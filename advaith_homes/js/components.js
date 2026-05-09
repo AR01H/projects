@@ -251,7 +251,7 @@ const FOOTER_HTML = `
     </div>
 
     <div class="footer__bottom">
-      <div style="font-size:.8rem">© 2026 Advaith Homes Ltd. All rights reserved.</div>
+      <div style="font-size:.8rem">© 2026 Advaith Homes. All rights reserved.</div>
     </div>
   </div>
 </footer>
