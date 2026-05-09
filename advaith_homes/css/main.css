@@ -888,7 +888,7 @@ p {
    ============================================ */
 .stats {
     background: linear-gradient(135deg, var(--client-color-900) 0%, var(--client-color-700) 50%, var(--slate-800) 100%);
-    padding: 72px 0;
+    padding: 32px 10px;
     position: relative;
     overflow: hidden;
 }
@@ -2529,10 +2529,12 @@ p {
 .testimonial-slider {
     background: white;
     border-radius: 30px;
-    padding: 0; /* Removed redundant padding */
+    padding: 0;
+    /* Removed redundant padding */
     box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
     border: 1px solid rgba(15, 23, 42, 0.03);
-    overflow: hidden; /* Added to clip slide transitions */
+    overflow: hidden;
+    /* Added to clip slide transitions */
 }
 
 .testimonial-slide {
@@ -2546,7 +2548,8 @@ p {
     display: flex;
     gap: 2.5rem;
     align-items: center;
-    padding: 2.5rem; /* Reduced & primary padding */
+    padding: 2.5rem;
+    /* Reduced & primary padding */
 }
 
 .testimonial-slide.active {
@@ -2558,7 +2561,8 @@ p {
 .testimonial-slide__image {
     width: 180px;
     height: 180px;
-    border-radius: 50%; /* Circular */
+    border-radius: 50%;
+    /* Circular */
     overflow: hidden;
     flex-shrink: 0;
     border: 5px solid var(--client-color-100);
