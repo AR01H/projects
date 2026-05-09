@@ -42,7 +42,7 @@ const MAIN_NAV = [
 ];
 
 const BLOG_DROPDOWN_HTML = `
-  <div class="nav__dropdown-menu nav__dropdown-menu--mega" style="width: 90vw; left: 50%; transform: translateX(-50%); padding: 20px; overflow-x: auto; overflow-y: hidden;">
+  <div class="nav__dropdown-menu nav__dropdown-menu--mega" style="width: 90vw; left: 50%; padding: 10px; overflow-x: auto; overflow-y: hidden;">
     <div style="display: grid; grid-template-rows: repeat(2, 1fr); grid-auto-flow: column; gap: 20px; min-width: max-content; padding-bottom: 5px;">
       ${BLOG_LINKS.map(blog => `
         <a href="pages/detail.html?type=blog&page=${blog.id}" class="nav__dropdown-item" style="width: 240px; flex-shrink: 0; display: flex; align-items: flex-start; gap: 12px; border-right: 1px solid var(--slate-100); padding-right: 15px;">
