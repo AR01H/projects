@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,7 +25,8 @@
   <meta property="twitter:title" content="UK's #1 Dedicated Buyer's Agent | Advaith Homes" />
   <meta property="twitter:description"
     content="Stop overpaying for property. Get an expert negotiator in your corner with Advaith Homes." />
-  <meta property="twitter:image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=630&fit=crop" />
+  <meta property="twitter:image"
+    content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=630&fit=crop" />
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -51,6 +52,7 @@
   </script>
 
   <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/commonstandard.css" />
 
 </head>
 
@@ -223,51 +225,30 @@
   </div>
 
   <!-- ── WHY YOU NEED US ── -->
-  <section class="section">
+  <section class="section" id="why-us-section">
     <div class="container">
-      <div style="text-align:center;max-width:640px;margin:0 auto">
+      <div style="text-align:center;max-width:700px;margin:0 auto">
         <div class="eyebrow reveal">Why You Need Us</div>
         <h2 class="reveal reveal-delay-1">The Home Buying System Is Stacked Against You</h2>
-        <p class="reveal reveal-delay-2">Estate agents are legally required to act in the seller's best interest — not
-          yours. Without an expert on your side, you're negotiating blind, missing problems, and paying too much.</p>
+        <p class="reveal reveal-delay-2" id="why-us-intro">Buying a home is one of the most significant decisions you'll
+          ever make, and while it may seem straightforward to handle everything yourself — having professional support
+          can truly transform the experience. A professional not only provides expert insights into the market but also
+          offers an objective perspective, helping you avoid emotional decisions and common pitfalls. With a skilled
+          expert by your side, you gain access to exclusive opportunities, save time, and secure the best possible
+          outcome, ensuring your investment is well-protected.</p>
       </div>
-      <div class="why-grid">
-        <div class="why-card reveal reveal-delay-1">
-          <div class="why-card__icon">🔍</div>
-          <h4>Hidden Property Problems</h4>
-          <p>Most buyers miss structural issues, planning problems, and neighbourhood concerns that only an expert eye
-            catches — before you're legally committed.</p>
-        </div>
-        <div class="why-card reveal reveal-delay-2">
-          <div class="why-card__icon">💸</div>
-          <h4>Overpaying Without Knowing</h4>
-          <p>Without access to real comparable data and skilled negotiation, most buyers pay 5–15% above fair market
-            value. That's tens of thousands of pounds.</p>
-        </div>
-        <div class="why-card reveal reveal-delay-3">
-          <div class="why-card__icon">⏰</div>
-          <h4>Months of Wasted Time</h4>
-          <p>The average first-time buyer spends 6–18 months searching, viewing unsuitable properties, and losing out to
-            other buyers. We cut that dramatically.</p>
-        </div>
-        <div class="why-card reveal reveal-delay-1">
-          <div class="why-card__icon">📋</div>
-          <h4>Legal & Survey Surprises</h4>
-          <p>Conveyancing, surveys, searches — the legal process is a minefield. We ensure nothing slips through,
-            protecting you from nasty surprises after exchange.</p>
-        </div>
-        <div class="why-card reveal reveal-delay-2">
-          <div class="why-card__icon">🤝</div>
-          <h4>No One In Your Corner</h4>
-          <p>The seller has their agent, their solicitor, their surveyor. You have… nobody. Until now. Advaith Homes is
-            100% on your side, every single step.</p>
-        </div>
-        <div class="why-card reveal reveal-delay-3">
-          <div class="why-card__icon">🧭</div>
-          <h4>Confusing, Stressful Process</h4>
-          <p>Most buyers have never done this before. We give you a clear roadmap, explain every step in plain English,
-            and handle the complexity so you don't have to.</p>
-        </div>
+
+      <!-- Cards rendered dynamically from data/why-us.json -->
+      <div class="why-grid" id="why-grid"></div>
+
+      <!-- Learn More CTA -->
+      <div class="reveal" style="text-align:center;margin-top:40px">
+        <a href="pages/detail.html?page=why-us" class="btn btn-primary reveal visible">
+          <span>Learn More</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
       </div>
     </div>
   </section>
@@ -320,7 +301,8 @@
               </div>
             </div>
           </div>
-          <a href="services.html" class="btn btn-primary reveal" style="margin-top:8px">Explore All Services →</a>
+          <a href="pages/detail.html?page=guidence" class="btn btn-primary reveal" style="margin-top:8px">Learn More
+            →</a>
         </div>
         <div class="guiding__visual reveal reveal-delay-2">
           <div class="guiding__property-card">
@@ -991,6 +973,33 @@
 
   <div id="footer-placeholder"></div>
   <script src="js/components.js"></script>
+
+  <!-- Why You Need Us — data loaded from data/why-us.js (no CORS, works locally) -->
+  <script src="data/why-us.js"></script>
+  <script>
+    (function () {
+      const data = WHY_US_DATA;
+      const grid = document.getElementById('why-grid');
+      if (!grid || !data) return;
+      const delays = ['reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+      data.section.cards.forEach(function (card, i) {
+        var div = document.createElement('div');
+        div.className = 'why-card reveal ' + delays[i % 3];
+        div.innerHTML = '<div class="why-card__icon">' + card.icon + '</div>'
+          + '<h4>' + card.title + '</h4>'
+          + '<p>' + card.text + '</p>';
+        grid.appendChild(div);
+      });
+      // Trigger reveal for dynamically added cards
+      if (window._revealObserver) {
+        grid.querySelectorAll('.why-card').forEach(function (el) { window._revealObserver.observe(el); });
+      } else {
+        grid.querySelectorAll('.why-card').forEach(function (el) { el.classList.add('visible'); });
+      }
+    })();
+  </script>
+
+
   <script>
     // 3D Coverflow Carousel Logic
     document.addEventListener('DOMContentLoaded', () => {

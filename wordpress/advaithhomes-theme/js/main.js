@@ -280,12 +280,12 @@ function initComponents() {
         if (e.isIntersecting) {
           // Add visible class
           e.target.classList.add('visible');
-          
+
           // Handle delays if specified
           if (e.target.classList.contains('reveal-delay-1')) e.target.style.transitionDelay = '0.2s';
           if (e.target.classList.contains('reveal-delay-2')) e.target.style.transitionDelay = '0.4s';
           if (e.target.classList.contains('reveal-delay-3')) e.target.style.transitionDelay = '0.6s';
-          
+
           obs.unobserve(e.target);
         }
       });
@@ -330,5 +330,3 @@ function initComponents() {
     obs2.observe(el);
   });
 }
-
-document.addEventListener('DOMContentLoaded', initComponents);

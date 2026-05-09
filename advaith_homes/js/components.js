@@ -280,12 +280,12 @@ function initComponents() {
         if (e.isIntersecting) {
           // Add visible class
           e.target.classList.add('visible');
-          
+
           // Handle delays if specified
           if (e.target.classList.contains('reveal-delay-1')) e.target.style.transitionDelay = '0.2s';
           if (e.target.classList.contains('reveal-delay-2')) e.target.style.transitionDelay = '0.4s';
           if (e.target.classList.contains('reveal-delay-3')) e.target.style.transitionDelay = '0.6s';
-          
+
           obs.unobserve(e.target);
         }
       });
@@ -334,21 +334,12 @@ function initComponents() {
 document.addEventListener('DOMContentLoaded', initComponents);
 
 // ── News Ticker Close ─────────────────────────
-(function() {
-  const ticker   = document.getElementById('news-ticker');
+(function () {
+  const ticker = document.getElementById('news-ticker');
   const closeBtn = document.getElementById('newsTickerClose');
   if (!ticker || !closeBtn) return;
-
-  // If user closed it this session, hide immediately
-  if (sessionStorage.getItem('ah_ticker_closed')) {
-    ticker.classList.add('hidden');
-    document.body.style.paddingTop = '';
-  }
-
   closeBtn.addEventListener('click', () => {
     ticker.classList.add('hidden');
-    sessionStorage.setItem('ah_ticker_closed', '1');
-    // Remove the extra padding when ticker is gone
     document.body.style.paddingTop = '';
   });
-})();
+})();
