@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -68,57 +68,7 @@
     </div>
     <div class="news-ticker__track-wrap">
       <div class="news-ticker__track" id="newsTickerTrack">
-        <a href="pages/news.html?id=1" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">BREAKING</span>
-          UK government announces 1,500 new affordable homes scheme across England — key buyer implications
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=2" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">MARKET</span>
-          UK house prices rise 3.2% year-on-year — 6 regions with the strongest growth right now
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=3" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--blue">RATES</span>
-          Bank of England holds base rate — what it means for your mortgage in 2025
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=4" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">POLICY</span>
-          Stamp duty changes: First-time buyer thresholds updated — act before April deadline
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=5" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">BUYERS</span>
-          Off-market property listings surge 28% — how to access homes before they hit Rightmove
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <!-- Duplicate for seamless loop -->
-        <a href="pages/news.html?id=1" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">BREAKING</span>
-          UK government announces 1,500 new affordable homes scheme across England — key buyer implications
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=2" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">MARKET</span>
-          UK house prices rise 3.2% year-on-year — 6 regions with the strongest growth right now
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=3" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--blue">RATES</span>
-          Bank of England holds base rate — what it means for your mortgage in 2025
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=4" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">POLICY</span>
-          Stamp duty changes: First-time buyer thresholds updated — act before April deadline
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=5" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">BUYERS</span>
-          Off-market property listings surge 28% — how to access homes before they hit Rightmove
-        </a>
-        <span class="news-ticker__sep">◆</span>
+        <!-- Injected via JS -->
       </div>
     </div>
     <button class="news-ticker__close" id="newsTickerClose" aria-label="Close news ticker">✕</button>
@@ -1091,6 +1041,34 @@
       setInterval(() => {
         showTestimonial(tIndex + 1);
       }, 8000);
+    });
+  </script>
+  <script src="dailynews/news.js"></script>
+  <script>
+    // Dynamic News Ticker Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const track = document.getElementById('newsTickerTrack');
+      // Fix: const doesn't attach to window, check NEWS_DATA directly
+      if (!track || typeof NEWS_DATA === 'undefined') return;
+
+      const itemsHtml = NEWS_DATA.map(art => `
+        <a href="pages/news.html?id=${art.id}" class="news-ticker__item">
+          <span class="news-ticker__tag news-ticker__tag--${art.tagClass.split('-')[1]}">${art.tag}</span>
+          ${art.title}
+        </a>
+        <span class="news-ticker__sep">◆</span>
+      `).join('');
+
+      // Inject twice for seamless loop
+      track.innerHTML = itemsHtml + itemsHtml;
+
+      // Close Logic
+      const closeBtn = document.getElementById('newsTickerClose');
+      const ticker = document.getElementById('news-ticker');
+      closeBtn?.addEventListener('click', () => {
+        ticker.classList.add('hidden');
+        document.body.style.paddingTop = '0';
+      });
     });
   </script>
 </body>

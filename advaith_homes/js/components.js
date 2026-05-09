@@ -22,42 +22,42 @@ const NAV_HTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="nav__dropdown-menu">
-            <a href="pages/property-research.html" class="nav__dropdown-item">
+            <a href="pages/detail.html?page=property-research" class="nav__dropdown-item">
               <div class="nav__dropdown-item-icon">🔍</div>
               <div>
                 <div style="font-weight:600;color:var(--slate-800);font-size:.85rem;width: max-content;">Property Research Report</div>
                 <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Deep analysis before you buy</div>
               </div>
             </a>
-            <a href="pages/legal-search.html" class="nav__dropdown-item">
+            <a href="pages/detail.html?page=legal-search" class="nav__dropdown-item">
               <div class="nav__dropdown-item-icon">⚖️</div>
               <div>
                 <div style="font-weight:600;color:var(--slate-800);font-size:.85rem;width: max-content;">Legal Search Packs</div>
                 <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">What's hidden in the paperwork</div>
               </div>
             </a>
-            <a href="pages/buyers-guide.html" class="nav__dropdown-item">
+            <a href="pages/detail.html?page=buyers-guide" class="nav__dropdown-item">
               <div class="nav__dropdown-item-icon">📋</div>
               <div>
                 <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Buyer's Guide</div>
                 <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Complete buying process</div>
               </div>
             </a>
-            <a href="pages/deposit-guide.html" class="nav__dropdown-item">
+            <a href="pages/detail.html?page=deposit-guide" class="nav__dropdown-item">
               <div class="nav__dropdown-item-icon">💰</div>
               <div>
                 <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Deposit Guide</div>
                 <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">How much you really need</div>
               </div>
             </a>
-            <a href="pages/mortgage-guide.html" class="nav__dropdown-item">
+            <a href="pages/detail.html?page=mortgage-guide" class="nav__dropdown-item">
               <div class="nav__dropdown-item-icon">🏦</div>
               <div>
                 <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Mortgage Guide</div>
                 <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Navigate rates & lenders</div>
               </div>
             </a>
-            <a href="pages/moving-guide.html" class="nav__dropdown-item">
+            <a href="pages/detail.html?page=moving-guide" class="nav__dropdown-item">
               <div class="nav__dropdown-item-icon">🚛</div>
               <div>
                 <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Moving Guide</div>
@@ -87,12 +87,12 @@ const NAV_HTML = `
   <a href="services.html" class="nav__mobile-link">✨ Services</a>
   <a href="about.html" class="nav__mobile-link">👥 About Us</a>
   <div style="padding:13px 16px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted)">Buying Guides</div>
-  <a href="pages/property-research.html" class="nav__mobile-link" style="padding-left:28px">🔍 Property Research Report</a>
-  <a href="pages/legal-search.html" class="nav__mobile-link" style="padding-left:28px">⚖️ Legal Search Packs</a>
-  <a href="pages/buyers-guide.html" class="nav__mobile-link" style="padding-left:28px">📋 Buyer's Guide</a>
-  <a href="pages/deposit-guide.html" class="nav__mobile-link" style="padding-left:28px">💰 Deposit Guide</a>
-  <a href="pages/mortgage-guide.html" class="nav__mobile-link" style="padding-left:28px">🏦 Mortgage Guide</a>
-  <a href="pages/moving-guide.html" class="nav__mobile-link" style="padding-left:28px">🚛 Moving Guide</a>
+  <a href="pages/detail.html?page=property-research" class="nav__mobile-link" style="padding-left:28px">🔍 Property Research Report</a>
+  <a href="pages/detail.html?page=legal-search" class="nav__mobile-link" style="padding-left:28px">⚖️ Legal Search Packs</a>
+  <a href="pages/detail.html?page=buyers-guide" class="nav__mobile-link" style="padding-left:28px">📋 Buyer's Guide</a>
+  <a href="pages/detail.html?page=deposit-guide" class="nav__mobile-link" style="padding-left:28px">💰 Deposit Guide</a>
+  <a href="pages/detail.html?page=mortgage-guide" class="nav__mobile-link" style="padding-left:28px">🏦 Mortgage Guide</a>
+  <a href="pages/detail.html?page=moving-guide" class="nav__mobile-link" style="padding-left:28px">🚛 Moving Guide</a>
   <a href="free-consultation.html" class="nav__mobile-link" style="padding-left:28px">☎️ Free Consultation Guide</a>
   <a href="contact.html" class="nav__mobile-link">📬 Contact Us</a>
   <a href="previous-clients.html" class="nav__mobile-link">⭐ Client Stories</a>
@@ -128,12 +128,12 @@ const FOOTER_HTML = `
       <div>
         <div class="footer__col-title">Buying Guides</div>
         <div class="footer__links">
-          <a href="pages/property-research.html" class="footer__link">Property Research Report</a>
-          <a href="pages/legal-search.html" class="footer__link">Legal Search Packs</a>
-          <a href="pages/buyers-guide.html" class="footer__link">Complete Buyer's Guide</a>
-          <a href="pages/deposit-guide.html" class="footer__link">Deposit Guide</a>
-          <a href="pages/mortgage-guide.html" class="footer__link">Mortgage Guide</a>
-          <a href="pages/moving-guide.html" class="footer__link">Moving Guide</a>
+          <a href="pages/detail.html?page=property-research" class="footer__link">Property Research Report</a>
+          <a href="pages/detail.html?page=legal-search" class="footer__link">Legal Search Packs</a>
+          <a href="pages/detail.html?page=buyers-guide" class="footer__link">Complete Buyer's Guide</a>
+          <a href="pages/detail.html?page=deposit-guide" class="footer__link">Deposit Guide</a>
+          <a href="pages/detail.html?page=mortgage-guide" class="footer__link">Mortgage Guide</a>
+          <a href="pages/detail.html?page=moving-guide" class="footer__link">Moving Guide</a>
           <a href="free-consultation.html" class="footer__link">Free Consultation Guide</a>
         </div>
       </div>

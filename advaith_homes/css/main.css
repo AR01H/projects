@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    ADVAITH HOMES — Design System
    Violet/Gold premium real estate palette
    ============================================ */
@@ -16,7 +16,7 @@
     right: 0;
     z-index: 490;
     height: 38px;
-    background: #0f172a;
+    background: var(--slate-900);
     border-bottom: 1px solid rgba(250, 204, 21, 0.25);
     display: flex;
     align-items: center;
@@ -30,14 +30,14 @@
     pointer-events: none;
 }
 
-/* Red label badge on the left */
+/* Gold label badge on the left */
 .news-ticker__label {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 7px;
-    background: #dc2626;
-    color: #fff;
+    background: var(--client-color-500); /* Brand Gold 500 */
+    color: var(--slate-900); /* Slate 900 for high contrast */
     font-family: 'DM Sans', sans-serif;
     font-size: 0.65rem;
     font-weight: 800;
@@ -54,7 +54,7 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #fff;
+    background: var(--surface);
     display: inline-block;
     animation: ticker-pulse 1.4s ease-in-out infinite;
 }
@@ -123,7 +123,7 @@
 }
 
 .news-ticker__item:hover {
-    color: #facc15;
+    color: var(--gold-400);
 }
 
 /* Separator dot */
@@ -179,7 +179,7 @@
 }
 
 .news-ticker__close:hover {
-    color: #fff;
+    color: var(--gold-400); /* Gold 400 */
 }
 
 /* Push body down by ticker height only.
@@ -1004,38 +1004,43 @@ p {
 }
 
 /* ============================================
-   SCROLL TICKER
+   TRUST TICKER (Brand Stats & Values)
    ============================================ */
 .ticker {
-    background: var(--slate-900);
-    padding: 14px 0;
+    background: var(--client-color-50);
+    padding: 20px 0;
     overflow: hidden;
     position: relative;
+    border-top: 1px solid rgba(183, 121, 31, 0.1);
+    border-bottom: 1px solid rgba(183, 121, 31, 0.1);
 }
 
 .ticker__track {
     display: flex;
-    animation: ticker 30s linear infinite;
+    animation: ticker 40s linear infinite;
     width: max-content;
 }
 
 .ticker__item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 0 40px;
-    font-size: .85rem;
+    gap: 12px;
+    padding: 0 50px;
+    font-size: 1rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, .75);
+    color: var(--slate-800);
     white-space: nowrap;
+    font-family: 'Instrument Serif', serif;
+    letter-spacing: 0.02em;
 }
 
 .ticker__dot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: var(--gold-400);
+    background: var(--client-color-600);
     flex-shrink: 0;
+    opacity: 0.6;
 }
 
 @keyframes ticker {

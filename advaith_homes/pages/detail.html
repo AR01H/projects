@@ -18,8 +18,12 @@
   <!-- All content injected here -->
   <div id="page-root">
     <div class="detail-loading">
-      <div class="detail-loading__spinner"></div>
-      <span>Loading…</span>
+      <div class="loading-progress"></div>
+      <div class="detail-loading__brand">
+        <div class="detail-loading__logo">AH</div>
+        <div class="detail-loading__pulse"></div>
+      </div>
+      <div class="detail-loading__text">Securing Your <em>Premium Data</em></div>
     </div>
   </div>
 
@@ -107,12 +111,97 @@
         </div>
 
         <div class="container">
+          <!-- Banner (Optional) -->
+          ${page.banner ? `
+            <div class="detail-banner" style="background-image: url('${page.banner.image}')">
+              <div class="detail-banner__content">
+                <h2>${page.banner.title}</h2>
+                <p>${page.banner.text}</p>
+              </div>
+            </div>
+          ` : ''}
+
           <!-- Challenges -->
           <div class="detail-section">
             <div class="detail-section__tag">${page.challengesTitle || 'Challenges'}</div>
             <h2>${page.challengesHeadline || 'Common Obstacles'}</h2>
             <div class="challenge-grid" id="challenge-grid"></div>
           </div>
+
+          <!-- Comparison Table (Optional) -->
+          ${page.table ? `
+            <div class="detail-section">
+              <div class="detail-section__tag">${page.table.tag || 'Comparison'}</div>
+              <h2>${page.table.headline || 'Choose Your Report'}</h2>
+              <div class="comparison-container">
+                <table class="comparison-table">
+                  <thead>
+                    <tr>
+                      ${page.table.columns.map(col => `<th>${col}</th>`).join('')}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${page.table.rows.map(row => `
+                      <tr class="table-category">
+                        <td colspan="${page.table.columns.length}">${row.category}</td>
+                      </tr>
+                      ${row.items.map(item => `
+                        <tr>
+                          <td>
+                            <strong>${item.name}</strong>
+                            ${item.desc ? `<div class="item-desc">${item.desc}</div>` : ''}
+                          </td>
+                          ${item.values.map(val => `
+                            <td class="table-check">
+                              ${val === true ? '<span class="table-icon table-icon--tick"></span>' : (val === false ? '<span class="table-icon table-icon--cross"></span>' : val)}
+                            </td>
+                          `).join('')}
+                        </tr>
+                      `).join('')}
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Process Timeline (Optional) -->
+          ${page.process ? `
+            <div class="detail-section">
+              <div class="detail-section__tag">${page.process.tag || 'Process'}</div>
+              <h2>${page.process.headline || 'How It Works'}</h2>
+              <div class="process-timeline">
+                ${page.process.steps.map(step => `
+                  <div class="process-step">
+                    <div class="process-dot"></div>
+                    <h4>${step.title}</h4>
+                    <p>${step.desc}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Testimonials (Optional) -->
+          ${page.testimonials ? `
+            <div class="detail-section">
+              <div class="detail-section__tag">Client Stories</div>
+              <h2>What Buyers Say</h2>
+              <div class="service-testimonials">
+                ${page.testimonials.map(t => `
+                  <div class="service-testi-card">
+                    <div class="service-testi-text">${t.text}</div>
+                    <div class="service-testi-author">
+                      <div class="service-testi-info">
+                        <div class="service-testi-name">${t.author}</div>
+                        <div class="service-testi-loc">${t.location}</div>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
 
           <!-- Do / Don't -->
           <div class="detail-section">
