@@ -33,11 +33,11 @@
     // ── 1. Read ?page= from URL ───────────────────────────────
     const params = new URLSearchParams(window.location.search);
     const pageKey = params.get('page') || '';
+    const pageType = params.get('type') || 'data';
 
     // ── 2. Load Data File Automatically ─────────────────────
-    // ?page=why-us loads ../data/why-us.js
-    // ?page=guidence loads ../data/guidence.js
-    const dataFile = `../data/${pageKey}.js`;
+    const dataFolder = pageType === 'blog' ? 'blog' : 'data';
+    const dataFile = `../${dataFolder}/${pageKey}.js`;
 
     if (!pageKey) {
       // Unknown page — show 404
@@ -52,10 +52,16 @@
       // ── 3. Load the data JS file then render ─────────────
       const script = document.createElement('script');
       script.src = dataFile;
-      script.onload = function () { renderPage(pageKey); };
+      script.onload = function () { 
+        if (pageType === 'blog') {
+          renderBlog(window.BLOG_POST_DATA);
+        } else {
+          renderPage(pageKey); 
+        }
+      };
       script.onerror = function () {
         document.getElementById('page-root').innerHTML =
-          '<div class="detail-404"><h2>Data failed to load</h2><a href="../index.html" class="btn btn-primary">← Home</a></div>';
+          `<div class="detail-404"><h2>Data failed to load</h2><p>Path: ${dataFile}</p><a href="../index.html" class="btn btn-primary">← Home</a></div>`;
       };
       document.head.appendChild(script);
     }
@@ -230,12 +236,14 @@
         </div>
                   <!-- CTA -->
           <div class="detail-cta">
-            <div class="detail-cta__eyebrow">Start Today</div>
-            <h2>${page.cta.headline}</h2>
-            <p>${page.cta.subtext}</p>
-            <div class="detail-cta__btns">
-              <a href="${page.cta.buttonUrl}" class="btn btn-gold">${page.cta.buttonText}</a>
-              <a href="../contact.html" class="btn btn-outline-white">Get In Touch</a>
+            <div class="container">
+              <div class="detail-cta__eyebrow">Start Today</div>
+              <h2>${page.cta.headline}</h2>
+              <p>${page.cta.subtext}</p>
+              <div class="detail-cta__btns">
+                <a href="${page.cta.buttonUrl}" class="btn btn-gold">${page.cta.buttonText}</a>
+                <a href="../contact.html" class="btn btn-outline-white">Get In Touch</a>
+              </div>
             </div>
           </div>
         `;
@@ -281,6 +289,68 @@
       const isOpen = item.classList.contains('open');
       document.querySelectorAll('.question-item').forEach(i => i.classList.remove('open'));
       if (!isOpen) item.classList.add('open');
+    }
+
+    function renderBlog(d) {
+      if (!d) {
+        document.getElementById('page-root').innerHTML = `<div class="detail-404"><h2>⚠️ Blog Data Not Found</h2><p>Make sure window.BLOG_POST_DATA is defined.</p></div>`;
+        return;
+      }
+
+      document.title = d.title;
+      document.getElementById('page-root').innerHTML = `
+        <div class="detail-hero">
+          <div class="container">
+            <div class="detail-hero__inner">
+              <div class="eyebrow">Expert Insights</div>
+              <h1>${d.title}</h1>
+              <p>${d.description}</p>
+              <div class="detail-stats">
+                ${(d.stats || []).map(s => `
+                  <div class="detail-stat">
+                    <span class="detail-stat__num">${s.num}</span>
+                    <span class="detail-stat__label">${s.label}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="blog-content">
+            ${(d.sections || []).map(sec => `
+              <div class="detail-section">
+                <div class="detail-section__tag">${sec.tag}</div>
+                <h2>${sec.headline}</h2>
+                <div class="blog-text">${sec.content}</div>
+              </div>
+            `).join('')}
+
+            ${d.banner ? `
+              <div class="detail-banner" style="background-image: url('${d.banner.image}')">
+                <div class="detail-banner__content">
+                  <h2>${d.banner.title}</h2>
+                  <p>${d.banner.desc}</p>
+                </div>
+              </div>
+            ` : ''}
+
+          </div>
+        </div>
+
+        <div class="detail-cta">
+          <div class="container">
+            <div class="detail-cta__eyebrow">Keep Reading</div>
+            <h2>${d.cta.title}</h2>
+            <p>${d.cta.desc}</p>
+            <div class="detail-cta__btns">
+              <a href="${d.cta.primaryBtn.link}" class="btn btn-gold">${d.cta.primaryBtn.text}</a>
+              <a href="../news.html" class="btn btn-outline-white">Market News</a>
+            </div>
+          </div>
+        </div>
+      `;
     }
   </script>
 </body>

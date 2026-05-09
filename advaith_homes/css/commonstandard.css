@@ -12,6 +12,31 @@
 
 
 /* ============================================================
+   0. GLOBAL SCROLLBAR (Premium Thin Design)
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px; /* Thin horizontal scrollbar */
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.02);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-400);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-600);
+}
+
+/* Firefox Support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-400) rgba(0,0,0,0.02);
+}
+
+/* ============================================================
    1. BUTTONS
    ============================================================ */
 

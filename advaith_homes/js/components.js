@@ -1,6 +1,61 @@
-// ============================================
-// ADVAITH HOMES — Shared Components
-// ============================================
+const BLOG_LINKS = [
+  { id: 'london-hotspots-2026', icon: '📍', title: 'London Hotspots', desc: 'Top 5 growth areas' },
+  { id: 'negotiation-secrets', icon: '💰', title: 'Negotiation Secrets', desc: 'Save £20k+ easily' },
+  { id: 'property-rules-2026', icon: '⚖️', title: 'Property Rules', desc: 'Law changes for 2026' },
+  { id: 'mortgage-secrets-2026', icon: '🏦', title: 'Mortgage Secrets', desc: 'Unlock the best rates' },
+  { id: 'midlands-boom-2026', icon: '🏗️', title: 'The Midlands Boom', desc: 'Manchester is smart buy' },
+  { id: 'first-time-buyer-2026', icon: '🔑', title: 'First-Time Buyer', desc: 'Your step-by-step key' },
+  { id: 'hidden-costs-buying', icon: '💸', title: 'Hidden Costs', desc: 'The extra £10k you need' },
+  { id: 'new-build-vs-period', icon: '🏘️', title: 'New Build vs Period', desc: 'Which wins in 2026?' },
+  { id: 'shared-ownership-reality', icon: '🤝', title: 'Shared Ownership', desc: 'Trap or ticket?' },
+  { id: 'digital-legals-2026', icon: '📱', title: 'Digital Legals', desc: 'Paperwork-free buying' }
+];
+
+const MAIN_NAV = [
+  { title: 'Home', href: 'index.html', icon: '🏠', showInMain: true },
+  { title: 'Services', href: 'services.html', icon: '✨', showInMain: false },
+  {
+    title: 'Buying Guides',
+    type: 'dropdown',
+    icon: '📋',
+    showInMain: true,
+    items: [
+      { id: 'property-research.html', icon: '🔍', title: 'Property Research Report', desc: 'Deep analysis before you buy' },
+      { id: 'legal-search.html', icon: '⚖️', title: 'Legal Search Packs', desc: "What's hidden in the paperwork" },
+      { id: 'buyers-guide.html', icon: '📋', title: "Buyer's Guide", desc: 'Complete buying process' },
+      { id: 'deposit-guide.html', icon: '💰', title: 'Deposit Guide', desc: 'How much you really need' },
+      { id: 'mortgage-guide.html', icon: '🏦', title: 'Mortgage Guide', desc: 'Navigate rates & lenders' },
+      { id: 'moving-guide.html', icon: '🚛', title: 'Moving Guide', desc: 'Stress-free moving day' },
+      { id: 'price-calculator.html', icon: '🧮', title: 'Price Calculator', desc: 'Dynamic cost estimations', highlight: true }
+    ]
+  },
+  {
+    title: 'Blog',
+    type: 'mega',
+    icon: '✍️',
+    showInMain: true,
+    items: BLOG_LINKS
+  },
+  { title: 'About Us', href: 'about.html', icon: '👥', showInMain: false },
+  { title: 'Client Stories', href: 'previous-clients.html', icon: '⭐', showInMain: false },
+  { title: 'Contact', href: 'contact.html', icon: '📬', showInMain: false }
+];
+
+const BLOG_DROPDOWN_HTML = `
+  <div class="nav__dropdown-menu nav__dropdown-menu--mega" style="width: 90vw; left: 50%; transform: translateX(-50%); padding: 20px; overflow-x: auto; overflow-y: hidden;">
+    <div style="display: grid; grid-template-rows: repeat(2, 1fr); grid-auto-flow: column; gap: 20px; min-width: max-content; padding-bottom: 5px;">
+      ${BLOG_LINKS.map(blog => `
+        <a href="pages/detail.html?type=blog&page=${blog.id}" class="nav__dropdown-item" style="width: 240px; flex-shrink: 0; display: flex; align-items: flex-start; gap: 12px; border-right: 1px solid var(--slate-100); padding-right: 15px;">
+          <div class="nav__dropdown-item-icon" style="margin-bottom: 0; flex-shrink: 0;">${blog.icon}</div>
+          <div>
+            <div style="font-weight:700;color:var(--slate-800);font-size:.82rem;margin-bottom:2px">${blog.title}</div>
+            <div style="font-size:.75rem;color:var(--text-muted);line-height:1.4">${blog.desc}</div>
+          </div>
+        </a>
+      `).join('')}
+    </div>
+  </div>
+`;
 
 const NAV_HTML = `
 <nav class="nav" id="mainNav">
@@ -12,63 +67,57 @@ const NAV_HTML = `
       </a>
 
       <ul class="nav__menu">
-        <li><a href="index.html" class="nav__link" data-page="home">Home</a></li>
-        <li><a href="services.html" class="nav__link" data-page="services">Services</a></li>
-        <li><a href="about.html" class="nav__link" data-page="about">About Us</a></li>
+        ${MAIN_NAV.map((nav, index) => {
+  const priorityClass = `nav__item-p${index + 1}`;
+  if (nav.type === 'dropdown') {
+    return `
+              <li class="nav__dropdown ${priorityClass}">
+                <button class="nav__link nav__dropdown-toggle">
+                  ${nav.title}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="nav__dropdown-menu">
+                  ${nav.items.map(item => `
+                    <a href="pages/${item.id}" class="nav__dropdown-item" ${item.highlight ? 'style="background: var(--bg-alt); border-radius: 8px;"' : ''}>
+                      <div class="nav__dropdown-item-icon" ${item.highlight ? 'style="background: var(--accent); color: white;"' : ''}>${item.icon}</div>
+                      <div>
+                        <div style="font-weight:${item.highlight ? '700' : '600'};color:${item.highlight ? 'var(--accent)' : 'var(--slate-800)'};font-size:.85rem;${item.desc.length > 25 ? 'width: max-content;' : ''}">${item.title}</div>
+                        <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">${item.desc}</div>
+                      </div>
+                    </a>
+                  `).join('')}
+                </div>
+              </li>
+            `;
+  } else if (nav.type === 'mega') {
+    return `
+              <li class="nav__dropdown ${priorityClass}">
+                <button class="nav__link nav__dropdown-toggle">
+                  ${nav.title}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                ${BLOG_DROPDOWN_HTML}
+              </li>
+            `;
+  } else {
+    return `<li class="${priorityClass}"><a href="${nav.href}" class="nav__link" data-page="${nav.title.toLowerCase().replace(/ /g, '')}">${nav.title}</a></li>`;
+  }
+}).join('')}
 
-        <li class="nav__dropdown">
-          <button class="nav__link nav__dropdown-toggle">
-            Buying Guides
+        <!-- "More" Dropdown (Auto-Handles Overflow) -->
+        <li class="nav__dropdown nav__item-more-trigger">
+          <button class="nav__link nav__dropdown-toggle" style="color: var(--accent); font-weight: 700;">
+            More
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="nav__dropdown-menu">
-            <a href="pages/detail.html?page=property-research" class="nav__dropdown-item">
-              <div class="nav__dropdown-item-icon">🔍</div>
-              <div>
-                <div style="font-weight:600;color:var(--slate-800);font-size:.85rem;width: max-content;">Property Research Report</div>
-                <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Deep analysis before you buy</div>
-              </div>
-            </a>
-            <a href="pages/detail.html?page=legal-search" class="nav__dropdown-item">
-              <div class="nav__dropdown-item-icon">⚖️</div>
-              <div>
-                <div style="font-weight:600;color:var(--slate-800);font-size:.85rem;width: max-content;">Legal Search Packs</div>
-                <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">What's hidden in the paperwork</div>
-              </div>
-            </a>
-            <a href="pages/detail.html?page=buyers-guide" class="nav__dropdown-item">
-              <div class="nav__dropdown-item-icon">📋</div>
-              <div>
-                <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Buyer's Guide</div>
-                <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Complete buying process</div>
-              </div>
-            </a>
-            <a href="pages/detail.html?page=deposit-guide" class="nav__dropdown-item">
-              <div class="nav__dropdown-item-icon">💰</div>
-              <div>
-                <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Deposit Guide</div>
-                <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">How much you really need</div>
-              </div>
-            </a>
-            <a href="pages/detail.html?page=mortgage-guide" class="nav__dropdown-item">
-              <div class="nav__dropdown-item-icon">🏦</div>
-              <div>
-                <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Mortgage Guide</div>
-                <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Navigate rates & lenders</div>
-              </div>
-            </a>
-            <a href="pages/detail.html?page=moving-guide" class="nav__dropdown-item">
-              <div class="nav__dropdown-item-icon">🚛</div>
-              <div>
-                <div style="font-weight:600;color:var(--slate-800);font-size:.85rem">Moving Guide</div>
-                <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">Stress-free moving day</div>
-              </div>
-            </a>
+          <div class="nav__dropdown-menu" style="min-width: 220px;">
+            ${MAIN_NAV.map((nav, index) => `
+              <a href="${nav.href || '#'}" class="nav__dropdown-item nav__more-item-${index + 1}" style="padding: 12px 16px;">
+                <span style="margin-right: 10px;">${nav.icon}</span> ${nav.title}
+              </a>
+            `).join('')}
           </div>
         </li>
-
-        <li><a href="contact.html" class="nav__link" data-page="contact">Contact</a></li>
-        <li><a href="previous-clients.html" class="nav__link" data-page="clients">Client Stories</a></li>
       </ul>
 
       <div class="nav__actions">
@@ -83,23 +132,46 @@ const NAV_HTML = `
 </nav>
 
 <div class="nav__mobile" id="mobileNav">
-  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
-  <a href="services.html" class="nav__mobile-link">✨ Services</a>
-  <a href="about.html" class="nav__mobile-link">👥 About Us</a>
-  <div style="padding:13px 16px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted)">Buying Guides</div>
-  <a href="pages/detail.html?page=property-research" class="nav__mobile-link" style="padding-left:28px">🔍 Property Research Report</a>
-  <a href="pages/detail.html?page=legal-search" class="nav__mobile-link" style="padding-left:28px">⚖️ Legal Search Packs</a>
-  <a href="pages/detail.html?page=buyers-guide" class="nav__mobile-link" style="padding-left:28px">📋 Buyer's Guide</a>
-  <a href="pages/detail.html?page=deposit-guide" class="nav__mobile-link" style="padding-left:28px">💰 Deposit Guide</a>
-  <a href="pages/detail.html?page=mortgage-guide" class="nav__mobile-link" style="padding-left:28px">🏦 Mortgage Guide</a>
-  <a href="pages/detail.html?page=moving-guide" class="nav__mobile-link" style="padding-left:28px">🚛 Moving Guide</a>
-  <a href="free-consultation.html" class="nav__mobile-link" style="padding-left:28px">☎️ Free Consultation Guide</a>
-  <a href="contact.html" class="nav__mobile-link">📬 Contact Us</a>
-  <a href="previous-clients.html" class="nav__mobile-link">⭐ Client Stories</a>
+  ${MAIN_NAV.map(nav => {
+  if (nav.type === 'dropdown' || nav.type === 'mega') {
+    return `
+        <details class="nav__mobile-details">
+          <summary class="nav__mobile-summary">${nav.icon} ${nav.title} <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="nav__mobile-sub-menu">
+            ${nav.items.map(item => {
+      const href = nav.type === 'mega' ? `pages/detail.html?type=blog&page=${item.id}` : `pages/${item.id}`;
+      return `<a href="${href}" class="nav__mobile-link" ${item.highlight ? 'style="color: var(--accent); font-weight: 700;"' : ''}>${item.icon} ${item.title}</a>`;
+    }).join('')}
+            ${nav.title === 'Buying Guides' ? '<a href="free-consultation.html" class="nav__mobile-link">☎️ Free Consultation Guide</a>' : ''}
+          </div>
+        </details>
+      `;
+  } else {
+    return `<a href="${nav.href}" class="nav__mobile-link">${nav.icon} ${nav.title}</a>`;
+  }
+}).join('')}
   <div style="padding:16px;">
     <a href="free-consultation.html" class="btn btn-primary" style="width:100%;justify-content:center">Book Free Consultation</a>
   </div>
 </div>
+
+<style>
+.nav__mobile-details { border-bottom: 1px solid rgba(0,0,0,0.05); }
+.nav__mobile-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  font-weight: 600;
+  color: var(--slate-700);
+  cursor: pointer;
+  list-style: none;
+}
+.nav__mobile-summary::-webkit-details-marker { display: none; }
+.nav__mobile-summary svg { transition: transform 0.3s ease; }
+.nav__mobile-details[open] .nav__mobile-summary svg { transform: rotate(180deg); }
+.nav__mobile-sub-menu { background: rgba(0,0,0,0.02); padding-left: 15px; padding-bottom: 5px; }
+</style>
 `;
 
 const FOOTER_HTML = `
@@ -128,12 +200,9 @@ const FOOTER_HTML = `
       <div>
         <div class="footer__col-title">Buying Guides</div>
         <div class="footer__links">
-          <a href="pages/detail.html?page=property-research" class="footer__link">Property Research Report</a>
-          <a href="pages/detail.html?page=legal-search" class="footer__link">Legal Search Packs</a>
-          <a href="pages/detail.html?page=buyers-guide" class="footer__link">Complete Buyer's Guide</a>
-          <a href="pages/detail.html?page=deposit-guide" class="footer__link">Deposit Guide</a>
-          <a href="pages/detail.html?page=mortgage-guide" class="footer__link">Mortgage Guide</a>
-          <a href="pages/detail.html?page=moving-guide" class="footer__link">Moving Guide</a>
+          ${MAIN_NAV.find(n => n.title === 'Buying Guides').items.map(guide => `
+            <a href="pages/${guide.id}" class="footer__link" ${guide.highlight ? 'style="color: var(--client-color-100); font-weight: 700;"' : ''}>${guide.title}</a>
+          `).join('')}
           <a href="free-consultation.html" class="footer__link">Free Consultation Guide</a>
         </div>
       </div>
@@ -141,11 +210,9 @@ const FOOTER_HTML = `
       <div>
         <div class="footer__col-title">Company</div>
         <div class="footer__links">
-          <a href="index.html" class="footer__link">Home</a>
-          <a href="services.html" class="footer__link">Our Services</a>
-          <a href="about.html" class="footer__link">About & Our Story</a>
-          <a href="previous-clients.html" class="footer__link">Client Stories</a>
-          <a href="contact.html" class="footer__link">Contact Us</a>
+          ${MAIN_NAV.filter(n => n.type !== 'dropdown' && n.type !== 'mega').map(n => `
+            <a href="${n.href}" class="footer__link">${n.title}</a>
+          `).join('')}
           <a href="pages/privacy-policy.html" class="footer__link">Privacy Policy</a>
           <a href="pages/terms.html" class="footer__link">Terms & Conditions</a>
           <a href="pages/refund-policy.html" class="footer__link">Refund Policy</a>
@@ -184,13 +251,7 @@ const FOOTER_HTML = `
     </div>
 
     <div class="footer__bottom">
-      <div style="font-size:.8rem">© 2026 Advaith Homes Ltd. All rights reserved. Registered in England & Wales.</div>
-      <div class="footer__legal">
-        <a href="pages/privacy-policy.html" class="footer__link">Privacy Policy</a>
-        <a href="pages/terms.html" class="footer__link">Terms & Conditions</a>
-        <a href="pages/refund-policy.html" class="footer__link">Refund Policy</a>
-        <a href="contact.html" class="footer__link">Contact</a>
-      </div>
+      <div style="font-size:.8rem">© 2026 Advaith Homes Ltd. All rights reserved.</div>
     </div>
   </div>
 </footer>
@@ -205,12 +266,17 @@ function initComponents() {
   let finalFooter = FOOTER_HTML;
 
   if (isPagesDir) {
-    finalNav = finalNav.replace(/href="([a-zA-Z0-9-]+\.html)"/g, 'href="../$1"');
-    finalNav = finalNav.replace(/href="pages\/([a-zA-Z0-9-]+\.html)"/g, 'href="$1"');
+    // Fix top-level links (e.g., index.html -> ../index.html)
+    // Only if they don't already start with http, #, or ../
+    finalNav = finalNav.replace(/href="(?!(http|#|\.\.\/))([a-zA-Z0-9-]+\.html)(\?[^"]*)?"/g, 'href="../$2$3"');
+
+    // Fix pages links (e.g., pages/detail.html -> detail.html)
+    finalNav = finalNav.replace(/href="pages\/([a-zA-Z0-9-]+\.html)(\?[^"]*)?"/g, 'href="$1$2"');
+
     finalNav = finalNav.replace(/src="logo\.png"/g, 'src="../logo.png"');
 
-    finalFooter = finalFooter.replace(/href="([a-zA-Z0-9-]+\.html)"/g, 'href="../$1"');
-    finalFooter = finalFooter.replace(/href="pages\/([a-zA-Z0-9-]+\.html)"/g, 'href="$1"');
+    finalFooter = finalFooter.replace(/href="(?!(http|#|\.\.\/))([a-zA-Z0-9-]+\.html)(\?[^"]*)?"/g, 'href="../$2$3"');
+    finalFooter = finalFooter.replace(/href="pages\/([a-zA-Z0-9-]+\.html)(\?[^"]*)?"/g, 'href="$1$2"');
   }
 
   // Nav
