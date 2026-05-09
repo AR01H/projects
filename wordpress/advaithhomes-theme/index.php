@@ -1,147 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<?php get_header(); ?>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advaith Homes | UK's #1 Dedicated Buyer's Agent | Find Your Dream Home</title>
-  <meta name="description"
-    content="Advaith Homes is the UK's leading buyer's agent. We work exclusively for you — not the seller — to find, negotiate, and secure your dream home while saving you thousands." />
-  <meta name="keywords"
-    content="buyer's agent UK, property search UK, home buying expert, UK real estate agent, find a home UK, Advaith Homes, London property search, buyer's advocate" />
-  <link rel="canonical" href="https://advaithhomes.co.uk/" />
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://advaithhomes.co.uk/" />
-  <meta property="og:title" content="Advaith Homes | Your Trusted UK Buyer's Advocate" />
-  <meta property="og:description"
-    content="We work exclusively for you — finding and negotiating your perfect UK home while saving you thousands." />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=630&fit=crop" />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://advaithhomes.co.uk/" />
-  <meta property="twitter:title" content="UK's #1 Dedicated Buyer's Agent | Advaith Homes" />
-  <meta property="twitter:description"
-    content="Stop overpaying for property. Get an expert negotiator in your corner with Advaith Homes." />
-  <meta property="twitter:image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=630&fit=crop" />
-
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
-    "name": "Advaith Homes",
-    "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa",
-    "url": "https://advaithhomes.co.uk/",
-    "telephone": "+447887699208",
-    "priceRange": "£££",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "London",
-      "addressCountry": "UK"
-    },
-    "description": "Advaith Homes is a dedicated UK buyer's agent representing property buyers in searching, researching, and negotiating home purchases.",
-    "sameAs": [
-      "https://facebook.com/advaithhomes",
-      "https://instagram.com/advaithhomes"
-    ]
-  }
-  </script>
-
-  <link rel="stylesheet" href="css/main.css" />
-
-</head>
-
-<body data-page="home">
 
   <div id="nav-placeholder"></div>
 
-  <!-- ── BREAKING NEWS TICKER ── -->
-  <div class="news-ticker" id="news-ticker" role="region" aria-label="Housing market news">
-    <div class="news-ticker__label">
-      <span class="news-ticker__pulse"></span>
-      NEWS
-    </div>
-    <div class="news-ticker__track-wrap">
-      <div class="news-ticker__track" id="newsTickerTrack">
-        <a href="pages/news.html?id=1" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">BREAKING</span>
-          UK government announces 1,500 new affordable homes scheme across England — key buyer implications
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=2" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">MARKET</span>
-          UK house prices rise 3.2% year-on-year — 6 regions with the strongest growth right now
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=3" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--blue">RATES</span>
-          Bank of England holds base rate — what it means for your mortgage in 2025
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=4" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">POLICY</span>
-          Stamp duty changes: First-time buyer thresholds updated — act before April deadline
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=5" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">BUYERS</span>
-          Off-market property listings surge 28% — how to access homes before they hit Rightmove
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <!-- Duplicate for seamless loop -->
-        <a href="pages/news.html?id=1" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">BREAKING</span>
-          UK government announces 1,500 new affordable homes scheme across England — key buyer implications
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=2" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">MARKET</span>
-          UK house prices rise 3.2% year-on-year — 6 regions with the strongest growth right now
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=3" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--blue">RATES</span>
-          Bank of England holds base rate — what it means for your mortgage in 2025
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=4" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--red">POLICY</span>
-          Stamp duty changes: First-time buyer thresholds updated — act before April deadline
-        </a>
-        <span class="news-ticker__sep">◆</span>
-        <a href="pages/news.html?id=5" class="news-ticker__item" target="_blank" rel="noopener">
-          <span class="news-ticker__tag news-ticker__tag--gold">BUYERS</span>
-          Off-market property listings surge 28% — how to access homes before they hit Rightmove
-        </a>
-        <span class="news-ticker__sep">◆</span>
-      </div>
-    </div>
-    <button class="news-ticker__close" id="newsTickerClose" aria-label="Close news ticker">✕</button>
-  </div>
-
-  <!-- ── HERO ── -->
+  <!-- â”€â”€ HERO â”€â”€ -->
   <section class="hero">
     <div class="container">
       <div class="hero__inner">
         <div class="hero__content">
           <div class="hero__badge reveal">
-            <div class="hero__badge-dot">✓</div>
-            UK's #1 Dedicated Buyer's Agent — Not an Estate Agent
+            <div class="hero__badge-dot">âœ“</div>
+            UK's #1 Dedicated Buyer's Agent â€” Not an Estate Agent
           </div>
           <h1 class="hero__headline reveal reveal-delay-1">
             We Buy Homes <em>For You</em>,<br />Not the Seller
           </h1>
           <p class="hero__sub reveal reveal-delay-2">
-            Estate agents work for sellers. Advaith Homes works exclusively for <strong>you</strong> — the buyer. We
-            research, negotiate, and guide you through every step, saving you an average of £18,000 and 6 months on your
+            Estate agents work for sellers. Advaith Homes works exclusively for <strong>you</strong> â€” the buyer. We
+            research, negotiate, and guide you through every step, saving you an average of Â£18,000 and 6 months on your
             home purchase.
           </p>
           <div class="hero__actions reveal reveal-delay-3">
-            <a href="free-consultation.html" class="btn btn-primary btn-lg">Book Free Consultation →</a>
-            <a href="services.html" class="btn btn-secondary btn-lg">Our Services</a>
+            <a href="<?php echo home_url("/free-consultation"); ?>" class="btn btn-primary btn-lg">Book Free Consultation â†’</a>
+            <a href="<?php echo home_url("/services"); ?>" class="btn btn-secondary btn-lg">Our Services</a>
           </div>
           <div class="hero__trust reveal reveal-delay-4">
             <div class="hero__trust-avatars">
@@ -153,14 +34,14 @@
             </div>
             <div class="hero__trust-text">
               <strong>500+ Happy Buyers</strong>
-              ⭐⭐⭐⭐⭐ &nbsp;4.9/5 average rating
+              â­â­â­â­â­ &nbsp;4.9/5 average rating
             </div>
           </div>
         </div>
 
         <div class="hero__visual reveal reveal-delay-2">
           <div class="hero__img-wrap">
-            <img src="images/hero-home.png" alt="Premium UK Home" class="hero__premium-img" />
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/hero-home.png" alt="Premium UK Home" class="hero__premium-img" />
             <div class="hero__premium-overlay"></div>
           </div>
           <div class="hero__card-float hero__card-float--stats">
@@ -176,7 +57,7 @@
                 style="font-weight:600;color:var(--slate-800);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px;">
                 Avg. Saving</div>
               <div style="font-size:1.4rem;font-weight:800;color:var(--slate-900);font-family:var(--font-display)">
-                £18,000+</div>
+                Â£18,000+</div>
             </div>
           </div>
           <div class="hero__card-float hero__card-float--badge">
@@ -199,71 +80,71 @@
     </div>
   </section>
 
-  <!-- ── TICKER ── -->
+  <!-- â”€â”€ TICKER â”€â”€ -->
   <div class="ticker">
     <div class="ticker__track" id="tickerTrack">
-      <div class="ticker__item"><span class="ticker__dot"></span> We work for YOU — not the seller</div>
+      <div class="ticker__item"><span class="ticker__dot"></span> We work for YOU â€” not the seller</div>
       <div class="ticker__item"><span class="ticker__dot"></span> 500+ successful UK home purchases</div>
-      <div class="ticker__item"><span class="ticker__dot"></span> Average £18,000 saved per buyer</div>
+      <div class="ticker__item"><span class="ticker__dot"></span> Average Â£18,000 saved per buyer</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Nationwide coverage across England & Wales</div>
-      <div class="ticker__item"><span class="ticker__dot"></span> Free initial consultation — no obligation</div>
+      <div class="ticker__item"><span class="ticker__dot"></span> Free initial consultation â€” no obligation</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Expert negotiators on your side</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Independent of all estate agents</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Full legal & financial guidance</div>
       <!-- duplicate for infinite loop -->
-      <div class="ticker__item"><span class="ticker__dot"></span> We work for YOU — not the seller</div>
+      <div class="ticker__item"><span class="ticker__dot"></span> We work for YOU â€” not the seller</div>
       <div class="ticker__item"><span class="ticker__dot"></span> 500+ successful UK home purchases</div>
-      <div class="ticker__item"><span class="ticker__dot"></span> Average £18,000 saved per buyer</div>
+      <div class="ticker__item"><span class="ticker__dot"></span> Average Â£18,000 saved per buyer</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Nationwide coverage across England & Wales</div>
-      <div class="ticker__item"><span class="ticker__dot"></span> Free initial consultation — no obligation</div>
+      <div class="ticker__item"><span class="ticker__dot"></span> Free initial consultation â€” no obligation</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Expert negotiators on your side</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Independent of all estate agents</div>
       <div class="ticker__item"><span class="ticker__dot"></span> Full legal & financial guidance</div>
     </div>
   </div>
 
-  <!-- ── WHY YOU NEED US ── -->
+  <!-- â”€â”€ WHY YOU NEED US â”€â”€ -->
   <section class="section">
     <div class="container">
       <div style="text-align:center;max-width:640px;margin:0 auto">
         <div class="eyebrow reveal">Why You Need Us</div>
         <h2 class="reveal reveal-delay-1">The Home Buying System Is Stacked Against You</h2>
-        <p class="reveal reveal-delay-2">Estate agents are legally required to act in the seller's best interest — not
+        <p class="reveal reveal-delay-2">Estate agents are legally required to act in the seller's best interest â€” not
           yours. Without an expert on your side, you're negotiating blind, missing problems, and paying too much.</p>
       </div>
       <div class="why-grid">
         <div class="why-card reveal reveal-delay-1">
-          <div class="why-card__icon">🔍</div>
+          <div class="why-card__icon">ðŸ”</div>
           <h4>Hidden Property Problems</h4>
           <p>Most buyers miss structural issues, planning problems, and neighbourhood concerns that only an expert eye
-            catches — before you're legally committed.</p>
+            catches â€” before you're legally committed.</p>
         </div>
         <div class="why-card reveal reveal-delay-2">
-          <div class="why-card__icon">💸</div>
+          <div class="why-card__icon">ðŸ’¸</div>
           <h4>Overpaying Without Knowing</h4>
-          <p>Without access to real comparable data and skilled negotiation, most buyers pay 5–15% above fair market
+          <p>Without access to real comparable data and skilled negotiation, most buyers pay 5â€“15% above fair market
             value. That's tens of thousands of pounds.</p>
         </div>
         <div class="why-card reveal reveal-delay-3">
-          <div class="why-card__icon">⏰</div>
+          <div class="why-card__icon">â°</div>
           <h4>Months of Wasted Time</h4>
-          <p>The average first-time buyer spends 6–18 months searching, viewing unsuitable properties, and losing out to
+          <p>The average first-time buyer spends 6â€“18 months searching, viewing unsuitable properties, and losing out to
             other buyers. We cut that dramatically.</p>
         </div>
         <div class="why-card reveal reveal-delay-1">
-          <div class="why-card__icon">📋</div>
+          <div class="why-card__icon">ðŸ“‹</div>
           <h4>Legal & Survey Surprises</h4>
-          <p>Conveyancing, surveys, searches — the legal process is a minefield. We ensure nothing slips through,
+          <p>Conveyancing, surveys, searches â€” the legal process is a minefield. We ensure nothing slips through,
             protecting you from nasty surprises after exchange.</p>
         </div>
         <div class="why-card reveal reveal-delay-2">
-          <div class="why-card__icon">🤝</div>
+          <div class="why-card__icon">ðŸ¤</div>
           <h4>No One In Your Corner</h4>
-          <p>The seller has their agent, their solicitor, their surveyor. You have… nobody. Until now. Advaith Homes is
+          <p>The seller has their agent, their solicitor, their surveyor. You haveâ€¦ nobody. Until now. Advaith Homes is
             100% on your side, every single step.</p>
         </div>
         <div class="why-card reveal reveal-delay-3">
-          <div class="why-card__icon">🧭</div>
+          <div class="why-card__icon">ðŸ§­</div>
           <h4>Confusing, Stressful Process</h4>
           <p>Most buyers have never done this before. We give you a clear roadmap, explain every step in plain English,
             and handle the complexity so you don't have to.</p>
@@ -272,7 +153,7 @@
     </div>
   </section>
 
-  <!-- ── GUIDING ── -->
+  <!-- â”€â”€ GUIDING â”€â”€ -->
   <section class="section guiding">
     <div class="container">
       <div class="guiding__inner">
@@ -307,7 +188,7 @@
               <div class="guiding__step-num">4</div>
               <div>
                 <h4>Negotiation & Offer</h4>
-                <p>Using real market data, we negotiate hard on your behalf — achieving prices often 5–10% below asking.
+                <p>Using real market data, we negotiate hard on your behalf â€” achieving prices often 5â€“10% below asking.
                 </p>
               </div>
             </div>
@@ -315,22 +196,22 @@
               <div class="guiding__step-num">5</div>
               <div>
                 <h4>Legal & Completion Support</h4>
-                <p>We stay by your side through surveys, searches, solicitors, and completion — until you have the keys
+                <p>We stay by your side through surveys, searches, solicitors, and completion â€” until you have the keys
                   in hand.</p>
               </div>
             </div>
           </div>
-          <a href="services.html" class="btn btn-primary reveal" style="margin-top:8px">Explore All Services →</a>
+          <a href="<?php echo home_url("/services"); ?>" class="btn btn-primary reveal" style="margin-top:8px">Explore All Services â†’</a>
         </div>
         <div class="guiding__visual reveal reveal-delay-2">
           <div class="guiding__property-card">
-            <div class="guiding__property-img">🏘️</div>
+            <div class="guiding__property-img">ðŸ˜ï¸</div>
             <div style="display:flex;justify-content:space-between;align-items:flex-start">
               <div>
-                <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:4px">📍 Richmond, London</div>
-                <div class="prop-price">£485,000</div>
+                <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:4px">ðŸ“ Richmond, London</div>
+                <div class="prop-price">Â£485,000</div>
               </div>
-              <div class="badge">✓ Secured</div>
+              <div class="badge">âœ“ Secured</div>
             </div>
             <div class="prop-meta">
               <span class="prop-tag">3 Bed</span>
@@ -340,18 +221,18 @@
             <div
               style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;justify-content:space-between">
               <div style="font-size:.8rem;color:var(--text-muted)">Listed at</div>
-              <div style="font-size:.8rem;font-weight:700;text-decoration:line-through;color:var(--text-muted)">£510,000
+              <div style="font-size:.8rem;font-weight:700;text-decoration:line-through;color:var(--text-muted)">Â£510,000
               </div>
             </div>
             <div style="display:flex;justify-content:space-between;margin-top:6px">
               <div style="font-size:.8rem;color:var(--text-muted)">We secured it at</div>
-              <div style="font-size:.9rem;font-weight:700;color:#16a34a">£485,000 ✓</div>
+              <div style="font-size:.9rem;font-weight:700;color:#16a34a">Â£485,000 âœ“</div>
             </div>
           </div>
           <div class="guiding__saving">
-            <div style="font-size:1.4rem">🎉</div>
+            <div style="font-size:1.4rem">ðŸŽ‰</div>
             <div>
-              <div class="saving-text">Buyer saved £25,000!</div>
+              <div class="saving-text">Buyer saved Â£25,000!</div>
               <div style="font-size:.72rem;color:#15803d">Plus 4 months of searching time</div>
             </div>
           </div>
@@ -360,7 +241,7 @@
     </div>
   </section>
 
-  <!-- ── STATS ── -->
+  <!-- â”€â”€ STATS â”€â”€ -->
   <section class="stats">
     <div class="container">
       <div class="stats__grid">
@@ -369,7 +250,7 @@
           <div class="stat-item__label">Happy Customers across the UK</div>
         </div>
         <div class="stat-item reveal reveal-delay-1">
-          <div class="stat-item__number">£<span class="count-up" data-target="18">0</span><span>k+</span></div>
+          <div class="stat-item__number">Â£<span class="count-up" data-target="18">0</span><span>k+</span></div>
           <div class="stat-item__label">Average saving per buyer</div>
         </div>
         <div class="stat-item reveal reveal-delay-2">
@@ -380,61 +261,61 @@
     </div>
   </section>
 
-  <!-- ── DIFFERENCE ── -->
+  <!-- â”€â”€ DIFFERENCE â”€â”€ -->
   <section class="section">
     <div class="container">
       <div style="text-align:center;max-width:640px;margin:0 auto">
         <div class="eyebrow reveal">The Difference</div>
         <h2 class="reveal reveal-delay-1">What Makes Us Different from Estate Agents</h2>
-        <p class="reveal reveal-delay-2">Estate agents are paid by sellers. We're paid by you — which means our
+        <p class="reveal reveal-delay-2">Estate agents are paid by sellers. We're paid by you â€” which means our
           interests are completely aligned with yours.</p>
       </div>
       <div class="diff-table reveal reveal-delay-2">
         <div class="diff-table__header">
           <div class="diff-table__header-cell">Feature</div>
-          <div class="diff-table__header-cell diff-table__header-cell--highlight">✦ Advaith Homes</div>
+          <div class="diff-table__header-cell diff-table__header-cell--highlight">âœ¦ Advaith Homes</div>
           <div class="diff-table__header-cell">Estate Agent</div>
         </div>
         <div class="diff-table__row">
           <div class="diff-table__cell diff-table__cell--feature">Works exclusively for the buyer</div>
-          <div class="diff-table__cell"><span class="check">✔</span> Always</div>
-          <div class="diff-table__cell"><span class="cross">✘</span> Never</div>
+          <div class="diff-table__cell"><span class="check">âœ”</span> Always</div>
+          <div class="diff-table__cell"><span class="cross">âœ˜</span> Never</div>
         </div>
         <div class="diff-table__row">
           <div class="diff-table__cell diff-table__cell--feature">Independent property research</div>
-          <div class="diff-table__cell"><span class="check">✔</span> Full report</div>
-          <div class="diff-table__cell"><span class="cross">✘</span> Not provided</div>
+          <div class="diff-table__cell"><span class="check">âœ”</span> Full report</div>
+          <div class="diff-table__cell"><span class="cross">âœ˜</span> Not provided</div>
         </div>
         <div class="diff-table__row">
           <div class="diff-table__cell diff-table__cell--feature">Price negotiation on your behalf</div>
-          <div class="diff-table__cell"><span class="check">✔</span> Expert negotiation</div>
-          <div class="diff-table__cell"><span class="cross">✘</span> Negotiates for seller</div>
+          <div class="diff-table__cell"><span class="check">âœ”</span> Expert negotiation</div>
+          <div class="diff-table__cell"><span class="cross">âœ˜</span> Negotiates for seller</div>
         </div>
         <div class="diff-table__row">
           <div class="diff-table__cell diff-table__cell--feature">Access to off-market properties</div>
-          <div class="diff-table__cell"><span class="check">✔</span> Exclusive network</div>
-          <div class="diff-table__cell"><span class="cross">✘</span> Listed only</div>
+          <div class="diff-table__cell"><span class="check">âœ”</span> Exclusive network</div>
+          <div class="diff-table__cell"><span class="cross">âœ˜</span> Listed only</div>
         </div>
         <div class="diff-table__row">
           <div class="diff-table__cell diff-table__cell--feature">Legal & survey guidance</div>
-          <div class="diff-table__cell"><span class="check">✔</span> Full support</div>
-          <div class="diff-table__cell"><span class="cross">✘</span> Not their role</div>
+          <div class="diff-table__cell"><span class="check">âœ”</span> Full support</div>
+          <div class="diff-table__cell"><span class="cross">âœ˜</span> Not their role</div>
         </div>
         <div class="diff-table__row">
           <div class="diff-table__cell diff-table__cell--feature">Unbiased advice on every property</div>
-          <div class="diff-table__cell"><span class="check">✔</span> Always honest</div>
-          <div class="diff-table__cell"><span class="cross">✘</span> Motivated to sell</div>
+          <div class="diff-table__cell"><span class="check">âœ”</span> Always honest</div>
+          <div class="diff-table__cell"><span class="cross">âœ˜</span> Motivated to sell</div>
         </div>
         <div class="diff-table__row">
           <div class="diff-table__cell diff-table__cell--feature">Post-offer completion support</div>
-          <div class="diff-table__cell"><span class="check">✔</span> Until keys in hand</div>
-          <div class="diff-table__cell"><span class="cross">✘</span> Rarely</div>
+          <div class="diff-table__cell"><span class="check">âœ”</span> Until keys in hand</div>
+          <div class="diff-table__cell"><span class="cross">âœ˜</span> Rarely</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── FEATURED PROPERTIES (3D CAROUSEL) ── -->
+  <!-- â”€â”€ FEATURED PROPERTIES (3D CAROUSEL) â”€â”€ -->
   <section class="section carousel-section">
     <div class="container">
       <div style="text-align:center;max-width:640px;margin:0 auto 40px">
@@ -457,9 +338,9 @@
             <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Luxury Home 1">
             <div class="coverflow-item-content">
               <div class="stats-bar">
-                <span>£1.2M</span>
+                <span>Â£1.2M</span>
                 <span>Surrey</span>
-                <span>Saved £45k</span>
+                <span>Saved Â£45k</span>
               </div>
             </div>
           </div>
@@ -467,9 +348,9 @@
             <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Luxury Home 2">
             <div class="coverflow-item-content">
               <div class="stats-bar">
-                <span>£850k</span>
+                <span>Â£850k</span>
                 <span>Richmond</span>
-                <span>Saved £20k</span>
+                <span>Saved Â£20k</span>
               </div>
             </div>
           </div>
@@ -477,9 +358,9 @@
             <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80" alt="Luxury Home 4">
             <div class="coverflow-item-content">
               <div class="stats-bar">
-                <span>£1.5M</span>
+                <span>Â£1.5M</span>
                 <span>London</span>
-                <span>Saved £55k</span>
+                <span>Saved Â£55k</span>
               </div>
             </div>
           </div>
@@ -487,9 +368,9 @@
             <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80" alt="Luxury Home 5">
             <div class="coverflow-item-content">
               <div class="stats-bar">
-                <span>£950k</span>
+                <span>Â£950k</span>
                 <span>Cornwall</span>
-                <span>Saved £30k</span>
+                <span>Saved Â£30k</span>
               </div>
             </div>
           </div>
@@ -506,13 +387,13 @@
     </div>
   </section>
 
-  <!-- ── DREAM PROPERTY (SERVICES PREVIEW) ── -->
+  <!-- â”€â”€ DREAM PROPERTY (SERVICES PREVIEW) â”€â”€ -->
   <section class="dream">
     <div class="container">
       <div class="dream__header reveal">
         <div class="eyebrow" style="color:var(--gold-300)">Find Your Home</div>
         <h2>Find Your Dream Property<br />with Advaith Homes</h2>
-        <p class="dream__sub">Whether you're a first-time buyer, upsizing, relocating, or investing — we have a service
+        <p class="dream__sub">Whether you're a first-time buyer, upsizing, relocating, or investing â€” we have a service
           designed for your exact situation.</p>
       </div>
       <div class="grid-3">
@@ -526,15 +407,15 @@
               style="margin-bottom:12px;background:rgba(139,92,246,.2);color:#c4b5fd;border:1px solid rgba(139,92,246,.3)">
               Most Popular</div>
             <h3>First-Time Buyers</h3>
-            <p>We walk you through every single step — from mortgage in principle to moving day. No experience needed;
+            <p>We walk you through every single step â€” from mortgage in principle to moving day. No experience needed;
               we've got you.</p>
             <div class="dream-card__stats">
-              <div class="dream-stat"><strong>~£12k</strong> avg. saved</div>
+              <div class="dream-stat"><strong>~Â£12k</strong> avg. saved</div>
               <div class="dream-stat"><strong>Full</strong> guidance</div>
               <div class="dream-stat"><strong>Free</strong> consultation</div>
             </div>
-            <a href="services.html" class="btn btn-outline-white btn-sm" style="margin-top:16px;width:100%">Learn More
-              →</a>
+            <a href="<?php echo home_url("/services"); ?>" class="btn btn-outline-white btn-sm" style="margin-top:16px;width:100%">Learn More
+              â†’</a>
           </div>
         </div>
         <div class="dream-card reveal reveal-delay-2">
@@ -547,12 +428,12 @@
             <p>Upsizing, downsizing, or relocating. We handle the complexity of buying and selling simultaneously so
               nothing falls through.</p>
             <div class="dream-card__stats">
-              <div class="dream-stat"><strong>~£22k</strong> avg. saved</div>
+              <div class="dream-stat"><strong>~Â£22k</strong> avg. saved</div>
               <div class="dream-stat"><strong>Chain</strong> managed</div>
               <div class="dream-stat"><strong>Fast</strong> moves</div>
             </div>
-            <a href="services.html" class="btn btn-outline-white btn-sm" style="margin-top:16px;width:100%">Learn More
-              →</a>
+            <a href="<?php echo home_url("/services"); ?>" class="btn btn-outline-white btn-sm" style="margin-top:16px;width:100%">Learn More
+              â†’</a>
           </div>
         </div>
         <div class="dream-card reveal reveal-delay-3">
@@ -565,19 +446,19 @@
             <p>We source high-yield opportunities, analyse rental potential, and negotiate below-market prices for your
               portfolio.</p>
             <div class="dream-card__stats">
-              <div class="dream-stat"><strong>~£35k</strong> avg. saved</div>
+              <div class="dream-stat"><strong>~Â£35k</strong> avg. saved</div>
               <div class="dream-stat"><strong>ROI</strong> focused</div>
               <div class="dream-stat"><strong>Off-market</strong> deals</div>
             </div>
-            <a href="services.html" class="btn btn-outline-white btn-sm" style="margin-top:16px;width:100%">Learn More
-              →</a>
+            <a href="<?php echo home_url("/services"); ?>" class="btn btn-outline-white btn-sm" style="margin-top:16px;width:100%">Learn More
+              â†’</a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── RESOURCES ── -->
+  <!-- â”€â”€ RESOURCES â”€â”€ -->
   <section class="section video-section">
     <div class="container">
       <div style="text-align:center;max-width:640px;margin:0 auto">
@@ -612,7 +493,7 @@
     </div>
   </section>
 
-  <!-- ── TESTIMONIALS ── -->
+  <!-- â”€â”€ TESTIMONIALS â”€â”€ -->
   <section class="section testimonial-section">
     <div class="container">
       <div style="text-align:center;max-width:640px;margin:0 auto 60px">
@@ -651,7 +532,7 @@
                 </svg>
               </div>
               <blockquote class="testimonial-quote">
-                "Advaith Homes saved us £27,500 on our Richmond home and six months of stress. The team spotted issues
+                "Advaith Homes saved us Â£27,500 on our Richmond home and six months of stress. The team spotted issues
                 we never would have seen and negotiated brilliantly."
               </blockquote>
               <div class="testimonial-author">
@@ -691,7 +572,7 @@
                 </svg>
               </div>
               <blockquote class="testimonial-quote">
-                "The negotiation was flawless. We saved £40,000 off the asking price thanks to Advaith Homes' expert
+                "The negotiation was flawless. We saved Â£40,000 off the asking price thanks to Advaith Homes' expert
                 intervention."
               </blockquote>
               <div class="testimonial-author">
@@ -732,7 +613,7 @@
               </div>
               <blockquote class="testimonial-quote">
                 "As an investor, I need ROI. Advaith Homes sourced three off-market properties for me this year, saving
-                me over £80k in total."
+                me over Â£80k in total."
               </blockquote>
               <div class="testimonial-author">
                 <div class="testimonial-author__info">
@@ -891,7 +772,7 @@
     </div>
   </section>
 
-  <!-- ── FAQs ── -->
+  <!-- â”€â”€ FAQs â”€â”€ -->
   <section class="section">
     <div class="container">
       <div style="text-align:center;max-width:600px;margin:0 auto">
@@ -906,7 +787,7 @@
           </div>
           <div class="faq-a">
             <p>A buyer's agent (also called a buyer's advocate) is a property professional who works exclusively for the
-              buyer — not the seller. Unlike estate agents, who are paid by and legally obligated to the seller, we
+              buyer â€” not the seller. Unlike estate agents, who are paid by and legally obligated to the seller, we
               represent your interests at every stage: searching, viewing, researching, negotiating, and completing your
               purchase.</p>
           </div>
@@ -919,7 +800,7 @@
           <div class="faq-a">
             <p>Our fees vary depending on the service level and property price, but our clients typically save far more
               than our fee. We offer a free initial consultation with no obligation. Speak to us about your situation
-              and we'll give you a clear, transparent quote — no hidden charges.</p>
+              and we'll give you a clear, transparent quote â€” no hidden charges.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -939,7 +820,7 @@
               </svg></div>
           </div>
           <div class="faq-a">
-            <p>Absolutely. New builds have their own complexities — developer negotiations, reservation fees, snagging,
+            <p>Absolutely. New builds have their own complexities â€” developer negotiations, reservation fees, snagging,
               and legal particulars. We have extensive experience dealing with major developers and can often secure
               better prices, extras, or incentives than buyers going direct.</p>
           </div>
@@ -951,7 +832,7 @@
               </svg></div>
           </div>
           <div class="faq-a">
-            <p>Perfect — we offer a "negotiation only" service where we step in to negotiate and handle due diligence on
+            <p>Perfect â€” we offer a "negotiation only" service where we step in to negotiate and handle due diligence on
               a specific property you've already found. Many clients save our entire fee in the very first negotiation
               call.</p>
           </div>
@@ -963,7 +844,7 @@
           </div>
           <div class="faq-a">
             <p>It's a 30-minute video or phone call where we learn about your property goals, budget, and timeline. We
-              give you honest, expert advice on your situation — whether or not you proceed with us. There's no sales
+              give you honest, expert advice on your situation â€” whether or not you proceed with us. There's no sales
               pitch and no obligation.</p>
           </div>
         </div>
@@ -971,26 +852,26 @@
     </div>
   </section>
 
-  <!-- ── FINAL CTA ── -->
+  <!-- â”€â”€ FINAL CTA â”€â”€ -->
   <section class="cta-section">
     <div class="container">
       <div class="cta-inner reveal">
         <div class="eyebrow" style="color:var(--gold-300);justify-content:center">Start Today</div>
         <h2>Ready to Buy Smarter?</h2>
         <p>Join 500+ UK buyers who saved time, stress, and thousands of pounds with Advaith Homes by their side. Your
-          free consultation costs nothing — but could save you everything.</p>
+          free consultation costs nothing â€” but could save you everything.</p>
         <div class="cta-actions">
-          <a href="free-consultation.html" class="btn btn-gold btn-lg">Book Your Free Consultation →</a>
-          <a href="contact.html" class="btn btn-outline-white btn-lg">Get In Touch</a>
+          <a href="<?php echo home_url("/free-consultation"); ?>" class="btn btn-gold btn-lg">Book Your Free Consultation â†’</a>
+          <a href="<?php echo home_url("/contact"); ?>" class="btn btn-outline-white btn-lg">Get In Touch</a>
         </div>
-        <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-top:24px">✓ Free &nbsp;✓ No obligation &nbsp;✓
+        <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-top:24px">âœ“ Free &nbsp;âœ“ No obligation &nbsp;âœ“
           Expert advice in 30 minutes</p>
       </div>
     </div>
   </section>
 
   <div id="footer-placeholder"></div>
-  <script src="js/components.js"></script>
+  
   <script>
     // 3D Coverflow Carousel Logic
     document.addEventListener('DOMContentLoaded', () => {
@@ -1084,6 +965,6 @@
       }, 8000);
     });
   </script>
-</body>
 
-</html>
+<?php get_footer(); ?>
+
