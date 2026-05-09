@@ -104,3 +104,170 @@ window.addEventListener('scroll', () => {
         nav.style.boxShadow = 'none';
     }
 });
+
+/* NEW FEATURES LOGIC */
+
+// FAQ Accordion
+document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isOpen = faqItem.classList.contains('active');
+        
+        // Close all other items
+        document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+        
+        // Toggle current item
+        if (!isOpen) {
+            faqItem.classList.add('active');
+        }
+    });
+});
+
+// Reviews Carousel
+const track = document.getElementById('reviews-track');
+const prevBtn = document.getElementById('rev-prev');
+const nextBtn = document.getElementById('rev-next');
+let index = 0;
+
+function updateCarousel() {
+    if (!track) return;
+    const cards = document.querySelectorAll('.review-card');
+    const dots = document.querySelectorAll('.dot');
+    
+    cards.forEach((c, i) => {
+        if (i === index) {
+            c.classList.add('active');
+        } else {
+            c.classList.remove('active');
+        }
+    });
+
+    dots.forEach((d, i) => {
+        if (i === index) {
+            d.classList.add('active');
+        } else {
+            d.classList.remove('active');
+        }
+    });
+}
+
+// Initial call to set active state
+setTimeout(updateCarousel, 100);
+
+if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+        const cards = document.querySelectorAll('.review-card');
+        index = (index + 1) % cards.length;
+        updateCarousel();
+    });
+}
+
+if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+        const cards = document.querySelectorAll('.review-card');
+        index = (index - 1 + cards.length) % cards.length;
+        updateCarousel();
+    });
+}
+
+// Dot navigation
+document.querySelectorAll('.dot').forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+        index = i;
+        updateCarousel();
+    });
+});
+
+// Auto-slide reviews
+let autoSlide = setInterval(() => {
+    if (nextBtn) nextBtn.click();
+}, 5000);
+
+// Pause on hover
+const carouselWrap = document.querySelector('.reviews-carousel-wrap');
+if (carouselWrap) {
+    carouselWrap.addEventListener('mouseenter', () => clearInterval(autoSlide));
+    carouselWrap.addEventListener('mouseleave', () => {
+        autoSlide = setInterval(() => {
+            if (nextBtn) nextBtn.click();
+        }, 5000);
+    });
+}
+
+// Update carousel on resize
+window.addEventListener('resize', () => {
+    index = 0;
+    updateCarousel();
+});
+
+// Franchise "Tap to Real" - Intersection Observer for smooth feel
+const franchiseSection = document.getElementById('franchise');
+const fObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        const track = document.querySelector('.franchise-track');
+        if (!track) return;
+        if (e.isIntersecting) {
+            track.style.animationPlayState = 'running';
+        } else {
+            track.style.animationPlayState = 'paused';
+        }
+    });
+}, { threshold: 0.1 });
+if (franchiseSection) fObs.observe(franchiseSection);
+
+// --- 3D JUICE SHOWCASE (Cover Flow) LOGIC ---
+const showcaseCards = document.querySelectorAll('.showcase-card');
+const sNext = document.getElementById('showcase-next');
+const sPrev = document.getElementById('showcase-prev');
+let sIndex = 0;
+
+function updateShowcase() {
+    if (!showcaseCards.length) return;
+    
+    showcaseCards.forEach((card, i) => {
+        card.classList.remove('active', 'prev', 'next');
+        
+        if (i === sIndex) {
+            card.classList.add('active');
+        } else if (i === (sIndex - 1 + showcaseCards.length) % showcaseCards.length) {
+            card.classList.add('prev');
+        } else if (i === (sIndex + 1) % showcaseCards.length) {
+            card.classList.add('next');
+        }
+    });
+}
+
+if (sNext) {
+    sNext.addEventListener('click', () => {
+        sIndex = (sIndex + 1) % showcaseCards.length;
+        updateShowcase();
+    });
+}
+
+if (sPrev) {
+    sPrev.addEventListener('click', () => {
+        sIndex = (sIndex - 1 + showcaseCards.length) % showcaseCards.length;
+        updateShowcase();
+    });
+}
+
+// Auto-slide showcase
+let sAutoSlide = setInterval(() => {
+    sIndex = (sIndex + 1) % showcaseCards.length;
+    updateShowcase();
+}, 5000);
+
+// Pause on hover
+const sContainer = document.querySelector('.juice-showcase');
+if (sContainer) {
+    sContainer.addEventListener('mouseenter', () => clearInterval(sAutoSlide));
+    sContainer.addEventListener('mouseleave', () => {
+        sAutoSlide = setInterval(() => {
+            sIndex = (sIndex + 1) % showcaseCards.length;
+            updateShowcase();
+        }, 5000);
+    });
+}
+
+// Initialize
+updateShowcase();

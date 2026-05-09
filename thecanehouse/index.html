@@ -26,11 +26,12 @@
     </a>
     <ul class="nav-links" id="nav-links">
       <li><a href="#how-to-order">How to Order</a></li>
+      <li><a href="#reviews">Reviews</a></li>
       <li><a href="#build">Our Juices</a></li>
-      <li><a href="#benefits">Why Cane?</a></li>
-      <li><a href="#hire">Events & Hire</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#hire">Events</a></li>
       <li><a href="#franchise">Franchise</a></li>
-      <li><a href="#contact" class="nav-cta-btn">Get in Touch</a></li>
+      <li><a href="#contact" class="nav-cta-btn">Contact</a></li>
     </ul>
     <button class="hamburger" id="hamburger" onclick="toggleNav()">
       <span></span><span></span><span></span>
@@ -67,7 +68,7 @@
         </div>
       </div>
       <div class="hero-right">
-        <div class="hero-glow hero-cup-wrap nav-logo-icon">
+        <div class="hero-glow hero-cup-wrap">
           <img src="thecanehouselogo.png" alt="The CaneHouse" class="" style="transform: rotate(15deg);" />
         </div>
         <div class="hero-cup-wrap">
@@ -165,6 +166,70 @@
         <div class="step-emoji shakking-leaf">🎉</div>
         <div class="step-title">Enjoy!</div>
         <div class="step-desc">Served chilled, no ice unless requested — pure fresh natural goodness in every sip</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <div class="reviews-header fade-up">
+      <div class="section-tag">Happy Customers</div>
+      <h2 class="section-title">What Our <span class="accent">Fans Say</span></h2>
+      <p class="section-body">Real reviews from our sugarcane lovers. Join the fresh juice community!</p>
+    </div>
+    <div class="reviews-container">
+      <div class="reviews-track" id="reviews-track">
+        <div class="review-card fade-up active">
+          <div class="review-avatar">
+            <img src="https://i.pravatar.cc/300?u=1" alt="User">
+          </div>
+          <div class="review-content">
+            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+            <p class="review-text">"The freshest cane juice I've ever had in the UK. The ginger blend is absolutely life-changing! Highly recommend for events too."</p>
+            <div class="review-meta">
+              <div class="review-name">Sarah Johnson</div>
+              <div class="review-subtitle">Verified Customer</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card fade-up">
+          <div class="review-avatar">
+            <img src="https://i.pravatar.cc/300?u=2" alt="User">
+          </div>
+          <div class="review-content">
+            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+            <p class="review-text">"Reminds me of home! Pressed live right in front of you. No added sugar but so naturally sweet and refreshing. 10/10."</p>
+            <div class="review-meta">
+              <div class="review-name">Mohammed Ali</div>
+              <div class="review-subtitle">Verified Customer</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card fade-up">
+          <div class="review-avatar">
+            <img src="https://i.pravatar.cc/300?u=3" alt="User">
+          </div>
+          <div class="review-content">
+            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+            <p class="review-text">"We hired The Cane House for our wedding and it was the highlight! Guests loved the live pressing experience. So unique!"</p>
+            <div class="review-meta">
+              <div class="review-name">Emma Wright</div>
+              <div class="review-subtitle">Event Client</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="reviews-nav-vertical">
+        <div class="nav-dots" id="nav-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="nav-arrows">
+          <button class="v-btn" id="rev-prev">↑</button>
+          <button class="v-btn" id="rev-next">↓</button>
+        </div>
       </div>
     </div>
   </section>
@@ -555,13 +620,113 @@
   <section id="franchise">
     <div class="franchise-inner fade-up">
       <div class="section-tag" style="justify-content:center;color:var(--green-deep);">Grow With Us</div>
-      <h2 class="section-title">Franchise Enquiries <span class="accent" style="color:var(--green-mid);">Welcome</span>
-      </h2>
-      <p class="section-body">Be part of the fresh juice revolution. Bring the live pressed cane experience to your
-        city. We'd love to hear from you.</p>
-      <!-- <a href="tel:+447887699208" class="btn-lime" style="display:inline-flex;margin:0 auto 0.5rem;">📞 Call Us Now</a> -->
+      <h2 class="section-title">Franchise <span class="accent" style="color:var(--green-mid);">Opportunities</span></h2>
+      <p class="section-body">Be part of the fresh juice revolution. Bring the live pressed cane experience to your city. Tap below to see our growing network.</p>
+      
+      <div class="juice-showcase">
+        <div class="showcase-container" id="showcase-track">
+          <div class="showcase-card active" data-index="0">
+            <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&q=80&w=600" alt="Pure Cane">
+            <div class="showcase-info">
+              <h3>Pure Yellow Cane</h3>
+              <p>Fresh & Naturally Sweet</p>
+            </div>
+          </div>
+          <div class="showcase-card next" data-index="1">
+            <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=600" alt="Lemon Blend">
+            <div class="showcase-info">
+              <h3>Zesty Lemon</h3>
+              <p>Citrus Refreshment</p>
+            </div>
+          </div>
+          <div class="showcase-card" data-index="2">
+            <img src="https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=600" alt="Ginger Twist">
+            <div class="showcase-info">
+              <h3>Spicy Ginger</h3>
+              <p>Warming & Healthy</p>
+            </div>
+          </div>
+          <div class="showcase-card prev" data-index="3">
+            <img src="https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&q=80&w=600" alt="Cool Mint">
+            <div class="showcase-info">
+              <h3>Cooling Mint</h3>
+              <p>Ultimate Freshness</p>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-controls">
+          <button class="s-btn" id="showcase-prev">←</button>
+          <button class="s-btn" id="showcase-next">→</button>
+        </div>
+      </div>
+
+      <div class="franchise-marquee">
+        <div class="franchise-track">
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">London Central</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Manchester Hub</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Birmingham West</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Leeds North</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Glasgow Fresh</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Cardiff Bay</span></div>
+          <!-- Repeat for smooth scroll -->
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">London Central</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Manchester Hub</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Birmingham West</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Leeds North</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Glasgow Fresh</span></div>
+          <div class="f-item"><span class="f-icon">📍</span><span class="f-name">Cardiff Bay</span></div>
+        </div>
+      </div>
+
       <div class="franchise-contact">
         <a href="tel:+447887699208" class="contact-pill">📞 +44 7887 699 208</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="faq-header fade-up">
+      <div class="section-tag">Questions?</div>
+      <h2 class="section-title">Common <span class="accent">Queries</span></h2>
+      <p class="section-body">Everything you need to know about our fresh sugarcane juice and services.</p>
+    </div>
+    <div class="faq-grid fade-up">
+      <div class="faq-item active">
+        <button class="faq-question">
+          Do you add any sugar or preservatives?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <p>No, absolutely not. Our sugarcane juice is 100% natural, pressed live from the stalk. The sweetness comes entirely from the natural sugars in the cane itself.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          How long does the juice stay fresh?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <p>Fresh sugarcane juice is best enjoyed immediately after pressing. However, if kept chilled, it can stay fresh for up to 24 hours. We always recommend drinking it cool and fresh!</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          What events can I hire you for?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <p>We cater for all types of events including weddings, birthdays, corporate gatherings, festivals, and community events across the UK. Our live pressing stall is always a huge hit!</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Is your sugarcane juice sustainable?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <p>Yes! Sugarcane is a highly sustainable crop. Even our leftover fibre (bagasse) is biodegradable and can be used for composting or as biofuel.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -670,6 +835,14 @@
       <span>© 2025 The Cane House. Pressed Fresh. Served Cool.</span>
     </div>
   </footer>
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/447887699208" class="whatsapp-float" target="_blank">
+    <div class="wa-tooltip">Chat with us! 🌿</div>
+    <svg viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.025 3.128l-.904 3.313 3.385-.888c.828.452 1.765.69 2.27.691h.005c3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.589-5.766-5.772-5.766zm3.377 8.203c-.144.405-.833.748-1.15.79-.27.034-.617.062-1.748-.349-1.444-.523-2.415-1.929-2.56-2.121-.144-.192-1.03-1.371-1.03-2.615 0-1.245.65-1.859.882-2.106.233-.247.508-.309.676-.309.167 0 .335.004.479.01.15.006.353-.058.552.424.198.483.676 1.649.736 1.77.059.121.099.262.019.421-.079.158-.119.256-.238.393-.118.137-.25.305-.357.408-.118.113-.242.237-.104.474.137.237.611.999 1.31 1.62.9.8 1.657 1.047 1.894 1.164.237.118.376.099.514-.059.137-.158.593-.689.752-.924.158-.236.316-.198.533-.118.217.08.1.533 1.378 1.164.123.061.205.297.144.703z"></path>
+    </svg>
+  </a>
+
   <script src="js/script.js"></script>
 </body>
 
