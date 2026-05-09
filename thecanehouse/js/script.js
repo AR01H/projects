@@ -128,60 +128,55 @@ const track = document.getElementById('reviews-track');
 const prevBtn = document.getElementById('rev-prev');
 const nextBtn = document.getElementById('rev-next');
 let index = 0;
+let isRevAnimating = false;
 
-function updateCarousel() {
-    if (!track) return;
+function updateCarousel(newIndex) {
+    if (!track || isRevAnimating) return;
     const cards = document.querySelectorAll('.review-card');
     const dots = document.querySelectorAll('.dot');
     
-    cards.forEach((c, i) => {
-        if (i === index) {
-            c.classList.add('active');
-        } else {
-            c.classList.remove('active');
-        }
-    });
+    if (newIndex < 0) newIndex = cards.length - 1;
+    if (newIndex >= cards.length) newIndex = 0;
+    if (newIndex === index && cards[index].classList.contains('active')) return;
 
-    dots.forEach((d, i) => {
-        if (i === index) {
-            d.classList.add('active');
-        } else {
-            d.classList.remove('active');
-        }
-    });
+    isRevAnimating = true;
+
+    // 1. Fade out current
+    cards.forEach(c => c.classList.remove('active'));
+    
+    // 2. Wait for fade out then fade in next
+    setTimeout(() => {
+        index = newIndex;
+        cards[index].classList.add('active');
+        
+        dots.forEach((d, i) => {
+            d.classList.toggle('active', i === index);
+        });
+        
+        isRevAnimating = false;
+    }, 350); // Sync with CSS transition
 }
-
-// Initial call to set active state
-setTimeout(updateCarousel, 100);
 
 if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-        const cards = document.querySelectorAll('.review-card');
-        index = (index + 1) % cards.length;
-        updateCarousel();
+        updateCarousel(index + 1);
     });
 }
 
 if (prevBtn) {
     prevBtn.addEventListener('click', () => {
-        const cards = document.querySelectorAll('.review-card');
-        index = (index - 1 + cards.length) % cards.length;
-        updateCarousel();
+        updateCarousel(index - 1);
     });
 }
 
-// Dot navigation
 document.querySelectorAll('.dot').forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-        index = i;
-        updateCarousel();
-    });
+    dot.addEventListener('click', () => updateCarousel(i));
 });
 
-// Auto-slide reviews
-let autoSlide = setInterval(() => {
-    if (nextBtn) nextBtn.click();
-}, 5000);
+// Auto slide
+setInterval(() => {
+    if (!isRevAnimating) updateCarousel(index + 1);
+}, 6000);
 
 // Pause on hover
 const carouselWrap = document.querySelector('.reviews-carousel-wrap');
