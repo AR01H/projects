@@ -191,8 +191,7 @@ if (carouselWrap) {
 
 // Update carousel on resize
 window.addEventListener('resize', () => {
-    index = 0;
-    updateCarousel();
+    updateCarousel(index);
 });
 
 // Franchise "Tap to Real" - Intersection Observer for smooth feel
