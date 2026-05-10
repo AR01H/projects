@@ -100,7 +100,9 @@
             alt="<?php bloginfo('name'); ?>" width="38" height="38">
         <?php endif; ?>
       </div>
-      <span class="logo-text-cane">THE CANE </span><span class="logo-text-house">HOUSE</span>
+      <span>
+        <span class="logo-text-cane">THE CANE </span><span class="logo-text-house">HOUSE</span>
+      </span>
     </a>
     <?php
     wp_nav_menu(array(

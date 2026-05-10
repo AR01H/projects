@@ -36,6 +36,7 @@ $locations = ch_get_active('franchise_locs', 'sort_order ASC');
 $phone = ch_opt('phone', '+44 7887 699 208');
 $website = ch_opt('website', 'www.thecanehouse.co.uk');
 $wa = ch_opt('whatsapp', '447887699208');
+$email = ch_opt('email', 'hello@thecanehouse.co.uk');
 
 // ── MARQUEE ───────────────────────────────────────────────────────────────────
 $marquee_text = ch_opt('marquee', 'Pressed Fresh ✦ Served Cool ✦ No Added Sugar ✦ No Preservatives ✦ Pressed Live ✦ Natural Goodness ✦ Build Your Juice ✦ Events & Hire');
@@ -336,8 +337,8 @@ $hire_desc = get_post_meta($pid, '_hire_desc', true) ?: 'Elevate your celebratio
             <?php endif; ?>
             <div class="chip-name"><?php echo esc_html($f->name); ?></div>
             <div class="chip-price <?php echo $f->price === 'Included' ? 'free' : ''; ?>">
-              <?php echo esc_html($f->price); ?>  <?php if (!empty($f->flavour_type) && $f->flavour_type !== 'Base')
-                     echo ' · ' . esc_html($f->flavour_type) . ' Blend'; ?>
+              <?php echo esc_html($f->price); ?>   <?php if (!empty($f->flavour_type) && $f->flavour_type !== 'Base')
+                      echo ' · ' . esc_html($f->flavour_type) . ' Blend'; ?>
             </div>
           </div>
         <?php endforeach; ?>
@@ -352,7 +353,7 @@ $hire_desc = get_post_meta($pid, '_hire_desc', true) ?: 'Elevate your celebratio
 <section id="benefits">
   <div class="benefits-inner">
     <div class="fade-left">
-      <div class="section-tag">Good for You</div>
+      <div class="section-tag" style="justify-content: flex-start;">Good for You</div>
       <h2 class="section-title">Why Sugarcane Juice is <span class="accent" style="color:var(--lime);">Loved
           Worldwide</span></h2>
       <p class="section-body">Fresh sugarcane juice is not just delicious — it's packed with natural benefits.</p>
@@ -405,13 +406,13 @@ $hire_desc = get_post_meta($pid, '_hire_desc', true) ?: 'Elevate your celebratio
             fill="rgba(255,255,255,0.4)" letter-spacing="2">THE CANE HOUSE</text>
         </svg>
       </div>
-      <div class="story-secondary-card">
+      <div class="story-secondary-card" style="justify-content: flex-start;">
         <p class="story-quote">"Sugarcane — one of nature's most generous gifts. Pure energy, pressed fresh."</p>
       </div>
       <div class="story-year-badge"><span>2,000+<br />Years<br />of Cane</span></div>
     </div>
     <div class="fade-right">
-      <div class="section-tag">The Story of Sugarcane</div>
+      <div class="section-tag" style="justify-content: flex-start;">The Story of Sugarcane</div>
       <h2 class="section-title">Beyond the <span class="accent">Juice</span></h2>
       <p class="section-body" style="margin-top:1rem;">Sugarcane has been cherished for over 2,000 years, originating in
         South and Southeast Asia. Fresh sugarcane juice is naturally sweet, refreshing, and enjoyed across tropical
@@ -505,7 +506,8 @@ $hire_desc = get_post_meta($pid, '_hire_desc', true) ?: 'Elevate your celebratio
       <div class="juice-showcase">
         <div class="showcase-container" id="showcase-track">
           <?php foreach ($slides as $si => $sl): ?>
-            <div class="showcase-card <?php echo $si === 0 ? 'active' : ($si === 1 ? 'next' : ($si === count($slides) - 1 ? 'prev' : '')); ?>"
+            <div
+              class="showcase-card <?php echo $si === 0 ? 'active' : ($si === 1 ? 'next' : ($si === count($slides) - 1 ? 'prev' : '')); ?>"
               data-index="<?php echo $si; ?>">
               <?php if (!empty($sl->image_url)): ?>
                 <img src="<?php echo esc_url($sl->image_url); ?>" alt="<?php echo esc_attr($sl->title); ?>">
@@ -604,6 +606,13 @@ if ($map): ?>
             WhatsApp</a></div>
       </div>
     </div>
+    <div class="contact-detail">
+      <div class="cd-icon">📧</div>
+      <div>
+        <div class="cd-label">Email Address</div>
+        <div class="cd-val"><a href="mailto:<?php echo esc_attr($email); ?>" style=" color:inherit;"><?php echo esc_html($email); ?></a></div>
+      </div>
+    </div>
     <?php
     // Extra custom contact fields from post meta
     $extras = get_post_meta($pid, '_contact_extra_fields', true);
@@ -611,7 +620,7 @@ if ($map): ?>
       foreach ($extras as $ef):
         if (empty($ef['label']))
           continue; ?>
-        <div class="contact-detail">
+    <div class="contact-detail">
           <div class="cd-icon"><?php echo esc_html($ef['icon'] ?? '📌'); ?></div>
           <div>
             <div class="cd-label"><?php echo esc_html($ef['label']); ?></div>

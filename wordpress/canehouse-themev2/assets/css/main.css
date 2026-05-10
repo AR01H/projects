@@ -168,7 +168,8 @@ nav {
     overflow: hidden;
     display: flex;
     align-items: center;
-    padding-top: 80px;
+    padding-top: 100px;
+    padding-bottom: 10px !important;
 }
 
 .hero-bubbles {
@@ -499,7 +500,7 @@ nav {
 /* MARQUEE */
 .marquee-wrap {
     background: var(--lime);
-    padding: 0.9rem 0;
+    padding: 0.4rem 0;
     overflow: hidden;
 }
 
@@ -536,7 +537,7 @@ nav {
 
 /* SECTIONS */
 section {
-    padding: 6rem 4rem;
+    padding: 3rem;
 }
 
 .section-tag {
@@ -579,7 +580,6 @@ section {
     font-weight: 400;
     line-height: 1.75;
     color: var(--text-muted);
-    max-width: 560px;
 }
 
 /* HOW TO ORDER */
@@ -602,7 +602,7 @@ section {
 
 .how-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 .how-header .section-tag {
@@ -660,7 +660,7 @@ section {
     font-size: 1.6rem;
     font-weight: 900;
     color: var(--white);
-    margin: 0 auto 1.4rem;
+    margin: 0 auto 0.4rem;
     box-shadow: 0 8px 20px rgba(74, 140, 42, 0.3);
 }
 
@@ -873,7 +873,6 @@ section {
 /* BENEFITS */
 #benefits {
     background: linear-gradient(160deg, var(--green-deep), #1a3a0a);
-    padding: 6rem 4rem;
     color: var(--white);
     position: relative;
     overflow: hidden;
@@ -1014,7 +1013,6 @@ section {
 /* STORY */
 #story {
     background: var(--green-bg);
-    padding: 4rem;
 }
 
 .story-inner {
@@ -1149,19 +1147,16 @@ section {
 /* HIRE */
 #hire {
     background: linear-gradient(180deg, #ffffff 0%, #f4f9f1 100%);
-    padding: 6rem 1.5rem;
     border-top: 1px solid rgba(45, 90, 27, 0.05);
 }
 
 .hire-container {
-    max-width: 1200px;
     margin: 0 auto;
 }
 
 .hire-header {
     text-align: center;
-    max-width: 700px;
-    margin: 0 auto 4rem;
+    margin: auto;
 }
 
 .hire-header .section-tag {
@@ -1172,12 +1167,12 @@ section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2.5rem;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 }
 
 .hire-card {
     background: var(--white);
-    padding: 3rem 2rem;
+    padding: 1rem;
     border-radius: 30px;
     text-align: center;
     border: 1.5px solid var(--green-pale);
@@ -1209,7 +1204,7 @@ section {
     font-size: 0.9rem;
     color: var(--text-muted);
     line-height: 1.6;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .h-card-list {
@@ -1240,11 +1235,10 @@ section {
     justify-content: center;
     flex-wrap: wrap;
     gap: 3rem;
-    padding: 2.5rem;
+    padding: 0.5rem;
     background: var(--green-deep);
     border-radius: 100px;
-    /* Pill shape */
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 .h-feature {
@@ -1305,7 +1299,6 @@ section {
 .franchise-inner {
     position: relative;
     z-index: 1;
-    max-width: 700px;
     margin: 0 auto;
 }
 
@@ -1349,7 +1342,6 @@ section {
 /* CONTACT */
 #contact {
     background: var(--green-bg);
-    padding: 6rem 4rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 5rem;
@@ -1511,16 +1503,16 @@ section {
 /* FOOTER */
 footer {
     background: var(--green-deep);
-    padding: 4rem 4rem 2rem;
+    padding: 1rem;
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.8fr 1fr 1fr;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
     gap: 4rem;
-    padding-bottom: 3rem;
+    padding-bottom: 2rem;
     border-bottom: 1px solid rgba(200, 232, 48, 0.12);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .footer-brand .f-logo {
@@ -1539,7 +1531,6 @@ footer {
     font-size: 0.85rem;
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.55);
-    max-width: 270px;
     margin-bottom: 1.5rem;
 }
 
@@ -1552,21 +1543,21 @@ footer {
     width: 38px;
     height: 38px;
     border-radius: 10px;
-    background: rgba(200, 232, 48, 0.1);
-    border: 1px solid rgba(200, 232, 48, 0.15);
+    /* background: rgba(200, 232, 48, 0.1); */
+    /* border: 1px solid rgba(200, 232, 48, 0.15); */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.95rem;
     text-decoration: none;
-    transition: all 0.25s;
+    /* transition: all 0.25s; */
     cursor: pointer;
 }
 
-.f-social-btn:hover {
+/* .f-social-btn:hover {
     background: rgba(200, 232, 48, 0.2);
     border-color: var(--lime);
-}
+} */
 
 .footer-col h4 {
     font-size: 0.68rem;
@@ -1574,7 +1565,7 @@ footer {
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--lime);
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.9rem;
 }
 
 .footer-col ul {
@@ -1582,7 +1573,7 @@ footer {
 }
 
 .footer-col ul li {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.4rem;
 }
 
 .footer-col ul a {
@@ -1751,10 +1742,13 @@ footer {
         flex-direction: column;
         padding: 2rem 1.5rem;
     }
+
     .reviews-track {
         width: 100%;
-        height: 300px; /* Taller for tablet */
+        height: 300px;
+        /* Taller for tablet */
     }
+
     .reviews-nav-vertical {
         flex-direction: row;
         padding-left: 0;
@@ -1764,13 +1758,16 @@ footer {
         width: 100%;
         justify-content: center;
     }
+
     .nav-dots {
         flex-direction: row;
     }
+
     .dot.active {
         width: 20px;
         height: 6px;
     }
+
     .nav-arrows {
         flex-direction: row;
     }
@@ -2026,17 +2023,13 @@ footer {
 }
 
 .reviews-container {
-    max-width: 880px;
-    /* Compact width */
     margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    /* Reduced gap */
     position: relative;
     background: #ffffff;
     padding: 1.2rem 1.5rem;
-    /* Tighter padding */
     border-radius: 24px;
     box-shadow: 0 10px 35px rgba(45, 90, 27, 0.05);
     border: 1px solid rgba(200, 232, 48, 0.12);
@@ -2220,7 +2213,7 @@ footer {
 
 .faq-question {
     width: 100%;
-    padding: 1.5rem 2rem;
+    padding: 1rem;
     background: none;
     border: none;
     display: flex;
@@ -2407,27 +2400,35 @@ footer {
     .reviews-container {
         padding: 1.5rem 1rem;
     }
+
     .reviews-track {
-        height: 380px; /* Much taller for stacked content */
+        height: 380px;
+        /* Much taller for stacked content */
     }
+
     .review-card {
         flex-direction: column;
         text-align: center;
+        align-items: flex-start;
         gap: 1rem;
         top: 50%;
         transform: translateY(-50%) scale(0.95);
     }
+
     .review-card.active {
         transform: translateY(-50%) scale(1);
     }
+
     .review-avatar {
-        width: 100px;
-        height: 100px;
+        width: 70px;
+        height: 70px;
     }
+
     .review-text {
         font-size: 0.95rem;
         line-height: 1.5;
     }
+
     .review-name {
         font-size: 1rem;
     }
@@ -2477,12 +2478,12 @@ footer {
 }
 
 .f-icon {
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
 
 .f-name {
     font-family: 'Nunito', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.0rem;
     font-weight: 900;
     color: var(--green-deep);
     opacity: 0.8;
@@ -2514,7 +2515,7 @@ footer {
         display: flex;
         flex-direction: row;
         /* Side-by-side */
-        align-items: center;
+        align-items: flex-start;
         gap: 1.2rem;
         opacity: 0;
         visibility: hidden;
@@ -2528,9 +2529,9 @@ footer {
     }
 
     .review-avatar {
-        width: 110px;
+        width: 70px;
         /* Smaller avatar */
-        height: 110px;
+        height: 70px;
         flex-shrink: 0;
         border-radius: 50%;
         /* Circular for side-by-side */
@@ -2653,8 +2654,8 @@ footer {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 65px;
-    height: 65px;
+    width: 50px;
+    height: 50px;
     background: #25d366;
     color: #fff;
     border-radius: 50%;
@@ -2728,7 +2729,25 @@ footer {
         display: none;
     }
 }
+
 /* ── Contact Form Status Messages ── */
-.form-status { display:none;margin-top:12px;padding:10px 14px;border-radius:8px;font-size:0.9rem;font-weight:500; }
-.form-status.success { background:#d1fae5;color:#065f46;border:1px solid #6ee7b7; }
-.form-status.error   { background:#fee2e2;color:#991b1b;border:1px solid #fca5a5; }
+.form-status {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.form-status.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+}
+
+.form-status.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}

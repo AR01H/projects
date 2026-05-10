@@ -1,13 +1,11 @@
 <?php
-$ig    = ch_opt('social_ig','#');
-$fb    = ch_opt('social_fb','#');
-$tt    = ch_opt('social_tt','#');
-$yt    = ch_opt('social_yt','#');
-$wa    = ch_opt('whatsapp','447887699208');
-$copy  = ch_opt('footer_copyright','© 2025 The Cane House. Pressed Fresh. Served Cool.');
-$desc  = ch_opt('footer_desc','Fresh sugarcane juice pressed live, served cool.');
-$phone = ch_opt('phone','+44 7887 699 208');
-$policy_raw   = ch_opt('footer_policy_links',"Privacy Policy\nTerms & Conditions\nRefund Policy");
+$ig = ch_opt('social_ig', '#');
+$fb = ch_opt('social_fb', '#');
+$wa = ch_opt('whatsapp', '447887699208');
+$copy = ch_opt('footer_copyright', '© 2025 The Cane House. Pressed Fresh. Served Cool.');
+$desc = ch_opt('footer_desc', 'Fresh sugarcane juice pressed live, served cool.');
+$phone = ch_opt('phone', '+44 7887 699 208');
+$policy_raw = ch_opt('footer_policy_links', "Privacy Policy\nTerms & Conditions\nRefund Policy");
 $policy_items = array_filter(array_map('trim', explode("\n", $policy_raw)));
 ?>
 <footer>
@@ -16,10 +14,48 @@ $policy_items = array_filter(array_map('trim', explode("\n", $policy_raw)));
       <div class="f-logo">The Cane <span>House</span> 🌿</div>
       <p><?php echo esc_html($desc); ?></p>
       <div class="footer-social">
-        <a class="f-social-btn" href="<?php echo esc_url($ig); ?>" target="_blank">📸</a>
-        <a class="f-social-btn" href="<?php echo esc_url($fb); ?>" target="_blank">📘</a>
-        <a class="f-social-btn" href="<?php echo esc_url($tt); ?>" target="_blank">🎵</a>
-        <a class="f-social-btn" href="<?php echo esc_url($yt); ?>" target="_blank">▶️</a>
+        <a class="f-social-btn" href="<?php echo esc_url($ig); ?>" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="" height="" viewBox="0 0 3364.7 3364.7">
+            <defs>
+              <radialGradient id="0" cx="217.76" cy="3290.99" r="4271.92" gradientUnits="userSpaceOnUse">
+                <stop offset=".09" stop-color="#fa8f21" />
+                <stop offset=".78" stop-color="#d82d7e" />
+              </radialGradient>
+              <radialGradient id="1" cx="2330.61" cy="3182.95" r="3759.33" gradientUnits="userSpaceOnUse">
+                <stop offset=".64" stop-color="#8c3aaa" stop-opacity="0" />
+                <stop offset="1" stop-color="#8c3aaa" />
+              </radialGradient>
+            </defs>
+            <path
+              d="M853.2,3352.8c-200.1-9.1-308.8-42.4-381.1-70.6-95.8-37.3-164.1-81.7-236-153.5S119.7,2988.6,82.6,2892.8c-28.2-72.3-61.5-181-70.6-381.1C2,2295.4,0,2230.5,0,1682.5s2.2-612.8,11.9-829.3C21,653.1,54.5,544.6,82.5,472.1,119.8,376.3,164.3,308,236,236c71.8-71.8,140.1-116.4,236-153.5C544.3,54.3,653,21,853.1,11.9,1069.5,2,1134.5,0,1682.3,0c548,0,612.8,2.2,829.3,11.9,200.1,9.1,308.6,42.6,381.1,70.6,95.8,37.1,164.1,81.7,236,153.5s116.2,140.2,153.5,236c28.2,72.3,61.5,181,70.6,381.1,9.9,216.5,11.9,281.3,11.9,829.3,0,547.8-2,612.8-11.9,829.3-9.1,200.1-42.6,308.8-70.6,381.1-37.3,95.8-81.7,164.1-153.5,235.9s-140.2,116.2-236,153.5c-72.3,28.2-181,61.5-381.1,70.6-216.3,9.9-281.3,11.9-829.3,11.9-547.8,0-612.8-1.9-829.1-11.9"
+              fill="url(#0)" />
+            <path
+              d="M853.2,3352.8c-200.1-9.1-308.8-42.4-381.1-70.6-95.8-37.3-164.1-81.7-236-153.5S119.7,2988.6,82.6,2892.8c-28.2-72.3-61.5-181-70.6-381.1C2,2295.4,0,2230.5,0,1682.5s2.2-612.8,11.9-829.3C21,653.1,54.5,544.6,82.5,472.1,119.8,376.3,164.3,308,236,236c71.8-71.8,140.1-116.4,236-153.5C544.3,54.3,653,21,853.1,11.9,1069.5,2,1134.5,0,1682.3,0c548,0,612.8,2.2,829.3,11.9,200.1,9.1,308.6,42.6,381.1,70.6,95.8,37.1,164.1,81.7,236,153.5s116.2,140.2,153.5,236c28.2,72.3,61.5,181,70.6,381.1,9.9,216.5,11.9,281.3,11.9,829.3,0,547.8-2,612.8-11.9,829.3-9.1,200.1-42.6,308.8-70.6,381.1-37.3,95.8-81.7,164.1-153.5,235.9s-140.2,116.2-236,153.5c-72.3,28.2-181,61.5-381.1,70.6-216.3,9.9-281.3,11.9-829.3,11.9-547.8,0-612.8-1.9-829.1-11.9"
+              fill="url(#1)" />
+            <path
+              d="M1269.25,1689.52c0-230.11,186.49-416.7,416.6-416.7s416.7,186.59,416.7,416.7-186.59,416.7-416.7,416.7-416.6-186.59-416.6-416.7m-225.26,0c0,354.5,287.36,641.86,641.86,641.86s641.86-287.36,641.86-641.86-287.36-641.86-641.86-641.86S1044,1335,1044,1689.52m1159.13-667.31a150,150,0,1,0,150.06-149.94h-0.06a150.07,150.07,0,0,0-150,149.94M1180.85,2707c-121.87-5.55-188.11-25.85-232.13-43-58.36-22.72-100-49.78-143.78-93.5s-70.88-85.32-93.5-143.68c-17.16-44-37.46-110.26-43-232.13-6.06-131.76-7.27-171.34-7.27-505.15s1.31-373.28,7.27-505.15c5.55-121.87,26-188,43-232.13,22.72-58.36,49.78-100,93.5-143.78s85.32-70.88,143.78-93.5c44-17.16,110.26-37.46,232.13-43,131.76-6.06,171.34-7.27,505-7.27S2059.13,666,2191,672c121.87,5.55,188,26,232.13,43,58.36,22.62,100,49.78,143.78,93.5s70.78,85.42,93.5,143.78c17.16,44,37.46,110.26,43,232.13,6.06,131.87,7.27,171.34,7.27,505.15s-1.21,373.28-7.27,505.15c-5.55,121.87-25.95,188.11-43,232.13-22.72,58.36-49.78,100-93.5,143.68s-85.42,70.78-143.78,93.5c-44,17.16-110.26,37.46-232.13,43-131.76,6.06-171.34,7.27-505.15,7.27s-373.28-1.21-505-7.27M1170.5,447.09c-133.07,6.06-224,27.16-303.41,58.06-82.19,31.91-151.86,74.72-221.43,144.18S533.39,788.47,501.48,870.76c-30.9,79.46-52,170.34-58.06,303.41-6.16,133.28-7.57,175.89-7.57,515.35s1.41,382.07,7.57,515.35c6.06,133.08,27.16,223.95,58.06,303.41,31.91,82.19,74.62,152,144.18,221.43s139.14,112.18,221.43,144.18c79.56,30.9,170.34,52,303.41,58.06,133.35,6.06,175.89,7.57,515.35,7.57s382.07-1.41,515.35-7.57c133.08-6.06,223.95-27.16,303.41-58.06,82.19-32,151.86-74.72,221.43-144.18s112.18-139.24,144.18-221.43c30.9-79.46,52.1-170.34,58.06-303.41,6.06-133.38,7.47-175.89,7.47-515.35s-1.41-382.07-7.47-515.35c-6.06-133.08-27.16-224-58.06-303.41-32-82.19-74.72-151.86-144.18-221.43S2586.8,537.06,2504.71,505.15c-79.56-30.9-170.44-52.1-303.41-58.06C2068,441,2025.41,439.52,1686,439.52s-382.1,1.41-515.45,7.57"
+              fill="#ffffff" />
+          </svg></a>
+        <a class="f-social-btn" href="<?php echo esc_url($fb); ?>" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="" height=""
+            viewBox="0 0 48 48" version="1.1" style="background-color:white">
+
+            <title>Facebook-color</title>
+            <desc>Created with Sketch.</desc>
+            <defs>
+
+            </defs>
+            <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Color-" transform="translate(-200.000000, -160.000000)" fill="#4460A0">
+                <path
+                  d="M225.638355,208 L202.649232,208 C201.185673,208 200,206.813592 200,205.350603 L200,162.649211 C200,161.18585 201.185859,160 202.649232,160 L245.350955,160 C246.813955,160 248,161.18585 248,162.649211 L248,205.350603 C248,206.813778 246.813769,208 245.350955,208 L233.119305,208 L233.119305,189.411755 L239.358521,189.411755 L240.292755,182.167586 L233.119305,182.167586 L233.119305,177.542641 C233.119305,175.445287 233.701712,174.01601 236.70929,174.01601 L240.545311,174.014333 L240.545311,167.535091 C239.881886,167.446808 237.604784,167.24957 234.955552,167.24957 C229.424834,167.24957 225.638355,170.625526 225.638355,176.825209 L225.638355,182.167586 L219.383122,182.167586 L219.383122,189.411755 L225.638355,189.411755 L225.638355,208 L225.638355,208 Z"
+                  id="Facebook">
+
+                </path>
+              </g>
+            </g>
+          </svg>
+        </a>
       </div>
     </div>
     <div class="footer-col">
@@ -41,36 +77,33 @@ $policy_items = array_filter(array_map('trim', explode("\n", $policy_raw)));
     <div class="footer-col">
       <h4>Contact</h4>
       <ul>
-        <li><a href="tel:<?php echo esc_attr(preg_replace('/\s+/','',$phone)); ?>"><?php echo esc_html($phone); ?></a></li>
+        <li><a href="tel:<?php echo esc_attr(preg_replace('/\s+/', '', $phone)); ?>"><?php echo esc_html($phone); ?></a>
+        </li>
         <li><a href="https://wa.me/<?php echo esc_attr($wa); ?>" target="_blank">WhatsApp Us</a></li>
       </ul>
-      <?php if (!empty($policy_items)): ?>
-      <h4 style="margin-top:1.2rem;">Legal</h4>
-      <ul>
-        <?php foreach ($policy_items as $pname):
-            $url = ch_get_page_url_by_title($pname);
-        ?>
-        <li><a href="<?php echo esc_url($url); ?>"><?php echo esc_html($pname); ?></a></li>
-        <?php endforeach; ?>
-      </ul>
-      <?php endif; ?>
     </div>
   </div>
-  <div class="footer-bottom" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+  <div class="footer-bottom"
+    style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
     <span><?php echo esc_html($copy); ?></span>
     <div style="display:flex;gap:16px;">
       <?php foreach ($policy_items as $pname):
-          $url = ch_get_page_url_by_title($pname);
-      ?>
-      <a href="<?php echo esc_url($url); ?>" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;"><?php echo esc_html($pname); ?></a>
+        $url = ch_get_page_url_by_title($pname);
+        ?>
+        <a href="<?php echo esc_url($url); ?>"
+          style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;"><?php echo esc_html($pname); ?></a>
       <?php endforeach; ?>
     </div>
   </div>
 </footer>
 <a href="https://wa.me/<?php echo esc_attr($wa); ?>" class="whatsapp-float" target="_blank">
   <div class="wa-tooltip">Chat with us! 🌿</div>
-  <svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 2a13.79 13.79 0 0 0-11.85 20.8L2 30l7.45-1.95A13.73 13.73 0 0 0 16 30c7.61 0 13.8-6.19 13.8-13.8A13.84 13.84 0 0 0 16 2zm6.65 19.38c-.3.84-1.49 1.54-2.45 1.76-.66.15-1.53.27-4.43-.93-3.71-1.54-6.1-5.32-6.29-5.57s-1.52-2.02-1.52-3.85 1-2.73 1.35-3.1.7-.46.93-.46.45 0 .64.01c.19 0 .45-.07.7.53.26.63.89 2.16.96 2.31s.12.33.02.53-.15.3-.3.47-.3.34-.45.51-.33.36-.14.68c.19.32.83 1.36 1.78 2.21 1.23 1.09 2.26 1.43 2.58 1.59s.53.13.73-.09.85-.99 1.08-1.33.45-.28.76-.17 1.95.92 2.28 1.08.55.25.63.38.12.78-.18 1.62z"/></svg>
+  <svg viewBox="0 0 32 32">
+    <path fill="currentColor"
+      d="M16 2a13.79 13.79 0 0 0-11.85 20.8L2 30l7.45-1.95A13.73 13.73 0 0 0 16 30c7.61 0 13.8-6.19 13.8-13.8A13.84 13.84 0 0 0 16 2zm6.65 19.38c-.3.84-1.49 1.54-2.45 1.76-.66.15-1.53.27-4.43-.93-3.71-1.54-6.1-5.32-6.29-5.57s-1.52-2.02-1.52-3.85 1-2.73 1.35-3.1.7-.46.93-.46.45 0 .64.01c.19 0 .45-.07.7.53.26.63.89 2.16.96 2.31s.12.33.02.53-.15.3-.3.47-.3.34-.45.51-.33.36-.14.68c.19.32.83 1.36 1.78 2.21 1.23 1.09 2.26 1.43 2.58 1.59s.53.13.73-.09.85-.99 1.08-1.33.45-.28.76-.17 1.95.92 2.28 1.08.55.25.63.38.12.78-.18 1.62z" />
+  </svg>
 </a>
 <?php wp_footer(); ?>
 </body>
+
 </html>

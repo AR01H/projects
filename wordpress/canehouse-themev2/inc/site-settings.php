@@ -146,16 +146,6 @@ function ch_site_settings_page()
                 <td><input type="text" name="ch_social_fb" value="<?php echo esc_attr(ch_opt('social_fb')); ?>"
                     class="regular-text"></td>
               </tr>
-              <tr>
-                <th>🎵 TikTok</th>
-                <td><input type="text" name="ch_social_tt" value="<?php echo esc_attr(ch_opt('social_tt')); ?>"
-                    class="regular-text"></td>
-              </tr>
-              <tr>
-                <th>▶️ YouTube</th>
-                <td><input type="text" name="ch_social_yt" value="<?php echo esc_attr(ch_opt('social_yt')); ?>"
-                    class="regular-text"></td>
-              </tr>
             </table>
           </div>
 
@@ -170,7 +160,7 @@ function ch_site_settings_page()
               <tr>
                 <th>Banner Text</th>
                 <td><input type="text" name="ch_header_notice" value="<?php echo esc_attr(ch_opt('header_notice')); ?>"
-                    class="large-text" placeholder="e.g. 🎉 Now available in Manchester! Book now →"></td>
+                    class="large-text" placeholder="e.g. 🎉 Now available in Manchester! Book now →" maxlength="40"></td>
               </tr>
             </table>
           </div>
