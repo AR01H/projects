@@ -1,0 +1,276 @@
+/* ── ch-legal-admin.css ── */
+
+.ch-legal-admin-wrap {
+    max-width: 1200px;
+    padding: 20px 0;
+}
+
+.ch-legal-admin-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #2d5a1b;
+    margin-bottom: 4px;
+}
+
+.ch-legal-admin-sub {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.ch-legal-admin-sub code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* TABLE */
+.ch-legal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ch-legal-table thead th {
+    background: #f9fafb;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.ch-legal-table tbody tr {
+    border-bottom: 1px solid #f3f4f6;
+    transition: background .1s;
+}
+
+.ch-legal-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.ch-legal-table td {
+    padding: 10px 14px;
+    vertical-align: middle;
+}
+
+.ch-status-pill {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.ch-status-published {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.ch-status-draft {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.ch-link-btn {
+    color: #2d5a1b;
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 3px 8px;
+    border: 1px solid #2d5a1b;
+    border-radius: 5px;
+}
+
+.ch-link-btn:hover {
+    background: #2d5a1b;
+    color: #fff;
+}
+
+/* BUTTONS */
+.ch-btn-primary {
+    background: #2d5a1b;
+    color: #fff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ch-btn-primary:hover {
+    background: #4a8c2a;
+}
+
+.ch-btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 8px 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ch-btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.ch-btn-sm:hover {
+    background: #f3f4f6;
+}
+
+.ch-btn-danger {
+    color: #ef4444;
+    border-color: #fca5a5;
+}
+
+.ch-btn-danger:hover {
+    background: #fef2f2;
+}
+
+.ch-req {
+    color: #ef4444;
+}
+
+/* MODAL OVERLAY */
+#ch-legal-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .6);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.ch-legal-modal-box {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 860px;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+}
+
+.ch-legal-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 2px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+}
+
+.ch-legal-modal-head h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #2d5a1b;
+}
+
+.ch-modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #9ca3af;
+}
+
+.ch-legal-modal-body {
+    padding: 24px;
+}
+
+/* FORM */
+.ch-legal-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.ch-legal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+
+.ch-legal-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.ch-legal-field input,
+.ch-legal-field select,
+.ch-legal-field textarea {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ch-legal-field input:focus,
+.ch-legal-field select:focus,
+.ch-legal-field textarea:focus {
+    outline: none;
+    border-color: #4a8c2a;
+    box-shadow: 0 0 0 3px rgba(74, 140, 42, .1);
+}
+
+.ch-slug-preview {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+/* SEO BOX */
+.ch-legal-seo-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.ch-legal-seo-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: #2d5a1b;
+    margin-bottom: 12px;
+}
+
+/* FORM ACTIONS */
+.ch-legal-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* CKEditor override */
+.ck-editor__editable {
+    min-height: 280px !important;
+    font-size: 14px !important;
+}

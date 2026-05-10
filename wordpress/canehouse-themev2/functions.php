@@ -103,6 +103,8 @@ require_once get_template_directory() . '/inc/db-schema.php';
 require_once get_template_directory() . '/inc/site-settings.php';
 require_once get_template_directory() . '/inc/content-manager.php';
 require_once get_template_directory() . '/inc/contact-leads.php';
+require_once get_template_directory() . '/inc/legal-pages.php';
+
 
 // ── 6. ANNOUNCEMENT BAR CSS ───────────────────────────────────────────────────
 add_action('wp_head', function () {

@@ -105,14 +105,20 @@
       </span>
     </a>
     <?php
-    wp_nav_menu(array(
-      'theme_location' => 'primary',
-      'menu_class' => 'nav-links',
-      'container' => false,
-      'fallback_cb' => 'ch_fallback_nav',
-      'items_wrap' => '<ul id="nav-links" class="nav-links">%3$s</ul>',
-    ));
-    ?>
+    $show_nav = $args['show_nav'] ?? true;
+    if ($show_nav):
+      wp_nav_menu(array(
+        'theme_location' => 'primary',
+        'menu_class' => 'nav-links',
+        'container' => false,
+        'fallback_cb' => 'ch_fallback_nav',
+        'items_wrap' => '<ul id="nav-links" class="nav-links">%3$s</ul>',
+      ));
+    else: ?>
+      <ul class="nav-links" id="nav-links" style="margin-left:auto;">
+        <li><a href="<?php echo esc_url(home_url('/#contact')); ?>" class="nav-cta-btn">CONTACT</a></li>
+      </ul>
+    <?php endif; ?>
 
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
       <span></span><span></span><span></span>

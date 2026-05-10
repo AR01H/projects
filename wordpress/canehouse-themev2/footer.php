@@ -5,8 +5,10 @@ $wa = ch_opt('whatsapp', '447887699208');
 $copy = ch_opt('footer_copyright', '© 2025 The Cane House. Pressed Fresh. Served Cool.');
 $desc = ch_opt('footer_desc', 'Fresh sugarcane juice pressed live, served cool.');
 $phone = ch_opt('phone', '+44 7887 699 208');
-$policy_raw = ch_opt('footer_policy_links', "Privacy Policy\nTerms & Conditions\nRefund Policy");
-$policy_items = array_filter(array_map('trim', explode("\n", $policy_raw)));
+global $wpdb;
+$policy_items_db = $wpdb->get_results(
+  "SELECT title, slug FROM {$wpdb->prefix}ch_legal_pages WHERE status='published' ORDER BY sort_order ASC, id ASC"
+);
 ?>
 <footer>
   <div class="footer-grid">
@@ -87,11 +89,9 @@ $policy_items = array_filter(array_map('trim', explode("\n", $policy_raw)));
     style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
     <span><?php echo esc_html($copy); ?></span>
     <div style="display:flex;gap:16px;">
-      <?php foreach ($policy_items as $pname):
-        $url = ch_get_page_url_by_title($pname);
-        ?>
-        <a href="<?php echo esc_url($url); ?>"
-          style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;"><?php echo esc_html($pname); ?></a>
+      <?php foreach ($policy_items_db as $lp): ?>
+        <a href="<?php echo esc_url(home_url('/' . $lp->slug)); ?>"
+          style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;"><?php echo esc_html($lp->title); ?></a>
       <?php endforeach; ?>
     </div>
   </div>
