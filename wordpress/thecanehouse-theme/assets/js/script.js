@@ -1,5 +1,5 @@
 
-const API_URL = "https://script.google.com/macros/s/AKfycbzl717Y-4DxUNX1p-sK6bmb0_yUVCtVSWH_HDMqNWlGJF7_E7YjT9WoV8ql8LxV00Q6Pg/exec";
+const API_URL = (typeof CANEHOUSE_API_URL !== "undefined") ? CANEHOUSE_API_URL : "https://script.google.com/macros/s/AKfycbzl717Y-4DxUNX1p-sK6bmb0_yUVCtVSWH_HDMqNWlGJF7_E7YjT9WoV8ql8LxV00Q6Pg/exec";
 
 function toggleNav() { document.getElementById('nav-links').classList.toggle('open'); }
 window.addEventListener('resize', () => { if (window.innerWidth > 960) document.getElementById('nav-links').classList.remove('open'); });

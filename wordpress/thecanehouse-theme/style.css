@@ -1,20 +1,11 @@
 /*
-Theme Name:  The Cane House
-Theme URI:   https://thecanehouse.co.uk/
-Author:      Antigravity AI
-Author URI:  https://github.com/AR01H
-Description: A premium, mobile-first WordPress theme for The Cane House — fresh live-pressed sugarcane juice business. Includes WordPress Customizer for easy client editing, contact form with admin dashboard, full SEO, and JSON-LD structured data.
-Version:     1.0.0
-Requires at least: 6.0
-Tested up to:      6.5
-Requires PHP:      8.0
-License:     Proprietary
-Text Domain: thecanehouse
-Tags:        food-and-drink, one-page, mobile-first, customizer, full-width-template
+Theme Name: The Cane House
+Theme URI: https://thecanehouse.co.uk
+Author: The Cane House
+Author URI: https://thecanehouse.co.uk
+Description: Custom WordPress theme for The Cane House - Fresh Live-Pressed Sugarcane Juice UK. Fully editable sections, pages, text and images from WordPress admin.
+Version: 1.0.0
+License: GNU General Public License v2 or later
+Text Domain: canehouse
+Tags: custom-theme, business, food-drink
 */
-
-/*
- * NOTE: This file intentionally contains only the WordPress theme header.
- * All actual styles are loaded from css/theme.css via functions.php.
- * Do NOT add styles here — add them to css/theme.css instead.
- */
