@@ -1,0 +1,85 @@
+{
+  "_readme": "Replace any value below with your real content. Then open db-schema.php and the ch_seed_defaults() function already reads this structure. Status: active = shows on site, inactive = hidden.",
+
+  "reviews": [
+    { "name": "Sarah Johnson", "role": "Verified Customer", "review_text": "The freshest cane juice I've ever had in the UK. The ginger blend is absolutely life-changing!", "rating": 5, "image_url": "", "status": "active", "sort_order": 1 },
+    { "name": "Mohammed Ali",  "role": "Verified Customer", "review_text": "Reminds me of home! Pressed live right in front of you. Naturally sweet and refreshing. 10/10.", "rating": 5, "image_url": "", "status": "active", "sort_order": 2 },
+    { "name": "Emma Wright",   "role": "Event Client",      "review_text": "We hired The Cane House for our wedding — guests loved the live pressing experience!", "rating": 5, "image_url": "", "status": "active", "sort_order": 3 }
+  ],
+
+  "order_steps": [
+    { "step_number": 1, "emoji": "📏", "title": "Select Size",    "description": "Choose from Mini 250ml right up to Group Sharing 1.5L — perfect for every occasion", "image_url": "", "status": "active", "sort_order": 1 },
+    { "step_number": 2, "emoji": "🌾", "title": "Select Cane",    "description": "Yellow Cane (light golden) or Red Cane (rich amber, +£0.50)", "image_url": "", "status": "active", "sort_order": 2 },
+    { "step_number": 3, "emoji": "🥤", "title": "Select Texture", "description": "Classic No Peel for a grassy taste, or Smooth With Peel for a cleaner finish (+£0.50)", "image_url": "", "status": "active", "sort_order": 3 },
+    { "step_number": 4, "emoji": "🍋", "title": "Select Flavour", "description": "Pure Cane (free), Citrus Blends (+£0.50) or Tropical Blends (+£1.00)", "image_url": "", "status": "active", "sort_order": 4 },
+    { "step_number": 5, "emoji": "🎉", "title": "Enjoy!",          "description": "Served chilled, no ice unless requested — pure fresh natural goodness in every sip", "image_url": "", "status": "active", "sort_order": 5 }
+  ],
+
+  "flavours": [
+    { "emoji": "🌿", "name": "Pure Cane",      "description": "Clean and natural — the original",  "price": "Included", "flavour_type": "Base",    "image_url": "", "status": "active", "sort_order": 1 },
+    { "emoji": "🍋", "name": "Lemon",           "description": "Bright citrus freshness",            "price": "+£0.50",   "flavour_type": "Citrus",  "image_url": "", "status": "active", "sort_order": 2 },
+    { "emoji": "🫚", "name": "Ginger",          "description": "Warming and invigorating",           "price": "+£0.50",   "flavour_type": "Citrus",  "image_url": "", "status": "active", "sort_order": 3 },
+    { "emoji": "🌀", "name": "Lemon & Ginger",  "description": "The classic combo",                  "price": "+£0.50",   "flavour_type": "Citrus",  "image_url": "", "status": "active", "sort_order": 4 },
+    { "emoji": "🌱", "name": "Mint",             "description": "Cool and refreshing",                "price": "+£0.50",   "flavour_type": "Citrus",  "image_url": "", "status": "active", "sort_order": 5 },
+    { "emoji": "🍍", "name": "Pineapple",       "description": "Tropical sweetness",                 "price": "+£1.00",   "flavour_type": "Tropical","image_url": "", "status": "active", "sort_order": 6 },
+    { "emoji": "🍉", "name": "Watermelon",      "description": "Summer in a cup",                    "price": "+£1.00",   "flavour_type": "Tropical","image_url": "", "status": "active", "sort_order": 7 },
+    { "emoji": "🍓", "name": "Strawberry",      "description": "Sweet and fruity",                   "price": "+£1.00",   "flavour_type": "Tropical","image_url": "", "status": "active", "sort_order": 8 }
+  ],
+
+  "events": [
+    { "icon": "💒", "title": "Weddings",         "description": "Add a traditional and healthy touch to your big day. We serve fresh juice live during your reception or party.", "list_items": "Reception Drinks\nMehndi & Sangeet\nPost-Ceremony Refreshment", "image_url": "", "status": "active", "sort_order": 1 },
+    { "icon": "🏢", "title": "Corporate Events", "description": "Perfect for office parties, wellness days, and conferences. A healthy alternative to sugary sodas.", "list_items": "Office Wellness Days\nProduct Launches\nExhibitions & Fairs", "image_url": "", "status": "active", "sort_order": 2 },
+    { "icon": "🎉", "title": "Private Parties",  "description": "From birthdays to garden parties, we bring the vibe. Freshly pressed juice for guests of all ages.", "list_items": "Birthday Parties\nCommunity Festivals\nGarden & BBQ Events", "image_url": "", "status": "active", "sort_order": 3 }
+  ],
+
+  "faqs": [
+    { "question": "Do you add any sugar or preservatives?", "answer": "No — 100% natural, pressed live from the stalk. The sweetness comes entirely from the natural sugars in the cane itself.", "category": "Product", "image_url": "", "status": "active", "sort_order": 1 },
+    { "question": "How long does the juice stay fresh?",    "answer": "Fresh sugarcane juice is best enjoyed immediately after pressing. However, if kept chilled, it can stay fresh for up to 24 hours.", "category": "Product", "image_url": "", "status": "active", "sort_order": 2 },
+    { "question": "What events can I hire you for?",        "answer": "We cater for weddings, birthdays, corporate gatherings, festivals, and community events across the UK.", "category": "Hire", "image_url": "", "status": "active", "sort_order": 3 },
+    { "question": "Is your sugarcane juice sustainable?",   "answer": "Yes! Sugarcane is a highly sustainable crop. Even our leftover fibre (bagasse) is biodegradable.", "category": "General", "image_url": "", "status": "active", "sort_order": 4 }
+  ],
+
+  "franchise_locs": [
+    { "name": "London Central",   "city": "London",     "description": "", "image_url": "", "status": "active", "sort_order": 1 },
+    { "name": "Manchester Hub",   "city": "Manchester", "description": "", "image_url": "", "status": "active", "sort_order": 2 },
+    { "name": "Birmingham West",  "city": "Birmingham", "description": "", "image_url": "", "status": "active", "sort_order": 3 },
+    { "name": "Leeds North",      "city": "Leeds",      "description": "", "image_url": "", "status": "active", "sort_order": 4 },
+    { "name": "Glasgow Fresh",    "city": "Glasgow",    "description": "", "image_url": "", "status": "active", "sort_order": 5 },
+    { "name": "Cardiff Bay",      "city": "Cardiff",    "description": "", "image_url": "", "status": "active", "sort_order": 6 }
+  ],
+
+  "benefits": [
+    { "icon": "⚡", "title": "Natural Energy Booster",    "description": "Provides instant energy with natural sugars — no additives or artificial ingredients.", "image_url": "", "status": "active", "sort_order": 1 },
+    { "icon": "💧", "title": "Hydrating & Cooling",       "description": "Perfect for warm days, helping to refresh and rehydrate the body naturally.", "image_url": "", "status": "active", "sort_order": 2 },
+    { "icon": "🌿", "title": "Rich in Natural Nutrients", "description": "Contains antioxidants, minerals, and electrolytes your body loves.", "image_url": "", "status": "active", "sort_order": 3 },
+    { "icon": "🫁", "title": "Supports Digestion",        "description": "Traditionally enjoyed with lemon and ginger to aid digestion.", "image_url": "", "status": "active", "sort_order": 4 },
+    { "icon": "🛡️", "title": "Boosts Immunity",           "description": "Natural compounds support overall wellness. Clean, fresh and light.", "image_url": "", "status": "active", "sort_order": 5 }
+  ],
+
+  "showcase_slides": [
+    { "title": "Pure Yellow Cane", "subtitle": "Fresh & Naturally Sweet",  "image_url": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&q=80&w=600", "status": "active", "sort_order": 1 },
+    { "title": "Zesty Lemon",      "subtitle": "Citrus Refreshment",       "image_url": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=600", "status": "active", "sort_order": 2 },
+    { "title": "Spicy Ginger",     "subtitle": "Warming & Healthy",        "image_url": "https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=600", "status": "active", "sort_order": 3 },
+    { "title": "Cooling Mint",     "subtitle": "Ultimate Freshness",       "image_url": "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&q=80&w=600", "status": "active", "sort_order": 4 }
+  ],
+
+  "site_settings": {
+    "phone":              "+44 7887 699 208",
+    "whatsapp":           "447887699208",
+    "email":              "hello@thecanehouse.co.uk",
+    "website":            "www.thecanehouse.co.uk",
+    "address":            "Available across the UK",
+    "social_ig":          "#",
+    "social_fb":          "#",
+    "social_tt":          "#",
+    "social_yt":          "#",
+    "footer_copyright":   "© 2025 The Cane House. Pressed Fresh. Served Cool.",
+    "footer_desc":        "Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives.",
+    "footer_policy_links":"Privacy Policy\nTerms & Conditions\nRefund Policy",
+    "marquee":            "Pressed Fresh ✦ Served Cool ✦ No Added Sugar ✦ No Preservatives ✦ Pressed Live ✦ Natural Goodness ✦ Build Your Juice ✦ Events & Hire",
+    "franchise_locations":"London Central\nManchester Hub\nBirmingham West\nLeeds North\nGlasgow Fresh\nCardiff Bay",
+    "header_notice":      "",
+    "header_notice_on":   "0",
+    "maps_embed":         "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.0!2d-0.1276!3d51.5074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDMwJzI3LjAiTiAwwrAwNyc0MC4yIlc!5e0!3m2!1sen!2suk!4v1234567890"
+  }
+}
