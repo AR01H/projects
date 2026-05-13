@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Franchise Opportunities – The Cane House</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #2d5a1b;
+  --green-mid: #4a8c2a;
+  --green-bright: #6abf3a;
+  --green-light: #a8d96e;
+  --green-pale: #d8f0b0;
+  --green-bg: #eef8e0;
+  --lime: #c8e830;
+  --lime-dark: #9bb800;
+  --yellow: #f5e642;
+  --white: #fdfff8;
+  --text: #1e3a0e;
+  --text-muted: #6a8c50;
+  --shadow: rgba(45,90,27,0.15);
+  --gold: #c8a020;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+
+/* ── BOLD HERO ── */
+.hero {
+  min-height: 95vh;
+  background: linear-gradient(150deg, #0d1f06 0%, #1a3a0a 45%, #2d5a1b 100%);
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; position: relative; overflow: hidden;
+}
+.hero-grid-lines {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(200,232,48,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,232,48,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-left { padding: 100px 80px; position: relative; z-index: 2; }
+.hero-label {
+  font-size: 9px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--lime); display: flex; align-items: center; gap: 12px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-label::before { content: ''; width: 40px; height: 1px; background: var(--lime); }
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 5vw, 80px);
+  font-weight: 300; line-height: 1.0; color: var(--white);
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+.hero h1 em { font-style: italic; color: var(--lime); display: block; }
+.hero-sub {
+  font-size: 17px; line-height: 1.75; color: rgba(255,255,255,0.6);
+  font-weight: 300; margin-bottom: 48px; max-width: 440px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 18px 40px;
+  background: var(--lime); color: var(--green-deep);
+  font-weight: 500; font-size: 14px; letter-spacing: 1px;
+  border-radius: 4px; text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+  animation: fadeUp 0.8s 0.45s ease both;
+}
+.hero-cta:hover { background: #d4f040; transform: translateY(-2px); }
+.hero-cta-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 18px 36px; margin-left: 12px;
+  border: 1px solid rgba(200,232,48,0.3);
+  color: rgba(255,255,255,0.7); font-size: 14px;
+  border-radius: 4px; text-decoration: none;
+  transition: border-color 0.3s, color 0.3s;
+  animation: fadeUp 0.8s 0.5s ease both;
+}
+.hero-cta-ghost:hover { border-color: var(--lime); color: var(--lime); }
+
+.hero-right {
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 2; padding: 60px 60px 60px 0;
+}
+.hero-metrics {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;
+}
+.hm-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(200,232,48,0.12);
+  padding: 36px 28px; border-radius: 4px;
+  transition: background 0.3s, border-color 0.3s;
+}
+.hm-card:hover { background: rgba(200,232,48,0.07); border-color: rgba(200,232,48,0.25); }
+.hm-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px; font-weight: 600; color: var(--lime); line-height: 1;
+  margin-bottom: 6px;
+}
+.hm-label { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; }
+
+/* ── SECTION HELPERS ── */
+.section { padding: 100px 40px; }
+.inner { max-width: 1200px; margin: 0 auto; }
+.tag { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.tag::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+h2.title { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 5vw, 60px); font-weight: 300; color: var(--green-deep); margin-bottom: 16px; line-height: 1.1; }
+h2.title em { font-style: italic; color: var(--green-mid); }
+
+/* ── WHY INVEST ── */
+.why-section { background: var(--green-bg); }
+.why-intro { max-width: 680px; margin-bottom: 60px; }
+.why-intro p { font-size: 17px; line-height: 1.8; color: #3a5a28; font-weight: 300; }
+.why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.wi-card {
+  background: var(--white); padding: 44px 36px;
+  border-radius: 4px; border-top: 3px solid transparent;
+  box-shadow: 0 2px 20px var(--shadow);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.wi-card:hover { border-top-color: var(--lime); transform: translateY(-6px); }
+.wi-icon { font-size: 36px; margin-bottom: 20px; }
+.wi-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--green-deep); margin-bottom: 10px; }
+.wi-card p { font-size: 14px; line-height: 1.65; color: var(--text-muted); }
+
+/* ── BUSINESS MODEL ── */
+.model-section { background: var(--white); }
+.model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 60px; }
+.model-items { display: flex; flex-direction: column; gap: 24px; }
+.mi-item {
+  display: flex; gap: 24px; align-items: flex-start;
+  padding: 24px 28px;
+  border: 1px solid var(--green-pale); border-radius: 4px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.mi-item:hover { border-color: var(--lime); box-shadow: 0 4px 20px var(--shadow); }
+.mi-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 600; color: var(--lime-dark);
+  line-height: 1; flex-shrink: 0;
+}
+.mi-text h4 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--green-deep); margin-bottom: 6px; }
+.mi-text p { font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+
+.model-visual {
+  background: linear-gradient(145deg, var(--green-deep), #1a3a0a);
+  border-radius: 4px; padding: 56px 48px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.mv-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 20px; border-bottom: 1px solid rgba(200,232,48,0.1);
+}
+.mv-row:last-child { border-bottom: none; padding-bottom: 0; }
+.mv-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+.mv-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: var(--lime); font-weight: 600;
+}
+
+/* ── SUPPORT ── */
+.support-section { background: var(--green-deep); }
+.support-section .tag { color: rgba(200,232,48,0.6); }
+.support-section .tag::before { background: rgba(200,232,48,0.4); }
+.support-section h2.title { color: var(--white); }
+.support-section h2.title em { color: var(--lime); }
+
+.support-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+.sg-card {
+  padding: 48px 40px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(200,232,48,0.07);
+  transition: background 0.3s;
+  position: relative; overflow: hidden;
+}
+.sg-card:hover { background: rgba(200,232,48,0.05); }
+.sg-card .sg-icon { font-size: 32px; margin-bottom: 18px; }
+.sg-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--white); margin-bottom: 10px; }
+.sg-card p { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.45); }
+.sg-card .sg-num {
+  position: absolute; top: 16px; right: 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px; font-weight: 600;
+  color: rgba(200,232,48,0.05); line-height: 1;
+}
+
+/* ── PROCESS STEPS ── */
+.process-section { background: var(--green-bg); }
+.franchise-steps { margin-top: 60px; display: flex; flex-direction: column; gap: 0; }
+.fs-item {
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 40px; align-items: stretch;
+}
+.fs-left {
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.fs-dot {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--green-deep); border: 2px solid var(--lime);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.fs-line { flex: 1; width: 1px; background: var(--green-light); margin: 4px 0; }
+.fs-item:last-child .fs-line { display: none; }
+.fs-content {
+  padding: 4px 0 48px;
+}
+.fs-step-num { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.fs-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--green-deep); margin-bottom: 10px; }
+.fs-content p { font-size: 15px; line-height: 1.7; color: #3a5a28; font-weight: 300; }
+
+/* ── ROI ── */
+.roi-section { background: var(--white); }
+.roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; }
+.roi-card {
+  border: 1px solid var(--green-pale); border-radius: 4px;
+  overflow: hidden;
+}
+.roi-header {
+  background: var(--green-deep); padding: 32px 36px;
+}
+.roi-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--white); margin-bottom: 4px; }
+.roi-header p { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+.roi-body { padding: 32px 36px; }
+.roi-metric {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--green-pale);
+  font-size: 14px;
+}
+.roi-metric:last-child { border-bottom: none; }
+.roi-metric .rm-label { color: var(--text-muted); }
+.roi-metric .rm-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--green-deep); font-weight: 600; }
+.roi-metric .rm-val.highlight { color: var(--green-mid); }
+
+/* ── FINAL CTA ── */
+.cta-section {
+  background: linear-gradient(135deg, var(--lime) 0%, #a8d96e 100%);
+  padding: 120px 40px; text-align: center; position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '🌾'; position: absolute;
+  font-size: 300px; opacity: 0.07; top: -60px; right: -60px; line-height: 1;
+}
+.cta-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 6vw, 80px); font-weight: 300; color: var(--green-deep);
+  margin-bottom: 16px; line-height: 1.1;
+}
+.cta-section h2 em { font-style: italic; }
+.cta-section p { font-size: 18px; color: var(--green-mid); margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.cta-main {
+  display: inline-block; padding: 20px 56px;
+  background: var(--green-deep); color: var(--lime);
+  font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+  border-radius: 4px; text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+}
+.cta-main:hover { background: #1a3a0a; transform: translateY(-3px); }
+.cta-sub {
+  display: block; margin-top: 20px;
+  font-size: 13px; color: var(--green-mid);
+}
+.cta-sub a { color: var(--green-deep); text-decoration: underline; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { padding: 0 40px 60px; }
+  .hero-left { padding: 80px 40px 40px; }
+  .why-grid, .support-grid { grid-template-columns: 1fr 1fr; }
+  .model-grid, .roi-grid { grid-template-columns: 1fr; }
+  .section { padding: 60px 24px; }
+}
+@media (max-width: 600px) {
+  .why-grid, .support-grid, .hero-metrics { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-left">
+    <div class="hero-label">Franchise Opportunities</div>
+    <h1>Start Your<br><em>Cane Journey</em></h1>
+    <p class="hero-sub">Join the UK's fastest-growing fresh juice revolution. Bring the live-pressed cane experience to your city with our proven franchise model and full brand support.</p>
+    <div>
+      <a href="#contact" class="hero-cta">Enquire Now →</a>
+      <a href="#process" class="hero-cta-ghost">How It Works</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-metrics">
+      <div class="hm-card reveal">
+        <div class="hm-num">£0</div>
+        <div class="hm-label">Added Sugar. Ever.</div>
+      </div>
+      <div class="hm-card reveal">
+        <div class="hm-num">6+</div>
+        <div class="hm-label">Cities & Growing</div>
+      </div>
+      <div class="hm-card reveal">
+        <div class="hm-num">30%</div>
+        <div class="hm-label">Avg. Gross Margin</div>
+      </div>
+      <div class="hm-card reveal">
+        <div class="hm-num">Full</div>
+        <div class="hm-label">Brand Support</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ WHY INVEST ═══════ -->
+<section class="section why-section">
+  <div class="inner">
+    <div class="tag">Why Invest</div>
+    <h2 class="title">The <em>Opportunity</em> Is Now</h2>
+    <div class="why-intro">
+      <p>The wellness beverage market is booming. Consumers are abandoning artificial drinks for something real, honest, and freshly made. The Cane House sits at the perfect intersection of health, premium experience, and cultural resonance.</p>
+    </div>
+    <div class="why-grid">
+      <div class="wi-card reveal">
+        <div class="wi-icon">📈</div>
+        <h3>Growing Market</h3>
+        <p>The UK health drinks market is growing at 8% annually. Live-pressed juice is at the premium end of a rapidly expanding category.</p>
+      </div>
+      <div class="wi-card reveal">
+        <div class="wi-icon">🌍</div>
+        <h3>Cultural Moment</h3>
+        <p>Sugarcane juice resonates across South Asian, African, Caribbean, and Latin communities — and is rapidly crossing mainstream. Your market is vast.</p>
+      </div>
+      <div class="wi-card reveal">
+        <div class="wi-icon">💰</div>
+        <h3>Low Overhead</h3>
+        <p>Compact setup, minimal equipment, simple supply chain. The Cane House model is designed for profitability from day one with lean operational costs.</p>
+      </div>
+      <div class="wi-card reveal">
+        <div class="wi-icon">🏆</div>
+        <h3>Proven Brand</h3>
+        <p>You are not starting from scratch. You get an established brand, loyal customer base, and a reputation built on real quality — not marketing.</p>
+      </div>
+      <div class="wi-card reveal">
+        <div class="wi-icon">🤝</div>
+        <h3>Full Support System</h3>
+        <p>From setup to staffing to marketing, our franchise support team walks with you at every step. You are never alone in this journey.</p>
+      </div>
+      <div class="wi-card reveal">
+        <div class="wi-icon">🌱</div>
+        <h3>Ethical Business</h3>
+        <p>Sell something you genuinely believe in. Natural, pure, sustainable — The Cane House lets you build wealth by doing good.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ BUSINESS MODEL ═══════ -->
+<section class="section model-section">
+  <div class="inner">
+    <div class="tag">Business Model</div>
+    <h2 class="title">Simple. <em>Scalable.</em> Profitable.</h2>
+    <div class="model-grid">
+      <div class="model-items">
+        <div class="mi-item reveal">
+          <div class="mi-num">01</div>
+          <div class="mi-text">
+            <h4>Market Stall / Kiosk</h4>
+            <p>The entry-level format. Low cost, high visibility. Perfect for markets, high streets, and events. Ideal for first-time franchise owners.</p>
+          </div>
+        </div>
+        <div class="mi-item reveal">
+          <div class="mi-num">02</div>
+          <div class="mi-text">
+            <h4>Fixed Counter / Shop</h4>
+            <p>A permanent retail presence in a high-footfall location. Consistent revenue, stronger brand visibility, and deeper customer relationships.</p>
+          </div>
+        </div>
+        <div class="mi-item reveal">
+          <div class="mi-num">03</div>
+          <div class="mi-text">
+            <h4>Event Hire Services</h4>
+            <p>Weddings, corporate events, festivals. A highly profitable revenue stream that complements your fixed location — often with premium margins.</p>
+          </div>
+        </div>
+        <div class="mi-item reveal">
+          <div class="mi-num">04</div>
+          <div class="mi-text">
+            <h4>Multi-Unit Expansion</h4>
+            <p>Once you have proven your first location, expand within your territory. We support multi-unit operators with additional resources and training.</p>
+          </div>
+        </div>
+      </div>
+      <div class="model-visual reveal">
+        <div class="mv-row">
+          <span class="mv-label">Franchise Fee</span>
+          <span class="mv-val">On Application</span>
+        </div>
+        <div class="mv-row">
+          <span class="mv-label">Setup Investment</span>
+          <span class="mv-val">Flexible Tiers</span>
+        </div>
+        <div class="mv-row">
+          <span class="mv-label">Gross Margins</span>
+          <span class="mv-val">25–35%</span>
+        </div>
+        <div class="mv-row">
+          <span class="mv-label">Training Duration</span>
+          <span class="mv-val">2–4 Weeks</span>
+        </div>
+        <div class="mv-row">
+          <span class="mv-label">Supply Chain</span>
+          <span class="mv-val">Centralised</span>
+        </div>
+        <div class="mv-row">
+          <span class="mv-label">Marketing Support</span>
+          <span class="mv-val">Ongoing</span>
+        </div>
+        <div class="mv-row">
+          <span class="mv-label">Break-Even Target</span>
+          <span class="mv-val">6–12 Months</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ SUPPORT ═══════ -->
+<section class="section support-section">
+  <div class="inner">
+    <div class="tag">Brand Support</div>
+    <h2 class="title">You're Never <em>Alone</em></h2>
+    <div class="support-grid">
+      <div class="sg-card reveal">
+        <div class="sg-num">01</div>
+        <div class="sg-icon">📍</div>
+        <h3>Location Setup</h3>
+        <p>We help you identify, evaluate, and set up the ideal location. From market research to fit-out guidance — your launch starts right.</p>
+      </div>
+      <div class="sg-card reveal">
+        <div class="sg-num">02</div>
+        <div class="sg-icon">👩‍🍳</div>
+        <h3>Staff Training</h3>
+        <p>Full operational training for you and your team. Pressing technique, hygiene protocols, customer experience, upselling — all covered.</p>
+      </div>
+      <div class="sg-card reveal">
+        <div class="sg-num">03</div>
+        <div class="sg-icon">🌾</div>
+        <h3>Raw Material Supply</h3>
+        <p>Centralised sourcing ensures you get fresh, quality-checked cane at competitive prices. No supply headaches — we handle the chain.</p>
+      </div>
+      <div class="sg-card reveal">
+        <div class="sg-num">04</div>
+        <div class="sg-icon">🎨</div>
+        <h3>Branding Kit</h3>
+        <p>Full brand assets — signage, packaging, social media templates, menu boards, uniforms. You open looking premium from day one.</p>
+      </div>
+      <div class="sg-card reveal">
+        <div class="sg-num">05</div>
+        <div class="sg-icon">💻</div>
+        <h3>POS System</h3>
+        <p>Integrated point-of-sale system configured for our menu. Real-time sales tracking, inventory management, and daily reporting built in.</p>
+      </div>
+      <div class="sg-card reveal">
+        <div class="sg-num">06</div>
+        <div class="sg-icon">📣</div>
+        <h3>Marketing Campaigns</h3>
+        <p>National brand campaigns, local area marketing support, seasonal promotions, and social media content — all provided by HQ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ ROI ═══════ -->
+<section class="section roi-section">
+  <div class="inner">
+    <div class="tag">ROI Expectations</div>
+    <h2 class="title">Transparent<br><em>Revenue Potential</em></h2>
+    <div class="roi-grid">
+      <div class="roi-card reveal">
+        <div class="roi-header">
+          <h3>Market Stall / Kiosk</h3>
+          <p>Entry level · Low capital</p>
+        </div>
+        <div class="roi-body">
+          <div class="roi-metric">
+            <span class="rm-label">Avg. Daily Customers</span>
+            <span class="rm-val">80–150</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Avg. Spend Per Customer</span>
+            <span class="rm-val">£6–8</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Daily Revenue Potential</span>
+            <span class="rm-val highlight">£480–£1,200</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Monthly Revenue (Est.)</span>
+            <span class="rm-val">£10k–£25k</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Break-Even Target</span>
+            <span class="rm-val">6–9 Months</span>
+          </div>
+        </div>
+      </div>
+      <div class="roi-card reveal">
+        <div class="roi-header">
+          <h3>Fixed Counter / Shop</h3>
+          <p>Permanent location · Higher volume</p>
+        </div>
+        <div class="roi-body">
+          <div class="roi-metric">
+            <span class="rm-label">Avg. Daily Customers</span>
+            <span class="rm-val">150–300</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Avg. Spend Per Customer</span>
+            <span class="rm-val">£7–10</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Daily Revenue Potential</span>
+            <span class="rm-val highlight">£1,000–£3,000</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Monthly Revenue (Est.)</span>
+            <span class="rm-val">£22k–£55k</span>
+          </div>
+          <div class="roi-metric">
+            <span class="rm-label">Break-Even Target</span>
+            <span class="rm-val">9–12 Months</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:12px;color:var(--text-muted);text-align:center">* Figures are indicative estimates based on existing locations. Actual results vary by location, season, and execution.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ PROCESS ═══════ -->
+<section class="section process-section" id="process">
+  <div class="inner">
+    <div class="tag">Franchise Process</div>
+    <h2 class="title">Your <em>Journey</em> to Launch</h2>
+    <div class="franchise-steps">
+      <div class="fs-item reveal">
+        <div class="fs-left">
+          <div class="fs-dot">🙋</div>
+          <div class="fs-line"></div>
+        </div>
+        <div class="fs-content">
+          <div class="fs-step-num">Step 01</div>
+          <h3>Initial Enquiry</h3>
+          <p>Fill out our franchise enquiry form or call us directly. Tell us about yourself, your city, and your vision. No obligations at this stage — just a conversation.</p>
+        </div>
+      </div>
+      <div class="fs-item reveal">
+        <div class="fs-left">
+          <div class="fs-dot">📞</div>
+          <div class="fs-line"></div>
+        </div>
+        <div class="fs-content">
+          <div class="fs-step-num">Step 02</div>
+          <h3>Discovery Call</h3>
+          <p>We schedule a call with our franchise team to discuss the opportunity in detail. We answer all your questions and share the full franchise prospectus.</p>
+        </div>
+      </div>
+      <div class="fs-item reveal">
+        <div class="fs-left">
+          <div class="fs-dot">📍</div>
+          <div class="fs-line"></div>
+        </div>
+        <div class="fs-content">
+          <div class="fs-step-num">Step 03</div>
+          <h3>Location Assessment</h3>
+          <p>Together we evaluate potential locations in your city. We provide market data, footfall analysis, and viability guidance to ensure the right fit.</p>
+        </div>
+      </div>
+      <div class="fs-item reveal">
+        <div class="fs-left">
+          <div class="fs-dot">✍️</div>
+          <div class="fs-line"></div>
+        </div>
+        <div class="fs-content">
+          <div class="fs-step-num">Step 04</div>
+          <h3>Agreement & Onboarding</h3>
+          <p>Franchise agreement signed. Welcome to The Cane House family. Onboarding begins — brand kit dispatched, equipment ordered, training scheduled.</p>
+        </div>
+      </div>
+      <div class="fs-item reveal">
+        <div class="fs-left">
+          <div class="fs-dot">🎓</div>
+          <div class="fs-line"></div>
+        </div>
+        <div class="fs-content">
+          <div class="fs-step-num">Step 05</div>
+          <h3>Training Programme</h3>
+          <p>2–4 weeks of hands-on training covering pressing, hygiene, operations, customer service, and local marketing. You finish ready and confident.</p>
+        </div>
+      </div>
+      <div class="fs-item reveal">
+        <div class="fs-left">
+          <div class="fs-dot">🥂</div>
+          <div class="fs-line"></div>
+        </div>
+        <div class="fs-content">
+          <div class="fs-step-num">Step 06</div>
+          <h3>Grand Opening</h3>
+          <p>Launch day support from our team. We help you make a splash in your local area with a marketing push, social media support, and on-the-ground assistance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ CTA ═══════ -->
+<section class="cta-section" id="contact">
+  <div class="inner">
+    <h2>Ready to <em>Start Your</em><br>Cane Journey?</h2>
+    <p>Join our growing network of franchise partners across the UK. The freshness revolution is expanding — and your city could be next.</p>
+    <a href="tel:+447887699208" class="cta-main">📞 Call Us: +44 7887 699 208</a>
+    <span class="cta-sub">Or email us at <a href="mailto:franchise@thecanehouse.co.uk">franchise@thecanehouse.co.uk</a> · No obligation initial consultation</span>
+  </div>
+</section>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

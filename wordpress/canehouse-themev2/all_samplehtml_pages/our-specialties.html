@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Specialties – The Cane House</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #2d5a1b;
+  --green-mid: #4a8c2a;
+  --green-bright: #6abf3a;
+  --green-light: #a8d96e;
+  --green-pale: #d8f0b0;
+  --green-bg: #eef8e0;
+  --lime: #c8e830;
+  --lime-dark: #9bb800;
+  --yellow: #f5e642;
+  --white: #fdfff8;
+  --text: #1e3a0e;
+  --text-muted: #6a8c50;
+  --shadow: rgba(45,90,27,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--green-bg);
+  padding: 120px 60px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-deco {
+  position: absolute; right: -80px; top: -80px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,232,48,0.15) 0%, transparent 70%);
+}
+.hero-deco2 {
+  position: absolute; left: -40px; bottom: -60px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(106,191,58,0.1) 0%, transparent 70%);
+}
+.hero-inner { max-width: 900px; position: relative; z-index: 1; }
+.hero-tag {
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--text-muted); display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--text-muted); }
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 300; line-height: 1.0; color: var(--green-deep);
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+.hero h1 em { font-style: italic; color: var(--green-mid); }
+.hero p {
+  font-size: 18px; line-height: 1.7; color: var(--text-muted); font-weight: 300;
+  max-width: 580px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+/* ── FILTERS ── */
+.filter-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--green-pale);
+  padding: 24px 60px;
+  display: flex; gap: 12px; flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.filter-btn {
+  padding: 10px 24px; border-radius: 30px;
+  border: 1px solid var(--green-pale);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; color: var(--text-muted);
+  cursor: pointer; transition: all 0.25s;
+  letter-spacing: 0.5px;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--green-deep); color: var(--lime);
+  border-color: var(--green-deep);
+}
+
+/* ── SPECIALTIES GRID ── */
+.specialties-section { padding: 80px 40px; background: var(--white); }
+.inner { max-width: 1200px; margin: 0 auto; }
+
+.spec-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+}
+
+.spec-card {
+  border-radius: 4px; overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s;
+  box-shadow: 0 4px 24px var(--shadow);
+}
+.spec-card:hover { transform: translateY(-10px); box-shadow: 0 24px 60px var(--shadow); }
+
+.spec-card-visual {
+  height: 260px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.spec-card-visual .glass-emoji { font-size: 80px; position: relative; z-index: 2; transition: transform 0.4s; }
+.spec-card:hover .glass-emoji { transform: scale(1.1) rotate(-5deg); }
+
+/* Each card has its own gradient */
+.card-classic .spec-card-visual { background: linear-gradient(145deg, #3a7a1a, #2d5a1b); }
+.card-mint .spec-card-visual { background: linear-gradient(145deg, #1a6a3a, #0d4a2a); }
+.card-ginger .spec-card-visual { background: linear-gradient(145deg, #7a4a1a, #5a3010); }
+.card-tropical .spec-card-visual { background: linear-gradient(145deg, #1a5a7a, #0d3a5a); }
+.card-coconut .spec-card-visual { background: linear-gradient(145deg, #4a7a5a, #2a5a3a); }
+.card-detox .spec-card-visual { background: linear-gradient(145deg, #5a7a1a, #3a5a0a); }
+.card-energy .spec-card-visual { background: linear-gradient(145deg, #7a5a1a, #5a3a0a); }
+
+.spec-card-visual::before {
+  content: ''; position: absolute; inset: 0;
+  background: inherit; filter: brightness(0.7);
+  transition: filter 0.4s;
+}
+.spec-card:hover .spec-card-visual::before { filter: brightness(0.55); }
+
+/* Liquid shine effect */
+.spec-card-visual::after {
+  content: ''; position: absolute; top: -50%; left: -50%;
+  width: 60%; height: 200%;
+  background: linear-gradient(to bottom right, rgba(255,255,255,0.08), transparent);
+  transform: rotate(25deg);
+  transition: transform 0.6s ease;
+}
+.spec-card:hover .spec-card-visual::after { transform: rotate(25deg) translateX(200%); }
+
+.spec-badge {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--lime); color: var(--green-deep);
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+  z-index: 3;
+}
+
+.spec-card-body {
+  background: var(--white); padding: 32px 28px;
+  border-top: none;
+}
+.spec-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; color: var(--green-deep); margin-bottom: 6px;
+}
+.spec-tagline {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 14px;
+}
+.spec-desc { font-size: 14px; line-height: 1.65; color: var(--text-muted); margin-bottom: 20px; }
+
+.spec-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.spec-tag {
+  padding: 5px 12px; border-radius: 20px;
+  background: var(--green-bg); font-size: 11px; color: var(--text-muted);
+}
+
+.spec-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: var(--green-deep); font-weight: 600;
+  margin-top: 18px;
+}
+.spec-price small { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 300; color: var(--text-muted); }
+
+/* ── FEATURED CARD ── */
+.spec-card.featured .spec-card-body {
+  border-bottom: 3px solid var(--lime);
+}
+
+/* ── PROCESS SECTION ── */
+.process-section { background: var(--green-deep); padding: 100px 40px; }
+.process-section .tag {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(200,232,48,0.6); display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.process-section .tag::before { content: ''; width: 28px; height: 1px; background: rgba(200,232,48,0.4); }
+.process-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 56px); font-weight: 300; color: var(--white); margin-bottom: 60px;
+}
+.process-section h2 em { font-style: italic; color: var(--lime); }
+
+.process-steps {
+  display: flex; gap: 0; position: relative;
+}
+.process-steps::before {
+  content: ''; position: absolute; top: 28px; left: 5%; right: 5%;
+  height: 1px; background: rgba(200,232,48,0.15);
+}
+.ps-item { flex: 1; text-align: center; padding: 0 20px; }
+.ps-num {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(200,232,48,0.1); border: 1px solid rgba(200,232,48,0.25);
+  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: var(--lime);
+  position: relative; z-index: 1;
+  transition: background 0.3s;
+}
+.ps-item:hover .ps-num { background: rgba(200,232,48,0.2); }
+.ps-item h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--white); margin-bottom: 8px; }
+.ps-item p { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.45); }
+
+/* ── CTA BAND ── */
+.cta-band {
+  background: var(--lime); padding: 80px 40px; text-align: center;
+}
+.cta-band h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 64px); font-weight: 300; color: var(--green-deep);
+  margin-bottom: 16px;
+}
+.cta-band p { font-size: 17px; color: var(--green-mid); margin-bottom: 36px; }
+.cta-btn {
+  display: inline-block; padding: 18px 48px;
+  background: var(--green-deep); color: var(--lime);
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase; text-decoration: none;
+  border-radius: 4px; transition: background 0.3s, transform 0.2s;
+}
+.cta-btn:hover { background: #1a3a0a; transform: translateY(-2px); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  .spec-grid { grid-template-columns: 1fr 1fr; }
+  .filter-bar { padding: 20px 24px; }
+  .hero { padding: 80px 28px 60px; }
+  .process-steps { flex-direction: column; gap: 32px; }
+  .process-steps::before { display: none; }
+}
+@media (max-width: 600px) {
+  .spec-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-deco"></div>
+  <div class="hero-deco2"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Our Specialties</div>
+    <h1>Crafted for<br>Every <em>Craving</em></h1>
+    <p>Seven signature cane blends, each one pressed live and crafted with real botanicals. From our timeless Classic to our bold Tropical Fusion — your perfect glass awaits.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ FILTERS ═══════ -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">All Blends</button>
+  <button class="filter-btn" data-filter="classic">Classic</button>
+  <button class="filter-btn" data-filter="citrus">Citrus</button>
+  <button class="filter-btn" data-filter="tropical">Tropical</button>
+  <button class="filter-btn" data-filter="wellness">Wellness</button>
+</div>
+
+<!-- ═══════════════════════════════════════ GRID ═══════ -->
+<section class="specialties-section">
+  <div class="inner">
+    <div class="spec-grid">
+
+      <!-- CLASSIC CANE -->
+      <div class="spec-card card-classic featured reveal" data-category="classic">
+        <div class="spec-card-visual">
+          <span class="spec-badge">Bestseller</span>
+          <span class="glass-emoji">🥤</span>
+        </div>
+        <div class="spec-card-body">
+          <div class="spec-name">Classic Cane</div>
+          <div class="spec-tagline">Pure · Unadulterated · Timeless</div>
+          <p class="spec-desc">The one that started it all. Yellow cane pressed pure with nothing added — just the natural golden sweetness that has refreshed people for over 2,000 years.</p>
+          <div class="spec-tags">
+            <span class="spec-tag">Yellow Cane</span>
+            <span class="spec-tag">Pure</span>
+            <span class="spec-tag">No Add-ons</span>
+          </div>
+          <div class="spec-price">From £4.00 <small>· 250ml–1.5L</small></div>
+        </div>
+      </div>
+
+      <!-- MINT LIME CANE -->
+      <div class="spec-card card-mint reveal" data-category="citrus">
+        <div class="spec-card-visual">
+          <span class="spec-badge">Fan Favourite</span>
+          <span class="glass-emoji">🌿</span>
+        </div>
+        <div class="spec-card-body">
+          <div class="spec-name">Mint Lime Cane</div>
+          <div class="spec-tagline">Cool · Bright · Refreshing</div>
+          <p class="spec-desc">Fresh mint leaves and cold-pressed lemon meet pure cane juice in this endlessly refreshing summer classic. The taste of a tropical afternoon in every sip.</p>
+          <div class="spec-tags">
+            <span class="spec-tag">Fresh Mint</span>
+            <span class="spec-tag">Real Lemon</span>
+            <span class="spec-tag">Citrus Blend</span>
+          </div>
+          <div class="spec-price">From £4.50 <small>· +£0.50 add-on</small></div>
+        </div>
+      </div>
+
+      <!-- GINGER TWIST -->
+      <div class="spec-card card-ginger reveal" data-category="citrus">
+        <div class="spec-card-visual">
+          <span class="glass-emoji">🫚</span>
+        </div>
+        <div class="spec-card-body">
+          <div class="spec-name">Ginger Twist</div>
+          <div class="spec-tagline">Warming · Bold · Digestive</div>
+          <p class="spec-desc">Whole ginger root pressed with pure cane creates a warming, fiery depth that energises and aids digestion. Beloved across generations for good reason.</p>
+          <div class="spec-tags">
+            <span class="spec-tag">Whole Ginger</span>
+            <span class="spec-tag">Digestive</span>
+            <span class="spec-tag">Bold Flavour</span>
+          </div>
+          <div class="spec-price">From £4.50 <small>· +£0.50 add-on</small></div>
+        </div>
+      </div>
+
+      <!-- TROPICAL FUSION -->
+      <div class="spec-card card-tropical reveal" data-category="tropical">
+        <div class="spec-card-visual">
+          <span class="spec-badge">Premium</span>
+          <span class="glass-emoji">🍍</span>
+        </div>
+        <div class="spec-card-body">
+          <div class="spec-name">Tropical Fusion</div>
+          <div class="spec-tagline">Exotic · Vibrant · Layered</div>
+          <p class="spec-desc">Cold-pressed pineapple juice blended into live cane creates an exotic, tropical experience unlike anything else. A flavour journey from field to coast.</p>
+          <div class="spec-tags">
+            <span class="spec-tag">Pineapple</span>
+            <span class="spec-tag">Tropical</span>
+            <span class="spec-tag">Cold-Pressed</span>
+          </div>
+          <div class="spec-price">From £5.00 <small>· +£1.00 blend</small></div>
+        </div>
+      </div>
+
+      <!-- COCONUT CANE -->
+      <div class="spec-card card-coconut reveal" data-category="tropical">
+        <div class="spec-card-visual">
+          <span class="glass-emoji">🥥</span>
+        </div>
+        <div class="spec-card-body">
+          <div class="spec-name">Coconut Cane</div>
+          <div class="spec-tagline">Creamy · Tropical · Indulgent</div>
+          <p class="spec-desc">The richness of coconut water meets the crispness of live-pressed cane. Smooth, hydrating, and irresistibly tropical — this is luxury refreshment.</p>
+          <div class="spec-tags">
+            <span class="spec-tag">Coconut Water</span>
+            <span class="spec-tag">Creamy</span>
+            <span class="spec-tag">Hydrating</span>
+          </div>
+          <div class="spec-price">From £5.00 <small>· +£1.00 blend</small></div>
+        </div>
+      </div>
+
+      <!-- DETOX BLEND -->
+      <div class="spec-card card-detox reveal" data-category="wellness">
+        <div class="spec-card-visual">
+          <span class="spec-badge">Wellness</span>
+          <span class="glass-emoji">🌱</span>
+        </div>
+        <div class="spec-card-body">
+          <div class="spec-name">Detox Blend</div>
+          <div class="spec-tagline">Cleansing · Light · Reviving</div>
+          <p class="spec-desc">Mint, lemon, and a whisper of ginger in pure cane — designed to refresh, cleanse, and revive. The antidote to every heavy meal and long day.</p>
+          <div class="spec-tags">
+            <span class="spec-tag">Detoxifying</span>
+            <span class="spec-tag">Mint + Lemon + Ginger</span>
+            <span class="spec-tag">Light</span>
+          </div>
+          <div class="spec-price">From £4.50 <small>· Citrus Blend</small></div>
+        </div>
+      </div>
+
+      <!-- ENERGY BOOSTER -->
+      <div class="spec-card card-energy reveal" data-category="wellness">
+        <div class="spec-card-visual">
+          <span class="spec-badge">Power Up</span>
+          <span class="glass-emoji">⚡</span>
+        </div>
+        <div class="spec-card-body">
+          <div class="spec-name">Energy Booster</div>
+          <div class="spec-tagline">Powerful · Invigorating · Natural</div>
+          <p class="spec-desc">Red cane pressed with ginger and lemon — maximum natural energy, no artificial stimulants. This is what your body was designed to drink.</p>
+          <div class="spec-tags">
+            <span class="spec-tag">Red Cane</span>
+            <span class="spec-tag">Ginger + Lemon</span>
+            <span class="spec-tag">High Energy</span>
+          </div>
+          <div class="spec-price">From £5.00 <small>· Red Cane + Blend</small></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ PROCESS ═══════ -->
+<section class="process-section">
+  <div class="inner">
+    <div class="tag">How Every Blend is Made</div>
+    <h2>Pressed <em>Live</em>, Every Time</h2>
+    <div class="process-steps">
+      <div class="ps-item reveal">
+        <div class="ps-num">01</div>
+        <h3>Fresh Cane Selection</h3>
+        <p>Each stalk inspected and selected for optimal sugar content and freshness.</p>
+      </div>
+      <div class="ps-item reveal">
+        <div class="ps-num">02</div>
+        <h3>Live Press</h3>
+        <p>Pressed at the point of order — your juice begins the moment you choose.</p>
+      </div>
+      <div class="ps-item reveal">
+        <div class="ps-num">03</div>
+        <h3>Botanicals Added</h3>
+        <p>Real mint, whole ginger, fresh lemon or cold-pressed fruit — never artificial.</p>
+      </div>
+      <div class="ps-item reveal">
+        <div class="ps-num">04</div>
+        <h3>Naturally Chilled</h3>
+        <p>Served at the perfect temperature — cool enough to refresh, pure enough to taste.</p>
+      </div>
+      <div class="ps-item reveal">
+        <div class="ps-num">05</div>
+        <h3>Served to You</h3>
+        <p>Presented with pride in premium cups — fresh, natural, extraordinary.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ CTA ═══════ -->
+<div class="cta-band">
+  <h2>Build Your Perfect Glass</h2>
+  <p>Choose your size, cane type, texture, and flavour. Your cane, your way.</p>
+  <a href="#" class="cta-btn">Build Your Juice →</a>
+</div>
+
+<script>
+// Filter functionality
+const btns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.spec-card');
+
+btns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    cards.forEach(card => {
+      const cat = card.dataset.category;
+      if (filter === 'all' || cat === filter) {
+        card.style.display = 'block';
+        setTimeout(() => card.style.opacity = '1', 10);
+      } else {
+        card.style.opacity = '0';
+        setTimeout(() => card.style.display = 'none', 300);
+      }
+    });
+  });
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

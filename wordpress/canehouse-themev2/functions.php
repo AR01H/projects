@@ -49,8 +49,9 @@ function canehouse_enqueue()
         null
     );
     // Main CSS
-    wp_enqueue_style('ch-main', get_template_directory_uri() . '/assets/css/main.css', array(), '2.0');
-    wp_enqueue_style('ch-style', get_stylesheet_uri(), array(), '2.0');
+    wp_enqueue_style('ch-variables', get_template_directory_uri() . '/assets/css/variables.css', array(), '2.0');
+    wp_enqueue_style('ch-main', get_template_directory_uri() . '/assets/css/main.css', array('ch-variables'), '2.0');
+    wp_enqueue_style('ch-style', get_stylesheet_uri(), array('ch-main', 'ch-variables'), '2.0');
     // Main JS
     wp_enqueue_script(
         'ch-script',
@@ -143,6 +144,50 @@ function ch_get_page_url_by_title($title)
     }
     return '#';
 }
+
+function custom_theme_routes(){
+
+    $routenames = [];
+    $routenames[] = 'about';
+    $routenames[] = 'contact';
+    $routenames[] = 'why-sugarcane';
+    $routenames[] = 'reviews-gallery';
+    $routenames[] = 'contact-us';
+    $routenames[] = 'our-specialties';
+    $routenames[] = 'franchise-events';
+    $routenames[] = 'cane-experience';
+    $routenames[] = 'events';
+
+    foreach ($routenames as $route) {
+        add_rewrite_rule(
+            '^' . $route . '/?$',
+            'index.php?custom_page=' . $route,
+            'top'
+        );
+    }
+}
+
+add_action('init', 'custom_theme_routes');
+
+function custom_query_vars($vars){
+    $vars[] = 'custom_page';
+    return $vars;
+}
+
+add_filter('query_vars', 'custom_query_vars');
+
+function custom_template($template){
+    $page = get_query_var('custom_page');
+    if ($page) {
+        $file = get_template_directory() . '/pages/' . $page . '.php';
+        if (file_exists($file)) {
+            return $file;
+        }
+    }
+    return $template;
+}
+
+add_filter('template_include', 'custom_template');
 
 // ── REMOVE WP DEFAULT ADMIN BAR ON FRONTEND ──────────────────────────────────
 add_filter('show_admin_bar', '__return_false');

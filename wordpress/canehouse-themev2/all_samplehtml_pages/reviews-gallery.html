@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews – The Cane House</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #2d5a1b;
+  --green-mid: #4a8c2a;
+  --green-bright: #6abf3a;
+  --green-light: #a8d96e;
+  --green-pale: #d8f0b0;
+  --green-bg: #eef8e0;
+  --lime: #c8e830;
+  --lime-dark: #9bb800;
+  --yellow: #f5e642;
+  --white: #fdfff8;
+  --text: #1e3a0e;
+  --text-muted: #6a8c50;
+  --shadow: rgba(45,90,27,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--green-deep);
+  padding: 120px 60px 80px;
+  position: relative; overflow: hidden;
+}
+.hero::after {
+  content: '★★★★★'; position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+  font-size: 80px; color: rgba(200,232,48,0.07); letter-spacing: 10px; line-height: 1;
+}
+.hero-label { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: rgba(200,232,48,0.6); display: flex; align-items: center; gap: 12px; margin-bottom: 24px; animation: fadeUp 0.8s ease both; }
+.hero-label::before { content: ''; width: 30px; height: 1px; background: rgba(200,232,48,0.5); }
+.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 8vw, 92px); font-weight: 300; line-height: 1.0; color: var(--white); margin-bottom: 20px; animation: fadeUp 0.8s 0.15s ease both; }
+.hero h1 em { font-style: italic; color: var(--lime); }
+.hero p { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.55); font-weight: 300; max-width: 520px; animation: fadeUp 0.8s 0.3s ease both; }
+
+/* ── HELPERS ── */
+.section { padding: 100px 40px; }
+.inner { max-width: 1200px; margin: 0 auto; }
+.tag { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.tag::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+h2.title { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 5vw, 60px); font-weight: 300; color: var(--green-deep); margin-bottom: 16px; line-height: 1.1; }
+h2.title em { font-style: italic; color: var(--green-mid); }
+
+/* ── RATING STRIP ── */
+.rating-strip { background: var(--lime); display: flex; justify-content: center; gap: 0; flex-wrap: wrap; }
+.rs-item { flex: 1; min-width: 180px; padding: 32px 20px; text-align: center; border-right: 1px solid rgba(45,90,27,0.15); }
+.rs-item:last-child { border-right: none; }
+.rs-num { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 600; color: var(--green-deep); line-height: 1; }
+.rs-stars { color: var(--green-deep); font-size: 14px; margin: 4px 0; }
+.rs-label { font-size: 11px; letter-spacing: 1px; color: var(--green-mid); }
+
+/* ── TESTIMONIALS SLIDER ── */
+.testimonials-section { background: var(--white); }
+.slider-wrap { position: relative; overflow: hidden; margin-top: 60px; }
+.slider-track { display: flex; gap: 28px; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+.tcard {
+  flex: 0 0 calc(33.33% - 19px); min-width: 0;
+  background: var(--green-bg); border-radius: 4px;
+  padding: 44px 36px;
+  border-top: 3px solid var(--lime);
+  position: relative;
+}
+.tcard .quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 80px; color: var(--lime); line-height: 0.8;
+  margin-bottom: 16px; display: block;
+}
+.tcard .review-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-style: italic; line-height: 1.55;
+  color: var(--green-deep); margin-bottom: 24px;
+}
+.tcard .reviewer {
+  display: flex; align-items: center; gap: 14px;
+}
+.tcard .reviewer-img {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--green-light); overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.tcard .reviewer-img img { width: 100%; height: 100%; object-fit: cover; }
+.tcard .reviewer-name { font-weight: 500; font-size: 14px; color: var(--green-deep); }
+.tcard .reviewer-type { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
+.tcard .stars { color: var(--lime-dark); font-size: 13px; margin-bottom: 4px; }
+
+.slider-controls { display: flex; gap: 12px; margin-top: 36px; }
+.slider-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--green-deep); color: var(--lime); border: none;
+  font-size: 20px; cursor: pointer; transition: background 0.3s, transform 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.slider-btn:hover { background: var(--green-mid); transform: scale(1.05); }
+.slider-dots { display: flex; gap: 8px; align-items: center; margin-left: 8px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-pale); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+.dot.active { background: var(--green-deep); transform: scale(1.3); }
+
+/* ── FLOATING CARDS SECTION ── */
+.community-section { background: var(--green-deep); padding: 100px 40px; }
+.community-section .tag { color: rgba(200,232,48,0.6); }
+.community-section .tag::before { background: rgba(200,232,48,0.4); }
+.community-section h2.title { color: var(--white); }
+.community-section h2.title em { color: var(--lime); }
+
+.community-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 60px; }
+.cg-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(200,232,48,0.1); border-radius: 4px;
+  padding: 28px 24px;
+  transition: background 0.3s, transform 0.3s, border-color 0.3s;
+  animation: float 4s ease-in-out infinite alternate;
+}
+.cg-card:nth-child(2) { animation-delay: 0.5s; }
+.cg-card:nth-child(3) { animation-delay: 1s; }
+.cg-card:nth-child(4) { animation-delay: 1.5s; }
+.cg-card:hover { background: rgba(200,232,48,0.07); border-color: rgba(200,232,48,0.2); transform: translateY(-6px); }
+@keyframes float { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+.cg-emoji { font-size: 28px; margin-bottom: 12px; }
+.cg-quote { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 16px; }
+.cg-name { font-size: 12px; color: var(--lime); letter-spacing: 1px; }
+.cg-stars { font-size: 11px; color: rgba(200,232,48,0.6); margin-bottom: 6px; }
+
+/* ── GALLERY ── */
+.gallery-section { background: var(--green-bg); }
+.gallery-tabs { display: flex; gap: 0; margin-top: 40px; border-bottom: 1px solid var(--green-pale); }
+.gtab {
+  padding: 14px 28px; cursor: pointer; font-size: 13px;
+  color: var(--text-muted); border-bottom: 2px solid transparent;
+  transition: color 0.3s, border-color 0.3s; letter-spacing: 0.5px;
+}
+.gtab:hover { color: var(--green-deep); }
+.gtab.active { color: var(--green-deep); border-bottom-color: var(--lime); font-weight: 500; }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 12px; margin-top: 32px;
+}
+.gallery-item {
+  border-radius: 4px; overflow: hidden;
+  position: relative; cursor: pointer;
+  background: var(--green-pale);
+}
+.gallery-item.wide { grid-column: span 2; }
+.gallery-item.tall { grid-row: span 2; }
+.gallery-item .gi-inner {
+  width: 100%; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+  transition: transform 0.4s ease;
+  position: relative; overflow: hidden;
+}
+.gallery-item.wide .gi-inner { aspect-ratio: 2; }
+.gallery-item.tall .gi-inner { aspect-ratio: 0.5; }
+.gallery-item:hover .gi-inner { transform: scale(1.05); }
+.gi-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(45,90,27,0.7), transparent);
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; align-items: flex-end; padding: 20px;
+}
+.gallery-item:hover .gi-overlay { opacity: 1; }
+.gi-overlay span { font-size: 12px; color: var(--white); letter-spacing: 1px; text-transform: uppercase; }
+
+/* Gallery backgrounds */
+.gi-drinks { background: linear-gradient(145deg, #1a6a2a, #2d5a1b); }
+.gi-interiors { background: linear-gradient(145deg, #2a3a6a, #1a2a4a); }
+.gi-customers { background: linear-gradient(145deg, #4a6a2a, #2d5a1b); }
+.gi-events { background: linear-gradient(145deg, #6a3a2a, #4a1a0a); }
+.gi-counter { background: linear-gradient(145deg, #2a5a4a, #1a3a2a); }
+.gi-franchise { background: linear-gradient(145deg, #5a4a2a, #3a2a0a); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  .tcard { flex: 0 0 calc(50% - 14px); }
+  .community-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
+  .hero { padding: 80px 28px 60px; }
+  .section { padding: 60px 24px; }
+}
+@media (max-width: 600px) {
+  .tcard { flex: 0 0 calc(100% - 0px); }
+  .community-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .rating-strip { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-label">Reviews & Community</div>
+  <h1>Real People,<br><em>Real Freshness</em></h1>
+  <p>Thousands of happy sips, hundreds of five-star moments. Here's what our community has to say about The Cane House.</p>
+</section>
+
+<!-- ═══════════════════════════════════════ RATING STRIP ═══════ -->
+<div class="rating-strip">
+  <div class="rs-item">
+    <div class="rs-num">4.9</div>
+    <div class="rs-stars">★★★★★</div>
+    <div class="rs-label">Google Rating</div>
+  </div>
+  <div class="rs-item">
+    <div class="rs-num">500+</div>
+    <div class="rs-stars">★★★★★</div>
+    <div class="rs-label">Reviews</div>
+  </div>
+  <div class="rs-item">
+    <div class="rs-num">98%</div>
+    <div class="rs-stars">✓ ✓ ✓</div>
+    <div class="rs-label">Would Recommend</div>
+  </div>
+  <div class="rs-item">
+    <div class="rs-num">2k+</div>
+    <div class="rs-stars">♥ ♥ ♥</div>
+    <div class="rs-label">Community Members</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TESTIMONIALS SLIDER ═══════ -->
+<section class="section testimonials-section">
+  <div class="inner">
+    <div class="tag">Customer Stories</div>
+    <h2 class="title">Words That <em>Warm</em> Us</h2>
+    <div class="slider-wrap">
+      <div class="slider-track" id="sliderTrack">
+
+        <div class="tcard">
+          <span class="quote-mark">"</span>
+          <p class="review-text">The freshest cane juice I have ever had in the UK. The ginger blend is absolutely life-changing. Reminds me of home — proper, real juice pressed right in front of you.</p>
+          <div class="reviewer">
+            <div class="reviewer-img"><img src="https://i.pravatar.cc/100?u=1" alt="Sarah"></div>
+            <div>
+              <div class="stars">★★★★★</div>
+              <div class="reviewer-name">Sarah Johnson</div>
+              <div class="reviewer-type">Verified Customer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <span class="quote-mark">"</span>
+          <p class="review-text">We hired The Cane House for our wedding and it was the absolute highlight! Every guest loved watching the live pressing. So unique, so refreshing. 10 out of 10.</p>
+          <div class="reviewer">
+            <div class="reviewer-img"><img src="https://i.pravatar.cc/100?u=5" alt="Emma"></div>
+            <div>
+              <div class="stars">★★★★★</div>
+              <div class="reviewer-name">Emma Wright</div>
+              <div class="reviewer-type">Wedding Client</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <span class="quote-mark">"</span>
+          <p class="review-text">No added sugar but so naturally sweet and refreshing. You can taste the difference immediately — no chemicals, no syrups, just pure cane. My whole family are now regulars.</p>
+          <div class="reviewer">
+            <div class="reviewer-img"><img src="https://i.pravatar.cc/100?u=2" alt="Mohammed"></div>
+            <div>
+              <div class="stars">★★★★★</div>
+              <div class="reviewer-name">Mohammed Ali</div>
+              <div class="reviewer-type">Regular Customer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <span class="quote-mark">"</span>
+          <p class="review-text">Hired them for our company wellness day. The team were professional, friendly, and the juice was incredible. Our employees are still talking about it three months later.</p>
+          <div class="reviewer">
+            <div class="reviewer-img"><img src="https://i.pravatar.cc/100?u=8" alt="Priya"></div>
+            <div>
+              <div class="stars">★★★★★</div>
+              <div class="reviewer-name">Priya Sharma</div>
+              <div class="reviewer-type">Corporate Event</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <span class="quote-mark">"</span>
+          <p class="review-text">The Tropical Fusion is something else. You close your eyes and you are in Barbados. Nothing else in the UK comes close to this level of freshness and authenticity.</p>
+          <div class="reviewer">
+            <div class="reviewer-img"><img src="https://i.pravatar.cc/100?u=12" alt="James"></div>
+            <div>
+              <div class="stars">★★★★★</div>
+              <div class="reviewer-name">James Okafor</div>
+              <div class="reviewer-type">Verified Customer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <span class="quote-mark">"</span>
+          <p class="review-text">As a nutritionist, I am so picky about what I recommend. The Cane House is one of the only drinks brands I tell my clients about without hesitation. Pure, clean, real.</p>
+          <div class="reviewer">
+            <div class="reviewer-img"><img src="https://i.pravatar.cc/100?u=20" alt="Dr Aisha"></div>
+            <div>
+              <div class="stars">★★★★★</div>
+              <div class="reviewer-name">Dr Aisha Patel</div>
+              <div class="reviewer-type">Nutritionist</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button class="slider-btn" id="prevBtn">←</button>
+      <button class="slider-btn" id="nextBtn">→</button>
+      <div class="slider-dots" id="sliderDots">
+        <div class="dot active" data-idx="0"></div>
+        <div class="dot" data-idx="1"></div>
+        <div class="dot" data-idx="2"></div>
+        <div class="dot" data-idx="3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ COMMUNITY LOVE ═══════ -->
+<section class="community-section">
+  <div class="inner">
+    <div class="tag">Community Love</div>
+    <h2 class="title">The <em>Cane House</em> Effect</h2>
+    <div class="community-grid">
+      <div class="cg-card reveal">
+        <div class="cg-emoji">💚</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">Can't start my morning without a Classic Cane now. It's my daily ritual.</div>
+        <div class="cg-name">@caneaddicted</div>
+      </div>
+      <div class="cg-card reveal">
+        <div class="cg-emoji">🌿</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">Best post-workout drink I've ever had. Natural energy, no junk. Perfect.</div>
+        <div class="cg-name">@fitlife.uk</div>
+      </div>
+      <div class="cg-card reveal">
+        <div class="cg-emoji">🎉</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">They did our Mehndi night and it was spectacular. Everyone loved it.</div>
+        <div class="cg-name">@bridetobe2024</div>
+      </div>
+      <div class="cg-card reveal">
+        <div class="cg-emoji">⚡</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">Replaced my afternoon coffee with Ginger Twist. No looking back ever.</div>
+        <div class="cg-name">@wellness_always</div>
+      </div>
+      <div class="cg-card reveal">
+        <div class="cg-emoji">🌾</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">Took my mum. She cried. Said it tasted exactly like back home. Amazing.</div>
+        <div class="cg-name">@diaspora.diaries</div>
+      </div>
+      <div class="cg-card reveal">
+        <div class="cg-emoji">🏆</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">The live pressing experience is unlike anything else. It's theatre and refreshment in one.</div>
+        <div class="cg-name">@foodie_adventures</div>
+      </div>
+      <div class="cg-card reveal">
+        <div class="cg-emoji">💧</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">Mint Lime Cane on a hot summer day. Honestly nothing better exists on earth.</div>
+        <div class="cg-name">@summervibes.uk</div>
+      </div>
+      <div class="cg-card reveal">
+        <div class="cg-emoji">🤝</div>
+        <div class="cg-stars">★★★★★</div>
+        <div class="cg-quote">Franchise enquiry was handled so professionally. Excited to open my own location!</div>
+        <div class="cg-name">@nextfranchisee</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ GALLERY ═══════ -->
+<section class="section gallery-section">
+  <div class="inner">
+    <div class="tag">Gallery</div>
+    <h2 class="title">A Feast for <em>the Eyes</em></h2>
+    <div class="gallery-tabs">
+      <div class="gtab active" data-gallery="all">All</div>
+      <div class="gtab" data-gallery="drinks">Drinks</div>
+      <div class="gtab" data-gallery="interiors">Interiors</div>
+      <div class="gtab" data-gallery="customers">Customers</div>
+      <div class="gtab" data-gallery="events">Events</div>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item wide" data-type="drinks">
+        <div class="gi-inner gi-drinks">🥤</div>
+        <div class="gi-overlay"><span>Classic Cane · Live Pressed</span></div>
+      </div>
+      <div class="gallery-item" data-type="interiors">
+        <div class="gi-inner gi-interiors">🏪</div>
+        <div class="gi-overlay"><span>Our Counter</span></div>
+      </div>
+      <div class="gallery-item" data-type="customers">
+        <div class="gi-inner gi-customers">😊</div>
+        <div class="gi-overlay"><span>Happy Customers</span></div>
+      </div>
+      <div class="gallery-item" data-type="drinks">
+        <div class="gi-inner gi-drinks">🌿</div>
+        <div class="gi-overlay"><span>Mint Lime Cane</span></div>
+      </div>
+      <div class="gallery-item tall" data-type="events">
+        <div class="gi-inner gi-events">🎊</div>
+        <div class="gi-overlay"><span>Wedding Service</span></div>
+      </div>
+      <div class="gallery-item" data-type="interiors">
+        <div class="gi-inner gi-counter">⚙️</div>
+        <div class="gi-overlay"><span>Live Pressing Counter</span></div>
+      </div>
+      <div class="gallery-item" data-type="drinks">
+        <div class="gi-inner gi-drinks">🍍</div>
+        <div class="gi-overlay"><span>Tropical Fusion</span></div>
+      </div>
+      <div class="gallery-item" data-type="events">
+        <div class="gi-inner gi-franchise">🌾</div>
+        <div class="gi-overlay"><span>Festival Setup</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Slider
+let currentSlide = 0;
+const track = document.getElementById('sliderTrack');
+const cards = track.querySelectorAll('.tcard');
+const dots = document.querySelectorAll('.dot');
+let cardsPerView = window.innerWidth < 600 ? 1 : window.innerWidth < 900 ? 2 : 3;
+const maxSlide = Math.ceil(cards.length / cardsPerView) - 1;
+
+function goToSlide(idx) {
+  idx = Math.max(0, Math.min(idx, maxSlide));
+  currentSlide = idx;
+  const cardWidth = cards[0].offsetWidth + 28;
+  track.style.transform = `translateX(-${currentSlide * cardsPerView * cardWidth}px)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+}
+
+document.getElementById('nextBtn').addEventListener('click', () => goToSlide(currentSlide + 1));
+document.getElementById('prevBtn').addEventListener('click', () => goToSlide(currentSlide - 1));
+dots.forEach(d => d.addEventListener('click', () => goToSlide(+d.dataset.idx)));
+
+// Gallery tabs
+document.querySelectorAll('.gtab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.gtab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const filter = tab.dataset.gallery;
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      const show = filter === 'all' || item.dataset.type === filter;
+      item.style.opacity = show ? '1' : '0.2';
+      item.style.pointerEvents = show ? 'auto' : 'none';
+    });
+  });
+});
+
+// Reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
