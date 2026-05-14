@@ -1,0 +1,30 @@
+.button {
+    font-family: var(--font-body);
+    cursor: pointer;
+    border-radius: var(--r-sm);
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, var(--client-color-700) 0%, var(--client-color-800) 100%);
+    color: #fff;
+    box-shadow: var(--shadow-xs);
+    padding: 10px 20px;
+    font-size: 0.82rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 600;
+    line-height: 1;
+    border-radius: var(--r-full);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, gap 0.22s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.button:hover{
+    background: linear-gradient(135deg, var(--client-color-800) 0%, var(--client-color-700) 100%);
+    box-shadow: var(--shadow-sm);
+}

@@ -52,6 +52,14 @@ function canehouse_enqueue()
     wp_enqueue_style('ch-variables', get_template_directory_uri() . '/assets/css/variables.css', array(), '2.0');
     wp_enqueue_style('ch-main', get_template_directory_uri() . '/assets/css/main.css', array('ch-variables'), '2.0');
     wp_enqueue_style('ch-style', get_stylesheet_uri(), array('ch-main', 'ch-variables'), '2.0');
+
+    // New inner pages CSS
+    wp_enqueue_style(
+        'ch-shared',
+        get_template_directory_uri() . '/assets/css/cane-shared.css',
+        array('ch-variables'),
+        '1.0'
+    );
     // Main JS
     wp_enqueue_script(
         'ch-script',
@@ -105,6 +113,11 @@ require_once get_template_directory() . '/inc/site-settings.php';
 require_once get_template_directory() . '/inc/content-manager.php';
 require_once get_template_directory() . '/inc/contact-leads.php';
 require_once get_template_directory() . '/inc/legal-pages.php';
+// require_once get_template_directory() . '/inc/cleanup.php';
+// require_once get_template_directory() . '/inc/cpts.php';
+// require_once get_template_directory() . '/inc/acf-fields.php';
+// require_once get_template_directory() . '/inc/admin-theme.php';
+// require_once get_template_directory() . '/inc/login-page.php';
 
 
 // ── 6. ANNOUNCEMENT BAR CSS ───────────────────────────────────────────────────
@@ -157,6 +170,7 @@ function custom_theme_routes(){
     $routenames[] = 'franchise-events';
     $routenames[] = 'cane-experience';
     $routenames[] = 'events';
+    $routenames[] = 'franchise';
 
     foreach ($routenames as $route) {
         add_rewrite_rule(

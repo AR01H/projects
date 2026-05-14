@@ -1,0 +1,142 @@
+:root {
+    --primary: #1e293b;
+    --accent: #ca8a04;
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --border: #e2e8f0;
+    --text: #334155;
+    --text-muted: #64748b;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --info: #2563eb;
+}
+
+.ah-admin-wrap {
+    margin: 20px 20px 0 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+}
+
+.ah-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+}
+
+.ah-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.ah-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--primary);
+}
+
+/* Stats Cards */
+.ah-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.ah-stat-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.ah-stat-card:hover { transform: translateY(-3px); }
+
+.ah-stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.ah-stat-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Custom Table */
+.ah-table-wrap {
+    overflow-x: auto;
+}
+
+.ah-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.ah-table th {
+    background: var(--bg-light);
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border);
+}
+
+.ah-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+
+/* Badges */
+.ah-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.ah-badge-new { background: #fee2e2; color: #991b1b; }
+.ah-badge-done { background: #dcfce7; color: #166534; }
+
+/* Tabs */
+.ah-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.ah-tab {
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.ah-tab:hover { background: var(--bg-light); color: var(--primary); }
+.ah-tab.active { background: var(--primary); color: var(--white); }
+
+/* Form Elements */
+.ah-field-group { margin-bottom: 20px; }
+.ah-label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px; }
+.ah-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; }
