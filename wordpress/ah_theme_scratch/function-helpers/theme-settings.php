@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
 
 function ah_theme_add_admin_menu() {
     $parent = 'advaith-homes';
-    add_menu_page('Advaith Homes', 'Advaith Homes', 'manage_options', $parent, 'ah_dashboard_view', 'dashicons-admin-home', 3);
+    add_menu_page('Advaith Homes Control', 'Advaith Homes Control', 'manage_options', $parent, 'ah_dashboard_view', 'dashicons-admin-home', 3);
     add_submenu_page($parent, 'Portal Dashboard', 'Dashboard Hub', 'manage_options', $parent, 'ah_dashboard_view');
     add_submenu_page($parent, 'Articles Portal',  'Content Hub',  'manage_options', 'ah-articles', 'ah_articles_portal_view');
     add_submenu_page($parent, 'Navigation Portal', 'Menu Navigator', 'manage_options', 'ah-navigation', 'ah_navigation_view');
