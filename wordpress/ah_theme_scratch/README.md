@@ -1,70 +1,57 @@
-# 🏗️ Advaith Homes — Elite WordPress Theme Engine
-> **A High-Performance Content Command Center for Premium Real Estate.**
+# Advaith Homes: Elite Admin Portal & Page Builder
 
-This theme is a custom-built, enterprise-grade WordPress engine designed for the UK's leading buyer agency. It combines **MoveIQ-style aesthetics** with a unique **2-Way Administration** system.
+A premium, data-driven administrative infrastructure for WordPress, designed to manage high-fidelity property portals, dynamic articles, and complex navigation systems with zero coding requirement.
 
----
+## 🚀 Key Features
 
-## 🚀 1. Core Mission
-To provide a seamless, non-destructive administrative experience where every visual element (Logos, Menus, Cards, Styles) is **100% manageable** from the dashboard without touching code.
+### 1. Unified Portal Dashboard
+- **Centralized Hub**: A single "Advaith Homes" admin menu that consolidates all platform management.
+- **Card-Based Interface**: A high-fidelity grid dashboard that provides instant access to all content departments (Articles, Projects, Leads, etc.).
+- **System Status**: Real-time indicators and professional branding throughout the backend.
 
----
+### 2. Infinite Visual Page Builder
+- **JSON-Driven Core**: Every detail page is powered by a structured JSON object, ensuring consistency and performance.
+- **Visual Admin Interface**: A form-based builder that automatically generates JSON in real-time.
+- **Premium Components**: Native support for:
+  - **Hero & Banner**: With native WordPress Image Upload support.
+  - **Comparison Tables**: A visual checkbox-driven builder for service tiers and feature lists.
+  - **Process Timelines**: Automated rendering of step-by-step methodologies.
+  - **Nested Repeaters**: Manage complex lists like "Phases", "Stats", "FAQs", and "Testimonials" effortlessly.
 
-## 🛠️ 2. The Content Command Center
-Located at **Advaith Homes → Manage Articles**. This is the heart of the site.
+### 3. Menu Navigator (Mega Menu)
+- **Visual Nav Builder**: Manage the high-fidelity Mega Menu dropdowns directly from the admin.
+- **Detailed Items**: Support for icons, primary titles, and descriptive subtitles for every menu link.
+- **Column Management**: Group links into logical columns (e.g., "Market Trends", "Buyer Guides").
 
-### Key Features:
-- **AJAX-Powered Editing:** Save changes instantly without page reloads.
-- **Media Library Integration:** Change featured images directly within the Quick-Edit popup.
-- **Style Switcher:** Toggle between **Standard Blog**, **Podcast/Rich Card**, and **Mini Hint** styles.
-- **Tag Branding:** Set custom text and hex-colors for badges on the fly.
+### 4. Command Center
+- **Tabular Overviews**: Dedicated management views for all custom post types.
+- **SQL Reporting**: Integrated tool for running custom SQL queries and visualizing results directly in the dashboard.
 
----
+## 📁 Directory Structure
 
-## 📂 3. End-to-End Data Flow
+```
+/ah_theme_scratch/
+├── /function-helpers/
+│   ├── cpt.php             # Custom Post Type & Taxonomy registrations
+│   ├── meta-boxes.php      # The Infinite Visual Builder logic & UI
+│   ├── helpers.php         # Frontend rendering logic for JSON components
+│   ├── theme-settings.php  # Admin Dashboard & Menu Navigator logic
+│   └── ajax-handlers.php   # Backend processing for reports and portals
+├── /database/
+│   └── seeder.php          # Sample data & "Feature Showcase" pre-fills
+└── functions.php           # Main theme bootstrap
+```
 
-### A. The Journey of a Podcast Card
-1. **Input:** Admin uses the Command Center to select "Podcast" style.
-2. **Database:** `update_post_meta` saves to `wp_postmeta` (Key: `ah_card_style`).
-3. **Logic:** The `podcasts.php` component runs a query for that style.
-4. **Render:** The front-end generates a rich card with icons, episode IDs, and custom buttons.
+## 🛠️ Technology Stack
+- **Backend**: WordPress (PHP 8+).
+- **Architecture**: Modular "Function Helper" pattern to keep `functions.php` clean and scalable.
+- **Data Storage**: Native WP Metadata + JSON Objects for complex page structures.
+- **Admin UI**: Vanilla CSS + jQuery for real-time form-to-JSON synchronization.
 
-### B. The Mega Menu Flow
-1. **Input:** Admin types `🔍 | Buying | Find a Home | /buying` in Site Settings.
-2. **Logic:** `nav-menu.php` fetches the `ah_mega_menu_json` option and parses it.
-3. **Render:** A premium 3-column mega-menu with icons appears in the header.
-
----
-
-## 📊 4. Database Schema
-
-| Table | Usage | Primary Keys / Meta Keys |
-|---|---|---|
-| `wp_options` | Global Branding | `ah_site_logo`, `ah_contact_phone`, `ah_mega_menu_json` |
-| `wp_posts` | Core Content | Types: `post`, `property`, `service`, `inquiry` |
-| `wp_postmeta` | Card Styling | `ah_card_style`, `ah_tag_text`, `ah_tag_color`, `ah_mini_info` |
-
----
-
-## 🛡️ 5. Security & Integrity
-- **Nonces:** Every AJAX request is protected by a security nonce (`ah_admin_nonce`).
-- **Permissions:** Admin pages are restricted via `manage_options` capability checks.
-- **Validation:** Data is sanitized (e.g., `sanitize_hex_color`, `sanitize_text_field`) before saving.
-
----
-
-## 🎨 6. Style & Design Principles
-- **Aesthetic:** Clean "MoveIQ" white-space, bold typography, and soft shadows.
-- **Variables:** Global CSS variables are defined in `main.css` for easy site-wide changes.
-- **Modular:** All front-end sections are stored in `/pages/components/` for easy reuse.
+## 📖 How to Use
+1. **Initialize Data**: Run the `ah_theme_seed_proper_data` function (via the Seeder) to populate the portal with sample articles and the "Feature Showcase".
+2. **Build a Page**: Go to any Article or Project, expand the **"🧩 Visual Page Builder"** section, and fill out the forms. Watch the JSON sync in real-time at the bottom.
+3. **Manage Navigation**: Use the **"Menu Navigator"** to build out the high-fidelity dropdowns seen on the frontend.
 
 ---
-
-## 📋 7. Admin "How-To" Summary
-- **Add News:** Create a post, set type to "News". It appears on the `/news` page.
-- **Add a Guide:** Add a line to the "Buying Hub Manager" in Site Settings.
-- **Track Leads:** Check the "Dashboard" for live counters or "All Messages" for deep details.
-
----
-
-**Developed for Advaith Homes — Your Dedicated Buyer's Agent.**
+*Developed by Antigravity for Advaith Homes.*
