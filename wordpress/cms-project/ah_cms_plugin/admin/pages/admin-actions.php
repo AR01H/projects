@@ -24,7 +24,7 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 			<div class="ah-action-icon" style="background:#f0fdf4;">
 				<span class="dashicons dashicons-trash" style="color:#16a34a;"></span>
 			</div>
-			<h3>Clear Transients</h3>
+			<h3>Clear Cache</h3>
 			<p>Delete all WordPress transient cache entries from the database. Useful when stale cached data causes issues.</p>
 			<button class="ah-btn ah-btn-primary ah-action-btn" data-action="ah_clear_transients">Run</button>
 			<div class="ah-action-result"></div>

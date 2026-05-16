@@ -23,6 +23,46 @@ class AH_DB_Installer {
 		if ( get_option( AH_DB_VERSION_KEY ) !== AH_THEME_VERSION ) {
 			self::install();
 		}
+		self::ensure_builder_table();
+		self::ensure_required_settings();
+	}
+
+	public static function ensure_builder_table(): void {
+		global $wpdb;
+		$p  = $wpdb->prefix;
+		$cs = $wpdb->get_charset_collate();
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS {$p}ah_builder_pages (
+				id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				title            VARCHAR(255) NOT NULL,
+				slug             VARCHAR(280) NOT NULL UNIQUE,
+				blocks           LONGTEXT DEFAULT NULL,
+				status           ENUM('active','draft') DEFAULT 'draft',
+				meta_title       VARCHAR(255),
+				meta_description TEXT,
+				created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				KEY idx_slug (slug), KEY idx_status (status)
+			) ENGINE=InnoDB {$cs}"
+		);
+	}
+
+	public static function ensure_required_settings(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_site_settings';
+		$required = array(
+			array( 'setting_key' => 'phone',            'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'Phone'            ),
+			array( 'setting_key' => 'whatsapp',         'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'WhatsApp'         ),
+			array( 'setting_key' => 'email',            'setting_val' => '', 'field_type' => 'email',    'group_name' => 'contact', 'label' => 'Email'            ),
+			array( 'setting_key' => 'address',          'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'contact', 'label' => 'Address'          ),
+			array( 'setting_key' => 'consultation_url', 'setting_val' => '', 'field_type' => 'url',      'group_name' => 'contact', 'label' => 'Consultation URL' ),
+			array( 'setting_key' => 'youtube_url',      'setting_val' => '', 'field_type' => 'url',      'group_name' => 'social',  'label' => 'YouTube URL'      ),
+		);
+		foreach ( $required as $s ) {
+			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE setting_key = %s", $s['setting_key'] ) ) ) {
+				$wpdb->insert( $table, $s );
+			}
+		}
 	}
 
 	// ----------------------------------------------------------------

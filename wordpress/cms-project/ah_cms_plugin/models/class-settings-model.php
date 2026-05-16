@@ -27,7 +27,7 @@ class AH_Settings_Model extends AH_Model_Base {
 		$table = $this->table();
 		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE setting_key = %s", $key ) );
 		if ( $exists ) {
-			return (bool) $wpdb->update( $table, array( 'setting_val' => $value, 'updated_by' => get_current_user_id() ?: null ), array( 'setting_key' => $key ) );
+			return (bool) $wpdb->update( $table, array( 'setting_val' => $value ), array( 'setting_key' => $key ) );
 		}
 		return (bool) $wpdb->insert( $table, array( 'setting_key' => $key, 'setting_val' => $value ) );
 	}

@@ -83,6 +83,9 @@ class AH_Admin_Menus {
 		// Sub: File Links
 		add_submenu_page( 'ah-dashboard', __( 'File Links', 'ah-theme' ), __( 'File Links', 'ah-theme' ), self::$cap, 'ah-file-links', array( self::class, 'page_file_links' ) );
 
+		// Sub: Page Builder
+		add_submenu_page( 'ah-dashboard', __( 'Page Builder', 'ah-theme' ), __( 'Page Builder', 'ah-theme' ), self::$cap, 'ah-page-builder', array( self::class, 'page_builder' ) );
+
 		// Sub: Form Builder
 		add_submenu_page( 'ah-dashboard', __( 'Form Builder', 'ah-theme' ), __( 'Form Builder', 'ah-theme' ), self::$cap, 'ah-form-builder', array( self::class, 'page_form_builder' ) );
 
@@ -126,6 +129,7 @@ class AH_Admin_Menus {
 	public static function page_audit()          { self::load( 'audit-log'      ); }
 	public static function page_import()         { self::load( 'import'         ); }
 	public static function page_file_links()     { self::load( 'file-links'     ); }
+	public static function page_builder()         { self::load( 'page-builder'    ); }
 	public static function page_form_builder()   { self::load( 'form-builder'   ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }

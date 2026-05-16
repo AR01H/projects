@@ -54,3 +54,23 @@ add_action( 'wp_enqueue_scripts', static function () {
 // ── Database ─────────────────────────────────────────────────────────────────
 register_activation_hook( __FILE__, array( 'AH_DB_Installer', 'install' ) );
 add_action( 'wp_loaded', array( 'AH_DB_Installer', 'maybe_upgrade' ) );
+
+// ── Builder page frontend routing ─────────────────────────────────────────────
+add_action( 'template_redirect', static function () {
+	if ( ! is_404() ) return;
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_builder_pages';
+	$home_path    = trim( (string) parse_url( home_url(), PHP_URL_PATH ), '/' );
+	$request_path = trim( (string) parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+	if ( $home_path !== '' && strpos( $request_path, $home_path ) === 0 ) {
+		$request_path = ltrim( substr( $request_path, strlen( $home_path ) ), '/' );
+	}
+	$slug = sanitize_title( trim( $request_path, '/' ) );
+	if ( ! $slug ) return;
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$page = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE slug = %s AND status = 'active'", $slug ) );
+	if ( ! $page ) return;
+	$GLOBALS['ah_builder_page'] = $page;
+	include AH_PLUGIN_DIR . '/templates/template-builder-page.php';
+	exit;
+} );
