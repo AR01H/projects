@@ -136,8 +136,11 @@ class AH_Ajax_Handlers {
 
 		global $wpdb;
 		$full_table = AH_DB_Helper::table( $model );
-		foreach ( $order as $position => $id ) {
-			$wpdb->update( $full_table, array( 'sort_order' => (int) $position ), array( 'id' => (int) $id ), array( '%d' ), array( '%d' ) );
+		foreach ( $order as $item ) {
+			$item_id  = (int) ( $item['id']    ?? 0 );
+			$item_ord = (int) ( $item['order'] ?? 0 );
+			if ( ! $item_id ) continue;
+			$wpdb->update( $full_table, array( 'sort_order' => $item_ord ), array( 'id' => $item_id ), array( '%d' ), array( '%d' ) );
 		}
 
 		wp_send_json_success( array( 'updated' => count( $order ) ) );

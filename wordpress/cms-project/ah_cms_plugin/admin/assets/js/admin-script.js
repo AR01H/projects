@@ -101,10 +101,11 @@
   // Image / Media picker (WP Media Library)
   // ----------------------------------------------------------------
   var mediaFrame;
+  var currentPicker;
 
   function ahPickerSetImage($picker, id, url) {
     $picker.find('.ah-image-id').val(id);
-    $picker.find('.ah-image-preview').attr('src', url).addClass('visible');
+    $picker.find('.ah-image-preview').attr('src', url).addClass('visible').css('display', 'block');
     $picker.find('.ah-image-placeholder').hide();
     $picker.addClass('has-image');
     $picker.find('.ah-pick-image').text('Change Image');
@@ -112,7 +113,7 @@
 
   function ahPickerClearImage($picker) {
     $picker.find('.ah-image-id').val(0);
-    $picker.find('.ah-image-preview').removeClass('visible').attr('src', '');
+    $picker.find('.ah-image-preview').removeClass('visible').css('display', '').attr('src', '');
     $picker.find('.ah-image-placeholder').show();
     $picker.removeClass('has-image');
     $picker.find('.ah-pick-image').text('Choose Image');
@@ -135,6 +136,7 @@
       }
 
       if ($preview.hasClass('visible') && $preview.attr('src')) {
+        $preview.css('display', 'block');
         $picker.addClass('has-image');
         $picker.find('.ah-image-placeholder').hide();
         $picker.find('.ah-pick-image').text('Change Image');
@@ -144,30 +146,40 @@
 
   $(document).on('click', '.ah-pick-image, .ah-image-placeholder', function (e) {
     e.preventDefault();
-    var $picker = $(this).closest('.ah-image-picker');
-    var $input  = $picker.find('.ah-image-id');
+    currentPicker = $(this).closest('.ah-image-picker');
 
     if (mediaFrame) {
       mediaFrame.open();
       return;
     }
 
-    mediaFrame = wp.media({
+    // Capture in a local variable so the 'select' handler always has a valid
+    // frame reference. 'mediaFrame' is nulled by 'close' (which fires before
+    // 'select' in WP), and 'this' inside 'select' is the Selection Collection
+    // (not the Frame), so neither works — only the closure variable is safe.
+    var frame = wp.media({
       title: 'Select Image',
       button: { text: 'Use this image' },
       multiple: false,
       library: { type: 'image' }
     });
+    mediaFrame = frame;
 
-    mediaFrame.on('select', function () {
-      var attach = mediaFrame.state().get('selection').first().toJSON();
-      ahPickerSetImage($picker, attach.id, attach.url);
+    frame.on('select', function () {
+      var selection = frame.state().get('selection');
+      var model     = selection ? selection.first() : null;
+      if ( ! model ) return;
+      var attach = model.toJSON();
+      var url = ( attach.sizes && attach.sizes.large  && attach.sizes.large.url  )
+             || ( attach.sizes && attach.sizes.medium && attach.sizes.medium.url )
+             || attach.url || '';
+      if ( ! url ) return;
+      ahPickerSetImage(currentPicker, attach.id, url);
     });
 
-    mediaFrame.open();
+    frame.open();
 
-    // Reset frame when closed so different pickers get independent frames
-    mediaFrame.on('close', function () { mediaFrame = null; });
+    frame.on('close', function () { mediaFrame = null; });
   });
 
   $(document).on('click', '.ah-remove-image', function (e) {

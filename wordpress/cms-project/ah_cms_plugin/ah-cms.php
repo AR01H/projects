@@ -3,14 +3,14 @@
  * Plugin Name:  AH CMS
  * Description:  CMS engine — admin portal, database, models, helpers, and form builder.
  *               Install as a plugin and pair with any frontend theme that reads wp_ah_* tables.
- * Version:      1.0.0
+ * Version:      1.0.2
  * Author:       Akhilesh Ravuri
  * Text Domain:  ah-theme
  */
 defined( 'ABSPATH' ) || exit;
 
 // ── Constants ────────────────────────────────────────────────────────────────
-define( 'AH_PLUGIN_VERSION', '1.0.0' );
+define( 'AH_PLUGIN_VERSION', '1.0.2' );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
 
 // plugin_dir_path() has a trailing slash; strip it so paths match the existing
@@ -27,6 +27,9 @@ define( 'AH_THEME_VERSION', AH_PLUGIN_VERSION );
 // ── Autoloader ───────────────────────────────────────────────────────────────
 require_once AH_PLUGIN_DIR . '/inc/class-autoloader.php';
 AH_Autoloader::register();
+
+// ── Components ───────────────────────────────────────────────────────────────
+require_once AH_PLUGIN_DIR . '/components/toaster/index.php';
 
 // ── Admin portal ─────────────────────────────────────────────────────────────
 if ( is_admin() ) {

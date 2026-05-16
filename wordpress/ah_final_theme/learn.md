@@ -1,6 +1,6 @@
 # learn.md — Advith Homes CMS: Complete Developer Reference
 <!-- Living document — append new sections as the project grows. -->
-<!-- Last updated: 2026-05-15 — Session 3 -->
+<!-- Last updated: 2026-05-16 — Session 5 -->
 
 ---
 
@@ -25,6 +25,12 @@
 17. [Full DB Table List](#17-full-db-table-list)
 18. [File Links System](#18-file-links-system)
 19. [Dynamic Form Builder System](#19-dynamic-form-builder-system)
+20. [Admin Actions System](#20-admin-actions-system)
+21. [Static HTML Pages System](#21-static-html-pages-system)
+22. [Plugin Mode & Deployment](#22-plugin-mode--deployment)
+23. [Page Builder System](#23-page-builder-system)
+24. [Native WP Content — Pages & Posts](#24-native-wp-content--pages--posts)
+25. [FK Pitfalls & DB Migrations](#25-fk-pitfalls--db-migrations)
 
 ---
 
@@ -91,11 +97,16 @@ hooks into `wp_loaded` and re-runs the installer when the stored version is stal
 ```
 ah_final_theme/
 │
-├── functions.php                      Bootstrap: constants, autoloader, init hooks
+├── ah-cms.php                         WordPress plugin main file (Plugin Name: AH CMS)
+├── functions.php                      Dual-mode bootstrap (plugin active vs standalone)
 ├── style.css                          WP theme header (Theme Name, Version, Author)
 ├── index.php                          WP fallback template (required)
+├── template-contact.php               Page template: Contact Page (AJAX form + sidebar)
+├── template-static-page.php           Page template: Static HTML Page (iframe isolation)
+├── static/                            Raw .html files served by template-static-page.php
 ├── .brain.md                          AI project memory file (append-only)
 ├── learn.md                           This file — developer reference
+├── deploy.md                          Deployment + companion theme building guide
 ├── Design.md                          Visual / UX design reference
 │
 ├── database/
@@ -137,16 +148,16 @@ ah_final_theme/
 └── admin/
     ├── class-admin-bootstrap.php      Hooks: admin_menu, assets, AJAX
     ├── menus/
-    │   └── class-admin-menus.php      19 submenus + page callbacks
+    │   └── class-admin-menus.php      23 submenus + page callbacks
     ├── ajax/
-    │   └── class-ajax-handlers.php    9 AJAX actions
+    │   └── class-ajax-handlers.php    16 admin AJAX actions + 2 public
     ├── import/
     │   ├── class-csv-importer.php     CSV parser + 7 typed import methods
     │   └── samples/                   One .csv sample file per import type
     ├── assets/
     │   ├── css/admin-style.css        Admin component CSS library
     │   └── js/admin-script.js         Status toggle, sort, delete, media, repeater
-    └── pages/                         21 admin page templates (thin views)
+    └── pages/                         23 admin page templates (thin views)
         ├── dashboard.php
         ├── settings.php
         ├── nav-menus.php
@@ -167,7 +178,9 @@ ah_final_theme/
         ├── audit-log.php
         ├── import.php
         ├── file-links.php
-        └── form-builder.php           Dynamic Form Builder admin UI
+        ├── form-builder.php           Dynamic Form Builder admin UI
+        ├── admin-actions.php          Utility action cards (flush, clear, health check)
+        └── static-pages.php           Static HTML page editor + file manager
 ```
 
 ---
@@ -563,6 +576,14 @@ public static function handle_toggle_status(): void {
 | `ah_mark_submission` | `handle_mark_submission` | Update contact submission status |
 | `ah_save_nav_item` | `handle_save_nav_item` | Add / update nav menu item |
 | `ah_delete_nav_item` | `handle_delete_nav_item` | Delete nav menu item |
+| `ah_flush_rewrites` | `handle_flush_rewrites` | `flush_rewrite_rules(true)` |
+| `ah_clear_transients` | `handle_clear_transients` | Delete all `_transient_*` from wp_options |
+| `ah_load_demo_data` | `handle_load_demo_data` | Run CSV importer on all 7 sample files |
+| `ah_clear_audit_log` | `handle_clear_audit_log` | `TRUNCATE wp_ah_audit_logs` |
+| `ah_db_health_check` | `handle_db_health_check` | `SHOW TABLES LIKE` check on all required tables |
+| `ah_clear_form_submissions` | `handle_clear_form_submissions` | Delete all form submission rows |
+| `ah_save_static_page` | `handle_save_static_page` | Write `static/{slug}.html` + create WP page |
+| `ah_rebuild_schema` | `handle_rebuild_schema` | Drop ALL `wp_ah_*` tables + reinstall schema (double-confirm gated) |
 
 **Public** (registered in `init_public()`, called in `functions.php` outside `is_admin()` — available to all visitors):
 
@@ -784,19 +805,28 @@ All components live in `admin/assets/css/admin-style.css`.
 
 ```html
 <div class="ah-image-picker">
-  <img src="<?= esc_url($url) ?>" class="ah-image-preview <?= $url ? 'visible' : '' ?>"
-       alt="" style="width:100%;height:120px;object-fit:cover;">
+  <!-- img.ah-image-preview — hidden until .visible class added -->
+  <img src="<?= esc_url($url) ?>" class="ah-image-preview <?= $url ? 'visible' : '' ?>" alt="">
   <div class="ah-image-picker-btns">
     <input type="hidden" class="ah-image-id" name="image_id" value="<?= (int)$id ?>">
     <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>
-    <button type="button" class="ah-btn ah-btn-sm ah-remove-image"
-            style="color:var(--ah-danger);">Remove</button>
+    <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
   </div>
 </div>
 ```
 
-JS wires `.ah-pick-image` to the WP Media Library frame automatically.
-`.ah-image-preview.visible` shows the image; without `.visible` it is hidden.
+**Behaviour (Session 5 — fully automatic, zero PHP changes needed):**
+
+| State | What the picker shows |
+|---|---|
+| No image | Dashed placeholder box "Click to choose image" — clicking opens WP Media Library; Remove button hidden |
+| Image selected / edit with existing image | Full-width image preview above buttons; button says "Change Image"; Remove button visible |
+| After Remove clicked | Clears preview, shows placeholder, button reverts to "Choose Image" |
+
+The JS auto-detects existing images on page load via `img.ah-image-preview.visible`.
+The `.ah-image-picker` element gets class `has-image` when an image is set — CSS uses this to show/hide Remove.
+
+**Image ID storage:** Always stores **WP attachment IDs** (from `wp.media`). Resolve URLs at render time with `wp_get_attachment_image_url((int) $row->reviewer_image_id, 'medium')` — never `$media_m->get_url()` which queries the custom `ah_media` table.
 
 ### Notices
 
@@ -1416,3 +1446,186 @@ foreach ($submissions as $sub) {
     echo $data['full_name'];
 }
 ```
+
+---
+
+## 20. Admin Actions System
+
+**Admin page:** CMS Portal → Admin Actions (`ah-admin-actions`)
+
+**Purpose:** One-click utility operations for maintenance, diagnostics, and testing.
+Each action fires via jQuery AJAX and shows an inline result — no page reload.
+
+### Available actions
+
+| Button | AJAX Action | What it does |
+|---|---|---|
+| Flush Rewrite Rules | `ah_flush_rewrites` | `flush_rewrite_rules(true)` — regenerates WP permalink rules |
+| Clear Transients | `ah_clear_transients` | DELETEs all `_transient_*` and `_site_transient_*` rows from `wp_options` |
+| Load Demo Data | `ah_load_demo_data` | Runs `AH_CSV_Importer` on all 7 sample CSV files; reports imported/skipped per type |
+| DB Health Check | `ah_db_health_check` | `SHOW TABLES LIKE` on every required `wp_ah_*` table; reports missing ones |
+| Clear Audit Log | `ah_clear_audit_log` | `TRUNCATE wp_ah_audit_logs` — irreversible, protected by `window.confirm()` |
+| Clear Form Submissions | `ah_clear_form_submissions` | `DELETE FROM wp_ah_form_submissions` — irreversible, confirm-gated |
+| **Delete & Create Schema** | `ah_rebuild_schema` | Drops **all** `wp_ah_*` tables + runs `AH_DB_Installer::install()` to recreate + reseed. **All data lost.** Double-confirm gated (warning dialog + must type "YES") |
+
+### Delete & Create Schema — double-confirm pattern
+
+```javascript
+// data-confirm fires window.confirm() first
+// data-double-confirm fires window.prompt() requiring exact text match
+<button data-action="ah_rebuild_schema"
+        data-confirm="⚠️ DANGER: permanently deletes ALL data..."
+        data-double-confirm="YES">Run</button>
+```
+
+The handler queries `INFORMATION_SCHEMA.TABLES` for all tables matching `{prefix}ah_%`, drops them with `FOREIGN_KEY_CHECKS = 0`, then calls `AH_DB_Installer::install()`.
+
+### Adding a new action card
+
+1. Add card HTML in `admin/pages/admin-actions.php`:
+```html
+<div class="ah-card ah-action-card">
+  <div class="ah-action-icon" style="background:#eff6ff;">
+    <span class="dashicons dashicons-update" style="color:#2563eb;"></span>
+  </div>
+  <h3>My Action</h3>
+  <p>Description of what this does.</p>
+  <button class="ah-btn ah-btn-primary ah-action-btn" data-action="ah_my_action">Run</button>
+  <div class="ah-action-result"></div>
+</div>
+```
+2. Add `'ah_my_action'` to `$actions` in `AH_Ajax_Handlers::init()`
+3. Implement `public static function handle_my_action(): void` with `self::verify()` → work → `wp_send_json_success(['message' => '...'])`
+
+### Inline result pattern
+
+```html
+<button class="ah-btn ah-btn-primary ah-action-btn" data-action="ah_flush_rewrites">Run</button>
+<div class="ah-action-result"></div>  <!-- hidden; shown as .ok or .err on response -->
+```
+
+Destructive actions add `data-confirm="Are you sure?"` — JS calls `window.confirm()` before firing.
+
+### Adding a new action card
+
+1. Add `data-action="ah_my_action"` button + `.ah-action-result` div in `admin/pages/admin-actions.php`
+2. Add `'ah_my_action'` to the `$actions` array in `AH_Ajax_Handlers::init()`
+3. Implement `public static function handle_my_action(): void` following the `self::verify()` → do work → `wp_send_json_success(['message' => '...'])` pattern
+
+---
+
+## 21. Static HTML Pages System
+
+**Admin page:** CMS Portal → Static Pages (`ah-static-pages`)
+
+**Purpose:** Upload raw HTML files and serve them as WordPress pages with complete
+style isolation — the active theme's CSS cannot reach inside the static content.
+
+### Architecture
+
+```
+Admin pastes HTML in editor → Save button
+    ↓
+ah_save_static_page AJAX handler
+    → validates slug (lowercase, hyphens only)
+    → realpath() path-traversal check
+    → file_put_contents(static/{slug}.html, $html)
+    → get_page_by_path($slug): exists? → set template meta
+                              missing? → wp_insert_post() + set template meta
+    ↓
+WordPress page at /{slug}/ created with Template: Static HTML Page
+    ↓
+Visitor requests /{slug}/
+    ↓
+template-static-page.php loads
+    → ?raw=1? → readfile(static/{slug}.html) → exit   (bare HTML, no WP wrapper)
+    → normal  → get_header() + <iframe src="?raw=1"> + resize JS + get_footer()
+```
+
+### CSS isolation mechanism
+
+The `<iframe src="?raw=1">` loads the HTML from the same origin (same domain), so:
+- The parent page's CSS cannot reach inside the iframe
+- The iframe content has no theme stylesheet applied at all
+- JavaScript can still resize the iframe via `iframe.contentDocument.documentElement.scrollHeight`
+- `sandbox="allow-scripts allow-same-origin allow-forms allow-popups"` permits normal interaction while blocking cross-origin escalation
+
+### File structure
+
+```
+ah_final_theme/
+├── static/
+│   ├── .gitkeep               directory marker
+│   ├── privacy-policy.html    → served at /privacy-policy/
+│   ├── terms.html             → served at /terms/
+│   └── embedded-tool.html     → served at /embedded-tool/
+└── template-static-page.php   WordPress page template
+```
+
+File naming rule: slug must be lowercase letters, numbers, hyphens only. The template reads `static/{page-slug}.html`.
+
+### Admin UI (`admin/pages/static-pages.php`)
+
+- **Sidebar** — lists all `.html` files in `static/`; Edit link opens in editor; View link opens the front-end URL
+- **Editor** — monospace textarea with full HTML; Save writes the file + creates/updates WP page
+- **New Page** — `+ New Page` button shows slug input field; after save, redirects to edit mode for that slug
+- **WP page auto-creation** — `wp_insert_post()` is called if no page with that slug exists; template meta is always set to `template-static-page.php`
+
+### Using a static page as an iframe src elsewhere
+
+The `?raw=1` URL serves pure HTML — no WordPress shell at all. Use it as an `src` for an `<iframe>` on any other page:
+
+```html
+<iframe
+  src="https://yoursite.com/privacy-policy/?raw=1"
+  sandbox="allow-scripts allow-same-origin"
+  style="width:100%;border:none;"
+></iframe>
+```
+
+### Adding to the navigation menu
+
+Static pages are standard WordPress pages — add them via **WP Admin → Appearance → Menus** like any other page.
+
+### Security notes
+
+- `ah_save_static_page` handler: slug is stripped to `[a-z0-9-]` only before use as a filename
+- `realpath()` check ensures the resolved path is inside the `static/` directory (prevents `../` traversal)
+- `manage_options` capability required — only WP admins can write files
+
+---
+
+## 22. Plugin Mode & Deployment
+
+See `deploy.md` in the project root for the full deployment guide.
+
+### Key points
+
+**Two modes — same codebase:**
+
+| Mode | When | Bootstrap |
+|---|---|---|
+| Plugin + Companion Theme | Recommended for new projects | `ah-cms.php` boots everything; companion theme's `functions.php` calls `AH_Asset_Loader::init()` only |
+| Standalone Theme | Backward-compat; theme-only installs | `functions.php` runs full bootstrap |
+
+**Detection:** `functions.php` checks `defined('AH_PLUGIN_DIR')` at the top. If true (plugin active), it skips constants + admin bootstrap and returns early.
+
+**Asset loading:** `AH_Asset_Loader::frontend_assets()` always uses `get_template_directory_uri()` — this resolves to the **active theme**, not the plugin directory. This is the critical line that makes plugin mode work.
+
+**Backward-compat constants:** All 60+ existing files reference `AH_THEME_DIR` and `AH_THEME_URL`. In plugin mode these are aliased to `AH_PLUGIN_DIR` / `AH_PLUGIN_URL`, so nothing breaks.
+
+### Using models from a companion theme
+
+```php
+// Read any data in a front-end template
+$hero     = (new AH_Home_Model())->get_hero();
+$services = (new AH_Services_Model())->get_active();
+$reviews  = (new AH_Reviews_Model())->get_active();
+$settings = (new AH_Settings_Model())->get_all_by_group('general');
+
+// Resolve image URL from stored media ID
+$media_m = new AH_Media_Model();
+$url     = $media_m->get_url((int) $hero->image_id);
+```
+
+All model classes are autoloaded by the plugin — no `require_once` needed in the theme.

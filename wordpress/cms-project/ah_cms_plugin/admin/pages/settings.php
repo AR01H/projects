@@ -55,7 +55,7 @@ sort( $all_groups );
   <h1><span class="dashicons dashicons-admin-settings"></span> <?php esc_html_e( 'Site Settings', 'ah-theme' ); ?></h1>
 
   <?php if ( $notice ) : ?>
-    <div class="ah-notice ah-notice-<?php echo esc_attr( $n_type ); ?>"><?php echo esc_html( $notice ); ?></div>
+    <?php echo ah_form_set_highlighted( $notice, $n_type ); ?>
   <?php endif; ?>
 
   <div class="ah-tabs">
@@ -90,7 +90,7 @@ sort( $all_groups );
               <?php $img_id = (int) $val; $img_url = $img_id ? ( new AH_Media_Model() )->get_url( $img_id ) : ''; ?>
               <img src="<?php echo esc_url( $img_url ); ?>" class="ah-image-preview <?php echo $img_url ? 'visible' : ''; ?>" alt="">
               <div class="ah-image-picker-btns">
-                <input type="hidden" class="ah-image-id" name="image_settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>">
+                <input type="hidden" id="setting_<?php echo esc_attr( $sk ); ?>" class="ah-image-id" name="image_settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>">
                 <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>
                 <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
               </div>
@@ -98,7 +98,7 @@ sort( $all_groups );
           <?php elseif ( $ft === 'color' ) : ?>
             <input type="text" id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>" class="wp-color-picker-field">
           <?php elseif ( $ft === 'toggle' ) : ?>
-            <select name="settings[<?php echo esc_attr( $sk ); ?>]">
+            <select id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]">
               <option value="1" <?php selected( $val, '1' ); ?>>Enabled</option>
               <option value="0" <?php selected( $val, '0' ); ?>>Disabled</option>
             </select>

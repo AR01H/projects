@@ -14,6 +14,8 @@ class AH_Ajax_Handlers {
 			'ah_mark_submission',
 			'ah_save_nav_item',
 			'ah_delete_nav_item',
+			// Static pages
+			'ah_save_static_page',
 			// Admin actions
 			'ah_flush_rewrites',
 			'ah_clear_transients',
@@ -527,5 +529,62 @@ class AH_Ajax_Handlers {
 		$deleted = $wpdb->query( "DELETE FROM `{$table}`" );
 		AH_DB_Helper::log_action( 'admin_action', 'system', null, array( 'action' => 'clear_form_submissions', 'deleted' => $deleted ) );
 		wp_send_json_success( array( 'message' => "Cleared {$deleted} form submission(s)." ) );
+	}
+
+	// -------------------------------------------------------------------------
+	// ah_save_static_page
+	// Writes HTML to static/{slug}.html and creates the WP page if needed.
+	// -------------------------------------------------------------------------
+	public static function handle_save_static_page(): void {
+		self::verify();
+
+		$slug = sanitize_file_name( wp_unslash( $_POST['slug'] ?? '' ) );
+		// Enforce safe slug: lowercase letters, numbers, hyphens only.
+		$slug = strtolower( preg_replace( '/[^a-z0-9-]/', '', $slug ) );
+		$html = wp_unslash( $_POST['html'] ?? '' );
+
+		if ( ! $slug ) {
+			wp_send_json_error( array( 'message' => 'Invalid or empty slug.' ) );
+		}
+
+		$static_dir = get_template_directory() . '/static/';
+		if ( ! file_exists( $static_dir ) ) {
+			wp_mkdir_p( $static_dir );
+		}
+
+		$file_path = realpath( $static_dir ) . DIRECTORY_SEPARATOR . $slug . '.html';
+		// Prevent path traversal: the resolved dir must match static_dir.
+		if ( realpath( $static_dir ) === false || strpos( $file_path, realpath( $static_dir ) ) !== 0 ) {
+			wp_send_json_error( array( 'message' => 'Invalid file path.' ) );
+		}
+
+		$is_new = ! file_exists( $file_path );
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+		file_put_contents( $file_path, $html );
+
+		// Create or update the matching WordPress page.
+		$existing = get_page_by_path( $slug );
+		if ( $existing ) {
+			update_post_meta( $existing->ID, '_wp_page_template', 'template-static-page.php' );
+			$message  = 'HTML saved.';
+			$redirect = null;
+		} else {
+			$page_id = wp_insert_post( array(
+				'post_title'  => ucwords( str_replace( '-', ' ', $slug ) ),
+				'post_name'   => $slug,
+				'post_status' => 'publish',
+				'post_type'   => 'page',
+			) );
+			if ( $page_id && ! is_wp_error( $page_id ) ) {
+				update_post_meta( $page_id, '_wp_page_template', 'template-static-page.php' );
+				$message  = 'Page created and HTML saved.';
+				$redirect = admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $slug ) );
+			} else {
+				$message  = 'HTML saved (could not auto-create WP page — create it manually and set template to "Static HTML Page").';
+				$redirect = null;
+			}
+		}
+
+		wp_send_json_success( array( 'message' => $message, 'redirect' => $redirect ) );
 	}
 }

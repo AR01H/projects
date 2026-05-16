@@ -34,6 +34,7 @@ class AH_Admin_Menus {
 			['title' => 'Form Builder','menu' => 'Form Builder','slug' => 'ah-form-builder','callback' => 'page_form_builder'],
 			['title' => 'Static Pages','menu' => 'Static Pages','slug' => 'ah-static-pages','callback' => 'page_static_pages'],
 			['title' => 'Admin Actions','menu' => 'Admin Actions','slug' => 'ah-admin-actions','callback' => 'page_admin_actions'],
+			['title' => 'Help & Guide','menu' => '❓ Help & Guide','slug' => 'ah-help','callback' => 'page_help'],
 		];
 
 		foreach ( $submenus as $submenu ) {
@@ -78,4 +79,5 @@ class AH_Admin_Menus {
 	public static function page_form_builder()   { self::load( 'form-builder'   ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }
+	public static function page_help()           { self::load( 'help'           ); }
 }
