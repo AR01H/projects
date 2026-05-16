@@ -23,6 +23,7 @@ class AH_Ajax_Handlers {
 			'ah_clear_audit_log',
 			'ah_db_health_check',
 			'ah_clear_form_submissions',
+			'ah_rebuild_schema',
 		);
 		foreach ( $actions as $action ) {
 			add_action( 'wp_ajax_' . $action, array( __CLASS__, str_replace( 'ah_', 'handle_', $action ) ) );
@@ -529,6 +530,40 @@ class AH_Ajax_Handlers {
 		$deleted = $wpdb->query( "DELETE FROM `{$table}`" );
 		AH_DB_Helper::log_action( 'admin_action', 'system', null, array( 'action' => 'clear_form_submissions', 'deleted' => $deleted ) );
 		wp_send_json_success( array( 'message' => "Cleared {$deleted} form submission(s)." ) );
+	}
+
+	// -------------------------------------------------------------------------
+	// ah_rebuild_schema
+	// Drops all wp_ah_* tables then runs the full installer to recreate them.
+	// ALL DATA IN THOSE TABLES IS PERMANENTLY DELETED.
+	// -------------------------------------------------------------------------
+	public static function handle_rebuild_schema(): void {
+		self::verify();
+		global $wpdb;
+
+		// Drop every table whose name starts with {prefix}ah_
+		$prefix  = $wpdb->prefix . 'ah_';
+		$tables  = $wpdb->get_col( $wpdb->prepare(
+			'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = %s AND TABLE_NAME LIKE %s',
+			DB_NAME,
+			$prefix . '%'
+		) );
+
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 0' );
+		$dropped = 0;
+		foreach ( $tables as $tbl ) {
+			$wpdb->query( "DROP TABLE IF EXISTS `{$tbl}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$dropped++;
+		}
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' );
+
+		// Force reinstall — resets version key so install() runs fully
+		delete_option( AH_DB_VERSION_KEY );
+		AH_DB_Installer::install();
+
+		wp_send_json_success( array(
+			'message' => "Schema rebuilt: {$dropped} table(s) dropped and recreated from scratch.",
+		) );
 	}
 
 	// -------------------------------------------------------------------------
