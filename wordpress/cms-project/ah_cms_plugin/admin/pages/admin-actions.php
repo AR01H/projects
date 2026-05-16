@@ -84,7 +84,7 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 			<button class="ah-btn ah-btn-danger ah-action-btn"
 				data-action="ah_rebuild_schema"
 				data-confirm="⚠️ DANGER: This will permanently delete ALL data in every wp_ah_* table and recreate the schema from scratch. This cannot be undone. Type YES in the next prompt to confirm."
-				data-double-confirm="YES">Run</button>
+				data-double-confirm="YES">Dangerous Run</button>
 			<div class="ah-action-result"></div>
 		</div>
 

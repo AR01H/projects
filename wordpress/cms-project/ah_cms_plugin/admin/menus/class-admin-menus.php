@@ -7,93 +7,38 @@ class AH_Admin_Menus {
 
 	public static function register(): void {
 		// Top-level: CMS Dashboard
-		add_menu_page(
-			__( 'CMS Portal', 'ah-theme' ),
-			__( 'CMS Portal', 'ah-theme' ),
-			self::$cap,
-			'ah-dashboard',
-			array( self::class, 'page_dashboard' ),
-			'dashicons-admin-home',
-			3
-		);
+		add_menu_page(__( 'CMS Portal', 'ah-theme' ),__( 'CMS Portal', 'ah-theme' ),self::$cap,'ah-dashboard',[self::class,'page_dashboard'],'dashicons-admin-home',3);
 
-		// Sub: Dashboard
-		add_submenu_page( 'ah-dashboard', __( 'Dashboard', 'ah-theme' ), __( 'Dashboard', 'ah-theme' ), self::$cap, 'ah-dashboard', array( self::class, 'page_dashboard' ) );
+		$submenus = [
+			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],
+			['title' => 'Site Settings','menu' => 'Site Settings','slug' => 'ah-settings','callback' => 'page_settings'],
+			['title' => 'Navigation Menus','menu' => 'Navigation Menus','slug' => 'ah-nav-menus','callback' => 'page_nav_menus'],
+			['title' => 'Pages Manager','menu' => 'Pages Manager','slug' => 'ah-pages','callback' => 'page_pages'],
+			['title' => 'Media Library','menu' => 'Media Library','slug' => 'ah-media','callback' => 'page_media'],
+			['title' => 'News Bar','menu' => 'News Bar','slug' => 'ah-news-bar','callback' => 'page_news_bar'],
+			['title' => 'Home Sections','menu' => 'Home Sections','slug' => 'ah-home','callback' => 'page_home'],
+			['title' => 'Services','menu' => 'Services','slug' => 'ah-services','callback' => 'page_services'],
+			['title' => 'About Page','menu' => 'About Page','slug' => 'ah-about','callback' => 'page_about'],
+			['title' => 'Reviews','menu' => 'Reviews','slug' => 'ah-reviews','callback' => 'page_reviews'],
+			['title' => 'FAQs','menu' => 'FAQs','slug' => 'ah-faqs','callback' => 'page_faqs'],
+			['title' => 'Posts / Blog','menu' => 'Posts / Blog','slug' => 'ah-posts','callback' => 'page_posts'],
+			['title' => 'Team Members','menu' => 'Team Members','slug' => 'ah-team','callback' => 'page_team'],
+			['title' => 'Client Stories','menu' => 'Client Stories','slug' => 'ah-client-stories','callback' => 'page_client_stories'],
+			['title' => 'Contact Page','menu' => 'Contact Page','slug' => 'ah-contact','callback' => 'page_contact'],
+			['title' => 'Categories & Tags','menu' => 'Categories & Tags','slug' => 'ah-taxonomy','callback' => 'page_taxonomy'],
+			['title' => 'Contact Submissions','menu' => 'Contact Submissions','slug' => 'ah-submissions','callback' => 'page_submissions'],
+			['title' => 'Audit Log','menu' => 'Audit Log','slug' => 'ah-audit','callback' => 'page_audit'],
+			['title' => 'Data Import','menu' => 'Data Import','slug' => 'ah-import','callback' => 'page_import'],
+			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
+			['title' => 'Page Builder','menu' => 'Page Builder','slug' => 'ah-page-builder','callback' => 'page_builder'],
+			['title' => 'Form Builder','menu' => 'Form Builder','slug' => 'ah-form-builder','callback' => 'page_form_builder'],
+			['title' => 'Static Pages','menu' => 'Static Pages','slug' => 'ah-static-pages','callback' => 'page_static_pages'],
+			['title' => 'Admin Actions','menu' => 'Admin Actions','slug' => 'ah-admin-actions','callback' => 'page_admin_actions'],
+		];
 
-		// Sub: Site Settings
-		add_submenu_page( 'ah-dashboard', __( 'Site Settings', 'ah-theme' ), __( 'Site Settings', 'ah-theme' ), self::$cap, 'ah-settings', array( self::class, 'page_settings' ) );
-
-		// Sub: Navigation Menus
-		add_submenu_page( 'ah-dashboard', __( 'Navigation Menus', 'ah-theme' ), __( 'Navigation Menus', 'ah-theme' ), self::$cap, 'ah-nav-menus', array( self::class, 'page_nav_menus' ) );
-
-		// Sub: Pages Manager
-		add_submenu_page( 'ah-dashboard', __( 'Pages Manager', 'ah-theme' ), __( 'Pages Manager', 'ah-theme' ), self::$cap, 'ah-pages', array( self::class, 'page_pages' ) );
-
-		// Sub: Media Library
-		add_submenu_page( 'ah-dashboard', __( 'Media Library', 'ah-theme' ), __( 'Media Library', 'ah-theme' ), self::$cap, 'ah-media', array( self::class, 'page_media' ) );
-
-		// ---- Content ----
-
-		// Sub: News Bar
-		add_submenu_page( 'ah-dashboard', __( 'News Bar', 'ah-theme' ), __( 'News Bar', 'ah-theme' ), self::$cap, 'ah-news-bar', array( self::class, 'page_news_bar' ) );
-
-		// Sub: Home Sections
-		add_submenu_page( 'ah-dashboard', __( 'Home Sections', 'ah-theme' ), __( 'Home Sections', 'ah-theme' ), self::$cap, 'ah-home', array( self::class, 'page_home' ) );
-
-		// Sub: Services
-		add_submenu_page( 'ah-dashboard', __( 'Services', 'ah-theme' ), __( 'Services', 'ah-theme' ), self::$cap, 'ah-services', array( self::class, 'page_services' ) );
-
-		// Sub: About Page
-		add_submenu_page( 'ah-dashboard', __( 'About Page', 'ah-theme' ), __( 'About Page', 'ah-theme' ), self::$cap, 'ah-about', array( self::class, 'page_about' ) );
-
-		// Sub: Reviews
-		add_submenu_page( 'ah-dashboard', __( 'Reviews', 'ah-theme' ), __( 'Reviews', 'ah-theme' ), self::$cap, 'ah-reviews', array( self::class, 'page_reviews' ) );
-
-		// Sub: FAQs
-		add_submenu_page( 'ah-dashboard', __( 'FAQs', 'ah-theme' ), __( 'FAQs', 'ah-theme' ), self::$cap, 'ah-faqs', array( self::class, 'page_faqs' ) );
-
-		// Sub: Posts (Blog / News / Articles)
-		add_submenu_page( 'ah-dashboard', __( 'Posts / Blog', 'ah-theme' ), __( 'Posts / Blog', 'ah-theme' ), self::$cap, 'ah-posts', array( self::class, 'page_posts' ) );
-
-		// Sub: Team Members
-		add_submenu_page( 'ah-dashboard', __( 'Team Members', 'ah-theme' ), __( 'Team Members', 'ah-theme' ), self::$cap, 'ah-team', array( self::class, 'page_team' ) );
-
-		// Sub: Client Stories
-		add_submenu_page( 'ah-dashboard', __( 'Client Stories', 'ah-theme' ), __( 'Client Stories', 'ah-theme' ), self::$cap, 'ah-client-stories', array( self::class, 'page_client_stories' ) );
-
-		// Sub: Contact Page
-		add_submenu_page( 'ah-dashboard', __( 'Contact Page', 'ah-theme' ), __( 'Contact Page', 'ah-theme' ), self::$cap, 'ah-contact', array( self::class, 'page_contact' ) );
-
-		// Sub: Taxonomy
-		add_submenu_page( 'ah-dashboard', __( 'Categories & Tags', 'ah-theme' ), __( 'Categories & Tags', 'ah-theme' ), self::$cap, 'ah-taxonomy', array( self::class, 'page_taxonomy' ) );
-
-		// ---- Reports ----
-
-		// Sub: Contact Submissions
-		add_submenu_page( 'ah-dashboard', __( 'Contact Submissions', 'ah-theme' ), __( 'Contact Submissions', 'ah-theme' ), self::$cap, 'ah-submissions', array( self::class, 'page_submissions' ) );
-
-		// Sub: Audit Log
-		add_submenu_page( 'ah-dashboard', __( 'Audit Log', 'ah-theme' ), __( 'Audit Log', 'ah-theme' ), self::$cap, 'ah-audit', array( self::class, 'page_audit' ) );
-
-		// ---- Tools ----
-
-		// Sub: Data Import
-		add_submenu_page( 'ah-dashboard', __( 'Data Import', 'ah-theme' ), __( 'Data Import', 'ah-theme' ), self::$cap, 'ah-import', array( self::class, 'page_import' ) );
-
-		// Sub: File Links
-		add_submenu_page( 'ah-dashboard', __( 'File Links', 'ah-theme' ), __( 'File Links', 'ah-theme' ), self::$cap, 'ah-file-links', array( self::class, 'page_file_links' ) );
-
-		// Sub: Page Builder
-		add_submenu_page( 'ah-dashboard', __( 'Page Builder', 'ah-theme' ), __( 'Page Builder', 'ah-theme' ), self::$cap, 'ah-page-builder', array( self::class, 'page_builder' ) );
-
-		// Sub: Form Builder
-		add_submenu_page( 'ah-dashboard', __( 'Form Builder', 'ah-theme' ), __( 'Form Builder', 'ah-theme' ), self::$cap, 'ah-form-builder', array( self::class, 'page_form_builder' ) );
-
-		// Sub: Static Pages
-		add_submenu_page( 'ah-dashboard', __( 'Static Pages', 'ah-theme' ), __( 'Static Pages', 'ah-theme' ), self::$cap, 'ah-static-pages', array( self::class, 'page_static_pages' ) );
-
-		// Sub: Admin Actions
-		add_submenu_page( 'ah-dashboard', __( 'Admin Actions', 'ah-theme' ), __( 'Admin Actions', 'ah-theme' ), self::$cap, 'ah-admin-actions', array( self::class, 'page_admin_actions' ) );
+		foreach ( $submenus as $submenu ) {
+			add_submenu_page('ah-dashboard',__( $submenu['title'], 'ah-theme' ),__( $submenu['menu'], 'ah-theme' ),self::$cap,$submenu['slug'],[ self::class, $submenu['callback'] ]);
+		}
 	}
 
 	// ----------------------------------------------------------------
