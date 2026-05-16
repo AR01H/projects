@@ -38,58 +38,63 @@ $faqs     = ah_get_faqs( 'contact', 6 );
             Fill in the form and we'll confirm a time within 24 hours.
           </p>
 
-          <form data-ah-form="consultation" class="ah-form" novalidate>
+          <form data-ah-form="contact" class="ah-form" enctype="multipart/form-data" novalidate>
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="cf-name">Full Name <span aria-hidden="true">*</span></label>
                 <input id="cf-name" name="name" type="text" class="form-input" placeholder="Jane Smith" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="cf-email">Email Address <span aria-hidden="true">*</span></label>
-                <input id="cf-email" name="email" type="email" class="form-input" placeholder="jane@example.com" required>
+                <label class="form-label" for="cf-type">Enquiry Type <span aria-hidden="true">*</span></label>
+                <select id="cf-type" name="enquiry_type" class="form-input form-select" required>
+                  <option value="">Select type…</option>
+                  <option value="general">General</option>
+                  <option value="complaint">Complaint</option>
+                  <option value="sales">Sales</option>
+                  <option value="support">Support</option>
+                  <option value="media">Media / Press</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
+                <label class="form-label" for="cf-email">Email Address <span aria-hidden="true">*</span></label>
+                <input id="cf-email" name="email" type="email" class="form-input" placeholder="jane@example.com" required>
+              </div>
+              <div class="form-group">
                 <label class="form-label" for="cf-phone">Phone Number</label>
                 <input id="cf-phone" name="phone" type="tel" class="form-input" placeholder="+44 7700 000000">
               </div>
-              <div class="form-group">
-                <label class="form-label" for="cf-budget">Budget Range</label>
-                <select id="cf-budget" name="budget" class="form-input form-select">
-                  <option value="">Select budget…</option>
-                  <option>Under £250,000</option>
-                  <option>£250,000 – £500,000</option>
-                  <option>£500,000 – £750,000</option>
-                  <option>£750,000 – £1M</option>
-                  <option>£1M – £2M</option>
-                  <option>Over £2M</option>
-                </select>
-              </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="cf-location">Preferred Location(s)</label>
-              <input id="cf-location" name="location" type="text" class="form-input" placeholder="e.g. North London, Bristol, Manchester">
+              <label class="form-label" for="cf-quote">In one sentence, what do you need?</label>
+              <input id="cf-quote" name="short_quote" type="text" class="form-input" placeholder="e.g. I'm looking for a 3-bed house in Bristol under £450k" maxlength="300">
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="cf-message">Tell Us About Your Search</label>
+              <label class="form-label" for="cf-message">Message <span aria-hidden="true">*</span></label>
               <textarea id="cf-message" name="message" class="form-input form-textarea" rows="4"
-                        placeholder="What are you looking for? How soon are you hoping to buy? Any must-haves?"></textarea>
+                        placeholder="Tell us more — timeline, requirements, anything helpful…" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="cf-attachment">Attach a File <span style="color:var(--text-secondary);font-weight:400">(optional — PDF, DOC, DOCX, JPG, PNG · max 2 MB)</span></label>
+              <input id="cf-attachment" name="attachment" type="file" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
             </div>
 
             <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;font-size:.875rem">
               <input type="checkbox" id="cf-consent" name="consent" required style="margin-top:3px;flex-shrink:0">
               <label for="cf-consent" style="color:var(--text-secondary)">
-                I agree to be contacted by Advaith Homes about my property search.
+                I agree to be contacted by Advaith Homes about my enquiry.
                 We never share your data. See our <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>" style="color:var(--accent)">privacy policy</a>.
               </label>
             </div>
 
             <button type="submit" class="btn btn-primary btn-block">
-              Book My Free Consultation →
+              Send Enquiry →
             </button>
 
             <div class="ah-form__status" aria-live="polite"></div>

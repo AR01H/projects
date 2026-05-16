@@ -1126,7 +1126,7 @@ class AH_Theme_Seeder {
 				$counts[ $t ] = null; // null = table doesn't exist (plugin not installed)
 			}
 		}
-		$options = [ 'ah_site_settings', 'ah_home_settings', 'ah_guide_nav', 'ah_guide_categories', 'ah_process_steps', 'ah_site_stats', 'ah_trust_signals' ];
+		$options = [ 'ah_site_settings', 'ah_home_settings', 'ah_guide_nav', 'ah_guide_categories', 'ah_nav_buying_topics', 'ah_nav_finance_topics', 'ah_nav_legal_topics', 'ah_process_steps', 'ah_site_stats', 'ah_trust_signals' ];
 		foreach ( $options as $opt ) {
 			$counts[ $opt ] = get_option( $opt ) !== false ? '✓' : '—';
 		}

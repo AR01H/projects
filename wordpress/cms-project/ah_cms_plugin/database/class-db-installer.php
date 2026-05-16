@@ -27,6 +27,7 @@ class AH_DB_Installer {
 		self::ensure_required_settings();
 		self::drop_broken_fks();
 		self::ensure_review_short_desc();
+		self::ensure_submission_columns();
 	}
 
 	/**
@@ -42,6 +43,38 @@ class AH_DB_Installer {
 		) );
 		if ( empty( $col ) ) {
 			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `short_desc` VARCHAR(400) DEFAULT NULL AFTER `reviewer_title`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+	}
+
+	/**
+	 * Add extended columns to ah_contact_form_submissions if they don't exist yet.
+	 */
+	public static function ensure_submission_columns(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_contact_form_submissions';
+
+		$columns = array(
+			'enquiry_type'    => "ENUM('general','complaint','sales','support','media','other') NOT NULL DEFAULT 'general' AFTER `subject`",
+			'short_quote'     => "VARCHAR(300) DEFAULT NULL AFTER `enquiry_type`",
+			'attachment_path' => "VARCHAR(500) DEFAULT NULL AFTER `message`",
+			'attachment_name' => "VARCHAR(255) DEFAULT NULL AFTER `attachment_path`",
+			'email_sent'      => "TINYINT(1) NOT NULL DEFAULT 0 AFTER `attachment_name`",
+			'email_sent_at'   => "TIMESTAMP NULL DEFAULT NULL AFTER `email_sent`",
+			'admin_notes'     => "TEXT DEFAULT NULL AFTER `email_sent_at`",
+			'page_url'        => "VARCHAR(500) DEFAULT NULL AFTER `ip_address`",
+			'user_agent'      => "VARCHAR(500) DEFAULT NULL AFTER `page_url`",
+		);
+
+		foreach ( $columns as $col_name => $col_def ) {
+			$exists = $wpdb->get_var( $wpdb->prepare(
+				"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s",
+				DB_NAME,
+				$table,
+				$col_name
+			) );
+			if ( ! $exists ) {
+				$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `{$col_name}` {$col_def}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			}
 		}
 	}
 
