@@ -102,11 +102,50 @@
   // ----------------------------------------------------------------
   var mediaFrame;
 
-  $(document).on('click', '.ah-pick-image', function (e) {
+  function ahPickerSetImage($picker, id, url) {
+    $picker.find('.ah-image-id').val(id);
+    $picker.find('.ah-image-preview').attr('src', url).addClass('visible');
+    $picker.find('.ah-image-placeholder').hide();
+    $picker.addClass('has-image');
+    $picker.find('.ah-pick-image').text('Change Image');
+  }
+
+  function ahPickerClearImage($picker) {
+    $picker.find('.ah-image-id').val(0);
+    $picker.find('.ah-image-preview').removeClass('visible').attr('src', '');
+    $picker.find('.ah-image-placeholder').show();
+    $picker.removeClass('has-image');
+    $picker.find('.ah-pick-image').text('Choose Image');
+  }
+
+  // Initialise state on page load for all pickers
+  $(function () {
+    $('.ah-image-picker').each(function () {
+      var $picker  = $(this);
+      var $preview = $picker.find('.ah-image-preview');
+
+      // Inject placeholder if not already present
+      if ( ! $picker.find('.ah-image-placeholder').length ) {
+        $picker.prepend(
+          '<div class="ah-image-placeholder">' +
+            '<span class="dashicons dashicons-format-image"></span>' +
+            '<span>Click to choose image</span>' +
+          '</div>'
+        );
+      }
+
+      if ($preview.hasClass('visible') && $preview.attr('src')) {
+        $picker.addClass('has-image');
+        $picker.find('.ah-image-placeholder').hide();
+        $picker.find('.ah-pick-image').text('Change Image');
+      }
+    });
+  });
+
+  $(document).on('click', '.ah-pick-image, .ah-image-placeholder', function (e) {
     e.preventDefault();
-    var $btn      = $(this);
-    var $input    = $btn.closest('.ah-image-picker').find('.ah-image-id');
-    var $preview  = $btn.closest('.ah-image-picker').find('.ah-image-preview');
+    var $picker = $(this).closest('.ah-image-picker');
+    var $input  = $picker.find('.ah-image-id');
 
     if (mediaFrame) {
       mediaFrame.open();
@@ -122,8 +161,7 @@
 
     mediaFrame.on('select', function () {
       var attach = mediaFrame.state().get('selection').first().toJSON();
-      $input.val(attach.id);
-      $preview.attr('src', attach.url).addClass('visible');
+      ahPickerSetImage($picker, attach.id, attach.url);
     });
 
     mediaFrame.open();
@@ -134,9 +172,7 @@
 
   $(document).on('click', '.ah-remove-image', function (e) {
     e.preventDefault();
-    var $picker  = $(this).closest('.ah-image-picker');
-    $picker.find('.ah-image-id').val(0);
-    $picker.find('.ah-image-preview').removeClass('visible').attr('src', '');
+    ahPickerClearImage($(this).closest('.ah-image-picker'));
   });
 
   // ----------------------------------------------------------------
