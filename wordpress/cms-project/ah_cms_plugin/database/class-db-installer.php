@@ -25,6 +25,37 @@ class AH_DB_Installer {
 		}
 		self::ensure_builder_table();
 		self::ensure_required_settings();
+		self::drop_broken_fks();
+	}
+
+	/**
+	 * Drop FK constraints that reference ah_admin_users or ah_media via columns
+	 * that are now populated with WP user IDs / WP attachment IDs.  Running
+	 * DROP FOREIGN KEY is idempotent — MySQL silently ignores unknown constraint
+	 * names when FOREIGN_KEY_CHECKS = 0.
+	 */
+	public static function drop_broken_fks(): void {
+		global $wpdb;
+		$p = $wpdb->prefix;
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 0' );
+		$drops = array(
+			// reviews: created_by → ah_admin_users (we pass WP user IDs)
+			"ALTER TABLE `{$p}ah_reviews` DROP FOREIGN KEY IF EXISTS fk_rv_user",
+			// reviews: reviewer_image_id → ah_media (we store WP attachment IDs)
+			"ALTER TABLE `{$p}ah_reviews` DROP FOREIGN KEY IF EXISTS fk_rv_img",
+			// news_bar_items: created_by → ah_admin_users
+			"ALTER TABLE `{$p}ah_news_bar_items` DROP FOREIGN KEY IF EXISTS fk_nbi_user",
+			// faqs: created_by → ah_admin_users
+			"ALTER TABLE `{$p}ah_faqs` DROP FOREIGN KEY IF EXISTS fk_faq_user",
+			// services: created_by → ah_admin_users
+			"ALTER TABLE `{$p}ah_services` DROP FOREIGN KEY IF EXISTS fk_svc_user",
+			// team members: created_by → ah_admin_users
+			"ALTER TABLE `{$p}ah_team_members` DROP FOREIGN KEY IF EXISTS fk_tm_user",
+		);
+		foreach ( $drops as $sql ) {
+			$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' );
 	}
 
 	public static function ensure_builder_table(): void {
