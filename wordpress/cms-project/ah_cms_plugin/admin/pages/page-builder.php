@@ -8,6 +8,58 @@ $notice  = '';
 $action  = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = (int) ( $_GET['id'] ?? 0 );
 
+// ── Template presets ──────────────────────────────────────────────────────────
+function ah_builder_templates(): array {
+	return array(
+		'landing' => array(
+			'label' => 'Landing Page', 'icon' => '🚀', 'desc' => 'Hero + feature cards + CTA + FAQ',
+			'blocks' => array(
+				array( 'type' => 'hero', 'data' => array( 'heading' => 'Welcome — We Make It Simple', 'subheading' => 'Expert guidance for your property journey. Book a free consultation today.', 'cta1_text' => 'Book Free Call', 'cta1_url' => '/free-consultation/', 'cta2_text' => 'Learn More', 'cta2_url' => '/about/', 'bg' => 'dark' ) ),
+				array( 'type' => 'section_heading', 'data' => array( 'title' => 'Why Choose Us', 'subtitle' => 'Trusted by hundreds of families across the UK', 'align' => 'center' ) ),
+				array( 'type' => 'cards', 'data' => array( 'heading' => '', 'cols' => '3', 'cards' => array( array( 'icon' => '🏠', 'title' => 'Expert Advice', 'text' => 'Personalised guidance at every step of your journey.' ), array( 'icon' => '💷', 'title' => 'Best Value', 'text' => 'We negotiate the best deals so you don\'t have to.' ), array( 'icon' => '✅', 'title' => 'Proven Results', 'text' => 'Hundreds of happy clients and successful completions.' ) ) ) ),
+				array( 'type' => 'stats_row', 'data' => array( 'stats' => array( array( 'prefix' => '', 'number' => '500', 'suffix' => '+', 'label' => 'Happy Clients' ), array( 'prefix' => '£', 'number' => '18', 'suffix' => 'k', 'label' => 'Average Saving' ), array( 'prefix' => '', 'number' => '12', 'suffix' => '+', 'label' => 'Years Experience' ) ) ) ),
+				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Ready to Get Started?', 'text' => 'Book your free no-obligation consultation today.', 'btn1_text' => 'Book Free Call', 'btn1_url' => '/free-consultation/', 'btn2_text' => 'Call Us Now', 'btn2_url' => 'tel:+447747223762', 'theme' => 'gold' ) ),
+				array( 'type' => 'faq', 'data' => array( 'heading' => 'Common Questions', 'items' => array( array( 'q' => 'Is the consultation really free?', 'a' => 'Yes, completely free with no obligation.' ), array( 'q' => 'Which areas do you cover?', 'a' => 'We cover London and nationwide UK.' ) ) ) ),
+			),
+		),
+		'about' => array(
+			'label' => 'About Us', 'icon' => '👥', 'desc' => 'Story + image-text + stats + CTA',
+			'blocks' => array(
+				array( 'type' => 'hero', 'data' => array( 'heading' => 'About Our Company', 'subheading' => 'A dedicated team passionate about helping you find your perfect property.', 'cta1_text' => 'Meet the Team', 'cta1_url' => '#team', 'bg' => 'light' ) ),
+				array( 'type' => 'image_text', 'data' => array( 'image_url' => '', 'image_alt' => 'Our team', 'heading' => 'Our Story', 'text' => 'Founded with a simple mission — to make property buying and selling straightforward, transparent, and stress-free. We\'ve helped hundreds of families across the UK find their perfect homes.', 'btn_text' => 'Our Services', 'btn_url' => '/services/', 'layout' => 'image-left' ) ),
+				array( 'type' => 'stats_row', 'data' => array( 'stats' => array( array( 'prefix' => '', 'number' => '2012', 'suffix' => '', 'label' => 'Year Founded' ), array( 'prefix' => '', 'number' => '500', 'suffix' => '+', 'label' => 'Clients Helped' ), array( 'prefix' => '', 'number' => '4.9', 'suffix' => '★', 'label' => 'Average Rating' ) ) ) ),
+				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Let\'s Work Together', 'text' => 'Get in touch and let us help you with your property goals.', 'btn1_text' => 'Contact Us', 'btn1_url' => '/contact/', 'theme' => 'dark' ) ),
+			),
+		),
+		'services' => array(
+			'label' => 'Services', 'icon' => '⚙️', 'desc' => 'Heading + service cards + links + CTA',
+			'blocks' => array(
+				array( 'type' => 'hero', 'data' => array( 'heading' => 'Our Services', 'subheading' => 'Comprehensive property solutions tailored to your needs.', 'bg' => 'light' ) ),
+				array( 'type' => 'cards', 'data' => array( 'heading' => 'What We Offer', 'cols' => '3', 'cards' => array( array( 'icon' => '🏠', 'title' => 'Property Search', 'text' => 'We find the right properties matched to your criteria.', 'link_url' => '/services/property-search/' ), array( 'icon' => '📋', 'title' => 'Conveyancing', 'text' => 'Smooth legal process from offer to completion.', 'link_url' => '/services/conveyancing/' ), array( 'icon' => '💰', 'title' => 'Mortgage Advice', 'text' => 'Expert mortgage guidance and lender introductions.', 'link_url' => '/services/mortgages/' ), array( 'icon' => '🔑', 'title' => 'Lettings', 'text' => 'Full lettings and property management service.', 'link_url' => '/services/lettings/' ), array( 'icon' => '📊', 'title' => 'Valuations', 'text' => 'Accurate market valuations backed by local data.', 'link_url' => '/services/valuations/' ), array( 'icon' => '🤝', 'title' => 'Investment', 'text' => 'BTL and investment property sourcing for landlords.', 'link_url' => '/services/investment/' ) ) ) ),
+				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Not Sure Where to Start?', 'text' => 'Book a free call and we\'ll guide you to the right service.', 'btn1_text' => 'Book Free Consultation', 'btn1_url' => '/free-consultation/', 'theme' => 'gold' ) ),
+			),
+		),
+		'faq' => array(
+			'label' => 'FAQ Page', 'icon' => '❓', 'desc' => 'Hero + accordion + links + CTA',
+			'blocks' => array(
+				array( 'type' => 'hero', 'data' => array( 'heading' => 'Frequently Asked Questions', 'subheading' => 'Find answers to the most common property questions.', 'bg' => 'light' ) ),
+				array( 'type' => 'faq', 'data' => array( 'heading' => 'Buying a Property', 'items' => array( array( 'q' => 'How long does buying a property take?', 'a' => 'The average property purchase takes 8–12 weeks from offer to completion, though this varies based on the chain and legal complexity.' ), array( 'q' => 'Do I need a solicitor?', 'a' => 'Yes, a conveyancing solicitor is required to handle the legal transfer of ownership.' ), array( 'q' => 'What is stamp duty?', 'a' => 'Stamp Duty Land Tax (SDLT) is a tax payable on property purchases above £250,000 (£425,000 for first-time buyers).' ) ) ) ),
+				array( 'type' => 'faq', 'data' => array( 'heading' => 'Selling a Property', 'items' => array( array( 'q' => 'How do I value my property?', 'a' => 'We offer free, accurate market valuations based on comparable sales and current market conditions.' ), array( 'q' => 'What fees are involved in selling?', 'a' => 'Typical costs include estate agent fees (1–3%), conveyancing, and any early mortgage repayment charges.' ) ) ) ),
+				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Still Have Questions?', 'text' => 'Speak to one of our experts for personalised advice.', 'btn1_text' => 'Book Free Call', 'btn1_url' => '/free-consultation/', 'theme' => 'dark' ) ),
+			),
+		),
+		'guide' => array(
+			'label' => 'Guide / Article', 'icon' => '📖', 'desc' => 'Hero + rich text + links + CTA',
+			'blocks' => array(
+				array( 'type' => 'hero', 'data' => array( 'heading' => 'First-Time Buyers Guide', 'subheading' => 'Everything you need to know about buying your first home in the UK.', 'bg' => 'light' ) ),
+				array( 'type' => 'text_block', 'data' => array( 'content' => '<p>Buying your first home is one of the biggest financial decisions you\'ll make. This guide walks you through every stage — from saving your deposit to getting the keys.</p><h2>Step 1: Get Your Finances in Order</h2><p>Before you start viewing properties, understand your budget. Most lenders require at least a 5% deposit, though 10% gives you access to better mortgage rates.</p><h2>Step 2: Get a Mortgage in Principle</h2><p>A mortgage in principle (MIP) shows sellers you\'re a serious buyer and helps you understand your maximum borrowing.</p>' ) ),
+				array( 'type' => 'links_list', 'data' => array( 'heading' => 'Related Guides', 'cols' => '2', 'links' => array( array( 'label' => 'Understanding Stamp Duty', 'url' => '/guides/stamp-duty/', 'icon' => '💷', 'desc' => 'How much will you pay?' ), array( 'label' => 'Help to Buy Explained', 'url' => '/guides/help-to-buy/', 'icon' => '🏛️', 'desc' => 'Government schemes for first-time buyers' ), array( 'label' => 'Mortgage Guide', 'url' => '/guides/mortgages/', 'icon' => '🏦', 'desc' => 'Types, rates and how to apply' ), array( 'label' => 'Conveyancing Process', 'url' => '/guides/conveyancing/', 'icon' => '📋', 'desc' => 'Legal steps explained simply' ) ) ) ),
+				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Need Personal Guidance?', 'text' => 'Our experts are happy to answer your questions for free.', 'btn1_text' => 'Book Free Consultation', 'btn1_url' => '/free-consultation/', 'theme' => 'gold' ) ),
+			),
+		),
+	);
+}
+
 // ── POST handlers ─────────────────────────────────────────────────────────────
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_builder_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_builder_nonce'], 'ah_builder_save' ) ) wp_die( 'Security check failed.' );
@@ -15,6 +67,18 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_builder_nonce'] 
 	if ( isset( $_POST['delete_page'] ) && $edit_id ) {
 		$wpdb->delete( $table, array( 'id' => $edit_id ) );
 		$notice = 'Page deleted.'; $action = 'list'; $edit_id = 0;
+
+	} elseif ( isset( $_POST['create_from_template'] ) ) {
+		// Create page from selected template then open builder
+		$tpl_key = sanitize_key( $_POST['template_key'] ?? 'landing' );
+		$tpls    = ah_builder_templates();
+		$tpl     = $tpls[ $tpl_key ] ?? reset( $tpls );
+		$title   = sanitize_text_field( $_POST['page_title'] ?? $tpl['label'] );
+		$slug    = sanitize_title( $_POST['page_slug'] ?: $title );
+		$wpdb->insert( $table, array( 'title' => $title, 'slug' => $slug, 'blocks' => wp_json_encode( $tpl['blocks'] ), 'status' => 'draft' ) );
+		$edit_id = $wpdb->insert_id;
+		$action  = 'builder';
+		$notice  = 'Page created from "' . esc_html( $tpl['label'] ) . '" template.';
 
 	} else {
 		$title  = sanitize_text_field( $_POST['page_title'] ?? 'Untitled Page' );
@@ -65,16 +129,29 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
 ?>
   <div class="ah-table-top" style="margin-bottom:0">
     <h1 style="margin:0"><span class="dashicons dashicons-layout"></span> Page Builder</h1>
-    <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-page-builder', 'action' => 'builder' ), admin_url( 'admin.php' ) ) ); ?>"
-       class="ah-btn ah-btn-primary">+ New Page</a>
+    <div style="display:flex;gap:8px;">
+      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-page-builder', 'action' => 'builder' ), admin_url( 'admin.php' ) ) ); ?>"
+         class="ah-btn ah-btn-secondary">+ Blank Page</a>
+      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-page-builder', 'action' => 'templates' ), admin_url( 'admin.php' ) ) ); ?>"
+         class="ah-btn ah-btn-primary">📋 From Template</a>
+    </div>
   </div>
   <p style="color:var(--ah-text-muted);margin:6px 0 20px">Build custom pages with drag-and-drop blocks — hero banners, card grids, CTAs, FAQs and more.</p>
 
   <?php if ( empty( $pages ) ) : ?>
-    <div class="ah-card" style="text-align:center;padding:48px">
-      <div style="font-size:3rem;margin-bottom:12px">🧱</div>
-      <h3>No pages yet</h3>
-      <p style="color:var(--ah-text-muted)">Click "+ New Page" to create your first drag-and-drop page.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px;">
+      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-page-builder', 'action' => 'builder' ), admin_url( 'admin.php' ) ) ); ?>"
+         class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
+        <div style="font-size:2.5rem;margin-bottom:12px;">🧱</div>
+        <h3 style="margin:0 0 8px;">Blank Page</h3>
+        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Start from scratch — drag and drop blocks to build your page.</p>
+      </a>
+      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-page-builder', 'action' => 'templates' ), admin_url( 'admin.php' ) ) ); ?>"
+         class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;border-top:3px solid var(--ah-primary);" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
+        <div style="font-size:2.5rem;margin-bottom:12px;">📋</div>
+        <h3 style="margin:0 0 8px;">From Template</h3>
+        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Pick a pre-built layout — Landing Page, About Us, Services, FAQ, and more.</p>
+      </a>
     </div>
   <?php else : ?>
     <div class="ah-table-wrap">
@@ -104,6 +181,47 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
       </table>
     </div>
   <?php endif; ?>
+
+<?php /* ══════════════ TEMPLATES VIEW ══════════════ */ ?>
+<?php elseif ( $action === 'templates' ) :
+  $tpls = ah_builder_templates();
+?>
+  <div class="ah-table-top" style="margin-bottom:0">
+    <h1 style="margin:0"><span class="dashicons dashicons-layout"></span> Choose a Template</h1>
+    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-page-builder' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">&larr; Back</a>
+  </div>
+  <p style="color:var(--ah-muted);margin:6px 0 24px;">Pick a pre-built layout. You can edit every block after creation.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+    <?php foreach ( $tpls as $tpl_key => $tpl ) : ?>
+      <div class="ah-card" style="padding:0;overflow:hidden;">
+        <div style="background:var(--ah-primary,#1e40af);color:#fff;padding:20px 24px;">
+          <div style="font-size:2rem;margin-bottom:8px;"><?php echo $tpl['icon']; ?></div>
+          <h3 style="margin:0 0 4px;color:#fff;"><?php echo esc_html( $tpl['label'] ); ?></h3>
+          <p style="margin:0;opacity:.8;font-size:.82rem;"><?php echo esc_html( $tpl['desc'] ); ?></p>
+          <p style="margin:4px 0 0;opacity:.6;font-size:.75rem;"><?php echo count( $tpl['blocks'] ); ?> blocks</p>
+        </div>
+        <div style="padding:20px 24px;">
+          <form method="post">
+            <?php wp_nonce_field( 'ah_builder_save', 'ah_builder_nonce' ); ?>
+            <input type="hidden" name="create_from_template" value="1">
+            <input type="hidden" name="template_key" value="<?php echo esc_attr( $tpl_key ); ?>">
+            <div class="ah-form-row" style="margin-bottom:12px;">
+              <label style="font-size:.8rem;margin-bottom:4px;display:block;font-weight:600;">Page Title</label>
+              <input type="text" name="page_title" value="<?php echo esc_attr( $tpl['label'] ); ?>" required style="width:100%;box-sizing:border-box;">
+            </div>
+            <div class="ah-form-row" style="margin-bottom:16px;">
+              <label style="font-size:.8rem;margin-bottom:4px;display:block;font-weight:600;">Slug (URL)</label>
+              <input type="text" name="page_slug" placeholder="auto-generated-from-title" style="width:100%;box-sizing:border-box;">
+            </div>
+            <button type="submit" class="ah-btn ah-btn-primary" style="width:100%;justify-content:center;">
+              Use This Template &rarr;
+            </button>
+          </form>
+        </div>
+      </div>
+    <?php endforeach; ?>
+  </div>
 
 <?php /* ══════════════ BUILDER VIEW ══════════════ */ ?>
 <?php else : ?>
