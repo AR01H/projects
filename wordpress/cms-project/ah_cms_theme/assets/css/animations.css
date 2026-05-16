@@ -1,0 +1,90 @@
+/* ── Intersection observer fade-ins ───────────────────────────────────────── */
+[data-aos] {
+	opacity: 0;
+	transform: translateY(24px);
+	transition: opacity .6s ease, transform .6s ease;
+}
+
+[data-aos].is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+[data-aos="fade-left"]  { transform: translateX(-24px); }
+[data-aos="fade-right"] { transform: translateX(24px); }
+[data-aos="fade-up"]    { transform: translateY(24px); }
+[data-aos="zoom-in"]    { transform: scale(.96); }
+
+[data-aos="fade-left"].is-visible,
+[data-aos="fade-right"].is-visible,
+[data-aos="fade-up"].is-visible,
+[data-aos="zoom-in"].is-visible { transform: none; opacity: 1; }
+
+/* Stagger delays */
+[data-delay="100"] { transition-delay: .1s; }
+[data-delay="200"] { transition-delay: .2s; }
+[data-delay="300"] { transition-delay: .3s; }
+[data-delay="400"] { transition-delay: .4s; }
+[data-delay="500"] { transition-delay: .5s; }
+
+/* ── Shimmer skeleton ─────────────────────────────────────────────────────── */
+.skeleton {
+	background: linear-gradient(90deg, var(--border) 25%, var(--bg-alt) 50%, var(--border) 75%);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s infinite;
+	border-radius: var(--r-sm);
+}
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* ── Spin ─────────────────────────────────────────────────────────────────── */
+.spin { animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Pulse ────────────────────────────────────────────────────────────────── */
+.pulse { animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+
+/* ── Float badge ──────────────────────────────────────────────────────────── */
+.float { animation: float 4s ease-in-out infinite; }
+@keyframes float {
+	0%,100% { transform: translateY(0); }
+	50%      { transform: translateY(-8px); }
+}
+
+/* ── Gradient text ────────────────────────────────────────────────────────── */
+.grad-text {
+	background: linear-gradient(135deg, var(--accent), var(--client-color-500));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* ── Hover lift cards ─────────────────────────────────────────────────────── */
+.hover-lift {
+	transition: transform .25s, box-shadow .25s;
+}
+.hover-lift:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--shadow-md);
+}
+
+/* ── Gold underline link ──────────────────────────────────────────────────── */
+.underline-gold {
+	position: relative;
+	text-decoration: none;
+}
+.underline-gold::after {
+	content: '';
+	position: absolute;
+	bottom: -2px; left: 0;
+	height: 2px; width: 0;
+	background: var(--accent);
+	transition: width .3s;
+}
+.underline-gold:hover::after { width: 100%; }
+
+/* ── Reduce motion ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+	[data-aos] { opacity: 1; transform: none; }
+}

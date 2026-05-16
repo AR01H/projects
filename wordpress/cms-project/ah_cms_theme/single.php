@@ -1,106 +1,121 @@
-<?php
-defined( 'ABSPATH' ) || exit;
+<?php get_header(); ?>
 
-get_template_part( 'parts/header' );
-
-while ( have_posts() ) :
-  the_post();
-
-  $post_id    = get_the_ID();
-  $title      = get_the_title();
-  $date       = get_the_date( 'j F Y' );
-  $author     = get_the_author();
-  $categories = get_the_category();
-  $cat_name   = ! empty( $categories ) ? $categories[0]->name : '';
-  $thumb      = get_the_post_thumbnail_url( $post_id, 'large' );
-  $read_time  = ceil( str_word_count( strip_tags( get_the_content() ) ) / 200 );
-?>
 <main id="main-content">
+  <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
-  <!-- Article Hero -->
-  <section class="article-hero">
-    <div class="container" style="max-width:860px">
-      <?php if ( $cat_name ) : ?>
-        <div class="eyebrow reveal" style="color:var(--accent)"><?php echo esc_html( $cat_name ); ?></div>
-      <?php endif; ?>
-      <h1 class="reveal reveal-delay-1"><?php echo esc_html( $title ); ?></h1>
-      <div class="article-meta reveal reveal-delay-2">
-        <span><?php echo esc_html( $author ); ?></span>
-        <span>•</span>
-        <time><?php echo esc_html( $date ); ?></time>
-        <span>•</span>
-        <span>⏱ <?php printf( esc_html__( '%d min read', 'ah-theme' ), $read_time ); ?></span>
+  <!-- Post Header -->
+  <header class="section section--sm section--alt" style="padding-bottom:0">
+    <div class="container">
+      <?php ah_breadcrumb(); ?>
+      <div class="content-layout" style="padding-top:24px">
+        <div>
+          <div class="card__meta" style="margin-bottom:16px">
+            <?php
+            $cats = get_the_category();
+            if ( $cats ) :
+              foreach ( $cats as $cat ) :
+            ?>
+              <a href="<?php echo esc_url( get_category_link( $cat ) ); ?>" style="color:var(--accent);font-weight:600">
+                <?php echo esc_html( $cat->name ); ?>
+              </a>
+            <?php endforeach; endif; ?>
+            <span>·</span>
+            <span><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></span>
+            <span>·</span>
+            <span><?php echo esc_html( ah_reading_time() ); ?></span>
+          </div>
+
+          <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.2;letter-spacing:-0.02em;margin-bottom:20px">
+            <?php the_title(); ?>
+          </h1>
+
+          <p style="font-size:1.1rem;color:var(--text-secondary);line-height:1.7;max-width:640px">
+            <?php echo esc_html( wp_trim_words( get_the_excerpt(), 40, '…' ) ); ?>
+          </p>
+        </div>
+        <div></div>
       </div>
     </div>
-  </section>
+  </header>
 
-  <!-- Featured Image -->
-  <?php if ( $thumb ) : ?>
-    <div class="article-hero-img reveal">
-      <div class="container" style="max-width:860px">
-        <img src="<?php echo esc_url( $thumb ); ?>"
-             alt="<?php echo esc_attr( $title ); ?>"
-             class="article-featured-img"
-             loading="eager">
-      </div>
-    </div>
-  <?php endif; ?>
+  <!-- Post Content -->
+  <div class="container section">
+    <div class="content-layout">
+      <!-- Main content -->
+      <article class="prose" data-aos="fade-up">
+        <?php if ( has_post_thumbnail() ) : ?>
+          <div style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/9">
+            <?php the_post_thumbnail( 'ah-hero', [ 'style' => 'width:100%;height:100%;object-fit:cover' ] ); ?>
+          </div>
+        <?php endif; ?>
 
-  <!-- Article Body -->
-  <article class="section article-body">
-    <div class="container" style="max-width:760px">
-      <div class="article-content reveal">
         <?php the_content(); ?>
-      </div>
 
-      <!-- Tags -->
-      <?php
-      $tags = get_the_tags();
-      if ( $tags ) :
-      ?>
-        <div class="article-tags">
+        <!-- Tags -->
+        <?php
+        $tags = get_the_tags();
+        if ( $tags ) :
+        ?>
+        <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
           <?php foreach ( $tags as $tag ) : ?>
-            <a href="<?php echo esc_url( get_tag_link( $tag ) ); ?>" class="tag"><?php echo esc_html( $tag->name ); ?></a>
+            <a href="<?php echo esc_url( get_tag_link( $tag ) ); ?>"
+               style="display:inline-block;padding:4px 12px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--r-full);font-size:.78rem;font-weight:600;color:var(--text-secondary);text-decoration:none">
+              #<?php echo esc_html( $tag->name ); ?>
+            </a>
           <?php endforeach; ?>
         </div>
-      <?php endif; ?>
+        <?php endif; ?>
 
-      <!-- Author Box -->
-      <div class="author-box reveal">
-        <div class="author-box__avatar">
-          <?php echo get_avatar( get_the_author_meta( 'email' ), 64, '', '', [ 'class' => 'author-box__img' ] ); ?>
+        <!-- Author bio -->
+        <div style="margin-top:40px;padding:24px;background:var(--bg-alt);border-radius:var(--r-lg);display:flex;gap:20px;align-items:flex-start">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--accent);color:white;display:grid;place-items:center;font-family:var(--font-display);font-size:1.2rem;font-weight:700;flex-shrink:0">
+            <?php echo esc_html( strtoupper( substr( get_the_author_meta('display_name'), 0, 1 ) ) ); ?>
+          </div>
+          <div>
+            <div style="font-weight:700;margin-bottom:4px"><?php the_author_meta('display_name'); ?></div>
+            <div style="font-size:.875rem;color:var(--text-muted)">Buyer's Agent · Advaith Homes</div>
+          </div>
         </div>
-        <div>
-          <div class="author-box__name"><?php echo esc_html( $author ); ?></div>
-          <p class="author-box__bio"><?php echo esc_html( get_the_author_meta( 'description' ) ?: __( 'Expert buyer agent at Advaith Homes.', 'ah-theme' ) ); ?></p>
-        </div>
-      </div>
+      </article>
 
-      <!-- Post Navigation -->
-      <nav class="post-nav" aria-label="<?php esc_attr_e( 'Article navigation', 'ah-theme' ); ?>">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-card__title">Free Consultation</div>
+          <p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:16px">
+            Ready to put this into practice? Speak to one of our buyer's agents — free and no obligation.
+          </p>
+          <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary btn-block">Book a Free Call →</a>
+        </div>
+
+        <!-- Related posts -->
         <?php
-        $prev = get_previous_post();
-        $next = get_next_post();
-        if ( $prev ) :
+        $related = get_posts( [
+          'numberposts'      => 3,
+          'category__in'     => wp_get_post_categories( get_the_ID() ),
+          'post__not_in'     => [ get_the_ID() ],
+          'post_status'      => 'publish',
+        ] );
+        if ( $related ) :
         ?>
-          <a href="<?php echo esc_url( get_permalink( $prev ) ); ?>" class="post-nav__link post-nav__link--prev">
-            <span class="post-nav__dir">← <?php esc_html_e( 'Previous', 'ah-theme' ); ?></span>
-            <span class="post-nav__title"><?php echo esc_html( get_the_title( $prev ) ); ?></span>
-          </a>
+        <div class="sidebar-card">
+          <div class="sidebar-card__title">Related Articles</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <?php foreach ( $related as $rp ) : ?>
+              <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>"
+                 style="font-size:.875rem;font-weight:500;color:var(--text-secondary);text-decoration:none;display:block;line-height:1.4">
+                <?php echo esc_html( get_the_title( $rp ) ); ?>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </div>
         <?php endif; ?>
-        <?php if ( $next ) : ?>
-          <a href="<?php echo esc_url( get_permalink( $next ) ); ?>" class="post-nav__link post-nav__link--next">
-            <span class="post-nav__dir"><?php esc_html_e( 'Next', 'ah-theme' ); ?> →</span>
-            <span class="post-nav__title"><?php echo esc_html( get_the_title( $next ) ); ?></span>
-          </a>
-        <?php endif; ?>
-      </nav>
+      </aside>
     </div>
-  </article>
+  </div>
 
+  <?php endwhile; ?>
 </main>
 
-<?php endwhile; ?>
-
-<?php get_template_part( 'components/cta' ); ?>
-<?php get_template_part( 'parts/footer' ); ?>
+<?php get_template_part( 'components/cta-section' ); ?>
+<?php get_footer(); ?>

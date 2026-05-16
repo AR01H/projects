@@ -7,7 +7,7 @@ class AH_Admin_Menus {
 
 	public static function register(): void {
 		// Top-level: CMS Dashboard
-		add_menu_page(__( 'CMS Portal', 'ah-theme' ),__( 'CMS Portal', 'ah-theme' ),self::$cap,'ah-dashboard',[self::class,'page_dashboard'],'dashicons-admin-home',3);
+		add_menu_page(__( 'CMS ADMIN', 'ah-theme' ),__( 'CMS ADMIN', 'ah-theme' ),self::$cap,'ah-dashboard',[self::class,'page_dashboard'],'dashicons-admin-home',3);
 
 		$submenus = [
 			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],

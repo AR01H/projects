@@ -1,8 +1,4 @@
-<?php
-defined( 'ABSPATH' ) || exit;
-
-get_template_part( 'parts/header' );
-?>
+<?php get_header(); ?>
 <main id="main-content">
 
   <section class="section" style="min-height:70vh;display:flex;align-items:center">
@@ -30,4 +26,4 @@ get_template_part( 'parts/header' );
   </section>
 
 </main>
-<?php get_template_part( 'parts/footer' ); ?>
+<?php get_footer(); ?>
