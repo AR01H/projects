@@ -645,7 +645,6 @@
 }
 .breadcrumb__link:hover { color: var(--accent); }
 .breadcrumb__sep {
-	color: var(--border);
 	font-size: .9rem;
 	line-height: 1;
 	margin: 0 2px;

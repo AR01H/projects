@@ -180,6 +180,20 @@ class AH_Theme_Admin {
 		$lines = array_filter( array_map( 'sanitize_text_field', explode( "\n", $_POST['news_bar_items'] ?? '' ) ) );
 		update_option( 'ah_news_bar_items', wp_json_encode( array_values( $lines ) ) );
 
+		// Trust signals
+		$signals = [];
+		foreach ( (array) ( $_POST['trust_signals'] ?? [] ) as $sig ) {
+			$text = sanitize_text_field( $sig['text'] ?? '' );
+			if ( ! $text ) continue;
+			$signals[] = [
+				'icon' => sanitize_text_field( $sig['icon'] ?? '' ),
+				'text' => $text,
+			];
+		}
+		if ( ! empty( $signals ) ) {
+			update_option( 'ah_trust_signals', wp_json_encode( $signals ) );
+		}
+
 		// Properties
 		$props = [];
 		foreach ( (array) ( $_POST['properties'] ?? [] ) as $p ) {
