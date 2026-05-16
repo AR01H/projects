@@ -26,6 +26,23 @@ class AH_DB_Installer {
 		self::ensure_builder_table();
 		self::ensure_required_settings();
 		self::drop_broken_fks();
+		self::ensure_review_short_desc();
+	}
+
+	/**
+	 * Add short_desc column to ah_reviews if it doesn't exist yet.
+	 */
+	public static function ensure_review_short_desc(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_reviews';
+		$col   = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'short_desc'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `short_desc` VARCHAR(400) DEFAULT NULL AFTER `reviewer_title`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	/**

@@ -16,6 +16,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	$data = array(
 		'reviewer_name'  => sanitize_text_field( $_POST['reviewer_name'] ?? '' ),
 		'reviewer_title' => sanitize_text_field( $_POST['reviewer_title'] ?? '' ),
+		'short_desc'     => sanitize_text_field( $_POST['short_desc'] ?? '' ),
 		'review_text'    => wp_kses_post( $_POST['review_text'] ?? '' ),
 		'rating'         => min( 5, max( 1, (int) ( $_POST['rating'] ?? 5 ) ) ),
 		'source'         => sanitize_key( $_POST['source'] ?? 'manual' ),
@@ -132,6 +133,10 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
             <div class="ah-form-row">
               <label>Title / Company <small style="font-weight:400;color:var(--ah-muted);">(e.g. "First-Time Buyer" or "Google Review")</small></label>
               <input type="text" name="reviewer_title" value="<?php echo esc_attr( $item->reviewer_title ?? '' ); ?>">
+            </div>
+            <div class="ah-form-row">
+              <label>Mini Description <small style="font-weight:400;color:var(--ah-muted);">(short bio or context — shown below name)</small></label>
+              <input type="text" name="short_desc" value="<?php echo esc_attr( $item->short_desc ?? '' ); ?>" placeholder="e.g. Bought first home in London, 2024">
             </div>
           </div>
 
