@@ -19,6 +19,11 @@ $trust_signals = ah_get_trust_signals();
 
 // Blog post suggestions for picker
 $all_posts = get_posts( [ 'numberposts' => 50, 'post_status' => 'publish' ] );
+
+// Static pages
+$static_pages      = ah_get_static_pages();
+$static_quick_opt  = get_option( 'ah_static_quick_links', '' );
+$static_page_sugg  = array_map( fn( $p ) => [ 'id' => $p['slug'], 'label' => $p['label'] ], $static_pages );
 $post_suggestions = array_map( function( $p ) {
 	return [ 'id' => (string) $p->ID, 'label' => $p->post_title ];
 }, $all_posts );
@@ -142,6 +147,56 @@ $news_text = implode( "\n", array_map( fn($s) => is_string($s) ? $s : '', $news_
                   style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px;font-size:.8rem;font-family:monospace"><?php echo esc_textarea( $html_blocks_raw[ $bkey ] ?? '' ); ?></textarea>
       </div>
       <?php endforeach; ?>
+    </div>
+
+    <!-- ── Static Pages Manager ─────────────────────────────────────────── -->
+    <div class="ah-admin-box" style="margin-bottom:20px">
+      <h2>📄 Static Pages</h2>
+      <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">
+        Static HTML pages stored in <code>static/</code> inside the theme.
+        Edit their content at <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-static-pages' ) ); ?>" target="_blank">CMS → Static HTML Pages ↗</a>.
+        Use the picker below to select pages that appear as <strong>Quick Links</strong> in the navigation and footer.
+      </p>
+
+      <?php if ( empty( $static_pages ) ) : ?>
+        <div class="ah-admin-notice ah-admin-notice--warn">
+          No static pages found yet. Run <strong>Install Mock Data</strong> to seed 7 demo pages (stamp duty calculator, mortgage calculator, glossary, and more).
+        </div>
+      <?php else : ?>
+        <table class="ah-admin-table" style="margin-bottom:16px">
+          <thead><tr><th>Page</th><th>Slug</th><th>WP Page</th><th>URL</th></tr></thead>
+          <tbody>
+            <?php foreach ( $static_pages as $sp ) : ?>
+            <tr>
+              <td style="font-weight:600"><?php echo esc_html( $sp['label'] ); ?></td>
+              <td><code><?php echo esc_html( $sp['slug'] ); ?></code></td>
+              <td>
+                <?php if ( $sp['has_wp_page'] ) : ?>
+                  <span class="ah-badge ah-badge--ok">✓ Created</span>
+                <?php else : ?>
+                  <span class="ah-badge ah-badge--warn">Missing</span>
+                <?php endif; ?>
+              </td>
+              <td><a href="<?php echo esc_url( $sp['url'] ); ?>" target="_blank" style="font-size:.8rem;color:#b7791f"><?php echo esc_html( $sp['url'] ); ?></a></td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php endif; ?>
+
+      <label style="font-weight:600;font-size:.875rem;display:block;margin-bottom:8px">Quick Links (shown in nav dropdowns and footer)</label>
+      <div class="ah-picker-wrap">
+        <div class="ah-tag-picker" data-picker="static_quick_links"
+             data-suggestions='<?php echo esc_attr( wp_json_encode( $static_page_sugg ) ); ?>'>
+          <input type="text" class="ah-tag-picker__input" placeholder="Type a page name…" autocomplete="off">
+        </div>
+        <div class="ah-suggestions" style="display:none"></div>
+      </div>
+      <input type="hidden" name="static_quick_links" class="ah-picker-value"
+             value="<?php echo esc_attr( is_string( $static_quick_opt ) ? $static_quick_opt : '' ); ?>">
+      <p style="font-size:.78rem;color:#94a3b8;margin-top:6px">
+        Currently: <code><?php echo esc_html( ( is_string( $static_quick_opt ) && $static_quick_opt ) ? $static_quick_opt : '(none selected)' ); ?></code>
+      </p>
     </div>
 
     <!-- ── Contact Form Settings ─────────────────────────────────────────── -->

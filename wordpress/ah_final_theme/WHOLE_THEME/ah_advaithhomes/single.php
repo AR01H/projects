@@ -93,32 +93,6 @@
           </a>
         </div>
 
-        <!-- Related posts -->
-        <?php
-        $related = get_posts( [
-          'numberposts'  => 3,
-          'category__in' => wp_get_post_categories( get_the_ID() ),
-          'post__not_in' => [ get_the_ID() ],
-          'post_status'  => 'publish',
-        ] );
-        if ( $related ) :
-        ?>
-        <div class="sidebar-card">
-          <div class="sidebar-card__title">Related Articles</div>
-          <div class="sidebar-related">
-            <?php foreach ( $related as $rp ) : ?>
-              <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>" class="sidebar-related__item">
-                <?php if ( has_post_thumbnail( $rp ) ) : ?>
-                  <div class="sidebar-related__thumb">
-                    <?php echo get_the_post_thumbnail( $rp, [ 80, 60 ] ); ?>
-                  </div>
-                <?php endif; ?>
-                <span class="sidebar-related__title"><?php echo esc_html( get_the_title( $rp ) ); ?></span>
-              </a>
-            <?php endforeach; ?>
-          </div>
-        </div>
-        <?php endif; ?>
 
         <!-- Quick links -->
         <div class="sidebar-card">
@@ -137,6 +111,61 @@
 </main>
 
 <?php endwhile; ?>
+
+<!-- ── Related Articles ───────────────────────────────────────────────────── -->
+<?php
+$_related = get_posts( [
+  'numberposts'  => 3,
+  'category__in' => wp_get_post_categories( get_the_ID() ),
+  'post__not_in' => [ get_the_ID() ],
+  'post_status'  => 'publish',
+] );
+if ( $_related ) :
+?>
+<section class="section section--alt" aria-label="Related articles">
+  <div class="container">
+    <div class="section__header" style="margin-bottom:32px">
+      <span class="section__eyebrow">Keep Reading</span>
+      <h2 class="section__title" style="font-size:1.5rem">Related Articles</h2>
+    </div>
+    <div class="post-grid">
+      <?php foreach ( $_related as $rp ) : ?>
+      <article class="post-card">
+        <?php if ( has_post_thumbnail( $rp ) ) : ?>
+        <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>" class="post-card__img-wrap">
+          <?php echo get_the_post_thumbnail( $rp, 'ah-card' ); ?>
+        </a>
+        <?php else : ?>
+        <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>" class="post-card__img-wrap"
+           style="background:var(--bg-alt);display:flex;align-items:center;justify-content:center;min-height:160px;font-size:2.5rem">
+          📰
+        </a>
+        <?php endif; ?>
+        <div class="post-card__body">
+          <?php $rp_cats = get_the_category( $rp->ID ); if ( $rp_cats ) : ?>
+          <div class="post-card__cat"><?php echo esc_html( $rp_cats[0]->name ); ?></div>
+          <?php endif; ?>
+          <div class="card__meta">
+            <span><?php echo esc_html( get_the_date( 'j M Y', $rp ) ); ?></span>
+            <span>·</span>
+            <span><?php echo esc_html( ah_reading_time( $rp->ID ) ); ?></span>
+          </div>
+          <h3 class="post-card__title">
+            <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>"><?php echo esc_html( get_the_title( $rp ) ); ?></a>
+          </h3>
+          <p class="post-card__excerpt">
+            <?php echo esc_html( wp_trim_words( get_the_excerpt( $rp ), 20, '…' ) ); ?>
+          </p>
+          <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>" class="btn btn-sm btn-ghost" style="margin-top:auto">
+            Read →
+          </a>
+        </div>
+      </article>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php get_template_part( 'components/cta-section' ); ?>
 <?php get_footer(); ?>

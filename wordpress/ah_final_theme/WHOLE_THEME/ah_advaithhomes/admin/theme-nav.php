@@ -4,9 +4,12 @@ defined( 'ABSPATH' ) || exit;
 $saved = isset( $_GET['saved'] );
 
 // Load current values
-$nav_vis   = ah_get_nav_visibility();
-$nav_links = ah_get_nav_static_links();
-$nav_cta   = ah_get_nav_cta();
+$nav_vis         = ah_get_nav_visibility();
+$nav_links       = ah_get_nav_static_links();
+$nav_cta         = ah_get_nav_cta();
+$static_pages    = ah_get_static_pages();
+$static_nav_items = ah_get_nav_static_page_links();
+$static_sugg     = array_map( fn( $p ) => [ 'id' => $p['slug'], 'label' => $p['label'] ], $static_pages );
 
 $buying  = ah_get_nav_buying_topics();
 $finance = ah_get_nav_finance_topics();
@@ -139,6 +142,48 @@ $dropdown_groups = [
     </div>
     <?php endforeach; ?>
 
+    <!-- ── Static Page Quick Links ──────────────────────────────────────────── -->
+    <div class="ah-admin-box" style="margin-bottom:20px">
+      <h2>📄 Static Page Quick Links</h2>
+      <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">
+        Add links to static HTML pages into nav dropdowns or footer.
+        Each row becomes an extra item in the chosen section.
+        <?php if ( empty( $static_pages ) ) : ?>
+          <strong style="color:#d97706">No static pages found — run Install Mock Data to generate them.</strong>
+        <?php endif; ?>
+      </p>
+      <div class="ah-nav-rows" id="static-link-rows">
+        <?php foreach ( $static_nav_items as $i => $sitem ) :
+          $sitem = is_array( $sitem ) ? $sitem : [];
+        ?>
+        <div class="ah-nav-row">
+          <select name="static_nav[<?php echo $i; ?>][section]" style="width:140px;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem">
+            <option value="buying"  <?php selected( ($sitem['section']??''), 'buying'  ); ?>>Buying</option>
+            <option value="finance" <?php selected( ($sitem['section']??''), 'finance' ); ?>>Finance</option>
+            <option value="legal"   <?php selected( ($sitem['section']??''), 'legal'   ); ?>>Legal</option>
+            <option value="footer"  <?php selected( ($sitem['section']??''), 'footer'  ); ?>>Footer only</option>
+          </select>
+          <div class="ah-slink-wrap" style="position:relative;flex:1;min-width:160px">
+            <input type="text" name="static_nav[<?php echo $i; ?>][slug]"
+                   value="<?php echo esc_attr( $sitem['slug'] ?? '' ); ?>"
+                   placeholder="page-slug" class="ah-slink-slug"
+                   style="width:100%;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem"
+                   autocomplete="off">
+            <div class="ah-suggestions ah-slink-drop" style="display:none"></div>
+          </div>
+          <input type="text" name="static_nav[<?php echo $i; ?>][label]"
+                 value="<?php echo esc_attr( $sitem['label'] ?? '' ); ?>"
+                 placeholder="Link label" style="width:200px">
+          <input type="text" name="static_nav[<?php echo $i; ?>][icon]"
+                 value="<?php echo esc_attr( $sitem['icon'] ?? '' ); ?>"
+                 placeholder="📄" style="width:55px" title="Emoji icon">
+          <button type="button" class="button ah-nav-remove-row">✕</button>
+        </div>
+        <?php endforeach; ?>
+      </div>
+      <button type="button" class="button" id="add-static-link" style="margin-top:10px">+ Add Static Page Link</button>
+    </div>
+
     <p class="submit" style="margin-top:0">
       <?php submit_button( 'Save Navigation', 'primary', 'submit', false ); ?>
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" class="button" style="margin-left:8px">View Site →</a>
@@ -165,7 +210,7 @@ $dropdown_groups = [
     }
   });
 
-  // Add row
+  // Add dropdown topic row
   document.querySelectorAll('.ah-nav-add-row').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var target  = document.getElementById(btn.dataset.target);
@@ -182,6 +227,65 @@ $dropdown_groups = [
         '<button type="button" class="button ah-nav-remove-row">✕</button>';
       target.appendChild(row);
     });
+  });
+
+  // Static page slug autocomplete
+  var staticSugg = <?php echo wp_json_encode( $static_sugg ); ?>;
+
+  function attachSlugPicker(wrap) {
+    var input = wrap.querySelector('.ah-slink-slug');
+    var drop  = wrap.querySelector('.ah-slink-drop');
+    if (!input || !drop || !staticSugg.length) return;
+    input.addEventListener('input', function() {
+      var q = input.value.toLowerCase().trim();
+      if (!q) { drop.style.display = 'none'; return; }
+      var hits = staticSugg.filter(function(s) {
+        return s.id.includes(q) || s.label.toLowerCase().includes(q);
+      }).slice(0, 6);
+      if (!hits.length) { drop.style.display = 'none'; return; }
+      drop.innerHTML = hits.map(function(s) {
+        return '<div class="ah-suggestion-item" data-slug="' + s.id + '" data-label="' + s.label.replace(/"/g, '&quot;') + '">'
+          + s.label + ' <span style="color:#94a3b8;font-size:.78rem">/' + s.id + '/</span></div>';
+      }).join('');
+      drop.style.display = 'block';
+      drop.querySelectorAll('.ah-suggestion-item').forEach(function(item) {
+        item.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          input.value = item.dataset.slug;
+          var labelInput = wrap.closest('.ah-nav-row').querySelector('input[name*="[label]"]');
+          if (labelInput && !labelInput.value) labelInput.value = item.dataset.label;
+          drop.style.display = 'none';
+        });
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!wrap.contains(e.target)) drop.style.display = 'none';
+    });
+  }
+
+  document.querySelectorAll('.ah-slink-wrap').forEach(attachSlugPicker);
+
+  // Add static link row
+  document.getElementById('add-static-link').addEventListener('click', function() {
+    var rows  = document.getElementById('static-link-rows');
+    var count = rows.querySelectorAll('.ah-nav-row').length;
+    var row   = document.createElement('div');
+    row.className = 'ah-nav-row';
+    row.innerHTML =
+      '<select name="static_nav[' + count + '][section]" style="width:140px;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem">' +
+        '<option value="buying">Buying</option><option value="finance">Finance</option>' +
+        '<option value="legal">Legal</option><option value="footer">Footer only</option>' +
+      '</select>' +
+      '<div class="ah-slink-wrap" style="position:relative;flex:1;min-width:160px">' +
+        '<input type="text" name="static_nav[' + count + '][slug]" placeholder="page-slug" class="ah-slink-slug"' +
+        ' style="width:100%;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem" autocomplete="off">' +
+        '<div class="ah-suggestions ah-slink-drop" style="display:none"></div>' +
+      '</div>' +
+      '<input type="text" name="static_nav[' + count + '][label]" placeholder="Link label" style="width:200px">' +
+      '<input type="text" name="static_nav[' + count + '][icon]"  placeholder="📄" style="width:55px" title="Emoji">' +
+      '<button type="button" class="button ah-nav-remove-row">✕</button>';
+    rows.appendChild(row);
+    attachSlugPicker(row.querySelector('.ah-slink-wrap'));
   });
 })();
 </script>

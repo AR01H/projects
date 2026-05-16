@@ -42,6 +42,9 @@ $seeded = ! empty( $_GET['seeded'] );
           [ 'item' => 'Guide Categories', 'type' => 'WP option (ah_guide_categories)','count' => 4,'current' => $counts['ah_guide_categories'] !== '—' ? '✓' : null ],
           [ 'item' => 'Nav Topics',       'type' => 'WP options (ah_nav_*)',       'count' => 3,  'current' => get_option('ah_nav_buying_topics') ? '✓' : null ],
           [ 'item' => 'Buying Guide Nav', 'type' => 'WP option (ah_guide_nav)',    'count' => 9,  'current' => $counts['ah_guide_nav'] !== '—' ? '✓' : null ],
+          [ 'item' => 'Properties',      'type' => 'WP option (ah_featured_properties)', 'count' => 6, 'current' => get_option('ah_featured_properties') ? '✓' : null ],
+          [ 'item' => 'Blog Posts',      'type' => 'WP posts (published)',        'count' => 3,  'current' => wp_count_posts()->publish >= 3 ? '✓' : null ],
+          [ 'item' => 'Static Pages',    'type' => 'HTML files + WP pages',       'count' => 7,  'current' => ( count( glob( trailingslashit( get_template_directory() ) . 'static/*.html' ) ?: [] ) >= 7 ) ? '✓' : null ],
         ];
         foreach ( $items as $r ) :
           $has = ! empty( $r['current'] ) && $r['current'] !== '—' && $r['current'] !== 0 && $r['current'] !== null;
@@ -67,7 +70,8 @@ $seeded = ! empty( $_GET['seeded'] );
 
   <!-- Warning -->
   <div class="ah-admin-notice ah-admin-notice--warn">
-    ⚠️ <strong>Note:</strong> Running the seeder will <strong>add</strong> rows to existing tables (it does not truncate first).
+    ⚠️ <strong>Note:</strong> Running the seeder will <strong>create any missing DB tables</strong> automatically, then
+    <strong>add</strong> rows (it does not truncate existing data first).
     If you want a clean install, run <a href="<?php echo esc_url( admin_url('admin.php?page=ah-theme-cleanup') ); ?>">Cleanup Data</a> first.
   </div>
 
@@ -75,7 +79,7 @@ $seeded = ! empty( $_GET['seeded'] );
   <div class="ah-admin-box">
     <h2>Run Seeder</h2>
     <p style="margin-bottom:20px;color:#64748b;font-size:.9rem">
-      This will populate all the tables listed above with realistic mock data — services, team members, reviews, FAQs, news ticker items, and all settings.
+      This will populate all CMS tables and WordPress options with realistic mock data — services, team members, reviews, FAQs, news ticker items, settings, properties, blog posts, and 7 static HTML pages (stamp duty calculator, mortgage calculator, glossary, and more).
     </p>
     <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
       <?php wp_nonce_field( 'ah_theme_seed' ); ?>
@@ -108,6 +112,9 @@ AH_Theme_Seeder::seed_news_bar();
 AH_Theme_Seeder::seed_home_settings();
 AH_Theme_Seeder::seed_process_steps();
 AH_Theme_Seeder::seed_site_stats();
+AH_Theme_Seeder::seed_properties();
+AH_Theme_Seeder::seed_blog_posts();
+AH_Theme_Seeder::seed_static_pages();  // writes 7 HTML files + WP pages
     </pre>
   </div>
 

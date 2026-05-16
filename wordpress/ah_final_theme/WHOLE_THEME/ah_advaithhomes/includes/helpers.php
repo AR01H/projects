@@ -343,3 +343,34 @@ function ah_reading_time( int $post_id = 0 ): string {
 	$count   = str_word_count( wp_strip_all_tags( $content ) );
 	return max( 1, (int) ceil( $count / 200 ) ) . ' min read';
 }
+
+// ── Static Pages ──────────────────────────────────────────────────────────────
+function ah_get_static_pages(): array {
+	$dir   = trailingslashit( get_template_directory() ) . 'static/';
+	$files = glob( $dir . '*.html' ) ?: [];
+	$pages = [];
+	foreach ( $files as $file ) {
+		$slug    = basename( $file, '.html' );
+		$label   = ucwords( str_replace( '-', ' ', $slug ) );
+		$wp_page = get_page_by_path( $slug );
+		$pages[] = [
+			'slug'        => $slug,
+			'label'       => $label,
+			'url'         => $wp_page ? get_permalink( $wp_page->ID ) : home_url( '/' . $slug . '/' ),
+			'has_wp_page' => (bool) $wp_page,
+		];
+	}
+	return $pages;
+}
+
+function ah_get_static_quick_links(): array {
+	$opt = get_option( 'ah_static_quick_links', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return (array) $opt;
+}
+
+function ah_get_nav_static_page_links(): array {
+	$opt = get_option( 'ah_nav_static_page_links', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return (array) $opt;
+}

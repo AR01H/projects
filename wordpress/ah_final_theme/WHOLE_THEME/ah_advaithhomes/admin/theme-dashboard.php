@@ -90,7 +90,7 @@ $plugin_ok = class_exists( 'AH_Admin_Bootstrap' ) || defined( 'AH_PLUGIN_VERSION
           [ 'type' => 'Nav Topics',     'primary' => 'WP Option: ah_nav_*_topics',   'fallback' => 'ah_mock_nav_*_topics()',    'opt' => $counts['ah_nav_buying_topics'] ?? '—' ],
         ];
         foreach ( $sources as $src ) :
-          if ( isset( $src['count'] ) ) {
+          if ( array_key_exists( 'count', $src ) ) {
             $status_class = ( $src['count'] === null ) ? 'warn' : ( $src['count'] > 0 ? 'ok' : 'warn' );
             $status_label = ( $src['count'] === null ) ? 'Table missing' : ( $src['count'] > 0 ? $src['count'] . ' rows' : 'Empty — using fallback' );
           } else {

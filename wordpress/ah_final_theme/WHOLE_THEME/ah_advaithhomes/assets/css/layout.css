@@ -1,6 +1,16 @@
 /* ── Page Offset (nav height) ─────────────────────────────────────────────── */
 #page-content { padding-top: var(--nav-h); }
 
+/* WordPress admin bar pushes fixed nav down — match the offset */
+.admin-bar .nav               { top: 32px; }
+.admin-bar .nav__mobile       { top: calc(32px + var(--nav-h)); }
+.admin-bar #page-content      { padding-top: calc(var(--nav-h) + 32px); }
+@media screen and (max-width: 782px) {
+  .admin-bar .nav             { top: 46px; }
+  .admin-bar .nav__mobile     { top: calc(46px + var(--nav-h)); }
+  .admin-bar #page-content    { padding-top: calc(var(--nav-h) + 46px); }
+}
+
 /* ── Sidebar Layout (article/guide pages) ────────────────────────────────── */
 .content-layout {
 	display: grid;

@@ -15,8 +15,8 @@ class AH_Theme_Admin {
 
 	public static function register_menus(): void {
 		add_menu_page(
-			__( 'AH Theme', 'ah-theme' ),
-			__( 'AH Theme', 'ah-theme' ),
+			__( 'CMS Controller', 'ah-theme' ),
+			__( 'CMS Controller', 'ah-theme' ),
 			'manage_options',
 			'ah-theme-admin',
 			[ self::class, 'page_dashboard' ],
@@ -148,6 +148,21 @@ class AH_Theme_Admin {
 			'url'   => sanitize_text_field( $_POST['nav_cta_url']   ?? '/contact/' ),
 		] ) );
 
+		// Static page nav links
+		$valid_sections = [ 'buying', 'finance', 'legal', 'footer' ];
+		$static_links   = [];
+		foreach ( (array) ( $_POST['static_nav'] ?? [] ) as $item ) {
+			$slug = sanitize_title( $item['slug'] ?? '' );
+			if ( ! $slug ) continue;
+			$static_links[] = [
+				'slug'    => $slug,
+				'label'   => sanitize_text_field( $item['label'] ?? '' ),
+				'icon'    => sanitize_text_field( $item['icon']  ?? '' ),
+				'section' => in_array( $item['section'] ?? '', $valid_sections, true ) ? $item['section'] : 'buying',
+			];
+		}
+		update_option( 'ah_nav_static_page_links', wp_json_encode( $static_links ) );
+
 		// Dropdown topics
 		foreach ( [ 'buying', 'finance', 'legal' ] as $section ) {
 			$items = [];
@@ -230,6 +245,9 @@ class AH_Theme_Admin {
 			'show_timeline'   => ! empty( $_POST['contact']['show_timeline'] ),
 		];
 		update_option( 'ah_contact_settings', wp_json_encode( $contact ) );
+
+		// Static quick links (comma-separated slugs from picker)
+		update_option( 'ah_static_quick_links', sanitize_text_field( $_POST['static_quick_links'] ?? '' ) );
 
 		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-content', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
