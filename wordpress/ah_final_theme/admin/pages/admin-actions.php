@@ -74,6 +74,20 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 			<div class="ah-action-result"></div>
 		</div>
 
+		<!-- Delete & Create Schema -->
+		<div class="ah-card ah-action-card" style="border-top:3px solid #dc2626;">
+			<div class="ah-action-icon" style="background:#fef2f2;">
+				<span class="dashicons dashicons-database" style="color:#dc2626;"></span>
+			</div>
+			<h3 style="color:#dc2626;">Delete &amp; Create Schema</h3>
+			<p>Drop <strong>all</strong> <code>wp_ah_*</code> tables and rebuild them from scratch. Default settings and seed data will be restored. <strong>All content will be permanently lost.</strong></p>
+			<button class="ah-btn ah-btn-danger ah-action-btn"
+				data-action="ah_rebuild_schema"
+				data-confirm="⚠️ DANGER: This will permanently delete ALL data in every wp_ah_* table and recreate the schema from scratch. This cannot be undone. Type YES in the next prompt to confirm."
+				data-double-confirm="YES">Dangerous Run</button>
+			<div class="ah-action-result"></div>
+		</div>
+
 	</div>
 </div>
 
@@ -128,6 +142,15 @@ jQuery(function($){
 		var confirm_msg = $btn.data('confirm');
 
 		if (confirm_msg && !window.confirm(confirm_msg)) return;
+
+		var double_confirm = $btn.data('double-confirm');
+		if (double_confirm) {
+			var typed = window.prompt('Type "' + double_confirm + '" to confirm:');
+			if (typed !== double_confirm) {
+				window.alert('Cancelled — text did not match.');
+				return;
+			}
+		}
 
 		$btn.prop('disabled', true).text('Running…');
 		$result.removeClass('ok err').hide();

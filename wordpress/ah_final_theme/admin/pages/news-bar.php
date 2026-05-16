@@ -24,7 +24,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	$action = 'list';
 }
 
-if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_newsbar' ) ) {
+if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_newsbar' ) ) {
 	$model->delete( (int) $_GET['delete_id'] );
 	$notice = 'Item deleted.';
 }

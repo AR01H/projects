@@ -10,8 +10,12 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Constants ────────────────────────────────────────────────────────────────
-define( 'AH_PLUGIN_VERSION', '1.0.2' );
+define( 'AH_PLUGIN_VERSION', '1.0.3' );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
+
+// Table name infix — all custom tables are named: {wpdb_prefix}ah{TABLE_MID_FIX}{table_suffix}
+// e.g. wp_ah_cms_plug_services. Change this only before first install.
+define( 'TABLE_MID_FIX', '_cms_plug_' );
 
 // plugin_dir_path() has a trailing slash; strip it so paths match the existing
 // AH_THEME_DIR convention (no trailing slash) — autoloader adds its own slash.

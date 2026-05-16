@@ -3,15 +3,19 @@
  * Plugin Name:  AH CMS
  * Description:  CMS engine — admin portal, database, models, helpers, and form builder.
  *               Install as a plugin and pair with any frontend theme that reads wp_ah_* tables.
- * Version:      1.0.0
+ * Version:      1.0.2
  * Author:       Akhilesh Ravuri
  * Text Domain:  ah-theme
  */
 defined( 'ABSPATH' ) || exit;
 
 // ── Constants ────────────────────────────────────────────────────────────────
-define( 'AH_PLUGIN_VERSION', '1.0.0' );
+define( 'AH_PLUGIN_VERSION', '1.0.3' );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
+
+// Table name infix — all custom tables are named: {wpdb_prefix}ah{TABLE_MID_FIX}{table_suffix}
+// e.g. wp_ah_cms_plug_services. Change this only before first install.
+define( 'TABLE_MID_FIX', '_cms_plug_' );
 
 // plugin_dir_path() has a trailing slash; strip it so paths match the existing
 // AH_THEME_DIR convention (no trailing slash) — autoloader adds its own slash.
@@ -27,6 +31,9 @@ define( 'AH_THEME_VERSION', AH_PLUGIN_VERSION );
 // ── Autoloader ───────────────────────────────────────────────────────────────
 require_once AH_PLUGIN_DIR . '/inc/class-autoloader.php';
 AH_Autoloader::register();
+
+// ── Components ───────────────────────────────────────────────────────────────
+require_once AH_PLUGIN_DIR . '/components/toaster/index.php';
 
 // ── Admin portal ─────────────────────────────────────────────────────────────
 if ( is_admin() ) {
@@ -54,3 +61,23 @@ add_action( 'wp_enqueue_scripts', static function () {
 // ── Database ─────────────────────────────────────────────────────────────────
 register_activation_hook( __FILE__, array( 'AH_DB_Installer', 'install' ) );
 add_action( 'wp_loaded', array( 'AH_DB_Installer', 'maybe_upgrade' ) );
+
+// ── Builder page frontend routing ─────────────────────────────────────────────
+add_action( 'template_redirect', static function () {
+	if ( ! is_404() ) return;
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_builder_pages';
+	$home_path    = trim( (string) parse_url( home_url(), PHP_URL_PATH ), '/' );
+	$request_path = trim( (string) parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+	if ( $home_path !== '' && strpos( $request_path, $home_path ) === 0 ) {
+		$request_path = ltrim( substr( $request_path, strlen( $home_path ) ), '/' );
+	}
+	$slug = sanitize_title( trim( $request_path, '/' ) );
+	if ( ! $slug ) return;
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$page = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE slug = %s AND status = 'active'", $slug ) );
+	if ( ! $page ) return;
+	$GLOBALS['ah_builder_page'] = $page;
+	include AH_PLUGIN_DIR . '/templates/template-builder-page.php';
+	exit;
+} );

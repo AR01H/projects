@@ -25,7 +25,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	$action = 'list';
 }
 
-if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_faq' ) ) {
+if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_faq' ) ) {
 	$model->delete( (int) $_GET['delete_id'] );
 	$notice = 'FAQ deleted.';
 }

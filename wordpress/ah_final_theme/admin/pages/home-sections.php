@@ -85,8 +85,8 @@ $guide_pts  = $guide ? $model->get_guide_points( (int) $guide->id ) : array();
 $difference = $page_id ? $model->get_difference( $page_id ) : null;
 $diff_rows  = $difference ? $model->get_difference_rows( (int) $difference->id ) : array();
 
-$hero_img   = $hero && $hero->image_id ? $media_m->get_url( (int) $hero->image_id ) : '';
-$guide_img  = $guide && $guide->image_id ? $media_m->get_url( (int) $guide->image_id ) : '';
+$hero_img   = $hero && $hero->image_id ? ( wp_get_attachment_image_url( (int) $hero->image_id, 'large' ) ?: '' ) : '';
+$guide_img  = $guide && $guide->image_id ? ( wp_get_attachment_image_url( (int) $guide->image_id, 'medium' ) ?: '' ) : '';
 
 $sections = array(
 	'hero'       => 'Hero Section',

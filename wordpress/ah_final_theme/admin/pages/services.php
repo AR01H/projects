@@ -48,7 +48,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	}
 }
 
-if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_service' ) ) {
+if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_service' ) ) {
 	$model->delete( (int) $_GET['delete_id'] );
 	$notice = 'Service deleted.';
 }
@@ -119,8 +119,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_
   <?php else :
     $item   = $edit_id ? $model->find( $edit_id ) : null;
     $bullets = $edit_id ? $model->get_bullet_points( $edit_id ) : array();
-    $media_model = new AH_Media_Model();
-    $img_url = $item && $item->image_id ? $media_model->get_url( (int) $item->image_id ) : '';
+    $img_url = $item && $item->image_id ? ( wp_get_attachment_image_url( (int) $item->image_id, 'medium' ) ?: '' ) : '';
   ?>
     <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-services' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-bottom:14px;display:inline-flex;">&larr; Back</a>
     <div class="ah-card">

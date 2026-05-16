@@ -23,6 +23,116 @@ class AH_DB_Installer {
 		if ( get_option( AH_DB_VERSION_KEY ) !== AH_THEME_VERSION ) {
 			self::install();
 		}
+		self::ensure_builder_table();
+		self::ensure_required_settings();
+		self::drop_broken_fks();
+		self::ensure_review_short_desc();
+	}
+
+	/**
+	 * Add short_desc column to ah_reviews if it doesn't exist yet.
+	 */
+	public static function ensure_review_short_desc(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_reviews';
+		$col   = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'short_desc'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `short_desc` VARCHAR(400) DEFAULT NULL AFTER `reviewer_title`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+	}
+
+	/**
+	 * Drop FK constraints that reference ah_admin_users or ah_media via columns
+	 * that are populated with WP user IDs / WP attachment IDs.
+	 *
+	 * Uses INFORMATION_SCHEMA to find only the FKs that still exist before
+	 * running ALTER TABLE — avoids the "IF EXISTS" syntax that requires MySQL 8.0.29+.
+	 */
+	public static function drop_broken_fks(): void {
+		global $wpdb;
+
+		// Full list of broken FK constraint names to remove.
+		$target_names = array(
+			// FKs → ah_admin_users: no rows ever exist; WP user IDs stored instead.
+			'fk_ss_user', 'fk_ps_user', 'fk_pg_cr', 'fk_pg_up', 'fk_nbi_user',
+			'fk_hero_user', 'fk_wu_user', 'fk_gt_user', 'fk_diff_user',
+			'fk_fp_user', 'fk_exp_user', 'fk_wr_user', 'fk_svc_user',
+			'fk_sph_user', 'fk_aph_user', 'fk_ast_user', 'fk_tm_user',
+			'fk_rv_user', 'fk_faq_user', 'fk_pt_author', 'fk_plph_user',
+			'fk_csh_user', 'fk_cpc_user', 'fk_fc_user', 'fk_al_user',
+			// FKs → ah_media: WP attachment IDs stored, not ah_media IDs.
+			'fk_rv_img', 'fk_svc_img', 'fk_tm_photo', 'fk_ast_img',
+			'fk_av_img', 'fk_hero_img', 'fk_gt_img', 'fk_wuc_img',
+			'fk_fpi_img', 'fk_ec_img', 'fk_hl_icon', 'fk_si_icon',
+			'fk_csi_img', 'fk_cuj_img', 'fk_cg_img', 'fk_cvl_thumb',
+			'fk_fc_logo', 'fk_pg_img', 'fk_psi_icon', 'fk_fw_icon',
+			'fk_au_avatar',
+		);
+
+		// Ask INFORMATION_SCHEMA which of these FKs actually exist right now.
+		$placeholders = implode( ',', array_fill( 0, count( $target_names ), '%s' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+		$existing = $wpdb->get_results( $wpdb->prepare(
+			"SELECT TABLE_NAME, CONSTRAINT_NAME
+			 FROM information_schema.TABLE_CONSTRAINTS
+			 WHERE TABLE_SCHEMA = DATABASE()
+			   AND CONSTRAINT_TYPE = 'FOREIGN KEY'
+			   AND CONSTRAINT_NAME IN ({$placeholders})",
+			...$target_names
+		) );
+
+		if ( empty( $existing ) ) {
+			return; // All already dropped — nothing to do.
+		}
+
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 0' );
+		foreach ( $existing as $row ) {
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE `{$row->TABLE_NAME}` DROP FOREIGN KEY `{$row->CONSTRAINT_NAME}`" );
+		}
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' );
+	}
+
+	public static function ensure_builder_table(): void {
+		global $wpdb;
+		$p  = $wpdb->prefix;
+		$cs = $wpdb->get_charset_collate();
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS {$p}ah_builder_pages (
+				id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				title            VARCHAR(255) NOT NULL,
+				slug             VARCHAR(280) NOT NULL UNIQUE,
+				blocks           LONGTEXT DEFAULT NULL,
+				status           ENUM('active','draft') DEFAULT 'draft',
+				meta_title       VARCHAR(255),
+				meta_description TEXT,
+				created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				KEY idx_slug (slug), KEY idx_status (status)
+			) ENGINE=InnoDB {$cs}"
+		);
+	}
+
+	public static function ensure_required_settings(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_site_settings';
+		$required = array(
+			array( 'setting_key' => 'phone',            'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'Phone'            ),
+			array( 'setting_key' => 'whatsapp',         'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'WhatsApp'         ),
+			array( 'setting_key' => 'email',            'setting_val' => '', 'field_type' => 'email',    'group_name' => 'contact', 'label' => 'Email'            ),
+			array( 'setting_key' => 'address',          'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'contact', 'label' => 'Address'          ),
+			array( 'setting_key' => 'consultation_url', 'setting_val' => '', 'field_type' => 'url',      'group_name' => 'contact', 'label' => 'Consultation URL' ),
+			array( 'setting_key' => 'youtube_url',      'setting_val' => '', 'field_type' => 'url',      'group_name' => 'social',  'label' => 'YouTube URL'      ),
+		);
+		foreach ( $required as $s ) {
+			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE setting_key = %s", $s['setting_key'] ) ) ) {
+				$wpdb->insert( $table, $s );
+			}
+		}
 	}
 
 	// ----------------------------------------------------------------

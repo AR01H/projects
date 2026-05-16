@@ -1,6 +1,6 @@
 # learn.md — Advith Homes CMS: Complete Developer Reference
 <!-- Living document — append new sections as the project grows. -->
-<!-- Last updated: 2026-05-16 — Session 5 -->
+<!-- Last updated: 2026-05-15 — Session 4 -->
 
 ---
 
@@ -28,9 +28,6 @@
 20. [Admin Actions System](#20-admin-actions-system)
 21. [Static HTML Pages System](#21-static-html-pages-system)
 22. [Plugin Mode & Deployment](#22-plugin-mode--deployment)
-23. [Page Builder System](#23-page-builder-system)
-24. [Native WP Content — Pages & Posts](#24-native-wp-content--pages--posts)
-25. [FK Pitfalls & DB Migrations](#25-fk-pitfalls--db-migrations)
 
 ---
 
@@ -583,7 +580,6 @@ public static function handle_toggle_status(): void {
 | `ah_db_health_check` | `handle_db_health_check` | `SHOW TABLES LIKE` check on all required tables |
 | `ah_clear_form_submissions` | `handle_clear_form_submissions` | Delete all form submission rows |
 | `ah_save_static_page` | `handle_save_static_page` | Write `static/{slug}.html` + create WP page |
-| `ah_rebuild_schema` | `handle_rebuild_schema` | Drop ALL `wp_ah_*` tables + reinstall schema (double-confirm gated) |
 
 **Public** (registered in `init_public()`, called in `functions.php` outside `is_admin()` — available to all visitors):
 
@@ -805,28 +801,19 @@ All components live in `admin/assets/css/admin-style.css`.
 
 ```html
 <div class="ah-image-picker">
-  <!-- img.ah-image-preview — hidden until .visible class added -->
-  <img src="<?= esc_url($url) ?>" class="ah-image-preview <?= $url ? 'visible' : '' ?>" alt="">
+  <img src="<?= esc_url($url) ?>" class="ah-image-preview <?= $url ? 'visible' : '' ?>"
+       alt="" style="width:100%;height:120px;object-fit:cover;">
   <div class="ah-image-picker-btns">
     <input type="hidden" class="ah-image-id" name="image_id" value="<?= (int)$id ?>">
     <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>
-    <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
+    <button type="button" class="ah-btn ah-btn-sm ah-remove-image"
+            style="color:var(--ah-danger);">Remove</button>
   </div>
 </div>
 ```
 
-**Behaviour (Session 5 — fully automatic, zero PHP changes needed):**
-
-| State | What the picker shows |
-|---|---|
-| No image | Dashed placeholder box "Click to choose image" — clicking opens WP Media Library; Remove button hidden |
-| Image selected / edit with existing image | Full-width image preview above buttons; button says "Change Image"; Remove button visible |
-| After Remove clicked | Clears preview, shows placeholder, button reverts to "Choose Image" |
-
-The JS auto-detects existing images on page load via `img.ah-image-preview.visible`.
-The `.ah-image-picker` element gets class `has-image` when an image is set — CSS uses this to show/hide Remove.
-
-**Image ID storage:** Always stores **WP attachment IDs** (from `wp.media`). Resolve URLs at render time with `wp_get_attachment_image_url((int) $row->reviewer_image_id, 'medium')` — never `$media_m->get_url()` which queries the custom `ah_media` table.
+JS wires `.ah-pick-image` to the WP Media Library frame automatically.
+`.ah-image-preview.visible` shows the image; without `.visible` it is hidden.
 
 ### Notices
 
@@ -1466,36 +1453,6 @@ Each action fires via jQuery AJAX and shows an inline result — no page reload.
 | DB Health Check | `ah_db_health_check` | `SHOW TABLES LIKE` on every required `wp_ah_*` table; reports missing ones |
 | Clear Audit Log | `ah_clear_audit_log` | `TRUNCATE wp_ah_audit_logs` — irreversible, protected by `window.confirm()` |
 | Clear Form Submissions | `ah_clear_form_submissions` | `DELETE FROM wp_ah_form_submissions` — irreversible, confirm-gated |
-| **Delete & Create Schema** | `ah_rebuild_schema` | Drops **all** `wp_ah_*` tables + runs `AH_DB_Installer::install()` to recreate + reseed. **All data lost.** Double-confirm gated (warning dialog + must type "YES") |
-
-### Delete & Create Schema — double-confirm pattern
-
-```javascript
-// data-confirm fires window.confirm() first
-// data-double-confirm fires window.prompt() requiring exact text match
-<button data-action="ah_rebuild_schema"
-        data-confirm="⚠️ DANGER: permanently deletes ALL data..."
-        data-double-confirm="YES">Run</button>
-```
-
-The handler queries `INFORMATION_SCHEMA.TABLES` for all tables matching `{prefix}ah_%`, drops them with `FOREIGN_KEY_CHECKS = 0`, then calls `AH_DB_Installer::install()`.
-
-### Adding a new action card
-
-1. Add card HTML in `admin/pages/admin-actions.php`:
-```html
-<div class="ah-card ah-action-card">
-  <div class="ah-action-icon" style="background:#eff6ff;">
-    <span class="dashicons dashicons-update" style="color:#2563eb;"></span>
-  </div>
-  <h3>My Action</h3>
-  <p>Description of what this does.</p>
-  <button class="ah-btn ah-btn-primary ah-action-btn" data-action="ah_my_action">Run</button>
-  <div class="ah-action-result"></div>
-</div>
-```
-2. Add `'ah_my_action'` to `$actions` in `AH_Ajax_Handlers::init()`
-3. Implement `public static function handle_my_action(): void` with `self::verify()` → work → `wp_send_json_success(['message' => '...'])`
 
 ### Inline result pattern
 

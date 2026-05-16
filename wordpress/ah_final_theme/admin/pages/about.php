@@ -48,11 +48,11 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && wp_verify_nonce( $_POST['ah_about_
 		$val_id ? $model->save_value( $val_data, $val_id ) : $model->save_value( $val_data );
 		$notice = 'Value card saved.';
 	}
+}
 
-	if ( isset( $_GET['delete_value'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_value' ) ) {
-		$model->delete_value( (int) $_GET['delete_value'] );
-		$notice = 'Value card deleted.';
-	}
+if ( isset( $_GET['delete_value'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_value' ) ) {
+	$model->delete_value( (int) $_GET['delete_value'] );
+	$notice = 'Value card deleted.';
 }
 
 $header = $page_id ? $model->get_page_header( $page_id ) : null;
@@ -61,7 +61,7 @@ $points = $story ? $model->get_story_points( (int) $story->id ) : array();
 $values = $page_id ? $model->get_values( $page_id ) : array();
 $edit_value_id = (int) ( $_GET['edit_value'] ?? 0 );
 $edit_value    = $edit_value_id ? AH_DB_Helper::get_row( AH_DB_Helper::table( 'about_values' ), $edit_value_id ) : null;
-$story_img_url = $story && $story->image_id ? $media_m->get_url( (int) $story->image_id ) : '';
+$story_img_url = $story && $story->image_id ? ( wp_get_attachment_image_url( (int) $story->image_id, 'medium' ) ?: '' ) : '';
 ?>
 <div class="wrap ah-wrap">
   <h1><span class="dashicons dashicons-info"></span> <?php esc_html_e( 'About Page', 'ah-theme' ); ?></h1>
@@ -161,7 +161,7 @@ $story_img_url = $story && $story->image_id ? $media_m->get_url( (int) $story->i
           <input type="hidden" name="value_id" value="<?php echo esc_attr( $edit_value_id ); ?>">
           <div class="ah-form-row">
             <label>Image</label>
-            <?php $val_img = $edit_value && $edit_value->image_id ? $media_m->get_url( (int) $edit_value->image_id ) : ''; ?>
+            <?php $val_img = $edit_value && $edit_value->image_id ? ( wp_get_attachment_image_url( (int) $edit_value->image_id, 'medium' ) ?: '' ) : ''; ?>
             <div class="ah-image-picker">
               <img src="<?php echo esc_url( $val_img ); ?>" class="ah-image-preview <?php echo $val_img ? 'visible' : ''; ?>" alt="" style="width:80px;height:60px;">
               <div class="ah-image-picker-btns">

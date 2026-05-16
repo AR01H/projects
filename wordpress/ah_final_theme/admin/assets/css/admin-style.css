@@ -287,25 +287,75 @@
 /* ── Media / Image Picker ── */
 .ah-image-picker {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
+}
+.ah-image-preview-wrap {
+  position: relative;
+  display: none;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--ah-border);
+  background: #f9fafb;
+  max-width: 100%;
+}
+.ah-image-preview-wrap.visible {
+  display: block;
 }
 .ah-image-preview {
-  width: 100px;
-  height: 80px;
+  display: block;
+  width: 100%;
+  max-height: 220px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 0;
+}
+/* Keep direct img.ah-image-preview without wrap working too */
+img.ah-image-preview {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
   border: 1px solid var(--ah-border);
   display: none;
 }
-.ah-image-preview.visible {
+img.ah-image-preview.visible {
   display: block;
+}
+.ah-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 140px;
+  border: 2px dashed var(--ah-border);
+  border-radius: 8px;
+  color: var(--ah-muted);
+  font-size: .82rem;
+  background: #fafafa;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.ah-image-placeholder:hover {
+  border-color: var(--ah-primary);
+  background: #f0f4ff;
+}
+.ah-image-placeholder .dashicons {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: var(--ah-muted);
 }
 .ah-image-picker-btns {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ah-image-picker .ah-remove-image {
+  display: none;
+}
+.ah-image-picker.has-image .ah-remove-image {
+  display: inline-flex;
 }
 
 /* ── Tabs ── */

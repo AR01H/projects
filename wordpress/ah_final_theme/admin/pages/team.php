@@ -27,7 +27,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	$action = 'list';
 }
 
-if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_team' ) ) {
+if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_team' ) ) {
 	$model->delete( (int) $_GET['delete_id'] );
 	$notice = 'Member deleted.';
 }
@@ -55,7 +55,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_
         <thead><tr><th></th><th>Photo</th><th>Name</th><th>Designation</th><th>Featured</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <?php foreach ( $items as $member ) :
-            $photo = $member->photo_id ? $media_m->get_url( (int) $member->photo_id ) : '';
+            $photo = $member->photo_id ? ( wp_get_attachment_image_url( (int) $member->photo_id, 'thumbnail' ) ?: '' ) : '';
           ?>
             <tr data-id="<?php echo esc_attr( $member->id ); ?>">
               <td class="ah-sort-handle">&#9776;</td>
@@ -77,7 +77,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_
 
   <?php else :
     $item    = $edit_id ? $model->find( $edit_id ) : null;
-    $img_url = $item && $item->photo_id ? $media_m->get_url( (int) $item->photo_id ) : '';
+    $img_url = $item && $item->photo_id ? ( wp_get_attachment_image_url( (int) $item->photo_id, 'medium' ) ?: '' ) : '';
   ?>
     <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-team' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-bottom:14px;display:inline-flex;">&larr; Back</a>
     <div class="ah-card">
