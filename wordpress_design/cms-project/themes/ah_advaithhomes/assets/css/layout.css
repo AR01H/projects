@@ -2,9 +2,9 @@
 #page-content { padding-top: var(--nav-h); }
 
 /* WordPress admin bar pushes fixed nav down — match the offset */
-.admin-bar .nav__mobile       { top: calc(32px + var(--nav-h)); }
+.admin-bar .nav__mobile       { top: calc( var(--nav-h)); }
 @media screen and (max-width: 782px) {
-  .admin-bar .nav__mobile     { top: calc(46px + var(--nav-h)); }
+  .admin-bar .nav__mobile     { top: calc( var(--nav-h)); }
 }
 
 /* ── Sidebar Layout (article/guide pages) ────────────────────────────────── */
@@ -194,7 +194,7 @@
 
 /* ── Single Post Header ──────────────────────────────────────────────────── */
 .post-header {
-	padding-top: calc(var(--nav-h) + 32px);
+	padding-top: calc(var(--nav-h) );
 	padding-bottom: 0;
 	background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
 	border-bottom: 1px solid var(--border);

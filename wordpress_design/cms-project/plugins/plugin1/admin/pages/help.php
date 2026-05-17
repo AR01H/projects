@@ -78,7 +78,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     <div class="ah-help-section">
       <h2>Welcome to CMS ADMIN</h2>
       <p>This CMS gives you full control over your website without needing to touch any code. Everything from the homepage hero to blog posts to contact forms can be managed from this admin panel.</p>
-      <div class="ah-tip"><strong>Tip:</strong> All changes are saved directly to the database. There is no "preview mode" — changes go live as soon as you save.</div>
+      <div class="ah-tip"><strong>Tip:</strong> All changes are saved directly to the database. There is no "preview mode" - changes go live as soon as you save.</div>
     </div>
 
     <div class="ah-help-section">
@@ -109,7 +109,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       </div>
       <div class="ah-step">
         <div class="ah-step-num">3</div>
-        <div class="ah-step-body"><strong>Fill in the Homepage</strong><p>Go to Home Sections and update each tab — Hero, Services, Stats, About, and CTA sections. This is what visitors see first.</p></div>
+        <div class="ah-step-body"><strong>Fill in the Homepage</strong><p>Go to Home Sections and update each tab - Hero, Services, Stats, About, and CTA sections. This is what visitors see first.</p></div>
       </div>
       <div class="ah-step">
         <div class="ah-step-num">4</div>
@@ -138,7 +138,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       </div>
       <div class="ah-step">
         <div class="ah-step-num">2</div>
-        <div class="ah-step-body"><strong>Fill in the Text</strong><p>This is the message shown in the ticker. Keep it short — under 100 characters works best.</p></div>
+        <div class="ah-step-body"><strong>Fill in the Text</strong><p>This is the message shown in the ticker. Keep it short - under 100 characters works best.</p></div>
       </div>
       <div class="ah-step">
         <div class="ah-step-num">3</div>
@@ -157,11 +157,11 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
     <div class="ah-help-section">
       <h2>Posts / Blog</h2>
-      <p>The Posts section manages all blog content — articles, news, guides, case studies, and FAQ posts. See the <strong>Post Editor</strong> tab for a detailed guide on creating and editing posts.</p>
+      <p>The Posts section manages all blog content - articles, news, guides, case studies, and FAQ posts. See the <strong>Post Editor</strong> tab for a detailed guide on creating and editing posts.</p>
       <h3>Post Statuses</h3>
       <dl class="ah-section-ref">
         <dt>Draft</dt><dd>Saved but not visible to site visitors.</dd>
-        <dt>Published</dt><dd>Live on the website — anyone can read it.</dd>
+        <dt>Published</dt><dd>Live on the website - anyone can read it.</dd>
         <dt>Private</dt><dd>Only logged-in admin users can see it.</dd>
         <dt>Pending</dt><dd>Ready for review before publishing.</dd>
       </dl>
@@ -173,8 +173,8 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <h2>Categories &amp; Tags</h2>
       <p>Organise your posts using categories (broad topics) and tags (specific keywords).</p>
       <ul>
-        <li><strong>Categories</strong> — hierarchical groups. A post should have at least one. Create them under Categories &amp; Tags before writing the post.</li>
-        <li><strong>Tags</strong> — flat keywords. Add as many as relevant. In the Form Editor, type tags separated by commas.</li>
+        <li><strong>Categories</strong> - hierarchical groups. A post should have at least one. Create them under Categories &amp; Tags before writing the post.</li>
+        <li><strong>Tags</strong> - flat keywords. Add as many as relevant. In the Form Editor, type tags separated by commas.</li>
       </ul>
       <div class="ah-tip"><strong>SEO benefit:</strong> Good categories and tags help search engines understand what your content is about.</div>
     </div>
@@ -207,14 +207,14 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <h2>Services</h2>
       <p>Each service record has:</p>
       <ul>
-        <li><strong>Title</strong> — name of the service</li>
-        <li><strong>Slug</strong> — auto-generated URL-friendly name (used in the service's page URL)</li>
-        <li><strong>Short Description</strong> — shown in service cards/grids</li>
-        <li><strong>Full Description</strong> — detailed text shown on the service's own page</li>
-        <li><strong>Icon</strong> — dashicon or image used in listings</li>
-        <li><strong>Features list</strong> — bullet points of what's included</li>
-        <li><strong>Status</strong> — Active services appear on the site; Inactive are hidden</li>
-        <li><strong>Sort Order</strong> — controls the display order. Lower numbers appear first</li>
+        <li><strong>Title</strong> - name of the service</li>
+        <li><strong>Slug</strong> - auto-generated URL-friendly name (used in the service's page URL)</li>
+        <li><strong>Short Description</strong> - shown in service cards/grids</li>
+        <li><strong>Full Description</strong> - detailed text shown on the service's own page</li>
+        <li><strong>Icon</strong> - dashicon or image used in listings</li>
+        <li><strong>Features list</strong> - bullet points of what's included</li>
+        <li><strong>Status</strong> - Active services appear on the site; Inactive are hidden</li>
+        <li><strong>Sort Order</strong> - controls the display order. Lower numbers appear first</li>
       </ul>
     </div>
 
@@ -226,7 +226,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     <div class="ah-help-section">
       <h2>Reviews</h2>
       <p>Add customer testimonials with a name, rating (1–5 stars), review text, and optional company/location. Reviews with <strong>Active</strong> status appear in the reviews section and homepage testimonial slider.</p>
-      <div class="ah-tip"><strong>Best practice:</strong> Use real first names and genuine quotes. Specificity builds trust — "saved us $4,000" is more compelling than "saved us money".</div>
+      <div class="ah-tip"><strong>Best practice:</strong> Use real first names and genuine quotes. Specificity builds trust - "saved us $4,000" is more compelling than "saved us money".</div>
     </div>
 
     <div class="ah-help-section">
@@ -259,30 +259,30 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
     <div class="ah-help-section">
       <h2>Creating a Post from a Template</h2>
-      <p>Go to <strong>Posts / Blog → From Template</strong>. You'll see five template cards — each is pre-structured for a specific type of post:</p>
+      <p>Go to <strong>Posts / Blog → From Template</strong>. You'll see five template cards - each is pre-structured for a specific type of post:</p>
       <dl class="ah-section-ref">
         <dt>✍️ Blog Post</dt><dd>Standard article with intro, sections, and key takeaways.</dd>
         <dt>📰 News Article</dt><dd>News format with a lead paragraph and "What This Means" section.</dd>
-        <dt>📋 Step-by-Step Guide</dt><dd>Numbered steps — set how many steps you need (2–10).</dd>
+        <dt>📋 Step-by-Step Guide</dt><dd>Numbered steps - set how many steps you need (2–10).</dd>
         <dt>🏆 Client Story</dt><dd>Challenge → Approach → Result structure with a client quote.</dd>
-        <dt>❓ FAQ Post</dt><dd>Multiple Q&amp;A pairs — set topic and how many pairs you need (2–10).</dd>
+        <dt>❓ FAQ Post</dt><dd>Multiple Q&amp;A pairs - set topic and how many pairs you need (2–10).</dd>
       </dl>
       <p>Fill in the template fields, then click one of the two editor buttons:</p>
       <ul>
-        <li><strong>📝 Form Editor</strong> — opens the structured section-based editor (see below)</li>
-        <li><strong>🖊 WP Editor</strong> — opens the standard WordPress block (Gutenberg) editor</li>
+        <li><strong>📝 Form Editor</strong> - opens the structured section-based editor (see below)</li>
+        <li><strong>🖊 WP Editor</strong> - opens the standard WordPress block (Gutenberg) editor</li>
       </ul>
       <div class="ah-tip"><strong>Which editor should I use?</strong> Use the Form Editor for simple, structured posts. Use the WP Editor when you need advanced formatting, embeds, galleries, or custom blocks.</div>
     </div>
 
     <div class="ah-help-section">
       <h2>The Form Editor</h2>
-      <p>The Form Editor lets you build post content using structured sections — no drag-and-drop complexity. Each section type has its own focused fields.</p>
+      <p>The Form Editor lets you build post content using structured sections - no drag-and-drop complexity. Each section type has its own focused fields.</p>
 
       <h3>Section Types</h3>
       <dl class="ah-section-ref">
         <dt>📝 Heading</dt><dd>Choose H2, H3, or H4, then type the heading text. H2 is the main section level; H3 is a sub-section.</dd>
-        <dt>¶ Paragraph</dt><dd>A block of body text. Write naturally — line breaks within the textarea become &lt;br&gt; tags.</dd>
+        <dt>¶ Paragraph</dt><dd>A block of body text. Write naturally - line breaks within the textarea become &lt;br&gt; tags.</dd>
         <dt>• List</dt><dd>Choose Bullet or Numbered. Add as many items as you need with "+ Add Item". Remove any item with ✕.</dd>
         <dt>⊞ Table</dt><dd>Starts as a 2×1 table. Use "+ Row" to add rows and "+ Column" to add columns. Click each cell to type into it.</dd>
         <dt>" Quote</dt><dd>A styled blockquote. Add the quote text and an optional attribution line (e.g. "Jane Smith, Melbourne").</dd>
@@ -308,7 +308,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       </dl>
 
       <h3>Switching to the WP Editor</h3>
-      <p>At the top right of the Form Editor, click <strong>"Switch to WP Editor"</strong>. Your saved content (blocks) will open in Gutenberg. You can edit there and switch back — though any changes made in Gutenberg won't re-appear in the Form Editor's section cards (they'll still save correctly to the post).</p>
+      <p>At the top right of the Form Editor, click <strong>"Switch to WP Editor"</strong>. Your saved content (blocks) will open in Gutenberg. You can edit there and switch back - though any changes made in Gutenberg won't re-appear in the Form Editor's section cards (they'll still save correctly to the post).</p>
     </div>
 
     <div class="ah-help-section">
@@ -323,16 +323,16 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       </ul>
       <p>Common keyboard shortcuts in Gutenberg:</p>
       <ul>
-        <li><span class="ah-kbd">Enter</span> — start a new paragraph block</li>
-        <li><span class="ah-kbd">Ctrl + Z</span> — undo</li>
-        <li><span class="ah-kbd">Ctrl + Shift + D</span> — duplicate the selected block</li>
-        <li><span class="ah-kbd">/</span> at the start of a new block — search for a block type</li>
+        <li><span class="ah-kbd">Enter</span> - start a new paragraph block</li>
+        <li><span class="ah-kbd">Ctrl + Z</span> - undo</li>
+        <li><span class="ah-kbd">Ctrl + Shift + D</span> - duplicate the selected block</li>
+        <li><span class="ah-kbd">/</span> at the start of a new block - search for a block type</li>
       </ul>
     </div>
 
     <div class="ah-help-section">
       <h2>How the Edit Button Remembers Your Editor</h2>
-      <p>When you return to the Posts list and click <strong>Edit</strong>, the CMS automatically opens the same editor you used when creating the post — Form Editor or WP Editor. You'll see a small indicator in the "Editor" column: <strong>📝 Form</strong> or <strong>🖊 WP</strong>.</p>
+      <p>When you return to the Posts list and click <strong>Edit</strong>, the CMS automatically opens the same editor you used when creating the post - Form Editor or WP Editor. You'll see a small indicator in the "Editor" column: <strong>📝 Form</strong> or <strong>🖊 WP</strong>.</p>
     </div>
 
   </div>
@@ -348,7 +348,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <h3>Creating a Page</h3>
       <div class="ah-step">
         <div class="ah-step-num">1</div>
-        <div class="ah-step-body"><strong>Click "+ New Page"</strong><p>Enter the page title — the slug is auto-generated.</p></div>
+        <div class="ah-step-body"><strong>Click "+ New Page"</strong><p>Enter the page title - the slug is auto-generated.</p></div>
       </div>
       <div class="ah-step">
         <div class="ah-step-num">2</div>
@@ -396,17 +396,17 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     <div class="ah-help-section">
       <h2>Data Import</h2>
       <p>Bulk-load content from a CSV file. Each import type (Services, FAQs, Team Members, etc.) has its own CSV template you can download, fill in, and upload.</p>
-      <div class="ah-warn"><strong>Warning:</strong> Imports add new records — they don't update existing ones. Running the same import twice will create duplicates. Double-check your CSV before importing.</div>
+      <div class="ah-warn"><strong>Warning:</strong> Imports add new records - they don't update existing ones. Running the same import twice will create duplicates. Double-check your CSV before importing.</div>
     </div>
 
     <div class="ah-help-section">
       <h2>Admin Actions</h2>
-      <p>One-click maintenance tasks such as clearing caches, regenerating thumbnails, running database migrations, or resetting specific data. Each action has a description — read it carefully before running. Some actions cannot be undone.</p>
+      <p>One-click maintenance tasks such as clearing caches, regenerating thumbnails, running database migrations, or resetting specific data. Each action has a description - read it carefully before running. Some actions cannot be undone.</p>
     </div>
 
     <div class="ah-help-section">
       <h2>Audit Log</h2>
-      <p>A read-only record of every significant action taken through this CMS — who added a service, who deleted a review, who changed site settings, and when. Useful for tracking changes and troubleshooting.</p>
+      <p>A read-only record of every significant action taken through this CMS - who added a service, who deleted a review, who changed site settings, and when. Useful for tracking changes and troubleshooting.</p>
     </div>
 
   </div>
@@ -423,45 +423,45 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <ul>
         <li>Hard-refresh the page: <span class="ah-kbd">Ctrl + Shift + R</span> (Windows) or <span class="ah-kbd">Cmd + Shift + R</span> (Mac).</li>
         <li>If your site uses a caching plugin (e.g. WP Rocket, W3 Total Cache), clear the cache from that plugin's settings.</li>
-        <li>Check that the record Status is set to <strong>Active</strong> or <strong>Published</strong> — Inactive/Draft records are hidden.</li>
+        <li>Check that the record Status is set to <strong>Active</strong> or <strong>Published</strong> - Inactive/Draft records are hidden.</li>
       </ul>
 
       <h3>The image I uploaded isn't showing</h3>
       <ul>
-        <li>Make sure you clicked <strong>"Use this image"</strong> in the media library popup — just selecting it isn't enough.</li>
+        <li>Make sure you clicked <strong>"Use this image"</strong> in the media library popup - just selecting it isn't enough.</li>
         <li>Check the image preview appeared in the picker (a thumbnail should show below the button).</li>
-        <li>Save the record. The image is stored by its WordPress attachment ID — if you skip saving, the selection is lost.</li>
+        <li>Save the record. The image is stored by its WordPress attachment ID - if you skip saving, the selection is lost.</li>
         <li>If the image shows in the admin but not on the site, clear your site's cache.</li>
       </ul>
 
       <h3>I saved a post but it's not live</h3>
       <ul>
-        <li>Check the Post Status in the sidebar or list view — it may be set to <strong>Draft</strong>.</li>
+        <li>Check the Post Status in the sidebar or list view - it may be set to <strong>Draft</strong>.</li>
         <li>In the Form Editor, use the <strong>Publish</strong> button (not "Save Draft") to make it live.</li>
         <li>In the WP Editor, click the blue <strong>Publish</strong> button at the top right.</li>
       </ul>
 
       <h3>The Form Editor sections disappeared after I switched to WP Editor</h3>
-      <p>The Form Editor loads sections from saved meta. If you edited content in the WP Editor and saved there, the block content is stored in the post but the structured section data in meta was not updated. The post content is still correct — the section cards just won't reflect the Gutenberg edits. Continue editing in the WP Editor for that post, or re-build sections in the Form Editor.</p>
+      <p>The Form Editor loads sections from saved meta. If you edited content in the WP Editor and saved there, the block content is stored in the post but the structured section data in meta was not updated. The post content is still correct - the section cards just won't reflect the Gutenberg edits. Continue editing in the WP Editor for that post, or re-build sections in the Form Editor.</p>
 
       <h3>A shortcode like [ah_form id="3"] is showing as plain text</h3>
       <ul>
         <li>Make sure the shortcode is in a <strong>Shortcode block</strong> in Gutenberg, not inside a Paragraph block.</li>
         <li>In Page Builder, use an <strong>HTML</strong> or <strong>Shortcode</strong> content block, not a plain Text block.</li>
-        <li>The CMS ADMIN plugin must be active — check <em>Plugins</em> in WordPress admin.</li>
+        <li>The CMS ADMIN plugin must be active - check <em>Plugins</em> in WordPress admin.</li>
       </ul>
 
       <h3>A menu item isn't appearing on the website</h3>
       <ul>
         <li>Check the item Status is set to <strong>Active</strong>.</li>
         <li>Confirm you selected the correct menu type (Header vs Footer).</li>
-        <li>Try reordering and saving — this re-syncs the menu data with the theme.</li>
+        <li>Try reordering and saving - this re-syncs the menu data with the theme.</li>
       </ul>
 
       <h3>The News Bar isn't showing</h3>
       <ul>
         <li>At least one item must have Status = <strong>Active</strong>.</li>
-        <li>Check Start Date / End Date — an item with a future Start Date or a past End Date will not show even if Active.</li>
+        <li>Check Start Date / End Date - an item with a future Start Date or a past End Date will not show even if Active.</li>
         <li>The theme must include the news bar component. If the bar is missing entirely, confirm the theme calls <code>do_action('ah_newsbar')</code> in its header template.</li>
       </ul>
 
@@ -473,7 +473,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <h2>Need More Help?</h2>
       <p>If you're stuck on something not covered here, check the following in order:</p>
       <ol>
-        <li>Re-read the relevant section above carefully — the answer is usually there.</li>
+        <li>Re-read the relevant section above carefully - the answer is usually there.</li>
         <li>Check the <strong>Audit Log</strong> to see if a recent change caused the issue.</li>
         <li>Try the action in a different browser (rules out browser-specific caching).</li>
         <li>Contact your website developer with a description of: what you were doing, what you expected to happen, and what actually happened.</li>

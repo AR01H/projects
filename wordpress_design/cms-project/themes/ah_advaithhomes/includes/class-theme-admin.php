@@ -22,8 +22,8 @@ class AH_Theme_Admin {
 			'manage_options',
 			'ah-theme-admin',
 			[ self::class, 'page_dashboard' ],
-			'dashicons-admin-appearance',
-			61
+			'dashicons-admin-tools',
+			3
 		);
 		add_submenu_page( 'ah-theme-admin', __( 'Overview',          'ah-theme' ), __( 'Overview',          'ah-theme' ), 'manage_options', 'ah-theme-admin',    [ self::class, 'page_dashboard' ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Section Controls',  'ah-theme' ), __( 'Section Controls',  'ah-theme' ), 'manage_options', 'ah-theme-sections', [ self::class, 'page_sections'  ] );

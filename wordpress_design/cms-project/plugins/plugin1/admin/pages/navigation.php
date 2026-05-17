@@ -15,11 +15,9 @@ if ( empty( $footer['legal_links'] ) ) {
 }
 ?>
 <div class="wrap ah-admin-wrap ah-nav-builder-wrap">
-	<div class="ah-admin-header">
-		<div class="ah-admin-logo">N</div>
+	<div class="ah-wrap">
 		<div>
-			<h1>Navigation and Footer Manager</h1>
-			<p>Reusable header and footer content now lives in CMS ADMIN, so the same data can be shared across themes.</p>
+			<h1>Navigation Editor</h1>
 		</div>
 	</div>
 
