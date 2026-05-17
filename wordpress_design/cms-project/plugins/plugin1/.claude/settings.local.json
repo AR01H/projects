@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Rename-Item -Path \"l:\\\\MY-GITHUB\\\\AR01H\\\\projects\\\\wordpress\\\\ah_final_theme\" -NewName \"ah_final_plugin\")",
+      "Bash(cmd /c \"cd /d l:\\\\MY-GITHUB\\\\AR01H\\\\projects\\\\wordpress && ren ah_final_theme ah_final_plugin && echo OK\")"
+    ]
+  }
+}
