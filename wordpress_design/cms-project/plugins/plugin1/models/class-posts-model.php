@@ -24,16 +24,12 @@ class AH_Posts_Model extends AH_Model_Base {
 	}
 
 	public function get_taxonomies( int $post_id ): array {
-		global $wpdb;
-		$pt = AH_DB_Helper::table( 'post_taxonomies' );
-		$tt = AH_DB_Helper::table( 'taxonomies' );
-		return $wpdb->get_results( $wpdb->prepare(
-			"SELECT t.* FROM `{$tt}` t INNER JOIN `{$pt}` pt ON pt.taxonomy_id = t.id WHERE pt.post_id = %d",
-			$post_id
-		) ) ?: array();
+		return ( new AH_Content_Taxonomy_Model() )->get_terms( 'ah_post', $post_id );
 	}
 
 	public function sync_taxonomies( int $post_id, array $taxonomy_ids ): void {
+		( new AH_Content_Taxonomy_Model() )->sync_terms( 'ah_post', $post_id, $taxonomy_ids );
+
 		$t = AH_DB_Helper::table( 'post_taxonomies' );
 		AH_DB_Helper::delete_where( $t, array( 'post_id' => $post_id ) );
 		foreach ( array_unique( $taxonomy_ids ) as $tid ) {

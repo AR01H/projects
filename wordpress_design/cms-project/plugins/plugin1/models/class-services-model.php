@@ -54,16 +54,12 @@ class AH_Services_Model extends AH_Model_Base {
 	}
 
 	public function get_taxonomies( int $service_id ): array {
-		global $wpdb;
-		$pt = AH_DB_Helper::table( 'service_taxonomies' );
-		$tt = AH_DB_Helper::table( 'taxonomies' );
-		return $wpdb->get_results( $wpdb->prepare(
-			"SELECT t.* FROM `{$tt}` t INNER JOIN `{$pt}` st ON st.taxonomy_id = t.id WHERE st.service_id = %d",
-			$service_id
-		) ) ?: array();
+		return ( new AH_Content_Taxonomy_Model() )->get_terms( 'service', $service_id );
 	}
 
 	public function sync_taxonomies( int $service_id, array $taxonomy_ids ): void {
+		( new AH_Content_Taxonomy_Model() )->sync_terms( 'service', $service_id, $taxonomy_ids );
+
 		$t = AH_DB_Helper::table( 'service_taxonomies' );
 		AH_DB_Helper::delete_where( $t, array( 'service_id' => $service_id ) );
 		foreach ( array_unique( $taxonomy_ids ) as $tid ) {

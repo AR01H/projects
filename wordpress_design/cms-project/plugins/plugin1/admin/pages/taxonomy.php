@@ -48,7 +48,7 @@ $types  = $model->get_types();
 $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
 ?>
 <div class="wrap ah-wrap">
-  <h1><span class="dashicons dashicons-tag"></span> <?php esc_html_e( 'Categories & Tags', 'ah-theme' ); ?></h1>
+  <h1><span class="dashicons dashicons-tag"></span> <?php esc_html_e( 'Taxonomies', 'ah-theme' ); ?></h1>
   <?php if ( $notice ) : ?><div class="ah-notice ah-notice-success"><?php echo esc_html( $notice ); ?></div><?php endif; ?>
 
   <div class="ah-tabs" style="margin-bottom:20px;">
@@ -156,7 +156,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
           </div>
           <div class="ah-form-row"><label>Name *</label><input type="text" name="name" value="<?php echo esc_attr( $item->name ?? '' ); ?>" class="ah-generate-slug-source" data-slug-target="#term-slug" required></div>
           <div class="ah-form-row"><label>Slug</label><input type="text" name="slug" id="term-slug" value="<?php echo esc_attr( $item->slug ?? '' ); ?>" class="ah-slug-field"></div>
-          <div class="ah-form-row"><label>Parent (for sub-categories)</label>
+          <div class="ah-form-row"><label>Parent Term</label>
             <select name="parent_id">
               <option value="">— None —</option>
               <?php foreach ( $parents as $par ) : ?><option value="<?php echo esc_attr( $par->id ); ?>" <?php selected( $item->parent_id ?? 0, $par->id ); ?>><?php echo esc_html( $par->name ); ?></option><?php endforeach; ?>

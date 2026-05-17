@@ -4,13 +4,17 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
 $static_dir = get_template_directory() . '/static/';
 $files      = glob( $static_dir . '*.html' ) ?: array();
+$content_tax_m = new AH_Content_Taxonomy_Model();
 
 $edit_slug    = isset( $_GET['edit'] ) ? sanitize_file_name( wp_unslash( $_GET['edit'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $edit_content = '';
+$edit_page_id = 0;
 if ( $edit_slug ) {
 	$edit_path = $static_dir . $edit_slug . '.html';
 	if ( file_exists( $edit_path ) ) {
 		$edit_content = file_get_contents( $edit_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+		$edit_page    = get_page_by_path( $edit_slug );
+		$edit_page_id = $edit_page ? (int) $edit_page->ID : 0;
 	} else {
 		$edit_slug = ''; // File doesn't exist — treat as new with that slug pre-filled
 	}
@@ -34,7 +38,12 @@ if ( $edit_slug ) {
 						$url  = $page ? get_permalink( $page->ID ) : null;
 					?>
 					<div class="ah-sl-item<?php echo ( $edit_slug === $s ) ? ' active' : ''; ?>">
-						<span class="ah-sl-name"><?php echo esc_html( $s ); ?></span>
+						<span class="ah-sl-name">
+							<?php echo esc_html( $s ); ?>
+							<?php if ( $page ) : ?>
+								<span style="display:block;margin-top:4px;"><?php $content_tax_m->render_badges( 'static_page', (int) $page->ID ); ?></span>
+							<?php endif; ?>
+						</span>
 						<div class="ah-sl-actions">
 							<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $s ) ) ); ?>" class="ah-sl-btn">Edit</a>
 							<?php if ( $url ) : ?>
@@ -100,6 +109,11 @@ if ( $edit_slug ) {
 					placeholder="Paste your full HTML here — include &lt;!DOCTYPE html&gt;, &lt;head&gt;, &lt;style&gt;, &lt;body&gt;, etc."
 				><?php echo esc_textarea( $edit_content ); ?></textarea>
 
+				<div class="ah-card" style="padding:16px;margin-top:12px;">
+					<div class="ah-card-header" style="margin-bottom:12px;"><h2>Taxonomy Terms</h2></div>
+					<?php $content_tax_m->render_picker( 'static_page', $edit_page_id ); ?>
+				</div>
+
 				<div style="margin-top:12px;display:flex;gap:12px;align-items:center;">
 					<button id="ah-save-btn" class="ah-btn ah-btn-primary">Save Page</button>
 					<span id="ah-save-msg" style="font-size:13px;"></span>
@@ -123,7 +137,7 @@ if ( $edit_slug ) {
 }
 .ah-sl-item + .ah-sl-item { border-top: 1px solid #f0f0f0; }
 .ah-sl-item.active { background: #eff6ff; }
-.ah-sl-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.ah-sl-name { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
 .ah-sl-actions { display: flex; gap: 4px; flex-shrink: 0; }
 .ah-sl-btn {
 	font-size: 11px;
@@ -167,6 +181,7 @@ jQuery(function ($) {
 		$('#ah-slug-row').show();
 		$('#ah-slug-input').val('').focus();
 		$('#ah-html-editor').val(defaultHtml);
+		$('.ah-taxonomy-picker input[name="taxonomy_ids[]"]').prop('checked', false);
 		$('#ah-save-msg').text('');
 		$('#ah-save-btn').text('Create Page');
 	});
@@ -175,6 +190,9 @@ jQuery(function ($) {
 		var $btn  = $(this);
 		var slug  = editing || $('#ah-slug-input').val().trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 		var html  = $('#ah-html-editor').val();
+		var taxonomyIds = $('.ah-taxonomy-picker input[name="taxonomy_ids[]"]:checked').map(function () {
+			return this.value;
+		}).get();
 
 		if (!slug) { alert('Enter a page slug first.'); $('#ah-slug-input').focus(); return; }
 		if (!html.trim()) { alert('HTML content is empty.'); return; }
@@ -187,6 +205,7 @@ jQuery(function ($) {
 			nonce  : ahAdmin.nonce,
 			slug   : slug,
 			html   : html,
+			taxonomy_ids: taxonomyIds,
 		}, function (res) {
 			$btn.prop('disabled', false).text(editing ? 'Save Page' : 'Create Page');
 			if (res.success) {

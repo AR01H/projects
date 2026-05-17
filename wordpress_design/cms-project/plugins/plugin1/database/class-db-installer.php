@@ -25,8 +25,16 @@ class AH_DB_Installer {
 		}
 		self::ensure_builder_table();
 		self::ensure_required_settings();
+		self::ensure_content_taxonomies();
 		self::drop_broken_fks();
 		self::ensure_review_short_desc();
+		self::ensure_news_bar_content();
+	}
+
+	public static function ensure_content_taxonomies(): void {
+		if ( class_exists( 'AH_Content_Taxonomy_Model' ) ) {
+			AH_Content_Taxonomy_Model::ensure_table();
+		}
 	}
 
 	/**
@@ -42,6 +50,19 @@ class AH_DB_Installer {
 		) );
 		if ( empty( $col ) ) {
 			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `short_desc` VARCHAR(400) DEFAULT NULL AFTER `reviewer_title`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+	}
+
+	public static function ensure_news_bar_content(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_news_bar_items';
+		$col   = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'content'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `content` LONGTEXT NULL AFTER `text`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 	}
 
@@ -265,6 +286,7 @@ class AH_DB_Installer {
 			"CREATE TABLE IF NOT EXISTS {$p}ah_news_bar_items (
 				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				text        VARCHAR(500) NOT NULL,
+				content     LONGTEXT NULL,
 				link_url    VARCHAR(500),
 				link_target ENUM('_self','_blank') DEFAULT '_self',
 				status      ENUM('active','inactive') DEFAULT 'active',
@@ -672,6 +694,19 @@ class AH_DB_Installer {
 				post_id     INT UNSIGNED NOT NULL,
 				taxonomy_id INT UNSIGNED NOT NULL,
 				PRIMARY KEY (post_id, taxonomy_id)
+			) ENGINE=InnoDB {$cs}",
+
+			// 41b. Universal content taxonomies pivot
+			"CREATE TABLE IF NOT EXISTS {$p}ah_content_taxonomies (
+				id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				object_type VARCHAR(50) NOT NULL,
+				object_id   BIGINT UNSIGNED NOT NULL,
+				taxonomy_id INT UNSIGNED NOT NULL,
+				created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (id),
+				UNIQUE KEY uq_object_taxonomy (object_type, object_id, taxonomy_id),
+				KEY idx_object (object_type, object_id),
+				KEY idx_taxonomy (taxonomy_id)
 			) ENGINE=InnoDB {$cs}",
 
 			// 42. Post Table Blocks

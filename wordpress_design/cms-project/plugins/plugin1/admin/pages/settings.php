@@ -50,6 +50,26 @@ if ( ! in_array( $group, $g_list, true ) ) $group = $g_list[0] ?? 'general';
 $current     = $groups[ $group ] ?? array();
 $all_groups  = array_unique( array_merge( $g_list, array( 'general','contact','social','design','seo' ) ) );
 sort( $all_groups );
+
+if ( ! function_exists( 'ah_settings_image_url' ) ) {
+	function ah_settings_image_url( string $value ): string {
+		if ( filter_var( $value, FILTER_VALIDATE_URL ) ) {
+			return esc_url( $value );
+		}
+
+		$img_id = absint( $value );
+		if ( ! $img_id ) {
+			return '';
+		}
+
+		$url = wp_get_attachment_image_url( $img_id, 'medium' );
+		if ( $url ) {
+			return esc_url( $url );
+		}
+
+		return class_exists( 'AH_Media_Model' ) ? ( new AH_Media_Model() )->get_url( $img_id ) : '';
+	}
+}
 ?>
 <div class="wrap ah-wrap">
   <h1><span class="dashicons dashicons-admin-settings"></span> <?php esc_html_e( 'Site Settings', 'ah-theme' ); ?></h1>
@@ -87,7 +107,7 @@ sort( $all_groups );
             <textarea id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" rows="4"><?php echo esc_textarea( $val ); ?></textarea>
           <?php elseif ( $ft === 'image' ) : ?>
             <div class="ah-image-picker">
-              <?php $img_id = (int) $val; $img_url = $img_id ? ( new AH_Media_Model() )->get_url( $img_id ) : ''; ?>
+              <?php $img_url = ah_settings_image_url( (string) $val ); ?>
               <img src="<?php echo esc_url( $img_url ); ?>" class="ah-image-preview <?php echo $img_url ? 'visible' : ''; ?>" alt="">
               <div class="ah-image-picker-btns">
                 <input type="hidden" id="setting_<?php echo esc_attr( $sk ); ?>" class="ah-image-id" name="image_settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>">
@@ -107,13 +127,9 @@ sort( $all_groups );
           ?>
             <input type="<?php echo esc_attr( $it ); ?>" id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>">
           <?php endif; ?>
-          <form method="post" style="display:inline;position:absolute;top:0;right:0;" onsubmit="return confirm('Delete setting &quot;<?php echo esc_js( $sk ); ?>&quot;?');">
-            <?php wp_nonce_field( 'ah_save_settings', 'ah_settings_nonce' ); ?>
-            <input type="hidden" name="delete_setting_key" value="<?php echo esc_attr( $sk ); ?>">
-            <button type="submit" class="ah-btn ah-btn-danger ah-btn-sm" title="Delete setting">
-              <span class="dashicons dashicons-trash" style="font-size:14px;width:14px;height:14px;margin:0;"></span>
-            </button>
-          </form>
+          <button type="submit" form="delete_setting_<?php echo esc_attr( $sk ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" title="Delete setting" style="position:absolute;top:0;right:0;" onclick="return confirm('Delete setting &quot;<?php echo esc_js( $sk ); ?>&quot;?');">
+            <span class="dashicons dashicons-trash" style="font-size:14px;width:14px;height:14px;margin:0;"></span>
+          </button>
         </div>
       <?php endforeach; ?>
       <?php if ( ! empty( $current ) ) : ?>
@@ -122,6 +138,14 @@ sort( $all_groups );
         </button>
       <?php endif; ?>
     </form>
+    <?php foreach ( $current as $setting ) :
+      $sk = $setting->setting_key ?? '';
+    ?>
+      <form id="delete_setting_<?php echo esc_attr( $sk ); ?>" method="post" style="display:none;">
+        <?php wp_nonce_field( 'ah_save_settings', 'ah_settings_nonce' ); ?>
+        <input type="hidden" name="delete_setting_key" value="<?php echo esc_attr( $sk ); ?>">
+      </form>
+    <?php endforeach; ?>
   </div>
 
   <div class="ah-card" style="margin-top:20px;border-top:3px solid var(--ah-primary);">

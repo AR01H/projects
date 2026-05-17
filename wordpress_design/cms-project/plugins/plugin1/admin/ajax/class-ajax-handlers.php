@@ -289,8 +289,6 @@ class AH_Ajax_Handlers {
 	// -------------------------------------------------------------------------
 
 	public static function init_public(): void {
-		add_action( 'wp_ajax_ah_contact_submit',        array( __CLASS__, 'handle_contact_submit' ) );
-		add_action( 'wp_ajax_nopriv_ah_contact_submit', array( __CLASS__, 'handle_contact_submit' ) );
 		add_action( 'wp_ajax_ah_form_submit',           array( __CLASS__, 'handle_form_submit' ) );
 		add_action( 'wp_ajax_nopriv_ah_form_submit',    array( __CLASS__, 'handle_form_submit' ) );
 	}
@@ -371,49 +369,6 @@ class AH_Ajax_Handlers {
 		wp_send_json_success( array( 'message' => $form->success_message ?: 'Thank you! We\'ll get back to you shortly.' ) );
 	}
 
-	public static function handle_contact_submit(): void {
-		if ( ! check_ajax_referer( 'ah_frontend_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => 'Security check failed. Please refresh the page.' ), 403 );
-		}
-
-		// Honeypot: bots fill this, humans don't
-		if ( ! empty( $_POST['website'] ) ) {
-			wp_send_json_success( array( 'message' => 'Thank you! We\'ll be in touch shortly.' ) );
-		}
-
-		$name    = sanitize_text_field( $_POST['full_name'] ?? '' );
-		$email   = sanitize_email( $_POST['email'] ?? '' );
-		$phone   = sanitize_text_field( $_POST['phone'] ?? '' );
-		$subject = sanitize_text_field( $_POST['subject'] ?? '' );
-		$message = sanitize_textarea_field( $_POST['message'] ?? '' );
-
-		if ( ! $name ) {
-			wp_send_json_error( array( 'message' => 'Please enter your full name.' ) );
-		}
-		if ( ! $email || ! is_email( $email ) ) {
-			wp_send_json_error( array( 'message' => 'Please enter a valid email address.' ) );
-		}
-		if ( ! $message ) {
-			wp_send_json_error( array( 'message' => 'Please enter your message.' ) );
-		}
-
-		$model = new AH_Contact_Model();
-		$id    = $model->submit( array(
-			'full_name' => $name,
-			'email'     => $email,
-			'phone'     => $phone,
-			'subject'   => $subject,
-			'message'   => $message,
-		) );
-
-		if ( ! $id ) {
-			wp_send_json_error( array( 'message' => 'Something went wrong. Please try again.' ) );
-		}
-
-		AH_DB_Helper::log_action( 'create', 'contact_form_submissions', (int) $id );
-		wp_send_json_success( array( 'message' => 'Thank you! We\'ll get back to you shortly.' ) );
-	}
-
 	// -------------------------------------------------------------------------
 	// ah_flush_rewrites
 	// -------------------------------------------------------------------------
@@ -491,7 +446,7 @@ class AH_Ajax_Handlers {
 		$required = array(
 			'pages', 'page_sections', 'site_settings', 'admin_roles', 'nav_menus', 'nav_menu_items',
 			'media', 'posts', 'services', 'reviews', 'faqs', 'team_members', 'taxonomies',
-			'taxonomy_types', 'news_bar_items', 'contact_submissions', 'contact_config', 'audit_logs',
+			'taxonomy_types', 'content_taxonomies', 'news_bar_items', 'contact_submissions', 'contact_config', 'audit_logs',
 			'home_hero', 'home_highlights', 'home_why_us', 'home_why_us_cards', 'home_guide',
 			'home_guide_points', 'home_stack_items', 'home_difference', 'home_difference_rows',
 			'home_experience', 'home_experience_cards', 'home_why_req', 'home_why_req_cards',
@@ -580,6 +535,7 @@ class AH_Ajax_Handlers {
 		// Enforce safe slug: lowercase letters, numbers, hyphens only.
 		$slug = strtolower( preg_replace( '/[^a-z0-9-]/', '', $slug ) );
 		$html = wp_unslash( $_POST['html'] ?? '' );
+		$taxonomy_ids = array_map( 'absint', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
 
 		if ( ! $slug ) {
 			wp_send_json_error( array( 'message' => 'Invalid or empty slug.' ) );
@@ -603,6 +559,7 @@ class AH_Ajax_Handlers {
 		// Create or update the matching WordPress page.
 		$existing = get_page_by_path( $slug );
 		if ( $existing ) {
+			$page_id = (int) $existing->ID;
 			update_post_meta( $existing->ID, '_wp_page_template', 'template-static-page.php' );
 			$message  = 'HTML saved.';
 			$redirect = null;
@@ -621,6 +578,10 @@ class AH_Ajax_Handlers {
 				$message  = 'HTML saved (could not auto-create WP page — create it manually and set template to "Static HTML Page").';
 				$redirect = null;
 			}
+		}
+
+		if ( ! empty( $page_id ) ) {
+			( new AH_Content_Taxonomy_Model() )->sync_terms( 'static_page', (int) $page_id, $taxonomy_ids );
 		}
 
 		wp_send_json_success( array( 'message' => $message, 'redirect' => $redirect ) );

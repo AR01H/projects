@@ -5,6 +5,7 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 // Ensure tables exist
 AH_Form_Builder::install_tables();
 
+$content_tax_m = new AH_Content_Taxonomy_Model();
 $notice     = '';
 $active_tab = sanitize_key( $_GET['tab'] ?? 'build' );
 $form_id    = (int) ( $_GET['form_id'] ?? 0 );
@@ -17,16 +18,16 @@ if ( isset( $_POST['ah_new_form_nonce'] ) ) {
 		'notify_email'    => sanitize_email( get_option( 'admin_email' ) ),
 		'success_message' => 'Thank you! We\'ll get back to you shortly.',
 	) );
-	wp_redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $new_id, 'tab' => 'build' ), admin_url( 'admin.php' ) ) );
-	exit;
+	AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $new_id, 'tab' => 'build' ), admin_url( 'admin.php' ) ) );
 }
 
 // ── Handle: delete form ───────────────────────────────────────────────────────
 if ( isset( $_GET['delete_form'] ) && isset( $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_form' ) ) wp_die( 'Security.' );
-	AH_Form_Builder::delete_form( (int) $_GET['delete_form'] );
-	wp_redirect( admin_url( 'admin.php?page=ah-form-builder' ) );
-	exit;
+	$deleted_form_id = (int) $_GET['delete_form'];
+	AH_Form_Builder::delete_form( $deleted_form_id );
+	$content_tax_m->sync_terms( 'form', $deleted_form_id, array() );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-form-builder' ) );
 }
 
 // ── Handle: delete submission ─────────────────────────────────────────────────
@@ -54,10 +55,10 @@ if ( isset( $_POST['ah_save_form_nonce'] ) ) {
 	if ( is_array( $parsed ) ) {
 		AH_Form_Builder::save_fields( $form_id, $parsed );
 	}
+	$content_tax_m->sync_terms( 'form', $form_id, $_POST['taxonomy_ids'] ?? array() );
 
 	$notice = 'success:Form saved successfully.';
-	wp_redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'build', 'saved' => 1 ), admin_url( 'admin.php' ) ) );
-	exit;
+	AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'build', 'saved' => 1 ), admin_url( 'admin.php' ) ) );
 }
 
 if ( isset( $_GET['saved'] ) ) $notice = 'success:Form saved successfully.';
@@ -143,6 +144,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
     </select>
     <?php if ( $current ) : ?>
       <span class="ah-badge <?php echo 'active' === $current->status ? 'ah-badge-active' : 'ah-badge-inactive'; ?>"><?php echo esc_html( ucfirst( $current->status ) ); ?></span>
+      <?php $content_tax_m->render_badges( 'form', $form_id ); ?>
       <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-form-builder', 'delete_form' => $form_id ), admin_url( 'admin.php' ) ), 'ah_del_form' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete this form and all its submissions?');">Delete Form</a>
     <?php endif; ?>
   </div>
@@ -192,6 +194,11 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
           </select>
         </div>
       </div>
+    </div>
+
+    <div class="ah-card" style="margin-bottom:20px">
+      <div class="ah-card-header"><h2>Taxonomy Terms</h2></div>
+      <?php $content_tax_m->render_picker( 'form', $form_id ); ?>
     </div>
 
     <!-- Fields builder card -->

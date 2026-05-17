@@ -4,6 +4,9 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
 global $wpdb;
 
+AH_Content_Taxonomy_Model::ensure_table();
+$content_tax_m = new AH_Content_Taxonomy_Model();
+
 // ── Ensure table exists (auto-creates on first visit) ──────────────────────
 $fl_table = $wpdb->prefix . 'ah_file_links';
 $wpdb->query( "
@@ -67,6 +70,18 @@ if ( ! is_dir( $base_dir ) ) {
 	file_put_contents( $base_dir . '/index.php', '<?php // Silence is golden.' );
 }
 
+if (
+	$_SERVER['REQUEST_METHOD'] === 'POST' &&
+	isset( $_POST['save_file_terms'] ) &&
+	wp_verify_nonce( $_POST['ah_fl_terms_nonce'] ?? '', 'ah_save_file_terms' )
+) {
+	$file_id = absint( $_POST['file_id'] ?? 0 );
+	if ( $file_id ) {
+		$content_tax_m->sync_terms( 'file_link', $file_id, $_POST['taxonomy_ids'] ?? array() );
+		$notice = 'File terms updated.';
+	}
+}
+
 // ── Handle upload ──────────────────────────────────────────────────────────
 if (
 	$_SERVER['REQUEST_METHOD'] === 'POST' &&
@@ -104,7 +119,9 @@ if (
 				'file_size'     => (int) $uploaded['size'],
 				'uploaded_by'   => get_current_user_id() ?: null,
 			) );
-			AH_DB_Helper::log_action( 'create', 'file_links', $wpdb->insert_id, array( 'file' => $original_name ) );
+			$file_id = (int) $wpdb->insert_id;
+			$content_tax_m->sync_terms( 'file_link', $file_id, $_POST['taxonomy_ids'] ?? array() );
+			AH_DB_Helper::log_action( 'create', 'file_links', $file_id, array( 'file' => $original_name ) );
 			$notice = "'{$original_name}' uploaded successfully. Copy the link below.";
 		} else {
 			$notice      = 'Failed to move uploaded file. Check directory permissions.';
@@ -121,6 +138,7 @@ if ( isset( $_GET['delete_fl'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 		$disk_path = ah_fl_get_disk_path( $del_row->file_path );
 		if ( file_exists( $disk_path ) ) @unlink( $disk_path );
 		$wpdb->delete( $fl_table, array( 'id' => $del_id ), array( '%d' ) );
+		$content_tax_m->sync_terms( 'file_link', $del_id, array() );
 		AH_DB_Helper::log_action( 'delete', 'file_links', $del_id );
 		$notice = "'{$del_row->original_name}' deleted.";
 	}
@@ -186,6 +204,7 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
               <col style="width:70px;">
               <col style="width:75px;">
               <col style="width:240px;">
+              <col style="width:170px;">
               <col style="width:95px;">
               <col style="width:80px;">
             </colgroup>
@@ -196,6 +215,7 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
                 <th>Type</th>
                 <th>Size</th>
                 <th>Link</th>
+                <th>Terms</th>
                 <th>Uploaded</th>
                 <th>Actions</th>
               </tr>
@@ -262,6 +282,21 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
                               style="font-size:14px;width:14px;line-height:1.6;"></span>
                       </a>
                     </div>
+                  </td>
+
+                  <!-- Terms -->
+                  <td>
+                    <details>
+                      <summary style="cursor:pointer;font-size:12px;color:var(--ah-primary);">
+                        <?php $content_tax_m->render_badges( 'file_link', (int) $f->id ); ?>
+                      </summary>
+                      <form method="post" style="margin-top:8px;">
+                        <?php wp_nonce_field( 'ah_save_file_terms', 'ah_fl_terms_nonce' ); ?>
+                        <input type="hidden" name="file_id" value="<?php echo esc_attr( $f->id ); ?>">
+                        <?php $content_tax_m->render_picker( 'file_link', (int) $f->id ); ?>
+                        <button type="submit" name="save_file_terms" value="1" class="ah-btn ah-btn-primary ah-btn-sm" style="margin-top:8px;">Save Terms</button>
+                      </form>
+                    </details>
                   </td>
 
                   <!-- Date -->
@@ -332,6 +367,11 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
             <strong>Post limit:</strong> <?php echo esc_html( ini_get( 'post_max_size' ) ); ?>
           </div>
 
+          <div class="ah-form-row">
+            <label>Taxonomy Terms</label>
+            <?php $content_tax_m->render_picker( 'file_link' ); ?>
+          </div>
+
           <button type="submit" class="ah-btn ah-btn-primary" style="width:100%;" id="ah-fl-submit">
             <span class="dashicons dashicons-upload"
                   style="font-size:14px;width:14px;line-height:1.8;margin-right:4px;"></span>
@@ -339,19 +379,6 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
           </button>
         </form>
       </div>
-
-      <!-- Quick tips -->
-      <div class="ah-card" style="margin-top:16px;">
-        <div class="ah-card-header"><h2>How to Use</h2></div>
-        <ol style="margin:0;padding-left:18px;font-size:13px;color:var(--ah-muted);line-height:1.8;">
-          <li>Upload any file using the form above.</li>
-          <li>Copy the generated link from the table.</li>
-          <li>Paste the link anywhere — emails, pages, content, navigation menus.</li>
-          <li>Files are stored in your WordPress uploads folder and are publicly accessible via the link.</li>
-        </ol>
-      </div>
-    </div>
-
   </div><!-- /grid -->
 </div>
 

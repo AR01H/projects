@@ -2,15 +2,19 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-$model   = new AH_Newsbar_Model();
-$notice  = '';
-$action  = sanitize_key( $_GET['action'] ?? 'list' );
-$edit_id = (int) ( $_GET['id'] ?? 0 );
+$model         = new AH_Newsbar_Model();
+$content_tax_m = new AH_Content_Taxonomy_Model();
+$notice        = '';
+$action        = sanitize_key( $_GET['action'] ?? 'list' );
+$edit_id       = (int) ( $_GET['id'] ?? 0 );
+
+AH_DB_Installer::ensure_news_bar_content();
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	if ( ! wp_verify_nonce( $_POST['ah_newsbar_nonce'] ?? '', 'ah_save_newsbar' ) ) wp_die( 'Security.' );
 	$data = array(
 		'text'       => sanitize_text_field( $_POST['text'] ?? '' ),
+		'content'    => wp_kses_post( $_POST['content'] ?? '' ),
 		'link_url'   => esc_url_raw( $_POST['link_url'] ?? '' ),
 		'link_target'=> in_array( $_POST['link_target'] ?? '_self', array( '_self', '_blank' ), true ) ? $_POST['link_target'] : '_self',
 		'status'     => sanitize_key( $_POST['status'] ?? 'active' ),
@@ -19,13 +23,23 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		'end_date'   => sanitize_text_field( $_POST['end_date'] ?? '' ) ?: null,
 		'created_by' => get_current_user_id() ?: null,
 	);
-	$edit_id ? $model->update( $edit_id, $data ) : $model->create( $data );
+	if ( $edit_id ) {
+		$model->update( $edit_id, $data );
+		$saved_id = $edit_id;
+	} else {
+		$saved_id = (int) $model->create( $data );
+	}
+	if ( $saved_id ) {
+		$content_tax_m->sync_terms( 'news_bar_item', $saved_id, $_POST['taxonomy_ids'] ?? array() );
+	}
 	$notice = 'News bar item saved.';
 	$action = 'list';
 }
 
 if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_newsbar' ) ) {
-	$model->delete( (int) $_GET['delete_id'] );
+	$delete_id = (int) $_GET['delete_id'];
+	$model->delete( $delete_id );
+	$content_tax_m->sync_terms( 'news_bar_item', $delete_id, array() );
 	$notice = 'Item deleted.';
 }
 ?>
@@ -44,7 +58,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
     </div>
     <div class="ah-table-wrap">
       <table class="ah-table ah-sortable-list" data-model="news_bar_items">
-        <thead><tr><th></th><th>Text</th><th>Link</th><th>Dates</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead><tr><th></th><th>Text</th><th>Link</th><th>Dates</th><th>CMS Terms</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <?php foreach ( $items as $item ) : ?>
             <tr data-id="<?php echo esc_attr( $item->id ); ?>">
@@ -52,6 +66,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               <td><?php echo esc_html( $item->text ); ?></td>
               <td><small><?php echo esc_html( $item->link_url ); ?></small></td>
               <td><small><?php echo esc_html( ( $item->start_date ?: '∞' ) . ' → ' . ( $item->end_date ?: '∞' ) ); ?></small></td>
+              <td><?php $content_tax_m->render_badges( 'news_bar_item', (int) $item->id ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $item->status ); ?>"><?php echo esc_html( $item->status ); ?></span></td>
               <td class="row-actions">
                 <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-news-bar', 'action' => 'edit', 'id' => $item->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
@@ -73,6 +88,18 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
       <form method="post">
         <?php wp_nonce_field( 'ah_save_newsbar', 'ah_newsbar_nonce' ); ?>
         <div class="ah-form-row"><label>Text *</label><input type="text" name="text" value="<?php echo esc_attr( $item->text ?? '' ); ?>" required></div>
+        <div class="ah-form-row">
+          <label>Full Context</label>
+          <?php
+          wp_editor( $item->content ?? '', 'newsbar_content', array(
+	          'textarea_name' => 'content',
+	          'media_buttons' => true,
+	          'teeny'         => false,
+	          'textarea_rows' => 8,
+	          'quicktags'     => true,
+          ) );
+          ?>
+        </div>
         <div class="ah-form-row"><label>Link URL</label><input type="text" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>"></div>
         <div class="ah-form-row">
           <label>Open In</label>
@@ -92,6 +119,10 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
             <option value="active" <?php selected( $item->status ?? 'active', 'active' ); ?>>Active</option>
             <option value="inactive" <?php selected( $item->status ?? '', 'inactive' ); ?>>Inactive</option>
           </select>
+        </div>
+        <div class="ah-form-row">
+          <label>Taxonomy Terms</label>
+          <?php $content_tax_m->render_picker( 'news_bar_item', $edit_id ); ?>
         </div>
         <button type="submit" class="ah-btn ah-btn-primary">Save Item</button>
       </form>

@@ -33,6 +33,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		// Save bullet points
 		$points = array_filter( array_map( 'sanitize_text_field', $_POST['bullet_points'] ?? array() ) );
 		$model->save_bullet_points( (int) $saved_id, $points );
+		$model->sync_taxonomies( (int) $saved_id, $_POST['taxonomy_ids'] ?? array() );
 		$notice = 'Service saved.';
 		$action = 'list';
 	}
@@ -97,13 +98,14 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
     </div>
     <div class="ah-table-wrap">
       <table class="ah-table ah-sortable-list" data-model="services">
-        <thead><tr><th></th><th>Title</th><th>Slug</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead><tr><th></th><th>Title</th><th>Slug</th><th>CMS Terms</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <?php foreach ( $items as $svc ) : ?>
             <tr data-id="<?php echo esc_attr( $svc->id ); ?>">
               <td class="ah-sort-handle">&#9776;</td>
               <td><strong><?php echo esc_html( $svc->title ); ?></strong></td>
               <td><code><?php echo esc_html( $svc->slug ); ?></code></td>
+              <td><?php ( new AH_Content_Taxonomy_Model() )->render_badges( 'service', (int) $svc->id ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $svc->status ); ?>"><?php echo esc_html( $svc->status ); ?></span></td>
               <td class="row-actions">
                 <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-services', 'action' => 'edit', 'id' => $svc->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
@@ -165,6 +167,10 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
                   <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
                 </div>
               </div>
+            </div>
+            <div class="ah-form-row">
+              <label>Taxonomy Terms</label>
+              <?php ( new AH_Content_Taxonomy_Model() )->render_picker( 'service', $edit_id ); ?>
             </div>
             <div class="ah-form-row"><label>Sort Order</label><input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>"></div>
             <div class="ah-form-row">

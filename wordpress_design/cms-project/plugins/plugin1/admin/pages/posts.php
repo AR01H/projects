@@ -362,13 +362,13 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_custom_editor_no
 	wp_update_post( $args );
 	wp_set_post_categories( $post_id, $cats );
 	if ( $tags_raw ) wp_set_post_tags( $post_id, $tags_raw );
+	( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', $post_id, $_POST['taxonomy_ids'] ?? array() );
 	if ( $feat_img_id ) set_post_thumbnail( $post_id, $feat_img_id );
 	else delete_post_thumbnail( $post_id );
 	update_post_meta( $post_id, '_ah_sections', wp_slash( wp_json_encode( $sections ) ) );
 	update_post_meta( $post_id, '_ah_editor_mode', 'custom' );
 
-	wp_redirect( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $post_id, 'saved' => 1 ], admin_url( 'admin.php' ) ) );
-	exit;
+	AH_Admin_Bootstrap::redirect( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $post_id, 'saved' => 1 ], admin_url( 'admin.php' ) ) );
 }
 
 // ── POST: create from template ────────────────────────────────────────────────
@@ -419,11 +419,10 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_posts_nonce'] ) 
 		update_post_meta( $new_id, '_ah_editor_mode', $editor_mode );
 		if ( $editor_mode === 'custom' ) {
 			update_post_meta( $new_id, '_ah_sections', wp_slash( wp_json_encode( $sections ) ) );
-			wp_redirect( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $new_id ], admin_url( 'admin.php' ) ) );
+			AH_Admin_Bootstrap::redirect( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $new_id ], admin_url( 'admin.php' ) ) );
 		} else {
-			wp_redirect( get_edit_post_link( $new_id, 'redirect' ) );
+			AH_Admin_Bootstrap::redirect( get_edit_post_link( $new_id, 'redirect' ) );
 		}
-		exit;
 	}
 	$notice = 'Could not create post. Please try again.';
 }
@@ -431,8 +430,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_posts_nonce'] ) 
 // ── GET: trash ────────────────────────────────────────────────────────────────
 if ( isset( $_GET['trash_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_trash_post' ) ) {
 	wp_trash_post( (int) $_GET['trash_id'] );
-	wp_redirect( add_query_arg( [ 'page' => 'ah-posts', 'trashed' => 1 ], admin_url( 'admin.php' ) ) );
-	exit;
+	AH_Admin_Bootstrap::redirect( add_query_arg( [ 'page' => 'ah-posts', 'trashed' => 1 ], admin_url( 'admin.php' ) ) );
 }
 if ( isset( $_GET['trashed'] ) ) $notice = 'Post moved to trash.';
 if ( isset( $_GET['saved'] ) )   $notice = 'Post saved successfully.';
@@ -504,9 +502,9 @@ $pages_count = (int) ceil( $total / 20 );
 <?php /* ══════════════ CUSTOM FORM EDITOR ══════════════ */ ?>
 <?php elseif ( $action === 'edit-custom' ) :
   $edit_id     = (int) ( $_GET['id'] ?? 0 );
-  if ( ! $edit_id ) { wp_redirect( admin_url( 'admin.php?page=ah-posts&action=templates' ) ); exit; }
+  if ( ! $edit_id ) { AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-posts&action=templates' ) ); }
   $post        = get_post( $edit_id );
-  if ( ! $post ) { wp_redirect( admin_url( 'admin.php?page=ah-posts' ) ); exit; }
+  if ( ! $post ) { AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-posts' ) ); }
 
   $saved_sections_raw = get_post_meta( $edit_id, '_ah_sections', true );
   $saved_sections     = $saved_sections_raw ? json_decode( $saved_sections_raw, true ) : [];
@@ -626,6 +624,12 @@ $pages_count = (int) ceil( $total / 20 );
           <h4 style="margin:0 0 10px;font-size:.9rem;">Tags</h4>
           <input type="text" name="post_tags" value="<?php echo esc_attr( $tags_str ); ?>" placeholder="tag1, tag2, tag3" style="width:100%;box-sizing:border-box;">
           <p style="font-size:.75rem;opacity:.6;margin:4px 0 0;">Separate with commas.</p>
+        </div>
+
+        <!-- Global Terms -->
+        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
+          <h4 style="margin:0 0 10px;font-size:.9rem;">CMS Taxonomy Terms</h4>
+          <?php ( new AH_Content_Taxonomy_Model() )->render_picker( 'wp_post', $edit_id ); ?>
         </div>
 
         <!-- Featured Image -->
@@ -885,7 +889,7 @@ $pages_count = (int) ceil( $total / 20 );
     <div class="ah-table-wrap">
       <table class="ah-table">
         <thead>
-          <tr><th>Title</th><th>Categories</th><th>Status</th><th>Editor</th><th>Author</th><th>Modified</th><th>Actions</th></tr>
+          <tr><th>Title</th><th>WP Categories</th><th>CMS Terms</th><th>Status</th><th>Editor</th><th>Author</th><th>Modified</th><th>Actions</th></tr>
         </thead>
         <tbody>
           <?php foreach ( $posts_list as $p ) :
@@ -906,6 +910,7 @@ $pages_count = (int) ceil( $total / 20 );
                 <?php endif; ?>
               </td>
               <td><small><?php echo $cats ? esc_html( implode( ', ', wp_list_pluck( $cats, 'name' ) ) ) : '—'; ?></small></td>
+              <td><?php ( new AH_Content_Taxonomy_Model() )->render_badges( 'wp_post', (int) $p->ID ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $badge[ $p->post_status ] ?? 'draft' ); ?>"><?php echo esc_html( $label[ $p->post_status ] ?? $p->post_status ); ?></span></td>
               <td><small style="opacity:.7;"><?php echo $editor_mode === 'custom' ? '📝 Form' : '🖊 WP'; ?></small></td>
               <td><small><?php echo esc_html( $author ); ?></small></td>

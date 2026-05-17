@@ -7,6 +7,7 @@ $table   = $wpdb->prefix . 'ah_builder_pages';
 $notice  = '';
 $action  = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = (int) ( $_GET['id'] ?? 0 );
+$content_tax_m = new AH_Content_Taxonomy_Model();
 
 // ── Template presets ──────────────────────────────────────────────────────────
 function ah_builder_templates(): array {
@@ -66,6 +67,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_builder_nonce'] 
 
 	if ( isset( $_POST['delete_page'] ) && $edit_id ) {
 		$wpdb->delete( $table, array( 'id' => $edit_id ) );
+		$content_tax_m->sync_terms( 'builder_page', $edit_id, array() );
 		$notice = 'Page deleted.'; $action = 'list'; $edit_id = 0;
 
 	} elseif ( isset( $_POST['create_from_template'] ) ) {
@@ -77,6 +79,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_builder_nonce'] 
 		$slug    = sanitize_title( $_POST['page_slug'] ?: $title );
 		$wpdb->insert( $table, array( 'title' => $title, 'slug' => $slug, 'blocks' => wp_json_encode( $tpl['blocks'] ), 'status' => 'draft' ) );
 		$edit_id = $wpdb->insert_id;
+		$content_tax_m->sync_terms( 'builder_page', (int) $edit_id, $_POST['taxonomy_ids'] ?? array() );
 		$action  = 'builder';
 		$notice  = 'Page created from "' . esc_html( $tpl['label'] ) . '" template.';
 
@@ -103,10 +106,12 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_builder_nonce'] 
 
 		if ( $edit_id ) {
 			$wpdb->update( $table, $data, array( 'id' => $edit_id ) );
+			$content_tax_m->sync_terms( 'builder_page', $edit_id, $_POST['taxonomy_ids'] ?? array() );
 			$notice = 'Page saved.';
 		} else {
 			$wpdb->insert( $table, $data );
 			$edit_id = $wpdb->insert_id;
+			$content_tax_m->sync_terms( 'builder_page', (int) $edit_id, $_POST['taxonomy_ids'] ?? array() );
 			$notice  = 'Page created.';
 			$action  = 'builder';
 		}
@@ -157,7 +162,7 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
     <div class="ah-table-wrap">
       <table class="ah-table">
         <thead>
-          <tr><th>Title</th><th>Slug</th><th>Blocks</th><th>Status</th><th>Updated</th><th>Actions</th></tr>
+          <tr><th>Title</th><th>Slug</th><th>Blocks</th><th>CMS Terms</th><th>Status</th><th>Updated</th><th>Actions</th></tr>
         </thead>
         <tbody>
           <?php foreach ( $pages as $pg ) :
@@ -167,6 +172,7 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
               <td><strong><?php echo esc_html( $pg->title ); ?></strong></td>
               <td><code>/<?php echo esc_html( $pg->slug ); ?>/</code></td>
               <td><?php echo esc_html( $b_count ); ?> block<?php echo $b_count !== 1 ? 's' : ''; ?></td>
+              <td><?php $content_tax_m->render_badges( 'builder_page', (int) $pg->id ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $pg->status ); ?>"><?php echo esc_html( $pg->status ); ?></span></td>
               <td style="color:var(--ah-text-muted);font-size:.82rem"><?php echo esc_html( date_i18n( 'j M Y', strtotime( $pg->updated_at ) ) ); ?></td>
               <td class="row-actions">
@@ -259,6 +265,9 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
 .ah-block-body label { font-size:.78rem; font-weight:600; color:#6b7280; display:block; margin-bottom:4px; }
 .ah-block-body input, .ah-block-body textarea, .ah-block-body select { width:100%; border:1px solid #e5e7eb; border-radius:6px; padding:7px 10px; font-size:.85rem; }
 .ah-block-body textarea { resize:vertical; }
+.ah-block-body .wp-editor-wrap { max-width:none; }
+.ah-block-body .wp-editor-wrap textarea { border-radius:0; }
+.ah-block-body .mce-container, .ah-block-body .quicktags-toolbar { box-sizing:border-box; }
 .ah-block-preview { padding:14px 16px; font-size:.82rem; color:#6b7280; border-top:1px dashed #e5e7eb; background:#fafafa; }
 .ah-repeater { border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; margin-top:8px; }
 .ah-repeater-row { display:grid; gap:8px; padding:10px 12px; border-bottom:1px solid #f0f0f0; position:relative; }
@@ -365,22 +374,31 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
                   placeholder="SEO description"><?php echo esc_textarea( $current_page->meta_description ?? '' ); ?></textarea>
       </div>
 
+      <div class="ah-form-row">
+        <label>Taxonomy Terms</label>
+        <?php $content_tax_m->render_picker( 'builder_page', $edit_id ); ?>
+      </div>
+
       <?php if ( $current_page ) : ?>
         <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0">
         <h4>Danger Zone</h4>
-        <form method="post" onsubmit="return confirm('Delete this page permanently?')">
-          <?php wp_nonce_field( 'ah_builder_save', 'ah_builder_nonce' ); ?>
-          <input type="hidden" name="page_title" value="<?php echo esc_attr( $current_page->title ); ?>">
-          <button type="submit" name="delete_page" value="1"
+        <div>
+          <button type="submit" form="ah-builder-delete-form" name="delete_page" value="1" onclick="return confirm('Delete this page permanently?')"
                   style="width:100%;background:#fef2f2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;padding:8px;cursor:pointer;font-size:.82rem;font-weight:600">
             🗑 Delete Page
           </button>
-        </form>
+        </div>
       <?php endif; ?>
     </div>
 
   </div><!-- /builder-wrap -->
 </form>
+<?php if ( $current_page ) : ?>
+  <form id="ah-builder-delete-form" method="post" style="display:none;">
+    <?php wp_nonce_field( 'ah_builder_save', 'ah_builder_nonce' ); ?>
+    <input type="hidden" name="page_title" value="<?php echo esc_attr( $current_page->title ); ?>">
+  </form>
+<?php endif; ?>
 
 <script>
 (function($){
@@ -532,6 +550,7 @@ function renderCanvas() {
   var $blocks  = $canvas.find('.ah-canvas-block');
 
   // Remove existing blocks but keep empty state div
+  destroyRichEditors();
   $blocks.remove();
 
   if ( blocks.length === 0 ) {
@@ -540,6 +559,7 @@ function renderCanvas() {
     $empty.hide();
     blocks.forEach(function(block){ $canvas.append(buildBlockHTML(block)); });
     makeSortable();
+    initRichEditors();
   }
 }
 
@@ -568,7 +588,9 @@ function buildBlockHTML(block) {
     var val = data[f.key] !== undefined ? data[f.key] : (f.def||'');
     html += '<div class="ah-form-row"><label>'+esc(f.label)+'</label>';
     if (f.type === 'textarea') {
-      html += '<textarea data-block-id="'+id+'" data-field="'+f.key+'" placeholder="'+esc(f.ph||'')+'" rows="3">'+esc(val)+'</textarea>';
+      var richClass = block.type === 'text_block' && f.key === 'content' ? ' class="ah-rich-editor"' : '';
+      var richId = block.type === 'text_block' && f.key === 'content' ? ' id="ah-rich-editor-'+id+'"' : '';
+      html += '<textarea'+richId+richClass+' data-block-id="'+id+'" data-field="'+f.key+'" placeholder="'+esc(f.ph||'')+'" rows="6">'+esc(val)+'</textarea>';
     } else if (f.type === 'select') {
       html += '<select data-block-id="'+id+'" data-field="'+f.key+'">';
       (f.options||[]).forEach(function(o){ html += '<option value="'+o+'"'+(val===o?' selected':'')+'>'+o+'</option>'; });
@@ -596,6 +618,52 @@ function buildBlockHTML(block) {
   html += '</div>'; // /block-body
   html += '</div>'; // /canvas-block
   return html;
+}
+
+function initRichEditors() {
+  if (!window.wp || !wp.editor) return;
+  $('.ah-canvas-block.ah-block-active .ah-rich-editor').each(function(){
+    var el = this;
+    if (el.dataset.editorReady) return;
+    el.dataset.editorReady = '1';
+    wp.editor.initialize(el.id, {
+      tinymce: {
+        wpautop: true,
+        toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,undo,redo',
+        toolbar2: '',
+        setup: function(editor) {
+          editor.on('change keyup undo redo', function() {
+            $('#' + editor.id).val(editor.getContent());
+            syncField($('#' + editor.id));
+          });
+        }
+      },
+      quicktags: true,
+      mediaButtons: false
+    });
+  });
+}
+
+function destroyRichEditors() {
+  $('.ah-rich-editor').each(function(){
+    if (!this.id) return;
+    if (window.tinymce && tinymce.get(this.id)) {
+      tinymce.get(this.id).save();
+      tinymce.get(this.id).remove();
+    }
+    if (window.QTags && QTags.instances && QTags.instances[this.id]) {
+      delete QTags.instances[this.id];
+    }
+  });
+}
+
+function syncRichEditors() {
+  $('.ah-rich-editor').each(function(){
+    if (window.tinymce && tinymce.get(this.id)) {
+      tinymce.get(this.id).save();
+    }
+    syncField($(this));
+  });
 }
 
 function buildRepeaterRow(fields, data, blockId, repKey, ri) {
@@ -679,13 +747,18 @@ $('.ah-palette-block').on('click', function(){
   // Auto-expand the new block
   var $new = $('#ah-canvas .ah-canvas-block:last');
   $new.addClass('ah-block-active');
+  initRichEditors();
   $new[0].scrollIntoView({behavior:'smooth', block:'center'});
 });
 
 // Toggle block expand/collapse
 $(document).on('click', '.ah-block-header', function(e){
   if ($(e.target).is('.ah-block-handle, .ah-delete-block')) return;
-  $(this).closest('.ah-canvas-block').toggleClass('ah-block-active');
+  var $block = $(this).closest('.ah-canvas-block');
+  $block.toggleClass('ah-block-active');
+  if ($block.hasClass('ah-block-active')) {
+    initRichEditors();
+  }
 });
 
 // Delete block
@@ -744,8 +817,9 @@ $('#page-slug').on('input', function(){ $(this).data('manually-edited', true); }
 
 // Save: serialize state to JSON
 $('#ah-builder-form').on('submit', function(){
-  // Sync any remaining repeater state
-  $('#ah-canvas [data-repeater]').each(function(){ syncField($(this)); });
+  syncRichEditors();
+  // Sync any remaining regular/repeater field state
+  $('#ah-canvas .ah-block-body input, #ah-canvas .ah-block-body textarea, #ah-canvas .ah-block-body select').each(function(){ syncField($(this)); });
   $('#blocks-json').val(JSON.stringify(blocks.map(function(b){
     return { type: b.type, data: b.data || {} };
   })));

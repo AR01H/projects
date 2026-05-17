@@ -456,6 +456,7 @@ class AH_CSV_Importer {
 
 			$wpdb->insert( $table, array(
 				'text'       => $text,
+				'content'    => wp_kses_post( $row['content'] ?? '' ),
 				'link_url'   => esc_url_raw( $row['link_url'] ?? '' ),
 				'start_date' => $start && strtotime( $start ) ? $start : null,
 				'end_date'   => $end   && strtotime( $end )   ? $end   : null,

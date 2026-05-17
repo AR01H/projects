@@ -6,7 +6,6 @@ class AH_Admin_Bootstrap {
 	public static function init(): void {
 		add_action( 'admin_menu', array( 'AH_Admin_Menus', 'register' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
-		add_action( 'admin_head', array( self::class, 'output_sidebar_icons' ) );
 		add_action( 'admin_bar_menu', array( self::class, 'clean_admin_bar' ), 999 );
 		AH_Ajax_Handlers::init();
 	}
@@ -20,6 +19,8 @@ class AH_Admin_Bootstrap {
 			array( 'wp-color-picker' ),
 			AH_THEME_VERSION
 		);
+		wp_add_inline_style( 'ah-admin-style', self::sidebar_icons_css() );
+
 		wp_enqueue_script(
 			'ah-admin-script',
 			AH_THEME_URL . '/admin/assets/js/admin-script.js',
@@ -35,15 +36,33 @@ class AH_Admin_Bootstrap {
 
 		wp_enqueue_media();
 		add_thickbox();
+
+		if ( strpos( $hook, 'ah-page-builder' ) !== false ) {
+			wp_enqueue_editor();
+		}
 	}
 
 	public static function clean_admin_bar( \WP_Admin_Bar $bar ): void {
 		$bar->remove_node( 'new-post' );
 	}
 
-	public static function output_sidebar_icons(): void {
-		?>
-<style id="ah-sidebar-icons">
+	public static function redirect( string $url ): void {
+		if ( ! headers_sent() ) {
+			wp_safe_redirect( $url );
+			exit;
+		}
+
+		$url = esc_url( $url );
+		printf(
+			'<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;url=%s"></noscript>',
+			wp_json_encode( $url ),
+			esc_attr( $url )
+		);
+		exit;
+	}
+
+	private static function sidebar_icons_css(): string {
+		return <<<'CSS'
 #adminmenu .wp-submenu a[href*="page=ah-"]::before {
 	font-family: dashicons !important; font-size:15px; display:inline-block;
 	vertical-align:middle; margin-right:6px; opacity:.75; line-height:1;
@@ -62,7 +81,7 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-client-stories"]::before { content:"\f109"; }
 #adminmenu .wp-submenu a[href*="page=ah-reviews"]::before      { content:"\f205"; }
 #adminmenu .wp-submenu a[href*="page=ah-faqs"]::before         { content:"\f223"; }
-#adminmenu .wp-submenu a[href*="page=ah-taxonomy"]::before     { content:"\f318"; }
+#adminmenu .wp-submenu a[href*="page=ah-taxonomy"]::before     { content:"\f323"; }
 #adminmenu .wp-submenu a[href*="page=ah-contact"]::before      { content:"\f466"; }
 #adminmenu .wp-submenu a[href*="page=ah-submissions"]::before  { content:"\f465"; }
 #adminmenu .wp-submenu a[href*="page=ah-page-builder"]::before { content:"\f116"; }
@@ -79,7 +98,6 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-audit"]) {
 	border-top:1px solid rgba(255,255,255,.12); margin-top:6px; padding-top:4px;
 }
-</style>
-		<?php
+CSS;
 	}
 }
