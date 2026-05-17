@@ -6,7 +6,7 @@
 	padding: 12px 24px;
 	font-size: .9rem;
 	font-weight: 600;
-	border-radius: var(--r-full);
+	border-radius: var(--r-sm);
 	border: 2px solid transparent;
 	transition: background .2s, color .2s, border-color .2s, transform .15s, box-shadow .2s;
 	text-decoration: none;
@@ -48,7 +48,7 @@
 }
 .btn-white:hover { background: var(--bg-alt); }
 
-.btn-sm { padding: 8px 18px; font-size: .82rem; }
+.btn-sm { padding: 4px 10px; font-size: .82rem; }
 .btn-lg { padding: 16px 36px; font-size: 1rem; }
 .btn-block { width: 100%; justify-content: center; }
 
@@ -487,7 +487,7 @@
 	background: white;
 	border-top: 1px solid var(--border);
 	border-bottom: 1px solid var(--border);
-	padding: 18px 0;
+	padding: 8px 0;
 	overflow: hidden;
 }
 .trust-bar__inner { display: flex; align-items: center; overflow: hidden; }
@@ -514,27 +514,30 @@
 	background: var(--slate-900);
 	color: rgba(255,255,255,.85);
 	font-size: .78rem;
-	padding: 8px 0;
+	padding: 0;
 	overflow: hidden;
 	position: relative;
 	z-index: 999;
 	position: absolute;
-    top: 75px;
+    top: var(--nav-h);
 	width:100%;
 }
-.news-ticker__inner { display: flex; align-items: center; gap: 16px; }
+.news-ticker__inner { display: flex; align-items: center; gap: 3px; }
 .news-ticker__label {
-	background: var(--accent);
-	color: var(--slate-900);
+	background:
+		linear-gradient(to right, #ae0c0c 98%, #ff6666 20px),
+		rgb(184, 8, 8);
+
+	color: var(--client-color-50);
 	font-weight: 700;
 	font-size: .7rem;
 	letter-spacing: .08em;
 	text-transform: uppercase;
-	padding: 3px 10px;
-	border-radius: var(--r-full);
 	flex-shrink: 0;
+	padding: 6px 20px 6px 6px;
 }
 .news-ticker__track {
+	padding: 3px 10px;
 	overflow: hidden;
 	flex: 1;
 }
@@ -558,7 +561,7 @@
 .star--empty { color: var(--border); }
 
 /* ── FAQ Accordion ────────────────────────────────────────────────────────── */
-.faq { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+.faq { border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; }
 .faq + .faq { margin-top: 8px; }
 
 .faq__q {
@@ -567,7 +570,7 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
-	padding: 20px 24px;
+	padding: 10px 14px;
 	text-align: left;
 	font-size: .95rem;
 	font-weight: 600;
@@ -586,7 +589,7 @@
 	display: grid;
 	place-items: center;
 	flex-shrink: 0;
-	font-size: 1.1rem;
+	/* font-size: 1rem; */
 	transition: transform .3s;
 }
 .faq.is-open .faq__icon { transform: rotate(45deg); background: var(--accent); color: white; }
@@ -599,7 +602,7 @@
 .faq.is-open .faq__a { max-height: 600px; }
 
 .faq__a-inner {
-	padding: 0 24px 20px;
+	padding: 5px 10px 12px;
 	font-size: .9rem;
 	color: var(--text-secondary);
 	line-height: 1.75;

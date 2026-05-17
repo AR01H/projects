@@ -29,7 +29,8 @@ $year     = gmdate( 'Y' );
           $logo = get_template_directory() . '/assets/images/logo.png';
           if ( file_exists( $logo ) ) :
           ?>
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php bloginfo('name'); ?>" style="height:36px;filter:brightness(0) invert(1)">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php bloginfo('name'); ?>" style="height:36px">
+              <span style="color:white;font-size:1.4rem">Advaith <em style="font-style:italic;font-family:var(--font-accent)">Homes</em></span>
           <?php else : ?>
             <div class="nav__logo-mark">AH</div>
             <span style="color:white;font-size:1.4rem">Advaith <em style="font-style:italic;font-family:var(--font-accent)">Homes</em></span>
@@ -82,9 +83,6 @@ $year     = gmdate( 'Y' );
           <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>" class="footer__link"><?php esc_html_e( 'Client Stories', 'ah-theme' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"          class="footer__link"><?php esc_html_e( 'Blog', 'ah-theme' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"       class="footer__link"><?php esc_html_e( 'Contact', 'ah-theme' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>" class="footer__link"><?php esc_html_e( 'Privacy Policy', 'ah-theme' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"         class="footer__link"><?php esc_html_e( 'Terms & Conditions', 'ah-theme' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/refund-policy/' ) ); ?>" class="footer__link"><?php esc_html_e( 'Refund Policy', 'ah-theme' ); ?></a>
         </div>
       </div>
 

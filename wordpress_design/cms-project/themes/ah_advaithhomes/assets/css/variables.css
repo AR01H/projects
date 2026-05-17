@@ -41,7 +41,7 @@
 	--font-body:    'DM Sans', system-ui, sans-serif;
 	--font-accent:  'Instrument Serif', Georgia, serif;
 
-	--nav-h:       76px;
+	--nav-h:       66px;
 	--section-py:  clamp(60px, 8vw, 60px);
 	--max-w:       100%;
 	--max-w-text:  760px;

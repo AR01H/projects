@@ -8,7 +8,7 @@ if ( empty( $items ) ) return;
 $all = array_merge( $items, $items );
 ?>
 <div class="news-ticker" role="complementary" aria-label="News updates">
-  <div class="container">
+  <div class="">
     <div class="news-ticker__inner">
       <span class="news-ticker__label">News</span>
       <div class="news-ticker__track" aria-live="off">

@@ -93,7 +93,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
         <div class="ah-feature-card"><div class="icon">❓</div><strong>FAQs</strong><p>Frequently asked questions and answers</p></div>
         <div class="ah-feature-card"><div class="icon">✍️</div><strong>Posts / Blog</strong><p>Blog posts, news articles, guides, case studies</p></div>
         <div class="ah-feature-card"><div class="icon">🏆</div><strong>Client Stories</strong><p>Case study / success story pages</p></div>
-        <div class="ah-feature-card"><div class="icon">📬</div><strong>Contact Submissions</strong><p>View and manage form enquiries</p></div>
         <div class="ah-feature-card"><div class="icon">🧩</div><strong>Page Builder</strong><p>Create custom landing pages visually</p></div>
         <div class="ah-feature-card"><div class="icon">📋</div><strong>Form Builder</strong><p>Build contact/enquiry forms with a shortcode</p></div>
         <div class="ah-feature-card"><div class="icon">📁</div><strong>File Links</strong><p>Manage downloadable PDF and document links</p></div>
@@ -178,18 +177,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
         <li><strong>Tags</strong> — flat keywords. Add as many as relevant. In the Form Editor, type tags separated by commas.</li>
       </ul>
       <div class="ah-tip"><strong>SEO benefit:</strong> Good categories and tags help search engines understand what your content is about.</div>
-    </div>
-
-    <div class="ah-help-section">
-      <h2>Contact Submissions</h2>
-      <p>Every time someone fills in a contact form on your website, the submission appears here. You can:</p>
-      <ul>
-        <li>Read the full message and contact details</li>
-        <li>Mark submissions as read/unread</li>
-        <li>Delete old submissions once dealt with</li>
-        <li>Filter by date or read status</li>
-      </ul>
-      <div class="ah-warn"><strong>Note:</strong> Deleting a submission here permanently removes it from the database. Download or copy important enquiry details before deleting.</div>
     </div>
 
   </div>

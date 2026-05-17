@@ -183,7 +183,7 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
           <div class="ah-card">
             <div class="ah-card-header"><h2>Featured Image</h2></div>
             <div class="ah-image-picker">
-              <img src="<?php echo esc_url( $thumb_url ); ?>" class="ah-image-preview <?php echo $thumb_url ? 'visible' : ''; ?>" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:6px;">
+              <img src="<?php echo esc_url( $thumb_url ); ?>" class="ah-image-preview <?php echo $thumb_url ? 'visible' : ''; ?>" alt="" style="width:100%;height:160px;object-fit:contain;border-radius:6px;">
               <div class="ah-image-picker-btns" style="margin-top:8px;">
                 <input type="hidden" class="ah-image-id" name="featured_image_id" value="<?php echo esc_attr( $thumb_id ); ?>">
                 <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Set Image</button>

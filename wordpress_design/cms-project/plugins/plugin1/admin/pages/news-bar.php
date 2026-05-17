@@ -73,7 +73,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
       <form method="post">
         <?php wp_nonce_field( 'ah_save_newsbar', 'ah_newsbar_nonce' ); ?>
         <div class="ah-form-row"><label>Text *</label><input type="text" name="text" value="<?php echo esc_attr( $item->text ?? '' ); ?>" required></div>
-        <div class="ah-form-row"><label>Link URL</label><input type="url" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>"></div>
+        <div class="ah-form-row"><label>Link URL</label><input type="text" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>"></div>
         <div class="ah-form-row">
           <label>Open In</label>
           <select name="link_target">

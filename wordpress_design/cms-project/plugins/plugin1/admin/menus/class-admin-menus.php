@@ -11,7 +11,6 @@ class AH_Admin_Menus {
 
 		$submenus = [
 			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],
-			['title' => 'Site Settings','menu' => 'Site Settings','slug' => 'ah-settings','callback' => 'page_settings'],
 			['title' => 'Pages Manager','menu' => 'Pages Manager','slug' => 'ah-pages','callback' => 'page_pages'],
 			['title' => 'Media Library','menu' => 'Media Library','slug' => 'ah-media','callback' => 'page_media'],
 			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
@@ -25,15 +24,15 @@ class AH_Admin_Menus {
 			['title' => 'Posts / Blog','menu' => 'Posts / Blog','slug' => 'ah-posts','callback' => 'page_posts'],
 			['title' => 'Page Builder','menu' => 'Page Builder','slug' => 'ah-page-builder','callback' => 'page_builder'],
 			['title' => 'Static Pages','menu' => 'Static Pages','slug' => 'ah-static-pages','callback' => 'page_static_pages'],
-			['title' => 'Team Members','menu' => 'Team Members','slug' => 'ah-team','callback' => 'page_team'],
-			['title' => 'Contact Page','menu' => 'Contact Page','slug' => 'ah-contact','callback' => 'page_contact'],
-			['title' => 'Categories & Tags','menu' => 'Categories & Tags','slug' => 'ah-taxonomy','callback' => 'page_taxonomy'],
-			['title' => 'Contact Submissions','menu' => 'Contact Submissions','slug' => 'ah-submissions','callback' => 'page_submissions'],
-			['title' => 'Audit Log','menu' => 'Audit Log','slug' => 'ah-audit','callback' => 'page_audit'],
-			['title' => 'Data Import','menu' => 'Data Import','slug' => 'ah-import','callback' => 'page_import'],
 			['title' => 'Form Builder','menu' => 'Form Builder','slug' => 'ah-form-builder','callback' => 'page_form_builder'],
+			['title' => 'Team Members','menu' => 'Team Members','slug' => 'ah-team','callback' => 'page_team'],
+			['title' => 'Categories & Tags','menu' => 'Categories & Tags','slug' => 'ah-taxonomy','callback' => 'page_taxonomy'],
+			['title' => 'Contact Page','menu' => 'Contact Page','slug' => 'ah-contact','callback' => 'page_contact'],
+			['title' => 'Data Import','menu' => 'Data Import','slug' => 'ah-import','callback' => 'page_import'],
+			['title' => 'Site Settings','menu' => 'Site Settings','slug' => 'ah-settings','callback' => 'page_settings'],
+			['title' => 'Audit Log','menu' => 'Audit Log','slug' => 'ah-audit','callback' => 'page_audit'],
 			['title' => 'Admin Actions','menu' => 'Admin Actions','slug' => 'ah-admin-actions','callback' => 'page_admin_actions'],
-			['title' => 'Help & Guide','menu' => '❓ Help & Guide','slug' => 'ah-help','callback' => 'page_help'],
+			['title' => 'Help & Guide','menu' => 'Help & Guide','slug' => 'ah-help','callback' => 'page_help'],
 		];
 
 		foreach ( $submenus as $submenu ) {
@@ -69,7 +68,6 @@ class AH_Admin_Menus {
 	public static function page_client_stories() { self::load( 'client-stories' ); }
 	public static function page_contact()        { self::load( 'contact'        ); }
 	public static function page_taxonomy()       { self::load( 'taxonomy'       ); }
-	public static function page_submissions()    { self::load( 'submissions'    ); }
 	public static function page_audit()          { self::load( 'audit-log'      ); }
 	public static function page_import()         { self::load( 'import'         ); }
 	public static function page_file_links()     { self::load( 'file-links'     ); }
