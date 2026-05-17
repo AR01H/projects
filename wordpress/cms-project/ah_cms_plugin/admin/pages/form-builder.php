@@ -210,7 +210,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
               <th style="min-width:160px">Field Label</th>
               <th style="width:148px">Type</th>
               <th>Placeholder</th>
-              <th style="width:180px">Dropdown Options <small style="font-weight:400;text-transform:none">(one per line)</small></th>
+              <th style="width:200px">Dropdown Options <small style="font-weight:400;text-transform:none;letter-spacing:0">(value | Label, one per line)</small></th>
               <th style="width:70px;text-align:center">Required</th>
               <th style="width:46px"></th>
             </tr>
@@ -226,7 +226,13 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
                 </select>
               </td>
               <td><input type="text" class="fb-ph<?php echo 'select' === $f->field_type ? ' fb-hidden' : ''; ?>" value="<?php echo esc_attr( $f->placeholder ?? '' ); ?>" placeholder="Placeholder text"></td>
-              <td><textarea class="fb-opts<?php echo 'select' !== $f->field_type ? ' fb-hidden' : ''; ?>" rows="3" placeholder="Option A&#10;Option B&#10;Option C"><?php echo esc_textarea( implode( "\n", $f->options ?? array() ) ); ?></textarea></td>
+              <?php
+              $opts_lines = array_map( function( $o ) {
+                  if ( is_array( $o ) ) return ( $o['value'] ?? '' ) . ' | ' . ( $o['label'] ?? '' );
+                  return $o . ' | ' . $o;
+              }, $f->options ?? array() );
+              ?>
+              <td><textarea class="fb-opts<?php echo 'select' !== $f->field_type ? ' fb-hidden' : ''; ?>" rows="3" placeholder="general | General Enquiry&#10;complaint | Complaint&#10;sales | Sales"><?php echo esc_textarea( implode( "\n", $opts_lines ) ); ?></textarea></td>
               <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"<?php checked( $f->is_required ); ?>></td>
               <td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">✕</button></td>
             </tr>
@@ -238,7 +244,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
               <td><input type="text" class="fb-label" value="" placeholder="Field label"></td>
               <td><select class="fb-type"><?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>"><?php echo esc_html( $tl ); ?></option><?php endforeach; ?></select></td>
               <td><input type="text" class="fb-ph" value="" placeholder="Placeholder text"></td>
-              <td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;Option B&#10;Option C"></textarea></td>
+              <td><textarea class="fb-opts fb-hidden" rows="3" placeholder="general | General Enquiry&#10;complaint | Complaint&#10;sales | Sales"></textarea></td>
               <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
               <td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">✕</button></td>
             </tr>
@@ -260,7 +266,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
       <td><input type="text" class="fb-label" value="" placeholder="Field label"></td>
       <td><select class="fb-type"><?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>"><?php echo esc_html( $tl ); ?></option><?php endforeach; ?></select></td>
       <td><input type="text" class="fb-ph" value="" placeholder="Placeholder text"></td>
-      <td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;Option B&#10;Option C"></textarea></td>
+      <td><textarea class="fb-opts fb-hidden" rows="3" placeholder="general | General Enquiry&#10;complaint | Complaint&#10;sales | Sales"></textarea></td>
       <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
       <td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">✕</button></td>
     </tr>
@@ -375,7 +381,12 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
       var opts = [];
       if (type === 'select') {
         var raw = $r.find('.fb-opts').val().trim();
-        if (raw) opts = raw.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+        if (raw) opts = raw.split('\n').map(function (s) {
+          s = s.trim(); if (!s) return null;
+          var idx = s.indexOf('|');
+          if (idx !== -1) return { value: s.substring(0, idx).trim(), label: s.substring(idx + 1).trim() };
+          return { value: s, label: s };
+        }).filter(Boolean);
       }
       fields.push({
         field_key:   $r.data('key') || ('field_' + i),

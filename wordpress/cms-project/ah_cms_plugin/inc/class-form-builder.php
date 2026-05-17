@@ -99,7 +99,19 @@ class AH_Form_Builder {
 			$label = sanitize_text_field( $f['label'] ?? '' );
 			if ( ! $label ) continue;
 			$type = self::allowed_type( $f['field_type'] ?? 'text' );
-			$opts = ( 'select' === $type && ! empty( $f['options'] ) ) ? array_values( array_filter( array_map( 'sanitize_text_field', (array) $f['options'] ) ) ) : array();
+			$opts = array();
+			if ( 'select' === $type && ! empty( $f['options'] ) ) {
+				foreach ( (array) $f['options'] as $o ) {
+					if ( is_array( $o ) ) {
+						$v = sanitize_text_field( $o['value'] ?? '' );
+						$l = sanitize_text_field( $o['label'] ?? $v );
+						if ( $v !== '' ) $opts[] = array( 'value' => $v, 'label' => $l );
+					} elseif ( is_string( $o ) && trim( $o ) !== '' ) {
+						$v = sanitize_text_field( $o );
+						$opts[] = array( 'value' => $v, 'label' => $v );
+					}
+				}
+			}
 			$wpdb->insert( $t, array(
 				'form_id'     => $form_id,
 				'label'       => $label,
@@ -204,7 +216,10 @@ class AH_Form_Builder {
       <?php elseif ( 'select' === $f->field_type && ! empty( $f->options ) ) : ?>
         <select id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
           <option value=""><?php echo esc_html( $f->placeholder ?: '— Select an option —' ); ?></option>
-          <?php foreach ( $f->options as $opt ) : ?><option value="<?php echo esc_attr( $opt ); ?>"><?php echo esc_html( $opt ); ?></option><?php endforeach; ?>
+          <?php foreach ( $f->options as $opt ) :
+            $ov = is_array( $opt ) ? ( $opt['value'] ?? '' ) : $opt;
+            $ol = is_array( $opt ) ? ( $opt['label'] ?? $ov ) : $opt;
+          ?><option value="<?php echo esc_attr( $ov ); ?>"><?php echo esc_html( $ol ); ?></option><?php endforeach; ?>
         </select>
       <?php else : ?>
         <input type="<?php echo esc_attr( $f->field_type ); ?>" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>>
