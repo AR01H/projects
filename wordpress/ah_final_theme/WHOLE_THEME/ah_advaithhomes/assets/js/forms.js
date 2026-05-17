@@ -74,7 +74,7 @@
     if (hasFiles) {
       // Use FormData so file inputs are included
       var fd = new FormData($form[0]);
-      fd.append('action',    'ah_form_submit');
+      fd.append('action',    'ah_theme_form_submit');
       fd.append('form_type', formType);
       fd.append('nonce',     nonce);
       fd.append('page_url',  window.location.href);
@@ -83,7 +83,7 @@
       ajaxOpts.contentType = false;
     } else {
       var data = $form.serializeArray();
-      data.push({ name: 'action',    value: 'ah_form_submit' });
+      data.push({ name: 'action',    value: 'ah_theme_form_submit' });
       data.push({ name: 'form_type', value: formType });
       data.push({ name: 'nonce',     value: nonce });
       data.push({ name: 'page_url',  value: window.location.href });

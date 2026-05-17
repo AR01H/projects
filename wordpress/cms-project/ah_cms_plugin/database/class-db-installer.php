@@ -28,6 +28,7 @@ class AH_DB_Installer {
 		self::drop_broken_fks();
 		self::ensure_review_short_desc();
 		self::ensure_submission_columns();
+		self::ensure_rules_tables();
 	}
 
 	/**
@@ -46,13 +47,9 @@ class AH_DB_Installer {
 		}
 	}
 
-	/**
-	 * Add extended columns to ah_contact_form_submissions if they don't exist yet.
-	 */
 	public static function ensure_submission_columns(): void {
 		global $wpdb;
-		$table = $wpdb->prefix . 'ah_contact_form_submissions';
-
+		$table   = $wpdb->prefix . 'ah_contact_form_submissions';
 		$columns = array(
 			'enquiry_type'    => "ENUM('general','complaint','sales','support','media','other') NOT NULL DEFAULT 'general' AFTER `subject`",
 			'short_quote'     => "VARCHAR(300) DEFAULT NULL AFTER `enquiry_type`",
@@ -64,7 +61,6 @@ class AH_DB_Installer {
 			'page_url'        => "VARCHAR(500) DEFAULT NULL AFTER `ip_address`",
 			'user_agent'      => "VARCHAR(500) DEFAULT NULL AFTER `page_url`",
 		);
-
 		foreach ( $columns as $col_name => $col_def ) {
 			$exists = $wpdb->get_var( $wpdb->prepare(
 				"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s",
@@ -76,6 +72,66 @@ class AH_DB_Installer {
 				$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `{$col_name}` {$col_def}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			}
 		}
+	}
+
+	public static function ensure_rules_tables(): void {
+		global $wpdb;
+		$p  = $wpdb->prefix;
+		$cs = $wpdb->get_charset_collate();
+
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS {$p}ah_rules (
+				id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				name            VARCHAR(200) NOT NULL,
+				description     TEXT,
+				trigger_event   VARCHAR(100) NOT NULL DEFAULT 'contact_submitted',
+				condition_logic ENUM('all','any') NOT NULL DEFAULT 'all',
+				status          ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				sort_order      INT DEFAULT 0,
+				created_by      INT UNSIGNED,
+				created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				KEY idx_trigger (trigger_event),
+				KEY idx_status (status)
+			) ENGINE=InnoDB {$cs}"
+		);
+
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS {$p}ah_rule_conditions (
+				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				rule_id    INT UNSIGNED NOT NULL,
+				field      VARCHAR(100) NOT NULL,
+				operator   ENUM('equals','not_equals','contains','not_contains','starts_with','ends_with','is_empty','is_not_empty','greater_than','less_than') NOT NULL DEFAULT 'equals',
+				value      VARCHAR(500),
+				sort_order INT DEFAULT 0,
+				KEY idx_rule (rule_id)
+			) ENGINE=InnoDB {$cs}"
+		);
+
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS {$p}ah_rule_actions (
+				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				rule_id     INT UNSIGNED NOT NULL,
+				action_type ENUM('send_email','webhook','internal_note') NOT NULL,
+				config      JSON,
+				sort_order  INT DEFAULT 0,
+				KEY idx_rule (rule_id)
+			) ENGINE=InnoDB {$cs}"
+		);
+
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS {$p}ah_rule_logs (
+				id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				rule_id      INT UNSIGNED NOT NULL,
+				trigger_data JSON,
+				result       ENUM('success','partial','failed') NOT NULL DEFAULT 'success',
+				notes        TEXT,
+				created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				KEY idx_rule (rule_id),
+				KEY idx_result (result),
+				KEY idx_created (created_at)
+			) ENGINE=InnoDB {$cs}"
+		);
 	}
 
 	/**

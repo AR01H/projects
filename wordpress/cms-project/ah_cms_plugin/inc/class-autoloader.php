@@ -30,6 +30,7 @@ class AH_Autoloader {
 		'AH_Newsbar_Model'    => 'models/class-newsbar-model.php',
 		'AH_Footer_Model'     => 'models/class-footer-model.php',
 		'AH_Audit_Model'      => 'models/class-audit-model.php',
+		'AH_Rules_Engine'     => 'models/class-rules-engine.php',
 
 		// Helpers
 		'AH_Slug_Helper'      => 'helper/class-slug-helper.php',

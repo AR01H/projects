@@ -7,7 +7,7 @@ class AH_Admin_Menus {
 
 	public static function register(): void {
 		// Top-level: CMS Dashboard
-		add_menu_page(__( 'CMS Portal', 'ah-theme' ),__( 'CMS Portal', 'ah-theme' ),self::$cap,'ah-dashboard',[self::class,'page_dashboard'],'dashicons-admin-home',3);
+		add_menu_page(__( 'CMS ADMIN', 'ah-theme' ),__( 'CMS ADMIN', 'ah-theme' ),self::$cap,'ah-dashboard',[self::class,'page_dashboard'],'dashicons-admin-home',3);
 
 		$submenus = [
 			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],
@@ -27,6 +27,7 @@ class AH_Admin_Menus {
 			['title' => 'Contact Page','menu' => 'Contact Page','slug' => 'ah-contact','callback' => 'page_contact'],
 			['title' => 'Categories & Tags','menu' => 'Categories & Tags','slug' => 'ah-taxonomy','callback' => 'page_taxonomy'],
 			['title' => 'Contact Submissions','menu' => 'Contact Submissions','slug' => 'ah-submissions','callback' => 'page_submissions'],
+			['title' => 'Rules Controller','menu' => 'Rules Controller','slug' => 'ah-rules','callback' => 'page_rules'],
 			['title' => 'Audit Log','menu' => 'Audit Log','slug' => 'ah-audit','callback' => 'page_audit'],
 			['title' => 'Data Import','menu' => 'Data Import','slug' => 'ah-import','callback' => 'page_import'],
 			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
@@ -72,6 +73,7 @@ class AH_Admin_Menus {
 	public static function page_contact()        { self::load( 'contact'        ); }
 	public static function page_taxonomy()       { self::load( 'taxonomy'       ); }
 	public static function page_submissions()    { self::load( 'submissions'    ); }
+	public static function page_rules()          { self::load( 'rules-controller' ); }
 	public static function page_audit()          { self::load( 'audit-log'      ); }
 	public static function page_import()         { self::load( 'import'         ); }
 	public static function page_file_links()     { self::load( 'file-links'     ); }

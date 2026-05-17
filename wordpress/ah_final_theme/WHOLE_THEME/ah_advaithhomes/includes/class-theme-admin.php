@@ -26,8 +26,9 @@ class AH_Theme_Admin {
 		add_submenu_page( 'ah-theme-admin', __( 'Overview',          'ah-theme' ), __( 'Overview',          'ah-theme' ), 'manage_options', 'ah-theme-admin',    [ self::class, 'page_dashboard' ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Section Controls',  'ah-theme' ), __( 'Section Controls',  'ah-theme' ), 'manage_options', 'ah-theme-sections', [ self::class, 'page_sections'  ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Navigation',        'ah-theme' ), __( 'Navigation',        'ah-theme' ), 'manage_options', 'ah-theme-nav',      [ self::class, 'page_nav'       ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Content Controls',  'ah-theme' ), __( 'Content Controls',  'ah-theme' ), 'manage_options', 'ah-theme-content',  [ self::class, 'page_content'   ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Install Mock Data', 'ah-theme' ), __( 'Install Mock Data', 'ah-theme' ), 'manage_options', 'ah-theme-mock',     [ self::class, 'page_mock'      ] );
+		add_submenu_page( 'ah-theme-admin', __( 'Content Controls',  'ah-theme' ), __( 'Content Controls',  'ah-theme' ), 'manage_options', 'ah-theme-content',     [ self::class, 'page_content'     ] );
+		add_submenu_page( 'ah-theme-admin', __( 'Contact Submissions', 'ah-theme' ), __( 'Contact Submissions', 'ah-theme' ), 'manage_options', 'ah-theme-submissions', [ self::class, 'page_submissions' ] );
+		add_submenu_page( 'ah-theme-admin', __( 'Install Mock Data', 'ah-theme' ), __( 'Install Mock Data', 'ah-theme' ), 'manage_options', 'ah-theme-mock',        [ self::class, 'page_mock'        ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Cleanup Data',      'ah-theme' ), __( 'Cleanup Data',      'ah-theme' ), 'manage_options', 'ah-theme-cleanup',  [ self::class, 'page_cleanup'   ] );
 	}
 
@@ -61,6 +62,10 @@ class AH_Theme_Admin {
 
 	public static function page_content(): void {
 		require get_template_directory() . '/admin/theme-content.php';
+	}
+
+	public static function page_submissions(): void {
+		require get_template_directory() . '/admin/theme-submissions.php';
 	}
 
 	// ── POST handlers ─────────────────────────────────────────────────────────
