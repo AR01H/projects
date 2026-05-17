@@ -93,7 +93,7 @@ ah_advaithhomes/
 ├── admin/
 │   ├── theme-dashboard.php      ← Theme Admin → Dashboard
 │   ├── theme-content.php        ← Theme Admin → Content Settings
-│   ├── theme-nav.php            ← Theme Admin → Navigation Settings
+│   ├── theme-nav.php            ← Legacy theme-only nav editor fallback
 │   ├── theme-sections.php       ← Theme Admin → Section Visibility
 │   ├── theme-mock-data.php      ← Theme Admin → Install Mock Data
 │   └── theme-cleanup.php        ← Theme Admin → Cleanup Data
@@ -109,7 +109,7 @@ ah_advaithhomes/
 
 | Role    | Family             | Usage                                          |
 |---------|--------------------|------------------------------------------------|
-| Display | Cormorant Garamond | All headings (h1–h6), `.section__title`, hero  |
+| Display | Cormorant Garamond | All headings (h1-h6), `.section__title`, hero  |
 | Body    | DM Sans            | Body text, labels, nav links                   |
 | Accent  | Instrument Serif   | Italic `<em>`, logo tagline                    |
 
@@ -496,10 +496,25 @@ If styles only apply to one template, add a `<style>` block directly in that PHP
 
 ## 10. Navigation System
 
-The nav is built in `parts/header.php`. Data comes from WordPress options set via
-**Theme Admin → Navigation**.
+The nav is built in `parts/header.php`. The theme now renders shared CMS data first:
+`ah_cms_navigation`, `ah_cms_nav_cta`, and `ah_cms_footer`.
 
-### Nav sections
+If the CMS plugin is not active or those values are empty, the theme falls back to
+legacy theme options like `ah_theme_navigation`, `ah_nav_cta`, and `ah_theme_footer`.
+
+### CMS source of truth
+
+Primary editing now happens in **CMS ADMIN → Navigation & Footer**.
+
+- Top-level item with children:
+  set **Type = Dropdown**
+- Single link item:
+  set **Type = Direct Link**
+- Submenu links only appear for dropdown items
+- The CMS builder supports:
+  top-level collapse/expand, submenu row collapse/expand, and global expand/collapse buttons
+
+### Legacy nav sections fallback
 
 | Section slug | Label in nav      | Dropdown items source            |
 |--------------|-------------------|----------------------------------|
@@ -509,17 +524,17 @@ The nav is built in `parts/header.php`. Data comes from WordPress options set vi
 | `news`       | News & Guides     | Static link (configurable)       |
 | `services`   | Services          | Static link (configurable)       |
 
-### Adding a static link to the nav
+### Legacy static nav links
 
-In **Theme Admin → Navigation → Static Page Quick Links**, add a row:
+In the legacy theme-only flow, add a row in **Theme Admin → Navigation → Static Page Quick Links**:
 - Section: `buying` / `finance` / `legal` / `footer`
 - Slug: the page slug (e.g. `stamp-duty-calculator`)
 - Label: display text
 - Icon: emoji or text icon
 
-### Visibility toggles
+### Legacy visibility toggles
 
-Each nav section can be shown/hidden via **Theme Admin → Navigation → Section Visibility**.
+Each legacy nav section can be shown/hidden via **Theme Admin → Navigation → Section Visibility**.
 Stored as `ah_nav_visibility` WP option.
 
 ---
@@ -667,7 +682,7 @@ and exits — this covers pages seeded before `_wp_page_template` was set.
 | `stamp-duty-calculator`     | Stamp Duty Calculator (JS, 2025)    |
 | `mortgage-calculator`       | Mortgage Calculator                 |
 | `first-time-buyer-checklist`| First-Time Buyer Checklist (22 items)|
-| `property-glossary`         | Property Glossary (A–Z, 14 terms)   |
+| `property-glossary`         | Property Glossary (A-Z, 14 terms)   |
 | `conveyancing-explained`    | Conveyancing Explained              |
 | `privacy-policy`            | Privacy Policy (GDPR)               |
 | `cookie-policy`             | Cookie Policy                       |

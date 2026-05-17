@@ -9,7 +9,9 @@ class AH_Theme_Admin {
 		add_action( 'admin_post_ah_theme_seed',     [ self::class, 'handle_seed' ] );
 		add_action( 'admin_post_ah_theme_cleanup',  [ self::class, 'handle_cleanup' ] );
 		add_action( 'admin_post_ah_theme_sections', [ self::class, 'handle_sections' ] );
-		add_action( 'admin_post_ah_theme_nav',      [ self::class, 'handle_nav' ] );
+		if ( ! class_exists( 'AH_Admin_Bootstrap' ) ) {
+			add_action( 'admin_post_ah_theme_nav', [ self::class, 'handle_nav' ] );
+		}
 		add_action( 'admin_post_ah_theme_content',  [ self::class, 'handle_content' ] );
 	}
 
@@ -25,7 +27,9 @@ class AH_Theme_Admin {
 		);
 		add_submenu_page( 'ah-theme-admin', __( 'Overview',          'ah-theme' ), __( 'Overview',          'ah-theme' ), 'manage_options', 'ah-theme-admin',    [ self::class, 'page_dashboard' ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Section Controls',  'ah-theme' ), __( 'Section Controls',  'ah-theme' ), 'manage_options', 'ah-theme-sections', [ self::class, 'page_sections'  ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Navigation',        'ah-theme' ), __( 'Navigation',        'ah-theme' ), 'manage_options', 'ah-theme-nav',      [ self::class, 'page_nav'       ] );
+		if ( ! class_exists( 'AH_Admin_Bootstrap' ) ) {
+			add_submenu_page( 'ah-theme-admin', __( 'Navigation', 'ah-theme' ), __( 'Navigation', 'ah-theme' ), 'manage_options', 'ah-theme-nav', [ self::class, 'page_nav' ] );
+		}
 		add_submenu_page( 'ah-theme-admin', __( 'Content Controls',  'ah-theme' ), __( 'Content Controls',  'ah-theme' ), 'manage_options', 'ah-theme-content',     [ self::class, 'page_content'     ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Contact Submissions', 'ah-theme' ), __( 'Contact Submissions', 'ah-theme' ), 'manage_options', 'ah-theme-submissions', [ self::class, 'page_submissions' ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Install Mock Data', 'ah-theme' ), __( 'Install Mock Data', 'ah-theme' ), 'manage_options', 'ah-theme-mock',        [ self::class, 'page_mock'        ] );
@@ -35,6 +39,7 @@ class AH_Theme_Admin {
 	public static function enqueue_assets( string $hook ): void {
 		if ( strpos( $hook, 'ah-theme' ) === false ) return;
 		// Inline styles for the theme admin pages (reuses WP's native admin style + our overrides)
+		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_add_inline_style( 'wp-admin', self::admin_css() );
 	}
 
@@ -129,73 +134,107 @@ class AH_Theme_Admin {
 		check_admin_referer( 'ah_theme_nav' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 
-		// Visibility
-		$keys = [ 'buying', 'finance', 'legal', 'news', 'services' ];
-		$vis  = [];
-		foreach ( $keys as $k ) {
-			$vis[ $k ] = isset( $_POST['nav_vis'][ $k ] ) ? 1 : 0;
-		}
-		update_option( 'ah_nav_visibility', wp_json_encode( $vis ) );
+		$nav_items = [];
+		foreach ( (array) ( $_POST['nav_items'] ?? [] ) as $item ) {
+			$label = sanitize_text_field( $item['label'] ?? '' );
+			if ( $label === '' ) {
+				continue;
+			}
 
-		$labels = [];
-		foreach ( [
-			'buying'   => 'Buying',
-			'finance'  => 'Finance',
-			'legal'    => 'Legal & Surveys',
-			'news'     => 'News & Guides',
-			'services' => 'Services',
-		] as $k => $default ) {
-			$labels[ $k ] = sanitize_text_field( $_POST['nav_label'][ $k ] ?? $default );
-		}
-		update_option( 'ah_nav_top_labels', wp_json_encode( $labels ) );
+			$type = ( $item['type'] ?? 'link' ) === 'dropdown' ? 'dropdown' : 'link';
+			$sub_items = [];
+			foreach ( (array) ( $item['submenu'] ?? [] ) as $sub_item ) {
+				$sub_label = sanitize_text_field( $sub_item['label'] ?? '' );
+				$sub_url   = ah_normalize_theme_url( (string) ( $sub_item['url'] ?? '' ) );
+				if ( $sub_label === '' || $sub_url === '' ) {
+					continue;
+				}
 
-		// Static links
-		$links = [];
-		foreach ( [ 'news', 'services' ] as $k ) {
-			$links[ $k ] = [
-				'label' => sanitize_text_field( $_POST['nav_link'][ $k ]['label'] ?? '' ),
-				'url'   => sanitize_text_field( $_POST['nav_link'][ $k ]['url']   ?? '' ),
+				$sub_items[] = [
+					'label'       => $sub_label,
+					'url'         => $sub_url,
+					'description' => sanitize_text_field( $sub_item['description'] ?? '' ),
+					'icon'        => sanitize_text_field( $sub_item['icon'] ?? '' ),
+					'highlight'   => ! empty( $sub_item['highlight'] ),
+				];
+			}
+
+			$nav_items[] = [
+				'id'          => sanitize_title( $item['id'] ?? $label ),
+				'label'       => $label,
+				'type'        => $type,
+				'url'         => $type === 'link' ? ah_normalize_theme_url( (string) ( $item['url'] ?? '' ) ) : '',
+				'visible'     => ! empty( $item['visible'] ),
+				'icon'        => sanitize_text_field( $item['icon'] ?? '' ),
+				'description' => sanitize_text_field( $item['description'] ?? '' ),
+				'submenu'     => $sub_items,
 			];
 		}
-		update_option( 'ah_nav_static_links', wp_json_encode( $links ) );
+		update_option( 'ah_theme_navigation', wp_json_encode( $nav_items ) );
+		update_option(
+			'ah_nav_cta',
+			wp_json_encode(
+				[
+					'label' => sanitize_text_field( $_POST['nav_cta']['label'] ?? 'Get Help' ),
+					'url'   => ah_normalize_theme_url( (string) ( $_POST['nav_cta']['url'] ?? '' ), '/contact/' ),
+				]
+			)
+		);
 
-		// CTA
-		update_option( 'ah_nav_cta', wp_json_encode( [
-			'label' => sanitize_text_field( $_POST['nav_cta_label'] ?? 'Get Help' ),
-			'url'   => sanitize_text_field( $_POST['nav_cta_url']   ?? '/contact/' ),
-		] ) );
-
-		// Static page nav links
-		$valid_sections = [ 'buying', 'finance', 'legal', 'footer' ];
-		$static_links   = [];
-		foreach ( (array) ( $_POST['static_nav'] ?? [] ) as $item ) {
-			$slug = sanitize_title( $item['slug'] ?? '' );
-			if ( ! $slug ) continue;
-			$static_links[] = [
-				'slug'    => $slug,
-				'label'   => sanitize_text_field( $item['label'] ?? '' ),
-				'icon'    => sanitize_text_field( $item['icon']  ?? '' ),
-				'section' => in_array( $item['section'] ?? '', $valid_sections, true ) ? $item['section'] : 'buying',
-			];
-		}
-		update_option( 'ah_nav_static_page_links', wp_json_encode( $static_links ) );
-
-		// Dropdown topics
-		foreach ( [ 'buying', 'finance', 'legal' ] as $section ) {
+		$footer_columns = [];
+		foreach ( (array) ( $_POST['footer_columns'] ?? [] ) as $column ) {
+			$title = sanitize_text_field( $column['title'] ?? '' );
 			$items = [];
-			foreach ( (array) ( $_POST[ $section . '_items' ] ?? [] ) as $item ) {
-				$title = sanitize_text_field( $item['title'] ?? '' );
-				if ( ! $title ) continue;
+			foreach ( (array) ( $column['items'] ?? [] ) as $item ) {
+				$label = sanitize_text_field( $item['label'] ?? '' );
+				$url   = ah_normalize_theme_url( (string) ( $item['url'] ?? '' ) );
+				if ( $label === '' || $url === '' ) {
+					continue;
+				}
 				$items[] = [
-					'icon'      => sanitize_text_field( $item['icon']  ?? '' ),
-					'title'     => $title,
-					'desc'      => sanitize_text_field( $item['desc']  ?? '' ),
-					'slug'      => sanitize_title( $item['slug'] ?: $title ),
+					'label'     => $label,
+					'url'       => $url,
 					'highlight' => ! empty( $item['highlight'] ),
 				];
 			}
-			update_option( 'ah_nav_' . $section . '_topics', wp_json_encode( $items ) );
+
+			if ( $title !== '' || ! empty( $items ) ) {
+				$footer_columns[] = [
+					'title' => $title ?: 'Links',
+					'items' => $items,
+				];
+			}
 		}
+
+		$legal_links = [];
+		foreach ( (array) ( $_POST['footer_legal_links'] ?? [] ) as $item ) {
+			$label = sanitize_text_field( $item['label'] ?? '' );
+			$url   = ah_normalize_theme_url( (string) ( $item['url'] ?? '' ) );
+			if ( $label === '' || $url === '' ) {
+				continue;
+			}
+			$legal_links[] = [
+				'label' => $label,
+				'url'   => $url,
+			];
+		}
+
+		$footer = [
+			'brand_description' => wp_kses_post( $_POST['footer_brand_description'] ?? '' ),
+			'badge_text'        => sanitize_text_field( $_POST['footer_badge_text'] ?? '' ),
+			'columns'           => $footer_columns,
+			'contact'           => [
+				'phone_note'   => sanitize_text_field( $_POST['footer_contact']['phone_note'] ?? '' ),
+				'email_note'   => sanitize_text_field( $_POST['footer_contact']['email_note'] ?? '' ),
+				'address_note' => sanitize_text_field( $_POST['footer_contact']['address_note'] ?? '' ),
+			],
+			'cta'               => [
+				'label' => sanitize_text_field( $_POST['footer_cta']['label'] ?? '' ),
+				'url'   => ah_normalize_theme_url( (string) ( $_POST['footer_cta']['url'] ?? '' ), '/contact/' ),
+			],
+			'legal_links'       => $legal_links,
+		];
+		update_option( 'ah_theme_footer', wp_json_encode( $footer ) );
 
 		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-nav', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;

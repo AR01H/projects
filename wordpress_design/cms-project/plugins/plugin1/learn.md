@@ -1,6 +1,6 @@
-# learn.md — Advith Homes CMS: Complete Developer Reference
-<!-- Living document — append new sections as the project grows. -->
-<!-- Last updated: 2026-05-15 — Session 4 -->
+# learn.md - Advith Homes CMS: Complete Developer Reference
+<!-- Living document - append new sections as the project grows. -->
+<!-- Last updated: 2026-05-15 - Session 4 -->
 
 ---
 
@@ -20,7 +20,7 @@
 12. [Admin JavaScript Patterns](#12-admin-javascript-patterns)
 13. [Security Rules](#13-security-rules)
 14. [Naming Conventions](#14-naming-conventions)
-15. [Recipes — How to Add New Features](#15-recipes--how-to-add-new-features)
+15. [Recipes - How to Add New Features](#15-recipes--how-to-add-new-features)
 16. [Common Gotchas](#16-common-gotchas)
 17. [Full DB Table List](#17-full-db-table-list)
 18. [File Links System](#18-file-links-system)
@@ -41,11 +41,11 @@ every piece of content through structured database tables.
 
 | Phase | Status | What it covers |
 |---|---|---|
-| Phase 1 — Admin Portal | Complete | All content management, settings, media, import |
-| Phase 2 — Frontend Theme | Pending | Public-facing templates that read from Phase 1 data |
+| Phase 1 - Admin Portal | Complete | All content management, settings, media, import |
+| Phase 2 - Frontend Theme | Pending | Public-facing templates that read from Phase 1 data |
 
 **What makes it different from a standard WP theme:**
-- No `wp_posts` usage for custom content — all data lives in `wp_ah_*` tables
+- No `wp_posts` usage for custom content - all data lives in `wp_ah_*` tables
 - OOP model classes own all DB access; admin pages are thin view templates
 - Static class-map autoloader (no Composer, no PSR-4 directory scan)
 - Full audit log for every create / update / delete operation
@@ -80,7 +80,7 @@ every piece of content through structured database tables.
 | Pages | home, about, services, contact, client-stories, blog, news |
 
 ### Re-running the installer
-`CREATE TABLE IF NOT EXISTS` makes the installer idempotent — re-activating the theme
+`CREATE TABLE IF NOT EXISTS` makes the installer idempotent - re-activating the theme
 never destroys data. Seeds use `INSERT IGNORE`.
 
 ### Upgrading the schema
@@ -102,7 +102,7 @@ ah_final_theme/
 ├── template-static-page.php           Page template: Static HTML Page (iframe isolation)
 ├── static/                            Raw .html files served by template-static-page.php
 ├── .brain.md                          AI project memory file (append-only)
-├── learn.md                           This file — developer reference
+├── learn.md                           This file - developer reference
 ├── deploy.md                          Deployment + companion theme building guide
 ├── Design.md                          Visual / UX design reference
 │
@@ -115,7 +115,7 @@ ah_final_theme/
 │   ├── class-autoloader.php           Static class-name → file-path map
 │   ├── class-theme-setup.php          Theme supports, nav menu registration, shortcodes
 │   ├── class-asset-loader.php         Frontend CSS / JS enqueue
-│   └── class-form-builder.php         Dynamic Form Builder — DB install, CRUD, shortcode renderer
+│   └── class-form-builder.php         Dynamic Form Builder - DB install, CRUD, shortcode renderer
 │
 ├── models/                            17 domain model classes
 │   ├── class-model-base.php           Abstract CRUD base
@@ -145,7 +145,7 @@ ah_final_theme/
 └── admin/
     ├── class-admin-bootstrap.php      Hooks: admin_menu, assets, AJAX
     ├── menus/
-    │   └── class-admin-menus.php      23 submenus + page callbacks
+│   └── class-admin-menus.php      CMS ADMIN sidebar registration + page callbacks
     ├── ajax/
     │   └── class-ajax-handlers.php    16 admin AJAX actions + 2 public
     ├── import/
@@ -181,9 +181,22 @@ ah_final_theme/
 
 ---
 
+### Navigation & Footer Builder
+
+CMS ADMIN now includes a reusable **Navigation & Footer** page at `admin.php?page=ah-navigation`.
+
+- View file: `admin/pages/navigation.php`
+- Menu registration: `admin/menus/class-admin-menus.php`
+- Save handler + normalization: `admin/class-admin-bootstrap.php`
+- Stored options: `ah_cms_navigation`, `ah_cms_nav_cta`, `ah_cms_footer`
+- For submenu support, the top-level item must use `Type = Dropdown`
+- The builder supports top-level collapse/expand, submenu row collapse/expand, and global expand/collapse buttons
+
+---
+
 ## 4. Bootstrap & Autoloading
 
-### functions.php — execution order
+### functions.php - execution order
 
 ```php
 define('AH_THEME_VERSION', '1.0.0');
@@ -224,7 +237,7 @@ private static array $map = [
 
 ## 5. Database Layer
 
-### Table naming — never hardcode the prefix
+### Table naming - never hardcode the prefix
 
 ```php
 // Always:
@@ -258,7 +271,7 @@ multisite-compatible.
 
 ### Writing raw queries
 
-Always use `$wpdb->prepare()` — no exceptions:
+Always use `$wpdb->prepare()` - no exceptions:
 
 ```php
 global $wpdb;
@@ -302,7 +315,7 @@ $wpdb->query("ALTER TABLE `{$p}ah_my_things`
 
 ## 6. Model System
 
-### AH_Model_Base — available methods
+### AH_Model_Base - available methods
 
 ```php
 // Read
@@ -363,7 +376,7 @@ $media_m = new AH_Media_Model();
 $url     = $media_m->get_url((int) $row->image_id);  // '' if ID is 0 or missing
 ```
 
-Never store raw URLs — they break if files are moved.
+Never store raw URLs - they break if files are moved.
 
 ---
 
@@ -509,7 +522,7 @@ add_submenu_page('ah-dashboard', 'My Feature', 'My Feature', self::$cap, 'ah-my-
 // callback method
 public static function page_my_feature() { self::load('my-feature'); }
 ```
-3. Done — WordPress handles the rest via the `page` slug.
+3. Done - WordPress handles the rest via the `page` slug.
 
 ### Nonce reference
 
@@ -523,7 +536,7 @@ public static function page_my_feature() { self::load('my-feature'); }
 
 ## 9. AJAX System
 
-### JS side — `ahAjax()` helper
+### JS side - `ahAjax()` helper
 
 ```javascript
 // Defined in admin-script.js, uses jQuery $.post
@@ -536,7 +549,7 @@ ahAjax(
 
 `ahAdmin.ajaxUrl` and `ahAdmin.nonce` are localized from `AH_Admin_Bootstrap::enqueue_assets()`.
 
-### PHP side — AH_Ajax_Handlers
+### PHP side - AH_Ajax_Handlers
 
 Every handler follows the same pattern:
 
@@ -580,14 +593,14 @@ public static function handle_toggle_status(): void {
 | `ah_clear_form_submissions` | `handle_clear_form_submissions` | Delete all form submission rows |
 | `ah_save_static_page` | `handle_save_static_page` | Write `static/{slug}.html` + create WP page |
 
-**Public** (registered in `init_public()`, called in `functions.php` outside `is_admin()` — available to all visitors):
+**Public** (registered in `init_public()`, called in `functions.php` outside `is_admin()` - available to all visitors):
 
 | Action | Handler | Purpose |
 |---|---|---|
 | `ah_contact_submit` | `handle_contact_submit` | Legacy contact page form submission |
 | `ah_form_submit` | `handle_form_submit` | Form Builder shortcode form submission |
 
-`init_public()` registers both `wp_ajax_` and `wp_ajax_nopriv_` variants so the action works whether the visitor is logged in or not. It uses `ah_frontend_nonce` (not `ah_admin_nonce`) — localized via `wp_localize_script` on the frontend as `ahTheme.nonce`.
+`init_public()` registers both `wp_ajax_` and `wp_ajax_nopriv_` variants so the action works whether the visitor is logged in or not. It uses `ah_frontend_nonce` (not `ah_admin_nonce`) - localized via `wp_localize_script` on the frontend as `ahTheme.nonce`.
 
 ### Adding a new AJAX action
 
@@ -685,9 +698,9 @@ case 'my_type': return self::import_my_type($rows);
 ```
 
 3. Implement `private static function import_my_type(array $rows): array`
-   — follow the existing pattern: loop, validate required, sanitize, insert, `self::result_add()`.
+   - follow the existing pattern: loop, validate required, sanitize, insert, `self::result_add()`.
 
-4. Create `admin/import/samples/sample-my-type.csv` with a header row + 3–5 example rows.
+4. Create `admin/import/samples/sample-my-type.csv` with a header row + 3-5 example rows.
 
 ---
 
@@ -698,10 +711,10 @@ All components live in `admin/assets/css/admin-style.css`.
 ### Design tokens
 
 ```css
---ah-primary:    #2563eb   /* blue — primary buttons, active tabs, links */
---ah-success:    #16a34a   /* green — success notices, active badges */
---ah-danger:     #dc2626   /* red — delete buttons, danger badges */
---ah-warning:    #d97706   /* amber — warning notices */
+--ah-primary:    #2563eb   /* blue - primary buttons, active tabs, links */
+--ah-success:    #16a34a   /* green - success notices, active badges */
+--ah-danger:     #dc2626   /* red - delete buttons, danger badges */
+--ah-warning:    #d97706   /* amber - warning notices */
 --ah-text:       #1e293b   /* default body text */
 --ah-muted:      #64748b   /* secondary / helper text */
 --ah-border:     #e2e8f0   /* borders, dividers */
@@ -727,7 +740,7 @@ All components live in `admin/assets/css/admin-style.css`.
     <h2>Card Title</h2>
     <a href="#" class="ah-btn ah-btn-secondary ah-btn-sm">Header Action</a>
   </div>
-  <!-- card body — padding is applied by .ah-card -->
+  <!-- card body - padding is applied by .ah-card -->
 </div>
 ```
 
@@ -858,7 +871,7 @@ JS wires `.ah-pick-image` to the WP Media Library frame automatically.
 
 ## 12. Admin JavaScript Patterns
 
-All behaviours are wired automatically by CSS selectors — no manual `init()` calls in templates.
+All behaviours are wired automatically by CSS selectors - no manual `init()` calls in templates.
 
 | Selector / attribute | What JS does |
 |---|---|
@@ -928,7 +941,7 @@ echo esc_textarea($row->bio);           // inside <textarea>
 echo wp_kses_post($row->content);       // trusted HTML content
 ```
 
-### SQL — always prepared
+### SQL - always prepared
 
 ```php
 $row = $wpdb->get_row(
@@ -936,7 +949,7 @@ $row = $wpdb->get_row(
 );
 ```
 
-### Nonces — always verify before mutation
+### Nonces - always verify before mutation
 
 ```php
 // POST form
@@ -950,7 +963,7 @@ if (!wp_verify_nonce($_GET['_wpnonce'] ?? '', 'ah_del_service')) {
 }
 ```
 
-### Capability check — first line of every admin page and AJAX handler
+### Capability check - first line of every admin page and AJAX handler
 
 ```php
 if (!current_user_can('manage_options')) wp_die('Access denied.');
@@ -974,13 +987,13 @@ if (!current_user_can('manage_options')) wp_die('Access denied.');
 
 ---
 
-## 15. Recipes — How to Add New Features
+## 15. Recipes - How to Add New Features
 
 ### Recipe A: New content type end-to-end
 
 Example: "Testimonial Videos"
 
-**Step 1 — DB table** (`database/class-db-installer.php`):
+**Step 1 - DB table** (`database/class-db-installer.php`):
 ```php
 $wpdb->query("CREATE TABLE IF NOT EXISTS `{$p}ah_testimonial_videos` (
     id        INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -993,21 +1006,21 @@ $wpdb->query("CREATE TABLE IF NOT EXISTS `{$p}ah_testimonial_videos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 ```
 
-**Step 2 — Model** (`models/class-testimonial-videos-model.php`):
+**Step 2 - Model** (`models/class-testimonial-videos-model.php`):
 ```php
 class AH_Testimonial_Videos_Model extends AH_Model_Base {
     protected string $table_suffix = 'testimonial_videos';
 }
 ```
 
-**Step 3 — Autoloader** (`inc/class-autoloader.php`):
+**Step 3 - Autoloader** (`inc/class-autoloader.php`):
 ```php
 'AH_Testimonial_Videos_Model' => 'models/class-testimonial-videos-model.php',
 ```
 
-**Step 4 — Admin page** (`admin/pages/testimonial-videos.php`) — follow the anatomy in §8.
+**Step 4 - Admin page** (`admin/pages/testimonial-videos.php`) - follow the anatomy in §8.
 
-**Step 5 — Menu** (`admin/menus/class-admin-menus.php`):
+**Step 5 - Menu** (`admin/menus/class-admin-menus.php`):
 ```php
 add_submenu_page('ah-dashboard', 'Testimonial Videos', 'Testimonial Videos',
     self::$cap, 'ah-testimonial-videos', [self::class, 'page_testimonial_videos']);
@@ -1015,10 +1028,10 @@ add_submenu_page('ah-dashboard', 'Testimonial Videos', 'Testimonial Videos',
 public static function page_testimonial_videos() { self::load('testimonial-videos'); }
 ```
 
-**Step 6 — AJAX** — add allowed table/model names to `handle_toggle_status()` and
+**Step 6 - AJAX** - add allowed table/model names to `handle_toggle_status()` and
 `handle_delete_item()` whitelists in `admin/ajax/class-ajax-handlers.php`.
 
-**Step 7 — Import** — add type to `AH_CSV_Importer::get_config()`, implement the method, add sample CSV.
+**Step 7 - Import** - add type to `AH_CSV_Importer::get_config()`, implement the method, add sample CSV.
 
 ---
 
@@ -1048,8 +1061,8 @@ The JS wires itself automatically.
 
 ### Recipe D: Inline status toggle for a new table
 
-HTML — see §12 for the markup.
-PHP — add `'my_things'` to `$allowed_tables` in `handle_toggle_status()`.
+HTML - see §12 for the markup.
+PHP - add `'my_things'` to `$allowed_tables` in `handle_toggle_status()`.
 
 ---
 
@@ -1070,7 +1083,7 @@ wp_editor(
 
 On save: `$content = wp_kses_post($_POST['content'] ?? '');`
 
-`wp_editor()` echoes immediately — place it exactly where you want it in the form.
+`wp_editor()` echoes immediately - place it exactly where you want it in the form.
 
 ---
 
@@ -1084,7 +1097,7 @@ Fixed in `admin/class-admin-bootstrap.php:36`.
 Adding a class file but not its entry in `inc/class-autoloader.php` triggers a fatal
 "Class not found" on first use. Always register class + file together.
 
-**3. Nonce type mismatch — GET vs POST**
+**3. Nonce type mismatch - GET vs POST**
 GET delete links use `wp_nonce_url()` / `$_GET['_wpnonce']`.
 POST forms use `wp_nonce_field()` / `$_POST['ah_nonce']`.
 Never mix them.
@@ -1097,11 +1110,11 @@ during CREATE TABLE phase. Never embed FK constraints inside `CREATE TABLE` in t
 Always store `image_id` (int FK to `wp_ah_media`) and resolve the URL at render time.
 Raw URLs break when files are moved or the site domain changes.
 
-**6. `$wpdb->update()` returns `0` on no-change — not an error**
+**6. `$wpdb->update()` returns `0` on no-change - not an error**
 ```php
 $result = $wpdb->update($table, $data, $where);
 if (false === $result) { /* real DB error */ }
-// 0 just means nothing changed — this is normal
+// 0 just means nothing changed - this is normal
 ```
 
 **7. `wp_editor()` echoes, not returns**
@@ -1112,8 +1125,8 @@ Excel saves UTF-8 CSVs with a 3-byte BOM (`\xEF\xBB\xBF`). The parser strips it.
 Do not remove that code from `AH_CSV_Importer::parse_file()`.
 
 **9. `sanitize_key()` vs `sanitize_title()`**
-- `sanitize_key()` → lowercase, numbers, underscores, hyphens — use for status values, AJAX actions
-- `sanitize_title()` → full slug processing — use for URL slugs
+- `sanitize_key()` → lowercase, numbers, underscores, hyphens - use for status values, AJAX actions
+- `sanitize_title()` → full slug processing - use for URL slugs
 
 **10. Always guard on `$page_id === 0`**
 Several admin pages (services, reviews, client-stories, etc.) require a CMS page record.
@@ -1179,9 +1192,9 @@ Follow this pattern in any new page that depends on `wp_ah_pages`.
 | `client_users_journey` | wp_ah_client_users_journey | (reserved / future) |
 | `client_story_images` | wp_ah_client_story_images | (reserved / future) |
 | `file_links` | wp_ah_file_links | Uploaded file registry for shareable links |
-| `forms` | wp_ah_forms | Form Builder — form definitions |
-| `form_fields` | wp_ah_form_fields | Form Builder — field definitions (JSON options) |
-| `form_submissions` | wp_ah_form_submissions | Form Builder — visitor submissions (JSON data) |
+| `forms` | wp_ah_forms | Form Builder - form definitions |
+| `form_fields` | wp_ah_form_fields | Form Builder - field definitions (JSON options) |
+| `form_submissions` | wp_ah_form_submissions | Form Builder - visitor submissions (JSON data) |
 
 ---
 
@@ -1190,7 +1203,7 @@ Follow this pattern in any new page that depends on `wp_ah_pages`.
 **Admin page:** CMS Portal → File Links (`ah-file-links`)
 
 **Purpose:** Upload any file and instantly get a publicly shareable URL you can paste
-anywhere — emails, page content, navigation menus, CTAs.
+anywhere - emails, page content, navigation menus, CTAs.
 
 ### How it works
 
@@ -1210,7 +1223,7 @@ Table shows the file URL with copy button
 
 ### DB table: wp_ah_file_links
 
-Auto-created on the first page visit (`CREATE TABLE IF NOT EXISTS`) — no theme reactivation needed.
+Auto-created on the first page visit (`CREATE TABLE IF NOT EXISTS`) - no theme reactivation needed.
 
 | Column | Type | Purpose |
 |---|---|---|
@@ -1245,7 +1258,7 @@ $url    = trailingslashit($upload['baseurl']) . 'ah-files/' . $row->file_path;
 
 ### Accepted file types
 
-All file types accepted — whatever PHP's `upload_max_filesize` and `post_max_size`
+All file types accepted - whatever PHP's `upload_max_filesize` and `post_max_size`
 allow. MIME type is detected via `wp_check_filetype()`.
 
 ### Copy button
@@ -1260,7 +1273,7 @@ Delete link uses a GET nonce (`ah_del_file_link`). On confirm:
 2. Deletes the DB row
 3. Logs the action to `wp_ah_audit_logs`
 
-If the file is missing on disk, the row still shows in the table with a ⚠ warning — you
+If the file is missing on disk, the row still shows in the table with a ⚠ warning - you
 can still delete the orphan record via the delete button.
 
 ---
@@ -1273,7 +1286,7 @@ can still delete the orphan record via the delete button.
 embed them anywhere via a shortcode, capture visitor submissions to the DB,
 and get email notifications on every submission.
 
-### How it works — end-to-end flow
+### How it works - end-to-end flow
 
 ```
 Admin builds form in CMS Portal → Form Builder
@@ -1304,7 +1317,7 @@ JS swaps form with success message
 All methods are static. No constructor.
 
 ```php
-AH_Form_Builder::install_tables()          // CREATE TABLE IF NOT EXISTS (idempotent — called on every admin page load)
+AH_Form_Builder::install_tables()          // CREATE TABLE IF NOT EXISTS (idempotent - called on every admin page load)
 AH_Form_Builder::create(array $data)       // Insert wp_ah_forms row, return int ID
 AH_Form_Builder::get(int $id)             // Fetch single form object
 AH_Form_Builder::all()                    // All forms as array
@@ -1312,35 +1325,35 @@ AH_Form_Builder::save_fields(int $form_id, array $fields)  // DELETE all + re-in
 AH_Form_Builder::get_fields(int $form_id) // Ordered field rows for a form
 AH_Form_Builder::submit(int $form_id, array $data)         // Insert JSON submission row
 AH_Form_Builder::get_submissions(int $form_id)             // All submissions for a form
-AH_Form_Builder::render(array $atts)      // Shortcode renderer — returns full HTML string
+AH_Form_Builder::render(array $atts)      // Shortcode renderer - returns full HTML string
 ```
 
-### DB Tables (auto-created — no theme reactivation needed)
+### DB Tables (auto-created - no theme reactivation needed)
 
 ```sql
 wp_ah_forms
     id              INT UNSIGNED AUTO_INCREMENT
-    name            VARCHAR(255)         — admin label for the form
-    notify_email    VARCHAR(255)         — where to send submission emails
-    success_message TEXT                 — shown to visitor after submit
+    name            VARCHAR(255)         - admin label for the form
+    notify_email    VARCHAR(255)         - where to send submission emails
+    success_message TEXT                 - shown to visitor after submit
     status          ENUM('active','inactive')
     created_at      DATETIME
 
 wp_ah_form_fields
     id              INT UNSIGNED AUTO_INCREMENT
-    form_id         INT UNSIGNED         — FK to wp_ah_forms.id
-    label           VARCHAR(255)         — visible field label
-    field_key       VARCHAR(100)         — snake_case key (auto-generated from label)
+    form_id         INT UNSIGNED         - FK to wp_ah_forms.id
+    label           VARCHAR(255)         - visible field label
+    field_key       VARCHAR(100)         - snake_case key (auto-generated from label)
     field_type      ENUM('text','email','tel','textarea','select','number','date','url')
     placeholder     VARCHAR(255)
-    options         JSON                 — array of option strings (select type only)
+    options         JSON                 - array of option strings (select type only)
     is_required     TINYINT(1)
     sort_order      SMALLINT
 
 wp_ah_form_submissions
     id              INT UNSIGNED AUTO_INCREMENT
     form_id         INT UNSIGNED
-    data            JSON                 — {field_key: value, ...}
+    data            JSON                 - {field_key: value, ...}
     ip_address      VARCHAR(45)
     created_at      DATETIME
 ```
@@ -1368,13 +1381,13 @@ echo do_shortcode('[ah_form id="1"]');
 [ah_form id="1"]
 ```
 
-The rendered form is fully self-contained — inline `<style>` + `<script>` blocks are
+The rendered form is fully self-contained - inline `<style>` + `<script>` blocks are
 included in the returned HTML string. No extra stylesheet or JS file needs to be enqueued.
 
 ### Admin UI (`admin/pages/form-builder.php`)
 
-- **Form selector** dropdown at top — switches active form
-- **+ New Form** button — creates blank form record
+- **Form selector** dropdown at top - switches active form
+- **+ New Form** button - creates blank form record
 - **Build Form tab:**
   - Form settings card: name, notify_email, success_message, status
   - Fields table: drag handle (⠿), label, type dropdown, placeholder, options textarea (select only), required checkbox, delete row
@@ -1389,7 +1402,7 @@ included in the returned HTML string. No extra stylesheet or JS file needs to be
 
 The shortcode `render()` method calls `wp_nonce_field('ah_frontend_nonce', 'nonce')` inside the form.
 The AJAX handler verifies with `check_ajax_referer('ah_frontend_nonce', 'nonce', false)`.
-This is separate from the admin nonce (`ah_admin_nonce`) — intentionally, because the
+This is separate from the admin nonce (`ah_admin_nonce`) - intentionally, because the
 frontend nonce must be accessible to non-logged-in visitors.
 
 ### Spam protection
@@ -1438,18 +1451,18 @@ foreach ($submissions as $sub) {
 **Admin page:** CMS Portal → Admin Actions (`ah-admin-actions`)
 
 **Purpose:** One-click utility operations for maintenance, diagnostics, and testing.
-Each action fires via jQuery AJAX and shows an inline result — no page reload.
+Each action fires via jQuery AJAX and shows an inline result - no page reload.
 
 ### Available actions
 
 | Button | AJAX Action | What it does |
 |---|---|---|
-| Flush Rewrite Rules | `ah_flush_rewrites` | `flush_rewrite_rules(true)` — regenerates WP permalink rules |
+| Flush Rewrite Rules | `ah_flush_rewrites` | `flush_rewrite_rules(true)` - regenerates WP permalink rules |
 | Clear Transients | `ah_clear_transients` | DELETEs all `_transient_*` and `_site_transient_*` rows from `wp_options` |
 | Load Demo Data | `ah_load_demo_data` | Runs `AH_CSV_Importer` on all 7 sample CSV files; reports imported/skipped per type |
 | DB Health Check | `ah_db_health_check` | `SHOW TABLES LIKE` on every required `wp_ah_*` table; reports missing ones |
-| Clear Audit Log | `ah_clear_audit_log` | `TRUNCATE wp_ah_audit_logs` — irreversible, protected by `window.confirm()` |
-| Clear Form Submissions | `ah_clear_form_submissions` | `DELETE FROM wp_ah_form_submissions` — irreversible, confirm-gated |
+| Clear Audit Log | `ah_clear_audit_log` | `TRUNCATE wp_ah_audit_logs` - irreversible, protected by `window.confirm()` |
+| Clear Form Submissions | `ah_clear_form_submissions` | `DELETE FROM wp_ah_form_submissions` - irreversible, confirm-gated |
 
 ### Inline result pattern
 
@@ -1458,7 +1471,7 @@ Each action fires via jQuery AJAX and shows an inline result — no page reload.
 <div class="ah-action-result"></div>  <!-- hidden; shown as .ok or .err on response -->
 ```
 
-Destructive actions add `data-confirm="Are you sure?"` — JS calls `window.confirm()` before firing.
+Destructive actions add `data-confirm="Are you sure?"` - JS calls `window.confirm()` before firing.
 
 ### Adding a new action card
 
@@ -1473,7 +1486,7 @@ Destructive actions add `data-confirm="Are you sure?"` — JS calls `window.conf
 **Admin page:** CMS Portal → Static Pages (`ah-static-pages`)
 
 **Purpose:** Upload raw HTML files and serve them as WordPress pages with complete
-style isolation — the active theme's CSS cannot reach inside the static content.
+style isolation - the active theme's CSS cannot reach inside the static content.
 
 ### Architecture
 
@@ -1520,14 +1533,14 @@ File naming rule: slug must be lowercase letters, numbers, hyphens only. The tem
 
 ### Admin UI (`admin/pages/static-pages.php`)
 
-- **Sidebar** — lists all `.html` files in `static/`; Edit link opens in editor; View link opens the front-end URL
-- **Editor** — monospace textarea with full HTML; Save writes the file + creates/updates WP page
-- **New Page** — `+ New Page` button shows slug input field; after save, redirects to edit mode for that slug
-- **WP page auto-creation** — `wp_insert_post()` is called if no page with that slug exists; template meta is always set to `template-static-page.php`
+- **Sidebar** - lists all `.html` files in `static/`; Edit link opens in editor; View link opens the front-end URL
+- **Editor** - monospace textarea with full HTML; Save writes the file + creates/updates WP page
+- **New Page** - `+ New Page` button shows slug input field; after save, redirects to edit mode for that slug
+- **WP page auto-creation** - `wp_insert_post()` is called if no page with that slug exists; template meta is always set to `template-static-page.php`
 
 ### Using a static page as an iframe src elsewhere
 
-The `?raw=1` URL serves pure HTML — no WordPress shell at all. Use it as an `src` for an `<iframe>` on any other page:
+The `?raw=1` URL serves pure HTML - no WordPress shell at all. Use it as an `src` for an `<iframe>` on any other page:
 
 ```html
 <iframe
@@ -1539,13 +1552,13 @@ The `?raw=1` URL serves pure HTML — no WordPress shell at all. Use it as an `s
 
 ### Adding to the navigation menu
 
-Static pages are standard WordPress pages — add them via **WP Admin → Appearance → Menus** like any other page.
+Static pages are standard WordPress pages - add them via **WP Admin → Appearance → Menus** like any other page.
 
 ### Security notes
 
 - `ah_save_static_page` handler: slug is stripped to `[a-z0-9-]` only before use as a filename
 - `realpath()` check ensures the resolved path is inside the `static/` directory (prevents `../` traversal)
-- `manage_options` capability required — only WP admins can write files
+- `manage_options` capability required - only WP admins can write files
 
 ---
 
@@ -1555,7 +1568,7 @@ See `deploy.md` in the project root for the full deployment guide.
 
 ### Key points
 
-**Two modes — same codebase:**
+**Two modes - same codebase:**
 
 | Mode | When | Bootstrap |
 |---|---|---|
@@ -1564,7 +1577,7 @@ See `deploy.md` in the project root for the full deployment guide.
 
 **Detection:** `functions.php` checks `defined('AH_PLUGIN_DIR')` at the top. If true (plugin active), it skips constants + admin bootstrap and returns early.
 
-**Asset loading:** `AH_Asset_Loader::frontend_assets()` always uses `get_template_directory_uri()` — this resolves to the **active theme**, not the plugin directory. This is the critical line that makes plugin mode work.
+**Asset loading:** `AH_Asset_Loader::frontend_assets()` always uses `get_template_directory_uri()` - this resolves to the **active theme**, not the plugin directory. This is the critical line that makes plugin mode work.
 
 **Backward-compat constants:** All 60+ existing files reference `AH_THEME_DIR` and `AH_THEME_URL`. In plugin mode these are aliased to `AH_PLUGIN_DIR` / `AH_PLUGIN_URL`, so nothing breaks.
 
@@ -1582,4 +1595,4 @@ $media_m = new AH_Media_Model();
 $url     = $media_m->get_url((int) $hero->image_id);
 ```
 
-All model classes are autoloaded by the plugin — no `require_once` needed in the theme.
+All model classes are autoloaded by the plugin - no `require_once` needed in the theme.

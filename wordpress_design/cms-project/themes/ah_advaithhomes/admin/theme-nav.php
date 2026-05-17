@@ -1,341 +1,601 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$saved = isset( $_GET['saved'] );
-$is_cms_admin_nav = ( $_GET['page'] ?? '' ) === 'ah-navigation';
-$form_action      = $is_cms_admin_nav ? 'ah_cms_nav' : 'ah_theme_nav';
+$saved       = isset( $_GET['saved'] );
+$nav_items   = ah_get_theme_navigation();
+$nav_cta     = ah_get_nav_cta();
+$footer      = ah_get_theme_footer();
+$suggestions = ah_get_nav_link_suggestions();
 
-// Load current values
-$nav_vis         = ah_get_nav_visibility();
-$nav_links       = ah_get_nav_static_links();
-$nav_cta         = ah_get_nav_cta();
-$nav_label_opt   = get_option( 'ah_nav_top_labels', [] );
-if ( is_string( $nav_label_opt ) ) $nav_label_opt = json_decode( $nav_label_opt, true ) ?: [];
-$static_pages    = ah_get_static_pages();
-$static_nav_items = ah_get_nav_static_page_links();
-$static_sugg     = array_map( fn( $p ) => [ 'id' => $p['slug'], 'label' => $p['label'] ], $static_pages );
-$wp_page_sugg     = array_map(
-	fn( $p ) => [ 'id' => $p->post_name, 'label' => $p->post_title ?: ucwords( str_replace( '-', ' ', $p->post_name ) ) ],
-	get_pages( [ 'post_status' => [ 'publish', 'draft', 'private' ], 'sort_column' => 'post_title' ] )
-);
-$static_sugg      = array_values( array_column( array_merge( $static_sugg, $wp_page_sugg ), null, 'id' ) );
-
-$buying  = ah_get_nav_buying_topics();
-$finance = ah_get_nav_finance_topics();
-$legal   = ah_get_nav_legal_topics();
-
-$top_items = [
-	'buying'   => [ 'label' => 'Buying',          'icon' => '🏠', 'has_dropdown' => true  ],
-	'finance'  => [ 'label' => 'Finance',          'icon' => '🏦', 'has_dropdown' => true  ],
-	'legal'    => [ 'label' => 'Legal & Surveys',  'icon' => '⚖️', 'has_dropdown' => true  ],
-	'news'     => [ 'label' => 'News & Guides',    'icon' => '📰', 'has_dropdown' => false ],
-	'services' => [ 'label' => 'Services',         'icon' => '✦',  'has_dropdown' => false ],
-];
-
-foreach ( $top_items as $key => $item ) {
-	if ( ! empty( $nav_label_opt[ $key ] ) ) {
-		$top_items[ $key ]['label'] = $nav_label_opt[ $key ];
-	}
+if ( empty( $footer['columns'] ) ) {
+	$footer['columns'] = [];
 }
-
-$dropdown_groups = [
-	'buying'  => [ 'label' => 'Buying Dropdown Links',  'items' => $buying  ],
-	'finance' => [ 'label' => 'Finance Dropdown Links', 'items' => $finance ],
-	'legal'   => [ 'label' => 'Legal Dropdown Links',   'items' => $legal   ],
-];
+if ( empty( $footer['legal_links'] ) ) {
+	$footer['legal_links'] = [];
+}
 ?>
-<div class="wrap ah-admin-wrap">
+<div class="wrap ah-admin-wrap ah-nav-builder-wrap">
+	<div class="ah-admin-header">
+		<div class="ah-admin-logo">N</div>
+		<div>
+			<h1>Navigation and Footer Manager</h1>
+			<p>This page is now the single theme admin source for header menus, submenu links, footer columns, and legal links.</p>
+		</div>
+	</div>
 
-  <div class="ah-admin-header">
-    <div class="ah-admin-logo">✦</div>
-    <div>
-      <h1>Navigation Manager</h1>
-      <p>Control every nav item from here — no WordPress menus needed.</p>
-    </div>
-  </div>
+	<?php if ( $saved ) : ?>
+		<div class="ah-admin-notice ah-admin-notice--success">Navigation and footer settings saved.</div>
+	<?php endif; ?>
 
-  <?php if ( $saved ) : ?>
-  <div class="ah-admin-notice ah-admin-notice--success">✓ Navigation settings saved.</div>
-  <?php endif; ?>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<?php wp_nonce_field( 'ah_theme_nav' ); ?>
+		<input type="hidden" name="action" value="ah_theme_nav">
 
-  <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-    <?php wp_nonce_field( 'ah_theme_nav' ); ?>
-    <input type="hidden" name="action" value="<?php echo esc_attr( $form_action ); ?>">
+		<div class="ah-admin-box">
+			<h2>Main Navigation</h2>
+			<p class="ah-builder-note">Add any top-level menu item you need. Use <strong>Dropdown</strong> when that item should open submenu links.</p>
 
-    <!-- ── Top-level visibility ─────────────────────────────────────────────── -->
-    <div class="ah-admin-box" style="margin-bottom:20px">
-      <h2>Top-Level Menu Items</h2>
-      <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">Toggle which items appear in the main navigation bar.</p>
-      <div class="ah-section-grid">
-        <?php foreach ( $top_items as $key => $item ) : ?>
-        <div class="ah-section-row">
-          <div class="ah-section-row__left">
-            <span class="ah-section-row__icon"><?php echo $item['icon']; ?></span>
-            <div>
-              <input type="text" name="nav_label[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $item['label'] ); ?>" class="ah-nav-label-input">
-              <div class="ah-section-row__desc"><?php echo $item['has_dropdown'] ? 'Has dropdown' : 'Direct link'; ?></div>
-            </div>
-          </div>
-          <label class="ah-toggle" title="Toggle <?php echo esc_attr( $item['label'] ); ?>">
-            <input type="checkbox" name="nav_vis[<?php echo esc_attr( $key ); ?>]" value="1"
-                   <?php checked( ! empty( $nav_vis[ $key ] ), true ); ?>>
-            <span class="ah-toggle__track"></span>
-          </label>
-        </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
+			<div id="ah-nav-items" class="ah-builder-stack">
+				<?php foreach ( $nav_items as $nav_index => $item ) : ?>
+					<div class="ah-builder-item" data-kind="nav-item">
+						<div class="ah-builder-item__bar">
+							<span class="ah-builder-handle" title="Drag to reorder">::</span>
+							<strong><?php echo esc_html( $item['label'] ?: 'Menu Item' ); ?></strong>
+							<button type="button" class="button-link-delete ah-remove-item">Remove</button>
+						</div>
 
-    <!-- ── Static link URLs ─────────────────────────────────────────────────── -->
-    <div class="ah-admin-box" style="margin-bottom:20px">
-      <h2>Static Link Settings</h2>
-      <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">Label and URL for direct nav links (no dropdown).</p>
-      <table class="ah-admin-table">
-        <thead><tr><th>Item</th><th>Label</th><th>URL</th></tr></thead>
-        <tbody>
-          <?php foreach ( [ 'news' => 'News & Guides', 'services' => 'Services' ] as $key => $default_label ) :
-            $link = $nav_links[ $key ] ?? [];
-          ?>
-          <tr>
-            <td style="font-weight:600"><?php echo esc_html( $default_label ); ?></td>
-            <td>
-              <input type="text" name="nav_link[<?php echo esc_attr( $key ); ?>][label]"
-                     value="<?php echo esc_attr( $link['label'] ?? $default_label ); ?>"
-                     class="regular-text" style="width:180px">
-            </td>
-            <td>
-              <input type="text" name="nav_link[<?php echo esc_attr( $key ); ?>][url]"
-                     value="<?php echo esc_attr( $link['url'] ?? '' ); ?>"
-                     class="regular-text" style="width:220px" placeholder="/blog/">
-            </td>
-          </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
+						<div class="ah-builder-grid ah-builder-grid--nav">
+							<input type="hidden" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][id]" value="<?php echo esc_attr( $item['id'] ?? '' ); ?>">
+							<label>
+								<span>Label</span>
+								<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][label]" value="<?php echo esc_attr( $item['label'] ?? '' ); ?>" class="regular-text ah-nav-title-input">
+							</label>
+							<label>
+								<span>Type</span>
+								<select name="nav_items[<?php echo esc_attr( $nav_index ); ?>][type]" class="ah-nav-type-select">
+									<option value="link" <?php selected( $item['type'] ?? 'link', 'link' ); ?>>Direct Link</option>
+									<option value="dropdown" <?php selected( $item['type'] ?? '', 'dropdown' ); ?>>Dropdown</option>
+								</select>
+							</label>
+							<label class="ah-link-only">
+								<span>URL</span>
+								<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][url]" value="<?php echo esc_attr( $item['url'] ?? '' ); ?>" class="regular-text">
+							</label>
+							<label>
+								<span>Icon / Note</span>
+								<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][icon]" value="<?php echo esc_attr( $item['icon'] ?? '' ); ?>" class="regular-text" placeholder="Optional">
+							</label>
+							<label>
+								<span>Short Description</span>
+								<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][description]" value="<?php echo esc_attr( $item['description'] ?? '' ); ?>" class="regular-text" placeholder="Optional helper text">
+							</label>
+							<label class="ah-checkbox-field">
+								<input type="checkbox" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][visible]" value="1" <?php checked( ! empty( $item['visible'] ) ); ?>>
+								<span>Show this menu item</span>
+							</label>
+						</div>
 
-    <!-- ── CTA Button ───────────────────────────────────────────────────────── -->
-    <div class="ah-admin-box" style="margin-bottom:20px">
-      <h2>CTA Button (top-right)</h2>
-      <table class="ah-admin-table">
-        <thead><tr><th>Label</th><th>URL</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><input type="text" name="nav_cta_label" value="<?php echo esc_attr( $nav_cta['label'] ?? 'Get Help' ); ?>" class="regular-text"></td>
-            <td><input type="text" name="nav_cta_url"   value="<?php echo esc_attr( $nav_cta['url'] ?? '/contact/' ); ?>" class="regular-text"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+						<div class="ah-submenu-wrap" <?php if ( ( $item['type'] ?? 'link' ) !== 'dropdown' ) echo 'style="display:none"'; ?>>
+							<div class="ah-submenu-head">
+								<h3>Submenu Links</h3>
+								<button type="button" class="button ah-add-submenu">+ Add Submenu Link</button>
+							</div>
+							<div class="ah-builder-stack ah-submenu-list">
+								<?php foreach ( (array) ( $item['submenu'] ?? [] ) as $sub_index => $sub_item ) : ?>
+									<div class="ah-submenu-item">
+										<div class="ah-builder-inline-head">
+											<span class="ah-builder-handle">::</span>
+											<strong><?php echo esc_html( $sub_item['label'] ?? 'Submenu Link' ); ?></strong>
+											<button type="button" class="button-link-delete ah-remove-item">Remove</button>
+										</div>
+										<div class="ah-builder-grid ah-builder-grid--submenu">
+											<label class="ah-suggest-wrap">
+												<span>Autosuggest</span>
+												<input type="text" class="regular-text ah-link-suggest-input" placeholder="Type page, blog, or static page name">
+												<div class="ah-suggestions" style="display:none"></div>
+											</label>
+											<label>
+												<span>Label</span>
+												<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][submenu][<?php echo esc_attr( $sub_index ); ?>][label]" value="<?php echo esc_attr( $sub_item['label'] ?? '' ); ?>" class="regular-text">
+											</label>
+											<label>
+												<span>URL</span>
+												<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][submenu][<?php echo esc_attr( $sub_index ); ?>][url]" value="<?php echo esc_attr( $sub_item['url'] ?? '' ); ?>" class="regular-text ah-link-url-field">
+											</label>
+											<label>
+												<span>Description</span>
+												<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][submenu][<?php echo esc_attr( $sub_index ); ?>][description]" value="<?php echo esc_attr( $sub_item['description'] ?? '' ); ?>" class="regular-text">
+											</label>
+											<label>
+												<span>Icon</span>
+												<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][submenu][<?php echo esc_attr( $sub_index ); ?>][icon]" value="<?php echo esc_attr( $sub_item['icon'] ?? '' ); ?>" class="regular-text">
+											</label>
+											<label class="ah-checkbox-field">
+												<input type="checkbox" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][submenu][<?php echo esc_attr( $sub_index ); ?>][highlight]" value="1" <?php checked( ! empty( $sub_item['highlight'] ) ); ?>>
+												<span>Highlight this link</span>
+											</label>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
 
-    <!-- ── Dropdown link editors ────────────────────────────────────────────── -->
-    <?php foreach ( $dropdown_groups as $gkey => $group ) : ?>
-    <div class="ah-admin-box" style="margin-bottom:20px">
-      <h2><?php echo esc_html( $group['label'] ); ?></h2>
-      <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">
-        Each row is a link in the <strong><?php echo esc_html( ucfirst( $gkey ) ); ?></strong> dropdown.
-        Slug becomes the URL: <code>/guides/{slug}/</code>
-      </p>
-      <div class="ah-nav-rows" id="nav-rows-<?php echo esc_attr( $gkey ); ?>">
-        <?php foreach ( $group['items'] as $i => $item ) :
-          $item = is_array( $item ) ? $item : (array) $item;
-        ?>
-        <div class="ah-nav-row" data-idx="<?php echo $i; ?>">
-          <span class="ah-nav-row__handle" title="Drag to reorder">::</span>
-          <input type="text"     name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][icon]"  value="<?php echo esc_attr( $item['icon']  ?? '' ); ?>" placeholder="🏠"  style="width:60px" title="Icon (emoji)">
-          <input type="text"     name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][title]" value="<?php echo esc_attr( $item['title'] ?? '' ); ?>" placeholder="Title" style="width:200px">
-          <input type="text"     name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][desc]"  value="<?php echo esc_attr( $item['desc']  ?? '' ); ?>" placeholder="Short description" style="width:230px">
-          <input type="text"     name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][slug]"  value="<?php echo esc_attr( $item['slug']  ?? '' ); ?>" placeholder="url-slug" style="width:150px">
-          <label title="Highlight this item">
-            <input type="checkbox" name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][highlight]" value="1" <?php checked( ! empty( $item['highlight'] ) ); ?>>
-            ⭐ Featured
-          </label>
-          <button type="button" class="button ah-nav-remove-row">✕</button>
-        </div>
-        <?php endforeach; ?>
-      </div>
-      <button type="button" class="button ah-nav-add-row" data-target="nav-rows-<?php echo esc_attr( $gkey ); ?>" data-section="<?php echo esc_attr( $gkey ); ?>" style="margin-top:10px">+ Add Link</button>
-    </div>
-    <?php endforeach; ?>
+			<div class="ah-builder-grid ah-builder-grid--footer" style="margin-top:16px">
+				<label>
+					<span>Header CTA Label</span>
+					<input type="text" name="nav_cta[label]" value="<?php echo esc_attr( $nav_cta['label'] ?? '' ); ?>" class="regular-text">
+				</label>
+				<label>
+					<span>Header CTA URL</span>
+					<input type="text" name="nav_cta[url]" value="<?php echo esc_attr( $nav_cta['url'] ?? '' ); ?>" class="regular-text">
+				</label>
+			</div>
 
-    <!-- ── Static Page Quick Links ──────────────────────────────────────────── -->
-    <div class="ah-admin-box" style="margin-bottom:20px">
-      <h2>📄 Static Page Quick Links</h2>
-      <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">
-        Add links to static HTML pages into nav dropdowns or footer.
-        Each row becomes an extra item in the chosen section.
-        <?php if ( empty( $static_pages ) ) : ?>
-          <strong style="color:#d97706">No static pages found — run Install Mock Data to generate them.</strong>
-        <?php endif; ?>
-      </p>
-      <div class="ah-nav-rows" id="static-link-rows">
-        <?php foreach ( $static_nav_items as $i => $sitem ) :
-          $sitem = is_array( $sitem ) ? $sitem : [];
-        ?>
-        <div class="ah-nav-row">
-          <span class="ah-nav-row__handle" title="Drag to reorder">::</span>
-          <select name="static_nav[<?php echo $i; ?>][section]" style="width:140px;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem">
-            <option value="buying"  <?php selected( ($sitem['section']??''), 'buying'  ); ?>>Buying</option>
-            <option value="finance" <?php selected( ($sitem['section']??''), 'finance' ); ?>>Finance</option>
-            <option value="legal"   <?php selected( ($sitem['section']??''), 'legal'   ); ?>>Legal</option>
-            <option value="footer"  <?php selected( ($sitem['section']??''), 'footer'  ); ?>>Footer only</option>
-          </select>
-          <div class="ah-slink-wrap" style="position:relative;flex:1;min-width:160px">
-            <input type="text" name="static_nav[<?php echo $i; ?>][slug]"
-                   value="<?php echo esc_attr( $sitem['slug'] ?? '' ); ?>"
-                   placeholder="page-slug" class="ah-slink-slug"
-                   style="width:100%;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem"
-                   autocomplete="off">
-            <div class="ah-suggestions ah-slink-drop" style="display:none"></div>
-          </div>
-          <input type="text" name="static_nav[<?php echo $i; ?>][label]"
-                 value="<?php echo esc_attr( $sitem['label'] ?? '' ); ?>"
-                 placeholder="Link label" style="width:200px">
-          <input type="text" name="static_nav[<?php echo $i; ?>][icon]"
-                 value="<?php echo esc_attr( $sitem['icon'] ?? '' ); ?>"
-                 placeholder="📄" style="width:55px" title="Emoji icon">
-          <button type="button" class="button ah-nav-remove-row">✕</button>
-        </div>
-        <?php endforeach; ?>
-      </div>
-      <button type="button" class="button" id="add-static-link" style="margin-top:10px">+ Add Static Page Link</button>
-    </div>
+			<p><button type="button" class="button button-secondary" id="ah-add-nav-item">+ Add Menu Item</button></p>
+		</div>
 
-    <p class="submit" style="margin-top:0">
-      <?php submit_button( 'Save Navigation', 'primary', 'submit', false ); ?>
-      <a href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" class="button" style="margin-left:8px">View Site →</a>
-    </p>
-  </form>
+		<div class="ah-admin-box">
+			<h2>Footer Settings</h2>
+			<p class="ah-builder-note">Control the footer text, button, columns, and legal links here.</p>
+
+			<div class="ah-builder-grid ah-builder-grid--footer">
+				<label>
+					<span>Brand Description</span>
+					<textarea name="footer_brand_description" rows="4" class="large-text"><?php echo esc_textarea( $footer['brand_description'] ?? '' ); ?></textarea>
+				</label>
+				<label>
+					<span>Badge Text</span>
+					<input type="text" name="footer_badge_text" value="<?php echo esc_attr( $footer['badge_text'] ?? '' ); ?>" class="regular-text">
+				</label>
+				<label>
+					<span>Phone Note</span>
+					<input type="text" name="footer_contact[phone_note]" value="<?php echo esc_attr( $footer['contact']['phone_note'] ?? '' ); ?>" class="regular-text">
+				</label>
+				<label>
+					<span>Email Note</span>
+					<input type="text" name="footer_contact[email_note]" value="<?php echo esc_attr( $footer['contact']['email_note'] ?? '' ); ?>" class="regular-text">
+				</label>
+				<label>
+					<span>Address Note</span>
+					<input type="text" name="footer_contact[address_note]" value="<?php echo esc_attr( $footer['contact']['address_note'] ?? '' ); ?>" class="regular-text">
+				</label>
+				<label>
+					<span>Footer CTA Label</span>
+					<input type="text" name="footer_cta[label]" value="<?php echo esc_attr( $footer['cta']['label'] ?? '' ); ?>" class="regular-text">
+				</label>
+				<label>
+					<span>Footer CTA URL</span>
+					<input type="text" name="footer_cta[url]" value="<?php echo esc_attr( $footer['cta']['url'] ?? '' ); ?>" class="regular-text">
+				</label>
+			</div>
+		</div>
+
+		<div class="ah-admin-box">
+			<h2>Footer Columns</h2>
+			<div id="ah-footer-columns" class="ah-builder-stack">
+				<?php foreach ( $footer['columns'] as $column_index => $column ) : ?>
+					<div class="ah-builder-item" data-kind="footer-column">
+						<div class="ah-builder-item__bar">
+							<span class="ah-builder-handle">::</span>
+							<strong><?php echo esc_html( $column['title'] ?? 'Footer Column' ); ?></strong>
+							<button type="button" class="button-link-delete ah-remove-item">Remove</button>
+						</div>
+						<label>
+							<span>Column Title</span>
+							<input type="text" name="footer_columns[<?php echo esc_attr( $column_index ); ?>][title]" value="<?php echo esc_attr( $column['title'] ?? '' ); ?>" class="regular-text ah-column-title-input">
+						</label>
+						<div class="ah-submenu-head">
+							<h3>Links</h3>
+							<button type="button" class="button ah-add-footer-link">+ Add Footer Link</button>
+						</div>
+						<div class="ah-builder-stack ah-footer-links">
+							<?php foreach ( (array) ( $column['items'] ?? [] ) as $link_index => $link ) : ?>
+								<div class="ah-submenu-item">
+									<div class="ah-builder-inline-head">
+										<span class="ah-builder-handle">::</span>
+										<strong><?php echo esc_html( $link['label'] ?? 'Footer Link' ); ?></strong>
+										<button type="button" class="button-link-delete ah-remove-item">Remove</button>
+									</div>
+									<div class="ah-builder-grid ah-builder-grid--submenu">
+										<label class="ah-suggest-wrap">
+											<span>Autosuggest</span>
+											<input type="text" class="regular-text ah-link-suggest-input" placeholder="Type page, blog, or static page name">
+											<div class="ah-suggestions" style="display:none"></div>
+										</label>
+										<label>
+											<span>Label</span>
+											<input type="text" name="footer_columns[<?php echo esc_attr( $column_index ); ?>][items][<?php echo esc_attr( $link_index ); ?>][label]" value="<?php echo esc_attr( $link['label'] ?? '' ); ?>" class="regular-text">
+										</label>
+										<label>
+											<span>URL</span>
+											<input type="text" name="footer_columns[<?php echo esc_attr( $column_index ); ?>][items][<?php echo esc_attr( $link_index ); ?>][url]" value="<?php echo esc_attr( $link['url'] ?? '' ); ?>" class="regular-text ah-link-url-field">
+										</label>
+										<label class="ah-checkbox-field">
+											<input type="checkbox" name="footer_columns[<?php echo esc_attr( $column_index ); ?>][items][<?php echo esc_attr( $link_index ); ?>][highlight]" value="1" <?php checked( ! empty( $link['highlight'] ) ); ?>>
+											<span>Highlight this link</span>
+										</label>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+
+			<p><button type="button" class="button button-secondary" id="ah-add-footer-column">+ Add Footer Column</button></p>
+		</div>
+
+		<div class="ah-admin-box">
+			<h2>Footer Legal Links</h2>
+			<div id="ah-footer-legal-links" class="ah-builder-stack">
+				<?php foreach ( $footer['legal_links'] as $legal_index => $legal_link ) : ?>
+					<div class="ah-submenu-item">
+						<div class="ah-builder-inline-head">
+							<span class="ah-builder-handle">::</span>
+							<strong><?php echo esc_html( $legal_link['label'] ?? 'Legal Link' ); ?></strong>
+							<button type="button" class="button-link-delete ah-remove-item">Remove</button>
+						</div>
+						<div class="ah-builder-grid ah-builder-grid--submenu">
+							<label class="ah-suggest-wrap">
+								<span>Autosuggest</span>
+								<input type="text" class="regular-text ah-link-suggest-input" placeholder="Type page, blog, or static page name">
+								<div class="ah-suggestions" style="display:none"></div>
+							</label>
+							<label>
+								<span>Label</span>
+								<input type="text" name="footer_legal_links[<?php echo esc_attr( $legal_index ); ?>][label]" value="<?php echo esc_attr( $legal_link['label'] ?? '' ); ?>" class="regular-text">
+							</label>
+							<label>
+								<span>URL</span>
+								<input type="text" name="footer_legal_links[<?php echo esc_attr( $legal_index ); ?>][url]" value="<?php echo esc_attr( $legal_link['url'] ?? '' ); ?>" class="regular-text ah-link-url-field">
+							</label>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<p><button type="button" class="button button-secondary" id="ah-add-legal-link">+ Add Legal Link</button></p>
+		</div>
+
+		<p class="submit">
+			<?php submit_button( 'Save Navigation and Footer', 'primary', 'submit', false ); ?>
+		</p>
+	</form>
 </div>
 
 <style>
-.ah-nav-rows { display:flex; flex-direction:column; gap:8px; }
-.ah-nav-row  { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:8px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; }
-.ah-nav-row__handle { cursor:grab;color:#94a3b8;font-weight:700;letter-spacing:1px;user-select:none; }
-.ah-nav-row.is-dragging { opacity:.75; box-shadow:0 8px 18px rgba(15,23,42,.12); }
-.ah-nav-row input[type="text"] { border:1.5px solid #e2e8f0; border-radius:6px; padding:5px 8px; font-size:.85rem; }
-.ah-nav-row input[type="text"]:focus { border-color:#b7791f; outline:none; }
-.ah-nav-remove-row { color:#dc2626; border-color:#fca5a5; }
-.ah-nav-label-input { width:180px;max-width:100%;border:1.5px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-weight:600;color:#0f172a; }
-.ah-nav-label-input:focus { border-color:#b7791f;outline:none;box-shadow:none; }
+.ah-nav-builder-wrap { max-width: 1080px; }
+.ah-builder-note { color: #64748b; margin: 0 0 16px; font-size: 13px; }
+.ah-builder-stack { display: flex; flex-direction: column; gap: 14px; }
+.ah-builder-item, .ah-submenu-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; }
+.ah-builder-item__bar, .ah-builder-inline-head, .ah-submenu-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.ah-builder-inline-head strong, .ah-builder-item__bar strong { flex: 1; }
+.ah-builder-handle { cursor: grab; color: #94a3b8; font-weight: 700; letter-spacing: 1px; user-select: none; }
+.ah-builder-grid { display: grid; gap: 12px; }
+.ah-builder-grid label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; color: #0f172a; }
+.ah-builder-grid label span { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #64748b; }
+.ah-builder-grid input[type="text"], .ah-builder-grid textarea, .ah-builder-grid select { width: 100%; max-width: 100%; }
+.ah-builder-grid--nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ah-builder-grid--submenu, .ah-builder-grid--footer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ah-checkbox-field { flex-direction: row !important; align-items: center; gap: 8px !important; padding-top: 24px; }
+.ah-checkbox-field span { font-size: 14px !important; text-transform: none !important; letter-spacing: 0 !important; color: #0f172a !important; }
+.ah-submenu-wrap { margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px; }
+.ah-suggest-wrap { position: relative; }
+.ah-suggestion-item { display: flex; justify-content: space-between; gap: 10px; }
+.ah-suggestion-item small { color: #94a3b8; }
+.ah-builder-item.is-dragging, .ah-submenu-item.is-dragging { opacity: .75; box-shadow: 0 10px 26px rgba(15, 23, 42, .10); }
+@media (max-width: 782px) {
+	.ah-builder-grid--nav, .ah-builder-grid--submenu, .ah-builder-grid--footer { grid-template-columns: 1fr; }
+}
 </style>
 
 <script>
 (function() {
-  'use strict';
+	'use strict';
 
-  // Remove row
-  document.addEventListener('click', function(e) {
-    if (e.target.matches('.ah-nav-remove-row')) {
-      e.target.closest('.ah-nav-row').remove();
-    }
-  });
+	var suggestions = <?php echo wp_json_encode( $suggestions ); ?>;
 
-  function renumberRows(container) {
-    var section = container.id.replace('nav-rows-', '');
-    var isStatic = container.id === 'static-link-rows';
-    container.querySelectorAll('.ah-nav-row').forEach(function(row, index) {
-      row.querySelectorAll('[name]').forEach(function(field) {
-        if (isStatic) {
-          field.name = field.name.replace(/static_nav\[\d+\]/, 'static_nav[' + index + ']');
-        } else {
-          field.name = field.name.replace(new RegExp(section + '_items\\[\\d+\\]'), section + '_items[' + index + ']');
-        }
-      });
-    });
-  }
+	function setSortable(selector) {
+		if (!window.jQuery || !jQuery.fn.sortable) {
+			return;
+		}
+		document.querySelectorAll(selector).forEach(function(container) {
+			if (container.dataset.sortableReady === '1') {
+				return;
+			}
+			jQuery(container).sortable({
+				handle: '.ah-builder-handle',
+				items: '> .ah-builder-item, > .ah-submenu-item',
+				start: function(event, ui) { ui.item.addClass('is-dragging'); },
+				stop: function(event, ui) {
+					ui.item.removeClass('is-dragging');
+					renumberAll();
+				}
+			});
+			container.dataset.sortableReady = '1';
+		});
+	}
 
-  document.querySelectorAll('.ah-nav-rows').forEach(function(container) {
-    if (!window.jQuery || !jQuery.fn.sortable) return;
-    jQuery(container).sortable({
-      handle: '.ah-nav-row__handle',
-      items: '.ah-nav-row',
-      start: function(e, ui) { ui.item.addClass('is-dragging'); },
-      stop: function(e, ui) {
-        ui.item.removeClass('is-dragging');
-        renumberRows(container);
-      }
-    });
-  });
+	function createInput(name, value, className, placeholder) {
+		return '<input type="text" name="' + name + '" value="' + (value || '') + '" class="regular-text ' + (className || '') + '" placeholder="' + (placeholder || '') + '">';
+	}
 
-  // Add dropdown topic row
-  document.querySelectorAll('.ah-nav-add-row').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var target  = document.getElementById(btn.dataset.target);
-      var section = btn.dataset.section;
-      var count   = target.querySelectorAll('.ah-nav-row').length;
-      var row     = document.createElement('div');
-      row.className = 'ah-nav-row';
-      row.innerHTML =
-        '<span class="ah-nav-row__handle" title="Drag to reorder">::</span>' +
-        '<input type="text" name="' + section + '_items[' + count + '][icon]"  placeholder="🏠" style="width:60px" title="Icon (emoji)">' +
-        '<input type="text" name="' + section + '_items[' + count + '][title]" placeholder="Title" style="width:200px">' +
-        '<input type="text" name="' + section + '_items[' + count + '][desc]"  placeholder="Short description" style="width:230px">' +
-        '<input type="text" name="' + section + '_items[' + count + '][slug]"  placeholder="url-slug" style="width:150px">' +
-        '<label><input type="checkbox" name="' + section + '_items[' + count + '][highlight]" value="1"> ⭐ Featured</label>' +
-        '<button type="button" class="button ah-nav-remove-row">✕</button>';
-      target.appendChild(row);
-    });
-  });
+	function createSuggestBlock() {
+		return '<label class="ah-suggest-wrap"><span>Autosuggest</span><input type="text" class="regular-text ah-link-suggest-input" placeholder="Type page, blog, or static page name"><div class="ah-suggestions" style="display:none"></div></label>';
+	}
 
-  // Static page slug autocomplete
-  var staticSugg = <?php echo wp_json_encode( $static_sugg ); ?>;
+	function submenuRowHtml(prefix) {
+		return '' +
+			'<div class="ah-submenu-item">' +
+				'<div class="ah-builder-inline-head">' +
+					'<span class="ah-builder-handle">::</span>' +
+					'<strong>Submenu Link</strong>' +
+					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+				'</div>' +
+				'<div class="ah-builder-grid ah-builder-grid--submenu">' +
+					createSuggestBlock() +
+					'<label><span>Label</span>' + createInput(prefix + '[label]', '', '', '') + '</label>' +
+					'<label><span>URL</span>' + createInput(prefix + '[url]', '', 'ah-link-url-field', '') + '</label>' +
+					'<label><span>Description</span>' + createInput(prefix + '[description]', '', '', '') + '</label>' +
+					'<label><span>Icon</span>' + createInput(prefix + '[icon]', '', '', '') + '</label>' +
+					'<label class="ah-checkbox-field"><input type="checkbox" name="' + prefix + '[highlight]" value="1"><span>Highlight this link</span></label>' +
+				'</div>' +
+			'</div>';
+	}
 
-  function attachSlugPicker(wrap) {
-    var input = wrap.querySelector('.ah-slink-slug');
-    var drop  = wrap.querySelector('.ah-slink-drop');
-    if (!input || !drop || !staticSugg.length) return;
-    input.addEventListener('input', function() {
-      var q = input.value.toLowerCase().trim();
-      if (!q) { drop.style.display = 'none'; return; }
-      var hits = staticSugg.filter(function(s) {
-        return s.id.includes(q) || s.label.toLowerCase().includes(q);
-      }).slice(0, 6);
-      if (!hits.length) { drop.style.display = 'none'; return; }
-      drop.innerHTML = hits.map(function(s) {
-        return '<div class="ah-suggestion-item" data-slug="' + s.id + '" data-label="' + s.label.replace(/"/g, '&quot;') + '">'
-          + s.label + ' <span style="color:#94a3b8;font-size:.78rem">/' + s.id + '/</span></div>';
-      }).join('');
-      drop.style.display = 'block';
-      drop.querySelectorAll('.ah-suggestion-item').forEach(function(item) {
-        item.addEventListener('mousedown', function(e) {
-          e.preventDefault();
-          input.value = item.dataset.slug;
-          var labelInput = wrap.closest('.ah-nav-row').querySelector('input[name*="[label]"]');
-          if (labelInput && !labelInput.value) labelInput.value = item.dataset.label;
-          drop.style.display = 'none';
-        });
-      });
-    });
-    document.addEventListener('click', function(e) {
-      if (!wrap.contains(e.target)) drop.style.display = 'none';
-    });
-  }
+	function footerLinkRowHtml(prefix) {
+		return '' +
+			'<div class="ah-submenu-item">' +
+				'<div class="ah-builder-inline-head">' +
+					'<span class="ah-builder-handle">::</span>' +
+					'<strong>Footer Link</strong>' +
+					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+				'</div>' +
+				'<div class="ah-builder-grid ah-builder-grid--submenu">' +
+					createSuggestBlock() +
+					'<label><span>Label</span>' + createInput(prefix + '[label]', '', '', '') + '</label>' +
+					'<label><span>URL</span>' + createInput(prefix + '[url]', '', 'ah-link-url-field', '') + '</label>' +
+					'<label class="ah-checkbox-field"><input type="checkbox" name="' + prefix + '[highlight]" value="1"><span>Highlight this link</span></label>' +
+				'</div>' +
+			'</div>';
+	}
 
-  document.querySelectorAll('.ah-slink-wrap').forEach(attachSlugPicker);
+	function legalLinkRowHtml(prefix) {
+		return '' +
+			'<div class="ah-submenu-item">' +
+				'<div class="ah-builder-inline-head">' +
+					'<span class="ah-builder-handle">::</span>' +
+					'<strong>Legal Link</strong>' +
+					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+				'</div>' +
+				'<div class="ah-builder-grid ah-builder-grid--submenu">' +
+					createSuggestBlock() +
+					'<label><span>Label</span>' + createInput(prefix + '[label]', '', '', '') + '</label>' +
+					'<label><span>URL</span>' + createInput(prefix + '[url]', '', 'ah-link-url-field', '') + '</label>' +
+				'</div>' +
+			'</div>';
+	}
 
-  // Add static link row
-  document.getElementById('add-static-link').addEventListener('click', function() {
-    var rows  = document.getElementById('static-link-rows');
-    var count = rows.querySelectorAll('.ah-nav-row').length;
-    var row   = document.createElement('div');
-    row.className = 'ah-nav-row';
-    row.innerHTML =
-      '<span class="ah-nav-row__handle" title="Drag to reorder">::</span>' +
-      '<select name="static_nav[' + count + '][section]" style="width:140px;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem">' +
-        '<option value="buying">Buying</option><option value="finance">Finance</option>' +
-        '<option value="legal">Legal</option><option value="footer">Footer only</option>' +
-      '</select>' +
-      '<div class="ah-slink-wrap" style="position:relative;flex:1;min-width:160px">' +
-        '<input type="text" name="static_nav[' + count + '][slug]" placeholder="page-slug" class="ah-slink-slug"' +
-        ' style="width:100%;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem" autocomplete="off">' +
-        '<div class="ah-suggestions ah-slink-drop" style="display:none"></div>' +
-      '</div>' +
-      '<input type="text" name="static_nav[' + count + '][label]" placeholder="Link label" style="width:200px">' +
-      '<input type="text" name="static_nav[' + count + '][icon]"  placeholder="📄" style="width:55px" title="Emoji">' +
-      '<button type="button" class="button ah-nav-remove-row">✕</button>';
-    rows.appendChild(row);
-    attachSlugPicker(row.querySelector('.ah-slink-wrap'));
-  });
+	function navItemHtml(index) {
+		return '' +
+			'<div class="ah-builder-item" data-kind="nav-item">' +
+				'<div class="ah-builder-item__bar">' +
+					'<span class="ah-builder-handle" title="Drag to reorder">::</span>' +
+					'<strong>Menu Item</strong>' +
+					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+				'</div>' +
+				'<div class="ah-builder-grid ah-builder-grid--nav">' +
+					'<input type="hidden" name="nav_items[' + index + '][id]" value="">' +
+					'<label><span>Label</span>' + createInput('nav_items[' + index + '][label]', '', 'ah-nav-title-input', '') + '</label>' +
+					'<label><span>Type</span><select name="nav_items[' + index + '][type]" class="ah-nav-type-select"><option value="link">Direct Link</option><option value="dropdown">Dropdown</option></select></label>' +
+					'<label class="ah-link-only"><span>URL</span>' + createInput('nav_items[' + index + '][url]', '', '', '') + '</label>' +
+					'<label><span>Icon / Note</span>' + createInput('nav_items[' + index + '][icon]', '', '', 'Optional') + '</label>' +
+					'<label><span>Short Description</span>' + createInput('nav_items[' + index + '][description]', '', '', 'Optional helper text') + '</label>' +
+					'<label class="ah-checkbox-field"><input type="checkbox" name="nav_items[' + index + '][visible]" value="1" checked><span>Show this menu item</span></label>' +
+				'</div>' +
+				'<div class="ah-submenu-wrap" style="display:none">' +
+					'<div class="ah-submenu-head"><h3>Submenu Links</h3><button type="button" class="button ah-add-submenu">+ Add Submenu Link</button></div>' +
+					'<div class="ah-builder-stack ah-submenu-list"></div>' +
+				'</div>' +
+			'</div>';
+	}
+
+	function footerColumnHtml(index) {
+		return '' +
+			'<div class="ah-builder-item" data-kind="footer-column">' +
+				'<div class="ah-builder-item__bar">' +
+					'<span class="ah-builder-handle">::</span>' +
+					'<strong>Footer Column</strong>' +
+					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+				'</div>' +
+				'<label><span>Column Title</span>' + createInput('footer_columns[' + index + '][title]', '', 'ah-column-title-input', '') + '</label>' +
+				'<div class="ah-submenu-head"><h3>Links</h3><button type="button" class="button ah-add-footer-link">+ Add Footer Link</button></div>' +
+				'<div class="ah-builder-stack ah-footer-links"></div>' +
+			'</div>';
+	}
+
+	function renumberAll() {
+		document.querySelectorAll('#ah-nav-items > .ah-builder-item').forEach(function(item, navIndex) {
+			item.querySelectorAll('[name]').forEach(function(field) {
+				field.name = field.name.replace(/nav_items\[\d+\]/, 'nav_items[' + navIndex + ']');
+			});
+
+			item.querySelectorAll('.ah-submenu-list > .ah-submenu-item').forEach(function(subItem, subIndex) {
+				subItem.querySelectorAll('[name]').forEach(function(field) {
+					field.name = field.name.replace(/nav_items\[\d+\]\[submenu\]\[\d+\]/, 'nav_items[' + navIndex + '][submenu][' + subIndex + ']');
+				});
+			});
+		});
+
+		document.querySelectorAll('#ah-footer-columns > .ah-builder-item').forEach(function(item, columnIndex) {
+			item.querySelectorAll('[name]').forEach(function(field) {
+				field.name = field.name.replace(/footer_columns\[\d+\]/, 'footer_columns[' + columnIndex + ']');
+			});
+			item.querySelectorAll('.ah-footer-links > .ah-submenu-item').forEach(function(linkItem, linkIndex) {
+				linkItem.querySelectorAll('[name]').forEach(function(field) {
+					field.name = field.name.replace(/footer_columns\[\d+\]\[items\]\[\d+\]/, 'footer_columns[' + columnIndex + '][items][' + linkIndex + ']');
+				});
+			});
+		});
+
+		document.querySelectorAll('#ah-footer-legal-links > .ah-submenu-item').forEach(function(item, legalIndex) {
+			item.querySelectorAll('[name]').forEach(function(field) {
+				field.name = field.name.replace(/footer_legal_links\[\d+\]/, 'footer_legal_links[' + legalIndex + ']');
+			});
+		});
+	}
+
+	function attachSuggest(root) {
+		root.querySelectorAll('.ah-suggest-wrap').forEach(function(wrap) {
+			if (wrap.dataset.ready === '1') {
+				return;
+			}
+			wrap.dataset.ready = '1';
+
+			var input = wrap.querySelector('.ah-link-suggest-input');
+			var drop = wrap.querySelector('.ah-suggestions');
+
+			if (!input || !drop) {
+				return;
+			}
+
+			input.addEventListener('input', function() {
+				var query = input.value.toLowerCase().trim();
+				if (!query) {
+					drop.style.display = 'none';
+					return;
+				}
+
+				var matches = suggestions.filter(function(item) {
+					return item.label.toLowerCase().indexOf(query) !== -1 || item.url.toLowerCase().indexOf(query) !== -1;
+				}).slice(0, 8);
+
+				if (!matches.length) {
+					drop.style.display = 'none';
+					return;
+				}
+
+				drop.innerHTML = matches.map(function(item) {
+					return '<div class="ah-suggestion-item" data-label="' + item.label.replace(/"/g, '&quot;') + '" data-url="' + item.url.replace(/"/g, '&quot;') + '">' +
+						'<span>' + item.label + '</span><small>' + item.type + '</small></div>';
+				}).join('');
+				drop.style.display = 'block';
+
+				drop.querySelectorAll('.ah-suggestion-item').forEach(function(row) {
+					row.addEventListener('mousedown', function(event) {
+						event.preventDefault();
+						var labelField = wrap.parentNode.parentNode.querySelector('input[name*="[label]"]');
+						var urlField = wrap.parentNode.parentNode.querySelector('.ah-link-url-field');
+						if (labelField && !labelField.value) {
+							labelField.value = row.dataset.label;
+						}
+						if (urlField) {
+							urlField.value = row.dataset.url;
+						}
+						input.value = row.dataset.label;
+						drop.style.display = 'none';
+					});
+				});
+			});
+
+			document.addEventListener('click', function(event) {
+				if (!wrap.contains(event.target)) {
+					drop.style.display = 'none';
+				}
+			});
+		});
+	}
+
+	function syncTypeCard(card) {
+		var select = card.querySelector('.ah-nav-type-select');
+		var linkOnly = card.querySelector('.ah-link-only');
+		var submenuWrap = card.querySelector('.ah-submenu-wrap');
+		if (!select || !linkOnly || !submenuWrap) {
+			return;
+		}
+		if (select.value === 'dropdown') {
+			linkOnly.style.display = 'none';
+			submenuWrap.style.display = '';
+		} else {
+			linkOnly.style.display = '';
+			submenuWrap.style.display = 'none';
+		}
+	}
+
+	document.querySelectorAll('.ah-nav-type-select').forEach(function(select) {
+		select.addEventListener('change', function() {
+			syncTypeCard(select.closest('.ah-builder-item'));
+		});
+		syncTypeCard(select.closest('.ah-builder-item'));
+	});
+
+	document.addEventListener('click', function(event) {
+		if (event.target.matches('.ah-remove-item')) {
+			event.preventDefault();
+			var row = event.target.closest('.ah-builder-item, .ah-submenu-item');
+			if (row) {
+				row.remove();
+				renumberAll();
+			}
+		}
+
+		if (event.target.matches('#ah-add-nav-item')) {
+			event.preventDefault();
+			var navItems = document.getElementById('ah-nav-items');
+			navItems.insertAdjacentHTML('beforeend', navItemHtml(navItems.children.length));
+			var newItem = navItems.lastElementChild;
+			syncTypeCard(newItem);
+			attachSuggest(newItem);
+			setSortable('.ah-builder-stack, .ah-submenu-list, .ah-footer-links');
+			renumberAll();
+		}
+
+		if (event.target.matches('.ah-add-submenu')) {
+			event.preventDefault();
+			var navCard = event.target.closest('.ah-builder-item');
+			var list = navCard.querySelector('.ah-submenu-list');
+			var navIndex = Array.prototype.indexOf.call(document.querySelectorAll('#ah-nav-items > .ah-builder-item'), navCard);
+			var nextIndex = list.children.length;
+			list.insertAdjacentHTML('beforeend', submenuRowHtml('nav_items[' + navIndex + '][submenu][' + nextIndex + ']'));
+			attachSuggest(list.lastElementChild);
+			setSortable('.ah-builder-stack, .ah-submenu-list, .ah-footer-links');
+			renumberAll();
+		}
+
+		if (event.target.matches('#ah-add-footer-column')) {
+			event.preventDefault();
+			var columns = document.getElementById('ah-footer-columns');
+			columns.insertAdjacentHTML('beforeend', footerColumnHtml(columns.children.length));
+			setSortable('.ah-builder-stack, .ah-submenu-list, .ah-footer-links');
+			renumberAll();
+		}
+
+		if (event.target.matches('.ah-add-footer-link')) {
+			event.preventDefault();
+			var column = event.target.closest('.ah-builder-item');
+			var list = column.querySelector('.ah-footer-links');
+			var columnIndex = Array.prototype.indexOf.call(document.querySelectorAll('#ah-footer-columns > .ah-builder-item'), column);
+			var nextIndex = list.children.length;
+			list.insertAdjacentHTML('beforeend', footerLinkRowHtml('footer_columns[' + columnIndex + '][items][' + nextIndex + ']'));
+			attachSuggest(list.lastElementChild);
+			setSortable('.ah-builder-stack, .ah-submenu-list, .ah-footer-links');
+			renumberAll();
+		}
+
+		if (event.target.matches('#ah-add-legal-link')) {
+			event.preventDefault();
+			var legal = document.getElementById('ah-footer-legal-links');
+			legal.insertAdjacentHTML('beforeend', legalLinkRowHtml('footer_legal_links[' + legal.children.length + ']'));
+			attachSuggest(legal.lastElementChild);
+			setSortable('.ah-builder-stack, .ah-submenu-list, .ah-footer-links');
+			renumberAll();
+		}
+	});
+
+	attachSuggest(document);
+	setSortable('.ah-builder-stack, .ah-submenu-list, .ah-footer-links');
+	renumberAll();
 })();
 </script>

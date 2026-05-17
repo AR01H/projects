@@ -147,10 +147,151 @@ class AH_Theme_Seeder {
 	}
 
 	public static function seed_nav_topics(): array {
+		$navigation = [
+			[
+				'id'      => 'buying-guides',
+				'label'   => 'Buying Guides',
+				'type'    => 'dropdown',
+				'url'     => '',
+				'visible' => true,
+				'icon'    => '',
+				'submenu' => array_map(
+					static function ( $item ) {
+						return [
+							'label'       => $item['title'],
+							'url'         => '/guides/' . $item['slug'] . '/',
+							'description' => $item['desc'] ?? '',
+							'icon'        => $item['icon'] ?? '',
+							'highlight'   => ! empty( $item['highlight'] ),
+						];
+					},
+					ah_mock_nav_buying_topics()
+				),
+			],
+			[
+				'id'      => 'finance',
+				'label'   => 'Finance',
+				'type'    => 'dropdown',
+				'url'     => '',
+				'visible' => true,
+				'icon'    => '',
+				'submenu' => array_map(
+					static function ( $item ) {
+						return [
+							'label'       => $item['title'],
+							'url'         => '/guides/' . $item['slug'] . '/',
+							'description' => $item['desc'] ?? '',
+							'icon'        => $item['icon'] ?? '',
+							'highlight'   => ! empty( $item['highlight'] ),
+						];
+					},
+					ah_mock_nav_finance_topics()
+				),
+			],
+			[
+				'id'      => 'legal-surveys',
+				'label'   => 'Legal & Surveys',
+				'type'    => 'dropdown',
+				'url'     => '',
+				'visible' => true,
+				'icon'    => '',
+				'submenu' => array_map(
+					static function ( $item ) {
+						return [
+							'label'       => $item['title'],
+							'url'         => '/guides/' . $item['slug'] . '/',
+							'description' => $item['desc'] ?? '',
+							'icon'        => $item['icon'] ?? '',
+							'highlight'   => ! empty( $item['highlight'] ),
+						];
+					},
+					ah_mock_nav_legal_topics()
+				),
+			],
+			[
+				'id'      => 'news-guides',
+				'label'   => 'News & Guides',
+				'type'    => 'link',
+				'url'     => '/blog/',
+				'visible' => true,
+				'icon'    => '',
+				'submenu' => [],
+			],
+			[
+				'id'      => 'services',
+				'label'   => 'Services',
+				'type'    => 'link',
+				'url'     => '/services/',
+				'visible' => true,
+				'icon'    => '',
+				'submenu' => [],
+			],
+		];
+		$footer = [
+			'brand_description' => "The UK's dedicated buyer's agent - we work exclusively for you, not the seller. Saving you time, stress, and thousands of pounds on your most important purchase.",
+			'badge_text'        => 'Proudly serving UK home buyers',
+			'columns'           => [
+				[
+					'title' => 'Buying Guides',
+					'items' => [
+						[ 'label' => 'First-Time Buyers', 'url' => '/guides/first-time-buyers/' ],
+						[ 'label' => 'Moving Home', 'url' => '/guides/moving-home/' ],
+						[ 'label' => 'Buy-to-Let', 'url' => '/guides/buy-to-let/' ],
+						[ 'label' => 'Using a Buyer\'s Agent', 'url' => '/guides/using-a-buyers-agent/', 'highlight' => true ],
+					],
+				],
+				[
+					'title' => 'Company',
+					'items' => [
+						[ 'label' => 'Home', 'url' => '/' ],
+						[ 'label' => 'Services', 'url' => '/services/' ],
+						[ 'label' => 'About Us', 'url' => '/about/' ],
+						[ 'label' => 'Blog', 'url' => '/blog/' ],
+						[ 'label' => 'Contact', 'url' => '/contact/' ],
+					],
+				],
+			],
+			'contact'           => [
+				'phone_note'   => 'Mon-Sat, 9am-6pm',
+				'email_note'   => 'We reply within 2 hours',
+				'address_note' => 'Covering all of England & Wales',
+			],
+			'cta'               => [
+				'label' => 'Book Free Consultation ->',
+				'url'   => '/contact/',
+			],
+			'legal_links'       => [
+				[ 'label' => 'Privacy Policy', 'url' => '/privacy-policy/' ],
+				[ 'label' => 'Terms', 'url' => '/terms/' ],
+				[ 'label' => 'Refund Policy', 'url' => '/refund-policy/' ],
+			],
+		];
 		update_option( 'ah_nav_buying_topics',  wp_json_encode( ah_mock_nav_buying_topics() ) );
 		update_option( 'ah_nav_finance_topics', wp_json_encode( ah_mock_nav_finance_topics() ) );
 		update_option( 'ah_nav_legal_topics',   wp_json_encode( ah_mock_nav_legal_topics() ) );
-		return [ 'inserted' => 0, 'updated' => 3 ];
+		update_option( 'ah_cms_navigation', wp_json_encode( $navigation ) );
+		update_option( 'ah_theme_navigation', wp_json_encode( $navigation ) );
+		update_option( 'ah_cms_footer', wp_json_encode( $footer ) );
+		update_option( 'ah_theme_footer', wp_json_encode( $footer ) );
+		update_option(
+			'ah_cms_nav_cta',
+			wp_json_encode(
+				[
+					'label' => 'Book Free Consultation ->',
+					'url'   => '/contact/',
+				]
+			)
+		);
+		update_option(
+			'ah_nav_cta',
+			wp_json_encode(
+				[
+					'label' => 'Book Free Consultation ->',
+					'url'   => '/contact/',
+				]
+			)
+		);
+		return [ 'inserted' => 0, 'updated' => 5 ];
 	}
 
 	public static function seed_process_steps(): array {
@@ -1094,7 +1235,8 @@ class AH_Theme_Seeder {
 			'ah_nav_legal_topics', 'ah_process_steps', 'ah_site_stats',
 			'ah_trust_signals', 'ah_news_bar_items', 'ah_featured_properties',
 			'ah_contact_settings', 'ah_html_blocks',
-			'ah_static_quick_links', 'ah_nav_static_page_links',
+			'ah_static_quick_links', 'ah_nav_static_page_links', 'ah_theme_navigation', 'ah_theme_footer',
+			'ah_cms_navigation', 'ah_cms_footer', 'ah_cms_nav_cta',
 		];
 		foreach ( $options as $opt ) {
 			if ( get_option( $opt ) !== false ) {
@@ -1126,7 +1268,7 @@ class AH_Theme_Seeder {
 				$counts[ $t ] = null; // null = table doesn't exist (plugin not installed)
 			}
 		}
-		$options = [ 'ah_site_settings', 'ah_home_settings', 'ah_guide_nav', 'ah_guide_categories', 'ah_nav_buying_topics', 'ah_nav_finance_topics', 'ah_nav_legal_topics', 'ah_process_steps', 'ah_site_stats', 'ah_trust_signals' ];
+		$options = [ 'ah_site_settings', 'ah_home_settings', 'ah_guide_nav', 'ah_guide_categories', 'ah_nav_buying_topics', 'ah_nav_finance_topics', 'ah_nav_legal_topics', 'ah_process_steps', 'ah_site_stats', 'ah_trust_signals', 'ah_theme_navigation', 'ah_theme_footer', 'ah_cms_navigation', 'ah_cms_footer', 'ah_cms_nav_cta' ];
 		foreach ( $options as $opt ) {
 			$counts[ $opt ] = get_option( $opt ) !== false ? '✓' : '—';
 		}

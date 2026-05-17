@@ -109,10 +109,391 @@ function ah_get_nav_static_links(): array {
 
 // ── Nav CTA Button ────────────────────────────────────────────────────────────
 function ah_get_nav_cta(): array {
-	$opt = get_option( 'ah_nav_cta', [] );
+	$opt = get_option( 'ah_cms_nav_cta', [] );
+	if ( empty( $opt ) ) {
+		$opt = get_option( 'ah_nav_cta', [] );
+	}
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	$defaults = [ 'label' => 'Get Help', 'url' => '/contact/' ];
 	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;
+}
+
+function ah_normalize_theme_url( string $url, string $fallback = '' ): string {
+	$url = trim( wp_unslash( $url ) );
+	if ( $url === '' ) {
+		return $fallback;
+	}
+	if ( preg_match( '#^(https?:)?//#i', $url ) || strpos( $url, '#' ) === 0 || strpos( $url, 'mailto:' ) === 0 || strpos( $url, 'tel:' ) === 0 ) {
+		return $url;
+	}
+	return '/' . trim( $url, '/' ) . '/';
+}
+
+function ah_get_theme_navigation(): array {
+	$opt = get_option( 'ah_cms_navigation', [] );
+	if ( empty( $opt ) ) {
+		$opt = get_option( 'ah_theme_navigation', [] );
+	}
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) && is_array( $opt ) ) {
+		return ah_normalize_theme_navigation( $opt );
+	}
+
+	return ah_build_legacy_theme_navigation();
+}
+
+function ah_normalize_theme_navigation( array $items ): array {
+	$normalized = [];
+	foreach ( $items as $index => $item ) {
+		$item  = is_object( $item ) ? (array) $item : (array) $item;
+		$label = sanitize_text_field( $item['label'] ?? '' );
+		if ( $label === '' ) {
+			continue;
+		}
+
+		$type    = ( $item['type'] ?? 'link' ) === 'dropdown' ? 'dropdown' : 'link';
+		$submenu = [];
+		foreach ( (array) ( $item['submenu'] ?? [] ) as $sub_item ) {
+			$sub_item = is_object( $sub_item ) ? (array) $sub_item : (array) $sub_item;
+			$sub_label = sanitize_text_field( $sub_item['label'] ?? '' );
+			$sub_url   = ah_normalize_theme_url( (string) ( $sub_item['url'] ?? '' ) );
+			if ( $sub_label === '' || $sub_url === '' ) {
+				continue;
+			}
+			$submenu[] = [
+				'label'       => $sub_label,
+				'url'         => $sub_url,
+				'description' => sanitize_text_field( $sub_item['description'] ?? '' ),
+				'icon'        => sanitize_text_field( $sub_item['icon'] ?? '' ),
+				'highlight'   => ! empty( $sub_item['highlight'] ),
+			];
+		}
+
+		$normalized[] = [
+			'id'          => sanitize_title( $item['id'] ?? $label ?: 'nav-' . $index ),
+			'label'       => $label,
+			'type'        => $type,
+			'url'         => $type === 'link' ? ah_normalize_theme_url( (string) ( $item['url'] ?? '' ), home_url( '/' ) ) : '',
+			'visible'     => isset( $item['visible'] ) ? (bool) $item['visible'] : true,
+			'icon'        => sanitize_text_field( $item['icon'] ?? '' ),
+			'description' => sanitize_text_field( $item['description'] ?? '' ),
+			'submenu'     => $submenu,
+		];
+	}
+
+	return $normalized;
+}
+
+function ah_build_legacy_theme_navigation(): array {
+	$buying_topics  = ah_get_nav_buying_topics();
+	$finance_topics = ah_get_nav_finance_topics();
+	$legal_topics   = ah_get_nav_legal_topics();
+	$nav_vis        = ah_get_nav_visibility();
+	$nav_links      = ah_get_nav_static_links();
+	$static_nav     = ah_get_nav_static_page_links();
+	$nav_labels     = get_option( 'ah_nav_top_labels', [] );
+
+	if ( is_string( $nav_labels ) ) $nav_labels = json_decode( $nav_labels, true ) ?: [];
+
+	$nav_labels = array_merge(
+		[
+			'buying'   => 'Buying',
+			'finance'  => 'Finance',
+			'legal'    => 'Legal & Surveys',
+			'news'     => $nav_links['news']['label'] ?? 'News & Guides',
+			'services' => $nav_links['services']['label'] ?? 'Services',
+		],
+		(array) $nav_labels
+	);
+
+	$append_static = static function ( array $topics, string $section ) use ( $static_nav ): array {
+		foreach ( $static_nav as $item ) {
+			$item = is_object( $item ) ? (array) $item : (array) $item;
+			if ( ( $item['section'] ?? '' ) !== $section ) {
+				continue;
+			}
+			$slug = sanitize_title( $item['slug'] ?? '' );
+			if ( $slug === '' ) {
+				continue;
+			}
+			$topics[] = [
+				'icon'      => $item['icon'] ?? '',
+				'title'     => $item['label'] ?: ucwords( str_replace( '-', ' ', $slug ) ),
+				'desc'      => 'Page',
+				'url'       => home_url( '/' . $slug . '/' ),
+				'highlight' => false,
+			];
+		}
+		return $topics;
+	};
+
+	$map_submenu = static function ( array $items, string $default_icon ): array {
+		$submenu = [];
+		foreach ( $items as $item ) {
+			$item = is_object( $item ) ? (array) $item : (array) $item;
+			$title = sanitize_text_field( $item['title'] ?? '' );
+			if ( $title === '' ) {
+				continue;
+			}
+			$url = ! empty( $item['url'] ) ? (string) $item['url'] : home_url( '/guides/' . sanitize_title( $item['slug'] ?? $title ) . '/' );
+			$submenu[] = [
+				'label'       => $title,
+				'url'         => $url,
+				'description' => sanitize_text_field( $item['desc'] ?? '' ),
+				'icon'        => sanitize_text_field( $item['icon'] ?? $default_icon ),
+				'highlight'   => ! empty( $item['highlight'] ),
+			];
+		}
+		return $submenu;
+	};
+
+	$buying_topics  = $append_static( $buying_topics, 'buying' );
+	$finance_topics = $append_static( $finance_topics, 'finance' );
+	$legal_topics   = $append_static( $legal_topics, 'legal' );
+
+	return [
+		[
+			'id'      => 'buying',
+			'label'   => $nav_labels['buying'],
+			'type'    => 'dropdown',
+			'url'     => '',
+			'visible' => ! empty( $nav_vis['buying'] ),
+			'icon'    => 'house',
+			'submenu' => $map_submenu( $buying_topics, 'home' ),
+		],
+		[
+			'id'      => 'finance',
+			'label'   => $nav_labels['finance'],
+			'type'    => 'dropdown',
+			'url'     => '',
+			'visible' => ! empty( $nav_vis['finance'] ),
+			'icon'    => 'money',
+			'submenu' => $map_submenu( $finance_topics, 'money' ),
+		],
+		[
+			'id'      => 'legal',
+			'label'   => $nav_labels['legal'],
+			'type'    => 'dropdown',
+			'url'     => '',
+			'visible' => ! empty( $nav_vis['legal'] ),
+			'icon'    => 'legal',
+			'submenu' => $map_submenu( $legal_topics, 'legal' ),
+		],
+		[
+			'id'      => 'news',
+			'label'   => $nav_labels['news'],
+			'type'    => 'link',
+			'url'     => ah_normalize_theme_url( (string) ( $nav_links['news']['url'] ?? '/blog/' ), '/blog/' ),
+			'visible' => ! empty( $nav_vis['news'] ),
+			'icon'    => 'news',
+			'submenu' => [],
+		],
+		[
+			'id'      => 'services',
+			'label'   => $nav_labels['services'],
+			'type'    => 'link',
+			'url'     => ah_normalize_theme_url( (string) ( $nav_links['services']['url'] ?? '/services/' ), '/services/' ),
+			'visible' => ! empty( $nav_vis['services'] ),
+			'icon'    => 'services',
+			'submenu' => [],
+		],
+	];
+}
+
+function ah_get_nav_link_suggestions(): array {
+	$suggestions = [];
+
+	$push = static function ( string $label, string $url, string $type ) use ( &$suggestions ): void {
+		$key = strtolower( $label . '|' . $url );
+		if ( isset( $suggestions[ $key ] ) ) {
+			return;
+		}
+		$suggestions[ $key ] = [
+			'label' => $label,
+			'url'   => $url,
+			'type'  => $type,
+		];
+	};
+
+	$push( 'Home', home_url( '/' ), 'page' );
+	$push( 'Blog', home_url( '/blog/' ), 'page' );
+	$push( 'Services', home_url( '/services/' ), 'page' );
+	$push( 'Contact', home_url( '/contact/' ), 'page' );
+
+	foreach ( get_pages( [ 'post_status' => [ 'publish', 'draft', 'private' ], 'sort_column' => 'post_title' ] ) as $page ) {
+		$push(
+			$page->post_title ?: ucwords( str_replace( '-', ' ', $page->post_name ) ),
+			get_permalink( $page->ID ) ?: home_url( '/' . $page->post_name . '/' ),
+			'wp-page'
+		);
+	}
+
+	$posts = get_posts( [
+		'post_type'      => 'post',
+		'post_status'    => [ 'publish', 'draft' ],
+		'posts_per_page' => 50,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	] );
+	foreach ( $posts as $post ) {
+		$push( get_the_title( $post ) ?: 'Post #' . $post->ID, get_permalink( $post ) ?: home_url( '/?p=' . $post->ID ), 'post' );
+	}
+
+	foreach ( ah_get_static_pages() as $page ) {
+		$push( $page['label'], $page['url'], 'static-page' );
+	}
+
+	return array_values( $suggestions );
+}
+
+function ah_get_theme_footer(): array {
+	$opt = get_option( 'ah_cms_footer', [] );
+	if ( empty( $opt ) ) {
+		$opt = get_option( 'ah_theme_footer', [] );
+	}
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) && is_array( $opt ) ) {
+		return ah_normalize_theme_footer( $opt );
+	}
+
+	return ah_build_legacy_theme_footer();
+}
+
+function ah_normalize_theme_footer( array $footer ): array {
+	$columns = [];
+	foreach ( (array) ( $footer['columns'] ?? [] ) as $column ) {
+		$column = is_object( $column ) ? (array) $column : (array) $column;
+		$title = sanitize_text_field( $column['title'] ?? '' );
+		$items = [];
+		foreach ( (array) ( $column['items'] ?? [] ) as $item ) {
+			$item = is_object( $item ) ? (array) $item : (array) $item;
+			$label = sanitize_text_field( $item['label'] ?? '' );
+			$url   = ah_normalize_theme_url( (string) ( $item['url'] ?? '' ) );
+			if ( $label === '' || $url === '' ) {
+				continue;
+			}
+			$items[] = [
+				'label'     => $label,
+				'url'       => $url,
+				'highlight' => ! empty( $item['highlight'] ),
+			];
+		}
+		if ( $title !== '' || ! empty( $items ) ) {
+			$columns[] = [
+				'title' => $title ?: 'Links',
+				'items' => $items,
+			];
+		}
+	}
+
+	$legal_links = [];
+	foreach ( (array) ( $footer['legal_links'] ?? [] ) as $item ) {
+		$item = is_object( $item ) ? (array) $item : (array) $item;
+		$label = sanitize_text_field( $item['label'] ?? '' );
+		$url   = ah_normalize_theme_url( (string) ( $item['url'] ?? '' ) );
+		if ( $label === '' || $url === '' ) {
+			continue;
+		}
+		$legal_links[] = [ 'label' => $label, 'url' => $url ];
+	}
+
+	return [
+		'brand_description' => wp_kses_post( $footer['brand_description'] ?? '' ),
+		'badge_text'        => sanitize_text_field( $footer['badge_text'] ?? '' ),
+		'columns'           => $columns,
+		'contact'           => [
+			'phone_note'   => sanitize_text_field( $footer['contact']['phone_note'] ?? '' ),
+			'email_note'   => sanitize_text_field( $footer['contact']['email_note'] ?? '' ),
+			'address_note' => sanitize_text_field( $footer['contact']['address_note'] ?? '' ),
+		],
+		'cta'               => [
+			'label' => sanitize_text_field( $footer['cta']['label'] ?? '' ),
+			'url'   => ah_normalize_theme_url( (string) ( $footer['cta']['url'] ?? '' ), '/contact/' ),
+		],
+		'legal_links'       => $legal_links,
+	];
+}
+
+function ah_build_legacy_theme_footer(): array {
+	$settings    = ah_get_settings();
+	$guides      = ah_buying_guides_nav();
+	$consult     = $settings['consultation_url'] ?? home_url( '/free-consultation/' );
+	$static_nav  = ah_get_nav_static_page_links();
+	$footer_page_links = [];
+
+	foreach ( $static_nav as $item ) {
+		$item = is_object( $item ) ? (array) $item : (array) $item;
+		if ( ( $item['section'] ?? '' ) !== 'footer' ) {
+			continue;
+		}
+		$slug = sanitize_title( $item['slug'] ?? '' );
+		if ( $slug === '' ) {
+			continue;
+		}
+		$footer_page_links[] = [
+			'label' => $item['label'] ?: ucwords( str_replace( '-', ' ', $slug ) ),
+			'url'   => home_url( '/' . $slug . '/' ),
+		];
+	}
+
+	$guide_links = [];
+	foreach ( $guides as $guide ) {
+		$guide = is_object( $guide ) ? (array) $guide : (array) $guide;
+		$guide_links[] = [
+			'label'     => $guide['title'] ?? '',
+			'url'       => home_url( '/guides/' . sanitize_title( $guide['slug'] ?? '' ) . '/' ),
+			'highlight' => ! empty( $guide['highlight'] ),
+		];
+	}
+	$guide_links[] = [
+		'label' => 'Free Consultation Guide',
+		'url'   => $consult,
+	];
+
+	$columns = [
+		[
+			'title' => 'Buying Guides',
+			'items' => $guide_links,
+		],
+		[
+			'title' => 'Company',
+			'items' => [
+				[ 'label' => 'Home', 'url' => home_url( '/' ) ],
+				[ 'label' => 'Services', 'url' => home_url( '/services/' ) ],
+				[ 'label' => 'About Us', 'url' => home_url( '/about/' ) ],
+				[ 'label' => 'Client Stories', 'url' => home_url( '/client-stories/' ) ],
+				[ 'label' => 'Blog', 'url' => home_url( '/blog/' ) ],
+				[ 'label' => 'Contact', 'url' => home_url( '/contact/' ) ],
+			],
+		],
+	];
+
+	if ( ! empty( $footer_page_links ) ) {
+		$columns[] = [
+			'title' => 'Resources',
+			'items' => $footer_page_links,
+		];
+	}
+
+	return [
+		'brand_description' => "The UK's dedicated buyer's agent - we work exclusively for you, not the seller. Saving you time, stress, and thousands of pounds on your most important purchase.",
+		'badge_text'        => 'Proudly serving UK home buyers',
+		'columns'           => $columns,
+		'contact'           => [
+			'phone_note'   => 'Mon-Sat, 9am-6pm',
+			'email_note'   => 'We reply within 2 hours',
+			'address_note' => 'Covering all of England & Wales',
+		],
+		'cta'               => [
+			'label' => 'Book Free Consultation ->',
+			'url'   => $consult,
+		],
+		'legal_links'       => [
+			[ 'label' => 'Privacy Policy', 'url' => home_url( '/privacy-policy/' ) ],
+			[ 'label' => 'Terms', 'url' => home_url( '/terms/' ) ],
+			[ 'label' => 'Refund Policy', 'url' => home_url( '/refund-policy/' ) ],
+		],
+	];
 }
 
 // ── Featured Properties ───────────────────────────────────────────────────────

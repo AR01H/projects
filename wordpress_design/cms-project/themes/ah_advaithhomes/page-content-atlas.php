@@ -36,6 +36,27 @@ $recent_pages   = get_posts( array(
 	'order'          => 'DESC',
 ) );
 
+$atlas_service_url = static function ( $service ): string {
+	$slug = sanitize_title( $service->slug ?? '' );
+	if ( $slug !== '' ) {
+		return home_url( '/services/' . $slug . '/' );
+	}
+	return home_url( '/services/' );
+};
+
+$atlas_builder_url = static function ( $builder_page ): string {
+	$slug = sanitize_title( $builder_page->slug ?? '' );
+	return $slug !== '' ? home_url( '/' . $slug . '/' ) : '';
+};
+
+$atlas_form_admin_url = static function ( $form ): string {
+	$form_id = (int) ( $form->id ?? 0 );
+	if ( $form_id <= 0 ) {
+		return '';
+	}
+	return admin_url( 'admin.php?page=ah-form-builder&form_id=' . $form_id . '&tab=build' );
+};
+
 $summary_cards = array(
 	array( 'label' => 'Published Posts', 'value' => (int) wp_count_posts( 'post' )->publish, 'note' => 'Blog, news, guides' ),
 	array( 'label' => 'Services', 'value' => count( $services ), 'note' => 'Active service records' ),
@@ -118,6 +139,17 @@ $summary_cards = array(
 .atlas-muted {
 	color: var(--text-secondary);
 	font-size: .92rem;
+}
+.atlas-link,
+.atlas-muted a {
+	color: var(--client-color-800);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	word-break: break-word;
+}
+.atlas-link:hover,
+.atlas-muted a:hover {
+	color: var(--client-color-900);
 }
 .atlas-kv {
 	display: grid;
@@ -341,7 +373,11 @@ $summary_cards = array(
 				<ul class="atlas-list">
 					<?php if ( $services ) : foreach ( $services as $service ) : ?>
 						<li>
-							<strong><?php echo esc_html( $service->title ?? '' ); ?></strong>
+							<?php $service_url = $atlas_service_url( $service ); ?>
+							<strong><a href="<?php echo esc_url( $service_url ); ?>"><?php echo esc_html( $service->title ?? '' ); ?></a></strong>
+							<?php if ( ! empty( $service->slug ) ) : ?>
+								<div class="atlas-muted"><a href="<?php echo esc_url( $service_url ); ?>">/<?php echo esc_html( trim( (string) $service->slug, '/' ) ); ?>/</a></div>
+							<?php endif; ?>
 							<div class="atlas-muted"><?php echo esc_html( $service->short_desc ?? $service->summary ?? '' ); ?></div>
 						</li>
 					<?php endforeach; else : ?>
@@ -408,7 +444,7 @@ $summary_cards = array(
 						<?php if ( $static_pages ) : foreach ( $static_pages as $static_page ) : ?>
 							<tr>
 								<td><a href="<?php echo esc_url( $static_page['url'] ); ?>"><?php echo esc_html( $static_page['label'] ); ?></a></td>
-								<td><code><?php echo esc_html( $static_page['slug'] ); ?></code></td>
+								<td><a href="<?php echo esc_url( $static_page['url'] ); ?>"><code><?php echo esc_html( $static_page['slug'] ); ?></code></a></td>
 								<td><?php echo ! empty( $static_page['has_wp_page'] ) ? 'Connected' : 'HTML only'; ?></td>
 							</tr>
 						<?php endforeach; else : ?>
@@ -435,10 +471,23 @@ $summary_cards = array(
 				<ul class="atlas-list">
 					<?php if ( $builder_pages ) : foreach ( $builder_pages as $builder_page ) :
 						$block_count = is_string( $builder_page->blocks ?? null ) ? count( json_decode( $builder_page->blocks, true ) ?: array() ) : 0;
+						$builder_url = $atlas_builder_url( $builder_page );
 					?>
 						<li>
-							<strong><?php echo esc_html( $builder_page->title ?? '' ); ?></strong>
-							<div class="atlas-muted">/<?php echo esc_html( $builder_page->slug ?? '' ); ?>/</div>
+							<strong>
+								<?php if ( $builder_url ) : ?>
+									<a href="<?php echo esc_url( $builder_url ); ?>"><?php echo esc_html( $builder_page->title ?? '' ); ?></a>
+								<?php else : ?>
+									<?php echo esc_html( $builder_page->title ?? '' ); ?>
+								<?php endif; ?>
+							</strong>
+							<div class="atlas-muted">
+								<?php if ( $builder_url ) : ?>
+									<a href="<?php echo esc_url( $builder_url ); ?>">/<?php echo esc_html( $builder_page->slug ?? '' ); ?>/</a>
+								<?php else : ?>
+									/<?php echo esc_html( $builder_page->slug ?? '' ); ?>/
+								<?php endif; ?>
+							</div>
 							<div class="atlas-muted"><?php echo esc_html( $block_count ); ?> blocks, <?php echo esc_html( $builder_page->status ?? 'draft' ); ?></div>
 						</li>
 					<?php endforeach; else : ?>
@@ -451,8 +500,21 @@ $summary_cards = array(
 				<ul class="atlas-list">
 					<?php if ( $forms ) : foreach ( $forms as $form ) : ?>
 						<li>
-							<strong><?php echo esc_html( $form->name ?? '' ); ?></strong>
-							<div class="atlas-muted">[ah_form id="<?php echo esc_html( (string) ( $form->id ?? 0 ) ); ?>"]</div>
+							<?php $form_admin_url = $atlas_form_admin_url( $form ); ?>
+							<strong>
+								<?php if ( $form_admin_url ) : ?>
+									<a href="<?php echo esc_url( $form_admin_url ); ?>"><?php echo esc_html( $form->name ?? '' ); ?></a>
+								<?php else : ?>
+									<?php echo esc_html( $form->name ?? '' ); ?>
+								<?php endif; ?>
+							</strong>
+							<div class="atlas-muted">
+								<?php if ( $form_admin_url ) : ?>
+									<a href="<?php echo esc_url( $form_admin_url ); ?>">[ah_form id="<?php echo esc_html( (string) ( $form->id ?? 0 ) ); ?>"]</a>
+								<?php else : ?>
+									[ah_form id="<?php echo esc_html( (string) ( $form->id ?? 0 ) ); ?>"]
+								<?php endif; ?>
+							</div>
 							<div class="atlas-muted"><?php echo esc_html( $form->status ?? 'active' ); ?></div>
 						</li>
 					<?php endforeach; else : ?>
