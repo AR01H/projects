@@ -51,7 +51,6 @@ class AH_Admin_Bootstrap {
 }
 #adminmenu .wp-submenu a[href$="page=ah-dashboard"]::before    { content:"\f226"; }
 #adminmenu .wp-submenu a[href*="page=ah-settings"]::before     { content:"\f108"; }
-#adminmenu .wp-submenu a[href*="page=ah-nav-menus"]::before    { content:"\f231"; }
 #adminmenu .wp-submenu a[href*="page=ah-pages"]::before        { content:"\f105"; }
 #adminmenu .wp-submenu a[href*="page=ah-media"]::before        { content:"\f128"; }
 #adminmenu .wp-submenu a[href*="page=ah-posts"]::before        { content:"\f122"; }
@@ -76,7 +75,7 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-help"]::before         { content:"\f223"; }
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),
-#adminmenu .wp-submenu li:has(> a[href*="page=ah-page-builder"]),
+#adminmenu .wp-submenu li:has(> a[href*="page=ah-team"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-audit"]) {
 	border-top:1px solid rgba(255,255,255,.12); margin-top:6px; padding-top:4px;
 }

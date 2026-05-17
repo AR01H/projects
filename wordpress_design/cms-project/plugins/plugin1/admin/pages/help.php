@@ -85,7 +85,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <h2>What Each Section Does</h2>
       <div class="ah-feature-grid">
         <div class="ah-feature-card"><div class="icon">⚙️</div><strong>Site Settings</strong><p>Logo, contact details, social links, footer text</p></div>
-        <div class="ah-feature-card"><div class="icon">🗂</div><strong>Navigation Menus</strong><p>Header and footer navigation links</p></div>
         <div class="ah-feature-card"><div class="icon">📰</div><strong>News Bar</strong><p>Scrolling ticker messages across the top of the site</p></div>
         <div class="ah-feature-card"><div class="icon">🏠</div><strong>Home Sections</strong><p>Hero, services preview, stats, CTAs on the homepage</p></div>
         <div class="ah-feature-card"><div class="icon">🛎</div><strong>Services</strong><p>Service cards, features, pricing highlights</p></div>
@@ -108,10 +107,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <div class="ah-step">
         <div class="ah-step-num">1</div>
         <div class="ah-step-body"><strong>Set up Site Settings</strong><p>Add your logo, business name, phone number, email, address, and social media links. These feed into the header and footer automatically.</p></div>
-      </div>
-      <div class="ah-step">
-        <div class="ah-step-num">2</div>
-        <div class="ah-step-body"><strong>Update Navigation Menus</strong><p>Set the links that appear in your header and footer navigation. Drag to reorder.</p></div>
       </div>
       <div class="ah-step">
         <div class="ah-step-num">3</div>
@@ -404,17 +399,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
         <div class="ah-step-body"><strong>Copy the shortcode</strong><p>After saving, you'll see a shortcode like <span class="ah-kbd">[ah_form id="3"]</span>. Paste this into any post, page, or Page Builder text block.</p></div>
       </div>
       <div class="ah-warn"><strong>Note:</strong> The shortcode only works on pages where jQuery is loaded. If pasting into a Page Builder page, use a "HTML" or "Shortcode" block type.</div>
-    </div>
-
-    <div class="ah-help-section">
-      <h2>Navigation Menus</h2>
-      <p>Manage the links in your site header and footer.</p>
-      <ul>
-        <li>Add a link: Enter the label and URL, set type (Header or Footer), and save.</li>
-        <li>Reorder: Drag the ☰ handle to rearrange. Click "Save Order" to persist the new order.</li>
-        <li>Open in new tab: Tick "New Tab" for external links.</li>
-        <li>Highlight a link: Use the "Highlight" option to make a link stand out (e.g. a CTA button).</li>
-      </ul>
     </div>
 
     <div class="ah-help-section">

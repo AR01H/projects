@@ -229,31 +229,6 @@ class AH_DB_Installer {
 				KEY idx_group (group_name)
 			) ENGINE=InnoDB {$cs}",
 
-			// 7. Navigation Menus
-			"CREATE TABLE IF NOT EXISTS {$p}ah_nav_menus (
-				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				name        VARCHAR(100) NOT NULL,
-				slug        VARCHAR(120) NOT NULL UNIQUE,
-				status      ENUM('active','inactive') DEFAULT 'active',
-				created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-			) ENGINE=InnoDB {$cs}",
-
-			// 8. Nav Menu Items
-			"CREATE TABLE IF NOT EXISTS {$p}ah_nav_menu_items (
-				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				menu_id     INT UNSIGNED NOT NULL,
-				parent_id   INT UNSIGNED DEFAULT NULL,
-				label       VARCHAR(150) NOT NULL,
-				url         VARCHAR(500),
-				page_slug   VARCHAR(200),
-				target      ENUM('_self','_blank') DEFAULT '_self',
-				icon_class  VARCHAR(100),
-				sort_order  INT DEFAULT 0,
-				status      ENUM('active','inactive') DEFAULT 'active',
-				KEY idx_menu (menu_id),
-				KEY idx_parent (parent_id)
-			) ENGINE=InnoDB {$cs}",
-
 			// 9. Pages
 			"CREATE TABLE IF NOT EXISTS {$p}ah_pages (
 				id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -962,12 +937,6 @@ class AH_DB_Installer {
 			// site_settings
 			"ALTER TABLE {$p}ah_site_settings
 				ADD CONSTRAINT fk_ss_user FOREIGN KEY (updated_by) REFERENCES {$p}ah_admin_users(id) ON DELETE SET NULL",
-
-			// nav_menu_items
-			"ALTER TABLE {$p}ah_nav_menu_items
-				ADD CONSTRAINT fk_nmi_menu   FOREIGN KEY (menu_id)   REFERENCES {$p}ah_nav_menus(id)      ON DELETE CASCADE,
-				ADD CONSTRAINT fk_nmi_parent FOREIGN KEY (parent_id) REFERENCES {$p}ah_nav_menu_items(id) ON DELETE SET NULL",
-
 			// pages
 			"ALTER TABLE {$p}ah_pages
 				ADD CONSTRAINT fk_pg_img  FOREIGN KEY (og_image_id) REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,

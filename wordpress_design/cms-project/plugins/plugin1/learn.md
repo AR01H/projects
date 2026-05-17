@@ -157,7 +157,6 @@ ah_final_theme/
     └── pages/                         23 admin page templates (thin views)
         ├── dashboard.php
         ├── settings.php
-        ├── nav-menus.php
         ├── pages.php
         ├── media.php
         ├── news-bar.php
@@ -1132,8 +1131,6 @@ Follow this pattern in any new page that depends on `wp_ah_pages`.
 | `site_settings` | wp_ah_site_settings | Key-value settings store |
 | `admin_roles` | wp_ah_admin_roles | CMS role definitions |
 | `admin_users` | wp_ah_admin_users | CMS users (extends WP users) |
-| `nav_menus` | wp_ah_nav_menus | Menu definitions |
-| `nav_menu_items` | wp_ah_nav_menu_items | Menu items with parent_id |
 | `media` | wp_ah_media | Uploaded file registry |
 | `posts` | wp_ah_posts | Blog / news / article content |
 | `services` | wp_ah_services | Service entries |
