@@ -137,6 +137,18 @@ class AH_Theme_Admin {
 		}
 		update_option( 'ah_nav_visibility', wp_json_encode( $vis ) );
 
+		$labels = [];
+		foreach ( [
+			'buying'   => 'Buying',
+			'finance'  => 'Finance',
+			'legal'    => 'Legal & Surveys',
+			'news'     => 'News & Guides',
+			'services' => 'Services',
+		] as $k => $default ) {
+			$labels[ $k ] = sanitize_text_field( $_POST['nav_label'][ $k ] ?? $default );
+		}
+		update_option( 'ah_nav_top_labels', wp_json_encode( $labels ) );
+
 		// Static links
 		$links = [];
 		foreach ( [ 'news', 'services' ] as $k ) {

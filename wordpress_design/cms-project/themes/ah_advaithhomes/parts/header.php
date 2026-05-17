@@ -11,6 +11,47 @@ $legal_topics   = ah_get_nav_legal_topics();
 $nav_vis        = ah_get_nav_visibility();
 $nav_links      = ah_get_nav_static_links();
 $nav_cta        = ah_get_nav_cta();
+$static_nav     = ah_get_nav_static_page_links();
+$nav_labels     = get_option( 'ah_nav_top_labels', [] );
+if ( is_string( $nav_labels ) ) $nav_labels = json_decode( $nav_labels, true ) ?: [];
+$nav_labels     = array_merge(
+	array(
+		'buying'   => 'Buying',
+		'finance'  => 'Finance',
+		'legal'    => 'Legal & Surveys',
+		'news'     => $nav_links['news']['label'] ?? 'News & Guides',
+		'services' => $nav_links['services']['label'] ?? 'Services',
+	),
+	(array) $nav_labels
+);
+
+$append_static_nav = static function ( array $topics, string $section ) use ( $static_nav ): array {
+	foreach ( $static_nav as $item ) {
+		$item = is_object( $item ) ? (array) $item : (array) $item;
+		if ( ( $item['section'] ?? '' ) !== $section ) continue;
+
+		$slug = sanitize_title( $item['slug'] ?? '' );
+		if ( ! $slug ) continue;
+
+		$topics[] = array(
+			'icon'  => $item['icon'] ?? '📄',
+			'title' => $item['label'] ?: ucwords( str_replace( '-', ' ', $slug ) ),
+			'desc'  => 'Page',
+			'slug'  => $slug,
+			'url'   => home_url( '/' . $slug . '/' ),
+		);
+	}
+
+	return $topics;
+};
+
+$nav_item_url = static function ( array $item ): string {
+	return ! empty( $item['url'] ) ? $item['url'] : home_url( '/guides/' . ( $item['slug'] ?? '' ) . '/' );
+};
+
+$buying_topics  = $append_static_nav( $buying_topics, 'buying' );
+$finance_topics = $append_static_nav( $finance_topics, 'finance' );
+$legal_topics   = $append_static_nav( $legal_topics, 'legal' );
 ?>
 <?php $global_banner = ah_get_html_block( 'global_banner' ); ?>
 <!DOCTYPE html>
@@ -49,13 +90,13 @@ $nav_cta        = ah_get_nav_cta();
         <?php if ( $buying_topics && ! empty( $nav_vis['buying'] ) ) : ?>
         <li class="nav__dropdown">
           <button class="nav__link nav__dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <?php esc_html_e( 'Buying', 'ah-theme' ); ?>
+            <?php echo esc_html( $nav_labels['buying'] ); ?>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="nav__dropdown-menu" role="menu">
             <?php foreach ( $buying_topics as $t ) :
               $t   = is_object($t) ? (array) $t : $t;
-              $url = home_url( '/guides/' . ( $t['slug'] ?? '' ) . '/' );
+              $url = $nav_item_url( $t );
             ?>
               <a href="<?php echo esc_url( $url ); ?>" class="nav__dropdown-item" role="menuitem"
                  <?php if ( ! empty( $t['highlight'] ) ) echo 'style="background:var(--bg-alt);border-radius:8px"'; ?>>
@@ -78,13 +119,13 @@ $nav_cta        = ah_get_nav_cta();
         <?php if ( $finance_topics && ! empty( $nav_vis['finance'] ) ) : ?>
         <li class="nav__dropdown">
           <button class="nav__link nav__dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <?php esc_html_e( 'Finance', 'ah-theme' ); ?>
+            <?php echo esc_html( $nav_labels['finance'] ); ?>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="nav__dropdown-menu" role="menu">
             <?php foreach ( $finance_topics as $t ) :
               $t   = is_object($t) ? (array) $t : $t;
-              $url = home_url( '/guides/' . ( $t['slug'] ?? '' ) . '/' );
+              $url = $nav_item_url( $t );
             ?>
               <a href="<?php echo esc_url( $url ); ?>" class="nav__dropdown-item" role="menuitem"
                  <?php if ( ! empty( $t['highlight'] ) ) echo 'style="background:var(--bg-alt);border-radius:8px"'; ?>>
@@ -105,13 +146,13 @@ $nav_cta        = ah_get_nav_cta();
         <?php if ( $legal_topics && ! empty( $nav_vis['legal'] ) ) : ?>
         <li class="nav__dropdown">
           <button class="nav__link nav__dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <?php esc_html_e( 'Legal & Surveys', 'ah-theme' ); ?>
+            <?php echo esc_html( $nav_labels['legal'] ); ?>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="nav__dropdown-menu" role="menu">
             <?php foreach ( $legal_topics as $t ) :
               $t   = is_object($t) ? (array) $t : $t;
-              $url = home_url( '/guides/' . ( $t['slug'] ?? '' ) . '/' );
+              $url = $nav_item_url( $t );
             ?>
               <a href="<?php echo esc_url( $url ); ?>" class="nav__dropdown-item" role="menuitem">
                 <div class="nav__dropdown-item-icon"><?php echo esc_html( $t['icon'] ?? '⚖️' ); ?></div>
@@ -129,7 +170,7 @@ $nav_cta        = ah_get_nav_cta();
         <li>
           <a href="<?php echo esc_url( home_url( $nav_links['news']['url'] ?? '/blog/' ) ); ?>" class="nav__link"
              <?php if ( is_home() || is_category() ) echo 'aria-current="page"'; ?>>
-            <?php echo esc_html( $nav_links['news']['label'] ?? 'News & Guides' ); ?>
+            <?php echo esc_html( $nav_labels['news'] ); ?>
           </a>
         </li>
         <?php endif; ?>
@@ -137,7 +178,7 @@ $nav_cta        = ah_get_nav_cta();
         <?php if ( ! empty( $nav_vis['services'] ) ) : ?>
         <li>
           <a href="<?php echo esc_url( home_url( $nav_links['services']['url'] ?? '/services/' ) ); ?>" class="nav__link">
-            <?php echo esc_html( $nav_links['services']['label'] ?? 'Services' ); ?>
+            <?php echo esc_html( $nav_labels['services'] ); ?>
           </a>
         </li>
         <?php endif; ?>
@@ -176,14 +217,14 @@ $nav_cta        = ah_get_nav_cta();
   <?php if ( $buying_topics ) : ?>
   <details class="nav__mobile-details">
     <summary class="nav__mobile-summary">
-      🏠 <?php esc_html_e( 'Buying', 'ah-theme' ); ?>
+      🏠 <?php echo esc_html( $nav_labels['buying'] ); ?>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
     </summary>
     <div class="nav__mobile-sub-menu">
       <?php foreach ( $buying_topics as $t ) :
         $t = is_object($t) ? (array) $t : $t;
       ?>
-        <a href="<?php echo esc_url( home_url( '/guides/' . ( $t['slug'] ?? '' ) . '/' ) ); ?>"
+        <a href="<?php echo esc_url( $nav_item_url( $t ) ); ?>"
            class="nav__mobile-link"
            <?php if ( ! empty( $t['highlight'] ) ) echo 'style="color:var(--accent);font-weight:700"'; ?>>
           <?php echo esc_html( ( $t['icon'] ?? '' ) . ' ' . ( $t['title'] ?? '' ) ); ?>
@@ -196,14 +237,14 @@ $nav_cta        = ah_get_nav_cta();
   <?php if ( $finance_topics ) : ?>
   <details class="nav__mobile-details">
     <summary class="nav__mobile-summary">
-      🏦 <?php esc_html_e( 'Finance', 'ah-theme' ); ?>
+      🏦 <?php echo esc_html( $nav_labels['finance'] ); ?>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
     </summary>
     <div class="nav__mobile-sub-menu">
       <?php foreach ( $finance_topics as $t ) :
         $t = is_object($t) ? (array) $t : $t;
       ?>
-        <a href="<?php echo esc_url( home_url( '/guides/' . ( $t['slug'] ?? '' ) . '/' ) ); ?>" class="nav__mobile-link">
+        <a href="<?php echo esc_url( $nav_item_url( $t ) ); ?>" class="nav__mobile-link">
           <?php echo esc_html( ( $t['icon'] ?? '' ) . ' ' . ( $t['title'] ?? '' ) ); ?>
         </a>
       <?php endforeach; ?>
@@ -214,14 +255,14 @@ $nav_cta        = ah_get_nav_cta();
   <?php if ( $legal_topics ) : ?>
   <details class="nav__mobile-details">
     <summary class="nav__mobile-summary">
-      ⚖️ <?php esc_html_e( 'Legal & Surveys', 'ah-theme' ); ?>
+      ⚖️ <?php echo esc_html( $nav_labels['legal'] ); ?>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
     </summary>
     <div class="nav__mobile-sub-menu">
       <?php foreach ( $legal_topics as $t ) :
         $t = is_object($t) ? (array) $t : $t;
       ?>
-        <a href="<?php echo esc_url( home_url( '/guides/' . ( $t['slug'] ?? '' ) . '/' ) ); ?>" class="nav__mobile-link">
+        <a href="<?php echo esc_url( $nav_item_url( $t ) ); ?>" class="nav__mobile-link">
           <?php echo esc_html( ( $t['icon'] ?? '' ) . ' ' . ( $t['title'] ?? '' ) ); ?>
         </a>
       <?php endforeach; ?>
@@ -229,8 +270,8 @@ $nav_cta        = ah_get_nav_cta();
   </details>
   <?php endif; ?>
 
-  <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"     class="nav__mobile-link">📰 <?php esc_html_e( 'News & Guides', 'ah-theme' ); ?></a>
-  <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="nav__mobile-link">✦ <?php esc_html_e( 'Services', 'ah-theme' ); ?></a>
+  <a href="<?php echo esc_url( home_url( $nav_links['news']['url'] ?? '/blog/' ) ); ?>"     class="nav__mobile-link">📰 <?php echo esc_html( $nav_labels['news'] ); ?></a>
+  <a href="<?php echo esc_url( home_url( $nav_links['services']['url'] ?? '/services/' ) ); ?>" class="nav__mobile-link">✦ <?php echo esc_html( $nav_labels['services'] ); ?></a>
   <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"  class="nav__mobile-link">📬 <?php esc_html_e( 'Get Help', 'ah-theme' ); ?></a>
 
   <div style="padding:16px">

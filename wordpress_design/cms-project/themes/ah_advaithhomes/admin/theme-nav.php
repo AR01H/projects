@@ -2,14 +2,23 @@
 defined( 'ABSPATH' ) || exit;
 
 $saved = isset( $_GET['saved'] );
+$is_cms_admin_nav = ( $_GET['page'] ?? '' ) === 'ah-navigation';
+$form_action      = $is_cms_admin_nav ? 'ah_cms_nav' : 'ah_theme_nav';
 
 // Load current values
 $nav_vis         = ah_get_nav_visibility();
 $nav_links       = ah_get_nav_static_links();
 $nav_cta         = ah_get_nav_cta();
+$nav_label_opt   = get_option( 'ah_nav_top_labels', [] );
+if ( is_string( $nav_label_opt ) ) $nav_label_opt = json_decode( $nav_label_opt, true ) ?: [];
 $static_pages    = ah_get_static_pages();
 $static_nav_items = ah_get_nav_static_page_links();
 $static_sugg     = array_map( fn( $p ) => [ 'id' => $p['slug'], 'label' => $p['label'] ], $static_pages );
+$wp_page_sugg     = array_map(
+	fn( $p ) => [ 'id' => $p->post_name, 'label' => $p->post_title ?: ucwords( str_replace( '-', ' ', $p->post_name ) ) ],
+	get_pages( [ 'post_status' => [ 'publish', 'draft', 'private' ], 'sort_column' => 'post_title' ] )
+);
+$static_sugg      = array_values( array_column( array_merge( $static_sugg, $wp_page_sugg ), null, 'id' ) );
 
 $buying  = ah_get_nav_buying_topics();
 $finance = ah_get_nav_finance_topics();
@@ -22,6 +31,12 @@ $top_items = [
 	'news'     => [ 'label' => 'News & Guides',    'icon' => '📰', 'has_dropdown' => false ],
 	'services' => [ 'label' => 'Services',         'icon' => '✦',  'has_dropdown' => false ],
 ];
+
+foreach ( $top_items as $key => $item ) {
+	if ( ! empty( $nav_label_opt[ $key ] ) ) {
+		$top_items[ $key ]['label'] = $nav_label_opt[ $key ];
+	}
+}
 
 $dropdown_groups = [
 	'buying'  => [ 'label' => 'Buying Dropdown Links',  'items' => $buying  ],
@@ -45,7 +60,7 @@ $dropdown_groups = [
 
   <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
     <?php wp_nonce_field( 'ah_theme_nav' ); ?>
-    <input type="hidden" name="action" value="ah_theme_nav">
+    <input type="hidden" name="action" value="<?php echo esc_attr( $form_action ); ?>">
 
     <!-- ── Top-level visibility ─────────────────────────────────────────────── -->
     <div class="ah-admin-box" style="margin-bottom:20px">
@@ -57,7 +72,7 @@ $dropdown_groups = [
           <div class="ah-section-row__left">
             <span class="ah-section-row__icon"><?php echo $item['icon']; ?></span>
             <div>
-              <div class="ah-section-row__name"><?php echo esc_html( $item['label'] ); ?></div>
+              <input type="text" name="nav_label[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $item['label'] ); ?>" class="ah-nav-label-input">
               <div class="ah-section-row__desc"><?php echo $item['has_dropdown'] ? 'Has dropdown' : 'Direct link'; ?></div>
             </div>
           </div>
@@ -126,6 +141,7 @@ $dropdown_groups = [
           $item = is_array( $item ) ? $item : (array) $item;
         ?>
         <div class="ah-nav-row" data-idx="<?php echo $i; ?>">
+          <span class="ah-nav-row__handle" title="Drag to reorder">::</span>
           <input type="text"     name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][icon]"  value="<?php echo esc_attr( $item['icon']  ?? '' ); ?>" placeholder="🏠"  style="width:60px" title="Icon (emoji)">
           <input type="text"     name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][title]" value="<?php echo esc_attr( $item['title'] ?? '' ); ?>" placeholder="Title" style="width:200px">
           <input type="text"     name="<?php echo esc_attr( $gkey ); ?>_items[<?php echo $i; ?>][desc]"  value="<?php echo esc_attr( $item['desc']  ?? '' ); ?>" placeholder="Short description" style="width:230px">
@@ -157,6 +173,7 @@ $dropdown_groups = [
           $sitem = is_array( $sitem ) ? $sitem : [];
         ?>
         <div class="ah-nav-row">
+          <span class="ah-nav-row__handle" title="Drag to reorder">::</span>
           <select name="static_nav[<?php echo $i; ?>][section]" style="width:140px;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem">
             <option value="buying"  <?php selected( ($sitem['section']??''), 'buying'  ); ?>>Buying</option>
             <option value="finance" <?php selected( ($sitem['section']??''), 'finance' ); ?>>Finance</option>
@@ -194,9 +211,13 @@ $dropdown_groups = [
 <style>
 .ah-nav-rows { display:flex; flex-direction:column; gap:8px; }
 .ah-nav-row  { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:8px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; }
+.ah-nav-row__handle { cursor:grab;color:#94a3b8;font-weight:700;letter-spacing:1px;user-select:none; }
+.ah-nav-row.is-dragging { opacity:.75; box-shadow:0 8px 18px rgba(15,23,42,.12); }
 .ah-nav-row input[type="text"] { border:1.5px solid #e2e8f0; border-radius:6px; padding:5px 8px; font-size:.85rem; }
 .ah-nav-row input[type="text"]:focus { border-color:#b7791f; outline:none; }
 .ah-nav-remove-row { color:#dc2626; border-color:#fca5a5; }
+.ah-nav-label-input { width:180px;max-width:100%;border:1.5px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-weight:600;color:#0f172a; }
+.ah-nav-label-input:focus { border-color:#b7791f;outline:none;box-shadow:none; }
 </style>
 
 <script>
@@ -210,6 +231,33 @@ $dropdown_groups = [
     }
   });
 
+  function renumberRows(container) {
+    var section = container.id.replace('nav-rows-', '');
+    var isStatic = container.id === 'static-link-rows';
+    container.querySelectorAll('.ah-nav-row').forEach(function(row, index) {
+      row.querySelectorAll('[name]').forEach(function(field) {
+        if (isStatic) {
+          field.name = field.name.replace(/static_nav\[\d+\]/, 'static_nav[' + index + ']');
+        } else {
+          field.name = field.name.replace(new RegExp(section + '_items\\[\\d+\\]'), section + '_items[' + index + ']');
+        }
+      });
+    });
+  }
+
+  document.querySelectorAll('.ah-nav-rows').forEach(function(container) {
+    if (!window.jQuery || !jQuery.fn.sortable) return;
+    jQuery(container).sortable({
+      handle: '.ah-nav-row__handle',
+      items: '.ah-nav-row',
+      start: function(e, ui) { ui.item.addClass('is-dragging'); },
+      stop: function(e, ui) {
+        ui.item.removeClass('is-dragging');
+        renumberRows(container);
+      }
+    });
+  });
+
   // Add dropdown topic row
   document.querySelectorAll('.ah-nav-add-row').forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -219,6 +267,7 @@ $dropdown_groups = [
       var row     = document.createElement('div');
       row.className = 'ah-nav-row';
       row.innerHTML =
+        '<span class="ah-nav-row__handle" title="Drag to reorder">::</span>' +
         '<input type="text" name="' + section + '_items[' + count + '][icon]"  placeholder="🏠" style="width:60px" title="Icon (emoji)">' +
         '<input type="text" name="' + section + '_items[' + count + '][title]" placeholder="Title" style="width:200px">' +
         '<input type="text" name="' + section + '_items[' + count + '][desc]"  placeholder="Short description" style="width:230px">' +
@@ -272,6 +321,7 @@ $dropdown_groups = [
     var row   = document.createElement('div');
     row.className = 'ah-nav-row';
     row.innerHTML =
+      '<span class="ah-nav-row__handle" title="Drag to reorder">::</span>' +
       '<select name="static_nav[' + count + '][section]" style="width:140px;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:.85rem">' +
         '<option value="buying">Buying</option><option value="finance">Finance</option>' +
         '<option value="legal">Legal</option><option value="footer">Footer only</option>' +

@@ -14,6 +14,7 @@ class AH_Admin_Menus {
 			['title' => 'Media Library','menu' => 'Media Library','slug' => 'ah-media','callback' => 'page_media'],
 			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
 			['title' => 'News Bar','menu' => 'News Bar','slug' => 'ah-news-bar','callback' => 'page_news_bar'],
+			['title' => 'Navigation','menu' => 'Navigation','slug' => 'ah-navigation','callback' => 'page_navigation'],
 			['title' => 'Home Sections','menu' => 'Home Sections','slug' => 'ah-home','callback' => 'page_home'],
 			['title' => 'Services','menu' => 'Services','slug' => 'ah-services','callback' => 'page_services'],
 			['title' => 'About Page','menu' => 'About Page','slug' => 'ah-about','callback' => 'page_about'],
@@ -57,6 +58,7 @@ class AH_Admin_Menus {
 	public static function page_pages()          { self::load( 'pages'          ); }
 	public static function page_media()          { self::load( 'media'          ); }
 	public static function page_news_bar()       { self::load( 'news-bar'       ); }
+	public static function page_navigation()     { self::load( 'navigation'     ); }
 	public static function page_home()           { self::load( 'home-sections'  ); }
 	public static function page_services()       { self::load( 'services'       ); }
 	public static function page_about()          { self::load( 'about'          ); }

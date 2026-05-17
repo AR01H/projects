@@ -7,6 +7,7 @@ class AH_Admin_Bootstrap {
 		add_action( 'admin_menu', array( 'AH_Admin_Menus', 'register' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
 		add_action( 'admin_bar_menu', array( self::class, 'clean_admin_bar' ), 999 );
+		add_action( 'admin_post_ah_cms_nav', array( self::class, 'handle_navigation' ) );
 		AH_Ajax_Handlers::init();
 	}
 
@@ -78,6 +79,7 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-media"]::before        { content:"\f128"; }
 #adminmenu .wp-submenu a[href*="page=ah-posts"]::before        { content:"\f122"; }
 #adminmenu .wp-submenu a[href*="page=ah-news-bar"]::before     { content:"\f463"; }
+#adminmenu .wp-submenu a[href*="page=ah-navigation"]::before   { content:"\f333"; }
 #adminmenu .wp-submenu a[href*="page=ah-home"]::before         { content:"\f102"; }
 #adminmenu .wp-submenu a[href*="page=ah-services"]::before     { content:"\f313"; }
 #adminmenu .wp-submenu a[href*="page=ah-about"]::before        { content:"\f488"; }
@@ -103,5 +105,91 @@ class AH_Admin_Bootstrap {
 	border-top:1px solid rgba(255,255,255,.12); margin-top:6px; padding-top:4px;
 }
 CSS;
+	}
+
+	public static function handle_navigation(): void {
+		check_admin_referer( 'ah_theme_nav' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+
+		$keys = array( 'buying', 'finance', 'legal', 'news', 'services' );
+		$vis  = array();
+		foreach ( $keys as $key ) {
+			$vis[ $key ] = isset( $_POST['nav_vis'][ $key ] ) ? 1 : 0;
+		}
+		update_option( 'ah_nav_visibility', wp_json_encode( $vis ) );
+
+		$labels = array();
+		$label_defaults = array(
+			'buying'   => 'Buying',
+			'finance'  => 'Finance',
+			'legal'    => 'Legal & Surveys',
+			'news'     => 'News & Guides',
+			'services' => 'Services',
+		);
+		foreach ( $label_defaults as $key => $default ) {
+			$labels[ $key ] = sanitize_text_field( $_POST['nav_label'][ $key ] ?? $default );
+		}
+		update_option( 'ah_nav_top_labels', wp_json_encode( $labels ) );
+
+		$links = array();
+		foreach ( array( 'news', 'services' ) as $key ) {
+			$links[ $key ] = array(
+				'label' => sanitize_text_field( $_POST['nav_link'][ $key ]['label'] ?? '' ),
+				'url'   => self::clean_nav_url( $_POST['nav_link'][ $key ]['url'] ?? '' ),
+			);
+		}
+		update_option( 'ah_nav_static_links', wp_json_encode( $links ) );
+
+		update_option(
+			'ah_nav_cta',
+			wp_json_encode(
+				array(
+					'label' => sanitize_text_field( $_POST['nav_cta_label'] ?? 'Get Help' ),
+					'url'   => self::clean_nav_url( $_POST['nav_cta_url'] ?? '/contact/' ),
+				)
+			)
+		);
+
+		$valid_sections = array( 'buying', 'finance', 'legal', 'footer' );
+		$static_links   = array();
+		foreach ( (array) ( $_POST['static_nav'] ?? array() ) as $item ) {
+			$slug = sanitize_title( $item['slug'] ?? '' );
+			if ( ! $slug ) continue;
+
+			$static_links[] = array(
+				'slug'    => $slug,
+				'label'   => sanitize_text_field( $item['label'] ?? '' ),
+				'icon'    => sanitize_text_field( $item['icon'] ?? '' ),
+				'section' => in_array( $item['section'] ?? '', $valid_sections, true ) ? $item['section'] : 'buying',
+			);
+		}
+		update_option( 'ah_nav_static_page_links', wp_json_encode( $static_links ) );
+
+		foreach ( array( 'buying', 'finance', 'legal' ) as $section ) {
+			$items = array();
+			foreach ( (array) ( $_POST[ $section . '_items' ] ?? array() ) as $item ) {
+				$title = sanitize_text_field( $item['title'] ?? '' );
+				if ( ! $title ) continue;
+
+				$items[] = array(
+					'icon'      => sanitize_text_field( $item['icon'] ?? '' ),
+					'title'     => $title,
+					'desc'      => sanitize_text_field( $item['desc'] ?? '' ),
+					'slug'      => sanitize_title( ( $item['slug'] ?? '' ) ?: $title ),
+					'highlight' => ! empty( $item['highlight'] ),
+				);
+			}
+			update_option( 'ah_nav_' . $section . '_topics', wp_json_encode( $items ) );
+		}
+
+		self::redirect( add_query_arg( array( 'page' => 'ah-navigation', 'saved' => '1' ), admin_url( 'admin.php' ) ) );
+	}
+
+	private static function clean_nav_url( string $url ): string {
+		$url = trim( $url );
+		if ( $url === '' ) return '';
+		if ( preg_match( '#^https?://#i', $url ) ) return esc_url_raw( $url );
+
+		return '/' . trim( sanitize_text_field( $url ), '/' ) . '/';
 	}
 }

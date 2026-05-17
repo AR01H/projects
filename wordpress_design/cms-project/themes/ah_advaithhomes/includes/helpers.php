@@ -374,3 +374,49 @@ function ah_get_nav_static_page_links(): array {
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	return (array) $opt;
 }
+
+function ah_get_builder_pages( int $limit = 20 ): array {
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_builder_pages';
+	$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+	if ( $exists !== $table ) {
+		return array();
+	}
+	return $wpdb->get_results(
+		$wpdb->prepare( "SELECT * FROM `{$table}` ORDER BY updated_at DESC LIMIT %d", $limit )
+	) ?: array();
+}
+
+function ah_get_file_links( int $limit = 20 ): array {
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_file_links';
+	$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+	if ( $exists !== $table ) {
+		return array();
+	}
+
+	$rows = $wpdb->get_results(
+		$wpdb->prepare( "SELECT * FROM `{$table}` ORDER BY created_at DESC LIMIT %d", $limit )
+	) ?: array();
+
+	$upload = wp_upload_dir();
+	foreach ( $rows as $row ) {
+		$row->file_url = trailingslashit( $upload['baseurl'] ) . 'ah-files/' . ltrim( (string) $row->file_path, '/' );
+	}
+	return $rows;
+}
+
+function ah_get_forms_summary(): array {
+	if ( class_exists( 'AH_Form_Builder' ) && method_exists( 'AH_Form_Builder', 'get_all' ) ) {
+		return AH_Form_Builder::get_all();
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_forms';
+	$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+	if ( $exists !== $table ) {
+		return array();
+	}
+
+	return $wpdb->get_results( "SELECT * FROM `{$table}` ORDER BY id ASC" ) ?: array();
+}
