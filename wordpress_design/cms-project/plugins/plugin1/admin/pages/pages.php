@@ -6,12 +6,14 @@ $notice   = '';
 $n_type   = 'success';
 $action   = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id  = (int) ( $_GET['id'] ?? 0 );
+$content_tax_m = new AH_Content_Taxonomy_Model();
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_pages_nonce'], 'ah_wp_page_save' ) ) wp_die( 'Security check failed.' );
 
 	if ( isset( $_POST['trash_page'] ) && $edit_id ) {
 		wp_trash_post( $edit_id );
+		$content_tax_m->sync_terms( 'wp_page', $edit_id, array() );
 		$notice = 'Page moved to trash.'; $action = 'list'; $edit_id = 0;
 	} else {
 		$title    = sanitize_text_field( $_POST['page_title'] ?? '' );
@@ -29,6 +31,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 			$saved_id = (int) $result;
 			if ( $thumb_id ) set_post_thumbnail( $saved_id, $thumb_id );
 			else delete_post_thumbnail( $saved_id );
+			$content_tax_m->sync_terms( 'wp_page', $saved_id, $_POST['taxonomy_ids'] ?? array() );
 			$notice = $edit_id ? 'Page updated.' : 'Page created.';
 			$action = 'list'; $edit_id = 0;
 		}
@@ -36,7 +39,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 }
 
 if ( isset( $_GET['trash_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_trash_page' ) ) {
-	wp_trash_post( (int) $_GET['trash_id'] );
+	$trash_id = (int) $_GET['trash_id'];
+	wp_trash_post( $trash_id );
+	$content_tax_m->sync_terms( 'wp_page', $trash_id, array() );
 	$notice = 'Page moved to trash.';
 }
 
@@ -73,9 +78,9 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
 
     <div class="ah-table-wrap">
       <table class="ah-table">
-        <thead><tr><th>Title</th><th>Slug</th><th>Status</th><th>Template</th><th>Modified</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Title</th><th>Slug</th><th>Taxonomies</th><th>Status</th><th>Template</th><th>Modified</th><th>Actions</th></tr></thead>
         <tbody>
-          <?php if ( empty( $pages ) ) : ?><tr><td colspan="6" style="text-align:center;color:var(--ah-muted);padding:32px;">No pages found.</td></tr><?php endif; ?>
+          <?php if ( empty( $pages ) ) : ?><tr><td colspan="7" style="text-align:center;color:var(--ah-muted);padding:32px;">No pages found.</td></tr><?php endif; ?>
           <?php foreach ( $pages as $pg ) :
             $tpl      = get_page_template_slug( $pg->ID );
             $tpl_name = $tpl ? ( $all_templates[ $tpl ] ?? basename( $tpl ) ) : 'Default';
@@ -87,6 +92,7 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
                 <?php if ( $pg->post_parent ) : ?><small style="color:var(--ah-muted);display:block;">Child of: <?php echo esc_html( get_the_title( $pg->post_parent ) ); ?></small><?php endif; ?>
               </td>
               <td><code><?php echo esc_html( $pg->post_name ); ?></code></td>
+              <td><?php $content_tax_m->render_badges( 'wp_page', (int) $pg->ID ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $badge[ $pg->post_status ] ?? 'draft' ); ?>"><?php echo esc_html( $label[ $pg->post_status ] ?? $pg->post_status ); ?></span></td>
               <td><small><?php echo esc_html( $tpl_name ); ?></small></td>
               <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $pg->post_modified ) ) ); ?></small></td>
@@ -190,6 +196,11 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
                 <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
               </div>
             </div>
+          </div>
+
+          <div class="ah-card">
+            <div class="ah-card-header"><h2>Taxonomies</h2></div>
+            <?php $content_tax_m->render_picker( 'wp_page', $edit_id ); ?>
           </div>
 
           <?php if ( $wp_page ) : ?>

@@ -16,8 +16,8 @@ function ah_sections_to_blocks( array $sections ): string {
 				$out .= "<!-- wp:heading {\"level\":{$lvl}} -->\n<{$tag}>{$text}</{$tag}>\n<!-- /wp:heading -->\n\n";
 				break;
 			case 'paragraph':
-				$text = nl2br( esc_html( $s['text'] ?? '' ) );
-				$out .= "<!-- wp:paragraph -->\n<p>{$text}</p>\n<!-- /wp:paragraph -->\n\n";
+				$text = wp_kses_post( $s['text'] ?? '' );
+				$out .= "<!-- wp:html -->\n{$text}\n<!-- /wp:html -->\n\n";
 				break;
 			case 'list':
 				$items = array_values( array_filter( (array) ( $s['items'] ?? [] ) ) );
@@ -48,10 +48,10 @@ function ah_sections_to_blocks( array $sections ): string {
 				}
 				break;
 			case 'quote':
-				$text     = esc_html( $s['text'] ?? '' );
+				$text     = wp_kses_post( $s['text'] ?? '' );
 				$cite     = esc_html( $s['cite'] ?? '' );
 				$cite_tag = $cite ? "<cite>— {$cite}</cite>" : '';
-				$out     .= "<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>\"{$text}\"</p>{$cite_tag}</blockquote>\n<!-- /wp:quote -->\n\n";
+				$out     .= "<!-- wp:html -->\n<blockquote class=\"wp-block-quote\">{$text}{$cite_tag}</blockquote>\n<!-- /wp:html -->\n\n";
 				break;
 			case 'cta':
 				$text = esc_html( $s['text'] ?? 'Learn More' );
@@ -453,6 +453,10 @@ $q           = new WP_Query( $q_args );
 $posts_list  = $q->posts;
 $total       = $q->found_posts;
 $pages_count = (int) ceil( $total / 20 );
+
+if ( $action === 'edit-custom' ) {
+	wp_enqueue_editor();
+}
 ?>
 <div class="wrap ah-wrap">
 <h1><span class="dashicons dashicons-edit"></span> Posts / Blog</h1>
@@ -656,8 +660,76 @@ $pages_count = (int) ceil( $total / 20 );
     </div><!-- /grid -->
   </form>
 
+<style>
+.ah-section-card .wp-editor-wrap { max-width: none; }
+.ah-section-card .wp-editor-container textarea.wp-editor-area { border-radius: 0; }
+</style>
+
 <script>
 (function($){
+  var richEditorCounter = 0;
+  var richTextSelector = '.ah-section-card[data-type="paragraph"] .ah-sec-text';
+
+  function assignRichEditorId($el) {
+    if ($el.attr('id')) return $el.attr('id');
+    richEditorCounter += 1;
+    $el.attr('id', 'ah-post-section-editor-' + richEditorCounter);
+    return $el.attr('id');
+  }
+
+  function initRichEditors($scope) {
+    if (!window.wp || !wp.editor) {
+      window.setTimeout(function() {
+        initRichEditors($scope);
+      }, 250);
+      return;
+    }
+    $scope = $scope && $scope.length ? $scope : $(document);
+    $scope.find(richTextSelector).each(function() {
+      var $el = $(this);
+      var id = assignRichEditorId($el);
+      if ($el.data('editorReady')) return;
+      $el.data('editorReady', 1);
+      wp.editor.initialize(id, {
+        tinymce: {
+          wpautop: true,
+          toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,image,undo,redo',
+          toolbar2: '',
+          setup: function(editor) {
+            editor.on('change keyup undo redo SetContent', function() {
+              editor.save();
+            });
+          }
+        },
+        quicktags: true,
+        mediaButtons: true
+      });
+    });
+  }
+
+  function destroyRichEditors($scope) {
+    $scope = $scope && $scope.length ? $scope : $(document);
+    $scope.find(richTextSelector).each(function() {
+      var id = this.id;
+      if (!id) return;
+      if (window.tinymce && tinymce.get(id)) {
+        tinymce.get(id).save();
+        tinymce.get(id).remove();
+      }
+      if (window.QTags && QTags.instances && QTags.instances[id]) {
+        delete QTags.instances[id];
+      }
+      $(this).removeData('editorReady');
+    });
+  }
+
+  function syncRichEditors() {
+    $(richTextSelector).each(function() {
+      if (this.id && window.tinymce && tinymce.get(this.id)) {
+        tinymce.get(this.id).save();
+      }
+    });
+  }
   // ── Section card templates ──────────────────────────────────────────────────
   var sectionTemplates = {
     heading: function() {
@@ -742,7 +814,9 @@ $pages_count = (int) ceil( $total / 20 );
   $(document).on('click', '.ah-add-sec', function() {
     var type = $(this).data('type');
     if (sectionTemplates[type]) {
-      $('#ah-sections-builder').append(sectionTemplates[type]());
+      var $card = sectionTemplates[type]();
+      $('#ah-sections-builder').append($card);
+      initRichEditors($card);
     }
   });
 
@@ -761,7 +835,9 @@ $pages_count = (int) ceil( $total / 20 );
   // ── Remove section ──────────────────────────────────────────────────────────
   $(document).on('click', '.ah-sec-rm', function() {
     if (confirm('Remove this section?')) {
-      $(this).closest('.ah-section-card').remove();
+      var $card = $(this).closest('.ah-section-card');
+      destroyRichEditors($card);
+      $card.remove();
     }
   });
 
@@ -804,6 +880,7 @@ $pages_count = (int) ceil( $total / 20 );
 
   // ── Serialize sections → JSON on submit ─────────────────────────────────────
   $('#ah-custom-editor-form').on('submit', function() {
+    syncRichEditors();
     var sections = [];
     $('#ah-sections-builder .ah-section-card').each(function() {
       var $c   = $(this);
@@ -844,6 +921,11 @@ $pages_count = (int) ceil( $total / 20 );
       sections.push(s);
     });
     $('#ah-sections-json').val(JSON.stringify(sections));
+  });
+
+  initRichEditors($('#ah-sections-builder'));
+  $(window).on('load', function() {
+    initRichEditors($('#ah-sections-builder'));
   });
 
 })(jQuery);

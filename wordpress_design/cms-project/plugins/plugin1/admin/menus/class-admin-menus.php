@@ -11,7 +11,6 @@ class AH_Admin_Menus {
 
 		$submenus = [
 			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],
-			['title' => 'Pages Manager','menu' => 'Pages Manager','slug' => 'ah-pages','callback' => 'page_pages'],
 			['title' => 'Media Library','menu' => 'Media Library','slug' => 'ah-media','callback' => 'page_media'],
 			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
 			['title' => 'News Bar','menu' => 'News Bar','slug' => 'ah-news-bar','callback' => 'page_news_bar'],
@@ -24,6 +23,7 @@ class AH_Admin_Menus {
 			['title' => 'Posts / Blog','menu' => 'Posts / Blog','slug' => 'ah-posts','callback' => 'page_posts'],
 			['title' => 'Page Builder','menu' => 'Page Builder','slug' => 'ah-page-builder','callback' => 'page_builder'],
 			['title' => 'Static Pages','menu' => 'Static Pages','slug' => 'ah-static-pages','callback' => 'page_static_pages'],
+			['title' => 'Pages Manager','menu' => 'Pages Manager','slug' => 'ah-pages','callback' => 'page_pages'],
 			['title' => 'Form Builder','menu' => 'Form Builder','slug' => 'ah-form-builder','callback' => 'page_form_builder'],
 			['title' => 'Team Members','menu' => 'Team Members','slug' => 'ah-team','callback' => 'page_team'],
 			['title' => 'Taxonomies','menu' => 'Taxonomies','slug' => 'ah-taxonomy','callback' => 'page_taxonomy'],

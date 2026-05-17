@@ -37,7 +37,11 @@ class AH_Admin_Bootstrap {
 		wp_enqueue_media();
 		add_thickbox();
 
-		if ( strpos( $hook, 'ah-page-builder' ) !== false ) {
+		if (
+			strpos( $hook, 'ah-page-builder' ) !== false ||
+			strpos( $hook, 'ah-pages' ) !== false ||
+			strpos( $hook, 'ah-posts' ) !== false
+		) {
 			wp_enqueue_editor();
 		}
 	}
