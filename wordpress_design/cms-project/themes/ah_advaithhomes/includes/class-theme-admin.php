@@ -17,8 +17,8 @@ class AH_Theme_Admin {
 
 	public static function register_menus(): void {
 		add_menu_page(
-			__( 'Advaith Homes CMS', 'ah-theme' ),
-			__( 'Advaith Homes CMS', 'ah-theme' ),
+			__( 'Advaith HM CMS', 'ah-theme' ),
+			__( 'Advaith HM CMS', 'ah-theme' ),
 			'manage_options',
 			'ah-theme-admin',
 			[ self::class, 'page_dashboard' ],

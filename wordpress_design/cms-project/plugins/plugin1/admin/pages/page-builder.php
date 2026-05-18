@@ -233,56 +233,167 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
 <?php else : ?>
 
 <style>
-/* ── Page Builder Styles ────────────────────────── */
-.ah-builder-wrap { display: grid; grid-template-columns: 260px 1fr 240px; gap: 0; height: calc(100vh - 120px); overflow: hidden; margin: 0 -20px; }
-.ah-builder-topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 20px; background:var(--ah-card-bg,#fff); border-bottom:1px solid var(--ah-border); margin:0 -20px 0; position:sticky; top:32px; z-index:100; }
-.ah-builder-topbar input[type=text] { border:1px solid var(--ah-border); border-radius:6px; padding:6px 12px; font-size:.9rem; max-width:260px; }
-.ah-palette { background:#1e2330; color:#c9d1e0; overflow-y:auto; padding:16px 12px; border-right:1px solid rgba(255,255,255,.07); }
-.ah-palette h4 { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; color:#6b7280; margin:16px 0 8px; padding:0 4px; }
-.ah-palette h4:first-child { margin-top:0; }
-.ah-palette-block { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; transition:background .15s; font-size:.82rem; font-weight:500; color:#c9d1e0; }
-.ah-palette-block:hover { background:rgba(255,255,255,.08); }
-.ah-palette-block .icon { font-size:1.1rem; width:24px; text-align:center; }
-.ah-canvas-wrap { overflow-y:auto; background:#f0f2f5; padding:24px 20px; }
-.ah-canvas { min-height:400px; }
-.ah-canvas-empty { text-align:center; padding:60px 20px; color:#9ca3af; border:2px dashed #d1d5db; border-radius:12px; background:#fff; }
-.ah-canvas-empty .icon { font-size:3rem; margin-bottom:12px; }
-.ah-canvas-block { background:#fff; border-radius:10px; border:1.5px solid #e5e7eb; margin-bottom:12px; overflow:hidden; transition:box-shadow .15s; }
-.ah-canvas-block:hover { box-shadow:0 4px 20px rgba(0,0,0,.09); }
-.ah-canvas-block.ah-block-active { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.12); }
-.ah-block-header { display:flex; align-items:center; gap:8px; padding:11px 16px; background:#f9fafb; border-bottom:1px solid #f0f0f0; cursor:pointer; }
-.ah-block-handle { cursor:grab; color:#9ca3af; padding:4px; font-size:1rem; }
+/* ── Page Builder Styles ───────────────────────────────────────────────── */
+
+/* Top bar */
+.ah-builder-topbar {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:10px 20px; background:#fff;
+  border-bottom:1px solid #e5e7eb; box-shadow:0 1px 6px rgba(0,0,0,.05);
+  margin:0 -20px;  z-index:100;
+}
+.ah-builder-topbar input[type=text] {
+  border:1px solid #d1d5db; border-radius:7px; padding:7px 12px;
+  font-size:.9rem; font-weight:600; max-width:300px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.ah-builder-topbar input[type=text]:focus {
+  outline:none; border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.12);
+}
+.ah-builder-topbar .ah-btn { padding:7px 16px; font-size:.8rem; }
+
+/* 3-column grid */
+.ah-builder-wrap {
+  display:grid; grid-template-columns:232px 1fr 236px;
+  gap:0; height:calc(100vh - 108px); overflow:hidden; margin:0 -20px;
+  border:1px solid #e5e7eb;
+}
+
+/* ── Left palette ──────────────────────────────────── */
+.ah-palette {
+  background:#181e2e; color:#c9d1e0; overflow-y:auto;
+  padding:10px 8px; border-right:1px solid rgba(255,255,255,.05);
+}
+.ah-palette h4 {
+  font-size:.58rem; text-transform:uppercase; letter-spacing:.13em; color:#4b5563;
+  margin:14px 0 5px; padding:0 8px;
+}
+.ah-palette h4:first-child { margin-top:4px; }
+.ah-palette-block {
+  display:flex; align-items:center; gap:9px; padding:8px 10px; border-radius:7px;
+  cursor:pointer; font-size:.79rem; font-weight:500; color:#9ca3af;
+  transition:background .12s,color .12s,transform .1s; margin-bottom:2px;
+}
+.ah-palette-block:hover { background:rgba(255,255,255,.1); color:#fff; transform:translateX(2px); }
+.ah-palette-block:active { transform:scale(.96); }
+.ah-palette-block .icon { font-size:.95rem; width:20px; text-align:center; flex-shrink:0; }
+
+/* ── Canvas ──────────────────────────────────────── */
+.ah-canvas-wrap { overflow-y:auto; background:#f1f3f6; padding:18px 16px; }
+.ah-canvas { min-height:calc(100vh - 180px); }
+.ah-canvas-empty {
+  text-align:center; padding:56px 20px; color:#9ca3af;
+  border:2px dashed #d1d5db; border-radius:12px; background:#fff; margin-top:4px;
+}
+.ah-canvas-empty .icon { font-size:2.8rem; margin-bottom:10px; }
+
+/* Canvas blocks */
+.ah-canvas-block {
+  background:#fff; border-radius:10px; border:1.5px solid #e5e7eb;
+  margin-bottom:10px; overflow:hidden; transition:box-shadow .15s,border-color .15s;
+}
+.ah-canvas-block:hover { box-shadow:0 3px 14px rgba(0,0,0,.07); border-color:#d1d5db; }
+.ah-canvas-block.ah-block-active { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.1); }
+
+.ah-block-header {
+  display:flex; align-items:center; gap:8px; padding:10px 14px;
+  background:#f9fafb; cursor:pointer; user-select:none;
+}
+.ah-canvas-block.ah-block-active .ah-block-header { background:#eff6ff; }
+
+.ah-block-handle { cursor:grab; color:#d1d5db; font-size:.9rem; transition:color .15s; flex-shrink:0; }
+.ah-block-handle:hover { color:#6b7280; }
 .ah-block-handle:active { cursor:grabbing; }
-.ah-block-type-badge { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; background:#eef2ff; color:#4f46e5; padding:2px 8px; border-radius:20px; }
-.ah-block-title { flex:1; font-size:.85rem; font-weight:600; color:#374151; }
-.ah-block-actions { display:flex; align-items:center; gap:4px; }
-.ah-block-actions button { background:none; border:none; cursor:pointer; padding:4px 6px; color:#9ca3af; border-radius:4px; font-size:.85rem; transition:all .15s; }
+
+.ah-block-title {
+  flex:1; font-size:.81rem; font-weight:600; color:#374151;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;
+}
+.ah-block-type-badge {
+  font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  padding:2px 7px; border-radius:20px; white-space:nowrap; flex-shrink:0;
+}
+.ah-block-actions { display:flex; align-items:center; gap:2px; flex-shrink:0; }
+.ah-block-actions button {
+  background:none; border:none; cursor:pointer; padding:4px 6px;
+  color:#9ca3af; border-radius:5px; font-size:.8rem; line-height:1;
+  transition:background .12s,color .12s;
+}
 .ah-block-actions button:hover { background:#f3f4f6; color:#374151; }
 .ah-block-actions .ah-delete-block:hover { color:#ef4444; background:#fef2f2; }
-.ah-block-body { padding:16px; display:none; }
+.ah-block-actions .ah-toggle-block { font-size:.7rem; transition:background .12s,color .12s,transform .2s; }
+.ah-canvas-block.ah-block-active .ah-toggle-block { transform:rotate(180deg); }
+
+/* Block body */
+.ah-block-body { padding:14px 16px; display:none; border-top:1px solid #f0f2f5; }
 .ah-canvas-block.ah-block-active .ah-block-body { display:block; }
-.ah-block-body .ah-form-row { margin-bottom:12px; }
-.ah-block-body label { font-size:.78rem; font-weight:600; color:#6b7280; display:block; margin-bottom:4px; }
-.ah-block-body input, .ah-block-body textarea, .ah-block-body select { width:100%; border:1px solid #e5e7eb; border-radius:6px; padding:7px 10px; font-size:.85rem; }
-.ah-block-body textarea { resize:vertical; }
+.ah-block-body .ah-form-row { margin-bottom:10px; }
+.ah-block-body label {
+  font-size:.72rem; font-weight:700; color:#6b7280; display:block;
+  margin-bottom:3px; text-transform:uppercase; letter-spacing:.04em;
+}
+.ah-block-body input, .ah-block-body textarea, .ah-block-body select {
+  width:100%; border:1px solid #e5e7eb; border-radius:6px;
+  padding:6px 9px; font-size:.82rem; box-sizing:border-box;
+  transition:border-color .15s,box-shadow .15s;
+}
+.ah-block-body input:focus, .ah-block-body textarea:focus, .ah-block-body select:focus {
+  outline:none; border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,.1);
+}
+.ah-block-body textarea { resize:vertical; min-height:76px; }
 .ah-block-body .wp-editor-wrap { max-width:none; }
 .ah-block-body .wp-editor-wrap textarea { border-radius:0; }
 .ah-block-body .mce-container, .ah-block-body .quicktags-toolbar { box-sizing:border-box; }
-.ah-block-preview { padding:14px 16px; font-size:.82rem; color:#6b7280; border-top:1px dashed #e5e7eb; background:#fafafa; }
-.ah-repeater { border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; margin-top:8px; }
-.ah-repeater-row { display:grid; gap:8px; padding:10px 12px; border-bottom:1px solid #f0f0f0; position:relative; }
-.ah-repeater-row:last-child { border-bottom:none; }
-.ah-repeater-row .ah-remove-row { position:absolute; top:8px; right:8px; background:none; border:none; cursor:pointer; color:#ef4444; font-size:.85rem; }
-.ah-add-row { display:flex; align-items:center; gap:6px; padding:8px 12px; color:#3b82f6; font-size:.82rem; font-weight:600; cursor:pointer; background:none; border:none; border-top:1px solid #f0f0f0; width:100%; }
-.ah-add-row:hover { background:#f0f7ff; }
-.ah-settings-panel { background:#fff; border-left:1px solid #e5e7eb; padding:16px; overflow-y:auto; }
-.ah-settings-panel h4 { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#6b7280; margin:0 0 14px; }
-.ah-settings-panel .ah-form-row { margin-bottom:12px; }
-.ah-settings-panel label { font-size:.78rem; font-weight:600; color:#6b7280; display:block; margin-bottom:4px; }
-.ah-settings-panel input, .ah-settings-panel select, .ah-settings-panel textarea { width:100%; border:1px solid #e5e7eb; border-radius:6px; padding:7px 10px; font-size:.82rem; }
-.ah-builder-topbar .ah-btn { padding:8px 18px; font-size:.82rem; }
-.ui-sortable-helper { box-shadow:0 8px 32px rgba(0,0,0,.15); }
-.ui-sortable-placeholder { background:#f0f7ff; border:2px dashed #93c5fd; border-radius:10px; margin-bottom:12px; }
+
+/* Repeater */
+.ah-repeater { border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; margin-top:6px; background:#fafafa; }
+.ah-repeater-row {
+  display:grid; gap:6px; padding:10px 32px 10px 10px;
+  border-bottom:1px solid #f0f0f0; position:relative; background:#fff;
+}
+.ah-repeater-row:last-of-type { border-bottom:none; }
+.ah-repeater-row label { font-size:.68rem; color:#9ca3af; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+.ah-repeater-row .ah-remove-row {
+  position:absolute; top:8px; right:8px; background:none; border:none;
+  cursor:pointer; color:#d1d5db; font-size:.75rem; line-height:1;
+  padding:3px 5px; border-radius:4px; transition:color .12s,background .12s;
+}
+.ah-repeater-row .ah-remove-row:hover { color:#ef4444; background:#fef2f2; }
+.ah-add-row {
+  display:flex; align-items:center; justify-content:center; gap:4px;
+  padding:7px 12px; color:#3b82f6; font-size:.78rem; font-weight:600;
+  cursor:pointer; background:#f8fbff; border:none; width:100%;
+  transition:background .12s;
+}
+.ah-add-row:hover { background:#dbeafe; }
+
+/* ── Right settings panel ────────────────────────── */
+.ah-settings-panel {
+  background:#fff; border-left:1px solid #e5e7eb;
+  padding:14px 12px; overflow-y:auto;
+}
+.ah-settings-panel h4 {
+  font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+  color:#9ca3af; margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid #f3f4f6;
+}
+.ah-settings-panel .ah-form-row { margin-bottom:10px; }
+.ah-settings-panel label {
+  font-size:.7rem; font-weight:700; color:#6b7280; display:block;
+  margin-bottom:3px; text-transform:uppercase; letter-spacing:.04em;
+}
+.ah-settings-panel input, .ah-settings-panel select, .ah-settings-panel textarea {
+  width:100%; border:1px solid #e5e7eb; border-radius:6px;
+  padding:6px 8px; font-size:.8rem; box-sizing:border-box;
+  transition:border-color .15s,box-shadow .15s;
+}
+.ah-settings-panel input:focus, .ah-settings-panel select:focus, .ah-settings-panel textarea:focus {
+  outline:none; border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,.1);
+}
+.ah-settings-panel small { display:block; font-size:.68rem; color:#9ca3af; margin-top:3px; word-break:break-all; line-height:1.4; }
+
+/* Drag helpers */
+.ui-sortable-helper { box-shadow:0 12px 36px rgba(0,0,0,.18) !important; border-color:#3b82f6 !important; }
+.ui-sortable-placeholder { background:#eff6ff; border:2px dashed #93c5fd; border-radius:10px; margin-bottom:10px; }
 </style>
 
 <form id="ah-builder-form" method="post">
@@ -303,7 +414,7 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
         <a href="<?php echo esc_url( home_url( '/' . esc_attr( $current_page->slug ) . '/' ) ); ?>"
            target="_blank" class="ah-btn ah-btn-secondary" style="padding:7px 14px;font-size:.8rem">👁 Preview</a>
       <?php endif; ?>
-      <select name="page_status" style="border:1px solid var(--ah-border);border-radius:6px;padding:7px 10px;font-size:.82rem">
+      <select name="page_status" style="border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem">
         <option value="draft" <?php selected( $current_page->status ?? 'draft', 'draft' ); ?>>Draft</option>
         <option value="active" <?php selected( $current_page->status ?? '', 'active' ); ?>>Published</option>
       </select>
