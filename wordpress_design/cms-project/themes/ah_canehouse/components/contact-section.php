@@ -1,0 +1,107 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+$settings = ch_get_settings();
+$contact  = ch_get_contact_settings();
+$phone    = $settings['phone']   ?? '+44 7887 699 208';
+$email    = $settings['email']   ?? 'hello@thecanehouse.co.uk';
+$website  = $settings['website'] ?? 'www.thecanehouse.co.uk';
+$nonce    = wp_create_nonce( 'ch_contact_nonce' );
+?>
+
+<section id="contact" class="ch-contact-section">
+	<div class="ch-contact-info fade-left">
+		<div class="ch-section-tag">Say Hello</div>
+		<h2 class="ch-section-title">Get in <span class="accent">Touch</span></h2>
+		<p class="ch-section-body" style="margin-top:.8rem;margin-bottom:2rem;">Questions about our juices, booking us for your event, or interested in franchise opportunities? We'd love to hear from you.</p>
+
+		<?php if ( $phone ) : ?>
+			<div class="ch-contact-detail">
+				<div class="ch-cd-icon" aria-hidden="true">📞</div>
+				<div>
+					<div class="ch-cd-label">Call Us</div>
+					<div class="ch-cd-val">
+						<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>">
+							<?php echo esc_html( $phone ); ?>
+						</a>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( $email ) : ?>
+			<div class="ch-contact-detail">
+				<div class="ch-cd-icon" aria-hidden="true">📧</div>
+				<div>
+					<div class="ch-cd-label">Email Us</div>
+					<div class="ch-cd-val">
+						<a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
+
+		<div class="ch-contact-detail">
+			<div class="ch-cd-icon" aria-hidden="true">🎪</div>
+			<div>
+				<div class="ch-cd-label">Events &amp; Hire</div>
+				<div class="ch-cd-val">Available across the UK for events, weddings &amp; community gatherings</div>
+			</div>
+		</div>
+
+		<div class="ch-contact-detail">
+			<div class="ch-cd-icon" aria-hidden="true">🤝</div>
+			<div>
+				<div class="ch-cd-label">Franchise</div>
+				<div class="ch-cd-val">Franchise enquiries warmly welcomed — reach out today</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ch-contact-form fade-right">
+		<div class="ch-form-title">Send Us a Message 🌿</div>
+
+		<div id="ch-form-msg" class="ch-form-feedback" style="display:none;" role="alert"></div>
+
+		<form id="ch-contact-form" novalidate>
+			<?php wp_nonce_field( 'ch_contact_nonce', 'ch_contact_nonce_field' ); ?>
+			<input type="hidden" name="action" value="ch_contact_submit">
+
+			<div class="ch-form-group">
+				<label class="ch-form-label" for="ch-name">Full Name</label>
+				<input type="text" id="ch-name" name="ch_name" class="ch-form-input" placeholder="Your name" required>
+			</div>
+
+			<div class="ch-form-group">
+				<label class="ch-form-label" for="ch-email">Email Address</label>
+				<input type="email" id="ch-email" name="ch_email" class="ch-form-input" placeholder="you@email.com" required>
+			</div>
+
+			<div class="ch-form-group">
+				<label class="ch-form-label" for="ch-phone">Phone Number</label>
+				<input type="tel" id="ch-phone" name="ch_phone" class="ch-form-input" placeholder="+44 ...">
+			</div>
+
+			<div class="ch-form-group">
+				<label class="ch-form-label" for="ch-enquiry">I'm enquiring about</label>
+				<select id="ch-enquiry" name="ch_enquiry" class="ch-form-select">
+					<option value="">Select enquiry type...</option>
+					<option value="general">General Enquiry</option>
+					<option value="event">Event / Stall Hire</option>
+					<option value="wedding">Wedding or Asian Celebration</option>
+					<option value="franchise">Franchise Opportunity</option>
+					<option value="other">Something Else</option>
+				</select>
+			</div>
+
+			<div class="ch-form-group">
+				<label class="ch-form-label" for="ch-message">Message</label>
+				<textarea id="ch-message" name="ch_message" class="ch-form-textarea"
+					placeholder="Tell us more — event date, location, expected guests..."></textarea>
+			</div>
+
+			<button type="submit" class="ch-form-submit" id="ch-form-submit">
+				Send Message 🥤
+			</button>
+		</form>
+	</div>
+</section>

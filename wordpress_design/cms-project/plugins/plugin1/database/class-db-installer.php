@@ -29,6 +29,7 @@ class AH_DB_Installer {
 		self::drop_broken_fks();
 		self::ensure_review_short_desc();
 		self::ensure_news_bar_content();
+		self::ensure_protected_taxonomy();
 	}
 
 	public static function ensure_content_taxonomies(): void {
@@ -63,6 +64,58 @@ class AH_DB_Installer {
 		) );
 		if ( empty( $col ) ) {
 			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `content` LONGTEXT NULL AFTER `text`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+	}
+
+	public static function ensure_protected_taxonomy(): void {
+		global $wpdb;
+		$p = $wpdb->prefix;
+
+		// Add is_protected column to ah_taxonomies if missing
+		$col = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'is_protected'",
+			DB_NAME,
+			"{$p}ah_taxonomies"
+		) );
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$p}ah_taxonomies` ADD COLUMN `is_protected` TINYINT(1) NOT NULL DEFAULT 0 AFTER `sort_order`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+
+		// Create DataProtected taxonomy type if missing
+		$type_id = $wpdb->get_var( $wpdb->prepare(
+			"SELECT id FROM `{$p}ah_taxonomy_types` WHERE slug = %s",
+			'data-protected'
+		) );
+		if ( ! $type_id ) {
+			$wpdb->insert( "{$p}ah_taxonomy_types", array(
+				'name'        => 'DataProtected',
+				'slug'        => 'data-protected',
+				'description' => 'System-protected taxonomy type',
+			) );
+			$type_id = $wpdb->insert_id;
+		}
+
+		// Seed protected terms
+		foreach ( array(
+			array( 'name' => 'Unchangeable', 'slug' => 'unchangeable' ),
+			array( 'name' => 'Undeletable',  'slug' => 'undeletable'  ),
+		) as $term ) {
+			$exists = $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM `{$p}ah_taxonomies` WHERE type_id = %d AND slug = %s",
+				$type_id,
+				$term['slug']
+			) );
+			if ( ! $exists ) {
+				$wpdb->insert( "{$p}ah_taxonomies", array(
+					'type_id'      => $type_id,
+					'name'         => $term['name'],
+					'slug'         => $term['slug'],
+					'status'       => 'active',
+					'is_protected' => 1,
+				) );
+			} else {
+				$wpdb->update( "{$p}ah_taxonomies", array( 'is_protected' => 1 ), array( 'id' => (int) $exists ) );
+			}
 		}
 	}
 

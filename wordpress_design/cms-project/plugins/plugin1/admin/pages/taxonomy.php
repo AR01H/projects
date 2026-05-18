@@ -10,38 +10,53 @@ $type_id = (int) ( $_GET['type_id'] ?? 0 );
 
 // POST: save taxonomy type
 if ( isset( $_POST['save_type'] ) && wp_verify_nonce( $_POST['ah_tax_nonce'] ?? '', 'ah_save_taxonomy' ) ) {
-	$type_data = array(
-		'name'        => sanitize_text_field( $_POST['type_name'] ?? '' ),
-		'slug'        => sanitize_title( $_POST['type_slug'] ?? $_POST['type_name'] ?? '' ),
-		'description' => sanitize_textarea_field( $_POST['type_description'] ?? '' ),
-	);
-	$type_edit_id = (int) ( $_POST['type_edit_id'] ?? 0 );
-	$type_edit_id ? $model->update_type( $type_edit_id, $type_data ) : $model->create_type( $type_data );
-	$notice = 'Taxonomy type saved.';
+	$type_edit_id   = (int) ( $_POST['type_edit_id'] ?? 0 );
+	$guarded_type   = $type_edit_id ? $model->get_type( $type_edit_id ) : null;
+	if ( $guarded_type && $guarded_type->slug === 'data-protected' ) {
+		$notice = 'This taxonomy type is protected and cannot be edited.';
+	} else {
+		$type_data = array(
+			'name'        => sanitize_text_field( $_POST['type_name'] ?? '' ),
+			'slug'        => sanitize_title( $_POST['type_slug'] ?? $_POST['type_name'] ?? '' ),
+			'description' => sanitize_textarea_field( $_POST['type_description'] ?? '' ),
+		);
+		$type_edit_id ? $model->update_type( $type_edit_id, $type_data ) : $model->create_type( $type_data );
+		$notice = 'Taxonomy type saved.';
+	}
 }
 
 // POST: save taxonomy term
 if ( isset( $_POST['save_term'] ) && wp_verify_nonce( $_POST['ah_tax_nonce'] ?? '', 'ah_save_taxonomy' ) ) {
-	$data = array(
-		'type_id'         => (int) ( $_POST['type_id'] ?? 0 ),
-		'parent_id'       => (int) ( $_POST['parent_id'] ?? 0 ) ?: null,
-		'name'            => sanitize_text_field( $_POST['name'] ?? '' ),
-		'slug'            => AH_Slug_Helper::generate( $_POST['slug'] ?: $_POST['name'], AH_DB_Helper::table( 'taxonomies' ), 'slug', $edit_id ),
-		'description'     => sanitize_textarea_field( $_POST['description'] ?? '' ),
-		'meta_title'      => sanitize_text_field( $_POST['meta_title'] ?? '' ),
-		'meta_description'=> sanitize_textarea_field( $_POST['meta_description'] ?? '' ),
-		'status'          => sanitize_key( $_POST['status'] ?? 'active' ),
-		'sort_order'      => (int) ( $_POST['sort_order'] ?? 0 ),
-	);
-	$edit_id ? $model->update( $edit_id, $data ) : $model->create( $data );
-	$notice = 'Taxonomy term saved.';
-	$action = 'list';
+	$guarded_term = $edit_id ? $model->find( $edit_id ) : null;
+	if ( $guarded_term && ! empty( $guarded_term->is_protected ) ) {
+		$notice = 'This term is protected and cannot be edited.';
+	} else {
+		$data = array(
+			'type_id'         => (int) ( $_POST['type_id'] ?? 0 ),
+			'parent_id'       => (int) ( $_POST['parent_id'] ?? 0 ) ?: null,
+			'name'            => sanitize_text_field( $_POST['name'] ?? '' ),
+			'slug'            => AH_Slug_Helper::generate( $_POST['slug'] ?: $_POST['name'], AH_DB_Helper::table( 'taxonomies' ), 'slug', $edit_id ),
+			'description'     => sanitize_textarea_field( $_POST['description'] ?? '' ),
+			'meta_title'      => sanitize_text_field( $_POST['meta_title'] ?? '' ),
+			'meta_description'=> sanitize_textarea_field( $_POST['meta_description'] ?? '' ),
+			'status'          => sanitize_key( $_POST['status'] ?? 'active' ),
+			'sort_order'      => (int) ( $_POST['sort_order'] ?? 0 ),
+		);
+		$edit_id ? $model->update( $edit_id, $data ) : $model->create( $data );
+		$notice = 'Taxonomy term saved.';
+		$action = 'list';
+	}
 }
 
 // Delete term
 if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_tax' ) ) {
-	$model->delete( (int) $_GET['delete_id'] );
-	$notice = 'Term deleted.';
+	$del_row = $model->find( (int) $_GET['delete_id'] );
+	if ( $del_row && ! empty( $del_row->is_protected ) ) {
+		$notice = 'This term is protected and cannot be deleted.';
+	} else {
+		$model->delete( (int) $_GET['delete_id'] );
+		$notice = 'Term deleted.';
+	}
 }
 
 $types  = $model->get_types();
@@ -66,10 +81,12 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
           <tbody>
             <?php foreach ( $types as $t ) : ?>
               <tr>
-                <td><?php echo esc_html( $t->name ); ?></td>
+                <td><?php echo esc_html( $t->name ); ?><?php if ( $t->slug === 'data-protected' ) echo ' <span title="System protected" style="cursor:default;">&#128274;</span>'; ?></td>
                 <td><code><?php echo esc_html( $t->slug ); ?></code></td>
                 <td>
-                  <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'types', 'edit_type' => $t->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
+                  <?php if ( $t->slug !== 'data-protected' ) : ?>
+                    <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'types', 'edit_type' => $t->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
+                  <?php endif; ?>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -126,13 +143,15 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
                 foreach ( $types as $tt ) { if ( $tt->id == $term->type_id ) { $t_type = $tt; break; } }
               ?>
                 <tr>
-                  <td><?php echo esc_html( $term->name ); ?><?php if ( $term->parent_id ) echo ' <small style="color:var(--ah-muted);">↳ child</small>'; ?></td>
+                  <td><?php echo esc_html( $term->name ); ?><?php if ( $term->parent_id ) echo ' <small style="color:var(--ah-muted);">↳ child</small>'; ?><?php if ( ! empty( $term->is_protected ) ) echo ' <span title="System protected" style="cursor:default;">&#128274;</span>'; ?></td>
                   <td><code><?php echo esc_html( $term->slug ); ?></code></td>
                   <td><?php echo esc_html( $t_type->name ?? '—' ); ?></td>
                   <td><span class="ah-badge ah-badge-<?php echo esc_attr( $term->status ); ?>"><?php echo esc_html( $term->status ); ?></span></td>
                   <td class="row-actions">
-                    <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'terms', 'action' => 'edit', 'id' => $term->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
-                    <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'delete_id' => $term->id ), admin_url( 'admin.php' ) ), 'ah_del_tax' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete?');">Delete</a>
+                    <?php if ( empty( $term->is_protected ) ) : ?>
+                      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'terms', 'action' => 'edit', 'id' => $term->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
+                      <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'delete_id' => $term->id ), admin_url( 'admin.php' ) ), 'ah_del_tax' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete?');">Delete</a>
+                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>

@@ -86,6 +86,8 @@ class AH_Theme_Seeder {
 			'seed_properties',
 			'seed_contact_settings',
 			'seed_blog_posts',
+			'seed_guides_page',
+			'seed_blog_page',
 			'seed_static_pages',
 		];
 		$methods[] = 'seed_plugin_tables'; // populate CMS plugin tables if plugin is active
@@ -462,6 +464,48 @@ class AH_Theme_Seeder {
 			}
 		}
 		return [ 'inserted' => $count, 'updated' => 0 ];
+	}
+
+	public static function seed_guides_page(): array {
+		$slug = 'guides';
+		$existing = get_page_by_path( $slug );
+		if ( ! $existing ) {
+			$id = wp_insert_post( [
+				'post_title'   => 'Buying Guides',
+				'post_name'    => $slug,
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_content' => '',
+			] );
+			if ( $id && ! is_wp_error( $id ) ) {
+				update_post_meta( $id, '_wp_page_template', 'page-guides.php' );
+				return [ 'inserted' => 1, 'updated' => 0 ];
+			}
+		} else {
+			update_post_meta( $existing->ID, '_wp_page_template', 'page-guides.php' );
+		}
+		return [ 'inserted' => 0, 'updated' => 0 ];
+	}
+
+	public static function seed_blog_page(): array {
+		$slug = 'blog';
+		$existing = get_page_by_path( $slug );
+		if ( ! $existing ) {
+			$id = wp_insert_post( [
+				'post_title'   => 'Blog',
+				'post_name'    => $slug,
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_content' => '',
+			] );
+			if ( $id && ! is_wp_error( $id ) ) {
+				update_post_meta( $id, '_wp_page_template', 'page-blog.php' );
+				return [ 'inserted' => 1, 'updated' => 0 ];
+			}
+		} else {
+			update_post_meta( $existing->ID, '_wp_page_template', 'page-blog.php' );
+		}
+		return [ 'inserted' => 0, 'updated' => 0 ];
 	}
 
 	public static function seed_static_pages(): array {
@@ -1244,6 +1288,16 @@ class AH_Theme_Seeder {
 				$deleted++;
 			}
 		}
+
+		// Remove seeded WP pages
+		foreach ( [ 'guides', 'blog' ] as $slug ) {
+			$page = get_page_by_path( $slug );
+			if ( $page ) {
+				wp_delete_post( $page->ID, true );
+				$deleted++;
+			}
+		}
+
 		return [ 'deleted' => $deleted ];
 	}
 
