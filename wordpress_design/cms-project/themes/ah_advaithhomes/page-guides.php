@@ -140,26 +140,4 @@ $guides_query = new WP_Query( $query_args );
 </section>
 <?php endif; ?>
 
-<!-- ── Newsletter ─────────────────────────────────────────────────────────── -->
-<section class="section" aria-label="Newsletter signup">
-  <div class="container container--sm">
-    <div class="newsletter-block text-center" data-aos="fade-up">
-      <span class="section__eyebrow">Stay Informed</span>
-      <h2 class="section__title" style="font-size:1.75rem;margin-bottom:12px">
-        Get New Guides Straight to Your Inbox
-      </h2>
-      <p style="color:var(--text-secondary);margin-bottom:24px">
-        No spam. One email a week. Unsubscribe any time.
-      </p>
-      <form data-ah-newsletter class="ah-newsletter-form" novalidate>
-        <div class="newsletter-inline">
-          <input type="email" name="email" class="form-input" placeholder="Your email address" required>
-          <button type="submit" class="btn btn-primary">Subscribe →</button>
-        </div>
-        <div class="ah-form__status" aria-live="polite"></div>
-      </form>
-    </div>
-  </div>
-</section>
-
 <?php get_footer(); ?>

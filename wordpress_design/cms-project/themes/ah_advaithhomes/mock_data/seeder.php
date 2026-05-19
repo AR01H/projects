@@ -115,7 +115,7 @@ class AH_Theme_Seeder {
 			'linkedin_url'     => 'https://linkedin.com/company/advaithhomes',
 			'youtube_url'      => '',
 			'consultation_url' => '/contact/',
-			'tagline'          => "The UK's buyer's agent — working exclusively for you.",
+			'tagline'          => "The UK's buyer's agent - working exclusively for you.",
 		] ) );
 		return [ 'inserted' => 0, 'updated' => 1 ];
 	}
@@ -123,7 +123,7 @@ class AH_Theme_Seeder {
 	public static function seed_home_settings(): array {
 		update_option( 'ah_home_settings', wp_json_encode( [
 			'hero_headline'      => "Your Expert on the<br><em>Buying Side</em>",
-			'hero_subline'       => "The UK's only buyer's agent combining deep market access, expert negotiation, and end-to-end coordination — so you buy the right property at the right price.",
+			'hero_subline'       => "The UK's only buyer's agent combining deep market access, expert negotiation, and end-to-end coordination - so you buy the right property at the right price.",
 			'hero_cta_label'     => 'Book a Free Consultation',
 			'hero_cta_url'       => '/contact/',
 			'hero_stat_1'        => '£28M+',
@@ -426,22 +426,22 @@ class AH_Theme_Seeder {
 		$posts = [
 			[
 				'title'   => 'How Long Does Buying a Home in the UK Really Take?',
-				'content' => '<p>If you\'ve been told buying a home in the UK takes "about three months", that\'s broadly right — but it tells you almost nothing useful. This guide breaks every week down into what\'s happening, who\'s doing it, and what you can do (and not do) to keep things moving.</p><h2 id="before-week-zero">Before week zero: the work that pays itself back</h2><p>The fastest completions we\'ve ever seen all share one thing — the buyer had their finances mortgage-ready before they even made an offer. That means an Agreement in Principle (AIP) from a lender, a deposit sitting in an account ready to be transferred, and a solicitor on standby.</p><p>An AIP is a soft credit check that tells you what a lender is willing to lend you. It takes 24–48 hours and lasts 60–90 days. It\'s not a binding offer, but it tells estate agents you\'re serious.</p>',
-				'excerpt' => 'The complete week-by-week guide to UK property buying timelines — what happens, who does it, and how to avoid delays.',
+				'content' => '<p>If you\'ve been told buying a home in the UK takes "about three months", that\'s broadly right - but it tells you almost nothing useful. This guide breaks every week down into what\'s happening, who\'s doing it, and what you can do (and not do) to keep things moving.</p><h2 id="before-week-zero">Before week zero: the work that pays itself back</h2><p>The fastest completions we\'ve ever seen all share one thing - the buyer had their finances mortgage-ready before they even made an offer. That means an Agreement in Principle (AIP) from a lender, a deposit sitting in an account ready to be transferred, and a solicitor on standby.</p><p>An AIP is a soft credit check that tells you what a lender is willing to lend you. It takes 24–48 hours and lasts 60–90 days. It\'s not a binding offer, but it tells estate agents you\'re serious.</p>',
+				'excerpt' => 'The complete week-by-week guide to UK property buying timelines - what happens, who does it, and how to avoid delays.',
 				'cat'     => 'Buying Guides',
 				'featured'=> true,
 			],
 			[
 				'title'   => 'Off-Market Property: What It Is and How to Find It',
-				'content' => '<p>Around 25–30% of UK property transactions happen before the home ever reaches Rightmove or Zoopla. These off-market deals go to buyers with the right connections — or the right agent working on their behalf.</p><h2>Why sellers go off-market</h2><p>There are several reasons a seller might prefer a quiet sale: privacy, avoiding the disruption of viewings, or simply because they trust an agent to bring a qualified buyer directly. Probate sales, corporate relocations, and downsizing retirees are common sources.</p>',
-				'excerpt' => 'Discover how to access properties that never appear on Rightmove — the buyers who win off-market deals and the agents who find them.',
+				'content' => '<p>Around 25–30% of UK property transactions happen before the home ever reaches Rightmove or Zoopla. These off-market deals go to buyers with the right connections - or the right agent working on their behalf.</p><h2>Why sellers go off-market</h2><p>There are several reasons a seller might prefer a quiet sale: privacy, avoiding the disruption of viewings, or simply because they trust an agent to bring a qualified buyer directly. Probate sales, corporate relocations, and downsizing retirees are common sources.</p>',
+				'excerpt' => 'Discover how to access properties that never appear on Rightmove - the buyers who win off-market deals and the agents who find them.',
 				'cat'     => 'Buying Guides',
 				'featured'=> false,
 			],
 			[
 				'title'   => 'Stamp Duty 2025: The Complete Guide for Buyers',
 				'content' => '<p>Stamp Duty Land Tax (SDLT) is one of the largest costs of buying a property in England. The rules changed again in 2024 and the thresholds are different depending on whether you\'re a first-time buyer, moving home, or purchasing an additional property.</p><h2>Current stamp duty rates (2025)</h2><p>For properties purchased as your main home: 0% on the first £250,000; 5% on £250,001–£925,000; 10% on £925,001–£1.5M; 12% above £1.5M.</p>',
-				'excerpt' => 'Everything buyers need to know about stamp duty in 2025 — rates, thresholds, first-time buyer relief, and the additional property surcharge.',
+				'excerpt' => 'Everything buyers need to know about stamp duty in 2025 - rates, thresholds, first-time buyer relief, and the additional property surcharge.',
 				'cat'     => 'Finance',
 				'featured'=> false,
 			],
@@ -563,7 +563,7 @@ class AH_Theme_Seeder {
 				'excerpt' => 'Calculate your stamp duty land tax for any UK property purchase, updated for 2025.',
 				'html'    => self::sp_page(
 					'Stamp Duty Calculator',
-					'<h1>Stamp Duty Calculator 2025</h1><p class="sub">Calculate your Stamp Duty Land Tax (SDLT) instantly. Updated for 2025 thresholds — covers standard purchases, first-time buyers, and additional properties.</p><div class="card"><label for="sp">Property price (&pound;)</label><input type="number" id="sp" placeholder="e.g. 450000" min="0" step="1000"><label for="st">Buyer type</label><select id="st"><option value="std">Standard buyer (main home)</option><option value="ftb">First-time buyer</option><option value="btl">Additional property / Buy-to-let</option></select><button class="btn" onclick="sdlt()">Calculate Stamp Duty</button><div class="res" id="sr"><p style="opacity:.8;font-size:.875rem;margin:0">Your SDLT liability</p><div class="amt" id="sa"></div><div class="brk" id="sb"></div></div></div><script>function sf(n){return"£"+Math.round(n).toLocaleString("en-GB")}function sdlt(){var p=parseFloat(document.getElementById("sp").value)||0,t=document.getElementById("st").value,x=0,ls=[];if(t==="ftb"&&p<=425e3){ls=["No SDLT — first-time buyer relief applies (up to £425,000)"]}else if(t==="ftb"&&p<=625e3){x=(p-425e3)*.05;ls=["5% on "+sf(p-425e3)+" above £425k limit = "+sf(x)]}else{var bs=t==="btl"?[[25e4,.05],[925e3,.1],[15e5,.15],[1e18,.17]]:[[25e4,0],[925e3,.05],[15e5,.1],[1e18,.12]],pr=0;bs.forEach(function(b){if(p>pr){var c=Math.min(p,b[0])-pr,v=c*b[1];x+=v;if(v>0)ls.push(b[1]*100+"% on "+sf(c)+" = "+sf(v));pr=b[0]}})}if(t==="btl")ls.unshift("3% surcharge applies (additional / BTL property)");document.getElementById("sa").textContent=sf(x);document.getElementById("sb").innerHTML=ls.join("<br>")||"No stamp duty payable";document.getElementById("sr").style.display="block"}</script>',
+					'<h1>Stamp Duty Calculator 2025</h1><p class="sub">Calculate your Stamp Duty Land Tax (SDLT) instantly. Updated for 2025 thresholds - covers standard purchases, first-time buyers, and additional properties.</p><div class="card"><label for="sp">Property price (&pound;)</label><input type="number" id="sp" placeholder="e.g. 450000" min="0" step="1000"><label for="st">Buyer type</label><select id="st"><option value="std">Standard buyer (main home)</option><option value="ftb">First-time buyer</option><option value="btl">Additional property / Buy-to-let</option></select><button class="btn" onclick="sdlt()">Calculate Stamp Duty</button><div class="res" id="sr"><p style="opacity:.8;font-size:.875rem;margin:0">Your SDLT liability</p><div class="amt" id="sa"></div><div class="brk" id="sb"></div></div></div><script>function sf(n){return"£"+Math.round(n).toLocaleString("en-GB")}function sdlt(){var p=parseFloat(document.getElementById("sp").value)||0,t=document.getElementById("st").value,x=0,ls=[];if(t==="ftb"&&p<=425e3){ls=["No SDLT - first-time buyer relief applies (up to £425,000)"]}else if(t==="ftb"&&p<=625e3){x=(p-425e3)*.05;ls=["5% on "+sf(p-425e3)+" above £425k limit = "+sf(x)]}else{var bs=t==="btl"?[[25e4,.05],[925e3,.1],[15e5,.15],[1e18,.17]]:[[25e4,0],[925e3,.05],[15e5,.1],[1e18,.12]],pr=0;bs.forEach(function(b){if(p>pr){var c=Math.min(p,b[0])-pr,v=c*b[1];x+=v;if(v>0)ls.push(b[1]*100+"% on "+sf(c)+" = "+sf(v));pr=b[0]}})}if(t==="btl")ls.unshift("3% surcharge applies (additional / BTL property)");document.getElementById("sa").textContent=sf(x);document.getElementById("sb").innerHTML=ls.join("<br>")||"No stamp duty payable";document.getElementById("sr").style.display="block"}</script>',
 					'Free Calculator'
 				),
 			],
@@ -583,7 +583,7 @@ class AH_Theme_Seeder {
 				'excerpt' => 'A step-by-step checklist covering everything first-time buyers need before, during and after purchase.',
 				'html'    => self::sp_page(
 					'First-Time Buyer Checklist',
-					'<h1>First-Time Buyer Checklist</h1><p class="sub">Work through each step in order. Tick items off as you complete them.</p><div class="card"><h2>1. Finances</h2><div class="ci"><input type="checkbox" id="c1"><label for="c1">Check your credit report free via Experian, Equifax, or Credit Karma</label></div><div class="ci"><input type="checkbox" id="c2"><label for="c2">Calculate your total budget: deposit + stamp duty + legal fees + survey costs</label></div><div class="ci"><input type="checkbox" id="c3"><label for="c3">Get an Agreement in Principle (AIP) from a lender or mortgage broker</label></div><div class="ci"><input type="checkbox" id="c4"><label for="c4">Check eligibility for a Lifetime ISA (25% government bonus on savings up to &pound;4,000/year)</label></div><div class="ci"><input type="checkbox" id="c5"><label for="c5">Confirm stamp duty position — no SDLT on first &pound;425k for properties up to &pound;625k</label></div></div><div class="card"><h2>2. Search and View</h2><div class="ci"><input type="checkbox" id="c6"><label for="c6">Register with local estate agents and set up Rightmove / Zoopla alerts</label></div><div class="ci"><input type="checkbox" id="c7"><label for="c7">View at least 5 to 8 properties before making an offer</label></div><div class="ci"><input type="checkbox" id="c8"><label for="c8">Research recent sold prices in target area via Land Registry data</label></div><div class="ci"><input type="checkbox" id="c9"><label for="c9">Ask the vendor why they are selling and how long the property has been listed</label></div></div><div class="card"><h2>3. Offer and Legal</h2><div class="ci"><input type="checkbox" id="c10"><label for="c10">Submit your offer in writing via the estate agent</label></div><div class="ci"><input type="checkbox" id="c11"><label for="c11">Instruct a solicitor or licensed conveyancer immediately after offer acceptance</label></div><div class="ci"><input type="checkbox" id="c12"><label for="c12">Submit full mortgage application within 2 to 3 weeks of offer acceptance</label></div><div class="ci"><input type="checkbox" id="c13"><label for="c13">Book a RICS HomeBuyer Report or full Building Survey</label></div><div class="ci"><input type="checkbox" id="c14"><label for="c14">Review results of local authority, water, and environmental searches</label></div></div><div class="card"><h2>4. Exchange and Completion</h2><div class="ci"><input type="checkbox" id="c15"><label for="c15">Pay exchange deposit (typically 10% of purchase price)</label></div><div class="ci"><input type="checkbox" id="c16"><label for="c16">Agree a completion date with the vendor</label></div><div class="ci"><input type="checkbox" id="c17"><label for="c17">Arrange buildings insurance to begin from date of exchange</label></div><div class="ci"><input type="checkbox" id="c18"><label for="c18">Transfer remaining balance to solicitor and collect your keys!</label></div></div>',
+					'<h1>First-Time Buyer Checklist</h1><p class="sub">Work through each step in order. Tick items off as you complete them.</p><div class="card"><h2>1. Finances</h2><div class="ci"><input type="checkbox" id="c1"><label for="c1">Check your credit report free via Experian, Equifax, or Credit Karma</label></div><div class="ci"><input type="checkbox" id="c2"><label for="c2">Calculate your total budget: deposit + stamp duty + legal fees + survey costs</label></div><div class="ci"><input type="checkbox" id="c3"><label for="c3">Get an Agreement in Principle (AIP) from a lender or mortgage broker</label></div><div class="ci"><input type="checkbox" id="c4"><label for="c4">Check eligibility for a Lifetime ISA (25% government bonus on savings up to &pound;4,000/year)</label></div><div class="ci"><input type="checkbox" id="c5"><label for="c5">Confirm stamp duty position - no SDLT on first &pound;425k for properties up to &pound;625k</label></div></div><div class="card"><h2>2. Search and View</h2><div class="ci"><input type="checkbox" id="c6"><label for="c6">Register with local estate agents and set up Rightmove / Zoopla alerts</label></div><div class="ci"><input type="checkbox" id="c7"><label for="c7">View at least 5 to 8 properties before making an offer</label></div><div class="ci"><input type="checkbox" id="c8"><label for="c8">Research recent sold prices in target area via Land Registry data</label></div><div class="ci"><input type="checkbox" id="c9"><label for="c9">Ask the vendor why they are selling and how long the property has been listed</label></div></div><div class="card"><h2>3. Offer and Legal</h2><div class="ci"><input type="checkbox" id="c10"><label for="c10">Submit your offer in writing via the estate agent</label></div><div class="ci"><input type="checkbox" id="c11"><label for="c11">Instruct a solicitor or licensed conveyancer immediately after offer acceptance</label></div><div class="ci"><input type="checkbox" id="c12"><label for="c12">Submit full mortgage application within 2 to 3 weeks of offer acceptance</label></div><div class="ci"><input type="checkbox" id="c13"><label for="c13">Book a RICS HomeBuyer Report or full Building Survey</label></div><div class="ci"><input type="checkbox" id="c14"><label for="c14">Review results of local authority, water, and environmental searches</label></div></div><div class="card"><h2>4. Exchange and Completion</h2><div class="ci"><input type="checkbox" id="c15"><label for="c15">Pay exchange deposit (typically 10% of purchase price)</label></div><div class="ci"><input type="checkbox" id="c16"><label for="c16">Agree a completion date with the vendor</label></div><div class="ci"><input type="checkbox" id="c17"><label for="c17">Arrange buildings insurance to begin from date of exchange</label></div><div class="ci"><input type="checkbox" id="c18"><label for="c18">Transfer remaining balance to solicitor and collect your keys!</label></div></div>',
 					'Free Guide'
 				),
 			],
@@ -622,7 +622,7 @@ class AH_Theme_Seeder {
 				'excerpt' => 'Information about the cookies used on the Advaith Homes website and how to manage them.',
 				'html'    => self::sp_page(
 					'Cookie Policy',
-					'<h1>Cookie Policy</h1><p class="sub">Last updated: May 2025. This page explains how Advaith Homes uses cookies on our website.</p><div class="sec"><h2>What are cookies?</h2><p>Cookies are small text files placed on your device when you visit a website. They help us recognise returning visitors and understand site usage.</p></div><h2>Cookies we use</h2><table><thead><tr><th>Cookie</th><th>Type</th><th>Purpose</th><th>Duration</th></tr></thead><tbody><tr><td>wordpress_*</td><td>Essential</td><td>WordPress session management</td><td>Session</td></tr><tr><td>wordpress_logged_in_*</td><td>Essential</td><td>Keeps admin users logged in</td><td>Session</td></tr><tr><td>_ga, _gid</td><td>Analytics</td><td>Google Analytics — anonymous visit tracking</td><td>2 years / 24h</td></tr><tr><td>ah_consent</td><td>Functional</td><td>Remembers your cookie consent choice</td><td>1 year</td></tr></tbody></table><h2>Managing cookies</h2><p class="sub">Control cookies through your browser settings. Blocking essential cookies may affect site functionality. To opt out of Google Analytics, use the official opt-out add-on at tools.google.com/dlpage/gaoptout</p>'
+					'<h1>Cookie Policy</h1><p class="sub">Last updated: May 2025. This page explains how Advaith Homes uses cookies on our website.</p><div class="sec"><h2>What are cookies?</h2><p>Cookies are small text files placed on your device when you visit a website. They help us recognise returning visitors and understand site usage.</p></div><h2>Cookies we use</h2><table><thead><tr><th>Cookie</th><th>Type</th><th>Purpose</th><th>Duration</th></tr></thead><tbody><tr><td>wordpress_*</td><td>Essential</td><td>WordPress session management</td><td>Session</td></tr><tr><td>wordpress_logged_in_*</td><td>Essential</td><td>Keeps admin users logged in</td><td>Session</td></tr><tr><td>_ga, _gid</td><td>Analytics</td><td>Google Analytics - anonymous visit tracking</td><td>2 years / 24h</td></tr><tr><td>ah_consent</td><td>Functional</td><td>Remembers your cookie consent choice</td><td>1 year</td></tr></tbody></table><h2>Managing cookies</h2><p class="sub">Control cookies through your browser settings. Blocking essential cookies may affect site functionality. To opt out of Google Analytics, use the official opt-out add-on at tools.google.com/dlpage/gaoptout</p>'
 				),
 			],
 
@@ -639,7 +639,7 @@ class AH_Theme_Seeder {
 		$pfx = $wpdb->prefix . 'ah_';
 
 		if ( ! self::table_exists( "{$pfx}pages" ) ) {
-			return self::skip( 'CMS plugin tables not found — activate the plugin first' );
+			return self::skip( 'CMS plugin tables not found - activate the plugin first' );
 		}
 
 		$count = 0;
@@ -662,7 +662,7 @@ class AH_Theme_Seeder {
 				'instagram_url'    => 'https://instagram.com/advaithhomes',
 				'youtube_url'      => '',
 				'consultation_url' => '/contact/',
-				'footer_tagline'   => "The UK's buyer's agent — working exclusively for you.",
+				'footer_tagline'   => "The UK's buyer's agent - working exclusively for you.",
 				'primary_color'    => '#b7791f',
 			];
 			foreach ( $sm as $key => $val ) {
@@ -687,7 +687,7 @@ class AH_Theme_Seeder {
 				'page_id'            => $home_id,
 				'badge_text'         => "#1 Trusted Buyer's Agent",
 				'heading'            => 'Your Expert on the Buying Side',
-				'subheading'         => "The UK's only buyer's agent combining deep market access, expert negotiation, and end-to-end coordination — so you buy the right property at the right price.",
+				'subheading'         => "The UK's only buyer's agent combining deep market access, expert negotiation, and end-to-end coordination - so you buy the right property at the right price.",
 				'cta_primary_text'   => 'Book a Free Consultation',
 				'cta_primary_url'    => '/contact/',
 				'cta_secondary_text' => 'See Our Services',
@@ -718,7 +718,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $wut, [
 				'page_id'        => $home_id,
 				'heading'        => "Why You Need a Buyer's Agent",
-				'description'    => "Estate agents work for the seller. We work exclusively for you — from search to negotiation to completion.",
+				'description'    => "Estate agents work for the seller. We work exclusively for you - from search to negotiation to completion.",
 				'more_link_text' => 'Learn More →',
 				'more_link_url'  => '/services/',
 				'is_visible'     => 1,
@@ -726,9 +726,9 @@ class AH_Theme_Seeder {
 			$wu_id = (int) $wpdb->insert_id;
 			if ( $wu_id && self::table_exists( $wuct ) ) {
 				foreach ( [
-					[ 1, 'Exclusive Market Access',   'We source up to 30% of properties before they reach Rightmove — giving you first pick before the competition.' ],
+					[ 1, 'Exclusive Market Access',   'We source up to 30% of properties before they reach Rightmove - giving you first pick before the competition.' ],
 					[ 2, 'Expert Negotiation',         'Our agents save clients an average of £42,000 below asking price through skilled, data-backed negotiation.' ],
-					[ 3, 'End-to-End Coordination',    'We manage solicitors, surveyors, and mortgage brokers so you focus on decisions — not admin.' ],
+					[ 3, 'End-to-End Coordination',    'We manage solicitors, surveyors, and mortgage brokers so you focus on decisions - not admin.' ],
 					[ 4, 'Works Only For You',         'Unlike estate agents, we have zero conflict of interest. Our only job is to get you the best outcome.' ],
 				] as [ $i, $title, $desc ] ) {
 					$wpdb->insert( $wuct, [ 'why_us_id' => $wu_id, 'title' => $title, 'description' => $desc, 'sort_order' => $i, 'status' => 'active' ] );
@@ -745,7 +745,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $gtt, [
 				'page_id'        => $home_id,
 				'heading'        => 'We Guide You Through Every Step',
-				'description'    => "Buying a home is one of the biggest decisions you'll make. We make it straightforward, safe, and stress-free — from your first brief to getting the keys.",
+				'description'    => "Buying a home is one of the biggest decisions you'll make. We make it straightforward, safe, and stress-free - from your first brief to getting the keys.",
 				'more_link_text' => 'Our Process →',
 				'more_link_url'  => '/services/',
 				'is_visible'     => 1,
@@ -753,7 +753,7 @@ class AH_Theme_Seeder {
 			$gt_id = (int) $wpdb->insert_id;
 			if ( $gt_id && self::table_exists( $gtpt ) ) {
 				foreach ( [
-					[ 1, 'Define your brief — budget, location, property type, must-haves and deal-breakers' ],
+					[ 1, 'Define your brief - budget, location, property type, must-haves and deal-breakers' ],
 					[ 2, 'Access off-market and on-market properties before competing buyers see them' ],
 					[ 3, 'View, shortlist, and run full independent due-diligence checks' ],
 					[ 4, 'Negotiate the best price and contract terms entirely on your behalf' ],
@@ -773,7 +773,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $dift, [
 				'page_id'        => $home_id,
 				'heading'        => "How We're Different From Estate Agents",
-				'information'    => "Estate agents are legally obligated to act in the seller's best interest. We're legally obligated to act in yours — the difference is everything.",
+				'information'    => "Estate agents are legally obligated to act in the seller's best interest. We're legally obligated to act in yours - the difference is everything.",
 				'more_link_text' => 'About Us →',
 				'more_link_url'  => '/about/',
 				'is_visible'     => 1,
@@ -781,8 +781,8 @@ class AH_Theme_Seeder {
 			$dif_id = (int) $wpdb->insert_id;
 			if ( $dif_id && self::table_exists( $diftt ) ) {
 				foreach ( [
-					[ 1, 'Works for',             'The buyer — exclusively',         'The seller' ],
-					[ 2, 'Off-market access',      'Yes — up to 30% of stock',       'Listed properties only' ],
+					[ 1, 'Works for',             'The buyer - exclusively',         'The seller' ],
+					[ 2, 'Off-market access',      'Yes - up to 30% of stock',       'Listed properties only' ],
 					[ 3, 'Negotiation goal',       'Lowest price for you',            'Highest price for seller' ],
 					[ 4, 'Conflict of interest',   'None',                            'Always (paid by seller)' ],
 					[ 5, 'Searches & due-dil.',    'Full independent check',          'Not provided' ],
@@ -810,10 +810,10 @@ class AH_Theme_Seeder {
 			$exp_id = (int) $wpdb->insert_id;
 			if ( $exp_id && self::table_exists( $expct ) ) {
 				foreach ( [
-					[ 1, 'First-Time Buyers',    'From AIP to completion — we guide first-timers through every step and avoid the costly traps.' ],
+					[ 1, 'First-Time Buyers',    'From AIP to completion - we guide first-timers through every step and avoid the costly traps.' ],
 					[ 2, 'Upsizers & Families',  'Timing your sale and purchase simultaneously is complex. We coordinate both sides seamlessly.' ],
 					[ 3, 'Buy-to-Let Investors', 'Yield analysis, tenant demand data, and off-market deal sourcing for investors who want returns.' ],
-					[ 4, 'Relocation Buyers',    'Moving city or country? We act as your local expert on the ground — no need for multiple trips.' ],
+					[ 4, 'Relocation Buyers',    'Moving city or country? We act as your local expert on the ground - no need for multiple trips.' ],
 					[ 5, 'Probate & Inheritance','Sensitive, time-pressured purchases handled with care, discretion, and full legal awareness.' ],
 				] as [ $i, $title, $desc ] ) {
 					$wpdb->insert( $expct, [ 'section_id' => $exp_id, 'title' => $title, 'description' => $desc, 'sort_order' => $i, 'status' => 'active' ] );
@@ -830,7 +830,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $wrt, [
 				'page_id'        => $home_id,
 				'heading'        => "Why a Buyer's Agent Is Worth Every Penny",
-				'information'    => "The average UK buyer leaves significant money on the table. Our fee pays for itself — typically many times over.",
+				'information'    => "The average UK buyer leaves significant money on the table. Our fee pays for itself - typically many times over.",
 				'more_link_text' => 'Our Fees →',
 				'more_link_url'  => '/services/',
 				'is_visible'     => 1,
@@ -840,7 +840,7 @@ class AH_Theme_Seeder {
 				foreach ( [
 					[ 1, 'The Average Buyer Pays 3% Too Much',       "Without independent data, most buyers accept early offers or fail to challenge inflated asking prices. We don't." ],
 					[ 2, 'Off-Market Eliminates Bidding Wars',        'Bidding wars cost buyers an average of 8% above guide price. Off-market deals remove the competition entirely.' ],
-					[ 3, 'Survey Issues Cost £12k on Average',        'Missing structural or legal problems before exchange can be catastrophic. We identify them early — and use them to renegotiate.' ],
+					[ 3, 'Survey Issues Cost £12k on Average',        'Missing structural or legal problems before exchange can be catastrophic. We identify them early - and use them to renegotiate.' ],
 				] as [ $i, $title, $desc ] ) {
 					$wpdb->insert( $wrct, [ 'section_id' => $wr_id, 'title' => $title, 'description' => $desc, 'sort_order' => $i, 'status' => 'active' ] );
 					$count += (int) (bool) $wpdb->rows_affected;
@@ -855,7 +855,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $apht, [
 				'page_id'     => $about_id,
 				'heading'     => 'About Advaith Homes',
-				'information' => "We're the UK's dedicated buyer's agent — a team of property experts who work exclusively for buyers, never sellers. Our mission is to level the playing field so that every buyer has expert representation on their side.",
+				'information' => "We're the UK's dedicated buyer's agent - a team of property experts who work exclusively for buyers, never sellers. Our mission is to level the playing field so that every buyer has expert representation on their side.",
 				'is_visible'  => 1,
 			] );
 			$count += (int) (bool) $wpdb->rows_affected;
@@ -877,7 +877,7 @@ class AH_Theme_Seeder {
 					[ 1, 'Founded in 2019 after witnessing buyers consistently lose out through poor representation' ],
 					[ 2, 'Over £28 million saved for clients across 500+ completed transactions' ],
 					[ 3, 'Access to off-market properties through an exclusive network of agent relationships' ],
-					[ 4, 'Regulated, transparent, and 100% conflict-free advice — always on your side' ],
+					[ 4, 'Regulated, transparent, and 100% conflict-free advice - always on your side' ],
 					[ 5, 'Average client saves £42,000 against the initial asking price' ],
 				] as [ $i, $pt ] ) {
 					$wpdb->insert( $astpt, [ 'story_id' => $ast_id, 'point_text' => $pt, 'sort_order' => $i ] );
@@ -891,7 +891,7 @@ class AH_Theme_Seeder {
 		$avt = "{$pfx}about_values";
 		if ( $about_id && self::table_exists( $avt ) && ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$avt}` WHERE page_id = %d", $about_id ) ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			foreach ( [
-				[ 1, 'Buyer-First Always',        "We work exclusively for buyers — no vendor relationships, no conflicts, ever." ],
+				[ 1, 'Buyer-First Always',        "We work exclusively for buyers - no vendor relationships, no conflicts, ever." ],
 				[ 2, 'Radical Transparency',       "Fixed fees, clear scope, no hidden charges. You always know exactly what you're getting." ],
 				[ 3, 'Data-Driven Decisions',      'Every recommendation is backed by real market data, comparable sales, and independent analysis.' ],
 				[ 4, 'Long-Term Relationships',    "Most of our clients return for their next purchase. That's how we measure success." ],
@@ -907,7 +907,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $spht, [
 				'page_id'     => $svc_id,
 				'heading'     => 'Our Services',
-				'information' => 'From your first search to handing over the keys — complete buyer-side representation at every stage of the property purchase.',
+				'information' => 'From your first search to handing over the keys - complete buyer-side representation at every stage of the property purchase.',
 				'is_visible'  => 1,
 			] );
 			$count += (int) (bool) $wpdb->rows_affected;
@@ -922,10 +922,10 @@ class AH_Theme_Seeder {
 					'slug'  => 'property-search', 'sort_order' => 1,
 					'title' => 'Property Search & Shortlisting',
 					'short' => 'Comprehensive on and off-market property search tailored to your exact brief.',
-					'full'  => '<p>We begin with a detailed briefing to understand exactly what you need — location, size, budget, lifestyle, must-haves, and deal-breakers. Then we search the entire market on your behalf: Rightmove, Zoopla, our exclusive off-market network, and direct agent relationships.</p><p>Every property we recommend has been pre-assessed against your brief. You only see the homes worth your time.</p>',
+					'full'  => '<p>We begin with a detailed briefing to understand exactly what you need - location, size, budget, lifestyle, must-haves, and deal-breakers. Then we search the entire market on your behalf: Rightmove, Zoopla, our exclusive off-market network, and direct agent relationships.</p><p>Every property we recommend has been pre-assessed against your brief. You only see the homes worth your time.</p>',
 					'pts'   => [
 						'Detailed needs analysis and buyer brief',
-						'Full market search — on and off-market',
+						'Full market search - on and off-market',
 						'Pre-assessment and shortlisting against brief',
 						'Accompanied viewings with expert commentary',
 						'Area research and comparable sales analysis',
@@ -934,21 +934,21 @@ class AH_Theme_Seeder {
 				[
 					'slug'  => 'off-market-access', 'sort_order' => 2,
 					'title' => 'Off-Market Property Access',
-					'short' => 'Up to 30% of our deals are off-market — no competition, no bidding wars.',
+					'short' => 'Up to 30% of our deals are off-market - no competition, no bidding wars.',
 					'full'  => '<p>Our relationships with estate agents, developers, and property solicitors across the UK give us access to properties before they are listed publicly. This off-market network means you can secure the best homes without competing against a field of buyers.</p><p>Off-market purchases typically complete 3 weeks faster and at a lower price than openly marketed equivalents.</p>',
 					'pts'   => [
 						'Exclusive agent network across the UK',
 						'Developer and new-build off-plan relationships',
 						'Probate and private sale introductions',
 						'Pre-market viewings before public launch',
-						'No bidding wars — fewer competing buyers',
+						'No bidding wars - fewer competing buyers',
 					],
 				],
 				[
 					'slug'  => 'negotiation-strategy', 'sort_order' => 3,
 					'title' => 'Negotiation & Offer Strategy',
 					'short' => 'Data-backed negotiation that saves our clients an average of £42,000.',
-					'full'  => '<p>Negotiating a property price without independent data is like negotiating a salary without knowing the market rate. We arm you with comparable sold prices, time-on-market data, chain status, and vendor motivation — then negotiate on your behalf.</p><p>Our average client saves 5–8% against the initial asking price. On a £500,000 property, that is £25,000–£40,000.</p>',
+					'full'  => '<p>Negotiating a property price without independent data is like negotiating a salary without knowing the market rate. We arm you with comparable sold prices, time-on-market data, chain status, and vendor motivation - then negotiate on your behalf.</p><p>Our average client saves 5–8% against the initial asking price. On a £500,000 property, that is £25,000–£40,000.</p>',
 					'pts'   => [
 						'Comparable sold price analysis',
 						'Vendor motivation and chain research',
@@ -961,7 +961,7 @@ class AH_Theme_Seeder {
 					'slug'  => 'due-diligence', 'sort_order' => 4,
 					'title' => 'Due Diligence & Survey Coordination',
 					'short' => 'Independent checks to ensure you know everything before you commit.',
-					'full'  => '<p>Missing a structural defect, planning issue, or legal problem before exchange can cost tens of thousands of pounds — or make a property unmortgageable. We coordinate all pre-purchase checks independently from the estate agent.</p><p>We interpret survey findings, identify material risks, and use issues we find to re-negotiate the price where appropriate.</p>',
+					'full'  => '<p>Missing a structural defect, planning issue, or legal problem before exchange can cost tens of thousands of pounds - or make a property unmortgageable. We coordinate all pre-purchase checks independently from the estate agent.</p><p>We interpret survey findings, identify material risks, and use issues we find to re-negotiate the price where appropriate.</p>',
 					'pts'   => [
 						'Independent RICS survey commissioning',
 						'Structural and planning history checks',
@@ -974,7 +974,7 @@ class AH_Theme_Seeder {
 					'slug'  => 'conveyancing-management', 'sort_order' => 5,
 					'title' => 'Conveyancing & Legal Coordination',
 					'short' => 'We manage your solicitor, chase the chain, and keep the deal moving.',
-					'full'  => '<p>Most purchase delays and fall-throughs are caused by poor communication between solicitors, agents, and lenders. As your representative we bridge that gap — chasing all parties, flagging issues early, and keeping the transaction on track.</p><p>Our clients complete 3–4 weeks faster on average than buyers without representation.</p>',
+					'full'  => '<p>Most purchase delays and fall-throughs are caused by poor communication between solicitors, agents, and lenders. As your representative we bridge that gap - chasing all parties, flagging issues early, and keeping the transaction on track.</p><p>Our clients complete 3–4 weeks faster on average than buyers without representation.</p>',
 					'pts'   => [
 						'Solicitor introduction and coordination',
 						'Chain status monitoring and chasing',
@@ -987,7 +987,7 @@ class AH_Theme_Seeder {
 					'slug'  => 'relocation-investment', 'sort_order' => 6,
 					'title' => 'Relocation & Investment Services',
 					'short' => 'Specialist support for those relocating or building a property portfolio.',
-					'full'  => '<p>Relocating from another city or country means you cannot easily visit properties at short notice. We act as your eyes and ears on the ground — attending viewings, meeting agents, and giving you honest, expert feedback on every property we see.</p><p>For investors, we add rental yield analysis, tenant demand data, and long-term capital growth projections to every recommendation.</p>',
+					'full'  => '<p>Relocating from another city or country means you cannot easily visit properties at short notice. We act as your eyes and ears on the ground - attending viewings, meeting agents, and giving you honest, expert feedback on every property we see.</p><p>For investors, we add rental yield analysis, tenant demand data, and long-term capital growth projections to every recommendation.</p>',
 					'pts'   => [
 						'Remote search and virtual viewing support',
 						'Area research and school catchment analysis',
@@ -1021,9 +1021,9 @@ class AH_Theme_Seeder {
 		if ( self::table_exists( $tmt ) && ! $wpdb->get_var( "SELECT id FROM `{$tmt}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			foreach ( [
 				[ 1, 'Advaith Rajkumar', 'Founder & Lead Buyer\'s Agent',              1, 'contact@advaithhomes.co.uk', 'https://linkedin.com/in/advaithhomes', "Advaith founded Advaith Homes in 2019 after eight years as a senior estate agent, watching buyers consistently lose out through poor representation. He personally oversees every acquisition above £750,000 and has negotiated over £28 million in savings for clients." ],
-				[ 2, 'Sarah Mitchell',   'Senior Buyer\'s Agent — London & South East', 1, 'sarah@advaithhomes.co.uk',   '',                                     "Sarah brings 12 years of property experience across prime London and the commuter belt. She specialises in family relocations and upsizers, with an unrivalled off-market network across Richmond, Wimbledon, and Surrey." ],
+				[ 2, 'Sarah Mitchell',   'Senior Buyer\'s Agent - London & South East', 1, 'sarah@advaithhomes.co.uk',   '',                                     "Sarah brings 12 years of property experience across prime London and the commuter belt. She specialises in family relocations and upsizers, with an unrivalled off-market network across Richmond, Wimbledon, and Surrey." ],
 				[ 3, 'Priya Sharma',     'Finance & Mortgage Specialist',               0, 'priya@advaithhomes.co.uk',   '',                                     "Priya is a qualified mortgage adviser who joined Advaith Homes to provide clients with independent financing guidance integrated into the buying process. She has access to over 90 lenders and specialises in complex income structures." ],
-				[ 4, 'James Cooper',     'Legal Liaison & Due Diligence Lead',          0, 'james@advaithhomes.co.uk',   '',                                     "James spent 10 years as a property solicitor before moving into buyer representation. He leads all due diligence, survey interpretation, and conveyancing coordination — catching issues early and using them to renegotiate." ],
+				[ 4, 'James Cooper',     'Legal Liaison & Due Diligence Lead',          0, 'james@advaithhomes.co.uk',   '',                                     "James spent 10 years as a property solicitor before moving into buyer representation. He leads all due diligence, survey interpretation, and conveyancing coordination - catching issues early and using them to renegotiate." ],
 			] as [ $i, $name, $designation, $is_featured, $email, $linkedin, $bio ] ) {
 				$wpdb->insert( $tmt, [
 					'name'         => $name,
@@ -1047,11 +1047,11 @@ class AH_Theme_Seeder {
 				DB_NAME, $rvt, 'short_desc'
 			) ) );
 			foreach ( [
-				[ 'James & Rachel T.',  'First-Time Buyers, Battersea',       5, 1, 'Off-market flat secured 8% below comparable properties',   "We were first-time buyers in London — overwhelmed, outbid, and frankly terrified. Advaith Homes found us a flat off-market, below our budget, in six weeks. They held our hands the entire way. Genuinely life-changing." ],
+				[ 'James & Rachel T.',  'First-Time Buyers, Battersea',       5, 1, 'Off-market flat secured 8% below comparable properties',   "We were first-time buyers in London - overwhelmed, outbid, and frankly terrified. Advaith Homes found us a flat off-market, below our budget, in six weeks. They held our hands the entire way. Genuinely life-changing." ],
 				[ 'Michael R.',         'Investor, Manchester & Leeds',        5, 1, '6 investment properties acquired across two cities',        "I've bought six properties through Advaith Homes over three years. Their yield analysis is better than any agent I've used, and the off-market access means I'm not competing against 40 other bidders." ],
 				[ 'Priya & Vikram S.',  'Relocating from Singapore',          5, 1, 'Completed purchase without the buyer visiting until moving day', "Moving from Singapore, we needed someone to be our eyes on the ground. Sarah viewed 14 properties over two weeks and gave us honest, detailed feedback on each. We bought a brilliant family home in Richmond without a single wasted trip." ],
 				[ 'Catherine B.',       'Downsizer, Kensington to Devon',     5, 0, 'Negotiated £65,000 below asking on a probate sale',         "The chain management alone was worth the fee. James kept everything moving when the estate agent went quiet for weeks. We completed on time, below asking, and without the stress I feared." ],
-				[ 'Tom & Alicia H.',    'Upsizers, South West London',        5, 0, 'Won competitive offer on third attempt after strategy change', "We'd been outbid three times before we found Advaith Homes. They changed our offer strategy completely — we won the next property we went for, at a price we were comfortable with." ],
+				[ 'Tom & Alicia H.',    'Upsizers, South West London',        5, 0, 'Won competitive offer on third attempt after strategy change', "We'd been outbid three times before we found Advaith Homes. They changed our offer strategy completely - we won the next property we went for, at a price we were comfortable with." ],
 				[ 'David & Emma L.',    'Second Home, Cotswolds',             5, 0, 'Off-market farmhouse secured in 7 weeks',                   "Finding a second home in a competitive market without living nearby is a nightmare. Advaith Homes found us exactly what we were looking for within two months, including a property we'd never have found on Rightmove." ],
 			] as [ $reviewer_name, $reviewer_title, $rating, $is_featured, $short_desc, $review_text ] ) {
 				$data = [
@@ -1075,10 +1075,10 @@ class AH_Theme_Seeder {
 		$faqt = "{$pfx}faqs";
 		if ( self::table_exists( $faqt ) && ! $wpdb->get_var( "SELECT id FROM `{$faqt}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			foreach ( [
-				[ 1, "What is a buyer's agent?",                            "A buyer's agent (also called a buying agent) is a property professional who acts exclusively for the buyer. Unlike estate agents — legally obligated to act for the seller — a buyer's agent's only duty is to you. We search for properties, negotiate prices, coordinate due diligence, and manage the transaction on your behalf." ],
+				[ 1, "What is a buyer's agent?",                            "A buyer's agent (also called a buying agent) is a property professional who acts exclusively for the buyer. Unlike estate agents - legally obligated to act for the seller - a buyer's agent's only duty is to you. We search for properties, negotiate prices, coordinate due diligence, and manage the transaction on your behalf." ],
 				[ 2, 'How much does Advaith Homes charge?',                  "We offer fixed, transparent fees agreed in advance. Fees depend on the service level required and the price range of the property. Contact us for a no-obligation quote. In most cases, the savings we achieve far exceed our fee." ],
-				[ 3, 'Do I have to use your recommended solicitor or broker?', "Not at all. We have relationships with excellent independent solicitors and mortgage advisers, and we're happy to recommend them — but you are entirely free to use anyone you choose." ],
-				[ 4, 'Can you help with off-market properties?',             "Yes — this is one of our core strengths. We maintain relationships with estate agents, developers, and solicitors across the UK, giving us access to properties before they're publicly listed. Typically 25–30% of our clients' purchases are off-market." ],
+				[ 3, 'Do I have to use your recommended solicitor or broker?', "Not at all. We have relationships with excellent independent solicitors and mortgage advisers, and we're happy to recommend them - but you are entirely free to use anyone you choose." ],
+				[ 4, 'Can you help with off-market properties?',             "Yes - this is one of our core strengths. We maintain relationships with estate agents, developers, and solicitors across the UK, giving us access to properties before they're publicly listed. Typically 25–30% of our clients' purchases are off-market." ],
 				[ 5, 'How long does the buying process take?',               "From initial briefing to completion, most clients buy within 8–16 weeks. Off-market purchases can be faster. We'll give you a realistic timeline based on your specific brief and target market." ],
 				[ 6, 'Do you operate across the whole UK?',                  "We operate primarily in London, the South East, and major UK cities. For other areas, we work with a trusted network of buying agents and will always be honest if another agent is better placed to help you." ],
 				[ 7, "Is a buyer's agent worth it for a property under £500,000?", "Absolutely. Our negotiation alone typically saves 5–8% of the purchase price. On a £400,000 property that's £20,000–£32,000. We also offer a negotiation-only service for buyers who have already found their property." ],
@@ -1093,11 +1093,11 @@ class AH_Theme_Seeder {
 		$nbit = "{$pfx}news_bar_items";
 		if ( self::table_exists( $nbit ) && ! $wpdb->get_var( "SELECT id FROM `{$nbit}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			foreach ( [
-				[ 1, 'New: Off-market properties now available in Richmond, Wimbledon & Surrey — register today',       '/contact/' ],
-				[ 2, 'UK property market update: Average asking prices up 2.3% — expert analysis available',            '/blog/' ],
-				[ 3, 'Advaith Homes rated 4.9/5 by 200+ verified clients — read the stories',                          '/client-stories/' ],
-				[ 4, 'Free 30-minute consultation with a buyer\'s agent — no obligation, book now',                     '/contact/' ],
-				[ 5, 'New guide: How to Buy a Home in the UK — 25-page step-by-step walkthrough, free download',        '/guides/' ],
+				[ 1, 'New: Off-market properties now available in Richmond, Wimbledon & Surrey - register today',       '/contact/' ],
+				[ 2, 'UK property market update: Average asking prices up 2.3% - expert analysis available',            '/blog/' ],
+				[ 3, 'Advaith Homes rated 4.9/5 by 200+ verified clients - read the stories',                          '/client-stories/' ],
+				[ 4, 'Free 30-minute consultation with a buyer\'s agent - no obligation, book now',                     '/contact/' ],
+				[ 5, 'New guide: How to Buy a Home in the UK - 25-page step-by-step walkthrough, free download',        '/guides/' ],
 			] as [ $i, $text, $url ] ) {
 				$wpdb->insert( $nbit, [ 'text' => $text, 'link_url' => $url, 'sort_order' => $i, 'status' => 'active' ] );
 				$count += (int) (bool) $wpdb->rows_affected;
@@ -1125,7 +1125,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $csht, [
 				'page_id'     => $cs_id,
 				'heading'     => 'Client Stories',
-				'information' => "Real results from real buyers. Every story here is from a client who trusted us to guide one of the biggest purchases of their life — and came out ahead.",
+				'information' => "Real results from real buyers. Every story here is from a client who trusted us to guide one of the biggest purchases of their life - and came out ahead.",
 				'is_visible'  => 1,
 			] );
 			$count += (int) (bool) $wpdb->rows_affected;
@@ -1136,7 +1136,7 @@ class AH_Theme_Seeder {
 		if ( self::table_exists( $fct ) && ! $wpdb->get_var( "SELECT id FROM `{$fct}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$wpdb->insert( $fct, [
 				'site_name'            => 'Advaith Homes',
-				'tagline'              => "The UK's buyer's agent — working exclusively for you.",
+				'tagline'              => "The UK's buyer's agent - working exclusively for you.",
 				'copyright_text'       => '© ' . gmdate( 'Y' ) . ' Advaith Homes. All rights reserved.',
 				'get_in_touch_heading' => 'Get in Touch',
 				'is_visible'           => 1,
@@ -1223,19 +1223,19 @@ class AH_Theme_Seeder {
 				[
 					'blog', 1, 'how-long-does-buying-a-home-take',
 					'How Long Does Buying a Home in the UK Really Take?',
-					'The complete week-by-week guide to UK property buying timelines — what happens, who does it, and how to avoid delays.',
-					'<p>If you\'ve been told buying a home in the UK takes "about three months", that\'s broadly right — but it tells you almost nothing useful. This guide breaks every stage down into what\'s happening, who\'s doing it, and what you can do to keep things moving.</p><h2>Before you start: the work that pays itself back</h2><p>The fastest completions share one thing in common — the buyer had their finances ready before they made an offer. That means an Agreement in Principle, a deposit sitting ready, and a solicitor on standby.</p>',
+					'The complete week-by-week guide to UK property buying timelines - what happens, who does it, and how to avoid delays.',
+					'<p>If you\'ve been told buying a home in the UK takes "about three months", that\'s broadly right - but it tells you almost nothing useful. This guide breaks every stage down into what\'s happening, who\'s doing it, and what you can do to keep things moving.</p><h2>Before you start: the work that pays itself back</h2><p>The fastest completions share one thing in common - the buyer had their finances ready before they made an offer. That means an Agreement in Principle, a deposit sitting ready, and a solicitor on standby.</p>',
 				],
 				[
 					'blog', 1, 'off-market-property-guide',
 					'Off-Market Property: What It Is and How to Find It',
-					"How to access properties that never appear on Rightmove — and why buyers who win off-market deals use a buyer's agent.",
-					"<p>Around 25–30% of UK property transactions happen before the home ever reaches Rightmove. These off-market deals go to buyers with the right connections — or the right agent working on their behalf.</p><h2>Why sellers go off-market</h2><p>Privacy, avoiding the disruption of viewings, or simply trusting an agent to bring a qualified buyer directly. Probate sales, corporate relocations, and downsizing retirees are the most common sources.</p>",
+					"How to access properties that never appear on Rightmove - and why buyers who win off-market deals use a buyer's agent.",
+					"<p>Around 25–30% of UK property transactions happen before the home ever reaches Rightmove. These off-market deals go to buyers with the right connections - or the right agent working on their behalf.</p><h2>Why sellers go off-market</h2><p>Privacy, avoiding the disruption of viewings, or simply trusting an agent to bring a qualified buyer directly. Probate sales, corporate relocations, and downsizing retirees are the most common sources.</p>",
 				],
 				[
 					'blog', 0, 'stamp-duty-guide-2025',
 					'Stamp Duty 2025: The Complete Guide for Buyers',
-					'Everything buyers need to know about stamp duty in 2025 — rates, thresholds, first-time buyer relief, and the additional property surcharge.',
+					'Everything buyers need to know about stamp duty in 2025 - rates, thresholds, first-time buyer relief, and the additional property surcharge.',
 					'<p>Stamp Duty Land Tax (SDLT) is one of the largest costs of buying a property in England. The rules changed again in 2024 and the thresholds are different depending on whether you\'re a first-time buyer, moving home, or purchasing an additional property.</p><h2>Current stamp duty rates (2025)</h2><p>For properties purchased as your main home: 0% on the first £250,000; 5% on £250,001–£925,000; 10% on £925,001–£1.5M; 12% above £1.5M.</p>',
 				],
 				[
@@ -1324,7 +1324,7 @@ class AH_Theme_Seeder {
 		}
 		$options = [ 'ah_site_settings', 'ah_home_settings', 'ah_guide_nav', 'ah_guide_categories', 'ah_nav_buying_topics', 'ah_nav_finance_topics', 'ah_nav_legal_topics', 'ah_process_steps', 'ah_site_stats', 'ah_trust_signals', 'ah_theme_navigation', 'ah_theme_footer', 'ah_cms_navigation', 'ah_cms_footer', 'ah_cms_nav_cta' ];
 		foreach ( $options as $opt ) {
-			$counts[ $opt ] = get_option( $opt ) !== false ? '✓' : '—';
+			$counts[ $opt ] = get_option( $opt ) !== false ? '✓' : '-';
 		}
 		return $counts;
 	}

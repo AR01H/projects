@@ -200,18 +200,14 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
     <div class="newsletter-block text-center" data-aos="fade-up">
       <span class="section__eyebrow">Stay Informed</span>
       <h2 class="section__title" style="font-size:1.75rem;margin-bottom:12px">
-        Get Expert Insights Straight to Your Inbox
+        Do you need more information ?
       </h2>
       <p style="color:var(--text-secondary);margin-bottom:28px">
         Market updates, new guides, and buyer tips — once a week. No spam, ever.
       </p>
-      <form data-ah-newsletter class="ah-newsletter-form" novalidate>
-        <div class="newsletter-inline">
-          <input type="email" name="email" class="form-input" placeholder="Your email address" required>
-          <button type="submit" class="btn btn-primary">Subscribe →</button>
-        </div>
-        <div class="ah-form__status" aria-live="polite"></div>
-      </form>
+      <button class="btn btn-primary">
+        <a href="/contact">Contact Us</a>
+      </button>
     </div>
   </div>
 </section>

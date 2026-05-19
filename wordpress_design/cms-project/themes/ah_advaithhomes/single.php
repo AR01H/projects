@@ -26,18 +26,6 @@
     <?php $excerpt = wp_trim_words( get_the_excerpt(), 35, '…' ); if ( $excerpt ) : ?>
     <p class="post-header__excerpt"><?php echo esc_html( $excerpt ); ?></p>
     <?php endif; ?>
-
-    <!-- Author row -->
-    <div class="post-header__author">
-      <div class="post-header__avatar">
-        <?php echo esc_html( strtoupper( substr( get_the_author_meta( 'display_name' ), 0, 1 ) ) ); ?>
-      </div>
-      <div>
-        <div class="post-header__author-name"><?php the_author_meta( 'display_name' ); ?></div>
-        <div class="post-header__author-role">Buyer's Agent · Advaith Homes</div>
-      </div>
-    </div>
-  </div>
 </header>
 
 <!-- ── Featured Image ────────────────────────────────────────────────────── -->
