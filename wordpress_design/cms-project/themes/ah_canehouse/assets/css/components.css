@@ -1,4 +1,4 @@
-/* ── The Cane House — Component Styles ──────────────────────────────────────── */
+/* ── The Cane House - Component Styles ──────────────────────────────────────── */
 
 /* ── Navigation ─────────────────────────────────────────────────────────────── */
 .ch-nav {
@@ -222,7 +222,7 @@
     cursor: pointer;
 }
 
-/* Priority nav — JS hides items one-by-one and moves them into More dropdown */
+/* Priority nav - JS hides items one-by-one and moves them into More dropdown */
 .ch-nav__item--hidden { display: none !important; }
 
 .ch-nav__more { position: relative; }

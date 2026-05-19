@@ -8,7 +8,7 @@ class AH_Asset_Loader {
 	}
 
 	public static function frontend_assets(): void {
-		// Use get_template_directory_uri() — not AH_THEME_URL — so assets always
+		// Use get_template_directory_uri() - not AH_THEME_URL - so assets always
 		// resolve to the active theme folder whether this class is called from the
 		// plugin or directly from a theme's functions.php.
 		$url = get_template_directory_uri();

@@ -15,7 +15,7 @@ $get_vis = function( string $key ) use ( $vis ): bool {
 $featured_services = get_option( 'ah_featured_services', '' );
 $featured_faqs     = get_option( 'ah_featured_faqs', '' );
 
-// Suggestion data for tag-picker — loaded from helpers
+// Suggestion data for tag-picker - loaded from helpers
 $all_services = ah_get_services( 50 );
 $all_faqs     = ah_get_faqs( '', 50 );
 
@@ -97,7 +97,7 @@ $section_groups = [
 
     <!-- ── Featured Content Pickers ────────────────────────────────────────── -->
     <div class="ah-admin-box">
-      <h2>Featured Content — Auto-Suggest Selectors</h2>
+      <h2>Featured Content - Auto-Suggest Selectors</h2>
       <p style="color:#64748b;font-size:.875rem;margin-bottom:20px">
         Choose which items are highlighted. Type to search and click a suggestion to add it as a tag.
         Leave empty to show all (or the default top items).

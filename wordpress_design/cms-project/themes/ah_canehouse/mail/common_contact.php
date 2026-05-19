@@ -79,7 +79,7 @@ function ch_handle_contact_submit(): void {
 		'other'     => 'Something Else',
 	];
 
-	$subject = sprintf( '%s New enquiry from %s — %s', $subject_prefix, $name, $enquiry_labels[ $enquiry ] ?? $enquiry );
+	$subject = sprintf( '%s New enquiry from %s - %s', $subject_prefix, $name, $enquiry_labels[ $enquiry ] ?? $enquiry );
 
 	$body = "You have received a new enquiry via The Cane House website.\n\n"
 		. "Name:         {$name}\n"
@@ -105,7 +105,7 @@ function ch_handle_contact_submit(): void {
 	// ── Auto-reply to sender ─────────────────────────────────────────────────
 	$auto_reply_body = "Hi {$name},\n\n"
 		. "Thank you for getting in touch with The Cane House! 🌿\n\n"
-		. "We've received your message and will get back to you very soon — usually within a few hours.\n\n"
+		. "We've received your message and will get back to you very soon - usually within a few hours.\n\n"
 		. "In the meantime, if your enquiry is urgent, please call us directly:\n"
 		. "📞 " . ( ch_get_settings()['phone'] ?? '+44 7887 699 208' ) . "\n\n"
 		. "Pressed Fresh. Served Cool.\n"
@@ -114,7 +114,7 @@ function ch_handle_contact_submit(): void {
 
 	wp_mail(
 		$email,
-		'Thanks for contacting The Cane House — we\'ll be in touch soon! 🌿',
+		'Thanks for contacting The Cane House - we\'ll be in touch soon! 🌿',
 		$auto_reply_body,
 		[
 			'Content-Type: text/plain; charset=UTF-8',

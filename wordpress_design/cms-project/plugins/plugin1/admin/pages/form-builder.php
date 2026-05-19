@@ -135,7 +135,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
   <div class="fb-forms-bar">
     <span style="font-weight:500;font-size:13px;color:#6b7280">SELECT FORM:</span>
     <select id="fb-form-select" onchange="location.href=this.value">
-      <option value="">— Choose a form —</option>
+      <option value="">- Choose a form -</option>
       <?php foreach ( $all_forms as $f ) : ?>
         <option value="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $f->id, 'tab' => 'build' ), admin_url( 'admin.php' ) ) ); ?>" <?php selected( $form_id, (int) $f->id ); ?>>
           <?php echo esc_html( $f->name ); ?> (#<?php echo esc_html( $f->id ); ?>)
@@ -163,7 +163,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
     <span style="font-size:13px;font-weight:500;color:#374151">Shortcode:</span>
     <span class="fb-sc-pill" id="fb-sc-text">[ah_form id="<?php echo esc_html( $form_id ); ?>"]</span>
     <button class="fb-sc-copy" id="fb-sc-copy">Copy</button>
-    <span style="font-size:12px;color:#6b7280">— paste into any page or template to embed this form</span>
+    <span style="font-size:12px;color:#6b7280">- paste into any page or template to embed this form</span>
   </div>
 
   <!-- Tab nav -->

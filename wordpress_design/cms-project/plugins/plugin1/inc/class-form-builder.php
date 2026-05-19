@@ -199,7 +199,7 @@ class AH_Form_Builder {
         <textarea id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>></textarea>
       <?php elseif ( 'select' === $f->field_type && ! empty( $f->options ) ) : ?>
         <select id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
-          <option value=""><?php echo esc_html( $f->placeholder ?: '— Select an option —' ); ?></option>
+          <option value=""><?php echo esc_html( $f->placeholder ?: '- Select an option -' ); ?></option>
           <?php foreach ( $f->options as $opt ) : ?><option value="<?php echo esc_attr( $opt ); ?>"><?php echo esc_html( $opt ); ?></option><?php endforeach; ?>
         </select>
       <?php else : ?>

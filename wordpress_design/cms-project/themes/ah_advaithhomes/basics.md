@@ -1,5 +1,5 @@
-# WordPress Basics — Complete Developer Reference
-<!-- Written for the ah_advaithhomes project — covers everything from scratch -->
+# WordPress Basics - Complete Developer Reference
+<!-- Written for the ah_advaithhomes project - covers everything from scratch -->
 <!-- Last updated: 2026-05-17 -->
 
 ---
@@ -13,14 +13,14 @@
 5. [Adding a Page Template](#5-adding-a-page-template)
 6. [Adding a Custom Page Header (Hero)](#6-adding-a-custom-page-header-hero)
 7. [Adding Styles (CSS)](#7-adding-styles-css)
-8. [Adding Counts — DB Rows, Post Counts, Option Checks](#8-adding-counts)
+8. [Adding Counts - DB Rows, Post Counts, Option Checks](#8-adding-counts)
 9. [How to Create a Plugin from Scratch](#9-how-to-create-a-plugin-from-scratch)
-10. [Plugin Anatomy — File by File](#10-plugin-anatomy)
+10. [Plugin Anatomy - File by File](#10-plugin-anatomy)
 11. [Adding Admin Pages to a Plugin](#11-adding-admin-pages-to-a-plugin)
 12. [Saving & Reading Data in a Plugin](#12-saving--reading-data-in-a-plugin)
 13. [Plugin Database Tables](#13-plugin-database-tables)
 14. [Plugin AJAX Actions](#14-plugin-ajax-actions)
-15. [Plugin Hooks — actions & filters](#15-plugin-hooks)
+15. [Plugin Hooks - actions & filters](#15-plugin-hooks)
 16. [Security Checklist](#16-security-checklist)
 17. [WordPress Functions You Must Know](#17-wordpress-functions-you-must-know)
 18. [Common Mistakes & How to Fix Them](#18-common-mistakes)
@@ -43,7 +43,7 @@ When a visitor hits your URL, PHP runs → WordPress loads → it finds the righ
 |-------------|----------------------------------------------------------------|
 | Theme       | The set of PHP + CSS + JS files that control how the site looks |
 | Plugin      | A PHP file (or folder) that adds new features to WordPress     |
-| Post        | A piece of content — blog post, page, product, etc.           |
+| Post        | A piece of content - blog post, page, product, etc.           |
 | Option      | A key-value pair stored in `wp_options` (settings, config)    |
 | Hook        | A named event where WordPress lets you inject your own code    |
 | Nonce       | A security token for forms and AJAX requests                   |
@@ -112,11 +112,11 @@ WordPress finds it by reading the comment block at the top of the main file.
 - Theme → controls how the site **looks**
 - Plugin → adds **functionality** that works regardless of the active theme
 
-### Plugin vs theme — real example
+### Plugin vs theme - real example
 
 In this project:
-- `ah_advaithhomes` (theme) — templates, CSS, blog layout, page templates
-- `ah_cms_plugin` (plugin) — database tables, admin CMS portal, AJAX handlers, data models
+- `ah_advaithhomes` (theme) - templates, CSS, blog layout, page templates
+- `ah_cms_plugin` (plugin) - database tables, admin CMS portal, AJAX handlers, data models
 
 If you swap the theme, the plugin still works. The plugin's data still exists.
 
@@ -131,13 +131,13 @@ Understanding this order stops 90% of "where does this even run?" confusion.
 2. All active plugins load (their main PHP file is included)
 3. The active theme's functions.php loads
 4. WordPress parses the URL to decide what content type it is
-5. The 'wp' hook fires — all registered callbacks run
-6. The 'template_redirect' hook fires — template file is selected
+5. The 'wp' hook fires - all registered callbacks run
+6. The 'template_redirect' hook fires - template file is selected
 7. The correct template file is included (e.g. page.php)
 8. The template calls get_header() → header.php renders
 9. The template renders its content
 10. The template calls get_footer() → footer.php renders
-11. wp_footer() fires — any footer scripts/styles output
+11. wp_footer() fires - any footer scripts/styles output
 12. HTML is sent to the browser
 ```
 
@@ -150,7 +150,7 @@ You register hooks there; the hooks fire later during the correct step.
 
 A page template is a PHP file that WordPress uses for a specific page. There are two ways:
 
-### Method A — slug-based (automatic)
+### Method A - slug-based (automatic)
 
 Name the file `page-{slug}.php`. WordPress uses it automatically
 for any page whose slug matches.
@@ -163,7 +163,7 @@ page-services.php  → used for /services/ automatically
 
 No configuration needed in WordPress admin.
 
-### Method B — Template Name comment (selectable)
+### Method B - Template Name comment (selectable)
 
 Add this comment at the top of any PHP file:
 
@@ -230,7 +230,7 @@ $team = ah_get_team();               // get data
 
 ## 6. Adding a Custom Page Header (Hero)
 
-The "page hero" is the top section of a page — usually contains a title, subtitle, and eyebrow label.
+The "page hero" is the top section of a page - usually contains a title, subtitle, and eyebrow label.
 
 ### The CSS classes to use
 
@@ -297,7 +297,7 @@ get_template_part( 'components/hero', null, [
 ] );
 ```
 
-### Section header (not a full hero — used mid-page)
+### Section header (not a full hero - used mid-page)
 
 ```php
 <div class="section__header text-center">
@@ -325,7 +325,7 @@ assets/css/
 
 They are all enqueued in `functions.php` via `wp_enqueue_style()`.
 
-### Step 1 — Add a CSS variable (design token)
+### Step 1 - Add a CSS variable (design token)
 
 Open `assets/css/variables.css`, find the `:root {}` block, add your token:
 
@@ -339,7 +339,7 @@ Open `assets/css/variables.css`, find the `:root {}` block, add your token:
 
 Use it anywhere: `background: var(--highlight-bg);`
 
-### Step 2 — Add a new component style
+### Step 2 - Add a new component style
 
 Open `assets/css/components.css`, scroll to the bottom, add:
 
@@ -374,7 +374,7 @@ Then in your template:
 </div>
 ```
 
-### Step 3 — Responsive styles
+### Step 3 - Responsive styles
 
 Always add mobile breakpoints after your base styles:
 
@@ -396,7 +396,7 @@ Always add mobile breakpoints after your base styles:
 }
 ```
 
-### Step 4 — Page-specific styles (inline in template)
+### Step 4 - Page-specific styles (inline in template)
 
 For styles used only on one template, add a `<style>` block in that file:
 
@@ -428,7 +428,7 @@ For styles used only on one template, add a `<style>` block in that file:
 Counts appear in dashboard cards, admin tables, and status checks.
 There are four types of "things to count" in this project.
 
-### Type 1 — Count rows in a custom DB table
+### Type 1 - Count rows in a custom DB table
 
 ```php
 global $wpdb;
@@ -449,7 +449,7 @@ $count = (int) $wpdb->get_var(
 );
 ```
 
-### Type 2 — Count WordPress posts
+### Type 2 - Count WordPress posts
 
 ```php
 // Count all published posts
@@ -464,29 +464,29 @@ $count = $query->found_posts;
 wp_reset_postdata();
 ```
 
-### Type 3 — Check if a WP option exists
+### Type 3 - Check if a WP option exists
 
 ```php
 $value = get_option( 'ah_site_settings' );
 
 if ( $value ) {
-    echo 'Option is set — ✓';
+    echo 'Option is set - ✓';
 } else {
-    echo 'Missing — using fallback';
+    echo 'Missing - using fallback';
 }
 ```
 
-**For null-safe check** (when value CAN be null but key exists — use `array_key_exists`):
+**For null-safe check** (when value CAN be null but key exists - use `array_key_exists`):
 
 ```php
-// WRONG — isset() returns false for null values:
+// WRONG - isset() returns false for null values:
 if ( isset( $row['count'] ) ) { ... }
 
-// RIGHT — array_key_exists() handles null correctly:
+// RIGHT - array_key_exists() handles null correctly:
 if ( array_key_exists( 'count', $row ) ) { ... }
 ```
 
-### Type 4 — Count files on disk
+### Type 4 - Count files on disk
 
 ```php
 $static_dir = trailingslashit( get_template_directory() ) . 'static/';
@@ -504,7 +504,7 @@ $ok    = $count > 0;
 ?>
 <div class="ah-admin-card ah-admin-card--<?php echo $ok ? 'ok' : 'warn'; ?>">
   <div class="ah-admin-card__label">Services</div>
-  <div class="ah-admin-card__value"><?php echo esc_html( $ok ? $count : '—' ); ?></div>
+  <div class="ah-admin-card__value"><?php echo esc_html( $ok ? $count : '-' ); ?></div>
   <div class="ah-admin-card__sub"><?php echo $ok ? 'rows in DB' : 'empty'; ?></div>
 </div>
 ```
@@ -530,7 +530,7 @@ if ( $exists ) {
 
 ## 9. How to Create a Plugin from Scratch
 
-### Step 1 — Create the folder and main file
+### Step 1 - Create the folder and main file
 
 ```
 wp-content/plugins/
@@ -538,7 +538,7 @@ wp-content/plugins/
     └── my-plugin.php       ← Main plugin file
 ```
 
-### Step 2 — The plugin header comment
+### Step 2 - The plugin header comment
 
 This is what makes WordPress recognise it as a plugin:
 
@@ -562,7 +562,7 @@ defined( 'ABSPATH' ) || exit;
 After saving this file, go to **WP Admin → Plugins** and you'll see "My Plugin" listed.
 Click **Activate**.
 
-### Step 3 — Define constants
+### Step 3 - Define constants
 
 ```php
 define( 'MY_PLUGIN_VERSION', '1.0.0' );
@@ -570,14 +570,14 @@ define( 'MY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );   // absolute path with 
 define( 'MY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );    // URL with trailing /
 ```
 
-### Step 4 — Include your other files
+### Step 4 - Include your other files
 
 ```php
 require_once MY_PLUGIN_DIR . 'includes/class-my-feature.php';
 require_once MY_PLUGIN_DIR . 'admin/admin-page.php';
 ```
 
-### Step 5 — Hook into WordPress
+### Step 5 - Hook into WordPress
 
 ```php
 // Run setup when WordPress is fully loaded
@@ -607,7 +607,7 @@ function my_plugin_page() {
 }
 ```
 
-### Step 6 — Run code on activation
+### Step 6 - Run code on activation
 
 ```php
 register_activation_hook( __FILE__, 'my_plugin_activate' );
@@ -618,7 +618,7 @@ function my_plugin_activate() {
 }
 ```
 
-### Step 7 — Clean up on deactivation / uninstall
+### Step 7 - Clean up on deactivation / uninstall
 
 ```php
 register_deactivation_hook( __FILE__, 'my_plugin_deactivate' );
@@ -627,7 +627,7 @@ function my_plugin_deactivate() {
     flush_rewrite_rules();   // clear any custom URL rules
 }
 
-// uninstall.php (separate file) — runs on "Delete" in Plugins list
+// uninstall.php (separate file) - runs on "Delete" in Plugins list
 // Only drop tables and delete options in uninstall.php, not deactivation
 ```
 
@@ -663,7 +663,7 @@ my-plugin/
         └── my-shortcode.php   ← Shortcode HTML output
 ```
 
-### Main plugin file — full example
+### Main plugin file - full example
 
 ```php
 <?php
@@ -731,7 +731,7 @@ Every admin page should follow this pattern:
 
 ```php
 <?php
-// 1. Security — always first
+// 1. Security - always first
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) {
     wp_die( 'Access denied.' );
@@ -848,8 +848,8 @@ register_activation_hook( __FILE__, 'my_plugin_create_tables' );
 ```
 
 **`dbDelta()` vs `$wpdb->query()`:**
-- `dbDelta()` — WordPress helper that creates OR updates the table schema safely
-- `$wpdb->query("CREATE TABLE IF NOT EXISTS ...")` — simpler, but won't alter existing tables
+- `dbDelta()` - WordPress helper that creates OR updates the table schema safely
+- `$wpdb->query("CREATE TABLE IF NOT EXISTS ...")` - simpler, but won't alter existing tables
 
 Use `dbDelta()` for anything that might need schema changes later.
 
@@ -910,10 +910,10 @@ $wpdb->delete( $table, [ 'id' => (int) $id ] );
 ### Always use `$wpdb->prepare()` for queries with variables
 
 ```php
-// SAFE — parameterised
+// SAFE - parameterised
 $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE id = %d", $id ) );
 
-// DANGEROUS — never do this (SQL injection risk)
+// DANGEROUS - never do this (SQL injection risk)
 $wpdb->get_row( "SELECT * FROM `{$table}` WHERE id = $id" );
 ```
 
@@ -926,7 +926,7 @@ $wpdb->get_row( "SELECT * FROM `{$table}` WHERE id = $id" );
 AJAX lets JavaScript talk to PHP without reloading the page.
 WordPress routes all AJAX through `admin-ajax.php`.
 
-### PHP side — register the handler
+### PHP side - register the handler
 
 ```php
 // In your plugin's main file or a class init:
@@ -1005,7 +1005,7 @@ Hooks are the core of WordPress extensibility.
 **Actions** let you run code at a specific moment.
 **Filters** let you modify a value before WordPress uses it.
 
-### Actions — run your code at the right time
+### Actions - run your code at the right time
 
 ```php
 // Syntax:
@@ -1025,7 +1025,7 @@ add_action( 'init', 'run_early', 5 );
 add_action( 'init', 'run_late',  20 );
 ```
 
-### Filters — modify a value
+### Filters - modify a value
 
 ```php
 // Syntax:
@@ -1045,10 +1045,10 @@ function my_modify_title( $title ) {
 ### Creating your own hooks (for other plugins/themes to extend)
 
 ```php
-// Action hook — let others run code at your moment:
+// Action hook - let others run code at your moment:
 do_action( 'my_plugin_after_save', $item_id );
 
-// Filter hook — let others modify your value:
+// Filter hook - let others modify your value:
 $title = apply_filters( 'my_plugin_item_title', $raw_title, $item_id );
 ```
 
@@ -1063,7 +1063,7 @@ $title = apply_filters( 'my_plugin_item_title', $raw_title, $item_id );
 | `wp_head`                  | Inside `<head>` tag                        |
 | `wp_footer`                | Just before `</body>`                      |
 | `admin_menu`               | Building the WP admin sidebar              |
-| `admin_init`               | Admin requests — register settings etc.   |
+| `admin_init`               | Admin requests - register settings etc.   |
 | `save_post`                | When any post/page is saved                |
 | `after_switch_theme`       | After a theme is activated                 |
 | `register_activation_hook` | When a specific plugin is activated        |
@@ -1072,7 +1072,7 @@ $title = apply_filters( 'my_plugin_item_title', $raw_title, $item_id );
 
 ## 16. Security Checklist
 
-Apply every one of these — every time, no exceptions.
+Apply every one of these - every time, no exceptions.
 
 ### Input sanitization (before DB / processing)
 
@@ -1114,7 +1114,7 @@ echo esc_textarea( $bio );        // inside <textarea>
 echo wp_kses_post( $content );    // trusted HTML (allows safe tags)
 ```
 
-### Nonces — always verify before saving
+### Nonces - always verify before saving
 
 ```php
 // In your form:
@@ -1126,7 +1126,7 @@ if ( ! wp_verify_nonce( $_POST['my_nonce'] ?? '', 'my_save_action' ) ) {
 }
 ```
 
-### Capability check — first line of every admin page and AJAX handler
+### Capability check - first line of every admin page and AJAX handler
 
 ```php
 if ( ! current_user_can( 'manage_options' ) ) {
@@ -1134,7 +1134,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
 }
 ```
 
-### SQL — always prepare
+### SQL - always prepare
 
 ```php
 // Safe:
@@ -1217,10 +1217,10 @@ $row = $wpdb->get_row( "SELECT * FROM `{$table}` WHERE id = $id" );  // SQL inje
 
 ## 18. Common Mistakes
 
-### Mistake 1 — Forgetting `wp_reset_postdata()` after a custom WP_Query
+### Mistake 1 - Forgetting `wp_reset_postdata()` after a custom WP_Query
 
 ```php
-// WRONG — the global $post is now broken for the rest of the page:
+// WRONG - the global $post is now broken for the rest of the page:
 $q = new WP_Query( [...] );
 while ( $q->have_posts() ) { $q->the_post(); /* ... */ }
 
@@ -1230,16 +1230,16 @@ while ( $q->have_posts() ) { $q->the_post(); /* ... */ }
 wp_reset_postdata();   // ← always add this
 ```
 
-### Mistake 2 — Using `isset()` when the value can be `null`
+### Mistake 2 - Using `isset()` when the value can be `null`
 
 ```php
 $row = [ 'count' => null ];
 
-isset( $row['count'] )              // false — WRONG, misses null
-array_key_exists( 'count', $row )   // true  — CORRECT
+isset( $row['count'] )              // false - WRONG, misses null
+array_key_exists( 'count', $row )   // true  - CORRECT
 ```
 
-### Mistake 3 — Not checking if a table exists before querying it
+### Mistake 3 - Not checking if a table exists before querying it
 
 ```php
 // If the plugin creating the table isn't active, this throws a DB error:
@@ -1254,10 +1254,10 @@ if ( $exists ) {
 }
 ```
 
-### Mistake 4 — Hardcoding the table prefix
+### Mistake 4 - Hardcoding the table prefix
 
 ```php
-// WRONG — breaks on any non-default install:
+// WRONG - breaks on any non-default install:
 $table = 'wp_my_items';
 
 // RIGHT:
@@ -1265,7 +1265,7 @@ global $wpdb;
 $table = $wpdb->prefix . 'my_items';   // → wp_my_items, or wpsite2_my_items on multisite
 ```
 
-### Mistake 5 — Mixing GET and POST nonces
+### Mistake 5 - Mixing GET and POST nonces
 
 ```php
 // GET link nonces go in the URL:
@@ -1279,20 +1279,20 @@ wp_nonce_field( 'my_save', 'my_nonce' );
 // Never put a POST nonce in a GET URL or vice versa.
 ```
 
-### Mistake 6 — Adding hooks outside `add_action`
+### Mistake 6 - Adding hooks outside `add_action`
 
 ```php
-// WRONG — runs immediately at file-include time, too early:
+// WRONG - runs immediately at file-include time, too early:
 My_Class::register_post_types();
 
-// RIGHT — runs at the correct WordPress moment:
+// RIGHT - runs at the correct WordPress moment:
 add_action( 'init', [ 'My_Class', 'register_post_types' ] );
 ```
 
-### Mistake 7 — Outputting before `get_header()` inside a template
+### Mistake 7 - Outputting before `get_header()` inside a template
 
 ```php
-// WRONG — outputs HTML before WordPress sends headers:
+// WRONG - outputs HTML before WordPress sends headers:
 echo '<h1>Title</h1>';
 get_header();
 
@@ -1301,10 +1301,10 @@ get_header();
 echo '<h1>Title</h1>';
 ```
 
-### Mistake 8 — Not escaping output
+### Mistake 8 - Not escaping output
 
 ```php
-// WRONG — XSS vulnerability:
+// WRONG - XSS vulnerability:
 echo $_POST['name'];
 echo $row->title;
 
@@ -1313,7 +1313,7 @@ echo esc_html( sanitize_text_field( $_POST['name'] ) );
 echo esc_html( $row->title );
 ```
 
-### Mistake 9 — Using `the_post()` outside a loop / forgetting the loop
+### Mistake 9 - Using `the_post()` outside a loop / forgetting the loop
 
 ```php
 // The loop must be: while ( have_posts() ) : the_post(); ... endwhile;
@@ -1325,16 +1325,16 @@ $title   = get_the_title( $post_id );
 $content = get_the_content( null, false, $post_id );
 ```
 
-### Mistake 10 — Calling `wp_editor()` and trying to capture its output
+### Mistake 10 - Calling `wp_editor()` and trying to capture its output
 
 ```php
-// WRONG — wp_editor() echoes directly, ob_start won't help in most cases:
+// WRONG - wp_editor() echoes directly, ob_start won't help in most cases:
 $editor = wp_editor( $content, 'my_editor', $settings );
 
-// RIGHT — call it exactly where you want it in the form:
+// RIGHT - call it exactly where you want it in the form:
 wp_editor( $content, 'my_editor', $settings );   // just let it echo inline
 ```
 
 ---
 
-*End of basics.md — for project-specific details see `learn.md` in the same folder.*
+*End of basics.md - for project-specific details see `learn.md` in the same folder.*

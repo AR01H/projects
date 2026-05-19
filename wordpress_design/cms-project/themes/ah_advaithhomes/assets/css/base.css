@@ -80,7 +80,7 @@ p + p { margin-top: .75em; }
 .section--alt  { background: var(--bg-alt); }
 .section--dark { background: var(--slate-900); color: white; }
 
-/* Shared decorative section — grid lines + subtle client-colour tint */
+/* Shared decorative section - grid lines + subtle client-colour tint */
 .section--pattern {
   position: relative;
   overflow: hidden;

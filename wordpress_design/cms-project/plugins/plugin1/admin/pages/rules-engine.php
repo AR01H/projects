@@ -118,7 +118,7 @@ details.re-adv .re-adv-body{padding:12px}
 <?php endif; ?>
 
 <div class="re-header">
-	<h1><span class="dashicons dashicons-randomize" style="font-size:1.4rem;vertical-align:middle;margin-right:4px"></span>Rules Engine</h1>
+	<h1><span class="dashicons dashicons-randomize" style="font-size:1.4rem;vertical-align:middle;margin-right:4px"></span>Triggers Maker</h1>
 	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ New Rule</a>
 	<?php if ( $editing ) : ?>
 	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine' ) ); ?>" class="ah-btn ah-btn-secondary">← All Rules</a>
@@ -126,7 +126,7 @@ details.re-adv .re-adv-body{padding:12px}
 </div>
 
 <p style="color:#6b7280;font-size:13px;margin:-8px 0 20px">
-	Automate anything. Define a <strong>trigger name</strong>, set optional <strong>conditions</strong>, and run <strong>actions</strong> — send emails, WhatsApp messages, or call any API. <strong>Trigger → Conditions → Actions.</strong>
+	Automate anything. Define a <strong>trigger name</strong>, set optional <strong>conditions</strong>, and run <strong>actions</strong> - send emails, WhatsApp messages, or call any API. <strong>Trigger → Conditions → Actions.</strong>
 </p>
 
 <?php if ( $editing ) : /* ════════ RULE EDITOR ════════ */ ?>
@@ -156,7 +156,7 @@ details.re-adv .re-adv-body{padding:12px}
 
 <!-- Trigger -->
 <div class="re-section">
-	<div class="re-section-title"><span>🎯 Trigger — fire when this event happens</span></div>
+	<div class="re-section-title"><span>🎯 Trigger - fire when this event happens</span></div>
 
 	<div class="re-field-group" style="max-width:440px;margin-bottom:8px">
 		<label>Trigger Name <small>(must match what you pass to <code>evaluate()</code>)</small></label>
@@ -173,7 +173,7 @@ details.re-adv .re-adv-body{padding:12px}
 	</div>
 
 	<div style="margin-top:14px">
-		<div style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">PHP — fire this trigger from anywhere in your code:</div>
+		<div style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">PHP - fire this trigger from anywhere in your code:</div>
 		<pre class="re-code-box">AH_Rules_Engine::evaluate( '<span class="re-code-hl" id="re-code-trigger"><?php echo esc_html( $editing->trigger_name ); ?></span>', [
     'field_key' =&gt; $value,
     'email'     =&gt; $email,
@@ -185,7 +185,7 @@ details.re-adv .re-adv-body{padding:12px}
 <!-- Conditions -->
 <div class="re-section">
 	<div class="re-section-title">
-		<span>🔍 Conditions — IF</span>
+		<span>🔍 Conditions - IF</span>
 		<select name="re_conditions_match" id="re-match" style="font-size:12px;padding:4px 8px;border:1.5px solid #d1d5db;border-radius:6px;font-weight:600;background:#fff">
 			<option value="all" <?php selected( $editing->conditions_match, 'all' ); ?>>ALL match</option>
 			<option value="any" <?php selected( $editing->conditions_match, 'any' ); ?>>ANY match</option>
@@ -194,7 +194,7 @@ details.re-adv .re-adv-body{padding:12px}
 	</div>
 	<div id="re-conds"></div>
 	<p id="re-conds-empty" style="color:#9ca3af;font-size:13px;margin:0">
-		No conditions — rule fires on <em>every</em> matching trigger. Click <strong>+ Condition</strong> to filter by context values.
+		No conditions - rule fires on <em>every</em> matching trigger. Click <strong>+ Condition</strong> to filter by context values.
 	</p>
 	<p style="font-size:12px;color:#6b7280;margin:8px 0 0">
 		Field key must match a key in the <code>$context</code> array passed to <code>evaluate()</code>.
@@ -204,7 +204,7 @@ details.re-adv .re-adv-body{padding:12px}
 <!-- Actions -->
 <div class="re-section">
 	<div class="re-section-title">
-		<span>⚙️ Actions — THEN do this…</span>
+		<span>⚙️ Actions - THEN do this…</span>
 		<div style="display:flex;gap:6px;flex-wrap:wrap">
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="send_email">📧 Email</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="whatsapp">💬 WhatsApp</button>
@@ -261,17 +261,17 @@ details.re-adv .re-adv-body{padding:12px}
 				</td>
 				<td style="font-size:12px;color:#6b7280">
 					<?php $cc = count( $r->conditions );
-					echo $cc ? esc_html( $cc . ' condition' . ( 1 !== $cc ? 's' : '' ) . ' (' . $r->conditions_match . ')' ) : '—'; ?>
+					echo $cc ? esc_html( $cc . ' condition' . ( 1 !== $cc ? 's' : '' ) . ' (' . $r->conditions_match . ')' ) : '-'; ?>
 				</td>
 				<td style="font-size:12px">
 					<?php foreach ( $action_pills as $ap ) : ?>
 					<span style="display:inline-block;background:#f1f5f9;border-radius:4px;padding:2px 7px;margin:1px;font-size:11px"><?php echo esc_html( $ap ); ?></span>
 					<?php endforeach;
-					if ( ! $action_pills ) echo '—'; ?>
+					if ( ! $action_pills ) echo '-'; ?>
 				</td>
 				<td style="text-align:center;font-size:13px"><?php echo esc_html( number_format( (int) $r->run_count ) ); ?></td>
 				<td style="font-size:12px;color:#6b7280">
-					<?php echo $r->last_run ? esc_html( wp_date( 'M j, Y g:i a', strtotime( $r->last_run ) ) ) : '—'; ?>
+					<?php echo $r->last_run ? esc_html( wp_date( 'M j, Y g:i a', strtotime( $r->last_run ) ) ) : '-'; ?>
 				</td>
 				<td style="text-align:center">
 					<span class="re-st-<?php echo esc_attr( $r->status ); ?>"><?php echo 'active' === $r->status ? 'Active' : 'Inactive'; ?></span>
@@ -290,7 +290,7 @@ details.re-adv .re-adv-body{padding:12px}
 <div class="ah-card re-empty">
 	<div style="font-size:3rem;margin-bottom:12px">⚙️</div>
 	<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:#374151">No rules yet</h2>
-	<p style="margin:0 0 20px;max-width:440px">Create a rule to automate actions — send emails, WhatsApp messages, or call any API whenever an event fires in your PHP code.</p>
+	<p style="margin:0 0 20px;max-width:440px">Create a rule to automate actions - send emails, WhatsApp messages, or call any API whenever an event fires in your PHP code.</p>
 	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn ah-btn-primary">+ Create First Rule</a>
 </div>
@@ -410,7 +410,7 @@ jQuery(function ($) {
         '<div class="re-field-group"><label>Message <small>(use {field_key} tokens)</small></label>',
           '<textarea class="re-a-wa-msg" rows="3" placeholder="Hello {name}, thanks for reaching out!"></textarea></div>',
         '<details class="re-adv">',
-          '<summary>▸ Custom Body JSON <span style="font-weight:400">(optional — overrides default payload)</span></summary>',
+          '<summary>▸ Custom Body JSON <span style="font-weight:400">(optional - overrides default payload)</span></summary>',
           '<div class="re-adv-body">',
             '<div class="re-field-group" style="margin:0"><label>JSON Body <small>(use {field_key} tokens inside strings)</small></label>',
             '<textarea class="re-a-wa-json" rows="3" placeholder=\'{"to":"{phone}","type":"text","text":{"body":"{message}"}}\' ></textarea></div>',
@@ -449,7 +449,7 @@ jQuery(function ($) {
           '<div class="re-field-group re-authval-wrap"><label>Auth Value <small>(token or user:pass)</small></label>',
             '<input type="text" class="re-a-http-authval" placeholder="your-token-here"></div>',
         '</div>',
-        '<div class="re-field-group"><label>Headers <small>(JSON object or Key: Value lines — optional)</small></label>',
+        '<div class="re-field-group"><label>Headers <small>(JSON object or Key: Value lines - optional)</small></label>',
           '<textarea class="re-a-http-headers" rows="2" placeholder="Authorization: Bearer {token}&#10;X-Custom: value"></textarea></div>',
         '<div class="re-act-grid-7030">',
           '<div class="re-field-group"><label>Body <small>(use {field_key} tokens)</small></label>',

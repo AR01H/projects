@@ -138,7 +138,7 @@ $flavours   = ch_get_flavours();
 				<?php endforeach; ?>
 			</div>
 			<p class="ch-build__disclaimer">
-				* As different cane types are freshly pressed in a single machine, slight variation in colour and taste may occur. Contains natural sugars — please consume responsibly.
+				* As different cane types are freshly pressed in a single machine, slight variation in colour and taste may occur. Contains natural sugars - please consume responsibly.
 			</p>
 		</div>
 

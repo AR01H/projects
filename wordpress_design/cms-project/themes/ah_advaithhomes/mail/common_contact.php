@@ -119,7 +119,7 @@ function ah_process_contact_form(): void {
 	$page_url    = esc_url_raw(         $_POST['page_url']    ?? '' );
 	$user_agent  = sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ?? '' );
 
-	// Enquiry type — whitelist only
+	// Enquiry type - whitelist only
 	$allowed_types = [ 'general', 'complaint', 'sales', 'support', 'media', 'other' ];
 	$enquiry_type  = in_array( sanitize_key( $_POST['enquiry_type'] ?? '' ), $allowed_types, true )
 		? sanitize_key( $_POST['enquiry_type'] )
@@ -166,7 +166,7 @@ function ah_process_contact_form(): void {
 		$safe_name = uniqid( 'ahc_', true ) . '.' . $ext;
 		$dest_file = $real_dest . DIRECTORY_SEPARATOR . $safe_name;
 
-		// Path traversal guard (belt-and-braces — uniqid makes this moot but policy requires it)
+		// Path traversal guard (belt-and-braces - uniqid makes this moot but policy requires it)
 		if ( strpos( $dest_file, $real_dest ) !== 0 ) {
 			wp_send_json_error( [ 'message' => 'Invalid file path.' ] );
 		}
@@ -212,7 +212,7 @@ function ah_process_contact_form(): void {
 			<tr><td style='padding:8px;font-weight:700;vertical-align:top'>Email</td>
 			    <td style='padding:8px'>" . esc_html( $email ) . "</td></tr>
 			<tr><td style='padding:8px;font-weight:700;vertical-align:top'>Phone</td>
-			    <td style='padding:8px'>" . esc_html( $phone ?: '—' ) . "</td></tr>
+			    <td style='padding:8px'>" . esc_html( $phone ?: '-' ) . "</td></tr>
 			" . ( $short_quote
 				? "<tr><td style='padding:8px;font-weight:700;vertical-align:top'>In a sentence</td>
 				       <td style='padding:8px'><em>" . esc_html( $short_quote ) . "</em></td></tr>"
@@ -224,7 +224,7 @@ function ah_process_contact_form(): void {
 				       <td style='padding:8px'>" . esc_html( $attachment_name ) . " (see attached)</td></tr>"
 				: '' ) . "
 			<tr><td style='padding:8px;font-weight:700;vertical-align:top'>Page</td>
-			    <td style='padding:8px'>" . esc_html( $page_url ?: '—' ) . "</td></tr>
+			    <td style='padding:8px'>" . esc_html( $page_url ?: '-' ) . "</td></tr>
 		</table>"
 	);
 
@@ -306,10 +306,10 @@ function ah_process_consultation_form(): void {
 			<tr><td style='padding:8px;font-weight:700;width:140px'>Name</td>      <td style='padding:8px'>" . esc_html( $name ) . "</td></tr>
 			<tr><td style='padding:8px;font-weight:700'>Email</td>     <td style='padding:8px'>" . esc_html( $email ) . "</td></tr>
 			<tr><td style='padding:8px;font-weight:700'>Phone</td>     <td style='padding:8px'>" . esc_html( $phone ) . "</td></tr>
-			<tr><td style='padding:8px;font-weight:700'>Budget</td>    <td style='padding:8px'>" . esc_html( $budget ?: '—' ) . "</td></tr>
-			<tr><td style='padding:8px;font-weight:700'>Location</td>  <td style='padding:8px'>" . esc_html( $location ?: '—' ) . "</td></tr>
-			<tr><td style='padding:8px;font-weight:700'>Buyer Type</td><td style='padding:8px'>" . esc_html( $buyer_type ?: '—' ) . "</td></tr>
-			<tr><td style='padding:8px;font-weight:700'>Notes</td>     <td style='padding:8px'>" . nl2br( esc_html( $notes ?: '—' ) ) . "</td></tr>
+			<tr><td style='padding:8px;font-weight:700'>Budget</td>    <td style='padding:8px'>" . esc_html( $budget ?: '-' ) . "</td></tr>
+			<tr><td style='padding:8px;font-weight:700'>Location</td>  <td style='padding:8px'>" . esc_html( $location ?: '-' ) . "</td></tr>
+			<tr><td style='padding:8px;font-weight:700'>Buyer Type</td><td style='padding:8px'>" . esc_html( $buyer_type ?: '-' ) . "</td></tr>
+			<tr><td style='padding:8px;font-weight:700'>Notes</td>     <td style='padding:8px'>" . nl2br( esc_html( $notes ?: '-' ) ) . "</td></tr>
 		</table>"
 	);
 
@@ -384,8 +384,8 @@ function ah_process_valuation_form(): void {
 			"<h2>Valuation Request</h2>
 			<p><strong>Name:</strong> " . esc_html( $name ) . "</p>
 			<p><strong>Email:</strong> " . esc_html( $email ) . "</p>
-			<p><strong>Phone:</strong> " . esc_html( $phone ?: '—' ) . "</p>
-			<p><strong>Address:</strong> " . nl2br( esc_html( $address ?: '—' ) ) . "</p>"
+			<p><strong>Phone:</strong> " . esc_html( $phone ?: '-' ) . "</p>
+			<p><strong>Address:</strong> " . nl2br( esc_html( $address ?: '-' ) ) . "</p>"
 		),
 		$headers
 	);
@@ -432,5 +432,5 @@ function ah_send_auto_reply( string $to, string $name, string $type ): void {
 		<p>Best regards,<br><strong>The {$blog_name} Team</strong></p>"
 	);
 
-	wp_mail( $to, "We've received your enquiry — {$blog_name}", $body, $headers );
+	wp_mail( $to, "We've received your enquiry - {$blog_name}", $body, $headers );
 }

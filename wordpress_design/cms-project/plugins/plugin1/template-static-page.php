@@ -3,7 +3,7 @@
  * Template Name: Static HTML Page
  *
  * Serves raw HTML files from static/{slug}.html with full style isolation.
- * Append ?raw=1 to get the bare HTML — used internally as the iframe src.
+ * Append ?raw=1 to get the bare HTML - used internally as the iframe src.
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -26,7 +26,7 @@ if ( isset( $_GET['raw'] ) && '1' === $_GET['raw'] ) { // phpcs:ignore WordPress
 	exit;
 }
 
-// ── Normal mode — full theme layout with isolated iframe ──────────────────────
+// ── Normal mode - full theme layout with isolated iframe ──────────────────────
 get_header();
 
 $raw_url = add_query_arg( 'raw', '1', get_permalink() );

@@ -10,7 +10,7 @@ if ( empty( $team ) ) return;
       <span class="section__eyebrow">Our Team</span>
       <h2 class="section__title">The Experts in Your Corner</h2>
       <p class="section__desc" style="margin-inline:auto">
-        Experienced buyer's agents, analysts, and coordinators — all working exclusively for you.
+        Experienced buyer's agents, analysts, and coordinators - all working exclusively for you.
       </p>
     </div>
     <div class="grid-4">

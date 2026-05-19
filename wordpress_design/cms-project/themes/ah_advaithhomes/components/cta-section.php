@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 $s         = $args ?? [];
 $eyebrow   = $s['eyebrow']   ?? '';
 $title     = $s['title']     ?? 'Ready to Start?<br><em>Let\'s Talk.</em>';
-$desc      = $s['desc']      ?? 'Book a free consultation. No obligation, no pressure — just straight answers about how we can help you buy smarter.';
+$desc      = $s['desc']      ?? 'Book a free consultation. No obligation, no pressure - just straight answers about how we can help you buy smarter.';
 $cta_label = $s['cta_label'] ?? 'Book a Free Call';
 $cta_url   = $s['cta_url']   ?? home_url( '/contact/' );
 $sec_label = $s['sec_label'] ?? 'Browse Our Guides';

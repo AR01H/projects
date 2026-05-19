@@ -69,7 +69,7 @@ $crumbs[] = [ get_the_title(), '' ];
         <div class="sidebar-card sidebar-card--accent">
           <div class="sidebar-card__icon">💬</div>
           <div class="sidebar-card__title">Free Consultation</div>
-          <p>Ready to put this into practice? Speak to a buyer's agent — free, no obligation.</p>
+          <p>Ready to put this into practice? Speak to a buyer's agent - free, no obligation.</p>
           <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-gold btn-block">
             Book a Free Call →
           </a>

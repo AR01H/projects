@@ -52,7 +52,7 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 			<div class="ch-cd-icon" aria-hidden="true">🤝</div>
 			<div>
 				<div class="ch-cd-label">Franchise</div>
-				<div class="ch-cd-val">Franchise enquiries warmly welcomed — reach out today</div>
+				<div class="ch-cd-val">Franchise enquiries warmly welcomed - reach out today</div>
 			</div>
 		</div>
 	</div>
@@ -96,7 +96,7 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 			<div class="ch-form-group">
 				<label class="ch-form-label" for="ch-message">Message</label>
 				<textarea id="ch-message" name="ch_message" class="ch-form-textarea"
-					placeholder="Tell us more — event date, location, expected guests..."></textarea>
+					placeholder="Tell us more - event date, location, expected guests..."></textarea>
 			</div>
 
 			<button type="submit" class="ch-form-submit" id="ch-form-submit">

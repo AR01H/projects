@@ -36,7 +36,7 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 				<span class="dashicons dashicons-database-import" style="color:#ca8a04;"></span>
 			</div>
 			<h3>Load Demo Data</h3>
-			<p>Import all sample CSV files — services, reviews, FAQs, posts, team, taxonomies, and news bar items.</p>
+			<p>Import all sample CSV files - services, reviews, FAQs, posts, team, taxonomies, and news bar items.</p>
 			<button class="ah-btn ah-btn-primary ah-action-btn" data-action="ah_load_demo_data" data-confirm="This will insert sample rows into your tables. Continue?">Run</button>
 			<div class="ah-action-result"></div>
 		</div>
@@ -147,7 +147,7 @@ jQuery(function($){
 		if (double_confirm) {
 			var typed = window.prompt('Type "' + double_confirm + '" to confirm:');
 			if (typed !== double_confirm) {
-				window.alert('Cancelled — text did not match.');
+				window.alert('Cancelled - text did not match.');
 				return;
 			}
 		}

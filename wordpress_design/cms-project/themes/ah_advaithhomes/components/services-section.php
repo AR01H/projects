@@ -9,7 +9,7 @@ $services = ah_get_services();
       <span class="section__eyebrow">What We Do</span>
       <h2 class="section__title">Full-Service Buyer Representation</h2>
       <p class="section__desc" style="margin-inline:auto">
-        From your first search to completion day — we handle every step so you can focus on the move, not the process.
+        From your first search to completion day - we handle every step so you can focus on the move, not the process.
       </p>
     </div>
 

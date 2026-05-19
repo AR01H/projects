@@ -97,7 +97,7 @@ class AH_Theme_Admin {
 		require_once get_template_directory() . '/mock_data/seeder.php';
 		$result = AH_Theme_Seeder::cleanup_all();
 
-		$msg = 'Cleanup complete — ' . $result['deleted'] . ' items removed.';
+		$msg = 'Cleanup complete - ' . $result['deleted'] . ' items removed.';
 		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-cleanup', 'cleaned' => '1', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
 		exit;
 	}

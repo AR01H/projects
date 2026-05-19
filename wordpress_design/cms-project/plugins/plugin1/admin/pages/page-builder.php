@@ -15,7 +15,7 @@ function ah_builder_templates(): array {
 		'landing' => array(
 			'label' => 'Landing Page', 'icon' => '🚀', 'desc' => 'Hero + feature cards + CTA + FAQ',
 			'blocks' => array(
-				array( 'type' => 'hero', 'data' => array( 'heading' => 'Welcome — We Make It Simple', 'subheading' => 'Expert guidance for your property journey. Book a free consultation today.', 'cta1_text' => 'Book Free Call', 'cta1_url' => '/free-consultation/', 'cta2_text' => 'Learn More', 'cta2_url' => '/about/', 'bg' => 'dark' ) ),
+				array( 'type' => 'hero', 'data' => array( 'heading' => 'Welcome - We Make It Simple', 'subheading' => 'Expert guidance for your property journey. Book a free consultation today.', 'cta1_text' => 'Book Free Call', 'cta1_url' => '/free-consultation/', 'cta2_text' => 'Learn More', 'cta2_url' => '/about/', 'bg' => 'dark' ) ),
 				array( 'type' => 'section_heading', 'data' => array( 'title' => 'Why Choose Us', 'subtitle' => 'Trusted by hundreds of families across the UK', 'align' => 'center' ) ),
 				array( 'type' => 'cards', 'data' => array( 'heading' => '', 'cols' => '3', 'cards' => array( array( 'icon' => '🏠', 'title' => 'Expert Advice', 'text' => 'Personalised guidance at every step of your journey.' ), array( 'icon' => '💷', 'title' => 'Best Value', 'text' => 'We negotiate the best deals so you don\'t have to.' ), array( 'icon' => '✅', 'title' => 'Proven Results', 'text' => 'Hundreds of happy clients and successful completions.' ) ) ) ),
 				array( 'type' => 'stats_row', 'data' => array( 'stats' => array( array( 'prefix' => '', 'number' => '500', 'suffix' => '+', 'label' => 'Happy Clients' ), array( 'prefix' => '£', 'number' => '18', 'suffix' => 'k', 'label' => 'Average Saving' ), array( 'prefix' => '', 'number' => '12', 'suffix' => '+', 'label' => 'Years Experience' ) ) ) ),
@@ -27,7 +27,7 @@ function ah_builder_templates(): array {
 			'label' => 'About Us', 'icon' => '👥', 'desc' => 'Story + image-text + stats + CTA',
 			'blocks' => array(
 				array( 'type' => 'hero', 'data' => array( 'heading' => 'About Our Company', 'subheading' => 'A dedicated team passionate about helping you find your perfect property.', 'cta1_text' => 'Meet the Team', 'cta1_url' => '#team', 'bg' => 'light' ) ),
-				array( 'type' => 'image_text', 'data' => array( 'image_url' => '', 'image_alt' => 'Our team', 'heading' => 'Our Story', 'text' => 'Founded with a simple mission — to make property buying and selling straightforward, transparent, and stress-free. We\'ve helped hundreds of families across the UK find their perfect homes.', 'btn_text' => 'Our Services', 'btn_url' => '/services/', 'layout' => 'image-left' ) ),
+				array( 'type' => 'image_text', 'data' => array( 'image_url' => '', 'image_alt' => 'Our team', 'heading' => 'Our Story', 'text' => 'Founded with a simple mission - to make property buying and selling straightforward, transparent, and stress-free. We\'ve helped hundreds of families across the UK find their perfect homes.', 'btn_text' => 'Our Services', 'btn_url' => '/services/', 'layout' => 'image-left' ) ),
 				array( 'type' => 'stats_row', 'data' => array( 'stats' => array( array( 'prefix' => '', 'number' => '2012', 'suffix' => '', 'label' => 'Year Founded' ), array( 'prefix' => '', 'number' => '500', 'suffix' => '+', 'label' => 'Clients Helped' ), array( 'prefix' => '', 'number' => '4.9', 'suffix' => '★', 'label' => 'Average Rating' ) ) ) ),
 				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Let\'s Work Together', 'text' => 'Get in touch and let us help you with your property goals.', 'btn1_text' => 'Contact Us', 'btn1_url' => '/contact/', 'theme' => 'dark' ) ),
 			),
@@ -53,7 +53,7 @@ function ah_builder_templates(): array {
 			'label' => 'Guide / Article', 'icon' => '📖', 'desc' => 'Hero + rich text + links + CTA',
 			'blocks' => array(
 				array( 'type' => 'hero', 'data' => array( 'heading' => 'First-Time Buyers Guide', 'subheading' => 'Everything you need to know about buying your first home in the UK.', 'bg' => 'light' ) ),
-				array( 'type' => 'text_block', 'data' => array( 'content' => '<p>Buying your first home is one of the biggest financial decisions you\'ll make. This guide walks you through every stage — from saving your deposit to getting the keys.</p><h2>Step 1: Get Your Finances in Order</h2><p>Before you start viewing properties, understand your budget. Most lenders require at least a 5% deposit, though 10% gives you access to better mortgage rates.</p><h2>Step 2: Get a Mortgage in Principle</h2><p>A mortgage in principle (MIP) shows sellers you\'re a serious buyer and helps you understand your maximum borrowing.</p>' ) ),
+				array( 'type' => 'text_block', 'data' => array( 'content' => '<p>Buying your first home is one of the biggest financial decisions you\'ll make. This guide walks you through every stage - from saving your deposit to getting the keys.</p><h2>Step 1: Get Your Finances in Order</h2><p>Before you start viewing properties, understand your budget. Most lenders require at least a 5% deposit, though 10% gives you access to better mortgage rates.</p><h2>Step 2: Get a Mortgage in Principle</h2><p>A mortgage in principle (MIP) shows sellers you\'re a serious buyer and helps you understand your maximum borrowing.</p>' ) ),
 				array( 'type' => 'links_list', 'data' => array( 'heading' => 'Related Guides', 'cols' => '2', 'links' => array( array( 'label' => 'Understanding Stamp Duty', 'url' => '/guides/stamp-duty/', 'icon' => '💷', 'desc' => 'How much will you pay?' ), array( 'label' => 'Help to Buy Explained', 'url' => '/guides/help-to-buy/', 'icon' => '🏛️', 'desc' => 'Government schemes for first-time buyers' ), array( 'label' => 'Mortgage Guide', 'url' => '/guides/mortgages/', 'icon' => '🏦', 'desc' => 'Types, rates and how to apply' ), array( 'label' => 'Conveyancing Process', 'url' => '/guides/conveyancing/', 'icon' => '📋', 'desc' => 'Legal steps explained simply' ) ) ) ),
 				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Need Personal Guidance?', 'text' => 'Our experts are happy to answer your questions for free.', 'btn1_text' => 'Book Free Consultation', 'btn1_url' => '/free-consultation/', 'theme' => 'gold' ) ),
 			),
@@ -141,7 +141,7 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
          class="ah-btn ah-btn-primary">📋 From Template</a>
     </div>
   </div>
-  <p style="color:var(--ah-text-muted);margin:6px 0 20px">Build custom pages with drag-and-drop blocks — hero banners, card grids, CTAs, FAQs and more.</p>
+  <p style="color:var(--ah-text-muted);margin:6px 0 20px">Build custom pages with drag-and-drop blocks - hero banners, card grids, CTAs, FAQs and more.</p>
 
   <?php if ( empty( $pages ) ) : ?>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px;">
@@ -149,13 +149,13 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
          class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
         <div style="font-size:2.5rem;margin-bottom:12px;">🧱</div>
         <h3 style="margin:0 0 8px;">Blank Page</h3>
-        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Start from scratch — drag and drop blocks to build your page.</p>
+        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Start from scratch - drag and drop blocks to build your page.</p>
       </a>
       <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-page-builder', 'action' => 'templates' ), admin_url( 'admin.php' ) ) ); ?>"
          class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;border-top:3px solid var(--ah-primary);" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
         <div style="font-size:2.5rem;margin-bottom:12px;">📋</div>
         <h3 style="margin:0 0 8px;">From Template</h3>
-        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Pick a pre-built layout — Landing Page, About Us, Services, FAQ, and more.</p>
+        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Pick a pre-built layout - Landing Page, About Us, Services, FAQ, and more.</p>
       </a>
     </div>
   <?php else : ?>

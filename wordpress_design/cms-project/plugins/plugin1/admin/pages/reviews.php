@@ -25,7 +25,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		'status'         => sanitize_key( $_POST['status'] ?? 'active' ),
 	);
 
-	// Store WP attachment ID directly — FK to ah_media dropped in maybe_upgrade
+	// Store WP attachment ID directly - FK to ah_media dropped in maybe_upgrade
 	if ( $img_id ) {
 		$data['reviewer_image_id'] = $img_id;
 	}
@@ -97,7 +97,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               <td style="max-width:260px;"><small style="color:var(--ah-muted);"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $rv->review_text ), 12 ) ); ?></small></td>
               <td class="ah-stars"><?php echo str_repeat( '★', (int) $rv->rating ) . str_repeat( '☆', 5 - (int) $rv->rating ); ?></td>
               <td><?php echo esc_html( $rv->source ); ?></td>
-              <td><?php echo $rv->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '—'; ?></td>
+              <td><?php echo $rv->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-'; ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $rv->status ); ?>"><?php echo esc_html( $rv->status ); ?></span></td>
               <td class="row-actions">
                 <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-reviews', 'action' => 'edit', 'id' => $rv->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
@@ -135,7 +135,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               <input type="text" name="reviewer_title" value="<?php echo esc_attr( $item->reviewer_title ?? '' ); ?>">
             </div>
             <div class="ah-form-row">
-              <label>Mini Description <small style="font-weight:400;color:var(--ah-muted);">(short bio or context — shown below name)</small></label>
+              <label>Mini Description <small style="font-weight:400;color:var(--ah-muted);">(short bio or context - shown below name)</small></label>
               <input type="text" name="short_desc" value="<?php echo esc_attr( $item->short_desc ?? '' ); ?>" placeholder="e.g. Bought first home in London, 2024">
             </div>
           </div>
@@ -201,7 +201,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               <label>Featured</label>
               <select name="is_featured">
                 <option value="0" <?php selected( (int) ( $item->is_featured ?? 0 ), 0 ); ?>>No</option>
-                <option value="1" <?php selected( (int) ( $item->is_featured ?? 0 ), 1 ); ?>>Yes — show on homepage</option>
+                <option value="1" <?php selected( (int) ( $item->is_featured ?? 0 ), 1 ); ?>>Yes - show on homepage</option>
               </select>
             </div>
             <div class="ah-form-row">

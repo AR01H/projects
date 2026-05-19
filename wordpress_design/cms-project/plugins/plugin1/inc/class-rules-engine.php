@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Rules Engine — General-purpose automation platform.
+ * Triggers Maker - General-purpose automation platform.
  *
  * Call from anywhere:
  *   AH_Rules_Engine::evaluate( 'your_trigger_name', [ 'field_key' => 'value', ... ] );
@@ -38,16 +38,6 @@ class AH_Rules_Engine {
 			`created_at`       DATETIME          NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
 		) ENGINE=InnoDB {$cs}" );
-
-		// Migrate old schema: rename trigger_type → trigger_name, drop trigger_id
-		$has_old = $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'trigger_type'" );
-		if ( $has_old ) {
-			$wpdb->query( "ALTER TABLE `{$t}` CHANGE `trigger_type` `trigger_name` VARCHAR(100) NOT NULL DEFAULT 'form_submit'" );
-			$has_id = $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'trigger_id'" );
-			if ( $has_id ) {
-				$wpdb->query( "ALTER TABLE `{$t}` DROP COLUMN `trigger_id`" );
-			}
-		}
 	}
 
 	// ── CRUD ─────────────────────────────────────────────────────────────────
@@ -125,7 +115,7 @@ class AH_Rules_Engine {
 	 *       'amount'        => '250.00',
 	 *   ] );
 	 *
-	 * @param string $trigger_name  Any string — matches rules with the same trigger name.
+	 * @param string $trigger_name  Any string - matches rules with the same trigger name.
 	 * @param array  $context       Key-value map of variables available in placeholders.
 	 */
 	public static function evaluate( string $trigger_name, array $context ): void {
@@ -320,7 +310,7 @@ class AH_Rules_Engine {
 	// ── Placeholder interpolation ─────────────────────────────────────────────
 
 	/**
-	 * Replace {key} tokens with context values (plain text — no escaping).
+	 * Replace {key} tokens with context values (plain text - no escaping).
 	 * Use for: URLs, JSON bodies, plain-text emails.
 	 */
 	public static function fill( string $tpl, array $ctx ): string {
@@ -331,7 +321,7 @@ class AH_Rules_Engine {
 	}
 
 	/**
-	 * Replace {key} tokens — values are HTML-escaped (safe for HTML email).
+	 * Replace {key} tokens - values are HTML-escaped (safe for HTML email).
 	 */
 	public static function fill_html( string $tpl, array $ctx ): string {
 		foreach ( $ctx as $k => $v ) {

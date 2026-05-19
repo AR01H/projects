@@ -27,7 +27,7 @@ $topic_icons = [
   'eyebrow'    => 'Frequently Asked Questions',
   'title'      => 'Your Questions,',
   'title_em'   => 'Answered Honestly',
-  'desc'       => 'Everything you need to know about working with a buyer\'s agent — how we work, what we cost, and what you can expect at every step.',
+  'desc'       => 'Everything you need to know about working with a buyer\'s agent - how we work, what we cost, and what you can expect at every step.',
   'breadcrumb' => [
     [ 'Home', home_url( '/' ) ],
     [ 'FAQ',  '' ],
@@ -74,7 +74,7 @@ $topic_icons = [
 get_template_part( 'components/cta-section', null, [
   'eyebrow'   => 'Still Have Questions?',
   'title'     => 'Let\'s Talk It<br><em>Through Together.</em>',
-  'desc'      => 'Our buyer\'s agents are happy to answer anything — no obligation, no sales pressure. Just honest advice from people who are 100% on your side.',
+  'desc'      => 'Our buyer\'s agents are happy to answer anything - no obligation, no sales pressure. Just honest advice from people who are 100% on your side.',
   'cta_label' => 'Book a Free Call',
   'cta_url'   => home_url( '/contact/' ),
   'sec_label' => 'Browse Our Guides',

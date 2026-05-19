@@ -21,13 +21,13 @@ $plugin_ok = class_exists( 'AH_Admin_Bootstrap' ) || defined( 'AH_PLUGIN_VERSION
     <?php
     $card_data = [
       [ 'label' => 'CMS Plugin',       'value' => $plugin_ok ? 'Active'    : 'Not Active', 'class' => $plugin_ok ? 'ok' : 'warn', 'sub' => $plugin_ok ? 'ah_cms_plugin is running' : 'Install & activate ah_cms_plugin' ],
-      [ 'label' => 'Services',         'value' => $counts['services'] ?? '—', 'class' => ( ($counts['services'] ?? 0) > 0 ) ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
-      [ 'label' => 'Team Members',     'value' => $counts['team']     ?? '—', 'class' => ( ($counts['team'] ?? 0) > 0 )     ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
-      [ 'label' => 'Reviews',          'value' => $counts['reviews']  ?? '—', 'class' => ( ($counts['reviews'] ?? 0) > 0 )  ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
-      [ 'label' => 'FAQs',             'value' => $counts['faqs']     ?? '—', 'class' => ( ($counts['faqs'] ?? 0) > 0 )     ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
-      [ 'label' => 'Home Settings',    'value' => $counts['ah_home_settings']   !== '—' ? 'Set' : 'Missing', 'class' => $counts['ah_home_settings']   !== '—' ? 'ok' : 'warn', 'sub' => 'wp_option' ],
-      [ 'label' => 'Process Steps',    'value' => $counts['ah_process_steps']   !== '—' ? 'Set' : 'Missing', 'class' => $counts['ah_process_steps']   !== '—' ? 'ok' : 'warn', 'sub' => 'wp_option' ],
-      [ 'label' => 'Site Stats',       'value' => $counts['ah_site_stats']      !== '—' ? 'Set' : 'Missing', 'class' => $counts['ah_site_stats']      !== '—' ? 'ok' : 'warn', 'sub' => 'wp_option' ],
+      [ 'label' => 'Services',         'value' => $counts['services'] ?? '-', 'class' => ( ($counts['services'] ?? 0) > 0 ) ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
+      [ 'label' => 'Team Members',     'value' => $counts['team']     ?? '-', 'class' => ( ($counts['team'] ?? 0) > 0 )     ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
+      [ 'label' => 'Reviews',          'value' => $counts['reviews']  ?? '-', 'class' => ( ($counts['reviews'] ?? 0) > 0 )  ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
+      [ 'label' => 'FAQs',             'value' => $counts['faqs']     ?? '-', 'class' => ( ($counts['faqs'] ?? 0) > 0 )     ? 'ok' : 'warn', 'sub' => 'rows in DB' ],
+      [ 'label' => 'Home Settings',    'value' => $counts['ah_home_settings']   !== '-' ? 'Set' : 'Missing', 'class' => $counts['ah_home_settings']   !== '-' ? 'ok' : 'warn', 'sub' => 'wp_option' ],
+      [ 'label' => 'Process Steps',    'value' => $counts['ah_process_steps']   !== '-' ? 'Set' : 'Missing', 'class' => $counts['ah_process_steps']   !== '-' ? 'ok' : 'warn', 'sub' => 'wp_option' ],
+      [ 'label' => 'Site Stats',       'value' => $counts['ah_site_stats']      !== '-' ? 'Set' : 'Missing', 'class' => $counts['ah_site_stats']      !== '-' ? 'ok' : 'warn', 'sub' => 'wp_option' ],
     ];
     foreach ( $card_data as $c ) :
     ?>
@@ -87,15 +87,15 @@ $plugin_ok = class_exists( 'AH_Admin_Bootstrap' ) || defined( 'AH_PLUGIN_VERSION
           [ 'type' => 'Process Steps',  'primary' => 'WP Option: ah_process_steps',  'fallback' => 'ah_mock_process_steps()',   'opt' => $counts['ah_process_steps'] ],
           [ 'type' => 'Site Stats',     'primary' => 'WP Option: ah_site_stats',     'fallback' => 'ah_mock_site_stats()',      'opt' => $counts['ah_site_stats'] ],
           [ 'type' => 'Guide Categories','primary' => 'WP Option: ah_guide_categories','fallback' => 'ah_mock_guide_categories_array()', 'opt' => $counts['ah_guide_categories'] ],
-          [ 'type' => 'Nav Topics',     'primary' => 'WP Option: ah_nav_*_topics',   'fallback' => 'ah_mock_nav_*_topics()',    'opt' => $counts['ah_nav_buying_topics'] ?? '—' ],
+          [ 'type' => 'Nav Topics',     'primary' => 'WP Option: ah_nav_*_topics',   'fallback' => 'ah_mock_nav_*_topics()',    'opt' => $counts['ah_nav_buying_topics'] ?? '-' ],
         ];
         foreach ( $sources as $src ) :
           if ( array_key_exists( 'count', $src ) ) {
             $status_class = ( $src['count'] === null ) ? 'warn' : ( $src['count'] > 0 ? 'ok' : 'warn' );
-            $status_label = ( $src['count'] === null ) ? 'Table missing' : ( $src['count'] > 0 ? $src['count'] . ' rows' : 'Empty — using fallback' );
+            $status_label = ( $src['count'] === null ) ? 'Table missing' : ( $src['count'] > 0 ? $src['count'] . ' rows' : 'Empty - using fallback' );
           } else {
-            $status_class = ( $src['opt'] !== '—' ) ? 'ok' : 'warn';
-            $status_label = ( $src['opt'] !== '—' ) ? 'Option set' : 'Missing — using fallback';
+            $status_class = ( $src['opt'] !== '-' ) ? 'ok' : 'warn';
+            $status_label = ( $src['opt'] !== '-' ) ? 'Option set' : 'Missing - using fallback';
           }
         ?>
         <tr>

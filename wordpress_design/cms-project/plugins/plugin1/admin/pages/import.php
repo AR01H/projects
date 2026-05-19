@@ -83,7 +83,7 @@ if (
       <!-- Column reference card -->
       <div class="ah-card" style="margin-bottom:20px;">
         <div class="ah-card-header">
-          <h2>CSV Columns — <?php echo esc_html( $current['label'] ); ?></h2>
+          <h2>CSV Columns - <?php echo esc_html( $current['label'] ); ?></h2>
           <a href="<?php echo esc_url( $samples_url . $current['sample'] ); ?>"
              class="ah-btn ah-btn-secondary ah-btn-sm"
              download>
@@ -167,7 +167,7 @@ if (
 
         <div style="background:var(--ah-bg-light);border-radius:var(--ah-radius);padding:12px;margin-bottom:16px;font-size:12px;color:var(--ah-muted);">
           <strong>Bulk import:</strong> Add as many data rows as you need in a single CSV file.
-          All rows are processed in one upload. Duplicate detection runs per-row — failed rows
+          All rows are processed in one upload. Duplicate detection runs per-row - failed rows
           are skipped and reported without stopping the rest.
         </div>
 

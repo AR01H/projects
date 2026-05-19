@@ -37,12 +37,12 @@ $submissions  = $table_exists
 				<tbody>
 					<?php foreach ( $submissions as $sub ) : ?>
 						<tr>
-							<td><?php echo esc_html( $sub->created_at ?? '—' ); ?></td>
-							<td><?php echo esc_html( $sub->name     ?? '—' ); ?></td>
-							<td><a href="mailto:<?php echo esc_attr( $sub->email ?? '' ); ?>"><?php echo esc_html( $sub->email ?? '—' ); ?></a></td>
-							<td><?php echo esc_html( $sub->phone    ?? '—' ); ?></td>
+							<td><?php echo esc_html( $sub->created_at ?? '-' ); ?></td>
+							<td><?php echo esc_html( $sub->name     ?? '-' ); ?></td>
+							<td><a href="mailto:<?php echo esc_attr( $sub->email ?? '' ); ?>"><?php echo esc_html( $sub->email ?? '-' ); ?></a></td>
+							<td><?php echo esc_html( $sub->phone    ?? '-' ); ?></td>
 							<td><span class="ch-badge ch-badge--green"><?php echo esc_html( $sub->enquiry_type ?? 'General' ); ?></span></td>
-							<td style="max-width:300px;word-wrap:break-word;"><?php echo esc_html( $sub->message ?? '—' ); ?></td>
+							<td style="max-width:300px;word-wrap:break-word;"><?php echo esc_html( $sub->message ?? '-' ); ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>

@@ -8,7 +8,7 @@ $benefits = ch_get_benefits();
 		<div class="fade-left">
 			<div class="ch-section-tag">Good for You</div>
 			<h2 class="ch-section-title">Why Sugarcane Juice is <span class="accent" style="color:var(--ch-lime);">Loved Worldwide</span></h2>
-			<p class="ch-section-body">Fresh sugarcane juice is not just delicious — it's packed with natural benefits rooted in 2,000 years of Ayurvedic and South Asian wellness tradition.</p>
+			<p class="ch-section-body">Fresh sugarcane juice is not just delicious - it's packed with natural benefits rooted in 2,000 years of Ayurvedic and South Asian wellness tradition.</p>
 			<div class="ch-benefits-list">
 				<?php foreach ( $benefits as $b ) :
 					$b = (array) $b;
@@ -37,7 +37,7 @@ $benefits = ch_get_benefits();
 					<div class="ch-promise-tag">Served chilled, always fresh</div>
 					<div class="ch-promise-tag">Rooted in Ayurvedic tradition</div>
 				</div>
-				<p class="ch-promise-foot">Sugarcane has been cherished for over 2,000 years across the Indian subcontinent. Even the leftover fibre (bagasse) is biodegradable — a truly sustainable crop.</p>
+				<p class="ch-promise-foot">Sugarcane has been cherished for over 2,000 years across the Indian subcontinent. Even the leftover fibre (bagasse) is biodegradable - a truly sustainable crop.</p>
 			</div>
 		</div>
 	</div>

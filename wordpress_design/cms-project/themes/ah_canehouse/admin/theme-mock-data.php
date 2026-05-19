@@ -17,7 +17,7 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 			<li>🌿 <strong>6 authentic Indian-context customer reviews</strong> (Priya Sharma, Mohammed Al-Rashid, Ananya Patel, etc.)</li>
 			<li>❓ <strong>10 FAQ entries</strong> covering juice, events, franchise, and sustainability</li>
 			<li>📰 <strong>Marquee/news bar items</strong> with The Cane House messaging</li>
-			<li>🔧 <strong>WordPress options</strong> — hero settings, menu sizes, flavours, cane types, order steps, benefits, franchise locations, hire packages</li>
+			<li>🔧 <strong>WordPress options</strong> - hero settings, menu sizes, flavours, cane types, order steps, benefits, franchise locations, hire packages</li>
 			<li>📍 <strong>Franchise location marquee</strong> with UK Indian-community cities (Southall, Belgrave, Rusholme, Manningham, Handsworth etc.)</li>
 			<li>📬 <strong>Contact submissions table</strong> (created if not exists)</li>
 		</ul>

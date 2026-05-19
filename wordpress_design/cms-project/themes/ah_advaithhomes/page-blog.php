@@ -30,7 +30,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
 	'eyebrow'    => 'Insights & Expertise',
 	'title'      => 'The Advaith Homes',
 	'title_em'   => 'Blog',
-	'desc'       => 'Practical advice from buyer\'s agents — market insights, step-by-step guides, and everything you need to buy smarter.',
+	'desc'       => 'Practical advice from buyer\'s agents - market insights, step-by-step guides, and everything you need to buy smarter.',
 	'breadcrumb' => [
 		[ 'Home', home_url( '/' ) ],
 		[ 'Blog', '' ],
@@ -209,7 +209,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
         <?php if ( $active_cat ) : ?>
           No posts in this category. Try another or view all.
         <?php else : ?>
-          We're working on something great — check back soon.
+          We're working on something great - check back soon.
         <?php endif; ?>
       </p>
       <?php if ( $active_cat ) : ?>
@@ -230,7 +230,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
         Do you need more information ?
       </h2>
       <p style="color:var(--text-secondary);margin-bottom:28px">
-        Market updates, new guides, and buyer tips — once a week. No spam, ever.
+        Market updates, new guides, and buyer tips - once a week. No spam, ever.
       </p>
       <button class="btn btn-primary">
         <a href="/contact">Contact Us</a>

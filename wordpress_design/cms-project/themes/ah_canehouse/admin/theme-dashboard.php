@@ -11,7 +11,7 @@ $submission_count  = $wpdb->get_var( "SHOW TABLES LIKE '{$submissions_table}'" )
 	? (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$submissions_table}`" ) : 0;
 ?>
 <div class="wrap ch-admin-wrap">
-	<h1>🌿 The Cane House — CMS Dashboard</h1>
+	<h1>🌿 The Cane House - CMS Dashboard</h1>
 
 	<div class="ch-card">
 		<h2>Site Overview</h2>
@@ -62,7 +62,7 @@ $submission_count  = $wpdb->get_var( "SHOW TABLES LIKE '{$submissions_table}'" )
 				<?php foreach ( [ 'phone' => 'Phone', 'email' => 'Email', 'address' => 'Address', 'website' => 'Website', 'tagline' => 'Tagline' ] as $key => $label ) : ?>
 					<tr>
 						<td style="font-weight:600;width:140px;"><?php echo esc_html( $label ); ?></td>
-						<td><?php echo esc_html( $settings[ $key ] ?? '—' ); ?></td>
+						<td><?php echo esc_html( $settings[ $key ] ?? '-' ); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

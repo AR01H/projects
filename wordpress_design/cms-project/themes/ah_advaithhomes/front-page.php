@@ -21,7 +21,7 @@
       <span class="section__eyebrow">The Process</span>
       <h2 class="section__title">How We Help You Buy</h2>
       <p class="section__desc" style="margin-inline:auto">
-        A clear, structured process from brief to completion — with you in control at every step.
+        A clear, structured process from brief to completion - with you in control at every step.
       </p>
     </div>
     <div class="process-grid">

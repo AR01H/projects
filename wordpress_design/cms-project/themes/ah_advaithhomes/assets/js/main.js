@@ -45,7 +45,7 @@
     $faq.toggleClass('is-open', !isOpen);
   });
 
-  // ── Intersection Observer — data-aos ──────────────────────────────────────
+  // ── Intersection Observer - data-aos ──────────────────────────────────────
   var aosEls = document.querySelectorAll('[data-aos]');
 
   // Apply data-delay inline so all ms values work
@@ -132,7 +132,7 @@
     AHCarousel(el);
   });
 
-  // ── Table of contents — active link on scroll ─────────────────────────────
+  // ── Table of contents - active link on scroll ─────────────────────────────
   var $tocLinks = $('.toc__item[href^="#"]');
   if ($tocLinks.length) {
     var headings = [];
@@ -255,7 +255,7 @@
     $('#mc-result-wrapper').toggleClass('is-visible', price > 0);
   });
 
-  // ── Priority Nav — overflow items go into a "More ›" dropdown ──────────────
+  // ── Priority Nav - overflow items go into a "More ›" dropdown ──────────────
   (function () {
     var nav    = document.getElementById('mainNav');
     var menu   = nav && nav.querySelector('.nav__menu');

@@ -101,7 +101,7 @@ if (
 			wp_mkdir_p( $target_dir );
 		}
 
-		// Unique filename — avoid collisions
+		// Unique filename - avoid collisions
 		$stored_name = wp_unique_filename( $target_dir, $original_name );
 		$target_path = $target_dir . '/' . $stored_name;
 		$file_path   = $year_month . '/' . $stored_name;

@@ -16,13 +16,13 @@ if ( $edit_slug ) {
 		$edit_page    = get_page_by_path( $edit_slug );
 		$edit_page_id = $edit_page ? (int) $edit_page->ID : 0;
 	} else {
-		$edit_slug = ''; // File doesn't exist — treat as new with that slug pre-filled
+		$edit_slug = ''; // File doesn't exist - treat as new with that slug pre-filled
 	}
 }
 ?>
 <div class="wrap ah-wrap">
 	<h1><span class="dashicons dashicons-editor-code"></span> Static HTML Pages</h1>
-	<p style="color:var(--ah-muted);margin-top:4px;">Upload raw HTML pages. Each page displays inside your site layout with full style isolation — theme CSS won't interfere with the HTML you write.</p>
+	<p style="color:var(--ah-muted);margin-top:4px;">Upload raw HTML pages. Each page displays inside your site layout with full style isolation - theme CSS won't interfere with the HTML you write.</p>
 
 	<div style="display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:24px;align-items:start;">
 
@@ -68,7 +68,7 @@ if ( $edit_slug ) {
 				3. A WordPress page is created automatically at <code>/your-slug/</code>.<br>
 				4. Add it to your nav menu via <em>WP Admin → Appearance → Menus</em>.<br><br>
 				<strong style="color:var(--ah-text);">Style isolation</strong><br>
-				Content renders inside a same-origin <code>&lt;iframe&gt;</code> — your HTML is completely isolated from the theme's CSS.
+				Content renders inside a same-origin <code>&lt;iframe&gt;</code> - your HTML is completely isolated from the theme's CSS.
 			</div>
 		</div>
 
@@ -106,7 +106,7 @@ if ( $edit_slug ) {
 					id="ah-html-editor"
 					rows="32"
 					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.5;margin-top:8px;resize:vertical;"
-					placeholder="Paste your full HTML here — include &lt;!DOCTYPE html&gt;, &lt;head&gt;, &lt;style&gt;, &lt;body&gt;, etc."
+					placeholder="Paste your full HTML here - include &lt;!DOCTYPE html&gt;, &lt;head&gt;, &lt;style&gt;, &lt;body&gt;, etc."
 				><?php echo esc_textarea( $edit_content ); ?></textarea>
 
 				<div class="ah-card" style="padding:16px;margin-top:12px;">

@@ -18,7 +18,7 @@ $faqs     = ah_get_faqs( '', 8 );
         <h1 class="page-hero__title">Full-Service<br><em>Buyer Representation</em></h1>
         <p class="page-hero__desc">
           From your first search to completion day, we handle every step of the buying
-          process — so you make the right decision at the right price, every time.
+          process - so you make the right decision at the right price, every time.
         </p>
         <div class="hero__actions">
           <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary btn-lg">
@@ -51,7 +51,7 @@ $faqs     = ah_get_faqs( '', 8 );
       <span class="section__eyebrow">Our Services</span>
       <h2 class="section__title">Everything Covered Under One Roof</h2>
       <p class="section__desc" style="margin-inline:auto">
-        We're a full-service buyer's agency — one fee, one team, one point of contact from search to keys.
+        We're a full-service buyer's agency - one fee, one team, one point of contact from search to keys.
       </p>
     </div>
     <div class="grid-3">
@@ -96,7 +96,7 @@ $faqs     = ah_get_faqs( '', 8 );
       <span class="section__eyebrow">The Process</span>
       <h2 class="section__title">How We Work With You</h2>
       <p class="section__desc" style="margin-inline:auto">
-        A clear, structured process with you in control at every step — from brief to completion.
+        A clear, structured process with you in control at every step - from brief to completion.
       </p>
     </div>
     <div class="process-grid">

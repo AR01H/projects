@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:  CMS ADMIN
- * Description:  CMS engine — admin portal, database, models, helpers, and form builder.
+ * Description:  CMS engine - admin portal, database, models, helpers, and form builder.
  *               Install as a plugin and pair with any frontend theme that reads wp_ah_* tables.
  * Version:      1.0.2
  * Author:       Akhilesh Ravuri
@@ -13,12 +13,12 @@ defined( 'ABSPATH' ) || exit;
 define( 'AH_PLUGIN_VERSION', '1.0.3' );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
 
-// Table name infix — all custom tables are named: {wpdb_prefix}ah{TABLE_MID_FIX}{table_suffix}
+// Table name infix - all custom tables are named: {wpdb_prefix}ah{TABLE_MID_FIX}{table_suffix}
 // e.g. wp_ah_cms_plug_services. Change this only before first install.
 define( 'TABLE_MID_FIX', '_cms_plug_' );
 
 // plugin_dir_path() has a trailing slash; strip it so paths match the existing
-// AH_THEME_DIR convention (no trailing slash) — autoloader adds its own slash.
+// AH_THEME_DIR convention (no trailing slash) - autoloader adds its own slash.
 define( 'AH_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'AH_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
@@ -40,7 +40,7 @@ if ( is_admin() ) {
 	AH_Admin_Bootstrap::init();
 }
 
-// ── Public AJAX (form builder frontend — works for logged-in and guests) ─────
+// ── Public AJAX (form builder frontend - works for logged-in and guests) ─────
 AH_Ajax_Handlers::init_public();
 
 // ── Shortcode [ah_form id="N"] ───────────────────────────────────────────────

@@ -59,7 +59,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
           ?>
             <tr data-id="<?php echo esc_attr( $member->id ); ?>">
               <td class="ah-sort-handle">&#9776;</td>
-              <td><?php if ( $photo ) : ?><img src="<?php echo esc_url( $photo ); ?>" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"><?php else : ?>—<?php endif; ?></td>
+              <td><?php if ( $photo ) : ?><img src="<?php echo esc_url( $photo ); ?>" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"><?php else : ?>-<?php endif; ?></td>
               <td><strong><?php echo esc_html( $member->name ); ?></strong></td>
               <td><?php echo esc_html( $member->designation ); ?></td>
               <td><?php echo $member->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-'; ?></td>

@@ -61,7 +61,7 @@ $post_suggestions = array_map( function( $p ) {
       <input type="hidden" name="featured_post_ids" class="ah-picker-value"
              value="<?php echo esc_attr( $featured_posts_opt ); ?>">
       <p style="font-size:.78rem;color:#94a3b8;margin-top:6px">
-        Currently: <code><?php echo esc_html( $featured_posts_opt ?: '(auto — newest post)' ); ?></code>
+        Currently: <code><?php echo esc_html( $featured_posts_opt ?: '(auto - newest post)' ); ?></code>
       </p>
     </div>
 
@@ -69,7 +69,7 @@ $post_suggestions = array_map( function( $p ) {
     <div class="ah-admin-box" style="margin-bottom:20px">
       <h2>⭐ Trust Bar (Auto-Scrolling Strip)</h2>
       <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">
-        Items that scroll across the trust bar below the hero. Format: <code>icon | text</code> — use any emoji as the icon.
+        Items that scroll across the trust bar below the hero. Format: <code>icon | text</code> - use any emoji as the icon.
       </p>
       <div id="trust-rows">
         <?php foreach ( $trust_signals as $i => $sig ) :
@@ -115,7 +115,7 @@ $post_suggestions = array_map( function( $p ) {
     <div class="ah-admin-box" style="margin-bottom:20px">
       <h2>🧩 Custom HTML Blocks</h2>
       <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">
-        Insert custom HTML into specific zones on the site. Use any HTML — scripts, embeds, banners.
+        Insert custom HTML into specific zones on the site. Use any HTML - scripts, embeds, banners.
       </p>
       <?php
       $block_defs = [

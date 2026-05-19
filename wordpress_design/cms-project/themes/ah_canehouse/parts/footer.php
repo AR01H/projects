@@ -16,7 +16,7 @@ $social   = $footer['social']     ?? [];
 		<div class="ch-footer__brand">
 			<div class="ch-footer__logo">The Cane <em>House</em> 🌿</div>
 			<p class="ch-footer__brand-desc">
-				<?php echo esc_html( $footer['brand_description'] ?? 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives — pure natural refreshment wherever you are.' ); ?>
+				<?php echo esc_html( $footer['brand_description'] ?? 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - pure natural refreshment wherever you are.' ); ?>
 			</p>
 			<div class="ch-footer__social">
 				<?php if ( ! empty( $social['instagram'] ) ) : ?>

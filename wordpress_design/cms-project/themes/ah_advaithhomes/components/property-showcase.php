@@ -19,7 +19,7 @@ $gradients = [
       <span class="section__eyebrow">Recent Acquisitions</span>
       <h2 class="section__title">Properties We've Secured for Clients</h2>
       <p class="section__desc" style="margin-inline:auto">
-        A snapshot of recent purchases — the locations, prices, and savings our team delivered.
+        A snapshot of recent purchases - the locations, prices, and savings our team delivered.
       </p>
     </div>
 

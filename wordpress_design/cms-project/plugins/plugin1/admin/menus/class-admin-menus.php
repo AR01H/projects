@@ -42,7 +42,7 @@ class AH_Admin_Menus {
 	}
 
 	// ----------------------------------------------------------------
-	// Page callbacks — each loads its dedicated template file
+	// Page callbacks - each loads its dedicated template file
 	// ----------------------------------------------------------------
 
 	private static function load( string $file ): void {

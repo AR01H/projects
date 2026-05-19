@@ -35,19 +35,19 @@ $seeded = ! empty( $_GET['seeded'] );
           [ 'item' => 'Reviews',          'type' => 'DB table (reviews)',          'count' => 6,  'current' => $counts['reviews'] ],
           [ 'item' => 'FAQs',             'type' => 'DB table (faqs)',             'count' => 10, 'current' => $counts['faqs'] ],
           [ 'item' => 'News Bar Items',   'type' => 'DB table (news_bar)',         'count' => 5,  'current' => $counts['news_bar'] ?? null ],
-          [ 'item' => 'Hero Settings',    'type' => 'WP option (ah_home_settings)','count' => 1,  'current' => $counts['ah_home_settings'] !== '—' ? '✓' : null ],
+          [ 'item' => 'Hero Settings',    'type' => 'WP option (ah_home_settings)','count' => 1,  'current' => $counts['ah_home_settings'] !== '-' ? '✓' : null ],
           [ 'item' => 'Site Settings',    'type' => 'WP option (ah_site_settings)','count' => 1,  'current' => get_option('ah_site_settings') ? '✓' : null ],
-          [ 'item' => 'Process Steps',    'type' => 'WP option (ah_process_steps)','count' => 6,  'current' => $counts['ah_process_steps'] !== '—' ? '✓' : null ],
-          [ 'item' => 'Site Stats',       'type' => 'WP option (ah_site_stats)',   'count' => 4,  'current' => $counts['ah_site_stats'] !== '—' ? '✓' : null ],
-          [ 'item' => 'Guide Categories', 'type' => 'WP option (ah_guide_categories)','count' => 4,'current' => $counts['ah_guide_categories'] !== '—' ? '✓' : null ],
+          [ 'item' => 'Process Steps',    'type' => 'WP option (ah_process_steps)','count' => 6,  'current' => $counts['ah_process_steps'] !== '-' ? '✓' : null ],
+          [ 'item' => 'Site Stats',       'type' => 'WP option (ah_site_stats)',   'count' => 4,  'current' => $counts['ah_site_stats'] !== '-' ? '✓' : null ],
+          [ 'item' => 'Guide Categories', 'type' => 'WP option (ah_guide_categories)','count' => 4,'current' => $counts['ah_guide_categories'] !== '-' ? '✓' : null ],
           [ 'item' => 'Nav Topics',       'type' => 'WP options (ah_nav_*)',       'count' => 3,  'current' => get_option('ah_nav_buying_topics') ? '✓' : null ],
-          [ 'item' => 'Buying Guide Nav', 'type' => 'WP option (ah_guide_nav)',    'count' => 9,  'current' => $counts['ah_guide_nav'] !== '—' ? '✓' : null ],
+          [ 'item' => 'Buying Guide Nav', 'type' => 'WP option (ah_guide_nav)',    'count' => 9,  'current' => $counts['ah_guide_nav'] !== '-' ? '✓' : null ],
           [ 'item' => 'Properties',      'type' => 'WP option (ah_featured_properties)', 'count' => 6, 'current' => get_option('ah_featured_properties') ? '✓' : null ],
           [ 'item' => 'Blog Posts',      'type' => 'WP posts (published)',        'count' => 3,  'current' => wp_count_posts()->publish >= 3 ? '✓' : null ],
           [ 'item' => 'Static Pages',    'type' => 'HTML files + WP pages',       'count' => 7,  'current' => ( count( glob( trailingslashit( get_template_directory() ) . 'static/*.html' ) ?: [] ) >= 7 ) ? '✓' : null ],
         ];
         foreach ( $items as $r ) :
-          $has = ! empty( $r['current'] ) && $r['current'] !== '—' && $r['current'] !== 0 && $r['current'] !== null;
+          $has = ! empty( $r['current'] ) && $r['current'] !== '-' && $r['current'] !== 0 && $r['current'] !== null;
         ?>
         <tr>
           <td><strong><?php echo esc_html( $r['item'] ); ?></strong></td>
@@ -59,7 +59,7 @@ $seeded = ! empty( $_GET['seeded'] );
             <?php elseif ( $r['current'] === null ) : ?>
               <span class="ah-badge ah-badge--warn">Table missing (plugin off?)</span>
             <?php else : ?>
-              <span class="ah-badge ah-badge--missing">Empty — will be seeded</span>
+              <span class="ah-badge ah-badge--missing">Empty - will be seeded</span>
             <?php endif; ?>
           </td>
         </tr>
@@ -79,7 +79,7 @@ $seeded = ! empty( $_GET['seeded'] );
   <div class="ah-admin-box">
     <h2>Run Seeder</h2>
     <p style="margin-bottom:20px;color:#64748b;font-size:.9rem">
-      This will populate all CMS tables and WordPress options with realistic mock data — services, team members, reviews, FAQs, news ticker items, settings, properties, blog posts, and 7 static HTML pages (stamp duty calculator, mortgage calculator, glossary, and more).
+      This will populate all CMS tables and WordPress options with realistic mock data - services, team members, reviews, FAQs, news ticker items, settings, properties, blog posts, and 7 static HTML pages (stamp duty calculator, mortgage calculator, glossary, and more).
     </p>
     <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
       <?php wp_nonce_field( 'ah_theme_seed' ); ?>

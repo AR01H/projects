@@ -1,4 +1,4 @@
-# deploy.md — How to Use This Project for a New Site
+# deploy.md - How to Use This Project for a New Site
 
 This file explains how to take the CMS ADMIN plugin and build a complete WordPress site with it.
 
@@ -12,7 +12,7 @@ This file explains how to take the CMS ADMIN plugin and build a complete WordPre
 4. [Mode 2: Standalone Theme](#4-mode-2-standalone-theme)
 5. [Building the Companion Theme](#5-building-the-companion-theme)
 6. [Design Spec → DB Model Mapping](#6-design-spec--db-model-mapping)
-7. [Available Models — Quick Reference](#7-available-models--quick-reference)
+7. [Available Models - Quick Reference](#7-available-models--quick-reference)
 8. [Frontend Template Examples](#8-frontend-template-examples)
 9. [Companion Theme Checklist](#9-companion-theme-checklist)
 
@@ -38,8 +38,8 @@ This separation means the CMS is reusable across different site designs.
 
 | Mode | Use when | Plugin file |
 |---|---|---|
-| **Plugin + Theme** | New project — keep CMS and design separate | `ah-cms.php` (plugin) + separate theme |
-| **Standalone Theme** | Legacy / single install — everything in one theme folder | `functions.php` bootstraps everything |
+| **Plugin + Theme** | New project - keep CMS and design separate | `ah-cms.php` (plugin) + separate theme |
+| **Standalone Theme** | Legacy / single install - everything in one theme folder | `functions.php` bootstraps everything |
 
 For any new project, **use Mode 1** (Plugin + Companion Theme).
 
@@ -47,7 +47,7 @@ For any new project, **use Mode 1** (Plugin + Companion Theme).
 
 ## 3. Mode 1: Plugin + Companion Theme (Recommended)
 
-### Step 1 — Copy and install the plugin
+### Step 1 - Copy and install the plugin
 
 1. Copy the entire `ah_final_theme/` folder
 2. Rename it to `ah-cms`
@@ -55,14 +55,14 @@ For any new project, **use Mode 1** (Plugin + Companion Theme).
 4. In WP Admin → Plugins → **Activate "CMS ADMIN"**
 5. On activation, all 50+ database tables are created and seeded automatically
 
-### Step 2 — Verify the CMS works
+### Step 2 - Verify the CMS works
 
 1. Go to WP Admin sidebar → **CMS Portal**
 2. Click **Admin Actions → DB Health Check** → should show all tables OK
 3. Click **Admin Actions → Load Demo Data** → inserts sample content into all tables
 4. Browse the admin pages (Services, Reviews, FAQs, etc.) to confirm data is there
 
-### Step 3 — Create your companion theme
+### Step 3 - Create your companion theme
 
 1. Create a new folder: `wp-content/themes/your-theme-name/`
 2. Add `style.css` with the WordPress theme header:
@@ -83,7 +83,7 @@ Text Domain: your-theme
 <?php
 defined( 'ABSPATH' ) || exit;
 
-// Plugin must be active — all models and helpers are autoloaded by the plugin.
+// Plugin must be active - all models and helpers are autoloaded by the plugin.
 if ( ! defined( 'AH_PLUGIN_DIR' ) ) {
     add_action( 'admin_notices', function () {
         echo '<div class="notice notice-error"><p>CMS ADMIN plugin must be active.</p></div>';
@@ -116,7 +116,7 @@ AH_Asset_Loader::init();
 
 5. Activate the theme in **WP Admin → Appearance → Themes**
 
-### Step 4 — Set up WordPress pages
+### Step 4 - Set up WordPress pages
 
 For each front-end page, create a WordPress page and assign the right template:
 
@@ -129,7 +129,7 @@ For each front-end page, create a WordPress page and assign the right template:
 | Client Stories | `client-stories` | `template-client-stories.php` (build this) |
 | Blog | `blog` | `template-blog.php` (build this) |
 
-### Step 5 — Set up navigation
+### Step 5 - Set up navigation
 
 1. WP Admin → Appearance → Menus
 2. Create a menu named "Primary"
@@ -159,7 +159,7 @@ In this mode, `functions.php` detects `AH_PLUGIN_DIR` is not defined and runs th
 your-theme/
 ├── style.css                   WP theme header
 ├── index.php                   WP fallback (required)
-├── functions.php               Theme bootstrap (thin — plugin does the heavy lifting)
+├── functions.php               Theme bootstrap (thin - plugin does the heavy lifting)
 ├── parts/
 │   ├── header.php              Site header: logo, nav, news bar
 │   └── footer.php              Site footer: links, social, copyright
@@ -319,7 +319,7 @@ Based on `ah_theme_scratch/makedesignthings.md`:
 
 ---
 
-## 7. Available Models — Quick Reference
+## 7. Available Models - Quick Reference
 
 All models extend `AH_Model_Base` and are autoloaded by the plugin.
 
@@ -349,7 +349,7 @@ $m->count(array $where)                        // total count
 | `AH_Contact_Model` | Contact config + submissions |
 | `AH_Taxonomy_Model` | Categories, tags, subtags |
 | `AH_Footer_Model` | Footer config + contact links + social links |
-| `AH_Media_Model` | Media library — resolve image ID to URL |
+| `AH_Media_Model` | Media library - resolve image ID to URL |
 | `AH_Pages_Model` | CMS page registry (slug, type, sections) |
 | `AH_Form_Builder` | Forms + fields + submissions (static methods) |
 
@@ -360,7 +360,7 @@ Images are stored as integer IDs in the DB. Always resolve at render time:
 ```php
 $media = new AH_Media_Model();
 $url   = $media->get_url( (int) $row->image_id );
-// Returns '' if ID is 0 or missing — always check before using in img src
+// Returns '' if ID is 0 or missing - always check before using in img src
 ```
 
 ---
@@ -506,25 +506,25 @@ get_header();
 
 ### Theme files
 
-- [ ] `style.css` — theme header with Theme Name, Version, Author
-- [ ] `index.php` — WP fallback (can be empty silence block)
-- [ ] `functions.php` — plugin check, `after_setup_theme`, `AH_Asset_Loader::init()`
-- [ ] `parts/header.php` — logo, nav, news bar
-- [ ] `parts/footer.php` — links, social, copyright
-- [ ] `assets/css/variables.css` — color tokens, font sizes, spacing
-- [ ] `assets/css/animations.css` — keyframes, transitions
-- [ ] `assets/css/main.css` — all component and layout CSS
-- [ ] `assets/js/main.js` — sliders, accordions, mobile nav, scroll effects
+- [ ] `style.css` - theme header with Theme Name, Version, Author
+- [ ] `index.php` - WP fallback (can be empty silence block)
+- [ ] `functions.php` - plugin check, `after_setup_theme`, `AH_Asset_Loader::init()`
+- [ ] `parts/header.php` - logo, nav, news bar
+- [ ] `parts/footer.php` - links, social, copyright
+- [ ] `assets/css/variables.css` - color tokens, font sizes, spacing
+- [ ] `assets/css/animations.css` - keyframes, transitions
+- [ ] `assets/css/main.css` - all component and layout CSS
+- [ ] `assets/js/main.js` - sliders, accordions, mobile nav, scroll effects
 
 ### Page templates (from `makedesignthings.md`)
 
-- [ ] `template-home.php` — hero, highlights, why us, guide, stack, difference, featured, experience, blogs, why req, reviews, faqs
-- [ ] `template-about.php` — header, story, team, values
-- [ ] `template-services.php` — header, service cards with bullet points
-- [ ] `template-client-stories.php` — header, gallery, videos, reviews
-- [ ] `template-contact.php` — contact form (use `[ah_form id="1"]` shortcode) + info sidebar
-- [ ] `template-blog.php` — listing header, post cards, taxonomy filter, pagination
-- [ ] `single-post.php` — full post content, image banner, links, related posts
+- [ ] `template-home.php` - hero, highlights, why us, guide, stack, difference, featured, experience, blogs, why req, reviews, faqs
+- [ ] `template-about.php` - header, story, team, values
+- [ ] `template-services.php` - header, service cards with bullet points
+- [ ] `template-client-stories.php` - header, gallery, videos, reviews
+- [ ] `template-contact.php` - contact form (use `[ah_form id="1"]` shortcode) + info sidebar
+- [ ] `template-blog.php` - listing header, post cards, taxonomy filter, pagination
+- [ ] `single-post.php` - full post content, image banner, links, related posts
 
 ### WordPress setup
 

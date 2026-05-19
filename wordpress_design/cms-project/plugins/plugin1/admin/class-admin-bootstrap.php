@@ -98,6 +98,8 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-audit"]::before        { content:"\f174"; }
 #adminmenu .wp-submenu a[href*="page=ah-admin-actions"]::before{ content:"\f534"; }
 #adminmenu .wp-submenu a[href*="page=ah-help"]::before         { content:"\f223"; }
+#adminmenu .wp-submenu a[href*="page=ah-rules-engine"]::before { content:"\f211"; }
+
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-team"]),

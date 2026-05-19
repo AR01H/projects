@@ -1,4 +1,4 @@
-/* The Cane House — Forms JS */
+/* The Cane House - Forms JS */
 (function ($) {
     'use strict';
 

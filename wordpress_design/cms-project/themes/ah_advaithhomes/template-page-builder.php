@@ -27,7 +27,7 @@ if ( $file && strpos( $file, $static_dir ) === 0 && file_exists( $file ) ) {
 	if ( preg_match( '/<body[^>]*>(.*?)<\/body>/is', $raw, $body_match ) ) {
 		$body_html = $body_match[1];
 	} else {
-		// No full document structure — use as-is
+		// No full document structure - use as-is
 		$body_html = $raw;
 	}
 }
@@ -51,7 +51,7 @@ get_template_part( 'components/page-header', null, [
   <div class="container section">
     <?php if ( $body_html ) : ?>
       <div class="pb-content">
-        <?php echo $body_html; /* trusted admin file — path-traversal guarded above */ ?>
+        <?php echo $body_html; /* trusted admin file - path-traversal guarded above */ ?>
       </div>
     <?php else : ?>
       <div class="text-center section--sm">

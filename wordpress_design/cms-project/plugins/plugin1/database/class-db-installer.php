@@ -124,7 +124,7 @@ class AH_DB_Installer {
 	 * that are populated with WP user IDs / WP attachment IDs.
 	 *
 	 * Uses INFORMATION_SCHEMA to find only the FKs that still exist before
-	 * running ALTER TABLE — avoids the "IF EXISTS" syntax that requires MySQL 8.0.29+.
+	 * running ALTER TABLE - avoids the "IF EXISTS" syntax that requires MySQL 8.0.29+.
 	 */
 	public static function drop_broken_fks(): void {
 		global $wpdb;
@@ -160,7 +160,7 @@ class AH_DB_Installer {
 		) );
 
 		if ( empty( $existing ) ) {
-			return; // All already dropped — nothing to do.
+			return; // All already dropped - nothing to do.
 		}
 
 		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 0' );
@@ -1215,7 +1215,7 @@ class AH_DB_Installer {
 		);
 
 		foreach ( $fks as $sql ) {
-			// Silently fail if FK already exists — ignore duplicate FK errors.
+			// Silently fail if FK already exists - ignore duplicate FK errors.
 			$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 	}

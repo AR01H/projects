@@ -15,10 +15,10 @@ $signals  = ah_get_trust_signals();
     <div class="page-hero__copy text-center" data-aos="fade-up" style="max-width:760px;margin-inline:auto">
       <span class="section__eyebrow">About Advaith Homes</span>
       <h1 class="page-hero__title">
-        The UK's Buyer's Agent —<br><em>Working Exclusively for You</em>
+        The UK's Buyer's Agent -<br><em>Working Exclusively for You</em>
       </h1>
       <p class="page-hero__desc">
-        We exist to level the playing field. Sellers have agents negotiating for them — so should you.
+        We exist to level the playing field. Sellers have agents negotiating for them - so should you.
         Advaith Homes is a buyer-only agency: we never list properties, never work for sellers, and
         never take referral fees from developers. Our only job is to help you buy smarter.
       </p>
@@ -56,13 +56,13 @@ $signals  = ah_get_trust_signals();
         <div class="prose">
           <p>
             Advaith Homes was founded on a simple belief: buying a home is the biggest financial
-            decision most people ever make, yet buyers are expected to navigate it alone — against
+            decision most people ever make, yet buyers are expected to navigate it alone - against
             estate agents who are legally and commercially incentivised to serve the seller.
           </p>
           <p>
             We started as a small team of former estate agents and property analysts who saw this
             imbalance every day. We switched sides. Now every negotiation, every recommendation,
-            every phone call we make is in your interest — not the vendor's.
+            every phone call we make is in your interest - not the vendor's.
           </p>
           <p>
             Today we've helped over 500 buyers across England and Wales secure the right property
@@ -90,7 +90,7 @@ $signals  = ah_get_trust_signals();
           <div class="about-value-card">
             <div class="about-value-card__icon">🤝</div>
             <div class="about-value-card__title">End-to-End Support</div>
-            <p class="about-value-card__desc">One point of contact from search to completion — managing solicitors, surveyors, and lenders for you.</p>
+            <p class="about-value-card__desc">One point of contact from search to completion - managing solicitors, surveyors, and lenders for you.</p>
           </div>
         </div>
       </div>

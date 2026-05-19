@@ -53,7 +53,7 @@ get_header();
         <div class="sidebar-card">
           <div class="sidebar-card__title">Need Expert Help?</div>
           <p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:16px">
-            Speak to one of our buyer's agents — free, no-obligation consultation.
+            Speak to one of our buyer's agents - free, no-obligation consultation.
           </p>
           <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary btn-block">
             Book a Free Call →

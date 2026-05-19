@@ -141,7 +141,7 @@ $marquee = ch_get_marquee_items();
 				?>
 					<div style="display:flex;gap:.5rem;margin-bottom:.4rem;align-items:center;">
 						<input type="text" name="franchise_locations[<?php echo $idx; ?>][icon]" value="<?php echo esc_attr( $loc['icon'] ?? '📍' ); ?>" style="width:50px;">
-						<input type="text" name="franchise_locations[<?php echo $idx; ?>][name]" value="<?php echo esc_attr( $loc['name'] ?? '' ); ?>" placeholder="City — Area" style="flex:1;">
+						<input type="text" name="franchise_locations[<?php echo $idx; ?>][name]" value="<?php echo esc_attr( $loc['name'] ?? '' ); ?>" placeholder="City - Area" style="flex:1;">
 						<button type="button" onclick="this.closest('div').remove()" class="button" style="color:red;">✕</button>
 					</div>
 				<?php endforeach; ?>
@@ -161,7 +161,7 @@ document.getElementById('ch-add-loc').addEventListener('click', function() {
 	row.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.4rem;align-items:center;';
 	row.innerHTML = `
 		<input type="text" name="franchise_locations[${chLocIdx}][icon]" value="📍" style="width:50px;">
-		<input type="text" name="franchise_locations[${chLocIdx}][name]" placeholder="City — Area" style="flex:1;">
+		<input type="text" name="franchise_locations[${chLocIdx}][name]" placeholder="City - Area" style="flex:1;">
 		<button type="button" onclick="this.closest('div').remove()" class="button" style="color:red;">✕</button>`;
 	wrap.appendChild(row);
 	chLocIdx++;

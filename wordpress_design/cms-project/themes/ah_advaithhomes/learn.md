@@ -1,8 +1,8 @@
-# ah_advaithhomes — WordPress Theme Documentation
-<!-- Living document — updated 2026-05-17 -->
+# ah_advaithhomes - WordPress Theme Documentation
+<!-- Living document - updated 2026-05-17 -->
 
 Theme path: `WHOLE_THEME/ah_advaithhomes/`  
-Plugin dependency: `ah_cms_plugin` (optional — falls back to mock data if absent)
+Plugin dependency: `ah_cms_plugin` (optional - falls back to mock data if absent)
 
 ---
 
@@ -11,12 +11,12 @@ Plugin dependency: `ah_cms_plugin` (optional — falls back to mock data if abse
 1. [File Structure](#1-file-structure)
 2. [Design System](#2-design-system)
 3. [Using Components](#3-using-components)
-4. [Data Layer — How Content Gets to the Page](#4-data-layer)
+4. [Data Layer - How Content Gets to the Page](#4-data-layer)
 5. [Forms & Email](#5-forms--email)
 6. [JavaScript API](#6-javascript-api)
 7. [Helper Functions](#7-helper-functions)
-8. [Page Templates — Complete Guide](#8-page-templates)
-9. [CSS — Adding Styles](#9-css--adding-styles)
+8. [Page Templates - Complete Guide](#8-page-templates)
+9. [CSS - Adding Styles](#9-css--adding-styles)
 10. [Navigation System](#10-navigation-system)
 11. [News Ticker](#11-news-ticker)
 12. [Blog System](#12-blog-system)
@@ -213,7 +213,7 @@ When `ah_cms_plugin` is installed and active, helpers query the custom DB tables
 
 Every helper automatically falls back to `includes/mock-data.php` when the plugin is absent or the table returns no rows. The site always has realistic content.
 
-### Table helper — never hardcode the prefix
+### Table helper - never hardcode the prefix
 
 ```php
 // Always use:
@@ -289,8 +289,8 @@ Clicking `.faq__q` toggles `.is-open` on the parent `.faq`.
 
 ### Calculators
 
-- `#ah-stamp-calc` — Stamp duty. Inputs: `#sdlt-price`, `#sdlt-first-time`, `#sdlt-additional`
-- `#ah-mortgage-calc` — Mortgage. Inputs: `#mc-price`, `#mc-deposit`, `#mc-rate`, `#mc-term`
+- `#ah-stamp-calc` - Stamp duty. Inputs: `#sdlt-price`, `#sdlt-first-time`, `#sdlt-additional`
+- `#ah-mortgage-calc` - Mortgage. Inputs: `#mc-price`, `#mc-deposit`, `#mc-rate`, `#mc-term`
 
 ### Copy to clipboard
 
@@ -360,7 +360,7 @@ index.php                → last resort fallback
 
 ### Creating a new page template
 
-**Step 1** — Create the file (e.g. `page-team.php`):
+**Step 1** - Create the file (e.g. `page-team.php`):
 
 ```php
 <?php
@@ -397,22 +397,22 @@ $team = ah_get_team();
 <?php get_footer(); ?>
 ```
 
-**Step 2** — In WordPress Admin:
+**Step 2** - In WordPress Admin:
 - Go to **Pages → Add New**
 - Set the title (e.g. "Team")
 - Under **Page Attributes → Template**, select "Team Page"
 - Publish
 
-**Step 3** — That's it. WordPress will use `page-team.php` automatically.
+**Step 3** - That's it. WordPress will use `page-team.php` automatically.
 
 ### Using `page-{slug}.php` (no Template Name needed)
 
 If you name a file `page-blog.php`, WordPress automatically uses it for any page
-whose slug is `blog` — no template selection needed.
+whose slug is `blog` - no template selection needed.
 
 ---
 
-## 9. CSS — Adding Styles
+## 9. CSS - Adding Styles
 
 ### File to edit
 
@@ -544,11 +544,11 @@ Stored as `ah_nav_visibility` WP option.
 The dark scrolling ticker bar appears just below the nav on every page.
 
 **Component file:** `components/news-ticker.php`  
-**Data source:** `ah_get_news_bar_items()` — returns array of strings.
+**Data source:** `ah_get_news_bar_items()` - returns array of strings.
 
 The ticker only renders if there are items. Items are duplicated automatically for seamless loop.
 
-**Visibility toggle:** `ah_section_visible('global_news_ticker')` — controlled via Theme Admin → Sections.
+**Visibility toggle:** `ah_section_visible('global_news_ticker')` - controlled via Theme Admin → Sections.
 
 **To add items without the plugin:** Run the seeder (Theme Admin → Install Mock Data),
 which seeds 5 ticker items into the DB (or WP option fallback).
@@ -561,9 +561,9 @@ which seeds 5 ticker items into the DB (or WP option fallback).
 
 | File              | Purpose                                         |
 |-------------------|-------------------------------------------------|
-| `page-blog.php`   | Blog listing page — all published posts, boxed cards |
-| `page-guides.php` | Guides archive — same posts, category filter, guide category cards |
-| `single.php`      | Single post view — header, body, sidebar CTA, related articles |
+| `page-blog.php`   | Blog listing page - all published posts, boxed cards |
+| `page-guides.php` | Guides archive - same posts, category filter, guide category cards |
+| `single.php`      | Single post view - header, body, sidebar CTA, related articles |
 | `archive.php`     | Category/tag archive listing                    |
 | `index.php`       | Bare fallback blog loop                         |
 
@@ -576,11 +576,11 @@ which seeds 5 ticker items into the DB (or WP option fallback).
 
 ### Blog listing features (`page-blog.php`)
 
-- **Category filter bar** — auto-generated from WP post categories
-- **Featured post** — top post on page 1 shown as a wide 2-column card
-- **Card grid** — remaining posts as `post-card` boxes (3 columns)
-- **Pagination** — preserves category filter in URL
-- **Empty state** — friendly message when no posts exist
+- **Category filter bar** - auto-generated from WP post categories
+- **Featured post** - top post on page 1 shown as a wide 2-column card
+- **Card grid** - remaining posts as `post-card` boxes (3 columns)
+- **Pagination** - preserves category filter in URL
+- **Empty state** - friendly message when no posts exist
 - **Newsletter block** at the bottom
 
 ### Single post features (`single.php`)
@@ -589,7 +589,7 @@ which seeds 5 ticker items into the DB (or WP option fallback).
 - Featured image below header
 - Article body with tags and share row
 - Sidebar: Free Consultation CTA + Useful Links
-- **Related Articles** — full-width card section below the article (3 post-cards matching the current category). Only renders when related posts exist.
+- **Related Articles** - full-width card section below the article (3 post-cards matching the current category). Only renders when related posts exist.
 
 ### Adding more blog posts
 
@@ -613,7 +613,7 @@ The seeder creates three posts:
 ### What it is
 
 Raw `.html` files stored in `static/` and served as WordPress pages inside an `<iframe>`.
-The iframe gives complete CSS isolation — the theme's styles cannot reach the content.
+The iframe gives complete CSS isolation - the theme's styles cannot reach the content.
 
 ### How it works end-to-end
 
@@ -631,7 +631,7 @@ template-static-page.php loads
     → outputs <iframe srcdoc="..."> with full HTML content
     → JS resizes iframe to fit content height
     ↓
-No theme CSS bleeds in — the page looks exactly as coded
+No theme CSS bleeds in - the page looks exactly as coded
 ```
 
 ### Template file: `template-static-page.php`
@@ -673,7 +673,7 @@ get_header();
 ### Fallback in `page.php`
 
 `page.php` checks for `_ah_static_page` post meta. If found, it renders the iframe
-and exits — this covers pages seeded before `_wp_page_template` was set.
+and exits - this covers pages seeded before `_wp_page_template` was set.
 
 ### Seeded static pages (7 pages)
 
@@ -716,17 +716,17 @@ Located in WP Admin sidebar as "AH Theme". Registered via `includes/class-theme-
 
 The dashboard shows live counts for:
 - CMS Plugin status (active / not active)
-- Services, Team Members, Reviews, FAQs — row counts from DB tables
-- Home Settings, Process Steps, Site Stats — WP option set/missing
+- Services, Team Members, Reviews, FAQs - row counts from DB tables
+- Home Settings, Process Steps, Site Stats - WP option set/missing
 
-`null` count means the DB table doesn't exist (plugin not active — seeder will create it).
+`null` count means the DB table doesn't exist (plugin not active - seeder will create it).
 
 ### Installing mock data
 
 **Theme Admin → Install Mock Data → "Install All Mock Data"**
 
 The seeder:
-1. Calls `AH_Theme_Seeder::create_tables()` — creates the 5 DB tables if missing
+1. Calls `AH_Theme_Seeder::create_tables()` - creates the 5 DB tables if missing
 2. Runs all seed methods: services, team, reviews, FAQs, news bar, home settings, properties, blog posts, static pages
 3. Sets `_wp_page_template` on all static page WP pages
 
@@ -743,7 +743,7 @@ After running, all dashboard counts show real data.
 
 | Method                            | What it seeds                                  |
 |-----------------------------------|------------------------------------------------|
-| `seed_all()`                      | Everything — calls all methods below           |
+| `seed_all()`                      | Everything - calls all methods below           |
 | `create_tables()`                 | Creates 5 DB tables if they don't exist        |
 | `seed_settings()`                 | `ah_site_settings` WP option                   |
 | `seed_home_settings()`            | `ah_home_settings` WP option                   |
@@ -765,7 +765,7 @@ After running, all dashboard counts show real data.
 
 ### DB tables created by the seeder
 
-These are **theme-specific** tables — simpler schema than the CMS plugin:
+These are **theme-specific** tables - simpler schema than the CMS plugin:
 
 | Table (via `ah_theme_table()`) | Columns seeded                              |
 |--------------------------------|---------------------------------------------|
@@ -890,7 +890,7 @@ The fixed nav (`position:fixed; height: var(--nav-h) = 76px`) requires a matchin
 `padding-top` on `#page-content` so content doesn't slide under it.
 
 When logged in, WordPress injects `html { margin-top: 32px }` for the admin bar,
-which pushes the fixed nav down 32px — but `#page-content` wouldn't know about it,
+which pushes the fixed nav down 32px - but `#page-content` wouldn't know about it,
 creating a 32px white gap.
 
 **The fix** is in `assets/css/layout.css`:

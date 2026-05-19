@@ -148,7 +148,7 @@ class AH_Ajax_Handlers {
 	}
 
 	// -------------------------------------------------------------------------
-	// ah_get_media  — paginated grid for media picker modal
+	// ah_get_media  - paginated grid for media picker modal
 	// -------------------------------------------------------------------------
 	public static function handle_get_media() {
 		self::verify();
@@ -239,7 +239,7 @@ class AH_Ajax_Handlers {
 	}
 
 	// -------------------------------------------------------------------------
-	// ah_save_nav_item  — inline AJAX save for nav menu items
+	// ah_save_nav_item  - inline AJAX save for nav menu items
 	// -------------------------------------------------------------------------
 	public static function handle_save_nav_item() {
 		self::verify();
@@ -286,7 +286,7 @@ class AH_Ajax_Handlers {
 	}
 
 	// -------------------------------------------------------------------------
-	// ah_get_form_fields — return field keys for a form (used by Rules Engine UI)
+	// ah_get_form_fields - return field keys for a form (used by Triggers Maker UI)
 	// -------------------------------------------------------------------------
 	public static function handle_get_form_fields(): void {
 		self::verify();
@@ -302,7 +302,7 @@ class AH_Ajax_Handlers {
 	}
 
 	// -------------------------------------------------------------------------
-	// Public AJAX — frontend contact form submission (no login required)
+	// Public AJAX - frontend contact form submission (no login required)
 	// -------------------------------------------------------------------------
 
 	public static function init_public(): void {
@@ -311,7 +311,7 @@ class AH_Ajax_Handlers {
 	}
 
 	// -------------------------------------------------------------------------
-	// ah_form_submit — dynamic Form Builder submissions (public, no login needed)
+	// ah_form_submit - dynamic Form Builder submissions (public, no login needed)
 	// -------------------------------------------------------------------------
 	public static function handle_form_submit(): void {
 		if ( ! check_ajax_referer( 'ah_frontend_nonce', 'nonce', false ) ) {
@@ -371,8 +371,8 @@ class AH_Ajax_Handlers {
 			wp_send_json_error( array( 'message' => 'Could not save your submission. Please try again.' ) );
 		}
 
-		// Fire rules engine
-		AH_Rules_Engine::evaluate( 'form_submit', $data );
+		// Fire Triggers Maker
+		AH_Rules_Engine::evaluate( 'form_submit', $form_id, $data );
 
 		// Send email notification
 		$notify = ! empty( $form->notify_email ) ? $form->notify_email : get_option( 'admin_email' );
@@ -535,7 +535,7 @@ class AH_Ajax_Handlers {
 		}
 		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' );
 
-		// Force reinstall — resets version key so install() runs fully
+		// Force reinstall - resets version key so install() runs fully
 		delete_option( AH_DB_VERSION_KEY );
 		AH_DB_Installer::install();
 
@@ -595,7 +595,7 @@ class AH_Ajax_Handlers {
 				$message  = 'Page created and HTML saved.';
 				$redirect = admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $slug ) );
 			} else {
-				$message  = 'HTML saved (could not auto-create WP page — create it manually and set template to "Static HTML Page").';
+				$message  = 'HTML saved (could not auto-create WP page - create it manually and set template to "Static HTML Page").';
 				$redirect = null;
 			}
 		}

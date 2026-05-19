@@ -14,10 +14,10 @@ class AH_CSV_Importer {
 				'required' => array( 'title' ),
 				'columns'  => array(
 					'title'             => 'Service title (required)',
-					'slug'              => 'URL slug — auto-generated from title if blank',
+					'slug'              => 'URL slug - auto-generated from title if blank',
 					'short_description' => 'Short description shown in listings',
 					'full_description'  => 'Full HTML/text description (detail page)',
-					'sort_order'        => 'Integer — display order (default 0)',
+					'sort_order'        => 'Integer - display order (default 0)',
 					'status'            => 'active | inactive | draft  (default active)',
 					'meta_title'        => 'SEO title',
 					'meta_description'  => 'SEO description',
@@ -46,7 +46,7 @@ class AH_CSV_Importer {
 				'required' => array( 'question', 'answer' ),
 				'columns'  => array(
 					'question'   => 'FAQ question (required)',
-					'answer'     => 'FAQ answer — plain text or HTML (required)',
+					'answer'     => 'FAQ answer - plain text or HTML (required)',
 					'link_text'  => 'Optional CTA link label',
 					'link_url'   => 'Optional CTA link URL',
 					'sort_order' => 'Integer display order (default 0)',
@@ -60,7 +60,7 @@ class AH_CSV_Importer {
 				'columns'  => array(
 					'title'            => 'Post title (required)',
 					'post_type'        => 'blog | news | article (required)',
-					'slug'             => 'URL slug — auto-generated if blank',
+					'slug'             => 'URL slug - auto-generated if blank',
 					'excerpt'          => 'Short summary',
 					'content'          => 'Full post content (HTML allowed)',
 					'is_featured'      => '1 = featured (default 0)',
@@ -92,7 +92,7 @@ class AH_CSV_Importer {
 				'columns'  => array(
 					'name'        => 'Term name (required)',
 					'type_slug'   => 'Taxonomy type slug, e.g. category | tag | subtag (required)',
-					'slug'        => 'URL slug — auto-generated if blank',
+					'slug'        => 'URL slug - auto-generated if blank',
 					'parent_slug' => 'Slug of parent term (leave blank for top-level)',
 					'description' => 'Optional description',
 					'sort_order'  => 'Integer display order (default 0)',

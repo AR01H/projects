@@ -15,7 +15,7 @@
 	transform: none !important;
 }
 
-/* Stagger delays — CSS fallback; JS sets inline style for all values */
+/* Stagger delays - CSS fallback; JS sets inline style for all values */
 [data-delay="0"]   { transition-delay: 0ms; }
 [data-delay="80"]  { transition-delay: 80ms; }
 [data-delay="100"] { transition-delay: 100ms; }

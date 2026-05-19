@@ -43,17 +43,17 @@ $actions_list = array( 'create', 'update', 'delete', 'login' );
           <tr>
             <td><small><?php echo esc_html( wp_date( 'M j Y g:i a', strtotime( $log->created_at ) ) ); ?></small></td>
             <td><span style="background:<?php echo esc_attr( $color ); ?>;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;"><?php echo esc_html( strtoupper( $log->action ) ); ?></span></td>
-            <td><code style="font-size:11px;"><?php echo esc_html( $log->table_name ?: '—' ); ?></code></td>
-            <td><?php echo $log->record_id ? '#' . esc_html( $log->record_id ) : '—'; ?></td>
+            <td><code style="font-size:11px;"><?php echo esc_html( $log->table_name ?: '-' ); ?></code></td>
+            <td><?php echo $log->record_id ? '#' . esc_html( $log->record_id ) : '-'; ?></td>
             <td><?php echo $log->user_id ? '#' . esc_html( $log->user_id ) : '<em style="color:var(--ah-muted);">system</em>'; ?></td>
-            <td><small><?php echo esc_html( $log->ip_address ?: '—' ); ?></small></td>
+            <td><small><?php echo esc_html( $log->ip_address ?: '-' ); ?></small></td>
             <td>
               <?php if ( $log->old_values || $log->new_values ) : ?>
                 <details><summary style="cursor:pointer;font-size:12px;color:var(--ah-primary);">View</summary>
                   <?php if ( $log->old_values ) : ?><pre style="font-size:10px;max-height:120px;overflow:auto;background:#f8fafc;padding:6px;border-radius:4px;">Before: <?php echo esc_html( $log->old_values ); ?></pre><?php endif; ?>
                   <?php if ( $log->new_values ) : ?><pre style="font-size:10px;max-height:120px;overflow:auto;background:#f8fafc;padding:6px;border-radius:4px;">After: <?php echo esc_html( $log->new_values ); ?></pre><?php endif; ?>
                 </details>
-              <?php else : ?>—<?php endif; ?>
+              <?php else : ?>-<?php endif; ?>
             </td>
           </tr>
         <?php endforeach; ?>

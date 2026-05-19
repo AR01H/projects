@@ -50,7 +50,7 @@ function ah_sections_to_blocks( array $sections ): string {
 			case 'quote':
 				$text     = wp_kses_post( $s['text'] ?? '' );
 				$cite     = esc_html( $s['cite'] ?? '' );
-				$cite_tag = $cite ? "<cite>— {$cite}</cite>" : '';
+				$cite_tag = $cite ? "<cite>- {$cite}</cite>" : '';
 				$out     .= "<!-- wp:html -->\n<blockquote class=\"wp-block-quote\">{$text}{$cite_tag}</blockquote>\n<!-- /wp:html -->\n\n";
 				break;
 			case 'cta':
@@ -98,14 +98,14 @@ function ah_template_default_sections( string $tpl_key, array $overrides = [] ):
 			return $sections;
 		case 'casestudy':
 			$name  = $overrides['client_name']  ?? 'Client Name, Location';
-			$quote = $overrides['client_quote'] ?? 'Add a genuine client quote here — it builds trust and makes the story real.';
+			$quote = $overrides['client_quote'] ?? 'Add a genuine client quote here - it builds trust and makes the story real.';
 			return [
 				[ 'type' => 'heading',   'level' => '2', 'text' => 'The Challenge' ],
 				[ 'type' => 'paragraph', 'text' => "Describe the client's situation and what problem they were facing. What made it difficult?" ],
 				[ 'type' => 'heading',   'level' => '2', 'text' => 'Our Approach' ],
 				[ 'type' => 'paragraph', 'text' => 'Explain how you stepped in and what you did differently. What specific action made the difference?' ],
 				[ 'type' => 'heading',   'level' => '2', 'text' => 'The Result' ],
-				[ 'type' => 'paragraph', 'text' => 'Share the outcome — use specific numbers or outcomes where possible.' ],
+				[ 'type' => 'paragraph', 'text' => 'Share the outcome - use specific numbers or outcomes where possible.' ],
 				[ 'type' => 'quote',     'text' => $quote, 'cite' => $name ],
 				[ 'type' => 'cta',       'text' => 'Book Your Free Consultation', 'url' => '/free-consultation/' ],
 			];
@@ -125,7 +125,7 @@ function ah_template_default_sections( string $tpl_key, array $overrides = [] ):
 	}
 }
 
-// ── Render a section card (PHP — for both new and loaded sections) ─────────────
+// ── Render a section card (PHP - for both new and loaded sections) ─────────────
 function ah_render_section_card( array $s, bool $first = false, bool $last = false ): void {
 	$type   = $s['type'] ?? '';
 	$labels = [
@@ -257,7 +257,7 @@ function ah_post_templates(): array {
 			'label'   => 'Blog Post',
 			'icon'    => '✍️',
 			'desc'    => 'Standard blog post with intro, body sections and conclusion',
-			'excerpt' => 'A short summary of what this post covers — edit to match your topic.',
+			'excerpt' => 'A short summary of what this post covers - edit to match your topic.',
 			'fields'  => array(
 				array( 'type' => 'text',     'name' => 'post_title',    'label' => 'Post Title',    'placeholder' => 'My Blog Post Title',  'required' => true ),
 				array( 'type' => 'textarea', 'name' => 'post_excerpt',  'label' => 'Short Summary', 'hint' => 'shown in listings',          'rows' => 2, 'placeholder' => 'A short summary of what this post covers…' ),
@@ -268,7 +268,7 @@ function ah_post_templates(): array {
 			'label'   => 'News Article',
 			'icon'    => '📰',
 			'desc'    => 'News-style format with headline, lead paragraph and body',
-			'excerpt' => 'Brief summary of the news — who, what, when, where.',
+			'excerpt' => 'Brief summary of the news - who, what, when, where.',
 			'fields'  => array(
 				array( 'type' => 'text',     'name' => 'post_title',     'label' => 'Headline',       'placeholder' => 'Company News: Your Headline Here', 'required' => true ),
 				array( 'type' => 'textarea', 'name' => 'lead_paragraph', 'label' => 'Lead Paragraph', 'hint' => 'who, what, when, where', 'rows' => 3, 'placeholder' => 'Summarise the key news in 1–2 sentences…' ),
@@ -288,7 +288,7 @@ function ah_post_templates(): array {
 			'label'   => 'Client Story / Case Study',
 			'icon'    => '🏆',
 			'desc'    => 'Client success story with challenge, solution and result',
-			'excerpt' => 'How we helped a client achieve their goal — read the full story.',
+			'excerpt' => 'How we helped a client achieve their goal - read the full story.',
 			'fields'  => array(
 				array( 'type' => 'text',     'name' => 'post_title',   'label' => 'Case Study Title', 'placeholder' => 'How We Helped [Client] Achieve [Goal]', 'required' => true ),
 				array( 'type' => 'text',     'name' => 'client_name',  'label' => 'Client Name',      'placeholder' => 'e.g. Jane Smith, Melbourne' ),
@@ -298,7 +298,7 @@ function ah_post_templates(): array {
 		'faq' => array(
 			'label'   => 'FAQ / Q&amp;A Post',
 			'icon'    => '❓',
-			'desc'    => 'Question and answer format — great for SEO',
+			'desc'    => 'Question and answer format - great for SEO',
 			'excerpt' => 'Answers to the most common questions about this topic.',
 			'fields'  => array(
 				array( 'type' => 'text',   'name' => 'post_title', 'label' => 'Post Title',          'placeholder' => 'Common Questions About…', 'required' => true ),
@@ -324,7 +324,7 @@ function ah_render_template_field( array $f ): void {
 	  <?php elseif ( $f['type'] === 'number' ) : ?>
 	    <input type="number" name="<?php echo esc_attr( $f['name'] ); ?>" min="<?php echo esc_attr( $f['min'] ?? 1 ); ?>" max="<?php echo esc_attr( $f['max'] ?? 10 ); ?>" value="<?php echo esc_attr( $f['default'] ?? 3 ); ?>" style="<?php echo $style; ?>">
 	  <?php elseif ( $f['type'] === 'category' ) : ?>
-	    <?php wp_dropdown_categories( array( 'name' => $f['name'], 'show_option_none' => '— No Category —', 'option_none_value' => 0, 'hide_empty' => false, 'style' => $style ) ); ?>
+	    <?php wp_dropdown_categories( array( 'name' => $f['name'], 'show_option_none' => '- No Category -', 'option_none_value' => 0, 'hide_empty' => false, 'style' => $style ) ); ?>
 	  <?php endif; ?>
 	</div>
 	<?php
@@ -618,7 +618,7 @@ if ( $action === 'edit-custom' ) {
                 </label>
               <?php endforeach; ?>
             <?php else : ?>
-              <p style="font-size:.82rem;opacity:.6;margin:0;">No categories yet — <a href="<?php echo esc_url( admin_url( 'edit-tags.php?taxonomy=category' ) ); ?>">add one</a>.</p>
+              <p style="font-size:.82rem;opacity:.6;margin:0;">No categories yet - <a href="<?php echo esc_url( admin_url( 'edit-tags.php?taxonomy=category' ) ); ?>">add one</a>.</p>
             <?php endif; ?>
           </div>
         </div>
@@ -958,13 +958,13 @@ if ( $action === 'edit-custom' ) {
          class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
         <div style="font-size:2.5rem;margin-bottom:12px;">✍️</div>
         <h3 style="margin:0 0 8px;">Blank Post</h3>
-        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Open the WordPress editor with a blank post — write freely.</p>
+        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Open the WordPress editor with a blank post - write freely.</p>
       </a>
       <a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'templates' ], admin_url( 'admin.php' ) ) ); ?>"
          class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;border-top:3px solid var(--ah-primary);" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
         <div style="font-size:2.5rem;margin-bottom:12px;">📋</div>
         <h3 style="margin:0 0 8px;">From Template</h3>
-        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Choose a pre-filled template — Blog, News, Guide, Case Study, FAQ.</p>
+        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Choose a pre-filled template - Blog, News, Guide, Case Study, FAQ.</p>
       </a>
     </div>
   <?php else : ?>
@@ -991,7 +991,7 @@ if ( $action === 'edit-custom' ) {
                   <small style="color:var(--ah-muted);display:block;"><?php echo esc_html( wp_trim_words( $p->post_excerpt, 10 ) ); ?></small>
                 <?php endif; ?>
               </td>
-              <td><small><?php echo $cats ? esc_html( implode( ', ', wp_list_pluck( $cats, 'name' ) ) ) : '—'; ?></small></td>
+              <td><small><?php echo $cats ? esc_html( implode( ', ', wp_list_pluck( $cats, 'name' ) ) ) : '-'; ?></small></td>
               <td><?php ( new AH_Content_Taxonomy_Model() )->render_badges( 'wp_post', (int) $p->ID ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $badge[ $p->post_status ] ?? 'draft' ); ?>"><?php echo esc_html( $label[ $p->post_status ] ?? $p->post_status ); ?></span></td>
               <td><small style="opacity:.7;"><?php echo $editor_mode === 'custom' ? '📝 Form' : '🖊 WP'; ?></small></td>

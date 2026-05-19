@@ -156,7 +156,7 @@
     // Capture in a local variable so the 'select' handler always has a valid
     // frame reference. 'mediaFrame' is nulled by 'close' (which fires before
     // 'select' in WP), and 'this' inside 'select' is the Selection Collection
-    // (not the Frame), so neither works — only the closure variable is safe.
+    // (not the Frame), so neither works - only the closure variable is safe.
     var frame = wp.media({
       title: 'Select Image',
       button: { text: 'Use this image' },

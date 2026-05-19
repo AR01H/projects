@@ -74,11 +74,11 @@ $faqs     = ah_get_faqs( 'contact', 6 );
             <div class="form-group">
               <label class="form-label" for="cf-message">Message <span aria-hidden="true">*</span></label>
               <textarea id="cf-message" name="message" class="form-input form-textarea" rows="4"
-                        placeholder="Tell us more — timeline, requirements, anything helpful…" required></textarea>
+                        placeholder="Tell us more - timeline, requirements, anything helpful…" required></textarea>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="cf-attachment">Attach a File <span style="color:var(--text-secondary);font-weight:400">(optional — PDF, DOC, DOCX, JPG, PNG · max 2 MB)</span></label>
+              <label class="form-label" for="cf-attachment">Attach a File <span style="color:var(--text-secondary);font-weight:400">(optional - PDF, DOC, DOCX, JPG, PNG · max 2 MB)</span></label>
               <input id="cf-attachment" name="attachment" type="file" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
             </div>
 

@@ -1,4 +1,4 @@
-/* The Cane House — Main JS */
+/* The Cane House - Main JS */
 (function () {
     'use strict';
 
@@ -167,7 +167,7 @@
         });
     }
 
-    // ── Priority Nav — overflow items go into a "More ›" dropdown ────────────
+    // ── Priority Nav - overflow items go into a "More ›" dropdown ────────────
     function initNavPriority() {
         var nav = document.getElementById('ch-nav');
         var linksEl = document.getElementById('ch-nav-links');
@@ -204,7 +204,7 @@
         });
 
         function adjust() {
-            // Mobile: CSS handles it — restore everything
+            // Mobile: CSS handles it - restore everything
             if (window.innerWidth <= 1024) {
                 navItems.forEach(function (li) { li.classList.remove('ch-nav__item--hidden'); });
                 moreLi.style.display = 'none';
@@ -220,7 +220,7 @@
 
             if (nav.scrollWidth <= nav.clientWidth + 2) return; // all fit, done
 
-            // Items overflow — show More button first (it takes space too)
+            // Items overflow - show More button first (it takes space too)
             moreLi.style.display = '';
 
             // Hide items one-by-one from right to left until nav fits

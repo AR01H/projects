@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PLUGIN MODE — CMS ADMIN plugin is active.
+// PLUGIN MODE - CMS ADMIN plugin is active.
 // The plugin already handled: autoloader, admin portal, AJAX, DB, shortcodes.
 // This file only needs to add theme-specific frontend concerns.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -20,7 +20,7 @@ if ( defined( 'AH_PLUGIN_DIR' ) ) {
 		) );
 	} );
 
-	// Frontend assets — AH_Asset_Loader is autoloaded by the plugin.
+	// Frontend assets - AH_Asset_Loader is autoloaded by the plugin.
 	// It uses get_template_directory_uri() internally so assets always resolve
 	// to THIS theme folder, not the plugin folder.
 	AH_Asset_Loader::init();
@@ -29,7 +29,7 @@ if ( defined( 'AH_PLUGIN_DIR' ) ) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// STANDALONE THEME MODE — plugin is NOT active.
+// STANDALONE THEME MODE - plugin is NOT active.
 // Full bootstrap so the theme works on its own (backward-compatible).
 // ─────────────────────────────────────────────────────────────────────────────
 define( 'AH_THEME_VERSION', '1.0.0' );

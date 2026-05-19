@@ -24,7 +24,7 @@ $facts = (array) ( $story['facts'] ?? ch_mock_story_settings()['facts'] );
 				</svg>
 			</div>
 			<div class="ch-story-secondary-card">
-				<p class="ch-story-quote"><?php echo esc_html( $story['quote'] ?? '"Sugarcane — one of nature\'s most generous gifts from the Indian subcontinent. Pure energy, pressed fresh."' ); ?></p>
+				<p class="ch-story-quote"><?php echo esc_html( $story['quote'] ?? '"Sugarcane - one of nature\'s most generous gifts from the Indian subcontinent. Pure energy, pressed fresh."' ); ?></p>
 			</div>
 			<div class="ch-story-year-badge">
 				<span><?php echo nl2br( esc_html( $story['badge_text'] ?? "2,000+\nYears\nof Cane" ) ); ?></span>
@@ -35,10 +35,10 @@ $facts = (array) ( $story['facts'] ?? ch_mock_story_settings()['facts'] );
 			<div class="ch-section-tag"><?php echo esc_html( $story['tag'] ?? 'The Story of Sugarcane' ); ?></div>
 			<h2 class="ch-section-title"><?php echo wp_kses( $story['headline'] ?? 'Beyond the <span class="accent">Juice</span>', [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 			<p class="ch-section-body" style="margin-top:1rem;">
-				<?php echo esc_html( $story['body_1'] ?? 'Sugarcane has been cherished for over 2,000 years, originating in South and Southeast Asia — particularly the Indian subcontinent — where it has been a cornerstone of Ayurvedic medicine, spiritual offerings, and everyday refreshment.' ); ?>
+				<?php echo esc_html( $story['body_1'] ?? 'Sugarcane has been cherished for over 2,000 years, originating in South and Southeast Asia - particularly the Indian subcontinent - where it has been a cornerstone of Ayurvedic medicine, spiritual offerings, and everyday refreshment.' ); ?>
 			</p>
 			<p class="ch-section-body" style="margin-top:1rem;font-size:.9rem;">
-				<?php echo esc_html( $story['body_2'] ?? 'At The Cane House, we bring this centuries-old tradition to the heart of the UK. Every glass honours that heritage — pressed live, served cool, with the same love and craft that has always made sugarcane juice special.' ); ?>
+				<?php echo esc_html( $story['body_2'] ?? 'At The Cane House, we bring this centuries-old tradition to the heart of the UK. Every glass honours that heritage - pressed live, served cool, with the same love and craft that has always made sugarcane juice special.' ); ?>
 			</p>
 			<div class="ch-story-facts">
 				<?php foreach ( $facts as $fact ) :

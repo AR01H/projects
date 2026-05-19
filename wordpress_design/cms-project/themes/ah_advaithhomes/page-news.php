@@ -14,7 +14,7 @@ $all_active = $model ? $model->get_active() : [];
 
 // ── Batch-fetch taxonomy terms for all items ───────────────────────────────
 $item_terms    = [];   // [ item_id => [ term, … ] ]
-$unique_terms  = [];   // [ slug => term ] — for filter tabs
+$unique_terms  = [];   // [ slug => term ] - for filter tabs
 
 if ( $all_active && class_exists( 'AH_DB_Helper' ) ) {
 	global $wpdb;

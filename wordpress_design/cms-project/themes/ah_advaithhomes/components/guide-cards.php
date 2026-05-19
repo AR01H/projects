@@ -10,7 +10,7 @@ if ( empty( $categories ) ) return;
       <span class="section__eyebrow">The Complete Resource</span>
       <h2 class="section__title">Everything You Need to Buy with Confidence</h2>
       <p class="section__desc" style="margin-inline:auto">
-        Our guides cover every stage of the buying journey — from understanding mortgages to completion day.
+        Our guides cover every stage of the buying journey - from understanding mortgages to completion day.
       </p>
     </div>
 

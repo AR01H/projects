@@ -35,18 +35,18 @@ $cleaned = ! empty( $_GET['cleaned'] );
           [ 'name' => 'reviews (DB table)',     'val' => $counts['reviews'] ],
           [ 'name' => 'faqs (DB table)',        'val' => $counts['faqs'] ],
           [ 'name' => 'news_bar (DB table)',    'val' => $counts['news_bar'] ?? null ],
-          [ 'name' => 'ah_site_settings',       'val' => get_option('ah_site_settings') ? '✓ set' : '—' ],
+          [ 'name' => 'ah_site_settings',       'val' => get_option('ah_site_settings') ? '✓ set' : '-' ],
           [ 'name' => 'ah_home_settings',       'val' => $counts['ah_home_settings'] ],
           [ 'name' => 'ah_guide_nav',           'val' => $counts['ah_guide_nav'] ],
           [ 'name' => 'ah_guide_categories',    'val' => $counts['ah_guide_categories'] ],
-          [ 'name' => 'ah_nav_buying_topics',   'val' => get_option('ah_nav_buying_topics') ? '✓ set' : '—' ],
-          [ 'name' => 'ah_nav_finance_topics',  'val' => get_option('ah_nav_finance_topics') ? '✓ set' : '—' ],
-          [ 'name' => 'ah_nav_legal_topics',    'val' => get_option('ah_nav_legal_topics') ? '✓ set' : '—' ],
+          [ 'name' => 'ah_nav_buying_topics',   'val' => get_option('ah_nav_buying_topics') ? '✓ set' : '-' ],
+          [ 'name' => 'ah_nav_finance_topics',  'val' => get_option('ah_nav_finance_topics') ? '✓ set' : '-' ],
+          [ 'name' => 'ah_nav_legal_topics',    'val' => get_option('ah_nav_legal_topics') ? '✓ set' : '-' ],
           [ 'name' => 'ah_process_steps',       'val' => $counts['ah_process_steps'] ],
           [ 'name' => 'ah_site_stats',          'val' => $counts['ah_site_stats'] ],
         ];
         foreach ( $rows as $r ) :
-          $empty = empty( $r['val'] ) || $r['val'] === '—' || $r['val'] === 0 || $r['val'] === null;
+          $empty = empty( $r['val'] ) || $r['val'] === '-' || $r['val'] === 0 || $r['val'] === null;
           $cls   = $r['val'] === null ? 'warn' : ( $empty ? 'missing' : 'ok' );
           $label = $r['val'] === null ? 'Table missing' : ( $empty ? 'Empty / not set' : (string) $r['val'] );
         ?>

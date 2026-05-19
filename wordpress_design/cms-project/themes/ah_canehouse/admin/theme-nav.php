@@ -11,7 +11,7 @@ $plugin_active  = class_exists( 'AH_Admin_Bootstrap' );
 	<?php if ( $plugin_active ) : ?>
 		<div class="ch-notice ch-notice--success" style="margin-bottom:1.5rem;">
 			Navigation and footer are managed by the <strong>CMS Plugin</strong>.
-			The plugin's editor supports full multi-page links, dropdown menus, submenu items, and footer columns — all shared across themes.
+			The plugin's editor supports full multi-page links, dropdown menus, submenu items, and footer columns - all shared across themes.
 		</div>
 		<p>
 			<a href="<?php echo esc_url( $plugin_nav_url ); ?>" class="button button-primary button-hero">

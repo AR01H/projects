@@ -30,7 +30,7 @@
       }
     }
 
-    // UI — loading state
+    // UI - loading state
     $btn.prop('disabled', true).data('orig-text', $btn.text()).text('Sending…');
     $status.text('').removeClass('ah-form__status--success ah-form__status--error');
     $success.removeClass('is-visible');
@@ -64,7 +64,7 @@
         }
       },
       error: function () {
-        showStatus('Network error — please check your connection and try again.', false);
+        showStatus('Network error - please check your connection and try again.', false);
       },
       complete: function () {
         $btn.prop('disabled', false).text($btn.data('orig-text') || 'Send');

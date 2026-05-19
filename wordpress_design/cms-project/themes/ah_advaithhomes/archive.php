@@ -4,7 +4,7 @@
 $archive_title = get_the_archive_title();
 $archive_desc  = get_the_archive_description();
 
-// Build a clean title — strip the "Category: / Tag: " prefix WP adds
+// Build a clean title - strip the "Category: / Tag: " prefix WP adds
 $clean_title = preg_replace( '/^[^:]+:\s*/', '', strip_tags( $archive_title ) );
 
 get_template_part( 'components/page-header', null, [
@@ -101,7 +101,7 @@ get_template_part( 'components/page-header', null, [
           <div class="text-center" style="padding:60px 24px">
             <div style="font-size:3rem;margin-bottom:16px">📂</div>
             <h2 style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:10px">No posts found</h2>
-            <p style="color:var(--text-secondary)">Nothing published in this category yet — check back soon.</p>
+            <p style="color:var(--text-secondary)">Nothing published in this category yet - check back soon.</p>
             <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">Browse All Posts →</a>
           </div>
         <?php endif; ?>

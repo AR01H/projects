@@ -105,9 +105,9 @@ $wp_cats       = get_categories( [ 'hide_empty' => true ] );
 			<h2 style="font-size:1.4rem;margin-bottom:12px">No articles yet</h2>
 			<p style="opacity:.7;margin-bottom:24px">
 				<?php if ( $active_cat ) : ?>
-					Nothing in this category yet — browse all articles.
+					Nothing in this category yet - browse all articles.
 				<?php else : ?>
-					We're brewing something great — check back soon.
+					We're brewing something great - check back soon.
 				<?php endif; ?>
 			</p>
 			<?php if ( $active_cat ) : ?>

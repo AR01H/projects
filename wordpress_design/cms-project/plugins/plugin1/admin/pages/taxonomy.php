@@ -145,7 +145,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
                 <tr>
                   <td><?php echo esc_html( $term->name ); ?><?php if ( $term->parent_id ) echo ' <small style="color:var(--ah-muted);">↳ child</small>'; ?><?php if ( ! empty( $term->is_protected ) ) echo ' <span title="System protected" style="cursor:default;">&#128274;</span>'; ?></td>
                   <td><code><?php echo esc_html( $term->slug ); ?></code></td>
-                  <td><?php echo esc_html( $t_type->name ?? '—' ); ?></td>
+                  <td><?php echo esc_html( $t_type->name ?? '-' ); ?></td>
                   <td><span class="ah-badge ah-badge-<?php echo esc_attr( $term->status ); ?>"><?php echo esc_html( $term->status ); ?></span></td>
                   <td class="row-actions">
                     <?php if ( empty( $term->is_protected ) ) : ?>
@@ -169,7 +169,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
           <div class="ah-form-row">
             <label>Type *</label>
             <select name="type_id" id="term-type" required>
-              <option value="">— Select Type —</option>
+              <option value="">- Select Type -</option>
               <?php foreach ( $types as $t ) : ?><option value="<?php echo esc_attr( $t->id ); ?>" <?php selected( $item->type_id ?? $type_id, $t->id ); ?>><?php echo esc_html( $t->name ); ?></option><?php endforeach; ?>
             </select>
           </div>
@@ -177,7 +177,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
           <div class="ah-form-row"><label>Slug</label><input type="text" name="slug" id="term-slug" value="<?php echo esc_attr( $item->slug ?? '' ); ?>" class="ah-slug-field"></div>
           <div class="ah-form-row"><label>Parent Term</label>
             <select name="parent_id">
-              <option value="">— None —</option>
+              <option value="">- None -</option>
               <?php foreach ( $parents as $par ) : ?><option value="<?php echo esc_attr( $par->id ); ?>" <?php selected( $item->parent_id ?? 0, $par->id ); ?>><?php echo esc_html( $par->name ); ?></option><?php endforeach; ?>
             </select>
           </div>

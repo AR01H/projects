@@ -153,7 +153,7 @@ $sections = array(
   <!-- ── Why Us ── -->
   <?php elseif ( $tab === 'why_us' ) : ?>
     <div class="ah-card">
-      <div class="ah-card-header"><h2>Why You Need Us — Section Header</h2></div>
+      <div class="ah-card-header"><h2>Why You Need Us - Section Header</h2></div>
       <form method="post">
         <?php wp_nonce_field( 'ah_save_home', 'ah_home_nonce' ); ?>
         <div class="ah-form-row"><label>Heading</label><input type="text" name="heading" value="<?php echo esc_attr( $why_us->heading ?? '' ); ?>"></div>
@@ -219,7 +219,7 @@ $sections = array(
   <!-- ── Difference ── -->
   <?php elseif ( $tab === 'difference' ) : ?>
     <div class="ah-card">
-      <div class="ah-card-header"><h2>Difference From Others — Header</h2></div>
+      <div class="ah-card-header"><h2>Difference From Others - Header</h2></div>
       <form method="post">
         <?php wp_nonce_field( 'ah_save_home', 'ah_home_nonce' ); ?>
         <div class="ah-form-row"><label>Heading</label><input type="text" name="heading" value="<?php echo esc_attr( $difference->heading ?? '' ); ?>"></div>

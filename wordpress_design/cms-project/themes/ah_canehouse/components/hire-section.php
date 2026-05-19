@@ -10,7 +10,7 @@ $settings = ch_get_settings();
 		<div class="ch-hire__header fade-up">
 			<div class="ch-section-tag">Live Juice Stall Hire</div>
 			<h2 class="ch-section-title">Bring Us to <span class="accent">Your Event</span></h2>
-			<p class="ch-section-body">Elevate your celebration with our premium live-pressed sugarcane juice experience — perfect for weddings, Mehndi nights, Eid parties, Diwali celebrations, and corporate gatherings.</p>
+			<p class="ch-section-body">Elevate your celebration with our premium live-pressed sugarcane juice experience - perfect for weddings, Mehndi nights, Eid parties, Diwali celebrations, and corporate gatherings.</p>
 		</div>
 
 		<div class="ch-hire-grid">

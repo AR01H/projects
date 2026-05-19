@@ -32,7 +32,7 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 			</div>
 
 			<p class="ch-hero__desc">
-				<?php echo wp_kses( $h['hero_desc'] ?? 'Fresh sugarcane juice pressed live and blended with authentic cold-pressed fruit extracts &amp; natural botanicals. Build your perfect juice — your way.', [ 'br' => [], 'em' => [], 'strong' => [], 'amp' => [] ] ); ?>
+				<?php echo wp_kses( $h['hero_desc'] ?? 'Fresh sugarcane juice pressed live and blended with authentic cold-pressed fruit extracts &amp; natural botanicals. Build your perfect juice - your way.', [ 'br' => [], 'em' => [], 'strong' => [], 'amp' => [] ] ); ?>
 			</p>
 
 			<div class="ch-hero__btns">

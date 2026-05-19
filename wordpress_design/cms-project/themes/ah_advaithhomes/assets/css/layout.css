@@ -1,7 +1,7 @@
 /* ── Page Offset (nav height) ─────────────────────────────────────────────── */
 /* #page-content { padding-top: var(--nav-h); } */
 
-/* WordPress admin bar pushes fixed nav down — match the offset */
+/* WordPress admin bar pushes fixed nav down - match the offset */
 .admin-bar .nav__mobile       { top: calc( var(--nav-h)); }
 @media screen and (max-width: 782px) {
   .admin-bar .nav__mobile     { top: calc( var(--nav-h)); }
@@ -514,7 +514,7 @@
 	flex-shrink: 0;
 }
 
-/* ── About page — value cards ────────────────────────────────────────────── */
+/* ── About page - value cards ────────────────────────────────────────────── */
 .about-values { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 640px) { .about-values { grid-template-columns: 1fr; } }
 

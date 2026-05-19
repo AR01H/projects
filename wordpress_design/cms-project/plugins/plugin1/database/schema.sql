@@ -838,7 +838,7 @@ CREATE TABLE random_blog_card_configs (
 
 
 -- ============================================================
--- 20. NEWS DETAIL PAGE — Big Cards & Related Posts
+-- 20. NEWS DETAIL PAGE - Big Cards & Related Posts
 -- ============================================================
 
 CREATE TABLE news_detail_big_cards (

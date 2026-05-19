@@ -68,7 +68,7 @@ class CH_Theme_Admin {
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 		require_once get_template_directory() . '/mock_data/seeder.php';
 		$result = CH_Theme_Seeder::cleanup_all();
-		$msg = 'Cleanup complete — ' . $result['deleted'] . ' items removed.';
+		$msg = 'Cleanup complete - ' . $result['deleted'] . ' items removed.';
 		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-cleanup', 'cleaned' => '1', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
 		exit;
 	}

@@ -67,7 +67,7 @@ $all_pages = $pages_m->get_active();
               <td><?php
                 if ( $faq->page_id ) {
                   $pg = $pages_m->find( (int) $faq->page_id );
-                  echo $pg ? esc_html( $pg->title ) : '—';
+                  echo $pg ? esc_html( $pg->title ) : '-';
                 } else { echo '<em>Global</em>'; }
               ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $faq->status ); ?>"><?php echo esc_html( $faq->status ); ?></span></td>
@@ -100,7 +100,7 @@ $all_pages = $pages_m->get_active();
           <div class="ah-form-row">
             <label>Attached Page <small>(leave empty = global)</small></label>
             <select name="page_id">
-              <option value="">— Global —</option>
+              <option value="">- Global -</option>
               <?php foreach ( $all_pages as $pg ) : ?><option value="<?php echo esc_attr( $pg->id ); ?>" <?php selected( $item->page_id ?? 0, $pg->id ); ?>><?php echo esc_html( $pg->title ); ?></option><?php endforeach; ?>
             </select>
           </div>

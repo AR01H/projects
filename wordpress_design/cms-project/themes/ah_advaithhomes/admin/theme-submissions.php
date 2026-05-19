@@ -87,7 +87,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ahts_add_note'] ) &
 		$existing  = $wpdb->get_var( $wpdb->prepare( "SELECT admin_notes FROM `{$table}` WHERE id = %d", $view_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$timestamp = wp_date( 'M j, Y g:i a' );
 		$user_name = wp_get_current_user()->display_name ?: 'Admin';
-		$new_entry = "[{$timestamp} — {$user_name}] " . $note_text;
+		$new_entry = "[{$timestamp} - {$user_name}] " . $note_text;
 		$combined  = $new_entry . ( $existing ? "\n\n" . $existing : '' );
 		$wpdb->update( $table, [ 'admin_notes' => $combined ], [ 'id' => $view_id ], [ '%s' ], [ '%d' ] );
 		$notice = 'Note saved.';
@@ -182,7 +182,7 @@ if ( $view_id && $sub ) :
 
     <div class="ahts-detail-row"><span class="ahts-detail-lbl">Name</span><span class="ahts-detail-val" style="font-weight:600"><?php echo esc_html( $sub->full_name ); ?></span></div>
     <div class="ahts-detail-row"><span class="ahts-detail-lbl">Email</span><span class="ahts-detail-val"><a href="mailto:<?php echo esc_attr( $sub->email ); ?>"><?php echo esc_html( $sub->email ); ?></a></span></div>
-    <div class="ahts-detail-row"><span class="ahts-detail-lbl">Phone</span><span class="ahts-detail-val"><?php echo esc_html( $sub->phone ?: '—' ); ?></span></div>
+    <div class="ahts-detail-row"><span class="ahts-detail-lbl">Phone</span><span class="ahts-detail-val"><?php echo esc_html( $sub->phone ?: '-' ); ?></span></div>
     <div class="ahts-detail-row"><span class="ahts-detail-lbl">Enquiry Type</span><span class="ahts-detail-val"><?php echo ahts_type_badge( $sub_type, $type_labels, $type_colors ); ?></span></div>
     <?php if ( ! empty( $sub->short_quote ) ) : ?>
     <div class="ahts-detail-row"><span class="ahts-detail-lbl">In a sentence</span><span class="ahts-detail-val" style="font-style:italic"><?php echo esc_html( $sub->short_quote ); ?></span></div>
@@ -224,14 +224,14 @@ if ( $view_id && $sub ) :
     <details style="margin-top:20px;">
       <summary style="cursor:pointer;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;user-select:none;">Technical Details</summary>
       <div style="margin-top:10px;">
-        <div class="ahts-detail-row"><span class="ahts-detail-lbl">IP Address</span><span class="ahts-detail-val" style="color:#94a3b8"><?php echo esc_html( $sub->ip_address ?: '—' ); ?></span></div>
+        <div class="ahts-detail-row"><span class="ahts-detail-lbl">IP Address</span><span class="ahts-detail-val" style="color:#94a3b8"><?php echo esc_html( $sub->ip_address ?: '-' ); ?></span></div>
         <div class="ahts-detail-row">
           <span class="ahts-detail-lbl">Page URL</span>
           <span class="ahts-detail-val">
-            <?php echo $sub->page_url ? '<a href="' . esc_url( $sub->page_url ) . '" target="_blank" rel="noopener">' . esc_html( $sub->page_url ) . '</a>' : '—'; ?>
+            <?php echo $sub->page_url ? '<a href="' . esc_url( $sub->page_url ) . '" target="_blank" rel="noopener">' . esc_html( $sub->page_url ) . '</a>' : '-'; ?>
           </span>
         </div>
-        <div class="ahts-detail-row"><span class="ahts-detail-lbl">User Agent</span><span class="ahts-detail-val" style="color:#94a3b8;font-size:12px"><?php echo esc_html( $sub->user_agent ?: '—' ); ?></span></div>
+        <div class="ahts-detail-row"><span class="ahts-detail-lbl">User Agent</span><span class="ahts-detail-val" style="color:#94a3b8;font-size:12px"><?php echo esc_html( $sub->user_agent ?: '-' ); ?></span></div>
       </div>
     </details>
     <?php endif; ?>

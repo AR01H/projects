@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-// ── Table helper — reads same wp_ah_cms_plug_* tables as the CMS plugin ──────
+// ── Table helper - reads same wp_ah_cms_plug_* tables as the CMS plugin ──────
 function ch_theme_table( string $name ): string {
 	global $wpdb;
 	$mid = defined( 'TABLE_MID_FIX' ) ? TABLE_MID_FIX : '_cms_plug_';
@@ -131,7 +131,7 @@ function ch_get_theme_footer(): array {
 function ch_build_default_footer(): array {
 	$s = ch_get_settings();
 	return [
-		'brand_description' => 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives — pure natural refreshment wherever you are.',
+		'brand_description' => 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - pure natural refreshment wherever you are.',
 		'columns'           => [
 			[
 				'title' => 'Our Juice',

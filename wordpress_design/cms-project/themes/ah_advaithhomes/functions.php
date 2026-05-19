@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-// ── Includes — order matters ──────────────────────────────────────────────────
+// ── Includes - order matters ──────────────────────────────────────────────────
 require_once get_template_directory() . '/includes/mock-data.php';       // fallback data arrays
 require_once get_template_directory() . '/includes/helpers.php';         // DB-first data functions + utilities
 require_once get_template_directory() . '/includes/class-theme-admin.php'; // WP admin menu for this theme

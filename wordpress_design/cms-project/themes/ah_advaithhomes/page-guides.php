@@ -7,7 +7,7 @@ get_header();
 $categories = ah_get_guide_categories();
 $active_cat = sanitize_text_field( $_GET['category'] ?? '' );
 
-// Pull recent posts (guides) — filter by category if set
+// Pull recent posts (guides) - filter by category if set
 $query_args = [
   'post_type'      => 'post',
   'posts_per_page' => 12,
@@ -28,7 +28,7 @@ $guides_query = new WP_Query( $query_args );
   'eyebrow'    => 'Free Resources',
   'title'      => 'The Complete',
   'title_em'   => 'Home Buying Library',
-  'desc'       => 'Guides written by buyer\'s agents — not marketers. Everything you need to buy with confidence, from mortgage basics to completion day.',
+  'desc'       => 'Guides written by buyer\'s agents - not marketers. Everything you need to buy with confidence, from mortgage basics to completion day.',
   'breadcrumb' => [
     [ 'Home',   home_url( '/' ) ],
     [ 'Guides', '' ],
@@ -108,7 +108,7 @@ $guides_query = new WP_Query( $query_args );
         No guides published yet
       </h2>
       <p style="color:var(--text-secondary);margin-bottom:24px">
-        Check back soon — our team is building out the full guide library.
+        Check back soon - our team is building out the full guide library.
       </p>
       <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="btn btn-outline">View all categories →</a>
     </div>
