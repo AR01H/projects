@@ -555,26 +555,10 @@ function ah_get_trust_signals(): array {
 
 // ── News Bar Items ────────────────────────────────────────────────────────────
 function ah_get_news_bar_items(): array {
-	if ( class_exists( 'AH_Model_News_Bar' ) ) {
-		$rows = method_exists( 'AH_Model_News_Bar', 'get_active' )
-			? AH_Model_News_Bar::get_active()
-			: AH_Model_News_Bar::all( [ 'status' => 'active' ] );
-		if ( ! empty( $rows ) ) {
-			return array_map( fn( $r ) => $r->message ?? $r->text ?? '', $rows );
-		}
+	if ( ! class_exists( 'AH_Newsbar_Model' ) ) {
+		return [];
 	}
-	// Try DB table directly
-	global $wpdb;
-	$table = ah_theme_table( 'news_bar' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ) {
-		$rows = $wpdb->get_results( "SELECT message FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC" );
-		if ( ! empty( $rows ) ) {
-			return array_map( fn( $r ) => $r->message, $rows );
-		}
-	}
-	$opt = get_option( 'ah_news_bar_items', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_news_bar_items();
+	return ( new AH_Newsbar_Model() )->get_active();
 }
 
 // ── Services ──────────────────────────────────────────────────────────────────

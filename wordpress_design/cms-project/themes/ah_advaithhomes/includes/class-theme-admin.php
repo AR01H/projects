@@ -247,10 +247,6 @@ class AH_Theme_Admin {
 		// Featured post IDs
 		update_option( 'ah_featured_post_ids', sanitize_text_field( $_POST['featured_post_ids'] ?? '' ) );
 
-		// News bar items (one per line)
-		$lines = array_filter( array_map( 'sanitize_text_field', explode( "\n", $_POST['news_bar_items'] ?? '' ) ) );
-		update_option( 'ah_news_bar_items', wp_json_encode( array_values( $lines ) ) );
-
 		// Trust signals
 		$signals = [];
 		foreach ( (array) ( $_POST['trust_signals'] ?? [] ) as $sig ) {

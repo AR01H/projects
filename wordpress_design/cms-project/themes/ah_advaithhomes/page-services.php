@@ -90,7 +90,7 @@ $faqs     = ah_get_faqs( '', 8 );
 
 <!-- ── How It Works ──────────────────────────────────────────────────────── -->
 <?php if ( $steps ) : ?>
-<section class="section section--alt" aria-label="How we work">
+<section class="section section--pattern" aria-label="How we work">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">The Process</span>

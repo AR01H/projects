@@ -38,7 +38,7 @@
     $form.find('.form-control, .form-input').removeClass('has-error');
     $form.find('.form-error').text('');
 
-    var ajaxUrl = (window.ahTheme && ahTheme.ajaxUrl) || '/wp-admin/admin-ajax.php';
+    var ajaxUrl = '/wp-admin/admin-ajax.php';
     var nonce   = (window.ahTheme && ahTheme.nonce) || '';
 
     var ajaxOpts = {
@@ -105,7 +105,7 @@
     $btn.prop('disabled', true).text('…');
 
     $.ajax({
-      url:  (window.ahTheme && ahTheme.ajaxUrl) || '/wp-admin/admin-ajax.php',
+      url:  '/wp-admin/admin-ajax.php',
       type: 'POST',
       data: {
         action: 'ah_newsletter_subscribe',

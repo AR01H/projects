@@ -19,6 +19,7 @@ function ah_mock_default_settings(): array {
 		'youtube_url'      => '',
 		'consultation_url' => '/contact/',
 		'tagline'          => "The UK's buyer's agent — working exclusively for you.",
+		'map_embed_url'    => 'https://maps.google.com/maps?q=London,UK&output=embed&z=12',
 	];
 }
 

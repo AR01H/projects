@@ -26,6 +26,7 @@ class AH_Admin_Menus {
 			['title' => 'Static Pages','menu' => 'Static Pages','slug' => 'ah-static-pages','callback' => 'page_static_pages'],
 			['title' => 'Pages Manager','menu' => 'Pages Manager','slug' => 'ah-pages','callback' => 'page_pages'],
 			['title' => 'Form Builder','menu' => 'Form Builder','slug' => 'ah-form-builder','callback' => 'page_form_builder'],
+			['title' => 'Triggers Maker','menu' => 'Triggers Maker','slug' => 'ah-rules-engine','callback' => 'page_rules_engine'],
 			['title' => 'Team Members','menu' => 'Team Members','slug' => 'ah-team','callback' => 'page_team'],
 			['title' => 'Taxonomies','menu' => 'Taxonomies','slug' => 'ah-taxonomy','callback' => 'page_taxonomy'],
 			['title' => 'Data Import','menu' => 'Data Import','slug' => 'ah-import','callback' => 'page_import'],
@@ -74,6 +75,7 @@ class AH_Admin_Menus {
 	public static function page_file_links()     { self::load( 'file-links'     ); }
 	public static function page_builder()         { self::load( 'page-builder'    ); }
 	public static function page_form_builder()   { self::load( 'form-builder'   ); }
+	public static function page_rules_engine()   { self::load( 'rules-engine'   ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }
 	public static function page_help()           { self::load( 'help'           ); }

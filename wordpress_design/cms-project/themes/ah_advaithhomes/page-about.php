@@ -45,7 +45,7 @@ $signals  = ah_get_trust_signals();
 <?php endif; ?>
 
 <!-- ── Our Story ─────────────────────────────────────────────────────────── -->
-<section class="section section--alt" aria-label="Our story">
+<section class="section section--pattern" aria-label="Our story">
   <div class="container">
     <div class="content-layout content-layout--2col">
       <div data-aos="fade-right">

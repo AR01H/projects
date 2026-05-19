@@ -13,7 +13,7 @@ $gradients = [
 	'linear-gradient(135deg,#3b0764,#6d28d9)',
 ];
 ?>
-<section class="section section--alt" aria-label="Featured properties">
+<section class="section section--pattern" aria-label="Featured properties">
   <div class="container">
     <div class="section__header text-center" data-aos="fade-up">
       <span class="section__eyebrow">Recent Acquisitions</span>

@@ -42,6 +42,7 @@
 	--font-accent:  'Instrument Serif', Georgia, serif;
 
 	--nav-h:       66px;
+	--ticker-h:    36px;
 	--section-py:  clamp(60px, 8vw, 60px);
 	--max-w:       100%;
 	--max-w-text:  760px;

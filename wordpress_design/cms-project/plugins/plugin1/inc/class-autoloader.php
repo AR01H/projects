@@ -43,6 +43,7 @@ class AH_Autoloader {
 		'AH_Ajax_Handlers'    => 'admin/ajax/class-ajax-handlers.php',
 		'AH_CSV_Importer'     => 'admin/import/class-csv-importer.php',
 		'AH_Form_Builder'     => 'inc/class-form-builder.php',
+		'AH_Rules_Engine'     => 'inc/class-rules-engine.php',
 	);
 
 	public static function register(): void {

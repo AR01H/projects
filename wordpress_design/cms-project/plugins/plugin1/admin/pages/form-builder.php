@@ -337,7 +337,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
 </div>
 
 <script>
-(function ($) {
+jQuery(function ($) {
   // ── New form dialog ──
   $('#fb-new-btn').on('click', function () { $('#fb-new-dialog').slideToggle(180); });
   $('#fb-new-cancel').on('click', function () { $('#fb-new-dialog').slideUp(180); });
@@ -348,8 +348,8 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
   // ── Add row ──
   var uid = Date.now();
   $('#fb-add').on('click', function () {
-    var tpl = document.getElementById('fb-row-tpl');
-    var $row = $(document.importNode(tpl.content, true)).find('tr');
+    var tpl  = document.getElementById('fb-row-tpl');
+    var $row = $(tpl.content.firstElementChild.cloneNode(true));
     $row.attr('data-key', 'new_' + (++uid));
     $('#fb-body').append($row);
     $row.find('.fb-label').focus();
@@ -412,5 +412,5 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
     $(this).text($det.hasClass('fb-hidden') ? '▶' : '▼');
     $(this).closest('tr').toggleClass('sub-row-open');
   });
-}(jQuery));
+});
 </script>

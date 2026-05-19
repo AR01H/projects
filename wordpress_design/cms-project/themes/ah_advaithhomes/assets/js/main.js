@@ -342,6 +342,56 @@
     adjust();
   }());
 
+  // ── Post share popover ────────────────────────────────────────────────────
+  $(document).on('click', '.post-share__btn', function (e) {
+    e.stopPropagation();
+    var $popover = $(this).siblings('.post-share__popover');
+    var isOpen   = $popover.hasClass('is-open');
+    // Close any other open popovers
+    $('.post-share__popover.is-open').not($popover).removeClass('is-open');
+    $popover.toggleClass('is-open', !isOpen);
+    $(this).attr('aria-expanded', String(!isOpen));
+  });
+
+  // Close share popover on outside click
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('.post-share').length) {
+      $('.post-share__popover').removeClass('is-open');
+      $('.post-share__btn').attr('aria-expanded', 'false');
+    }
+  });
+
+  // Native share button (Web Share API)
+  $(document).on('click', '.post-share__icon--native', function () {
+    var url   = $(this).data('url');
+    var title = $(this).data('title') || document.title;
+    if (navigator.share) {
+      navigator.share({ title: title, url: url }).catch(function () {});
+    } else {
+      // Fallback: open a new tab to the URL
+      window.open(url, '_blank', 'noopener');
+    }
+  });
+
+  // Copy link button inside share popover
+  $(document).on('click', '.post-share__icon--copy', function () {
+    var url = $(this).data('url');
+    if (!url) return;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    var $btn = $(this);
+    $btn.addClass('copied');
+    setTimeout(function () { $btn.removeClass('copied'); }, 1800);
+  });
+
   // ── Copy to clipboard ─────────────────────────────────────────────────────
   $(document).on('click', '[data-copy]', function () {
     var text = $(this).data('copy') || $(this).text();

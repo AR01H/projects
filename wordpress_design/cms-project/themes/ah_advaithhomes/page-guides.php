@@ -24,19 +24,16 @@ if ( $active_cat ) {
 $guides_query = new WP_Query( $query_args );
 ?>
 
-<!-- ── Page Header ───────────────────────────────────────────────────────── -->
-<section class="page-hero page-hero--sm" aria-label="Guides">
-  <div class="container">
-    <div class="page-hero__copy text-center" style="max-width:680px;margin-inline:auto" data-aos="fade-up">
-      <span class="section__eyebrow">Free Resources</span>
-      <h1 class="page-hero__title">The Complete<br><em>Home Buying Library</em></h1>
-      <p class="page-hero__desc">
-        Guides written by buyer's agents — not marketers. Everything you need to buy with confidence,
-        from mortgage basics to completion day.
-      </p>
-    </div>
-  </div>
-</section>
+<?php get_template_part( 'components/page-header', null, [
+  'eyebrow'    => 'Free Resources',
+  'title'      => 'The Complete',
+  'title_em'   => 'Home Buying Library',
+  'desc'       => 'Guides written by buyer\'s agents — not marketers. Everything you need to buy with confidence, from mortgage basics to completion day.',
+  'breadcrumb' => [
+    [ 'Home',   home_url( '/' ) ],
+    [ 'Guides', '' ],
+  ],
+] ); ?>
 
 <!-- ── Category Filter ───────────────────────────────────────────────────── -->
 <?php if ( $categories ) : ?>
@@ -64,7 +61,7 @@ $guides_query = new WP_Query( $query_args );
 <?php endif; ?>
 
 <!-- ── Guide Cards ───────────────────────────────────────────────────────── -->
-<section class="section" aria-label="Guides listing">
+<section class="section section--pattern" aria-label="Guides listing">
   <div class="container">
 
     <?php if ( $guides_query->have_posts() ) : ?>
@@ -72,28 +69,33 @@ $guides_query = new WP_Query( $query_args );
       <?php while ( $guides_query->have_posts() ) :
         $guides_query->the_post();
       ?>
-      <article class="post-card" data-aos="fade-up">
+      <?php
+        $cats      = get_the_category();
+        $cat_name  = $cats ? $cats[0]->name : '';
+      ?>
+      <a href="<?php the_permalink(); ?>" class="gc" data-aos="fade-up">
         <?php if ( has_post_thumbnail() ) : ?>
-          <a href="<?php the_permalink(); ?>" class="post-card__img-wrap">
-            <?php the_post_thumbnail( 'ah-card' ); ?>
-          </a>
+          <?php the_post_thumbnail( 'ah-card', [ 'class' => 'gc__img' ] ); ?>
+        <?php else : ?>
+          <div class="gc__img gc__img--fallback">📖</div>
         <?php endif; ?>
-        <div class="post-card__body">
-          <?php $cats = get_the_category(); if ( $cats ) : ?>
-          <div class="post-card__cat"><?php echo esc_html( $cats[0]->name ); ?></div>
-          <?php endif; ?>
-          <div class="card__meta">
-            <span><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></span>
-            <span>·</span>
-            <span><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
+        <div class="gc__overlay">
+          <div class="gc__top">
+            <?php if ( $cat_name ) : ?>
+              <span class="gc__cat"><?php echo esc_html( $cat_name ); ?></span>
+            <?php endif; ?>
           </div>
-          <h2 class="post-card__title">
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-          </h2>
-          <p class="post-card__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 22, '…' ) ); ?></p>
-          <a href="<?php the_permalink(); ?>" class="btn btn-sm btn-ghost">Read Guide →</a>
+          <div class="gc__bottom">
+            <div class="gc__meta">
+              <?php echo esc_html( get_the_date( 'j M Y' ) ); ?>
+              <span>·</span>
+              <?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?>
+            </div>
+            <h2 class="gc__title"><?php the_title(); ?></h2>
+            <span class="gc__btn">Read Guide →</span>
+          </div>
         </div>
-      </article>
+      </a>
       <?php endwhile; wp_reset_postdata(); ?>
     </div>
 
@@ -116,7 +118,7 @@ $guides_query = new WP_Query( $query_args );
 
 <!-- ── Guide Category Cards ──────────────────────────────────────────────── -->
 <?php if ( $categories ) : ?>
-<section class="section section--alt" aria-label="Browse by category">
+<section class="section section--pattern" aria-label="Browse by category">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Browse by Topic</span>

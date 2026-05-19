@@ -15,7 +15,11 @@ $year     = gmdate( 'Y' );
 ?>
 </div><!-- #page-content -->
 
-<?php $above_footer = ah_get_html_block( 'above_footer' ); if ( $above_footer ) echo $above_footer; ?>
+<?php $above_footer = ah_get_html_block( 'above_footer' ); if ( $above_footer ) : ?>
+<div class="above-footer-block">
+  <div class="container"><?php echo $above_footer; ?></div>
+</div>
+<?php endif; ?>
 
 <footer class="footer" role="contentinfo">
 	<div class="container">

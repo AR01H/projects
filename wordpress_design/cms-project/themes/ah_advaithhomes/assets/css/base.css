@@ -80,6 +80,25 @@ p + p { margin-top: .75em; }
 .section--alt  { background: var(--bg-alt); }
 .section--dark { background: var(--slate-900); color: white; }
 
+/* Shared decorative section — grid lines + subtle client-colour tint */
+.section--pattern {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--client-color-400, #f7c62f) 6%, var(--bg-alt, #f8fafc));
+}
+.section--pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 100% 90% at 50% 100%, transparent 20%, black 100%);
+  pointer-events: none;
+}
+.section--pattern > * { position: relative; }
+
 .section__header {
 	margin-bottom: clamp(32px, 5vw, 34px);
 }

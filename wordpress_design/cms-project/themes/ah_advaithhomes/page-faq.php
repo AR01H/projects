@@ -23,19 +23,18 @@ $topic_icons = [
 ];
 ?>
 
-<!-- ── Page Hero ─────────────────────────────────────────────────────────── -->
-<section class="page-hero page-hero--sm" aria-label="FAQ">
-  <div class="container">
-    <div class="page-hero__copy text-center" style="max-width:640px;margin-inline:auto" data-aos="fade-up">
-      <span class="section__eyebrow">Frequently Asked Questions</span>
-      <h1 class="page-hero__title">Your Questions,<br><em>Answered Honestly</em></h1>
-      <p class="page-hero__desc">
-        Everything you need to know about working with a buyer's agent — how we work,
-        what we cost, and what you can expect at every step.
-      </p>
-    </div>
-  </div>
-</section>
+<?php get_template_part( 'components/page-header', null, [
+  'eyebrow'    => 'Frequently Asked Questions',
+  'title'      => 'Your Questions,',
+  'title_em'   => 'Answered Honestly',
+  'desc'       => 'Everything you need to know about working with a buyer\'s agent — how we work, what we cost, and what you can expect at every step.',
+  'breadcrumb' => [
+    [ 'Home', home_url( '/' ) ],
+    [ 'FAQ',  '' ],
+  ],
+] ); ?>
+
+
 
 <!-- ── FAQ Groups ────────────────────────────────────────────────────────── -->
 <section class="section" aria-label="All FAQs">
@@ -68,31 +67,19 @@ $topic_icons = [
       <?php endforeach; ?>
 
     <?php endif; ?>
-
-    <!-- Still have a question? -->
-    <div class="text-center" style="margin-top:40px;padding:40px;background:var(--bg-alt);border-radius:var(--r-xl);border:1px solid var(--border)" data-aos="fade-up">
-      <div style="font-size:2rem;margin-bottom:12px">💬</div>
-      <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:8px">
-        Still have a question?
-      </h3>
-      <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:20px">
-        We're happy to answer anything — no obligation, no sales pressure.
-      </p>
-      <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary">
-        Ask Us Directly →
-      </a>
-    </div>
   </div>
 </section>
 
 <?php
 get_template_part( 'components/cta-section', null, [
-  'title'     => 'Ready to Start?<br><em>Let\'s Talk.</em>',
-  'desc'      => 'Book a free consultation. No obligation, no pressure — just straight answers about how we can help you buy smarter.',
-  'cta_label' => 'Book a Free Call →',
+  'eyebrow'   => 'Still Have Questions?',
+  'title'     => 'Let\'s Talk It<br><em>Through Together.</em>',
+  'desc'      => 'Our buyer\'s agents are happy to answer anything — no obligation, no sales pressure. Just honest advice from people who are 100% on your side.',
+  'cta_label' => 'Book a Free Call',
   'cta_url'   => home_url( '/contact/' ),
   'sec_label' => 'Browse Our Guides',
   'sec_url'   => home_url( '/guides/' ),
+  'trust'     => 'Free consultation · No obligation · Independent advice',
 ] );
 
 get_footer();

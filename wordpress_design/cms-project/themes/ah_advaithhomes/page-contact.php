@@ -11,19 +11,16 @@ $address  = $settings['address'] ?? '';
 $faqs     = ah_get_faqs( 'contact', 6 );
 ?>
 
-<!-- ── Contact Hero ──────────────────────────────────────────────────────── -->
-<section class="page-hero page-hero--sm" aria-label="Contact us">
-  <div class="container">
-    <div class="page-hero__copy" data-aos="fade-up">
-      <span class="section__eyebrow">Get in Touch</span>
-      <h1 class="page-hero__title">Talk to a<br><em>Buyer's Agent Today</em></h1>
-      <p class="page-hero__desc">
-        Book a free, no-obligation 30-minute consultation. We'll listen to your brief,
-        explain how we work, and tell you honestly whether we're the right fit.
-      </p>
-    </div>
-  </div>
-</section>
+<?php get_template_part( 'components/page-header', null, [
+  'eyebrow'    => 'Get in Touch',
+  'title'      => 'Talk to a',
+  'title_em'   => "Buyer's Agent Today",
+  'desc'       => 'Book a free, no-obligation 30-minute consultation. We\'ll listen to your brief, explain how we work, and tell you honestly whether we\'re the right fit.',
+  'breadcrumb' => [
+    [ 'Home',    home_url( '/' ) ],
+    [ 'Contact', '' ],
+  ],
+] ); ?>
 
 <!-- ── Contact Layout ────────────────────────────────────────────────────── -->
 <section class="section" aria-label="Contact form and details">
@@ -144,51 +141,19 @@ $faqs     = ah_get_faqs( 'contact', 6 );
           </div>
         </div>
 
-        <!-- What to expect -->
-        <div class="contact-info-block">
-          <h3 class="contact-info-block__title">What Happens Next</h3>
-          <ol class="contact-steps">
-            <li class="contact-step">
-              <span class="contact-step__num">1</span>
-              <div>
-                <strong>We'll confirm your slot</strong><br>
-                <span style="font-size:.875rem;color:var(--text-secondary)">Usually within a few hours during business days.</span>
-              </div>
-            </li>
-            <li class="contact-step">
-              <span class="contact-step__num">2</span>
-              <div>
-                <strong>30-minute call</strong><br>
-                <span style="font-size:.875rem;color:var(--text-secondary)">We listen, answer your questions, and explain how we work.</span>
-              </div>
-            </li>
-            <li class="contact-step">
-              <span class="contact-step__num">3</span>
-              <div>
-                <strong>No obligation</strong><br>
-                <span style="font-size:.875rem;color:var(--text-secondary)">If we're not the right fit, we'll say so — and point you in the right direction.</span>
-              </div>
-            </li>
-          </ol>
+        <!-- Google Map -->
+        <?php $map_url = $settings['map_embed_url'] ?? ''; ?>
+        <?php if ( $map_url ) : ?>
+        <div class="contact-map" data-aos="fade-up" data-delay="200">
+          <iframe
+            src="<?php echo esc_url( $map_url ); ?>"
+            width="100%" height="100%"
+            style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Our location on Google Maps">
+          </iframe>
         </div>
-
-        <!-- Alternative: General Enquiry form -->
-        <div class="contact-info-block">
-          <h3 class="contact-info-block__title">Send a Quick Message</h3>
-          <form data-ah-form="contact" class="ah-form" novalidate>
-            <div class="form-group">
-              <input name="name" type="text" class="form-input" placeholder="Your name" required>
-            </div>
-            <div class="form-group">
-              <input name="email" type="email" class="form-input" placeholder="Your email" required>
-            </div>
-            <div class="form-group">
-              <textarea name="message" class="form-input form-textarea" rows="3" placeholder="Your message…" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-outline btn-block">Send Message →</button>
-            <div class="ah-form__status" aria-live="polite"></div>
-          </form>
-        </div>
+        <?php endif; ?>
 
       </div>
     </div>
@@ -197,7 +162,7 @@ $faqs     = ah_get_faqs( 'contact', 6 );
 
 <!-- ── Contact FAQ ────────────────────────────────────────────────────────── -->
 <?php if ( $faqs ) : ?>
-<section class="section section--alt" aria-label="Contact FAQ">
+<section class="section section--pattern" aria-label="Contact FAQ">
   <div class="container container--md">
     <div class="section__header text-center">
       <span class="section__eyebrow">FAQ</span>

@@ -23,4 +23,15 @@
   </section>
 
 </main>
+
+<?php get_template_part( 'components/cta-section', null, [
+  'eyebrow'   => 'While You\'re Here',
+  'title'     => 'Let\'s Find Your<br><em>Perfect Property.</em>',
+  'desc'      => 'Book a free consultation with one of our buyer\'s agents — no obligation, just honest advice on how we can help you buy smarter.',
+  'cta_label' => 'Book a Free Call',
+  'cta_url'   => home_url( '/contact/' ),
+  'sec_label' => 'Browse Our Guides',
+  'sec_url'   => home_url( '/guides/' ),
+] ); ?>
+
 <?php get_footer(); ?>

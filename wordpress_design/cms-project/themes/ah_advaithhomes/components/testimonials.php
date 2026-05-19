@@ -14,7 +14,7 @@ foreach ( ah_get_site_stats() as $s ) {
 	if ( strpos( $n, '500' ) !== false ) $client_stat = $n;
 }
 ?>
-<section class="section section--alt" aria-label="Client testimonials">
+<section class="section section--pattern" aria-label="Client testimonials">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Client Stories</span>

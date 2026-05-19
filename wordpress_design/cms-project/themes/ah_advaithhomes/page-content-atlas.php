@@ -287,7 +287,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section section--alt" aria-label="Live signals">
+<section class="section section--pattern" aria-label="Live signals">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Live Signals</span>
@@ -361,7 +361,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section section--alt" aria-label="Structured content">
+<section class="section section--pattern" aria-label="Structured content">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Structured Content</span>
@@ -526,7 +526,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section section--alt" aria-label="Process and numbers">
+<section class="section section--pattern" aria-label="Process and numbers">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Operational Snapshot</span>

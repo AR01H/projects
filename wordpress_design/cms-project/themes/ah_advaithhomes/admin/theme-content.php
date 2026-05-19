@@ -12,9 +12,6 @@ $html_blocks_raw = get_option( 'ah_html_blocks', [] );
 if ( is_string( $html_blocks_raw ) ) $html_blocks_raw = json_decode( $html_blocks_raw, true ) ?: [];
 
 $featured_posts_opt = get_option( 'ah_featured_post_ids', '' );
-$news_items_opt     = get_option( 'ah_news_bar_items', [] );
-if ( is_string( $news_items_opt ) ) $news_items_opt = json_decode( $news_items_opt, true ) ?: [];
-
 $trust_signals = ah_get_trust_signals();
 
 // Blog post suggestions for picker
@@ -28,8 +25,6 @@ $post_suggestions = array_map( function( $p ) {
 	return [ 'id' => (string) $p->ID, 'label' => $p->post_title ];
 }, $all_posts );
 
-// News bar items (for text area)
-$news_text = implode( "\n", array_map( fn($s) => is_string($s) ? $s : '', $news_items_opt ) );
 ?>
 <div class="wrap ah-admin-wrap">
 
@@ -68,15 +63,6 @@ $news_text = implode( "\n", array_map( fn($s) => is_string($s) ? $s : '', $news_
       <p style="font-size:.78rem;color:#94a3b8;margin-top:6px">
         Currently: <code><?php echo esc_html( $featured_posts_opt ?: '(auto — newest post)' ); ?></code>
       </p>
-    </div>
-
-    <!-- ── News Bar Items ────────────────────────────────────────────────── -->
-    <div class="ah-admin-box" style="margin-bottom:20px">
-      <h2>📰 News Bar Items</h2>
-      <p style="color:#64748b;font-size:.875rem;margin-bottom:16px">
-        One item per line. These scroll across the top of every page.
-      </p>
-      <textarea name="news_bar_items" rows="6" style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px;font-size:.875rem;font-family:monospace"><?php echo esc_textarea( $news_text ); ?></textarea>
     </div>
 
     <!-- ── Trust Bar Signals ─────────────────────────────────────────────── -->

@@ -51,7 +51,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$bg     = $bg_map[ $d['bg'] ?? 'white' ] ?? '#ffffff';
 			$dark   = in_array( $d['bg'] ?? '', array( 'dark', 'gold' ), true );
 			?>
-			<section class="ah-block-hero" style="background:<?php echo esc_attr( $bg ); ?>;padding:80px 20px;text-align:center;<?php echo $dark ? 'color:#fff;' : ''; ?>">
+			<section class="ah-block-hero" style="background:<?php echo esc_attr( $bg ); ?>;padding:80px 20px 20px 20px;text-align:center;<?php echo $dark ? 'color:#fff;' : ''; ?>">
 				<div style="max-width:760px;margin:0 auto;">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<h1 style="font-size:clamp(2rem,5vw,3.2rem);font-weight:700;margin:0 0 20px;<?php echo $dark ? 'color:#fff;' : ''; ?>">

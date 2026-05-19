@@ -6,6 +6,7 @@ class AH_Ajax_Handlers {
 	public static function init() {
 		$actions = array(
 			'ah_toggle_status',
+			'ah_get_form_fields',
 			'ah_delete_item',
 			'ah_update_sort_order',
 			'ah_get_media',
@@ -285,6 +286,22 @@ class AH_Ajax_Handlers {
 	}
 
 	// -------------------------------------------------------------------------
+	// ah_get_form_fields — return field keys for a form (used by Rules Engine UI)
+	// -------------------------------------------------------------------------
+	public static function handle_get_form_fields(): void {
+		self::verify();
+		$form_id = (int) ( $_POST['form_id'] ?? 0 );
+		if ( ! $form_id ) wp_send_json_error( array( 'message' => 'Missing form_id.' ) );
+		AH_Form_Builder::install_tables();
+		$fields = AH_Form_Builder::get_fields( $form_id );
+		wp_send_json_success( array(
+			'fields' => array_map( static function ( $f ) {
+				return array( 'field_key' => $f->field_key, 'label' => $f->label );
+			}, $fields ),
+		) );
+	}
+
+	// -------------------------------------------------------------------------
 	// Public AJAX — frontend contact form submission (no login required)
 	// -------------------------------------------------------------------------
 
@@ -353,6 +370,9 @@ class AH_Ajax_Handlers {
 		if ( ! $sub_id ) {
 			wp_send_json_error( array( 'message' => 'Could not save your submission. Please try again.' ) );
 		}
+
+		// Fire rules engine
+		AH_Rules_Engine::evaluate( 'form_submit', $data );
 
 		// Send email notification
 		$notify = ! empty( $form->notify_email ) ? $form->notify_email : get_option( 'admin_email' );

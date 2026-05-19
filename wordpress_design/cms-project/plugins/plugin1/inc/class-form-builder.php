@@ -174,10 +174,6 @@ class AH_Form_Builder {
 .ah-fw .ah-fr input,.ah-fw .ah-fr textarea,.ah-fw .ah-fr select{padding:11px 14px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;color:#1f2937;background:#fff;font-family:inherit;width:100%;box-sizing:border-box;transition:border-color .18s,box-shadow .18s}
 .ah-fw .ah-fr input:focus,.ah-fw .ah-fr textarea:focus,.ah-fw .ah-fr select:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
 .ah-fw .ah-fr textarea{resize:vertical;min-height:110px}
-.ah-fw .ah-sb{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:background .18s,transform .1s}
-.ah-fw .ah-sb:hover{background:#1d4ed8}
-.ah-fw .ah-sb:active{transform:scale(.98)}
-.ah-fw .ah-sb:disabled{background:#93c5fd;cursor:not-allowed}
 .ah-fw .ah-msg{display:none;align-items:flex-start;gap:10px;padding:14px 16px;border-radius:8px;margin-bottom:20px;font-size:14.5px;font-weight:500}
 .ah-fw .ah-msg.show{display:flex}
 .ah-fw .ah-suc{background:#f0fdf4;border:1px solid #86efac;color:#166534}
@@ -213,7 +209,7 @@ class AH_Form_Builder {
     <?php endforeach; ?>
 
     <div>
-      <button type="submit" class="ah-sb">
+      <button type="submit" class="btn btn-sm btn-primary">
         <svg class="ah-sp" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none"><circle cx="12" cy="12" r="10" stroke-dasharray="31 62"/></svg>
         <span class="ah-bt">Send Message</span>
       </button>

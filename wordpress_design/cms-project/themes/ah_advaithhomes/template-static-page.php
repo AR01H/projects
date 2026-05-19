@@ -19,7 +19,8 @@ get_header();
 	<iframe id="ah-static-frame"
 	        srcdoc="<?php echo htmlspecialchars( $html_raw, ENT_QUOTES, 'UTF-8' ); ?>"
 	        style="width:100%;border:none;display:block;min-height:80vh;background:#fff"
-	        title="<?php echo esc_attr( get_the_title() ); ?>"></iframe>
+	        title="<?php echo esc_attr( get_the_title() ); ?>">
+	</iframe>
 </main>
 <script>
 (function(){
@@ -29,4 +30,5 @@ get_header();
 	window.addEventListener('resize',r);
 })();
 </script>
+<?php get_template_part( 'components/cta-section' ); ?>
 <?php get_footer(); ?>
