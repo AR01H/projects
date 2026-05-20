@@ -99,6 +99,11 @@ p + p { margin-top: .75em; }
 }
 .section--pattern > * { position: relative; }
 
+.section.what-we-do {
+	background-color: var(--client-color-100);
+}
+
+
 .section__header {
 	margin-bottom: clamp(32px, 5vw, 34px);
 }

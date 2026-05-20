@@ -57,6 +57,9 @@ foreach ( $stats as $s ) {
 </div>
 <?php endif; ?>
 
+<!-- ── Review Carousel ────────────────────────────────────────────────────── -->
+<?php get_template_part( 'components/review-carousel' ); ?>
+
 <!-- ── Reviews Grid ───────────────────────────────────────────────────────── -->
 <?php if ( $reviews ) : ?>
 <section class="section" aria-label="Client reviews">
@@ -65,13 +68,13 @@ foreach ( $stats as $s ) {
       <?php foreach ( $reviews as $i => $rev ) : ?>
       <div class="review-card" data-aos="fade-up" data-delay="<?php echo ( $i % 3 ) * 100; ?>">
         <?php ah_stars( (float) ( $rev->rating ?? 5 ) ); ?>
-        <p class="review-card__quote">"<?php echo esc_html( $rev->review_text ?? $rev->body ?? '' ); ?>"</p>
-        <?php if ( ! empty( $rev->result ) ) : ?>
-          <div class="review-card__result"><?php echo esc_html( $rev->result ); ?></div>
+        <p class="review-card__quote">"<?php echo esc_html( $rev->review_text ?? '' ); ?>"</p>
+        <?php if ( ! empty( $rev->short_desc ) ) : ?>
+          <div class="review-card__result"><?php echo esc_html( $rev->short_desc ); ?></div>
         <?php endif; ?>
         <div>
-          <div class="review-card__author"><?php echo esc_html( $rev->author_name ?? $rev->name ?? 'Client' ); ?></div>
-          <div class="review-card__location"><?php echo esc_html( $rev->location ?? '' ); ?></div>
+          <div class="review-card__author"><?php echo esc_html( $rev->reviewer_name ?? 'Client' ); ?></div>
+          <div class="review-card__location"><?php echo esc_html( $rev->reviewer_title ?? '' ); ?></div>
         </div>
       </div>
       <?php endforeach; ?>

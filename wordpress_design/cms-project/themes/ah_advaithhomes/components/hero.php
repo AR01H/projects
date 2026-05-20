@@ -21,26 +21,27 @@ $stats = array_filter( $stats, fn($s) => ! empty( $s['num'] ) );
 
       <!-- Copy -->
       <div class="hero__copy" data-aos="fade-right">
-        <div class="hero__eyebrow">
-          <span>🇬🇧</span> UK Buyer's Agent
-        </div>
         <?php if ( $headline ) : ?>
-          <h1 class="hero__title"><?php echo wp_kses_post( $headline ); ?></h1>
+          <h1 class="hero__title"><span><?php echo wp_kses_post( $headline ); ?></span></h1>
         <?php endif; ?>
         <?php if ( $subline ) : ?>
           <p class="hero__desc"><?php echo esc_html( $subline ); ?></p>
         <?php endif; ?>
         <div class="hero__actions">
-          <a href="<?php echo esc_url( $cta_url ); ?>" class="btn btn-primary btn-lg">
+          <a href="<?php echo esc_url( $cta_url ); ?>" class="btn btn-primary btn-md">
             <?php echo esc_html( $cta_label ); ?> →
           </a>
-          <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="btn btn-outline btn-lg">
+          <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="btn btn-outline btn-md">
             Browse Guides
           </a>
         </div>
 
+      </div>
+      
+      <!-- Visual -->
+      <div class="hero__visual" data-aos="fade-left" data-delay="200">
         <?php if ( $stats ) : ?>
-        <div class="hero__stats" style="margin-top:40px">
+        <div class="hero__stats">
           <?php foreach ( $stats as $i => $stat ) : ?>
           <div class="hero__stat" data-aos="zoom-in" data-delay="<?php echo $i * 100; ?>">
             <div class="hero__stat-num"><?php echo esc_html( $stat['num'] ); ?></div>
@@ -49,33 +50,6 @@ $stats = array_filter( $stats, fn($s) => ! empty( $s['num'] ) );
           <?php endforeach; ?>
         </div>
         <?php endif; ?>
-      </div>
-
-      <!-- Visual -->
-      <div class="hero__visual" data-aos="fade-left" data-delay="200">
-        <div class="hero__img-frame">
-          <?php
-          $img = get_template_directory() . '/assets/images/hero-home.jpg';
-          if ( file_exists( $img ) ) :
-          ?>
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-home.jpg' ); ?>"
-                 alt="Property buying with Advaith Homes" loading="eager">
-          <?php else : ?>
-            <div style="padding:60px;text-align:center;color:var(--text-muted)">
-              <div style="font-size:5rem;margin-bottom:20px">🏠</div>
-              <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:600">Your Dream Home Awaits</div>
-              <div style="margin-top:12px;font-size:.875rem">We'll find it for you</div>
-            </div>
-          <?php endif; ?>
-        </div>
-        <?php
-          $badge_rating = rtrim( str_replace( '★', '', $home['hero_stat_4'] ?? '4.9' ) );
-          $badge_count  = $home['hero_stat_3'] ?? '500+';
-        ?>
-        <div class="hero__badge float">
-          <div style="font-weight:700;font-size:.95rem">★ <?php echo esc_html( $badge_rating ); ?>/5</div>
-          <div style="font-size:.75rem;color:var(--text-muted);margin-top:2px">From <?php echo esc_html( $badge_count ); ?> buyers</div>
-        </div>
       </div>
 
     </div>

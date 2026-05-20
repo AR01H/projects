@@ -16,7 +16,6 @@ $theme_nav = array_values(
 );
 $nav_cta = ah_get_nav_cta();
 ?>
-<?php $global_banner = ah_get_html_block( 'global_banner' ); ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -28,7 +27,6 @@ $nav_cta = ah_get_nav_cta();
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<?php if ( $global_banner ) echo $global_banner; ?>
 
 <nav class="nav" id="mainNav" role="navigation" aria-label="<?php esc_attr_e( 'Main Navigation', 'ah-theme' ); ?>">
 	<div class="container">

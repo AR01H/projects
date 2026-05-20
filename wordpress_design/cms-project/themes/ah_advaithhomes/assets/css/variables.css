@@ -43,7 +43,7 @@
 
 	--nav-h:       66px;
 	--ticker-h:    36px;
-	--section-py:  clamp(60px, 8vw, 60px);
+	--section-py:  clamp(20px, 3vw, 30px);
 	--max-w:       100%;
 	--max-w-text:  760px;
 
@@ -60,6 +60,9 @@
 
 	/* Aliases used throughout components */
 	--radius:    12px;
+	--radius-xs: 4px;
+	--radius-sm: 8px;
+	--radius-md: 14px;
 	--radius-lg: 20px;
 	--radius-xl: 28px;
 

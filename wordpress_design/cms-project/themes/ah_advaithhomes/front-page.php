@@ -40,32 +40,10 @@
 <?php endif; ?>
 <?php endif; ?>
 
-<!-- ── Stats Strip ──────────────────────────────────────────────────────── -->
-<?php if ( ah_section_visible( 'home_stats' ) ) : ?>
-<?php $stats = ah_get_site_stats(); if ( $stats ) : ?>
-<div class="section section--sm stats-strip-wrap" aria-label="Our impact in numbers" style="background-color: black;">
-  <div class="container">
-    <div class="stats-strip">
-      <?php foreach ( $stats as $i => $stat ) :
-        $stat = is_object($stat) ? (array) $stat : $stat;
-      ?>
-      <div class="stats-strip__item" data-aos="zoom-in" data-delay="<?php echo $i * 100; ?>">
-        <div class="stats-strip__num"><?php echo esc_html( $stat['num'] ?? '' ); ?></div>
-        <div class="stats-strip__label"><?php echo esc_html( $stat['label'] ?? '' ); ?></div>
-      </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</div>
-<?php endif; ?>
-<?php endif; ?>
+
 
 <?php if ( ah_section_visible( 'home_services' ) ) : ?>
 <?php get_template_part( 'components/services-section' ); ?>
-<?php endif; ?>
-
-<?php if ( ah_section_visible( 'home_testimonials' ) ) : ?>
-<?php get_template_part( 'components/review-carousel' ); ?>
 <?php endif; ?>
 
 <?php if ( ah_section_visible( 'home_properties' ) ) : ?>
@@ -83,7 +61,7 @@
 <!-- ── Latest Blog Posts ─────────────────────────────────────────────────── -->
 <?php if ( ah_section_visible( 'home_blog' ) ) : ?>
 <?php
-$blog_posts = get_posts( [ 'numberposts' => 3, 'post_status' => 'publish' ] );
+$blog_posts = get_posts( [ 'numberposts' => 4, 'post_status' => 'publish' ] );
 if ( $blog_posts ) :
 ?>
 <section class="section" aria-label="Latest from the blog" style="background-color: var(--bg-alt);">
@@ -93,7 +71,7 @@ if ( $blog_posts ) :
         <span class="section__eyebrow">News & Insights</span>
         <h2 class="section__title" style="margin-bottom:0">Latest from the Blog</h2>
       </div>
-      <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="btn btn-outline">All Articles →</a>
+      <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="btn btn-outline btn-sm">All Articles →</a>
     </div>
     <div class="post-grid">
       <?php foreach ( $blog_posts as $idx => $post ) :
@@ -101,29 +79,12 @@ if ( $blog_posts ) :
         $is_featured = $idx === 0 || get_post_meta( $post->ID, '_ah_featured', true );
         $cats = get_the_category( $post->ID );
         $cat_name = ! empty( $cats ) ? $cats[0]->name : '';
+         setup_postdata( $post );
+        get_template_part( 'components/mini-blog-card', null, [
+            'post'  => $post,
+            'idx'   => $idx,
+        ] );
       ?>
-      <article class="post-card<?php echo $is_featured ? ' post-card--featured' : ''; ?>" data-aos="fade-up" data-delay="<?php echo $idx * 100; ?>">
-        <?php if ( has_post_thumbnail( $post ) ) : ?>
-          <a href="<?php echo esc_url( get_permalink( $post ) ); ?>" class="post-card__img-wrap">
-            <?php echo get_the_post_thumbnail( $post, 'ah-card' ); ?>
-          </a>
-        <?php endif; ?>
-        <div class="post-card__body">
-          <?php if ( $cat_name ) : ?>
-          <span class="post-card__cat"><?php echo esc_html( $cat_name ); ?></span>
-          <?php endif; ?>
-          <div class="card__meta">
-            <span><?php echo esc_html( get_the_date( 'j M Y', $post ) ); ?></span>
-            <span>·</span>
-            <span><?php echo esc_html( ah_reading_time( $post->ID ) ); ?></span>
-          </div>
-          <h3 class="post-card__title">
-            <a href="<?php echo esc_url( get_permalink( $post ) ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a>
-          </h3>
-          <p class="post-card__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt( $post ), 20, '…' ) ); ?></p>
-          <a href="<?php echo esc_url( get_permalink( $post ) ); ?>" class="btn btn-sm btn-ghost">Read →</a>
-        </div>
-      </article>
       <?php endforeach; wp_reset_postdata(); ?>
     </div>
   </div>
@@ -136,7 +97,7 @@ if ( $blog_posts ) :
 get_template_part( 'components/cta-section', null, [
 	'title'     => 'Your Ideal Home Is Out There.<br><em>Let\'s Find It Together.</em>',
 	'desc'      => "Join 500+ buyers who saved time, stress, and thousands of pounds. Book a free, no-obligation consultation with one of our buyer's agents today.",
-	'cta_label' => 'Book a Free Call →',
+	'cta_label' => 'Book a Free Call',
 	'cta_url'   => home_url( '/contact/' ),
 	'sec_label' => 'Read Our Guides First',
 	'sec_url'   => home_url( '/guides/' ),

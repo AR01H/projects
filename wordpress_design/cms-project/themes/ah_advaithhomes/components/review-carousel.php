@@ -31,21 +31,24 @@ $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩�
       <div class="stories-carousel__stage">
         <div class="carousel-3d" id="storiesCarousel">
           <?php foreach ( $reviews as $i => $rev ) :
-            $rev = is_object( $rev ) ? $rev : (object) $rev;
-            $avatar = $avatars[ $i % count( $avatars ) ];
+            $rev     = is_object( $rev ) ? $rev : (object) $rev;
+            $avatar  = $avatars[ $i % count( $avatars ) ];
+            $img_url = ! empty( $rev->reviewer_image_id )
+              ? wp_get_attachment_image_url( (int) $rev->reviewer_image_id, 'thumbnail' )
+              : '';
           ?>
           <div class="carousel-3d__slide" data-pos="<?php echo $i === 0 ? '0' : $i; ?>">
             <div class="story-card">
               <div class="story-card__avatar">
-                <?php if ( ! empty( $rev->photo_url ) ) : ?>
-                  <img src="<?php echo esc_url( $rev->photo_url ); ?>" alt="<?php echo esc_attr( $rev->author_name ?? '' ); ?>">
+                <?php if ( $img_url ) : ?>
+                  <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $rev->reviewer_name ?? '' ); ?>">
                 <?php else : ?>
                   <?php echo $avatar; ?>
                 <?php endif; ?>
               </div>
-              <p class="story-card__quote">"<?php echo esc_html( $rev->review_text ?? $rev->body ?? '' ); ?>"</p>
+              <p class="story-card__quote">"<?php echo esc_html( $rev->review_text ?? '' ); ?>"</p>
               <div class="story-card__name">
-                <?php echo esc_html( $rev->author_name ?? $rev->name ?? 'Anonymous' ); ?>
+                <?php echo esc_html( $rev->reviewer_name ?? 'Anonymous' ); ?>
               </div>
             </div>
           </div>
@@ -60,18 +63,18 @@ $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩�
         ?>
         <div class="story-detail" data-carousel-detail>
           <div class="story-detail__location">
-            <?php echo esc_html( $rev->location ?? 'United Kingdom' ); ?>
+            <?php echo esc_html( $rev->reviewer_title ?? '' ); ?>
           </div>
           <h3 class="story-detail__title">
-            <?php echo esc_html( $rev->author_name ?? 'Client Story' ); ?>
+            <?php echo esc_html( $rev->reviewer_name ?? 'Client Story' ); ?>
           </h3>
           <p class="story-detail__quote">
-            "<?php echo esc_html( $rev->review_text ?? $rev->body ?? '' ); ?>"
+            "<?php echo esc_html( $rev->review_text ?? '' ); ?>"
           </p>
-          <?php if ( ! empty( $rev->result ) ) : ?>
+          <?php if ( ! empty( $rev->short_desc ) ) : ?>
           <div>
-            <div class="story-detail__author-name"><?php echo esc_html( $rev->author_name ?? '' ); ?></div>
-            <div class="story-detail__result"><?php echo esc_html( $rev->result ); ?></div>
+            <div class="story-detail__author-name"><?php echo esc_html( $rev->reviewer_name ?? '' ); ?></div>
+            <div class="story-detail__result"><?php echo esc_html( $rev->short_desc ); ?></div>
           </div>
           <?php endif; ?>
         </div>

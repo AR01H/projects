@@ -25,7 +25,7 @@ $guides_query = new WP_Query( $query_args );
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
-  'eyebrow'    => 'Free Resources',
+  'eyebrow'    => '',
   'title'      => 'The Complete',
   'title_em'   => 'Home Buying Library',
   'desc'       => 'Guides written by buyer\'s agents - not marketers. Everything you need to buy with confidence, from mortgage basics to completion day.',

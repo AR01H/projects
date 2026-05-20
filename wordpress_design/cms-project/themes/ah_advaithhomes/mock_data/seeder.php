@@ -122,8 +122,8 @@ class AH_Theme_Seeder {
 
 	public static function seed_home_settings(): array {
 		update_option( 'ah_home_settings', wp_json_encode( [
-			'hero_headline'      => "Your Expert on the<br><em>Buying Side</em>",
-			'hero_subline'       => "The UK's only buyer's agent combining deep market access, expert negotiation, and end-to-end coordination - so you buy the right property at the right price.",
+			'hero_headline'      => "Make Smarter<br><em>Property Decisions</em>",
+			'hero_subline'       => "Navigating the UK housing market can be complex, but having access to the right information makes all the difference. With unbiased market data, expert guidance, and practical tools, you can make confident property decisions based on facts rather than speculation. Whether you're buying your first home, investing, or simply exploring the market, our insights help you better understand trends, pricing, and opportunities across the UK.",
 			'hero_cta_label'     => 'Book a Free Consultation',
 			'hero_cta_url'       => '/contact/',
 			'hero_stat_1'        => '£28M+',
@@ -415,9 +415,6 @@ class AH_Theme_Seeder {
 			'recipient_email' => get_option( 'admin_email' ),
 			'subject_prefix'  => '[Advaith Homes Enquiry]',
 			'thank_you_msg'   => "Thanks for getting in touch! We'll respond within one working day.",
-			'show_phone'      => true,
-			'show_budget'     => true,
-			'show_timeline'   => true,
 		] ) );
 		return [ 'inserted' => 0, 'updated' => 1 ];
 	}
@@ -686,8 +683,8 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $ht, [
 				'page_id'            => $home_id,
 				'badge_text'         => "#1 Trusted Buyer's Agent",
-				'heading'            => 'Your Expert on the Buying Side',
-				'subheading'         => "The UK's only buyer's agent combining deep market access, expert negotiation, and end-to-end coordination - so you buy the right property at the right price.",
+				'heading'            => 'Make Smarter Property Decisions',
+				'subheading'         => "Navigating the UK housing market can be complex, but having access to the right information makes all the difference. With unbiased market data, expert guidance, and practical tools, you can make confident property decisions based on facts rather than speculation. Whether you're buying your first home, investing, or simply exploring the market, our insights help you better understand trends, pricing, and opportunities across the UK.",
 				'cta_primary_text'   => 'Book a Free Consultation',
 				'cta_primary_url'    => '/contact/',
 				'cta_secondary_text' => 'See Our Services',

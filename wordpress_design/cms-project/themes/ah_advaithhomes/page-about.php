@@ -98,28 +98,6 @@ $signals  = ah_get_trust_signals();
   </div>
 </section>
 
-<!-- ── Trust Signals ─────────────────────────────────────────────────────── -->
-<?php if ( $signals ) : ?>
-<section class="section" aria-label="Why clients trust us">
-  <div class="container">
-    <div class="section__header text-center">
-      <span class="section__eyebrow">Why Choose Us</span>
-      <h2 class="section__title">The Advaith Difference</h2>
-    </div>
-    <div class="grid-3" style="--gap:24px">
-      <?php foreach ( $signals as $i => $sig ) :
-        $sig = is_object($sig) ? (array) $sig : $sig;
-      ?>
-      <div class="trust-feature-card" data-aos="fade-up" data-delay="<?php echo $i * 80; ?>">
-        <div class="trust-feature-card__icon"><?php echo esc_html( $sig['icon'] ?? '' ); ?></div>
-        <p><?php echo esc_html( $sig['text'] ?? '' ); ?></p>
-      </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-
 <!-- ── Team ──────────────────────────────────────────────────────────────── -->
 <?php get_template_part( 'components/team-section' ); ?>
 

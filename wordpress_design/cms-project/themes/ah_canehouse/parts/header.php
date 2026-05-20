@@ -16,7 +16,6 @@ $theme_nav = array_values(
 );
 $nav_cta = ch_get_nav_cta();
 ?>
-<?php $global_banner = ch_get_html_block( 'global_banner' ); ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -28,7 +27,6 @@ $nav_cta = ch_get_nav_cta();
 
 <body <?php body_class( 'ch-body' ); ?>>
 <?php wp_body_open(); ?>
-<?php if ( $global_banner ) echo $global_banner; ?>
 
 <nav id="ch-nav" class="ch-nav" role="navigation" aria-label="<?php esc_attr_e( 'Main Navigation', 'ch-theme' ); ?>">
 	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-nav__logo" aria-label="<?php bloginfo( 'name' ); ?> Home">

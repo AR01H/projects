@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 $services = ah_get_services();
 ?>
-<section class="section" aria-label="Services">
+<section class="section what-we-do" aria-label="Services">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">What We Do</span>

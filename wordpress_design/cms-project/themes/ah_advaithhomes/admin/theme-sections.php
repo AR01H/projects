@@ -11,10 +11,6 @@ $get_vis = function( string $key ) use ( $vis ): bool {
 	return isset( $vis[ $key ] ) ? (bool) $vis[ $key ] : true; // default ON
 };
 
-// Current tag-picker values
-$featured_services = get_option( 'ah_featured_services', '' );
-$featured_faqs     = get_option( 'ah_featured_faqs', '' );
-
 // Suggestion data for tag-picker - loaded from helpers
 $all_services = ah_get_services( 50 );
 $all_faqs     = ah_get_faqs( '', 50 );
@@ -37,9 +33,7 @@ $section_groups = [
 		[ 'key' => 'home_hero',          'icon' => '🏠', 'name' => 'Hero Section',         'desc' => 'Main headline, CTA, and hero image' ],
 		[ 'key' => 'home_guide_cards',   'icon' => '📚', 'name' => 'Guide Cards',          'desc' => '4-column guide category cards' ],
 		[ 'key' => 'home_process',       'icon' => '📋', 'name' => 'How It Works',         'desc' => 'Step-by-step process cards (01–06)' ],
-		[ 'key' => 'home_stats',         'icon' => '📊', 'name' => 'Stats Strip',          'desc' => '4 key figures: £28M+, 500+, 94%, 4.9★' ],
 		[ 'key' => 'home_services',      'icon' => '✦',  'name' => 'Services Section',     'desc' => 'Service cards pulled from DB or mock' ],
-		[ 'key' => 'home_testimonials',  'icon' => '💬', 'name' => 'Stories Carousel',     'desc' => '3D animated review carousel (up to 6)' ],
 		[ 'key' => 'home_properties',    'icon' => '🏡', 'name' => 'Property Showcase',    'desc' => '3D carousel of recently secured properties' ],
 		[ 'key' => 'home_team',          'icon' => '👥', 'name' => 'Team Section',         'desc' => 'Team member cards' ],
 		[ 'key' => 'home_faq',           'icon' => '❓', 'name' => 'FAQ Section',          'desc' => 'FAQ accordion (up to 6 questions)' ],
@@ -94,60 +88,6 @@ $section_groups = [
       </div>
     </div>
     <?php endforeach; ?>
-
-    <!-- ── Featured Content Pickers ────────────────────────────────────────── -->
-    <div class="ah-admin-box">
-      <h2>Featured Content - Auto-Suggest Selectors</h2>
-      <p style="color:#64748b;font-size:.875rem;margin-bottom:20px">
-        Choose which items are highlighted. Type to search and click a suggestion to add it as a tag.
-        Leave empty to show all (or the default top items).
-      </p>
-
-      <!-- Featured Services -->
-      <div style="margin-bottom:24px">
-        <label style="display:block;font-weight:600;font-size:.9rem;margin-bottom:8px">
-          ✦ Featured Services
-          <span style="color:#94a3b8;font-weight:400;font-size:.8rem;margin-left:6px">
-            shown on the home page services strip
-          </span>
-        </label>
-        <div class="ah-picker-wrap">
-          <div class="ah-tag-picker" data-picker="featured_services"
-               data-suggestions='<?php echo esc_attr( wp_json_encode( $service_suggestions ) ); ?>'>
-            <input type="text" class="ah-tag-picker__input" placeholder="Type a service name…" autocomplete="off">
-          </div>
-          <div class="ah-suggestions" style="display:none"></div>
-        </div>
-        <input type="hidden" name="featured_services" class="ah-picker-value"
-               value="<?php echo esc_attr( $featured_services ); ?>">
-        <p style="font-size:.78rem;color:#94a3b8;margin-top:6px">
-          Comma-separated IDs are saved. Currently: <code><?php echo esc_html( $featured_services ?: '(all)' ); ?></code>
-        </p>
-      </div>
-
-      <!-- Featured FAQs -->
-      <div>
-        <label style="display:block;font-weight:600;font-size:.9rem;margin-bottom:8px">
-          ❓ Featured FAQs
-          <span style="color:#94a3b8;font-weight:400;font-size:.8rem;margin-left:6px">
-            shown in the home page FAQ accordion
-          </span>
-        </label>
-        <div class="ah-picker-wrap">
-          <div class="ah-tag-picker" data-picker="featured_faqs"
-               data-suggestions='<?php echo esc_attr( wp_json_encode( $faq_suggestions ) ); ?>'>
-            <input type="text" class="ah-tag-picker__input" placeholder="Type a question…" autocomplete="off">
-          </div>
-          <div class="ah-suggestions" style="display:none"></div>
-        </div>
-        <input type="hidden" name="featured_faqs" class="ah-picker-value"
-               value="<?php echo esc_attr( $featured_faqs ); ?>">
-        <p style="font-size:.78rem;color:#94a3b8;margin-top:6px">
-          Currently: <code><?php echo esc_html( $featured_faqs ?: '(all)' ); ?></code>
-        </p>
-      </div>
-    </div>
-
     <p class="submit" style="margin-top:0">
       <?php submit_button( 'Save Section Settings', 'primary', 'submit', false ); ?>
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank"

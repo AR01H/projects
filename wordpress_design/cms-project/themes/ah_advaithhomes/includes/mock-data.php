@@ -25,8 +25,8 @@ function ah_mock_default_settings(): array {
 
 function ah_mock_home_settings_array(): array {
 	return [
-		'hero_headline'      => "Your Expert on the<br><em>Buying Side</em>",
-		'hero_subline'       => "The UK's only buyer's agent combining deep market access, expert negotiation, and end-to-end coordination - so you buy the right property at the right price.",
+		'hero_headline'      => "Make Smarter<br><em>Property Decisions</em>",
+		'hero_subline'       => "Navigating the UK housing market can be complex, but having access to the right information makes all the difference. With unbiased market data, expert guidance, and practical tools, you can make confident property decisions based on facts rather than speculation. Whether you're buying your first home, investing, or simply exploring the market, our insights help you better understand trends, pricing, and opportunities across the UK.",
 		'hero_cta_label'     => 'Book a Free Consultation',
 		'hero_cta_url'       => '/contact/',
 		'hero_stat_1'        => '£28M+',

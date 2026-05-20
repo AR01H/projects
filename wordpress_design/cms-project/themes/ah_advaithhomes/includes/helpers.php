@@ -518,9 +518,6 @@ function ah_get_contact_settings(): array {
 		'recipient_email' => get_option( 'admin_email' ),
 		'subject_prefix'  => '[Advaith Homes Enquiry]',
 		'thank_you_msg'   => "Thanks for getting in touch! We'll respond within one working day.",
-		'show_phone'      => true,
-		'show_budget'     => true,
-		'show_timeline'   => true,
 	];
 	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;
 }

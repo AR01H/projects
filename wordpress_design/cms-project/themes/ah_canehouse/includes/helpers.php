@@ -299,8 +299,6 @@ function ch_get_contact_settings(): array {
 		'recipient_email' => get_option( 'admin_email' ),
 		'subject_prefix'  => '[The Cane House Enquiry]',
 		'thank_you_msg'   => "Thanks for getting in touch! We'll be in touch shortly. 🌿",
-		'show_phone'      => true,
-		'show_enquiry'    => true,
 	];
 	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;
 }

@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$reviews = ah_get_reviews( 6 );
+$reviews = ah_get_reviews( 3 );
 if ( empty( $reviews ) ) return;
 
 // Extract rating and client count from site stats

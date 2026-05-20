@@ -108,8 +108,8 @@ class AH_Theme_Admin {
 
 		$all_keys = [
 			'global_news_ticker', 'global_trust_bar',
-			'home_hero', 'home_guide_cards', 'home_process', 'home_stats',
-			'home_services', 'home_testimonials', 'home_properties', 'home_team',
+			'home_hero', 'home_guide_cards', 'home_process',
+			'home_services', 'home_properties', 'home_team',
 			'home_faq', 'home_blog', 'home_cta',
 		];
 
@@ -118,13 +118,6 @@ class AH_Theme_Admin {
 			$visibility[ $k ] = isset( $_POST[ 'section_' . $k ] ) ? 1 : 0;
 		}
 		update_option( 'ah_section_visibility', wp_json_encode( $visibility ) );
-
-		// Save featured selections (tag-picker values)
-		$pickers = [ 'featured_services', 'featured_faqs' ];
-		foreach ( $pickers as $p ) {
-			$val = sanitize_text_field( $_POST[ $p ] ?? '' );
-			update_option( 'ah_' . $p, $val );
-		}
 
 		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-sections', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
@@ -280,7 +273,7 @@ class AH_Theme_Admin {
 		update_option( 'ah_featured_properties', wp_json_encode( $props ) );
 
 		// HTML blocks
-		$allowed = [ 'above_footer', 'below_hero', 'global_banner' ];
+		$allowed = [ 'above_footer' ];
 		$blocks  = [];
 		foreach ( $allowed as $bkey ) {
 			$blocks[ $bkey ] = wp_kses_post( $_POST['html_block'][ $bkey ] ?? '' );
@@ -291,10 +284,7 @@ class AH_Theme_Admin {
 		$contact = [
 			'recipient_email' => sanitize_email( $_POST['contact']['recipient_email'] ?? '' ),
 			'subject_prefix'  => sanitize_text_field( $_POST['contact']['subject_prefix'] ?? '' ),
-			'thank_you_msg'   => sanitize_textarea_field( $_POST['contact']['thank_you_msg'] ?? '' ),
-			'show_phone'      => ! empty( $_POST['contact']['show_phone'] ),
-			'show_budget'     => ! empty( $_POST['contact']['show_budget'] ),
-			'show_timeline'   => ! empty( $_POST['contact']['show_timeline'] ),
+			'thank_you_msg'   => sanitize_textarea_field( $_POST['contact']['thank_you_msg'] ?? '' )
 		];
 		update_option( 'ah_contact_settings', wp_json_encode( $contact ) );
 
@@ -309,7 +299,6 @@ class AH_Theme_Admin {
 
 	private static function admin_css(): string {
 		return '
-.ah-admin-wrap { max-width:860px; }
 .ah-admin-header { display:flex; align-items:center; gap:14px; margin-bottom:28px; }
 .ah-admin-logo { width:44px; height:44px; background:#b7791f; border-radius:10px; display:grid; place-items:center; color:white; font-size:1.2rem; font-weight:700; flex-shrink:0; }
 .ah-admin-header h1 { font-size:1.5rem; font-weight:700; margin:0; }

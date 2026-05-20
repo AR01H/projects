@@ -120,8 +120,6 @@ $post_suggestions = array_map( function( $p ) {
       <?php
       $block_defs = [
           'above_footer'  => [ 'label' => 'Above Footer',  'desc' => 'Shown on every page just above the footer' ],
-          'below_hero'    => [ 'label' => 'Below Hero',    'desc' => 'Inserted after the home page hero section' ],
-          'global_banner' => [ 'label' => 'Global Banner', 'desc' => 'Full-width bar shown at the very top of every page (above nav)' ],
       ];
       foreach ( $block_defs as $bkey => $bdef ) : ?>
       <div style="margin-bottom:20px">
@@ -201,33 +199,6 @@ $post_suggestions = array_map( function( $p ) {
           <tr>
             <th>Thank-You Message</th>
             <td><textarea name="contact[thank_you_msg]" rows="3" style="width:100%;border:1px solid #e2e8f0;border-radius:6px;padding:8px"><?php echo esc_textarea( $contact['thank_you_msg'] ?? '' ); ?></textarea></td>
-          </tr>
-          <tr>
-            <th>Show Phone Field</th>
-            <td>
-              <label class="ah-toggle">
-                <input type="checkbox" name="contact[show_phone]" value="1" <?php checked( ! empty( $contact['show_phone'] ) ); ?>>
-                <span class="ah-toggle__track"></span>
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <th>Show Budget Field</th>
-            <td>
-              <label class="ah-toggle">
-                <input type="checkbox" name="contact[show_budget]" value="1" <?php checked( ! empty( $contact['show_budget'] ) ); ?>>
-                <span class="ah-toggle__track"></span>
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <th>Show Timeline Field</th>
-            <td>
-              <label class="ah-toggle">
-                <input type="checkbox" name="contact[show_timeline]" value="1" <?php checked( ! empty( $contact['show_timeline'] ) ); ?>>
-                <span class="ah-toggle__track"></span>
-              </label>
-            </td>
           </tr>
         </tbody>
       </table>
