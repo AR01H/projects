@@ -1,6 +1,17 @@
 <?php
 get_header();
+
 ?>
+
+<?php get_template_part( 'components/page-header', null, [
+	'eyebrow'    => 'All the latest',
+	'title'      => 'Blogs',
+	'title_em'   => 'Announcements',
+	'desc'       => 'Discover the latest insights, market trends, and expert advice on real estate investing. Our blog is your go-to resource for staying informed and making smart investment decisions.',
+	'badge'      => '',
+	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'Blog', '' ] ],
+] ); ?>
+
 <main class="container" style="padding-top:var(--section-py);padding-bottom:var(--section-py)">
   <?php if ( have_posts() ) : ?>
     <div class="post-grid">

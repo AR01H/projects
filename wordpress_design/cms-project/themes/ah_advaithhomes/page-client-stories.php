@@ -18,19 +18,24 @@ foreach ( $stats as $s ) {
 }
 ?>
 
-<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
-<section class="page-hero page-hero--sm" aria-label="Client stories">
-  <div class="container">
-    <div class="page-hero__copy text-center" style="max-width:680px;margin-inline:auto" data-aos="fade-up">
-      <span class="section__eyebrow">Client Stories</span>
-      <h1 class="page-hero__title">Real Results for<br><em>Real Buyers</em></h1>
-      <p class="page-hero__desc">
-        We let our clients do the talking. Here's what over <?php echo esc_html( $client_stat ); ?> buyers
-        have said about working with Advaith Homes.
-      </p>
-    </div>
-  </div>
-</section>
+<?php get_template_part(
+	'components/page-header',
+	null,
+	[
+		'eyebrow'  => 'Client Stories',
+		'title'    => 'Real Results for',
+		'title_em' => 'Real Buyers',
+		'desc'     => sprintf(
+			"We let our clients do the talking. Here's what over %s buyers have said about working with Advaith Homes.",
+			esc_html( $client_stat )
+		),
+		'badge'      => '',
+		'breadcrumb' => [
+			[ 'Home', home_url( '/' ) ],
+			[ 'Client Stories', '' ],
+		],
+	]
+); ?>
 
 <!-- ── Overall Rating ────────────────────────────────────────────────────── -->
 <?php if ( $stats ) : ?>

@@ -9,22 +9,14 @@ $stats    = ah_get_site_stats();
 $signals  = ah_get_trust_signals();
 ?>
 
-<!-- ── About Hero ────────────────────────────────────────────────────────── -->
-<section class="page-hero page-hero--centered" aria-label="About us">
-  <div class="container">
-    <div class="page-hero__copy text-center" data-aos="fade-up" style="max-width:760px;margin-inline:auto">
-      <span class="section__eyebrow">About Advaith Homes</span>
-      <h1 class="page-hero__title">
-        The UK's Buyer's Agent -<br><em>Working Exclusively for You</em>
-      </h1>
-      <p class="page-hero__desc">
-        We exist to level the playing field. Sellers have agents negotiating for them - so should you.
-        Advaith Homes is a buyer-only agency: we never list properties, never work for sellers, and
-        never take referral fees from developers. Our only job is to help you buy smarter.
-      </p>
-    </div>
-  </div>
-</section>
+<?php get_template_part( 'components/page-header', null, [
+	'eyebrow'    => 'About Advaith Homes',
+	'title'      => 'The UK\'s Buyer\'s Agent -',
+	'title_em'   => 'Working Exclusively for You',
+	'desc'       => 'We exist to level the playing field. Sellers have agents negotiating for them - so should you. Advaith Homes is a buyer-only agency: we never list properties, never work for sellers, and never take referral fees from developers. Our only job is to help you buy smarter.',
+	'badge'      => '',
+	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'About', '' ] ],
+] ); ?>
 
 <!-- ── Mission Strip ─────────────────────────────────────────────────────── -->
 <?php if ( $stats ) : ?>

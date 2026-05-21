@@ -35,7 +35,6 @@ class AH_Theme_Admin {
 		add_submenu_page( 'ah-theme-admin', __( 'Contact Submissions', 'ah-theme' ), __( 'Contact Submissions', 'ah-theme' ), 'manage_options', 'ah-theme-submissions', [ self::class, 'page_submissions' ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Install Mock Data', 'ah-theme' ), __( 'Install Mock Data', 'ah-theme' ), 'manage_options', 'ah-theme-mock',        [ self::class, 'page_mock'        ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Cleanup Data',      'ah-theme' ), __( 'Cleanup Data',      'ah-theme' ), 'manage_options', 'ah-theme-cleanup',  [ self::class, 'page_cleanup'   ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Taxonomy',          'ah-theme' ), __( 'Taxonomy',          'ah-theme' ), 'manage_options', 'ah-taxonomy',       [ self::class, 'page_taxonomy'  ] );
 	}
 
 	public static function enqueue_assets( string $hook ): void {

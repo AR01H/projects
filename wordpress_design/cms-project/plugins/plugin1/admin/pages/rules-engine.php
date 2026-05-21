@@ -290,7 +290,6 @@ details.re-adv .re-adv-body{padding:12px}
 <div class="ah-card re-empty">
 	<div style="font-size:3rem;margin-bottom:12px">⚙️</div>
 	<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:#374151">No rules yet</h2>
-	<p style="margin:0 0 20px;max-width:440px">Create a rule to automate actions - send emails, WhatsApp messages, or call any API whenever an event fires in your PHP code.</p>
 	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn ah-btn-primary">+ Create First Rule</a>
 </div>
