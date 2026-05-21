@@ -29,10 +29,10 @@ $year     = gmdate( 'Y' );
 					<?php $logo = get_template_directory() . '/assets/images/logo.png'; ?>
 					<?php if ( file_exists( $logo ) ) : ?>
 						<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php bloginfo( 'name' ); ?>" style="height:36px">
-						<span style="color:white;font-size:1.4rem">Advaith <em style="font-style:italic;font-family:var(--font-accent)">Homes</em></span>
+						<span style="color:white;font-size:1.4rem"><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 					<?php else : ?>
 						<div class="nav__logo-mark">AH</div>
-						<span style="color:white;font-size:1.4rem">Advaith <em style="font-style:italic;font-family:var(--font-accent)">Homes</em></span>
+						<span style="color:white;font-size:1.4rem"><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 					<?php endif; ?>
 				</a>
 

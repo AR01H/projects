@@ -71,15 +71,6 @@ $topic_icons = [
 </section>
 
 <?php
-get_template_part( 'components/cta-section', null, [
-  'eyebrow'   => 'Still Have Questions?',
-  'title'     => 'Let\'s Talk It<br><em>Through Together.</em>',
-  'desc'      => 'Our buyer\'s agents are happy to answer anything - no obligation, no sales pressure. Just honest advice from people who are 100% on your side.',
-  'cta_label' => 'Book a Free Call',
-  'cta_url'   => home_url( '/contact/' ),
-  'sec_label' => 'Browse Our Guides',
-  'sec_url'   => home_url( '/guides/' ),
-  'trust'     => 'Free consultation · No obligation · Independent advice',
-] );
+get_template_part( 'components/cta-section', null, [] );
 
 get_footer();

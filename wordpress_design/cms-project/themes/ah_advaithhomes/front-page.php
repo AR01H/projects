@@ -94,14 +94,7 @@ if ( $blog_posts ) :
 
 <?php if ( ah_section_visible( 'home_cta' ) ) : ?>
 <?php
-get_template_part( 'components/cta-section', null, [
-	'title'     => 'Your Ideal Home Is Out There.<br><em>Let\'s Find It Together.</em>',
-	'desc'      => "Join 500+ buyers who saved time, stress, and thousands of pounds. Book a free, no-obligation consultation with one of our buyer's agents today.",
-	'cta_label' => 'Book a Free Call',
-	'cta_url'   => home_url( '/contact/' ),
-	'sec_label' => 'Read Our Guides First',
-	'sec_url'   => home_url( '/guides/' ),
-] );
+get_template_part( 'components/cta-section', null, [] );
 ?>
 <?php endif; ?>
 

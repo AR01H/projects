@@ -34,10 +34,10 @@ $nav_cta = ah_get_nav_cta();
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nav__logo" aria-label="<?php bloginfo( 'name' ); ?> Home">
 				<?php if ( $has_logo ) : ?>
 					<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php bloginfo( 'name' ); ?>" style="height:40px">
-					<span>Advaith <em style="font-style:italic;font-family:var(--font-accent)">Homes</em></span>
+					<span><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 				<?php else : ?>
 					<div class="nav__logo-mark">AH</div>
-					<span>Advaith <em style="font-style:italic;font-family:var(--font-accent)">Homes</em></span>
+					<span><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 				<?php endif; ?>
 			</a>
 

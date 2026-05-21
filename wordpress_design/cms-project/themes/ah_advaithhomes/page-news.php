@@ -177,15 +177,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
   </div>
 </div>
 
-<?php get_template_part( 'components/cta-section', null, [
-  'title'     => 'Want to stay ahead of the market?',
-  'desc'      => 'Get expert guidance, market updates, and exclusive off-market deals straight from our team.',
-  'cta_label' => 'Connect With Us',
-  'cta_url'   => home_url( '/contact/' ),
-  'sec_label' => 'Browse Our Guides',
-  'sec_url'   => home_url( '/guides/' ),
-] ); ?>
-
+<?php get_template_part( 'components/cta-section', null, [] ); ?>
 <?php get_footer(); ?>
 
 <style>

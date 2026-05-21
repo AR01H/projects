@@ -2,13 +2,13 @@
 defined( 'ABSPATH' ) || exit;
 
 $s         = $args ?? [];
-$eyebrow   = $s['eyebrow']   ?? '';
-$title     = $s['title']     ?? 'Ready to Start?<br><em>Let\'s Talk.</em>';
-$desc      = $s['desc']      ?? 'Book a free consultation. No obligation, no pressure - just straight answers about how we can help you buy smarter.';
-$cta_label = $s['cta_label'] ?? 'Book a Free Call';
-$cta_url   = $s['cta_url']   ?? home_url( '/contact/' );
-$sec_label = $s['sec_label'] ?? 'Browse Our Guides';
-$sec_url   = $s['sec_url']   ?? home_url( '/guides/' );
+$eyebrow   = $s['eyebrow']   ?? CTA_SECONDARY_SECTION;
+$title     = $s['title']     ?? CTA_PRIMARY_SECTION;
+$desc      = $s['desc']      ?? CTA_DESCRIPTION;
+$cta_label = $s['cta_label'] ?? CTA_BUTTON_TEXT;
+$cta_url   = $s['cta_url']   ?? home_url( CTA_BUTTON_LINK );
+$sec_label = $s['sec_label'] ?? CTA_BUTTON2_TEXT;
+$sec_url   = $s['sec_url']   ?? home_url( CTA_BUTTON2_LINK );
 ?>
 <section class="cta-section" aria-label="Call to action">
   <div class="container">

@@ -118,13 +118,6 @@ get_template_part( 'components/faq-section' );
 
 get_template_part( 'components/testimonials' );
 
-get_template_part( 'components/cta-section', null, [
-  'title'     => 'Ready to Start Your<br><em>Property Search?</em>',
-  'desc'      => 'Book a free, no-obligation consultation. We\'ll explain exactly how we work and whether we\'re the right fit for your search.',
-  'cta_label' => 'Book a Free Call',
-  'cta_url'   => home_url( '/contact/' ),
-  'sec_label' => 'Read Our Guides First',
-  'sec_url'   => home_url( '/guides/' ),
-] );
+get_template_part( 'components/cta-section', null, [] );
 
 get_footer();
