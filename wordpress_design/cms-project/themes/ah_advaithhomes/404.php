@@ -5,17 +5,17 @@
     <div class="container" style="text-align:center;max-width:600px">
       <div style="font-size:6rem;line-height:1;margin-bottom:24px">🏠</div>
       <p style="color:var(--text-muted);margin-bottom:40px">
-        <?php esc_html_e( "The page you're looking for doesn't exist or may have moved. Let's get you back on track.", 'ah-theme' ); ?>
+        <?php echo  DESCRIPTION_404 ; ?>
       </p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="btn btn-primary">
+        <a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="btn btn-primary">
           <?php esc_html_e( 'Back to Home', 'ah-theme' ); ?>
         </a>
-        <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="btn btn-outline">
+        <a href="<?php echo esc_url( home_url( AH_LINK_GUIDES ) ); ?>" class="btn btn-outline">
           <?php esc_html_e( 'Browse Guides', 'ah-theme' ); ?>
         </a>
-        <a href="<?php echo esc_url( home_url( '/free-consultation/' ) ); ?>" class="btn btn-outline">
-          <?php esc_html_e( 'Contact Us', 'ah-theme' ); ?>
+        <a href="<?php echo esc_url( home_url( AH_LINK_CONTACT_US ) ); ?>" class="btn btn-outline">
+          <?php echo esc_html( AH_LABEL_CONTACT_US ); ?>
         </a>
       </div>
     </div>

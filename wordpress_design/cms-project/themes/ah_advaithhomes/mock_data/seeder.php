@@ -1,6 +1,8 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+require_once get_template_directory() . '/schema/class-schema.php';
+
 /**
  * AH Theme Seeder
  * Populates all CMS tables and WordPress options with realistic demo data.
@@ -8,61 +10,10 @@ defined( 'ABSPATH' ) || exit;
  */
 class AH_Theme_Seeder {
 
-	// ── Table creation (run before seeding when plugin is not active) ────────────
+	// ── Table creation (delegated to schema/class-schema.php) ───────────────────
 
 	public static function create_tables(): void {
-		global $wpdb;
-		$cs = $wpdb->get_charset_collate();
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ah_theme_table( 'services' ) . "` (
-			id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			title      VARCHAR(255) NOT NULL,
-			summary    TEXT,
-			icon       VARCHAR(100),
-			status     ENUM('active','inactive') DEFAULT 'active',
-			sort_order INT DEFAULT 0,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ah_theme_table( 'team' ) . "` (
-			id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			name       VARCHAR(200) NOT NULL,
-			role       VARCHAR(200),
-			bio        TEXT,
-			photo_url  VARCHAR(500),
-			status     ENUM('active','inactive') DEFAULT 'active',
-			sort_order INT DEFAULT 0,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ah_theme_table( 'reviews' ) . "` (
-			id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			author_name VARCHAR(200) NOT NULL,
-			location    VARCHAR(200),
-			review_text TEXT NOT NULL,
-			rating      TINYINT UNSIGNED DEFAULT 5,
-			result      VARCHAR(200),
-			status      ENUM('active','inactive') DEFAULT 'active',
-			created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ah_theme_table( 'faqs' ) . "` (
-			id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			topic      VARCHAR(150),
-			question   TEXT NOT NULL,
-			answer     TEXT NOT NULL,
-			status     ENUM('active','inactive') DEFAULT 'active',
-			sort_order INT DEFAULT 0,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ah_theme_table( 'news_bar' ) . "` (
-			id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			message    VARCHAR(500) NOT NULL,
-			status     ENUM('active','inactive') DEFAULT 'active',
-			sort_order INT DEFAULT 0,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		AH_Schema::create_all();
 	}
 
 	/** @return array{inserted:int, updated:int, errors:string[]} */
@@ -70,6 +21,9 @@ class AH_Theme_Seeder {
 		self::create_tables();
 		$results = [ 'inserted' => 0, 'updated' => 0, 'errors' => [] ];
 		$methods = [
+			'seed_mandatory_pages',
+			'seed_taxonomy_terms',
+			'seed_taxonomy_types',
 			'seed_settings',
 			'seed_home_settings',
 			'seed_guide_nav',
@@ -314,6 +268,141 @@ class AH_Theme_Seeder {
 		return [ 'inserted' => 0, 'updated' => 1 ];
 	}
 
+	// ── Taxonomy types + default terms ───────────────────────────────────────
+
+	public static function seed_taxonomy_types(): array {
+		global $wpdb;
+
+		// Uses the CMS plugin tables — skip silently when plugin is not active.
+		if ( ! class_exists( 'AH_DB_Helper' ) ) {
+			return self::skip( 'CMS plugin not active — taxonomy types not seeded' );
+		}
+
+		$tt = AH_DB_Helper::table( 'taxonomy_types' ); // wp_ah_taxonomy_types
+		$tm = AH_DB_Helper::table( 'taxonomies' );      // wp_ah_taxonomies
+
+		if ( ! self::table_exists( $tt ) || ! self::table_exists( $tm ) ) {
+			return self::skip( 'Plugin taxonomy tables not found — activate plugin first' );
+		}
+
+		$types = [
+			[ 'name' => 'Highlight Names', 'slug' => 'highlight-names', 'description' => 'Label content as Featured, Popular, New, etc.' ],
+			[ 'name' => 'Category',        'slug' => 'category',        'description' => 'Content category groupings.' ],
+			[ 'name' => 'Tags',            'slug' => 'tags',            'description' => 'Free-form content tags.' ],
+			[ 'name' => 'DataProtected',   'slug' => 'data-protected',  'description' => 'GDPR / data-handling classification.' ],
+			[ 'name' => 'Common',          'slug' => 'common',          'description' => 'Shared cross-content labels.' ],
+		];
+
+		// Terms to seed per type slug
+		$type_terms = [
+			'common' => [
+				[ 'name' => 'Related Articles', 'slug' => 'related-articles' ],
+				[ 'name' => 'Useful Links',      'slug' => 'useful-links' ],
+			],
+		];
+
+		$inserted = 0;
+		foreach ( $types as $type ) {
+			// Get or create the type row
+			$type_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$tt}` WHERE slug = %s", $type['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( ! $type_id ) {
+				$wpdb->insert( $tt, [
+					'name'        => $type['name'],
+					'slug'        => $type['slug'],
+					'description' => $type['description'],
+				] );
+				$type_id = (int) $wpdb->insert_id;
+				$inserted++;
+			}
+
+			// Seed default terms into wp_ah_taxonomies for this type
+			foreach ( $type_terms[ $type['slug'] ] ?? [] as $i => $term ) {
+				$exists = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$tm}` WHERE type_id = %d AND slug = %s", $type_id, $term['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $tm, [
+						'type_id'    => $type_id,
+						'name'       => $term['name'],
+						'slug'       => $term['slug'],
+						'sort_order' => $i + 1,
+						'status'     => 'active',
+					] );
+					$inserted++;
+				}
+			}
+		}
+
+		return [ 'inserted' => $inserted, 'updated' => 0 ];
+	}
+
+	// ── Mandatory WP pages ───────────────────────────────────────────────────
+
+	public static function seed_mandatory_pages(): array {
+		$pages = [
+			'home'           => [ 'title' => 'Home',          'template' => '' ],
+			'about'          => [ 'title' => 'About Us',       'template' => 'page-about.php' ],
+			'services'       => [ 'title' => 'Our Services',   'template' => 'page-services.php' ],
+			'client-stories' => [ 'title' => 'Client Stories', 'template' => 'page-client-stories.php' ],
+			'contact'        => [ 'title' => 'Contact',        'template' => 'page-contact.php' ],
+			'guides'         => [ 'title' => 'Buying Guides',  'template' => 'page-guides.php' ],
+			'blog'           => [ 'title' => 'Blog',           'template' => 'page-blog.php' ],
+			'news'           => [ 'title' => 'News',           'template' => 'page-news.php' ],
+			'faq'            => [ 'title' => 'FAQ',            'template' => 'page-faq.php' ],
+		];
+		$count = 0;
+		foreach ( $pages as $slug => $cfg ) {
+			$existing = get_page_by_path( $slug );
+			if ( ! $existing ) {
+				$id = wp_insert_post( [
+					'post_title'   => $cfg['title'],
+					'post_name'    => $slug,
+					'post_status'  => 'publish',
+					'post_type'    => 'page',
+					'post_content' => '',
+				] );
+				if ( $id && ! is_wp_error( $id ) ) {
+					if ( $cfg['template'] ) {
+						update_post_meta( $id, '_wp_page_template', $cfg['template'] );
+					}
+					$count++;
+				}
+			} elseif ( $cfg['template'] ) {
+				update_post_meta( $existing->ID, '_wp_page_template', $cfg['template'] );
+			}
+		}
+
+		// Set Home as the static front page and Blog as the posts archive page.
+		$home_page = get_page_by_path( 'home' );
+		if ( $home_page ) {
+			update_option( 'show_on_front', 'page' );
+			update_option( 'page_on_front', $home_page->ID );
+		}
+		$blog_page = get_page_by_path( 'blog' );
+		if ( $blog_page ) {
+			update_option( 'page_for_posts', $blog_page->ID );
+		}
+
+		return [ 'inserted' => $count, 'updated' => 0 ];
+	}
+
+	// ── Taxonomy terms ────────────────────────────────────────────────────────
+
+	public static function seed_taxonomy_terms(): array {
+		$count = 0;
+
+		// WP native categories used by seed_blog_posts
+		foreach ( [ 'Buying Guides', 'Finance', 'Legal', 'Market Updates' ] as $name ) {
+			if ( ! term_exists( $name, 'category' ) ) {
+				$t = wp_insert_term( $name, 'category' );
+				if ( ! is_wp_error( $t ) ) $count++;
+			}
+		}
+
+		// All other taxonomy types and terms are managed in ah_taxonomy_types / ah_taxonomy_terms
+		// via seed_taxonomy_types() — no WP register_taxonomy() calls needed.
+
+		return [ 'inserted' => $count, 'updated' => 0 ];
+	}
+
 	public static function seed_blog_posts(): array {
 		$posts = [
 			[
@@ -340,7 +429,14 @@ class AH_Theme_Seeder {
 		];
 		$count = 0;
 		foreach ( $posts as $p ) {
-			$existing = get_page_by_title( $p['title'], OBJECT, 'post' );
+			$existing = ( new WP_Query( [
+				'post_type'              => 'post',
+				'title'                  => $p['title'],
+				'posts_per_page'         => 1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			] ) )->posts[0] ?? null;
 			if ( $existing ) continue;
 			$post_id = wp_insert_post( [
 				'post_title'   => $p['title'],
@@ -1164,6 +1260,7 @@ class AH_Theme_Seeder {
 		$deleted += self::cleanup_db_table( 'reviews' );
 		$deleted += self::cleanup_db_table( 'faqs' );
 		$deleted += self::cleanup_db_table( 'news_bar' );
+		// ah_taxonomy_types and ah_taxonomies belong to the CMS plugin — not truncated here.
 
 		$options = [
 			'ah_site_settings', 'ah_home_settings', 'ah_guide_nav',
@@ -1182,13 +1279,18 @@ class AH_Theme_Seeder {
 		}
 
 		// Remove seeded WP pages
-		foreach ( [ 'guides', 'blog' ] as $slug ) {
+		$seeded_pages = [ 'home', 'about', 'services', 'client-stories', 'contact', 'guides', 'blog', 'news', 'faq' ];
+		foreach ( $seeded_pages as $slug ) {
 			$page = get_page_by_path( $slug );
 			if ( $page ) {
 				wp_delete_post( $page->ID, true );
 				$deleted++;
 			}
 		}
+		// Reset front-page options
+		update_option( 'show_on_front', 'posts' );
+		delete_option( 'page_on_front' );
+		delete_option( 'page_for_posts' );
 
 		return [ 'deleted' => $deleted ];
 	}

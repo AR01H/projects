@@ -31,12 +31,12 @@ $nav_cta = ah_get_nav_cta();
 <nav class="nav" id="mainNav" role="navigation" aria-label="<?php esc_attr_e( 'Main Navigation', 'ah-theme' ); ?>">
 	<div class="container">
 		<div class="nav__inner">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nav__logo" aria-label="<?php bloginfo( 'name' ); ?> Home">
+			<a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="nav__logo" aria-label="<?php bloginfo( 'name' ); ?> Home">
 				<?php if ( $has_logo ) : ?>
 					<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php bloginfo( 'name' ); ?>" style="height:40px">
 					<span><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 				<?php else : ?>
-					<div class="nav__logo-mark">AH</div>
+					<div class="nav__logo-mark"><?php echo esc_html( CLIENT_SHORT_TITLE ); ?></div>
 					<span><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 				<?php endif; ?>
 			</a>
@@ -90,11 +90,11 @@ $nav_cta = ah_get_nav_cta();
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
 							<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.02 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
 						</svg>
-						Contact Us
+						<?php echo esc_html( AH_LABEL_CONTACT_US ); ?>
 					</a>
 				<?php endif; ?>
-				<a href="<?php echo esc_url( $nav_cta['url'] ?? home_url( '/contact/' ) ); ?>" class="btn btn-sm btn-primary">
-					<?php echo esc_html( $nav_cta['label'] ?? 'Get Help' ); ?>
+				<a href="<?php echo esc_url( $nav_cta['url'] ?? home_url( AH_LINK_CONTACT ) ); ?>" class="btn btn-sm btn-primary">
+					<?php echo esc_html( $nav_cta['label'] ?? AH_LABEL_GET_HELP ); ?>
 				</a>
 				<button class="nav__hamburger" id="ahHamburger"
 					aria-label="<?php esc_attr_e( 'Open menu', 'ah-theme' ); ?>"
@@ -107,7 +107,7 @@ $nav_cta = ah_get_nav_cta();
 </nav>
 
 <nav class="nav__mobile" id="ahMobileNav" aria-label="<?php esc_attr_e( 'Mobile Navigation', 'ah-theme' ); ?>">
-	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nav__mobile-link">Home</a>
+	<a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="nav__mobile-link"><?php echo esc_html( AH_LABEL_HOME ); ?></a>
 
 	<?php foreach ( $theme_nav as $item ) : ?>
 		<?php
@@ -136,8 +136,8 @@ $nav_cta = ah_get_nav_cta();
 	<?php endforeach; ?>
 
 	<div style="padding:16px">
-		<a href="<?php echo esc_url( $nav_cta['url'] ?? home_url( '/contact/' ) ); ?>" class="btn btn-primary btn-block" style="justify-content:center">
-			<?php echo esc_html( $nav_cta['label'] ?? 'Talk to an Expert' ); ?>
+		<a href="<?php echo esc_url( $nav_cta['url'] ?? home_url( AH_LINK_CONTACT ) ); ?>" class="btn btn-primary btn-block" style="justify-content:center">
+			<?php echo esc_html( $nav_cta['label'] ?? AH_LABEL_TALK_TO_EXPERT ); ?>
 		</a>
 	</div>
 </nav>

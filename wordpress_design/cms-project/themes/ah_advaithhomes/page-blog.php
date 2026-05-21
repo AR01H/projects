@@ -28,7 +28,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
 
 <?php get_template_part( 'components/page-header', null, [
 	'eyebrow'    => 'Insights & Expertise',
-	'title'      => 'The Advaith Homes',
+	'title'      => 'The ' . CLIENT_FULL_TITLE,
 	'title_em'   => 'Blog',
 	'desc'       => 'Practical advice from buyer\'s agents - market insights, step-by-step guides, and everything you need to buy smarter.',
 	'breadcrumb' => [
@@ -45,7 +45,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
       <a href="<?php echo esc_url( get_permalink() ); ?>"
          class="filter-tab<?php if ( ! $active_cat ) echo ' filter-tab--active'; ?>"
          role="tab" aria-selected="<?php echo ! $active_cat ? 'true' : 'false'; ?>">
-        All Posts
+        <?php echo esc_html( AH_LABEL_ALL_POSTS ); ?>
       </a>
       <?php foreach ( $wp_cats as $cat ) :
         $is_active = ( $active_cat === $cat->slug );
@@ -96,7 +96,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
             <?php echo esc_html( wp_trim_words( get_the_excerpt(), 28, '…' ) ); ?>
           </p>
           <a href="<?php the_permalink(); ?>" class="btn btn-primary" style="align-self:flex-start;margin-top:8px">
-            Read Article →
+            <?php echo esc_html( AH_LABEL_READ_ARTICLE ); ?> →
           </a>
         </div>
       </article>
@@ -164,7 +164,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
                 <?php echo esc_html( wp_trim_words( get_the_excerpt(), 18, '…' ) ); ?>
               </p>
               <a href="<?php the_permalink(); ?>" class="post-card__read-btn">
-                Read <span aria-hidden="true">→</span>
+                <?php echo esc_html( AH_LABEL_READ_MORE ); ?> <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
@@ -208,7 +208,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
         <?php endif; ?>
       </p>
       <?php if ( $active_cat ) : ?>
-      <a href="<?php echo esc_url( get_permalink() ); ?>" class="btn btn-outline">View All Posts →</a>
+      <a href="<?php echo esc_url( get_permalink() ); ?>" class="btn btn-outline"><?php echo esc_html( AH_LABEL_VIEW_ALL_POSTS ); ?> →</a>
       <?php endif; ?>
     </div>
     <?php endif; ?>
@@ -228,7 +228,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
         Market updates, new guides, and buyer tips - once a week. No spam, ever.
       </p>
       <button class="btn btn-primary">
-        <a href="/contact">Contact Us</a>
+        <a href="<?php echo esc_url( home_url( AH_LINK_CONTACT ) ); ?>"><?php echo esc_html( AH_LABEL_CONTACT_US ); ?></a>
       </button>
     </div>
   </div>

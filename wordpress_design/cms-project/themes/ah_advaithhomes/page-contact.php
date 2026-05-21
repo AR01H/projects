@@ -85,7 +85,7 @@ $faqs     = ah_get_faqs( 6 );
             <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;font-size:.875rem">
               <input type="checkbox" id="cf-consent" name="consent" required style="margin-top:3px;flex-shrink:0">
               <label for="cf-consent" style="color:var(--text-secondary)">
-                I agree to be contacted by Advaith Homes about my enquiry.
+                I agree to be contacted by <?php echo esc_html( CLIENT_FULL_TITLE ); ?> about my enquiry.
                 We never share your data. See our <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>" style="color:var(--accent)">privacy policy</a>.
               </label>
             </div>
@@ -182,7 +182,7 @@ $faqs     = ah_get_faqs( 6 );
       <?php endforeach; ?>
     </div>
     <div class="text-center" style="margin-top:24px">
-      <a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>" class="btn btn-outline">View all FAQs →</a>
+      <a href="<?php echo esc_url( home_url( AH_LINK_FAQ ) ); ?>" class="btn btn-outline">View all FAQs →</a>
     </div>
   </div>
 </section>

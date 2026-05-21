@@ -132,7 +132,7 @@ function ah_get_nav_cta(): array {
 		$opt = get_option( 'ah_nav_cta', [] );
 	}
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	$defaults = [ 'label' => 'Get Help', 'url' => '/contact/' ];
+	$defaults = [ 'label' => AH_LABEL_GET_HELP, 'url' => AH_LINK_CONTACT ];
 	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;
 }
 
@@ -157,7 +157,7 @@ function ah_get_theme_navigation(): array {
 		return ah_normalize_theme_navigation( $opt );
 	}
 
-	return ah_build_legacy_theme_navigation();
+	return [];
 }
 
 function ah_normalize_theme_navigation( array $items ): array {
@@ -202,116 +202,7 @@ function ah_normalize_theme_navigation( array $items ): array {
 	return $normalized;
 }
 
-function ah_build_legacy_theme_navigation(): array {
-	$buying_topics  = ah_get_nav_buying_topics();
-	$finance_topics = ah_get_nav_finance_topics();
-	$legal_topics   = ah_get_nav_legal_topics();
-	$nav_vis        = ah_get_nav_visibility();
-	$nav_links      = ah_get_nav_static_links();
-	$static_nav     = ah_get_nav_static_page_links();
-	$nav_labels     = get_option( 'ah_nav_top_labels', [] );
 
-	if ( is_string( $nav_labels ) ) $nav_labels = json_decode( $nav_labels, true ) ?: [];
-
-	$nav_labels = array_merge(
-		[
-		],
-		(array) $nav_labels
-	);
-
-	$append_static = static function ( array $topics, string $section ) use ( $static_nav ): array {
-		foreach ( $static_nav as $item ) {
-			$item = is_object( $item ) ? (array) $item : (array) $item;
-			if ( ( $item['section'] ?? '' ) !== $section ) {
-				continue;
-			}
-			$slug = sanitize_title( $item['slug'] ?? '' );
-			if ( $slug === '' ) {
-				continue;
-			}
-			$topics[] = [
-				'icon'      => $item['icon'] ?? '',
-				'title'     => $item['label'] ?: ucwords( str_replace( '-', ' ', $slug ) ),
-				'desc'      => 'Page',
-				'url'       => home_url( '/' . $slug . '/' ),
-				'highlight' => false,
-			];
-		}
-		return $topics;
-	};
-
-	$map_submenu = static function ( array $items, string $default_icon ): array {
-		$submenu = [];
-		foreach ( $items as $item ) {
-			$item = is_object( $item ) ? (array) $item : (array) $item;
-			$title = sanitize_text_field( $item['title'] ?? '' );
-			if ( $title === '' ) {
-				continue;
-			}
-			$url = ! empty( $item['url'] ) ? (string) $item['url'] : home_url( '/guides/' . sanitize_title( $item['slug'] ?? $title ) . '/' );
-			$submenu[] = [
-				'label'       => $title,
-				'url'         => $url,
-				'description' => sanitize_text_field( $item['desc'] ?? '' ),
-				'icon'        => sanitize_text_field( $item['icon'] ?? $default_icon ),
-				'highlight'   => ! empty( $item['highlight'] ),
-			];
-		}
-		return $submenu;
-	};
-
-	$buying_topics  = $append_static( $buying_topics, 'buying' );
-	$finance_topics = $append_static( $finance_topics, 'finance' );
-	$legal_topics   = $append_static( $legal_topics, 'legal' );
-
-	return [
-		[
-			'id'      => 'buying',
-			'label'   => $nav_labels['buying'],
-			'type'    => 'dropdown',
-			'url'     => '',
-			'visible' => ! empty( $nav_vis['buying'] ),
-			'icon'    => 'house',
-			'submenu' => $map_submenu( $buying_topics, 'home' ),
-		],
-		[
-			'id'      => 'finance',
-			'label'   => $nav_labels['finance'],
-			'type'    => 'dropdown',
-			'url'     => '',
-			'visible' => ! empty( $nav_vis['finance'] ),
-			'icon'    => 'money',
-			'submenu' => $map_submenu( $finance_topics, 'money' ),
-		],
-		[
-			'id'      => 'legal',
-			'label'   => $nav_labels['legal'],
-			'type'    => 'dropdown',
-			'url'     => '',
-			'visible' => ! empty( $nav_vis['legal'] ),
-			'icon'    => 'legal',
-			'submenu' => $map_submenu( $legal_topics, 'legal' ),
-		],
-		[
-			'id'      => 'news',
-			'label'   => $nav_labels['news'],
-			'type'    => 'link',
-			'url'     => ah_normalize_theme_url( (string) ( $nav_links['news']['url'] ?? '/blog/' ), '/blog/' ),
-			'visible' => ! empty( $nav_vis['news'] ),
-			'icon'    => 'news',
-			'submenu' => [],
-		],
-		[
-			'id'      => 'services',
-			'label'   => $nav_labels['services'],
-			'type'    => 'link',
-			'url'     => ah_normalize_theme_url( (string) ( $nav_links['services']['url'] ?? '/services/' ), '/services/' ),
-			'visible' => ! empty( $nav_vis['services'] ),
-			'icon'    => 'services',
-			'submenu' => [],
-		],
-	];
-}
 
 function ah_get_nav_link_suggestions(): array {
 	$suggestions = [];
@@ -331,7 +222,7 @@ function ah_get_nav_link_suggestions(): array {
 	$push( 'Home', home_url( '/' ), 'page' );
 	$push( 'Blog', home_url( '/blog/' ), 'page' );
 	$push( 'Services', home_url( '/services/' ), 'page' );
-	$push( 'Contact', home_url( '/contact/' ), 'page' );
+	$push( 'Contact', home_url( AH_LINK_CONTACT ), 'page' );
 
 	foreach ( get_pages( [ 'post_status' => [ 'publish', 'draft', 'private' ], 'sort_column' => 'post_title' ] ) as $page ) {
 		$push(
@@ -421,7 +312,7 @@ function ah_normalize_theme_footer( array $footer ): array {
 		],
 		'cta'               => [
 			'label' => sanitize_text_field( $footer['cta']['label'] ?? '' ),
-			'url'   => ah_normalize_theme_url( (string) ( $footer['cta']['url'] ?? '' ), '/contact/' ),
+			'url'   => ah_normalize_theme_url( (string) ( $footer['cta']['url'] ?? '' ), AH_LINK_CONTACT ),
 		],
 		'legal_links'       => $legal_links,
 	];
@@ -476,7 +367,7 @@ function ah_build_legacy_theme_footer(): array {
 				[ 'label' => 'About Us', 'url' => home_url( '/about/' ) ],
 				[ 'label' => 'Client Stories', 'url' => home_url( '/client-stories/' ) ],
 				[ 'label' => 'Blog', 'url' => home_url( '/blog/' ) ],
-				[ 'label' => 'Contact', 'url' => home_url( '/contact/' ) ],
+				[ 'label' => 'Contact', 'url' => home_url( AH_LINK_CONTACT ) ],
 			],
 		],
 	];
@@ -528,7 +419,7 @@ function ah_get_contact_settings(): array {
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	$defaults = [
 		'recipient_email' => get_option( 'admin_email' ),
-		'subject_prefix'  => '[Advaith Homes Enquiry]',
+		'subject_prefix'  => CLIENT_ENQUIRY_SUBJECT_PREFIX,
 		'thank_you_msg'   => "Thanks for getting in touch! We'll respond within one working day.",
 	];
 	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;

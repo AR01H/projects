@@ -118,18 +118,4 @@ AH_Theme_Seeder::seed_static_pages();  // writes 7 HTML files + WP pages
     </pre>
   </div>
 
-  <!-- SQL download info -->
-  <div class="ah-admin-box">
-    <h2>SQL Seeder File</h2>
-    <p style="color:#64748b;font-size:.9rem;margin-bottom:12px">
-      For DB-only seeding (e.g. via phpMyAdmin), use the SQL file at:
-    </p>
-    <code style="display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 14px;font-size:.85rem">
-      <?php echo esc_html( get_template_directory() . '/mock_data/seeder.sql' ); ?>
-    </code>
-    <p style="margin-top:10px;font-size:.82rem;color:#94a3b8">
-      Remember to replace <strong>{prefix}</strong> in the SQL file with your actual table prefix (e.g. <code>wp_ah_cms_plug_</code>).
-    </p>
-  </div>
-
 </div>

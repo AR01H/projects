@@ -9,6 +9,7 @@ class AH_Theme_Admin {
 		add_action( 'admin_post_ah_theme_seed',     [ self::class, 'handle_seed' ] );
 		add_action( 'admin_post_ah_theme_cleanup',  [ self::class, 'handle_cleanup' ] );
 		add_action( 'admin_post_ah_theme_sections', [ self::class, 'handle_sections' ] );
+		add_action( 'admin_post_ah_taxonomy',       [ self::class, 'handle_taxonomy' ] );
 		if ( ! class_exists( 'AH_Admin_Bootstrap' ) ) {
 			add_action( 'admin_post_ah_theme_nav', [ self::class, 'handle_nav' ] );
 		}
@@ -34,6 +35,7 @@ class AH_Theme_Admin {
 		add_submenu_page( 'ah-theme-admin', __( 'Contact Submissions', 'ah-theme' ), __( 'Contact Submissions', 'ah-theme' ), 'manage_options', 'ah-theme-submissions', [ self::class, 'page_submissions' ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Install Mock Data', 'ah-theme' ), __( 'Install Mock Data', 'ah-theme' ), 'manage_options', 'ah-theme-mock',        [ self::class, 'page_mock'        ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Cleanup Data',      'ah-theme' ), __( 'Cleanup Data',      'ah-theme' ), 'manage_options', 'ah-theme-cleanup',  [ self::class, 'page_cleanup'   ] );
+		add_submenu_page( 'ah-theme-admin', __( 'Taxonomy',          'ah-theme' ), __( 'Taxonomy',          'ah-theme' ), 'manage_options', 'ah-taxonomy',       [ self::class, 'page_taxonomy'  ] );
 	}
 
 	public static function enqueue_assets( string $hook ): void {
@@ -55,6 +57,10 @@ class AH_Theme_Admin {
 
 	public static function page_cleanup(): void {
 		require get_template_directory() . '/admin/theme-cleanup.php';
+	}
+
+	public static function page_taxonomy(): void {
+		require get_template_directory() . '/admin/theme-taxonomy.php';
 	}
 
 	public static function page_sections(): void {
@@ -120,6 +126,66 @@ class AH_Theme_Admin {
 		update_option( 'ah_section_visibility', wp_json_encode( $visibility ) );
 
 		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-sections', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	public static function handle_taxonomy(): void {
+		check_admin_referer( 'ah_taxonomy' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+		if ( ! class_exists( 'AH_DB_Helper' ) ) wp_die( 'CMS plugin is not active.' );
+
+		global $wpdb;
+		$action = sanitize_key( $_POST['_action'] ?? '' );
+		$tab    = sanitize_key( $_POST['_tab']    ?? 'types' );
+		$tt     = AH_DB_Helper::table( 'taxonomy_types' ); // wp_ah_taxonomy_types
+		$tm     = AH_DB_Helper::table( 'taxonomies' );      // wp_ah_taxonomies
+
+		if ( $action === 'add_type' ) {
+			$name = sanitize_text_field( $_POST['type_name'] ?? '' );
+			$slug = sanitize_title( $_POST['type_slug'] ?? $name );
+			$desc = sanitize_textarea_field( $_POST['type_description'] ?? '' );
+			if ( $name && $slug ) {
+				$wpdb->insert( $tt, [
+					'name'        => $name,
+					'slug'        => $slug,
+					'description' => $desc,
+				] );
+			}
+			$tab = 'types';
+
+		} elseif ( $action === 'add_term' ) {
+			$type_id = (int) ( $_POST['term_type_id'] ?? 0 );
+			$name    = sanitize_text_field( $_POST['term_name'] ?? '' );
+			$slug    = sanitize_title( $_POST['term_slug'] ?? $name );
+			if ( $type_id && $name && $slug ) {
+				$sort = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$tm}` WHERE type_id = %d", $type_id ) ) + 1; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$wpdb->insert( $tm, [
+					'type_id'    => $type_id,
+					'name'       => $name,
+					'slug'       => $slug,
+					'sort_order' => $sort,
+					'status'     => 'active',
+				] );
+			}
+			$tab = 'terms';
+
+		} elseif ( $action === 'delete_type' ) {
+			$id = (int) ( $_POST['type_id'] ?? 0 );
+			if ( $id ) {
+				$wpdb->delete( $tm, [ 'type_id' => $id ], [ '%d' ] );
+				$wpdb->delete( $tt, [ 'id' => $id ], [ '%d' ] );
+			}
+			$tab = 'types';
+
+		} elseif ( $action === 'delete_term' ) {
+			$id = (int) ( $_POST['term_id'] ?? 0 );
+			if ( $id ) {
+				$wpdb->delete( $tm, [ 'id' => $id ], [ '%d' ] );
+			}
+			$tab = 'terms';
+		}
+
+		wp_redirect( add_query_arg( [ 'page' => 'ah-taxonomy', 'tab' => $tab, 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 

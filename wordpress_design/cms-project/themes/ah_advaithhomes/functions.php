@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Includes - order matters ──────────────────────────────────────────────────
+require_once get_template_directory() . '/includes/mini-helping-functions.php';  
 require_once get_template_directory() . '/includes/common_constants.php';  // CTA & site-wide string constants
 require_once get_template_directory() . '/includes/common_terms.php';      // client brand name constants
 require_once get_template_directory() . '/includes/mock-data.php';         // fallback data arrays
