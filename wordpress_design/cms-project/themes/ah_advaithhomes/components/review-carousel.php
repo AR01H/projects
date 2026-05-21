@@ -73,7 +73,6 @@ $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩�
           </p>
           <?php if ( ! empty( $rev->short_desc ) ) : ?>
           <div>
-            <div class="story-detail__author-name"><?php echo esc_html( $rev->reviewer_name ?? '' ); ?></div>
             <div class="story-detail__result"><?php echo esc_html( $rev->short_desc ); ?></div>
           </div>
           <?php endif; ?>
@@ -84,9 +83,6 @@ $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩�
           <button class="carousel-nav-btn" data-carousel-prev aria-label="Previous story">←</button>
           <span style="font-size:.82rem;color:var(--text-muted);text-align:center;display:flex;align-items: center;" data-carousel-counter>1 / <?php echo count( $reviews ); ?></span>
           <button class="carousel-nav-btn" data-carousel-next aria-label="Next story">→</button>
-          <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>" class="btn btn-outline btn-sm" style="margin-left:auto">
-            All stories →
-          </a>
         </div>
       </div>
     </div>

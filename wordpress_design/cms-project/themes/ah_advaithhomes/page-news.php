@@ -13,26 +13,12 @@ $model     = class_exists( 'AH_Newsbar_Model' ) ? new AH_Newsbar_Model() : null;
 $all_active = $model ? $model->get_active() : [];
 
 // ── Batch-fetch taxonomy terms for all items ───────────────────────────────
-$item_terms    = [];   // [ item_id => [ term, … ] ]
-$unique_terms  = [];   // [ slug => term ] - for filter tabs
+$taxonomy_result = $all_active
+	? AH_Theme_Content_Taxonomy::get_terms_for_items( $all_active, 'news_bar_item' )
+	: [ 'item_terms' => [], 'unique_terms' => [] ];
 
-if ( $all_active && class_exists( 'AH_DB_Helper' ) ) {
-	global $wpdb;
-	$ids    = implode( ',', array_map( fn( $i ) => (int) $i->id, $all_active ) );
-	$ct     = AH_DB_Helper::table( 'content_taxonomies' );
-	$tax    = AH_DB_Helper::table( 'taxonomies' );
-	$rows   = $wpdb->get_results(
-		"SELECT ct.object_id, t.id, t.name, t.slug
-		 FROM `{$ct}` ct
-		 INNER JOIN `{$tax}` t ON t.id = ct.taxonomy_id
-		 WHERE ct.object_type = 'news_bar_item' AND ct.object_id IN ({$ids})
-		 ORDER BY t.name ASC"
-	) ?: [];
-	foreach ( $rows as $r ) {
-		$item_terms[ (int) $r->object_id ][] = $r;
-		$unique_terms[ $r->slug ]             = $r;
-	}
-}
+$item_terms   = $taxonomy_result['item_terms'];   // [ item_id => [ term, … ] ]
+$unique_terms = $taxonomy_result['unique_terms']; // [ slug => term ] - for filter tabs
 
 // ── Apply term filter ──────────────────────────────────────────────────────
 $filtered = $all_active;
@@ -206,12 +192,11 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
 /* ── Layout ──────────────────────────────────────────────────────────────── */
 .news-layout__inner {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr;
   gap: 40px;
   align-items: start;
 }
 @media (max-width: 900px) {
-  .news-layout__inner { grid-template-columns: 1fr; }
   .news-layout__sidebar { order: -1; }
 }
 

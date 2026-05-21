@@ -20,8 +20,8 @@
 .sidebar-card {
 	background: white;
 	border: 1px solid var(--border);
-	border-radius: var(--r-lg);
-	padding: 24px;
+	border-radius: var(--r-sm);
+	padding: 8px;
 	margin-bottom: 20px;
 }
 
@@ -311,9 +311,6 @@
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	margin-top: 24px;
-	padding-top: 20px;
-	border-top: 1px solid var(--border);
 	flex-wrap: wrap;
 }
 

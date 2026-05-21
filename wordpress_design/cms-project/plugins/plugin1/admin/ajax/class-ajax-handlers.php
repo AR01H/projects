@@ -372,7 +372,7 @@ class AH_Ajax_Handlers {
 		}
 
 		// Fire Triggers Maker
-		AH_Rules_Engine::evaluate( 'form_submit', $form_id, $data );
+		AH_Rules_Engine::evaluate( 'form_submit', array_merge( array( 'form_id' => $form_id ), $data ) );
 
 		// Send email notification
 		$notify = ! empty( $form->notify_email ) ? $form->notify_email : get_option( 'admin_email' );

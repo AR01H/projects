@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 $services = ah_get_services();
 ?>
+
 <section class="section what-we-do" aria-label="Services">
   <div class="container">
     <div class="section__header text-center">
@@ -16,9 +17,12 @@ $services = ah_get_services();
     <div class="grid-3">
       <?php foreach ( $services as $i => $svc ) : ?>
       <div class="service-card" data-aos="fade-up" data-delay="<?php echo ( $i % 3 ) * 100; ?>">
-        <div class="service-card__icon"><?php echo esc_html( $svc->icon ?? '✦' ); ?></div>
-        <h3 class="service-card__title"><?php echo esc_html( $svc->title ); ?></h3>
-        <p class="service-card__body"><?php echo esc_html( $svc->summary ?? $svc->description ?? '' ); ?></p>
+        <div class="service-card__icon">
+         
+          <div class="service-card__title service-card__title-mini">  <?php echo esc_html( $svc->icon ?? '✦' ); ?> <?php echo esc_html( $svc->title ); ?></div>
+        </div>
+        
+        <p class="service-card__body"><?php echo esc_html( $svc->short_desc ?? $svc->short_desc ?? '' ); ?></p>
       </div>
       <?php endforeach; ?>
     </div>

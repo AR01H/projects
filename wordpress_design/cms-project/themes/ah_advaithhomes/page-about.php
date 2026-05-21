@@ -108,7 +108,7 @@ $signals  = ah_get_trust_signals();
 get_template_part( 'components/cta-section', null, [
   'title'     => 'Ready to Work With<br><em>a Team That\'s on Your Side?</em>',
   'desc'      => 'Book a free, no-obligation consultation. Tell us what you\'re looking for and we\'ll explain exactly how we can help.',
-  'cta_label' => 'Book a Free Call →',
+  'cta_label' => 'Book a Free Call',
   'cta_url'   => home_url( '/contact/' ),
   'sec_label' => 'See Our Services',
   'sec_url'   => home_url( '/services/' ),

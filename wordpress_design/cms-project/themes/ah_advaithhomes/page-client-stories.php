@@ -88,7 +88,7 @@ foreach ( $stats as $s ) {
 get_template_part( 'components/cta-section', null, [
   'title'     => 'Join ' . esc_html( $client_stat ) . ' Buyers<br><em>Who Bought with Confidence</em>',
   'desc'      => 'Book a free consultation and find out how we can help you buy the right property at the right price.',
-  'cta_label' => 'Book a Free Call →',
+  'cta_label' => 'Book a Free Call',
   'cta_url'   => home_url( '/contact/' ),
   'sec_label' => 'See Our Services',
   'sec_url'   => home_url( '/services/' ),

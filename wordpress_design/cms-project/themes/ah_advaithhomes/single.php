@@ -25,13 +25,6 @@ $crumbs[] = [ get_the_title(), '' ];
 <?php if ( has_post_thumbnail() ) : ?>
 <div class="sp-hero-img">
   <?php the_post_thumbnail( 'full', [ 'class' => 'sp-hero-img__img', 'loading' => 'eager' ] ); ?>
-  <div class="sp-hero-img__meta">
-    <time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
-      <?php echo esc_html( get_the_date( 'j M Y' ) ); ?>
-    </time>
-    <span>·</span>
-    <span><?php echo esc_html( ah_reading_time() ); ?></span>
-  </div>
 </div>
 <?php endif; ?>
 
@@ -55,12 +48,17 @@ $crumbs[] = [ get_the_title(), '' ];
         <?php endif; ?>
 
         <div class="post-share">
-          <span class="post-share__label">Share:</span>
           <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink() ); ?>&text=<?php echo urlencode( get_the_title() ); ?>"
              class="post-share__btn" target="_blank" rel="noopener" aria-label="Share on X">𝕏</a>
           <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode( get_permalink() ); ?>"
              class="post-share__btn" target="_blank" rel="noopener" aria-label="Share on LinkedIn">in</a>
-          <button class="post-share__btn" data-copy="<?php echo esc_attr( get_permalink() ); ?>" aria-label="Copy link">🔗</button>
+
+          <button class="post-share__icon post-share__icon--native"
+                  data-url="<?php echo esc_attr( get_permalink() ); ?>"
+                  data-title="<?php echo esc_attr( get_the_title() ); ?>"
+                  aria-label="More share options">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
         </div>
       </article>
 
@@ -79,8 +77,8 @@ $crumbs[] = [ get_the_title(), '' ];
           <div class="toc">
             <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>"                   class="toc__item">📚 All Buying Guides</a>
             <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"                 class="toc__item">✦ Our Services</a>
-            <a href="<?php echo esc_url( home_url( '/guides/stamp-duty/' ) ); ?>"        class="toc__item">📋 Stamp Duty Calculator</a>
-            <a href="<?php echo esc_url( home_url( '/guides/mortgage-guide/' ) ); ?>"   class="toc__item">🏦 Mortgage Guide</a>
+            <!-- <a href="<?php echo esc_url( home_url( '/guides/stamp-duty/' ) ); ?>"        class="toc__item">📋 Stamp Duty Calculator</a> -->
+            <!-- <a href="<?php echo esc_url( home_url( '/guides/mortgage-guide/' ) ); ?>"   class="toc__item">🏦 Mortgage Guide</a> -->
             <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>"           class="toc__item">⭐ Client Stories</a>
           </div>
         </div>
@@ -141,8 +139,6 @@ if ( $_related ) :
           </div>
           <div class="ra-card__bottom">
             <div class="ra-card__meta">
-              <?php echo esc_html( get_the_date( 'j M Y', $rp ) ); ?>
-              <span>·</span>
               <?php echo esc_html( ah_reading_time( $rp->ID ) ); ?>
             </div>
             <h3 class="ra-card__title"><?php echo esc_html( get_the_title( $rp ) ); ?></h3>

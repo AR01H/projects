@@ -3,9 +3,9 @@ defined( 'ABSPATH' ) || exit;
 
 $settings = ah_get_settings();
 $footer   = ah_get_theme_footer();
-$phone    = $settings['phone'] ?? '+447747223762';
-$email    = $settings['email'] ?? 'contact@advaithhomes.co.uk';
-$address  = $settings['address'] ?? 'London & Nationwide';
+$phone    = $settings['contact_phone'] ?? '';
+$email    = $settings['email'] ?? '';
+$address  = $settings['address'] ?? '';
 $fb       = $settings['facebook_url'] ?? '';
 $ig       = $settings['instagram_url'] ?? '';
 $tw       = $settings['twitter_url'] ?? '';
@@ -45,11 +45,45 @@ $year     = gmdate( 'Y' );
 				<?php endif; ?>
 
 				<div class="footer__socials" style="margin-top:16px">
-					<?php if ( $fb ) : ?><a href="<?php echo esc_url( $fb ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Facebook">F</a><?php endif; ?>
-					<?php if ( $tw ) : ?><a href="<?php echo esc_url( $tw ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Twitter/X">X</a><?php endif; ?>
-					<?php if ( $ig ) : ?><a href="<?php echo esc_url( $ig ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Instagram">I</a><?php endif; ?>
-					<?php if ( $yt ) : ?><a href="<?php echo esc_url( $yt ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="YouTube">Y</a><?php endif; ?>
-					<?php if ( $li ) : ?><a href="<?php echo esc_url( $li ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="LinkedIn">L</a><?php endif; ?>
+					<?php if ( $fb ) : ?>
+					<a href="<?php echo esc_url( $fb ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Facebook">
+					<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+						<path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.88 3.78-3.88 1.1 0 2.24.2 2.24.2v2.46H15.2c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12"/>
+					</svg>
+					</a>
+					<?php endif; ?>
+
+					<?php if ( $tw ) : ?>
+					<a href="<?php echo esc_url( $tw ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Twitter/X">
+					<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+						<path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.25L6.63 22H3.5l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52z"/>
+					</svg>
+					</a>
+					<?php endif; ?>
+
+					<?php if ( $ig ) : ?>
+					<a href="<?php echo esc_url( $ig ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Instagram">
+					<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+						<path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.65 0 3 1.35 3 3v10c0 1.65-1.35 3-3 3H7c-1.65 0-3-1.35-3-3V7c0-1.65 1.35-3 3-3zm10.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
+					</svg>
+					</a>
+					<?php endif; ?>
+
+					<?php if ( $yt ) : ?>
+					<a href="<?php echo esc_url( $yt ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="YouTube">
+					<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+						<path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8zM9.75 15.5v-7l6 3.5-6 3.5z"/>
+					</svg>
+					</a>
+					<?php endif; ?>
+
+					<?php if ( $li ) : ?>
+					<a href="<?php echo esc_url( $li ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="LinkedIn">
+					<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+						<path d="M4.98 3.5A2.48 2.48 0 1 0 5 8.46 2.48 2.48 0 0 0 4.98 3.5zM3 9h4v12H3zm7 0h3.83v1.64h.05c.53-1 1.84-2.05 3.79-2.05 4.05 0 4.8 2.67 4.8 6.14V21h-4v-5.27c0-1.26-.02-2.88-1.75-2.88-1.75 0-2.02 1.37-2.02 2.79V21h-4z"/>
+					</svg>
+					</a>
+					<?php endif; ?>
 				</div>
 			</div>
 

@@ -51,7 +51,6 @@ get_template_part( 'components/page-header', null, [
                       </svg>
                     </button>
                     <div class="post-share__popover" role="dialog" aria-label="Share options">
-                      <span class="post-share__label">Share</span>
                       <div class="post-share__icons">
                         <a href="https://wa.me/?text=<?php echo rawurlencode( $post_title . ' ' . $post_url ); ?>"
                            target="_blank" rel="noopener noreferrer"
@@ -76,8 +75,6 @@ get_template_part( 'components/page-header', null, [
 
                 <div class="post-card__info">
                   <div class="card__meta">
-                    <span><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></span>
-                    <span>·</span>
                     <span><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
                   </div>
                   <h2 class="post-card__title">
@@ -115,7 +112,7 @@ get_template_part( 'components/page-header', null, [
           <p>Have a question? Drop us a message and we'll get back to you shortly.</p>
         </div>
         <div class="sidebar-card" style="margin-top:16px">
-          <?php echo do_shortcode( '[ah_form id="2"]' ); ?>
+          <?php echo do_shortcode( '[ah_form id="1"]' ); ?>
         </div>
       </aside>
 

@@ -41,6 +41,12 @@ $gradients = [
                   <span style="font-size:4rem"><?php echo $emoji; ?></span>
                 </div>
               <?php endif; ?>
+              <div class="" style="position: absolute;top: 20px;text-align: center;width: 100%;background-color:white;padding:10px 0px">
+                <div style="font-size:1rem;font-weight:600;color:var(--text-primary)"><?php echo esc_html('Type: '. $prop['type'] ); ?></div>
+                <div style="font-size:1rem;font-weight:600;color:var(--text-primary)"><?php echo esc_html( $prop['beds'] .' Bed Rooms' ); ?> </div>
+                <div style="font-size:1rem;font-weight:600;color:var(--text-primary)"> <?php echo esc_html( 'In ' .$prop['area'] ); ?></div>
+                <div style="font-size:.9rem;font-weight:600;color:var(--accent)"><?php echo esc_html( $prop['result'] ); ?></div>
+              </div>
               <div class="property-card-3d__overlay">
                 <span class="property-card-3d__price"><?php echo esc_html( $prop['price'] ?? '' ); ?></span>
                 <span class="property-card-3d__loc"><?php echo esc_html( $prop['location'] ?? '' ); ?></span>
@@ -66,32 +72,7 @@ $gradients = [
         $prop = is_object( $prop ) ? (array) $prop : $prop;
       ?>
       <div data-carousel-detail style="<?php echo $i === 0 ? '' : 'display:none'; ?>">
-        <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap">
-          <?php if ( ! empty( $prop['type'] ) ) : ?>
-          <div style="text-align:center">
-            <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)">Type</div>
-            <div style="font-size:1rem;font-weight:600;color:var(--text-primary)"><?php echo esc_html( $prop['type'] ); ?></div>
-          </div>
-          <?php endif; ?>
-          <?php if ( ! empty( $prop['beds'] ) ) : ?>
-          <div style="text-align:center">
-            <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)">Bedrooms</div>
-            <div style="font-size:1rem;font-weight:600;color:var(--text-primary)"><?php echo esc_html( $prop['beds'] ); ?></div>
-          </div>
-          <?php endif; ?>
-          <?php if ( ! empty( $prop['area'] ) ) : ?>
-          <div style="text-align:center">
-            <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)">Area</div>
-            <div style="font-size:1rem;font-weight:600;color:var(--text-primary)"><?php echo esc_html( $prop['area'] ); ?></div>
-          </div>
-          <?php endif; ?>
-          <?php if ( ! empty( $prop['result'] ) ) : ?>
-          <div style="text-align:center">
-            <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)">Result</div>
-            <div style="font-size:.9rem;font-weight:600;color:var(--accent)"><?php echo esc_html( $prop['result'] ); ?></div>
-          </div>
-          <?php endif; ?>
-        </div>
+        
       </div>
       <?php endforeach; ?>
     </div>

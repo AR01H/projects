@@ -109,10 +109,10 @@ class AH_Theme_Seeder {
 			'phone'            => '+44 7747 223762',
 			'email'            => 'contact@advaithhomes.co.uk',
 			'address'          => 'London & Nationwide',
-			'facebook_url'     => 'https://facebook.com/advaithhomes',
-			'instagram_url'    => 'https://instagram.com/advaithhomes',
-			'twitter_url'      => 'https://twitter.com/advaithhomes',
-			'linkedin_url'     => 'https://linkedin.com/company/advaithhomes',
+			'facebook_url'     => '',
+			'instagram_url'    => '',
+			'twitter_url'      => '',
+			'linkedin_url'     => '',
 			'youtube_url'      => '',
 			'consultation_url' => '/contact/',
 			'tagline'          => "The UK's buyer's agent - working exclusively for you.",
@@ -151,122 +151,17 @@ class AH_Theme_Seeder {
 	public static function seed_nav_topics(): array {
 		$navigation = [
 			[
-				'id'      => 'buying-guides',
-				'label'   => 'Buying Guides',
-				'type'    => 'dropdown',
-				'url'     => '',
-				'visible' => true,
-				'icon'    => '',
-				'submenu' => array_map(
-					static function ( $item ) {
-						return [
-							'label'       => $item['title'],
-							'url'         => '/guides/' . $item['slug'] . '/',
-							'description' => $item['desc'] ?? '',
-							'icon'        => $item['icon'] ?? '',
-							'highlight'   => ! empty( $item['highlight'] ),
-						];
-					},
-					ah_mock_nav_buying_topics()
-				),
 			],
 			[
-				'id'      => 'finance',
-				'label'   => 'Finance',
-				'type'    => 'dropdown',
-				'url'     => '',
-				'visible' => true,
-				'icon'    => '',
-				'submenu' => array_map(
-					static function ( $item ) {
-						return [
-							'label'       => $item['title'],
-							'url'         => '/guides/' . $item['slug'] . '/',
-							'description' => $item['desc'] ?? '',
-							'icon'        => $item['icon'] ?? '',
-							'highlight'   => ! empty( $item['highlight'] ),
-						];
-					},
-					ah_mock_nav_finance_topics()
-				),
-			],
-			[
-				'id'      => 'legal-surveys',
-				'label'   => 'Legal & Surveys',
-				'type'    => 'dropdown',
-				'url'     => '',
-				'visible' => true,
-				'icon'    => '',
-				'submenu' => array_map(
-					static function ( $item ) {
-						return [
-							'label'       => $item['title'],
-							'url'         => '/guides/' . $item['slug'] . '/',
-							'description' => $item['desc'] ?? '',
-							'icon'        => $item['icon'] ?? '',
-							'highlight'   => ! empty( $item['highlight'] ),
-						];
-					},
-					ah_mock_nav_legal_topics()
-				),
-			],
-			[
-				'id'      => 'news-guides',
-				'label'   => 'News & Guides',
-				'type'    => 'link',
-				'url'     => '/blog/',
-				'visible' => true,
-				'icon'    => '',
-				'submenu' => [],
-			],
-			[
-				'id'      => 'services',
-				'label'   => 'Services',
-				'type'    => 'link',
-				'url'     => '/services/',
-				'visible' => true,
-				'icon'    => '',
-				'submenu' => [],
 			],
 		];
 		$footer = [
-			'brand_description' => "The UK's dedicated buyer's agent - we work exclusively for you, not the seller. Saving you time, stress, and thousands of pounds on your most important purchase.",
-			'badge_text'        => 'Proudly serving UK home buyers',
-			'columns'           => [
-				[
-					'title' => 'Buying Guides',
-					'items' => [
-						[ 'label' => 'First-Time Buyers', 'url' => '/guides/first-time-buyers/' ],
-						[ 'label' => 'Moving Home', 'url' => '/guides/moving-home/' ],
-						[ 'label' => 'Buy-to-Let', 'url' => '/guides/buy-to-let/' ],
-						[ 'label' => 'Using a Buyer\'s Agent', 'url' => '/guides/using-a-buyers-agent/', 'highlight' => true ],
-					],
-				],
-				[
-					'title' => 'Company',
-					'items' => [
-						[ 'label' => 'Home', 'url' => '/' ],
-						[ 'label' => 'Services', 'url' => '/services/' ],
-						[ 'label' => 'About Us', 'url' => '/about/' ],
-						[ 'label' => 'Blog', 'url' => '/blog/' ],
-						[ 'label' => 'Contact', 'url' => '/contact/' ],
-					],
-				],
-			],
-			'contact'           => [
-				'phone_note'   => 'Mon-Sat, 9am-6pm',
-				'email_note'   => 'We reply within 2 hours',
-				'address_note' => 'Covering all of England & Wales',
-			],
-			'cta'               => [
-				'label' => 'Book Free Consultation ->',
-				'url'   => '/contact/',
-			],
-			'legal_links'       => [
-				[ 'label' => 'Privacy Policy', 'url' => '/privacy-policy/' ],
-				[ 'label' => 'Terms', 'url' => '/terms/' ],
-				[ 'label' => 'Refund Policy', 'url' => '/refund-policy/' ],
-			],
+			'brand_description' => "",
+			'badge_text'        => '',
+			'columns'           => [],
+			'contact'           => [],
+			'cta'               => [],
+			'legal_links'       => [],
 		];
 		update_option( 'ah_nav_buying_topics',  wp_json_encode( ah_mock_nav_buying_topics() ) );
 		update_option( 'ah_nav_finance_topics', wp_json_encode( ah_mock_nav_finance_topics() ) );
@@ -1020,7 +915,7 @@ class AH_Theme_Seeder {
 				[ 1, 'Advaith Rajkumar', 'Founder & Lead Buyer\'s Agent',              1, 'contact@advaithhomes.co.uk', 'https://linkedin.com/in/advaithhomes', "Advaith founded Advaith Homes in 2019 after eight years as a senior estate agent, watching buyers consistently lose out through poor representation. He personally oversees every acquisition above £750,000 and has negotiated over £28 million in savings for clients." ],
 				[ 2, 'Sarah Mitchell',   'Senior Buyer\'s Agent - London & South East', 1, 'sarah@advaithhomes.co.uk',   '',                                     "Sarah brings 12 years of property experience across prime London and the commuter belt. She specialises in family relocations and upsizers, with an unrivalled off-market network across Richmond, Wimbledon, and Surrey." ],
 				[ 3, 'Priya Sharma',     'Finance & Mortgage Specialist',               0, 'priya@advaithhomes.co.uk',   '',                                     "Priya is a qualified mortgage adviser who joined Advaith Homes to provide clients with independent financing guidance integrated into the buying process. She has access to over 90 lenders and specialises in complex income structures." ],
-				[ 4, 'James Cooper',     'Legal Liaison & Due Diligence Lead',          0, 'james@advaithhomes.co.uk',   '',                                     "James spent 10 years as a property solicitor before moving into buyer representation. He leads all due diligence, survey interpretation, and conveyancing coordination - catching issues early and using them to renegotiate." ],
+				[ 4, 'James Cooper',     'Legal Liaison & Due Diligence Lead',          0, 'james@advaithhomes.co.uk',   '',                                     "-James spent 10 years as a property solicitor before moving into buyer representation. He leads all due diligence, survey interpretation, and conveyancing coordination - catching issues early and using them to renegotiate." ],
 			] as [ $i, $name, $designation, $is_featured, $email, $linkedin, $bio ] ) {
 				$wpdb->insert( $tmt, [
 					'name'         => $name,

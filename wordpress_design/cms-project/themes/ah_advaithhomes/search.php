@@ -39,9 +39,6 @@
               </a>
             <?php endif; ?>
             <div class="post-card__body">
-              <div class="card__meta">
-                <span><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></span>
-              </div>
               <h2 class="post-card__title">
                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
               </h2>

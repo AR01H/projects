@@ -13,7 +13,7 @@ $get_vis = function( string $key ) use ( $vis ): bool {
 
 // Suggestion data for tag-picker - loaded from helpers
 $all_services = ah_get_services( 50 );
-$all_faqs     = ah_get_faqs( '', 50 );
+$all_faqs     = ah_get_faqs( 50 );
 
 $service_suggestions = array_map( function( $s ) {
 	return [ 'id' => (string) ( $s->id ?? $s->ID ?? '' ), 'label' => $s->title ?? '' ];

@@ -174,7 +174,6 @@ $crumbs   = $s['breadcrumb'] ?? [];
   font-size: clamp(.9rem, 1.5vw, 1.05rem);
   color: rgba(0,0,0,.65);
   line-height: 1.75;
-  max-width: 560px;
   margin: 0;
 }
 

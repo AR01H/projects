@@ -4,7 +4,7 @@
  */
 get_header();
 
-$all_faqs = ah_get_faqs( '', 100 );
+$all_faqs = ah_get_faqs( 100 );
 
 // Group by topic
 $grouped = [];

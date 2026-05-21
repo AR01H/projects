@@ -25,67 +25,86 @@ function ah_section_visible( string $key ): bool {
 
 // ── Site Settings ─────────────────────────────────────────────────────────────
 function ah_get_settings(): array {
-	$saved = get_option( 'ah_site_settings', [] );
-	if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: [];
-	$defaults = ah_mock_default_settings();
-	return array_merge( $defaults, (array) $saved );
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_site_settings';
+	$rows  = $wpdb->get_results( "SELECT setting_key, setting_val FROM `{$table}`" ) ?: [];
+	$out   = [];
+	foreach ( $rows as $r ) {
+		$out[ $r->setting_key ] = $r->setting_val;
+	}
+	return $out;
 }
 
 // ── Home / Hero settings ──────────────────────────────────────────────────────
 function ah_get_home_settings(): array {
-	// Try CMS plugin model
-	if ( class_exists( 'AH_Model_Home' ) ) {
-		$rows = AH_Model_Home::all();
-		if ( ! empty( $rows ) ) {
-			// Flatten key/value rows into an associative array
-			$out = [];
-			foreach ( $rows as $r ) {
-				$key = $r->meta_key ?? $r->field_key ?? $r->key ?? null;
-				$val = $r->meta_value ?? $r->field_value ?? $r->value ?? null;
-				if ( $key !== null ) $out[ $key ] = $val;
-			}
-			if ( $out ) return $out;
-		}
-	}
-	// Try option
 	$opt = get_option( 'ah_home_settings', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return $opt;
-
-	return ah_mock_home_settings_array();
+	if ( ! empty( $opt ) ) return (array) $opt;
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_site_settings';
+	$rows  = $wpdb->get_results( $wpdb->prepare( "SELECT setting_key, setting_val FROM `{$table}` WHERE group_name = %s", 'home' ) ) ?: [];
+	$out   = [];
+	foreach ( $rows as $r ) {
+		$out[ $r->setting_key ] = $r->setting_val;
+	}
+	return $out;
 }
 
 // ── Buying Guides Navigation ──────────────────────────────────────────────────
 function ah_buying_guides_nav(): array {
 	$opt = get_option( 'ah_guide_nav', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_guide_nav();
+	return (array) $opt;
 }
 
 // ── Guide Categories ──────────────────────────────────────────────────────────
 function ah_get_guide_categories(): array {
-	$opt = get_option( 'ah_guide_categories', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_guide_categories_array();
+	global $wpdb;
+	$tt  = "{$wpdb->prefix}ah_taxonomy_types";
+	$t   = "{$wpdb->prefix}ah_taxonomies";
+	$ct  = "{$wpdb->prefix}ah_content_taxonomies";
+	$wt  = $wpdb->terms;           // wp_terms
+	$wtt = $wpdb->term_taxonomy;   // wp_term_taxonomy
+
+	// Terms inside the plugin's "category" type.
+	// count: prefer WP native category post count (guides page uses WP_Query),
+	//        fall back to plugin content_taxonomies count.
+	// HAVING count > 0 hides categories that have no posts yet.
+	return $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT tax.id, tax.name AS title, tax.slug, tax.description AS `desc`,
+			        GREATEST( COALESCE(wtt.count, 0), COUNT(DISTINCT pct.object_id) ) AS `count`
+			 FROM `{$t}` tax
+			 INNER JOIN `{$tt}` type_row ON type_row.id = tax.type_id AND type_row.slug = %s
+			 LEFT  JOIN `{$ct}` pct ON pct.taxonomy_id = tax.id AND pct.object_type = 'ah_post'
+			 LEFT  JOIN `{$wt}`  wterm ON wterm.slug = tax.slug
+			 LEFT  JOIN `{$wtt}` wtt   ON wtt.term_id = wterm.term_id AND wtt.taxonomy = 'category'
+			 WHERE tax.status = 'active'
+			 GROUP BY tax.id
+			 HAVING `count` > 0
+			 ORDER BY tax.sort_order ASC, tax.name ASC",
+			'category'
+		)
+	) ?: [];
 }
 
 // ── Nav Topic Groups (for header dropdowns) ───────────────────────────────────
 function ah_get_nav_buying_topics(): array {
 	$opt = get_option( 'ah_nav_buying_topics', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_nav_buying_topics();
+	return (array) $opt;
 }
 
 function ah_get_nav_finance_topics(): array {
 	$opt = get_option( 'ah_nav_finance_topics', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_nav_finance_topics();
+	return (array) $opt;
 }
 
 function ah_get_nav_legal_topics(): array {
 	$opt = get_option( 'ah_nav_legal_topics', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_nav_legal_topics();
+	return (array) $opt;
 }
 
 // ── Nav Visibility (which top-level items show) ───────────────────────────────
@@ -101,8 +120,7 @@ function ah_get_nav_static_links(): array {
 	$opt = get_option( 'ah_nav_static_links', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	$defaults = [
-		'news'     => [ 'label' => 'News & Guides', 'url' => '/blog/' ],
-		'services' => [ 'label' => 'Services',      'url' => '/services/' ],
+		
 	];
 	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;
 }
@@ -197,11 +215,6 @@ function ah_build_legacy_theme_navigation(): array {
 
 	$nav_labels = array_merge(
 		[
-			'buying'   => 'Buying',
-			'finance'  => 'Finance',
-			'legal'    => 'Legal & Surveys',
-			'news'     => $nav_links['news']['label'] ?? 'News & Guides',
-			'services' => $nav_links['services']['label'] ?? 'Services',
 		],
 		(array) $nav_labels
 	);
@@ -506,8 +519,7 @@ function ah_get_properties( int $limit = 6 ): array {
 	}
 	$opt = get_option( 'ah_featured_properties', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return array_slice( $opt, 0, $limit );
-	return ah_mock_properties();
+	return ! empty( $opt ) ? array_slice( $opt, 0, $limit ) : [];
 }
 
 // ── Contact Form Settings ─────────────────────────────────────────────────────
@@ -531,23 +543,38 @@ function ah_get_html_block( string $key ): string {
 
 // ── Process Steps ─────────────────────────────────────────────────────────────
 function ah_get_process_steps(): array {
-	$opt = get_option( 'ah_process_steps', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_process_steps();
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_site_settings';
+	$val   = $wpdb->get_var( $wpdb->prepare( "SELECT setting_val FROM `{$table}` WHERE setting_key = %s", 'process_steps' ) );
+	if ( $val ) {
+		$decoded = json_decode( $val, true );
+		if ( is_array( $decoded ) && ! empty( $decoded ) ) return $decoded;
+	}
+	return [];
 }
 
 // ── Site Stats ────────────────────────────────────────────────────────────────
 function ah_get_site_stats(): array {
-	$opt = get_option( 'ah_site_stats', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_site_stats();
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_site_settings';
+	$val   = $wpdb->get_var( $wpdb->prepare( "SELECT setting_val FROM `{$table}` WHERE setting_key = %s", 'site_stats' ) );
+	if ( $val ) {
+		$decoded = json_decode( $val, true );
+		if ( is_array( $decoded ) && ! empty( $decoded ) ) return $decoded;
+	}
+	return [];
 }
 
 // ── Trust Signals ─────────────────────────────────────────────────────────────
 function ah_get_trust_signals(): array {
-	$opt = get_option( 'ah_trust_signals', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ah_mock_trust_signals();
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_site_settings';
+	$val   = $wpdb->get_var( $wpdb->prepare( "SELECT setting_val FROM `{$table}` WHERE setting_key = %s", 'trust_signals' ) );
+	if ( $val ) {
+		$decoded = json_decode( $val, true );
+		if ( is_array( $decoded ) && ! empty( $decoded ) ) return $decoded;
+	}
+	return [];
 }
 
 // ── News Bar Items ────────────────────────────────────────────────────────────
@@ -559,61 +586,53 @@ function ah_get_news_bar_items(): array {
 }
 
 // ── Services ──────────────────────────────────────────────────────────────────
-function ah_get_services( int $limit = 12 ): array {
-	if ( class_exists( 'AH_Model_Services' ) ) {
-		$rows = AH_Model_Services::all( [ 'status' => 'active', 'limit' => $limit ] );
-		if ( ! empty( $rows ) ) return $rows;
-	}
+function ah_get_services_bullet_points(array $ids = []): array {
+	if (!$ids) return [];
 	global $wpdb;
-	$table = ah_theme_table( 'services' );
-	$rows  = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC LIMIT %d", $limit ) );
-	if ( ! empty( $rows ) ) return $rows;
-	return ah_mock_services();
+	$table = $wpdb->prefix . 'ah_service_bullet_points';
+	$placeholders = implode(',', array_fill(0, count($ids), '%d'));
+	$sql = "
+		SELECT *
+		FROM {$table}
+		WHERE service_id IN ($placeholders)
+		ORDER BY sort_order ASC
+	";
+	$results = $wpdb->get_results(
+		$wpdb->prepare($sql, ...$ids),
+		ARRAY_A
+	) ?: [];
+	$data = [];
+	foreach ($results as $row) {
+		$data[$row['service_id']][] = $row;
+	}
+	return $data;
+}
+
+function ah_get_services( int $limit = 12 ): array {
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_services';
+	return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC LIMIT %d", $limit ) ) ?: [];
 }
 
 // ── Team ──────────────────────────────────────────────────────────────────────
 function ah_get_team( int $limit = 12 ): array {
-	if ( class_exists( 'AH_Model_Team' ) ) {
-		$rows = AH_Model_Team::all( [ 'status' => 'active', 'limit' => $limit ] );
-		if ( ! empty( $rows ) ) return $rows;
-	}
 	global $wpdb;
-	$table = ah_theme_table( 'team' );
-	$rows  = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC LIMIT %d", $limit ) );
-	if ( ! empty( $rows ) ) return $rows;
-	return ah_mock_team();
+	$table = $wpdb->prefix . 'ah_team_members';
+	return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC LIMIT %d", $limit ) ) ?: [];
 }
 
 // ── Reviews ───────────────────────────────────────────────────────────────────
 function ah_get_reviews( int $limit = 6 ): array {
-	if ( class_exists( 'AH_Model_Reviews' ) ) {
-		$rows = AH_Model_Reviews::all( [ 'status' => 'active', 'limit' => $limit ] );
-		if ( ! empty( $rows ) ) return $rows;
-	}
 	global $wpdb;
-	$table = ah_theme_table( 'reviews' );
-	$rows  = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY id DESC LIMIT %d", $limit ) );
-	if ( ! empty( $rows ) ) return $rows;
-	return array_slice( ah_mock_reviews(), 0, $limit );
+	$table = $wpdb->prefix . 'ah_reviews';
+	return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC, id DESC LIMIT %d", $limit ) ) ?: [];
 }
 
 // ── FAQs ──────────────────────────────────────────────────────────────────────
-function ah_get_faqs( string $topic = '', int $limit = 20 ): array {
-	if ( class_exists( 'AH_Model_FAQs' ) ) {
-		$args = [ 'status' => 'active', 'limit' => $limit ];
-		if ( $topic ) $args['topic'] = $topic;
-		$rows = AH_Model_FAQs::all( $args );
-		if ( ! empty( $rows ) ) return $rows;
-	}
+function ah_get_faqs( int $limit = 20 ): array {
 	global $wpdb;
-	$table = ah_theme_table( 'faqs' );
-	if ( $topic ) {
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' AND topic=%s ORDER BY sort_order ASC LIMIT %d", $topic, $limit ) );
-	} else {
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC LIMIT %d", $limit ) );
-	}
-	if ( ! empty( $rows ) ) return $rows;
-	return ah_mock_faqs( $topic );
+	$table = $wpdb->prefix . 'ah_faqs';
+	return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC LIMIT %d", $limit ) ) ?: [];
 }
 
 // ── Star rating renderer ──────────────────────────────────────────────────────
@@ -695,9 +714,9 @@ function ah_pagination(): void {
 	echo '</ul></nav>';
 }
 
-function ah_excerpt( int $length = 160 ): string {
+function ah_excerpt( int $length = 30 ): string {
 	$text = wp_strip_all_tags( get_the_excerpt() ?: get_the_content() );
-	return wp_trim_words( $text, 30, '…' );
+	return wp_trim_words( $text, $length, '…' );
 }
 
 function ah_reading_time( int $post_id = 0 ): string {

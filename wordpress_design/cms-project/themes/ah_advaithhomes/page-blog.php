@@ -87,8 +87,6 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
           <div class="post-card__cat"><?php echo esc_html( $cats[0]->name ); ?></div>
           <?php endif; ?>
           <div class="card__meta" style="margin-top:0">
-            <span><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></span>
-            <span>·</span>
             <span><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
           </div>
           <h2 class="post-card__title" style="font-size:1.5rem;line-height:1.25">
@@ -133,7 +131,6 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
                   </svg>
                 </button>
                 <div class="post-share__popover" role="dialog" aria-label="Share options">
-                  <span class="post-share__label">Share</span>
                   <div class="post-share__icons">
                     <a href="https://wa.me/?text=<?php echo rawurlencode( $post_title . ' ' . $post_url ); ?>"
                        target="_blank" rel="noopener noreferrer"
@@ -158,8 +155,6 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
 
             <div class="post-card__info">
               <div class="card__meta">
-                <span><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></span>
-                <span>·</span>
                 <span><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
               </div>
               <h2 class="post-card__title">

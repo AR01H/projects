@@ -8,7 +8,7 @@ $settings = ah_get_settings();
 $phone    = $settings['phone']   ?? '';
 $email    = $settings['email']   ?? '';
 $address  = $settings['address'] ?? '';
-$faqs     = ah_get_faqs( 'contact', 6 );
+$faqs     = ah_get_faqs( 6 );
 ?>
 
 <?php get_template_part( 'components/page-header', null, [

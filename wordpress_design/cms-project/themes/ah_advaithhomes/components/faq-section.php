@@ -1,10 +1,8 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$topic  = $args['topic'] ?? '';
-$faqs   = ah_get_faqs( $topic );
-$limit  = $args['limit'] ?? 6;
-$faqs   = array_slice( $faqs, 0, $limit );
+$limit = (int) ( $args['limit'] ?? 6 );
+$faqs  = ah_get_faqs( $limit );
 
 if ( empty( $faqs ) ) return;
 ?>

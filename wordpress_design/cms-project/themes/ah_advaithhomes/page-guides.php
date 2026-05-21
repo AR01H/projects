@@ -87,8 +87,6 @@ $guides_query = new WP_Query( $query_args );
           </div>
           <div class="gc__bottom">
             <div class="gc__meta">
-              <?php echo esc_html( get_the_date( 'j M Y' ) ); ?>
-              <span>·</span>
               <?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?>
             </div>
             <h2 class="gc__title"><?php the_title(); ?></h2>
@@ -141,5 +139,5 @@ $guides_query = new WP_Query( $query_args );
   </div>
 </section>
 <?php endif; ?>
-
+<?php get_template_part( 'components/cta-section' ); ?>
 <?php get_footer(); ?>

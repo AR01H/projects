@@ -22,14 +22,13 @@ if ( empty( $team ) ) return;
       ?>
       <div class="team-card" data-aos="fade-up" data-delay="<?php echo $i * 100; ?>">
         <div class="team-card__avatar">
-          <?php if ( ! empty( $member->photo_url ) ) : ?>
-            <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="<?php echo esc_attr( $member->name ); ?>">
+          <?php if ( ! empty( $member->photo_id ) ) : ?>
+            <?php echo wp_get_attachment_image( $member->photo_id ); ?> 
           <?php else : ?>
             <?php echo esc_html( $initials ); ?>
           <?php endif; ?>
         </div>
         <div class="team-card__name"><?php echo esc_html( $member->name ); ?></div>
-        <div class="team-card__role"><?php echo esc_html( $member->role ); ?></div>
         <p class="team-card__bio"><?php echo esc_html( $member->bio ); ?></p>
       </div>
       <?php endforeach; ?>
