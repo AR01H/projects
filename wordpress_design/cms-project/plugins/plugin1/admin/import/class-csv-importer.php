@@ -10,7 +10,6 @@ class AH_CSV_Importer {
 		return array(
 			'services'   => array(
 				'label'    => 'Services',
-				'sample'   => 'sample-services.csv',
 				'required' => array( 'title' ),
 				'columns'  => array(
 					'title'             => 'Service title (required)',
@@ -26,7 +25,6 @@ class AH_CSV_Importer {
 			),
 			'reviews'    => array(
 				'label'    => 'Reviews',
-				'sample'   => 'sample-reviews.csv',
 				'required' => array( 'reviewer_name', 'review_text', 'star_rating' ),
 				'columns'  => array(
 					'reviewer_name'  => 'Full name of reviewer (required)',
@@ -42,7 +40,6 @@ class AH_CSV_Importer {
 			),
 			'faqs'       => array(
 				'label'    => 'FAQs',
-				'sample'   => 'sample-faqs.csv',
 				'required' => array( 'question', 'answer' ),
 				'columns'  => array(
 					'question'   => 'FAQ question (required)',
@@ -55,7 +52,6 @@ class AH_CSV_Importer {
 			),
 			'posts'      => array(
 				'label'    => 'Posts / Blog',
-				'sample'   => 'sample-posts.csv',
 				'required' => array( 'title', 'post_type' ),
 				'columns'  => array(
 					'title'            => 'Post title (required)',
@@ -72,7 +68,6 @@ class AH_CSV_Importer {
 			),
 			'team'       => array(
 				'label'    => 'Team Members',
-				'sample'   => 'sample-team.csv',
 				'required' => array( 'name', 'designation' ),
 				'columns'  => array(
 					'name'         => 'Full name (required)',
@@ -87,7 +82,6 @@ class AH_CSV_Importer {
 			),
 			'taxonomies' => array(
 				'label'    => 'Categories & Tags',
-				'sample'   => 'sample-taxonomies.csv',
 				'required' => array( 'name', 'type_slug' ),
 				'columns'  => array(
 					'name'        => 'Term name (required)',
@@ -101,7 +95,6 @@ class AH_CSV_Importer {
 			),
 			'news_bar'   => array(
 				'label'    => 'News Bar',
-				'sample'   => 'sample-news-bar.csv',
 				'required' => array( 'text' ),
 				'columns'  => array(
 					'text'       => 'Ticker text (required)',

@@ -6,6 +6,7 @@ class AH_Theme_Admin {
 	public static function init(): void {
 		add_action( 'admin_menu',             [ self::class, 'register_menus' ] );
 		add_action( 'admin_enqueue_scripts',  [ self::class, 'enqueue_assets' ] );
+		add_action( 'admin_post_ah_theme_schema',   [ self::class, 'handle_schema' ] );
 		add_action( 'admin_post_ah_theme_seed',     [ self::class, 'handle_seed' ] );
 		add_action( 'admin_post_ah_theme_cleanup',  [ self::class, 'handle_cleanup' ] );
 		add_action( 'admin_post_ah_theme_sections', [ self::class, 'handle_sections' ] );
@@ -80,6 +81,19 @@ class AH_Theme_Admin {
 
 	// ── POST handlers ─────────────────────────────────────────────────────────
 
+	public static function handle_schema(): void {
+		check_admin_referer( 'ah_theme_schema' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+
+		require_once get_template_directory() . '/mock_data/seeder.php';
+		$result = AH_Theme_Seeder::seed_schema_only();
+
+		$msg = 'Schema installed: ' . $result['inserted'] . ' pages/items created, ' . $result['updated'] . ' updated.';
+		if ( ! empty( $result['errors'] ) ) $msg .= ' Warnings: ' . implode( '; ', $result['errors'] );
+		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-mock', 'seeded' => '1', 'type' => 'schema', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
 	public static function handle_seed(): void {
 		check_admin_referer( 'ah_theme_seed' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
@@ -87,11 +101,9 @@ class AH_Theme_Admin {
 		require_once get_template_directory() . '/mock_data/seeder.php';
 		$result = AH_Theme_Seeder::seed_all();
 
-		$msg = 'Seeded ' . $result['inserted'] . ' rows and updated ' . $result['updated'] . ' options successfully.';
-		if ( ! empty( $result['errors'] ) ) {
-			$msg .= ' Warnings: ' . implode( '; ', $result['errors'] );
-		}
-		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-mock', 'seeded' => '1', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
+		$msg = 'Mock data installed: ' . $result['inserted'] . ' inserted, ' . $result['updated'] . ' updated, ' . ( $result['skipped'] ?? 0 ) . ' skipped (already existed).';
+		if ( ! empty( $result['errors'] ) ) $msg .= ' Notes: ' . implode( '; ', $result['errors'] );
+		wp_redirect( add_query_arg( [ 'page' => 'ah-theme-mock', 'seeded' => '1', 'type' => 'mock', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 

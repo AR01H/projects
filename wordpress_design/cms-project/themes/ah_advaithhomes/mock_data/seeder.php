@@ -17,12 +17,13 @@ class AH_Theme_Seeder {
 		AH_Schema::create_all();
 	}
 
-	/** @return array{inserted:int, updated:int, errors:string[]} */
+	/** @return array{inserted:int, updated:int, skipped:int, errors:string[]} */
 	public static function seed_all(): array {
 		self::create_tables();
-		$results = [ 'inserted' => 0, 'updated' => 0, 'errors' => [] ];
+		$results = [ 'inserted' => 0, 'updated' => 0, 'skipped' => 0, 'errors' => [] ];
 		$methods = [
 			'seed_mandatory_pages',
+			'seed_extra_pages',
 			'seed_taxonomy_terms',
 			'seed_taxonomy_types',
 			'seed_settings',
@@ -41,10 +42,10 @@ class AH_Theme_Seeder {
 			'seed_properties',
 			'seed_contact_settings',
 			'seed_blog_posts',
+			'seed_client_stories',
 			'seed_guides_page',
 			'seed_blog_page',
 			'seed_static_pages',
-			'seed_extra_pages',
 		];
 		$methods[] = 'seed_plugin_tables'; // populate CMS plugin tables if plugin is active
 		foreach ( $methods as $method ) {
@@ -52,6 +53,28 @@ class AH_Theme_Seeder {
 				$r = self::$method();
 				$results['inserted'] += $r['inserted'] ?? 0;
 				$results['updated']  += $r['updated']  ?? 0;
+				$results['skipped']  += $r['skipped']  ?? 0;
+			} catch ( \Throwable $e ) {
+				$results['errors'][] = "{$method}: " . $e->getMessage();
+			}
+		}
+		return $results;
+	}
+
+	/**
+	 * Schema-only install: creates tables + mandatory pages + taxonomy structure + basic settings.
+	 * Safe to run at any time — idempotent. Does NOT install demo content.
+	 * @return array{inserted:int, updated:int, skipped:int, errors:string[]}
+	 */
+	public static function seed_schema_only(): array {
+		self::create_tables();
+		$results = [ 'inserted' => 0, 'updated' => 0, 'skipped' => 0, 'errors' => [] ];
+		foreach ( [ 'seed_mandatory_pages', 'seed_extra_pages', 'seed_taxonomy_types', 'seed_settings' ] as $method ) {
+			try {
+				$r = self::$method();
+				$results['inserted'] += $r['inserted'] ?? 0;
+				$results['updated']  += $r['updated']  ?? 0;
+				$results['skipped']  += $r['skipped']  ?? 0;
 			} catch ( \Throwable $e ) {
 				$results['errors'][] = "{$method}: " . $e->getMessage();
 			}
@@ -164,101 +187,160 @@ class AH_Theme_Seeder {
 
 	public static function seed_news_bar(): array {
 		global $wpdb;
+		$csv = AH_Data::load_csv( 'news-bar' );
+		if ( empty( $csv ) ) return self::skip( 'news-bar.csv has no rows' );
+
 		$table = ah_theme_table( 'news_bar' );
 		if ( ! self::table_exists( $table ) ) {
-			update_option( 'ah_news_bar_items', wp_json_encode( ah_mock_news_bar_items() ) );
-			return [ 'inserted' => 0, 'updated' => 1 ];
+			// Fallback: store as option when table absent
+			update_option( 'ah_news_bar_items', wp_json_encode( array_column( $csv, 'message' ) ) );
+			return [ 'inserted' => 0, 'updated' => 1, 'skipped' => 0 ];
 		}
-		$items   = ah_mock_news_bar_items();
-		$count   = 0;
-		foreach ( $items as $i => $msg ) {
-			$wpdb->insert( $table, [ 'message' => $msg, 'status' => 'active', 'sort_order' => $i + 1 ] );
+		$count = $skipped = 0;
+		foreach ( $csv as $row ) {
+			$msg = $row['message'] ?? '';
+			if ( ! $msg ) continue;
+			$snippet = substr( $msg, 0, 120 );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE LEFT(message,120) = %s LIMIT 1", $snippet ) );
+			if ( $exists ) { $skipped++; continue; }
+			$wpdb->insert( $table, [
+				'message'    => $msg,
+				'status'     => 'active',
+				'sort_order' => (int) ( $row['sort_order'] ?? 0 ),
+			] );
 			if ( $wpdb->rows_affected ) $count++;
 		}
-		return [ 'inserted' => $count, 'updated' => 0 ];
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
 	}
 
 	public static function seed_services(): array {
 		global $wpdb;
 		$table = ah_theme_table( 'services' );
 		if ( ! self::table_exists( $table ) ) return self::skip( 'services table missing' );
-		$rows  = ah_mock_services();
-		$count = 0;
-		foreach ( $rows as $row ) {
+		$csv = AH_Data::load_csv( 'services' );
+		if ( empty( $csv ) ) return self::skip( 'services.csv has no rows' );
+		$count = $skipped = 0;
+		foreach ( $csv as $i => $row ) {
+			$title = $row['title'] ?? '';
+			if ( ! $title ) continue;
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE title = %s LIMIT 1", $title ) ) ) {
+				$skipped++; continue;
+			}
 			$wpdb->insert( $table, [
-				'title'      => $row->title,
-				'summary'    => $row->summary,
-				'icon'       => $row->icon,
+				'title'      => $title,
+				'summary'    => $row['summary'] ?? '',
+				'icon'       => $row['icon'] ?? '',
 				'status'     => 'active',
-				'sort_order' => $row->sort_order,
+				'sort_order' => (int) ( $row['sort_order'] ?? ( $i + 1 ) ),
 			] );
 			if ( $wpdb->rows_affected ) $count++;
 		}
-		return [ 'inserted' => $count, 'updated' => 0 ];
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
 	}
 
 	public static function seed_team(): array {
 		global $wpdb;
 		$table = ah_theme_table( 'team' );
 		if ( ! self::table_exists( $table ) ) return self::skip( 'team table missing' );
-		$rows  = ah_mock_team();
-		$count = 0;
-		foreach ( $rows as $i => $row ) {
+		$csv = AH_Data::load_csv( 'team' );
+		if ( empty( $csv ) ) return self::skip( 'team.csv has no rows' );
+		$count = $skipped = 0;
+		foreach ( $csv as $i => $row ) {
+			$name = $row['name'] ?? '';
+			if ( ! $name ) continue;
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE name = %s LIMIT 1", $name ) ) ) {
+				$skipped++; continue;
+			}
 			$wpdb->insert( $table, [
-				'name'       => $row->name,
-				'role'       => $row->role,
-				'bio'        => $row->bio,
+				'name'       => $name,
+				'role'       => $row['role'] ?? '',
+				'bio'        => $row['bio'] ?? '',
 				'photo_url'  => '',
 				'status'     => 'active',
-				'sort_order' => $i + 1,
+				'sort_order' => (int) ( $row['sort_order'] ?? ( $i + 1 ) ),
 			] );
 			if ( $wpdb->rows_affected ) $count++;
 		}
-		return [ 'inserted' => $count, 'updated' => 0 ];
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
 	}
 
 	public static function seed_reviews(): array {
 		global $wpdb;
 		$table = ah_theme_table( 'reviews' );
 		if ( ! self::table_exists( $table ) ) return self::skip( 'reviews table missing' );
-		$rows  = ah_mock_reviews();
-		$count = 0;
-		foreach ( $rows as $row ) {
+		$csv = AH_Data::load_csv( 'reviews' );
+		if ( empty( $csv ) ) return self::skip( 'reviews.csv has no rows' );
+		$count = $skipped = 0;
+		foreach ( $csv as $row ) {
+			$name = $row['author_name'] ?? '';
+			if ( ! $name ) continue;
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE author_name = %s LIMIT 1", $name ) ) ) {
+				$skipped++; continue;
+			}
 			$wpdb->insert( $table, [
-				'author_name' => $row->author_name,
-				'location'    => $row->location,
-				'review_text' => $row->review_text,
-				'rating'      => $row->rating,
-				'result'      => $row->result,
+				'author_name' => $name,
+				'location'    => $row['location']    ?? '',
+				'review_text' => $row['review_text'] ?? '',
+				'rating'      => (float) ( $row['rating'] ?? 5 ),
+				'result'      => $row['result']      ?? '',
 				'status'      => 'active',
 			] );
 			if ( $wpdb->rows_affected ) $count++;
 		}
-		return [ 'inserted' => $count, 'updated' => 0 ];
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
 	}
 
 	public static function seed_faqs(): array {
 		global $wpdb;
 		$table = ah_theme_table( 'faqs' );
 		if ( ! self::table_exists( $table ) ) return self::skip( 'faqs table missing' );
-		$rows  = ah_mock_faqs();
-		$count = 0;
-		foreach ( $rows as $row ) {
+		$csv = AH_Data::load_csv( 'faqs' );
+		if ( empty( $csv ) ) return self::skip( 'faqs.csv has no rows' );
+		$count = $skipped = 0;
+		foreach ( $csv as $i => $row ) {
+			$question = $row['question'] ?? '';
+			if ( ! $question ) continue;
+			$snippet = substr( $question, 0, 100 );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE LEFT(question,100) = %s LIMIT 1", $snippet ) ) ) {
+				$skipped++; continue;
+			}
 			$wpdb->insert( $table, [
-				'topic'      => $row->topic,
-				'question'   => $row->question,
-				'answer'     => $row->answer,
+				'topic'      => $row['topic']      ?? '',
+				'question'   => $question,
+				'answer'     => $row['answer']     ?? '',
 				'status'     => 'active',
-				'sort_order' => $row->sort_order ?? 0,
+				'sort_order' => (int) ( $row['sort_order'] ?? ( $i + 1 ) ),
 			] );
 			if ( $wpdb->rows_affected ) $count++;
 		}
-		return [ 'inserted' => $count, 'updated' => 0 ];
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
 	}
 
 	public static function seed_properties(): array {
-		update_option( 'ah_featured_properties', wp_json_encode( ah_mock_properties() ) );
-		return [ 'inserted' => 0, 'updated' => 1 ];
+		$csv = AH_Data::load_csv( 'properties' );
+		if ( empty( $csv ) ) return self::skip( 'properties.csv has no rows' );
+		$props = [];
+		foreach ( $csv as $row ) {
+			$loc = $row['location'] ?? '';
+			if ( ! $loc ) continue;
+			$props[] = [
+				'emoji'    => $row['emoji']   ?? '🏠',
+				'price'    => $row['price']   ?? '',
+				'location' => $loc,
+				'area'     => $row['area']    ?? '',
+				'saved'    => $row['saved']   ?? '',
+				'type'     => $row['type']    ?? '',
+				'beds'     => (int) ( $row['beds'] ?? 0 ),
+				'result'   => $row['result']  ?? '',
+			];
+		}
+		update_option( 'ah_featured_properties', wp_json_encode( $props ) );
+		return [ 'inserted' => 0, 'updated' => 1, 'skipped' => 0 ];
 	}
 
 	public static function seed_contact_settings(): array {
@@ -402,8 +484,8 @@ class AH_Theme_Seeder {
 	public static function seed_taxonomy_terms(): array {
 		$count = 0;
 
-		// WP native categories used by seed_blog_posts
-		foreach ( [ 'Buying Guides', 'Finance', 'Legal', 'Market Updates' ] as $name ) {
+		// WP native categories used by seed_blog_posts and seed_client_stories
+		foreach ( [ 'Buying Guides', 'Finance & Mortgages', 'Legal & Conveyancing', 'Market Updates', 'Client Stories' ] as $name ) {
 			if ( ! term_exists( $name, 'category' ) ) {
 				$t = wp_insert_term( $name, 'category' );
 				if ( ! is_wp_error( $t ) ) $count++;
@@ -417,54 +499,74 @@ class AH_Theme_Seeder {
 	}
 
 	public static function seed_blog_posts(): array {
-		$posts = [
-			[
-				'title'   => 'How Long Does Buying a Home in the UK Really Take?',
-				'content' => '<p>If you\'ve been told buying a home in the UK takes "about three months", that\'s broadly right - but it tells you almost nothing useful. This guide breaks every week down into what\'s happening, who\'s doing it, and what you can do (and not do) to keep things moving.</p><h2 id="before-week-zero">Before week zero: the work that pays itself back</h2><p>The fastest completions we\'ve ever seen all share one thing - the buyer had their finances mortgage-ready before they even made an offer. That means an Agreement in Principle (AIP) from a lender, a deposit sitting in an account ready to be transferred, and a solicitor on standby.</p><p>An AIP is a soft credit check that tells you what a lender is willing to lend you. It takes 24–48 hours and lasts 60–90 days. It\'s not a binding offer, but it tells estate agents you\'re serious.</p>',
-				'excerpt' => 'The complete week-by-week guide to UK property buying timelines - what happens, who does it, and how to avoid delays.',
-				'cat'     => 'Buying Guides',
-				'featured'=> true,
-			],
-			[
-				'title'   => 'Off-Market Property: What It Is and How to Find It',
-				'content' => '<p>Around 25–30% of UK property transactions happen before the home ever reaches Rightmove or Zoopla. These off-market deals go to buyers with the right connections - or the right agent working on their behalf.</p><h2>Why sellers go off-market</h2><p>There are several reasons a seller might prefer a quiet sale: privacy, avoiding the disruption of viewings, or simply because they trust an agent to bring a qualified buyer directly. Probate sales, corporate relocations, and downsizing retirees are common sources.</p>',
-				'excerpt' => 'Discover how to access properties that never appear on Rightmove - the buyers who win off-market deals and the agents who find them.',
-				'cat'     => 'Buying Guides',
-				'featured'=> false,
-			],
-			[
-				'title'   => 'Stamp Duty 2025: The Complete Guide for Buyers',
-				'content' => '<p>Stamp Duty Land Tax (SDLT) is one of the largest costs of buying a property in England. The rules changed again in 2024 and the thresholds are different depending on whether you\'re a first-time buyer, moving home, or purchasing an additional property.</p><h2>Current stamp duty rates (2025)</h2><p>For properties purchased as your main home: 0% on the first £250,000; 5% on £250,001–£925,000; 10% on £925,001–£1.5M; 12% above £1.5M.</p>',
-				'excerpt' => 'Everything buyers need to know about stamp duty in 2025 - rates, thresholds, first-time buyer relief, and the additional property surcharge.',
-				'cat'     => 'Finance',
-				'featured'=> false,
-			],
-		];
-		$count = 0;
-		foreach ( $posts as $p ) {
-			$existing = ( new WP_Query( [
-				'post_type'              => 'post',
-				'title'                  => $p['title'],
-				'posts_per_page'         => 1,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-			] ) )->posts[0] ?? null;
-			if ( $existing ) continue;
+		$csv = AH_Data::load_csv( 'blog-posts' );
+		if ( empty( $csv ) ) return self::skip( 'blog-posts.csv has no rows' );
+
+		// Ensure WP categories for posts exist
+		foreach ( [ 'Buying Guides', 'Finance & Mortgages', 'Legal & Conveyancing', 'Market Updates', 'Client Stories' ] as $cat ) {
+			if ( ! term_exists( $cat, 'category' ) ) wp_insert_term( $cat, 'category' );
+		}
+
+		$count = $skipped = 0;
+		foreach ( $csv as $row ) {
+			$title = $row['title'] ?? '';
+			$slug  = $row['slug']  ?? sanitize_title( $title );
+			if ( ! $title ) continue;
+			if ( get_page_by_path( $slug, OBJECT, 'post' ) ) { $skipped++; continue; }
 			$post_id = wp_insert_post( [
-				'post_title'   => $p['title'],
-				'post_content' => $p['content'],
-				'post_excerpt' => $p['excerpt'],
+				'post_title'   => $title,
+				'post_name'    => $slug,
+				'post_content' => $row['content'] ?? '',
+				'post_excerpt' => $row['excerpt'] ?? '',
 				'post_status'  => 'publish',
 				'post_type'    => 'post',
 			] );
 			if ( $post_id && ! is_wp_error( $post_id ) ) {
-				if ( ! empty( $p['cat'] ) ) wp_set_object_terms( $post_id, $p['cat'], 'category' );
-				if ( ! empty( $p['featured'] ) ) update_post_meta( $post_id, '_ah_featured', '1' );
+				if ( ! empty( $row['category'] ) ) wp_set_object_terms( $post_id, $row['category'], 'category' );
+				if ( ! empty( $row['featured'] ) && $row['featured'] === '1' ) {
+					update_post_meta( $post_id, '_ah_featured', '1' );
+				}
 				$count++;
 			}
 		}
-		return [ 'inserted' => $count, 'updated' => 0 ];
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
+	}
+
+	/** Seed client stories as WP posts with 'Client Stories' category. */
+	public static function seed_client_stories(): array {
+		$csv = AH_Data::load_csv( 'client-stories' );
+		if ( empty( $csv ) ) return self::skip( 'client-stories.csv has no rows' );
+
+		if ( ! term_exists( 'Client Stories', 'category' ) ) wp_insert_term( 'Client Stories', 'category' );
+
+		$count = $skipped = 0;
+		foreach ( $csv as $row ) {
+			$title = $row['title'] ?? '';
+			$slug  = $row['slug']  ?? sanitize_title( $title );
+			if ( ! $title ) continue;
+			if ( get_page_by_path( $slug, OBJECT, 'post' ) ) { $skipped++; continue; }
+			$post_id = wp_insert_post( [
+				'post_title'   => $title,
+				'post_name'    => $slug,
+				'post_content' => $row['content']  ?? '',
+				'post_excerpt' => $row['excerpt']  ?? '',
+				'post_status'  => 'publish',
+				'post_type'    => 'post',
+			] );
+			if ( $post_id && ! is_wp_error( $post_id ) ) {
+				$cat = ! empty( $row['category'] ) ? $row['category'] : 'Client Stories';
+				wp_set_object_terms( $post_id, $cat, 'category' );
+				if ( ! empty( $row['featured'] ) && $row['featured'] === '1' ) {
+					update_post_meta( $post_id, '_ah_featured', '1' );
+				}
+				// Store structured meta for template use
+				foreach ( [ 'buyer_name', 'property_type', 'purchase_price', 'amount_saved', 'result_headline' ] as $key ) {
+					if ( ! empty( $row[ $key ] ) ) update_post_meta( $post_id, "_ah_{$key}", $row[ $key ] );
+				}
+				$count++;
+			}
+		}
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
 	}
 
 	public static function seed_guides_page(): array {

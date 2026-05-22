@@ -20,7 +20,6 @@ class AH_Ajax_Handlers {
 			// Admin actions
 			'ah_flush_rewrites',
 			'ah_clear_transients',
-			'ah_load_demo_data',
 			'ah_clear_audit_log',
 			'ah_db_health_check',
 			'ah_clear_form_submissions',
@@ -410,39 +409,6 @@ class AH_Ajax_Handlers {
 		);
 		AH_DB_Helper::log_action( 'admin_action', 'system', null, array( 'action' => 'clear_transients', 'deleted' => $deleted ) );
 		wp_send_json_success( array( 'message' => "Cleared {$deleted} transient entries." ) );
-	}
-
-	// -------------------------------------------------------------------------
-	// ah_load_demo_data
-	// -------------------------------------------------------------------------
-	public static function handle_load_demo_data(): void {
-		self::verify();
-
-		$samples_dir = AH_THEME_DIR . '/admin/import/samples/';
-		$types       = array(
-			'services'   => 'sample-services.csv',
-			'reviews'    => 'sample-reviews.csv',
-			'faqs'       => 'sample-faqs.csv',
-			'posts'      => 'sample-posts.csv',
-			'team'       => 'sample-team.csv',
-			'taxonomies' => 'sample-taxonomies.csv',
-			'news_bar'   => 'sample-news-bar.csv',
-		);
-
-		$summary = array();
-		foreach ( $types as $type => $file ) {
-			$path = $samples_dir . $file;
-			if ( ! file_exists( $path ) ) {
-				$summary[] = "{$type}: file missing";
-				continue;
-			}
-			$rows   = AH_CSV_Importer::parse_file( $path );
-			$result = AH_CSV_Importer::import( $type, $rows );
-			$summary[] = "{$type}: {$result['imported']} imported, {$result['skipped']} skipped";
-		}
-
-		AH_DB_Helper::log_action( 'admin_action', 'system', null, array( 'action' => 'load_demo_data' ) );
-		wp_send_json_success( array( 'message' => implode( ' | ', $summary ) ) );
 	}
 
 	// -------------------------------------------------------------------------

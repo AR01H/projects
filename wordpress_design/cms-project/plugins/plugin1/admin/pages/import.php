@@ -8,7 +8,6 @@ if ( ! isset( $config[ $tab ] ) ) $tab = array_key_first( $config );
 
 $notice  = '';
 $results = null;
-$samples_url = AH_THEME_URL . '/admin/import/samples/';
 
 // ---- Handle upload ----
 if (
@@ -84,12 +83,6 @@ if (
       <div class="ah-card" style="margin-bottom:20px;">
         <div class="ah-card-header">
           <h2>CSV Columns - <?php echo esc_html( $current['label'] ); ?></h2>
-          <a href="<?php echo esc_url( $samples_url . $current['sample'] ); ?>"
-             class="ah-btn ah-btn-secondary ah-btn-sm"
-             download>
-            <span class="dashicons dashicons-download" style="font-size:14px;line-height:1.6;"></span>
-            Download Sample CSV
-          </a>
         </div>
         <table class="ah-table" style="margin-top:4px;">
           <thead>
@@ -176,30 +169,10 @@ if (
           Import <?php echo esc_html( $current['label'] ); ?>
         </button>
 
-        <p style="text-align:center;margin-top:12px;">
-          <a href="<?php echo esc_url( $samples_url . $current['sample'] ); ?>" download
-             style="font-size:12px;color:var(--ah-primary);">
-            Download sample CSV for <?php echo esc_html( $current['label'] ); ?>
-          </a>
-        </p>
       </form>
     </div>
 
   </div><!-- /grid -->
 
-  <!-- All sample files reference -->
-  <div class="ah-card" style="margin-top:24px;">
-    <div class="ah-card-header"><h2>All Sample Files</h2></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:4px 0;">
-      <?php foreach ( $config as $key => $cfg ) : ?>
-        <a href="<?php echo esc_url( $samples_url . $cfg['sample'] ); ?>" download
-           class="ah-btn ah-btn-secondary ah-btn-sm"
-           style="display:flex;align-items:center;gap:6px;">
-          <span class="dashicons dashicons-media-spreadsheet" style="font-size:16px;line-height:1.4;"></span>
-          <?php echo esc_html( $cfg['label'] ); ?>
-        </a>
-      <?php endforeach; ?>
-    </div>
-  </div>
 
 </div>
