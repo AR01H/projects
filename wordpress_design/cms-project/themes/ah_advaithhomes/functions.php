@@ -39,8 +39,11 @@ add_action( 'after_setup_theme', function () {
 
 // ── Enqueue Assets ────────────────────────────────────────────────────────────
 add_action( 'wp_enqueue_scripts', function () {
-	$v   = wp_get_theme()->get( 'Version' );
+	$dir = get_template_directory();
 	$uri = get_template_directory_uri();
+
+	// Use file modification time so browsers auto-bust cache on every CSS save.
+	$fv = fn( string $rel ) => (string) @filemtime( $dir . $rel );
 
 	wp_enqueue_style(
 		'ah-google-fonts',
@@ -49,21 +52,21 @@ add_action( 'wp_enqueue_scripts', function () {
 		null
 	);
 
-	wp_enqueue_style( 'ah-variables',  $uri . '/assets/css/variables.css',  [ 'ah-google-fonts' ], $v );
-	wp_enqueue_style( 'ah-base',       $uri . '/assets/css/base.css',       [ 'ah-variables' ],    $v );
-	wp_enqueue_style( 'ah-components', $uri . '/assets/css/components.css', [ 'ah-base' ],         $v );
-	wp_enqueue_style( 'ah-layout',     $uri . '/assets/css/layout.css',     [ 'ah-components' ],   $v );
-	wp_enqueue_style( 'ah-forms',      $uri . '/assets/css/forms.css',      [ 'ah-base' ],         $v );
-	wp_enqueue_style( 'ah-animations', $uri . '/assets/css/animations.css', [ 'ah-base' ],         $v );
-	wp_enqueue_style( 'ah-style',      get_stylesheet_uri(),                [ 'ah-layout' ],       $v );
+	wp_enqueue_style( 'ah-variables',  $uri . '/assets/css/variables.css',  [ 'ah-google-fonts' ], $fv( '/assets/css/variables.css' ) );
+	wp_enqueue_style( 'ah-base',       $uri . '/assets/css/base.css',       [ 'ah-variables' ],    $fv( '/assets/css/base.css' ) );
+	wp_enqueue_style( 'ah-components', $uri . '/assets/css/components.css', [ 'ah-base' ],         $fv( '/assets/css/components.css' ) );
+	wp_enqueue_style( 'ah-layout',     $uri . '/assets/css/layout.css',     [ 'ah-components' ],   $fv( '/assets/css/layout.css' ) );
+	wp_enqueue_style( 'ah-forms',      $uri . '/assets/css/forms.css',      [ 'ah-base' ],         $fv( '/assets/css/forms.css' ) );
+	wp_enqueue_style( 'ah-animations', $uri . '/assets/css/animations.css', [ 'ah-base' ],         $fv( '/assets/css/animations.css' ) );
+	wp_enqueue_style( 'ah-style',      get_stylesheet_uri(),                [ 'ah-layout' ],       $fv( '/style.css' ) );
 
-	// News & Info Feeder — load only on that page template
-	if ( is_page_template( 'template-news-info-feeder.php' ) ) {
-		wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $v );
+	// News & Info Feeder — load on that page template and the front page (which also uses it)
+	if ( is_page_template( 'template-news-info-feeder.php' ) || is_front_page() ) {
+		wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv( '/assets/css/news-feed.css' ) );
 	}
 
-	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $v, true );
-	wp_enqueue_script( 'ah-forms', $uri . '/assets/js/forms.js', [ 'ah-main' ], $v, true );
+	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ],  $fv( '/assets/js/main.js' ),  true );
+	wp_enqueue_script( 'ah-forms', $uri . '/assets/js/forms.js', [ 'ah-main' ], $fv( '/assets/js/forms.js' ), true );
 
 	wp_localize_script( 'ah-forms', 'ahTheme', [
 		'ajaxUrl' => admin_url( 'admin-ajax.php' ),
@@ -77,7 +80,7 @@ add_action( 'wp_enqueue_scripts', function () {
 // template loads) and strips ?page=X from static page URLs, redirecting back to
 // the base URL. Disable it only for this template so ?page=X pagination works.
 add_filter( 'redirect_canonical', function ( $redirect_url ) {
-	if ( is_page_template( 'template-news-info-feeder.php' ) ) {
+	if ( is_page_template( 'template-news-info-feeder.php' ) || is_front_page() ) {
 		return false;
 	}
 	return $redirect_url;

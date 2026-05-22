@@ -132,26 +132,49 @@
     AHCarousel(el);
   });
 
-  // ── Table of contents - active link on scroll ─────────────────────────────
-  var $tocLinks = $('.toc__item[href^="#"]');
-  if ($tocLinks.length) {
-    var headings = [];
-    $tocLinks.each(function () {
-      var id = $(this).attr('href').replace('#', '');
-      var $h = $('#' + id);
-      if ($h.length) headings.push({ $link: $(this), $h: $h });
+  // ── Dynamic Table of Contents ─────────────────────────────────────────────
+  (function () {
+    var article = document.getElementById('article-body');
+    var tocCard  = document.getElementById('sp-toc');
+    if (!article || !tocCard) return;
+
+    var headings = Array.from(article.querySelectorAll('h2, h3'));
+    if (headings.length < 2) return;
+
+    var nav = tocCard.querySelector('.sp-toc__nav');
+    if (!nav) return;
+
+    // Ensure every heading has an id
+    headings.forEach(function (h, i) {
+      if (!h.id) h.id = 'sp-h-' + i;
     });
 
-    $(window).on('scroll.toc', function () {
-      var scrollY = window.scrollY + 100;
-      var active  = null;
-      headings.forEach(function (h) {
-        if (h.$h.offset().top <= scrollY) active = h;
-      });
-      $tocLinks.removeClass('is-active');
-      if (active) active.$link.addClass('is-active');
+    // Build anchor links
+    headings.forEach(function (h) {
+      var a = document.createElement('a');
+      a.href    = '#' + h.id;
+      a.className = 'sp-toc__link sp-toc__link--' + h.tagName.toLowerCase();
+      a.textContent = h.textContent;
+      nav.appendChild(a);
     });
-  }
+
+    tocCard.removeAttribute('hidden');
+
+    // Scroll-spy: highlight the heading currently in view
+    if ('IntersectionObserver' in window) {
+      var activeLink = null;
+      var spy = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            if (activeLink) activeLink.classList.remove('is-active');
+            activeLink = nav.querySelector('[href="#' + entry.target.id + '"]');
+            if (activeLink) activeLink.classList.add('is-active');
+          }
+        });
+      }, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+      headings.forEach(function (h) { spy.observe(h); });
+    }
+  }());
 
   // ── Filter tabs ───────────────────────────────────────────────────────────
   $(document).on('click', '.filter-tab', function () {

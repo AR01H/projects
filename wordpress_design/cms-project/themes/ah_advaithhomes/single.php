@@ -21,20 +21,20 @@ $crumbs[] = [ get_the_title(), '' ];
 	'breadcrumb' => $crumbs,
 ] ); ?>
 
-<!-- ── Featured Image ── full bleed ──────────────────────────────────────── -->
-<?php if ( has_post_thumbnail() ) : ?>
-<div class="sp-hero-img">
-  <?php the_post_thumbnail( 'full', [ 'class' => 'sp-hero-img__img', 'loading' => 'eager' ] ); ?>
-</div>
-<?php endif; ?>
-
 <!-- ── Article + Sidebar ─────────────────────────────────────────────────── -->
 <main id="main-content">
-  <div class="container section" style="padding-top:clamp(32px,4vw,56px)">
+  <div class="container section" style="padding-top:clamp(28px,3.5vw,48px)">
     <div class="content-layout">
 
       <!-- Article -->
       <article class="prose" id="article-body">
+
+        <?php if ( has_post_thumbnail() ) : ?>
+        <figure class="sp-feat-img">
+          <?php the_post_thumbnail( 'large', [ 'loading' => 'eager', 'decoding' => 'async' ] ); ?>
+        </figure>
+        <?php endif; ?>
+
         <?php the_content(); ?>
 
         <?php $tags = get_the_tags(); if ( $tags ) : ?>
@@ -60,28 +60,82 @@ $crumbs[] = [ get_the_title(), '' ];
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           </button>
         </div>
+        <div style="clear:both"></div><!-- clears sp-feat-img float -->
       </article>
 
       <!-- Sidebar -->
       <aside class="sidebar" aria-label="Article sidebar">
+
+        <!-- Table of Contents — populated by JS from article headings -->
+        <div class="sidebar-card sp-toc-card" id="sp-toc" hidden>
+          <div class="sidebar-card__title sp-toc__heading">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <?php esc_html_e( 'Contents', 'ah-theme' ); ?>
+          </div>
+          <nav class="sp-toc__nav" aria-label="<?php esc_attr_e( 'Article sections', 'ah-theme' ); ?>"></nav>
+        </div>
+
+        <!-- Consultation CTA -->
         <div class="sidebar-card sidebar-card--accent">
           <div class="sidebar-card__icon">💬</div>
-          <div class="sidebar-card__title">Free Consultation</div>
-          <p>Ready to put this into practice? Speak to a buyer's agent - free, no obligation.</p>
+          <div class="sidebar-card__title"><?php esc_html_e( 'Free Consultation', 'ah-theme' ); ?></div>
+          <p><?php esc_html_e( 'Ready to put this into practice? Speak to a buyer\'s agent - free, no obligation.', 'ah-theme' ); ?></p>
           <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-gold btn-block">
-            Book a Free Call →
+            <?php esc_html_e( 'Book a Free Call →', 'ah-theme' ); ?>
           </a>
         </div>
+
+
+        <!-- More in same category — from DB -->
+        <?php
+        $_sb_more = $cat ? get_posts( [
+          'numberposts'  => 3,
+          'category__in' => [ $cat->term_id ],
+          'post__not_in' => [ get_the_ID() ],
+          'post_status'  => 'publish',
+          'orderby'      => 'date',
+          'order'        => 'DESC',
+        ] ) : [];
+        ?>
+        <?php if ( $_sb_more ) : ?>
+        <div class="sidebar-card sp-more-card">
+          <div class="sidebar-card__title">
+            <?php printf( esc_html__( 'More in %s', 'ah-theme' ), esc_html( $cat->name ) ); ?>
+          </div>
+          <ul class="sp-more-list">
+            <?php foreach ( $_sb_more as $mp ) :
+              $mp_thumb = get_the_post_thumbnail_url( $mp->ID, 'thumbnail' )
+                       ?: get_the_post_thumbnail_url( $mp->ID, 'medium' );
+            ?>
+            <li class="sp-more-item">
+              <a href="<?php echo esc_url( get_permalink( $mp ) ); ?>" class="sp-more-item__link">
+                <?php if ( $mp_thumb ) : ?>
+                  <img class="sp-more-item__img" src="<?php echo esc_url( $mp_thumb ); ?>"
+                       alt="<?php echo esc_attr( get_the_title( $mp ) ); ?>" loading="lazy">
+                <?php else : ?>
+                  <div class="sp-more-item__img sp-more-item__img--ph" aria-hidden="true"></div>
+                <?php endif; ?>
+                <span class="sp-more-item__title"><?php echo esc_html( get_the_title( $mp ) ); ?></span>
+              </a>
+            </li>
+            <?php endforeach; ?>
+          </ul>
+          <a href="<?php echo esc_url( get_category_link( $cat ) ); ?>" class="sp-more-all">
+            <?php printf( esc_html__( 'All %s →', 'ah-theme' ), esc_html( $cat->name ) ); ?>
+          </a>
+        </div>
+        <?php endif; ?>
+
+        <!-- Useful Links -->
         <div class="sidebar-card">
-          <div class="sidebar-card__title">Useful Links</div>
+          <div class="sidebar-card__title"><?php esc_html_e( 'Useful Links', 'ah-theme' ); ?></div>
           <div class="toc">
-            <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>"                   class="toc__item">📚 All Buying Guides</a>
-            <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"                 class="toc__item">✦ Our Services</a>
-            <!-- <a href="<?php echo esc_url( home_url( '/guides/stamp-duty/' ) ); ?>"        class="toc__item">📋 Stamp Duty Calculator</a> -->
-            <!-- <a href="<?php echo esc_url( home_url( '/guides/mortgage-guide/' ) ); ?>"   class="toc__item">🏦 Mortgage Guide</a> -->
-            <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>"           class="toc__item">⭐ Client Stories</a>
+            <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>"         class="toc__item">📚 <?php esc_html_e( 'All Buying Guides', 'ah-theme' ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"       class="toc__item">✦ <?php esc_html_e( 'Our Services', 'ah-theme' ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>" class="toc__item">⭐ <?php esc_html_e( 'Client Stories', 'ah-theme' ); ?></a>
           </div>
         </div>
+
       </aside>
 
     </div>
@@ -90,104 +144,62 @@ $crumbs[] = [ get_the_title(), '' ];
 
 <?php endwhile; ?>
 
-<!-- ── Related Articles ───────────────────────────────────────────────────── -->
 <?php
-// Try same category first; pad with any posts if not enough
-$_current_cats = wp_get_post_categories( get_the_ID() );
+// ── Related Articles — same-category first, pad with recent if < 3 ──────────
+$_current_cat_ids = wp_get_post_categories( get_the_ID() );
 $_related = get_posts( [
-  'numberposts'  => 5,
-  'category__in' => $_current_cats,
+  'numberposts'  => 3,
+  'category__in' => $_current_cat_ids,
   'post__not_in' => [ get_the_ID() ],
   'post_status'  => 'publish',
+  'orderby'      => 'date',
+  'order'        => 'DESC',
 ] );
-if ( count( $_related ) < 5 ) {
-  $have_ids    = array_merge( [ get_the_ID() ], wp_list_pluck( $_related, 'ID' ) );
-  $_pad        = get_posts( [
-    'numberposts'  => 5 - count( $_related ),
-    'post__not_in' => $have_ids,
+if ( count( $_related ) < 3 ) {
+  $_have = [ get_the_ID(), ...wp_list_pluck( $_related, 'ID' ) ];
+  $_pad  = get_posts( [
+    'numberposts'  => 3 - count( $_related ),
+    'post__not_in' => $_have,
     'post_status'  => 'publish',
     'orderby'      => 'date',
     'order'        => 'DESC',
   ] );
-  $_related = array_merge( $_related, $_pad );
+  $_related = [ ...$_related, ...$_pad ];
 }
-if ( $_related ) :
+
+// ── Suggested Guides — other categories, fallback to recent ──────────────────
+$_exclude_ids = array_merge( [ get_the_ID() ], wp_list_pluck( $_related, 'ID' ) );
+$_guides = get_posts( [
+  'numberposts'      => 3,
+  'post__not_in'     => $_exclude_ids,
+  'post_status'      => 'publish',
+  'category__not_in' => $_current_cat_ids,
+  'orderby'          => 'date',
+  'order'            => 'DESC',
+] );
+if ( empty( $_guides ) ) {
+  $_guides = get_posts( [
+    'numberposts'  => 3,
+    'post__not_in' => $_exclude_ids,
+    'post_status'  => 'publish',
+    'orderby'      => 'date',
+    'order'        => 'DESC',
+  ] );
+}
 ?>
-<section class="section section--pattern" aria-label="Related articles">
-  <div class="container">
-    <div class="section__header" style="margin-bottom:32px">
-      <span class="section__eyebrow">Keep Reading</span>
-      <h2 class="section__title" style="font-size:1.5rem">Related Articles</h2>
-    </div>
-    <div class="related-grid">
-      <?php foreach ( $_related as $rp ) :
-        $rc        = get_the_category( $rp->ID );
-        $thumb_url = get_the_post_thumbnail_url( $rp->ID, 'large' );
-      ?>
-      <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>" class="ra-card">
-        <?php if ( $thumb_url ) : ?>
-          <img class="ra-card__img" src="<?php echo esc_url( $thumb_url ); ?>"
-               alt="<?php echo esc_attr( get_the_title( $rp ) ); ?>" loading="lazy">
-        <?php else : ?>
-          <div class="ra-card__img ra-card__img--fallback">📰</div>
-        <?php endif; ?>
-        <div class="ra-card__overlay">
-          <div class="ra-card__top">
-            <?php if ( $rc ) : ?>
-              <span class="ra-card__cat"><?php echo esc_html( $rc[0]->name ); ?></span>
-            <?php endif; ?>
-          </div>
-          <div class="ra-card__bottom">
-            <div class="ra-card__meta">
-              <?php echo esc_html( ah_reading_time( $rp->ID ) ); ?>
-            </div>
-            <h3 class="ra-card__title"><?php echo esc_html( get_the_title( $rp ) ); ?></h3>
-            <span class="ra-card__btn">Read Article →</span>
-          </div>
-        </div>
-      </a>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
+
+<?php if ( $_related ) :
+  get_template_part( 'components/sp-related-articles', null, [
+    'posts' => $_related,
+    'cat'   => $cat,
+  ] );
+endif; ?>
+
+<?php if ( $_guides ) :
+  get_template_part( 'components/sp-guide-suggestions', null, [
+    'posts' => $_guides,
+  ] );
+endif; ?>
 
 <?php get_template_part( 'components/cta-section' ); ?>
 <?php get_footer(); ?>
-
-<style>
-/* ── Full-bleed featured image ───────────────────────────────────────────── */
-.sp-hero-img {
-  position: relative;
-  width: 100%;
-  max-height: 560px;
-  overflow: hidden;
-  display: block;
-}
-.sp-hero-img__img {
-  width: 100%;
-  height: 100%;
-  max-height: 560px;
-  object-fit: contain;
-  display: block;
-}
-.sp-hero-img__meta {
-  position: absolute;
-  bottom: 16px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: .78rem;
-  font-weight: 500;
-  color: #fff;
-  background: rgba(0,0,0,.45);
-  backdrop-filter: blur(6px);
-  border-radius: 999px;
-  padding: 5px 14px;
-}
-@media (max-width: 600px) {
-  .sp-hero-img { max-height: 260px; }
-  .sp-hero-img__img { max-height: 260px; }
-}
-</style>
