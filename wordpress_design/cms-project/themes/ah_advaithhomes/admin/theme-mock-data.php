@@ -23,7 +23,7 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
     <div class="ah-admin-logo">⬆</div>
     <div>
       <h1>Mock Data & Schema Installer</h1>
-      <p>Install the database schema and demo content for Advaith Homes. All demo content is driven by CSV files in <code>mock_data/csv/</code> — edit CSVs before installing to customise.</p>
+      <p>Install the database schema and demo content for Advaith Homes. All demo content is driven by CSV files in <code>mock_data/csv/</code> - edit CSVs before installing to customise.</p>
     </div>
   </div>
 
@@ -39,11 +39,11 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
 
     <!-- Button 1: Schema + Setup -->
     <div class="ah-admin-box" style="border-top:3px solid #0284c7;margin-bottom:0">
-      <h2 style="color:#0284c7">🏗️ Step 1 — Install Schema & Setup</h2>
+      <h2 style="color:#0284c7">🏗️ Step 1 - Install Schema & Setup</h2>
       <p style="font-size:.875rem;color:#64748b;margin-bottom:16px">
         Creates database tables, mandatory WP pages (Home, About, Services, Contact…), legal pages (Privacy Policy, Cookie Policy…),
         taxonomy types &amp; terms, and baseline site settings.<br>
-        <strong>Safe to run anytime — idempotent.</strong> Does not install demo content.
+        <strong>Safe to run anytime - idempotent.</strong> Does not install demo content.
       </p>
       <ul style="font-size:.82rem;color:#475569;margin:0 0 20px 16px;line-height:1.8">
         <li>DB tables: services, team, reviews, FAQs, news_bar</li>
@@ -64,12 +64,12 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
 
     <!-- Button 2: Mock Data -->
     <div class="ah-admin-box" style="border-top:3px solid #b7791f;margin-bottom:0">
-      <h2 style="color:#b7791f">📦 Step 2 — Install Mock Data</h2>
+      <h2 style="color:#b7791f">📦 Step 2 - Install Mock Data</h2>
       <p style="font-size:.875rem;color:#64748b;margin-bottom:16px">
         Seeds all demo content from the CSVs in <code>mock_data/csv/</code>.
-        <strong>Sections with empty CSVs are skipped.</strong> Existing records (same slug / name) are skipped — no duplicates created.
+        <strong>Sections with empty CSVs are skipped.</strong> Existing records (same slug / name) are skipped - no duplicates created.
         <?php if ( ! $plugin_active ) : ?>
-          <br><span style="color:#d97706">⚠️ CMS plugin not active — taxonomy seeding and plugin table data will be skipped.</span>
+          <br><span style="color:#d97706">⚠️ CMS plugin not active - taxonomy seeding and plugin table data will be skipped.</span>
         <?php endif; ?>
       </p>
       <ul style="font-size:.82rem;color:#475569;margin:0 0 20px 16px;line-height:1.8">
@@ -86,9 +86,9 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
         ];
         foreach ( $content_csvs as $csv => $label ) :
           $n = $csv_counts[ $csv ];
-          $icon = $n > 0 ? '<span style="color:#16a34a">✓</span>' : '<span style="color:#dc2626">✗ empty — will skip</span>';
+          $icon = $n > 0 ? '<span style="color:#16a34a">✓</span>' : '<span style="color:#dc2626">✗ empty - will skip</span>';
         ?>
-          <li><?php echo wp_kses_post( $icon ); ?> <?php echo esc_html( $label ); ?>: <?php echo $n > 0 ? esc_html( $n . ' rows' ) : '—'; ?></li>
+          <li><?php echo wp_kses_post( $icon ); ?> <?php echo esc_html( $label ); ?>: <?php echo $n > 0 ? esc_html( $n . ' rows' ) : '-'; ?></li>
         <?php endforeach; ?>
       </ul>
       <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -126,7 +126,7 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
           [ 'label' => 'Taxonomy Types',   'csv' => 'taxonomy-types', 'db' => $plugin_active ? null : 'Plugin off' ],
         ];
         foreach ( $status_rows as $r ) :
-          $csv_n   = $r['csv'] ? ( $csv_counts[ $r['csv'] ] ?? 0 ) : '—';
+          $csv_n   = $r['csv'] ? ( $csv_counts[ $r['csv'] ] ?? 0 ) : '-';
           $db_val  = $r['db'];
           $has     = $db_val !== null && $db_val !== 0 && $db_val !== '0' && $db_val !== false;
           $missing = $db_val === null;
@@ -134,7 +134,7 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
         <tr>
           <td><strong><?php echo esc_html( $r['label'] ); ?></strong></td>
           <td style="font-size:.82rem;color:#64748b"><?php echo is_int( $csv_n ) ? esc_html( $csv_n . ' rows' ) : esc_html( $csv_n ); ?></td>
-          <td style="font-weight:600"><?php echo $db_val !== null ? esc_html( (string) $db_val ) : '—'; ?></td>
+          <td style="font-weight:600"><?php echo $db_val !== null ? esc_html( (string) $db_val ) : '-'; ?></td>
           <td>
             <?php if ( $has ) : ?>
               <span class="ah-badge ah-badge--ok">✓ Has data</span>
@@ -195,7 +195,7 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
 
   <!-- ── NOTES ───────────────────────────────────────────────────────────── -->
   <div class="ah-admin-notice ah-admin-notice--warn">
-    ⚠️ <strong>Duplicate protection:</strong> If a blog post slug, review author name, service title, team member name, or FAQ question already exists, it is skipped — not duplicated.
+    ⚠️ <strong>Duplicate protection:</strong> If a blog post slug, review author name, service title, team member name, or FAQ question already exists, it is skipped - not duplicated.
     Run <a href="<?php echo esc_url( admin_url('admin.php?page=ah-theme-cleanup') ); ?>">Cleanup Data</a> first if you want a clean slate, then re-run mock data install.
   </div>
 

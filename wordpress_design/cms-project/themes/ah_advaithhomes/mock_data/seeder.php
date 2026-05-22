@@ -63,7 +63,7 @@ class AH_Theme_Seeder {
 
 	/**
 	 * Schema-only install: creates tables + mandatory pages + taxonomy structure + basic settings.
-	 * Safe to run at any time — idempotent. Does NOT install demo content.
+	 * Safe to run at any time - idempotent. Does NOT install demo content.
 	 * @return array{inserted:int, updated:int, skipped:int, errors:string[]}
 	 */
 	public static function seed_schema_only(): array {
@@ -357,16 +357,16 @@ class AH_Theme_Seeder {
 	public static function seed_taxonomy_types(): array {
 		global $wpdb;
 
-		// Uses the CMS plugin tables — skip silently when plugin is not active.
+		// Uses the CMS plugin tables - skip silently when plugin is not active.
 		if ( ! class_exists( 'AH_DB_Helper' ) ) {
-			return self::skip( 'CMS plugin not active — taxonomy types not seeded' );
+			return self::skip( 'CMS plugin not active - taxonomy types not seeded' );
 		}
 
 		$tt = AH_DB_Helper::table( 'taxonomy_types' ); // wp_ah_taxonomy_types
 		$tm = AH_DB_Helper::table( 'taxonomies' );      // wp_ah_taxonomies
 
 		if ( ! self::table_exists( $tt ) || ! self::table_exists( $tm ) ) {
-			return self::skip( 'Plugin taxonomy tables not found — activate plugin first' );
+			return self::skip( 'Plugin taxonomy tables not found - activate plugin first' );
 		}
 
 		$inserted = 0;
@@ -493,7 +493,7 @@ class AH_Theme_Seeder {
 		}
 
 		// All other taxonomy types and terms are managed in ah_taxonomy_types / ah_taxonomy_terms
-		// via seed_taxonomy_types() — no WP register_taxonomy() calls needed.
+		// via seed_taxonomy_types() - no WP register_taxonomy() calls needed.
 
 		return [ 'inserted' => $count, 'updated' => 0 ];
 	}
@@ -1375,7 +1375,7 @@ class AH_Theme_Seeder {
 		$deleted += self::cleanup_db_table( 'reviews' );
 		$deleted += self::cleanup_db_table( 'faqs' );
 		$deleted += self::cleanup_db_table( 'news_bar' );
-		// ah_taxonomy_types and ah_taxonomies belong to the CMS plugin — not truncated here.
+		// ah_taxonomy_types and ah_taxonomies belong to the CMS plugin - not truncated here.
 
 		$options = [
 			'ah_site_settings', 'ah_home_settings', 'ah_guide_nav',

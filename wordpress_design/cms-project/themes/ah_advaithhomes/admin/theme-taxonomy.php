@@ -28,7 +28,7 @@ if ( $plugin_ok ) {
     <div class="ah-admin-logo">TX</div>
     <div>
       <h1><?php esc_html_e( 'Taxonomy Manager', 'ah-theme' ); ?></h1>
-      <p><?php esc_html_e( 'Manage taxonomy types and their terms — stored in the CMS plugin tables.', 'ah-theme' ); ?></p>
+      <p><?php esc_html_e( 'Manage taxonomy types and their terms - stored in the CMS plugin tables.', 'ah-theme' ); ?></p>
     </div>
   </div>
 
@@ -79,7 +79,7 @@ if ( $plugin_ok ) {
             <tr>
               <td style="font-weight:600"><?php echo esc_html( $type->name ); ?></td>
               <td><code style="font-size:.8rem;background:#f1f5f9;padding:2px 6px;border-radius:4px"><?php echo esc_html( $type->slug ); ?></code></td>
-              <td style="color:#64748b;font-size:.85rem"><?php echo esc_html( $type->description ?: '—' ); ?></td>
+              <td style="color:#64748b;font-size:.85rem"><?php echo esc_html( $type->description ?: '-' ); ?></td>
               <td>
                 <?php if ( empty( $type_terms_list ) ) : ?>
                   <span style="color:#94a3b8;font-size:.8rem">none</span>
@@ -198,7 +198,7 @@ if ( $plugin_ok ) {
           <div>
             <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php esc_html_e( 'Type *', 'ah-theme' ); ?></label>
             <select name="term_type_id" required class="regular-text">
-              <option value=""><?php esc_html_e( '— select type —', 'ah-theme' ); ?></option>
+              <option value=""><?php esc_html_e( '- select type -', 'ah-theme' ); ?></option>
               <?php foreach ( $types as $type ) : ?>
                 <option value="<?php echo esc_attr( $type->id ); ?>"><?php echo esc_html( $type->name ); ?></option>
               <?php endforeach; ?>

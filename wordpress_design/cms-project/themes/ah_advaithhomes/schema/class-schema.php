@@ -20,7 +20,7 @@ class AH_Schema {
 		self::create_reviews( $cs );
 		self::create_faqs( $cs );
 		self::create_news_bar( $cs );
-		// ah_taxonomy_types and ah_taxonomies are owned by the CMS plugin — not created here.
+		// ah_taxonomy_types and ah_taxonomies are owned by the CMS plugin - not created here.
 	}
 
 	// ── Table definitions ─────────────────────────────────────────────────────

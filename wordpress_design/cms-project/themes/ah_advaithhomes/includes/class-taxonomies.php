@@ -6,12 +6,12 @@ defined( 'ABSPATH' ) || exit;
  * Registers all WordPress taxonomies used by this theme.
  *
  * Built-in WP taxonomies (no registration needed):
- *   category  — blog post categories (Buying Guides, Finance, Legal, Market Updates)
- *   post_tag  — blog post tags
+ *   category  - blog post categories (Buying Guides, Finance, Legal, Market Updates)
+ *   post_tag  - blog post tags
  *
  * Custom taxonomies registered here:
- *   ah_highlight      — Highlighter Names  (tag content as Featured, Popular, etc.)
- *   ah_data_protected — DataProtected      (GDPR / data-handling classification)
+ *   ah_highlight      - Highlighter Names  (tag content as Featured, Popular, etc.)
+ *   ah_data_protected - DataProtected      (GDPR / data-handling classification)
  *
  * Usage in functions.php:
  *   AH_Taxonomies::register();
@@ -76,7 +76,7 @@ class AH_Taxonomies {
 					'not_found'         => __( 'No levels found.', 'ah-theme' ),
 				],
 				'hierarchical'       => false,
-				'public'             => false,  // internal classification — not in front-end URLs
+				'public'             => false,  // internal classification - not in front-end URLs
 				'show_ui'            => true,
 				'show_in_rest'       => true,
 				'show_admin_column'  => false,

@@ -61,7 +61,7 @@ class AH_Theme_Content_Taxonomy {
 	}
 
 	/**
-	 * Convenience wrapper — extracts IDs from an array of objects then calls get_terms_for().
+	 * Convenience wrapper - extracts IDs from an array of objects then calls get_terms_for().
 	 *
 	 * @param object[] $items       Objects that each have an ->id property.
 	 * @param string   $object_type Object type string.

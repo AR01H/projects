@@ -6,13 +6,13 @@ defined( 'ABSPATH' ) || exit;
  * Central registry of taxonomy types/terms and extra pages used during mock install.
  *
  * Data source priority:
- *   1. CSV files in mock_data/csv/ — edit these for easy customisation before running mock install
- *   2. Hardcoded defaults below — used when CSVs are absent
+ *   1. CSV files in mock_data/csv/ - edit these for easy customisation before running mock install
+ *   2. Hardcoded defaults below - used when CSVs are absent
  *
  * Taxonomy data populates the CMS plugin tables visible at:
  *   admin.php?page=ah-taxonomy
  *
- * This class has zero dependency on the CMS plugin — the seeder handles plugin checks.
+ * This class has zero dependency on the CMS plugin - the seeder handles plugin checks.
  */
 class AH_Data {
 
