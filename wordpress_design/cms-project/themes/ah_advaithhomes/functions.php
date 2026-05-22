@@ -71,3 +71,14 @@ add_action( 'wp_enqueue_scripts', function () {
 		'siteUrl' => esc_url( home_url( '/' ) ),
 	] );
 } );
+
+// ── News & Info Feeder — fix pagination 301 redirect ─────────────────────────
+// WordPress's redirect_canonical() fires on template_redirect (before the page
+// template loads) and strips ?page=X from static page URLs, redirecting back to
+// the base URL. Disable it only for this template so ?page=X pagination works.
+add_filter( 'redirect_canonical', function ( $redirect_url ) {
+	if ( is_page_template( 'template-news-info-feeder.php' ) ) {
+		return false;
+	}
+	return $redirect_url;
+} );

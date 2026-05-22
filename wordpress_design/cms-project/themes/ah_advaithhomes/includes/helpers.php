@@ -389,7 +389,7 @@ function ah_build_legacy_theme_footer(): array {
 			'address_note' => 'Covering all of England & Wales',
 		],
 		'cta'               => [
-			'label' => 'Book Free Consultation ->',
+			'label' => 'Contact Us->',
 			'url'   => $consult,
 		],
 		'legal_links'       => [

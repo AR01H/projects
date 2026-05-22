@@ -1,0 +1,118 @@
+<?php
+/**
+ * Component: NIF Brief List
+ * "In Brief" — horizontal list-style article items with thumbnail + excerpt.
+ * No dates displayed. Pagination uses ?pg=X (avoids WP redirect_canonical).
+ *
+ * @var array $args {
+ *   @type WP_Post[] $posts       Post objects to list.
+ *   @type int       $max_pages   Total pages for pagination.
+ *   @type int       $paged       Current page number.
+ *   @type string    $base_url    Base URL for pagination.
+ *   @type string    $eyebrow     Section label. Default 'In Brief'.
+ * }
+ */
+defined( 'ABSPATH' ) || exit;
+
+$posts     = $args['posts']     ?? [];
+$max_pages = $args['max_pages'] ?? 1;
+$paged     = $args['paged']     ?? 1;
+$base_url  = $args['base_url']  ?? get_permalink();
+$eyebrow   = $args['eyebrow']   ?? __( 'In Brief', 'ah-theme' );
+
+if ( empty( $posts ) ) return;
+?>
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
+
+  <div class="nif-portal-section-row">
+    <span class="nif-section-label--primary"><?php echo esc_html( $eyebrow ); ?></span>
+  </div>
+
+  <div class="nif-brief-list">
+    <?php foreach ( $posts as $p ) :
+      $d       = nif_get_post_data( $p );
+      $cats    = get_the_category( $p->ID );
+      $cat1    = $cats[0] ?? null;
+      $cat2    = $cats[1] ?? null;
+      $excerpt = wp_trim_words( get_the_excerpt( $p->ID ) ?: $p->post_content, 35, '…' );
+    ?>
+    <article class="nif-brief-item" data-aos="fade-up">
+
+      <!-- Thumbnail -->
+      <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-brief-item__img" tabindex="-1" aria-hidden="true">
+        <?php if ( $d['thumb_url'] ) : ?>
+          <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
+               alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+               loading="lazy" decoding="async">
+        <?php else : ?>
+          <span class="nif-brief-item__placeholder" aria-hidden="true"><?php echo esc_html( $d['emoji'] ); ?></span>
+        <?php endif; ?>
+      </a>
+
+      <!-- Content -->
+      <div class="nif-brief-item__body">
+        <div class="nif-brief-item__badges">
+          <?php if ( $cat1 ) : ?>
+            <span class="nif-tile-badge" data-slug="<?php echo esc_attr( $cat1->slug ); ?>">
+              <?php echo esc_html( $cat1->name ); ?>
+            </span>
+          <?php endif; ?>
+          <?php if ( $cat2 ) : ?>
+            <span class="nif-tile-badge nif-tile-badge--secondary" data-slug="<?php echo esc_attr( $cat2->slug ); ?>">
+              <?php echo esc_html( $cat2->name ); ?>
+            </span>
+          <?php endif; ?>
+        </div>
+
+        <h3 class="nif-brief-item__title">
+          <a href="<?php echo esc_url( $d['permalink'] ); ?>">
+            <?php echo esc_html( get_the_title( $p->ID ) ); ?>
+          </a>
+        </h3>
+
+        <p class="nif-brief-item__excerpt"><?php echo esc_html( $excerpt ); ?></p>
+
+        <div class="nif-brief-item__meta">
+          <?php if ( $d['read_time'] ) : ?>
+            <span class="nif-meta-time"><?php echo esc_html( $d['read_time'] ); ?></span>
+          <?php endif; ?>
+          <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-brief-item__cta">
+            <?php esc_html_e( 'Continue reading', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+    </article>
+    <?php endforeach; ?>
+  </div>
+
+  <!-- Pagination — ?pg=X avoids WordPress's redirect_canonical for ?page and ?paged -->
+  <?php
+  $sep = strpos( $base_url, '?' ) !== false ? '&' : '?';
+  if ( $max_pages > 1 ) :
+    $links = paginate_links( [
+      'base'      => $base_url . $sep . 'pg=%#%',
+      'format'    => '',
+      'current'   => $paged,
+      'total'     => $max_pages,
+      'prev_text' => '← Prev',
+      'next_text' => 'Next →',
+      'type'      => 'array',
+    ] );
+    if ( $links ) : ?>
+  <nav class="nif-brief-pagination" aria-label="<?php esc_attr_e( 'Page navigation', 'ah-theme' ); ?>">
+    <?php foreach ( $links as $link ) echo '<span class="nif-brief-page-link">' . $link . '</span>'; ?>
+  </nav>
+  <?php endif; ?>
+
+  <?php elseif ( $paged === 1 ) :
+    $next_url = "{$base_url}{$sep}pg=2";
+  ?>
+  <div class="nif-brief-load-more" data-aos="fade-up">
+    <a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline nif-load-more-btn">
+      <?php esc_html_e( 'Load More Articles', 'ah-theme' ); ?>
+    </a>
+  </div>
+  <?php endif; ?>
+
+</section>

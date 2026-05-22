@@ -153,7 +153,7 @@ class AH_Theme_Seeder {
 			'ah_cms_nav_cta',
 			wp_json_encode(
 				[
-					'label' => 'Book Free Consultation ->',
+					'label' => 'Contact Us->',
 					'url'   => '/contact/',
 				]
 			)
@@ -162,7 +162,7 @@ class AH_Theme_Seeder {
 			'ah_nav_cta',
 			wp_json_encode(
 				[
-					'label' => 'Book Free Consultation ->',
+					'label' => 'Contact Us->',
 					'url'   => '/contact/',
 				]
 			)
