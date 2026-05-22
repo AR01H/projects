@@ -437,7 +437,7 @@ class AH_Theme_Seeder {
 			'client-stories' => [ 'title' => 'Client Stories', 'template' => 'page-client-stories.php' ],
 			'reviews'        => [ 'title' => 'Client Stories', 'template' => 'page-client-stories.php' ],
 			'contact'        => [ 'title' => 'Contact',        'template' => 'page-contact.php' ],
-			'contact-us'        => [ 'title' => 'Contact',        'template' => 'page-contact.php' ],
+			'contact-us'     => [ 'title' => 'Contact',        'template' => 'page-contact.php' ],
 			'guides'         => [ 'title' => 'Buying Guides',  'template' => 'page-guides.php' ],
 			'blog'           => [ 'title' => 'Blog',           'template' => 'page-blog.php' ],
 			'news'           => [ 'title' => 'News',           'template' => 'page-news.php' ],

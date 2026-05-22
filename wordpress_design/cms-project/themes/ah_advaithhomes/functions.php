@@ -57,6 +57,11 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-animations', $uri . '/assets/css/animations.css', [ 'ah-base' ],         $v );
 	wp_enqueue_style( 'ah-style',      get_stylesheet_uri(),                [ 'ah-layout' ],       $v );
 
+	// News & Info Feeder — load only on that page template
+	if ( is_page_template( 'template-news-info-feeder.php' ) ) {
+		wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $v );
+	}
+
 	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $v, true );
 	wp_enqueue_script( 'ah-forms', $uri . '/assets/js/forms.js', [ 'ah-main' ], $v, true );
 
