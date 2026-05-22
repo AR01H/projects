@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once get_template_directory() . '/schema/class-schema.php';
+require_once get_template_directory() . '/schema/class-data.php';
 
 /**
  * AH Theme Seeder
@@ -43,6 +44,7 @@ class AH_Theme_Seeder {
 			'seed_guides_page',
 			'seed_blog_page',
 			'seed_static_pages',
+			'seed_extra_pages',
 		];
 		$methods[] = 'seed_plugin_tables'; // populate CMS plugin tables if plugin is active
 		foreach ( $methods as $method ) {
@@ -285,45 +287,28 @@ class AH_Theme_Seeder {
 			return self::skip( 'Plugin taxonomy tables not found — activate plugin first' );
 		}
 
-		$types = [
-			[ 'name' => 'Highlight Names', 'slug' => 'highlight-names', 'description' => 'Label content as Featured, Popular, New, etc.' ],
-			[ 'name' => 'Category',        'slug' => 'category',        'description' => 'Content category groupings.' ],
-			[ 'name' => 'Tags',            'slug' => 'tags',            'description' => 'Free-form content tags.' ],
-			[ 'name' => 'DataProtected',   'slug' => 'data-protected',  'description' => 'GDPR / data-handling classification.' ],
-			[ 'name' => 'Common',          'slug' => 'common',          'description' => 'Shared cross-content labels.' ],
-		];
-
-		// Terms to seed per type slug
-		$type_terms = [
-			'common' => [
-				[ 'name' => 'Related Articles', 'slug' => 'related-articles' ],
-				[ 'name' => 'Useful Links',      'slug' => 'useful-links' ],
-			],
-		];
-
 		$inserted = 0;
-		foreach ( $types as $type ) {
+		foreach ( AH_Data::taxonomy_types() as $type ) {
 			// Get or create the type row
 			$type_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$tt}` WHERE slug = %s", $type['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			if ( ! $type_id ) {
 				$wpdb->insert( $tt, [
 					'name'        => $type['name'],
 					'slug'        => $type['slug'],
-					'description' => $type['description'],
+					'description' => $type['description'] ?? '',
 				] );
 				$type_id = (int) $wpdb->insert_id;
 				$inserted++;
 			}
 
-			// Seed default terms into wp_ah_taxonomies for this type
-			foreach ( $type_terms[ $type['slug'] ] ?? [] as $i => $term ) {
+			foreach ( $type['terms'] ?? [] as $term ) {
 				$exists = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$tm}` WHERE type_id = %d AND slug = %s", $type_id, $term['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				if ( ! $exists ) {
 					$wpdb->insert( $tm, [
 						'type_id'    => $type_id,
 						'name'       => $term['name'],
 						'slug'       => $term['slug'],
-						'sort_order' => $i + 1,
+						'sort_order' => $term['sort_order'] ?? 0,
 						'status'     => 'active',
 					] );
 					$inserted++;
@@ -332,6 +317,32 @@ class AH_Theme_Seeder {
 		}
 
 		return [ 'inserted' => $inserted, 'updated' => 0 ];
+	}
+
+	/** Creates policy, legal, and utility pages defined in AH_Data::extra_pages() / pages.csv. */
+	public static function seed_extra_pages(): array {
+		$count = 0;
+		foreach ( AH_Data::extra_pages() as $slug => $cfg ) {
+			$existing = get_page_by_path( $slug );
+			if ( ! $existing ) {
+				$id = wp_insert_post( [
+					'post_title'   => $cfg['title'],
+					'post_name'    => $slug,
+					'post_status'  => 'publish',
+					'post_type'    => 'page',
+					'post_content' => $cfg['content'] ?? '',
+				] );
+				if ( $id && ! is_wp_error( $id ) ) {
+					if ( ! empty( $cfg['template'] ) ) {
+						update_post_meta( $id, '_wp_page_template', $cfg['template'] );
+					}
+					$count++;
+				}
+			} elseif ( ! empty( $cfg['template'] ) ) {
+				update_post_meta( $existing->ID, '_wp_page_template', $cfg['template'] );
+			}
+		}
+		return [ 'inserted' => $count, 'updated' => 0 ];
 	}
 
 	// ── Mandatory WP pages ───────────────────────────────────────────────────
@@ -1280,8 +1291,11 @@ class AH_Theme_Seeder {
 			}
 		}
 
-		// Remove seeded WP pages
-		$seeded_pages = [ 'home', 'about', 'services', 'client-stories', 'contact', 'guides', 'blog', 'news', 'faq' ];
+		// Remove seeded WP pages (mandatory + extra)
+		$seeded_pages = array_merge(
+			[ 'home', 'about', 'services', 'client-stories', 'reviews', 'contact', 'contact-us', 'guides', 'blog', 'news', 'faq' ],
+			array_keys( AH_Data::extra_pages() )
+		);
 		foreach ( $seeded_pages as $slug ) {
 			$page = get_page_by_path( $slug );
 			if ( $page ) {

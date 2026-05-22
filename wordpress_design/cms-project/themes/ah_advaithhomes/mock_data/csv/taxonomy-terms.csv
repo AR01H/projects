@@ -1,0 +1,76 @@
+type_slug,name,slug,description,sort_order
+highlight-names,Featured,featured,,1
+highlight-names,Popular,popular,,2
+highlight-names,New,new,,3
+highlight-names,Hot Deal,hot-deal,,4
+highlight-names,Exclusive,exclusive,,5
+highlight-names,Off-Market,off-market,,6
+highlight-names,Price Reduced,price-reduced,,7
+highlight-names,Under Offer,under-offer,,8
+category,Buying Guides,buying-guides,,1
+category,Finance & Mortgages,finance-mortgages,,2
+category,Legal & Conveyancing,legal-conveyancing,,3
+category,Market Updates,market-updates,,4
+category,First-Time Buyers,first-time-buyers,,5
+category,Investors,investors,,6
+category,Relocation,relocation,,7
+category,Luxury Properties,luxury-properties,,8
+category,Property News,property-news,,9
+category,Tips & Advice,tips-advice,,10
+tags,London,london,,1
+tags,South East,south-east,,2
+tags,North West,north-west,,3
+tags,Midlands,midlands,,4
+tags,Scotland,scotland,,5
+tags,Wales,wales,,6
+tags,Apartment,apartment,,7
+tags,Detached,detached,,8
+tags,Semi-Detached,semi-detached,,9
+tags,Terraced,terraced,,10
+tags,New Build,new-build,,11
+tags,Period Property,period-property,,12
+tags,Stamp Duty,stamp-duty,,13
+tags,Mortgage,mortgage,,14
+tags,Conveyancing,conveyancing,,15
+data-protected,Public,public,,1
+data-protected,Members Only,members-only,,2
+data-protected,Internal Only,internal-only,,3
+data-protected,GDPR Protected,gdpr-protected,,4
+data-protected,Restricted,restricted,,5
+common,Related Articles,related-articles,,1
+common,Useful Links,useful-links,,2
+common,External Resources,external-resources,,3
+common,Downloads,downloads,,4
+common,FAQs,faqs-label,,5
+location,Greater London,greater-london,,1
+location,Central London,central-london,,2
+location,North London,north-london,,3
+location,South London,south-london,,4
+location,East London,east-london,,5
+location,West London,west-london,,6
+location,Surrey,surrey,,7
+location,Kent,kent,,8
+location,Essex,essex,,9
+location,Hertfordshire,hertfordshire,,10
+location,Manchester,manchester,,11
+location,Birmingham,birmingham,,12
+location,Leeds,leeds,,13
+location,Bristol,bristol,,14
+location,Nationwide,nationwide,,15
+property-type,Apartment / Flat,apartment-flat,,1
+property-type,Detached House,detached-house,,2
+property-type,Semi-Detached House,semi-detached-house,,3
+property-type,Terraced House,terraced-house,,4
+property-type,Townhouse,townhouse,,5
+property-type,Bungalow,bungalow,,6
+property-type,New Build,new-build-type,,7
+property-type,Period Property,period-property-type,,8
+property-type,Off-Plan,off-plan,,9
+property-type,Commercial,commercial,,10
+buyer-type,First-Time Buyer,first-time-buyer,,1
+buyer-type,Home Mover,home-mover,,2
+buyer-type,Property Investor,property-investor,,3
+buyer-type,Remortgager,remortgager,,4
+buyer-type,International Buyer,international-buyer,,5
+buyer-type,Cash Buyer,cash-buyer,,6
+buyer-type,BTL Investor,btl-investor,,7

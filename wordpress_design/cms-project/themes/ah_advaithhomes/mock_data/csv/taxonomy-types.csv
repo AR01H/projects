@@ -1,0 +1,9 @@
+slug,name,description
+highlight-names,Highlight Names,"Label content as Featured, Popular, New, Hot Deal, etc."
+category,Category,Content category groupings for articles and guides
+tags,Tags,Free-form content tags for cross-referencing topics
+data-protected,DataProtected,GDPR / data-handling classification for content visibility
+common,Common,Shared cross-content labels used for linking and grouping
+location,Location,Geographic area classifications for property and content
+property-type,Property Type,Classification of property by structural type
+buyer-type,Buyer Type,Target buyer profile for content and service tagging
