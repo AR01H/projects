@@ -374,4 +374,85 @@
     setTimeout(function () { $btn.text(orig); }, 1500);
   });
 
+  // ── Header Search Autosuggest ──────────────────────────────────────────────
+  var $searchToggle  = $( '#ahSearchToggle' );
+  var $searchPanel   = $( '#ahSearchPanel' );
+  var $searchInput   = $( '#ahSearchInput' );
+  var $searchClose   = $( '#ahSearchClose' );
+  var $searchResults = $( '#ahSearchResults' );
+  var searchTimer;
+
+  function openSearch() {
+    $searchPanel.addClass( 'is-open' ).attr( 'aria-hidden', 'false' );
+    $searchToggle.addClass( 'is-active' ).attr( 'aria-expanded', 'true' );
+    $searchInput.focus();
+    $( 'body' ).addClass( 'search-open' );
+  }
+
+  function closeSearch() {
+    $searchPanel.removeClass( 'is-open' ).attr( 'aria-hidden', 'true' );
+    $searchToggle.removeClass( 'is-active' ).attr( 'aria-expanded', 'false' );
+    $searchInput.val( '' );
+    $searchResults.empty();
+    $( 'body' ).removeClass( 'search-open' );
+  }
+
+  $searchToggle.on( 'click', function () {
+    $searchPanel.hasClass( 'is-open' ) ? closeSearch() : openSearch();
+  } );
+
+  $searchClose.on( 'click', closeSearch );
+
+  $( document ).on( 'keydown', function ( e ) {
+    if ( e.key === 'Escape' && $searchPanel.hasClass( 'is-open' ) ) closeSearch();
+  } );
+
+  $searchInput.on( 'input', function () {
+    clearTimeout( searchTimer );
+    var q = $.trim( $( this ).val() );
+    if ( q.length < 1 ) { $searchResults.empty(); return; }
+    $searchResults.html( '<div class="nav__search-loading"><span class="nav__search-spinner"></span>Searching…</div>' );
+    searchTimer = setTimeout( function () {
+      if ( typeof ahTheme === 'undefined' ) return;
+      $.getJSON( ahTheme.ajaxUrl, {
+        action : 'ah_search_suggest',
+        nonce  : ahTheme.nonce,
+        q      : q,
+      }, function ( res ) {
+        if ( ! res.success || ! res.data.length ) {
+          $searchResults.html(
+            '<p class="nav__search-noresult">No results for <strong>' +
+            $( '<span>' ).text( q ).html() + '</strong></p>'
+          );
+          return;
+        }
+        var html = '<ul class="nav__search-list">';
+        $.each( res.data, function ( i, item ) {
+          var thumb = item.thumb
+            ? '<img src="' + item.thumb + '" alt="" class="nav__search-thumb" loading="lazy">'
+            : '<span class="nav__search-thumb nav__search-thumb--ph">📰</span>';
+          html += '<li><a href="' + item.url + '" class="nav__search-result">' +
+            thumb +
+            '<span class="nav__search-info">' +
+            ( item.cat ? '<span class="nav__search-cat">' + item.cat + '</span>' : '' ) +
+            '<span class="nav__search-title">' + $( '<span>' ).text( item.title ).html() + '</span>' +
+            '</span></a></li>';
+        } );
+        html += '</ul>';
+        html += '<a href="' + ahTheme.siteUrl + '?s=' + encodeURIComponent( q ) +
+          '" class="nav__search-all">See all results <span aria-hidden="true">→</span></a>';
+        $searchResults.html( html );
+      } );
+    }, 300 );
+  } );
+
+  $searchInput.on( 'keydown', function ( e ) {
+    if ( e.key === 'Enter' ) {
+      var q = $.trim( $( this ).val() );
+      if ( q && typeof ahTheme !== 'undefined' ) {
+        window.location.href = ahTheme.siteUrl + '?s=' + encodeURIComponent( q );
+      }
+    }
+  } );
+
 })(jQuery);

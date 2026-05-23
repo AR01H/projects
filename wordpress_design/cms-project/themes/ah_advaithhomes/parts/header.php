@@ -86,6 +86,13 @@ $nav_cta = ah_get_nav_cta();
 			</ul>
 
 			<div class="nav__actions">
+				<button class="nav__search-btn" id="ahSearchToggle"
+					aria-label="<?php esc_attr_e( 'Search', 'ah-theme' ); ?>"
+					aria-expanded="false" aria-controls="ahSearchPanel">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+					</svg>
+				</button>
 				<a href="<?php echo esc_url( $nav_cta['url'] ?? home_url( AH_LINK_CONTACT ) ); ?>" class="btn btn-sm btn-primary">
 					<?php echo esc_html( $nav_cta['label'] ?? AH_LABEL_GET_HELP ); ?>
 				</a>
@@ -98,6 +105,25 @@ $nav_cta = ah_get_nav_cta();
 		</div>
 	</div>
 </nav>
+
+<!-- Search panel — slides down from nav, autosuggest blogs & news only -->
+<div class="nav__search-panel" id="ahSearchPanel" role="search" aria-hidden="true">
+	<div class="container">
+		<div class="nav__search-inner">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="nav__search-icon">
+				<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+			</svg>
+			<input type="search" id="ahSearchInput" class="nav__search-input"
+				placeholder="<?php esc_attr_e( 'Search articles and guides…', 'ah-theme' ); ?>"
+				autocomplete="off" aria-label="<?php esc_attr_e( 'Search', 'ah-theme' ); ?>">
+			<button class="nav__search-close" id="ahSearchClose"
+				aria-label="<?php esc_attr_e( 'Close search', 'ah-theme' ); ?>">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+			</button>
+		</div>
+		<div class="nav__search-results" id="ahSearchResults" aria-live="polite"></div>
+	</div>
+</div>
 
 <nav class="nav__mobile" id="ahMobileNav" aria-label="<?php esc_attr_e( 'Mobile Navigation', 'ah-theme' ); ?>">
 	<a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="nav__mobile-link"><?php echo esc_html( AH_LABEL_HOME ); ?></a>
@@ -138,5 +164,5 @@ $nav_cta = ah_get_nav_cta();
 <div id="page-content">
 
 <?php if ( ah_section_visible( 'global_news_ticker' ) ) : ?>
-	<?php get_template_part( 'components/news-ticker' ); ?>
+	<!-- <?php get_template_part( 'components/news-ticker' ); ?> -->
 <?php endif; ?>
