@@ -56,4 +56,20 @@ class AH_Taxonomy_Model extends AH_Model_Base {
 			'order'    => 'ASC',
 		) );
 	}
+
+	public function get_parent_terms( ?int $type_id = null ): array {
+		$where = '(parent_id IS NULL OR parent_id = 0)';
+		if ( $type_id ) $where .= " AND type_id = {$type_id}";
+		return $this->all( array(
+			'where'    => $where,
+			'order_by' => 'name',
+			'order'    => 'ASC',
+		) );
+	}
+
+	public function count_children( int $parent_id ): int {
+		global $wpdb;
+		$table = AH_DB_Helper::table( 'taxonomies' );
+		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$table}` WHERE parent_id = %d", $parent_id ) );
+	}
 }

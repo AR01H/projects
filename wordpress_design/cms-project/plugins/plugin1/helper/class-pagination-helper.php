@@ -25,22 +25,22 @@ class AH_Pagination {
 
 		// First / Prev
 		if ( $current > 1 ) {
-			$html .= '<a class="first-page button" href="' . esc_url( add_query_arg( 'paged', 1, $base_url ) ) . '">&laquo;</a>';
-			$html .= '<a class="prev-page button" href="' . esc_url( add_query_arg( 'paged', $current - 1, $base_url ) ) . '">&lsaquo;</a>';
+			$html .= '<a class="first-page" href="' . esc_url( add_query_arg( 'paged', 1, $base_url ) ) . '">&laquo;</a>';
+			$html .= '<a class="prev-page" href="' . esc_url( add_query_arg( 'paged', $current - 1, $base_url ) ) . '">&lsaquo;</a>';
 		} else {
-			$html .= '<span class="first-page button disabled">&laquo;</span>';
-			$html .= '<span class="prev-page button disabled">&lsaquo;</span>';
+			$html .= '<span class="first-page disabled">&laquo;</span>';
+			$html .= '<span class="prev-page disabled">&lsaquo;</span>';
 		}
 
 		$html .= '<span class="paging-input">' . $current . ' / <span class="total-pages">' . $total . '</span></span>';
 
 		// Next / Last
 		if ( $current < $total ) {
-			$html .= '<a class="next-page button" href="' . esc_url( add_query_arg( 'paged', $current + 1, $base_url ) ) . '">&rsaquo;</a>';
-			$html .= '<a class="last-page button" href="' . esc_url( add_query_arg( 'paged', $total, $base_url ) ) . '">&raquo;</a>';
+			$html .= '<a class="next-page" href="' . esc_url( add_query_arg( 'paged', $current + 1, $base_url ) ) . '">&rsaquo;</a>';
+			$html .= '<a class="last-page" href="' . esc_url( add_query_arg( 'paged', $total, $base_url ) ) . '">&raquo;</a>';
 		} else {
-			$html .= '<span class="next-page button disabled">&rsaquo;</span>';
-			$html .= '<span class="last-page button disabled">&raquo;</span>';
+			$html .= '<span class="next-page disabled">&rsaquo;</span>';
+			$html .= '<span class="last-page disabled">&raquo;</span>';
 		}
 
 		$html .= '</span></div>';

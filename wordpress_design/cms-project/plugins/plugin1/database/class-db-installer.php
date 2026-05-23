@@ -32,6 +32,13 @@ class AH_DB_Installer {
 		self::ensure_news_bar_image();
 		self::ensure_protected_taxonomy();
 		self::ensure_taxonomy_media();
+		self::ensure_taxonomy_parent_terms();
+	}
+
+	public static function ensure_taxonomy_parent_terms(): void {
+		if ( class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
+			AH_Taxonomy_Parent_Model::ensure_table();
+		}
 	}
 
 	public static function ensure_content_taxonomies(): void {
