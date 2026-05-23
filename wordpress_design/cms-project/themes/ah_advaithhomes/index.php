@@ -21,31 +21,34 @@ get_header();
           $thumb_url  = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'ah-card' ) : '';
         ?>
         <article class="blog-card" data-aos="fade-up">
-          <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__img-wrap" tabindex="-1" aria-hidden="true">
-            <?php if ( $thumb_url ) : ?>
-            <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $post_title ); ?>" class="blog-card__img" loading="lazy">
-            <?php else : ?>
-            <div class="blog-card__img-placeholder">✍️</div>
-            <?php endif; ?>
-          </a>
-          <div class="blog-card__body">
-            <div class="blog-card__top">
-              <?php if ( $cats ) : ?>
-              <span class="blog-card__cat"><?php echo esc_html( $cats[0]->name ); ?></span>
-              <?php else : ?><span></span><?php endif; ?>
-            </div>
-            <div class="blog-card__meta">
-              <span><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
-            </div>
-            <h2 class="blog-card__title">
-              <a href="<?php echo esc_url( $post_url ); ?>"><?php the_title(); ?></a>
-            </h2>
-            <p class="blog-card__excerpt">
-              <?php echo esc_html( wp_trim_words( get_the_excerpt(), 18, '…' ) ); ?>
-            </p>
-            <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__read-btn">
-              <?php echo esc_html( AH_LABEL_READ_MORE ); ?> <span aria-hidden="true">→</span>
+          <div class="blog-card__img-wrap">
+            <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__img-link" tabindex="-1" aria-hidden="true">
+              <?php if ( $thumb_url ) : ?>
+              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $post_title ); ?>" class="blog-card__img" loading="lazy">
+              <?php else : ?>
+              <div class="blog-card__img-placeholder">✍️</div>
+              <?php endif; ?>
             </a>
+            <div class="blog-card__overlay">
+              <div class="blog-card__badges">
+                <?php if ( $cats ) : ?>
+                <span class="blog-card__cat"><?php echo esc_html( $cats[0]->name ); ?></span>
+                <?php else : ?><span></span><?php endif; ?>
+                <span class="blog-card__read-time"><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
+              </div>
+              <h2 class="blog-card__title">
+                <a href="<?php echo esc_url( $post_url ); ?>"><?php the_title(); ?></a>
+              </h2>
+              <!-- Slides up from inside the card on hover -->
+              <div class="blog-card__desc-wrap">
+                <div>
+                  <p class="blog-card__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 18, '…' ) ); ?></p>
+                  <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__read-btn">
+                    <?php echo esc_html( AH_LABEL_READ_MORE ); ?> <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
         <?php endwhile; ?>

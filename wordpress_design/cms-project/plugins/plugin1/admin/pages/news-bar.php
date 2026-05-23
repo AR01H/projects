@@ -9,12 +9,14 @@ $action        = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id       = (int) ( $_GET['id'] ?? 0 );
 
 AH_DB_Installer::ensure_news_bar_content();
+AH_DB_Installer::ensure_news_bar_image();
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	if ( ! wp_verify_nonce( $_POST['ah_newsbar_nonce'] ?? '', 'ah_save_newsbar' ) ) wp_die( 'Security.' );
 	$data = array(
 		'text'       => sanitize_text_field( $_POST['text'] ?? '' ),
 		'content'    => wp_kses_post( $_POST['content'] ?? '' ),
+		'image_id'   => (int) ( $_POST['image_id'] ?? 0 ) ?: null,
 		'link_url'   => esc_url_raw( $_POST['link_url'] ?? '' ),
 		'link_target'=> in_array( $_POST['link_target'] ?? '_self', array( '_self', '_blank' ), true ) ? $_POST['link_target'] : '_self',
 		'status'     => sanitize_key( $_POST['status'] ?? 'active' ),
@@ -99,6 +101,23 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 	          'quicktags'     => true,
           ) );
           ?>
+        </div>
+        <div class="ah-form-row">
+          <label>Thumbnail Image</label>
+          <?php
+            $nb_img_id  = (int) ( $item->image_id ?? 0 );
+            $nb_img_url = $nb_img_id ? ( wp_get_attachment_image_url( $nb_img_id, 'medium' ) ?: '' ) : '';
+          ?>
+          <div style="max-width:240px;">
+            <div class="ah-image-picker<?php echo $nb_img_url ? ' has-image' : ''; ?>">
+              <img src="<?php echo esc_url( $nb_img_url ); ?>" class="ah-image-preview<?php echo $nb_img_url ? ' visible' : ''; ?>" alt="">
+              <div class="ah-image-picker-btns">
+                <input type="hidden" class="ah-image-id" name="image_id" value="<?php echo esc_attr( $nb_img_id ); ?>">
+                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Set Image</button>
+                <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="ah-form-row"><label>Link URL</label><input type="text" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>"></div>
         <div class="ah-form-row">

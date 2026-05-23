@@ -85,3 +85,9 @@ add_filter( 'redirect_canonical', function ( $redirect_url ) {
 	}
 	return $redirect_url;
 } );
+
+add_action( 'pre_get_posts', function ( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && $query->is_home() ) {
+		$query->set( 'posts_per_page', 12 );
+	}
+} );

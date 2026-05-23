@@ -29,7 +29,9 @@ class AH_DB_Installer {
 		self::drop_broken_fks();
 		self::ensure_review_short_desc();
 		self::ensure_news_bar_content();
+		self::ensure_news_bar_image();
 		self::ensure_protected_taxonomy();
+		self::ensure_taxonomy_media();
 	}
 
 	public static function ensure_content_taxonomies(): void {
@@ -64,6 +66,19 @@ class AH_DB_Installer {
 		) );
 		if ( empty( $col ) ) {
 			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `content` LONGTEXT NULL AFTER `text`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+	}
+
+	public static function ensure_news_bar_image(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_news_bar_items';
+		$col   = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'image_id'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `image_id` INT UNSIGNED DEFAULT NULL AFTER `content`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 	}
 
@@ -116,6 +131,30 @@ class AH_DB_Installer {
 			} else {
 				$wpdb->update( "{$p}ah_taxonomies", array( 'is_protected' => 1 ), array( 'id' => (int) $exists ) );
 			}
+		}
+	}
+
+	/**
+	 * Add image_id and icon_emoji columns to ah_taxonomies if not present.
+	 */
+	public static function ensure_taxonomy_media(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_taxonomies';
+
+		$has_image = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'image_id'",
+			DB_NAME, $table
+		) );
+		if ( empty( $has_image ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `image_id` INT UNSIGNED DEFAULT NULL AFTER `sort_order`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+
+		$has_icon = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'icon_emoji'",
+			DB_NAME, $table
+		) );
+		if ( empty( $has_icon ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `icon_emoji` VARCHAR(20) DEFAULT NULL AFTER `image_id`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 	}
 

@@ -73,6 +73,7 @@ function ah_get_guide_categories(): array {
 	return $wpdb->get_results(
 		$wpdb->prepare(
 			"SELECT tax.id, tax.name AS title, tax.slug, tax.description AS `desc`,
+			        tax.image_id, tax.icon_emoji,
 			        GREATEST( COALESCE(wtt.count, 0), COUNT(DISTINCT pct.object_id) ) AS `count`
 			 FROM `{$t}` tax
 			 INNER JOIN `{$tt}` type_row ON type_row.id = tax.type_id AND type_row.slug = %s

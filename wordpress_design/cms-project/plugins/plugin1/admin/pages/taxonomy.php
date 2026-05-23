@@ -41,6 +41,8 @@ if ( isset( $_POST['save_term'] ) && wp_verify_nonce( $_POST['ah_tax_nonce'] ?? 
 			'meta_description'=> sanitize_textarea_field( $_POST['meta_description'] ?? '' ),
 			'status'          => sanitize_key( $_POST['status'] ?? 'active' ),
 			'sort_order'      => (int) ( $_POST['sort_order'] ?? 0 ),
+			'image_id'        => (int) ( $_POST['image_id'] ?? 0 ) ?: null,
+			'icon_emoji'      => sanitize_text_field( $_POST['icon_emoji'] ?? '' ) ?: null,
 		);
 		$edit_id ? $model->update( $edit_id, $data ) : $model->create( $data );
 		$notice = 'Taxonomy term saved.';
@@ -182,6 +184,22 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
             </select>
           </div>
           <div class="ah-form-row"><label>Description</label><textarea name="description" rows="3"><?php echo esc_textarea( $item->description ?? '' ); ?></textarea></div>
+          <div class="ah-form-row"><label>Icon (emoji)</label><input type="text" name="icon_emoji" value="<?php echo esc_attr( $item->icon_emoji ?? '' ); ?>" placeholder="e.g. 📖" style="width:80px;font-size:1.4rem;text-align:center;"></div>
+          <div class="ah-form-row">
+            <label>Card Background Image</label>
+            <?php
+              $tax_img_id  = (int) ( $item->image_id ?? 0 );
+              $tax_img_url = $tax_img_id ? ( wp_get_attachment_image_url( $tax_img_id, 'medium' ) ?: '' ) : '';
+            ?>
+            <div class="ah-image-picker">
+              <img src="<?php echo esc_url( $tax_img_url ); ?>" class="ah-image-preview <?php echo $tax_img_url ? 'visible' : ''; ?>" alt="" style="aspect-ratio:16/9;height:auto;object-fit:cover;width:100%;border-radius:6px;">
+              <div class="ah-image-picker-btns" style="margin-top:8px;">
+                <input type="hidden" class="ah-image-id" name="image_id" value="<?php echo esc_attr( $tax_img_id ); ?>">
+                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Set Image</button>
+                <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
+              </div>
+            </div>
+          </div>
           <div class="ah-form-row"><label>Sort Order</label><input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>"></div>
           <div class="ah-form-row"><label>Status</label><select name="status"><option value="active" <?php selected( $item->status ?? 'active', 'active' ); ?>>Active</option><option value="inactive" <?php selected( $item->status ?? '', 'inactive' ); ?>>Inactive</option></select></div>
           <button type="submit" name="save_term" value="1" class="ah-btn ah-btn-primary">Save Term</button>

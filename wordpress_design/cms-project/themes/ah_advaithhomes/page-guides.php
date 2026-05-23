@@ -126,17 +126,12 @@ $guides_query = new WP_Query( $query_args );
     </div>
     <div class="grid-4">
       <?php foreach ( $categories as $i => $cat ) :
-        $cat = is_object($cat) ? (array) $cat : $cat;
-      ?>
-      <a href="<?php echo esc_url( home_url( '/guides/?category=' . urlencode( $cat['slug'] ?? '' ) ) ); ?>"
-         class="guide-card" data-aos="fade-up" data-delay="<?php echo $i * 100; ?>"
-         style="text-decoration:none;color:inherit">
-        <div class="guide-card__icon"><?php echo esc_html( $cat['icon'] ?? '📖' ); ?></div>
-        <div class="guide-card__title"><?php echo esc_html( $cat['title'] ); ?></div>
-        <div class="guide-card__desc"><?php echo esc_html( $cat['desc'] ?? '' ); ?></div>
-        <div class="guide-card__count"><?php echo esc_html( $cat['count'] ?? '' ); ?> GUIDES →</div>
-      </a>
-      <?php endforeach; ?>
+        $cat = is_object( $cat ) ? (array) $cat : $cat;
+        get_template_part( 'components/cards/guide-category-card', null, [
+          'cat'   => $cat,
+          'index' => $i,
+        ] );
+      endforeach; ?>
     </div>
   </div>
 </section>
