@@ -87,6 +87,40 @@ class AH_Theme_Seeder {
 		return $results;
 	}
 
+	/**
+	 * Seed only the explicitly selected content types.
+	 *
+	 * @param string[] $types  Keys from the seed_types[] checkbox array
+	 * @return array{inserted:int, updated:int, skipped:int, errors:string[]}
+	 */
+	public static function seed_selected( array $types ): array {
+		$map = [
+			'blog-posts'     => 'seed_blog_posts',
+			'client-stories' => 'seed_client_stories',
+			'reviews'        => 'seed_reviews',
+			'services'       => 'seed_services',
+			'team'           => 'seed_team',
+			'faqs'           => 'seed_faqs',
+			'news-bar'       => 'seed_news_bar',
+			'properties'     => 'seed_properties',
+		];
+		$results = [ 'inserted' => 0, 'updated' => 0, 'skipped' => 0, 'errors' => [] ];
+		foreach ( $types as $type ) {
+			$type = sanitize_key( $type );
+			if ( ! isset( $map[ $type ] ) ) continue;
+			$method = $map[ $type ];
+			try {
+				$r = self::$method();
+				$results['inserted'] += $r['inserted'] ?? 0;
+				$results['updated']  += $r['updated']  ?? 0;
+				$results['skipped']  += $r['skipped']  ?? 0;
+			} catch ( \Throwable $e ) {
+				$results['errors'][] = "{$method}: " . $e->getMessage();
+			}
+		}
+		return $results;
+	}
+
 	/** @return array{inserted:int,updated:int} */
 	public static function seed_settings(): array {
 		update_option( 'ah_site_settings', wp_json_encode( [

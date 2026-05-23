@@ -32,6 +32,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 			if ( $thumb_id ) set_post_thumbnail( $saved_id, $thumb_id );
 			else delete_post_thumbnail( $saved_id );
 			$content_tax_m->sync_terms( 'wp_page', $saved_id, $_POST['taxonomy_ids'] ?? array() );
+			if ( ! $edit_id ) {
+				flush_rewrite_rules( false ); // refresh routing so new slug is immediately accessible
+			}
 			$notice = $edit_id ? 'Page updated.' : 'Page created.';
 			$action = 'list'; $edit_id = 0;
 		}
@@ -137,7 +140,14 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
               <label>Slug (URL)</label>
               <div style="display:flex;align-items:center;gap:8px;">
                 <span style="color:var(--ah-muted);font-size:12px;"><?php echo esc_html( trailingslashit( home_url() ) ); ?></span>
-                <input type="text" name="page_slug" id="ah-page-slug" value="<?php echo esc_attr( $wp_page->post_name ?? '' ); ?>" class="ah-slug-field" style="flex:1;">
+                <input type="text" name="page_slug" id="ah-page-slug" value="<?php echo esc_attr( $wp_page->post_name ?? '' ); ?>" class="ah-slug-field" style="flex:1;"
+                     <?php if ( ! empty( $wp_page->post_name ) ) echo 'data-manual="1"'; ?>>
+              <?php if ( ! empty( $wp_page->post_name ) ) : ?>
+                <small style="color:var(--ah-muted);font-size:11px;display:block;margin-top:4px;">
+                  Slug is locked — editing the title won't change it.
+                  <a href="#" style="color:var(--ah-primary);" onclick="document.getElementById('ah-page-slug').removeAttribute('data-manual');jQuery('#ah-page-slug').data('manual',false);this.parentNode.remove();return false;">Unlock to regenerate</a>
+                </small>
+              <?php endif; ?>
               </div>
             </div>
             <div class="ah-form-row"><label>Excerpt</label><textarea name="page_excerpt" rows="2"><?php echo esc_textarea( $wp_page->post_excerpt ?? '' ); ?></textarea></div>

@@ -194,12 +194,16 @@
     var $target = $($(this).data('slug-target') || '#ah-slug');
     if ($target.data('manual')) return;
     var slug = $(this).val().toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '') // strip special chars
       .trim()
-      .replace(/\s+/g, '-');
+      .replace(/\s+/g, '-')         // spaces → hyphens
+      .replace(/-{2,}/g, '-')       // collapse consecutive hyphens
+      .replace(/^-+|-+$/g, '');     // strip leading/trailing hyphens
     $target.val(slug);
   });
 
+  // When the user manually edits the slug field, lock it so title changes don't overwrite it.
+  // Use the "Unlock to regenerate" link in the form to clear this lock.
   $(document).on('input', '.ah-slug-field', function () {
     $(this).data('manual', true);
   });

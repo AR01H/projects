@@ -323,7 +323,18 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
                   <td><?php echo esc_html( $term->name ); ?><?php if ( ! empty( $term->is_protected ) ) echo ' <span title="System protected" style="cursor:default;">&#128274;</span>'; ?></td>
                   <td><code><?php echo esc_html( $term->slug ); ?></code></td>
                   <td><?php echo esc_html( $t_type->name ?? '-' ); ?></td>
-                  <td><?php echo $pt_obj ? esc_html( ( $pt_obj->icon_emoji ? $pt_obj->icon_emoji . ' ' : '' ) . $pt_obj->name ) : '<small style="opacity:.4;">—</small>'; ?></td>
+                  <td>
+                    <?php if ( $pt_obj ) :
+                      $dot = ! empty( $pt_obj->color ) ? $pt_obj->color : '#94a3b8';
+                    ?>
+                      <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
+                        <span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:<?php echo esc_attr( $dot ); ?>;"></span>
+                        <?php echo esc_html( ( $pt_obj->icon_emoji ? $pt_obj->icon_emoji . ' ' : '' ) . $pt_obj->name ); ?>
+                      </span>
+                    <?php else : ?>
+                      <small style="opacity:.4;">—</small>
+                    <?php endif; ?>
+                  </td>
                   <td><span class="ah-badge ah-badge-<?php echo esc_attr( $term->status ); ?>"><?php echo esc_html( $term->status ); ?></span></td>
                   <td class="row-actions">
                     <?php if ( empty( $term->is_protected ) ) : ?>

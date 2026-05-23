@@ -2,12 +2,24 @@
 
 get_header();
 
-$page_url   = get_permalink();
-$active_cat = sanitize_text_field( $_GET['category'] ?? '' );
-$news_cat   = sanitize_text_field( $_GET['news_cat']  ?? '' );
-$paged      = max( 1, absint( $_GET['pg'] ?? 1 ) );
+$page_url           = get_permalink();
+$active_cat         = sanitize_text_field( $_GET['category']    ?? '' );
+$active_parent_term = sanitize_title(      $_GET['parent_term'] ?? '' );
+$news_cat           = sanitize_text_field( $_GET['news_cat']    ?? '' );
+$paged              = max( 1, absint( $_GET['pg'] ?? 1 ) );
 
-// ── Categories (shared) ───────────────────────────────────────────────────────
+// ── Parent Terms (CMS taxonomy groups — shown as colored filter tabs) ─────────
+$parent_terms = [];
+if ( class_exists( 'AH_DB_Helper' ) ) {
+	global $wpdb;
+	$pt_table     = AH_DB_Helper::table( 'taxonomy_parent_terms' );
+	$parent_terms = $wpdb->get_results(
+		"SELECT id, name, slug, color FROM {$pt_table} WHERE status = 1 ORDER BY name ASC"
+	) ?: [];
+}
+$use_parent_terms = count( $parent_terms ) >= 2;
+
+// ── Categories (fallback for sidebar / news-hero when parent terms not used) ──
 $wp_cats = get_categories( [ 'hide_empty' => true ] );
 
 // ── News posts (hero + side cards) — sticky-aware, separate from guides ───────
@@ -31,6 +43,27 @@ while ( $news_query->have_posts() ) {
 }
 wp_reset_postdata();
 
+// ── Resolve active parent term + child terms (shared by WP_Query and sidebar) ─
+$pt_obj        = null;   // active parent term object
+$child_terms   = [];     // CMS taxonomy term objects (id, slug)
+$pt_child_cats = [];     // WP_Term objects matching child term slugs (sidebar chips)
+if ( $use_parent_terms && $active_parent_term && class_exists( 'AH_DB_Helper' ) ) {
+	foreach ( $parent_terms as $_pt ) {
+		if ( $_pt->slug === $active_parent_term ) { $pt_obj = $_pt; break; }
+	}
+	if ( $pt_obj ) {
+		$_tax_table  = AH_DB_Helper::table( 'taxonomies' );
+		$child_terms = $wpdb->get_results( $wpdb->prepare(
+			"SELECT id, slug FROM {$_tax_table} WHERE parent_term_id = %d AND status = 1",
+			(int) $pt_obj->id
+		) ) ?: [];
+		foreach ( $child_terms as $_ct ) {
+			$_wc = get_term_by( 'slug', $_ct->slug, 'category' );
+			if ( $_wc ) $pt_child_cats[] = $_wc;
+		}
+	}
+}
+
 // ── All posts (guide tiles + brief list) — sticky posts shown once, not at top
 $wp_args = [
 	'post_type'           => 'post',
@@ -41,7 +74,25 @@ $wp_args = [
 	'order'               => 'DESC',
 	'ignore_sticky_posts' => true,
 ];
-if ( $active_cat ) {
+if ( $use_parent_terms && $pt_obj ) {
+	$post_ids = [];
+	if ( $child_terms && class_exists( 'AH_DB_Helper' ) ) {
+		$_ct_table = AH_DB_Helper::table( 'content_taxonomies' );
+		$_ids      = implode( ',', array_map( fn( $t ) => (int) $t->id, $child_terms ) );
+		$post_ids  = $wpdb->get_col(
+			"SELECT DISTINCT object_id FROM {$_ct_table} WHERE object_type = 'post' AND taxonomy_id IN ({$_ids})"
+		) ?: [];
+	}
+	if ( $post_ids ) {
+		$wp_args['post__in'] = array_map( 'intval', $post_ids );
+	} elseif ( $pt_child_cats ) {
+		$wp_args['category__in'] = array_map( fn( $c ) => $c->term_id, $pt_child_cats );
+	} else {
+		$wp_args['post__in'] = [ 0 ];
+	}
+} elseif ( $use_parent_terms && $active_parent_term ) {
+	$wp_args['post__in'] = [ 0 ]; // slug given but no matching DB term
+} elseif ( $active_cat ) {
 	$term = get_term_by( 'slug', $active_cat, 'category' );
 	if ( $term ) $wp_args['cat'] = $term->term_id;
 }
@@ -107,7 +158,18 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       <!-- ══ MAIN CONTENT ════════════════════════════════════════════════════ -->
       <main class="nif-portal-main">
 
-        <?php if ( ! $active_cat && $paged === 1 ) :
+        <?php
+        // ── FILTER BAR — always shown when topics exist ────────────────────
+        get_template_part( 'components/nif-filter-bar', null, [
+          'cats'               => $wp_cats,
+          'active_cat'         => $active_cat,
+          'parent_terms'       => $parent_terms,
+          'active_parent_term' => $active_parent_term,
+          'permalink'          => $page_url,
+        ] );
+        ?>
+
+        <?php if ( ! $active_cat && ! $active_parent_term && $paged === 1 ) :
           // ── PORTAL HOME LAYOUT ─────────────────────────────────────────────
 
           // Featured Guides: big hero card + 3 side cards — only _ah_is_featured posts
@@ -137,11 +199,6 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
 
         else :
           // ── FILTERED / PAGINATED GRID VIEW ────────────────────────────────
-          get_template_part( 'components/nif-filter-bar', null, [
-            'cats'       => $wp_cats,
-            'active_cat' => $active_cat,
-            'permalink'  => $page_url,
-          ] );
         ?>
         <section class="section" style="padding-top:28px" aria-label="<?php esc_attr_e( 'Articles', 'ah-theme' ); ?>">
 
@@ -202,7 +259,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
                 ? esc_html__( 'No posts in this topic yet. Try another category.', 'ah-theme' )
                 : esc_html__( 'We\'re working on great content — check back shortly.', 'ah-theme' ); ?>
             </p>
-            <?php if ( $active_cat ) : ?>
+            <?php if ( $active_cat || $active_parent_term ) : ?>
               <a href="<?php echo esc_url( $page_url ); ?>" class="btn btn-outline" style="margin-top:20px">
                 <?php esc_html_e( 'View All Topics →', 'ah-theme' ); ?>
               </a>
@@ -212,7 +269,9 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
 
           <!-- Pagination — ?pg=X avoids WordPress redirect_canonical intercept -->
           <?php if ( $blog_query->max_num_pages > 1 ) :
-            $pg_base = $active_cat ? add_query_arg( 'category', $active_cat, $page_url ) : $page_url;
+            $pg_base = $active_parent_term
+              ? add_query_arg( 'parent_term', $active_parent_term, $page_url )
+              : ( $active_cat ? add_query_arg( 'category', $active_cat, $page_url ) : $page_url );
             $sep     = strpos( $pg_base, '?' ) !== false ? '&' : '?';
             $links   = paginate_links( [
               'base'      => $pg_base . $sep . 'pg=%#%',
@@ -239,12 +298,16 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       <!-- ══ SIDEBAR ════════════════════════════════════════════════════════ -->
       <aside class="nif-portal-sidebar" aria-label="<?php esc_attr_e( 'Market information and tools', 'ah-theme' ); ?>">
         <?php get_template_part( 'components/nif-sidebar', null, [
-          'site_stats'     => $site_stats,
-          'news_bar_items' => $news_bar_items,
-          'popular_posts'  => $popular_posts,
-          'cats'           => $wp_cats,
-          'active_cat'     => $active_cat,
-          'permalink'      => $page_url,
+          'site_stats'         => $site_stats,
+          'news_bar_items'     => $news_bar_items,
+          'popular_posts'      => $popular_posts,
+          'cats'               => $wp_cats,
+          'active_cat'         => $active_cat,
+          'permalink'          => $page_url,
+          'parent_terms'       => $parent_terms,
+          'active_parent_term' => $active_parent_term,
+          'active_pt_obj'      => $pt_obj,
+          'pt_child_cats'      => $pt_child_cats,
         ] ); ?>
       </aside>
 

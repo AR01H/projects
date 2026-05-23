@@ -108,22 +108,38 @@
 .nif-tile-badge[data-slug*="invest"]  { background: #0a3a3a; }
 .nif-tile-badge[data-slug*="tips"]    { background: var(--accent); }
 
-/* ── Category filter (used in filtered/paginated view) ──────── */
+/* ── Topic filter bar ────────────────────────────────────────── */
 .nif-filter-wrap {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
   position: sticky;
   top: var(--nav-h, 64px);
   z-index: 80;
-  margin-bottom: 0;
+  margin-bottom: 20px;
+}
+.nif-filter-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+}
+.nif-filter-label {
+  font-size: .65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-right: 10px;
+  border-right: 1.5px solid var(--border);
 }
 .nif-filter-bar {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   gap: 6px;
-  padding: 11px 0;
+  padding: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -152,6 +168,60 @@
 }
 .nif-filter-tab--active .nif-filter-tab__count {
   background: rgba(255,255,255,.22); opacity: 1;
+}
+
+/* ── Parent-terms filter bar — underline tab style (matches theme) ─ */
+.nif-filter-bar--pt { gap: 0; }
+
+.nif-filter-bar--pt .nif-filter-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  box-shadow: none;
+}
+.nif-filter-bar--pt .nif-filter-tab:hover {
+  background: var(--gold-50, #fffbeb);
+  border-color: var(--gold-300, #fcd34d);
+  color: var(--accent);
+  box-shadow: none;
+}
+.nif-filter-bar--pt .nif-filter-tab--active {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+  box-shadow: none;
+}
+.nif-filter-bar--pt .nif-filter-tab--active:hover {
+  background: var(--gold-50, #fffbeb);
+  color: var(--accent);
+}
+
+/* Colored topic tabs — underline uses the parent term color */
+.nif-filter-tab--colored {
+  color: var(--pt-color, var(--text-secondary));
+  font-weight: 600;
+}
+.nif-filter-tab--colored:hover {
+  background: color-mix(in srgb, var(--pt-color) 8%, transparent) !important;
+  border-color: var(--pt-color) !important;
+  color: var(--pt-color) !important;
+  box-shadow: none !important;
+}
+.nif-filter-tab--colored-active {
+  background: color-mix(in srgb, var(--pt-color) 10%, transparent) !important;
+  border-color: var(--pt-color) !important;
+  color: var(--pt-color) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+.nif-filter-tab--colored-active:hover {
+  background: color-mix(in srgb, var(--pt-color) 14%, transparent) !important;
+  color: var(--pt-color) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -738,6 +808,83 @@
 }
 .nif-sb-topic:hover { border-color: var(--accent); color: var(--accent); background: var(--gold-50); }
 .nif-sb-topic--active { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+
+/* ── Sidebar Parent-Term List (inside nif-sb-card, theme-native) ── */
+.nif-sb-pt-list { padding: 4px 0; }
+
+.nif-sb-pt-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  transition: background .15s, color .15s, border-left-color .15s;
+}
+.nif-sb-pt-row:hover {
+  background: var(--bg-alt);
+  color: var(--ptc, var(--accent));
+  border-left-color: var(--ptc, var(--accent));
+}
+/* All Topics row — uses accent when active */
+.nif-sb-pt-row--all-active {
+  color: var(--accent);
+  background: var(--gold-50, #fffbeb);
+  border-left-color: var(--accent);
+}
+/* Open parent term row */
+.nif-sb-pt-item--open > .nif-sb-pt-row {
+  color: var(--ptc, var(--accent));
+  background: var(--gold-50, #fffbeb);
+  border-left-color: var(--ptc, var(--accent));
+}
+.nif-sb-pt-item:last-child > .nif-sb-pt-row { border-bottom: none; }
+
+.nif-sb-pt-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.nif-sb-pt-name { flex: 1; }
+.nif-sb-pt-arrow { font-size: .78rem; color: var(--text-muted); flex-shrink: 0; }
+
+/* Child list */
+.nif-sb-pt-children {
+  background: var(--bg-alt, #f8fafc);
+  border-left: 3px solid var(--ptc, var(--accent));
+  border-bottom: 1px solid var(--border);
+  padding: 2px 0;
+}
+.nif-sb-pt-child {
+  display: block;
+  padding: 7px 16px 7px 28px;
+  font-size: .81rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color .15s, background .15s, padding-left .15s;
+}
+.nif-sb-pt-child:last-child { border-bottom: none; }
+.nif-sb-pt-child:hover {
+  background: var(--surface);
+  color: var(--ptc, var(--accent));
+  padding-left: 34px;
+}
+.nif-sb-pt-child--active {
+  color: var(--ptc, var(--accent));
+  font-weight: 700;
+  background: var(--surface);
+}
+.nif-sb-pt-child--empty {
+  display: block;
+  padding: 10px 16px 10px 28px;
+  font-size: .79rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
 .nif-sb-topic[data-slug*="buying"]:hover  { border-color: #16a34a; color: #16a34a; }
 .nif-sb-topic[data-slug*="finance"]:hover { border-color: #7c3aed; color: #7c3aed; }
 

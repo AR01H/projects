@@ -99,7 +99,8 @@ class AH_Theme_Admin {
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 
 		require_once get_template_directory() . '/mock_data/seeder.php';
-		$result = AH_Theme_Seeder::seed_all();
+		$selected = isset( $_POST['seed_types'] ) ? array_map( 'sanitize_key', (array) $_POST['seed_types'] ) : [];
+		$result   = $selected ? AH_Theme_Seeder::seed_selected( $selected ) : AH_Theme_Seeder::seed_all();
 
 		$msg = 'Mock data installed: ' . $result['inserted'] . ' inserted, ' . $result['updated'] . ' updated, ' . ( $result['skipped'] ?? 0 ) . ' skipped (already existed).';
 		if ( ! empty( $result['errors'] ) ) $msg .= ' Notes: ' . implode( '; ', $result['errors'] );

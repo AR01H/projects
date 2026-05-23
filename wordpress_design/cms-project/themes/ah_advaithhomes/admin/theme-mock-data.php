@@ -72,32 +72,56 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
           <br><span style="color:#d97706">⚠️ CMS plugin not active - taxonomy seeding and plugin table data will be skipped.</span>
         <?php endif; ?>
       </p>
-      <ul style="font-size:.82rem;color:#475569;margin:0 0 20px 16px;line-height:1.8">
-        <?php
-        $content_csvs = [
-          'blog-posts'     => 'Blog posts',
-          'client-stories' => 'Client stories',
-          'reviews'        => 'Reviews',
-          'services'       => 'Services',
-          'team'           => 'Team members',
-          'faqs'           => 'FAQs',
-          'news-bar'       => 'News bar items',
-          'properties'     => 'Featured properties',
-        ];
-        foreach ( $content_csvs as $csv => $label ) :
-          $n = $csv_counts[ $csv ];
-          $icon = $n > 0 ? '<span style="color:#16a34a">✓</span>' : '<span style="color:#dc2626">✗ empty - will skip</span>';
-        ?>
-          <li><?php echo wp_kses_post( $icon ); ?> <?php echo esc_html( $label ); ?>: <?php echo $n > 0 ? esc_html( $n . ' rows' ) : '-'; ?></li>
-        <?php endforeach; ?>
-      </ul>
-      <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+      <?php
+      $content_csvs = [
+        'blog-posts'     => 'Blog posts',
+        'client-stories' => 'Client stories',
+        'reviews'        => 'Reviews',
+        'services'       => 'Services',
+        'team'           => 'Team members',
+        'faqs'           => 'FAQs',
+        'news-bar'       => 'News bar items',
+        'properties'     => 'Featured properties',
+      ];
+      ?>
+      <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="ah-seed-form">
         <?php wp_nonce_field( 'ah_theme_seed' ); ?>
         <input type="hidden" name="action" value="ah_theme_seed">
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:.78rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Select data to import</span>
+          <span style="font-size:.78rem;">
+            <a href="#" style="color:#b7791f;text-decoration:none;" onclick="document.querySelectorAll('#ah-seed-form input[type=checkbox]:not(:disabled)').forEach(c=>c.checked=true);return false;">All</a>
+            &nbsp;/&nbsp;
+            <a href="#" style="color:#b7791f;text-decoration:none;" onclick="document.querySelectorAll('#ah-seed-form input[type=checkbox]:not(:disabled)').forEach(c=>c.checked=false);return false;">None</a>
+          </span>
+        </div>
+
+        <ul style="list-style:none;margin:0 0 16px;padding:0;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;">
+          <?php foreach ( $content_csvs as $csv => $label ) :
+            $n       = $csv_counts[ $csv ];
+            $has_csv = $n > 0;
+          ?>
+            <li style="border-bottom:1px solid #f1f5f9;last-child{border:none}">
+              <label style="display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:<?php echo $has_csv ? 'pointer' : 'default'; ?>;<?php echo ! $has_csv ? 'opacity:.45;' : ''; ?>">
+                <input type="checkbox" name="seed_types[]" value="<?php echo esc_attr( $csv ); ?>"
+                       <?php echo $has_csv ? 'checked' : 'disabled'; ?>
+                       style="width:15px;height:15px;accent-color:#b7791f;flex-shrink:0;">
+                <span style="flex:1;font-size:.82rem;color:#374151;"><?php echo esc_html( $label ); ?></span>
+                <?php if ( $has_csv ) : ?>
+                  <span style="font-size:.75rem;color:#16a34a;white-space:nowrap;">✓ <?php echo esc_html( $n ); ?> rows</span>
+                <?php else : ?>
+                  <span style="font-size:.75rem;color:#dc2626;white-space:nowrap;">✗ empty</span>
+                <?php endif; ?>
+              </label>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+
         <button type="submit" class="button button-primary button-hero"
                 style="width:100%;padding:10px;font-size:.95rem"
-                onclick="return confirm('Install all mock data from CSVs? Duplicates will be skipped automatically.')">
-          📦 Install Mock Data
+                onclick="var checked=document.querySelectorAll('#ah-seed-form input[type=checkbox]:checked').length;if(!checked){alert('Please select at least one item to import.');return false;}return confirm('Import selected mock data? Duplicates will be skipped automatically.');">
+          📦 Install Selected
         </button>
       </form>
     </div>
