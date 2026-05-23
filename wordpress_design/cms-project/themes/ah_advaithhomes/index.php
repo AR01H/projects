@@ -1,40 +1,64 @@
 <?php
 get_header();
-
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
-	'eyebrow'    => 'All the latest',
-	'title'      => 'Blogs',
-	'title_em'   => 'Announcements',
-	'desc'       => 'Discover the latest insights, market trends, and expert advice on real estate investing. Our blog is your go-to resource for staying informed and making smart investment decisions.',
-	'badge'      => '',
+	'eyebrow'    => 'Insights & Expertise',
+	'title'      => 'The ' . CLIENT_FULL_TITLE,
+	'title_em'   => 'Blog',
+	'desc'       => 'Practical advice from buyer\'s agents – market insights, step-by-step guides, and everything you need to buy smarter.',
 	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'Blog', '' ] ],
 ] ); ?>
 
-<main class="container" style="padding-top:var(--section-py);padding-bottom:var(--section-py)">
-  <?php if ( have_posts() ) : ?>
-    <div class="post-grid">
-      <?php while ( have_posts() ) : the_post(); ?>
-        <article class="post-card">
-          <?php if ( has_post_thumbnail() ) : ?>
-            <a href="<?php the_permalink(); ?>" class="post-card__img-wrap">
-              <?php the_post_thumbnail( 'ah-card' ); ?>
-            </a>
-          <?php endif; ?>
-          <div class="post-card__body">
-            <h2 class="post-card__title">
-              <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+<section class="section" aria-label="Blog posts">
+  <div class="container">
+    <?php if ( have_posts() ) : ?>
+      <div class="post-grid">
+        <?php while ( have_posts() ) : the_post();
+          $post_url   = get_permalink();
+          $post_title = get_the_title();
+          $cats       = get_the_category();
+          $thumb_url  = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'ah-card' ) : '';
+        ?>
+        <article class="blog-card" data-aos="fade-up">
+          <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__img-wrap" tabindex="-1" aria-hidden="true">
+            <?php if ( $thumb_url ) : ?>
+            <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $post_title ); ?>" class="blog-card__img" loading="lazy">
+            <?php else : ?>
+            <div class="blog-card__img-placeholder">✍️</div>
+            <?php endif; ?>
+          </a>
+          <div class="blog-card__body">
+            <div class="blog-card__top">
+              <?php if ( $cats ) : ?>
+              <span class="blog-card__cat"><?php echo esc_html( $cats[0]->name ); ?></span>
+              <?php else : ?><span></span><?php endif; ?>
+            </div>
+            <div class="blog-card__meta">
+              <span><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
+            </div>
+            <h2 class="blog-card__title">
+              <a href="<?php echo esc_url( $post_url ); ?>"><?php the_title(); ?></a>
             </h2>
-            <p class="post-card__excerpt"><?php echo esc_html( ah_excerpt() ); ?></p>
-            <a href="<?php the_permalink(); ?>" class="btn btn-sm btn-outline">Read more →</a>
+            <p class="blog-card__excerpt">
+              <?php echo esc_html( wp_trim_words( get_the_excerpt(), 18, '…' ) ); ?>
+            </p>
+            <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__read-btn">
+              <?php echo esc_html( AH_LABEL_READ_MORE ); ?> <span aria-hidden="true">→</span>
+            </a>
           </div>
         </article>
-      <?php endwhile; ?>
+        <?php endwhile; ?>
+      </div>
+      <?php ah_pagination(); ?>
+    <?php else : ?>
+    <div class="text-center" style="padding:80px 24px">
+      <div style="font-size:3.5rem;margin-bottom:16px">✍️</div>
+      <h2 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:12px">No posts yet</h2>
+      <p style="color:var(--text-secondary)">We're working on something great – check back soon.</p>
     </div>
-    <?php ah_pagination(); ?>
-  <?php else : ?>
-    <p><?php esc_html_e( 'No posts found.', 'ah-theme' ); ?></p>
-  <?php endif; ?>
-</main>
+    <?php endif; ?>
+  </div>
+</section>
+
 <?php get_footer(); ?>

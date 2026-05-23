@@ -116,7 +116,7 @@ $story_img_url = $story && $story->image_id ? ( wp_get_attachment_image_url( (in
             <div class="ah-form-row">
               <label>Story Image</label>
               <div class="ah-image-picker">
-                <img src="<?php echo esc_url( $story_img_url ); ?>" class="ah-image-preview <?php echo $story_img_url ? 'visible' : ''; ?>" alt="" style="width:100%;height:160px;">
+                <img src="<?php echo esc_url( $story_img_url ); ?>" class="ah-image-preview <?php echo $story_img_url ? 'visible' : ''; ?>" alt="" style="width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;">
                 <div class="ah-image-picker-btns">
                   <input type="hidden" class="ah-image-id" name="image_id" value="<?php echo esc_attr( $story->image_id ?? 0 ); ?>">
                   <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>

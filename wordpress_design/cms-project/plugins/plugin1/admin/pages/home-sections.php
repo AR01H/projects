@@ -136,7 +136,7 @@ $sections = array(
             <div class="ah-form-row">
               <label>Hero Image (Right side)</label>
               <div class="ah-image-picker">
-                <img src="<?php echo esc_url( $hero_img ); ?>" class="ah-image-preview <?php echo $hero_img ? 'visible' : ''; ?>" alt="" style="width:100%;height:180px;">
+                <img src="<?php echo esc_url( $hero_img ); ?>" class="ah-image-preview <?php echo $hero_img ? 'visible' : ''; ?>" alt="" style="width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;">
                 <div class="ah-image-picker-btns">
                   <input type="hidden" class="ah-image-id" name="image_id" value="<?php echo esc_attr( $hero->image_id ?? 0 ); ?>">
                   <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>
@@ -202,7 +202,7 @@ $sections = array(
             <div class="ah-form-row">
               <label>Image (Left Side)</label>
               <div class="ah-image-picker">
-                <img src="<?php echo esc_url( $guide_img ); ?>" class="ah-image-preview <?php echo $guide_img ? 'visible' : ''; ?>" alt="" style="width:100%;height:160px;">
+                <img src="<?php echo esc_url( $guide_img ); ?>" class="ah-image-preview <?php echo $guide_img ? 'visible' : ''; ?>" alt="" style="width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;">
                 <div class="ah-image-picker-btns">
                   <input type="hidden" class="ah-image-id" name="image_id" value="<?php echo esc_attr( $guide->image_id ?? 0 ); ?>">
                   <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>

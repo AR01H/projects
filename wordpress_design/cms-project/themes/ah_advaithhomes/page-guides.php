@@ -70,10 +70,12 @@ $guides_query = new WP_Query( $query_args );
         $guides_query->the_post();
       ?>
       <?php
-        $cats      = get_the_category();
-        $cat_name  = $cats ? $cats[0]->name : '';
+        $cats     = get_the_category();
+        $cat0     = $cats ? $cats[0] : null;
+        $cat_name = $cat0 ? $cat0->name : '';
+        $cat_slug = $cat0 ? $cat0->slug : '';
       ?>
-      <a href="<?php the_permalink(); ?>" class="gc" data-aos="fade-up">
+      <a href="<?php the_permalink(); ?>" class="gc" data-cat="<?php echo esc_attr( $cat_slug ); ?>" data-aos="fade-up">
         <?php if ( has_post_thumbnail() ) : ?>
           <?php the_post_thumbnail( 'ah-card', [ 'class' => 'gc__img' ] ); ?>
         <?php else : ?>

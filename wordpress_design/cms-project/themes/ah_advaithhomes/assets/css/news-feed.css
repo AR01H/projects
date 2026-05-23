@@ -383,7 +383,7 @@
 
 .nif-news-card__img-wrap {
   position: relative; display: block;
-  height: 140px; overflow: hidden;
+  aspect-ratio: 16/9; height: auto; overflow: hidden;
   background: var(--bg-alt);
 }
 .nif-news-card__img-wrap img {
@@ -804,7 +804,7 @@
 .nif-grid-card[data-cat*="legal"]   { border-top: 3px solid #1a1a4a; }
 .nif-grid-card[data-cat*="invest"]  { border-top: 3px solid #0a3a3a; }
 .nif-grid-card[data-cat*="tips"]    { border-top: 3px solid var(--accent); }
-.nif-grid-card__img { height: 190px; overflow: hidden; background: var(--bg-alt); flex-shrink: 0; }
+.nif-grid-card__img { aspect-ratio: 16/9; height: auto; overflow: hidden; background: var(--bg-alt); flex-shrink: 0; }
 .nif-grid-card__img a { display: block; height: 100%; }
 .nif-grid-card__img img {
   width: 100%; height: 100%; object-fit: cover; display: block;

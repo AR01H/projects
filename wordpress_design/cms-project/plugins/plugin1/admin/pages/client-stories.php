@@ -119,7 +119,7 @@ $videos  = $page_id ? $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$cs_v
           <div class="ah-form-row">
             <label>Image *</label>
             <div class="ah-image-picker">
-              <img src="" class="ah-image-preview" alt="" style="width:100%;height:100px;">
+              <img src="" class="ah-image-preview" alt="" style="width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;">
               <div class="ah-image-picker-btns">
                 <input type="hidden" class="ah-image-id" name="gallery_image_id" value="0">
                 <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>
