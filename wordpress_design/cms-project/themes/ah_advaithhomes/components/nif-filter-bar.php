@@ -32,11 +32,13 @@ $all_active = $use_parent_terms ? ! $active_parent_term : ! $active_cat;
       <span class="nif-filter-label"><?php esc_html_e( 'Topics', 'ah-theme' ); ?></span>
       <nav class="nif-filter-bar<?php echo $use_parent_terms ? ' nif-filter-bar--pt' : ''; ?>" role="tablist" aria-label="<?php esc_attr_e( 'Filter by topic', 'ah-theme' ); ?>">
 
+      <?php if ( ! $use_parent_terms ) : ?>
       <a href="<?php echo esc_url( $permalink ); ?>"
          class="nif-filter-tab<?php echo $all_active ? ' nif-filter-tab--active' : ''; ?>"
          role="tab" aria-selected="<?php echo $all_active ? 'true' : 'false'; ?>">
         <?php esc_html_e( 'All', 'ah-theme' ); ?>
       </a>
+      <?php endif; ?>
 
       <?php if ( $use_parent_terms ) : ?>
 

@@ -77,20 +77,77 @@
 }
 
 /* ── Article / Prose ──────────────────────────────────────────────────────── */
-.prose {
+/* .prose-content = lightweight version usable anywhere (news cards, pages, etc.) */
+.prose,
+.prose-content {
 	font-size: 1rem;
 	line-height: 1.85;
 	color: var(--text-secondary);
 }
-.prose h2, .prose h3, .prose h4 { color: var(--text-primary); margin-top: 2em; margin-bottom: .6em; }
-.prose h2 { font-size: 1.6rem; }
-.prose h3 { font-size: 1.25rem; }
-.prose p  { margin-bottom: 1.2em; }
-.prose ul, .prose ol { padding-left: 1.5em; margin-bottom: 1.2em; }
-.prose li { margin-bottom: .4em; }
-.prose ul li { list-style: disc; }
-.prose ol li { list-style: decimal; }
-.prose blockquote {
+.prose h2, .prose h3, .prose h4,
+.prose-content h2, .prose-content h3, .prose-content h4 { color: var(--text-primary); margin-top: 1.6em; margin-bottom: .5em; }
+.prose h2, .prose-content h2 { font-size: 1.6rem; }
+.prose h3, .prose-content h3 { font-size: 1.25rem; }
+.prose p, .prose-content p  { margin-bottom: 1.2em; }
+/* Lists */
+.prose ul, .prose ol,
+.prose-content ul, .prose-content ol {
+	padding-left: 0;
+	margin-bottom: 1.25em;
+	list-style: none;
+}
+.prose ul ul, .prose ul ol,
+.prose ol ul, .prose ol ol,
+.prose-content ul ul, .prose-content ul ol,
+.prose-content ol ul, .prose-content ol ol {
+	margin-top: .4em;
+	margin-bottom: .4em;
+}
+.prose li, .prose-content li {
+	position: relative;
+	padding-left: 1.5em;
+	margin-bottom: .55em;
+	color: var(--text-secondary);
+	line-height: 1.7;
+}
+/* UL — gold accent dot */
+.prose ul > li::before,
+.prose-content ul > li::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: .58em;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--accent);
+	flex-shrink: 0;
+}
+/* Nested UL — hollow dot */
+.prose ul ul > li::before,
+.prose-content ul ul > li::before {
+	background: transparent;
+	border: 1.5px solid var(--accent);
+}
+/* OL — bold accent counter */
+.prose ol,
+.prose-content ol { counter-reset: prose-ol; }
+.prose ol > li,
+.prose-content ol > li { counter-increment: prose-ol; }
+.prose ol > li::before,
+.prose-content ol > li::before {
+	content: counter(prose-ol) '.';
+	position: absolute;
+	left: 0;
+	top: 0;
+	font-size: .8rem;
+	font-weight: 700;
+	color: var(--accent);
+	line-height: 1.9;
+	min-width: 1.2em;
+}
+.prose blockquote,
+.prose-content blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 16px 20px;
 	margin: 1.5em 0;
@@ -99,13 +156,108 @@
 	font-style: italic;
 	color: var(--text-primary);
 }
-.prose strong { font-weight: 700; color: var(--text-primary); }
-.prose a      { color: var(--accent); text-decoration: underline; }
-.prose a:hover { opacity: .8; }
-.prose img    { border-radius: var(--r-md); margin-block: 1.5em; }
-.prose table  { width: 100%; border-collapse: collapse; margin-block: 1.5em; font-size: .9rem; }
-.prose th, .prose td { padding: 10px 16px; border: 1px solid var(--border); text-align: left; }
-.prose th { background: var(--bg-alt); font-weight: 600; }
+.prose strong, .prose-content strong { font-weight: 700; color: var(--text-primary); }
+.prose a, .prose-content a      { color: var(--accent); text-decoration: underline; }
+.prose a:hover, .prose-content a:hover { opacity: .8; }
+.prose img, .prose-content img  { border-radius: var(--r-md); margin-block: 1.5em; max-width: 100%; height: auto; }
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL CONTENT STYLES — tables, iframes, embeds
+   Applied via .prose-table-wrap / .prose-embed classes that
+   the_content filter injects on ALL post/page content.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Responsive table wrapper ──────────────────────────────────────────────── */
+.prose-table-wrap {
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	margin-block: 1.5em;
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--border);
+	box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.prose-table-wrap table { margin: 0; }
+
+/* All content tables (inside .prose, .prose-content, or .prose-table-wrap) */
+.prose table,
+.prose-content table,
+.prose-table-wrap table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: .88rem;
+}
+.prose > table,
+.prose-content > table { margin-block: 1.5em; border: 1px solid var(--border); }
+
+.prose th, .prose td,
+.prose-content th, .prose-content td,
+.prose-table-wrap th, .prose-table-wrap td {
+	padding: 10px 16px;
+	border-bottom: 1px solid var(--border);
+	border-right: 1px solid var(--border);
+	text-align: left;
+	vertical-align: top;
+	line-height: 1.55;
+}
+.prose th:last-child, .prose td:last-child,
+.prose-content th:last-child, .prose-content td:last-child,
+.prose-table-wrap th:last-child, .prose-table-wrap td:last-child { border-right: none; }
+
+/* Header */
+.prose th,
+.prose-content th,
+.prose-table-wrap th {
+	background: var(--accent);
+	color: var(--surface);
+	font-size: .74rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .05em;
+	border-bottom-color: rgba(0,0,0,.2);
+	white-space: nowrap;
+}
+/* Zebra */
+.prose tbody tr:nth-child(even) td,
+.prose-content tbody tr:nth-child(even) td,
+.prose-table-wrap tbody tr:nth-child(even) td { background: var(--bg-alt, #f8fafc); }
+/* Row hover */
+.prose tbody tr:hover td,
+.prose-content tbody tr:hover td,
+.prose-table-wrap tbody tr:hover td { background: var(--gold-50, #fffbeb); color: var(--text-primary); }
+/* Last row */
+.prose tbody tr:last-child td,
+.prose-content tbody tr:last-child td,
+.prose-table-wrap tbody tr:last-child td { border-bottom: none; }
+
+/* ── Responsive embed (16:9) ───────────────────────────────────────────────── */
+.prose-embed {
+	position: relative;
+	width: 100%;
+	padding-bottom: 56.25%;
+	height: 0;
+	margin-block: 1.5em;
+	border-radius: var(--radius-sm);
+	overflow: hidden;
+	background: #1e293b;
+}
+.prose-embed iframe {
+	position: absolute;
+	top: 0; left: 0;
+	width: 100% !important;
+	height: 100% !important;
+	border: 0;
+}
+/* Bare iframe not inside .prose-embed */
+.prose iframe,
+.prose-content iframe {
+	max-width: 100%;
+	border: 0;
+	border-radius: var(--radius-sm);
+	display: block;
+	margin-block: 1.5em;
+}
+
 .prose code {
 	background: var(--bg-alt);
 	border: 1px solid var(--border);

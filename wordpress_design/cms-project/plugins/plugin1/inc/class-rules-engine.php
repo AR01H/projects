@@ -21,10 +21,17 @@ class AH_Rules_Engine {
 		return $wpdb->prefix . 'ah_rules';
 	}
 
+	public static function logs_table(): string {
+		global $wpdb;
+		return $wpdb->prefix . 'ah_trigger_logs';
+	}
+
 	public static function install_tables(): void {
 		global $wpdb;
-		$t  = self::table();
 		$cs = $wpdb->get_charset_collate();
+
+		// Rules table
+		$t = self::table();
 		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$t}` (
 			`id`               INT UNSIGNED      NOT NULL AUTO_INCREMENT,
 			`name`             VARCHAR(200)      NOT NULL DEFAULT '',
@@ -37,7 +44,38 @@ class AH_Rules_Engine {
 			`last_run`         DATETIME          DEFAULT NULL,
 			`created_at`       DATETIME          NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
-		) ENGINE=InnoDB {$cs}" );
+		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+		// Trigger logs table — also created by AH_DB_Installer but install_tables()
+		// is called on every admin page load so we guard with IF NOT EXISTS.
+		if ( class_exists( 'AH_DB_Installer' ) ) {
+			AH_DB_Installer::ensure_trigger_logs();
+		} else {
+			$lg = self::logs_table();
+			$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$lg}` (
+				`id`            BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+				`rule_id`       INT UNSIGNED     NOT NULL,
+				`trigger_name`  VARCHAR(100)     NOT NULL,
+				`context_data`  JSON             DEFAULT NULL,
+				`action_index`  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+				`action_type`   VARCHAR(50)      NOT NULL DEFAULT '',
+				`action_config` JSON             DEFAULT NULL,
+				`status`        ENUM('pending','sent','failed','unsent') NOT NULL DEFAULT 'pending',
+				`is_done`       TINYINT(1)       NOT NULL DEFAULT 0,
+				`is_unsent`     TINYINT(1)       NOT NULL DEFAULT 0,
+				`attempts`      TINYINT UNSIGNED NOT NULL DEFAULT 0,
+				`error_message` TEXT             DEFAULT NULL,
+				`sent_at`       DATETIME         DEFAULT NULL,
+				`failed_at`     DATETIME         DEFAULT NULL,
+				`created_at`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_rule`    (`rule_id`),
+				KEY `idx_status`  (`status`),
+				KEY `idx_trigger` (`trigger_name`),
+				KEY `idx_done`    (`is_done`),
+				KEY `idx_unsent`  (`is_unsent`)
+			) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	// ── CRUD ─────────────────────────────────────────────────────────────────
@@ -129,14 +167,71 @@ class AH_Rules_Engine {
 
 		foreach ( $rows as $rule ) {
 			$rule = self::decode( $rule );
-			if ( self::conditions_pass( $rule, $context ) ) {
-				self::run_actions( $rule->actions, $context );
-				$wpdb->query( $wpdb->prepare(
-					"UPDATE `" . self::table() . "` SET run_count = run_count + 1, last_run = %s WHERE id = %d",
-					current_time( 'mysql' ),
-					$rule->id
-				) );
+			if ( ! self::conditions_pass( $rule, $context ) ) continue;
+
+			foreach ( $rule->actions as $idx => $action ) {
+				self::run_action_logged( $rule, $idx, $action, $context );
 			}
+
+			$wpdb->query( $wpdb->prepare(
+				"UPDATE `" . self::table() . "` SET run_count = run_count + 1, last_run = %s WHERE id = %d",
+				current_time( 'mysql' ),
+				(int) $rule->id
+			) );
+		}
+	}
+
+	/**
+	 * Execute a single action and write a row to ah_trigger_logs.
+	 * Skips execution if a pending/failed log entry for this rule+action was
+	 * previously marked is_unsent = 1 by an admin.
+	 */
+	private static function run_action_logged( object $rule, int $idx, array $action, array $context ): void {
+		global $wpdb;
+		$lg = self::logs_table();
+
+		// Check whether admin has pre-cancelled this rule+action_index pair
+		$cancelled = (int) $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM `{$lg}` WHERE rule_id = %d AND action_index = %d AND is_unsent = 1 AND is_done = 0 LIMIT 1",
+			(int) $rule->id, $idx
+		) );
+		if ( $cancelled ) return;
+
+		// Insert a pending log entry
+		$wpdb->insert( $lg, array(
+			'rule_id'       => (int) $rule->id,
+			'trigger_name'  => $rule->trigger_name,
+			'context_data'  => wp_json_encode( $context ),
+			'action_index'  => $idx,
+			'action_type'   => $action['type'] ?? '',
+			'action_config' => wp_json_encode( $action ),
+			'status'        => 'pending',
+			'attempts'      => 0,
+		) );
+		$log_id = (int) $wpdb->insert_id;
+
+		// Execute
+		$error = null;
+		try {
+			self::run_actions( array( $action ), $context );
+		} catch ( \Throwable $e ) {
+			$error = $e->getMessage();
+		}
+
+		// Update log entry
+		if ( $error ) {
+			$wpdb->update( $lg, array(
+				'status'        => 'failed',
+				'attempts'      => 1,
+				'error_message' => $error,
+				'failed_at'     => current_time( 'mysql' ),
+			), array( 'id' => $log_id ) );
+		} else {
+			$wpdb->update( $lg, array(
+				'status'  => 'sent',
+				'is_done' => 1,
+				'sent_at' => current_time( 'mysql' ),
+			), array( 'id' => $log_id ) );
 		}
 	}
 
@@ -390,13 +485,14 @@ class AH_Rules_Engine {
 
 	public static function trigger_presets(): array {
 		return array(
-			'form_submit'    => 'Form Submission (built-in)',
-			'user_signup'    => 'User Signup',
-			'order_placed'   => 'Order Placed',
-			'order_paid'     => 'Order Paid',
-			'appointment'    => 'Appointment Booked',
-			'lead_created'   => 'Lead Created',
-			'custom'         => 'Custom (define your own)',
+			'contact_submitted' => 'Contact Form Submitted',
+			'form_submit'       => 'Form Submission (built-in)',
+			'user_signup'       => 'User Signup',
+			'order_placed'      => 'Order Placed',
+			'order_paid'        => 'Order Paid',
+			'appointment'       => 'Appointment Booked',
+			'lead_created'      => 'Lead Created',
+			'custom'            => 'Custom (define your own)',
 		);
 	}
 }

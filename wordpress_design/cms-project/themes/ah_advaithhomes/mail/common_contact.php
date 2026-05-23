@@ -13,67 +13,45 @@ defined( 'ABSPATH' ) || exit;
 add_action( 'wp_ajax_ah_theme_form_submit',        'ah_handle_form_submit' );
 add_action( 'wp_ajax_nopriv_ah_theme_form_submit', 'ah_handle_form_submit' );
 
-// ── Direct DB save (no plugin model dependency) ───────────────────────────────
+// ── Direct DB save — uses the plugin's contact_form_submissions table ─────────
 function ah_save_submission( array $data ): int {
 	global $wpdb;
-	$table = $wpdb->prefix . 'ah_contact_form_submissions';
 
-	// Create table if missing
-	if ( $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %s AND table_name = %s",
-		DB_NAME, $table
-	) ) === '0' ) {
-		$charset = $wpdb->get_charset_collate();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$table}` (
-			id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-			full_name       VARCHAR(255)    NOT NULL DEFAULT '',
-			email           VARCHAR(255)    NOT NULL DEFAULT '',
-			phone           VARCHAR(100)    NOT NULL DEFAULT '',
-			subject         VARCHAR(500)    NOT NULL DEFAULT '',
-			message         LONGTEXT        NOT NULL,
-			enquiry_type    VARCHAR(100)    NOT NULL DEFAULT 'general',
-			short_quote     VARCHAR(500)    NOT NULL DEFAULT '',
-			attachment_path VARCHAR(1000)   NOT NULL DEFAULT '',
-			attachment_name VARCHAR(255)    NOT NULL DEFAULT '',
-			email_sent      TINYINT(1)      NOT NULL DEFAULT 0,
-			email_sent_at   DATETIME                 DEFAULT NULL,
-			status          VARCHAR(50)     NOT NULL DEFAULT 'new',
-			is_read         TINYINT(1)      NOT NULL DEFAULT 0,
-			admin_notes     LONGTEXT                 DEFAULT NULL,
-			ip_address      VARCHAR(100)    NOT NULL DEFAULT '',
-			page_url        VARCHAR(2000)   NOT NULL DEFAULT '',
-			user_agent      VARCHAR(500)    NOT NULL DEFAULT '',
-			submitted_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (id)
-		) {$charset};" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	// Use same table name resolution as the plugin (AH_DB_Helper::table if available)
+	$table = class_exists( 'AH_DB_Helper' )
+		? AH_DB_Helper::table( 'contact_form_submissions' )
+		: $wpdb->prefix . 'ah_contact_form_submissions';
+
+	// Table schema (plugin-owned): id, full_name, email, phone, subject,
+	// message, page_url, user_agent, ip_address, admin_notes, is_read, status, submitted_at
+	$inserted = $wpdb->insert(
+		$table,
+		[
+			'full_name'   => $data['full_name']   ?? '',
+			'email'       => $data['email']        ?? '',
+			'phone'       => $data['phone']        ?? '',
+			'subject'     => $data['subject']      ?? '',
+			'short_quote' => $data['short_quote']  ?? '',
+			'message'     => $data['message']      ?? '',
+			'page_url'    => $data['page_url']     ?? '',
+			'user_agent'  => $data['user_agent']   ?? '',
+			'ip_address'  => $data['ip_address']   ?? '',
+			'is_read'     => 0,
+			'status'      => 'new',
+		],
+		[ '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s' ]
+	);
+
+	if ( ! $inserted ) {
+		error_log( 'ah_save_submission DB error [' . $table . ']: ' . $wpdb->last_error );
+		return 0;
 	}
 
-	$inserted = $wpdb->insert( $table, [
-		'full_name'       => $data['full_name']       ?? '',
-		'email'           => $data['email']            ?? '',
-		'phone'           => $data['phone']            ?? '',
-		'subject'         => $data['subject']          ?? '',
-		'message'         => $data['message']          ?? '',
-		'enquiry_type'    => $data['enquiry_type']     ?? 'general',
-		'short_quote'     => $data['short_quote']      ?? '',
-		'attachment_path' => $data['attachment_path']  ?? '',
-		'attachment_name' => $data['attachment_name']  ?? '',
-		'email_sent'      => 0,
-		'status'          => 'new',
-		'is_read'         => 0,
-		'ip_address'      => $data['ip_address']       ?? '',
-		'page_url'        => $data['page_url']         ?? '',
-		'user_agent'      => $data['user_agent']       ?? '',
-		'submitted_at'    => current_time( 'mysql' ),
-	] );
-
-	return $inserted ? (int) $wpdb->insert_id : 0;
+	return (int) $wpdb->insert_id;
 }
 
 function ah_update_submission_email_sent( int $id ): void {
-	global $wpdb;
-	$table = $wpdb->prefix . 'ah_contact_form_submissions';
-	$wpdb->update( $table, [ 'email_sent' => 1, 'email_sent_at' => current_time( 'mysql' ) ], [ 'id' => $id ] ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	// email_sent / email_sent_at columns are not in the plugin-owned table — no-op.
 }
 
 function ah_handle_form_submit(): void {
@@ -134,50 +112,6 @@ function ah_process_contact_form(): void {
 		wp_send_json_error( [ 'message' => 'Please fix the errors below.', 'errors' => $errors ] );
 	}
 
-	// ── File upload ───────────────────────────────────────────────────────────
-	$attachment_path  = '';
-	$attachment_name  = '';
-	$email_attachment = ''; // filesystem path for wp_mail attachment
-
-	if ( ! empty( $_FILES['attachment']['name'] ) && $_FILES['attachment']['error'] !== UPLOAD_ERR_NO_FILE ) {
-		$file        = $_FILES['attachment'];
-		$allowed_ext = [ 'pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png' ];
-		$ext         = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
-
-		if ( $file['error'] !== UPLOAD_ERR_OK ) {
-			wp_send_json_error( [ 'message' => 'File upload error. Please try again.' ] );
-		}
-		if ( ! in_array( $ext, $allowed_ext, true ) ) {
-			wp_send_json_error( [ 'message' => 'File type not allowed. Accepted: PDF, DOC, DOCX, JPG, PNG.' ] );
-		}
-		if ( $file['size'] > 2 * 1024 * 1024 ) {
-			wp_send_json_error( [ 'message' => 'File exceeds the 2 MB limit.' ] );
-		}
-
-		$upload_dir = wp_upload_dir();
-		$dest_dir   = $upload_dir['basedir'] . '/ah-contact/';
-		wp_mkdir_p( $dest_dir );
-		$real_dest  = realpath( $dest_dir );
-
-		if ( ! $real_dest ) {
-			wp_send_json_error( [ 'message' => 'Upload directory unavailable. Please contact us directly.' ] );
-		}
-
-		$safe_name = uniqid( 'ahc_', true ) . '.' . $ext;
-		$dest_file = $real_dest . DIRECTORY_SEPARATOR . $safe_name;
-
-		// Path traversal guard (belt-and-braces - uniqid makes this moot but policy requires it)
-		if ( strpos( $dest_file, $real_dest ) !== 0 ) {
-			wp_send_json_error( [ 'message' => 'Invalid file path.' ] );
-		}
-
-		if ( move_uploaded_file( $file['tmp_name'], $dest_file ) ) {
-			$attachment_path  = $upload_dir['baseurl'] . '/ah-contact/' . $safe_name;
-			$attachment_name  = sanitize_file_name( $file['name'] );
-			$email_attachment = $dest_file;
-		}
-	}
-
 	// ── Email routing by enquiry type ─────────────────────────────────────────
 	$type_routes = [
 		'general'   => 'general@advaithhomes.com',
@@ -219,10 +153,6 @@ function ah_process_contact_form(): void {
 				: '' ) . "
 			<tr><td style='padding:8px;font-weight:700;vertical-align:top'>Message</td>
 			    <td style='padding:8px'>" . nl2br( esc_html( $message ) ) . "</td></tr>
-			" . ( $attachment_name
-				? "<tr><td style='padding:8px;font-weight:700;vertical-align:top'>Attachment</td>
-				       <td style='padding:8px'>" . esc_html( $attachment_name ) . " (see attached)</td></tr>"
-				: '' ) . "
 			<tr><td style='padding:8px;font-weight:700;vertical-align:top'>Page</td>
 			    <td style='padding:8px'>" . esc_html( $page_url ?: '-' ) . "</td></tr>
 		</table>"
@@ -230,23 +160,19 @@ function ah_process_contact_form(): void {
 
 	// ── 1. Save to DB first ───────────────────────────────────────────────────
 	$submission_id = ah_save_submission( [
-		'full_name'       => $name,
-		'email'           => $email,
-		'phone'           => $phone,
-		'subject'         => $subj,
-		'message'         => $message,
-		'enquiry_type'    => $enquiry_type,
-		'short_quote'     => $short_quote,
-		'attachment_path' => $attachment_path,
-		'attachment_name' => $attachment_name,
-		'ip_address'      => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
-		'page_url'        => $page_url,
-		'user_agent'      => $user_agent,
+		'full_name'   => $name,
+		'email'       => $email,
+		'phone'       => $phone,
+		'subject'     => $subj,
+		'short_quote' => $short_quote,
+		'message'     => $message,
+		'page_url'    => $page_url,
+		'user_agent'  => $user_agent,
+		'ip_address'  => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
 	] );
 
 	// ── 2. Try to send email (non-blocking) ───────────────────────────────────
-	$mail_attachments = $email_attachment ? [ $email_attachment ] : [];
-	$sent             = wp_mail( $to, $subj, $body, $headers, $mail_attachments );
+	$sent = wp_mail( $to, $subj, $body, $headers );
 
 	if ( $sent ) {
 		ah_send_auto_reply( $email, $name, 'contact' );
@@ -272,7 +198,14 @@ function ah_process_contact_form(): void {
 	if ( $submission_id ) {
 		wp_send_json_success( [ 'message' => "Thank you, {$name}! We'll be in touch within 24 hours." ] );
 	} else {
-		wp_send_json_error( [ 'message' => 'Your message could not be saved. Please try calling us directly.' ] );
+		global $wpdb;
+		$db_err = $wpdb->last_error;
+		// Show DB detail in WP_DEBUG mode so you can diagnose; hide in production
+		$user_msg = 'Your message could not be saved. Please try calling us directly.';
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$user_msg .= ' [DB: ' . $db_err . ']';
+		}
+		wp_send_json_error( [ 'message' => $user_msg ] );
 	}
 }
 

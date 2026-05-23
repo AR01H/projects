@@ -35,15 +35,16 @@ $faqs     = ah_get_faqs( 6 );
             Fill in the form and we'll confirm a time within 24 hours.
           </p>
 
-          <form data-ah-form="contact" class="ah-form" enctype="multipart/form-data" novalidate>
+          <form data-ah-form="contact" class="ah-form" novalidate>
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="cf-name">Full Name <span aria-hidden="true">*</span></label>
                 <input id="cf-name" name="name" type="text" class="form-input" placeholder="Jane Smith" required>
+                <span class="form-error"></span>
               </div>
               <div class="form-group">
-                <label class="form-label" for="cf-type">Enquiry Type <span aria-hidden="true">*</span></label>
-                <select id="cf-type" name="enquiry_type" class="form-input form-select" required>
+                <label class="form-label" for="cf-type">Enquiry Type</label>
+                <select id="cf-type" name="enquiry_type" class="form-input form-select">
                   <option value="">Select type…</option>
                   <option value="general">General</option>
                   <option value="complaint">Complaint</option>
@@ -59,6 +60,7 @@ $faqs     = ah_get_faqs( 6 );
               <div class="form-group">
                 <label class="form-label" for="cf-email">Email Address <span aria-hidden="true">*</span></label>
                 <input id="cf-email" name="email" type="email" class="form-input" placeholder="jane@example.com" required>
+                <span class="form-error"></span>
               </div>
               <div class="form-group">
                 <label class="form-label" for="cf-phone">Phone Number</label>
@@ -75,11 +77,7 @@ $faqs     = ah_get_faqs( 6 );
               <label class="form-label" for="cf-message">Message <span aria-hidden="true">*</span></label>
               <textarea id="cf-message" name="message" class="form-input form-textarea" rows="4"
                         placeholder="Tell us more - timeline, requirements, anything helpful…" required></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="cf-attachment">Attach a File <span style="color:var(--text-secondary);font-weight:400">(optional - PDF, DOC, DOCX, JPG, PNG · max 2 MB)</span></label>
-              <input id="cf-attachment" name="attachment" type="file" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+              <span class="form-error"></span>
             </div>
 
             <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;font-size:.875rem">
@@ -142,7 +140,7 @@ $faqs     = ah_get_faqs( 6 );
         </div>
 
         <!-- Google Map -->
-        <?php $map_url = $settings['map_embed_url'] ?? ''; ?>
+        <?php $map_url = $settings['google_maps_url'] ?? ''; ?>
         <?php if ( $map_url ) : ?>
         <div class="contact-map" data-aos="fade-up" data-delay="200">
           <iframe

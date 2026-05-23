@@ -60,7 +60,8 @@ select.form-control {
 	color: #dc2626;
 }
 
-.form-control.has-error { border-color: #dc2626; }
+.form-control.has-error,
+.form-input.has-error { border-color: #dc2626; }
 
 /* ── Checkbox / Radio ─────────────────────────────────────────────────────── */
 .form-check { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; cursor: pointer; }

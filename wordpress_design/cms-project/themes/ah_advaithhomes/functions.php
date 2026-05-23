@@ -91,3 +91,76 @@ add_action( 'pre_get_posts', function ( $query ) {
 		$query->set( 'posts_per_page', 12 );
 	}
 } );
+
+// ── Allow iframes in post content ────────────────────────────────────────────
+// WordPress strips iframes by default via wp_kses_post. Adding them here lets
+// editors embed YouTube/maps/etc. without switching to code view and losing them on save.
+add_filter( 'wp_kses_allowed_html', function ( array $tags, string $context ) : array {
+	if ( $context === 'post' ) {
+		$tags['iframe'] = [
+			'src'             => true,
+			'width'           => true,
+			'height'          => true,
+			'frameborder'     => true,
+			'allow'           => true,
+			'allowfullscreen' => true,
+			'allowpaymentrequest' => true,
+			'loading'         => true,
+			'title'           => true,
+			'name'            => true,
+			'id'              => true,
+			'class'           => true,
+			'style'           => true,
+			'sandbox'         => true,
+			'referrerpolicy'  => true,
+		];
+	}
+	return $tags;
+}, 10, 2 );
+
+// ── Shared content formatter — tables, iframes, YouTube URLs ─────────────────
+// Call ah_format_content() anywhere raw HTML needs the same treatment.
+function ah_format_content( string $content ) : string {
+	if ( empty( $content ) ) return $content;
+
+	if ( strpos( $content, '<iframe' ) !== false ) {
+		// Convert youtu.be short links
+		$content = preg_replace_callback(
+			'/(<iframe[^>]*\ssrc=")https?:\/\/youtu\.be\/([A-Za-z0-9_\-]+)([^"]*?)(")/i',
+			fn( $m ) => $m[1] . 'https://www.youtube.com/embed/' . $m[2] . $m[3] . $m[4],
+			$content
+		);
+		// Convert youtube.com/watch?v= links
+		$content = preg_replace_callback(
+			'/(<iframe[^>]*\ssrc=")https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([A-Za-z0-9_\-]+)([^"]*?)(")/i',
+			fn( $m ) => $m[1] . 'https://www.youtube.com/embed/' . $m[2] . $m[3] . $m[4],
+			$content
+		);
+		// Wrap in responsive .prose-embed container
+		$content = preg_replace_callback(
+			'/<iframe[^>]*>[\s\S]*?<\/iframe>/i',
+			fn( $m ) => '<div class="prose-embed">' . $m[0] . '</div>',
+			$content
+		);
+		// Fix accidental double-wrap
+		$content = preg_replace(
+			'/<div class="prose-embed">\s*<div class="prose-embed">([\s\S]*?<\/iframe>)\s*<\/div>\s*<\/div>/i',
+			'<div class="prose-embed">$1</div>',
+			$content
+		);
+	}
+
+	// Wrap tables in horizontally-scrollable container
+	if ( strpos( $content, '<table' ) !== false && strpos( $content, 'prose-table-wrap' ) === false ) {
+		$content = preg_replace_callback(
+			'/<table[\s\S]*?<\/table>/i',
+			fn( $m ) => '<div class="prose-table-wrap">' . $m[0] . '</div>',
+			$content
+		);
+	}
+
+	return $content;
+}
+
+// Hook the shared formatter into the standard WordPress content filter
+add_filter( 'the_content', 'ah_format_content' );

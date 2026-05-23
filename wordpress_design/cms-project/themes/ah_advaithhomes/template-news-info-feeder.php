@@ -75,20 +75,31 @@ $wp_args = [
 	'ignore_sticky_posts' => true,
 ];
 if ( $use_parent_terms && $pt_obj ) {
-	$post_ids = [];
-	if ( $child_terms && class_exists( 'AH_DB_Helper' ) ) {
-		$_ct_table = AH_DB_Helper::table( 'content_taxonomies' );
-		$_ids      = implode( ',', array_map( fn( $t ) => (int) $t->id, $child_terms ) );
-		$post_ids  = $wpdb->get_col(
-			"SELECT DISTINCT object_id FROM {$_ct_table} WHERE object_type = 'post' AND taxonomy_id IN ({$_ids})"
-		) ?: [];
-	}
-	if ( $post_ids ) {
-		$wp_args['post__in'] = array_map( 'intval', $post_ids );
-	} elseif ( $pt_child_cats ) {
-		$wp_args['category__in'] = array_map( fn( $c ) => $c->term_id, $pt_child_cats );
+	if ( $active_cat ) {
+		// Specific child category selected — narrow to that WP category only
+		$_specific = get_term_by( 'slug', $active_cat, 'category' );
+		if ( $_specific ) {
+			$wp_args['cat'] = $_specific->term_id;
+		} else {
+			$wp_args['post__in'] = [ 0 ];
+		}
 	} else {
-		$wp_args['post__in'] = [ 0 ];
+		// Whole parent term — show all posts across child categories
+		$post_ids = [];
+		if ( $child_terms && class_exists( 'AH_DB_Helper' ) ) {
+			$_ct_table = AH_DB_Helper::table( 'content_taxonomies' );
+			$_ids      = implode( ',', array_map( fn( $t ) => (int) $t->id, $child_terms ) );
+			$post_ids  = $wpdb->get_col(
+				"SELECT DISTINCT object_id FROM {$_ct_table} WHERE object_type = 'post' AND taxonomy_id IN ({$_ids})"
+			) ?: [];
+		}
+		if ( $post_ids ) {
+			$wp_args['post__in'] = array_map( 'intval', $post_ids );
+		} elseif ( $pt_child_cats ) {
+			$wp_args['category__in'] = array_map( fn( $c ) => $c->term_id, $pt_child_cats );
+		} else {
+			$wp_args['post__in'] = [ 0 ];
+		}
 	}
 } elseif ( $use_parent_terms && $active_parent_term ) {
 	$wp_args['post__in'] = [ 0 ]; // slug given but no matching DB term
@@ -158,16 +169,6 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       <!-- ══ MAIN CONTENT ════════════════════════════════════════════════════ -->
       <main class="nif-portal-main">
 
-        <?php
-        // ── FILTER BAR — always shown when topics exist ────────────────────
-        get_template_part( 'components/nif-filter-bar', null, [
-          'cats'               => $wp_cats,
-          'active_cat'         => $active_cat,
-          'parent_terms'       => $parent_terms,
-          'active_parent_term' => $active_parent_term,
-          'permalink'          => $page_url,
-        ] );
-        ?>
 
         <?php if ( ! $active_cat && ! $active_parent_term && $paged === 1 ) :
           // ── PORTAL HOME LAYOUT ─────────────────────────────────────────────

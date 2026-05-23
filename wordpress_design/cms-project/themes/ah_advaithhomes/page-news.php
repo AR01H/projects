@@ -160,8 +160,8 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
 
           <!-- Expandable detail -->
           <?php if ( $content ) : ?>
-          <div class="nc4__detail" id="<?php echo esc_attr( $card_id . '-detail' ); ?>" hidden>
-            <?php echo wp_kses_post( $content ); ?>
+          <div class="nc4__detail prose-content" id="<?php echo esc_attr( $card_id . '-detail' ); ?>" hidden>
+            <?php echo ah_format_content( wp_kses_post( $content ) ); ?>
             <?php if ( $url ) : ?>
               <a href="<?php echo esc_url( $url ); ?>"
                  target="<?php echo esc_attr( $target ); ?>"
@@ -349,10 +349,9 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
   padding: 0 16px 18px 120px;
   border-top: 1px solid var(--border, #f1f5f9);
 }
-.nc4__detail h2, .nc4__detail h3 { font-size: .9rem; font-weight: 700; color: var(--text); margin: 14px 0 6px; }
+.nc4__detail { font-size: .875rem; }
+.nc4__detail h2, .nc4__detail h3 { font-size: .95rem; font-weight: 700; color: var(--text-primary); margin: 14px 0 6px; }
 .nc4__detail p  { margin: 0 0 .6em; }
-.nc4__detail ul { padding-left: 1.25em; margin: 0 0 .6em; }
-.nc4__detail li { margin-bottom: .3em; }
 
 @media (max-width: 500px) {
   .nc4__detail { padding-left: 16px; }
