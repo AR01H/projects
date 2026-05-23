@@ -24,6 +24,8 @@ class AH_Ajax_Handlers {
 			'ah_db_health_check',
 			'ah_clear_form_submissions',
 			'ah_rebuild_schema',
+			// Posts quick-edit
+			'ah_quick_save_post_meta',
 		);
 		foreach ( $actions as $action ) {
 			add_action( 'wp_ajax_' . $action, array( __CLASS__, str_replace( 'ah_', 'handle_', $action ) ) );
@@ -571,5 +573,28 @@ class AH_Ajax_Handlers {
 		}
 
 		wp_send_json_success( array( 'message' => $message, 'redirect' => $redirect ) );
+	}
+
+	// -------------------------------------------------------------------------
+	// ah_quick_save_post_meta — save Featured, Tags, CMS Taxonomy from list quick-edit
+	// -------------------------------------------------------------------------
+	public static function handle_quick_save_post_meta() {
+		self::verify();
+
+		$post_id = (int) ( $_POST['post_id'] ?? 0 );
+		if ( ! $post_id ) wp_send_json_error( array( 'message' => 'Missing post ID.' ) );
+		if ( ! current_user_can( 'edit_post', $post_id ) ) wp_send_json_error( array( 'message' => 'Unauthorized.' ), 403 );
+
+		update_post_meta( $post_id, '_ah_is_featured',  ! empty( $_POST['is_featured'] )  ? '1' : '0' );
+		update_post_meta( $post_id, '_ah_is_popular',   ! empty( $_POST['is_popular'] )   ? '1' : '0' );
+		update_post_meta( $post_id, '_ah_is_suggested', ! empty( $_POST['is_suggested'] ) ? '1' : '0' );
+
+		if ( class_exists( 'AH_Content_Taxonomy_Model' ) ) {
+			$taxonomy_ids = array_map( 'intval', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
+			( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', $post_id, $taxonomy_ids );
+		}
+
+		AH_DB_Helper::log_action( 'update', 'posts', $post_id, array( 'action' => 'quick_edit' ) );
+		wp_send_json_success( array( 'message' => 'Saved.' ) );
 	}
 }

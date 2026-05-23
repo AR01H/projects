@@ -367,6 +367,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_custom_editor_no
 	else delete_post_thumbnail( $post_id );
 	update_post_meta( $post_id, '_ah_sections', wp_slash( wp_json_encode( $sections ) ) );
 	update_post_meta( $post_id, '_ah_editor_mode', 'custom' );
+	update_post_meta( $post_id, '_ah_is_featured',  ! empty( $_POST['is_featured'] )  ? '1' : '0' );
+	update_post_meta( $post_id, '_ah_is_popular',   ! empty( $_POST['is_popular'] )   ? '1' : '0' );
+	update_post_meta( $post_id, '_ah_is_suggested', ! empty( $_POST['is_suggested'] ) ? '1' : '0' );
 
 	AH_Admin_Bootstrap::redirect( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $post_id, 'saved' => 1 ], admin_url( 'admin.php' ) ) );
 }
@@ -521,6 +524,9 @@ if ( $action === 'edit-custom' ) {
   $feat_img_url   = $feat_img_id ? wp_get_attachment_image_url( $feat_img_id, 'medium' ) : '';
   $all_cats       = get_categories( [ 'hide_empty' => false ] );
   $pub_date_raw   = $post->post_status === 'future' ? $post->post_date : '';
+  $is_featured    = (bool) get_post_meta( $edit_id, '_ah_is_featured', true );
+  $is_popular     = (bool) get_post_meta( $edit_id, '_ah_is_popular', true );
+  $is_suggested   = (bool) get_post_meta( $edit_id, '_ah_is_suggested', true );
 
   $wp_edit_url    = get_edit_post_link( $edit_id );
   $section_count  = count( $saved_sections );
@@ -602,6 +608,23 @@ if ( $action === 'edit-custom' ) {
             <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Publish Date <small style="font-weight:400;opacity:.65;">(leave blank for now)</small></label>
             <input type="datetime-local" name="post_date" value="<?php echo esc_attr( $pub_date_raw ); ?>" style="width:100%;box-sizing:border-box;">
           </div>
+        </div>
+
+        <!-- Post Settings -->
+        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
+          <h4 style="margin:0 0 10px;font-size:.9rem;">Post Settings</h4>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;font-weight:600;margin-bottom:6px;">
+            <input type="checkbox" name="is_featured" value="1" <?php checked( $is_featured ); ?>>
+            ⭐ Featured Post
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;font-weight:600;margin-bottom:6px;">
+            <input type="checkbox" name="is_popular" value="1" <?php checked( $is_popular ); ?>>
+            🔥 Popular Post
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;font-weight:600;">
+            <input type="checkbox" name="is_suggested" value="1" <?php checked( $is_suggested ); ?>>
+            💡 Suggested Post
+          </label>
         </div>
 
         <!-- Categories -->
@@ -974,15 +997,22 @@ if ( $action === 'edit-custom' ) {
           <tr><th>Title</th><th>WP Categories</th><th>CMS Terms</th><th>Status</th><th>Editor</th><th>Author</th><th>Modified</th><th>Actions</th></tr>
         </thead>
         <tbody>
-          <?php foreach ( $posts_list as $p ) :
+          <?php
+          $qe_tax_model  = class_exists( 'AH_Content_Taxonomy_Model' ) ? new AH_Content_Taxonomy_Model() : null;
+          $qe_tax_groups = $qe_tax_model ? $qe_tax_model->get_active_terms_grouped() : [];
+          foreach ( $posts_list as $p ) :
             $cats        = get_the_category( $p->ID );
             $author      = get_the_author_meta( 'display_name', $p->post_author );
             $editor_mode = get_post_meta( $p->ID, '_ah_editor_mode', true ) ?: 'gutenberg';
             $edit_url    = $editor_mode === 'custom'
               ? add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $p->ID ], admin_url( 'admin.php' ) )
               : get_edit_post_link( $p->ID );
-            $badge  = [ 'publish' => 'active', 'draft' => 'draft', 'private' => 'inactive', 'pending' => 'draft' ];
-            $label  = [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ];
+            $badge       = [ 'publish' => 'active', 'draft' => 'draft', 'private' => 'inactive', 'pending' => 'draft' ];
+            $label       = [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ];
+            $qe_term_ids   = $qe_tax_model ? $qe_tax_model->get_term_ids( 'wp_post', (int) $p->ID ) : [];
+            $qe_is_feat    = (bool) get_post_meta( $p->ID, '_ah_is_featured', true );
+            $qe_is_popular = (bool) get_post_meta( $p->ID, '_ah_is_popular', true );
+            $qe_is_sug     = (bool) get_post_meta( $p->ID, '_ah_is_suggested', true );
           ?>
             <tr>
               <td>
@@ -999,11 +1029,76 @@ if ( $action === 'edit-custom' ) {
               <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $p->post_modified ) ) ); ?></small></td>
               <td class="row-actions">
                 <a href="<?php echo esc_url( $edit_url ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
+                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-open" data-id="<?php echo esc_attr( $p->ID ); ?>">Edit Meta</button>
                 <?php if ( $p->post_status === 'publish' ) : ?>
                   <a href="<?php echo esc_url( get_permalink( $p->ID ) ); ?>" target="_blank" class="ah-btn ah-btn-secondary ah-btn-sm">View</a>
                 <?php endif; ?>
                 <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'page' => 'ah-posts', 'trash_id' => $p->ID ], admin_url( 'admin.php' ) ), 'ah_trash_post' ) ); ?>"
                    class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Move to trash?');">Trash</a>
+              </td>
+            </tr>
+            <tr class="ah-qe-row" id="ah-qe-<?php echo esc_attr( $p->ID ); ?>" style="display:none;">
+              <td colspan="8" style="padding:0;background:#f8faff;border-bottom:2px solid var(--ah-primary,#1e40af);">
+                <div style="padding:14px 20px 16px;border-top:2px solid var(--ah-primary,#1e40af);">
+                  <!-- Header -->
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ah-primary,#1e40af);background:#e8efff;padding:2px 8px;border-radius:4px;">Meta</span>
+                      <strong style="font-size:.88rem;color:#1e293b;"><?php echo esc_html( wp_trim_words( $p->post_title ?: '(no title)', 8 ) ); ?></strong>
+                    </div>
+                    <button type="button" class="ah-qe-close ah-btn ah-btn-secondary ah-btn-sm" data-id="<?php echo esc_attr( $p->ID ); ?>">✕ Close</button>
+                  </div>
+                  <!-- Body: Flags + Taxonomy -->
+                  <div style="display:grid;grid-template-columns:160px 1fr;gap:20px;align-items:start;">
+                    <!-- Flags -->
+                    <div style="background:#fff;border:1px solid #dde6f5;border-radius:8px;padding:12px 14px;">
+                      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:10px;">Post Flags</div>
+                      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.84rem;padding:5px 0;border-bottom:1px solid #f1f5f9;">
+                        <input type="checkbox" class="ah-qe-featured" <?php checked( $qe_is_feat ); ?> style="width:14px;height:14px;accent-color:#f59e0b;">
+                        <span>⭐ Featured</span>
+                      </label>
+                      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.84rem;padding:5px 0;border-bottom:1px solid #f1f5f9;">
+                        <input type="checkbox" class="ah-qe-popular" <?php checked( $qe_is_popular ); ?> style="width:14px;height:14px;accent-color:#ef4444;">
+                        <span>🔥 Popular</span>
+                      </label>
+                      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.84rem;padding:5px 0;">
+                        <input type="checkbox" class="ah-qe-suggested" <?php checked( $qe_is_sug ); ?> style="width:14px;height:14px;accent-color:#3b82f6;">
+                        <span>💡 Suggested</span>
+                      </label>
+                    </div>
+                    <!-- CMS Taxonomy Terms -->
+                    <div>
+                      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:10px;">CMS Taxonomy Terms</div>
+                      <?php if ( ! empty( $qe_tax_groups ) ) : ?>
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+                        <?php foreach ( $qe_tax_groups as $grp ) : ?>
+                          <?php if ( empty( $grp['items'] ) ) continue; ?>
+                          <div>
+                            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#94a3b8;margin-bottom:5px;"><?php echo esc_html( $grp['label'] ); ?></div>
+                            <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                              <?php foreach ( $grp['items'] as $term ) :
+                                $checked = in_array( (int) $term->id, $qe_term_ids, true );
+                              ?>
+                                <label style="display:inline-flex;align-items:center;gap:4px;font-size:.78rem;padding:3px 10px;border:1px solid <?php echo $checked ? '#4f7cf5' : '#d1dae8'; ?>;border-radius:20px;cursor:pointer;background:<?php echo $checked ? '#e8efff' : '#fff'; ?>;color:<?php echo $checked ? '#1a49c4' : 'inherit'; ?>;user-select:none;transition:all .12s;" class="ah-qe-chip">
+                                  <input type="checkbox" class="ah-qe-term" value="<?php echo esc_attr( $term->id ); ?>" <?php checked( $checked ); ?> style="margin:0;display:none;">
+                                  <?php echo esc_html( $term->name ); ?>
+                                </label>
+                              <?php endforeach; ?>
+                            </div>
+                          </div>
+                        <?php endforeach; ?>
+                        </div>
+                      <?php else : ?>
+                        <p style="font-size:.82rem;color:#94a3b8;margin:0;">No taxonomy terms yet — <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ); ?>">add some →</a></p>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                  <!-- Footer actions -->
+                  <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #e2ecf9;padding-top:12px;">
+                    <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-close" data-id="<?php echo esc_attr( $p->ID ); ?>">Cancel</button>
+                    <button type="button" class="ah-btn ah-btn-primary ah-btn-sm ah-qe-save" data-id="<?php echo esc_attr( $p->ID ); ?>">Save Changes</button>
+                  </div>
+                </div>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -1022,4 +1117,54 @@ if ( $action === 'edit-custom' ) {
   <?php endif; ?>
 
 <?php endif; ?>
+
+<script>
+(function($){
+  $(document).on('click', '.ah-qe-open', function() {
+    var id = $(this).data('id');
+    $('.ah-qe-row').not('#ah-qe-' + id).hide();
+    $('#ah-qe-' + id).toggle();
+  });
+  $(document).on('click', '.ah-qe-close', function() {
+    $('#ah-qe-' + $(this).data('id')).hide();
+  });
+  /* Chip toggle: click label → toggle checkbox + restyle */
+  $(document).on('click', '.ah-qe-chip', function(e) {
+    e.preventDefault();
+    var $chip = $(this), $cb = $chip.find('.ah-qe-term');
+    var checked = !$cb.prop('checked');
+    $cb.prop('checked', checked);
+    $chip.css({
+      background: checked ? '#e8efff' : '#fff',
+      border:     '1px solid ' + (checked ? '#4f7cf5' : '#d1dae8'),
+      color:      checked ? '#1a49c4' : ''
+    });
+  });
+  $(document).on('click', '.ah-qe-save', function() {
+    var $btn = $(this), id = $btn.data('id'), $row = $('#ah-qe-' + id);
+    var taxIds = [];
+    $row.find('.ah-qe-term:checked').each(function() { taxIds.push($(this).val()); });
+    $btn.text('Saving…').prop('disabled', true);
+    $.post(ahAdmin.ajaxUrl, {
+      action:       'ah_quick_save_post_meta',
+      nonce:        ahAdmin.nonce,
+      post_id:      id,
+      is_featured:  $row.find('.ah-qe-featured').is(':checked')  ? 1 : 0,
+      is_popular:   $row.find('.ah-qe-popular').is(':checked')   ? 1 : 0,
+      is_suggested: $row.find('.ah-qe-suggested').is(':checked') ? 1 : 0,
+      taxonomy_ids: taxIds
+    }, function(res) {
+      if (res.success) {
+        window.location.reload();
+      } else {
+        alert('Error: ' + (res.data && res.data.message ? res.data.message : 'Save failed.'));
+        $btn.text('Save Changes').prop('disabled', false);
+      }
+    }).fail(function() {
+      alert('Network error. Please try again.');
+      $btn.text('Save Changes').prop('disabled', false);
+    });
+  });
+})(jQuery);
+</script>
 </div>

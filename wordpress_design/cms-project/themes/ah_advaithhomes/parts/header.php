@@ -56,17 +56,19 @@ $nav_cta = ah_get_nav_cta();
 							<div class="nav__dropdown-menu" role="menu">
 								<?php foreach ( (array) $item['submenu'] as $sub_item ) : ?>
 									<?php $sub_item = is_object( $sub_item ) ? (array) $sub_item : (array) $sub_item; ?>
-									<a href="<?php echo esc_url( $sub_item['url'] ?? '#' ); ?>" class="nav__dropdown-item" role="menuitem"
-										<?php if ( ! empty( $sub_item['highlight'] ) ) echo 'style="background:var(--bg-alt);border-radius:8px"'; ?>>
-										<div class="nav__dropdown-item-icon" <?php if ( ! empty( $sub_item['highlight'] ) ) echo 'style="background:var(--accent);color:white"'; ?>>
-											<?php echo esc_html( $sub_item['icon'] ?? '' ); ?>
+									<?php $is_hl = ! empty( $sub_item['highlight'] ); ?>
+									<a href="<?php echo esc_url( $sub_item['url'] ?? '#' ); ?>" class="nav__dropdown-item" role="menuitem">
+										<?php if ( ! empty( $sub_item['icon'] ) ) : ?>
+										<div class="nav__dropdown-item-icon"<?php if ( $is_hl ) echo ' style="background:var(--accent);color:#fff"'; ?>>
+											<?php echo esc_html( $sub_item['icon'] ); ?>
 										</div>
+										<?php endif; ?>
 										<div>
-											<div style="font-weight:<?php echo ! empty( $sub_item['highlight'] ) ? 700 : 600; ?>;color:<?php echo ! empty( $sub_item['highlight'] ) ? 'var(--accent)' : 'var(--slate-800)'; ?>;font-size:.85rem">
+											<div class="nav__ddi-label<?php echo $is_hl ? ' nav__ddi-label--accent' : ''; ?>">
 												<?php echo esc_html( $sub_item['label'] ?? '' ); ?>
 											</div>
 											<?php if ( ! empty( $sub_item['description'] ) ) : ?>
-												<div style="font-size:.78rem;color:var(--text-muted);margin-top:2px"><?php echo esc_html( $sub_item['description'] ); ?></div>
+												<div class="nav__ddi-desc"><?php echo esc_html( $sub_item['description'] ); ?></div>
 											<?php endif; ?>
 										</div>
 									</a>

@@ -36,7 +36,7 @@
   border-bottom: 2px solid var(--border);
 }
 .nif-section-label--primary {
-  font-size: .72rem; font-weight: 800; letter-spacing: .1em;
+  font-size: .72rem; font-weight: bolder; letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--accent);
 }
@@ -101,10 +101,10 @@
 }
 
 /* Category color map for tile badges */
-.nif-tile-badge[data-slug*="buying"]  { background: #1a6b3a; }
-.nif-tile-badge[data-slug*="first"]   { background: #1a4060; }
-.nif-tile-badge[data-slug*="finance"] { background: #5a1a6a; }
-.nif-tile-badge[data-slug*="legal"]   { background: #1a1a4a; }
+.nif-tile-badge[data-slug*="buy"]  { background: #1a6b3a; }
+.nif-tile-badge[data-slug*="sel"]   { background: #1a4060; }
+.nif-tile-badge[data-slug*="fin"] { background: #5a1a6a; }
+.nif-tile-badge[data-slug*="tip"]   { background: #1a1a4a; }
 .nif-tile-badge[data-slug*="invest"]  { background: #0a3a3a; }
 .nif-tile-badge[data-slug*="tips"]    { background: var(--accent); }
 
@@ -628,12 +628,12 @@
 
 .nif-sb-card {
   background: var(--surface);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   overflow: hidden;
 }
 .nif-sb-card__header {
-  padding: 13px 16px 11px;
+  padding: 6px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-alt);
 }
@@ -649,7 +649,6 @@
 .nif-sb-card--stats .nif-sb-card__header { background: var(--gold-50); border-bottom-color: var(--gold-200); }
 
 /* Flash Updates */
-.nif-sb-card--flash { border-left: 3px solid var(--accent); }
 .nif-sb-card--flash .nif-sb-card__header { background: var(--gold-50); border-bottom-color: var(--gold-200); }
 
 .nif-sb-flash {

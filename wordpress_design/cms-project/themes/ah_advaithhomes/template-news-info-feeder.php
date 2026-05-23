@@ -58,9 +58,21 @@ $site_stats     = ah_get_site_stats();
 $news_bar_items = function_exists( 'ah_get_news_bar_items' ) ? ah_get_news_bar_items() : [];
 $popular_posts  = get_posts( [
 	'posts_per_page' => 5,
-	'orderby'        => 'comment_count',
-	'order'          => 'DESC',
 	'post_status'    => 'publish',
+	'orderby'        => 'date',
+	'order'          => 'DESC',
+	'meta_key'       => '_ah_is_popular',
+	'meta_value'     => '1',
+] );
+
+// ── Featured posts (top "Featured Guides" section) ───────────────────────────
+$featured_posts = get_posts( [
+	'posts_per_page' => 4,
+	'post_status'    => 'publish',
+	'orderby'        => 'date',
+	'order'          => 'DESC',
+	'meta_key'       => '_ah_is_featured',
+	'meta_value'     => '1',
 ] );
 
 // ── Post data helper (shared across all NIF components in this request) ───────
@@ -98,10 +110,10 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <?php if ( ! $active_cat && $paged === 1 ) :
           // ── PORTAL HOME LAYOUT ─────────────────────────────────────────────
 
-          // Latest News: big hero card + 3 side cards (with category chip filter)
+          // Featured Guides: big hero card + 3 side cards — only _ah_is_featured posts
           get_template_part( 'components/nif-news-hero', null, [
-            'posts'     => $news_posts,
-            'eyebrow'   => __( 'Guides', 'ah-theme' ),
+            'posts'     => $featured_posts,
+            'eyebrow'   => __( 'Featured Guides', 'ah-theme' ),
             'see_all'   => home_url( '/guides/' ),
             'cats'      => $wp_cats,
             'news_cat'  => $news_cat,
@@ -240,22 +252,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
   </div><!-- /.container -->
 </div><!-- /.nif-portal-bg -->
 
-<!-- ── CTA ──────────────────────────────────────────────────────────────────── -->
-<section class="section section--pattern" aria-label="<?php esc_attr_e( 'Free consultation', 'ah-theme' ); ?>">
-  <div class="container container--sm">
-    <div class="newsletter-block text-center" data-aos="fade-up">
-      <span class="section__eyebrow"><?php esc_html_e( 'Free Advice', 'ah-theme' ); ?></span>
-      <h2 class="section__title" style="font-size:1.75rem;margin-bottom:12px">
-        <?php esc_html_e( 'Ready to talk strategy?', 'ah-theme' ); ?>
-      </h2>
-      <p style="color:var(--text-secondary);margin-bottom:28px">
-        <?php esc_html_e( "Book a free 30-minute call with a buyer's agent. No commitment, no sales pitch — just practical guidance.", 'ah-theme' ); ?>
-      </p>
-      <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary">
-        <?php esc_html_e( 'Contact Us→', 'ah-theme' ); ?>
-      </a>
-    </div>
-  </div>
-</section>
+
+<?php get_template_part( 'components/cta-section' ); ?>
 
 <?php get_footer(); ?>

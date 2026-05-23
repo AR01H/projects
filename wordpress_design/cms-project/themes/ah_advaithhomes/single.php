@@ -145,46 +145,81 @@ $crumbs[] = [ get_the_title(), '' ];
 <?php endwhile; ?>
 
 <?php
-// ── Related Articles — same-category first, pad with recent if < 3 ──────────
+// ── Related Articles — 1 suggested first, rest random same-cat, pad if < 3 ───
 $_current_cat_ids = wp_get_post_categories( get_the_ID() );
-$_related = get_posts( [
-  'numberposts'  => 3,
+
+// 1 suggested post from same category (random pick if multiple)
+$_suggested = get_posts( [
+  'numberposts'  => 1,
   'category__in' => $_current_cat_ids,
   'post__not_in' => [ get_the_ID() ],
   'post_status'  => 'publish',
-  'orderby'      => 'date',
-  'order'        => 'DESC',
+  'orderby'      => 'rand',
+  'meta_key'     => '_ah_is_suggested',
+  'meta_value'   => '1',
 ] );
+
+// Fill remaining slots with random posts from same category
+$_excl = array_merge( [ get_the_ID() ], wp_list_pluck( $_suggested, 'ID' ) );
+$_rand_cat = get_posts( [
+  'numberposts'  => 3 - count( $_suggested ),
+  'category__in' => $_current_cat_ids,
+  'post__not_in' => $_excl,
+  'post_status'  => 'publish',
+  'orderby'      => 'rand',
+] );
+
+$_related = array_merge( $_suggested, $_rand_cat );
+
+// Pad with random posts from any category if still under 3
 if ( count( $_related ) < 3 ) {
-  $_have = [ get_the_ID(), ...wp_list_pluck( $_related, 'ID' ) ];
+  $_have = array_merge( [ get_the_ID() ], wp_list_pluck( $_related, 'ID' ) );
   $_pad  = get_posts( [
     'numberposts'  => 3 - count( $_related ),
     'post__not_in' => $_have,
     'post_status'  => 'publish',
-    'orderby'      => 'date',
-    'order'        => 'DESC',
+    'orderby'      => 'rand',
   ] );
-  $_related = [ ...$_related, ...$_pad ];
+  $_related = array_merge( $_related, $_pad );
 }
 
-// ── Suggested Guides — other categories, fallback to recent ──────────────────
+// ── You Might Also Like — popular from other categories, fill with others ────
 $_exclude_ids = array_merge( [ get_the_ID() ], wp_list_pluck( $_related, 'ID' ) );
+
+// Step 1: popular posts from different categories (up to 3)
 $_guides = get_posts( [
   'numberposts'      => 3,
   'post__not_in'     => $_exclude_ids,
   'post_status'      => 'publish',
   'category__not_in' => $_current_cat_ids,
-  'orderby'          => 'date',
-  'order'            => 'DESC',
+  'orderby'          => 'rand',
+  'meta_key'         => '_ah_is_popular',
+  'meta_value'       => '1',
 ] );
-if ( empty( $_guides ) ) {
-  $_guides = get_posts( [
-    'numberposts'  => 3,
-    'post__not_in' => $_exclude_ids,
-    'post_status'  => 'publish',
-    'orderby'      => 'date',
-    'order'        => 'DESC',
+
+// Step 2: if fewer than 3, fill with other-category posts (non-popular)
+if ( count( $_guides ) < 3 ) {
+  $_guides_excl = array_merge( $_exclude_ids, wp_list_pluck( $_guides, 'ID' ) );
+  $_guides_fill = get_posts( [
+    'numberposts'      => 3 - count( $_guides ),
+    'post__not_in'     => $_guides_excl,
+    'post_status'      => 'publish',
+    'category__not_in' => $_current_cat_ids,
+    'orderby'          => 'rand',
   ] );
+  $_guides = array_merge( $_guides, $_guides_fill );
+}
+
+// Step 3: last resort — any post if still under 3
+if ( count( $_guides ) < 3 ) {
+  $_guides_excl = array_merge( $_exclude_ids, wp_list_pluck( $_guides, 'ID' ) );
+  $_guides_any  = get_posts( [
+    'numberposts'  => 3 - count( $_guides ),
+    'post__not_in' => $_guides_excl,
+    'post_status'  => 'publish',
+    'orderby'      => 'rand',
+  ] );
+  $_guides = array_merge( $_guides, $_guides_any );
 }
 ?>
 

@@ -43,9 +43,10 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
         $rtime  = function_exists( 'ah_reading_time' ) ? ah_reading_time( $rp->ID ) : '';
         $emoji  = '📰';
         if ( $rc0 ) foreach ( $emoji_map as $k => $e ) { if ( stripos( $rc0->slug, $k ) !== false ) { $emoji = $e; break; } }
+        $is_sug = get_post_meta( $rp->ID, '_ah_is_suggested', true ) === '1';
       ?>
       <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>"
-         class="sp-ra-card<?php echo $i === 0 ? ' sp-ra-card--featured' : ''; ?>"
+         class="sp-ra-card<?php echo $i === 0 ? ' sp-ra-card--featured' : ''; ?><?php echo $is_sug ? ' sp-ra-card--suggested' : ''; ?>"
          data-cat="<?php echo esc_attr( $rc0 ? $rc0->slug : '' ); ?>">
 
         <!-- Image layer -->
@@ -63,6 +64,9 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
 
         <!-- Text content -->
         <div class="sp-ra-card__body">
+          <?php if ( $is_sug ) : ?>
+            <span class="sp-ra-card__suggested-badge">💡 Suggested</span>
+          <?php endif; ?>
           <div class="sp-ra-card__top">
             <?php if ( $rc0 ) : ?>
               <span class="sp-ra-card__cat"><?php echo esc_html( $rc0->name ); ?></span>

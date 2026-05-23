@@ -1,17 +1,5 @@
 <?php
-/**
- * Component: NIF Brief List
- * "In Brief" — horizontal list-style article items with thumbnail + excerpt.
- * No dates displayed. Pagination uses ?pg=X (avoids WP redirect_canonical).
- *
- * @var array $args {
- *   @type WP_Post[] $posts       Post objects to list.
- *   @type int       $max_pages   Total pages for pagination.
- *   @type int       $paged       Current page number.
- *   @type string    $base_url    Base URL for pagination.
- *   @type string    $eyebrow     Section label. Default 'In Brief'.
- * }
- */
+
 defined( 'ABSPATH' ) || exit;
 
 $posts     = $args['posts']     ?? [];

@@ -47,6 +47,10 @@ class AH_Theme_Seeder {
 			'seed_blog_page',
 			'seed_static_pages',
 		];
+		// Ensure CMS plugin tables exist before seeding plugin data
+		if ( class_exists( 'AH_DB_Installer' ) ) {
+			AH_DB_Installer::install();
+		}
 		$methods[] = 'seed_plugin_tables';     // populate CMS plugin tables (hardcoded fallback)
 		$methods[] = 'seed_plugin_csv_lists';  // overlay CSV data on top — add rows to CSVs to extend
 		foreach ( $methods as $method ) {
@@ -1058,90 +1062,89 @@ class AH_Theme_Seeder {
 				}
 			}
 		}
-		// ── Team Members ──────────────────────────────────────────────────────
+		// ── Team Members  ->  plugin-team.csv
+		// Columns: sort_order, name, designation, bio, email, linkedin_url, is_featured
 		$tmt = "{$pfx}team_members";
-		if ( self::table_exists( $tmt ) && ! $wpdb->get_var( "SELECT id FROM `{$tmt}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			foreach ( [
-				[ 1, 'Advaith Rajkumar', 'Founder & Lead Buyer\'s Agent',              1, 'contact@advaithhomes.co.uk', 'https://linkedin.com/in/advaithhomes', "Advaith founded Advaith Homes in 2019 after eight years as a senior estate agent, watching buyers consistently lose out through poor representation. He personally oversees every acquisition above £750,000 and has negotiated over £28 million in savings for clients." ],
-				[ 2, 'Sarah Mitchell',   'Senior Buyer\'s Agent - London & South East', 1, 'sarah@advaithhomes.co.uk',   '',                                     "Sarah brings 12 years of property experience across prime London and the commuter belt. She specialises in family relocations and upsizers, with an unrivalled off-market network across Richmond, Wimbledon, and Surrey." ],
-				[ 3, 'Priya Sharma',     'Finance & Mortgage Specialist',               0, 'priya@advaithhomes.co.uk',   '',                                     "Priya is a qualified mortgage adviser who joined Advaith Homes to provide clients with independent financing guidance integrated into the buying process. She has access to over 90 lenders and specialises in complex income structures." ],
-				[ 4, 'James Cooper',     'Legal Liaison & Due Diligence Lead',          0, 'james@advaithhomes.co.uk',   '',                                     "-James spent 10 years as a property solicitor before moving into buyer representation. He leads all due diligence, survey interpretation, and conveyancing coordination - catching issues early and using them to renegotiate." ],
-			] as [ $i, $name, $designation, $is_featured, $email, $linkedin, $bio ] ) {
+		if ( self::table_exists( $tmt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-team' ) as $r ) {
+				if ( empty( $r['name'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$tmt}` WHERE name = %s", $r['name'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
 				$wpdb->insert( $tmt, [
-					'name'         => $name,
-					'designation'  => $designation,
-					'bio'          => $bio,
-					'email'        => $email,
-					'linkedin_url' => $linkedin,
-					'sort_order'   => $i,
-					'is_featured'  => $is_featured,
+					'name'         => $r['name'],
+					'designation'  => $r['designation']  ?? '',
+					'bio'          => $r['bio']          ?? '',
+					'email'        => $r['email']        ?? '',
+					'linkedin_url' => $r['linkedin_url'] ?? '',
+					'sort_order'   => (int) ( $r['sort_order']  ?? 0 ),
+					'is_featured'  => (int) ( $r['is_featured'] ?? 0 ),
 					'status'       => 'active',
 				] );
 				$count += (int) (bool) $wpdb->rows_affected;
 			}
 		}
 
-		// ── Reviews ───────────────────────────────────────────────────────────
+		// ── Reviews  ->  plugin-reviews.csv
+		// Columns: sort_order, reviewer_name, reviewer_title, review_text, rating, is_featured, short_desc
 		$rvt = "{$pfx}reviews";
-		if ( self::table_exists( $rvt ) && ! $wpdb->get_var( "SELECT id FROM `{$rvt}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( self::table_exists( $rvt ) ) {
 			$has_short_desc = ! empty( $wpdb->get_results( $wpdb->prepare(
 				'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s',
 				DB_NAME, $rvt, 'short_desc'
 			) ) );
-			foreach ( [
-				[ 'James & Rachel T.',  'First-Time Buyers, Battersea',       5, 1, 'Off-market flat secured 8% below comparable properties',   "We were first-time buyers in London - overwhelmed, outbid, and frankly terrified. Advaith Homes found us a flat off-market, below our budget, in six weeks. They held our hands the entire way. Genuinely life-changing." ],
-				[ 'Michael R.',         'Investor, Manchester & Leeds',        5, 1, '6 investment properties acquired across two cities',        "I've bought six properties through Advaith Homes over three years. Their yield analysis is better than any agent I've used, and the off-market access means I'm not competing against 40 other bidders." ],
-				[ 'Priya & Vikram S.',  'Relocating from Singapore',          5, 1, 'Completed purchase without the buyer visiting until moving day', "Moving from Singapore, we needed someone to be our eyes on the ground. Sarah viewed 14 properties over two weeks and gave us honest, detailed feedback on each. We bought a brilliant family home in Richmond without a single wasted trip." ],
-				[ 'Catherine B.',       'Downsizer, Kensington to Devon',     5, 0, 'Negotiated £65,000 below asking on a probate sale',         "The chain management alone was worth the fee. James kept everything moving when the estate agent went quiet for weeks. We completed on time, below asking, and without the stress I feared." ],
-				[ 'Tom & Alicia H.',    'Upsizers, South West London',        5, 0, 'Won competitive offer on third attempt after strategy change', "We'd been outbid three times before we found Advaith Homes. They changed our offer strategy completely - we won the next property we went for, at a price we were comfortable with." ],
-				[ 'David & Emma L.',    'Second Home, Cotswolds',             5, 0, 'Off-market farmhouse secured in 7 weeks',                   "Finding a second home in a competitive market without living nearby is a nightmare. Advaith Homes found us exactly what we were looking for within two months, including a property we'd never have found on Rightmove." ],
-			] as [ $reviewer_name, $reviewer_title, $rating, $is_featured, $short_desc, $review_text ] ) {
+			foreach ( AH_Data::load_csv( 'plugin-reviews' ) as $r ) {
+				if ( empty( $r['reviewer_name'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$rvt}` WHERE reviewer_name = %s", $r['reviewer_name'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
 				$data = [
-					'reviewer_name'  => $reviewer_name,
-					'reviewer_title' => $reviewer_title,
-					'review_text'    => $review_text,
-					'rating'         => $rating,
-					'is_featured'    => $is_featured,
+					'reviewer_name'  => $r['reviewer_name'],
+					'reviewer_title' => $r['reviewer_title'] ?? '',
+					'review_text'    => $r['review_text']    ?? '',
+					'rating'         => (int) ( $r['rating']     ?? 5 ),
+					'is_featured'    => (int) ( $r['is_featured'] ?? 0 ),
 					'status'         => 'active',
 					'source'         => 'manual',
 				];
 				if ( $has_short_desc ) {
-					$data['short_desc'] = $short_desc;
+					$data['short_desc'] = $r['short_desc'] ?? '';
 				}
 				$wpdb->insert( $rvt, $data );
 				$count += (int) (bool) $wpdb->rows_affected;
 			}
 		}
 
-		// ── FAQs ──────────────────────────────────────────────────────────────
+		// ── FAQs  ->  plugin-faqs.csv
+		// Columns: sort_order, question, answer
 		$faqt = "{$pfx}faqs";
-		if ( self::table_exists( $faqt ) && ! $wpdb->get_var( "SELECT id FROM `{$faqt}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			foreach ( [
-				[ 1, "What is a buyer's agent?",                            "A buyer's agent (also called a buying agent) is a property professional who acts exclusively for the buyer. Unlike estate agents - legally obligated to act for the seller - a buyer's agent's only duty is to you. We search for properties, negotiate prices, coordinate due diligence, and manage the transaction on your behalf." ],
-				[ 2, 'How much does Advaith Homes charge?',                  "We offer fixed, transparent fees agreed in advance. Fees depend on the service level required and the price range of the property. Contact us for a no-obligation quote. In most cases, the savings we achieve far exceed our fee." ],
-				[ 3, 'Do I have to use your recommended solicitor or broker?', "Not at all. We have relationships with excellent independent solicitors and mortgage advisers, and we're happy to recommend them - but you are entirely free to use anyone you choose." ],
-				[ 4, 'Can you help with off-market properties?',             "Yes - this is one of our core strengths. We maintain relationships with estate agents, developers, and solicitors across the UK, giving us access to properties before they're publicly listed. Typically 25–30% of our clients' purchases are off-market." ],
-				[ 5, 'How long does the buying process take?',               "From initial briefing to completion, most clients buy within 8–16 weeks. Off-market purchases can be faster. We'll give you a realistic timeline based on your specific brief and target market." ],
-				[ 6, 'Do you operate across the whole UK?',                  "We operate primarily in London, the South East, and major UK cities. For other areas, we work with a trusted network of buying agents and will always be honest if another agent is better placed to help you." ],
-				[ 7, "Is a buyer's agent worth it for a property under £500,000?", "Absolutely. Our negotiation alone typically saves 5–8% of the purchase price. On a £400,000 property that's £20,000–£32,000. We also offer a negotiation-only service for buyers who have already found their property." ],
-				[ 8, 'What happens after offer acceptance?',                 "The hard work begins. We coordinate the survey, manage any renegotiation, liaise with solicitors on both sides, track mortgage progress, monitor the chain, and keep everything moving through to exchange and completion." ],
-			] as [ $i, $q, $a ] ) {
-				$wpdb->insert( $faqt, [ 'question' => $q, 'answer' => $a, 'sort_order' => $i, 'status' => 'active' ] );
+		if ( self::table_exists( $faqt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-faqs' ) as $r ) {
+				if ( empty( $r['question'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$faqt}` WHERE LEFT(question,80) = %s", substr( $r['question'], 0, 80 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
+				$wpdb->insert( $faqt, [
+					'question'   => $r['question'],
+					'answer'     => $r['answer']     ?? '',
+					'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+					'status'     => 'active',
+				] );
 				$count += (int) (bool) $wpdb->rows_affected;
 			}
 		}
 
-		// ── News Bar Items ────────────────────────────────────────────────────
+		// ── News Bar Items  ->  plugin-news-bar.csv
+		// Columns: sort_order, text, link_url
 		$nbit = "{$pfx}news_bar_items";
-		if ( self::table_exists( $nbit ) && ! $wpdb->get_var( "SELECT id FROM `{$nbit}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			foreach ( [
-				[ 1, 'New: Off-market properties now available in Richmond, Wimbledon & Surrey - register today',       '/contact/' ],
-				[ 2, 'UK property market update: Average asking prices up 2.3% - expert analysis available',            '/blog/' ],
-				[ 3, 'Advaith Homes rated 4.9/5 by 200+ verified clients - read the stories',                          '/client-stories/' ],
-				[ 4, 'Free 30-minute consultation with a buyer\'s agent - no obligation, book now',                     '/contact/' ],
-				[ 5, 'New guide: How to Buy a Home in the UK - 25-page step-by-step walkthrough, free download',        '/guides/' ],
-			] as [ $i, $text, $url ] ) {
-				$wpdb->insert( $nbit, [ 'text' => $text, 'link_url' => $url, 'sort_order' => $i, 'status' => 'active' ] );
+		if ( self::table_exists( $nbit ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-news-bar' ) as $r ) {
+				if ( empty( $r['text'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nbit}` WHERE LEFT(text,80) = %s", substr( $r['text'], 0, 80 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
+				$wpdb->insert( $nbit, [
+					'text'       => $r['text'],
+					'link_url'   => $r['link_url']   ?? '',
+					'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+					'status'     => 'active',
+				] );
 				$count += (int) (bool) $wpdb->rows_affected;
 			}
 		}
@@ -1173,7 +1176,7 @@ class AH_Theme_Seeder {
 			$count += (int) (bool) $wpdb->rows_affected;
 		}
 
-		// ── Footer Config + Contact Links + Social Links ──────────────────────
+		// ── Footer Config + Contact Links + Social Links
 		$fct = "{$pfx}footer_config";
 		if ( self::table_exists( $fct ) && ! $wpdb->get_var( "SELECT id FROM `{$fct}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$wpdb->insert( $fct, [
@@ -1184,62 +1187,80 @@ class AH_Theme_Seeder {
 				'is_visible'           => 1,
 			] );
 			$count += (int) (bool) $wpdb->rows_affected;
+		}
 
-			$fclt = "{$pfx}footer_contact_links";
-			if ( self::table_exists( $fclt ) ) {
-				foreach ( [
-					[ 1, 'Phone',   '+44 7747 223762',               'tel:+447747223762',                    'phone'    ],
-					[ 2, 'Email',   'contact@advaithhomes.co.uk',     'mailto:contact@advaithhomes.co.uk',    'email'    ],
-					[ 3, 'Address', 'London & Nationwide, UK',        '',                                     'location' ],
-				] as [ $i, $label, $value, $url, $icon ] ) {
-					$wpdb->insert( $fclt, [ 'label' => $label, 'value' => $value, 'link_url' => $url, 'icon_class' => $icon, 'sort_order' => $i, 'status' => 'active' ] );
-					$count += (int) (bool) $wpdb->rows_affected;
-				}
-			}
-
-			$fslt = "{$pfx}footer_social_links";
-			if ( self::table_exists( $fslt ) ) {
-				foreach ( [
-					[ 1, 'Instagram',   'https://instagram.com/advaithhomes',               'instagram' ],
-					[ 2, 'Facebook',    'https://facebook.com/advaithhomes',                'facebook'  ],
-					[ 3, 'LinkedIn',    'https://linkedin.com/company/advaithhomes',        'linkedin'  ],
-					[ 4, 'Twitter / X', 'https://twitter.com/advaithhomes',                'twitter'   ],
-				] as [ $i, $platform, $url, $icon ] ) {
-					$wpdb->insert( $fslt, [ 'platform' => $platform, 'url' => $url, 'icon_class' => $icon, 'sort_order' => $i, 'status' => 'active' ] );
-					$count += (int) (bool) $wpdb->rows_affected;
-				}
+		// Footer contact links  ->  plugin-footer-contact.csv
+		// Columns: sort_order, label, value, link_url, icon_class
+		$fclt = "{$pfx}footer_contact_links";
+		if ( self::table_exists( $fclt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-footer-contact' ) as $r ) {
+				if ( empty( $r['label'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$fclt}` WHERE label = %s", $r['label'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
+				$wpdb->insert( $fclt, [
+					'label'      => $r['label'],
+					'value'      => $r['value']      ?? '',
+					'link_url'   => $r['link_url']   ?? '',
+					'icon_class' => $r['icon_class'] ?? '',
+					'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+					'status'     => 'active',
+				] );
+				$count += (int) (bool) $wpdb->rows_affected;
 			}
 		}
 
-		// ── Nav Menu Items ────────────────────────────────────────────────────
+		// Footer social links  ->  plugin-footer-social.csv
+		// Columns: sort_order, platform, url, icon_class
+		$fslt = "{$pfx}footer_social_links";
+		if ( self::table_exists( $fslt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-footer-social' ) as $r ) {
+				if ( empty( $r['platform'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$fslt}` WHERE platform = %s", $r['platform'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
+				$wpdb->insert( $fslt, [
+					'platform'   => $r['platform'],
+					'url'        => $r['url']        ?? '',
+					'icon_class' => $r['icon_class'] ?? '',
+					'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+				] );
+				$count += (int) (bool) $wpdb->rows_affected;
+			}
+		}
+
+		// ── Nav Menu Items  ->  plugin-nav-primary.csv + plugin-nav-footer.csv
+		// Columns: sort_order, label, url
 		$nmt  = "{$pfx}nav_menus";
 		$nmit = "{$pfx}nav_menu_items";
 		if ( self::table_exists( $nmt ) && self::table_exists( $nmit ) ) {
 			$primary_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmt}` WHERE slug = %s", 'primary' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$footer_id  = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmt}` WHERE slug = %s", 'footer' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			if ( $primary_id && ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmit}` WHERE menu_id = %d", $primary_id ) ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				foreach ( [
-					[ 1, 'Home',           '/'               ],
-					[ 2, 'About',          '/about/'         ],
-					[ 3, 'Services',       '/services/'      ],
-					[ 4, 'Guides',         '/guides/'        ],
-					[ 5, 'Client Stories', '/client-stories/'],
-					[ 6, 'Blog',           '/blog/'          ],
-					[ 7, 'Contact',        '/contact/'       ],
-				] as [ $i, $label, $url ] ) {
-					$wpdb->insert( $nmit, [ 'menu_id' => $primary_id, 'label' => $label, 'url' => $url, 'sort_order' => $i, 'status' => 'active' ] );
+			$footer_id  = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmt}` WHERE slug = %s", 'footer' ) );  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $primary_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-nav-primary' ) as $r ) {
+					if ( empty( $r['label'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmit}` WHERE menu_id = %d AND label = %s", $primary_id, $r['label'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( $exists ) continue;
+					$wpdb->insert( $nmit, [
+						'menu_id'    => $primary_id,
+						'label'      => $r['label'],
+						'url'        => $r['url']        ?? '',
+						'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+						'status'     => 'active',
+					] );
 					$count += (int) (bool) $wpdb->rows_affected;
 				}
 			}
-			if ( $footer_id && ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmit}` WHERE menu_id = %d", $footer_id ) ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				foreach ( [
-					[ 1, 'Privacy Policy',        '/privacy-policy/'              ],
-					[ 2, 'Cookie Policy',         '/cookie-policy/'               ],
-					[ 3, 'Stamp Duty Calculator', '/guides/stamp-duty-calculator/' ],
-					[ 4, 'Mortgage Calculator',   '/guides/mortgage-calculator/'  ],
-					[ 5, 'Contact',               '/contact/'                     ],
-				] as [ $i, $label, $url ] ) {
-					$wpdb->insert( $nmit, [ 'menu_id' => $footer_id, 'label' => $label, 'url' => $url, 'sort_order' => $i, 'status' => 'active' ] );
+			if ( $footer_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-nav-footer' ) as $r ) {
+					if ( empty( $r['label'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmit}` WHERE menu_id = %d AND label = %s", $footer_id, $r['label'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( $exists ) continue;
+					$wpdb->insert( $nmit, [
+						'menu_id'    => $footer_id,
+						'label'      => $r['label'],
+						'url'        => $r['url']        ?? '',
+						'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+						'status'     => 'active',
+					] );
 					$count += (int) (bool) $wpdb->rows_affected;
 				}
 			}
@@ -1258,42 +1279,21 @@ class AH_Theme_Seeder {
 			$count += (int) (bool) $wpdb->rows_affected;
 		}
 
-		// ── Plugin Posts (blog + news) ────────────────────────────────────────
+		// ── Plugin Posts (blog + news)  ->  plugin-posts.csv
+		// Columns: post_type, slug, is_featured, title, excerpt, content
 		$ppt = "{$pfx}posts";
-		if ( self::table_exists( $ppt ) && ! $wpdb->get_var( "SELECT id FROM `{$ppt}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			foreach ( [
-				[
-					'blog', 1, 'how-long-does-buying-a-home-take',
-					'How Long Does Buying a Home in the UK Really Take?',
-					'The complete week-by-week guide to UK property buying timelines - what happens, who does it, and how to avoid delays.',
-					'<p>If you\'ve been told buying a home in the UK takes "about three months", that\'s broadly right - but it tells you almost nothing useful. This guide breaks every stage down into what\'s happening, who\'s doing it, and what you can do to keep things moving.</p><h2>Before you start: the work that pays itself back</h2><p>The fastest completions share one thing in common - the buyer had their finances ready before they made an offer. That means an Agreement in Principle, a deposit sitting ready, and a solicitor on standby.</p>',
-				],
-				[
-					'blog', 1, 'off-market-property-guide',
-					'Off-Market Property: What It Is and How to Find It',
-					"How to access properties that never appear on Rightmove - and why buyers who win off-market deals use a buyer's agent.",
-					"<p>Around 25–30% of UK property transactions happen before the home ever reaches Rightmove. These off-market deals go to buyers with the right connections - or the right agent working on their behalf.</p><h2>Why sellers go off-market</h2><p>Privacy, avoiding the disruption of viewings, or simply trusting an agent to bring a qualified buyer directly. Probate sales, corporate relocations, and downsizing retirees are the most common sources.</p>",
-				],
-				[
-					'blog', 0, 'stamp-duty-guide-2025',
-					'Stamp Duty 2025: The Complete Guide for Buyers',
-					'Everything buyers need to know about stamp duty in 2025 - rates, thresholds, first-time buyer relief, and the additional property surcharge.',
-					'<p>Stamp Duty Land Tax (SDLT) is one of the largest costs of buying a property in England. The rules changed again in 2024 and the thresholds are different depending on whether you\'re a first-time buyer, moving home, or purchasing an additional property.</p><h2>Current stamp duty rates (2025)</h2><p>For properties purchased as your main home: 0% on the first £250,000; 5% on £250,001–£925,000; 10% on £925,001–£1.5M; 12% above £1.5M.</p>',
-				],
-				[
-					'news', 0, 'uk-property-market-may-2025',
-					'UK Property Market: May 2025 Update',
-					"Average asking prices rose 2.3% in Q1 2025. Here's what it means for buyers and how to navigate a competitive market.",
-					'<p>The latest data from HM Land Registry shows average UK house prices increased by 2.3% in the first quarter of 2025, driven by continued demand pressure in London, Manchester, and Bristol.</p><h2>What this means for buyers</h2><p>Competition for well-priced stock remains intense, particularly for family homes under £600,000. Off-market sourcing is increasingly the strategy that makes the difference.</p>',
-				],
-			] as [ $type, $is_featured, $slug, $title, $excerpt, $content ] ) {
+		if ( self::table_exists( $ppt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-posts' ) as $r ) {
+				if ( empty( $r['slug'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$ppt}` WHERE slug = %s", $r['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
 				$wpdb->insert( $ppt, [
-					'post_type'    => $type,
-					'title'        => $title,
-					'slug'         => $slug,
-					'excerpt'      => $excerpt,
-					'content'      => $content,
-					'is_featured'  => $is_featured,
+					'post_type'    => $r['post_type']  ?? 'blog',
+					'slug'         => $r['slug'],
+					'title'        => $r['title']      ?? '',
+					'excerpt'      => $r['excerpt']    ?? '',
+					'content'      => $r['content']    ?? '',
+					'is_featured'  => (int) ( $r['is_featured'] ?? 0 ),
 					'status'       => 'active',
 					'published_at' => current_time( 'mysql', true ),
 				] );
