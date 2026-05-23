@@ -68,8 +68,8 @@ if ( $use_parent_terms && $active_parent_term && class_exists( 'AH_DB_Helper' ) 
 $wp_args = [
 	'post_type'           => 'post',
 	'post_status'         => 'publish',
-	'posts_per_page'      => 10,
-	// 'paged'               => $paged,
+	'posts_per_page'      => 12,
+	'paged'               => $paged,
 	'orderby'             => 'date',
 	'order'               => 'DESC',
 	'ignore_sticky_posts' => true,
@@ -165,12 +165,14 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
 <div class="nif-portal-bg">
   <div class="container">
     <div class="nif-portal-wrap">
-
       <!-- ══ MAIN CONTENT ════════════════════════════════════════════════════ -->
       <main class="nif-portal-main">
+         
+         <?php
+          get_template_part( 'components/nif-background-imagecard', null, [] );
+        ?>
 
-
-        <?php if ( ! $active_cat && ! $active_parent_term && $paged === 1 ) :
+        <?php if ( ! $active_cat && ! $active_parent_term && $paged === 1 ) {
           // ── PORTAL HOME LAYOUT ─────────────────────────────────────────────
 
           // Featured Guides: big hero card + 3 side cards — only _ah_is_featured posts
@@ -192,13 +194,13 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
 
           // In Brief: remaining posts as a horizontal list
           get_template_part( 'components/nif-brief-list', null, [
-            'posts'     => array_slice( $posts_arr, 6 ),
+            'posts'     => array_slice( $posts_arr,0, 6 ),
             'max_pages' => $blog_query->max_num_pages,
             'paged'     => $paged,
             'base_url'  => $page_url,
           ] );
 
-        else :
+        } else {
           // ── FILTERED / PAGINATED GRID VIEW ────────────────────────────────
         ?>
         <section class="section" style="padding-top:28px" aria-label="<?php esc_attr_e( 'Articles', 'ah-theme' ); ?>">
@@ -292,7 +294,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           <?php endif; endif; ?>
 
         </section>
-        <?php endif; ?>
+        <?php } ?>
 
       </main><!-- /.nif-portal-main -->
 

@@ -192,3 +192,34 @@ p + p { margin-top: .75em; }
 	border-top: 1px solid var(--border);
 	margin-block: 32px;
 }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--client-color-700);
+    border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--client-color-600);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--client-color-700) transparent;
+}
+
+/* ── Text selection ── */
+::selection {
+    background: var(--client-color-600);
+    color: #fff;
+}

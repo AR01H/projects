@@ -49,7 +49,7 @@ $chip_base = remove_query_arg( 'news_cat', $permalink );
   </div>
 
   <!-- Category filter chips -->
-  <?php if ( ! empty( $cats ) ) : ?>
+  <!-- <?php if ( ! empty( $cats ) ) : ?>
   <div class="nif-news-cats" role="navigation" aria-label="<?php esc_attr_e( 'Filter news by category', 'ah-theme' ); ?>">
     <a href="<?php echo esc_url( $chip_base ); ?>"
        class="nif-news-cat-chip<?php echo ! $news_cat ? ' nif-news-cat-chip--active' : ''; ?>">
@@ -65,7 +65,7 @@ $chip_base = remove_query_arg( 'news_cat', $permalink );
     </a>
     <?php endforeach; ?>
   </div>
-  <?php endif; ?>
+  <?php endif; ?> -->
 
   <!-- Hero grid -->
   <div class="nif-news-hero-grid">

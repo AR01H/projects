@@ -350,7 +350,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
   border-top: 1px solid var(--border, #f1f5f9);
 }
 .nc4__detail { font-size: .875rem; }
-.nc4__detail h2, .nc4__detail h3 { font-size: .95rem; font-weight: 700; color: var(--text-primary); margin: 14px 0 6px; }
+.nc4__detail h2, .nc4__detail h3 { font-weight: 700; color: var(--text-primary); margin: 14px 0 6px; }
 .nc4__detail p  { margin: 0 0 .6em; }
 
 @media (max-width: 500px) {

@@ -92,15 +92,7 @@ if ( empty( $posts ) ) return;
     <?php foreach ( $links as $link ) echo '<span class="nif-brief-page-link">' . $link . '</span>'; ?>
   </nav>
   <?php endif; ?>
-
-  <?php elseif ( $paged === 1 ) :
-    $next_url = "{$base_url}{$sep}pg=2";
-  ?>
-  <div class="nif-brief-load-more" data-aos="fade-up">
-    <a href="<?php echo esc_url( $next_url ); ?>" class="btn btn-outline nif-load-more-btn">
-      <?php esc_html_e( 'Load More Articles', 'ah-theme' ); ?>
-    </a>
-  </div>
+  
   <?php endif; ?>
 
 </section>

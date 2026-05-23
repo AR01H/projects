@@ -149,8 +149,8 @@
 .prose blockquote,
 .prose-content blockquote {
 	border-left: 4px solid var(--accent);
-	padding: 16px 20px;
-	margin: 1.5em 0;
+	padding: 6px;
+	margin: 0.5em 0;
 	background: var(--bg-alt);
 	border-radius: 0 var(--r-md) var(--r-md) 0;
 	font-style: italic;
@@ -255,7 +255,6 @@
 	border: 0;
 	border-radius: var(--radius-sm);
 	display: block;
-	margin-block: 1.5em;
 }
 
 .prose code {

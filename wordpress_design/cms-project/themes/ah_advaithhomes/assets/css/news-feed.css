@@ -603,6 +603,7 @@
   border-bottom: 1px solid var(--border);
   border-left: 3px solid transparent;
   padding-left: 10px;
+  padding-right: 10px;
   transition: background .18s ease, border-color .18s ease;
 }
 .nif-brief-item:first-child { border-top: none; }
