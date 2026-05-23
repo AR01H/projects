@@ -15,12 +15,9 @@ class AH_Schema {
 		global $wpdb;
 		$cs = $wpdb->get_charset_collate();
 
-		// self::create_services( $cs );
-		// self::create_team( $cs );
-		// self::create_reviews( $cs );
-		// self::create_faqs( $cs );
-		// self::create_news_bar( $cs );
+		self::create_contact_form_submissions( $cs );
 		// ah_taxonomy_types and ah_taxonomies are owned by the CMS plugin - not created here.
+		// reviews, faqs, news_bar, services, team are owned by the CMS plugin tables.
 	}
 
 	// ── Table definitions ─────────────────────────────────────────────────────
@@ -90,10 +87,10 @@ class AH_Schema {
 	// 	) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	// }
 
-	private static function create_news_bar( string $cs ): void {
+	private static function create_contact_form_submissions( string $cs ): void {
 		global $wpdb;
 		$table = $wpdb->prefix . 'ah_contact_form_submissions';
-		$wpdb->query("CREATE TABLE IF NOT EXISTS `" . $table . "` (
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$table}` (
 			`id`           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 			`full_name`    VARCHAR(200) NOT NULL,
 			`email`        VARCHAR(200) NOT NULL,
@@ -110,7 +107,7 @@ class AH_Schema {
 			`submitted_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			KEY `idx_status`  (`status`),
 			KEY `idx_is_read` (`is_read`)
-		) ENGINE=InnoDB {charset_collate}");
+		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 }

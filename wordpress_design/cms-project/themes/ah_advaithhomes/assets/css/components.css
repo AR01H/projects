@@ -135,7 +135,7 @@
 
 .nav__dropdown-menu {
 	position: absolute;
-	top: calc(100% + 10px);
+	top: calc(100%);
 	left: 50%;
 	transform: translateX(-50%) translateY(-8px);
 	min-width: 280px;
@@ -297,56 +297,12 @@
 }
 .nav__mobile-sub-menu .nav__mobile-link { padding-left: 40px; font-size: .85rem; }
 
-@media (max-width: 1024px) {
-	.nav__menu { display: none; }
-	.nav__hamburger { display: flex; }
-	.nav__actions .btn { display: none; }
-}
-@media (min-width: 1025px) { .nav__mobile { display: none !important; } }
+/* Hamburger/mobile controlled by JS — show only when nav items don't fit */
+body:not(.nav--collapsed) .nav__mobile  { display: none !important; }
+body.nav--collapsed .nav__menu          { display: none; }
+body.nav--collapsed .nav__hamburger     { display: flex; }
+body.nav--collapsed .nav__actions .btn  { display: none; }
 
-/* Priority nav - overflow items move into More dropdown */
-.ah-nav__item--hidden { display: none !important; }
-
-.ah-nav__more { position: relative; }
-
-.ah-nav__more-btn {
-	background: none;
-	border: none;
-	display: inline-flex;
-	align-items: center;
-	gap: 4px;
-	cursor: pointer;
-	white-space: nowrap;
-}
-.ah-nav__more-btn svg { transition: transform .2s; flex-shrink: 0; }
-.ah-nav__more.open .ah-nav__more-btn svg { transform: rotate(180deg); }
-
-.ah-nav__more-menu {
-	display: none;
-	position: absolute;
-	top: calc(100% + 8px);
-	right: 0;
-	min-width: 180px;
-	background: var(--surface, #fff);
-	border: 1px solid var(--border, #e5e7eb);
-	border-radius: 10px;
-	padding: .4rem;
-	box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-	z-index: 600;
-}
-.ah-nav__more.open .ah-nav__more-menu { display: block; }
-
-.ah-nav__more-item {
-	display: block;
-	padding: .5rem .85rem;
-	font-size: .82rem;
-	font-weight: 600;
-	color: var(--text, #1a1a1a);
-	border-radius: 6px;
-	transition: background .15s;
-	white-space: nowrap;
-}
-.ah-nav__more-item:hover { background: var(--bg-alt, #f5f5f5); color: var(--accent, #b7791f); }
 
 /* ── Cards ────────────────────────────────────────────────────────────────── */
 .card {

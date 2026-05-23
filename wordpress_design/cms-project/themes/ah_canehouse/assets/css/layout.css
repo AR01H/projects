@@ -17,10 +17,9 @@
     .ch-option-card--full { grid-column: 1; }
 }
 
-@media (max-width: 1024px) {
-    .ch-nav__links { display: none; }
-    .ch-nav__hamburger { display: flex; }
-}
+/* Hamburger/mobile controlled by JS — show only when nav items don't fit */
+body.nav--collapsed .ch-nav__links      { display: none; }
+body.nav--collapsed .ch-nav__hamburger  { display: flex; }
 
 @media (max-width: 768px) {
     :root { --ch-section-py: 3.5rem; }

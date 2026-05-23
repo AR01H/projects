@@ -6,7 +6,8 @@ class CH_Theme_Admin {
 	public static function init(): void {
 		add_action( 'admin_menu',                      [ self::class, 'register_menus' ] );
 		add_action( 'admin_enqueue_scripts',           [ self::class, 'enqueue_assets' ] );
-		add_action( 'admin_post_ch_theme_seed',        [ self::class, 'handle_seed' ] );
+		add_action( 'admin_post_ch_theme_schema',      [ self::class, 'handle_schema'  ] );
+		add_action( 'admin_post_ch_theme_seed',        [ self::class, 'handle_seed'    ] );
 		add_action( 'admin_post_ch_theme_cleanup',     [ self::class, 'handle_cleanup' ] );
 		add_action( 'admin_post_ch_theme_sections',    [ self::class, 'handle_sections' ] );
 		add_action( 'admin_post_ch_theme_content',     [ self::class, 'handle_content' ] );
@@ -50,16 +51,28 @@ class CH_Theme_Admin {
 
 	// ── POST handlers ─────────────────────────────────────────────────────────
 
+	public static function handle_schema(): void {
+		check_admin_referer( 'ch_theme_schema' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+		require_once get_template_directory() . '/mock_data/seeder.php';
+		$result = CH_Theme_Seeder::seed_schema_only();
+		$msg = 'Schema installed: tables created, ' . $result['updated'] . ' settings saved.';
+		if ( ! empty( $result['errors'] ) ) $msg .= ' Warnings: ' . implode( '; ', $result['errors'] );
+		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-mock', 'seeded' => '1', 'type' => 'schema', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
 	public static function handle_seed(): void {
 		check_admin_referer( 'ch_theme_seed' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 		require_once get_template_directory() . '/mock_data/seeder.php';
-		$result = CH_Theme_Seeder::seed_all();
-		$msg = 'Seeded ' . $result['inserted'] . ' rows and updated ' . $result['updated'] . ' options successfully.';
+		$selected = isset( $_POST['seed_types'] ) ? array_map( 'sanitize_key', (array) $_POST['seed_types'] ) : [];
+		$result   = $selected ? CH_Theme_Seeder::seed_selected( $selected ) : CH_Theme_Seeder::seed_all();
+		$msg = 'Mock data installed: ' . $result['inserted'] . ' inserted, ' . $result['updated'] . ' updated.';
 		if ( ! empty( $result['errors'] ) ) {
 			$msg .= ' Warnings: ' . implode( '; ', $result['errors'] );
 		}
-		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-mock', 'seeded' => '1', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
+		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-mock', 'seeded' => '1', 'type' => 'mock', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 

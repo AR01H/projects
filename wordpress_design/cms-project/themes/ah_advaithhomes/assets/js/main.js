@@ -278,83 +278,30 @@
     $('#mc-result-wrapper').toggleClass('is-visible', price > 0);
   });
 
-  // ── Priority Nav - overflow items go into a "More ›" dropdown ──────────────
+  // ── Adaptive Nav — desktop menu if items fit, hamburger (3-lines) if not ───
   (function () {
     var nav    = document.getElementById('mainNav');
     var menu   = nav && nav.querySelector('.nav__menu');
     var inner  = nav && nav.querySelector('.nav__inner');
-    var burger = document.getElementById('ahHamburger');
-    if (!menu || !inner || !burger) return;
-
-    var items = Array.from(menu.querySelectorAll(':scope > li'));
-
-    // Build More button once
-    var moreLi = document.createElement('li');
-    moreLi.className = 'ah-nav__more';
-    moreLi.innerHTML =
-      '<button class="nav__link ah-nav__more-btn" aria-haspopup="true" aria-expanded="false">' +
-      'More <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>' +
-      '</button>' +
-      '<div class="ah-nav__more-menu" role="menu"></div>';
-    moreLi.style.display = 'none';
-    menu.appendChild(moreLi);
-
-    var moreBtn  = moreLi.querySelector('.ah-nav__more-btn');
-    var moreMenu = moreLi.querySelector('.ah-nav__more-menu');
-
-    moreBtn.addEventListener('click', function () {
-      var open = moreLi.classList.toggle('open');
-      moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    document.addEventListener('click', function (e) {
-      if (!moreLi.contains(e.target)) {
-        moreLi.classList.remove('open');
-        moreBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
+    if (!menu || !inner) return;
 
     function adjust() {
-      if (window.innerWidth <= 1024) {
-        items.forEach(function (li) { li.classList.remove('ah-nav__item--hidden'); });
-        moreLi.style.display = 'none';
-        moreMenu.innerHTML = '';
+      var body = document.body;
+
+      // Reset to desktop state so we can measure accurately
+      body.classList.remove('nav--collapsed');
+      void inner.offsetWidth; // force reflow
+
+      if (inner.scrollWidth <= inner.clientWidth + 2) {
+        // All items fit — stay in desktop mode
         return;
       }
 
-      items.forEach(function (li) { li.classList.remove('ah-nav__item--hidden'); });
-      moreLi.style.display = 'none';
-      moreMenu.innerHTML = '';
-
-      if (inner.scrollWidth <= inner.clientWidth + 2) return;
-
-      moreLi.style.display = '';
-      var maxIter = items.length;
-      while (inner.scrollWidth > inner.clientWidth + 2 && maxIter-- > 0) {
-        var didHide = false;
-        for (var i = items.length - 1; i >= 0; i--) {
-          if (!items[i].classList.contains('ah-nav__item--hidden') && items[i] !== moreLi) {
-            items[i].classList.add('ah-nav__item--hidden');
-            didHide = true;
-            break;
-          }
-        }
-        if (!didHide) break;
-      }
-
-      items.forEach(function (li) {
-        if (!li.classList.contains('ah-nav__item--hidden') || li === moreLi) return;
-        var a = li.querySelector('a') || li.querySelector('button');
-        if (!a) return;
-        var item = document.createElement('a');
-        item.className = 'ah-nav__more-item';
-        item.textContent = a.textContent.trim();
-        item.href = a.tagName === 'A' ? (a.getAttribute('href') || '#') : '#';
-        item.setAttribute('role', 'menuitem');
-        moreMenu.appendChild(item);
-      });
-
-      var anyHidden = items.some(function (li) { return li !== moreLi && li.classList.contains('ah-nav__item--hidden'); });
-      if (!anyHidden) moreLi.style.display = 'none';
+      // Doesn't fit — switch straight to hamburger
+      body.classList.add('nav--collapsed');
+      $mobileNav.removeClass('is-open');
+      $hamburger.removeClass('is-open').attr('aria-expanded', 'false');
+      $('body').removeClass('nav-open');
     }
 
     var timer;

@@ -4,6 +4,8 @@ defined( 'ABSPATH' ) || exit;
 // ── Includes - order matters ──────────────────────────────────────────────────
 require_once get_template_directory() . '/includes/mock-data.php';
 require_once get_template_directory() . '/includes/helpers.php';
+require_once get_template_directory() . '/schema/class-schema.php';
+require_once get_template_directory() . '/schema/class-data.php';
 require_once get_template_directory() . '/includes/class-theme-admin.php';
 require_once get_template_directory() . '/mail/common_contact.php';
 

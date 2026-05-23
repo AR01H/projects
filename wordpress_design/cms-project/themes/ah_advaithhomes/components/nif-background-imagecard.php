@@ -78,12 +78,10 @@
 
 /* ── Description ────────────────────────────────────────────────── */
 .nif-portal-section-background-img .nif-content .hero__desc {
-    font-family: 'DM Sans', sans-serif;
     color: rgba(255, 255, 255, 0.88);
     font-size: 15px;
     line-height: 1.78;
-    margin: 0 0 32px;
-    max-width: 460px;
+    margin: 0 0 16px;
     font-weight: 400;
 }
 

@@ -167,92 +167,33 @@
         });
     }
 
-    // ── Priority Nav - overflow items go into a "More ›" dropdown ────────────
+    // ── Adaptive Nav — desktop menu if items fit, hamburger (3-lines) if not ──
     function initNavPriority() {
         var nav = document.getElementById('ch-nav');
-        var linksEl = document.getElementById('ch-nav-links');
-        var hamburger = document.getElementById('ch-hamburger');
-        if (!nav || !linksEl || !hamburger) return;
+        if (!nav) return;
 
-        var allItems = Array.from(linksEl.querySelectorAll('li'));
-        if (allItems.length < 2) return;
-        var navItems = allItems.slice(0, -1); // all except last (CTA)
-
-        // Build the "More" overflow button once
-        var moreLi = document.createElement('li');
-        moreLi.className = 'ch-nav__more';
-        moreLi.innerHTML =
-            '<button class="ch-nav__link ch-nav__more-btn" aria-haspopup="true" aria-expanded="false">' +
-            'More <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>' +
-            '</button>' +
-            '<div class="ch-nav__more-menu" role="menu"></div>';
-        moreLi.style.display = 'none';
-        linksEl.insertBefore(moreLi, allItems[allItems.length - 1]); // before CTA
-
-        var moreBtn = moreLi.querySelector('.ch-nav__more-btn');
-        var moreMenu = moreLi.querySelector('.ch-nav__more-menu');
-
-        moreBtn.addEventListener('click', function () {
-            var open = moreLi.classList.toggle('open');
-            moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-        document.addEventListener('click', function (e) {
-            if (!moreLi.contains(e.target)) {
-                moreLi.classList.remove('open');
-                moreBtn.setAttribute('aria-expanded', 'false');
-            }
-        });
+        var mobileNav  = document.getElementById('ch-mobile-nav');
+        var hamburger  = document.getElementById('ch-hamburger');
 
         function adjust() {
-            // Mobile: CSS handles it - restore everything
-            if (window.innerWidth <= 1024) {
-                navItems.forEach(function (li) { li.classList.remove('ch-nav__item--hidden'); });
-                moreLi.style.display = 'none';
-                moreMenu.innerHTML = '';
-                hamburger.style.display = '';
+            var body = document.body;
+
+            // Reset to desktop state so we can measure accurately
+            body.classList.remove('nav--collapsed');
+            void nav.offsetWidth; // force reflow
+
+            if (nav.scrollWidth <= nav.clientWidth + 2) {
+                // All items fit — stay in desktop mode
                 return;
             }
 
-            hamburger.style.display = 'none';
-            navItems.forEach(function (li) { li.classList.remove('ch-nav__item--hidden'); });
-            moreLi.style.display = 'none';
-            moreMenu.innerHTML = '';
-
-            if (nav.scrollWidth <= nav.clientWidth + 2) return; // all fit, done
-
-            // Items overflow - show More button first (it takes space too)
-            moreLi.style.display = '';
-
-            // Hide items one-by-one from right to left until nav fits
-            var maxIter = navItems.length;
-            while (nav.scrollWidth > nav.clientWidth + 2 && maxIter-- > 0) {
-                var didHide = false;
-                for (var i = navItems.length - 1; i >= 0; i--) {
-                    if (!navItems[i].classList.contains('ch-nav__item--hidden')) {
-                        navItems[i].classList.add('ch-nav__item--hidden');
-                        didHide = true;
-                        break;
-                    }
-                }
-                if (!didHide) break;
+            // Doesn't fit — switch straight to hamburger
+            body.classList.add('nav--collapsed');
+            if (mobileNav) mobileNav.classList.remove('open');
+            if (hamburger) {
+                hamburger.classList.remove('open');
+                hamburger.setAttribute('aria-expanded', 'false');
             }
-
-            // Fill More dropdown with hidden items (in order)
-            navItems.forEach(function (li) {
-                if (!li.classList.contains('ch-nav__item--hidden')) return;
-                var a = li.querySelector('a') || li.querySelector('button');
-                if (!a) return;
-                var item = document.createElement('a');
-                item.className = 'ch-nav__more-item';
-                item.textContent = a.textContent.trim();
-                item.href = a.tagName === 'A' ? (a.getAttribute('href') || '#') : '#';
-                item.setAttribute('role', 'menuitem');
-                moreMenu.appendChild(item);
-            });
-
-            // If somehow nothing ended up hidden, hide More btn
-            var anyHidden = navItems.some(function (li) { return li.classList.contains('ch-nav__item--hidden'); });
-            if (!anyHidden) moreLi.style.display = 'none';
         }
 
         var resizeTimer;
