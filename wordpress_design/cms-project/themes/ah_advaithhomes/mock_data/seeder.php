@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined( 'ABSPATH' ) || exit;
 
 require_once get_template_directory() . '/schema/class-schema.php';
@@ -47,7 +47,8 @@ class AH_Theme_Seeder {
 			'seed_blog_page',
 			'seed_static_pages',
 		];
-		$methods[] = 'seed_plugin_tables'; // populate CMS plugin tables if plugin is active
+		$methods[] = 'seed_plugin_tables';     // populate CMS plugin tables (hardcoded fallback)
+		$methods[] = 'seed_plugin_csv_lists';  // overlay CSV data on top — add rows to CSVs to extend
 		foreach ( $methods as $method ) {
 			try {
 				$r = self::$method();
@@ -1019,109 +1020,44 @@ class AH_Theme_Seeder {
 			$count += (int) (bool) $wpdb->rows_affected;
 		}
 
-		// ── Services + Bullet Points ──────────────────────────────────────────
+		// ── Services + Bullet Points  ->  plugin-services.csv + plugin-service-bullets.csv
+		// Services columns:        slug, sort_order, title, short_desc, full_desc
+		// Service bullets columns: service_slug, sort_order, point_text
+		// HOW TO ADD MORE: add a row to plugin-services.csv; add its bullets (same slug) to plugin-service-bullets.csv
 		$svct  = "{$pfx}services";
 		$svbpt = "{$pfx}service_bullet_points";
-		if ( self::table_exists( $svct ) && ! $wpdb->get_var( "SELECT id FROM `{$svct}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$services = [
-				[
-					'slug'  => 'property-search', 'sort_order' => 1,
-					'title' => 'Property Search & Shortlisting',
-					'short' => 'Comprehensive on and off-market property search tailored to your exact brief.',
-					'full'  => '<p>We begin with a detailed briefing to understand exactly what you need - location, size, budget, lifestyle, must-haves, and deal-breakers. Then we search the entire market on your behalf: Rightmove, Zoopla, our exclusive off-market network, and direct agent relationships.</p><p>Every property we recommend has been pre-assessed against your brief. You only see the homes worth your time.</p>',
-					'pts'   => [
-						'Detailed needs analysis and buyer brief',
-						'Full market search - on and off-market',
-						'Pre-assessment and shortlisting against brief',
-						'Accompanied viewings with expert commentary',
-						'Area research and comparable sales analysis',
-					],
-				],
-				[
-					'slug'  => 'off-market-access', 'sort_order' => 2,
-					'title' => 'Off-Market Property Access',
-					'short' => 'Up to 30% of our deals are off-market - no competition, no bidding wars.',
-					'full'  => '<p>Our relationships with estate agents, developers, and property solicitors across the UK give us access to properties before they are listed publicly. This off-market network means you can secure the best homes without competing against a field of buyers.</p><p>Off-market purchases typically complete 3 weeks faster and at a lower price than openly marketed equivalents.</p>',
-					'pts'   => [
-						'Exclusive agent network across the UK',
-						'Developer and new-build off-plan relationships',
-						'Probate and private sale introductions',
-						'Pre-market viewings before public launch',
-						'No bidding wars - fewer competing buyers',
-					],
-				],
-				[
-					'slug'  => 'negotiation-strategy', 'sort_order' => 3,
-					'title' => 'Negotiation & Offer Strategy',
-					'short' => 'Data-backed negotiation that saves our clients an average of £42,000.',
-					'full'  => '<p>Negotiating a property price without independent data is like negotiating a salary without knowing the market rate. We arm you with comparable sold prices, time-on-market data, chain status, and vendor motivation - then negotiate on your behalf.</p><p>Our average client saves 5–8% against the initial asking price. On a £500,000 property, that is £25,000–£40,000.</p>',
-					'pts'   => [
-						'Comparable sold price analysis',
-						'Vendor motivation and chain research',
-						'Strategic offer timing and structuring',
-						'Condition and contract term negotiation',
-						'Gazumping and re-negotiation management',
-					],
-				],
-				[
-					'slug'  => 'due-diligence', 'sort_order' => 4,
-					'title' => 'Due Diligence & Survey Coordination',
-					'short' => 'Independent checks to ensure you know everything before you commit.',
-					'full'  => '<p>Missing a structural defect, planning issue, or legal problem before exchange can cost tens of thousands of pounds - or make a property unmortgageable. We coordinate all pre-purchase checks independently from the estate agent.</p><p>We interpret survey findings, identify material risks, and use issues we find to re-negotiate the price where appropriate.</p>',
-					'pts'   => [
-						'Independent RICS survey commissioning',
-						'Structural and planning history checks',
-						'Environmental and flood risk research',
-						'Leasehold and title deed review',
-						'Survey result interpretation and renegotiation',
-					],
-				],
-				[
-					'slug'  => 'conveyancing-management', 'sort_order' => 5,
-					'title' => 'Conveyancing & Legal Coordination',
-					'short' => 'We manage your solicitor, chase the chain, and keep the deal moving.',
-					'full'  => '<p>Most purchase delays and fall-throughs are caused by poor communication between solicitors, agents, and lenders. As your representative we bridge that gap - chasing all parties, flagging issues early, and keeping the transaction on track.</p><p>Our clients complete 3–4 weeks faster on average than buyers without representation.</p>',
-					'pts'   => [
-						'Solicitor introduction and coordination',
-						'Chain status monitoring and chasing',
-						'Lender and mortgage progress tracking',
-						'Search result and enquiry management',
-						'Exchange and completion day coordination',
-					],
-				],
-				[
-					'slug'  => 'relocation-investment', 'sort_order' => 6,
-					'title' => 'Relocation & Investment Services',
-					'short' => 'Specialist support for those relocating or building a property portfolio.',
-					'full'  => '<p>Relocating from another city or country means you cannot easily visit properties at short notice. We act as your eyes and ears on the ground - attending viewings, meeting agents, and giving you honest, expert feedback on every property we see.</p><p>For investors, we add rental yield analysis, tenant demand data, and long-term capital growth projections to every recommendation.</p>',
-					'pts'   => [
-						'Remote search and virtual viewing support',
-						'Area research and school catchment analysis',
-						'Buy-to-let yield and return analysis',
-						'Portfolio strategy and growth planning',
-						'Renovation and uplift potential assessment',
-					],
-				],
-			];
-			foreach ( $services as $svc ) {
+		if ( self::table_exists( $svct ) && self::table_exists( $svbpt ) ) {
+			$all_bullets = [];
+			foreach ( AH_Data::load_csv( 'plugin-service-bullets' ) as $b ) {
+				if ( ! empty( $b['service_slug'] ) ) {
+					$all_bullets[ $b['service_slug'] ][] = $b;
+				}
+			}
+			foreach ( AH_Data::load_csv( 'plugin-services' ) as $r ) {
+				if ( empty( $r['slug'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$svct}` WHERE slug = %s", $r['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( $exists ) continue;
 				$wpdb->insert( $svct, [
-					'title'      => $svc['title'],
-					'slug'       => $svc['slug'],
-					'short_desc' => $svc['short'],
-					'full_desc'  => $svc['full'],
-					'sort_order' => $svc['sort_order'],
+					'title'      => $r['title']      ?? '',
+					'slug'       => $r['slug'],
+					'short_desc' => $r['short_desc'] ?? '',
+					'full_desc'  => $r['full_desc']  ?? '',
+					'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
 					'status'     => 'active',
 				] );
 				$svc_row_id = (int) $wpdb->insert_id;
-				if ( $svc_row_id && self::table_exists( $svbpt ) ) {
-					foreach ( $svc['pts'] as $bi => $bullet ) {
-						$wpdb->insert( $svbpt, [ 'service_id' => $svc_row_id, 'point_text' => $bullet, 'sort_order' => $bi + 1 ] );
+				$count += (int) (bool) $wpdb->rows_affected;
+				if ( $svc_row_id ) {
+					foreach ( $all_bullets[ $r['slug'] ] ?? [] as $bi => $b ) {
+						$wpdb->insert( $svbpt, [
+							'service_id' => $svc_row_id,
+							'point_text' => $b['point_text'] ?? '',
+							'sort_order' => (int) ( $b['sort_order'] ?? $bi + 1 ),
+						] );
 					}
 				}
-				$count++;
 			}
 		}
-
 		// ── Team Members ──────────────────────────────────────────────────────
 		$tmt = "{$pfx}team_members";
 		if ( self::table_exists( $tmt ) && ! $wpdb->get_var( "SELECT id FROM `{$tmt}` LIMIT 1" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -1362,6 +1298,331 @@ class AH_Theme_Seeder {
 					'published_at' => current_time( 'mysql', true ),
 				] );
 				$count += (int) (bool) $wpdb->rows_affected;
+			}
+		}
+
+		return [ 'inserted' => $count, 'updated' => 0 ];
+	}
+
+	// ── CSV-driven plugin data (runs after seed_plugin_tables) ──────────────
+	//
+	// HOW TO ADD MORE DATA
+	// ====================
+	// 1. Open (or create) the relevant CSV in mock_data/csv/
+	// 2. Add a row following the column headers shown in each section below
+	// 3. Re-run "Install Mock Data" — existing rows are skipped (dedup by key column)
+	//
+	// HOW TO ADD A COMPLETELY NEW TABLE
+	// ===================================
+	// 1. Create mock_data/csv/plugin-mytable.csv  with the columns you need
+	// 2. Add a block below following the same pattern:
+	//      $csv = AH_Data::load_csv( 'plugin-mytable' );
+	//      $table = $pfx . 'my_table_suffix';
+	//      foreach ( $csv as $r ) { $wpdb->insert( $table, [ ... $r ... ] ); }
+
+	public static function seed_plugin_csv_lists(): array {
+		global $wpdb;
+		$pfx = $wpdb->prefix . 'ah_';
+
+		if ( ! self::table_exists( "{$pfx}pages" ) ) {
+			return self::skip( 'CMS plugin tables not found' );
+		}
+
+		$count = 0;
+
+		// Resolve page IDs needed for child-row inserts
+		$pt         = "{$pfx}pages";
+		$home_id    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$pt}` WHERE slug = %s", 'home' ) );    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$about_id   = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$pt}` WHERE slug = %s", 'about' ) );   // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		// ── Home highlights  →  mock_data/csv/plugin-home-highlights.csv ─────
+		// Columns: sort_order, text
+		// Example: 5,Nationwide coverage across UK
+		$hlt = "{$pfx}section_highlights";
+		if ( $home_id && self::table_exists( $hlt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-home-highlights' ) as $r ) {
+				if ( empty( $r['text'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$hlt}` WHERE page_id = %d AND text = %s", $home_id, $r['text'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $hlt, [ 'page_id' => $home_id, 'text' => $r['text'], 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── Why-Us cards  →  mock_data/csv/plugin-why-us-cards.csv ──────────
+		// Columns: sort_order, title, description
+		$wuct = "{$pfx}section_why_us_cards";
+		$wut  = "{$pfx}section_why_us";
+		if ( $home_id && self::table_exists( $wuct ) ) {
+			$wu_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$wut}` WHERE page_id = %d", $home_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $wu_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-why-us-cards' ) as $r ) {
+					if ( empty( $r['title'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$wuct}` WHERE why_us_id = %d AND title = %s", $wu_id, $r['title'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( ! $exists ) {
+						$wpdb->insert( $wuct, [ 'why_us_id' => $wu_id, 'title' => $r['title'], 'description' => $r['description'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+						$count += (int) (bool) $wpdb->rows_affected;
+					}
+				}
+			}
+		}
+
+		// ── Guide-Through points  →  mock_data/csv/plugin-guide-through-points.csv
+		// Columns: sort_order, point_text
+		$gtpt = "{$pfx}section_guide_through_points";
+		$gtt  = "{$pfx}section_guide_through";
+		if ( $home_id && self::table_exists( $gtpt ) ) {
+			$gt_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$gtt}` WHERE page_id = %d", $home_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $gt_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-guide-through-points' ) as $r ) {
+					if ( empty( $r['point_text'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$gtpt}` WHERE guide_id = %d AND LEFT(point_text,80) = %s", $gt_id, substr( $r['point_text'], 0, 80 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( ! $exists ) {
+						$wpdb->insert( $gtpt, [ 'guide_id' => $gt_id, 'point_text' => $r['point_text'], 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+						$count += (int) (bool) $wpdb->rows_affected;
+					}
+				}
+			}
+		}
+
+		// ── Difference table rows  →  mock_data/csv/plugin-difference-table.csv
+		// Columns: sort_order, feature_label, us_value, others_value
+		$diftt = "{$pfx}section_difference_table";
+		$dift  = "{$pfx}section_difference";
+		if ( $home_id && self::table_exists( $diftt ) ) {
+			$dif_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$dift}` WHERE page_id = %d", $home_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $dif_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-difference-table' ) as $r ) {
+					if ( empty( $r['feature_label'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$diftt}` WHERE difference_id = %d AND feature_label = %s", $dif_id, $r['feature_label'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( ! $exists ) {
+						$wpdb->insert( $diftt, [ 'difference_id' => $dif_id, 'feature_label' => $r['feature_label'], 'us_value' => $r['us_value'] ?? '', 'others_value' => $r['others_value'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+						$count += (int) (bool) $wpdb->rows_affected;
+					}
+				}
+			}
+		}
+
+		// ── Experience cards  →  mock_data/csv/plugin-experience-cards.csv
+		// Columns: sort_order, title, description
+		$expct = "{$pfx}section_experience_cards";
+		$expt  = "{$pfx}section_experience";
+		if ( $home_id && self::table_exists( $expct ) ) {
+			$exp_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$expt}` WHERE page_id = %d", $home_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $exp_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-experience-cards' ) as $r ) {
+					if ( empty( $r['title'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$expct}` WHERE section_id = %d AND title = %s", $exp_id, $r['title'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( ! $exists ) {
+						$wpdb->insert( $expct, [ 'section_id' => $exp_id, 'title' => $r['title'], 'description' => $r['description'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+						$count += (int) (bool) $wpdb->rows_affected;
+					}
+				}
+			}
+		}
+
+		// ── Why-Required cards  →  mock_data/csv/plugin-why-required-cards.csv
+		// Columns: sort_order, title, description
+		$wrct = "{$pfx}section_why_required_cards";
+		$wrt  = "{$pfx}section_why_required";
+		if ( $home_id && self::table_exists( $wrct ) ) {
+			$wr_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$wrt}` WHERE page_id = %d", $home_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $wr_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-why-required-cards' ) as $r ) {
+					if ( empty( $r['title'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$wrct}` WHERE section_id = %d AND title = %s", $wr_id, $r['title'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( ! $exists ) {
+						$wpdb->insert( $wrct, [ 'section_id' => $wr_id, 'title' => $r['title'], 'description' => $r['description'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+						$count += (int) (bool) $wpdb->rows_affected;
+					}
+				}
+			}
+		}
+
+		// ── About values  →  mock_data/csv/plugin-about-values.csv
+		// Columns: sort_order, heading, information
+		$avt = "{$pfx}about_values";
+		if ( $about_id && self::table_exists( $avt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-about-values' ) as $r ) {
+				if ( empty( $r['heading'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$avt}` WHERE page_id = %d AND heading = %s", $about_id, $r['heading'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $avt, [ 'page_id' => $about_id, 'heading' => $r['heading'], 'information' => $r['information'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── About story points  →  mock_data/csv/plugin-about-story-points.csv
+		// Columns: sort_order, point_text
+		$astpt = "{$pfx}about_story_points";
+		$astt  = "{$pfx}about_story";
+		if ( $about_id && self::table_exists( $astpt ) ) {
+			$ast_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$astt}` WHERE page_id = %d", $about_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $ast_id ) {
+				foreach ( AH_Data::load_csv( 'plugin-about-story-points' ) as $r ) {
+					if ( empty( $r['point_text'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$astpt}` WHERE story_id = %d AND LEFT(point_text,80) = %s", $ast_id, substr( $r['point_text'], 0, 80 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( ! $exists ) {
+						$wpdb->insert( $astpt, [ 'story_id' => $ast_id, 'point_text' => $r['point_text'], 'sort_order' => (int) $r['sort_order'] ] );
+						$count += (int) (bool) $wpdb->rows_affected;
+					}
+				}
+			}
+		}
+
+		// ── Services  →  mock_data/csv/plugin-services.csv ───────────────────
+		// Columns: slug, sort_order, title, short_desc, full_desc
+		// ── Service bullets  →  mock_data/csv/plugin-service-bullets.csv ─────
+		// Columns: service_slug, sort_order, point_text
+		$svct  = "{$pfx}services";
+		$svbpt = "{$pfx}service_bullet_points";
+		if ( self::table_exists( $svct ) ) {
+			$bullets_by_slug = [];
+			foreach ( AH_Data::load_csv( 'plugin-service-bullets' ) as $b ) {
+				$bullets_by_slug[ $b['service_slug'] ?? '' ][] = $b;
+			}
+			foreach ( AH_Data::load_csv( 'plugin-services' ) as $r ) {
+				if ( empty( $r['slug'] ) || empty( $r['title'] ) ) continue;
+				$svc_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$svct}` WHERE slug = %s", $r['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $svc_id ) {
+					$wpdb->insert( $svct, [ 'title' => $r['title'], 'slug' => $r['slug'], 'short_desc' => $r['short_desc'] ?? '', 'full_desc' => $r['full_desc'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$svc_id = (int) $wpdb->insert_id;
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+				if ( $svc_id && self::table_exists( $svbpt ) ) {
+					foreach ( $bullets_by_slug[ $r['slug'] ] ?? [] as $b ) {
+						if ( empty( $b['point_text'] ) ) continue;
+						$bex = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$svbpt}` WHERE service_id = %d AND LEFT(point_text,80) = %s", $svc_id, substr( $b['point_text'], 0, 80 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+						if ( ! $bex ) {
+							$wpdb->insert( $svbpt, [ 'service_id' => $svc_id, 'point_text' => $b['point_text'], 'sort_order' => (int) $b['sort_order'] ] );
+						}
+					}
+				}
+			}
+		}
+
+		// ── Team members  →  mock_data/csv/plugin-team.csv ───────────────────
+		// Columns: sort_order, name, designation, bio, email, linkedin_url, is_featured
+		$tmt = "{$pfx}team_members";
+		if ( self::table_exists( $tmt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-team' ) as $r ) {
+				if ( empty( $r['name'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$tmt}` WHERE name = %s", $r['name'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $tmt, [ 'name' => $r['name'], 'designation' => $r['designation'] ?? '', 'bio' => $r['bio'] ?? '', 'email' => $r['email'] ?? '', 'linkedin_url' => $r['linkedin_url'] ?? '', 'sort_order' => (int) $r['sort_order'], 'is_featured' => (int) $r['is_featured'], 'status' => 'active' ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── Reviews  →  mock_data/csv/plugin-reviews.csv ─────────────────────
+		// Columns: sort_order, reviewer_name, reviewer_title, review_text, rating, is_featured, short_desc
+		$rvt = "{$pfx}reviews";
+		if ( self::table_exists( $rvt ) ) {
+			$has_short = ! empty( $wpdb->get_results( $wpdb->prepare( 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s', DB_NAME, $rvt, 'short_desc' ) ) );
+			foreach ( AH_Data::load_csv( 'plugin-reviews' ) as $r ) {
+				if ( empty( $r['reviewer_name'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$rvt}` WHERE reviewer_name = %s", $r['reviewer_name'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$data = [ 'reviewer_name' => $r['reviewer_name'], 'reviewer_title' => $r['reviewer_title'] ?? '', 'review_text' => $r['review_text'] ?? '', 'rating' => (float) ( $r['rating'] ?? 5 ), 'is_featured' => (int) ( $r['is_featured'] ?? 0 ), 'status' => 'active', 'source' => 'manual' ];
+					if ( $has_short ) $data['short_desc'] = $r['short_desc'] ?? '';
+					$wpdb->insert( $rvt, $data );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── FAQs  →  mock_data/csv/plugin-faqs.csv ───────────────────────────
+		// Columns: sort_order, question, answer
+		$faqt = "{$pfx}faqs";
+		if ( self::table_exists( $faqt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-faqs' ) as $r ) {
+				if ( empty( $r['question'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$faqt}` WHERE LEFT(question,100) = %s", substr( $r['question'], 0, 100 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $faqt, [ 'question' => $r['question'], 'answer' => $r['answer'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── News bar items  →  mock_data/csv/plugin-news-bar.csv ─────────────
+		// Columns: sort_order, text, link_url
+		$nbit = "{$pfx}news_bar_items";
+		if ( self::table_exists( $nbit ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-news-bar' ) as $r ) {
+				if ( empty( $r['text'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nbit}` WHERE LEFT(text,120) = %s", substr( $r['text'], 0, 120 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $nbit, [ 'text' => $r['text'], 'link_url' => $r['link_url'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── Footer contact links  →  mock_data/csv/plugin-footer-contact.csv ─
+		// Columns: sort_order, label, value, link_url, icon_class
+		$fclt = "{$pfx}footer_contact_links";
+		if ( self::table_exists( $fclt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-footer-contact' ) as $r ) {
+				if ( empty( $r['label'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$fclt}` WHERE label = %s", $r['label'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $fclt, [ 'label' => $r['label'], 'value' => $r['value'] ?? '', 'link_url' => $r['link_url'] ?? '', 'icon_class' => $r['icon_class'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── Footer social links  →  mock_data/csv/plugin-footer-social.csv ───
+		// Columns: sort_order, platform, url, icon_class
+		$fslt = "{$pfx}footer_social_links";
+		if ( self::table_exists( $fslt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-footer-social' ) as $r ) {
+				if ( empty( $r['platform'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$fslt}` WHERE platform = %s", $r['platform'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $fslt, [ 'platform' => $r['platform'], 'url' => $r['url'] ?? '', 'icon_class' => $r['icon_class'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
+			}
+		}
+
+		// ── Nav primary items  →  mock_data/csv/plugin-nav-primary.csv ───────
+		// ── Nav footer items   →  mock_data/csv/plugin-nav-footer.csv ────────
+		// Columns: sort_order, label, url
+		$nmt  = "{$pfx}nav_menus";
+		$nmit = "{$pfx}nav_menu_items";
+		if ( self::table_exists( $nmt ) && self::table_exists( $nmit ) ) {
+			$nav_map = [ 'primary' => 'plugin-nav-primary', 'footer' => 'plugin-nav-footer' ];
+			foreach ( $nav_map as $menu_slug => $csv_name ) {
+				$menu_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmt}` WHERE slug = %s", $menu_slug ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $menu_id ) continue;
+				foreach ( AH_Data::load_csv( $csv_name ) as $r ) {
+					if ( empty( $r['label'] ) ) continue;
+					$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nmit}` WHERE menu_id = %d AND label = %s", $menu_id, $r['label'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( ! $exists ) {
+						$wpdb->insert( $nmit, [ 'menu_id' => $menu_id, 'label' => $r['label'], 'url' => $r['url'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+						$count += (int) (bool) $wpdb->rows_affected;
+					}
+				}
+			}
+		}
+
+		// ── Plugin posts (blog + news)  →  mock_data/csv/plugin-posts.csv ────
+		// Columns: post_type, slug, is_featured, title, excerpt, content
+		// Add a row: news,my-post-slug,0,My Post Title,Short excerpt,<p>Full content</p>
+		$ppt = "{$pfx}posts";
+		if ( self::table_exists( $ppt ) ) {
+			foreach ( AH_Data::load_csv( 'plugin-posts' ) as $r ) {
+				if ( empty( $r['slug'] ) || empty( $r['title'] ) ) continue;
+				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$ppt}` WHERE slug = %s", $r['slug'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				if ( ! $exists ) {
+					$wpdb->insert( $ppt, [ 'post_type' => $r['post_type'] ?? 'blog', 'title' => $r['title'], 'slug' => $r['slug'], 'excerpt' => $r['excerpt'] ?? '', 'content' => $r['content'] ?? '', 'is_featured' => (int) ( $r['is_featured'] ?? 0 ), 'status' => 'active', 'published_at' => current_time( 'mysql', true ) ] );
+					$count += (int) (bool) $wpdb->rows_affected;
+				}
 			}
 		}
 

@@ -113,7 +113,7 @@ $crumbs[] = [ get_the_title(), '' ];
                   <img class="sp-more-item__img" src="<?php echo esc_url( $mp_thumb ); ?>"
                        alt="<?php echo esc_attr( get_the_title( $mp ) ); ?>" loading="lazy">
                 <?php else : ?>
-                  <div class="sp-more-item__img sp-more-item__img--ph" aria-hidden="true"></div>
+                  <div class="sp-more-item__img sp-more-item__img--ph" aria-hidden="true"><?php echo esc_html( get_the_title( $mp )[0] ) ?></div>
                 <?php endif; ?>
                 <span class="sp-more-item__title"><?php echo esc_html( get_the_title( $mp ) ); ?></span>
               </a>

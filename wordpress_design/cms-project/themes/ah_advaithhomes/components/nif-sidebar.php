@@ -144,7 +144,7 @@ $permalink      = $args['permalink']      ?? get_permalink();
 <?php endif; ?>
 
 <!-- ══ WEEKLY MARKET BRIEFING ════════════════════════════════ -->
-<div class="nif-sb-card nif-sb-card--briefing" aria-label="<?php esc_attr_e( 'Weekly Market Briefing', 'ah-theme' ); ?>">
+<div class=" hidden nif-sb-card nif-sb-card--briefing" aria-label="<?php esc_attr_e( 'Weekly Market Briefing', 'ah-theme' ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary"><?php esc_html_e( 'Weekly Market Briefing', 'ah-theme' ); ?></span>
   </div>
