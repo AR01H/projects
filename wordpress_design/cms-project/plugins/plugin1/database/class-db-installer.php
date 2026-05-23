@@ -33,6 +33,7 @@ class AH_DB_Installer {
 		self::ensure_protected_taxonomy();
 		self::ensure_taxonomy_media();
 		self::ensure_taxonomy_parent_terms();
+		self::ensure_trigger_logs();
 	}
 
 	public static function ensure_taxonomy_parent_terms(): void {
@@ -217,6 +218,39 @@ class AH_DB_Installer {
 		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' );
 	}
 
+	/**
+	 * Create ah_trigger_logs if it does not already exist (for existing installations).
+	 * New installations get it via get_table_sqls() during install().
+	 */
+	public static function ensure_trigger_logs(): void {
+		global $wpdb;
+		$t  = $wpdb->prefix . 'ah_trigger_logs';
+		$cs = $wpdb->get_charset_collate();
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$t}` (
+			`id`            BIGINT UNSIGNED     NOT NULL AUTO_INCREMENT,
+			`rule_id`       INT UNSIGNED        NOT NULL,
+			`trigger_name`  VARCHAR(100)        NOT NULL,
+			`context_data`  JSON                DEFAULT NULL,
+			`action_index`  TINYINT UNSIGNED    NOT NULL DEFAULT 0,
+			`action_type`   VARCHAR(50)         NOT NULL DEFAULT '',
+			`action_config` JSON                DEFAULT NULL,
+			`status`        ENUM('pending','sent','failed','unsent') NOT NULL DEFAULT 'pending',
+			`is_done`       TINYINT(1)          NOT NULL DEFAULT 0,
+			`is_unsent`     TINYINT(1)          NOT NULL DEFAULT 0,
+			`attempts`      TINYINT UNSIGNED    NOT NULL DEFAULT 0,
+			`error_message` TEXT                DEFAULT NULL,
+			`sent_at`       DATETIME            DEFAULT NULL,
+			`failed_at`     DATETIME            DEFAULT NULL,
+			`created_at`    DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (`id`),
+			KEY `idx_rule`    (`rule_id`),
+			KEY `idx_status`  (`status`),
+			KEY `idx_trigger` (`trigger_name`),
+			KEY `idx_done`    (`is_done`),
+			KEY `idx_unsent`  (`is_unsent`)
+		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
+
 	public static function ensure_builder_table(): void {
 		global $wpdb;
 		$p  = $wpdb->prefix;
@@ -241,12 +275,21 @@ class AH_DB_Installer {
 		global $wpdb;
 		$table = $wpdb->prefix . 'ah_site_settings';
 		$required = array(
-			array( 'setting_key' => 'phone',            'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'Phone'            ),
-			array( 'setting_key' => 'whatsapp',         'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'WhatsApp'         ),
-			array( 'setting_key' => 'email',            'setting_val' => '', 'field_type' => 'email',    'group_name' => 'contact', 'label' => 'Email'            ),
-			array( 'setting_key' => 'address',          'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'contact', 'label' => 'Address'          ),
-			array( 'setting_key' => 'consultation_url', 'setting_val' => '', 'field_type' => 'url',      'group_name' => 'contact', 'label' => 'Consultation URL' ),
-			array( 'setting_key' => 'youtube_url',      'setting_val' => '', 'field_type' => 'url',      'group_name' => 'social',  'label' => 'YouTube URL'      ),
+			array( 'setting_key' => 'phone',            'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact',       'label' => 'Phone'                     ),
+			array( 'setting_key' => 'whatsapp',         'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact',       'label' => 'WhatsApp'                  ),
+			array( 'setting_key' => 'email',            'setting_val' => '', 'field_type' => 'email',    'group_name' => 'contact',       'label' => 'Email'                     ),
+			array( 'setting_key' => 'address',          'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'contact',       'label' => 'Address'                   ),
+			array( 'setting_key' => 'consultation_url', 'setting_val' => '', 'field_type' => 'url',      'group_name' => 'contact',       'label' => 'Consultation URL'          ),
+			array( 'setting_key' => 'youtube_url',      'setting_val' => '', 'field_type' => 'url',      'group_name' => 'social',        'label' => 'YouTube URL'               ),
+			// Notification / outbound email identity
+			array( 'setting_key' => 'notif_from_name',  'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'Notification From Name'    ),
+			array( 'setting_key' => 'notif_from_email', 'setting_val' => '', 'field_type' => 'email',    'group_name' => 'notifications', 'label' => 'Notification From Email'   ),
+			// SMTP overrides (leave blank to use WordPress default mailer)
+			array( 'setting_key' => 'smtp_host',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Host'                 ),
+			array( 'setting_key' => 'smtp_port',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Port'                 ),
+			array( 'setting_key' => 'smtp_user',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Username'             ),
+			array( 'setting_key' => 'smtp_pass',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Password'             ),
+			array( 'setting_key' => 'smtp_secure',      'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Encryption (tls/ssl)' ),
 		);
 		foreach ( $required as $s ) {
 			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE setting_key = %s", $s['setting_key'] ) ) ) {
@@ -933,12 +976,40 @@ class AH_DB_Installer {
 				phone        VARCHAR(30),
 				subject      VARCHAR(300),
 				message      TEXT NOT NULL,
+				page_url     VARCHAR(500),
+				user_agent   VARCHAR(500),
 				ip_address   VARCHAR(45),
+				admin_notes  TEXT,
 				is_read      TINYINT(1) DEFAULT 0,
 				status       ENUM('new','in_progress','resolved','spam') DEFAULT 'new',
 				submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 				KEY idx_status (status),
 				KEY idx_is_read (is_read)
+			) ENGINE=InnoDB {$cs}",
+
+			// 62. Trigger Execution Logs
+			"CREATE TABLE IF NOT EXISTS {$p}ah_trigger_logs (
+				id            BIGINT UNSIGNED     NOT NULL AUTO_INCREMENT,
+				rule_id       INT UNSIGNED        NOT NULL,
+				trigger_name  VARCHAR(100)        NOT NULL,
+				context_data  JSON                DEFAULT NULL,
+				action_index  TINYINT UNSIGNED    NOT NULL DEFAULT 0,
+				action_type   VARCHAR(50)         NOT NULL DEFAULT '',
+				action_config JSON                DEFAULT NULL,
+				status        ENUM('pending','sent','failed','unsent') NOT NULL DEFAULT 'pending',
+				is_done       TINYINT(1)          NOT NULL DEFAULT 0,
+				is_unsent     TINYINT(1)          NOT NULL DEFAULT 0,
+				attempts      TINYINT UNSIGNED    NOT NULL DEFAULT 0,
+				error_message TEXT                DEFAULT NULL,
+				sent_at       DATETIME            DEFAULT NULL,
+				failed_at     DATETIME            DEFAULT NULL,
+				created_at    DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (id),
+				KEY idx_rule    (rule_id),
+				KEY idx_status  (status),
+				KEY idx_trigger (trigger_name),
+				KEY idx_done    (is_done),
+				KEY idx_unsent  (is_unsent)
 			) ENGINE=InnoDB {$cs}",
 
 			// 53. Footer Config
