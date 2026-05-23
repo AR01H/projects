@@ -428,21 +428,24 @@ class AH_Theme_Seeder {
 	}
 
 	// ── Mandatory WP pages ───────────────────────────────────────────────────
+	// Add more pages: open mock_data/csv/mandatory-pages.csv and add a row:
+	//   slug,title,template
+	//   my-page,My Page,page-my-page.php
 
 	public static function seed_mandatory_pages(): array {
-		$pages = [
-			'home'           => [ 'title' => 'Home',          'template' => '' ],
-			'about'          => [ 'title' => 'About Us',       'template' => 'page-about.php' ],
-			'services'       => [ 'title' => 'Our Services',   'template' => 'page-services.php' ],
-			'client-stories' => [ 'title' => 'Client Stories', 'template' => 'page-client-stories.php' ],
-			'reviews'        => [ 'title' => 'Client Stories', 'template' => 'page-client-stories.php' ],
-			'contact'        => [ 'title' => 'Contact',        'template' => 'page-contact.php' ],
-			'contact-us'     => [ 'title' => 'Contact',        'template' => 'page-contact.php' ],
-			'guides'         => [ 'title' => 'Buying Guides',  'template' => 'page-guides.php' ],
-			'blog'           => [ 'title' => 'Blog',           'template' => 'page-blog.php' ],
-			'news'           => [ 'title' => 'News',           'template' => 'page-news.php' ],
-			'faq'            => [ 'title' => 'FAQ',            'template' => 'page-faq.php' ],
-		];
+		// Load from CSV; fall back to inline defaults when file is absent.
+		$csv_rows = AH_Data::load_csv( 'mandatory-pages' );
+		$pages = [];
+		if ( $csv_rows ) {
+			foreach ( $csv_rows as $row ) {
+				$slug = $row['slug'] ?? '';
+				if ( ! $slug ) continue;
+				$pages[ $slug ] = [
+					'title'    => $row['title']    ?? $slug,
+					'template' => $row['template'] ?? '',
+				];
+			}
+		} 
 		$count = 0;
 		foreach ( $pages as $slug => $cfg ) {
 			$existing = get_page_by_path( $slug );

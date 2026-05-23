@@ -124,7 +124,7 @@ $guides_query = new WP_Query( $query_args );
       <span class="section__eyebrow">Browse by Topic</span>
       <h2 class="section__title">Find Exactly What You Need</h2>
     </div>
-    <div class="grid-4">
+    <div class="gcat-grid">
       <?php foreach ( $categories as $i => $cat ) :
         $cat = is_object( $cat ) ? (array) $cat : $cat;
         get_template_part( 'components/cards/guide-category-card', null, [

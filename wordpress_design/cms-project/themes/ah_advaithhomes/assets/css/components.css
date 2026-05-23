@@ -332,6 +332,25 @@
 
 /* Guide category card */
 /* ── Guide Category Card (components/cards/guide-category-card.php) ─────── */
+
+/* Flex grid — centres orphan items on the last row */
+.gcat-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 24px;
+}
+.gcat-grid > .gcat-card {
+	flex: 0 1 calc(25% - 18px);
+	min-width: 220px;
+}
+@media (max-width: 1024px) {
+	.gcat-grid > .gcat-card { flex: 0 1 calc(50% - 12px); }
+}
+@media (max-width: 640px) {
+	.gcat-grid > .gcat-card { flex: 1 1 100%; }
+}
+
 .gcat-card {
 	position: relative;
 	display: flex; flex-direction: column; gap: 14px;

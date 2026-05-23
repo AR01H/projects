@@ -1,9 +1,4 @@
 <?php
-/**
- * Template Name: News & Info Feeder
- * Portal-style two-column information hub — all data from DB.
- * URL: /news-info-feeder/
- */
 
 get_header();
 
