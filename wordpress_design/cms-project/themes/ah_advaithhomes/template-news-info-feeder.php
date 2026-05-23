@@ -68,8 +68,8 @@ if ( $use_parent_terms && $active_parent_term && class_exists( 'AH_DB_Helper' ) 
 $wp_args = [
 	'post_type'           => 'post',
 	'post_status'         => 'publish',
-	'posts_per_page'      => 20,
-	'paged'               => $paged,
+	'posts_per_page'      => 10,
+	// 'paged'               => $paged,
 	'orderby'             => 'date',
 	'order'               => 'DESC',
 	'ignore_sticky_posts' => true,
