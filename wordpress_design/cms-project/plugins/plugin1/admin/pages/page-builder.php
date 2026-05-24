@@ -381,7 +381,8 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
   font-size:.7rem; font-weight:700; color:#6b7280; display:block;
   margin-bottom:3px; text-transform:uppercase; letter-spacing:.04em;
 }
-.ah-settings-panel input, .ah-settings-panel select, .ah-settings-panel textarea {
+/* .ah-settings-panel input, */
+ .ah-settings-panel select, .ah-settings-panel textarea {
   width:100%; border:1px solid #e5e7eb; border-radius:6px;
   padding:6px 8px; font-size:.8rem; box-sizing:border-box;
   transition:border-color .15s,box-shadow .15s;
@@ -428,21 +429,46 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
     <!-- LEFT: Block Palette -->
     <div class="ah-palette">
       <h4>Layout</h4>
-      <div class="ah-palette-block" data-type="hero">         <span class="icon">🎯</span> Hero Banner</div>
+      <div class="ah-palette-block" data-type="hero">          <span class="icon">🎯</span> Hero Banner</div>
       <div class="ah-palette-block" data-type="section_heading"><span class="icon">📌</span> Section Heading</div>
-      <div class="ah-palette-block" data-type="text_block">  <span class="icon">📝</span> Rich Text</div>
-      <div class="ah-palette-block" data-type="spacer">       <span class="icon">↕️</span> Spacer</div>
+      <div class="ah-palette-block" data-type="text_block">    <span class="icon">📝</span> Rich Text</div>
+      <div class="ah-palette-block" data-type="columns">       <span class="icon">⬛</span> 2-Col Text</div>
+      <div class="ah-palette-block" data-type="tabs">          <span class="icon">🗂️</span> Tabs</div>
+      <div class="ah-palette-block" data-type="divider">       <span class="icon">➖</span> Divider</div>
+      <div class="ah-palette-block" data-type="spacer">        <span class="icon">↕️</span> Spacer</div>
+
+      <h4>Media</h4>
+      <div class="ah-palette-block" data-type="gallery">       <span class="icon">🖼️</span> Gallery</div>
+      <div class="ah-palette-block" data-type="video">         <span class="icon">▶️</span> Video Embed</div>
+      <div class="ah-palette-block" data-type="map_embed">     <span class="icon">📍</span> Map Embed</div>
+      <div class="ah-palette-block" data-type="logo_strip">    <span class="icon">🏷️</span> Logo Strip</div>
 
       <h4>Content</h4>
-      <div class="ah-palette-block" data-type="cards">        <span class="icon">🃏</span> Card Grid</div>
-      <div class="ah-palette-block" data-type="cta_banner">   <span class="icon">📣</span> CTA Banner</div>
-      <div class="ah-palette-block" data-type="stats_row">    <span class="icon">📊</span> Stats Row</div>
-      <div class="ah-palette-block" data-type="faq">          <span class="icon">❓</span> FAQ Accordion</div>
+      <div class="ah-palette-block" data-type="cards">         <span class="icon">🃏</span> Card Grid</div>
+      <div class="ah-palette-block" data-type="image_text">    <span class="icon">🖼️</span> Image + Text</div>
+      <div class="ah-palette-block" data-type="testimonial">   <span class="icon">💬</span> Testimonial</div>
+      <div class="ah-palette-block" data-type="team">          <span class="icon">👥</span> Team Members</div>
+      <div class="ah-palette-block" data-type="steps">         <span class="icon">🔢</span> Steps / Process</div>
+      <div class="ah-palette-block" data-type="timeline">      <span class="icon">📅</span> Timeline</div>
+      <div class="ah-palette-block" data-type="icon_list">     <span class="icon">✅</span> Icon List</div>
+      <div class="ah-palette-block" data-type="pull_quote">    <span class="icon">❝</span> Pull Quote</div>
+      <div class="ah-palette-block" data-type="comparison">    <span class="icon">⚖️</span> Comparison Table</div>
+      <div class="ah-palette-block" data-type="pricing">       <span class="icon">💰</span> Pricing Card</div>
+
+      <h4>Action</h4>
+      <div class="ah-palette-block" data-type="cta_banner">    <span class="icon">📣</span> CTA Banner</div>
+      <div class="ah-palette-block" data-type="stats_row">     <span class="icon">📊</span> Stats Row</div>
+      <div class="ah-palette-block" data-type="faq">           <span class="icon">❓</span> FAQ Accordion</div>
+      <div class="ah-palette-block" data-type="alert">         <span class="icon">📢</span> Alert / Notice</div>
+      <div class="ah-palette-block" data-type="notice_bar">    <span class="icon">📯</span> Notice Bar</div>
+      <div class="ah-palette-block" data-type="download">      <span class="icon">⬇️</span> Download Button</div>
+
+      <h4>People & Contact</h4>
+      <div class="ah-palette-block" data-type="contact_card">  <span class="icon">📇</span> Contact Card</div>
 
       <h4>Navigation</h4>
-      <div class="ah-palette-block" data-type="button_row">   <span class="icon">🔘</span> Button Row</div>
-      <div class="ah-palette-block" data-type="links_list">   <span class="icon">🔗</span> Links List</div>
-      <div class="ah-palette-block" data-type="image_text">   <span class="icon">🖼️</span> Image + Text</div>
+      <div class="ah-palette-block" data-type="button_row">    <span class="icon">🔘</span> Button Row</div>
+      <div class="ah-palette-block" data-type="links_list">    <span class="icon">🔗</span> Links List</div>
     </div>
 
     <!-- MIDDLE: Canvas -->
@@ -520,21 +546,29 @@ var BLOCK_DEFS = {
   hero: {
     label: 'Hero Banner', icon: '🎯', color: '#4f46e5',
     fields: [
-      { key:'heading',     label:'Heading',         type:'text',     ph:'Welcome to our service'     },
-      { key:'subheading',  label:'Subheading',      type:'textarea', ph:'A brief description…'       },
-      { key:'cta1_text',   label:'Button 1 Text',   type:'text',     ph:'Book Free Call'             },
-      { key:'cta1_url',    label:'Button 1 URL',    type:'text',     ph:'/free-consultation/'        },
-      { key:'cta2_text',   label:'Button 2 Text',   type:'text',     ph:'Learn More'                 },
-      { key:'cta2_url',    label:'Button 2 URL',    type:'text',     ph:'/about/'                    },
-      { key:'bg',          label:'Background',      type:'select',   options:['white','light','dark','gold','client-color-light','client-color-medium','client-color-dark'], def:'white' },
+      { key:'eyebrow',     label:'Eyebrow Text',         type:'text',     ph:'Trusted Buyer\'s Agents'    },
+      { key:'heading',     label:'Heading',              type:'text',     ph:'Welcome to our service'     },
+      { key:'subheading',  label:'Subheading',           type:'textarea', ph:'A brief description…'       },
+      { key:'cta1_text',   label:'Button 1 Text',        type:'text',     ph:'Book Free Call'             },
+      { key:'cta1_url',    label:'Button 1 URL',         type:'text',     ph:'/free-consultation/'        },
+      { key:'cta2_text',   label:'Button 2 Text',        type:'text',     ph:'Learn More'                 },
+      { key:'cta2_url',    label:'Button 2 URL',         type:'text',     ph:'/about/'                    },
+      { key:'bg',          label:'Background',           type:'select',   options:['white','light','dark','gold','client-color-light','client-color-medium','client-color-dark'], def:'white' },
+      { key:'bg_image',    label:'Background Image URL', type:'text',     ph:'https://…/image.jpg'        },
+      { key:'overlay',     label:'Image Overlay',        type:'select',   options:['light','medium','dark','none'], def:'medium' },
+      { key:'min_height',  label:'Min Height (px)',      type:'text',     ph:'480'                        },
+      { key:'text_align',  label:'Text Align',           type:'select',   options:['center','left'], def:'center' },
+      { key:'full_height', label:'Full Height (100vh)',  type:'select',   options:['no','yes'], def:'no'   },
     ]
   },
   section_heading: {
     label: 'Section Heading', icon: '📌', color: '#0891b2',
     fields: [
-      { key:'title',    label:'Title',    type:'text',   ph:'Section Title'   },
-      { key:'subtitle', label:'Subtitle', type:'text',   ph:'Optional subtitle' },
-      { key:'align',    label:'Align',    type:'select', options:['center','left','right'], def:'center' },
+      { key:'eyebrow',    label:'Eyebrow',    type:'text',   ph:'Our Approach'    },
+      { key:'title',      label:'Title',      type:'text',   ph:'Section Title'   },
+      { key:'subtitle',   label:'Subtitle',   type:'text',   ph:'Optional subtitle' },
+      { key:'align',      label:'Align',      type:'select', options:['center','left','right'], def:'center' },
+      { key:'accent_bar', label:'Accent Bar', type:'select', options:['yes','no'], def:'yes' },
     ]
   },
   text_block: {
@@ -552,22 +586,26 @@ var BLOCK_DEFS = {
   cards: {
     label: 'Card Grid', icon: '🃏', color: '#7c3aed',
     fields: [
-      { key:'heading', label:'Section Heading', type:'text', ph:'Our Features' },
-      { key:'cols',    label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
+      { key:'heading',    label:'Section Heading', type:'text',   ph:'Our Features' },
+      { key:'cols',       label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
+      { key:'bg',         label:'Background',      type:'select', options:['white','alt'], def:'white' },
+      { key:'card_style', label:'Card Style',      type:'select', options:['feat','value','plain'], def:'feat' },
     ],
     repeater: {
       key: 'cards', label: 'Cards', addLabel: '+ Add Card',
       fields: [
-        { key:'icon',     label:'Icon/Emoji', type:'text',     ph:'🏠' },
-        { key:'title',    label:'Title',      type:'text',     ph:'Card Title' },
-        { key:'text',     label:'Text',       type:'textarea', ph:'Description…' },
-        { key:'link_url', label:'Link URL',   type:'text',     ph:'/guides/…' },
+        { key:'icon',      label:'Icon/Emoji', type:'text',     ph:'🏠'         },
+        { key:'title',     label:'Title',      type:'text',     ph:'Card Title' },
+        { key:'text',      label:'Text',       type:'textarea', ph:'Description…' },
+        { key:'link_url',  label:'Link URL',   type:'text',     ph:'/guides/…'  },
+        { key:'link_text', label:'Link Label', type:'text',     ph:'Learn more' },
       ]
     }
   },
   cta_banner: {
     label: 'CTA Banner', icon: '📣', color: '#b45309',
     fields: [
+      { key:'eyebrow',   label:'Eyebrow',      type:'text',     ph:'Ready to start?'       },
       { key:'heading',   label:'Heading',      type:'text',     ph:'Ready to get started?' },
       { key:'text',      label:'Subtext',      type:'textarea', ph:'Supporting message…'   },
       { key:'btn1_text', label:'Button 1 Text',type:'text',     ph:'Book Free Call'        },
@@ -575,17 +613,21 @@ var BLOCK_DEFS = {
       { key:'btn2_text', label:'Button 2 Text',type:'text',     ph:'Learn More'            },
       { key:'btn2_url',  label:'Button 2 URL', type:'text',     ph:'/about/'               },
       { key:'theme',     label:'Theme',        type:'select',   options:['gold','dark','light','blue'], def:'gold' },
+      { key:'layout',    label:'Layout',       type:'select',   options:['centered','split'], def:'centered' },
     ]
   },
   stats_row: {
     label: 'Stats Row', icon: '📊', color: '#0369a1',
-    fields: [],
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text', ph:'By the Numbers' },
+    ],
     repeater: {
       key: 'stats', label: 'Stats', addLabel: '+ Add Stat',
       fields: [
-        { key:'prefix', label:'Prefix', type:'text', ph:'£' },
-        { key:'number', label:'Number', type:'text', ph:'18' },
-        { key:'suffix', label:'Suffix', type:'text', ph:'k+' },
+        { key:'icon',   label:'Icon',   type:'text', ph:'🏠'         },
+        { key:'prefix', label:'Prefix', type:'text', ph:'£'          },
+        { key:'number', label:'Number', type:'text', ph:'18'         },
+        { key:'suffix', label:'Suffix', type:'text', ph:'k+'         },
         { key:'label',  label:'Label',  type:'text', ph:'Average Saving' },
       ]
     }
@@ -622,6 +664,7 @@ var BLOCK_DEFS = {
     fields: [
       { key:'heading', label:'Heading',   type:'text',   ph:'Useful Links' },
       { key:'cols',    label:'Columns',   type:'select', options:['1','2','3'], def:'2' },
+      { key:'style',   label:'Style',     type:'select', options:['card','plain','numbered'], def:'card' },
     ],
     repeater: {
       key: 'links', label: 'Links', addLabel: '+ Add Link',
@@ -636,16 +679,283 @@ var BLOCK_DEFS = {
   image_text: {
     label: 'Image + Text', icon: '🖼️', color: '#059669',
     fields: [
-      { key:'image_url',  label:'Image URL',   type:'text',     ph:'/wp-content/uploads/…'       },
-      { key:'image_alt',  label:'Image Alt',   type:'text',     ph:'Descriptive alt text'        },
-      { key:'heading',    label:'Heading',     type:'text',     ph:'Section Heading'             },
-      { key:'text',       label:'Body Text',   type:'textarea', ph:'Description…'                },
-      { key:'btn_text',   label:'Button Text', type:'text',     ph:'Learn More'                  },
-      { key:'btn_url',    label:'Button URL',  type:'text',     ph:'/page/'                      },
-      { key:'layout',     label:'Layout',      type:'select',   options:['image-left','image-right'], def:'image-left' },
+      { key:'image_url',  label:'Image URL',    type:'text',     ph:'/wp-content/uploads/…'       },
+      { key:'image_alt',  label:'Image Alt',    type:'text',     ph:'Descriptive alt text'        },
+      { key:'eyebrow',    label:'Eyebrow',      type:'text',     ph:'Our Story'                   },
+      { key:'heading',    label:'Heading',      type:'text',     ph:'Section Heading'             },
+      { key:'text',       label:'Body Text',    type:'textarea', ph:'Description…'                },
+      { key:'btn_text',   label:'Button 1 Text',type:'text',     ph:'Learn More'                  },
+      { key:'btn_url',    label:'Button 1 URL', type:'text',     ph:'/page/'                      },
+      { key:'btn2_text',  label:'Button 2 Text',type:'text',     ph:'See Examples'                },
+      { key:'btn2_url',   label:'Button 2 URL', type:'text',     ph:'/case-studies/'              },
+      { key:'layout',     label:'Layout',       type:'select',   options:['image-left','image-right'], def:'image-left' },
+    ],
+    repeater: {
+      key: 'points', label: 'Bullet Points', addLabel: '+ Add Point',
+      fields: [
+        { key:'icon', label:'Icon', type:'text', ph:'✅'           },
+        { key:'text', label:'Text', type:'text', ph:'Key benefit…' },
+      ]
+    }
+  },
+  testimonial: {
+    label: 'Testimonial', icon: '💬', color: '#0891b2',
+    fields: [
+      { key:'quote',   label:'Quote',       type:'textarea', ph:'Working with them transformed our property search…' },
+      { key:'name',    label:'Author Name', type:'text',     ph:'Sarah & James T.'    },
+      { key:'role',    label:'Role / Note', type:'text',     ph:'First-Time Buyers'   },
+      { key:'company', label:'Company',     type:'text',     ph:'London, UK'          },
+      { key:'stars',   label:'Stars (1–5)', type:'select',   options:['5','4','3','2','1'], def:'5' },
+      { key:'avatar',  label:'Avatar URL',  type:'text',     ph:'/wp-content/uploads/avatar.jpg' },
+      { key:'bg',      label:'Background',  type:'select',   options:['white','alt','gold'], def:'alt' },
+      { key:'layout',  label:'Layout',      type:'select',   options:['centered','card'], def:'centered' },
     ]
   },
+  steps: {
+    label: 'Steps / Process', icon: '🔢', color: '#7c3aed',
+    fields: [
+      { key:'heading',   label:'Section Heading', type:'text',   ph:'How It Works' },
+      { key:'layout',    label:'Layout',          type:'select', options:['vertical','horizontal'], def:'vertical' },
+      { key:'bg',        label:'Background',      type:'select', options:['white','alt'], def:'white' },
+      { key:'connector', label:'Show Connector',  type:'select', options:['yes','no'], def:'no' },
+    ],
+    repeater: {
+      key: 'items', label: 'Steps', addLabel: '+ Add Step',
+      fields: [
+        { key:'title', label:'Title', type:'text',     ph:'Initial Consultation'  },
+        { key:'text',  label:'Text',  type:'textarea', ph:'We begin by…'         },
+        { key:'icon',  label:'Icon',  type:'text',     ph:'🏠'                   },
+      ]
+    }
+  },
+  divider: {
+    label: 'Divider', icon: '➖', color: '#9ca3af',
+    fields: [
+      { key:'style', label:'Style',         type:'select', options:['line','ornament','dots'], def:'line' },
+      { key:'label', label:'Optional Label',type:'text',   ph:'— or —' },
+    ]
+  },
+  alert: {
+    label: 'Alert / Notice', icon: '📢', color: '#b45309',
+    fields: [
+      { key:'type',        label:'Type',        type:'select', options:['info','success','warning','tip'], def:'info' },
+      { key:'title',       label:'Title',       type:'text',   ph:'Did you know?'       },
+      { key:'text',        label:'Text',        type:'textarea',ph:'Important message…' },
+      { key:'dismissible', label:'Dismissible', type:'select', options:['no','yes'], def:'no' },
+    ]
+  },
+  columns: {
+    label: '2-Col Text', icon: '⬛', color: '#059669',
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text',   ph:'' },
+      { key:'cols',    label:'Columns',         type:'select', options:['2','3'], def:'2' },
+      { key:'bg',      label:'Background',      type:'select', options:['white','alt'], def:'white' },
+    ],
+    repeater: {
+      key: 'items', label: 'Columns', addLabel: '+ Add Column',
+      fields: [
+        { key:'heading', label:'Heading', type:'text',     ph:'Column Title'  },
+        { key:'text',    label:'Text',    type:'textarea', ph:'Column body…'  },
+        { key:'icon',    label:'Icon',    type:'text',     ph:'✅'            },
+      ]
+    }
+  },
+  gallery: {
+    label: 'Gallery', icon: '🖼️', color: '#7c3aed',
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text',   ph:'Our Properties'          },
+      { key:'cols',    label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
+      { key:'gap',     label:'Gap',             type:'select', options:['sm','md','lg'], def:'md' },
+    ],
+    repeater: {
+      key: 'images', label: 'Images', addLabel: '+ Add Image',
+      fields: [
+        { key:'url', label:'Image URL', type:'text', ph:'/wp-content/uploads/…' },
+        { key:'alt', label:'Alt Text',  type:'text', ph:'Description'           },
+        { key:'caption', label:'Caption', type:'text', ph:'Optional caption'    },
+      ]
+    }
+  },
+  video: {
+    label: 'Video Embed', icon: '▶️', color: '#dc2626',
+    fields: [
+      { key:'url',     label:'YouTube / Vimeo URL', type:'text', ph:'https://www.youtube.com/watch?v=…' },
+      { key:'caption', label:'Caption',             type:'text', ph:'Optional caption below video'       },
+      { key:'ratio',   label:'Aspect Ratio',        type:'select', options:['16:9','4:3','1:1'], def:'16:9' },
+    ]
+  },
+  map_embed: {
+    label: 'Map Embed', icon: '📍', color: '#059669',
+    fields: [
+      { key:'url',    label:'Google Maps Embed URL', type:'text', ph:'https://www.google.com/maps/embed?…' },
+      { key:'height', label:'Height (px)',           type:'text', ph:'400' },
+      { key:'label',  label:'Label above map',       type:'text', ph:'Find Us'    },
+    ]
+  },
+  logo_strip: {
+    label: 'Logo Strip', icon: '🏷️', color: '#6b7280',
+    fields: [
+      { key:'heading', label:'Label / Heading', type:'text', ph:'Trusted by leading firms' },
+      { key:'bg',      label:'Background',      type:'select', options:['white','alt'], def:'white' },
+    ],
+    repeater: {
+      key: 'logos', label: 'Logos', addLabel: '+ Add Logo',
+      fields: [
+        { key:'url',  label:'Image URL', type:'text', ph:'/wp-content/uploads/logo.png' },
+        { key:'alt',  label:'Alt Text',  type:'text', ph:'Company Name'                 },
+        { key:'link', label:'Link URL',  type:'text', ph:'https://…'                    },
+      ]
+    }
+  },
+  timeline: {
+    label: 'Timeline', icon: '📅', color: '#0891b2',
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text', ph:'Our Journey' },
+      { key:'bg',      label:'Background',      type:'select', options:['white','alt'], def:'white' },
+    ],
+    repeater: {
+      key: 'items', label: 'Events', addLabel: '+ Add Event',
+      fields: [
+        { key:'date',  label:'Date / Year', type:'text',     ph:'2019'             },
+        { key:'title', label:'Title',       type:'text',     ph:'Company Founded'  },
+        { key:'text',  label:'Description', type:'textarea', ph:'We started with…' },
+        { key:'icon',  label:'Icon',        type:'text',     ph:'🏠'               },
+      ]
+    }
+  },
+  pricing: {
+    label: 'Pricing Card', icon: '💰', color: '#b45309',
+    fields: [
+      { key:'heading',    label:'Section Heading', type:'text',     ph:'Our Fees'                 },
+      { key:'subtitle',   label:'Section Subtitle',type:'text',     ph:'Simple, transparent pricing' },
+    ],
+    repeater: {
+      key: 'plans', label: 'Plans', addLabel: '+ Add Plan',
+      fields: [
+        { key:'name',       label:'Plan Name',    type:'text',     ph:'Standard'             },
+        { key:'price',      label:'Price',        type:'text',     ph:'1% of purchase price' },
+        { key:'period',     label:'Period/Note',  type:'text',     ph:'inc. VAT'             },
+        { key:'desc',       label:'Description',  type:'text',     ph:'For buyers up to £500k' },
+        { key:'features',   label:'Features (one per line)', type:'textarea', ph:'Property search\nNegotiation\nSolicitor liaison' },
+        { key:'cta_text',   label:'Button Text',  type:'text',     ph:'Get Started'          },
+        { key:'cta_url',    label:'Button URL',   type:'text',     ph:'/contact/'            },
+        { key:'highlight',  label:'Highlighted',  type:'select',   options:['no','yes'], def:'no' },
+      ]
+    }
+  },
+  pull_quote: {
+    label: 'Pull Quote', icon: '❝', color: '#b45309',
+    fields: [
+      { key:'quote', label:'Quote Text', type:'textarea', ph:'The most important thing is to find the right property at the right price.' },
+      { key:'size',  label:'Size',       type:'select',   options:['md','lg'], def:'md'     },
+      { key:'align', label:'Align',      type:'select',   options:['center','left'], def:'center' },
+      { key:'color', label:'Accent',     type:'select',   options:['gold','dark','muted'], def:'gold' },
+    ]
+  },
+  icon_list: {
+    label: 'Icon List', icon: '✅', color: '#059669',
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text',   ph:''         },
+      { key:'cols',    label:'Columns',         type:'select', options:['1','2'], def:'1' },
+      { key:'bg',      label:'Background',      type:'select', options:['white','alt'], def:'white' },
+    ],
+    repeater: {
+      key: 'items', label: 'Items', addLabel: '+ Add Item',
+      fields: [
+        { key:'icon', label:'Icon',  type:'text', ph:'✅'          },
+        { key:'text', label:'Text',  type:'text', ph:'Key benefit' },
+        { key:'sub',  label:'Sub',   type:'text', ph:'Optional detail' },
+      ]
+    }
+  },
+  download: {
+    label: 'Download Button', icon: '⬇️', color: '#0369a1',
+    fields: [
+      { key:'label',    label:'Label',         type:'text',   ph:'First-Time Buyer Guide'         },
+      { key:'url',      label:'File URL',      type:'text',   ph:'/wp-content/uploads/guide.pdf'  },
+      { key:'filetype', label:'File Type',     type:'text',   ph:'PDF'                            },
+      { key:'filesize', label:'File Size',     type:'text',   ph:'2.4 MB'                         },
+      { key:'desc',     label:'Description',   type:'text',   ph:'Everything you need to know'    },
+    ]
+  },
+  tabs: {
+    label: 'Tabs', icon: '🗂️', color: '#4f46e5',
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text', ph:'' },
+    ],
+    repeater: {
+      key: 'tabs', label: 'Tabs', addLabel: '+ Add Tab',
+      fields: [
+        { key:'label',   label:'Tab Label', type:'text',     ph:'Buying'        },
+        { key:'content', label:'Content',   type:'textarea', ph:'Tab body text…' },
+        { key:'icon',    label:'Icon',      type:'text',     ph:'🏠'            },
+      ]
+    }
+  },
+  comparison: {
+    label: 'Comparison Table', icon: '⚖️', color: '#7c3aed',
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text', ph:'Why use a Buyer\'s Agent?' },
+      { key:'col1',    label:'Column 1 Label',  type:'text', ph:'With Us'                   },
+      { key:'col2',    label:'Column 2 Label',  type:'text', ph:'Without Us'                },
+    ],
+    repeater: {
+      key: 'rows', label: 'Rows', addLabel: '+ Add Row',
+      fields: [
+        { key:'feature', label:'Feature',     type:'text',   ph:'Property search'   },
+        { key:'col1',    label:'Col 1 Value', type:'text',   ph:'✅ Handled for you' },
+        { key:'col2',    label:'Col 2 Value', type:'text',   ph:'❌ You do it alone' },
+      ]
+    }
+  },
+  notice_bar: {
+    label: 'Notice Bar', icon: '📯', color: '#b45309',
+    fields: [
+      { key:'text',  label:'Message',    type:'text',   ph:'Limited spaces available — book your free consultation today' },
+      { key:'cta',   label:'CTA Text',   type:'text',   ph:'Book Now'    },
+      { key:'url',   label:'CTA URL',    type:'text',   ph:'/contact/'   },
+      { key:'style', label:'Style',      type:'select', options:['gold','dark','info'], def:'gold' },
+    ]
+  },
+  contact_card: {
+    label: 'Contact Card', icon: '📇', color: '#0891b2',
+    fields: [
+      { key:'photo',   label:'Photo URL',  type:'text',     ph:'/wp-content/uploads/agent.jpg' },
+      { key:'name',    label:'Name',       type:'text',     ph:'James Whitmore'                },
+      { key:'role',    label:'Role',       type:'text',     ph:'Senior Buyer\'s Agent'         },
+      { key:'phone',   label:'Phone',      type:'text',     ph:'+44 20 1234 5678'              },
+      { key:'email',   label:'Email',      type:'text',     ph:'james@agency.com'              },
+      { key:'bio',     label:'Bio',        type:'textarea', ph:'James has 15 years experience…' },
+      { key:'cta_text',label:'CTA Text',   type:'text',     ph:'Book a Call'                   },
+      { key:'cta_url', label:'CTA URL',    type:'text',     ph:'/book/'                        },
+      { key:'layout',  label:'Layout',     type:'select',   options:['horizontal','vertical'], def:'horizontal' },
+    ]
+  },
+  team: {
+    label: 'Team Members', icon: '👥', color: '#0891b2',
+    fields: [
+      { key:'heading', label:'Section Heading', type:'text',   ph:'Meet the Team' },
+      { key:'cols',    label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
+    ],
+    repeater: {
+      key: 'members', label: 'Members', addLabel: '+ Add Member',
+      fields: [
+        { key:'photo', label:'Photo URL', type:'text',     ph:'/wp-content/uploads/…'  },
+        { key:'name',  label:'Name',      type:'text',     ph:'Jane Smith'             },
+        { key:'role',  label:'Role',      type:'text',     ph:'Buyer\'s Agent'         },
+        { key:'bio',   label:'Bio',       type:'textarea', ph:'Short bio…'             },
+        { key:'email', label:'Email',     type:'text',     ph:'jane@agency.com'        },
+        { key:'link',  label:'Profile URL',type:'text',   ph:'/team/jane/'            },
+      ]
+    }
+  },
 };
+
+// Common fields appended to every block
+var COMMON_FIELDS = [
+  { key:'section_id', label:'Anchor ID', type:'text',   ph:'why-us'                      },
+  { key:'padding',    label:'Padding',   type:'select', options:['md','sm','lg','none'], def:'md' },
+];
 
 // ── State ────────────────────────────────────────────────────────────────────
 var blocks = <?php echo wp_json_encode( json_decode( $existing_blocks, true ) ?: array() ); ?>;
@@ -703,6 +1013,20 @@ function buildBlockHTML(block) {
       var richId = block.type === 'text_block' && f.key === 'content' ? ' id="ah-rich-editor-'+id+'"' : '';
       html += '<textarea'+richId+richClass+' data-block-id="'+id+'" data-field="'+f.key+'" placeholder="'+esc(f.ph||'')+'" rows="6">'+esc(val)+'</textarea>';
     } else if (f.type === 'select') {
+      html += '<select data-block-id="'+id+'" data-field="'+f.key+'">';
+      (f.options||[]).forEach(function(o){ html += '<option value="'+o+'"'+(val===o?' selected':'')+'>'+o+'</option>'; });
+      html += '</select>';
+    } else {
+      html += '<input type="text" data-block-id="'+id+'" data-field="'+f.key+'" value="'+esc(val)+'" placeholder="'+esc(f.ph||'')+'">';
+    }
+    html += '</div>';
+  });
+
+  // Common fields (anchor + padding) — appended to every block
+  COMMON_FIELDS.forEach(function(f){
+    var val = data[f.key] !== undefined ? data[f.key] : (f.def||'');
+    html += '<div class="ah-form-row"><label>'+esc(f.label)+'</label>';
+    if (f.type === 'select') {
       html += '<select data-block-id="'+id+'" data-field="'+f.key+'">';
       (f.options||[]).forEach(function(o){ html += '<option value="'+o+'"'+(val===o?' selected':'')+'>'+o+'</option>'; });
       html += '</select>';
