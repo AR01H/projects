@@ -161,7 +161,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
   <!-- Shortcode display -->
   <div style="margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <span style="font-size:13px;font-weight:500;color:#374151">Shortcode:</span>
-    <span class="fb-sc-pill" id="fb-sc-text">do_shortcode('[ah_form id="<?php echo esc_html( $form_id ); ?>"]')</span>
+    <span class="fb-sc-pill" id="fb-sc-text">[ah_form id="<?php echo esc_html( $form_id ); ?>"]</span>
     <button class="fb-sc-copy" id="fb-sc-copy">Copy</button>
     <span style="font-size:12px;color:#6b7280">- paste into any page or template to embed this form</span>
   </div>
