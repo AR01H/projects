@@ -16,7 +16,7 @@ if ( isset( $_POST['ah_new_form_nonce'] ) ) {
 	$new_id = AH_Form_Builder::upsert( 0, array(
 		'name'            => sanitize_text_field( $_POST['new_form_name'] ?? 'New Form' ),
 		'notify_email'    => sanitize_email( get_option( 'admin_email' ) ),
-		'success_message' => 'Thank you! We\'ll get back to you shortly.',
+		'success_message' => 'Thank you! We will get back to you shortly.',
 	) );
 	AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $new_id, 'tab' => 'build' ), admin_url( 'admin.php' ) ) );
 }

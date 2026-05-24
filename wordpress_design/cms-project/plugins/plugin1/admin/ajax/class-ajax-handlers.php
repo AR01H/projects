@@ -387,7 +387,7 @@ class AH_Ajax_Handlers {
 			wp_mail( $notify, $subject, $body );
 		}
 
-		wp_send_json_success( array( 'message' => $form->success_message ?: 'Thank you! We\'ll get back to you shortly.' ) );
+		wp_send_json_success( array( 'message' => $form->success_message ?: 'Thank you! We will get back to you shortly.' ) );
 	}
 
 	// -------------------------------------------------------------------------
