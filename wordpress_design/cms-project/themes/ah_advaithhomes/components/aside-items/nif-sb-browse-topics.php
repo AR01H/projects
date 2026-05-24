@@ -29,7 +29,7 @@ if ( ! $use_parent_terms && empty( $cats ) ) return;
   <div class="nif-sb-pt-list">
 
     <?php
-    // "All Topics" row — active when no parent term selected
+    // "All Topics" row - active when no parent term selected
     $all_active  = ! $active_parent_term;
     $all_row_cls = 'nif-sb-pt-row nif-sb-pt-row--all' . ( $all_active ? ' nif-sb-pt-row--all-active' : '' );
     ?>

@@ -72,7 +72,7 @@ $crumbs[] = [ get_the_title(), '' ];
       <!-- Sidebar -->
       <aside class="sidebar" aria-label="Article sidebar">
 
-        <!-- Table of Contents — populated by JS from article headings -->
+        <!-- Table of Contents - populated by JS from article headings -->
         <div class="sidebar-card sp-toc-card" id="sp-toc" hidden>
           <div class="sidebar-card__title sp-toc__heading">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -92,7 +92,7 @@ $crumbs[] = [ get_the_title(), '' ];
         </div>
 
 
-        <!-- More in same category — from DB -->
+        <!-- More in same category - from DB -->
         <?php
         $_sb_more = $cat ? get_posts( [
           'numberposts'  => 3,
@@ -137,7 +137,7 @@ $crumbs[] = [ get_the_title(), '' ];
         </div>
         <?php endif; ?>
 
-        <!-- Highlight Links — shown only when defined on this post -->
+        <!-- Highlight Links - shown only when defined on this post -->
         <?php
         $_hl_raw   = get_post_meta( get_the_ID(), '_ah_highlight_links', true );
         $_hl_links = json_decode( $_hl_raw ?: '[]', true );
@@ -176,7 +176,7 @@ $crumbs[] = [ get_the_title(), '' ];
 <?php endwhile; ?>
 
 <?php
-// ── Related Articles — 1 suggested first, rest random same-cat, pad if < 3 ───
+// ── Related Articles - 1 suggested first, rest random same-cat, pad if < 3 ───
 $_current_cat_ids = wp_get_post_categories( get_the_ID() );
 
 // 1 suggested post from same category (random pick if multiple)
@@ -214,7 +214,7 @@ if ( count( $_related ) < 3 ) {
   $_related = array_merge( $_related, $_pad );
 }
 
-// ── You Might Also Like — popular from other categories, fill with others ────
+// ── You Might Also Like - popular from other categories, fill with others ────
 $_exclude_ids = array_merge( [ get_the_ID() ], wp_list_pluck( $_related, 'ID' ) );
 
 // Step 1: popular posts from different categories (up to 3)
@@ -241,7 +241,7 @@ if ( count( $_guides ) < 3 ) {
   $_guides = array_merge( $_guides, $_guides_fill );
 }
 
-// Step 3: last resort — any post if still under 3
+// Step 3: last resort - any post if still under 3
 if ( count( $_guides ) < 3 ) {
   $_guides_excl = array_merge( $_exclude_ids, wp_list_pluck( $_guides, 'ID' ) );
   $_guides_any  = get_posts( [

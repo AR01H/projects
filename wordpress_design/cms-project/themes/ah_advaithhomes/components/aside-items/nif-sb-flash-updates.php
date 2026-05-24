@@ -1,6 +1,6 @@
 <?php
 /**
- * Component: NIF Sidebar — Flash Updates
+ * Component: NIF Sidebar - Flash Updates
  *
  * @var array $args {
  *   @type array $news_bar_items  From ah_get_news_bar_items().

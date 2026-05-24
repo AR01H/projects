@@ -112,7 +112,7 @@
 	color: var(--text-secondary);
 	line-height: 1.7;
 }
-/* UL — gold accent dot */
+/* UL - gold accent dot */
 .prose ul > li::before,
 .prose-content ul > li::before {
 	content: '';
@@ -125,13 +125,13 @@
 	background: var(--accent);
 	flex-shrink: 0;
 }
-/* Nested UL — hollow dot */
+/* Nested UL - hollow dot */
 .prose ul ul > li::before,
 .prose-content ul ul > li::before {
 	background: transparent;
 	border: 1.5px solid var(--accent);
 }
-/* OL — bold accent counter */
+/* OL - bold accent counter */
 .prose ol,
 .prose-content ol { counter-reset: prose-ol; }
 .prose ol > li,
@@ -164,7 +164,7 @@
 .prose img, .prose-content img  { border-radius: var(--r-md);max-width: 100%; height: auto; }
 
 /* ═══════════════════════════════════════════════════════════
-   GLOBAL CONTENT STYLES — tables, iframes, embeds
+   GLOBAL CONTENT STYLES - tables, iframes, embeds
    Applied via .prose-table-wrap / .prose-embed classes that
    the_content filter injects on ALL post/page content.
    ══════════════════════════════════════════════════════════ */

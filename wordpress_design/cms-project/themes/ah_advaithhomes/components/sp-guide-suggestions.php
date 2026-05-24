@@ -1,6 +1,6 @@
 <?php
 /**
- * Component: Single Post — Suggested Guides
+ * Component: Single Post - Suggested Guides
  * 3-column card row from different categories ("You Might Also Like").
  *
  * @var array $args {

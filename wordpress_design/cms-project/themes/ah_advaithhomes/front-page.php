@@ -1,6 +1,6 @@
 <?php
 /**
- * Homepage — bento grid layout.
+ * Homepage - bento grid layout.
  * Different card sizes: blog=2×2, service=1×1, news=1×1.
  *
  * ── EDIT ZONE (change text / urls / icons here) ──────────────────────────────
@@ -8,14 +8,14 @@
 defined( 'ABSPATH' ) || exit;
 
 /*
- * Service / link cards — edit freely.
+ * Service / link cards - edit freely.
  * 'color' = CSS color for the top accent strip.
  */
 $hp_tiles = [
 	'contact' => [
 		'icon'   => '💬',
 		'title'  => 'Contact Us',
-		'desc'   => 'Speak to our team — free, no obligation.',
+		'desc'   => 'Speak to our team - free, no obligation.',
 		'url'    => '/contact/',
 		'cta'    => 'Get in touch',
 		'color'  => '#0f172a',
@@ -31,7 +31,7 @@ $hp_tiles = [
 	'services' => [
 		'icon'   => '🛠️',
 		'title'  => 'Our Services',
-		'desc'   => 'From surveys to conveyancing — see everything we offer.',
+		'desc'   => 'From surveys to conveyancing - see everything we offer.',
 		'url'    => '/services/',
 		'cta'    => 'View services',
 		'color'  => '#14532d',

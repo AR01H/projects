@@ -1,6 +1,6 @@
 <?php
 /**
- * Component: NIF Sidebar — Market Pulse
+ * Component: NIF Sidebar - Market Pulse
  *
  * @var array $args {
  *   @type array $site_stats  From ah_get_site_stats(). Each item:

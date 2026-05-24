@@ -167,7 +167,7 @@
         });
     }
 
-    // ── Adaptive Nav — desktop menu if items fit, hamburger (3-lines) if not ──
+    // ── Adaptive Nav - desktop menu if items fit, hamburger (3-lines) if not ──
     function initNavPriority() {
         var nav = document.getElementById('ch-nav');
         if (!nav) return;
@@ -183,11 +183,11 @@
             void nav.offsetWidth; // force reflow
 
             if (nav.scrollWidth <= nav.clientWidth + 2) {
-                // All items fit — stay in desktop mode
+                // All items fit - stay in desktop mode
                 return;
             }
 
-            // Doesn't fit — switch straight to hamburger
+            // Doesn't fit - switch straight to hamburger
             body.classList.add('nav--collapsed');
             if (mobileNav) mobileNav.classList.remove('open');
             if (hamburger) {

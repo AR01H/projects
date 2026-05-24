@@ -1,7 +1,7 @@
 <?php
 /**
  * Component: NIF News Strip
- * "Latest News" — 4-column card row pulled from WP posts.
+ * "Latest News" - 4-column card row pulled from WP posts.
  *
  * @var array $args {
  *   @type WP_Post[] $posts     Up to 4 WP_Post objects.

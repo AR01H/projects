@@ -1092,7 +1092,7 @@ if ( $action === 'edit-custom' ) {
                         <?php endforeach; ?>
                         </div>
                       <?php else : ?>
-                        <p style="font-size:.82rem;color:#94a3b8;margin:0;">No taxonomy terms yet — <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ); ?>">add some →</a></p>
+                        <p style="font-size:.82rem;color:#94a3b8;margin:0;">No taxonomy terms yet - <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ); ?>">add some →</a></p>
                       <?php endif; ?>
                     </div>
                   </div>

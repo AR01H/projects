@@ -425,7 +425,7 @@
 	border-color: var(--accent);
 }
 
-/* Topic sidebar — always-open children list */
+/* Topic sidebar - always-open children list */
 .nif-sb-pt-children--always { display: flex; flex-direction: column; gap: 2px; padding-top: 4px; }
 
 /* Sidebar "Browse all topics" link */
@@ -449,7 +449,7 @@
 .nif-sb-cta-text { font-size: .85rem; color: var(--text-secondary); margin: 0 0 12px; line-height: 1.55; }
 
 /* ── Sidebar accordion (+/−) ─────────────────────────────────────────────── */
-/* Toggle button — shared by both single-post sidebar and NIF topic sidebar */
+/* Toggle button - shared by both single-post sidebar and NIF topic sidebar */
 .sb-toggle-btn {
 	display: inline-flex; align-items: center; justify-content: center;
 	width: 20px; height: 20px; flex-shrink: 0;
@@ -571,7 +571,7 @@
 }
 .nav__mobile-sub-menu .nav__mobile-link { padding-left: 40px; font-size: .85rem; }
 
-/* Hamburger/mobile controlled by JS — show only when nav items don't fit */
+/* Hamburger/mobile controlled by JS - show only when nav items don't fit */
 body:not(.nav--collapsed) .nav__mobile  { display: none !important; }
 body.nav--collapsed .nav__menu          { display: none; }
 body.nav--collapsed .nav__hamburger     { display: flex; }
@@ -604,7 +604,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 /* Guide category card */
 /* ── Guide Category Card (components/cards/guide-category-card.php) ─────── */
 
-/* Flex grid — centres orphan items on the last row */
+/* Flex grid - centres orphan items on the last row */
 .gcat-grid {
 	display: flex;
 	flex-wrap: wrap;
@@ -633,13 +633,13 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 }
 .gcat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,.28); }
 
-/* Cycling dark gradients — one per card in the grid */
+/* Cycling dark gradients - one per card in the grid */
 .gcat-card:nth-child(4n+1) { background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 100%); }
 .gcat-card:nth-child(4n+2) { background: linear-gradient(145deg, #0c1f38 0%, #0e5270 100%); }
 .gcat-card:nth-child(4n+3) { background: linear-gradient(145deg, #1c0f30 0%, #3b1878 100%); }
 .gcat-card:nth-child(4n+4) { background: linear-gradient(145deg, #0e2016 0%, #0f5c35 100%); }
 
-/* Image-background variant — gradient layered directly over photo, no z-index tricks */
+/* Image-background variant - gradient layered directly over photo, no z-index tricks */
 .gcat-card--img {
 	background:
 		linear-gradient(160deg, rgba(5,12,28,.88) 0%, rgba(5,12,28,.68) 60%, rgba(5,12,28,.82) 100%),
@@ -1138,7 +1138,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 	pointer-events: none;
 }
 
-/* ── Blog listing card — image fills card, description slides up on hover ─── */
+/* ── Blog listing card - image fills card, description slides up on hover ─── */
 .blog-card {
 	border-radius: var(--r-lg);
 	overflow: hidden;
@@ -1174,7 +1174,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 	background: linear-gradient(135deg, var(--slate-100, #f1f5f9), var(--slate-200, #e2e8f0));
 }
 
-/* Overlay anchored to bottom — grows UPWARD as excerpt expands */
+/* Overlay anchored to bottom - grows UPWARD as excerpt expands */
 .blog-card__overlay {
 	position: absolute;
 	bottom: 0; left: 0; right: 0;
@@ -1295,10 +1295,10 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .sp-more-all:hover { text-decoration: underline; }
 
 /* ═══════════════════════════════════════════════════════════
-   SINGLE POST — Related Articles & Suggested Guides
+   SINGLE POST - Related Articles & Suggested Guides
    ══════════════════════════════════════════════════════════ */
 
-/* ── Single post — Table of Contents sidebar card ──────────────────────────── */
+/* ── Single post - Table of Contents sidebar card ──────────────────────────── */
 .sp-toc__heading {
   display: flex; align-items: center; gap: 7px;
 }
@@ -1337,7 +1337,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .sp-toc__link--h3:hover,
 .sp-toc__link--h3.is-active { padding-left: 30px; }
 
-/* ── Single post — compact floating feature image ──────────────────────────── */
+/* ── Single post - compact floating feature image ──────────────────────────── */
 .sp-feat-img {
   float: right;
   margin: 0 0 20px 28px;
@@ -1383,7 +1383,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 }
 .sp-see-all:hover { gap: 8px; }
 
-/* ── Related articles bento grid — left tall feature + 2 stacked right ──── */
+/* ── Related articles bento grid - left tall feature + 2 stacked right ──── */
 .sp-related-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -2435,7 +2435,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
   border-color: rgba(255,255,255,.7);
 }
 /* ============================================================
-   HOMEPAGE — hp-* components
+   HOMEPAGE - hp-* components
    ============================================================ */
 
 .hp-wrap { display: flex; flex-direction: column; }
@@ -2543,7 +2543,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .hp-news-card__rt { display: inline-flex; align-items: center; gap: 4px; font-size: .71rem; color: var(--text-secondary); }
 
 /* ============================================================
-   HOMEPAGE MIXED GRID  — hp-mgrid / hp-mcard
+   HOMEPAGE MIXED GRID  - hp-mgrid / hp-mcard
    ============================================================ */
 
 .hp-grid-section { padding-block: clamp(40px,5vw,64px); }
@@ -2720,7 +2720,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .hp-mcard--bgimg .nif-meta-dot-line,
 .hp-mcard--dark   .nif-meta-dot-line { background: rgba(255,255,255,.20); }
 
-/* ══ PERSONALISED GUIDANCE — improved padding & chips ════════ */
+/* ══ PERSONALISED GUIDANCE - improved padding & chips ════════ */
 .hp-guidance {
   background: var(--client-color-900, #0f172a);
   padding-block: 30px;
@@ -2846,7 +2846,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .hp-bento__svc--services  { grid-area: svc3; }
 .hp-bento__svc--multiinfo { grid-area: svc4; }
 .hp-bento__svc--guides    { grid-area: svc5; }
-/* News areas set via inline style="grid-area:newsX" in PHP — no nth-child dependency */
+/* News areas set via inline style="grid-area:newsX" in PHP - no nth-child dependency */
 
 /* ── Base item ─────────────────────────────────────────────── */
 .hp-bento__item {
@@ -2865,7 +2865,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .hp-bento__cover-link { position: absolute; inset: 0; z-index: 1; }
 
 /* ────────────────────────────────────────────────────────────
-   BLOG card — full background image, dark overlay, text at bottom
+   BLOG card - full background image, dark overlay, text at bottom
    ──────────────────────────────────────────────────────────── */
 .hp-bento__blog {
   background: var(--client-color-900, #0f172a)
@@ -2918,7 +2918,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .hp-bento__blog:hover .hp-bento__blog-cta { gap: 8px; }
 
 /* ────────────────────────────────────────────────────────────
-   SERVICE tiles — colored banner header + white body
+   SERVICE tiles - colored banner header + white body
    ──────────────────────────────────────────────────────────── */
 .hp-bento__svc {
   background: #fff;
@@ -2967,7 +2967,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 }
 
 /* ────────────────────────────────────────────────────────────
-   NEWS cards — image top + text below
+   NEWS cards - image top + text below
    ──────────────────────────────────────────────────────────── */
 .hp-bento__news {
   background: var(--bg-alt, #f8fafc);
@@ -3053,7 +3053,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .ah-block-hero.ah-hero--dark .section__eyebrow,
 .ah-block-hero.ah-hero--gold .section__eyebrow { color: rgba(255,255,255,.6); }
 .ah-block-hero .section__desc {
-	max-width: 580px;
+	max-width: 100%;
 	margin-inline: auto;
 	font-size: 1.08rem;
 	color: rgba(0,0,0,.6);
@@ -3062,18 +3062,27 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .ah-block-hero.ah-hero--dark .section__desc,
 .ah-block-hero.ah-hero--gold .section__desc { color: rgba(255,255,255,.72); }
 
-/* Background image variant — overlay opacity controlled via --hero-overlay */
+/* Background image variant - overlay opacity controlled via --hero-overlay */
 .ah-block-hero.ah-hero--image { --hero-overlay: .52; }
 .ah-block-hero.ah-hero--image::before {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: rgba(0, 0, 0, var(--hero-overlay, .52));
+	 background: rgba(255, 255, 255, 0.4);
 	z-index: 0;
 }
 .ah-block-hero.ah-hero--image .section__eyebrow { color: rgba(255,255,255,.6); }
 .ah-block-hero.ah-hero--image .section__title   { color: #fff; }
 .ah-block-hero.ah-hero--image .section__desc    { color: rgba(255,255,255,.72); }
+
+#ah-builder-page .section__desc {
+    max-width: 100%;
+}
+
+#ah-builder-page h1{
+    color: var(--client-color-500);
+	font-weight: bolder;
+}
 
 /* Feature card */
 .ah-feat-card {
@@ -3586,7 +3595,6 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .ah-team-card__links a:hover { color: var(--accent); }
 
 /* ── Enhancement: steps connector ────────────────────────────────────────── */
-.ah-steps--connector .ah-step { border-bottom-style: dashed; }
 .ah-steps--connector.ah-steps--horiz .ah-step { position: relative; }
 .ah-steps--connector.ah-steps--horiz .ah-step::after {
 	content: '→';

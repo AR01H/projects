@@ -46,7 +46,7 @@ class AH_Rules_Engine {
 			PRIMARY KEY (`id`)
 		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-		// Trigger logs table — also created by AH_DB_Installer but install_tables()
+		// Trigger logs table - also created by AH_DB_Installer but install_tables()
 		// is called on every admin page load so we guard with IF NOT EXISTS.
 		if ( class_exists( 'AH_DB_Installer' ) ) {
 			AH_DB_Installer::ensure_trigger_logs();

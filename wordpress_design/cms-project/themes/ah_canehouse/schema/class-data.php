@@ -6,8 +6,8 @@ defined( 'ABSPATH' ) || exit;
  * Seed data registry for the Cane House theme.
  *
  * Data source priority:
- *   1. CSV files in mock_data/csv/ — edit these before running mock install
- *   2. Hardcoded defaults below   — used when CSV files are absent
+ *   1. CSV files in mock_data/csv/ - edit these before running mock install
+ *   2. Hardcoded defaults below   - used when CSV files are absent
  *
  * CSV files live at: {theme}/mock_data/csv/{name}.csv
  *

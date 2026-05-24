@@ -144,7 +144,7 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
                      <?php if ( ! empty( $wp_page->post_name ) ) echo 'data-manual="1"'; ?>>
               <?php if ( ! empty( $wp_page->post_name ) ) : ?>
                 <small style="color:var(--ah-muted);font-size:11px;display:block;margin-top:4px;">
-                  Slug is locked — editing the title won't change it.
+                  Slug is locked - editing the title won't change it.
                   <a href="#" style="color:var(--ah-primary);" onclick="document.getElementById('ah-page-slug').removeAttribute('data-manual');jQuery('#ah-page-slug').data('manual',false);this.parentNode.remove();return false;">Unlock to regenerate</a>
                 </small>
               <?php endif; ?>

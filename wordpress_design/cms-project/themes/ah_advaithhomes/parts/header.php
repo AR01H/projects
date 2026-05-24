@@ -106,7 +106,7 @@ $nav_cta = ah_get_nav_cta();
 	</div>
 </nav>
 
-<!-- Search panel — slides down from nav, autosuggest blogs & news only -->
+<!-- Search panel - slides down from nav, autosuggest blogs & news only -->
 <div class="nav__search-panel" id="ahSearchPanel" role="search" aria-hidden="true">
 	<div class="container">
 		<div class="nav__search-inner">

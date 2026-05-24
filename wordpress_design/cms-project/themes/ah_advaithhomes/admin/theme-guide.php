@@ -2,12 +2,12 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Guide To Use — tabbed reference page.
+ * Guide To Use - tabbed reference page.
  *
  * HOW TO ADD A NEW TAB:
  *   1. Add an entry to $guide_tabs below.
  *   2. Write the content inside the 'render' callable.
- *   Done — nav and URL routing are automatic.
+ *   Done - nav and URL routing are automatic.
  */
 
 $guide_tabs = [
@@ -18,7 +18,7 @@ $guide_tabs = [
 		'icon'  => '📋',
 		'render' => function() { ?>
 			<div class="ah-admin-box">
-				<h2>Sample Tab 1 — Rules &amp; Conventions</h2>
+				<h2>Sample Tab 1 - Rules &amp; Conventions</h2>
 				<p style="color:#374151;font-size:.9rem;margin-bottom:20px;">
 					This tab is a placeholder to show the tab system works. Replace the content
 					inside the <code>'render'</code> callable in <code>admin/theme-guide.php</code>.
@@ -67,7 +67,7 @@ $data = json_decode( $raw, true ) ?: [];</pre>
 		'icon'  => '🔧',
 		'render' => function() { ?>
 			<div class="ah-admin-box">
-				<h2>Sample Tab 2 — Snippets &amp; References</h2>
+				<h2>Sample Tab 2 - Snippets &amp; References</h2>
 				<p style="color:#374151;font-size:.9rem;margin-bottom:20px;">
 					Another placeholder tab. Add as many tabs as you need by copying the array
 					entry pattern in <code>admin/theme-guide.php</code>.
@@ -125,7 +125,7 @@ $data = json_decode( $raw, true ) ?: [];</pre>
 
 			<!-- Page Builder URL params -->
 			<div class="ah-admin-box">
-				<h2>📄 Page Builder Template — URL Parameters</h2>
+				<h2>📄 Page Builder Template - URL Parameters</h2>
 				<p style="color:#374151;font-size:.875rem;margin-bottom:16px;">
 					File: <code>plugins/plugin1/templates/template-builder-page.php</code><br>
 					Append these to any builder-page URL to control what gets rendered.
@@ -163,10 +163,10 @@ $data = json_decode( $raw, true ) ?: [];</pre>
 
 			<!-- Static Page Template URL params -->
 			<div class="ah-admin-box">
-				<h2>🖼️ Static HTML Page Template — URL Parameters</h2>
+				<h2>🖼️ Static HTML Page Template - URL Parameters</h2>
 				<p style="color:#374151;font-size:.875rem;margin-bottom:16px;">
 					File: <code>themes/ah_advaithhomes/template-static-page.php</code><br>
-					WordPress template: <em>"Static HTML Page"</em> — assign it in Page Attributes.<br>
+					WordPress template: <em>"Static HTML Page"</em> - assign it in Page Attributes.<br>
 					HTML source file is loaded from <code>themes/ah_advaithhomes/static/&lt;page-slug&gt;.html</code>.
 				</p>
 				<table class="ah-admin-table">
@@ -201,7 +201,7 @@ $data = json_decode( $raw, true ) ?: [];</pre>
 					</tbody>
 				</table>
 				<p style="margin-top:14px;font-size:.825rem;color:#64748b;">
-					💡 Combine freely: <code>?bare=1&amp;iframe=true</code> gives a clean page with the static HTML sandboxed inside an iframe — perfect for embedding in a modal.
+					💡 Combine freely: <code>?bare=1&amp;iframe=true</code> gives a clean page with the static HTML sandboxed inside an iframe - perfect for embedding in a modal.
 				</p>
 			</div>
 
@@ -239,7 +239,7 @@ $data = json_decode( $raw, true ) ?: [];</pre>
 
 			<!-- Theme CSS classes cheatsheet -->
 			<div class="ah-admin-box">
-				<h2>🎨 Theme CSS Classes — Quick Reference</h2>
+				<h2>🎨 Theme CSS Classes - Quick Reference</h2>
 				<p style="color:#374151;font-size:.875rem;margin-bottom:20px;">
 					These classes are available on every page where the theme stylesheets load
 					(<code>assets/css/base.css</code>, <code>components.css</code>).
@@ -282,12 +282,12 @@ $data = json_decode( $raw, true ) ?: [];</pre>
 				<table class="ah-admin-table">
 					<thead><tr><th>Class</th><th>What it does</th></tr></thead>
 					<tbody>
-						<tr><td><code>.btn</code></td><td>Base button — required on all button variants</td></tr>
+						<tr><td><code>.btn</code></td><td>Base button - required on all button variants</td></tr>
 						<tr><td><code>.btn-primary</code></td><td>Dark accent fill</td></tr>
 						<tr><td><code>.btn-gold</code></td><td>Gold brand fill</td></tr>
 						<tr><td><code>.btn-outline</code></td><td>Transparent + accent border</td></tr>
 						<tr><td><code>.btn-ghost</code></td><td>Transparent, subtle hover</td></tr>
-						<tr><td><code>.btn-white</code></td><td>White fill — use on dark backgrounds</td></tr>
+						<tr><td><code>.btn-white</code></td><td>White fill - use on dark backgrounds</td></tr>
 						<tr><td><code>.btn-sm</code></td><td>Smaller padding + font size</td></tr>
 						<tr><td><code>.btn-lg</code></td><td>Larger padding + font size</td></tr>
 						<tr><td><code>.btn-block</code></td><td>Full-width, centered text</td></tr>
@@ -320,7 +320,7 @@ $data = json_decode( $raw, true ) ?: [];</pre>
 				</table>
 
 				<p style="margin-top:16px;font-size:.825rem;color:#64748b;">
-					💡 Example — a gold CTA button: <code>&lt;a href="#" class="btn btn-gold"&gt;Book a Call&lt;/a&gt;</code>
+					💡 Example - a gold CTA button: <code>&lt;a href="#" class="btn btn-gold"&gt;Book a Call&lt;/a&gt;</code>
 				</p>
 			</div>
 

@@ -24,7 +24,7 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
       <h1 style="margin:0">Mock Data &amp; Schema Installer</h1>
       <p style="margin:4px 0 0;color:#64748b;font-size:.875rem">
         Install the database schema and demo content for The Cane House. Content is driven by CSV files in
-        <code>mock_data/csv/</code> — edit CSVs before installing to customise.
+        <code>mock_data/csv/</code> - edit CSVs before installing to customise.
       </p>
     </div>
   </div>
@@ -44,7 +44,7 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
       <p style="font-size:.83rem;color:#64748b;margin-bottom:14px">
         Creates database tables (reviews, FAQs, news bar, contact submissions) and saves baseline site
         settings, hero text, section visibility, and contact config.<br>
-        <strong>Safe to run anytime — idempotent.</strong> Does not insert demo content rows.
+        <strong>Safe to run anytime - idempotent.</strong> Does not insert demo content rows.
       </p>
       <ul style="font-size:.8rem;color:#475569;margin:0 0 16px 16px;line-height:1.9">
         <li>DB tables: reviews, FAQs, news_bar, contact submissions</li>
@@ -68,7 +68,7 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
       <p style="font-size:.83rem;color:#64748b;margin-bottom:14px">
         Seeds demo content from the CSVs in <code>mock_data/csv/</code>.
         Sections with no CSV rows are skipped automatically.
-        ⚠️ Running multiple times may duplicate DB rows — use Cleanup first if re-seeding.
+        ⚠️ Running multiple times may duplicate DB rows - use Cleanup first if re-seeding.
       </p>
       <?php
       $content_csvs = [
@@ -162,7 +162,7 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
         <tr style="border-bottom:1px solid #f1f5f9">
           <td style="padding:7px 12px;font-weight:600"><?php echo esc_html( $r['label'] ); ?></td>
           <td style="padding:7px 12px;color:#64748b"><?php echo is_int( $csv_n ) ? esc_html( $csv_n . ' rows' ) : esc_html( $csv_n ); ?></td>
-          <td style="padding:7px 12px;font-weight:600"><?php echo $db_val !== null ? esc_html( (string) $db_val ) : '—'; ?></td>
+          <td style="padding:7px 12px;font-weight:600"><?php echo $db_val !== null ? esc_html( (string) $db_val ) : '-'; ?></td>
           <td style="padding:7px 12px"><span style="color:<?php echo esc_attr( $color ); ?>;font-size:.8rem;font-weight:600"><?php echo esc_html( $badge ); ?></span></td>
         </tr>
         <?php endforeach; ?>
@@ -212,7 +212,7 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
 
   <div class="notice notice-warning" style="margin-top:12px">
     <p>
-      ⚠️ <strong>Duplicate protection:</strong> Reviews and FAQs have no dedup — running seed multiple times will insert duplicates.
+      ⚠️ <strong>Duplicate protection:</strong> Reviews and FAQs have no dedup - running seed multiple times will insert duplicates.
       Use <a href="<?php echo esc_url( admin_url('admin.php?page=ch-theme-cleanup') ); ?>">Cleanup Data</a> first if re-seeding.
     </p>
   </div>

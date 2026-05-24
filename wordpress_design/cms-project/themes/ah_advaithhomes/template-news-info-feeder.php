@@ -8,7 +8,7 @@ $active_parent_term = sanitize_title(      $_GET['parent_term'] ?? '' );
 $news_cat           = sanitize_text_field( $_GET['news_cat']    ?? '' );
 $paged              = max( 1, absint( $_GET['pg'] ?? 1 ) );
 
-// ── Parent Terms (CMS taxonomy groups — shown as colored filter tabs) ─────────
+// ── Parent Terms (CMS taxonomy groups - shown as colored filter tabs) ─────────
 $parent_terms = [];
 if ( class_exists( 'AH_DB_Helper' ) ) {
 	global $wpdb;
@@ -22,7 +22,7 @@ $use_parent_terms = count( $parent_terms ) >= 2;
 // ── Categories (fallback for sidebar / news-hero when parent terms not used) ──
 $wp_cats = get_categories( [ 'hide_empty' => true ] );
 
-// ── News posts (hero + side cards) — sticky-aware, separate from guides ───────
+// ── News posts (hero + side cards) - sticky-aware, separate from guides ───────
 $news_query_args = [
 	'post_type'           => 'post',
 	'post_status'         => 'publish',
@@ -64,7 +64,7 @@ if ( $use_parent_terms && $active_parent_term && class_exists( 'AH_DB_Helper' ) 
 	}
 }
 
-// ── All posts (guide tiles + brief list) — sticky posts shown once, not at top
+// ── All posts (guide tiles + brief list) - sticky posts shown once, not at top
 $wp_args = [
 	'post_type'           => 'post',
 	'post_status'         => 'publish',
@@ -76,7 +76,7 @@ $wp_args = [
 ];
 if ( $use_parent_terms && $pt_obj ) {
 	if ( $active_cat ) {
-		// Specific child category selected — narrow to that WP category only
+		// Specific child category selected - narrow to that WP category only
 		$_specific = get_term_by( 'slug', $active_cat, 'category' );
 		if ( $_specific ) {
 			$wp_args['cat'] = $_specific->term_id;
@@ -84,7 +84,7 @@ if ( $use_parent_terms && $pt_obj ) {
 			$wp_args['post__in'] = [ 0 ];
 		}
 	} else {
-		// Whole parent term — show all posts across child categories
+		// Whole parent term - show all posts across child categories
 		$post_ids = [];
 		if ( $child_terms && class_exists( 'AH_DB_Helper' ) ) {
 			$_ct_table = AH_DB_Helper::table( 'content_taxonomies' );
@@ -175,7 +175,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <?php if ( ! $active_cat && ! $active_parent_term && $paged === 1 ) {
           // ── PORTAL HOME LAYOUT ─────────────────────────────────────────────
 
-          // Featured Guides: big hero card + 3 side cards — only _ah_is_featured posts
+          // Featured Guides: big hero card + 3 side cards - only _ah_is_featured posts
           get_template_part( 'components/nif-news-hero', null, [
             'posts'     => $featured_posts,
             'eyebrow'   => __( 'Featured Guides', 'ah-theme' ),
@@ -192,7 +192,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             'see_all' => home_url( '/guides/' ),
           ] );
 
-          // Latest News: hero + side cards — links to /allnews/ for full listing
+          // Latest News: hero + side cards - links to /allnews/ for full listing
           if ( ! empty( $news_posts ) ) {
             get_template_part( 'components/nif-news-hero', null, [
               'posts'     => $news_posts,
@@ -272,7 +272,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             <p class="nif-empty__desc">
               <?php echo $active_cat
                 ? esc_html__( 'No posts in this topic yet. Try another category.', 'ah-theme' )
-                : esc_html__( 'We\'re working on great content — check back shortly.', 'ah-theme' ); ?>
+                : esc_html__( 'We\'re working on great content - check back shortly.', 'ah-theme' ); ?>
             </p>
             <?php if ( $active_cat || $active_parent_term ) : ?>
               <a href="<?php echo esc_url( $page_url ); ?>" class="btn btn-outline" style="margin-top:20px">
@@ -282,7 +282,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           </div>
           <?php endif; ?>
 
-          <!-- Pagination — ?pg=X avoids WordPress redirect_canonical intercept -->
+          <!-- Pagination - ?pg=X avoids WordPress redirect_canonical intercept -->
           <?php if ( $blog_query->max_num_pages > 1 ) :
             $pg_base = $active_parent_term
               ? add_query_arg( 'parent_term', $active_parent_term, $page_url )

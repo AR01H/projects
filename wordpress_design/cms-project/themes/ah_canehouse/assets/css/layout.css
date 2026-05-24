@@ -17,7 +17,7 @@
     .ch-option-card--full { grid-column: 1; }
 }
 
-/* Hamburger/mobile controlled by JS — show only when nav items don't fit */
+/* Hamburger/mobile controlled by JS - show only when nav items don't fit */
 body.nav--collapsed .ch-nav__links      { display: none; }
 body.nav--collapsed .ch-nav__hamburger  { display: flex; }
 

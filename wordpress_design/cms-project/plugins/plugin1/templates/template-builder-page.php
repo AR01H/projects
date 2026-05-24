@@ -136,12 +136,12 @@ function ah_render_builder_block( string $type, array $d ): void {
 			         <?php if ( $hero_style ) echo 'style="' . esc_attr( $hero_style ) . '"'; ?>
 			         data-aos="fade-in">
 				<div class="ph__bg" aria-hidden="true"><div class="ph__grid-lines"></div></div>
-				<div class="container container--md">
+				<div class="container">
 					<?php if ( ! empty( $d['eyebrow'] ) ) : ?>
 						<p class="section__eyebrow" data-aos="fade-up"><?php echo esc_html( $d['eyebrow'] ); ?></p>
 					<?php endif; ?>
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
-						<h1 class="section__title" data-aos="fade-up" data-aos-delay="80">
+						<h1 class=" " data-aos="fade-up" data-aos-delay="80">
 							<?php echo $d['heading']; ?>
 						</h1>
 					<?php endif; ?>
@@ -175,12 +175,12 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$align = $d['align'] ?? 'center';
 			?>
 			<?php echo ah_section_open( $d, 'section section--sm' . ( $align === 'center' ? ' text-center' : '' ) ); ?>
-				<div class="container container--sm">
+				<div class="container  ">
 					<?php if ( ! empty( $d['eyebrow'] ) ) : ?>
 						<p class="section__eyebrow"><?php echo esc_html( $d['eyebrow'] ); ?></p>
 					<?php endif; ?>
 					<?php if ( ! empty( $d['title'] ) ) : ?>
-						<h2 class="section__title"><?php echo esc_html( $d['title'] ); ?></h2>
+						<h2 class=" "><?php echo esc_html( $d['title'] ); ?></h2>
 						<?php if ( ( $d['accent_bar'] ?? 'yes' ) !== 'no' ) : ?>
 							<span class="ah-accent-bar"></span>
 						<?php endif; ?>
@@ -196,7 +196,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 		case 'text_block':
 			?>
 			<?php echo ah_section_open( $d, 'section section--sm' ); ?>
-				<div class="container container--sm">
+				<div class="container  ">
 					<?php echo wp_kses_post( $d['content'] ?? '' ); ?>
 				</div>
 			</section>
@@ -220,7 +220,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 				<div class="container">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" data-aos="fade-up" style="margin-bottom:40px;">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -270,7 +270,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			         style="<?php echo $cta_style; ?>"
 			         <?php if ( ! empty( $d['section_id'] ) ) echo 'id="' . esc_attr( $d['section_id'] ) . '"'; ?>
 			         data-aos="fade-up">
-				<div class="container<?php echo $is_split ? '' : ' container--sm'; ?>" style="position:relative;z-index:1;">
+				<div class="container<?php echo $is_split ? '' : '  '; ?>" style="position:relative;z-index:1;">
 					<?php if ( $is_split ) : ?>
 						<div class="ah-cta-split">
 							<div class="ah-cta-split__text">
@@ -278,7 +278,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 									<p class="section__eyebrow" style="color:<?php echo $th['sub']; ?>;"><?php echo esc_html( $d['eyebrow'] ); ?></p>
 								<?php endif; ?>
 								<?php if ( ! empty( $d['heading'] ) ) : ?>
-									<h2 class="section__title" style="color:<?php echo $th['text']; ?>;"><?php echo esc_html( $d['heading'] ); ?></h2>
+									<h2 class=" " style="color:<?php echo $th['text']; ?>;"><?php echo esc_html( $d['heading'] ); ?></h2>
 								<?php endif; ?>
 								<?php if ( ! empty( $d['text'] ) ) : ?>
 									<p class="section__desc" style="color:<?php echo $th['sub']; ?>;margin-top:12px;"><?php echo esc_html( $d['text'] ); ?></p>
@@ -298,7 +298,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 							<p class="section__eyebrow" style="color:<?php echo $th['sub']; ?>;" data-aos="fade-up"><?php echo esc_html( $d['eyebrow'] ); ?></p>
 						<?php endif; ?>
 						<?php if ( ! empty( $d['heading'] ) ) : ?>
-							<h2 class="section__title" style="color:<?php echo $th['text']; ?>;" data-aos="fade-up">
+							<h2 class=" " style="color:<?php echo $th['text']; ?>;" data-aos="fade-up">
 								<?php echo esc_html( $d['heading'] ); ?>
 							</h2>
 						<?php endif; ?>
@@ -335,7 +335,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 				<div class="container">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:32px;" data-aos="fade-up">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -362,10 +362,10 @@ function ah_render_builder_block( string $type, array $d ): void {
 			if ( empty( $items ) ) break;
 			?>
 			<?php echo ah_section_open( $d, 'section' ); ?>
-				<div class="container container--sm">
+				<div class="container  ">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:32px;">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -419,10 +419,10 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$lnk_style  = $d['style'] ?? 'card';
 			?>
 			<?php echo ah_section_open( $d, 'section' ); ?>
-				<div class="container container--md">
+				<div class="container ">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div style="margin-bottom:32px;">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -478,7 +478,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$is_card = ( $d['layout'] ?? 'centered' ) === 'card';
 			?>
 			<?php echo ah_section_open( $d, $sec_cls ); ?>
-				<div class="container container--sm">
+				<div class="container  ">
 					<figure class="ah-testimonial<?php echo $is_card ? ' ah-testimonial--card' : ''; ?>">
 						<div class="ah-testimonial__stars" aria-label="<?php echo $stars; ?> stars">
 							<?php echo str_repeat( '★', $stars ) . str_repeat( '☆', 5 - $stars ); ?>
@@ -520,10 +520,10 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$connector = ( $d['connector'] ?? 'no' ) === 'yes';
 			?>
 			<?php echo ah_section_open( $d, $steps_cls ); ?>
-				<div class="container container--md">
+				<div class="container  ">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:40px;" data-aos="fade-up">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -576,7 +576,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$dismissible = ( $d['dismissible'] ?? 'no' ) === 'yes';
 			$alert_id    = ! empty( $d['section_id'] ) ? ' id="' . esc_attr( $d['section_id'] ) . '"' : '';
 			?>
-			<div class="container container--md" style="padding-top:0;padding-bottom:0;margin-bottom:24px;" data-aos="fade-up"<?php echo $alert_id; ?>>
+			<div class="container  " style="padding-top:0;padding-bottom:0;margin-bottom:24px;" data-aos="fade-up"<?php echo $alert_id; ?>>
 				<div class="ah-alert <?php echo $at['cls']; ?>"<?php echo $dismissible ? ' data-dismissible="1"' : ''; ?>>
 					<div class="ah-alert__icon" aria-hidden="true"><?php echo $at['icon']; ?></div>
 					<div class="ah-alert__body">
@@ -602,7 +602,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 				<div class="container">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:32px;" data-aos="fade-up">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -631,7 +631,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$points   = $d['points'] ?? array();
 			?>
 			<?php echo ah_section_open( $d, 'section' ); ?>
-				<div class="container container--md">
+				<div class="container  ">
 					<div class="content-layout--2col ah-img-text-grid"
 					     style="<?php echo $img_left ? '' : 'direction:rtl;'; ?>">
 						<div style="<?php echo $img_left ? '' : 'direction:ltr;'; ?>"
@@ -652,7 +652,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 								<p class="section__eyebrow"><?php echo esc_html( $d['eyebrow'] ); ?></p>
 							<?php endif; ?>
 							<?php if ( ! empty( $d['heading'] ) ) : ?>
-								<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+								<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 								<span class="ah-accent-bar" style="margin-bottom:20px;"></span>
 							<?php endif; ?>
 							<?php if ( ! empty( $d['text'] ) ) : ?>
@@ -698,7 +698,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 				<div class="container">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:32px;" data-aos="fade-up">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -731,7 +731,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$ratio_pad = $ratio_map[ $d['ratio'] ?? '16:9' ] ?? '56.25%';
 			?>
 			<?php echo ah_section_open( $d, 'section section--sm' ); ?>
-				<div class="container container--md" data-aos="fade-up">
+				<div class="container  " data-aos="fade-up">
 					<?php if ( ! empty( $d['caption'] ) ) : ?>
 						<p class="section__eyebrow" style="margin-bottom:16px;"><?php echo esc_html( $d['caption'] ); ?></p>
 					<?php endif; ?>
@@ -756,7 +756,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 				<div class="container" data-aos="fade-up">
 					<?php if ( ! empty( $d['label'] ) ) : ?>
 						<div style="margin-bottom:20px;">
-							<h2 class="section__title"><?php echo esc_html( $d['label'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['label'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -803,10 +803,10 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$sec_cls = ( $d['bg'] ?? 'white' ) === 'alt' ? 'section section--alt' : 'section';
 			?>
 			<?php echo ah_section_open( $d, $sec_cls ); ?>
-				<div class="container container--md" data-aos="fade-up">
+				<div class="container  " data-aos="fade-up">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:40px;">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -838,7 +838,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 				<div class="container">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:40px;" data-aos="fade-up">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<?php if ( ! empty( $d['subtitle'] ) ) : ?><p class="section__desc"><?php echo esc_html( $d['subtitle'] ); ?></p><?php endif; ?>
 							<span class="ah-accent-bar"></span>
 						</div>
@@ -882,7 +882,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$color     = $d['color'] ?? 'gold';
 			?>
 			<?php echo ah_section_open( $d, 'section section--sm' ); ?>
-				<div class="container container--sm" data-aos="fade-up">
+				<div class="container  " data-aos="fade-up">
 					<blockquote class="ah-pull-quote<?php echo $size_cls . $align_cls; ?>" data-color="<?php echo esc_attr( $color ); ?>">
 						<?php echo wp_kses_post( $quote ); ?>
 					</blockquote>
@@ -898,10 +898,10 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$sec_cls = ( $d['bg'] ?? 'white' ) === 'alt' ? 'section section--alt' : 'section';
 			?>
 			<?php echo ah_section_open( $d, $sec_cls ); ?>
-				<div class="container container--md">
+				<div class="container  ">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div style="margin-bottom:28px;" data-aos="fade-up">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -928,7 +928,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			if ( empty( $url ) ) break;
 			?>
 			<?php echo ah_section_open( $d, 'section section--sm' ); ?>
-				<div class="container container--md" data-aos="fade-up">
+				<div class="container  " data-aos="fade-up">
 					<div class="ah-download">
 						<div class="ah-download__icon">⬇️</div>
 						<div class="ah-download__body">
@@ -952,10 +952,10 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$block_id = 'ah-tabs-' . substr( md5( serialize( $tabs ) ), 0, 6 );
 			?>
 			<?php echo ah_section_open( $d, 'section' ); ?>
-				<div class="container container--md" data-aos="fade-up">
+				<div class="container  " data-aos="fade-up">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:32px;">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -991,10 +991,10 @@ function ah_render_builder_block( string $type, array $d ): void {
 			if ( empty( $rows ) ) break;
 			?>
 			<?php echo ah_section_open( $d, 'section' ); ?>
-				<div class="container container--md" data-aos="fade-up">
+				<div class="container  " data-aos="fade-up">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:32px;">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
@@ -1039,7 +1039,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$horiz = ( $d['layout'] ?? 'horizontal' ) === 'horizontal';
 			?>
 			<?php echo ah_section_open( $d, 'section section--alt' ); ?>
-				<div class="container container--sm" data-aos="fade-up">
+				<div class="container  " data-aos="fade-up">
 					<div class="ah-contact-card<?php echo $horiz ? '' : ' ah-contact-card--vertical'; ?>">
 						<?php if ( ! empty( $d['photo'] ) ) : ?>
 							<img src="<?php echo esc_url( $d['photo'] ); ?>"
@@ -1073,7 +1073,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 				<div class="container">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:40px;" data-aos="fade-up">
-							<h2 class="section__title"><?php echo esc_html( $d['heading'] ); ?></h2>
+							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>

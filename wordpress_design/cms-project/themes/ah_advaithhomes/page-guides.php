@@ -21,7 +21,7 @@ if ( $active_cat && $categories ) {
 	}
 }
 
-// Query — only run when a category is selected
+// Query - only run when a category is selected
 $guides_query = null;
 if ( $active_cat ) {
 	$query_args = [

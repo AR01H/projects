@@ -97,7 +97,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 
 		<?php
 	} else {
-		// Item not found — redirect to listing
+		// Item not found - redirect to listing
 		wp_safe_redirect( $base_url );
 		exit;
 	}
@@ -198,7 +198,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
 	'eyebrow'    => __( 'Stay Informed', 'ah-theme' ),
 	'title'      => __( 'All', 'ah-theme' ),
 	'title_em'   => __( 'News', 'ah-theme' ),
-	'desc'       => __( 'Market updates, property insights, and buying tips — everything in one place, ordered by date.', 'ah-theme' ),
+	'desc'       => __( 'Market updates, property insights, and buying tips - everything in one place, ordered by date.', 'ah-theme' ),
 	'breadcrumb' => [
 		[ 'Home', home_url( '/' ) ],
 		[ 'All News', '' ],

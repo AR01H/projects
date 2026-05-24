@@ -117,7 +117,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
             </thead>
             <tbody>
               <?php if ( empty( $pt_items ) ) : ?>
-                <tr><td colspan="6" style="text-align:center;opacity:.5;padding:24px;">No parent terms yet — use the form to add one.</td></tr>
+                <tr><td colspan="6" style="text-align:center;opacity:.5;padding:24px;">No parent terms yet - use the form to add one.</td></tr>
               <?php endif; ?>
               <?php foreach ( $pt_items as $pt ) :
                 $child_count = $pt_model->count_children( (int) $pt->id );
@@ -138,7 +138,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
                       <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'terms' ), admin_url( 'admin.php' ) ) ); ?>"
                          style="font-size:.82rem;"><?php echo $child_count; ?> term<?php echo $child_count !== 1 ? 's' : ''; ?> →</a>
                     <?php else : ?>
-                      <small style="opacity:.4;">—</small>
+                      <small style="opacity:.4;">-</small>
                     <?php endif; ?>
                   </td>
                   <td><span class="ah-badge ah-badge-<?php echo esc_attr( $pt->status ); ?>"><?php echo esc_html( $pt->status ); ?></span></td>
@@ -332,7 +332,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
                         <?php echo esc_html( ( $pt_obj->icon_emoji ? $pt_obj->icon_emoji . ' ' : '' ) . $pt_obj->name ); ?>
                       </span>
                     <?php else : ?>
-                      <small style="opacity:.4;">—</small>
+                      <small style="opacity:.4;">-</small>
                     <?php endif; ?>
                   </td>
                   <td><span class="ah-badge ah-badge-<?php echo esc_attr( $term->status ); ?>"><?php echo esc_html( $term->status ); ?></span></td>
@@ -369,7 +369,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
               <small style="font-weight:400;opacity:.6;">(from Parent Terms tab)</small>
             </label>
             <select name="parent_term_id">
-              <option value="">— No group —</option>
+              <option value="">- No group -</option>
               <?php foreach ( $parents as $par ) : ?>
                 <option value="<?php echo esc_attr( $par->id ); ?>" <?php selected( $item->parent_term_id ?? 0, $par->id ); ?>>
                   <?php echo esc_html( ( $par->icon_emoji ? $par->icon_emoji . ' ' : '' ) . $par->name ); ?>
@@ -378,7 +378,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
             </select>
             <?php if ( empty( $parents ) ) : ?>
               <small style="color:var(--ah-muted);display:block;margin-top:4px;">
-                No parent terms yet —
+                No parent terms yet -
                 <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'parent-terms' ), admin_url( 'admin.php' ) ) ); ?>">create some first →</a>
               </small>
             <?php endif; ?>

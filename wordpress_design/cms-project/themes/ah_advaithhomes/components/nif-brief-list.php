@@ -74,7 +74,7 @@ if ( empty( $posts ) ) return;
     <?php endforeach; ?>
   </div>
 
-  <!-- Pagination — ?pg=X avoids WordPress's redirect_canonical for ?page and ?paged -->
+  <!-- Pagination - ?pg=X avoids WordPress's redirect_canonical for ?page and ?paged -->
   <?php
   $sep = strpos( $base_url, '?' ) !== false ? '&' : '?';
   if ( $max_pages > 1 ) :

@@ -278,7 +278,7 @@
     $('#mc-result-wrapper').toggleClass('is-visible', price > 0);
   });
 
-  // ── Adaptive Nav — desktop menu if items fit, hamburger (3-lines) if not ───
+  // ── Adaptive Nav - desktop menu if items fit, hamburger (3-lines) if not ───
   (function () {
     var nav    = document.getElementById('mainNav');
     var menu   = nav && nav.querySelector('.nav__menu');
@@ -293,11 +293,11 @@
       void inner.offsetWidth; // force reflow
 
       if (inner.scrollWidth <= inner.clientWidth + 2) {
-        // All items fit — stay in desktop mode
+        // All items fit - stay in desktop mode
         return;
       }
 
-      // Doesn't fit — switch straight to hamburger
+      // Doesn't fit - switch straight to hamburger
       body.classList.add('nav--collapsed');
       $mobileNav.removeClass('is-open');
       $hamburger.removeClass('is-open').attr('aria-expanded', 'false');

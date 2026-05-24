@@ -1,7 +1,7 @@
 <?php
 /**
  * Component: NIF Guide Tiles
- * "Latest Guides" — 3-column dark colored tiles from WP posts.
+ * "Latest Guides" - 3-column dark colored tiles from WP posts.
  *
  * @var array $args {
  *   @type WP_Post[] $posts    Up to 6 WP_Post objects.

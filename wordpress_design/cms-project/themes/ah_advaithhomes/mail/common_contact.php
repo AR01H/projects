@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 add_action( 'wp_ajax_ah_theme_form_submit',        'ah_handle_form_submit' );
 add_action( 'wp_ajax_nopriv_ah_theme_form_submit', 'ah_handle_form_submit' );
 
-// ── Direct DB save — uses the plugin's contact_form_submissions table ─────────
+// ── Direct DB save - uses the plugin's contact_form_submissions table ─────────
 function ah_save_submission( array $data ): int {
 	global $wpdb;
 
@@ -51,7 +51,7 @@ function ah_save_submission( array $data ): int {
 }
 
 function ah_update_submission_email_sent( int $id ): void {
-	// email_sent / email_sent_at columns are not in the plugin-owned table — no-op.
+	// email_sent / email_sent_at columns are not in the plugin-owned table - no-op.
 }
 
 function ah_handle_form_submit(): void {

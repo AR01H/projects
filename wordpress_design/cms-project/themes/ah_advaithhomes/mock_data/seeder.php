@@ -52,7 +52,7 @@ class AH_Theme_Seeder {
 			AH_DB_Installer::install();
 		}
 		$methods[] = 'seed_plugin_tables';     // populate CMS plugin tables (hardcoded fallback)
-		$methods[] = 'seed_plugin_csv_lists';  // overlay CSV data on top — add rows to CSVs to extend
+		$methods[] = 'seed_plugin_csv_lists';  // overlay CSV data on top - add rows to CSVs to extend
 		foreach ( $methods as $method ) {
 			try {
 				$r = self::$method();
@@ -1344,7 +1344,7 @@ class AH_Theme_Seeder {
 	// ====================
 	// 1. Open (or create) the relevant CSV in mock_data/csv/
 	// 2. Add a row following the column headers shown in each section below
-	// 3. Re-run "Install Mock Data" — existing rows are skipped (dedup by key column)
+	// 3. Re-run "Install Mock Data" - existing rows are skipped (dedup by key column)
 	//
 	// HOW TO ADD A COMPLETELY NEW TABLE
 	// ===================================

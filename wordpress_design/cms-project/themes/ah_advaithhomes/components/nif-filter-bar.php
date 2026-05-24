@@ -5,7 +5,7 @@
  * Uses CMS parent terms (colored tabs) when ≥ 2 are active, otherwise falls back to WP categories.
  *
  * @var array $args {
- *   @type object[]  $parent_terms        CMS parent term objects (id, name, slug, color) — preferred
+ *   @type object[]  $parent_terms        CMS parent term objects (id, name, slug, color) - preferred
  *   @type string    $active_parent_term  Active parent term slug
  *   @type WP_Term[] $cats                WP categories (fallback)
  *   @type string    $active_cat          Active WP category slug (fallback)

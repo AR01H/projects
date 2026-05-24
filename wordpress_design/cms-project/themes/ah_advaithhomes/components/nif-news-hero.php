@@ -1,7 +1,7 @@
 <?php
 /**
  * Component: NIF News Hero
- * "Latest News" — big featured card (left, 3fr) + 3 compact side cards (right, 2fr).
+ * "Latest News" - big featured card (left, 3fr) + 3 compact side cards (right, 2fr).
  * Inline category chip filter via ?news_cat= (portal layout stays intact).
  * Sticky post = featured hero; falls back to most recent.
  * No dates displayed.
@@ -35,7 +35,7 @@ $h_cat1 = $h_cats[0] ?? null;
 $h_cat2 = $h_cats[1] ?? null;
 $h_bg   = $hd['thumb_url'] ? 'style="--nif-bg:url(' . esc_url( $hd['thumb_url'] ) . ')"' : '';
 
-// Build category chip URLs — preserve any existing ?pg or ?category params except news_cat
+// Build category chip URLs - preserve any existing ?pg or ?category params except news_cat
 $chip_base = remove_query_arg( 'news_cat', $permalink );
 ?>
 <section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">

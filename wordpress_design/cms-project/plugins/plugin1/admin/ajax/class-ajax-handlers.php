@@ -576,7 +576,7 @@ class AH_Ajax_Handlers {
 	}
 
 	// -------------------------------------------------------------------------
-	// ah_quick_save_post_meta — save Featured, Tags, CMS Taxonomy from list quick-edit
+	// ah_quick_save_post_meta - save Featured, Tags, CMS Taxonomy from list quick-edit
 	// -------------------------------------------------------------------------
 	public static function handle_quick_save_post_meta() {
 		self::verify();
@@ -589,7 +589,7 @@ class AH_Ajax_Handlers {
 		update_post_meta( $post_id, '_ah_is_popular',   ! empty( $_POST['is_popular'] )   ? '1' : '0' );
 		update_post_meta( $post_id, '_ah_is_suggested', ! empty( $_POST['is_suggested'] ) ? '1' : '0' );
 
-		// Highlight Links — sent as JSON string from JS
+		// Highlight Links - sent as JSON string from JS
 		$hl_raw   = sanitize_text_field( wp_unslash( $_POST['highlight_links'] ?? '[]' ) );
 		$hl_links = json_decode( $hl_raw, true );
 		if ( is_array( $hl_links ) ) {

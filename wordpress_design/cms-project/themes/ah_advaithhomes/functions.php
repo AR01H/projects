@@ -61,7 +61,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-style',      get_stylesheet_uri(),                [ 'ah-layout' ],       $fv( '/style.css' ) );
 	wp_enqueue_style( 'ah-common',     $uri . '/assets/css/common.css',     [ 'ah-style' ],         $fv( '/assets/css/common.css' ) );
 
-	// News & Info Feeder — load on that page template and the front page (which also uses it)
+	// News & Info Feeder - load on that page template and the front page (which also uses it)
 	if ( is_page_template( 'template-news-info-feeder.php' ) || is_front_page() ) {
 		wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv( '/assets/css/news-feed.css' ) );
 	}
@@ -77,7 +77,7 @@ add_action( 'wp_enqueue_scripts', function () {
 } );
 
 // Load news-feed CSS when the MultiInfo portal page template is active (the WP page
-// at /multiinfo/ — the 404-intercepted sub-pages are covered by ah_is_topic_page).
+// at /multiinfo/ - the 404-intercepted sub-pages are covered by ah_is_topic_page).
 add_action( 'wp_enqueue_scripts', function (): void {
 	if ( ! is_page_template( 'template-multiinfo.php' ) ) return;
 	$uri = get_template_directory_uri();
@@ -85,7 +85,7 @@ add_action( 'wp_enqueue_scripts', function (): void {
 	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv );
 }, 20 );
 
-// ── News & Info Feeder — fix pagination 301 redirect ─────────────────────────
+// ── News & Info Feeder - fix pagination 301 redirect ─────────────────────────
 // WordPress's redirect_canonical() fires on template_redirect (before the page
 // template loads) and strips ?page=X from static page URLs, redirecting back to
 // the base URL. Disable it only for this template so ?page=X pagination works.
@@ -128,7 +128,7 @@ add_filter( 'wp_kses_allowed_html', function ( array $tags, string $context ) : 
 	return $tags;
 }, 10, 2 );
 
-// ── Shared content formatter — tables, iframes, YouTube URLs ─────────────────
+// ── Shared content formatter - tables, iframes, YouTube URLs ─────────────────
 // Call ah_format_content() anywhere raw HTML needs the same treatment.
 function ah_format_content( string $content ) : string {
 	if ( empty( $content ) ) return $content;
@@ -220,7 +220,7 @@ add_filter( 'template_include', function ( string $template ): string {
 	$pt = ah_resolve_topic_from_url();
 	if ( ! $pt ) return $template;
 
-	// Fix HTTP status code — this is a real page now.
+	// Fix HTTP status code - this is a real page now.
 	status_header( 200 );
 
 	$GLOBALS['ah_current_pt'] = $pt;
@@ -244,7 +244,7 @@ add_action( 'wp_enqueue_scripts', function (): void {
 	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv );
 }, 20 );
 
-// ── MultiInfo Portal — /multiinfo/<parent-term>/ routing ──────────────────────
+// ── MultiInfo Portal - /multiinfo/<parent-term>/ routing ──────────────────────
 /**
  * Parses /multiinfo/<slug>/ and returns the matching parent-term row, or null.
  * Statically cached per request.
@@ -290,7 +290,7 @@ add_filter( 'template_include', function ( string $template ): string {
 	return locate_template( 'template-multiinfo.php' ) ?: $template;
 }, 11 );
 
-// ── Breadcrumb helper — find the parent term for a WP category slug ──────────
+// ── Breadcrumb helper - find the parent term for a WP category slug ──────────
 /**
  * Returns the parent-term row for the given category slug, or null.
  * Used in single.php to build Home › PT › Cat › Post breadcrumbs.

@@ -185,7 +185,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         </div>
 
         <?php else : ?>
-        <!-- ── Root /multiinfo/ — parent term chip strip ──────────────────── -->
+        <!-- ── Root /multiinfo/ - parent term chip strip ──────────────────── -->
         <?php if ( ! empty( $parent_terms ) ) : ?>
         <div class="mi-chip-strip mi-chip-strip--pts">
           <?php foreach ( $parent_terms as $_pt ) :
@@ -285,7 +285,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           <div class="nif-empty">
             <div class="nif-empty__icon">✍️</div>
             <h2 class="nif-empty__title"><?php esc_html_e( 'Nothing here yet', 'ah-theme' ); ?></h2>
-            <p class="nif-empty__desc"><?php esc_html_e( 'We\'re working on great content — check back soon.', 'ah-theme' ); ?></p>
+            <p class="nif-empty__desc"><?php esc_html_e( 'We\'re working on great content - check back soon.', 'ah-theme' ); ?></p>
             <a href="<?php echo esc_url( home_url( '/multiinfo/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
               ← <?php esc_html_e( 'All Topics', 'ah-theme' ); ?>
             </a>

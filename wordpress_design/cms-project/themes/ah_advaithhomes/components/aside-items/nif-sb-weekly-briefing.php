@@ -1,6 +1,6 @@
 <?php
 /**
- * Component: NIF Sidebar — Weekly Market Briefing
+ * Component: NIF Sidebar - Weekly Market Briefing
  *
  * Self-contained newsletter signup card. No $args dependencies.
  */

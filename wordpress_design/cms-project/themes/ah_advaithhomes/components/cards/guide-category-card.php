@@ -1,8 +1,8 @@
 <?php
 /**
  * Guide Category Card
- * $args['cat']   — array: id, slug, icon_emoji, image_id, title, desc, count
- * $args['index'] — int: for AOS stagger delay
+ * $args['cat']   - array: id, slug, icon_emoji, image_id, title, desc, count
+ * $args['index'] - int: for AOS stagger delay
  */
 $cat          = $args['cat']   ?? [];
 $index        = (int) ( $args['index'] ?? 0 );

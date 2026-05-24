@@ -201,7 +201,7 @@ $total_posts = $blog_query->found_posts;
 				<div class="nif-empty" data-aos="fade-up">
 					<div class="nif-empty__icon">✍️</div>
 					<h2 class="nif-empty__title"><?php esc_html_e( 'Nothing published yet', 'ah-theme' ); ?></h2>
-					<p class="nif-empty__desc"><?php esc_html_e( 'We\'re working on content for this topic — check back soon.', 'ah-theme' ); ?></p>
+					<p class="nif-empty__desc"><?php esc_html_e( 'We\'re working on content for this topic - check back soon.', 'ah-theme' ); ?></p>
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
 						<?php esc_html_e( '← All Topics', 'ah-theme' ); ?>
 					</a>

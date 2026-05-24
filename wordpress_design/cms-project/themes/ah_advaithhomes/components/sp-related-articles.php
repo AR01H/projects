@@ -1,6 +1,6 @@
 <?php
 /**
- * Component: Single Post — Related Articles
+ * Component: Single Post - Related Articles
  * Dark bento grid: featured card (left, tall) + 2 stacked cards (right).
  *
  * @var array $args {

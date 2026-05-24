@@ -732,7 +732,7 @@ var BLOCK_DEFS = {
     label: 'Divider', icon: '➖', color: '#9ca3af',
     fields: [
       { key:'style', label:'Style',         type:'select', options:['line','ornament','dots'], def:'line' },
-      { key:'label', label:'Optional Label',type:'text',   ph:'— or —' },
+      { key:'label', label:'Optional Label',type:'text',   ph:'- or -' },
     ]
   },
   alert: {
@@ -911,7 +911,7 @@ var BLOCK_DEFS = {
   notice_bar: {
     label: 'Notice Bar', icon: '📯', color: '#b45309',
     fields: [
-      { key:'text',  label:'Message',    type:'text',   ph:'Limited spaces available — book your free consultation today' },
+      { key:'text',  label:'Message',    type:'text',   ph:'Limited spaces available - book your free consultation today' },
       { key:'cta',   label:'CTA Text',   type:'text',   ph:'Book Now'    },
       { key:'url',   label:'CTA URL',    type:'text',   ph:'/contact/'   },
       { key:'style', label:'Style',      type:'select', options:['gold','dark','info'], def:'gold' },
@@ -1022,7 +1022,7 @@ function buildBlockHTML(block) {
     html += '</div>';
   });
 
-  // Common fields (anchor + padding) — appended to every block
+  // Common fields (anchor + padding) - appended to every block
   COMMON_FIELDS.forEach(function(f){
     var val = data[f.key] !== undefined ? data[f.key] : (f.def||'');
     html += '<div class="ah-form-row"><label>'+esc(f.label)+'</label>';

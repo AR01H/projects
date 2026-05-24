@@ -1,6 +1,6 @@
 /* ============================================================
-   News & Info Feeder — complete portal CSS
-   All tokens from variables.css — zero hardcoded hex values.
+   News & Info Feeder - complete portal CSS
+   All tokens from variables.css - zero hardcoded hex values.
    ============================================================ */
 
 /* ── Hide news ticker on this page ────────────────────────── */
@@ -171,7 +171,7 @@
   background: rgba(255,255,255,.22); opacity: 1;
 }
 
-/* ── Parent-terms filter bar — underline tab style (matches theme) ─ */
+/* ── Parent-terms filter bar - underline tab style (matches theme) ─ */
 .nif-filter-bar--pt { gap: 0; }
 
 .nif-filter-bar--pt .nif-filter-tab {
@@ -202,7 +202,7 @@
   color: var(--accent);
 }
 
-/* Colored topic tabs — underline uses the parent term color */
+/* Colored topic tabs - underline uses the parent term color */
 .nif-filter-tab--colored {
   color: var(--pt-color, var(--text-secondary));
   font-weight: 600;
@@ -258,7 +258,7 @@
   grid-template-columns: 3fr 2fr;
   gap: 12px;
   min-height: 400px;
-  isolation: isolate; /* contain stacking contexts — prevents AOS cross-column bleed */
+  isolation: isolate; /* contain stacking contexts - prevents AOS cross-column bleed */
 }
 @media (max-width: 760px) { .nif-news-hero-grid { grid-template-columns: 1fr; min-height: auto; } }
 
@@ -850,7 +850,7 @@
   color: var(--ptc, var(--accent));
   border-left-color: var(--ptc, var(--accent));
 }
-/* All Topics row — uses accent when active */
+/* All Topics row - uses accent when active */
 .nif-sb-pt-row--all-active {
   color: var(--accent);
   background: var(--gold-50, #fffbeb);
@@ -1047,7 +1047,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MULTIINFO PORTAL — /multiinfo/ and /multiinfo/<pt-slug>/
+   MULTIINFO PORTAL - /multiinfo/ and /multiinfo/<pt-slug>/
    ══════════════════════════════════════════════════════════ */
 
 /* Parent term header (shown on /multiinfo/<pt-slug>/) */
@@ -1087,7 +1087,7 @@
   background: var(--accent); color: #fff; gap: 7px;
 }
 
-/* Chip filter strip — subcategories or parent terms */
+/* Chip filter strip - subcategories or parent terms */
 .mi-chip-strip {
   display: flex; flex-wrap: wrap; gap: 8px;
   padding: 10px 0 4px;

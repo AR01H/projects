@@ -505,7 +505,7 @@ CSS;
 				$sel    = $model->get_term_ids( 'wp_post', $post->ID );
 				$groups = $model->get_active_terms_grouped();
 				if ( empty( $groups ) ) {
-					echo '<p style="font-size:12px;color:#888;margin:0;">No taxonomy terms yet — add some in <a href="' . esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ) . '">Taxonomies</a>.</p>';
+					echo '<p style="font-size:12px;color:#888;margin:0;">No taxonomy terms yet - add some in <a href="' . esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ) . '">Taxonomies</a>.</p>';
 				} else {
 					foreach ( $groups as $group ) {
 						if ( empty( $group['items'] ) ) continue;

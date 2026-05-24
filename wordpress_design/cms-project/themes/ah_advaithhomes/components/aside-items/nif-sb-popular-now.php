@@ -1,6 +1,6 @@
 <?php
 /**
- * Component: NIF Sidebar — Popular Now
+ * Component: NIF Sidebar - Popular Now
  *
  * @var array $args {
  *   @type WP_Post[] $popular_posts  Top posts ordered by comment_count.

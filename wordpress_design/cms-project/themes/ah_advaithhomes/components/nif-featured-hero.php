@@ -1,7 +1,7 @@
 <?php
 /**
  * Component: NIF Featured Hero
- * Large Breaking News card — full background image, overlaid content.
+ * Large Breaking News card - full background image, overlaid content.
  *
  * @var array $args {
  *   @type WP_Post $post      The featured post.
