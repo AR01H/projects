@@ -33,6 +33,8 @@
 	padding-bottom: 12px;
 	border-bottom: 1px solid var(--border);
 }
+/* When JS turns the title into an accordion header, remove the bottom margin */
+.sidebar-card__title.sb-header--row { margin-bottom: 0; }
 
 /* Table of Contents */
 .toc { display: flex; flex-direction: column; gap: 4px; }

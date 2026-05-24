@@ -6,10 +6,16 @@
 $cats      = get_the_category();
 $cat       = $cats ? $cats[0] : null;
 $exc       = wp_trim_words( get_the_excerpt(), 30, '…' );
-$crumbs    = [
-	[ 'Home', home_url( '/' ) ],
-];
-if ( $cat ) $crumbs[] = [ $cat->name, get_category_link( $cat ) ];
+
+// Build breadcrumb: Home › Parent Term › Category › Post
+$_pt_for_cat = $cat ? ah_get_parent_term_for_cat( $cat->slug ) : null;
+$crumbs      = [ [ 'Home', home_url( '/' ) ] ];
+if ( $_pt_for_cat ) {
+	$crumbs[] = [ $_pt_for_cat->name, home_url( '/' . $_pt_for_cat->slug . '/' ) ];
+	$crumbs[] = [ $cat->name, home_url( '/' . $_pt_for_cat->slug . '/' . $cat->slug . '/' ) ];
+} elseif ( $cat ) {
+	$crumbs[] = [ $cat->name, get_category_link( $cat ) ];
+}
 $crumbs[] = [ get_the_title(), '' ];
 ?>
 
@@ -120,9 +126,34 @@ $crumbs[] = [ get_the_title(), '' ];
             </li>
             <?php endforeach; ?>
           </ul>
-          <a href="<?php echo esc_url( get_category_link( $cat ) ); ?>" class="sp-more-all">
+          <?php
+          $_more_cat_url = $_pt_for_cat
+            ? home_url( '/' . $_pt_for_cat->slug . '/' . $cat->slug . '/' )
+            : get_category_link( $cat );
+          ?>
+          <a href="<?php echo esc_url( $_more_cat_url ); ?>" class="sp-more-all">
             <?php printf( esc_html__( 'All %s →', 'ah-theme' ), esc_html( $cat->name ) ); ?>
           </a>
+        </div>
+        <?php endif; ?>
+
+        <!-- Highlight Links — shown only when defined on this post -->
+        <?php
+        $_hl_raw   = get_post_meta( get_the_ID(), '_ah_highlight_links', true );
+        $_hl_links = json_decode( $_hl_raw ?: '[]', true );
+        if ( ! is_array( $_hl_links ) ) $_hl_links = [];
+        $_hl_links = array_values( array_filter( $_hl_links, fn( $l ) => ! empty( $l['name'] ) || ! empty( $l['url'] ) ) );
+        ?>
+        <?php if ( ! empty( $_hl_links ) ) : ?>
+        <div class="sidebar-card ah-hl-card">
+          <div class="sidebar-card__title"><?php esc_html_e( 'Highlight Links', 'ah-theme' ); ?></div>
+          <div class="ah-hl-buttons">
+            <?php foreach ( $_hl_links as $_hl ) : ?>
+            <a href="<?php echo esc_url( $_hl['url'] ?? '#' ); ?>" class="ah-hl-btn">
+              <?php echo esc_html( $_hl['name'] ?? $_hl['url'] ); ?>
+            </a>
+            <?php endforeach; ?>
+          </div>
         </div>
         <?php endif; ?>
 

@@ -448,6 +448,53 @@
 .nif-sb-card--cta { text-align: center; }
 .nif-sb-cta-text { font-size: .85rem; color: var(--text-secondary); margin: 0 0 12px; line-height: 1.55; }
 
+/* ── Sidebar accordion (+/−) ─────────────────────────────────────────────── */
+/* Toggle button — shared by both single-post sidebar and NIF topic sidebar */
+.sb-toggle-btn {
+	display: inline-flex; align-items: center; justify-content: center;
+	width: 20px; height: 20px; flex-shrink: 0;
+	border: 1.5px solid var(--border); border-radius: var(--r-sm);
+	background: var(--surface); color: var(--text-secondary);
+	font-size: .85rem; font-weight: 700; line-height: 1;
+	cursor: pointer; transition: border-color .15s, color .15s, background .15s;
+}
+.sb-toggle-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--client-color-100); }
+
+/* Single-post sidebar */
+.sidebar .sb-header--row {
+	display: flex; align-items: center; justify-content: space-between; gap: 8px;
+	cursor: pointer; user-select: none; margin-bottom: 0;
+}
+.sidebar .sb-body-wrap { padding-top: 14px; }
+.sidebar .is-closed .sb-body-wrap { display: none; }
+.sidebar .sidebar-card.is-closed { overflow: hidden; }
+
+/* ── Highlight Links sidebar widget ─────────────────────────────────────── */
+.ah-hl-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	padding: 4px 0 2px;
+}
+.ah-hl-btn {
+	display: inline-flex;
+	align-items: center;
+	padding: 7px 15px;
+	border-radius: var(--r-full);
+	font-size: .8rem;
+	font-weight: 600;
+	background: var(--accent);
+	color: #fff;
+	text-decoration: none;
+	transition: background .2s, transform .15s, box-shadow .2s;
+	box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+.ah-hl-btn:hover {
+	background: var(--gold-600, #b45309);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
 /* Mobile nav */
 .nav__hamburger {
 	display: none;

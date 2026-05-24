@@ -1013,6 +1013,9 @@ if ( $action === 'edit-custom' ) {
             $qe_is_feat    = (bool) get_post_meta( $p->ID, '_ah_is_featured', true );
             $qe_is_popular = (bool) get_post_meta( $p->ID, '_ah_is_popular', true );
             $qe_is_sug     = (bool) get_post_meta( $p->ID, '_ah_is_suggested', true );
+            $qe_hl_raw     = get_post_meta( $p->ID, '_ah_highlight_links', true );
+            $qe_hl_links   = json_decode( $qe_hl_raw ?: '[]', true );
+            if ( ! is_array( $qe_hl_links ) ) $qe_hl_links = [];
           ?>
             <tr>
               <td>
@@ -1093,6 +1096,25 @@ if ( $action === 'edit-custom' ) {
                       <?php endif; ?>
                     </div>
                   </div>
+                  <!-- Highlight Links -->
+                  <div style="margin-top:14px;background:#fff;border:1px solid #dde6f5;border-radius:8px;padding:12px 14px;">
+                    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:8px;">🔗 Highlight Links <span style="font-weight:400;font-size:.68rem;text-transform:none;letter-spacing:0;color:#94a3b8">(shown as highlight buttons in the blog sidebar)</span></div>
+                    <div id="ah-qe-hl-rows-<?php echo esc_attr( $p->ID ); ?>">
+                      <?php foreach ( $qe_hl_links as $hl ) : ?>
+                      <div class="ah-qe-hl-row" style="display:flex;gap:6px;margin-bottom:5px;align-items:center;">
+                        <input type="text" class="ah-qe-hl-name" value="<?php echo esc_attr( $hl['name'] ?? '' ); ?>" placeholder="Label"
+                               style="flex:1;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">
+                        <input type="text" class="ah-qe-hl-url"  value="<?php echo esc_attr( $hl['url'] ?? '' ); ?>"  placeholder="/slug/ or URL"
+                               style="flex:1.6;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">
+                        <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-remove" style="flex-shrink:0;padding:3px 8px;">✕</button>
+                      </div>
+                      <?php endforeach; ?>
+                    </div>
+                    <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-add"
+                            data-id="<?php echo esc_attr( $p->ID ); ?>"
+                            style="margin-top:2px;font-size:.78rem;">+ Add Link</button>
+                  </div>
+
                   <!-- Footer actions -->
                   <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #e2ecf9;padding-top:12px;">
                     <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-close" data-id="<?php echo esc_attr( $p->ID ); ?>">Cancel</button>
@@ -1140,19 +1162,43 @@ if ( $action === 'edit-custom' ) {
       color:      checked ? '#1a49c4' : ''
     });
   });
+  /* Highlight Links: add row */
+  $(document).on('click', '.ah-qe-hl-add', function() {
+    var id = $(this).data('id');
+    $('#ah-qe-hl-rows-' + id).append(
+      '<div class="ah-qe-hl-row" style="display:flex;gap:6px;margin-bottom:5px;align-items:center;">' +
+      '<input type="text" class="ah-qe-hl-name" placeholder="Label" style="flex:1;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">' +
+      '<input type="text" class="ah-qe-hl-url"  placeholder="/slug/ or URL" style="flex:1.6;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">' +
+      '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-remove" style="flex-shrink:0;padding:3px 8px;">✕</button>' +
+      '</div>'
+    );
+  });
+  /* Highlight Links: remove row */
+  $(document).on('click', '.ah-qe-hl-remove', function() {
+    $(this).closest('.ah-qe-hl-row').remove();
+  });
+
   $(document).on('click', '.ah-qe-save', function() {
     var $btn = $(this), id = $btn.data('id'), $row = $('#ah-qe-' + id);
     var taxIds = [];
     $row.find('.ah-qe-term:checked').each(function() { taxIds.push($(this).val()); });
+    /* Collect highlight link pairs */
+    var hlLinks = [];
+    $row.find('#ah-qe-hl-rows-' + id + ' .ah-qe-hl-row').each(function() {
+      var name = $.trim($(this).find('.ah-qe-hl-name').val());
+      var url  = $.trim($(this).find('.ah-qe-hl-url').val());
+      if (name || url) hlLinks.push({ name: name, url: url });
+    });
     $btn.text('Saving…').prop('disabled', true);
     $.post(ahAdmin.ajaxUrl, {
-      action:       'ah_quick_save_post_meta',
-      nonce:        ahAdmin.nonce,
-      post_id:      id,
-      is_featured:  $row.find('.ah-qe-featured').is(':checked')  ? 1 : 0,
-      is_popular:   $row.find('.ah-qe-popular').is(':checked')   ? 1 : 0,
-      is_suggested: $row.find('.ah-qe-suggested').is(':checked') ? 1 : 0,
-      taxonomy_ids: taxIds
+      action:          'ah_quick_save_post_meta',
+      nonce:           ahAdmin.nonce,
+      post_id:         id,
+      is_featured:     $row.find('.ah-qe-featured').is(':checked')  ? 1 : 0,
+      is_popular:      $row.find('.ah-qe-popular').is(':checked')   ? 1 : 0,
+      is_suggested:    $row.find('.ah-qe-suggested').is(':checked') ? 1 : 0,
+      taxonomy_ids:    taxIds,
+      highlight_links: JSON.stringify(hlLinks)
     }, function(res) {
       if (res.success) {
         window.location.reload();

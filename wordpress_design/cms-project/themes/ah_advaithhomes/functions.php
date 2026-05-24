@@ -234,6 +234,100 @@ add_action( 'wp_enqueue_scripts', function (): void {
 	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv );
 }, 20 );
 
+// ── Breadcrumb helper — find the parent term for a WP category slug ──────────
+/**
+ * Returns the parent-term row for the given category slug, or null.
+ * Used in single.php to build Home › PT › Cat › Post breadcrumbs.
+ * Results are statically cached by slug.
+ */
+function ah_get_parent_term_for_cat( string $cat_slug ): ?object {
+	static $cache = [];
+	if ( array_key_exists( $cat_slug, $cache ) ) return $cache[ $cat_slug ];
+	if ( ! class_exists( 'AH_DB_Helper' ) ) { $cache[ $cat_slug ] = null; return null; }
+
+	global $wpdb;
+	$tax_table = AH_DB_Helper::table( 'taxonomies' );
+	$pt_table  = AH_DB_Helper::table( 'taxonomy_parent_terms' );
+	$row       = $wpdb->get_row( $wpdb->prepare(
+		"SELECT pt.* FROM `{$pt_table}` pt
+		 INNER JOIN `{$tax_table}` t ON t.parent_term_id = pt.id
+		 WHERE t.slug = %s AND pt.status = 1 AND t.status = 1
+		 LIMIT 1",
+		$cat_slug
+	) );
+	$cache[ $cat_slug ] = $row ?: null;
+	return $cache[ $cat_slug ];
+}
+
+// ── Highlight Links meta box ──────────────────────────────────────────────────
+add_action( 'add_meta_boxes', function (): void {
+	add_meta_box(
+		'ah_highlight_links',
+		__( 'Highlight Links', 'ah-theme' ),
+		'ah_highlight_links_render',
+		'post',
+		'side',
+		'default'
+	);
+} );
+
+function ah_highlight_links_render( WP_Post $post ): void {
+	wp_nonce_field( 'ah_highlight_links_save', 'ah_hl_nonce' );
+	$links = json_decode( get_post_meta( $post->ID, '_ah_highlight_links', true ) ?: '[]', true );
+	if ( ! is_array( $links ) ) $links = [];
+	?>
+	<div id="ah-hl-rows">
+	<?php foreach ( $links as $link ) : ?>
+	<div class="ah-hl-row" style="display:flex;gap:5px;margin-bottom:5px">
+		<input type="text" name="ah_hl_name[]"
+		       value="<?php echo esc_attr( $link['name'] ?? '' ); ?>"
+		       placeholder="<?php esc_attr_e( 'Label', 'ah-theme' ); ?>"
+		       style="flex:1;min-width:0">
+		<input type="text" name="ah_hl_url[]"
+		       value="<?php echo esc_attr( $link['url'] ?? '' ); ?>"
+		       placeholder="<?php esc_attr_e( '/slug/ or URL', 'ah-theme' ); ?>"
+		       style="flex:1.4;min-width:0">
+		<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>
+	</div>
+	<?php endforeach; ?>
+	</div>
+	<button type="button" id="ah-hl-add" class="button button-secondary" style="margin-top:4px;width:100%">
+		+ <?php esc_html_e( 'Add Link', 'ah-theme' ); ?>
+	</button>
+	<script>
+	(function($){
+		$('#ah-hl-add').on('click',function(){
+			$('#ah-hl-rows').append(
+				'<div class="ah-hl-row" style="display:flex;gap:5px;margin-bottom:5px">' +
+				'<input type="text" name="ah_hl_name[]" placeholder="<?php echo esc_js( __( 'Label', 'ah-theme' ) ); ?>" style="flex:1;min-width:0">' +
+				'<input type="text" name="ah_hl_url[]"  placeholder="<?php echo esc_js( __( '/slug/ or URL', 'ah-theme' ) ); ?>" style="flex:1.4;min-width:0">' +
+				'<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>' +
+				'</div>'
+			);
+		});
+		$(document).on('click','.ah-hl-remove',function(){ $(this).closest('.ah-hl-row').remove(); });
+	})(jQuery);
+	</script>
+	<?php
+}
+
+add_action( 'save_post_post', function ( int $post_id ): void {
+	if ( ! isset( $_POST['ah_hl_nonce'] ) || ! wp_verify_nonce( $_POST['ah_hl_nonce'], 'ah_highlight_links_save' ) ) return;
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+	if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+
+	$names = array_map( 'sanitize_text_field', wp_unslash( (array) ( $_POST['ah_hl_name'] ?? [] ) ) );
+	$urls  = array_map( 'esc_url_raw',          wp_unslash( (array) ( $_POST['ah_hl_url']  ?? [] ) ) );
+	$links = [];
+	foreach ( $names as $i => $name ) {
+		$url = $urls[ $i ] ?? '';
+		if ( $name !== '' || $url !== '' ) {
+			$links[] = [ 'name' => $name, 'url' => $url ];
+		}
+	}
+	update_post_meta( $post_id, '_ah_highlight_links', wp_json_encode( $links ) );
+} );
+
 // ── Header Search Autosuggest (blogs & news only) ─────────────────────────────
 add_action( 'wp_ajax_ah_search_suggest',        'ah_search_suggest_handler' );
 add_action( 'wp_ajax_nopriv_ah_search_suggest', 'ah_search_suggest_handler' );

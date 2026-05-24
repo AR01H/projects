@@ -589,6 +589,21 @@ class AH_Ajax_Handlers {
 		update_post_meta( $post_id, '_ah_is_popular',   ! empty( $_POST['is_popular'] )   ? '1' : '0' );
 		update_post_meta( $post_id, '_ah_is_suggested', ! empty( $_POST['is_suggested'] ) ? '1' : '0' );
 
+		// Highlight Links — sent as JSON string from JS
+		$hl_raw   = sanitize_text_field( wp_unslash( $_POST['highlight_links'] ?? '[]' ) );
+		$hl_links = json_decode( $hl_raw, true );
+		if ( is_array( $hl_links ) ) {
+			$hl_clean = array();
+			foreach ( $hl_links as $hl ) {
+				$name = sanitize_text_field( $hl['name'] ?? '' );
+				$url  = esc_url_raw( $hl['url'] ?? '' );
+				if ( $name !== '' || $url !== '' ) {
+					$hl_clean[] = array( 'name' => $name, 'url' => $url );
+				}
+			}
+			update_post_meta( $post_id, '_ah_highlight_links', wp_json_encode( $hl_clean ) );
+		}
+
 		if ( class_exists( 'AH_Content_Taxonomy_Model' ) ) {
 			$taxonomy_ids = array_map( 'intval', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
 			( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', $post_id, $taxonomy_ids );

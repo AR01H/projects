@@ -374,6 +374,54 @@
     setTimeout(function () { $btn.text(orig); }, 1500);
   });
 
+  // ── Sidebar card accordion (+/−) ─────────────────────────────────────────
+  (function () {
+    // Handle both NIF topic sidebar (.nif-sb-card) and single-post sidebar (.sidebar-card)
+    var configs = [
+      { container: '.nif-portal-sidebar', cardSel: '.nif-sb-card',   headerSel: '.nif-sb-card__header' },
+      { container: '.sidebar',            cardSel: '.sidebar-card',   headerSel: '.sidebar-card__title' },
+    ];
+
+    configs.forEach(function (cfg) {
+      var cont = document.querySelector(cfg.container);
+      if (!cont) return;
+
+      cont.querySelectorAll(cfg.cardSel).forEach(function (card) {
+        // Skip cards explicitly excluded or with no toggleable content
+        if (card.id === 'sp-toc') return;
+        if (card.classList.contains('nif-sb-card--topics-link')) return;
+
+        var header = card.querySelector(cfg.headerSel);
+        if (!header) return;
+
+        // Wrap everything except the header into a collapsible body div
+        var body = document.createElement('div');
+        body.className = 'sb-body-wrap';
+        Array.from(card.children).forEach(function (child) {
+          if (child !== header) body.appendChild(child);
+        });
+        if (!body.children.length) return; // nothing to collapse
+        card.appendChild(body);
+
+        // Add the +/− button into the header
+        header.classList.add('sb-header--row');
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'sb-toggle-btn';
+        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', 'Toggle section');
+        btn.textContent = '−';
+        header.appendChild(btn);
+
+        header.addEventListener('click', function () {
+          var closed = card.classList.toggle('is-closed');
+          btn.textContent = closed ? '+' : '−';
+          btn.setAttribute('aria-expanded', String(!closed));
+        });
+      });
+    });
+  }());
+
   // ── Header Search Autosuggest ──────────────────────────────────────────────
   var $searchToggle  = $( '#ahSearchToggle' );
   var $searchPanel   = $( '#ahSearchPanel' );

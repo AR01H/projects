@@ -712,6 +712,24 @@
 .nif-sb-card__header--row {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
+
+/* ── Sidebar accordion ─────────────────────────────────────────────────────── */
+.sb-header--row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  cursor: pointer; user-select: none;
+}
+.sb-toggle-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; flex-shrink: 0;
+  border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  background: var(--surface); color: var(--text-secondary);
+  font-size: .85rem; font-weight: 700; line-height: 1;
+  cursor: pointer; transition: border-color .15s, color .15s, background .15s;
+}
+.sb-toggle-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--client-color-100); }
+.is-closed .sb-body-wrap { display: none; }
+/* Keep border-bottom on header even when card is closed */
+.nif-sb-card.is-closed .nif-sb-card__header { border-bottom: none; }
 .nif-sb-more-link {
   font-size: .7rem; font-weight: 600; color: var(--accent);
   text-decoration: none; display: inline-flex; align-items: center; gap: 2px;
