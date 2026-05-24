@@ -161,6 +161,7 @@ $year     = gmdate( 'Y' );
 			</div>
 		</div>
 	</div>
+<p class="footer__sitemap"><a href="<?php echo esc_url( home_url( '/sitemap.xml' ) ); ?>" target="_blank" rel="noopener">Sitemap</a></p>
 </footer>
 
 <?php wp_footer(); ?>
