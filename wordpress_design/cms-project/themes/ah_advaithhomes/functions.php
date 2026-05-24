@@ -75,6 +75,15 @@ add_action( 'wp_enqueue_scripts', function () {
 	] );
 } );
 
+// Load news-feed CSS when the MultiInfo portal page template is active (the WP page
+// at /multiinfo/ — the 404-intercepted sub-pages are covered by ah_is_topic_page).
+add_action( 'wp_enqueue_scripts', function (): void {
+	if ( ! is_page_template( 'template-multiinfo.php' ) ) return;
+	$uri = get_template_directory_uri();
+	$fv  = (string) @filemtime( get_template_directory() . '/assets/css/news-feed.css' );
+	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv );
+}, 20 );
+
 // ── News & Info Feeder — fix pagination 301 redirect ─────────────────────────
 // WordPress's redirect_canonical() fires on template_redirect (before the page
 // template loads) and strips ?page=X from static page URLs, redirecting back to
@@ -233,6 +242,52 @@ add_action( 'wp_enqueue_scripts', function (): void {
 	$fv  = (string) @filemtime( get_template_directory() . '/assets/css/news-feed.css' );
 	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv );
 }, 20 );
+
+// ── MultiInfo Portal — /multiinfo/<parent-term>/ routing ──────────────────────
+/**
+ * Parses /multiinfo/<slug>/ and returns the matching parent-term row, or null.
+ * Statically cached per request.
+ */
+function ah_resolve_multiinfo_from_url(): ?object {
+	static $cache = null;
+	if ( $cache !== false && $cache !== null ) return $cache;
+	if ( ! class_exists( 'AH_DB_Helper' ) ) { $cache = false; return null; }
+
+	$path  = trim( (string) parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH ), '/' );
+	$parts = array_values( array_filter( explode( '/', $path ) ) );
+
+	// Must be exactly ['multiinfo', '<slug>']
+	if ( count( $parts ) !== 2 || $parts[0] !== 'multiinfo' ) { $cache = false; return null; }
+
+	global $wpdb;
+	$pt_table = AH_DB_Helper::table( 'taxonomy_parent_terms' );
+	$pt       = $wpdb->get_row( $wpdb->prepare(
+		"SELECT * FROM `{$pt_table}` WHERE slug = %s AND status = 1 LIMIT 1",
+		sanitize_title( $parts[1] )
+	) );
+
+	$cache = $pt ?: false;
+	return $pt ?: null;
+}
+
+// Prevent canonical redirect from bouncing /multiinfo/<slug>/ before our filter fires.
+add_filter( 'redirect_canonical', function ( $redirect_url ) {
+	return ah_resolve_multiinfo_from_url() ? false : $redirect_url;
+}, 11 );
+
+// Intercept WordPress 404 for /multiinfo/<parent-term>/ and serve the portal template.
+add_filter( 'template_include', function ( string $template ): string {
+	if ( ! is_404() ) return $template;
+
+	$pt = ah_resolve_multiinfo_from_url();
+	if ( ! $pt ) return $template;
+
+	status_header( 200 );
+	$GLOBALS['ah_multiinfo_pt']  = $pt;
+	$GLOBALS['ah_is_topic_page'] = true; // triggers news-feed.css enqueue
+
+	return locate_template( 'template-multiinfo.php' ) ?: $template;
+}, 11 );
 
 // ── Breadcrumb helper — find the parent term for a WP category slug ──────────
 /**

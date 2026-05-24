@@ -4,11 +4,14 @@
  */
 get_header();
 
-$settings = ah_get_settings();
-$phone    = $settings['phone']   ?? '';
-$email    = $settings['email']   ?? '';
-$address  = $settings['address'] ?? '';
-$faqs     = ah_get_faqs( 6 );
+$settings         = ah_get_settings();
+$phone            = $settings['phone']   ?? '';
+$email            = $settings['email']   ?? '';
+$address          = $settings['address'] ?? '';
+$faqs             = ah_get_faqs( 6 );
+$_valid_enq_types = [ 'general', 'complaint', 'sales', 'support', 'media', 'other' ];
+$preset_enq       = sanitize_key( $_GET['enquiry_type'] ?? '' );
+if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
@@ -42,16 +45,24 @@ $faqs     = ah_get_faqs( 6 );
                 <input id="cf-name" name="name" type="text" class="form-input" placeholder="Jane Smith" required>
                 <span class="form-error"></span>
               </div>
-              <div class="form-group">
+              <div class="form-group"<?php if ( $preset_enq ) echo ' style="display:none"'; ?>>
                 <label class="form-label" for="cf-type">Enquiry Type</label>
                 <select id="cf-type" name="enquiry_type" class="form-input form-select">
                   <option value="">Select type…</option>
-                  <option value="general">General</option>
-                  <option value="complaint">Complaint</option>
-                  <option value="sales">Sales</option>
-                  <option value="support">Support</option>
-                  <option value="media">Media / Press</option>
-                  <option value="other">Other</option>
+                  <?php
+                  $enq_options = [
+                    'general'   => 'General',
+                    'complaint' => 'Complaint',
+                    'sales'     => 'Sales',
+                    'support'   => 'Support',
+                    'media'     => 'Media / Press',
+                    'other'     => 'Other',
+                  ];
+                  foreach ( $enq_options as $val => $label ) :
+                    $selected = selected( $preset_enq, $val, false );
+                  ?>
+                  <option value="<?php echo esc_attr( $val ); ?>"<?php echo $selected; ?>><?php echo esc_html( $label ); ?></option>
+                  <?php endforeach; ?>
                 </select>
               </div>
             </div>

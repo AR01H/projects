@@ -192,9 +192,21 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             'see_all' => home_url( '/guides/' ),
           ] );
 
+          // Latest News: hero + side cards — links to /allnews/ for full listing
+          if ( ! empty( $news_posts ) ) {
+            get_template_part( 'components/nif-news-hero', null, [
+              'posts'     => $news_posts,
+              'eyebrow'   => __( 'Latest News', 'ah-theme' ),
+              'see_all'   => home_url( '/allnews/' ),
+              'cats'      => $wp_cats,
+              'news_cat'  => $news_cat,
+              'permalink' => $page_url,
+            ] );
+          }
+
           // In Brief: remaining posts as a horizontal list
           get_template_part( 'components/nif-brief-list', null, [
-            'posts'     => array_slice( $posts_arr,0, 6 ),
+            'posts'     => array_slice( $posts_arr, 0, 6 ),
             'max_pages' => $blog_query->max_num_pages,
             'paged'     => $paged,
             'base_url'  => $page_url,

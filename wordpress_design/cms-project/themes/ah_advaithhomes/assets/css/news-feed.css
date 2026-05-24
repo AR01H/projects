@@ -1045,3 +1045,77 @@
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MULTIINFO PORTAL — /multiinfo/ and /multiinfo/<pt-slug>/
+   ══════════════════════════════════════════════════════════ */
+
+/* Parent term header (shown on /multiinfo/<pt-slug>/) */
+.mi-pt-header {
+  padding: 20px 0 8px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 24px;
+}
+.mi-pt-header__eyebrow {
+  font-size: .7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--accent); margin-bottom: 4px;
+}
+.mi-pt-header__top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.mi-pt-header__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700; color: var(--text-primary);
+  margin: 0;
+}
+.mi-pt-header__full-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  flex-shrink: 0; margin-top: 8px;
+  font-size: .82rem; font-weight: 600;
+  color: var(--accent); text-decoration: none;
+  padding: 5px 12px; border-radius: var(--r-full);
+  border: 1.5px solid var(--accent);
+  transition: background .15s, color .15s, gap .15s;
+  white-space: nowrap;
+}
+.mi-pt-header__full-link:hover {
+  background: var(--accent); color: #fff; gap: 7px;
+}
+
+/* Chip filter strip — subcategories or parent terms */
+.mi-chip-strip {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 10px 0 4px;
+}
+.mi-chip-strip--pts { padding: 12px 0 6px; }
+.mi-chip {
+  display: inline-flex; align-items: center;
+  padding: 6px 14px; border-radius: var(--r-full);
+  font-size: .8rem; font-weight: 600;
+  color: var(--text-secondary); background: var(--bg-alt);
+  border: 1.5px solid var(--border);
+  text-decoration: none; white-space: nowrap;
+  transition: color .15s, background .15s, border-color .15s;
+}
+.mi-chip:hover {
+  color: var(--ptc, var(--accent));
+  border-color: var(--ptc, var(--accent));
+  background: var(--client-color-50);
+}
+.mi-chip--active {
+  color: #fff;
+  background: var(--ptc, var(--accent));
+  border-color: var(--ptc, var(--accent));
+}
+/* Parent term chips with their brand color */
+.mi-chip-strip--pts .mi-chip:hover,
+.mi-chip-strip--pts .mi-chip--active {
+  color: #fff;
+  background: var(--ptc, var(--accent));
+  border-color: var(--ptc, var(--accent));
+}
