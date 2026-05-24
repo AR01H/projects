@@ -51,7 +51,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		] ); ?>
 
 		<article class="section" aria-label="<?php esc_attr_e( 'News article', 'ah-theme' ); ?>">
-		  <div class="container container--md">
+		  <div class="container">
 
 		    <!-- Back link -->
 		    <a href="<?php echo esc_url( $base_url ); ?>" class="news-single__back" style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--accent);text-decoration:none;margin-bottom:32px">
@@ -59,28 +59,30 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		      <?php esc_html_e( 'Back to All News', 'ah-theme' ); ?>
 		    </a>
 
-		    <?php if ( $s_thumb ) : ?>
-		    <div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/7">
-		      <img src="<?php echo esc_url( $s_thumb ); ?>"
-		           alt="<?php echo esc_attr( $s_title ); ?>"
-		           style="width:100%;height:100%;object-fit:cover"
-		           loading="eager" decoding="async">
-		    </div>
-		    <?php endif; ?>
-
+			
 		    <div class="news-single__meta" style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
-		      <span class="nif-tile-badge" style="font-size:.75rem"><?php echo esc_html( strtoupper( $s_cat ) ); ?></span>
-		      <?php if ( $s_date ) : ?>
-		      <span style="font-size:.82rem;color:var(--text-secondary)"><?php echo esc_html( $s_date ); ?></span>
-		      <?php endif; ?>
-		    </div>
-
-		    <h1 class="news-single__title" style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;color:var(--text-primary);margin-bottom:24px;line-height:1.25">
-		      <?php echo esc_html( $s_title ); ?>
-		    </h1>
+				<span class="nif-tile-badge" style="font-size:.75rem"><?php echo esc_html( strtoupper( $s_cat ) ); ?></span>
+				<?php if ( $s_date ) : ?>
+					<span style="font-size:.82rem;color:var(--text-secondary)"><?php echo esc_html( $s_date ); ?></span>
+					<?php endif; ?>
+				</div>
+				
+				<div style="display:flex;flex-wrap:wrap;justify-content: space-between;">
+					<h1 class="news-single__title" style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;color:var(--text-primary);margin-bottom:24px;line-height:1.25">
+						<?php echo esc_html( $s_title ); ?>
+					</h1>
+					<?php if ( $s_thumb ) : ?>
+					<div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/7;max-width:400px">
+					  <img src="<?php echo esc_url( $s_thumb ); ?>"
+						   alt="<?php echo esc_attr( $s_title ); ?>"
+						   style="width:100%;height:100%;object-fit:cover"
+						   loading="eager" decoding="async">
+					</div>
+					<?php endif; ?>
+				</div>
 
 		    <?php if ( $s_content ) : ?>
-		    <div class="news-single__body prose" style="color:var(--text-secondary);font-size:1rem;line-height:1.8;max-width:680px">
+		    <div class="news-single__body prose" style="color:var(--text-secondary);font-size:1rem;line-height:1.8;">
 		      <?php echo wp_kses_post( wpautop( $s_content ) ); ?>
 		    </div>
 		    <?php endif; ?>

@@ -233,7 +233,7 @@ $blog_cat  = $blog_cats[0] ?? null;
             <?php else : ?>
               <div class="hp-bento__news-placeholder">📰</div>
             <?php endif; ?>
-            <span class="nif-tile-badge hp-bento__news-badge hp-bento__news-badge-news-card"><?php echo esc_html( $news_label ); ?></span>
+            <span class="nif-tile-badge hp-bento__news-badge hp-bento__news-badge-news-card"><?php echo ( $news_label ); ?></span>
           </a>
           <div class="hp-bento__news-body">
             <h3 class="hp-bento__news-title">
@@ -276,7 +276,7 @@ $blog_cat  = $blog_cats[0] ?? null;
             <?php else : ?>
               <div class="hp-bento__news-placeholder">📰</div>
             <?php endif; ?>
-            <span class="nif-tile-badge hp-bento__news-badge"><?php echo esc_html( $fb_label ); ?></span>
+            <span class="nif-tile-badge hp-bento__news-badge"><?php echo ( $fb_label ); ?></span>
           </a>
           <div class="hp-bento__news-body">
             <h3 class="hp-bento__news-title">

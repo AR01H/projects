@@ -60,14 +60,12 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-animations', $uri . '/assets/css/animations.css', [ 'ah-base' ],         $fv( '/assets/css/animations.css' ) );
 	wp_enqueue_style( 'ah-style',      get_stylesheet_uri(),                [ 'ah-layout' ],       $fv( '/style.css' ) );
 	wp_enqueue_style( 'ah-common',     $uri . '/assets/css/common.css',     [ 'ah-style' ],         $fv( '/assets/css/common.css' ) );
-
-	// News & Info Feeder - load on that page template and the front page (which also uses it)
-	if ( is_page_template( 'template-news-info-feeder.php' ) || is_front_page() ) {
-		wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv( '/assets/css/news-feed.css' ) );
-	}
+	wp_enqueue_style( 'ah-scroll-to-top',     $uri . '/assets/css/scroll-to-top.css',     [ 'ah-common' ],         $fv( '/assets/css/scroll-to-top.css' ) );
+	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv( '/assets/css/news-feed.css' ) );
 
 	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ],  $fv( '/assets/js/main.js' ),  true );
 	wp_enqueue_script( 'ah-forms', $uri . '/assets/js/forms.js', [ 'ah-main' ], $fv( '/assets/js/forms.js' ), true );
+	wp_enqueue_script( 'ah-js-scroll-to-top', $uri . '/assets/js/scroll-to-top.js', [ 'ah-main' ], $fv( '/assets/js/scroll-to-top.js' ), true );
 
 	wp_localize_script( 'ah-forms', 'ahTheme', [
 		'ajaxUrl' => admin_url( 'admin-ajax.php' ),

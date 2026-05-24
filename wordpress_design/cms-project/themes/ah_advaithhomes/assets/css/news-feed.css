@@ -14,7 +14,7 @@
    ══════════════════════════════════════════════════════════ */
 .nif-portal-bg {
   background: var(--bg);
-  padding-block: clamp(28px, 3vw, 44px);
+  /* padding-block: clamp(28px, 3vw, 44px); */
   margin-top: var(--nav-h);
 }
 .nif-portal-wrap {

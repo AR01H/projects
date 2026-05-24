@@ -2041,6 +2041,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 	background: var(--slate-700);
 	color: white;
 	padding-block: 10px;
+	margin-top: 10px;
 	text-align: center;
 }
 .cta-section__eyebrow {
@@ -2996,9 +2997,9 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
   position: absolute; top: 10px; left: 10px; z-index: 2;
 }
 
-.hp-bento__news-badge-news-card {
+.nif-tile-badge.hp-bento__news-badge-news-card {
     border-radius: 0px;
-    background: red;
+    background: var(--important);
     border-bottom-left-radius: var(--radius-lg);
     border-top-right-radius: var(--r-lg);
     color: white;

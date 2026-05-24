@@ -149,7 +149,16 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       <!-- ══ MAIN CONTENT ═══════════════════════════════════════════════════ -->
       <main class="nif-portal-main">
 
-        <?php get_template_part( 'components/nif-background-imagecard' ); ?>
+        <?php 
+        $extra_heading ='';
+        if(isset($active_pt->name)){
+          $extra_heading = 'on '.$active_pt->name;
+        }
+        get_template_part( 'components/nif-background-imagecard',null,[
+          'exta_heading'=> $extra_heading,
+        ] ); 
+        
+        ?>
 
         <?php if ( $active_pt ) : ?>
         <!-- ── Parent term header + subcategory filter strip ─────────────── -->

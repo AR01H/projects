@@ -268,4 +268,6 @@ endif; ?>
 endif; ?>
 
 <?php get_template_part( 'components/cta-section' ); ?>
+
+<?php get_template_part( 'components/scroll-to-top' ); ?>
 <?php get_footer(); ?>

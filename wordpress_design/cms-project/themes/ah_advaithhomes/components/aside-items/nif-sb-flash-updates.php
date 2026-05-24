@@ -17,7 +17,7 @@ if ( empty( $news_bar_items ) ) {
 <div class="nif-sb-card nif-sb-card--flash" aria-label="<?php esc_attr_e( 'Latest News', 'ah-theme' ); ?>">
   <div class="nif-sb-card__header nif-sb-card__header--row">
     <span class="nif-section-label--primary" style="color:var(--important);font-weight:bolder;"><?php esc_html_e( 'Latest News', 'ah-theme' ); ?></span>
-    <a href="<?php echo esc_url( home_url( '/news/' ) ); ?>" class="nif-sb-more-link" >
+    <a href="<?php echo esc_url( home_url( '/allnews/' ) ); ?>" class="nif-sb-more-link" >
       <?php esc_html_e( 'See all', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
     </a>
   </div>

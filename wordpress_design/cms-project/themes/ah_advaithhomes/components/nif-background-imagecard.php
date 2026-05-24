@@ -1,8 +1,5 @@
 <?php
-/**
- * NIF Portal Hero Section - v3
- * Light overlay so image shows through clearly + elegant typography
- */
+$exta_heading = $args['exta_heading'] ?? '';
 ?>
 
 <style>
@@ -191,7 +188,7 @@
         <div class="nif-content">
 
             <h1 class="hero__title">
-                <span>Make Smarter </span><em>Property Decisions</em>
+                <span>Make Smarter </span><em>Property Decisions <?php echo $exta_heading; ?></em>
             </h1>
 
             <p class="hero__desc">
