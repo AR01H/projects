@@ -46,8 +46,8 @@ $hp_tiles = [
 	],
 	'guides' => [
 		'icon'   => '📖',
-		'title'  => 'Buying Guides',
-		'desc'   => 'Step-by-step guides for every stage of your property journey.',
+		'title'  => 'Guides to Know',
+		'desc'   => 'Explore detailed step-by-step guidance designed to help you confidently navigate every stage of your property journey, from searching for the right home to securing the perfect deal and moving in successfully.',
 		'url'    => '/guides/',
 		'cta'    => 'Browse guides',
 		'color'  => '#581c87',
@@ -141,7 +141,7 @@ $blog_cats = $blog_post ? get_the_category( $blog_post->ID ) : [];
 $blog_cat  = $blog_cats[0] ?? null;
 ?>
 
-<div class="hp-wrap">
+<div class="hp-wrap whole-page-card">
 
   <!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
   <?php get_template_part( 'components/nif-background-imagecard' ); ?>
@@ -206,7 +206,7 @@ $blog_cat  = $blog_cats[0] ?? null;
         // ── Newsbar items ──────────────────────────────────────────────────
         foreach ( $news_items as $item ) :
           $_terms     = $news_item_terms[ $item->id ] ?? [];
-          $news_label = ! empty( $_terms ) ? strtoupper( $_terms[0]->name ) : 'NEWS';
+          $news_label = 'NEWS';
           $news_area  = $_news_areas[ $_slot ] ?? '';
           $news_link  = ! empty( $item->link_url ) ? $item->link_url : home_url( '/allnews/?item=' . (int) $item->id );
           $news_title = $item->text ?? '';
@@ -233,7 +233,7 @@ $blog_cat  = $blog_cats[0] ?? null;
             <?php else : ?>
               <div class="hp-bento__news-placeholder">📰</div>
             <?php endif; ?>
-            <span class="nif-tile-badge hp-bento__news-badge"><?php echo esc_html( $news_label ); ?></span>
+            <span class="nif-tile-badge hp-bento__news-badge hp-bento__news-badge-news-card"><?php echo esc_html( $news_label ); ?></span>
           </a>
           <div class="hp-bento__news-body">
             <h3 class="hp-bento__news-title">

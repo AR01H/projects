@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mortgage Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .custom_styles_page {
+    --brand: #7B2D8B;
+    --brand-light: #f3e8f7;
+    --accent: #e91e8c;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --bg: #f7f5f9;
+    --white: #ffffff;
+    --border: #e2d9ea;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(123,45,139,0.10);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom_styles_page * { box-sizing: border-box; }
+
+  .custom_styles_page .top-bar {
+    background: var(--brand);
+    color: #fff;
+    padding: 14px 32px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .custom_styles_page .top-bar span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    opacity: 0.7;
+    margin-left: 8px;
+    font-weight: 400;
+  }
+
+  .custom_styles_page .layout {
+    display: flex;
+    flex: 1;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* Sidebar */
+  .custom_styles_page .sidebar {
+    width: 260px;
+    min-width: 220px;
+    background: var(--white);
+    border-right: 1.5px solid var(--border);
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .custom_styles_page .sidebar-section {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--brand);
+    text-transform: uppercase;
+    padding: 16px 20px 6px;
+  }
+
+  .custom_styles_page .nav-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    border-radius: 0;
+  }
+
+  .custom_styles_page .nav-btn:hover {
+    background: var(--brand-light);
+    color: var(--brand);
+  }
+
+  .custom_styles_page .nav-btn.active {
+    background: var(--brand-light);
+    color: var(--brand);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Main content */
+  .custom_styles_page .main {
+    flex: 1;
+    padding: 32px;
+    overflow-y: auto;
+  }
+
+  .custom_styles_page .page-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--brand);
+    margin: 0 0 6px;
+  }
+
+  .custom_styles_page .page-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 28px;
+  }
+
+  /* Calculator iframe panel */
+  .custom_styles_page .calc-frame {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 32px 32px;
+    max-width: 640px;
+    display: none;
+  }
+
+  .custom_styles_page .calc-frame.active {
+    display: block;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .custom_styles_page .calc-frame h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    margin: 0 0 20px;
+    color: var(--text);
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--border);
+  }
+
+  /* Form elements */
+  .custom_styles_page .field {
+    margin-bottom: 18px;
+  }
+
+  .custom_styles_page label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .custom_styles_page input[type="number"],
+  .custom_styles_page input[type="text"],
+  .custom_styles_page select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: #faf8fc;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .custom_styles_page input:focus,
+  .custom_styles_page select:focus {
+    border-color: var(--brand);
+  }
+
+  .custom_styles_page input[type="range"] {
+    width: 100%;
+    accent-color: var(--brand);
+  }
+
+  .custom_styles_page .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .custom_styles_page .slider-val {
+    min-width: 56px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brand);
+    text-align: right;
+  }
+
+  .custom_styles_page .calc-btn {
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    padding: 11px 28px;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 6px;
+  }
+
+  .custom_styles_page .calc-btn:hover { background: #5a1e6e; }
+
+  .custom_styles_page .results {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 12px;
+  }
+
+  .custom_styles_page .result-card {
+    background: var(--brand-light);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .custom_styles_page .result-card .rlabel {
+    font-size: 11px;
+    color: var(--brand);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+  }
+
+  .custom_styles_page .result-card .rval {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .custom_styles_page .info-block {
+    background: #fff8e1;
+    border-left: 3px solid #f59e0b;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #78350f;
+    margin-top: 18px;
+  }
+
+  .custom_styles_page .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .custom_styles_page .bar-wrap {
+    margin-top: 18px;
+  }
+
+  .custom_styles_page .bar-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .custom_styles_page .bar-track {
+    height: 10px;
+    border-radius: 5px;
+    background: #e9d5f0;
+    overflow: hidden;
+  }
+
+  .custom_styles_page .bar-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 5px;
+    transition: width 0.4s;
+  }
+</style>
+</head>
+<body class="custom_styles_page">
+
+<div class="top-bar">
+  🏠 Mortgage Hub <span>Your complete mortgage calculator centre</span>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-section">Rates & Lenders</div>
+    <button class="nav-btn active" onclick="show('mortgage-calc', this)">Compare Mortgage Rates</button>
+    <button class="nav-btn" onclick="show('best-rates', this)">Best Mortgage Rates</button>
+    <button class="nav-btn" onclick="show('best-lenders', this)">Best Mortgage Lenders</button>
+    <button class="nav-btn" onclick="show('rate-forecast', this)">Mortgage Rate Forecast</button>
+
+    <div class="sidebar-section">Remortgage</div>
+    <button class="nav-btn" onclick="show('remortgage-service', this)">Remortgage Service</button>
+    <button class="nav-btn" onclick="show('how-remortgage', this)">How to Remortgage</button>
+
+    <div class="sidebar-section">First Time Buyers</div>
+    <button class="nav-btn" onclick="show('ftb-mortgages', this)">First Time Buyer Mortgages</button>
+    <button class="nav-btn" onclick="show('ftb-rates', this)">First Time Buyer Rates</button>
+
+    <div class="sidebar-section">Calculators</div>
+    <button class="nav-btn" onclick="show('borrow-calc', this)">How Much Can I Borrow?</button>
+    <button class="nav-btn" onclick="show('get-mortgage', this)">How to Get a Mortgage</button>
+    <button class="nav-btn" onclick="show('gifted-deposit', this)">Gifted Deposits Explained</button>
+
+    <div class="sidebar-section">Specialist Mortgages</div>
+    <button class="nav-btn" onclick="show('over50', this)">Mortgages for Over 50s</button>
+    <button class="nav-btn" onclick="show('btl', this)">Buy to Let Mortgages</button>
+    <button class="nav-btn" onclick="show('btl-rates', this)">Buy to Let Mortgage Rates</button>
+    <button class="nav-btn" onclick="show('bridging', this)">Bridging Loans Explained</button>
+
+    <div class="sidebar-section">Schemes</div>
+    <button class="nav-btn" onclick="show('deposit-unlock', this)">Deposit Unlock</button>
+    <button class="nav-btn" onclick="show('rate-reducer', this)">Own New Rate Reducer</button>
+    <button class="nav-btn" onclick="show('life-insurance', this)">Life Insurance with Mortgage</button>
+  </nav>
+
+  <!-- Main Panel -->
+  <main class="main">
+
+    <!-- Compare Mortgage Rates -->
+    <div id="mortgage-calc" class="calc-frame active">
+      <h2>Compare Mortgage Rates</h2>
+      <div class="two-col">
+        <div class="field"><label>Property Value (£)</label><input type="number" id="cm-price" value="300000" oninput="calcCompare()"></div>
+        <div class="field"><label>Deposit (£)</label><input type="number" id="cm-deposit" value="60000" oninput="calcCompare()"></div>
+      </div>
+      <div class="field"><label>Interest Rate — <span id="cm-rate-out">3.5</span>%</label>
+        <div class="slider-row"><input type="range" min="1" max="15" step="0.1" value="3.5" id="cm-rate" oninput="syncSlider('cm-rate','cm-rate-out','%');calcCompare()"><span class="slider-val" id="cm-rate-sv">3.5%</span></div>
+      </div>
+      <div class="field"><label>Mortgage Term — <span id="cm-term-out">25</span> years</label>
+        <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="cm-term" oninput="syncSlider('cm-term','cm-term-out',' yrs');calcCompare()"><span class="slider-val" id="cm-term-sv">25 yrs</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Monthly Payment</div><div class="rval" id="cm-emi">—</div></div>
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="cm-loan">—</div></div>
+        <div class="result-card"><div class="rlabel">Total Interest</div><div class="rval" id="cm-interest">—</div></div>
+        <div class="result-card"><div class="rlabel">Total Repaid</div><div class="rval" id="cm-total">—</div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label-row"><span>Principal</span><span>Interest</span></div>
+        <div class="bar-track"><div class="bar-fill" id="cm-bar" style="width:60%"></div></div>
+      </div>
+    </div>
+
+    <!-- Best Mortgage Rates -->
+    <div id="best-rates" class="calc-frame">
+      <h2>Best Mortgage Rates</h2>
+      <div class="field"><label>Loan Amount (£)</label><input type="number" id="br-loan" value="240000" oninput="calcBestRates()"></div>
+      <div class="field"><label>Term (years)</label><input type="number" id="br-term" value="25" oninput="calcBestRates()"></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Estimated monthly payments across common fixed rates:</p>
+      <div class="results" id="br-results"></div>
+      <div class="info-block">Rates shown are illustrative. Always compare live rates from lenders before committing.</div>
+    </div>
+
+    <!-- Best Mortgage Lenders -->
+    <div id="best-lenders" class="calc-frame">
+      <h2>Best Mortgage Lenders</h2>
+      <div class="field"><label>Your Credit Score</label>
+        <select id="bl-credit" onchange="showLenders()">
+          <option value="excellent">Excellent (750+)</option>
+          <option value="good">Good (650–749)</option>
+          <option value="fair">Fair (500–649)</option>
+        </select>
+      </div>
+      <div class="field"><label>Mortgage Type</label>
+        <select id="bl-type" onchange="showLenders()">
+          <option value="fixed">Fixed Rate</option>
+          <option value="variable">Variable Rate</option>
+          <option value="tracker">Tracker</option>
+        </select>
+      </div>
+      <div id="bl-results" class="results" style="margin-top:18px;"></div>
+    </div>
+
+    <!-- Mortgage Rate Forecast -->
+    <div id="rate-forecast" class="calc-frame">
+      <h2>Mortgage Rate Forecast</h2>
+      <div class="field"><label>Current Loan Balance (£)</label><input type="number" id="rf-balance" value="200000" oninput="calcForecast()"></div>
+      <div class="field"><label>Current Rate — <span id="rf-rate-out">4.5</span>%</label>
+        <div class="slider-row"><input type="range" min="1" max="12" step="0.1" value="4.5" id="rf-rate" oninput="syncSlider('rf-rate','rf-rate-out','%');calcForecast()"><span class="slider-val" id="rf-rate-sv">4.5%</span></div>
+      </div>
+      <div class="field"><label>Remaining Term (years)</label><input type="number" id="rf-term" value="20" oninput="calcForecast()"></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">If rates change, your monthly payment would become:</p>
+      <div class="results" id="rf-results"></div>
+    </div>
+
+    <!-- Remortgage Service -->
+    <div id="remortgage-service" class="calc-frame">
+      <h2>Remortgage Service</h2>
+      <div class="two-col">
+        <div class="field"><label>Current Balance (£)</label><input type="number" id="rs-balance" value="180000" oninput="calcRemortgage()"></div>
+        <div class="field"><label>Property Value (£)</label><input type="number" id="rs-value" value="300000" oninput="calcRemortgage()"></div>
+      </div>
+      <div class="field"><label>New Rate — <span id="rs-rate-out">3.2</span>%</label>
+        <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="3.2" id="rs-rate" oninput="syncSlider('rs-rate','rs-rate-out','%');calcRemortgage()"><span class="slider-val" id="rs-rate-sv">3.2%</span></div>
+      </div>
+      <div class="field"><label>New Term — <span id="rs-term-out">20</span> years</label>
+        <div class="slider-row"><input type="range" min="5" max="30" step="1" value="20" id="rs-term" oninput="syncSlider('rs-term','rs-term-out',' yrs');calcRemortgage()"><span class="slider-val" id="rs-term-sv">20 yrs</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">New LTV</div><div class="rval" id="rs-ltv">—</div></div>
+        <div class="result-card"><div class="rlabel">New Monthly</div><div class="rval" id="rs-emi">—</div></div>
+        <div class="result-card"><div class="rlabel">Equity</div><div class="rval" id="rs-equity">—</div></div>
+      </div>
+    </div>
+
+    <!-- How to Remortgage -->
+    <div id="how-remortgage" class="calc-frame">
+      <h2>How to Remortgage</h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;">Remortgaging means switching your existing mortgage to a new deal — either with the same lender or a new one. Use the calculator below to see potential savings.</p>
+      <div class="field"><label>Current Monthly Payment (£)</label><input type="number" id="hr-current" value="900" oninput="calcHowRemortgage()"></div>
+      <div class="two-col">
+        <div class="field"><label>New Rate — <span id="hr-rate-out">3.0</span>%</label>
+          <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="3.0" id="hr-rate" oninput="syncSlider('hr-rate','hr-rate-out','%');calcHowRemortgage()"><span class="slider-val" id="hr-rate-sv">3.0%</span></div>
+        </div>
+        <div class="field"><label>Balance (£)</label><input type="number" id="hr-balance" value="180000" oninput="calcHowRemortgage()"></div>
+      </div>
+      <div class="field"><label>Remaining Term — <span id="hr-term-out">20</span> yrs</label>
+        <div class="slider-row"><input type="range" min="5" max="30" step="1" value="20" id="hr-term" oninput="syncSlider('hr-term','hr-term-out',' yrs');calcHowRemortgage()"><span class="slider-val" id="hr-term-sv">20 yrs</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">New Monthly</div><div class="rval" id="hr-new">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Saving</div><div class="rval" id="hr-saving">—</div></div>
+        <div class="result-card"><div class="rlabel">Annual Saving</div><div class="rval" id="hr-annual">—</div></div>
+      </div>
+    </div>
+
+    <!-- FTB Mortgages -->
+    <div id="ftb-mortgages" class="calc-frame">
+      <h2>First Time Buyer Mortgages</h2>
+      <div class="field"><label>Property Price (£)</label><input type="number" id="ftb-price" value="250000" oninput="calcFTB()"></div>
+      <div class="field"><label>Deposit (£)</label><input type="number" id="ftb-deposit" value="12500" oninput="calcFTB()"></div>
+      <div class="field"><label>Rate — <span id="ftb-rate-out">4.0</span>%</label>
+        <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="4.0" id="ftb-rate" oninput="syncSlider('ftb-rate','ftb-rate-out','%');calcFTB()"><span class="slider-val" id="ftb-rate-sv">4.0%</span></div>
+      </div>
+      <div class="field"><label>Term — <span id="ftb-term-out">25</span> yrs</label>
+        <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="ftb-term" oninput="syncSlider('ftb-term','ftb-term-out',' yrs');calcFTB()"><span class="slider-val" id="ftb-term-sv">25 yrs</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="ftb-dep-pct">—</div></div>
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="ftb-loan">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly</div><div class="rval" id="ftb-emi">—</div></div>
+        <div class="result-card"><div class="rlabel">LTV</div><div class="rval" id="ftb-ltv">—</div></div>
+      </div>
+      <div class="info-block">As a first time buyer you may qualify for 95% LTV mortgages and government Help to Buy schemes.</div>
+    </div>
+
+    <!-- FTB Rates -->
+    <div id="ftb-rates" class="calc-frame">
+      <h2>First Time Buyer Mortgage Rates</h2>
+      <div class="field"><label>Loan Amount (£)</label><input type="number" id="ftbr-loan" value="200000" oninput="calcFTBRates()"></div>
+      <div class="field"><label>Term — <span id="ftbr-term-out">25</span> yrs</label>
+        <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="ftbr-term" oninput="syncSlider('ftbr-term','ftbr-term-out',' yrs');calcFTBRates()"><span class="slider-val" id="ftbr-term-sv">25 yrs</span></div>
+      </div>
+      <div class="results" id="ftbr-results"></div>
+    </div>
+
+    <!-- How Much Can I Borrow -->
+    <div id="borrow-calc" class="calc-frame">
+      <h2>How Much Can I Borrow?</h2>
+      <div class="two-col">
+        <div class="field"><label>Annual Income (£)</label><input type="number" id="bc-income" value="45000" oninput="calcBorrow()"></div>
+        <div class="field"><label>Partner Income (£)</label><input type="number" id="bc-income2" value="0" oninput="calcBorrow()"></div>
+      </div>
+      <div class="field"><label>Monthly Commitments (£)</label><input type="number" id="bc-commitments" value="300" oninput="calcBorrow()"></div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Conservative (4x)</div><div class="rval" id="bc-low">—</div></div>
+        <div class="result-card"><div class="rlabel">Standard (4.5x)</div><div class="rval" id="bc-mid">—</div></div>
+        <div class="result-card"><div class="rlabel">Maximum (5.5x)</div><div class="rval" id="bc-high">—</div></div>
+      </div>
+      <div class="info-block">Most lenders use 4–4.5x income. A small number of lenders go to 5.5x for higher earners.</div>
+    </div>
+
+    <!-- How to Get a Mortgage -->
+    <div id="get-mortgage" class="calc-frame">
+      <h2>How to Get a Mortgage</h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:18px;">Check your affordability before applying. Lenders assess your income, outgoings and credit history.</p>
+      <div class="field"><label>Gross Annual Income (£)</label><input type="number" id="gm-income" value="50000" oninput="calcGetMortgage()"></div>
+      <div class="field"><label>Monthly Outgoings (£)</label><input type="number" id="gm-outgoings" value="600" oninput="calcGetMortgage()"></div>
+      <div class="field"><label>Deposit Available (£)</label><input type="number" id="gm-deposit" value="30000" oninput="calcGetMortgage()"></div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Est. Max Loan</div><div class="rval" id="gm-loan">—</div></div>
+        <div class="result-card"><div class="rlabel">Max Property</div><div class="rval" id="gm-property">—</div></div>
+        <div class="result-card"><div class="rlabel">Net Annual</div><div class="rval" id="gm-net">—</div></div>
+      </div>
+    </div>
+
+    <!-- Gifted Deposit -->
+    <div id="gifted-deposit" class="calc-frame">
+      <h2>Gifted Deposits Explained</h2>
+      <div class="field"><label>Property Price (£)</label><input type="number" id="gd-price" value="250000" oninput="calcGifted()"></div>
+      <div class="field"><label>Gifted Amount (£)</label><input type="number" id="gd-gift" value="25000" oninput="calcGifted()"></div>
+      <div class="field"><label>Your Savings (£)</label><input type="number" id="gd-savings" value="10000" oninput="calcGifted()"></div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Total Deposit</div><div class="rval" id="gd-total">—</div></div>
+        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="gd-pct">—</div></div>
+        <div class="result-card"><div class="rlabel">Loan Needed</div><div class="rval" id="gd-loan">—</div></div>
+        <div class="result-card"><div class="rlabel">LTV Band</div><div class="rval" id="gd-ltv-band">—</div></div>
+      </div>
+      <div class="info-block">Gifted deposits must come from a family member and require a signed letter confirming it is not a loan.</div>
+    </div>
+
+    <!-- Over 50s -->
+    <div id="over50" class="calc-frame">
+      <h2>Mortgages for Over 50s</h2>
+      <div class="field"><label>Your Age</label><input type="number" id="o5-age" value="55" oninput="calcOver50()"></div>
+      <div class="field"><label>Loan Amount (£)</label><input type="number" id="o5-loan" value="150000" oninput="calcOver50()"></div>
+      <div class="field"><label>Rate — <span id="o5-rate-out">4.0</span>%</label>
+        <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="4.0" id="o5-rate" oninput="syncSlider('o5-rate','o5-rate-out','%');calcOver50()"><span class="slider-val" id="o5-rate-sv">4.0%</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Max Term</div><div class="rval" id="o5-maxterm">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly (max term)</div><div class="rval" id="o5-emi">—</div></div>
+        <div class="result-card"><div class="rlabel">Age at Payoff</div><div class="rval" id="o5-payoff">—</div></div>
+      </div>
+      <div class="info-block">Most lenders cap mortgages at age 70–75. Some specialist lenders offer terms into your 80s.</div>
+    </div>
+
+    <!-- Buy to Let -->
+    <div id="btl" class="calc-frame">
+      <h2>Buy to Let Mortgages</h2>
+      <div class="two-col">
+        <div class="field"><label>Property Value (£)</label><input type="number" id="btl-value" value="200000" oninput="calcBTL()"></div>
+        <div class="field"><label>Monthly Rent (£)</label><input type="number" id="btl-rent" value="1200" oninput="calcBTL()"></div>
+      </div>
+      <div class="field"><label>Rate — <span id="btl-rate-out">5.0</span>%</label>
+        <div class="slider-row"><input type="range" min="2" max="12" step="0.1" value="5.0" id="btl-rate" oninput="syncSlider('btl-rate','btl-rate-out','%');calcBTL()"><span class="slider-val" id="btl-rate-sv">5.0%</span></div>
+      </div>
+      <div class="field"><label>Deposit — <span id="btl-dep-out">25</span>%</label>
+        <div class="slider-row"><input type="range" min="15" max="50" step="1" value="25" id="btl-dep" oninput="syncSlider('btl-dep','btl-dep-out','%');calcBTL()"><span class="slider-val" id="btl-dep-sv">25%</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="btl-loan">—</div></div>
+        <div class="result-card"><div class="rlabel">Interest Only</div><div class="rval" id="btl-io">—</div></div>
+        <div class="result-card"><div class="rlabel">Rental Yield</div><div class="rval" id="btl-yield">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Profit</div><div class="rval" id="btl-profit">—</div></div>
+      </div>
+    </div>
+
+    <!-- BTL Rates -->
+    <div id="btl-rates" class="calc-frame">
+      <h2>Buy to Let Mortgage Rates</h2>
+      <div class="field"><label>Loan Amount (£)</label><input type="number" id="btlr-loan" value="150000" oninput="calcBTLRates()"></div>
+      <div class="field"><label>Term — <span id="btlr-term-out">25</span> yrs</label>
+        <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="btlr-term" oninput="syncSlider('btlr-term','btlr-term-out',' yrs');calcBTLRates()"><span class="slider-val" id="btlr-term-sv">25 yrs</span></div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">BTL typical rate comparison:</p>
+      <div class="results" id="btlr-results"></div>
+    </div>
+
+    <!-- Bridging Loans -->
+    <div id="bridging" class="calc-frame">
+      <h2>Bridging Loans Explained</h2>
+      <div class="field"><label>Loan Amount (£)</label><input type="number" id="bl2-amount" value="100000" oninput="calcBridging()"></div>
+      <div class="field"><label>Monthly Rate — <span id="bl2-rate-out">0.75</span>%</label>
+        <div class="slider-row"><input type="range" min="0.3" max="2" step="0.05" value="0.75" id="bl2-rate" oninput="syncSlider('bl2-rate','bl2-rate-out','%');calcBridging()"><span class="slider-val" id="bl2-rate-sv">0.75%</span></div>
+      </div>
+      <div class="field"><label>Term — <span id="bl2-term-out">6</span> months</label>
+        <div class="slider-row"><input type="range" min="1" max="24" step="1" value="6" id="bl2-term" oninput="syncSlider('bl2-term','bl2-term-out',' mo');calcBridging()"><span class="slider-val" id="bl2-term-sv">6 mo</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Monthly Interest</div><div class="rval" id="bl2-monthly">—</div></div>
+        <div class="result-card"><div class="rlabel">Total Interest</div><div class="rval" id="bl2-total-int">—</div></div>
+        <div class="result-card"><div class="rlabel">Total Repayable</div><div class="rval" id="bl2-total">—</div></div>
+      </div>
+      <div class="info-block">Bridging loans are short-term, typically 1–24 months, and are secured against property.</div>
+    </div>
+
+    <!-- Deposit Unlock -->
+    <div id="deposit-unlock" class="calc-frame">
+      <h2>Deposit Unlock Scheme</h2>
+      <div class="field"><label>New Build Property Price (£)</label><input type="number" id="du-price" value="400000" oninput="calcDepositUnlock()"></div>
+      <div class="field"><label>Your Deposit (£)</label><input type="number" id="du-deposit" value="20000" oninput="calcDepositUnlock()"></div>
+      <div class="field"><label>Rate — <span id="du-rate-out">4.5</span>%</label>
+        <div class="slider-row"><input type="range" min="2" max="10" step="0.1" value="4.5" id="du-rate" oninput="syncSlider('du-rate','du-rate-out','%');calcDepositUnlock()"><span class="slider-val" id="du-rate-sv">4.5%</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="du-pct">—</div></div>
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="du-loan">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly (25yr)</div><div class="rval" id="du-emi">—</div></div>
+      </div>
+      <div class="info-block">Deposit Unlock allows 95% LTV on new-build homes up to £833,250 through participating builders.</div>
+    </div>
+
+    <!-- Own New Rate Reducer -->
+    <div id="rate-reducer" class="calc-frame">
+      <h2>Own New Rate Reducer Scheme</h2>
+      <div class="field"><label>Property Price (£)</label><input type="number" id="rr-price" value="350000" oninput="calcRateReducer()"></div>
+      <div class="field"><label>Deposit (£)</label><input type="number" id="rr-deposit" value="35000" oninput="calcRateReducer()"></div>
+      <div class="field"><label>Standard Rate — <span id="rr-std-out">5.5</span>%</label>
+        <div class="slider-row"><input type="range" min="2" max="12" step="0.1" value="5.5" id="rr-std" oninput="syncSlider('rr-std','rr-std-out','%');calcRateReducer()"><span class="slider-val" id="rr-std-sv">5.5%</span></div>
+      </div>
+      <div class="field"><label>Reduced Rate — <span id="rr-red-out">3.0</span>%</label>
+        <div class="slider-row"><input type="range" min="1" max="8" step="0.1" value="3.0" id="rr-red" oninput="syncSlider('rr-red','rr-red-out','%');calcRateReducer()"><span class="slider-val" id="rr-red-sv">3.0%</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Standard Monthly</div><div class="rval" id="rr-std-emi">—</div></div>
+        <div class="result-card"><div class="rlabel">Reduced Monthly</div><div class="rval" id="rr-red-emi">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Saving</div><div class="rval" id="rr-saving">—</div></div>
+      </div>
+    </div>
+
+    <!-- Life Insurance -->
+    <div id="life-insurance" class="calc-frame">
+      <h2>Life Insurance with a Mortgage</h2>
+      <div class="field"><label>Mortgage Balance (£)</label><input type="number" id="li-balance" value="200000" oninput="calcLifeIns()"></div>
+      <div class="field"><label>Your Age</label><input type="number" id="li-age" value="35" oninput="calcLifeIns()"></div>
+      <div class="field"><label>Mortgage Term — <span id="li-term-out">25</span> yrs</label>
+        <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="li-term" oninput="syncSlider('li-term','li-term-out',' yrs');calcLifeIns()"><span class="slider-val" id="li-term-sv">25 yrs</span></div>
+      </div>
+      <div class="results">
+        <div class="result-card"><div class="rlabel">Cover Needed</div><div class="rval" id="li-cover">—</div></div>
+        <div class="result-card"><div class="rlabel">Est. Monthly Premium</div><div class="rval" id="li-premium">—</div></div>
+        <div class="result-card"><div class="rlabel">Cover Type</div><div class="rval" id="li-type">—</div></div>
+      </div>
+      <div class="info-block">Decreasing term life insurance tracks your mortgage balance and is typically the most cost-effective option.</div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function fmt(n){return '£'+Math.round(n).toLocaleString('en-GB');}
+function pct(n){return Math.round(n)+'%';}
+
+function show(id, btn) {
+  document.querySelectorAll('.calc-frame').forEach(f => f.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function syncSlider(sliderId, outId, suffix) {
+  var v = parseFloat(document.getElementById(sliderId).value).toFixed(suffix==='%'?1:0);
+  document.getElementById(outId).textContent = v;
+  document.getElementById(sliderId+'-sv').textContent = v+suffix;
+}
+
+function emi(principal, annualRate, years) {
+  if(!principal||!annualRate||!years) return 0;
+  var r = annualRate/100/12, n = years*12;
+  return principal*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+}
+
+function calcCompare() {
+  var price=+document.getElementById('cm-price').value||0;
+  var dep=+document.getElementById('cm-deposit').value||0;
+  var rate=+document.getElementById('cm-rate').value;
+  var term=+document.getElementById('cm-term').value;
+  var loan=Math.max(0,price-dep);
+  var m=emi(loan,rate,term);
+  var total=m*term*12, interest=total-loan;
+  document.getElementById('cm-emi').textContent=fmt(m);
+  document.getElementById('cm-loan').textContent=fmt(loan);
+  document.getElementById('cm-interest').textContent=fmt(interest);
+  document.getElementById('cm-total').textContent=fmt(total);
+  var pctP=total>0?Math.round((loan/total)*100):60;
+  document.getElementById('cm-bar').style.width=pctP+'%';
+}
+
+function calcBestRates() {
+  var loan=+document.getElementById('br-loan').value||0;
+  var term=+document.getElementById('br-term').value||25;
+  var rates=[2.5,3.5,4.5,5.5];
+  var labels=['2.5% (2yr fix)','3.5% (5yr fix)','4.5% (10yr fix)','5.5% (SVR)'];
+  var html='';
+  rates.forEach(function(r,i){
+    var m=emi(loan,r,term);
+    html+='<div class="result-card"><div class="rlabel">'+labels[i]+'</div><div class="rval">'+fmt(m)+'</div></div>';
+  });
+  document.getElementById('br-results').innerHTML=html;
+}
+
+function showLenders() {
+  var credit=document.getElementById('bl-credit').value;
+  var type=document.getElementById('bl-type').value;
+  var lenders={
+    excellent:{fixed:['Nationwide 3.2%','Halifax 3.4%','Barclays 3.5%'],variable:['HSBC 3.0%','NatWest 3.1%','Santander 3.2%'],tracker:['First Direct 2.9%','Metro 3.0%','TSB 3.1%']},
+    good:{fixed:['Halifax 3.8%','Santander 3.9%','Barclays 4.1%'],variable:['NatWest 3.6%','Lloyds 3.8%','RBS 3.9%'],tracker:['Virgin Money 3.5%','Metro 3.7%','Accord 3.8%']},
+    fair:{fixed:['Aldermore 5.2%','Pepper Money 5.5%','Bluestone 5.8%'],variable:['Together 5.0%','Aldermore 5.2%','West One 5.5%'],tracker:['Precise 4.9%','Together 5.1%','Buckinghamshire BS 5.3%']}
+  };
+  var list=lenders[credit][type];
+  var html='';
+  list.forEach(function(l){
+    html+='<div class="result-card"><div class="rlabel">Lender</div><div class="rval" style="font-size:15px;">'+l+'</div></div>';
+  });
+  document.getElementById('bl-results').innerHTML=html;
+}
+
+function calcForecast() {
+  var balance=+document.getElementById('rf-balance').value||0;
+  var rate=+document.getElementById('rf-rate').value;
+  var term=+document.getElementById('rf-term').value||20;
+  var rates=[rate-1,rate,rate+1,rate+2];
+  var labels=['Rate -1%','Current','Rate +1%','Rate +2%'];
+  var html='';
+  rates.forEach(function(r,i){
+    var m=emi(balance,Math.max(0.1,r),term);
+    html+='<div class="result-card"><div class="rlabel">'+labels[i]+'</div><div class="rval">'+fmt(m)+'</div></div>';
+  });
+  document.getElementById('rf-results').innerHTML=html;
+}
+
+function calcRemortgage() {
+  var balance=+document.getElementById('rs-balance').value||0;
+  var value=+document.getElementById('rs-value').value||1;
+  var rate=+document.getElementById('rs-rate').value;
+  var term=+document.getElementById('rs-term').value;
+  var ltv=Math.round((balance/value)*100);
+  var m=emi(balance,rate,term);
+  document.getElementById('rs-ltv').textContent=ltv+'%';
+  document.getElementById('rs-emi').textContent=fmt(m);
+  document.getElementById('rs-equity').textContent=fmt(value-balance);
+}
+
+function calcHowRemortgage() {
+  var current=+document.getElementById('hr-current').value||0;
+  var rate=+document.getElementById('hr-rate').value;
+  var balance=+document.getElementById('hr-balance').value||0;
+  var term=+document.getElementById('hr-term').value;
+  var newM=emi(balance,rate,term);
+  var saving=current-newM;
+  document.getElementById('hr-new').textContent=fmt(newM);
+  document.getElementById('hr-saving').textContent=(saving>0?'+':'')+fmt(saving);
+  document.getElementById('hr-annual').textContent=(saving>0?'+':'')+fmt(saving*12);
+}
+
+function calcFTB() {
+  var price=+document.getElementById('ftb-price').value||0;
+  var deposit=+document.getElementById('ftb-deposit').value||0;
+  var rate=+document.getElementById('ftb-rate').value;
+  var term=+document.getElementById('ftb-term').value;
+  var loan=Math.max(0,price-deposit);
+  var depPct=price>0?Math.round((deposit/price)*100):0;
+  var ltv=100-depPct;
+  var m=emi(loan,rate,term);
+  document.getElementById('ftb-dep-pct').textContent=depPct+'%';
+  document.getElementById('ftb-loan').textContent=fmt(loan);
+  document.getElementById('ftb-emi').textContent=fmt(m);
+  document.getElementById('ftb-ltv').textContent=ltv+'%';
+}
+
+function calcFTBRates() {
+  var loan=+document.getElementById('ftbr-loan').value||0;
+  var term=+document.getElementById('ftbr-term').value||25;
+  var rates=[3.8,4.2,4.8,5.5];
+  var labels=['95% LTV fix','90% LTV fix','85% LTV fix','80% LTV fix'];
+  var html='';
+  rates.forEach(function(r,i){
+    html+='<div class="result-card"><div class="rlabel">'+labels[i]+' '+r+'%</div><div class="rval">'+fmt(emi(loan,r,term))+'</div></div>';
+  });
+  document.getElementById('ftbr-results').innerHTML=html;
+}
+
+function calcBorrow() {
+  var inc=+document.getElementById('bc-income').value||0;
+  var inc2=+document.getElementById('bc-income2').value||0;
+  var total=inc+inc2;
+  document.getElementById('bc-low').textContent=fmt(total*4);
+  document.getElementById('bc-mid').textContent=fmt(total*4.5);
+  document.getElementById('bc-high').textContent=fmt(total*5.5);
+}
+
+function calcGetMortgage() {
+  var inc=+document.getElementById('gm-income').value||0;
+  var dep=+document.getElementById('gm-deposit').value||0;
+  var loan=inc*4.5;
+  document.getElementById('gm-loan').textContent=fmt(loan);
+  document.getElementById('gm-property').textContent=fmt(loan+dep);
+  document.getElementById('gm-net').textContent=fmt(inc*0.7);
+}
+
+function calcGifted() {
+  var price=+document.getElementById('gd-price').value||0;
+  var gift=+document.getElementById('gd-gift').value||0;
+  var savings=+document.getElementById('gd-savings').value||0;
+  var total=gift+savings;
+  var pctVal=price>0?Math.round((total/price)*100):0;
+  var loan=Math.max(0,price-total);
+  var ltv=100-pctVal;
+  var band=ltv<=80?'≤80% ✓':ltv<=90?'≤90%':'95% LTV';
+  document.getElementById('gd-total').textContent=fmt(total);
+  document.getElementById('gd-pct').textContent=pctVal+'%';
+  document.getElementById('gd-loan').textContent=fmt(loan);
+  document.getElementById('gd-ltv-band').textContent=band;
+}
+
+function calcOver50() {
+  var age=+document.getElementById('o5-age').value||55;
+  var loan=+document.getElementById('o5-loan').value||0;
+  var rate=+document.getElementById('o5-rate').value;
+  var maxTerm=Math.min(25,75-age);
+  var m=emi(loan,rate,maxTerm);
+  document.getElementById('o5-maxterm').textContent=maxTerm+' yrs';
+  document.getElementById('o5-emi').textContent=fmt(m);
+  document.getElementById('o5-payoff').textContent=(age+maxTerm);
+}
+
+function calcBTL() {
+  var value=+document.getElementById('btl-value').value||0;
+  var rent=+document.getElementById('btl-rent').value||0;
+  var rate=+document.getElementById('btl-rate').value;
+  var dep=+document.getElementById('btl-dep').value;
+  var loan=value*(1-dep/100);
+  var io=(loan*rate/100)/12;
+  var grossYield=value>0?(rent*12/value)*100:0;
+  var profit=rent-io;
+  document.getElementById('btl-loan').textContent=fmt(loan);
+  document.getElementById('btl-io').textContent=fmt(io);
+  document.getElementById('btl-yield').textContent=grossYield.toFixed(1)+'%';
+  document.getElementById('btl-profit').textContent=(profit>=0?'+':'')+fmt(profit);
+}
+
+function calcBTLRates() {
+  var loan=+document.getElementById('btlr-loan').value||0;
+  var term=+document.getElementById('btlr-term').value||25;
+  var rates=[4.5,5.5,6.5,7.5];
+  var labels=['2yr fix 4.5%','5yr fix 5.5%','IO 6.5%','SVR 7.5%'];
+  var html='';
+  rates.forEach(function(r,i){
+    html+='<div class="result-card"><div class="rlabel">'+labels[i]+'</div><div class="rval">'+fmt(emi(loan,r,term))+'</div></div>';
+  });
+  document.getElementById('btlr-results').innerHTML=html;
+}
+
+function calcBridging() {
+  var amount=+document.getElementById('bl2-amount').value||0;
+  var rate=+document.getElementById('bl2-rate').value;
+  var term=+document.getElementById('bl2-term').value;
+  var monthly=amount*(rate/100);
+  var totalInt=monthly*term;
+  document.getElementById('bl2-monthly').textContent=fmt(monthly);
+  document.getElementById('bl2-total-int').textContent=fmt(totalInt);
+  document.getElementById('bl2-total').textContent=fmt(amount+totalInt);
+}
+
+function calcDepositUnlock() {
+  var price=+document.getElementById('du-price').value||0;
+  var dep=+document.getElementById('du-deposit').value||0;
+  var rate=+document.getElementById('du-rate').value;
+  var loan=Math.max(0,price-dep);
+  var pctVal=price>0?Math.round((dep/price)*100):0;
+  var m=emi(loan,rate,25);
+  document.getElementById('du-pct').textContent=pctVal+'%';
+  document.getElementById('du-loan').textContent=fmt(loan);
+  document.getElementById('du-emi').textContent=fmt(m);
+}
+
+function calcRateReducer() {
+  var price=+document.getElementById('rr-price').value||0;
+  var dep=+document.getElementById('rr-deposit').value||0;
+  var loan=Math.max(0,price-dep);
+  var stdRate=+document.getElementById('rr-std').value;
+  var redRate=+document.getElementById('rr-red').value;
+  var mStd=emi(loan,stdRate,25);
+  var mRed=emi(loan,redRate,25);
+  document.getElementById('rr-std-emi').textContent=fmt(mStd);
+  document.getElementById('rr-red-emi').textContent=fmt(mRed);
+  document.getElementById('rr-saving').textContent=fmt(mStd-mRed);
+}
+
+function calcLifeIns() {
+  var balance=+document.getElementById('li-balance').value||0;
+  var age=+document.getElementById('li-age').value||35;
+  var term=+document.getElementById('li-term').value;
+  var base = age < 40 ? 0.20 : age < 50 ? 0.35 : 0.55;
+  var premium=(balance/1000)*base*(term/25);
+  document.getElementById('li-cover').textContent=fmt(balance);
+  document.getElementById('li-premium').textContent='£'+premium.toFixed(2);
+  document.getElementById('li-type').textContent='Decreasing';
+}
+
+// Init all
+calcCompare(); calcBestRates(); showLenders(); calcForecast(); calcRemortgage();
+calcHowRemortgage(); calcFTB(); calcFTBRates(); calcBorrow(); calcGetMortgage();
+calcGifted(); calcOver50(); calcBTL(); calcBTLRates(); calcBridging();
+calcDepositUnlock(); calcRateReducer(); calcLifeIns();
+</script>
+</body>
+</html>

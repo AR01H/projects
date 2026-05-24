@@ -36,7 +36,8 @@ class AH_Theme_Admin {
 		add_submenu_page( 'ah-theme-admin', __( 'Contact Submissions', 'ah-theme' ), __( 'Contact Submissions', 'ah-theme' ), 'manage_options', 'ah-theme-submissions', [ self::class, 'page_submissions' ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Install Mock Data', 'ah-theme' ), __( 'Install Mock Data', 'ah-theme' ), 'manage_options', 'ah-theme-mock',        [ self::class, 'page_mock'        ] );
 		add_submenu_page( 'ah-theme-admin', __( 'Cleanup Data',      'ah-theme' ), __( 'Cleanup Data',      'ah-theme' ), 'manage_options', 'ah-theme-cleanup',  [ self::class, 'page_cleanup'   ] );
-	}
+		add_submenu_page( 'ah-theme-admin', __( 'Guide To Use',      'ah-theme' ), __( 'Guide To Use',      'ah-theme' ), 'manage_options', 'ah-theme-guide',  [ self::class, 'page_guide'   ] );
+		}
 
 	public static function enqueue_assets( string $hook ): void {
 		if ( strpos( $hook, 'ah-theme' ) === false ) return;
@@ -77,6 +78,10 @@ class AH_Theme_Admin {
 
 	public static function page_submissions(): void {
 		require get_template_directory() . '/admin/theme-submissions.php';
+	}
+
+	public static function page_guide(): void {
+		require get_template_directory() . '/admin/theme-guide.php';
 	}
 
 	// ── POST handlers ─────────────────────────────────────────────────────────

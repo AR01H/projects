@@ -56,7 +56,7 @@ $topic_icons = [
         <div class="faq" data-aos="fade-up" data-delay="<?php echo min( $i * 40, 240 ); ?>">
           <button class="faq__q" aria-expanded="false">
             <?php echo esc_html( $faq->question ); ?>
-            <span class="faq__icon" aria-hidden="true">+</span>
+            <span class="faq__icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 4 6 8 10 4"/></svg></span>
           </button>
           <div class="faq__a" role="region">
             <div class="faq__a-inner"><?php echo wp_kses_post( $faq->answer ); ?></div>

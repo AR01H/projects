@@ -526,7 +526,7 @@ var BLOCK_DEFS = {
       { key:'cta1_url',    label:'Button 1 URL',    type:'text',     ph:'/free-consultation/'        },
       { key:'cta2_text',   label:'Button 2 Text',   type:'text',     ph:'Learn More'                 },
       { key:'cta2_url',    label:'Button 2 URL',    type:'text',     ph:'/about/'                    },
-      { key:'bg',          label:'Background',      type:'select',   options:['white','light','dark','gold'], def:'white' },
+      { key:'bg',          label:'Background',      type:'select',   options:['white','light','dark','gold','client-color-light','client-color-medium','client-color-dark'], def:'white' },
     ]
   },
   section_heading: {

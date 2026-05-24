@@ -521,7 +521,6 @@ img.ah-image-preview.visible {
 .ah-repeater-item .ah-repeater-handle {
   cursor: grab;
   color: var(--ah-muted);
-  position: absolute;
   font-size: 18px;
 }
 .ah-repeater-item .ah-repeater-remove {

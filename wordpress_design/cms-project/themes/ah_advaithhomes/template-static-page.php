@@ -13,22 +13,57 @@ if ( $file && strpos( $file, $real_dir ) === 0 && file_exists( $file ) ) {
 	$html_raw = '<h2 style="font-family:sans-serif;padding:40px 24px;color:#1e293b">Page content not found.</h2>';
 }
 
-get_header();
+// URL parameter support: ?bare=1  |  ?no_header=1  |  ?no_footer=1  |  ?iframe=true
+$bare      = ! empty( $_GET['bare'] );
+$no_header = $bare || ! empty( $_GET['no_header'] );
+$no_footer = $bare || ! empty( $_GET['no_footer'] );
+$iframe    = isset( $_GET['iframe'] ) && $_GET['iframe'] === 'true';
+
+if ( ! $no_header ) {
+	get_header();
+} else {
+	?><!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+	<?php
+}
 ?>
-<main style="margin:0;padding:0">
+<main class="container">
+
+	<?php if ( $iframe ) : ?>
 	<iframe id="ah-static-frame"
-	        srcdoc="<?php echo htmlspecialchars( $html_raw, ENT_QUOTES, 'UTF-8' ); ?>"
-	        style="width:100%;border:none;display:block;min-height:80vh;background:#fff"
-	        title="<?php echo esc_attr( get_the_title() ); ?>">
+			srcdoc="<?php echo htmlspecialchars( $html_raw, ENT_QUOTES, 'UTF-8' ); ?>"
+			style="width:100%;border:none;display:block;min-height:80vh;background:#fff;margin-top:var(--nav-h)"
+			title="<?php echo esc_attr( get_the_title() ); ?>">
 	</iframe>
+	<script>
+	(function(){
+		var f = document.getElementById('ah-static-frame');
+		if ( ! f ) return;
+		function r(){try{f.style.height=f.contentDocument.documentElement.scrollHeight+'px';}catch(e){}}
+		f.addEventListener('load',r);
+		window.addEventListener('resize',r);
+	})();
+	</script>
+	<?php else : ?>
+	<div><?php echo $html_raw; ?></div>
+	<?php endif; ?>
+
 </main>
-<script>
-(function(){
-	var f = document.getElementById('ah-static-frame');
-	function r(){try{f.style.height=f.contentDocument.documentElement.scrollHeight+'px';}catch(e){}}
-	f.addEventListener('load',r);
-	window.addEventListener('resize',r);
-})();
-</script>
-<?php get_template_part( 'components/cta-section' ); ?>
-<?php get_footer(); ?>
+
+<?php
+if ( ! $no_footer ) {
+	get_template_part( 'components/cta-section' );
+	get_footer();
+} else {
+	wp_footer();
+	?>
+</body>
+</html>
+	<?php
+}

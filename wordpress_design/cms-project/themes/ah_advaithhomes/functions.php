@@ -59,6 +59,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-forms',      $uri . '/assets/css/forms.css',      [ 'ah-base' ],         $fv( '/assets/css/forms.css' ) );
 	wp_enqueue_style( 'ah-animations', $uri . '/assets/css/animations.css', [ 'ah-base' ],         $fv( '/assets/css/animations.css' ) );
 	wp_enqueue_style( 'ah-style',      get_stylesheet_uri(),                [ 'ah-layout' ],       $fv( '/style.css' ) );
+	wp_enqueue_style( 'ah-common',     $uri . '/assets/css/common.css',     [ 'ah-style' ],         $fv( '/assets/css/common.css' ) );
 
 	// News & Info Feeder — load on that page template and the front page (which also uses it)
 	if ( is_page_template( 'template-news-info-feeder.php' ) || is_front_page() ) {

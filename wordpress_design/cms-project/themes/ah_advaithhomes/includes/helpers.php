@@ -63,6 +63,7 @@ function ah_get_guide_categories(): array {
 	$tt  = "{$wpdb->prefix}ah_taxonomy_types";
 	$t   = "{$wpdb->prefix}ah_taxonomies";
 	$ct  = "{$wpdb->prefix}ah_content_taxonomies";
+	$pt  = "{$wpdb->prefix}ah_taxonomy_parent_terms";
 	$wt  = $wpdb->terms;           // wp_terms
 	$wtt = $wpdb->term_taxonomy;   // wp_term_taxonomy
 
@@ -70,16 +71,19 @@ function ah_get_guide_categories(): array {
 	// count: prefer WP native category post count (guides page uses WP_Query),
 	//        fall back to plugin content_taxonomies count.
 	// HAVING count > 0 hides categories that have no posts yet.
+	// parent_color: background color from the parent term for card styling.
 	return $wpdb->get_results(
 		$wpdb->prepare(
 			"SELECT tax.id, tax.name AS title, tax.slug, tax.description AS `desc`,
 			        tax.image_id, tax.icon_emoji,
-			        GREATEST( COALESCE(wtt.count, 0), COUNT(DISTINCT pct.object_id) ) AS `count`
+			        GREATEST( COALESCE(wtt.count, 0), COUNT(DISTINCT pct.object_id) ) AS `count`,
+			        ptrow.color AS parent_color
 			 FROM `{$t}` tax
 			 INNER JOIN `{$tt}` type_row ON type_row.id = tax.type_id AND type_row.slug = %s
 			 LEFT  JOIN `{$ct}` pct ON pct.taxonomy_id = tax.id AND pct.object_type = 'ah_post'
 			 LEFT  JOIN `{$wt}`  wterm ON wterm.slug = tax.slug
 			 LEFT  JOIN `{$wtt}` wtt   ON wtt.term_id = wterm.term_id AND wtt.taxonomy = 'category'
+			 LEFT  JOIN `{$pt}`  ptrow ON ptrow.id = tax.parent_term_id
 			 WHERE tax.status = 'active'
 			 GROUP BY tax.id
 			 HAVING `count` > 0
