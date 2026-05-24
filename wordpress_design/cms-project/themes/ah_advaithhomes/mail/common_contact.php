@@ -271,6 +271,20 @@ function ah_process_consultation_form(): void {
 		}
 	}
 
+	// Fire Triggers Maker
+	if ( class_exists( 'AH_Rules_Engine' ) ) {
+		AH_Rules_Engine::evaluate( 'consultation_submitted', [
+			'full_name'   => $name,
+			'email'       => $email,
+			'phone'       => $phone,
+			'budget'      => $budget,
+			'location'    => $location,
+			'buyer_type'  => $buyer_type,
+			'notes'       => $notes,
+			'page_url'    => esc_url_raw( $_POST['page_url'] ?? '' ),
+		] );
+	}
+
 	wp_send_json_success( [ 'message' => "Thank you, {$name}! We'll call you within 4 business hours to book your consultation." ] );
 }
 

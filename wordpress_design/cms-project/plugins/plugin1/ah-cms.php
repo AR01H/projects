@@ -62,6 +62,39 @@ add_action( 'wp_enqueue_scripts', static function () {
 register_activation_hook( __FILE__, array( 'AH_DB_Installer', 'install' ) );
 add_action( 'wp_loaded', array( 'AH_DB_Installer', 'maybe_upgrade' ) );
 
+// ── Rules Engine: async cron processor ───────────────────────────────────────
+// evaluate() queues actions as 'pending' in ah_trigger_logs; this cron fires
+// them in the background every minute (pending + failed retries).
+
+add_filter( 'cron_schedules', static function ( array $s ): array {
+	if ( ! isset( $s['ah_every_minute'] ) ) {
+		$s['ah_every_minute'] = array(
+			'interval' => 60,
+			'display'  => 'Every Minute (AH Rules Engine)',
+		);
+	}
+	return $s;
+} );
+
+add_action( 'ah_rules_cron_process', array( 'AH_Rules_Engine', 'cron_process' ) );
+
+// Schedule on first load; clear any old retry-only hook.
+add_action( 'init', static function (): void {
+	// Remove old hook name if it exists from a prior version
+	$old = wp_next_scheduled( 'ah_rules_cron_retry' );
+	if ( $old ) wp_unschedule_event( $old, 'ah_rules_cron_retry' );
+
+	if ( ! wp_next_scheduled( 'ah_rules_cron_process' ) ) {
+		wp_schedule_event( time(), 'ah_every_minute', 'ah_rules_cron_process' );
+	}
+} );
+
+// Clear schedule on plugin deactivation.
+register_deactivation_hook( __FILE__, static function (): void {
+	$ts = wp_next_scheduled( 'ah_rules_cron_process' );
+	if ( $ts ) wp_unschedule_event( $ts, 'ah_rules_cron_process' );
+} );
+
 // ── Builder page frontend routing ─────────────────────────────────────────────
 add_action( 'template_redirect', static function () {
 	if ( ! is_404() ) return;

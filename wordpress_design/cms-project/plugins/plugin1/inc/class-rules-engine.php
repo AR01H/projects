@@ -144,17 +144,14 @@ class AH_Rules_Engine {
 	// ── Public API ────────────────────────────────────────────────────────────
 
 	/**
-	 * Fire all active rules that match $trigger_name.
+	 * Queue all matching rule actions into ah_trigger_logs as 'pending'.
+	 * Nothing executes here - the cron picks them up and fires them in the background.
 	 *
-	 * Call from anywhere in your plugin or theme:
+	 * Call from anywhere:
 	 *   AH_Rules_Engine::evaluate( 'order_placed', [
 	 *       'customer_name' => 'John',
 	 *       'email'         => 'john@example.com',
-	 *       'amount'        => '250.00',
 	 *   ] );
-	 *
-	 * @param string $trigger_name  Any string - matches rules with the same trigger name.
-	 * @param array  $context       Key-value map of variables available in placeholders.
 	 */
 	public static function evaluate( string $trigger_name, array $context ): void {
 		global $wpdb;
@@ -165,73 +162,88 @@ class AH_Rules_Engine {
 			$trigger_name
 		) ) ?: array();
 
+		if ( $wpdb->last_error ) {
+			error_log( 'AH_Rules_Engine::evaluate() rules query error: ' . $wpdb->last_error );
+		}
+
+		$now = current_time( 'mysql' );
+
 		foreach ( $rows as $rule ) {
 			$rule = self::decode( $rule );
 			if ( ! self::conditions_pass( $rule, $context ) ) continue;
 
 			foreach ( $rule->actions as $idx => $action ) {
-				self::run_action_logged( $rule, $idx, $action, $context );
+				$inserted = $wpdb->insert( self::logs_table(), array(
+					'rule_id'       => (int) $rule->id,
+					'trigger_name'  => $trigger_name,
+					'context_data'  => wp_json_encode( $context ),
+					'action_index'  => $idx,
+					'action_type'   => $action['type'] ?? '',
+					'action_config' => wp_json_encode( $action ),
+					'status'        => 'pending',
+					'attempts'      => 0,
+				) );
+				if ( false === $inserted ) {
+					error_log( 'AH_Rules_Engine::evaluate() log insert error (rule #' . $rule->id . '): ' . $wpdb->last_error );
+				}
 			}
 
 			$wpdb->query( $wpdb->prepare(
 				"UPDATE `" . self::table() . "` SET run_count = run_count + 1, last_run = %s WHERE id = %d",
-				current_time( 'mysql' ),
+				$now,
 				(int) $rule->id
 			) );
 		}
 	}
 
+	// ── Cron: process pending + retry failed ──────────────────────────────────
+
 	/**
-	 * Execute a single action and write a row to ah_trigger_logs.
-	 * Skips execution if a pending/failed log entry for this rule+action was
-	 * previously marked is_unsent = 1 by an admin.
+	 * Called by WP-Cron every minute.
+	 * Picks up all 'pending' rows and 'failed' rows under the retry limit,
+	 * executes them, and updates the log status.
 	 */
-	private static function run_action_logged( object $rule, int $idx, array $action, array $context ): void {
+	public static function cron_process(): void {
 		global $wpdb;
-		$lg = self::logs_table();
+		$lg  = self::logs_table();
+		$cfg = self::get_config();
+		if ( '0' === ( $cfg['cron_enabled'] ?? '1' ) ) return;
+		$max = max( 1, (int) ( $cfg['retry_max_attempts'] ?? 3 ) );
 
-		// Check whether admin has pre-cancelled this rule+action_index pair
-		$cancelled = (int) $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*) FROM `{$lg}` WHERE rule_id = %d AND action_index = %d AND is_unsent = 1 AND is_done = 0 LIMIT 1",
-			(int) $rule->id, $idx
-		) );
-		if ( $cancelled ) return;
+		$rows = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM `{$lg}`
+			 WHERE is_done = 0 AND is_unsent = 0
+			   AND ( status = 'pending' OR ( status = 'failed' AND attempts < %d ) )
+			 ORDER BY id ASC
+			 LIMIT 100",
+			$max
+		) ) ?: array();
 
-		// Insert a pending log entry
-		$wpdb->insert( $lg, array(
-			'rule_id'       => (int) $rule->id,
-			'trigger_name'  => $rule->trigger_name,
-			'context_data'  => wp_json_encode( $context ),
-			'action_index'  => $idx,
-			'action_type'   => $action['type'] ?? '',
-			'action_config' => wp_json_encode( $action ),
-			'status'        => 'pending',
-			'attempts'      => 0,
-		) );
-		$log_id = (int) $wpdb->insert_id;
+		foreach ( $rows as $row ) {
+			$action  = json_decode( $row->action_config ?? '{}', true ) ?: array();
+			$context = json_decode( $row->context_data  ?? '{}', true ) ?: array();
 
-		// Execute
-		$error = null;
-		try {
-			self::run_actions( array( $action ), $context );
-		} catch ( \Throwable $e ) {
-			$error = $e->getMessage();
-		}
+			$error = null;
+			try {
+				self::run_actions( array( $action ), $context );
+			} catch ( \Throwable $e ) {
+				$error = $e->getMessage();
+			}
 
-		// Update log entry
-		if ( $error ) {
-			$wpdb->update( $lg, array(
-				'status'        => 'failed',
-				'attempts'      => 1,
-				'error_message' => $error,
-				'failed_at'     => current_time( 'mysql' ),
-			), array( 'id' => $log_id ) );
-		} else {
-			$wpdb->update( $lg, array(
-				'status'  => 'sent',
-				'is_done' => 1,
-				'sent_at' => current_time( 'mysql' ),
-			), array( 'id' => $log_id ) );
+			if ( $error ) {
+				$wpdb->update( $lg, array(
+					'status'        => 'failed',
+					'attempts'      => (int) $row->attempts + 1,
+					'error_message' => $error,
+					'failed_at'     => current_time( 'mysql' ),
+				), array( 'id' => (int) $row->id ) );
+			} else {
+				$wpdb->update( $lg, array(
+					'status'  => 'sent',
+					'is_done' => 1,
+					'sent_at' => current_time( 'mysql' ),
+				), array( 'id' => (int) $row->id ) );
+			}
 		}
 	}
 
@@ -282,45 +294,86 @@ class AH_Rules_Engine {
 	// ── send_email ────────────────────────────────────────────────────────────
 
 	private static function action_email( array $a, array $context ): void {
-		$to = sanitize_email( self::fill( $a['to'] ?? '', $context ) );
+		$ctx = array_merge( self::config_tokens(), $context );
+		$cfg = self::get_config();
+
+		$to = sanitize_email( self::fill( $a['to'] ?? '', $ctx ) );
 		if ( ! $to ) return;
 
-		$subject  = self::fill( $a['subject'] ?? 'Notification', $context );
+		$subject  = self::fill( $a['subject'] ?? 'Notification', $ctx );
 		$body_tpl = $a['body'] ?? '';
 		$is_html  = ! empty( $a['html'] );
 
 		$body = $is_html
-			? self::fill_html( $body_tpl, $context )
-			: self::fill( $body_tpl, $context );
+			? self::fill_html( $body_tpl, $ctx )
+			: self::fill( $body_tpl, $ctx );
 
 		$headers = array( 'Content-Type: ' . ( $is_html ? 'text/html' : 'text/plain' ) . '; charset=UTF-8' );
 
-		if ( ! empty( $a['from_name'] ) || ! empty( $a['from_email'] ) ) {
-			$from_name  = sanitize_text_field( $a['from_name']  ?? get_bloginfo( 'name' ) );
-			$from_email = sanitize_email(      $a['from_email'] ?? get_option( 'admin_email' ) );
-			$headers[]  = "From: {$from_name} <{$from_email}>";
+		// Resolve channel → global config fallback chain
+		$channel = ! empty( $a['channel_id'] ) ? self::get_email_channel( $a['channel_id'] ) : null;
+
+		$from_name = sanitize_text_field(
+			! empty( $a['from_name'] )
+				? self::fill( $a['from_name'], $ctx )
+				: ( $channel ? $channel['from_name'] : $cfg['email_from_name'] )
+		);
+		$from_email = sanitize_email(
+			! empty( $a['from_email'] )
+				? self::fill( $a['from_email'], $ctx )
+				: ( $channel ? $channel['from_email'] : $cfg['email_from_email'] )
+		);
+		if ( $from_name || $from_email ) {
+			$headers[] = "From: {$from_name} <{$from_email}>";
 		}
 
 		if ( ! empty( $a['cc'] ) ) {
-			$headers[] = 'CC: ' . sanitize_email( self::fill( $a['cc'], $context ) );
+			$headers[] = 'CC: ' . sanitize_email( self::fill( $a['cc'], $ctx ) );
+		}
+		if ( ! empty( $cfg['email_bcc'] ) ) {
+			$headers[] = 'BCC: ' . sanitize_email( $cfg['email_bcc'] );
+		}
+
+		// Per-channel SMTP override via phpmailer_init - added just before wp_mail, removed immediately after
+		$smtp_hook = null;
+		if ( $channel && ! empty( $channel['host'] ) ) {
+			$ch        = $channel;
+			$smtp_hook = static function ( $mailer ) use ( $ch ) {
+				$mailer->isSMTP();
+				$mailer->Host       = $ch['host'];
+				$mailer->Port       = (int) $ch['port'];
+				$mailer->SMTPAuth   = ( '' !== (string) $ch['username'] );
+				$mailer->Username   = $ch['username'];
+				$mailer->Password   = $ch['password'];
+				$enc = $ch['encryption'] ?? 'tls';
+				$mailer->SMTPSecure = ( 'ssl' === $enc ) ? 'ssl' : ( 'none' === $enc ? '' : 'tls' );
+			};
+			add_action( 'phpmailer_init', $smtp_hook );
 		}
 
 		wp_mail( $to, $subject, $body, $headers );
+
+		if ( $smtp_hook ) {
+			remove_action( 'phpmailer_init', $smtp_hook );
+		}
 	}
 
 	// ── whatsapp ──────────────────────────────────────────────────────────────
 
 	private static function action_whatsapp( array $a, array $context ): void {
-		$url   = esc_url_raw( self::fill( $a['api_url'] ?? '', $context ) );
-		$token = self::fill( $a['auth_token'] ?? '', $context );
-		$phone = preg_replace( '/\D/', '', self::fill( $a['to_phone'] ?? '', $context ) );
-		$msg   = self::fill( $a['message'] ?? '', $context );
+		$ctx   = array_merge( self::config_tokens(), $context );
+		$cfg   = self::get_config();
+		// Fall back to global config when action field is blank
+		$url   = esc_url_raw( self::fill( ! empty( $a['api_url'] ) ? $a['api_url'] : $cfg['wa_api_url'], $ctx ) );
+		$token = self::fill( ! empty( $a['auth_token'] ) ? $a['auth_token'] : $cfg['wa_auth_token'], $ctx );
+		$phone = preg_replace( '/\D/', '', self::fill( $a['to_phone'] ?? '', $ctx ) );
+		$msg   = self::fill( $a['message'] ?? '', $ctx );
 
 		if ( ! $url || ! $phone || ! $msg ) return;
 
 		// Body template: use custom JSON if set, otherwise auto-build for common providers
 		if ( ! empty( $a['body_json'] ) ) {
-			$body_raw = self::fill( $a['body_json'], $context );
+			$body_raw = self::fill( $a['body_json'], $ctx );
 			$body     = json_decode( $body_raw, true );
 		} else {
 			// Default: WATI / generic WhatsApp Business API pattern
@@ -346,13 +399,14 @@ class AH_Rules_Engine {
 	// ── http_request ──────────────────────────────────────────────────────────
 
 	private static function action_http( array $a, array $context ): void {
-		$url    = esc_url_raw( self::fill( $a['url'] ?? '', $context ) );
+		$ctx    = array_merge( self::config_tokens(), $context );
+		$url    = esc_url_raw( self::fill( $a['url'] ?? '', $ctx ) );
 		$method = strtoupper( $a['method'] ?? 'POST' );
 		if ( ! $url ) return;
 
 		// Headers: parse from JSON or key:value lines
-		$headers = array();
-		$raw_hdrs = self::fill( $a['headers'] ?? '', $context );
+		$headers  = array();
+		$raw_hdrs = self::fill( $a['headers'] ?? '', $ctx );
 		if ( $raw_hdrs ) {
 			$decoded = json_decode( $raw_hdrs, true );
 			if ( is_array( $decoded ) ) {
@@ -370,9 +424,9 @@ class AH_Rules_Engine {
 		// Auth
 		$auth_type = $a['auth_type'] ?? 'none';
 		if ( 'bearer' === $auth_type && ! empty( $a['auth_value'] ) ) {
-			$headers['Authorization'] = 'Bearer ' . self::fill( $a['auth_value'], $context );
+			$headers['Authorization'] = 'Bearer ' . self::fill( $a['auth_value'], $ctx );
 		} elseif ( 'basic' === $auth_type && ! empty( $a['auth_value'] ) ) {
-			$headers['Authorization'] = 'Basic ' . base64_encode( self::fill( $a['auth_value'], $context ) );
+			$headers['Authorization'] = 'Basic ' . base64_encode( self::fill( $a['auth_value'], $ctx ) );
 		}
 
 		// Body
@@ -380,7 +434,7 @@ class AH_Rules_Engine {
 		$content_type = $a['content_type'] ?? 'json';
 
 		if ( 'json' === $content_type ) {
-			$filled = self::fill( $body_tpl, $context );
+			$filled = self::fill( $body_tpl, $ctx );
 			$headers['Content-Type'] = 'application/json';
 			$body = $filled;
 		} else {
@@ -388,7 +442,7 @@ class AH_Rules_Engine {
 			$tpl_data = json_decode( $body_tpl, true ) ?: array();
 			$body = array();
 			foreach ( $tpl_data as $k => $v ) {
-				$body[ $k ] = self::fill( (string) $v, $context );
+				$body[ $k ] = self::fill( (string) $v, $ctx );
 			}
 		}
 
@@ -439,6 +493,7 @@ class AH_Rules_Engine {
 				'from_name'  => sanitize_text_field( $a['from_name']  ?? '' ),
 				'from_email' => sanitize_email(      $a['from_email'] ?? '' ),
 				'cc'         => sanitize_text_field( $a['cc']         ?? '' ),
+				'channel_id' => sanitize_key(        $a['channel_id'] ?? '' ),
 			),
 			'whatsapp' => array(
 				'type'       => 'whatsapp',
@@ -485,14 +540,196 @@ class AH_Rules_Engine {
 
 	public static function trigger_presets(): array {
 		return array(
-			'contact_submitted' => 'Contact Form Submitted',
-			'form_submit'       => 'Form Submission (built-in)',
-			'user_signup'       => 'User Signup',
-			'order_placed'      => 'Order Placed',
-			'order_paid'        => 'Order Paid',
-			'appointment'       => 'Appointment Booked',
-			'lead_created'      => 'Lead Created',
-			'custom'            => 'Custom (define your own)',
+			'contact_submitted'      => 'Contact Form Submitted',
+			'consultation_submitted' => 'Consultation Form Submitted',
+			'form_submit'            => 'Form Submission (built-in)',
+			'user_signup'            => 'User Signup',
+			'order_placed'           => 'Order Placed',
+			'order_paid'             => 'Order Paid',
+			'appointment'            => 'Appointment Booked',
+			'lead_created'           => 'Lead Created',
+			'custom'                 => 'Custom (define your own)',
 		);
+	}
+
+	// ── Global config ─────────────────────────────────────────────────────────
+
+	public static function get_config(): array {
+		$saved = get_option( 'ah_re_config', array() );
+		if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: array();
+		return array_merge( array(
+			'email_from_name'    => get_bloginfo( 'name' ),
+			'email_from_email'   => get_option( 'admin_email' ),
+			'email_bcc'          => '',
+			'wa_api_url'         => '',
+			'wa_auth_token'      => '',
+			'retry_max_attempts' => '3',
+			'cron_enabled'       => '1',
+		), (array) $saved );
+	}
+
+	public static function save_config( array $data ): void {
+		$clean = array(
+			'email_from_name'    => sanitize_text_field( $data['email_from_name']    ?? '' ),
+			'email_from_email'   => sanitize_email(      $data['email_from_email']   ?? '' ),
+			'email_bcc'          => sanitize_email(      $data['email_bcc']          ?? '' ),
+			'wa_api_url'         => esc_url_raw(         $data['wa_api_url']         ?? '' ),
+			'wa_auth_token'      => sanitize_text_field( $data['wa_auth_token']      ?? '' ),
+			'retry_max_attempts' => (string) max( 1, min( 10, (int) ( $data['retry_max_attempts'] ?? 3 ) ) ),
+			'cron_enabled'       => ! empty( $data['cron_enabled'] ) ? '1' : '0',
+		);
+		update_option( 'ah_re_config', $clean );
+	}
+
+	// ── Custom config variables ───────────────────────────────────────────────
+
+	public static function get_custom_vars(): array {
+		$saved = get_option( 'ah_re_custom_vars', array() );
+		if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: array();
+		return is_array( $saved ) ? $saved : array();
+	}
+
+	public static function save_custom_vars( array $vars ): void {
+		$clean = array();
+		foreach ( $vars as $v ) {
+			$key = sanitize_key( $v['key'] ?? '' );
+			if ( ! $key ) continue;
+			$clean[] = array(
+				'key'   => $key,
+				'label' => sanitize_text_field( $v['label'] ?? $key ),
+				'value' => sanitize_text_field( $v['value'] ?? '' ),
+			);
+		}
+		update_option( 'ah_re_custom_vars', $clean );
+	}
+
+	// ── Email channels / SMTP profiles ────────────────────────────────────────
+
+	public static function get_email_channels(): array {
+		$saved = get_option( 'ah_re_email_channels', array() );
+		if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: array();
+		return is_array( $saved ) ? $saved : array();
+	}
+
+	/** Returns id => name map for select dropdowns. */
+	public static function get_email_channels_list(): array {
+		$list = array( '' => '- Default (site mail) -' );
+		foreach ( self::get_email_channels() as $ch ) {
+			if ( ! empty( $ch['id'] ) ) {
+				$list[ $ch['id'] ] = $ch['name'] ?: $ch['id'];
+			}
+		}
+		return $list;
+	}
+
+	public static function get_email_channel( string $id ): ?array {
+		foreach ( self::get_email_channels() as $ch ) {
+			if ( ( $ch['id'] ?? '' ) === $id ) return $ch;
+		}
+		return null;
+	}
+
+	public static function save_email_channels( array $channels ): void {
+		$clean = array();
+		foreach ( $channels as $ch ) {
+			$id = sanitize_key( $ch['id'] ?? '' );
+			if ( ! $id ) continue;
+			$enc = in_array( $ch['encryption'] ?? '', array( 'tls', 'ssl', 'none' ), true )
+				? $ch['encryption'] : 'tls';
+			$clean[] = array(
+				'id'         => $id,
+				'name'       => sanitize_text_field( $ch['name']       ?? '' ),
+				'from_name'  => sanitize_text_field( $ch['from_name']  ?? '' ),
+				'from_email' => sanitize_email(      $ch['from_email'] ?? '' ),
+				'provider'   => sanitize_key(        $ch['provider']   ?? 'custom' ),
+				'host'       => sanitize_text_field( $ch['host']       ?? '' ),
+				'port'       => (int) ( $ch['port'] ?? 587 ),
+				'username'   => sanitize_text_field( $ch['username']   ?? '' ),
+				'password'   => (string) ( $ch['password'] ?? '' ),
+				'encryption' => $enc,
+			);
+		}
+		update_option( 'ah_re_email_channels', $clean );
+	}
+
+	/**
+	 * Return config values + custom variables as {config_xxx} tokens.
+	 * Built-in keys: {config_email_from_name}, {config_wa_api_url}, etc.
+	 * Custom keys:   {config_support_email}, {config_whatsapp_number}, etc.
+	 */
+	private static function config_tokens(): array {
+		$tokens = array();
+		foreach ( self::get_config() as $k => $v ) {
+			$tokens[ 'config_' . $k ] = $v;
+		}
+		foreach ( self::get_custom_vars() as $var ) {
+			if ( ! empty( $var['key'] ) ) {
+				$tokens[ 'config_' . $var['key'] ] = $var['value'] ?? '';
+			}
+		}
+		return $tokens;
+	}
+
+	// ── Trigger log helpers ───────────────────────────────────────────────────
+
+	public static function get_logs( int $limit = 100, int $offset = 0 ): array {
+		global $wpdb;
+		$lg = self::logs_table();
+		$rt = self::table();
+		return $wpdb->get_results( $wpdb->prepare(
+			"SELECT l.*, r.name AS rule_name
+			 FROM `{$lg}` l
+			 LEFT JOIN `{$rt}` r ON r.id = l.rule_id
+			 ORDER BY l.id DESC LIMIT %d OFFSET %d",
+			$limit, $offset
+		) ) ?: array();
+	}
+
+	public static function count_logs(): int {
+		global $wpdb;
+		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `" . self::logs_table() . "`" );
+	}
+
+	public static function delete_log( int $id ): void {
+		global $wpdb;
+		$wpdb->delete( self::logs_table(), array( 'id' => $id ), array( '%d' ) );
+	}
+
+	public static function mark_log_unsent( int $id ): void {
+		global $wpdb;
+		$wpdb->update( self::logs_table(), array( 'is_unsent' => 1, 'status' => 'unsent' ), array( 'id' => $id ) );
+	}
+
+	public static function retry_log( int $id ): bool {
+		global $wpdb;
+		$lg  = self::logs_table();
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$lg}` WHERE id = %d", $id ) );
+		if ( ! $row ) return false;
+
+		$action  = json_decode( $row->action_config ?? '{}', true ) ?: array();
+		$context = json_decode( $row->context_data  ?? '{}', true ) ?: array();
+
+		$error = null;
+		try {
+			self::run_actions( array( $action ), $context );
+		} catch ( \Throwable $e ) {
+			$error = $e->getMessage();
+		}
+
+		if ( $error ) {
+			$wpdb->update( $lg, array(
+				'attempts'      => (int) $row->attempts + 1,
+				'error_message' => $error,
+				'failed_at'     => current_time( 'mysql' ),
+			), array( 'id' => $id ) );
+			return false;
+		}
+
+		$wpdb->update( $lg, array(
+			'status'  => 'sent',
+			'is_done' => 1,
+			'sent_at' => current_time( 'mysql' ),
+		), array( 'id' => $id ) );
+		return true;
 	}
 }
