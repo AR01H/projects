@@ -178,7 +178,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           // Featured Guides: big hero card + 3 side cards - only _ah_is_featured posts
           get_template_part( 'components/nif-news-hero', null, [
             'posts'     => $featured_posts,
-            'eyebrow'   => __( 'Featured Guides', 'ah-theme' ),
+            'eyebrow'   => TXT_FEATURED_GUIDES,
             'see_all'   => home_url( '/guides/' ),
             'cats'      => $wp_cats,
             'news_cat'  => $news_cat,
@@ -188,7 +188,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           // Latest Guides: dark 3-column tiles
           get_template_part( 'components/nif-guide-tiles', null, [
             'posts'   => array_slice( $posts_arr, 0, 6 ),
-            'eyebrow' => __( 'Latest Guides', 'ah-theme' ),
+            'eyebrow' => TXT_LATEST_GUIDES,
             'see_all' => home_url( '/guides/' ),
           ] );
 
@@ -196,7 +196,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           if ( ! empty( $news_posts ) ) {
             get_template_part( 'components/nif-news-hero', null, [
               'posts'     => $news_posts,
-              'eyebrow'   => __( 'Latest News', 'ah-theme' ),
+              'eyebrow'   => TXT_LATEST_NEWS,
               'see_all'   => home_url( '/allnews/' ),
               'cats'      => $wp_cats,
               'news_cat'  => $news_cat,
@@ -215,7 +215,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         } else {
           // ── FILTERED / PAGINATED GRID VIEW ────────────────────────────────
         ?>
-        <section class="section" style="padding-top:28px" aria-label="<?php esc_attr_e( 'Articles', 'ah-theme' ); ?>">
+        <section class="section" style="padding-top:28px" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_ARTICLES ); ?>">
 
           <?php if ( ! empty( $posts_arr ) ) : ?>
           <div class="nif-grid">
@@ -224,13 +224,13 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
               $delay = ( $idx % 3 ) * 80;
             ?>
             <article class="nif-grid-card" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $delay ); ?>"
-                     <?php if ( $d['cat'] ) echo 'data-cat="' . esc_attr( $d['cat']->slug ) . '"'; ?>>
+                     <?php if ( $d['cat'] ) echo esc_html( TXT_DATA_CAT_ESC_ATTR_D_CAT_SLUG ); ?>>
 
               <?php if ( $d['thumb_url'] ) : ?>
                 <div class="nif-grid-card__img">
                   <a href="<?php echo esc_url( $d['permalink'] ); ?>" tabindex="-1" aria-hidden="true">
                     <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                         alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+                         alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
                          loading="lazy" decoding="async">
                   </a>
                 </div>
@@ -257,7 +257,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
                     <?php echo $d['read_time'] ? esc_html( $d['read_time'] ) : 'Quick read'; ?>
                   </span>
                   <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-read-link nif-read-link--sm">
-                    <?php esc_html_e( 'Read', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+                    <?php echo esc_html( TXT_READ ); ?> <span aria-hidden="true">→</span>
                   </a>
                 </div>
               </div>
@@ -268,15 +268,15 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           <?php else : ?>
           <div class="nif-empty" data-aos="fade-up">
             <div class="nif-empty__icon">✍️</div>
-            <h2 class="nif-empty__title"><?php esc_html_e( 'Nothing here yet', 'ah-theme' ); ?></h2>
+            <h2 class="nif-empty__title"><?php echo esc_html( TXT_NOTHING_HERE_YET ); ?></h2>
             <p class="nif-empty__desc">
               <?php echo $active_cat
-                ? esc_html__( 'No posts in this topic yet. Try another category.', 'ah-theme' )
-                : esc_html__( 'We\'re working on great content - check back shortly.', 'ah-theme' ); ?>
+                ? esc_html( TXT_NO_POSTS_IN_THIS_TOPIC_YET_TRY_ANOTHER_CATEGORY )
+                : esc_html( TXT_WE_RE_WORKING_ON_GREAT_CONTENT_CHECK_BACK_SHORTLY ); ?>
             </p>
             <?php if ( $active_cat || $active_parent_term ) : ?>
               <a href="<?php echo esc_url( $page_url ); ?>" class="btn btn-outline" style="margin-top:20px">
-                <?php esc_html_e( 'View All Topics →', 'ah-theme' ); ?>
+                <?php echo esc_html( TXT_VIEW_ALL_TOPICS ); ?>
               </a>
             <?php endif; ?>
           </div>
@@ -298,9 +298,9 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
               'type'      => 'array',
             ] );
             if ( $links ) : ?>
-          <nav class="pagination" aria-label="<?php esc_attr_e( 'Page navigation', 'ah-theme' ); ?>" style="margin-top:48px">
+          <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
             <ul class="pagination__list">
-              <?php foreach ( $links as $link ) echo '<li class="pagination__item">' . $link . '</li>'; ?>
+              <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
             </ul>
           </nav>
           <?php endif; endif; ?>
@@ -311,7 +311,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       </main><!-- /.nif-portal-main -->
 
       <!-- ══ SIDEBAR ════════════════════════════════════════════════════════ -->
-      <aside class="nif-portal-sidebar" aria-label="<?php esc_attr_e( 'Market information and tools', 'ah-theme' ); ?>">
+      <aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_MARKET_INFORMATION_AND_TOOLS ); ?>">
         <?php get_template_part( 'components/nif-sidebar', null, [
           'site_stats'         => $site_stats,
           'news_bar_items'     => $news_bar_items,

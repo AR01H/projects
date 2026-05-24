@@ -19,9 +19,9 @@ $use_parent_terms = count( $parent_terms ) >= 2;
 if ( ! $use_parent_terms && empty( $cats ) ) return;
 
 ?>
-<div class="nif-sb-card" aria-label="<?php esc_attr_e( 'Browse by Topic', 'ah-theme' ); ?>">
+<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC ); ?>">
   <div class="nif-sb-card__header">
-    <span class="nif-section-label--primary"><?php esc_html_e( 'Browse by Topic', 'ah-theme' ); ?></span>
+    <span class="nif-section-label--primary"><?php echo esc_html( TXT_BROWSE_BY_TOPIC ); ?></span>
   </div>
 
   <?php if ( $use_parent_terms ) : ?>
@@ -35,7 +35,7 @@ if ( ! $use_parent_terms && empty( $cats ) ) return;
     ?>
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="<?php echo esc_attr( $all_row_cls ); ?>">
       <span class="nif-sb-pt-dot" style="background: var(--border)"></span>
-      <span class="nif-sb-pt-name"><?php esc_html_e( 'All Topics', 'ah-theme' ); ?></span>
+      <span class="nif-sb-pt-name"><?php echo esc_html( TXT_ALL_TOPICS ); ?></span>
       <span class="nif-sb-pt-arrow"><?php echo $all_active ? '▾' : '›'; ?></span>
     </a>
 
@@ -69,7 +69,7 @@ if ( ! $use_parent_terms && empty( $cats ) ) return;
           </a>
           <?php endforeach; ?>
         <?php else : ?>
-          <span class="nif-sb-pt-child--empty"><?php esc_html_e( 'No sub-topics yet', 'ah-theme' ); ?></span>
+          <span class="nif-sb-pt-child--empty"><?php echo esc_html( TXT_NO_SUB_TOPICS_YET ); ?></span>
         <?php endif; ?>
       </div>
       <?php endif; ?>
@@ -84,7 +84,7 @@ if ( ! $use_parent_terms && empty( $cats ) ) return;
   <div class="nif-sb-topics">
     <a href="<?php echo esc_url( $permalink ); ?>"
        class="nif-sb-topic<?php echo ! $active_cat ? ' nif-sb-topic--active' : ''; ?>">
-      <?php esc_html_e( 'All', 'ah-theme' ); ?>
+      <?php echo esc_html( TXT_ALL ); ?>
     </a>
     <?php foreach ( $cats as $cat ) :
       $is_active = ( $active_cat === $cat->slug );

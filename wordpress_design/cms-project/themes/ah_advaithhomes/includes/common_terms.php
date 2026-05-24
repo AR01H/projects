@@ -25,3 +25,421 @@ handle_defined( 'EMAIL_SALES', 'sales@advaithhomes.com' );
 handle_defined( 'EMAIL_SUPPORT', 'support@advaithhomes.com' );
 handle_defined( 'EMAIL_MEDIA', 'media@advaithhomes.com' );
 handle_defined( 'EMAIL_OTHER', 'contact@advaithhomes.com' );
+
+// NIF Hero Background Image Card
+handle_defined( 'NIF_HERO_BG_ALT', 'Property consultants in conversation' );
+handle_defined( 'NIF_HERO_TITLE_SPAN', 'Make Smarter ' );
+handle_defined( 'NIF_HERO_TITLE_EM', 'Property Decisions' );
+handle_defined( 'NIF_HERO_DESC', 'Navigating the UK housing market can be complex, but having the right information makes all the difference. With unbiased market data, expert guidance, and practical tools, you can make confident decisions based on facts - whether you\'re buying your first home, investing, or exploring the market.' );
+handle_defined( 'NIF_HERO_CARD1_TEXT', 'Browse Guides' );
+handle_defined( 'NIF_HERO_CARD2_TEXT', 'Mortgages' );
+
+// Homepage Bento Grid Tiles
+function get_client_hp_tiles() {
+	return [
+		'contact' => [
+			'icon'   => '💬',
+			'title'  => 'Contact Us',
+			'desc'   => 'Speak to our team - free, no obligation.',
+			'url'    => '/contact/',
+			'cta'    => 'Get in touch',
+			'color'  => '#0f172a',
+		],
+		'support' => [
+			'icon'   => '🛡️',
+			'title'  => 'Get Support',
+			'desc'   => 'Existing client? Raise a query or request assistance.',
+			'url'    => '/contact/?enquiry_type=support',
+			'cta'    => 'Get help',
+			'color'  => '#1e3a8a',
+		],
+		'services' => [
+			'icon'   => '🛠️',
+			'title'  => 'Our Services',
+			'desc'   => 'From surveys to conveyancing - see everything we offer.',
+			'url'    => '/services/',
+			'cta'    => 'View services',
+			'color'  => '#14532d',
+		],
+		'multiinfo' => [
+			'icon'   => '📚',
+			'title'  => 'Info Hub',
+			'desc'   => 'In-depth guides on buying, selling, renting & more.',
+			'url'    => '/multiinfo/',
+			'cta'    => 'Explore topics',
+			'color'  => '#78350f',
+		],
+		'guides' => [
+			'icon'   => '📖',
+			'title'  => 'Guides to Know',
+			'desc'   => 'Explore detailed step-by-step guidance designed to help you confidently navigate every stage of your property journey, from searching for the right home to securing the perfect deal and moving in successfully.',
+			'url'    => '/guides/',
+			'cta'    => 'Browse guides',
+			'color'  => '#581c87',
+		],
+	];
+}
+// --- Automated Extracted Text Constants ---
+handle_defined( 'TXT_BACK_TO_HOME', 'Back to Home' );
+handle_defined( 'TXT_BROWSE_GUIDES', 'Browse Guides' );
+handle_defined( 'TXT_CLEANUP_DATA', 'Cleanup Data' );
+handle_defined( 'TXT_REMOVE_ALL_MOCK_SEEDED_DATA_FROM_CMS_TABLES_AND_WO', 'Remove all mock/seeded data from CMS tables and WordPress options.' );
+handle_defined( 'TXT_CONTENT_FIRST_WORDPRESS_THEME_FOR_S', 'Content-first WordPress theme for %s' );
+handle_defined( 'TXT_GUIDE_TO_USE', 'Guide To Use' );
+handle_defined( 'TXT_REFERENCE_DOCS_RULES_AND_SNIPPETS_FOR_THIS_THEME', 'Reference docs, rules, and snippets for this theme' );
+handle_defined( 'TXT_TAXONOMY_MANAGER', 'Taxonomy Manager' );
+handle_defined( 'TXT_MANAGE_TAXONOMY_TYPES_AND_THEIR_TERMS_STORED_IN_TH', 'Manage taxonomy types and their terms - stored in the CMS plugin tables.' );
+handle_defined( 'TXT_THE_CMS_PLUGIN_IS_NOT_ACTIVE_ACTIVATE_IT_TO_MANAGE', 'The CMS plugin is not active. Activate it to manage taxonomy types and terms.' );
+handle_defined( 'TXT_SAVED_SUCCESSFULLY', 'Saved successfully.' );
+handle_defined( 'TXT_TAXONOMY_TYPES', 'Taxonomy Types' );
+handle_defined( 'TXT_STORED_IN_WP_AH_TAXONOMY_TYPES', 'stored in wp_ah_taxonomy_types' );
+handle_defined( 'TXT_NO_TYPES_YET_USE_INSTALL_MOCK_DATA_TO_SEED_THE_DEF', 'No types yet. Use Install Mock Data to seed the defaults, or add one below.' );
+handle_defined( 'TXT_NAME', 'Name' );
+handle_defined( 'TXT_SLUG', 'Slug' );
+handle_defined( 'TXT_DESCRIPTION', 'Description' );
+handle_defined( 'TXT_TERMS', 'Terms' );
+handle_defined( 'TXT_DELETE', 'Delete' );
+handle_defined( 'TXT_ADD_NEW_TYPE', '+ Add New Type' );
+handle_defined( 'TXT_NAME_1', 'Name *' );
+handle_defined( 'TXT_SLUG_AUTO_IF_BLANK', 'Slug (auto if blank)' );
+handle_defined( 'TXT_ADD_TYPE', 'Add Type' );
+handle_defined( 'TXT_TAXONOMY_TERMS', 'Taxonomy Terms' );
+handle_defined( 'TXT_STORED_IN_WP_AH_TAXONOMIES', 'stored in wp_ah_taxonomies' );
+handle_defined( 'TXT_NO_TERMS_YET_ADD_A_TYPE_FIRST_THEN_ADD_TERMS_TO_IT', 'No terms yet. Add a type first, then add terms to it.' );
+handle_defined( 'TXT_TERM_NAME', 'Term Name' );
+handle_defined( 'TXT_TYPE', 'Type' );
+handle_defined( 'TXT_STATUS', 'Status' );
+handle_defined( 'TXT_ADD_NEW_TERM', '+ Add New Term' );
+handle_defined( 'TXT_TYPE_1', 'Type *' );
+handle_defined( 'TXT_SELECT_TYPE', '- select type -' );
+handle_defined( 'TXT_TERM_NAME_1', 'Term Name *' );
+handle_defined( 'TXT_ADD_TERM', 'Add Term' );
+handle_defined( 'TXT_ADD_AT_LEAST_ONE_TYPE_BEFORE_ADDING_TERMS', 'Add at least one type before adding terms.' );
+handle_defined( 'TXT_BROWSE_BY_TOPIC', 'Browse by Topic' );
+handle_defined( 'TXT_ALL_TOPICS', 'All Topics' );
+handle_defined( 'TXT_NO_SUB_TOPICS_YET', 'No sub-topics yet' );
+handle_defined( 'TXT_ALL', 'All' );
+handle_defined( 'TXT_LATEST_NEWS', 'Latest News' );
+handle_defined( 'TXT_SEE_ALL', 'See all' );
+handle_defined( 'TXT_MARKET_PULSE', 'Market Pulse' );
+handle_defined( 'TXT_UP', 'up' );
+handle_defined( 'TXT_DOWN', 'down' );
+handle_defined( 'TXT_POPULAR_NOW', 'Popular Now' );
+handle_defined( 'TXT_NEED_TO_BE_A_PART', 'Need to be a part?' );
+handle_defined( 'TXT_YOUR_EMAIL_ADDRESS', 'Your email address' );
+handle_defined( 'TXT_PERSONALISED_GUIDANCE', 'Personalised Guidance' );
+handle_defined( 'TXT_I_NEED_ADVICE_ON', 'I need advice on…' );
+handle_defined( 'TXT_LEARN_MORE', 'Learn more' );
+handle_defined( 'TXT_SUBCATEGORIES', 'Subcategories' );
+handle_defined( 'TXT_IN_S', 'In: %s' );
+handle_defined( 'TXT_FULL_PAGE', 'Full page' );
+handle_defined( 'TXT_EXPLORE_TOPICS', 'Explore Topics' );
+handle_defined( 'TXT_IN_BRIEF', 'In Brief' );
+handle_defined( 'TXT_CONTINUE_READING', 'Continue reading' );
+handle_defined( 'TXT_PAGE_NAVIGATION', 'Page navigation' );
+handle_defined( 'TXT_MORE_S', 'More %s' );
+handle_defined( 'TXT_VIEW_ALL_S', 'View all %s' );
+handle_defined( 'TXT_EDITOR_S_PICKS', 'Editor\'s Picks' );
+handle_defined( 'TXT_READ_STORY', 'Read Story' );
+handle_defined( 'TXT_READ', 'Read' );
+handle_defined( 'TXT_BREAKING_NEWS', 'Breaking News' );
+handle_defined( 'TXT_ALL_NEWS', 'All news' );
+handle_defined( 'TXT_CONTINUE_READING_1', 'Continue Reading' );
+handle_defined( 'TXT_TOPICS', 'Topics' );
+handle_defined( 'TXT_FILTER_BY_TOPIC', 'Filter by topic' );
+handle_defined( 'TXT_GUIDES_RESOURCES', 'Guides & Resources' );
+handle_defined( 'TXT_FEATURED_ARTICLES', 'Featured articles' );
+handle_defined( 'TXT_TOP_STORY', 'Top Story' );
+handle_defined( 'TXT_READ_FULL_ARTICLE', 'Read full article' );
+handle_defined( 'TXT_FILTER_NEWS_BY_CATEGORY', 'Filter news by category' );
+handle_defined( 'TXT_FREE_TOOLS_GUIDES', 'Free Tools & Guides' );
+handle_defined( 'TXT_TOOLS_AND_RESOURCES', 'Tools and resources' );
+handle_defined( 'TXT_SUGGESTED_GUIDES', 'Suggested guides' );
+handle_defined( 'TXT_EXPLORE_MORE', 'Explore More' );
+handle_defined( 'TXT_YOU_MIGHT_ALSO_LIKE', 'You Might Also Like' );
+handle_defined( 'TXT_ALL_GUIDES', 'All Guides →' );
+handle_defined( 'TXT_READ_1', 'Read →' );
+handle_defined( 'TXT_RELATED_S', 'Related %s' );
+handle_defined( 'TXT_KEEP_READING', 'Keep Reading' );
+handle_defined( 'TXT_MORE_S_1', 'More %s →' );
+handle_defined( 'TXT_READ_S', 'Read %s →' );
+handle_defined( 'TXT_CATEGORIES_IN_THIS_TOPIC', 'Categories in this topic' );
+handle_defined( 'TXT_BROWSE_ALL_TOPICS', 'Browse all topics' );
+handle_defined( 'TXT_NEED_HELP', 'Need Help?' );
+handle_defined( 'TXT_SPEAK_WITH_ONE_OF_OUR_PROPERTY_EXPERTS_FOR_PERSONA', 'Speak with one of our property experts for personalised guidance.' );
+handle_defined( 'TXT_GET_IN_TOUCH', 'Get in Touch' );
+handle_defined( 'TXT_EXPLORE', 'Explore' );
+handle_defined( 'TXT_LATEST_ARTICLE', 'Latest Article' );
+handle_defined( 'TXT_READ_MORE', 'Read more' );
+handle_defined( 'TXT_PRIMARY_NAVIGATION', 'Primary Navigation' );
+handle_defined( 'TXT_FOOTER_NAVIGATION', 'Footer Navigation' );
+handle_defined( 'TXT_HIGHLIGHT_LINKS', 'Highlight Links' );
+handle_defined( 'TXT_LABEL', 'Label' );
+handle_defined( 'TXT_SLUG_OR_URL', '/slug/ or URL' );
+handle_defined( 'TXT_ADD_LINK', 'Add Link' );
+handle_defined( 'TXT_HIGHLIGHTER_NAMES', 'Highlighter Names' );
+handle_defined( 'TXT_HIGHLIGHTER_NAME', 'Highlighter Name' );
+handle_defined( 'TXT_ADD_HIGHLIGHTER_NAME', 'Add Highlighter Name' );
+handle_defined( 'TXT_NEW_HIGHLIGHTER_NAME', 'New Highlighter Name' );
+handle_defined( 'TXT_SEARCH_HIGHLIGHTER_NAMES', 'Search Highlighter Names' );
+handle_defined( 'TXT_ALL_HIGHLIGHTER_NAMES', 'All Highlighter Names' );
+handle_defined( 'TXT_EDIT_HIGHLIGHTER_NAME', 'Edit Highlighter Name' );
+handle_defined( 'TXT_UPDATE_HIGHLIGHTER_NAME', 'Update Highlighter Name' );
+handle_defined( 'TXT_NO_HIGHLIGHTER_NAMES_FOUND', 'No highlighter names found.' );
+handle_defined( 'TXT_DATAPROTECTED', 'DataProtected' );
+handle_defined( 'TXT_ADD_DATAPROTECTED_LEVEL', 'Add DataProtected Level' );
+handle_defined( 'TXT_NEW_DATAPROTECTED_LEVEL', 'New DataProtected Level' );
+handle_defined( 'TXT_SEARCH_DATAPROTECTED_LEVELS', 'Search DataProtected Levels' );
+handle_defined( 'TXT_ALL_DATAPROTECTED_LEVELS', 'All DataProtected Levels' );
+handle_defined( 'TXT_EDIT_DATAPROTECTED_LEVEL', 'Edit DataProtected Level' );
+handle_defined( 'TXT_UPDATE_DATAPROTECTED_LEVEL', 'Update DataProtected Level' );
+handle_defined( 'TXT_NO_LEVELS_FOUND', 'No levels found.' );
+handle_defined( 'TXT_OVERVIEW', 'Overview' );
+handle_defined( 'TXT_SECTION_CONTROLS', 'Section Controls' );
+handle_defined( 'TXT_NAVIGATION', 'Navigation' );
+handle_defined( 'TXT_CONTENT_CONTROLS', 'Content Controls' );
+handle_defined( 'TXT_CONTACT_SUBMISSIONS', 'Contact Submissions' );
+handle_defined( 'TXT_INSTALL_MOCK_DATA', 'Install Mock Data' );
+handle_defined( 'TXT_NEWS_ARTICLE', 'News article' );
+handle_defined( 'TXT_BACK_TO_ALL_NEWS', 'Back to All News' );
+handle_defined( 'TXT_ALL_NEWS_1', 'All News' );
+handle_defined( 'TXT_STAY_INFORMED', 'Stay Informed' );
+handle_defined( 'TXT_NEWS', 'News' );
+handle_defined( 'TXT_MARKET_UPDATES_PROPERTY_INSIGHTS_AND_BUYING_TIPS_E', 'Market updates, property insights, and buying tips - everything in one place, ordered by date.' );
+handle_defined( 'TXT_FILTER_BY_CATEGORY', 'Filter by category' );
+handle_defined( 'TXT_NEWS_ARTICLES', 'News articles' );
+handle_defined( 'TXT_NEWS_NAVIGATION', 'News navigation' );
+handle_defined( 'TXT_NO_NEWS_YET', 'No news yet' );
+handle_defined( 'TXT_NOTHING_IN_THIS_CATEGORY_YET', 'Nothing in this category yet.' );
+handle_defined( 'TXT_CHECK_BACK_SOON_FOR_UPDATES', 'Check back soon for updates.' );
+handle_defined( 'TXT_VIEW_ALL', 'View all →' );
+handle_defined( 'TXT_GUIDES_LISTING', 'Guides listing' );
+handle_defined( 'TXT_GUIDES', 'guides' );
+handle_defined( 'TXT_GUIDES_NAVIGATION', 'Guides navigation' );
+handle_defined( 'TXT_BROWSE_BY_TOPIC_1', 'Browse by topic' );
+handle_defined( 'TXT_GUIDE_TOPICS', 'Guide topics' );
+handle_defined( 'TXT_GET_IN_TOUCH_1', 'Get In Touch' );
+handle_defined( 'TXT_ALL_RIGHTS_RESERVED', 'All rights reserved.' );
+handle_defined( 'TXT_MAIN_NAVIGATION', 'Main Navigation' );
+handle_defined( 'TXT_SEARCH', 'Search' );
+handle_defined( 'TXT_OPEN_MENU', 'Open menu' );
+handle_defined( 'TXT_SEARCH_S_AND_GUIDES', 'Search %s and guides…' );
+handle_defined( 'TXT_CLOSE_SEARCH', 'Close search' );
+handle_defined( 'TXT_MOBILE_NAVIGATION', 'Mobile Navigation' );
+handle_defined( 'TXT_SEARCH_RESULTS_FOR_S', 'Search results for: %s' );
+handle_defined( 'TXT_FOUND_D_RESULTS', 'Found %d results' );
+handle_defined( 'TXT_S_SIDEBAR', '%s sidebar' );
+handle_defined( 'TXT_CONTENTS', 'Contents' );
+handle_defined( 'TXT_S_SECTIONS', '%s sections' );
+handle_defined( 'TXT_FREE_CONSULTATION', 'Free Consultation' );
+handle_defined( 'TXT_READY_TO_PUT_THIS_INTO_PRACTICE_SPEAK_TO_A_BUYER_S', 'Ready to put this into practice? Speak to a buyer\'s agent - free, no obligation.' );
+handle_defined( 'TXT_BOOK_A_FREE_CALL', 'Book a Free Call →' );
+handle_defined( 'TXT_MORE_IN_S', 'More in %s' );
+handle_defined( 'TXT_ALL_S', 'All %s →' );
+handle_defined( 'TXT_USEFUL_LINKS', 'Useful Links' );
+handle_defined( 'TXT_ALL_BUYING_GUIDES', 'All Buying Guides' );
+handle_defined( 'TXT_OUR_SERVICES', 'Our Services' );
+handle_defined( 'TXT_CLIENT_STORIES', 'Client Stories' );
+handle_defined( 'TXT_TOPIC', 'Topic' );
+handle_defined( 'TXT_FULL_TOPIC_PAGE', 'Full topic page' );
+handle_defined( 'TXT_FEATURED_S', 'Featured: %s' );
+handle_defined( 'TXT_FEATURED_GUIDES', 'Featured Guides' );
+handle_defined( 'TXT_LATEST_IN_S', 'Latest in %s' );
+handle_defined( 'TXT_LATEST_GUIDES', 'Latest Guides' );
+handle_defined( 'TXT_NOTHING_HERE_YET', 'Nothing here yet' );
+handle_defined( 'TXT_WE_RE_WORKING_ON_GREAT_CONTENT_CHECK_BACK_SOON', 'We\'re working on great content - check back soon.' );
+handle_defined( 'TXT_TOPIC_INFORMATION', 'Topic information' );
+handle_defined( 'TXT_ARTICLES', 'Articles' );
+handle_defined( 'TXT_NO_POSTS_IN_THIS_TOPIC_YET_TRY_ANOTHER_CATEGORY', 'No posts in this topic yet. Try another category.' );
+handle_defined( 'TXT_WE_RE_WORKING_ON_GREAT_CONTENT_CHECK_BACK_SHORTLY', 'We\'re working on great content - check back shortly.' );
+handle_defined( 'TXT_VIEW_ALL_TOPICS', 'View All Topics →' );
+handle_defined( 'TXT_MARKET_INFORMATION_AND_TOOLS', 'Market information and tools' );
+handle_defined( 'TXT_HOME', 'Home' );
+handle_defined( 'TXT_NO_S_IN_THIS_CATEGORY_YET_TRY_ANOTHER_S', 'No %s in this category yet. Try another %s.' );
+handle_defined( 'TXT_TOPIC_SIDEBAR', 'Topic sidebar' );
+handle_defined( 'TXT_EXPLORE_S', 'Explore %s' );
+handle_defined( 'TXT_NOTHING_PUBLISHED_YET', 'Nothing published yet' );
+handle_defined( 'TXT_WE_RE_WORKING_ON_CONTENT_FOR_THIS_S_CHECK_BACK_SOO', 'We\'re working on content for this %s - check back soon.' );
+handle_defined( 'TXT_ALL_S_1', 'All %s' );
+
+// --- Automated Extracted Text Constants ---
+handle_defined( 'TXT_TYPE_A_POST_TITLE', 'Type a post title…' );
+handle_defined( 'TXT_EMPTY', '⭐' );
+handle_defined( 'TXT_EMOJI_ICON', 'Emoji icon' );
+handle_defined( 'TXT_TRUST_SIGNAL_TEXT', 'Trust signal text' );
+handle_defined( 'TXT_EMPTY_1', '🏡' );
+handle_defined( 'TXT_EMOJI', 'Emoji' );
+handle_defined( 'TXT_850K', '£850k' );
+handle_defined( 'TXT_RICHMOND', 'Richmond' );
+handle_defined( 'TXT_SOUTH_WEST_LONDON', 'South West London' );
+handle_defined( 'TXT_SAVED_20K', 'Saved £20k' );
+handle_defined( 'TXT_DETACHED', 'Detached' );
+handle_defined( 'TXT_BEDS', 'Beds' );
+handle_defined( 'TXT_RESULT_SUMMARY', 'Result summary' );
+handle_defined( 'TXT_TYPE_A_PAGE_NAME', 'Type a page name…' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_CLIENT_ENQUIRY_SUBJECT_PREFIX', '<?php echo esc_attr( CLIENT_ENQUIRY_SUBJECT_PREFIX ); ?>' );
+handle_defined( 'TXT_F_P', '\' + f.p + \'' );
+handle_defined( 'TXT_REMOVE', 'Remove' );
+handle_defined( 'TXT_TOGGLE_PHP_ECHO_ESC_ATTR_SEC_NAME', 'Toggle <?php echo esc_attr( $sec[\'name\'] ); ?>' );
+handle_defined( 'TXT_ADD_AN_INTERNAL_NOTE', 'Add an internal note…' );
+handle_defined( 'TXT_SEARCH_NAME_EMAIL_MESSAGE', 'Search name, email, message…' );
+handle_defined( 'TXT_EMAIL_SENT', 'Email sent' );
+handle_defined( 'TXT_NOT_SENT', 'Not sent' );
+handle_defined( 'TXT_E_G_HIGHLIGHT_NAMES', 'e.g. Highlight Names' );
+handle_defined( 'TXT_E_G_HIGHLIGHT_NAMES_1', 'e.g. highlight-names' );
+handle_defined( 'TXT_OPTIONAL_DESCRIPTION', 'Optional description' );
+handle_defined( 'TXT_E_G_RELATED_ARTICLES', 'e.g. Related Articles' );
+handle_defined( 'TXT_E_G_RELATED_ARTICLES_1', 'e.g. related-articles' );
+handle_defined( 'TXT_SHARE_THIS_POST', 'Share this post' );
+handle_defined( 'TXT_SHARE_OPTIONS', 'Share options' );
+handle_defined( 'TXT_SHARE_ON_WHATSAPP', 'Share on WhatsApp' );
+handle_defined( 'TXT_COPY_LINK', 'Copy link' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_POST_TITLE', '<?php echo esc_attr( $post_title ); ?>' );
+handle_defined( 'TXT_MORE_SHARE_OPTIONS', 'More share options' );
+handle_defined( 'TXT_ARCHIVE_SIDEBAR', 'Archive sidebar' );
+handle_defined( 'TXT_STYLE_BACKGROUND_IMAGE_URL_ESC_URL_THUMB_URL', ' style="background-image:url(\' . esc_url( $thumb_url ) . \')"' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC', '<?php echo esc_attr( TXT_BROWSE_BY_TOPIC ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_LATEST_NEWS', '<?php echo esc_attr( TXT_LATEST_NEWS ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_MARKET_PULSE', '<?php echo esc_attr( TXT_MARKET_PULSE ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_UP', '<?php echo esc_attr( TXT_UP ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_DOWN', '<?php echo esc_attr( TXT_DOWN ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_POPULAR_NOW', '<?php echo esc_attr( TXT_POPULAR_NOW ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_NEED_TO_BE_A_PART', '<?php echo esc_attr( TXT_NEED_TO_BE_A_PART ); ?>' );
+handle_defined( 'TXT_STYLE_ESC_ATTR_INLINE_STYLE', 'style="\' . esc_attr( $inline_style ) . \'"' );
+handle_defined( 'TXT_CALL_TO_ACTION', 'Call to action' );
+handle_defined( 'TXT_FREQUENTLY_ASKED_QUESTIONS', 'Frequently asked questions' );
+handle_defined( 'TXT_GUIDE_CATEGORIES', 'Guide categories' );
+handle_defined( 'TXT_HERO', 'Hero' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_PERSONALISED_GUIDANCE', '<?php echo esc_attr( TXT_PERSONALISED_GUIDANCE ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_SUBCATEGORIES', '<?php echo esc_attr( TXT_SUBCATEGORIES ); ?>' );
+handle_defined( 'TXT_NEWS_UPDATES', 'News updates' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_NIF_HERO_BG_ALT', '<?php echo esc_attr( NIF_HERO_BG_ALT ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_EYEBROW', '<?php echo esc_attr( $eyebrow ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID', '<?php echo esc_attr( get_the_title( $p->ID ) ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION', '<?php echo esc_attr( TXT_PAGE_NAVIGATION ); ?>' );
+handle_defined( 'TXT_SPAN_CLASS_NIF_BRIEF_PAGE_LINK_LINK_SPAN', '<span class="nif-brief-page-link">\' . $link . \'</span>' );
+handle_defined( 'TXT_PHP_PRINTF_ESC_ATTR_TXT_MORE_S_AH_TERM_LOWER_PLURAL', '<?php printf( esc_attr( TXT_MORE_S ), AH_TERM_LOWER_PLURAL ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_GP_ID', '<?php echo esc_attr( get_the_title( $gp->ID ) ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_FP_ID', '<?php echo esc_attr( get_the_title( $fp->ID ) ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_BREAKING_NEWS', '<?php echo esc_attr( TXT_BREAKING_NEWS ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_BY_TOPIC', '<?php echo esc_attr( TXT_FILTER_BY_TOPIC ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_FEATURED_ARTICLES', '<?php echo esc_attr( TXT_FEATURED_ARTICLES ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_HERO_ID', '<?php echo esc_attr( get_the_title( $hero->ID ) ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_SP_ID', '<?php echo esc_attr( get_the_title( $sp->ID ) ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_NEWS_BY_CATEGORY', '<?php echo esc_attr( TXT_FILTER_NEWS_BY_CATEGORY ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_TOOLS_AND_RESOURCES', '<?php echo esc_attr( TXT_TOOLS_AND_RESOURCES ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_STRIP_TAGS_TITLE_TITLE_EM', '<?php echo esc_attr( strip_tags( $title . \' \' . $title_em ) ); ?>' );
+handle_defined( 'TXT_BREADCRUMB', 'Breadcrumb' );
+handle_defined( 'TXT_FEATURED_PROPERTIES', 'Featured properties' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_PROP_LOCATION', '<?php echo esc_attr( $prop[\'location\'] ?? \'\' ); ?>' );
+handle_defined( 'TXT_PREVIOUS_PROPERTY', 'Previous property' );
+handle_defined( 'TXT_NEXT_PROPERTY', 'Next property' );
+handle_defined( 'TXT_CLIENT_SUCCESS_STORIES', 'Client success stories' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_REV_REVIEWER_NAME', '<?php echo esc_attr( $rev->reviewer_name ?? \'\' ); ?>' );
+handle_defined( 'TXT_PREVIOUS_STORY', 'Previous story' );
+handle_defined( 'TXT_NEXT_STORY', 'Next story' );
+handle_defined( 'TXT_BACK_TO_TOP', 'Back to top' );
+handle_defined( 'TXT_SERVICES', 'Services' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_SUGGESTED_GUIDES', '<?php echo esc_attr( TXT_SUGGESTED_GUIDES ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_GP', '<?php echo esc_attr( get_the_title( $gp ) ); ?>' );
+handle_defined( 'TXT_PHP_PRINTF_ESC_ATTR_TXT_RELATED_S_AH_TERM_LOWER_PLURAL', '<?php printf( esc_attr( TXT_RELATED_S ), AH_TERM_LOWER_PLURAL ); ?>' );
+handle_defined( 'TXT_EMPTY_2', '' );
+handle_defined( 'TXT_MEET_THE_TEAM', 'Meet the team' );
+handle_defined( 'TXT_CLIENT_TESTIMONIALS', 'Client testimonials' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_CATEGORIES_IN_THIS_TOPIC', '<?php echo esc_attr( TXT_CATEGORIES_IN_THIS_TOPIC ); ?>' );
+handle_defined( 'TXT_WHY_CLIENTS_TRUST_US', 'Why clients trust us' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_EXPLORE', '<?php echo esc_attr( TXT_EXPLORE ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_NEWS_TITLE', '<?php echo esc_attr( $news_title ); ?>' );
+handle_defined( 'TXT_STYLE_GRID_AREA_ESC_ATTR_NEWS_AREA', 'style="grid-area:\' . esc_attr( $news_area ) . \'"' );
+handle_defined( 'TXT_STYLE_GRID_AREA_ESC_ATTR_FB_AREA', 'style="grid-area:\' . esc_attr( $fb_area ) . \'"' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_LABEL', '<?php echo esc_attr( TXT_LABEL ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_SLUG_OR_URL', '<?php echo esc_attr( TXT_SLUG_OR_URL ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_JS_TXT_LABEL', '<?php echo esc_js( TXT_LABEL ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_JS_TXT_SLUG_OR_URL', '<?php echo esc_js( TXT_SLUG_OR_URL ); ?>' );
+handle_defined( 'TXT_ESC_ATTR_RATING_OUT_OF_5_STARS', '\' . esc_attr( $rating . \' out of 5 stars\' ) . \'' );
+handle_defined( 'TXT_POSTS_NAVIGATION', 'Posts navigation' );
+handle_defined( 'TXT_NAV_CLASS_BREADCRUMB_ARIA_LABEL_PHP_ECHO_ESC_ATTR_TXT_BREADCRUMB_OL_CLASS_BREADCRUMB_LIST', '<nav class="breadcrumb" aria-label="<?php echo esc_attr( TXT_BREADCRUMB ); ?>"><ol class="breadcrumb__list">' );
+handle_defined( 'TXT_LI_CLASS_BREADCRUMB_ITEM', '<li class="breadcrumb__item">' );
+handle_defined( 'TXT_A_HREF_ESC_URL_C_URL_CLASS_BREADCRUMB_LINK_ESC_HTML_C_LABEL_A', '<a href="\' . esc_url( $c[\'url\'] ) . \'" class="breadcrumb__link">\' . esc_html( $c[\'label\'] ) . \'</a>' );
+handle_defined( 'TXT_SPAN_CLASS_BREADCRUMB_SEP_ARIA_HIDDEN_TRUE_SPAN', '<span class="breadcrumb__sep" aria-hidden="true">›</span>' );
+handle_defined( 'TXT_SPAN_CLASS_BREADCRUMB_CURRENT_ARIA_CURRENT_PAGE_ESC_HTML_C_LABEL_SPAN', '<span class="breadcrumb__current" aria-current="page">\' . esc_html( $c[\'label\'] ) . \'</span>' );
+handle_defined( 'TXT_LI', '</li>' );
+handle_defined( 'TXT_OL_NAV', '</ol></nav>' );
+handle_defined( 'TXT_NAV_CLASS_PAGINATION_ARIA_LABEL_PHP_ECHO_ESC_ATTR_TXT_POSTS_NAVIGATION_UL_CLASS_PAGINATION_LIST', '<nav class="pagination" aria-label="<?php echo esc_attr( TXT_POSTS_NAVIGATION ); ?>"><ul class="pagination__list">' );
+handle_defined( 'TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI', '<li class="pagination__item">\' . $link . \'</li>' );
+handle_defined( 'TXT_UL_NAV', '</ul></nav>' );
+handle_defined( 'TXT_BLOG_POSTS', 'Blog posts' );
+handle_defined( 'TXT_E_G_450000', 'e.g. 450000' );
+handle_defined( 'TXT_E_G_300000', 'e.g. 300000' );
+handle_defined( 'TXT_E_G_4_5', 'e.g. 4.5' );
+handle_defined( 'TXT_E_G_25', 'e.g. 25' );
+handle_defined( 'TXT_OUR_STORY', 'Our story' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_ARTICLE', '<?php echo esc_attr( TXT_NEWS_ARTICLE ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_S_TITLE', '<?php echo esc_attr( $s_title ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_BY_CATEGORY', '<?php echo esc_attr( TXT_FILTER_BY_CATEGORY ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_ARTICLES', '<?php echo esc_attr( TXT_NEWS_ARTICLES ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_ITEM_TITLE', '<?php echo esc_attr( $item_title ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_NAVIGATION', '<?php echo esc_attr( TXT_NEWS_NAVIGATION ); ?>' );
+handle_defined( 'TXT_BLOG_CATEGORIES', 'Blog categories' );
+handle_defined( 'TXT_BLOG_NAVIGATION', 'Blog navigation' );
+handle_defined( 'TXT_NEWSLETTER', 'Newsletter' );
+handle_defined( 'TXT_FILTER_TAB_ACTIVE', ' filter-tab--active' );
+handle_defined( 'TXT_CLIENT_REVIEWS', 'Client reviews' );
+handle_defined( 'TXT_CONTACT_FORM_AND_DETAILS', 'Contact form and details' );
+handle_defined( 'TXT_JANE_SMITH', 'Jane Smith' );
+handle_defined( 'TXT_JANE_EXAMPLE_COM', 'jane@example.com' );
+handle_defined( 'TXT_44_7700_000000', '+44 7700 000000' );
+handle_defined( 'TXT_E_G_I_M_LOOKING_FOR_A_3_BED_HOUSE_IN_BRISTOL_UNDER_450K', 'e.g. I\'m looking for a 3-bed house in Bristol under £450k' );
+handle_defined( 'TXT_TELL_US_MORE_TIMELINE_REQUIREMENTS_ANYTHING_HELPFUL', 'Tell us more - timeline, requirements, anything helpful…' );
+handle_defined( 'TXT_OUR_LOCATION_ON_GOOGLE_MAPS', 'Our location on Google Maps' );
+handle_defined( 'TXT_CONTACT_FAQ', 'Contact FAQ' );
+handle_defined( 'TXT_STYLE_DISPLAY_NONE', ' style="display:none"' );
+handle_defined( 'TXT_CONTENT_OVERVIEW', 'Content overview' );
+handle_defined( 'TXT_CONTENT_SUMMARY', 'Content summary' );
+handle_defined( 'TXT_CORE_SETTINGS', 'Core settings' );
+handle_defined( 'TXT_LIVE_SIGNALS', 'Live signals' );
+handle_defined( 'TXT_PUBLISHED_CONTENT', 'Published content' );
+handle_defined( 'TXT_STRUCTURED_CONTENT', 'Structured content' );
+handle_defined( 'TXT_TOOLS_AND_RESOURCES', 'Tools and resources' );
+handle_defined( 'TXT_PROCESS_AND_NUMBERS', 'Process and numbers' );
+handle_defined( 'TXT_ALL_FAQS', 'All FAQs' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDES_LISTING', '<?php echo esc_attr( TXT_GUIDES_LISTING ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDES_NAVIGATION', '<?php echo esc_attr( TXT_GUIDES_NAVIGATION ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC_1', '<?php echo esc_attr( TXT_BROWSE_BY_TOPIC_1 ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDE_TOPICS', '<?php echo esc_attr( TXT_GUIDE_TOPICS ); ?>' );
+handle_defined( 'TXT_HOW_WE_WORK', 'How we work' );
+handle_defined( 'TXT_LATEST_FROM_THE_BLOG', 'Latest from the blog' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_ITEM_TEXT', '<?php echo esc_attr( $item->text ); ?>' );
+handle_defined( 'TXT_EXPAND', 'Expand' );
+handle_defined( 'TXT_VIEW_DETAILS', 'View details' );
+handle_defined( 'TXT_ALL_SERVICES', 'All services' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_SVC_TITLE', '<?php echo esc_attr($svc->title); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_AH_QUERIED_POST_TITLE', '<?php echo esc_attr( $_ah_queried->post_title ); ?>' );
+handle_defined( 'TXT_PHP_BLOGINFO_NAME', '<?php bloginfo( \'name\' ); ?>' );
+handle_defined( 'TXT_FACEBOOK', 'Facebook' );
+handle_defined( 'TXT_TWITTER_X', 'Twitter/X' );
+handle_defined( 'TXT_INSTAGRAM', 'Instagram' );
+handle_defined( 'TXT_YOUTUBE', 'YouTube' );
+handle_defined( 'TXT_LINKEDIN', 'LinkedIn' );
+handle_defined( 'TXT_STYLE_COLOR_VAR_CLIENT_COLOR_100_FONT_WEIGHT_700', 'style="color:var(--client-color-100);font-weight:700"' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_MAIN_NAVIGATION', '<?php echo esc_attr( TXT_MAIN_NAVIGATION ); ?>' );
+handle_defined( 'TXT_PHP_BLOGINFO_NAME_HOME', '<?php bloginfo( \'name\' ); ?> Home' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_SEARCH', '<?php echo esc_attr( TXT_SEARCH ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_OPEN_MENU', '<?php echo esc_attr( TXT_OPEN_MENU ); ?>' );
+handle_defined( 'TXT_PHP_PRINTF_ESC_ATTR_TXT_SEARCH_S_AND_GUIDES_AH_TERM_LOWER_PLURAL', '<?php printf( esc_attr( TXT_SEARCH_S_AND_GUIDES ), AH_TERM_LOWER_PLURAL ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_CLOSE_SEARCH', '<?php echo esc_attr( TXT_CLOSE_SEARCH ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_MOBILE_NAVIGATION', '<?php echo esc_attr( TXT_MOBILE_NAVIGATION ); ?>' );
+handle_defined( 'TXT_STYLE_BACKGROUND_VAR_ACCENT_COLOR_FFF', ' style="background:var(--accent);color:#fff"' );
+handle_defined( 'TXT_STYLE_COLOR_VAR_ACCENT_FONT_WEIGHT_700', 'style="color:var(--accent);font-weight:700"' );
+handle_defined( 'TXT_SEARCH_GUIDES_NEWS_TOPICS', 'Search guides, news, topics…' );
+handle_defined( 'TXT_SHARE_ON_X', 'Share on X' );
+handle_defined( 'TXT_SHARE_ON_LINKEDIN', 'Share on LinkedIn' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE', '<?php echo esc_attr( get_the_title() ); ?>' );
+handle_defined( 'TXT_PHP_PRINTF_ESC_ATTR_TXT_S_SIDEBAR_AH_TERM_SINGULAR', '<?php printf( esc_attr( TXT_S_SIDEBAR ), AH_TERM_SINGULAR ); ?>' );
+handle_defined( 'TXT_PHP_PRINTF_ESC_ATTR_TXT_S_SECTIONS_AH_TERM_SINGULAR', '<?php printf( esc_attr( TXT_S_SECTIONS ), AH_TERM_SINGULAR ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_MP', '<?php echo esc_attr( get_the_title( $mp ) ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_TOPIC_INFORMATION', '<?php echo esc_attr( TXT_TOPIC_INFORMATION ); ?>' );
+handle_defined( 'TXT_DATA_CAT_ESC_ATTR_D_CAT_SLUG', 'data-cat="\' . esc_attr( $d[\'cat\']->slug ) . \'"' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_ARTICLES', '<?php echo esc_attr( TXT_ARTICLES ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_MARKET_INFORMATION_AND_TOOLS', '<?php echo esc_attr( TXT_MARKET_INFORMATION_AND_TOOLS ); ?>' );
+handle_defined( 'TXT_PHP_ECHO_ESC_ATTR_TXT_TOPIC_SIDEBAR', '<?php echo esc_attr( TXT_TOPIC_SIDEBAR ); ?>' );

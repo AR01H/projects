@@ -53,7 +53,7 @@ if ( $active_cat ) {
 <?php if ( $active_cat && $guides_query ) : ?>
 <!-- ── FILTERED: back link + posts + category cards below ──────────────── -->
 
-<section class="section section--pattern" aria-label="<?php esc_attr_e( 'Guides listing', 'ah-theme' ); ?>">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDES_LISTING ); ?>">
   <div class="container">
 
     <!-- Back / filter indicator -->
@@ -61,14 +61,14 @@ if ( $active_cat ) {
       <a href="<?php echo esc_url( $base_url ); ?>"
          style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--accent);text-decoration:none">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        <?php esc_html_e( 'All Topics', 'ah-theme' ); ?>
+        <?php echo esc_html( TXT_ALL_TOPICS ); ?>
       </a>
       <?php if ( $active_cat_obj ) : ?>
       <span style="font-size:.82rem;color:var(--text-secondary)">
         <?php echo esc_html( $active_cat_obj['icon_emoji'] ?? '' ); ?>
         <?php echo esc_html( $active_cat_obj['title'] ?? $active_cat ); ?>
         <?php if ( ! empty( $active_cat_obj['count'] ) ) : ?>
-        &mdash; <?php echo (int) $active_cat_obj['count']; ?> <?php esc_html_e( 'guides', 'ah-theme' ); ?>
+        &mdash; <?php echo (int) $active_cat_obj['count']; ?> <?php echo esc_html( TXT_GUIDES ); ?>
         <?php endif; ?>
       </span>
       <?php endif; ?>
@@ -119,9 +119,9 @@ if ( $active_cat ) {
       ] );
       if ( $links ) :
     ?>
-    <nav class="pagination" aria-label="<?php esc_attr_e( 'Guides navigation', 'ah-theme' ); ?>" style="margin-top:48px">
+    <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDES_NAVIGATION ); ?>" style="margin-top:48px">
       <ul class="pagination__list">
-        <?php foreach ( $links as $link ) echo '<li class="pagination__item">' . $link . '</li>'; ?>
+        <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
       </ul>
     </nav>
     <?php endif; endif; ?>
@@ -140,7 +140,7 @@ if ( $active_cat ) {
 
 <!-- ── Category cards repeated below posts ───────────────────────────────── -->
 <?php if ( $categories ) : ?>
-<section class="section section--pattern" aria-label="<?php esc_attr_e( 'Browse by topic', 'ah-theme' ); ?>">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC_1 ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Browse by Topic</span>
@@ -160,7 +160,7 @@ if ( $active_cat ) {
 <!-- ── HOME: category cards grid only ───────────────────────────────────── -->
 
 <?php if ( $categories ) : ?>
-<section class="section section--pattern" aria-label="<?php esc_attr_e( 'Guide topics', 'ah-theme' ); ?>">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDE_TOPICS ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Browse by Topic</span>

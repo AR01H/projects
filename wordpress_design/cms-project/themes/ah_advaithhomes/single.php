@@ -55,14 +55,14 @@ $crumbs[] = [ get_the_title(), '' ];
 
         <div class="post-share">
           <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink() ); ?>&text=<?php echo urlencode( get_the_title() ); ?>"
-             class="post-share__btn" target="_blank" rel="noopener" aria-label="Share on X">𝕏</a>
+             class="post-share__btn" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( TXT_SHARE_ON_X ); ?>">𝕏</a>
           <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode( get_permalink() ); ?>"
-             class="post-share__btn" target="_blank" rel="noopener" aria-label="Share on LinkedIn">in</a>
+             class="post-share__btn" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( TXT_SHARE_ON_LINKEDIN ); ?>">in</a>
 
           <button class="post-share__icon post-share__icon--native"
                   data-url="<?php echo esc_attr( get_permalink() ); ?>"
-                  data-title="<?php echo esc_attr( get_the_title() ); ?>"
-                  aria-label="More share options">
+                  data-title="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE ); ?>"
+                  aria-label="<?php echo esc_attr( TXT_MORE_SHARE_OPTIONS ); ?>">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           </button>
         </div>
@@ -70,24 +70,24 @@ $crumbs[] = [ get_the_title(), '' ];
       </article>
 
       <!-- Sidebar -->
-      <aside class="sidebar" aria-label="<?php printf( esc_attr__( '%s sidebar', 'ah-theme' ), AH_TERM_SINGULAR ); ?>">
+      <aside class="sidebar" aria-label="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_S_SIDEBAR_AH_TERM_SINGULAR ); ?>">
 
         <!-- Table of Contents - populated by JS from article headings -->
         <div class="sidebar-card sp-toc-card" id="sp-toc" hidden>
           <div class="sidebar-card__title sp-toc__heading">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-            <?php esc_html_e( 'Contents', 'ah-theme' ); ?>
+            <?php echo esc_html( TXT_CONTENTS ); ?>
           </div>
-          <nav class="sp-toc__nav" aria-label="<?php printf( esc_attr__( '%s sections', 'ah-theme' ), AH_TERM_SINGULAR ); ?>"></nav>
+          <nav class="sp-toc__nav" aria-label="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_S_SECTIONS_AH_TERM_SINGULAR ); ?>"></nav>
         </div>
 
         <!-- Consultation CTA -->
         <div class="sidebar-card sidebar-card--accent">
           <div class="sidebar-card__icon">💬</div>
-          <div class="sidebar-card__title"><?php esc_html_e( 'Free Consultation', 'ah-theme' ); ?></div>
-          <p><?php esc_html_e( 'Ready to put this into practice? Speak to a buyer\'s agent - free, no obligation.', 'ah-theme' ); ?></p>
+          <div class="sidebar-card__title"><?php echo esc_html( TXT_FREE_CONSULTATION ); ?></div>
+          <p><?php echo esc_html( TXT_READY_TO_PUT_THIS_INTO_PRACTICE_SPEAK_TO_A_BUYER_S ); ?></p>
           <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-gold btn-block">
-            <?php esc_html_e( 'Book a Free Call →', 'ah-theme' ); ?>
+            <?php echo esc_html( TXT_BOOK_A_FREE_CALL ); ?>
           </a>
         </div>
 
@@ -106,7 +106,7 @@ $crumbs[] = [ get_the_title(), '' ];
         <?php if ( $_sb_more ) : ?>
         <div class="sidebar-card sp-more-card">
           <div class="sidebar-card__title">
-            <?php printf( esc_html__( 'More in %s', 'ah-theme' ), esc_html( $cat->name ) ); ?>
+            <?php printf( esc_html( TXT_MORE_IN_S ), esc_html( $cat->name ) ); ?>
           </div>
           <ul class="sp-more-list">
             <?php foreach ( $_sb_more as $mp ) :
@@ -117,7 +117,7 @@ $crumbs[] = [ get_the_title(), '' ];
               <a href="<?php echo esc_url( get_permalink( $mp ) ); ?>" class="sp-more-item__link">
                 <?php if ( $mp_thumb ) : ?>
                   <img class="sp-more-item__img" src="<?php echo esc_url( $mp_thumb ); ?>"
-                       alt="<?php echo esc_attr( get_the_title( $mp ) ); ?>" loading="lazy">
+                       alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_MP ); ?>" loading="lazy">
                 <?php else : ?>
                   <div class="sp-more-item__img sp-more-item__img--ph" aria-hidden="true"><?php echo esc_html( get_the_title( $mp )[0] ) ?></div>
                 <?php endif; ?>
@@ -132,7 +132,7 @@ $crumbs[] = [ get_the_title(), '' ];
             : get_category_link( $cat );
           ?>
           <a href="<?php echo esc_url( $_more_cat_url ); ?>" class="sp-more-all">
-            <?php printf( esc_html__( 'All %s →', 'ah-theme' ), esc_html( $cat->name ) ); ?>
+            <?php printf( esc_html( TXT_ALL_S ), esc_html( $cat->name ) ); ?>
           </a>
         </div>
         <?php endif; ?>
@@ -146,7 +146,7 @@ $crumbs[] = [ get_the_title(), '' ];
         ?>
         <?php if ( ! empty( $_hl_links ) ) : ?>
         <div class="sidebar-card ah-hl-card">
-          <div class="sidebar-card__title"><?php esc_html_e( 'Highlight Links', 'ah-theme' ); ?></div>
+          <div class="sidebar-card__title"><?php echo esc_html( TXT_HIGHLIGHT_LINKS ); ?></div>
           <div class="ah-hl-buttons">
             <?php foreach ( $_hl_links as $_hl ) : ?>
             <a href="<?php echo esc_url( $_hl['url'] ?? '#' ); ?>" class="ah-hl-btn">
@@ -159,11 +159,11 @@ $crumbs[] = [ get_the_title(), '' ];
 
         <!-- Useful Links -->
         <div class="sidebar-card">
-          <div class="sidebar-card__title"><?php esc_html_e( 'Useful Links', 'ah-theme' ); ?></div>
+          <div class="sidebar-card__title"><?php echo esc_html( TXT_USEFUL_LINKS ); ?></div>
           <div class="toc">
-            <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>"         class="toc__item">📚 <?php esc_html_e( 'All Buying Guides', 'ah-theme' ); ?></a>
-            <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"       class="toc__item">✦ <?php esc_html_e( 'Our Services', 'ah-theme' ); ?></a>
-            <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>" class="toc__item">⭐ <?php esc_html_e( 'Client Stories', 'ah-theme' ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>"         class="toc__item">📚 <?php echo esc_html( TXT_ALL_BUYING_GUIDES ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"       class="toc__item">✦ <?php echo esc_html( TXT_OUR_SERVICES ); ?></a>
+            <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>" class="toc__item">⭐ <?php echo esc_html( TXT_CLIENT_STORIES ); ?></a>
           </div>
         </div>
 

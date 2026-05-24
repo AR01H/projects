@@ -10,7 +10,7 @@ $cta_url   = $s['cta_url']   ?? home_url( CTA_BUTTON_LINK );
 $sec_label = $s['sec_label'] ?? CTA_BUTTON2_TEXT;
 $sec_url   = $s['sec_url']   ?? home_url( CTA_BUTTON2_LINK );
 ?>
-<section class="cta-section" aria-label="Call to action">
+<section class="cta-section" aria-label="<?php echo esc_attr( TXT_CALL_TO_ACTION ); ?>">
   <div class="container">
     <?php if ( $eyebrow ) : ?>
       <div class="cta-section__eyebrow"><?php echo esc_html( $eyebrow ); ?></div>

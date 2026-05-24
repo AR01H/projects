@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 
 $posts      = $args['posts']     ?? [];
 $see_all    = $args['see_all']   ?? home_url( '/news/' );
-$eyebrow    = $args['eyebrow']   ?? __( 'Latest News', 'ah-theme' );
+$eyebrow    = $args['eyebrow']   ?? TXT_LATEST_NEWS;
 $cats       = $args['cats']      ?? [];
 $news_cat   = $args['news_cat']  ?? '';
 $permalink  = $args['permalink'] ?? get_permalink();
@@ -38,22 +38,22 @@ $h_bg   = $hd['thumb_url'] ? 'style="--nif-bg:url(' . esc_url( $hd['thumb_url'] 
 // Build category chip URLs - preserve any existing ?pg or ?category params except news_cat
 $chip_base = remove_query_arg( 'news_cat', $permalink );
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
 
   <!-- Header row: label + See all -->
   <div class="nif-portal-section-row">
     <span class="nif-section-label--primary"><?php echo esc_html( $eyebrow ); ?></span>
     <a href="<?php echo esc_url( $see_all ); ?>" class="nif-more-link">
-      <?php esc_html_e( 'See all', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+      <?php echo esc_html( TXT_SEE_ALL ); ?> <span aria-hidden="true">→</span>
     </a>
   </div>
 
   <!-- Category filter chips -->
   <!-- <?php if ( ! empty( $cats ) ) : ?>
-  <div class="nif-news-cats" role="navigation" aria-label="<?php esc_attr_e( 'Filter news by category', 'ah-theme' ); ?>">
+  <div class="nif-news-cats" role="navigation" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_NEWS_BY_CATEGORY ); ?>">
     <a href="<?php echo esc_url( $chip_base ); ?>"
        class="nif-news-cat-chip<?php echo ! $news_cat ? ' nif-news-cat-chip--active' : ''; ?>">
-      <?php esc_html_e( 'All', 'ah-theme' ); ?>
+      <?php echo esc_html( TXT_ALL ); ?>
     </a>
     <?php foreach ( $cats as $cat ) :
       $active = ( $news_cat === $cat->slug );
@@ -103,7 +103,7 @@ $chip_base = remove_query_arg( 'news_cat', $permalink );
             </span>
           <?php endif; ?>
           <a href="<?php echo esc_url( $hd['permalink'] ); ?>" class="nif-hero-big-card__cta">
-            <?php esc_html_e( 'Continue Reading', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+            <?php echo esc_html( TXT_CONTINUE_READING_1 ); ?> <span aria-hidden="true">→</span>
           </a>
         </div>
       </div>
@@ -121,7 +121,7 @@ $chip_base = remove_query_arg( 'news_cat', $permalink );
         <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-side-card__img" tabindex="-1" aria-hidden="true">
           <?php if ( $d['thumb_url'] ) : ?>
             <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                 alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
                  loading="lazy" decoding="async">
           <?php else : ?>
             <div class="nif-side-card__placeholder" aria-hidden="true">

@@ -23,7 +23,7 @@ $faqs     = ah_get_faqs( 8 );
 
 <!-- ── All Services ──────────────────────────────────────────────────────── -->
 <?php if ( $services ) : ?>
-<section class="section" aria-label="All services">
+<section class="section" aria-label="<?php echo esc_attr( TXT_ALL_SERVICES ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Our Services</span>
@@ -49,7 +49,7 @@ $faqs     = ah_get_faqs( 8 );
             <img
               class="service-card__image"
               src="<?php echo esc_url($thumb_url); ?>"
-              alt="<?php echo esc_attr($svc->title); ?>"
+              alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_SVC_TITLE ); ?>"
             />
           </div>
         </div>
@@ -89,7 +89,7 @@ $faqs     = ah_get_faqs( 8 );
 
 <!-- ── How It Works ──────────────────────────────────────────────────────── -->
 <?php if ( $steps ) : ?>
-<section class="section section--pattern" aria-label="How we work">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_HOW_WE_WORK ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">The Process</span>

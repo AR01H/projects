@@ -37,7 +37,7 @@ $topic_icons = [
 
 
 <!-- ── FAQ Groups ────────────────────────────────────────────────────────── -->
-<section class="section" aria-label="All FAQs">
+<section class="section" aria-label="<?php echo esc_attr( TXT_ALL_FAQS ); ?>">
   <div class="container container--md">
 
     <?php if ( empty( $grouped ) ) : ?>

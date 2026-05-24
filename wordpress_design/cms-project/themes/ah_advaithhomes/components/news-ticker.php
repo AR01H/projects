@@ -6,7 +6,7 @@ if ( empty( $items ) ) return;
 
 $all = array_merge( $items, $items );
 ?>
-<div class="news-ticker" role="complementary" aria-label="News updates">
+<div class="news-ticker" role="complementary" aria-label="<?php echo esc_attr( TXT_NEWS_UPDATES ); ?>">
   <div class="">
     <div class="news-ticker__inner">
       <a class="news-ticker__label" href="<?php echo esc_url( home_url( '/news/' ) ); ?>">News</a>

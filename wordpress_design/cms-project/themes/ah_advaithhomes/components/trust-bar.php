@@ -7,7 +7,7 @@ if ( empty( $signals ) ) return;
 // Double the items so the -50% translateX loop is seamless
 $doubled = array_merge( $signals, $signals );
 ?>
-<div class="trust-bar" aria-label="Why clients trust us">
+<div class="trust-bar" aria-label="<?php echo esc_attr( TXT_WHY_CLIENTS_TRUST_US ); ?>">
   <div class="trust-bar__inner">
     <div class="trust-bar__track">
       <?php foreach ( $doubled as $i => $signal ) :

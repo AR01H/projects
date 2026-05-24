@@ -10,7 +10,7 @@ get_header();
 	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'Blog', '' ] ],
 ] ); ?>
 
-<section class="section" aria-label="Blog posts">
+<section class="section" aria-label="<?php echo esc_attr( TXT_BLOG_POSTS ); ?>">
   <div class="container">
     <?php if ( have_posts() ) : ?>
       <div class="post-grid">
@@ -24,7 +24,7 @@ get_header();
           <div class="blog-card__img-wrap">
             <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__img-link" tabindex="-1" aria-hidden="true">
               <?php if ( $thumb_url ) : ?>
-              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $post_title ); ?>" class="blog-card__img" loading="lazy">
+              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_POST_TITLE ); ?>" class="blog-card__img" loading="lazy">
               <?php else : ?>
               <div class="blog-card__img-placeholder">✍️</div>
               <?php endif; ?>

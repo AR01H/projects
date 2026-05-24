@@ -37,10 +37,10 @@ $base_url      = $args['base_url']      ?? home_url( '/multiinfo/' );
 <!-- ── Topics navigation card ────────────────────────────────────────────── -->
 <?php if ( $active_pt ) : ?>
 <!-- On a parent-term page: show subcategories of that term -->
-<div class="nif-sb-card" aria-label="<?php esc_attr_e( 'Subcategories', 'ah-theme' ); ?>">
+<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SUBCATEGORIES ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary">
-      <?php echo esc_html( sprintf( __( 'In: %s', 'ah-theme' ), $active_pt->name ) ); ?>
+      <?php echo esc_html( sprintf( TXT_IN_S, $active_pt->name ) ); ?>
     </span>
   </div>
 
@@ -49,7 +49,7 @@ $base_url      = $args['base_url']      ?? home_url( '/multiinfo/' );
   <a href="<?php echo esc_url( $base_url ); ?>"
      class="nif-sb-pt-row nif-sb-pt-row--all<?php echo ! $active_cat ? ' nif-sb-pt-row--all-active' : ''; ?>">
     <span class="nif-sb-pt-dot" style="background:<?php echo esc_attr( $pt_color ); ?>"></span>
-    <span class="nif-sb-pt-name"><?php esc_html_e( 'All', 'ah-theme' ); ?></span>
+    <span class="nif-sb-pt-name"><?php echo esc_html( TXT_ALL ); ?></span>
     <span class="nif-sb-pt-arrow"><?php echo ! $active_cat ? '▾' : '›'; ?></span>
   </a>
 
@@ -71,11 +71,11 @@ $base_url      = $args['base_url']      ?? home_url( '/multiinfo/' );
     <a href="<?php echo esc_url( home_url( '/multiinfo/' ) ); ?>"
        style="display:inline-flex;align-items:center;gap:4px;font-size:.78rem;color:var(--text-secondary);text-decoration:none;">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-      <?php esc_html_e( 'All Topics', 'ah-theme' ); ?>
+      <?php echo esc_html( TXT_ALL_TOPICS ); ?>
     </a>
     <a href="<?php echo esc_url( home_url( '/' . $active_slug . '/' ) ); ?>"
        style="display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:600;color:var(--accent);text-decoration:none;">
-      <?php esc_html_e( 'Full page', 'ah-theme' ); ?>
+      <?php echo esc_html( TXT_FULL_PAGE ); ?>
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
   </div>
@@ -84,9 +84,9 @@ $base_url      = $args['base_url']      ?? home_url( '/multiinfo/' );
 <?php else : ?>
 <!-- On the root /multiinfo/ page: show all parent terms as a card list -->
 <?php if ( ! empty( $parent_terms ) ) : ?>
-<div class="nif-sb-card" aria-label="<?php esc_attr_e( 'Browse by Topic', 'ah-theme' ); ?>">
+<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC ); ?>">
   <div class="nif-sb-card__header">
-    <span class="nif-section-label--primary"><?php esc_html_e( 'Explore Topics', 'ah-theme' ); ?></span>
+    <span class="nif-section-label--primary"><?php echo esc_html( TXT_EXPLORE_TOPICS ); ?></span>
   </div>
   <div class="nif-sb-pt-list">
     <?php foreach ( $parent_terms as $pt ) :

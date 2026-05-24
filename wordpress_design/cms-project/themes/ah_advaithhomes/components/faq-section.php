@@ -6,7 +6,7 @@ $faqs  = ah_get_faqs( $limit );
 
 if ( empty( $faqs ) ) return;
 ?>
-<section class="section" aria-label="Frequently asked questions">
+<section class="section" aria-label="<?php echo esc_attr( TXT_FREQUENTLY_ASKED_QUESTIONS ); ?>">
   <div class="container container--md">
     <div class="section__header text-center">
       <span class="section__eyebrow">FAQ</span>

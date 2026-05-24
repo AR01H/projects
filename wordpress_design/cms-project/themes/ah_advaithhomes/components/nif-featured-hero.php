@@ -22,12 +22,12 @@ $cat2     = $cats[1] ?? null;
 $date_str = get_the_date( 'j M Y', $post->ID );
 $bg_style = $d['thumb_url'] ? 'style="--nif-bg:url(' . esc_url( $d['thumb_url'] ) . ')"' : '';
 ?>
-<section class="nif-portal-section" aria-label="<?php esc_attr_e( 'Breaking News', 'ah-theme' ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BREAKING_NEWS ); ?>">
 
   <div class="nif-portal-section-row">
-    <span class="nif-section-label--primary"><?php esc_html_e( 'Breaking News', 'ah-theme' ); ?></span>
+    <span class="nif-section-label--primary"><?php echo esc_html( TXT_BREAKING_NEWS ); ?></span>
     <a href="<?php echo esc_url( $news_url ); ?>" class="nif-more-link">
-      <?php esc_html_e( 'All news', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+      <?php echo esc_html( TXT_ALL_NEWS ); ?> <span aria-hidden="true">→</span>
     </a>
   </div>
 
@@ -65,7 +65,7 @@ $bg_style = $d['thumb_url'] ? 'style="--nif-bg:url(' . esc_url( $d['thumb_url'] 
         <?php endif; ?>
         <span class="nif-meta-pill nif-meta-pill--date"><?php echo esc_html( $date_str ); ?></span>
         <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-featured-hero__cta">
-          <?php esc_html_e( 'Continue Reading', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+          <?php echo esc_html( TXT_CONTINUE_READING_1 ); ?> <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>

@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $posts   = $args['posts']   ?? [];
-$eyebrow = $args['eyebrow'] ?? __( 'Guides & Resources', 'ah-theme' );
+$eyebrow = $args['eyebrow'] ?? TXT_GUIDES_RESOURCES;
 $see_all = $args['see_all'] ?? home_url( '/guides/' );
 
 if ( empty( $posts ) ) return;
@@ -35,12 +35,12 @@ if ( ! function_exists( 'nif_tile_cat_class' ) ) {
 	}
 }
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
 
   <div class="nif-portal-section-row">
     <span class="nif-section-label--primary"><?php echo esc_html( $eyebrow ); ?></span>
     <a href="<?php echo esc_url( $see_all ); ?>" class="nif-more-link">
-      <?php esc_html_e( 'See all', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+      <?php echo esc_html( TXT_SEE_ALL ); ?> <span aria-hidden="true">→</span>
     </a>
   </div>
 

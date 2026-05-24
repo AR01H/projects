@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 $categories = ah_get_guide_categories();
 if ( empty( $categories ) ) return;
 ?>
-<section class="section section--pattern" aria-label="Guide categories">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_GUIDE_CATEGORIES ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">The Complete Resource</span>

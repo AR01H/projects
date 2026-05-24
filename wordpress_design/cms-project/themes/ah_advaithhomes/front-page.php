@@ -8,51 +8,10 @@
 defined( 'ABSPATH' ) || exit;
 
 /*
- * Service / link cards - edit freely.
+ * Service / link cards - edit freely in includes/common_terms.php (get_client_hp_tiles).
  * 'color' = CSS color for the top accent strip.
  */
-$hp_tiles = [
-	'contact' => [
-		'icon'   => '💬',
-		'title'  => 'Contact Us',
-		'desc'   => 'Speak to our team - free, no obligation.',
-		'url'    => '/contact/',
-		'cta'    => 'Get in touch',
-		'color'  => '#0f172a',
-	],
-	'support' => [
-		'icon'   => '🛡️',
-		'title'  => 'Get Support',
-		'desc'   => 'Existing client? Raise a query or request assistance.',
-		'url'    => '/contact/?enquiry_type=support',
-		'cta'    => 'Get help',
-		'color'  => '#1e3a8a',
-	],
-	'services' => [
-		'icon'   => '🛠️',
-		'title'  => 'Our Services',
-		'desc'   => 'From surveys to conveyancing - see everything we offer.',
-		'url'    => '/services/',
-		'cta'    => 'View services',
-		'color'  => '#14532d',
-	],
-	'multiinfo' => [
-		'icon'   => '📚',
-		'title'  => 'Info Hub',
-		'desc'   => 'In-depth guides on buying, selling, renting & more.',
-		'url'    => '/multiinfo/',
-		'cta'    => 'Explore topics',
-		'color'  => '#78350f',
-	],
-	'guides' => [
-		'icon'   => '📖',
-		'title'  => 'Guides to Know',
-		'desc'   => 'Explore detailed step-by-step guidance designed to help you confidently navigate every stage of your property journey, from searching for the right home to securing the perfect deal and moving in successfully.',
-		'url'    => '/guides/',
-		'cta'    => 'Browse guides',
-		'color'  => '#581c87',
-	],
-];
+$hp_tiles = function_exists('get_client_hp_tiles') ? get_client_hp_tiles() : [];
 /* ── END EDIT ZONE ────────────────────────────────────────────────────────── */
 
 get_header();
@@ -147,7 +106,7 @@ $blog_cat  = $blog_cats[0] ?? null;
   <?php get_template_part( 'components/nif-background-imagecard' ); ?>
 
   <!-- ══ BENTO GRID ════════════════════════════════════════════════════════ -->
-  <section class="hp-grid-section" aria-label="<?php esc_attr_e( 'Explore', 'ah-theme' ); ?>">
+  <section class="hp-grid-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_EXPLORE ); ?>">
     <div class="container">
       <div class="hp-bento">
 
@@ -161,7 +120,7 @@ $blog_cat  = $blog_cats[0] ?? null;
               <?php if ( $blog_cat ) : ?>
               <span class="nif-tile-badge"><?php echo esc_html( strtoupper( $blog_cat->name ) ); ?></span>
               <?php endif; ?>
-              <span class="hp-bento__blog-tag"><?php esc_html_e( 'Latest Article', 'ah-theme' ); ?></span>
+              <span class="hp-bento__blog-tag"><?php echo esc_html( TXT_LATEST_ARTICLE ); ?></span>
             </div>
             <h2 class="hp-bento__blog-title">
               <a href="<?php echo esc_url( $bd['permalink'] ); ?>"><?php echo esc_html( get_the_title( $blog_post->ID ) ); ?></a>
@@ -175,7 +134,7 @@ $blog_cat  = $blog_cats[0] ?? null;
               </span>
               <?php endif; ?>
               <a href="<?php echo esc_url( $bd['permalink'] ); ?>" class="hp-bento__blog-cta">
-                <?php esc_html_e( 'Continue reading', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+                <?php echo esc_html( TXT_CONTINUE_READING ); ?> <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
@@ -222,13 +181,13 @@ $blog_cat  = $blog_cats[0] ?? null;
             : '';
         ?>
         <article class="hp-bento__item hp-bento__news"
-                 <?php if ( $news_area ) echo 'style="grid-area:' . esc_attr( $news_area ) . '"'; ?>
+                 <?php if ( $news_area ) echo esc_html( TXT_STYLE_GRID_AREA_ESC_ATTR_NEWS_AREA ); ?>
                  data-aos="fade-up" data-aos-delay="<?php echo $_slot * 60; ?>">
           <a href="<?php echo esc_url( $news_link ); ?>"
              class="hp-bento__news-img" tabindex="-1" aria-hidden="true" <?php echo $target_attr; ?>>
             <?php if ( $news_thumb ) : ?>
               <img src="<?php echo esc_url( $news_thumb ); ?>"
-                   alt="<?php echo esc_attr( $news_title ); ?>"
+                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_NEWS_TITLE ); ?>"
                    loading="lazy" decoding="async">
             <?php else : ?>
               <div class="hp-bento__news-placeholder">📰</div>
@@ -249,7 +208,7 @@ $blog_cat  = $blog_cats[0] ?? null;
               </span>
               <?php endif; ?>
               <a href="<?php echo esc_url( $news_link ); ?>" class="hp-bento__news-link" <?php echo $target_attr; ?>>
-                <?php esc_html_e( 'Read more', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+                <?php echo esc_html( TXT_READ_MORE ); ?> <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
@@ -265,13 +224,13 @@ $blog_cat  = $blog_cats[0] ?? null;
           $fb_area  = $_news_areas[ $_slot ] ?? '';
         ?>
         <article class="hp-bento__item hp-bento__news"
-                 <?php if ( $fb_area ) echo 'style="grid-area:' . esc_attr( $fb_area ) . '"'; ?>
+                 <?php if ( $fb_area ) echo esc_html( TXT_STYLE_GRID_AREA_ESC_ATTR_FB_AREA ); ?>
                  data-aos="fade-up" data-aos-delay="<?php echo $_slot * 60; ?>">
           <a href="<?php echo esc_url( $fb_d['permalink'] ); ?>"
              class="hp-bento__news-img" tabindex="-1" aria-hidden="true">
             <?php if ( $fb_d['thumb_url'] ) : ?>
               <img src="<?php echo esc_url( $fb_d['thumb_url'] ); ?>"
-                   alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
                    loading="lazy" decoding="async">
             <?php else : ?>
               <div class="hp-bento__news-placeholder">📰</div>
@@ -292,7 +251,7 @@ $blog_cat  = $blog_cats[0] ?? null;
               </span>
               <?php endif; ?>
               <a href="<?php echo esc_url( $fb_d['permalink'] ); ?>" class="hp-bento__news-link">
-                <?php esc_html_e( 'Read more', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+                <?php echo esc_html( TXT_READ_MORE ); ?> <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>

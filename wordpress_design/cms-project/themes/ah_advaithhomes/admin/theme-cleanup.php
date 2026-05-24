@@ -11,8 +11,8 @@ $cleaned = ! empty( $_GET['cleaned'] );
   <div class="ah-admin-header">
     <div class="ah-admin-logo" style="background:#dc2626">🗑</div>
     <div>
-      <h1><?php esc_html_e( 'Cleanup Data', 'ah-theme' ); ?></h1>
-      <p><?php esc_html_e( 'Remove all mock/seeded data from CMS tables and WordPress options.', 'ah-theme' ); ?></p>
+      <h1><?php echo esc_html( TXT_CLEANUP_DATA ); ?></h1>
+      <p><?php echo esc_html( TXT_REMOVE_ALL_MOCK_SEEDED_DATA_FROM_CMS_TABLES_AND_WO ); ?></p>
     </div>
   </div>
 

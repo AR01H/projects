@@ -23,7 +23,7 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
     <div class="ah-admin-logo">⬆</div>
     <div>
       <h1>Mock Data & Schema Installer</h1>
-      <p>Install the database schema and demo content for Advaith Homes. All demo content is driven by CSV files in <code>mock_data/csv/</code> - edit CSVs before installing to customise.</p>
+      <p>Install the database schema and demo content for <?php echo esc_html( CLIENT_FULL_TITLE ); ?>. All demo content is driven by CSV files in <code>mock_data/csv/</code> - edit CSVs before installing to customise.</p>
     </div>
   </div>
 

@@ -6,11 +6,11 @@ $posts     = $args['posts']     ?? [];
 $max_pages = $args['max_pages'] ?? 1;
 $paged     = $args['paged']     ?? 1;
 $base_url  = $args['base_url']  ?? get_permalink();
-$eyebrow   = $args['eyebrow']   ?? __( 'In Brief', 'ah-theme' );
+$eyebrow   = $args['eyebrow']   ?? TXT_IN_BRIEF;
 
 if ( empty( $posts ) ) return;
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
 
   <div class="nif-portal-section-row">
     <span class="nif-section-label--primary"><?php echo esc_html( $eyebrow ); ?></span>
@@ -30,7 +30,7 @@ if ( empty( $posts ) ) return;
       <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-brief-item__img" tabindex="-1" aria-hidden="true">
         <?php if ( $d['thumb_url'] ) : ?>
           <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-               alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+               alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
                loading="lazy" decoding="async">
         <?php else : ?>
           <span class="nif-brief-item__placeholder" aria-hidden="true"><?php echo esc_html( $d['emoji'] ); ?></span>
@@ -65,7 +65,7 @@ if ( empty( $posts ) ) return;
             <span class="nif-meta-time"><?php echo esc_html( $d['read_time'] ); ?></span>
           <?php endif; ?>
           <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-brief-item__cta">
-            <?php esc_html_e( 'Continue reading', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+            <?php echo esc_html( TXT_CONTINUE_READING ); ?> <span aria-hidden="true">→</span>
           </a>
         </div>
       </div>
@@ -88,8 +88,8 @@ if ( empty( $posts ) ) return;
       'type'      => 'array',
     ] );
     if ( $links ) : ?>
-  <nav class="nif-brief-pagination" aria-label="<?php esc_attr_e( 'Page navigation', 'ah-theme' ); ?>">
-    <?php foreach ( $links as $link ) echo '<span class="nif-brief-page-link">' . $link . '</span>'; ?>
+  <nav class="nif-brief-pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>">
+    <?php foreach ( $links as $link ) echo esc_html( TXT_SPAN_CLASS_NIF_BRIEF_PAGE_LINK_LINK_SPAN ); ?>
   </nav>
   <?php endif; ?>
   

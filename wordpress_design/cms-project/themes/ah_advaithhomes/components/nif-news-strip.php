@@ -13,16 +13,16 @@ defined( 'ABSPATH' ) || exit;
 
 $posts   = $args['posts']   ?? [];
 $see_all = $args['see_all'] ?? home_url( '/news/' );
-$eyebrow = $args['eyebrow'] ?? __( 'Latest News', 'ah-theme' );
+$eyebrow = $args['eyebrow'] ?? TXT_LATEST_NEWS;
 
 if ( empty( $posts ) ) return;
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
 
   <div class="nif-portal-section-row">
     <span class="nif-section-label--primary"><?php echo esc_html( $eyebrow ); ?></span>
     <a href="<?php echo esc_url( $see_all ); ?>" class="nif-more-link">
-      <?php esc_html_e( 'See all', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+      <?php echo esc_html( TXT_SEE_ALL ); ?> <span aria-hidden="true">→</span>
     </a>
   </div>
 
@@ -36,7 +36,7 @@ if ( empty( $posts ) ) return;
       <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-news-card__img-wrap" tabindex="-1" aria-hidden="true">
         <?php if ( $d['thumb_url'] ) : ?>
           <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-               alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+               alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
                loading="lazy" decoding="async">
         <?php else : ?>
           <div class="nif-news-card__placeholder" aria-hidden="true">

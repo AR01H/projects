@@ -28,12 +28,12 @@ $nav_cta = ah_get_nav_cta();
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<nav class="nav" id="mainNav" role="navigation" aria-label="<?php esc_attr_e( 'Main Navigation', 'ah-theme' ); ?>">
+<nav class="nav" id="mainNav" role="navigation" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_MAIN_NAVIGATION ); ?>">
 	<div class="container">
 		<div class="nav__inner">
-			<a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="nav__logo" aria-label="<?php bloginfo( 'name' ); ?> Home">
+			<a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="nav__logo" aria-label="<?php echo esc_attr( TXT_PHP_BLOGINFO_NAME_HOME ); ?>">
 				<?php if ( $has_logo ) : ?>
-					<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php bloginfo( 'name' ); ?>" style="height:40px">
+					<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_BLOGINFO_NAME ); ?>" style="height:40px">
 					<span><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 				<?php else : ?>
 					<div class="nav__logo-mark"><?php echo esc_html( CLIENT_SHORT_TITLE ); ?></div>
@@ -59,7 +59,7 @@ $nav_cta = ah_get_nav_cta();
 									<?php $is_hl = ! empty( $sub_item['highlight'] ); ?>
 									<a href="<?php echo esc_url( $sub_item['url'] ?? '#' ); ?>" class="nav__dropdown-item" role="menuitem">
 										<?php if ( ! empty( $sub_item['icon'] ) ) : ?>
-										<div class="nav__dropdown-item-icon"<?php if ( $is_hl ) echo ' style="background:var(--accent);color:#fff"'; ?>>
+										<div class="nav__dropdown-item-icon"<?php if ( $is_hl ) echo esc_html( TXT_STYLE_BACKGROUND_VAR_ACCENT_COLOR_FFF ); ?>>
 											<?php echo esc_html( $sub_item['icon'] ); ?>
 										</div>
 										<?php endif; ?>
@@ -87,7 +87,7 @@ $nav_cta = ah_get_nav_cta();
 
 			<div class="nav__actions">
 				<button class="nav__search-btn" id="ahSearchToggle"
-					aria-label="<?php esc_attr_e( 'Search', 'ah-theme' ); ?>"
+					aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SEARCH ); ?>"
 					aria-expanded="false" aria-controls="ahSearchPanel">
 					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 						<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -97,7 +97,7 @@ $nav_cta = ah_get_nav_cta();
 					<?php echo esc_html( $nav_cta['label'] ?? AH_LABEL_GET_HELP ); ?>
 				</a>
 				<button class="nav__hamburger" id="ahHamburger"
-					aria-label="<?php esc_attr_e( 'Open menu', 'ah-theme' ); ?>"
+					aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_OPEN_MENU ); ?>"
 					aria-expanded="false" aria-controls="ahMobileNav">
 					<span></span><span></span><span></span>
 				</button>
@@ -114,10 +114,10 @@ $nav_cta = ah_get_nav_cta();
 				<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
 			</svg>
 			<input type="search" id="ahSearchInput" class="nav__search-input"
-				placeholder="<?php printf( esc_attr__( 'Search %s and guides…', 'ah-theme' ), AH_TERM_LOWER_PLURAL ); ?>"
-				autocomplete="off" aria-label="<?php esc_attr_e( 'Search', 'ah-theme' ); ?>">
+				placeholder="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_SEARCH_S_AND_GUIDES_AH_TERM_LOWER_PLURAL ); ?>"
+				autocomplete="off" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SEARCH ); ?>">
 			<button class="nav__search-close" id="ahSearchClose"
-				aria-label="<?php esc_attr_e( 'Close search', 'ah-theme' ); ?>">
+				aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_CLOSE_SEARCH ); ?>">
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 			</button>
 		</div>
@@ -125,7 +125,7 @@ $nav_cta = ah_get_nav_cta();
 	</div>
 </div>
 
-<nav class="nav__mobile" id="ahMobileNav" aria-label="<?php esc_attr_e( 'Mobile Navigation', 'ah-theme' ); ?>">
+<nav class="nav__mobile" id="ahMobileNav" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_MOBILE_NAVIGATION ); ?>">
 	<a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="nav__mobile-link"><?php echo esc_html( AH_LABEL_HOME ); ?></a>
 
 	<?php foreach ( $theme_nav as $item ) : ?>
@@ -143,7 +143,7 @@ $nav_cta = ah_get_nav_cta();
 					<?php foreach ( (array) $item['submenu'] as $sub_item ) : ?>
 						<?php $sub_item = is_object( $sub_item ) ? (array) $sub_item : (array) $sub_item; ?>
 						<a href="<?php echo esc_url( $sub_item['url'] ?? '#' ); ?>" class="nav__mobile-link"
-							<?php if ( ! empty( $sub_item['highlight'] ) ) echo 'style="color:var(--accent);font-weight:700"'; ?>>
+							<?php if ( ! empty( $sub_item['highlight'] ) ) echo esc_html( TXT_STYLE_COLOR_VAR_ACCENT_FONT_WEIGHT_700 ); ?>>
 							<?php echo esc_html( trim( ( $sub_item['icon'] ?? '' ) . ' ' . ( $sub_item['label'] ?? '' ) ) ); ?>
 						</a>
 					<?php endforeach; ?>

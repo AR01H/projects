@@ -19,24 +19,24 @@ class AH_Theme_Admin {
 
 	public static function register_menus(): void {
 		add_menu_page(
-			__( 'Advaith HM CMS', 'ah-theme' ),
-			__( 'Advaith HM CMS', 'ah-theme' ),
+			CLIENT_PRIMARY_TITLE . ' CMS',
+			CLIENT_PRIMARY_TITLE . ' CMS',
 			'manage_options',
 			'ah-theme-admin',
 			[ self::class, 'page_dashboard' ],
 			'dashicons-admin-tools',
 			3
 		);
-		add_submenu_page( 'ah-theme-admin', __( 'Overview',          'ah-theme' ), __( 'Overview',          'ah-theme' ), 'manage_options', 'ah-theme-admin',    [ self::class, 'page_dashboard' ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Section Controls',  'ah-theme' ), __( 'Section Controls',  'ah-theme' ), 'manage_options', 'ah-theme-sections', [ self::class, 'page_sections'  ] );
+		add_submenu_page( 'ah-theme-admin', TXT_OVERVIEW, TXT_OVERVIEW, 'manage_options', 'ah-theme-admin',    [ self::class, 'page_dashboard' ] );
+		add_submenu_page( 'ah-theme-admin', TXT_SECTION_CONTROLS, TXT_SECTION_CONTROLS, 'manage_options', 'ah-theme-sections', [ self::class, 'page_sections'  ] );
 		if ( ! class_exists( 'AH_Admin_Bootstrap' ) ) {
-			add_submenu_page( 'ah-theme-admin', __( 'Navigation', 'ah-theme' ), __( 'Navigation', 'ah-theme' ), 'manage_options', 'ah-theme-nav', [ self::class, 'page_nav' ] );
+			add_submenu_page( 'ah-theme-admin', TXT_NAVIGATION, TXT_NAVIGATION, 'manage_options', 'ah-theme-nav', [ self::class, 'page_nav' ] );
 		}
-		add_submenu_page( 'ah-theme-admin', __( 'Content Controls',  'ah-theme' ), __( 'Content Controls',  'ah-theme' ), 'manage_options', 'ah-theme-content',     [ self::class, 'page_content'     ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Contact Submissions', 'ah-theme' ), __( 'Contact Submissions', 'ah-theme' ), 'manage_options', 'ah-theme-submissions', [ self::class, 'page_submissions' ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Install Mock Data', 'ah-theme' ), __( 'Install Mock Data', 'ah-theme' ), 'manage_options', 'ah-theme-mock',        [ self::class, 'page_mock'        ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Cleanup Data',      'ah-theme' ), __( 'Cleanup Data',      'ah-theme' ), 'manage_options', 'ah-theme-cleanup',  [ self::class, 'page_cleanup'   ] );
-		add_submenu_page( 'ah-theme-admin', __( 'Guide To Use',      'ah-theme' ), __( 'Guide To Use',      'ah-theme' ), 'manage_options', 'ah-theme-guide',  [ self::class, 'page_guide'   ] );
+		add_submenu_page( 'ah-theme-admin', TXT_CONTENT_CONTROLS, TXT_CONTENT_CONTROLS, 'manage_options', 'ah-theme-content',     [ self::class, 'page_content'     ] );
+		add_submenu_page( 'ah-theme-admin', TXT_CONTACT_SUBMISSIONS, TXT_CONTACT_SUBMISSIONS, 'manage_options', 'ah-theme-submissions', [ self::class, 'page_submissions' ] );
+		add_submenu_page( 'ah-theme-admin', TXT_INSTALL_MOCK_DATA, TXT_INSTALL_MOCK_DATA, 'manage_options', 'ah-theme-mock',        [ self::class, 'page_mock'        ] );
+		add_submenu_page( 'ah-theme-admin', TXT_CLEANUP_DATA, TXT_CLEANUP_DATA, 'manage_options', 'ah-theme-cleanup',  [ self::class, 'page_cleanup'   ] );
+		add_submenu_page( 'ah-theme-admin', TXT_GUIDE_TO_USE, TXT_GUIDE_TO_USE, 'manage_options', 'ah-theme-guide',  [ self::class, 'page_guide'   ] );
 		}
 
 	public static function enqueue_assets( string $hook ): void {

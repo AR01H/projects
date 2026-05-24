@@ -341,8 +341,8 @@ $tab_base_url = admin_url( 'admin.php?page=ah-theme-guide' );
   <div class="ah-admin-header">
     <div class="ah-admin-logo">AH</div>
     <div>
-      <h1><?php esc_html_e( 'Guide To Use', 'ah-theme' ); ?></h1>
-      <p><?php esc_html_e( 'Reference docs, rules, and snippets for this theme', 'ah-theme' ); ?></p>
+      <h1><?php echo esc_html( TXT_GUIDE_TO_USE ); ?></h1>
+      <p><?php echo esc_html( TXT_REFERENCE_DOCS_RULES_AND_SNIPPETS_FOR_THIS_THEME ); ?></p>
     </div>
   </div>
 

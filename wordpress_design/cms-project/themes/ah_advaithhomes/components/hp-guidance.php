@@ -19,10 +19,10 @@ if ( class_exists( 'AH_DB_Helper' ) ) {
 
 if ( empty( $parent_terms ) ) return;
 ?>
-<section class="hp-guidance" aria-label="<?php esc_attr_e( 'Personalised Guidance', 'ah-theme' ); ?>">
+<section class="hp-guidance" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PERSONALISED_GUIDANCE ); ?>">
   <div class="container">
-    <p class="hp-guidance__eyebrow"><?php esc_html_e( 'Personalised Guidance', 'ah-theme' ); ?></p>
-    <h2 class="hp-guidance__title"><?php esc_html_e( 'I need advice on…', 'ah-theme' ); ?></h2>
+    <p class="hp-guidance__eyebrow"><?php echo esc_html( TXT_PERSONALISED_GUIDANCE ); ?></p>
+    <h2 class="hp-guidance__title"><?php echo esc_html( TXT_I_NEED_ADVICE_ON ); ?></h2>
     <div class="hp-guidance__chips" role="list">
       <?php foreach ( $parent_terms as $pt ) :
         $color = ! empty( $pt->color ) ? $pt->color : '#f59e0b';

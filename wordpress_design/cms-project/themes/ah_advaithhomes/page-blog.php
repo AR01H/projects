@@ -41,9 +41,9 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
 <?php if ( $wp_cats ) : ?>
 <div style="border-bottom:1px solid var(--border);background:var(--bg-alt)">
   <div class="container" style="padding-top:16px;padding-bottom:16px">
-    <div class="filter-tabs" role="tablist" aria-label="Blog categories">
+    <div class="filter-tabs" role="tablist" aria-label="<?php echo esc_attr( TXT_BLOG_CATEGORIES ); ?>">
       <a href="<?php echo esc_url( get_permalink() ); ?>"
-         class="filter-tab<?php if ( ! $active_cat ) echo ' filter-tab--active'; ?>"
+         class="filter-tab<?php if ( ! $active_cat ) echo esc_html( TXT_FILTER_TAB_ACTIVE ); ?>"
          role="tab" aria-selected="<?php echo ! $active_cat ? 'true' : 'false'; ?>">
         <?php echo esc_html( AH_LABEL_ALL_POSTS ); ?>
       </a>
@@ -51,7 +51,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
         $is_active = ( $active_cat === $cat->slug );
       ?>
       <a href="<?php echo esc_url( add_query_arg( 'category', $cat->slug, get_permalink() ) ); ?>"
-         class="filter-tab<?php if ( $is_active ) echo ' filter-tab--active'; ?>"
+         class="filter-tab<?php if ( $is_active ) echo esc_html( TXT_FILTER_TAB_ACTIVE ); ?>"
          role="tab" aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>">
         <?php echo esc_html( $cat->name ); ?>
         <span style="font-size:.75rem;opacity:.7;margin-left:4px">(<?php echo esc_html( $cat->count ); ?>)</span>
@@ -63,7 +63,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
 <?php endif; ?>
 
 <!-- ── Blog Grid ──────────────────────────────────────────────────────────── -->
-<section class="section" aria-label="Blog posts">
+<section class="section" aria-label="<?php echo esc_attr( TXT_BLOG_POSTS ); ?>">
   <div class="container">
 
     <?php if ( $blog_query->have_posts() ) : ?>
@@ -116,7 +116,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
           <div class="blog-card__img-wrap">
             <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__img-link" tabindex="-1" aria-hidden="true">
               <?php if ( $thumb_url ) : ?>
-              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $post_title ); ?>" class="blog-card__img" loading="lazy">
+              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_POST_TITLE ); ?>" class="blog-card__img" loading="lazy">
               <?php else : ?>
               <div class="blog-card__img-placeholder">✍️</div>
               <?php endif; ?>
@@ -162,9 +162,9 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
         ] );
         if ( $links ) :
       ?>
-      <nav class="pagination" aria-label="Blog navigation" style="margin-top:48px">
+      <nav class="pagination" aria-label="<?php echo esc_attr( TXT_BLOG_NAVIGATION ); ?>" style="margin-top:48px">
         <ul class="pagination__list">
-          <?php foreach ( $links as $link ) echo '<li class="pagination__item">' . $link . '</li>'; ?>
+          <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
         </ul>
       </nav>
       <?php endif; endif; ?>
@@ -191,7 +191,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
 </section>
 
 <!-- ── Newsletter CTA ─────────────────────────────────────────────────────── -->
-<section class="section section--pattern" aria-label="Newsletter">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_NEWSLETTER ); ?>">
   <div class="container container--sm">
     <div class="newsletter-block text-center" data-aos="fade-up">
       <span class="section__eyebrow">Stay Informed</span>

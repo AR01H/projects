@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 $team = ah_get_team();
 if ( empty( $team ) ) return;
 ?>
-<section class="section section--alt" aria-label="Meet the team" style="background-color: var(--client-color-50);">
+<section class="section section--alt" aria-label="<?php echo esc_attr( TXT_MEET_THE_TEAM ); ?>" style="background-color: var(--client-color-50);">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Our Team</span>

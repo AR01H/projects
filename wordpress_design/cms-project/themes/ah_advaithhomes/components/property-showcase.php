@@ -13,7 +13,7 @@ $gradients = [
 	'linear-gradient(135deg,#3b0764,#6d28d9)',
 ];
 ?>
-<section class="section section--pattern" aria-label="Featured properties">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_FEATURED_PROPERTIES ); ?>">
   <div class="container">
     <div class="section__header text-center" data-aos="fade-up">
       <span class="section__eyebrow">Recent Acquisitions</span>
@@ -35,7 +35,7 @@ $gradients = [
           <div class="property-card-3d">
             <div class="property-card-3d__img">
               <?php if ( ! empty( $prop['image_url'] ) ) : ?>
-                <img src="<?php echo esc_url( $prop['image_url'] ); ?>" alt="<?php echo esc_attr( $prop['location'] ?? '' ); ?>">
+                <img src="<?php echo esc_url( $prop['image_url'] ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_PROP_LOCATION ); ?>">
               <?php else : ?>
                 <div class="property-card-3d__img-placeholder" style="background:<?php echo esc_attr( $grad ); ?>">
                   <span style="font-size:4rem"><?php echo $emoji; ?></span>
@@ -59,9 +59,9 @@ $gradients = [
       </div>
 
       <div class="property-showcase-nav">
-        <button class="carousel-nav-btn" data-carousel-prev aria-label="Previous property">←</button>
+        <button class="carousel-nav-btn" data-carousel-prev aria-label="<?php echo esc_attr( TXT_PREVIOUS_PROPERTY ); ?>">←</button>
         <span style="font-size:.82rem;color:var(--text-muted)" data-carousel-counter>1 / <?php echo count( $properties ); ?></span>
-        <button class="carousel-nav-btn" data-carousel-next aria-label="Next property">→</button>
+        <button class="carousel-nav-btn" data-carousel-next aria-label="<?php echo esc_attr( TXT_NEXT_PROPERTY ); ?>">→</button>
       </div>
 
     </div>

@@ -9,10 +9,10 @@
       </p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
         <a href="<?php echo esc_url( home_url( AH_LINK_HOME ) ); ?>" class="btn btn-primary">
-          <?php esc_html_e( 'Back to Home', 'ah-theme' ); ?>
+          <?php echo esc_html( TXT_BACK_TO_HOME ); ?>
         </a>
         <a href="<?php echo esc_url( home_url( AH_LINK_GUIDES ) ); ?>" class="btn btn-outline">
-          <?php esc_html_e( 'Browse Guides', 'ah-theme' ); ?>
+          <?php echo esc_html( TXT_BROWSE_GUIDES ); ?>
         </a>
         <a href="<?php echo esc_url( home_url( AH_LINK_CONTACT_US ) ); ?>" class="btn btn-outline">
           <?php echo esc_html( AH_LABEL_CONTACT_US ); ?>

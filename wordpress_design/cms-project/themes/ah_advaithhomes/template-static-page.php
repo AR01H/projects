@@ -39,7 +39,7 @@ if ( ! $no_header ) {
 	<iframe id="ah-static-frame"
 			srcdoc="<?php echo htmlspecialchars( $html_raw, ENT_QUOTES, 'UTF-8' ); ?>"
 			style="width:100%;border:none;display:block;min-height:80vh;background:#fff;margin-top:var(--nav-h)"
-			title="<?php echo esc_attr( get_the_title() ); ?>">
+			title="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE ); ?>">
 	</iframe>
 	<script>
 	(function(){

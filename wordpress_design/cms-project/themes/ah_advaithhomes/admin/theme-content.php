@@ -54,7 +54,7 @@ $post_suggestions = array_map( function( $p ) {
       <div class="ah-picker-wrap">
         <div class="ah-tag-picker" data-picker="featured_post_ids"
              data-suggestions='<?php echo esc_attr( wp_json_encode( $post_suggestions ) ); ?>'>
-          <input type="text" class="ah-tag-picker__input" placeholder="Type a post title…" autocomplete="off">
+          <input type="text" class="ah-tag-picker__input" placeholder="<?php echo esc_attr( TXT_TYPE_A_POST_TITLE ); ?>" autocomplete="off">
         </div>
         <div class="ah-suggestions" style="display:none"></div>
       </div>
@@ -76,8 +76,8 @@ $post_suggestions = array_map( function( $p ) {
           $sig = is_array($sig) ? $sig : (array) $sig;
         ?>
         <div class="ah-nav-row">
-          <input type="text" name="trust_signals[<?php echo $i; ?>][icon]" value="<?php echo esc_attr( $sig['icon'] ?? '' ); ?>" placeholder="⭐" style="width:60px" title="Emoji icon">
-          <input type="text" name="trust_signals[<?php echo $i; ?>][text]" value="<?php echo esc_attr( $sig['text'] ?? '' ); ?>" placeholder="Trust signal text" style="flex:1;min-width:300px">
+          <input type="text" name="trust_signals[<?php echo $i; ?>][icon]" value="<?php echo esc_attr( $sig['icon'] ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_EMPTY ); ?>" style="width:60px" title="<?php echo esc_attr( TXT_EMOJI_ICON ); ?>">
+          <input type="text" name="trust_signals[<?php echo $i; ?>][text]" value="<?php echo esc_attr( $sig['text'] ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_TRUST_SIGNAL_TEXT ); ?>" style="flex:1;min-width:300px">
           <button type="button" class="button ah-nav-remove-row">✕</button>
         </div>
         <?php endforeach; ?>
@@ -96,14 +96,14 @@ $post_suggestions = array_map( function( $p ) {
           $prop = is_array($prop) ? $prop : (array) $prop;
         ?>
         <div class="ah-nav-row" style="flex-wrap:wrap;gap:8px">
-          <input type="text" name="properties[<?php echo $i; ?>][emoji]"    value="<?php echo esc_attr( $prop['emoji']    ?? '' ); ?>" placeholder="🏡" style="width:55px" title="Emoji">
-          <input type="text" name="properties[<?php echo $i; ?>][price]"    value="<?php echo esc_attr( $prop['price']    ?? '' ); ?>" placeholder="£850k" style="width:90px">
-          <input type="text" name="properties[<?php echo $i; ?>][location]" value="<?php echo esc_attr( $prop['location'] ?? '' ); ?>" placeholder="Richmond" style="width:140px">
-          <input type="text" name="properties[<?php echo $i; ?>][area]"     value="<?php echo esc_attr( $prop['area']     ?? '' ); ?>" placeholder="South West London" style="width:180px">
-          <input type="text" name="properties[<?php echo $i; ?>][saved]"    value="<?php echo esc_attr( $prop['saved']    ?? '' ); ?>" placeholder="Saved £20k" style="width:110px">
-          <input type="text" name="properties[<?php echo $i; ?>][type]"     value="<?php echo esc_attr( $prop['type']     ?? '' ); ?>" placeholder="Detached" style="width:110px">
-          <input type="number" name="properties[<?php echo $i; ?>][beds]"   value="<?php echo esc_attr( $prop['beds']     ?? '' ); ?>" placeholder="Beds" style="width:60px" min="1" max="20">
-          <input type="text" name="properties[<?php echo $i; ?>][result]"   value="<?php echo esc_attr( $prop['result']   ?? '' ); ?>" placeholder="Result summary" style="width:220px">
+          <input type="text" name="properties[<?php echo $i; ?>][emoji]"    value="<?php echo esc_attr( $prop['emoji']    ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_EMPTY_1 ); ?>" style="width:55px" title="<?php echo esc_attr( TXT_EMOJI ); ?>">
+          <input type="text" name="properties[<?php echo $i; ?>][price]"    value="<?php echo esc_attr( $prop['price']    ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_850K ); ?>" style="width:90px">
+          <input type="text" name="properties[<?php echo $i; ?>][location]" value="<?php echo esc_attr( $prop['location'] ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_RICHMOND ); ?>" style="width:140px">
+          <input type="text" name="properties[<?php echo $i; ?>][area]"     value="<?php echo esc_attr( $prop['area']     ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_SOUTH_WEST_LONDON ); ?>" style="width:180px">
+          <input type="text" name="properties[<?php echo $i; ?>][saved]"    value="<?php echo esc_attr( $prop['saved']    ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_SAVED_20K ); ?>" style="width:110px">
+          <input type="text" name="properties[<?php echo $i; ?>][type]"     value="<?php echo esc_attr( $prop['type']     ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_DETACHED ); ?>" style="width:110px">
+          <input type="number" name="properties[<?php echo $i; ?>][beds]"   value="<?php echo esc_attr( $prop['beds']     ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_BEDS ); ?>" style="width:60px" min="1" max="20">
+          <input type="text" name="properties[<?php echo $i; ?>][result]"   value="<?php echo esc_attr( $prop['result']   ?? '' ); ?>" placeholder="<?php echo esc_attr( TXT_RESULT_SUMMARY ); ?>" style="width:220px">
           <button type="button" class="button ah-nav-remove-row">✕</button>
         </div>
         <?php endforeach; ?>
@@ -172,7 +172,7 @@ $post_suggestions = array_map( function( $p ) {
       <div class="ah-picker-wrap">
         <div class="ah-tag-picker" data-picker="static_quick_links"
              data-suggestions='<?php echo esc_attr( wp_json_encode( $static_page_sugg ) ); ?>'>
-          <input type="text" class="ah-tag-picker__input" placeholder="Type a page name…" autocomplete="off">
+          <input type="text" class="ah-tag-picker__input" placeholder="<?php echo esc_attr( TXT_TYPE_A_PAGE_NAME ); ?>" autocomplete="off">
         </div>
         <div class="ah-suggestions" style="display:none"></div>
       </div>
@@ -194,7 +194,7 @@ $post_suggestions = array_map( function( $p ) {
           </tr>
           <tr>
             <th>Email Subject Prefix</th>
-            <td><input type="text" name="contact[subject_prefix]" value="<?php echo esc_attr( $contact['subject_prefix'] ?? '' ); ?>" class="regular-text" placeholder="[Advaith Homes Enquiry]"></td>
+            <td><input type="text" name="contact[subject_prefix]" value="<?php echo esc_attr( $contact['subject_prefix'] ?? '' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_CLIENT_ENQUIRY_SUBJECT_PREFIX ); ?>"></td>
           </tr>
           <tr>
             <th>Thank-You Message</th>
@@ -245,9 +245,9 @@ $post_suggestions = array_map( function( $p ) {
       {n:'result',   w:'220px', p:'Result summary'},
     ];
     row.innerHTML = fields.map(function(f) {
-      return '<input type="text" name="properties[' + count + '][' + f.n + ']" placeholder="' + f.p + '" style="width:' + f.w + '">';
+      return '<input type="text" name="properties[' + count + '][' + f.n + ']" placeholder="<?php echo esc_attr( TXT_F_P ); ?>" style="width:' + f.w + '">';
     }).join('') +
-      '<input type="number" name="properties[' + count + '][beds]" placeholder="Beds" style="width:60px" min="1" max="20">' +
+      '<input type="number" name="properties[' + count + '][beds]" placeholder="<?php echo esc_attr( TXT_BEDS ); ?>" style="width:60px" min="1" max="20">' +
       '<button type="button" class="button ah-nav-remove-row">✕</button>';
     rows.appendChild(row);
   });
@@ -292,7 +292,7 @@ $post_suggestions = array_map( function( $p ) {
       if (selected.find(function(t){return t.id===item.id;})) return;
       selected.push(item);
       var tag=document.createElement('span'); tag.className='ah-tag-picker__tag';
-      tag.innerHTML='<span>'+item.label+'</span><button type="button" aria-label="Remove">×</button>';
+      tag.innerHTML='<span>'+item.label+'</span><button type="button" aria-label="<?php echo esc_attr( TXT_REMOVE ); ?>">×</button>';
       tag.querySelector('button').addEventListener('click',function(){
         selected=selected.filter(function(t){return t.id!==item.id;});
         tag.remove(); sync();
@@ -330,8 +330,8 @@ $post_suggestions = array_map( function( $p ) {
     var row   = document.createElement('div');
     row.className = 'ah-nav-row';
     row.innerHTML =
-      '<input type="text" name="trust_signals[' + count + '][icon]" placeholder="⭐" style="width:60px" title="Emoji icon">' +
-      '<input type="text" name="trust_signals[' + count + '][text]" placeholder="Trust signal text" style="flex:1;min-width:300px">' +
+      '<input type="text" name="trust_signals[' + count + '][icon]" placeholder="<?php echo esc_attr( TXT_EMPTY ); ?>" style="width:60px" title="<?php echo esc_attr( TXT_EMOJI_ICON ); ?>">' +
+      '<input type="text" name="trust_signals[' + count + '][text]" placeholder="<?php echo esc_attr( TXT_TRUST_SIGNAL_TEXT ); ?>" style="flex:1;min-width:300px">' +
       '<button type="button" class="button ah-nav-remove-row">✕</button>';
     rows.appendChild(row);
   });

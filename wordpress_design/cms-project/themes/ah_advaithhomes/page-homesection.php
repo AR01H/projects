@@ -15,7 +15,7 @@
 <!-- ── How It Works ─────────────────────────────────────────────────────── -->
 <?php if ( ah_section_visible( 'home_process' ) ) : ?>
 <?php $steps = ah_get_process_steps(); if ( $steps ) : ?>
-<section class="section" aria-label="How we work">
+<section class="section" aria-label="<?php echo esc_attr( TXT_HOW_WE_WORK ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">The Process</span>
@@ -64,7 +64,7 @@
 $blog_posts = get_posts( [ 'numberposts' => 4, 'post_status' => 'publish' ] );
 if ( $blog_posts ) :
 ?>
-<section class="section" aria-label="Latest from the blog" style="background-color: var(--bg-alt);">
+<section class="section" aria-label="<?php echo esc_attr( TXT_LATEST_FROM_THE_BLOG ); ?>" style="background-color: var(--bg-alt);">
   <div class="container">
     <div class="section__header flex justify-between items-center flex-wrap gap-16">
       <div>

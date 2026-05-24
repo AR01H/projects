@@ -50,13 +50,13 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 			],
 		] ); ?>
 
-		<article class="section" aria-label="<?php esc_attr_e( 'News article', 'ah-theme' ); ?>">
+		<article class="section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_ARTICLE ); ?>">
 		  <div class="container">
 
 		    <!-- Back link -->
 		    <a href="<?php echo esc_url( $base_url ); ?>" class="news-single__back" style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--accent);text-decoration:none;margin-bottom:32px">
 		      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-		      <?php esc_html_e( 'Back to All News', 'ah-theme' ); ?>
+		      <?php echo esc_html( TXT_BACK_TO_ALL_NEWS ); ?>
 		    </a>
 
 			
@@ -74,7 +74,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 					<?php if ( $s_thumb ) : ?>
 					<div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/7;max-width:400px">
 					  <img src="<?php echo esc_url( $s_thumb ); ?>"
-						   alt="<?php echo esc_attr( $s_title ); ?>"
+						   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_S_TITLE ); ?>"
 						   style="width:100%;height:100%;object-fit:cover"
 						   loading="eager" decoding="async">
 					</div>
@@ -90,7 +90,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		    <!-- CTA back -->
 		    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border)">
 		      <a href="<?php echo esc_url( $base_url ); ?>" class="btn btn-outline">
-		        ← <?php esc_html_e( 'All News', 'ah-theme' ); ?>
+		        ← <?php echo esc_html( TXT_ALL_NEWS_1 ); ?>
 		      </a>
 		    </div>
 
@@ -197,10 +197,10 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
-	'eyebrow'    => __( 'Stay Informed', 'ah-theme' ),
-	'title'      => __( 'All', 'ah-theme' ),
-	'title_em'   => __( 'News', 'ah-theme' ),
-	'desc'       => __( 'Market updates, property insights, and buying tips - everything in one place, ordered by date.', 'ah-theme' ),
+	'eyebrow'    => TXT_STAY_INFORMED,
+	'title'      => TXT_ALL,
+	'title_em'   => TXT_NEWS,
+	'desc'       => TXT_MARKET_UPDATES_PROPERTY_INSIGHTS_AND_BUYING_TIPS_E,
 	'breadcrumb' => [
 		[ 'Home', home_url( '/' ) ],
 		[ 'All News', '' ],
@@ -211,11 +211,11 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
 <?php if ( ! empty( $unique_terms ) ) : ?>
 <div style="border-bottom:1px solid var(--border);background:var(--bg-alt)">
   <div class="container" style="padding-top:14px;padding-bottom:14px">
-    <div class="filter-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Filter by category', 'ah-theme' ); ?>">
+    <div class="filter-tabs" role="tablist" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_BY_CATEGORY ); ?>">
       <a href="<?php echo esc_url( $base_url ); ?>"
          class="filter-tab<?php echo ! $active_cat ? ' filter-tab--active' : ''; ?>"
          role="tab" aria-selected="<?php echo ! $active_cat ? 'true' : 'false'; ?>">
-        <?php esc_html_e( 'All', 'ah-theme' ); ?>
+        <?php echo esc_html( TXT_ALL ); ?>
       </a>
       <?php foreach ( $unique_terms as $term ) :
         $is_active = ( $active_cat === $term->slug );
@@ -232,7 +232,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
 <?php endif; ?>
 
 <!-- ── News-card grid ─────────────────────────────────────────────────────── -->
-<section class="section" aria-label="<?php esc_attr_e( 'News articles', 'ah-theme' ); ?>">
+<section class="section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_ARTICLES ); ?>">
   <div class="container">
 
     <?php if ( ! empty( $news_items ) ) : ?>
@@ -267,7 +267,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
              class="blog-card__img-link" tabindex="-1" aria-hidden="true">
             <?php if ( $thumb_url ) : ?>
               <img src="<?php echo esc_url( $thumb_url ); ?>"
-                   alt="<?php echo esc_attr( $item_title ); ?>"
+                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_ITEM_TITLE ); ?>"
                    class="blog-card__img" loading="lazy" decoding="async">
             <?php else : ?>
               <div class="blog-card__img-placeholder">📰</div>
@@ -292,7 +292,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
                 <p class="blog-card__excerpt"><?php echo esc_html( $excerpt ); ?></p>
                 <a href="<?php echo esc_url( $item_link ); ?>" <?php echo $ext_target; ?>
                    class="blog-card__read-btn">
-                  <?php esc_html_e( 'Read more', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+                  <?php echo esc_html( TXT_READ_MORE ); ?> <span aria-hidden="true">→</span>
                 </a>
               </div>
             </div>
@@ -321,9 +321,9 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
       ] );
       if ( $links ) :
     ?>
-    <nav class="pagination" aria-label="<?php esc_attr_e( 'News navigation', 'ah-theme' ); ?>" style="margin-top:48px">
+    <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_NAVIGATION ); ?>" style="margin-top:48px">
       <ul class="pagination__list">
-        <?php foreach ( $links as $link ) echo '<li class="pagination__item">' . $link . '</li>'; ?>
+        <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
       </ul>
     </nav>
     <?php endif; endif; ?>
@@ -331,15 +331,15 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
     <?php else : ?>
     <div class="text-center" style="padding:80px 24px">
       <div style="font-size:3rem;margin-bottom:12px">📰</div>
-      <h2 style="font-size:1.25rem;margin-bottom:8px"><?php esc_html_e( 'No news yet', 'ah-theme' ); ?></h2>
+      <h2 style="font-size:1.25rem;margin-bottom:8px"><?php echo esc_html( TXT_NO_NEWS_YET ); ?></h2>
       <p style="color:var(--text-secondary)">
         <?php echo $active_cat
-          ? esc_html__( 'Nothing in this category yet.', 'ah-theme' )
-          : esc_html__( 'Check back soon for updates.', 'ah-theme' ); ?>
+          ? esc_html( TXT_NOTHING_IN_THIS_CATEGORY_YET )
+          : esc_html( TXT_CHECK_BACK_SOON_FOR_UPDATES ); ?>
       </p>
       <?php if ( $active_cat ) : ?>
       <a href="<?php echo esc_url( $base_url ); ?>" class="btn btn-outline" style="margin-top:16px">
-        <?php esc_html_e( 'View all →', 'ah-theme' ); ?>
+        <?php echo esc_html( TXT_VIEW_ALL ); ?>
       </a>
       <?php endif; ?>
     </div>

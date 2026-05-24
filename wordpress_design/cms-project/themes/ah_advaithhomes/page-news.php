@@ -111,7 +111,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
             <!-- Thumbnail -->
             <div class="nc4__thumb" <?php echo ! $img_url ? 'style="background:' . esc_attr( $fb_bg ) . '"' : ''; ?>>
               <?php if ( $img_url ) : ?>
-                <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $item->text ); ?>" loading="lazy">
+                <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_ITEM_TEXT ); ?>" loading="lazy">
               <?php else : ?>
                 <span class="nc4__thumb-icon" style="color:<?php echo esc_attr( $fb_fg ); ?>">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
@@ -142,7 +142,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
                 <button class="nc4__expand-btn" type="button"
                         aria-expanded="false"
                         aria-controls="<?php echo esc_attr( $card_id . '-detail' ); ?>"
-                        title="Expand">
+                        title="<?php echo esc_attr( TXT_EXPAND ); ?>">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
               <?php endif; ?>
@@ -150,7 +150,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
                 <a href="<?php echo esc_url( $url ); ?>"
                    target="<?php echo esc_attr( $target ); ?>"
                    <?php echo $target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
-                   class="nc4__link-btn" title="View details">
+                   class="nc4__link-btn" title="<?php echo esc_attr( TXT_VIEW_DETAILS ); ?>">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
               <?php endif; ?>
@@ -192,7 +192,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
       ?>
       <nav class="pagination" style="margin-top:32px">
         <ul class="pagination__list">
-          <?php foreach ( $links as $link ) echo '<li class="pagination__item">' . $link . '</li>'; ?>
+          <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
         </ul>
       </nav>
       <?php endif; endif; ?>

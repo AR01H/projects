@@ -15,7 +15,7 @@ $stats     = [
 ];
 $stats = array_filter( $stats, fn($s) => ! empty( $s['num'] ) );
 ?>
-<section class="hero" aria-label="Hero">
+<section class="hero" aria-label="<?php echo esc_attr( TXT_HERO ); ?>">
   <div class="container">
     <div class="hero__inner">
 

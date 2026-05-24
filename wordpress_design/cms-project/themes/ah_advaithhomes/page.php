@@ -16,7 +16,7 @@ if ( $_ah_static ) {
 	<iframe id="ah-static-frame"
 	        srcdoc="<?php echo htmlspecialchars( $html_raw, ENT_QUOTES, 'UTF-8' ); ?>"
 	        style="width:100%;border:none;display:block;min-height:80vh;background:#fff"
-	        title="<?php echo esc_attr( $_ah_queried->post_title ); ?>"></iframe>
+	        title="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_AH_QUERIED_POST_TITLE ); ?>"></iframe>
 </main>
 <script>
 (function(){

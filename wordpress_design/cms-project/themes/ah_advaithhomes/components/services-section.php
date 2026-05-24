@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 $services = ah_get_services();
 ?>
 
-<section class="section what-we-do" aria-label="Services">
+<section class="section what-we-do" aria-label="<?php echo esc_attr( TXT_SERVICES ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">What We Do</span>

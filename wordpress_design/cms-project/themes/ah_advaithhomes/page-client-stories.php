@@ -68,7 +68,7 @@ foreach ( $stats as $s ) {
 
 <!-- ── Reviews Grid ───────────────────────────────────────────────────────── -->
 <?php if ( $reviews ) : ?>
-<section class="section" aria-label="Client reviews">
+<section class="section" aria-label="<?php echo esc_attr( TXT_CLIENT_REVIEWS ); ?>">
   <div class="container">
     <div class="grid-3">
       <?php foreach ( $reviews as $i => $rev ) : ?>

@@ -7,7 +7,7 @@
       <h1 class="section__title" style="margin-top:12px">
         <?php
         printf(
-          esc_html__( 'Search results for: %s', 'ah-theme' ),
+          esc_html( TXT_SEARCH_RESULTS_FOR_S ),
           '<em>' . esc_html( get_search_query() ) . '</em>'
         );
         ?>
@@ -17,7 +17,7 @@
       <form action="<?php echo esc_url( home_url( '/' ) ); ?>" method="get" style="margin-top:20px;max-width:480px">
         <div style="display:flex;gap:8px">
           <input type="search" name="s" value="<?php echo esc_attr( get_search_query() ); ?>"
-                 placeholder="Search guides, news, topics…"
+                 placeholder="<?php echo esc_attr( TXT_SEARCH_GUIDES_NEWS_TOPICS ); ?>"
                  class="form-control">
           <button type="submit" class="btn btn-primary">Search</button>
         </div>
@@ -28,7 +28,7 @@
   <div class="container section">
     <?php if ( have_posts() ) : ?>
       <p style="margin-bottom:24px;color:var(--text-muted)">
-        <?php printf( esc_html__( 'Found %d results', 'ah-theme' ), $wp_query->found_posts ); ?>
+        <?php printf( esc_html( TXT_FOUND_D_RESULTS ), $wp_query->found_posts ); ?>
       </p>
       <div class="post-grid">
         <?php while ( have_posts() ) : the_post(); ?>

@@ -24,17 +24,17 @@ $pt_color      = ( $pt && ! empty( $pt->color ) ) ? $pt->color : 'var(--accent)'
 
 <?php if ( $pt && ! empty( $pt_child_cats ) ) : ?>
 <!-- ── In this topic ──────────────────────────────────────────────────────── -->
-<div class="nif-sb-card" aria-label="<?php esc_attr_e( 'Categories in this topic', 'ah-theme' ); ?>">
+<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_CATEGORIES_IN_THIS_TOPIC ); ?>">
 	<div class="nif-sb-card__header">
 		<span class="nif-section-label--primary">
-			<?php echo esc_html( sprintf( __( 'In: %s', 'ah-theme' ), $pt->name ) ); ?>
+			<?php echo esc_html( sprintf( TXT_IN_S, $pt->name ) ); ?>
 		</span>
 	</div>
 
 	<a href="<?php echo esc_url( home_url( '/' . $pt_slug . '/' ) ); ?>"
 	   class="nif-sb-pt-row nif-sb-pt-row--all<?php echo ! $active_cat ? ' nif-sb-pt-row--all-active' : ''; ?>">
 		<span class="nif-sb-pt-dot" style="background:<?php echo esc_attr( $pt_color ); ?>"></span>
-		<span class="nif-sb-pt-name"><?php esc_html_e( 'All', 'ah-theme' ); ?></span>
+		<span class="nif-sb-pt-name"><?php echo esc_html( TXT_ALL ); ?></span>
 		<span class="nif-sb-pt-arrow"><?php echo ! $active_cat ? '▾' : '›'; ?></span>
 	</a>
 
@@ -55,7 +55,7 @@ $pt_color      = ( $pt && ! empty( $pt->color ) ) ? $pt->color : 'var(--accent)'
 <div class="nif-sb-card nif-sb-card--topics-link">
 	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nif-sb-all-topics-link">
 		<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-		<?php esc_html_e( 'Browse all topics', 'ah-theme' ); ?>
+		<?php echo esc_html( TXT_BROWSE_ALL_TOPICS ); ?>
 	</a>
 </div>
 
@@ -72,11 +72,11 @@ $pt_color      = ( $pt && ! empty( $pt->color ) ) ? $pt->color : 'var(--accent)'
 <!-- ── CTA card ──────────────────────────────────────────────────────────── -->
 <div class="nif-sb-card nif-sb-card--cta">
 	<div class="nif-sb-card__header">
-		<span class="nif-section-label--primary"><?php esc_html_e( 'Need Help?', 'ah-theme' ); ?></span>
+		<span class="nif-section-label--primary"><?php echo esc_html( TXT_NEED_HELP ); ?></span>
 	</div>
-	<p class="nif-sb-cta-text"><?php esc_html_e( 'Speak with one of our property experts for personalised guidance.', 'ah-theme' ); ?></p>
+	<p class="nif-sb-cta-text"><?php echo esc_html( TXT_SPEAK_WITH_ONE_OF_OUR_PROPERTY_EXPERTS_FOR_PERSONA ); ?></p>
 	<a href="<?php echo esc_url( home_url( defined( 'AH_LINK_CONTACT' ) ? AH_LINK_CONTACT : '/contact/' ) ); ?>"
 	   class="btn btn-primary btn-sm" style="width:100%;justify-content:center">
-		<?php esc_html_e( 'Get in Touch', 'ah-theme' ); ?>
+		<?php echo esc_html( TXT_GET_IN_TOUCH ); ?>
 	</a>
 </div>

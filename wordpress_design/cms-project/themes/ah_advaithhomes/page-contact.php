@@ -26,7 +26,7 @@ if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
 ] ); ?>
 
 <!-- ── Contact Layout ────────────────────────────────────────────────────── -->
-<section class="section" aria-label="Contact form and details">
+<section class="section" aria-label="<?php echo esc_attr( TXT_CONTACT_FORM_AND_DETAILS ); ?>">
   <div class="container">
     <div class="contact-layout">
 
@@ -42,10 +42,10 @@ if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="cf-name">Full Name <span aria-hidden="true">*</span></label>
-                <input id="cf-name" name="name" type="text" class="form-input" placeholder="Jane Smith" required>
+                <input id="cf-name" name="name" type="text" class="form-input" placeholder="<?php echo esc_attr( TXT_JANE_SMITH ); ?>" required>
                 <span class="form-error"></span>
               </div>
-              <div class="form-group"<?php if ( $preset_enq ) echo ' style="display:none"'; ?>>
+              <div class="form-group"<?php if ( $preset_enq ) echo esc_html( TXT_STYLE_DISPLAY_NONE ); ?>>
                 <label class="form-label" for="cf-type">Enquiry Type</label>
                 <select id="cf-type" name="enquiry_type" class="form-input form-select">
                   <option value="">Select type…</option>
@@ -70,24 +70,24 @@ if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="cf-email">Email Address <span aria-hidden="true">*</span></label>
-                <input id="cf-email" name="email" type="email" class="form-input" placeholder="jane@example.com" required>
+                <input id="cf-email" name="email" type="email" class="form-input" placeholder="<?php echo esc_attr( TXT_JANE_EXAMPLE_COM ); ?>" required>
                 <span class="form-error"></span>
               </div>
               <div class="form-group">
                 <label class="form-label" for="cf-phone">Phone Number</label>
-                <input id="cf-phone" name="phone" type="tel" class="form-input" placeholder="+44 7700 000000">
+                <input id="cf-phone" name="phone" type="tel" class="form-input" placeholder="<?php echo esc_attr( TXT_44_7700_000000 ); ?>">
               </div>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="cf-quote">In one sentence, what do you need?</label>
-              <input id="cf-quote" name="short_quote" type="text" class="form-input" placeholder="e.g. I'm looking for a 3-bed house in Bristol under £450k" maxlength="300">
+              <input id="cf-quote" name="short_quote" type="text" class="form-input" placeholder="<?php echo esc_attr( TXT_E_G_I_M_LOOKING_FOR_A_3_BED_HOUSE_IN_BRISTOL_UNDER_450K ); ?>" maxlength="300">
             </div>
 
             <div class="form-group">
               <label class="form-label" for="cf-message">Message <span aria-hidden="true">*</span></label>
               <textarea id="cf-message" name="message" class="form-input form-textarea" rows="4"
-                        placeholder="Tell us more - timeline, requirements, anything helpful…" required></textarea>
+                        placeholder="<?php echo esc_attr( TXT_TELL_US_MORE_TIMELINE_REQUIREMENTS_ANYTHING_HELPFUL ); ?>" required></textarea>
               <span class="form-error"></span>
             </div>
 
@@ -159,7 +159,7 @@ if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
             width="100%" height="100%"
             style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Our location on Google Maps">
+            title="<?php echo esc_attr( TXT_OUR_LOCATION_ON_GOOGLE_MAPS ); ?>">
           </iframe>
         </div>
         <?php endif; ?>
@@ -171,7 +171,7 @@ if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
 
 <!-- ── Contact FAQ ────────────────────────────────────────────────────────── -->
 <?php if ( $faqs ) : ?>
-<section class="section section--pattern" aria-label="Contact FAQ">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_CONTACT_FAQ ); ?>">
   <div class="container container--md">
     <div class="section__header text-center">
       <span class="section__eyebrow">FAQ</span>

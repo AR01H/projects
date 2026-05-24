@@ -16,7 +16,7 @@ $side2 = $posts[2] ?? null;
 
 if ( ! $hero ) return;
 ?>
-<section class="section nif-section-hero" aria-label="<?php esc_attr_e( 'Featured articles', 'ah-theme' ); ?>">
+<section class="section nif-section-hero" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_FEATURED_ARTICLES ); ?>">
   <div class="container">
     <div class="nif-hero-row">
 
@@ -27,7 +27,7 @@ if ( ! $hero ) return;
         <?php if ( $d['thumb_url'] ) : ?>
           <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-hero-card__img-wrap" tabindex="-1" aria-hidden="true">
             <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                 alt="<?php echo esc_attr( get_the_title( $hero->ID ) ); ?>"
+                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_HERO_ID ); ?>"
                  loading="eager" decoding="async">
             <div class="nif-hero-card__img-overlay" aria-hidden="true"></div>
           </a>
@@ -44,7 +44,7 @@ if ( ! $hero ) return;
                 <?php echo esc_html( $d['cat']->name ); ?>
               </span>
             <?php endif; ?>
-            <span class="nif-hero-card__label"><?php esc_html_e( 'Top Story', 'ah-theme' ); ?></span>
+            <span class="nif-hero-card__label"><?php echo esc_html( TXT_TOP_STORY ); ?></span>
           </div>
           <h2 class="nif-hero-card__title">
             <a href="<?php echo esc_url( $d['permalink'] ); ?>">
@@ -60,7 +60,7 @@ if ( ! $hero ) return;
               <?php endif; ?>
             </span>
             <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-read-link">
-              <?php esc_html_e( 'Read full article', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+              <?php echo esc_html( TXT_READ_FULL_ARTICLE ); ?> <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
@@ -77,7 +77,7 @@ if ( ! $hero ) return;
           <?php if ( $d['thumb_url'] ) : ?>
             <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-side-card__img" tabindex="-1" aria-hidden="true">
               <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                   alt="<?php echo esc_attr( get_the_title( $sp->ID ) ); ?>"
+                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_SP_ID ); ?>"
                    loading="lazy" decoding="async">
             </a>
           <?php else : ?>
@@ -98,7 +98,7 @@ if ( ! $hero ) return;
               </a>
             </h3>
             <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-read-link nif-read-link--sm" style="margin-top:auto">
-              <?php esc_html_e( 'Read', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+              <?php echo esc_html( TXT_READ ); ?> <span aria-hidden="true">→</span>
             </a>
           </div>
 

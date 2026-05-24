@@ -15,7 +15,7 @@ foreach ( ah_get_site_stats() as $s ) {
 
 $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩‍🔬', '👨‍🏗️' ];
 ?>
-<section class="section" aria-label="Client success stories" style="background-color: var(--client-color-50);">
+<section class="section" aria-label="<?php echo esc_attr( TXT_CLIENT_SUCCESS_STORIES ); ?>" style="background-color: var(--client-color-50);">
   <div class="container">
     <div class="section__header text-center" data-aos="fade-up">
       <span class="section__eyebrow">Client Stories</span>
@@ -41,7 +41,7 @@ $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩�
             <div class="story-card">
               <div class="story-card__avatar">
                 <?php if ( $img_url ) : ?>
-                  <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $rev->reviewer_name ?? '' ); ?>">
+                  <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_REV_REVIEWER_NAME ); ?>">
                 <?php else : ?>
                   <?php echo $avatar; ?>
                 <?php endif; ?>
@@ -80,9 +80,9 @@ $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩�
         <?php endforeach; ?>
 
         <div class="stories-carousel-nav">
-          <button class="carousel-nav-btn" data-carousel-prev aria-label="Previous story">←</button>
+          <button class="carousel-nav-btn" data-carousel-prev aria-label="<?php echo esc_attr( TXT_PREVIOUS_STORY ); ?>">←</button>
           <span style="font-size:.82rem;color:var(--text-muted);text-align:center;display:flex;align-items: center;" data-carousel-counter>1 / <?php echo count( $reviews ); ?></span>
-          <button class="carousel-nav-btn" data-carousel-next aria-label="Next story">→</button>
+          <button class="carousel-nav-btn" data-carousel-next aria-label="<?php echo esc_attr( TXT_NEXT_STORY ); ?>">→</button>
         </div>
       </div>
     </div>

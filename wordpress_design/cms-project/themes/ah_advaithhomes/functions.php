@@ -33,8 +33,8 @@ add_action( 'after_setup_theme', function () {
 	add_image_size( 'ah-thumb',  480,  320, true );
 
 	register_nav_menus( [
-		'primary' => __( 'Primary Navigation', 'ah-theme' ),
-		'footer'  => __( 'Footer Navigation',  'ah-theme' ),
+		'primary' => TXT_PRIMARY_NAVIGATION,
+		'footer'  => TXT_FOOTER_NAVIGATION,
 	] );
 } );
 
@@ -319,7 +319,7 @@ function ah_get_parent_term_for_cat( string $cat_slug ): ?object {
 add_action( 'add_meta_boxes', function (): void {
 	add_meta_box(
 		'ah_highlight_links',
-		__( 'Highlight Links', 'ah-theme' ),
+		TXT_HIGHLIGHT_LINKS,
 		'ah_highlight_links_render',
 		'post',
 		'side',
@@ -337,26 +337,26 @@ function ah_highlight_links_render( WP_Post $post ): void {
 	<div class="ah-hl-row" style="display:flex;gap:5px;margin-bottom:5px">
 		<input type="text" name="ah_hl_name[]"
 		       value="<?php echo esc_attr( $link['name'] ?? '' ); ?>"
-		       placeholder="<?php esc_attr_e( 'Label', 'ah-theme' ); ?>"
+		       placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_LABEL ); ?>"
 		       style="flex:1;min-width:0">
 		<input type="text" name="ah_hl_url[]"
 		       value="<?php echo esc_attr( $link['url'] ?? '' ); ?>"
-		       placeholder="<?php esc_attr_e( '/slug/ or URL', 'ah-theme' ); ?>"
+		       placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SLUG_OR_URL ); ?>"
 		       style="flex:1.4;min-width:0">
 		<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>
 	</div>
 	<?php endforeach; ?>
 	</div>
 	<button type="button" id="ah-hl-add" class="button button-secondary" style="margin-top:4px;width:100%">
-		+ <?php esc_html_e( 'Add Link', 'ah-theme' ); ?>
+		+ <?php echo esc_html( TXT_ADD_LINK ); ?>
 	</button>
 	<script>
 	(function($){
 		$('#ah-hl-add').on('click',function(){
 			$('#ah-hl-rows').append(
 				'<div class="ah-hl-row" style="display:flex;gap:5px;margin-bottom:5px">' +
-				'<input type="text" name="ah_hl_name[]" placeholder="<?php echo esc_js( __( 'Label', 'ah-theme' ) ); ?>" style="flex:1;min-width:0">' +
-				'<input type="text" name="ah_hl_url[]"  placeholder="<?php echo esc_js( __( '/slug/ or URL', 'ah-theme' ) ); ?>" style="flex:1.4;min-width:0">' +
+				'<input type="text" name="ah_hl_name[]" placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_JS_TXT_LABEL ); ?>" style="flex:1;min-width:0">' +
+				'<input type="text" name="ah_hl_url[]"  placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_JS_TXT_SLUG_OR_URL ); ?>" style="flex:1.4;min-width:0">' +
 				'<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>' +
 				'</div>'
 			);

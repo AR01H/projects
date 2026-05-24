@@ -15,16 +15,16 @@ if ( empty( $posts ) ) return;
 
 $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖️','invest'=>'📈','tips'=>'💡','client'=>'⭐' ];
 ?>
-<section class="sp-guides-section" aria-label="<?php esc_attr_e( 'Suggested guides', 'ah-theme' ); ?>">
+<section class="sp-guides-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SUGGESTED_GUIDES ); ?>">
   <div class="container">
 
     <div class="sp-section-head">
       <div>
-        <span class="section__eyebrow"><?php esc_html_e( 'Explore More', 'ah-theme' ); ?></span>
-        <h2 class="sp-section-head__title"><?php esc_html_e( 'You Might Also Like', 'ah-theme' ); ?></h2>
+        <span class="section__eyebrow"><?php echo esc_html( TXT_EXPLORE_MORE ); ?></span>
+        <h2 class="sp-section-head__title"><?php echo esc_html( TXT_YOU_MIGHT_ALSO_LIKE ); ?></h2>
       </div>
       <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="sp-see-all">
-        <?php esc_html_e( 'All Guides →', 'ah-theme' ); ?>
+        <?php echo esc_html( TXT_ALL_GUIDES ); ?>
       </a>
     </div>
 
@@ -48,7 +48,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
         <div class="sp-guide-card__img">
           <?php if ( $gthumb ) : ?>
             <img src="<?php echo esc_url( $gthumb ); ?>"
-                 alt="<?php echo esc_attr( get_the_title( $gp ) ); ?>"
+                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_GP ); ?>"
                  loading="lazy" decoding="async">
           <?php else : ?>
             <div class="sp-guide-card__placeholder" aria-hidden="true"><?php echo esc_html( $gemoji ); ?></div>
@@ -70,7 +70,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
                 <?php echo esc_html( $gtime ); ?>
               </span>
             <?php endif; ?>
-            <span class="sp-guide-card__read"><?php esc_html_e( 'Read →', 'ah-theme' ); ?></span>
+            <span class="sp-guide-card__read"><?php echo esc_html( TXT_READ_1 ); ?></span>
           </div>
         </div>
 

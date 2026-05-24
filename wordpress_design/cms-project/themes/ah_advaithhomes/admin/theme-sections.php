@@ -76,7 +76,7 @@ $section_groups = [
               <div class="ah-section-row__desc"><?php echo esc_html( $sec['desc'] ); ?></div>
             </div>
           </div>
-          <label class="ah-toggle" title="Toggle <?php echo esc_attr( $sec['name'] ); ?>">
+          <label class="ah-toggle" title="<?php echo esc_attr( TXT_TOGGLE_PHP_ECHO_ESC_ATTR_SEC_NAME ); ?>">
             <input type="checkbox"
                    name="section_<?php echo esc_attr( $sec['key'] ); ?>"
                    value="1"
@@ -149,7 +149,7 @@ $section_groups = [
       selected.push(item);
       var tag = document.createElement('span');
       tag.className = 'ah-tag-picker__tag';
-      tag.innerHTML = '<span>' + item.label + '</span><button type="button" aria-label="Remove">×</button>';
+      tag.innerHTML = '<span>' + item.label + '</span><button type="button" aria-label="<?php echo esc_attr( TXT_REMOVE ); ?>">×</button>';
       tag.querySelector('button').addEventListener('click', function() {
         selected = selected.filter(function(t) { return t.id !== item.id; });
         tag.remove();

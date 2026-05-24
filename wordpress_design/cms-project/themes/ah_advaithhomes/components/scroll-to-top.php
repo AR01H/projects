@@ -1,4 +1,4 @@
-<button id="scrollTopBtn" aria-label="Back to top" title="Back to top">
+<button id="scrollTopBtn" aria-label="<?php echo esc_attr( TXT_BACK_TO_TOP ); ?>" title="<?php echo esc_attr( TXT_BACK_TO_TOP ); ?>">
   <svg class="progress-ring" width="48" height="48" viewBox="0 0 48 48">
     <circle class="ring-bg" cx="24" cy="24" r="21" stroke-width="3"/>
     <circle class="ring-fg" id="scrollRingFg" cx="24" cy="24" r="21" stroke-width="3"/>

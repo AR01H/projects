@@ -27,19 +27,19 @@ if ( $plugin_ok ) {
   <div class="ah-admin-header">
     <div class="ah-admin-logo">TX</div>
     <div>
-      <h1><?php esc_html_e( 'Taxonomy Manager', 'ah-theme' ); ?></h1>
-      <p><?php esc_html_e( 'Manage taxonomy types and their terms - stored in the CMS plugin tables.', 'ah-theme' ); ?></p>
+      <h1><?php echo esc_html( TXT_TAXONOMY_MANAGER ); ?></h1>
+      <p><?php echo esc_html( TXT_MANAGE_TAXONOMY_TYPES_AND_THEIR_TERMS_STORED_IN_TH ); ?></p>
     </div>
   </div>
 
   <?php if ( ! $plugin_ok ) : ?>
     <div class="ah-admin-notice ah-admin-notice--warn">
-      <?php esc_html_e( 'The CMS plugin is not active. Activate it to manage taxonomy types and terms.', 'ah-theme' ); ?>
+      <?php echo esc_html( TXT_THE_CMS_PLUGIN_IS_NOT_ACTIVE_ACTIVATE_IT_TO_MANAGE ); ?>
     </div>
   <?php else : ?>
 
   <?php if ( $saved ) : ?>
-    <div class="ah-admin-notice ah-admin-notice--success"><?php esc_html_e( 'Saved successfully.', 'ah-theme' ); ?></div>
+    <div class="ah-admin-notice ah-admin-notice--success"><?php echo esc_html( TXT_SAVED_SUCCESSFULLY ); ?></div>
   <?php endif; ?>
 
   <!-- Tabs -->
@@ -57,18 +57,18 @@ if ( $plugin_ok ) {
   <!-- ── Types tab ─────────────────────────────────────────────────────────── -->
 
     <div class="ah-admin-box">
-      <h2><?php esc_html_e( 'Taxonomy Types', 'ah-theme' ); ?> <span style="font-weight:400;font-size:.85rem;color:#94a3b8"><?php esc_html_e( 'stored in wp_ah_taxonomy_types', 'ah-theme' ); ?></span></h2>
+      <h2><?php echo esc_html( TXT_TAXONOMY_TYPES ); ?> <span style="font-weight:400;font-size:.85rem;color:#94a3b8"><?php echo esc_html( TXT_STORED_IN_WP_AH_TAXONOMY_TYPES ); ?></span></h2>
 
       <?php if ( empty( $types ) ) : ?>
-        <p style="color:#94a3b8"><?php esc_html_e( 'No types yet. Use Install Mock Data to seed the defaults, or add one below.', 'ah-theme' ); ?></p>
+        <p style="color:#94a3b8"><?php echo esc_html( TXT_NO_TYPES_YET_USE_INSTALL_MOCK_DATA_TO_SEED_THE_DEF ); ?></p>
       <?php else : ?>
         <table class="ah-admin-table" style="margin-bottom:24px">
           <thead>
             <tr>
-              <th><?php esc_html_e( 'Name', 'ah-theme' ); ?></th>
-              <th><?php esc_html_e( 'Slug', 'ah-theme' ); ?></th>
-              <th><?php esc_html_e( 'Description', 'ah-theme' ); ?></th>
-              <th><?php esc_html_e( 'Terms', 'ah-theme' ); ?></th>
+              <th><?php echo esc_html( TXT_NAME ); ?></th>
+              <th><?php echo esc_html( TXT_SLUG ); ?></th>
+              <th><?php echo esc_html( TXT_DESCRIPTION ); ?></th>
+              <th><?php echo esc_html( TXT_TERMS ); ?></th>
               <th></th>
             </tr>
           </thead>
@@ -100,7 +100,7 @@ if ( $plugin_ok ) {
                   <input type="hidden" name="_tab"    value="types">
                   <input type="hidden" name="type_id" value="<?php echo esc_attr( $type->id ); ?>">
                   <button type="submit" class="button ah-btn-danger" style="padding:2px 10px;height:auto;font-size:.8rem">
-                    <?php esc_html_e( 'Delete', 'ah-theme' ); ?>
+                    <?php echo esc_html( TXT_DELETE ); ?>
                   </button>
                 </form>
               </td>
@@ -111,7 +111,7 @@ if ( $plugin_ok ) {
       <?php endif; ?>
 
       <details style="border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
-        <summary style="font-weight:600;cursor:pointer;color:#0f172a"><?php esc_html_e( '+ Add New Type', 'ah-theme' ); ?></summary>
+        <summary style="font-weight:600;cursor:pointer;color:#0f172a"><?php echo esc_html( TXT_ADD_NEW_TYPE ); ?></summary>
         <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
               style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <?php wp_nonce_field( 'ah_taxonomy' ); ?>
@@ -119,19 +119,19 @@ if ( $plugin_ok ) {
           <input type="hidden" name="_action" value="add_type">
           <input type="hidden" name="_tab"    value="types">
           <div>
-            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php esc_html_e( 'Name *', 'ah-theme' ); ?></label>
-            <input type="text" name="type_name" required class="regular-text" placeholder="e.g. Highlight Names">
+            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php echo esc_html( TXT_NAME_1 ); ?></label>
+            <input type="text" name="type_name" required class="regular-text" placeholder="<?php echo esc_attr( TXT_E_G_HIGHLIGHT_NAMES ); ?>">
           </div>
           <div>
-            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php esc_html_e( 'Slug (auto if blank)', 'ah-theme' ); ?></label>
-            <input type="text" name="type_slug" class="regular-text" placeholder="e.g. highlight-names">
+            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php echo esc_html( TXT_SLUG_AUTO_IF_BLANK ); ?></label>
+            <input type="text" name="type_slug" class="regular-text" placeholder="<?php echo esc_attr( TXT_E_G_HIGHLIGHT_NAMES_1 ); ?>">
           </div>
           <div style="grid-column:1/-1">
-            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php esc_html_e( 'Description', 'ah-theme' ); ?></label>
-            <input type="text" name="type_description" class="large-text" placeholder="Optional description">
+            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php echo esc_html( TXT_DESCRIPTION ); ?></label>
+            <input type="text" name="type_description" class="large-text" placeholder="<?php echo esc_attr( TXT_OPTIONAL_DESCRIPTION ); ?>">
           </div>
           <div style="grid-column:1/-1">
-            <button type="submit" class="button button-primary"><?php esc_html_e( 'Add Type', 'ah-theme' ); ?></button>
+            <button type="submit" class="button button-primary"><?php echo esc_html( TXT_ADD_TYPE ); ?></button>
           </div>
         </form>
       </details>
@@ -141,18 +141,18 @@ if ( $plugin_ok ) {
   <!-- ── Terms tab ─────────────────────────────────────────────────────────── -->
 
     <div class="ah-admin-box">
-      <h2><?php esc_html_e( 'Taxonomy Terms', 'ah-theme' ); ?> <span style="font-weight:400;font-size:.85rem;color:#94a3b8"><?php esc_html_e( 'stored in wp_ah_taxonomies', 'ah-theme' ); ?></span></h2>
+      <h2><?php echo esc_html( TXT_TAXONOMY_TERMS ); ?> <span style="font-weight:400;font-size:.85rem;color:#94a3b8"><?php echo esc_html( TXT_STORED_IN_WP_AH_TAXONOMIES ); ?></span></h2>
 
       <?php if ( empty( $terms ) ) : ?>
-        <p style="color:#94a3b8"><?php esc_html_e( 'No terms yet. Add a type first, then add terms to it.', 'ah-theme' ); ?></p>
+        <p style="color:#94a3b8"><?php echo esc_html( TXT_NO_TERMS_YET_ADD_A_TYPE_FIRST_THEN_ADD_TERMS_TO_IT ); ?></p>
       <?php else : ?>
         <table class="ah-admin-table" style="margin-bottom:24px">
           <thead>
             <tr>
-              <th><?php esc_html_e( 'Term Name', 'ah-theme' ); ?></th>
-              <th><?php esc_html_e( 'Slug', 'ah-theme' ); ?></th>
-              <th><?php esc_html_e( 'Type', 'ah-theme' ); ?></th>
-              <th><?php esc_html_e( 'Status', 'ah-theme' ); ?></th>
+              <th><?php echo esc_html( TXT_TERM_NAME ); ?></th>
+              <th><?php echo esc_html( TXT_SLUG ); ?></th>
+              <th><?php echo esc_html( TXT_TYPE ); ?></th>
+              <th><?php echo esc_html( TXT_STATUS ); ?></th>
               <th></th>
             </tr>
           </thead>
@@ -176,7 +176,7 @@ if ( $plugin_ok ) {
                   <input type="hidden" name="_tab"     value="terms">
                   <input type="hidden" name="term_id"  value="<?php echo esc_attr( $term->id ); ?>">
                   <button type="submit" class="button ah-btn-danger" style="padding:2px 10px;height:auto;font-size:.8rem">
-                    <?php esc_html_e( 'Delete', 'ah-theme' ); ?>
+                    <?php echo esc_html( TXT_DELETE ); ?>
                   </button>
                 </form>
               </td>
@@ -188,7 +188,7 @@ if ( $plugin_ok ) {
 
       <?php if ( ! empty( $types ) ) : ?>
       <details style="border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
-        <summary style="font-weight:600;cursor:pointer;color:#0f172a"><?php esc_html_e( '+ Add New Term', 'ah-theme' ); ?></summary>
+        <summary style="font-weight:600;cursor:pointer;color:#0f172a"><?php echo esc_html( TXT_ADD_NEW_TERM ); ?></summary>
         <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
               style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <?php wp_nonce_field( 'ah_taxonomy' ); ?>
@@ -196,29 +196,29 @@ if ( $plugin_ok ) {
           <input type="hidden" name="_action" value="add_term">
           <input type="hidden" name="_tab"    value="terms">
           <div>
-            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php esc_html_e( 'Type *', 'ah-theme' ); ?></label>
+            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php echo esc_html( TXT_TYPE_1 ); ?></label>
             <select name="term_type_id" required class="regular-text">
-              <option value=""><?php esc_html_e( '- select type -', 'ah-theme' ); ?></option>
+              <option value=""><?php echo esc_html( TXT_SELECT_TYPE ); ?></option>
               <?php foreach ( $types as $type ) : ?>
                 <option value="<?php echo esc_attr( $type->id ); ?>"><?php echo esc_html( $type->name ); ?></option>
               <?php endforeach; ?>
             </select>
           </div>
           <div>
-            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php esc_html_e( 'Term Name *', 'ah-theme' ); ?></label>
-            <input type="text" name="term_name" required class="regular-text" placeholder="e.g. Related Articles">
+            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php echo esc_html( TXT_TERM_NAME_1 ); ?></label>
+            <input type="text" name="term_name" required class="regular-text" placeholder="<?php echo esc_attr( TXT_E_G_RELATED_ARTICLES ); ?>">
           </div>
           <div>
-            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php esc_html_e( 'Slug (auto if blank)', 'ah-theme' ); ?></label>
-            <input type="text" name="term_slug" class="regular-text" placeholder="e.g. related-articles">
+            <label style="display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px"><?php echo esc_html( TXT_SLUG_AUTO_IF_BLANK ); ?></label>
+            <input type="text" name="term_slug" class="regular-text" placeholder="<?php echo esc_attr( TXT_E_G_RELATED_ARTICLES_1 ); ?>">
           </div>
           <div style="grid-column:1/-1">
-            <button type="submit" class="button button-primary"><?php esc_html_e( 'Add Term', 'ah-theme' ); ?></button>
+            <button type="submit" class="button button-primary"><?php echo esc_html( TXT_ADD_TERM ); ?></button>
           </div>
         </form>
       </details>
       <?php else : ?>
-        <p style="color:#94a3b8;font-size:.875rem"><?php esc_html_e( 'Add at least one type before adding terms.', 'ah-theme' ); ?></p>
+        <p style="color:#94a3b8;font-size:.875rem"><?php echo esc_html( TXT_ADD_AT_LEAST_ONE_TYPE_BEFORE_ADDING_TERMS ); ?></p>
       <?php endif; ?>
     </div>
 

@@ -12,7 +12,7 @@ $plugin_ok = class_exists( 'AH_Admin_Bootstrap' ) || defined( 'AH_PLUGIN_VERSION
     <div class="ah-admin-logo">AH</div>
     <div>
       <h1><?php echo esc_html( $theme->get('Name') ); ?> <span style="font-weight:400;font-size:1rem;color:#94a3b8">v<?php echo esc_html( $theme->get('Version') ); ?></span></h1>
-      <p><?php esc_html_e( 'Content-first WordPress theme for Advaith Homes', 'ah-theme' ); ?></p>
+      <p><?php printf( esc_html( TXT_CONTENT_FIRST_WORDPRESS_THEME_FOR_S ), esc_html( CLIENT_FULL_TITLE ) ); ?></p>
     </div>
   </div>
 

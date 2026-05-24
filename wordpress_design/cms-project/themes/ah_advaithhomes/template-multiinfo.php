@@ -165,7 +165,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <div class="mi-pt-header">
           <div class="mi-pt-header__top-row">
             <div>
-              <div class="mi-pt-header__eyebrow"><?php esc_html_e( 'Topic', 'ah-theme' ); ?></div>
+              <div class="mi-pt-header__eyebrow"><?php echo esc_html( TXT_TOPIC ); ?></div>
               <h1 class="mi-pt-header__title">
                 <?php if ( ! empty( $active_pt->icon_emoji ) ) echo esc_html( $active_pt->icon_emoji ) . ' '; ?>
                 <?php echo esc_html( $active_pt->name ); ?>
@@ -173,7 +173,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             </div>
             <a href="<?php echo esc_url( home_url( '/' . $active_slug . '/' ) ); ?>"
                class="mi-pt-header__full-link">
-              <?php esc_html_e( 'Full topic page', 'ah-theme' ); ?>
+              <?php echo esc_html( TXT_FULL_TOPIC_PAGE ); ?>
               <span aria-hidden="true">→</span>
             </a>
           </div>
@@ -181,7 +181,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           <div class="mi-chip-strip">
             <a href="<?php echo esc_url( $base_url ); ?>"
                class="mi-chip<?php echo ! $active_cat ? ' mi-chip--active' : ''; ?>">
-              <?php esc_html_e( 'All', 'ah-theme' ); ?>
+              <?php echo esc_html( TXT_ALL ); ?>
             </a>
             <?php foreach ( $pt_child_cats as $fc ) : ?>
             <a href="<?php echo esc_url( add_query_arg( 'cat', $fc->slug, $base_url ) ); ?>"
@@ -216,8 +216,8 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <?php get_template_part( 'components/nif-news-hero', null, [
           'posts'    => $featured_posts,
           'eyebrow'  => $active_pt
-            ? sprintf( __( 'Featured: %s', 'ah-theme' ), $active_pt->name )
-            : __( 'Featured Guides', 'ah-theme' ),
+            ? sprintf( TXT_FEATURED_S, $active_pt->name )
+            : TXT_FEATURED_GUIDES,
           'see_all'  => $active_pt
             ? home_url( '/multiinfo/' . $active_slug . '/' )
             : home_url( '/multiinfo/' ),
@@ -230,8 +230,8 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <?php get_template_part( 'components/nif-guide-tiles', null, [
           'posts'   => array_slice( $posts_arr, 0, 6 ),
           'eyebrow' => $active_pt
-            ? sprintf( __( 'Latest in %s', 'ah-theme' ), $active_pt->name )
-            : __( 'Latest Guides', 'ah-theme' ),
+            ? sprintf( TXT_LATEST_IN_S, $active_pt->name )
+            : TXT_LATEST_GUIDES,
           'see_all' => $active_pt
             ? home_url( '/multiinfo/' . $active_slug . '/' )
             : home_url( '/multiinfo/' ),
@@ -255,12 +255,12 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
               $delay = ( $idx % 3 ) * 80;
             ?>
             <article class="nif-grid-card" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $delay ); ?>"
-                     <?php if ( $d['cat'] ) echo 'data-cat="' . esc_attr( $d['cat']->slug ) . '"'; ?>>
+                     <?php if ( $d['cat'] ) echo esc_html( TXT_DATA_CAT_ESC_ATTR_D_CAT_SLUG ); ?>>
               <?php if ( $d['thumb_url'] ) : ?>
               <div class="nif-grid-card__img">
                 <a href="<?php echo esc_url( $d['permalink'] ); ?>" tabindex="-1" aria-hidden="true">
                   <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                       alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+                       alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
                        loading="lazy" decoding="async">
                 </a>
               </div>
@@ -283,7 +283,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
                     <?php echo $d['read_time'] ? esc_html( $d['read_time'] ) : 'Quick read'; ?>
                   </span>
                   <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-read-link nif-read-link--sm">
-                    <?php esc_html_e( 'Read', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+                    <?php echo esc_html( TXT_READ ); ?> <span aria-hidden="true">→</span>
                   </a>
                 </div>
               </div>
@@ -293,10 +293,10 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           <?php else : ?>
           <div class="nif-empty">
             <div class="nif-empty__icon">✍️</div>
-            <h2 class="nif-empty__title"><?php esc_html_e( 'Nothing here yet', 'ah-theme' ); ?></h2>
-            <p class="nif-empty__desc"><?php esc_html_e( 'We\'re working on great content - check back soon.', 'ah-theme' ); ?></p>
+            <h2 class="nif-empty__title"><?php echo esc_html( TXT_NOTHING_HERE_YET ); ?></h2>
+            <p class="nif-empty__desc"><?php echo esc_html( TXT_WE_RE_WORKING_ON_GREAT_CONTENT_CHECK_BACK_SOON ); ?></p>
             <a href="<?php echo esc_url( home_url( '/multiinfo/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
-              ← <?php esc_html_e( 'All Topics', 'ah-theme' ); ?>
+              ← <?php echo esc_html( TXT_ALL_TOPICS ); ?>
             </a>
           </div>
           <?php endif; ?>
@@ -314,9 +314,9 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
               'type'      => 'array',
             ] );
             if ( $links ) : ?>
-          <nav class="pagination" aria-label="<?php esc_attr_e( 'Page navigation', 'ah-theme' ); ?>" style="margin-top:48px">
+          <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
             <ul class="pagination__list">
-              <?php foreach ( $links as $link ) echo '<li class="pagination__item">' . $link . '</li>'; ?>
+              <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
             </ul>
           </nav>
           <?php endif; endif; ?>
@@ -326,7 +326,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       </main>
 
       <!-- ══ SIDEBAR ═══════════════════════════════════════════════════════ -->
-      <aside class="nif-portal-sidebar" aria-label="<?php esc_attr_e( 'Topic information', 'ah-theme' ); ?>">
+      <aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_TOPIC_INFORMATION ); ?>">
         <?php get_template_part( 'components/multiinfo-sidebar', null, [
           'active_pt'      => $active_pt,
           'active_slug'    => $active_slug,

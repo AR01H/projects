@@ -28,7 +28,7 @@ $year     = gmdate( 'Y' );
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nav__logo" style="margin-bottom:0">
 					<?php $logo = get_template_directory() . '/assets/images/logo.png'; ?>
 					<?php if ( file_exists( $logo ) ) : ?>
-						<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php bloginfo( 'name' ); ?>" style="height:36px">
+						<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php echo esc_attr( TXT_PHP_BLOGINFO_NAME ); ?>" style="height:36px">
 						<span style="color:white;font-size:1.4rem"><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 					<?php else : ?>
 						<div class="nav__logo-mark"><?php echo esc_html( CLIENT_SHORT_TITLE ); ?></div>
@@ -46,31 +46,31 @@ $year     = gmdate( 'Y' );
 
 				<div class="footer__socials" style="margin-top:16px">
 					<?php if ( $fb ) : ?>
-					<a href="<?php echo esc_url( $fb ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Facebook">
+					<a href="<?php echo esc_url( $fb ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="<?php echo esc_attr( TXT_FACEBOOK ); ?>">
 					<?php echo file_get_contents(get_template_directory() . '/assets/images/svgs/facebook.svg');?>
 					</a>
 					<?php endif; ?>
 
 					<?php if ( $tw ) : ?>
-					<a href="<?php echo esc_url( $tw ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Twitter/X">
+					<a href="<?php echo esc_url( $tw ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="<?php echo esc_attr( TXT_TWITTER_X ); ?>">
 						<?php echo file_get_contents(get_template_directory() . '/assets/images/svgs/twitter.svg');?>
 					</a>
 					<?php endif; ?>
 
 					<?php if ( $ig ) : ?>
-					<a href="<?php echo esc_url( $ig ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="Instagram">
+					<a href="<?php echo esc_url( $ig ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="<?php echo esc_attr( TXT_INSTAGRAM ); ?>">
 						<?php echo file_get_contents(get_template_directory() . '/assets/images/svgs/instagram.svg');?>
 					</a>
 					<?php endif; ?>
 
 					<?php if ( $yt ) : ?>
-					<a href="<?php echo esc_url( $yt ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="YouTube">
+					<a href="<?php echo esc_url( $yt ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="<?php echo esc_attr( TXT_YOUTUBE ); ?>">
 					<?php echo file_get_contents(get_template_directory() . '/assets/images/svgs/youtube.svg');?>
 					</a>
 					<?php endif; ?>
 
 					<?php if ( $li ) : ?>
-					<a href="<?php echo esc_url( $li ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="LinkedIn">
+					<a href="<?php echo esc_url( $li ); ?>" target="_blank" rel="noopener" class="footer__social" aria-label="<?php echo esc_attr( TXT_LINKEDIN ); ?>">
 						<?php echo file_get_contents(get_template_directory() . '/assets/images/svgs/linkedin.svg');?>
 					</a>
 					<?php endif; ?>
@@ -90,7 +90,7 @@ $year     = gmdate( 'Y' );
 						<?php foreach ( (array) $column['items'] as $link ) : ?>
 							<?php $link = is_object( $link ) ? (array) $link : (array) $link; ?>
 							<a href="<?php echo esc_url( $link['url'] ?? '#' ); ?>" class="footer__link"
-								<?php if ( ! empty( $link['highlight'] ) ) echo 'style="color:var(--client-color-100);font-weight:700"'; ?>>
+								<?php if ( ! empty( $link['highlight'] ) ) echo esc_html( TXT_STYLE_COLOR_VAR_CLIENT_COLOR_100_FONT_WEIGHT_700 ); ?>>
 								<?php echo esc_html( $link['label'] ?? '' ); ?>
 							</a>
 						<?php endforeach; ?>
@@ -99,7 +99,7 @@ $year     = gmdate( 'Y' );
 			<?php endforeach; ?>
 
 			<div>
-				<div class="footer__col-title"><?php esc_html_e( 'Get In Touch', 'ah-theme' ); ?></div>
+				<div class="footer__col-title"><?php echo esc_html( TXT_GET_IN_TOUCH_1 ); ?></div>
 
 				<?php if ( $phone ) : ?>
 					<div class="footer__contact-item">
@@ -152,7 +152,7 @@ $year     = gmdate( 'Y' );
 		</div>
 
 		<div class="footer__bottom">
-			<div>&copy; <?php echo esc_html( $year ); ?> <?php bloginfo( 'name' ); ?>. <?php esc_html_e( 'All rights reserved.', 'ah-theme' ); ?></div>
+			<div>&copy; <?php echo esc_html( $year ); ?> <?php bloginfo( 'name' ); ?>. <?php echo esc_html( TXT_ALL_RIGHTS_RESERVED ); ?></div>
 			<div class="footer__legal">
 				<?php foreach ( (array) ( $footer['legal_links'] ?? [] ) as $link ) : ?>
 					<?php $link = is_object( $link ) ? (array) $link : (array) $link; ?>

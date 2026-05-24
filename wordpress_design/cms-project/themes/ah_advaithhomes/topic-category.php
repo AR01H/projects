@@ -115,7 +115,7 @@ $total_posts = $blog_query->found_posts;
 	'title'      => esc_html( $cat_name ),
 	'badge'      => $total_posts ? sprintf( _n( '%s ' . AH_TERM_LOWER, '%s ' . AH_TERM_LOWER_PLURAL, $total_posts, 'ah-theme' ), number_format_i18n( $total_posts ) ) : '',
 	'breadcrumb' => [
-		[ __( 'Home', 'ah-theme' ),   home_url( '/' ) ],
+		[ TXT_HOME,   home_url( '/' ) ],
 		[ $pt_name,                    home_url( '/' . $pt_slug . '/' ) ],
 		[ $cat_name,                   '' ],
 	],
@@ -127,7 +127,7 @@ $total_posts = $blog_query->found_posts;
 		<div class="topic-filter-strip__inner">
 			<a href="<?php echo esc_url( home_url( '/' . $pt_slug . '/' ) ); ?>"
 			   class="topic-chip topic-chip--all">
-				<?php esc_html_e( 'All', 'ah-theme' ); ?>
+				<?php echo esc_html( TXT_ALL ); ?>
 			</a>
 			<?php foreach ( $pt_child_cats as $fc ) : ?>
 				<a href="<?php echo esc_url( home_url( '/' . $pt_slug . '/' . $fc->slug . '/' ) ); ?>"
@@ -153,13 +153,13 @@ $total_posts = $blog_query->found_posts;
 						$delay = ( $idx % 3 ) * 80;
 					?>
 					<article class="nif-grid-card" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $delay ); ?>"
-					         <?php if ( $d['cat'] ) echo 'data-cat="' . esc_attr( $d['cat']->slug ) . '"'; ?>>
+					         <?php if ( $d['cat'] ) echo esc_html( TXT_DATA_CAT_ESC_ATTR_D_CAT_SLUG ); ?>>
 
 						<?php if ( $d['thumb_url'] ) : ?>
 							<div class="nif-grid-card__img">
 								<a href="<?php echo esc_url( $d['permalink'] ); ?>" tabindex="-1" aria-hidden="true">
 									<img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-									     alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
+									     alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
 									     loading="lazy" decoding="async">
 								</a>
 							</div>
@@ -187,7 +187,7 @@ $total_posts = $blog_query->found_posts;
 									<?php echo $d['read_time'] ? esc_html( $d['read_time'] ) : 'Quick read'; ?>
 								</span>
 								<a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-read-link nif-read-link--sm">
-									<?php esc_html_e( 'Read', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+									<?php echo esc_html( TXT_READ ); ?> <span aria-hidden="true">→</span>
 								</a>
 							</div>
 						</div>
@@ -198,8 +198,8 @@ $total_posts = $blog_query->found_posts;
 				<?php else : ?>
 				<div class="nif-empty" data-aos="fade-up">
 					<div class="nif-empty__icon">✍️</div>
-					<h2 class="nif-empty__title"><?php esc_html_e( 'Nothing here yet', 'ah-theme' ); ?></h2>
-					<p class="nif-empty__desc"><?php printf( esc_html__( 'No %s in this category yet. Try another %s.', 'ah-theme' ), AH_TERM_LOWER_PLURAL, AH_TERM_LOWER ); ?></p>
+					<h2 class="nif-empty__title"><?php echo esc_html( TXT_NOTHING_HERE_YET ); ?></h2>
+					<p class="nif-empty__desc"><?php printf( esc_html( TXT_NO_S_IN_THIS_CATEGORY_YET_TRY_ANOTHER_S ), AH_TERM_LOWER_PLURAL, AH_TERM_LOWER ); ?></p>
 					<a href="<?php echo esc_url( home_url( '/' . $pt_slug . '/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
 						← <?php echo esc_html( $pt_name ); ?>
 					</a>
@@ -218,16 +218,16 @@ $total_posts = $blog_query->found_posts;
 						'type'      => 'array',
 					] );
 					if ( $links ) : ?>
-				<nav class="pagination" aria-label="<?php esc_attr_e( 'Page navigation', 'ah-theme' ); ?>" style="margin-top:48px">
+				<nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
 					<ul class="pagination__list">
-						<?php foreach ( $links as $link ) echo '<li class="pagination__item">' . $link . '</li>'; ?>
+						<?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
 					</ul>
 				</nav>
 				<?php endif; endif; ?>
 
 			</main>
 
-			<aside class="nif-portal-sidebar" aria-label="<?php esc_attr_e( 'Topic sidebar', 'ah-theme' ); ?>">
+			<aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_TOPIC_SIDEBAR ); ?>">
 				<?php get_template_part( 'components/topic-sidebar', null, [
 					'pt'            => $pt,
 					'pt_slug'       => $pt_slug,

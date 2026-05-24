@@ -14,14 +14,14 @@
 defined( 'ABSPATH' ) || exit;
 
 $posts      = $args['posts']      ?? [];
-$eyebrow    = $args['eyebrow']    ?? sprintf( __( 'More %s', 'ah-theme' ), AH_TERM_PLURAL );
+$eyebrow    = $args['eyebrow']    ?? sprintf( TXT_MORE_S, AH_TERM_PLURAL );
 $heading    = $args['heading']    ?? 'Latest <em>Updates</em>';
 $more_url   = $args['more_url']   ?? '';
-$more_label = $args['more_label'] ?? sprintf( __( 'View all %s', 'ah-theme' ), AH_TERM_LOWER_PLURAL );
+$more_label = $args['more_label'] ?? sprintf( TXT_VIEW_ALL_S, AH_TERM_LOWER_PLURAL );
 
 if ( empty( $posts ) ) return;
 ?>
-<section class="section nif-section-compact" aria-label="<?php printf( esc_attr__( 'More %s', 'ah-theme' ), AH_TERM_LOWER_PLURAL ); ?>">
+<section class="section nif-section-compact" aria-label="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_MORE_S_AH_TERM_LOWER_PLURAL ); ?>">
   <div class="container">
 
     <div class="nif-section-header" data-aos="fade-up">
@@ -45,7 +45,7 @@ if ( empty( $posts ) ) return;
         <?php if ( $d['thumb_url'] ) : ?>
           <div class="nif-compact-card__img">
             <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                 alt="<?php echo esc_attr( get_the_title( $gp->ID ) ); ?>"
+                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_GP_ID ); ?>"
                  loading="lazy" decoding="async">
           </div>
         <?php else : ?>

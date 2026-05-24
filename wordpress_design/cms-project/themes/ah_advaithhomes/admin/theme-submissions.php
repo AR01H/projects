@@ -249,7 +249,7 @@ if ( $view_id && $sub ) :
       <?php wp_nonce_field( 'ahts_note_' . $sub->id ); ?>
       <input type="hidden" name="ahts_add_note" value="1">
       <div style="margin-bottom:10px;">
-        <textarea name="note_text" rows="3" placeholder="Add an internal note…" required></textarea>
+        <textarea name="note_text" rows="3" placeholder="<?php echo esc_attr( TXT_ADD_AN_INTERNAL_NOTE ); ?>" required></textarea>
       </div>
       <button type="submit" class="ahts-action-btn" style="background:#b7791f;color:white;border-color:#b7791f;">Add Note</button>
     </form>
@@ -295,7 +295,7 @@ else :
   <!-- Filter bar -->
   <form method="get" class="ahts-filter-bar">
     <input type="hidden" name="page" value="ah-theme-submissions">
-    <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search name, email, message…">
+    <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php echo esc_attr( TXT_SEARCH_NAME_EMAIL_MESSAGE ); ?>">
     <select name="status">
       <option value="">All Status</option>
       <?php foreach ( [ 'new', 'in_progress', 'resolved', 'spam' ] as $st ) : ?>
@@ -349,8 +349,8 @@ else :
             <td><span class="ahts-badge-status" style="<?php echo esc_attr( $ss_style ); ?>"><?php echo esc_html( ucfirst( str_replace( '_', ' ', $s_status ) ) ); ?></span></td>
             <td style="text-align:center">
               <?php echo ! empty( $sub->email_sent )
-                ? '<span style="color:#22c55e;font-size:16px" title="Email sent">&#10003;</span>'
-                : '<span style="color:#cbd5e1;font-size:16px" title="Not sent">&#10007;</span>'; ?>
+                ? '<span style="color:#22c55e;font-size:16px" title="<?php echo esc_attr( TXT_EMAIL_SENT ); ?>">&#10003;</span>'
+                : '<span style="color:#cbd5e1;font-size:16px" title="<?php echo esc_attr( TXT_NOT_SENT ); ?>">&#10007;</span>'; ?>
             </td>
             <td style="font-size:12px;color:#64748b;white-space:nowrap"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $sub->submitted_at ) ) ); ?></td>
             <td style="white-space:nowrap">

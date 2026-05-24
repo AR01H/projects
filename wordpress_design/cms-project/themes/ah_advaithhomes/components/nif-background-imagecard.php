@@ -178,7 +178,7 @@ $exta_heading = $args['exta_heading'] ?? '';
     <img
         class="nif-bg-img"
         src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/backgrounds/family_background.png' ); ?>"
-        alt="Property consultants in conversation"
+        alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_NIF_HERO_BG_ALT ); ?>"
     />
 
     <div class="nif-overlay" aria-hidden="true"></div>
@@ -188,23 +188,23 @@ $exta_heading = $args['exta_heading'] ?? '';
         <div class="nif-content">
 
             <h1 class="hero__title">
-                <span>Make Smarter </span><em>Property Decisions <?php echo $exta_heading; ?></em>
+                <span><?php echo esc_html( NIF_HERO_TITLE_SPAN ); ?></span><em><?php echo esc_html( NIF_HERO_TITLE_EM ); ?> <?php echo $exta_heading; ?></em>
             </h1>
 
             <p class="hero__desc">
-                Navigating the UK housing market can be complex, but having the right information makes all the difference. With unbiased market data, expert guidance, and practical tools, you can make confident decisions based on facts - whether you're buying your first home, investing, or exploring the market.
+                <?php echo wp_kses_post( NIF_HERO_DESC ); ?>
             </p>
 
             <div class="nif-cards-flex">
 
                 <a href="/guides" class="nif-card">
                     <span class="nif-card-icon">🏠</span>
-                    Browse Guides
+                    <?php echo esc_html( NIF_HERO_CARD1_TEXT ); ?>
                 </a>
 
                 <a href="#" class="nif-card">
                     <span class="nif-card-icon">🛡️</span>
-                    Mortgages
+                    <?php echo esc_html( NIF_HERO_CARD2_TEXT ); ?>
                 </a>
 
             </div>

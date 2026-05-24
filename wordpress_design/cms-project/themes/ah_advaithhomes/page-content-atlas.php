@@ -219,7 +219,7 @@ $summary_cards = array(
 }
 </style>
 
-<section class="page-hero atlas-hero" aria-label="Content overview">
+<section class="page-hero atlas-hero" aria-label="<?php echo esc_attr( TXT_CONTENT_OVERVIEW ); ?>">
 	<div class="container">
 		<div class="page-hero__copy" style="max-width:820px" data-aos="fade-up">
 			<span class="section__eyebrow">Content Atlas</span>
@@ -232,7 +232,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section section--sm" aria-label="Content summary">
+<section class="section section--sm" aria-label="<?php echo esc_attr( TXT_CONTENT_SUMMARY ); ?>">
 	<div class="container">
 		<div class="atlas-summary">
 			<?php foreach ( $summary_cards as $card ) : ?>
@@ -246,7 +246,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section" aria-label="Core settings">
+<section class="section" aria-label="<?php echo esc_attr( TXT_CORE_SETTINGS ); ?>">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Site Basics</span>
@@ -287,7 +287,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section section--pattern" aria-label="Live signals">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_LIVE_SIGNALS ); ?>">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Live Signals</span>
@@ -323,7 +323,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section" aria-label="Published content">
+<section class="section" aria-label="<?php echo esc_attr( TXT_PUBLISHED_CONTENT ); ?>">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Posts and Pages</span>
@@ -361,7 +361,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section section--pattern" aria-label="Structured content">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_STRUCTURED_CONTENT ); ?>">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Structured Content</span>
@@ -429,7 +429,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section" aria-label="Tools and resources">
+<section class="section" aria-label="<?php echo esc_attr( TXT_TOOLS_AND_RESOURCES ); ?>">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Tools and Resources</span>
@@ -526,7 +526,7 @@ $summary_cards = array(
 	</div>
 </section>
 
-<section class="section section--pattern" aria-label="Process and numbers">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_PROCESS_AND_NUMBERS ); ?>">
 	<div class="container">
 		<div class="section__header">
 			<span class="section__eyebrow">Operational Snapshot</span>

@@ -13,11 +13,11 @@ defined( 'ABSPATH' ) || exit;
 
 $feat    = $args['feat']    ?? null;
 $flank   = $args['flank']   ?? [];
-$eyebrow = $args['eyebrow'] ?? __( "Editor's Picks", 'ah-theme' );
+$eyebrow = $args['eyebrow'] ?? TXT_EDITOR_S_PICKS;
 
 if ( ! $feat && empty( $flank ) ) return;
 ?>
-<section class="section section--alt nif-section-feature" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
+<section class="section section--alt nif-section-feature" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
   <div class="container">
 
     <div class="nif-section-label" data-aos="fade-up">
@@ -46,7 +46,7 @@ if ( ! $feat && empty( $flank ) ) return;
           </h3>
           <p class="nif-overlay-card__excerpt"><?php echo esc_html( $d['excerpt'] ); ?></p>
           <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-overlay-card__link">
-            <?php esc_html_e( 'Read Story', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+            <?php echo esc_html( TXT_READ_STORY ); ?> <span aria-hidden="true">→</span>
           </a>
         </div>
       </article>
@@ -62,7 +62,7 @@ if ( ! $feat && empty( $flank ) ) return;
           <?php if ( $d['thumb_url'] ) : ?>
             <div class="nif-flank-card__img">
               <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                   alt="<?php echo esc_attr( get_the_title( $fp->ID ) ); ?>"
+                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_FP_ID ); ?>"
                    loading="lazy" decoding="async">
             </div>
           <?php else : ?>
@@ -91,7 +91,7 @@ if ( ! $feat && empty( $flank ) ) return;
                 </span>
               <?php endif; ?>
               <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-read-link nif-read-link--sm">
-                <?php esc_html_e( 'Read', 'ah-theme' ); ?> <span aria-hidden="true">→</span>
+                <?php echo esc_html( TXT_READ ); ?> <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
