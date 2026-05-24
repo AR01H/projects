@@ -10,7 +10,8 @@ require_once get_template_directory() . '/includes/helpers.php';           // DB
 require_once get_template_directory() . '/includes/class-theme-admin.php'; // WP admin menu for this theme
 require_once get_template_directory() . '/mail/common_contact.php';        // AJAX form handlers
 require_once get_template_directory() . '/models/class-content-taxonomy.php'; // AH_Theme_Content_Taxonomy
-
+require_once get_template_directory() . '/cors-origin.php'; // Allowign cors origin
+require_once get_template_directory() . '/url-fixer.php';
 // ── Init Theme Admin ──────────────────────────────────────────────────────────
 if ( is_admin() ) {
 	AH_Theme_Admin::init();
@@ -54,6 +55,7 @@ add_action( 'wp_enqueue_scripts', function () {
 
 	wp_enqueue_style( 'ah-variables',  $uri . '/assets/css/variables.css',  [ 'ah-google-fonts' ], $fv( '/assets/css/variables.css' ) );
 	wp_enqueue_style( 'ah-base',       $uri . '/assets/css/base.css',       [ 'ah-variables' ],    $fv( '/assets/css/base.css' ) );
+	wp_enqueue_style( 'ah-main-css',       $uri . '/assets/css/main.css',       [ 'ah-variables' ],    $fv( '/assets/css/main.css' ) );
 	wp_enqueue_style( 'ah-components', $uri . '/assets/css/components.css', [ 'ah-base' ],         $fv( '/assets/css/components.css' ) );
 	wp_enqueue_style( 'ah-layout',     $uri . '/assets/css/layout.css',     [ 'ah-components' ],   $fv( '/assets/css/layout.css' ) );
 	wp_enqueue_style( 'ah-forms',      $uri . '/assets/css/forms.css',      [ 'ah-base' ],         $fv( '/assets/css/forms.css' ) );

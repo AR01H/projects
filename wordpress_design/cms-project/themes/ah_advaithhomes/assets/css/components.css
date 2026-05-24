@@ -3069,7 +3069,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 	content: '';
 	position: absolute;
 	inset: 0;
-	 background: rgba(255, 255, 255, 0.4);
+	background: rgba(0, 0, 0, var(--hero-overlay));
 	z-index: 0;
 }
 .ah-block-hero.ah-hero--image .section__eyebrow { color: rgba(255,255,255,.6); }
