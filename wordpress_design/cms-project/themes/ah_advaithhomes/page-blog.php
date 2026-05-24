@@ -164,7 +164,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
       ?>
       <nav class="pagination" aria-label="<?php echo esc_attr( TXT_BLOG_NAVIGATION ); ?>" style="margin-top:48px">
         <ul class="pagination__list">
-          <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
+          <?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
         </ul>
       </nav>
       <?php endif; endif; ?>

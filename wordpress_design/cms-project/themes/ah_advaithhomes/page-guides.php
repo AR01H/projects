@@ -121,7 +121,7 @@ if ( $active_cat ) {
     ?>
     <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDES_NAVIGATION ); ?>" style="margin-top:48px">
       <ul class="pagination__list">
-        <?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
+        <?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
       </ul>
     </nav>
     <?php endif; endif; ?>

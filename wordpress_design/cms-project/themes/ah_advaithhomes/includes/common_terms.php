@@ -365,9 +365,6 @@ handle_defined( 'TXT_SPAN_CLASS_BREADCRUMB_SEP_ARIA_HIDDEN_TRUE_SPAN', '<span cl
 handle_defined( 'TXT_SPAN_CLASS_BREADCRUMB_CURRENT_ARIA_CURRENT_PAGE_ESC_HTML_C_LABEL_SPAN', '<span class="breadcrumb__current" aria-current="page">\' . esc_html( $c[\'label\'] ) . \'</span>' );
 handle_defined( 'TXT_LI', '</li>' );
 handle_defined( 'TXT_OL_NAV', '</ol></nav>' );
-handle_defined( 'TXT_NAV_CLASS_PAGINATION_ARIA_LABEL_PHP_ECHO_ESC_ATTR_TXT_POSTS_NAVIGATION_UL_CLASS_PAGINATION_LIST', '<nav class="pagination" aria-label="<?php echo esc_attr( TXT_POSTS_NAVIGATION ); ?>"><ul class="pagination__list">' );
-handle_defined( 'TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI', '<li class="pagination__item">\' . $link . \'</li>' );
-handle_defined( 'TXT_UL_NAV', '</ul></nav>' );
 handle_defined( 'TXT_BLOG_POSTS', 'Blog posts' );
 handle_defined( 'TXT_E_G_450000', 'e.g. 450000' );
 handle_defined( 'TXT_E_G_300000', 'e.g. 300000' );

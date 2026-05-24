@@ -222,7 +222,7 @@ $total_posts = $blog_query->found_posts;
 					if ( $links ) : ?>
 				<nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
 					<ul class="pagination__list">
-						<?php foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI ); ?>
+						<?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
 					</ul>
 				</nav>
 				<?php endif; endif; ?>

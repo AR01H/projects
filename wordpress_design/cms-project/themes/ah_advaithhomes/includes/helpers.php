@@ -605,9 +605,9 @@ function ah_breadcrumb(): void {
 function ah_pagination(): void {
 	$links = paginate_links( [ 'type' => 'array', 'prev_text' => '← Prev', 'next_text' => 'Next →' ] );
 	if ( ! $links ) return;
-	echo esc_html( TXT_NAV_CLASS_PAGINATION_ARIA_LABEL_PHP_ECHO_ESC_ATTR_TXT_POSTS_NAVIGATION_UL_CLASS_PAGINATION_LIST );
-	foreach ( $links as $link ) echo esc_html( TXT_LI_CLASS_PAGINATION_ITEM_LINK_LI );
-	echo esc_html( TXT_UL_NAV );
+	echo '<nav class="pagination" aria-label="<?php echo esc_attr( TXT_POSTS_NAVIGATION ); ?>"><ul class="pagination__list">';
+	foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' );
+	echo '</ul></nav>';
 }
 
 function ah_excerpt( int $length = 30 ): string {
