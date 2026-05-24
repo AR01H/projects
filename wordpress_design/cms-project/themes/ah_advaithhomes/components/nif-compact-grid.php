@@ -14,14 +14,14 @@
 defined( 'ABSPATH' ) || exit;
 
 $posts      = $args['posts']      ?? [];
-$eyebrow    = $args['eyebrow']    ?? __( 'More Reads', 'ah-theme' );
+$eyebrow    = $args['eyebrow']    ?? sprintf( __( 'More %s', 'ah-theme' ), AH_TERM_PLURAL );
 $heading    = $args['heading']    ?? 'Latest <em>Updates</em>';
 $more_url   = $args['more_url']   ?? '';
-$more_label = $args['more_label'] ?? __( 'View all articles', 'ah-theme' );
+$more_label = $args['more_label'] ?? sprintf( __( 'View all %s', 'ah-theme' ), AH_TERM_LOWER_PLURAL );
 
 if ( empty( $posts ) ) return;
 ?>
-<section class="section nif-section-compact" aria-label="<?php esc_attr_e( 'More articles', 'ah-theme' ); ?>">
+<section class="section nif-section-compact" aria-label="<?php printf( esc_attr__( 'More %s', 'ah-theme' ), AH_TERM_LOWER_PLURAL ); ?>">
   <div class="container">
 
     <div class="nif-section-header" data-aos="fade-up">

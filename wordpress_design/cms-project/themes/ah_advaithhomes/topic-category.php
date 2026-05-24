@@ -113,7 +113,7 @@ $total_posts = $blog_query->found_posts;
 <?php get_template_part( 'components/page-header', null, [
 	'eyebrow'    => esc_html( $pt_name ),
 	'title'      => esc_html( $cat_name ),
-	'badge'      => $total_posts ? sprintf( _n( '%s article', '%s articles', $total_posts, 'ah-theme' ), number_format_i18n( $total_posts ) ) : '',
+	'badge'      => $total_posts ? sprintf( _n( '%s ' . AH_TERM_LOWER, '%s ' . AH_TERM_LOWER_PLURAL, $total_posts, 'ah-theme' ), number_format_i18n( $total_posts ) ) : '',
 	'breadcrumb' => [
 		[ __( 'Home', 'ah-theme' ),   home_url( '/' ) ],
 		[ $pt_name,                    home_url( '/' . $pt_slug . '/' ) ],
@@ -199,7 +199,7 @@ $total_posts = $blog_query->found_posts;
 				<div class="nif-empty" data-aos="fade-up">
 					<div class="nif-empty__icon">✍️</div>
 					<h2 class="nif-empty__title"><?php esc_html_e( 'Nothing here yet', 'ah-theme' ); ?></h2>
-					<p class="nif-empty__desc"><?php esc_html_e( 'No posts in this category yet. Try another topic.', 'ah-theme' ); ?></p>
+					<p class="nif-empty__desc"><?php printf( esc_html__( 'No %s in this category yet. Try another %s.', 'ah-theme' ), AH_TERM_LOWER_PLURAL, AH_TERM_LOWER ); ?></p>
 					<a href="<?php echo esc_url( home_url( '/' . $pt_slug . '/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
 						← <?php echo esc_html( $pt_name ); ?>
 					</a>

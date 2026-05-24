@@ -73,7 +73,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
 	'eyebrow'    => 'Latest Updates',
 	'title'      => 'News &amp;',
 	'title_em'   => 'Announcements',
-	'desc'       => 'Stay up to date with the latest news, market updates, and announcements from Advaith Homes.',
+	'desc'       => 'Stay up to date with the latest news, market updates, and announcements from ' . CLIENT_FULL_TITLE . '.',
 	'badge'      => count( $all_active ) ? count( $all_active ) . ' items' : '',
 	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'News', '' ] ],
 ] ); ?>

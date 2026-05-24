@@ -10,10 +10,10 @@ $signals  = ah_get_trust_signals();
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
-	'eyebrow'    => 'About Advaith Homes',
+	'eyebrow'    => 'About ' . CLIENT_FULL_TITLE,
 	'title'      => 'The UK\'s Buyer\'s Agent -',
 	'title_em'   => 'Working Exclusively for You',
-	'desc'       => 'We exist to level the playing field. Sellers have agents negotiating for them - so should you. Advaith Homes is a buyer-only agency: we never list properties, never work for sellers, and never take referral fees from developers. Our only job is to help you buy smarter.',
+	'desc'       => 'We exist to level the playing field. Sellers have agents negotiating for them - so should you. ' . CLIENT_FULL_TITLE . ' is a buyer-only agency: we never list properties, never work for sellers, and never take referral fees from developers. Our only job is to help you buy smarter.',
 	'badge'      => '',
 	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'About', '' ] ],
 ] ); ?>
@@ -47,7 +47,7 @@ $signals  = ah_get_trust_signals();
         </h2>
         <div class="prose">
           <p>
-            Advaith Homes was founded on a simple belief: buying a home is the biggest financial
+            <?php echo esc_html( CLIENT_FULL_TITLE ); ?> was founded on a simple belief: buying a home is the biggest financial
             decision most people ever make, yet buyers are expected to navigate it alone - against
             estate agents who are legally and commercially incentivised to serve the seller.
           </p>

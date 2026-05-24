@@ -26,8 +26,9 @@ foreach ( $stats as $s ) {
 		'title'    => 'Real Results for',
 		'title_em' => 'Real Buyers',
 		'desc'     => sprintf(
-			"We let our clients do the talking. Here's what over %s buyers have said about working with Advaith Homes.",
-			esc_html( $client_stat )
+			"We let our clients do the talking. Here's what over %s buyers have said about working with %s.",
+			esc_html( $client_stat ),
+			esc_html( CLIENT_FULL_TITLE )
 		),
 		'badge'      => '',
 		'breadcrumb' => [

@@ -20,7 +20,7 @@ $crumbs[] = [ get_the_title(), '' ];
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
-	'eyebrow'    => $cat ? $cat->name : 'Article',
+	'eyebrow'    => $cat ? $cat->name : AH_TERM_SINGULAR,
 	'title'      => get_the_title(),
 	'desc'       => $exc,
 	'badge'      => ah_reading_time(),
@@ -70,7 +70,7 @@ $crumbs[] = [ get_the_title(), '' ];
       </article>
 
       <!-- Sidebar -->
-      <aside class="sidebar" aria-label="Article sidebar">
+      <aside class="sidebar" aria-label="<?php printf( esc_attr__( '%s sidebar', 'ah-theme' ), AH_TERM_SINGULAR ); ?>">
 
         <!-- Table of Contents - populated by JS from article headings -->
         <div class="sidebar-card sp-toc-card" id="sp-toc" hidden>
@@ -78,7 +78,7 @@ $crumbs[] = [ get_the_title(), '' ];
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             <?php esc_html_e( 'Contents', 'ah-theme' ); ?>
           </div>
-          <nav class="sp-toc__nav" aria-label="<?php esc_attr_e( 'Article sections', 'ah-theme' ); ?>"></nav>
+          <nav class="sp-toc__nav" aria-label="<?php printf( esc_attr__( '%s sections', 'ah-theme' ), AH_TERM_SINGULAR ); ?>"></nav>
         </div>
 
         <!-- Consultation CTA -->

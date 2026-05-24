@@ -114,12 +114,12 @@ function ah_process_contact_form(): void {
 
 	// ── Email routing by enquiry type ─────────────────────────────────────────
 	$type_routes = [
-		'general'   => 'general@advaithhomes.com',
-		'complaint'  => 'complaint@advaithhomes.com',
-		'sales'      => 'sales@advaithhomes.com',
-		'support'    => 'support@advaithhomes.com',
-		'media'      => 'media@advaithhomes.com',
-		'other'      => 'contact@advaithhomes.com',
+		'general'   => EMAIL_GENERAL,
+		'complaint'  => EMAIL_COMPLAINT,
+		'sales'      => EMAIL_SALES,
+		'support'    => EMAIL_SUPPORT,
+		'media'      => EMAIL_MEDIA,
+		'other'      => EMAIL_OTHER,
 	];
 	$type_labels = [
 		'general'   => 'General',

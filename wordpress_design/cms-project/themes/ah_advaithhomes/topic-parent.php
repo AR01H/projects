@@ -114,9 +114,9 @@ $total_posts = $blog_query->found_posts;
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
-	'eyebrow'    => esc_html__( 'Explore Topic', 'ah-theme' ),
+	'eyebrow'    => sprintf( esc_html__( 'Explore %s', 'ah-theme' ), AH_TERM_SINGULAR ),
 	'title'      => esc_html( $pt_name ),
-	'badge'      => $total_posts ? sprintf( _n( '%s article', '%s articles', $total_posts, 'ah-theme' ), number_format_i18n( $total_posts ) ) : '',
+	'badge'      => $total_posts ? sprintf( _n( '%s ' . AH_TERM_LOWER, '%s ' . AH_TERM_LOWER_PLURAL, $total_posts, 'ah-theme' ), number_format_i18n( $total_posts ) ) : '',
 	'breadcrumb' => [
 		[ __( 'Home', 'ah-theme' ), home_url( '/' ) ],
 		[ $pt_name, '' ],
@@ -201,9 +201,9 @@ $total_posts = $blog_query->found_posts;
 				<div class="nif-empty" data-aos="fade-up">
 					<div class="nif-empty__icon">✍️</div>
 					<h2 class="nif-empty__title"><?php esc_html_e( 'Nothing published yet', 'ah-theme' ); ?></h2>
-					<p class="nif-empty__desc"><?php esc_html_e( 'We\'re working on content for this topic - check back soon.', 'ah-theme' ); ?></p>
+					<p class="nif-empty__desc"><?php printf( esc_html__( 'We\'re working on content for this %s - check back soon.', 'ah-theme' ), AH_TERM_LOWER ); ?></p>
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
-						<?php esc_html_e( '← All Topics', 'ah-theme' ); ?>
+						← <?php printf( esc_html__( 'All %s', 'ah-theme' ), AH_TERM_PLURAL ); ?>
 					</a>
 				</div>
 				<?php endif; ?>

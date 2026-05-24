@@ -9,9 +9,9 @@ defined( 'ABSPATH' ) || exit;
 
 function ah_mock_default_settings(): array {
 	return [
-		'phone'            => '+44 7747 223762',
-		'email'            => 'contact@advaithhomes.co.uk',
-		'address'          => 'London & Nationwide',
+		'phone'            => CLIENT_PHONE,
+		'email'            => CLIENT_EMAIL,
+		'address'          => CLIENT_ADDRESS,
 		'facebook_url'     => '',
 		'instagram_url'    => '',
 		'twitter_url'      => '',
@@ -128,7 +128,7 @@ function ah_mock_news_bar_items(): array {
 		'✦ Off-market deals available now in London, Bristol, and Manchester - speak to our team today',
 		'✦ Stamp duty relief for first-time buyers extended - check our calculator for your savings',
 		'✦ New: Free 30-minute consultation with a buyer\'s agent - limited slots available this week',
-		'✦ Q1 2025: Average negotiation saving for Advaith clients was £14,200',
+		'✦ Q1 2025: Average negotiation saving for ' . CLIENT_PRIMARY_TITLE . ' clients was £14,200',
 	];
 }
 
@@ -156,8 +156,8 @@ function ah_mock_reviews(): array {
 	return [
 		(object)[ 'id' => 1, 'author_name' => 'Sarah & Marcus T.', 'location' => 'First-time buyers - East London',      'review_text' => 'James found us a flat off-market, negotiated £18,000 off the asking price, and coordinated everything. Completion was 7 weeks from offer. Cannot recommend enough.',                    'rating' => 5.0, 'result' => 'Saved £18,000 vs asking price',     'status' => 'active' ],
 		(object)[ 'id' => 2, 'author_name' => 'Dr. Ravi Menon',    'location' => 'Relocating from Dubai - Surrey',        'review_text' => 'Bought a 5-bedroom home in Surrey entirely remotely. Priya handled every site visit, due diligence report, and legal question on my behalf. Flawless service.',                          'rating' => 5.0, 'result' => 'Full remote purchase completed',     'status' => 'active' ],
-		(object)[ 'id' => 3, 'author_name' => 'Claire Ashworth',   'location' => 'Buy-to-let investor - Manchester',      'review_text' => "Third property I've bought through Advaith. Average yield across my portfolio is 7.4%. They genuinely understand investment criteria, not just 'nice homes'.",                         'rating' => 5.0, 'result' => '7.4% avg portfolio yield',          'status' => 'active' ],
-		(object)[ 'id' => 4, 'author_name' => 'Henry & Jo Blackwell','location' => 'Upsizing - Bristol',                  'review_text' => 'After two failed offers on homes we found ourselves, we brought in Advaith. They found a better property and we got it first time. Three months of stress gone in three weeks.',   'rating' => 5.0, 'result' => 'Secured on first offer',             'status' => 'active' ],
+		(object)[ 'id' => 3, 'author_name' => 'Claire Ashworth',   'location' => 'Buy-to-let investor - Manchester',      'review_text' => "Third property I've bought through " . CLIENT_PRIMARY_TITLE . ". Average yield across my portfolio is 7.4%. They genuinely understand investment criteria, not just 'nice homes'.",                         'rating' => 5.0, 'result' => '7.4% avg portfolio yield',          'status' => 'active' ],
+		(object)[ 'id' => 4, 'author_name' => 'Henry & Jo Blackwell','location' => 'Upsizing - Bristol',                  'review_text' => 'After two failed offers on homes we found ourselves, we brought in ' . CLIENT_PRIMARY_TITLE . '. They found a better property and we got it first time. Three months of stress gone in three weeks.',   'rating' => 5.0, 'result' => 'Secured on first offer',             'status' => 'active' ],
 		(object)[ 'id' => 5, 'author_name' => 'Anoushka Reid',     'location' => 'New build purchase - Canary Wharf',     'review_text' => 'Developers are very savvy. Tom explained what was negotiable and got a parking space, £5k in extras, and a better completion date included. The fee paid for itself three times over.', 'rating' => 5.0, 'result' => '£5k+ in developer extras negotiated', 'status' => 'active' ],
 		(object)[ 'id' => 6, 'author_name' => 'David & Lisa Okonkwo','location' => 'Family home - Hertfordshire',          'review_text' => 'School catchments, planning applications, flood risk, Japanese knotweed - they checked everything. We bought knowing exactly what we were getting. No surprises after completion.',       'rating' => 5.0, 'result' => 'Full due diligence on family home',  'status' => 'active' ],
 	];

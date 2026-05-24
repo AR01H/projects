@@ -17,13 +17,13 @@ if ( empty( $posts ) ) return;
 
 $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖️','invest'=>'📈','tips'=>'💡','client'=>'⭐' ];
 ?>
-<section class="sp-related" aria-label="<?php esc_attr_e( 'Related articles', 'ah-theme' ); ?>">
+<section class="sp-related" aria-label="<?php printf( esc_attr__( 'Related %s', 'ah-theme' ), AH_TERM_LOWER_PLURAL ); ?>">
   <div class="container">
 
     <div class="sp-section-head">
       <div>
         <span class="section__eyebrow"><?php esc_html_e( 'Keep Reading', 'ah-theme' ); ?></span>
-        <h2 class="sp-section-head__title"><?php esc_html_e( 'Related Articles', 'ah-theme' ); ?></h2>
+        <h2 class="sp-section-head__title"><?php printf( esc_html__( 'Related %s', 'ah-theme' ), AH_TERM_PLURAL ); ?></h2>
       </div>
       <?php if ( $cat ) : ?>
       <a href="<?php echo esc_url( get_category_link( $cat ) ); ?>" class="sp-see-all">
@@ -79,7 +79,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
           <?php if ( $i === 0 && $rexc ) : ?>
             <p class="sp-ra-card__excerpt"><?php echo esc_html( $rexc ); ?></p>
           <?php endif; ?>
-          <span class="sp-ra-card__cta"><?php esc_html_e( 'Read Article →', 'ah-theme' ); ?></span>
+          <span class="sp-ra-card__cta"><?php printf( esc_html__( 'Read %s →', 'ah-theme' ), AH_TERM_SINGULAR ); ?></span>
         </div>
 
       </a>
