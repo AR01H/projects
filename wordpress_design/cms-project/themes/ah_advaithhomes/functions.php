@@ -64,6 +64,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-common',     $uri . '/assets/css/common.css',     [ 'ah-style' ],         $fv( '/assets/css/common.css' ) );
 	wp_enqueue_style( 'ah-scroll-to-top',     $uri . '/assets/css/scroll-to-top.css',     [ 'ah-common' ],         $fv( '/assets/css/scroll-to-top.css' ) );
 	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv( '/assets/css/news-feed.css' ) );
+	wp_enqueue_style( 'ah-theme-builder-css',     $uri . '/assets/css/themebuilder.css',     [ 'ah-common' ],         $fv( '/assets/css/themebuilder.css' ) );
 
 	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ],  $fv( '/assets/js/main.js' ),  true );
 	wp_enqueue_script( 'ah-forms', $uri . '/assets/js/forms.js', [ 'ah-main' ], $fv( '/assets/js/forms.js' ), true );

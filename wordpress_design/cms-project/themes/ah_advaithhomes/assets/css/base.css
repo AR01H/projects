@@ -130,7 +130,6 @@ p + p { margin-top: .75em; }
 .section__desc {
 	font-size: 1.05rem;
 	color: var(--text-secondary);
-	max-width: 600px;
 }
 
 /* ── Grid helpers ─────────────────────────────────────────────────────────── */

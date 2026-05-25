@@ -596,27 +596,40 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$items    = $d['items'] ?? array();
 			if ( empty( $items ) ) break;
 			$cols     = max( 2, min( 3, (int) ( $d['cols'] ?? 2 ) ) );
-			$col_cls  = ( $d['bg'] ?? 'white' ) === 'alt' ? 'section section--alt section--sm' : 'section section--sm';
+			$col_cls  = ( $d['bg'] ?? 'white' ) === 'alt'
+				? 'section section--alt section--sm ah-columns-section'
+				: 'section section--sm ah-columns-section';
 			?>
 			<?php echo ah_section_open( $d, $col_cls ); ?>
 				<div class="container">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
-						<div class="section__header text-center" style="margin-bottom:32px;" data-aos="fade-up">
-							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
+						<div class="section__header text-center ah-columns-header"
+							data-aos="fade-up">
+							<h2 class="ah-columns-title">
+								<?php echo esc_html( $d['heading'] ); ?>
+							</h2>
 							<span class="ah-accent-bar"></span>
 						</div>
 					<?php endif; ?>
-					<div class="grid-<?php echo $cols; ?>">
+					<div class="grid-<?php echo $cols; ?> ah-columns-grid">
 						<?php foreach ( $items as $i => $col ) : ?>
-							<div data-aos="fade-up" data-aos-delay="<?php echo $i * 80; ?>">
+							<div class="ah-columns-card"
+								data-aos="fade-up"
+								data-aos-delay="<?php echo $i * 80; ?>">
 								<?php if ( ! empty( $col['icon'] ) ) : ?>
-									<div style="font-size:1.6rem;margin-bottom:12px;"><?php echo esc_html( $col['icon'] ); ?></div>
+									<div class="ah-columns-icon">
+										<?php echo esc_html( $col['icon'] ); ?>
+									</div>
 								<?php endif; ?>
 								<?php if ( ! empty( $col['heading'] ) ) : ?>
-									<h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--text-primary);"><?php echo esc_html( $col['heading'] ); ?></h3>
+									<h3 class="ah-columns-card-title">
+										<?php echo esc_html( $col['heading'] ); ?>
+									</h3>
 								<?php endif; ?>
 								<?php if ( ! empty( $col['text'] ) ) : ?>
-									<p style="font-size:.875rem;line-height:1.75;color:var(--text-secondary);"><?php echo nl2br( esc_html( $col['text'] ) ); ?></p>
+									<p class="ah-columns-card-text">
+										<?php echo nl2br( esc_html( $col['text'] ) ); ?>
+									</p>
 								<?php endif; ?>
 							</div>
 						<?php endforeach; ?>
@@ -927,7 +940,7 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$url = $d['url'] ?? '';
 			if ( empty( $url ) ) break;
 			?>
-			<?php echo ah_section_open( $d, 'section section--sm' ); ?>
+			<?php echo ah_section_open( $d, 'section section--sm ah-download-section' ); ?>
 				<div class="container  " data-aos="fade-up">
 					<div class="ah-download">
 						<div class="ah-download__icon">⬇️</div>
