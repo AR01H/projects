@@ -50,7 +50,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 			],
 		] ); ?>
 
-		<article class="section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_ARTICLE ); ?>">
+		<article class="section" aria-label="<?php echo esc_attr( TXT_NEWS_ARTICLE ); ?>">
 		  <div class="container">
 
 		    <!-- Back link -->
@@ -232,7 +232,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
 <?php endif; ?>
 
 <!-- ── News-card grid ─────────────────────────────────────────────────────── -->
-<section class="section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_ARTICLES ); ?>">
+<section class="section" aria-label="<?php echo esc_attr( TXT_NEWS_ARTICLE ); ?>">
   <div class="container">
 
     <?php if ( ! empty( $news_items ) ) : ?>

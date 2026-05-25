@@ -215,7 +215,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         } else {
           // ── FILTERED / PAGINATED GRID VIEW ────────────────────────────────
         ?>
-        <section class="section" style="padding-top:28px" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_ARTICLES ); ?>">
+        <section class="section" style="padding-top:28px" aria-label="<?php echo esc_attr( TXT_ARTICLES ); ?>">
 
           <?php if ( ! empty( $posts_arr ) ) : ?>
           <div class="nif-grid">
@@ -298,7 +298,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
               'type'      => 'array',
             ] );
             if ( $links ) : ?>
-          <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
+          <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
             <ul class="pagination__list">
               <?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
             </ul>

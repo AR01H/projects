@@ -314,7 +314,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
               'type'      => 'array',
             ] );
             if ( $links ) : ?>
-          <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
+          <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
             <ul class="pagination__list">
               <?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
             </ul>
@@ -326,7 +326,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       </main>
 
       <!-- ══ SIDEBAR ═══════════════════════════════════════════════════════ -->
-      <aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_TOPIC_INFORMATION ); ?>">
+      <aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_TOPIC_INFORMATION ); ?>">
         <?php get_template_part( 'components/multiinfo-sidebar', null, [
           'active_pt'      => $active_pt,
           'active_slug'    => $active_slug,

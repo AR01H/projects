@@ -117,7 +117,7 @@ $crumbs[] = [ get_the_title(), '' ];
               <a href="<?php echo esc_url( get_permalink( $mp ) ); ?>" class="sp-more-item__link">
                 <?php if ( $mp_thumb ) : ?>
                   <img class="sp-more-item__img" src="<?php echo esc_url( $mp_thumb ); ?>"
-                       alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_MP ); ?>" loading="lazy">
+                       alt="<?php echo esc_attr( get_the_title( $mp ) ); ?>" loading="lazy">
                 <?php else : ?>
                   <div class="sp-more-item__img sp-more-item__img--ph" aria-hidden="true"><?php echo esc_html( get_the_title( $mp )[0] ) ?></div>
                 <?php endif; ?>

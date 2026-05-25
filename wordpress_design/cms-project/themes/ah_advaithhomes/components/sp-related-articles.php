@@ -17,7 +17,7 @@ if ( empty( $posts ) ) return;
 
 $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖️','invest'=>'📈','tips'=>'💡','client'=>'⭐' ];
 ?>
-<section class="sp-related" aria-label="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_RELATED_S_AH_TERM_LOWER_PLURAL ); ?>">
+<section class="sp-related" aria-label="<?php printf( esc_html( TXT_RELATED_S ), AH_TERM_LOWER_PLURAL ); ?>">
   <div class="container">
 
     <div class="sp-section-head">

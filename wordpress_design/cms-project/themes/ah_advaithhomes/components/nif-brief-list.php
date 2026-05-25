@@ -88,8 +88,8 @@ if ( empty( $posts ) ) return;
       'type'      => 'array',
     ] );
     if ( $links ) : ?>
-  <nav class="nif-brief-pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>">
-    <?php foreach ( $links as $link ) echo esc_html( TXT_SPAN_CLASS_NIF_BRIEF_PAGE_LINK_LINK_SPAN ); ?>
+  <nav class="nif-brief-pagination" aria-label="<?php echo esc_attr( TXT_PAGE_NAVIGATION ); ?>">
+    <?php foreach ( $links as $link ) echo ( '<span class="nif-brief-page-link">' . $link . '</span>' ); ?>
   </nav>
   <?php endif; ?>
   

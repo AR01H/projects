@@ -3,7 +3,9 @@
    Fills the styling gaps for blocks rendered by template-builder-page.php
    that are NOT covered by the theme's components.css.
    ═══════════════════════════════════════════════════════════════════════════ */
-
+.footer__sitemap {
+	display: none;
+}
 
 /* ── Stats strip ─────────────────────────────────────────────────────────── */
 .stats-strip {

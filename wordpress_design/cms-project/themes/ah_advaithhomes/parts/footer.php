@@ -90,7 +90,7 @@ $year     = gmdate( 'Y' );
 						<?php foreach ( (array) $column['items'] as $link ) : ?>
 							<?php $link = is_object( $link ) ? (array) $link : (array) $link; ?>
 							<a href="<?php echo esc_url( $link['url'] ?? '#' ); ?>" class="footer__link"
-								<?php if ( ! empty( $link['highlight'] ) ) echo esc_html( TXT_STYLE_COLOR_VAR_CLIENT_COLOR_100_FONT_WEIGHT_700 ); ?>>
+								<?php if ( ! empty( $link['highlight'] ) ) echo ( 'style="color:var(--client-color-100);font-weight:700"' ); ?>>
 								<?php echo esc_html( $link['label'] ?? '' ); ?>
 							</a>
 						<?php endforeach; ?>

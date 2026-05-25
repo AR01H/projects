@@ -114,7 +114,7 @@ $nav_cta = ah_get_nav_cta();
 				<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
 			</svg>
 			<input type="search" id="ahSearchInput" class="nav__search-input"
-				placeholder="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_SEARCH_S_AND_GUIDES_AH_TERM_LOWER_PLURAL ); ?>"
+				placeholder="<?php printf( esc_attr( TXT_SEARCH_S_AND_GUIDES ), AH_TERM_LOWER_PLURAL ); ?>"
 				autocomplete="off" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SEARCH ); ?>">
 			<button class="nav__search-close" id="ahSearchClose"
 				aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_CLOSE_SEARCH ); ?>">

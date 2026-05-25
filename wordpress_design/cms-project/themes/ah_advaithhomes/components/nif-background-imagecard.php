@@ -135,7 +135,6 @@ $exta_heading = $args['exta_heading'] ?? '';
     }
     .nif-portal-section-background-img .nif-inner {
         justify-content: center;
-        padding: 210px 24px 56px;
     }
     .nif-portal-section-background-img .nif-content {
         width: 100%;
@@ -143,19 +142,21 @@ $exta_heading = $args['exta_heading'] ?? '';
 }
 
 @media (max-width: 560px) {
-    .nif-portal-section-background-img .nif-inner {
-        padding-top: 185px;
+    .whole-page-card .nif-portal-section-background-img .nif-content .hero__title{
+        font-size: 3.0rem;
+    }
+    .nif-portal-section-background-img .nif-content .hero__desc{
+        font-size: 1.0rem;
+        line-height: 2rem;
     }
     .nif-portal-section-background-img .hero__title {
-        font-size: 1.6rem;
+        font-size: 1.0rem;
     }
 }
 .hero__title em {
     font-style: italic;
     color: var(--client-color-50);
-    overflow: hidden;
     display: block;
-    white-space: nowrap;
     width: 0;
     animation: nif-type 2s steps(20, end) forwards;
 }

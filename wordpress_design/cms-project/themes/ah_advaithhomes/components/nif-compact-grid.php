@@ -21,7 +21,7 @@ $more_label = $args['more_label'] ?? sprintf( TXT_VIEW_ALL_S, AH_TERM_LOWER_PLUR
 
 if ( empty( $posts ) ) return;
 ?>
-<section class="section nif-section-compact" aria-label="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_MORE_S_AH_TERM_LOWER_PLURAL ); ?>">
+<section class="section nif-section-compact" aria-label="<?php printf( esc_attr( TXT_MORE_S ), AH_TERM_LOWER_PLURAL ); ?>">
   <div class="container">
 
     <div class="nif-section-header" data-aos="fade-up">

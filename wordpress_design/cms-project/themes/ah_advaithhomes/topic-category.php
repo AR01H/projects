@@ -218,7 +218,7 @@ $total_posts = $blog_query->found_posts;
 						'type'      => 'array',
 					] );
 					if ( $links ) : ?>
-				<nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
+				<nav class="pagination" aria-label="<?php echo esc_attr( TXT_PAGE_NAVIGATION ); ?>" style="margin-top:48px">
 					<ul class="pagination__list">
 						<?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
 					</ul>
@@ -227,7 +227,7 @@ $total_posts = $blog_query->found_posts;
 
 			</main>
 
-			<aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_TOPIC_SIDEBAR ); ?>">
+			<aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_TOPIC_SIDEBAR ); ?>">
 				<?php get_template_part( 'components/topic-sidebar', null, [
 					'pt'            => $pt,
 					'pt_slug'       => $pt_slug,

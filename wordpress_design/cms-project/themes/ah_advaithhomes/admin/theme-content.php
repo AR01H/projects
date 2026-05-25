@@ -194,7 +194,7 @@ $post_suggestions = array_map( function( $p ) {
           </tr>
           <tr>
             <th>Email Subject Prefix</th>
-            <td><input type="text" name="contact[subject_prefix]" value="<?php echo esc_attr( $contact['subject_prefix'] ?? '' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_CLIENT_ENQUIRY_SUBJECT_PREFIX ); ?>"></td>
+            <td><input type="text" name="contact[subject_prefix]" value="<?php echo esc_attr( $contact['subject_prefix'] ?? '' ); ?>" class="regular-text" placeholder="'<?php echo esc_attr( CLIENT_ENQUIRY_SUBJECT_PREFIX ); ?>'"></td>
           </tr>
           <tr>
             <th>Thank-You Message</th>

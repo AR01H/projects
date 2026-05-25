@@ -37,7 +37,7 @@ $base_url      = $args['base_url']      ?? home_url( '/multiinfo/' );
 <!-- ── Topics navigation card ────────────────────────────────────────────── -->
 <?php if ( $active_pt ) : ?>
 <!-- On a parent-term page: show subcategories of that term -->
-<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SUBCATEGORIES ); ?>">
+<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_SUBCATEGORIES ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary">
       <?php echo esc_html( sprintf( TXT_IN_S, $active_pt->name ) ); ?>

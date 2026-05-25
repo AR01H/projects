@@ -7,7 +7,7 @@
       <h1 class="section__title" style="margin-top:12px">
         <?php
         printf(
-          esc_html( TXT_SEARCH_RESULTS_FOR_S ),
+          esc_html( 'Search results for: %s' ),
           '<em>' . esc_html( get_search_query() ) . '</em>'
         );
         ?>
