@@ -14,7 +14,7 @@ if ( empty( $news_bar_items ) ) {
 	return;
 }
 ?>
-<div class="nif-sb-card nif-sb-card--flash" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_LATEST_NEWS ); ?>">
+<div class="nif-sb-card nif-sb-card--flash" aria-label="<?php echo esc_attr( TXT_LATEST_NEWS ); ?>">
   <div class="nif-sb-card__header nif-sb-card__header--row">
     <span class="nif-section-label--primary" style="color:var(--important);font-weight:bolder;"><?php echo esc_html( TXT_LATEST_NEWS ); ?></span>
     <a href="<?php echo esc_url( home_url( '/allnews/' ) ); ?>" class="nif-sb-more-link" >

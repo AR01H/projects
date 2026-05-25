@@ -17,7 +17,7 @@ $heading = $args['heading'] ?? 'Buyer <em>Resources</em>';
 
 if ( empty( $cards ) ) return;
 ?>
-<section class="section section--alt nif-section-resources" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_TOOLS_AND_RESOURCES ); ?>">
+<section class="section section--alt nif-section-resources" aria-label="<?php echo esc_attr( TXT_TOOLS_AND_RESOURCES ); ?>">
   <div class="container">
 
     <div class="nif-section-label" data-aos="fade-up">

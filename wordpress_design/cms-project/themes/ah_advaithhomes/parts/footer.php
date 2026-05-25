@@ -28,7 +28,7 @@ $year     = gmdate( 'Y' );
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nav__logo" style="margin-bottom:0">
 					<?php $logo = get_template_directory() . '/assets/images/logo.png'; ?>
 					<?php if ( file_exists( $logo ) ) : ?>
-						<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php echo esc_attr( TXT_PHP_BLOGINFO_NAME ); ?>" style="height:36px">
+						<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php bloginfo( 'name' ); ?>" style="height:36px">
 						<span style="color:white;font-size:1.4rem"><?php echo esc_html( CLIENT_PRIMARY_TITLE ); ?> <em style="font-style:italic;font-family:var(--font-accent)"><?php echo esc_html( CLIENT_SECONDARY_TITLE ); ?></em></span>
 					<?php else : ?>
 						<div class="nav__logo-mark"><?php echo esc_html( CLIENT_SHORT_TITLE ); ?></div>

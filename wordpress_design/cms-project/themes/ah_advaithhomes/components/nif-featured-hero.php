@@ -22,7 +22,7 @@ $cat2     = $cats[1] ?? null;
 $date_str = get_the_date( 'j M Y', $post->ID );
 $bg_style = $d['thumb_url'] ? 'style="--nif-bg:url(' . esc_url( $d['thumb_url'] ) . ')"' : '';
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BREAKING_NEWS ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_BREAKING_NEWS ); ?>">
 
   <div class="nif-portal-section-row">
     <span class="nif-section-label--primary"><?php echo esc_html( TXT_BREAKING_NEWS ); ?></span>

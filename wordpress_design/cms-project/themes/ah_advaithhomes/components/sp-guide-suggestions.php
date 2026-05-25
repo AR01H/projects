@@ -15,7 +15,7 @@ if ( empty( $posts ) ) return;
 
 $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖️','invest'=>'📈','tips'=>'💡','client'=>'⭐' ];
 ?>
-<section class="sp-guides-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SUGGESTED_GUIDES ); ?>">
+<section class="sp-guides-section" aria-label="<?php echo esc_attr( TXT_SUGGESTED_GUIDES ); ?>">
   <div class="container">
 
     <div class="sp-section-head">
@@ -48,7 +48,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
         <div class="sp-guide-card__img">
           <?php if ( $gthumb ) : ?>
             <img src="<?php echo esc_url( $gthumb ); ?>"
-                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_GP ); ?>"
+                 alt="<?php echo esc_attr( get_the_title( $gp ) ); ?>"
                  loading="lazy" decoding="async">
           <?php else : ?>
             <div class="sp-guide-card__placeholder" aria-hidden="true"><?php echo esc_html( $gemoji ); ?></div>

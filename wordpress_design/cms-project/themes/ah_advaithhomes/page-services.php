@@ -49,7 +49,7 @@ $faqs     = ah_get_faqs( 8 );
             <img
               class="service-card__image"
               src="<?php echo esc_url($thumb_url); ?>"
-              alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_SVC_TITLE ); ?>"
+              alt="<?php echo esc_attr($svc->title); ?>"
             />
           </div>
         </div>

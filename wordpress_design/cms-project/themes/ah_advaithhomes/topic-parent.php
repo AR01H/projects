@@ -114,7 +114,7 @@ $total_posts = $blog_query->found_posts;
 ?>
 
 <?php get_template_part( 'components/page-header', null, [
-	'eyebrow'    => sprintf( esc_html( TXT_EXPLORE_S ), AH_TERM_SINGULAR ),
+	'eyebrow'    => sprintf( 'Explore %s' , AH_TERM_SINGULAR ),
 	'title'      => esc_html( $pt_name ),
 	'badge'      => $total_posts ? sprintf( _n( '%s ' . AH_TERM_LOWER, '%s ' . AH_TERM_LOWER_PLURAL, $total_posts, 'ah-theme' ), number_format_i18n( $total_posts ) ) : '',
 	'breadcrumb' => [
@@ -155,13 +155,13 @@ $total_posts = $blog_query->found_posts;
 						$delay = ( $idx % 3 ) * 80;
 					?>
 					<article class="nif-grid-card" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $delay ); ?>"
-					         <?php if ( $d['cat'] ) echo esc_html( TXT_DATA_CAT_ESC_ATTR_D_CAT_SLUG ); ?>>
+					         <?php if ( $d['cat'] )  echo "data-cat=" . esc_attr( $d['cat']->slug ) . ";" ?>>
 
 						<?php if ( $d['thumb_url'] ) : ?>
 							<div class="nif-grid-card__img">
 								<a href="<?php echo esc_url( $d['permalink'] ); ?>" tabindex="-1" aria-hidden="true">
 									<img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-									     alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
+									     alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
 									     loading="lazy" decoding="async">
 								</a>
 							</div>
@@ -201,9 +201,9 @@ $total_posts = $blog_query->found_posts;
 				<div class="nif-empty" data-aos="fade-up">
 					<div class="nif-empty__icon">✍️</div>
 					<h2 class="nif-empty__title"><?php echo esc_html( TXT_NOTHING_PUBLISHED_YET ); ?></h2>
-					<p class="nif-empty__desc"><?php printf( esc_html( TXT_WE_RE_WORKING_ON_CONTENT_FOR_THIS_S_CHECK_BACK_SOO ), AH_TERM_LOWER ); ?></p>
+					<p class="nif-empty__desc"><?php printf( 'Were working on content for this %s - check back soon.', AH_TERM_LOWER ); ?></p>
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
-						← <?php printf( esc_html( TXT_ALL_S_1 ), AH_TERM_PLURAL ); ?>
+						← <?php printf( 'All %s', AH_TERM_PLURAL ); ?>
 					</a>
 				</div>
 				<?php endif; ?>

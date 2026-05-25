@@ -17,7 +17,7 @@ $eyebrow = $args['eyebrow'] ?? TXT_EDITOR_S_PICKS;
 
 if ( ! $feat && empty( $flank ) ) return;
 ?>
-<section class="section section--alt nif-section-feature" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
+<section class="section section--alt nif-section-feature" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
   <div class="container">
 
     <div class="nif-section-label" data-aos="fade-up">
@@ -46,7 +46,7 @@ if ( ! $feat && empty( $flank ) ) return;
           </h3>
           <p class="nif-overlay-card__excerpt"><?php echo esc_html( $d['excerpt'] ); ?></p>
           <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-overlay-card__link">
-            <?php echo esc_html( TXT_READ_STORY ); ?> <span aria-hidden="true">→</span>
+            <?php echo '/slug/ or URL'; ?> <span aria-hidden="true">→</span>
           </a>
         </div>
       </article>
@@ -62,7 +62,7 @@ if ( ! $feat && empty( $flank ) ) return;
           <?php if ( $d['thumb_url'] ) : ?>
             <div class="nif-flank-card__img">
               <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_FP_ID ); ?>"
+                   alt="<?php echo esc_attr( get_the_title( $fp->ID ) ); ?>"
                    loading="lazy" decoding="async">
             </div>
           <?php else : ?>

@@ -45,7 +45,7 @@ if ( empty( $posts ) ) return;
         <?php if ( $d['thumb_url'] ) : ?>
           <div class="nif-compact-card__img">
             <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_GP_ID ); ?>"
+                 alt="<?php echo esc_attr( get_the_title( $gp->ID ) ); ?>"
                  loading="lazy" decoding="async">
           </div>
         <?php else : ?>

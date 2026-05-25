@@ -28,7 +28,7 @@
   <div class="container section">
     <?php if ( have_posts() ) : ?>
       <p style="margin-bottom:24px;color:var(--text-muted)">
-        <?php printf( esc_html( TXT_FOUND_D_RESULTS ), $wp_query->found_posts ); ?>
+        <?php printf( 'Found %d results', $wp_query->found_posts ); ?>
       </p>
       <div class="post-grid">
         <?php while ( have_posts() ) : the_post(); ?>

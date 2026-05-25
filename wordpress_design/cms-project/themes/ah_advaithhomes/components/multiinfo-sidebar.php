@@ -84,7 +84,7 @@ $base_url      = $args['base_url']      ?? home_url( '/multiinfo/' );
 <?php else : ?>
 <!-- On the root /multiinfo/ page: show all parent terms as a card list -->
 <?php if ( ! empty( $parent_terms ) ) : ?>
-<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC ); ?>">
+<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_BROWSE_BY_TOPIC ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary"><?php echo esc_html( TXT_EXPLORE_TOPICS ); ?></span>
   </div>

@@ -35,7 +35,7 @@ if ( ! function_exists( 'nif_tile_cat_class' ) ) {
 	}
 }
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
 
   <div class="nif-portal-section-row">
     <span class="nif-section-label--primary"><?php echo esc_html( $eyebrow ); ?></span>

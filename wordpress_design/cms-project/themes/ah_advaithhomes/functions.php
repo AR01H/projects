@@ -337,11 +337,11 @@ function ah_highlight_links_render( WP_Post $post ): void {
 	<div class="ah-hl-row" style="display:flex;gap:5px;margin-bottom:5px">
 		<input type="text" name="ah_hl_name[]"
 		       value="<?php echo esc_attr( $link['name'] ?? '' ); ?>"
-		       placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_LABEL ); ?>"
+		       placeholder="<?php echo esc_attr( TXT_LABEL ); ?>"
 		       style="flex:1;min-width:0">
 		<input type="text" name="ah_hl_url[]"
 		       value="<?php echo esc_attr( $link['url'] ?? '' ); ?>"
-		       placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_SLUG_OR_URL ); ?>"
+		       placeholder="<?php echo esc_attr( TXT_SLUG_OR_URL ); ?>"
 		       style="flex:1.4;min-width:0">
 		<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>
 	</div>
@@ -355,8 +355,8 @@ function ah_highlight_links_render( WP_Post $post ): void {
 		$('#ah-hl-add').on('click',function(){
 			$('#ah-hl-rows').append(
 				'<div class="ah-hl-row" style="display:flex;gap:5px;margin-bottom:5px">' +
-				'<input type="text" name="ah_hl_name[]" placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_JS_TXT_LABEL ); ?>" style="flex:1;min-width:0">' +
-				'<input type="text" name="ah_hl_url[]"  placeholder="<?php echo esc_attr( TXT_PHP_ECHO_ESC_JS_TXT_SLUG_OR_URL ); ?>" style="flex:1.4;min-width:0">' +
+				'<input type="text" name="ah_hl_name[]" placeholder="<?php echo esc_js( TXT_LABEL ); ?>" style="flex:1;min-width:0">' +
+				'<input type="text" name="ah_hl_url[]"  placeholder="<?php echo esc_js( TXT_SLUG_OR_URL ); ?>" style="flex:1.4;min-width:0">' +
 				'<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>' +
 				'</div>'
 			);

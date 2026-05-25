@@ -16,7 +16,7 @@ $side2 = $posts[2] ?? null;
 
 if ( ! $hero ) return;
 ?>
-<section class="section nif-section-hero" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_FEATURED_ARTICLES ); ?>">
+<section class="section nif-section-hero" aria-label="<?php echo esc_attr( TXT_FEATURED_ARTICLES ); ?>">
   <div class="container">
     <div class="nif-hero-row">
 
@@ -27,7 +27,7 @@ if ( ! $hero ) return;
         <?php if ( $d['thumb_url'] ) : ?>
           <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-hero-card__img-wrap" tabindex="-1" aria-hidden="true">
             <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_HERO_ID ); ?>"
+                 alt="<?php echo esc_attr( get_the_title( $hero->ID ) ); ?>"
                  loading="eager" decoding="async">
             <div class="nif-hero-card__img-overlay" aria-hidden="true"></div>
           </a>
@@ -77,7 +77,7 @@ if ( ! $hero ) return;
           <?php if ( $d['thumb_url'] ) : ?>
             <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-side-card__img" tabindex="-1" aria-hidden="true">
               <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_SP_ID ); ?>"
+                   alt="<?php echo esc_attr( get_the_title( $sp->ID ) ); ?>"
                    loading="lazy" decoding="async">
             </a>
           <?php else : ?>

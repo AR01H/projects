@@ -33,7 +33,7 @@ get_template_part( 'components/page-header', null, [
               $cats       = get_the_category();
             ?>
             <article class="post-card post-card--overlay" data-aos="fade-up">
-              <div class="post-card__bg"<?php if ( $thumb_url ) echo esc_html( TXT_STYLE_BACKGROUND_IMAGE_URL_ESC_URL_THUMB_URL ); ?>></div>
+              <div class="post-card__bg"<?php if ( $thumb_url ) echo 'style="background-image:url( . esc_url( $thumb_url ) . )"'; ?>></div>
 
               <div class="post-card__content">
                 <div class="post-card__top">
@@ -64,7 +64,7 @@ get_template_part( 'components/page-header', null, [
                         </button>
                         <button class="post-share__icon post-share__icon--native"
                                 data-url="<?php echo esc_attr( $post_url ); ?>"
-                                data-title="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_POST_TITLE ); ?>"
+                                data-title="<?php echo esc_attr( $post_title ); ?>"
                                 aria-label="<?php echo esc_attr( TXT_MORE_SHARE_OPTIONS ); ?>">
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                         </button>

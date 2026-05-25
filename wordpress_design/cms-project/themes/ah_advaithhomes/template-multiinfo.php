@@ -216,7 +216,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <?php get_template_part( 'components/nif-news-hero', null, [
           'posts'    => $featured_posts,
           'eyebrow'  => $active_pt
-            ? sprintf( TXT_FEATURED_S, $active_pt->name )
+            ? sprintf( 'Featured: %s', $active_pt->name )
             : TXT_FEATURED_GUIDES,
           'see_all'  => $active_pt
             ? home_url( '/multiinfo/' . $active_slug . '/' )
@@ -230,7 +230,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <?php get_template_part( 'components/nif-guide-tiles', null, [
           'posts'   => array_slice( $posts_arr, 0, 6 ),
           'eyebrow' => $active_pt
-            ? sprintf( TXT_LATEST_IN_S, $active_pt->name )
+            ? sprintf( 'Latest in %s' , $active_pt->name )
             : TXT_LATEST_GUIDES,
           'see_all' => $active_pt
             ? home_url( '/multiinfo/' . $active_slug . '/' )
@@ -255,12 +255,12 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
               $delay = ( $idx % 3 ) * 80;
             ?>
             <article class="nif-grid-card" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $delay ); ?>"
-                     <?php if ( $d['cat'] ) echo esc_html( TXT_DATA_CAT_ESC_ATTR_D_CAT_SLUG ); ?>>
+                     <?php if ( $d['cat'] ) echo "data-cat=" . esc_attr( $d['cat']->slug ) . ";" ?>>
               <?php if ( $d['thumb_url'] ) : ?>
               <div class="nif-grid-card__img">
                 <a href="<?php echo esc_url( $d['permalink'] ); ?>" tabindex="-1" aria-hidden="true">
                   <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                       alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
+                       alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
                        loading="lazy" decoding="async">
                 </a>
               </div>

@@ -53,7 +53,7 @@ if ( $active_cat ) {
 <?php if ( $active_cat && $guides_query ) : ?>
 <!-- ── FILTERED: back link + posts + category cards below ──────────────── -->
 
-<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDES_LISTING ); ?>">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_GUIDES_LISTING ); ?>">
   <div class="container">
 
     <!-- Back / filter indicator -->
@@ -119,7 +119,7 @@ if ( $active_cat ) {
       ] );
       if ( $links ) :
     ?>
-    <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDES_NAVIGATION ); ?>" style="margin-top:48px">
+    <nav class="pagination" aria-label="<?php echo esc_attr( TXT_GUIDES_NAVIGATION ); ?>" style="margin-top:48px">
       <ul class="pagination__list">
         <?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
       </ul>
@@ -140,7 +140,7 @@ if ( $active_cat ) {
 
 <!-- ── Category cards repeated below posts ───────────────────────────────── -->
 <?php if ( $categories ) : ?>
-<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC_1 ); ?>">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_BROWSE_BY_TOPIC_1 ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Browse by Topic</span>
@@ -160,7 +160,7 @@ if ( $active_cat ) {
 <!-- ── HOME: category cards grid only ───────────────────────────────────── -->
 
 <?php if ( $categories ) : ?>
-<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_GUIDE_TOPICS ); ?>">
+<section class="section section--pattern" aria-label="<?php echo esc_attr( TXT_GUIDE_TOPICS ); ?>">
   <div class="container">
     <div class="section__header text-center">
       <span class="section__eyebrow">Browse by Topic</span>

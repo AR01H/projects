@@ -15,7 +15,7 @@ if ( empty( $site_stats ) ) {
 	return;
 }
 ?>
-<div class="nif-sb-card nif-sb-card--stats" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_MARKET_PULSE ); ?>">
+<div class="nif-sb-card nif-sb-card--stats" aria-label="<?php echo esc_attr( TXT_MARKET_PULSE ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary"><?php echo esc_html( TXT_MARKET_PULSE ); ?></span>
   </div>
@@ -33,12 +33,12 @@ if ( empty( $site_stats ) ) {
         <?php echo esc_html( $val ); ?>
         <?php if ( $trend === 'up' ) : ?>
           <svg class="nif-trend nif-trend--up" width="12" height="12" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2.5" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_UP ); ?>">
+               stroke="currentColor" stroke-width="2.5" aria-label="<?php echo esc_attr( TXT_UP ); ?>">
             <polyline points="18 15 12 9 6 15"/>
           </svg>
         <?php elseif ( $trend === 'down' ) : ?>
           <svg class="nif-trend nif-trend--down" width="12" height="12" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2.5" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_DOWN ); ?>">
+               stroke="currentColor" stroke-width="2.5" aria-label="<?php echo esc_attr( TXT_DOWN ); ?>">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         <?php endif; ?>

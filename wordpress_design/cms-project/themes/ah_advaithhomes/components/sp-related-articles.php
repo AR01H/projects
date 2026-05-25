@@ -17,17 +17,17 @@ if ( empty( $posts ) ) return;
 
 $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖️','invest'=>'📈','tips'=>'💡','client'=>'⭐' ];
 ?>
-<section class="sp-related" aria-label="<?php printf( esc_html( TXT_RELATED_S ), AH_TERM_LOWER_PLURAL ); ?>">
+<section class="sp-related" aria-label="<?php printf( 'Related %s', AH_TERM_LOWER_PLURAL ); ?>">
   <div class="container">
 
     <div class="sp-section-head">
       <div>
         <span class="section__eyebrow"><?php echo esc_html( TXT_KEEP_READING ); ?></span>
-        <h2 class="sp-section-head__title"><?php printf( esc_html( TXT_RELATED_S ), AH_TERM_PLURAL ); ?></h2>
+        <h2 class="sp-section-head__title"><?php printf( 'Related %s', AH_TERM_PLURAL ); ?></h2>
       </div>
       <?php if ( $cat ) : ?>
       <a href="<?php echo esc_url( get_category_link( $cat ) ); ?>" class="sp-see-all">
-        <?php printf( esc_html( TXT_MORE_S_1 ), esc_html( $cat->name ) ); ?>
+        <?php printf( 'More %s →', esc_html( $cat->name ) ); ?>
       </a>
       <?php endif; ?>
     </div>
@@ -53,7 +53,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
         <div class="sp-ra-card__img" aria-hidden="true">
           <?php if ( $thumb ) : ?>
             <img src="<?php echo esc_url( $thumb ); ?>"
-                 alt="<?php echo esc_attr( TXT_EMPTY_2 ); ?>" loading="lazy" decoding="async">
+                 alt="" loading="lazy" decoding="async">
           <?php else : ?>
             <div class="sp-ra-card__img-ph"><?php echo esc_html( $emoji ); ?></div>
           <?php endif; ?>
@@ -79,7 +79,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
           <?php if ( $i === 0 && $rexc ) : ?>
             <p class="sp-ra-card__excerpt"><?php echo esc_html( $rexc ); ?></p>
           <?php endif; ?>
-          <span class="sp-ra-card__cta"><?php printf( esc_html( TXT_READ_S ), AH_TERM_SINGULAR ); ?></span>
+          <span class="sp-ra-card__cta"><?php printf( 'Read %s →', AH_TERM_SINGULAR ); ?></span>
         </div>
 
       </a>

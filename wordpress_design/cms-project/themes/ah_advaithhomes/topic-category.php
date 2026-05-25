@@ -153,13 +153,13 @@ $total_posts = $blog_query->found_posts;
 						$delay = ( $idx % 3 ) * 80;
 					?>
 					<article class="nif-grid-card" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $delay ); ?>"
-					         <?php if ( $d['cat'] ) echo esc_html( TXT_DATA_CAT_ESC_ATTR_D_CAT_SLUG ); ?>>
+					         <?php if ( $d['cat'] )  echo "data-cat=" . esc_attr( $d['cat']->slug ) . ";" ?>>
 
 						<?php if ( $d['thumb_url'] ) : ?>
 							<div class="nif-grid-card__img">
 								<a href="<?php echo esc_url( $d['permalink'] ); ?>" tabindex="-1" aria-hidden="true">
 									<img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-									     alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
+									     alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
 									     loading="lazy" decoding="async">
 								</a>
 							</div>
@@ -199,7 +199,7 @@ $total_posts = $blog_query->found_posts;
 				<div class="nif-empty" data-aos="fade-up">
 					<div class="nif-empty__icon">✍️</div>
 					<h2 class="nif-empty__title"><?php echo esc_html( TXT_NOTHING_HERE_YET ); ?></h2>
-					<p class="nif-empty__desc"><?php printf( esc_html( TXT_NO_S_IN_THIS_CATEGORY_YET_TRY_ANOTHER_S ), AH_TERM_LOWER_PLURAL, AH_TERM_LOWER ); ?></p>
+					<p class="nif-empty__desc"><?php printf( 'No %s in this category yet. Try another %s.', AH_TERM_LOWER_PLURAL, AH_TERM_LOWER ); ?></p>
 					<a href="<?php echo esc_url( home_url( '/' . $pt_slug . '/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">
 						← <?php echo esc_html( $pt_name ); ?>
 					</a>

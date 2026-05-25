@@ -38,7 +38,7 @@ $h_bg   = $hd['thumb_url'] ? 'style="--nif-bg:url(' . esc_url( $hd['thumb_url'] 
 // Build category chip URLs - preserve any existing ?pg or ?category params except news_cat
 $chip_base = remove_query_arg( 'news_cat', $permalink );
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
 
   <!-- Header row: label + See all -->
   <div class="nif-portal-section-row">
@@ -50,7 +50,7 @@ $chip_base = remove_query_arg( 'news_cat', $permalink );
 
   <!-- Category filter chips -->
   <!-- <?php if ( ! empty( $cats ) ) : ?>
-  <div class="nif-news-cats" role="navigation" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_NEWS_BY_CATEGORY ); ?>">
+  <div class="nif-news-cats" role="navigation" aria-label="<?php echo esc_attr( TXT_FILTER_NEWS_BY_CATEGORY ); ?>">
     <a href="<?php echo esc_url( $chip_base ); ?>"
        class="nif-news-cat-chip<?php echo ! $news_cat ? ' nif-news-cat-chip--active' : ''; ?>">
       <?php echo esc_html( TXT_ALL ); ?>
@@ -121,7 +121,7 @@ $chip_base = remove_query_arg( 'news_cat', $permalink );
         <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-side-card__img" tabindex="-1" aria-hidden="true">
           <?php if ( $d['thumb_url'] ) : ?>
             <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-                 alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
+                 alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
                  loading="lazy" decoding="async">
           <?php else : ?>
             <div class="nif-side-card__placeholder" aria-hidden="true">

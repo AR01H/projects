@@ -35,7 +35,7 @@ $gradients = [
           <div class="property-card-3d">
             <div class="property-card-3d__img">
               <?php if ( ! empty( $prop['image_url'] ) ) : ?>
-                <img src="<?php echo esc_url( $prop['image_url'] ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_PROP_LOCATION ); ?>">
+                <img src="<?php echo esc_url( $prop['image_url'] ); ?>" alt="<?php echo esc_attr( $prop["location"] ?? ''  ); ?>">
               <?php else : ?>
                 <div class="property-card-3d__img-placeholder" style="background:<?php echo esc_attr( $grad ); ?>">
                   <span style="font-size:4rem"><?php echo $emoji; ?></span>

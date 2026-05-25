@@ -6,7 +6,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="nif-sb-card nif-sb-card--briefing" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_NEED_TO_BE_A_PART ); ?>">
+<div class="nif-sb-card nif-sb-card--briefing" aria-label="<?php echo esc_attr( TXT_NEED_TO_BE_A_PART ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary"><?php echo esc_html( TXT_NEED_TO_BE_A_PART ); ?></span>
   </div>

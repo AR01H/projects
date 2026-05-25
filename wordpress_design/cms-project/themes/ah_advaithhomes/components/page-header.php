@@ -22,7 +22,7 @@ $desc     = $s['desc']       ?? '';
 $badge    = $s['badge']      ?? '';
 $crumbs   = $s['breadcrumb'] ?? [];
 ?>
-<section class="ph" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_STRIP_TAGS_TITLE_TITLE_EM ); ?>">
+<section class="ph" aria-label="<?php echo esc_attr( strip_tags( $title . " " . $title_em ) ); ?>">
   <div class="ph__bg" aria-hidden="true">
     <div class="ph__grid-lines"></div>
     <div class="ph__blob"></div>

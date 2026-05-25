@@ -17,7 +17,7 @@ $eyebrow = $args['eyebrow'] ?? TXT_LATEST_NEWS;
 
 if ( empty( $posts ) ) return;
 ?>
-<section class="nif-portal-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_EYEBROW ); ?>">
+<section class="nif-portal-section" aria-label="<?php echo esc_attr( $eyebrow ); ?>">
 
   <div class="nif-portal-section-row">
     <span class="nif-section-label--primary"><?php echo esc_html( $eyebrow ); ?></span>
@@ -36,7 +36,7 @@ if ( empty( $posts ) ) return;
       <a href="<?php echo esc_url( $d['permalink'] ); ?>" class="nif-news-card__img-wrap" tabindex="-1" aria-hidden="true">
         <?php if ( $d['thumb_url'] ) : ?>
           <img src="<?php echo esc_url( $d['thumb_url'] ); ?>"
-               alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
+               alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
                loading="lazy" decoding="async">
         <?php else : ?>
           <div class="nif-news-card__placeholder" aria-hidden="true">

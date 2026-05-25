@@ -111,7 +111,7 @@ function nc_term_color( string $slug, array &$cache, array $map, array $fallback
             <!-- Thumbnail -->
             <div class="nc4__thumb" <?php echo ! $img_url ? 'style="background:' . esc_attr( $fb_bg ) . '"' : ''; ?>>
               <?php if ( $img_url ) : ?>
-                <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_ITEM_TEXT ); ?>" loading="lazy">
+                <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $item->text ); ?>" loading="lazy">
               <?php else : ?>
                 <span class="nc4__thumb-icon" style="color:<?php echo esc_attr( $fb_fg ); ?>">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>

@@ -41,7 +41,7 @@ $avatars = [ '👩‍💼', '👨‍💼', '👩‍🏫', '👨‍💻', '👩�
             <div class="story-card">
               <div class="story-card__avatar">
                 <?php if ( $img_url ) : ?>
-                  <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_REV_REVIEWER_NAME ); ?>">
+                  <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $rev->reviewer_name ?? '' ); ?>">
                 <?php else : ?>
                   <?php echo $avatar; ?>
                 <?php endif; ?>

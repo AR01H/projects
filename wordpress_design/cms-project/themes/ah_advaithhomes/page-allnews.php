@@ -211,7 +211,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
 <?php if ( ! empty( $unique_terms ) ) : ?>
 <div style="border-bottom:1px solid var(--border);background:var(--bg-alt)">
   <div class="container" style="padding-top:14px;padding-bottom:14px">
-    <div class="filter-tabs" role="tablist" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_BY_CATEGORY ); ?>">
+    <div class="filter-tabs" role="tablist" aria-label="<?php echo esc_attr( TXT_FILTER_BY_CATEGORY ); ?>">
       <a href="<?php echo esc_url( $base_url ); ?>"
          class="filter-tab<?php echo ! $active_cat ? ' filter-tab--active' : ''; ?>"
          role="tab" aria-selected="<?php echo ! $active_cat ? 'true' : 'false'; ?>">
@@ -267,7 +267,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
              class="blog-card__img-link" tabindex="-1" aria-hidden="true">
             <?php if ( $thumb_url ) : ?>
               <img src="<?php echo esc_url( $thumb_url ); ?>"
-                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_ITEM_TITLE ); ?>"
+                   alt="<?php echo esc_attr( $item_title ); ?>"
                    class="blog-card__img" loading="lazy" decoding="async">
             <?php else : ?>
               <div class="blog-card__img-placeholder">📰</div>
@@ -321,7 +321,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
       ] );
       if ( $links ) :
     ?>
-    <nav class="pagination" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_NEWS_NAVIGATION ); ?>" style="margin-top:48px">
+    <nav class="pagination" aria-label="<?php echo esc_attr( TXT_NEWS_NAVIGATION ); ?>" style="margin-top:48px">
       <ul class="pagination__list">
         <?php foreach ( $links as $link ) echo ( '<li class="pagination__item">'. $link . '</li>' ); ?>
       </ul>

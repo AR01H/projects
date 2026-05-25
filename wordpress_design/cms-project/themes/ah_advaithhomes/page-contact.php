@@ -45,7 +45,7 @@ if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
                 <input id="cf-name" name="name" type="text" class="form-input" placeholder="<?php echo esc_attr( TXT_JANE_SMITH ); ?>" required>
                 <span class="form-error"></span>
               </div>
-              <div class="form-group"<?php if ( $preset_enq ) echo esc_html( TXT_STYLE_DISPLAY_NONE ); ?>>
+              <div class="form-group"<?php if ( $preset_enq ) echo esc_html( 'style="display:none"' ); ?>>
                 <label class="form-label" for="cf-type">Enquiry Type</label>
                 <select id="cf-type" name="enquiry_type" class="form-input form-select">
                   <option value="">Select type…</option>
@@ -70,18 +70,18 @@ if ( ! in_array( $preset_enq, $_valid_enq_types, true ) ) $preset_enq = '';
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="cf-email">Email Address <span aria-hidden="true">*</span></label>
-                <input id="cf-email" name="email" type="email" class="form-input" placeholder="<?php echo esc_attr( TXT_JANE_EXAMPLE_COM ); ?>" required>
+                <input id="cf-email" name="email" type="email" class="form-input" placeholder="" required>
                 <span class="form-error"></span>
               </div>
               <div class="form-group">
                 <label class="form-label" for="cf-phone">Phone Number</label>
-                <input id="cf-phone" name="phone" type="tel" class="form-input" placeholder="<?php echo esc_attr( TXT_44_7700_000000 ); ?>">
+                <input id="cf-phone" name="phone" type="tel" class="form-input" placeholder="Enter your Phonenumber">
               </div>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="cf-quote">In one sentence, what do you need?</label>
-              <input id="cf-quote" name="short_quote" type="text" class="form-input" placeholder="<?php echo esc_attr( TXT_E_G_I_M_LOOKING_FOR_A_3_BED_HOUSE_IN_BRISTOL_UNDER_450K ); ?>" maxlength="300">
+              <input id="cf-quote" name="short_quote" type="text" class="form-input" placeholder="" maxlength="300">
             </div>
 
             <div class="form-group">

@@ -61,7 +61,7 @@ $crumbs[] = [ get_the_title(), '' ];
 
           <button class="post-share__icon post-share__icon--native"
                   data-url="<?php echo esc_attr( get_permalink() ); ?>"
-                  data-title="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE ); ?>"
+                  data-title="<?php echo esc_attr( get_the_title() ); ?>"
                   aria-label="<?php echo esc_attr( TXT_MORE_SHARE_OPTIONS ); ?>">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           </button>
@@ -70,7 +70,7 @@ $crumbs[] = [ get_the_title(), '' ];
       </article>
 
       <!-- Sidebar -->
-      <aside class="sidebar" aria-label="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_S_SIDEBAR_AH_TERM_SINGULAR ); ?>">
+      <aside class="sidebar" aria-label="<?php printf('%s sidebar' , AH_TERM_SINGULAR ); ?>">
 
         <!-- Table of Contents - populated by JS from article headings -->
         <div class="sidebar-card sp-toc-card" id="sp-toc" hidden>
@@ -78,7 +78,7 @@ $crumbs[] = [ get_the_title(), '' ];
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             <?php echo esc_html( TXT_CONTENTS ); ?>
           </div>
-          <nav class="sp-toc__nav" aria-label="<?php echo esc_attr( TXT_PHP_PRINTF_ESC_ATTR_TXT_S_SECTIONS_AH_TERM_SINGULAR ); ?>"></nav>
+          <nav class="sp-toc__nav" aria-label="<?php printf( esc_attr( "%s sections" ), AH_TERM_SINGULAR ); ?>"></nav>
         </div>
 
         <!-- Consultation CTA -->
@@ -106,7 +106,7 @@ $crumbs[] = [ get_the_title(), '' ];
         <?php if ( $_sb_more ) : ?>
         <div class="sidebar-card sp-more-card">
           <div class="sidebar-card__title">
-            <?php printf( esc_html( TXT_MORE_IN_S ), esc_html( $cat->name ) ); ?>
+            <?php printf( 'More in %s', esc_html( $cat->name ) ); ?>
           </div>
           <ul class="sp-more-list">
             <?php foreach ( $_sb_more as $mp ) :
@@ -132,7 +132,7 @@ $crumbs[] = [ get_the_title(), '' ];
             : get_category_link( $cat );
           ?>
           <a href="<?php echo esc_url( $_more_cat_url ); ?>" class="sp-more-all">
-            <?php printf( esc_html( TXT_ALL_S ), esc_html( $cat->name ) ); ?>
+            <?php printf( 'All %s →', esc_html( $cat->name ) ); ?>
           </a>
         </div>
         <?php endif; ?>

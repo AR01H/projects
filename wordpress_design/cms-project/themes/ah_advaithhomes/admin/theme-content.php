@@ -245,7 +245,7 @@ $post_suggestions = array_map( function( $p ) {
       {n:'result',   w:'220px', p:'Result summary'},
     ];
     row.innerHTML = fields.map(function(f) {
-      return '<input type="text" name="properties[' + count + '][' + f.n + ']" placeholder="<?php echo esc_attr( TXT_F_P ); ?>" style="width:' + f.w + '">';
+      return '<input type="text" name="properties[' + count + '][' + f.n + ']" placeholder="f.p" style="width:' + f.w + '">';
     }).join('') +
       '<input type="number" name="properties[' + count + '][beds]" placeholder="<?php echo esc_attr( TXT_BEDS ); ?>" style="width:60px" min="1" max="20">' +
       '<button type="button" class="button ah-nav-remove-row">✕</button>';

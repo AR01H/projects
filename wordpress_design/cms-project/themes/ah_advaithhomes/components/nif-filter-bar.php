@@ -30,7 +30,7 @@ $all_active = $use_parent_terms ? ! $active_parent_term : ! $active_cat;
   <div class="container">
     <div class="nif-filter-inner">
       <span class="nif-filter-label"><?php echo esc_html( TXT_TOPICS ); ?></span>
-      <nav class="nif-filter-bar<?php echo $use_parent_terms ? ' nif-filter-bar--pt' : ''; ?>" role="tablist" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_FILTER_BY_TOPIC ); ?>">
+      <nav class="nif-filter-bar<?php echo $use_parent_terms ? ' nif-filter-bar--pt' : ''; ?>" role="tablist" aria-label="<?php echo esc_attr( TXT_FILTER_BY_TOPIC ); ?>">
 
       <?php if ( ! $use_parent_terms ) : ?>
       <a href="<?php echo esc_url( $permalink ); ?>"

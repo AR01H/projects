@@ -536,7 +536,7 @@ function ah_stars( float $rating = 5.0, bool $echo = true ): string {
 	$full  = (int) $rating;
 	$half  = ( $rating - $full ) >= 0.5;
 	$empty = 5 - $full - (int) $half;
-	$html  = '<span class="stars" aria-label="<?php echo esc_attr( TXT_ESC_ATTR_RATING_OUT_OF_5_STARS ); ?>">';
+	$html  = '<span class="stars" aria-label="'. esc_attr( $rating . ' out of 5 stars' ) .'">';
 	$html .= str_repeat( '<span class="star star--full">★</span>', $full );
 	if ( $half ) $html .= '<span class="star star--half">★</span>';
 	$html .= str_repeat( '<span class="star star--empty">☆</span>', max( 0, $empty ) );
@@ -587,19 +587,19 @@ function ah_breadcrumb(): void {
 	} elseif ( is_404() ) {
 		$crumbs[] = [ 'label' => 'Page Not Found', 'url' => '' ];
 	}
-	echo esc_html( TXT_NAV_CLASS_BREADCRUMB_ARIA_LABEL_PHP_ECHO_ESC_ATTR_TXT_BREADCRUMB_OL_CLASS_BREADCRUMB_LIST );
+	echo '<nav class="breadcrumb" aria-label="<?php echo esc_attr( TXT_BREADCRUMB ); ?>"><ol class="breadcrumb__list">';
 	foreach ( $crumbs as $i => $c ) {
 		$last = $i === count( $crumbs ) - 1;
-		echo esc_html( TXT_LI_CLASS_BREADCRUMB_ITEM );
+		echo  '<li class="breadcrumb__item">';
 		if ( ! $last && $c['url'] ) {
-			echo esc_html( TXT_A_HREF_ESC_URL_C_URL_CLASS_BREADCRUMB_LINK_ESC_HTML_C_LABEL_A );
-			echo esc_html( TXT_SPAN_CLASS_BREADCRUMB_SEP_ARIA_HIDDEN_TRUE_SPAN );
+			echo "<a href=" . esc_url( $c['url'] ) . " class='breadcrumb__link'> ". esc_html( $c["label"] ) . "</a>";
+			echo '<span class="breadcrumb__sep" aria-hidden="true">></span>';
 		} else {
-			echo esc_html( TXT_SPAN_CLASS_BREADCRUMB_CURRENT_ARIA_CURRENT_PAGE_ESC_HTML_C_LABEL_SPAN );
+			echo '<span class="breadcrumb__current" aria-current="page">' . esc_html( $c["label"] ) . '</span>';
 		}
-		echo esc_html( TXT_LI );
+		echo '</li>';
 	}
-	echo esc_html( TXT_OL_NAV );
+	echo '</ol></nav>';
 }
 
 function ah_pagination(): void {

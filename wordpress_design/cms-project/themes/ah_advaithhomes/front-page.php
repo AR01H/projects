@@ -106,7 +106,7 @@ $blog_cat  = $blog_cats[0] ?? null;
   <?php get_template_part( 'components/nif-background-imagecard' ); ?>
 
   <!-- ══ BENTO GRID ════════════════════════════════════════════════════════ -->
-  <section class="hp-grid-section" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_EXPLORE ); ?>">
+  <section class="hp-grid-section" aria-label="<?php echo esc_attr( TXT_EXPLORE ); ?>">
     <div class="container">
       <div class="hp-bento">
 
@@ -181,13 +181,13 @@ $blog_cat  = $blog_cats[0] ?? null;
             : '';
         ?>
         <article class="hp-bento__item hp-bento__news"
-                 <?php if ( $news_area ) echo esc_html( TXT_STYLE_GRID_AREA_ESC_ATTR_NEWS_AREA ); ?>
+                 <?php if ( $news_area ) echo 'style="grid-area:' . esc_attr( $news_area ) . '"'; ?>
                  data-aos="fade-up" data-aos-delay="<?php echo $_slot * 60; ?>">
           <a href="<?php echo esc_url( $news_link ); ?>"
              class="hp-bento__news-img" tabindex="-1" aria-hidden="true" <?php echo $target_attr; ?>>
             <?php if ( $news_thumb ) : ?>
               <img src="<?php echo esc_url( $news_thumb ); ?>"
-                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_NEWS_TITLE ); ?>"
+                   alt="<?php echo esc_attr( $news_title ); ?>"
                    loading="lazy" decoding="async">
             <?php else : ?>
               <div class="hp-bento__news-placeholder">📰</div>
@@ -224,13 +224,13 @@ $blog_cat  = $blog_cats[0] ?? null;
           $fb_area  = $_news_areas[ $_slot ] ?? '';
         ?>
         <article class="hp-bento__item hp-bento__news"
-                 <?php if ( $fb_area ) echo esc_html( TXT_STYLE_GRID_AREA_ESC_ATTR_FB_AREA ); ?>
+                 <?php if ( $fb_area ) echo 'style="grid-area:' . esc_attr( $fb_area ) . '"'; ?>
                  data-aos="fade-up" data-aos-delay="<?php echo $_slot * 60; ?>">
           <a href="<?php echo esc_url( $fb_d['permalink'] ); ?>"
              class="hp-bento__news-img" tabindex="-1" aria-hidden="true">
             <?php if ( $fb_d['thumb_url'] ) : ?>
               <img src="<?php echo esc_url( $fb_d['thumb_url'] ); ?>"
-                   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_GET_THE_TITLE_P_ID ); ?>"
+                   alt="<?php echo esc_attr( get_the_title( $p->ID ) ); ?>"
                    loading="lazy" decoding="async">
             <?php else : ?>
               <div class="hp-bento__news-placeholder">📰</div>

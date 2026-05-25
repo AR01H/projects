@@ -77,7 +77,7 @@ $exta_heading = $args['exta_heading'] ?? '';
 .nif-portal-section-background-img .nif-content .hero__desc {
     color: rgba(255, 255, 255, 0.88);
     font-size: 15px;
-    line-height: 1.78;
+    line-height: 1.5;
     margin: 0 0 16px;
     font-weight: 400;
 }
@@ -147,7 +147,7 @@ $exta_heading = $args['exta_heading'] ?? '';
     }
     .nif-portal-section-background-img .nif-content .hero__desc{
         font-size: 1.0rem;
-        line-height: 2rem;
+        line-height: 1.3rem;
     }
     .nif-portal-section-background-img .hero__title {
         font-size: 1.0rem;
@@ -179,7 +179,7 @@ $exta_heading = $args['exta_heading'] ?? '';
     <img
         class="nif-bg-img"
         src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/backgrounds/family_background.png' ); ?>"
-        alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_NIF_HERO_BG_ALT ); ?>"
+        alt="<?php echo esc_attr( NIF_HERO_BG_ALT ); ?>"
     />
 
     <div class="nif-overlay" aria-hidden="true"></div>

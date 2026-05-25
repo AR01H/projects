@@ -19,7 +19,7 @@ if ( class_exists( 'AH_DB_Helper' ) ) {
 
 if ( empty( $parent_terms ) ) return;
 ?>
-<section class="hp-guidance" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_PERSONALISED_GUIDANCE ); ?>">
+<section class="hp-guidance" aria-label="<?php echo esc_attr( TXT_PERSONALISED_GUIDANCE ); ?>">
   <div class="container">
     <p class="hp-guidance__eyebrow"><?php echo esc_html( TXT_PERSONALISED_GUIDANCE ); ?></p>
     <h2 class="hp-guidance__title"><?php echo esc_html( TXT_I_NEED_ADVICE_ON ); ?></h2>

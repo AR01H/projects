@@ -19,7 +19,7 @@ $use_parent_terms = count( $parent_terms ) >= 2;
 if ( ! $use_parent_terms && empty( $cats ) ) return;
 
 ?>
-<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_TXT_BROWSE_BY_TOPIC ); ?>">
+<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_BROWSE_BY_TOPIC ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary"><?php echo esc_html( TXT_BROWSE_BY_TOPIC ); ?></span>
   </div>

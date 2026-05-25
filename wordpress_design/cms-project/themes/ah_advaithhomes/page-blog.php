@@ -116,7 +116,7 @@ $wp_cats = get_categories( [ 'hide_empty' => true ] );
           <div class="blog-card__img-wrap">
             <a href="<?php echo esc_url( $post_url ); ?>" class="blog-card__img-link" tabindex="-1" aria-hidden="true">
               <?php if ( $thumb_url ) : ?>
-              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_POST_TITLE ); ?>" class="blog-card__img" loading="lazy">
+              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( $post_title ); ?>" class="blog-card__img" loading="lazy">
               <?php else : ?>
               <div class="blog-card__img-placeholder">✍️</div>
               <?php endif; ?>
