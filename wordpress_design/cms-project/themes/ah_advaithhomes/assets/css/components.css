@@ -1386,7 +1386,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 /* ── Related articles bento grid - left tall feature + 2 stacked right ──── */
 .sp-related-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 12px;
   isolation: isolate;
 }
@@ -1503,7 +1503,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 /* ── Suggested Guides cards ──────────── */
 .sp-guide-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
 }
 .sp-guide-card {
@@ -1952,7 +1952,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .footer__grid {
 	display: grid;
 	grid-template-columns: 2fr 1fr 1fr 1fr;
-	gap: 48px;
+	gap: 8px;
 	padding-bottom: 16px;
 }
 
@@ -2013,7 +2013,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 	display: flex;
 	align-items: flex-start;
 	gap: 12px;
-	margin-bottom: 16px;
+	margin-bottom: 4px;
 }
 .footer__contact-icon { font-size: 1.1rem; }
 
@@ -2766,11 +2766,11 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 }
 
 .whole-page-card{
-	margin-top: calc(var(--nav-h));
+	/* margin-top: calc(var(--nav-h)); */
 }
 
 .whole-page-card .nif-portal-section-background-img{
-    min-height: 100vh;
+    min-height: 50vh;
 }
 .whole-page-card .nif-portal-section-background-img .nif-content .hero__title{
     font-size: 5em;
@@ -3028,3 +3028,8 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
   transition: gap .15s;
 }
 .hp-bento__news-link:hover { gap: 6px; }
+
+
+section:has(table){
+	overflow-y: auto;
+}

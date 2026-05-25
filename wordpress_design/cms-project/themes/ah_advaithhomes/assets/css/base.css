@@ -222,3 +222,60 @@ p + p { margin-top: .75em; }
     background: var(--client-color-600);
     color: #fff;
 }
+
+/* =========================================
+   REMOVE SCROLLBAR ARROWS
+========================================= */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar-button{
+	display:none;
+	width:0;
+	height:0;
+}
+
+/* =========================================
+   CUSTOM SCROLLBAR
+========================================= */
+
+/* Width */
+::-webkit-scrollbar{
+	width:10px;
+	height:10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track{
+	background:var(--slate-100);
+	border-radius:999px;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb{
+	background:
+		linear-gradient(
+			180deg,
+			var(--gold-400),
+			var(--gold-600)
+		);
+
+	border-radius:999px;
+
+	border:2px solid var(--slate-100);
+}
+
+/* Hover */
+::-webkit-scrollbar-thumb:hover{
+	background:
+		linear-gradient(
+			180deg,
+			var(--gold-500),
+			var(--gold-700)
+		);
+}
+
+/* Firefox */
+*{
+	scrollbar-width:thin;
+	scrollbar-color:var(--gold-500) var(--slate-100);
+}

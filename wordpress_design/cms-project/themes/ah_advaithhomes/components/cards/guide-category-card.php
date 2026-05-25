@@ -31,7 +31,7 @@ if ( $img_url ) {
 ?>
 <a href="<?php echo esc_url( $url ); ?>"
    class="gcat-card<?php echo $img_url ? ' gcat-card--img' : ''; ?>"
-   <?php if ( $inline_style ) echo 'style=" . esc_attr( $inline_style ) . "'; ?>
+   <?php if ( $inline_style ) echo 'style=" ' . esc_attr( $inline_style ) . ' "'; ?>
    data-aos="fade-up"
    data-aos-delay="<?php echo $index * 80; ?>">
 

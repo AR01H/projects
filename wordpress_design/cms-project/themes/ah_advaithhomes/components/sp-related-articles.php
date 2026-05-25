@@ -4,7 +4,7 @@
  * Dark bento grid: featured card (left, tall) + 2 stacked cards (right).
  *
  * @var array $args {
- *   @type WP_Post[] $posts  Up to 3 posts.
+ *   @type WP_Post[] $posts  Up to 7 posts.
  *   @type WP_Term|null $cat Primary category of the current post (for "More in…" link).
  * }
  */
@@ -46,7 +46,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
         $is_sug = get_post_meta( $rp->ID, '_ah_is_suggested', true ) === '1';
       ?>
       <a href="<?php echo esc_url( get_permalink( $rp ) ); ?>"
-         class="sp-ra-card<?php echo $i === 0 ? ' sp-ra-card--featured' : ''; ?><?php echo $is_sug ? ' sp-ra-card--suggested' : ''; ?>"
+         class="sp-ra-card<?php echo in_array($i, [0, 4, 6]) ? ' sp-ra-card--featured' : ''; ?><?php echo $is_sug ? ' sp-ra-card--suggested' : ''; ?>"
          data-cat="<?php echo esc_attr( $rc0 ? $rc0->slug : '' ); ?>">
 
         <!-- Image layer -->
@@ -79,7 +79,7 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
           <?php if ( $i === 0 && $rexc ) : ?>
             <p class="sp-ra-card__excerpt"><?php echo esc_html( $rexc ); ?></p>
           <?php endif; ?>
-          <span class="sp-ra-card__cta"><?php printf( 'Read %s →', AH_TERM_SINGULAR ); ?></span>
+          <span class="sp-ra-card__cta"><?php printf( $i.' Read %s →', AH_TERM_SINGULAR ); ?></span>
         </div>
 
       </a>

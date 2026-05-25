@@ -2,8 +2,8 @@
 .ph {
   position: relative;
   overflow: hidden;
-  padding-top:    calc(var(--nav-h, 66px) + var(--ticker-h, 36px));
-  padding-bottom: clamp(46px);
+  padding-top:    calc(var(--nav-h, 66px));
+  padding-bottom: (46px);
   background: var(--client-color-400, #f7c62f);
 }
 

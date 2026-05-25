@@ -1,17 +1,5 @@
 <?php
-/**
- * Reusable page header / hero component.
- *
- * Usage:
- *   get_template_part( 'components/page-header', null, [
- *     'eyebrow'   => 'Latest Updates',      // small label above title
- *     'title'     => 'News &',              // main title (plain part)
- *     'title_em'  => 'Announcements',       // italic/accent part appended to title
- *     'desc'      => 'Paragraph text...',   // optional subtitle
- *     'badge'     => '12 items',            // optional pill badge after title
- *     'breadcrumb'=> [ ['Home','/''], ['News',''] ],  // optional breadcrumb
- *   ] );
- */
+
 defined( 'ABSPATH' ) || exit;
 
 $s        = $args ?? [];
@@ -26,6 +14,8 @@ $crumbs   = $s['breadcrumb'] ?? [];
   <div class="ph__bg" aria-hidden="true">
     <div class="ph__grid-lines"></div>
     <div class="ph__blob"></div>
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/svgs/ph-bg-anim.svg"
+       class="ph__anim-bg" alt="" aria-hidden="true">
   </div>
 
   <div class="container ph__inner">

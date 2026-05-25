@@ -203,10 +203,10 @@ $_rand_cat = get_posts( [
 $_related = array_merge( $_suggested, $_rand_cat );
 
 // Pad with random posts from any category if still under 3
-if ( count( $_related ) < 3 ) {
+if ( count( $_related ) < 7 ) {
   $_have = array_merge( [ get_the_ID() ], wp_list_pluck( $_related, 'ID' ) );
   $_pad  = get_posts( [
-    'numberposts'  => 3 - count( $_related ),
+    'numberposts'  => 7 - count( $_related ),
     'post__not_in' => $_have,
     'post_status'  => 'publish',
     'orderby'      => 'rand',
@@ -242,10 +242,10 @@ if ( count( $_guides ) < 3 ) {
 }
 
 // Step 3: last resort - any post if still under 3
-if ( count( $_guides ) < 3 ) {
+if ( count( $_guides ) < 5 ) {
   $_guides_excl = array_merge( $_exclude_ids, wp_list_pluck( $_guides, 'ID' ) );
   $_guides_any  = get_posts( [
-    'numberposts'  => 3 - count( $_guides ),
+    'numberposts'  => 5 - count( $_guides ),
     'post__not_in' => $_guides_excl,
     'post_status'  => 'publish',
     'orderby'      => 'rand',

@@ -74,7 +74,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 					<?php if ( $s_thumb ) : ?>
 					<div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/7;max-width:400px">
 					  <img src="<?php echo esc_url( $s_thumb ); ?>"
-						   alt="<?php echo esc_attr( TXT_PHP_ECHO_ESC_ATTR_S_TITLE ); ?>"
+						alt="<?php echo ( 'News' ); ?>"
 						   style="width:100%;height:100%;object-fit:cover"
 						   loading="eager" decoding="async">
 					</div>
@@ -86,14 +86,6 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		      <?php echo wp_kses_post( wpautop( $s_content ) ); ?>
 		    </div>
 		    <?php endif; ?>
-
-		    <!-- CTA back -->
-		    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border)">
-		      <a href="<?php echo esc_url( $base_url ); ?>" class="btn btn-outline">
-		        ← <?php echo esc_html( TXT_ALL_NEWS_1 ); ?>
-		      </a>
-		    </div>
-
 		  </div>
 		</article>
 
@@ -103,11 +95,8 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		wp_safe_redirect( $base_url );
 		exit;
 	}
+}else{
 
-	get_template_part( 'components/cta-section', null, [] );
-	get_footer();
-	return;
-}
 
 // ══ LISTING VIEW ════════════════════════════════════════════════════════════
 $per_page   = 12;
@@ -210,7 +199,7 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
 <!-- ── Category filter ───────────────────────────────────────────────────── -->
 <?php if ( ! empty( $unique_terms ) ) : ?>
 <div style="border-bottom:1px solid var(--border);background:var(--bg-alt)">
-  <div class="container" style="padding-top:14px;padding-bottom:14px">
+  <div class="container" style="padding-top:4px;padding-bottom:4px">
     <div class="filter-tabs" role="tablist" aria-label="<?php echo esc_attr( TXT_FILTER_BY_CATEGORY ); ?>">
       <a href="<?php echo esc_url( $base_url ); ?>"
          class="filter-tab<?php echo ! $active_cat ? ' filter-tab--active' : ''; ?>"
@@ -348,5 +337,8 @@ if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && class_exists( 'AH_DB_Helper'
   </div>
 </section>
 
-<?php get_template_part( 'components/cta-section', null, [] ); ?>
-<?php get_footer(); ?>
+<?php }
+
+get_template_part( 'components/cta-section', null, [] );
+get_template_part( 'components/scroll-to-top' );
+get_footer(); ?>

@@ -28,7 +28,7 @@
 
 /* ── Portal main column sections ──────────────────────────── */
 .nif-portal-main { display: flex; flex-direction: column; gap: 0; min-width: 0; }
-.nif-portal-section { padding-bottom: 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.nif-portal-section { padding-bottom: 32px; border-bottom: 1px solid var(--border); }
 .nif-portal-section:last-child { border-bottom: none; margin-bottom: 0; }
 
 .nif-portal-section-row {

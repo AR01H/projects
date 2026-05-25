@@ -11,7 +11,6 @@ $exta_heading = $args['exta_heading'] ?? '';
     align-items: center;
     overflow: hidden;
     background: var(--client-color-900);
-    border-radius: var(--r-md);
 }
 
 /* ── Background image ───────────────────────────────────────────── */
@@ -26,19 +25,34 @@ $exta_heading = $args['exta_heading'] ?? '';
     display: block;
 }
 
+.nif-bg-img-light{
+	opacity:0.48;
+
+	pointer-events:none;
+}
+
 /* ── Overlay: very subtle - image must show clearly ────────────── */
 .nif-portal-section-background-img .nif-overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
-    /* Light-to-stronger fade only on right side where text sits */
-    background: linear-gradient(
-        to right,
-        color-mix(in srgb, var(--client-color-900) 8%,  transparent) 0%,
-        color-mix(in srgb, var(--client-color-900) 20%, transparent) 30%,
-        color-mix(in srgb, var(--client-color-900) 55%, transparent) 52%,
-        color-mix(in srgb, var(--client-color-900) 70%, transparent) 100%
-    );
+/* Softer middle fade */
+
+background: linear-gradient(
+	to right,
+
+	color-mix(in srgb, var(--client-color-400) 4%, transparent) 0%,
+
+	color-mix(in srgb, var(--client-color-300) 8%, transparent) 20%,
+
+	color-mix(in srgb, var(--client-color-100) 12%, transparent) 40%,
+
+	color-mix(in srgb, var(--client-color-200) 16%, transparent) 55%,
+
+	color-mix(in srgb, var(--client-color-50) 10%, transparent) 75%,
+
+	color-mix(in srgb, #ffffff 4%, transparent) 100%
+);
 }
 
 /* ── Rooftop silhouette ─────────────────────────────────────────── */
@@ -58,8 +72,9 @@ $exta_heading = $args['exta_heading'] ?? '';
     z-index: 3;
     width: 100%;
     margin: 0 auto;
-    padding: 30px;
+    padding: 15px;
     display: flex;
+    margin-top: calc(var(--nav-h) / 2);
 }
 
 /* ── Headline - Playfair Display serif ─────────────────────────── */
@@ -156,9 +171,7 @@ $exta_heading = $args['exta_heading'] ?? '';
 .hero__title em {
     font-style: italic;
     color: var(--client-color-50);
-    display: block;
     width: 0;
-    animation: nif-type 2s steps(20, end) forwards;
 }
 
 .nif-portal-section-background-img .nif-content {
@@ -177,11 +190,11 @@ $exta_heading = $args['exta_heading'] ?? '';
 <section class="nif-portal-section nif-portal-section-background-img">
 
     <img
-        class="nif-bg-img"
+        class="nif-bg-img nif-bg-img-light"
         src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/backgrounds/family_background.png' ); ?>"
         alt="<?php echo esc_attr( NIF_HERO_BG_ALT ); ?>"
     />
-
+<img src="<?php echo get_template_directory_uri(); ?>/assets/images/svgs/ph-bg-anim.svg" alt="" aria-hidden="true" class="nif-bg-img">
     <div class="nif-overlay" aria-hidden="true"></div>
 
 
