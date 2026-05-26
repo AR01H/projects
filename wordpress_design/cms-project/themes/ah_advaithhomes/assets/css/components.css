@@ -2860,7 +2860,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
   color: inherit;
   transition: transform .22s, box-shadow .22s;
 }
-.hp-bento__item:hover { transform: translateY(-3px); box-shadow: 0 10px 36px rgba(0,0,0,.14); }
+.hp-bento__item { transform: translateY(-3px); box-shadow: 0 10px 36px rgba(0,0,0,.14); }
 
 /* ── Full-area transparent cover link (for article elements) ─ */
 .hp-bento__cover-link { position: absolute; inset: 0; z-index: 1; }
@@ -2925,7 +2925,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
   background: #fff;
   border: 1.5px solid var(--border);
 }
-.hp-bento__svc:hover { border-color: var(--tile-color, var(--accent)); }
+.hp-bento__svc { border-color: var(--tile-color, var(--accent)); }
 
 .hp-bento__svc-banner {
   background: var(--tile-color, var(--accent));
@@ -2962,11 +2962,13 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
   transition: background .18s, color .18s, gap .15s;
   text-decoration: none;
 }
-.hp-bento__svc:hover .hp-bento__svc-cta {
+.hp-bento__svc .hp-bento__svc-cta {
   background: var(--tile-color, var(--accent));
   color: #fff; gap: 8px;
 }
-
+.hp-bento__svc:hover .hp-bento__svc-cta{
+    transform: scale(1.05);
+}
 /* ────────────────────────────────────────────────────────────
    NEWS cards - image top + text below
    ──────────────────────────────────────────────────────────── */
@@ -3030,6 +3032,36 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 .hp-bento__news-link:hover { gap: 6px; }
 
 
-section:has(table){
-	overflow-y: auto;
+.hp-bento__svc-body{
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* min-height: 220px; */
+    padding: 1.2rem;
+}
+
+.hp-bento__svc-body::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--tile-bg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    z-index: -1;
+}
+
+/* button above image overlay */
+.hp-bento__svc-cta{
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    width: fit-content;
 }

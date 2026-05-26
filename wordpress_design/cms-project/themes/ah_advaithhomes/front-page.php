@@ -143,16 +143,29 @@ $blog_cat  = $blog_cats[0] ?? null;
 
         <!-- ─ SERVICE TILES (5 tiles: svc1–svc5) ────────────────────────── -->
         <?php foreach ( $hp_tiles as $key => $tile ) : ?>
+
         <a href="<?php echo esc_url( home_url( $tile['url'] ) ); ?>"
-           class="hp-bento__item hp-bento__svc hp-bento__svc--<?php echo esc_attr( $key ); ?>"
-           style="--tile-color:<?php echo esc_attr( $tile['color'] ); ?>">
+          class="hp-bento__item hp-bento__svc hp-bento__svc--<?php echo esc_attr( $key ); ?>"
+          style="
+              --tile-color:<?php echo esc_attr( $tile['color'] ); ?>;
+              --tile-bg:url('<?php echo esc_url( get_template_directory_uri() . '/' . $tile['image'] ); ?>');
+          ">
           <div class="hp-bento__svc-banner" aria-hidden="true">
-            <span class="hp-bento__svc-icon"><?php echo esc_html( $tile['icon'] ); ?></span>
-            <span class="hp-bento__svc-title"><?php echo esc_html( $tile['title'] ); ?></span>
+            <span class="hp-bento__svc-icon">
+              <?php echo esc_html( $tile['icon'] ); ?>
+            </span>
+            <span class="hp-bento__svc-title">
+              <?php echo esc_html( $tile['title'] ); ?>
+            </span>
           </div>
           <div class="hp-bento__svc-body">
-            <p class="hp-bento__svc-desc"><?php echo esc_html( $tile['desc'] ); ?></p>
-            <span class="hp-bento__svc-cta"><?php echo esc_html( $tile['cta'] ); ?> <span aria-hidden="true">→</span></span>
+            <p class="hp-bento__svc-desc">
+              <?php echo esc_html( $tile['desc'] ); ?>
+            </p>
+            <span class="hp-bento__svc-cta">
+              <?php echo esc_html( $tile['cta'] ); ?>
+              <span aria-hidden="true">→</span>
+            </span>
           </div>
         </a>
         <?php endforeach; ?>

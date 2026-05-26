@@ -90,9 +90,11 @@
 .nif-tile-badge {
   display: inline-flex; align-items: center;
   font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
-  padding: 3px 9px; border-radius: var(--r-full);
-  background: var(--accent); color: var(--surface);
+  padding: 3px 9px; border-radius: var(--r-sm);
+  background: rgba(47, 44, 44, 0.593); 
+  color: var(--client-color-50);
   width: fit-content; flex-shrink: 0;
+  border: 1px solid var(--client-color-500);
 }
 .nif-tile-badge--outline {
   background: transparent; border: 1.5px solid rgba(255,255,255,.55); color: rgba(255,255,255,.9);
