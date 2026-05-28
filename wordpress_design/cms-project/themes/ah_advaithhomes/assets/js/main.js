@@ -451,6 +451,11 @@
 
   $searchClose.on( 'click', closeSearch );
 
+  // Close when clicking the dark backdrop (not the modal card itself)
+  $searchPanel.on( 'click', function ( e ) {
+    if ( $( e.target ).is( $searchPanel ) ) closeSearch();
+  } );
+
   $( document ).on( 'keydown', function ( e ) {
     if ( e.key === 'Escape' && $searchPanel.hasClass( 'is-open' ) ) closeSearch();
   } );
