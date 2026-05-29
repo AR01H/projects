@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Frontend renderer for pages created in the Page Builder.
  * Loaded by the template_redirect hook in ah-cms.php.
@@ -74,7 +74,12 @@ document.querySelectorAll('.ah-alert[data-dismissible="1"]').forEach(function(el
 	btn.addEventListener('click',function(){el.closest('.container').style.display='none';});
 	el.appendChild(btn);
 });
-</script>
+(function(){
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('spine-visible');obs.unobserve(e.target);}});
+},{threshold:.15});
+document.querySelectorAll('.ah-steps').forEach(function(el){obs.observe(el);});
+})();</script>
 
 <?php
 if ( ! $no_footer ) {
@@ -519,7 +524,24 @@ function ah_render_builder_block( string $type, array $d ): void {
 			$steps_cls = ( $d['bg'] ?? 'white' ) === 'alt' ? 'section section--alt' : 'section';
 			$connector = ( $d['connector'] ?? 'no' ) === 'yes';
 			?>
-			<?php echo ah_section_open( $d, $steps_cls ); ?>
+			<?php static $ah_steps_css_done = false; if ( ! $ah_steps_css_done ) : $ah_steps_css_done = true; ?>
+<style>
+.ah-steps{display:flex;flex-direction:column;gap:14px;}
+.ah-step{display:flex!important;flex-direction:row!important;align-items:center!important;gap:24px!important;padding:28px 32px!important;background:#fff!important;border:1px solid rgba(183,121,31,.1)!important;border-left:5px solid #b7791f!important;border-radius:18px!important;box-shadow:0 3px 16px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.03)!important;position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;}
+.ah-step:hover{transform:translateX(8px)!important;box-shadow:0 14px 44px rgba(183,121,31,.15)!important;}
+.ah-step::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(183,121,31,.04) 0%,transparent 40%);pointer-events:none;}
+.ah-step__num{width:64px!important;min-width:64px!important;height:64px!important;border-radius:16px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:1.4rem!important;font-weight:700!important;color:#b7791f!important;background:linear-gradient(135deg,#fffbeb,#fffdf7)!important;border:2px solid #fde68a!important;flex-shrink:0!important;}
+.ah-step__body{flex:1!important;min-width:0!important;}
+.ah-step__title{font-size:1.1rem!important;font-weight:700!important;color:#1e293b!important;-webkit-text-fill-color:#1e293b!important;background:none!important;-webkit-background-clip:initial!important;margin-bottom:6px!important;line-height:1.4!important;}
+.ah-step__text{font-size:.9rem!important;color:#64748b!important;line-height:1.8!important;margin:0!important;}
+.ah-steps--horiz{flex-direction:row!important;align-items:stretch!important;gap:16px!important;}
+.ah-steps--horiz .ah-step{flex:1!important;flex-direction:column!important;align-items:flex-start!important;border-left:1px solid rgba(183,121,31,.08)!important;border-top:5px solid #b7791f!important;padding:24px!important;}
+.ah-steps--horiz .ah-step:hover{transform:translateY(-6px)!important;}
+.ah-steps--connector.ah-steps--horiz .ah-step::after{display:none!important;}
+@media(max-width:768px){.ah-steps--horiz{flex-direction:column!important;}.ah-steps--horiz .ah-step{flex-direction:row!important;border-top:1px solid rgba(183,121,31,.08)!important;border-left:5px solid #b7791f!important;}}
+</style>
+<?php endif; ?>
+<?php echo ah_section_open( $d, $steps_cls ); ?>
 				<div class="container  ">
 					<?php if ( ! empty( $d['heading'] ) ) : ?>
 						<div class="section__header text-center" style="margin-bottom:40px;" data-aos="fade-up">
