@@ -29,6 +29,7 @@
 /* Inner layout */
 .ph__inner {
   position: relative;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,15 +49,45 @@
   color: rgba(0,0,0,.65);
   margin-bottom: 22px;
   text-decoration: none;
+  position: relative;
+  z-index: 5;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 .ph__breadcrumb a {
   color: rgba(0,0,0,.65);
   text-decoration: none;
   transition: color .15s;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
 }
-.ph__breadcrumb a:hover { color: rgba(0,0,0,.9); }
-.ph__breadcrumb span[aria-current] { color: rgba(0,0,0,.9); font-weight: 600; }
-.ph__breadcrumb span[aria-hidden] { opacity: .5; }
+.ph__breadcrumb a:hover { color: rgba(0,0,0,.9); text-decoration: underline; }
+.ph__breadcrumb span[aria-current] {
+  color: rgba(0,0,0,.85);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  display: inline-block;
+}
+.ph__breadcrumb span[aria-hidden] { opacity: .5; flex-shrink: 0; }
+
+/* Mobile: show only last parent link as ← Back */
+@media (max-width: 640px) {
+  .ph__breadcrumb > * { display: none; }
+  .ph__breadcrumb a:last-of-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ph__breadcrumb a:last-of-type::before {
+    content: '←';
+    font-size: .9rem;
+  }
+}
 
 /* Eyebrow */
 .ph__eyebrow {

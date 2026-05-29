@@ -1,6 +1,42 @@
 (function ($) {
   'use strict';
 
+  // ── Carousel side buttons (Related / Guides) ─────────────────────────────
+  function spCarouselUpdateBtns( $wrap ) {
+    var $track = $wrap.find('.sp-related-grid, .sp-guide-row');
+    if ( ! $track.length ) return;
+    var el = $track[0];
+    $wrap.find('.sp-carousel-btn--prev').prop('disabled', el.scrollLeft <= 2);
+    $wrap.find('.sp-carousel-btn--next').prop('disabled', el.scrollLeft + el.clientWidth >= el.scrollWidth - 2);
+  }
+
+  $(document).on('click', '.sp-carousel-btn', function () {
+    var $btn   = $(this);
+    var $wrap  = $btn.closest('.sp-carousel-wrap');
+    var $track = $wrap.find('.sp-related-grid, .sp-guide-row');
+    if ( ! $track.length ) return;
+    var cardW  = $track.find('> *').first().outerWidth(true) || 170;
+    var dir    = $btn.hasClass('sp-carousel-btn--prev') ? -1 : 1;
+    $track[0].scrollBy({ left: dir * cardW * 2, behavior: 'smooth' });
+  });
+
+  $('.sp-carousel-wrap').each(function () {
+    var $wrap  = $(this);
+    var $track = $wrap.find('.sp-related-grid, .sp-guide-row');
+    spCarouselUpdateBtns($wrap);
+    $track.on('scroll', function () { spCarouselUpdateBtns($wrap); });
+  });
+
+  // ── Footer accordion (mobile only) ───────────────────────────────────────
+  $(document).on('click', '.footer__acc-toggle', function () {
+    if ( window.innerWidth > 640 ) return;
+    var $btn  = $(this);
+    var $body = $btn.siblings('.footer__acc-body');
+    var open  = $btn.attr('aria-expanded') === 'true';
+    $btn.attr('aria-expanded', String(!open));
+    $body.toggleClass('is-open', !open);
+  });
+
   // ── Nav scroll state ──────────────────────────────────────────────────────
   var $nav = $('#mainNav');
   function updateNavScroll() {

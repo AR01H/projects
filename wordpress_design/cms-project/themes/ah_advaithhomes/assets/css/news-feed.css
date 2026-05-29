@@ -9,6 +9,98 @@
 }
 .page-template-template-news-info-feeder-php .news-ticker { display: none; }
 
+/* ══════════════════════════════════════════════════════════
+   MULTIINFO HERO — distinct amber split layout vs homepage
+   ══════════════════════════════════════════════════════════ */
+
+/* Desktop: image fills right half, amber panel on left */
+.page-template-template-multiinfo-php .nif-portal-section-background-img {
+  min-height: clamp(300px, 36vw, 460px);
+  align-items: stretch;
+  padding-top: 0;
+}
+
+.page-template-template-multiinfo-php .nif-portal-section-background-img .nif-bg-img-light {
+  width: 50%;
+  left: auto;
+  right: 0;
+  object-position: center center;
+}
+
+.page-template-template-multiinfo-php .nif-portal-section-background-img .nif-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(255,249,230,.92) 0%,
+    rgba(255,249,230,.85) 42%,
+    rgba(255,249,230,.40) 62%,
+    transparent 80%
+  );
+}
+
+.page-template-template-multiinfo-php .nif-portal-section-background-img .nif-inner {
+  max-width: 52%;
+  padding: clamp(28px,5vw,56px) clamp(16px,4vw,48px);
+  margin-top: var(--nav-h);
+  background: none;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.page-template-template-multiinfo-php .nif-portal-section-background-img .nif-content .hero__title {
+  color: var(--client-color-900) !important;
+  font-size: clamp(1.5rem, 3vw, 2.6rem) !important;
+}
+.page-template-template-multiinfo-php .hero__title em {
+  color: var(--client-color-900) !important;
+  opacity: .7;
+}
+.page-template-template-multiinfo-php .nif-portal-section-background-img .nif-content .hero__desc {
+  color: rgba(30,15,0,.72) !important;
+  font-size: clamp(.82rem,1.3vw,.95rem) !important;
+}
+
+.page-template-template-multiinfo-php .nif-card {
+  background: rgba(30,15,0,.09) !important;
+  border: 1.5px solid rgba(30,15,0,.18) !important;
+  color: var(--client-color-900) !important;
+  backdrop-filter: none !important;
+}
+.page-template-template-multiinfo-php .nif-card:hover {
+  background: rgba(30,15,0,.16) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,.10) !important;
+}
+.page-template-template-multiinfo-php .nif-card .nif-card-icon {
+  background: rgba(30,15,0,.10) !important;
+}
+
+/* Mobile: image strip top + amber content panel */
+@media (max-width: 600px) {
+  .page-template-template-multiinfo-php .nif-portal-section-background-img {
+    flex-direction: column;
+    min-height: 0 !important;
+    padding-top: var(--nav-h) !important;
+    align-items: stretch !important;
+  }
+  .page-template-template-multiinfo-php .nif-portal-section-background-img .nif-bg-img-light {
+    position: relative !important;
+    width: 100% !important;
+    height: 180px !important;
+    left: auto; right: auto;
+    inset: auto !important;
+  }
+  .page-template-template-multiinfo-php .nif-portal-section-background-img .nif-overlay {
+    display: none !important;
+  }
+  .page-template-template-multiinfo-php .nif-portal-section-background-img .nif-inner {
+    max-width: 100% !important;
+    background: rgba(255,249,230,.92) !important;
+    padding: 18px 16px 22px !important;
+    margin-top: 0 !important;
+    position: relative !important;
+    z-index: 1;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════
    PORTAL WRAPPER
    ══════════════════════════════════════════════════════════ */
@@ -508,28 +600,34 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GUIDE TILES (colored dark backgrounds)
+   GUIDE TILES — always horizontal scroll carousel
    ══════════════════════════════════════════════════════════ */
 .nif-guide-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   gap: 14px;
+  padding-bottom: 10px;
+  scrollbar-width: none;
 }
-@media (max-width: 860px)  { .nif-guide-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px)  { .nif-guide-grid { grid-template-columns: 1fr; } }
+.nif-guide-grid::-webkit-scrollbar { display: none; }
 
 .nif-guide-tile {
   position: relative;
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   overflow: hidden;
-  min-height: 220px;
+  flex: 0 0 clamp(180px, 28vw, 280px);
+  min-height: clamp(180px, 22vw, 260px);
+  scroll-snap-align: start;
   display: flex; flex-direction: column; justify-content: flex-end;
   background-color: var(--slate-800);
   background-image: var(--nif-tile-img);
   background-size: cover; background-position: center;
-  transition: transform .22s ease, box-shadow .22s ease;
+  transition: transform .25s ease, box-shadow .25s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
 }
-.nif-guide-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.nif-guide-tile:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,.25); }
 
 /* Category background colours */
 .nif-guide-tile--cat-buying  { background-color: #14362a; }
@@ -595,26 +693,47 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   BRIEF LIST
+   BRIEF LIST — always horizontal scroll carousel
    ══════════════════════════════════════════════════════════ */
-.nif-brief-list { display: flex; flex-direction: column; gap: 0; }
+.nif-brief-list {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 14px;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+}
+.nif-brief-list::-webkit-scrollbar { display: none; }
 
 .nif-brief-item {
-  display: flex; gap: 16px;
-  padding-block: 20px;
-  border-bottom: 1px solid var(--border);
-  border-left: 3px solid transparent;
-  padding-left: 10px;
-  padding-right: 10px;
-  transition: background .18s ease, border-color .18s ease;
+  flex: 0 0 clamp(180px, 22vw, 260px);
+  scroll-snap-align: start;
+  flex-direction: column;
+  display: flex;
+  gap: 0;
+  padding: 0;
+  border-bottom: none;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow .22s, transform .22s, border-color .22s;
 }
-.nif-brief-item:first-child { border-top: none; }
-.nif-brief-item:hover { background: var(--gold-50); border-left-color: var(--accent); }
+.nif-brief-item:hover {
+  border-color: var(--client-color-200) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.10);
+  background: var(--surface) !important;
+}
 
+/* ── Brief card inner layout ── */
 .nif-brief-item__img {
+  width: 100%;
+  height: clamp(90px, 14vw, 140px);
   flex-shrink: 0;
-  width: 72px; height: 72px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   overflow: hidden;
   background: var(--bg-alt);
   display: block;
@@ -622,22 +741,29 @@
 .nif-brief-item__img img {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
-  transition: transform .28s ease;
+  transition: transform .3s ease;
 }
-.nif-brief-item:hover .nif-brief-item__img img { transform: scale(1.08); }
+.nif-brief-item:hover .nif-brief-item__img img { transform: scale(1.06); }
+
 .nif-brief-item__placeholder {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   background: linear-gradient(135deg, var(--gold-50), var(--gold-100));
 }
 
-.nif-brief-item__body { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
-.nif-brief-item__badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.nif-brief-item__body {
+  display: flex; flex-direction: column;
+  gap: 6px; flex: 1;
+  padding: 12px 12px 14px;
+  min-width: 0;
+}
+.nif-brief-item__badges { display: flex; gap: 5px; flex-wrap: nowrap; overflow: hidden; }
 .nif-brief-item__title {
   font-family: var(--font-display);
-  font-size: 1rem; font-weight: 700; line-height: 1.3;
+  font-size: .92rem; font-weight: 700; line-height: 1.3;
   color: var(--text-primary); margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .nif-brief-item__title a { color: inherit; text-decoration: none; }
 .nif-brief-item__title a:hover { color: var(--accent); }
@@ -1091,9 +1217,12 @@
 
 /* Chip filter strip - subcategories or parent terms */
 .mi-chip-strip {
-  display: flex; flex-wrap: wrap; gap: 8px;
+  display: flex; flex-wrap: nowrap; gap: 8px;
   padding: 10px 0 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.mi-chip-strip::-webkit-scrollbar { display: none; }
 .mi-chip-strip--pts { padding: 12px 0 6px; }
 .mi-chip {
   display: inline-flex; align-items: center;
@@ -1121,3 +1250,175 @@
   background: var(--ptc, var(--accent));
   border-color: var(--ptc, var(--accent));
 }
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE IMPROVEMENTS  (≤ 860px)
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 860px) {
+
+  /* ── Layout ── */
+  .nif-portal-bg { margin-top: 0; padding-top: var(--nav-h); }
+  .nif-portal-wrap { gap: 0; }
+  .nif-portal-main { gap: 0; }
+  .nif-portal-section { padding-bottom: 20px; }
+
+  /* ── Filter wrap ── */
+  .nif-filter-wrap { margin-bottom: 12px; }
+  .nif-filter-inner { gap: 8px; padding: 8px 0; }
+  .nif-filter-label { font-size: .6rem; padding-right: 8px; }
+  .nif-filter-tab { font-size: .75rem; padding: 5px 12px; }
+  .nif-portal-section-row { margin-bottom: 12px; padding-bottom: 8px; }
+
+  /* Guide tiles + brief list: smaller cards on narrow mobile */
+  .nif-guide-tile { flex: 0 0 175px !important; min-height: 170px !important; }
+  .nif-brief-item { flex: 0 0 160px !important; }
+  .nif-brief-item__img { height: 90px !important; }
+
+  /* ── News hero ── */
+  .nif-hero-big-card { min-height: 240px; }
+  .nif-news-hero-grid { gap: 8px; }
+
+  /* ── Sidebar: full-width section below main ── */
+  .nif-portal-sidebar {
+    position: static !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 8px;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  /* Section header label */
+  .nif-portal-sidebar::before {
+    content: 'More Resources';
+    display: block;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 20px 0 12px;
+    border-top: 2px solid var(--border);
+  }
+
+  /* Hide market pulse and weekly briefing — not needed on mobile */
+  .nif-sb-card--stats,
+  .nif-sb-card--briefing { display: none; }
+
+  /* All cards: clean bordered cards */
+  .nif-sb-card {
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .nif-sb-card:last-child { margin-bottom: 0; }
+
+  /* Flash updates: keep as-is, looks fine */
+  .nif-sb-card--flash .nif-sb-card__header {
+    padding: 10px 14px;
+    background: linear-gradient(135deg, var(--client-color-50), var(--gold-50));
+  }
+
+  /* Topics card: show subcategory links as horizontal scrollable chips */
+  .nif-sb-pt-children--always {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 8px;
+    padding: 12px 14px !important;
+  }
+  .nif-sb-pt-children--always::-webkit-scrollbar { display: none; }
+
+  .nif-sb-pt-child {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-size: .78rem;
+    white-space: nowrap;
+  }
+  .nif-sb-pt-child--active {
+    background: var(--ptc, var(--accent));
+    border-color: var(--ptc, var(--accent));
+    color: #fff !important;
+  }
+
+  /* Popular Now: horizontal scroll compact cards */
+  .nif-sb-popular {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+    padding: 12px 14px !important;
+    margin: 0 !important;
+    list-style: none;
+    scrollbar-width: none;
+  }
+  .nif-sb-popular::-webkit-scrollbar { display: none; }
+
+  .nif-sb-popular__item {
+    flex: 0 0 150px;
+    scroll-snap-align: start;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+    padding: 0 !important;
+  }
+
+  .nif-sb-popular__link {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px;
+    padding: 10px 12px 12px !important;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .nif-sb-popular__cat {
+    font-size: .58rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: var(--client-color-50);
+    color: var(--accent);
+    border: 1px solid var(--client-color-200);
+    width: fit-content;
+  }
+
+  .nif-sb-popular__title {
+    font-size: .78rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ── Very small (≤ 480px) ── */
+@media (max-width: 480px) {
+  .nif-portal-sidebar { grid-template-columns: 1fr; }
+  .nif-sb-card--flash,
+  .nif-sb-card--popular { grid-column: span 1; }
+  .nif-guide-tile { flex: 0 0 155px !important; min-height: 155px !important; }
+  .nif-brief-item { flex: 0 0 145px !important; }
+  .nif-brief-item__img { height: 80px !important; }
+  .mi-chip { font-size: .75rem; padding: 5px 11px; }
+}
+
+/* ── Hide brief list meta/excerpt/cta always (card layout) ── */
+.nif-brief-item__excerpt,
+.nif-brief-item__meta,
+.nif-brief-item__cta { display: none; }

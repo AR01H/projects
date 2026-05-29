@@ -32,7 +32,10 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
       <?php endif; ?>
     </div>
 
-    <div class="sp-related-grid">
+    <div class="sp-carousel-wrap">
+      <button class="sp-carousel-btn sp-carousel-btn--prev" aria-label="Previous">&#8592;</button>
+      <button class="sp-carousel-btn sp-carousel-btn--next" aria-label="Next">&#8594;</button>
+      <div class="sp-related-grid">
       <?php foreach ( $posts as $i => $rp ) :
         $rc     = get_the_category( $rp->ID );
         $rc0    = $rc[0] ?? null;
@@ -84,7 +87,8 @@ $emoji_map = [ 'buying'=>'🏠','first'=>'🔑','finance'=>'💷','legal'=>'⚖�
 
       </a>
       <?php endforeach; ?>
-    </div>
+      </div><!-- /.sp-related-grid -->
+    </div><!-- /.sp-carousel-wrap -->
 
   </div>
 </section>

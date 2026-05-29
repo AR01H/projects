@@ -3,186 +3,198 @@ $exta_heading = $args['exta_heading'] ?? '';
 ?>
 
 <style>
-
-/* ── Hero section ───────────────────────────────────────────────── */
+/* ── Hero ─────────────────────────────────────────────────────────── */
 .nif-portal-section-background-img {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     overflow: hidden;
     background: var(--client-color-900);
+    min-height: clamp(420px, 60vh, 600px);
+    padding-top: var(--nav-h);
 }
 
-/* ── Background image ───────────────────────────────────────────── */
+/* Background photo */
 .nif-portal-section-background-img .nif-bg-img {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
-    object-position: left center;
+    object-position: center top;
     z-index: 0;
     display: block;
 }
+.nif-bg-img-light { opacity: .52; pointer-events: none; }
 
-.nif-bg-img-light{
-	opacity:0.48;
-
-	pointer-events:none;
-}
-
-/* ── Overlay: very subtle - image must show clearly ────────────── */
+/* Dark gradient overlay — strong at bottom so text pops */
 .nif-portal-section-background-img .nif-overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
-/* Softer middle fade */
-
-background: linear-gradient(
-	to right,
-
-	color-mix(in srgb, var(--client-color-400) 4%, transparent) 0%,
-
-	color-mix(in srgb, var(--client-color-300) 8%, transparent) 20%,
-
-	color-mix(in srgb, var(--client-color-100) 12%, transparent) 40%,
-
-	color-mix(in srgb, var(--client-color-200) 16%, transparent) 55%,
-
-	color-mix(in srgb, var(--client-color-50) 10%, transparent) 75%,
-
-	color-mix(in srgb, #ffffff 4%, transparent) 100%
-);
+    background: linear-gradient(
+        to bottom,
+        rgba(10,6,2,.10) 0%,
+        rgba(10,6,2,.28) 40%,
+        rgba(10,6,2,.72) 70%,
+        rgba(10,6,2,.90) 100%
+    );
 }
 
-/* ── Rooftop silhouette ─────────────────────────────────────────── */
+/* Rooftop SVG */
 .nif-portal-section-background-img .nif-rooftops {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 2;
+    bottom: 0; left: 0;
+    width: 100%; z-index: 2;
     pointer-events: none;
-    opacity: 0.10;
+    opacity: .08;
 }
 
-/* ── Inner wrapper ──────────────────────────────────────────────── */
+/* Content wrapper */
 .nif-portal-section-background-img .nif-inner {
     position: relative;
     z-index: 3;
     width: 100%;
-    margin: 0 auto;
-    padding: 15px;
-    display: flex;
-    margin-top: calc(var(--nav-h) / 2);
+    max-width: 860px;
+    padding: clamp(24px, 4vw, 52px) clamp(16px, 4vw, 40px);
 }
 
-/* ── Headline - Playfair Display serif ─────────────────────────── */
+/* Title */
 .nif-portal-section-background-img .nif-content .hero__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-display, 'Playfair Display', Georgia, serif);
     color: #fff;
-    font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+    font-size: clamp(1.6rem, 3.8vw, 3rem);
     font-weight: 700;
     line-height: 1.18;
-    margin: 0 0 18px;
-    letter-spacing: -0.01em;
-}
-
-/* ── Description ────────────────────────────────────────────────── */
-.nif-portal-section-background-img .nif-content .hero__desc {
-    color: rgba(255, 255, 255, 0.88);
-    font-size: 15px;
-    line-height: 1.5;
-    margin: 0 0 16px;
-    font-weight: 400;
-}
-
-.nif-cards-flex {
-    display: flex;
-    flex-wrap: wrap;
-    gap:10px;
-}
-
-
-.nif-card {
-    background: rgba(255, 255, 255, 0.96);
-    border-radius: var(--radius-sm);
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: var(--client-color-900);
-    font-size: 15px;
-    font-weight: 600;
-    border: 1.5px solid transparent;
-    transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.18s ease;
-    backdrop-filter: blur(4px);
-    width:max-content;
-}
-.nif-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px color-mix(in srgb, var(--client-color-500) 28%, transparent);
-    border-color: var(--client-color-500);
-    background: #fff;
-}
-
-.nif-card .nif-card-icon {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: color-mix(in srgb, var(--client-color-50) 60%, transparent);
-    border-radius: var(--radius-sm);
-    font-size: 21px;
-}
-
-/* ── Responsive ─────────────────────────────────────────────────── */
-@media (max-width: 900px) {
-    .nif-portal-section-background-img .nif-overlay {
-        background: linear-gradient(
-            to bottom,
-            color-mix(in srgb, var(--client-color-900) 5%,  transparent) 0%,
-            color-mix(in srgb, var(--client-color-900) 30%, transparent) 35%,
-            color-mix(in srgb, var(--client-color-900) 72%, transparent) 58%,
-            color-mix(in srgb, var(--client-color-900) 82%, transparent) 100%
-        );
-    }
-    .nif-portal-section-background-img .nif-inner {
-        justify-content: center;
-    }
-    .nif-portal-section-background-img .nif-content {
-        width: 100%;
-    }
-}
-
-@media (max-width: 560px) {
-    .whole-page-card .nif-portal-section-background-img .nif-content .hero__title{
-        font-size: 3.0rem;
-    }
-    .nif-portal-section-background-img .nif-content .hero__desc{
-        font-size: 1.0rem;
-        line-height: 1.3rem;
-    }
-    .nif-portal-section-background-img .hero__title {
-        font-size: 1.0rem;
-    }
+    margin: 0 0 12px;
+    letter-spacing: -.01em;
 }
 .hero__title em {
     font-style: italic;
-    color: var(--client-color-50);
-    width: 0;
+    color: var(--client-color-300);
 }
 
-.nif-portal-section-background-img .nif-content {
-    width: 100%;
-    min-width: 0;
+/* Description */
+.nif-portal-section-background-img .nif-content .hero__desc {
+    color: rgba(255,255,255,.82);
+    font-size: clamp(.82rem, 1.4vw, .96rem);
+    line-height: 1.6;
+    margin: 0 0 18px;
+    max-width: 520px;
 }
 
-
-@keyframes nif-type {
-    to { width: 100%; }
+/* Action cards row */
+.nif-cards-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
+
+.nif-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,.95);
+    border: 1.5px solid rgba(255,255,255,.4);
+    border-radius: 10px;
+    padding: 10px 18px 10px 12px;
+    text-decoration: none;
+    color: var(--client-color-900);
+    font-size: .88rem;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+    transition: transform .18s, box-shadow .2s, background .18s;
+    white-space: nowrap;
+}
+.nif-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(234,179,8,.25);
+    background: #fff;
+}
+.nif-card .nif-card-icon {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--client-color-100);
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+/* ── MOBILE: split layout — image strip top, dark panel bottom ── */
+@media (max-width: 600px) {
+    .nif-portal-section-background-img {
+        min-height: 0 !important;
+        align-items: stretch !important;
+        flex-direction: column;
+        padding-top: 0;
+    }
+
+    /* Full-size image as top strip */
+    .nif-portal-section-background-img .nif-bg-img {
+        position: relative !important;
+        inset: auto !important;
+        width: 100% !important;
+        height: 180px !important;
+        object-fit: cover !important;
+        object-position: center top !important;
+        flex-shrink: 0;
+        z-index: 0 !important;
+    }
+
+    /* Hide the SVG animated bg on mobile */
+    .nif-portal-section-background-img .nif-bg-img:not(.nif-bg-img-light) {
+        display: none !important;
+    }
+
+    /* Kill the full-screen overlay on mobile */
+    .nif-portal-section-background-img .nif-overlay {
+        display: none !important;
+    }
+
+    /* Rooftop SVG also hidden */
+    .nif-portal-section-background-img .nif-rooftops {
+        display: none !important;
+    }
+
+    /* Dark content panel below the image */
+    .nif-portal-section-background-img .nif-inner {
+        position: relative !important;
+        z-index: 1 !important;
+        background: var(--client-color-900, #1a0e04);
+        padding: 20px 18px 24px !important;
+        margin-top: 0 !important;
+    }
+
+    .nif-portal-section-background-img .nif-content .hero__title {
+        font-size: 1.5rem !important;
+        line-height: 1.22 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .nif-portal-section-background-img .nif-content .hero__desc {
+        font-size: .84rem !important;
+        line-height: 1.55 !important;
+        margin-bottom: 16px !important;
+        color: rgba(255,255,255,.75) !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .nif-cards-flex { gap: 8px; }
+
+    .nif-card {
+        font-size: .8rem !important;
+        padding: 8px 14px 8px 10px !important;
+        background: rgba(255,255,255,.92) !important;
+    }
+    .nif-card .nif-card-icon {
+        width: 28px !important; height: 28px !important;
+        font-size: .95rem !important;
+    }
+}
+
+@keyframes nif-type { to { width: 100%; } }
 </style>
 
 
