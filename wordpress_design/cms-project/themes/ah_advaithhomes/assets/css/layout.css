@@ -541,8 +541,7 @@
 
 /* ── Service card full (services page) ───────────────────────────────────── */
 .service-card--full {
-	display: flex;
-	flex-direction: column;
+	display: block;
 }
 
 /* ── Page Hero ───────────────────────────────────────────────────────────── */

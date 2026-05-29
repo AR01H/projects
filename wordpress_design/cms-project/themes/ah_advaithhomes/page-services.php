@@ -32,18 +32,21 @@ $faqs     = ah_get_faqs( 8 );
         We're a full-service buyer's agency - one fee, one team, one point of contact from search to keys.
       </p>
     </div>
-    <div class="grid-1" style="display:grid;gap:20px;">
+    <div class="grid-1" style="display:grid;gap:28px;">
       <?php foreach ( $services as $i => $svc ) {
         $thumb_url = $svc->image_id ? wp_get_attachment_image_url( $svc->image_id, 'medium' ) : '';
       ?>
       <div class="service-card service-card--full" data-aos="fade-up" data-delay="<?php echo ( $i % 3 ) * 100; ?>">
         <div class="service-card__content">
-            <div class="service-card__info">
-            <div class="service-card__icon">
-              <h2 class="service-card__title"><?php echo ($svc->icon ?? '✦'); ?> <?php echo ($svc->title); ?></h2>
-            </div>
-            <p class="service-card__body">- <?php echo ($svc->short_desc ?? ''); ?></p>
-            <p class="service-card__body"><?php echo ($svc->full_desc ?? ''); ?></p>
+          <div class="service-card__info">
+            <div class="service-card__icon-badge"><?php echo esc_html($svc->icon ?? '✦'); ?></div>
+            <h2 class="service-card__title"><?php echo esc_html($svc->title); ?></h2>
+            <?php if (!empty($svc->short_desc)) : ?>
+              <p class="service-card__tagline"><?php echo wp_kses_post($svc->short_desc); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($svc->full_desc)) : ?>
+              <div class="service-card__body"><?php echo wp_kses_post($svc->full_desc); ?></div>
+            <?php endif; ?>
           </div>
           <div class="service-card__image-wrap">
             <img
