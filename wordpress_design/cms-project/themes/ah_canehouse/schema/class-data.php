@@ -88,6 +88,41 @@ class CH_Data {
 		return $rows ?: self::default_news_bar();
 	}
 
+	public static function services(): array {
+		$rows = self::load_csv( 'services' );
+		if ( $rows ) {
+			return array_map( static function ( $r ) {
+				return [
+					'icon'        => $r['icon']        ?? '',
+					'title'       => $r['title']       ?? '',
+					'description' => $r['description'] ?? '',
+					'details'     => $r['details']     ?? '',
+					'image_url'   => $r['image_url']   ?? '',
+					'status'      => $r['status']      ?? 'active',
+					'sort_order'  => (int) ( $r['sort_order'] ?? 0 ),
+				];
+			}, $rows );
+		}
+		return self::default_services();
+	}
+
+	public static function about_team(): array {
+		$rows = self::load_csv( 'about_team' );
+		if ( $rows ) {
+			return array_map( static function ( $r ) {
+				return [
+					'name'       => $r['name']       ?? '',
+					'role'       => $r['role']       ?? '',
+					'bio'        => $r['bio']        ?? '',
+					'image_url'  => $r['image_url']  ?? '',
+					'status'     => $r['status']     ?? 'active',
+					'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+				];
+			}, $rows );
+		}
+		return self::default_about_team();
+	}
+
 	// ── Site settings (key-value CSVs) ────────────────────────────────────────
 
 	public static function settings(): array {
@@ -539,6 +574,84 @@ class CH_Data {
 			[ 'title' => 'The History of Ganna Ras in South Asian Culture',         'excerpt' => 'Tracing the 4000-year history of sugarcane juice in South Asian culture - from ancient Sanskrit texts to the iconic roadside press.', 'cat' => 'Events & Culture', 'content' => '' ],
 			[ 'title' => 'How to Build Your Perfect Juice: A Guide to Our Blends',  'excerpt' => 'New to The Cane House? This step-by-step guide walks you through our cane types citrus blends tropical flavours and sizes.', 'cat' => 'Juice Knowledge',  'content' => '' ],
 			[ 'title' => 'Sugarcane Juice in Winter: Warming Blends for Cold Days', 'excerpt' => 'Think sugarcane juice is only for summer? With our Ginger and Lemon blends it is a warming functional drink for every season.', 'cat' => 'Health & Wellness', 'content' => '' ],
+		];
+	}
+
+	private static function default_services(): array {
+		return [
+			[
+				'icon'        => '🥤',
+				'title'       => 'Fresh Juice Orders',
+				'description' => 'Build your perfect sugarcane juice with our customizable menu. Choose from different cane types, textures, and delicious flavor blends.',
+				'details'     => 'Available for immediate or advance orders. Delivered fresh to your location.',
+				'image_url'   => 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&q=80&w=600',
+				'status'      => 'active',
+				'sort_order'  => 1,
+			],
+			[
+				'icon'        => '🎪',
+				'title'       => 'Event & Stall Hire',
+				'description' => 'Bring the live-pressed juice experience to your event. Our professional team will manage a fully-equipped juice stall at your venue.',
+				'details'     => 'Perfect for weddings corporate events parties and festivals. Fully insured and certified.',
+				'image_url'   => 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=600',
+				'status'      => 'active',
+				'sort_order'  => 2,
+			],
+			[
+				'icon'        => '📍',
+				'title'       => 'Franchise Opportunities',
+				'description' => 'Be part of the fresh juice revolution. Own your own Cane House franchise and bring live-pressed juice to your city.',
+				'details'     => 'Complete business support training and marketing materials provided. Join our growing network.',
+				'image_url'   => 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=600',
+				'status'      => 'active',
+				'sort_order'  => 3,
+			],
+			[
+				'icon'        => '🎁',
+				'title'       => 'Corporate Wellness',
+				'description' => 'Elevate your workplace with fresh healthy juice options. Perfect for office wellness programs and team gatherings.',
+				'details'     => 'Bulk orders available with special corporate rates. Delivered to your office.',
+				'image_url'   => 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&q=80&w=600',
+				'status'      => 'active',
+				'sort_order'  => 4,
+			],
+		];
+	}
+
+	private static function default_about_team(): array {
+		return [
+			[
+				'name'       => 'Akhilesh Ravuri',
+				'role'       => 'Founder & CEO',
+				'bio'        => 'Passionate about bringing authentic sugarcane juice to the UK. With years of experience in food service and a love for natural products Akhilesh founded The Cane House to share this amazing juice with everyone.',
+				'image_url'  => 'https://i.pravatar.cc/300?u=founder',
+				'status'     => 'active',
+				'sort_order' => 1,
+			],
+			[
+				'name'       => 'Sarah Johnson',
+				'role'       => 'Operations Manager',
+				'bio'        => 'Dedicated to ensuring every order is perfect. Sarah manages our supply chain quality control and customer satisfaction with enthusiasm and care.',
+				'image_url'  => 'https://i.pravatar.cc/300?u=sarah',
+				'status'     => 'active',
+				'sort_order' => 2,
+			],
+			[
+				'name'       => 'Mohammed Ali',
+				'role'       => 'Events Coordinator',
+				'bio'        => 'Expert in bringing The Cane House to life at events. Mohammed coordinates our event stalls making sure every guest has an amazing fresh juice experience.',
+				'image_url'  => 'https://i.pravatar.cc/300?u=mohammed',
+				'status'     => 'active',
+				'sort_order' => 3,
+			],
+			[
+				'name'       => 'Emma Wright',
+				'role'       => 'Customer Experience Lead',
+				'bio'        => 'Your friendly voice on the other end. Emma ensures every customer inquiry is handled with warmth and every event runs smoothly.',
+				'image_url'  => 'https://i.pravatar.cc/300?u=emma',
+				'status'     => 'active',
+				'sort_order' => 4,
+			],
 		];
 	}
 

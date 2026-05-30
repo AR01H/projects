@@ -35,7 +35,8 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 			$_td     = AH_Theme_Content_Taxonomy::get_terms_for_items( [ $single ], 'news_bar_item' );
 			$s_terms = $_td['item_terms'][ $single->id ] ?? [];
 		}
-		$s_cat = ! empty( $s_terms ) ? $s_terms[0]->name : 'News';
+		$s_cat        = ! empty( $s_terms ) ? $s_terms[0]->name : 'News';
+		$s_term_slugs = array_column( $s_terms, 'slug' );
 		?>
 
 		<?php get_template_part( 'components/page-header', null, [
@@ -60,30 +61,31 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		    </a>
 
 			
-		    <div class="news-single__meta" style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
-				<span class="nif-tile-badge" style="font-size:.75rem"><?php echo esc_html( strtoupper( $s_cat ) ); ?></span>
-				<?php if ( $s_date ) : ?>
-					<span style="font-size:.82rem;color:var(--text-secondary)"><?php echo esc_html( $s_date ); ?></span>
-					<?php endif; ?>
-				</div>
-				
-				<div style="display:flex;flex-wrap:wrap;justify-content: space-between;">
-					<h1 class="news-single__title" style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;color:var(--text-primary);margin-bottom:24px;line-height:1.25">
-						<?php echo esc_html( $s_title ); ?>
-					</h1>
-					<?php if ( $s_thumb ) : ?>
-					<div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/7;max-width:400px">
-					  <img src="<?php echo esc_url( $s_thumb ); ?>"
-						alt="<?php echo ( 'News' ); ?>"
-						   style="width:100%;height:100%;object-fit:cover"
-						   loading="eager" decoding="async">
-					</div>
-					<?php endif; ?>
-				</div>
+		    <?php if ( $s_thumb ) : ?>
+		    <div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/7;box-shadow:var(--shadow-md)">
+		      <img src="<?php echo esc_url( $s_thumb ); ?>"
+		           alt="<?php echo esc_attr( $s_title ); ?>"
+		           style="width:100%;height:100%;object-fit:cover"
+		           loading="eager" decoding="async">
+		    </div>
+		    <?php endif; ?>
 
 		    <?php if ( $s_content ) : ?>
-		    <div class="news-single__body prose" style="color:var(--text-secondary);font-size:1rem;line-height:1.8;">
+		    <div class="news-single__body prose" style="max-width:var(--max-w-text);margin-inline:auto;color:var(--text-secondary);font-size:1.05rem;line-height:1.85;">
 		      <?php echo wp_kses_post( wpautop( $s_content ) ); ?>
+		    </div>
+		    <?php else : ?>
+		    <p style="max-width:var(--max-w-text);margin-inline:auto;color:var(--text-muted);font-style:italic;">No further details for this update.</p>
+		    <?php endif; ?>
+
+		    <?php if ( in_array( 'useful-links', $s_term_slugs, true ) ) : ?>
+		    <div class="sidebar-card" style="max-width:var(--max-w-text);margin:32px auto 0">
+		      <div class="sidebar-card__title"><?php echo esc_html( TXT_USEFUL_LINKS ); ?></div>
+		      <div class="toc">
+		        <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>"         class="toc__item">📚 <?php echo esc_html( TXT_ALL_BUYING_GUIDES ); ?></a>
+		        <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"       class="toc__item">✦ <?php echo esc_html( TXT_OUR_SERVICES ); ?></a>
+		        <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>" class="toc__item">⭐ <?php echo esc_html( TXT_CLIENT_STORIES ); ?></a>
+		      </div>
 		    </div>
 		    <?php endif; ?>
 		  </div>

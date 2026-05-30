@@ -2,12 +2,31 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Includes - order matters ──────────────────────────────────────────────────
+require_once get_template_directory() . '/includes/common_terms.php';  // first — defines constants
 require_once get_template_directory() . '/includes/mock-data.php';
 require_once get_template_directory() . '/includes/helpers.php';
 require_once get_template_directory() . '/schema/class-schema.php';
 require_once get_template_directory() . '/schema/class-data.php';
 require_once get_template_directory() . '/includes/class-theme-admin.php';
 require_once get_template_directory() . '/mail/common_contact.php';
+require_once get_template_directory() . '/admin/theme-reset.php';
+
+// ── Clear stale nav data from other themes (runs once per session) ────────────
+add_action( 'init', function () {
+	if ( get_option( 'ch_nav_cleaned_v2' ) ) return;
+	delete_option( 'ah_cms_navigation' );
+	delete_option( 'ch_theme_navigation' );
+	delete_option( 'ah_cms_nav_cta' );
+	delete_option( 'ch_nav_cta' );
+	update_option( 'ch_nav_cleaned_v2', true );
+} );
+
+// ── Theme Activation Hook ─────────────────────────────────────────────────────
+register_activation_hook( __FILE__, function () {
+	if ( class_exists( 'CH_Theme_Reset' ) ) {
+		CH_Theme_Reset::reset_all();
+	}
+} );
 
 // ── Init Theme Admin ──────────────────────────────────────────────────────────
 if ( is_admin() ) {

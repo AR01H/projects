@@ -38,6 +38,25 @@ add_action( 'after_setup_theme', function () {
 	] );
 } );
 
+/**
+ * Ensure required theme pages exist (idempotent).
+ * Creates the /mortgages/ page so page-mortgages.php activates.
+ */
+add_action( 'init', function () {
+	if ( ! is_admin() && ! wp_doing_cron() ) {
+		// Only provision once; cheap slug lookup.
+		if ( ! get_page_by_path( 'mortgages' ) ) {
+			wp_insert_post( [
+				'post_title'   => 'Mortgages',
+				'post_name'    => 'mortgages',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_content' => '',
+			] );
+		}
+	}
+}, 20 );
+
 // ── Enqueue Assets ────────────────────────────────────────────────────────────
 add_action( 'wp_enqueue_scripts', function () {
 	$dir = get_template_directory();
@@ -64,6 +83,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-common',     $uri . '/assets/css/common.css',     [ 'ah-style' ],         $fv( '/assets/css/common.css' ) );
 	wp_enqueue_style( 'ah-scroll-to-top',     $uri . '/assets/css/scroll-to-top.css',     [ 'ah-common' ],         $fv( '/assets/css/scroll-to-top.css' ) );
 	wp_enqueue_style( 'ah-news-feed', $uri . '/assets/css/news-feed.css', [ 'ah-components' ], $fv( '/assets/css/news-feed.css' ) );
+	wp_enqueue_style( 'ah-nhp',      $uri . '/assets/css/nhp.css',      [ 'ah-components' ], $fv( '/assets/css/nhp.css' ) );
 	wp_enqueue_style( 'ah-theme-builder-css',     $uri . '/assets/css/themebuilder.css',     [ 'ah-common' ],         $fv( '/assets/css/themebuilder.css' ) );
 
 	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ],  $fv( '/assets/js/main.js' ),  true );

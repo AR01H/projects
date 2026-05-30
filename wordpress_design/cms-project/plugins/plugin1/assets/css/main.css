@@ -1,9 +1,8 @@
-/* ═══════════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════════
    Page Builder – main.css
    Fills the styling gaps for blocks rendered by template-builder-page.php
    that are NOT covered by the theme's components.css.
    ═══════════════════════════════════════════════════════════════════════════ */
-
 
 /* ── Stats strip ─────────────────────────────────────────────────────────── */
 .stats-strip {
@@ -18,10 +17,9 @@
 	background: var(--surface, #fff);
 	border: 1px solid var(--border);
 	border-radius: var(--r-lg);
-	transition: box-shadow .25s, transform .25s;
+	transition: transform .25s;
 }
 .stats-strip__item:hover {
-	box-shadow: var(--shadow-md);
 	transform: translateY(-3px);
 }
 
@@ -53,7 +51,6 @@
 	.stats-strip { grid-template-columns: 1fr; }
 }
 
-
 /* ── About / Value card ──────────────────────────────────────────────────── */
 .about-value-card {
 	background: var(--surface, #fff);
@@ -63,7 +60,7 @@
 	text-align: center;
 	position: relative;
 	overflow: hidden;
-	transition: box-shadow .25s, transform .25s, border-color .25s;
+	transition: transform .25s, border-color .25s;
 }
 .about-value-card::before {
 	content: '';
@@ -75,7 +72,6 @@
 	transition: opacity .25s;
 }
 .about-value-card:hover {
-	box-shadow: var(--shadow-lg);
 	transform: translateY(-4px);
 	border-color: var(--client-color-200);
 }
@@ -108,20 +104,17 @@
 	margin: 0;
 }
 
-
 /* ── Plain card ──────────────────────────────────────────────────────────── */
 .ah-plain-card {
 	padding: 24px 22px;
 	background: var(--surface, #fff);
 	border: 1px solid var(--border);
 	border-radius: var(--r-md);
-	transition: box-shadow .25s, transform .25s;
+	transition: transform .25s;
 }
 .ah-plain-card:hover {
-	box-shadow: var(--shadow-md);
 	transform: translateY(-3px);
 }
-
 
 /* ── Image + Text 2-col grid ─────────────────────────────────────────────── */
 .content-layout--2col,
@@ -143,7 +136,6 @@
 		direction: ltr !important;
 	}
 }
-
 
 /* ── Gallery (custom-property driven columns) ────────────────────────────── */
 .ah-gallery {
@@ -175,7 +167,6 @@
 	.ah-gallery { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
-
 /* ── Timeline (class-name bridge) ────────────────────────────────────────── 
    Template uses: ah-timeline__item, ah-timeline__marker, ah-timeline__dot,
                   ah-timeline__body, ah-timeline__date, ah-timeline__title,
@@ -206,7 +197,6 @@
 	background: var(--accent, #b7791f);
 	border: 3px solid var(--surface, #fff);
 	border-radius: 50%;
-	box-shadow: 0 0 0 2px var(--client-color-200, #fde68a);
 	display: grid;
 	place-items: center;
 	font-size: .65rem;
@@ -239,7 +229,6 @@
 	margin: 0;
 }
 
-
 /* ── Comparison table (div-based layout) ─────────────────────────────────── 
    Template outputs div-based rows, not table elements.
 */
@@ -247,7 +236,6 @@
 	border: 1px solid var(--border);
 	border-radius: var(--r-lg);
 	overflow: hidden;
-	box-shadow: var(--shadow-sm);
 }
 
 .ah-comparison__head {
@@ -316,7 +304,6 @@
 	}
 }
 
-
 /* ── Icon list sub-text ──────────────────────────────────────────────────── */
 .ah-icon-list__sub {
 	display: block;
@@ -325,7 +312,6 @@
 	line-height: 1.5;
 	margin-top: 2px;
 }
-
 
 /* ── Download card extras ────────────────────────────────────────────────── */
 .ah-download__body { flex: 1; min-width: 0; }
@@ -360,7 +346,6 @@
 	font-size: .75rem;
 	color: var(--text-muted);
 }
-
 
 /* ── Contact card (photo variant) ────────────────────────────────────────── */
 .ah-contact-card__photo {
@@ -435,7 +420,6 @@
 	}
 }
 
-
 /* ── CTA split buttons wrapper ───────────────────────────────────────────── */
 .ah-cta-split__btns {
 	display: flex;
@@ -448,10 +432,8 @@
 	.ah-cta-split__btns { width: 100%; }
 }
 
-
 /* ── Button utilities ────────────────────────────────────────────────────── */
 .btn-full { width: 100%; justify-content: center; }
-
 
 /* ── Pull quote color data-attribute variants ────────────────────────────── */
 .ah-pull-quote[data-color="gold"]   { border-left-color: var(--client-color-400, #f7c62f); background: var(--client-color-50, #fffbeb); }
@@ -471,7 +453,6 @@
 	color: var(--text-primary);
 }
 
-
 /* ── Team card photo wrapper (img tag wrapper) ───────────────────────────── */
 .ah-team-card__photo {
 	width: 100%;
@@ -479,7 +460,6 @@
 	object-fit: cover;
 	display: block;
 }
-
 
 /* ── Form inputs fallback for unclassed HTML in tabs/text blocks ─────────── */
 .ah-tabs__panel input[type="text"],
@@ -495,7 +475,7 @@
 	background: #fff;
 	border: 1.5px solid var(--border);
 	border-radius: var(--r-md);
-	transition: border-color .2s, box-shadow .2s;
+	transition: border-color .2s;
 	outline: none;
 	margin-bottom: 16px;
 }
@@ -504,7 +484,6 @@
 .ah-tabs__panel select:focus,
 .ah-tabs__panel textarea:focus {
 	border-color: var(--accent);
-	box-shadow: 0 0 0 3px rgba(183,121,31,.12);
 }
 
 .ah-tabs__panel button[type="submit"],
@@ -517,14 +496,13 @@
 	font-weight: 600;
 	border-radius: var(--r-sm);
 	cursor: pointer;
-	transition: background .2s, box-shadow .2s;
+	transition: background .2s;
 	width: 100%;
 }
 
 .ah-tabs__panel button[type="submit"]:hover,
 .ah-tabs__panel button:not([class]):hover {
 	background: var(--gold-400, #fbbf24);
-	box-shadow: var(--shadow-md);
 }
 
 .ah-tabs__panel form {
@@ -533,7 +511,6 @@
 	border-radius: var(--r-lg);
 	border: 1px solid var(--border);
 }
-
 
 /* -- Grid Utilities ---------------------------------------------------------- */
 .grid-1 { display: grid; grid-template-columns: 1fr; gap: 24px; }
@@ -558,7 +535,7 @@
 .ah-icon-list__icon { width: 38px; height: 38px; background: var(--client-color-50, #fffbeb); border: 1px solid var(--client-color-200, #fde68a); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent, #b7791f); font-weight: 700; font-size: 1.1rem; margin-top: -2px; flex-shrink: 0; overflow: hidden; }
 
 /* -- Steps Horizontal Upgrade ---------------------------------------------- */
-.ah-steps--horiz .ah-step { padding: 24px 32px; background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg); margin: 0 10px; box-shadow: var(--shadow-sm); position: relative; z-index: 1; }
+.ah-steps--horiz .ah-step { padding: 24px 32px; background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg); margin: 0 10px; position: relative; z-index: 1; }
 .ah-steps--connector.ah-steps--horiz .ah-step::after { content: ""; position: absolute; right: -25px; top: 50%; transform: translateY(-50%); width: 20px; height: 2px; background: var(--client-color-300, #fcd34d); z-index: 0; }
 .ah-steps--connector.ah-steps--horiz .ah-step:last-child::after { display: none; }
 

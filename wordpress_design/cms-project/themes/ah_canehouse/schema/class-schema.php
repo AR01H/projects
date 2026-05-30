@@ -19,6 +19,9 @@ class CH_Schema {
 		self::create_faqs( $cs );
 		self::create_news_bar( $cs );
 		self::create_contact_submissions( $cs );
+		self::create_services( $cs );
+		self::create_about_team( $cs );
+		self::create_blog_posts( $cs );
 	}
 
 	// ── Table definitions ─────────────────────────────────────────────────────
@@ -77,6 +80,53 @@ class CH_Schema {
 			PRIMARY KEY (id)
 		) {$cs};";
 		dbDelta( $sql );
+	}
+
+	private static function create_services( string $cs ): void {
+		global $wpdb;
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ch_theme_table( 'services' ) . "` (
+			id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			icon        VARCHAR(10),
+			title       VARCHAR(150) NOT NULL,
+			description TEXT NOT NULL,
+			details     TEXT,
+			image_url   VARCHAR(500),
+			status      ENUM('active','inactive') DEFAULT 'active',
+			sort_order  INT DEFAULT 0,
+			created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	private static function create_about_team( string $cs ): void {
+		global $wpdb;
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ch_theme_table( 'about_team' ) . "` (
+			id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			name        VARCHAR(200) NOT NULL,
+			role        VARCHAR(100),
+			bio         TEXT,
+			image_url   VARCHAR(500),
+			status      ENUM('active','inactive') DEFAULT 'active',
+			sort_order  INT DEFAULT 0,
+			created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	private static function create_blog_posts( string $cs ): void {
+		global $wpdb;
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ch_theme_table( 'blog_posts' ) . "` (
+			id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			title        VARCHAR(300) NOT NULL,
+			slug         VARCHAR(300) UNIQUE,
+			content      LONGTEXT NOT NULL,
+			excerpt      TEXT,
+			featured_image VARCHAR(500),
+			author       VARCHAR(200),
+			category     VARCHAR(100),
+			status       ENUM('published','draft','archived') DEFAULT 'draft',
+			published_at DATETIME,
+			created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 }

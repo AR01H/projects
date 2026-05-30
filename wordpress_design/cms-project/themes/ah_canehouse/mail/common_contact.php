@@ -81,12 +81,12 @@ function ch_handle_contact_submit(): void {
 
 	$subject = sprintf( '%s New enquiry from %s - %s', $subject_prefix, $name, $enquiry_labels[ $enquiry ] ?? $enquiry );
 
-	$body = "You have received a new enquiry via The Cane House website.\n\n"
+	$body = "You have received a new enquiry via The Cane House website."
 		. "Name:         {$name}\n"
 		. "Email:        {$email}\n"
 		. "Phone:        {$phone}\n"
-		. "Enquiry Type: " . ( $enquiry_labels[ $enquiry ] ?? $enquiry ) . "\n\n"
-		. "Message:\n{$message}\n\n"
+		. "Enquiry Type: " . ( $enquiry_labels[ $enquiry ] ?? $enquiry ) . ""
+		. "Message:\n{$message}"
 		. "---\n"
 		. "Sent from " . home_url() . "\n"
 		. 'Time: ' . current_time( 'Y-m-d H:i:s' );
@@ -103,13 +103,13 @@ function ch_handle_contact_submit(): void {
 	);
 
 	// ── Auto-reply to sender ─────────────────────────────────────────────────
-	$auto_reply_body = "Hi {$name},\n\n"
-		. "Thank you for getting in touch with The Cane House! 🌿\n\n"
-		. "We've received your message and will get back to you very soon - usually within a few hours.\n\n"
+	$auto_reply_body = "Hi {$name},"
+		. "Thank you for getting in touch with The Cane House! 🌿"
+		. "We've received your message and will get back to you very soon - usually within a few hours."
 		. "In the meantime, if your enquiry is urgent, please call us directly:\n"
-		. "📞 " . ( ch_get_settings()['phone'] ?? '+44 7887 699 208' ) . "\n\n"
+		. "📞 " . ( ch_get_settings()['phone'] ?? '+44 7887 699 208' ) . ""
 		. "Pressed Fresh. Served Cool.\n"
-		. "The Cane House Team\n\n"
+		. "The Cane House Team"
 		. "www.thecanehouse.co.uk";
 
 	wp_mail(

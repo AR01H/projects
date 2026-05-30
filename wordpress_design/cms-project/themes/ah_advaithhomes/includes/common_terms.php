@@ -40,7 +40,7 @@ function get_client_hp_tiles() {
 		'contact' => [
 			'icon'   => '💬',
 			'title'  => 'Contact Us',
-			'desc'   => '',
+			'desc'   => 'Got a question? Our team is here to help you at every step of your journey.',
 			'url'    => '/contact/',
 			'cta'    => 'Get in touch',
 			'color'  => '#0f172a',
@@ -49,7 +49,7 @@ function get_client_hp_tiles() {
 		'support' => [
 			'icon'   => '🛡️',
 			'title'  => 'Get Support',
-			'desc'   => '',
+			'desc'   => 'Need guidance? Get expert support on rules, finance and the buying process.',
 			'url'    => '/contact/?enquiry_type=support',
 			'cta'    => 'Get help',
 			'color'  => '#1e3a8a',
@@ -58,16 +58,25 @@ function get_client_hp_tiles() {
 		'services' => [
 			'icon'   => '🛠️',
 			'title'  => 'Our Services',
-			'desc'   => '',
+			'desc'   => 'From checklists to calculators — everything a buyer needs, all in one place.',
 			'url'    => '/services/',
 			'cta'    => 'View services',
 			'color'  => '#14532d',
 			'image'  => 'assets/images/backgrounds/mini_services.png',
 		],
+		'mortgages' => [
+			'icon'   => '💷',
+			'title'  => 'Mortgages',
+			'desc'   => 'Rates, eligibility & lender rules explained.',
+			'url'    => '/mortgages/',
+			'cta'    => 'View mortgages',
+			'color'  => '#5a1a6a',
+			'image'  => 'assets/images/backgrounds/mini_guides.png',
+		],
 		'multiinfo' => [
 			'icon'   => '📚',
 			'title'  => 'Info Hub',
-			'desc'   => '',
+			'desc'   => 'Browse every topic in one place.',
 			'url'    => '/multiinfo/',
 			'cta'    => 'Explore topics',
 			'color'  => '#78350f',
@@ -76,13 +85,57 @@ function get_client_hp_tiles() {
 		'guides' => [
 			'icon'   => '📖',
 			'title'  => 'Guides to Know',
-			'desc'   => '',
+			'desc'   => 'Step-by-step buyer guides.',
 			'url'    => '/guides/',
 			'cta'    => 'Browse guides',
 			'color'  => '#581c87',
 			'image'  => 'assets/images/backgrounds/mini_guides.png',
 		],
 	];
+}
+
+/**
+ * Homepage trust-bar stats.
+ * Prefers CMS-saved site_stats; otherwise derives real counts from the DB.
+ * (Hardcoded fallbacks live here only, per project rule.)
+ */
+function get_client_hp_stats(): array {
+	// 1) CMS-managed stats take priority.
+	if ( function_exists( 'ah_get_site_stats' ) ) {
+		$saved = ah_get_site_stats();
+		if ( ! empty( $saved ) ) {
+			return array_map( function ( $s ) {
+				$s = is_object( $s ) ? (array) $s : (array) $s;
+				return [ 'num' => $s['num'] ?? '', 'label' => $s['label'] ?? '' ];
+			}, $saved );
+		}
+	}
+
+	// 2) Derive from real DB content.
+	$articles = 0;
+	if ( function_exists( 'wp_count_posts' ) ) {
+		$counts   = wp_count_posts( 'post' );
+		$articles = (int) ( $counts->publish ?? 0 );
+	}
+
+	$topics = 0;
+	$guides = 0;
+	if ( function_exists( 'ah_get_guide_categories' ) ) {
+		$cats   = ah_get_guide_categories();
+		$topics = count( $cats );
+		foreach ( $cats as $c ) {
+			$c       = is_object( $c ) ? (array) $c : $c;
+			$guides += (int) ( $c['count'] ?? 0 );
+		}
+	}
+
+	$out = [];
+	if ( $guides )   $out[] = [ 'num' => $guides . '+', 'label' => 'Guides' ];
+	if ( $topics )   $out[] = [ 'num' => $topics,        'label' => 'Topics' ];
+	if ( $articles ) $out[] = [ 'num' => $articles . '+','label' => 'Articles' ];
+	$out[] = [ 'num' => '100%', 'label' => 'Independent' ];
+
+	return $out;
 }
 // --- Automated Extracted Text Constants ---
 handle_defined( 'TXT_BACK_TO_HOME', 'Back to Home' );

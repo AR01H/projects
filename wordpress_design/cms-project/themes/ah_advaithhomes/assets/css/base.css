@@ -1,4 +1,4 @@
-/* ── Reset & Base ─────────────────────────────────────────────────────────── */
+﻿/* ── Reset & Base ─────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
@@ -102,7 +102,6 @@ p + p { margin-top: .75em; }
 .section.what-we-do {
 	background-color: var(--client-color-100);
 }
-
 
 .section__header {
 	margin-bottom: clamp(32px, 5vw, 34px);

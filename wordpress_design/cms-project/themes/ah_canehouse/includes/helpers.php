@@ -58,8 +58,8 @@ function ch_normalize_theme_url( string $url, string $fallback = '' ): string {
 }
 
 function ch_get_theme_navigation(): array {
-	$opt = get_option( 'ah_cms_navigation', [] );  // admin CMS controls this key
-	if ( empty( $opt ) ) $opt = get_option( 'ch_theme_navigation', [] );  // seeder fallback
+	// Only read ch_ prefixed options — never ah_cms_ to avoid advaith data bleed
+	$opt = get_option( 'ch_theme_navigation', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) {
 		return ch_normalize_theme_navigation( $opt );
@@ -101,28 +101,29 @@ function ch_normalize_theme_navigation( array $items ): array {
 }
 
 function ch_build_default_navigation(): array {
-	return [
-		[ 'id' => 'how-to-order', 'label' => 'How to Order', 'type' => 'link', 'url' => home_url( '/#how-to-order' ), 'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'menu',         'label' => 'Our Juices',   'type' => 'link', 'url' => home_url( '/#build' ),        'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'events',       'label' => 'Events',       'type' => 'link', 'url' => home_url( '/#hire' ),         'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'franchise',    'label' => 'Franchise',    'type' => 'link', 'url' => home_url( '/#franchise' ),    'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'faq',          'label' => 'FAQ',          'type' => 'link', 'url' => home_url( '/#faq' ),          'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'contact',      'label' => 'Contact',      'type' => 'link', 'url' => home_url( '/#contact' ),      'visible' => true, 'submenu' => [] ],
+	// Use common_terms.php constants if available, otherwise raw strings
+	return function_exists( 'ch_default_nav' ) ? ch_default_nav() : [
+		[ 'id' => 'how-to-order', 'label' => 'How to Order',  'type' => 'link', 'url' => home_url( '/#how-to-order' ), 'visible' => true, 'submenu' => [] ],
+		[ 'id' => 'build',        'label' => 'Our Juices',    'type' => 'link', 'url' => home_url( '/#build' ),        'visible' => true, 'submenu' => [] ],
+		[ 'id' => 'hire',         'label' => 'Events & Hire', 'type' => 'link', 'url' => home_url( '/#hire' ),         'visible' => true, 'submenu' => [] ],
+		[ 'id' => 'franchise',    'label' => 'Franchise',     'type' => 'link', 'url' => home_url( '/#franchise' ),    'visible' => true, 'submenu' => [] ],
+		[ 'id' => 'faq',          'label' => 'FAQ',           'type' => 'link', 'url' => home_url( '/#faq' ),          'visible' => true, 'submenu' => [] ],
 	];
 }
 
 function ch_get_nav_cta(): array {
-	$opt = get_option( 'ah_cms_nav_cta', [] );  // admin CMS controls this key
-	if ( empty( $opt ) ) $opt = get_option( 'ch_nav_cta', [] );  // seeder fallback
+	// Only read ch_ prefixed options — never ah_cms_ to avoid advaith data bleed
+	$opt = get_option( 'ch_nav_cta', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	$defaults = [ 'label' => 'Contact', 'url' => home_url( '/#contact' ) ];
+	$label = defined( 'CH_NAV_CONTACT' ) ? CH_NAV_CONTACT : 'Contact Us';
+	$defaults = [ 'label' => $label, 'url' => home_url( '/#contact' ) ];
 	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;
 }
 
 // ── Footer ────────────────────────────────────────────────────────────────────
 function ch_get_theme_footer(): array {
-	$opt = get_option( 'ah_cms_footer', [] );  // plugin's shared key
-	if ( empty( $opt ) ) $opt = get_option( 'ch_theme_footer', [] );
+	// Only read ch_ prefixed options — never ah_cms_ to avoid advaith data bleed
+	$opt = get_option( 'ch_theme_footer', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
 	return ch_build_default_footer();
@@ -130,41 +131,15 @@ function ch_get_theme_footer(): array {
 
 function ch_build_default_footer(): array {
 	$s = ch_get_settings();
-	return [
-		'brand_description' => 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - pure natural refreshment wherever you are.',
-		'columns'           => [
-			[
-				'title' => 'Our Juice',
-				'items' => [
-					[ 'label' => 'Build Your Juice',   'url' => home_url( '/#build' ) ],
-					[ 'label' => 'Sizes & Pricing',    'url' => home_url( '/#build' ) ],
-					[ 'label' => 'Cane Types',         'url' => home_url( '/#build' ) ],
-					[ 'label' => 'Flavour Blends',     'url' => home_url( '/#build' ) ],
-					[ 'label' => 'Health Benefits',    'url' => home_url( '/#benefits' ) ],
-				],
-			],
-			[
-				'title' => 'Services',
-				'items' => [
-					[ 'label' => 'Event Hire',         'url' => home_url( '/#hire' ) ],
-					[ 'label' => 'Weddings',           'url' => home_url( '/#hire' ) ],
-					[ 'label' => 'Parties & Gatherings','url' => home_url( '/#hire' ) ],
-					[ 'label' => 'Franchise',          'url' => home_url( '/#franchise' ) ],
-					[ 'label' => 'Contact Us',         'url' => home_url( '/#contact' ) ],
-				],
-			],
-		],
-		'legal_links' => [
-			[ 'label' => 'Privacy Policy', 'url' => home_url( '/privacy-policy/' ) ],
-		],
-		'social' => [
-			'instagram' => $s['instagram_url'] ?? '',
-			'facebook'  => $s['facebook_url']  ?? '',
-			'tiktok'    => $s['tiktok_url']    ?? '',
-			'youtube'   => $s['youtube_url']   ?? '',
-		],
-		'copyright' => '© ' . date( 'Y' ) . ' The Cane House. Pressed Fresh. Served Cool.',
-	];
+	return function_exists( 'ch_default_footer_data' )
+		? ch_default_footer_data( $s )
+		: [
+			'brand_description' => defined( 'CH_BRAND_DESC' ) ? CH_BRAND_DESC : 'Fresh sugarcane juice pressed live, served cool.',
+			'columns'           => [],
+			'legal_links'       => [ [ 'label' => 'Privacy Policy', 'url' => home_url( '/privacy-policy/' ) ] ],
+			'social'            => [ 'instagram' => '', 'facebook' => '', 'tiktok' => '', 'youtube' => '' ],
+			'copyright'         => '© ' . date( 'Y' ) . ' The Cane House. Pressed Fresh. Served Cool.',
+		];
 }
 
 // ── Menu / Products ───────────────────────────────────────────────────────────
@@ -343,6 +318,45 @@ function ch_stars( float $rating = 5.0, bool $echo = true ): string {
 	$html .= '</span>';
 	if ( $echo ) echo $html;
 	return $html;
+}
+
+// ── Services ──────────────────────────────────────────────────────────────────
+function ch_get_services( string $status = 'active' ): array {
+	global $wpdb;
+	$table = ch_theme_table( 'services' );
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ) {
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status = %s ORDER BY sort_order ASC", $status ) );
+		if ( ! empty( $rows ) ) return $rows;
+	}
+	if ( class_exists( 'CH_Data' ) ) {
+		return CH_Data::services();
+	}
+	return [];
+}
+
+// ── Team Members ──────────────────────────────────────────────────────────────
+function ch_get_team_members( string $status = 'active' ): array {
+	global $wpdb;
+	$table = ch_theme_table( 'about_team' );
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ) {
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status = %s ORDER BY sort_order ASC", $status ) );
+		if ( ! empty( $rows ) ) return $rows;
+	}
+	if ( class_exists( 'CH_Data' ) ) {
+		return CH_Data::about_team();
+	}
+	return [];
+}
+
+// ── Blog Posts ─────────────────────────────────────────────────────────────────
+function ch_get_blog_posts( int $limit = 12, string $status = 'published' ): array {
+	global $wpdb;
+	$table = ch_theme_table( 'blog_posts' );
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ) {
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status = %s AND published_at IS NOT NULL ORDER BY published_at DESC LIMIT %d", $status, $limit ) );
+		if ( ! empty( $rows ) ) return $rows;
+	}
+	return [];
 }
 
 // ── Nav link suggestions (for admin nav builder) ─────────────────────────────

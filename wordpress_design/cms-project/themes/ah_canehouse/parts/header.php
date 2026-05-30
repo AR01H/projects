@@ -94,7 +94,7 @@ $nav_cta = ch_get_nav_cta();
 
 <!-- Mobile navigation (PHP-rendered, toggled via JS) -->
 <nav class="ch-mobile-nav" id="ch-mobile-nav" aria-label="<?php esc_attr_e( 'Mobile Navigation', 'ch-theme' ); ?>">
-	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-mobile-nav__link">Home</a>
+	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-mobile-nav__link"><?php echo defined( 'CH_NAV_HOME' ) ? esc_html( CH_NAV_HOME ) : 'Home'; ?></a>
 
 	<?php foreach ( $theme_nav as $item ) : ?>
 		<?php

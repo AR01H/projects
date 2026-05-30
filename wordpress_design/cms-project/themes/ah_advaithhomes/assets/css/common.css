@@ -1,10 +1,20 @@
-/* ── Page Header Component ────────────────────────────────────────────── */
+﻿/* ── Page Header Component ────────────────────────────────────────────── */
 .ph {
   position: relative;
   overflow: hidden;
-  padding-top:    calc(var(--nav-h, 66px));
-  padding-bottom: (46px);
-  background: var(--client-color-400, #f7c62f);
+  padding-top:    calc(var(--nav-h, 66px) + clamp(36px, 5vw, 60px));
+  padding-bottom: clamp(40px, 5vw, 64px);
+  background:
+    radial-gradient(120% 140% at 50% -20%, rgba(255,255,255,.35) 0%, transparent 45%),
+    linear-gradient(135deg, var(--client-color-500) 0%, var(--client-color-400) 48%, var(--client-color-300) 100%);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+/* soft fade into the page below for a premium finish */
+.ph::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,.04));
+  pointer-events: none;
 }
 
 /* Decorative background */
@@ -13,16 +23,16 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, rgba(0,0,0,.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0,0,0,.07) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(to right, rgba(0,0,0,.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,.06) 1px, transparent 1px);
+  background-size: 46px 46px;
   mask-image: radial-gradient(ellipse 90% 80% at 50% 100%, transparent 30%, black 100%);
 }
 .ph__blob {
   position: absolute;
-  top: -80px; right: -100px;
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(255,255,255,.25) 0%, transparent 65%);
+  top: -120px; right: -120px;
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(255,255,255,.32) 0%, transparent 62%);
   border-radius: 50%;
 }
 
@@ -89,10 +99,17 @@
   }
 }
 
-/* Eyebrow */
+/* Eyebrow — pill badge */
 .ph__eyebrow {
-  color: rgba(0,0,0,.6) !important;
-  margin-bottom: 10px;
+  display: inline-flex; align-items: center; gap: 6px;
+  color: rgba(0,0,0,.72) !important;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 999px;
+  padding: 5px 16px;
+  margin-bottom: 16px;
+  font-size: .68rem; font-weight: 800; letter-spacing: .14em;
+  backdrop-filter: blur(4px);
 }
 
 /* Title */
@@ -130,18 +147,20 @@
 /* Desc */
 .ph__desc {
   font-size: clamp(.9rem, 1.5vw, 1.05rem);
-  color: rgba(0,0,0,.65);
-  line-height: 1.75;
+  color: rgba(0,0,0,.66);
+  line-height: 1.7;
   margin: 0;
+  max-width: 640px;
 }
 
 /* Accent line */
 .ph__accent {
-  width: 40px;
-  height: 3px;
-  background: rgba(0,0,0,.3);
-  border-radius: 2px;
-  margin-top: 24px;
+  width: 56px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--client-color-900), var(--client-color-700));
+  border-radius: 999px;
+  margin-top: 22px;
+  opacity: .8;
 }
 section:has(table){
 	overflow-y: auto;

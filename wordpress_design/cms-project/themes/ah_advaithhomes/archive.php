@@ -1,11 +1,36 @@
-<?php get_header(); ?>
+<?php get_header();
 
-<?php
 $archive_title = get_the_archive_title();
+$clean_title   = preg_replace( '/^[^:]+:\s*/', '', strip_tags( $archive_title ) );
 $archive_desc  = get_the_archive_description();
 
-// Build a clean title - strip the "Category: / Tag: " prefix WP adds
-$clean_title = preg_replace( '/^[^:]+:\s*/', '', strip_tags( $archive_title ) );
+// Current category for active-state detection
+$current_cat = is_category() ? get_queried_object() : null;
+$current_cat_slug = $current_cat ? $current_cat->slug : '';
+
+// ── See More sidebar data (same as guides page) ───────────────────────────────
+$sidebar_pts     = [];
+$cat_pt_map      = [];
+$sidebar_active_pt_id = null;
+
+if ( class_exists( 'AH_Taxonomy_Parent_Model' ) && class_exists( 'AH_DB_Helper' ) ) {
+	global $wpdb;
+	$_ptm_sb = new AH_Taxonomy_Parent_Model();
+	$_tax_sb = AH_DB_Helper::table( 'taxonomies' );
+	foreach ( $_ptm_sb->get_all_active() as $_sb_pt ) {
+		$_sb_children = $wpdb->get_results( $wpdb->prepare(
+			"SELECT slug, name FROM `{$_tax_sb}` WHERE parent_term_id = %d AND status = 1 ORDER BY name ASC",
+			(int) $_sb_pt->id
+		) ) ?: [];
+		$sidebar_pts[] = [ 'pt' => $_sb_pt, 'children' => $_sb_children ];
+		foreach ( $_sb_children as $_sbc ) {
+			$cat_pt_map[ $_sbc->slug ] = $_sb_pt;
+			if ( $_sbc->slug === $current_cat_slug ) {
+				$sidebar_active_pt_id = $_sb_pt->id;
+			}
+		}
+	}
+}
 
 get_template_part( 'components/page-header', null, [
 	'eyebrow'    => is_category() ? 'Category' : ( is_tag() ? 'Tag' : 'Archive' ),
@@ -18,107 +43,87 @@ get_template_part( 'components/page-header', null, [
 ] );
 ?>
 
-<main id="main-content">
-  <div class="container section">
-    <div class="content-layout">
+<div class="gc-portal-bg">
+<div class="container">
+<div class="gc-portal-layout">
 
-      <!-- Posts -->
-      <div>
-        <?php if ( have_posts() ) : ?>
-          <div class="post-grid">
-            <?php while ( have_posts() ) : the_post();
-              $thumb_url  = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'ah-card' ) : '';
-              $post_url   = get_permalink();
-              $post_title = get_the_title();
-              $cats       = get_the_category();
-            ?>
-            <article class="post-card post-card--overlay" data-aos="fade-up">
-              <div class="post-card__bg"<?php if ( $thumb_url ) echo 'style="background-image:url( . esc_url( $thumb_url ) . )"'; ?>></div>
+<main class="gc-portal-main">
 
-              <div class="post-card__content">
-                <div class="post-card__top">
-                  <?php if ( $cats ) : ?>
-                  <span class="post-card__cat"><?php echo esc_html( $cats[0]->name ); ?></span>
-                  <?php else : ?>
-                  <span></span>
-                  <?php endif; ?>
-
-                  <div class="post-share">
-                    <button class="post-share__btn" aria-label="<?php echo esc_attr( TXT_SHARE_THIS_POST ); ?>" aria-expanded="false">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                      </svg>
-                    </button>
-                    <div class="post-share__popover" role="dialog" aria-label="<?php echo esc_attr( TXT_SHARE_OPTIONS ); ?>">
-                      <div class="post-share__icons">
-                        <a href="https://wa.me/?text=<?php echo rawurlencode( $post_title . ' ' . $post_url ); ?>"
-                           target="_blank" rel="noopener noreferrer"
-                           class="post-share__icon post-share__icon--wa" aria-label="<?php echo esc_attr( TXT_SHARE_ON_WHATSAPP ); ?>">
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-                        </a>
-                        <button class="post-share__icon post-share__icon--copy"
-                                data-url="<?php echo esc_attr( $post_url ); ?>"
-                                aria-label="<?php echo esc_attr( TXT_COPY_LINK ); ?>">
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-                        </button>
-                        <button class="post-share__icon post-share__icon--native"
-                                data-url="<?php echo esc_attr( $post_url ); ?>"
-                                data-title="<?php echo esc_attr( $post_title ); ?>"
-                                aria-label="<?php echo esc_attr( TXT_MORE_SHARE_OPTIONS ); ?>">
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="post-card__info">
-                  <div class="card__meta">
-                    <span><?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span>
-                  </div>
-                  <h2 class="post-card__title">
-                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                  </h2>
-                  <p class="post-card__excerpt">
-                    <?php echo esc_html( wp_trim_words( get_the_excerpt(), 18, '…' ) ); ?>
-                  </p>
-                  <a href="<?php the_permalink(); ?>" class="post-card__read-btn">
-                    Read <span aria-hidden="true">→</span>
-                  </a>
-                </div>
-              </div>
-            </article>
-            <?php endwhile; ?>
-          </div>
-
-          <?php ah_pagination(); ?>
-
-        <?php else : ?>
-          <div class="text-center" style="padding:60px 24px">
-            <div style="font-size:3rem;margin-bottom:16px">📂</div>
-            <h2 style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:10px">No posts found</h2>
-            <p style="color:var(--text-secondary)">Nothing published in this category yet - check back soon.</p>
-            <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="btn btn-outline" style="margin-top:20px">Browse All Posts →</a>
-          </div>
-        <?php endif; ?>
+  <?php if ( have_posts() ) : ?>
+  <div class="post-grid">
+    <?php while ( have_posts() ) : the_post();
+      $cats      = get_the_category();
+      $cat0      = $cats ? $cats[0] : null;
+      $cat_slug  = $cat0 ? $cat0->slug : '';
+      $cat_name  = $cat0 ? $cat0->name : '';
+      $thumb_url = get_the_post_thumbnail_url( null, 'ah-card' ) ?: '';
+      $pt        = $cat_slug ? ( $cat_pt_map[ $cat_slug ] ?? null ) : null;
+    ?>
+    <a href="<?php the_permalink(); ?>" class="gc" data-cat="<?php echo esc_attr( $cat_slug ); ?>" data-aos="fade-up">
+      <div class="gc__img-wrap">
+        <?php if ( $thumb_url ) : ?><img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" class="gc__img" loading="lazy">
+        <?php else : ?><div class="gc__img gc__img--fallback">📖</div><?php endif; ?>
+        <?php if ( $cat_name ) : ?><span class="gc__cat"><?php echo esc_html( $cat_name ); ?></span><?php endif; ?>
       </div>
-
-      <!-- Sidebar -->
-      <aside class="sidebar" aria-label="<?php echo esc_attr( TXT_ARCHIVE_SIDEBAR ); ?>">
-        <div class="sidebar-card sidebar-card--accent">
-          <div class="sidebar-card__icon">💬</div>
-          <div class="sidebar-card__title">Get in Touch</div>
-          <p>Have a question? Drop us a message and we will get back to you shortly.</p>
-        </div>
-        <div class="sidebar-card" style="margin-top:16px">
-          <?php echo do_shortcode( '[ah_form id="1"]' ); ?>
-        </div>
-      </aside>
-
-    </div>
+      <div class="gc__body">
+        <?php if ( $pt ) : ?>
+        <span class="gc__pt-badge" style="--ptc:<?php echo esc_attr( $pt->color ?? 'var(--accent)' ); ?>"><?php echo esc_html( $pt->name ); ?></span>
+        <?php endif; ?>
+        <div class="gc__meta"><span class="gc__read-time">⏱ <?php echo esc_html( ah_reading_time( get_the_ID() ) ); ?></span></div>
+        <h2 class="gc__title"><?php the_title(); ?></h2>
+        <?php $exc = get_the_excerpt(); if ( $exc ) : ?><p class="gc__excerpt"><?php echo wp_trim_words( $exc, 18, '…' ); ?></p><?php endif; ?>
+        <span class="gc__btn">Read Guide <span class="gc__arrow">→</span></span>
+      </div>
+    </a>
+    <?php endwhile; ?>
   </div>
+
+  <?php ah_pagination(); ?>
+
+  <?php else : ?>
+  <div class="text-center" style="padding:60px 0">
+    <div style="font-size:3rem;margin-bottom:16px">📂</div>
+    <h2 style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:10px">No posts found</h2>
+    <p style="color:var(--text-secondary)">Nothing published here yet — check back soon.</p>
+  </div>
+  <?php endif; ?>
+
 </main>
+
+<!-- ── SIDEBAR ── -->
+<aside class="gc-portal-sidebar">
+  <?php if ( $sidebar_pts ) : ?>
+  <div class="gc-see-more">
+    <div class="gc-see-more__title">See More</div>
+    <?php foreach ( $sidebar_pts as $sb ) :
+      $sb_pt    = $sb['pt'];
+      $sb_color = ! empty( $sb_pt->color ) ? $sb_pt->color : 'var(--accent)';
+      $is_open  = $sidebar_active_pt_id && ( (int) $sb_pt->id === (int) $sidebar_active_pt_id );
+    ?>
+    <div class="gc-see-more__group<?php echo $is_open ? ' is-open' : ''; ?>" style="--gc-group-color:<?php echo esc_attr( $sb_color ); ?>">
+      <a href="<?php echo esc_url( home_url( '/guides/?parent_term=' . urlencode( $sb_pt->slug ) ) ); ?>"
+         class="gc-see-more__pt-header" style="background:<?php echo esc_attr( $sb_color ); ?>">
+        <?php echo esc_html( $sb_pt->name ); ?>
+      </a>
+      <?php if ( $is_open && $sb['children'] ) : ?>
+      <ul class="gc-see-more__children">
+        <?php foreach ( $sb['children'] as $sb_child ) :
+          $is_active_child = ( $sb_child->slug === $current_cat_slug );
+        ?>
+        <li><a href="<?php echo esc_url( get_category_link( get_term_by( 'slug', $sb_child->slug, 'category' ) ) ?: home_url( '/guides/?category=' . urlencode( $sb_child->slug ) ) ); ?>"
+               class="<?php echo $is_active_child ? 'is-active' : ''; ?>"><?php echo esc_html( $sb_child->name ); ?></a></li>
+        <?php endforeach; ?>
+      </ul>
+      <?php endif; ?>
+    </div>
+    <?php endforeach; ?>
+  </div>
+  <?php endif; ?>
+</aside>
+
+</div><!-- /.gc-portal-layout -->
+</div><!-- /.container -->
+</div><!-- /.gc-portal-bg -->
 
 <?php get_template_part( 'components/cta-section' ); ?>
 <?php get_footer(); ?>

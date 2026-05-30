@@ -5,45 +5,64 @@ $settings = ch_get_settings();
 $footer   = ch_get_theme_footer();
 $phone    = $settings['phone']    ?? '+44 7887 699 208';
 $whatsapp = $settings['whatsapp'] ?? '447887699208';
-$email    = $settings['email']    ?? 'hello@thecanehouse.co.uk';
 $social   = $footer['social']     ?? [];
+
+$cols = (array) ( $footer['columns'] ?? [] );
+if ( empty( $cols ) ) {
+	$cols = [
+		[
+			'title' => 'Our Juice',
+			'items' => [
+				[ 'label' => 'Build Your Juice',  'url' => home_url( '/#build' ) ],
+				[ 'label' => 'Sizes & Pricing',   'url' => home_url( '/#build' ) ],
+				[ 'label' => 'Cane Types',         'url' => home_url( '/#build' ) ],
+				[ 'label' => 'Flavour Blends',     'url' => home_url( '/#build' ) ],
+				[ 'label' => 'Health Benefits',    'url' => home_url( '/#benefits' ) ],
+			],
+		],
+		[
+			'title' => 'Services',
+			'items' => [
+				[ 'label' => 'Event Hire',          'url' => home_url( '/#hire' ) ],
+				[ 'label' => 'Weddings',             'url' => home_url( '/#hire' ) ],
+				[ 'label' => 'Parties & Gatherings', 'url' => home_url( '/#hire' ) ],
+				[ 'label' => 'Franchise',            'url' => home_url( '/#franchise' ) ],
+				[ 'label' => 'Contact Us',           'url' => home_url( '/#contact' ) ],
+			],
+		],
+	];
+}
 ?>
 
 </div><!-- #ch-page-content -->
 
 <footer class="ch-footer">
-	<div class="ch-footer__grid">
-		<div class="ch-footer__brand">
-			<div class="ch-footer__logo">The Cane <em>House</em> 🌿</div>
-			<p class="ch-footer__brand-desc">
-				<?php echo esc_html( $footer['brand_description'] ?? 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - pure natural refreshment wherever you are.' ); ?>
-			</p>
-			<div class="ch-footer__social">
-				<?php if ( ! empty( $social['instagram'] ) ) : ?>
-					<a class="ch-footer__social-btn" href="<?php echo esc_url( $social['instagram'] ); ?>" target="_blank" rel="noopener" aria-label="Instagram">📸</a>
-				<?php else : ?>
-					<a class="ch-footer__social-btn" href="#" aria-label="Instagram">📸</a>
-				<?php endif; ?>
-				<?php if ( ! empty( $social['facebook'] ) ) : ?>
-					<a class="ch-footer__social-btn" href="<?php echo esc_url( $social['facebook'] ); ?>" target="_blank" rel="noopener" aria-label="Facebook">📘</a>
-				<?php else : ?>
-					<a class="ch-footer__social-btn" href="#" aria-label="Facebook">📘</a>
-				<?php endif; ?>
-				<?php if ( ! empty( $social['tiktok'] ) ) : ?>
-					<a class="ch-footer__social-btn" href="<?php echo esc_url( $social['tiktok'] ); ?>" target="_blank" rel="noopener" aria-label="TikTok">🎵</a>
-				<?php else : ?>
-					<a class="ch-footer__social-btn" href="#" aria-label="TikTok">🎵</a>
-				<?php endif; ?>
-				<?php if ( ! empty( $social['youtube'] ) ) : ?>
-					<a class="ch-footer__social-btn" href="<?php echo esc_url( $social['youtube'] ); ?>" target="_blank" rel="noopener" aria-label="YouTube">▶️</a>
-				<?php else : ?>
-					<a class="ch-footer__social-btn" href="#" aria-label="YouTube">▶️</a>
-				<?php endif; ?>
+	<div class="ch-footer-grid">
+		<!-- Brand column -->
+		<div class="ch-footer-brand">
+			<div class="ch-footer-logo">The Cane <span>House</span> 🌿</div>
+			<p><?php echo esc_html( $footer['brand_description'] ?? 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives — just pure natural refreshment wherever you are.' ); ?></p>
+			<div class="ch-footer-social">
+				<?php
+				$social_icons = [
+					'instagram' => '📸',
+					'facebook'  => '📘',
+					'tiktok'    => '🎵',
+					'youtube'   => '▶️',
+				];
+				foreach ( $social_icons as $key => $icon ) :
+					$url = ! empty( $social[ $key ] ) ? $social[ $key ] : '#';
+				?>
+					<a class="ch-footer-social-btn" href="<?php echo esc_url( $url ); ?>"
+						<?php echo $url !== '#' ? 'target="_blank" rel="noopener"' : ''; ?>
+						aria-label="<?php echo esc_attr( ucfirst( $key ) ); ?>"><?php echo $icon; ?></a>
+				<?php endforeach; ?>
 			</div>
 		</div>
 
-		<?php foreach ( (array) ( $footer['columns'] ?? [] ) as $col ) : ?>
-			<div class="ch-footer__col">
+		<!-- Link columns -->
+		<?php foreach ( $cols as $col ) : ?>
+			<div class="ch-footer-col">
 				<h4><?php echo esc_html( $col['title'] ?? '' ); ?></h4>
 				<ul>
 					<?php foreach ( (array) ( $col['items'] ?? [] ) as $it ) : ?>
@@ -58,15 +77,8 @@ $social   = $footer['social']     ?? [];
 		<?php endforeach; ?>
 	</div>
 
-	<div class="ch-footer__bottom">
+	<div class="ch-footer-bottom">
 		<span><?php echo esc_html( $footer['copyright'] ?? '© ' . date( 'Y' ) . ' The Cane House. Pressed Fresh. Served Cool.' ); ?></span>
-		<?php if ( ! empty( $footer['legal_links'] ) ) : ?>
-			<div class="ch-footer__legal">
-				<?php foreach ( (array) $footer['legal_links'] as $it ) : ?>
-					<a href="<?php echo esc_url( $it['url'] ?? '#' ); ?>"><?php echo esc_html( $it['label'] ?? '' ); ?></a>
-				<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
 	</div>
 </footer>
 

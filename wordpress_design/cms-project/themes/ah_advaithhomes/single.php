@@ -7,6 +7,13 @@ $cats      = get_the_category();
 $cat       = $cats ? $cats[0] : null;
 $exc       = wp_trim_words( get_the_excerpt(), 30, '…' );
 
+// Fetch ALL CMS taxonomy terms for this post once — reused for Useful Links, Related Articles etc.
+$_post_tax_slugs = [];
+if ( class_exists( 'AH_Theme_Content_Taxonomy' ) ) {
+	$_pt_data        = AH_Theme_Content_Taxonomy::get_terms_for( [ get_the_ID() ], 'ah_post' );
+	$_post_tax_slugs = array_column( $_pt_data['item_terms'][ get_the_ID() ] ?? [], 'slug' );
+}
+
 // Build breadcrumb: Home › Parent Term › Category › Post
 $_pt_for_cat = $cat ? ah_get_parent_term_for_cat( $cat->slug ) : null;
 $crumbs      = [ [ 'Home', home_url( '/' ) ] ];
@@ -157,7 +164,8 @@ $crumbs[] = [ get_the_title(), '' ];
         </div>
         <?php endif; ?>
 
-        <!-- Useful Links -->
+        <!-- Useful Links — only shown when post is tagged with 'useful-links' CMS taxonomy term -->
+        <?php if ( in_array( 'useful-links', $_post_tax_slugs, true ) ) : ?>
         <div class="sidebar-card">
           <div class="sidebar-card__title"><?php echo esc_html( TXT_USEFUL_LINKS ); ?></div>
           <div class="toc">
@@ -166,6 +174,7 @@ $crumbs[] = [ get_the_title(), '' ];
             <a href="<?php echo esc_url( home_url( '/client-stories/' ) ); ?>" class="toc__item">⭐ <?php echo esc_html( TXT_CLIENT_STORIES ); ?></a>
           </div>
         </div>
+        <?php endif; ?>
 
       </aside>
 
@@ -176,7 +185,9 @@ $crumbs[] = [ get_the_title(), '' ];
 <?php endwhile; ?>
 
 <?php
-// ── Related Articles - 1 suggested first, rest random same-cat, pad if < 3 ───
+// ── Related Articles & You Might Also Like — only when post has 'related-articles' taxonomy term ──
+$_show_related = in_array( 'related-articles', $_post_tax_slugs, true );
+
 $_current_cat_ids = wp_get_post_categories( get_the_ID() );
 
 // 1 suggested post from same category (random pick if multiple)
