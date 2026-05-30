@@ -55,7 +55,7 @@ button {
 }
 
 #ch-page-content {
-    padding-top: var(--ch-nav-height);
+    padding-top: 0;
 }
 
 section {
@@ -64,9 +64,8 @@ section {
 }
 
 .container {
-    max-width: var(--ch-container);
     margin-inline: auto;
-    padding-inline: 2rem;
+    /* padding-inline: 2rem; */
 }
 
 /* ── Typography ────────────────────────────────────────────────────────────── */

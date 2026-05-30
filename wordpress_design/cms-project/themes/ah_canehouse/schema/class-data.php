@@ -47,7 +47,8 @@ class CH_Data {
 			if ( count( $row ) < count( $headers ) ) {
 				continue;
 			}
-			$rows[] = array_combine( $headers, array_map( 'trim', $row ) );
+			// Truncate extra columns so array_combine never mismatches
+			$rows[] = array_combine( $headers, array_map( 'trim', array_slice( $row, 0, count( $headers ) ) ) );
 		}
 		fclose( $fh );
 		return $rows;

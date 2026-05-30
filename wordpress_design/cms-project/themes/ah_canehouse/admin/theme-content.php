@@ -2,14 +2,16 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 
-$home    = ch_get_home_settings();
-$steps   = ch_get_order_steps();
-$sizes   = ch_get_menu_sizes();
-$faqs    = ch_get_faqs( '', 20 );
-$benefits= ch_get_benefits();
-$pkgs    = ch_get_hire_packages();
-$locs    = ch_get_franchise_locations();
-$marquee = ch_get_marquee_items();
+$home        = ch_get_home_settings();
+$steps       = ch_get_order_steps();
+$sizes       = ch_get_menu_sizes();
+$faqs        = ch_get_faqs( '', 20 );
+$benefits    = ch_get_benefits();
+$pkgs        = ch_get_hire_packages();
+$locs        = ch_get_franchise_locations();
+$marquee     = ch_get_marquee_items();
+$story_cards = ch_get_story_cards();
+$s           = ch_get_settings();
 ?>
 <div class="wrap ch-admin-wrap">
 	<h1>📝 Content &amp; Menu</h1>
@@ -88,17 +90,18 @@ $marquee = ch_get_marquee_items();
 
 		<!-- MENU SIZES -->
 		<div class="ch-card">
-			<h2>🧃 Menu Sizes &amp; Pricing</h2>
+			<h2>🧃 Menu Sizes</h2>
+			<p style="font-size:.85rem;color:#666;margin-bottom:.8rem;">Edit size names and descriptions. Pricing is managed separately in Site Settings.</p>
 			<?php foreach ( $sizes as $idx => $sz ) :
 				$sz = (array) $sz;
 			?>
 				<div style="background:#f9f9f9;border-radius:6px;padding:.8rem;margin-bottom:.6rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][icon]"  value="<?php echo esc_attr( $sz['icon']  ?? '' ); ?>" placeholder="🥤" style="width:50px;">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][name]"  value="<?php echo esc_attr( $sz['name']  ?? '' ); ?>" placeholder="Name" style="width:160px;">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][desc]"  value="<?php echo esc_attr( $sz['desc']  ?? '' ); ?>" placeholder="Description" style="flex:1;min-width:180px;">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][price]" value="<?php echo esc_attr( $sz['price'] ?? '' ); ?>" placeholder="£5.50" style="width:70px;">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][badge]" value="<?php echo esc_attr( $sz['badge'] ?? '' ); ?>" placeholder="Badge" style="width:80px;">
-					<label style="font-size:.8rem;"><input type="checkbox" name="menu_sizes[<?php echo $idx; ?>][featured]" value="1" <?php checked( ! empty( $sz['featured'] ) ); ?>> Featured</label>
+					<input type="text" name="menu_sizes[<?php echo $idx; ?>][icon]"  value="<?php echo esc_attr( $sz['icon']  ?? '' ); ?>" placeholder="🥤" style="width:50px;" title="Emoji icon">
+					<input type="text" name="menu_sizes[<?php echo $idx; ?>][name]"  value="<?php echo esc_attr( $sz['name']  ?? '' ); ?>" placeholder="e.g. Regular (350ml)" style="width:180px;" title="Size name">
+					<input type="text" name="menu_sizes[<?php echo $idx; ?>][desc]"  value="<?php echo esc_attr( $sz['desc']  ?? '' ); ?>" placeholder="Description" style="flex:1;min-width:200px;" title="Short description">
+					<input type="hidden" name="menu_sizes[<?php echo $idx; ?>][price]" value="<?php echo esc_attr( $sz['price'] ?? '' ); ?>">
+					<input type="text" name="menu_sizes[<?php echo $idx; ?>][badge]" value="<?php echo esc_attr( $sz['badge'] ?? '' ); ?>" placeholder="Badge (e.g. Popular)" style="width:110px;" title="Optional badge label">
+					<label style="font-size:.8rem;white-space:nowrap;"><input type="checkbox" name="menu_sizes[<?php echo $idx; ?>][featured]" value="1" <?php checked( ! empty( $sz['featured'] ) ); ?>> Featured</label>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -147,6 +150,106 @@ $marquee = ch_get_marquee_items();
 				<?php endforeach; ?>
 			</div>
 			<button type="button" id="ch-add-loc" class="button" style="margin-top:.5rem;">+ Add Location</button>
+		</div>
+
+		<!-- BOOKING WIZARD -->
+		<div class="ch-card">
+			<h2>🎫 Booking Wizard</h2>
+			<p style="font-size:.83rem;color:#666;margin-bottom:1rem;">
+				Multi-step order form on the homepage (Size → Cane → Flavour → Event Details → Confirm).
+				Submissions arrive as an enquiry message under <strong>Enquiry Submissions</strong>.
+				Options come from your <strong>Menu Sizes</strong> (above) and the Cane Types / Flavours data.
+			</p>
+			<div class="ch-row">
+				<label>Section Heading</label>
+				<input type="text" name="booking_heading"
+					value="<?php echo esc_attr( $s['booking_heading'] ?? 'Book Your Order' ); ?>"
+					placeholder="Book Your Order">
+			</div>
+			<div class="ch-row">
+				<label>Section Sub-text</label>
+				<input type="text" name="booking_sub"
+					value="<?php echo esc_attr( $s['booking_sub'] ?? '' ); ?>"
+					placeholder="Build your perfect fresh cane juice order in a few easy steps.">
+			</div>
+		</div>
+
+		<!-- STORY CARDS -->
+		<div class="ch-card">
+			<h2>🌿 Sugarcane Story Cards</h2>
+			<p style="font-size:.83rem;color:#666;margin-bottom:1rem;">
+				The interactive tabbed section on the homepage. Each card reveals info when clicked. Shown after the marquee.
+			</p>
+
+			<div class="ch-row">
+				<label>Section Heading</label>
+				<input type="text" name="story_cards_heading"
+					value="<?php echo esc_attr( $s['story_cards_heading'] ?? 'The Sugarcane Story' ); ?>"
+					placeholder="The Sugarcane Story">
+			</div>
+			<div class="ch-row">
+				<label>Section Sub-text</label>
+				<input type="text" name="story_cards_sub"
+					value="<?php echo esc_attr( $s['story_cards_sub'] ?? '' ); ?>"
+					placeholder="From ancient fields to your cup...">
+			</div>
+
+			<hr style="margin:1rem 0;border-color:#eee;">
+			<p style="font-size:.82rem;color:#888;margin-bottom:.8rem;">
+				<strong><?php echo count( $story_cards ); ?> cards.</strong>
+				Each card has an emoji icon, short tab label, heading, body text, bullet facts, and optional image URL.
+				Facts: one per line.
+			</p>
+
+			<?php foreach ( $story_cards as $ci => $card ) :
+				$card  = (array) $card;
+				$facts = implode( "\n", (array) ( $card['facts'] ?? [] ) );
+			?>
+			<div style="background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:1rem;margin-bottom:.8rem;">
+				<div style="display:grid;grid-template-columns:50px 120px 1fr;gap:.5rem;margin-bottom:.5rem;align-items:start;">
+					<div>
+						<label style="font-size:.7rem;color:#888;display:block;">Icon</label>
+						<input type="text" name="story_cards[<?php echo $ci; ?>][icon]"
+							value="<?php echo esc_attr( $card['icon'] ?? '' ); ?>"
+							style="width:100%;text-align:center;font-size:1.3rem;padding:.3rem;">
+					</div>
+					<div>
+						<label style="font-size:.7rem;color:#888;display:block;">Tab Label</label>
+						<input type="text" name="story_cards[<?php echo $ci; ?>][label]"
+							value="<?php echo esc_attr( $card['label'] ?? '' ); ?>"
+							placeholder="e.g. Live Pressed" style="width:100%;padding:.3rem .5rem;">
+					</div>
+					<div>
+						<label style="font-size:.7rem;color:#888;display:block;">Panel Heading</label>
+						<input type="text" name="story_cards[<?php echo $ci; ?>][heading]"
+							value="<?php echo esc_attr( $card['heading'] ?? '' ); ?>"
+							placeholder="Full heading shown in panel" style="width:100%;padding:.3rem .5rem;">
+					</div>
+				</div>
+				<input type="hidden" name="story_cards[<?php echo $ci; ?>][id]"
+					value="<?php echo esc_attr( $card['id'] ?? '' ); ?>">
+				<div style="margin-bottom:.5rem;">
+					<label style="font-size:.7rem;color:#888;display:block;">Body Text</label>
+					<textarea name="story_cards[<?php echo $ci; ?>][body]"
+						rows="3" style="width:100%;padding:.4rem .6rem;font-size:.83rem;"><?php echo esc_textarea( $card['body'] ?? '' ); ?></textarea>
+				</div>
+				<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+					<div>
+						<label style="font-size:.7rem;color:#888;display:block;">Bullet Facts (one per line)</label>
+						<textarea name="story_cards[<?php echo $ci; ?>][facts]"
+							rows="4" style="width:100%;padding:.4rem .6rem;font-size:.8rem;"><?php echo esc_textarea( $facts ); ?></textarea>
+					</div>
+					<div>
+						<label style="font-size:.7rem;color:#888;display:block;">Image URL (optional)</label>
+						<input type="url" name="story_cards[<?php echo $ci; ?>][image]"
+							value="<?php echo esc_attr( $card['image'] ?? '' ); ?>"
+							placeholder="https://... (paste from Media Library)"
+							style="width:100%;padding:.3rem .5rem;font-size:.8rem;">
+						<p style="font-size:.7rem;color:#aaa;margin-top:.3rem;">Leave blank to show the animated emoji visual</p>
+					</div>
+				</div>
+			</div>
+			<?php endforeach; ?>
 		</div>
 
 		<?php submit_button( 'Save All Content', 'primary', 'submit', false ); ?>

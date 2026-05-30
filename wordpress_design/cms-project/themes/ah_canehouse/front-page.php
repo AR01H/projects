@@ -19,8 +19,16 @@ $s = ch_get_settings();
 		<?php get_template_part( 'components/marquee' ); ?>
 	<?php endif; ?>
 
-	<?php if ( ch_section_visible( 'how_to_order' ) ) : ?>
+	<?php if ( ch_section_visible( 'story_cards' ) ) : ?>
+		<?php get_template_part( 'components/story-cards' ); ?>
+	<?php endif; ?>
+
+	<!-- <?php if ( ch_section_visible( 'how_to_order' ) ) : ?>
 		<?php get_template_part( 'components/how-to-order' ); ?>
+	<?php endif; ?> -->
+
+	<?php if ( ch_section_visible( 'booking' ) ) : ?>
+		<?php get_template_part( 'components/booking-wizard' ); ?>
 	<?php endif; ?>
 
 	<?php if ( ch_section_visible( 'reviews' ) ) : ?>
@@ -43,18 +51,22 @@ $s = ch_get_settings();
 		<?php get_template_part( 'components/hire-section' ); ?>
 	<?php endif; ?>
 
+	
 	<?php if ( ch_section_visible( 'franchise' ) ) : ?>
 		<?php get_template_part( 'components/franchise-section' ); ?>
 	<?php endif; ?>
-
+		
 	<?php if ( ch_section_visible( 'faqs' ) ) : ?>
 		<?php get_template_part( 'components/faq-section' ); ?>
 	<?php endif; ?>
-
+			
 	<?php if ( ch_section_visible( 'contact' ) ) : ?>
 		<?php get_template_part( 'components/contact-section' ); ?>
 	<?php endif; ?>
-
+				
+	<?php if ( ch_section_visible( 'certifications' ) ) : ?>
+		<?php get_template_part( 'components/certifications' ); ?>
+	<?php endif; ?>
 </main>
 
 <?php get_footer(); ?>

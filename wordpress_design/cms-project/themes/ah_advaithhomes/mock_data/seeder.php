@@ -144,7 +144,7 @@ class AH_Theme_Seeder {
 			'hero_subline'       => "Navigating the UK housing market can be complex, but having access to the right information makes all the difference. With unbiased market data, expert guidance, and practical tools, you can make confident property decisions based on facts rather than speculation. Whether you're buying your first home, investing, or simply exploring the market, our insights help you better understand trends, pricing, and opportunities across the UK.",
 			'hero_cta_label'     => 'Book a Free Consultation',
 			'hero_cta_url'       => '/contact/',
-			'hero_stat_1'        => '£28M+',
+			'hero_stat_1'        => 'ï¿½28M+',
 			'hero_stat_1_label'  => 'Saved for clients',
 			'hero_stat_2'        => '94%',
 			'hero_stat_2_label'  => 'Off-market success rate',
@@ -708,7 +708,7 @@ class AH_Theme_Seeder {
 				'excerpt' => 'Calculate your stamp duty land tax for any UK property purchase, updated for 2025.',
 				'html'    => self::sp_page(
 					'Stamp Duty Calculator',
-					'<h1>Stamp Duty Calculator 2025</h1><p class="sub">Calculate your Stamp Duty Land Tax (SDLT) instantly. Updated for 2025 thresholds - covers standard purchases, first-time buyers, and additional properties.</p><div class="card"><label for="sp">Property price (&pound;)</label><input type="number" id="sp" placeholder="<?php echo esc_attr( TXT_E_G_450000 ); ?>" min="0" step="1000"><label for="st">Buyer type</label><select id="st"><option value="std">Standard buyer (main home)</option><option value="ftb">First-time buyer</option><option value="btl">Additional property / Buy-to-let</option></select><button class="btn" onclick="sdlt()">Calculate Stamp Duty</button><div class="res" id="sr"><p style="opacity:.8;font-size:.875rem;margin:0">Your SDLT liability</p><div class="amt" id="sa"></div><div class="brk" id="sb"></div></div></div><script>function sf(n){return"£"+Math.round(n).toLocaleString("en-GB")}function sdlt(){var p=parseFloat(document.getElementById("sp").value)||0,t=document.getElementById("st").value,x=0,ls=[];if(t==="ftb"&&p<=425e3){ls=["No SDLT - first-time buyer relief applies (up to £425,000)"]}else if(t==="ftb"&&p<=625e3){x=(p-425e3)*.05;ls=["5% on "+sf(p-425e3)+" above £425k limit = "+sf(x)]}else{var bs=t==="btl"?[[25e4,.05],[925e3,.1],[15e5,.15],[1e18,.17]]:[[25e4,0],[925e3,.05],[15e5,.1],[1e18,.12]],pr=0;bs.forEach(function(b){if(p>pr){var c=Math.min(p,b[0])-pr,v=c*b[1];x+=v;if(v>0)ls.push(b[1]*100+"% on "+sf(c)+" = "+sf(v));pr=b[0]}})}if(t==="btl")ls.unshift("3% surcharge applies (additional / BTL property)");document.getElementById("sa").textContent=sf(x);document.getElementById("sb").innerHTML=ls.join("<br>")||"No stamp duty payable";document.getElementById("sr").style.display="block"}</script>',
+					'<h1>Stamp Duty Calculator 2025</h1><p class="sub">Calculate your Stamp Duty Land Tax (SDLT) instantly. Updated for 2025 thresholds - covers standard purchases, first-time buyers, and additional properties.</p><div class="card"><label for="sp">Property price (&pound;)</label><input type="number" id="sp" placeholder="<?php echo esc_attr( TXT_E_G_450000 ); ?>" min="0" step="1000"><label for="st">Buyer type</label><select id="st"><option value="std">Standard buyer (main home)</option><option value="ftb">First-time buyer</option><option value="btl">Additional property / Buy-to-let</option></select><button class="btn" onclick="sdlt()">Calculate Stamp Duty</button><div class="res" id="sr"><p style="opacity:.8;font-size:.875rem;margin:0">Your SDLT liability</p><div class="amt" id="sa"></div><div class="brk" id="sb"></div></div></div><script>function sf(n){return"ï¿½"+Math.round(n).toLocaleString("en-GB")}function sdlt(){var p=parseFloat(document.getElementById("sp").value)||0,t=document.getElementById("st").value,x=0,ls=[];if(t==="ftb"&&p<=425e3){ls=["No SDLT - first-time buyer relief applies (up to ï¿½425,000)"]}else if(t==="ftb"&&p<=625e3){x=(p-425e3)*.05;ls=["5% on "+sf(p-425e3)+" above ï¿½425k limit = "+sf(x)]}else{var bs=t==="btl"?[[25e4,.05],[925e3,.1],[15e5,.15],[1e18,.17]]:[[25e4,0],[925e3,.05],[15e5,.1],[1e18,.12]],pr=0;bs.forEach(function(b){if(p>pr){var c=Math.min(p,b[0])-pr,v=c*b[1];x+=v;if(v>0)ls.push(b[1]*100+"% on "+sf(c)+" = "+sf(v));pr=b[0]}})}if(t==="btl")ls.unshift("3% surcharge applies (additional / BTL property)");document.getElementById("sa").textContent=sf(x);document.getElementById("sb").innerHTML=ls.join("<br>")||"No stamp duty payable";document.getElementById("sr").style.display="block"}</script>',
 					'Free Calculator'
 				),
 			],
@@ -718,7 +718,7 @@ class AH_Theme_Seeder {
 				'excerpt' => 'Estimate your monthly mortgage repayments and total interest over the term.',
 				'html'    => self::sp_page(
 					'Mortgage Calculator',
-					'<h1>Mortgage Repayment Calculator</h1><p class="sub">Estimate monthly payments and total interest cost. For personalised advice, speak with a qualified mortgage broker.</p><div class="card"><label for="ml">Loan amount (&pound;)</label><input type="number" id="ml" placeholder="<?php echo esc_attr( TXT_E_G_300000 ); ?>" min="0" step="5000"><label for="mr">Annual interest rate (%)</label><input type="number" id="mr" placeholder="<?php echo esc_attr( TXT_E_G_4_5 ); ?>" min="0" max="30" step="0.1"><label for="mt">Mortgage term (years)</label><input type="number" id="mt" placeholder="<?php echo esc_attr( TXT_E_G_25 ); ?>" min="1" max="40" step="1"><button class="btn" onclick="mcalc()">Calculate</button><div class="res" id="mr2"><p style="opacity:.8;font-size:.875rem;margin:0">Monthly repayment</p><div class="amt" id="ma"></div><div class="brk" id="mb"></div></div></div><script>function mf(n){return"£"+Math.round(n).toLocaleString("en-GB")}function mcalc(){var L=parseFloat(document.getElementById("ml").value)||0,R=parseFloat(document.getElementById("mr").value)||0,Y=parseFloat(document.getElementById("mt").value)||0;if(!L||!R||!Y){alert("Please fill in all three fields");return}var r=R/100/12,n=Y*12,pmt=r?L*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1):L/n,tot=pmt*n,ti=tot-L;document.getElementById("ma").textContent=mf(pmt)+" / month";document.getElementById("mb").innerHTML="Total repaid: "+mf(tot)+"<br>Total interest: "+mf(ti)+"<br>Loan (capital): "+mf(L);document.getElementById("mr2").style.display="block"}</script>',
+					'<h1>Mortgage Repayment Calculator</h1><p class="sub">Estimate monthly payments and total interest cost. For personalised advice, speak with a qualified mortgage broker.</p><div class="card"><label for="ml">Loan amount (&pound;)</label><input type="number" id="ml" placeholder="<?php echo esc_attr( TXT_E_G_300000 ); ?>" min="0" step="5000"><label for="mr">Annual interest rate (%)</label><input type="number" id="mr" placeholder="<?php echo esc_attr( TXT_E_G_4_5 ); ?>" min="0" max="30" step="0.1"><label for="mt">Mortgage term (years)</label><input type="number" id="mt" placeholder="<?php echo esc_attr( TXT_E_G_25 ); ?>" min="1" max="40" step="1"><button class="btn" onclick="mcalc()">Calculate</button><div class="res" id="mr2"><p style="opacity:.8;font-size:.875rem;margin:0">Monthly repayment</p><div class="amt" id="ma"></div><div class="brk" id="mb"></div></div></div><script>function mf(n){return"ï¿½"+Math.round(n).toLocaleString("en-GB")}function mcalc(){var L=parseFloat(document.getElementById("ml").value)||0,R=parseFloat(document.getElementById("mr").value)||0,Y=parseFloat(document.getElementById("mt").value)||0;if(!L||!R||!Y){alert("Please fill in all three fields");return}var r=R/100/12,n=Y*12,pmt=r?L*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1):L/n,tot=pmt*n,ti=tot-L;document.getElementById("ma").textContent=mf(pmt)+" / month";document.getElementById("mb").innerHTML="Total repaid: "+mf(tot)+"<br>Total interest: "+mf(ti)+"<br>Loan (capital): "+mf(L);document.getElementById("mr2").style.display="block"}</script>',
 					'Free Calculator'
 				),
 			],
@@ -846,7 +846,7 @@ class AH_Theme_Seeder {
 		$hlt = "{$pfx}section_highlights";
 		if ( $home_id && self::table_exists( $hlt ) && ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$hlt}` WHERE page_id = %d", $home_id ) ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			foreach ( [
-				[ 1, '£28M+ saved for clients' ],
+				[ 1, 'ï¿½28M+ saved for clients' ],
 				[ 2, '94% off-market success rate' ],
 				[ 3, '500+ homes secured' ],
 				[ 4, '4.9? average client rating' ],
@@ -872,7 +872,7 @@ class AH_Theme_Seeder {
 			if ( $wu_id && self::table_exists( $wuct ) ) {
 				foreach ( [
 					[ 1, 'Exclusive Market Access',   'We source up to 30% of properties before they reach Rightmove - giving you first pick before the competition.' ],
-					[ 2, 'Expert Negotiation',         'Our agents save clients an average of £42,000 below asking price through skilled, data-backed negotiation.' ],
+					[ 2, 'Expert Negotiation',         'Our agents save clients an average of ï¿½42,000 below asking price through skilled, data-backed negotiation.' ],
 					[ 3, 'End-to-End Coordination',    'We manage solicitors, surveyors, and mortgage brokers so you focus on decisions - not admin.' ],
 					[ 4, 'Works Only For You',         'Unlike estate agents, we have zero conflict of interest. Our only job is to get you the best outcome.' ],
 				] as [ $i, $title, $desc ] ) {
@@ -985,7 +985,7 @@ class AH_Theme_Seeder {
 				foreach ( [
 					[ 1, 'The Average Buyer Pays 3% Too Much',       "Without independent data, most buyers accept early offers or fail to challenge inflated asking prices. We don't." ],
 					[ 2, 'Off-Market Eliminates Bidding Wars',        'Bidding wars cost buyers an average of 8% above guide price. Off-market deals remove the competition entirely.' ],
-					[ 3, 'Survey Issues Cost £12k on Average',        'Missing structural or legal problems before exchange can be catastrophic. We identify them early - and use them to renegotiate.' ],
+					[ 3, 'Survey Issues Cost ï¿½12k on Average',        'Missing structural or legal problems before exchange can be catastrophic. We identify them early - and use them to renegotiate.' ],
 				] as [ $i, $title, $desc ] ) {
 					$wpdb->insert( $wrct, [ 'section_id' => $wr_id, 'title' => $title, 'description' => $desc, 'sort_order' => $i, 'status' => 'active' ] );
 					$count += (int) (bool) $wpdb->rows_affected;
@@ -1020,10 +1020,10 @@ class AH_Theme_Seeder {
 			if ( $ast_id && self::table_exists( $astpt ) ) {
 				foreach ( [
 					[ 1, 'Founded in 2019 after witnessing buyers consistently lose out through poor representation' ],
-					[ 2, 'Over £28 million saved for clients across 500+ completed transactions' ],
+					[ 2, 'Over ï¿½28 million saved for clients across 500+ completed transactions' ],
 					[ 3, 'Access to off-market properties through an exclusive network of agent relationships' ],
 					[ 4, 'Regulated, transparent, and 100% conflict-free advice - always on your side' ],
-					[ 5, 'Average client saves £42,000 against the initial asking price' ],
+					[ 5, 'Average client saves ï¿½42,000 against the initial asking price' ],
 				] as [ $i, $pt ] ) {
 					$wpdb->insert( $astpt, [ 'story_id' => $ast_id, 'point_text' => $pt, 'sort_order' => $i ] );
 					$count += (int) (bool) $wpdb->rows_affected;
@@ -1190,7 +1190,7 @@ class AH_Theme_Seeder {
 				'page_id'         => $contact_id,
 				'heading'         => 'Get in Touch',
 				'basic_info'      => "Ready to buy smarter? Whether you have a specific property in mind or are just starting your search, we'd love to hear from you. A 30-minute call is free, confidential, and no-obligation.",
-				'email'           => '' . CLIENT_EMAIL . '',
+				'email'           => CLIENT_EMAIL,
 				'whatsapp_number' => '+44 7747 223762',
 				'phone_number'    => '+44 7747 223762',
 				'is_visible'      => 1,
@@ -1216,7 +1216,7 @@ class AH_Theme_Seeder {
 			$wpdb->insert( $fct, [
 				'site_name'            => '' . CLIENT_FULL_TITLE . '',
 				'tagline'              => "The UK's buyer's agent - working exclusively for you.",
-				'copyright_text'       => '© ' . gmdate( 'Y' ) . ' ' . CLIENT_FULL_TITLE . '. All rights reserved.',
+				'copyright_text'       => 'ï¿½ ' . gmdate( 'Y' ) . ' ' . CLIENT_FULL_TITLE . '. All rights reserved.',
 				'get_in_touch_heading' => 'Get in Touch',
 				'is_visible'           => 1,
 			] );

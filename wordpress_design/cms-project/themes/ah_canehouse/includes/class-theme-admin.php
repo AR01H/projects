@@ -4,14 +4,15 @@ defined( 'ABSPATH' ) || exit;
 class CH_Theme_Admin {
 
 	public static function init(): void {
-		add_action( 'admin_menu',                      [ self::class, 'register_menus' ] );
-		add_action( 'admin_enqueue_scripts',           [ self::class, 'enqueue_assets' ] );
-		add_action( 'admin_post_ch_theme_schema',      [ self::class, 'handle_schema'  ] );
-		add_action( 'admin_post_ch_theme_seed',        [ self::class, 'handle_seed'    ] );
-		add_action( 'admin_post_ch_theme_cleanup',     [ self::class, 'handle_cleanup' ] );
+		add_action( 'admin_menu',                      [ self::class, 'register_menus'  ] );
+		add_action( 'admin_enqueue_scripts',           [ self::class, 'enqueue_assets'  ] );
+		add_action( 'admin_post_ch_theme_schema',      [ self::class, 'handle_schema'   ] );
+		add_action( 'admin_post_ch_theme_seed',        [ self::class, 'handle_seed'     ] );
+		add_action( 'admin_post_ch_theme_cleanup',     [ self::class, 'handle_cleanup'  ] );
 		add_action( 'admin_post_ch_theme_sections',    [ self::class, 'handle_sections' ] );
-		add_action( 'admin_post_ch_theme_content',     [ self::class, 'handle_content' ] );
+		add_action( 'admin_post_ch_theme_content',     [ self::class, 'handle_content'  ] );
 		add_action( 'admin_post_ch_theme_settings',    [ self::class, 'handle_settings' ] );
+		// nav handler registered in functions.php via admin_post_ch_theme_nav
 	}
 
 	public static function register_menus(): void {
@@ -24,13 +25,14 @@ class CH_Theme_Admin {
 			'dashicons-coffee',
 			3
 		);
-		add_submenu_page( 'ch-theme-admin', __( 'Overview',           'ch-theme' ), __( 'Overview',           'ch-theme' ), 'manage_options', 'ch-theme-admin',       [ self::class, 'page_dashboard'   ] );
-		add_submenu_page( 'ch-theme-admin', __( 'Section Controls',   'ch-theme' ), __( 'Section Controls',   'ch-theme' ), 'manage_options', 'ch-theme-sections',    [ self::class, 'page_sections'    ] );
-		add_submenu_page( 'ch-theme-admin', __( 'Content & Menu',     'ch-theme' ), __( 'Content & Menu',     'ch-theme' ), 'manage_options', 'ch-theme-content',     [ self::class, 'page_content'     ] );
-		add_submenu_page( 'ch-theme-admin', __( 'Site Settings',      'ch-theme' ), __( 'Site Settings',      'ch-theme' ), 'manage_options', 'ch-theme-settings',    [ self::class, 'page_settings'    ] );
-		add_submenu_page( 'ch-theme-admin', __( 'Enquiry Submissions','ch-theme' ), __( 'Enquiry Submissions','ch-theme' ), 'manage_options', 'ch-theme-submissions', [ self::class, 'page_submissions' ] );
-		add_submenu_page( 'ch-theme-admin', __( 'Install Mock Data',  'ch-theme' ), __( 'Install Mock Data',  'ch-theme' ), 'manage_options', 'ch-theme-mock',        [ self::class, 'page_mock'        ] );
-		add_submenu_page( 'ch-theme-admin', __( 'Cleanup Data',       'ch-theme' ), __( 'Cleanup Data',       'ch-theme' ), 'manage_options', 'ch-theme-cleanup',     [ self::class, 'page_cleanup'     ] );
+		add_submenu_page( 'ch-theme-admin', 'Overview',             'Overview',             'manage_options', 'ch-theme-admin',       [ self::class, 'page_dashboard'   ] );
+		add_submenu_page( 'ch-theme-admin', 'Section Controls',     'Section Controls',     'manage_options', 'ch-theme-sections',    [ self::class, 'page_sections'    ] );
+		add_submenu_page( 'ch-theme-admin', 'Content & Menu',       'Content & Menu',       'manage_options', 'ch-theme-content',     [ self::class, 'page_content'     ] );
+		add_submenu_page( 'ch-theme-admin', 'Navigation & Footer',  '🗺️ Nav & Footer',      'manage_options', 'ch-theme-nav',         [ self::class, 'page_nav'         ] );
+		add_submenu_page( 'ch-theme-admin', 'Site Settings',        'Site Settings',        'manage_options', 'ch-theme-settings',    [ self::class, 'page_settings'    ] );
+		add_submenu_page( 'ch-theme-admin', 'Enquiry Submissions',  'Enquiry Submissions',  'manage_options', 'ch-theme-submissions', [ self::class, 'page_submissions' ] );
+		add_submenu_page( 'ch-theme-admin', 'Install Mock Data',    'Install Mock Data',    'manage_options', 'ch-theme-mock',        [ self::class, 'page_mock'        ] );
+		add_submenu_page( 'ch-theme-admin', 'Cleanup Data',         'Cleanup Data',         'manage_options', 'ch-theme-cleanup',     [ self::class, 'page_cleanup'     ] );
 	}
 
 	public static function enqueue_assets( string $hook ): void {
@@ -44,6 +46,7 @@ class CH_Theme_Admin {
 	public static function page_dashboard(): void   { require get_template_directory() . '/admin/theme-dashboard.php';   }
 	public static function page_sections(): void    { require get_template_directory() . '/admin/theme-sections.php';    }
 	public static function page_content(): void     { require get_template_directory() . '/admin/theme-content.php';    }
+	public static function page_nav(): void         { require get_template_directory() . '/admin/theme-nav.php';         }
 	public static function page_settings(): void    { require get_template_directory() . '/admin/theme-settings.php';   }
 	public static function page_submissions(): void { require get_template_directory() . '/admin/theme-submissions.php';}
 	public static function page_mock(): void        { require get_template_directory() . '/admin/theme-mock-data.php';   }
@@ -66,9 +69,26 @@ class CH_Theme_Admin {
 		check_admin_referer( 'ch_theme_seed' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 		require_once get_template_directory() . '/mock_data/seeder.php';
+
 		$selected = isset( $_POST['seed_types'] ) ? array_map( 'sanitize_key', (array) $_POST['seed_types'] ) : [];
-		$result   = $selected ? CH_Theme_Seeder::seed_selected( $selected ) : CH_Theme_Seeder::seed_all();
-		$msg = 'Mock data installed: ' . $result['inserted'] . ' inserted, ' . $result['updated'] . ' updated.';
+		$nav_seeded = false;
+
+		// Handle navigation preset separately (not CSV-driven)
+		if ( in_array( 'navigation', $selected, true ) ) {
+			$selected = array_diff( $selected, [ 'navigation' ] );
+			$mock_nav = ch_get_mock_navigation();
+			update_option( 'ch_theme_navigation', wp_json_encode( $mock_nav['nav'] ) );
+			update_option( 'ch_nav_cta',          wp_json_encode( $mock_nav['cta'] ) );
+			update_option( 'ch_theme_footer',      wp_json_encode( $mock_nav['footer'] ) );
+			$nav_seeded = true;
+		}
+
+		$result = ! empty( $selected )
+			? CH_Theme_Seeder::seed_selected( $selected )
+			: [ 'inserted' => 0, 'updated' => 0, 'errors' => [] ];
+
+		$msg = $nav_seeded ? 'Navigation & footer preset installed. ' : '';
+		$msg .= 'Mock data: ' . $result['inserted'] . ' inserted, ' . $result['updated'] . ' updated.';
 		if ( ! empty( $result['errors'] ) ) {
 			$msg .= ' Warnings: ' . implode( '; ', $result['errors'] );
 		}
@@ -90,8 +110,8 @@ class CH_Theme_Admin {
 		check_admin_referer( 'ch_theme_sections' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 		$all_keys = [
-			'news_ticker', 'hero', 'marquee', 'how_to_order', 'reviews',
-			'menu_builder', 'benefits', 'story', 'hire', 'franchise', 'faqs', 'contact',
+			'news_ticker', 'hero', 'marquee', 'story_cards', 'how_to_order', 'booking', 'reviews',
+			'menu_builder', 'benefits', 'story', 'hire', 'certifications', 'franchise', 'faqs', 'contact',
 		];
 		$visibility = [];
 		foreach ( $all_keys as $k ) {
@@ -200,6 +220,32 @@ class CH_Theme_Admin {
 			];
 		}
 		if ( ! empty( $locations ) ) update_option( 'ch_franchise_locations', wp_json_encode( $locations ) );
+
+		// Story cards + Booking wizard headings → merge into site settings
+		$existing_settings = get_option( 'ch_site_settings', [] );
+		if ( is_string( $existing_settings ) ) $existing_settings = json_decode( $existing_settings, true ) ?: [];
+		if ( isset( $_POST['story_cards_heading'] ) ) $existing_settings['story_cards_heading'] = sanitize_text_field( $_POST['story_cards_heading'] );
+		if ( isset( $_POST['story_cards_sub'] ) )     $existing_settings['story_cards_sub']     = sanitize_text_field( $_POST['story_cards_sub'] );
+		if ( isset( $_POST['booking_heading'] ) )     $existing_settings['booking_heading']     = sanitize_text_field( $_POST['booking_heading'] );
+		if ( isset( $_POST['booking_sub'] ) )         $existing_settings['booking_sub']         = sanitize_text_field( $_POST['booking_sub'] );
+		update_option( 'ch_site_settings', $existing_settings );
+		$sc = [];
+		foreach ( (array) ( $_POST['story_cards'] ?? [] ) as $card ) {
+			$label = sanitize_text_field( $card['label'] ?? '' );
+			if ( ! $label ) continue;
+			$raw_facts = sanitize_textarea_field( $card['facts'] ?? '' );
+			$facts     = array_filter( array_map( 'trim', explode( "\n", $raw_facts ) ) );
+			$sc[] = [
+				'id'      => sanitize_title( $card['id'] ?? $label ),
+				'icon'    => sanitize_text_field( $card['icon']    ?? '' ),
+				'label'   => $label,
+				'heading' => sanitize_text_field( $card['heading'] ?? '' ),
+				'body'    => sanitize_textarea_field( $card['body'] ?? '' ),
+				'facts'   => array_values( $facts ),
+				'image'   => esc_url_raw( $card['image'] ?? '' ),
+			];
+		}
+		if ( ! empty( $sc ) ) update_option( 'ch_story_cards', wp_json_encode( $sc ) );
 
 		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-content', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;

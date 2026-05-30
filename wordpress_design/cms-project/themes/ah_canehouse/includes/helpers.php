@@ -27,6 +27,83 @@ function ch_get_settings(): array {
 	return array_merge( $defaults, (array) $saved );
 }
 
+// ── Price visibility ──────────────────────────────────────────────────────────
+function ch_show_prices(): bool {
+	$s = ch_get_settings();
+	// Default OFF — only show if explicitly enabled in admin
+	return ! empty( $s['show_prices'] ) && $s['show_prices'] === '1';
+}
+
+// ── Certifications ────────────────────────────────────────────────────────────
+function ch_get_certifications(): array {
+	$s    = ch_get_settings();
+	$saved = isset( $s['certifications'] ) ? $s['certifications'] : [];
+	if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: [];
+	if ( ! empty( $saved ) ) return (array) $saved;
+	return [
+		[
+			'icon'  => '🍽️',
+			'title' => 'Food Hygiene Rating 5',
+			'desc'  => 'Awarded the highest food hygiene score by local authority. Inspected and verified.',
+			'badge' => 'Grade 5 ★★★★★',
+		],
+		[
+			'icon'  => '🛡️',
+			'title' => 'Public Liability Insured',
+			'desc'  => 'Fully covered with comprehensive public liability insurance for all UK events.',
+			'badge' => 'Fully Insured',
+		],
+		[
+			'icon'  => '🌿',
+			'title' => 'Allergen Information',
+			'desc'  => 'No added allergens. Pure fresh cane juice. Full allergen information available on request.',
+			'badge' => 'Allergen Safe',
+		],
+		[
+			'icon'  => '📋',
+			'title' => 'HACCP Compliant',
+			'desc'  => 'Full Hazard Analysis and Critical Control Point procedures in place for all operations.',
+			'badge' => 'HACCP Cert.',
+		],
+		[
+			'icon'  => '🤝',
+			'title' => 'Multi-Event Handler',
+			'desc'  => 'Experienced in serving 50 to 1,000+ guests. Reliable, punctual, professional every time.',
+			'badge' => '200+ Events',
+		],
+		[
+			'icon'  => '✅',
+			'title' => 'Risk Assessed',
+			'desc'  => 'Full risk assessment documentation provided for venues and event organisers on request.',
+			'badge' => 'RA Documented',
+		],
+	];
+}
+
+// ── Schema / SEO Settings ──────────────────────────────────────────────────────
+function ch_get_schema_settings(): array {
+	$s      = ch_get_settings();
+	$schema = isset( $s['schema'] ) ? $s['schema'] : [];
+	if ( is_string( $schema ) ) $schema = json_decode( $schema, true ) ?: [];
+	$settings = ch_get_settings();
+	$defaults = [
+		'enabled'          => '1',
+		'type'             => 'FoodEstablishment',
+		'name'             => get_bloginfo( 'name' ) ?: 'The Cane House',
+		'description'      => $settings['tagline'] ?? 'Fresh sugarcane juice pressed live, served cool.',
+		'phone'            => $settings['phone'] ?? '',
+		'email'            => $settings['email'] ?? '',
+		'area_served'      => 'United Kingdom',
+		'price_range'      => '',   // intentionally blank by default
+		'include_price'    => '0',  // do not include pricing in schema by default
+		'include_reviews'  => '1',
+		'logo_url'         => get_template_directory_uri() . '/assets/images/logo.png',
+		'social_instagram' => $settings['instagram_url'] ?? '',
+		'social_facebook'  => $settings['facebook_url']  ?? '',
+	];
+	return array_merge( $defaults, (array) $schema );
+}
+
 // ── Home / Hero settings ──────────────────────────────────────────────────────
 function ch_get_home_settings(): array {
 	if ( class_exists( 'AH_Model_Home' ) ) {
@@ -58,8 +135,14 @@ function ch_normalize_theme_url( string $url, string $fallback = '' ): string {
 }
 
 function ch_get_theme_navigation(): array {
-	// Only read ch_ prefixed options — never ah_cms_ to avoid advaith data bleed
+	// Primary: ch_-prefixed theme-specific nav
 	$opt = get_option( 'ch_theme_navigation', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) && is_array( $opt ) ) {
+		return ch_normalize_theme_navigation( $opt );
+	}
+	// Fallback: read from plugin's shared navigation option
+	$opt = get_option( 'ah_cms_navigation', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) {
 		return ch_normalize_theme_navigation( $opt );
@@ -112,18 +195,26 @@ function ch_build_default_navigation(): array {
 }
 
 function ch_get_nav_cta(): array {
-	// Only read ch_ prefixed options — never ah_cms_ to avoid advaith data bleed
+	$label    = defined( 'CH_NAV_CONTACT' ) ? CH_NAV_CONTACT : 'Contact Us';
+	$defaults = [ 'label' => $label, 'url' => home_url( '/#contact' ) ];
+	// Primary
 	$opt = get_option( 'ch_nav_cta', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	$label = defined( 'CH_NAV_CONTACT' ) ? CH_NAV_CONTACT : 'Contact Us';
-	$defaults = [ 'label' => $label, 'url' => home_url( '/#contact' ) ];
-	return ! empty( $opt ) ? array_merge( $defaults, $opt ) : $defaults;
+	if ( ! empty( $opt ) ) return array_merge( $defaults, (array) $opt );
+	// Fallback: plugin option
+	$opt = get_option( 'ah_cms_nav_cta', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? array_merge( $defaults, (array) $opt ) : $defaults;
 }
 
 // ── Footer ────────────────────────────────────────────────────────────────────
 function ch_get_theme_footer(): array {
-	// Only read ch_ prefixed options — never ah_cms_ to avoid advaith data bleed
+	// Primary
 	$opt = get_option( 'ch_theme_footer', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
+	// Fallback: plugin option
+	$opt = get_option( 'ah_cms_footer', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
 	return ch_build_default_footer();
@@ -283,6 +374,69 @@ function ch_get_html_block( string $key ): string {
 	$blocks = get_option( 'ch_html_blocks', [] );
 	if ( is_string( $blocks ) ) $blocks = json_decode( $blocks, true ) ?: [];
 	return wp_kses_post( $blocks[ $key ] ?? '' );
+}
+
+// ── Interactive Story Cards ───────────────────────────────────────────────────
+function ch_get_story_cards(): array {
+	$opt = get_option( 'ch_story_cards', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
+	return [
+		[
+			'id'       => 'origins',
+			'icon'     => '🌍',
+			'label'    => 'Ancient Origins',
+			'heading'  => 'Sugarcane: 2,000 Years of History',
+			'body'     => 'Sugarcane has been cultivated since 8000 BC in New Guinea and spread across South Asia, where ancient texts celebrated it as a healing drink. For centuries it was traded more than gold.',
+			'facts'    => [ '8000 BC first cultivated', 'Travelled from Asia to Arabia', 'Documented in Ayurvedic medicine' ],
+			'image'    => '',
+		],
+		[
+			'id'       => 'sourcing',
+			'icon'     => '🚜',
+			'label'    => 'Farm Sourced',
+			'heading'  => 'Sourced From Trusted Farms',
+			'body'     => 'We source our sugarcane directly from trusted suppliers who grow varieties specifically suited to juicing. Yellow cane, Barbados cane — each with a distinct natural sweetness and character.',
+			'facts'    => [ 'Yellow & Red cane varieties', 'Grown without added chemicals', 'Freshness guaranteed' ],
+			'image'    => '',
+		],
+		[
+			'id'       => 'pressing',
+			'icon'     => '⚙️',
+			'label'    => 'Live Pressed',
+			'heading'  => 'Pressed Live in Front of You',
+			'body'     => 'Every cup is pressed at the moment you order — not pre-made, not bottled. You watch it happen. Raw cane goes in, pure juice comes out. No heat, no chemicals, no shortcuts.',
+			'facts'    => [ 'Pressed to order every time', 'Cold extraction preserves nutrients', 'Ready in under 60 seconds' ],
+			'image'    => '',
+		],
+		[
+			'id'       => 'blending',
+			'icon'     => '🍋',
+			'label'    => 'Custom Blends',
+			'heading'  => 'Blended With Natural Botanicals',
+			'body'     => 'From zingy lemon to spicy ginger, cooling mint to tropical pineapple — our blend range uses only real, fresh botanical ingredients. Nothing artificial, nothing pre-mixed.',
+			'facts'    => [ '8+ natural blend options', 'Real lemon, ginger, mint', 'No syrups or concentrates' ],
+			'image'    => '',
+		],
+		[
+			'id'       => 'serving',
+			'icon'     => '🥤',
+			'label'    => 'Served Cool',
+			'heading'  => 'Chilled and Served Immediately',
+			'body'     => 'Every juice is served immediately after pressing — cool, fresh, and full of life. No ice that dilutes, no sitting in a fridge losing nutrients. Just pure cane, pressed and served.',
+			'facts'    => [ 'Served within 60 seconds', 'Optimal temperature maintained', 'Maximum nutrients preserved' ],
+			'image'    => '',
+		],
+		[
+			'id'       => 'pure',
+			'icon'     => '💚',
+			'label'    => 'Zero Additives',
+			'heading'  => '100% Pure — Nothing Added',
+			'body'     => 'No preservatives, no artificial sweeteners, no colourings, no emulsifiers. What goes in is cane. What comes out is juice. The way it should be. The way it has always been.',
+			'facts'    => [ 'Zero preservatives', 'Zero artificial anything', 'Naturally allergen-free' ],
+			'image'    => '',
+		],
+	];
 }
 
 // ── Story Section ─────────────────────────────────────────────────────────────

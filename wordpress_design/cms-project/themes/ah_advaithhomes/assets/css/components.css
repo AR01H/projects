@@ -2506,7 +2506,7 @@ body.nav--collapsed .nav__actions .btn  { display: none; }
 	display: grid;
 	grid-template-columns: 2fr 1fr 1fr 1.4fr;
 	gap: 24px 40px;
-	padding: 40px 0 32px;
+	padding: 40px 0 0px;
 	align-items: start;
 }
 

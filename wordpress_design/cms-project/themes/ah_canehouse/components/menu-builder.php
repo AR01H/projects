@@ -1,16 +1,17 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$sizes      = ch_get_menu_sizes();
-$cane_types = ch_get_cane_types();
-$textures   = ch_get_textures();
-$flavours   = ch_get_flavours();
+$sizes        = ch_get_menu_sizes();
+$cane_types   = ch_get_cane_types();
+$textures     = ch_get_textures();
+$flavours     = ch_get_flavours();
+$show_prices  = ch_show_prices();
 ?>
 
 <section id="build" class="ch-build-section">
 	<div class="ch-build__header fade-up">
 		<div class="ch-section-tag">Full Menu</div>
 		<h2 class="ch-section-title">Build Your <span class="accent">Juice</span></h2>
-		<p class="ch-section-body">Mix and match size, cane type, texture and flavour. All prices in GBP.</p>
+		<p class="ch-section-body">Mix and match size, cane type, texture and flavour — pressed live, just for you.</p>
 	</div>
 
 	<div class="ch-build-grid">
@@ -26,7 +27,7 @@ $flavours   = ch_get_flavours();
 			</div>
 			<div class="ch-price-rows">
 				<?php foreach ( $sizes as $size ) :
-					$size = (array) $size;
+					$size     = (array) $size;
 					$featured = ! empty( $size['featured'] );
 				?>
 					<div class="ch-price-row<?php echo $featured ? ' ch-price-row--featured' : ''; ?>">
@@ -41,7 +42,7 @@ $flavours   = ch_get_flavours();
 							<?php if ( ! empty( $size['badge'] ) ) : ?>
 								<span class="ch-row-badge"><?php echo esc_html( $size['badge'] ); ?></span>
 							<?php endif; ?>
-							<?php if ( ! empty( $size['price'] ) ) : ?>
+							<?php if ( $show_prices && ! empty( $size['price'] ) ) : ?>
 								<div class="ch-row-price"><?php echo esc_html( $size['price'] ); ?></div>
 							<?php endif; ?>
 						</div>
@@ -50,7 +51,7 @@ $flavours   = ch_get_flavours();
 			</div>
 		</div>
 
-		<!-- CANE + TEXTURE -->
+		<!-- CANE TYPE + TEXTURE -->
 		<div class="ch-option-card fade-right">
 			<div class="ch-option-header">
 				<div class="ch-option-num">2</div>
@@ -76,7 +77,7 @@ $flavours   = ch_get_flavours();
 							<?php if ( ! empty( $cane['badge'] ) ) : ?>
 								<span class="ch-row-badge"><?php echo esc_html( $cane['badge'] ); ?></span>
 							<?php endif; ?>
-							<?php if ( ! empty( $cane['price'] ) ) : ?>
+							<?php if ( $show_prices && ! empty( $cane['price'] ) ) : ?>
 								<div class="ch-row-price"><?php echo esc_html( $cane['price'] ); ?></div>
 							<?php endif; ?>
 						</div>
@@ -108,7 +109,7 @@ $flavours   = ch_get_flavours();
 							<?php if ( ! empty( $tex['badge'] ) ) : ?>
 								<span class="ch-row-badge"><?php echo esc_html( $tex['badge'] ); ?></span>
 							<?php endif; ?>
-							<?php if ( ! empty( $tex['price'] ) ) : ?>
+							<?php if ( $show_prices && ! empty( $tex['price'] ) ) : ?>
 								<div class="ch-row-price"><?php echo esc_html( $tex['price'] ); ?></div>
 							<?php endif; ?>
 						</div>
@@ -133,12 +134,16 @@ $flavours   = ch_get_flavours();
 					<div class="ch-flavour-chip">
 						<span class="ch-chip-emoji ch-shaking-leaf"><?php echo esc_html( $fl['emoji'] ?? '🌿' ); ?></span>
 						<div class="ch-chip-name"><?php echo esc_html( $fl['name'] ?? '' ); ?></div>
-						<div class="ch-chip-price"><?php echo esc_html( $fl['desc'] ?? '' ); ?></div>
+						<?php if ( $show_prices ) : ?>
+							<div class="ch-chip-price"><?php echo esc_html( $fl['desc'] ?? '' ); ?></div>
+						<?php else : ?>
+							<div class="ch-chip-price"><?php echo esc_html( $fl['type'] ?? '' ); ?></div>
+						<?php endif; ?>
 					</div>
 				<?php endforeach; ?>
 			</div>
 			<p class="ch-build__disclaimer">
-				* As different cane types are freshly pressed in a single machine, slight variation in colour and taste may occur. Contains natural sugars - please consume responsibly.
+				* As different cane types are freshly pressed in a shared machine, slight variation in colour and taste may occur. Contains natural sugars — please consume responsibly.
 			</p>
 		</div>
 
