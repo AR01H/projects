@@ -89,20 +89,44 @@
         });
     }
 
-    // ── Booking Wizard ─────────────────────────────────────────────────────────
+    // ── Booking Wizard (modal) ──────────────────────────────────────────────────
     function initBookingWizard() {
         var wizard = document.getElementById('ch-booking-form');
-        if (!wizard) return;
+        var modal  = document.getElementById('ch-bk-modal');
+        var openBtn= document.getElementById('ch-bk-open');
+        if (!wizard || !modal) return;
 
-        var section  = document.getElementById('booking');
+        var box      = modal.querySelector('.ch-bk-modal-box');
         var steps    = Array.prototype.slice.call(wizard.querySelectorAll('.ch-bk-step'));
-        var progSteps= Array.prototype.slice.call(section.querySelectorAll('.ch-bk-prog-step'));
-        var progFill = section.querySelector('.ch-bk-prog-fill');
+        var progSteps= Array.prototype.slice.call(modal.querySelectorAll('.ch-bk-prog-step'));
+        var progFill = modal.querySelector('.ch-bk-prog-fill');
         var msg      = document.getElementById('ch-bk-msg');
         var submitBtn= document.getElementById('ch-bk-submit');
         var summary  = document.getElementById('ch-bk-summary');
         var total    = steps.length;
         var current  = 1;
+
+        // ── Modal open / close ──────────────────────────────────────────────────
+        function openModal() {
+            modal.classList.add('is-open');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            var prog = modal.querySelector('.ch-bk-progress');
+            if (prog) prog.style.display = ''; // restore if hidden after a previous success
+            goTo(1);
+        }
+        function closeModal() {
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+        if (openBtn) openBtn.addEventListener('click', openModal);
+        modal.querySelectorAll('[data-bk-close]').forEach(function (el) {
+            el.addEventListener('click', closeModal);
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+        });
 
         function showMsg(text, type) {
             if (!msg) return;
@@ -125,31 +149,31 @@
             if (progFill) progFill.style.width = ((step - 1) / (total - 1) * 100) + '%';
             if (step === total) buildSummary();
             hideMsg();
-            // Scroll wizard into view
-            if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (box) box.scrollTop = 0;
         }
 
-        function selectedVal(name) {
-            var el = wizard.querySelector('[name="' + name + '"]:checked, [name="' + name + '"]');
-            return el ? el.value : '';
+        function selectedCanes() {
+            return Array.prototype.map.call(
+                wizard.querySelectorAll('[name="bk_cane[]"]:checked'),
+                function (c) { return c.value; }
+            );
         }
-
         function selectedFlavours() {
-            var checked = wizard.querySelectorAll('[name="bk_flavour[]"]:checked');
-            return Array.prototype.map.call(checked, function (c) { return c.value; });
+            return Array.prototype.map.call(
+                wizard.querySelectorAll('[name="bk_flavour[]"]:checked'),
+                function (c) { return c.value; }
+            );
         }
 
         function buildSummary() {
             if (!summary) return;
-            var flavours = selectedFlavours();
             var rows = [
-                ['🥤 Size',    selectedVal('bk_size')],
-                ['🌾 Cane',    selectedVal('bk_cane')],
-                ['🍋 Flavours', flavours.join(', ')],
-                ['🎉 Occasion',wizard.querySelector('[name="bk_occasion"]').value],
-                ['📅 Date',    wizard.querySelector('[name="bk_date"]').value],
-                ['👥 Guests',  wizard.querySelector('[name="bk_guests"]').value],
-                ['📍 Location',wizard.querySelector('[name="bk_location"]').value]
+                ['🌾 Cane',     selectedCanes().join(', ')],
+                ['🍋 Flavours', selectedFlavours().join(', ')],
+                ['🎉 Occasion', wizard.querySelector('[name="bk_occasion"]').value],
+                ['📅 Date',     wizard.querySelector('[name="bk_date"]').value],
+                ['👥 Guests',   wizard.querySelector('[name="bk_guests"]').value],
+                ['📍 Location', wizard.querySelector('[name="bk_location"]').value]
             ];
             var html = '<div class="ch-bk-summary-title">Your Order Summary</div><div class="ch-bk-summary-grid">';
             rows.forEach(function (r) {
@@ -167,25 +191,29 @@
             return d.innerHTML;
         }
 
+        // Validate before advancing each step
+        function validateStep(step) {
+            if (step === 1 && selectedCanes().length === 0) {
+                showMsg('Please choose at least one cane type. 🌾', 'error'); return false;
+            }
+            if (step === 2 && selectedFlavours().length === 0) {
+                showMsg('Please pick at least one flavour. 🍋', 'error'); return false;
+            }
+            return true;
+        }
+
         // Next buttons
         wizard.querySelectorAll('.ch-bk-next').forEach(function (btn) {
             btn.addEventListener('click', function () {
-                var target = parseInt(btn.dataset.next, 10);
-                // Require at least one flavour before leaving step 3
-                if (current === 3 && selectedFlavours().length === 0) {
-                    showMsg('Please pick at least one flavour. 🍋', 'error');
-                    return;
-                }
-                goTo(target);
+                if (!validateStep(current)) return;
+                goTo(parseInt(btn.dataset.next, 10));
             });
         });
         // Back buttons
         wizard.querySelectorAll('.ch-bk-back').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                goTo(parseInt(btn.dataset.back, 10));
-            });
+            btn.addEventListener('click', function () { goTo(parseInt(btn.dataset.back, 10)); });
         });
-        // Click on a completed progress step to jump back
+        // Jump back via progress steps
         progSteps.forEach(function (p) {
             p.addEventListener('click', function () {
                 var ps = parseInt(p.dataset.step, 10);
@@ -205,14 +233,11 @@
                 showMsg('Please enter a valid email address.', 'error'); email.focus(); return;
             }
 
-            // Build the combined message
-            var flavourList = selectedFlavours().join(', ') || '—';
             var lines = [
                 '🥤 NEW ORDER REQUEST',
                 '',
-                'Size:     ' + selectedVal('bk_size'),
-                'Cane:     ' + selectedVal('bk_cane'),
-                'Flavours: ' + flavourList,
+                'Cane:     ' + (selectedCanes().join(', ')    || '—'),
+                'Flavours: ' + (selectedFlavours().join(', ') || '—'),
                 '',
                 'Occasion: ' + (wizard.querySelector('[name="bk_occasion"]').value || '—'),
                 'Date:     ' + (wizard.querySelector('[name="bk_date"]').value     || '—'),
@@ -238,27 +263,38 @@
 
             fetch(chTheme.ajaxUrl, { method: 'POST', body: data })
                 .then(function (r) { return r.json(); })
+                .catch(function () { return null; }) // network / parse failure only
                 .then(function (res) {
-                    if (res.success) {
-                        wizard.querySelector('.ch-bk-step[data-step="5"]').innerHTML =
-                            '<div class="ch-bk-success">' +
-                            '<div class="ch-bk-success-icon">🎉</div>' +
-                            '<h3>Order Request Sent!</h3>' +
-                            '<p>' + escapeHtml(res.data.message || "Thanks! We'll be in touch very soon to confirm your order. 🌿") + '</p>' +
-                            '</div>';
-                        if (progFill) progFill.style.width = '100%';
-                        progSteps.forEach(function (p) { p.classList.add('done'); });
+                    if (res && res.success) {
+                        renderSuccess(res.data && res.data.message);
+                    } else if (res) {
+                        showMsg((res.data && res.data.message) || 'Something went wrong. Please try again.', 'error');
+                        submitBtn.disabled    = false;
+                        submitBtn.textContent = originalText;
                     } else {
-                        showMsg(res.data.message || 'Something went wrong. Please try again.', 'error');
+                        showMsg('Connection error. Please try again.', 'error');
                         submitBtn.disabled    = false;
                         submitBtn.textContent = originalText;
                     }
-                })
-                .catch(function () {
-                    showMsg('Connection error. Please try again.', 'error');
-                    submitBtn.disabled    = false;
-                    submitBtn.textContent = originalText;
                 });
+
+            function renderSuccess(message) {
+                var step = wizard.querySelector('.ch-bk-step[data-step="4"]');
+                if (step) {
+                    step.innerHTML =
+                        '<div class="ch-bk-success">' +
+                        '<div class="ch-bk-success-icon">🎉</div>' +
+                        '<h3>Order Request Sent!</h3>' +
+                        '<p>' + escapeHtml(message || "Thanks! We'll be in touch very soon to confirm your order. 🌿") + '</p>' +
+                        '<button type="button" class="btn-lime" data-bk-close style="margin-top:1.2rem;">Close</button>' +
+                        '</div>';
+                    var cb = step.querySelector('[data-bk-close]');
+                    if (cb) cb.addEventListener('click', closeModal);
+                }
+                // Hide the step progress bar on the success screen
+                var prog = modal.querySelector('.ch-bk-progress');
+                if (prog) prog.style.display = 'none';
+            }
         });
     }
 

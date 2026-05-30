@@ -2,6 +2,35 @@
 (function () {
     'use strict';
 
+    // ── Swipe gesture helper ────────────────────────────────────────────────────
+    // Attaches touch swipe detection to an element.
+    // onLeft  = user swiped finger right→left (means "next")
+    // onRight = user swiped finger left→right (means "previous")
+    function addSwipe(el, onLeft, onRight) {
+        if (!el) return;
+        var startX = 0, startY = 0, tracking = false;
+
+        el.addEventListener('touchstart', function (e) {
+            var t = e.changedTouches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+            tracking = true;
+        }, { passive: true });
+
+        el.addEventListener('touchend', function (e) {
+            if (!tracking) return;
+            tracking = false;
+            var t  = e.changedTouches[0];
+            var dx = t.clientX - startX;
+            var dy = t.clientY - startY;
+            // Require a clear horizontal swipe (min 40px, mostly sideways)
+            if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+                if (dx < 0) { onLeft && onLeft(); }
+                else        { onRight && onRight(); }
+            }
+        }, { passive: true });
+    }
+
     // ── Mobile Nav ─────────────────────────────────────────────────────────────
     function initMobileNav() {
         var hamburger = document.getElementById('ch-hamburger');
@@ -184,6 +213,12 @@
             dot.addEventListener('click', function () { show(i); resetTimer(); });
         });
 
+        // Swipe support
+        addSwipe(track,
+            function () { advance(); resetTimer(); },
+            function () { retreat(); resetTimer(); }
+        );
+
         timer = setInterval(advance, 6000);
     }
 
@@ -207,8 +242,14 @@
             });
         }
 
-        if (next) next.addEventListener('click', function () { current = (current + 1) % cards.length; update(); });
-        if (prev) prev.addEventListener('click', function () { current = (current - 1 + cards.length) % cards.length; update(); });
+        function goNext() { current = (current + 1) % cards.length; update(); }
+        function goPrev() { current = (current - 1 + cards.length) % cards.length; update(); }
+
+        if (next) next.addEventListener('click', goNext);
+        if (prev) prev.addEventListener('click', goPrev);
+
+        // Swipe support
+        addSwipe(track, goNext, goPrev);
 
         var autoTimer = setInterval(function () { current = (current + 1) % cards.length; update(); }, 4000);
         // Pause on hover
@@ -315,7 +356,51 @@
         section.addEventListener('mouseenter', function() { clearInterval(timer); });
         section.addEventListener('mouseleave', startTimer);
 
+        function nextCard() { show((current() + 1) % tabs.length); startTimer(); }
+        function prevCard() { show((current() - 1 + tabs.length) % tabs.length); startTimer(); }
+
+        // Swipe to change the STORY (card) — only on the text content and
+        // any non-gallery visual. A multi-image gallery handles its own swipe
+        // (changes the image, not the card).
+        section.querySelectorAll('.ch-sc-panel').forEach(function(panel) {
+            var content = panel.querySelector('.ch-sc-panel-content');
+            var visual  = panel.querySelector('.ch-sc-panel-visual');
+            var gallery = visual && visual.querySelector('.ch-sc-gallery');
+
+            if (content) addSwipe(content, nextCard, prevCard);
+            if (visual && !gallery) addSwipe(visual, nextCard, prevCard);
+        });
+
         startTimer();
+    }
+
+    // ── Story Card Galleries (multi-image crossfade) ───────────────────────────
+    function initStoryGalleries() {
+        document.querySelectorAll('.ch-sc-gallery').forEach(function (gallery) {
+            var imgs = Array.prototype.slice.call(gallery.querySelectorAll('.ch-sc-gallery-img'));
+            var dots = Array.prototype.slice.call(gallery.querySelectorAll('.ch-sc-gallery-dot'));
+            if (imgs.length < 2) return;
+
+            var idx = 0, timer;
+
+            function show(i) {
+                idx = (i + imgs.length) % imgs.length;
+                imgs.forEach(function (im, n) { im.classList.toggle('active', n === idx); });
+                dots.forEach(function (d, n)  { d.classList.toggle('active', n === idx); });
+            }
+            function start() { clearInterval(timer); timer = setInterval(function () { show(idx + 1); }, 3500); }
+
+            dots.forEach(function (dot, n) {
+                dot.addEventListener('click', function () { show(n); start(); });
+            });
+
+            // Pause on hover (desktop), swipe support (mobile)
+            gallery.addEventListener('mouseenter', function () { clearInterval(timer); });
+            gallery.addEventListener('mouseleave', start);
+            addSwipe(gallery, function () { show(idx + 1); start(); }, function () { show(idx - 1); start(); });
+
+            start();
+        });
     }
 
     // ── Init ───────────────────────────────────────────────────────────────────
@@ -331,6 +416,7 @@
         initFooterAccordion();
         initSmoothScroll();
         initStoryCards();
+        initStoryGalleries();
     });
 
 })();

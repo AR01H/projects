@@ -377,6 +377,56 @@ function ch_get_html_block( string $key ): string {
 }
 
 // ── Interactive Story Cards ───────────────────────────────────────────────────
+/**
+ * Resolve any image reference to a usable URL.
+ * Accepts: full URLs, protocol-relative (//), data URIs,
+ * site-root paths (/wp-content/…), or theme-relative paths
+ * (e.g. "assets/images/story/cane.jpg" or "story/cane.jpg").
+ */
+function ch_resolve_image_url( string $path ): string {
+	$path = trim( $path );
+	if ( $path === '' ) return '';
+
+	// Absolute URL, protocol-relative, or data URI
+	if ( preg_match( '#^(https?:)?//#i', $path ) || strpos( $path, 'data:' ) === 0 ) {
+		return $path;
+	}
+	// Absolute path from site root
+	if ( $path[0] === '/' ) {
+		return home_url( $path );
+	}
+	// Bare filename → assume in /assets/images/
+	if ( strpos( $path, '/' ) === false ) {
+		$path = 'assets/images/' . $path;
+	}
+	// Theme-relative path
+	return trailingslashit( get_template_directory_uri() ) . ltrim( $path, '/' );
+}
+
+/**
+ * Get a normalised list of image URLs for a story card.
+ * Supports: 'images' (array OR comma/newline string) and legacy single 'image'.
+ */
+function ch_card_images( $card ): array {
+	$card = (array) $card;
+	$out  = [];
+
+	$raw = $card['images'] ?? '';
+	if ( is_string( $raw ) && $raw !== '' ) {
+		$raw = preg_split( '/[\r\n,]+/', $raw );
+	}
+	foreach ( (array) $raw as $p ) {
+		$u = ch_resolve_image_url( (string) $p );
+		if ( $u ) $out[] = $u;
+	}
+	// Legacy single image fallback
+	if ( empty( $out ) && ! empty( $card['image'] ) ) {
+		$u = ch_resolve_image_url( (string) $card['image'] );
+		if ( $u ) $out[] = $u;
+	}
+	return array_values( array_unique( $out ) );
+}
+
 function ch_get_story_cards(): array {
 	$opt = get_option( 'ch_story_cards', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
@@ -389,7 +439,10 @@ function ch_get_story_cards(): array {
 			'heading'  => 'Sugarcane: 2,000 Years of History',
 			'body'     => 'Sugarcane has been cultivated since 8000 BC in New Guinea and spread across South Asia, where ancient texts celebrated it as a healing drink. For centuries it was traded more than gold.',
 			'facts'    => [ '8000 BC first cultivated', 'Travelled from Asia to Arabia', 'Documented in Ayurvedic medicine' ],
-			'image'    => '',
+			'images'   => [
+				'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=700&q=80',
+				'https://images.unsplash.com/photo-1591287083773-9a52bc35cb5e?auto=format&fit=crop&w=700&q=80',
+			],
 		],
 		[
 			'id'       => 'sourcing',
@@ -398,7 +451,10 @@ function ch_get_story_cards(): array {
 			'heading'  => 'Sourced From Trusted Farms',
 			'body'     => 'We source our sugarcane directly from trusted suppliers who grow varieties specifically suited to juicing. Yellow cane, Barbados cane — each with a distinct natural sweetness and character.',
 			'facts'    => [ 'Yellow & Red cane varieties', 'Grown without added chemicals', 'Freshness guaranteed' ],
-			'image'    => '',
+			'images'   => [
+				'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=80',
+				'https://images.unsplash.com/photo-1530267981375-f0de937f5f13?auto=format&fit=crop&w=700&q=80',
+			],
 		],
 		[
 			'id'       => 'pressing',
@@ -407,7 +463,10 @@ function ch_get_story_cards(): array {
 			'heading'  => 'Pressed Live in Front of You',
 			'body'     => 'Every cup is pressed at the moment you order — not pre-made, not bottled. You watch it happen. Raw cane goes in, pure juice comes out. No heat, no chemicals, no shortcuts.',
 			'facts'    => [ 'Pressed to order every time', 'Cold extraction preserves nutrients', 'Ready in under 60 seconds' ],
-			'image'    => '',
+			'images'   => [
+				'https://images.unsplash.com/photo-1437418747212-8d9709afab22?auto=format&fit=crop&w=700&q=80',
+				'https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&w=700&q=80',
+			],
 		],
 		[
 			'id'       => 'blending',
@@ -416,7 +475,11 @@ function ch_get_story_cards(): array {
 			'heading'  => 'Blended With Natural Botanicals',
 			'body'     => 'From zingy lemon to spicy ginger, cooling mint to tropical pineapple — our blend range uses only real, fresh botanical ingredients. Nothing artificial, nothing pre-mixed.',
 			'facts'    => [ '8+ natural blend options', 'Real lemon, ginger, mint', 'No syrups or concentrates' ],
-			'image'    => '',
+			'images'   => [
+				'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=700&q=80',
+				'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=700&q=80',
+				'https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&w=700&q=80',
+			],
 		],
 		[
 			'id'       => 'serving',
@@ -425,7 +488,10 @@ function ch_get_story_cards(): array {
 			'heading'  => 'Chilled and Served Immediately',
 			'body'     => 'Every juice is served immediately after pressing — cool, fresh, and full of life. No ice that dilutes, no sitting in a fridge losing nutrients. Just pure cane, pressed and served.',
 			'facts'    => [ 'Served within 60 seconds', 'Optimal temperature maintained', 'Maximum nutrients preserved' ],
-			'image'    => '',
+			'images'   => [
+				'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=700&q=80',
+				'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=700&q=80',
+			],
 		],
 		[
 			'id'       => 'pure',
@@ -434,7 +500,10 @@ function ch_get_story_cards(): array {
 			'heading'  => '100% Pure — Nothing Added',
 			'body'     => 'No preservatives, no artificial sweeteners, no colourings, no emulsifiers. What goes in is cane. What comes out is juice. The way it should be. The way it has always been.',
 			'facts'    => [ 'Zero preservatives', 'Zero artificial anything', 'Naturally allergen-free' ],
-			'image'    => '',
+			'images'   => [
+				'https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&w=700&q=80',
+				'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=700&q=80',
+			],
 		],
 	];
 }

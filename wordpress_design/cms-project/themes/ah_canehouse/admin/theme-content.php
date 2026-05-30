@@ -172,6 +172,13 @@ $s           = ch_get_settings();
 					value="<?php echo esc_attr( $s['booking_sub'] ?? '' ); ?>"
 					placeholder="Build your perfect fresh cane juice order in a few easy steps.">
 			</div>
+			<div class="ch-row">
+				<label>Banner Image URL</label>
+				<input type="url" name="booking_image"
+					value="<?php echo esc_attr( $s['booking_image'] ?? '' ); ?>"
+					placeholder="https://… (paste from Media Library)">
+				<p style="font-size:.75rem;color:#888;margin-top:.3rem;width:100%;">Shown on the right side of the booking banner. Leave blank for the default juice photo.</p>
+			</div>
 		</div>
 
 		<!-- STORY CARDS -->
@@ -240,12 +247,19 @@ $s           = ch_get_settings();
 							rows="4" style="width:100%;padding:.4rem .6rem;font-size:.8rem;"><?php echo esc_textarea( $facts ); ?></textarea>
 					</div>
 					<div>
-						<label style="font-size:.7rem;color:#888;display:block;">Image URL (optional)</label>
-						<input type="url" name="story_cards[<?php echo $ci; ?>][image]"
-							value="<?php echo esc_attr( $card['image'] ?? '' ); ?>"
-							placeholder="https://... (paste from Media Library)"
-							style="width:100%;padding:.3rem .5rem;font-size:.8rem;">
-						<p style="font-size:.7rem;color:#aaa;margin-top:.3rem;">Leave blank to show the animated emoji visual</p>
+						<label style="font-size:.7rem;color:#888;display:block;">Images (one per line — rotates as a slideshow)</label>
+						<?php
+						$card_imgs = $card['images'] ?? ( ! empty( $card['image'] ) ? [ $card['image'] ] : [] );
+						if ( is_string( $card_imgs ) ) $card_imgs = preg_split( '/[\r\n,]+/', $card_imgs );
+						$card_imgs_text = implode( "\n", array_filter( (array) $card_imgs ) );
+						?>
+						<textarea name="story_cards[<?php echo $ci; ?>][images]" rows="3"
+							placeholder="https://example.com/photo.jpg&#10;assets/images/story/cane.jpg&#10;my-photo.jpg"
+							style="width:100%;padding:.4rem .5rem;font-size:.78rem;font-family:monospace;"><?php echo esc_textarea( $card_imgs_text ); ?></textarea>
+						<p style="font-size:.7rem;color:#aaa;margin-top:.3rem;">
+							Full URLs, or theme paths like <code>assets/images/story/cane.jpg</code>, or just a filename <code>cane.jpg</code> (looks in <code>/assets/images/</code>).
+							Add several lines for an auto-rotating gallery. Leave blank for the animated emoji.
+						</p>
 					</div>
 				</div>
 			</div>

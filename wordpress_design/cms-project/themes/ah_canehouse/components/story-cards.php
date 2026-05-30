@@ -40,7 +40,7 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup — pr
 				$card  = (array) $card;
 				$id    = esc_attr( $card['id'] ?? 'card-' . $i );
 				$facts = (array) ( $card['facts'] ?? [] );
-				$img   = $card['image'] ?? '';
+				$imgs  = ch_card_images( $card );
 			?>
 				<div class="ch-sc-panel<?php echo $i === 0 ? ' active' : ''; ?>"
 					id="ch-sc-panel-<?php echo $id; ?>"
@@ -63,10 +63,27 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup — pr
 							<?php endif; ?>
 						</div>
 
-						<!-- Right: image or decorative visual -->
+						<!-- Right: image gallery or decorative visual -->
 						<div class="ch-sc-panel-visual">
-							<?php if ( $img ) : ?>
-								<img src="<?php echo esc_url( $img ); ?>"
+							<?php if ( count( $imgs ) > 1 ) : ?>
+								<div class="ch-sc-gallery" data-count="<?php echo count( $imgs ); ?>">
+									<div class="ch-sc-gallery-track">
+										<?php foreach ( $imgs as $gi => $src ) : ?>
+											<img src="<?php echo esc_url( $src ); ?>"
+												alt="<?php echo esc_attr( ( $card['label'] ?? '' ) . ' ' . ( $gi + 1 ) ); ?>"
+												loading="lazy"
+												class="ch-sc-gallery-img<?php echo $gi === 0 ? ' active' : ''; ?>">
+										<?php endforeach; ?>
+									</div>
+									<div class="ch-sc-gallery-dots">
+										<?php foreach ( $imgs as $gi => $src ) : ?>
+											<button type="button" class="ch-sc-gallery-dot<?php echo $gi === 0 ? ' active' : ''; ?>"
+												data-go="<?php echo $gi; ?>" aria-label="Image <?php echo $gi + 1; ?>"></button>
+										<?php endforeach; ?>
+									</div>
+								</div>
+							<?php elseif ( count( $imgs ) === 1 ) : ?>
+								<img src="<?php echo esc_url( $imgs[0] ); ?>"
 									alt="<?php echo esc_attr( $card['label'] ?? '' ); ?>"
 									loading="lazy" class="ch-sc-panel-img">
 							<?php else : ?>

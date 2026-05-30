@@ -228,6 +228,7 @@ class CH_Theme_Admin {
 		if ( isset( $_POST['story_cards_sub'] ) )     $existing_settings['story_cards_sub']     = sanitize_text_field( $_POST['story_cards_sub'] );
 		if ( isset( $_POST['booking_heading'] ) )     $existing_settings['booking_heading']     = sanitize_text_field( $_POST['booking_heading'] );
 		if ( isset( $_POST['booking_sub'] ) )         $existing_settings['booking_sub']         = sanitize_text_field( $_POST['booking_sub'] );
+		if ( isset( $_POST['booking_image'] ) )       $existing_settings['booking_image']       = esc_url_raw( $_POST['booking_image'] );
 		update_option( 'ch_site_settings', $existing_settings );
 		$sc = [];
 		foreach ( (array) ( $_POST['story_cards'] ?? [] ) as $card ) {
@@ -235,6 +236,22 @@ class CH_Theme_Admin {
 			if ( ! $label ) continue;
 			$raw_facts = sanitize_textarea_field( $card['facts'] ?? '' );
 			$facts     = array_filter( array_map( 'trim', explode( "\n", $raw_facts ) ) );
+
+			// Images: textarea, one per line. Keep URLs and theme-relative paths.
+			$raw_imgs = $card['images'] ?? ( $card['image'] ?? '' );
+			if ( is_array( $raw_imgs ) ) $raw_imgs = implode( "\n", $raw_imgs );
+			$images = [];
+			foreach ( preg_split( '/[\r\n,]+/', (string) $raw_imgs ) as $line ) {
+				$line = trim( wp_unslash( $line ) );
+				if ( $line === '' ) continue;
+				// Allow full URLs OR safe relative paths
+				if ( preg_match( '#^(https?:)?//#i', $line ) || strpos( $line, 'data:' ) === 0 ) {
+					$images[] = esc_url_raw( $line );
+				} else {
+					$images[] = sanitize_text_field( ltrim( $line, '/' ) );
+				}
+			}
+
 			$sc[] = [
 				'id'      => sanitize_title( $card['id'] ?? $label ),
 				'icon'    => sanitize_text_field( $card['icon']    ?? '' ),
@@ -242,7 +259,7 @@ class CH_Theme_Admin {
 				'heading' => sanitize_text_field( $card['heading'] ?? '' ),
 				'body'    => sanitize_textarea_field( $card['body'] ?? '' ),
 				'facts'   => array_values( $facts ),
-				'image'   => esc_url_raw( $card['image'] ?? '' ),
+				'images'  => array_values( array_filter( $images ) ),
 			];
 		}
 		if ( ! empty( $sc ) ) update_option( 'ch_story_cards', wp_json_encode( $sc ) );
