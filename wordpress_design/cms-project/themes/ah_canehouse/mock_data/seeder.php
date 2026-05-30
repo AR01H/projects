@@ -21,12 +21,12 @@ class CH_Theme_Seeder {
 	public static function seed_all(): array {
 		self::create_tables();
 		$results = [ 'inserted' => 0, 'updated' => 0, 'errors' => [] ];
+		// Navigation, footer and FAQs are managed by the CMS plugin and are
+		// intentionally NOT seeded here (the theme reads them from the plugin).
 		$methods = [
 			'seed_settings',
 			'seed_home_settings',
 			'seed_section_visibility',
-			'seed_navigation',
-			'seed_footer',
 			'seed_contact_settings',
 			'seed_menu_sizes',
 			'seed_cane_types',
@@ -40,8 +40,9 @@ class CH_Theme_Seeder {
 			'seed_franchise_locations',
 			'seed_juice_showcase',
 			'seed_story_settings',
+			'seed_story_cards',
+			'seed_certifications',
 			'seed_reviews',
-			'seed_faqs',
 			'seed_news_bar',
 			'seed_journal_page',
 			'seed_journal_posts',
@@ -77,7 +78,7 @@ class CH_Theme_Seeder {
 			'ch_menu_sizes', 'ch_cane_types', 'ch_textures', 'ch_flavours',
 			'ch_order_steps', 'ch_marquee_items', 'ch_benefits',
 			'ch_hire_packages', 'ch_hire_features', 'ch_franchise_locations',
-			'ch_juice_showcase', 'ch_story_settings', 'ch_faqs_manual',
+			'ch_juice_showcase', 'ch_story_settings', 'ch_story_cards', 'ch_faqs_manual',
 		];
 		foreach ( $options as $opt ) {
 			if ( delete_option( $opt ) ) {
@@ -122,11 +123,14 @@ class CH_Theme_Seeder {
 	 * @return array{inserted:int, updated:int, errors:string[]}
 	 */
 	public static function seed_selected( array $types ): array {
+		// Navigation, footer and FAQs are owned by the CMS plugin — the theme
+		// must NOT seed them (it would duplicate/overwrite the plugin's data).
 		$map = [
-			'reviews'  => 'seed_reviews',
-			'faqs'     => 'seed_faqs',
-			'news-bar' => 'seed_news_bar',
-			'journal'  => 'seed_journal_posts',
+			'story-cards'    => 'seed_story_cards',
+			'certifications' => 'seed_certifications',
+			'reviews'        => 'seed_reviews',
+			'news-bar'       => 'seed_news_bar',
+			'journal'        => 'seed_journal_posts',
 		];
 		$results = [ 'inserted' => 0, 'updated' => 0, 'errors' => [] ];
 		foreach ( $types as $type ) {
@@ -190,60 +194,24 @@ class CH_Theme_Seeder {
 		return [ 'updated' => 1 ];
 	}
 
-	private static function seed_navigation(): array {
-		$all      = CH_Data::navigation();
-		$nav_rows = array_values( array_filter( $all, fn( $item ) => ! $item['is_cta'] ) );
-		$cta_row  = current( array_filter( $all, fn( $item ) => $item['is_cta'] ) );
+	// seed_navigation() and seed_footer() removed — navigation & footer are
+	// owned by the CMS plugin (ah_cms_navigation / ah_cms_footer). The theme
+	// reads them via ch_get_theme_navigation() / ch_get_theme_footer().
 
-		$nav = array_map( fn( $item ) => [
-			'id'      => $item['id'],
-			'label'   => $item['label'],
-			'type'    => 'link',
-			'url'     => $item['url'],
-			'visible' => $item['visible'],
-			'submenu' => [],
-		], $nav_rows );
-
-		$cta = $cta_row
-			? [ 'label' => $cta_row['label'], 'url' => $cta_row['url'] ]
-			: [ 'label' => 'Contact Us', 'url' => '#contact' ];
-
-		update_option( 'ah_cms_navigation', wp_json_encode( $nav ) );
-		update_option( 'ch_theme_navigation', wp_json_encode( $nav ) );
-		update_option( 'ah_cms_nav_cta', wp_json_encode( $cta ) );
-		update_option( 'ch_nav_cta', wp_json_encode( $cta ) );
-		return [ 'updated' => 4 ];
+	private static function seed_story_cards(): array {
+		$cards = CH_Data::story_cards();
+		if ( empty( $cards ) ) return [ 'updated' => 0 ];
+		update_option( 'ch_story_cards', wp_json_encode( $cards ) );
+		return [ 'updated' => 1 ];
 	}
 
-	private static function seed_footer(): array {
-		update_option( 'ch_theme_footer', wp_json_encode( [
-			'brand_description' => 'The Cane House - UK\'s premium live-pressed sugarcane juice experience. Serving fresh ganna ras at weddings, festivals, and events across the UK.',
-			'copyright'         => '© ' . gmdate( 'Y' ) . ' The Cane House. All rights reserved.',
-			'columns'           => [
-				[
-					'title' => 'Quick Links',
-					'items' => [
-						[ 'label' => 'How To Order',     'url' => '#how-to-order' ],
-						[ 'label' => 'Build Your Juice', 'url' => '#build' ],
-						[ 'label' => 'Hire for Events',  'url' => '#hire' ],
-						[ 'label' => 'Franchise',        'url' => '#franchise' ],
-						[ 'label' => 'FAQ',              'url' => '#faq' ],
-					],
-				],
-				[
-					'title' => 'Contact',
-					'items' => [
-						[ 'label' => '+44 7887 699 208',           'url' => 'tel:+447887699208' ],
-						[ 'label' => 'hello@thecanehouse.co.uk',   'url' => 'mailto:hello@thecanehouse.co.uk' ],
-						[ 'label' => 'WhatsApp Us',                'url' => 'https://wa.me/447887699208' ],
-					],
-				],
-			],
-			'legal_links' => [
-				[ 'label' => 'Privacy Policy',    'url' => '/privacy-policy' ],
-				[ 'label' => 'Terms & Conditions','url' => '/terms' ],
-			],
-		] ) );
+	private static function seed_certifications(): array {
+		$certs = CH_Data::certifications();
+		if ( empty( $certs ) ) return [ 'updated' => 0 ];
+		$settings = get_option( 'ch_site_settings', [] );
+		if ( is_string( $settings ) ) $settings = json_decode( $settings, true ) ?: [];
+		$settings['certifications'] = wp_json_encode( $certs );
+		update_option( 'ch_site_settings', $settings );
 		return [ 'updated' => 1 ];
 	}
 
@@ -338,30 +306,8 @@ class CH_Theme_Seeder {
 		return [ 'inserted' => $inserted ];
 	}
 
-	private static function seed_faqs(): array {
-		global $wpdb;
-		$table    = ch_theme_table( 'faqs' );
-		$inserted = 0;
-
-		foreach ( CH_Data::faqs() as $row ) {
-			$ok = $wpdb->insert(
-				$table,
-				[
-					'topic'      => $row['topic']      ?? '',
-					'question'   => $row['question']   ?? '',
-					'answer'     => $row['answer']     ?? '',
-					'status'     => $row['status']     ?? 'active',
-					'sort_order' => (int) ( $row['sort_order'] ?? 0 ),
-				],
-				[ '%s', '%s', '%s', '%s', '%d' ]
-			);
-			if ( $ok ) {
-				$inserted++;
-			}
-		}
-
-		return [ 'inserted' => $inserted ];
-	}
+	// seed_faqs() removed — FAQs are managed by the CMS plugin (AH_Model_FAQs).
+	// ch_get_faqs() reads them from the plugin; the theme does not seed them.
 
 	private static function seed_news_bar(): array {
 		global $wpdb;

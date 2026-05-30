@@ -27,6 +27,46 @@ function ch_get_settings(): array {
 	return array_merge( $defaults, (array) $saved );
 }
 
+// ── Homepage display limits ───────────────────────────────────────────────────
+/**
+ * How many items a homepage section should show.
+ * Returns 0 to mean "no limit — show everything on the homepage".
+ * Controlled from Content & Menu → Homepage Display Limits.
+ *
+ * @param string $key            e.g. 'story_cards', 'faqs'
+ * @param int    $default_count  fallback when no admin value is set
+ */
+function ch_home_limit( string $key, int $default_count ): int {
+	$s  = ch_get_settings();
+	$hl = $s['home_limits'] ?? [];
+	if ( is_string( $hl ) ) $hl = json_decode( $hl, true ) ?: [];
+
+	// Limit is ON by default. Unchecked in admin → show all (return 0).
+	$enabled = isset( $hl[ $key . '_limit' ] ) ? (bool) $hl[ $key . '_limit' ] : true;
+	if ( ! $enabled ) {
+		return 0;
+	}
+	$count = isset( $hl[ $key . '_count' ] ) ? (int) $hl[ $key . '_count' ] : $default_count;
+	return max( 1, $count );
+}
+
+/**
+ * Reusable "View all / Read more" button shown under a limited homepage section.
+ *
+ * @param string $url   destination page
+ * @param string $label button text
+ * @param string $style 'outline' (default) or 'lime'
+ */
+function ch_more_button( string $url, string $label, string $style = 'outline' ): void {
+	$cls = $style === 'lime' ? 'btn-lime' : 'btn-outline';
+	printf(
+		'<div class="ch-section-more fade-up"><a href="%s" class="%s">%s</a></div>',
+		esc_url( $url ),
+		esc_attr( $cls ),
+		esc_html( $label )
+	);
+}
+
 // ── Price visibility ──────────────────────────────────────────────────────────
 function ch_show_prices(): bool {
 	$s = ch_get_settings();
@@ -135,14 +175,14 @@ function ch_normalize_theme_url( string $url, string $fallback = '' ): string {
 }
 
 function ch_get_theme_navigation(): array {
-	// Primary: ch_-prefixed theme-specific nav
-	$opt = get_option( 'ch_theme_navigation', [] );
+	// Primary: CMS plugin shared navigation (single source of truth).
+	$opt = get_option( 'ah_cms_navigation', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) {
 		return ch_normalize_theme_navigation( $opt );
 	}
-	// Fallback: read from plugin's shared navigation option
-	$opt = get_option( 'ah_cms_navigation', [] );
+	// Fallback: legacy theme-specific option (if it was ever saved).
+	$opt = get_option( 'ch_theme_navigation', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) {
 		return ch_normalize_theme_navigation( $opt );
@@ -197,24 +237,24 @@ function ch_build_default_navigation(): array {
 function ch_get_nav_cta(): array {
 	$label    = defined( 'CH_NAV_CONTACT' ) ? CH_NAV_CONTACT : 'Contact Us';
 	$defaults = [ 'label' => $label, 'url' => home_url( '/#contact' ) ];
-	// Primary
-	$opt = get_option( 'ch_nav_cta', [] );
+	// Primary: CMS plugin option
+	$opt = get_option( 'ah_cms_nav_cta', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) ) return array_merge( $defaults, (array) $opt );
-	// Fallback: plugin option
-	$opt = get_option( 'ah_cms_nav_cta', [] );
+	// Fallback: legacy theme option
+	$opt = get_option( 'ch_nav_cta', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	return ! empty( $opt ) ? array_merge( $defaults, (array) $opt ) : $defaults;
 }
 
 // ── Footer ────────────────────────────────────────────────────────────────────
 function ch_get_theme_footer(): array {
-	// Primary
-	$opt = get_option( 'ch_theme_footer', [] );
+	// Primary: CMS plugin option
+	$opt = get_option( 'ah_cms_footer', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
-	// Fallback: plugin option
-	$opt = get_option( 'ah_cms_footer', [] );
+	// Fallback: legacy theme option
+	$opt = get_option( 'ch_theme_footer', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
 	return ch_build_default_footer();

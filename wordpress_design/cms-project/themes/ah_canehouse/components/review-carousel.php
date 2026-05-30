@@ -66,5 +66,7 @@ if ( empty( $reviews ) ) return;
 			</div>
 		</div>
 
+		<?php ch_more_button( home_url( '/client-stories/' ), 'Read All Reviews & Stories →' ); ?>
+
 	</div><!-- .ch-reviews-wrapper -->
 </section>

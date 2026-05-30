@@ -181,6 +181,47 @@ $s           = ch_get_settings();
 			</div>
 		</div>
 
+		<!-- HOMEPAGE DISPLAY LIMITS -->
+		<?php
+		$home_limits = $s['home_limits'] ?? [];
+		if ( is_string( $home_limits ) ) $home_limits = json_decode( $home_limits, true ) ?: [];
+		$hl_on = function ( $key ) use ( $home_limits ) {
+			return isset( $home_limits[ $key . '_limit' ] ) ? (bool) $home_limits[ $key . '_limit' ] : true;
+		};
+		$hl_count = function ( $key, $def ) use ( $home_limits ) {
+			return isset( $home_limits[ $key . '_count' ] ) ? (int) $home_limits[ $key . '_count' ] : $def;
+		};
+		?>
+		<div class="ch-card">
+			<h2>🏠 Homepage Display Limits</h2>
+			<p style="font-size:.83rem;color:#666;margin-bottom:1rem;">
+				Control how many items each section shows on the homepage. When <strong>“Limit on homepage”</strong> is
+				ticked, only the chosen number is shown with a <em>“View all”</em> button to the full page.
+				Untick to show <strong>all</strong> items on the homepage (no button).
+			</p>
+			<input type="hidden" name="home_limits_present" value="1">
+
+			<?php
+			$limit_rows = [
+				'story_cards' => [ 'label' => 'Sugarcane Story Cards', 'def' => 4, 'page' => '/our-story/' ],
+				'faqs'        => [ 'label' => 'FAQs',                  'def' => 6, 'page' => '/faqs/' ],
+			];
+			foreach ( $limit_rows as $key => $row ) : ?>
+				<div class="ch-row" style="align-items:center;">
+					<label style="min-width:200px;"><?php echo esc_html( $row['label'] ); ?></label>
+					<label style="font-size:.85rem;display:flex;align-items:center;gap:.4rem;min-width:auto;flex:0 0 auto;">
+						<input type="checkbox" name="home_limits[<?php echo $key; ?>_limit]" value="1" <?php checked( $hl_on( $key ) ); ?>>
+						Limit on homepage
+					</label>
+					<span style="font-size:.85rem;color:#666;">Show first</span>
+					<input type="number" min="1" max="50" style="width:70px;flex:0 0 auto;min-width:0;"
+						name="home_limits[<?php echo $key; ?>_count]"
+						value="<?php echo esc_attr( $hl_count( $key, $row['def'] ) ); ?>">
+					<span style="font-size:.78rem;color:#999;">(rest on <code><?php echo esc_html( $row['page'] ); ?></code>)</span>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
 		<!-- STORY CARDS -->
 		<div class="ch-card">
 			<h2>🌿 Sugarcane Story Cards</h2>
@@ -208,11 +249,13 @@ $s           = ch_get_settings();
 				Facts: one per line.
 			</p>
 
+			<div id="ch-story-cards-wrap">
 			<?php foreach ( $story_cards as $ci => $card ) :
 				$card  = (array) $card;
 				$facts = implode( "\n", (array) ( $card['facts'] ?? [] ) );
 			?>
-			<div style="background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:1rem;margin-bottom:.8rem;">
+			<div class="ch-sc-admin-card" style="background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:1rem;margin-bottom:.8rem;position:relative;">
+					<button type="button" class="button ch-sc-remove" style="position:absolute;top:.6rem;right:.6rem;color:#b32d2e;border-color:#b32d2e;">✕ Remove</button>
 				<div style="display:grid;grid-template-columns:50px 120px 1fr;gap:.5rem;margin-bottom:.5rem;align-items:start;">
 					<div>
 						<label style="font-size:.7rem;color:#888;display:block;">Icon</label>
@@ -264,6 +307,8 @@ $s           = ch_get_settings();
 				</div>
 			</div>
 			<?php endforeach; ?>
+		</div><!-- #ch-story-cards-wrap -->
+		<button type="button" id="ch-add-story-card" class="button button-secondary" style="margin-bottom:1rem;">+ Add Story Card</button>
 		</div>
 
 		<?php submit_button( 'Save All Content', 'primary', 'submit', false ); ?>
@@ -283,4 +328,50 @@ document.getElementById('ch-add-loc').addEventListener('click', function() {
 	wrap.appendChild(row);
 	chLocIdx++;
 });
+
+// ── Story Cards: add / remove ───────────────────────────────────────────────
+(function () {
+	const wrap   = document.getElementById('ch-story-cards-wrap');
+	const addBtn = document.getElementById('ch-add-story-card');
+	if (!wrap || !addBtn) return;
+
+	function cardHTML(i) {
+		return `
+			<button type="button" class="button ch-sc-remove" style="position:absolute;top:.6rem;right:.6rem;color:#b32d2e;border-color:#b32d2e;">✕ Remove</button>
+			<div style="display:grid;grid-template-columns:50px 120px 1fr;gap:.5rem;margin:0 6rem .5rem 0;align-items:start;">
+				<div><label style="font-size:.7rem;color:#888;display:block;">Icon</label>
+					<input type="text" name="story_cards[${i}][icon]" value="🌿" style="width:100%;text-align:center;font-size:1.3rem;padding:.3rem;"></div>
+				<div><label style="font-size:.7rem;color:#888;display:block;">Tab Label</label>
+					<input type="text" name="story_cards[${i}][label]" placeholder="e.g. Live Pressed" style="width:100%;padding:.3rem .5rem;"></div>
+				<div><label style="font-size:.7rem;color:#888;display:block;">Panel Heading</label>
+					<input type="text" name="story_cards[${i}][heading]" placeholder="Full heading shown in panel" style="width:100%;padding:.3rem .5rem;"></div>
+			</div>
+			<input type="hidden" name="story_cards[${i}][id]" value="">
+			<div style="margin-bottom:.5rem;"><label style="font-size:.7rem;color:#888;display:block;">Body Text</label>
+				<textarea name="story_cards[${i}][body]" rows="3" style="width:100%;padding:.4rem .6rem;font-size:.83rem;"></textarea></div>
+			<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+				<div><label style="font-size:.7rem;color:#888;display:block;">Bullet Facts (one per line)</label>
+					<textarea name="story_cards[${i}][facts]" rows="4" style="width:100%;padding:.4rem .6rem;font-size:.8rem;"></textarea></div>
+				<div><label style="font-size:.7rem;color:#888;display:block;">Images (one per line)</label>
+					<textarea name="story_cards[${i}][images]" rows="3" placeholder="https://… or assets/images/story/cane.jpg" style="width:100%;padding:.4rem .5rem;font-size:.78rem;font-family:monospace;"></textarea></div>
+			</div>`;
+	}
+
+	addBtn.addEventListener('click', function () {
+		const i   = 'new' + Date.now();
+		const div = document.createElement('div');
+		div.className = 'ch-sc-admin-card';
+		div.style.cssText = 'background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:1rem;margin-bottom:.8rem;position:relative;';
+		div.innerHTML = cardHTML(i);
+		wrap.appendChild(div);
+		div.scrollIntoView({ behavior: 'smooth', block: 'center' });
+	});
+
+	// Event delegation for remove buttons (works for existing + new cards)
+	wrap.addEventListener('click', function (e) {
+		if (e.target.classList.contains('ch-sc-remove')) {
+			if (confirm('Remove this story card?')) e.target.closest('.ch-sc-admin-card').remove();
+		}
+	});
+})();
 </script>

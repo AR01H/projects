@@ -163,6 +163,90 @@ class CH_Data {
 		return $rows ?: self::default_navigation();
 	}
 
+	/**
+	 * Footer — assembled from footer-settings.csv (kv), footer-links.csv
+	 * (grouped by column) and footer-legal.csv. Returns the nested structure
+	 * used by ch_get_theme_footer() / ah_cms_footer.
+	 */
+	public static function footer(): array {
+		$kv = self::load_kv_csv( 'footer-settings' );
+
+		// Group links by their "column" value, preserving order.
+		$columns = [];
+		foreach ( self::load_csv( 'footer-links' ) as $r ) {
+			$title = trim( $r['column'] ?? '' );
+			$label = trim( $r['label'] ?? '' );
+			if ( $title === '' || $label === '' ) continue;
+			if ( ! isset( $columns[ $title ] ) ) {
+				$columns[ $title ] = [ 'title' => $title, 'items' => [] ];
+			}
+			$columns[ $title ]['items'][] = [
+				'label'     => $label,
+				'url'       => $r['url'] ?? '#',
+				'highlight' => filter_var( $r['highlight'] ?? false, FILTER_VALIDATE_BOOLEAN ),
+			];
+		}
+
+		$legal = [];
+		foreach ( self::load_csv( 'footer-legal' ) as $r ) {
+			$label = trim( $r['label'] ?? '' );
+			if ( $label === '' ) continue;
+			$legal[] = [ 'label' => $label, 'url' => $r['url'] ?? '#' ];
+		}
+
+		return [
+			'brand_description' => $kv['brand_description'] ?? '',
+			'badge_text'        => $kv['badge_text'] ?? '',
+			'copyright_suffix'  => $kv['copyright_suffix'] ?? 'Pressed Fresh. Served Cool.',
+			'columns'           => array_values( $columns ),
+			'cta'               => [
+				'label' => $kv['cta_label'] ?? 'Send a Message 🌿',
+				'url'   => $kv['cta_url']   ?? '#contact',
+			],
+			'contact'           => [
+				'phone_note' => $kv['phone_note'] ?? '',
+				'email_note' => $kv['email_note'] ?? '',
+			],
+			'legal_links'       => $legal,
+			'social'            => [],
+		];
+	}
+
+	/** Interactive Sugarcane Story cards. */
+	public static function story_cards(): array {
+		$rows = self::load_csv( 'story-cards' );
+		if ( ! $rows ) return [];
+		return array_map( static function ( $r ) {
+			$split = static function ( $val ) {
+				$val = (string) ( $val ?? '' );
+				return $val === '' ? [] : array_values( array_filter( array_map( 'trim', explode( ';', $val ) ) ) );
+			};
+			return [
+				'id'      => $r['id']      ?? '',
+				'icon'    => $r['icon']    ?? '🌿',
+				'label'   => $r['label']   ?? '',
+				'heading' => $r['heading'] ?? '',
+				'body'    => $r['body']    ?? '',
+				'facts'   => $split( $r['facts']  ?? '' ),
+				'images'  => $split( $r['images'] ?? '' ),
+			];
+		}, $rows );
+	}
+
+	/** Certification badges. */
+	public static function certifications(): array {
+		$rows = self::load_csv( 'certifications' );
+		if ( ! $rows ) return [];
+		return array_map( static function ( $r ) {
+			return [
+				'icon'  => $r['icon']  ?? '✅',
+				'title' => $r['title'] ?? '',
+				'desc'  => $r['desc']  ?? '',
+				'badge' => $r['badge'] ?? '',
+			];
+		}, $rows );
+	}
+
 	public static function menu_sizes(): array {
 		$rows = self::load_csv( 'menu-sizes' );
 		if ( $rows ) {

@@ -1,6 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$faqs = ch_get_faqs( '', 12 );
+// FAQs come from the CMS plugin (AH_Model_FAQs) via ch_get_faqs().
+$faqs_all   = ch_get_faqs( '', 100 );
+$home_limit = ch_home_limit( 'faqs', 6 );
+$faqs       = $home_limit > 0 ? array_slice( $faqs_all, 0, $home_limit ) : $faqs_all;
+$has_more   = $home_limit > 0 && count( $faqs_all ) > $home_limit;
 ?>
 
 <section id="faq" class="ch-faq-section">
@@ -25,4 +29,6 @@ $faqs = ch_get_faqs( '', 12 );
 			</div>
 		<?php endforeach; ?>
 	</div>
+
+	<?php if ( $has_more ) ch_more_button( home_url( '/faqs/' ), 'View All ' . count( $faqs_all ) . ' FAQs →' ); ?>
 </section>

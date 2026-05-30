@@ -32,6 +32,9 @@ function ch_get_page_definitions(): array {
 		[ 'title' => 'Events & Hire',      'slug' => 'events',         'template' => 'page-events.php'                           ],
 		[ 'title' => 'Client Stories',     'slug' => 'client-stories', 'template' => 'page-client-stories.php'                   ],
 		[ 'title' => 'Franchise',          'slug' => 'franchise',      'template' => 'page-franchise.php'                        ],
+		[ 'title' => 'Our Story',          'slug' => 'our-story',      'template' => 'page-story.php'                            ],
+		[ 'title' => 'FAQs',               'slug' => 'faqs',           'template' => 'page-faqs.php'                             ],
+		[ 'title' => 'Contact',            'slug' => 'contact',        'template' => 'page-contact.php'                          ],
 		[ 'title' => 'Blog',               'slug' => 'blog',           'template' => 'page-blog.php'                             ],
 	];
 }
@@ -97,7 +100,8 @@ add_action( 'after_switch_theme', 'ch_setup_theme_pages' );
 // ── Also run on admin_init to catch any missing pages ─────────────────────────
 // (runs once per WP version bump or if option is missing)
 add_action( 'admin_init', function () {
-	$done_key = 'ch_pages_created_v1';
+	// Bump this key whenever new page templates are added to ch_get_page_definitions().
+	$done_key = 'ch_pages_created_v3';
 	if ( get_option( $done_key ) ) return;
 	if ( ! current_theme_supports( 'title-tag' ) ) return; // not our theme
 	ch_setup_theme_pages();
@@ -108,7 +112,7 @@ add_action( 'admin_init', function () {
 add_action( 'admin_init', function () {
 	if ( ! isset( $_GET['ch_regen_pages'] ) ) return;
 	if ( ! current_user_can( 'manage_options' ) ) return;
-	delete_option( 'ch_pages_created_v1' );
+	delete_option( 'ch_pages_created_v3' );
 	ch_setup_theme_pages();
 	wp_safe_redirect( admin_url( 'themes.php?ch_regen=1' ) );
 	exit;
@@ -132,128 +136,10 @@ if ( is_admin() ) {
 	CH_Theme_Admin::init();
 }
 
-// ── Navigation & Footer Save Handler ─────────────────────────────────────────
-add_action( 'admin_post_ch_theme_nav', function () {
-	check_admin_referer( 'ch_theme_nav' );
-	if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-
-	// ── Header nav items ──────────────────────────────────────────────────
-	$raw_items = isset( $_POST['nav_items'] ) && is_array( $_POST['nav_items'] ) ? $_POST['nav_items'] : [];
-	$nav       = [];
-	foreach ( $raw_items as $item ) {
-		$label = sanitize_text_field( wp_unslash( $item['label'] ?? '' ) );
-		if ( ! $label ) continue;
-		$type    = ( $item['type'] ?? 'link' ) === 'dropdown' ? 'dropdown' : 'link';
-		$submenu = [];
-		foreach ( (array) ( $item['submenu'] ?? [] ) as $sub ) {
-			$sl = sanitize_text_field( wp_unslash( $sub['label'] ?? '' ) );
-			$su = esc_url_raw( wp_unslash( $sub['url'] ?? '' ) );
-			if ( ! $sl || ! $su ) continue;
-			$submenu[] = [
-				'label'       => $sl,
-				'url'         => $su,
-				'icon'        => sanitize_text_field( wp_unslash( $sub['icon'] ?? '' ) ),
-				'description' => sanitize_text_field( wp_unslash( $sub['description'] ?? '' ) ),
-				'highlight'   => ! empty( $sub['highlight'] ),
-			];
-		}
-		$nav[] = [
-			'id'      => sanitize_title( $item['id'] ?? $label ),
-			'label'   => $label,
-			'type'    => $type,
-			'url'     => $type === 'link' ? esc_url_raw( wp_unslash( $item['url'] ?? '' ) ) : '',
-			'visible' => ! empty( $item['visible'] ),
-			'submenu' => $submenu,
-		];
-	}
-	update_option( 'ch_theme_navigation', wp_json_encode( $nav ) );
-
-	// ── CTA ───────────────────────────────────────────────────────────────
-	$cta_raw = isset( $_POST['nav_cta'] ) ? (array) $_POST['nav_cta'] : [];
-	update_option( 'ch_nav_cta', wp_json_encode( [
-		'label' => sanitize_text_field( wp_unslash( $cta_raw['label'] ?? 'Contact Us' ) ),
-		'url'   => esc_url_raw( wp_unslash( $cta_raw['url']   ?? home_url( '/#contact' ) ) ),
-	] ) );
-
-	// ── Footer ────────────────────────────────────────────────────────────
-	$f_raw = isset( $_POST['footer'] ) ? (array) $_POST['footer'] : [];
-
-	$columns = [];
-	foreach ( (array) ( $f_raw['columns'] ?? [] ) as $col ) {
-		$title = sanitize_text_field( wp_unslash( $col['title'] ?? '' ) );
-		if ( ! $title ) continue;
-		$items = [];
-		foreach ( (array) ( $col['items'] ?? [] ) as $link ) {
-			$ll = sanitize_text_field( wp_unslash( $link['label'] ?? '' ) );
-			$lu = esc_url_raw( wp_unslash( $link['url'] ?? '' ) );
-			if ( ! $ll ) continue;
-			$items[] = [ 'label' => $ll, 'url' => $lu, 'highlight' => ! empty( $link['highlight'] ) ];
-		}
-		$columns[] = [ 'title' => $title, 'items' => $items ];
-	}
-
-	$footer = [
-		'brand_description' => wp_kses_post( wp_unslash( $f_raw['brand_description'] ?? '' ) ),
-		'badge_text'        => sanitize_text_field( wp_unslash( $f_raw['badge_text'] ?? '' ) ),
-		'copyright_suffix'  => sanitize_text_field( wp_unslash( $f_raw['copyright_suffix'] ?? '' ) ),
-		'columns'           => $columns,
-		'cta'               => [
-			'label' => sanitize_text_field( wp_unslash( $f_raw['cta']['label'] ?? '' ) ),
-			'url'   => esc_url_raw( wp_unslash( $f_raw['cta']['url'] ?? '' ) ),
-		],
-		'contact' => [
-			'phone_note'   => sanitize_text_field( wp_unslash( $f_raw['contact']['phone_note'] ?? '' ) ),
-			'email_note'   => sanitize_text_field( wp_unslash( $f_raw['contact']['email_note'] ?? '' ) ),
-		],
-		'social' => (array) ( json_decode( get_option( 'ch_theme_footer', '{}' ), true )['social'] ?? [] ),
-	];
-	update_option( 'ch_theme_footer', wp_json_encode( $footer ) );
-
-	wp_safe_redirect( add_query_arg( 'saved', '1', wp_get_referer() ?: admin_url( 'admin.php?page=ch-theme-nav' ) ) );
-	exit;
-} );
-
-// ── Mock navigation preset ────────────────────────────────────────────────────
-function ch_get_mock_navigation(): array {
-	return [
-		'nav'     => [
-			[ 'id'=>'our-juices',     'label'=>'Our Juices',     'type'=>'link',     'url'=>home_url('/our-juices/'),     'visible'=>true, 'submenu'=>[] ],
-			[ 'id'=>'why-sugarcane',  'label'=>'Why Sugarcane',  'type'=>'link',     'url'=>home_url('/why-sugarcane/'),  'visible'=>true, 'submenu'=>[] ],
-			[ 'id'=>'events',         'label'=>'Events & Hire',  'type'=>'link',     'url'=>home_url('/events/'),         'visible'=>true, 'submenu'=>[] ],
-			[ 'id'=>'about',          'label'=>'About Us',       'type'=>'dropdown', 'url'=>'',                          'visible'=>true, 'submenu'=>[
-				[ 'label'=>'Our Story',      'url'=>home_url('/about/'),          'icon'=>'🌿', 'description'=>'Who we are', 'highlight'=>false ],
-				[ 'label'=>'Client Stories', 'url'=>home_url('/client-stories/'), 'icon'=>'⭐', 'description'=>'Real reviews', 'highlight'=>false ],
-				[ 'label'=>'Services',       'url'=>home_url('/services/'),       'icon'=>'🛠️', 'description'=>'What we offer', 'highlight'=>false ],
-			]],
-			[ 'id'=>'franchise',      'label'=>'Franchise',      'type'=>'link',     'url'=>home_url('/franchise/'),      'visible'=>true, 'submenu'=>[] ],
-			[ 'id'=>'blog',           'label'=>'Blog',            'type'=>'link',     'url'=>home_url('/blog/'),           'visible'=>true, 'submenu'=>[] ],
-		],
-		'cta'     => [ 'label' => 'Get in Touch', 'url' => home_url( '/#contact' ) ],
-		'footer'  => [
-			'brand_description' => 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives — just pure natural refreshment wherever you are.',
-			'badge_text'        => 'Proudly Serving the UK 🇬🇧',
-			'copyright_suffix'  => 'Pressed Fresh. Served Cool.',
-			'columns' => [
-				[ 'title'=>'Our Juice', 'items'=>[
-					[ 'label'=>'Build Your Juice',  'url'=>home_url('/#build'),    'highlight'=>false ],
-					[ 'label'=>'Our Juices',         'url'=>home_url('/our-juices/'), 'highlight'=>false ],
-					[ 'label'=>'Why Sugarcane',      'url'=>home_url('/why-sugarcane/'), 'highlight'=>false ],
-					[ 'label'=>'Health Benefits',    'url'=>home_url('/#benefits'), 'highlight'=>false ],
-				]],
-				[ 'title'=>'Services', 'items'=>[
-					[ 'label'=>'Event Hire',         'url'=>home_url('/events/'),    'highlight'=>false ],
-					[ 'label'=>'Weddings',            'url'=>home_url('/events/'),    'highlight'=>false ],
-					[ 'label'=>'Corporate Events',    'url'=>home_url('/events/'),    'highlight'=>false ],
-					[ 'label'=>'Franchise',           'url'=>home_url('/franchise/'), 'highlight'=>false ],
-					[ 'label'=>'Client Stories',      'url'=>home_url('/client-stories/'), 'highlight'=>false ],
-				]],
-			],
-			'cta'     => [ 'label'=>'Send a Message 🌿', 'url'=>home_url('/#contact') ],
-			'contact' => [ 'phone_note'=>'Mon–Sat · 9am–9pm', 'email_note'=>'We reply within 24 hours' ],
-			'social'  => [],
-		],
-	];
-}
+// Navigation & Footer are managed by the CMS plugin (ah_cms_navigation /
+// ah_cms_nav_cta / ah_cms_footer). Demo content for nav, footer, story cards
+// and certifications is seeded from CSVs via Install Mock Data (see
+// mock_data/csv/ and CH_Theme_Seeder).
 
 // ── Theme Settings Save Handler ───────────────────────────────────────────────
 add_action( 'admin_post_ch_theme_settings', function () {
@@ -314,8 +200,7 @@ add_action( 'admin_post_ch_theme_settings', function () {
 
 	update_option( 'ch_site_settings', $existing );
 
-	// Determine redirect URL — support both admin menu slug and query param
-	$redirect = wp_get_referer() ?: admin_url( 'admin.php?page=ch-settings' );
+	$redirect = wp_get_referer() ?: admin_url( 'admin.php?page=ch-theme-settings' );
 	wp_safe_redirect( add_query_arg( 'saved', '1', $redirect ) );
 	exit;
 } );

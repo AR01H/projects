@@ -1,7 +1,13 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$cards = ch_get_story_cards();
-if ( empty( $cards ) ) return;
+$all_cards = ch_get_story_cards();
+if ( empty( $all_cards ) ) return;
+
+// Limit how many story tabs show on the homepage; the rest live on /our-story/.
+$home_limit = ch_home_limit( 'story_cards', 4 );
+$cards      = $home_limit > 0 ? array_slice( $all_cards, 0, $home_limit ) : $all_cards;
+$has_more   = $home_limit > 0 && count( $all_cards ) > $home_limit;
+
 $s        = ch_get_settings();
 $heading  = $s['story_cards_heading'] ?? 'The Sugarcane <span class="accent">Story</span>';
 $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup — pressed live, served cool, every single time.';
@@ -110,6 +116,8 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup — pr
 					data-idx="<?php echo $i; ?>"></div>
 			<?php endforeach; ?>
 		</div>
+
+		<?php if ( $has_more ) ch_more_button( home_url( '/our-story/' ), '🌿 Read the Full Story →', 'lime' ); ?>
 
 	</div>
 </section>

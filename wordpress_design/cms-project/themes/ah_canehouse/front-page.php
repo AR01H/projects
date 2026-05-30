@@ -27,10 +27,6 @@ $s = ch_get_settings();
 		<?php get_template_part( 'components/how-to-order' ); ?>
 	<?php endif; ?> -->
 
-	<?php if ( ch_section_visible( 'booking' ) ) : ?>
-		<?php get_template_part( 'components/booking-wizard' ); ?>
-	<?php endif; ?>
-
 	<?php if ( ch_section_visible( 'reviews' ) ) : ?>
 		<?php get_template_part( 'components/review-carousel' ); ?>
 	<?php endif; ?>

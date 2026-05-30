@@ -48,7 +48,9 @@ $submission_count  = $wpdb->get_var( "SHOW TABLES LIKE '{$submissions_table}'" )
 		<div style="display:flex;gap:1rem;flex-wrap:wrap;">
 			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-sections' ); ?>" class="button button-primary">⚙️ Section Controls</a>
 			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-content' ); ?>" class="button button-primary">📝 Content &amp; Menu</a>
-			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-nav' ); ?>" class="button button-primary">🧭 Navigation</a>
+			<?php if ( class_exists( 'AH_Admin_Bootstrap' ) ) : ?>
+				<a href="<?php echo admin_url( 'admin.php?page=ah-navigation' ); ?>" class="button button-primary">🧭 Navigation &amp; Footer (Plugin)</a>
+			<?php endif; ?>
 			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-settings' ); ?>" class="button button-primary">🔧 Site Settings</a>
 			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-submissions' ); ?>" class="button">📥 Enquiry Submissions</a>
 			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-mock' ); ?>" class="button">🌱 Install Mock Data</a>

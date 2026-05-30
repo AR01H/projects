@@ -11,8 +11,9 @@ class CH_Theme_Admin {
 		add_action( 'admin_post_ch_theme_cleanup',     [ self::class, 'handle_cleanup'  ] );
 		add_action( 'admin_post_ch_theme_sections',    [ self::class, 'handle_sections' ] );
 		add_action( 'admin_post_ch_theme_content',     [ self::class, 'handle_content'  ] );
-		add_action( 'admin_post_ch_theme_settings',    [ self::class, 'handle_settings' ] );
-		// nav handler registered in functions.php via admin_post_ch_theme_nav
+		// ch_theme_settings handler lives in functions.php (complete version that
+		// also saves pricing, certifications and schema). Do NOT register a second
+		// handler here — it would overwrite those extended settings.
 	}
 
 	public static function register_menus(): void {
@@ -28,7 +29,7 @@ class CH_Theme_Admin {
 		add_submenu_page( 'ch-theme-admin', 'Overview',             'Overview',             'manage_options', 'ch-theme-admin',       [ self::class, 'page_dashboard'   ] );
 		add_submenu_page( 'ch-theme-admin', 'Section Controls',     'Section Controls',     'manage_options', 'ch-theme-sections',    [ self::class, 'page_sections'    ] );
 		add_submenu_page( 'ch-theme-admin', 'Content & Menu',       'Content & Menu',       'manage_options', 'ch-theme-content',     [ self::class, 'page_content'     ] );
-		add_submenu_page( 'ch-theme-admin', 'Navigation & Footer',  '🗺️ Nav & Footer',      'manage_options', 'ch-theme-nav',         [ self::class, 'page_nav'         ] );
+		// Navigation & Footer are managed by the CMS plugin (ah_cms_navigation / ah_cms_footer).
 		add_submenu_page( 'ch-theme-admin', 'Site Settings',        'Site Settings',        'manage_options', 'ch-theme-settings',    [ self::class, 'page_settings'    ] );
 		add_submenu_page( 'ch-theme-admin', 'Enquiry Submissions',  'Enquiry Submissions',  'manage_options', 'ch-theme-submissions', [ self::class, 'page_submissions' ] );
 		add_submenu_page( 'ch-theme-admin', 'Install Mock Data',    'Install Mock Data',    'manage_options', 'ch-theme-mock',        [ self::class, 'page_mock'        ] );
@@ -46,7 +47,6 @@ class CH_Theme_Admin {
 	public static function page_dashboard(): void   { require get_template_directory() . '/admin/theme-dashboard.php';   }
 	public static function page_sections(): void    { require get_template_directory() . '/admin/theme-sections.php';    }
 	public static function page_content(): void     { require get_template_directory() . '/admin/theme-content.php';    }
-	public static function page_nav(): void         { require get_template_directory() . '/admin/theme-nav.php';         }
 	public static function page_settings(): void    { require get_template_directory() . '/admin/theme-settings.php';   }
 	public static function page_submissions(): void { require get_template_directory() . '/admin/theme-submissions.php';}
 	public static function page_mock(): void        { require get_template_directory() . '/admin/theme-mock-data.php';   }
@@ -71,24 +71,12 @@ class CH_Theme_Admin {
 		require_once get_template_directory() . '/mock_data/seeder.php';
 
 		$selected = isset( $_POST['seed_types'] ) ? array_map( 'sanitize_key', (array) $_POST['seed_types'] ) : [];
-		$nav_seeded = false;
-
-		// Handle navigation preset separately (not CSV-driven)
-		if ( in_array( 'navigation', $selected, true ) ) {
-			$selected = array_diff( $selected, [ 'navigation' ] );
-			$mock_nav = ch_get_mock_navigation();
-			update_option( 'ch_theme_navigation', wp_json_encode( $mock_nav['nav'] ) );
-			update_option( 'ch_nav_cta',          wp_json_encode( $mock_nav['cta'] ) );
-			update_option( 'ch_theme_footer',      wp_json_encode( $mock_nav['footer'] ) );
-			$nav_seeded = true;
-		}
 
 		$result = ! empty( $selected )
 			? CH_Theme_Seeder::seed_selected( $selected )
 			: [ 'inserted' => 0, 'updated' => 0, 'errors' => [] ];
 
-		$msg = $nav_seeded ? 'Navigation & footer preset installed. ' : '';
-		$msg .= 'Mock data: ' . $result['inserted'] . ' inserted, ' . $result['updated'] . ' updated.';
+		$msg = 'Mock data installed: ' . $result['inserted'] . ' inserted, ' . $result['updated'] . ' updated.';
 		if ( ! empty( $result['errors'] ) ) {
 			$msg .= ' Warnings: ' . implode( '; ', $result['errors'] );
 		}
@@ -229,6 +217,17 @@ class CH_Theme_Admin {
 		if ( isset( $_POST['booking_heading'] ) )     $existing_settings['booking_heading']     = sanitize_text_field( $_POST['booking_heading'] );
 		if ( isset( $_POST['booking_sub'] ) )         $existing_settings['booking_sub']         = sanitize_text_field( $_POST['booking_sub'] );
 		if ( isset( $_POST['booking_image'] ) )       $existing_settings['booking_image']       = esc_url_raw( $_POST['booking_image'] );
+
+		// Homepage display limits (only when the limits card was on the submitted form)
+		if ( isset( $_POST['home_limits_present'] ) ) {
+			$raw_hl = isset( $_POST['home_limits'] ) ? (array) $_POST['home_limits'] : [];
+			$hl     = [];
+			foreach ( [ 'story_cards', 'faqs' ] as $hk ) {
+				$hl[ $hk . '_limit' ] = isset( $raw_hl[ $hk . '_limit' ] ) ? '1' : '0';
+				$hl[ $hk . '_count' ] = max( 1, (int) ( $raw_hl[ $hk . '_count' ] ?? 0 ) );
+			}
+			$existing_settings['home_limits'] = $hl;
+		}
 		update_option( 'ch_site_settings', $existing_settings );
 		$sc = [];
 		foreach ( (array) ( $_POST['story_cards'] ?? [] ) as $card ) {
@@ -253,7 +252,7 @@ class CH_Theme_Admin {
 			}
 
 			$sc[] = [
-				'id'      => sanitize_title( $card['id'] ?? $label ),
+				'id'      => sanitize_title( ! empty( $card['id'] ) ? $card['id'] : $label ),
 				'icon'    => sanitize_text_field( $card['icon']    ?? '' ),
 				'label'   => $label,
 				'heading' => sanitize_text_field( $card['heading'] ?? '' ),
@@ -268,18 +267,8 @@ class CH_Theme_Admin {
 		exit;
 	}
 
-	public static function handle_settings(): void {
-		check_admin_referer( 'ch_theme_settings' );
-		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-		$fields = [ 'phone', 'email', 'address', 'website', 'whatsapp', 'facebook_url', 'instagram_url', 'tiktok_url', 'youtube_url', 'tagline' ];
-		$saved  = [];
-		foreach ( $fields as $f ) {
-			$saved[ $f ] = sanitize_text_field( $_POST[ $f ] ?? '' );
-		}
-		update_option( 'ch_site_settings', wp_json_encode( $saved ) );
-		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-settings', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
-		exit;
-	}
+	// handle_settings() intentionally removed — the authoritative handler is in
+	// functions.php (saves contact, social, pricing, certifications and schema).
 
 	// ── Shared admin CSS ──────────────────────────────────────────────────────
 

@@ -71,24 +71,15 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
         ⚠️ Running multiple times may duplicate DB rows - use Cleanup first if re-seeding.
       </p>
       <?php
-      // Navigation: check if already configured
-      $nav_set    = ! empty( get_option( 'ch_theme_navigation' ) );
-      $footer_set = ! empty( get_option( 'ch_theme_footer' ) );
-      $nav_status = $nav_set ? 'configured' : 'empty';
-
-      $content_csvs = [
-        'navigation' => 'Header nav, CTA button &amp; footer columns',
-        'reviews'    => 'Customer reviews',
-        'faqs'       => 'FAQ entries',
-        'news-bar'   => 'News bar / marquee items',
-        'journal'    => 'Journal blog posts (WP posts)',
-      ];
-      $csv_map_for_count = [
-        'navigation' => null,
-        'reviews'    => 'reviews',
-        'faqs'       => 'faqs',
-        'news-bar'   => 'news_bar',
-        'journal'    => null,
+      // Each importable item: label + the CSV file used for its row count.
+      // Navigation, footer and FAQs are managed by the CMS plugin and are NOT
+      // seeded by the theme (they are read from the plugin directly).
+      $content_items = [
+        'story-cards'    => [ 'label' => '🌾 Sugarcane story cards (with images)', 'csv' => 'story-cards' ],
+        'certifications' => [ 'label' => '🏛️ Certification badges',           'csv' => 'certifications' ],
+        'reviews'        => [ 'label' => '⭐ Customer reviews',                 'csv' => 'reviews'        ],
+        'news-bar'       => [ 'label' => '📰 News bar / marquee items',         'csv' => 'news_bar'       ],
+        'journal'        => [ 'label' => '📝 Journal blog posts (WP posts)',    'csv' => 'journal-posts'  ],
       ];
       ?>
       <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="ch-seed-form">
@@ -105,43 +96,28 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
         </div>
 
         <ul style="list-style:none;margin:0 0 14px;padding:0;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden">
-          <?php foreach ( $content_csvs as $key => $label ) :
-            $csv_key = $csv_map_for_count[ $key ];
-            $n       = $csv_key ? ( $csv_counts[ $csv_key ] ?? 0 ) : null;
-            $is_nav  = $key === 'navigation';
+          <?php foreach ( $content_items as $key => $item ) :
+            $rows = CH_Data::load_csv( $item['csv'] );
+            $n    = is_array( $rows ) ? count( $rows ) : 0;
           ?>
             <li style="border-bottom:1px solid #f1f5f9">
               <label style="display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer">
                 <input type="checkbox" name="seed_types[]" value="<?php echo esc_attr( $key ); ?>" checked
                        style="width:15px;height:15px;accent-color:#b7791f;flex-shrink:0">
-                <span style="flex:1;font-size:.82rem;color:#374151"><?php echo $label; ?></span>
-                <?php if ( $is_nav ) : ?>
-                  <?php if ( $nav_set ) : ?>
-                    <span style="font-size:.75rem;color:#d97706;white-space:nowrap">⚠ Already set (will overwrite)</span>
-                  <?php else : ?>
-                    <span style="font-size:.75rem;color:#16a34a;white-space:nowrap">✓ Preset ready</span>
-                  <?php endif; ?>
-                <?php elseif ( $n !== null && $n > 0 ) : ?>
+                <span style="flex:1;font-size:.82rem;color:#374151"><?php echo $item['label']; ?></span>
+                <?php if ( $n > 0 ) : ?>
                   <span style="font-size:.75rem;color:#16a34a;white-space:nowrap">✓ <?php echo esc_html( $n ); ?> rows</span>
-                <?php elseif ( $n === null ) : ?>
-                  <span style="font-size:.75rem;color:#64748b;white-space:nowrap">WP posts</span>
                 <?php else : ?>
                   <span style="font-size:.75rem;color:#dc2626;white-space:nowrap">✗ empty CSV</span>
                 <?php endif; ?>
               </label>
-              <?php if ( $is_nav ) : ?>
-              <div style="padding:4px 12px 10px 36px;font-size:.75rem;color:#64748b;line-height:1.6;">
-                Installs: <strong>Home → Our Juices → Why Sugarcane → Events &amp; Hire → About Us (dropdown) → Franchise → Blog</strong>
-                + CTA "Get in Touch" button + 2 footer link columns (Our Juice / Services)
-              </div>
-              <?php endif; ?>
             </li>
           <?php endforeach; ?>
         </ul>
 
         <button type="submit" class="button button-primary"
                 style="width:100%;padding:9px;font-size:.9rem"
-                onclick="var checked=document.querySelectorAll('#ch-seed-form input[type=checkbox]:checked').length;if(!checked){alert('Select at least one item.');return false;}return confirm('Import selected mock data? Navigation will overwrite existing if checked.')">
+                onclick="var checked=document.querySelectorAll('#ch-seed-form input[type=checkbox]:checked').length;if(!checked){alert('Select at least one item.');return false;}return confirm('Import selected mock data? Existing data for the selected items will be overwritten.')">
           📦 Install Selected
         </button>
       </form>
@@ -205,13 +181,16 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
       </thead>
       <tbody>
         <?php
+        // Navigation, footer and FAQs are managed by the CMS plugin, not the theme.
         $csv_files = [
-          'reviews.csv'  => [ 'key' => 'reviews',  'purpose' => 'Customer reviews (author_name, location, review_text, rating, result, status)' ],
-          'faqs.csv'     => [ 'key' => 'faqs',     'purpose' => 'FAQs (topic, question, answer, status, sort_order)' ],
-          'news_bar.csv' => [ 'key' => 'news_bar', 'purpose' => 'News ticker messages (message, status, sort_order)' ],
+          'story-cards.csv'     => [ 'csv' => 'story-cards',     'purpose' => 'Sugarcane story cards (id, icon, label, heading, body, facts;…, images;…)' ],
+          'certifications.csv'  => [ 'csv' => 'certifications',  'purpose' => 'Certification badges (icon, title, desc, badge)' ],
+          'reviews.csv'         => [ 'csv' => 'reviews',         'purpose' => 'Customer reviews (author_name, location, review_text, rating, result, status)' ],
+          'news_bar.csv'        => [ 'csv' => 'news_bar',        'purpose' => 'News ticker messages (message, status, sort_order)' ],
         ];
         foreach ( $csv_files as $file => $info ) :
-          $n = $csv_counts[ $info['key'] ] ?? 0;
+          $rows = CH_Data::load_csv( $info['csv'] );
+          $n    = is_array( $rows ) ? count( $rows ) : 0;
         ?>
         <tr style="border-bottom:1px solid #f1f5f9">
           <td style="padding:6px 12px"><code><?php echo esc_html( $file ); ?></code></td>

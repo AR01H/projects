@@ -46,6 +46,9 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 	</div>
 </div>
 
+<!-- ── Book Your Order wizard (banner + popup) ──────────────────────────────── -->
+<?php get_template_part( 'components/booking-wizard' ); ?>
+
 <!-- ── Event packages ────────────────────────────────────────────────────────── -->
 <section style="background:var(--ch-white);padding:5rem 2rem;">
 	<div class="container">
