@@ -257,6 +257,230 @@
         track.addEventListener('mouseleave', function () { autoTimer = setInterval(function () { current = (current + 1) % cards.length; update(); }, 4000); });
     }
 
+    // ── Hire Packages Carousel ────────────────────────────────────────────────
+    function initHireCarousel() {
+        var track = document.getElementById('ch-hire-track');
+        var prev  = document.getElementById('ch-hire-prev');
+        var next  = document.getElementById('ch-hire-next');
+        if (!track) return;
+
+        var cards   = track.querySelectorAll('.ch-hire-card');
+        var current = 0;
+
+        function getDots() {
+            return document.querySelectorAll('#ch-hire-dots .ch-dot');
+        }
+
+        function show(idx) {
+            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+            getDots().forEach(function (d, i) {
+                d.classList.toggle('active', i === idx);
+                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+            });
+            current = idx;
+        }
+        function advance() { show((current + 1) % cards.length); }
+        function retreat() { show((current - 1 + cards.length) % cards.length); }
+
+        if (next) next.addEventListener('click', advance);
+        if (prev) prev.addEventListener('click', retreat);
+
+        getDots().forEach(function (dot, i) {
+            dot.addEventListener('click', function () { show(i); });
+        });
+
+        addSwipe(track, advance, retreat);
+    }
+
+    // ── Certifications Carousel ───────────────────────────────────────────────
+    function initCertsCarousel() {
+        var track = document.getElementById('ch-certs-track');
+        var prev  = document.getElementById('ch-certs-prev');
+        var next  = document.getElementById('ch-certs-next');
+        if (!track) return;
+
+        var cards   = track.querySelectorAll('.ch-cert-card');
+        var current = 0;
+
+        function getDots() {
+            return document.querySelectorAll('#ch-certs-dots .ch-dot');
+        }
+
+        function show(idx) {
+            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+            getDots().forEach(function (d, i) {
+                d.classList.toggle('active', i === idx);
+                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+            });
+            current = idx;
+        }
+        function advance() { show((current + 1) % cards.length); }
+        function retreat() { show((current - 1 + cards.length) % cards.length); }
+
+        if (next) next.addEventListener('click', advance);
+        if (prev) prev.addEventListener('click', retreat);
+
+        getDots().forEach(function (dot, i) {
+            dot.addEventListener('click', function () { show(i); });
+        });
+
+        addSwipe(track, advance, retreat);
+
+        // Auto-rotate every 5 s
+        var timer = setInterval(advance, 5000);
+        track.addEventListener('mouseenter', function () { clearInterval(timer); });
+        track.addEventListener('mouseleave', function () { timer = setInterval(advance, 5000); });
+    }
+
+    // ── Event Packages Carousel (events page) ────────────────────────────────
+    function initPkgCarousel() {
+        var track = document.getElementById('ch-pkg-track');
+        var prev  = document.getElementById('ch-pkg-prev');
+        var next  = document.getElementById('ch-pkg-next');
+        if (!track) return;
+
+        var cards   = track.querySelectorAll('.ch-package-card');
+        var current = 0;
+
+        function getDots() { return document.querySelectorAll('#ch-pkg-dots .ch-dot'); }
+
+        function show(idx) {
+            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+            getDots().forEach(function (d, i) {
+                d.classList.toggle('active', i === idx);
+                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+            });
+            current = idx;
+        }
+        function advance() { show((current + 1) % cards.length); }
+        function retreat() { show((current - 1 + cards.length) % cards.length); }
+
+        if (next) next.addEventListener('click', advance);
+        if (prev) prev.addEventListener('click', retreat);
+        getDots().forEach(function (dot, i) { dot.addEventListener('click', function () { show(i); }); });
+        addSwipe(track, advance, retreat);
+    }
+
+    // ── Homepage Events Preview Carousel ─────────────────────────────────────
+    function initEpcCarousel() {
+        var track = document.getElementById('ch-epc-track');
+        var prev  = document.getElementById('ch-epc-prev');
+        var next  = document.getElementById('ch-epc-next');
+        if (!track) return;
+
+        var cards   = track.querySelectorAll('.ch-epc');
+        var current = 0;
+
+        function getDots() { return document.querySelectorAll('#ch-epc-dots .ch-dot'); }
+
+        function show(idx) {
+            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+            getDots().forEach(function (d, i) {
+                d.classList.toggle('active', i === idx);
+                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+            });
+            current = idx;
+        }
+        function advance() { show((current + 1) % cards.length); }
+        function retreat() { show((current - 1 + cards.length) % cards.length); }
+
+        if (next) next.addEventListener('click', advance);
+        if (prev) prev.addEventListener('click', retreat);
+        getDots().forEach(function (dot, i) { dot.addEventListener('click', function () { show(i); }); });
+        addSwipe(track, advance, retreat);
+    }
+
+    // ── Franchise Why / Steps / Reviews carousels ────────────────────────────
+    function makeFranchiseCarousel(trackId, prevId, nextId, dotsId, cardSel) {
+        var track = document.getElementById(trackId);
+        var prev  = document.getElementById(prevId);
+        var next  = document.getElementById(nextId);
+        if (!track) return;
+        var cards   = track.querySelectorAll(cardSel);
+        var current = 0;
+        function getDots() { return document.querySelectorAll('#' + dotsId + ' .ch-dot'); }
+        function show(idx) {
+            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+            getDots().forEach(function (d, i) {
+                d.classList.toggle('active', i === idx);
+                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+            });
+            current = idx;
+        }
+        function advance() { show((current + 1) % cards.length); }
+        function retreat() { show((current - 1 + cards.length) % cards.length); }
+        if (next) next.addEventListener('click', advance);
+        if (prev) prev.addEventListener('click', retreat);
+        getDots().forEach(function (dot, i) { dot.addEventListener('click', function () { show(i); }); });
+        addSwipe(track, advance, retreat);
+    }
+    function initFranchiseCarousels() {
+        makeFranchiseCarousel('ch-fwhy-track',  'ch-fwhy-prev',  'ch-fwhy-next',  'ch-fwhy-dots',  '.ch-fw-card');
+        makeFranchiseCarousel('ch-fstep-track', 'ch-fstep-prev', 'ch-fstep-next', 'ch-fstep-dots', '.ch-step-card');
+        makeFranchiseCarousel('ch-rfr-track',   'ch-rfr-prev',   'ch-rfr-next',   'ch-rfr-dots',   '.ch-rfr-card');
+    }
+
+    // ── Gallery Strip Carousels (mobile) ─────────────────────────────────────
+    function initGalleryStrips() {
+        document.querySelectorAll('.ch-gstrip').forEach(function (gstrip) {
+            var id    = gstrip.getAttribute('data-id');
+            var track = document.getElementById(id + '-track');
+            var prev  = document.getElementById(id + '-prev');
+            var next  = document.getElementById(id + '-next');
+            if (!track) return;
+
+            var cards   = track.querySelectorAll('.ch-gstrip__card');
+            var current = 0;
+
+            function getDots() { return document.querySelectorAll('#' + id + '-dots .ch-dot'); }
+
+            function show(idx) {
+                cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+                getDots().forEach(function (d, i) {
+                    d.classList.toggle('active', i === idx);
+                    d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+                });
+                current = idx;
+            }
+            function advance() { show((current + 1) % cards.length); }
+            function retreat() { show((current - 1 + cards.length) % cards.length); }
+
+            if (next) next.addEventListener('click', advance);
+            if (prev) prev.addEventListener('click', retreat);
+            getDots().forEach(function (dot, i) { dot.addEventListener('click', function () { show(i); }); });
+            addSwipe(track, advance, retreat);
+        });
+    }
+
+    // ── Events Reviews Carousel ───────────────────────────────────────────────
+    function initRevEvCarousel() {
+        var track = document.getElementById('ch-rev-ev-track');
+        var prev  = document.getElementById('ch-rev-ev-prev');
+        var next  = document.getElementById('ch-rev-ev-next');
+        if (!track) return;
+
+        var cards   = track.querySelectorAll('.ch-rev-ev-card');
+        var current = 0;
+
+        function getDots() { return document.querySelectorAll('#ch-rev-ev-dots .ch-dot'); }
+
+        function show(idx) {
+            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+            getDots().forEach(function (d, i) {
+                d.classList.toggle('active', i === idx);
+                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+            });
+            current = idx;
+        }
+        function advance() { show((current + 1) % cards.length); }
+        function retreat() { show((current - 1 + cards.length) % cards.length); }
+
+        if (next) next.addEventListener('click', advance);
+        if (prev) prev.addEventListener('click', retreat);
+        getDots().forEach(function (dot, i) { dot.addEventListener('click', function () { show(i); }); });
+        addSwipe(track, advance, retreat);
+    }
+
     // ── FAQ Accordion ──────────────────────────────────────────────────────────
     function initFaqAccordion() {
         var items = document.querySelectorAll('.ch-faq-item');
@@ -403,6 +627,122 @@
         });
     }
 
+    // ── Scroll to Top Button ──────────────────────────────────────────────────
+    function initScrollToTop() {
+        var btn = document.getElementById('ch-scroll-to-top');
+        var fill = document.querySelector('.ch-scroll-glass__fill');
+        if (!btn) return;
+
+        function updateScrollProgress() {
+            // Calculate scroll percentage
+            var scrollTop = window.scrollY;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+            // Show button when scrolled down
+            if (scrollTop > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+
+            // Update juice fill height (max 16px, scales with scroll)
+            if (fill) {
+                var maxFillHeight = 16;
+                var fillHeight = (scrollPercent / 100) * maxFillHeight;
+                fill.style.height = fillHeight + 'px';
+                fill.style.opacity = scrollPercent > 5 ? 1 : scrollPercent / 5;
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        btn.addEventListener('click', scrollToTop);
+
+        // Initial call
+        updateScrollProgress();
+    }
+
+    // ── Post Gallery Carousel ─────────────────────────────────────────────────
+    function initPostGalleries() {
+        document.querySelectorAll('.ch-post-gallery').forEach(function (gallery) {
+            var id     = gallery.getAttribute('id');
+            var track  = gallery.querySelector('.ch-post-gallery__track');
+            var slides = gallery.querySelectorAll('.ch-post-gallery__slide');
+            var dots   = gallery.querySelectorAll('.ch-post-gallery__dot');
+            var arrows = gallery.querySelectorAll('.ch-post-gallery__arrow');
+
+            if (!track || slides.length < 2) return;
+
+            var current = 0;
+
+            function show(idx) {
+                current = (idx + slides.length) % slides.length;
+                slides.forEach(function (s, i) { s.classList.toggle('active', i === current); });
+                dots.forEach(function (d, i) { d.classList.toggle('active', i === current); });
+            }
+
+            function advance() { show(current + 1); }
+            function retreat() { show(current - 1); }
+
+            // Dots and arrows
+            dots.forEach(function (dot, i) {
+                dot.addEventListener('click', function () { show(i); });
+            });
+            arrows.forEach(function (arrow) {
+                var isNext = arrow.classList.contains('ch-post-gallery__arrow--next');
+                arrow.addEventListener('click', isNext ? advance : retreat);
+            });
+
+            // Swipe support
+            addSwipe(track, advance, retreat);
+        });
+    }
+
+    // ── Privacy Policy Modal ───────────────────────────────────────────────────
+    function initPrivacyModal() {
+        var modal   = document.getElementById('ch-pp-modal');
+        var overlay = document.getElementById('ch-pp-overlay');
+        if (!modal) return;
+
+        var lastTrigger = null;
+
+        function openModal(triggerEl) {
+            lastTrigger = triggerEl || null;
+            modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            var firstClose = modal.querySelector('.ch-pp-close');
+            if (firstClose) setTimeout(function () { firstClose.focus(); }, 50);
+        }
+        function closeModal() {
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            if (lastTrigger) lastTrigger.focus();
+        }
+
+        // All triggers on the page (class or id)
+        document.addEventListener('click', function (e) {
+            var t = e.target.closest('#ch-pp-trigger, .ch-pp-trigger');
+            if (t) { e.preventDefault(); openModal(t); }
+        });
+
+        if (overlay) overlay.addEventListener('click', closeModal);
+        modal.querySelectorAll('.ch-pp-close').forEach(function (btn) {
+            btn.addEventListener('click', closeModal);
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+        });
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
         initNavScroll();
@@ -410,13 +750,23 @@
         initMobileNav();
         initSearchPanel();
         initScrollAnimations();
+        initScrollToTop();
         initReviewCarousel();
+        initHireCarousel();
+        initCertsCarousel();
+        initPkgCarousel();
+        initEpcCarousel();
+        initRevEvCarousel();
+        initFranchiseCarousels();
+        initGalleryStrips();
+        initPostGalleries();
         initJuiceShowcase();
         initFaqAccordion();
         initFooterAccordion();
         initSmoothScroll();
         initStoryCards();
         initStoryGalleries();
+        initPrivacyModal();
     });
 
 })();

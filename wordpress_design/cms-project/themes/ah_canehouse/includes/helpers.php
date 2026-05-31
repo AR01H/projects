@@ -415,10 +415,30 @@ function ch_get_benefits(): array {
 }
 
 // ── Events / Hire Packages ────────────────────────────────────────────────────
-function ch_get_hire_packages(): array {
+function ch_get_hire_packages( int $limit = 0 ): array {
+	// Pull from plugin DB table if available
+	if ( class_exists( 'AH_Events_Model' ) ) {
+		$model = new AH_Events_Model();
+		$rows  = $model->get_active( $limit );
+		if ( ! empty( $rows ) ) {
+			return array_map( function ( $r ) {
+				return [
+					'id'    => (int) $r->id,
+					'icon'  => $r->icon  ?? '🎉',
+					'title' => $r->title ?? '',
+					'desc'  => $r->description ?? '',
+					'items' => (array) ( $r->items ?? [] ),
+					'color' => $r->color ?? 'green',
+				];
+			}, $rows );
+		}
+	}
+	// Fallback: legacy WP option
 	$opt = get_option( 'ch_hire_packages', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_hire_packages();
+	$packages = ! empty( $opt ) ? $opt : ch_mock_hire_packages();
+	if ( $limit > 0 ) $packages = array_slice( $packages, 0, $limit );
+	return $packages;
 }
 
 function ch_get_hire_features(): array {

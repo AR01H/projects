@@ -16,6 +16,9 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 	</div>
 	<div class="ch-hero__deco ch-hero__deco--1" aria-hidden="true">🌿</div>
 	<div class="ch-hero__deco ch-hero__deco--2" aria-hidden="true">🌿</div>
+	<div class="ch-floating-leaf ch-fl1" aria-hidden="true">🍋</div>
+	<div class="ch-floating-leaf ch-fl2" aria-hidden="true">🍃</div>
+	<div class="ch-floating-leaf ch-fl3" aria-hidden="true">🌿</div>
 
 	<div class="ch-hero__inner">
 		<div class="ch-hero__left">
@@ -68,16 +71,11 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 			<div class="ch-hero__glow ch-hero__cup-wrap">
 				<?php if ( $has_logo ) : ?>
 					<img src="<?php echo esc_url( $logo_url ); ?>" alt="The Cane House"
-						class="ch-hero__logo-spin" style="transform:rotate(15deg);" />
+						class="ch-hero__logo-spin" />
 				<?php else : ?>
 					<div class="ch-hero__logo-placeholder">🌿</div>
 				<?php endif; ?>
 			</div>
-			<div class="ch-hero__cup-wrap">
-				<div class="ch-floating-leaf ch-fl1">🍋</div>
-				<div class="ch-floating-leaf ch-fl2">🍃</div>
-				<div class="ch-floating-leaf ch-fl3">🌿</div>
 			</div>
-		</div>
 	</div>
 </section>

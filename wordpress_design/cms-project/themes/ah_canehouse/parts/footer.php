@@ -5,9 +5,9 @@ $settings  = ch_get_settings();
 $footer    = ch_get_theme_footer();
 $phone     = $settings['phone']     ?? $settings['contact_phone']  ?? '';
 $email     = $settings['email']     ?? '';
-$whatsapp  = $settings['whatsapp']  ?? $settings['whatsapp_number'] ?? WHATASPP_CONTACT_NUMBER;
+$whatsapp  = $settings['whatsapp']  ?? $settings['whatsapp'] ?? WHATASPP_CONTACT_NUMBER;
 $address   = $settings['address']   ?? '';
-$wa_number = preg_replace( '/[^0-9]/', '', $whatsapp );
+$wa_number = $whatsapp;
 $logo_url  = get_template_directory_uri() . '/assets/images/logo.png';
 $has_logo  = file_exists( get_template_directory() . '/assets/images/logo.png' );
 $social    = $footer['social'] ?? [];
@@ -211,6 +211,22 @@ if ( empty( $cols ) ) {
 	</p>
 </footer>
 
+<!-- ── Scroll to Top Button ──────────────────────────────────────────────── -->
+<button id="ch-scroll-to-top" class="ch-scroll-to-top" aria-label="Scroll to top">
+	<!-- Glass of Sugarcane Juice -->
+	<div class="ch-scroll-glass">
+		<div class="ch-scroll-glass__fill"></div>
+		<svg viewBox="0 0 24 24" class="ch-scroll-glass__cup" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+			<path d="M6 4h12v12c0 2-1.5 3-6 3s-6-1-6-3V4z" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M18 6h2c1 0 1.5.5 1.5 1.5v4c0 1-.5 1.5-1.5 1.5h-2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+	</div>
+	<!-- Arrow Icon -->
+	<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="ch-scroll-arrow">
+		<path d="M7 14.5l5-5 5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+	</svg>
+</button>
+
 <!-- ── WhatsApp FAB ──────────────────────────────────────────────────────── -->
 <?php if ( $wa_number ) : ?>
 <a href="<?php echo esc_url( 'https://wa.me/' . $wa_number . '?text=' . rawurlencode( 'Hi! I\'d love to find out more about The Cane House.' ) ); ?>"
@@ -221,6 +237,8 @@ if ( empty( $cols ) ) {
 	<span class="ch-wa-fab__label">WhatsApp</span>
 </a>
 <?php endif; ?>
+
+<?php get_template_part( 'components/privacy-policy-modal' ); ?>
 
 <?php wp_footer(); ?>
 </body>

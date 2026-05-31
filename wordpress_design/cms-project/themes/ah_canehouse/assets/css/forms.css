@@ -139,6 +139,83 @@
     display: block;
 }
 
+/* ── Disclaimer / Consent Checkbox ─────────────────────────────────────────── */
+.ch-disclaimer-group { margin-top: 0.5rem; margin-bottom: 0.25rem; }
+
+.ch-disclaimer-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+/* Hide native checkbox */
+.ch-disclaimer-check {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+/* Custom box */
+.ch-disclaimer-box {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--ch-green-mid, #4a8c2a);
+    border-radius: 5px;
+    background: #fff;
+    margin-top: 2px;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    display: inline-block;
+}
+/* Tick mark */
+.ch-disclaimer-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpolyline points='1.5,5 4.5,8 10.5,1.5' stroke='%23fff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/70% no-repeat;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.ch-disclaimer-check:checked + .ch-disclaimer-box {
+    background: var(--ch-green-mid, #4a8c2a);
+    border-color: var(--ch-green-mid, #4a8c2a);
+}
+.ch-disclaimer-check:checked + .ch-disclaimer-box::after { opacity: 1; }
+.ch-disclaimer-check:focus-visible + .ch-disclaimer-box {
+    box-shadow: 0 0 0 3px rgba(74, 140, 42, 0.25);
+}
+
+/* Disclaimer text */
+.ch-disclaimer-text {
+    font-size: 0.78rem;
+    color: var(--ch-text-muted, #6b7c5e);
+    line-height: 1.55;
+}
+.ch-disclaimer-text a {
+    color: var(--ch-green-mid, #4a8c2a);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.ch-disclaimer-text a:hover { color: var(--ch-green-deep, #2d5a1b); }
+
+/* Error state */
+.ch-disclaimer-group.has-error .ch-disclaimer-box {
+    border-color: #e53935;
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+}
+.ch-consent-error {
+    font-size: 0.72rem;
+    color: #e53935;
+    margin-top: 0.4rem;
+    margin-left: 1.75rem;
+    display: block;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .ch-contact-form { padding: 1.8rem 1.5rem; }

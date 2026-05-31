@@ -153,7 +153,7 @@ add_action( 'admin_post_ch_theme_settings', function () {
 	$text_fields = [
 		'phone', 'email', 'address', 'website', 'whatsapp', 'tagline',
 		'instagram_url', 'facebook_url', 'tiktok_url', 'youtube_url',
-		'cert_heading', 'cert_subtext', 'cert_image_url',
+		'cert_heading', 'cert_subtext'
 	];
 	foreach ( $text_fields as $key ) {
 		if ( isset( $_POST[ $key ] ) ) {

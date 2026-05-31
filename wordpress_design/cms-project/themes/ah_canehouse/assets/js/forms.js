@@ -20,8 +20,12 @@
         }
 
         function clearErrors() {
-            form.querySelectorAll('.ch-field-error').forEach(function (el) { el.remove(); });
+            form.querySelectorAll('.ch-field-error:not(.ch-consent-error)').forEach(function (el) { el.remove(); });
             form.querySelectorAll('.invalid').forEach(function (el) { el.classList.remove('invalid'); });
+            var consentErr = form.querySelector('.ch-consent-error');
+            if (consentErr) consentErr.style.display = 'none';
+            var dg = form.querySelector('.ch-disclaimer-group');
+            if (dg) dg.classList.remove('has-error');
         }
 
         function showFieldError(field, message) {
@@ -33,9 +37,10 @@
         }
 
         function validate() {
-            var ok    = true;
-            var name  = document.getElementById('ch-name');
-            var email = document.getElementById('ch-email');
+            var ok      = true;
+            var name    = document.getElementById('ch-name');
+            var email   = document.getElementById('ch-email');
+            var consent = document.getElementById('ch-consent');
             clearErrors();
 
             if (name && name.value.trim() === '') {
@@ -50,6 +55,12 @@
                     showFieldError(email, 'Please enter a valid email address.');
                     ok = false;
                 }
+            }
+            if (consent && !consent.checked) {
+                var consentErr = form.querySelector('.ch-consent-error');
+                if (consentErr) consentErr.style.display = 'block';
+                consent.closest('.ch-disclaimer-group').classList.add('has-error');
+                ok = false;
             }
             return ok;
         }

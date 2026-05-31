@@ -101,6 +101,25 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 			</div>
 			
 
+			<!-- ── Disclaimer checkbox ───────────────────────────────────────── -->
+			<div class="ch-form-group ch-disclaimer-group">
+				<label class="ch-disclaimer-label" for="ch-consent">
+					<input type="checkbox" id="ch-consent" name="ch_consent" class="ch-disclaimer-check" required>
+					<span class="ch-disclaimer-box" aria-hidden="true"></span>
+					<span class="ch-disclaimer-text">
+						I agree to The Cane House
+						<button type="button" class="ch-pp-trigger" id="ch-pp-trigger" aria-haspopup="dialog"><strong>Privacy Policy</strong></button>
+						and consent to being contacted regarding my enquiry.
+						We will never share your details with third parties.
+					</span>
+				</label>
+				<span class="ch-field-error ch-consent-error" style="display:none;">
+					Please tick the box to confirm you agree before sending.
+				</span>
+			</div>
+
+			<!-- Modal is rendered at body level via components/privacy-policy-modal.php (footer) -->
+
 			<button type="submit" class="ch-form-submit" id="ch-form-submit">
 				Send Message 🥤
 			</button>

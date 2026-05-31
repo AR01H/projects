@@ -30,16 +30,16 @@ $reviews  = ch_get_reviews( 12 );
 	<div class="container">
 		<div class="ch-stats-grid">
 			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num">★ 5.0</span>
-				<span class="ch-stat-label">Average Rating</span>
+				<span class="ch-stat-num">100%</span>
+				<span class="ch-stat-label">Usage</span>
 			</div>
 			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num">500+</span>
-				<span class="ch-stat-label">Happy Customers</span>
+				<span class="ch-stat-num">Unlimited</span>
+				<span class="ch-stat-label">Satisfaction</span>
 			</div>
 			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num">200+</span>
-				<span class="ch-stat-label">Events Served</span>
+				<span class="ch-stat-num">0%</span>
+				<span class="ch-stat-label">Additives</span>
 			</div>
 			<div class="ch-stat-item fade-up">
 				<span class="ch-stat-num">100%</span>
@@ -156,21 +156,10 @@ $reviews  = ch_get_reviews( 12 );
 	</div>
 </section>
 
-<!-- ── CTA ───────────────────────────────────────────────────────────────────── -->
-<section class="ch-inner-cta">
-	<div class="container">
-		<div class="ch-inner-cta__box fade-up">
-			<h2>Add Your Story to Ours</h2>
-			<p>Book The Cane House for your next event and give your guests something they'll be talking about for years.</p>
-			<div class="ch-inner-cta__btns">
-				<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn-lime">📞 Get a Quote</a>
-				<?php if ( $phone ) : ?>
-					<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" class="btn-outline" style="border-color:rgba(255,255,255,0.4);color:#fff;"><?php echo esc_html( $phone ); ?></a>
-				<?php endif; ?>
-			</div>
-		</div>
-	</div>
-</section>
+<div class="ch-contact-page-form">
+	<?php get_template_part( 'components/contact-section' ); ?>
+</div>
+
 
 </main>
 <?php get_footer(); ?>

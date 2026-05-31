@@ -88,13 +88,7 @@ $schema = ch_get_schema_settings();
 				<label for="cert_subtext">Section Sub-text</label>
 				<textarea id="cert_subtext" name="cert_subtext" rows="3" style="width:100%;padding:.5rem;border:1px solid #ddd;border-radius:4px;"><?php echo esc_textarea( $s['cert_subtext'] ?? '' ); ?></textarea>
 			</div>
-			<div class="ch-row">
-				<label for="cert_image_url">Certificate Image URL</label>
-				<input type="url" id="cert_image_url" name="cert_image_url"
-					value="<?php echo esc_attr( $s['cert_image_url'] ?? '' ); ?>"
-					placeholder="https://... or use Media Library URL">
-				<p style="font-size:.8rem;color:#888;margin-top:4px;">Upload your Food Hygiene Certificate image to the Media Library and paste the URL here.</p>
-			</div>
+			
 
 			<h3 style="margin-top:1.5rem;font-size:1rem;">Certification Badges</h3>
 			<p style="color:#666;font-size:.85rem;margin-bottom:1rem;">Each badge appears as a card in the section. Leave title blank to hide a badge.</p>

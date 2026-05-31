@@ -2,9 +2,7 @@
 
 @media (max-width: 1024px) {
     /* .ch-nav { padding: 1rem 2rem; } */
-    .ch-hero { padding: 2rem 2rem 3rem; }
     .ch-hero__inner { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
-    .ch-hero__right { display: none; }
     .ch-hero__desc { margin-inline: auto; }
     .ch-hero__btns { justify-content: center; }
     .ch-hero__badges { justify-content: center; }
@@ -26,7 +24,6 @@ body.nav--collapsed .ch-nav__hamburger  { display: flex; }
 
     /* .ch-nav { padding: .8rem 1.5rem; } */
 
-    .ch-hero { padding: 2rem 1.5rem 3rem; }
     .ch-section-title { font-size: 1.8rem; }
 
     .ch-reviews-container { grid-template-columns: 1fr; }

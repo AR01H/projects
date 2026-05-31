@@ -34,6 +34,35 @@ class AH_DB_Installer {
 		self::ensure_taxonomy_media();
 		self::ensure_taxonomy_parent_terms();
 		self::ensure_trigger_logs();
+		self::ensure_events_table();
+	}
+
+	/**
+	 * Create the events (hire packages) table if it does not exist.
+	 */
+	public static function ensure_events_table(): void {
+		global $wpdb;
+		$t  = $wpdb->prefix . 'ah_events';
+		$cs = $wpdb->get_charset_collate();
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS `{$t}` (
+				`id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`icon`        VARCHAR(30)  NOT NULL DEFAULT '🎉',
+				`title`       VARCHAR(200) NOT NULL,
+				`description` TEXT         DEFAULT NULL,
+				`items`       JSON         DEFAULT NULL,
+				`color`       VARCHAR(30)  NOT NULL DEFAULT 'green',
+				`is_featured` TINYINT(1)   NOT NULL DEFAULT 0,
+				`sort_order`  INT          NOT NULL DEFAULT 0,
+				`status`      ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				`created_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				`updated_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_status`   (`status`),
+				KEY `idx_featured` (`is_featured`),
+				KEY `idx_sort`     (`sort_order`)
+			) ENGINE=InnoDB {$cs}"
+		);
 	}
 
 	public static function ensure_taxonomy_parent_terms(): void {

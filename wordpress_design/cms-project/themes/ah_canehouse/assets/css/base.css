@@ -113,7 +113,8 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 
 .btn-lime,
 .btn-outline,
-.btn-lime-sm {
+.btn-lime-sm,
+.btn-dark {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -167,6 +168,19 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 .btn-lime-sm:hover {
     background: var(--ch-yellow);
     transform: translateY(-1px);
+}
+
+.btn-dark {
+    padding: 0.95rem 2.2rem;
+    background: var(--ch-green-deep);
+    color: var(--ch-white);
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(15, 60, 10, 0.25);
+}
+.btn-dark:hover {
+    background: var(--ch-green-mid);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 60, 10, 0.35);
 }
 
 /* ── Text Utilities ────────────────────────────────────────────────────────── */
@@ -261,4 +275,8 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--ch-green-mid) var(--ch-bg-dark);
+}
+
+strong {
+    color: var(--ch-green-deep);
 }

@@ -105,6 +105,20 @@ class AH_CSV_Importer {
 					'status'     => 'active | inactive (default active)',
 				),
 			),
+			'events'     => array(
+				'label'    => 'Events / Hire Packages',
+				'required' => array( 'title' ),
+				'columns'  => array(
+					'title'       => 'Event / package name (required)',
+					'icon'        => 'Emoji icon for the card (default 🎉)',
+					'description' => 'Short description shown on the card',
+					'items'       => 'Pipe-separated bullet points e.g. "Live pressing|200 servings|Setup included"',
+					'color'       => 'green | amber | teal | purple | coral | indigo (default green)',
+					'is_featured' => '1 = show in homepage preview, 0 = events page only (default 0)',
+					'sort_order'  => 'Integer display order (default 0)',
+					'status'      => 'active | inactive (default active)',
+				),
+			),
 		);
 	}
 
@@ -166,6 +180,7 @@ class AH_CSV_Importer {
 			case 'team':       return self::import_team( $rows );
 			case 'taxonomies': return self::import_taxonomies( $rows );
 			case 'news_bar':   return self::import_news_bar( $rows );
+			case 'events':     return self::import_events( $rows );
 		}
 		return array( 'imported' => 0, 'skipped' => 0, 'errors' => array( 'Unknown type.' ) );
 	}
@@ -421,6 +436,52 @@ class AH_CSV_Importer {
 				'slug'        => $slug,
 				'parent_id'   => $parent_id,
 				'description' => sanitize_textarea_field( $row['description'] ?? '' ),
+				'sort_order'  => (int) ( $row['sort_order'] ?? 0 ),
+				'status'      => self::status( $row['status'] ?? '', array( 'active', 'inactive' ) ),
+			) );
+			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
+		}
+
+		return $result;
+	}
+
+	// -------------------------------------------------------------------------
+	// Events / Hire Packages
+	// -------------------------------------------------------------------------
+	private static function import_events( array $rows ): array {
+		global $wpdb;
+		AH_DB_Installer::ensure_events_table();
+		$table        = AH_DB_Helper::table( 'events' );
+		$valid_colors = array( 'green', 'amber', 'teal', 'purple', 'coral', 'indigo' );
+		$result       = array( 'imported' => 0, 'skipped' => 0, 'errors' => array() );
+
+		foreach ( $rows as $i => $row ) {
+			$line  = $i + 2;
+			$title = sanitize_text_field( $row['title'] ?? '' );
+			if ( ! $title ) {
+				self::result_add( $result, false, "Row {$line}: 'title' is required." );
+				continue;
+			}
+
+			// Parse pipe-separated items into JSON
+			$raw_items = sanitize_textarea_field( $row['items'] ?? '' );
+			$items_arr = array();
+			if ( $raw_items ) {
+				$items_arr = array_values( array_filter( array_map( 'trim', explode( '|', $raw_items ) ) ) );
+			}
+
+			$color = sanitize_key( $row['color'] ?? 'green' );
+			if ( ! in_array( $color, $valid_colors, true ) ) {
+				$color = 'green';
+			}
+
+			$wpdb->insert( $table, array(
+				'icon'        => sanitize_text_field( $row['icon'] ?? '🎉' ) ?: '🎉',
+				'title'       => $title,
+				'description' => sanitize_textarea_field( $row['description'] ?? '' ),
+				'items'       => wp_json_encode( $items_arr ),
+				'color'       => $color,
+				'is_featured' => (int) ( $row['is_featured'] ?? 0 ) ? 1 : 0,
 				'sort_order'  => (int) ( $row['sort_order'] ?? 0 ),
 				'status'      => self::status( $row['status'] ?? '', array( 'active', 'inactive' ) ),
 			) );
