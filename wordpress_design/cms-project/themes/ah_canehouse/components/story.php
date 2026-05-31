@@ -32,7 +32,7 @@ $facts = (array) ( $story['facts'] ?? ch_mock_story_settings()['facts'] );
 		</div>
 
 		<div class="fade-right">
-			<div class="ch-section-tag"><?php echo esc_html( $story['tag'] ?? 'The Story of Sugarcane' ); ?></div>
+			<div class="ch-section-tag"><?php echo esc_html( $story['tag'] ?? 'Story of Sugarcane' ); ?></div>
 			<h2 class="ch-section-title"><?php echo wp_kses( $story['headline'] ?? 'Beyond the <span class="accent">Juice</span>', [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 			<p class="ch-section-body" style="margin-top:1rem;">
 				<?php echo esc_html( $story['body_1'] ?? 'Sugarcane has been cherished for over 2,000 years, originating in South and Southeast Asia - particularly the Indian subcontinent - where it has been a cornerstone of Ayurvedic medicine, spiritual offerings, and everyday refreshment.' ); ?>

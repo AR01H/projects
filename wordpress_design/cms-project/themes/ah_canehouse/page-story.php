@@ -28,7 +28,7 @@ get_header();
 <!-- Why Sugarcane Juice is Loved Worldwide -->
 <?php get_template_part( 'components/sugarcane-benefits' ); ?>
 
-<!-- Beyond the Juice — history & heritage -->
+<!-- Beyond the Juice  history & heritage -->
 <?php get_template_part( 'components/story' ); ?>
 
 <!-- CTA -->

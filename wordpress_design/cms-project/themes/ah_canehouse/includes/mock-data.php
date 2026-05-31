@@ -246,7 +246,7 @@ function ch_mock_juice_showcase(): array {
 
 function ch_mock_story_settings(): array {
 	return [
-		'tag'          => 'The Story of Sugarcane',
+		'tag'          => 'Story of Sugarcane',
 		'headline'     => 'Beyond the <span class="accent">Juice</span>',
 		'body_1'       => 'Sugarcane has been cherished for over 2,000 years, originating in South and Southeast Asia - particularly the Indian subcontinent - where it has been a cornerstone of Ayurvedic medicine, spiritual offerings, and everyday refreshment. Fresh ganna ras (sugarcane juice) remains one of the most beloved street drinks across India.',
 		'body_2'       => 'At The Cane House, we bring this centuries-old tradition to the heart of the UK. Every glass honours that heritage - pressed live, served cool, with the same love and craft that has always made sugarcane juice special.',

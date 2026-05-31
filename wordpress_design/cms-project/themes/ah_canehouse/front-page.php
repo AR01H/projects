@@ -15,13 +15,15 @@ $s = ch_get_settings();
 		<?php get_template_part( 'components/hero' ); ?>
 	<?php endif; ?>
 
+	<?php
+		get_template_part( 'components/history-info' );
+	?>
+
 	<?php if ( ch_section_visible( 'story_cards' ) ) : ?>
 		<?php get_template_part( 'components/story-cards' ); ?>
 	<?php endif; ?>
 
-	<?php
-		get_template_part( 'components/sugarcane-experience' );
-	?>
+
 
 
 	<?php if ( ch_section_visible( 'reviews' ) ) : ?>

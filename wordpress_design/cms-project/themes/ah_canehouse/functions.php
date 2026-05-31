@@ -306,6 +306,7 @@ add_action( 'wp_enqueue_scripts', function () {
 
 	wp_enqueue_script( 'ch-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $v, true );
 	wp_enqueue_script( 'ch-forms', $uri . '/assets/js/forms.js', [ 'ch-main' ], $v, true );
+	wp_enqueue_script( 'ch-history-info', $uri . '/assets/js/history-info.js', [ 'ch-main' ], $v, true );
 
 	wp_localize_script( 'ch-forms', 'chTheme', [
 		'ajaxUrl' => admin_url( 'admin-ajax.php' ),

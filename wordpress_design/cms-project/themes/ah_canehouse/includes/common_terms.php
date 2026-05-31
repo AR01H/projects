@@ -33,7 +33,7 @@ define( 'CH_TAG_HOW',       'Simple & Easy' );
 define( 'CH_TAG_REVIEWS',   'Happy Customers' );
 define( 'CH_TAG_BUILD',     'Full Menu' );
 define( 'CH_TAG_BENEFITS',  'Good for You' );
-define( 'CH_TAG_STORY',     'The Story of Sugarcane' );
+define( 'CH_TAG_STORY',     'Story of Sugarcane' );
 define( 'CH_TAG_HIRE',      'Live Juice Stall Hire' );
 define( 'CH_TAG_FRANCHISE', 'Grow With Us' );
 define( 'CH_TAG_FAQ',       'Questions?' );
