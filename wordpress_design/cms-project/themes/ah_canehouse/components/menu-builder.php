@@ -17,7 +17,7 @@ $show_prices  = ch_show_prices();
 	<div class="ch-build-grid">
 
 		<!-- SIZES -->
-		<div class="ch-option-card fade-left">
+		<!-- <div class="ch-option-card fade-left">
 			<div class="ch-option-header">
 				<div class="ch-option-num">1</div>
 				<div>
@@ -49,12 +49,12 @@ $show_prices  = ch_show_prices();
 					</div>
 				<?php endforeach; ?>
 			</div>
-		</div>
+		</div> -->
 
 		<!-- CANE TYPE + TEXTURE -->
 		<div class="ch-option-card fade-right">
 			<div class="ch-option-header">
-				<div class="ch-option-num">2</div>
+				<!-- <div class="ch-option-num"></div> -->
 				<div>
 					<div class="ch-option-title">Cane Type</div>
 					<div class="ch-option-sub">Choose your cane</div>
@@ -75,7 +75,7 @@ $show_prices  = ch_show_prices();
 						</div>
 						<div class="ch-row-right">
 							<?php if ( ! empty( $cane['badge'] ) ) : ?>
-								<span class="ch-row-badge"><?php echo esc_html( $cane['badge'] ); ?></span>
+								<!-- <span class="ch-row-badge"><?php echo esc_html( $cane['badge'] ); ?></span> -->
 							<?php endif; ?>
 							<?php if ( $show_prices && ! empty( $cane['price'] ) ) : ?>
 								<div class="ch-row-price"><?php echo esc_html( $cane['price'] ); ?></div>
@@ -84,9 +84,11 @@ $show_prices  = ch_show_prices();
 					</div>
 				<?php endforeach; ?>
 			</div>
+		</div>
 
+		<div class="ch-option-card fade-left" >
 			<div class="ch-option-header" style="margin-top:.5rem;">
-				<div class="ch-option-num">3</div>
+				<!-- <div class="ch-option-num"></div> -->
 				<div>
 					<div class="ch-option-title">Texture</div>
 					<div class="ch-option-sub">How it's pressed</div>
@@ -107,7 +109,7 @@ $show_prices  = ch_show_prices();
 						</div>
 						<div class="ch-row-right">
 							<?php if ( ! empty( $tex['badge'] ) ) : ?>
-								<span class="ch-row-badge"><?php echo esc_html( $tex['badge'] ); ?></span>
+								<!-- <span class="ch-row-badge"><?php echo esc_html( $tex['badge'] ); ?></span> -->
 							<?php endif; ?>
 							<?php if ( $show_prices && ! empty( $tex['price'] ) ) : ?>
 								<div class="ch-row-price"><?php echo esc_html( $tex['price'] ); ?></div>
@@ -121,7 +123,7 @@ $show_prices  = ch_show_prices();
 		<!-- FLAVOURS -->
 		<div class="ch-option-card fade-up ch-option-card--full">
 			<div class="ch-option-header">
-				<div class="ch-option-num">4</div>
+				<!-- <div class="ch-option-num"></div> -->
 				<div>
 					<div class="ch-option-title">Flavour</div>
 					<div class="ch-option-sub">Pick your blend</div>

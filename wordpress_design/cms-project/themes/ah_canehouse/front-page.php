@@ -15,17 +15,11 @@ $s = ch_get_settings();
 		<?php get_template_part( 'components/hero' ); ?>
 	<?php endif; ?>
 
-	<?php if ( ch_section_visible( 'marquee' ) ) : ?>
-		<?php get_template_part( 'components/marquee' ); ?>
-	<?php endif; ?>
-
 	<?php if ( ch_section_visible( 'story_cards' ) ) : ?>
 		<?php get_template_part( 'components/story-cards' ); ?>
 	<?php endif; ?>
 
-	<!-- <?php if ( ch_section_visible( 'how_to_order' ) ) : ?>
-		<?php get_template_part( 'components/how-to-order' ); ?>
-	<?php endif; ?> -->
+
 
 	<?php if ( ch_section_visible( 'reviews' ) ) : ?>
 		<?php get_template_part( 'components/review-carousel' ); ?>
@@ -38,6 +32,8 @@ $s = ch_get_settings();
 	<?php if ( ch_section_visible( 'benefits' ) ) : ?>
 		<?php get_template_part( 'components/benefits' ); ?>
 	<?php endif; ?>
+
+	<?php get_template_part( 'components/booking-wizard' ); ?>
 
 	<?php if ( ch_section_visible( 'story' ) ) : ?>
 		<?php get_template_part( 'components/story' ); ?>

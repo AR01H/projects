@@ -105,10 +105,10 @@ unset( $_ch_sc );
 
 			<!-- Actions: CTA + hamburger -->
 			<div class="ch-nav__actions">
-				<a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/#contact' ) ); ?>"
+				<!-- <a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/#contact' ) ); ?>"
 					class="ch-nav__cta-btn">
 					<?php echo esc_html( $nav_cta['label'] ?? 'Contact Us' ); ?>
-				</a>
+				</a> -->
 
 				<button class="ch-nav__hamburger" id="ch-hamburger"
 					aria-label="Open menu" aria-expanded="false" aria-controls="ch-mobile-nav">
@@ -122,8 +122,6 @@ unset( $_ch_sc );
 
 <!-- ── Mobile nav ────────────────────────────────────────────────────────── -->
 <nav class="ch-mobile-nav" id="ch-mobile-nav" aria-label="Mobile Navigation">
-	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-mobile-nav__link">Home</a>
-
 	<?php foreach ( $theme_nav as $item ) :
 		$item        = (array) $item;
 		$has_submenu = ( $item['type'] ?? 'link' ) === 'dropdown' && ! empty( $item['submenu'] );

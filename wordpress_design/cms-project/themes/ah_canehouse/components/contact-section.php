@@ -78,7 +78,7 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 
 			<div class="ch-form-group">
 				<label class="ch-form-label" for="ch-phone">Phone Number</label>
-				<input type="tel" id="ch-phone" name="ch_phone" class="ch-form-input" placeholder="+44 ...">
+				<input type="tel" id="ch-phone" name="ch_phone" class="ch-form-input" placeholder="+44 ..." required>
 			</div>
 
 			<div class="ch-form-group">
@@ -90,14 +90,16 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 					<option value="wedding">Wedding or Asian Celebration</option>
 					<option value="franchise">Franchise Opportunity</option>
 					<option value="other">Something Else</option>
+					
 				</select>
 			</div>
 
 			<div class="ch-form-group">
 				<label class="ch-form-label" for="ch-message">Message</label>
 				<textarea id="ch-message" name="ch_message" class="ch-form-textarea"
-					placeholder="Tell us more - event date, location, expected guests..."></textarea>
+					placeholder="Tell us more - event date, location, expected guests..." required></textarea>
 			</div>
+			
 
 			<button type="submit" class="ch-form-submit" id="ch-form-submit">
 				Send Message 🥤

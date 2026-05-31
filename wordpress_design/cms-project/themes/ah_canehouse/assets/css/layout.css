@@ -1,8 +1,8 @@
 /* ── The Cane House - Layout / Responsive ───────────────────────────────────── */
 
 @media (max-width: 1024px) {
-    .ch-nav { padding: 1rem 2rem; }
-    .ch-hero { padding: 5rem 2rem 3rem; }
+    /* .ch-nav { padding: 1rem 2rem; } */
+    .ch-hero { padding: 2rem 2rem 3rem; }
     .ch-hero__inner { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
     .ch-hero__right { display: none; }
     .ch-hero__desc { margin-inline: auto; }
@@ -24,9 +24,9 @@ body.nav--collapsed .ch-nav__hamburger  { display: flex; }
 @media (max-width: 768px) {
     :root { --ch-section-py: 3.5rem; }
 
-    .ch-nav { padding: .8rem 1.5rem; }
+    /* .ch-nav { padding: .8rem 1.5rem; } */
 
-    .ch-hero { padding: 5rem 1.5rem 3rem; }
+    .ch-hero { padding: 2rem 1.5rem 3rem; }
     .ch-section-title { font-size: 1.8rem; }
 
     .ch-reviews-container { grid-template-columns: 1fr; }
@@ -44,7 +44,7 @@ body.nav--collapsed .ch-nav__hamburger  { display: flex; }
     .ch-benefits-inner { gap: 2rem; }
 
     .ch-footer { padding: 3rem 1.5rem 0; }
-    .ch-footer__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .ch-footer__grid { grid-template-columns: 1fr; gap: 1rem; }
     .ch-footer__bottom { flex-direction: column; text-align: center; }
 
     .ch-flavour-grid { grid-template-columns: repeat(3, 1fr); }

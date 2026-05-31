@@ -27,7 +27,7 @@ $help = [
 <main class="ch-main" id="main-content">
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
-<section class="ch-page-hero ch-page-hero--sugarcane">
+<!-- <section class="ch-page-hero ch-page-hero--sugarcane">
 	<div class="container">
 		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
 			<div class="section-tag">Say Hello</div>
@@ -43,10 +43,10 @@ $help = [
 			</div>
 		</div>
 	</div>
-</section>
+</section> -->
 
 <!-- ── Quick contact cards ──────────────────────────────────────────────────── -->
-<div class="ch-stats-bar" style="background:var(--ch-white);">
+<!-- <div class="ch-stats-bar" style="background:var(--ch-white);">
 	<div class="container">
 		<div class="ch-contact-quick">
 			<?php if ( $phone ) : ?>
@@ -75,10 +75,10 @@ $help = [
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <!-- ── How can we help ──────────────────────────────────────────────────────── -->
-<section style="background:var(--ch-green-bg);padding:5rem 2rem;">
+<!-- <section style="background:var(--ch-green-bg);padding:5rem 2rem;">
 	<div class="container">
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">How Can We Help?</div>
@@ -96,7 +96,7 @@ $help = [
 			<?php endforeach; ?>
 		</div>
 	</div>
-</section>
+</section> -->
 
 <!-- ── Contact form (reuses the shared component) ───────────────────────────── -->
 <div class="ch-contact-page-form">
@@ -104,7 +104,7 @@ $help = [
 </div>
 
 <!-- ── Social + CTA ─────────────────────────────────────────────────────────── -->
-<section class="ch-inner-cta">
+<!-- <section class="ch-inner-cta">
 	<div class="container">
 		<div class="ch-inner-cta__box fade-up">
 			<h2>Follow the Fresh Juice Journey</h2>
@@ -127,7 +127,7 @@ $help = [
 			</div>
 		</div>
 	</div>
-</section>
+</section> -->
 
 </main>
 <?php get_footer(); ?>

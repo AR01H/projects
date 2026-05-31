@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 $s      = ch_get_settings();
 $certs  = ch_get_certifications();
-$cert_heading = $s['cert_heading'] ?? 'Government Certified & Fully Compliant';
+$cert_heading = $s['cert_heading'] ?? 'Council Registered & Fully Compliant';
 $cert_sub     = $s['cert_subtext'] ?? 'Every event we attend comes with full documentation, insurance, and food safety compliance. We take the trust of our clients and their guests very seriously.';
 $cert_img     = $s['cert_image_url'] ?? get_template_directory_uri() . '/assets/images/ncass_logo.png';
 ?>
@@ -43,9 +43,6 @@ $cert_img     = $s['cert_image_url'] ?? get_template_directory_uri() . '/assets/
 					<img src="<?php echo esc_url( $cert_img ); ?>"
 						alt="The Cane House Food Hygiene Certificate"
 						class="ch-cert-img" loading="lazy">
-					<div class="ch-cert-stamp">
-						<div class="ch-cert-stamp__text">Council Registered</div>
-					</div>
 				</div>
 			<?php else : ?>
 				<div class="ch-cert-trust fade-right">
