@@ -34,7 +34,7 @@ if ( empty( $cols ) ) {
 				[ 'label' => 'Weddings',             'url' => home_url( '/#hire' ) ],
 				[ 'label' => 'Parties & Gatherings', 'url' => home_url( '/#hire' ) ],
 				[ 'label' => 'Franchise',            'url' => home_url( '/#franchise' ) ],
-				[ 'label' => 'Contact Us',           'url' => home_url( '/#contact' ) ],
+				[ 'label' => 'Hire Us',           'url' => home_url( '/#contact' ) ],
 			],
 		],
 	];

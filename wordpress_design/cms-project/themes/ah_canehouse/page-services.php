@@ -90,7 +90,7 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 			<div class="ch-step-card fade-up">
 				<div class="ch-step-num">1</div>
 				<div class="ch-step-emoji">📞</div>
-				<div class="ch-step-title">Contact Us</div>
+				<div class="ch-step-title">Hire Us</div>
 				<div class="ch-step-desc">Reach out by phone, WhatsApp, or email with your event details.</div>
 			</div>
 			<div class="ch-step-card fade-up">

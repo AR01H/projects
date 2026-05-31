@@ -77,7 +77,7 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pres
 			<h2>Taste 2,000 Years of Tradition</h2>
 			<p>Fresh sugarcane juice, pressed live and served cool - just for you.</p>
 			<div class="ch-inner-cta__btns">
-				<a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn-lime">🥤 Contact Us</a>
+				<a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn-lime">🥤 Hire Us</a>
 				<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="btn-outline ch-btn-outline-light">Book for Events →</a>
 			</div>
 		</div>

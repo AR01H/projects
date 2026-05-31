@@ -107,7 +107,7 @@ unset( $_ch_sc );
 			<div class="ch-nav__actions">
 				<!-- <a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/#contact' ) ); ?>"
 					class="ch-nav__cta-btn">
-					<?php echo esc_html( $nav_cta['label'] ?? 'Contact Us' ); ?>
+					<?php echo esc_html( $nav_cta['label'] ?? 'Hire Us' ); ?>
 				</a> -->
 
 				<button class="ch-nav__hamburger" id="ch-hamburger"
@@ -158,7 +158,7 @@ unset( $_ch_sc );
 	<div style="padding:1rem 0 0.5rem;">
 		<a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/#contact' ) ); ?>"
 			class="ch-nav__cta-btn" style="display:block;text-align:center;width:100%;">
-			<?php echo esc_html( $nav_cta['label'] ?? 'Contact Us' ); ?>
+			<?php echo esc_html( $nav_cta['label'] ?? 'Hire Us' ); ?>
 		</a>
 	</div>
 </nav>

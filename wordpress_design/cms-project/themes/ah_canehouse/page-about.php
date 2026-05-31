@@ -158,7 +158,6 @@ if ( ! empty( $team ) ) : ?>
 	<div class="container">
 		<div class="fade-up">
 			<div class="section-tag" style="color:var(--ch-lime);justify-content:center;margin-inline:auto;">
-				<span style="background:var(--ch-lime);width:28px;height:2px;border-radius:1px;display:block;"></span>
 				Say Hello
 			</div>
 			<h2 class="section-title" style="color:var(--ch-white);">Get in <span class="accent" style="color:var(--ch-lime);">Touch</span></h2>

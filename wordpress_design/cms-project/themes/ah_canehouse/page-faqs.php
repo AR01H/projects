@@ -69,7 +69,7 @@ foreach ( $faqs as $faq ) {
 			<h2>Still Have a Question?</h2>
 			<p>Can't find what you're looking for? Get in touch and we'll be happy to help.</p>
 			<div class="ch-inner-cta__btns">
-				<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn-lime">📩 Contact Us</a>
+				<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn-lime">📩 Hire Us</a>
 				<?php if ( $phone ) : ?>
 					<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" class="btn-outline ch-btn-outline-light"><?php echo esc_html( $phone ); ?></a>
 				<?php endif; ?>

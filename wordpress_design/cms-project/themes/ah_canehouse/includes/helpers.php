@@ -223,7 +223,7 @@ function ch_build_default_navigation(): array {
 }
 
 function ch_get_nav_cta(): array {
-	$label    = defined( 'CH_NAV_CONTACT' ) ? CH_NAV_CONTACT : 'Contact Us';
+	$label    = defined( 'CH_NAV_CONTACT' ) ? CH_NAV_CONTACT : 'Hire Us';
 	$defaults = [ 'label' => $label, 'url' => home_url( '/#contact' ) ];
 	// Primary: CMS plugin option
 	$opt = get_option( 'ah_cms_nav_cta', [] );

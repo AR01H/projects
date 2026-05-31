@@ -12,7 +12,7 @@ $footer_cols = (array) ( $footer['columns'] ?? [] );
 if ( empty( $footer_cols ) ) {
 	$footer_cols = [
 		[ 'title' => 'Our Juice',  'items' => [ ['label'=>'Build Your Juice','url'=>home_url('/#build')], ['label'=>'Health Benefits','url'=>home_url('/#benefits')] ] ],
-		[ 'title' => 'Services',   'items' => [ ['label'=>'Event Hire','url'=>home_url('/#hire')], ['label'=>'Franchise','url'=>home_url('/#franchise')], ['label'=>'Contact Us','url'=>home_url('/#contact')] ] ],
+		[ 'title' => 'Services',   'items' => [ ['label'=>'Event Hire','url'=>home_url('/#hire')], ['label'=>'Franchise','url'=>home_url('/#franchise')], ['label'=>'Hire Us','url'=>home_url('/#contact')] ] ],
 	];
 }
 
@@ -114,8 +114,8 @@ $page_suggestions = ch_get_nav_link_suggestions();
 			<div class="ch-row">
 				<label>Button Label</label>
 				<input type="text" name="nav_cta[label]"
-					value="<?php echo esc_attr( $nav_cta['label'] ?? 'Contact Us' ); ?>"
-					placeholder="Contact Us">
+					value="<?php echo esc_attr( $nav_cta['label'] ?? 'Hire Us' ); ?>"
+					placeholder="Hire Us">
 			</div>
 			<div class="ch-row">
 				<label>Button URL</label>

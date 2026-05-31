@@ -26,7 +26,7 @@ define( 'CH_NAV_FAQ',       'FAQ' );
 define( 'CH_NAV_BLOG',      'Blog' );
 define( 'CH_NAV_ABOUT',     'About' );
 define( 'CH_NAV_SERVICES',  'Services' );
-define( 'CH_NAV_CONTACT',   'Contact Us' );
+define( 'CH_NAV_CONTACT',   'Hire Us' );
 
 // ── Section Tags ─────────────────────────────────────────────────────────────
 define( 'CH_TAG_HOW',       'Simple & Easy' );
@@ -103,7 +103,7 @@ function ch_default_footer_data( array $settings = [] ): array {
 					[ 'label' => 'About Us',   'url' => home_url( '/about/' ) ],
 					[ 'label' => 'Services',   'url' => home_url( '/services/' ) ],
 					[ 'label' => 'Blog',       'url' => home_url( '/blog/' ) ],
-					[ 'label' => 'Contact Us', 'url' => home_url( '/#contact' ) ],
+					[ 'label' => 'Hire Us', 'url' => home_url( '/#contact' ) ],
 				],
 			],
 		],
