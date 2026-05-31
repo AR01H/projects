@@ -5,7 +5,7 @@ $settings  = ch_get_settings();
 $footer    = ch_get_theme_footer();
 $phone     = $settings['phone']     ?? $settings['contact_phone']  ?? '';
 $email     = $settings['email']     ?? '';
-$whatsapp  = $settings['whatsapp']  ?? $settings['whatsapp_number'] ?? $phone;
+$whatsapp  = $settings['whatsapp']  ?? $settings['whatsapp_number'] ?? WHATASPP_CONTACT_NUMBER;
 $address   = $settings['address']   ?? '';
 $wa_number = preg_replace( '/[^0-9]/', '', $whatsapp );
 $logo_url  = get_template_directory_uri() . '/assets/images/logo.png';
@@ -59,7 +59,7 @@ if ( empty( $cols ) ) {
 				</a>
 
 				<p class="ch-footer__brand-desc">
-					<?php echo wp_kses_post( $footer['brand_description'] ?? 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives — just pure natural refreshment wherever you are.' ); ?>
+					<?php echo wp_kses_post( $footer['brand_description'] ?? 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - just pure natural refreshment wherever you are.' ); ?>
 				</p>
 
 				<?php if ( ! empty( $footer['badge_text'] ) ) : ?>
@@ -77,6 +77,9 @@ if ( empty( $cols ) ) {
 					];
 					foreach ( $social_map as $key => $info ) :
 						$url = ! empty( $social[ $key ] ) ? $social[ $key ] : '';
+						if(strlen( $url ) <= 0) {
+							continue;
+						}
 					?>
 						<a href="<?php echo $url ? esc_url( $url ) : '#'; ?>"
 							class="ch-footer__social"
@@ -115,11 +118,8 @@ if ( empty( $cols ) ) {
 			<?php endforeach; ?>
 
 			<!-- ── Get in Touch Column ────────────────────────────────────────── -->
-			<div class="ch-footer__accordion">
-				<button class="ch-footer__col-title ch-footer__acc-toggle" aria-expanded="false">
-					Get In Touch
-					<span class="ch-footer__acc-icon" aria-hidden="true">+</span>
-				</button>
+			<div class="ch-footer__accordion hidden" style="display:none;">
+
 				<div class="ch-footer__acc-body">
 
 					<?php if ( $phone ) : ?>
@@ -184,7 +184,7 @@ if ( empty( $cols ) ) {
 				</div>
 			</div>
 
-		</div><!-- .ch-footer__grid -->
+		</div>
 
 		<!-- Bottom bar -->
 		<div class="ch-footer__bottom">

@@ -123,7 +123,7 @@ class CH_Theme_Seeder {
 	 * @return array{inserted:int, updated:int, errors:string[]}
 	 */
 	public static function seed_selected( array $types ): array {
-		// Navigation, footer and FAQs are owned by the CMS plugin — the theme
+		// Navigation, footer and FAQs are owned by the CMS plugin - the theme
 		// must NOT seed them (it would duplicate/overwrite the plugin's data).
 		$map = [
 			'story-cards'    => 'seed_story_cards',
@@ -194,7 +194,7 @@ class CH_Theme_Seeder {
 		return [ 'updated' => 1 ];
 	}
 
-	// seed_navigation() and seed_footer() removed — navigation & footer are
+	// seed_navigation() and seed_footer() removed - navigation & footer are
 	// owned by the CMS plugin (ah_cms_navigation / ah_cms_footer). The theme
 	// reads them via ch_get_theme_navigation() / ch_get_theme_footer().
 
@@ -306,7 +306,7 @@ class CH_Theme_Seeder {
 		return [ 'inserted' => $inserted ];
 	}
 
-	// seed_faqs() removed — FAQs are managed by the CMS plugin (AH_Model_FAQs).
+	// seed_faqs() removed - FAQs are managed by the CMS plugin (AH_Model_FAQs).
 	// ch_get_faqs() reads them from the plugin; the theme does not seed them.
 
 	private static function seed_news_bar(): array {

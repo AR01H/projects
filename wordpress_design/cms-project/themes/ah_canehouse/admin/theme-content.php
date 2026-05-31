@@ -290,7 +290,7 @@ $s           = ch_get_settings();
 							rows="4" style="width:100%;padding:.4rem .6rem;font-size:.8rem;"><?php echo esc_textarea( $facts ); ?></textarea>
 					</div>
 					<div>
-						<label style="font-size:.7rem;color:#888;display:block;">Images (one per line — rotates as a slideshow)</label>
+						<label style="font-size:.7rem;color:#888;display:block;">Images (one per line - rotates as a slideshow)</label>
 						<?php
 						$card_imgs = $card['images'] ?? ( ! empty( $card['image'] ) ? [ $card['image'] ] : [] );
 						if ( is_string( $card_imgs ) ) $card_imgs = preg_split( '/[\r\n,]+/', $card_imgs );

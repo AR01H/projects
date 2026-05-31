@@ -99,7 +99,7 @@
 
             if (inner.scrollWidth <= inner.clientWidth + 2) return;
 
-            // Doesn't fit — collapse
+            // Doesn't fit - collapse
             body.classList.add('nav--collapsed');
             if (mobileNav && !mobileNav.classList.contains('open')) mobileNav.classList.remove('open');
             if (hamburger) {
@@ -149,7 +149,7 @@
             if (e.key === 'Escape') closePanel();
         });
 
-        // Search input — redirect to WP search
+        // Search input - redirect to WP search
         if (input) {
             input.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' && input.value.trim()) {
@@ -359,7 +359,7 @@
         function nextCard() { show((current() + 1) % tabs.length); startTimer(); }
         function prevCard() { show((current() - 1 + tabs.length) % tabs.length); startTimer(); }
 
-        // Swipe to change the STORY (card) — only on the text content and
+        // Swipe to change the STORY (card) - only on the text content and
         // any non-gallery visual. A multi-image gallery handles its own swipe
         // (changes the image, not the card).
         section.querySelectorAll('.ch-sc-panel').forEach(function(panel) {

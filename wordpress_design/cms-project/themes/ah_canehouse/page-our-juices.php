@@ -21,7 +21,7 @@ $show_prices = ch_show_prices();
 		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
 			<div class="section-tag">Full Menu</div>
 			<h1 class="ch-page-hero__title">Our <em>Juices</em></h1>
-			<p class="ch-page-hero__desc">Mix and match your perfect cup — every juice is pressed live, just for you.</p>
+			<p class="ch-page-hero__desc">Mix and match your perfect cup - every juice is pressed live, just for you.</p>
 		</div>
 	</div>
 </section>
@@ -32,7 +32,7 @@ $show_prices = ch_show_prices();
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Signature Blends</div>
 			<h2 class="section-title">Find Your <span class="accent">Flavour</span></h2>
-			<p class="section-body">From clean and classic to tropical and bold — there's a Cane House juice for every mood.</p>
+			<p class="section-body">From clean and classic to tropical and bold - there's a Cane House juice for every mood.</p>
 		</div>
 		<div class="ch-juice-showcase-grid fade-up">
 			<div class="ch-juice-card">
@@ -41,7 +41,7 @@ $show_prices = ch_show_prices();
 				</div>
 				<div class="ch-juice-card__body">
 					<h3>Pure Cane</h3>
-					<p>Clean, natural sweetness. The classic — no additions, just the freshly pressed cane exactly as nature intended.</p>
+					<p>Clean, natural sweetness. The classic - no additions, just the freshly pressed cane exactly as nature intended.</p>
 					<?php if ( $show_prices ) : ?><span class="ch-juice-card__price">Included</span><?php endif; ?>
 				</div>
 			</div>
@@ -51,7 +51,7 @@ $show_prices = ch_show_prices();
 				</div>
 				<div class="ch-juice-card__body">
 					<h3>Lemon Blend</h3>
-					<p>Zesty and refreshing — our citrus lemon blend adds a sharp brightness to the natural cane sweetness.</p>
+					<p>Zesty and refreshing - our citrus lemon blend adds a sharp brightness to the natural cane sweetness.</p>
 					<?php if ( $show_prices ) : ?><span class="ch-juice-card__price">+£0.50</span><?php endif; ?>
 				</div>
 			</div>
@@ -61,7 +61,7 @@ $show_prices = ch_show_prices();
 				</div>
 				<div class="ch-juice-card__body">
 					<h3>Ginger Zing</h3>
-					<p>Warming and invigorating — the sharp heat of fresh ginger perfectly balances the cane's sweetness.</p>
+					<p>Warming and invigorating - the sharp heat of fresh ginger perfectly balances the cane's sweetness.</p>
 					<?php if ( $show_prices ) : ?><span class="ch-juice-card__price">+£0.50</span><?php endif; ?>
 				</div>
 			</div>
@@ -71,7 +71,7 @@ $show_prices = ch_show_prices();
 				</div>
 				<div class="ch-juice-card__body">
 					<h3>Mint Cooler</h3>
-					<p>Ultra-refreshing — the ultimate summer drink. Cool mint cuts through the cane for a perfectly balanced sip.</p>
+					<p>Ultra-refreshing - the ultimate summer drink. Cool mint cuts through the cane for a perfectly balanced sip.</p>
 					<?php if ( $show_prices ) : ?><span class="ch-juice-card__price">+£0.50</span><?php endif; ?>
 				</div>
 			</div>
@@ -81,7 +81,7 @@ $show_prices = ch_show_prices();
 				</div>
 				<div class="ch-juice-card__body">
 					<h3>Tropical Pineapple</h3>
-					<p>Sweet, tropical, and vibrant — pineapple elevates the cane juice experience to something truly exotic.</p>
+					<p>Sweet, tropical, and vibrant - pineapple elevates the cane juice experience to something truly exotic.</p>
 					<?php if ( $show_prices ) : ?><span class="ch-juice-card__price">+£1.00</span><?php endif; ?>
 				</div>
 			</div>
@@ -91,7 +91,7 @@ $show_prices = ch_show_prices();
 				</div>
 				<div class="ch-juice-card__body">
 					<h3>Wild Strawberry</h3>
-					<p>Berry-sweet and gorgeous — fresh strawberry notes turn the classic cane juice into a crowd favourite.</p>
+					<p>Berry-sweet and gorgeous - fresh strawberry notes turn the classic cane juice into a crowd favourite.</p>
 					<?php if ( $show_prices ) : ?><span class="ch-juice-card__price">+£1.00</span><?php endif; ?>
 				</div>
 			</div>
@@ -216,7 +216,7 @@ $show_prices = ch_show_prices();
 						</div>
 					<?php endforeach; ?>
 				</div>
-				<p style="margin-top:1rem;font-size:0.72rem;color:var(--ch-text-muted);font-style:italic;">* Slight colour and taste variation may occur as different canes are pressed in a shared machine. Contains natural sugars — enjoy responsibly.</p>
+				<p style="margin-top:1rem;font-size:0.72rem;color:var(--ch-text-muted);font-style:italic;">* Slight colour and taste variation may occur as different canes are pressed in a shared machine. Contains natural sugars - enjoy responsibly.</p>
 			</div>
 
 		</div>
@@ -224,12 +224,12 @@ $show_prices = ch_show_prices();
 </section>
 
 <!-- ── How to Order steps ────────────────────────────────────────────────────── -->
-<section style="background:var(--ch-green-deep);padding:5rem 2rem;">
+<!-- <section style="background:var(--ch-green-deep);padding:5rem 2rem;">
 	<div class="container">
 		<div class="ch-section-center fade-up" style="color:var(--ch-white);">
 			<div class="section-tag" style="color:var(--ch-lime);">Simple Process</div>
 			<h2 class="section-title" style="color:var(--ch-white);">How to <span class="accent" style="color:var(--ch-lime);">Order</span></h2>
-			<p class="section-body" style="color:rgba(255,255,255,0.7);">Walk up, choose your options, we press it live — done in under 2 minutes.</p>
+			<p class="section-body" style="color:rgba(255,255,255,0.7);">Walk up, choose your options, we press it live - done in under 2 minutes.</p>
 		</div>
 		<div class="ch-steps-grid fade-up">
 			<?php foreach ( $steps as $step ) :
@@ -245,7 +245,10 @@ $show_prices = ch_show_prices();
 			<?php endforeach; ?>
 		</div>
 	</div>
-</section>
+</section> -->
+<div class="ch-contact-page-form">
+	<?php get_template_part( 'components/contact-section' ); ?>
+</div>
 
 </main>
 <?php get_footer(); ?>

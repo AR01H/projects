@@ -8,7 +8,7 @@ get_header();
 $packages = ch_get_hire_packages();
 $features = ch_get_hire_features();
 $settings = ch_get_settings();
-$phone    = $settings['phone'] ?? '+44 7887 699 208';
+$phone    = $settings['phone'] ?? CONTACT_NUMBER;
 ?>
 
 <main class="ch-main" id="main-content">
@@ -19,7 +19,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
 			<div class="section-tag">Live Juice Stall Hire</div>
 			<h1 class="ch-page-hero__title">Events & <em>Hire</em></h1>
-			<p class="ch-page-hero__desc">Bring The Cane House to your celebration. Live-pressed sugarcane juice — a unique, healthy, and unforgettable experience for your guests.</p>
+			<p class="ch-page-hero__desc">Bring The Cane House to your celebration. Live-pressed sugarcane juice - a unique, healthy, and unforgettable experience for your guests.</p>
 			<div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;justify-content:center;">
 				<a href="#quote" class="btn-lime">🌿 Get a Free Quote</a>
 				<?php if ( $phone ) : ?>
@@ -86,27 +86,27 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 			<div class="fade-left">
 				<div class="section-tag">Why Choose Us</div>
 				<h2 class="section-title">What Makes Us <span class="accent">Different</span></h2>
-				<p class="section-body">We're not just another catering option — we're an experience your guests will be talking about for weeks.</p>
+				<p class="section-body">We're not just another catering option - we're an experience your guests will be talking about for weeks.</p>
 				<div class="ch-why-list">
 					<div class="ch-why-item">
 						<div class="ch-why-icon">👀</div>
 						<div>
 							<strong>Live Pressing in Front of Guests</strong>
-							<p>Watching fresh cane being pressed is a spectacle in itself — creating a natural talking point and crowd magnet at your event.</p>
+							<p>Watching fresh cane being pressed is a spectacle in itself - creating a natural talking point and crowd magnet at your event.</p>
 						</div>
 					</div>
 					<div class="ch-why-item">
 						<div class="ch-why-icon">🌿</div>
 						<div>
-							<strong>100% Natural — No Compromise</strong>
-							<p>Everything we serve is pure, natural, and fresh. No artificial syrups, no chemicals — just real sugarcane juice.</p>
+							<strong>100% Natural - No Compromise</strong>
+							<p>Everything we serve is pure, natural, and fresh. No artificial syrups, no chemicals - just real sugarcane juice.</p>
 						</div>
 					</div>
 					<div class="ch-why-item">
 						<div class="ch-why-icon">📋</div>
 						<div>
 							<strong>Fully Insured & Certified</strong>
-							<p>We carry full public liability insurance and comply with all food hygiene regulations — complete peace of mind for you.</p>
+							<p>We carry full public liability insurance and comply with all food hygiene regulations - complete peace of mind for you.</p>
 						</div>
 					</div>
 					<div class="ch-why-item">
@@ -177,7 +177,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 					</div>
 					<div class="ch-form-group">
 						<label class="ch-form-label">Message (date, location, guest count…)</label>
-						<textarea name="ch_message" class="ch-form-textarea" placeholder="Tell us more — event date, venue, number of guests..."></textarea>
+						<textarea name="ch_message" class="ch-form-textarea" placeholder="Tell us more - event date, venue, number of guests..."></textarea>
 					</div>
 					<button type="submit" class="ch-form-submit">Send Event Enquiry 🥤</button>
 				</form>

@@ -106,7 +106,7 @@ $occasions = [ 'Wedding / Walima', 'Mehndi / Sangeet', 'Eid Celebration', 'Birth
 			<!-- ── STEP 2: Flavour (multi-select) ───────────────────────────────── -->
 			<div class="ch-bk-step" data-step="2">
 				<h3 class="ch-bk-step-title">Choose your flavours</h3>
-				<p class="ch-bk-step-desc">Pick as many as you like — mix and match for your event! 🌿</p>
+				<p class="ch-bk-step-desc">Pick as many as you like - mix and match for your event! 🌿</p>
 				<div class="ch-bk-options ch-bk-options--chips">
 					<?php foreach ( $flavours as $i => $fl ) :
 						$fl = (array) $fl;

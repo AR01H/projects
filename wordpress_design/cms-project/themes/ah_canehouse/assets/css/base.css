@@ -217,3 +217,48 @@ h4 { font-size: 1.3rem; font-weight: 700; }
         font-size: 0.95rem;
     }
 }
+
+
+/* ── Selection Color ─────────────────────────────────────────────────────────── */
+::selection {
+    background-color: var(--ch-lime);
+    color: var(--ch-text);           /* dark green text on lime */
+}
+
+::-moz-selection {                   /* Firefox */
+    background-color: var(--ch-lime);
+    color: var(--ch-text);
+}
+
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ch-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ch-green-mid);
+    border-radius: var(--ch-radius-pill);
+    border: 2px solid var(--ch-bg-dark); /* creates a floating inset look */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ch-lime);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--ch-bg-dark);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ch-green-mid) var(--ch-bg-dark);
+}

@@ -1,15 +1,20 @@
 <?php
 /**
- * The Cane House — Common Terms
+ * The Cane House - Common Terms
  * Single source of truth for all brand labels, strings, and UI text.
  * Change here and it updates everywhere.
  */
 defined( 'ABSPATH' ) || exit;
 
+
+define('CONTACT_NUMBER', '+44 7887 699 208');
+define('WHATASPP_CONTACT_NUMBER','+447887699208');
+define('CONTACT_EMAIL','thecanehouseuk@gmail.com');
+
 // ── Brand ───────────────────────────────────────────────────────────────────
 define( 'CH_BRAND_NAME',    'The Cane House' );
 define( 'CH_BRAND_TAGLINE', 'Pressed Fresh. Served Cool.' );
-define( 'CH_BRAND_DESC',    'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives — pure natural refreshment wherever you are.' );
+define( 'CH_BRAND_DESC',    'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - pure natural refreshment wherever you are.' );
 
 // ── Nav Labels ───────────────────────────────────────────────────────────────
 define( 'CH_NAV_HOME',      'Home' );

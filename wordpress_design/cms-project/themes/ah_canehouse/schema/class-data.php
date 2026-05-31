@@ -164,7 +164,7 @@ class CH_Data {
 	}
 
 	/**
-	 * Footer — assembled from footer-settings.csv (kv), footer-links.csv
+	 * Footer - assembled from footer-settings.csv (kv), footer-links.csv
 	 * (grouped by column) and footer-legal.csv. Returns the nested structure
 	 * used by ch_get_theme_footer() / ah_cms_footer.
 	 */
@@ -457,7 +457,6 @@ class CH_Data {
 			[ 'topic' => 'Juice',     'question' => 'What is the difference between Yellow Cane and Red Cane?', 'answer' => 'Yellow Cane produces a lighter golden juice with a clean mild sweetness. Red Cane (+£0.50) is naturally richer with a deeper amber colour and more intense sweetness.',                                                              'status' => 'active', 'sort_order' => '7'  ],
 			[ 'topic' => 'Juice',     'question' => 'What flavour blends do you offer?',                        'answer' => 'Pure Cane (included) Citrus Blends - Lemon Ginger Lemon & Ginger Mint (+£0.50 each) - and Tropical Blends - Pineapple Watermelon Strawberry Blueberry Burst (+£1.00 each).',                                                       'status' => 'active', 'sort_order' => '8'  ],
 			[ 'topic' => 'General',   'question' => 'Is your sugarcane sustainable?',                           'answer' => 'Yes! Sugarcane is one of the most sustainable crops on earth. Our leftover fibre (bagasse) is completely biodegradable.',                                                                                                            'status' => 'active', 'sort_order' => '9'  ],
-			[ 'topic' => 'Franchise', 'question' => 'How can I become a franchise partner?',                    'answer' => 'We welcome franchise enquiries from across the UK. Call +44 7887 699 208 or use the contact form.',                                                                                                                                   'status' => 'active', 'sort_order' => '10' ],
 		];
 	}
 
@@ -473,16 +472,16 @@ class CH_Data {
 
 	private static function default_settings(): array {
 		return [
-			'phone'         => '+44 7887 699 208',
-			'email'         => 'hello@thecanehouse.co.uk',
-			'address'       => 'Available across the UK',
-			'website'       => 'www.thecanehouse.co.uk',
-			'whatsapp'      => '447887699208',
+			'phone'         => '',
+			'email'         => '',
+			'address'       => '',
+			'website'       => '',
+			'whatsapp'      => '',
 			'facebook_url'  => '',
 			'instagram_url' => '',
 			'tiktok_url'    => '',
 			'youtube_url'   => '',
-			'tagline'       => 'Pressed Fresh. Served Cool.',
+			'tagline'       => '',
 		];
 	}
 

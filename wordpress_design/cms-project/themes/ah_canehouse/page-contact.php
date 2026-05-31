@@ -6,8 +6,8 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 $settings = ch_get_settings();
-$phone    = $settings['phone']        ?? '+44 7887 699 208';
-$email    = $settings['email']        ?? 'hello@thecanehouse.co.uk';
+$phone    = $settings['phone']        ?? CONTACT_NUMBER;
+$email    = $settings['email']        ?? CONTACT_EMAIL;
 $address  = $settings['address']      ?? 'Available across the UK';
 $whatsapp = $settings['whatsapp']     ?? preg_replace( '/[^0-9]/', '', $phone );
 $insta    = $settings['instagram_url'] ?? '';
@@ -19,7 +19,7 @@ $wa_num   = preg_replace( '/[^0-9]/', '', $whatsapp );
 // Quick "how can we help" routes
 $help = [
 	[ 'icon' => '🎪', 'title' => 'Events & Hire',  'desc' => 'Book our live juice stall for weddings, parties & corporate events.', 'url' => home_url( '/events/' ),    'cta' => 'Book an Event' ],
-	[ 'icon' => '🤝', 'title' => 'Franchise',       'desc' => 'Bring The Cane House to your city — partner with us.',                'url' => home_url( '/franchise/' ), 'cta' => 'Franchise Info' ],
+	[ 'icon' => '🤝', 'title' => 'Franchise',       'desc' => 'Bring The Cane House to your city - partner with us.',                'url' => home_url( '/franchise/' ), 'cta' => 'Franchise Info' ],
 	[ 'icon' => '🥤', 'title' => 'Our Juices',      'desc' => 'Questions about flavours, sizes or ingredients? We\'re happy to help.', 'url' => home_url( '/our-juices/' ), 'cta' => 'View Menu' ],
 ];
 ?>
@@ -32,7 +32,7 @@ $help = [
 		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
 			<div class="section-tag">Say Hello</div>
 			<h1 class="ch-page-hero__title">Get in <em>Touch</em></h1>
-			<p class="ch-page-hero__desc">Questions about our juice, booking an event, or a franchise enquiry? We'd love to hear from you — we usually reply within 24 hours.</p>
+			<p class="ch-page-hero__desc">Questions about our juice, booking an event, or a franchise enquiry? We'd love to hear from you - we usually reply within 24 hours.</p>
 			<div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;justify-content:center;">
 				<?php if ( $phone ) : ?>
 					<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" class="btn-lime">📞 <?php echo esc_html( $phone ); ?></a>
@@ -71,7 +71,7 @@ $help = [
 			<div class="ch-cq-card">
 				<span class="ch-cq-icon">🕒</span>
 				<span class="ch-cq-label">Hours</span>
-				<span class="ch-cq-val">Mon–Sat · 9am–9pm</span>
+				<span class="ch-cq-val">Mon-Sat · 9am-9pm</span>
 			</div>
 		</div>
 	</div>

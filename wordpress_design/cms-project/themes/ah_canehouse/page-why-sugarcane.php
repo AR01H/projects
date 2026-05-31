@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 $settings = ch_get_settings();
-$phone    = $settings['phone'] ?? '+44 7887 699 208';
+$phone    = $settings['phone'] ?? CONTACT_NUMBER;
 ?>
 
 <main class="ch-main" id="main-content">
@@ -18,7 +18,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 			<div class="section-tag">Nature's Gift</div>
 			<h1 class="ch-page-hero__title">Why <em>Sugarcane?</em></h1>
 			<p class="ch-page-hero__desc">
-				Sugarcane has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world's most natural energy drink — and why we're proud to bring it to the UK.
+				Sugarcane has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world's most natural energy drink - and why we're proud to bring it to the UK.
 			</p>
 		</div>
 	</div>
@@ -54,19 +54,19 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Good For You</div>
 			<h2 class="section-title">Health <span class="accent">Benefits</span></h2>
-			<p class="section-body">Packed with natural goodness your body recognises and loves — no lab, no additives, just the cane.</p>
+			<p class="section-body">Packed with natural goodness your body recognises and loves - no lab, no additives, just the cane.</p>
 		</div>
 		<div class="ch-benefit-cards fade-up">
 			<div class="ch-benefit-card">
 				<div class="ch-benefit-card__icon">⚡</div>
 				<h3>Instant Energy</h3>
-				<p>Natural sucrose provides rapid, sustained energy — far better than caffeine or artificial sugar highs. Perfect before or after activity.</p>
+				<p>Natural sucrose provides rapid, sustained energy - far better than caffeine or artificial sugar highs. Perfect before or after activity.</p>
 				<div class="ch-benefit-card__tag">Natural Carbs</div>
 			</div>
 			<div class="ch-benefit-card">
 				<div class="ch-benefit-card__icon">💧</div>
 				<h3>Deep Hydration</h3>
-				<p>Rich in electrolytes including potassium, calcium, and magnesium — nature's own sports drink. Rehydrates faster than water alone.</p>
+				<p>Rich in electrolytes including potassium, calcium, and magnesium - nature's own sports drink. Rehydrates faster than water alone.</p>
 				<div class="ch-benefit-card__tag">Electrolytes</div>
 			</div>
 			<div class="ch-benefit-card">
@@ -103,7 +103,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">From Cane to Cup</div>
 			<h2 class="section-title">The <span class="accent">Journey</span></h2>
-			<p class="section-body">From tropical fields to your hands — freshly pressed, never processed.</p>
+			<p class="section-body">From tropical fields to your hands - freshly pressed, never processed.</p>
 		</div>
 		<div class="ch-gallery-grid fade-up">
 			<div class="ch-gallery-item ch-gallery-item--tall">
@@ -142,7 +142,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 					<div class="ch-nutrition-row">
 						<span class="ch-nutrition-name">🍬 Natural Sugars</span>
 						<span class="ch-nutrition-val">~13–15g</span>
-						<span class="ch-nutrition-note">Sucrose, glucose, fructose — natural energy</span>
+						<span class="ch-nutrition-note">Sucrose, glucose, fructose - natural energy</span>
 					</div>
 					<div class="ch-nutrition-row">
 						<span class="ch-nutrition-name">💊 Potassium</span>
@@ -186,7 +186,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 				<div class="ch-inside-card">
 					<div class="ch-inside-card__icon">🤲</div>
 					<div class="ch-inside-card__title">Pressed Live</div>
-					<div class="ch-inside-card__desc">Every cup pressed fresh at your order — no pre-made batches, no bottles, no shortcuts. Maximum nutrition, maximum freshness.</div>
+					<div class="ch-inside-card__desc">Every cup pressed fresh at your order - no pre-made batches, no bottles, no shortcuts. Maximum nutrition, maximum freshness.</div>
 				</div>
 			</div>
 		</div>
@@ -199,7 +199,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Rich Heritage</div>
 			<h2 class="section-title">2,000 Years of <span class="accent">Cane</span></h2>
-			<p class="section-body">Sugarcane isn't just a crop — it's a story of civilisation, trade, and natural wisdom passed down through generations.</p>
+			<p class="section-body">Sugarcane isn't just a crop - it's a story of civilisation, trade, and natural wisdom passed down through generations.</p>
 		</div>
 		<div class="ch-timeline fade-up">
 			<div class="ch-timeline-item">
@@ -231,7 +231,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 				<div class="ch-tl-year">Today</div>
 				<div class="ch-tl-content">
 					<h4>The Cane House, UK</h4>
-					<p>We bring this ancient tradition to modern Britain — live-pressed, fresh, and served cool at events across the UK.</p>
+					<p>We bring this ancient tradition to modern Britain - live-pressed, fresh, and served cool at events across the UK.</p>
 				</div>
 			</div>
 		</div>
@@ -243,7 +243,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 	<div class="container">
 		<div class="ch-inner-cta__box fade-up">
 			<h2>Ready to Taste the Difference?</h2>
-			<p>Experience 2,000 years of natural goodness — pressed fresh, served cool, just for you.</p>
+			<p>Experience 2,000 years of natural goodness - pressed fresh, served cool, just for you.</p>
 			<div class="ch-inner-cta__btns">
 				<a href="<?php echo esc_url( home_url( '/#build' ) ); ?>" class="btn-lime">🥤 Build Your Juice</a>
 				<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn-outline" style="border-color:rgba(255,255,255,0.4);color:#fff;">Book for Events →</a>

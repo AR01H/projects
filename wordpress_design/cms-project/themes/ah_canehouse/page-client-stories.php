@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 $settings = ch_get_settings();
-$phone    = $settings['phone'] ?? '+44 7887 699 208';
+$phone    = $settings['phone'] ?? CONTACT_NUMBER;
 $reviews  = ch_get_reviews( 12 );
 ?>
 
@@ -96,7 +96,7 @@ $reviews  = ch_get_reviews( 12 );
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Our Events</div>
 			<h2 class="section-title">We've Been <span class="accent">Everywhere</span></h2>
-			<p class="section-body">From intimate gatherings to large-scale events — The Cane House delivers every time.</p>
+			<p class="section-body">From intimate gatherings to large-scale events - The Cane House delivers every time.</p>
 		</div>
 		<div class="ch-showcase-events">
 			<div class="ch-event-showcase fade-up">
@@ -142,11 +142,11 @@ $reviews  = ch_get_reviews( 12 );
 				</div>
 				<div class="ch-event-showcase__body">
 					<h3>Private Parties & Festivals</h3>
-					<p>Birthdays, garden parties, community festivals, or street fairs — our live-press stall brings genuine excitement and freshness to any gathering, big or small.</p>
+					<p>Birthdays, garden parties, community festivals, or street fairs - our live-press stall brings genuine excitement and freshness to any gathering, big or small.</p>
 					<ul class="ch-event-list">
 						<li>Available across the whole UK</li>
 						<li>Flexible packages from 50 to 500+ guests</li>
-						<li>All ages love it — kids and adults alike</li>
+						<li>All ages love it - kids and adults alike</li>
 						<li>Quick setup and pack-down</li>
 					</ul>
 					<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn-lime" style="margin-top:1.5rem;display:inline-flex;">Enquire for a Party →</a>

@@ -10,7 +10,7 @@ $has_more   = $home_limit > 0 && count( $all_cards ) > $home_limit;
 
 $s        = ch_get_settings();
 $heading  = $s['story_cards_heading'] ?? 'The Sugarcane <span class="accent">Story</span>';
-$subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup — pressed live, served cool, every single time.';
+$subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pressed live, served cool, every single time.';
 ?>
 
 <section id="story-cards" class="ch-sc-section">

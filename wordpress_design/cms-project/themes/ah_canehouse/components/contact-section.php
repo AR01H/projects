@@ -2,8 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 $settings = ch_get_settings();
 $contact  = ch_get_contact_settings();
-$phone    = $settings['phone']   ?? '+44 7887 699 208';
-$email    = $settings['email']   ?? 'hello@thecanehouse.co.uk';
+$phone    = $settings['phone']   ?? CONTACT_NUMBER;
+$email    = $settings['email']   ?? CONTACT_EMAIL;
 $website  = $settings['website'] ?? 'www.thecanehouse.co.uk';
 $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 ?>

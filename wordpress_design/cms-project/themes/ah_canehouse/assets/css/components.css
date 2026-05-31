@@ -6,7 +6,7 @@
 .ch-ticker { background: var(--ch-green-deep); color: var(--ch-lime); padding: 0.5rem 0; overflow: hidden; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; 
     margin-top: var(--ch-nav-height);
 }
-.ch-ticker__track { display: inline-flex; white-space: nowrap; animation: ch-scroll-left 30s linear infinite; gap: 0; }
+.ch-ticker__track { display: inline-flex; white-space: nowrap; animation: ch-scroll-left 60s linear infinite; gap: 0; }
 .ch-ticker__item { padding: 0 1.5rem; }
 .ch-ticker__sep { opacity: 0.4; padding: 0 0.3rem; }
 
@@ -50,7 +50,7 @@
 .ch-h-feature { display: flex; align-items: center; gap: 0.8rem; }
 
 /* FAQ aliases */
-.ch-faq-section { background: var(--ch-green-bg) !important; }
+.ch-faq-section { background: var(--ch-green-pale) !important; }
 .ch-faq__header { text-align: center; margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; }
 .ch-faq__header .ch-section-body { margin-inline: auto; text-align: center; }
 
@@ -65,7 +65,7 @@
 .ch-option-card--full { grid-column: 1 / -1; }
 .ch-build__disclaimer { margin-top: 1.2rem; font-size: 0.72rem; color: var(--ch-text-muted); font-style: italic; }
 
-/* Section tag — line-prefix style (resets pill from base.css) */
+/* Section tag - line-prefix style (resets pill from base.css) */
 .ch-section-tag,
 .section-tag {
     display: inline-flex !important;
@@ -607,7 +607,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
 .ch-marquee-track {
     display: flex;
     width: max-content;
-    animation: ch-scroll-left 28s linear infinite;
+    animation: ch-scroll-left 50s linear infinite;
     will-change: transform;
 }
 .ch-marquee-wrap:hover .ch-marquee-track { animation-play-state: paused; }
@@ -773,7 +773,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
     margin: 0 auto;
 }
 
-/* Track — the white card shell */
+/* Track - the white card shell */
 .ch-reviews-track {
     background: #ffffff;
     border-radius: 24px;
@@ -783,7 +783,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
     overflow: hidden;
 }
 
-/* Cards — inactive sit behind with opacity 0 */
+/* Cards - inactive sit behind with opacity 0 */
 .ch-review-card {
     position: absolute;
     inset: 0;
@@ -1750,7 +1750,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
 #contact,
 .ch-section-contact,
 .ch-contact-section {
-    background: var(--ch-green-bg) !important;
+    background: var(--ch-green-pale) !important;
     padding: 6rem 4rem !important;
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -2426,7 +2426,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
 .ch-single-content th, .ch-single-content td { border: 1px solid var(--ch-green-bg); padding: 0.7rem 1rem; text-align: left; }
 .ch-single-content th { background: var(--ch-green-deep); color: #fff; }
 
-/* Single article — breadcrumb + meta */
+/* Single article - breadcrumb + meta */
 .ch-single-breadcrumb { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 1.2rem; }
 .ch-single-breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
 .ch-single-breadcrumb a:hover { color: var(--ch-lime); }
@@ -2434,7 +2434,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
 .ch-single-meta__item { display: inline-flex; align-items: center; gap: 0.5rem; }
 .ch-single-meta__avatar { border-radius: 50%; }
 
-/* Single article — footer (tags + share) */
+/* Single article - footer (tags + share) */
 .ch-single-footer { max-width: 800px; margin: 2.5rem auto 0; padding: 1.5rem 2rem 0; border-top: 1px solid var(--ch-green-bg); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
 .ch-single-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .ch-single-tag { background: var(--ch-green-bg); color: var(--ch-green-deep); padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.8rem; text-decoration: none; transition: background 0.2s; }
@@ -2444,7 +2444,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
 .ch-single-share__btn { width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--ch-green-bg); text-decoration: none; font-size: 1rem; transition: transform 0.2s, background 0.2s; }
 .ch-single-share__btn:hover { transform: translateY(-2px); background: var(--ch-lime); }
 
-/* Single article — related posts section */
+/* Single article - related posts section */
 .ch-single-related { padding: 4rem 0; background: var(--ch-green-bg); }
 .ch-single-related .ch-section-center { margin-bottom: 2.5rem; }
 
@@ -2530,7 +2530,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .services-steps .ch-steps-grid::before { display: none; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   STORY CARDS — interactive tabbed reveal section
+   STORY CARDS - interactive tabbed reveal section
    ═══════════════════════════════════════════════════════════════════════════ */
 .ch-sc-section {
     background: var(--ch-white);
@@ -2826,7 +2826,7 @@ body.has-ticker .ch-nav { top: 32px; }
     .ch-sc-tabs { grid-template-columns: 1fr 1fr; }
 }
 
-/* ── Swipe support — keep vertical scroll, capture horizontal swipe ─────────── */
+/* ── Swipe support - keep vertical scroll, capture horizontal swipe ─────────── */
 .ch-sc-panels,
 .ch-reviews-track,
 .ch-showcase-container { touch-action: pan-y; }
@@ -2858,7 +2858,7 @@ body.has-ticker .ch-nav { top: 32px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   NAV ENHANCEMENTS — search, actions, dropdown rich items
+   NAV ENHANCEMENTS - search, actions, dropdown rich items
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Search button */
@@ -2972,7 +2972,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-nav__dropdown-item:hover .ch-nav__dropdown-icon { background: rgba(200,232,48,0.25); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FOOTER — grid, accordion, contact, socials, bottom bar, WA FAB
+   FOOTER - grid, accordion, contact, socials, bottom bar, WA FAB
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .ch-footer {
@@ -3174,7 +3174,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-footer__sitemap a { color: rgba(255,255,255,0.15); text-decoration: none; }
 .ch-footer__sitemap a:hover { color: rgba(255,255,255,0.45); }
 
-/* ── WhatsApp FAB — pill button ────────────────────────────────────────── */
+/* ── WhatsApp FAB - pill button ────────────────────────────────────────── */
 .ch-wa-fab {
     display: none; /* shows on mobile only */
     position: fixed;
@@ -3243,7 +3243,7 @@ body.has-ticker .ch-nav { top: 32px; }
     .ch-footer__brand-desc { max-width: 320px; margin-inline: auto; }
     .ch-footer__socials { justify-content: center; }
 
-    /* Accordion sections — tight, even rows */
+    /* Accordion sections - tight, even rows */
     .ch-footer__accordion { border-bottom: 1px solid rgba(200,232,48,0.12); }
     .ch-footer__acc-icon { display: inline; }
     .ch-footer__col-title {
@@ -3254,7 +3254,7 @@ body.has-ticker .ch-nav { top: 32px; }
         width: 100%;
     }
 
-    /* Collapsed by default — fully zero height */
+    /* Collapsed by default - fully zero height */
     .ch-footer__acc-body {
         display: grid;
         grid-template-rows: 0fr;
@@ -3494,7 +3494,7 @@ body.has-ticker .ch-nav { top: 32px; }
 @media (max-width:900px) { .ch-menu-columns { grid-template-columns:1fr; } }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   BOOKING — banner + popup modal wizard
+   BOOKING - banner + popup modal wizard
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Banner card ────────────────────────────────────────────────────────── */
@@ -3979,7 +3979,7 @@ body.has-ticker .ch-nav { top: 32px; }
     .ch-bk-summary { padding: 1.1rem 1.2rem; }
     .ch-bk-summary-row { font-size: 0.82rem; }
 
-    /* Stacked nav buttons — Next prominent, Back subtle */
+    /* Stacked nav buttons - Next prominent, Back subtle */
     .ch-bk-nav { flex-direction: column-reverse; gap: 0.5rem; }
     .ch-bk-nav span { display: none; }
     .ch-bk-nav .btn-lime {
@@ -4022,7 +4022,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-section-more .btn-lime,
 .ch-section-more .btn-outline { cursor: pointer; }
 
-/* ── FAQ page — grouped by topic ───────────────────────────────────────────── */
+/* ── FAQ page - grouped by topic ───────────────────────────────────────────── */
 .ch-faqpage-group { max-width: 820px; margin: 0 auto 3rem; }
 .ch-faqpage-group:last-child { margin-bottom: 0; }
 .ch-faqpage-topic {
@@ -4044,7 +4044,7 @@ body.has-ticker .ch-nav { top: 32px; }
     border-radius: 4px;
 }
 
-/* ── Our Story page — alternating rows ─────────────────────────────────────── */
+/* ── Our Story page - alternating rows ─────────────────────────────────────── */
 .ch-storypage {
     max-width: 1050px;
     margin-inline: auto;

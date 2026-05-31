@@ -9,7 +9,7 @@ if ( empty( $reviews ) ) return;
 	<div class="ch-reviews-header fade-up">
 		<div class="section-tag">Happy Customers</div>
 		<h2 class="section-title">What Our <span class="accent">Fans Say</span></h2>
-		<p class="section-body">Real reviews from our sugarcane lovers across the UK — and beyond!</p>
+		<p class="section-body">Real reviews from our sugarcane lovers across the UK - and beyond!</p>
 	</div>
 
 	<div class="ch-reviews-wrapper">

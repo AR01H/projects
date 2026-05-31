@@ -13,7 +13,7 @@ class CH_Theme_Admin {
 		add_action( 'admin_post_ch_theme_content',     [ self::class, 'handle_content'  ] );
 		// ch_theme_settings handler lives in functions.php (complete version that
 		// also saves pricing, certifications and schema). Do NOT register a second
-		// handler here — it would overwrite those extended settings.
+		// handler here - it would overwrite those extended settings.
 	}
 
 	public static function register_menus(): void {
@@ -267,7 +267,7 @@ class CH_Theme_Admin {
 		exit;
 	}
 
-	// handle_settings() intentionally removed — the authoritative handler is in
+	// handle_settings() intentionally removed - the authoritative handler is in
 	// functions.php (saves contact, social, pricing, certifications and schema).
 
 	// ── Shared admin CSS ──────────────────────────────────────────────────────

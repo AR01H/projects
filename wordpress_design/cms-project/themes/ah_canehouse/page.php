@@ -1,6 +1,6 @@
 <?php
 /**
- * Generic page — renders native WP pages created in the CMS plugin
+ * Generic page - renders native WP pages created in the CMS plugin
  * (admin.php?page=ah-pages). Pages with an assigned template use their own
  * page-{slug}.php; everything else falls back here.
  */

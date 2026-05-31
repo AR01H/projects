@@ -1,6 +1,6 @@
 <?php
 /**
- * Single post — The Cane Journal article view.
+ * Single post - The Cane Journal article view.
  * Posts are authored in the CMS plugin (admin.php?page=ah-posts) as native WP
  * posts, so the loop below picks them up exactly the way page-blog.php does.
  */

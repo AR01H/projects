@@ -236,15 +236,15 @@
             var lines = [
                 '🥤 NEW ORDER REQUEST',
                 '',
-                'Cane:     ' + (selectedCanes().join(', ')    || '—'),
-                'Flavours: ' + (selectedFlavours().join(', ') || '—'),
+                'Cane:     ' + (selectedCanes().join(', ')    || '-'),
+                'Flavours: ' + (selectedFlavours().join(', ') || '-'),
                 '',
-                'Occasion: ' + (wizard.querySelector('[name="bk_occasion"]').value || '—'),
-                'Date:     ' + (wizard.querySelector('[name="bk_date"]').value     || '—'),
-                'Guests:   ' + (wizard.querySelector('[name="bk_guests"]').value   || '—'),
-                'Location: ' + (wizard.querySelector('[name="bk_location"]').value || '—'),
+                'Occasion: ' + (wizard.querySelector('[name="bk_occasion"]').value || '-'),
+                'Date:     ' + (wizard.querySelector('[name="bk_date"]').value     || '-'),
+                'Guests:   ' + (wizard.querySelector('[name="bk_guests"]').value   || '-'),
+                'Location: ' + (wizard.querySelector('[name="bk_location"]').value || '-'),
                 '',
-                'Notes:    ' + (wizard.querySelector('[name="bk_notes"]').value    || '—')
+                'Notes:    ' + (wizard.querySelector('[name="bk_notes"]').value    || '-')
             ];
             var compiled = lines.join('\n');
 

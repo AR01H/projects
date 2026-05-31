@@ -7,7 +7,7 @@ get_header();
 
 $faqs     = ch_get_faqs( '', 200 );
 $settings = ch_get_settings();
-$phone    = $settings['phone'] ?? '+44 7887 699 208';
+$phone    = $settings['phone'] ?? CONTACT_NUMBER;
 
 // Group by topic (preserve order of first appearance)
 $grouped = [];
@@ -27,7 +27,7 @@ foreach ( $faqs as $faq ) {
 		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
 			<div class="section-tag">Got Questions?</div>
 			<h1 class="ch-page-hero__title">Frequently Asked <em>Questions</em></h1>
-			<p class="ch-page-hero__desc">Everything you need to know about The Cane House — our juice, events, hire, and more.</p>
+			<p class="ch-page-hero__desc">Everything you need to know about The Cane House - our juice, events, hire, and more.</p>
 		</div>
 	</div>
 </section>

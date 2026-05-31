@@ -30,7 +30,7 @@ function ch_get_settings(): array {
 // ── Homepage display limits ───────────────────────────────────────────────────
 /**
  * How many items a homepage section should show.
- * Returns 0 to mean "no limit — show everything on the homepage".
+ * Returns 0 to mean "no limit - show everything on the homepage".
  * Controlled from Content & Menu → Homepage Display Limits.
  *
  * @param string $key            e.g. 'story_cards', 'faqs'
@@ -70,7 +70,7 @@ function ch_more_button( string $url, string $label, string $style = 'outline' )
 // ── Price visibility ──────────────────────────────────────────────────────────
 function ch_show_prices(): bool {
 	$s = ch_get_settings();
-	// Default OFF — only show if explicitly enabled in admin
+	// Default OFF - only show if explicitly enabled in admin
 	return ! empty( $s['show_prices'] ) && $s['show_prices'] === '1';
 }
 
@@ -83,7 +83,7 @@ function ch_get_certifications(): array {
 	return [
 		[
 			'icon'  => '🍽️',
-			'title' => 'Food Hygiene Rating 5',
+			'title' => 'Hygiene Rating 5',
 			'desc'  => 'Awarded the highest food hygiene score by local authority. Inspected and verified.',
 			'badge' => 'Grade 5 ★★★★★',
 		],
@@ -104,19 +104,7 @@ function ch_get_certifications(): array {
 			'title' => 'HACCP Compliant',
 			'desc'  => 'Full Hazard Analysis and Critical Control Point procedures in place for all operations.',
 			'badge' => 'HACCP Cert.',
-		],
-		[
-			'icon'  => '🤝',
-			'title' => 'Multi-Event Handler',
-			'desc'  => 'Experienced in serving 50 to 1,000+ guests. Reliable, punctual, professional every time.',
-			'badge' => '200+ Events',
-		],
-		[
-			'icon'  => '✅',
-			'title' => 'Risk Assessed',
-			'desc'  => 'Full risk assessment documentation provided for venues and event organisers on request.',
-			'badge' => 'RA Documented',
-		],
+		]
 	];
 }
 
@@ -545,7 +533,7 @@ function ch_get_story_cards(): array {
 			'icon'     => '🚜',
 			'label'    => 'Farm Sourced',
 			'heading'  => 'Sourced From Trusted Farms',
-			'body'     => 'We source our sugarcane directly from trusted suppliers who grow varieties specifically suited to juicing. Yellow cane, Barbados cane — each with a distinct natural sweetness and character.',
+			'body'     => 'We source our sugarcane directly from trusted suppliers who grow varieties specifically suited to juicing. Yellow cane, Barbados cane - each with a distinct natural sweetness and character.',
 			'facts'    => [ 'Yellow & Red cane varieties', 'Grown without added chemicals', 'Freshness guaranteed' ],
 			'images'   => [
 				'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=80',
@@ -557,7 +545,7 @@ function ch_get_story_cards(): array {
 			'icon'     => '⚙️',
 			'label'    => 'Live Pressed',
 			'heading'  => 'Pressed Live in Front of You',
-			'body'     => 'Every cup is pressed at the moment you order — not pre-made, not bottled. You watch it happen. Raw cane goes in, pure juice comes out. No heat, no chemicals, no shortcuts.',
+			'body'     => 'Every cup is pressed at the moment you order - not pre-made, not bottled. You watch it happen. Raw cane goes in, pure juice comes out. No heat, no chemicals, no shortcuts.',
 			'facts'    => [ 'Pressed to order every time', 'Cold extraction preserves nutrients', 'Ready in under 60 seconds' ],
 			'images'   => [
 				'https://images.unsplash.com/photo-1437418747212-8d9709afab22?auto=format&fit=crop&w=700&q=80',
@@ -569,7 +557,7 @@ function ch_get_story_cards(): array {
 			'icon'     => '🍋',
 			'label'    => 'Custom Blends',
 			'heading'  => 'Blended With Natural Botanicals',
-			'body'     => 'From zingy lemon to spicy ginger, cooling mint to tropical pineapple — our blend range uses only real, fresh botanical ingredients. Nothing artificial, nothing pre-mixed.',
+			'body'     => 'From zingy lemon to spicy ginger, cooling mint to tropical pineapple - our blend range uses only real, fresh botanical ingredients. Nothing artificial, nothing pre-mixed.',
 			'facts'    => [ '8+ natural blend options', 'Real lemon, ginger, mint', 'No syrups or concentrates' ],
 			'images'   => [
 				'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=700&q=80',
@@ -582,7 +570,7 @@ function ch_get_story_cards(): array {
 			'icon'     => '🥤',
 			'label'    => 'Served Cool',
 			'heading'  => 'Chilled and Served Immediately',
-			'body'     => 'Every juice is served immediately after pressing — cool, fresh, and full of life. No ice that dilutes, no sitting in a fridge losing nutrients. Just pure cane, pressed and served.',
+			'body'     => 'Every juice is served immediately after pressing - cool, fresh, and full of life. No ice that dilutes, no sitting in a fridge losing nutrients. Just pure cane, pressed and served.',
 			'facts'    => [ 'Served within 60 seconds', 'Optimal temperature maintained', 'Maximum nutrients preserved' ],
 			'images'   => [
 				'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=700&q=80',
@@ -593,7 +581,7 @@ function ch_get_story_cards(): array {
 			'id'       => 'pure',
 			'icon'     => '💚',
 			'label'    => 'Zero Additives',
-			'heading'  => '100% Pure — Nothing Added',
+			'heading'  => '100% Pure - Nothing Added',
 			'body'     => 'No preservatives, no artificial sweeteners, no colourings, no emulsifiers. What goes in is cane. What comes out is juice. The way it should be. The way it has always been.',
 			'facts'    => [ 'Zero preservatives', 'Zero artificial anything', 'Naturally allergen-free' ],
 			'images'   => [

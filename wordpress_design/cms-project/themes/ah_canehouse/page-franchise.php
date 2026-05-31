@@ -8,7 +8,7 @@ get_header();
 $locations = ch_get_franchise_locations();
 $showcase  = ch_get_juice_showcase();
 $settings  = ch_get_settings();
-$phone     = $settings['phone'] ?? '+44 7887 699 208';
+$phone     = $settings['phone'] ?? CONTACT_NUMBER;
 ?>
 
 <main class="ch-main" id="main-content">
@@ -19,7 +19,7 @@ $phone     = $settings['phone'] ?? '+44 7887 699 208';
 		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
 			<div class="section-tag">Grow With Us</div>
 			<h1 class="ch-page-hero__title">Franchise <em>Opportunities</em></h1>
-			<p class="ch-page-hero__desc">Join the UK's fastest-growing natural juice movement. Bring live-pressed sugarcane juice to your city — we provide everything you need to succeed.</p>
+			<p class="ch-page-hero__desc">Join the UK's fastest-growing natural juice movement. Bring live-pressed sugarcane juice to your city - we provide everything you need to succeed.</p>
 			<a href="#franchise-enquiry" class="btn-lime" style="margin-top:2rem;">Start Your Enquiry →</a>
 		</div>
 	</div>
@@ -31,18 +31,18 @@ $phone     = $settings['phone'] ?? '+44 7887 699 208';
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">The Opportunity</div>
 			<h2 class="section-title">Why <span class="accent">The Cane House?</span></h2>
-			<p class="section-body">The demand for healthy, natural drinks is booming. The UK has almost no live-press sugarcane brand — yet. Be the first in your city.</p>
+			<p class="section-body">The demand for healthy, natural drinks is booming. The UK has almost no live-press sugarcane brand - yet. Be the first in your city.</p>
 		</div>
 		<div class="ch-franchise-why-grid fade-up">
 			<div class="ch-fw-card">
 				<div class="ch-fw-icon">📈</div>
 				<h3>Growing Market</h3>
-				<p>The natural drinks sector is growing 15%+ year-on-year. Live-press juice is untapped in most UK cities — massive first-mover advantage awaits.</p>
+				<p>The natural drinks sector is growing 15%+ year-on-year. Live-press juice is untapped in most UK cities - massive first-mover advantage awaits.</p>
 			</div>
 			<div class="ch-fw-card">
 				<div class="ch-fw-icon">🏗️</div>
 				<h3>Full Setup Support</h3>
-				<p>We provide the equipment, training, branding, marketing templates, and supplier contacts. You focus on serving customers — we handle the rest.</p>
+				<p>We provide the equipment, training, branding, marketing templates, and supplier contacts. You focus on serving customers - we handle the rest.</p>
 			</div>
 			<div class="ch-fw-card">
 				<div class="ch-fw-icon">💰</div>
@@ -52,7 +52,7 @@ $phone     = $settings['phone'] ?? '+44 7887 699 208';
 			<div class="ch-fw-card">
 				<div class="ch-fw-icon">🤝</div>
 				<h3>Ongoing Partnership</h3>
-				<p>We're not just a licensor — we're your business partner. Regular check-ins, marketing support, and a growing network of fellow franchise owners.</p>
+				<p>We're not just a licensor - we're your business partner. Regular check-ins, marketing support, and a growing network of fellow franchise owners.</p>
 			</div>
 			<div class="ch-fw-card">
 				<div class="ch-fw-icon">🌿</div>

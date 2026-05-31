@@ -8,7 +8,7 @@ get_header();
 $cards    = ch_get_story_cards();
 $s        = ch_get_settings();
 $heading  = $s['story_cards_heading'] ?? 'The Sugarcane Story';
-$subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup — pressed live, served cool, every single time.';
+$subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pressed live, served cool, every single time.';
 ?>
 
 <main class="ch-main" id="main-content">
@@ -75,9 +75,9 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup — pr
 	<div class="container">
 		<div class="ch-inner-cta__box fade-up">
 			<h2>Taste 2,000 Years of Tradition</h2>
-			<p>Fresh sugarcane juice, pressed live and served cool — just for you.</p>
+			<p>Fresh sugarcane juice, pressed live and served cool - just for you.</p>
 			<div class="ch-inner-cta__btns">
-				<a href="<?php echo esc_url( home_url( '/#build' ) ); ?>" class="btn-lime">🥤 Build Your Juice</a>
+				<a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn-lime">🥤 Contact Us</a>
 				<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="btn-outline ch-btn-outline-light">Book for Events →</a>
 			</div>
 		</div>

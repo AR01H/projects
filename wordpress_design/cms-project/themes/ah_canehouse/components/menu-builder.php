@@ -11,7 +11,7 @@ $show_prices  = ch_show_prices();
 	<div class="ch-build__header fade-up">
 		<div class="ch-section-tag">Full Menu</div>
 		<h2 class="ch-section-title">Build Your <span class="accent">Juice</span></h2>
-		<p class="ch-section-body">Mix and match size, cane type, texture and flavour — pressed live, just for you.</p>
+		<p class="ch-section-body">Mix and match size, cane type, texture and flavour - pressed live, just for you.</p>
 	</div>
 
 	<div class="ch-build-grid">
@@ -143,7 +143,7 @@ $show_prices  = ch_show_prices();
 				<?php endforeach; ?>
 			</div>
 			<p class="ch-build__disclaimer">
-				* As different cane types are freshly pressed in a shared machine, slight variation in colour and taste may occur. Contains natural sugars — please consume responsibly.
+				* As different cane types are freshly pressed in a shared machine, slight variation in colour and taste may occur. Contains natural sugars - please consume responsibly.
 			</p>
 		</div>
 

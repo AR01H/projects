@@ -9,11 +9,11 @@ defined( 'ABSPATH' ) || exit;
 
 function ch_mock_default_settings(): array {
 	return [
-		'phone'          => '+44 7887 699 208',
-		'email'          => 'hello@thecanehouse.co.uk',
-		'address'        => 'Available across the UK',
-		'website'        => 'www.thecanehouse.co.uk',
-		'whatsapp'       => '+447887699208',
+		'phone'          => '',
+		'email'          => '',
+		'address'        => '',
+		'website'        => '',
+		'whatsapp'       => '',
 		'facebook_url'   => '',
 		'instagram_url'  => '',
 		'tiktok_url'     => '',
@@ -167,7 +167,7 @@ function ch_mock_faqs( string $topic = '' ): array {
 		(object)[ 'topic' => 'Juice',   'question' => 'What is the difference between Yellow and Red Cane?', 'answer' => 'Yellow Cane produces a lighter, more refreshing golden juice with a clean, mild sweetness. Red Cane (available at +£0.50) is naturally richer with a deeper amber colour and a more intense sweetness. Both are 100% natural with no additives.',                  'status' => 'active', 'sort_order' => 7 ],
 		(object)[ 'topic' => 'Juice',   'question' => 'What flavour blends do you offer?',               'answer' => 'We offer Pure Cane (natural, included), Citrus Blends including Lemon, Ginger, Lemon & Ginger, and Mint (+£0.50 each), and Tropical Blends including Pineapple, Watermelon, Strawberry, and Blueberry Burst (+£1.00 each).',                                         'status' => 'active', 'sort_order' => 8 ],
 		(object)[ 'topic' => 'General', 'question' => 'Is your sugarcane juice sustainable?',            'answer' => 'Yes! Sugarcane is a highly sustainable crop. Even our leftover fibre (bagasse) is biodegradable and can be used for composting or as biofuel. We are committed to responsible, eco-conscious serving practices.',                                                        'status' => 'active', 'sort_order' => 9 ],
-		(object)[ 'topic' => 'Franchise','question' => 'How can I become a franchise partner?',          'answer' => 'We warmly welcome franchise enquiries from across the UK. Whether you want to run a permanent stall, a mobile unit, or an events-focused operation - we have a model for you. Call us on +44 7887 699 208 or use the contact form to start the conversation.',          'status' => 'active', 'sort_order' => 10 ],
+		(object)[ 'topic' => 'Franchise','question' => 'How can I become a franchise partner?',          'answer' => 'We warmly welcome franchise enquiries from across the UK. Whether you want to run a permanent stall, a mobile unit, or an events-focused operation - we have a model for you. Use the contact form to start the conversation.',          'status' => 'active', 'sort_order' => 10 ],
 	];
 	if ( $topic ) {
 		return array_values( array_filter( $all, fn( $f ) => $f->topic === $topic ) );

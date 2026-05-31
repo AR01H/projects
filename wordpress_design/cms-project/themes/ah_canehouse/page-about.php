@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 $settings = ch_get_settings();
-$phone    = $settings['phone'] ?? '+44 7887 699 208';
+$phone    = $settings['phone'] ?? CONTACT_NUMBER;
 ?>
 
 <main class="ch-main" id="main-content">
@@ -15,7 +15,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 			<div class="section-tag">About Us</div>
 			<h1 class="section-title">The Story Behind <span class="accent">The Cane House</span></h1>
 			<p class="section-body">
-				We believe in the power of nature's simplest gifts. At The Cane House, we're dedicated to bringing the freshest, most natural sugarcane juice experience to the UK — pressed live, served cool, with nothing added.
+				We believe in the power of nature's simplest gifts. At The Cane House, we're dedicated to bringing the freshest, most natural sugarcane juice experience to the UK - pressed live, served cool, with nothing added.
 			</p>
 		</div>
 	</div>
@@ -37,7 +37,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 			<div class="mission-card fade-up">
 				<div class="mission-icon">🌿</div>
 				<h3>Our Vision</h3>
-				<p>To become the UK's most trusted brand for fresh, natural, live-pressed sugarcane juice — setting the standard for sustainability and quality.</p>
+				<p>To become the UK's most trusted brand for fresh, natural, live-pressed sugarcane juice - setting the standard for sustainability and quality.</p>
 			</div>
 			<div class="mission-card fade-right">
 				<div class="mission-icon">💚</div>
@@ -126,7 +126,7 @@ if ( ! empty( $team ) ) : ?>
 		<div style="text-align:center;margin-bottom:3rem;" class="fade-up">
 			<div class="section-tag">Our Journey</div>
 			<h2 class="section-title">Beyond the <span class="accent">Juice</span></h2>
-			<p class="section-body" style="margin-inline:auto;">Sugarcane has been cherished for over 2,000 years. At The Cane House, we bring that ancient goodness to every cup we press — fresh, natural, and live.</p>
+			<p class="section-body" style="margin-inline:auto;">Sugarcane has been cherished for over 2,000 years. At The Cane House, we bring that ancient goodness to every cup we press - fresh, natural, and live.</p>
 		</div>
 		<div class="ch-story-facts fade-up" style="max-width:900px;margin-inline:auto;">
 			<div class="ch-story-fact">
@@ -147,7 +147,7 @@ if ( ! empty( $team ) ) : ?>
 			<div class="ch-story-fact">
 				<div class="ch-fact-icon">🌱</div>
 				<div class="ch-fact-title">Eco Fibre</div>
-				<div class="ch-fact-desc">Biodegradable — fully sustainable crop</div>
+				<div class="ch-fact-desc">Biodegradable - fully sustainable crop</div>
 			</div>
 		</div>
 	</div>

@@ -107,7 +107,7 @@ function ch_handle_contact_submit(): void {
 		. "Thank you for getting in touch with The Cane House! 🌿"
 		. "We've received your message and will get back to you very soon - usually within a few hours."
 		. "In the meantime, if your enquiry is urgent, please call us directly:\n"
-		. "📞 " . ( ch_get_settings()['phone'] ?? '+44 7887 699 208' ) . ""
+		. "📞 " . ( ch_get_settings()['phone'] ?? CONTACT_NUMBER ) . ""
 		. "Pressed Fresh. Served Cool.\n"
 		. "The Cane House Team"
 		. "www.thecanehouse.co.uk";

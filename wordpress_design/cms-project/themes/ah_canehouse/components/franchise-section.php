@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 $locations = ch_get_franchise_locations();
 $showcase  = ch_get_juice_showcase();
 $settings  = ch_get_settings();
-$phone     = $settings['phone'] ?? '+44 7887 699 208';
+$phone     = $settings['phone'] ?? CONTACT_NUMBER;
 ?>
 
 <section id="franchise" class="ch-franchise-section">

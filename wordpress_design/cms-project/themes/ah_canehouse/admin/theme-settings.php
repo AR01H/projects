@@ -3,7 +3,6 @@ defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 $s      = ch_get_settings();
 $schema = ch_get_schema_settings();
-$certs  = ch_get_certifications();
 ?>
 <div class="wrap ch-admin-wrap">
 	<h1>🔧 Site Settings</h1>
@@ -21,11 +20,11 @@ $certs  = ch_get_certifications();
 			<h2>📞 Contact &amp; Business Info</h2>
 			<?php
 			$fields = [
-				'phone'    => [ 'Phone Number',                      'tel',   '+44 7887 699 208' ],
-				'email'    => [ 'Email Address',                     'email', 'hello@thecanehouse.co.uk' ],
+				'phone'    => [ 'Phone Number',                      'tel',   CONTACT_NUMBER ],
+				'email'    => [ 'Email Address',                     'email', CONTACT_EMAIL ],
 				'address'  => [ 'Address / Coverage Area',           'text',  'Available across the UK' ],
 				'website'  => [ 'Website URL',                       'text',  'www.thecanehouse.co.uk' ],
-				'whatsapp' => [ 'WhatsApp Number (digits + country)', 'text',  '447887699208' ],
+				'whatsapp' => [ 'WhatsApp Number (digits + country)', 'text',  WHATASPP_CONTACT_NUMBER ],
 				'tagline'  => [ 'Business Tagline',                  'text',  'Pressed Fresh. Served Cool.' ],
 			];
 			foreach ( $fields as $key => [ $label, $type, $placeholder ] ) : ?>
@@ -63,7 +62,7 @@ $certs  = ch_get_certifications();
 		<!-- ── Pricing Control ─────────────────────────────────────────────── -->
 		<div class="ch-card">
 			<h2>💷 Pricing Visibility</h2>
-			<p style="color:#666;margin-bottom:1rem;">Control whether prices appear anywhere on the website. Turn off to keep pricing private — useful when quoting per-event or for franchise partners.</p>
+			<p style="color:#666;margin-bottom:1rem;">Control whether prices appear anywhere on the website. Turn off to keep pricing private - useful when quoting per-event or for franchise partners.</p>
 			<div class="ch-row">
 				<label>Show Prices on Website</label>
 				<label class="ch-toggle">
@@ -157,8 +156,8 @@ $certs  = ch_get_certifications();
 			$schema_fields = [
 				'schema[name]'        => [ 'Business Name',    'text',  'The Cane House' ],
 				'schema[description]' => [ 'Business Description', 'text', 'Fresh sugarcane juice pressed live, served cool.' ],
-				'schema[phone]'       => [ 'Phone (schema)',   'tel',   '+44 7887 699 208' ],
-				'schema[email]'       => [ 'Email (schema)',   'email', 'hello@thecanehouse.co.uk' ],
+				'schema[phone]'       => [ 'Phone (schema)',   'tel',   CONTACT_NUMBER ],
+				'schema[email]'       => [ 'Email (schema)',   'email', CONTACT_EMAIL ],
 				'schema[area_served]' => [ 'Area Served',      'text',  'United Kingdom' ],
 				'schema[price_range]' => [ 'Price Range (£ to £££)', 'text', '£' ],
 			];

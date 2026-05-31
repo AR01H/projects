@@ -4,7 +4,7 @@ $s      = ch_get_settings();
 $certs  = ch_get_certifications();
 $cert_heading = $s['cert_heading'] ?? 'Government Certified & Fully Compliant';
 $cert_sub     = $s['cert_subtext'] ?? 'Every event we attend comes with full documentation, insurance, and food safety compliance. We take the trust of our clients and their guests very seriously.';
-$cert_img     = $s['cert_image_url'] ?? '';
+$cert_img     = $s['cert_image_url'] ?? get_template_directory_uri() . '/assets/images/ncass_logo.png';
 ?>
 
 <section id="certifications" class="ch-certs-section">
@@ -30,7 +30,7 @@ $cert_img     = $s['cert_image_url'] ?? '';
 							<div class="ch-cert-title"><?php echo esc_html( $cert['title'] ); ?></div>
 							<div class="ch-cert-desc"><?php echo esc_html( $cert['desc'] ?? '' ); ?></div>
 						</div>
-						<?php if ( ! empty( $cert['badge'] ) ) : ?>
+						<?php if ( ! empty( $cert['badge'] ) && $cert['badge'] !== "''" ) : ?>
 							<span class="ch-cert-badge"><?php echo esc_html( $cert['badge'] ); ?></span>
 						<?php endif; ?>
 					</div>
@@ -44,14 +44,15 @@ $cert_img     = $s['cert_image_url'] ?? '';
 						alt="The Cane House Food Hygiene Certificate"
 						class="ch-cert-img" loading="lazy">
 					<div class="ch-cert-stamp">
-						<span class="ch-cert-stamp__icon">🏛️</span>
-						<div class="ch-cert-stamp__text">Government Verified</div>
+						<div class="ch-cert-stamp__text">Council Registered</div>
 					</div>
 				</div>
 			<?php else : ?>
 				<div class="ch-cert-trust fade-right">
 					<div class="ch-cert-trust__inner">
-						<div class="ch-cert-trust__icon">🏛️</div>
+						<div class="ch-cert-trust__icon">
+							<img src="<?php echo esc_url( $cert_img ); ?>" alt="Certification Icon" />
+						</div>
 						<div class="ch-cert-trust__title">Proudly Certified</div>
 						<p class="ch-cert-trust__text">
 							The Cane House operates with full compliance across all food safety, health, and event regulations applicable in the United Kingdom.

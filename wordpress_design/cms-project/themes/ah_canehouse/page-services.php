@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 $settings = ch_get_settings();
-$phone    = $settings['phone'] ?? '+44 7887 699 208';
+$phone    = $settings['phone'] ?? CONTACT_NUMBER;
 ?>
 
 <main class="ch-main" id="main-content">
@@ -15,7 +15,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 			<div class="section-tag">What We Offer</div>
 			<h1 class="section-title">Our <span class="accent">Services</span></h1>
 			<p class="section-body">
-				From fresh juice orders to full live-press event experiences — we bring the authentic taste of sugarcane to every occasion.
+				From fresh juice orders to full live-press event experiences - we bring the authentic taste of sugarcane to every occasion.
 			</p>
 		</div>
 	</div>
@@ -27,7 +27,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 		<div style="text-align:center;margin-bottom:3rem;" class="fade-up">
 			<div class="section-tag">Everything We Do</div>
 			<h2 class="section-title">Fresh Juice. <span class="accent">Every Way.</span></h2>
-			<p class="section-body" style="margin-inline:auto;">Discover how The Cane House can serve you — whether it's a single cup or a full event setup.</p>
+			<p class="section-body" style="margin-inline:auto;">Discover how The Cane House can serve you - whether it's a single cup or a full event setup.</p>
 		</div>
 		<div class="services-grid">
 			<?php
@@ -60,7 +60,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 					[ 'icon' => '🥤', 'title' => 'Fresh Juice Orders',        'desc' => 'Walk-up or pre-order your perfect sugarcane blend. Choose your size, cane type, texture, and flavour.' ],
 					[ 'icon' => '💒', 'title' => 'Wedding &amp; Events Hire', 'desc' => 'Live-pressed juice stall for your wedding reception, Mehndi, Sangeet, or post-ceremony celebration.' ],
 					[ 'icon' => '🏢', 'title' => 'Corporate Events',          'desc' => 'A refreshing, healthy alternative for office wellness days, product launches, and exhibitions.' ],
-					[ 'icon' => '🎉', 'title' => 'Private Parties',           'desc' => 'Birthdays, garden parties, community festivals — we bring the live-press experience to you.' ],
+					[ 'icon' => '🎉', 'title' => 'Private Parties',           'desc' => 'Birthdays, garden parties, community festivals - we bring the live-press experience to you.' ],
 					[ 'icon' => '🤝', 'title' => 'Franchise Opportunities',   'desc' => 'Join our growing network. Bring live-pressed sugarcane juice to your city with full support.' ],
 					[ 'icon' => '📦', 'title' => 'Bulk &amp; Catering',       'desc' => 'Large-volume juice supply for festivals, markets, and corporate catering needs across the UK.' ],
 				];
@@ -84,7 +84,7 @@ $phone    = $settings['phone'] ?? '+44 7887 699 208';
 		<div style="text-align:center;margin-bottom:3rem;" class="fade-up">
 			<div class="section-tag">The Process</div>
 			<h2 class="section-title">Simple to <span class="accent">Book</span></h2>
-			<p class="section-body" style="margin-inline:auto;">Getting The Cane House to your event is easy — just a few steps and we take care of the rest.</p>
+			<p class="section-body" style="margin-inline:auto;">Getting The Cane House to your event is easy - just a few steps and we take care of the rest.</p>
 		</div>
 		<div class="ch-steps-grid ch-steps-grid--4" style="max-width:900px;margin-inline:auto;">
 			<div class="ch-step-card fade-up">
