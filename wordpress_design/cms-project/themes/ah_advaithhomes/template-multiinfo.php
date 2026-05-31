@@ -155,8 +155,9 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           $extra_heading = 'on '.$active_pt->name;
         }
         get_template_part( 'components/nif-background-imagecard',null,[
-          'exta_heading'=> $extra_heading,
-        ] ); 
+          'variant'      => 'tiles',
+          'exta_heading' => $extra_heading,
+        ] );
         
         ?>
 
@@ -167,7 +168,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             <div>
               <div class="mi-pt-header__eyebrow"><?php echo esc_html( TXT_TOPIC ); ?></div>
               <h1 class="mi-pt-header__title">
-                <?php if ( ! empty( $active_pt->icon_emoji ) ) echo esc_html( $active_pt->icon_emoji ) . ' '; ?>
+                <?php echo esc_html( ah_topic_icon( $active_pt->name ?? '', $active_pt->slug ?? '', $active_pt->icon_emoji ?? '' ) ); ?>
                 <?php echo esc_html( $active_pt->name ); ?>
               </h1>
             </div>
@@ -199,7 +200,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
         <div class="mi-chip-strip mi-chip-strip--pts">
           <?php foreach ( $parent_terms as $_pt ) :
             $color = ! empty( $_pt->color ) ? $_pt->color : 'var(--accent)';
-            $label = ( ! empty( $_pt->icon_emoji ) ? $_pt->icon_emoji . ' ' : '' ) . $_pt->name;
+            $label = ah_topic_icon( $_pt->name ?? '', $_pt->slug ?? '', $_pt->icon_emoji ?? '' ) . ' ' . $_pt->name;
           ?>
           <a href="<?php echo esc_url( home_url( '/multiinfo/' . $_pt->slug . '/' ) ); ?>"
              class="mi-chip"
@@ -226,9 +227,16 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
           'permalink'=> $base_url,
         ] ); ?>
 
+        <?php
+        // Split the scoped posts so "Latest Guides" and "In Brief" never repeat:
+        // Latest = first 6, In Brief = the next 6.
+        $latest_tiles = array_slice( $posts_arr, 0, 6 );
+        $brief_posts  = array_slice( $posts_arr, 6, 6 );
+        ?>
+
         <!-- ── Guide tiles ───────────────────────────────────────────────── -->
         <?php get_template_part( 'components/nif-guide-tiles', null, [
-          'posts'   => array_slice( $posts_arr, 0, 6 ),
+          'posts'   => $latest_tiles,
           'eyebrow' => $active_pt
             ? sprintf( 'Latest in %s' , $active_pt->name )
             : TXT_LATEST_GUIDES,
@@ -237,13 +245,15 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             : home_url( '/multiinfo/' ),
         ] ); ?>
 
-        <!-- ── In brief / more posts ─────────────────────────────────────── -->
+        <!-- ── In brief / more posts (only when there are non-duplicate items) ── -->
+        <?php if ( ! empty( $brief_posts ) ) : ?>
         <?php get_template_part( 'components/nif-brief-list', null, [
-          'posts'     => array_slice( $posts_arr, 0, 6 ),
+          'posts'     => $brief_posts,
           'max_pages' => $blog_query->max_num_pages,
           'paged'     => $paged,
           'base_url'  => $base_url,
         ] ); ?>
+        <?php endif; ?>
 
         <?php else : ?>
         <!-- ── Paginated grid (pg > 1) ───────────────────────────────────── -->

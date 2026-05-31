@@ -79,4 +79,40 @@ class AH_Theme_Content_Taxonomy {
 	public static function get_unique_terms( array $items, string $object_type ): array {
 		return self::get_terms_for_items( $items, $object_type )['unique_terms'];
 	}
+
+	/**
+	 * Check if an object has ANY term belonging to a specific taxonomy TYPE.
+	 *
+	 * @param int    $object_id   Object ID (e.g. post ID).
+	 * @param string $object_type Object type (e.g. 'ah_post', 'news_bar_item').
+	 * @param string $type_slug   Taxonomy type slug (e.g. 'related-articles', 'useful-links').
+	 * @return bool True if the object has at least one term of that type.
+	 */
+	public static function has_terms_of_type( int $object_id, string $object_type, string $type_slug ): bool {
+		if ( ! class_exists( 'AH_DB_Helper' ) ) {
+			return false;
+		}
+
+		global $wpdb;
+		$ct        = AH_DB_Helper::table( 'content_taxonomies' );
+		$tax       = AH_DB_Helper::table( 'taxonomies' );
+		$tax_types = AH_DB_Helper::table( 'taxonomy_types' );
+
+		$result = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM `{$ct}` ct
+				 INNER JOIN `{$tax}` t ON t.id = ct.taxonomy_id
+				 INNER JOIN `{$tax_types}` tt ON tt.id = t.type_id
+				 WHERE ct.object_type = %s
+				   AND ct.object_id = %d
+				   AND tt.slug = %s
+				 LIMIT 1",
+				$object_type,
+				$object_id,
+				$type_slug
+			)
+		);
+
+		return (int) $result > 0;
+	}
 }

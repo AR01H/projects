@@ -102,7 +102,9 @@ class AH_Theme_Seeder {
 			'team'           => 'seed_team',
 			'faqs'           => 'seed_faqs',
 			'news-bar'       => 'seed_news_bar',
+			'news-articles'  => 'seed_news_articles',
 			'properties'     => 'seed_properties',
+			'navigation'     => 'seed_nav_topics',
 		];
 		$results = [ 'inserted' => 0, 'updated' => 0, 'skipped' => 0, 'errors' => [] ];
 		foreach ( $types as $type ) {
@@ -166,14 +168,131 @@ class AH_Theme_Seeder {
 		return [ 'inserted' => 0, 'updated' => 1 ];
 	}
 
-	public static function seed_nav_topics(): array {
-		$navigation = [
-			[
-			],
-			[
-			],
+	/**
+	 * Builds the header navigation array from nav-header.csv.
+	 *
+	 * CSV columns: sort_order, parent, label, url, type, icon, description, highlight
+	 *   - A row with an empty `parent` is a top-level item.
+	 *   - A row whose `parent` matches a top-level item's label becomes a submenu
+	 *     child of that item (the parent is then rendered as a dropdown).
+	 *
+	 * @return array Shape consumed by ah_normalize_theme_navigation().
+	 */
+	private static function build_nav_header_from_csv(): array {
+		$rows = AH_Data::load_csv( 'nav-header' );
+		if ( empty( $rows ) ) return [];
+
+		$tops = $children = [];
+		foreach ( $rows as $r ) {
+			$label = trim( $r['label'] ?? '' );
+			if ( $label === '' ) continue;
+			$parent = trim( $r['parent'] ?? '' );
+			if ( $parent === '' ) {
+				$tops[] = $r;
+			} else {
+				$children[ strtolower( $parent ) ][] = $r;
+			}
+		}
+
+		$by_order = static function ( $a, $b ) {
+			return (int) ( $a['sort_order'] ?? 0 ) <=> (int) ( $b['sort_order'] ?? 0 );
+		};
+		usort( $tops, $by_order );
+
+		$nav = [];
+		foreach ( $tops as $r ) {
+			$label   = trim( $r['label'] );
+			$subrows = $children[ strtolower( $label ) ] ?? [];
+			usort( $subrows, $by_order );
+
+			$submenu = [];
+			foreach ( $subrows as $s ) {
+				$s_label = trim( $s['label'] ?? '' );
+				$s_url   = trim( $s['url'] ?? '' );
+				if ( $s_label === '' || $s_url === '' ) continue;
+				$submenu[] = [
+					'label'       => $s_label,
+					'url'         => $s_url,
+					'description' => trim( $s['description'] ?? '' ),
+					'icon'        => trim( $s['icon'] ?? '' ),
+					'highlight'   => ! empty( $s['highlight'] ) && $s['highlight'] !== '0',
+				];
+			}
+
+			$type = ! empty( $submenu ) || ( ( $r['type'] ?? 'link' ) === 'dropdown' ) ? 'dropdown' : 'link';
+			$nav[] = [
+				'id'          => sanitize_title( $label ),
+				'label'       => $label,
+				'type'        => $type,
+				'url'         => $type === 'link' ? trim( $r['url'] ?? '' ) : '',
+				'visible'     => true,
+				'icon'        => trim( $r['icon'] ?? '' ),
+				'description' => trim( $r['description'] ?? '' ),
+				'submenu'     => $submenu,
+			];
+		}
+		return $nav;
+	}
+
+	/**
+	 * Builds the footer from nav-footer.csv.
+	 *
+	 * CSV columns: column, sort_order, label, url, highlight
+	 *   - Rows are grouped into footer columns by their `column` value.
+	 *   - Rows whose `column` is "Legal" populate the bottom-bar legal links instead.
+	 *
+	 * @return array|null Footer shape for ah_normalize_theme_footer(), or null if no CSV.
+	 */
+	private static function build_footer_from_csv(): ?array {
+		$rows = AH_Data::load_csv( 'nav-footer' );
+		if ( empty( $rows ) ) return null;
+
+		$cols = $legal = [];
+		foreach ( $rows as $r ) {
+			$label = trim( $r['label'] ?? '' );
+			$url   = trim( $r['url'] ?? '' );
+			if ( $label === '' || $url === '' ) continue;
+			$order = (int) ( $r['sort_order'] ?? 0 );
+			$hl    = ! empty( $r['highlight'] ) && $r['highlight'] !== '0';
+			$cname = trim( $r['column'] ?? '' );
+
+			if ( strcasecmp( $cname, 'legal' ) === 0 ) {
+				$legal[] = [ 'order' => $order, 'label' => $label, 'url' => $url ];
+			} else {
+				$cols[ $cname ?: 'Links' ][] = [ 'order' => $order, 'label' => $label, 'url' => $url, 'highlight' => $hl ];
+			}
+		}
+
+		$by_order = static function ( $a, $b ) { return $a['order'] <=> $b['order']; };
+
+		$columns = [];
+		foreach ( $cols as $title => $items ) {
+			usort( $items, $by_order );
+			$columns[] = [
+				'title' => $title,
+				'items' => array_map( static fn( $i ) => [ 'label' => $i['label'], 'url' => $i['url'], 'highlight' => $i['highlight'] ], $items ),
+			];
+		}
+		usort( $legal, $by_order );
+		$legal_links = array_map( static fn( $i ) => [ 'label' => $i['label'], 'url' => $i['url'] ], $legal );
+
+		$settings = function_exists( 'ah_get_settings' ) ? ah_get_settings() : [];
+		return [
+			'brand_description' => $settings['footer_tagline'] ?? "The UK's buyer's agent - working exclusively for you.",
+			'badge_text'        => '',
+			'columns'           => $columns,
+			'contact'           => [],
+			'cta'               => [ 'label' => 'Contact Us', 'url' => '/contact/' ],
+			'legal_links'       => $legal_links,
 		];
-		$footer = [
+	}
+
+	public static function seed_nav_topics(): array {
+		// Header navigation (with dropdown levels) from nav-header.csv.
+		$navigation = self::build_nav_header_from_csv();
+
+		// Footer (columns + legal links) from nav-footer.csv.
+		$footer = self::build_footer_from_csv() ?? [
 			'brand_description' => "",
 			'badge_text'        => '',
 			'columns'           => [],
@@ -224,6 +343,26 @@ class AH_Theme_Seeder {
 		return [ 'inserted' => 0, 'updated' => 1 ];
 	}
 
+	/**
+	 * Maps a plugin-news-bar.csv row to the ah_news_bar_items column set.
+	 * Optional columns (content, dates, target, image_id) are only included
+	 * when present, so older CSVs that only have text/link_url still work.
+	 */
+	private static function news_item_row_data( array $r ): array {
+		$data = [
+			'text'       => $r['text'],
+			'link_url'   => $r['link_url'] ?? '',
+			'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
+			'status'     => 'active',
+		];
+		if ( ! empty( $r['content'] ) )     $data['content']     = $r['content'];
+		if ( ! empty( $r['link_target'] ) ) $data['link_target'] = $r['link_target'] === '_blank' ? '_blank' : '_self';
+		if ( ! empty( $r['start_date'] ) )  $data['start_date']  = $r['start_date'];
+		if ( ! empty( $r['end_date'] ) )    $data['end_date']    = $r['end_date'];
+		if ( isset( $r['image_id'] ) && $r['image_id'] !== '' ) $data['image_id'] = (int) $r['image_id'];
+		return $data;
+	}
+
 	public static function seed_news_bar(): array {
 		global $wpdb;
 		$csv = AH_Data::load_csv( 'news-bar' );
@@ -253,6 +392,28 @@ class AH_Theme_Seeder {
 		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
 	}
 
+	/**
+	 * Seeds the full News articles shown on /allnews/ (ah_news_bar_items),
+	 * with body content, dates and links, from plugin-news-bar.csv.
+	 */
+	public static function seed_news_articles(): array {
+		global $wpdb;
+		$rows = AH_Data::load_csv( 'plugin-news-bar' );
+		if ( empty( $rows ) ) return self::skip( 'plugin-news-bar.csv has no rows' );
+		$nbit = $wpdb->prefix . 'ah_news_bar_items';
+		if ( ! self::table_exists( $nbit ) ) return self::skip( 'news_bar_items table missing' );
+		$count = $skipped = 0;
+		foreach ( $rows as $r ) {
+			if ( empty( $r['text'] ) ) continue;
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nbit}` WHERE LEFT(text,80) = %s LIMIT 1", substr( $r['text'], 0, 80 ) ) );
+			if ( $exists ) { $skipped++; continue; }
+			$wpdb->insert( $nbit, self::news_item_row_data( $r ) );
+			if ( $wpdb->rows_affected ) $count++;
+		}
+		return [ 'inserted' => $count, 'updated' => 0, 'skipped' => $skipped ];
+	}
+
 	public static function seed_services(): array {
 		global $wpdb;
 		$table = ah_theme_table( 'services' );
@@ -268,11 +429,11 @@ class AH_Theme_Seeder {
 				$skipped++; continue;
 			}
 			$wpdb->insert( $table, [
-				'title'      => $title,
-				'summary'    => $row['summary'] ?? '',
-				'icon'       => $row['icon'] ?? '',
-				'status'     => 'active',
-				'sort_order' => (int) ( $row['sort_order'] ?? ( $i + 1 ) ),
+				'title'       => $title,
+				'icon'        => $row['icon'] ?? '',
+				'description' => $row['summary'] ?? '',
+				'status'      => 'active',
+				'sort_order'  => (int) ( $row['sort_order'] ?? ( $i + 1 ) ),
 			] );
 			if ( $wpdb->rows_affected ) $count++;
 		}
@@ -1166,19 +1327,14 @@ class AH_Theme_Seeder {
 		}
 
 		// -- News Bar Items  ->  plugin-news-bar.csv
-		// Columns: sort_order, text, link_url
+		// Columns: sort_order, text, content, link_url, link_target, start_date, end_date, [image_id]
 		$nbit = "{$pfx}news_bar_items";
 		if ( self::table_exists( $nbit ) ) {
 			foreach ( AH_Data::load_csv( 'plugin-news-bar' ) as $r ) {
 				if ( empty( $r['text'] ) ) continue;
 				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nbit}` WHERE LEFT(text,80) = %s", substr( $r['text'], 0, 80 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				if ( $exists ) continue;
-				$wpdb->insert( $nbit, [
-					'text'       => $r['text'],
-					'link_url'   => $r['link_url']   ?? '',
-					'sort_order' => (int) ( $r['sort_order'] ?? 0 ),
-					'status'     => 'active',
-				] );
+				$wpdb->insert( $nbit, self::news_item_row_data( $r ) );
 				$count += (int) (bool) $wpdb->rows_affected;
 			}
 		}
@@ -1583,14 +1739,14 @@ class AH_Theme_Seeder {
 		}
 
 		// -- News bar items  ?  mock_data/csv/plugin-news-bar.csv -------------
-		// Columns: sort_order, text, link_url
+		// Columns: sort_order, text, content, link_url, link_target, start_date, end_date, [image_id]
 		$nbit = "{$pfx}news_bar_items";
 		if ( self::table_exists( $nbit ) ) {
 			foreach ( AH_Data::load_csv( 'plugin-news-bar' ) as $r ) {
 				if ( empty( $r['text'] ) ) continue;
 				$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$nbit}` WHERE LEFT(text,120) = %s", substr( $r['text'], 0, 120 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				if ( ! $exists ) {
-					$wpdb->insert( $nbit, [ 'text' => $r['text'], 'link_url' => $r['link_url'] ?? '', 'sort_order' => (int) $r['sort_order'], 'status' => 'active' ] );
+					$wpdb->insert( $nbit, self::news_item_row_data( $r ) );
 					$count += (int) (bool) $wpdb->rows_affected;
 				}
 			}

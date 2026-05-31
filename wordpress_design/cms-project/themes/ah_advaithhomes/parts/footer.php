@@ -162,14 +162,14 @@ $year     = gmdate( 'Y' );
 			</div>
 		</div>
 
-		<div class="footer__bottom">
-			<div>&copy; <?php echo esc_html( $year ); ?> <?php bloginfo( 'name' ); ?>. <?php echo esc_html( TXT_ALL_RIGHTS_RESERVED ); ?></div>
-			<div class="footer__legal">
-				<?php foreach ( (array) ( $footer['legal_links'] ?? [] ) as $link ) : ?>
-					<?php $link = is_object( $link ) ? (array) $link : (array) $link; ?>
-					<a href="<?php echo esc_url( $link['url'] ?? '#' ); ?>"><?php echo esc_html( $link['label'] ?? '' ); ?></a>
-				<?php endforeach; ?>
-			</div>
+	</div>
+	<div class="footer__bottom">
+		<div>&copy; <?php echo esc_html( $year ); ?> <?php bloginfo( 'name' ); ?>. <?php echo esc_html( TXT_ALL_RIGHTS_RESERVED ); ?></div>
+		<div class="footer__legal">
+			<?php foreach ( (array) ( $footer['legal_links'] ?? [] ) as $link ) : ?>
+				<?php $link = is_object( $link ) ? (array) $link : (array) $link; ?>
+				<a href="<?php echo esc_url( $link['url'] ?? '#' ); ?>"><?php echo esc_html( $link['label'] ?? '' ); ?></a>
+			<?php endforeach; ?>
 		</div>
 	</div>
 <p class="footer__sitemap"><a href="<?php echo esc_url( home_url( '/sitemap.xml' ) ); ?>" target="_blank" rel="noopener">Sitemap</a></p>

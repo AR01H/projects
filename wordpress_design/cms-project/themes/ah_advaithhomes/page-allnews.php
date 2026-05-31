@@ -30,13 +30,12 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 			? ( wp_get_attachment_image_url( (int) $single->image_id, 'large' )
 			  ?: wp_get_attachment_image_url( (int) $single->image_id, 'medium_large' ) )
 			: '';
-		$s_terms  = [];
+		$s_terms = [];
 		if ( class_exists( 'AH_Theme_Content_Taxonomy' ) ) {
 			$_td     = AH_Theme_Content_Taxonomy::get_terms_for_items( [ $single ], 'news_bar_item' );
 			$s_terms = $_td['item_terms'][ $single->id ] ?? [];
 		}
-		$s_cat        = ! empty( $s_terms ) ? $s_terms[0]->name : 'News';
-		$s_term_slugs = array_column( $s_terms, 'slug' );
+		$s_cat = ! empty( $s_terms ) ? $s_terms[0]->name : 'News';
 		?>
 
 		<?php get_template_part( 'components/page-header', null, [
@@ -51,8 +50,36 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 			],
 		] ); ?>
 
-		<article class="section" aria-label="<?php echo esc_attr( TXT_NEWS_ARTICLE ); ?>">
-		  <div class="container">
+		<?php
+		// ── Sidebar data (categories, popular posts, news bar, stats) ──────────
+		$nb_items_sb   = function_exists( 'ah_get_news_bar_items' ) ? ah_get_news_bar_items() : [];
+		$site_stats_sb = function_exists( 'ah_get_site_stats' ) ? ah_get_site_stats() : [];
+		$wp_cats_sb    = get_categories( [ 'hide_empty' => true ] );
+
+		// Parent terms power the "Browse by Topic" widget (needs >= 2 to show).
+		$parent_terms_sb = [];
+		if ( class_exists( 'AH_DB_Helper' ) ) {
+			$_pt_tbl_sb      = AH_DB_Helper::table( 'taxonomy_parent_terms' );
+			$parent_terms_sb = $wpdb->get_results(
+				"SELECT id, name, slug, color, icon_emoji FROM `{$_pt_tbl_sb}` WHERE status = 1 ORDER BY name ASC"
+			) ?: [];
+		}
+		$popular_sb    = get_posts( [
+			'posts_per_page' => 5,
+			'post_status'    => 'publish',
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'meta_key'       => '_ah_is_popular',
+			'meta_value'     => '1',
+		] );
+		?>
+
+		<div class="nif-portal-bg">
+		<div class="container">
+		<div class="nif-portal-wrap">
+
+		<main class="nif-portal-main">
+		<article aria-label="<?php echo esc_attr( TXT_NEWS_ARTICLE ); ?>">
 
 		    <!-- Back link -->
 		    <a href="<?php echo esc_url( $base_url ); ?>" class="news-single__back" style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--accent);text-decoration:none;margin-bottom:32px">
@@ -78,7 +105,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		    <p style="max-width:var(--max-w-text);margin-inline:auto;color:var(--text-muted);font-style:italic;">No further details for this update.</p>
 		    <?php endif; ?>
 
-		    <?php if ( in_array( 'useful-links', $s_term_slugs, true ) ) : ?>
+		    <?php if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && AH_Theme_Content_Taxonomy::has_terms_of_type( (int) $single->id, 'news_bar_item', 'useful-links' ) ) : ?>
 		    <div class="sidebar-card" style="max-width:var(--max-w-text);margin:32px auto 0">
 		      <div class="sidebar-card__title"><?php echo esc_html( TXT_USEFUL_LINKS ); ?></div>
 		      <div class="toc">
@@ -88,8 +115,121 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		      </div>
 		    </div>
 		    <?php endif; ?>
-		  </div>
 		</article>
+
+		<?php
+		// ── Related news ──────────────────────────────────────────────────────
+		$related = [];
+		$nb_tbl  = AH_DB_Helper::table( 'news_bar_items' );
+
+		// Prefer items sharing the current item's first taxonomy term.
+		$rel_term_id = ! empty( $s_terms ) ? (int) ( $s_terms[0]->id ?? $s_terms[0]->taxonomy_id ?? 0 ) : 0;
+		if ( $rel_term_id && class_exists( 'AH_Theme_Content_Taxonomy' ) ) {
+			$ct_tbl  = AH_DB_Helper::table( 'content_taxonomies' );
+			$related = $wpdb->get_results( $wpdb->prepare(
+				"SELECT DISTINCT n.* FROM `{$nb_tbl}` n
+				 INNER JOIN `{$ct_tbl}` ct ON ct.object_id = n.id AND ct.object_type = 'news_bar_item'
+				 WHERE n.status = 'active' AND n.id <> %d AND ct.taxonomy_id = %d
+				 ORDER BY COALESCE(n.start_date, '1970-01-01') DESC, n.id DESC
+				 LIMIT 3",
+				$single->id, $rel_term_id
+			) ) ?: [];
+		}
+
+		// Fallback: most recent other active items.
+		if ( empty( $related ) ) {
+			$related = $wpdb->get_results( $wpdb->prepare(
+				"SELECT * FROM `{$nb_tbl}` WHERE status = 'active' AND id <> %d
+				 ORDER BY COALESCE(start_date, '1970-01-01') DESC, id DESC
+				 LIMIT 3",
+				$single->id
+			) ) ?: [];
+		}
+
+		$rel_terms = [];
+		if ( ! empty( $related ) && class_exists( 'AH_Theme_Content_Taxonomy' ) ) {
+			$_rd       = AH_Theme_Content_Taxonomy::get_terms_for_items( $related, 'news_bar_item' );
+			$rel_terms = $_rd['item_terms'] ?? [];
+		}
+
+		if ( ! empty( $related ) ) : ?>
+		<section class="news-single__related" aria-label="<?php echo esc_attr( TXT_NEWS_ARTICLE ); ?>" style="margin-top:56px;padding-top:40px;border-top:1px solid var(--border)">
+		    <h2 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:24px">Related News</h2>
+		    <div class="post-grid">
+		      <?php foreach ( $related as $r_item ) :
+		        $r_terms   = $rel_terms[ $r_item->id ] ?? [];
+		        $r_cat     = ! empty( $r_terms ) ? $r_terms[0]->name : 'News';
+		        $r_link    = ( ! empty( $r_item->link_url ) && filter_var( $r_item->link_url, FILTER_VALIDATE_URL ) )
+		          ? $r_item->link_url
+		          : esc_url( add_query_arg( 'item', $r_item->id, $base_url ) );
+		        $r_target  = ( ! empty( $r_item->link_url ) && filter_var( $r_item->link_url, FILTER_VALIDATE_URL ) && ! empty( $r_item->link_target ) )
+		          ? 'target="' . esc_attr( $r_item->link_target ) . '"' : '';
+		        $r_title   = $r_item->text ?? '';
+		        $r_excerpt = ! empty( $r_item->content ) ? wp_trim_words( wp_strip_all_tags( $r_item->content ), 18, '…' ) : '';
+		        $r_thumb   = ! empty( $r_item->image_id )
+		          ? ( wp_get_attachment_image_url( (int) $r_item->image_id, 'ah-card' ) ?: wp_get_attachment_image_url( (int) $r_item->image_id, 'medium_large' ) )
+		          : '';
+		        $r_date    = ! empty( $r_item->start_date ) ? date_i18n( 'd M Y', strtotime( $r_item->start_date ) ) : '';
+		      ?>
+		      <article class="blog-card">
+		        <div class="blog-card__img-wrap">
+		          <a href="<?php echo esc_url( $r_link ); ?>" <?php echo $r_target; ?>
+		             class="blog-card__img-link" tabindex="-1" aria-hidden="true">
+		            <?php if ( $r_thumb ) : ?>
+		              <img src="<?php echo esc_url( $r_thumb ); ?>" alt="<?php echo esc_attr( $r_title ); ?>"
+		                   class="blog-card__img" loading="lazy" decoding="async">
+		            <?php else : ?>
+		              <div class="blog-card__img-placeholder">📰</div>
+		            <?php endif; ?>
+		          </a>
+		          <div class="blog-card__overlay">
+		            <div class="blog-card__badges">
+		              <span class="blog-card__cat"><?php echo esc_html( $r_cat ); ?></span>
+		              <?php if ( $r_date ) : ?>
+		              <span class="blog-card__read-time"><?php echo esc_html( $r_date ); ?></span>
+		              <?php endif; ?>
+		            </div>
+		            <h2 class="blog-card__title">
+		              <a href="<?php echo esc_url( $r_link ); ?>" <?php echo $r_target; ?>>
+		                <?php echo esc_html( $r_title ); ?>
+		              </a>
+		            </h2>
+		            <?php if ( $r_excerpt ) : ?>
+		            <div class="blog-card__desc-wrap">
+		              <div>
+		                <p class="blog-card__excerpt"><?php echo esc_html( $r_excerpt ); ?></p>
+		                <a href="<?php echo esc_url( $r_link ); ?>" <?php echo $r_target; ?>
+		                   class="blog-card__read-btn">
+		                  <?php echo esc_html( TXT_READ_MORE ); ?> <span aria-hidden="true">→</span>
+		                </a>
+		              </div>
+		            </div>
+		            <?php endif; ?>
+		          </div>
+		        </div>
+		      </article>
+		      <?php endforeach; ?>
+		    </div>
+		</section>
+		<?php endif; ?>
+
+		</main><!-- /.nif-portal-main -->
+
+		<aside class="nif-portal-sidebar" aria-label="<?php echo esc_attr( TXT_MARKET_INFORMATION_AND_TOOLS ); ?>">
+		  <?php get_template_part( 'components/nif-sidebar', null, [
+		    'site_stats'     => $site_stats_sb,
+		    'news_bar_items' => $nb_items_sb,
+		    'popular_posts'  => $popular_sb,
+		    'cats'           => $wp_cats_sb,
+		    'active_cat'     => '',
+		    'permalink'      => home_url( '/news-info-feeder/' ),
+		    'parent_terms'   => $parent_terms_sb,
+		  ] ); ?>
+		</aside>
+
+		</div><!-- /.nif-portal-wrap -->
+		</div><!-- /.container -->
+		</div><!-- /.nif-portal-bg -->
 
 		<?php
 	} else {

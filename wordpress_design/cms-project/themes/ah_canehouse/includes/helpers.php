@@ -363,6 +363,62 @@ function ch_get_faqs( string $topic = '', int $limit = 20 ): array {
 	return ch_mock_faqs( $topic );
 }
 
+// ── Posts (from CMS plugin) ────────────────────────────────────────────────────
+/**
+ * Get posts from the CMS plugin (AH_Posts_Model). Plugin-first.
+ *
+ * @param int   $limit  max items to return
+ * @param array $filters ['search' => string, 'status' => 'active'|'draft', 'post_type' => string]
+ */
+function ch_get_posts( int $limit = 12, array $filters = [] ): array {
+	if ( class_exists( 'AH_Posts_Model' ) ) {
+		$model = new AH_Posts_Model();
+		$result = $model->get_paginated( 1, $filters );
+		if ( ! empty( $result['data'] ) ) {
+			return array_slice( $result['data'], 0, $limit );
+		}
+	}
+	return [];
+}
+
+/**
+ * Get a single post from the CMS plugin by slug.
+ */
+function ch_get_post_by_slug( string $slug ): ?object {
+	if ( class_exists( 'AH_Posts_Model' ) ) {
+		return ( new AH_Posts_Model() )->find_by( 'slug', $slug );
+	}
+	return null;
+}
+
+// ── Pages (from CMS plugin) ────────────────────────────────────────────────────
+/**
+ * Get pages from the CMS plugin (AH_Pages_Model). Plugin-first.
+ *
+ * @param int   $limit  max items to return
+ * @param array $filters ['search' => string]
+ */
+function ch_get_pages_list( int $limit = 20, array $filters = [] ): array {
+	if ( class_exists( 'AH_Pages_Model' ) ) {
+		$model  = new AH_Pages_Model();
+		$result = $model->get_paginated( 1, $filters['search'] ?? '' );
+		if ( ! empty( $result['data'] ) ) {
+			return array_slice( $result['data'], 0, $limit );
+		}
+	}
+	return [];
+}
+
+/**
+ * Get a single page from the CMS plugin by slug.
+ */
+function ch_get_page_by_slug( string $slug ): ?object {
+	if ( class_exists( 'AH_Pages_Model' ) ) {
+		return ( new AH_Pages_Model() )->get_by_slug( $slug );
+	}
+	return null;
+}
+
 // ── Benefits ──────────────────────────────────────────────────────────────────
 function ch_get_benefits(): array {
 	$opt = get_option( 'ch_benefits', [] );

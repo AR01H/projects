@@ -69,6 +69,36 @@ if ( class_exists( 'AH_Taxonomy_Parent_Model' ) && class_exists( 'AH_DB_Helper' 
 	}
 }
 
+// Pick a meaningful icon for a guide topic. Uses the term's own icon_emoji
+// when set, otherwise matches keywords in the name/slug to a sensible default.
+if ( ! function_exists( 'ah_guide_topic_icon' ) ) {
+	function ah_guide_topic_icon( $name = '', $slug = '', $explicit = '' ) {
+		$explicit = trim( (string) $explicit );
+		// Respect an explicit icon only if it's a real emoji/symbol, not a plain
+		// letter or word (some terms store just the first initial, e.g. "B").
+		if ( $explicit !== '' && preg_match( '/[^\x00-\x7F]/u', $explicit ) ) return $explicit;
+		$h = strtolower( $name . ' ' . $slug );
+		$map = [
+			'first-time'  => '🔑', 'first time' => '🔑',
+			'mortgage'    => '🏦', 'finance' => '💷', 'remortgage' => '🏦',
+			'calculat'    => '🧮', 'stamp duty' => '🧾',
+			'legal'       => '⚖️', 'conveyanc' => '⚖️',
+			'invest'      => '📈', 'btl' => '📈', 'buy-to-let' => '📈',
+			'market'      => '📊', 'news' => '📰',
+			'reloc'       => '✈️', 'international' => '🌍',
+			'luxury'      => '💎',
+			'tip'         => '💡', 'advice' => '💡',
+			'sell'        => '🏷️',
+			'buying'         => '🏡', 'home' => '🏡', 'purchase' => '🏡',
+			'rent'        => '🔑', 'landlord' => '🏘️',
+		];
+		foreach ( $map as $needle => $icon ) {
+			if ( strpos( $h, $needle ) !== false ) return $icon;
+		}
+		return '📂';
+	}
+}
+
 // Define early so subsequent queries can use it
 $is_filtered = $active_cat || $active_pt_slug;
 
@@ -168,7 +198,11 @@ get_template_part( 'components/page-header', null, [
   <?php
     $cat_img_url  = ! empty( $active_cat_obj['image_id'] ) ? wp_get_attachment_image_url( $active_cat_obj['image_id'], 'medium_large' ) : '';
     $banner_title = $active_cat_obj['title'] ?? ( $active_pt ? $active_pt->name : $active_cat );
-    $banner_icon  = $active_cat_obj['icon_emoji'] ?? ( $active_pt ? ( $active_pt->icon_emoji ?? '📂' ) : '📖' );
+    $banner_icon  = ! empty( $active_cat_obj['icon_emoji'] )
+        ? $active_cat_obj['icon_emoji']
+        : ( $active_pt
+            ? ah_guide_topic_icon( $active_pt->name ?? '', $active_pt->slug ?? '', $active_pt->icon_emoji ?? '' )
+            : ah_guide_topic_icon( $banner_title, $active_cat, '' ) );
     $banner_desc  = $active_cat_obj['desc'] ?? ( $active_pt ? ( $active_pt->description ?? '' ) : '' );
     $banner_count = $active_cat_obj['count'] ?? ( $guides_query ? $guides_query->found_posts : 0 );
   ?>
@@ -179,7 +213,6 @@ get_template_part( 'components/page-header', null, [
         <?php echo esc_html( TXT_ALL_TOPICS ); ?>
       </a>
       <div class="gc-cat-banner__icon"><?php echo esc_html( $banner_icon ); ?></div>
-      <h1 class="gc-cat-banner__title"><?php echo esc_html( $banner_title ); ?></h1>
       <?php if ( $banner_desc ) : ?><p class="gc-cat-banner__desc"><?php echo esc_html( $banner_desc ); ?></p><?php endif; ?>
       <?php if ( $banner_count ) : ?><span class="gc-cat-banner__count"><?php echo (int) $banner_count; ?> <?php echo esc_html( TXT_GUIDES ); ?></span><?php endif; ?>
     </div>
@@ -262,7 +295,7 @@ get_template_part( 'components/page-header', null, [
       ?>
       <a href="<?php echo esc_url( home_url( '/guides/?parent_term=' . urlencode( $sb_pt->slug ) ) ); ?>"
          class="gc-pt-card" style="--ptc:<?php echo esc_attr( $sb_color ); ?>">
-        <span class="gc-pt-card__icon"><?php echo esc_html( $sb_pt->icon_emoji ?? '📂' ); ?></span>
+        <span class="gc-pt-card__icon"><?php echo esc_html( ah_guide_topic_icon( $sb_pt->name ?? '', $sb_pt->slug ?? '', $sb_pt->icon_emoji ?? '' ) ); ?></span>
         <span class="gc-pt-card__name"><?php echo esc_html( $sb_pt->name ); ?></span>
         <?php if ( $sb_count ) : ?>
         <span class="gc-pt-card__meta"><?php echo $sb_count; ?> topics</span>
@@ -389,6 +422,7 @@ get_template_part( 'components/page-header', null, [
     <div class="gc-see-more__group<?php echo $is_open ? ' is-open' : ''; ?>" style="--gc-group-color:<?php echo esc_attr( $sb_color ); ?>">
       <a href="<?php echo esc_url( home_url( '/guides/?parent_term=' . urlencode( $sb_pt->slug ) ) ); ?>"
          class="gc-see-more__pt-header" style="background:<?php echo esc_attr( $sb_color ); ?>">
+        <span class="gc-see-more__pt-icon" aria-hidden="true"><?php echo esc_html( ah_guide_topic_icon( $sb_pt->name ?? '', $sb_pt->slug ?? '', $sb_pt->icon_emoji ?? '' ) ); ?></span>
         <?php echo esc_html( $sb_pt->name ); ?>
       </a>
       <?php if ( $is_open && $sb['children'] ) : ?>

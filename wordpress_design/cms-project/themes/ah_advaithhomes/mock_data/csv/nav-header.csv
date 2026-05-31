@@ -1,0 +1,11 @@
+sort_order,parent,label,url,type,icon,description,highlight
+1,,Home,/,link,,,
+2,,About,/about/,link,,,
+3,,Services,/services/,link,,,
+4,,Guides,,dropdown,,,
+5,Guides,Buying Guides,/guides/?parent_term=buying,link,🏡,First-time & home-mover guides,
+6,Guides,Finance & Mortgages,/guides/?parent_term=finance-mortgages,link,💷,Mortgages & financing help,
+7,Guides,Legal & Conveyancing,/guides/?parent_term=legal-conveyancing,link,⚖️,The legal process explained,
+8,Guides,All Guides,/guides/,link,📚,Browse the full library,1
+9,,News,/allnews/,link,,,
+10,,Contact,/contact/,link,,,

@@ -82,27 +82,110 @@ $base_url      = $args['base_url']      ?? home_url( '/multiinfo/' );
 </div>
 
 <?php else : ?>
-<!-- On the root /multiinfo/ page: show all parent terms as a card list -->
-<?php if ( ! empty( $parent_terms ) ) : ?>
-<div class="nif-sb-card" aria-label="<?php echo esc_attr( TXT_BROWSE_BY_TOPIC ); ?>">
+<!-- On the root /multiinfo/ page: parent terms WITH their categories, as a neat accordion -->
+<?php if ( ! empty( $parent_terms ) ) :
+	// Fetch every parent term's child categories in one query, grouped by parent.
+	$pt_children_map = [];
+	if ( class_exists( 'AH_DB_Helper' ) ) {
+		global $wpdb;
+		$_tax  = AH_DB_Helper::table( 'taxonomies' );
+		$_ids  = implode( ',', array_map( fn( $p ) => (int) $p->id, $parent_terms ) );
+		if ( $_ids !== '' ) {
+			$_rows = $wpdb->get_results(
+				"SELECT id, slug, name, parent_term_id FROM `{$_tax}`
+				 WHERE parent_term_id IN ({$_ids}) AND status = 1 ORDER BY name ASC"
+			) ?: [];
+			foreach ( $_rows as $_r ) {
+				$pt_children_map[ (int) $_r->parent_term_id ][] = $_r;
+			}
+		}
+	}
+?>
+<div class="nif-sb-card nif-sb-card--tree" aria-label="<?php echo esc_attr( TXT_BROWSE_BY_TOPIC ); ?>">
   <div class="nif-sb-card__header">
     <span class="nif-section-label--primary"><?php echo esc_html( TXT_EXPLORE_TOPICS ); ?></span>
   </div>
   <div class="nif-sb-pt-list">
-    <?php foreach ( $parent_terms as $pt ) :
-      $color = ! empty( $pt->color ) ? $pt->color : '#1e293b';
-      $label = ( ! empty( $pt->icon_emoji ) ? $pt->icon_emoji . ' ' : '' ) . $pt->name;
+    <?php foreach ( $parent_terms as $i => $pt ) :
+      $color    = ! empty( $pt->color ) ? $pt->color : '#1e293b';
+      $icon     = ah_topic_icon( $pt->name ?? '', $pt->slug ?? '', $pt->icon_emoji ?? '' );
+      $children = $pt_children_map[ (int) $pt->id ] ?? [];
+      $pt_url   = home_url( '/multiinfo/' . $pt->slug . '/' );
+      $is_open  = ( $active_slug === $pt->slug ) || ( ! $active_slug && $i === 0 );
     ?>
-    <a href="<?php echo esc_url( home_url( '/multiinfo/' . $pt->slug . '/' ) ); ?>"
-       class="nif-sb-pt-row"
-       style="--ptc:<?php echo esc_attr( $color ); ?>">
-      <span class="nif-sb-pt-dot" style="background:<?php echo esc_attr( $color ); ?>"></span>
-      <span class="nif-sb-pt-name"><?php echo esc_html( $label ); ?></span>
-      <span class="nif-sb-pt-arrow">›</span>
-    </a>
+    <details class="nif-sb-tree" <?php echo $is_open ? 'open' : ''; ?> style="--ptc:<?php echo esc_attr( $color ); ?>">
+      <summary class="nif-sb-pt-row nif-sb-tree__summary">
+        <span class="nif-sb-pt-dot" style="background:<?php echo esc_attr( $color ); ?>"></span>
+        <span class="nif-sb-pt-name"><?php echo esc_html( $icon . ' ' . $pt->name ); ?></span>
+        <?php if ( $children ) : ?>
+        <span class="nif-sb-tree__count"><?php echo count( $children ); ?></span>
+        <?php endif; ?>
+        <span class="nif-sb-tree__chev" aria-hidden="true">›</span>
+      </summary>
+
+      <div class="nif-sb-pt-children">
+        <?php if ( $children ) : ?>
+          <?php foreach ( $children as $ch ) :
+            $ch_active = ( $active_cat === $ch->slug );
+          ?>
+          <a href="<?php echo esc_url( add_query_arg( 'cat', $ch->slug, $pt_url ) ); ?>"
+             class="nif-sb-pt-child<?php echo $ch_active ? ' nif-sb-pt-child--active' : ''; ?>">
+            <?php echo esc_html( $ch->name ); ?>
+          </a>
+          <?php endforeach; ?>
+        <?php else : ?>
+          <span class="nif-sb-pt-child--empty"><?php echo esc_html( TXT_NO_SUB_TOPICS_YET ); ?></span>
+        <?php endif; ?>
+        <a href="<?php echo esc_url( $pt_url ); ?>" class="nif-sb-tree__viewall">
+          <?php echo esc_html( sprintf( TXT_IN_S, $pt->name ) ); ?> <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </details>
     <?php endforeach; ?>
   </div>
 </div>
+
+<style>
+/* Parent-term → categories tree (neat accordion) */
+.nif-sb-card--tree .nif-sb-pt-list { padding: 0; }
+.nif-sb-tree { border-bottom: 1px solid var(--border); }
+.nif-sb-tree:last-child { border-bottom: none; }
+.nif-sb-tree__summary {
+  list-style: none; cursor: pointer; border-bottom: none;
+  user-select: none;
+}
+.nif-sb-tree__summary::-webkit-details-marker { display: none; }
+.nif-sb-tree[open] > .nif-sb-tree__summary {
+  color: var(--ptc, var(--accent));
+  background: var(--gold-50, #fffbeb);
+  border-left-color: var(--ptc, var(--accent));
+}
+.nif-sb-tree__count {
+  flex-shrink: 0;
+  min-width: 20px; height: 20px; padding: 0 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: .68rem; font-weight: 700; line-height: 1;
+  color: var(--ptc, var(--accent));
+  background: color-mix(in srgb, var(--ptc, var(--accent)) 14%, transparent);
+  border-radius: 999px;
+}
+.nif-sb-tree__chev {
+  flex-shrink: 0; font-size: .9rem; color: var(--text-muted);
+  transition: transform .18s ease;
+}
+.nif-sb-tree[open] > .nif-sb-tree__summary .nif-sb-tree__chev {
+  transform: rotate(90deg); color: var(--ptc, var(--accent));
+}
+.nif-sb-tree__viewall {
+  display: block;
+  padding: 8px 16px 9px 28px;
+  font-size: .76rem; font-weight: 600;
+  color: var(--ptc, var(--accent));
+  text-decoration: none;
+  border-top: 1px dashed var(--border);
+}
+.nif-sb-tree__viewall:hover { text-decoration: underline; }
+</style>
 <?php endif; ?>
 <?php endif; ?>
 

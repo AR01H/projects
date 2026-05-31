@@ -9,7 +9,7 @@ $op_type = isset( $_GET['type'] ) ? sanitize_key( $_GET['type'] ) : '';
 
 // ── CSV row counts ────────────────────────────────────────────────────────────
 $csv_counts = [];
-foreach ( [ 'blog-posts', 'reviews', 'client-stories', 'services', 'team', 'faqs', 'news-bar', 'properties', 'taxonomy-types', 'taxonomy-terms', 'pages' ] as $name ) {
+foreach ( [ 'blog-posts', 'reviews', 'client-stories', 'services', 'team', 'faqs', 'news-bar', 'properties', 'taxonomy-types', 'taxonomy-terms', 'pages', 'nav-header', 'nav-footer', 'plugin-news-bar' ] as $name ) {
 	$rows = AH_Data::load_csv( $name );
 	$csv_counts[ $name ] = count( $rows );
 }
@@ -73,15 +73,19 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
         <?php endif; ?>
       </p>
       <?php
+      // Each row: import key => [ label, csvs[] ]. Count = sum of its CSV files'
+      // rows (navigation spans two CSVs: nav-header + nav-footer).
       $content_csvs = [
-        'blog-posts'     => 'Blog posts',
-        'client-stories' => 'Client stories',
-        'reviews'        => 'Reviews',
-        'services'       => 'Services',
-        'team'           => 'Team members',
-        'faqs'           => 'FAQs',
-        'news-bar'       => 'News bar items',
-        'properties'     => 'Featured properties',
+        'blog-posts'     => [ 'label' => 'Blog posts',                 'csvs' => [ 'blog-posts' ] ],
+        'client-stories' => [ 'label' => 'Client stories',             'csvs' => [ 'client-stories' ] ],
+        'reviews'        => [ 'label' => 'Reviews',                    'csvs' => [ 'reviews' ] ],
+        'services'       => [ 'label' => 'Services',                   'csvs' => [ 'services' ] ],
+        'team'           => [ 'label' => 'Team members',               'csvs' => [ 'team' ] ],
+        'faqs'           => [ 'label' => 'FAQs',                       'csvs' => [ 'faqs' ] ],
+        'news-bar'       => [ 'label' => 'News ticker messages',       'csvs' => [ 'news-bar' ] ],
+        'news-articles'  => [ 'label' => 'News articles (All News page)', 'csvs' => [ 'plugin-news-bar' ] ],
+        'properties'     => [ 'label' => 'Featured properties',        'csvs' => [ 'properties' ] ],
+        'navigation'     => [ 'label' => 'Navigation (header & footer)', 'csvs' => [ 'nav-header', 'nav-footer' ] ],
       ];
       ?>
       <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="ah-seed-form">
@@ -98,16 +102,16 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
         </div>
 
         <ul style="list-style:none;margin:0 0 16px;padding:0;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;">
-          <?php foreach ( $content_csvs as $csv => $label ) :
-            $n       = $csv_counts[ $csv ];
+          <?php foreach ( $content_csvs as $key => $def ) :
+            $n       = array_sum( array_map( static fn( $c ) => $csv_counts[ $c ] ?? 0, $def['csvs'] ) );
             $has_csv = $n > 0;
           ?>
             <li style="border-bottom:1px solid #f1f5f9;last-child{border:none}">
               <label style="display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:<?php echo $has_csv ? 'pointer' : 'default'; ?>;<?php echo ! $has_csv ? 'opacity:.45;' : ''; ?>">
-                <input type="checkbox" name="seed_types[]" value="<?php echo esc_attr( $csv ); ?>"
+                <input type="checkbox" name="seed_types[]" value="<?php echo esc_attr( $key ); ?>"
                        <?php echo $has_csv ? 'checked' : 'disabled'; ?>
                        style="width:15px;height:15px;accent-color:#b7791f;flex-shrink:0;">
-                <span style="flex:1;font-size:.82rem;color:#374151;"><?php echo esc_html( $label ); ?></span>
+                <span style="flex:1;font-size:.82rem;color:#374151;"><?php echo esc_html( $def['label'] ); ?></span>
                 <?php if ( $has_csv ) : ?>
                   <span style="font-size:.75rem;color:#16a34a;white-space:nowrap;">✓ <?php echo esc_html( $n ); ?> rows</span>
                 <?php else : ?>
@@ -191,8 +195,11 @@ $plugin_active = class_exists( 'AH_DB_Helper' );
           'services.csv'        => 'Services offered (dedup by title)',
           'team.csv'            => 'Team member profiles (dedup by name)',
           'faqs.csv'            => 'Frequently asked questions (dedup by question)',
-          'news-bar.csv'        => 'News ticker messages',
+          'news-bar.csv'        => 'News ticker messages (scrolling bar)',
+          'plugin-news-bar.csv' => 'News articles for /allnews/ (text, content, dates, links)',
           'properties.csv'      => 'Featured property examples',
+          'nav-header.csv'      => 'Header menu (supports dropdown levels via parent column)',
+          'nav-footer.csv'      => 'Footer menu columns + legal bar (column = Legal)',
           'taxonomy-types.csv'  => 'Taxonomy type definitions (used in schema install)',
           'taxonomy-terms.csv'  => 'Taxonomy terms per type (used in schema install)',
           'pages.csv'           => 'Extra WP pages to create (used in schema install)',

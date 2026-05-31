@@ -41,7 +41,7 @@ if ( ! $use_parent_terms && empty( $cats ) ) return;
 
     <?php foreach ( $parent_terms as $pt ) :
       $color     = ! empty( $pt->color ) ? $pt->color : '#1e293b';
-      $label     = ( ! empty( $pt->icon_emoji ) ? $pt->icon_emoji . ' ' : '' ) . $pt->name;
+      $label     = ( function_exists( 'ah_topic_icon' ) ? ah_topic_icon( $pt->name ?? '', $pt->slug ?? '', $pt->icon_emoji ?? '' ) . ' ' : '' ) . $pt->name;
       $is_active = ( $active_parent_term === $pt->slug );
       // Link to clean /{pt-slug}/ URL; active term already there so link goes to All Topics
       $btn_href  = $is_active ? home_url( '/' ) : home_url( '/' . $pt->slug . '/' );

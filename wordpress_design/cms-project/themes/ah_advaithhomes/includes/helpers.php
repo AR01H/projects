@@ -697,3 +697,44 @@ function ah_get_forms_summary(): array {
 
 	return $wpdb->get_results( "SELECT * FROM `{$table}` ORDER BY id ASC" ) ?: array();
 }
+
+/**
+ * Resolve a meaningful icon for a topic / parent term.
+ *
+ * Honours an explicitly-set emoji only when it is a real emoji/symbol — a plain
+ * letter or word (some terms store just an initial, e.g. "B") is ignored and the
+ * name/slug is matched against a keyword map instead.
+ *
+ * @param string $name     Term display name.
+ * @param string $slug     Term slug.
+ * @param string $explicit The stored icon_emoji value, if any.
+ * @return string A single emoji.
+ */
+if ( ! function_exists( 'ah_topic_icon' ) ) {
+	function ah_topic_icon( string $name = '', string $slug = '', string $explicit = '' ): string {
+		$explicit = trim( $explicit );
+		// Real emoji/symbol = contains a non-ASCII char. Plain "B"/"News" -> ignore.
+		if ( $explicit !== '' && preg_match( '/[^\x00-\x7F]/u', $explicit ) ) {
+			return $explicit;
+		}
+		$h   = strtolower( $name . ' ' . $slug );
+		$map = [
+			'first-time' => '🔑', 'first time' => '🔑',
+			'mortgage'   => '🏦', 'finance' => '💷', 'remortgage' => '🏦',
+			'calculat'   => '🧮', 'stamp duty' => '🧾',
+			'legal'      => '⚖️', 'conveyanc' => '⚖️',
+			'invest'     => '📈', 'btl' => '📈', 'buy-to-let' => '📈',
+			'market'     => '📊', 'news' => '📰',
+			'reloc'      => '✈️', 'international' => '🌍',
+			'luxury'     => '💎',
+			'tip'        => '💡', 'advice' => '💡',
+			'sell'       => '🏷️',
+			'buy'        => '🏡', 'home' => '🏡', 'purchase' => '🏡',
+			'rent'       => '🔑', 'landlord' => '🏘️',
+		];
+		foreach ( $map as $needle => $icon ) {
+			if ( strpos( $h, $needle ) !== false ) return $icon;
+		}
+		return '📂';
+	}
+}

@@ -169,7 +169,9 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
       <main class="nif-portal-main">
          
          <?php
-          get_template_part( 'components/nif-background-imagecard', null, [] );
+          get_template_part( 'components/nif-background-imagecard', null, [
+            'variant' => 'gradient',
+          ] );
         ?>
 
         <?php if ( ! $active_cat && ! $active_parent_term && $paged === 1 ) {
@@ -185,7 +187,7 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             'permalink' => $page_url,
           ] );
 
-          // Latest Guides: dark 3-column tiles
+          // Latest Guides: dark 3-column tiles (first 6)
           get_template_part( 'components/nif-guide-tiles', null, [
             'posts'   => array_slice( $posts_arr, 0, 6 ),
             'eyebrow' => TXT_LATEST_GUIDES,
@@ -204,13 +206,16 @@ if ( ! function_exists( 'nif_get_post_data' ) ) {
             ] );
           }
 
-          // In Brief: remaining posts as a horizontal list
-          get_template_part( 'components/nif-brief-list', null, [
-            'posts'     => array_slice( $posts_arr, 0, 6 ),
-            'max_pages' => $blog_query->max_num_pages,
-            'paged'     => $paged,
-            'base_url'  => $page_url,
-          ] );
+          // In Brief: the NEXT posts after Latest Guides, so the two don't repeat
+          $brief_posts = array_slice( $posts_arr, 6, 6 );
+          if ( ! empty( $brief_posts ) ) {
+            get_template_part( 'components/nif-brief-list', null, [
+              'posts'     => $brief_posts,
+              'max_pages' => $blog_query->max_num_pages,
+              'paged'     => $paged,
+              'base_url'  => $page_url,
+            ] );
+          }
 
         } else {
           // ── FILTERED / PAGINATED GRID VIEW ────────────────────────────────
