@@ -860,7 +860,7 @@
 .nif-sb-card--flash .nif-sb-card__header { background: var(--gold-50); border-bottom-color: var(--gold-200); }
 
 .nif-sb-flash {
-  list-style: none; margin: 0; padding: 6px 0;
+  list-style: none; margin: 0; padding: 6px 0;    height: 150px;overflow: auto;
 }
 .nif-sb-flash__item {
   padding: 0;
@@ -935,6 +935,8 @@
 .nif-sb-topics {
   padding: 14px 16px;
   display: grid; gap: 5px;
+  overflow-y: auto;
+  max-height: 150px;
 }
 .nif-sb-topic {
   display: inline-flex; align-items: center;

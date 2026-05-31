@@ -94,7 +94,7 @@ $b_desc       = $args['desc']         ?? ( defined( 'NIF_HERO_DESC' ) ? NIF_HERO
 }
 </style>
 
-<section class="nif-portal-section nif-gbanner" aria-label="<?php echo esc_attr( $g_title ); ?>">
+<!-- <section class="nif-portal-section nif-gbanner" aria-label="<?php echo esc_attr( $g_title ); ?>">
 	<div class="nif-gbanner__inner">
 		<span class="nif-gbanner__eyebrow"><?php echo esc_html( defined( 'TXT_STAY_INFORMED' ) ? TXT_STAY_INFORMED : 'Stay Informed' ); ?></span>
 		<h1 class="nif-gbanner__title"><?php echo esc_html( $g_title ); ?> <em><?php echo esc_html( $exta_heading ); ?></em></h1>
@@ -116,7 +116,7 @@ $b_desc       = $args['desc']         ?? ( defined( 'NIF_HERO_DESC' ) ? NIF_HERO
 		</div>
 	</div>
 	<?php endif; ?>
-</section>
+</section> -->
 
 <?php elseif ( $variant === 'tiles' ) :
 	// ── Tiles: build from parent terms, fall back to a fixed set ──────────────

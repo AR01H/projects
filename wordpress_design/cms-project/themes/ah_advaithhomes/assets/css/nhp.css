@@ -341,21 +341,20 @@
 
 @media (max-width: 900px) {
   .nhp-mq-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      "wide  wide"
-      "promo dark"
-      "art   svc1"
-      "svc2  svc3"
+      "wide  wide promo dark"
+      "art   svc1 svc2"
+      "svc3"
       "svc4  svc4";
   }
 }
 @media (max-width: 560px) {
   .nhp-mq-grid {
-    grid-template-columns: 1fr;
+    /* grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      "wide" "promo" "dark" "art" "svc1" "svc2" "svc3" "svc4";
-    gap: 14px;
+      "wide" "promo" "dark" "art" "svc1" "svc2" "svc3" "svc4"; */
+    gap: 6px;
   }
 }
 

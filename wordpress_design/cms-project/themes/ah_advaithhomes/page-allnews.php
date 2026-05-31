@@ -82,10 +82,10 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		<article aria-label="<?php echo esc_attr( TXT_NEWS_ARTICLE ); ?>">
 
 		    <!-- Back link -->
-		    <a href="<?php echo esc_url( $base_url ); ?>" class="news-single__back" style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--accent);text-decoration:none;margin-bottom:32px">
+		    <!-- <a href="<?php echo esc_url( $base_url ); ?>" class="news-single__back" style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--accent);text-decoration:none;margin-bottom:32px">
 		      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
 		      <?php echo esc_html( TXT_BACK_TO_ALL_NEWS ); ?>
-		    </a>
+		    </a> -->
 
 			
 		    <?php if ( $s_thumb ) : ?>
@@ -98,7 +98,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 		    <?php endif; ?>
 
 		    <?php if ( $s_content ) : ?>
-		    <div class="news-single__body prose" style="max-width:var(--max-w-text);margin-inline:auto;color:var(--text-secondary);font-size:1.05rem;line-height:1.85;">
+		    <div class="news-single__body prose" style="margin-inline:auto;color:var(--text-secondary);font-size:1.05rem;line-height:1.85;">
 		      <?php echo wp_kses_post( wpautop( $s_content ) ); ?>
 		    </div>
 		    <?php else : ?>
