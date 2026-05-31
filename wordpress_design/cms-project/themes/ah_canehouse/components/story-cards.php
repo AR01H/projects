@@ -9,7 +9,7 @@ $cards      = $home_limit > 0 ? array_slice( $all_cards, 0, $home_limit ) : $all
 $has_more   = $home_limit > 0 && count( $all_cards ) > $home_limit;
 
 $s        = ch_get_settings();
-$heading  = $s['story_cards_heading'] ?? 'The Sugarcane <span class="accent">Story</span>';
+$heading  = $s['story_cards_heading'] ?? 'The Sugarcane <span class="accent">Life</span> Story';
 $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pressed live, served cool, every single time.';
 ?>
 

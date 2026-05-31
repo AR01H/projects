@@ -1708,7 +1708,7 @@ body.nav--collapsed .ch-nav__search-btn { display: none; }
 
 .ch-faq-question {
     width: 100%;
-    padding: 1.5rem 2rem;
+    padding: 1rem;
     background: none;
     border: none;
     display: flex;
@@ -2603,7 +2603,6 @@ body.has-ticker .ch-nav { top: 32px; }
 /* ── Panels container ───────────────────────────────────────────────────── */
 .ch-sc-panels {
     position: relative;
-    max-width: 1100px;
     margin-inline: auto;
     min-height: 320px;
 }
@@ -3442,7 +3441,7 @@ body.has-ticker .ch-nav { top: 32px; }
 
 /* ── Certifications section ────────────────────────────────────────────────────
    Dark green bg, badge grid + trust card or certificate image               */
-.ch-certs-section { background:linear-gradient(160deg,var(--ch-green-deep) 0%,#1a3a0a 100%); padding:2rem; position:relative; overflow:hidden; }
+.ch-certs-section { background:linear-gradient(160deg,var(--ch-green-deep) 0%,#1a3a0a 100%); padding:1rem; position:relative; overflow:hidden; }
 .ch-certs-section::before { content:'🏛️'; position:absolute; font-size:28rem; opacity:.03; bottom:-80px; right:-60px; pointer-events:none; line-height:1; }
 .ch-certs-header { text-align:center; margin-bottom:3rem; display:flex; flex-direction:column; align-items:center; }
 .ch-certs-header .section-title { color:var(--ch-white); }
@@ -3500,7 +3499,6 @@ body.has-ticker .ch-nav { top: 32px; }
 /* ── Banner card ────────────────────────────────────────────────────────── */
 .ch-bkb-section { padding: 5rem 2rem; background: var(--ch-green-bg); }
 .ch-bkb-card {
-    max-width: 1000px;
     margin-inline: auto;
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
