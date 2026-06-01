@@ -16,7 +16,7 @@ class CH_Schema {
 		$cs = $wpdb->get_charset_collate();
 
 		self::create_reviews( $cs );
-		self::create_faqs( $cs );
+		// FAQs are owned by the CMS plugin (ah_faqs); the theme has no faqs table.
 		self::create_news_bar( $cs );
 		self::create_contact_submissions( $cs );
 		self::create_services( $cs );
@@ -37,19 +37,6 @@ class CH_Schema {
 			result      VARCHAR(200),
 			status      ENUM('active','inactive') DEFAULT 'active',
 			created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	}
-
-	private static function create_faqs( string $cs ): void {
-		global $wpdb;
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ch_theme_table( 'faqs' ) . "` (
-			id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			topic      VARCHAR(150),
-			question   TEXT NOT NULL,
-			answer     TEXT NOT NULL,
-			status     ENUM('active','inactive') DEFAULT 'active',
-			sort_order INT DEFAULT 0,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 

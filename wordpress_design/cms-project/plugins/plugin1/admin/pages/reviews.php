@@ -2,10 +2,11 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-$model  = new AH_Reviews_Model();
-$notice = '';
-$n_type = 'success';
-$action = sanitize_key( $_GET['action'] ?? 'list' );
+$model   = new AH_Reviews_Model();
+$ct_model = new AH_Content_Taxonomy_Model();
+$notice  = '';
+$n_type  = 'success';
+$action  = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = (int) ( $_GET['id'] ?? 0 );
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
@@ -32,13 +33,29 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 	if ( $edit_id ) {
 		$model->update( $edit_id, $data );
+		$saved_id = $edit_id;
 	} else {
-		$model->create( $data );
+		$saved_id = $model->create( $data );
 	}
+
+	// Save taxonomy terms
+	$taxonomy_ids = array_map( 'absint', (array) ( $_POST['taxonomy_ids'] ?? [] ) );
+	$ct_model->sync_terms( 'review', (int) $saved_id, $taxonomy_ids );
+
+	// Save occasion images
+	$raw_img_ids = array_map( 'absint', (array) ( $_POST['review_image_ids'] ?? [] ) );
+	$model->save_images( (int) $saved_id, array_filter( $raw_img_ids ) );
 
 	$notice = 'Review saved.';
 	$action = 'list';
 	$edit_id = 0;
+}
+
+// Delete a single occasion image row
+if ( isset( $_GET['delete_rv_img'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_rv_img' ) ) {
+	$model->delete_image( (int) $_GET['delete_rv_img'] );
+	wp_safe_redirect( add_query_arg( [ 'page' => 'ah-reviews', 'action' => 'edit', 'id' => (int) ( $_GET['review_id'] ?? 0 ), 'img_deleted' => 1 ], admin_url( 'admin.php' ) ) );
+	exit;
 }
 
 if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_review' ) ) {
@@ -74,11 +91,11 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
     <div class="ah-table-wrap">
       <table class="ah-table ah-sortable-list" data-model="reviews">
         <thead>
-          <tr><th></th><th>Reviewer</th><th>Review</th><th>Rating</th><th>Source</th><th>Featured</th><th>Status</th><th>Actions</th></tr>
+          <tr><th></th><th>Reviewer</th><th>Review</th><th>Rating</th><th>Type</th><th>Source</th><th>Featured</th><th>Status</th><th>Actions</th></tr>
         </thead>
         <tbody>
           <?php if ( empty( $items ) ) : ?>
-            <tr><td colspan="8" style="text-align:center;color:var(--ah-muted);padding:32px;">No reviews yet. Click "+ Add Review" to add one.</td></tr>
+            <tr><td colspan="9" style="text-align:center;color:var(--ah-muted);padding:32px;">No reviews yet. Click "+ Add Review" to add one.</td></tr>
           <?php endif; ?>
           <?php foreach ( $items as $rv ) :
             $img_url = $rv->reviewer_image_id ? wp_get_attachment_image_url( (int) $rv->reviewer_image_id, 'thumbnail' ) : '';
@@ -96,6 +113,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               </td>
               <td style="max-width:260px;"><small style="color:var(--ah-muted);"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $rv->review_text ), 12 ) ); ?></small></td>
               <td class="ah-stars"><?php echo str_repeat( '★', (int) $rv->rating ) . str_repeat( '☆', 5 - (int) $rv->rating ); ?></td>
+              <td><?php $ct_model->render_badges( 'review', (int) $rv->id ); ?></td>
               <td><?php echo esc_html( $rv->source ); ?></td>
               <td><?php echo $rv->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-'; ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $rv->status ); ?>"><?php echo esc_html( $rv->status ); ?></span></td>
@@ -110,11 +128,16 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
     </div>
     <?php echo AH_Pagination::render( $meta ); ?>
 
+  <?php
+    if ( isset( $_GET['img_deleted'] ) ) {
+      echo '<div class="ah-notice ah-notice-success">Image removed.</div>';
+    }
+  ?>
   <?php else :
-    $item    = $edit_id ? $model->find( $edit_id ) : null;
-    // Use WP attachment ID stored in reviewer_image_id
-    $img_id  = $item ? (int) $item->reviewer_image_id : 0;
-    $img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'medium' ) : '';
+    $item        = $edit_id ? $model->find( $edit_id ) : null;
+    $img_id      = $item ? (int) $item->reviewer_image_id : 0;
+    $img_url     = $img_id ? wp_get_attachment_image_url( $img_id, 'medium' ) : '';
+    $occ_images  = $edit_id ? $model->get_images( $edit_id ) : [];
   ?>
     <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-reviews' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-bottom:16px;display:inline-flex;">&larr; Back to Reviews</a>
 
@@ -160,6 +183,43 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
             );
             ?>
           </div>
+
+          <!-- ── Occasion / Gallery Images ──────────────────────────────── -->
+          <div class="ah-card">
+            <div class="ah-card-header" style="display:flex;align-items:center;justify-content:space-between;">
+              <h2 style="margin:0;">Occasion Images</h2>
+              <button type="button" id="rv-add-images" class="ah-btn ah-btn-secondary ah-btn-sm">
+                <span class="dashicons dashicons-plus-alt2" style="font-size:15px;line-height:1.4;"></span> Add Images
+              </button>
+            </div>
+            <p style="font-size:12px;color:var(--ah-muted);margin:0 0 14px;">
+              Add photos from the occasion — wedding, event, party etc. Drag to reorder.
+            </p>
+
+            <div id="rv-gallery" style="display:flex;flex-wrap:wrap;gap:12px;min-height:60px;">
+              <?php foreach ( $occ_images as $occ ) :
+                $occ_url = wp_get_attachment_image_url( (int) $occ->image_id, 'thumbnail' );
+                if ( ! $occ_url ) continue;
+                $del_url = wp_nonce_url(
+                  add_query_arg( [ 'page' => 'ah-reviews', 'action' => 'edit', 'id' => $edit_id, 'delete_rv_img' => $occ->id, 'review_id' => $edit_id ], admin_url( 'admin.php' ) ),
+                  'ah_del_rv_img'
+                );
+              ?>
+                <div class="rv-img-tile" style="position:relative;width:90px;cursor:move;">
+                  <input type="hidden" name="review_image_ids[]" value="<?php echo esc_attr( $occ->image_id ); ?>">
+                  <img src="<?php echo esc_url( $occ_url ); ?>" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--ah-border,#e0e0e0);display:block;">
+                  <a href="<?php echo esc_url( $del_url ); ?>"
+                     onclick="return confirm('Remove this image?')"
+                     style="position:absolute;top:-6px;right:-6px;background:#e53e3e;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;line-height:1;text-decoration:none;"
+                     title="Remove">✕</a>
+                </div>
+              <?php endforeach; ?>
+            </div>
+
+            <?php if ( ! $edit_id ) : ?>
+              <p style="font-size:12px;color:var(--ah-muted);margin-top:10px;font-style:italic;">Save the review first, then add occasion images.</p>
+            <?php endif; ?>
+          </div>
         </div>
 
         <!-- Right column: settings -->
@@ -177,6 +237,12 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
                 <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
               </div>
             </div>
+          </div>
+
+          <div class="ah-card">
+            <div class="ah-card-header"><h2>Review Type</h2></div>
+            <p style="font-size:12px;color:var(--ah-muted);margin:0 0 12px;">Tag this review as Customer, Partner, or Event so it appears in the right section on the website.</p>
+            <?php $ct_model->render_picker( 'review', $edit_id ); ?>
           </div>
 
           <div class="ah-card">
@@ -223,5 +289,56 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 
       </div>
     </form>
+
+    <?php if ( $edit_id ) : ?>
+    <script>
+    jQuery(function($){
+      var gallery   = document.getElementById('rv-gallery');
+      var addBtn    = document.getElementById('rv-add-images');
+      if ( ! addBtn || ! gallery ) return;
+
+      // Sortable
+      $(gallery).sortable({ items: '.rv-img-tile', tolerance: 'pointer' });
+
+      // WP Media frame (multi-select)
+      var frame;
+      addBtn.addEventListener('click', function(){
+        if ( frame ) { frame.open(); return; }
+        frame = wp.media({
+          title    : 'Select Occasion Images',
+          button   : { text: 'Add Selected' },
+          multiple : true,
+          library  : { type: 'image' }
+        });
+        frame.on('select', function(){
+          var attachments = frame.state().get('selection').toJSON();
+          attachments.forEach(function(att){
+            // Skip if already in the gallery
+            if ( gallery.querySelector('input[value="'+att.id+'"]') ) return;
+
+            var thumb = att.sizes && att.sizes.thumbnail ? att.sizes.thumbnail.url : att.url;
+            var delConfirm = 'Remove this image?';
+
+            var tile = document.createElement('div');
+            tile.className = 'rv-img-tile';
+            tile.style.cssText = 'position:relative;width:90px;cursor:move;';
+            tile.innerHTML =
+              '<input type="hidden" name="review_image_ids[]" value="' + att.id + '">' +
+              '<img src="' + thumb + '" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--ah-border,#e0e0e0);display:block;">' +
+              '<button type="button" class="rv-remove-new" title="Remove" style="position:absolute;top:-6px;right:-6px;background:#e53e3e;color:#fff;border-radius:50%;width:20px;height:20px;border:none;cursor:pointer;font-size:12px;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;">✕</button>';
+
+            tile.querySelector('.rv-remove-new').addEventListener('click', function(){
+              tile.parentNode.removeChild(tile);
+            });
+
+            gallery.appendChild(tile);
+          });
+        });
+        frame.open();
+      });
+    });
+    </script>
+    <?php endif; ?>
+
   <?php endif; ?>
 </div>

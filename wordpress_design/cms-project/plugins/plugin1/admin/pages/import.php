@@ -27,7 +27,7 @@ if (
 			$notice = 'error:The CSV file is empty or could not be parsed. Check headers match the sample file.';
 		} else {
 			$results = AH_CSV_Importer::import( $type, $rows );
-			AH_DB_Helper::log_action( 'create', 'import_' . $type, null, array(
+			AH_DB_Helper::log_action( 'create', 'import_' . $type, 0, array(
 				'file'     => sanitize_text_field( $_FILES['csv_file']['name'] ),
 				'rows'     => count( $rows ),
 				'imported' => $results['imported'],
@@ -81,8 +81,19 @@ if (
 
       <!-- Column reference card -->
       <div class="ah-card" style="margin-bottom:20px;">
-        <div class="ah-card-header">
-          <h2>CSV Columns - <?php echo esc_html( $current['label'] ); ?></h2>
+        <div class="ah-card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <h2 style="margin:0;">CSV Columns - <?php echo esc_html( $current['label'] ); ?></h2>
+          <?php if ( $tab === 'reviews' ) :
+            $sample_url = get_template_directory_uri() . '/sample-reviews.csv';
+          ?>
+            <a href="<?php echo esc_url( $sample_url ); ?>"
+               download="sample-reviews.csv"
+               class="ah-btn ah-btn-secondary ah-btn-sm"
+               style="font-size:12px;">
+              <span class="dashicons dashicons-download" style="font-size:14px;line-height:1.6;margin-right:3px;"></span>
+              Download Sample CSV
+            </a>
+          <?php endif; ?>
         </div>
         <table class="ah-table" style="margin-top:4px;">
           <thead>

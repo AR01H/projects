@@ -20,9 +20,10 @@ if ( empty( $reviews ) ) return;
 				$r        = (array) $r;
 				$name     = esc_html( $r['author_name'] ?? 'Happy Customer' );
 				$location = esc_html( $r['location']    ?? 'Verified Customer' );
-				$text     = esc_html( $r['review_text'] ?? '' );
+				$_names   = ch_get_review_highlight_names( (int) ( $r['id'] ?? 0 ) );
+				$text     = ch_highlight_text( wp_strip_all_tags( $r['review_text'] ?? '' ), $_names );
 				$rating   = (float) ( $r['rating'] ?? 5.0 );
-				$avatar   = 'https://i.pravatar.cc/120?u=' . ( $i + 10 );
+				$avatar   = ch_get_review_image( $r, $i, 'thumbnail' );
 			?>
 				<div class="ch-review-card<?php echo $i === 0 ? ' active' : ''; ?>">
 
@@ -32,9 +33,11 @@ if ( empty( $reviews ) ) return;
 
 					<div class="ch-review-footer">
 						<div class="ch-review-author">
-							<img src="<?php echo esc_url( $avatar ); ?>"
-								alt="<?php echo $name; ?>"
-								class="ch-review-avatar" loading="lazy">
+							<?php if ( $avatar ) : ?>
+								<img src="<?php echo esc_url( $avatar ); ?>"
+									alt="<?php echo $name; ?>"
+									class="ch-review-avatar" loading="lazy">
+							<?php endif; ?>
 							<div class="ch-review-author-info">
 								<div class="ch-review-name"><?php echo $name; ?></div>
 								<div class="ch-review-subtitle"><?php echo $location; ?></div>

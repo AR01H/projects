@@ -193,50 +193,22 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 	</div>
 </section>
 
-<!-- ── History Timeline ──────────────────────────────────────────────────────── -->
-<section class="ch-history-section">
-	<div class="container">
-		<div class="ch-section-center fade-up">
-			<div class="section-tag">Rich Heritage</div>
-			<h2 class="section-title">2,000 Years of <span class="accent">Cane</span></h2>
-			<p class="section-body">Sugarcane isn't just a crop - it's a story of civilisation, trade, and natural wisdom passed down through generations.</p>
-		</div>
-		<div class="ch-timeline fade-up">
-			<div class="ch-timeline-item">
-				<div class="ch-tl-dot"></div>
-				<div class="ch-tl-year">~8000 BC</div>
-				<div class="ch-tl-content">
-					<h4>Origins in New Guinea</h4>
-					<p>Sugarcane first cultivated in Papua New Guinea, spreading across South and Southeast Asia.</p>
-				</div>
-			</div>
-			<div class="ch-timeline-item">
-				<div class="ch-tl-dot"></div>
-				<div class="ch-tl-year">~500 BC</div>
-				<div class="ch-tl-content">
-					<h4>Ayurvedic Medicine</h4>
-					<p>Ancient Indian texts document sugarcane juice as a healing drink for digestion, fever, and energy restoration.</p>
-				</div>
-			</div>
-			<div class="ch-timeline-item">
-				<div class="ch-tl-dot"></div>
-				<div class="ch-tl-year">~400 AD</div>
-				<div class="ch-tl-content">
-					<h4>Spread to the World</h4>
-					<p>Arab traders carry sugarcane westward. It becomes the most-traded agricultural commodity in history.</p>
-				</div>
-			</div>
-			<div class="ch-timeline-item">
-				<div class="ch-tl-dot"></div>
-				<div class="ch-tl-year">Today</div>
-				<div class="ch-tl-content">
-					<h4>The Cane House, UK</h4>
-					<p>We bring this ancient tradition to modern Britain - live-pressed, fresh, and served cool at events across the UK.</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+<!-- ── The Experience: Sensory Journey ───────────────────────────────────────── -->
+<?php get_template_part( 'components/sugarcane-experience', null, [
+	'tag'      => 'The Cane House Experience',
+	'title'    => 'Why Fresh-Pressed <span class="accent">Beats Everything</span>',
+	'subtitle' => 'From field to glass in minutes - the live pressing experience your guests will never forget.',
+] ); ?>
+
+<!-- ── Global Love: Why the World Drinks Cane ────────────────────────────────── -->
+<?php get_template_part( 'components/sugarcane-benefits', null, [
+	'tag'   => 'Science & Tradition',
+	'title' => 'Why the World <span class="accent">Swears By It</span>',
+	'body'  => 'From Ayurvedic healers in ancient India to modern sports scientists - sugarcane juice has always stood apart. Here\'s what makes it extraordinary.',
+] ); ?>
+
+<!-- ── 10,000 Years of Sweet History (interactive book) ──────────────────────── -->
+<?php get_template_part( 'components/history-info' ); ?>
 
 <!-- ── CTA ───────────────────────────────────────────────────────────────────── -->
 <section class="ch-inner-cta">

@@ -76,13 +76,13 @@ $schema = ch_get_schema_settings();
 		<!-- ── Certifications ──────────────────────────────────────────────── -->
 		<div class="ch-card">
 			<h2>🏛️ Certifications Section</h2>
-			<p style="color:#666;margin-bottom:1rem;">Controls the "Government Certified" section shown on the homepage. Upload your certificate image and customise the badges.</p>
+			<p style="color:#666;margin-bottom:1rem;">Controls the "Food Safety Registered" section shown on the homepage. Upload your certificate image and customise the badges.</p>
 
 			<div class="ch-row">
 				<label for="cert_heading">Section Heading</label>
 				<input type="text" id="cert_heading" name="cert_heading"
-					value="<?php echo esc_attr( $s['cert_heading'] ?? 'Government Certified &amp; Fully Compliant' ); ?>"
-					placeholder="Government Certified &amp; Fully Compliant">
+					value="<?php echo esc_attr( $s['cert_heading'] ?? 'Food Safety Registered &amp; Fully Compliant' ); ?>"
+					placeholder="Food Safety Registered &amp; Fully Compliant">
 			</div>
 			<div class="ch-row">
 				<label for="cert_subtext">Section Sub-text</label>

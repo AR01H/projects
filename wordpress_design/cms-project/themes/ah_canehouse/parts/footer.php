@@ -16,28 +16,7 @@ $year      = gmdate( 'Y' );
 // Fallback link columns (identical to reference design)
 $cols = (array) ( $footer['columns'] ?? [] );
 if ( empty( $cols ) ) {
-	$cols = [
-		[
-			'title' => 'Our Juice',
-			'items' => [
-				[ 'label' => 'Build Your Juice',  'url' => home_url( '/#build' ) ],
-				[ 'label' => 'Sizes & Pricing',   'url' => home_url( '/#build' ) ],
-				[ 'label' => 'Cane Types',         'url' => home_url( '/#build' ) ],
-				[ 'label' => 'Flavour Blends',     'url' => home_url( '/#build' ) ],
-				[ 'label' => 'Health Benefits',    'url' => home_url( '/#benefits' ) ],
-			],
-		],
-		[
-			'title' => 'Services',
-			'items' => [
-				[ 'label' => 'Event Hire',          'url' => home_url( '/#hire' ) ],
-				[ 'label' => 'Weddings',             'url' => home_url( '/#hire' ) ],
-				[ 'label' => 'Parties & Gatherings', 'url' => home_url( '/#hire' ) ],
-				[ 'label' => 'Franchise',            'url' => home_url( '/#franchise' ) ],
-				[ 'label' => 'Hire Us',           'url' => home_url( '/#contact' ) ],
-			],
-		],
-	];
+	$cols = [];
 }
 ?>
 

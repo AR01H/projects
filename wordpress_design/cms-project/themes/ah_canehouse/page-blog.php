@@ -10,7 +10,7 @@ $paged      = max( 1, get_query_var( 'paged' ) ?: ( get_query_var( 'page' ) ?: 1
 $args = [
 	'post_type'      => 'post',
 	'post_status'    => 'publish',
-	'posts_per_page' => 9,
+	'posts_per_page' => 12,
 	'paged'          => $paged,
 	'orderby'        => 'date',
 	'order'          => 'DESC',
@@ -28,33 +28,50 @@ $wp_cats       = get_categories( [ 'hide_empty' => true ] );
 <main class="ch-main" id="main-content">
 
 <!-- ── Page Header ────────────────────────────────────────────────────────── -->
-<div class="ch-page-hero">
-	<div class="container">
-		<span class="ch-eyebrow">Tips · Recipes · Culture</span>
-		<h1 class="ch-page-hero__title">The Cane <em>Journal</em></h1>
-		<p class="ch-page-hero__desc">
-			Health tips, sugarcane facts, seasonal recipes and stories from
-			the heart of South Asian juice culture.
-		</p>
+<div style="background: #f9fafb; padding: 4rem 2rem; border-bottom: 1px solid #e5e7eb;">
+	<div class="container" style="max-width: 900px;">
+		<h1 style="font-size: 2.5rem; margin: 0 0 0.5rem; color: #1f2937; font-weight: 700;">The Cane Journal</h1>
+		<p style="font-size: 1rem; color: #6b7280; margin: 0;">Health tips, recipes, and stories from South Asian juice culture.</p>
 	</div>
 </div>
 
 <!-- ── Category Filter ─────────────────────────────────────────────────────── -->
 <?php if ( $wp_cats ) : ?>
-<div class="ch-filter-bar">
-	<div class="container">
-		<div class="ch-filter-tabs" role="tablist" aria-label="Journal categories">
+<div style="background: #fff; border-bottom: 1px solid #e5e7eb; padding: 1.5rem 2rem;">
+	<div class="container" style="max-width: 900px;">
+		<div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+			<span style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #9ca3af; letter-spacing: 0.5px;">Filter:</span>
 			<a href="<?php echo esc_url( get_permalink() ); ?>"
-				class="ch-filter-tab<?php if ( ! $active_cat ) echo ' ch-filter-tab--active'; ?>"
-				role="tab" aria-selected="<?php echo ! $active_cat ? 'true' : 'false'; ?>">
+				style="
+					padding: 0.5rem 1rem;
+					border-radius: 6px;
+					font-size: 13px;
+					font-weight: 600;
+					text-decoration: none;
+					border: 1.5px solid <?php echo ! $active_cat ? '#84cc16' : '#d1d5db'; ?>;
+					color: <?php echo ! $active_cat ? '#fff' : '#6b7280'; ?>;
+					background: <?php echo ! $active_cat ? '#84cc16' : '#fff'; ?>;
+					cursor: pointer;
+					transition: all 0.2s;
+				">
 				All Articles
 			</a>
 			<?php foreach ( $wp_cats as $cat ) :
 				$is_active = ( $active_cat === $cat->slug );
 			?>
 			<a href="<?php echo esc_url( add_query_arg( 'category', $cat->slug, get_permalink() ) ); ?>"
-				class="ch-filter-tab<?php if ( $is_active ) echo ' ch-filter-tab--active'; ?>"
-				role="tab" aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>">
+				style="
+					padding: 0.5rem 1rem;
+					border-radius: 6px;
+					font-size: 13px;
+					font-weight: 600;
+					text-decoration: none;
+					border: 1.5px solid <?php echo $is_active ? '#84cc16' : '#d1d5db'; ?>;
+					color: <?php echo $is_active ? '#fff' : '#6b7280'; ?>;
+					background: <?php echo $is_active ? '#84cc16' : '#fff'; ?>;
+					cursor: pointer;
+					transition: all 0.2s;
+				">
 				<?php echo esc_html( $cat->name ); ?>
 			</a>
 			<?php endforeach; ?>
@@ -63,59 +80,126 @@ $wp_cats       = get_categories( [ 'hide_empty' => true ] );
 </div>
 <?php endif; ?>
 
-<!-- ── Posts Grid ──────────────────────────────────────────────────────────── -->
-<div class="container ch-page-content">
+<!-- ── Posts List ──────────────────────────────────────────────────────────── -->
+<div style="padding: 3rem 2rem; background: #fff;">
+	<div class="container" style="max-width: 900px;">
 
-	<?php if ( $journal_query->have_posts() ) : ?>
-		<div class="ch-posts-grid">
-			<?php while ( $journal_query->have_posts() ) :
-				$journal_query->the_post();
-			?>
-			<article class="ch-post-card fade-up">
-				<?php if ( has_post_thumbnail() ) : ?>
-					<a href="<?php the_permalink(); ?>" class="ch-post-card__img">
-						<?php the_post_thumbnail( 'ch-card' ); ?>
-					</a>
-				<?php else : ?>
-					<a href="<?php the_permalink(); ?>" class="ch-post-card__img ch-post-card__img--placeholder"
-						style="display:flex;align-items:center;justify-content:center;min-height:200px;background:var(--ch-green-deep);font-size:3rem">
-						🥤
-					</a>
-				<?php endif; ?>
-				<div class="ch-post-card__body">
-					<?php $cats = get_the_category(); if ( $cats ) : ?>
-						<div class="ch-post-card__cat"><?php echo esc_html( $cats[0]->name ); ?></div>
-					<?php endif; ?>
-					<div class="ch-post-card__date"><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></div>
-					<h2 class="ch-post-card__title">
-						<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+		<?php if ( $journal_query->have_posts() ) : ?>
+			<div style="display: grid; gap: 2rem;">
+				<?php while ( $journal_query->have_posts() ) :
+					$journal_query->the_post();
+					$cats = get_the_category();
+				?>
+				<article style="
+					border-left: 4px solid #84cc16;
+					padding-left: 1.5rem;
+					padding-bottom: 2rem;
+					border-bottom: 1px solid #f3f4f6;
+					transition: all 0.3s ease;
+				" class="fade-up">
+					<div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem;">
+						<?php if ( $cats ) : ?>
+							<span style="
+								display: inline-block;
+								font-size: 11px;
+								font-weight: 700;
+								text-transform: uppercase;
+								color: #84cc16;
+								letter-spacing: 0.5px;
+								background: #f0fdf4;
+								padding: 0.25rem 0.75rem;
+								border-radius: 4px;
+							">
+								<?php echo esc_html( $cats[0]->name ); ?>
+							</span>
+						<?php endif; ?>
+						<span style="font-size: 12px; color: #9ca3af;">
+							<?php echo esc_html( get_the_date( 'j M Y' ) ); ?>
+						</span>
+					</div>
+
+					<h2 style="
+						font-size: 1.3rem;
+						margin: 0 0 0.75rem;
+						color: #1f2937;
+						font-weight: 700;
+						line-height: 1.3;
+					">
+						<a href="<?php the_permalink(); ?>" style="color: inherit; text-decoration: none;">
+							<?php the_title(); ?>
+						</a>
 					</h2>
-					<p class="ch-post-card__excerpt"><?php echo esc_html( ch_excerpt() ); ?></p>
-					<a href="<?php the_permalink(); ?>" class="btn-lime-sm">Read Article →</a>
-				</div>
-			</article>
-			<?php endwhile; wp_reset_postdata(); ?>
-		</div>
 
-		<?php ch_pagination(); ?>
+					<p style="
+						font-size: 0.95rem;
+						color: #6b7280;
+						margin: 0;
+						line-height: 1.6;
+					">
+						<?php echo esc_html( ch_excerpt( 20 ) ); ?>
+					</p>
 
-	<?php else : ?>
-		<div style="text-align:center;padding:80px 24px">
-			<div style="font-size:3rem;margin-bottom:16px">🌿</div>
-			<h2 style="font-size:1.4rem;margin-bottom:12px">No articles yet</h2>
-			<p style="opacity:.7;margin-bottom:24px">
-				<?php if ( $active_cat ) : ?>
-					Nothing in this category yet - browse all articles.
-				<?php else : ?>
-					We're brewing something great - check back soon.
-				<?php endif; ?>
-			</p>
-			<?php if ( $active_cat ) : ?>
-				<a href="<?php echo esc_url( get_permalink() ); ?>" class="ch-nav__cta-btn">View All Articles →</a>
+					<a href="<?php the_permalink(); ?>" style="
+						display: inline-block;
+						margin-top: 1rem;
+						font-size: 13px;
+						font-weight: 600;
+						color: #84cc16;
+						text-decoration: none;
+						transition: all 0.2s;
+					" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+						Read Full Article →
+					</a>
+				</article>
+				<?php endwhile; wp_reset_postdata(); ?>
+			</div>
+
+			<!-- ── Pagination ──────────────────────────────────────────────── -->
+			<?php if ( $journal_query->max_num_pages > 1 ) : ?>
+			<div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e5e7eb; text-align: center;">
+				<?php
+				$big = 999999999;
+				echo paginate_links( [
+					'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+					'format'  => '?paged=%#%',
+					'current' => max( 1, $paged ),
+					'total'   => $journal_query->max_num_pages,
+					'type'    => 'list',
+					'prev_text' => '← Previous',
+					'next_text' => 'Next →',
+				] );
+				?>
+			</div>
 			<?php endif; ?>
-		</div>
-	<?php endif; ?>
 
+		<?php else : ?>
+			<div style="text-align: center; padding: 4rem 2rem;">
+				<div style="font-size: 3rem; margin-bottom: 1rem;">📖</div>
+				<h2 style="font-size: 1.4rem; margin-bottom: 0.75rem; color: #1f2937;">No articles yet</h2>
+				<p style="color: #6b7280; margin-bottom: 1.5rem;">
+					<?php if ( $active_cat ) : ?>
+						Nothing in this category yet - browse all articles.
+					<?php else : ?>
+						We're brewing something great - check back soon.
+					<?php endif; ?>
+				</p>
+				<?php if ( $active_cat ) : ?>
+					<a href="<?php echo esc_url( get_permalink() ); ?>" style="
+						display: inline-block;
+						padding: 0.75rem 1.5rem;
+						background: #84cc16;
+						color: #fff;
+						text-decoration: none;
+						font-weight: 600;
+						border-radius: 6px;
+					">
+						View All Articles →
+					</a>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+
+	</div>
 </div>
 
 </main>

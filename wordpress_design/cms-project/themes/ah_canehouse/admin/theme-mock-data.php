@@ -11,7 +11,7 @@ $op_type = isset( $_GET['type'] ) ? sanitize_key( $_GET['type'] ) : '';
 
 // ── CSV row counts ────────────────────────────────────────────────────────────
 $csv_counts = [];
-foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
+foreach ( [ 'reviews', 'news_bar' ] as $name ) {
 	$rows              = CH_Data::load_csv( $name );
 	$csv_counts[$name] = count( $rows );
 }
@@ -71,16 +71,11 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
         ⚠️ Running multiple times may duplicate DB rows - use Cleanup first if re-seeding.
       </p>
       <?php
-      // Each importable item: label + the CSV file used for its row count.
-      // Navigation, footer and FAQs are managed by the CMS plugin and are NOT
-      // seeded by the theme (they are read from the plugin directly).
-      $content_items = [
-        'story-cards'    => [ 'label' => '🌾 Sugarcane story cards (with images)', 'csv' => 'story-cards' ],
-        'certifications' => [ 'label' => '🏛️ Certification badges',           'csv' => 'certifications' ],
-        'reviews'        => [ 'label' => '⭐ Customer reviews',                 'csv' => 'reviews'        ],
-        'news-bar'       => [ 'label' => '📰 News bar / marquee items',         'csv' => 'news_bar'       ],
-        'journal'        => [ 'label' => '📝 Journal blog posts (WP posts)',    'csv' => 'journal-posts'  ],
-      ];
+      // Every importable CSV type comes from the central registry in the seeder
+      // (CH_Theme_Seeder::importable_types()). To add a new type, edit that one
+      // list — this UI updates automatically. Navigation, footer and FAQs are
+      // owned by the CMS plugin and are intentionally not listed here.
+      $content_items = CH_Theme_Seeder::importable_types();
       ?>
       <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="ch-seed-form">
         <?php wp_nonce_field( 'ch_theme_seed' ); ?>
@@ -97,14 +92,23 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
 
         <ul style="list-style:none;margin:0 0 14px;padding:0;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden">
           <?php foreach ( $content_items as $key => $item ) :
-            $rows = CH_Data::load_csv( $item['csv'] );
-            $n    = is_array( $rows ) ? count( $rows ) : 0;
+            $rows   = CH_Data::load_csv( $item['csv'] );
+            $n      = is_array( $rows ) ? count( $rows ) : 0;
+            $append = ! empty( $item['append'] );
+            // Overwrite-safe types are pre-ticked; append types (duplicate risk)
+            // start unticked so a full "Install Selected" never silently dupes.
+            $checked = ( $n > 0 && ! $append ) ? ' checked' : '';
           ?>
             <li style="border-bottom:1px solid #f1f5f9">
               <label style="display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer">
-                <input type="checkbox" name="seed_types[]" value="<?php echo esc_attr( $key ); ?>" checked
+                <input type="checkbox" name="seed_types[]" value="<?php echo esc_attr( $key ); ?>"<?php echo $checked; ?>
                        style="width:15px;height:15px;accent-color:#b7791f;flex-shrink:0">
-                <span style="flex:1;font-size:.82rem;color:#374151"><?php echo $item['label']; ?></span>
+                <span style="flex:1;font-size:.82rem;color:#374151"><?php echo esc_html( $item['label'] ); ?></span>
+                <?php if ( $append ) : ?>
+                  <span title="Appends rows - may duplicate if run twice" style="font-size:.68rem;color:#b45309;background:#fef3c7;border-radius:4px;padding:1px 6px;white-space:nowrap">appends</span>
+                <?php else : ?>
+                  <span title="Overwrites - safe to run again" style="font-size:.68rem;color:#15803d;background:#dcfce7;border-radius:4px;padding:1px 6px;white-space:nowrap">overwrite</span>
+                <?php endif; ?>
                 <?php if ( $n > 0 ) : ?>
                   <span style="font-size:.75rem;color:#16a34a;white-space:nowrap">✓ <?php echo esc_html( $n ); ?> rows</span>
                 <?php else : ?>
@@ -141,7 +145,6 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
         <?php
         $status_rows = [
           [ 'label' => 'Reviews',              'csv_key' => 'reviews',  'db_key' => 'reviews'              ],
-          [ 'label' => 'FAQs',                 'csv_key' => 'faqs',     'db_key' => 'faqs'                 ],
           [ 'label' => 'News Bar Items',        'csv_key' => 'news_bar', 'db_key' => 'news_bar'             ],
           [ 'label' => 'Contact Submissions',   'csv_key' => null,       'db_key' => 'contact_submissions'  ],
           [ 'label' => 'Journal Posts (WP)',    'csv_key' => null,       'db_key' => null                   ],
@@ -181,16 +184,13 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
       </thead>
       <tbody>
         <?php
-        // Navigation, footer and FAQs are managed by the CMS plugin, not the theme.
-        $csv_files = [
-          'story-cards.csv'     => [ 'csv' => 'story-cards',     'purpose' => 'Sugarcane story cards (id, icon, label, heading, body, facts;…, images;…)' ],
-          'certifications.csv'  => [ 'csv' => 'certifications',  'purpose' => 'Certification badges (icon, title, desc, badge)' ],
-          'reviews.csv'         => [ 'csv' => 'reviews',         'purpose' => 'Customer reviews (author_name, location, review_text, rating, result, status)' ],
-          'news_bar.csv'        => [ 'csv' => 'news_bar',        'purpose' => 'News ticker messages (message, status, sort_order)' ],
-        ];
-        foreach ( $csv_files as $file => $info ) :
+        // Driven by the same central registry as the importer above, so every
+        // supported CSV is listed automatically. Navigation, footer and FAQs are
+        // managed by the CMS plugin, not the theme, so they don't appear.
+        foreach ( CH_Theme_Seeder::importable_types() as $info ) :
           $rows = CH_Data::load_csv( $info['csv'] );
           $n    = is_array( $rows ) ? count( $rows ) : 0;
+          $file = $info['csv'] . '.csv';
         ?>
         <tr style="border-bottom:1px solid #f1f5f9">
           <td style="padding:6px 12px"><code><?php echo esc_html( $file ); ?></code></td>
@@ -201,7 +201,10 @@ foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
               <span style="color:#dc2626;font-weight:600">Empty / missing</span>
             <?php endif; ?>
           </td>
-          <td style="padding:6px 12px;color:#64748b"><?php echo esc_html( $info['purpose'] ); ?></td>
+          <td style="padding:6px 12px;color:#64748b">
+            <?php echo esc_html( $info['label'] ); ?>
+            <span style="color:#94a3b8">— <?php echo esc_html( $info['cols'] ); ?></span>
+          </td>
         </tr>
         <?php endforeach; ?>
       </tbody>

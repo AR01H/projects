@@ -11,7 +11,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $limit   = $args['limit'] ?? 6;
-$reviews = ch_get_reviews( $limit );
+$reviews = ch_get_reviews( $limit, 'event' );
 if ( empty( $reviews ) ) return;
 
 $tag   = $args['tag']   ?? 'Event Reviews';
@@ -36,10 +36,11 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 					$r      = (array) $r;
 					$name   = esc_html( $r['author_name'] ?? 'Happy Customer' );
 					$loc    = esc_html( $r['location']    ?? 'Verified Customer' );
-					$text   = esc_html( $r['review_text'] ?? 'Absolutely amazing experience. The freshest cane juice we\'ve ever had!' );
+					$_names = ch_get_review_highlight_names( (int) ( $r['id'] ?? 0 ) );
+					$text   = ch_highlight_text( wp_strip_all_tags( $r['review_text'] ?? '' ), $_names );
 					$rating = (float) ( $r['rating'] ?? 5.0 );
 					$badge  = $event_badges[ $i % count( $event_badges ) ];
-					$avatar = 'https://i.pravatar.cc/100?u=ev' . ( $i + 20 );
+					$avatar = ch_get_review_image( $r, $i + 20, 'thumbnail' );
 				?>
 					<div class="ch-rev-ev-card<?php echo $i === 0 ? ' active' : ''; ?>">
 						<div class="ch-rev-ev-badge"><?php echo esc_html( $badge ); ?></div>
@@ -50,7 +51,9 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 						</div>
 						<p class="ch-rev-ev-text"><?php echo $text; ?></p>
 						<div class="ch-rev-ev-author">
-							<img src="<?php echo esc_url( $avatar ); ?>" alt="<?php echo $name; ?>" class="ch-rev-ev-avatar" loading="lazy">
+							<?php if ( $avatar ) : ?>
+								<img src="<?php echo esc_url( $avatar ); ?>" alt="<?php echo $name; ?>" class="ch-rev-ev-avatar" loading="lazy">
+							<?php endif; ?>
 							<div>
 								<div class="ch-rev-ev-name"><?php echo $name; ?></div>
 								<div class="ch-rev-ev-loc"><?php echo $loc; ?></div>

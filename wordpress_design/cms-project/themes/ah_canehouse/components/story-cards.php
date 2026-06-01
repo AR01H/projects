@@ -4,7 +4,7 @@ $all_cards = ch_get_story_cards();
 if ( empty( $all_cards ) ) return;
 
 // Limit how many story tabs show on the homepage; the rest live on /our-story/.
-$home_limit = ch_home_limit( 'story_cards', 4 );
+$home_limit = ch_home_limit( 'story_cards', 400 );
 $cards      = $home_limit > 0 ? array_slice( $all_cards, 0, $home_limit ) : $all_cards;
 $has_more   = $home_limit > 0 && count( $all_cards ) > $home_limit;
 
@@ -21,6 +21,7 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pres
 			<h2 class="section-title"><?php echo wp_kses( $heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 			<p class="section-body"><?php echo esc_html( $subtext ); ?></p>
 		</div>
+	</div>
 
 		<!-- ── Tab cards ────────────────────────────────────────────────────── -->
 		<div class="ch-sc-tabs fade-up" role="tablist" aria-label="Sugarcane story steps">
@@ -119,5 +120,4 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pres
 
 		<?php if ( $has_more ) ch_more_button( home_url( '/our-story/' ), '🌿 Read the Full Story →', 'lime' ); ?>
 
-	</div>
 </section>

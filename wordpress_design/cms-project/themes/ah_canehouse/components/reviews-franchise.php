@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $limit   = $args['limit'] ?? 5;
-$reviews = ch_get_reviews( $limit );
+$reviews = ch_get_reviews( $limit, 'partner' );
 if ( empty( $reviews ) ) return;
 
 $tag   = $args['tag']   ?? 'Franchise Partners';
@@ -25,20 +25,26 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 			<div class="ch-rfr-track" id="ch-rfr-track">
 				<?php foreach ( $reviews as $i => $r ) :
 					$r = (array) $r;
+					$name   = esc_html( $r['author_name'] ?? 'Partner' );
+					$location = esc_html( $r['location'] ?? $cities[ $i ] ?? 'UK' );
+					$_names = ch_get_review_highlight_names( (int) ( $r['id'] ?? 0 ) );
+					$text   = ch_highlight_text( wp_strip_all_tags( $r['review_text'] ?? '' ), $_names );
+					$rating = (float) ( $r['rating'] ?? 5.0 );
+					$avatar = ch_get_review_image( $r, $i, 'thumbnail' );
 				?>
 					<div class="ch-rfr-card<?php echo $i === 0 ? ' active' : ''; ?>">
 						<div class="ch-rfr-card__quote">&#10077;</div>
-						<p class="ch-rfr-card__text">
-							<?php echo esc_html( $r['review_text'] ?? 'Joining The Cane House franchise was the best business decision I\'ve made.' ); ?>
-						</p>
+						<p class="ch-rfr-card__text"><?php echo $text; ?></p>
 						<div class="ch-rfr-card__author">
-							<img src="<?php echo esc_url( 'https://i.pravatar.cc/60?u=fr' . $i ); ?>"
-								alt="<?php echo esc_html( $r['author_name'] ?? '' ); ?>"
-								class="ch-rfr-card__avatar" loading="lazy">
+							<?php if ( $avatar ) : ?>
+								<img src="<?php echo esc_url( $avatar ); ?>"
+									alt="<?php echo $name; ?>"
+									class="ch-rfr-card__avatar" loading="lazy">
+							<?php endif; ?>
 							<div>
-								<div class="ch-rfr-card__name"><?php echo esc_html( $r['author_name'] ?? 'Partner' ); ?></div>
+								<div class="ch-rfr-card__name"><?php echo $name; ?></div>
 								<div class="ch-rfr-card__city">
-									<?php echo esc_html( $r['location'] ?? $cities[ $i ] ?? 'UK' ); ?>
+									<?php echo $location; ?>
 									&nbsp;·&nbsp;
 									<?php for ( $s = 1; $s <= 5; $s++ ) : ?>
 										<span class="ch-star ch-star--full" style="color:var(--ch-lime);font-size:.8rem;">★</span>

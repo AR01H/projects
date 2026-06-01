@@ -2,8 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 $s      = ch_get_settings();
 $certs  = ch_get_certifications();
-$cert_heading = $s['cert_heading'] ?? 'Council Registered & Fully Compliant';
-$cert_sub     = $s['cert_subtext'] ?? 'Every event we attend comes with full documentation, insurance, and food safety compliance. We take the trust of our clients and their guests very seriously.';
+$cert_heading = $s['cert_heading'] ?? 'Food Safety Registered & Fully Compliant';
+$cert_sub     = $s['cert_subtext'] ?? 'Every event we attend comes with full documentation, insurance, and Food Safety Registered compliance. We take the trust of our clients and their guests very seriously.';
 $cert_img     = get_template_directory_uri() . '/assets/images/ncass_logo.png';
 ?>
 

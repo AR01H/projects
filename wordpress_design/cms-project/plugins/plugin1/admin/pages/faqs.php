@@ -2,9 +2,10 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-$model   = new AH_Faqs_Model();
-$pages_m = new AH_Pages_Model();
-$notice  = '';
+$model    = new AH_Faqs_Model();
+$pages_m  = new AH_Pages_Model();
+$ct_model = new AH_Content_Taxonomy_Model();
+$notice   = '';
 $action  = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = (int) ( $_GET['id'] ?? 0 );
 
@@ -20,7 +21,17 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		'status'     => sanitize_key( $_POST['status'] ?? 'active' ),
 		'created_by' => get_current_user_id() ?: null,
 	);
-	$edit_id ? $model->update( $edit_id, $data ) : $model->create( $data );
+	if ( $edit_id ) {
+		$model->update( $edit_id, $data );
+		$saved_id = $edit_id;
+	} else {
+		$saved_id = (int) $model->create( $data );
+	}
+
+	// Save taxonomy terms (FAQ tags) attached to this FAQ.
+	$taxonomy_ids = array_map( 'absint', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
+	$ct_model->sync_terms( 'faq', (int) $saved_id, $taxonomy_ids );
+
 	$notice = 'FAQ saved.';
 	$action = 'list';
 }
@@ -58,7 +69,7 @@ $all_pages = $pages_m->get_active();
     </div>
     <div class="ah-table-wrap">
       <table class="ah-table ah-sortable-list" data-model="faqs">
-        <thead><tr><th></th><th>Question</th><th>Page</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead><tr><th></th><th>Question</th><th>Page</th><th>Tags</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <?php foreach ( $items as $faq ) : ?>
             <tr data-id="<?php echo esc_attr( $faq->id ); ?>">
@@ -70,6 +81,7 @@ $all_pages = $pages_m->get_active();
                   echo $pg ? esc_html( $pg->title ) : '-';
                 } else { echo '<em>Global</em>'; }
               ?></td>
+              <td><?php $ct_model->render_badges( 'faq', (int) $faq->id ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $faq->status ); ?>"><?php echo esc_html( $faq->status ); ?></span></td>
               <td class="row-actions">
                 <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-faqs', 'action' => 'edit', 'id' => $faq->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
@@ -106,6 +118,10 @@ $all_pages = $pages_m->get_active();
           </div>
           <div class="ah-form-row"><label>Sort Order</label><input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>"></div>
           <div class="ah-form-row"><label>Status</label><select name="status"><option value="active" <?php selected( $item->status ?? 'active', 'active' ); ?>>Active</option><option value="inactive" <?php selected( $item->status ?? '', 'inactive' ); ?>>Inactive</option></select></div>
+        </div>
+        <div class="ah-form-row">
+          <label>Tags</label>
+          <?php $ct_model->render_picker( 'faq', $edit_id ); ?>
         </div>
         <button type="submit" class="ah-btn ah-btn-primary">Save FAQ</button>
       </form>

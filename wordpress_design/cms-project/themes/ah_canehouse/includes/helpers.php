@@ -83,9 +83,9 @@ function ch_get_certifications(): array {
 	return [
 		[
 			'icon'  => '🍽️',
-			'title' => 'Hygiene Rating 5',
+			'title' => 'Food Hygiene',
 			'desc'  => 'Awarded the highest food hygiene score by local authority. Inspected and verified.',
-			'badge' => 'Grade 5 ★★★★★',
+			'badge' => 'Level 2',
 		],
 		[
 			'icon'  => '🛡️',
@@ -214,11 +214,6 @@ function ch_normalize_theme_navigation( array $items ): array {
 function ch_build_default_navigation(): array {
 	// Use common_terms.php constants if available, otherwise raw strings
 	return function_exists( 'ch_default_nav' ) ? ch_default_nav() : [
-		[ 'id' => 'how-to-order', 'label' => 'How to Order',  'type' => 'link', 'url' => home_url( '/#how-to-order' ), 'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'build',        'label' => 'Our Juices',    'type' => 'link', 'url' => home_url( '/#build' ),        'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'hire',         'label' => 'Events & Hire', 'type' => 'link', 'url' => home_url( '/#hire' ),         'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'franchise',    'label' => 'Franchise',     'type' => 'link', 'url' => home_url( '/#franchise' ),    'visible' => true, 'submenu' => [] ],
-		[ 'id' => 'faq',          'label' => 'FAQ',           'type' => 'link', 'url' => home_url( '/#faq' ),          'visible' => true, 'submenu' => [] ],
 	];
 }
 
@@ -316,39 +311,134 @@ function ch_get_marquee_items(): array {
 }
 
 // ── Reviews ───────────────────────────────────────────────────────────────────
-function ch_get_reviews( int $limit = 6 ): array {
-	if ( class_exists( 'AH_Model_Reviews' ) ) {
-		$rows = AH_Model_Reviews::all( [ 'status' => 'active', 'limit' => $limit ] );
-		if ( ! empty( $rows ) ) return $rows;
+/**
+ * @param int    $limit         Max reviews to return (0 = no limit for taxonomy queries).
+ * @param string $taxonomy_slug Optional: filter by Review Type term slug ('customer','partner','event').
+ *                              When empty, returns all active reviews.
+ */
+function ch_get_reviews( int $limit = 6, string $taxonomy_slug = '' ): array {
+	if ( class_exists( 'AH_Reviews_Model' ) ) {
+		$model = new AH_Reviews_Model();
+
+		if ( $taxonomy_slug !== '' ) {
+			// Taxonomy-filtered: never fall back to untagged reviews — that causes
+			// the same pool to bleed into every section on the site.
+			$rows = $model->get_by_taxonomy_slug( $taxonomy_slug, $limit );
+			return empty( $rows ) ? [] : array_map( 'ch_normalize_review', $rows );
+		}
+
+		// No taxonomy filter → return all active reviews.
+		$rows = $model->get_paginated( 1, '', 'active' );
+		if ( ! empty( $rows['items'] ) ) {
+			$reviews = $limit > 0 ? array_slice( $rows['items'], 0, $limit ) : $rows['items'];
+			return array_map( 'ch_normalize_review', $reviews );
+		}
 	}
+
+	// Direct DB query fallback (plugin autoloader not yet loaded).
+	// Use {prefix}ah_reviews — the table the plugin installer creates.
 	global $wpdb;
-	$table = ch_theme_table( 'reviews' );
+	$table = $wpdb->prefix . 'ah_reviews';
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ) {
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY id DESC LIMIT %d", $limit ) );
-		if ( ! empty( $rows ) ) return $rows;
+		$limit_sql = $limit > 0 ? $wpdb->prepare( ' LIMIT %d', $limit ) : '';
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$rows = $wpdb->get_results(
+			"SELECT * FROM `{$table}` WHERE status='active' ORDER BY id DESC" . $limit_sql
+		);
+		if ( ! empty( $rows ) ) {
+			return array_map( 'ch_normalize_review', $rows );
+		}
 	}
+
+	// Last resort: mock data (only when DB has zero reviews at all).
 	return array_slice( ch_mock_reviews(), 0, $limit );
+}
+
+// ── Normalize review data from plugin to theme format ───────────────────────────
+function ch_normalize_review( $r ): object {
+	$r = (array) $r;
+	return (object) [
+		'id'          => (int) ( $r['id'] ?? 0 ),
+		'author_name' => $r['reviewer_name'] ?? $r['author_name'] ?? 'Happy Customer',
+		'location'    => $r['reviewer_title'] ?? $r['location'] ?? 'Verified Customer',
+		'review_text' => $r['review_text'] ?? '',
+		'rating'      => (float) ( $r['rating'] ?? 5.0 ),
+		'image_id'    => (int) ( $r['reviewer_image_id'] ?? 0 ),
+	];
+}
+
+// ── Highlight Names in review text ────────────────────────────────────────────
+/**
+ * Fetch taxonomy terms of type 'highlight-names' attached to this review.
+ * Results are cached per request so the DB is only hit once per review.
+ */
+function ch_get_review_highlight_names( int $review_id ): array {
+	if ( ! $review_id || ! class_exists( 'AH_Reviews_Model' ) ) return [];
+	static $cache = [];
+	if ( ! isset( $cache[ $review_id ] ) ) {
+		$cache[ $review_id ] = ( new AH_Reviews_Model() )->get_highlight_names( $review_id );
+	}
+	return $cache[ $review_id ];
+}
+
+/**
+ * Escape plain review text and wrap occurrences of highlight names in <mark> tags.
+ * Always call wp_strip_all_tags() on the input before passing here.
+ */
+function ch_highlight_text( string $plain_text, array $names ): string {
+	if ( $plain_text === '' ) return '';
+	if ( empty( $names ) ) return esc_html( $plain_text );
+	// Already sorted longest-first by the model; re-sort here in case called directly.
+	usort( $names, fn( $a, $b ) => strlen( $b ) - strlen( $a ) );
+	$out = esc_html( $plain_text );
+	foreach ( $names as $name ) {
+		if ( $name === '' ) continue;
+		$pat = preg_quote( esc_html( $name ), '#' );
+		$out = preg_replace( '#' . $pat . '#iu', '<mark class="ch-highlight">$0</mark>', $out );
+	}
+	return $out;
+}
+
+// ── Get reviewer image URL - supports custom images or generates avatar ─────────
+function ch_get_review_image( array|object $review, int $index = 0, string $size = 'thumbnail' ): string {
+	$review = (array) $review;
+	$image_id = (int) ( $review['image_id'] ?? $review['reviewer_image_id'] ?? 0 );
+	if ( $image_id ) {
+		$url = wp_get_attachment_image_url( $image_id, $size );
+		if ( $url ) return $url;
+	}
+	return 'https://i.pravatar.cc/120?u=' . ( $index + 10 );
 }
 
 // ── FAQs ──────────────────────────────────────────────────────────────────────
 function ch_get_faqs( string $topic = '', int $limit = 20 ): array {
-	if ( class_exists( 'AH_Model_FAQs' ) ) {
-		$args = [ 'status' => 'active', 'limit' => $limit ];
-		if ( $topic ) $args['topic'] = $topic;
-		$rows = AH_Model_FAQs::all( $args );
-		if ( ! empty( $rows ) ) return $rows;
+	// FAQs are owned by the CMS plugin (ah_faqs table) — the theme has no FAQ
+	// data of its own. When $topic is given it filters by a "FAQ Tags" taxonomy
+	// term slug through the content_taxonomies pivot (object_type = 'faq').
+	if ( ! class_exists( 'AH_Faqs_Model' ) ) {
+		return [];
 	}
 	global $wpdb;
-	$table = ch_theme_table( 'faqs' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ) {
-		if ( $topic ) {
-			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' AND topic=%s ORDER BY sort_order ASC LIMIT %d", $topic, $limit ) );
-		} else {
-			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status='active' ORDER BY sort_order ASC LIMIT %d", $limit ) );
-		}
-		if ( ! empty( $rows ) ) return $rows;
+	$faqs = $wpdb->prefix . 'ah_faqs';
+
+	if ( $topic !== '' ) {
+		$ct  = $wpdb->prefix . 'ah_content_taxonomies';
+		$tax = $wpdb->prefix . 'ah_taxonomies';
+		return $wpdb->get_results( $wpdb->prepare(
+			"SELECT f.* FROM `{$faqs}` f
+			 INNER JOIN `{$ct}`  ct ON ct.object_type = 'faq' AND ct.object_id = f.id
+			 INNER JOIN `{$tax}` t  ON t.id = ct.taxonomy_id AND t.slug = %s AND t.status = 'active'
+			 WHERE f.status = 'active'
+			 ORDER BY f.sort_order ASC, f.id ASC
+			 LIMIT %d",
+			$topic, $limit
+		) ) ?: [];
 	}
-	return ch_mock_faqs( $topic );
+
+	return $wpdb->get_results( $wpdb->prepare(
+		"SELECT * FROM `{$faqs}` WHERE status = 'active' ORDER BY sort_order ASC, id ASC LIMIT %d",
+		$limit
+	) ) ?: [];
 }
 
 // ── Posts (from CMS plugin) ────────────────────────────────────────────────────

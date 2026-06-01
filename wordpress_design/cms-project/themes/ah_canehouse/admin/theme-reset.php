@@ -23,7 +23,6 @@ class CH_Theme_Reset {
         $tables = [
             ch_theme_table( 'news_bar' ),
             ch_theme_table( 'reviews' ),
-            ch_theme_table( 'faqs' ),
             ch_theme_table( 'services' ),
             ch_theme_table( 'about_team' ),
             ch_theme_table( 'blog_posts' ),
@@ -38,7 +37,6 @@ class CH_Theme_Reset {
         // Reseed from CSV data via CH_Data class
         self::seed_news_bar();
         self::seed_reviews();
-        self::seed_faqs();
         self::seed_services();
         self::seed_team();
     }
@@ -80,27 +78,6 @@ class CH_Theme_Reset {
                     'status'      => $item['status'] ?? 'active',
                 ],
                 [ '%s', '%s', '%s', '%f', '%s', '%s' ]
-            );
-        }
-    }
-
-    private static function seed_faqs() {
-        if ( ! class_exists( 'CH_Data' ) ) return;
-        global $wpdb;
-        $table = ch_theme_table( 'faqs' );
-        $items = CH_Data::faqs();
-
-        foreach ( $items as $item ) {
-            $wpdb->insert(
-                $table,
-                [
-                    'topic'      => $item['topic'] ?? '',
-                    'question'   => $item['question'] ?? '',
-                    'answer'     => $item['answer'] ?? '',
-                    'status'     => $item['status'] ?? 'active',
-                    'sort_order' => $item['sort_order'] ?? 0,
-                ],
-                [ '%s', '%s', '%s', '%s', '%d' ]
             );
         }
     }

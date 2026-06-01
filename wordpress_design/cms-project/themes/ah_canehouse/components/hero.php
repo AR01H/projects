@@ -16,9 +16,14 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 	</div>
 	<div class="ch-hero__deco ch-hero__deco--1" aria-hidden="true">🌿</div>
 	<div class="ch-hero__deco ch-hero__deco--2" aria-hidden="true">🌿</div>
-	<div class="ch-floating-leaf ch-fl1" aria-hidden="true">🍋</div>
-	<div class="ch-floating-leaf ch-fl2" aria-hidden="true">🍃</div>
-	<div class="ch-floating-leaf ch-fl3" aria-hidden="true">🌿</div>
+<div class="ch-floating-leaf ch-fl1" aria-hidden="true" style="top: 22%; left: 34%;">🍋</div>
+<div class="ch-floating-leaf ch-fl2" aria-hidden="true" style="bottom: 30%; left: 3%; animation-delay: 2s;">🍃</div>
+<div class="ch-floating-leaf ch-fl3" aria-hidden="true" style="top: 5%; left: 8%; animation-delay: 1s;">🌿</div>
+<div class="ch-floating-leaf ch-fl5" aria-hidden="true" style="bottom: 24%; right: 16%; animation-delay: 3s;">🍉</div>
+<div class="ch-floating-leaf ch-fl15" aria-hidden="true" style="bottom: 40%; right: 8%; animation-delay: 4s;">🫚</div>
+<div class="ch-floating-leaf ch-fl18" aria-hidden="true" style="bottom: 8%; right: 5%; animation-delay: 3.8s;">🥭</div>
+<div class="ch-floating-leaf ch-fl19" aria-hidden="true" style="top: 45%; left: 22%; animation-delay: 1.2s;">🍇</div>
+<div class="ch-floating-leaf ch-fl20" aria-hidden="true" style="top: 0%; right: 5%; animation-delay: 4.5s;">🍍</div>
 
 	<div class="ch-hero__inner">
 		<div class="ch-hero__left">

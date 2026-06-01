@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) || exit;
 $settings  = ch_get_settings();
 $phone     = $settings['phone']    ?? '';
 $logo_url  = get_template_directory_uri() . '/assets/images/logo.png';
+$logotext_url = get_template_directory_uri() . '/assets/images/thecanehousetextlogo.png';
 $has_logo  = file_exists( get_template_directory() . '/assets/images/logo.png' );
 $theme_nav = array_values(
 	array_filter(
@@ -47,10 +48,11 @@ unset( $_ch_sc );
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-nav__logo" aria-label="The Cane House Home">
 				<?php if ( $has_logo ) : ?>
 					<img src="<?php echo esc_url( $logo_url ); ?>" alt="The Cane House" class="ch-nav__logo-img">
+					<img src="<?php echo esc_url( $logotext_url ); ?>" alt="The Cane House" class="ch-nav__logo-img" style="width: 100px;">
 				<?php else : ?>
 					<div class="ch-nav__logo-mark">🌿</div>
+					<span class="ch-nav__logo-text">THE CANE <em>HOUSE</em></span>
 				<?php endif; ?>
-				<span class="ch-nav__logo-text">THE CANE <em>HOUSE</em></span>
 			</a>
 
 			<!-- Desktop menu -->
@@ -102,19 +104,20 @@ unset( $_ch_sc );
 					<?php endif; ?>
 				<?php endforeach; ?>
 			</ul>
-
 			<!-- Actions: CTA + hamburger -->
+			 <?php if (!empty($nav_cta['url'])) : ?>
 			<div class="ch-nav__actions">
-				<!-- <a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/#contact' ) ); ?>"
+				<a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/contact' ) ); ?>"
 					class="ch-nav__cta-btn">
 					<?php echo esc_html( $nav_cta['label'] ?? 'Hire Us' ); ?>
-				</a> -->
-
+				</a>
 				<button class="ch-nav__hamburger" id="ch-hamburger"
 					aria-label="Open menu" aria-expanded="false" aria-controls="ch-mobile-nav">
 					<span></span><span></span><span></span>
 				</button>
 			</div>
+			 <?php endif; ?>
+
 
 		</div><!-- .ch-nav__inner -->
 	</div><!-- .container -->
@@ -155,12 +158,12 @@ unset( $_ch_sc );
 		<?php endif; ?>
 	<?php endforeach; ?>
 
-	<div style="padding:1rem 0 0.5rem;">
-		<a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/#contact' ) ); ?>"
-			class="ch-nav__cta-btn" style="display:block;text-align:center;width:100%;">
+	<?php if ( ! empty( $nav_cta['url'] ) ) : ?>
+		<a href="<?php echo esc_url( ch_normalize_theme_url( $nav_cta['url'] ?? '/contact' ) ); ?>"
+			class="ch-mobile-nav__cta">
 			<?php echo esc_html( $nav_cta['label'] ?? 'Hire Us' ); ?>
 		</a>
-	</div>
+	<?php endif; ?>
 </nav>
 
 <div id="ch-page-content">

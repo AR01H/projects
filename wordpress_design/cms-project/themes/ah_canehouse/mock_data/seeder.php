@@ -65,7 +65,7 @@ class CH_Theme_Seeder {
 		$deleted = 0;
 
 		// Truncate CMS tables
-		foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $t ) {
+		foreach ( [ 'reviews', 'news_bar' ] as $t ) {
 			$table = ch_theme_table( $t );
 			$wpdb->query( "TRUNCATE TABLE `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$deleted++;
@@ -118,25 +118,71 @@ class CH_Theme_Seeder {
 	}
 
 	/**
+	 * Central registry of every CSV-backed content type that can be imported
+	 * individually from the admin "Install Mock Data" screen.
+	 *
+	 * ── To add a NEW importable CSV type ──────────────────────────────────────
+	 *   1. Drop a CSV in mock_data/csv/{csv}.csv
+	 *   2. Add a CH_Data::{loader}() method + a seed_{name}() method below
+	 *   3. Add ONE entry to this array
+	 * The admin UI (checkbox list + CSV file table) and the selective importer
+	 * (seed_selected) all read from this single list — nothing else to touch.
+	 *
+	 * Navigation, footer and FAQs are intentionally excluded — they are owned by
+	 * the CMS plugin and must NOT be seeded by the theme.
+	 *
+	 * Each entry:
+	 *   csv    => CSV filename (without .csv) in mock_data/csv/
+	 *   method => seed_* method that writes it
+	 *   label  => human label shown in the admin UI
+	 *   cols   => CSV column hint shown in the admin file table
+	 *   append => true if seeding APPENDS rows (duplicate risk on re-run),
+	 *             false if it OVERWRITES an option (safe to re-run)
+	 *
+	 * @return array<string, array{csv:string, method:string, label:string, cols:string, append:bool}>
+	 */
+	public static function importable_types(): array {
+		return [
+			// ── Site & section settings (key/value CSVs — overwrite, safe) ──
+			'settings'            => [ 'csv' => 'settings',            'method' => 'seed_settings',            'label' => '⚙️ Site settings (phone, email, socials)', 'cols' => 'key, value', 'append' => false ],
+			'home-settings'       => [ 'csv' => 'home-settings',       'method' => 'seed_home_settings',       'label' => '🏠 Hero / home settings',                   'cols' => 'key, value', 'append' => false ],
+			'contact-settings'    => [ 'csv' => 'contact-settings',    'method' => 'seed_contact_settings',    'label' => '✉️ Contact settings',                       'cols' => 'key, value', 'append' => false ],
+			'story-settings'      => [ 'csv' => 'story-settings',      'method' => 'seed_story_settings',      'label' => '📖 Story section settings',                 'cols' => 'key, value', 'append' => false ],
+			// ── Builder & section options (row CSVs — overwrite, safe) ──
+			'menu-sizes'          => [ 'csv' => 'menu-sizes',          'method' => 'seed_menu_sizes',          'label' => '📏 Menu sizes',            'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
+			'cane-types'          => [ 'csv' => 'cane-types',          'method' => 'seed_cane_types',          'label' => '🌾 Cane types',            'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
+			'textures'            => [ 'csv' => 'textures',            'method' => 'seed_textures',            'label' => '🥢 Textures',              'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
+			'flavours'            => [ 'csv' => 'flavours',            'method' => 'seed_flavours',            'label' => '🍋 Flavours',              'cols' => 'emoji, name, desc, category',              'append' => false ],
+			'order-steps'         => [ 'csv' => 'order-steps',         'method' => 'seed_order_steps',         'label' => '🔢 How-to-order steps',    'cols' => 'num, emoji, title, desc, highlight',       'append' => false ],
+			'marquee-items'       => [ 'csv' => 'marquee-items',       'method' => 'seed_marquee_items',       'label' => '🎞️ Marquee strip items',  'cols' => 'item',                                     'append' => false ],
+			'benefits'            => [ 'csv' => 'benefits',            'method' => 'seed_benefits',            'label' => '💪 Benefits',              'cols' => 'icon, title, desc',                        'append' => false ],
+			'hire-packages'       => [ 'csv' => 'hire-packages',       'method' => 'seed_hire_packages',       'label' => '📦 Hire packages',         'cols' => 'icon, title, desc, items (; separated)',    'append' => false ],
+			'hire-features'       => [ 'csv' => 'hire-features',       'method' => 'seed_hire_features',       'label' => '✨ Hire features',         'cols' => 'icon, text',                               'append' => false ],
+			'franchise-locations' => [ 'csv' => 'franchise-locations', 'method' => 'seed_franchise_locations', 'label' => '📍 Franchise locations',   'cols' => 'icon, name',                               'append' => false ],
+			'juice-showcase'      => [ 'csv' => 'juice-showcase',      'method' => 'seed_juice_showcase',      'label' => '🧃 Juice showcase',        'cols' => 'image, title, desc',                       'append' => false ],
+			'story-cards'         => [ 'csv' => 'story-cards',         'method' => 'seed_story_cards',         'label' => '🌱 Sugarcane story cards', 'cols' => 'id, icon, label, heading, body, facts (;), images (;)', 'append' => false ],
+			'certifications'      => [ 'csv' => 'certifications',      'method' => 'seed_certifications',      'label' => '🏛️ Certification badges',  'cols' => 'icon, title, desc, badge',                 'append' => false ],
+			// ── CMS table rows (APPEND — may duplicate on re-run) ──
+			'reviews'             => [ 'csv' => 'reviews',             'method' => 'seed_reviews',             'label' => '⭐ Customer reviews',       'cols' => 'author_name, location, review_text, rating, result, status', 'append' => true ],
+			'news-bar'            => [ 'csv' => 'news_bar',            'method' => 'seed_news_bar',            'label' => '📰 News bar items',        'cols' => 'message, status, sort_order',              'append' => true ],
+			'journal'             => [ 'csv' => 'journal-posts',       'method' => 'seed_journal_posts',       'label' => '📝 Journal blog posts',    'cols' => 'title, excerpt, category, content',         'append' => true ],
+		];
+	}
+
+	/**
 	 * Seed only the explicitly selected content types.
-	 * @param string[] $types  Keys from the seed_types[] checkbox array
+	 * @param string[] $types  Keys from the seed_types[] checkbox array (see importable_types())
 	 * @return array{inserted:int, updated:int, errors:string[]}
 	 */
 	public static function seed_selected( array $types ): array {
-		// Navigation, footer and FAQs are owned by the CMS plugin - the theme
-		// must NOT seed them (it would duplicate/overwrite the plugin's data).
-		$map = [
-			'story-cards'    => 'seed_story_cards',
-			'certifications' => 'seed_certifications',
-			'reviews'        => 'seed_reviews',
-			'news-bar'       => 'seed_news_bar',
-			'journal'        => 'seed_journal_posts',
-		];
+		$registry = self::importable_types();
+		// Ensure CMS tables exist before any row inserts (reviews / news_bar).
+		self::create_tables();
 		$results = [ 'inserted' => 0, 'updated' => 0, 'errors' => [] ];
 		foreach ( $types as $type ) {
 			$type = sanitize_key( $type );
-			if ( ! isset( $map[ $type ] ) ) continue;
-			$method = $map[ $type ];
+			if ( ! isset( $registry[ $type ] ) ) continue;
+			$method = $registry[ $type ]['method'];
 			try {
 				$r = self::$method();
 				$results['inserted'] += $r['inserted'] ?? 0;
@@ -152,7 +198,7 @@ class CH_Theme_Seeder {
 	public static function table_counts(): array {
 		global $wpdb;
 		$counts = [];
-		foreach ( [ 'reviews', 'faqs', 'news_bar' ] as $name ) {
+		foreach ( [ 'reviews', 'news_bar' ] as $name ) {
 			$table           = ch_theme_table( $name );
 			$exists          = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table;
 			$counts[ $name ] = $exists ? (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" ) : null; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared

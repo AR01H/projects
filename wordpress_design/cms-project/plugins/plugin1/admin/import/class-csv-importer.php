@@ -25,17 +25,18 @@ class AH_CSV_Importer {
 			),
 			'reviews'    => array(
 				'label'    => 'Reviews',
-				'required' => array( 'reviewer_name', 'review_text', 'star_rating' ),
+				'required' => array( 'reviewer_name', 'review_text', 'rating' ),
 				'columns'  => array(
 					'reviewer_name'  => 'Full name of reviewer (required)',
-					'reviewer_title' => 'Job title / role',
-					'company'        => 'Company name',
+					'reviewer_title' => 'Title / company shown under the name',
+					'short_desc'     => 'One-line bio or context (e.g. "Bought first home in London, 2024")',
 					'review_text'    => 'The review body (required)',
-					'star_rating'    => '1–5 (required)',
-					'source'         => 'google | facebook | website | direct',
-					'is_featured'    => '1 = featured, 0 = not featured (default 0)',
+					'rating'         => '1–5 stars (required)',
+					'source'         => 'manual | google | facebook | other  (default manual)',
+					'is_featured'    => '1 = show on homepage, 0 = not featured (default 0)',
 					'sort_order'     => 'Integer display order (default 0)',
 					'status'         => 'active | inactive (default active)',
+					'categories'     => 'Semicolon-separated Review Category slugs to tag this review (e.g. customer;event). Valid slugs: customer, partner, event, client-story',
 				),
 			),
 			'faqs'       => array(
@@ -48,6 +49,7 @@ class AH_CSV_Importer {
 					'link_url'   => 'Optional CTA link URL',
 					'sort_order' => 'Integer display order (default 0)',
 					'status'     => 'active | inactive (default active)',
+					'tags'       => 'Optional FAQ tags - semicolon-separated taxonomy slugs (e.g. general;juice)',
 				),
 			),
 			'posts'      => array(
@@ -255,33 +257,62 @@ class AH_CSV_Importer {
 	private static function import_reviews( array $rows ): array {
 		global $wpdb;
 		$table   = AH_DB_Helper::table( 'reviews' );
-		$page_id = self::page_id( 'reviews' );
+		$ct      = AH_DB_Helper::table( 'content_taxonomies' );
+		$tax     = AH_DB_Helper::table( 'taxonomies' );
 		$result  = array( 'imported' => 0, 'skipped' => 0, 'errors' => array() );
-		$sources = array( 'google', 'facebook', 'website', 'direct' );
+		$sources = array( 'manual', 'google', 'facebook', 'other' );
+
+		// Pre-load taxonomy slug → id map for quick lookup during import.
+		$slug_to_id = array();
+		$all_terms  = $wpdb->get_results( "SELECT id, slug FROM `{$tax}` WHERE status = 'active'" ) ?: array();
+		foreach ( $all_terms as $t ) {
+			$slug_to_id[ $t->slug ] = (int) $t->id;
+		}
 
 		foreach ( $rows as $i => $row ) {
 			$line   = $i + 2;
 			$name   = sanitize_text_field( $row['reviewer_name'] ?? '' );
-			$text   = sanitize_textarea_field( $row['review_text'] ?? '' );
-			$rating = (int) ( $row['star_rating'] ?? 0 );
+			$text   = wp_kses_post( $row['review_text'] ?? '' );
+			$rating = (int) ( $row['rating'] ?? 0 );
 
-			if ( ! $name )              { self::result_add( $result, false, "Row {$line}: 'reviewer_name' is required." ); continue; }
-			if ( ! $text )              { self::result_add( $result, false, "Row {$line}: 'review_text' is required." ); continue; }
-			if ( $rating < 1 || $rating > 5 ) { self::result_add( $result, false, "Row {$line}: 'star_rating' must be 1–5." ); continue; }
+			if ( ! $name )                    { self::result_add( $result, false, "Row {$line}: 'reviewer_name' is required." ); continue; }
+			if ( ! $text )                    { self::result_add( $result, false, "Row {$line}: 'review_text' is required." ); continue; }
+			if ( $rating < 1 || $rating > 5 ) { self::result_add( $result, false, "Row {$line}: 'rating' must be 1–5." ); continue; }
 
 			$wpdb->insert( $table, array(
-				'page_id'        => $page_id ?: null,
 				'reviewer_name'  => $name,
 				'reviewer_title' => sanitize_text_field( $row['reviewer_title'] ?? '' ),
-				'company'        => sanitize_text_field( $row['company'] ?? '' ),
+				'short_desc'     => sanitize_text_field( $row['short_desc'] ?? '' ),
 				'review_text'    => $text,
-				'star_rating'    => $rating,
-				'source'         => in_array( $row['source'] ?? '', $sources, true ) ? $row['source'] : 'website',
+				'rating'         => $rating,
+				'source'         => in_array( $row['source'] ?? '', $sources, true ) ? $row['source'] : 'manual',
 				'is_featured'    => (int) ( $row['is_featured'] ?? 0 ) ? 1 : 0,
 				'sort_order'     => (int) ( $row['sort_order'] ?? 0 ),
 				'status'         => self::status( $row['status'] ?? '', array( 'active', 'inactive' ) ),
 			) );
-			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
+
+			if ( $wpdb->last_error ) {
+				self::result_add( $result, false, "Row {$line}: " . $wpdb->last_error );
+				continue;
+			}
+
+			$review_id = (int) $wpdb->insert_id;
+
+			// Assign taxonomy categories if provided (semicolon-separated slugs).
+			$raw_cats = trim( $row['categories'] ?? '' );
+			if ( $raw_cats && $review_id ) {
+				$slugs = array_filter( array_map( 'sanitize_key', explode( ';', $raw_cats ) ) );
+				foreach ( $slugs as $slug ) {
+					if ( ! isset( $slug_to_id[ $slug ] ) ) continue;
+					$wpdb->replace( $ct, array(
+						'object_type' => 'review',
+						'object_id'   => $review_id,
+						'taxonomy_id' => $slug_to_id[ $slug ],
+					), array( '%s', '%d', '%d' ) );
+				}
+			}
+
+			self::result_add( $result, true );
 		}
 
 		return $result;
@@ -293,7 +324,16 @@ class AH_CSV_Importer {
 	private static function import_faqs( array $rows ): array {
 		global $wpdb;
 		$table  = AH_DB_Helper::table( 'faqs' );
+		$ct     = AH_DB_Helper::table( 'content_taxonomies' );
+		$tax    = AH_DB_Helper::table( 'taxonomies' );
 		$result = array( 'imported' => 0, 'skipped' => 0, 'errors' => array() );
+
+		// Pre-load taxonomy slug → id map for quick lookup during import.
+		$slug_to_id = array();
+		$all_terms  = $wpdb->get_results( "SELECT id, slug FROM `{$tax}` WHERE status = 'active'" ) ?: array();
+		foreach ( $all_terms as $t ) {
+			$slug_to_id[ $t->slug ] = (int) $t->id;
+		}
 
 		foreach ( $rows as $i => $row ) {
 			$line     = $i + 2;
@@ -311,7 +351,29 @@ class AH_CSV_Importer {
 				'sort_order' => (int) ( $row['sort_order'] ?? 0 ),
 				'status'     => self::status( $row['status'] ?? '' ),
 			) );
-			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
+
+			if ( $wpdb->last_error ) {
+				self::result_add( $result, false, "Row {$line}: " . $wpdb->last_error );
+				continue;
+			}
+
+			$faq_id = (int) $wpdb->insert_id;
+
+			// Assign FAQ tags if provided (semicolon-separated taxonomy slugs).
+			$raw_tags = trim( $row['tags'] ?? '' );
+			if ( $raw_tags && $faq_id ) {
+				$slugs = array_filter( array_map( 'sanitize_key', explode( ';', $raw_tags ) ) );
+				foreach ( $slugs as $slug ) {
+					if ( ! isset( $slug_to_id[ $slug ] ) ) continue;
+					$wpdb->replace( $ct, array(
+						'object_type' => 'faq',
+						'object_id'   => $faq_id,
+						'taxonomy_id' => $slug_to_id[ $slug ],
+					), array( '%s', '%d', '%d' ) );
+				}
+			}
+
+			self::result_add( $result, true );
 		}
 
 		return $result;

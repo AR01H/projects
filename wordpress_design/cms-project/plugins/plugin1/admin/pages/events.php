@@ -35,6 +35,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		'is_featured' => (int) ( $_POST['is_featured'] ?? 0 ),
 		'sort_order'  => (int) ( $_POST['sort_order']  ?? 0 ),
 		'status'      => sanitize_key( $_POST['status'] ?? 'active' ),
+		'notify_on_booking'    => (int) ( $_POST['notify_on_booking'] ?? 0 ),
+		'booking_trigger_name' => sanitize_text_field( $_POST['booking_trigger_name'] ?? '' ),
 	);
 
 	if ( ! $data['title'] ) {
@@ -253,6 +255,34 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
                 <option value="active"   <?php selected( $item->status ?? 'active', 'active' ); ?>>Active</option>
                 <option value="inactive" <?php selected( $item->status ?? '',        'inactive' ); ?>>Inactive</option>
               </select>
+            </div>
+          </div>
+
+          <div class="ah-card" style="border-color:#3b82f6;background:#f0f9ff;">
+            <div class="ah-card-header"><h2 style="color:#1e40af;">📧 Email Notifications</h2></div>
+            <p style="color:#1e40af;font-size:12px;margin:0 0 12px;">
+              When someone submits a booking for this event, automatically fire a trigger to send email notifications via the Rules Engine.
+            </p>
+            <div class="ah-form-row">
+              <label style="display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:0;">
+                <input type="checkbox" name="notify_on_booking" value="1"
+                       <?php checked( (int) ( $item->notify_on_booking ?? 0 ), 1 ); ?>>
+                <span>Enable email notifications for bookings</span>
+              </label>
+              <p class="description" style="font-size:11px;margin-top:4px;color:#1e40af;">
+                When enabled, booking submissions will trigger the Rules Engine to send configured emails.
+              </p>
+            </div>
+            <div class="ah-form-row">
+              <label>Trigger Event Name <small style="font-weight:400;color:#666;">(shown in Rules Engine)</small></label>
+              <input type="text" name="booking_trigger_name"
+                     value="<?php echo esc_attr( $item->booking_trigger_name ?? '' ); ?>"
+                     placeholder="e.g. booking_wedding, booking_corporate"
+                     style="font-family:monospace;font-size:12px;">
+              <p class="description" style="font-size:11px;margin-top:4px;color:#666;">
+                In the <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine' ) ); ?>" target="_blank" style="color:#1e40af;">Triggers Maker</a>,
+                create a rule with this trigger name to send emails. If left blank, will use: <code style="background:#fff;border:1px solid #ddd;padding:2px 5px;border-radius:3px;">booking_event_<?php echo esc_html( $edit_id ?: '{id}' ); ?></code>
+              </p>
             </div>
             <button type="submit" class="ah-btn ah-btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
               <span class="dashicons dashicons-saved"></span>

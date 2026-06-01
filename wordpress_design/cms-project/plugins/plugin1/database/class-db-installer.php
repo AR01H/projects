@@ -35,6 +35,11 @@ class AH_DB_Installer {
 		self::ensure_taxonomy_parent_terms();
 		self::ensure_trigger_logs();
 		self::ensure_events_table();
+		self::ensure_events_notification_columns();
+		self::ensure_review_taxonomy_type();
+		self::ensure_review_categories_taxonomy_type();
+		self::ensure_review_images_table();
+		self::ensure_faq_tags_taxonomy_type();
 	}
 
 	/**
@@ -63,6 +68,32 @@ class AH_DB_Installer {
 				KEY `idx_sort`     (`sort_order`)
 			) ENGINE=InnoDB {$cs}"
 		);
+	}
+
+	/**
+	 * Add notification columns to events table if they don't exist.
+	 */
+	public static function ensure_events_notification_columns(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_events';
+
+		$has_notify = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'notify_on_booking'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $has_notify ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `notify_on_booking` TINYINT(1) NOT NULL DEFAULT 0 AFTER `status`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+
+		$has_trigger = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'booking_trigger_name'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $has_trigger ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `booking_trigger_name` VARCHAR(100) DEFAULT NULL AFTER `notify_on_booking`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	public static function ensure_taxonomy_parent_terms(): void {
@@ -1438,6 +1469,173 @@ class AH_DB_Installer {
 		foreach ( $default_pages as $pg ) {
 			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$p}ah_pages WHERE slug = %s", $pg['slug'] ) ) ) {
 				$wpdb->insert( "{$p}ah_pages", $pg );
+			}
+		}
+	}
+
+	/**
+	 * Seed a "Review Categories" taxonomy type with four routing terms.
+	 * Slugs match the $taxonomy_slug values used by ch_get_reviews() in the theme.
+	 * Safe to call on every page load — idempotent.
+	 */
+	public static function ensure_review_categories_taxonomy_type(): void {
+		global $wpdb;
+		$p = $wpdb->prefix;
+
+		$type_id = (int) $wpdb->get_var( $wpdb->prepare(
+			"SELECT id FROM `{$p}ah_taxonomy_types` WHERE slug = %s",
+			'review-categories'
+		) );
+		if ( ! $type_id ) {
+			$wpdb->insert( "{$p}ah_taxonomy_types", array(
+				'name'        => 'Review Categories',
+				'slug'        => 'review-categories',
+				'description' => 'Routes each review to the correct section on the website.',
+			) );
+			$type_id = (int) $wpdb->insert_id;
+		}
+
+		if ( ! $type_id ) {
+			return;
+		}
+
+		// Terms — slugs must match the taxonomy_slug values used in theme components.
+		$terms = array(
+			array( 'name' => 'Customer Review',   'slug' => 'customer'     ),
+			array( 'name' => 'Franchise Partner', 'slug' => 'partner'      ),
+			array( 'name' => 'Event Review',      'slug' => 'event'        ),
+			array( 'name' => 'Client Story',      'slug' => 'client-story' ),
+		);
+		foreach ( $terms as $term ) {
+			$exists = $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM `{$p}ah_taxonomies` WHERE type_id = %d AND slug = %s",
+				$type_id, $term['slug']
+			) );
+			if ( ! $exists ) {
+				$wpdb->insert( "{$p}ah_taxonomies", array(
+					'type_id' => $type_id,
+					'name'    => $term['name'],
+					'slug'    => $term['slug'],
+					'status'  => 'active',
+				) );
+			}
+		}
+	}
+
+	/**
+	 * Seed a "FAQ Tags" taxonomy type with the default FAQ topics as terms.
+	 * Attached to FAQs via the ah_content_taxonomies pivot (object_type = 'faq').
+	 * Safe to call on every load — idempotent.
+	 */
+	public static function ensure_faq_tags_taxonomy_type(): void {
+		global $wpdb;
+		$p = $wpdb->prefix;
+
+		$type_id = (int) $wpdb->get_var( $wpdb->prepare(
+			"SELECT id FROM `{$p}ah_taxonomy_types` WHERE slug = %s",
+			'faq-tags'
+		) );
+		if ( ! $type_id ) {
+			$wpdb->insert( "{$p}ah_taxonomy_types", array(
+				'name'        => 'FAQ Tags',
+				'slug'        => 'faq-tags',
+				'description' => 'Tags used to group and filter FAQs.',
+			) );
+			$type_id = (int) $wpdb->insert_id;
+		}
+
+		if ( ! $type_id ) {
+			return;
+		}
+
+		// Default terms — the original theme FAQ topics.
+		$terms = array(
+			array( 'name' => 'General',   'slug' => 'general'   ),
+			array( 'name' => 'Events',    'slug' => 'events'    ),
+			array( 'name' => 'Juice',     'slug' => 'juice'     ),
+			array( 'name' => 'Franchise', 'slug' => 'franchise' ),
+		);
+		foreach ( $terms as $term ) {
+			$exists = $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM `{$p}ah_taxonomies` WHERE type_id = %d AND slug = %s",
+				$type_id, $term['slug']
+			) );
+			if ( ! $exists ) {
+				$wpdb->insert( "{$p}ah_taxonomies", array(
+					'type_id' => $type_id,
+					'name'    => $term['name'],
+					'slug'    => $term['slug'],
+					'status'  => 'active',
+				) );
+			}
+		}
+	}
+
+	/**
+	 * Create ah_review_images table for per-review occasion/gallery images.
+	 */
+	public static function ensure_review_images_table(): void {
+		global $wpdb;
+		$t  = $wpdb->prefix . 'ah_review_images';
+		$cs = $wpdb->get_charset_collate();
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS `{$t}` (
+				`id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`review_id`  INT UNSIGNED NOT NULL,
+				`image_id`   INT UNSIGNED NOT NULL,
+				`caption`    VARCHAR(300) DEFAULT NULL,
+				`sort_order` INT          NOT NULL DEFAULT 0,
+				PRIMARY KEY (`id`),
+				KEY `idx_review` (`review_id`),
+				KEY `idx_sort`   (`review_id`, `sort_order`)
+			) ENGINE=InnoDB {$cs}"
+		);
+	}
+
+	/**
+	 * Seed a "Review Type" taxonomy type with Customer / Partner / Event terms.
+	 * Safe to call on every load — uses INSERT IGNORE so it never duplicates.
+	 */
+	public static function ensure_review_taxonomy_type(): void {
+		global $wpdb;
+		$p = $wpdb->prefix;
+
+		// 1. Taxonomy type
+		$type_id = (int) $wpdb->get_var( $wpdb->prepare(
+			"SELECT id FROM `{$p}ah_taxonomy_types` WHERE slug = %s",
+			'review-type'
+		) );
+		if ( ! $type_id ) {
+			$wpdb->insert( "{$p}ah_taxonomy_types", array(
+				'name'        => 'Review Type',
+				'slug'        => 'review-type',
+				'description' => 'Categorises reviews by audience (Customer, Partner, Event).',
+			) );
+			$type_id = (int) $wpdb->insert_id;
+		}
+
+		if ( ! $type_id ) {
+			return;
+		}
+
+		// 2. Seed default terms
+		$terms = array(
+			array( 'name' => 'Customer', 'slug' => 'customer' ),
+			array( 'name' => 'Partner',  'slug' => 'partner'  ),
+			array( 'name' => 'Event',    'slug' => 'event'    ),
+		);
+		foreach ( $terms as $term ) {
+			$exists = $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM `{$p}ah_taxonomies` WHERE type_id = %d AND slug = %s",
+				$type_id, $term['slug']
+			) );
+			if ( ! $exists ) {
+				$wpdb->insert( "{$p}ah_taxonomies", array(
+					'type_id' => $type_id,
+					'name'    => $term['name'],
+					'slug'    => $term['slug'],
+					'status'  => 'active',
+				) );
 			}
 		}
 	}

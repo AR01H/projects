@@ -7,7 +7,7 @@ get_header();
 
 $settings = ch_get_settings();
 $phone    = $settings['phone'] ?? CONTACT_NUMBER;
-$reviews  = ch_get_reviews( 12 );
+$reviews  = ch_get_reviews( 20 );
 ?>
 
 <main class="ch-main" id="main-content">
@@ -57,18 +57,21 @@ $reviews  = ch_get_reviews( 12 );
 			<div class="section-tag">What They Said</div>
 			<h2 class="section-title">Customer <span class="accent">Reviews</span></h2>
 		</div>
-		<div class="ch-stories-grid">
+		<div class="ch-stories-grid" id="ch-stories-track">
 			<?php foreach ( $reviews as $i => $r ) :
 				$r        = (array) $r;
 				$name     = esc_html( $r['author_name'] ?? 'Happy Customer' );
 				$location = esc_html( $r['location']    ?? 'Verified Customer' );
-				$text     = esc_html( $r['review_text'] ?? '' );
+				$_names   = ch_get_review_highlight_names( (int) ( $r['id'] ?? 0 ) );
+				$text     = ch_highlight_text( wp_strip_all_tags( $r['review_text'] ?? '' ), $_names );
 				$rating   = (float) ( $r['rating'] ?? 5.0 );
-				$avatar   = 'https://i.pravatar.cc/120?u=' . ( $i + 20 );
+				$avatar   = ch_get_review_image( $r, $i + 20, 'thumbnail' );
 			?>
-				<div class="ch-story-card fade-up">
+				<div class="ch-story-card">
 					<div class="ch-story-card__header">
-						<img src="<?php echo esc_url( $avatar ); ?>" alt="<?php echo $name; ?>" class="ch-story-card__avatar" loading="lazy">
+						<?php if ( $avatar ) : ?>
+							<img src="<?php echo esc_url( $avatar ); ?>" alt="<?php echo $name; ?>" class="ch-story-card__avatar" loading="lazy">
+						<?php endif; ?>
 						<div>
 							<div class="ch-story-card__name"><?php echo $name; ?></div>
 							<div class="ch-story-card__role"><?php echo $location; ?></div>
@@ -86,6 +89,45 @@ $reviews  = ch_get_reviews( 12 );
 				</div>
 			<?php endforeach; ?>
 		</div>
+
+		<div class="ch-stories-nav">
+			<button class="ch-scb-btn" id="ch-stories-prev" aria-label="Previous">&#8592;</button>
+			<span class="ch-scb-count" id="ch-stories-count">1 / <?php echo count( $reviews ); ?></span>
+			<button class="ch-scb-btn" id="ch-stories-next" aria-label="Next">&#8594;</button>
+		</div>
+		<script>
+		(function(){
+			var track   = document.getElementById('ch-stories-track');
+			var counter = document.getElementById('ch-stories-count');
+			var total   = <?php echo (int) count( $reviews ); ?>;
+			if ( !track || !total ) return;
+			var cards   = Array.from( track.querySelectorAll('.ch-story-card') );
+			var current = 0;
+
+			function goTo( idx ) {
+				idx = Math.max( 0, Math.min( total - 1, idx ) );
+				current = idx;
+				cards[ idx ].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+				if ( counter ) counter.textContent = (idx + 1) + ' / ' + total;
+			}
+
+			document.getElementById('ch-stories-prev').addEventListener('click', function(){ goTo( current - 1 ); });
+			document.getElementById('ch-stories-next').addEventListener('click', function(){ goTo( current + 1 ); });
+
+			var ticking = false;
+			track.addEventListener('scroll', function(){
+				if ( ticking ) return;
+				ticking = true;
+				requestAnimationFrame(function(){
+					var cardW = cards[0] ? cards[0].offsetWidth + 22 : 1;
+					var idx   = Math.round( track.scrollLeft / cardW );
+					current   = Math.max( 0, Math.min( total - 1, idx ) );
+					if ( counter ) counter.textContent = (current + 1) + ' / ' + total;
+					ticking = false;
+				});
+			}, { passive: true });
+		})();
+		</script>
 	</div>
 </section>
 <?php endif; ?>
