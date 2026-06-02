@@ -4,6 +4,8 @@ defined( 'ABSPATH' ) || exit;
 $settings  = ch_get_settings();
 $phone     = $settings['phone']    ?? '';
 $logo_url  = get_template_directory_uri() . '/assets/images/logo.png';
+$favicon_url  = get_template_directory_uri() . '/assets/images/favicon.ico';
+$only_logo_url  = get_template_directory_uri() . '/assets/images/only_logo.png';
 $logotext_url = get_template_directory_uri() . '/assets/images/thecanehousetextlogo.png';
 $has_logo  = file_exists( get_template_directory() . '/assets/images/logo.png' );
 $theme_nav = array_values(
@@ -23,6 +25,8 @@ $nav_cta = ch_get_nav_cta();
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="profile" href="https://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="<?php echo esc_url( $favicon_url ); ?>" type="image/x-icon">
+<link rel="icon" href="<?php echo esc_url( $favicon_url ); ?>" type="image/x-icon">
 <?php wp_head(); ?><?php
 $_ch_sc = ch_get_schema_settings();
 if ( ( $_ch_sc['enabled'] ?? '1' ) === '1' ) {
@@ -47,7 +51,7 @@ unset( $_ch_sc );
 			<!-- Logo -->
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-nav__logo" aria-label="The Cane House Home">
 				<?php if ( $has_logo ) : ?>
-					<img src="<?php echo esc_url( $logo_url ); ?>" alt="The Cane House" class="ch-nav__logo-img">
+					<img src="<?php echo esc_url( $only_logo_url ); ?>" alt="The Cane House" class="ch-nav__logo-img">
 					<img src="<?php echo esc_url( $logotext_url ); ?>" alt="The Cane House" class="ch-nav__logo-img" style="width: 100px;">
 				<?php else : ?>
 					<div class="ch-nav__logo-mark">🌿</div>
