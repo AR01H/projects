@@ -43,11 +43,11 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 
 <section class="ch-equipment-section">
 	<div class="container">
-		<div class="ch-section-center fade-up">
-			<div class="section-tag"><?php echo esc_html( $tag ); ?></div>
-			<h2 class="section-title"><?php echo wp_kses( $title, $allowed ); ?></h2>
-			<p class="section-body"><?php echo esc_html( $body ); ?></p>
-		</div>
+		<?php get_template_part( 'components/section-header', null, [
+			'tag'   => $tag,
+			'title' => $title,
+			'body'  => $body,
+		] ); ?>
 
 		<div class="ch-equip-gallery fade-up">
 			<!-- Featured large item -->

@@ -38,11 +38,11 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 <section class="ch-experience-section">
     <div class="container">
         <!-- Section Header -->
-        <div class="ch-section-center fade-up">
-            <div class="section-tag"><?php echo esc_html( $tag ); ?></div>
-            <h2 class="section-title"><?php echo wp_kses( $title, $allowed ); ?></h2>
-            <p class="section-body"><?php echo esc_html( $subtitle ); ?></p>
-        </div>
+        <?php get_template_part( 'components/section-header', null, [
+            'tag'  => $tag,
+            'title' => $title,
+            'body'  => $subtitle,
+        ] ); ?>
 
     </div>
     <!-- Experience Journey - Vertical Timeline -->

@@ -37,9 +37,9 @@ if ( empty( $cols ) ) {
 					<?php endif; ?>
 				</a>
 
-				<p class="ch-footer__brand-desc">
+				<!-- <p class="ch-footer__brand-desc">
 					<?php echo wp_kses_post( $footer['brand_description'] ?? 'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - just pure natural refreshment wherever you are.' ); ?>
-				</p>
+				</p> -->
 
 				<?php if ( ! empty( $footer['badge_text'] ) ) : ?>
 					<div class="ch-footer__badge"><?php echo esc_html( $footer['badge_text'] ); ?></div>

@@ -3,11 +3,11 @@
  * Business origin / "Why We Started" section for the About page.
  *
  * Args (all optional):
- *  tag      (string)  Eyebrow tag.    Default: 'How It Started'
- *  title    (string)  Heading HTML.   Default: preset
- *  paras    (array)   Body paragraphs. Default: preset
- *  milestones (array) Timeline items: [ 'year', 'text' ]
- *  image    (string)  Side image URL.
+ *  tag        (string) Eyebrow tag.    Default: 'How It Started'
+ *  title      (string) Heading HTML.   Default: preset
+ *  paras      (array)  Body paragraphs. Default: preset
+ *  milestones (array)  Timeline items: [ 'year', 'text' ]
+ *  image      (string) Side image URL.
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -27,44 +27,38 @@ $default_milestones = [
 	[ 'year' => '2023', 'text' => 'Franchise enquiries start flooding in. First partner launched.' ],
 	[ 'year' => '2024', 'text' => 'The Cane House brand formally launched across the UK.' ],
 ];
+$default_milestones =[];
 
 $paras      = $args['paras']      ?? $default_paras;
 $milestones = $args['milestones'] ?? $default_milestones;
 $image      = $args['image']      ?? 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&h=700&q=80';
-$allowed    = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
+
+// Pre-render the timeline so it can be passed as after_html.
+ob_start();
 ?>
-
-<section class="ch-about-origin-section">
-	<div class="container">
-		<div class="ch-origin-grid">
-
-			<div class="ch-origin-content fade-left">
-				<div class="section-tag"><?php echo esc_html( $tag ); ?></div>
-				<h2 class="section-title"><?php echo wp_kses( $title, $allowed ); ?></h2>
-				<?php foreach ( $paras as $para ) : ?>
-					<p class="section-body" style="margin-top:1rem;"><?php echo esc_html( $para ); ?></p>
-				<?php endforeach; ?>
-			</div>
-
-			<div class="ch-origin-visual fade-right">
-				<img src="<?php echo esc_url( $image ); ?>"
-					alt="The Cane House origins"
-					loading="lazy"
-					class="ch-origin-img">
-			</div>
-
+<div class="ch-origin-timeline fade-up">
+	<?php foreach ( $milestones as $ms ) : ?>
+		<div class="ch-timeline-item">
+			<div class="ch-timeline-year"><?php echo esc_html( $ms['year'] ?? '' ); ?></div>
+			<div class="ch-timeline-dot"></div>
+			<div class="ch-timeline-text"><?php echo esc_html( $ms['text'] ?? '' ); ?></div>
 		</div>
+	<?php endforeach; ?>
+</div>
+<?php
+$timeline_html = ob_get_clean();
 
-		<!-- Milestone timeline -->
-		<div class="ch-origin-timeline fade-up">
-			<?php foreach ( $milestones as $ms ) : ?>
-				<div class="ch-timeline-item">
-					<div class="ch-timeline-year"><?php echo esc_html( $ms['year'] ?? '' ); ?></div>
-					<div class="ch-timeline-dot"></div>
-					<div class="ch-timeline-text"><?php echo esc_html( $ms['text'] ?? '' ); ?></div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-	</div>
-</section>
+get_template_part( 'components/image-text-split', null, [
+	'layout'        => 'image-right',
+	'section_class' => 'ch-about-origin-section',
+	'inner_class'   => 'ch-origin-grid',
+	'tag'           => $tag,
+	'title'         => $title,
+	'body'          => $paras,
+	'image_url'     => $image,
+	'image_alt'     => 'The Cane House origins',
+	'image_class'   => 'ch-origin-img',
+	'content_anim'  => 'fade-left',
+	'visual_anim'   => 'fade-right',
+	'after_html'    => $timeline_html,
+] );

@@ -15,11 +15,12 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 
 <section class="ch-reviews-franchise-section">
 	<div class="container">
-		<div class="ch-section-center fade-up" style="color:var(--ch-white);">
-			<div class="section-tag" style="color:var(--ch-lime);"><?php echo esc_html( $tag ); ?></div>
-			<h2 class="section-title" style="color:var(--ch-white);"><?php echo wp_kses( $title, $allowed ); ?></h2>
-			<p class="section-body" style="color:rgba(255,255,255,0.65);"><?php echo esc_html( $body ); ?></p>
-		</div>
+		<?php get_template_part( 'components/section-header', null, [
+			'tag'   => $tag,
+			'title' => $title,
+			'body'  => $body,
+			'dark'  => true,
+		] ); ?>
 
 		<div class="ch-rfr-carousel fade-up">
 			<div class="ch-rfr-track" id="ch-rfr-track">

@@ -36,13 +36,11 @@ $next_id      = esc_attr( $id ) . '-next';
 <section class="<?php echo $section_cls; ?>" style="background:<?php echo esc_attr( $bg ); ?>;">
 	<div class="container">
 
-		<?php if ( $tag || $title ) : ?>
-			<div class="ch-section-center fade-up">
-				<?php if ( $tag ) : ?><div class="section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
-				<?php if ( $title ) : ?><h2 class="section-title"><?php echo wp_kses( $title, $allowed ); ?></h2><?php endif; ?>
-				<?php if ( $body )  : ?><p class="section-body"><?php echo esc_html( $body ); ?></p><?php endif; ?>
-			</div>
-		<?php endif; ?>
+		<?php get_template_part( 'components/section-header', null, [
+			'tag'   => $tag,
+			'title' => $title,
+			'body'  => $body,
+		] ); ?>
 
 		<div class="ch-gstrip fade-up" data-id="<?php echo esc_attr( $id ); ?>">
 			<div class="ch-gstrip__track" id="<?php echo $track_id; ?>">

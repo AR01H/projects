@@ -18,13 +18,11 @@ $more_label    = $args['more_label'] ?? 'View All Event Packages →';
 <section class="ch-events-preview-section">
 	<div class="container">
 
-		<div class="ch-section-center fade-up">
-			<div class="section-tag"><?php echo esc_html( $section_tag ); ?></div>
-			<h2 class="section-title">
-				<?php echo wp_kses( $section_title, [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ] ); ?>
-			</h2>
-			<p class="section-body"><?php echo esc_html( $section_body ); ?></p>
-		</div>
+		<?php get_template_part( 'components/section-header', null, [
+			'tag'   => $section_tag,
+			'title' => $section_title,
+			'body'  => $section_body,
+		] ); ?>
 
 		<div class="ch-epc-carousel fade-up">
 			<div class="ch-epc-track" id="ch-epc-track">

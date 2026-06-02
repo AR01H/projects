@@ -21,7 +21,7 @@ $s = ch_get_settings();
 		get_template_part( 'components/history-info' );
 	?>
 
-	<?php get_template_part( 'components/feature-carousel' ); ?>
+	<!-- <?php get_template_part( 'components/feature-carousel' ); ?> -->
 
 	<?php if ( ch_section_visible( 'story_cards' ) ) : ?>
 		<?php get_template_part( 'components/story-cards' ); ?>
@@ -65,6 +65,7 @@ $s = ch_get_settings();
 	<?php if ( ch_section_visible( 'certifications' ) ) : ?>
 		<?php get_template_part( 'components/certifications' ); ?>
 	<?php endif; ?>
+
 </main>
 
 <?php get_footer(); ?>

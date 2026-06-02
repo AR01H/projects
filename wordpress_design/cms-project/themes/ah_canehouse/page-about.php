@@ -144,36 +144,42 @@ $team = ch_get_team_members();
 ] ); ?>
 
 <!-- ── Quality / Promise ─────────────────────────────────────────────────────── -->
-<section class="about-values">
-	<div class="container">
-		<div class="values-content">
-			<div class="fade-left">
-				<div class="section-tag">Why We Do It</div>
-				<h2 class="section-title">Our Commitment to <span class="accent">Quality</span></h2>
-				<p class="section-body">Every cup of The Cane House juice is made with intention, care, and a deep respect for the sugarcane plant. We don't cut corners because our customers deserve nothing but the best.</p>
-				<ul class="values-list">
-					<?php foreach ( $quality_items as $item ) : ?>
-						<li>✓ <?php echo esc_html( is_array( $item ) ? ( $item['text'] ?? '' ) : $item ); ?></li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-			<div class="fade-right" style="display:flex;align-items:center;justify-content:center;">
-				<div class="promise-card">
-					<span class="promise-icon">🌱</span>
-					<div class="promise-title">Our Promise</div>
-					<div class="promise-sub">Pressed Fresh. Served Cool.</div>
-					<div class="promise-tags">
-						<div class="promise-tag">No added sugar</div>
-						<div class="promise-tag">No preservatives</div>
-						<div class="promise-tag">Pure, natural refreshment</div>
-						<div class="promise-tag">Pressed live at every order</div>
-						<div class="promise-tag">Served chilled, always fresh</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+<?php
+ob_start();
+foreach ( $quality_items as $item ) {
+	echo '<li>✓ ' . esc_html( is_array( $item ) ? ( $item['text'] ?? '' ) : $item ) . '</li>';
+}
+$_about_values_extra = '<ul class="values-list">' . ob_get_clean() . '</ul>';
+
+$_about_values_visual = '<div style="display:flex;align-items:center;justify-content:center;">'
+	. '<div class="promise-card">'
+	. '<span class="promise-icon">🌱</span>'
+	. '<div class="promise-title">Our Promise</div>'
+	. '<div class="promise-sub">Pressed Fresh. Served Cool.</div>'
+	. '<div class="promise-tags">'
+	. '<div class="promise-tag">No added sugar</div>'
+	. '<div class="promise-tag">No preservatives</div>'
+	. '<div class="promise-tag">Pure, natural refreshment</div>'
+	. '<div class="promise-tag">Pressed live at every order</div>'
+	. '<div class="promise-tag">Served chilled, always fresh</div>'
+	. '</div>'
+	. '</div>'
+	. '</div>';
+
+get_template_part( 'components/image-text-split', null, [
+	'layout'        => 'image-right',
+	'section_class' => 'about-values',
+	'inner_class'   => 'values-content',
+	'tag'           => 'Why We Do It',
+	'title'         => 'Our Commitment to <span class="accent">Quality</span>',
+	'body'          => 'Every cup of The Cane House juice is made with intention, care, and a deep respect for the sugarcane plant. We don\'t cut corners because our customers deserve nothing but the best.',
+	'extra_html'    => $_about_values_extra,
+	'visual_html'   => $_about_values_visual,
+	'content_anim'  => 'fade-left',
+	'visual_anim'   => 'fade-right',
+] );
+unset( $_about_values_extra, $_about_values_visual );
+?>
 
 <!-- ── Events preview ────────────────────────────────────────────────────────── -->
 <?php get_template_part( 'components/events-preview', null, [

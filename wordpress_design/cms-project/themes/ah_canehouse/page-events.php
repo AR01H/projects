@@ -13,12 +13,6 @@ get_header();
 	'heading'    => 'Events & <em>Hire</em>',
 	'desc'       => 'Bring The Cane House to your celebration. Live-pressed sugarcane juice - a unique, healthy, and unforgettable experience for your guests.',
 	'modifier'   => 'ch-page-hero--events',
-	'btn1_label' => 'Get a Free Quote',
-	'btn1_url'   => '#quote',
-	'btn1_icon'  => '🌿',
-	'btn2_label' => 'Call Us',
-	'btn2_icon'  => '📞',
-	'show_phone' => true,
 ] ); ?>
 
 <?php get_template_part( 'components/features-ribbon' ); ?>

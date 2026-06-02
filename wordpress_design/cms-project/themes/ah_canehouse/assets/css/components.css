@@ -1166,7 +1166,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── Menu / Build Section ────────────────────────────────────────────────────── */
 #build,
 .ch-section-build {
-    background: var(--ch-white) !important;
+    background: var(--ch-lime-glow) !important;
     padding: 6rem 4rem !important;
 }
 
@@ -4909,7 +4909,7 @@ body.has-ticker .ch-nav { top: 32px; }
     background: none;
     border: none;
     cursor: pointer;
-    color: inherit;
+    color: var(--ch-green-bg);;
     padding: 0;
     display: flex;
     align-items: center;
@@ -8283,4 +8283,24 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
 @media (max-width: 640px) {
     .ch-filter { padding: 0.85rem 1rem; }
     .ch-filter__select { flex: 1 1 auto; }
+}
+
+/* ── Image + Text Split Component (ch-split-section) ──────────────────────────
+   Generic 2-column grid used by image-text-split.php when no inner_class is
+   supplied. Existing section-specific grid classes (ch-origin-grid, etc.) are
+   passed via args and continue to control layout exactly as before.          */
+.ch-split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+.ch-split-img {
+    width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 8px 32px var(--ch-shadow, rgba(0,0,0,.12));
+}
+@media (max-width: 768px) {
+    .ch-split-grid { grid-template-columns: 1fr; gap: 2rem; }
 }

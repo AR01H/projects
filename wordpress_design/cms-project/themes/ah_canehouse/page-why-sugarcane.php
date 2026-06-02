@@ -12,17 +12,12 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 <main class="ch-main" id="main-content">
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
-<section class="ch-page-hero ch-page-hero--sugarcane">
-	<div class="container">
-		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-			<div class="section-tag">Nature's Gift</div>
-			<h1 class="ch-page-hero__title">Why <em>Sugarcane?</em></h1>
-			<p class="ch-page-hero__desc">
-				Sugarcane has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world's most natural energy drink - and why we're proud to bring it to the UK.
-			</p>
-		</div>
-	</div>
-</section>
+<?php get_template_part( 'components/page-hero', null, [
+	'modifier' => 'ch-page-hero--sugarcane',
+	'tag'      => 'Nature\'s Gift',
+	'heading'  => 'Why <em>Sugarcane?</em>',
+	'desc'     => 'Sugarcane has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world\'s most natural energy drink - and why we\'re proud to bring it to the UK.',
+] ); ?>
 
 <!-- ── Stats bar ─────────────────────────────────────────────────────────────── -->
 <div class="ch-stats-bar">
@@ -131,74 +126,57 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 </section>
 
 <!-- ── What's Inside ─────────────────────────────────────────────────────────── -->
-<section class="ch-inside-section">
-	<div class="container">
-		<div class="ch-inside-grid">
-			<div class="fade-left">
-				<div class="section-tag">Nutritional Profile</div>
-				<h2 class="section-title">What's Inside <span class="accent">Every Sip</span></h2>
-				<p class="section-body">A single 350ml glass of freshly pressed sugarcane juice delivers a surprising range of natural nutrients:</p>
-				<div class="ch-nutrition-list">
-					<div class="ch-nutrition-row">
-						<span class="ch-nutrition-name">🍬 Natural Sugars</span>
-						<span class="ch-nutrition-val">~13–15g</span>
-						<span class="ch-nutrition-note">Sucrose, glucose, fructose - natural energy</span>
-					</div>
-					<div class="ch-nutrition-row">
-						<span class="ch-nutrition-name">💊 Potassium</span>
-						<span class="ch-nutrition-val">~300mg</span>
-						<span class="ch-nutrition-note">Electrolyte for heart & muscles</span>
-					</div>
-					<div class="ch-nutrition-row">
-						<span class="ch-nutrition-name">🦴 Calcium</span>
-						<span class="ch-nutrition-val">~40mg</span>
-						<span class="ch-nutrition-note">Bone health support</span>
-					</div>
-					<div class="ch-nutrition-row">
-						<span class="ch-nutrition-name">⚗️ Magnesium</span>
-						<span class="ch-nutrition-val">~10mg</span>
-						<span class="ch-nutrition-note">Nervous system & energy</span>
-					</div>
-					<div class="ch-nutrition-row">
-						<span class="ch-nutrition-name">🌿 Antioxidants</span>
-						<span class="ch-nutrition-val">Rich</span>
-						<span class="ch-nutrition-note">Polyphenols & flavonoids</span>
-					</div>
-					<div class="ch-nutrition-row">
-						<span class="ch-nutrition-name">💧 Water Content</span>
-						<span class="ch-nutrition-val">~70%</span>
-						<span class="ch-nutrition-note">Natural hydration</span>
-					</div>
-				</div>
-				<p style="margin-top:1rem;font-size:0.78rem;color:var(--ch-text-muted);font-style:italic;">* Values are approximate for 350ml fresh-pressed yellow cane, no additives.</p>
-			</div>
-			<div class="ch-inside-visual fade-right">
-				<div class="ch-inside-card">
-					<div class="ch-inside-card__icon">🌾</div>
-					<div class="ch-inside-card__title">Zero Additives</div>
-					<div class="ch-inside-card__desc">No added sugar, no preservatives, no colouring, no flavouring. Just the pure cane, pressed live in front of you.</div>
-				</div>
-				<div class="ch-inside-card ch-inside-card--lime">
-					<div class="ch-inside-card__icon">♻️</div>
-					<div class="ch-inside-card__title">100% Sustainable</div>
-					<div class="ch-inside-card__desc">Even the leftover bagasse (cane fibre) is fully biodegradable. Sugarcane is one of the most eco-friendly crops on the planet.</div>
-				</div>
-				<div class="ch-inside-card">
-					<div class="ch-inside-card__icon">🤲</div>
-					<div class="ch-inside-card__title">Pressed Live</div>
-					<div class="ch-inside-card__desc">Every cup pressed fresh at your order - no pre-made batches, no bottles, no shortcuts. Maximum nutrition, maximum freshness.</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+<?php
+$_inside_extra = '<div class="ch-nutrition-list">'
+	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">🍬 Natural Sugars</span><span class="ch-nutrition-val">~13–15g</span><span class="ch-nutrition-note">Sucrose, glucose, fructose - natural energy</span></div>'
+	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">💊 Potassium</span><span class="ch-nutrition-val">~300mg</span><span class="ch-nutrition-note">Electrolyte for heart &amp; muscles</span></div>'
+	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">🦴 Calcium</span><span class="ch-nutrition-val">~40mg</span><span class="ch-nutrition-note">Bone health support</span></div>'
+	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">⚗️ Magnesium</span><span class="ch-nutrition-val">~10mg</span><span class="ch-nutrition-note">Nervous system &amp; energy</span></div>'
+	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">🌿 Antioxidants</span><span class="ch-nutrition-val">Rich</span><span class="ch-nutrition-note">Polyphenols &amp; flavonoids</span></div>'
+	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">💧 Water Content</span><span class="ch-nutrition-val">~70%</span><span class="ch-nutrition-note">Natural hydration</span></div>'
+	. '</div>'
+	. '<p style="margin-top:1rem;font-size:0.78rem;color:var(--ch-text-muted);font-style:italic;">* Values are approximate for 350ml fresh-pressed yellow cane, no additives.</p>';
+
+$_inside_visual = '<div class="ch-inside-card">'
+	. '<div class="ch-inside-card__icon">🌾</div>'
+	. '<div class="ch-inside-card__title">Zero Additives</div>'
+	. '<div class="ch-inside-card__desc">No added sugar, no preservatives, no colouring, no flavouring. Just the pure cane, pressed live in front of you.</div>'
+	. '</div>'
+	. '<div class="ch-inside-card ch-inside-card--lime">'
+	. '<div class="ch-inside-card__icon">♻️</div>'
+	. '<div class="ch-inside-card__title">100% Sustainable</div>'
+	. '<div class="ch-inside-card__desc">Even the leftover bagasse (cane fibre) is fully biodegradable. Sugarcane is one of the most eco-friendly crops on the planet.</div>'
+	. '</div>'
+	. '<div class="ch-inside-card">'
+	. '<div class="ch-inside-card__icon">🤲</div>'
+	. '<div class="ch-inside-card__title">Pressed Live</div>'
+	. '<div class="ch-inside-card__desc">Every cup pressed fresh at your order - no pre-made batches, no bottles, no shortcuts. Maximum nutrition, maximum freshness.</div>'
+	. '</div>';
+
+get_template_part( 'components/image-text-split', null, [
+	'layout'        => 'image-right',
+	'section_class' => 'ch-inside-section',
+	'inner_class'   => 'ch-inside-grid',
+	'tag'           => 'Nutritional Profile',
+	'title'         => 'What\'s Inside <span class="accent">Every Sip</span>',
+	'body'          => 'A single 350ml glass of freshly pressed sugarcane juice delivers a surprising range of natural nutrients:',
+	'extra_html'    => $_inside_extra,
+	'visual_html'   => $_inside_visual,
+	'visual_class'  => 'ch-inside-visual',
+	'content_anim'  => 'fade-left',
+	'visual_anim'   => 'fade-right',
+] );
+unset( $_inside_extra, $_inside_visual );
+?>
 
 <!-- ── The Experience: Sensory Journey ───────────────────────────────────────── -->
-<?php get_template_part( 'components/sugarcane-experience', null, [
-	'tag'      => 'The Cane House Experience',
-	'title'    => 'Why Fresh-Pressed <span class="accent">Beats Everything</span>',
-	'subtitle' => 'From field to glass in minutes - the live pressing experience your guests will never forget.',
-] ); ?>
+<?php 
+// get_template_part( 'components/sugarcane-experience', null, [
+// 	'tag'      => 'The Cane House Experience',
+// 	'title'    => 'Why Fresh-Pressed <span class="accent">Beats Everything</span>',
+// 	'subtitle' => 'From field to glass in minutes - the live pressing experience your guests will never forget.',
+// ] ); 
+?> 
 
 <!-- ── Global Love: Why the World Drinks Cane ────────────────────────────────── -->
 <?php get_template_part( 'components/sugarcane-benefits', null, [
