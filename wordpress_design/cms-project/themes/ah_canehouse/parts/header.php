@@ -51,7 +51,7 @@ unset( $_ch_sc );
 			<!-- Logo -->
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-nav__logo" aria-label="The Cane House Home">
 				<?php if ( $has_logo ) : ?>
-					<img src="<?php echo esc_url( $only_logo_url ); ?>" alt="The Cane House" class="ch-nav__logo-img">
+					<!-- <img src="<?php echo esc_url( $only_logo_url ); ?>" alt="The Cane House" class="ch-nav__logo-img"> -->
 					<img src="<?php echo esc_url( $logotext_url ); ?>" alt="The Cane House" class="ch-nav__logo-img" style="width: 100px;">
 				<?php else : ?>
 					<div class="ch-nav__logo-mark">🌿</div>

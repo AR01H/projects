@@ -53,7 +53,7 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 	<div class="container">
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Good For You</div>
-			<h2 class="section-title">Health <span class="accent">Benefits</span></h2>
+			<h2 class="section-title">Natural <span class="accent">Benefits</span></h2>
 			<p class="section-body">Packed with natural goodness your body recognises and loves - no lab, no additives, just the cane.</p>
 		</div>
 		<div class="ch-benefit-cards fade-up">
