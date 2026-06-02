@@ -40,6 +40,8 @@ class AH_DB_Installer {
 		self::ensure_review_categories_taxonomy_type();
 		self::ensure_review_images_table();
 		self::ensure_faq_tags_taxonomy_type();
+		self::ensure_sugarcane_contact_rule();
+		self::ensure_contact_form_rule_cc();
 	}
 
 	/**
@@ -1637,6 +1639,91 @@ class AH_DB_Installer {
 					'status'  => 'active',
 				) );
 			}
+		}
+	}
+
+	/**
+	 * Seed a default rule for the Sugarcane contact form.
+	 * Creates admin notification + auto-reply email actions.
+	 * Skips if any rule for this trigger already exists — idempotent.
+	 */
+	public static function ensure_sugarcane_contact_rule(): void {
+		if ( ! class_exists( 'AH_Rules_Engine' ) ) return;
+
+		global $wpdb;
+		$t = AH_Rules_Engine::table();
+
+		$exists = $wpdb->get_var( $wpdb->prepare(
+			"SELECT id FROM `{$t}` WHERE trigger_name = %s LIMIT 1",
+			'sugarcane_contact_form'
+		) );
+		if ( $exists ) return;
+
+		AH_Rules_Engine::save( 0, array(
+			'name'             => 'Sugarcane - Contact Form Emails',
+			'trigger_name'     => 'sugarcane_contact_form',
+			'conditions_match' => 'all',
+			'conditions'       => array(),
+			'status'           => 'active',
+			'actions'          => array(
+				array(
+					'type'    => 'send_email',
+					'to'      => '{config_email_from_email}',
+					'subject' => 'New Contact Enquiry from {name} - {enquiry_label}',
+					'body'    => "You have received a new enquiry via The Cane House website.\n\nName:         {name}\nEmail:        {email}\nPhone:        {phone}\nEnquiry Type: {enquiry_label}\n\nMessage:\n{message}\n\n---\nSent from {site_url}\nTime: {submitted_at}",
+					'html'    => 0,
+					'cc'      => '{config_email_from_email}',
+				),
+				array(
+					'type'    => 'send_email',
+					'to'      => '{email}',
+					'subject' => 'Thanks for contacting The Cane House - we\'ll be in touch soon!',
+					'body'    => "Hi {name},\n\nThank you for getting in touch with The Cane House! \xf0\x9f\x8c\xbf\n\nWe've received your message and will get back to you very soon - usually within a few hours.\n\nIn the meantime, if your enquiry is urgent, please call us directly.\n\nPressed Fresh. Served Cool.\nThe Cane House Team\nwww.thecanehouse.co.uk",
+					'html'    => 0,
+					'cc'      => '{config_email_from_email}',
+				),
+			),
+		) );
+	}
+
+	/**
+	 * One-time migration: patch the seeded Sugarcane contact rule to add CC
+	 * on both actions if they currently have a blank CC field.
+	 * Idempotent — skips actions that already have a CC value.
+	 */
+	public static function ensure_contact_form_rule_cc(): void {
+		if ( ! class_exists( 'AH_Rules_Engine' ) ) return;
+
+		global $wpdb;
+		$t = AH_Rules_Engine::table();
+
+		$row = $wpdb->get_row( $wpdb->prepare(
+			"SELECT id, actions FROM `{$t}` WHERE trigger_name = %s AND name = %s LIMIT 1",
+			'sugarcane_contact_form',
+			'Sugarcane - Contact Form Emails'
+		) );
+		if ( ! $row ) return;
+
+		$actions = json_decode( $row->actions, true );
+		if ( ! is_array( $actions ) ) return;
+
+		$changed = false;
+		foreach ( $actions as &$action ) {
+			if ( ( $action['type'] ?? '' ) === 'send_email' && empty( $action['cc'] ) ) {
+				$action['cc'] = '{config_email_from_email}';
+				$changed = true;
+			}
+		}
+		unset( $action );
+
+		if ( $changed ) {
+			$wpdb->update(
+				$t,
+				array( 'actions' => wp_json_encode( $actions ) ),
+				array( 'id' => (int) $row->id ),
+				array( '%s' ),
+				array( '%d' )
+			);
 		}
 	}
 

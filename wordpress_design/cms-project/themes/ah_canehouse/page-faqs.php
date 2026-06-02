@@ -21,16 +21,13 @@ foreach ( $faqs as $faq ) {
 
 <main class="ch-main" id="main-content">
 
-<!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
-<section class="ch-page-hero">
-	<div class="container">
-		<div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-			<div class="section-tag">Got Questions?</div>
-			<h1 class="ch-page-hero__title">Frequently Asked <em>Questions</em></h1>
-			<p class="ch-page-hero__desc">Everything you need to know about The Cane House - our juice, events, hire, and more.</p>
-		</div>
-	</div>
-</section>
+<!-- ── Hero (Reusable Component) ────────────────────────────────────────────── -->
+<?php get_template_part( 'components/page-hero', null, [
+	'tag'      => 'Got Questions?',
+	'heading'  => 'Frequently Asked <em>Questions</em>',
+	'desc'     => 'Everything you need to know about The Cane House - our juice, events, hire, and more.',
+	'modifier' => 'ch-page-hero--sugarcane',
+] ); ?>
 
 <!-- ── FAQ groups ───────────────────────────────────────────────────────────── -->
 <section style="background:var(--ch-green-bg);padding:5rem 2rem;">

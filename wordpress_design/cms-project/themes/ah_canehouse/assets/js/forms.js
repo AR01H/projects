@@ -82,10 +82,30 @@
                 .then(function (r) { return r.json(); })
                 .then(function (res) {
                     if (res.success) {
-                        showMsg(res.data.message || "Thanks! We'll be in touch soon. 🌿", 'success');
-                        submit.textContent = '✓ Sent! 🌿';
-                        submit.style.background = 'linear-gradient(135deg,#5a9a2a,#7ac040)';
-                        form.reset();
+                        var formContainer = form.closest('.ch-contact-form');
+                        var message = res.data.message || "Thanks! We'll be in touch soon. 🌿";
+
+                        var successBox = document.createElement('div');
+                        successBox.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:500px;text-align:center;padding:4rem 2.5rem;';
+
+                        var emoji = document.createElement('div');
+                        emoji.textContent = '🌿';
+                        emoji.style.cssText = 'font-size:5.5rem;margin-bottom:2rem;line-height:1;';
+
+                        var title = document.createElement('h3');
+                        title.textContent = 'Message Sent!';
+                        title.style.cssText = 'font-family:var(--ch-font-display);font-size:2.2rem;font-weight:900;color:var(--ch-green-deep);margin-bottom:1rem;letter-spacing:-0.01em;';
+
+                        var msgText = document.createElement('p');
+                        msgText.textContent = message;
+                        msgText.style.cssText = 'font-size:1.05rem;color:var(--ch-text-muted);line-height:1.75;max-width:480px;margin:0;';
+
+                        successBox.appendChild(emoji);
+                        successBox.appendChild(title);
+                        successBox.appendChild(msgText);
+
+                        formContainer.innerHTML = '';
+                        formContainer.appendChild(successBox);
                     } else {
                         showMsg(res.data.message || 'Something went wrong. Please try again.', 'error');
                         submit.disabled    = false;
@@ -203,12 +223,52 @@
         }
 
         // Validate before advancing each step
+        function clearFieldErrors() {
+            wizard.querySelectorAll('.ch-field-error').forEach(function (el) { el.remove(); });
+            wizard.querySelectorAll('.ch-bk-field').forEach(function (el) { el.classList.remove('invalid'); });
+        }
+        function showFieldError(field, message) {
+            field.classList.add('invalid');
+            var err = document.createElement('span');
+            err.className   = 'ch-field-error';
+            err.textContent = message;
+            field.appendChild(err);
+        }
         function validateStep(step) {
+            clearFieldErrors();
             if (step === 1 && selectedCanes().length === 0) {
                 showMsg('Please choose at least one cane type. 🌾', 'error'); return false;
             }
             if (step === 2 && selectedFlavours().length === 0) {
                 showMsg('Please pick at least one flavour. 🍋', 'error'); return false;
+            }
+            if (step === 3) {
+                var occasion = wizard.querySelector('[name="bk_occasion"]');
+                var date     = wizard.querySelector('[name="bk_date"]');
+                var guests   = wizard.querySelector('[name="bk_guests"]');
+                var location = wizard.querySelector('[name="bk_location"]');
+                var ok       = true;
+
+                if (!occasion.value.trim()) {
+                    showFieldError(occasion.closest('.ch-bk-field'), 'Please select an occasion.');
+                    ok = false;
+                }
+                if (!date.value.trim()) {
+                    showFieldError(date.closest('.ch-bk-field'), 'Please enter the event date.');
+                    ok = false;
+                }
+                if (!guests.value.trim() || parseInt(guests.value, 10) < 1) {
+                    showFieldError(guests.closest('.ch-bk-field'), 'Please enter the number of guests (minimum 1).');
+                    ok = false;
+                }
+                if (!location.value.trim()) {
+                    showFieldError(location.closest('.ch-bk-field'), 'Please enter the venue location.');
+                    ok = false;
+                }
+                if (!ok) {
+                    showMsg('Please fill in all required event details. 📋', 'error');
+                    return false;
+                }
             }
             return true;
         }
@@ -309,10 +369,45 @@
         });
     }
 
+    // ── Native Share Button ─────────────────────────────────────────────────────
+    function initNativeShare() {
+        var shareBtn = document.getElementById('ch-native-share');
+        if (!shareBtn) return;
+
+        shareBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var url = window.location.href;
+            var title = document.querySelector('h1') ? document.querySelector('h1').textContent : document.title;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: 'Check this out!',
+                    url: url
+                }).catch(function (err) {
+                    if (err.name !== 'AbortError') console.error('Share error:', err);
+                });
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function () {
+                    var originalText = shareBtn.innerHTML;
+                    shareBtn.innerHTML = '✓ Link copied!';
+                    setTimeout(function () {
+                        shareBtn.innerHTML = originalText;
+                    }, 2000);
+                }).catch(function () {
+                    alert('Copy to clipboard failed. URL: ' + url);
+                });
+            } else {
+                prompt('Copy link:', url);
+            }
+        });
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────────
     $(document).ready(function () {
         initContactForm();
         initBookingWizard();
+        initNativeShare();
     });
 
 }(jQuery));

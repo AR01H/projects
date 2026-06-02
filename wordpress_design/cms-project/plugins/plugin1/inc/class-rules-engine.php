@@ -76,6 +76,15 @@ class AH_Rules_Engine {
 				KEY `idx_unsent`  (`is_unsent`)
 			) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
+
+		// Schema migrations — add new columns if missing
+		if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'settings'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `settings` JSON DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+		$lg = self::logs_table();
+		if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$lg}` LIKE 'scheduled_at'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE `{$lg}` ADD COLUMN `scheduled_at` DATETIME DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	// ── CRUD ─────────────────────────────────────────────────────────────────
@@ -96,15 +105,41 @@ class AH_Rules_Engine {
 		global $wpdb;
 		$t = self::table();
 
-		$conditions = array();
-		foreach ( (array) ( $data['conditions'] ?? array() ) as $c ) {
-			$field = sanitize_key( $c['field'] ?? '' );
-			if ( ! $field ) continue;
-			$conditions[] = array(
-				'field'    => $field,
-				'operator' => self::valid_operator( $c['operator'] ?? 'equals' ),
-				'value'    => sanitize_text_field( $c['value'] ?? '' ),
-			);
+		// Condition groups: each group has its own match + conditions array
+		$raw_groups       = (array) ( $data['conditions'] ?? array() );
+		$condition_groups = array();
+		foreach ( $raw_groups as $g ) {
+			if ( isset( $g['field'] ) ) {
+				// Legacy flat format — wrap into single group
+				$field = sanitize_key( $g['field'] );
+				if ( ! $field ) continue;
+				$condition_groups[] = array(
+					'match'      => 'any' === ( $data['conditions_match'] ?? 'all' ) ? 'any' : 'all',
+					'conditions' => array( array(
+						'field'    => $field,
+						'operator' => self::valid_operator( $g['operator'] ?? 'equals' ),
+						'value'    => sanitize_text_field( $g['value'] ?? '' ),
+					) ),
+				);
+			} else {
+				// New group format
+				$group_conds = array();
+				foreach ( (array) ( $g['conditions'] ?? array() ) as $c ) {
+					$field = sanitize_key( $c['field'] ?? '' );
+					if ( ! $field ) continue;
+					$group_conds[] = array(
+						'field'    => $field,
+						'operator' => self::valid_operator( $c['operator'] ?? 'equals' ),
+						'value'    => sanitize_text_field( $c['value'] ?? '' ),
+					);
+				}
+				if ( ! empty( $group_conds ) ) {
+					$condition_groups[] = array(
+						'match'      => 'any' === ( $g['match'] ?? 'all' ) ? 'any' : 'all',
+						'conditions' => $group_conds,
+					);
+				}
+			}
 		}
 
 		$actions = array();
@@ -113,13 +148,22 @@ class AH_Rules_Engine {
 			if ( $sanitized ) $actions[] = $sanitized;
 		}
 
+		// Dedup / cooldown settings
+		$raw_s    = (array) ( $data['settings'] ?? array() );
+		$settings = array(
+			'dedup_key'          => sanitize_text_field( $raw_s['dedup_key']          ?? '' ),
+			'dedup_window_hours' => max( 0, (int) ( $raw_s['dedup_window_hours'] ?? 0 ) ),
+			'cooldown_minutes'   => max( 0, (int) ( $raw_s['cooldown_minutes']   ?? 0 ) ),
+		);
+
 		$row = array(
-			'name'             => sanitize_text_field( $data['name'] ?? '' ),
-			'trigger_name'     => sanitize_text_field( $data['trigger_name'] ?? 'form_submit' ),
+			'name'             => sanitize_text_field( $data['name']             ?? '' ),
+			'trigger_name'     => sanitize_text_field( $data['trigger_name']     ?? 'form_submit' ),
 			'conditions_match' => 'any' === ( $data['conditions_match'] ?? '' ) ? 'any' : 'all',
-			'conditions'       => wp_json_encode( $conditions ),
+			'conditions'       => wp_json_encode( $condition_groups ),
 			'actions'          => wp_json_encode( $actions ),
 			'status'           => 'inactive' === ( $data['status'] ?? '' ) ? 'inactive' : 'active',
+			'settings'         => wp_json_encode( $settings ),
 		);
 
 		if ( $id > 0 ) {
@@ -138,62 +182,149 @@ class AH_Rules_Engine {
 	private static function decode( object $row ): object {
 		$row->conditions = $row->conditions ? json_decode( $row->conditions, true ) : array();
 		$row->actions    = $row->actions    ? json_decode( $row->actions, true )    : array();
+		$row->settings   = ! empty( $row->settings ) ? json_decode( $row->settings, true ) : array();
 		return $row;
 	}
 
 	// ── Public API ────────────────────────────────────────────────────────────
 
 	/**
-	 * Queue all matching rule actions into ah_trigger_logs as 'pending'.
-	 * Nothing executes here - the cron picks them up and fires them in the background.
+	 * Evaluate all matching rules for a trigger event.
+	 *
+	 * @param string $trigger_name  Event slug, e.g. 'sugarcane_contact_form'.
+	 * @param array  $context       Key/value pairs — become {tokens} in action templates.
+	 * @param bool   $immediate     true  → run matching actions right now (synchronous).
+	 *                              false → queue into ah_trigger_logs for cron (default).
 	 *
 	 * Call from anywhere:
-	 *   AH_Rules_Engine::evaluate( 'order_placed', [
-	 *       'customer_name' => 'John',
-	 *       'email'         => 'john@example.com',
-	 *   ] );
+	 *   AH_Rules_Engine::evaluate( 'sugarcane_contact_form', [
+	 *       'name'  => 'Jane',
+	 *       'email' => 'jane@example.com',
+	 *   ], true );
 	 */
-	public static function evaluate( string $trigger_name, array $context ): void {
+	public static function evaluate( string $trigger_name, array $context, bool $immediate = false ): void {
 		global $wpdb;
 		self::install_tables();
 
+		$t  = self::table();
+		$lg = self::logs_table();
+
 		$rows = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM `" . self::table() . "` WHERE status = 'active' AND trigger_name = %s",
+			"SELECT * FROM `{$t}` WHERE status = 'active' AND trigger_name = %s",
 			$trigger_name
 		) ) ?: array();
 
 		if ( $wpdb->last_error ) {
-			error_log( 'AH_Rules_Engine::evaluate() rules query error: ' . $wpdb->last_error );
+			error_log( 'AH_Rules_Engine::evaluate() DB error: ' . $wpdb->last_error );
 		}
 
-		$now = current_time( 'mysql' );
+		$now    = current_time( 'mysql' );
+		$now_ts = current_time( 'timestamp' );
 
 		foreach ( $rows as $rule ) {
 			$rule = self::decode( $rule );
 			if ( ! self::conditions_pass( $rule, $context ) ) continue;
+			if ( ! self::passes_dedup( $rule, $context, $lg ) ) continue;
+
+			$delay_seconds = 0;
 
 			foreach ( $rule->actions as $idx => $action ) {
-				$inserted = $wpdb->insert( self::logs_table(), array(
+				$type = $action['type'] ?? '';
+
+				// wait: accumulate delay, no log entry for the wait itself
+				if ( 'wait' === $type ) {
+					$mults          = array( 'minutes' => 60, 'hours' => 3600, 'days' => 86400 );
+					$delay_seconds += max( 0, (int) ( $action['duration'] ?? 0 ) )
+					                  * ( $mults[ $action['unit'] ?? 'minutes' ] ?? 60 );
+					continue;
+				}
+
+				$scheduled_at = $delay_seconds > 0
+					? gmdate( 'Y-m-d H:i:s', $now_ts + $delay_seconds )
+					: null;
+
+				$log_base = array(
 					'rule_id'       => (int) $rule->id,
 					'trigger_name'  => $trigger_name,
 					'context_data'  => wp_json_encode( $context ),
 					'action_index'  => $idx,
-					'action_type'   => $action['type'] ?? '',
+					'action_type'   => $type,
 					'action_config' => wp_json_encode( $action ),
-					'status'        => 'pending',
-					'attempts'      => 0,
-				) );
-				if ( false === $inserted ) {
+				);
+
+				// Run synchronously only when immediate mode AND no delay has accumulated
+				if ( $immediate && null === $scheduled_at ) {
+					$error = null;
+					try {
+						self::run_actions( array( $action ), $context );
+					} catch ( \Throwable $e ) {
+						$error = $e->getMessage();
+					}
+					$log = array_merge( $log_base, array(
+						'status'        => $error ? 'failed' : 'sent',
+						'is_done'       => $error ? 0 : 1,
+						'attempts'      => 1,
+						'error_message' => $error,
+					) );
+					$log[ $error ? 'failed_at' : 'sent_at' ] = $now;
+				} else {
+					// Queue for cron (deferred or non-immediate)
+					$log = array_merge( $log_base, array(
+						'status'       => 'pending',
+						'is_done'      => 0,
+						'attempts'     => 0,
+						'scheduled_at' => $scheduled_at,
+					) );
+				}
+
+				if ( false === $wpdb->insert( $lg, $log ) ) {
 					error_log( 'AH_Rules_Engine::evaluate() log insert error (rule #' . $rule->id . '): ' . $wpdb->last_error );
 				}
 			}
 
 			$wpdb->query( $wpdb->prepare(
-				"UPDATE `" . self::table() . "` SET run_count = run_count + 1, last_run = %s WHERE id = %d",
-				$now,
-				(int) $rule->id
+				"UPDATE `{$t}` SET run_count = run_count + 1, last_run = %s WHERE id = %d",
+				$now, (int) $rule->id
 			) );
 		}
+	}
+
+	// Dedup + cooldown check — returns false if this rule should be skipped
+	private static function passes_dedup( object $rule, array $context, string $lg ): bool {
+		global $wpdb;
+		$s = (array) ( $rule->settings ?? array() );
+
+		// Cooldown: rule cannot fire more than once per N minutes (globally)
+		$cooldown = max( 0, (int) ( $s['cooldown_minutes'] ?? 0 ) );
+		if ( $cooldown > 0 ) {
+			$count = (int) $wpdb->get_var( $wpdb->prepare(
+				"SELECT COUNT(*) FROM `{$lg}` WHERE rule_id = %d AND is_unsent = 0
+				   AND created_at >= DATE_SUB(NOW(), INTERVAL %d MINUTE)",
+				(int) $rule->id, $cooldown
+			) );
+			if ( $count > 0 ) return false;
+		}
+
+		// Dedup: skip if same context value already triggered this rule within N hours
+		$dedup_key    = trim( $s['dedup_key'] ?? '' );
+		$dedup_window = max( 0, (int) ( $s['dedup_window_hours'] ?? 0 ) );
+		if ( $dedup_key && $dedup_window > 0 ) {
+			$field = preg_replace( '/^\{(.+)\}$/', '$1', $dedup_key );
+			$value = (string) ( $context[ $field ] ?? self::fill( $dedup_key, $context ) );
+			if ( $value !== '' ) {
+				$count = (int) $wpdb->get_var( $wpdb->prepare(
+					"SELECT COUNT(*) FROM `{$lg}` WHERE rule_id = %d AND is_unsent = 0
+					   AND created_at >= DATE_SUB(NOW(), INTERVAL %d HOUR)
+					   AND JSON_UNQUOTE(JSON_EXTRACT(context_data, %s)) = %s",
+					(int) $rule->id, $dedup_window,
+					'$.' . $field,
+					$value
+				) );
+				if ( $count > 0 ) return false;
+			}
+		}
+
+		return true;
 	}
 
 	// ── Cron: process pending + retry failed ──────────────────────────────────
@@ -214,9 +345,10 @@ class AH_Rules_Engine {
 			"SELECT * FROM `{$lg}`
 			 WHERE is_done = 0 AND is_unsent = 0
 			   AND ( status = 'pending' OR ( status = 'failed' AND attempts < %d ) )
+			   AND ( scheduled_at IS NULL OR scheduled_at <= %s )
 			 ORDER BY id ASC
 			 LIMIT 100",
-			$max
+			$max, current_time( 'mysql' )
 		) ) ?: array();
 
 		foreach ( $rows as $row ) {
@@ -252,13 +384,32 @@ class AH_Rules_Engine {
 	private static function conditions_pass( object $rule, array $context ): bool {
 		if ( empty( $rule->conditions ) ) return true;
 
-		$any = ( 'any' === $rule->conditions_match );
-		foreach ( $rule->conditions as $c ) {
+		$conditions = $rule->conditions;
+		$any_top    = ( 'any' === $rule->conditions_match );
+
+		// Legacy flat format: first element has a 'field' key
+		if ( isset( $conditions[0]['field'] ) ) {
+			return self::evaluate_flat_conditions( $conditions, $context, $any_top );
+		}
+
+		// Group format: each element has 'match' + 'conditions'
+		foreach ( $conditions as $group ) {
+			$any_group  = ( 'any' === ( $group['match'] ?? 'all' ) );
+			$group_pass = self::evaluate_flat_conditions( $group['conditions'] ?? array(), $context, $any_group );
+			if ( $any_top && $group_pass )       return true;
+			if ( ! $any_top && ! $group_pass )   return false;
+		}
+		return ! $any_top;
+	}
+
+	private static function evaluate_flat_conditions( array $conditions, array $context, bool $any ): bool {
+		if ( empty( $conditions ) ) return true;
+		foreach ( $conditions as $c ) {
 			$actual   = strtolower( trim( (string) ( $context[ $c['field'] ] ?? '' ) ) );
 			$expected = strtolower( trim( $c['value'] ?? '' ) );
 			$op       = $c['operator'] ?? 'equals';
-
-			$pass = match ( $op ) {
+			$list     = array_map( 'trim', explode( ',', $expected ) );
+			$pass     = match ( $op ) {
 				'equals'       => $actual === $expected,
 				'not_equals'   => $actual !== $expected,
 				'contains'     => str_contains( $actual, $expected ),
@@ -269,11 +420,12 @@ class AH_Rules_Engine {
 				'is_not_empty' => $actual !== '',
 				'greater_than' => is_numeric( $actual ) && is_numeric( $expected ) && ( (float) $actual > (float) $expected ),
 				'less_than'    => is_numeric( $actual ) && is_numeric( $expected ) && ( (float) $actual < (float) $expected ),
+				'in_list'      => in_array( $actual, $list, true ),
+				'not_in_list'  => ! in_array( $actual, $list, true ),
 				default        => false,
 			};
-
-			if ( $any && $pass )  return true;
-			if ( ! $any && ! $pass ) return false;
+			if ( $any && $pass )       return true;
+			if ( ! $any && ! $pass )   return false;
 		}
 		return ! $any;
 	}
@@ -283,10 +435,11 @@ class AH_Rules_Engine {
 	private static function run_actions( array $actions, array $context ): void {
 		foreach ( $actions as $a ) {
 			match ( $a['type'] ?? '' ) {
-				'send_email'   => self::action_email( $a, $context ),
-				'whatsapp'     => self::action_whatsapp( $a, $context ),
-				'http_request' => self::action_http( $a, $context ),
-				default        => null,
+				'send_email'    => self::action_email( $a, $context ),
+				'whatsapp'      => self::action_whatsapp( $a, $context ),
+				'http_request'  => self::action_http( $a, $context ),
+				'update_option' => self::action_update_option( $a, $context ),
+				default         => null,
 			};
 		}
 	}
@@ -297,8 +450,16 @@ class AH_Rules_Engine {
 		$ctx = array_merge( self::config_tokens(), $context );
 		$cfg = self::get_config();
 
-		$to = sanitize_email( self::fill( $a['to'] ?? '', $ctx ) );
-		if ( ! $to ) return;
+		// Handle TO as array
+		$to_list = is_array( $a['to'] ?? null ) ? $a['to'] : array( $a['to'] ?? '' );
+		$to_recipients = array();
+		foreach ( $to_list as $to_addr ) {
+			$filled = self::fill( (string) $to_addr, $ctx );
+			$email = sanitize_email( $filled );
+			if ( $email ) $to_recipients[] = $email;
+		}
+		if ( empty( $to_recipients ) ) return;
+		$to = implode( ', ', $to_recipients );
 
 		$subject  = self::fill( $a['subject'] ?? 'Notification', $ctx );
 		$body_tpl = $a['body'] ?? '';
@@ -314,24 +475,47 @@ class AH_Rules_Engine {
 		$channel = ! empty( $a['channel_id'] ) ? self::get_email_channel( $a['channel_id'] ) : null;
 
 		$from_name = sanitize_text_field(
-			! empty( $a['from_name'] )
-				? self::fill( $a['from_name'], $ctx )
-				: ( $channel ? $channel['from_name'] : $cfg['email_from_name'] )
+			$channel ? $channel['from_name'] : $cfg['email_from_name']
 		);
 		$from_email = sanitize_email(
-			! empty( $a['from_email'] )
-				? self::fill( $a['from_email'], $ctx )
-				: ( $channel ? $channel['from_email'] : $cfg['email_from_email'] )
+			$channel ? $channel['from_email'] : $cfg['email_from_email']
 		);
 		if ( $from_name || $from_email ) {
 			$headers[] = "From: {$from_name} <{$from_email}>";
 		}
 
-		if ( ! empty( $a['cc'] ) ) {
-			$headers[] = 'CC: ' . sanitize_email( self::fill( $a['cc'], $ctx ) );
+		// Handle CC as array
+		$cc_list = is_array( $a['cc'] ?? null ) ? $a['cc'] : ( ! empty( $a['cc'] ) ? array( $a['cc'] ) : array() );
+		$cc_recipients = array();
+		foreach ( $cc_list as $cc_addr ) {
+			$filled = self::fill( (string) $cc_addr, $ctx );
+			$email = sanitize_email( $filled );
+			if ( $email ) $cc_recipients[] = $email;
 		}
+		if ( ! empty( $cc_recipients ) ) {
+			$headers[] = 'CC: ' . implode( ', ', $cc_recipients );
+		}
+
+		// Handle BCC - from rule action AND global config
+		$bcc_list = is_array( $a['bcc'] ?? null ) ? $a['bcc'] : ( ! empty( $a['bcc'] ) ? array( $a['bcc'] ) : array() );
+		$bcc_recipients = array();
+		foreach ( $bcc_list as $bcc_addr ) {
+			$filled = self::fill( (string) $bcc_addr, $ctx );
+			$email = sanitize_email( $filled );
+			if ( $email ) $bcc_recipients[] = $email;
+		}
+		// Add global BCC
 		if ( ! empty( $cfg['email_bcc'] ) ) {
-			$headers[] = 'BCC: ' . sanitize_email( $cfg['email_bcc'] );
+			$global_bcc = is_array( $cfg['email_bcc'] ) ? $cfg['email_bcc'] : array_filter( array_map( 'trim', explode( ',', $cfg['email_bcc'] ) ) );
+			foreach ( $global_bcc as $bcc_addr ) {
+				$email = sanitize_email( $bcc_addr );
+				if ( $email && ! in_array( $email, $bcc_recipients, true ) ) {
+					$bcc_recipients[] = $email;
+				}
+			}
+		}
+		if ( ! empty( $bcc_recipients ) ) {
+			$headers[] = 'BCC: ' . implode( ', ', $bcc_recipients );
 		}
 
 		// Per-channel SMTP override via phpmailer_init - added just before wp_mail, removed immediately after
@@ -456,6 +640,16 @@ class AH_Rules_Engine {
 		wp_remote_request( $url, $args );
 	}
 
+	// ── update_option ─────────────────────────────────────────────────────────
+
+	private static function action_update_option( array $a, array $context ): void {
+		$ctx = array_merge( self::config_tokens(), $context );
+		$key = sanitize_key( self::fill( $a['option_key'] ?? '', $ctx ) );
+		if ( ! $key ) return;
+		$value = sanitize_text_field( self::fill( $a['option_value'] ?? '', $ctx ) );
+		update_option( $key, $value );
+	}
+
 	// ── Placeholder interpolation ─────────────────────────────────────────────
 
 	/**
@@ -481,19 +675,43 @@ class AH_Rules_Engine {
 
 	// ── Sanitize actions on save ──────────────────────────────────────────────
 
+	private static function sanitize_email_list( $input ): array {
+		if ( ! is_array( $input ) ) {
+			$input = ! empty( $input ) ? array( $input ) : array();
+		}
+		$emails = array();
+		foreach ( (array) $input as $email ) {
+			$email = sanitize_text_field( trim( (string) $email ) );
+			if ( $email ) {
+				$emails[] = $email;
+			}
+		}
+		return $emails;
+	}
+
 	private static function sanitize_action( array $a ): ?array {
 		$type = sanitize_key( $a['type'] ?? '' );
 		return match ( $type ) {
 			'send_email' => array(
 				'type'       => 'send_email',
-				'to'         => sanitize_text_field( $a['to']         ?? '' ),
+				'to'         => self::sanitize_email_list( $a['to']         ?? array() ),
 				'subject'    => sanitize_text_field( $a['subject']    ?? '' ),
 				'body'       => wp_kses_post(        $a['body']       ?? '' ),
 				'html'       => ! empty( $a['html'] ) ? 1 : 0,
-				'from_name'  => sanitize_text_field( $a['from_name']  ?? '' ),
-				'from_email' => sanitize_email(      $a['from_email'] ?? '' ),
-				'cc'         => sanitize_text_field( $a['cc']         ?? '' ),
 				'channel_id' => sanitize_key(        $a['channel_id'] ?? '' ),
+				'cc'         => self::sanitize_email_list( $a['cc']    ?? array() ),
+				'bcc'        => self::sanitize_email_list( $a['bcc']   ?? array() ),
+			),
+			'wait' => array(
+				'type'     => 'wait',
+				'duration' => max( 1, (int) ( $a['duration'] ?? 1 ) ),
+				'unit'     => in_array( $a['unit'] ?? 'minutes', array( 'minutes', 'hours', 'days' ), true )
+				              ? $a['unit'] : 'minutes',
+			),
+			'update_option' => array(
+				'type'         => 'update_option',
+				'option_key'   => sanitize_key( $a['option_key']   ?? '' ),
+				'option_value' => sanitize_text_field( $a['option_value'] ?? '' ),
 			),
 			'whatsapp' => array(
 				'type'       => 'whatsapp',
@@ -535,11 +753,14 @@ class AH_Rules_Engine {
 			'is_not_empty' => 'is not empty',
 			'greater_than' => 'is greater than',
 			'less_than'    => 'is less than',
+			'in_list'      => 'is in (comma list)',
+			'not_in_list'  => 'is not in (comma list)',
 		);
 	}
 
 	public static function trigger_presets(): array {
 		return array(
+			'sugarcane_contact_form' => 'Sugarcane - Contact Form Submitted',
 			'contact_submitted'      => 'Contact Form Submitted',
 			'consultation_submitted' => 'Consultation Form Submitted',
 			'form_submit'            => 'Form Submission (built-in)',
@@ -688,6 +909,126 @@ class AH_Rules_Engine {
 	public static function count_logs(): int {
 		global $wpdb;
 		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `" . self::logs_table() . "`" );
+	}
+
+	public static function get_logs_filtered( array $filters, int $limit = 100, int $offset = 0 ): array {
+		global $wpdb;
+		$lg     = self::logs_table();
+		$rt     = self::table();
+		$where  = array();
+		$params = array();
+
+		if ( ! empty( $filters['status'] ) && 'all' !== $filters['status'] ) {
+			$where[]  = 'l.status = %s';
+			$params[] = sanitize_key( $filters['status'] );
+		}
+		if ( ! empty( $filters['search'] ) ) {
+			$where[]  = '( l.trigger_name LIKE %s OR r.name LIKE %s )';
+			$like     = '%' . $wpdb->esc_like( sanitize_text_field( $filters['search'] ) ) . '%';
+			$params[] = $like;
+			$params[] = $like;
+		}
+
+		$where_sql = $where ? 'WHERE ' . implode( ' AND ', $where ) : '';
+		$params[]  = $limit;
+		$params[]  = $offset;
+
+		return $wpdb->get_results( $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"SELECT l.*, r.name AS rule_name
+			 FROM `{$lg}` l
+			 LEFT JOIN `{$rt}` r ON r.id = l.rule_id
+			 {$where_sql}
+			 ORDER BY l.id DESC LIMIT %d OFFSET %d",
+			...$params
+		) ) ?: array();
+	}
+
+	public static function count_logs_filtered( array $filters ): int {
+		global $wpdb;
+		$lg     = self::logs_table();
+		$where  = array();
+		$params = array();
+
+		if ( ! empty( $filters['status'] ) && 'all' !== $filters['status'] ) {
+			$where[]  = 'l.status = %s';
+			$params[] = sanitize_key( $filters['status'] );
+		}
+		if ( ! empty( $filters['search'] ) ) {
+			$where[]  = '( l.trigger_name LIKE %s OR r.name LIKE %s )';
+			$like     = '%' . $wpdb->esc_like( sanitize_text_field( $filters['search'] ) ) . '%';
+			$params[] = $like;
+			$params[] = $like;
+		}
+
+		if ( ! $where ) {
+			return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$lg}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+
+		$rt        = self::table();
+		$where_sql = 'WHERE ' . implode( ' AND ', $where );
+		return (int) $wpdb->get_var( $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"SELECT COUNT(*) FROM `{$lg}` l LEFT JOIN `{$rt}` r ON r.id = l.rule_id {$where_sql}",
+			...$params
+		) );
+	}
+
+	public static function cancel_all_pending(): int {
+		global $wpdb;
+		$lg  = self::logs_table();
+		$cfg = self::get_config();
+		$max = max( 1, (int) ( $cfg['retry_max_attempts'] ?? 3 ) );
+		$wpdb->query( $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"UPDATE `{$lg}` SET status = 'unsent', is_unsent = 1
+			 WHERE is_done = 0 AND is_unsent = 0
+			   AND ( status = 'pending' OR ( status = 'failed' AND attempts < %d ) )",
+			$max
+		) );
+		return (int) $wpdb->rows_affected;
+	}
+
+	public static function retry_all_pending(): array {
+		global $wpdb;
+		$lg  = self::logs_table();
+		$cfg = self::get_config();
+		$max = max( 1, (int) ( $cfg['retry_max_attempts'] ?? 3 ) );
+
+		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"SELECT * FROM `{$lg}`
+			 WHERE is_done = 0 AND is_unsent = 0
+			   AND ( status = 'pending' OR ( status = 'failed' AND attempts < %d ) )
+			 ORDER BY id ASC LIMIT 200",
+			$max
+		) ) ?: array();
+
+		$ok   = 0;
+		$fail = 0;
+		foreach ( $rows as $row ) {
+			$action  = json_decode( $row->action_config ?? '{}', true ) ?: array();
+			$context = json_decode( $row->context_data  ?? '{}', true ) ?: array();
+			$error   = null;
+			try {
+				self::run_actions( array( $action ), $context );
+			} catch ( \Throwable $e ) {
+				$error = $e->getMessage();
+			}
+			if ( $error ) {
+				$wpdb->update( $lg, array(
+					'status'        => 'failed',
+					'attempts'      => (int) $row->attempts + 1,
+					'error_message' => $error,
+					'failed_at'     => current_time( 'mysql' ),
+				), array( 'id' => (int) $row->id ) );
+				$fail++;
+			} else {
+				$wpdb->update( $lg, array(
+					'status'  => 'sent',
+					'is_done' => 1,
+					'sent_at' => current_time( 'mysql' ),
+				), array( 'id' => (int) $row->id ) );
+				$ok++;
+			}
+		}
+		return array( 'ok' => $ok, 'fail' => $fail );
 	}
 
 	public static function delete_log( int $id ): void {

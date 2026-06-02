@@ -83,6 +83,7 @@ if ( isset( $_POST['ah_re_nonce'] ) ) {
 
 	$raw_conditions = json_decode( wp_unslash( $_POST['re_conditions_json'] ?? '[]' ), true ) ?: array();
 	$raw_actions    = json_decode( wp_unslash( $_POST['re_actions_json']    ?? '[]' ), true ) ?: array();
+	$raw_settings   = json_decode( wp_unslash( $_POST['re_settings_json']   ?? '{}' ), true ) ?: array();
 
 	$saved_id = AH_Rules_Engine::save( $rule_id, array(
 		'name'             => sanitize_text_field( $_POST['re_name']             ?? '' ),
@@ -91,6 +92,7 @@ if ( isset( $_POST['ah_re_nonce'] ) ) {
 		'conditions'       => $raw_conditions,
 		'actions'          => $raw_actions,
 		'status'           => sanitize_key(        $_POST['re_status']           ?? 'active' ),
+		'settings'         => $raw_settings,
 	) );
 
 	AH_Admin_Bootstrap::redirect( add_query_arg( array(
@@ -190,6 +192,15 @@ details.re-adv .re-adv-body{padding:12px}
 .re-var-row input{padding:7px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;background:#fff;box-sizing:border-box}
 .re-var-row input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.1)}
 .re-var-key-badge{font-family:monospace;font-size:11.5px;color:#6b7280;white-space:nowrap}
+/* Condition groups */
+.re-cond-group{border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:10px;background:#fafafa}
+.re-cond-group-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;font-weight:600;color:#374151}
+.re-cond-group-head select{font-size:12px;padding:3px 8px;border:1.5px solid #d1d5db;border-radius:6px;font-weight:600;background:#fff}
+.re-cond-group-head .re-rm{margin-left:auto}
+/* Wait action card */
+.re-act-card[data-type="wait"]{border-top:3px solid #f59e0b}
+/* Update option action card */
+.re-act-card[data-type="update_option"]{border-top:3px solid #10b981}
 </style>
 
 <div class="wrap ah-wrap">
@@ -237,6 +248,7 @@ details.re-adv .re-adv-body{padding:12px}
 <?php wp_nonce_field( 'ah_save_rule', 'ah_re_nonce' ); ?>
 <input type="hidden" name="re_conditions_json" id="re-cond-json">
 <input type="hidden" name="re_actions_json"    id="re-act-json">
+<input type="hidden" name="re_settings_json"   id="re-settings-json">
 
 <!-- Rule Details -->
 <div class="re-section">
@@ -289,19 +301,43 @@ details.re-adv .re-adv-body{padding:12px}
 	<div class="re-section-title">
 		<span>🔍 Conditions - IF</span>
 		<select name="re_conditions_match" id="re-match" style="font-size:12px;padding:4px 8px;border:1.5px solid #d1d5db;border-radius:6px;font-weight:600;background:#fff">
-			<option value="all" <?php selected( $editing->conditions_match, 'all' ); ?>>ALL match</option>
-			<option value="any" <?php selected( $editing->conditions_match, 'any' ); ?>>ANY match</option>
+			<option value="all" <?php selected( $editing->conditions_match, 'all' ); ?>>ALL groups match</option>
+			<option value="any" <?php selected( $editing->conditions_match, 'any' ); ?>>ANY group matches</option>
 		</select>
-		<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" id="re-add-cond">+ Condition</button>
+		<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" id="re-add-group">+ Add Group</button>
 	</div>
 	<div id="re-conds"></div>
 	<p id="re-conds-empty" style="color:#9ca3af;font-size:13px;margin:0">
-		No conditions - rule fires on <em>every</em> matching trigger. Click <strong>+ Condition</strong> to filter by context values.
+		No conditions — rule fires on <em>every</em> matching trigger. Click <strong>+ Add Group</strong> to filter.
 	</p>
 	<p style="font-size:12px;color:#6b7280;margin:8px 0 0">
-		Field key must match a key in the <code>$context</code> array passed to <code>evaluate()</code>.
+		Each group combines its own conditions with AND/ANY. Groups themselves are then combined by the top-level ALL/ANY above.
 	</p>
 </div>
+
+<!-- Rule Settings (dedup / cooldown) -->
+<details class="re-adv re-section" style="padding:0">
+	<summary style="padding:14px 18px;font-size:13px;font-weight:600;color:#374151;cursor:pointer;list-style:none;user-select:none;display:flex;align-items:center;gap:8px">
+		⚙️ Rule Settings <span style="font-weight:400;font-size:12px;color:#9ca3af">(deduplication &amp; cooldown)</span>
+	</summary>
+	<div style="padding:0 18px 16px;border-top:1px solid #e5e7eb;margin-top:0">
+		<p style="font-size:12px;color:#6b7280;margin:12px 0 14px">Prevent this rule from firing too often. Use <code>{field_key}</code> in Dedup Key to deduplicate per-contact (e.g. <code>{email}</code>).</p>
+		<div class="re-act-grid-3">
+			<div class="re-field-group">
+				<label>Dedup Key <small>(token to deduplicate by)</small></label>
+				<input type="text" id="re-s-dedup-key" placeholder="{email}" value="<?php echo esc_attr( $editing->settings['dedup_key'] ?? '' ); ?>">
+			</div>
+			<div class="re-field-group">
+				<label>Dedup Window <small>(hours — 0 = disabled)</small></label>
+				<input type="number" id="re-s-dedup-win" min="0" max="8760" placeholder="24" value="<?php echo esc_attr( $editing->settings['dedup_window_hours'] ?? '0' ); ?>">
+			</div>
+			<div class="re-field-group">
+				<label>Cooldown <small>(minutes between any fires — 0 = off)</small></label>
+				<input type="number" id="re-s-cooldown" min="0" max="10080" placeholder="0" value="<?php echo esc_attr( $editing->settings['cooldown_minutes'] ?? '0' ); ?>">
+			</div>
+		</div>
+	</div>
+</details>
 
 <!-- Actions -->
 <div class="re-section">
@@ -311,6 +347,8 @@ details.re-adv .re-adv-body{padding:12px}
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="send_email">📧 Email</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="whatsapp">💬 WhatsApp</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="http_request">🌐 HTTP Request</button>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="wait">⏱ Wait / Delay</button>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="update_option">🔧 Update WP Option</button>
 		</div>
 	</div>
 	<div id="re-actions"></div>
@@ -417,24 +455,79 @@ if ( 'config' === $view ) :
 <div class="re-section">
 	<div class="re-section-title"><span>📧 Email Defaults</span></div>
 	<p style="font-size:12px;color:#6b7280;margin:-4px 0 14px">
-		Global fallback sender used when an email action or channel has no From set.
-		Use as tokens: <code>{config_email_from_name}</code>, <code>{config_email_from_email}</code>, <code>{config_email_bcc}</code>.
+		Global email sender defaults. Use as tokens in any action: <code>{config_email_from_name}</code>, <code>{config_email_from_email}</code>, <code>{config_email_cc}</code>, <code>{config_email_bcc}</code>.
 	</p>
-	<div class="re-act-grid-3">
-		<div class="re-field-group">
-			<label>From Name</label>
-			<input type="text" name="cfg_email_from_name" value="<?php echo esc_attr( $cfg['email_from_name'] ); ?>" placeholder="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-		</div>
-		<div class="re-field-group">
-			<label>From Email</label>
-			<input type="email" name="cfg_email_from_email" value="<?php echo esc_attr( $cfg['email_from_email'] ); ?>" placeholder="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>">
-		</div>
-		<div class="re-field-group">
-			<label>BCC <small>(all outgoing emails)</small></label>
-			<input type="email" name="cfg_email_bcc" value="<?php echo esc_attr( $cfg['email_bcc'] ); ?>" placeholder="bcc@example.com">
+
+	<!-- Sender Info -->
+	<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #e5e7eb">
+		<h3 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">Sender Information</h3>
+		<div class="re-act-grid-2">
+			<div class="re-field-group">
+				<label>From Name</label>
+				<input type="text" name="cfg_email_from_name" value="<?php echo esc_attr( $cfg['email_from_name'] ); ?>" placeholder="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+			</div>
+			<div class="re-field-group">
+				<label>From Email</label>
+				<input type="email" name="cfg_email_from_email" value="<?php echo esc_attr( $cfg['email_from_email'] ); ?>" placeholder="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>">
+			</div>
 		</div>
 	</div>
+
+	<!-- CC Recipients -->
+	<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #e5e7eb">
+		<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+			<h3 style="margin:0;font-size:13px;font-weight:600;color:#374151">CC Recipients</h3>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="document.getElementById('re-email-cc-list').innerHTML += '<div style=display:flex;gap:6px;margin-bottom:6px><input type=email placeholder=cc@example.com style=flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff><button type=button class=ah-btn ah-btn-danger ah-btn-sm onclick=this.parentElement.remove()>Remove</button></div>'; return false">+ Add CC</button>
+		</div>
+		<div id="re-email-cc-list">
+			<?php
+			$cc_list = array_filter( array_map( 'trim', explode( ',', $cfg['email_cc'] ?? '' ) ) );
+			foreach ( $cc_list as $cc ) :
+			?>
+			<div style="display:flex;gap:6px;margin-bottom:6px">
+				<input type="email" value="<?php echo esc_attr( $cc ); ?>" placeholder="cc@example.com" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff" onchange="updateEmailList('cc')">
+				<button type="button" class="ah-btn ah-btn-danger ah-btn-sm" onclick="this.parentElement.remove(); updateEmailList('cc')">Remove</button>
+			</div>
+			<?php endforeach; ?>
+		</div>
+		<p style="font-size:11px;color:#9ca3af;margin:6px 0 0">Automatically CC all outgoing emails to these addresses (comma-separated in storage)</p>
+	</div>
+
+	<!-- BCC Recipients -->
+	<div>
+		<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+			<h3 style="margin:0;font-size:13px;font-weight:600;color:#374151">BCC Recipients</h3>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="document.getElementById('re-email-bcc-list').innerHTML += '<div style=display:flex;gap:6px;margin-bottom:6px><input type=email placeholder=bcc@example.com style=flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff><button type=button class=ah-btn ah-btn-danger ah-btn-sm onclick=this.parentElement.remove()>Remove</button></div>'; return false">+ Add BCC</button>
+		</div>
+		<div id="re-email-bcc-list">
+			<?php
+			$bcc_list = array_filter( array_map( 'trim', explode( ',', $cfg['email_bcc'] ?? '' ) ) );
+			foreach ( $bcc_list as $bcc ) :
+			?>
+			<div style="display:flex;gap:6px;margin-bottom:6px">
+				<input type="email" value="<?php echo esc_attr( $bcc ); ?>" placeholder="bcc@example.com" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff" onchange="updateEmailList('bcc')">
+				<button type="button" class="ah-btn ah-btn-danger ah-btn-sm" onclick="this.parentElement.remove(); updateEmailList('bcc')">Remove</button>
+			</div>
+			<?php endforeach; ?>
+		</div>
+		<p style="font-size:11px;color:#9ca3af;margin:6px 0 0">Automatically BCC all outgoing emails to these addresses (comma-separated in storage)</p>
+	</div>
+
+	<input type="hidden" name="cfg_email_cc" id="cfg-email-cc" value="<?php echo esc_attr( $cfg['email_cc'] ?? '' ); ?>">
+	<input type="hidden" name="cfg_email_bcc" id="cfg-email-bcc" value="<?php echo esc_attr( $cfg['email_bcc'] ?? '' ); ?>">
 </div>
+
+<script>
+function updateEmailList(type) {
+	const listId = type === 'cc' ? 're-email-cc-list' : 're-email-bcc-list';
+	const inputId = type === 'cc' ? 'cfg-email-cc' : 'cfg-email-bcc';
+	const list = document.getElementById(listId);
+	const emails = Array.from(list.querySelectorAll('input[type="email"]'))
+		.map(el => el.value.trim())
+		.filter(v => v);
+	document.getElementById(inputId).value = emails.join(', ');
+}
+</script>
 
 <!-- Email Channels ─────────────────────────────────────────────────────────── -->
 <div class="re-section">
@@ -678,6 +771,9 @@ if ( 'logs' === $view ) :
 				$st  = $status_map[ $lg->status ] ?? array( 'label' => ucfirst( $lg->status ), 'color' => '#374151' );
 				$act_labels = array( 'send_email' => '📧 Email', 'whatsapp' => '💬 WhatsApp', 'http_request' => '🌐 HTTP' );
 				$time = $lg->sent_at ?: $lg->failed_at ?: $lg->created_at;
+				$ctx_data = json_decode( $lg->context_data ?? '{}', true ) ?: array();
+				$act_cfg = json_decode( $lg->action_config ?? '{}', true ) ?: array();
+				$det_id = 're-det-lg-' . (int) $lg->id;
 			?>
 			<tr>
 				<td style="color:#9ca3af;font-size:12px">#<?php echo (int) $lg->id; ?></td>
@@ -697,6 +793,7 @@ if ( 'logs' === $view ) :
 					<?php echo esc_html( $lg->error_message ? mb_strimwidth( $lg->error_message, 0, 60, '…' ) : '' ); ?>
 				</td>
 				<td style="white-space:nowrap">
+					<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="document.getElementById('<?php echo esc_js( $det_id ); ?>').style.display = document.getElementById('<?php echo esc_js( $det_id ); ?>').style.display === 'none' ? 'table-row' : 'none'">Details</button>
 					<?php if ( 'failed' === $lg->status && ! $lg->is_unsent ) : ?>
 					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'logs', 'retry_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_retry_log' ) ); ?>"
 					   class="ah-btn ah-btn-secondary ah-btn-sm">Retry</a>
@@ -709,6 +806,80 @@ if ( 'logs' === $view ) :
 					   onclick="return confirm('Delete this log entry?')">×</a>
 				</td>
 			</tr>
+
+			<!-- Details Row -->
+			<tr id="<?php echo esc_attr( $det_id ); ?>" style="display:none;background:#f9fafb">
+				<td colspan="9" style="padding:16px;border-bottom:2px solid #e5e7eb">
+					<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+						<!-- Input Context Data -->
+						<div>
+							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">📥 Input Data (Context)</h4>
+							<?php if ( $ctx_data ) : ?>
+							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:12px">
+								<?php foreach ( $ctx_data as $key => $val ) : ?>
+								<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6;display:flex;gap:12px">
+									<strong style="color:#6b7280;min-width:100px;word-break:break-word"><?php echo esc_html( $key ); ?>:</strong>
+									<span style="color:#374151;word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $val, 0, 100, '…' ) ); ?></span>
+								</div>
+								<?php endforeach; ?>
+							</div>
+							<?php else : ?>
+							<p style="color:#9ca3af;font-size:12px;margin:0">No context data</p>
+							<?php endif; ?>
+						</div>
+
+						<!-- Action Details -->
+						<div>
+							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">
+								<?php
+								$action_icons = array( 'send_email' => '📧', 'whatsapp' => '💬', 'http_request' => '🌐' );
+								echo $action_icons[ $lg->action_type ] ?? '•';
+								?>
+								Action Details
+							</h4>
+							<?php if ( 'send_email' === $lg->action_type && $act_cfg ) : ?>
+							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:12px">
+								<?php
+								// Email specific fields
+								$email_fields = array(
+									'to' => 'To',
+									'cc' => 'CC',
+									'bcc' => 'BCC',
+									'subject' => 'Subject',
+									'body' => 'Body',
+								);
+								foreach ( $email_fields as $field_key => $field_label ) :
+									if ( empty( $act_cfg[ $field_key ] ) ) continue;
+									$val = $act_cfg[ $field_key ];
+									if ( is_array( $val ) ) $val = implode( ', ', $val );
+								?>
+								<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6">
+									<strong style="color:#6b7280;display:block;margin-bottom:4px"><?php echo esc_html( $field_label ); ?>:</strong>
+									<span style="color:#374151;display:block;word-break:break-word;font-family:monospace;font-size:11px;background:#f9fafb;padding:6px;border-radius:4px">
+										<?php echo esc_html( mb_strimwidth( (string) $val, 0, 150, '…' ) ); ?>
+									</span>
+								</div>
+								<?php endforeach; ?>
+							</div>
+							<?php elseif ( $act_cfg ) : ?>
+							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:11px;font-family:monospace">
+								<pre style="margin:0;padding:8px 12px;overflow-x:auto;color:#374151"><?php echo esc_html( wp_json_encode( $act_cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
+							</div>
+							<?php else : ?>
+							<p style="color:#9ca3af;font-size:12px;margin:0">No action config</p>
+							<?php endif; ?>
+						</div>
+					</div>
+
+					<?php if ( $lg->error_message ) : ?>
+					<div style="margin-top:16px;padding:12px;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px">
+						<h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:#991b1b">❌ Error Message</h4>
+						<p style="margin:0;font-size:12px;color:#7f1d1d;word-break:break-word;font-family:monospace"><?php echo esc_html( $lg->error_message ); ?></p>
+					</div>
+					<?php endif; ?>
+				</td>
+			</tr>
+
 			<?php endforeach; ?>
 			</tbody>
 		</table>
@@ -752,38 +923,79 @@ jQuery(function ($) {
     $('#' + emptyId).toggle($('#' + wrapId).children().length === 0);
   }
 
-  /* ── Condition rows ── */
-  var opOpts   = <?php echo wp_json_encode( $operators ); ?>;
-  var NO_VAL   = ['is_empty', 'is_not_empty'];
+  /* ── Condition groups ── */
+  var opOpts = <?php echo wp_json_encode( $operators ); ?>;
+  var NO_VAL = ['is_empty', 'is_not_empty'];
 
   function buildOpSel(sel) {
     var s = '<select class="re-c-op" style="min-width:160px">';
-    Object.keys(opOpts).forEach(function (k) {
+    Object.keys(opOpts).forEach(function(k) {
       s += '<option value="' + k + '"' + (k === sel ? ' selected' : '') + '>' + opOpts[k] + '</option>';
     });
     return s + '</select>';
   }
 
-  function addCondRow(field, op, val) {
+  var LIST_OPS = ['in_list', 'not_in_list'];
+
+  function condValPlaceholder(op) {
+    if (LIST_OPS.includes(op)) return 'val1, val2, val3';
+    return 'value';
+  }
+
+  function addCondRowToGroup($group, field, op, val) {
     field = field || ''; op = op || 'equals'; val = val || '';
+    var $valInput = $('<input type="text" class="re-c-val" style="flex:1;min-width:120px">')
+      .val(val)
+      .attr('placeholder', condValPlaceholder(op))
+      .toggle(!NO_VAL.includes(op));
+    var $opSel = $(buildOpSel(op)).on('change', function() {
+      var v = $(this).val();
+      NO_VAL.includes(v) ? $valInput.hide().val('') : $valInput.show();
+      $valInput.attr('placeholder', condValPlaceholder(v));
+    });
     var $row = $('<div class="re-row re-cond-row">').append(
       $('<input type="text" class="re-c-field" placeholder="field_key" style="min-width:140px">').val(field),
-      $(buildOpSel(op)).on('change', function () {
-        var $v = $(this).closest('.re-row').find('.re-c-val');
-        NO_VAL.includes($(this).val()) ? $v.hide().val('') : $v.show();
-      }),
-      $('<input type="text" class="re-c-val" placeholder="value" style="flex:1;min-width:120px">').val(val)
-        .toggle(!NO_VAL.includes(op)),
-      $('<button type="button" class="re-rm" title="Remove">✕</button>').on('click', function () {
-        $(this).closest('.re-cond-row').remove();
+      $opSel,
+      $valInput,
+      $('<button type="button" class="re-rm" title="Remove condition">✕</button>').on('click', function() {
+        $row.remove();
         syncEmpty('re-conds', 're-conds-empty');
       })
     );
-    $('#re-conds').append($row);
+    $group.find('.re-cond-group-rows').append($row);
     syncEmpty('re-conds', 're-conds-empty');
   }
 
-  $('#re-add-cond').on('click', function () { addCondRow(); });
+  function addCondGroup(groupData) {
+    groupData = groupData || { match: 'all', conditions: [] };
+    var $g = $('<div class="re-cond-group">');
+    var $head = $('<div class="re-cond-group-head">').append(
+      $('<span>').text('Match '),
+      $('<select class="re-c-group-match">').append(
+        $('<option value="all"' + ('all' === groupData.match ? ' selected' : '') + '>').text('ALL'),
+        $('<option value="any"' + ('any' === groupData.match ? ' selected' : '') + '>').text('ANY')
+      ),
+      $('<span>').text(' of these conditions:'),
+      $('<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-left:8px">+ Condition</button>').on('click', function() {
+        addCondRowToGroup($g);
+      }),
+      $('<button type="button" class="re-rm" title="Remove group">✕</button>').on('click', function() {
+        $g.remove();
+        syncEmpty('re-conds', 're-conds-empty');
+      })
+    );
+    $g.append($head, $('<div class="re-cond-group-rows">'));
+    $('#re-conds').append($g);
+    (groupData.conditions || []).forEach(function(c) {
+      addCondRowToGroup($g, c.field, c.operator, c.value);
+    });
+    if (!groupData.conditions || groupData.conditions.length === 0) {
+      addCondRowToGroup($g);
+    }
+    syncEmpty('re-conds', 're-conds-empty');
+  }
+
+  $('#re-add-group').on('click', function() { addCondGroup(); });
 
   /* ── Action card builders ── */
   function rmBtn() {
@@ -808,9 +1020,28 @@ jQuery(function ($) {
         '<div class="re-act-card-head">📧 Send Email</div>',
         '<div class="re-field-group"><label>Send via Channel <small>(SMTP profile - leave default for site mail)</small></label>',
           buildChannelSel(d.channel_id || ''), '</div>',
+        '<div class="re-field-group" style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#f9fafb;margin:12px 0">',
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">',
+            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">To Recipients <small>(email or {field_key})</small></label>',
+            '<button type="button" class="re-add-to-btn ah-btn ah-btn-secondary ah-btn-sm" data-add="to">+ Add</button>',
+          '</div>',
+          '<div class="re-to-list"></div>',
+        '</div>',
+        '<div class="re-field-group" style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#f9fafb;margin:12px 0">',
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">',
+            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">CC Recipients <small>(optional)</small></label>',
+            '<button type="button" class="re-add-to-btn ah-btn ah-btn-secondary ah-btn-sm" data-add="cc">+ Add</button>',
+          '</div>',
+          '<div class="re-cc-list"></div>',
+        '</div>',
+        '<div class="re-field-group" style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#f9fafb;margin:12px 0">',
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">',
+            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">BCC Recipients <small>(optional)</small></label>',
+            '<button type="button" class="re-add-to-btn ah-btn ah-btn-secondary ah-btn-sm" data-add="bcc">+ Add</button>',
+          '</div>',
+          '<div class="re-bcc-list"></div>',
+        '</div>',
         '<div class="re-act-grid-2">',
-          '<div class="re-field-group"><label>To <small>(email or {field_key})</small></label>',
-            '<input type="text" class="re-a-to" placeholder="manager@example.com or {email}"></div>',
           '<div class="re-field-group"><label>Subject</label>',
             '<input type="text" class="re-a-subj" placeholder="New submission: {name}"></div>',
         '</div>',
@@ -818,24 +1049,47 @@ jQuery(function ($) {
           '<label class="re-html-row"><input type="checkbox" class="re-a-html"> Send as HTML email (supports tags &amp; styles)</label></div>',
         '<div class="re-field-group"><label>Body <small>(use {field_key} tokens)</small></label>',
           '<textarea class="re-a-body" rows="4" placeholder="Hello {name},&#10;&#10;Message: {message}"></textarea></div>',
-        '<div class="re-act-grid-3">',
-          '<div class="re-field-group"><label>From Name <small>(overrides channel)</small></label>',
-            '<input type="text" class="re-a-from-name" placeholder="My Website"></div>',
-          '<div class="re-field-group"><label>From Email <small>(overrides channel)</small></label>',
-            '<input type="email" class="re-a-from-email" placeholder="noreply@example.com"></div>',
-          '<div class="re-field-group"><label>CC <small>(optional)</small></label>',
-            '<input type="email" class="re-a-cc" placeholder="cc@example.com"></div>',
-        '</div>',
       '</div>',
     ].join(''));
     $c.find('.re-act-card-head').append(rmBtn());
-    $c.find('.re-a-to').val(d.to || '');
+
+    // Helper to add recipient rows
+    function addRecipientRow(type, value) {
+      var $row = $('<div style="display:flex;gap:6px;margin-bottom:6px">'+
+        '<input type="text" class="re-a-'+type+'-val" placeholder="email@example.com or {field}" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px" value="'+(value||'')+'">'+
+        '<button type="button" class="ah-btn ah-btn-danger ah-btn-sm" style="padding:6px 10px">Remove</button>'+
+        '</div>');
+      $row.find('button').on('click', function(){
+        $row.remove();
+      });
+      return $row;
+    }
+
+    // Add buttons
+    $c.find('.re-add-to-btn').on('click', function(e){
+      e.preventDefault();
+      var type = $(this).data('add');
+      var target = $c.find('.re-'+type+'-list');
+      target.append(addRecipientRow(type));
+    });
+
+    // Load existing values
+    var toList = d.to ? (Array.isArray(d.to) ? d.to : [d.to]) : [];
+    var ccList = d.cc ? (Array.isArray(d.cc) ? d.cc : [d.cc]) : [];
+    var bccList = d.bcc ? (Array.isArray(d.bcc) ? d.bcc : [d.bcc]) : [];
+
+    toList.forEach(function(v){ $c.find('.re-to-list').append(addRecipientRow('to', v)); });
+    ccList.forEach(function(v){ $c.find('.re-cc-list').append(addRecipientRow('cc', v)); });
+    bccList.forEach(function(v){ $c.find('.re-bcc-list').append(addRecipientRow('bcc', v)); });
+
+    // Add at least one TO field
+    if (toList.length === 0) {
+      $c.find('.re-to-list').append(addRecipientRow('to'));
+    }
+
     $c.find('.re-a-subj').val(d.subject || '');
     $c.find('.re-a-html').prop('checked', !!d.html);
     $c.find('.re-a-body').val(d.body || '');
-    $c.find('.re-a-from-name').val(d.from_name || '');
-    $c.find('.re-a-from-email').val(d.from_email || '');
-    $c.find('.re-a-cc').val(d.cc || '');
     $('#re-actions').append($c);
     syncEmpty('re-actions', 're-actions-empty');
   }
@@ -921,52 +1175,134 @@ jQuery(function ($) {
     syncEmpty('re-actions', 're-actions-empty');
   }
 
-  $('[data-add-action="send_email"]').on('click',   function () { addEmailCard(); });
-  $('[data-add-action="whatsapp"]').on('click',     function () { addWhatsappCard(); });
-  $('[data-add-action="http_request"]').on('click', function () { addHttpCard(); });
+  function addWaitCard(d) {
+    d = d || {};
+    var unitSel = '<select class="re-a-wait-unit" style="width:auto">'
+      + '<option value="minutes"' + ('minutes' === (d.unit||'minutes') ? ' selected' : '') + '>Minutes</option>'
+      + '<option value="hours"'   + ('hours'   === d.unit ? ' selected' : '') + '>Hours</option>'
+      + '<option value="days"'    + ('days'    === d.unit ? ' selected' : '') + '>Days</option>'
+      + '</select>';
+    var $c = $([
+      '<div class="re-act-card" data-type="wait">',
+        '<div class="re-act-card-head">⏱ Wait / Delay</div>',
+        '<div class="re-row" style="align-items:center;gap:12px;flex-wrap:nowrap">',
+          '<div class="re-field-group" style="margin:0;flex:0 0 140px">',
+            '<label>Duration</label>',
+            '<input type="number" class="re-a-wait-dur" min="1" placeholder="1" style="width:100%">',
+          '</div>',
+          '<div class="re-field-group" style="margin:0;flex:0 0 120px">',
+            '<label>Unit</label>',
+            unitSel,
+          '</div>',
+          '<p style="margin:18px 0 0;font-size:12px;color:#9ca3af;flex:1">',
+            'Actions below this card will be queued and run after the delay.',
+          '</p>',
+        '</div>',
+      '</div>',
+    ].join(''));
+    $c.find('.re-act-card-head').append(rmBtn());
+    $c.find('.re-a-wait-dur').val(d.duration || 1);
+    $('#re-actions').append($c);
+    syncEmpty('re-actions', 're-actions-empty');
+  }
+
+  function addUpdateOptionCard(d) {
+    d = d || {};
+    var $c = $([
+      '<div class="re-act-card" data-type="update_option">',
+        '<div class="re-act-card-head">🔧 Update WP Option</div>',
+        '<div class="re-act-grid-2">',
+          '<div class="re-field-group"><label>Option Key <small>(wp_options name)</small></label>',
+            '<input type="text" class="re-a-opt-key" placeholder="my_plugin_setting"></div>',
+          '<div class="re-field-group"><label>Value <small>(use {field_key} tokens)</small></label>',
+            '<input type="text" class="re-a-opt-val" placeholder="{email} or static value"></div>',
+        '</div>',
+      '</div>',
+    ].join(''));
+    $c.find('.re-act-card-head').append(rmBtn());
+    $c.find('.re-a-opt-key').val(d.option_key   || '');
+    $c.find('.re-a-opt-val').val(d.option_value || '');
+    $('#re-actions').append($c);
+    syncEmpty('re-actions', 're-actions-empty');
+  }
+
+  $('[data-add-action="send_email"]').on('click',     function () { addEmailCard(); });
+  $('[data-add-action="whatsapp"]').on('click',       function () { addWhatsappCard(); });
+  $('[data-add-action="http_request"]').on('click',   function () { addHttpCard(); });
+  $('[data-add-action="wait"]').on('click',           function () { addWaitCard(); });
+  $('[data-add-action="update_option"]').on('click',  function () { addUpdateOptionCard(); });
 
   /* ── Channel list for email action dropdown ── */
   var ahReChannels = <?php echo wp_json_encode( AH_Rules_Engine::get_email_channels_list() ); ?>;
 
   /* ── Populate existing data ── */
-  var existingConds   = <?php echo wp_json_encode( $editing ? (array) $editing->conditions : array() ); ?>;
-  var existingActions = <?php echo wp_json_encode( $editing ? (array) $editing->actions    : array() ); ?>;
+  var existingCondGroups = <?php echo wp_json_encode( $editing ? (array) $editing->conditions : array() ); ?>;
+  var existingActions    = <?php echo wp_json_encode( $editing ? (array) $editing->actions    : array() ); ?>;
+  var existingSettings   = <?php echo wp_json_encode( $editing ? (array) ( $editing->settings ?? array() ) : array() ); ?>;
 
-  existingConds.forEach(function (c) { addCondRow(c.field, c.operator, c.value); });
+  // Load condition groups (new format: [{match, conditions:[]}])
+  // Also handles legacy flat format by wrapping in a single group
+  if (existingCondGroups.length && existingCondGroups[0] && existingCondGroups[0].conditions) {
+    existingCondGroups.forEach(function(g) { addCondGroup(g); });
+  } else if (existingCondGroups.length && existingCondGroups[0] && existingCondGroups[0].field) {
+    // Legacy flat format
+    addCondGroup({ match: 'all', conditions: existingCondGroups });
+  }
+
+  // Load actions including new types
   existingActions.forEach(function (a) {
-    if      (a.type === 'send_email')   addEmailCard(a);
-    else if (a.type === 'whatsapp')     addWhatsappCard(a);
-    else if (a.type === 'http_request') addHttpCard(a);
+    if      (a.type === 'send_email')    addEmailCard(a);
+    else if (a.type === 'whatsapp')      addWhatsappCard(a);
+    else if (a.type === 'http_request')  addHttpCard(a);
+    else if (a.type === 'wait')          addWaitCard(a);
+    else if (a.type === 'update_option') addUpdateOptionCard(a);
   });
+
+  // Load settings into dedup/cooldown fields
+  if (existingSettings.dedup_key)          $('#re-s-dedup-key').val(existingSettings.dedup_key);
+  if (existingSettings.dedup_window_hours) $('#re-s-dedup-win').val(existingSettings.dedup_window_hours);
+  if (existingSettings.cooldown_minutes)   $('#re-s-cooldown').val(existingSettings.cooldown_minutes);
 
   /* ── Serialize on submit ── */
   $('#re-form').on('submit', function () {
-    var conds = [];
-    $('.re-cond-row').each(function () {
-      var f = $(this).find('.re-c-field').val().trim();
-      if (!f) return;
-      conds.push({ field: f, operator: $(this).find('.re-c-op').val(), value: $(this).find('.re-c-val:visible').val().trim() });
-    });
-    $('#re-cond-json').val(JSON.stringify(conds));
 
+    // Serialize condition groups
+    var groups = [];
+    $('#re-conds .re-cond-group').each(function() {
+      var match = $(this).find('.re-c-group-match').val() || 'all';
+      var conds = [];
+      $(this).find('.re-cond-row').each(function() {
+        var f = $(this).find('.re-c-field').val().trim();
+        if (!f) return;
+        conds.push({
+          field:    f,
+          operator: $(this).find('.re-c-op').val(),
+          value:    $(this).find('.re-c-val:visible').val().trim()
+        });
+      });
+      if (conds.length) groups.push({ match: match, conditions: conds });
+    });
+    $('#re-cond-json').val(JSON.stringify(groups));
+
+    // Serialize actions
     var acts = [];
     $('.re-act-card').each(function () {
       var type = $(this).data('type');
       if (type === 'send_email') {
+        var toList = [], ccList = [], bccList = [];
+        $(this).find('.re-to-list .re-a-to-val').each(function(){ var v=$(this).val().trim(); if(v) toList.push(v); });
+        $(this).find('.re-cc-list .re-a-cc-val').each(function(){ var v=$(this).val().trim(); if(v) ccList.push(v); });
+        $(this).find('.re-bcc-list .re-a-bcc-val').each(function(){ var v=$(this).val().trim(); if(v) bccList.push(v); });
         acts.push({
-          type:       'send_email',
-          channel_id: $(this).find('.re-a-channel-id').val(),
-          to:         $(this).find('.re-a-to').val().trim(),
-          subject:    $(this).find('.re-a-subj').val().trim(),
-          body:       $(this).find('.re-a-body').val(),
-          html:       $(this).find('.re-a-html').is(':checked') ? 1 : 0,
-          from_name:  $(this).find('.re-a-from-name').val().trim(),
-          from_email: $(this).find('.re-a-from-email').val().trim(),
-          cc:         $(this).find('.re-a-cc').val().trim(),
+          type: 'send_email', channel_id: $(this).find('.re-a-channel-id').val(),
+          to: toList, cc: ccList, bcc: bccList,
+          subject: $(this).find('.re-a-subj').val().trim(),
+          body:    $(this).find('.re-a-body').val(),
+          html:    $(this).find('.re-a-html').is(':checked') ? 1 : 0,
         });
       } else if (type === 'whatsapp') {
         acts.push({
-          type:       'whatsapp',
+          type: 'whatsapp',
           api_url:    $(this).find('.re-a-wa-url').val().trim(),
           auth_token: $(this).find('.re-a-wa-token').val().trim(),
           to_phone:   $(this).find('.re-a-wa-phone').val().trim(),
@@ -975,7 +1311,7 @@ jQuery(function ($) {
         });
       } else if (type === 'http_request') {
         acts.push({
-          type:         'http_request',
+          type: 'http_request',
           url:          $(this).find('.re-a-http-url').val().trim(),
           method:       $(this).find('.re-a-http-method').val(),
           auth_type:    $(this).find('.re-a-http-authtype').val(),
@@ -984,9 +1320,29 @@ jQuery(function ($) {
           content_type: $(this).find('.re-a-http-ct').val(),
           body:         $(this).find('.re-a-http-body').val().trim(),
         });
+      } else if (type === 'wait') {
+        acts.push({
+          type:     'wait',
+          duration: parseInt($(this).find('.re-a-wait-dur').val(), 10) || 1,
+          unit:     $(this).find('.re-a-wait-unit').val(),
+        });
+      } else if (type === 'update_option') {
+        var k = $(this).find('.re-a-opt-key').val().trim();
+        if (k) acts.push({
+          type:         'update_option',
+          option_key:   k,
+          option_value: $(this).find('.re-a-opt-val').val().trim(),
+        });
       }
     });
     $('#re-act-json').val(JSON.stringify(acts));
+
+    // Serialize settings
+    $('#re-settings-json').val(JSON.stringify({
+      dedup_key:          $('#re-s-dedup-key').val().trim(),
+      dedup_window_hours: parseInt($('#re-s-dedup-win').val(), 10) || 0,
+      cooldown_minutes:   parseInt($('#re-s-cooldown').val(), 10)  || 0,
+    }));
   });
 
 

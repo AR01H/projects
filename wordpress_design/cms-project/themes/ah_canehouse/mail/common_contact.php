@@ -66,10 +66,26 @@ function ch_handle_contact_submit(): void {
 		[ '%s', '%s', '%s', '%s', '%s', '%s', '%s' ]
 	);
 
-	// ── Send Email ────────────────────────────────────────────────────────────
+	// ── Send response immediately, then run Rules Engine in background ───────
 	$contact_settings = ch_get_contact_settings();
-	$recipient        = $contact_settings['recipient_email'] ?? get_option( 'admin_email' );
-	$subject_prefix   = $contact_settings['subject_prefix']  ?? '[The Cane House Enquiry]';
+	$thank_you = $contact_settings['thank_you_msg'] ?? "Thanks for your message! We'll be in touch shortly. Pressed Fresh. Served Cool. 🌿";
+
+	$response = wp_json_encode( [ 'success' => true, 'data' => [ 'message' => $thank_you ] ] );
+
+	// Close the HTTP connection so the user gets their response now.
+	header( 'Content-Type: application/json; charset=UTF-8' );
+	header( 'Content-Length: ' . strlen( $response ) );
+	header( 'Connection: close' );
+	ob_end_clean();
+	echo $response;
+	flush();
+	if ( function_exists( 'fastcgi_finish_request' ) ) {
+		fastcgi_finish_request();
+	}
+
+	// ── Everything below runs AFTER the browser receives the response ─────────
+	ignore_user_abort( true );
+	set_time_limit( 60 );
 
 	$enquiry_labels = [
 		'general'   => 'General Enquiry',
@@ -79,50 +95,16 @@ function ch_handle_contact_submit(): void {
 		'other'     => 'Something Else',
 	];
 
-	$subject = sprintf( '%s New enquiry from %s - %s', $subject_prefix, $name, $enquiry_labels[ $enquiry ] ?? $enquiry );
-
-	$body = "You have received a new enquiry via The Cane House website."
-		. "Name:         {$name}\n"
-		. "Email:        {$email}\n"
-		. "Phone:        {$phone}\n"
-		. "Enquiry Type: " . ( $enquiry_labels[ $enquiry ] ?? $enquiry ) . ""
-		. "Message:\n{$message}"
-		. "---\n"
-		. "Sent from " . home_url() . "\n"
-		. 'Time: ' . current_time( 'Y-m-d H:i:s' );
-
-	wp_mail(
-		$recipient,
-		$subject,
-		$body,
-		[
-			'Content-Type: text/plain; charset=UTF-8',
-			'Reply-To: ' . $name . ' <' . $email . '>',
-			'From: The Cane House <' . get_option( 'admin_email' ) . '>',
-		]
-	);
-
-	// ── Auto-reply to sender ─────────────────────────────────────────────────
-	$auto_reply_body = "Hi {$name},"
-		. "Thank you for getting in touch with The Cane House! 🌿"
-		. "We've received your message and will get back to you very soon - usually within a few hours."
-		. "In the meantime, if your enquiry is urgent, please call us directly:\n"
-		. "📞 " . ( ch_get_settings()['phone'] ?? CONTACT_NUMBER ) . ""
-		. "Pressed Fresh. Served Cool.\n"
-		. "The Cane House Team"
-		. "www.thecanehouse.co.uk";
-
-	wp_mail(
-		$email,
-		'Thanks for contacting The Cane House - we\'ll be in touch soon! 🌿',
-		$auto_reply_body,
-		[
-			'Content-Type: text/plain; charset=UTF-8',
-			'From: The Cane House <' . get_option( 'admin_email' ) . '>',
-		]
-	);
-
-	$thank_you = $contact_settings['thank_you_msg'] ?? "Thanks for your message! We'll be in touch shortly. Pressed Fresh. Served Cool. 🌿";
-
-	wp_send_json_success( [ 'message' => $thank_you ] );
+	if ( class_exists( 'AH_Rules_Engine' ) ) {
+		AH_Rules_Engine::evaluate( 'sugarcane_contact_form', [
+			'name'          => $name,
+			'email'         => $email,
+			'phone'         => $phone,
+			'enquiry'       => $enquiry,
+			'enquiry_label' => $enquiry_labels[ $enquiry ] ?? $enquiry,
+			'message'       => $message,
+			'site_url'      => home_url(),
+			'submitted_at'  => current_time( 'Y-m-d H:i:s' ),
+		], true );
+	}
 }

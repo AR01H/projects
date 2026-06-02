@@ -39,9 +39,9 @@ $more_label    = $args['more_label'] ?? 'View All Event Packages →';
 						<div class="ch-epc__icon"><?php echo $icon; ?></div>
 						<h3 class="ch-epc__title"><?php echo $name; ?></h3>
 						<p class="ch-epc__desc"><?php echo $desc; ?></p>
-						<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="ch-epc__link">
+						<!-- <a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="ch-epc__link">
 							Book This →
-						</a>
+						</a> -->
 					</div>
 				<?php endforeach; ?>
 			</div>

@@ -27,7 +27,6 @@ $occasions = [ 'Wedding / Walima', 'Mehndi / Sangeet', 'Eid Celebration', 'Birth
 				<p class="ch-bkb-sub"><?php echo esc_html( $wiz_sub ); ?></p>
 
 				<ul class="ch-bkb-features">
-					<li>🥤 Order multiple jugs &amp; sizes</li>
 					<li>🍋 Mix &amp; match your flavours</li>
 					<li>📅 Perfect for events &amp; parties</li>
 				</ul>
@@ -135,8 +134,8 @@ $occasions = [ 'Wedding / Walima', 'Mehndi / Sangeet', 'Eid Celebration', 'Birth
 
 				<div class="ch-bk-fields">
 					<div class="ch-bk-field">
-						<label>Occasion</label>
-						<select name="bk_occasion" class="ch-form-select">
+						<label>Occasion *</label>
+						<select name="bk_occasion" class="ch-form-select" required>
 							<option value="">Select occasion…</option>
 							<?php foreach ( $occasions as $occ ) : ?>
 								<option value="<?php echo esc_attr( $occ ); ?>"><?php echo esc_html( $occ ); ?></option>
@@ -145,17 +144,17 @@ $occasions = [ 'Wedding / Walima', 'Mehndi / Sangeet', 'Eid Celebration', 'Birth
 					</div>
 					<div class="ch-bk-field-row">
 						<div class="ch-bk-field">
-							<label>Event Date</label>
-							<input type="date" name="bk_date" class="ch-form-input">
+							<label>Event Date *</label>
+							<input type="date" name="bk_date" class="ch-form-input" required>
 						</div>
 						<div class="ch-bk-field">
-							<label>Approx. Guests</label>
-							<input type="number" name="bk_guests" class="ch-form-input" min="1" placeholder="e.g. 150">
+							<label>Approx. Guests *</label>
+							<input type="number" name="bk_guests" class="ch-form-input" min="1" placeholder="e.g. 150" required>
 						</div>
 					</div>
 					<div class="ch-bk-field">
-						<label>Location / Venue</label>
-						<input type="text" name="bk_location" class="ch-form-input" placeholder="City or venue name">
+						<label>Location / Venue *</label>
+						<input type="text" name="bk_location" class="ch-form-input" placeholder="City or venue name" required>
 					</div>
 					<div class="ch-bk-field">
 						<label>Anything else? <small>(optional)</small></label>

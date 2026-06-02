@@ -21,30 +21,16 @@ get_header();
 		$share_url   = rawurlencode( $permalink );
 	?>
 
-		<!-- ── Article Hero ───────────────────────────────────────────────────── -->
-		<div class="ch-page-hero ch-single-hero">
-			<div class="container">
-				<nav class="ch-single-breadcrumb" aria-label="Breadcrumb">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
-					<span aria-hidden="true">›</span>
-					<a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ?: home_url( '/blog/' ) ); ?>">Journal</a>
-					<?php if ( $primary_cat ) : ?>
-						<span aria-hidden="true">›</span>
-						<a href="<?php echo esc_url( get_category_link( $primary_cat->term_id ) ); ?>"><?php echo esc_html( $primary_cat->name ); ?></a>
-					<?php endif; ?>
-				</nav>
-
-				<?php if ( $primary_cat ) : ?>
-					<div class="ch-eyebrow"><?php echo esc_html( $primary_cat->name ); ?></div>
-				<?php endif; ?>
-
-				<h1 class="ch-page-hero__title"><?php the_title(); ?></h1>
-
-				<?php if ( has_excerpt() ) : ?>
-					<p class="ch-page-hero__desc"><?php echo esc_html( get_the_excerpt() ); ?></p>
-				<?php endif; ?>
-			</div>
-		</div>
+		<!-- ── Article Hero (Reusable Component) ─────────────────────────────── -->
+		<?php
+		$excerpt = has_excerpt() ? get_the_excerpt() : '';
+		get_template_part( 'components/page-hero', null, [
+			'tag'      => '',
+			'heading'  => get_the_title(),
+			'desc'     => $excerpt,
+			'modifier' => 'ch-page-hero--sugarcane',
+		] );
+		?>
 
 		<!-- ── Featured Image ─────────────────────────────────────────────────── -->
 		<?php if ( has_post_thumbnail() ) : ?>
@@ -73,70 +59,24 @@ get_header();
 				<?php endif; ?>
 
 				<div class="ch-single-share">
-					<span class="ch-single-share__label">Share</span>
-					<a class="ch-single-share__btn" target="_blank" rel="noopener" aria-label="Share on WhatsApp"
+					<a class="ch-single-share__btn" target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp"
 						href="<?php echo esc_url( 'https://wa.me/?text=' . $share_title . '%20' . $share_url ); ?>">💬</a>
-					<a class="ch-single-share__btn" target="_blank" rel="noopener" aria-label="Share on Facebook"
-						href="<?php echo esc_url( 'https://www.facebook.com/sharer/sharer.php?u=' . $share_url ); ?>">👍</a>
-					<a class="ch-single-share__btn" target="_blank" rel="noopener" aria-label="Share on X"
-						href="<?php echo esc_url( 'https://twitter.com/intent/tweet?text=' . $share_title . '&url=' . $share_url ); ?>">✦</a>
+					<a class="ch-single-share__btn" target="_blank" rel="noopener" aria-label="Share on Instagram" title="Share on Instagram"
+						href="<?php echo esc_url( 'https://www.instagram.com/' ); ?>">📷</a>
+					<button class="ch-single-share__btn" id="ch-native-share" aria-label="Native share" title="Share">📤</button>
 				</div>
 			</div>
 		</article>
 
-		<!-- ── Related Articles ───────────────────────────────────────────────── -->
-		<?php
-		$related_args = [
-			'post_type'           => 'post',
-			'post_status'         => 'publish',
-			'posts_per_page'      => 3,
-			'post__not_in'        => [ get_the_ID() ],
-			'orderby'             => 'rand',
-			'ignore_sticky_posts' => true,
-		];
-		if ( $primary_cat ) $related_args['cat'] = $primary_cat->term_id;
-		$related = new WP_Query( $related_args );
-		if ( $related->have_posts() ) :
-		?>
-			<section class="ch-single-related">
-				<div class="container">
-					<div class="ch-section-center fade-up">
-						<div class="section-tag">Keep Reading</div>
-						<h2 class="section-title">More from the <span class="accent">Journal</span></h2>
-					</div>
-				</div>
-					<div class="ch-posts-grid">
-						<?php while ( $related->have_posts() ) : $related->the_post(); ?>
-							<article class="ch-post-card fade-up">
-								<a href="<?php the_permalink(); ?>" class="ch-post-card__img<?php echo has_post_thumbnail() ? '' : ' ch-post-card__img--placeholder'; ?>"
-									<?php echo has_post_thumbnail() ? '' : 'style="display:flex;align-items:center;justify-content:center;min-height:200px;background:var(--ch-green-deep);font-size:3rem;"'; ?>>
-									<?php if ( has_post_thumbnail() ) the_post_thumbnail( 'ch-card' ); else echo '🥤'; ?>
-								</a>
-								<div class="ch-post-card__body">
-									<div class="ch-post-card__date"><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></div>
-									<h3 class="ch-post-card__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-									<p class="ch-post-card__excerpt"><?php echo esc_html( ch_excerpt() ); ?></p>
-									<a href="<?php the_permalink(); ?>" class="btn-lime-sm">Read Article →</a>
-								</div>
-							</article>
-						<?php endwhile; wp_reset_postdata(); ?>
-					</div>
-			</section>
-		<?php endif; ?>
-
-		<!-- ── CTA ────────────────────────────────────────────────────────────── -->
-		<section class="ch-inner-cta">
-			<div class="container">
-				<div class="ch-inner-cta__box fade-up">
-					<h2>Thirsty for the Real Thing?</h2>
-					<p>Book our live sugarcane juice stall for your next event, or explore our fresh-pressed menu.</p>
-					<div class="ch-inner-cta__btns">
-						<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="btn-lime">🎪 Book an Event</a>
-						<!-- <a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ?: home_url( '/blog/' ) ); ?>" class="btn-outline ch-btn-outline-light">← Back to Journal</a> -->
-					</div>
-				</div>
-			</div>
-		</section>
+		<!-- ── CTA (Reusable Component) ────────────────────────────────────────── -->
+		<?php get_template_part( 'components/cta-section', null, [
+			'tag'        => 'Ready for More?',
+			'heading'    => 'Thirsty for the <span class="accent">Real Thing?</span>',
+			'body'       => 'Book our live sugarcane juice stall for your next event, or explore our fresh-pressed menu.',
+			'btn_label'  => '🎪 Book an Event',
+			'btn_url'    => home_url( '/events/' ),
+			'show_phone' => false,
+		] ); ?>
 
 	<?php endwhile; ?>
 </main>

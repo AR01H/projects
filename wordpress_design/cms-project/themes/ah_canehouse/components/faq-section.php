@@ -18,10 +18,12 @@ $has_more   = $home_limit > 0 && count( $faqs_all ) > $home_limit;
 		<?php foreach ( $faqs as $i => $faq ) :
 			$faq = (array) $faq;
 		?>
-			<div class="ch-faq-item<?php echo $i === 0 ? ' active' : ''; ?>" role="listitem">
-				<button class="ch-faq-question" aria-expanded="<?php echo $i === 0 ? 'true' : 'false'; ?>">
+			<div class="ch-faq-item" role="listitem">
+				<button class="ch-faq-question" aria-expanded="false">
 					<?php echo esc_html( $faq['question'] ?? '' ); ?>
-					<div class="ch-faq-icon" aria-hidden="true">+</div>
+					<svg class="ch-faq-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="6 9 12 15 18 9"></polyline>
+					</svg>
 				</button>
 				<div class="ch-faq-answer">
 					<p><?php echo esc_html( $faq['answer'] ?? '' ); ?></p>

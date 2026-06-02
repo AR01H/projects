@@ -57,6 +57,11 @@ $allowed_html  = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [], 'br' 
 ?>
 
 <section class="<?php echo $section_class; ?>">
+	<span class="ch-ph-line ch-ph-line--1" aria-hidden="true"></span>
+	<span class="ch-ph-line ch-ph-line--2" aria-hidden="true"></span>
+	<span class="ch-ph-line ch-ph-line--3" aria-hidden="true"></span>
+	<span class="ch-ph-line ch-ph-line--4" aria-hidden="true"></span>
+	<span class="ch-ph-line ch-ph-line--5" aria-hidden="true"></span>
 	<div class="container">
 		<div class="ch-page-hero__inner fade-up">
 
