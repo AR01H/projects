@@ -1,6 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-// FAQs come from the CMS plugin (AH_Model_FAQs) via ch_get_faqs().
+// FAQs come from the CMS plugin (AH_Faqs_Model) via ch_get_faqs().
 $faqs_all   = ch_get_faqs( '', 100 );
 $home_limit = ch_home_limit( 'faqs', 6 );
 $faqs       = $home_limit > 0 ? array_slice( $faqs_all, 0, $home_limit ) : $faqs_all;

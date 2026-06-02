@@ -83,11 +83,16 @@ if (
       <div class="ah-card" style="margin-bottom:20px;">
         <div class="ah-card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
           <h2 style="margin:0;">CSV Columns - <?php echo esc_html( $current['label'] ); ?></h2>
-          <?php if ( $tab === 'reviews' ) :
-            $sample_url = get_template_directory_uri() . '/sample-reviews.csv';
+          <?php
+            // Show a "Download Sample CSV" button for any tab that ships a
+            // sample-{tab}.csv in the active theme (e.g. sample-reviews.csv,
+            // sample-faqs.csv).
+            $sample_file = 'sample-' . $tab . '.csv';
+            if ( file_exists( get_template_directory() . '/' . $sample_file ) ) :
+              $sample_url = get_template_directory_uri() . '/' . $sample_file;
           ?>
             <a href="<?php echo esc_url( $sample_url ); ?>"
-               download="sample-reviews.csv"
+               download="<?php echo esc_attr( $sample_file ); ?>"
                class="ah-btn ah-btn-secondary ah-btn-sm"
                style="font-size:12px;">
               <span class="dashicons dashicons-download" style="font-size:14px;line-height:1.6;margin-right:3px;"></span>

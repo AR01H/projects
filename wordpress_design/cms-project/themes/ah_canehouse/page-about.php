@@ -59,7 +59,8 @@ $team = ch_get_team_members();
 			<div class="section-tag">What Drives Us</div>
 			<h2 class="section-title">Our <span class="accent">Foundation</span></h2>
 		</div>
-		<div class="mission-grid">
+		<div class="mission-carousel" data-oc data-oc-autoplay="4500">
+			<div class="mission-grid" data-oc-track>
 			<?php foreach ( $mvv as $i => $card ) :
 				$card  = (array) $card;
 				$anims = [ 'fade-left', 'fade-up', 'fade-right' ];
@@ -71,7 +72,20 @@ $team = ch_get_team_members();
 					<p><?php echo esc_html( $card['text'] ?? '' ); ?></p>
 				</div>
 			<?php endforeach; ?>
-		</div>
+			</div>
+
+			<?php if ( count( $mvv ) > 1 ) : ?>
+				<div class="mission-nav" aria-hidden="true">
+					<button type="button" class="mission-arrow" data-oc-prev aria-label="Previous">‹</button>
+					<div class="mission-dots" data-oc-dots>
+						<?php foreach ( $mvv as $mi => $card ) : ?>
+							<button type="button" class="mission-dot<?php echo $mi === 0 ? ' active' : ''; ?>" data-go="<?php echo (int) $mi; ?>"></button>
+						<?php endforeach; ?>
+					</div>
+					<button type="button" class="mission-arrow" data-oc-next aria-label="Next">›</button>
+				</div>
+			<?php endif; ?>
+		</div><!-- /.mission-carousel -->
 	</div>
 </section>
 

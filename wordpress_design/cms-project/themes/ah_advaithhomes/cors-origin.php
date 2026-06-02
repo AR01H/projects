@@ -8,6 +8,7 @@ define('CORS_MODE', 'specific'); // 'all' or 'specific'
 define('CORS_ALLOWED_DOMAINS', [
     'wp_advithhomes_project.test',
     'unshaken-nutshell-aspire.ngrok-free.dev',
+    'thecanehouse.co.uk.test'
 ]);
 
 // -----------------------------------------------

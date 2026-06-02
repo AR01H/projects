@@ -21,6 +21,8 @@ $s = ch_get_settings();
 		get_template_part( 'components/history-info' );
 	?>
 
+	<?php get_template_part( 'components/feature-carousel' ); ?>
+
 	<?php if ( ch_section_visible( 'story_cards' ) ) : ?>
 		<?php get_template_part( 'components/story-cards' ); ?>
 	<?php endif; ?>

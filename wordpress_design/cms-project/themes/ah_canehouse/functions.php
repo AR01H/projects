@@ -286,8 +286,16 @@ add_action( 'after_setup_theme', function () {
 
 // ── Enqueue Assets ────────────────────────────────────────────────────────────
 add_action( 'wp_enqueue_scripts', function () {
-	$v   = wp_get_theme()->get( 'Version' );
-	$uri = get_template_directory_uri();
+	$theme_v = wp_get_theme()->get( 'Version' );
+	$dir     = get_template_directory();
+	$uri     = get_template_directory_uri();
+
+	// Version each local asset by its file mtime so edits always bust the
+	// browser cache (the static theme version never changed between edits).
+	$ver = static function ( string $rel ) use ( $dir, $theme_v ) {
+		$path = $dir . $rel;
+		return file_exists( $path ) ? (string) filemtime( $path ) : $theme_v;
+	};
 
 	wp_enqueue_style(
 		'ch-google-fonts',
@@ -296,17 +304,17 @@ add_action( 'wp_enqueue_scripts', function () {
 		null
 	);
 
-	wp_enqueue_style( 'ch-variables',  $uri . '/assets/css/variables.css',  [ 'ch-google-fonts' ], $v );
-	wp_enqueue_style( 'ch-base',       $uri . '/assets/css/base.css',       [ 'ch-variables' ],    $v );
-	wp_enqueue_style( 'ch-components', $uri . '/assets/css/components.css', [ 'ch-base' ],         $v );
-	wp_enqueue_style( 'ch-layout',     $uri . '/assets/css/layout.css',     [ 'ch-components' ],   $v );
-	wp_enqueue_style( 'ch-forms',      $uri . '/assets/css/forms.css',      [ 'ch-base' ],         $v );
-	wp_enqueue_style( 'ch-animations', $uri . '/assets/css/animations.css', [ 'ch-base' ],         $v );
-	wp_enqueue_style( 'ch-style',      get_stylesheet_uri(),                [ 'ch-layout' ],       $v );
+	wp_enqueue_style( 'ch-variables',  $uri . '/assets/css/variables.css',  [ 'ch-google-fonts' ], $ver( '/assets/css/variables.css' ) );
+	wp_enqueue_style( 'ch-base',       $uri . '/assets/css/base.css',       [ 'ch-variables' ],    $ver( '/assets/css/base.css' ) );
+	wp_enqueue_style( 'ch-components', $uri . '/assets/css/components.css', [ 'ch-base' ],         $ver( '/assets/css/components.css' ) );
+	wp_enqueue_style( 'ch-layout',     $uri . '/assets/css/layout.css',     [ 'ch-components' ],   $ver( '/assets/css/layout.css' ) );
+	wp_enqueue_style( 'ch-forms',      $uri . '/assets/css/forms.css',      [ 'ch-base' ],         $ver( '/assets/css/forms.css' ) );
+	wp_enqueue_style( 'ch-animations', $uri . '/assets/css/animations.css', [ 'ch-base' ],         $ver( '/assets/css/animations.css' ) );
+	wp_enqueue_style( 'ch-style',      get_stylesheet_uri(),                [ 'ch-layout' ],       $ver( '/style.css' ) );
 
-	wp_enqueue_script( 'ch-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $v, true );
-	wp_enqueue_script( 'ch-forms', $uri . '/assets/js/forms.js', [ 'ch-main' ], $v, true );
-	wp_enqueue_script( 'ch-history-info', $uri . '/assets/js/history-info.js', [ 'ch-main' ], $v, true );
+	wp_enqueue_script( 'ch-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $ver( '/assets/js/main.js' ), true );
+	wp_enqueue_script( 'ch-forms', $uri . '/assets/js/forms.js', [ 'ch-main' ], $ver( '/assets/js/forms.js' ), true );
+	wp_enqueue_script( 'ch-history-info', $uri . '/assets/js/history-info.js', [ 'ch-main' ], $ver( '/assets/js/history-info.js' ), true );
 
 	wp_localize_script( 'ch-forms', 'chTheme', [
 		'ajaxUrl' => admin_url( 'admin-ajax.php' ),

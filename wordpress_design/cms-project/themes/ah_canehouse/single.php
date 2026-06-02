@@ -104,6 +104,7 @@ get_header();
 						<div class="section-tag">Keep Reading</div>
 						<h2 class="section-title">More from the <span class="accent">Journal</span></h2>
 					</div>
+				</div>
 					<div class="ch-posts-grid">
 						<?php while ( $related->have_posts() ) : $related->the_post(); ?>
 							<article class="ch-post-card fade-up">
@@ -120,7 +121,6 @@ get_header();
 							</article>
 						<?php endwhile; wp_reset_postdata(); ?>
 					</div>
-				</div>
 			</section>
 		<?php endif; ?>
 
@@ -132,7 +132,7 @@ get_header();
 					<p>Book our live sugarcane juice stall for your next event, or explore our fresh-pressed menu.</p>
 					<div class="ch-inner-cta__btns">
 						<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="btn-lime">🎪 Book an Event</a>
-						<a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ?: home_url( '/blog/' ) ); ?>" class="btn-outline ch-btn-outline-light">← Back to Journal</a>
+						<!-- <a href="<?php echo esc_url( get_post_type_archive_link( 'post' ) ?: home_url( '/blog/' ) ); ?>" class="btn-outline ch-btn-outline-light">← Back to Journal</a> -->
 					</div>
 				</div>
 			</div>

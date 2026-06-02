@@ -27,61 +27,25 @@ $wp_cats       = get_categories( [ 'hide_empty' => true ] );
 
 <main class="ch-main" id="main-content">
 
-<!-- ── Page Header ────────────────────────────────────────────────────────── -->
-<div style="background: #f9fafb; padding: 4rem 2rem; border-bottom: 1px solid #e5e7eb;">
-	<div class="container" style="max-width: 900px;">
-		<h1 style="font-size: 2.5rem; margin: 0 0 0.5rem; color: #1f2937; font-weight: 700;">The Cane Journal</h1>
-		<p style="font-size: 1rem; color: #6b7280; margin: 0;">Health tips, recipes, and stories from South Asian juice culture.</p>
-	</div>
-</div>
+<!-- ── Page Header (reusable hero component) ───────────────────────────────── -->
+<?php get_template_part( 'components/page-hero', null, [
+	'tag'     => 'The Cane Journal',
+	'heading' => 'Fresh Reads from <em>The Cane House</em>',
+	'desc'    => 'Health tips, recipes, and stories from South Asian juice culture.',
+] ); ?>
 
-<!-- ── Category Filter ─────────────────────────────────────────────────────── -->
-<?php if ( $wp_cats ) : ?>
-<div style="background: #fff; border-bottom: 1px solid #e5e7eb; padding: 1.5rem 2rem;">
-	<div class="container" style="max-width: 900px;">
-		<div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-			<span style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #9ca3af; letter-spacing: 0.5px;">Filter:</span>
-			<a href="<?php echo esc_url( get_permalink() ); ?>"
-				style="
-					padding: 0.5rem 1rem;
-					border-radius: 6px;
-					font-size: 13px;
-					font-weight: 600;
-					text-decoration: none;
-					border: 1.5px solid <?php echo ! $active_cat ? '#84cc16' : '#d1d5db'; ?>;
-					color: <?php echo ! $active_cat ? '#fff' : '#6b7280'; ?>;
-					background: <?php echo ! $active_cat ? '#84cc16' : '#fff'; ?>;
-					cursor: pointer;
-					transition: all 0.2s;
-				">
-				All Articles
-			</a>
-			<?php foreach ( $wp_cats as $cat ) :
-				$is_active = ( $active_cat === $cat->slug );
-			?>
-			<a href="<?php echo esc_url( add_query_arg( 'category', $cat->slug, get_permalink() ) ); ?>"
-				style="
-					padding: 0.5rem 1rem;
-					border-radius: 6px;
-					font-size: 13px;
-					font-weight: 600;
-					text-decoration: none;
-					border: 1.5px solid <?php echo $is_active ? '#84cc16' : '#d1d5db'; ?>;
-					color: <?php echo $is_active ? '#fff' : '#6b7280'; ?>;
-					background: <?php echo $is_active ? '#84cc16' : '#fff'; ?>;
-					cursor: pointer;
-					transition: all 0.2s;
-				">
-				<?php echo esc_html( $cat->name ); ?>
-			</a>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</div>
-<?php endif; ?>
+<!-- ── Category Filter (reusable component) ────────────────────────────────── -->
+<!-- <?php get_template_part( 'components/post-filter', null, [
+	'categories' => $wp_cats,
+	'active'     => $active_cat,
+	'base_url'   => get_permalink(),
+	'all_label'  => 'All Articles',
+	'label'      => 'Filter',
+	'threshold'  => 3,   // more than 2 categories → compact dropdown
+] ); ?> -->
 
 <!-- ── Posts List ──────────────────────────────────────────────────────────── -->
-<div style="padding: 3rem 2rem; background: #fff;">
+<div style="padding: 1rem 0rem; background: #fff;">
 	<div class="container" style="max-width: 900px;">
 
 		<?php if ( $journal_query->have_posts() ) : ?>
@@ -113,9 +77,6 @@ $wp_cats       = get_categories( [ 'hide_empty' => true ] );
 								<?php echo esc_html( $cats[0]->name ); ?>
 							</span>
 						<?php endif; ?>
-						<span style="font-size: 12px; color: #9ca3af;">
-							<?php echo esc_html( get_the_date( 'j M Y' ) ); ?>
-						</span>
 					</div>
 
 					<h2 style="

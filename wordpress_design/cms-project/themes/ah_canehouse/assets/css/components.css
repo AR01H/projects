@@ -1204,7 +1204,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1.8rem;
+    margin-bottom: 0.8rem;
 }
 
 .ch-menu-num,
@@ -1367,6 +1367,9 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     margin-top: 2rem;
 }
 
+/* Carousel controls — only shown on mobile (see ≤960px) */
+.ch-benefits-nav { display: none; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.25rem; }
+
 .ch-benefit-item {
     display: flex;
     gap: 1.2rem;
@@ -1449,7 +1452,67 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 
 @media (max-width: 960px) {
     #benefits, .ch-section-benefits { padding: 4rem 1.5rem !important; }
+    #benefits { overflow-x: hidden; }                 /* contain the carousel bleed */
     .ch-benefits-inner { grid-template-columns: 1fr; gap: 3rem; }
+    /* CRITICAL: let the column shrink so the nowrap carousel scrolls instead of
+       stretching the whole section wider than the screen. */
+    .ch-benefits-inner > * { min-width: 0; }
+
+    /* Benefit cards become a ONE-card-at-a-time carousel (was a tall stack) */
+    .ch-benefits-list {
+        max-width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 0.9rem;
+        margin-top: 1.5rem;
+        margin-inline: -1.5rem;                 /* bleed to the section edges */
+        padding: 0.25rem 1.5rem 0.5rem;         /* keep the card aligned with the heading */
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .ch-benefits-list::-webkit-scrollbar { display: none; }
+    .ch-benefit-item {
+        flex: 0 0 100%;                         /* exactly one card per view */
+        width: 100%;
+        min-height: 130px;
+        align-items: center;                    /* centre icon + text in the taller card */
+        scroll-snap-align: center;
+    }
+    .ch-benefit-item:hover { transform: none; } /* no sideways shift inside a scroller */
+
+    /* Carousel controls */
+    .ch-benefits-nav { display: flex; }
+    .ch-benefits-arrow {
+        width: 38px; height: 38px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%;
+        border: 1.5px solid rgba(200, 232, 48, 0.3);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--ch-lime);
+        font-size: 1.35rem; line-height: 1;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .ch-benefits-arrow:hover {
+        background: var(--ch-lime); color: var(--ch-green-deep); border-color: var(--ch-lime);
+    }
+    .ch-benefits-dots { display: flex; align-items: center; gap: 0.4rem; }
+    .ch-benefits-dot {
+        width: 8px; height: 8px; padding: 0;
+        border: none; border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        cursor: pointer;
+        transition: background 0.25s, width 0.25s;
+    }
+    .ch-benefits-dot.active { background: var(--ch-lime); width: 22px; border-radius: 5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ch-benefits-list { scroll-behavior: auto; }
 }
 
 /* ── Story Section ──────────────────────────────────────────────────────────── */
@@ -2457,6 +2520,57 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 .mission-card h3 { font-family: var(--ch-font-display); font-weight: 900; color: var(--ch-green-deep); margin-bottom: 0.8rem; font-size: 1.3rem; }
 .mission-card p  { color: var(--ch-text-muted); font-size: 0.95rem; line-height: 1.7; }
 
+/* Mission carousel controls — only shown on the mobile carousel */
+.mission-nav { display: none; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+
+@media (max-width: 768px) {
+    .about-mission { overflow-x: hidden; }
+    .mission-carousel { min-width: 0; }
+
+    /* Mission/Vision/Values become a one-card-at-a-time carousel (fixes the
+       grid min-width overflow that pushed cards off the screen). */
+    .mission-grid {
+        display: flex;
+        grid-template-columns: none;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 1rem;
+        margin-top: 2rem;
+        max-width: 100%;
+        padding-bottom: 0.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .mission-grid::-webkit-scrollbar { display: none; }
+    .mission-card {
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+    }
+    .mission-card:hover { transform: none; box-shadow: none; border-color: var(--ch-green-pale); }
+
+    .mission-nav { display: flex; }
+    .mission-arrow {
+        width: 38px; height: 38px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%;
+        border: 1.5px solid var(--ch-green-pale);
+        background: #fff; color: var(--ch-green-deep);
+        font-size: 1.35rem; line-height: 1; cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .mission-arrow:hover { background: var(--ch-green-deep); color: #fff; border-color: var(--ch-green-deep); }
+    .mission-dots { display: flex; align-items: center; gap: 0.4rem; }
+    .mission-dot {
+        width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%;
+        background: rgba(45, 90, 27, 0.2); cursor: pointer;
+        transition: background 0.25s, width 0.25s;
+    }
+    .mission-dot.active { background: var(--ch-green-deep); width: 22px; border-radius: 5px; }
+}
+
 /* Team */
 .team-grid {
     display: grid;
@@ -2686,7 +2800,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 .ch-post-card:hover .ch-post-card__img img { transform: scale(1.04); }
 
 .ch-post-card__body {
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
 }
@@ -3929,6 +4043,7 @@ body.has-ticker .ch-nav { top: 32px; }
         margin: 0 auto 2.5rem;
         padding-bottom: 0;
         max-width: 100%;
+        --sc-ring-r: 106px;   /* ring radius - keep in sync with ::before (2× = diameter) */
     }
 
     /* Circular guide ring - replaces horizontal connecting line */
@@ -3952,11 +4067,22 @@ body.has-ticker .ch-nav { top: 32px; }
     .ch-sc-tabs::after { display: none; }
     .ch-sc-tab::after  { display: none; }
 
-    /* Each tab: absolutely placed around the circle */
-    /* R=106px  |  icon=48px (half=24px)  |  tab-width=68px (half=34px) */
-    /* top = calc(50% + cy - 24px)  |  left = calc(50% + cx - 34px)     */
+    /* Each tab: evenly placed around the circle for ANY number of cards.
+       The icon centre (34px,24px) is pinned to the ring centre, rotated to its
+       slot (i/n of 360deg from the top, clockwise), pushed out by the radius,
+       then counter-rotated so the icon + label stay upright.
+       Active/hover scale lives on .ch-sc-tab-icon, so this transform is free. */
     .ch-sc-tab {
         position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -34px;   /* half tab width  → icon centre on x */
+        margin-top: -24px;    /* half icon height → icon centre on y */
+        transform-origin: 34px 24px;
+        transform:
+            rotate( calc( var(--ch-sc-i, 0) * 360deg / var(--ch-sc-n, 1) ) )
+            translateY( calc( -1 * var(--sc-ring-r, 106px) ) )
+            rotate( calc( -1 * var(--ch-sc-i, 0) * 360deg / var(--ch-sc-n, 1) ) );
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -3989,16 +4115,6 @@ body.has-ticker .ch-nav { top: 32px; }
         white-space: normal;
         word-break: break-word;
     }
-
-    /* 7-step lifecycle - clockwise from top, R=106px */
-    /* formula: top = calc(50% + cy - 24px), left = calc(50% + cx - 34px) */
-    .ch-sc-tab:nth-child(1) { top: calc(50% - 130px); left: calc(50% - 34px);  } /* top         cx=0,   cy=-106 */
-    .ch-sc-tab:nth-child(2) { top: calc(50% -  90px); left: calc(50% +  49px); } /* top-right   cx=83,  cy=-66  */
-    .ch-sc-tab:nth-child(3) { top: calc(50% +   0px); left: calc(50% +  69px); } /* right       cx=103, cy=24   */
-    .ch-sc-tab:nth-child(4) { top: calc(50% +  72px); left: calc(50% +  12px); } /* bottom-right cx=46, cy=96   */
-    .ch-sc-tab:nth-child(5) { top: calc(50% +  72px); left: calc(50% -  80px); } /* bottom-left cx=-46, cy=96   */
-    .ch-sc-tab:nth-child(6) { top: calc(50% +   0px); left: calc(50% - 137px); } /* left        cx=-103,cy=24   */
-    .ch-sc-tab:nth-child(7) { top: calc(50% -  90px); left: calc(50% - 117px); } /* top-left    cx=-83, cy=-66  */
 
     .ch-sc-panel-heading { font-size: 1.3rem; }
     .ch-sc-progress { display: none; }
@@ -4726,8 +4842,8 @@ body.has-ticker .ch-nav { top: 32px; }
 
 /* Footer logo image size override */
 .ch-footer__logo-link img {
-    height: 64px !important;
-    width: 64px !important;
+    height: 130px !important;
+    width: 130px !important;
 }
 
 .ch-footer__brand-desc {
@@ -5095,7 +5211,7 @@ body.has-ticker .ch-nav { top: 32px; }
         text-align: center;
     }
     .ch-footer__logo-link { font-size: 1rem; justify-content: center; }
-    .ch-footer__logo-link img { height: 52px !important; width: 52px !important; }
+    .ch-footer__logo-link img { height: 110px !important; width: 110px !important; }
     .ch-footer__brand-desc { max-width: 320px; margin-inline: auto; }
     .ch-footer__socials { justify-content: center; }
 
@@ -7881,4 +7997,290 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
     .ch-hist-tick::after { display: none; }
 
     .ch-turn-leaf { display: none; }
+}
+/* ═══════════════════════════════════════════════════════════════════════════
+   FEATURE CAROUSEL (reusable)  —  .ch-fc-*
+   Mixed-variant cards in a swipeable, snapping track. See components/feature-carousel.php
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ch-fc-section {
+    padding: 5rem 0;
+    background: #fff;
+    overflow: hidden;
+}
+.ch-fc-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+.ch-fc-subtitle {
+    color: var(--ch-text-muted);
+    margin-top: 0.6rem;
+    max-width: 560px;
+    line-height: 1.7;
+}
+.ch-fc-arrows { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.ch-fc-arrow {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid rgba(45, 90, 27, 0.2);
+    background: #fff;
+    color: var(--ch-green-deep);
+    font-size: 1.5rem; line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s;
+}
+.ch-fc-arrow:hover:not(:disabled) {
+    background: var(--ch-green-deep);
+    color: var(--ch-lime);
+    border-color: var(--ch-green-deep);
+    transform: translateY(-2px);
+}
+.ch-fc-arrow:disabled { opacity: 0.3; cursor: default; }
+
+/* Track: full-bleed, first card aligned to the container edge */
+.ch-fc { position: relative; }
+.ch-fc-track {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 0.5rem max(1.25rem, calc((100% - var(--ch-container, 1200px)) / 2 + 1rem)) 1.5rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+}
+.ch-fc-track::-webkit-scrollbar { display: none; }
+.ch-fc-track.is-dragging { cursor: grabbing; scroll-behavior: auto; scroll-snap-type: none; }
+
+/* ── Card base ──────────────────────────────────────────────────────────── */
+.ch-fc-card {
+    flex: 0 0 auto;
+    width: min(82vw, 320px);
+    min-height: 300px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid rgba(45, 90, 27, 0.1);
+    box-shadow: 0 8px 30px rgba(45, 90, 27, 0.07);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+.ch-fc-card:hover { transform: translateY(-6px); box-shadow: 0 16px 42px rgba(45, 90, 27, 0.15); }
+.ch-fc-card__body {
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+}
+.ch-fc-card__title {
+    font-family: var(--ch-font-display);
+    font-size: 1.2rem; font-weight: 800;
+    color: var(--ch-text-dark);
+    line-height: 1.25; margin: 0;
+}
+.ch-fc-card__text {
+    font-size: 0.9rem;
+    color: var(--ch-text-muted);
+    line-height: 1.65; margin: 0;
+}
+.ch-fc-link {
+    margin-top: auto;
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-weight: 700; font-size: 0.85rem;
+    color: var(--ch-green-deep);
+    text-decoration: none;
+}
+.ch-fc-link span { transition: transform 0.2s; }
+.ch-fc-card:hover .ch-fc-link span { transform: translateX(4px); }
+
+/* icon chip */
+.ch-fc-card__icon {
+    width: 54px; height: 54px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 14px;
+    font-size: 1.65rem;
+    background: var(--ch-green-bg, #eef6e3);
+    box-shadow: inset 0 0 0 2px rgba(200, 232, 48, 0.45);
+}
+.ch-fc-card__icon--lg {
+    width: 64px; height: 64px; font-size: 2.1rem;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* ── Variant: gradient ─────────────────────────────────────────────────── */
+.ch-fc-card--gradient {
+    background: linear-gradient(160deg, var(--ch-green-deep) 0%, #3d7a22 70%, #4a8c2a 100%);
+    border-color: transparent;
+    color: #fff;
+}
+.ch-fc-card--gradient .ch-fc-card__title { color: #fff; }
+.ch-fc-card--gradient .ch-fc-card__text { color: rgba(255, 255, 255, 0.85); }
+.ch-fc-card--gradient .ch-fc-link { color: var(--ch-lime); }
+
+/* ── Variant: image ────────────────────────────────────────────────────── */
+.ch-fc-card--image .ch-fc-card__media {
+    position: relative;
+    height: 170px;
+    background: var(--ch-green-deep);
+    flex-shrink: 0;
+}
+.ch-fc-card--image .ch-fc-card__media img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+}
+.ch-fc-card--image .ch-fc-card__media::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.28), transparent 55%);
+}
+
+/* ── Variant: stat ─────────────────────────────────────────────────────── */
+.ch-fc-card--stat { background: linear-gradient(160deg, #f0fdf4 0%, #fff 70%); }
+.ch-fc-card__stat {
+    font-family: var(--ch-font-display);
+    font-size: 3rem; font-weight: 900; line-height: 1;
+    background: linear-gradient(120deg, var(--ch-green-deep), #6fae2e);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: var(--ch-green-deep);
+}
+.ch-fc-card__stat-label {
+    font-size: 0.7rem; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ch-green-deep);
+    margin-bottom: 0.2rem;
+}
+
+/* ── Variant: quote ────────────────────────────────────────────────────── */
+.ch-fc-card--quote {
+    background: var(--ch-green-deep);
+    border-color: transparent;
+}
+.ch-fc-card--quote .ch-fc-card__body { justify-content: center; gap: 0.4rem; }
+.ch-fc-card__quote-mark {
+    font-family: var(--ch-font-display);
+    font-size: 3.5rem; line-height: 0.3;
+    color: var(--ch-lime);
+}
+.ch-fc-card__quote {
+    font-size: 1.05rem; font-style: italic;
+    color: #fff; line-height: 1.5; margin: 0;
+}
+.ch-fc-card__cite {
+    font-size: 0.8rem; font-style: normal; font-weight: 700;
+    color: var(--ch-lime);
+}
+
+/* ── Dots ──────────────────────────────────────────────────────────────── */
+.ch-fc-dots {
+    display: flex; justify-content: center; gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+.ch-fc-dot {
+    width: 8px; height: 8px;
+    border: none; border-radius: 50%;
+    background: rgba(45, 90, 27, 0.2);
+    cursor: pointer; padding: 0;
+    transition: background 0.25s, width 0.25s;
+}
+.ch-fc-dot.active { background: var(--ch-lime); width: 22px; border-radius: 5px; }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .ch-fc-section { padding: 3.5rem 0; }
+    .ch-fc-arrows { display: none; }   /* swipe instead */
+    .ch-fc-card { width: 80vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ch-fc-track { scroll-behavior: auto; }
+    .ch-fc-card, .ch-fc-link span, .ch-fc-arrow, .ch-fc-dot { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   POST / CATEGORY FILTER (reusable)  —  .ch-filter
+   Chips for a few categories, compact dropdown for many. See components/post-filter.php
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ch-filter {
+    background: #fff;
+    border-bottom: 1px solid var(--ch-green-pale, #e5e7eb);
+    padding: 1rem 1.5rem;
+}
+.ch-filter__inner {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: nowrap;
+    max-width: 900px;
+    margin-inline: auto;
+}
+.ch-filter__label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ch-text-muted, #9ca3af);
+    flex-shrink: 0;
+}
+
+/* Chips — single non-wrapping row, scrolls if needed (never wastes vertical space) */
+.ch-filter__chips {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+}
+.ch-filter__chips::-webkit-scrollbar { display: none; }
+.ch-filter__chip {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--ch-text-muted, #6b7280);
+    background: #fff;
+    border: 1.5px solid var(--ch-green-pale, #d1d5db);
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.ch-filter__chip:hover { border-color: var(--ch-lime); color: var(--ch-green-deep); }
+.ch-filter__chip.is-active {
+    background: var(--ch-lime);
+    border-color: var(--ch-lime);
+    color: var(--ch-green-deep);
+}
+
+/* Dropdown — compact, used when categories exceed the threshold */
+.ch-filter__select {
+    flex: 0 1 280px;
+    max-width: 100%;
+    padding: 0.5rem 2rem 0.5rem 0.9rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--ch-green-pale, #d1d5db);
+    background-color: #fff;
+    color: var(--ch-text-dark, #1f2937);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2384cc16' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+}
+.ch-filter__select:focus { outline: none; border-color: var(--ch-lime); }
+
+@media (max-width: 640px) {
+    .ch-filter { padding: 0.85rem 1rem; }
+    .ch-filter__select { flex: 1 1 auto; }
 }

@@ -24,12 +24,14 @@ $subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pres
 	</div>
 
 		<!-- ── Tab cards ────────────────────────────────────────────────────── -->
-		<div class="ch-sc-tabs fade-up" role="tablist" aria-label="Sugarcane story steps">
+		<div class="ch-sc-tabs fade-up" role="tablist" aria-label="Sugarcane story steps"
+			style="--ch-sc-n: <?php echo max( 1, count( $cards ) ); ?>;">
 			<?php foreach ( $cards as $i => $card ) :
 				$card = (array) $card;
 				$id   = esc_attr( $card['id'] ?? 'card-' . $i );
 			?>
 				<button class="ch-sc-tab<?php echo $i === 0 ? ' active' : ''; ?>"
+					style="--ch-sc-i: <?php echo $i; ?>;"
 					role="tab"
 					id="ch-sc-tab-<?php echo $id; ?>"
 					aria-selected="<?php echo $i === 0 ? 'true' : 'false'; ?>"

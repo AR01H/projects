@@ -33,8 +33,8 @@ if ( empty( $cols ) ) {
 						<img src="<?php echo esc_url( $logo_url ); ?>" alt="The Cane House">
 					<?php else : ?>
 						<div class="ch-nav__logo-mark">🌿</div>
+						<span class="ch-nav__logo-text">THE CANE <em>HOUSE</em></span>
 					<?php endif; ?>
-					<span class="ch-nav__logo-text">THE CANE <em>HOUSE</em></span>
 				</a>
 
 				<p class="ch-footer__brand-desc">

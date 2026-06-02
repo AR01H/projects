@@ -743,8 +743,66 @@
         });
     }
 
+    // ── Generic one-card carousel (data-attribute driven, reusable) ─────────────
+    // Markup:
+    //   <div data-oc data-oc-autoplay="4000">
+    //     <div data-oc-track> <slide/> <slide/> … </div>
+    //     <div data-oc-dots> <button data-go="0"></button> … </div>   (optional)
+    //     <button data-oc-prev></button> <button data-oc-next></button> (optional)
+    //   </div>
+    // The slides are the direct children of [data-oc-track]. Autoplay runs only
+    // while the track actually overflows (i.e. the mobile carousel is active).
+    function initOneCardCarousels() {
+        document.querySelectorAll('[data-oc]').forEach(function (root) {
+            if (root.dataset.ocInit) return;
+            var track = root.querySelector('[data-oc-track]');
+            if (!track) return;
+            var items = Array.prototype.slice.call(track.children);
+            if (items.length < 2) return;
+            root.dataset.ocInit = '1';
+
+            var dots = Array.prototype.slice.call(root.querySelectorAll('[data-oc-dots] [data-go]'));
+            var prev = root.querySelector('[data-oc-prev]');
+            var next = root.querySelector('[data-oc-next]');
+            var auto = parseInt(root.getAttribute('data-oc-autoplay') || '0', 10) || 0;
+            var cur = 0, timer = null;
+
+            function step()    { return (items[1].offsetLeft - items[0].offsetLeft) || track.clientWidth; }
+            function isOn()    { return track.scrollWidth > track.clientWidth + 4; }
+            function setDots() { dots.forEach(function (d, k) { d.classList.toggle('active', k === cur); }); }
+            function go(i, smooth) {
+                cur = (i + items.length) % items.length;
+                track.scrollTo({ left: items[cur].offsetLeft - items[0].offsetLeft, behavior: smooth === false ? 'auto' : 'smooth' });
+                setDots();
+            }
+            function start() { stop(); if (auto > 0 && isOn()) timer = setInterval(function () { go(cur + 1); }, auto); }
+            function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+
+            if (prev) prev.addEventListener('click', function () { go(cur - 1); start(); });
+            if (next) next.addEventListener('click', function () { go(cur + 1); start(); });
+            dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); start(); }); });
+
+            var raf;
+            track.addEventListener('scroll', function () {
+                if (raf) cancelAnimationFrame(raf);
+                raf = requestAnimationFrame(function () {
+                    cur = Math.max(0, Math.min(items.length - 1, Math.round(track.scrollLeft / step())));
+                    setDots();
+                });
+            }, { passive: true });
+
+            ['pointerdown', 'touchstart', 'mouseenter'].forEach(function (e) { track.addEventListener(e, stop, { passive: true }); });
+            ['pointerup', 'touchend', 'mouseleave'].forEach(function (e) { track.addEventListener(e, start, { passive: true }); });
+            window.addEventListener('resize', function () { setDots(); start(); });
+
+            setDots();
+            start();
+        });
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
+        initOneCardCarousels();
         initNavScroll();
         initNavPriority();
         initMobileNav();

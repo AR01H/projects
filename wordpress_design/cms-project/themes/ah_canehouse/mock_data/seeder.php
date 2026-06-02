@@ -352,7 +352,7 @@ class CH_Theme_Seeder {
 		return [ 'inserted' => $inserted ];
 	}
 
-	// seed_faqs() removed - FAQs are managed by the CMS plugin (AH_Model_FAQs).
+	// seed_faqs() removed - FAQs are managed by the CMS plugin (AH_Faqs_Model).
 	// ch_get_faqs() reads them from the plugin; the theme does not seed them.
 
 	private static function seed_news_bar(): array {
