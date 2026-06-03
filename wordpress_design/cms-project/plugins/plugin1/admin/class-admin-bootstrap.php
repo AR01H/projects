@@ -8,6 +8,7 @@ class AH_Admin_Bootstrap {
 		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
 		add_action( 'admin_bar_menu', array( self::class, 'clean_admin_bar' ), 999 );
 		add_action( 'admin_post_ah_cms_nav', array( self::class, 'handle_navigation' ) );
+		add_action( 'admin_post_ah_save_notice', array( self::class, 'handle_notice_save' ) );
 		add_action( 'add_meta_boxes', array( self::class, 'register_post_metaboxes' ) );
 		add_action( 'save_post', array( self::class, 'save_post_metabox' ), 10, 1 );
 		AH_Ajax_Handlers::init();
@@ -546,6 +547,26 @@ CSS;
 			$taxonomy_ids = array_map( 'intval', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
 			( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', $post_id, $taxonomy_ids );
 		}
+	}
+
+	public static function handle_notice_save(): void {
+		check_admin_referer( 'ah_notices_save' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+
+		require_once AH_THEME_DIR . '/helper/class-notice-helper.php';
+
+		AH_Notice_Helper::save_notice( [
+			'enabled'        => ! empty( $_POST['notice_enabled'] ),
+			'id'             => sanitize_key( $_POST['notice_id'] ?? 'default' ),
+			'title'          => sanitize_text_field( wp_unslash( $_POST['notice_title'] ?? 'Important Update' ) ),
+			'message'        => sanitize_text_field( wp_unslash( $_POST['notice_message'] ?? '' ) ),
+			'image'          => esc_url_raw( wp_unslash( $_POST['notice_image'] ?? '' ) ),
+			'button_label'   => sanitize_text_field( wp_unslash( $_POST['notice_button_label'] ?? '' ) ),
+			'button_url'     => esc_url_raw( wp_unslash( $_POST['notice_button_url'] ?? '' ) ),
+		] );
+
+		wp_redirect( add_query_arg( [ 'page' => 'ah-notices', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
+		exit;
 	}
 
 	private static function clean_nav_url( string $url, string $fallback = '' ): string {

@@ -296,6 +296,28 @@ details.re-adv .re-adv-body{padding:12px}
 	</div>
 </div>
 
+<!-- Form Field Reference Helper (visible when trigger = form_submit) -->
+<?php $_ffh_forms = class_exists( 'AH_Form_Builder' ) ? AH_Form_Builder::get_all() : array(); ?>
+<?php if ( $_ffh_forms ) : ?>
+<div class="re-section" id="re-form-field-helper" style="<?php echo 'form_submit' !== $editing->trigger_name ? 'display:none;' : ''; ?>background:#f0f9ff;border-color:#bae6fd">
+	<div class="re-section-title" style="color:#0369a1"><span>📋 Form Field Reference</span></div>
+	<p style="font-size:12px;color:#0c4a6e;margin:-4px 0 12px">
+		Pick a form to see its field keys. <strong>Click any chip</strong> to insert it into the last focused condition field — or copies to clipboard. Use <code>{field_key}</code> as tokens in action body/subject. Add condition <code>form_id = N</code> to target only one specific form.
+	</p>
+	<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+		<select id="re-form-picker" style="padding:7px 12px;border:1.5px solid #7dd3fc;border-radius:6px;font-size:13px;background:#fff;min-width:220px">
+			<option value="">-- Select a form to inspect --</option>
+			<?php foreach ( $_ffh_forms as $_ffh_f ) : ?>
+			<option value="<?php echo (int) $_ffh_f->id; ?>"><?php echo esc_html( $_ffh_f->name ); ?> (ID #<?php echo (int) $_ffh_f->id; ?>)</option>
+			<?php endforeach; ?>
+		</select>
+	</div>
+	<div id="re-field-chips" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px;align-items:center">
+		<span style="font-size:12px;color:#7dd3fc;font-style:italic">Select a form above to see its field keys...</span>
+	</div>
+</div>
+<?php endif; ?>
+
 <!-- Conditions -->
 <div class="re-section">
 	<div class="re-section-title">
@@ -735,19 +757,60 @@ $_last_tf        = sanitize_text_field( $_GET['tf'] ?? '' );
 // LOGS VIEW
 // ════════════════════════════════════════════════════════════
 if ( 'logs' === $view ) :
-	$log_paged  = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
-	$log_limit  = 50;
-	$log_offset = ( $log_paged - 1 ) * $log_limit;
-	$logs       = AH_Rules_Engine::get_logs( $log_limit, $log_offset );
-	$total_logs = AH_Rules_Engine::count_logs();
+	$log_paged   = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
+	$log_limit   = 10;
+	$log_offset  = ( $log_paged - 1 ) * $log_limit;
+	$log_filters = array(
+		'status'      => sanitize_key( $_GET['log_status'] ?? 'all' ),
+		'action_type' => sanitize_key( $_GET['log_action'] ?? 'all' ),
+		'search'      => sanitize_text_field( $_GET['log_search'] ?? '' ),
+	);
+	$logs        = AH_Rules_Engine::get_logs_filtered( $log_filters, $log_limit, $log_offset );
+	$total_logs  = AH_Rules_Engine::count_logs_filtered( $log_filters );
 	$total_pages = (int) ceil( $total_logs / $log_limit );
+	$base_url    = admin_url( 'admin.php?page=ah-rules-engine&view=logs' );
+	$filter_qs   = array_filter( array(
+		'log_status' => ( 'all' !== $log_filters['status']      ) ? $log_filters['status']      : '',
+		'log_action' => ( 'all' !== $log_filters['action_type'] ) ? $log_filters['action_type'] : '',
+		'log_search' => $log_filters['search'],
+	) );
 ?>
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
-	<p style="color:#6b7280;font-size:13px;margin:0;flex:1">
-		Every rule action creates a log entry. Failed entries with fewer than <strong><?php echo esc_html( AH_Rules_Engine::get_config()['retry_max_attempts'] ); ?> attempts</strong> are automatically retried by the cron.
-	</p>
-	<span style="font-size:12px;color:#9ca3af"><?php echo number_format( $total_logs ); ?> total entries</span>
-</div>
+
+<!-- Filters bar -->
+<form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
+	<input type="hidden" name="page"  value="ah-rules-engine">
+	<input type="hidden" name="view"  value="logs">
+
+	<select name="log_status" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff">
+		<option value="all"     <?php selected( $log_filters['status'], 'all' );     ?>>All Statuses</option>
+		<option value="pending" <?php selected( $log_filters['status'], 'pending' ); ?>>⏳ Pending</option>
+		<option value="sent"    <?php selected( $log_filters['status'], 'sent' );    ?>>✅ Sent</option>
+		<option value="failed"  <?php selected( $log_filters['status'], 'failed' );  ?>>❌ Failed</option>
+		<option value="unsent"  <?php selected( $log_filters['status'], 'unsent' );  ?>>⛔ Unsent</option>
+	</select>
+
+	<select name="log_action" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff">
+		<option value="all"          <?php selected( $log_filters['action_type'], 'all' );          ?>>All Actions</option>
+		<option value="send_email"   <?php selected( $log_filters['action_type'], 'send_email' );   ?>>📧 Email</option>
+		<option value="whatsapp"     <?php selected( $log_filters['action_type'], 'whatsapp' );     ?>>💬 WhatsApp</option>
+		<option value="http_request" <?php selected( $log_filters['action_type'], 'http_request' ); ?>>🌐 HTTP</option>
+	</select>
+
+	<input type="text" name="log_search" value="<?php echo esc_attr( $log_filters['search'] ); ?>"
+		placeholder="Search rule / trigger…"
+		style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:180px">
+
+	<button type="submit" class="ah-btn ah-btn-primary ah-btn-sm">Filter</button>
+	<?php if ( $filter_qs ) : ?>
+	<a href="<?php echo esc_url( $base_url ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
+	<?php endif; ?>
+
+	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo number_format( $total_logs ); ?> entries</span>
+</form>
+
+<p style="color:#6b7280;font-size:12px;margin:0 0 10px">
+	Failed entries with fewer than <strong><?php echo esc_html( AH_Rules_Engine::get_config()['retry_max_attempts'] ); ?> attempts</strong> are automatically retried by the cron.
+</p>
 
 <?php if ( $logs ) : ?>
 <div class="ah-card">
@@ -887,9 +950,10 @@ if ( 'logs' === $view ) :
 </div>
 
 <?php if ( $total_pages > 1 ) : ?>
-<div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap">
+<div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;align-items:center">
+	<span style="font-size:12px;color:#6b7280">Page <?php echo $log_paged; ?> of <?php echo $total_pages; ?></span>
 	<?php for ( $p = 1; $p <= $total_pages; $p++ ) : ?>
-	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'logs', 'paged' => $p ), admin_url( 'admin.php' ) ) ); ?>"
+	<a href="<?php echo esc_url( add_query_arg( array_merge( $filter_qs, array( 'page' => 'ah-rules-engine', 'view' => 'logs', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn <?php echo $p === $log_paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?> ah-btn-sm"><?php echo $p; ?></a>
 	<?php endfor; ?>
 </div>
@@ -912,10 +976,59 @@ jQuery(function ($) {
 
   /* ── Trigger name → code preview ── */
   $('#re-trigger-name').on('input', function () {
-    $('#re-code-trigger').text($(this).val() || 'your_trigger');
+    var v = $(this).val() || 'your_trigger';
+    $('#re-code-trigger').text(v);
+    $('#re-form-field-helper').toggle(v.trim() === 'form_submit');
   });
   $('.re-preset-chip').on('click', function () {
     $('#re-trigger-name').val($(this).data('val')).trigger('input');
+  });
+
+  /* ── Form Field Reference ── */
+  var ahReNonce = '<?php echo esc_js( wp_create_nonce( "ah_admin_nonce" ) ); ?>';
+  window._lastCondField = null;
+
+  $(document).on('focus', '.re-c-field', function () {
+    window._lastCondField = this;
+  });
+
+  function buildFFHChip(key, title, bg, border, color) {
+    return '<span class="re-ffh-chip" data-key="' + key + '" title="' + title + '" style="background:' + bg + ';border:1px solid ' + border + ';border-radius:4px;padding:4px 10px;font-size:12px;color:' + color + ';cursor:pointer;font-family:monospace;display:inline-block">' + key + '</span>';
+  }
+
+  $('#re-form-picker').on('change', function () {
+    var fid = $(this).val();
+    var $ch = $('#re-field-chips');
+    if (!fid) {
+      $ch.html('<span style="font-size:12px;color:#7dd3fc;font-style:italic">Select a form above to see its field keys...</span>');
+      return;
+    }
+    $ch.html('<span style="font-size:12px;color:#7dd3fc">Loading...</span>');
+    $.post(ajaxurl, { action: 'ah_get_form_fields', form_id: fid, nonce: ahReNonce }, function (r) {
+      if (!r.success || !r.data.fields.length) {
+        $ch.html('<span style="font-size:12px;color:#dc2626">No fields found for this form.</span>');
+        return;
+      }
+      var s = buildFFHChip('form_id', 'Condition: target this specific form (form_id = ' + fid + ')', '#dbeafe', '#93c5fd', '#1d4ed8') + ' ';
+      r.data.fields.forEach(function (f) {
+        s += buildFFHChip(f.field_key, f.label + ' — use as {' + f.field_key + '} in action body', '#f0f9ff', '#7dd3fc', '#0369a1') + ' ';
+      });
+      $ch.html(s);
+    }).fail(function () {
+      $ch.html('<span style="font-size:12px;color:#dc2626">Error loading fields. Check nonce / login.</span>');
+    });
+  });
+
+  $(document).on('click', '.re-ffh-chip', function () {
+    var key = $(this).data('key');
+    if (window._lastCondField && document.contains(window._lastCondField)) {
+      $(window._lastCondField).val(key).focus();
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(key);
+    }
+    var $c = $(this), orig = $c.attr('style');
+    $c.css({ background: '#dcfce7', 'border-color': '#86efac', color: '#166534' });
+    setTimeout(function () { $c.attr('style', orig); }, 700);
   });
 
   /* ── Helpers ── */
@@ -1392,8 +1505,8 @@ jQuery(function ($) {
           '<div class="re-field-group"><label>Provider</label>',pSel,'</div>',
         '</div>',
         '<div class="re-act-grid-2">',
-          '<div class="re-field-group"><label>From Name</label><input type="text" class="re-ch-from-name" placeholder="Advaitha Homes"></div>',
-          '<div class="re-field-group"><label>From Email</label><input type="email" class="re-ch-from-email" placeholder="support@advaithhomes.com"></div>',
+          '<div class="re-field-group"><label>From Name</label><input type="text" class="re-ch-from-name" placeholder="Name"></div>',
+          '<div class="re-field-group"><label>From Email</label><input type="email" class="re-ch-from-email" placeholder="test@yopmail.com"></div>',
         '</div>',
         '<div class="re-act-grid-3">',
           '<div class="re-field-group"><label>SMTP Host</label><input type="text" class="re-ch-host" placeholder="smtp.gmail.com"></div>',

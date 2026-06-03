@@ -167,50 +167,44 @@ class AH_Form_Builder {
 		ob_start();
 		?>
 <style>
-.ah-fw{font-family:inherit}
-.ah-fw .ah-df{display:flex;flex-direction:column;gap:18px}
-.ah-fw .ah-fr{display:flex;flex-direction:column;gap:6px}
-.ah-fw .ah-fr label{font-size:14px;font-weight:500;color:#374151}
-.ah-fw .ah-fr input,.ah-fw .ah-fr textarea,.ah-fw .ah-fr select{padding:11px 14px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;color:#1f2937;background:#fff;font-family:inherit;width:100%;box-sizing:border-box;transition:border-color .18s,box-shadow .18s}
-.ah-fw .ah-fr input:focus,.ah-fw .ah-fr textarea:focus,.ah-fw .ah-fr select:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
-.ah-fw .ah-fr textarea{resize:vertical;min-height:110px}
-.ah-fw .ah-msg{display:none;align-items:flex-start;gap:10px;padding:4px;border-radius:8px;margin-bottom:20px;font-size:14.5px;font-weight:500}
-.ah-fw .ah-msg.show{display:flex;align-items: center;}
-.ah-fw .ah-suc{background:#f0fdf4;border:1px solid #86efac;color:#166534}
-.ah-fw .ah-err{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b}
-.ah-fw .ah-req{color:#ef4444;margin-left:2px}
 @keyframes ah-spin{to{transform:rotate(360deg)}}
-.ah-fw .ah-sp{animation:ah-spin .8s linear infinite}
+.ah-fw .ah-sp{animation:ah-spin .8s linear infinite;display:none}
+.ah-fw .ah-req{color:#e53935;margin-left:2px}
 </style>
 
 <div class="ah-fw" id="<?php echo esc_attr( $uid ); ?>">
-  <div class="ah-msg ah-suc"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span></span></div>
-  <div class="ah-msg ah-err"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span></span></div>
+  <div class="ch-form-feedback" role="alert"><span></span></div>
+  <div class="ch-form-feedback" role="alert"><span></span></div>
 
-  <form class="ah-df" novalidate>
-    <input type="hidden" name="nonce" value="<?php echo esc_attr( $nonce ); ?>">
+  <form novalidate>
+    <input type="hidden" name="nonce"   value="<?php echo esc_attr( $nonce ); ?>">
     <input type="hidden" name="form_id" value="<?php echo esc_attr( $form_id ); ?>">
     <div style="display:none;visibility:hidden" aria-hidden="true"><input type="text" name="ah_hp" tabindex="-1" autocomplete="off"></div>
 
-    <?php foreach ( $fields as $f ) : $fid = esc_attr( $uid . '_' . $f->field_key ); $fname = esc_attr( $f->field_key ); $fph = esc_attr( $f->placeholder ); $freq = $f->is_required; ?>
-    <div class="ah-fr">
-      <label for="<?php echo $fid; ?>"><?php echo esc_html( $f->label ); ?><?php if ( $freq ) : ?><span class="ah-req">*</span><?php endif; ?></label>
+    <?php foreach ( $fields as $f ) :
+      $fid   = esc_attr( $uid . '_' . $f->field_key );
+      $fname = esc_attr( $f->field_key );
+      $fph   = esc_attr( $f->placeholder );
+      $freq  = $f->is_required;
+    ?>
+    <div class="ch-form-group">
+      <label class="ch-form-label" for="<?php echo $fid; ?>"><?php echo esc_html( $f->label ); ?><?php if ( $freq ) : ?><span class="ah-req">*</span><?php endif; ?></label>
       <?php if ( 'textarea' === $f->field_type ) : ?>
-        <textarea id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>></textarea>
+        <textarea class="ch-form-textarea" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>></textarea>
       <?php elseif ( 'select' === $f->field_type && ! empty( $f->options ) ) : ?>
-        <select id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
+        <select class="ch-form-select" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
           <option value=""><?php echo esc_html( $f->placeholder ?: '- Select an option -' ); ?></option>
           <?php foreach ( $f->options as $opt ) : ?><option value="<?php echo esc_attr( $opt ); ?>"><?php echo esc_html( $opt ); ?></option><?php endforeach; ?>
         </select>
       <?php else : ?>
-        <input type="<?php echo esc_attr( $f->field_type ); ?>" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>>
+        <input class="ch-form-input" type="<?php echo esc_attr( $f->field_type ); ?>" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>>
       <?php endif; ?>
     </div>
     <?php endforeach; ?>
 
     <div>
-      <button type="submit" class="btn btn-sm btn-primary ah-sb">
-        <svg class="ah-sp" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none"><circle cx="12" cy="12" r="10" stroke-dasharray="31 62"/></svg>
+      <button type="submit" class="ch-form-submit ah-sb">
+        <svg class="ah-sp" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10" stroke-dasharray="31 62"/></svg>
         <span class="ah-bt">Send Message</span>
       </button>
     </div>
@@ -221,16 +215,18 @@ class AH_Form_Builder {
 (function(){
   var w = document.getElementById('<?php echo esc_js( $uid ); ?>');
   if (!w) return;
-  var f   = w.querySelector('.ah-df');
+  var f   = w.querySelector('form');
   var btn = w.querySelector('.ah-sb');
   var btt = w.querySelector('.ah-bt');
   var sp  = w.querySelector('.ah-sp');
-  var sc  = w.querySelector('.ah-suc');
-  var ec  = w.querySelector('.ah-err');
-  function msg(el, txt) {
-    sc.classList.remove('show'); ec.classList.remove('show');
+  var fb  = w.querySelectorAll('.ch-form-feedback');
+  var sc  = fb[0];
+  var ec  = fb[1];
+  function msg(el, type, txt) {
+    sc.className = 'ch-form-feedback';
+    ec.className = 'ch-form-feedback';
     el.querySelector('span').textContent = txt;
-    el.classList.add('show');
+    el.className = 'ch-form-feedback ' + type;
     el.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
   f.addEventListener('submit', function(e) {
@@ -245,11 +241,20 @@ class AH_Form_Builder {
     })
     .then(function(r){ return r.json(); })
     .then(function(r){
-      if (r.success) { msg(sc, r.data.message); f.reset(); }
-      else { msg(ec, r.data && r.data.message ? r.data.message : 'Something went wrong.'); }
+      if (r.success) {
+        msg(sc, 'success', r.data.message);
+        f.reset();
+        f.querySelectorAll('input:not([type=hidden]),textarea,select').forEach(function(el){ el.disabled = true; el.style.opacity = '0.5'; el.style.cursor = 'not-allowed'; });
+        btn.disabled = true; btt.textContent = 'Sent'; sp.style.display = 'none'; btn.style.opacity = '0.55'; btn.style.cursor = 'not-allowed';
+      } else {
+        msg(ec, 'error', r.data && r.data.message ? r.data.message : 'Something went wrong.');
+        btn.disabled = false; btt.textContent = 'Send Message'; sp.style.display = 'none';
+      }
     })
-    .catch(function(){ msg(ec, 'Network error. Please try again.'); })
-    .finally(function(){ btn.disabled = false; btt.textContent = 'Send Message'; sp.style.display = 'none'; });
+    .catch(function(){
+      msg(ec, 'error', 'Network error. Please try again.');
+      btn.disabled = false; btt.textContent = 'Send Message'; sp.style.display = 'none';
+    });
   });
 })();
 </script>

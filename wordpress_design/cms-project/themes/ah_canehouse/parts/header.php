@@ -43,6 +43,9 @@ unset( $_ch_sc );
 ?></head>
 
 <body <?php body_class( 'ch-body' ); ?>><?php wp_body_open(); ?>
+
+<?php get_template_part( 'components/important-notice' ); ?>
+
 <!-- ── Main Navigation ────────────────────────────────────────────────────── -->
 <nav id="ch-nav" class="ch-nav" role="navigation" aria-label="Main Navigation">
 	<div class="container">

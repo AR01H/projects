@@ -8,25 +8,8 @@
 defined( 'ABSPATH' ) || exit;
 get_header();
 
-// Mission / Vision / Values
-$mvv_raw = get_option( 'ch_about_mvv', [] );
-if ( is_string( $mvv_raw ) ) $mvv_raw = json_decode( $mvv_raw, true ) ?: [];
-$mvv = ! empty( $mvv_raw ) ? $mvv_raw : [
-	[ 'icon' => '🎯', 'title' => 'Our Mission',  'text' => 'To deliver 100% natural, freshly-pressed sugarcane juice that brings health, happiness, and wholesome refreshment to every customer we serve.' ],
-	[ 'icon' => '🌿', 'title' => 'Our Vision',   'text' => 'To become the UK\'s most trusted brand for fresh, natural, live-pressed sugarcane juice - setting the standard for sustainability and quality.' ],
-	[ 'icon' => '💚', 'title' => 'Our Values',   'text' => 'Freshness, integrity, sustainability, and community. We stand behind every drop of juice we serve, with a commitment to natural goodness.' ],
-];
-
-// Quality commitment
-$quality_raw = get_option( 'ch_about_quality', [] );
-if ( is_string( $quality_raw ) ) $quality_raw = json_decode( $quality_raw, true ) ?: [];
-$quality_items = ! empty( $quality_raw ) ? $quality_raw : [
-	'Pressed fresh to order, never pre-made',
-	'100% natural ingredients, no additives',
-	'Fully certified and insured for events',
-	'Sustainable practices throughout',
-	'Community-focused and locally minded',
-];
+$mvv           = ch_get_about_mvv();
+$quality_items = ch_get_about_quality();
 
 $team = ch_get_team_members();
 ?>

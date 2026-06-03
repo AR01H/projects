@@ -12,7 +12,7 @@ $wiz_sub     = $s['booking_sub']     ?? 'Fresh cane juice, pressed live for your
 $wiz_image   = $s['booking_image']   ?? 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=900&q=80';
 
 // occasion options
-$occasions = [ 'Wedding / Walima', 'Mehndi / Sangeet', 'Eid Celebration', 'Birthday Party', 'Corporate Event', 'Community Festival', 'Other' ];
+$occasions = ch_get_occasions();
 ?>
 
 <!-- ═══ BOOKING BANNER ════════════════════════════════════════════════════════ -->

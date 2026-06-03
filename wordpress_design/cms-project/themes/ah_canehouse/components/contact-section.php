@@ -40,6 +40,15 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 			</div>
 		<?php endif; ?>
 
+		<?php if ( ! empty( $settings['events_info_text'] ) ) : ?>
+		<div class="ch-contact-detail">
+			<div class="ch-cd-icon" aria-hidden="true">🎪</div>
+			<div>
+				<div class="ch-cd-label">Events &amp; Hire</div>
+				<div class="ch-cd-val"><?php echo esc_html( $settings['events_info_text'] ); ?></div>
+			</div>
+		</div>
+		<?php else : ?>
 		<div class="ch-contact-detail">
 			<div class="ch-cd-icon" aria-hidden="true">🎪</div>
 			<div>
@@ -47,7 +56,17 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 				<div class="ch-cd-val">Available across the UK for events, weddings &amp; community gatherings</div>
 			</div>
 		</div>
+		<?php endif; ?>
 
+		<?php if ( ! empty( $settings['franchise_info_text'] ) ) : ?>
+		<div class="ch-contact-detail">
+			<div class="ch-cd-icon" aria-hidden="true">🤝</div>
+			<div>
+				<div class="ch-cd-label">Franchise</div>
+				<div class="ch-cd-val"><?php echo esc_html( $settings['franchise_info_text'] ); ?></div>
+			</div>
+		</div>
+		<?php else : ?>
 		<div class="ch-contact-detail">
 			<div class="ch-cd-icon" aria-hidden="true">🤝</div>
 			<div>
@@ -55,6 +74,7 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 				<div class="ch-cd-val">Franchise enquiries warmly welcomed - reach out today</div>
 			</div>
 		</div>
+		<?php endif; ?>
 	</div>
 
 	<div class="ch-contact-form fade-right">
@@ -85,12 +105,10 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 				<label class="ch-form-label" for="ch-enquiry">I'm enquiring about</label>
 				<select id="ch-enquiry" name="ch_enquiry" class="ch-form-select">
 					<option value="">Select enquiry type...</option>
-					<option value="general">General Enquiry</option>
-					<option value="event">Event / Stall Hire</option>
-					<option value="wedding">Wedding or Asian Celebration</option>
-					<option value="franchise">Franchise Opportunity</option>
-					<option value="other">Something Else</option>
-					
+					<?php foreach ( ch_get_enquiry_types() as $et ) : ?>
+						<option value="<?php echo esc_attr( $et['value'] ); ?>"><?php echo esc_html( $et['label'] ); ?></option>
+					<?php endforeach; ?>
+
 				</select>
 			</div>
 

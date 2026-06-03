@@ -28,17 +28,14 @@ get_header();
 	'modifier' => 'ch-gstrip--events',
 	'id'       => 'gstrip-events',
 	'bg'       => 'var(--ch-green-bg)',
-	'images'   => [
-		[ 'src' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Wedding Setup',       'desc' => 'Live press for 300+ guests' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Mehndi Night',        'desc' => 'Traditional Asian celebrations' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Corporate Event',     'desc' => 'Office & team events across the UK' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Eid Festival',        'desc' => 'Community gatherings & festivals' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Birthday Party',      'desc' => 'Milestone celebrations' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Community Festival',  'desc' => 'Street fairs & open-air events' ],
-	],
+	'images' => ch_get_events_gallery(),
 ] ); ?>
 
-<?php get_template_part( 'components/events-why' ); ?>
+<?php $ew = ch_get_events_why();
+get_template_part( 'components/events-why', null, [
+	'image' => $ew['image'] ?? '',
+	'items' => $ew['items'] ?? [],
+] ); ?>
 
 <?php get_template_part( 'components/reviews-events' ); ?>
 

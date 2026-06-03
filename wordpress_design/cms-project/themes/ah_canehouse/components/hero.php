@@ -56,12 +56,7 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 
 			<div class="ch-hero__badges">
 				<?php
-				$badges = [
-					$h['hero_badge_1'] ?? 'No Added Sugar',
-					$h['hero_badge_2'] ?? 'No Preservatives',
-					$h['hero_badge_3'] ?? 'Pressed Live',
-					$h['hero_badge_4'] ?? 'Served Chilled',
-				];
+				$badges = ch_get_hero_badges();
 				foreach ( $badges as $i => $badge ) :
 					if ( ! $badge ) continue;
 				?>

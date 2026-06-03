@@ -28,14 +28,7 @@ get_header();
 	'modifier' => 'ch-gstrip--franchise',
 	'id'       => 'gstrip-franchise',
 	'bg'       => 'var(--ch-white)',
-	'images'   => [
-		[ 'src' => 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Branded Stall',        'desc' => 'Full The Cane House branding pack' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Pressing',       'desc' => 'In front of customers, every time' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1486428263684-28ec9e4f2584?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Birmingham',          'desc' => 'Our fastest-growing franchise city' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Commercial Machine',  'desc' => 'Stainless steel, high-volume press' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Partner Training',    'desc' => 'Full onboarding + ongoing support' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Market Days',         'desc' => 'High footfall weekend markets' ],
-	],
+	'images' => ch_get_franchise_gallery(),
 ] ); ?>
 
 <?php get_template_part( 'components/franchise-why' ); ?>

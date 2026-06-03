@@ -26,8 +26,8 @@ $uk = $args['uk_entry'] ?? [
 		'The same press you\'d find on the streets of Lahore or Mumbai',
 		'Available for events, markets & hire across the UK',
 	],
-	'images'    => [],
-	'video_url' => '',
+	'images'    => ["https://i.pinimg.com/474x/50/84/7c/50847cd781044058cfbf7ef09e0a0d3f.jpg"],
+	'video_url' => 'https://www.youtube.com/embed/OmidK8z4YzE?si=us9NS6YJQn7GO9TL',
 ];
 
 /* ── Origin countries (right — small, switchable) ──────────────────── */
@@ -43,7 +43,7 @@ $origins = $args['origins'] ?? [
 			'Pressed live on roadside kolhus for centuries',
 			'Served with black salt, ginger & fresh lime',
 		],
-		'images'   => [],
+		'images'   => ["https://i.pinimg.com/474x/50/84/7c/50847cd781044058cfbf7ef09e0a0d3f.jpg"],
 		'video_url'=> '',
 	],
 	[

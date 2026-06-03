@@ -11,6 +11,7 @@ class AH_Admin_Menus {
 
 		$submenus = [
 			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],
+			['title' => 'Site Notices','menu' => 'Site Notices','slug' => 'ah-notices','callback' => 'page_notices'],
 			['title' => 'Media Library','menu' => 'Media Library','slug' => 'ah-media','callback' => 'page_media'],
 			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
 			['title' => 'News Bar','menu' => 'News Bar','slug' => 'ah-news-bar','callback' => 'page_news_bar'],
@@ -19,7 +20,6 @@ class AH_Admin_Menus {
 			['title' => 'Services','menu' => 'Services','slug' => 'ah-services','callback' => 'page_services'],
 			['title' => 'About Page','menu' => 'About Page','slug' => 'ah-about','callback' => 'page_about'],
 			['title' => 'Reviews','menu' => 'Reviews','slug' => 'ah-reviews','callback' => 'page_reviews'],
-			['title' => 'Events / Hire','menu' => 'Events / Hire','slug' => 'ah-events','callback' => 'page_events_hire'],
 			['title' => 'Client Stories','menu' => 'Client Stories','slug' => 'ah-client-stories','callback' => 'page_client_stories'],
 			['title' => 'FAQs','menu' => 'FAQs','slug' => 'ah-faqs','callback' => 'page_faqs'],
 			['title' => 'Posts / Blog','menu' => 'Posts / Blog','slug' => 'ah-posts','callback' => 'page_posts'],
@@ -56,6 +56,7 @@ class AH_Admin_Menus {
 	}
 
 	public static function page_dashboard()      { self::load( 'dashboard'      ); }
+	public static function page_notices()        { self::load( 'notices'        ); }
 	public static function page_settings()       { self::load( 'settings'       ); }
 	public static function page_pages()          { self::load( 'pages'          ); }
 	public static function page_media()          { self::load( 'media'          ); }
@@ -65,8 +66,7 @@ class AH_Admin_Menus {
 	public static function page_services()       { self::load( 'services'       ); }
 	public static function page_about()          { self::load( 'about'          ); }
 	public static function page_reviews()        { self::load( 'reviews'        ); }
-	public static function page_events_hire()    { self::load( 'events'         ); }
-	public static function page_faqs()           { self::load( 'faqs'           ); }
+public static function page_faqs()           { self::load( 'faqs'           ); }
 	public static function page_posts()          { self::load( 'posts'          ); }
 	public static function page_team()           { self::load( 'team'           ); }
 	public static function page_client_stories() { self::load( 'client-stories' ); }

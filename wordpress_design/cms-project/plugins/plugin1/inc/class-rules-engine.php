@@ -922,6 +922,10 @@ class AH_Rules_Engine {
 			$where[]  = 'l.status = %s';
 			$params[] = sanitize_key( $filters['status'] );
 		}
+		if ( ! empty( $filters['action_type'] ) && 'all' !== $filters['action_type'] ) {
+			$where[]  = 'l.action_type = %s';
+			$params[] = sanitize_key( $filters['action_type'] );
+		}
 		if ( ! empty( $filters['search'] ) ) {
 			$where[]  = '( l.trigger_name LIKE %s OR r.name LIKE %s )';
 			$like     = '%' . $wpdb->esc_like( sanitize_text_field( $filters['search'] ) ) . '%';
@@ -952,6 +956,10 @@ class AH_Rules_Engine {
 		if ( ! empty( $filters['status'] ) && 'all' !== $filters['status'] ) {
 			$where[]  = 'l.status = %s';
 			$params[] = sanitize_key( $filters['status'] );
+		}
+		if ( ! empty( $filters['action_type'] ) && 'all' !== $filters['action_type'] ) {
+			$where[]  = 'l.action_type = %s';
+			$params[] = sanitize_key( $filters['action_type'] );
 		}
 		if ( ! empty( $filters['search'] ) ) {
 			$where[]  = '( l.trigger_name LIKE %s OR r.name LIKE %s )';

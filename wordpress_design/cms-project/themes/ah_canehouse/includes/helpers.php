@@ -551,6 +551,154 @@ function ch_get_juice_showcase(): array {
 	return ! empty( $opt ) ? $opt : ch_mock_juice_showcase();
 }
 
+// ── Gallery Images ────────────────────────────────────────────────────────────
+function ch_get_gallery( string $key, array $defaults ): array {
+	$opt = get_option( $key, [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? $opt : $defaults;
+}
+
+function ch_get_events_gallery(): array {
+	return ch_get_gallery( 'ch_events_gallery', [
+		[ 'src' => 'https://images.unsplash.com/photo-ByBo1Ip07eE?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Juice Pressing',     'desc' => 'Commercial sugarcane juice machine in action' ],
+		[ 'src' => 'https://images.unsplash.com/photo-m-qE4H-LKqo?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Fresh Green Juice',      'desc' => 'Freshly pressed juice ready to serve' ],
+		[ 'src' => 'https://images.unsplash.com/photo-SMUrHECtH3M?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Juice Variety Display',   'desc' => 'Multiple juice flavors for guests' ],
+		[ 'src' => 'https://images.unsplash.com/photo-JWfcm1stQuo?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Orange Juice Service',   'desc' => 'Professional beverage presentation' ],
+		[ 'src' => 'https://images.unsplash.com/photo-_bQxQlLpoVY?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Juice Bar Setup',        'desc' => 'Event beverage station ready' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1VeYwfqR92s?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Fresh Fruit Juice',     'desc' => 'Vibrant natural refreshment' ],
+	] );
+}
+
+function ch_get_franchise_gallery(): array {
+	return ch_get_gallery( 'ch_franchise_gallery', [
+		[ 'src' => 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Branded Stall',       'desc' => 'Full The Cane House branding pack' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Pressing',      'desc' => 'In front of customers, every time' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1486428263684-28ec9e4f2584?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Birmingham',         'desc' => 'Our fastest-growing franchise city' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Commercial Machine', 'desc' => 'Stainless steel, high-volume press' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Partner Training',   'desc' => 'Full onboarding + ongoing support' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Market Days',        'desc' => 'High footfall weekend markets' ],
+	] );
+}
+
+function ch_get_sugarcane_gallery(): array {
+	return ch_get_gallery( 'ch_sugarcane_gallery', [
+		[ 'src' => 'https://images.unsplash.com/photo-1635329535997-c0a9b62e2d56?auto=format&fit=crop&w=600&h=800&q=80', 'label' => 'Fresh Sugarcane Fields', 'desc' => '' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&h=400&q=80', 'label' => 'Pure Yellow Cane',       'desc' => '' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&h=400&q=80', 'label' => 'Zesty Lemon Blend',     'desc' => '' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&w=800&h=400&q=80', 'label' => 'Spicy Ginger Infusion',  'desc' => '' ],
+		[ 'src' => 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=600&h=400&q=80', 'label' => 'Cooling Mint Blend',    'desc' => '' ],
+	] );
+}
+
+// ── Why Sugarcane Stats bar ───────────────────────────────────────────────────
+function ch_get_sugarcane_stats(): array {
+	$opt = get_option( 'ch_sugarcane_stats', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? $opt : [
+		[ 'num' => '2,000+', 'label' => 'Years of Tradition' ],
+		[ 'num' => '100%',   'label' => 'Natural & Pure' ],
+		[ 'num' => '0',      'label' => 'Additives Added' ],
+		[ 'num' => '5+',     'label' => 'Health Benefits' ],
+	];
+}
+
+// ── Nutrition Facts (Why Sugarcane page) ──────────────────────────────────────
+function ch_get_nutrition_facts(): array {
+	$opt = get_option( 'ch_nutrition_facts', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? $opt : [
+		[ 'name' => '🍬 Natural Sugars', 'value' => '~13–15g', 'note' => 'Sucrose, glucose, fructose - natural energy' ],
+		[ 'name' => '💊 Potassium',       'value' => '~300mg',  'note' => 'Electrolyte for heart & muscles' ],
+		[ 'name' => '🦴 Calcium',         'value' => '~40mg',   'note' => 'Bone health support' ],
+		[ 'name' => '⚗️ Magnesium',       'value' => '~10mg',   'note' => 'Nervous system & energy' ],
+		[ 'name' => '🌿 Antioxidants',    'value' => 'Rich',    'note' => 'Polyphenols & flavonoids' ],
+		[ 'name' => '💧 Water Content',   'value' => '~70%',    'note' => 'Natural hydration' ],
+	];
+}
+
+// ── Events "Why Choose Us" items ──────────────────────────────────────────────
+function ch_get_events_why(): array {
+	$opt = get_option( 'ch_events_why', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return $opt;
+	return [
+		'image' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&h=700&q=80',
+		'items' => [
+			[ 'icon' => '👀', 'title' => 'Live Pressing in Front of Guests',  'text' => 'Watching fresh cane being pressed is a spectacle in itself - creating a natural talking point and crowd magnet at your event.' ],
+			[ 'icon' => '🌿', 'title' => '100% Natural - No Compromise',      'text' => 'Everything we serve is pure, natural, and fresh. No artificial syrups, no chemicals - just real sugarcane juice.' ],
+			[ 'icon' => '📋', 'title' => 'Fully Insured & Certified',         'text' => 'We carry full public liability insurance and comply with all food hygiene regulations - complete peace of mind for you.' ],
+			[ 'icon' => '🤝', 'title' => 'Flexible & Responsive',             'text' => 'We work around your schedule, venue, and guest count. Packages from 50 to 1,000+ guests across the UK.' ],
+		],
+	];
+}
+
+// ── About Page: Mission / Vision / Values ─────────────────────────────────────
+function ch_get_about_mvv(): array {
+	$opt = get_option( 'ch_about_mvv', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? $opt : [
+		[ 'icon' => '🎯', 'title' => 'Our Mission', 'text' => 'To deliver 100% natural, freshly-pressed sugarcane juice that brings health, happiness, and wholesome refreshment to every customer we serve.' ],
+		[ 'icon' => '🌿', 'title' => 'Our Vision',  'text' => 'To become the UK\'s most trusted brand for fresh, natural, live-pressed sugarcane juice - setting the standard for sustainability and quality.' ],
+		[ 'icon' => '💚', 'title' => 'Our Values',  'text' => 'Freshness, integrity, sustainability, and community. We stand behind every drop of juice we serve, with a commitment to natural goodness.' ],
+	];
+}
+
+// ── About Page: Quality Commitment items ──────────────────────────────────────
+function ch_get_about_quality(): array {
+	$opt = get_option( 'ch_about_quality', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? $opt : [
+		'Pressed fresh to order, never pre-made',
+		'100% natural ingredients, no additives',
+		'Fully certified and insured for events',
+		'Sustainable practices throughout',
+		'Community-focused and locally minded',
+	];
+}
+
+// ── Enquiry Types (Contact Form dropdown) ─────────────────────────────────────
+function ch_get_enquiry_types(): array {
+	$opt = get_option( 'ch_enquiry_types', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? $opt : [
+		[ 'value' => 'general',   'label' => 'General Enquiry' ],
+		[ 'value' => 'event',     'label' => 'Event / Stall Hire' ],
+		[ 'value' => 'wedding',   'label' => 'Wedding or Asian Celebration' ],
+		[ 'value' => 'franchise', 'label' => 'Franchise Opportunity' ],
+		[ 'value' => 'other',     'label' => 'Something Else' ],
+	];
+}
+
+// ── Booking Occasions (Booking Wizard dropdown) ───────────────────────────────
+function ch_get_occasions(): array {
+	$opt = get_option( 'ch_occasions', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	return ! empty( $opt ) ? $opt : [
+		'Wedding / Walima',
+		'Mehndi / Sangeet',
+		'Eid Celebration',
+		'Birthday Party',
+		'Corporate Event',
+		'Community Festival',
+		'Other',
+	];
+}
+
+// ── Hero Badges (dynamic list) ────────────────────────────────────────────────
+function ch_get_hero_badges(): array {
+	$opt = get_option( 'ch_hero_badges', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return $opt;
+	// Fallback: old badge_1..4 keys from ch_home_settings
+	$h = ch_get_home_settings();
+	return array_values( array_filter( [
+		$h['hero_badge_1'] ?? 'No Added Sugar',
+		$h['hero_badge_2'] ?? 'No Preservatives',
+		$h['hero_badge_3'] ?? 'Pressed Live',
+		$h['hero_badge_4'] ?? 'Served Chilled',
+	] ) );
+}
+
 // ── Contact Settings ─────────────────────────────────────────────────────────
 function ch_get_contact_settings(): array {
 	$opt = get_option( 'ch_contact_settings', [] );
@@ -857,4 +1005,22 @@ function ch_get_nav_link_suggestions(): array {
 		$push( $p->post_title, get_permalink( $p->ID ) ?: home_url( '/' ), 'wp-page' );
 	}
 	return array_values( $suggestions );
+}
+
+// ── Important Notice ──────────────────────────────────────────────────────────
+function ch_get_important_notice(): array {
+	// Retrieve from plugin level (plugin manages data, theme displays it)
+	if ( class_exists( 'AH_Notice_Helper' ) ) {
+		return AH_Notice_Helper::get_notice();
+	}
+	// Fallback if plugin helper not available
+	return [
+		'enabled'        => false,
+		'id'             => 'default',
+		'title'          => 'Important Update',
+		'message'        => '',
+		'image'          => '',
+		'button_label'   => '',
+		'button_url'     => '',
+	];
 }

@@ -23,22 +23,14 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 <div class="ch-stats-bar">
 	<div class="container">
 		<div class="ch-stats-grid">
+			<?php foreach ( ch_get_sugarcane_stats() as $stat ) :
+				$stat = (array) $stat;
+			?>
 			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num">2,000+</span>
-				<span class="ch-stat-label">Years of Tradition</span>
+				<span class="ch-stat-num"><?php echo esc_html( $stat['num'] ?? '' ); ?></span>
+				<span class="ch-stat-label"><?php echo esc_html( $stat['label'] ?? '' ); ?></span>
 			</div>
-			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num">100%</span>
-				<span class="ch-stat-label">Natural & Pure</span>
-			</div>
-			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num">0</span>
-				<span class="ch-stat-label">Additives Added</span>
-			</div>
-			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num">5+</span>
-				<span class="ch-stat-label">Health Benefits</span>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </div>
@@ -52,42 +44,18 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 			<p class="section-body">Packed with natural goodness your body recognises and loves - no lab, no additives, just the cane.</p>
 		</div>
 		<div class="ch-benefit-cards fade-up">
+			<?php foreach ( ch_get_benefits() as $b ) :
+				$b = (array) $b;
+			?>
 			<div class="ch-benefit-card">
-				<div class="ch-benefit-card__icon">⚡</div>
-				<h3>Instant Energy</h3>
-				<p>Natural sucrose provides rapid, sustained energy - far better than caffeine or artificial sugar highs. Perfect before or after activity.</p>
-				<div class="ch-benefit-card__tag">Natural Carbs</div>
+				<div class="ch-benefit-card__icon"><?php echo esc_html( $b['icon'] ?? '🌿' ); ?></div>
+				<h3><?php echo esc_html( $b['title'] ?? '' ); ?></h3>
+				<p><?php echo esc_html( $b['desc'] ?? '' ); ?></p>
+				<?php if ( ! empty( $b['tag'] ) ) : ?>
+				<div class="ch-benefit-card__tag"><?php echo esc_html( $b['tag'] ); ?></div>
+				<?php endif; ?>
 			</div>
-			<div class="ch-benefit-card">
-				<div class="ch-benefit-card__icon">💧</div>
-				<h3>Deep Hydration</h3>
-				<p>Rich in electrolytes including potassium, calcium, and magnesium - nature's own sports drink. Rehydrates faster than water alone.</p>
-				<div class="ch-benefit-card__tag">Electrolytes</div>
-			</div>
-			<div class="ch-benefit-card">
-				<div class="ch-benefit-card__icon">🛡️</div>
-				<h3>Immunity Support</h3>
-				<p>Antioxidants in fresh cane juice help neutralise free radicals, supporting your immune system naturally throughout the year.</p>
-				<div class="ch-benefit-card__tag">Antioxidants</div>
-			</div>
-			<div class="ch-benefit-card">
-				<div class="ch-benefit-card__icon">🫁</div>
-				<h3>Digestive Aid</h3>
-				<p>Traditionally blended with lemon and ginger, sugarcane juice soothes the gut, reduces acidity, and aids healthy digestion.</p>
-				<div class="ch-benefit-card__tag">Gut Health</div>
-			</div>
-			<div class="ch-benefit-card">
-				<div class="ch-benefit-card__icon">✨</div>
-				<h3>Skin Glow</h3>
-				<p>Alpha hydroxy acids and antioxidants keep skin hydrated and radiant from within. A natural beauty drink that works from the inside out.</p>
-				<div class="ch-benefit-card__tag">Glow Factor</div>
-			</div>
-			<div class="ch-benefit-card">
-				<div class="ch-benefit-card__icon">🌱</div>
-				<h3>Low Glycaemic</h3>
-				<p>Despite its natural sweetness, raw cane juice has a lower glycaemic index than many processed drinks, making it a smarter choice.</p>
-				<div class="ch-benefit-card__tag">Low GI</div>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
@@ -101,41 +69,34 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 			<p class="section-body">From tropical fields to your hands - freshly pressed, never processed.</p>
 		</div>
 		<div class="ch-gallery-grid fade-up">
-			<div class="ch-gallery-item ch-gallery-item--tall">
-				<img src="https://images.unsplash.com/photo-1635329535997-c0a9b62e2d56?auto=format&fit=crop&w=600&h=800&q=80" alt="Sugarcane field" loading="lazy">
-				<div class="ch-gallery-caption">Fresh Sugarcane Fields</div>
+			<?php foreach ( ch_get_sugarcane_gallery() as $i => $img ) :
+				$img  = (array) $img;
+				$cls  = $i === 0 ? 'ch-gallery-item ch-gallery-item--tall' : ( $i === 3 ? 'ch-gallery-item ch-gallery-item--wide' : 'ch-gallery-item' );
+			?>
+			<div class="<?php echo esc_attr( $cls ); ?>">
+				<img src="<?php echo esc_url( $img['src'] ?? '' ); ?>" alt="<?php echo esc_attr( $img['label'] ?? '' ); ?>" loading="lazy">
+				<div class="ch-gallery-caption"><?php echo esc_html( $img['label'] ?? '' ); ?></div>
 			</div>
-			<div class="ch-gallery-item">
-				<img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&h=400&q=80" alt="Fresh juice" loading="lazy">
-				<div class="ch-gallery-caption">Pure Yellow Cane</div>
-			</div>
-			<div class="ch-gallery-item">
-				<img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&h=400&q=80" alt="Zesty lemon blend" loading="lazy">
-				<div class="ch-gallery-caption">Zesty Lemon Blend</div>
-			</div>
-			<div class="ch-gallery-item ch-gallery-item--wide">
-				<img src="https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&w=800&h=400&q=80" alt="Spicy ginger" loading="lazy">
-				<div class="ch-gallery-caption">Spicy Ginger Infusion</div>
-			</div>
-			<div class="ch-gallery-item">
-				<img src="https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=600&h=400&q=80" alt="Cooling mint" loading="lazy">
-				<div class="ch-gallery-caption">Cooling Mint Blend</div>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
 
 <!-- ── What's Inside ─────────────────────────────────────────────────────────── -->
 <?php
-$_inside_extra = '<div class="ch-nutrition-list">'
-	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">🍬 Natural Sugars</span><span class="ch-nutrition-val">~13–15g</span><span class="ch-nutrition-note">Sucrose, glucose, fructose - natural energy</span></div>'
-	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">💊 Potassium</span><span class="ch-nutrition-val">~300mg</span><span class="ch-nutrition-note">Electrolyte for heart &amp; muscles</span></div>'
-	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">🦴 Calcium</span><span class="ch-nutrition-val">~40mg</span><span class="ch-nutrition-note">Bone health support</span></div>'
-	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">⚗️ Magnesium</span><span class="ch-nutrition-val">~10mg</span><span class="ch-nutrition-note">Nervous system &amp; energy</span></div>'
-	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">🌿 Antioxidants</span><span class="ch-nutrition-val">Rich</span><span class="ch-nutrition-note">Polyphenols &amp; flavonoids</span></div>'
-	. '<div class="ch-nutrition-row"><span class="ch-nutrition-name">💧 Water Content</span><span class="ch-nutrition-val">~70%</span><span class="ch-nutrition-note">Natural hydration</span></div>'
-	. '</div>'
-	. '<p style="margin-top:1rem;font-size:0.78rem;color:var(--ch-text-muted);font-style:italic;">* Values are approximate for 350ml fresh-pressed yellow cane, no additives.</p>';
+$_nf_rows = '';
+foreach ( ch_get_nutrition_facts() as $nf ) {
+	$nf = (array) $nf;
+	$_nf_rows .= '<div class="ch-nutrition-row">'
+		. '<span class="ch-nutrition-name">' . esc_html( $nf['name'] ?? '' ) . '</span>'
+		. '<span class="ch-nutrition-val">'  . esc_html( $nf['value'] ?? '' ) . '</span>'
+		. '<span class="ch-nutrition-note">' . esc_html( $nf['note'] ?? '' ) . '</span>'
+		. '</div>';
+}
+$_nf_disclaimer = get_option( 'ch_nutrition_disclaimer', '* Values are approximate for 350ml fresh-pressed yellow cane, no additives.' );
+$_inside_extra  = '<div class="ch-nutrition-list">' . $_nf_rows . '</div>'
+	. '<p style="margin-top:1rem;font-size:0.78rem;color:var(--ch-text-muted);font-style:italic;">' . esc_html( $_nf_disclaimer ) . '</p>';
+unset( $_nf_rows, $_nf_disclaimer );
 
 $_inside_visual = '<div class="ch-inside-card">'
 	. '<div class="ch-inside-card__icon">🌾</div>'

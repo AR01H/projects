@@ -322,3 +322,25 @@ add_action( 'wp_enqueue_scripts', function () {
 		'siteUrl' => esc_url( home_url( '/' ) ),
 	] );
 } );
+
+// ── Slug aliases: redirect alternative slugs to canonical URLs ────────────────
+add_action( 'template_redirect', function () {
+	$slug_aliases = [
+		'home'       => '/',
+		'index'      => '/',
+		'about-us'   => '/about/',
+		'who-we-are' => '/about/',
+		'hire'       => '/events/',
+		'hire-us'    => '/events/',
+		'book'       => '/events/',
+		'contact-us' => '/contact/',
+		'get-in-touch' => '/contact/',
+	];
+
+	$request = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+
+	if ( isset( $slug_aliases[ $request ] ) ) {
+		wp_redirect( home_url( $slug_aliases[ $request ] ), 301 );
+		exit;
+	}
+} );
