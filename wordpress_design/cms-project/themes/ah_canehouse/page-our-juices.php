@@ -87,11 +87,11 @@ $show_prices = ch_show_prices();
 			</div>
 			<div class="ch-juice-card">
 				<div class="ch-juice-card__img" style="background:linear-gradient(135deg,#e83e8c,#c82060);">
-					<span style="font-size:3rem;">🍓</span>
+					<span style="font-size:3rem;">🥭</span>
 				</div>
 				<div class="ch-juice-card__body">
-					<h3>Wild Strawberry</h3>
-					<p>Berry-sweet and gorgeous - fresh strawberry notes turn the classic cane juice into a crowd favourite.</p>
+					<h3>Wild Mango</h3>
+					<p>Berry-sweet and gorgeous - fresh mango notes turn the classic cane juice into a crowd favourite.</p>
 					<?php if ( $show_prices ) : ?><span class="ch-juice-card__price">+£1.00</span><?php endif; ?>
 				</div>
 			</div>

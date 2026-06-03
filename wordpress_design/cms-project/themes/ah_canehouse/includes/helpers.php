@@ -580,6 +580,39 @@ function ch_get_franchise_gallery(): array {
 	] );
 }
 
+function ch_get_about_gallery(): array {
+	return ch_get_gallery( 'ch_about_gallery', [
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Commercial Press',   'desc' => 'Stainless steel, purpose-built machine' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Event Stall',        'desc' => 'Mobile setup, ready in 30 minutes' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Pressing',      'desc' => 'Fresh to order, every single time' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Fresh Ingredients', 'desc' => 'Whole stalks, ginger, lemon, mint' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'First Glass',       'desc' => 'The moment it all comes together' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&h=500&q=80', 'label' => 'Our Team',          'desc' => 'Passionate about every pour' ],
+	] );
+}
+
+function ch_get_events_media_gallery(): array {
+	return ch_get_gallery( 'ch_events_media_gallery', [
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Live Juice Pressing',   'desc' => 'Commercial machine in action' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Fresh Green Juice',     'desc' => 'Freshly pressed, ready to serve' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Juice Variety Display', 'desc' => 'Multiple flavors for guests' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Event Stall Setup',    'desc' => 'Mobile setup, ready in 30 minutes' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Fresh Ingredients',    'desc' => 'Whole stalks, ginger, lemon, mint' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Wedding Setup',       'desc' => 'Elegantly branded for the occasion' ],
+	] );
+}
+
+function ch_get_franchise_media_gallery(): array {
+	return ch_get_gallery( 'ch_franchise_media_gallery', [
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Branded Stall',       'desc' => 'Full The Cane House branding pack' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Live Pressing',      'desc' => 'In front of customers, every time' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Commercial Machine', 'desc' => 'Stainless steel, high-volume press' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Partner Training',   'desc' => 'Full onboarding + ongoing support' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1486428263684-28ec9e4f2584?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Birmingham',         'desc' => 'Our fastest-growing franchise city' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Market Days',        'desc' => 'High footfall weekend markets' ],
+	] );
+}
+
 function ch_get_sugarcane_gallery(): array {
 	return ch_get_gallery( 'ch_sugarcane_gallery', [
 		[ 'src' => 'https://images.unsplash.com/photo-1635329535997-c0a9b62e2d56?auto=format&fit=crop&w=600&h=800&q=80', 'label' => 'Fresh Sugarcane Fields', 'desc' => '' ],

@@ -19,8 +19,9 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 	'desc'     => 'Sugarcane has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world\'s most natural energy drink - and why we\'re proud to bring it to the UK.',
 ] ); ?>
 
+<?php get_template_part( 'components/history-info' ); ?>
 <!-- ── Stats bar ─────────────────────────────────────────────────────────────── -->
-<div class="ch-stats-bar">
+<!-- <div class="ch-stats-bar">
 	<div class="container">
 		<div class="ch-stats-grid">
 			<?php foreach ( ch_get_sugarcane_stats() as $stat ) :
@@ -33,7 +34,7 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 			<?php endforeach; ?>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <!-- ── Health Benefits Grid ──────────────────────────────────────────────────── -->
 <section class="ch-benefits-page">
@@ -54,28 +55,6 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 				<?php if ( ! empty( $b['tag'] ) ) : ?>
 				<div class="ch-benefit-card__tag"><?php echo esc_html( $b['tag'] ); ?></div>
 				<?php endif; ?>
-			</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
-
-<!-- ── Image Gallery ─────────────────────────────────────────────────────────── -->
-<section class="ch-gallery-section">
-	<div class="container">
-		<div class="ch-section-center fade-up">
-			<div class="section-tag">From Cane to Cup</div>
-			<h2 class="section-title">The <span class="accent">Journey</span></h2>
-			<p class="section-body">From tropical fields to your hands - freshly pressed, never processed.</p>
-		</div>
-		<div class="ch-gallery-grid fade-up">
-			<?php foreach ( ch_get_sugarcane_gallery() as $i => $img ) :
-				$img  = (array) $img;
-				$cls  = $i === 0 ? 'ch-gallery-item ch-gallery-item--tall' : ( $i === 3 ? 'ch-gallery-item ch-gallery-item--wide' : 'ch-gallery-item' );
-			?>
-			<div class="<?php echo esc_attr( $cls ); ?>">
-				<img src="<?php echo esc_url( $img['src'] ?? '' ); ?>" alt="<?php echo esc_attr( $img['label'] ?? '' ); ?>" loading="lazy">
-				<div class="ch-gallery-caption"><?php echo esc_html( $img['label'] ?? '' ); ?></div>
 			</div>
 			<?php endforeach; ?>
 		</div>
@@ -114,6 +93,8 @@ $_inside_visual = '<div class="ch-inside-card">'
 	. '<div class="ch-inside-card__desc">Every cup pressed fresh at your order - no pre-made batches, no bottles, no shortcuts. Maximum nutrition, maximum freshness.</div>'
 	. '</div>';
 
+get_template_part( 'components/story-cards' );
+
 get_template_part( 'components/image-text-split', null, [
 	'layout'        => 'image-right',
 	'section_class' => 'ch-inside-section',
@@ -130,14 +111,6 @@ get_template_part( 'components/image-text-split', null, [
 unset( $_inside_extra, $_inside_visual );
 ?>
 
-<!-- ── The Experience: Sensory Journey ───────────────────────────────────────── -->
-<?php 
-// get_template_part( 'components/sugarcane-experience', null, [
-// 	'tag'      => 'The Cane House Experience',
-// 	'title'    => 'Why Fresh-Pressed <span class="accent">Beats Everything</span>',
-// 	'subtitle' => 'From field to glass in minutes - the live pressing experience your guests will never forget.',
-// ] ); 
-?> 
 
 <!-- ── Global Love: Why the World Drinks Cane ────────────────────────────────── -->
 <?php get_template_part( 'components/sugarcane-benefits', null, [
@@ -146,8 +119,7 @@ unset( $_inside_extra, $_inside_visual );
 	'body'  => 'From Ayurvedic healers in ancient India to modern sports scientists - sugarcane juice has always stood apart. Here\'s what makes it extraordinary.',
 ] ); ?>
 
-<!-- ── 10,000 Years of Sweet History (interactive book) ──────────────────────── -->
-<?php get_template_part( 'components/history-info' ); ?>
+
 
 <!-- ── CTA ───────────────────────────────────────────────────────────────────── -->
 <section class="ch-inner-cta">
@@ -156,8 +128,8 @@ unset( $_inside_extra, $_inside_visual );
 			<h2>Ready to Taste the Difference?</h2>
 			<p>Experience 2,000 years of natural goodness - pressed fresh, served cool, just for you.</p>
 			<div class="ch-inner-cta__btns">
-				<a href="<?php echo esc_url( home_url( '/#build' ) ); ?>" class="btn-lime">🥤 Build Your Juice</a>
-				<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn-outline" style="border-color:rgba(255,255,255,0.4);color:#fff;">Book for Events →</a>
+				<a href="<?php echo esc_url( home_url( '/franchise' ) ); ?>" class="btn-lime">Join with Us</a>
+				<a href="<?php echo esc_url( home_url( '/events' ) ); ?>" class="btn-outline" style="border-color:rgba(255,255,255,0.4);color:#fff;">Book for Events </a>
 			</div>
 		</div>
 	</div>

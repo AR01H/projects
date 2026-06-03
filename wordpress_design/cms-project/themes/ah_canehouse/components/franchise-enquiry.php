@@ -1,76 +1,181 @@
 <?php
-/**
- * Franchise enquiry form section.
- *
- * Args (all optional):
- *  tag         (string)  Eyebrow tag.    Default: 'Enquire Today'
- *  title       (string)  Heading HTML.   Default: 'Take the First <span ...>Step</span>'
- *  body        (string)  Intro text.     Default: preset copy
- *  form_title  (string)  Form card heading. Default: 'Franchise Enquiry 🌿'
- */
 defined( 'ABSPATH' ) || exit;
 
-$settings = ch_get_settings();
-$phone    = $settings['phone'] ?? ( defined( 'CONTACT_NUMBER' ) ? CONTACT_NUMBER : '' );
-
-$tag        = $args['tag']        ?? 'Enquire Today';
-$title      = $args['title']      ?? 'Take the First <span class="accent" style="color:var(--ch-lime);">Step</span>';
-$body       = $args['body']       ?? 'Franchise enquiries are handled personally by our founder. Expect a response within 24 hours. All enquiries treated with complete confidentiality.';
-$form_title = $args['form_title'] ?? 'Franchise Enquiry 🌿';
-$allowed    = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
+$s          = ch_get_settings();
+$frn_heading = $s['franchise_wiz_heading'] ?? 'Own a <span class="accent">Cane House</span> Franchise';
+$frn_sub     = $s['franchise_wiz_sub']     ?? 'Join a growing network of franchise partners. We\'ll walk you through every step — from site to launch.';
+$frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80';
 ?>
 
-<section id="franchise-enquiry" class="ch-franchise-enquiry-section">
+<!-- ═══ FRANCHISE BANNER ════════════════════════════════════════════════════════ -->
+<section id="franchise-enquiry" class="ch-frn-section">
 	<div class="container">
-		<div class="ch-quote-layout">
-			<div class="fade-left" style="color:var(--ch-white);">
-				<div class="section-tag" style="color:var(--ch-lime);"><?php echo esc_html( $tag ); ?></div>
-				<h2 class="section-title" style="color:var(--ch-white);"><?php echo wp_kses( $title, $allowed ); ?></h2>
-				<p class="section-body" style="color:rgba(255,255,255,0.7);"><?php echo esc_html( $body ); ?></p>
-				<?php if ( $phone ) : ?>
-					<div class="ch-contact-detail" style="margin-top:2rem;">
-						<div class="ch-cd-icon">📞</div>
-						<div>
-							<div class="ch-cd-label">Direct Line</div>
-							<div class="ch-cd-val">
-								<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" style="color:white;">
-									<?php echo esc_html( $phone ); ?>
-								</a>
-							</div>
-						</div>
-					</div>
-				<?php endif; ?>
+		<div class="ch-frn-card fade-up">
+
+			<!-- Left: image -->
+			<div class="ch-frn-visual">
+				<img src="<?php echo esc_url( $frn_image ); ?>" alt="Franchise opportunity" loading="lazy">
+				<div class="ch-frn-visual-badge">Be Your Own Boss 🌿</div>
 			</div>
-			<div class="ch-contact-form fade-right">
-				<div class="ch-form-title"><?php echo esc_html( $form_title ); ?></div>
-				<div id="ch-form-msg" class="ch-form-feedback" style="display:none;" role="alert"></div>
-				<form id="ch-contact-form" novalidate>
-					<?php wp_nonce_field( 'ch_contact_nonce', 'ch_contact_nonce_field' ); ?>
-					<input type="hidden" name="action" value="ch_contact_submit">
-					<input type="hidden" name="ch_enquiry" value="franchise">
-					<div class="ch-form-group">
-						<label class="ch-form-label">Your Name</label>
-						<input type="text" name="ch_name" class="ch-form-input" placeholder="Full name" required>
-					</div>
-					<div class="ch-form-group">
-						<label class="ch-form-label">Email</label>
-						<input type="email" name="ch_email" class="ch-form-input" placeholder="you@email.com" required>
-					</div>
-					<div class="ch-form-group">
-						<label class="ch-form-label">Phone / WhatsApp</label>
-						<input type="tel" name="ch_phone" class="ch-form-input" placeholder="+44 ...">
-					</div>
-					<div class="ch-form-group">
-						<label class="ch-form-label">City / Area You're Interested In</label>
-						<input type="text" name="ch_city" class="ch-form-input" placeholder="e.g. Manchester, Leeds, Glasgow...">
-					</div>
-					<div class="ch-form-group">
-						<label class="ch-form-label">Tell Us About Yourself</label>
-						<textarea name="ch_message" class="ch-form-textarea" placeholder="Your background, why you're interested, any questions..."></textarea>
-					</div>
-					<button type="submit" class="ch-form-submit">Submit Franchise Enquiry →</button>
-				</form>
+
+			<!-- Right: content -->
+			<div class="ch-frn-content">
+				<div class="section-tag" style="color:var(--ch-lime);">Franchise Opportunity</div>
+				<h2 class="ch-frn-title"><?php echo wp_kses( $frn_heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
+				<p class="ch-frn-sub"><?php echo esc_html( $frn_sub ); ?></p>
+
+				<ul class="ch-frn-features">
+					<li>💼 Full training &amp; ongoing support</li>
+					<li>📍 Exclusive territory rights</li>
+					<li>🚀 Launch-ready in weeks, not months</li>
+				</ul>
+
+				<button type="button" class="ch-frn-open btn-lime" id="ch-frn-open">
+					🌿 Enquire Now
+				</button>
 			</div>
+
 		</div>
 	</div>
 </section>
+
+<!-- ═══ FRANCHISE ENQUIRY MODAL ════════════════════════════════════════════════ -->
+<div class="ch-bk-modal" id="ch-frn-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Franchise enquiry">
+	<div class="ch-bk-modal-backdrop" data-frn-close></div>
+
+	<div class="ch-bk-modal-box">
+		<button type="button" class="ch-bk-modal-close" data-frn-close aria-label="Close">&times;</button>
+
+		<div class="ch-bk-modal-scroll">
+
+			<!-- Progress bar -->
+			<div class="ch-bk-progress">
+				<?php
+				$frn_steps = [ '📍 Location', '💼 Background', '✅ Confirm' ];
+				foreach ( $frn_steps as $i => $lbl ) :
+				?>
+					<div class="ch-bk-prog-step<?php echo $i === 0 ? ' active' : ''; ?>" data-step="<?php echo $i + 1; ?>">
+						<div class="ch-bk-prog-dot"><?php echo $i + 1; ?></div>
+						<span class="ch-bk-prog-label"><?php echo esc_html( $lbl ); ?></span>
+					</div>
+				<?php endforeach; ?>
+				<div class="ch-bk-prog-line"><span class="ch-bk-prog-fill"></span></div>
+			</div>
+
+			<form id="ch-frn-form" novalidate>
+				<?php wp_nonce_field( 'ch_contact_nonce', 'ch_frn_nonce_field' ); ?>
+				<div id="ch-frn-msg" class="ch-form-feedback" style="display:none;" role="alert"></div>
+
+				<!-- ── STEP 1: Location interest ─────────────────────────────────── -->
+				<div class="ch-bk-step active" data-step="1">
+					<h3 class="ch-bk-step-title">Where do you want to open?</h3>
+					<p class="ch-bk-step-desc">Tell us your preferred city or area and what type of unit interests you.</p>
+
+					<div class="ch-bk-fields">
+						<div class="ch-bk-field">
+							<label>City / Area *</label>
+							<input type="text" name="frn_city" class="ch-form-input" placeholder="e.g. Manchester, Leeds, Birmingham…" required>
+						</div>
+						<div class="ch-bk-field">
+							<label>Franchise Type *</label>
+							<select name="frn_type" class="ch-form-select" required>
+								<option value="">Select a type…</option>
+								<option>Kiosk / Cart (small footprint)</option>
+								<option>Food Court Unit</option>
+								<option>Full Standalone Store</option>
+								<option>Not sure yet — need guidance</option>
+							</select>
+						</div>
+						<div class="ch-bk-field">
+							<label>When are you looking to start? *</label>
+							<select name="frn_timeline" class="ch-form-select" required>
+								<option value="">Select a timeline…</option>
+								<option>As soon as possible</option>
+								<option>Within 3 months</option>
+								<option>3–6 months</option>
+								<option>6–12 months</option>
+								<option>Just exploring for now</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="ch-bk-nav">
+						<span></span>
+						<button type="button" class="ch-bk-next btn-lime" data-next="2">Next: Your Background →</button>
+					</div>
+				</div>
+
+				<!-- ── STEP 2: Background + Investment ───────────────────────────── -->
+				<div class="ch-bk-step" data-step="2">
+					<h3 class="ch-bk-step-title">Tell us about yourself</h3>
+					<p class="ch-bk-step-desc">Helps us match you to the right franchise package.</p>
+
+					<div class="ch-bk-fields">
+						<div class="ch-bk-field">
+							<label>Investment Range *</label>
+							<select name="frn_investment" class="ch-form-select" required>
+								<option value="">Select a range…</option>
+								<option>Under £10,000</option>
+								<option>£10,000 – £25,000</option>
+								<option>£25,000 – £50,000</option>
+								<option>£50,000+</option>
+								<option>Depends on the opportunity</option>
+							</select>
+						</div>
+						<div class="ch-bk-field">
+							<label>Business / Food Experience <small>(optional)</small></label>
+							<select name="frn_experience" class="ch-form-select">
+								<option value="">Select…</option>
+								<option>No prior business experience</option>
+								<option>I've run a small business before</option>
+								<option>Food &amp; hospitality background</option>
+								<option>Multi-unit / franchise experience</option>
+							</select>
+						</div>
+						<div class="ch-bk-field">
+							<label>Any questions or comments? <small>(optional)</small></label>
+							<textarea name="frn_message" class="ch-form-textarea" rows="3" placeholder="Anything you'd like us to know…"></textarea>
+						</div>
+					</div>
+
+					<div class="ch-bk-nav">
+						<button type="button" class="ch-bk-back btn-outline" data-back="1">← Back</button>
+						<button type="button" class="ch-bk-next btn-lime" data-next="3">Next: Your Details →</button>
+					</div>
+				</div>
+
+				<!-- ── STEP 3: Contact + Confirm ─────────────────────────────────── -->
+				<div class="ch-bk-step" data-step="3">
+					<h3 class="ch-bk-step-title">Almost there! 🌿</h3>
+					<p class="ch-bk-step-desc">We'll reply personally within 24 hours. All enquiries are fully confidential.</p>
+
+					<div class="ch-bk-summary" id="ch-frn-summary"></div>
+
+					<div class="ch-bk-fields">
+						<div class="ch-bk-field-row">
+							<div class="ch-bk-field">
+								<label>Your Name *</label>
+								<input type="text" name="frn_name" class="ch-form-input" placeholder="Full name" required>
+							</div>
+							<div class="ch-bk-field">
+								<label>Email *</label>
+								<input type="email" name="frn_email" class="ch-form-input" placeholder="you@email.com" required>
+							</div>
+						</div>
+						<div class="ch-bk-field">
+							<label>Phone / WhatsApp <small>(optional)</small></label>
+							<input type="tel" name="frn_phone" class="ch-form-input" placeholder="+44 …">
+						</div>
+					</div>
+
+					<div class="ch-bk-nav">
+						<button type="button" class="ch-bk-back btn-outline" data-back="2">← Back</button>
+						<button type="submit" class="ch-bk-submit btn-lime" id="ch-frn-submit">Submit My Enquiry 💼</button>
+					</div>
+				</div>
+
+			</form>
+
+		</div><!-- .ch-bk-modal-scroll -->
+	</div>
+</div>

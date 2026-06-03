@@ -403,10 +403,139 @@
         });
     }
 
+    // ── Franchise Enquiry Wizard ────────────────────────────────────────────────
+    function initFranchiseWizard() {
+        var wizard = document.getElementById('ch-frn-form');
+        var modal  = document.getElementById('ch-frn-modal');
+        var openBtn= document.getElementById('ch-frn-open');
+        if (!wizard || !modal) return;
+
+        var box       = modal.querySelector('.ch-bk-modal-box');
+        var steps     = Array.prototype.slice.call(wizard.querySelectorAll('.ch-bk-step'));
+        var progSteps = Array.prototype.slice.call(modal.querySelectorAll('.ch-bk-prog-step'));
+        var progFill  = modal.querySelector('.ch-bk-prog-fill');
+        var msgEl     = document.getElementById('ch-frn-msg');
+        var submitBtn = document.getElementById('ch-frn-submit');
+        var summary   = document.getElementById('ch-frn-summary');
+        var total     = steps.length;
+        var current   = 1;
+
+        function openModal()  { modal.classList.add('is-open');    modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; goTo(1); }
+        function closeModal() { modal.classList.remove('is-open'); modal.setAttribute('aria-hidden','true');  document.body.style.overflow = ''; }
+
+        if (openBtn) openBtn.addEventListener('click', openModal);
+        modal.querySelectorAll('[data-frn-close]').forEach(function(el){ el.addEventListener('click', closeModal); });
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
+
+        function showMsg(text, type) { if (!msgEl) return; msgEl.textContent = text; msgEl.className = 'ch-form-feedback ' + type; msgEl.style.display = 'block'; }
+        function hideMsg() { if (msgEl) msgEl.style.display = 'none'; }
+
+        function goTo(step) {
+            current = step;
+            steps.forEach(function(s){ s.classList.toggle('active', parseInt(s.dataset.step,10) === step); });
+            progSteps.forEach(function(p){ var ps = parseInt(p.dataset.step,10); p.classList.toggle('active', ps === step); p.classList.toggle('done', ps < step); });
+            if (progFill) progFill.style.width = ((step - 1) / (total - 1) * 100) + '%';
+            if (step === total) buildSummary();
+            hideMsg();
+            if (box) box.scrollTop = 0;
+        }
+
+        function val(name) { var el = wizard.querySelector('[name="' + name + '"]'); return el ? el.value.trim() : ''; }
+
+        function buildSummary() {
+            if (!summary) return;
+            var rows = [
+                ['📍 City / Area',     val('frn_city')],
+                ['🏪 Franchise Type',  val('frn_type')],
+                ['⏱ Timeline',         val('frn_timeline')],
+                ['💼 Investment',       val('frn_investment')],
+            ];
+            var html = '<div class="ch-bk-summary-title">Your Enquiry Summary</div><div class="ch-bk-summary-grid">';
+            rows.forEach(function(r){ if (!r[1]) return; html += '<div class="ch-bk-summary-row"><span class="ch-bk-summary-label">' + r[0] + '</span><span class="ch-bk-summary-val">' + r[1] + '</span></div>'; });
+            html += '</div>';
+            summary.innerHTML = html;
+        }
+
+        function clearErrors() { wizard.querySelectorAll('.ch-field-error').forEach(function(e){ e.remove(); }); wizard.querySelectorAll('.ch-bk-field').forEach(function(e){ e.classList.remove('invalid'); }); }
+        function fieldError(field, msg) { field.classList.add('invalid'); var e = document.createElement('span'); e.className = 'ch-field-error'; e.textContent = msg; field.appendChild(e); }
+
+        function validateStep(step) {
+            clearErrors();
+            if (step === 1) {
+                var city = wizard.querySelector('[name="frn_city"]');
+                var type = wizard.querySelector('[name="frn_type"]');
+                var time = wizard.querySelector('[name="frn_timeline"]');
+                var ok = true;
+                if (!city.value.trim())  { fieldError(city.closest('.ch-bk-field'), 'Please enter a city or area.'); ok = false; }
+                if (!type.value.trim())  { fieldError(type.closest('.ch-bk-field'), 'Please select a franchise type.'); ok = false; }
+                if (!time.value.trim())  { fieldError(time.closest('.ch-bk-field'), 'Please select a timeline.'); ok = false; }
+                if (!ok) { showMsg('Please fill in all required fields.', 'error'); return false; }
+            }
+            if (step === 2) {
+                var inv = wizard.querySelector('[name="frn_investment"]');
+                if (!inv.value.trim()) { fieldError(inv.closest('.ch-bk-field'), 'Please select an investment range.'); showMsg('Please select your investment range.', 'error'); return false; }
+            }
+            return true;
+        }
+
+        wizard.querySelectorAll('.ch-bk-next').forEach(function(btn){ btn.addEventListener('click', function(){ if (!validateStep(current)) return; goTo(parseInt(btn.dataset.next,10)); }); });
+        wizard.querySelectorAll('.ch-bk-back').forEach(function(btn){ btn.addEventListener('click', function(){ goTo(parseInt(btn.dataset.back,10)); }); });
+
+        wizard.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var name  = wizard.querySelector('[name="frn_name"]');
+            var email = wizard.querySelector('[name="frn_email"]');
+            if (!name.value.trim())  { showMsg('Please enter your name.', 'error'); name.focus(); return; }
+            if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { showMsg('Please enter a valid email address.', 'error'); email.focus(); return; }
+
+            var lines = [
+                '💼 FRANCHISE ENQUIRY', '',
+                'City / Area:      ' + val('frn_city'),
+                'Franchise Type:   ' + val('frn_type'),
+                'Timeline:         ' + val('frn_timeline'), '',
+                'Investment Range: ' + val('frn_investment'),
+                'Experience:       ' + val('frn_experience'), '',
+                'Message:          ' + val('frn_message'),
+            ];
+
+            var originalText = submitBtn.textContent;
+            submitBtn.disabled = true; submitBtn.textContent = 'Sending… 🌿';
+
+            var data = new FormData();
+            data.append('action',     'ch_contact_submit');
+            data.append('nonce',      chTheme.nonce);
+            data.append('ch_name',    name.value.trim());
+            data.append('ch_email',   email.value.trim());
+            data.append('ch_phone',   val('frn_phone'));
+            data.append('ch_enquiry', 'franchise');
+            data.append('ch_message', lines.join('\n'));
+
+            fetch(chTheme.ajaxUrl, { method: 'POST', body: data })
+                .then(function(r){ return r.json(); })
+                .catch(function(){ return null; })
+                .then(function(res) {
+                    if (res && res.success) {
+                        var step = wizard.querySelector('.ch-bk-step[data-step="3"]');
+                        if (step) {
+                            step.innerHTML = '<div class="ch-bk-success"><div class="ch-bk-success-icon">🎉</div><h3>Enquiry Sent!</h3><p>' + (res.data.message || "Thank you! We'll be in touch within 24 hours. 🌿") + '</p><button type="button" class="btn-lime" data-frn-close style="margin-top:1.2rem;">Close</button></div>';
+                            var cb = step.querySelector('[data-frn-close]');
+                            if (cb) cb.addEventListener('click', closeModal);
+                        }
+                        var prog = modal.querySelector('.ch-bk-progress');
+                        if (prog) prog.style.display = 'none';
+                    } else {
+                        showMsg((res && res.data && res.data.message) ? res.data.message : 'Something went wrong. Please try again.', 'error');
+                        submitBtn.disabled = false; submitBtn.textContent = originalText;
+                    }
+                });
+        });
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────────
     $(document).ready(function () {
         initContactForm();
         initBookingWizard();
+        initFranchiseWizard();
         initNativeShare();
     });
 

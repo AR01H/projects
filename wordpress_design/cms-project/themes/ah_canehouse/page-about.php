@@ -22,18 +22,10 @@ $team = ch_get_team_members();
 	'heading'    => 'The Story Behind <em>The Cane House</em>',
 	'desc'       => 'We believe in the power of nature\'s simplest gifts. Live-pressed, served cool, with nothing added — and a whole lot of heart behind every glass.',
 	'modifier'   => 'ch-page-hero--sugarcane',
-	'btn1_label' => 'Our Origin Story',
-	'btn1_url'   => '#our-story',
-	'btn1_icon'  => '🌿',
-	'btn2_label' => 'Meet the Team',
-	'btn2_url'   => '#team',
-	'btn2_class' => 'btn-outline ch-btn-outline-light',
 ] ); ?>
 
 <!-- ── Why We Started ────────────────────────────────────────────────────────── -->
-<div id="our-story">
-	<?php get_template_part( 'components/about-origin' ); ?>
-</div>
+<?php get_template_part( 'components/about-origin' ); ?>
 
 <!-- ── Mission / Vision / Values ─────────────────────────────────────────────── -->
 <section class="about-mission">
@@ -109,7 +101,16 @@ $team = ch_get_team_members();
 <?php endif; ?>
 
 <!-- ── About Gallery ─────────────────────────────────────────────────────────── -->
-<?php get_template_part( 'components/gallery-strip', null, [
+<?php get_template_part( 'components/media-gallery', null, [
+	'tag'   => 'Our Gallery',
+	'title' => 'View <span class="accent">Our Hygiene</span>',
+	'body'  => 'A visual journey through our beginnings, our team, and the craft behind every glass.',
+	'bg'    => 'var(--accent)',
+	'id'    => 'mg-about',
+	'items' => ch_get_about_gallery(),
+] ); 
+
+get_template_part( 'components/gallery-strip', null, [
 	'tag'      => 'Behind the Scenes',
 	'title'    => 'Our Equipment, <span class="accent">Our Craft</span>',
 	'body'     => 'The machines, the setup, the ingredients — everything that goes into every perfect glass.',
@@ -123,8 +124,9 @@ $team = ch_get_team_members();
 		[ 'src' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Fresh Ingredients',    'desc' => 'Whole stalks, ginger, lemon, mint' ],
 		[ 'src' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'First Glass Served',  'desc' => 'The moment it all comes together' ],
 		[ 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Our Team',            'desc' => 'Passionate about every pour' ],
-	],
-] ); ?>
+	]] );
+?>
+
 
 <!-- ── Quality / Promise ─────────────────────────────────────────────────────── -->
 <?php
@@ -178,7 +180,7 @@ unset( $_about_values_extra, $_about_values_visual );
 	'body'       => 'Book us for your next event, or take the leap and bring The Cane House to your city with a franchise.',
 	'btn_label'  => '🥤 Book an Event',
 	'btn_url'    => home_url( '/events/' ),
-	'btn2_label' => 'Explore Franchise →',
+	'btn2_label' => 'Explore Franchise',
 	'btn2_url'   => home_url( '/franchise/' ),
 	'show_phone' => false,
 ] ); ?>

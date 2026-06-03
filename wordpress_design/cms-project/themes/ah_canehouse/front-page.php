@@ -17,16 +17,6 @@ $s = ch_get_settings();
 
 	<?php get_template_part( 'components/origins-showcase' ); ?>
 
-	<?php
-		get_template_part( 'components/history-info' );
-	?>
-
-	<!-- <?php get_template_part( 'components/feature-carousel' ); ?> -->
-
-	<?php if ( ch_section_visible( 'story_cards' ) ) : ?>
-		<?php get_template_part( 'components/story-cards' ); ?>
-	<?php endif; ?>
-
 	<?php if ( ch_section_visible( 'reviews' ) ) : ?>
 		<?php get_template_part( 'components/review-carousel' ); ?>
 	<?php endif; ?>
@@ -39,20 +29,22 @@ $s = ch_get_settings();
 		<?php get_template_part( 'components/benefits' ); ?>
 	<?php endif; ?>
 
-	<?php get_template_part( 'components/booking-wizard' ); ?>
-
-	<?php if ( ch_section_visible( 'story' ) ) : ?>
+	
+	<!-- <?php if ( ch_section_visible( 'story' ) ) : ?>
 		<?php get_template_part( 'components/story' ); ?>
-	<?php endif; ?>
-
+	<?php endif; ?> -->
+		
 	<?php if ( ch_section_visible( 'hire' ) ) : ?>
-		<?php get_template_part( 'components/hire-section' ); ?>
+			<?php get_template_part( 'components/hire-section' ); ?>
 	<?php endif; ?>
+	<?php get_template_part( 'components/booking-wizard' ); ?>
 
 	
 	<?php if ( ch_section_visible( 'franchise' ) ) : ?>
 		<?php get_template_part( 'components/franchise-section' ); ?>
 	<?php endif; ?>
+
+	<?php get_template_part( 'components/franchise-enquiry' ); ?>
 		
 	<?php if ( ch_section_visible( 'faqs' ) ) : ?>
 		<?php get_template_part( 'components/faq-section' ); ?>

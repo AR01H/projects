@@ -16,19 +16,15 @@ get_header();
 	'btn1_label' => 'Start Your Enquiry',
 	'btn1_url'   => '#franchise-enquiry',
 	'btn1_icon'  => '🌿',
-	'btn2_label' => 'Call Us',
-	'btn2_icon'  => '📞',
-	'show_phone' => true,
 ] ); ?>
 
-<?php get_template_part( 'components/gallery-strip', null, [
-	'tag'      => 'Franchise Gallery',
-	'title'    => 'The Cane House <span class="accent">in Action</span>',
-	'body'     => 'Our partners across the UK — branded stalls, live pressing, and happy queues.',
-	'modifier' => 'ch-gstrip--franchise',
-	'id'       => 'gstrip-franchise',
-	'bg'       => 'var(--ch-white)',
-	'images' => ch_get_franchise_gallery(),
+<?php get_template_part( 'components/media-gallery', null, [
+	'tag'   => 'Franchise Gallery',
+	'title' => 'The Cane House <span class="accent">in Action</span>',
+	'body'  => 'Our partners across the UK — branded stalls, live pressing, and happy queues.',
+	'bg'    => 'var(--ch-white)',
+	'id'    => 'mg-franchise',
+	'items' => ch_get_franchise_media_gallery(),
 ] ); ?>
 
 <?php get_template_part( 'components/franchise-why' ); ?>

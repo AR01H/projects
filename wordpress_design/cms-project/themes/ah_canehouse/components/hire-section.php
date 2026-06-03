@@ -66,11 +66,11 @@ $settings = ch_get_settings();
 			<?php endforeach; ?>
 		</div>
 
-		<div class="ch-hire-cta fade-up">
+		<!-- <div class="ch-hire-cta fade-up">
 			<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="btn-outline">
 				View & Hire →
 			</a>
-		</div>
+		</div> -->
 
 	</div>
 </section>

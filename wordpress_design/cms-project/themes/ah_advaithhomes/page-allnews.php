@@ -89,7 +89,7 @@ if ( $item_id && class_exists( 'AH_DB_Helper' ) ) {
 
 			
 		    <?php if ( $s_thumb ) : ?>
-		    <div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/7;box-shadow:var(--shadow-md)">
+		    <div class="news-single__hero" style="margin-bottom:32px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/9;box-shadow:var(--shadow-md)">
 		      <img src="<?php echo esc_url( $s_thumb ); ?>"
 		           alt="<?php echo esc_attr( $s_title ); ?>"
 		           style="width:100%;height:100%;object-fit:cover"
