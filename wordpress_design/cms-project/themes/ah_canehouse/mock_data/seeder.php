@@ -162,6 +162,8 @@ class CH_Theme_Seeder {
 			'juice-showcase'      => [ 'csv' => 'juice-showcase',      'method' => 'seed_juice_showcase',      'label' => '🧃 Juice showcase',        'cols' => 'image, title, desc',                       'append' => false ],
 			'story-cards'         => [ 'csv' => 'story-cards',         'method' => 'seed_story_cards',         'label' => '🌱 Sugarcane story cards', 'cols' => 'id, icon, label, heading, body, facts (;), images (;)', 'append' => false ],
 			'certifications'      => [ 'csv' => 'certifications',      'method' => 'seed_certifications',      'label' => '🏛️ Certification badges',  'cols' => 'icon, title, desc, badge',                 'append' => false ],
+			'about-equipment'     => [ 'csv' => 'about-equipment',     'method' => 'seed_about_equipment',     'label' => '🔧 About - Equipment gallery',    'cols' => 'src, label, desc',          'append' => false ],
+			'about-settings'      => [ 'csv' => 'about-settings',      'method' => 'seed_about_settings',      'label' => '📄 About - Promise card',        'cols' => 'key, value',                'append' => false ],
 			// ── CMS table rows (APPEND - may duplicate on re-run) ──
 			'reviews'             => [ 'csv' => 'reviews',             'method' => 'seed_reviews',             'label' => '⭐ Customer reviews',       'cols' => 'author_name, location, review_text, rating, result, status', 'append' => true ],
 			'news-bar'            => [ 'csv' => 'news_bar',            'method' => 'seed_news_bar',            'label' => '📰 News bar items',        'cols' => 'message, status, sort_order',              'append' => true ],
@@ -243,6 +245,25 @@ class CH_Theme_Seeder {
 	// seed_navigation() and seed_footer() removed - navigation & footer are
 	// owned by the CMS plugin (ah_cms_navigation / ah_cms_footer). The theme
 	// reads them via ch_get_theme_navigation() / ch_get_theme_footer().
+
+	private static function seed_about_equipment(): array {
+		$items = CH_Data::about_equipment();
+		if ( empty( $items ) ) return [ 'updated' => 0 ];
+		update_option( 'ch_about_equipment', wp_json_encode( $items ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_about_settings(): array {
+		$kv      = CH_Data::about_settings();
+		$promise = [
+			'icon'  => $kv['promise_icon']  ?? '🌱',
+			'title' => $kv['promise_title'] ?? 'Our Promise',
+			'sub'   => $kv['promise_sub']   ?? 'Pressed Fresh. Served Cool.',
+			'tags'  => $kv['promise_tags']  ?? [],
+		];
+		update_option( 'ch_about_promise', wp_json_encode( $promise ) );
+		return [ 'updated' => 1 ];
+	}
 
 	private static function seed_story_cards(): array {
 		$cards = CH_Data::story_cards();

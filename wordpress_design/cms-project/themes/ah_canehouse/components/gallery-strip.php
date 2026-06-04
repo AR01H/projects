@@ -33,7 +33,7 @@ $prev_id      = esc_attr( $id ) . '-prev';
 $next_id      = esc_attr( $id ) . '-next';
 ?>
 
-<section class="<?php echo $section_cls; ?>" style="background:<?php echo esc_attr( $bg ); ?>;">
+<section class="<?php echo $section_cls; ?>">
 	<div class="container">
 
 		<?php get_template_part( 'components/section-header', null, [

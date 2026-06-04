@@ -20,17 +20,27 @@ defined( 'ABSPATH' ) || exit;
 
 class CH_CSV_Loader {
 
-	/** Absolute path to the CSV data directory (the seeder's source files). */
+	/** Absolute path to the mock CSV data directory. */
 	public static function dir(): string {
 		return get_template_directory() . '/mock_data/csv';
 	}
 
-	/** Absolute path to a single CSV file. */
+	/** Absolute path to the real CSV data directory. */
+	public static function real_dir(): string {
+		return get_template_directory() . '/real_data/csv';
+	}
+
+	/** Absolute path to a single mock CSV file. */
 	public static function path( string $name ): string {
 		return self::dir() . '/' . $name . '.csv';
 	}
 
-	/** Does a given CSV file exist? */
+	/** Absolute path to a single real CSV file. */
+	public static function real_path( string $name ): string {
+		return self::real_dir() . '/' . $name . '.csv';
+	}
+
+	/** Does a given mock CSV file exist? */
 	public static function exists( string $name ): bool {
 		return file_exists( self::path( $name ) );
 	}
@@ -43,6 +53,64 @@ class CH_CSV_Loader {
 		}
 		sort( $names );
 		return $names;
+	}
+
+	/**
+	 * Read a row-style CSV from real_data/csv/.
+	 *
+	 * @return array<int,array<string,string>>
+	 */
+	public static function load_real_csv( string $name ): array {
+		$path = self::real_path( $name );
+		if ( ! file_exists( $path ) ) {
+			return array();
+		}
+		$fh = fopen( $path, 'r' );
+		if ( false === $fh ) {
+			return array();
+		}
+		$bom = fread( $fh, 3 );
+		if ( "\xef\xbb\xbf" !== $bom ) {
+			rewind( $fh );
+		}
+		$headers = fgetcsv( $fh );
+		if ( ! $headers ) {
+			fclose( $fh );
+			return array();
+		}
+		$headers = array_map( 'trim', $headers );
+		$rows    = array();
+		while ( ( $row = fgetcsv( $fh ) ) !== false ) {
+			if ( count( $row ) < count( $headers ) ) {
+				continue;
+			}
+			$rows[] = array_combine(
+				$headers,
+				array_map( 'trim', array_slice( $row, 0, count( $headers ) ) )
+			);
+		}
+		fclose( $fh );
+		return $rows;
+	}
+
+	/**
+	 * Read a two-column key/value CSV from real_data/csv/ into [ key => value ].
+	 *
+	 * @return array<string,string>
+	 */
+	public static function load_real_kv_csv( string $name ): array {
+		$rows = self::load_real_csv( $name );
+		if ( ! $rows ) {
+			return array();
+		}
+		$out = array();
+		foreach ( $rows as $row ) {
+			$k = trim( $row['key'] ?? '' );
+			if ( '' !== $k ) {
+				$out[ $k ] = $row['value'] ?? '';
+			}
+		}
+		return $out;
 	}
 
 	/**

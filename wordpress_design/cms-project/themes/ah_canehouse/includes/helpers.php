@@ -703,12 +703,10 @@ function ch_get_events_why(): array {
 // ── About Page: Mission / Vision / Values ─────────────────────────────────────
 function ch_get_about_mvv(): array {
 	$opt = get_option( 'ch_about_mvv', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : [
-		[ 'icon' => '🎯', 'title' => 'Our Mission', 'text' => 'To deliver 100% natural, freshly-pressed sugarcane juice that brings happiness, and wholesome refreshment to every customer we serve.' ],
-		[ 'icon' => '🌿', 'title' => 'Our Vision',  'text' => 'To become the UK\'s most trusted brand for fresh, natural, live-pressed sugarcane juice - setting the standard for sustainability and quality.' ],
-		[ 'icon' => '💚', 'title' => 'Our Values',  'text' => 'Freshness, integrity, sustainability, and community. We stand behind every drop of juice we serve, with a commitment to natural goodness.' ],
-	];
+	if ( is_string( $opt ) ){
+		$opt = json_decode( $opt, true ) ?: [];
+	} 
+	return $opt;
 }
 
 // ── About Page: Quality Commitment items ──────────────────────────────────────
@@ -724,6 +722,25 @@ function ch_get_about_quality(): array {
 		'Locally served in Sutton',
 		'Takeaway bottles and family packs available',
 		' Seasonal and unique - not commonly available in the UK'
+	];
+}
+
+// ── About Page: Equipment Gallery (gallery-strip) ────────────────────────────
+function ch_get_about_equipment(): array {
+	return ch_get_gallery( 'ch_about_equipment', CH_Data::about_equipment() );
+}
+
+// ── About Page: Promise Card ──────────────────────────────────────────────────
+function ch_get_about_promise(): array {
+	$opt = get_option( 'ch_about_promise', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return $opt;
+	$kv = CH_Data::about_settings();
+	return [
+		'icon'  => $kv['promise_icon']  ?? '🌱',
+		'title' => $kv['promise_title'] ?? 'Our Promise',
+		'sub'   => $kv['promise_sub']   ?? 'Pressed Fresh. Served Cool.',
+		'tags'  => $kv['promise_tags']  ?? [],
 	];
 }
 

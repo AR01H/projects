@@ -5376,7 +5376,7 @@ body.has-ticker .ch-nav { top: 32px; }
 @media (max-width:480px) { .ch-gallery-grid { grid-template-columns:1fr; } .ch-gallery-item--wide { grid-column:span 1; } }
 
 /* ── Gallery Strip ──────────────────────────────────────────────────────────── */
-.ch-gallery-strip-section { padding: 5rem 0; }
+.ch-gallery-strip-section { padding: 2rem 0; background: var(--accent);}
 
 /* Desktop: all cards in one row, hidden scrollbar for overflow */
 .ch-gstrip { margin-top: 2.5rem; }
@@ -5447,7 +5447,6 @@ body.has-ticker .ch-nav { top: 32px; }
     }
     .ch-gstrip__dots { display: flex; gap: 0.5rem; }
     .ch-gstrip__arrows { display: flex; gap: 0.5rem; }
-    .ch-gallery-strip-section { padding: 3.5rem 0; }
 }
 
 /* Per-page colour variants */

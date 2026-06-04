@@ -7,6 +7,17 @@ require_once get_template_directory() . '/includes/mock-data.php';
 require_once get_template_directory() . '/includes/helpers.php';
 require_once get_template_directory() . '/schema/class-schema.php';
 require_once get_template_directory() . '/schema/class-data.php';
+
+// ── Real-data classes (read from real_data/csv/ and real_data/json/) ─────────
+require_once get_template_directory() . '/includes/data/class-real-loader.php';
+require_once get_template_directory() . '/includes/data/class-site-data.php';
+require_once get_template_directory() . '/includes/data/class-home-data.php';
+require_once get_template_directory() . '/includes/data/class-menu-data.php';
+require_once get_template_directory() . '/includes/data/class-about-data.php';
+require_once get_template_directory() . '/includes/data/class-story-data.php';
+require_once get_template_directory() . '/includes/data/class-hire-data.php';
+require_once get_template_directory() . '/includes/data/class-blog-data.php';
+require_once get_template_directory() . '/includes/data/class-shared-data.php';
 require_once get_template_directory() . '/includes/class-theme-admin.php';
 require_once get_template_directory() . '/mail/common_contact.php';
 require_once get_template_directory() . '/admin/theme-reset.php';

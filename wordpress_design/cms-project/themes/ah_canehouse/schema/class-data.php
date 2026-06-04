@@ -90,6 +90,20 @@ class CH_Data {
 		return self::default_about_team();
 	}
 
+	public static function about_equipment(): array {
+		$rows = CH_CSV_Loader::load_real_csv( 'about-equipment' );
+		if ( $rows ) {
+			return array_map( static function ( $r ) {
+				return [
+					'src'   => $r['src']   ?? '',
+					'label' => $r['label'] ?? '',
+					'desc'  => $r['desc']  ?? '',
+				];
+			}, $rows );
+		}
+		return [];
+	}
+
 	// ── Site settings (key-value CSVs) ────────────────────────────────────────
 
 	public static function settings(): array {
@@ -120,6 +134,17 @@ class CH_Data {
 			return $kv;
 		}
 		return self::default_story_settings();
+	}
+
+	public static function about_settings(): array {
+		$kv = self::load_kv_csv( 'about-settings' );
+		if ( $kv ) {
+			if ( isset( $kv['promise_tags'] ) ) {
+				$kv['promise_tags'] = array_map( 'trim', explode( ';', $kv['promise_tags'] ) );
+			}
+			return $kv;
+		}
+		return [];
 	}
 
 	// ── Array data ────────────────────────────────────────────────────────────
