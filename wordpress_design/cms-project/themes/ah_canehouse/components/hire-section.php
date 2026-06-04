@@ -55,7 +55,7 @@ $settings = ch_get_settings();
 		</div><!-- .ch-hire-carousel -->
 
 		<!-- Features ribbon -->
-		<div class="ch-hire-features-bar fade-up">
+		<!-- <div class="ch-hire-features-bar fade-up">
 			<?php foreach ( $features as $feat ) :
 				$feat = (array) $feat;
 			?>
@@ -64,7 +64,7 @@ $settings = ch_get_settings();
 					<div class="ch-hf-text"><?php echo esc_html( $feat['text'] ?? '' ); ?></div>
 				</div>
 			<?php endforeach; ?>
-		</div>
+		</div> -->
 
 		<!-- <div class="ch-hire-cta fade-up">
 			<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="btn-outline">

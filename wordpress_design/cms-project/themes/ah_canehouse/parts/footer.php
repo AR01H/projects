@@ -28,7 +28,7 @@ if ( empty( $cols ) ) {
 
 			<!-- ── Brand Column ───────────────────────────────────────────────── -->
 			<div class="ch-footer__brand-col">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="ch-nav__logo ch-footer__logo-link">
+				<a href="<?php echo esc_url( ( '/' ) ); ?>" class="ch-nav__logo ch-footer__logo-link">
 					<?php if ( $has_logo ) : ?>
 						<img src="<?php echo esc_url( $logo_url ); ?>" alt="The Cane House">
 					<?php else : ?>
@@ -86,7 +86,7 @@ if ( empty( $cols ) ) {
 								$link  = (array) $link;
 								$is_hl = ! empty( $link['highlight'] );
 							?>
-								<a href="<?php echo esc_url( $link['url'] ?? '#' ); ?>"
+								<a href="<?php echo ( $link['url'] ?? '#' ); ?>"
 									class="ch-footer__link<?php echo $is_hl ? ' ch-footer__link--highlight' : ''; ?>">
 									<?php echo esc_html( $link['label'] ?? '' ); ?>
 								</a>
@@ -146,14 +146,14 @@ if ( empty( $cols ) ) {
 
 					<?php if ( ! empty( $footer['cta']['label'] ) ) : ?>
 						<div style="margin-top:1.2rem;">
-							<a href="<?php echo esc_url( $footer['cta']['url'] ?? home_url( '/#contact' ) ); ?>"
+							<a href="<?php echo esc_url( $footer['cta']['url'] ?? ( '/#contact' ) ); ?>"
 								class="btn-lime" style="width:100%;justify-content:center;display:flex;">
 								<?php echo esc_html( $footer['cta']['label'] ); ?>
 							</a>
 						</div>
 					<?php else : ?>
 						<div style="margin-top:1.2rem;">
-							<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>"
+							<a href="<?php echo esc_url( ( '/#contact' ) ); ?>"
 								class="btn-lime" style="width:100%;justify-content:center;display:flex;">
 								Send a Message 🌿
 							</a>

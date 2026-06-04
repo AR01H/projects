@@ -20,23 +20,8 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 ] ); ?>
 
 <?php get_template_part( 'components/history-info' ); ?>
-<!-- ── Stats bar ─────────────────────────────────────────────────────────────── -->
-<!-- <div class="ch-stats-bar">
-	<div class="container">
-		<div class="ch-stats-grid">
-			<?php foreach ( ch_get_sugarcane_stats() as $stat ) :
-				$stat = (array) $stat;
-			?>
-			<div class="ch-stat-item fade-up">
-				<span class="ch-stat-num"><?php echo esc_html( $stat['num'] ?? '' ); ?></span>
-				<span class="ch-stat-label"><?php echo esc_html( $stat['label'] ?? '' ); ?></span>
-			</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</div> -->
 
-<!-- ── Health Benefits Grid ──────────────────────────────────────────────────── -->
+<!-- ── Benefits Grid ──────────────────────────────────────────────────── -->
 <section class="ch-benefits-page">
 	<div class="container">
 		<div class="ch-section-center fade-up">
@@ -110,14 +95,6 @@ get_template_part( 'components/image-text-split', null, [
 ] );
 unset( $_inside_extra, $_inside_visual );
 ?>
-
-
-<!-- ── Global Love: Why the World Drinks Cane ────────────────────────────────── -->
-<?php get_template_part( 'components/sugarcane-benefits', null, [
-	'tag'   => 'Science & Tradition',
-	'title' => 'Why the World <span class="accent">Swears By It</span>',
-	'body'  => 'From Ayurvedic healers in ancient India to modern sports scientists - sugarcane juice has always stood apart. Here\'s what makes it extraordinary.',
-] ); ?>
 
 
 

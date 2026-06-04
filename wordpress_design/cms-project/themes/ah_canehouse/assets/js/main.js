@@ -828,3 +828,101 @@
     });
 
 })();
+
+// (function () {
+//   var style = document.createElement('style');
+//   style.textContent = '* { cursor: none !important; }';
+//   document.head.appendChild(style);
+
+//   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+//   svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+//   svg.setAttribute('width', '18');
+//   svg.setAttribute('height', '56');
+//   svg.setAttribute('viewBox', '0 0 18 56');
+//   svg.style.cssText = [
+//     'position:fixed',
+//     'pointer-events:none',
+//     'z-index:999999',
+//     'top:0',
+//     'left:0',
+//     'transform:translate(-50%,-95%) rotate(-15deg)',
+//   ].join(';');
+
+//   svg.innerHTML = `
+//     <defs>
+//       <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="0%">
+//         <stop offset="0%"  stop-color="#4a8c3f"/>
+//         <stop offset="45%" stop-color="#6db560"/>
+//         <stop offset="100%" stop-color="#3d7535"/>
+//       </linearGradient>
+//     </defs>
+//     <rect x="6" y="3" width="6" height="51" rx="3" fill="url(#cg)"/>
+//     <rect x="5" y="14" width="8" height="3" rx="1.5" fill="#3a6e30"/>
+//     <rect x="5" y="28" width="8" height="3" rx="1.5" fill="#3a6e30"/>
+//     <rect x="5" y="42" width="8" height="3" rx="1.5" fill="#3a6e30"/>
+//     <line x1="9" y1="14" x2="2"  y2="7"  stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/>
+//     <ellipse cx="1"  cy="6"  rx="3" ry="1.5" fill="#7dd670" transform="rotate(-30 1 6)"/>
+//     <line x1="9" y1="28" x2="16" y2="21" stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/>
+//     <ellipse cx="17" cy="20" rx="3" ry="1.5" fill="#7dd670" transform="rotate(30 17 20)"/>
+//     <line x1="9" y1="42" x2="2"  y2="35" stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/>
+//     <ellipse cx="1"  cy="34" rx="3" ry="1.5" fill="#7dd670" transform="rotate(-30 1 34)"/>
+//     <line x1="9" y1="3"  x2="4"  y2="0"  stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/>
+//     <ellipse cx="3"  cy="-1" rx="3.5" ry="1.5" fill="#9ee897" transform="rotate(-20 3 -1)"/>
+//     <line x1="9" y1="3"  x2="14" y2="0"  stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/>
+//     <ellipse cx="15" cy="-1" rx="3.5" ry="1.5" fill="#9ee897" transform="rotate(20 15 -1)"/>
+//   `;
+
+//   document.body.appendChild(svg);
+
+//   var mx = -300, my = -300, cx = -300, cy = -300;
+//   var angle = -15, targetAngle = -15, prevX = -300;
+
+//   document.addEventListener('mousemove', function (e) {
+//     var dx = e.clientX - prevX;
+//     targetAngle = -15 + Math.max(-22, Math.min(22, dx * 1.8));
+//     prevX = e.clientX;
+//     mx = e.clientX;
+//     my = e.clientY;
+//   });
+
+//   (function loop() {
+//     cx += (mx - cx) * 0.18;
+//     cy += (my - cy) * 0.18;
+//     angle += (targetAngle - angle) * 0.12;
+//     targetAngle += (-15 - targetAngle) * 0.06;
+//     svg.style.left = cx + 'px';
+//     svg.style.top  = cy + 'px';
+//     svg.style.transform =
+//       'translate(-50%,-95%) rotate(' + angle.toFixed(2) + 'deg)';
+//     requestAnimationFrame(loop);
+//   })();
+// })();
+
+// (function(){
+//   var st=document.createElement('style');
+//   st.textContent='*{cursor:none!important;}';
+//   document.head.appendChild(st);
+
+//   var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+//   svg.setAttribute('width','18');
+//   svg.setAttribute('height','56');
+//   svg.setAttribute('viewBox','0 0 18 56');
+//   svg.style.cssText='position:fixed;pointer-events:none;z-index:2147483647;top:0;left:0;will-change:transform;';
+//   svg.innerHTML='<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4a8c3f"/><stop offset="50%" stop-color="#6db560"/><stop offset="100%" stop-color="#3d7535"/></linearGradient></defs><rect x="6" y="3" width="6" height="51" rx="3" fill="url(#g1)"/><rect x="5" y="14" width="8" height="3" rx="1.5" fill="#3a6e30"/><rect x="5" y="28" width="8" height="3" rx="1.5" fill="#3a6e30"/><rect x="5" y="42" width="8" height="3" rx="1.5" fill="#3a6e30"/><line x1="9" y1="14" x2="2" y2="7" stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="1" cy="6" rx="3" ry="1.5" fill="#7dd670" transform="rotate(-30 1 6)"/><line x1="9" y1="28" x2="16" y2="21" stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="17" cy="20" rx="3" ry="1.5" fill="#7dd670" transform="rotate(30 17 20)"/><line x1="9" y1="42" x2="2" y2="35" stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="1" cy="34" rx="3" ry="1.5" fill="#7dd670" transform="rotate(-30 1 34)"/><line x1="9" y1="3" x2="4" y2="0" stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="3" cy="-1" rx="3.5" ry="1.5" fill="#9ee897" transform="rotate(-20 3 -1)"/><line x1="9" y1="3" x2="14" y2="0" stroke="#5cb854" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="15" cy="-1" rx="3.5" ry="1.5" fill="#9ee897" transform="rotate(20 15 -1)"/>';
+//   document.body.appendChild(svg);
+
+//   var mx=-300,my=-300,cx=-300,cy=-300;
+//   var angle=-15,ta=-15,px=-300,run=false;
+//   document.addEventListener('mousemove',function(e){
+//     var dx=e.clientX-px;
+//     ta=-15+Math.max(-22,Math.min(22,dx*1.8));
+//     px=e.clientX; mx=e.clientX; my=e.clientY;
+//     if(!run){run=true;loop();}
+//   });
+//   function loop(){
+//     cx+=(mx-cx)*0.18; cy+=(my-cy)*0.18;
+//     angle+=(ta-angle)*0.12; ta+=(-15-ta)*0.06;
+//     svg.style.transform='translate3d('+(cx-9)+ 'px,'+(cy-53)+ 'px,0) rotate('+angle.toFixed(1)+'deg)';
+//     requestAnimationFrame(loop);
+//   }
+// })();

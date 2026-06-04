@@ -11,7 +11,7 @@ $settings  = ch_get_settings();
 $footer_cols = (array) ( $footer['columns'] ?? [] );
 if ( empty( $footer_cols ) ) {
 	$footer_cols = [
-		[ 'title' => 'Our Juice',  'items' => [ ['label'=>'Build Your Juice','url'=>home_url('/#build')], ['label'=>'Health Benefits','url'=>home_url('/#benefits')] ] ],
+		[ 'title' => 'Our Juice',  'items' => [ ['label'=>'Build Your Juice','url'=>home_url('/#build')], ['label'=>'Benefits','url'=>home_url('/#benefits')] ] ],
 		[ 'title' => 'Services',   'items' => [ ['label'=>'Event Hire','url'=>home_url('/#hire')], ['label'=>'Franchise','url'=>home_url('/#franchise')], ['label'=>'Hire Us','url'=>home_url('/#contact')] ] ],
 	];
 }

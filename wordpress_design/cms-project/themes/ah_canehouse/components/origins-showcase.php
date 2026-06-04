@@ -146,11 +146,11 @@ $uk = (array) $uk;
 
 <section class="ch-orig-section">
 	<div class="container">
-		<div class="ch-orig-header fade-up">
-			<div class="section-tag"><?php echo esc_html( $tag ); ?></div>
-			<h2 class="section-title"><?php echo wp_kses( $title, $allowed ); ?></h2>
-			<p class="ch-orig-subtitle"><?php echo wp_kses( $subtitle, $allowed ); ?></p>
-		</div>
+	<?php get_template_part( 'components/section-header', null, [
+			'tag'   => $tag,
+			'title' => $title,
+			'body'  => $subtitle,
+		] ); ?>
 	</div>
 
 	<div class="ch-orig-split">

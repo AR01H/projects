@@ -55,8 +55,8 @@ $cards = $args['cards'] ?? array(
 	array(
 		'variant'    => 'stat',
 		'stat'       => '6+',
-		'stat_label' => 'Health Benefits',
-		'title'      => 'Health Benefits',
+		'stat_label' => 'Benefits',
+		'title'      => 'Benefits',
 		'text'       => 'Natural energy, hydration, antioxidants, digestion support and more - no additives, no crash.',
 		'link_text'  => 'See benefits',
 		'link_url'   => '#benefits',

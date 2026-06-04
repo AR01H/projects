@@ -105,7 +105,7 @@ function ch_get_history_pages() {
             'tag'      => 'Chapter 7 · Impact & Legacy',
             'title'    => 'A Bittersweet History',
             'accent'   => 'Bittersweet',
-            'body'     => 'No crop has shaped human civilisation more dramatically - or more violently. Sugarcane drove colonialism, slavery, migration, and the globalisation of trade. Today it fuels economies and bioenergy, yet also contributes to deforestation, water stress, and the global health crisis of excess sugar consumption.',
+            'body'     => 'No crop has shaped human civilisation more dramatically - or more violently. Sugarcane drove colonialism, slavery, migration, and the globalisation of trade. Today it fuels economies and bioenergy, yet also contributes to deforestation, water stress, and the global crisis of excess sugar consumption.',
             'image'    => 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&q=80',
             'image_alt'=> 'Sugarcane juice being pressed fresh',
             'countries'=> [],

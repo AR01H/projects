@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 $tag   = $args['tag']   ?? 'The Opportunity';
 $title = $args['title'] ?? 'Why <span class="accent">The Cane House?</span>';
-$body  = $args['body']  ?? 'The demand for healthy, natural drinks is booming. The UK has almost no live-press sugarcane brand - yet. Be the first in your city.';
+$body  = $args['body']  ?? 'The demand for natural drinks is booming. The UK has almost no live-press sugarcane brand - yet. Be the first in your city.';
 
 $default_items = [
 	[ 'icon' => '📈', 'title' => 'Growing Market',       'text' => 'The natural drinks sector is growing 15%+ year-on-year. Live-press juice is untapped in most UK cities - massive first-mover advantage awaits.' ],

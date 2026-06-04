@@ -15,11 +15,19 @@ $s = ch_get_settings();
 		<?php get_template_part( 'components/hero' ); ?>
 	<?php endif; ?>
 
-	<?php get_template_part( 'components/origins-showcase' ); ?>
+	<!-- Hero Banners(multiple and responsive) -->
+	<?php get_template_part( 'components/home-banners' ); ?>
 
-	<?php if ( ch_section_visible( 'reviews' ) ) : ?>
-		<?php get_template_part( 'components/review-carousel' ); ?>
-	<?php endif; ?>
+	<?php get_template_part( 'components/showcase-carousel', null, [
+		'tag'   => 'See It Live',
+		'title' => 'Our Machines, <span class="accent">Our Craft</span>',
+		'body'  => 'From the press to the bottle — a closer look at how we bring fresh sugarcane to life.',
+		'bg'    => 'var(--ch-bg-alt)',
+		'id'    => 'sc-home',
+		'items' => ch_get_showcase(),
+	] ); ?>
+
+
 
 	<?php if ( ch_section_visible( 'menu_builder' ) ) : ?>
 		<?php get_template_part( 'components/menu-builder' ); ?>

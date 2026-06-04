@@ -11,7 +11,7 @@ get_header();
 <?php get_template_part( 'components/page-hero', null, [
 	'tag'        => 'Live Juice Stall Hire',
 	'heading'    => 'Events & <em>Hire</em>',
-	'desc'       => 'Bring The Cane House to your celebration. Live-pressed sugarcane juice - a unique, healthy, and unforgettable experience for your guests.',
+	'desc'       => 'Bring The Cane House to your celebration. Live-pressed sugarcane juice - a unique, and unforgettable experience for your guests.',
 	'modifier'   => 'ch-page-hero--events',
 	'btn1_label' => 'Hire Us',
 	'btn1_url'   => '#booking',

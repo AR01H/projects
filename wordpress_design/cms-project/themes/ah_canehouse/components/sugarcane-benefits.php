@@ -40,12 +40,6 @@ $default_items = [
 		'stat'  => '120+ countries grow cane',
 	],
 	[
-		'icon'  => '🫀',
-		'title' => 'Liver & Gut Health',
-		'text'  => 'Ayurvedic tradition credits sugarcane with detoxifying the liver, aiding digestion, and treating jaundice. Modern studies support its hepatoprotective properties.',
-		'stat'  => '2,000+ years of use',
-	],
-	[
 		'icon'  => '🌱',
 		'title' => 'Fully Sustainable Crop',
 		'text'  => 'Sugarcane is one of the most efficient crops on earth. The pressed fibre (bagasse) is composted or used as biofuel. Zero waste from root to glass.',

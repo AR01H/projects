@@ -59,7 +59,7 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 				$default_svcs = [
 					[ 'icon' => '🥤', 'title' => 'Fresh Juice Orders',        'desc' => 'Walk-up or pre-order your perfect sugarcane blend. Choose your size, cane type, texture, and flavour.' ],
 					[ 'icon' => '💒', 'title' => 'Wedding &amp; Events Hire', 'desc' => 'Live-pressed juice stall for your wedding reception, Mehndi, Sangeet, or post-ceremony celebration.' ],
-					[ 'icon' => '🏢', 'title' => 'Corporate Events',          'desc' => 'A refreshing, healthy alternative for office wellness days, product launches, and exhibitions.' ],
+					[ 'icon' => '🏢', 'title' => 'Corporate Events',          'desc' => 'A refreshing alternative for office wellness days, product launches, and exhibitions.' ],
 					[ 'icon' => '🎉', 'title' => 'Private Parties',           'desc' => 'Birthdays, garden parties, community festivals - we bring the live-press experience to you.' ],
 					[ 'icon' => '🤝', 'title' => 'Franchise Opportunities',   'desc' => 'Join our growing network. Bring live-pressed sugarcane juice to your city with full support.' ],
 					[ 'icon' => '📦', 'title' => 'Bulk &amp; Catering',       'desc' => 'Large-volume juice supply for festivals, markets, and corporate catering needs across the UK.' ],

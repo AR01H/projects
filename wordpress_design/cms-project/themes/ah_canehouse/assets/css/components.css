@@ -1647,7 +1647,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── Events / Hire Section ──────────────────────────────────────────────────── */
 #hire,
 .ch-section-hire {
-    background: linear-gradient(180deg, #ffffff 0%, #f4f9f1 100%) !important;
+    background: var(--ch-green-pale);
     padding: 2rem !important;
     border-top: 1px solid rgba(45, 90, 27, 0.05);
 }
@@ -1967,7 +1967,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── FAQ Section ────────────────────────────────────────────────────────────── */
 #faq,
 .ch-section-faq {
-    background: var(--ch-green-bg) !important;
     padding: 2rem !important;
 }
 
@@ -2044,7 +2043,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 #contact,
 .ch-section-contact,
 .ch-contact-section {
-    background: var(--ch-green-pale) !important;
+    background: var(--accent) !important;
     padding: 6rem 4rem !important;
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -3707,7 +3706,7 @@ body.has-ticker .ch-nav { top: 32px; }
    ═══════════════════════════════════════════════════════════════════════════ */
 .ch-sc-section {
     background: var(--ch-white);
-    padding: 5rem 2rem;
+    padding: 2rem;
     overflow: hidden;
 }
 
@@ -4078,7 +4077,6 @@ body.has-ticker .ch-nav { top: 32px; }
     .ch-sc-placeholder-icon { font-size: 4rem; }
 }
 @media (max-width: 640px) {
-    .ch-sc-section { padding: 3.5rem 1rem; }
     .ch-sc-header { margin-bottom: 2rem; }
 
     /* ── Lifecycle Circle on mobile ─────────────────────────────────────── */
@@ -4204,11 +4202,8 @@ body.has-ticker .ch-nav { top: 32px; }
 
 .ch-orig-section {
     position: relative;
-    background:
-        radial-gradient(900px 380px at 85% -5%, rgba(200,232,48,0.16), transparent 60%),
-        radial-gradient(700px 340px at 8% 108%, rgba(45,90,27,0.10), transparent 60%),
-        #fdf9f2;
-    padding: 5rem 0;
+    background: var(--ch-green-bg);
+    padding: 2rem 0;
     overflow: hidden;
     isolation: isolate;
 }
@@ -4278,7 +4273,6 @@ body.has-ticker .ch-nav { top: 32px; }
     gap: 1.25rem;
     max-width: 1140px;
     margin: 0 auto;
-    padding: 0 1.5rem;
     align-items: stretch;
 }
 
@@ -4697,7 +4691,6 @@ body.has-ticker .ch-nav { top: 32px; }
     .ch-orig-split {
         grid-template-columns: 1fr;
         gap: 1rem;
-        padding: 0 1rem;
     }
     .ch-orig-uk .ch-orig-media,
     .ch-orig-uk .ch-orig-media .ch-orig-slides,
@@ -4706,7 +4699,6 @@ body.has-ticker .ch-nav { top: 32px; }
 
 @media (max-width: 640px) {
     .ch-orig-section { padding: 2rem; }
-    .ch-orig-split { padding: 0 0.75rem; }
 
     .ch-orig-uk { border-radius: 14px; }
     .ch-orig-uk-body { padding: 1.25rem 1.1rem 1.4rem; }
@@ -4890,8 +4882,8 @@ body.has-ticker .ch-nav { top: 32px; }
 
 /* Footer logo image size override */
 .ch-footer__logo-link img {
-    height: 130px !important;
-    width: 130px !important;
+    height: 230px !important;
+    width: 230px !important;
 }
 
 .ch-footer__brand-desc {
@@ -5359,7 +5351,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-stat-label { display:block; font-size:.78rem; font-weight:600; color:var(--ch-text-muted); text-transform:uppercase; letter-spacing:.1em; }
 @media (max-width:640px) { .ch-stats-grid { grid-template-columns:repeat(2,1fr); } .ch-stat-item:nth-child(odd) { border-right:1px solid var(--ch-green-pale); } .ch-stat-item { border-bottom:1px solid var(--ch-green-pale); } .ch-stat-item:nth-last-child(-n+2) { border-bottom:none; } }
 
-/* Health benefit cards */
+/* benefit cards */
 .ch-benefits-page { padding:5rem 2rem; background:var(--ch-white); }
 .ch-benefit-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1.8rem; max-width:1100px; margin-inline:auto; }
 .ch-benefit-card { background:var(--ch-green-bg); border:2px solid var(--ch-green-pale); border-radius:20px; padding:2rem 1.8rem; transition:all .3s; }
@@ -5833,7 +5825,7 @@ body.has-ticker .ch-nav { top: 32px; }
     gap: 4rem;
     align-items: center;
 }
-.ch-origin-img { width: 100%; border-radius: 20px; object-fit: cover; aspect-ratio: 16/8; box-shadow: 0 16px 48px var(--ch-shadow); }
+.ch-origin-img { width: 100%; border-radius: 20px; object-fit: contain; aspect-ratio: 16/9; box-shadow: 0 16px 48px var(--ch-shadow); }
 
 /* Timeline */
 .ch-origin-timeline { display: flex; gap: 0; overflow-x: auto; padding-bottom: 0.5rem; }
@@ -6049,6 +6041,154 @@ body.has-ticker .ch-nav { top: 32px; }
     .ch-frn-visual { min-height: 220px; }
     .ch-frn-content { padding: 2rem 1.6rem; }
     .ch-frn-open { align-self: stretch; text-align: center; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SHOWCASE CAROUSEL  (ch-sc-*)
+   Peek-card carousel for machines / bottles / products. Images, GIFs, video.
+   ══════════════════════════════════════════════════════════════════════════ */
+.ch-sc-section .ch-section-center { margin-bottom: 2.5rem; }
+
+.ch-sc {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Viewport clips the sliding track */
+.ch-sc-viewport {
+    flex: 1;
+    /* max-height: 300px; */
+    border-radius: 12px;
+}
+
+.ch-sc-track {
+    display: flex;
+    gap: 18px;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+/* 3 cards visible + a peek of the 4th on desktop */
+.ch-sc-card {
+    flex: 0 0 calc((100% - 2 * 18px) / 3 - 22px);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--ch-green-pale, #d8f0b0);
+    box-shadow: 0 10px 30px rgba(45, 90, 27, 0.12);
+    position: relative;
+    max-height: 400px;
+    max-width: 300px;
+}
+
+.ch-sc-media {
+    position: relative;
+    aspect-ratio: 5/4;
+    overflow: hidden;
+}
+.ch-sc-img,
+.ch-sc-vid {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.ch-sc-card:hover .ch-sc-img,
+.ch-sc-card:hover .ch-sc-vid { transform: scale(1.06); }
+
+.ch-sc-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: rgba(26, 58, 15, 0.78);
+    color: var(--ch-lime, #c8e830);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 50px;
+    backdrop-filter: blur(4px);
+}
+
+.ch-sc-caption {
+    padding: 0.85rem 1.1rem 1rem;
+    background: var(--ch-white, #fdfff8);
+}
+.ch-sc-caption strong {
+    display: block;
+    font-family: var(--ch-font-display, 'Nunito', sans-serif);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ch-text, #1e3a0e);
+    line-height: 1.2;
+}
+.ch-sc-caption span {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--ch-text-muted, #6a8c50);
+    margin-top: 2px;
+}
+
+/* Arrows */
+.ch-sc-arrow {
+    flex: 0 0 auto;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: none;
+    background: var(--ch-white, #fff);
+    color: var(--ch-green-deep, #2d5a1b);
+    box-shadow: 0 6px 18px rgba(45, 90, 27, 0.18);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+}
+.ch-sc-arrow svg { width: 22px; height: 22px; }
+.ch-sc-arrow:hover {
+    background: var(--ch-lime, #c8e830);
+    color: var(--ch-green-deep, #2d5a1b);
+    transform: scale(1.08);
+}
+.ch-sc-arrow:active { transform: scale(0.96); }
+
+/* Dots */
+.ch-sc-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.8rem;
+}
+.ch-sc-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: none;
+    background: var(--ch-green-light, #a8d96e);
+    opacity: 0.5;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.25s ease;
+}
+.ch-sc-dot.active {
+    opacity: 1;
+    width: 26px;
+    border-radius: 50px;
+    background: var(--ch-green-mid, #4a8c2a);
+}
+
+/* Tablet: 2 cards + peek */
+@media (max-width: 1024px) {
+    .ch-sc-card { flex: 0 0 calc((100% - 18px) / 2 - 18px); }
+}
+
+/* Mobile: 1 card + peek, hide side arrows (swipe + dots instead) */
+@media (max-width: 640px) {
+    .ch-sc { gap: 0; }
+    .ch-sc-arrow { display: none; }
+    .ch-sc-card { flex: 0 0 calc(100% - 38px); }
+    .ch-sc-caption strong { font-size: 1rem; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -8596,4 +8736,18 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
 }
 @media (max-width: 768px) {
     .ch-split-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.ch-nav__link.is-active {
+    color: var(--ch-lime, #c8e830);
+}
+
+.ch-nav__link.is-active::after {
+    /* underline indicator — only needed if your theme draws one on hover */
+    width: 100%;
+}
+
+.ch-mobile-nav__link.is-active {
+    color: var(--ch-lime, #c8e830);
+    font-weight: 600;
 }

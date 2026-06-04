@@ -591,6 +591,21 @@ function ch_get_about_gallery(): array {
 	] );
 }
 
+/**
+ * Home showcase carousel — machines, bottles, products (after hero).
+ * Each item supports type: 'image' | 'gif' | 'video' (mp4/webm, autoplays muted+loop).
+ */
+function ch_get_showcase(): array {
+	return ch_get_gallery( 'ch_showcase_items', [
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Commercial Press',  'desc' => 'Stainless steel, purpose-built' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Live Pressing',     'desc' => 'Fresh to order, every time' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Bottled Fresh',     'desc' => 'Pure cane, nothing added' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Branded Stall',     'desc' => 'Ready for any event' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Fresh Ingredients', 'desc' => 'Stalks, ginger, lemon, mint' ],
+		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Served Chilled',    'desc' => 'The perfect pour, every time' ],
+	] );
+}
+
 function ch_get_events_media_gallery(): array {
 	return ch_get_gallery( 'ch_events_media_gallery', [
 		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Live Juice Pressing',   'desc' => 'Commercial machine in action' ],
@@ -631,7 +646,7 @@ function ch_get_sugarcane_stats(): array {
 		[ 'num' => '2,000+', 'label' => 'Years of Tradition' ],
 		[ 'num' => '100%',   'label' => 'Natural & Pure' ],
 		[ 'num' => '0',      'label' => 'Additives Added' ],
-		[ 'num' => '5+',     'label' => 'Health Benefits' ],
+		[ 'num' => '5+',     'label' => 'Benefits' ],
 	];
 }
 
@@ -642,7 +657,6 @@ function ch_get_nutrition_facts(): array {
 	return ! empty( $opt ) ? $opt : [
 		[ 'name' => '🍬 Natural Sugars', 'value' => '~13–15g', 'note' => 'Sucrose, glucose, fructose - natural energy' ],
 		[ 'name' => '💊 Potassium',       'value' => '~300mg',  'note' => 'Electrolyte for heart & muscles' ],
-		[ 'name' => '🦴 Calcium',         'value' => '~40mg',   'note' => 'Bone health support' ],
 		[ 'name' => '⚗️ Magnesium',       'value' => '~10mg',   'note' => 'Nervous system & energy' ],
 		[ 'name' => '🌿 Antioxidants',    'value' => 'Rich',    'note' => 'Polyphenols & flavonoids' ],
 		[ 'name' => '💧 Water Content',   'value' => '~70%',    'note' => 'Natural hydration' ],
@@ -670,7 +684,7 @@ function ch_get_about_mvv(): array {
 	$opt = get_option( 'ch_about_mvv', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	return ! empty( $opt ) ? $opt : [
-		[ 'icon' => '🎯', 'title' => 'Our Mission', 'text' => 'To deliver 100% natural, freshly-pressed sugarcane juice that brings health, happiness, and wholesome refreshment to every customer we serve.' ],
+		[ 'icon' => '🎯', 'title' => 'Our Mission', 'text' => 'To deliver 100% natural, freshly-pressed sugarcane juice that brings happiness, and wholesome refreshment to every customer we serve.' ],
 		[ 'icon' => '🌿', 'title' => 'Our Vision',  'text' => 'To become the UK\'s most trusted brand for fresh, natural, live-pressed sugarcane juice - setting the standard for sustainability and quality.' ],
 		[ 'icon' => '💚', 'title' => 'Our Values',  'text' => 'Freshness, integrity, sustainability, and community. We stand behind every drop of juice we serve, with a commitment to natural goodness.' ],
 	];

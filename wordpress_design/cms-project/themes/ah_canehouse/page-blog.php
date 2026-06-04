@@ -31,7 +31,7 @@ $wp_cats       = get_categories( [ 'hide_empty' => true ] );
 <?php get_template_part( 'components/page-hero', null, [
 	'tag'     => 'The Cane Journal',
 	'heading' => 'Fresh Reads from <em>The Cane House</em>',
-	'desc'    => 'Health tips, recipes, and stories from South Asian juice culture.',
+	'desc'    => 'Tips, recipes, and stories from South Asian juice culture.',
 ] ); ?>
 
 <!-- ── Category Filter (reusable component) ────────────────────────────────── -->

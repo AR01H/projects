@@ -148,7 +148,7 @@ $reviews  = ch_get_reviews( 20 );
 				</div>
 				<div class="ch-event-showcase__body">
 					<h3>Wedding & Asian Celebrations</h3>
-					<p>The Cane House has become the go-to live juice stall for Desi weddings, Mehndi nights, Walima receptions and Eid gatherings across the UK. A healthy, cultural touch your guests will never forget.</p>
+					<p>The Cane House has become the go-to live juice stall for Desi weddings, Mehndi nights, Walima receptions and Eid gatherings across the UK. A cultural touch your guests will never forget.</p>
 					<ul class="ch-event-list">
 						<li>Unlimited servings packages available</li>
 						<li>Traditional and modern flavour blends</li>
@@ -166,11 +166,11 @@ $reviews  = ch_get_reviews( 20 );
 				</div>
 				<div class="ch-event-showcase__body">
 					<h3>Corporate Events & Wellness Days</h3>
-					<p>Refreshing, healthy, and genuinely impressive. The Cane House adds a unique, memorable element to your product launch, office wellness day, or exhibition stand.</p>
+					<p>Refreshing, and genuinely impressive. The Cane House adds a unique, memorable element to your product launch, office wellness day, or exhibition stand.</p>
 					<ul class="ch-event-list">
 						<li>Branded signage and uniform available</li>
 						<li>Bulk servings for large conferences</li>
-						<li>Healthy alternative to sugary drinks</li>
+						<li>Alternative to sugary drinks</li>
 						<li>Invoice & formal quote provided</li>
 					</ul>
 					<a href="<?php echo esc_url( home_url( '/#contact' ) ); ?>" class="btn-lime" style="margin-top:1.5rem;display:inline-flex;">Enquire for Corporate →</a>

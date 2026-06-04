@@ -65,7 +65,7 @@ get_template_part( 'components/post-gallery', null, [
         [
             'src'   => 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800',
             'label' => 'Corporate Event',
-            'desc'  => 'Healthy refreshment station for professional networking'
+            'desc'  => 'Refreshment station for professional networking'
         ],
         [
             'src'   => 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800',

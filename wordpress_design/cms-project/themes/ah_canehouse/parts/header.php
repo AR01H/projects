@@ -18,6 +18,11 @@ $theme_nav = array_values(
 	)
 );
 $nav_cta = ch_get_nav_cta();
+// Active nav helper
+$current_url = trailingslashit( strtok( ( $_SERVER['REQUEST_URI'] ), '?' ) );
+function ch_nav_is_active( $url, $current ) {
+    return trailingslashit( $url ) === $current ? ' is-active' : '';
+}
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -70,7 +75,7 @@ unset( $_ch_sc );
 				?>
 					<?php if ( $has_submenu ) : ?>
 						<li class="ch-nav__dropdown">
-							<button class="ch-nav__link ch-nav__dropdown-toggle"
+							<button class="ch-nav__link ch-nav__dropdown-toggle<?php echo ch_nav_is_active( ch_normalize_theme_url( $item['url'] ?? '#' ), $current_url ); ?>"
 								aria-haspopup="true" aria-expanded="false">
 								<?php echo esc_html( $item['label'] ); ?>
 								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" width="12" height="12"><path d="M6 9l6 6 6-6"/></svg>
@@ -104,7 +109,7 @@ unset( $_ch_sc );
 					<?php else : ?>
 						<li>
 							<a href="<?php echo esc_url( ch_normalize_theme_url( $item['url'] ?? home_url( '/' ) ) ); ?>"
-								class="ch-nav__link">
+								class="ch-nav__link<?php echo ch_nav_is_active( ch_normalize_theme_url( $item['url'] ?? home_url('/') ), $current_url ); ?>">
 								<?php echo esc_html( $item['label'] ); ?>
 							</a>
 						</li>
@@ -159,7 +164,7 @@ unset( $_ch_sc );
 			</details>
 		<?php else : ?>
 			<a href="<?php echo esc_url( ch_normalize_theme_url( $item['url'] ?? home_url( '/' ) ) ); ?>"
-				class="ch-mobile-nav__link">
+				class="ch-mobile-nav__link<?php echo ch_nav_is_active( ch_normalize_theme_url( $item['url'] ?? home_url('/') ), $current_url ); ?>">
 				<?php echo esc_html( $item['label'] ); ?>
 			</a>
 		<?php endif; ?>

@@ -58,15 +58,5 @@ $phone     = $settings['phone'] ?? CONTACT_NUMBER;
 			</div>
 		</div>
 
-		<div class="ch-franchise-contact">
-			<a href="<?php echo esc_url( home_url( '/franchise/' ) ); ?>" class="btn-dark">
-				Explore Franchise →
-			</a>
-			<?php if ( strlen( preg_replace( '/[^0-9]/', '', $phone ) ) >= 6 ) : ?>
-				<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" class="btn-outline">
-					📞 <?php echo esc_html( $phone ); ?>
-				</a>
-			<?php endif; ?>
-		</div>
 	</div>
 </section>
