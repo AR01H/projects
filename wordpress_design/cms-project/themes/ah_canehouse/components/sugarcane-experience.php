@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $tag     = $args['tag']     ?? 'The Experience';
-$title   = $args['title']   ?? 'Why We Miss <span class="accent" style="color:var(--ch-lime);">India\'s Sugarcane</span>';
+$title   = $args['title']   ?? 'Why We Miss <span class="accent" style="color:var(--client-color-7);">India\'s Sugarcane</span>';
 $subtitle = $args['subtitle'] ?? 'From street vendor to your glass - a taste of tradition';
 
 $steps = $args['steps'] ?? [

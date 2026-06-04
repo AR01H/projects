@@ -16,7 +16,7 @@ $settings = ch_get_settings();
 $phone    = $settings['phone'] ?? ( defined( 'CONTACT_NUMBER' ) ? CONTACT_NUMBER : '' );
 
 $tag        = $args['tag']        ?? 'Get in Touch';
-$title      = $args['title']      ?? 'Request a <span class="accent" style="color:var(--ch-lime);">Free Quote</span>';
+$title      = $args['title']      ?? 'Request a <span class="accent" style="color:var(--client-color-7);">Free Quote</span>';
 $body       = $args['body']       ?? 'Tell us about your event and we\'ll come back to you within 24 hours with a personalised package and price.';
 $form_title = $args['form_title'] ?? 'Tell Us About Your Event 🌿';
 $enq_type   = $args['enquiry_type'] ?? 'event';
@@ -37,9 +37,9 @@ $allowed     = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 <section id="quote" class="ch-events-quote-section">
 	<div class="container">
 		<div class="ch-quote-layout">
-			<div class="fade-left" style="color:var(--ch-white);">
-				<div class="section-tag" style="color:var(--ch-lime);"><?php echo esc_html( $tag ); ?></div>
-				<h2 class="section-title" style="color:var(--ch-white);"><?php echo wp_kses( $title, $allowed ); ?></h2>
+			<div class="fade-left" style="color:var(--client-color-11);">
+				<div class="section-tag" style="color:var(--client-color-7);"><?php echo esc_html( $tag ); ?></div>
+				<h2 class="section-title" style="color:var(--client-color-11);"><?php echo wp_kses( $title, $allowed ); ?></h2>
 				<p class="section-body" style="color:rgba(255,255,255,0.7);"><?php echo esc_html( $body ); ?></p>
 				<?php if ( $phone ) : ?>
 					<div class="ch-contact-detail" style="margin-top:2rem;">

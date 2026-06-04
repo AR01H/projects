@@ -18,8 +18,8 @@ html, body {
 
 body.ch-body {
     font-family: var(--ch-font-body);
-    background: var(--ch-white);
-    color: var(--ch-text);
+    background: var(--client-color-11);
+    color: var(--client-color-15);
     line-height: 1.6;
 }
 
@@ -74,7 +74,7 @@ section {
     display: inline-block;
     padding: 0.4rem 1rem;
     background: rgba(106, 191, 58, 0.12);
-    color: var(--ch-green-mid);
+    color: var(--client-color-2);
     border-radius: 50px;
     font-size: 0.7rem;
     font-weight: 800;
@@ -87,19 +87,19 @@ section {
     font-family: var(--ch-font-display);
     font-size: 2.8rem;
     font-weight: 900;
-    color: var(--ch-text);
+    color: var(--client-color-15);
     margin-bottom: 1.5rem;
     line-height: 1.15;
     letter-spacing: -0.02em;
 }
 
 .section-title .accent {
-    color: var(--ch-lime);
+    color: var(--client-color-7);
 }
 
 .section-body {
     font-size: 1.05rem;
-    color: var(--ch-text-muted);
+    color: var(--client-color-15-muted);
     line-height: 1.7;
     max-width: 650px;
 }
@@ -132,14 +132,14 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 
 .btn-lime {
     padding: 0.95rem 2.2rem;
-    background: var(--ch-lime);
-    color: var(--ch-green-deep);
+    background: var(--client-color-7);
+    color: var(--client-color-1);
     font-size: 1rem;
     box-shadow: 0 4px 15px rgba(200, 232, 48, 0.3);
 }
 
 .btn-lime:hover {
-    background: var(--ch-yellow);
+    background: var(--client-color-10);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(200, 232, 48, 0.4);
 }
@@ -147,38 +147,38 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 .btn-outline {
     padding: 0.95rem 2.2rem;
     background: transparent;
-    color: var(--ch-text);
-    border: 2.5px solid var(--ch-text);
+    color: var(--client-color-15);
+    border: 2.5px solid var(--client-color-15);
     font-size: 1rem;
 }
 
 .btn-outline:hover {
-    background: var(--ch-text);
-    color: var(--ch-white);
+    background: var(--client-color-15);
+    color: var(--client-color-11);
     transform: translateY(-2px);
 }
 
 .btn-lime-sm {
     padding: 0.65rem 1.5rem;
     font-size: 0.9rem;
-    background: var(--ch-lime);
-    color: var(--ch-green-deep);
+    background: var(--client-color-7);
+    color: var(--client-color-1);
 }
 
 .btn-lime-sm:hover {
-    background: var(--ch-yellow);
+    background: var(--client-color-10);
     transform: translateY(-1px);
 }
 
 .btn-dark {
     padding: 0.95rem 2.2rem;
-    background: var(--ch-green-deep);
-    color: var(--ch-white);
+    background: var(--client-color-1);
+    color: var(--client-color-11);
     font-size: 1rem;
     box-shadow: 0 4px 15px rgba(15, 60, 10, 0.25);
 }
 .btn-dark:hover {
-    background: var(--ch-green-mid);
+    background: var(--client-color-2);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(15, 60, 10, 0.35);
 }
@@ -186,8 +186,8 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 /* ── Text Utilities ────────────────────────────────────────────────────────── */
 
 .text-center { text-align: center; }
-.text-muted { color: var(--ch-text-muted); }
-.text-white { color: var(--ch-white); }
+.text-muted { color: var(--client-color-15-muted); }
+.text-white { color: var(--client-color-11); }
 
 /* ── Spacing ───────────────────────────────────────────────────────────────── */
 
@@ -235,13 +235,13 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 
 /* ── Selection Color ─────────────────────────────────────────────────────────── */
 ::selection {
-    background-color: var(--ch-lime);
-    color: var(--ch-text);           /* dark green text on lime */
+    background-color: var(--client-color-7);
+    color: var(--client-color-15);           /* dark green text on lime */
 }
 
 ::-moz-selection {                   /* Firefox */
-    background-color: var(--ch-lime);
-    color: var(--ch-text);
+    background-color: var(--client-color-7);
+    color: var(--client-color-15);
 }
 
 
@@ -254,29 +254,29 @@ h4 { font-size: 1.3rem; font-weight: 700; }
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--ch-bg-dark);
+    background: var(--client-color-13);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--ch-green-mid);
+    background: var(--client-color-2);
     border-radius: var(--ch-radius-pill);
-    border: 2px solid var(--ch-bg-dark); /* creates a floating inset look */
+    border: 2px solid var(--client-color-13); /* creates a floating inset look */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--ch-lime);
+    background: var(--client-color-7);
 }
 
 ::-webkit-scrollbar-corner {
-    background: var(--ch-bg-dark);
+    background: var(--client-color-13);
 }
 
 /* Firefox */
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--ch-green-mid) var(--ch-bg-dark);
+    scrollbar-color: var(--client-color-2) var(--client-color-13);
 }
 
 strong {
-    color: var(--ch-green-bright);
+    color: var(--client-color-3);
 }

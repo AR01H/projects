@@ -94,11 +94,11 @@
 
                         var title = document.createElement('h3');
                         title.textContent = 'Message Sent!';
-                        title.style.cssText = 'font-family:var(--ch-font-display);font-size:2.2rem;font-weight:900;color:var(--ch-green-deep);margin-bottom:1rem;letter-spacing:-0.01em;';
+                        title.style.cssText = 'font-family:var(--ch-font-display);font-size:2.2rem;font-weight:900;color:var(--client-color-1);margin-bottom:1rem;letter-spacing:-0.01em;';
 
                         var msgText = document.createElement('p');
                         msgText.textContent = message;
-                        msgText.style.cssText = 'font-size:1.05rem;color:var(--ch-text-muted);line-height:1.75;max-width:480px;margin:0;';
+                        msgText.style.cssText = 'font-size:1.05rem;color:var(--client-color-15-muted);line-height:1.75;max-width:480px;margin:0;';
 
                         successBox.appendChild(emoji);
                         successBox.appendChild(title);

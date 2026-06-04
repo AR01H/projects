@@ -26,7 +26,7 @@ $tag   = $args['tag']   ?? 'Gallery';
 $title = $args['title'] ?? '';
 $body  = $args['body']  ?? '';
 $items = $args['items'] ?? [];
-$bg    = $args['bg']    ?? 'var(--ch-white)';
+$bg    = $args['bg']    ?? 'var(--client-color-11)';
 $uid   = esc_attr( $args['id'] ?? 'ch-mg-' . wp_rand( 100, 999 ) );
 
 if ( empty( $items ) ) return;

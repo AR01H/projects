@@ -6,7 +6,7 @@ $reviews = ch_get_reviews( $limit, 'partner' );
 if ( empty( $reviews ) ) return;
 
 $tag   = $args['tag']   ?? 'Franchise Partners';
-$title = $args['title'] ?? 'Hear From Our <span class="accent" style="color:var(--ch-lime);">Partners</span>';
+$title = $args['title'] ?? 'Hear From Our <span class="accent" style="color:var(--client-color-7);">Partners</span>';
 $body  = $args['body']  ?? 'Real people who took the leap and built something they\'re proud of.';
 
 $cities  = [ 'Birmingham', 'Manchester', 'Leeds', 'Leicester', 'London', 'Bradford' ];
@@ -48,7 +48,7 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 									<?php echo $location; ?>
 									&nbsp;·&nbsp;
 									<?php for ( $s = 1; $s <= 5; $s++ ) : ?>
-										<span class="ch-star ch-star--full" style="color:var(--ch-lime);font-size:.8rem;">★</span>
+										<span class="ch-star ch-star--full" style="color:var(--client-color-7);font-size:.8rem;">★</span>
 									<?php endfor; ?>
 								</div>
 							</div>

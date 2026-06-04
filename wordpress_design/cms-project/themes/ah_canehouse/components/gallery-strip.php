@@ -10,7 +10,7 @@
  *  body      (string)  Intro text.                     Default: ''
  *  modifier  (string)  Extra CSS class on section.     Default: ''
  *  id        (string)  Unique ID for JS hooks.         Default: 'ch-gstrip'
- *  bg        (string)  CSS background value.           Default: 'var(--ch-white)'
+ *  bg        (string)  CSS background value.           Default: 'var(--client-color-11)'
  *  images    (array)   Array of [ 'src', 'label', 'desc' ]
  */
 defined( 'ABSPATH' ) || exit;
@@ -20,7 +20,7 @@ $title    = $args['title']    ?? '';
 $body     = $args['body']     ?? '';
 $modifier = $args['modifier'] ?? '';
 $id       = $args['id']       ?? 'ch-gstrip';
-$bg       = $args['bg']       ?? 'var(--ch-white)';
+$bg       = $args['bg']       ?? 'var(--client-color-11)';
 $images   = $args['images']   ?? [];
 
 if ( empty( $images ) ) return;

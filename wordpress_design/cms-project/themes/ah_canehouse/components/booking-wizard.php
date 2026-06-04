@@ -22,7 +22,7 @@ $occasions = ch_get_occasions();
 
 			<!-- Left: text + button -->
 			<div class="ch-bkb-content">
-				<div class="section-tag" style="color:var(--ch-lime);">Live Juice Booking</div>
+				<div class="section-tag" style="color:var(--client-color-7);">Live Juice Booking</div>
 				<h2 class="ch-bkb-title"><?php echo wp_kses( $wiz_heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 				<p class="ch-bkb-sub"><?php echo esc_html( $wiz_sub ); ?></p>
 

@@ -6,7 +6,7 @@ $phone    = $settings['phone'] ?? ( defined( 'CONTACT_NUMBER' ) ? CONTACT_NUMBER
 
 // Caller overrides via get_template_part( ..., null, $args )
 $tag        = $args['tag']        ?? 'Say Hello';
-$heading    = $args['heading']    ?? 'Get in <span class="accent" style="color:var(--ch-lime);">Touch</span>';
+$heading    = $args['heading']    ?? 'Get in <span class="accent" style="color:var(--client-color-7);">Touch</span>';
 $body       = $args['body']       ?? 'Have a question, want to book us for an event, or interested in franchise opportunities? We\'d love to hear from you.';
 $btn_label  = $args['btn_label']  ?? 'Send a Message 🌿';
 $btn_url    = $args['btn_url']    ?? home_url( '/#contact' );
@@ -15,7 +15,7 @@ $btn2_url   = $args['btn2_url']   ?? '#';
 $btn2_icon  = $args['btn2_icon']  ?? '';
 $btn2_class = $args['btn2_class'] ?? 'btn-outline ch-btn-outline-light';
 $show_phone = $args['show_phone'] ?? true;
-$bg         = $args['bg']         ?? 'var(--ch-green-deep)';
+$bg         = $args['bg']         ?? 'var(--client-color-1)';
 ?>
 
 <section class="ch-cta-section" style="background:<?php echo esc_attr( $bg ); ?>;">

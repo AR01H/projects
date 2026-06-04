@@ -46,7 +46,7 @@ $help = [
 </section> -->
 
 <!-- ── Quick contact cards ──────────────────────────────────────────────────── -->
-<!-- <div class="ch-stats-bar" style="background:var(--ch-white);">
+<!-- <div class="ch-stats-bar" style="background:var(--client-color-11);">
 	<div class="container">
 		<div class="ch-contact-quick">
 			<?php if ( $phone ) : ?>
@@ -78,7 +78,7 @@ $help = [
 </div> -->
 
 <!-- ── How can we help ──────────────────────────────────────────────────────── -->
-<!-- <section style="background:var(--ch-green-bg);padding:5rem 2rem;">
+<!-- <section style="background:var(--client-color-6);padding:5rem 2rem;">
 	<div class="container">
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">How Can We Help?</div>

@@ -22,7 +22,7 @@ get_header();
 	'tag'   => 'Franchise Gallery',
 	'title' => 'The Cane House <span class="accent">in Action</span>',
 	'body'  => 'Our partners across the UK - branded stalls, live pressing, and happy queues.',
-	'bg'    => 'var(--ch-white)',
+	'bg'    => 'var(--client-color-11)',
 	'id'    => 'mg-franchise',
 	'items' => ch_get_franchise_media_gallery(),
 ] ); ?>

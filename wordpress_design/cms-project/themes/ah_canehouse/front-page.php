@@ -22,7 +22,7 @@ $s = ch_get_settings();
 		'tag'   => 'See It Live',
 		'title' => 'Our Machines, <span class="accent">Our Craft</span>',
 		'body'  => 'From the press to the bottle - a closer look at how we bring fresh sugarcane to life.',
-		'bg'    => 'var(--ch-bg-alt)',
+		'bg'    => 'var(--client-color-12)',
 		'id'    => 'sc-home',
 		'items' => ch_get_showcase(),
 	] ); ?>

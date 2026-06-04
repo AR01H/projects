@@ -1,18 +1,18 @@
 /* ── The Cane House - Forms (light-background variant) ──────────────────────── */
 
 .ch-contact-form {
-    background: var(--ch-white);
-    border: 2px solid var(--ch-green-pale);
+    background: var(--client-color-11);
+    border: 2px solid var(--client-color-5);
     border-radius: 24px;
     padding: 2.5rem;
-    box-shadow: 0 8px 40px var(--ch-shadow);
+    box-shadow: 0 8px 40px var(--client-color-18);
 }
 
 .ch-form-title {
     font-family: var(--ch-font-display);
     font-size: 1.4rem;
     font-weight: 900;
-    color: var(--ch-green-deep);
+    color: var(--client-color-1);
     margin-bottom: 1.8rem;
 }
 
@@ -26,7 +26,7 @@
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ch-text-muted);
+    color: var(--client-color-15-muted);
     margin-bottom: 0.45rem;
 }
 
@@ -34,13 +34,13 @@
 .ch-form-select,
 .ch-form-textarea {
     width: 100%;
-    background: var(--ch-green-bg);
-    border: 1.5px solid var(--ch-green-pale);
+    background: var(--client-color-6);
+    border: 1.5px solid var(--client-color-5);
     border-radius: 12px;
     padding: 0.85rem 1rem;
     font-family: var(--ch-font-body);
     font-size: 0.9rem;
-    color: var(--ch-text);
+    color: var(--client-color-15);
     outline: none;
     transition: border-color 0.25s;
     appearance: none;
@@ -48,14 +48,14 @@
 
 .ch-form-input::placeholder,
 .ch-form-textarea::placeholder {
-    color: var(--ch-text-muted);
+    color: var(--client-color-15-muted);
     opacity: 0.7;
 }
 
 .ch-form-input:focus,
 .ch-form-select:focus,
 .ch-form-textarea:focus {
-    border-color: var(--ch-green-bright);
+    border-color: var(--client-color-3);
     box-shadow: 0 0 0 3px rgba(106, 191, 58, 0.1);
 }
 
@@ -67,7 +67,7 @@
     padding-right: 2.5rem;
 }
 
-.ch-form-select option { background: var(--ch-white); color: var(--ch-text); }
+.ch-form-select option { background: var(--client-color-11); color: var(--client-color-15); }
 
 .ch-form-textarea {
     resize: vertical;
@@ -78,8 +78,8 @@
 .ch-form-submit {
     width: 100%;
     margin-top: 0.5rem;
-    background: linear-gradient(135deg, var(--ch-green-mid), var(--ch-green-bright));
-    color: var(--ch-white);
+    background: linear-gradient(135deg, var(--client-color-2), var(--client-color-3));
+    color: var(--client-color-11);
     font-family: var(--ch-font-body);
     font-weight: 700;
     font-size: 0.88rem;
@@ -115,8 +115,8 @@
 .ch-form-feedback.success {
     display: block;
     background: rgba(106, 191, 58, 0.12);
-    border: 1.5px solid var(--ch-green-bright);
-    color: var(--ch-green-deep);
+    border: 1.5px solid var(--client-color-3);
+    color: var(--client-color-1);
 }
 .ch-form-feedback.error {
     display: block;
@@ -164,7 +164,7 @@
     flex-shrink: 0;
     width: 20px;
     height: 20px;
-    border: 2px solid var(--ch-green-mid, #4a8c2a);
+    border: 2px solid var(--client-color-2, #4a8c2a);
     border-radius: 5px;
     background: #fff;
     margin-top: 2px;
@@ -182,8 +182,8 @@
     transition: opacity 0.15s;
 }
 .ch-disclaimer-check:checked + .ch-disclaimer-box {
-    background: var(--ch-green-mid, #4a8c2a);
-    border-color: var(--ch-green-mid, #4a8c2a);
+    background: var(--client-color-2, #4a8c2a);
+    border-color: var(--client-color-2, #4a8c2a);
 }
 .ch-disclaimer-check:checked + .ch-disclaimer-box::after { opacity: 1; }
 .ch-disclaimer-check:focus-visible + .ch-disclaimer-box {
@@ -193,15 +193,15 @@
 /* Disclaimer text */
 .ch-disclaimer-text {
     font-size: 0.78rem;
-    color: var(--ch-text-muted, #6b7c5e);
+    color: var(--client-color-15-muted, #6b7c5e);
     line-height: 1.55;
 }
 .ch-disclaimer-text a {
-    color: var(--ch-green-mid, #4a8c2a);
+    color: var(--client-color-2, #4a8c2a);
     text-decoration: underline;
     text-underline-offset: 2px;
 }
-.ch-disclaimer-text a:hover { color: var(--ch-green-deep, #2d5a1b); }
+.ch-disclaimer-text a:hover { color: var(--client-color-1, #2d5a1b); }
 
 /* Error state */
 .ch-disclaimer-group.has-error .ch-disclaimer-box {

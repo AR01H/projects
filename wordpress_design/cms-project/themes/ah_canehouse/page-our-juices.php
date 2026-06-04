@@ -27,7 +27,7 @@ $show_prices = ch_show_prices();
 </section>
 
 <!-- ── Flavour Showcase ──────────────────────────────────────────────────────── -->
-<section style="background:var(--ch-green-bg);padding:5rem 2rem;">
+<section style="background:var(--client-color-6);padding:5rem 2rem;">
 	<div class="container">
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Signature Blends</div>
@@ -100,7 +100,7 @@ $show_prices = ch_show_prices();
 </section>
 
 <!-- ── Full Build Menu (from DB) ────────────────────────────────────────────── -->
-<section style="background:var(--ch-white);padding:5rem 2rem;">
+<section style="background:var(--client-color-11);padding:5rem 2rem;">
 	<div class="container">
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Build Your Cup</div>
@@ -216,7 +216,7 @@ $show_prices = ch_show_prices();
 						</div>
 					<?php endforeach; ?>
 				</div>
-				<p style="margin-top:1rem;font-size:0.72rem;color:var(--ch-text-muted);font-style:italic;">* Slight colour and taste variation may occur as different canes are pressed in a shared machine. Contains natural sugars - enjoy responsibly.</p>
+				<p style="margin-top:1rem;font-size:0.72rem;color:var(--client-color-15-muted);font-style:italic;">* Slight colour and taste variation may occur as different canes are pressed in a shared machine. Contains natural sugars - enjoy responsibly.</p>
 			</div>
 
 		</div>
@@ -224,11 +224,11 @@ $show_prices = ch_show_prices();
 </section>
 
 <!-- ── How to Order steps ────────────────────────────────────────────────────── -->
-<!-- <section style="background:var(--ch-green-deep);padding:5rem 2rem;">
+<!-- <section style="background:var(--client-color-1);padding:5rem 2rem;">
 	<div class="container">
-		<div class="ch-section-center fade-up" style="color:var(--ch-white);">
-			<div class="section-tag" style="color:var(--ch-lime);">Simple Process</div>
-			<h2 class="section-title" style="color:var(--ch-white);">How to <span class="accent" style="color:var(--ch-lime);">Order</span></h2>
+		<div class="ch-section-center fade-up" style="color:var(--client-color-11);">
+			<div class="section-tag" style="color:var(--client-color-7);">Simple Process</div>
+			<h2 class="section-title" style="color:var(--client-color-11);">How to <span class="accent" style="color:var(--client-color-7);">Order</span></h2>
 			<p class="section-body" style="color:rgba(255,255,255,0.7);">Walk up, choose your options, we press it live - done in under 2 minutes.</p>
 		</div>
 		<div class="ch-steps-grid fade-up">

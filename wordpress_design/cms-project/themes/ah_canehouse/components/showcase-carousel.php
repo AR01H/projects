@@ -6,7 +6,7 @@
  *  tag      (string)  Eyebrow tag.             Default: 'Showcase'
  *  title    (string)  Heading HTML.            Default: ''
  *  body     (string)  Intro text.              Default: ''
- *  bg       (string)  Section background CSS.  Default: 'var(--ch-white)'
+ *  bg       (string)  Section background CSS.  Default: 'var(--client-color-11)'
  *  id       (string)  Unique ID for JS hooks.  Default: auto
  *  autoplay (int)     Auto-advance ms.         Default: 2500
  *  items    (array)   [
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 $tag      = $args['tag']      ?? 'Showcase';
 $title    = $args['title']    ?? '';
 $body     = $args['body']     ?? '';
-$bg       = $args['bg']       ?? 'var(--ch-white)';
+$bg       = $args['bg']       ?? 'var(--client-color-11)';
 $autoplay = isset( $args['autoplay'] ) ? (int) $args['autoplay'] : 2500;
 $items    = $args['items']    ?? [];
 $uid      = esc_attr( $args['id'] ?? 'ch-sc-' . wp_rand( 100, 999 ) );

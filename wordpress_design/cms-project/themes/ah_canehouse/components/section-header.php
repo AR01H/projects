@@ -44,9 +44,9 @@ $allowed_kses = [
 ];
 
 if ( $dark ) {
-	$wrapper_style = $wrapper_style ?: 'color:var(--ch-white)';
-	$tag_style     = $tag_style     ?: 'color:var(--ch-lime)';
-	$title_style   = $title_style   ?: 'color:var(--ch-white)';
+	$wrapper_style = $wrapper_style ?: 'color:var(--client-color-11)';
+	$tag_style     = $tag_style     ?: 'color:var(--client-color-7)';
+	$title_style   = $title_style   ?: 'color:var(--client-color-11)';
 	$body_style    = $body_style    ?: 'color:rgba(255,255,255,0.65)';
 }
 

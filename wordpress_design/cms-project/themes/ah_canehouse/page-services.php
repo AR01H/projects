@@ -79,7 +79,7 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 </section>
 
 <!-- ── How We Work ────────────────────────────────────────────────────────────── -->
-<section style="background:var(--ch-white);padding:5rem 2rem;">
+<section style="background:var(--client-color-11);padding:5rem 2rem;">
 	<div class="container">
 		<div style="text-align:center;margin-bottom:3rem;" class="fade-up">
 			<div class="section-tag">The Process</div>
@@ -105,8 +105,8 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 				<div class="ch-step-title">Book a Date</div>
 				<div class="ch-step-desc">Confirm your booking with a simple deposit to secure the date.</div>
 			</div>
-			<div class="ch-step-card fade-up" style="border-color:var(--ch-lime);">
-				<div class="ch-step-num" style="background:linear-gradient(135deg,var(--ch-lime-dark),var(--ch-lime));color:var(--ch-green-deep);">4</div>
+			<div class="ch-step-card fade-up" style="border-color:var(--client-color-7);">
+				<div class="ch-step-num" style="background:linear-gradient(135deg,var(--client-color-7-dark),var(--client-color-7));color:var(--client-color-1);">4</div>
 				<div class="ch-step-emoji">🎉</div>
 				<div class="ch-step-title">We Arrive!</div>
 				<div class="ch-step-desc">We set up, press live, and serve your guests the freshest cane juice they've ever tasted.</div>
@@ -127,7 +127,7 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 			</div>
 			<?php if ( $phone ) : ?>
 				<p style="margin-top:1.5rem;font-size:0.85rem;color:rgba(255,255,255,0.6);">Or call us directly:
-					<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" style="color:var(--ch-lime);font-weight:700;"><?php echo esc_html( $phone ); ?></a>
+					<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" style="color:var(--client-color-7);font-weight:700;"><?php echo esc_html( $phone ); ?></a>
 				</p>
 			<?php endif; ?>
 		</div>

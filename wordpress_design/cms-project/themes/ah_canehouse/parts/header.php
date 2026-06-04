@@ -90,7 +90,7 @@ unset( $_ch_sc );
 										role="menuitem">
 										<?php if ( ! empty( $sub['icon'] ) ) : ?>
 											<div class="ch-nav__dropdown-icon"
-												<?php echo $is_hl ? 'style="background:var(--ch-lime);color:var(--ch-green-deep)"' : ''; ?>>
+												<?php echo $is_hl ? 'style="background:var(--client-color-7);color:var(--client-color-1)"' : ''; ?>>
 												<?php echo esc_html( $sub['icon'] ); ?>
 											</div>
 										<?php endif; ?>

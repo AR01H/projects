@@ -27,7 +27,7 @@ get_header();
 	'tag'   => 'Events Gallery',
 	'title' => 'The Cane House <span class="accent">at Your Events</span>',
 	'body'  => 'A glimpse of the live experience we bring - from intimate gatherings to 500-guest celebrations.',
-	'bg'    => 'var(--ch-green-bg)',
+	'bg'    => 'var(--client-color-6)',
 	'id'    => 'mg-events',
 	'items' => ch_get_events_media_gallery(),
 ] ); ?>

@@ -123,7 +123,7 @@ $uid = 'ch-hero-' . wp_unique_id();
     height: 90vh;
     min-height: 480px;
     max-height: 900px;
-    background: var(--ch-bg-dark, #1a3a0f);
+    background: var(--client-color-13, #1a3a0f);
     padding: 0 !important;
 }
 
@@ -202,7 +202,7 @@ $uid = 'ch-hero-' . wp_unique_id();
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--ch-lime, #c8e830);
+    color: var(--client-color-7, #c8e830);
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
@@ -212,7 +212,7 @@ $uid = 'ch-hero-' . wp_unique_id();
     font-size: clamp(2rem, 6vw, 4.5rem);
     font-weight: 800;
     line-height: 1.1;
-    color: var(--ch-white, #fdfff8);
+    color: var(--client-color-11, #fdfff8);
     text-shadow: 0 2px 24px rgba(0,0,0,0.4);
     opacity: 0;
     transform: translateY(28px);
@@ -223,7 +223,7 @@ $uid = 'ch-hero-' . wp_unique_id();
     font-size: clamp(0.875rem, 1.8vw, 1.1rem);
     font-weight: 400;
     line-height: 1.65;
-    color: var(--ch-text-light, rgba(232,245,224,0.82));
+    color: var(--client-color-15-light, rgba(232,245,224,0.82));
     max-width: 560px;
     opacity: 0;
     transform: translateY(24px);
@@ -240,15 +240,15 @@ $uid = 'ch-hero-' . wp_unique_id();
     gap: 0.5rem;
     margin-top: 0.5rem;
     padding: 0.85rem 2rem;
-    background: var(--ch-lime, #c8e830);
-    color: var(--ch-green-deep, #2d5a1b);
+    background: var(--client-color-7, #c8e830);
+    color: var(--client-color-1, #2d5a1b);
     font-size: clamp(0.8rem, 1.4vw, 0.95rem);
     font-weight: 700;
     letter-spacing: 0.06em;
     text-decoration: none;
     border-radius: var(--ch-radius-pill, 50px);
     border: 2px solid transparent;
-    box-shadow: 0 4px 24px var(--ch-lime-glow, rgba(200,232,48,0.35));
+    box-shadow: 0 4px 24px var(--client-color-7-glow, rgba(200,232,48,0.35));
     opacity: 0;
     transform: translateY(20px);
     transition:
@@ -262,9 +262,9 @@ $uid = 'ch-hero-' . wp_unique_id();
 .ch-hero-slide__btn:hover,
 .ch-hero-slide__btn:focus-visible {
     background: transparent;
-    color: var(--ch-lime, #c8e830);
-    border-color: var(--ch-lime, #c8e830);
-    box-shadow: 0 4px 32px var(--ch-lime-glow, rgba(200,232,48,0.45));
+    color: var(--client-color-7, #c8e830);
+    border-color: var(--client-color-7, #c8e830);
+    box-shadow: 0 4px 32px var(--client-color-7-glow, rgba(200,232,48,0.45));
 }
 .ch-hero-slide__btn-arrow {
     display: inline-block;
@@ -310,10 +310,10 @@ $uid = 'ch-hero-' . wp_unique_id();
     inset: -6px;
 }
 .ch-hero-dot.is-active {
-    background: var(--ch-lime, #c8e830);
-    border-color: var(--ch-lime, #c8e830);
+    background: var(--client-color-7, #c8e830);
+    border-color: var(--client-color-7, #c8e830);
     transform: scale(1.3);
-    box-shadow: 0 0 8px var(--ch-lime-glow, rgba(200,232,48,0.5));
+    box-shadow: 0 0 8px var(--client-color-7-glow, rgba(200,232,48,0.5));
 }
 .ch-hero-dot:hover:not(.is-active) {
     background: rgba(255,255,255,0.45);
@@ -345,9 +345,9 @@ $uid = 'ch-hero-' . wp_unique_id();
 .ch-hero-arrow--next { right: clamp(3.5rem, 6vw, 5rem); }
 .ch-hero-arrow:hover,
 .ch-hero-arrow:focus-visible {
-    background: var(--ch-lime, #c8e830);
-    border-color: var(--ch-lime, #c8e830);
-    color: var(--ch-green-deep, #2d5a1b);
+    background: var(--client-color-7, #c8e830);
+    border-color: var(--client-color-7, #c8e830);
+    color: var(--client-color-1, #2d5a1b);
 }
 
 /* ── Progress bar ────────────────────────────────────────── */
@@ -363,7 +363,7 @@ $uid = 'ch-hero-' . wp_unique_id();
 .ch-hero-progress__bar {
     height: 100%;
     width: 0%;
-    background: var(--ch-lime, #c8e830);
+    background: var(--client-color-7, #c8e830);
     transition: width 0.1s linear;
 }
 

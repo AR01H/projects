@@ -30,10 +30,10 @@ foreach ( $faqs as $faq ) {
 ] ); ?>
 
 <!-- ── FAQ groups ───────────────────────────────────────────────────────────── -->
-<section style="background:var(--ch-green-bg);padding:5rem 2rem;">
+<section style="background:var(--client-color-6);padding:5rem 2rem;">
 	<div class="container">
 		<?php if ( empty( $grouped ) ) : ?>
-			<p style="text-align:center;color:var(--ch-text-muted);">No FAQs available yet. Please check back soon.</p>
+			<p style="text-align:center;color:var(--client-color-15-muted);">No FAQs available yet. Please check back soon.</p>
 		<?php else : ?>
 			<?php foreach ( $grouped as $topic => $items ) : ?>
 				<div class="ch-faqpage-group fade-up">

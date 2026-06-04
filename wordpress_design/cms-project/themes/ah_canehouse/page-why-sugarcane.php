@@ -59,7 +59,7 @@ foreach ( ch_get_nutrition_facts() as $nf ) {
 }
 $_nf_disclaimer = get_option( 'ch_nutrition_disclaimer', '* Values are approximate for 350ml fresh-pressed yellow cane, no additives.' );
 $_inside_extra  = '<div class="ch-nutrition-list">' . $_nf_rows . '</div>'
-	. '<p style="margin-top:1rem;font-size:0.78rem;color:var(--ch-text-muted);font-style:italic;">' . esc_html( $_nf_disclaimer ) . '</p>';
+	. '<p style="margin-top:1rem;font-size:0.78rem;color:var(--client-color-15-muted);font-style:italic;">' . esc_html( $_nf_disclaimer ) . '</p>';
 unset( $_nf_rows, $_nf_disclaimer );
 
 $_inside_visual = '<div class="ch-inside-card">'

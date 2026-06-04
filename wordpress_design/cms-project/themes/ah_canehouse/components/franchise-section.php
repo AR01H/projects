@@ -9,7 +9,7 @@ $phone     = $settings['phone'] ?? CONTACT_NUMBER;
 <section id="franchise" class="ch-franchise-section">
 	<?php get_template_part( 'components/section-header', null, [
 		'tag'   => 'Grow With Us',
-		'title' => 'Franchise <em style="color:var(--ch-green-mid);">Opportunities</em>',
+		'title' => 'Franchise <em style="color:var(--client-color-2);">Opportunities</em>',
 		'body'  => 'Be part of the fresh juice revolution. Bring the live-pressed cane experience to your city. Join our growing network of franchise partners across the UK.',
 	] ); ?>
 

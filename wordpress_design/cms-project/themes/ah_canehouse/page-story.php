@@ -34,7 +34,7 @@ get_header();
 <!-- CTA -->
 <?php get_template_part( 'components/cta-section', null, [
 	'tag'        => 'Experience It',
-	'heading'    => 'Ready to <span class="accent" style="color:var(--ch-lime);">Taste the Tradition?</span>',
+	'heading'    => 'Ready to <span class="accent" style="color:var(--client-color-7);">Taste the Tradition?</span>',
 	'body'       => 'Book us for your next event or explore a franchise opportunity in your city.',
 	'btn_label'  => '🥤 Book an Event',
 	'btn_url'    => home_url( '/events/' ),

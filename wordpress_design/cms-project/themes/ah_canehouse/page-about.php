@@ -52,7 +52,7 @@ get_template_part( 'components/gallery-strip', null, [
 	'body'     => 'The machines, the setup, the ingredients - everything that goes into every perfect glass.',
 	'modifier' => 'ch-gstrip--about',
 	'id'       => 'gstrip-about',
-	'bg'       => 'var(--ch-white)',
+	'bg'       => 'var(--client-color-11)',
 	'images'   => ch_get_about_equipment(),
 ] );
 ?>
@@ -106,7 +106,7 @@ unset( $_about_values_extra, $_about_values_visual );
 <!-- ── CTA ────────────────────────────────────────────────────────────────────── -->
 <?php get_template_part( 'components/cta-section', null, [
 	'tag'        => 'Work With Us',
-	'heading'    => 'Let\'s Do Something <span class="accent" style="color:var(--ch-lime);">Amazing</span>',
+	'heading'    => 'Let\'s Do Something <span class="accent" style="color:var(--client-color-7);">Amazing</span>',
 	'body'       => 'Book us for your next event, or take the leap and bring The Cane House to your city with a franchise.',
 	'btn_label'  => '🥤 Book an Event',
 	'btn_url'    => home_url( '/events/' ),

@@ -51,7 +51,7 @@ $reviews  = ch_get_reviews( 20 );
 
 <!-- ── Reviews Masonry Grid ─────────────────────────────────────────────────── -->
 <?php if ( ! empty( $reviews ) ) : ?>
-<section style="background:var(--ch-green-bg);padding:5rem 2rem;">
+<section style="background:var(--client-color-6);padding:5rem 2rem;">
 	<div class="container">
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">What They Said</div>
@@ -133,7 +133,7 @@ $reviews  = ch_get_reviews( 20 );
 <?php endif; ?>
 
 <!-- ── Event Showcases ───────────────────────────────────────────────────────── -->
-<section style="background:var(--ch-white);padding:5rem 2rem;">
+<section style="background:var(--client-color-11);padding:5rem 2rem;">
 	<div class="container">
 		<div class="ch-section-center fade-up">
 			<div class="section-tag">Our Events</div>

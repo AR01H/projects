@@ -20,7 +20,7 @@ $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo
 
 			<!-- Right: content -->
 			<div class="ch-frn-content">
-				<div class="section-tag" style="color:var(--ch-lime);">Franchise Opportunity</div>
+				<div class="section-tag" style="color:var(--client-color-7);">Franchise Opportunity</div>
 				<h2 class="ch-frn-title"><?php echo wp_kses( $frn_heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 				<p class="ch-frn-sub"><?php echo esc_html( $frn_sub ); ?></p>
 
