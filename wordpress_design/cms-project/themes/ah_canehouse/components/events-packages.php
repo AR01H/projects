@@ -49,7 +49,6 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 								<?php endforeach; ?>
 							</ul>
 						<?php endif; ?>
-						<a href="#quote" class="ch-package-card__cta">Enquire →</a>
 					</div>
 				<?php endforeach; ?>
 			</div>

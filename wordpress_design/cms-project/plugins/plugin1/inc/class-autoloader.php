@@ -38,6 +38,7 @@ class AH_Autoloader {
 		'AH_Validator'        => 'helper/class-validator.php',
 		'AH_Uploader'         => 'helper/class-uploader.php',
 		'AH_Notice_Helper'    => 'helper/class-notice-helper.php',
+		'AH_Banners_Helper'   => 'helper/class-banners-helper.php',
 
 		// Admin
 		'AH_Admin_Bootstrap'  => 'admin/class-admin-bootstrap.php',

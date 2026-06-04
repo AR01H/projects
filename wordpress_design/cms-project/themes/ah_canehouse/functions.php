@@ -310,6 +310,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ch-layout',     $uri . '/assets/css/layout.css',     [ 'ch-components' ],   $ver( '/assets/css/layout.css' ) );
 	wp_enqueue_style( 'ch-forms',      $uri . '/assets/css/forms.css',      [ 'ch-base' ],         $ver( '/assets/css/forms.css' ) );
 	wp_enqueue_style( 'ch-animations', $uri . '/assets/css/animations.css', [ 'ch-base' ],         $ver( '/assets/css/animations.css' ) );
+	wp_enqueue_style( 'ch-cursors', $uri . '/assets/css/ch-cursors.css',    [ 'ch-base' ],         $ver( '/assets/css/ch-cursors.css' ) );
 	wp_enqueue_style( 'ch-style',      get_stylesheet_uri(),                [ 'ch-layout' ],       $ver( '/style.css' ) );
 
 	wp_enqueue_script( 'ch-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $ver( '/assets/js/main.js' ), true );

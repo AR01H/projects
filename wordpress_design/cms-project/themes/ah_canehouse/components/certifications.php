@@ -66,7 +66,7 @@ $cert_img     = get_template_directory_uri() . '/assets/images/ncass_logo.png';
 					<img src="<?php echo esc_url( $cert_img ); ?>"
 						alt="The Cane House Food Hygiene Certificate"
 						class="ch-cert-img" loading="lazy">
-						<span class="ch-cert-badge">We are officially member off</span>
+						<span class="ch-cert-badge">We are officially member of</span>
 				</div>
 			<?php endif; ?>
 

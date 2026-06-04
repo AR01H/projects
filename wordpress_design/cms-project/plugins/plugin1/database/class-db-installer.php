@@ -36,6 +36,8 @@ class AH_DB_Installer {
 		self::ensure_trigger_logs();
 		self::ensure_events_table();
 		self::ensure_events_notification_columns();
+		self::ensure_banners_table();
+		self::ensure_banners_mobile_column();
 		self::ensure_review_taxonomy_type();
 		self::ensure_review_categories_taxonomy_type();
 		self::ensure_review_images_table();
@@ -70,6 +72,52 @@ class AH_DB_Installer {
 				KEY `idx_sort`     (`sort_order`)
 			) ENGINE=InnoDB {$cs}"
 		);
+	}
+
+	/**
+	 * Create the home hero banners table if it does not exist.
+	 */
+	public static function ensure_banners_table(): void {
+		global $wpdb;
+		$t  = $wpdb->prefix . 'ah_home_banners';
+		$cs = $wpdb->get_charset_collate();
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"CREATE TABLE IF NOT EXISTS `{$t}` (
+				`id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`image`        VARCHAR(500) NOT NULL DEFAULT '',
+				`image_mobile` VARCHAR(500) NOT NULL DEFAULT '',
+				`subtitle`    VARCHAR(255) NOT NULL DEFAULT '',
+				`title`       VARCHAR(500) NOT NULL DEFAULT '',
+				`description` TEXT         DEFAULT NULL,
+				`btn_text`    VARCHAR(255) NOT NULL DEFAULT '',
+				`btn_url`     VARCHAR(500) NOT NULL DEFAULT '',
+				`btn_target`  VARCHAR(10)  NOT NULL DEFAULT '_self',
+				`text_align`  VARCHAR(10)  NOT NULL DEFAULT 'center',
+				`text_pos`    VARCHAR(10)  NOT NULL DEFAULT 'middle',
+				`overlay`     VARCHAR(100) NOT NULL DEFAULT 'rgba(26,58,15,0.45)',
+				`status`      ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				`sort_order`  INT          NOT NULL DEFAULT 0,
+				`created_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_status_sort` (`status`, `sort_order`)
+			) ENGINE=InnoDB {$cs}"
+		);
+	}
+
+	/**
+	 * Add the optional mobile image column to the banners table if missing.
+	 */
+	public static function ensure_banners_mobile_column(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_home_banners';
+		$has   = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'image_mobile'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $has ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `image_mobile` VARCHAR(500) NOT NULL DEFAULT '' AFTER `image`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	/**

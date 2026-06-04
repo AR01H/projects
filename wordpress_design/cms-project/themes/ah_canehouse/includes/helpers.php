@@ -558,6 +558,27 @@ function ch_get_gallery( string $key, array $defaults ): array {
 	return ! empty( $opt ) ? $opt : $defaults;
 }
 
+/**
+ * Home hero banners — managed in the plugin (CMS ADMIN → Home Banners).
+ * Falls back to the plugin's example defaults if the table is empty,
+ * and to a hardcoded set if the plugin is not active.
+ */
+function ch_get_home_banners(): array {
+	if ( class_exists( 'AH_Banners_Helper' ) ) {
+		$rows = AH_Banners_Helper::get_all( true ); // active only
+		if ( ! empty( $rows ) ) {
+			return $rows;
+		}
+		return AH_Banners_Helper::defaults();
+	}
+	// Plugin off — minimal safe fallback.
+	return [];
+}
+
+function ch_get_banner_autoplay(): int {
+	return class_exists( 'AH_Banners_Helper' ) ? AH_Banners_Helper::get_autoplay() : 5000;
+}
+
 function ch_get_events_gallery(): array {
 	return ch_get_gallery( 'ch_events_gallery', [
 		[ 'src' => 'https://images.unsplash.com/photo-ByBo1Ip07eE?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Juice Pressing',     'desc' => 'Commercial sugarcane juice machine in action' ],

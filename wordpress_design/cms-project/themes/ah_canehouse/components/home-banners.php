@@ -1,64 +1,20 @@
 <?php
 /**
  * The Cane House – Hero Banner Carousel
- * Drop this file into your theme and call: get_template_part('cane-house-banner');
- * Or paste the PHP + output HTML directly into a page template / Elementor HTML widget.
  *
- * HOW TO ADD BANNERS
- * Edit the $banners array below. Each banner supports:
- *   'image'       => full URL or get_template_directory_uri() path
- *   'title'       => headline text (HTML allowed)
- *   'subtitle'    => smaller text above the title (optional)
- *   'description' => body copy (optional)
- *   'btn_text'    => button label (leave empty to hide)
- *   'btn_url'     => button href
- *   'btn_target'  => '_self' or '_blank'
- *   'text_align'  => 'left' | 'center' | 'right'  (default: center)
- *   'text_pos'    => 'top' | 'middle' | 'bottom'   (default: middle)
- *   'overlay'     => css background value for the scrim, e.g. 'rgba(0,0,0,0.45)'
+ * Banners are managed in the plugin: CMS ADMIN → Home Banners (stored in the DB).
+ * This template just renders whatever ch_get_home_banners() returns.
+ *
+ * Each banner row supports:
+ *   image, subtitle, title (limited HTML), description,
+ *   btn_text, btn_url, btn_target, text_align, text_pos, overlay
  */
+defined( 'ABSPATH' ) || exit;
 
-$banners = [
-    [
-        'image'       => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80',
-        'subtitle'    => 'Welcome to',
-        'title'       => 'The Cane House',
-        'description' => 'A place where nature meets craftsmanship. Discover our handpicked collection of sustainable products.',
-        'btn_text'    => 'Explore Now',
-        'btn_url'     => '#',
-        'btn_target'  => '_self',
-        'text_align'  => 'center',
-        'text_pos'    => 'middle',
-        'overlay'     => 'rgba(26,58,15,0.50)',
-    ],
-    [
-        'image'       => 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1600&q=80',
-        'subtitle'    => 'New Arrivals',
-        'title'       => 'Fresh From<br>The Garden',
-        'description' => 'Organic, local, and lovingly grown — straight to your door.',
-        'btn_text'    => 'Shop Collection',
-        'btn_url'     => '#',
-        'btn_target'  => '_self',
-        'text_align'  => 'left',
-        'text_pos'    => 'middle',
-        'overlay'     => 'rgba(26,58,15,0.45)',
-    ],
-    [
-        'image'       => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80',
-        'subtitle'    => 'Our Story',
-        'title'       => 'Rooted in<br>Sustainability',
-        'description' => 'Every product tells a story of care, community, and commitment to the earth.',
-        'btn_text'    => 'Learn More',
-        'btn_url'     => '#',
-        'btn_target'  => '_blank',
-        'text_align'  => 'right',
-        'text_pos'    => 'bottom',
-        'overlay'     => 'rgba(26,58,15,0.55)',
-    ],
-];
+$banners     = ch_get_home_banners();
+$autoplay_ms = ch_get_banner_autoplay();
 
-/* ── Auto-scroll interval (ms) ──────────────────────────── */
-$autoplay_ms = 5000;
+if ( empty( $banners ) ) return;
 
 /* ── Unique ID so multiple carousels on same page work ──── */
 $uid = 'ch-hero-' . wp_unique_id();
@@ -74,18 +30,22 @@ $uid = 'ch-hero-' . wp_unique_id();
     <!-- TRACK -->
     <div class="ch-hero-track" role="list">
         <?php foreach ( $banners as $i => $b ) :
-            $align   = in_array( $b['text_align'] ?? 'center', ['left','right','center'] ) ? $b['text_align'] : 'center';
-            $pos     = in_array( $b['text_pos']   ?? 'middle', ['top','middle','bottom'] ) ? $b['text_pos']   : 'middle';
-            $overlay = esc_attr( $b['overlay'] ?? 'rgba(26,58,15,0.45)' );
+            $align     = in_array( $b['text_align'] ?? 'center', ['left','right','center'] ) ? $b['text_align'] : 'center';
+            $pos       = in_array( $b['text_pos']   ?? 'middle', ['top','middle','bottom'] ) ? $b['text_pos']   : 'middle';
+            $overlay   = esc_attr( $b['overlay'] ?? 'rgba(26,58,15,0.45)' );
+            $img_desk  = esc_url( $b['image'] ?? '' );
+            // Mobile image is optional — fall back to the desktop image when blank.
+            $img_mob   = ! empty( $b['image_mobile'] ) ? esc_url( $b['image_mobile'] ) : $img_desk;
+            $bg_style  = "--bg:url('{$img_desk}');--bg-mobile:url('{$img_mob}');";
         ?>
         <div class="ch-hero-slide ch-hero-slide--align-<?php echo $align; ?> ch-hero-slide--pos-<?php echo $pos; ?>"
              role="listitem"
              aria-label="Slide <?php echo $i + 1; ?>"
              aria-hidden="<?php echo $i === 0 ? 'false' : 'true'; ?>">
 
-            <!-- Background image -->
+            <!-- Background image (separate desktop / mobile source via CSS vars) -->
             <div class="ch-hero-slide__bg"
-                 style="background-image:url('<?php echo esc_url( $b['image'] ); ?>');"
+                 style="<?php echo esc_attr( $bg_style ); ?>"
                  role="img"
                  aria-label="<?php echo esc_attr( strip_tags( $b['title'] ?? '' ) ); ?>">
             </div>
@@ -190,11 +150,16 @@ $uid = 'ch-hero-' . wp_unique_id();
 .ch-hero-slide__bg {
     position: absolute;
     inset: 0;
-    background-size: cover;
+    background-image: var(--bg);
+    background-size: 100% 100%;   /* fill: stretch to cover the whole banner */
     background-position: center;
     background-repeat: no-repeat;
     transform: scale(1.08);
     transition: transform 8s ease;
+}
+/* Use the mobile image (falls back to desktop when none supplied) */
+@media (max-width: 768px) {
+    .ch-hero-slide__bg { background-image: var(--bg-mobile, var(--bg)); }
 }
 .ch-hero-slide.is-active .ch-hero-slide__bg {
     transform: scale(1);

@@ -41,7 +41,7 @@
 
 /* Hire aliases */
 .ch-hire-container { max-width: 1200px; margin: 0 auto; }
-.ch-hire__header { text-align: center; max-width: 700px; margin: 0 auto 4rem; }
+.ch-hire__header { text-align: center; max-width: 700px; margin: 0 auto 2rem; }
 .ch-hire__header .ch-section-tag, .ch-hire__header .section-tag { justify-content: center; margin-inline: auto; }
 .ch-h-card-icon  { font-size: 3rem; margin-bottom: 1.5rem; display: inline-block; }
 .ch-h-card-list  { list-style: none; padding: 0; text-align: left; display: inline-block; }
@@ -59,7 +59,7 @@
 
 /* Build/menu-builder aliases */
 .ch-build-section { background: var(--ch-white) !important; }
-.ch-build__header { text-align: center; margin-bottom: 4rem; display: flex; flex-direction: column; align-items: center; }
+.ch-build__header { text-align: center; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
 .ch-build__header .ch-section-body { margin-inline: auto; }
 .ch-price-row--featured { border-color: var(--ch-lime); background: linear-gradient(135deg, rgba(200,232,48,0.08), rgba(106,191,58,0.08)); }
 .ch-option-card--full { grid-column: 1 / -1; }

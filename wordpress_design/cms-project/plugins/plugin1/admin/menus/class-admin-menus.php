@@ -12,6 +12,7 @@ class AH_Admin_Menus {
 		$submenus = [
 			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],
 			['title' => 'Site Notices','menu' => 'Site Notices','slug' => 'ah-notices','callback' => 'page_notices'],
+			['title' => 'Home Banners','menu' => 'Home Banners','slug' => 'ah-banners','callback' => 'page_banners'],
 			['title' => 'Media Library','menu' => 'Media Library','slug' => 'ah-media','callback' => 'page_media'],
 			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
 			['title' => 'News Bar','menu' => 'News Bar','slug' => 'ah-news-bar','callback' => 'page_news_bar'],
@@ -57,6 +58,7 @@ class AH_Admin_Menus {
 
 	public static function page_dashboard()      { self::load( 'dashboard'      ); }
 	public static function page_notices()        { self::load( 'notices'        ); }
+	public static function page_banners()        { self::load( 'banners'        ); }
 	public static function page_settings()       { self::load( 'settings'       ); }
 	public static function page_pages()          { self::load( 'pages'          ); }
 	public static function page_media()          { self::load( 'media'          ); }
