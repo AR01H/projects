@@ -14,28 +14,12 @@ $tag   = $args['tag']   ?? 'Our Setup';
 $title = $args['title'] ?? 'The <span class="accent">Machine</span> Behind the Magic';
 $body  = $args['body']  ?? 'Every glass starts with our purpose-built stainless steel press. Hygienic, powerful, and built to handle high volumes at live events without missing a beat.';
 
-$default_items = [
-	[
-		'image' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&h=450&q=80',
-		'label' => 'Commercial Press',
-		'desc'  => 'Heavy-duty stainless steel sugarcane press. Processes a full cane stalk in seconds.',
-	],
-	[
-		'image' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&h=450&q=80',
-		'label' => 'Event Stall Setup',
-		'desc'  => 'Fully branded, mobile setup that fits in any venue. Ready to serve within 30 minutes.',
-	],
-	[
-		'image' => 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&h=450&q=80',
-		'label' => 'Live Pressing',
-		'desc'  => 'Every cup pressed fresh to order, right in front of your guests.',
-	],
-	[
-		'image' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=600&h=450&q=80',
-		'label' => 'Fresh Ingredients',
-		'desc'  => 'Whole sugarcane stalks sourced fresh. Optional ginger, lemon, and mint pairings.',
-	],
-];
+$default_items = [];
+// Load gallery data from JSON if available
+$json_data = CH_Real_Loader::json('equipment-gallery');
+if ( is_array( $json_data ) && isset( $json_data['items'] ) ) {
+    $default_items = $json_data['items'];
+}
 
 $items   = $args['items'] ?? $default_items;
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];

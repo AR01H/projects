@@ -76,36 +76,13 @@ function ch_show_prices(): bool {
 
 // ── Certifications ────────────────────────────────────────────────────────────
 function ch_get_certifications(): array {
-	$s    = ch_get_settings();
+	$s     = ch_get_settings();
 	$saved = isset( $s['certifications'] ) ? $s['certifications'] : [];
 	if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: [];
 	if ( ! empty( $saved ) ) return (array) $saved;
-	return [
-		[
-			'icon'  => '🍽️',
-			'title' => 'Food Hygiene',
-			'desc'  => 'Awarded the highest food hygiene score by local authority. Inspected and verified.',
-			'badge' => 'Level 2',
-		],
-		[
-			'icon'  => '🛡️',
-			'title' => 'Public Liability Insured',
-			'desc'  => 'Fully covered with comprehensive public liability insurance for all UK events.',
-			'badge' => 'Fully Insured',
-		],
-		[
-			'icon'  => '🌿',
-			'title' => 'Allergen Information',
-			'desc'  => 'No added allergens. Pure fresh cane juice. Full allergen information available on request.',
-			'badge' => 'Allergen Safe',
-		],
-		[
-			'icon'  => '📋',
-			'title' => 'HACCP Compliant',
-			'desc'  => 'Full Hazard Analysis and Critical Control Point procedures in place for all operations.',
-			'badge' => 'HACCP Cert.',
-		]
-	];
+	// Real data fallback – edit real_data/csv/certifications.csv to customise per client.
+	$rows = CH_Real_Loader::csv( 'certifications' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 // ── Schema / SEO Settings ──────────────────────────────────────────────────────
@@ -580,36 +557,30 @@ function ch_get_banner_autoplay(): int {
 }
 
 function ch_get_events_gallery(): array {
-	return ch_get_gallery( 'ch_events_gallery', [
-		[ 'src' => 'https://images.unsplash.com/photo-ByBo1Ip07eE?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Juice Pressing',     'desc' => 'Commercial sugarcane juice machine in action' ],
-		[ 'src' => 'https://images.unsplash.com/photo-m-qE4H-LKqo?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Fresh Green Juice',      'desc' => 'Freshly pressed juice ready to serve' ],
-		[ 'src' => 'https://images.unsplash.com/photo-SMUrHECtH3M?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Juice Variety Display',   'desc' => 'Multiple juice flavors for guests' ],
-		[ 'src' => 'https://images.unsplash.com/photo-JWfcm1stQuo?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Orange Juice Service',   'desc' => 'Professional beverage presentation' ],
-		[ 'src' => 'https://images.unsplash.com/photo-_bQxQlLpoVY?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Juice Bar Setup',        'desc' => 'Event beverage station ready' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1VeYwfqR92s?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Fresh Fruit Juice',     'desc' => 'Vibrant natural refreshment' ],
-	] );
+	// DB/admin option first; then real_data/csv/events-gallery.csv.
+	$opt = get_option( 'ch_events_gallery', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	$rows = CH_Real_Loader::csv( 'events-gallery' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 function ch_get_franchise_gallery(): array {
-	return ch_get_gallery( 'ch_franchise_gallery', [
-		[ 'src' => 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Branded Stall',       'desc' => 'Full The Cane House branding pack' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Pressing',      'desc' => 'In front of customers, every time' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1486428263684-28ec9e4f2584?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Birmingham',         'desc' => 'Our fastest-growing franchise city' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Commercial Machine', 'desc' => 'Stainless steel, high-volume press' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Partner Training',   'desc' => 'Full onboarding + ongoing support' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Market Days',        'desc' => 'High footfall weekend markets' ],
-	] );
+	// DB/admin option first; then real_data/csv/franchise-gallery.csv.
+	$opt = get_option( 'ch_franchise_gallery', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	$rows = CH_Real_Loader::csv( 'franchise-gallery' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 function ch_get_about_gallery(): array {
-	return ch_get_gallery( 'ch_about_gallery', [
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Commercial Press',   'desc' => 'Stainless steel, purpose-built machine' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Event Stall',        'desc' => 'Mobile setup, ready in 30 minutes' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Live Pressing',      'desc' => 'Fresh to order, every single time' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Fresh Ingredients', 'desc' => 'Whole stalks, ginger, lemon, mint' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'First Glass',       'desc' => 'The moment it all comes together' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&h=500&q=80', 'label' => 'Our Team',          'desc' => 'Passionate about every pour' ],
-	] );
+	// DB/admin option first; then real_data/csv/about-gallery.csv.
+	$opt = get_option( 'ch_about_gallery', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	$rows = CH_Real_Loader::csv( 'about-gallery' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 /**
@@ -617,71 +588,59 @@ function ch_get_about_gallery(): array {
  * Each item supports type: 'image' | 'gif' | 'video' (mp4/webm, autoplays muted+loop).
  */
 function ch_get_showcase(): array {
-	return ch_get_gallery( 'ch_showcase_items', [
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Commercial Press',  'desc' => 'Stainless steel, purpose-built' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Live Pressing',     'desc' => 'Fresh to order, every time' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Bottled Fresh',     'desc' => 'Pure cane, nothing added' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Branded Stall',     'desc' => 'Ready for any event' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Fresh Ingredients', 'desc' => 'Stalks, ginger, lemon, mint' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=700&h=560&q=80', 'label' => 'Served Chilled',    'desc' => 'The perfect pour, every time' ],
-	] );
+	// DB/admin option first; then real_data/csv/showcase-items.csv.
+	$opt = get_option( 'ch_showcase_items', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	$rows = CH_Real_Loader::csv( 'showcase-items' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 function ch_get_events_media_gallery(): array {
-	return ch_get_gallery( 'ch_events_media_gallery', [
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Live Juice Pressing',   'desc' => 'Commercial machine in action' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Fresh Green Juice',     'desc' => 'Freshly pressed, ready to serve' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Juice Variety Display', 'desc' => 'Multiple flavors for guests' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Event Stall Setup',    'desc' => 'Mobile setup, ready in 30 minutes' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Fresh Ingredients',    'desc' => 'Whole stalks, ginger, lemon, mint' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Wedding Setup',       'desc' => 'Elegantly branded for the occasion' ],
-	] );
+	// DB/admin option first; then real_data/csv/events-media-gallery.csv.
+	$opt = get_option( 'ch_events_media_gallery', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	$rows = CH_Real_Loader::csv( 'events-media-gallery' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 function ch_get_franchise_media_gallery(): array {
-	return ch_get_gallery( 'ch_franchise_media_gallery', [
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Branded Stall',       'desc' => 'Full The Cane House branding pack' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Live Pressing',      'desc' => 'In front of customers, every time' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=560&h=420&q=80', 'label' => 'Commercial Machine', 'desc' => 'Stainless steel, high-volume press' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Partner Training',   'desc' => 'Full onboarding + ongoing support' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1486428263684-28ec9e4f2584?auto=format&fit=crop&w=560&h=700&q=80', 'label' => 'Birmingham',         'desc' => 'Our fastest-growing franchise city' ],
-		[ 'type' => 'image', 'src' => 'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=900&h=420&q=80', 'label' => 'Market Days',        'desc' => 'High footfall weekend markets' ],
-	] );
+	// DB/admin option first; then real_data/csv/franchise-media-gallery.csv.
+	$opt = get_option( 'ch_franchise_media_gallery', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	$rows = CH_Real_Loader::csv( 'franchise-media-gallery' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 function ch_get_sugarcane_gallery(): array {
-	return ch_get_gallery( 'ch_sugarcane_gallery', [
-		[ 'src' => 'https://images.unsplash.com/photo-1635329535997-c0a9b62e2d56?auto=format&fit=crop&w=600&h=800&q=80', 'label' => 'Fresh Sugarcane Fields', 'desc' => '' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&h=400&q=80', 'label' => 'Pure Yellow Cane',       'desc' => '' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&h=400&q=80', 'label' => 'Zesty Lemon Blend',     'desc' => '' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&w=800&h=400&q=80', 'label' => 'Spicy Ginger Infusion',  'desc' => '' ],
-		[ 'src' => 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=600&h=400&q=80', 'label' => 'Cooling Mint Blend',    'desc' => '' ],
-	] );
+	// DB/admin option first; then real_data/csv/sugarcane-gallery.csv.
+	$opt = get_option( 'ch_sugarcane_gallery', [] );
+	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	$rows = CH_Real_Loader::csv( 'sugarcane-gallery' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 // ── Why Sugarcane Stats bar ───────────────────────────────────────────────────
 function ch_get_sugarcane_stats(): array {
 	$opt = get_option( 'ch_sugarcane_stats', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : [
-		[ 'num' => '2,000+', 'label' => 'Years of Tradition' ],
-		[ 'num' => '100%',   'label' => 'Natural & Pure' ],
-		[ 'num' => '0',      'label' => 'Additives Added' ],
-		[ 'num' => '5+',     'label' => 'Benefits' ],
-	];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	// Real data fallback – edit real_data/csv/sugarcane-stats.csv to customise per client.
+	$rows = CH_Real_Loader::csv( 'sugarcane-stats' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 // ── Nutrition Facts (Why Sugarcane page) ──────────────────────────────────────
 function ch_get_nutrition_facts(): array {
 	$opt = get_option( 'ch_nutrition_facts', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : [
-		[ 'name' => '🍬 Natural Sugars', 'value' => '~13–15g', 'note' => 'Sucrose, glucose, fructose - natural energy' ],
-		[ 'name' => '💊 Potassium',       'value' => '~300mg',  'note' => 'Electrolyte for heart & muscles' ],
-		[ 'name' => '⚗️ Magnesium',       'value' => '~10mg',   'note' => 'Nervous system & energy' ],
-		[ 'name' => '🌿 Antioxidants',    'value' => 'Rich',    'note' => 'Polyphenols & flavonoids' ],
-		[ 'name' => '💧 Water Content',   'value' => '~70%',    'note' => 'Natural hydration' ],
-	];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	// Real data fallback – edit real_data/csv/nutrition-facts.csv to customise per client.
+	$rows = CH_Real_Loader::csv( 'nutrition-facts' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 // ── Events "Why Choose Us" items ──────────────────────────────────────────────
@@ -689,15 +648,17 @@ function ch_get_events_why(): array {
 	$opt = get_option( 'ch_events_why', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) ) return $opt;
-	return [
-		'image' => 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&h=700&q=80',
-		'items' => [
-			[ 'icon' => '👀', 'title' => 'Live Pressing in Front of Guests',  'text' => 'Watching fresh cane being pressed is a spectacle in itself - creating a natural talking point and crowd magnet at your event.' ],
-			[ 'icon' => '🌿', 'title' => '100% Natural - No Compromise',      'text' => 'Everything we serve is pure, natural, and fresh. No artificial syrups, no chemicals - just real sugarcane juice.' ],
-			[ 'icon' => '📋', 'title' => 'Fully Insured & Certified',         'text' => 'We carry full public liability insurance and comply with all food hygiene regulations - complete peace of mind for you.' ],
-			[ 'icon' => '🤝', 'title' => 'Flexible & Responsive',             'text' => 'We work around your schedule, venue, and guest count. Packages from 50 to 1,000+ guests across the UK.' ],
-		],
-	];
+	// Real data fallback – edit real_data/json/events-why.json to customise per client.
+	$data = CH_Real_Loader::kv_json( 'events-why' );
+	if ( empty( $data ) ) {
+		// kv_json returns [] for arrays; load raw JSON object manually.
+		$path = get_template_directory() . '/real_data/json/events-why.json';
+		if ( file_exists( $path ) ) {
+			$decoded = json_decode( file_get_contents( $path ), true );
+			if ( is_array( $decoded ) ) $data = $decoded;
+		}
+	}
+	return $data ?: [];
 }
 
 // ── About Page: Mission / Vision / Values ─────────────────────────────────────
@@ -713,16 +674,10 @@ function ch_get_about_mvv(): array {
 function ch_get_about_quality(): array {
 	$opt = get_option( 'ch_about_quality', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : [
-		'Freshly pressed while you wait',
-		'Natural fruit blends available',
-		'No artificial colours or preservatives',
-		'Traditional drink enjoyed for generations',
-		'Family-friendly summer refreshment',
-		'Locally served in Sutton',
-		'Takeaway bottles and family packs available',
-		' Seasonal and unique - not commonly available in the UK'
-	];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	// Real data fallback – edit real_data/csv/about-quality.csv to customise per client.
+	$rows = CH_Real_Loader::csv( 'about-quality' );
+	return ! empty( $rows ) ? array_column( $rows, 'item' ) : [];
 }
 
 // ── About Page: Equipment Gallery (gallery-strip) ────────────────────────────
@@ -748,28 +703,20 @@ function ch_get_about_promise(): array {
 function ch_get_enquiry_types(): array {
 	$opt = get_option( 'ch_enquiry_types', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : [
-		[ 'value' => 'general',   'label' => 'General Enquiry' ],
-		[ 'value' => 'event',     'label' => 'Event / Stall Hire' ],
-		[ 'value' => 'wedding',   'label' => 'Wedding or Asian Celebration' ],
-		[ 'value' => 'franchise', 'label' => 'Franchise Opportunity' ],
-		[ 'value' => 'other',     'label' => 'Something Else' ],
-	];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	// Real data fallback – edit real_data/csv/enquiry-types.csv to customise per client.
+	$rows = CH_Real_Loader::csv( 'enquiry-types' );
+	return ! empty( $rows ) ? $rows : [];
 }
 
 // ── Booking Occasions (Booking Wizard dropdown) ───────────────────────────────
 function ch_get_occasions(): array {
 	$opt = get_option( 'ch_occasions', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : [
-		'Wedding / Walima',
-		'Mehndi / Sangeet',
-		'Eid Celebration',
-		'Birthday Party',
-		'Corporate Event',
-		'Community Festival',
-		'Other',
-	];
+	if ( ! empty( $opt ) ) return (array) $opt;
+	// Real data fallback – edit real_data/csv/occasions.csv to customise per client.
+	$rows = CH_Real_Loader::csv( 'occasions' );
+	return ! empty( $rows ) ? array_column( $rows, 'value' ) : [];
 }
 
 // ── Hero Badges (dynamic list) ────────────────────────────────────────────────
@@ -861,6 +808,9 @@ function ch_get_story_cards(): array {
 	$opt = get_option( 'ch_story_cards', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
+	// Real data fallback – edit real_data/json/story-cards.json to customise per client.
+	$rows = CH_Real_Loader::json( 'story-cards' );
+	if ( ! empty( $rows ) ) return $rows;
 	return [
 	[
 		'id'       => 'cultivation',
@@ -1112,3 +1062,6 @@ function ch_get_important_notice(): array {
 		'button_url'     => '',
 	];
 }
+
+
+

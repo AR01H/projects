@@ -79,6 +79,10 @@ class CH_Theme_Seeder {
 			'ch_order_steps', 'ch_marquee_items', 'ch_benefits',
 			'ch_hire_packages', 'ch_hire_features', 'ch_franchise_locations',
 			'ch_juice_showcase', 'ch_story_settings', 'ch_story_cards', 'ch_faqs_manual',
+			'ch_events_gallery', 'ch_franchise_gallery', 'ch_about_gallery',
+			'ch_events_media_gallery', 'ch_franchise_media_gallery', 'ch_sugarcane_gallery',
+			'ch_sugarcane_stats', 'ch_nutrition_facts', 'ch_about_quality', 'ch_events_why',
+			'ch_enquiry_types', 'ch_occasions', 'ch_about_equipment', 'ch_about_promise'
 		];
 		foreach ( $options as $opt ) {
 			if ( delete_option( $opt ) ) {
@@ -164,6 +168,18 @@ class CH_Theme_Seeder {
 			'certifications'      => [ 'csv' => 'certifications',      'method' => 'seed_certifications',      'label' => '🏛️ Certification badges',  'cols' => 'icon, title, desc, badge',                 'append' => false ],
 			'about-equipment'     => [ 'csv' => 'about-equipment',     'method' => 'seed_about_equipment',     'label' => '🔧 About - Equipment gallery',    'cols' => 'src, label, desc',          'append' => false ],
 			'about-settings'      => [ 'csv' => 'about-settings',      'method' => 'seed_about_settings',      'label' => '📄 About - Promise card',        'cols' => 'key, value',                'append' => false ],
+			'events-gallery'      => [ 'csv' => 'events-gallery',      'method' => 'seed_events_gallery',      'label' => '📷 Events Gallery',              'cols' => 'src, label, desc',          'append' => false ],
+			'franchise-gallery'   => [ 'csv' => 'franchise-gallery',   'method' => 'seed_franchise_gallery',   'label' => '📷 Franchise Gallery',           'cols' => 'src, label, desc',          'append' => false ],
+			'about-gallery'       => [ 'csv' => 'about-gallery',       'method' => 'seed_about_gallery',       'label' => '📷 About Gallery',               'cols' => 'type, src, label, desc',    'append' => false ],
+			'events-media-gallery'=> [ 'csv' => 'events-media-gallery','method' => 'seed_events_media_gallery','label' => '📷 Events Media Gallery',        'cols' => 'type, src, label, desc',    'append' => false ],
+			'franchise-media-gallery'=>[ 'csv'=> 'franchise-media-gallery','method'=> 'seed_franchise_media_gallery','label'=>'📷 Franchise Media Gallery','cols'=>'type, src, label, desc',   'append' => false ],
+			'sugarcane-gallery'   => [ 'csv' => 'sugarcane-gallery',   'method' => 'seed_sugarcane_gallery',   'label' => '📷 Sugarcane Gallery',           'cols' => 'src, label, desc',          'append' => false ],
+			'sugarcane-stats'     => [ 'csv' => 'sugarcane-stats',     'method' => 'seed_sugarcane_stats',     'label' => '📊 Sugarcane Stats',             'cols' => 'num, label',                'append' => false ],
+			'nutrition-facts'     => [ 'csv' => 'nutrition-facts',     'method' => 'seed_nutrition_facts',     'label' => '🍎 Nutrition Facts',             'cols' => 'name, value, note',         'append' => false ],
+			'about-quality'       => [ 'csv' => 'about-quality',       'method' => 'seed_about_quality',       'label' => '✅ About Quality',               'cols' => 'item',                      'append' => false ],
+			'events-why'          => [ 'csv' => 'events-why-items',    'method' => 'seed_events_why',          'label' => '🤔 Events Why Us',               'cols' => 'icon, title, text',         'append' => false ],
+			'enquiry-types'       => [ 'csv' => 'enquiry-types',       'method' => 'seed_enquiry_types',       'label' => '📝 Enquiry Types',               'cols' => 'value, label',              'append' => false ],
+			'occasions'           => [ 'csv' => 'occasions',           'method' => 'seed_occasions',           'label' => '🎉 Occasions',                   'cols' => 'value',                     'append' => false ],
 			// ── CMS table rows (APPEND - may duplicate on re-run) ──
 			'reviews'             => [ 'csv' => 'reviews',             'method' => 'seed_reviews',             'label' => '⭐ Customer reviews',       'cols' => 'author_name, location, review_text, rating, result, status', 'append' => true ],
 			'news-bar'            => [ 'csv' => 'news_bar',            'method' => 'seed_news_bar',            'label' => '📰 News bar items',        'cols' => 'message, status, sort_order',              'append' => true ],
@@ -441,4 +457,65 @@ class CH_Theme_Seeder {
 		}
 		return [ 'inserted' => $count, 'updated' => 0 ];
 	}
+
+	private static function seed_events_gallery(): array {
+		update_option( 'ch_events_gallery', wp_json_encode( CH_Data::events_gallery() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_franchise_gallery(): array {
+		update_option( 'ch_franchise_gallery', wp_json_encode( CH_Data::franchise_gallery() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_about_gallery(): array {
+		update_option( 'ch_about_gallery', wp_json_encode( CH_Data::about_gallery() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_events_media_gallery(): array {
+		update_option( 'ch_events_media_gallery', wp_json_encode( CH_Data::events_media_gallery() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_franchise_media_gallery(): array {
+		update_option( 'ch_franchise_media_gallery', wp_json_encode( CH_Data::franchise_media_gallery() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_sugarcane_gallery(): array {
+		update_option( 'ch_sugarcane_gallery', wp_json_encode( CH_Data::sugarcane_gallery() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_sugarcane_stats(): array {
+		update_option( 'ch_sugarcane_stats', wp_json_encode( CH_Data::sugarcane_stats() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_nutrition_facts(): array {
+		update_option( 'ch_nutrition_facts', wp_json_encode( CH_Data::nutrition_facts() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_about_quality(): array {
+		update_option( 'ch_about_quality', wp_json_encode( CH_Data::about_quality() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_events_why(): array {
+		update_option( 'ch_events_why', wp_json_encode( CH_Data::events_why() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_enquiry_types(): array {
+		update_option( 'ch_enquiry_types', wp_json_encode( CH_Data::enquiry_types() ) );
+		return [ 'updated' => 1 ];
+	}
+
+	private static function seed_occasions(): array {
+		update_option( 'ch_occasions', wp_json_encode( CH_Data::occasions() ) );
+		return [ 'updated' => 1 ];
+	}
+
 }

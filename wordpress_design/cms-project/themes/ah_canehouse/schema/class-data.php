@@ -422,6 +422,82 @@ class CH_Data {
 		return self::default_journal_posts();
 	}
 
+	public static function events_gallery(): array {
+		$rows = self::load_csv( 'events-gallery' );
+		return $rows ?: [];
+	}
+
+	public static function franchise_gallery(): array {
+		$rows = self::load_csv( 'franchise-gallery' );
+		return $rows ?: [];
+	}
+
+	public static function about_gallery(): array {
+		$rows = self::load_csv( 'about-gallery' );
+		return $rows ?: [];
+	}
+
+	public static function showcase_items(): array {
+		$rows = self::load_csv( 'showcase-items' );
+		return $rows ?: [];
+	}
+
+	public static function events_media_gallery(): array {
+		$rows = self::load_csv( 'events-media-gallery' );
+		return $rows ?: [];
+	}
+
+	public static function franchise_media_gallery(): array {
+		$rows = self::load_csv( 'franchise-media-gallery' );
+		return $rows ?: [];
+	}
+
+	public static function sugarcane_gallery(): array {
+		$rows = self::load_csv( 'sugarcane-gallery' );
+		return $rows ?: [];
+	}
+
+	public static function sugarcane_stats(): array {
+		$rows = self::load_csv( 'sugarcane-stats' );
+		return $rows ?: [];
+	}
+
+	public static function nutrition_facts(): array {
+		$rows = self::load_csv( 'nutrition-facts' );
+		return $rows ?: [];
+	}
+
+	public static function about_quality(): array {
+		$rows = self::load_csv( 'about-quality' );
+		return $rows ? array_column( $rows, 'item' ) : [];
+	}
+
+	public static function events_why(): array {
+		$rows = self::load_csv( 'events-why-items' );
+		if ( empty( $rows ) ) return [];
+		return [
+			'image' => '', // Loaded from theme admin in practice
+			'items' => array_map( static function( $r ) {
+				return [
+					'icon'  => $r['icon'] ?? '',
+					'title' => $r['title'] ?? '',
+					'text'  => $r['text'] ?? ''
+				];
+			}, $rows )
+		];
+	}
+
+	public static function enquiry_types(): array {
+		$rows = self::load_csv( 'enquiry-types' );
+		return $rows ?: [];
+	}
+
+	public static function occasions(): array {
+		$rows = self::load_csv( 'occasions' );
+		return $rows ? array_column( $rows, 'value' ) : [];
+	}
+
+
 	// ── Defaults ──────────────────────────────────────────────────────────────
 	// All demo content now lives in mock_data/csv/*.csv (the single source of
 	// truth). These fallbacks return EMPTY so nothing is hardcoded in the theme.

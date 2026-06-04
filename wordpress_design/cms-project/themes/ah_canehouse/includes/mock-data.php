@@ -76,3 +76,51 @@ function ch_mock_juice_showcase(): array {
 function ch_mock_story_settings(): array {
 	return CH_Data::story_settings();
 }
+
+function ch_mock_events_gallery(): array {
+	return CH_Data::events_gallery();
+}
+
+function ch_mock_franchise_gallery(): array {
+	return CH_Data::franchise_gallery();
+}
+
+function ch_mock_about_gallery(): array {
+	return CH_Data::about_gallery();
+}
+
+function ch_mock_events_media_gallery(): array {
+	return CH_Data::events_media_gallery();
+}
+
+function ch_mock_franchise_media_gallery(): array {
+	return CH_Data::franchise_media_gallery();
+}
+
+function ch_mock_sugarcane_gallery(): array {
+	return CH_Data::sugarcane_gallery();
+}
+
+function ch_mock_sugarcane_stats(): array {
+	return CH_Data::sugarcane_stats();
+}
+
+function ch_mock_nutrition_facts(): array {
+	return CH_Data::nutrition_facts();
+}
+
+function ch_mock_about_quality(): array {
+	return CH_Data::about_quality();
+}
+
+function ch_mock_events_why(): array {
+	return CH_Data::events_why();
+}
+
+function ch_mock_enquiry_types(): array {
+	return CH_Data::enquiry_types();
+}
+
+function ch_mock_occasions(): array {
+	return CH_Data::occasions();
+}
