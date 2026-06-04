@@ -37,11 +37,8 @@ function ch_get_page_definitions(): array {
 	return [
 		[ 'title' => 'Home',               'slug' => 'home',           'template' => 'front-page.php',         'front' => true  ],
 		[ 'title' => 'About',              'slug' => 'about',          'template' => 'page-about.php'                            ],
-		[ 'title' => 'Services',           'slug' => 'services',       'template' => 'page-services.php'                         ],
-		[ 'title' => 'Our Juices',         'slug' => 'our-juices',     'template' => 'page-our-juices.php'                       ],
 		[ 'title' => 'Why Sugarcane',      'slug' => 'why-sugarcane',  'template' => 'page-why-sugarcane.php'                    ],
-		[ 'title' => 'Events & Hire',      'slug' => 'events',         'template' => 'page-events.php'                           ],
-		[ 'title' => 'Client Stories',     'slug' => 'client-stories', 'template' => 'page-client-stories.php'                   ],
+		[ 'title' => 'Events',             'slug' => 'events',         'template' => 'page-events.php'                           ],
 		[ 'title' => 'Franchise',          'slug' => 'franchise',      'template' => 'page-franchise.php'                        ],
 		[ 'title' => 'Our Story',          'slug' => 'our-story',      'template' => 'page-story.php'                            ],
 		[ 'title' => 'FAQs',               'slug' => 'faqs',           'template' => 'page-faqs.php'                             ],
