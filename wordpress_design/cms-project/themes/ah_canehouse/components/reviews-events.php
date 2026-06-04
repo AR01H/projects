@@ -1,6 +1,6 @@
 <?php
 /**
- * Event-context review section — white bg, event-type badge per card, mobile carousel.
+ * Event-context review section - white bg, event-type badge per card, mobile carousel.
  *
  * Args (all optional):
  *  limit  (int)     Number of reviews to show.  Default: 6

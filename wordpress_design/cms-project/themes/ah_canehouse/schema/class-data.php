@@ -1,15 +1,22 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+// The instant CSV reader lives in the csv/ folder; it reads the data files
+// from mock_data/csv/ (the same files the mock-data seeder inserts).
+require_once get_template_directory() . '/csv/class-csv-loader.php';
+
 /**
  * CH_Data
  * Seed data registry for the Cane House theme.
  *
  * Data source priority:
  *   1. CSV files in mock_data/csv/ - edit these before running mock install
- *   2. Hardcoded defaults below   - used when CSV files are absent
+ *   2. Hardcoded defaults below    - used when CSV files are absent
  *
- * CSV files live at: {theme}/mock_data/csv/{name}.csv
+ * NOTE: CSV reading itself lives in CH_CSV_Loader (mock_data/class-csv-loader.php).
+ *       The methods below just delegate, so the CSV-fetch logic is in one obvious
+ *       place. The per-section methods (settings(), flavours(), reviews(), …)
+ *       further down add hardcoded fallbacks when a CSV is absent.
  *
  * Key-value CSVs (settings.csv, home-settings.csv, etc.) use two columns: key, value
  * Array CSVs use one row per item with named columns
@@ -17,59 +24,21 @@ defined( 'ABSPATH' ) || exit;
  */
 class CH_Data {
 
-	// ── CSV loaders ───────────────────────────────────────────────────────────
+	// ── CSV loaders (delegate to CH_CSV_Loader in mock_data/) ─────────────────
 
 	/**
 	 * Loads a CSV from mock_data/csv/{name}.csv.
 	 * Returns array of associative rows, or empty array when file is absent.
 	 */
 	public static function load_csv( string $name ): array {
-		$path = get_template_directory() . "/mock_data/csv/{$name}.csv";
-		if ( ! file_exists( $path ) ) {
-			return [];
-		}
-		$fh = fopen( $path, 'r' );
-		if ( $fh === false ) {
-			return [];
-		}
-		$bom = fread( $fh, 3 );
-		if ( $bom !== "\xef\xbb\xbf" ) {
-			rewind( $fh );
-		}
-		$headers = fgetcsv( $fh );
-		if ( ! $headers ) {
-			fclose( $fh );
-			return [];
-		}
-		$headers = array_map( 'trim', $headers );
-		$rows    = [];
-		while ( ( $row = fgetcsv( $fh ) ) !== false ) {
-			if ( count( $row ) < count( $headers ) ) {
-				continue;
-			}
-			// Truncate extra columns so array_combine never mismatches
-			$rows[] = array_combine( $headers, array_map( 'trim', array_slice( $row, 0, count( $headers ) ) ) );
-		}
-		fclose( $fh );
-		return $rows;
+		return CH_CSV_Loader::load_csv( $name );
 	}
 
 	/**
 	 * Loads a key-value CSV (columns: key, value) and returns [key => value] array.
 	 */
 	public static function load_kv_csv( string $name ): array {
-		$rows = self::load_csv( $name );
-		if ( ! $rows ) {
-			return [];
-		}
-		$result = [];
-		foreach ( $rows as $row ) {
-			$k = trim( $row['key'] ?? '' );
-			if ( $k !== '' ) {
-				$result[ $k ] = $row['value'] ?? '';
-			}
-		}
-		return $result;
+		return CH_CSV_Loader::load_kv_csv( $name );
 	}
 
 	// ── DB table data ─────────────────────────────────────────────────────────
@@ -79,7 +48,7 @@ class CH_Data {
 		return $rows ?: self::default_reviews();
 	}
 
-	// FAQs are owned by the CMS plugin — the theme no longer stores or seeds them.
+	// FAQs are owned by the CMS plugin - the theme no longer stores or seeds them.
 
 	public static function news_bar(): array {
 		$rows = self::load_csv( 'news_bar' );

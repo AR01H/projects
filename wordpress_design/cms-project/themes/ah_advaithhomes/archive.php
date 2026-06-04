@@ -84,7 +84,7 @@ get_template_part( 'components/page-header', null, [
   <div class="text-center" style="padding:60px 0">
     <div style="font-size:3rem;margin-bottom:16px">📂</div>
     <h2 style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:10px">No posts found</h2>
-    <p style="color:var(--text-secondary)">Nothing published here yet — check back soon.</p>
+    <p style="color:var(--text-secondary)">Nothing published here yet - check back soon.</p>
   </div>
   <?php endif; ?>
 

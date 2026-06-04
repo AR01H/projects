@@ -342,17 +342,17 @@
         <div class="field"><label>Property Value (£)</label><input type="number" id="cm-price" value="300000" oninput="calcCompare()"></div>
         <div class="field"><label>Deposit (£)</label><input type="number" id="cm-deposit" value="60000" oninput="calcCompare()"></div>
       </div>
-      <div class="field"><label>Interest Rate — <span id="cm-rate-out">3.5</span>%</label>
+      <div class="field"><label>Interest Rate - <span id="cm-rate-out">3.5</span>%</label>
         <div class="slider-row"><input type="range" min="1" max="15" step="0.1" value="3.5" id="cm-rate" oninput="syncSlider('cm-rate','cm-rate-out','%');calcCompare()"><span class="slider-val" id="cm-rate-sv">3.5%</span></div>
       </div>
-      <div class="field"><label>Mortgage Term — <span id="cm-term-out">25</span> years</label>
+      <div class="field"><label>Mortgage Term - <span id="cm-term-out">25</span> years</label>
         <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="cm-term" oninput="syncSlider('cm-term','cm-term-out',' yrs');calcCompare()"><span class="slider-val" id="cm-term-sv">25 yrs</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Monthly Payment</div><div class="rval" id="cm-emi">—</div></div>
-        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="cm-loan">—</div></div>
-        <div class="result-card"><div class="rlabel">Total Interest</div><div class="rval" id="cm-interest">—</div></div>
-        <div class="result-card"><div class="rlabel">Total Repaid</div><div class="rval" id="cm-total">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Payment</div><div class="rval" id="cm-emi">-</div></div>
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="cm-loan">-</div></div>
+        <div class="result-card"><div class="rlabel">Total Interest</div><div class="rval" id="cm-interest">-</div></div>
+        <div class="result-card"><div class="rlabel">Total Repaid</div><div class="rval" id="cm-total">-</div></div>
       </div>
       <div class="bar-wrap">
         <div class="bar-label-row"><span>Principal</span><span>Interest</span></div>
@@ -394,7 +394,7 @@
     <div id="rate-forecast" class="calc-frame">
       <h2>Mortgage Rate Forecast</h2>
       <div class="field"><label>Current Loan Balance (£)</label><input type="number" id="rf-balance" value="200000" oninput="calcForecast()"></div>
-      <div class="field"><label>Current Rate — <span id="rf-rate-out">4.5</span>%</label>
+      <div class="field"><label>Current Rate - <span id="rf-rate-out">4.5</span>%</label>
         <div class="slider-row"><input type="range" min="1" max="12" step="0.1" value="4.5" id="rf-rate" oninput="syncSlider('rf-rate','rf-rate-out','%');calcForecast()"><span class="slider-val" id="rf-rate-sv">4.5%</span></div>
       </div>
       <div class="field"><label>Remaining Term (years)</label><input type="number" id="rf-term" value="20" oninput="calcForecast()"></div>
@@ -409,37 +409,37 @@
         <div class="field"><label>Current Balance (£)</label><input type="number" id="rs-balance" value="180000" oninput="calcRemortgage()"></div>
         <div class="field"><label>Property Value (£)</label><input type="number" id="rs-value" value="300000" oninput="calcRemortgage()"></div>
       </div>
-      <div class="field"><label>New Rate — <span id="rs-rate-out">3.2</span>%</label>
+      <div class="field"><label>New Rate - <span id="rs-rate-out">3.2</span>%</label>
         <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="3.2" id="rs-rate" oninput="syncSlider('rs-rate','rs-rate-out','%');calcRemortgage()"><span class="slider-val" id="rs-rate-sv">3.2%</span></div>
       </div>
-      <div class="field"><label>New Term — <span id="rs-term-out">20</span> years</label>
+      <div class="field"><label>New Term - <span id="rs-term-out">20</span> years</label>
         <div class="slider-row"><input type="range" min="5" max="30" step="1" value="20" id="rs-term" oninput="syncSlider('rs-term','rs-term-out',' yrs');calcRemortgage()"><span class="slider-val" id="rs-term-sv">20 yrs</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">New LTV</div><div class="rval" id="rs-ltv">—</div></div>
-        <div class="result-card"><div class="rlabel">New Monthly</div><div class="rval" id="rs-emi">—</div></div>
-        <div class="result-card"><div class="rlabel">Equity</div><div class="rval" id="rs-equity">—</div></div>
+        <div class="result-card"><div class="rlabel">New LTV</div><div class="rval" id="rs-ltv">-</div></div>
+        <div class="result-card"><div class="rlabel">New Monthly</div><div class="rval" id="rs-emi">-</div></div>
+        <div class="result-card"><div class="rlabel">Equity</div><div class="rval" id="rs-equity">-</div></div>
       </div>
     </div>
 
     <!-- How to Remortgage -->
     <div id="how-remortgage" class="calc-frame">
       <h2>How to Remortgage</h2>
-      <p style="font-size:14px;color:var(--muted);line-height:1.7;">Remortgaging means switching your existing mortgage to a new deal — either with the same lender or a new one. Use the calculator below to see potential savings.</p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;">Remortgaging means switching your existing mortgage to a new deal - either with the same lender or a new one. Use the calculator below to see potential savings.</p>
       <div class="field"><label>Current Monthly Payment (£)</label><input type="number" id="hr-current" value="900" oninput="calcHowRemortgage()"></div>
       <div class="two-col">
-        <div class="field"><label>New Rate — <span id="hr-rate-out">3.0</span>%</label>
+        <div class="field"><label>New Rate - <span id="hr-rate-out">3.0</span>%</label>
           <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="3.0" id="hr-rate" oninput="syncSlider('hr-rate','hr-rate-out','%');calcHowRemortgage()"><span class="slider-val" id="hr-rate-sv">3.0%</span></div>
         </div>
         <div class="field"><label>Balance (£)</label><input type="number" id="hr-balance" value="180000" oninput="calcHowRemortgage()"></div>
       </div>
-      <div class="field"><label>Remaining Term — <span id="hr-term-out">20</span> yrs</label>
+      <div class="field"><label>Remaining Term - <span id="hr-term-out">20</span> yrs</label>
         <div class="slider-row"><input type="range" min="5" max="30" step="1" value="20" id="hr-term" oninput="syncSlider('hr-term','hr-term-out',' yrs');calcHowRemortgage()"><span class="slider-val" id="hr-term-sv">20 yrs</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">New Monthly</div><div class="rval" id="hr-new">—</div></div>
-        <div class="result-card"><div class="rlabel">Monthly Saving</div><div class="rval" id="hr-saving">—</div></div>
-        <div class="result-card"><div class="rlabel">Annual Saving</div><div class="rval" id="hr-annual">—</div></div>
+        <div class="result-card"><div class="rlabel">New Monthly</div><div class="rval" id="hr-new">-</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Saving</div><div class="rval" id="hr-saving">-</div></div>
+        <div class="result-card"><div class="rlabel">Annual Saving</div><div class="rval" id="hr-annual">-</div></div>
       </div>
     </div>
 
@@ -448,17 +448,17 @@
       <h2>First Time Buyer Mortgages</h2>
       <div class="field"><label>Property Price (£)</label><input type="number" id="ftb-price" value="250000" oninput="calcFTB()"></div>
       <div class="field"><label>Deposit (£)</label><input type="number" id="ftb-deposit" value="12500" oninput="calcFTB()"></div>
-      <div class="field"><label>Rate — <span id="ftb-rate-out">4.0</span>%</label>
+      <div class="field"><label>Rate - <span id="ftb-rate-out">4.0</span>%</label>
         <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="4.0" id="ftb-rate" oninput="syncSlider('ftb-rate','ftb-rate-out','%');calcFTB()"><span class="slider-val" id="ftb-rate-sv">4.0%</span></div>
       </div>
-      <div class="field"><label>Term — <span id="ftb-term-out">25</span> yrs</label>
+      <div class="field"><label>Term - <span id="ftb-term-out">25</span> yrs</label>
         <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="ftb-term" oninput="syncSlider('ftb-term','ftb-term-out',' yrs');calcFTB()"><span class="slider-val" id="ftb-term-sv">25 yrs</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="ftb-dep-pct">—</div></div>
-        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="ftb-loan">—</div></div>
-        <div class="result-card"><div class="rlabel">Monthly</div><div class="rval" id="ftb-emi">—</div></div>
-        <div class="result-card"><div class="rlabel">LTV</div><div class="rval" id="ftb-ltv">—</div></div>
+        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="ftb-dep-pct">-</div></div>
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="ftb-loan">-</div></div>
+        <div class="result-card"><div class="rlabel">Monthly</div><div class="rval" id="ftb-emi">-</div></div>
+        <div class="result-card"><div class="rlabel">LTV</div><div class="rval" id="ftb-ltv">-</div></div>
       </div>
       <div class="info-block">As a first time buyer you may qualify for 95% LTV mortgages and government Help to Buy schemes.</div>
     </div>
@@ -467,7 +467,7 @@
     <div id="ftb-rates" class="calc-frame">
       <h2>First Time Buyer Mortgage Rates</h2>
       <div class="field"><label>Loan Amount (£)</label><input type="number" id="ftbr-loan" value="200000" oninput="calcFTBRates()"></div>
-      <div class="field"><label>Term — <span id="ftbr-term-out">25</span> yrs</label>
+      <div class="field"><label>Term - <span id="ftbr-term-out">25</span> yrs</label>
         <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="ftbr-term" oninput="syncSlider('ftbr-term','ftbr-term-out',' yrs');calcFTBRates()"><span class="slider-val" id="ftbr-term-sv">25 yrs</span></div>
       </div>
       <div class="results" id="ftbr-results"></div>
@@ -482,9 +482,9 @@
       </div>
       <div class="field"><label>Monthly Commitments (£)</label><input type="number" id="bc-commitments" value="300" oninput="calcBorrow()"></div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Conservative (4x)</div><div class="rval" id="bc-low">—</div></div>
-        <div class="result-card"><div class="rlabel">Standard (4.5x)</div><div class="rval" id="bc-mid">—</div></div>
-        <div class="result-card"><div class="rlabel">Maximum (5.5x)</div><div class="rval" id="bc-high">—</div></div>
+        <div class="result-card"><div class="rlabel">Conservative (4x)</div><div class="rval" id="bc-low">-</div></div>
+        <div class="result-card"><div class="rlabel">Standard (4.5x)</div><div class="rval" id="bc-mid">-</div></div>
+        <div class="result-card"><div class="rlabel">Maximum (5.5x)</div><div class="rval" id="bc-high">-</div></div>
       </div>
       <div class="info-block">Most lenders use 4–4.5x income. A small number of lenders go to 5.5x for higher earners.</div>
     </div>
@@ -497,9 +497,9 @@
       <div class="field"><label>Monthly Outgoings (£)</label><input type="number" id="gm-outgoings" value="600" oninput="calcGetMortgage()"></div>
       <div class="field"><label>Deposit Available (£)</label><input type="number" id="gm-deposit" value="30000" oninput="calcGetMortgage()"></div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Est. Max Loan</div><div class="rval" id="gm-loan">—</div></div>
-        <div class="result-card"><div class="rlabel">Max Property</div><div class="rval" id="gm-property">—</div></div>
-        <div class="result-card"><div class="rlabel">Net Annual</div><div class="rval" id="gm-net">—</div></div>
+        <div class="result-card"><div class="rlabel">Est. Max Loan</div><div class="rval" id="gm-loan">-</div></div>
+        <div class="result-card"><div class="rlabel">Max Property</div><div class="rval" id="gm-property">-</div></div>
+        <div class="result-card"><div class="rlabel">Net Annual</div><div class="rval" id="gm-net">-</div></div>
       </div>
     </div>
 
@@ -510,10 +510,10 @@
       <div class="field"><label>Gifted Amount (£)</label><input type="number" id="gd-gift" value="25000" oninput="calcGifted()"></div>
       <div class="field"><label>Your Savings (£)</label><input type="number" id="gd-savings" value="10000" oninput="calcGifted()"></div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Total Deposit</div><div class="rval" id="gd-total">—</div></div>
-        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="gd-pct">—</div></div>
-        <div class="result-card"><div class="rlabel">Loan Needed</div><div class="rval" id="gd-loan">—</div></div>
-        <div class="result-card"><div class="rlabel">LTV Band</div><div class="rval" id="gd-ltv-band">—</div></div>
+        <div class="result-card"><div class="rlabel">Total Deposit</div><div class="rval" id="gd-total">-</div></div>
+        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="gd-pct">-</div></div>
+        <div class="result-card"><div class="rlabel">Loan Needed</div><div class="rval" id="gd-loan">-</div></div>
+        <div class="result-card"><div class="rlabel">LTV Band</div><div class="rval" id="gd-ltv-band">-</div></div>
       </div>
       <div class="info-block">Gifted deposits must come from a family member and require a signed letter confirming it is not a loan.</div>
     </div>
@@ -523,13 +523,13 @@
       <h2>Mortgages for Over 50s</h2>
       <div class="field"><label>Your Age</label><input type="number" id="o5-age" value="55" oninput="calcOver50()"></div>
       <div class="field"><label>Loan Amount (£)</label><input type="number" id="o5-loan" value="150000" oninput="calcOver50()"></div>
-      <div class="field"><label>Rate — <span id="o5-rate-out">4.0</span>%</label>
+      <div class="field"><label>Rate - <span id="o5-rate-out">4.0</span>%</label>
         <div class="slider-row"><input type="range" min="1" max="10" step="0.1" value="4.0" id="o5-rate" oninput="syncSlider('o5-rate','o5-rate-out','%');calcOver50()"><span class="slider-val" id="o5-rate-sv">4.0%</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Max Term</div><div class="rval" id="o5-maxterm">—</div></div>
-        <div class="result-card"><div class="rlabel">Monthly (max term)</div><div class="rval" id="o5-emi">—</div></div>
-        <div class="result-card"><div class="rlabel">Age at Payoff</div><div class="rval" id="o5-payoff">—</div></div>
+        <div class="result-card"><div class="rlabel">Max Term</div><div class="rval" id="o5-maxterm">-</div></div>
+        <div class="result-card"><div class="rlabel">Monthly (max term)</div><div class="rval" id="o5-emi">-</div></div>
+        <div class="result-card"><div class="rlabel">Age at Payoff</div><div class="rval" id="o5-payoff">-</div></div>
       </div>
       <div class="info-block">Most lenders cap mortgages at age 70–75. Some specialist lenders offer terms into your 80s.</div>
     </div>
@@ -541,17 +541,17 @@
         <div class="field"><label>Property Value (£)</label><input type="number" id="btl-value" value="200000" oninput="calcBTL()"></div>
         <div class="field"><label>Monthly Rent (£)</label><input type="number" id="btl-rent" value="1200" oninput="calcBTL()"></div>
       </div>
-      <div class="field"><label>Rate — <span id="btl-rate-out">5.0</span>%</label>
+      <div class="field"><label>Rate - <span id="btl-rate-out">5.0</span>%</label>
         <div class="slider-row"><input type="range" min="2" max="12" step="0.1" value="5.0" id="btl-rate" oninput="syncSlider('btl-rate','btl-rate-out','%');calcBTL()"><span class="slider-val" id="btl-rate-sv">5.0%</span></div>
       </div>
-      <div class="field"><label>Deposit — <span id="btl-dep-out">25</span>%</label>
+      <div class="field"><label>Deposit - <span id="btl-dep-out">25</span>%</label>
         <div class="slider-row"><input type="range" min="15" max="50" step="1" value="25" id="btl-dep" oninput="syncSlider('btl-dep','btl-dep-out','%');calcBTL()"><span class="slider-val" id="btl-dep-sv">25%</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="btl-loan">—</div></div>
-        <div class="result-card"><div class="rlabel">Interest Only</div><div class="rval" id="btl-io">—</div></div>
-        <div class="result-card"><div class="rlabel">Rental Yield</div><div class="rval" id="btl-yield">—</div></div>
-        <div class="result-card"><div class="rlabel">Monthly Profit</div><div class="rval" id="btl-profit">—</div></div>
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="btl-loan">-</div></div>
+        <div class="result-card"><div class="rlabel">Interest Only</div><div class="rval" id="btl-io">-</div></div>
+        <div class="result-card"><div class="rlabel">Rental Yield</div><div class="rval" id="btl-yield">-</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Profit</div><div class="rval" id="btl-profit">-</div></div>
       </div>
     </div>
 
@@ -559,7 +559,7 @@
     <div id="btl-rates" class="calc-frame">
       <h2>Buy to Let Mortgage Rates</h2>
       <div class="field"><label>Loan Amount (£)</label><input type="number" id="btlr-loan" value="150000" oninput="calcBTLRates()"></div>
-      <div class="field"><label>Term — <span id="btlr-term-out">25</span> yrs</label>
+      <div class="field"><label>Term - <span id="btlr-term-out">25</span> yrs</label>
         <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="btlr-term" oninput="syncSlider('btlr-term','btlr-term-out',' yrs');calcBTLRates()"><span class="slider-val" id="btlr-term-sv">25 yrs</span></div>
       </div>
       <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">BTL typical rate comparison:</p>
@@ -570,16 +570,16 @@
     <div id="bridging" class="calc-frame">
       <h2>Bridging Loans Explained</h2>
       <div class="field"><label>Loan Amount (£)</label><input type="number" id="bl2-amount" value="100000" oninput="calcBridging()"></div>
-      <div class="field"><label>Monthly Rate — <span id="bl2-rate-out">0.75</span>%</label>
+      <div class="field"><label>Monthly Rate - <span id="bl2-rate-out">0.75</span>%</label>
         <div class="slider-row"><input type="range" min="0.3" max="2" step="0.05" value="0.75" id="bl2-rate" oninput="syncSlider('bl2-rate','bl2-rate-out','%');calcBridging()"><span class="slider-val" id="bl2-rate-sv">0.75%</span></div>
       </div>
-      <div class="field"><label>Term — <span id="bl2-term-out">6</span> months</label>
+      <div class="field"><label>Term - <span id="bl2-term-out">6</span> months</label>
         <div class="slider-row"><input type="range" min="1" max="24" step="1" value="6" id="bl2-term" oninput="syncSlider('bl2-term','bl2-term-out',' mo');calcBridging()"><span class="slider-val" id="bl2-term-sv">6 mo</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Monthly Interest</div><div class="rval" id="bl2-monthly">—</div></div>
-        <div class="result-card"><div class="rlabel">Total Interest</div><div class="rval" id="bl2-total-int">—</div></div>
-        <div class="result-card"><div class="rlabel">Total Repayable</div><div class="rval" id="bl2-total">—</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Interest</div><div class="rval" id="bl2-monthly">-</div></div>
+        <div class="result-card"><div class="rlabel">Total Interest</div><div class="rval" id="bl2-total-int">-</div></div>
+        <div class="result-card"><div class="rlabel">Total Repayable</div><div class="rval" id="bl2-total">-</div></div>
       </div>
       <div class="info-block">Bridging loans are short-term, typically 1–24 months, and are secured against property.</div>
     </div>
@@ -589,13 +589,13 @@
       <h2>Deposit Unlock Scheme</h2>
       <div class="field"><label>New Build Property Price (£)</label><input type="number" id="du-price" value="400000" oninput="calcDepositUnlock()"></div>
       <div class="field"><label>Your Deposit (£)</label><input type="number" id="du-deposit" value="20000" oninput="calcDepositUnlock()"></div>
-      <div class="field"><label>Rate — <span id="du-rate-out">4.5</span>%</label>
+      <div class="field"><label>Rate - <span id="du-rate-out">4.5</span>%</label>
         <div class="slider-row"><input type="range" min="2" max="10" step="0.1" value="4.5" id="du-rate" oninput="syncSlider('du-rate','du-rate-out','%');calcDepositUnlock()"><span class="slider-val" id="du-rate-sv">4.5%</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="du-pct">—</div></div>
-        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="du-loan">—</div></div>
-        <div class="result-card"><div class="rlabel">Monthly (25yr)</div><div class="rval" id="du-emi">—</div></div>
+        <div class="result-card"><div class="rlabel">Deposit %</div><div class="rval" id="du-pct">-</div></div>
+        <div class="result-card"><div class="rlabel">Loan Amount</div><div class="rval" id="du-loan">-</div></div>
+        <div class="result-card"><div class="rlabel">Monthly (25yr)</div><div class="rval" id="du-emi">-</div></div>
       </div>
       <div class="info-block">Deposit Unlock allows 95% LTV on new-build homes up to £833,250 through participating builders.</div>
     </div>
@@ -605,16 +605,16 @@
       <h2>Own New Rate Reducer Scheme</h2>
       <div class="field"><label>Property Price (£)</label><input type="number" id="rr-price" value="350000" oninput="calcRateReducer()"></div>
       <div class="field"><label>Deposit (£)</label><input type="number" id="rr-deposit" value="35000" oninput="calcRateReducer()"></div>
-      <div class="field"><label>Standard Rate — <span id="rr-std-out">5.5</span>%</label>
+      <div class="field"><label>Standard Rate - <span id="rr-std-out">5.5</span>%</label>
         <div class="slider-row"><input type="range" min="2" max="12" step="0.1" value="5.5" id="rr-std" oninput="syncSlider('rr-std','rr-std-out','%');calcRateReducer()"><span class="slider-val" id="rr-std-sv">5.5%</span></div>
       </div>
-      <div class="field"><label>Reduced Rate — <span id="rr-red-out">3.0</span>%</label>
+      <div class="field"><label>Reduced Rate - <span id="rr-red-out">3.0</span>%</label>
         <div class="slider-row"><input type="range" min="1" max="8" step="0.1" value="3.0" id="rr-red" oninput="syncSlider('rr-red','rr-red-out','%');calcRateReducer()"><span class="slider-val" id="rr-red-sv">3.0%</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Standard Monthly</div><div class="rval" id="rr-std-emi">—</div></div>
-        <div class="result-card"><div class="rlabel">Reduced Monthly</div><div class="rval" id="rr-red-emi">—</div></div>
-        <div class="result-card"><div class="rlabel">Monthly Saving</div><div class="rval" id="rr-saving">—</div></div>
+        <div class="result-card"><div class="rlabel">Standard Monthly</div><div class="rval" id="rr-std-emi">-</div></div>
+        <div class="result-card"><div class="rlabel">Reduced Monthly</div><div class="rval" id="rr-red-emi">-</div></div>
+        <div class="result-card"><div class="rlabel">Monthly Saving</div><div class="rval" id="rr-saving">-</div></div>
       </div>
     </div>
 
@@ -623,13 +623,13 @@
       <h2>Life Insurance with a Mortgage</h2>
       <div class="field"><label>Mortgage Balance (£)</label><input type="number" id="li-balance" value="200000" oninput="calcLifeIns()"></div>
       <div class="field"><label>Your Age</label><input type="number" id="li-age" value="35" oninput="calcLifeIns()"></div>
-      <div class="field"><label>Mortgage Term — <span id="li-term-out">25</span> yrs</label>
+      <div class="field"><label>Mortgage Term - <span id="li-term-out">25</span> yrs</label>
         <div class="slider-row"><input type="range" min="5" max="35" step="1" value="25" id="li-term" oninput="syncSlider('li-term','li-term-out',' yrs');calcLifeIns()"><span class="slider-val" id="li-term-sv">25 yrs</span></div>
       </div>
       <div class="results">
-        <div class="result-card"><div class="rlabel">Cover Needed</div><div class="rval" id="li-cover">—</div></div>
-        <div class="result-card"><div class="rlabel">Est. Monthly Premium</div><div class="rval" id="li-premium">—</div></div>
-        <div class="result-card"><div class="rlabel">Cover Type</div><div class="rval" id="li-type">—</div></div>
+        <div class="result-card"><div class="rlabel">Cover Needed</div><div class="rval" id="li-cover">-</div></div>
+        <div class="result-card"><div class="rlabel">Est. Monthly Premium</div><div class="rval" id="li-premium">-</div></div>
+        <div class="result-card"><div class="rlabel">Cover Type</div><div class="rval" id="li-type">-</div></div>
       </div>
       <div class="info-block">Decreasing term life insurance tracks your mortgage balance and is typically the most cost-effective option.</div>
     </div>

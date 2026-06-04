@@ -99,7 +99,7 @@
   }
 }
 
-/* Eyebrow — pill badge */
+/* Eyebrow - pill badge */
 .ph__eyebrow {
   display: inline-flex; align-items: center; gap: 6px;
   color: rgba(0,0,0,.72) !important;

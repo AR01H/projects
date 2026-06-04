@@ -34,7 +34,7 @@ if ( $active_pt_slug && class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
 	}
 }
 
-// Categories to display — filtered to parent term's children when ?parent_term= is active
+// Categories to display - filtered to parent term's children when ?parent_term= is active
 $display_cats = ( $active_pt_slug && ! empty( $_child_slugs ) )
 	? array_values( array_filter( $categories, function( $c ) use ( $_child_slugs ) {
 		$c = is_object( $c ) ? (array) $c : $c;
@@ -404,7 +404,7 @@ get_template_part( 'components/page-header', null, [
 <!-- ── SIDEBAR ───────────────────────────────────────────── -->
 <aside class="gc-portal-sidebar">
   <?php if ( $is_filtered && $sidebar_pts ) :
-    // Which parent term is currently active — expand only that one
+    // Which parent term is currently active - expand only that one
     $sidebar_active_pt_id = null;
     if ( $active_pt ) {
       $sidebar_active_pt_id = $active_pt->id;

@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
  * Runtime display fallbacks for The Cane House theme.
  *
  * These run ONLY when a DB option (written by Theme Admin → Install Mock Data)
- * is empty. They contain NO hardcoded content — every value is read from the
+ * is empty. They contain NO hardcoded content - every value is read from the
  * CSV "import sheets" in mock_data/csv/ through CH_Data, the single source of
  * truth. To change any of this, edit the matching CSV.
  *
@@ -50,7 +50,7 @@ function ch_mock_reviews(): array {
 	return [];
 }
 
-// FAQs are owned by the CMS plugin (ah_faqs table) — no theme-level FAQ data
+// FAQs are owned by the CMS plugin (ah_faqs table) - no theme-level FAQ data
 // or fallback. ch_get_faqs() reads them directly from the plugin.
 
 function ch_mock_benefits(): array {

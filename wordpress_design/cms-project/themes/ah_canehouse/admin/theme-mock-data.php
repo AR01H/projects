@@ -73,7 +73,7 @@ foreach ( [ 'reviews', 'news_bar' ] as $name ) {
       <?php
       // Every importable CSV type comes from the central registry in the seeder
       // (CH_Theme_Seeder::importable_types()). To add a new type, edit that one
-      // list — this UI updates automatically. Navigation, footer and FAQs are
+      // list - this UI updates automatically. Navigation, footer and FAQs are
       // owned by the CMS plugin and are intentionally not listed here.
       $content_items = CH_Theme_Seeder::importable_types();
       ?>
@@ -203,7 +203,7 @@ foreach ( [ 'reviews', 'news_bar' ] as $name ) {
           </td>
           <td style="padding:6px 12px;color:#64748b">
             <?php echo esc_html( $info['label'] ); ?>
-            <span style="color:#94a3b8">— <?php echo esc_html( $info['cols'] ); ?></span>
+            <span style="color:#94a3b8">- <?php echo esc_html( $info['cols'] ); ?></span>
           </td>
         </tr>
         <?php endforeach; ?>

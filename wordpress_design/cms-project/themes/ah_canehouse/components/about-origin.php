@@ -22,7 +22,7 @@ $default_paras = [
 
 $default_milestones = [
 	[ 'year' => '2019', 'text' => 'First market stall with a borrowed press and a dream.' ],
-	[ 'year' => '2021', 'text' => 'First wedding booking — 400 guests, standing ovation from the bar queue.' ],
+	[ 'year' => '2021', 'text' => 'First wedding booking - 400 guests, standing ovation from the bar queue.' ],
 	[ 'year' => '2022', 'text' => 'Custom stainless steel machine built. First full event season.' ],
 	[ 'year' => '2023', 'text' => 'Franchise enquiries start flooding in. First partner launched.' ],
 	[ 'year' => '2024', 'text' => 'The Cane House brand formally launched across the UK.' ],

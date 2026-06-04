@@ -10,7 +10,7 @@
 .page-template-template-news-info-feeder-php .news-ticker { display: none; }
 
 /* ══════════════════════════════════════════════════════════
-   MULTIINFO HERO — distinct amber split layout vs homepage
+   MULTIINFO HERO - distinct amber split layout vs homepage
    ══════════════════════════════════════════════════════════ */
 
 /* Desktop: image fills right half, amber panel on left */
@@ -592,7 +592,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GUIDE TILES — always horizontal scroll carousel
+   GUIDE TILES - always horizontal scroll carousel
    ══════════════════════════════════════════════════════════ */
 .nif-guide-grid {
   display: flex;
@@ -684,7 +684,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   BRIEF LIST — always horizontal scroll carousel
+   BRIEF LIST - always horizontal scroll carousel
    ══════════════════════════════════════════════════════════ */
 .nif-brief-list {
   display: flex;
@@ -1072,7 +1072,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 16px; align-items: start;
 }
-/* Bento — no gaps: row pattern [span2][1][1] then [1][1][span2] every 6 cards */
+/* Bento - no gaps: row pattern [span2][1][1] then [1][1][span2] every 6 cards */
 .nif-grid-card:nth-child(6n+1),
 .nif-grid-card:nth-child(6n+6) { grid-column: span 2; flex-direction: row; }
 .nif-grid-card:nth-child(6n+1) .nif-grid-card__img,
@@ -1112,7 +1112,7 @@
 }
 .nif-grid-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.09); }
 
-/* Category accent top border — brighter, matches homepage */
+/* Category accent top border - brighter, matches homepage */
 .nif-grid-card[data-cat*="buying"]  { border-top: 3px solid #2ecc71; }
 .nif-grid-card[data-cat*="first"]   { border-top: 3px solid #3b8fd4; }
 .nif-grid-card[data-cat*="finance"] { border-top: 3px solid #a855f7; }
@@ -1120,7 +1120,7 @@
 .nif-grid-card[data-cat*="invest"]  { border-top: 3px solid #14b8a6; }
 .nif-grid-card[data-cat*="tips"]    { border-top: 3px solid var(--accent); }
 
-/* Image — fixed height, consistent across cards */
+/* Image - fixed height, consistent across cards */
 .nif-grid-card__img {
   height: 160px; overflow: hidden;
   background: var(--slate-200); flex-shrink: 0; position: relative;
@@ -1172,7 +1172,7 @@
   margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border);
 }
 
-/* ── Badge (grid filter view) — matches homepage pill style ── */
+/* ── Badge (grid filter view) - matches homepage pill style ── */
 .nif-badge {
   display: inline-flex; align-items: center;
   font-size: .6rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
@@ -1331,7 +1331,7 @@
     border-top: 2px solid var(--border);
   }
 
-  /* Hide market pulse and weekly briefing — not needed on mobile */
+  /* Hide market pulse and weekly briefing - not needed on mobile */
   .nif-sb-card--stats,
   .nif-sb-card--briefing { display: none; }
 

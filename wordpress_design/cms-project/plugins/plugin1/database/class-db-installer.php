@@ -1526,7 +1526,7 @@ class AH_DB_Installer {
 	/**
 	 * Seed a "Review Categories" taxonomy type with four routing terms.
 	 * Slugs match the $taxonomy_slug values used by ch_get_reviews() in the theme.
-	 * Safe to call on every page load — idempotent.
+	 * Safe to call on every page load - idempotent.
 	 */
 	public static function ensure_review_categories_taxonomy_type(): void {
 		global $wpdb;
@@ -1549,7 +1549,7 @@ class AH_DB_Installer {
 			return;
 		}
 
-		// Terms — slugs must match the taxonomy_slug values used in theme components.
+		// Terms - slugs must match the taxonomy_slug values used in theme components.
 		$terms = array(
 			array( 'name' => 'Customer Review',   'slug' => 'customer'     ),
 			array( 'name' => 'Franchise Partner', 'slug' => 'partner'      ),
@@ -1575,7 +1575,7 @@ class AH_DB_Installer {
 	/**
 	 * Seed a "FAQ Tags" taxonomy type with the default FAQ topics as terms.
 	 * Attached to FAQs via the ah_content_taxonomies pivot (object_type = 'faq').
-	 * Safe to call on every load — idempotent.
+	 * Safe to call on every load - idempotent.
 	 */
 	public static function ensure_faq_tags_taxonomy_type(): void {
 		global $wpdb;
@@ -1598,7 +1598,7 @@ class AH_DB_Installer {
 			return;
 		}
 
-		// Default terms — the original theme FAQ topics.
+		// Default terms - the original theme FAQ topics.
 		$terms = array(
 			array( 'name' => 'General',   'slug' => 'general'   ),
 			array( 'name' => 'Events',    'slug' => 'events'    ),
@@ -1644,7 +1644,7 @@ class AH_DB_Installer {
 
 	/**
 	 * Seed a "Review Type" taxonomy type with Customer / Partner / Event terms.
-	 * Safe to call on every load — uses INSERT IGNORE so it never duplicates.
+	 * Safe to call on every load - uses INSERT IGNORE so it never duplicates.
 	 */
 	public static function ensure_review_taxonomy_type(): void {
 		global $wpdb;
@@ -1693,7 +1693,7 @@ class AH_DB_Installer {
 	/**
 	 * Seed a default rule for the Sugarcane contact form.
 	 * Creates admin notification + auto-reply email actions.
-	 * Skips if any rule for this trigger already exists — idempotent.
+	 * Skips if any rule for this trigger already exists - idempotent.
 	 */
 	public static function ensure_sugarcane_contact_rule(): void {
 		if ( ! class_exists( 'AH_Rules_Engine' ) ) return;
@@ -1737,7 +1737,7 @@ class AH_DB_Installer {
 	/**
 	 * One-time migration: patch the seeded Sugarcane contact rule to add CC
 	 * on both actions if they currently have a blank CC field.
-	 * Idempotent — skips actions that already have a CC value.
+	 * Idempotent - skips actions that already have a CC value.
 	 */
 	public static function ensure_contact_form_rule_cc(): void {
 		if ( ! class_exists( 'AH_Rules_Engine' ) ) return;

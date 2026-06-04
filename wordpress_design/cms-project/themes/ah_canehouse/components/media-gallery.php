@@ -33,7 +33,7 @@ if ( empty( $items ) ) return;
 
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 
-// Bento size pattern — cycles every 6 items
+// Bento size pattern - cycles every 6 items
 $size_cycle = [ 'wide', 'normal', 'tall', 'normal', 'normal', 'wide' ];
 
 $lightbox_id = $uid . '-lb';

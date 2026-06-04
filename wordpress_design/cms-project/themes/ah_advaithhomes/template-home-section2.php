@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Homepage — Bento Layout (v1)
+ * Template Name: Homepage - Bento Layout (v1)
  *
  * The original bento-grid homepage preserved as a standalone page template.
  * Assign this template to any WordPress page to restore the old layout.

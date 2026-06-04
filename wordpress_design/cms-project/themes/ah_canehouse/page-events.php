@@ -26,7 +26,7 @@ get_header();
 <?php get_template_part( 'components/media-gallery', null, [
 	'tag'   => 'Events Gallery',
 	'title' => 'The Cane House <span class="accent">at Your Events</span>',
-	'body'  => 'A glimpse of the live experience we bring — from intimate gatherings to 500-guest celebrations.',
+	'body'  => 'A glimpse of the live experience we bring - from intimate gatherings to 500-guest celebrations.',
 	'bg'    => 'var(--ch-green-bg)',
 	'id'    => 'mg-events',
 	'items' => ch_get_events_media_gallery(),

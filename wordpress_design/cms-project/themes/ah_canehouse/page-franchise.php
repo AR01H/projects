@@ -21,7 +21,7 @@ get_header();
 <?php get_template_part( 'components/media-gallery', null, [
 	'tag'   => 'Franchise Gallery',
 	'title' => 'The Cane House <span class="accent">in Action</span>',
-	'body'  => 'Our partners across the UK — branded stalls, live pressing, and happy queues.',
+	'body'  => 'Our partners across the UK - branded stalls, live pressing, and happy queues.',
 	'bg'    => 'var(--ch-white)',
 	'id'    => 'mg-franchise',
 	'items' => ch_get_franchise_media_gallery(),

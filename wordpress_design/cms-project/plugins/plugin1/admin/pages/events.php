@@ -133,11 +133,11 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
                 <?php if ( ! empty( $ev_items ) ) : ?>
                   <small style="color:var(--ah-muted);"><?php echo count( $ev_items ); ?> bullet<?php echo count( $ev_items ) !== 1 ? 's' : ''; ?></small>
                 <?php else : ?>
-                  <small style="color:var(--ah-muted);">—</small>
+                  <small style="color:var(--ah-muted);">-</small>
                 <?php endif; ?>
               </td>
               <td>
-                <?php echo $ev->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '—'; ?>
+                <?php echo $ev->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-'; ?>
               </td>
               <td>
                 <span class="ah-badge ah-badge-<?php echo esc_attr( $ev->status ); ?>">
@@ -242,7 +242,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               <label>Show on Homepage</label>
               <select name="is_featured">
                 <option value="0" <?php selected( (int) ( $item->is_featured ?? 0 ), 0 ); ?>>No</option>
-                <option value="1" <?php selected( (int) ( $item->is_featured ?? 0 ), 1 ); ?>>Yes — show in homepage preview</option>
+                <option value="1" <?php selected( (int) ( $item->is_featured ?? 0 ), 1 ); ?>>Yes - show in homepage preview</option>
               </select>
             </div>
             <div class="ah-form-row">

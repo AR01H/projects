@@ -53,7 +53,7 @@ $tabs = [
 	</nav>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 1 — Business Details
+	     TAB 1 - Business Details
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php if ( $active_tab === 'business' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -102,7 +102,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 2 — Contact Form Enquiry Types
+	     TAB 2 - Contact Form Enquiry Types
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'contact' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -110,7 +110,7 @@ $tabs = [
 		<input type="hidden" name="action" value="ch_content_settings_contact">
 
 		<div class="ch-card">
-			<h2>📬 Contact Form — Enquiry Types</h2>
+			<h2>📬 Contact Form - Enquiry Types</h2>
 			<p class="ch-cs-desc">These are the options shown in the "I'm enquiring about" dropdown on the contact form. Each item needs a <strong>Value</strong> (no spaces, lowercase) and a <strong>Label</strong> (what the user sees).</p>
 
 			<div class="ch-rep-header">
@@ -138,7 +138,7 @@ $tabs = [
 			</button>
 
 			<p class="ch-cs-hint" style="margin-top:1rem;">
-				CSV format: <code>value,label</code> — one row per type.<br>
+				CSV format: <code>value,label</code> - one row per type.<br>
 				<a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>">Go to CSV Import →</a>
 			</p>
 		</div>
@@ -147,7 +147,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 3 — Booking Wizard Occasions
+	     TAB 3 - Booking Wizard Occasions
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'booking' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -155,8 +155,8 @@ $tabs = [
 		<input type="hidden" name="action" value="ch_content_settings_booking">
 
 		<div class="ch-card">
-			<h2>📅 Booking Wizard — Occasion Options</h2>
-			<p class="ch-cs-desc">These are the occasion types shown in Step 3 of the booking wizard. Add or remove as needed — drag to reorder.</p>
+			<h2>📅 Booking Wizard - Occasion Options</h2>
+			<p class="ch-cs-desc">These are the occasion types shown in Step 3 of the booking wizard. Add or remove as needed - drag to reorder.</p>
 
 			<div class="ch-rep-header ch-rep-header--single">
 				<span>Occasion Name</span>
@@ -179,7 +179,7 @@ $tabs = [
 			</button>
 
 			<p class="ch-cs-hint" style="margin-top:1rem;">
-				CSV format: single column <code>occasion</code> — one row per occasion.<br>
+				CSV format: single column <code>occasion</code> - one row per occasion.<br>
 				<a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>">Go to CSV Import →</a>
 			</p>
 		</div>
@@ -188,7 +188,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 4 — Hero Badges
+	     TAB 4 - Hero Badges
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'badges' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -196,7 +196,7 @@ $tabs = [
 		<input type="hidden" name="action" value="ch_content_settings_badges">
 
 		<div class="ch-card">
-			<h2>🏷️ Hero Section — Badges</h2>
+			<h2>🏷️ Hero Section - Badges</h2>
 			<p class="ch-cs-desc">Short trust badges shown under the hero headline (e.g. "No Added Sugar"). Add as many as you like.</p>
 
 			<div class="ch-rep-header ch-rep-header--single">
@@ -220,7 +220,7 @@ $tabs = [
 			</button>
 
 			<p class="ch-cs-hint" style="margin-top:1rem;">
-				CSV format: single column <code>badge</code> — one row per badge.<br>
+				CSV format: single column <code>badge</code> - one row per badge.<br>
 				<a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>">Go to CSV Import →</a>
 			</p>
 		</div>
@@ -229,7 +229,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 5 — Gallery Images
+	     TAB 5 - Gallery Images
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'galleries' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -279,7 +279,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 6 — Why Sugarcane (Stats + Nutrition)
+	     TAB 6 - Why Sugarcane (Stats + Nutrition)
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'sugarcane' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -345,7 +345,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 7 — Events "Why Choose Us"
+	     TAB 7 - Events "Why Choose Us"
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'eventswhy' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -392,7 +392,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 8 — About Page
+	     TAB 8 - About Page
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'about' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -449,7 +449,7 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 9 — CSV Import
+	     TAB 9 - CSV Import
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'import' ) : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
@@ -463,9 +463,9 @@ $tabs = [
 			<div class="ch-row">
 				<label>Import Type</label>
 				<select name="import_type" id="ch-import-type" style="padding:.5rem .8rem;border:1px solid #ddd;border-radius:4px;max-width:280px;">
-					<option value="enquiry_types">Contact Form — Enquiry Types</option>
-					<option value="occasions">Booking Wizard — Occasions</option>
-					<option value="hero_badges">Hero — Badges</option>
+					<option value="enquiry_types">Contact Form - Enquiry Types</option>
+					<option value="occasions">Booking Wizard - Occasions</option>
+					<option value="hero_badges">Hero - Badges</option>
 				</select>
 			</div>
 
@@ -490,7 +490,7 @@ $tabs = [
 			<div class="ch-cs-format-grid">
 
 				<div class="ch-cs-format-box">
-					<h4>Contact Form — Enquiry Types</h4>
+					<h4>Contact Form - Enquiry Types</h4>
 					<p>Two columns: <code>value</code> and <code>label</code>. First row is header (skipped).</p>
 					<pre>value,label
 general,General Enquiry
@@ -501,7 +501,7 @@ other,Something Else</pre>
 				</div>
 
 				<div class="ch-cs-format-box">
-					<h4>Booking Wizard — Occasions</h4>
+					<h4>Booking Wizard - Occasions</h4>
 					<p>One column: <code>occasion</code>. First row is header (skipped).</p>
 					<pre>occasion
 Wedding / Walima
@@ -512,7 +512,7 @@ Corporate Event</pre>
 				</div>
 
 				<div class="ch-cs-format-box">
-					<h4>Hero — Badges</h4>
+					<h4>Hero - Badges</h4>
 					<p>One column: <code>badge</code>. First row is header (skipped).</p>
 					<pre>badge
 No Added Sugar

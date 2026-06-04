@@ -701,7 +701,7 @@ function ah_get_forms_summary(): array {
 /**
  * Resolve a meaningful icon for a topic / parent term.
  *
- * Honours an explicitly-set emoji only when it is a real emoji/symbol — a plain
+ * Honours an explicitly-set emoji only when it is a real emoji/symbol - a plain
  * letter or word (some terms store just an initial, e.g. "B") is ignored and the
  * name/slug is matched against a keyword map instead.
  *

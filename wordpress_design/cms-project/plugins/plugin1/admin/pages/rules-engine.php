@@ -302,7 +302,7 @@ details.re-adv .re-adv-body{padding:12px}
 <div class="re-section" id="re-form-field-helper" style="<?php echo 'form_submit' !== $editing->trigger_name ? 'display:none;' : ''; ?>background:#f0f9ff;border-color:#bae6fd">
 	<div class="re-section-title" style="color:#0369a1"><span>📋 Form Field Reference</span></div>
 	<p style="font-size:12px;color:#0c4a6e;margin:-4px 0 12px">
-		Pick a form to see its field keys. <strong>Click any chip</strong> to insert it into the last focused condition field — or copies to clipboard. Use <code>{field_key}</code> as tokens in action body/subject. Add condition <code>form_id = N</code> to target only one specific form.
+		Pick a form to see its field keys. <strong>Click any chip</strong> to insert it into the last focused condition field - or copies to clipboard. Use <code>{field_key}</code> as tokens in action body/subject. Add condition <code>form_id = N</code> to target only one specific form.
 	</p>
 	<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
 		<select id="re-form-picker" style="padding:7px 12px;border:1.5px solid #7dd3fc;border-radius:6px;font-size:13px;background:#fff;min-width:220px">
@@ -330,7 +330,7 @@ details.re-adv .re-adv-body{padding:12px}
 	</div>
 	<div id="re-conds"></div>
 	<p id="re-conds-empty" style="color:#9ca3af;font-size:13px;margin:0">
-		No conditions — rule fires on <em>every</em> matching trigger. Click <strong>+ Add Group</strong> to filter.
+		No conditions - rule fires on <em>every</em> matching trigger. Click <strong>+ Add Group</strong> to filter.
 	</p>
 	<p style="font-size:12px;color:#6b7280;margin:8px 0 0">
 		Each group combines its own conditions with AND/ANY. Groups themselves are then combined by the top-level ALL/ANY above.
@@ -350,11 +350,11 @@ details.re-adv .re-adv-body{padding:12px}
 				<input type="text" id="re-s-dedup-key" placeholder="{email}" value="<?php echo esc_attr( $editing->settings['dedup_key'] ?? '' ); ?>">
 			</div>
 			<div class="re-field-group">
-				<label>Dedup Window <small>(hours — 0 = disabled)</small></label>
+				<label>Dedup Window <small>(hours - 0 = disabled)</small></label>
 				<input type="number" id="re-s-dedup-win" min="0" max="8760" placeholder="24" value="<?php echo esc_attr( $editing->settings['dedup_window_hours'] ?? '0' ); ?>">
 			</div>
 			<div class="re-field-group">
-				<label>Cooldown <small>(minutes between any fires — 0 = off)</small></label>
+				<label>Cooldown <small>(minutes between any fires - 0 = off)</small></label>
 				<input type="number" id="re-s-cooldown" min="0" max="10080" placeholder="0" value="<?php echo esc_attr( $editing->settings['cooldown_minutes'] ?? '0' ); ?>">
 			</div>
 		</div>
@@ -1011,7 +1011,7 @@ jQuery(function ($) {
       }
       var s = buildFFHChip('form_id', 'Condition: target this specific form (form_id = ' + fid + ')', '#dbeafe', '#93c5fd', '#1d4ed8') + ' ';
       r.data.fields.forEach(function (f) {
-        s += buildFFHChip(f.field_key, f.label + ' — use as {' + f.field_key + '} in action body', '#f0f9ff', '#7dd3fc', '#0369a1') + ' ';
+        s += buildFFHChip(f.field_key, f.label + ' - use as {' + f.field_key + '} in action body', '#f0f9ff', '#7dd3fc', '#0369a1') + ' ';
       });
       $ch.html(s);
     }).fail(function () {

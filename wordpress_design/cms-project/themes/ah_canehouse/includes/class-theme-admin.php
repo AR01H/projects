@@ -456,7 +456,7 @@ class CH_Theme_Admin {
 			exit;
 		}
 
-		// Validate MIME — only plain text/CSV
+		// Validate MIME - only plain text/CSV
 		$finfo    = finfo_open( FILEINFO_MIME_TYPE );
 		$mime     = finfo_file( $finfo, $_FILES['csv_file']['tmp_name'] );
 		finfo_close( $finfo );

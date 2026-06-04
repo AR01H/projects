@@ -1,6 +1,6 @@
 <?php
 /**
- * NIF banner — supports multiple variants so different pages get distinct designs.
+ * NIF banner - supports multiple variants so different pages get distinct designs.
  *
  * Args:
  *   variant       'photo' (default) | 'gradient' | 'tiles'
@@ -222,7 +222,7 @@ $b_desc       = $args['desc']         ?? ( defined( 'NIF_HERO_DESC' ) ? NIF_HERO
 	</div>
 </section> -->
 
-<?php else : // ── 'photo' (default) — original family-photo hero ──────────────── ?>
+<?php else : // ── 'photo' (default) - original family-photo hero ──────────────── ?>
 
 <style>
 /* ── Hero ─────────────────────────────────────────────────────────── */
@@ -248,7 +248,7 @@ $b_desc       = $args['desc']         ?? ( defined( 'NIF_HERO_DESC' ) ? NIF_HERO
 }
 .nif-bg-img-light { opacity: .52; pointer-events: none; }
 
-/* Dark gradient overlay — strong at bottom so text pops */
+/* Dark gradient overlay - strong at bottom so text pops */
 .nif-portal-section-background-img .nif-overlay {
     position: absolute;
     inset: 0;
@@ -341,7 +341,7 @@ $b_desc       = $args['desc']         ?? ( defined( 'NIF_HERO_DESC' ) ? NIF_HERO
     font-size: 1.1rem;
 }
 
-/* ── MOBILE: split layout — image strip top, dark panel bottom ── */
+/* ── MOBILE: split layout - image strip top, dark panel bottom ── */
 @media (max-width: 600px) {
     .nif-portal-section-background-img {
         min-height: 0 !important;

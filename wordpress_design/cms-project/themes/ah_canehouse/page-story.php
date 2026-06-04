@@ -3,7 +3,7 @@
  * Template Name: Our Story
  * Slug: /our-story/
  *
- * This page is entirely about sugarcane — its lifecycle, global love, and history.
+ * This page is entirely about sugarcane - its lifecycle, global love, and history.
  * The business story lives at /about/.
  */
 defined( 'ABSPATH' ) || exit;
@@ -15,7 +15,7 @@ get_header();
 <?php get_template_part( 'components/page-hero', null, [
 	'tag'        => 'The Journey',
 	'heading'    => 'The <em>Sugarcane</em> Story',
-	'desc'       => 'From ancient fields across five continents to your cup — pressed live, served cool, with 2,000 years of tradition behind every glass.',
+	'desc'       => 'From ancient fields across five continents to your cup - pressed live, served cool, with 2,000 years of tradition behind every glass.',
 	'modifier'   => 'ch-page-hero--sugarcane',
 	'btn1_label' => 'See the Lifecycle',
 	'btn1_url'   => '#story-cards',

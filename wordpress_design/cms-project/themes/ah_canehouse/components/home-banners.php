@@ -21,7 +21,7 @@ $uid = 'ch-hero-' . wp_unique_id();
 ?>
 
 <!-- ════════════════════════════════════════════════════════
-     THE CANE HOUSE — HERO BANNER CAROUSEL
+     THE CANE HOUSE - HERO BANNER CAROUSEL
      ════════════════════════════════════════════════════════ -->
 <section class="ch-carousel-hero-banner" id="<?php echo esc_attr( $uid ); ?>"
          aria-label="Hero Banner"
@@ -34,7 +34,7 @@ $uid = 'ch-hero-' . wp_unique_id();
             $pos       = in_array( $b['text_pos']   ?? 'middle', ['top','middle','bottom'] ) ? $b['text_pos']   : 'middle';
             $overlay   = esc_attr( $b['overlay'] ?? 'rgba(26,58,15,0.45)' );
             $img_desk  = esc_url( $b['image'] ?? '' );
-            // Mobile image is optional — fall back to the desktop image when blank.
+            // Mobile image is optional - fall back to the desktop image when blank.
             $img_mob   = ! empty( $b['image_mobile'] ) ? esc_url( $b['image_mobile'] ) : $img_desk;
             $bg_style  = "--bg:url('{$img_desk}');--bg-mobile:url('{$img_mob}');";
         ?>
@@ -80,7 +80,7 @@ $uid = 'ch-hero-' . wp_unique_id();
         <?php endforeach; ?>
     </div><!-- /.ch-hero-track -->
 
-    <!-- DOTS — positioned inside the banner -->
+    <!-- DOTS - positioned inside the banner -->
     <?php if ( count( $banners ) > 1 ) : ?>
     <div class="ch-hero-dots" role="tablist" aria-label="Slide navigation">
         <?php foreach ( $banners as $i => $b ) : ?>
@@ -272,7 +272,7 @@ $uid = 'ch-hero-' . wp_unique_id();
 }
 .ch-hero-slide__btn:hover .ch-hero-slide__btn-arrow { transform: translateX(4px); }
 
-/* ── Active slide — animate in ───────────────────────────── */
+/* ── Active slide - animate in ───────────────────────────── */
 .ch-hero-slide.is-active .ch-hero-slide__subtitle,
 .ch-hero-slide.is-active .ch-hero-slide__title,
 .ch-hero-slide.is-active .ch-hero-slide__desc,

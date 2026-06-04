@@ -3,7 +3,7 @@
  * Template Name: About Us
  * Slug: /about/
  *
- * The business story — origin, mission, team, equipment, values.
+ * The business story - origin, mission, team, equipment, values.
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
@@ -20,7 +20,7 @@ $team = ch_get_team_members();
 <?php get_template_part( 'components/page-hero', null, [
 	'tag'        => 'About Us',
 	'heading'    => 'The Story Behind <em>The Cane House</em>',
-	'desc'       => 'We believe in the power of nature\'s simplest gifts. Live-pressed, served cool, with nothing added — and a whole lot of heart behind every glass.',
+	'desc'       => 'We believe in the power of nature\'s simplest gifts. Live-pressed, served cool, with nothing added - and a whole lot of heart behind every glass.',
 	'modifier'   => 'ch-page-hero--sugarcane',
 ] ); ?>
 
@@ -113,7 +113,7 @@ $team = ch_get_team_members();
 get_template_part( 'components/gallery-strip', null, [
 	'tag'      => 'Behind the Scenes',
 	'title'    => 'Our Equipment, <span class="accent">Our Craft</span>',
-	'body'     => 'The machines, the setup, the ingredients — everything that goes into every perfect glass.',
+	'body'     => 'The machines, the setup, the ingredients - everything that goes into every perfect glass.',
 	'modifier' => 'ch-gstrip--about',
 	'id'       => 'gstrip-about',
 	'bg'       => 'var(--ch-white)',
@@ -156,8 +156,8 @@ get_template_part( 'components/image-text-split', null, [
 	'section_class' => 'about-values',
 	'inner_class'   => 'values-content',
 	'tag'           => 'Why We Do It',
-	'title'         => 'Our Commitment to <span class="accent">Quality</span>',
-	'body'          => 'Every cup of The Cane House juice is made with intention, care, and a deep respect for the sugarcane plant. We don\'t cut corners because our customers deserve nothing but the best.',
+	'title'         => 'What Makes <span class="accent">The Cane House</span> Different?',
+	'body'          => 'At The Cane House, we serve freshly pressed sugarcane juice and natural fruit blends that are prepared fresh for every customer. Our drinks offer a refreshing alternative to fizzy drinks and processed juices, bringing a traditional summer favourite enjoyed by millions to the heart of Sutton.',
 	'extra_html'    => $_about_values_extra,
 	'visual_html'   => $_about_values_visual,
 	'content_anim'  => 'fade-left',

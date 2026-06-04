@@ -302,10 +302,10 @@
           <input class="mh-range" type="range" min="5" max="35" step="1" value="25" id="cm-term" oninput="sl('cm-term','cm-term-lbl',' yrs');calcCompare()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="cm-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="cm-loan">—</div></div>
-          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="cm-interest">—</div></div>
-          <div class="mh-rcard"><div class="rl">Total Repaid</div><div class="rv" id="cm-total">—</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="cm-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="cm-loan">-</div></div>
+          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="cm-interest">-</div></div>
+          <div class="mh-rcard"><div class="rl">Total Repaid</div><div class="rv" id="cm-total">-</div></div>
         </div>
         <div class="mh-bar-wrap">
           <div class="mh-bar-labels"><span>Principal</span><span>Interest</span></div>
@@ -393,10 +393,10 @@
           <input class="mh-range" type="range" min="5" max="30" step="1" value="20" id="rs-term" oninput="sl('rs-term','rs-term-lbl',' yrs');calcRemortgage()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">New LTV</div><div class="rv" id="rs-ltv">—</div></div>
-          <div class="mh-rcard"><div class="rl">New Monthly</div><div class="rv" id="rs-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">Equity</div><div class="rv" id="rs-equity">—</div></div>
-          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="rs-total-int">—</div></div>
+          <div class="mh-rcard"><div class="rl">New LTV</div><div class="rv" id="rs-ltv">-</div></div>
+          <div class="mh-rcard"><div class="rl">New Monthly</div><div class="rv" id="rs-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">Equity</div><div class="rv" id="rs-equity">-</div></div>
+          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="rs-total-int">-</div></div>
         </div>
         <div class="mh-divider"></div>
         <div class="mh-table-wrap"><table class="mh-table"><thead><tr><th>Year</th><th>Balance</th><th>Interest Paid</th><th>Principal Paid</th></tr></thead><tbody id="rs-tbody"></tbody></table></div>
@@ -405,7 +405,7 @@
       <!-- ⑥ How to Remortgage -->
       <div id="how-remortgage" class="calc-frame">
         <h2>How to Remortgage</h2>
-        <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;margin:0 0 16px;">Switch your existing mortgage to a new deal — same lender or new. Use this calculator to estimate savings.</p>
+        <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;margin:0 0 16px;">Switch your existing mortgage to a new deal - same lender or new. Use this calculator to estimate savings.</p>
         <div class="mh-two-col">
           <div class="mh-field"><label class="mh-label">Current Monthly Payment (£)</label><input class="mh-input" type="number" id="hr-current" value="900" oninput="calcHowRemortgage()"></div>
           <div class="mh-field"><label class="mh-label">Remaining Balance (£)</label><input class="mh-input" type="number" id="hr-balance" value="180000" oninput="calcHowRemortgage()"></div>
@@ -419,10 +419,10 @@
           <input class="mh-range" type="range" min="5" max="30" step="1" value="20" id="hr-term" oninput="sl('hr-term','hr-term-lbl',' yrs');calcHowRemortgage()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">New Monthly</div><div class="rv" id="hr-new">—</div></div>
-          <div class="mh-rcard"><div class="rl">Monthly Saving</div><div class="rv" id="hr-saving">—</div></div>
-          <div class="mh-rcard"><div class="rl">Annual Saving</div><div class="rv" id="hr-annual">—</div></div>
-          <div class="mh-rcard"><div class="rl">5-yr Saving</div><div class="rv" id="hr-5yr">—</div></div>
+          <div class="mh-rcard"><div class="rl">New Monthly</div><div class="rv" id="hr-new">-</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly Saving</div><div class="rv" id="hr-saving">-</div></div>
+          <div class="mh-rcard"><div class="rl">Annual Saving</div><div class="rv" id="hr-annual">-</div></div>
+          <div class="mh-rcard"><div class="rl">5-yr Saving</div><div class="rv" id="hr-5yr">-</div></div>
         </div>
       </div>
 
@@ -442,10 +442,10 @@
           <input class="mh-range" type="range" min="5" max="35" step="1" value="25" id="ftb-term" oninput="sl('ftb-term','ftb-term-lbl',' yrs');calcFTB()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Deposit %</div><div class="rv" id="ftb-dep-pct">—</div></div>
-          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="ftb-loan">—</div></div>
-          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="ftb-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">LTV</div><div class="rv" id="ftb-ltv">—</div></div>
+          <div class="mh-rcard"><div class="rl">Deposit %</div><div class="rv" id="ftb-dep-pct">-</div></div>
+          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="ftb-loan">-</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="ftb-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">LTV</div><div class="rv" id="ftb-ltv">-</div></div>
         </div>
         <div class="mh-divider"></div>
         <div class="mh-table-wrap"><table class="mh-table"><thead><tr><th>Stamp Duty Item</th><th>Amount</th></tr></thead><tbody id="ftb-stamp-tbody"></tbody></table></div>
@@ -478,10 +478,10 @@
           <div class="mh-field"><label class="mh-label">Deposit Available (£)</label><input class="mh-input" type="number" id="bc-deposit" value="30000" oninput="calcBorrow()"></div>
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Conservative (4×)</div><div class="rv" id="bc-low">—</div></div>
-          <div class="mh-rcard"><div class="rl">Standard (4.5×)</div><div class="rv" id="bc-mid">—</div></div>
-          <div class="mh-rcard"><div class="rl">Maximum (5.5×)</div><div class="rv" id="bc-high">—</div></div>
-          <div class="mh-rcard"><div class="rl">Max Property</div><div class="rv" id="bc-property">—</div></div>
+          <div class="mh-rcard"><div class="rl">Conservative (4×)</div><div class="rv" id="bc-low">-</div></div>
+          <div class="mh-rcard"><div class="rl">Standard (4.5×)</div><div class="rv" id="bc-mid">-</div></div>
+          <div class="mh-rcard"><div class="rl">Maximum (5.5×)</div><div class="rv" id="bc-high">-</div></div>
+          <div class="mh-rcard"><div class="rl">Max Property</div><div class="rv" id="bc-property">-</div></div>
         </div>
         <div class="mh-divider"></div>
         <div class="mh-table-wrap"><table class="mh-table"><thead><tr><th>Multiplier</th><th>Max Loan</th><th>Est. Monthly (4.5%, 25yr)</th></tr></thead><tbody id="bc-tbody"></tbody></table></div>
@@ -503,10 +503,10 @@
           </div>
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Max Loan</div><div class="rv" id="gm-loan">—</div></div>
-          <div class="mh-rcard"><div class="rl">Max Property</div><div class="rv" id="gm-property">—</div></div>
-          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="gm-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">Debt-to-Income</div><div class="rv" id="gm-dti">—</div></div>
+          <div class="mh-rcard"><div class="rl">Max Loan</div><div class="rv" id="gm-loan">-</div></div>
+          <div class="mh-rcard"><div class="rl">Max Property</div><div class="rv" id="gm-property">-</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="gm-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">Debt-to-Income</div><div class="rv" id="gm-dti">-</div></div>
         </div>
       </div>
 
@@ -524,10 +524,10 @@
           </div>
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Total Deposit</div><div class="rv" id="gd-total">—</div></div>
-          <div class="mh-rcard"><div class="rl">Deposit %</div><div class="rv" id="gd-pct">—</div></div>
-          <div class="mh-rcard"><div class="rl">Loan Needed</div><div class="rv" id="gd-loan">—</div></div>
-          <div class="mh-rcard"><div class="rl">LTV Band</div><div class="rv" id="gd-ltv-band">—</div></div>
+          <div class="mh-rcard"><div class="rl">Total Deposit</div><div class="rv" id="gd-total">-</div></div>
+          <div class="mh-rcard"><div class="rl">Deposit %</div><div class="rv" id="gd-pct">-</div></div>
+          <div class="mh-rcard"><div class="rl">Loan Needed</div><div class="rv" id="gd-loan">-</div></div>
+          <div class="mh-rcard"><div class="rl">LTV Band</div><div class="rv" id="gd-ltv-band">-</div></div>
         </div>
         <div class="mh-divider"></div>
         <div class="mh-table-wrap"><table class="mh-table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody id="gd-tbody"></tbody></table></div>
@@ -546,10 +546,10 @@
           <input class="mh-range" type="range" min="1" max="10" step="0.1" value="4.0" id="o5-rate" oninput="sl('o5-rate','o5-rate-lbl','%');calcOver50()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Max Term</div><div class="rv" id="o5-maxterm">—</div></div>
-          <div class="mh-rcard"><div class="rl">Monthly (max term)</div><div class="rv" id="o5-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">Age at Payoff</div><div class="rv" id="o5-payoff">—</div></div>
-          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="o5-total-int">—</div></div>
+          <div class="mh-rcard"><div class="rl">Max Term</div><div class="rv" id="o5-maxterm">-</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly (max term)</div><div class="rv" id="o5-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">Age at Payoff</div><div class="rv" id="o5-payoff">-</div></div>
+          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="o5-total-int">-</div></div>
         </div>
         <div class="mh-divider"></div>
         <div class="mh-table-wrap"><table class="mh-table"><thead><tr><th>Term Option</th><th>Monthly</th><th>Total Repaid</th><th>Age at End</th></tr></thead><tbody id="o5-tbody"></tbody></table></div>
@@ -572,10 +572,10 @@
           <input class="mh-range" type="range" min="15" max="50" step="1" value="25" id="btl-dep" oninput="sl('btl-dep','btl-dep-lbl','%');calcBTL()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="btl-loan">—</div></div>
-          <div class="mh-rcard"><div class="rl">Interest Only</div><div class="rv" id="btl-io">—</div></div>
-          <div class="mh-rcard"><div class="rl">Gross Yield</div><div class="rv" id="btl-yield">—</div></div>
-          <div class="mh-rcard"><div class="rl">Monthly Profit</div><div class="rv" id="btl-profit">—</div></div>
+          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="btl-loan">-</div></div>
+          <div class="mh-rcard"><div class="rl">Interest Only</div><div class="rv" id="btl-io">-</div></div>
+          <div class="mh-rcard"><div class="rl">Gross Yield</div><div class="rv" id="btl-yield">-</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly Profit</div><div class="rv" id="btl-profit">-</div></div>
         </div>
         <div class="mh-divider"></div>
         <div class="mh-table-wrap"><table class="mh-table"><thead><tr><th>Metric</th><th>Value</th><th>Benchmark</th></tr></thead><tbody id="btl-tbody"></tbody></table></div>
@@ -609,10 +609,10 @@
           <input class="mh-range" type="range" min="1" max="24" step="1" value="6" id="bl2-term" oninput="sl('bl2-term','bl2-term-lbl',' mo');calcBridging()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Monthly Interest</div><div class="rv" id="bl2-monthly">—</div></div>
-          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="bl2-total-int">—</div></div>
-          <div class="mh-rcard"><div class="rl">Total Repayable</div><div class="rv" id="bl2-total">—</div></div>
-          <div class="mh-rcard"><div class="rl">Effective Annual</div><div class="rv" id="bl2-apr">—</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly Interest</div><div class="rv" id="bl2-monthly">-</div></div>
+          <div class="mh-rcard"><div class="rl">Total Interest</div><div class="rv" id="bl2-total-int">-</div></div>
+          <div class="mh-rcard"><div class="rl">Total Repayable</div><div class="rv" id="bl2-total">-</div></div>
+          <div class="mh-rcard"><div class="rl">Effective Annual</div><div class="rv" id="bl2-apr">-</div></div>
         </div>
         <div class="mh-divider"></div>
         <div class="mh-table-wrap"><table class="mh-table"><thead><tr><th>Month</th><th>Interest</th><th>Running Total</th></tr></thead><tbody id="bl2-tbody"></tbody></table></div>
@@ -635,10 +635,10 @@
           <input class="mh-range" type="range" min="5" max="35" step="1" value="25" id="du-term" oninput="sl('du-term','du-term-lbl',' yrs');calcDepositUnlock()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Deposit %</div><div class="rv" id="du-pct">—</div></div>
-          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="du-loan">—</div></div>
-          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="du-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">LTV</div><div class="rv" id="du-ltv">—</div></div>
+          <div class="mh-rcard"><div class="rl">Deposit %</div><div class="rv" id="du-pct">-</div></div>
+          <div class="mh-rcard"><div class="rl">Loan Amount</div><div class="rv" id="du-loan">-</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly EMI</div><div class="rv" id="du-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">LTV</div><div class="rv" id="du-ltv">-</div></div>
         </div>
         <div class="mh-info">Deposit Unlock allows 95% LTV on new-build homes up to £833,250 through participating builders and lenders.</div>
       </div>
@@ -659,10 +659,10 @@
           <input class="mh-range" type="range" min="1" max="8" step="0.1" value="3.0" id="rr-red" oninput="sl('rr-red','rr-red-lbl','%');calcRateReducer()">
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Standard Monthly</div><div class="rv" id="rr-std-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">Reduced Monthly</div><div class="rv" id="rr-red-emi">—</div></div>
-          <div class="mh-rcard"><div class="rl">Monthly Saving</div><div class="rv" id="rr-saving">—</div></div>
-          <div class="mh-rcard"><div class="rl">2-yr Total Saving</div><div class="rv" id="rr-2yr">—</div></div>
+          <div class="mh-rcard"><div class="rl">Standard Monthly</div><div class="rv" id="rr-std-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">Reduced Monthly</div><div class="rv" id="rr-red-emi">-</div></div>
+          <div class="mh-rcard"><div class="rl">Monthly Saving</div><div class="rv" id="rr-saving">-</div></div>
+          <div class="mh-rcard"><div class="rl">2-yr Total Saving</div><div class="rv" id="rr-2yr">-</div></div>
         </div>
       </div>
 
@@ -685,10 +685,10 @@
           </select>
         </div>
         <div class="mh-results">
-          <div class="mh-rcard"><div class="rl">Cover Needed</div><div class="rv" id="li-cover">—</div></div>
-          <div class="mh-rcard"><div class="rl">Est. Monthly Premium</div><div class="rv" id="li-premium">—</div></div>
-          <div class="mh-rcard"><div class="rl">Cover Type</div><div class="rv" id="li-type">—</div></div>
-          <div class="mh-rcard"><div class="rl">Total Premiums</div><div class="rv" id="li-total-prem">—</div></div>
+          <div class="mh-rcard"><div class="rl">Cover Needed</div><div class="rv" id="li-cover">-</div></div>
+          <div class="mh-rcard"><div class="rl">Est. Monthly Premium</div><div class="rv" id="li-premium">-</div></div>
+          <div class="mh-rcard"><div class="rl">Cover Type</div><div class="rv" id="li-type">-</div></div>
+          <div class="mh-rcard"><div class="rl">Total Premiums</div><div class="rv" id="li-total-prem">-</div></div>
         </div>
         <div class="mh-info">Decreasing term life insurance tracks your mortgage balance and is typically the most cost-effective option.</div>
       </div>
@@ -699,7 +699,7 @@
 
 <script>
 // ╔══════════════════════════════════════════════════════════╗
-// ║  LOCALE / CURRENCY CONFIG — edit only this block        ║
+// ║  LOCALE / CURRENCY CONFIG - edit only this block        ║
 // ║  to switch region, symbol, separators, defaults         ║
 // ╚══════════════════════════════════════════════════════════╝
 var LOCALE = {
@@ -713,7 +713,7 @@ var LOCALE = {
   //           'en-IN'  → 12,34,567
   locale: 'en-GB',
 
-  // Default field values — change to local market norms
+  // Default field values - change to local market norms
   defaults: {
     propertyPrice:   300000,   // typical purchase price
     deposit:          60000,   // typical deposit
@@ -735,7 +735,7 @@ var LOCALE = {
 };
 // ══════════════════════════════════════════════════════════
 
-// ── Utilities (consume LOCALE — do not edit these) ─────────
+// ── Utilities (consume LOCALE - do not edit these) ─────────
 function fmt(n){
   return LOCALE.symbol + Math.round(n).toLocaleString(LOCALE.locale);
 }
@@ -912,7 +912,7 @@ function calcForecast(){
     var delta=m-currentM;
     var sign=delta>=0?'+':'';
     html+='<div class="mh-rcard"><div class="rl">'+s.label+'</div><div class="rv">'+fmt(m)+'</div></div>';
-    thtml+='<tr><td>'+s.label+'</td><td>'+r.toFixed(1)+'%</td><td>'+fmt(m)+'</td><td>'+(s.label==='Current'?'—':sign+fmt(delta))+'</td></tr>';
+    thtml+='<tr><td>'+s.label+'</td><td>'+r.toFixed(1)+'%</td><td>'+fmt(m)+'</td><td>'+(s.label==='Current'?'-':sign+fmt(delta))+'</td></tr>';
   });
   document.getElementById('rf-results').innerHTML=html;
   document.getElementById('rf-tbody').innerHTML=thtml;

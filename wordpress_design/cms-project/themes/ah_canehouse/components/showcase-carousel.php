@@ -1,6 +1,6 @@
 <?php
 /**
- * Showcase Carousel — infinite auto-scroll, fixed-size cards, single row.
+ * Showcase Carousel - infinite auto-scroll, fixed-size cards, single row.
  *
  * Args:
  *  tag      (string)  Eyebrow tag.             Default: 'Showcase'

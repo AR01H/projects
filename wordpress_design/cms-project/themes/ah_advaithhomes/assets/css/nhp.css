@@ -411,7 +411,7 @@
   transition: gap .15s, background .15s;
 }
 
-/* Shared card base — accent top-border only, very subtle shadow, no hover outline */
+/* Shared card base - accent top-border only, very subtle shadow, no hover outline */
 .nhp-mq-wide, .nhp-mq-promo, .nhp-mq-dark, .nhp-mq-card, .nhp-mq-service {
   text-decoration: none; color: inherit;
   border-top: 3px solid var(--ac, var(--accent));
@@ -533,7 +533,7 @@
   font-size: .78rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 8px;
 }
 
-/* ── DARK featured card — thumbnail top-left, badge top-right, body full-width below ── */
+/* ── DARK featured card - thumbnail top-left, badge top-right, body full-width below ── */
 .nhp-mq-dark {
   position: relative; /* badge anchors here */
   display: flex; flex-direction: column;
@@ -670,7 +670,7 @@
 .nhp-mq-area-art .nhp-mq-card__title { font-size: 1.18rem; -webkit-line-clamp: 3; }
 .nhp-mq-area-art .nhp-mq-card__excerpt { -webkit-line-clamp: 4; }
 
-/* ── SVC1 slot: horizontal tile — image left, text + button right ── */
+/* ── SVC1 slot: horizontal tile - image left, text + button right ── */
 .nhp-mq-area-svc1.nhp-mq-service { flex-direction: row; }
 .nhp-mq-area-svc1 .nhp-mq-tile__img {
   width: 46%; flex-shrink: 0; height: auto; align-self: stretch;

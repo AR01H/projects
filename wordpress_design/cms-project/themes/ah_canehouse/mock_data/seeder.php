@@ -126,9 +126,9 @@ class CH_Theme_Seeder {
 	 *   2. Add a CH_Data::{loader}() method + a seed_{name}() method below
 	 *   3. Add ONE entry to this array
 	 * The admin UI (checkbox list + CSV file table) and the selective importer
-	 * (seed_selected) all read from this single list — nothing else to touch.
+	 * (seed_selected) all read from this single list - nothing else to touch.
 	 *
-	 * Navigation, footer and FAQs are intentionally excluded — they are owned by
+	 * Navigation, footer and FAQs are intentionally excluded - they are owned by
 	 * the CMS plugin and must NOT be seeded by the theme.
 	 *
 	 * Each entry:
@@ -143,12 +143,12 @@ class CH_Theme_Seeder {
 	 */
 	public static function importable_types(): array {
 		return [
-			// ── Site & section settings (key/value CSVs — overwrite, safe) ──
+			// ── Site & section settings (key/value CSVs - overwrite, safe) ──
 			'settings'            => [ 'csv' => 'settings',            'method' => 'seed_settings',            'label' => '⚙️ Site settings (phone, email, socials)', 'cols' => 'key, value', 'append' => false ],
 			'home-settings'       => [ 'csv' => 'home-settings',       'method' => 'seed_home_settings',       'label' => '🏠 Hero / home settings',                   'cols' => 'key, value', 'append' => false ],
 			'contact-settings'    => [ 'csv' => 'contact-settings',    'method' => 'seed_contact_settings',    'label' => '✉️ Contact settings',                       'cols' => 'key, value', 'append' => false ],
 			'story-settings'      => [ 'csv' => 'story-settings',      'method' => 'seed_story_settings',      'label' => '📖 Story section settings',                 'cols' => 'key, value', 'append' => false ],
-			// ── Builder & section options (row CSVs — overwrite, safe) ──
+			// ── Builder & section options (row CSVs - overwrite, safe) ──
 			'menu-sizes'          => [ 'csv' => 'menu-sizes',          'method' => 'seed_menu_sizes',          'label' => '📏 Menu sizes',            'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
 			'cane-types'          => [ 'csv' => 'cane-types',          'method' => 'seed_cane_types',          'label' => '🌾 Cane types',            'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
 			'textures'            => [ 'csv' => 'textures',            'method' => 'seed_textures',            'label' => '🥢 Textures',              'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
@@ -162,7 +162,7 @@ class CH_Theme_Seeder {
 			'juice-showcase'      => [ 'csv' => 'juice-showcase',      'method' => 'seed_juice_showcase',      'label' => '🧃 Juice showcase',        'cols' => 'image, title, desc',                       'append' => false ],
 			'story-cards'         => [ 'csv' => 'story-cards',         'method' => 'seed_story_cards',         'label' => '🌱 Sugarcane story cards', 'cols' => 'id, icon, label, heading, body, facts (;), images (;)', 'append' => false ],
 			'certifications'      => [ 'csv' => 'certifications',      'method' => 'seed_certifications',      'label' => '🏛️ Certification badges',  'cols' => 'icon, title, desc, badge',                 'append' => false ],
-			// ── CMS table rows (APPEND — may duplicate on re-run) ──
+			// ── CMS table rows (APPEND - may duplicate on re-run) ──
 			'reviews'             => [ 'csv' => 'reviews',             'method' => 'seed_reviews',             'label' => '⭐ Customer reviews',       'cols' => 'author_name, location, review_text, rating, result, status', 'append' => true ],
 			'news-bar'            => [ 'csv' => 'news_bar',            'method' => 'seed_news_bar',            'label' => '📰 News bar items',        'cols' => 'message, status, sort_order',              'append' => true ],
 			'journal'             => [ 'csv' => 'journal-posts',       'method' => 'seed_journal_posts',       'label' => '📝 Journal blog posts',    'cols' => 'title, excerpt, category, content',         'append' => true ],

@@ -106,7 +106,7 @@ $nav_cta = ah_get_nav_cta();
 	</div>
 </nav>
 
-<!-- Search overlay — backdrop click closes, ESC closes -->
+<!-- Search overlay - backdrop click closes, ESC closes -->
 <div class="nav__search-panel" id="ahSearchPanel" role="search" aria-hidden="true">
 	<div class="container">
 		<div class="nav__search-inner">

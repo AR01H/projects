@@ -321,7 +321,7 @@ function ch_get_reviews( int $limit = 6, string $taxonomy_slug = '' ): array {
 		$model = new AH_Reviews_Model();
 
 		if ( $taxonomy_slug !== '' ) {
-			// Taxonomy-filtered: never fall back to untagged reviews — that causes
+			// Taxonomy-filtered: never fall back to untagged reviews - that causes
 			// the same pool to bleed into every section on the site.
 			$rows = $model->get_by_taxonomy_slug( $taxonomy_slug, $limit );
 			return empty( $rows ) ? [] : array_map( 'ch_normalize_review', $rows );
@@ -336,7 +336,7 @@ function ch_get_reviews( int $limit = 6, string $taxonomy_slug = '' ): array {
 	}
 
 	// Direct DB query fallback (plugin autoloader not yet loaded).
-	// Use {prefix}ah_reviews — the table the plugin installer creates.
+	// Use {prefix}ah_reviews - the table the plugin installer creates.
 	global $wpdb;
 	$table = $wpdb->prefix . 'ah_reviews';
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table ) {
@@ -412,7 +412,7 @@ function ch_get_review_image( array|object $review, int $index = 0, string $size
 
 // ── FAQs ──────────────────────────────────────────────────────────────────────
 function ch_get_faqs( string $topic = '', int $limit = 20 ): array {
-	// FAQs are owned by the CMS plugin (ah_faqs table) — the theme has no FAQ
+	// FAQs are owned by the CMS plugin (ah_faqs table) - the theme has no FAQ
 	// data of its own. When $topic is given it filters by a "FAQ Tags" taxonomy
 	// term slug through the content_taxonomies pivot (object_type = 'faq').
 	if ( ! class_exists( 'AH_Faqs_Model' ) ) {
@@ -559,7 +559,7 @@ function ch_get_gallery( string $key, array $defaults ): array {
 }
 
 /**
- * Home hero banners — managed in the plugin (CMS ADMIN → Home Banners).
+ * Home hero banners - managed in the plugin (CMS ADMIN → Home Banners).
  * Falls back to the plugin's example defaults if the table is empty,
  * and to a hardcoded set if the plugin is not active.
  */
@@ -571,7 +571,7 @@ function ch_get_home_banners(): array {
 		}
 		return AH_Banners_Helper::defaults();
 	}
-	// Plugin off — minimal safe fallback.
+	// Plugin off - minimal safe fallback.
 	return [];
 }
 
@@ -613,7 +613,7 @@ function ch_get_about_gallery(): array {
 }
 
 /**
- * Home showcase carousel — machines, bottles, products (after hero).
+ * Home showcase carousel - machines, bottles, products (after hero).
  * Each item supports type: 'image' | 'gif' | 'video' (mp4/webm, autoplays muted+loop).
  */
 function ch_get_showcase(): array {
@@ -716,11 +716,14 @@ function ch_get_about_quality(): array {
 	$opt = get_option( 'ch_about_quality', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	return ! empty( $opt ) ? $opt : [
-		'Pressed fresh to order, never pre-made',
-		'100% natural ingredients, no additives',
-		'Fully certified and insured for events',
-		'Sustainable practices throughout',
-		'Community-focused and locally minded',
+		'Freshly pressed while you wait',
+		'Natural fruit blends available',
+		'No artificial colours or preservatives',
+		'Traditional drink enjoyed for generations',
+		'Family-friendly summer refreshment',
+		'Locally served in Sutton',
+		'Takeaway bottles and family packs available',
+		' Seasonal and unique - not commonly available in the UK'
 	];
 }
 

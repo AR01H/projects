@@ -1,6 +1,6 @@
 <?php
 /**
- * Home Hero Banners — DB-backed manager (plugin level).
+ * Home Hero Banners - DB-backed manager (plugin level).
  *
  * Self-installing table: {prefix}ah_home_banners
  * Repeater-style save (delete-all + re-insert), like AH_Form_Builder::save_fields().
@@ -24,7 +24,7 @@ class AH_Banners_Helper {
 	 * The schema is owned by the central installer
 	 * (database/class-db-installer.php → ensure_banners_table()). This just
 	 * delegates to it, so a read never fails if the upgrade hook hasn't run yet
-	 * — the CREATE TABLE statement lives only at the schema level.
+	 * - the CREATE TABLE statement lives only at the schema level.
 	 */
 	public static function install_table(): void {
 		if ( method_exists( 'AH_DB_Installer', 'ensure_banners_table' ) ) {
@@ -96,7 +96,7 @@ class AH_Banners_Helper {
 		update_option( self::AUTOPLAY_OPTION, max( 1000, min( 30000, $ms ) ) );
 	}
 
-	/** Default banners — used when the table is empty (first run / fallback). */
+	/** Default banners - used when the table is empty (first run / fallback). */
 	public static function defaults(): array {
 		return [];
 	}

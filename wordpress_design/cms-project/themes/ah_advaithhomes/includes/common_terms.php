@@ -58,7 +58,7 @@ function get_client_hp_tiles() {
 		'services' => [
 			'icon'   => '🛠️',
 			'title'  => 'Our Services',
-			'desc'   => 'From checklists to calculators — everything a buyer needs, all in one place.',
+			'desc'   => 'From checklists to calculators - everything a buyer needs, all in one place.',
 			'url'    => '/services/',
 			'cta'    => 'View services',
 			'color'  => '#14532d',

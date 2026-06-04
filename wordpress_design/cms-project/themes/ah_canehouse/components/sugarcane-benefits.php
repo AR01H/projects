@@ -18,25 +18,25 @@ $default_items = [
 	[
 		'icon'  => '⚡',
 		'title' => 'Instant Natural Energy',
-		'text'  => 'A single glass provides a rapid, sustained energy boost. The natural sucrose is absorbed immediately — no crash, no additives. Athletes worldwide swear by it.',
+		'text'  => 'A single glass provides a rapid, sustained energy boost. The natural sucrose is absorbed immediately - no crash, no additives. Athletes worldwide swear by it.',
 		'stat'  => '~180 kcal per glass',
 	],
 	[
 		'icon'  => '🧬',
 		'title' => 'Antioxidant Powerhouse',
-		'text'  => 'Rich in polyphenols and flavonoids that fight free radicals. Raw, live-pressed juice retains these compounds — pasteurised or bottled juice loses most of them.',
+		'text'  => 'Rich in polyphenols and flavonoids that fight free radicals. Raw, live-pressed juice retains these compounds - pasteurised or bottled juice loses most of them.',
 		'stat'  => 'Higher than orange juice',
 	],
 	[
 		'icon'  => '💧',
 		'title' => 'Deep Hydration',
-		'text'  => 'Packed with electrolytes — potassium, sodium, magnesium, calcium. Traditionally used in South Asia to treat dehydration and heat stroke during summer months.',
+		'text'  => 'Packed with electrolytes - potassium, sodium, magnesium, calcium. Traditionally used in South Asia to treat dehydration and heat stroke during summer months.',
 		'stat'  => '5 key electrolytes',
 	],
 	[
 		'icon'  => '🌍',
 		'title' => 'Loved on 5 Continents',
-		'text'  => 'Brazil (caldo de cana), India (ganne ka ras), Pakistan, Egypt, West Africa, Thailand, Philippines — sugarcane juice is a global staple, not a niche trend.',
+		'text'  => 'Brazil (caldo de cana), India (ganne ka ras), Pakistan, Egypt, West Africa, Thailand, Philippines - sugarcane juice is a global staple, not a niche trend.',
 		'stat'  => '120+ countries grow cane',
 	],
 	[

@@ -77,7 +77,7 @@ class AH_Rules_Engine {
 			) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 
-		// Schema migrations — add new columns if missing
+		// Schema migrations - add new columns if missing
 		if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'settings'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `settings` JSON DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
@@ -110,7 +110,7 @@ class AH_Rules_Engine {
 		$condition_groups = array();
 		foreach ( $raw_groups as $g ) {
 			if ( isset( $g['field'] ) ) {
-				// Legacy flat format — wrap into single group
+				// Legacy flat format - wrap into single group
 				$field = sanitize_key( $g['field'] );
 				if ( ! $field ) continue;
 				$condition_groups[] = array(
@@ -192,7 +192,7 @@ class AH_Rules_Engine {
 	 * Evaluate all matching rules for a trigger event.
 	 *
 	 * @param string $trigger_name  Event slug, e.g. 'sugarcane_contact_form'.
-	 * @param array  $context       Key/value pairs — become {tokens} in action templates.
+	 * @param array  $context       Key/value pairs - become {tokens} in action templates.
 	 * @param bool   $immediate     true  → run matching actions right now (synchronous).
 	 *                              false → queue into ah_trigger_logs for cron (default).
 	 *
@@ -289,7 +289,7 @@ class AH_Rules_Engine {
 		}
 	}
 
-	// Dedup + cooldown check — returns false if this rule should be skipped
+	// Dedup + cooldown check - returns false if this rule should be skipped
 	private static function passes_dedup( object $rule, array $context, string $lg ): bool {
 		global $wpdb;
 		$s = (array) ( $rule->settings ?? array() );

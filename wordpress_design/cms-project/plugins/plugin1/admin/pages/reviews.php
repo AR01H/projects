@@ -193,7 +193,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               </button>
             </div>
             <p style="font-size:12px;color:var(--ah-muted);margin:0 0 14px;">
-              Add photos from the occasion — wedding, event, party etc. Drag to reorder.
+              Add photos from the occasion - wedding, event, party etc. Drag to reorder.
             </p>
 
             <div id="rv-gallery" style="display:flex;flex-wrap:wrap;gap:12px;min-height:60px;">

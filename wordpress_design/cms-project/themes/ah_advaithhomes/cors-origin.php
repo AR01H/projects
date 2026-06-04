@@ -1,6 +1,6 @@
 <?php
 // -----------------------------------------------
-// CONFIG — change only this section
+// CONFIG - change only this section
 // -----------------------------------------------
 
 define('CORS_MODE', 'specific'); // 'all' or 'specific'

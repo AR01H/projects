@@ -157,7 +157,7 @@ $crumbs[] = [ get_the_title(), '' ];
         </div>
         <?php endif; ?>
 
-        <!-- Useful Links — only shown when post is tagged with 'useful-links' taxonomy TYPE -->
+        <!-- Useful Links - only shown when post is tagged with 'useful-links' taxonomy TYPE -->
         <?php if ( class_exists( 'AH_Theme_Content_Taxonomy' ) && AH_Theme_Content_Taxonomy::has_terms_of_type( get_the_ID(), 'ah_post', 'useful-links' ) ) : ?>
         <div class="sidebar-card">
           <div class="sidebar-card__title"><?php echo esc_html( TXT_USEFUL_LINKS ); ?></div>
@@ -178,7 +178,7 @@ $crumbs[] = [ get_the_title(), '' ];
 <?php endwhile; ?>
 
 <?php
-// ── Related Articles & You Might Also Like — only when post is tagged with 'related-articles' taxonomy TYPE ──
+// ── Related Articles & You Might Also Like - only when post is tagged with 'related-articles' taxonomy TYPE ──
 $_show_related = class_exists( 'AH_Theme_Content_Taxonomy' ) && AH_Theme_Content_Taxonomy::has_terms_of_type( get_the_ID(), 'ah_post', 'related-articles' );
 
 $_current_cat_ids = wp_get_post_categories( get_the_ID() );

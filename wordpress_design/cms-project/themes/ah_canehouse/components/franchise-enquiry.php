@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 $s          = ch_get_settings();
 $frn_heading = $s['franchise_wiz_heading'] ?? 'Own a <span class="accent">Cane House</span> Franchise';
-$frn_sub     = $s['franchise_wiz_sub']     ?? 'Join a growing network of franchise partners. We\'ll walk you through every step — from site to launch.';
+$frn_sub     = $s['franchise_wiz_sub']     ?? 'Join a growing network of franchise partners. We\'ll walk you through every step - from site to launch.';
 $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80';
 ?>
 
@@ -83,7 +83,7 @@ $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo
 								<option>Kiosk / Cart (small footprint)</option>
 								<option>Food Court Unit</option>
 								<option>Full Standalone Store</option>
-								<option>Not sure yet — need guidance</option>
+								<option>Not sure yet - need guidance</option>
 							</select>
 						</div>
 						<div class="ch-bk-field">

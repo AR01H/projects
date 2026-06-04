@@ -1,6 +1,6 @@
 <?php
 /**
- * Mortgages page — informational hub for the "Finance & Mortgages" category.
+ * Mortgages page - informational hub for the "Finance & Mortgages" category.
  * All content pulled from the DB (WP category + posts). No hardcoded copy
  * beyond labels/constants.
  */
@@ -42,7 +42,7 @@ if ( ! function_exists( 'nhp_meta' ) ) {
 	'eyebrow'    => 'Finance & Mortgages',
 	'title'      => 'Understand UK',
 	'title_em'   => 'Mortgages',
-	'desc'       => 'Independent guides on mortgage rules, eligibility, rates, and the lending process — written to help you borrow with confidence.',
+	'desc'       => 'Independent guides on mortgage rules, eligibility, rates, and the lending process - written to help you borrow with confidence.',
 	'breadcrumb' => [
 		[ 'Home', home_url( '/' ) ],
 		[ 'Mortgages', '' ],

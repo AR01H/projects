@@ -1,6 +1,6 @@
 <?php
 /**
- * Homepage — Editorial / Informational rebuild (MoveIQ-inspired).
+ * Homepage - Editorial / Informational rebuild (MoveIQ-inspired).
  * All content from DB/CMS. Hardcoded labels in includes/common_terms.php only.
  */
 defined( 'ABSPATH' ) || exit;
@@ -18,7 +18,7 @@ if ( class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
 	$parent_terms = $_pt_model->get_all_active();
 }
 
-// All posts — hero (1) + bento (6) + grid (6)
+// All posts - hero (1) + bento (6) + grid (6)
 $all_posts  = get_posts( [
 	'posts_per_page'      => 13,
 	'post_status'         => 'publish',
@@ -111,7 +111,7 @@ if ( ! function_exists( 'nhp_card_from_news' ) ) {
 $nhp_news_q = array_map( 'nhp_card_from_news', $news_items );
 $nhp_post_q = array_map( 'nhp_card_from_post', $bento_posts );
 
-// Allocate bento slots — NEWS slots prefer real news, fall back to posts (with real category)
+// Allocate bento slots - NEWS slots prefer real news, fall back to posts (with real category)
 $card_wide = array_shift( $nhp_news_q ) ?: array_shift( $nhp_post_q );  // big top card
 $card_dark = array_shift( $nhp_post_q );                                // dark feature (post)
 $card_art  = array_shift( $nhp_post_q );                                // article (post)
@@ -144,7 +144,7 @@ $nhp_dots = '<span class="nhp-mq-dots" aria-hidden="true"><i></i><i></i><i class
       Your Complete Guide to <em>Buying Property</em> in the UK
     </h1>
     <p class="nhp-banner__sub">
-      Independent, expert-written guides on rules, regulations, finance, and legal requirements — everything a buyer needs, explained clearly.
+      Independent, expert-written guides on rules, regulations, finance, and legal requirements - everything a buyer needs, explained clearly.
     </p>
 
     <div class="nhp-banner__chips">

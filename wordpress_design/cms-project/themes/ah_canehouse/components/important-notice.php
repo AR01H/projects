@@ -1,6 +1,6 @@
 <?php
 /**
- * Important Notice — Dialog Popup (Component Template)
+ * Important Notice - Dialog Popup (Component Template)
  * Shows once per session/day as a small modal dialog
  *
  * CSS: assets/css/components/important-notice.css

@@ -1,6 +1,6 @@
 <?php
 /**
- * Home Hero Banners — admin manager (plugin level).
+ * Home Hero Banners - admin manager (plugin level).
  * Repeater UI: add / remove / drag-reorder banner slides, each saved to the DB.
  */
 defined( 'ABSPATH' ) || exit;
@@ -56,7 +56,7 @@ function ah_banner_row( $i, array $b, array $align_opts, array $pos_opts ): void
 			<!-- Images: desktop + optional mobile -->
 			<div class="ahb-images">
 				<div class="ahb-field ahb-field--image">
-					<label>Desktop Image <small>(wide — landscape works best)</small></label>
+					<label>Desktop Image <small>(wide - landscape works best)</small></label>
 					<div class="ahb-img-wrap">
 						<div class="ahb-img-preview" <?php echo $image ? 'style="background-image:url(\'' . esc_url( $image ) . '\')"' : ''; ?>></div>
 						<div class="ahb-img-controls">
@@ -67,7 +67,7 @@ function ah_banner_row( $i, array $b, array $align_opts, array $pos_opts ): void
 					</div>
 				</div>
 				<div class="ahb-field ahb-field--image">
-					<label>Mobile Image <small>(optional — tall/portrait; falls back to desktop)</small></label>
+					<label>Mobile Image <small>(optional - tall/portrait; falls back to desktop)</small></label>
 					<div class="ahb-img-wrap">
 						<div class="ahb-img-preview ahb-img-preview--mobile" <?php echo $image_m ? 'style="background-image:url(\'' . esc_url( $image_m ) . '\')"' : ''; ?>></div>
 						<div class="ahb-img-controls">
@@ -146,7 +146,7 @@ endif;
 	<h1>🖼️ Home Hero Banners</h1>
 	<p style="color:#666;max-width:760px;">
 		Manage the rotating hero banner shown on the home page. Add as many slides as you like,
-		drag to reorder, and hide any without deleting. Saved to the database — the theme reads it automatically.
+		drag to reorder, and hide any without deleting. Saved to the database - the theme reads it automatically.
 	</p>
 
 	<?php if ( $saved ) : ?>

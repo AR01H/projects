@@ -1,6 +1,6 @@
 <?php
 /**
- * Component: Origins Showcase — Split Hero
+ * Component: Origins Showcase - Split Hero
  * Permanent split screen:
  *   LEFT  → UK hero, always visible & highlighted (the star)
  *   RIGHT → origin countries (India / Pakistan / Brazil) with a small tab
@@ -11,17 +11,17 @@ defined( 'ABSPATH' ) || exit;
 
 $tag      = $args['tag']      ?? 'A Global Tradition';
 $title    = $args['title']    ?? 'The World <span class="accent">Already Knows</span> This Feeling.';
-$subtitle = $args['subtitle'] ?? 'Sugarcane juice has been pressed for centuries across Asia and South America. We brought that same living culture to the UK — no shortcuts, no bottles, pressed live in front of you.';
+$subtitle = $args['subtitle'] ?? 'Sugarcane juice has been pressed for centuries across Asia and South America. We brought that same living culture to the UK - no shortcuts, no bottles, pressed live in front of you.';
 
-/* ── UK (the hero, left — always highlighted) ───────────────────────── */
+/* ── UK (the hero, left - always highlighted) ───────────────────────── */
 $uk = $args['uk_entry'] ?? [
 	'flag'     => '🇬🇧',
-	'name'     => 'The Cane House — UK',
+	'name'     => 'The Cane House - UK',
 	'badge'    => 'NOW IN THE UK',
 	'headline' => 'That Culture. Right Here. Right Now.',
 	'desc'     => 'We pressed our first glass in the UK so you never have to miss it again. Fresh stalks sourced from South Asia, pressed live on our machine, blended with authentic botanicals. Watch it happen in front of you.',
 	'points'   => [
-		'Fresh stalks pressed live — no bottles, no preservatives',
+		'Fresh stalks pressed live - no bottles, no preservatives',
 		'Blended with authentic South Asian botanicals',
 		'The same press you\'d find on the streets of Lahore or Mumbai',
 		'Available for events, markets & hire across the UK',
@@ -30,7 +30,7 @@ $uk = $args['uk_entry'] ?? [
 	'video_url' => 'https://www.youtube.com/embed/OmidK8z4YzE?si=us9NS6YJQn7GO9TL',
 ];
 
-/* ── Origin countries (right — small, switchable) ──────────────────── */
+/* ── Origin countries (right - small, switchable) ──────────────────── */
 $origins = $args['origins'] ?? [
 	[
 		'id'      => 'india',
@@ -38,7 +38,7 @@ $origins = $args['origins'] ?? [
 		'name'    => 'India',
 		'tagline' => 'The birthplace',
 		'headline'=> 'The Streets That Started It All',
-		'desc'    => 'Every gali in India has a press. Sugarcane juice isn\'t a trend here — it\'s been the street culture heartbeat for over 2,000 years. Pressed on hand-cranked kolhus, served ice-cold.',
+		'desc'    => 'Every gali in India has a press. Sugarcane juice isn\'t a trend here - it\'s been the street culture heartbeat for over 2,000 years. Pressed on hand-cranked kolhus, served ice-cold.',
 		'points'  => [
 			'Pressed live on roadside kolhus for centuries',
 			'Served with black salt, ginger & fresh lime',
@@ -65,8 +65,8 @@ $origins = $args['origins'] ?? [
 		'flag'    => '🇧🇷',
 		'name'    => 'Brazil',
 		'tagline' => 'On every corner',
-		'headline'=> 'Caldo de Cana — A Way of Life',
-		'desc'    => 'Brazil is the world\'s biggest cane producer and they drink it everywhere. Beach kiosks, market stalls, roadsides — caldo de cana with fresh lime over crushed ice.',
+		'headline'=> 'Caldo de Cana - A Way of Life',
+		'desc'    => 'Brazil is the world\'s biggest cane producer and they drink it everywhere. Beach kiosks, market stalls, roadsides - caldo de cana with fresh lime over crushed ice.',
 		'points'  => [
 			'World\'s largest sugarcane producer by volume',
 			'Pressed with fresh lime over crushed ice',
@@ -155,7 +155,7 @@ $uk = (array) $uk;
 
 	<div class="ch-orig-split">
 
-		<!-- ══ LEFT: UK hero — always visible, highlighted ════════════════ -->
+		<!-- ══ LEFT: UK hero - always visible, highlighted ════════════════ -->
 		<div class="ch-orig-uk">
 			<span class="ch-orig-uk-ribbon">★ The Cane House</span>
 			<?php ch_orig_media_block( $uk['images'] ?? [], $uk['video_url'] ?? '', $uk['flag'] ?? '🇬🇧' ); ?>
@@ -179,7 +179,7 @@ $uk = (array) $uk;
 			</div>
 		</div>
 
-		<!-- ══ RIGHT: origin countries — small, switchable ═══════════════ -->
+		<!-- ══ RIGHT: origin countries - small, switchable ═══════════════ -->
 		<div class="ch-orig-side">
 			<div class="ch-orig-side-head">
 				<span class="ch-orig-side-label">Where It Comes From</span>

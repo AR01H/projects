@@ -1367,7 +1367,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     margin-top: 2rem;
 }
 
-/* Carousel controls — only shown on mobile (see ≤960px) */
+/* Carousel controls - only shown on mobile (see ≤960px) */
 .ch-benefits-nav { display: none; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.25rem; }
 
 .ch-benefit-item {
@@ -2568,7 +2568,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 .mission-card h3 { font-family: var(--ch-font-display); font-weight: 900; color: var(--ch-green-deep); margin-bottom: 0.8rem; font-size: 1.3rem; }
 .mission-card p  { color: var(--ch-text-muted); font-size: 0.95rem; line-height: 1.7; }
 
-/* Mission carousel controls — only shown on the mobile carousel */
+/* Mission carousel controls - only shown on the mobile carousel */
 .mission-nav { display: none; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
 
 @media (max-width: 768px) {
@@ -6199,7 +6199,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-mg-header  { text-align: center; margin-bottom: 3rem; }
 .ch-mg-header .section-body { margin-inline: auto; text-align: center; }
 
-/* ── Desktop grid — 6-col base, 2 rows, alternating L·M·S pattern ──────────── */
+/* ── Desktop grid - 6-col base, 2 rows, alternating L·M·S pattern ──────────── */
 /*
    Row 1:  [ item1: 2col · med ] [ item2: 3col · large    ] [ item3: 1col · sm ]
    Row 2:  [ item4: 3col · large         ] [ item5: 1col ] [ item6: 2col · med ]
@@ -8432,7 +8432,7 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
     .ch-turn-leaf { display: none; }
 }
 /* ═══════════════════════════════════════════════════════════════════════════
-   FEATURE CAROUSEL (reusable)  —  .ch-fc-*
+   FEATURE CAROUSEL (reusable)  -  .ch-fc-*
    Mixed-variant cards in a swipeable, snapping track. See components/feature-carousel.php
    ═══════════════════════════════════════════════════════════════════════════ */
 .ch-fc-section {
@@ -8638,7 +8638,7 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   POST / CATEGORY FILTER (reusable)  —  .ch-filter
+   POST / CATEGORY FILTER (reusable)  -  .ch-filter
    Chips for a few categories, compact dropdown for many. See components/post-filter.php
    ═══════════════════════════════════════════════════════════════════════════ */
 .ch-filter {
@@ -8663,7 +8663,7 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
     flex-shrink: 0;
 }
 
-/* Chips — single non-wrapping row, scrolls if needed (never wastes vertical space) */
+/* Chips - single non-wrapping row, scrolls if needed (never wastes vertical space) */
 .ch-filter__chips {
     display: flex;
     gap: 0.5rem;
@@ -8693,7 +8693,7 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
     color: var(--ch-green-deep);
 }
 
-/* Dropdown — compact, used when categories exceed the threshold */
+/* Dropdown - compact, used when categories exceed the threshold */
 .ch-filter__select {
     flex: 0 1 280px;
     max-width: 100%;
@@ -8743,7 +8743,7 @@ a.ch-cq-card:hover { border-color: var(--ch-lime); transform: translateY(-4px); 
 }
 
 .ch-nav__link.is-active::after {
-    /* underline indicator — only needed if your theme draws one on hover */
+    /* underline indicator - only needed if your theme draws one on hover */
     width: 100%;
 }
 
