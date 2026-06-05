@@ -12,11 +12,12 @@ $cert_img     = get_template_directory_uri() . '/assets/images/ncass_logo.png';
 <section id="certifications" class="ch-certs-section">
 	<div class="container">
 
-		<div class="ch-certs-header fade-up">
-			<div class="section-tag"><?php echo esc_html( $cert_tag ); ?></div>
-			<h2 class="section-title"><?php echo wp_kses( $cert_heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
-			<p class="section-body"><?php echo esc_html( $cert_sub ); ?></p>
-		</div>
+		<?php get_template_part( 'components/section-header', null, [
+			'tag'           => $cert_tag,
+			'title'         => $cert_heading,
+			'body'          => $cert_sub,
+			'wrapper_class' => 'ch-certs-header',
+		] ); ?>
 
 		<div class="ch-certs-layout">
 

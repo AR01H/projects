@@ -4,6 +4,8 @@
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
+
+$_cta = CH_Shared_Data::section_heading( 'cta_contact' );
 ?>
 
 
@@ -14,9 +16,9 @@ get_header();
 
 
 <?php get_template_part( 'components/cta-section', null, [
-	'tag'        => 'Work With Us',
-	'heading'    => 'Look at us <span class="accent" style="color:var(--client-color-7);"> Its Amazing</span>',
-	'body'       => 'Book us for your next event, or take the leap and bring The Cane House to your city with a franchise.',
+	'tag'        => $_cta['tag']     ?? '',
+	'heading'    => $_cta['heading'] ?? '',
+	'body'       => $_cta['body']    ?? '',
 	'btn_label'  => '🥤View Event',
 	'btn_url'    => home_url( '/events/' ),
 	'btn2_label' => 'Explore Franchise',

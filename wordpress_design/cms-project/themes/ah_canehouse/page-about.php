@@ -3,11 +3,15 @@
 defined( 'ABSPATH' ) || exit;
 
 // Load data from JSON files in real_data/json
-$about_header =  CH_About_Data::page_header_info();
-$about_values = ch_get_about_quality();
-$about_origin = CH_About_Data::origin_settings();
+$about_header            = CH_About_Data::page_header_info();
+$about_values            = ch_get_about_quality();
+$about_origin            = CH_About_Data::origin_settings();
 $about_origin_milestones = CH_About_Data::origin_milestones();
-$mvv           = ch_get_about_mvv();
+$mvv                     = ch_get_about_mvv();
+$_gallery_about          = CH_Shared_Data::section_heading( 'gallery_about' );
+$_gallery_strip          = CH_Shared_Data::section_heading( 'gallery_strip_about' );
+$_events_preview         = CH_Shared_Data::section_heading( 'events_preview' );
+$_cta                    = CH_Shared_Data::section_heading( 'cta_about' );
 
 get_header(); ?>
 
@@ -34,18 +38,18 @@ get_header(); ?>
 
 <!-- ── About Gallery ─────────────────────────────────────────────────────────── -->
 <?php get_template_part( 'components/media-gallery', null, [
-	'tag'   => 'Our Gallery',
-	'title' => 'View <span class="accent">Our Hygiene</span>',
-	'body'  => 'A visual journey through our beginnings, our team, and the craft behind every glass.',
+	'tag'   => $_gallery_about['tag']   ?? '',
+	'title' => $_gallery_about['title'] ?? '',
+	'body'  => $_gallery_about['body']  ?? '',
 	'bg'    => 'var(--accent)',
 	'id'    => 'mg-about',
 	'items' => ch_get_about_gallery(),
-] ); 
+] );
 
 get_template_part( 'components/gallery-strip', null, [
-	'tag'      => 'Behind the Scenes',
-	'title'    => 'Our Equipment, <span class="accent">Our Craft</span>',
-	'body'     => 'The machines, the setup, the ingredients - everything that goes into every perfect glass.',
+	'tag'      => $_gallery_strip['tag']   ?? '',
+	'title'    => $_gallery_strip['title'] ?? '',
+	'body'     => $_gallery_strip['body']  ?? '',
 	'modifier' => 'ch-gstrip--about',
 	'id'       => 'gstrip-about',
 	'bg'       => 'var(--client-color-11)',
@@ -59,16 +63,16 @@ get_template_part( 'components/gallery-strip', null, [
 
 <!-- ── Events preview ────────────────────────────────────────────────────────── -->
 <?php get_template_part( 'components/events-preview', null, [
-	'tag'     => 'Events & Hire',
-	'heading' => 'Need Us at Your <span class="accent">Event?</span>',
-	'body'    => 'From weddings to corporate events, we bring freshly-pressed sugarcane juice live to your guests.',
+	'tag'     => $_events_preview['tag']     ?? '',
+	'heading' => $_events_preview['heading'] ?? '',
+	'body'    => $_events_preview['body']    ?? '',
 ] ); ?>
 
 <!-- ── CTA ────────────────────────────────────────────────────────────────────── -->
 <?php get_template_part( 'components/cta-section', null, [
-	'tag'        => 'Work With Us',
-	'heading'    => 'Let\'s Do Something <span class="accent" style="color:var(--client-color-7);">Amazing</span>',
-	'body'       => 'Book us for your next event, or take the leap and bring The Cane House to your city with a franchise.',
+	'tag'        => $_cta['tag']     ?? '',
+	'heading'    => $_cta['heading'] ?? '',
+	'body'       => $_cta['body']    ?? '',
 	'btn_label'  => '🥤 Book an Event',
 	'btn_url'    => home_url( '/events/' ),
 	'btn2_label' => 'Explore Franchise',

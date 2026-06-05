@@ -5,17 +5,19 @@
 defined( 'ABSPATH' ) || exit;
 get_header();
 
-$ew = class_exists( 'CH_Hire_Data' ) ? CH_Hire_Data::events_why() : [];
-$gallery_items =  ch_get_events_media_gallery();
+$ew            = class_exists( 'CH_Hire_Data' ) ? CH_Hire_Data::events_why() : [];
+$gallery_items = ch_get_events_media_gallery();
+$_hero         = CH_Shared_Data::section_heading( 'page_hero_events' );
+$_gallery      = CH_Shared_Data::section_heading( 'gallery_events' );
 
 ?>
 
 <main class="ch-main" id="main-content">
 
 <?php get_template_part( 'components/page-hero', null, [
-	'tag'        => 'Live Juice Stall Hire',
-	'heading'    => 'Events & <em>Hire</em>',
-	'desc'       => 'Bring The Cane House to your celebration. Live-pressed sugarcane juice - a unique, and unforgettable experience for your guests.',
+	'tag'        => $_hero['tag']     ?? '',
+	'heading'    => $_hero['heading'] ?? '',
+	'desc'       => $_hero['desc']    ?? '',
 	'modifier'   => 'ch-page-hero--events',
 	'btn1_label' => 'Hire Us',
 	'btn1_url'   => '#booking',
@@ -27,9 +29,9 @@ $gallery_items =  ch_get_events_media_gallery();
 <?php get_template_part( 'components/event-typesection' ); ?>
 
 <?php get_template_part( 'components/media-gallery', null, [
-	'tag'   => 'Events Gallery',
-	'title' => 'The Cane House <span class="accent">at Your Events</span>',
-	'body'  => 'A glimpse of the live experience we bring - from intimate gatherings to 500-guest celebrations.',
+	'tag'   => $_gallery['tag']   ?? '',
+	'title' => $_gallery['title'] ?? '',
+	'body'  => $_gallery['body']  ?? '',
 	'bg'    => 'var(--client-color-6)',
 	'id'    => 'mg-events',
 	'items' => $gallery_items

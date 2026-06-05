@@ -16,6 +16,8 @@
  *  dark          bool    Preset dark-background colour overrides
  *  wrapper_class string  Extra class on the wrapper div
  *  wrapper_style string  Inline style on the wrapper div
+ *  wrapper_base  string  Base class(es) for wrapper (default: 'ch-section-center fade-up')
+ *  no_wrapper    bool    Output elements with no surrounding div (for embedded layouts)
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -33,6 +35,8 @@ $body_style    = $args['body_style']    ?? '';
 $dark          = ! empty( $args['dark'] );
 $wrapper_class = $args['wrapper_class'] ?? '';
 $wrapper_style = $args['wrapper_style'] ?? '';
+$wrapper_base  = $args['wrapper_base']  ?? 'ch-section-center fade-up';
+$no_wrapper    = ! empty( $args['no_wrapper'] );
 
 if ( ! $tag && ! $title && ! $body ) return;
 
@@ -50,9 +54,11 @@ if ( $dark ) {
 	$body_style    = $body_style    ?: 'color:rgba(255,255,255,0.65)';
 }
 
-$wrapper_cls = trim( 'ch-section-center fade-up ' . $wrapper_class );
+$wrapper_cls = trim( $wrapper_base . ' ' . $wrapper_class );
 ?>
+<?php if ( ! $no_wrapper ) : ?>
 <div class="<?php echo esc_attr( $wrapper_cls ); ?>"<?php echo $wrapper_style ? ' style="' . esc_attr( $wrapper_style ) . '"' : ''; ?>>
+<?php endif; ?>
 	<?php if ( $tag ) : ?>
 		<div class="<?php echo esc_attr( $tag_class ); ?>"<?php echo $tag_style ? ' style="' . esc_attr( $tag_style ) . '"' : ''; ?>><?php echo esc_html( $tag ); ?></div>
 	<?php endif; ?>
@@ -62,4 +68,6 @@ $wrapper_cls = trim( 'ch-section-center fade-up ' . $wrapper_class );
 	<?php if ( $body ) : ?>
 		<p class="<?php echo esc_attr( $body_class ); ?>"<?php echo $body_style ? ' style="' . esc_attr( $body_style ) . '"' : ''; ?>><?php echo esc_html( $body ); ?></p>
 	<?php endif; ?>
+<?php if ( ! $no_wrapper ) : ?>
 </div>
+<?php endif; ?>

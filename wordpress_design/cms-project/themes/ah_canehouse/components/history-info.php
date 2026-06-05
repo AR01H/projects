@@ -14,11 +14,14 @@ function ch_get_history_pages() {
 <section id="ch-history" class="ch-history-section">
     <div class="container">
 
-        <div class="ch-history__header fade-up">
-            <div class="ch-section-tag">Story of Sugarcane</div>
-            <h2 class="ch-section-title">10,000 Years of <span class="accent">Sweet History</span></h2>
-            <p class="ch-section-body">From a wild grass in New Guinea to the world's most traded commodity - the extraordinary journey of sugarcane.</p>
-        </div>
+        <?php
+        $_h = CH_Shared_Data::section_heading( 'history_info' );
+        get_template_part( 'components/section-header', null, [
+            'tag'           => $_h['tag']   ?? '',
+            'title'         => $_h['title'] ?? '',
+            'body'          => $_h['body']  ?? '',
+            'wrapper_class' => 'ch-history__header',
+        ] ); ?>
 
         
     </div>

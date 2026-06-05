@@ -1,5 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+$_d       = CH_Shared_Data::section_heading( 'event_type' );
 $packages = ch_get_hire_packages();
 $features = ch_get_hire_features();
 $settings = ch_get_settings();
@@ -8,11 +9,12 @@ $settings = ch_get_settings();
 <section id="hire" class="ch-hire-section">
 	<div class="ch-hire-container">
 
-		<div class="ch-hire__header fade-up">
-			<div class="ch-section-tag">Live Juice Stall Hire</div>
-			<h2 class="ch-section-title">Bring Us to <span class="accent">Your Event</span></h2>
-			<p class="ch-section-body">Elevate your celebration with our premium live-pressed sugarcane juice experience - perfect for weddings, Mehndi nights, Eid parties, Diwali celebrations, and corporate gatherings.</p>
-		</div>
+		<?php get_template_part( 'components/section-header', null, [
+			'tag'           => $_d['tag']   ?? '',
+			'title'         => $_d['title'] ?? '',
+			'body'          => $_d['body']  ?? '',
+			'wrapper_class' => 'ch-hire__header',
+		] ); ?>
 
 		<!-- ── Carousel wrapper ───────────────────────────────────────────────── -->
 		<div class="ch-hire-carousel ch-carousel" id="ch-hire-carousel" style="--cc-items-visible: 3;">

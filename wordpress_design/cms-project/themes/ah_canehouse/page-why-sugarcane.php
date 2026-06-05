@@ -5,8 +5,11 @@
 defined( 'ABSPATH' ) || exit;
 get_header();
 
-$settings = ch_get_settings();
-$phone    = $settings['phone'] ?? CONTACT_NUMBER;
+$settings   = ch_get_settings();
+$phone      = $settings['phone'] ?? CONTACT_NUMBER;
+$_hero      = CH_Shared_Data::section_heading( 'page_hero_why_sugarcane' );
+$_nutrition = CH_Shared_Data::section_heading( 'nutrition_split' );
+$_cta       = CH_Shared_Data::section_heading( 'cta_why_sugarcane' );
 ?>
 
 <main class="ch-main" id="main-content">
@@ -14,9 +17,9 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
 <?php get_template_part( 'components/page-hero', null, [
 	'modifier' => 'ch-page-hero--sugarcane',
-	'tag'      => 'Nature\'s Gift',
-	'heading'  => 'Why <em>Sugarcane?</em>',
-	'desc'     => 'Sugarcane has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world\'s most natural energy drink - and why we\'re proud to bring it to the UK.',
+	'tag'      => $_hero['tag']     ?? '',
+	'heading'  => $_hero['heading'] ?? '',
+	'desc'     => $_hero['desc']    ?? '',
 ] ); ?>
 
 <?php 
@@ -71,9 +74,9 @@ get_template_part( 'components/image-text-split', null, [
 	'layout'        => 'image-right',
 	'section_class' => 'ch-inside-section',
 	'inner_class'   => 'ch-inside-grid',
-	'tag'           => 'Nutritional Profile',
-	'title'         => 'What\'s Inside <span class="accent">Every Sip</span>',
-	'body'          => 'A single 350ml glass of freshly pressed sugarcane juice delivers a surprising range of natural nutrients:',
+	'tag'           => $_nutrition['tag']   ?? '',
+	'title'         => $_nutrition['title'] ?? '',
+	'body'          => $_nutrition['body']  ?? '',
 	'extra_html'    => $_inside_extra,
 	'visual_html'   => $_inside_visual,
 	'visual_class'  => 'ch-inside-visual',
@@ -91,9 +94,9 @@ unset( $_inside_extra, $_inside_visual );
 <?php get_template_part( 'components/beyondjuice' ); ?>
 
 <?php get_template_part( 'components/cta-section', null, [
-	'tag'        => 'Experience It',
-	'heading'    => 'Ready to <span class="accent" style="color:var(--client-color-7);">Taste the Tradition?</span>',
-	'body'       => 'Book us for your next event or explore a franchise opportunity in your city.',
+	'tag'        => $_cta['tag']     ?? '',
+	'heading'    => $_cta['heading'] ?? '',
+	'body'       => $_cta['body']    ?? '',
 	'btn_label'  => '🥤 Book an Event',
 	'btn_url'    => home_url( '/events/' ),
 	'btn2_label' => 'Explore Franchise →',

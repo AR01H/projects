@@ -4,14 +4,17 @@
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
+
+$_hero    = CH_Shared_Data::section_heading( 'page_hero_franchise' );
+$_gallery = CH_Shared_Data::section_heading( 'gallery_franchise' );
 ?>
 
 <main class="ch-main" id="main-content">
 
 <?php get_template_part( 'components/page-hero', null, [
-	'tag'        => 'Grow With Us',
-	'heading'    => 'Franchise <em>Opportunities</em>',
-	'desc'       => 'Join the UK\'s fastest-growing natural juice movement. Bring live-pressed sugarcane juice to your city - we provide everything you need to succeed.',
+	'tag'        => $_hero['tag']     ?? '',
+	'heading'    => $_hero['heading'] ?? '',
+	'desc'       => $_hero['desc']    ?? '',
 	'modifier'   => 'ch-page-hero--franchise',
 	'btn1_label' => 'Start Your Enquiry',
 	'btn1_url'   => '#franchise-enquiry',
@@ -19,9 +22,9 @@ get_header();
 ] ); ?>
 
 <?php get_template_part( 'components/media-gallery', null, [
-	'tag'   => 'Franchise Gallery',
-	'title' => 'The Cane House <span class="accent">in Action</span>',
-	'body'  => 'Our partners across the UK - branded stalls, live pressing, and happy queues.',
+	'tag'   => $_gallery['tag']   ?? '',
+	'title' => $_gallery['title'] ?? '',
+	'body'  => $_gallery['body']  ?? '',
 	'bg'    => 'var(--client-color-11)',
 	'id'    => 'mg-franchise',
 	'items' => ch_get_franchise_media_gallery(),

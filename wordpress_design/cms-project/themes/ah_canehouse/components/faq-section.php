@@ -1,5 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+$_d = CH_Shared_Data::section_heading( 'faq' );
 // FAQs come from the CMS plugin (AH_Faqs_Model) via ch_get_faqs().
 $faqs_all   = ch_get_faqs( '', 100 );
 $home_limit = ch_home_limit( 'faqs', 6 );
@@ -8,11 +9,12 @@ $has_more   = $home_limit > 0 && count( $faqs_all ) > $home_limit;
 ?>
 
 <section id="faq" class="ch-faq-section">
-	<div class="ch-faq__header fade-up">
-		<div class="ch-section-tag">Questions?</div>
-		<h2 class="ch-section-title">Common <span class="accent">Queries</span></h2>
-		<p class="ch-section-body">Everything you need to know about our fresh sugarcane juice and services.</p>
-	</div>
+	<?php get_template_part( 'components/section-header', null, [
+		'tag'           => $_d['tag']   ?? '',
+		'title'         => $_d['title'] ?? '',
+		'body'          => $_d['body']  ?? '',
+		'wrapper_class' => 'ch-faq__header',
+	] ); ?>
 
 	<div class="ch-faq-grid fade-up" role="list">
 		<?php foreach ( $faqs as $i => $faq ) :

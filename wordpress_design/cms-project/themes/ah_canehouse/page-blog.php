@@ -23,15 +23,16 @@ if ( $active_cat ) {
 }
 $journal_query = new WP_Query( $args );
 $wp_cats       = get_categories( [ 'hide_empty' => true ] );
+$_hero         = CH_Shared_Data::section_heading( 'page_hero_blog' );
 ?>
 
 <main class="ch-main" id="main-content">
 
 <!-- ── Page Header (reusable hero component) ───────────────────────────────── -->
 <?php get_template_part( 'components/page-hero', null, [
-	'tag'     => 'The Cane Journal',
-	'heading' => 'Fresh Reads from <em>The Cane House</em>',
-	'desc'    => 'Tips, recipes, and stories from South Asian juice culture.',
+	'tag'     => $_hero['tag']     ?? '',
+	'heading' => $_hero['heading'] ?? '',
+	'desc'    => $_hero['desc']    ?? '',
 ] ); ?>
 
 <!-- ── Category Filter (reusable component) ────────────────────────────────── -->

@@ -42,13 +42,12 @@ $lightbox_id = $uid . '-lb';
 <section class="ch-mg-section" style="background:<?php echo esc_attr( $bg ); ?>;" id="<?php echo $uid; ?>-section">
 <div class="container">
 
-	<?php if ( $title ) : ?>
-	<div class="ch-mg-header fade-up">
-		<?php if ( $tag ) : ?><div class="section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
-		<h2 class="section-title"><?php echo wp_kses( $title, $allowed ); ?></h2>
-		<?php if ( $body ) : ?><p class="section-body"><?php echo esc_html( $body ); ?></p><?php endif; ?>
-	</div>
-	<?php endif; ?>
+	<?php get_template_part( 'components/section-header', null, [
+		'tag'           => $tag,
+		'title'         => $title,
+		'body'          => $body,
+		'wrapper_class' => 'ch-mg-header',
+	] ); ?>
 
 	<!-- Desktop: bento grid  |  Mobile: scroll carousel (same markup, CSS drives both) -->
 	<div class="ch-mg-grid" id="<?php echo $uid; ?>">

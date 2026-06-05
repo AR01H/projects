@@ -25,9 +25,12 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 	<div class="container">
 		<div class="ch-why-grid">
 			<div class="fade-left">
-				<div class="section-tag"><?php echo esc_html( $tag ); ?></div>
-				<h2 class="section-title"><?php echo wp_kses( $title, $allowed ); ?></h2>
-				<p class="section-body"><?php echo esc_html( $body ); ?></p>
+				<?php get_template_part( 'components/section-header', null, [
+					'tag'        => $tag,
+					'title'      => $title,
+					'body'       => $body,
+					'no_wrapper' => true,
+				] ); ?>
 				<div class="ch-why-list">
 					<?php foreach ( $items as $item ) : ?>
 						<div class="ch-why-item">

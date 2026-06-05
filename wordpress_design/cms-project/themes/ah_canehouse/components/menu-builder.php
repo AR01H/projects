@@ -1,5 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+$_d           = CH_Shared_Data::section_heading( 'menu_builder' );
 $sizes        = ch_get_menu_sizes();
 $cane_types   = ch_get_cane_types();
 $textures     = ch_get_textures();
@@ -8,11 +9,12 @@ $show_prices  = ch_show_prices();
 ?>
 
 <section id="build" class="ch-build-section">
-	<div class="ch-build__header fade-up">
-		<div class="ch-section-tag">Full Menu</div>
-		<h2 class="ch-section-title">Build Your <span class="accent">Juice</span></h2>
-		<p class="ch-section-body">Mix and match size, cane type, texture and flavour - pressed live, just for you.</p>
-	</div>
+	<?php get_template_part( 'components/section-header', null, [
+		'tag'           => $_d['tag']   ?? '',
+		'title'         => $_d['title'] ?? '',
+		'body'          => $_d['body']  ?? '',
+		'wrapper_class' => 'ch-build__header',
+	] ); ?>
 
 	<div class="ch-build-grid">
 

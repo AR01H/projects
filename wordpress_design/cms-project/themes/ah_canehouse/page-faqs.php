@@ -8,6 +8,7 @@ get_header();
 $faqs     = ch_get_faqs( '', 200 );
 $settings = ch_get_settings();
 $phone    = $settings['phone'] ?? CONTACT_NUMBER;
+$_hero    = CH_Shared_Data::section_heading( 'page_hero_faqs' );
 
 // Group by topic (preserve order of first appearance)
 $grouped = [];
@@ -23,9 +24,9 @@ foreach ( $faqs as $faq ) {
 
 <!-- ── Hero (Reusable Component) ────────────────────────────────────────────── -->
 <?php get_template_part( 'components/page-hero', null, [
-	'tag'      => 'Got Questions?',
-	'heading'  => 'Frequently Asked <em>Questions</em>',
-	'desc'     => 'Everything you need to know about The Cane House - our juice, events, hire, and more.',
+	'tag'      => $_hero['tag']     ?? '',
+	'heading'  => $_hero['heading'] ?? '',
+	'desc'     => $_hero['desc']    ?? '',
 	'modifier' => 'ch-page-hero--sugarcane',
 ] ); ?>
 

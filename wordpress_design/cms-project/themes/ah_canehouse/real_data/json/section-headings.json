@@ -82,5 +82,95 @@
 	"franchise_enquiry": {
 		"heading": "Own a <span class=\"accent\">Cane House</span> Franchise",
 		"sub":     "Join a growing network of franchise partners. We'll walk you through every step - from site to launch."
+	},
+	"faq": {
+		"tag":   "Questions?",
+		"title": "Common <span class=\"accent\">Queries</span>",
+		"body":  "Everything you need to know about our fresh {product_name} and services."
+	},
+	"menu_builder": {
+		"tag":   "Full Menu",
+		"title": "Build Your <span class=\"accent\">Juice</span>",
+		"body":  "Mix and match size, variety, texture and flavour - pressed live, just for you."
+	},
+	"event_type": {
+		"tag":   "Live Juice Stall Hire",
+		"title": "Bring Us to <span class=\"accent\">Your Event</span>",
+		"body":  "Elevate your celebration with our premium live-pressed {product_name} experience - perfect for weddings, Mehndi nights, Eid parties, Diwali celebrations, and corporate gatherings."
+	},
+	"history_info": {
+		"tag":   "Story of {Product_short}",
+		"title": "10,000 Years of <span class=\"accent\">Sweet History</span>",
+		"body":  "From a wild grass in New Guinea to the world's most traded commodity - the extraordinary journey of {product_short}."
+	},
+	"page_hero_faqs": {
+		"tag":     "Got Questions?",
+		"heading": "Frequently Asked <em>Questions</em>",
+		"desc":    "Everything you need to know about {brand_name} - our juice, events, hire, and more."
+	},
+	"page_hero_events": {
+		"tag":     "Live Juice Stall Hire",
+		"heading": "Events & <em>Hire</em>",
+		"desc":    "Bring {brand_name} to your celebration. Live-pressed {product_name} - a unique, and unforgettable experience for your guests."
+	},
+	"page_hero_franchise": {
+		"tag":     "Grow With Us",
+		"heading": "Franchise <em>Opportunities</em>",
+		"desc":    "Join the UK's fastest-growing natural juice movement. Bring live-pressed {product_name} to your city - we provide everything you need to succeed."
+	},
+	"page_hero_why_sugarcane": {
+		"tag":     "Nature's Gift",
+		"heading": "Why <em>{Product_short}?</em>",
+		"desc":    "{Product_short} has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world's most natural energy drink - and why we're proud to bring it to the UK."
+	},
+	"page_hero_blog": {
+		"tag":     "{brand_name} Journal",
+		"heading": "Fresh Reads from <em>{brand_name}</em>",
+		"desc":    "Tips, recipes, and stories from South Asian juice culture."
+	},
+	"gallery_about": {
+		"tag":   "Our Gallery",
+		"title": "View <span class=\"accent\">Our Hygiene</span>",
+		"body":  "A visual journey through our beginnings, our team, and the craft behind every glass."
+	},
+	"gallery_strip_about": {
+		"tag":   "Behind the Scenes",
+		"title": "Our Equipment, <span class=\"accent\">Our Craft</span>",
+		"body":  "The machines, the setup, the ingredients - everything that goes into every perfect glass."
+	},
+	"gallery_events": {
+		"tag":   "Events Gallery",
+		"title": "{brand_name} <span class=\"accent\">at Your Events</span>",
+		"body":  "A glimpse of the live experience we bring - from intimate gatherings to 500-guest celebrations."
+	},
+	"gallery_franchise": {
+		"tag":   "Franchise Gallery",
+		"title": "{brand_name} <span class=\"accent\">in Action</span>",
+		"body":  "Our partners across the UK - branded stalls, live pressing, and happy queues."
+	},
+	"events_preview": {
+		"tag":     "Events & Hire",
+		"heading": "Need Us at Your <span class=\"accent\">Event?</span>",
+		"body":    "From weddings to corporate events, we bring freshly-pressed {product_name} live to your guests."
+	},
+	"cta_about": {
+		"tag":     "Work With Us",
+		"heading": "Let's Do Something <span class=\"accent\" style=\"color:var(--client-color-7);\">Amazing</span>",
+		"body":    "Book us for your next event, or take the leap and bring {brand_name} to your city with a franchise."
+	},
+	"cta_contact": {
+		"tag":     "Work With Us",
+		"heading": "Look at us <span class=\"accent\" style=\"color:var(--client-color-7);\"> Its Amazing</span>",
+		"body":    "Book us for your next event, or take the leap and bring {brand_name} to your city with a franchise."
+	},
+	"cta_why_sugarcane": {
+		"tag":     "Experience It",
+		"heading": "Ready to <span class=\"accent\" style=\"color:var(--client-color-7);\">Taste the Tradition?</span>",
+		"body":    "Book us for your next event or explore a franchise opportunity in your city."
+	},
+	"nutrition_split": {
+		"tag":   "Nutritional Profile",
+		"title": "What's Inside <span class=\"accent\">Every Sip</span>",
+		"body":  "A single 350ml glass of freshly pressed {product_name} delivers a surprising range of natural nutrients:"
 	}
 }

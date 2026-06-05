@@ -7,11 +7,12 @@ if ( empty( $reviews ) ) return;
 
 <section id="reviews" class="ch-reviews-section">
 
-	<div class="ch-reviews-header fade-up">
-		<div class="section-tag"><?php echo esc_html( $_d['tag'] ?? '' ); ?></div>
-		<h2 class="section-title"><?php echo wp_kses( $_d['title'] ?? '', [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
-		<p class="section-body"><?php echo esc_html( $_d['body'] ?? '' ); ?></p>
-	</div>
+	<?php get_template_part( 'components/section-header', null, [
+		'tag'           => $_d['tag']   ?? '',
+		'title'         => $_d['title'] ?? '',
+		'body'          => $_d['body']  ?? '',
+		'wrapper_class' => 'ch-reviews-header',
+	] ); ?>
 
 	<div class="ch-reviews-wrapper">
 
