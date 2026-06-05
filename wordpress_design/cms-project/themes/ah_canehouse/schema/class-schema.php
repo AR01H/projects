@@ -126,6 +126,7 @@ class CH_Schema {
 			email         VARCHAR(200)    NOT NULL DEFAULT '',
 			phone         VARCHAR(50)     NOT NULL DEFAULT '',
 			cane_types    TEXT            NOT NULL DEFAULT '',
+			textures      TEXT            NOT NULL DEFAULT '',
 			flavours      TEXT            NOT NULL DEFAULT '',
 			occasion      VARCHAR(200)    NOT NULL DEFAULT '',
 			event_date    DATE                         NULL,

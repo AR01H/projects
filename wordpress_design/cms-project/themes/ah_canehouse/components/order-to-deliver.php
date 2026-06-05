@@ -9,7 +9,7 @@ $otd_sub      = $_b['sub'];
 $otd_image    = $_b['image'];
 $otd_features = CH_Order_Data::features();
 
-$time_slots = [ 'Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible' ];
+$time_slots = [ 'Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible','Now' ];
 ?>
 
 <!-- ═══ ORDER-TO-DELIVER BANNER ════════════════════════════════════════════ -->
@@ -107,17 +107,6 @@ $time_slots = [ 'Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm�
 						<?php endforeach; ?>
 					</div>
 
-					<div class="ch-otd-custom-row">
-						<label class="ch-otd-custom-label">
-							<span>✏️ Custom / other item <small>(optional)</small></span>
-						</label>
-						<div class="ch-otd-custom-fields">
-							<input type="text" name="otd_custom_item" class="ch-form-input"
-								placeholder="e.g. Sugarcane with Pineapple">
-							<input type="number" name="otd_custom_qty" class="ch-form-input ch-otd-custom-qty"
-								value="1" min="1" max="99" placeholder="Qty">
-						</div>
-					</div>
 
 					<div class="ch-bk-nav">
 						<span></span>

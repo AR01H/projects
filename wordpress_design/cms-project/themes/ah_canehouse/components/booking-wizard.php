@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 $sizes       = ch_get_menu_sizes();
 $cane_types  = ch_get_cane_types();
+$textures    = ch_get_textures();
 $flavours    = ch_get_flavours();
 $show_prices = function_exists( 'ch_show_prices' ) ? ch_show_prices() : false;
 $s           = ch_get_settings();
@@ -99,12 +100,38 @@ $occasions = ch_get_occasions();
 				</div>
 				<div class="ch-bk-nav">
 					<span></span>
-					<button type="button" class="ch-bk-next btn-lime" data-next="2">Next: Flavour →</button>
+					<button type="button" class="ch-bk-next btn-lime" data-next="2">Next: Texture →</button>
 				</div>
 			</div>
 
-			<!-- ── STEP 2: Flavour (multi-select) ───────────────────────────────── -->
+			<!-- ── STEP 2: Texture (single-select) ──────────────────────────────── -->
 			<div class="ch-bk-step" data-step="2">
+				<h3 class="ch-bk-step-title">Choose your texture</h3>
+				<p class="ch-bk-step-desc">How would you like your juice pressed?</p>
+				<div class="ch-bk-options">
+					<?php foreach ( $textures as $i => $tex ) :
+						$tex = (array) $tex;
+					?>
+						<label class="ch-bk-option">
+							<input type="radio" name="bk_texture" value="<?php echo esc_attr( $tex['name'] ?? '' ); ?>"
+								<?php echo $i === 0 ? 'checked' : ''; ?>>
+							<span class="ch-bk-option-card">
+								<span class="ch-bk-option-check">✓</span>
+								<span class="ch-bk-option-icon"><?php echo esc_html( $tex['icon'] ?? '🥢' ); ?></span>
+								<span class="ch-bk-option-name"><?php echo esc_html( $tex['name'] ?? '' ); ?></span>
+								<span class="ch-bk-option-desc"><?php echo esc_html( $tex['desc'] ?? '' ); ?></span>
+							</span>
+						</label>
+					<?php endforeach; ?>
+				</div>
+				<div class="ch-bk-nav">
+					<button type="button" class="ch-bk-back btn-outline" data-back="1">← Back</button>
+					<button type="button" class="ch-bk-next btn-lime" data-next="3">Next: Flavour →</button>
+				</div>
+			</div>
+
+			<!-- ── STEP 3: Flavour (multi-select) ───────────────────────────────── -->
+			<div class="ch-bk-step" data-step="3">
 				<h3 class="ch-bk-step-title">Choose your flavours</h3>
 				<p class="ch-bk-step-desc">Pick as many as you like - mix and match for your event! 🌿</p>
 				<div class="ch-bk-options ch-bk-options--chips">
@@ -123,13 +150,13 @@ $occasions = ch_get_occasions();
 					<?php endforeach; ?>
 				</div>
 				<div class="ch-bk-nav">
-					<button type="button" class="ch-bk-back btn-outline" data-back="1">← Back</button>
-					<button type="button" class="ch-bk-next btn-lime" data-next="3">Next: Event Details →</button>
+					<button type="button" class="ch-bk-back btn-outline" data-back="2">← Back</button>
+					<button type="button" class="ch-bk-next btn-lime" data-next="4">Next: Event Details →</button>
 				</div>
 			</div>
 
-			<!-- ── STEP 3: Event + Personal Details ─────────────────────────────── -->
-			<div class="ch-bk-step" data-step="3">
+			<!-- ── STEP 4: Event + Personal Details ─────────────────────────────── -->
+			<div class="ch-bk-step" data-step="4">
 				<h3 class="ch-bk-step-title">Tell us about your event</h3>
 				<p class="ch-bk-step-desc">So we can give you the perfect quote.</p>
 
@@ -164,13 +191,13 @@ $occasions = ch_get_occasions();
 				</div>
 
 				<div class="ch-bk-nav">
-					<button type="button" class="ch-bk-back btn-outline" data-back="2">← Back</button>
-					<button type="button" class="ch-bk-next btn-lime" data-next="4">Next: Confirm →</button>
+					<button type="button" class="ch-bk-back btn-outline" data-back="3">← Back</button>
+					<button type="button" class="ch-bk-next btn-lime" data-next="5">Next: Confirm →</button>
 				</div>
 			</div>
 
-			<!-- ── STEP 4: Confirm + Contact ────────────────────────────────────── -->
-			<div class="ch-bk-step" data-step="4">
+			<!-- ── STEP 5: Confirm + Contact ────────────────────────────────────── -->
+			<div class="ch-bk-step" data-step="5">
 				<h3 class="ch-bk-step-title">Almost done! 🌿</h3>
 				<p class="ch-bk-step-desc">Review your order and leave your contact details.</p>
 
@@ -194,7 +221,7 @@ $occasions = ch_get_occasions();
 				</div>
 
 				<div class="ch-bk-nav">
-					<button type="button" class="ch-bk-back btn-outline" data-back="3">← Back</button>
+					<button type="button" class="ch-bk-back btn-outline" data-back="4">← Back</button>
 					<button type="submit" class="ch-bk-submit btn-lime" id="ch-bk-submit">Send My Order Request 🥤</button>
 				</div>
 			</div>

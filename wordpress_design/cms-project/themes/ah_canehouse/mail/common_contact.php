@@ -158,14 +158,6 @@ function ch_handle_order_submit(): void {
 		$items_data[] = [ 'name' => $item_name, 'qty' => $qty ];
 	}
 
-	// Optional custom item
-	$custom_item = sanitize_text_field( wp_unslash( $_POST['otd_custom_item'] ?? '' ) );
-	if ( $custom_item !== '' ) {
-		$items_data[] = [
-			'name' => $custom_item,
-			'qty'  => max( 1, absint( $_POST['otd_custom_qty'] ?? 1 ) ),
-		];
-	}
 
 	if ( empty( $items_data ) ) {
 		wp_send_json_error( [ 'message' => 'Please select at least one item.' ] );
@@ -273,6 +265,7 @@ function ch_handle_booking_submit(): void {
 
 	// Multi-value fields
 	$cane_types = array_map( 'sanitize_text_field', array_map( 'wp_unslash', (array) ( $_POST['bk_cane']    ?? [] ) ) );
+	$textures   = sanitize_text_field( wp_unslash( $_POST['bk_texture'] ?? '' ) );
 	$flavours   = array_map( 'sanitize_text_field', array_map( 'wp_unslash', (array) ( $_POST['bk_flavour'] ?? [] ) ) );
 
 	// Validate date
@@ -300,6 +293,7 @@ function ch_handle_booking_submit(): void {
 		'email'       => $email,
 		'phone'       => $phone,
 		'cane_types'  => implode( ', ', $cane_types ),
+		'textures'    => $textures,
 		'flavours'    => implode( ', ', $flavours ),
 		'occasion'    => $occasion,
 		'event_date'  => $event_date,
@@ -309,7 +303,7 @@ function ch_handle_booking_submit(): void {
 		'status'      => 'new',
 		'ip_address'  => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
 		'created_at'  => current_time( 'mysql' ),
-	], [ '%s','%s','%s','%s','%s','%s','%s','%d','%s','%s','%s','%s','%s' ] );
+	], [ '%s','%s','%s','%s','%s','%s','%s','%s','%d','%s','%s','%s','%s','%s' ] );
 
 	$booking_id = (int) $wpdb->insert_id;
 
