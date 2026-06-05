@@ -450,7 +450,51 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     z-index: 2;
 }
 
-/* Hero left */
+
+
+/* Top-right floating weather widget */
+.ch-hero__wx {
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    text-align: center;
+    z-index: 3;
+    pointer-events: none;
+    animation: ch-proof-float 6s ease-in-out infinite;
+}
+.ch-hero__wx-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    filter: drop-shadow(0 0 10px rgba(200,232,48,0.3));
+}
+.ch-hero__wx-temp {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+.ch-hero__wx-city {
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+.ch-hero__wx-time {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.08em;
+}
+@keyframes ch-proof-float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+}
+
 .ch-hero__tag {
     display: inline-flex;
     align-items: center;
@@ -562,10 +606,20 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     position: relative;
     border-radius: 50%;
     z-index: 0;
+    animation: ch-pulse-glow 3s ease-in-out infinite;
 }
 
+.hero-glow {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(200, 232, 48, 0.25) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+
 @keyframes ch-pulse-glow {
-    0%, 100% { transform: scale(1);    opacity: 0.7; }
+    0%, 100% { transform: scale(1);    opacity: 0.9; }
     50%       { transform: scale(1.15); opacity: 1;   }
 }
 
@@ -606,38 +660,40 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 }
 
 @media (max-width: 960px) {
-    /* Stack content, let mascot peek from bottom - no bottom padding on hero */
-    .ch-hero {
-        min-height: 0;
-    }
+    /* Stack content, let mascot peek from bottom */
+    .ch-hero { min-height: 0; padding: 1.5rem 1.5rem 0; }
     .ch-hero__inner {
         grid-template-columns: 1fr;
         text-align: center;
         align-items: start;
-        row-gap: 0;
+        gap: 0.5rem;
     }
     .ch-hero__right {
         display: flex !important;
         justify-content: center;
         align-items: flex-end;
-        /* overflow: hidden; */
-        /* max-height: 230px; */
-        margin-top: 1rem;
+        margin-top: 0;
     }
+    .ch-hero__wx    { top: 5rem; right: 1rem; }
+    .ch-hero__wx-icon { font-size: 1.3rem; margin-bottom: 0.1rem; }
+    .ch-hero__wx-temp { font-size: 1rem; margin-bottom: 0.1rem; }
+    .ch-hero__wx-city { display: none; }
+    .ch-hero__wx-time { font-size: 0.48rem; }
     .ch-hero__logo-spin { width: min(62vw, 270px); height: auto; }
     .ch-hero__desc, .ch-section-body { margin-inline: auto; }
-    .ch-hero__btns  { justify-content: center; margin-bottom: 1.5rem; }
+    .ch-hero__btns  { justify-content: center; margin-bottom: 1rem; }
     .ch-hero__badges { justify-content: center; }
     .ch-hero__tag  { justify-content: center; }
-    .ch-hero__desc { margin-bottom: 1.5rem; }
+    .ch-hero__desc { margin-bottom: 1rem; }
 }
 @media (max-width: 480px) {
+    .ch-hero { padding: 1.2rem 1rem 0; }
     .ch-hero__tag   { font-size: 0.62rem; letter-spacing: 0.1em; flex-wrap: wrap; justify-content: center; }
     .ch-hero__title { font-size: clamp(2rem, 11vw, 3rem); }
-    .ch-hero__brand { font-size: 0.82rem; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
-    .ch-hero__desc  { font-size: 0.88rem; margin-bottom: 1.2rem; }
-    .ch-hero__btns  { flex-direction: column; align-items: center; margin-bottom: 1.2rem; }
-    /* 2×2 grid so all 4 badges sit evenly without a lone orphan on row 3 */
+    .ch-hero__brand { font-size: 0.82rem; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+    .ch-hero__desc  { font-size: 0.88rem; margin-bottom: 1rem; }
+    .ch-hero__btns  { flex-direction: column; align-items: center; margin-bottom: 1rem; }
+    /* 2×2 grid so all 4 badges sit evenly */
     .ch-hero__badges {
         display: grid;
         grid-template-columns: repeat(2, auto);

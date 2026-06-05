@@ -16,6 +16,14 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 	</div>
 	<div class="ch-hero__deco ch-hero__deco--1" aria-hidden="true">🌿</div>
 	<div class="ch-hero__deco ch-hero__deco--2" aria-hidden="true">🌿</div>
+
+	<div class="ch-hero__wx" id="ch-hero-wx" aria-hidden="true">
+		<div class="ch-hero__wx-icon"></div>
+		<div class="ch-hero__wx-temp"></div>
+		<div class="ch-hero__wx-city"></div>
+		<div class="ch-hero__wx-time"></div>
+	</div>
+
 <div class="ch-floating-leaf ch-fl1" aria-hidden="true" style="top: 22%; left: 34%;">🍋</div>
 <div class="ch-floating-leaf ch-fl2" aria-hidden="true" style="bottom: 30%; left: 3%; animation-delay: 2s;">🍃</div>
 <div class="ch-floating-leaf ch-fl3" aria-hidden="true" style="top: 5%; left: 8%; animation-delay: 1s;">🌿</div>
@@ -79,3 +87,57 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 			</div>
 	</div>
 </section>
+<script>
+(function () {
+    var wxRoot = document.getElementById('ch-hero-wx');
+    if (!wxRoot) return;
+
+    var elWxTime = wxRoot.querySelector('.ch-hero__wx-time');
+
+    var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    function wmoEmoji(c) {
+        if (c === 0)  return '☀️';
+        if (c <= 2)   return '🌤️';
+        if (c <= 3)   return '☁️';
+        if (c <= 49)  return '🌫️';
+        if (c <= 67)  return '🌧️';
+        if (c <= 77)  return '🌨️';
+        if (c <= 82)  return '🌦️';
+        if (c <= 86)  return '❄️';
+        return '⛈️';
+    }
+
+    function tick() {
+        var n = new Date();
+        elWxTime.textContent = n.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    /* IP geolocation → weather (no browser permission prompt) */
+    fetch('https://ipapi.co/json/')
+        .then(function (r) { return r.json(); })
+        .then(function (geo) {
+            var url = 'https://api.open-meteo.com/v1/forecast'
+                + '?latitude=' + geo.latitude
+                + '&longitude=' + geo.longitude
+                + '&current=temperature_2m,weathercode'
+                + '&timezone=auto';
+            return fetch(url)
+                .then(function (r) { return r.json(); })
+                .then(function (wx) {
+                    var code = wx.current.weathercode;
+                    var temp = Math.round(wx.current.temperature_2m);
+                    var city = geo.city || geo.region || '';
+                    if (wxRoot) {
+                        wxRoot.querySelector('.ch-hero__wx-icon').textContent = wmoEmoji(code);
+                        wxRoot.querySelector('.ch-hero__wx-temp').textContent = temp + '°C';
+                        wxRoot.querySelector('.ch-hero__wx-city').textContent = city;
+                    }
+                });
+        })
+        .catch(function () {});
+})();
+</script>
