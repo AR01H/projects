@@ -4,31 +4,25 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 
 $active_tab    = sanitize_key( $_GET['tab'] ?? 'business' );
 $saved         = isset( $_GET['saved'] ) ? (int) $_GET['saved'] : 0;
-$import_result = isset( $_GET['imported'] ) ? sanitize_text_field( wp_unslash( $_GET['imported'] ) ) : '';
 
 $s               = ch_get_settings();
-$enquiry_types   = ch_get_enquiry_types();
-$occasions       = ch_get_occasions();
-$badges          = ch_get_hero_badges();
-$sugarcane_stats = ch_get_sugarcane_stats();
-$nutrition_facts = ch_get_nutrition_facts();
-$events_why      = ch_get_events_why();
-$about_mvv       = ch_get_about_mvv();
-$about_quality   = ch_get_about_quality();
+$enquiry_types   = ch_get_enquiry_types() ?? [];
+$occasions       = ch_get_occasions() ?? [];
+$events_why      = ch_get_events_why() ?? [];
+$about_mvv       = ch_get_about_mvv() ?? [];
+$about_quality   = ch_get_about_quality() ?? [];
 $events_gallery  = ch_get_events_gallery();
 $franchise_gallery = ch_get_franchise_gallery();
-$sugarcane_gallery = ch_get_sugarcane_gallery();
+$about_gallery   = ch_get_about_gallery();
+$equipment_gallery = ch_get_equipment_gallery();
 
 $tabs = [
 	'business'  => '📋 Business Details',
 	'contact'   => '📬 Contact Form',
 	'booking'   => '📅 Booking Wizard',
-	'badges'    => '🏷️ Hero Badges',
 	'galleries' => '🖼️ Gallery Images',
-	'sugarcane' => '📊 Why Sugarcane',
 	'eventswhy' => '🎯 Events Why',
 	'about'     => '🏢 About Page',
-	'import'    => '📥 Import CSV',
 ];
 ?>
 <div class="wrap ch-admin-wrap ch-cs-wrap">
@@ -37,9 +31,6 @@ $tabs = [
 
 	<?php if ( $saved ) : ?>
 		<div class="ch-notice ch-notice--success">✅ Settings saved successfully.</div>
-	<?php endif; ?>
-	<?php if ( $import_result ) : ?>
-		<div class="ch-notice ch-notice--success">📥 <?php echo esc_html( $import_result ); ?></div>
 	<?php endif; ?>
 
 	<!-- ── Tab Nav ────────────────────────────────────────────────────────── -->
@@ -188,47 +179,6 @@ $tabs = [
 	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 4 - Hero Badges
-	     ══════════════════════════════════════════════════════════════════════ -->
-	<?php elseif ( $active_tab === 'badges' ) : ?>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-		<?php wp_nonce_field( 'ch_content_settings_badges' ); ?>
-		<input type="hidden" name="action" value="ch_content_settings_badges">
-
-		<div class="ch-card">
-			<h2>🏷️ Hero Section - Badges</h2>
-			<p class="ch-cs-desc">Short trust badges shown under the hero headline (e.g. "No Added Sugar"). Add as many as you like.</p>
-
-			<div class="ch-rep-header ch-rep-header--single">
-				<span>Badge Text</span>
-				<span></span>
-			</div>
-
-			<div class="ch-repeater ch-repeater--single" id="ch-badge-repeater">
-				<?php foreach ( $badges as $i => $badge ) : ?>
-				<div class="ch-rep-row ch-rep-row--single">
-					<input type="text" name="hero_badges[<?php echo $i; ?>]"
-						value="<?php echo esc_attr( $badge ); ?>"
-						placeholder="e.g. Pressed Live">
-					<button type="button" class="ch-rep-remove" title="Remove">✕</button>
-				</div>
-				<?php endforeach; ?>
-			</div>
-
-			<button type="button" class="ch-rep-add button" data-target="ch-badge-repeater" data-prefix="hero_badges" data-single="1">
-				+ Add Badge
-			</button>
-
-			<p class="ch-cs-hint" style="margin-top:1rem;">
-				CSV format: single column <code>badge</code> - one row per badge.<br>
-				<a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'import' ], admin_url( 'admin.php' ) ) ); ?>">Go to CSV Import →</a>
-			</p>
-		</div>
-
-		<?php submit_button( '💾 Save Hero Badges', 'primary', 'submit', false ); ?>
-	</form>
-
-	<!-- ══════════════════════════════════════════════════════════════════════
 	     TAB 5 - Gallery Images
 	     ══════════════════════════════════════════════════════════════════════ -->
 	<?php elseif ( $active_tab === 'galleries' ) : ?>
@@ -238,10 +188,11 @@ $tabs = [
 
 		<?php
 		$gallery_sections = [
-			[ 'key' => 'events',    'label' => '🎪 Events Gallery',    'data' => $events_gallery ],
-			[ 'key' => 'franchise', 'label' => '🤝 Franchise Gallery', 'data' => $franchise_gallery ],
-			[ 'key' => 'sugarcane', 'label' => '🌿 Why Sugarcane Gallery', 'data' => $sugarcane_gallery ],
-		];
+    [ 'key' => 'events',    'label' => '🎪 Events Gallery',    'data' => $events_gallery ?? [] ],
+    [ 'key' => 'franchise', 'label' => '🤝 Franchise Gallery', 'data' => $franchise_gallery ?? [] ],
+    [ 'key' => 'about',    'label' => '📸 About Gallery',    'data' => $about_gallery ?? [] ],
+    [ 'key' => 'equipment', 'label' => '🛠️ Equipment Gallery', 'data' => $equipment_gallery ?? [] ],
+];
 		foreach ( $gallery_sections as $gs ) :
 		?>
 		<div class="ch-card">
@@ -278,71 +229,6 @@ $tabs = [
 		<?php submit_button( '💾 Save Gallery Images', 'primary', 'submit', false ); ?>
 	</form>
 
-	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 6 - Why Sugarcane (Stats + Nutrition)
-	     ══════════════════════════════════════════════════════════════════════ -->
-	<?php elseif ( $active_tab === 'sugarcane' ) : ?>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-		<?php wp_nonce_field( 'ch_content_settings_sugarcane' ); ?>
-		<input type="hidden" name="action" value="ch_content_settings_sugarcane">
-
-		<div class="ch-card">
-			<h2>📊 Stats Bar (4 numbers shown at top of Why Sugarcane page)</h2>
-			<div class="ch-rep-header" style="grid-template-columns:1fr 1fr 36px;">
-				<span>Number / Value</span><span>Label</span><span></span>
-			</div>
-			<div class="ch-repeater" id="ch-stats-repeater">
-				<?php foreach ( $sugarcane_stats as $i => $stat ) :
-					$stat = (array) $stat;
-				?>
-				<div class="ch-rep-row">
-					<input type="text" name="sugarcane_stats[<?php echo $i; ?>][num]"
-						value="<?php echo esc_attr( $stat['num'] ?? '' ); ?>" placeholder="e.g. 2,000+">
-					<input type="text" name="sugarcane_stats[<?php echo $i; ?>][label]"
-						value="<?php echo esc_attr( $stat['label'] ?? '' ); ?>" placeholder="e.g. Years of Tradition">
-					<button type="button" class="ch-rep-remove" title="Remove">✕</button>
-				</div>
-				<?php endforeach; ?>
-			</div>
-			<button type="button" class="ch-rep-add button" data-target="ch-stats-repeater" data-prefix="sugarcane_stats" data-columns="num,label">
-				+ Add Stat
-			</button>
-		</div>
-
-		<div class="ch-card">
-			<h2>🧪 Nutrition Facts Table</h2>
-			<p class="ch-cs-desc">Shown in the "What's Inside Every Sip" section.</p>
-			<div class="ch-rep-header" style="grid-template-columns:1fr 1fr 1.5fr 36px;">
-				<span>Nutrient Name</span><span>Value</span><span>Note</span><span></span>
-			</div>
-			<div class="ch-repeater ch-repeater--nutrition" id="ch-nutrition-repeater">
-				<?php foreach ( $nutrition_facts as $i => $nf ) :
-					$nf = (array) $nf;
-				?>
-				<div class="ch-rep-row ch-rep-row--nutrition">
-					<input type="text" name="nutrition_facts[<?php echo $i; ?>][name]"
-						value="<?php echo esc_attr( $nf['name'] ?? '' ); ?>" placeholder="e.g. 🍬 Natural Sugars">
-					<input type="text" name="nutrition_facts[<?php echo $i; ?>][value]"
-						value="<?php echo esc_attr( $nf['value'] ?? '' ); ?>" placeholder="e.g. ~13–15g">
-					<input type="text" name="nutrition_facts[<?php echo $i; ?>][note]"
-						value="<?php echo esc_attr( $nf['note'] ?? '' ); ?>" placeholder="Short note">
-					<button type="button" class="ch-rep-remove" title="Remove">✕</button>
-				</div>
-				<?php endforeach; ?>
-			</div>
-			<button type="button" class="ch-rep-add button" data-target="ch-nutrition-repeater" data-prefix="nutrition_facts" data-columns="name,value,note">
-				+ Add Row
-			</button>
-			<div class="ch-row" style="margin-top:1.2rem;">
-				<label>Disclaimer Text</label>
-				<input type="text" name="nutrition_disclaimer"
-					value="<?php echo esc_attr( get_option( 'ch_nutrition_disclaimer', '* Values are approximate for 350ml fresh-pressed yellow cane, no additives.' ) ); ?>"
-					placeholder="Footnote shown below the nutrition table">
-			</div>
-		</div>
-
-		<?php submit_button( '💾 Save Why Sugarcane', 'primary', 'submit', false ); ?>
-	</form>
 
 	<!-- ══════════════════════════════════════════════════════════════════════
 	     TAB 7 - Events "Why Choose Us"
@@ -447,91 +333,11 @@ $tabs = [
 
 		<?php submit_button( '💾 Save About Page', 'primary', 'submit', false ); ?>
 	</form>
-
-	<!-- ══════════════════════════════════════════════════════════════════════
-	     TAB 9 - CSV Import
-	     ══════════════════════════════════════════════════════════════════════ -->
-	<?php elseif ( $active_tab === 'import' ) : ?>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
-		<?php wp_nonce_field( 'ch_content_settings_import' ); ?>
-		<input type="hidden" name="action" value="ch_content_settings_import">
-
-		<div class="ch-card">
-			<h2>📥 Import from CSV</h2>
-			<p class="ch-cs-desc">Upload a CSV file to populate any of the repeatable sections. Choose what you're importing and whether to replace or append to existing data.</p>
-
-			<div class="ch-row">
-				<label>Import Type</label>
-				<select name="import_type" id="ch-import-type" style="padding:.5rem .8rem;border:1px solid #ddd;border-radius:4px;max-width:280px;">
-					<option value="enquiry_types">Contact Form - Enquiry Types</option>
-					<option value="occasions">Booking Wizard - Occasions</option>
-					<option value="hero_badges">Hero - Badges</option>
-				</select>
-			</div>
-
-			<div class="ch-row">
-				<label>CSV File</label>
-				<input type="file" name="csv_file" accept=".csv,text/csv" required style="flex:1;">
-			</div>
-
-			<div class="ch-row">
-				<label>Import Mode</label>
-				<label style="display:flex;align-items:center;gap:.4rem;font-weight:normal;cursor:pointer;">
-					<input type="radio" name="import_mode" value="replace" checked> Replace all existing data
-				</label>
-				<label style="display:flex;align-items:center;gap:.4rem;font-weight:normal;cursor:pointer;margin-left:1.5rem;">
-					<input type="radio" name="import_mode" value="append"> Append to existing data
-				</label>
-			</div>
-		</div>
-
-		<div class="ch-card">
-			<h2>📄 CSV Format Guide</h2>
-			<div class="ch-cs-format-grid">
-
-				<div class="ch-cs-format-box">
-					<h4>Contact Form - Enquiry Types</h4>
-					<p>Two columns: <code>value</code> and <code>label</code>. First row is header (skipped).</p>
-					<pre>value,label
-general,General Enquiry
-event,Event / Stall Hire
-wedding,Wedding or Asian Celebration
-franchise,Franchise Opportunity
-other,Something Else</pre>
-				</div>
-
-				<div class="ch-cs-format-box">
-					<h4>Booking Wizard - Occasions</h4>
-					<p>One column: <code>occasion</code>. First row is header (skipped).</p>
-					<pre>occasion
-Wedding / Walima
-Mehndi / Sangeet
-Eid Celebration
-Birthday Party
-Corporate Event</pre>
-				</div>
-
-				<div class="ch-cs-format-box">
-					<h4>Hero - Badges</h4>
-					<p>One column: <code>badge</code>. First row is header (skipped).</p>
-					<pre>badge
-No Added Sugar
-No Preservatives
-Pressed Live
-Served Chilled</pre>
-				</div>
-
-			</div>
-		</div>
-
-		<?php submit_button( '📥 Import CSV', 'primary', 'submit', false ); ?>
-	</form>
 	<?php endif; ?>
 </div>
 
 <style>
 /* ── Tab nav ────────────────────────────────────────────────────────────────── */
-.ch-cs-wrap { max-width:960px; }
 .ch-cs-tabs { display:flex; gap:.3rem; margin-bottom:1.5rem; border-bottom:2px solid #e0e0e0; padding-bottom:0; flex-wrap:wrap; }
 .ch-cs-tab { display:inline-block; padding:.55rem 1.1rem; border-radius:6px 6px 0 0; text-decoration:none; color:#555; font-size:.85rem; font-weight:600; border:1px solid transparent; border-bottom:none; margin-bottom:-2px; transition:all .15s; }
 .ch-cs-tab:hover { background:#f0f0f0; color:#222; }

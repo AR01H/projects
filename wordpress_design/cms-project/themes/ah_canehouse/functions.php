@@ -160,7 +160,7 @@ add_action( 'admin_post_ch_theme_settings', function () {
 	// Standard text/url/tel fields
 	$text_fields = [
 		'phone', 'email', 'address', 'website', 'whatsapp', 'tagline',
-		'instagram_url', 'facebook_url', 'tiktok_url', 'youtube_url',
+		'instagram_url', 'facebook_url', 'youtube_url',
 		'cert_heading', 'cert_subtext'
 	];
 	foreach ( $text_fields as $key ) {
@@ -174,8 +174,6 @@ add_action( 'admin_post_ch_theme_settings', function () {
 		$existing['cert_subtext'] = sanitize_textarea_field( wp_unslash( $_POST['cert_subtext'] ) );
 	}
 
-	// Checkbox: show_prices
-	$existing['show_prices'] = isset( $_POST['show_prices'] ) ? '1' : '0';
 
 	// Certifications array
 	if ( ! empty( $_POST['cert'] ) && is_array( $_POST['cert'] ) ) {
@@ -195,14 +193,12 @@ add_action( 'admin_post_ch_theme_settings', function () {
 
 	// Schema settings
 	if ( ! empty( $_POST['schema'] ) && is_array( $_POST['schema'] ) ) {
-		$schema_keys = [ 'enabled', 'type', 'name', 'description', 'phone', 'email', 'area_served', 'price_range', 'include_price', 'include_reviews' ];
+		$schema_keys = [ 'enabled', 'name', 'description', 'phone', 'email', 'area_served' ];
 		$schema      = [];
 		foreach ( $schema_keys as $k ) {
 			$schema[ $k ] = sanitize_text_field( wp_unslash( $_POST['schema'][ $k ] ?? '' ) );
 		}
-		$schema['enabled']         = isset( $_POST['schema']['enabled'] )         ? '1' : '0';
-		$schema['include_price']   = isset( $_POST['schema']['include_price'] )   ? '1' : '0';
-		$schema['include_reviews'] = isset( $_POST['schema']['include_reviews'] ) ? '1' : '0';
+		$schema['enabled'] = isset( $_POST['schema']['enabled'] ) ? '1' : '0';
 		$existing['schema'] = wp_json_encode( $schema );
 	}
 
@@ -219,7 +215,7 @@ function ch_build_schema_json( bool $include_reviews_data = true ): array {
 	$s      = ch_get_settings();
 	$schema = [
 		'@context' => 'https://schema.org',
-		'@type'    => $sc['type'] ?: 'FoodEstablishment',
+		'@type'    => 'FoodEstablishment',
 		'name'     => $sc['name'] ?: get_bloginfo( 'name' ),
 		'url'      => home_url( '/' ),
 		'logo'     => $sc['logo_url'] ?: get_template_directory_uri() . '/assets/images/logo.png',
@@ -228,42 +224,23 @@ function ch_build_schema_json( bool $include_reviews_data = true ): array {
 		'areaServed'     => $sc['area_served'] ?: 'United Kingdom',
 		'servesCuisine'  => 'Fresh Sugarcane Juice',
 		'currenciesAccepted' => 'GBP',
-		'paymentAccepted' => 'Cash, Card',
 		'hasMap'     => '',
 	];
 
 	if ( $sc['phone'] ) $schema['telephone'] = $sc['phone'];
 	if ( $sc['email'] ) $schema['email']     = $sc['email'];
 
-	if ( $sc['include_price'] === '1' && $sc['price_range'] ) {
-		$schema['priceRange'] = $sc['price_range'];
-	}
+
 
 	// Social profiles
 	$sameAs = array_filter( [
 		$s['instagram_url'] ?? '',
 		$s['facebook_url']  ?? '',
-		$s['tiktok_url']    ?? '',
 		$s['youtube_url']   ?? '',
 	] );
 	if ( $sameAs ) $schema['sameAs'] = array_values( $sameAs );
 
-	// Aggregate rating from DB reviews
-	if ( $sc['include_reviews'] === '1' && $include_reviews_data ) {
-		$reviews = ch_get_reviews( 100 );
-		if ( ! empty( $reviews ) ) {
-			$total  = count( $reviews );
-			$sum    = array_sum( array_map( fn( $r ) => (float) ( is_array( $r ) ? $r['rating'] : ( $r->rating ?? 5 ) ), $reviews ) );
-			$avg    = round( $sum / $total, 1 );
-			$schema['aggregateRating'] = [
-				'@type'       => 'AggregateRating',
-				'ratingValue' => $avg,
-				'reviewCount' => $total,
-				'bestRating'  => 5,
-				'worstRating' => 1,
-			];
-		}
-	}
+
 
 	return array_filter( $schema, fn( $v ) => $v !== '' && $v !== null );
 }

@@ -45,7 +45,6 @@ $schema = ch_get_schema_settings();
 			<?php foreach ( [
 				'instagram_url' => 'Instagram URL',
 				'facebook_url'  => 'Facebook URL',
-				'tiktok_url'    => 'TikTok URL',
 				'youtube_url'   => 'YouTube URL',
 			] as $key => $label ) : ?>
 				<div class="ch-row">
@@ -59,19 +58,7 @@ $schema = ch_get_schema_settings();
 			<?php endforeach; ?>
 		</div>
 
-		<!-- ── Pricing Control ─────────────────────────────────────────────── -->
-		<div class="ch-card">
-			<h2>💷 Pricing Visibility</h2>
-			<p style="color:#666;margin-bottom:1rem;">Control whether prices appear anywhere on the website. Turn off to keep pricing private - useful when quoting per-event or for franchise partners.</p>
-			<div class="ch-row">
-				<label>Show Prices on Website</label>
-				<label class="ch-toggle">
-					<input type="checkbox" name="show_prices" value="1" <?php checked( $s['show_prices'] ?? '', '1' ); ?>>
-					<span class="ch-toggle-slider"></span>
-					<span class="ch-toggle-label">Prices <?php echo ( ( $s['show_prices'] ?? '' ) === '1' ) ? '<strong style="color:green">Visible</strong>' : '<strong style="color:#c00">Hidden</strong>'; ?></span>
-				</label>
-			</div>
-		</div>
+
 
 		<!-- ── Certifications ──────────────────────────────────────────────── -->
 		<div class="ch-card">
@@ -95,41 +82,44 @@ $schema = ch_get_schema_settings();
 
 			<?php
 			$cert_defaults = ch_get_certifications();
-			for ( $i = 0; $i < 6; $i++ ) :
-				$cert = $cert_defaults[ $i ] ?? [];
 			?>
-				<div style="background:#f8f8f8;border:1px solid #e0e0e0;border-radius:8px;padding:1rem;margin-bottom:1rem;">
-					<div style="display:grid;grid-template-columns:60px 1fr 1fr;gap:.8rem;align-items:start;">
-						<div>
-							<label style="font-size:.75rem;color:#888;">Icon</label>
-							<input type="text" name="cert[<?php echo $i; ?>][icon]"
-								value="<?php echo esc_attr( $cert['icon'] ?? '' ); ?>"
-								style="width:100%;padding:.4rem;text-align:center;font-size:1.4rem;border:1px solid #ddd;border-radius:4px;">
+			<div id="ch-cert-wrap">
+				<?php foreach ( $cert_defaults as $i => $cert ) : ?>
+					<div style="background:#f8f8f8;border:1px solid #e0e0e0;border-radius:8px;padding:1rem;margin-bottom:1rem;position:relative;">
+						<button type="button" onclick="this.parentElement.remove()" class="button" style="color:red;position:absolute;top:.5rem;right:.5rem;border-color:transparent;background:transparent;box-shadow:none;">✕</button>
+						<div style="display:grid;grid-template-columns:60px 1fr 1fr;gap:.8rem;align-items:start;padding-right:2rem;">
+							<div>
+								<label style="font-size:.75rem;color:#888;">Icon</label>
+								<input type="text" name="cert[<?php echo esc_attr( $i ); ?>][icon]"
+									value="<?php echo esc_attr( $cert['icon'] ?? '' ); ?>"
+									style="width:100%;padding:.4rem;text-align:center;font-size:1.4rem;border:1px solid #ddd;border-radius:4px;">
+							</div>
+							<div>
+								<label style="font-size:.75rem;color:#888;">Title</label>
+								<input type="text" name="cert[<?php echo esc_attr( $i ); ?>][title]"
+									value="<?php echo esc_attr( $cert['title'] ?? '' ); ?>"
+									style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;"
+									placeholder="e.g. Food Hygiene Rating 5">
+							</div>
+							<div>
+								<label style="font-size:.75rem;color:#888;">Badge Label</label>
+								<input type="text" name="cert[<?php echo esc_attr( $i ); ?>][badge]"
+									value="<?php echo esc_attr( $cert['badge'] ?? '' ); ?>"
+									style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;"
+									placeholder="e.g. Grade 5">
+							</div>
 						</div>
-						<div>
-							<label style="font-size:.75rem;color:#888;">Title</label>
-							<input type="text" name="cert[<?php echo $i; ?>][title]"
-								value="<?php echo esc_attr( $cert['title'] ?? '' ); ?>"
+						<div style="margin-top:.6rem;">
+							<label style="font-size:.75rem;color:#888;">Description</label>
+							<input type="text" name="cert[<?php echo esc_attr( $i ); ?>][desc]"
+								value="<?php echo esc_attr( $cert['desc'] ?? '' ); ?>"
 								style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;"
-								placeholder="e.g. Food Hygiene Rating 5">
-						</div>
-						<div>
-							<label style="font-size:.75rem;color:#888;">Badge Label</label>
-							<input type="text" name="cert[<?php echo $i; ?>][badge]"
-								value="<?php echo esc_attr( $cert['badge'] ?? '' ); ?>"
-								style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;"
-								placeholder="e.g. Grade 5">
+								placeholder="Short description shown on the card">
 						</div>
 					</div>
-					<div style="margin-top:.6rem;">
-						<label style="font-size:.75rem;color:#888;">Description</label>
-						<input type="text" name="cert[<?php echo $i; ?>][desc]"
-							value="<?php echo esc_attr( $cert['desc'] ?? '' ); ?>"
-							style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;"
-							placeholder="Short description shown on the card">
-					</div>
-				</div>
-			<?php endfor; ?>
+				<?php endforeach; ?>
+			</div>
+			<button type="button" id="ch-add-cert" class="button" style="margin-top:.5rem;">+ Add Certification</button>
 		</div>
 
 		<!-- ── Schema / SEO ────────────────────────────────────────────────── -->
@@ -153,7 +143,6 @@ $schema = ch_get_schema_settings();
 				'schema[phone]'       => [ 'Phone (schema)',   'tel',   CONTACT_NUMBER ],
 				'schema[email]'       => [ 'Email (schema)',   'email', CONTACT_EMAIL ],
 				'schema[area_served]' => [ 'Area Served',      'text',  'United Kingdom' ],
-				'schema[price_range]' => [ 'Price Range (£ to £££)', 'text', '£' ],
 			];
 			foreach ( $schema_fields as $name => [ $label, $type, $placeholder ] ) :
 				// Parse key for current value e.g. schema[name] → $schema['name']
@@ -169,32 +158,7 @@ $schema = ch_get_schema_settings();
 				</div>
 			<?php endforeach; ?>
 
-			<div class="ch-row">
-				<label>Include Pricing in Schema</label>
-				<label class="ch-toggle">
-					<input type="checkbox" name="schema[include_price]" value="1" <?php checked( $schema['include_price'] ?? '0', '1' ); ?>>
-					<span class="ch-toggle-slider"></span>
-					<span class="ch-toggle-label">Prices in schema <?php echo ( ( $schema['include_price'] ?? '0' ) === '1' ) ? '<strong style="color:green">Included</strong>' : '<strong style="color:#c00">Excluded</strong>'; ?></span>
-				</label>
-			</div>
 
-			<div class="ch-row">
-				<label>Include Review Schema</label>
-				<label class="ch-toggle">
-					<input type="checkbox" name="schema[include_reviews]" value="1" <?php checked( $schema['include_reviews'] ?? '1', '1' ); ?>>
-					<span class="ch-toggle-slider"></span>
-					<span class="ch-toggle-label">Review schema <?php echo ( ( $schema['include_reviews'] ?? '1' ) === '1' ) ? '<strong style="color:green">Active</strong>' : '<strong style="color:#c00">Off</strong>'; ?></span>
-				</label>
-			</div>
-
-			<div class="ch-row">
-				<label>Schema Type</label>
-				<select name="schema[type]" style="padding:.5rem .8rem;border:1px solid #ddd;border-radius:4px;">
-					<?php foreach ( [ 'FoodEstablishment', 'FoodService', 'LocalBusiness', 'CafeOrCoffeeShop' ] as $type ) : ?>
-						<option value="<?php echo esc_attr( $type ); ?>" <?php selected( $schema['type'] ?? 'FoodEstablishment', $type ); ?>><?php echo esc_html( $type ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
 
 			<details style="margin-top:1rem;">
 				<summary style="cursor:pointer;font-weight:600;color:#2d5a1b;">👁 Preview current schema output</summary>
@@ -217,3 +181,36 @@ $schema = ch_get_schema_settings();
 .ch-toggle input:checked + .ch-toggle-slider::before { transform:translateX(20px); }
 .ch-toggle-label { font-size:.9rem; color:#444; }
 </style>
+
+<script>
+let chCertIdx = <?php echo count( $cert_defaults ); ?>;
+document.getElementById('ch-add-cert').addEventListener('click', function() {
+	const wrap = document.getElementById('ch-cert-wrap');
+	const div = document.createElement('div');
+	div.style.cssText = 'background:#f8f8f8;border:1px solid #e0e0e0;border-radius:8px;padding:1rem;margin-bottom:1rem;position:relative;';
+	div.innerHTML = `
+		<button type="button" onclick="this.parentElement.remove()" class="button" style="color:red;position:absolute;top:.5rem;right:.5rem;border-color:transparent;background:transparent;box-shadow:none;">✕</button>
+		<div style="display:grid;grid-template-columns:60px 1fr 1fr;gap:.8rem;align-items:start;padding-right:2rem;">
+			<div>
+				<label style="font-size:.75rem;color:#888;">Icon</label>
+				<input type="text" name="cert[${chCertIdx}][icon]" style="width:100%;padding:.4rem;text-align:center;font-size:1.4rem;border:1px solid #ddd;border-radius:4px;">
+			</div>
+			<div>
+				<label style="font-size:.75rem;color:#888;">Title</label>
+				<input type="text" name="cert[${chCertIdx}][title]" style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;" placeholder="e.g. Food Hygiene Rating 5">
+			</div>
+			<div>
+				<label style="font-size:.75rem;color:#888;">Badge Label</label>
+				<input type="text" name="cert[${chCertIdx}][badge]" style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;" placeholder="e.g. Grade 5">
+			</div>
+		</div>
+		<div style="margin-top:.6rem;">
+			<label style="font-size:.75rem;color:#888;">Description</label>
+			<input type="text" name="cert[${chCertIdx}][desc]" style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:4px;" placeholder="Short description shown on the card">
+		</div>
+	`;
+	wrap.appendChild(div);
+	chCertIdx++;
+});
+</script>
+

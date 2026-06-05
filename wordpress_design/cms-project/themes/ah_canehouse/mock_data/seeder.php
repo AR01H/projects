@@ -81,7 +81,7 @@ class CH_Theme_Seeder {
 			'ch_juice_showcase', 'ch_story_settings', 'ch_story_cards', 'ch_faqs_manual',
 			'ch_events_gallery', 'ch_franchise_gallery', 'ch_about_gallery',
 			'ch_events_media_gallery', 'ch_franchise_media_gallery', 'ch_sugarcane_gallery',
-			'ch_sugarcane_stats', 'ch_nutrition_facts', 'ch_about_quality', 'ch_events_why',
+			'ch_nutrition_facts', 'ch_about_quality', 'ch_events_why',
 			'ch_enquiry_types', 'ch_occasions', 'ch_about_equipment', 'ch_about_promise'
 		];
 		foreach ( $options as $opt ) {
@@ -175,7 +175,6 @@ class CH_Theme_Seeder {
 			'franchise-media-gallery'=>[ 'csv'=> 'franchise-media-gallery','method'=> 'seed_franchise_media_gallery','label'=>'📷 Franchise Media Gallery','cols'=>'type, src, label, desc',   'append' => false ],
 			'sugarcane-gallery'   => [ 'csv' => 'sugarcane-gallery',   'method' => 'seed_sugarcane_gallery',   'label' => '📷 Sugarcane Gallery',           'cols' => 'src, label, desc',          'append' => false ],
 			'sugarcane-stats'     => [ 'csv' => 'sugarcane-stats',     'method' => 'seed_sugarcane_stats',     'label' => '📊 Sugarcane Stats',             'cols' => 'num, label',                'append' => false ],
-			'nutrition-facts'     => [ 'csv' => 'nutrition-facts',     'method' => 'seed_nutrition_facts',     'label' => '🍎 Nutrition Facts',             'cols' => 'name, value, note',         'append' => false ],
 			'about-quality'       => [ 'csv' => 'about-quality',       'method' => 'seed_about_quality',       'label' => '✅ About Quality',               'cols' => 'item',                      'append' => false ],
 			'events-why'          => [ 'csv' => 'events-why-items',    'method' => 'seed_events_why',          'label' => '🤔 Events Why Us',               'cols' => 'icon, title, text',         'append' => false ],
 			'enquiry-types'       => [ 'csv' => 'enquiry-types',       'method' => 'seed_enquiry_types',       'label' => '📝 Enquiry Types',               'cols' => 'value, label',              'append' => false ],
@@ -485,16 +484,6 @@ class CH_Theme_Seeder {
 
 	private static function seed_sugarcane_gallery(): array {
 		update_option( 'ch_sugarcane_gallery', wp_json_encode( CH_Data::sugarcane_gallery() ) );
-		return [ 'updated' => 1 ];
-	}
-
-	private static function seed_sugarcane_stats(): array {
-		update_option( 'ch_sugarcane_stats', wp_json_encode( CH_Data::sugarcane_stats() ) );
-		return [ 'updated' => 1 ];
-	}
-
-	private static function seed_nutrition_facts(): array {
-		update_option( 'ch_nutrition_facts', wp_json_encode( CH_Data::nutrition_facts() ) );
 		return [ 'updated' => 1 ];
 	}
 

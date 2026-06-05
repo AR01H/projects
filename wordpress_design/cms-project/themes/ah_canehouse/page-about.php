@@ -49,7 +49,7 @@ get_template_part( 'components/gallery-strip', null, [
 	'modifier' => 'ch-gstrip--about',
 	'id'       => 'gstrip-about',
 	'bg'       => 'var(--client-color-11)',
-	'images'   => ch_get_about_equipment(),
+	'images'   => ch_get_equipment_gallery(),
 ] );
 ?>
 

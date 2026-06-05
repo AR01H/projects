@@ -1,11 +1,21 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$settings = ch_get_settings();
-$contact  = ch_get_contact_settings();
-$phone    = $settings['phone']   ?? CONTACT_NUMBER;
-$email    = $settings['email']   ?? CONTACT_EMAIL;
-$website  = $settings['website'] ?? 'www.thecanehouse.co.uk';
-$nonce    = wp_create_nonce( 'ch_contact_nonce' );
+$settings      = ch_get_settings();
+$contact       = ch_get_contact_settings();
+$phone         = $settings['phone']   ?? CONTACT_NUMBER;
+$email         = $settings['email']   ?? CONTACT_EMAIL;
+$website       = $settings['website'] ?? 'www.thecanehouse.co.uk';
+$nonce         = wp_create_nonce( 'ch_contact_nonce' );
+
+$contact_details = [
+    'address'             => [ 'icon' => '📍', 'label' => 'Address' ],
+    'business_hours'      => [ 'icon' => '🕐', 'label' => 'Business Hours' ],
+    'response_time'       => [ 'icon' => '⚡', 'label' => 'Response Time' ],
+    'events_info_text'    => [ 'icon' => '🎪', 'label' => 'Events &amp; Hire' ],
+    'franchise_info_text' => [ 'icon' => '🤝', 'label' => 'Franchise' ],
+];
+
+
 ?>
 
 <section id="contact" class="ch-contact-section">
@@ -38,43 +48,19 @@ $nonce    = wp_create_nonce( 'ch_contact_nonce' );
 					</div>
 				</div>
 			</div>
-		<?php endif; ?>
+		<?php endif;
 
-		<?php if ( ! empty( $settings['events_info_text'] ) ) : ?>
-		<div class="ch-contact-detail">
-			<div class="ch-cd-icon" aria-hidden="true">🎪</div>
-			<div>
-				<div class="ch-cd-label">Events &amp; Hire</div>
-				<div class="ch-cd-val"><?php echo esc_html( $settings['events_info_text'] ); ?></div>
+		foreach ( $contact_details as $key => $detail ) :
+			if ( empty( $settings[ $key ] ) ) continue;
+		?>
+			<div class="ch-contact-detail">
+				<div class="ch-cd-icon" aria-hidden="true"><?php echo $detail['icon']; ?></div>
+				<div>
+					<div class="ch-cd-label"><?php echo $detail['label']; ?></div>
+					<div class="ch-cd-val"><?php echo esc_html( $settings[ $key ] ); ?></div>
+				</div>
 			</div>
-		</div>
-		<?php else : ?>
-		<div class="ch-contact-detail">
-			<div class="ch-cd-icon" aria-hidden="true">🎪</div>
-			<div>
-				<div class="ch-cd-label">Events &amp; Hire</div>
-				<div class="ch-cd-val">Available across the UK for events, weddings &amp; community gatherings</div>
-			</div>
-		</div>
-		<?php endif; ?>
-
-		<?php if ( ! empty( $settings['franchise_info_text'] ) ) : ?>
-		<div class="ch-contact-detail">
-			<div class="ch-cd-icon" aria-hidden="true">🤝</div>
-			<div>
-				<div class="ch-cd-label">Franchise</div>
-				<div class="ch-cd-val"><?php echo esc_html( $settings['franchise_info_text'] ); ?></div>
-			</div>
-		</div>
-		<?php else : ?>
-		<div class="ch-contact-detail">
-			<div class="ch-cd-icon" aria-hidden="true">🤝</div>
-			<div>
-				<div class="ch-cd-label">Franchise</div>
-				<div class="ch-cd-val">Franchise enquiries warmly welcomed - reach out today</div>
-			</div>
-		</div>
-		<?php endif; ?>
+		<?php endforeach; ?>
 	</div>
 
 	<div class="ch-contact-form fade-right">

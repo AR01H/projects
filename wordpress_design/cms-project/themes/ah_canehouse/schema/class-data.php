@@ -462,11 +462,6 @@ class CH_Data {
 		return $rows ?: [];
 	}
 
-	public static function nutrition_facts(): array {
-		$rows = self::load_csv( 'nutrition-facts' );
-		return $rows ?: [];
-	}
-
 	public static function about_quality(): array {
 		$rows = self::load_csv( 'about-quality' );
 		return $rows ? array_column( $rows, 'item' ) : [];

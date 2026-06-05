@@ -3,14 +3,12 @@ defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 
 $home        = ch_get_home_settings();
-$steps       = ch_get_order_steps();
-$sizes       = ch_get_menu_sizes();
 $faqs        = ch_get_faqs( '', 20 );
 
 $pkgs        = ch_get_hire_packages();
 $locs        = ch_get_franchise_locations();
 $marquee     = ch_get_marquee_items();
-$story_cards = CH_Story_Data::story_cards(); // used only for count display
+$badges      = ch_get_hero_badges();
 
 $s           = ch_get_settings();
 ?>
@@ -37,10 +35,6 @@ $s           = ch_get_settings();
 				'hero_cta_url'   => [ 'CTA 1 URL', 'text', '#build' ],
 				'hero_cta2_label'=> [ 'CTA 2 Label', 'text', 'Hire for Events →' ],
 				'hero_cta2_url'  => [ 'CTA 2 URL', 'text', '#hire' ],
-				'hero_badge_1'   => [ 'Badge 1', 'text', 'No Added Sugar' ],
-				'hero_badge_2'   => [ 'Badge 2', 'text', 'No Preservatives' ],
-				'hero_badge_3'   => [ 'Badge 3', 'text', 'Pressed Live' ],
-				'hero_badge_4'   => [ 'Badge 4', 'text', 'Served Chilled' ],
 			] as $key => [ $label, $type, $placeholder ] ) : ?>
 				<div class="ch-row">
 					<label><?php echo esc_html( $label ); ?></label>
@@ -51,60 +45,18 @@ $s           = ch_get_settings();
 			<?php endforeach; ?>
 		</div>
 
+		<!-- HERO BADGES -->
+		<div class="ch-card">
+			<h2>🏷️ Hero Badges</h2>
+			<p style="font-size:.85rem;color:#666;margin-bottom:.5rem;">One badge per line. Shown under the hero headline.</p>
+			<textarea name="hero_badges" rows="4" style="width:100%;"><?php echo esc_textarea( implode( "\n", $badges ) ); ?></textarea>
+		</div>
+
 		<!-- MARQUEE -->
 		<div class="ch-card">
 			<h2>🎞️ Marquee Items</h2>
 			<p style="font-size:.85rem;color:#666;margin-bottom:.5rem;">One item per line.</p>
 			<textarea name="marquee_items" rows="8" style="width:100%;"><?php echo esc_textarea( implode( "\n", $marquee ) ); ?></textarea>
-		</div>
-
-		<!-- ORDER STEPS -->
-		<div class="ch-card">
-			<h2>📋 How to Order Steps</h2>
-			<?php foreach ( $steps as $idx => $step ) :
-				$step = (array) $step;
-			?>
-				<div style="background:#f9f9f9;border-radius:6px;padding:1rem;margin-bottom:.8rem;">
-					<div class="ch-row">
-						<label>Step Number</label>
-						<input type="text" name="order_steps[<?php echo $idx; ?>][num]" value="<?php echo esc_attr( $step['num'] ?? '' ); ?>" style="width:60px;">
-					</div>
-					<div class="ch-row">
-						<label>Emoji</label>
-						<input type="text" name="order_steps[<?php echo $idx; ?>][emoji]" value="<?php echo esc_attr( $step['emoji'] ?? '' ); ?>" style="width:60px;">
-					</div>
-					<div class="ch-row">
-						<label>Title</label>
-						<input type="text" name="order_steps[<?php echo $idx; ?>][title]" value="<?php echo esc_attr( $step['title'] ?? '' ); ?>">
-					</div>
-					<div class="ch-row">
-						<label>Description</label>
-						<textarea name="order_steps[<?php echo $idx; ?>][desc]" rows="2" style="width:100%;flex:1;"><?php echo esc_textarea( $step['desc'] ?? '' ); ?></textarea>
-					</div>
-					<label style="font-size:.8rem;">
-						<input type="checkbox" name="order_steps[<?php echo $idx; ?>][highlight]" value="1" <?php checked( ! empty( $step['highlight'] ) ); ?>>
-						Highlight step (lime border)
-					</label>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-		<!-- MENU SIZES -->
-		<div class="ch-card">
-			<h2>🧃 Menu Sizes</h2>
-			<p style="font-size:.85rem;color:#666;margin-bottom:.8rem;">Edit size names and descriptions. Pricing is managed separately in Site Settings.</p>
-			<?php foreach ( $sizes as $idx => $sz ) :
-				$sz = (array) $sz;
-			?>
-				<div style="background:#f9f9f9;border-radius:6px;padding:.8rem;margin-bottom:.6rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][icon]"  value="<?php echo esc_attr( $sz['icon']  ?? '' ); ?>" placeholder="🥤" style="width:50px;" title="Emoji icon">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][name]"  value="<?php echo esc_attr( $sz['name']  ?? '' ); ?>" placeholder="e.g. Regular (350ml)" style="width:180px;" title="Size name">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][desc]"  value="<?php echo esc_attr( $sz['desc']  ?? '' ); ?>" placeholder="Description" style="flex:1;min-width:200px;" title="Short description">
-					<input type="hidden" name="menu_sizes[<?php echo $idx; ?>][price]" value="<?php echo esc_attr( $sz['price'] ?? '' ); ?>">
-					<input type="text" name="menu_sizes[<?php echo $idx; ?>][badge]" value="<?php echo esc_attr( $sz['badge'] ?? '' ); ?>" placeholder="Badge (e.g. Popular)" style="width:110px;" title="Optional badge label">
-					<label style="font-size:.8rem;white-space:nowrap;"><input type="checkbox" name="menu_sizes[<?php echo $idx; ?>][featured]" value="1" <?php checked( ! empty( $sz['featured'] ) ); ?>> Featured</label>
-				</div>
-			<?php endforeach; ?>
 		</div>
 
 		<!-- HIRE PACKAGES -->
@@ -153,35 +105,6 @@ $s           = ch_get_settings();
 			<button type="button" id="ch-add-loc" class="button" style="margin-top:.5rem;">+ Add Location</button>
 		</div>
 
-		<!-- BOOKING WIZARD -->
-		<div class="ch-card">
-			<h2>🎫 Booking Wizard</h2>
-			<p style="font-size:.83rem;color:#666;margin-bottom:1rem;">
-				Multi-step order form on the homepage (Size → Cane → Flavour → Event Details → Confirm).
-				Submissions arrive as an enquiry message under <strong>Enquiry Submissions</strong>.
-				Options come from your <strong>Menu Sizes</strong> (above) and the Cane Types / Flavours data.
-			</p>
-			<div class="ch-row">
-				<label>Section Heading</label>
-				<input type="text" name="booking_heading"
-					value="<?php echo esc_attr( $s['booking_heading'] ?? 'Book Your Order' ); ?>"
-					placeholder="Book Your Order">
-			</div>
-			<div class="ch-row">
-				<label>Section Sub-text</label>
-				<input type="text" name="booking_sub"
-					value="<?php echo esc_attr( $s['booking_sub'] ?? '' ); ?>"
-					placeholder="Build your perfect fresh cane juice order in a few easy steps.">
-			</div>
-			<div class="ch-row">
-				<label>Banner Image URL</label>
-				<input type="url" name="booking_image"
-					value="<?php echo esc_attr( $s['booking_image'] ?? '' ); ?>"
-					placeholder="https://… (paste from Media Library)">
-				<p style="font-size:.75rem;color:#888;margin-top:.3rem;width:100%;">Shown on the right side of the booking banner. Leave blank for the default juice photo.</p>
-			</div>
-		</div>
-
 		<!-- HOMEPAGE DISPLAY LIMITS -->
 		<?php
 		$home_limits = $s['home_limits'] ?? [];
@@ -204,7 +127,6 @@ $s           = ch_get_settings();
 
 			<?php
 			$limit_rows = [
-				'story_cards' => [ 'label' => 'Sugarcane Story Cards', 'def' => 4, 'page' => '/our-story/' ],
 				'faqs'        => [ 'label' => 'FAQs',                  'def' => 6, 'page' => '/faqs/' ],
 			];
 			foreach ( $limit_rows as $key => $row ) : ?>

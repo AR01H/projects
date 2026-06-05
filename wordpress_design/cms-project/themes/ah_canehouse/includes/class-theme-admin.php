@@ -13,12 +13,9 @@ class CH_Theme_Admin {
 		add_action( 'admin_post_ch_content_settings_business', [ self::class, 'handle_cs_business'   ] );
 		add_action( 'admin_post_ch_content_settings_contact',  [ self::class, 'handle_cs_contact'    ] );
 		add_action( 'admin_post_ch_content_settings_booking',  [ self::class, 'handle_cs_booking'    ] );
-		add_action( 'admin_post_ch_content_settings_badges',     [ self::class, 'handle_cs_badges'     ] );
 		add_action( 'admin_post_ch_content_settings_galleries', [ self::class, 'handle_cs_galleries'  ] );
-		add_action( 'admin_post_ch_content_settings_sugarcane', [ self::class, 'handle_cs_sugarcane'  ] );
 		add_action( 'admin_post_ch_content_settings_eventswhy', [ self::class, 'handle_cs_eventswhy'  ] );
 		add_action( 'admin_post_ch_content_settings_about',     [ self::class, 'handle_cs_about'      ] );
-		add_action( 'admin_post_ch_content_settings_import',    [ self::class, 'handle_cs_import'     ] );
 		// ch_theme_settings handler lives in functions.php (complete version that
 		// also saves pricing, certifications and schema). Do NOT register a second
 		// handler here - it would overwrite those extended settings.
@@ -117,20 +114,11 @@ class CH_Theme_Admin {
 		$lines = array_filter( array_map( 'sanitize_text_field', explode( "\n", $_POST['marquee_items'] ?? '' ) ) );
 		update_option( 'ch_marquee_items', wp_json_encode( array_values( $lines ) ) );
 
-		// Order steps
-		$steps = [];
-		foreach ( (array) ( $_POST['order_steps'] ?? [] ) as $step ) {
-			$title = sanitize_text_field( $step['title'] ?? '' );
-			if ( ! $title ) continue;
-			$steps[] = [
-				'num'       => sanitize_text_field( $step['num']   ?? '' ),
-				'emoji'     => sanitize_text_field( $step['emoji'] ?? '' ),
-				'title'     => $title,
-				'desc'      => sanitize_textarea_field( $step['desc'] ?? '' ),
-				'highlight' => ! empty( $step['highlight'] ),
-			];
-		}
-		if ( ! empty( $steps ) ) update_option( 'ch_order_steps', wp_json_encode( $steps ) );
+		// Hero badges (one per line)
+		$badge_lines = array_filter( array_map( 'sanitize_text_field', explode( "\n", $_POST['hero_badges'] ?? '' ) ) );
+		update_option( 'ch_hero_badges', wp_json_encode( array_values( $badge_lines ) ) );
+
+
 
 
 		// FAQs (simple text pairs, topic-based)
@@ -146,21 +134,7 @@ class CH_Theme_Admin {
 		}
 		if ( ! empty( $faqs ) ) update_option( 'ch_faqs_manual', wp_json_encode( $faqs ) );
 
-		// Menu sizes
-		$sizes = [];
-		foreach ( (array) ( $_POST['menu_sizes'] ?? [] ) as $sz ) {
-			$name = sanitize_text_field( $sz['name'] ?? '' );
-			if ( ! $name ) continue;
-			$sizes[] = [
-				'icon'     => sanitize_text_field( $sz['icon']     ?? '' ),
-				'name'     => $name,
-				'desc'     => sanitize_text_field( $sz['desc']     ?? '' ),
-				'price'    => sanitize_text_field( $sz['price']    ?? '' ),
-				'badge'    => sanitize_text_field( $sz['badge']    ?? '' ),
-				'featured' => ! empty( $sz['featured'] ),
-			];
-		}
-		if ( ! empty( $sizes ) ) update_option( 'ch_menu_sizes', wp_json_encode( $sizes ) );
+
 
 		// Hire packages
 		$packages = [];
@@ -189,12 +163,9 @@ class CH_Theme_Admin {
 		}
 		if ( ! empty( $locations ) ) update_option( 'ch_franchise_locations', wp_json_encode( $locations ) );
 
-		// Story cards + Booking wizard headings → merge into site settings
+		// Story cards → merge into site settings
 		$existing_settings = get_option( 'ch_site_settings', [] );
 		if ( is_string( $existing_settings ) ) $existing_settings = json_decode( $existing_settings, true ) ?: [];
-		if ( isset( $_POST['booking_heading'] ) )     $existing_settings['booking_heading']     = sanitize_text_field( $_POST['booking_heading'] );
-		if ( isset( $_POST['booking_sub'] ) )         $existing_settings['booking_sub']         = sanitize_text_field( $_POST['booking_sub'] );
-		if ( isset( $_POST['booking_image'] ) )       $existing_settings['booking_image']       = esc_url_raw( $_POST['booking_image'] );
 
 		// Homepage display limits (only when the limits card was on the submitted form)
 		if ( isset( $_POST['home_limits_present'] ) ) {
@@ -266,25 +237,11 @@ class CH_Theme_Admin {
 		exit;
 	}
 
-	public static function handle_cs_badges(): void {
-		check_admin_referer( 'ch_content_settings_badges' );
-		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-
-		$badges = [];
-		foreach ( (array) ( $_POST['hero_badges'] ?? [] ) as $b ) {
-			$b = sanitize_text_field( wp_unslash( $b ) );
-			if ( $b !== '' ) $badges[] = $b;
-		}
-		update_option( 'ch_hero_badges', wp_json_encode( $badges ) );
-		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'badges', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
-		exit;
-	}
 
 	public static function handle_cs_galleries(): void {
 		check_admin_referer( 'ch_content_settings_galleries' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-
-		$keys = [ 'events' => 'ch_events_gallery', 'franchise' => 'ch_franchise_gallery', 'sugarcane' => 'ch_sugarcane_gallery' ];
+		$keys = [ 'events' => 'ch_events_gallery', 'franchise' => 'ch_franchise_gallery', 'about' => 'ch_about_gallery', 'equipment' => 'ch_equipment_gallery' ];
 		foreach ( $keys as $slug => $option ) {
 			$raw  = (array) ( $_POST[ 'gallery_' . $slug ] ?? [] );
 			$imgs = [];
@@ -301,33 +258,6 @@ class CH_Theme_Admin {
 			update_option( $option, wp_json_encode( $imgs ) );
 		}
 		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'galleries', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
-		exit;
-	}
-
-	public static function handle_cs_sugarcane(): void {
-		check_admin_referer( 'ch_content_settings_sugarcane' );
-		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-
-		$stats = [];
-		foreach ( (array) ( $_POST['sugarcane_stats'] ?? [] ) as $st ) {
-			$num = sanitize_text_field( wp_unslash( $st['num'] ?? '' ) );
-			if ( $num ) $stats[] = [ 'num' => $num, 'label' => sanitize_text_field( wp_unslash( $st['label'] ?? '' ) ) ];
-		}
-		update_option( 'ch_sugarcane_stats', wp_json_encode( $stats ) );
-
-		$nf = [];
-		foreach ( (array) ( $_POST['nutrition_facts'] ?? [] ) as $row ) {
-			$name = sanitize_text_field( wp_unslash( $row['name'] ?? '' ) );
-			if ( $name ) $nf[] = [
-				'name'  => $name,
-				'value' => sanitize_text_field( wp_unslash( $row['value'] ?? '' ) ),
-				'note'  => sanitize_text_field( wp_unslash( $row['note']  ?? '' ) ),
-			];
-		}
-		update_option( 'ch_nutrition_facts', wp_json_encode( $nf ) );
-		update_option( 'ch_nutrition_disclaimer', sanitize_text_field( wp_unslash( $_POST['nutrition_disclaimer'] ?? '' ) ) );
-
-		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'sugarcane', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 
@@ -379,69 +309,10 @@ class CH_Theme_Admin {
 		exit;
 	}
 
-	public static function handle_cs_import(): void {
-		check_admin_referer( 'ch_content_settings_import' );
-		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-
-		$type = sanitize_key( $_POST['import_type'] ?? '' );
-		$mode = sanitize_key( $_POST['import_mode'] ?? 'replace' );
-
-		if ( empty( $_FILES['csv_file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['csv_file']['tmp_name'] ) ) {
-			wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'import', 'imported' => urlencode( 'Error: No file uploaded.' ) ], admin_url( 'admin.php' ) ) );
-			exit;
-		}
-
-		// Validate MIME - only plain text/CSV
-		$finfo    = finfo_open( FILEINFO_MIME_TYPE );
-		$mime     = finfo_file( $finfo, $_FILES['csv_file']['tmp_name'] );
-		finfo_close( $finfo );
-		$ext      = strtolower( pathinfo( sanitize_file_name( $_FILES['csv_file']['name'] ), PATHINFO_EXTENSION ) );
-		$ok_mimes = [ 'text/csv', 'text/plain', 'application/csv', 'application/vnd.ms-excel' ];
-		if ( $ext !== 'csv' || ! in_array( $mime, $ok_mimes, true ) ) {
-			wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'import', 'imported' => urlencode( 'Error: File must be a .csv.' ) ], admin_url( 'admin.php' ) ) );
-			exit;
-		}
-
-		$rows    = array_map( 'str_getcsv', file( $_FILES['csv_file']['tmp_name'] ) );
-		$header  = array_shift( $rows ); // skip header row
-		$count   = 0;
-
-		if ( $type === 'enquiry_types' ) {
-			$existing = $mode === 'append' ? ch_get_enquiry_types() : [];
-			foreach ( $rows as $row ) {
-				$value = sanitize_key( $row[0] ?? '' );
-				$label = sanitize_text_field( $row[1] ?? '' );
-				if ( $value && $label ) { $existing[] = [ 'value' => $value, 'label' => $label ]; $count++; }
-			}
-			update_option( 'ch_enquiry_types', wp_json_encode( $existing ) );
-
-		} elseif ( $type === 'occasions' ) {
-			$existing = $mode === 'append' ? ch_get_occasions() : [];
-			foreach ( $rows as $row ) {
-				$occ = sanitize_text_field( $row[0] ?? '' );
-				if ( $occ ) { $existing[] = $occ; $count++; }
-			}
-			update_option( 'ch_occasions', wp_json_encode( $existing ) );
-
-		} elseif ( $type === 'hero_badges' ) {
-			$existing = $mode === 'append' ? ch_get_hero_badges() : [];
-			foreach ( $rows as $row ) {
-				$badge = sanitize_text_field( $row[0] ?? '' );
-				if ( $badge ) { $existing[] = $badge; $count++; }
-			}
-			update_option( 'ch_hero_badges', wp_json_encode( $existing ) );
-		}
-
-		$msg = $count . ' item(s) imported successfully' . ( $mode === 'append' ? ' (appended).' : ' (replaced).' );
-		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'import', 'imported' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
-		exit;
-	}
-
 	// ── Shared admin CSS ──────────────────────────────────────────────────────
 
 	public static function admin_css(): string {
 		return '
-		.ch-admin-wrap { max-width:900px; }
 		.ch-admin-wrap h1 { font-size:1.6rem; margin-bottom:1.5rem; color:#1a3a0f; }
 		.ch-card { background:#fff; border:1px solid #e0e0e0; border-radius:8px; padding:1.5rem; margin-bottom:1.5rem; }
 		.ch-card h2 { font-size:1.1rem; margin-bottom:1rem; padding-bottom:.5rem; border-bottom:1px solid #eee; }

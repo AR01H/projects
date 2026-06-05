@@ -30,9 +30,15 @@ get_template_part( 'components/story-cards' );
 
 <!-- ── What's Inside ─────────────────────────────────────────────────────────── -->
 <?php
+$nutrition_facts = [
+	[ 'name' => '🍬 Natural Sugars', 'value' => '~13-15g', 'note' => 'Sucrose glucose fructose - natural energy' ],
+	[ 'name' => '💊 Potassium',      'value' => '~300mg',  'note' => 'Electrolyte for heart & muscles' ],
+	[ 'name' => '⚗️ Magnesium',      'value' => '~10mg',   'note' => 'Nervous system & energy' ],
+	[ 'name' => '🌿 Antioxidants',   'value' => 'Rich',    'note' => 'Polyphenols & flavonoids' ],
+	[ 'name' => '💧 Water Content',   'value' => '~70%',    'note' => 'Natural hydration' ],
+];
 $_nf_rows = '';
-foreach ( ch_get_nutrition_facts() as $nf ) {
-	$nf = (array) $nf;
+foreach ( $nutrition_facts as $nf ) {
 	$_nf_rows .= '<div class="ch-nutrition-row">'
 		. '<span class="ch-nutrition-name">' . esc_html( $nf['name'] ?? '' ) . '</span>'
 		. '<span class="ch-nutrition-val">'  . esc_html( $nf['value'] ?? '' ) . '</span>'

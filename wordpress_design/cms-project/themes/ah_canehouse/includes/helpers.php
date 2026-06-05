@@ -565,6 +565,11 @@ function ch_get_about_gallery(): array {
 	return (array) $opt; // DB-only: install mock data to populate.
 }
 
+// ── About Page: Equipment Gallery (gallery-strip) ────────────────────────────
+function ch_get_equipment_gallery(): array {
+	return ch_get_gallery( 'ch_equipment_gallery', [] ); // DB-only: install mock data to populate.
+}
+
 /**
  * Home showcase carousel - machines, bottles, products (after hero).
  * Each item supports type: 'image' | 'gif' | 'video' (mp4/webm, autoplays muted+loop).
@@ -593,20 +598,13 @@ function ch_get_sugarcane_gallery(): array {
 	return (array) $opt; // DB-only: install mock data to populate.
 }
 
-// ── Why Sugarcane Stats bar ───────────────────────────────────────────────────
-function ch_get_sugarcane_stats(): array {
-	$opt = get_option( 'ch_sugarcane_stats', [] );
+
+// ── Events: Why Choose Us ─────────────────────────────────────────────────────
+function ch_get_events_why(): array {
+	$opt = get_option( 'ch_events_why', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	return (array) $opt; // DB-only: install mock data to populate.
 }
-
-// ── Nutrition Facts (Why Sugarcane page) ──────────────────────────────────────
-function ch_get_nutrition_facts(): array {
-	$opt = get_option( 'ch_nutrition_facts', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return (array) $opt; // DB-only: install mock data to populate.
-}
-
 
 
 // ── About Page: Mission / Vision / Values ─────────────────────────────────────
@@ -625,10 +623,6 @@ function ch_get_about_quality(): array {
 	return (array) $opt; // DB-only: install mock data to populate.
 }
 
-// ── About Page: Equipment Gallery (gallery-strip) ────────────────────────────
-function ch_get_about_equipment(): array {
-	return ch_get_gallery( 'ch_about_equipment', [] ); // DB-only: install mock data to populate.
-}
 
 // ── About Page: Promise Card ──────────────────────────────────────────────────
 function ch_get_about_promise(): array {
