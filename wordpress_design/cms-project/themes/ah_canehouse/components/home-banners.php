@@ -30,25 +30,68 @@ $uid = 'ch-hero-' . wp_unique_id();
     <!-- TRACK -->
     <div class="ch-hero-track" role="list">
         <?php foreach ( $banners as $i => $b ) :
-            $align     = in_array( $b['text_align'] ?? 'center', ['left','right','center'] ) ? $b['text_align'] : 'center';
-            $pos       = in_array( $b['text_pos']   ?? 'middle', ['top','middle','bottom'] ) ? $b['text_pos']   : 'middle';
-            $overlay   = esc_attr( $b['overlay'] ?? 'rgba(26,58,15,0.45)' );
-            $img_desk  = esc_url( $b['image'] ?? '' );
-            // Mobile image is optional - fall back to the desktop image when blank.
-            $img_mob   = ! empty( $b['image_mobile'] ) ? esc_url( $b['image_mobile'] ) : $img_desk;
-            $bg_style  = "--bg:url('{$img_desk}');--bg-mobile:url('{$img_mob}');";
+            $align      = in_array( $b['text_align'] ?? 'center', ['left','right','center'] ) ? $b['text_align'] : 'center';
+            $pos        = in_array( $b['text_pos']   ?? 'middle', ['top','middle','bottom'] ) ? $b['text_pos']   : 'middle';
+            $overlay    = esc_attr( $b['overlay'] ?? 'rgba(26,58,15,0.45)' );
+            $raw_src    = $b['image'] ?? '';
+            $media_type = ch_asset_type( $raw_src, 'image' );
+            $media_url  = ch_resolve_asset_url( $raw_src );
+
+            // Mobile image applies only to image slides; videos are naturally responsive.
+            $img_mob    = ( $media_type === 'image' && ! empty( $b['image_mobile'] ) )
+                            ? esc_url( $b['image_mobile'] ) : $media_url;
         ?>
         <div class="ch-hero-slide ch-hero-slide--align-<?php echo $align; ?> ch-hero-slide--pos-<?php echo $pos; ?>"
              role="listitem"
              aria-label="Slide <?php echo $i + 1; ?>"
-             aria-hidden="<?php echo $i === 0 ? 'false' : 'true'; ?>">
+             aria-hidden="<?php echo $i === 0 ? 'false' : 'true'; ?>"
+             data-media-type="<?php echo esc_attr( $media_type ); ?>">
 
-            <!-- Background image (separate desktop / mobile source via CSS vars) -->
+            <!-- Background — image / video / YouTube / Vimeo -->
+            <?php if ( $media_type === 'image' ) : ?>
             <div class="ch-hero-slide__bg"
-                 style="<?php echo esc_attr( $bg_style ); ?>"
+                 style="--bg:url('<?php echo $media_url; ?>');--bg-mobile:url('<?php echo $img_mob; ?>');"
                  role="img"
                  aria-label="<?php echo esc_attr( strip_tags( $b['title'] ?? '' ) ); ?>">
             </div>
+
+            <?php elseif ( $media_type === 'video' ) :
+                $ext  = strtolower( pathinfo( preg_replace( '/[?#].*$/', '', $raw_src ), PATHINFO_EXTENSION ) );
+                $mime = match ( $ext ) { 'webm' => 'video/webm', 'ogg', 'ogv' => 'video/ogg', default => 'video/mp4' };
+            ?>
+            <video class="ch-hero-slide__bg ch-hero-slide__bg--video"
+                   autoplay muted playsinline preload="auto"
+                   aria-label="<?php echo esc_attr( strip_tags( $b['title'] ?? '' ) ); ?>">
+                <source src="<?php echo $media_url; ?>" type="<?php echo esc_attr( $mime ); ?>">
+            </video>
+
+            <?php elseif ( $media_type === 'youtube' ) :
+                $yt_id  = ch_youtube_id( $raw_src );
+                $yt_src = 'https://www.youtube.com/embed/' . $yt_id
+                        . '?autoplay=1&mute=1&loop=1&playlist=' . $yt_id
+                        . '&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1';
+            ?>
+            <iframe class="ch-hero-slide__bg ch-hero-slide__bg--embed"
+                    src="<?php echo esc_url( $yt_src ); ?>"
+                    title="<?php echo esc_attr( strip_tags( $b['title'] ?? '' ) ); ?>"
+                    frameborder="0"
+                    allow="autoplay; encrypted-media"
+                    aria-hidden="true">
+            </iframe>
+
+            <?php elseif ( $media_type === 'vimeo' ) :
+                $vm_id  = ch_vimeo_id( $raw_src );
+                $vm_src = 'https://player.vimeo.com/video/' . $vm_id
+                        . '?autoplay=1&muted=1&loop=1&background=1';
+            ?>
+            <iframe class="ch-hero-slide__bg ch-hero-slide__bg--embed"
+                    src="<?php echo esc_url( $vm_src ); ?>"
+                    title="<?php echo esc_attr( strip_tags( $b['title'] ?? '' ) ); ?>"
+                    frameborder="0"
+                    allow="autoplay; fullscreen"
+                    aria-hidden="true">
+            </iframe>
+            <?php endif; ?>
 
             <!-- Scrim / overlay -->
             <div class="ch-hero-slide__overlay" style="background:<?php echo $overlay; ?>;"></div>
@@ -151,18 +194,45 @@ $uid = 'ch-hero-' . wp_unique_id();
     position: absolute;
     inset: 0;
     background-image: var(--bg);
-    background-size: 100% 100%;   /* fill: stretch to cover the whole banner */
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     transform: scale(1.08);
     transition: transform 8s ease;
 }
-/* Use the mobile image (falls back to desktop when none supplied) */
 @media (max-width: 768px) {
     .ch-hero-slide__bg { background-image: var(--bg-mobile, var(--bg)); }
 }
 .ch-hero-slide.is-active .ch-hero-slide__bg {
     transform: scale(1);
+}
+
+/* Background video — fills the slide like object-fit:cover */
+.ch-hero-slide__bg--video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    transform: none;
+    transition: none;
+}
+
+/* YouTube / Vimeo iframe background — oversized + centred to simulate cover */
+.ch-hero-slide__bg--embed {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* wider than viewport AND taller than banner via the larger of the two */
+    width: 100vw;
+    height: 56.25vw;   /* 16:9 at full viewport width */
+    min-height: 100%;
+    min-width: 177.78vh; /* 16:9 at full banner height */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border: none;
+    z-index: 0;
 }
 
 /* Overlay scrim */
@@ -430,10 +500,31 @@ $uid = 'ch-hero-' . wp_unique_id();
         var startX     = 0;
         var isDragging = false;
 
+        /* ── Video helpers ────────────────────────────────── */
+        function getVideo(slide) {
+            return slide.querySelector('video.ch-hero-slide__bg--video');
+        }
+        function isVideoSlide(slide) {
+            return slide.dataset.mediaType === 'video';
+        }
+        function pauseSlideVideo(slide) {
+            var v = getVideo(slide);
+            if (v) { v.onended = null; v.pause(); }
+        }
+        function playSlideVideo(slide, onEnd) {
+            var v = getVideo(slide);
+            if (!v) return;
+            v.onended = onEnd || null;
+            v.currentTime = 0;
+            v.play().catch(function () {});
+        }
+
         /* ── Go to slide ──────────────────────────────────── */
         function goTo(index) {
             index = ((index % total) + total) % total;
 
+            // Leave current slide
+            pauseSlideVideo(slides[current]);
             slides[current].classList.remove('is-active');
             slides[current].setAttribute('aria-hidden', 'true');
             if (dots[current]) {
@@ -443,6 +534,7 @@ $uid = 'ch-hero-' . wp_unique_id();
 
             current = index;
 
+            // Enter new slide
             track.style.transform = 'translateX(-' + (current * 100) + '%)';
             slides[current].classList.add('is-active');
             slides[current].setAttribute('aria-hidden', 'false');
@@ -451,7 +543,32 @@ $uid = 'ch-hero-' . wp_unique_id();
                 dots[current].setAttribute('aria-selected', 'true');
             }
 
-            resetProgress();
+            if (isVideoSlide(slides[current])) {
+                // Video slide: advance only when video finishes, not the timer
+                stopAutoplay();
+                (function (idx) {
+                    playSlideVideo(slides[current], function () {
+                        if (current === idx) { goTo(current + 1); startAutoplay(); }
+                    });
+                })(current);
+                // Progress bar tracks video duration
+                if (progressBar) {
+                    progressBar.style.transition = 'none';
+                    progressBar.style.width = '0%';
+                    var vid = getVideo(slides[current]);
+                    if (vid) {
+                        vid.addEventListener('timeupdate', function onTU() {
+                            if (vid !== getVideo(slides[current])) { vid.removeEventListener('timeupdate', onTU); return; }
+                            var pct = vid.duration ? (vid.currentTime / vid.duration * 100) : 0;
+                            progressBar.style.transition = 'none';
+                            progressBar.style.width = pct + '%';
+                        });
+                    }
+                }
+            } else {
+                // Image / embed slide: use timer
+                resetProgress();
+            }
         }
 
         /* ── Progress bar ─────────────────────────────────── */
@@ -467,7 +584,10 @@ $uid = 'ch-hero-' . wp_unique_id();
         /* ── Autoplay ─────────────────────────────────────── */
         function startAutoplay() {
             stopAutoplay();
+            // Video slides advance via the video's own 'ended' event — no timer needed
+            if (isVideoSlide(slides[current])) return;
             timer = setInterval(function () { goTo(current + 1); }, autoplayMs);
+            resetProgress();
         }
         function stopAutoplay() {
             clearInterval(timer);
@@ -513,6 +633,7 @@ $uid = 'ch-hero-' . wp_unique_id();
         }, { passive: true });
 
         /* ── Pause on hover ───────────────────────────────── */
+        // Only the image slide timer is paused on hover — videos keep playing uninterrupted.
         carousel.addEventListener('mouseenter', stopAutoplay);
         carousel.addEventListener('mouseleave', startAutoplay);
 

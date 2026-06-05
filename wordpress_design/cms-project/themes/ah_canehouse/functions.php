@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 // ── Includes - order matters ──────────────────────────────────────────────────
 require_once get_template_directory() . '/includes/common_terms.php';  // first - defines constants
+require_once get_template_directory() . '/includes/usefulfuntions.php';
 require_once get_template_directory() . '/includes/mock-data.php';
 require_once get_template_directory() . '/includes/helpers.php';
 require_once get_template_directory() . '/includes/carousel-helpers.php';
