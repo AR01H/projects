@@ -46,15 +46,36 @@ class CH_Shared_Data {
 	}
 
 	/**
-	 * Load one component's heading data from the single section-headings.json.
-	 * Static cache so the file is only parsed once per request.
+	 * Load one component's heading data from section-headings.json.
+	 * Substitutes brand tokens: {brand_name}, {product_name}, {Product_name},
+	 * {product_short}, {Product_short} — values from brand.json.
+	 * Static cache so both files are parsed only once per request.
 	 */
 	public static function section_heading( string $key ): array {
-		static $all = null;
+		static $all    = null;
+		static $tokens = null;
 		if ( $all === null ) {
 			$all = CH_Real_Loader::json( 'section-headings' ) ?: [];
 		}
-		return $all[ $key ] ?? [];
+		if ( $tokens === null ) {
+			$b      = CH_Site_Data::brand();
+			$tokens = [
+				'{brand_name}'    => $b['brand_name']    ?? '',
+				'{product_name}'  => $b['product_name']  ?? '',
+				'{Product_name}'  => ucwords( $b['product_name']  ?? '' ),
+				'{product_short}' => $b['product_short'] ?? '',
+				'{Product_short}' => ucwords( $b['product_short'] ?? '' ),
+			];
+		}
+		$heading = $all[ $key ] ?? [];
+		if ( ! $heading ) {
+			return [];
+		}
+		$keys   = array_keys( $tokens );
+		$values = array_values( $tokens );
+		return array_map( static function ( $v ) use ( $keys, $values ) {
+			return is_string( $v ) ? str_replace( $keys, $values, $v ) : $v;
+		}, $heading );
 	}
 
 	public static function review_carousel_settings(): array {

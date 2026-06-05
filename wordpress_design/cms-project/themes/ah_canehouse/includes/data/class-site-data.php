@@ -12,6 +12,14 @@ class CH_Site_Data {
 		return CH_Real_Loader::kv( 'settings' );
 	}
 
+	public static function brand(): array {
+		static $cache = null;
+		if ( $cache === null ) {
+			$cache = CH_Real_Loader::json( 'brand' ) ?: [];
+		}
+		return $cache;
+	}
+
 	public static function contact_settings(): array {
 		$kv = CH_Real_Loader::kv( 'contact-settings' );
 		return array_merge( [ 'recipient_email' => get_option( 'admin_email' ) ], $kv );
