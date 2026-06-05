@@ -55,4 +55,19 @@ class CH_Story_Data {
 			];
 		}, $rows );
 	}
+
+	public static function sugarcane_benefits(): array {
+		$rows = CH_Real_Loader::csv( 'sugarcane-benefits' );
+		if ( ! $rows ) {
+			return [];
+		}
+		return array_map( static function ( $r ) {
+			return [
+				'icon'  => $r['icon']  ?? '',
+				'title' => $r['title'] ?? '',
+				'text'  => $r['text']  ?? '',
+				'stat'  => $r['stat']  ?? '',
+			];
+		}, $rows );
+	}
 }

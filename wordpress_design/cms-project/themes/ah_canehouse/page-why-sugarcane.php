@@ -19,32 +19,14 @@ $phone    = $settings['phone'] ?? CONTACT_NUMBER;
 	'desc'     => 'Sugarcane has fuelled civilisations for over 2,000 years. Discover why fresh, live-pressed cane juice is the world\'s most natural energy drink - and why we\'re proud to bring it to the UK.',
 ] ); ?>
 
-<?php get_template_part( 'components/history-info' ); ?>
+<?php 
 
-<!-- ── Benefits Grid ──────────────────────────────────────────────────── -->
-<section class="ch-benefits-page">
-	<div class="container">
-		<div class="ch-section-center fade-up">
-			<div class="section-tag">Good For You</div>
-			<h2 class="section-title">Natural <span class="accent">Benefits</span></h2>
-			<p class="section-body">Packed with natural goodness your body recognises and loves - no lab, no additives, just the cane.</p>
-		</div>
-		<div class="ch-benefit-cards fade-up">
-			<?php foreach ( ch_get_benefits() as $b ) :
-				$b = (array) $b;
-			?>
-			<div class="ch-benefit-card">
-				<div class="ch-benefit-card__icon"><?php echo esc_html( $b['icon'] ?? '🌿' ); ?></div>
-				<h3><?php echo esc_html( $b['title'] ?? '' ); ?></h3>
-				<p><?php echo esc_html( $b['desc'] ?? '' ); ?></p>
-				<?php if ( ! empty( $b['tag'] ) ) : ?>
-				<div class="ch-benefit-card__tag"><?php echo esc_html( $b['tag'] ); ?></div>
-				<?php endif; ?>
-			</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
+get_template_part( 'components/history-info' ); 
+
+get_template_part( 'components/story-cards' );
+
+?>
+
 
 <!-- ── What's Inside ─────────────────────────────────────────────────────────── -->
 <?php
@@ -78,7 +60,6 @@ $_inside_visual = '<div class="ch-inside-card">'
 	. '<div class="ch-inside-card__desc">Every cup pressed fresh at your order - no pre-made batches, no bottles, no shortcuts. Maximum nutrition, maximum freshness.</div>'
 	. '</div>';
 
-get_template_part( 'components/story-cards' );
 
 get_template_part( 'components/image-text-split', null, [
 	'layout'        => 'image-right',
@@ -98,19 +79,22 @@ unset( $_inside_extra, $_inside_visual );
 
 
 
-<!-- ── CTA ───────────────────────────────────────────────────────────────────── -->
-<section class="ch-inner-cta">
-	<div class="container">
-		<div class="ch-inner-cta__box fade-up">
-			<h2>Ready to Taste the Difference?</h2>
-			<p>Experience 2,000 years of natural goodness - pressed fresh, served cool, just for you.</p>
-			<div class="ch-inner-cta__btns">
-				<a href="<?php echo esc_url( home_url( '/franchise' ) ); ?>" class="btn-lime">Join with Us</a>
-				<a href="<?php echo esc_url( home_url( '/events' ) ); ?>" class="btn-outline" style="border-color:rgba(255,255,255,0.4);color:#fff;">Book for Events </a>
-			</div>
-		</div>
-	</div>
-</section>
+<!-- Why Sugarcane Juice is Loved Worldwide -->
+<?php get_template_part( 'components/sugarcane-benefits' ); ?>
+
+<?php get_template_part( 'components/beyondjuice' ); ?>
+
+<?php get_template_part( 'components/cta-section', null, [
+	'tag'        => 'Experience It',
+	'heading'    => 'Ready to <span class="accent" style="color:var(--client-color-7);">Taste the Tradition?</span>',
+	'body'       => 'Book us for your next event or explore a franchise opportunity in your city.',
+	'btn_label'  => '🥤 Book an Event',
+	'btn_url'    => home_url( '/events/' ),
+	'btn2_label' => 'Explore Franchise →',
+	'btn2_url'   => home_url( '/franchise/' ),
+	'show_phone' => false,
+] ); ?>
+
 
 </main>
 <?php get_footer(); ?>

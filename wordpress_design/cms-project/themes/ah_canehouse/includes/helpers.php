@@ -471,12 +471,6 @@ function ch_get_page_by_slug( string $slug ): ?object {
 	return null;
 }
 
-// ── Benefits ──────────────────────────────────────────────────────────────────
-function ch_get_benefits(): array {
-	$opt = get_option( 'ch_benefits', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return (array) $opt; // DB-only: install mock data to populate.
-}
 
 // ── Events / Hire Packages ────────────────────────────────────────────────────
 function ch_get_hire_packages( int $limit = 0 ): array {
@@ -747,19 +741,10 @@ function ch_card_images( $card ): array {
 	return array_values( array_unique( $out ) );
 }
 
-function ch_get_story_cards(): array {
-	$opt = get_option( 'ch_story_cards', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return (array) $opt; // DB-only: install mock data to populate.
-}
 
 
-// ── Story Section ─────────────────────────────────────────────────────────────
-function ch_get_story_settings(): array {
-	$opt = get_option( 'ch_story_settings', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return (array) $opt; // DB-only: install mock data to populate.
-}
+
+
 
 // ── Page helpers ──────────────────────────────────────────────────────────────
 function ch_pagination(): void {

@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$story = ch_get_story_settings();
-$facts = (array) ( $story['facts'] ?? ch_mock_story_settings()['facts'] );
+$story = class_exists( 'CH_Story_Data' ) ? CH_Story_Data::story_settings() : [];
+$facts = (array) ( $story['facts'] ?? [] );
 ?>
 
 <section id="story" class="ch-story-section">

@@ -14,38 +14,7 @@ $tag   = $args['tag']   ?? 'Global Love';
 $title = $args['title'] ?? 'Why Sugarcane Juice is <span class="accent">Loved Worldwide</span>';
 $body  = $args['body']  ?? 'From South Asian street corners to West African markets and Caribbean festivals, sugarcane juice is one of the few drinks that transcends every border, culture, and generation.';
 
-$default_items = [
-	[
-		'icon'  => '⚡',
-		'title' => 'Instant Natural Energy',
-		'text'  => 'A single glass provides a rapid, sustained energy boost. The natural sucrose is absorbed immediately - no crash, no additives. Athletes worldwide swear by it.',
-		'stat'  => '~180 kcal per glass',
-	],
-	[
-		'icon'  => '🧬',
-		'title' => 'Antioxidant Powerhouse',
-		'text'  => 'Rich in polyphenols and flavonoids that fight free radicals. Raw, live-pressed juice retains these compounds - pasteurised or bottled juice loses most of them.',
-		'stat'  => 'Higher than orange juice',
-	],
-	[
-		'icon'  => '💧',
-		'title' => 'Deep Hydration',
-		'text'  => 'Packed with electrolytes - potassium, sodium, magnesium, calcium. Traditionally used in South Asia to treat dehydration and heat stroke during summer months.',
-		'stat'  => '5 key electrolytes',
-	],
-	[
-		'icon'  => '🌍',
-		'title' => 'Loved on 5 Continents',
-		'text'  => 'Brazil (caldo de cana), India (ganne ka ras), Pakistan, Egypt, West Africa, Thailand, Philippines - sugarcane juice is a global staple, not a niche trend.',
-		'stat'  => '120+ countries grow cane',
-	],
-	[
-		'icon'  => '🌱',
-		'title' => 'Fully Sustainable Crop',
-		'text'  => 'Sugarcane is one of the most efficient crops on earth. The pressed fibre (bagasse) is composted or used as biofuel. Zero waste from root to glass.',
-		'stat'  => '90% water efficiency',
-	],
-];
+$default_items = class_exists( 'CH_Story_Data' ) ? CH_Story_Data::sugarcane_benefits() : [];
 
 $items   = $args['items'] ?? $default_items;
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];

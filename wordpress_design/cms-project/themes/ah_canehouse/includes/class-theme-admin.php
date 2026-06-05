@@ -132,18 +132,6 @@ class CH_Theme_Admin {
 		}
 		if ( ! empty( $steps ) ) update_option( 'ch_order_steps', wp_json_encode( $steps ) );
 
-		// Benefits
-		$benefits = [];
-		foreach ( (array) ( $_POST['benefits'] ?? [] ) as $b ) {
-			$title = sanitize_text_field( $b['title'] ?? '' );
-			if ( ! $title ) continue;
-			$benefits[] = [
-				'icon'  => sanitize_text_field( $b['icon'] ?? '' ),
-				'title' => $title,
-				'desc'  => sanitize_textarea_field( $b['desc'] ?? '' ),
-			];
-		}
-		if ( ! empty( $benefits ) ) update_option( 'ch_benefits', wp_json_encode( $benefits ) );
 
 		// FAQs (simple text pairs, topic-based)
 		$faqs = [];
@@ -204,8 +192,6 @@ class CH_Theme_Admin {
 		// Story cards + Booking wizard headings → merge into site settings
 		$existing_settings = get_option( 'ch_site_settings', [] );
 		if ( is_string( $existing_settings ) ) $existing_settings = json_decode( $existing_settings, true ) ?: [];
-		if ( isset( $_POST['story_cards_heading'] ) ) $existing_settings['story_cards_heading'] = sanitize_text_field( $_POST['story_cards_heading'] );
-		if ( isset( $_POST['story_cards_sub'] ) )     $existing_settings['story_cards_sub']     = sanitize_text_field( $_POST['story_cards_sub'] );
 		if ( isset( $_POST['booking_heading'] ) )     $existing_settings['booking_heading']     = sanitize_text_field( $_POST['booking_heading'] );
 		if ( isset( $_POST['booking_sub'] ) )         $existing_settings['booking_sub']         = sanitize_text_field( $_POST['booking_sub'] );
 		if ( isset( $_POST['booking_image'] ) )       $existing_settings['booking_image']       = esc_url_raw( $_POST['booking_image'] );
@@ -221,39 +207,7 @@ class CH_Theme_Admin {
 			$existing_settings['home_limits'] = $hl;
 		}
 		update_option( 'ch_site_settings', $existing_settings );
-		$sc = [];
-		foreach ( (array) ( $_POST['story_cards'] ?? [] ) as $card ) {
-			$label = sanitize_text_field( $card['label'] ?? '' );
-			if ( ! $label ) continue;
-			$raw_facts = sanitize_textarea_field( $card['facts'] ?? '' );
-			$facts     = array_filter( array_map( 'trim', explode( "\n", $raw_facts ) ) );
 
-			// Images: textarea, one per line. Keep URLs and theme-relative paths.
-			$raw_imgs = $card['images'] ?? ( $card['image'] ?? '' );
-			if ( is_array( $raw_imgs ) ) $raw_imgs = implode( "\n", $raw_imgs );
-			$images = [];
-			foreach ( preg_split( '/[\r\n,]+/', (string) $raw_imgs ) as $line ) {
-				$line = trim( wp_unslash( $line ) );
-				if ( $line === '' ) continue;
-				// Allow full URLs OR safe relative paths
-				if ( preg_match( '#^(https?:)?//#i', $line ) || strpos( $line, 'data:' ) === 0 ) {
-					$images[] = esc_url_raw( $line );
-				} else {
-					$images[] = sanitize_text_field( ltrim( $line, '/' ) );
-				}
-			}
-
-			$sc[] = [
-				'id'      => sanitize_title( ! empty( $card['id'] ) ? $card['id'] : $label ),
-				'icon'    => sanitize_text_field( $card['icon']    ?? '' ),
-				'label'   => $label,
-				'heading' => sanitize_text_field( $card['heading'] ?? '' ),
-				'body'    => sanitize_textarea_field( $card['body'] ?? '' ),
-				'facts'   => array_values( $facts ),
-				'images'  => array_values( array_filter( $images ) ),
-			];
-		}
-		if ( ! empty( $sc ) ) update_option( 'ch_story_cards', wp_json_encode( $sc ) );
 
 		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-content', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;

@@ -6,11 +6,12 @@ $home        = ch_get_home_settings();
 $steps       = ch_get_order_steps();
 $sizes       = ch_get_menu_sizes();
 $faqs        = ch_get_faqs( '', 20 );
-$benefits    = ch_get_benefits();
+
 $pkgs        = ch_get_hire_packages();
 $locs        = ch_get_franchise_locations();
 $marquee     = ch_get_marquee_items();
-$story_cards = ch_get_story_cards();
+$story_cards = CH_Story_Data::story_cards(); // used only for count display
+
 $s           = ch_get_settings();
 ?>
 <div class="wrap ch-admin-wrap">
@@ -222,95 +223,6 @@ $s           = ch_get_settings();
 			<?php endforeach; ?>
 		</div>
 
-		<!-- STORY CARDS -->
-		<div class="ch-card">
-			<h2>🌿 Sugarcane Story Cards</h2>
-			<p style="font-size:.83rem;color:#666;margin-bottom:1rem;">
-				The interactive tabbed section on the homepage. Each card reveals info when clicked. Shown after the marquee.
-			</p>
-
-			<div class="ch-row">
-				<label>Section Heading</label>
-				<input type="text" name="story_cards_heading"
-					value="<?php echo esc_attr( $s['story_cards_heading'] ?? 'The Sugarcane Story' ); ?>"
-					placeholder="The Sugarcane Story">
-			</div>
-			<div class="ch-row">
-				<label>Section Sub-text</label>
-				<input type="text" name="story_cards_sub"
-					value="<?php echo esc_attr( $s['story_cards_sub'] ?? '' ); ?>"
-					placeholder="From ancient fields to your cup...">
-			</div>
-
-			<hr style="margin:1rem 0;border-color:#eee;">
-			<p style="font-size:.82rem;color:#888;margin-bottom:.8rem;">
-				<strong><?php echo count( $story_cards ); ?> cards.</strong>
-				Each card has an emoji icon, short tab label, heading, body text, bullet facts, and optional image URL.
-				Facts: one per line.
-			</p>
-
-			<div id="ch-story-cards-wrap">
-			<?php foreach ( $story_cards as $ci => $card ) :
-				$card  = (array) $card;
-				$facts = implode( "\n", (array) ( $card['facts'] ?? [] ) );
-			?>
-			<div class="ch-sc-admin-card" style="background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:1rem;margin-bottom:.8rem;position:relative;">
-					<button type="button" class="button ch-sc-remove" style="position:absolute;top:.6rem;right:.6rem;color:#b32d2e;border-color:#b32d2e;">✕ Remove</button>
-				<div style="display:grid;grid-template-columns:50px 120px 1fr;gap:.5rem;margin-bottom:.5rem;align-items:start;">
-					<div>
-						<label style="font-size:.7rem;color:#888;display:block;">Icon</label>
-						<input type="text" name="story_cards[<?php echo $ci; ?>][icon]"
-							value="<?php echo esc_attr( $card['icon'] ?? '' ); ?>"
-							style="width:100%;text-align:center;font-size:1.3rem;padding:.3rem;">
-					</div>
-					<div>
-						<label style="font-size:.7rem;color:#888;display:block;">Tab Label</label>
-						<input type="text" name="story_cards[<?php echo $ci; ?>][label]"
-							value="<?php echo esc_attr( $card['label'] ?? '' ); ?>"
-							placeholder="e.g. Live Pressed" style="width:100%;padding:.3rem .5rem;">
-					</div>
-					<div>
-						<label style="font-size:.7rem;color:#888;display:block;">Panel Heading</label>
-						<input type="text" name="story_cards[<?php echo $ci; ?>][heading]"
-							value="<?php echo esc_attr( $card['heading'] ?? '' ); ?>"
-							placeholder="Full heading shown in panel" style="width:100%;padding:.3rem .5rem;">
-					</div>
-				</div>
-				<input type="hidden" name="story_cards[<?php echo $ci; ?>][id]"
-					value="<?php echo esc_attr( $card['id'] ?? '' ); ?>">
-				<div style="margin-bottom:.5rem;">
-					<label style="font-size:.7rem;color:#888;display:block;">Body Text</label>
-					<textarea name="story_cards[<?php echo $ci; ?>][body]"
-						rows="3" style="width:100%;padding:.4rem .6rem;font-size:.83rem;"><?php echo esc_textarea( $card['body'] ?? '' ); ?></textarea>
-				</div>
-				<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
-					<div>
-						<label style="font-size:.7rem;color:#888;display:block;">Bullet Facts (one per line)</label>
-						<textarea name="story_cards[<?php echo $ci; ?>][facts]"
-							rows="4" style="width:100%;padding:.4rem .6rem;font-size:.8rem;"><?php echo esc_textarea( $facts ); ?></textarea>
-					</div>
-					<div>
-						<label style="font-size:.7rem;color:#888;display:block;">Images (one per line - rotates as a slideshow)</label>
-						<?php
-						$card_imgs = $card['images'] ?? ( ! empty( $card['image'] ) ? [ $card['image'] ] : [] );
-						if ( is_string( $card_imgs ) ) $card_imgs = preg_split( '/[\r\n,]+/', $card_imgs );
-						$card_imgs_text = implode( "\n", array_filter( (array) $card_imgs ) );
-						?>
-						<textarea name="story_cards[<?php echo $ci; ?>][images]" rows="3"
-							placeholder="https://example.com/photo.jpg&#10;assets/images/story/cane.jpg&#10;my-photo.jpg"
-							style="width:100%;padding:.4rem .5rem;font-size:.78rem;font-family:monospace;"><?php echo esc_textarea( $card_imgs_text ); ?></textarea>
-						<p style="font-size:.7rem;color:#aaa;margin-top:.3rem;">
-							Full URLs, or theme paths like <code>assets/images/story/cane.jpg</code>, or just a filename <code>cane.jpg</code> (looks in <code>/assets/images/</code>).
-							Add several lines for an auto-rotating gallery. Leave blank for the animated emoji.
-						</p>
-					</div>
-				</div>
-			</div>
-			<?php endforeach; ?>
-		</div><!-- #ch-story-cards-wrap -->
-		<button type="button" id="ch-add-story-card" class="button button-secondary" style="margin-bottom:1rem;">+ Add Story Card</button>
-		</div>
-
 		<?php submit_button( 'Save All Content', 'primary', 'submit', false ); ?>
 	</form>
 </div>
@@ -329,49 +241,5 @@ document.getElementById('ch-add-loc').addEventListener('click', function() {
 	chLocIdx++;
 });
 
-// ── Story Cards: add / remove ───────────────────────────────────────────────
-(function () {
-	const wrap   = document.getElementById('ch-story-cards-wrap');
-	const addBtn = document.getElementById('ch-add-story-card');
-	if (!wrap || !addBtn) return;
 
-	function cardHTML(i) {
-		return `
-			<button type="button" class="button ch-sc-remove" style="position:absolute;top:.6rem;right:.6rem;color:#b32d2e;border-color:#b32d2e;">✕ Remove</button>
-			<div style="display:grid;grid-template-columns:50px 120px 1fr;gap:.5rem;margin:0 6rem .5rem 0;align-items:start;">
-				<div><label style="font-size:.7rem;color:#888;display:block;">Icon</label>
-					<input type="text" name="story_cards[${i}][icon]" value="🌿" style="width:100%;text-align:center;font-size:1.3rem;padding:.3rem;"></div>
-				<div><label style="font-size:.7rem;color:#888;display:block;">Tab Label</label>
-					<input type="text" name="story_cards[${i}][label]" placeholder="e.g. Live Pressed" style="width:100%;padding:.3rem .5rem;"></div>
-				<div><label style="font-size:.7rem;color:#888;display:block;">Panel Heading</label>
-					<input type="text" name="story_cards[${i}][heading]" placeholder="Full heading shown in panel" style="width:100%;padding:.3rem .5rem;"></div>
-			</div>
-			<input type="hidden" name="story_cards[${i}][id]" value="">
-			<div style="margin-bottom:.5rem;"><label style="font-size:.7rem;color:#888;display:block;">Body Text</label>
-				<textarea name="story_cards[${i}][body]" rows="3" style="width:100%;padding:.4rem .6rem;font-size:.83rem;"></textarea></div>
-			<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
-				<div><label style="font-size:.7rem;color:#888;display:block;">Bullet Facts (one per line)</label>
-					<textarea name="story_cards[${i}][facts]" rows="4" style="width:100%;padding:.4rem .6rem;font-size:.8rem;"></textarea></div>
-				<div><label style="font-size:.7rem;color:#888;display:block;">Images (one per line)</label>
-					<textarea name="story_cards[${i}][images]" rows="3" placeholder="https://… or assets/images/story/cane.jpg" style="width:100%;padding:.4rem .5rem;font-size:.78rem;font-family:monospace;"></textarea></div>
-			</div>`;
-	}
-
-	addBtn.addEventListener('click', function () {
-		const i   = 'new' + Date.now();
-		const div = document.createElement('div');
-		div.className = 'ch-sc-admin-card';
-		div.style.cssText = 'background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:1rem;margin-bottom:.8rem;position:relative;';
-		div.innerHTML = cardHTML(i);
-		wrap.appendChild(div);
-		div.scrollIntoView({ behavior: 'smooth', block: 'center' });
-	});
-
-	// Event delegation for remove buttons (works for existing + new cards)
-	wrap.addEventListener('click', function (e) {
-		if (e.target.classList.contains('ch-sc-remove')) {
-			if (confirm('Remove this story card?')) e.target.closest('.ch-sc-admin-card').remove();
-		}
-	});
-})();
 </script>
