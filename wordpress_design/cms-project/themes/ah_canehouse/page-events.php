@@ -20,7 +20,6 @@ get_header();
 
 <?php get_template_part( 'components/features-ribbon' ); ?>
 
-
 <?php get_template_part( 'components/events-packages' ); ?>
 
 <?php get_template_part( 'components/media-gallery', null, [

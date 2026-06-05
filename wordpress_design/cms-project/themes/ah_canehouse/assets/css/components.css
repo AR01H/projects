@@ -1067,8 +1067,29 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     .ch-reviews-events-section { padding: 3.5rem 0; }
 }
 
-/* ── Franchise Why / Steps / Reviews - shared strip mixin ────────────────────── */
-.ch-fwhy-track,
+/* ── Franchise Why - single-card carousel (all screen sizes) ─────────────────── */
+.ch-fwhy-track {
+    display: block;
+    overflow: visible;
+    margin: 2.5rem auto 0;
+    max-width: 700px;
+    width: 100%;
+}
+.ch-fwhy-track::-webkit-scrollbar { display: none; }
+
+.ch-fwhy-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ch-fwhy-dots { display: flex; gap: 0.5rem; }
+.ch-fwhy-arrows { display: flex; gap: 0.5rem; }
+
+/* ── Steps / Reviews - shared strip mixin (unchanged) ────────────────────────── */
 .ch-fstep-track,
 .ch-rfr-track {
     display: flex;
@@ -1078,30 +1099,32 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    padding: 0.5rem 2rem 0.5rem 2rem;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 2rem;
     align-items: stretch;
     margin: 2.5rem auto 0;
     width: fit-content;
     max-width: 100%;
 }
-.ch-fwhy-track::-webkit-scrollbar,
 .ch-fstep-track::-webkit-scrollbar,
 .ch-rfr-track::-webkit-scrollbar { display: none; }
 
-.ch-fwhy-nav,
 .ch-fstep-nav,
 .ch-rfr-nav { display: none; }
 
-/* ── Why The Cane House ─────────────────────────────────────────────── */
+/* ── Why The Cane House - single card at a time ─────────────────────── */
 .ch-fw-card {
-    flex: 0 0 280px;
-    scroll-snap-align: start;
+    display: none;
+    width: 100%;
     background: var(--client-color-11);
     border: 2px solid var(--client-color-5);
     border-radius: 18px;
-    padding: 2rem 1.8rem;
+    padding: 2.5rem 2rem;
     transition: all .3s;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+.ch-fw-card.active {
+    display: flex;
 }
 .ch-fw-card:hover { border-color: var(--client-color-7); transform: translateY(-4px); box-shadow: 0 10px 28px var(--client-color-18); }
 
@@ -1133,24 +1156,20 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 .ch-rfr-card__name  { font-weight: 700; font-size: 0.85rem; color: var(--client-color-11); }
 .ch-rfr-card__city  { font-size: 0.75rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 0.2rem; flex-wrap: wrap; }
 
-/* Mobile: single-card carousel for all three */
+/* Mobile: single-card carousel for steps / reviews (fwhy already carousel on all screens) */
 @media (max-width: 767px) {
-    .ch-fwhy-track,
     .ch-fstep-track,
     .ch-rfr-track {
         display: block;
         overflow: visible;
         margin-top: 1.5rem;
     }
-    .ch-fw-card,
     .ch-fstep-track .ch-step-card,
     .ch-rfr-card { display: none; flex: unset; width: 100%; }
-    .ch-fw-card.active,
     .ch-fstep-track .ch-step-card.active,
     .ch-rfr-card.active { display: flex; flex-direction: column; }
     .ch-fstep-track .ch-step-card.active { display: block; }
 
-    .ch-fwhy-nav,
     .ch-fstep-nav,
     .ch-rfr-nav {
         display: flex;
@@ -1158,8 +1177,8 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
         align-items: center;
         margin-top: 1rem;
     }
-    .ch-fwhy-dots, .ch-fstep-dots, .ch-rfr-dots { display: flex; gap: 0.5rem; }
-    .ch-fwhy-arrows, .ch-fstep-arrows, .ch-rfr-arrows { display: flex; gap: 0.5rem; }
+    .ch-fstep-dots, .ch-rfr-dots { display: flex; gap: 0.5rem; }
+    .ch-fstep-arrows, .ch-rfr-arrows { display: flex; gap: 0.5rem; }
     .ch-reviews-franchise-section { padding: 3.5rem 0; }
 }
 
@@ -6740,34 +6759,23 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-epc--coral  .ch-epc__link { color: #e11d48; }
 .ch-epc--indigo .ch-epc__link { color: #3730a3; }
 
-/* ── Hire Carousel ──────────────────────────────────────────────────────────── */
-
-/* Desktop: show all cards as grid, hide nav controls */
-.ch-hire-carousel { position: relative; }
-.ch-hire-track {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+/* ── Hire Carousel (now uses generic .ch-carousel via carousel.js) ────────── */
+.ch-hire-carousel { position: relative; margin-top: 2rem; }
+.ch-hire-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 1.5rem;
+    margin-top: 1.5rem;
 }
-.ch-hire-track .ch-hire-card { display: block; }
-.ch-hire-nav { display: none; }
+/* Ensure track gap is respected by carousel.js */
+.ch-hire-track { gap: 1.5rem; }
 
-/* Mobile: single-card carousel */
-@media (max-width: 767px) {
-    .ch-hire-track {
-        display: block;
-        position: relative;
-        min-height: 260px;
-    }
-    .ch-hire-track .ch-hire-card { display: none; animation: ch-fade-in 0.35s ease; }
-    .ch-hire-track .ch-hire-card.active { display: block; }
-    .ch-hire-nav {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-        margin-top: 1.5rem;
-    }
+@media (max-width: 900px) {
+    .ch-hire-carousel { --cc-items-visible: 2; }
+}
+@media (max-width: 650px) {
+    .ch-hire-carousel { --cc-items-visible: 1; }
 }
 
 /* ── Certifications Carousel ────────────────────────────────────────────────── */

@@ -102,7 +102,7 @@ add_action( 'wp_head', 'seo_output_tags' );
  */
 function cms_generate_sitemap_xml(): string {
     $posts = get_posts( [
-        'post_type'      => 'any',
+        'post_type'      => [ 'post', 'page' ],
         'post_status'    => 'publish',
         'posts_per_page' => -1,
         'fields'         => 'ids',

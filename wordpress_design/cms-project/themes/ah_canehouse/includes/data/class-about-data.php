@@ -75,4 +75,22 @@ class CH_About_Data {
 			];
 		}, $rows );
 	}
+
+    /**
+     * Franchise Why items (icon, title, text).
+     * Source: real_data/csv/franchise-why.csv
+     */
+    public static function franchise_why_items(): array {
+        $rows = CH_Real_Loader::csv( 'franchise-why' );
+        if ( ! $rows ) {
+            return [];
+        }
+        return array_map( static function ( $r ) {
+            return [
+                'icon'  => $r['icon'] ?? '',
+                'title' => $r['title'] ?? '',
+                'text'  => $r['text'] ?? '',
+            ];
+        }, $rows );
+    }
 }

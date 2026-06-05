@@ -5,16 +5,9 @@ $tag   = $args['tag']   ?? 'The Opportunity';
 $title = $args['title'] ?? 'Why <span class="accent">The Cane House?</span>';
 $body  = $args['body']  ?? 'The demand for natural drinks is booming. The UK has almost no live-press sugarcane brand - yet. Be the first in your city.';
 
-$default_items = [
-	[ 'icon' => '📈', 'title' => 'Growing Market',       'text' => 'The natural drinks sector is growing 15%+ year-on-year. Live-press juice is untapped in most UK cities - massive first-mover advantage awaits.' ],
-	[ 'icon' => '🏗️', 'title' => 'Full Setup Support',   'text' => 'We provide the equipment, training, branding, marketing templates, and supplier contacts. You focus on serving customers - we handle the rest.' ],
-	[ 'icon' => '💰', 'title' => 'Strong Margins',        'text' => 'Low cost ingredients, high selling price. A single busy event can generate significant returns. Scalable from a single stall to multiple locations.' ],
-	[ 'icon' => '🤝', 'title' => 'Ongoing Partnership',   'text' => 'We\'re not just a licensor - we\'re your business partner. Regular check-ins, marketing support, and a growing network of fellow franchise owners.' ],
-	[ 'icon' => '🌿', 'title' => 'Ethical & Sustainable', 'text' => 'A product you can be genuinely proud of. Natural, sustainable, and culturally resonant with communities across the UK.' ],
-	[ 'icon' => '⚡',  'title' => 'Quick to Launch',       'text' => 'Minimal setup time compared to traditional food franchise. Be ready to trade at events within weeks of joining the family.' ],
-];
+// Load franchise why items from data class
+$items = CH_About_Data::franchise_why_items();
 
-$items   = $args['items'] ?? $default_items;
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 

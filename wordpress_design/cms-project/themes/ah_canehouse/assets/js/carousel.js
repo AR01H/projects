@@ -46,6 +46,36 @@
         }
 
         this._checkNav();
+
+        // If looping and we have enough items, clone them for a seamless loop
+        if ( this.opts.loop && !this._noCarousel && this._total > 1 ) {
+            var self = this;
+            var clones = [];
+            this.items.forEach( function( item ) {
+                var clone = item.cloneNode(true);
+                clone.classList.add('is-clone');
+                clone.setAttribute('aria-hidden', 'true');
+                self.track.appendChild(clone);
+                clones.push(clone);
+            } );
+            this.items = this.items.concat(clones);
+            this._cloned = true;
+
+            this.track.addEventListener('transitionend', function(e) {
+                if (e.target !== self.track) return;
+                if (self._index >= self._total) {
+                    self.track.style.transition = 'none';
+                    self._index = self._index % self._total;
+                    self._slide();
+                    // Update navigation indicators after looping
+                    self._updateDots();
+                    self._updateArrows();
+                    void self.track.offsetWidth;
+                    self.track.style.transition = '';
+                }
+            });
+        }
+
         this._bindEvents();
         this._watchContainer();
 
@@ -90,6 +120,7 @@
 
     /* ── max valid index ────────────────────────────────────── */
     CHCarousel.prototype._maxIndex = function () {
+        if (this._cloned) return this._total - 1;
         return Math.max( 0, this._total - this._visibleCount() );
     };
 
@@ -117,8 +148,19 @@
         var maxIdx = this._maxIndex();
 
         if ( this.opts.loop ) {
-            if ( index > maxIdx ) index = 0;
-            if ( index < 0      ) index = maxIdx;
+            if ( this._cloned ) {
+                if ( index < 0 ) {
+                    this.track.style.transition = 'none';
+                    this._index = this._total;
+                    this._slide();
+                    void this.track.offsetWidth;
+                    this.track.style.transition = '';
+                    index = this._total - 1;
+                }
+            } else {
+                if ( index > maxIdx ) index = 0;
+                if ( index < 0      ) index = maxIdx;
+            }
         } else {
             index = Math.max( 0, Math.min( index, maxIdx ) );
         }
@@ -129,7 +171,7 @@
         this._updateArrows();
 
         if ( typeof this.opts.onChange === 'function' ) {
-            this.opts.onChange( this._index );
+            this.opts.onChange( this._index % this._total );
         }
     };
 
@@ -163,7 +205,9 @@
     /* ── dots: highlight the FIRST visible item's dot ───────── */
     CHCarousel.prototype._updateDots = function () {
         var idx = this._index;
+        var maxIdx = this._maxIndex();
         this.dots.forEach( function ( dot, i ) {
+            dot.style.display = i > maxIdx ? 'none' : '';
             dot.classList.toggle( 'is-active', i === idx );
         } );
     };

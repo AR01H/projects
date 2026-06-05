@@ -105,7 +105,12 @@ add_action( 'init', function () {
 } );
 
 // ── Run on theme activation ───────────────────────────────────────────────────
-add_action( 'after_switch_theme', 'ch_setup_theme_pages' );
+add_action( 'after_switch_theme', function () {
+	ch_setup_theme_pages();
+	if ( class_exists( 'CH_Schema' ) ) {
+		CH_Schema::create_all();
+	}
+} );
 
 // ── Also run on admin_init to catch any missing pages ─────────────────────────
 // (runs once per WP version bump or if option is missing)
@@ -132,13 +137,6 @@ add_action( 'admin_init', function () {
 add_action( 'admin_notices', function () {
 	if ( ! isset( $_GET['ch_regen'] ) ) return;
 	echo '<div class="notice notice-success is-dismissible"><p><strong>The Cane House:</strong> All theme pages created/updated and permalink rules flushed.</p></div>';
-} );
-
-// ── Theme Activation Hook ─────────────────────────────────────────────────────
-register_activation_hook( __FILE__, function () {
-	if ( class_exists( 'CH_Theme_Reset' ) ) {
-		CH_Theme_Reset::reset_all();
-	}
 } );
 
 // ── Init Theme Admin ──────────────────────────────────────────────────────────

@@ -257,41 +257,7 @@
         track.addEventListener('mouseleave', function () { autoTimer = setInterval(function () { current = (current + 1) % cards.length; update(); }, 4000); });
     }
 
-    // ── Hire Packages Carousel ────────────────────────────────────────────────
-    function initHireCarousel() {
-        var track = document.getElementById('ch-hire-track');
-        var prev  = document.getElementById('ch-hire-prev');
-        var next  = document.getElementById('ch-hire-next');
-        if (!track) return;
-
-        var cards   = track.querySelectorAll('.ch-hire-card');
-        var current = 0;
-
-        function getDots() {
-            return document.querySelectorAll('#ch-hire-dots .ch-dot');
-        }
-
-        function show(idx) {
-            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
-            getDots().forEach(function (d, i) {
-                d.classList.toggle('active', i === idx);
-                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
-            });
-            current = idx;
-        }
-        function advance() { show((current + 1) % cards.length); }
-        function retreat() { show((current - 1 + cards.length) % cards.length); }
-
-        if (next) next.addEventListener('click', advance);
-        if (prev) prev.addEventListener('click', retreat);
-
-        getDots().forEach(function (dot, i) {
-            dot.addEventListener('click', function () { show(i); });
-        });
-
-        addSwipe(track, advance, retreat);
-    }
-
+    // ── Hire Packages Carousel (removed in favor of generic CHCarousel) ────────
     // ── Certifications Carousel ───────────────────────────────────────────────
     function initCertsCarousel() {
         var track = document.getElementById('ch-certs-track');
@@ -810,7 +776,7 @@
         initScrollAnimations();
         initScrollToTop();
         initReviewCarousel();
-        initHireCarousel();
+        // initHireCarousel(); removed in favor of CHCarousel
         initCertsCarousel();
         initPkgCarousel();
         initEpcCarousel();

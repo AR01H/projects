@@ -80,9 +80,7 @@ function ch_get_certifications(): array {
 	$saved = isset( $s['certifications'] ) ? $s['certifications'] : [];
 	if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: [];
 	if ( ! empty( $saved ) ) return (array) $saved;
-	// Real data fallback – edit real_data/csv/certifications.csv to customise per client.
-	$rows = CH_Real_Loader::csv( 'certifications' );
-	return ! empty( $rows ) ? $rows : [];
+	return []; // DB-only: install mock data to populate.
 }
 
 // ── Schema / SEO Settings ──────────────────────────────────────────────────────
@@ -125,8 +123,7 @@ function ch_get_home_settings(): array {
 	}
 	$opt = get_option( 'ch_home_settings', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return $opt;
-	return ch_mock_home_settings_array();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────────
@@ -237,32 +234,32 @@ function ch_build_default_footer(): array {
 function ch_get_menu_sizes(): array {
 	$opt = get_option( 'ch_menu_sizes', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_menu_sizes();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_cane_types(): array {
 	$opt = get_option( 'ch_cane_types', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_cane_types();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_textures(): array {
 	$opt = get_option( 'ch_textures', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_textures();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_flavours(): array {
 	$opt = get_option( 'ch_flavours', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_flavours();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Order Steps ───────────────────────────────────────────────────────────────
 function ch_get_order_steps(): array {
 	$opt = get_option( 'ch_order_steps', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_order_steps();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Marquee Items ─────────────────────────────────────────────────────────────
@@ -284,7 +281,7 @@ function ch_get_marquee_items(): array {
 	}
 	$opt = get_option( 'ch_marquee_items', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_marquee_items();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Reviews ───────────────────────────────────────────────────────────────────
@@ -327,8 +324,8 @@ function ch_get_reviews( int $limit = 6, string $taxonomy_slug = '' ): array {
 		}
 	}
 
-	// Last resort: mock data (only when DB has zero reviews at all).
-	return array_slice( ch_mock_reviews(), 0, $limit );
+	// No reviews in DB yet - return empty (install mock data to populate).
+	return [];
 }
 
 // ── Normalize review data from plugin to theme format ───────────────────────────
@@ -478,7 +475,7 @@ function ch_get_page_by_slug( string $slug ): ?object {
 function ch_get_benefits(): array {
 	$opt = get_option( 'ch_benefits', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_benefits();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Events / Hire Packages ────────────────────────────────────────────────────
@@ -500,10 +497,10 @@ function ch_get_hire_packages( int $limit = 0 ): array {
 			}, $rows );
 		}
 	}
-	// Fallback: legacy WP option
+	// Fallback: legacy WP option — DB-only, no mock fallback.
 	$opt = get_option( 'ch_hire_packages', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	$packages = ! empty( $opt ) ? $opt : ch_mock_hire_packages();
+	$packages = (array) $opt;
 	if ( $limit > 0 ) $packages = array_slice( $packages, 0, $limit );
 	return $packages;
 }
@@ -511,21 +508,21 @@ function ch_get_hire_packages( int $limit = 0 ): array {
 function ch_get_hire_features(): array {
 	$opt = get_option( 'ch_hire_features', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_hire_features();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Franchise Locations ───────────────────────────────────────────────────────
 function ch_get_franchise_locations(): array {
 	$opt = get_option( 'ch_franchise_locations', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_franchise_locations();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Showcase / Juice Gallery ──────────────────────────────────────────────────
 function ch_get_juice_showcase(): array {
 	$opt = get_option( 'ch_juice_showcase', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_juice_showcase();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Gallery Images ────────────────────────────────────────────────────────────
@@ -557,30 +554,21 @@ function ch_get_banner_autoplay(): int {
 }
 
 function ch_get_events_gallery(): array {
-	// DB/admin option first; then real_data/csv/events-gallery.csv.
 	$opt = get_option( 'ch_events_gallery', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	$rows = CH_Real_Loader::csv( 'events-gallery' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_franchise_gallery(): array {
-	// DB/admin option first; then real_data/csv/franchise-gallery.csv.
 	$opt = get_option( 'ch_franchise_gallery', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	$rows = CH_Real_Loader::csv( 'franchise-gallery' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_about_gallery(): array {
-	// DB/admin option first; then real_data/csv/about-gallery.csv.
 	$opt = get_option( 'ch_about_gallery', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	$rows = CH_Real_Loader::csv( 'about-gallery' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 /**
@@ -588,77 +576,48 @@ function ch_get_about_gallery(): array {
  * Each item supports type: 'image' | 'gif' | 'video' (mp4/webm, autoplays muted+loop).
  */
 function ch_get_showcase(): array {
-	// DB/admin option first; then real_data/csv/showcase-items.csv.
 	$opt = get_option( 'ch_showcase_items', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	$rows = CH_Real_Loader::csv( 'showcase-items' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_events_media_gallery(): array {
-	// DB/admin option first; then real_data/csv/events-media-gallery.csv.
 	$opt = get_option( 'ch_events_media_gallery', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	$rows = CH_Real_Loader::csv( 'events-media-gallery' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_franchise_media_gallery(): array {
-	// DB/admin option first; then real_data/csv/franchise-media-gallery.csv.
 	$opt = get_option( 'ch_franchise_media_gallery', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	$rows = CH_Real_Loader::csv( 'franchise-media-gallery' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 function ch_get_sugarcane_gallery(): array {
-	// DB/admin option first; then real_data/csv/sugarcane-gallery.csv.
 	$opt = get_option( 'ch_sugarcane_gallery', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	$rows = CH_Real_Loader::csv( 'sugarcane-gallery' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Why Sugarcane Stats bar ───────────────────────────────────────────────────
 function ch_get_sugarcane_stats(): array {
 	$opt = get_option( 'ch_sugarcane_stats', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	// Real data fallback – edit real_data/csv/sugarcane-stats.csv to customise per client.
-	$rows = CH_Real_Loader::csv( 'sugarcane-stats' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Nutrition Facts (Why Sugarcane page) ──────────────────────────────────────
 function ch_get_nutrition_facts(): array {
 	$opt = get_option( 'ch_nutrition_facts', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	// Real data fallback – edit real_data/csv/nutrition-facts.csv to customise per client.
-	$rows = CH_Real_Loader::csv( 'nutrition-facts' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Events "Why Choose Us" items ──────────────────────────────────────────────
 function ch_get_events_why(): array {
 	$opt = get_option( 'ch_events_why', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return $opt;
-	// Real data fallback – edit real_data/json/events-why.json to customise per client.
-	$data = CH_Real_Loader::kv_json( 'events-why' );
-	if ( empty( $data ) ) {
-		// kv_json returns [] for arrays; load raw JSON object manually.
-		$path = get_template_directory() . '/real_data/json/events-why.json';
-		if ( file_exists( $path ) ) {
-			$decoded = json_decode( file_get_contents( $path ), true );
-			if ( is_array( $decoded ) ) $data = $decoded;
-		}
-	}
-	return $data ?: [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── About Page: Mission / Vision / Values ─────────────────────────────────────
@@ -674,49 +633,33 @@ function ch_get_about_mvv(): array {
 function ch_get_about_quality(): array {
 	$opt = get_option( 'ch_about_quality', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	// Real data fallback – edit real_data/csv/about-quality.csv to customise per client.
-	$rows = CH_Real_Loader::csv( 'about-quality' );
-	return ! empty( $rows ) ? array_column( $rows, 'item' ) : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── About Page: Equipment Gallery (gallery-strip) ────────────────────────────
 function ch_get_about_equipment(): array {
-	return ch_get_gallery( 'ch_about_equipment', CH_Data::about_equipment() );
+	return ch_get_gallery( 'ch_about_equipment', [] ); // DB-only: install mock data to populate.
 }
 
 // ── About Page: Promise Card ──────────────────────────────────────────────────
 function ch_get_about_promise(): array {
 	$opt = get_option( 'ch_about_promise', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return $opt;
-	$kv = CH_Data::about_settings();
-	return [
-		'icon'  => $kv['promise_icon']  ?? '🌱',
-		'title' => $kv['promise_title'] ?? 'Our Promise',
-		'sub'   => $kv['promise_sub']   ?? 'Pressed Fresh. Served Cool.',
-		'tags'  => $kv['promise_tags']  ?? [],
-	];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Enquiry Types (Contact Form dropdown) ─────────────────────────────────────
 function ch_get_enquiry_types(): array {
 	$opt = get_option( 'ch_enquiry_types', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	// Real data fallback – edit real_data/csv/enquiry-types.csv to customise per client.
-	$rows = CH_Real_Loader::csv( 'enquiry-types' );
-	return ! empty( $rows ) ? $rows : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Booking Occasions (Booking Wizard dropdown) ───────────────────────────────
 function ch_get_occasions(): array {
 	$opt = get_option( 'ch_occasions', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) ) return (array) $opt;
-	// Real data fallback – edit real_data/csv/occasions.csv to customise per client.
-	$rows = CH_Real_Loader::csv( 'occasions' );
-	return ! empty( $rows ) ? array_column( $rows, 'value' ) : [];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Hero Badges (dynamic list) ────────────────────────────────────────────────
@@ -807,154 +750,15 @@ function ch_card_images( $card ): array {
 function ch_get_story_cards(): array {
 	$opt = get_option( 'ch_story_cards', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	if ( ! empty( $opt ) && is_array( $opt ) ) return (array) $opt;
-	// Real data fallback – edit real_data/json/story-cards.json to customise per client.
-	$rows = CH_Real_Loader::json( 'story-cards' );
-	if ( ! empty( $rows ) ) return $rows;
-	return [
-	[
-		'id'       => 'cultivation',
-		'icon'     => '🌱',
-		'label'    => 'Cultivation',
-		'heading'  => 'Sugarcane Begins on the Farm',
-		'body'     => 'Sugarcane is planted in fertile soil and carefully grown for 10–18 months. Farmers monitor irrigation, sunlight, and soil health to produce healthy stalks packed with natural sweetness.',
-		'facts'    => [
-			'10–18 month growing cycle',
-			'Rich fertile farmland',
-			'Naturally sun-ripened'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-
-	[
-		'id'       => 'harvesting',
-		'icon'     => '🚜',
-		'label'    => 'Harvesting',
-		'heading'  => 'Harvested at Peak Sweetness',
-		'body'     => 'Once mature, the sugarcane is carefully harvested and prepared for transport. Timing is critical to preserve maximum juice content and natural flavour.',
-		'facts'    => [
-			'Peak maturity harvesting',
-			'Freshly cut stalks',
-			'Quality inspected'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-
-	[
-		'id'       => 'transport',
-		'icon'     => '🚚',
-		'label'    => 'Farm to Store',
-		'heading'  => 'Delivered Fresh From Trusted Farms',
-		'body'     => 'Freshly harvested cane is transported directly from partner farms to our stores, helping preserve freshness and ensuring the highest quality juice.',
-		'facts'    => [
-			'Direct farm sourcing',
-			'Fresh delivery process',
-			'Minimal storage time'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-
-	[
-		'id'       => 'juicing',
-		'icon'     => '🥤',
-		'label'    => 'Fresh Pressing',
-		'heading'  => 'Pressed Fresh for Every Cup',
-		'body'     => 'Every sugarcane stalk is washed and pressed live when ordered. No preservatives, concentrates, or artificial ingredients are added.',
-		'facts'    => [
-			'Pressed to order',
-			'No preservatives',
-			'100% natural juice'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-
-	[
-		'id'       => 'enjoy',
-		'icon'     => '🍹',
-		'label'    => 'Enjoyment',
-		'heading'  => 'Farm Fresh Juice Served Instantly',
-		'body'     => 'Customers enjoy pure sugarcane juice moments after pressing, experiencing the natural sweetness exactly as nature intended.',
-		'facts'    => [
-			'Served immediately',
-			'Maximum freshness',
-			'Naturally refreshing'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-
-	[
-		'id'       => 'bagasse',
-		'icon'     => '♻️',
-		'label'    => 'Bagasse Recovery',
-		'heading'  => 'Nothing Goes to Waste',
-		'body'     => 'After juice extraction, the remaining sugarcane fibre known as bagasse is collected and repurposed instead of being discarded.',
-		'facts'    => [
-			'Natural sugarcane fibre',
-			'Waste reduction',
-			'Sustainable reuse'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1497436072909-f5e4be0d1e91?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-
-	[
-		'id'       => 'plates',
-		'icon'     => '🍽️',
-		'label'    => 'Eco Products',
-		'heading'  => 'Turned Into Sustainable Tableware',
-		'body'     => 'The recovered bagasse is transformed into biodegradable plates, bowls, and food containers that help replace plastic waste.',
-		'facts'    => [
-			'Biodegradable plates',
-			'Plastic-free solution',
-			'Food-safe products'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-
-	[
-		'id'       => 'compost',
-		'icon'     => '🌍',
-		'label'    => 'Return to Nature',
-		'heading'  => 'Back to the Earth',
-		'body'     => 'After use, the sugarcane-fibre products naturally break down and return nutrients to the soil, completing the circular lifecycle.',
-		'facts'    => [
-			'100% compostable',
-			'Returns to soil',
-			'Supports circular sustainability'
-		],
-		'images'   => [
-			'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=700&q=80',
-			'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=700&q=80',
-		],
-	],
-];
+	return (array) $opt; // DB-only: install mock data to populate.
 }
+
 
 // ── Story Section ─────────────────────────────────────────────────────────────
 function ch_get_story_settings(): array {
 	$opt = get_option( 'ch_story_settings', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return ! empty( $opt ) ? $opt : ch_mock_story_settings();
+	return (array) $opt; // DB-only: install mock data to populate.
 }
 
 // ── Page helpers ──────────────────────────────────────────────────────────────
@@ -993,9 +797,7 @@ function ch_get_services( string $status = 'active' ): array {
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status = %s ORDER BY sort_order ASC", $status ) );
 		if ( ! empty( $rows ) ) return $rows;
 	}
-	if ( class_exists( 'CH_Data' ) ) {
-		return CH_Data::services();
-	}
+	// DB-only: no fallback to mock data. Returns empty if table absent or no rows.
 	return [];
 }
 
@@ -1007,9 +809,7 @@ function ch_get_team_members( string $status = 'active' ): array {
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE status = %s ORDER BY sort_order ASC", $status ) );
 		if ( ! empty( $rows ) ) return $rows;
 	}
-	if ( class_exists( 'CH_Data' ) ) {
-		return CH_Data::about_team();
-	}
+	// DB-only: no fallback to mock data. Returns empty if table absent or no rows.
 	return [];
 }
 

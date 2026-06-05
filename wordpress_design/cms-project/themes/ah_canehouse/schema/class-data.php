@@ -91,7 +91,7 @@ class CH_Data {
 	}
 
 	public static function about_equipment(): array {
-		$rows = CH_CSV_Loader::load_real_csv( 'about-equipment' );
+		$rows = self::load_csv( 'about-equipment' );
 		if ( $rows ) {
 			return array_map( static function ( $r ) {
 				return [
