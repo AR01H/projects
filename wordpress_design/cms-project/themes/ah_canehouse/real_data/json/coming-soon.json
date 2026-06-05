@@ -1,0 +1,21 @@
+{
+	"default": {
+		"icon":      "🌿",
+		"tag":       "Coming Soon",
+		"title":     "Something <span class=\"accent\">Exciting</span> Is Coming",
+		"body":      "We're working on something special for you. Stay tuned — this page will be live very soon.",
+		"cta_label": "Get in Touch",
+		"cta_url":   "/contact",
+		"note":      "We'll let you know as soon as it's ready."
+	},
+
+	"shop": {
+		"icon":      "🛒",
+		"tag":       "Shop Opening Soon",
+		"title":     "Our Online <span class=\"accent\">Shop</span> Is Coming",
+		"body":      "Fresh sugarcane products, merchandise and more — all available to order online very soon.",
+		"cta_label": "Notify Me",
+		"cta_url":   "/contact",
+		"note":      "Drop us a message and we'll ping you when we launch."
+	}
+}
