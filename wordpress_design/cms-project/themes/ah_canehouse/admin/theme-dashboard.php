@@ -46,7 +46,6 @@ $submission_count  = $wpdb->get_var( "SHOW TABLES LIKE '{$submissions_table}'" )
 	<div class="ch-card">
 		<h2>Quick Actions</h2>
 		<div style="display:flex;gap:1rem;flex-wrap:wrap;">
-			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-sections' ); ?>" class="button button-primary">⚙️ Section Controls</a>
 			<a href="<?php echo admin_url( 'admin.php?page=ch-theme-content' ); ?>" class="button button-primary">📝 Content &amp; Menu</a>
 			<?php if ( class_exists( 'AH_Admin_Bootstrap' ) ) : ?>
 				<a href="<?php echo admin_url( 'admin.php?page=ah-navigation' ); ?>" class="button button-primary">🧭 Navigation &amp; Footer (Plugin)</a>

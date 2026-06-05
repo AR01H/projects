@@ -9,7 +9,6 @@ class CH_Theme_Admin {
 		add_action( 'admin_post_ch_theme_schema',            [ self::class, 'handle_schema'           ] );
 		add_action( 'admin_post_ch_theme_seed',              [ self::class, 'handle_seed'             ] );
 		add_action( 'admin_post_ch_theme_cleanup',           [ self::class, 'handle_cleanup'          ] );
-		add_action( 'admin_post_ch_theme_sections',          [ self::class, 'handle_sections'         ] );
 		add_action( 'admin_post_ch_theme_content',           [ self::class, 'handle_content'          ] );
 		add_action( 'admin_post_ch_content_settings_business', [ self::class, 'handle_cs_business'   ] );
 		add_action( 'admin_post_ch_content_settings_contact',  [ self::class, 'handle_cs_contact'    ] );
@@ -36,7 +35,6 @@ class CH_Theme_Admin {
 			3
 		);
 		add_submenu_page( 'ch-theme-admin', 'Overview',             'Overview',             'manage_options', 'ch-theme-admin',       [ self::class, 'page_dashboard'   ] );
-		add_submenu_page( 'ch-theme-admin', 'Section Controls',     'Section Controls',     'manage_options', 'ch-theme-sections',    [ self::class, 'page_sections'    ] );
 		add_submenu_page( 'ch-theme-admin', 'Content & Menu',       'Content & Menu',       'manage_options', 'ch-theme-content',     [ self::class, 'page_content'     ] );
 		// Navigation & Footer are managed by the CMS plugin (ah_cms_navigation / ah_cms_footer).
 		add_submenu_page( 'ch-theme-admin', 'Site Settings',        'Site Settings',        'manage_options', 'ch-theme-settings',    [ self::class, 'page_settings'    ] );
@@ -55,7 +53,6 @@ class CH_Theme_Admin {
 	// ── Page renderers ────────────────────────────────────────────────────────
 
 	public static function page_dashboard(): void        { require get_template_directory() . '/admin/theme-dashboard.php';         }
-	public static function page_sections(): void         { require get_template_directory() . '/admin/theme-sections.php';          }
 	public static function page_content(): void          { require get_template_directory() . '/admin/theme-content.php';           }
 	public static function page_settings(): void         { require get_template_directory() . '/admin/theme-settings.php';          }
 	public static function page_content_settings(): void { require get_template_directory() . '/admin/theme-content-settings.php';  }
@@ -102,22 +99,6 @@ class CH_Theme_Admin {
 		$result = CH_Theme_Seeder::cleanup_all();
 		$msg = 'Cleanup complete - ' . $result['deleted'] . ' items removed.';
 		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-cleanup', 'cleaned' => '1', 'msg' => urlencode( $msg ) ], admin_url( 'admin.php' ) ) );
-		exit;
-	}
-
-	public static function handle_sections(): void {
-		check_admin_referer( 'ch_theme_sections' );
-		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
-		$all_keys = [
-			'news_ticker', 'hero', 'marquee', 'story_cards', 'how_to_order', 'booking', 'reviews',
-			'menu_builder', 'benefits', 'story', 'hire', 'certifications', 'franchise', 'faqs', 'contact',
-		];
-		$visibility = [];
-		foreach ( $all_keys as $k ) {
-			$visibility[ $k ] = isset( $_POST[ 'section_' . $k ] ) ? 1 : 0;
-		}
-		update_option( 'ch_section_visibility', wp_json_encode( $visibility ) );
-		wp_redirect( add_query_arg( [ 'page' => 'ch-theme-sections', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 
