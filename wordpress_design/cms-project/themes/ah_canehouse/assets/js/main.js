@@ -311,24 +311,40 @@
         function getDots() { return document.querySelectorAll('#ch-pkg-dots .ch-dot'); }
 
         function show(idx) {
-            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
+            // Determine visible count based on viewport width
+            const isDesktop = window.innerWidth > 767;
+            const visibleCount = isDesktop ? (window.innerWidth > 1200 ? 4 : 3) : 1;
+            // Toggle active class for cards within the visible range
+            cards.forEach(function (c, i) {
+                const inRange = isDesktop ? (i >= idx * visibleCount && i < (idx + 1) * visibleCount) : (i === idx);
+                c.classList.toggle('active', inRange);
+            });
+            // Update navigation dots
             getDots().forEach(function (d, i) {
                 d.classList.toggle('active', i === idx);
                 d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
             });
             current = idx;
-            if (window.innerWidth > 767) {
+            // Scroll track to show the correct group of cards on desktop
+            if (isDesktop) {
+                const cardWidth = cards[0].offsetWidth + 32; // include margin
+                const targetScroll = idx * visibleCount * cardWidth;
+                track.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            } else {
+                // Mobile: single card scroll into view
                 cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
             }
         }
         var raf;
         track.addEventListener('scroll', function() {
-            if (window.innerWidth <= 767) return;
+            const isDesktop = window.innerWidth > 767;
+            if (!isDesktop) return; // only for desktop multi-card view
             if (raf) cancelAnimationFrame(raf);
             raf = requestAnimationFrame(function() {
-                var cardWidth = cards[0].offsetWidth + 32;
-                var idx = Math.round(track.scrollLeft / cardWidth);
-                if (idx !== current && idx >= 0 && idx < cards.length) {
+                const cardWidth = cards[0].offsetWidth + 32;
+                const visibleCount = window.innerWidth > 1200 ? 4 : 3;
+                const idx = Math.round(track.scrollLeft / (cardWidth * visibleCount));
+                if (idx !== current && idx >= 0 && idx < Math.ceil(cards.length / visibleCount)) {
                     current = idx;
                     getDots().forEach(function (d, i) {
                         d.classList.toggle('active', i === idx);
@@ -381,23 +397,79 @@
         var prev  = document.getElementById(prevId);
         var next  = document.getElementById(nextId);
         if (!track) return;
-        var cards   = track.querySelectorAll(cardSel);
+        var cards   = Array.from(track.querySelectorAll(cardSel));
         var current = 0;
-        function getDots() { return document.querySelectorAll('#' + dotsId + ' .ch-dot'); }
-        function show(idx) {
-            cards.forEach(function (c, i) { c.classList.toggle('active', i === idx); });
-            getDots().forEach(function (d, i) {
-                d.classList.toggle('active', i === idx);
-                d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
-            });
-            current = idx;
+
+        function getVisibleCount() {
+            if (window.innerWidth > 767) {
+                return window.innerWidth > 1100 ? 3 : 2;
+            }
+            return 1;
         }
-        function advance() { show((current + 1) % cards.length); }
-        function retreat() { show((current - 1 + cards.length) % cards.length); }
+
+        function getTotalPages() {
+            return Math.ceil(cards.length / getVisibleCount());
+        }
+
+        function getDots() { return document.querySelectorAll('#' + dotsId + ' .ch-dot'); }
+
+        function show(pageIdx) {
+            var vc = getVisibleCount();
+            var total = getTotalPages();
+            pageIdx = Math.max(0, Math.min(pageIdx, total - 1));
+            current = pageIdx;
+
+            cards.forEach(function (c, i) {
+                var inPage = (i >= pageIdx * vc && i < (pageIdx + 1) * vc);
+                c.classList.toggle('active', inPage);
+            });
+
+            getDots().forEach(function (d, i) {
+                d.classList.toggle('active', i === pageIdx);
+                d.setAttribute('aria-selected', i === pageIdx ? 'true' : 'false');
+            });
+
+            // Scroll track on desktop
+            if (window.innerWidth > 767 && cards[pageIdx * vc]) {
+                cards[pageIdx * vc].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+            }
+        }
+
+        function rebuildDots() {
+            var dotsContainer = document.getElementById(dotsId);
+            if (!dotsContainer) return;
+            var total = getTotalPages();
+            dotsContainer.innerHTML = '';
+            for (var i = 0; i < total; i++) {
+                var btn = document.createElement('button');
+                btn.className = 'ch-dot' + (i === 0 ? ' active' : '');
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+                btn.setAttribute('aria-label', 'Page ' + (i + 1));
+                (function(idx) { btn.addEventListener('click', function() { show(idx); }); })(i);
+                dotsContainer.appendChild(btn);
+            }
+        }
+
+        function advance() { show(current + 1); }
+        function retreat() { show(current - 1); }
+
         if (next) next.addEventListener('click', advance);
         if (prev) prev.addEventListener('click', retreat);
-        getDots().forEach(function (dot, i) { dot.addEventListener('click', function () { show(i); }); });
         addSwipe(track, advance, retreat);
+
+        // Re-init on resize
+        var resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                rebuildDots();
+                show(0);
+            }, 200);
+        });
+
+        rebuildDots();
+        show(0);
     }
     function initFranchiseCarousels() {
         makeFranchiseCarousel('ch-fwhy-track',  'ch-fwhy-prev',  'ch-fwhy-next',  'ch-fwhy-dots',  '.ch-fw-card');
