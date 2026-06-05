@@ -11,10 +11,11 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$tag   = $args['tag']   ?? 'Why Choose Us';
-$title = $args['title'] ?? 'What Makes Us <span class="accent">Different</span>';
-$body  = $args['body']  ?? 'We\'re not just another catering option - we\'re an experience your guests will be talking about for weeks.';
-$image = 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&h=700&q=80';
+$_d    = CH_Hire_Data::events_why_settings();
+$tag   = $args['tag']   ?? $_d['tag']   ?? '';
+$title = $args['title'] ?? $_d['title'] ?? '';
+$body  = $args['body']  ?? $_d['body']  ?? '';
+$image = $args['image'] ?? $_d['image'] ?? '';
 
 $items   = $args['items'] ?? [];
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];

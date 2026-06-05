@@ -4,11 +4,13 @@ defined( 'ABSPATH' ) || exit;
 $settings = ch_get_settings();
 $phone    = $settings['phone'] ?? ( defined( 'CONTACT_NUMBER' ) ? CONTACT_NUMBER : '' );
 
+$_d = CH_Shared_Data::cta_section_settings();
+
 // Caller overrides via get_template_part( ..., null, $args )
-$tag        = $args['tag']        ?? 'Say Hello';
-$heading    = $args['heading']    ?? 'Get in <span class="accent" style="color:var(--client-color-7);">Touch</span>';
-$body       = $args['body']       ?? 'Have a question, want to book us for an event, or interested in franchise opportunities? We\'d love to hear from you.';
-$btn_label  = $args['btn_label']  ?? 'Send a Message 🌿';
+$tag        = $args['tag']        ?? $_d['tag']       ?? '';
+$heading    = $args['heading']    ?? $_d['heading']   ?? '';
+$body       = $args['body']       ?? $_d['body']      ?? '';
+$btn_label  = $args['btn_label']  ?? $_d['btn_label'] ?? '';
 $btn_url    = $args['btn_url']    ?? home_url( '/#contact' );
 $btn2_label = $args['btn2_label'] ?? '';
 $btn2_url   = $args['btn2_url']   ?? '#';

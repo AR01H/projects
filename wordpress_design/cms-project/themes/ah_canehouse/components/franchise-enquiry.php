@@ -1,9 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$s          = ch_get_settings();
-$frn_heading = $s['franchise_wiz_heading'] ?? 'Own a <span class="accent">Cane House</span> Franchise';
-$frn_sub     = $s['franchise_wiz_sub']     ?? 'Join a growing network of franchise partners. We\'ll walk you through every step - from site to launch.';
+$s           = ch_get_settings();
+$_d          = CH_About_Data::franchise_enquiry_settings();
+$frn_heading = $s['franchise_wiz_heading'] ?? $_d['heading'] ?? '';
+$frn_sub     = $s['franchise_wiz_sub']     ?? $_d['sub']     ?? '';
 $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80';
 ?>
 
@@ -51,7 +52,7 @@ $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo
 			<!-- Progress bar -->
 			<div class="ch-bk-progress">
 				<?php
-				$frn_steps = [ '📍 Location', '💼 Background', '✅ Confirm' ];
+				$frn_steps = $_d['steps'] ?? [];
 				foreach ( $frn_steps as $i => $lbl ) :
 				?>
 					<div class="ch-bk-prog-step<?php echo $i === 0 ? ' active' : ''; ?>" data-step="<?php echo $i + 1; ?>">
@@ -80,21 +81,18 @@ $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo
 							<label>Franchise Type *</label>
 							<select name="frn_type" class="ch-form-select" required>
 								<option value="">Select a type…</option>
-								<option>Kiosk / Cart (small footprint)</option>
-								<option>Food Court Unit</option>
-								<option>Full Standalone Store</option>
-								<option>Not sure yet - need guidance</option>
+								<?php foreach ( $_d['unit_types'] ?? [] as $ut ) : ?>
+									<option><?php echo esc_html( $ut ); ?></option>
+								<?php endforeach; ?>
 							</select>
 						</div>
 						<div class="ch-bk-field">
 							<label>When are you looking to start? *</label>
 							<select name="frn_timeline" class="ch-form-select" required>
 								<option value="">Select a timeline…</option>
-								<option>As soon as possible</option>
-								<option>Within 3 months</option>
-								<option>3–6 months</option>
-								<option>6–12 months</option>
-								<option>Just exploring for now</option>
+								<?php foreach ( $_d['timelines'] ?? [] as $tl ) : ?>
+									<option><?php echo esc_html( $tl ); ?></option>
+								<?php endforeach; ?>
 							</select>
 						</div>
 					</div>
@@ -115,11 +113,9 @@ $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo
 							<label>Investment Range *</label>
 							<select name="frn_investment" class="ch-form-select" required>
 								<option value="">Select a range…</option>
-								<option>Under £10,000</option>
-								<option>£10,000 – £25,000</option>
-								<option>£25,000 – £50,000</option>
-								<option>£50,000+</option>
-								<option>Depends on the opportunity</option>
+								<?php foreach ( $_d['investment_ranges'] ?? [] as $ir ) : ?>
+									<option><?php echo esc_html( $ir ); ?></option>
+								<?php endforeach; ?>
 							</select>
 						</div>
 						<div class="ch-bk-field">

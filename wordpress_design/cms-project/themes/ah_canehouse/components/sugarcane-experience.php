@@ -1,36 +1,11 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$tag     = $args['tag']     ?? 'The Experience';
-$title   = $args['title']   ?? 'Why We Miss <span class="accent" style="color:var(--client-color-7);">India\'s Sugarcane</span>';
-$subtitle = $args['subtitle'] ?? 'From street vendor to your glass - a taste of tradition';
-
-$steps = $args['steps'] ?? [
-    [
-        'emoji' => '🥬',
-        'title' => 'Fresh Selection',
-        'desc' => 'Sweet, golden stalks hand-picked from the fields. That familiar crunch when the vendor selects the finest canes.',
-        'feeling' => 'Anticipation'
-    ],
-    [
-        'emoji' => '⚙️',
-        'title' => 'The Press',
-        'desc' => 'The mechanical press groans to life, crushing the stalks with rhythmic force. Juice flows like liquid gold onto the collection tray.',
-        'feeling' => 'Wonder'
-    ],
-    [
-        'emoji' => '🧊',
-        'title' => 'Chill & Serve',
-        'desc' => 'Ice shards dropped in with a satisfying clink. The vendor hands you the glass with a smile - it\'s an art form.',
-        'feeling' => 'Joy'
-    ],
-    [
-        'emoji' => '😋',
-        'title' => 'First Sip',
-        'desc' => 'That first sip hits different. Pure, natural, no chemicals. The sweetness, the freshness, the memories it brings.',
-        'feeling' => 'Bliss'
-    ],
-];
+$_d      = CH_Story_Data::sugarcane_experience_settings();
+$tag      = $args['tag']      ?? $_d['tag']      ?? '';
+$title    = $args['title']    ?? $_d['title']    ?? '';
+$subtitle = $args['subtitle'] ?? $_d['subtitle'] ?? '';
+$steps    = $args['steps']    ?? $_d['steps']    ?? [];
 
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
@@ -89,29 +64,17 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
     </div>
 
     <!-- Sensory Experience -->
+    <?php $sensory = $_d['sensory'] ?? []; ?>
     <div class="ch-exp-senses fade-up">
         <h3 class="ch-exp-senses-title">The Senses</h3>
         <div class="ch-exp-senses-grid">
-            <div class="ch-sense-item">
-                <div class="ch-sense-emoji">👁️</div>
-                <div class="ch-sense-label">See</div>
-                <p>Golden liquid flowing into glass containers</p>
-            </div>
-            <div class="ch-sense-item">
-                <div class="ch-sense-emoji">👂</div>
-                <div class="ch-sense-label">Hear</div>
-                <p>The mechanical crush, the satisfying clink of ice</p>
-            </div>
-            <div class="ch-sense-item">
-                <div class="ch-sense-emoji">👃</div>
-                <div class="ch-sense-label">Smell</div>
-                <p>Fresh, natural sweetness of pure sugarcane</p>
-            </div>
-            <div class="ch-sense-item">
-                <div class="ch-sense-emoji">👅</div>
-                <div class="ch-sense-label">Taste</div>
-                <p>Clean, pure, naturally sweet with no additives</p>
-            </div>
+            <?php foreach ( $sensory as $sense ) : ?>
+                <div class="ch-sense-item">
+                    <div class="ch-sense-emoji"><?php echo esc_html( $sense['icon'] ?? '' ); ?></div>
+                    <div class="ch-sense-label"><?php echo esc_html( $sense['label'] ?? '' ); ?></div>
+                    <p><?php echo esc_html( $sense['desc'] ?? '' ); ?></p>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>

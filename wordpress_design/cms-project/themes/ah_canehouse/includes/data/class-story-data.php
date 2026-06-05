@@ -70,4 +70,29 @@ class CH_Story_Data {
 			];
 		}, $rows );
 	}
+
+	public static function story_cards_settings(): array {
+		return CH_Shared_Data::section_heading( 'story_cards' );
+	}
+
+	public static function sugarcane_benefits_settings(): array {
+		return CH_Shared_Data::section_heading( 'sugarcane_benefits' );
+	}
+
+	public static function quality_promise_settings(): array {
+		return CH_Shared_Data::section_heading( 'quality_promise' );
+	}
+
+	public static function mission_vision_settings(): array {
+		return CH_Shared_Data::section_heading( 'mission_vision' );
+	}
+
+	public static function sugarcane_experience_settings(): array {
+		$heading = CH_Shared_Data::section_heading( 'sugarcane_experience' );
+		$data    = CH_Real_Loader::json( 'sugarcane-experience' );
+		return array_merge( $heading, [
+			'steps'   => isset( $data['steps'] )   && is_array( $data['steps'] )   ? $data['steps']   : [],
+			'sensory' => isset( $data['sensory'] ) && is_array( $data['sensory'] ) ? $data['sensory'] : [],
+		] );
+	}
 }

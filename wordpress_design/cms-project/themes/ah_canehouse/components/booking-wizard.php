@@ -7,8 +7,9 @@ $flavours    = ch_get_flavours();
 $show_prices = function_exists( 'ch_show_prices' ) ? ch_show_prices() : false;
 $s           = ch_get_settings();
 
-$wiz_heading = $s['booking_heading'] ?? 'Book Your <span class="accent">Order</span>';
-$wiz_sub     = $s['booking_sub']     ?? 'Fresh cane juice, pressed live for your event. Pick your jugs, choose your flavours, and we\'ll take care of the rest.';
+$_d          = CH_Hire_Data::booking_wizard_settings();
+$wiz_heading = $s['booking_heading'] ?? $_d['heading'] ?? '';
+$wiz_sub     = $s['booking_sub']     ?? $_d['sub']     ?? '';
 $wiz_image   = $s['booking_image']   ?? 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=900&q=80';
 
 // occasion options
@@ -58,7 +59,7 @@ $occasions = ch_get_occasions();
 		<!-- Progress bar -->
 		<div class="ch-bk-progress">
 			<?php
-			$step_labels = [ '🌾 Cane', '🍋 Flavour', '📅 Details', '✅ Confirm' ];
+			$step_labels = $_d['step_labels'] ?? [];
 			foreach ( $step_labels as $i => $lbl ) :
 			?>
 				<div class="ch-bk-prog-step<?php echo $i === 0 ? ' active' : ''; ?>" data-step="<?php echo $i + 1; ?>">

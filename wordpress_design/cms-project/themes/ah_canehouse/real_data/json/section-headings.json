@@ -1,0 +1,86 @@
+{
+	"contact": {
+		"tag":        "Say Hello",
+		"title":      "Get in <span class=\"accent\">Touch</span>",
+		"body":       "Questions about our juices, booking us for your event, or interested in franchise opportunities? We'd love to hear from you.",
+		"form_title": "Send Us a Message 🌿"
+	},
+	"review_carousel": {
+		"tag":   "Happy Customers",
+		"title": "What Our <span class=\"accent\">Fans Say</span>",
+		"body":  "Real reviews from our sugarcane lovers across the UK - and beyond!"
+	},
+	"reviews_events": {
+		"tag":   "Event Reviews",
+		"title": "Trusted by <span class=\"accent\">Event Hosts</span> Across the UK",
+		"body":  "From intimate Mehndi nights to 500-guest weddings - here's what our clients say."
+	},
+	"reviews_franchise": {
+		"tag":   "Franchise Partners",
+		"title": "Hear From Our <span class=\"accent\" style=\"color:var(--client-color-7);\">Partners</span>",
+		"body":  "Real people who took the leap and built something they're proud of."
+	},
+	"cta_section": {
+		"tag":       "Say Hello",
+		"heading":   "Get in <span class=\"accent\" style=\"color:var(--client-color-7);\">Touch</span>",
+		"body":      "Have a question, want to book us for an event, or interested in franchise opportunities? We'd love to hear from you.",
+		"btn_label": "Send a Message 🌿"
+	},
+	"certifications": {
+		"tag":     "Official & Verified",
+		"heading": "Food Safety Registered & Fully Compliant",
+		"sub":     "Every event we attend comes with full documentation, insurance, and Food Safety Registered compliance. We take the trust of our clients and their guests very seriously."
+	},
+	"franchise_why": {
+		"tag":   "The Opportunity",
+		"title": "Why <span class=\"accent\">The Cane House?</span>",
+		"body":  "The demand for natural drinks is booming. The UK has almost no live-press sugarcane brand - yet. Be the first in your city."
+	},
+	"events_why": {
+		"tag":   "Why Choose Us",
+		"title": "What Makes Us <span class=\"accent\">Different</span>",
+		"body":  "We're not just another catering option - we bring an experience that creates talking points and lasting memories for your guests."
+	},
+	"events_quote": {
+		"tag":        "Get in Touch",
+		"title":      "Request a <span class=\"accent\" style=\"color:var(--client-color-7);\">Free Quote</span>",
+		"body":       "Tell us about your event and we'll come back to you within 24 hours with a personalised package and price.",
+		"form_title": "Tell Us About Your Event 🌿"
+	},
+	"mission_vision": {
+		"tag":   "What Drives Us",
+		"title": "Our <span class=\"accent\">Foundation</span>"
+	},
+	"quality_promise": {
+		"tag":   "Why We Do It",
+		"title": "What Makes <span class=\"accent\">The Cane House</span> Different?",
+		"body":  "At The Cane House, we serve freshly pressed sugarcane juice and natural fruit blends that are prepared fresh for every customer. Our drinks offer a refreshing alternative to fizzy drinks and processed juices, bringing a traditional summer favourite enjoyed by millions to the heart of Sutton."
+	},
+	"story_cards": {
+		"tag":     "The Journey",
+		"heading": "The Sugarcane <span class=\"accent\">Life</span> Story",
+		"subtext": "From ancient fields to your cup - pressed live, served cool, every single time."
+	},
+	"sugarcane_benefits": {
+		"tag":   "Global Love",
+		"title": "Why Sugarcane Juice is <span class=\"accent\">Loved Worldwide</span>",
+		"body":  "From South Asian street corners to West African markets and Caribbean festivals, sugarcane juice is one of the few drinks that transcends every border, culture, and generation."
+	},
+	"beyondjuice": {
+		"tag":      "Story of Sugarcane",
+		"headline": "Beyond the <span class=\"accent\">Juice</span>"
+	},
+	"sugarcane_experience": {
+		"tag":      "The Experience",
+		"title":    "Why We Miss <span class=\"accent\" style=\"color:var(--client-color-7);\">India's Sugarcane</span>",
+		"subtitle": "From street vendor to your glass - a taste of tradition"
+	},
+	"booking_wizard": {
+		"heading": "Book Your <span class=\"accent\">Order</span>",
+		"sub":     "Fresh cane juice, pressed live for your event. Pick your jugs, choose your flavours, and we'll take care of the rest."
+	},
+	"franchise_enquiry": {
+		"heading": "Own a <span class=\"accent\">Cane House</span> Franchise",
+		"sub":     "Join a growing network of franchise partners. We'll walk you through every step - from site to launch."
+	}
+}

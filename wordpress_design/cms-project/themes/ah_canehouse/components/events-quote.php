@@ -15,22 +15,14 @@ defined( 'ABSPATH' ) || exit;
 $settings = ch_get_settings();
 $phone    = $settings['phone'] ?? ( defined( 'CONTACT_NUMBER' ) ? CONTACT_NUMBER : '' );
 
-$tag        = $args['tag']        ?? 'Get in Touch';
-$title      = $args['title']      ?? 'Request a <span class="accent" style="color:var(--client-color-7);">Free Quote</span>';
-$body       = $args['body']       ?? 'Tell us about your event and we\'ll come back to you within 24 hours with a personalised package and price.';
-$form_title = $args['form_title'] ?? 'Tell Us About Your Event 🌿';
+$_d         = CH_Hire_Data::events_quote_settings();
+$tag        = $args['tag']          ?? $_d['tag']        ?? '';
+$title      = $args['title']        ?? $_d['title']      ?? '';
+$body       = $args['body']         ?? $_d['body']       ?? '';
+$form_title = $args['form_title']   ?? $_d['form_title'] ?? '';
 $enq_type   = $args['enquiry_type'] ?? 'event';
 
-$default_event_types = [
-	'Wedding / Walima',
-	'Mehndi / Sangeet',
-	'Eid Celebration',
-	'Birthday Party',
-	'Corporate Event',
-	'Community Festival',
-	'Other',
-];
-$event_types = $args['event_types'] ?? $default_event_types;
+$event_types = $args['event_types'] ?? $_d['event_types'] ?? [];
 $allowed     = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 

@@ -5,11 +5,12 @@ $limit   = $args['limit'] ?? 5;
 $reviews = ch_get_reviews( $limit, 'partner' );
 if ( empty( $reviews ) ) return;
 
-$tag   = $args['tag']   ?? 'Franchise Partners';
-$title = $args['title'] ?? 'Hear From Our <span class="accent" style="color:var(--client-color-7);">Partners</span>';
-$body  = $args['body']  ?? 'Real people who took the leap and built something they\'re proud of.';
+$_d    = CH_Shared_Data::reviews_franchise_settings();
+$tag   = $args['tag']   ?? $_d['tag']   ?? '';
+$title = $args['title'] ?? $_d['title'] ?? '';
+$body  = $args['body']  ?? $_d['body']  ?? '';
 
-$cities  = [ 'Birmingham', 'Manchester', 'Leeds', 'Leicester', 'London', 'Bradford' ];
+$cities  = $_d['cities'] ?? [];
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 

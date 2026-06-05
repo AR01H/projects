@@ -8,10 +8,11 @@ defined( 'ABSPATH' ) || exit;
 // Expect $quality_items and $promise to be set globally by the page template.
 // If they are not, we fallback to empty arrays.
 // Accept values passed via args for tag, title, body
+$_d            = CH_Story_Data::quality_promise_settings();
 $quality_items = $args['values'] ?? $quality_items;
-$tag           = $args['tag']   ?? 'Why We Do It';
-$title         = $args['title'] ?? 'What Makes <span class="accent">The Cane House</span> Different?';
-$body          = $args['body']  ?? 'At The Cane House, we serve freshly pressed sugarcane juice and natural fruit blends that are prepared fresh for every customer. Our drinks offer a refreshing alternative to fizzy drinks and processed juices, bringing a traditional summer favourite enjoyed by millions to the heart of Sutton.';
+$tag           = $args['tag']   ?? $_d['tag']   ?? '';
+$title         = $args['title'] ?? $_d['title'] ?? '';
+$body          = $args['body']  ?? $_d['body']  ?? '';
 
 
 ob_start();

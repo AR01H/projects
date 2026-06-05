@@ -1,6 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$story = class_exists( 'CH_Story_Data' ) ? CH_Story_Data::story_settings() : [];
+$story = class_exists( 'CH_Home_Data' ) ? CH_Home_Data::beyondjuice_settings() : [];
+if ( class_exists( 'CH_Story_Data' ) ) {
+	$_story_full = CH_Story_Data::story_settings();
+	$story = array_merge( $_story_full, array_filter( $story ) );
+}
 $facts = (array) ( $story['facts'] ?? [] );
 ?>
 

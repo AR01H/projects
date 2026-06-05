@@ -10,9 +10,10 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$tag   = $args['tag']   ?? 'Global Love';
-$title = $args['title'] ?? 'Why Sugarcane Juice is <span class="accent">Loved Worldwide</span>';
-$body  = $args['body']  ?? 'From South Asian street corners to West African markets and Caribbean festivals, sugarcane juice is one of the few drinks that transcends every border, culture, and generation.';
+$_d    = CH_Story_Data::sugarcane_benefits_settings();
+$tag   = $args['tag']   ?? $_d['tag']   ?? '';
+$title = $args['title'] ?? $_d['title'] ?? '';
+$body  = $args['body']  ?? $_d['body']  ?? '';
 
 $default_items = class_exists( 'CH_Story_Data' ) ? CH_Story_Data::sugarcane_benefits() : [];
 

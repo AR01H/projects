@@ -3,16 +3,17 @@ defined( 'ABSPATH' ) || exit;
 $cards = class_exists( 'CH_Story_Data' ) ? CH_Story_Data::story_cards() : [];
 if ( empty( $cards ) ) return;
 
-$s        = ch_get_settings();
-$heading  = $s['story_cards_heading'] ?? 'The Sugarcane <span class="accent">Life</span> Story';
-$subtext  = $s['story_cards_sub']     ?? 'From ancient fields to your cup - pressed live, served cool, every single time.';
+$_d      = CH_Story_Data::story_cards_settings();
+$s       = ch_get_settings();
+$heading = $s['story_cards_heading'] ?? $_d['heading'] ?? '';
+$subtext = $s['story_cards_sub']     ?? $_d['subtext'] ?? '';
 ?>
 
 <section id="story-cards" class="ch-sc-section">
 	<div class="container">
 
 		<div class="ch-sc-header fade-up">
-			<div class="section-tag">The Journey</div>
+			<div class="section-tag"><?php echo esc_html( $_d['tag'] ?? '' ); ?></div>
 			<h2 class="section-title"><?php echo wp_kses( $heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 			<p class="section-body"><?php echo esc_html( $subtext ); ?></p>
 		</div>

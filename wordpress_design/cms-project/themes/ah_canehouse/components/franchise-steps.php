@@ -1,17 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+$_d    = CH_About_Data::franchise_steps_settings();
 $tag   = $args['tag']   ?? 'Getting Started';
 $title = $args['title'] ?? 'How It <span class="accent">Works</span>';
-
-$default_steps = [
-	[ 'emoji' => '📞', 'title' => 'Enquire',        'desc' => 'Fill in the form below or call us. We\'ll schedule a call to discuss the opportunity in your city.' ],
-	[ 'emoji' => '📋', 'title' => 'Discovery Call',  'desc' => 'We walk you through the model, margins, requirements, and answer all your questions honestly.' ],
-	[ 'emoji' => '🖊️', 'title' => 'Agreement',       'desc' => 'Sign the franchise agreement, complete training, and receive your equipment and branding pack.' ],
-	[ 'emoji' => '🎉', 'title' => 'Launch!',          'desc' => 'Start trading at events in your area with full The Cane House support behind you from day one.', 'highlight' => true ],
-];
-
-$steps   = $args['steps'] ?? $default_steps;
+$steps = $args['steps'] ?? $_d['steps'] ?? [];
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 

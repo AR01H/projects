@@ -33,9 +33,11 @@ $anims = [ 'fade-left', 'fade-up', 'fade-right' ];
 <section class="about-mission">
 	<div class="container">
 
-		<?php get_template_part( 'components/section-header', null, [
-			'tag'   => 'What Drives Us',
-			'title' => 'Our <span class="accent">Foundation</span>',
+		<?php
+		$_d_mv = CH_Story_Data::mission_vision_settings();
+		get_template_part( 'components/section-header', null, [
+			'tag'   => $_d_mv['tag']   ?? '',
+			'title' => $_d_mv['title'] ?? '',
 		] ); ?>
 
 		<div class="mission-carousel" data-oc data-oc-autoplay="4500">

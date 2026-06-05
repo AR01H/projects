@@ -1,9 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$tag   = $args['tag']   ?? 'The Opportunity';
-$title = $args['title'] ?? 'Why <span class="accent">The Cane House?</span>';
-$body  = $args['body']  ?? 'The demand for natural drinks is booming. The UK has almost no live-press sugarcane brand - yet. Be the first in your city.';
+$_d    = CH_About_Data::franchise_why_settings();
+$tag   = $args['tag']   ?? $_d['tag']   ?? '';
+$title = $args['title'] ?? $_d['title'] ?? '';
+$body  = $args['body']  ?? $_d['body']  ?? '';
 
 // Load franchise why items from data class
 $items = CH_About_Data::franchise_why_items();

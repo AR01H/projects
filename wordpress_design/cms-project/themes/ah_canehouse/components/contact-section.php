@@ -1,11 +1,17 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$settings      = ch_get_settings();
-$contact       = ch_get_contact_settings();
-$phone         = $settings['phone']   ?? CONTACT_NUMBER;
-$email         = $settings['email']   ?? CONTACT_EMAIL;
-$website       = $settings['website'] ?? 'www.thecanehouse.co.uk';
-$nonce         = wp_create_nonce( 'ch_contact_nonce' );
+$settings = ch_get_settings();
+$contact  = ch_get_contact_settings();
+$phone    = $settings['phone']   ?? CONTACT_NUMBER;
+$email    = $settings['email']   ?? CONTACT_EMAIL;
+$website  = $settings['website'] ?? 'www.thecanehouse.co.uk';
+$nonce    = wp_create_nonce( 'ch_contact_nonce' );
+
+$_h        = CH_Shared_Data::section_heading( 'contact' );
+$sec_tag   = $_h['tag']        ?? '';
+$sec_title = $_h['title']      ?? '';
+$sec_body  = $_h['body']       ?? '';
+$form_title = $_h['form_title'] ?? '';
 
 $contact_details = [
     'address'             => [ 'icon' => '📍', 'label' => 'Address' ],
@@ -20,9 +26,9 @@ $contact_details = [
 
 <section id="contact" class="ch-contact-section">
 	<div class="ch-contact-info fade-left">
-		<div class="ch-section-tag">Say Hello</div>
-		<h2 class="ch-section-title">Get in <span class="accent">Touch</span></h2>
-		<p class="ch-section-body" style="margin-top:.8rem;margin-bottom:2rem;">Questions about our juices, booking us for your event, or interested in franchise opportunities? We'd love to hear from you.</p>
+		<div class="ch-section-tag"><?php echo esc_html( $sec_tag ); ?></div>
+		<h2 class="ch-section-title"><?php echo wp_kses( $sec_title, [ 'span' => [ 'class' => [] ] ] ); ?></h2>
+		<p class="ch-section-body" style="margin-top:.8rem;margin-bottom:2rem;"><?php echo esc_html( $sec_body ); ?></p>
 
 		<?php if ( $phone ) : ?>
 			<div class="ch-contact-detail">
@@ -64,7 +70,7 @@ $contact_details = [
 	</div>
 
 	<div class="ch-contact-form fade-right">
-		<div class="ch-form-title">Send Us a Message 🌿</div>
+		<div class="ch-form-title"><?php echo esc_html( $form_title ); ?></div>
 
 		<div id="ch-form-msg" class="ch-form-feedback" style="display:none;" role="alert"></div>
 

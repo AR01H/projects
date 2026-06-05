@@ -10,15 +10,16 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$limit   = $args['limit'] ?? 6;
+$_ev = CH_Shared_Data::reviews_events_settings();
+
+$limit   = $args['limit'] ?? $_ev['limit'] ?? 6;
 $reviews = ch_get_reviews( $limit, 'event' );
 if ( empty( $reviews ) ) return;
 
-$tag   = $args['tag']   ?? 'Event Reviews';
-$title = $args['title'] ?? 'Trusted by <span class="accent">Event Hosts</span> Across the UK';
-$body  = $args['body']  ?? 'From intimate Mehndi nights to 500-guest weddings - here\'s what our clients say.';
-
-$event_badges = [ 'Wedding', 'Corporate', 'Mehndi Night', 'Eid Party', 'Birthday', 'Festival' ];
+$tag          = $args['tag']   ?? $_ev['tag']          ?? '';
+$title        = $args['title'] ?? $_ev['title']        ?? '';
+$body         = $args['body']  ?? $_ev['body']         ?? '';
+$event_badges = $_ev['event_badges'] ?? [];
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 

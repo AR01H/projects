@@ -2,8 +2,10 @@
 defined( 'ABSPATH' ) || exit;
 $s      = ch_get_settings();
 $certs  = ch_get_certifications();
-$cert_heading = $s['cert_heading'] ?? 'Food Safety Registered & Fully Compliant';
-$cert_sub     = $s['cert_subtext'] ?? 'Every event we attend comes with full documentation, insurance, and Food Safety Registered compliance. We take the trust of our clients and their guests very seriously.';
+$_d           = CH_Shared_Data::certifications_section_settings();
+$cert_tag     = $_d['tag']     ?? '';
+$cert_heading = $s['cert_heading'] ?? $_d['heading'] ?? '';
+$cert_sub     = $s['cert_subtext'] ?? $_d['sub']     ?? '';
 $cert_img     = get_template_directory_uri() . '/assets/images/ncass_logo.png';
 ?>
 
@@ -11,7 +13,7 @@ $cert_img     = get_template_directory_uri() . '/assets/images/ncass_logo.png';
 	<div class="container">
 
 		<div class="ch-certs-header fade-up">
-			<div class="section-tag">Official & Verified</div>
+			<div class="section-tag"><?php echo esc_html( $cert_tag ); ?></div>
 			<h2 class="section-title"><?php echo wp_kses( $cert_heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 			<p class="section-body"><?php echo esc_html( $cert_sub ); ?></p>
 		</div>

@@ -49,11 +49,36 @@ class CH_Hire_Data {
 			];
 		}, $rows );
 	}
+
 	public static function events_why(): array {
 		$rows = CH_Real_Loader::csv( 'events-why' );
 		if ( $rows ) {
 			return [ 'items' => $rows ];
 		}
 		return [];
+	}
+
+	public static function events_why_settings(): array {
+		$heading = CH_Shared_Data::section_heading( 'events_why' );
+		$data    = CH_Real_Loader::json( 'events-why' );
+		return array_merge( $heading, [
+			'image' => $data['image'] ?? '',
+		] );
+	}
+
+	public static function events_quote_settings(): array {
+		$heading = CH_Shared_Data::section_heading( 'events_quote' );
+		$data    = CH_Real_Loader::json( 'events-quote' );
+		return array_merge( $heading, [
+			'event_types' => isset( $data['event_types'] ) && is_array( $data['event_types'] ) ? $data['event_types'] : [],
+		] );
+	}
+
+	public static function booking_wizard_settings(): array {
+		$heading = CH_Shared_Data::section_heading( 'booking_wizard' );
+		$data    = CH_Real_Loader::json( 'booking-wizard' );
+		return array_merge( $heading, [
+			'step_labels' => isset( $data['step_labels'] ) && is_array( $data['step_labels'] ) ? $data['step_labels'] : [],
+		] );
 	}
 }

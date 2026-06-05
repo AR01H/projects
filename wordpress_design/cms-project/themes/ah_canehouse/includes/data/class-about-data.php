@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class CH_About_Data {
 
-    public static function page_header_info() {
+	public static function page_header_info() {
 		return CH_Real_Loader::json( 'about-page-header' );
 	}
 
@@ -51,18 +51,10 @@ class CH_About_Data {
 		}, $rows );
 	}
 
-	/**
-	 * Origin section settings (tag, title, image, paras array).
-	 * Source: real_data/json/about-origin.json
-	 */
 	public static function origin_settings(): array {
 		return CH_Real_Loader::json( 'about-origin' );
 	}
 
-	/**
-	 * Origin section timeline milestones (year, text rows).
-	 * Source: real_data/csv/about-milestones.csv
-	 */
 	public static function origin_milestones(): array {
 		$rows = CH_Real_Loader::csv( 'about-milestones' );
 		if ( ! $rows ) {
@@ -76,21 +68,61 @@ class CH_About_Data {
 		}, $rows );
 	}
 
-    /**
-     * Franchise Why items (icon, title, text).
-     * Source: real_data/csv/franchise-why.csv
-     */
-    public static function franchise_why_items(): array {
-        $rows = CH_Real_Loader::csv( 'franchise-why' );
-        if ( ! $rows ) {
-            return [];
-        }
-        return array_map( static function ( $r ) {
-            return [
-                'icon'  => $r['icon'] ?? '',
-                'title' => $r['title'] ?? '',
-                'text'  => $r['text'] ?? '',
-            ];
-        }, $rows );
-    }
+	public static function franchise_why_items(): array {
+		$rows = CH_Real_Loader::csv( 'franchise-why' );
+		if ( ! $rows ) {
+			return [];
+		}
+		return array_map( static function ( $r ) {
+			return [
+				'icon'  => $r['icon']  ?? '',
+				'title' => $r['title'] ?? '',
+				'text'  => $r['text']  ?? '',
+			];
+		}, $rows );
+	}
+
+	public static function franchise_why_settings(): array {
+		return CH_Shared_Data::section_heading( 'franchise_why' );
+	}
+
+	public static function franchise_steps_settings(): array {
+		$data = CH_Real_Loader::json( 'franchise-steps' );
+		return [
+			'steps' => isset( $data['steps'] ) && is_array( $data['steps'] ) ? $data['steps'] : [],
+		];
+	}
+
+	public static function franchise_enquiry_settings(): array {
+		$heading = CH_Shared_Data::section_heading( 'franchise_enquiry' );
+		$data    = CH_Real_Loader::json( 'franchise-enquiry' );
+		return array_merge( $heading, [
+			'steps'             => isset( $data['steps'] )             && is_array( $data['steps'] )             ? $data['steps']             : [],
+			'unit_types'        => isset( $data['unit_types'] )        && is_array( $data['unit_types'] )        ? $data['unit_types']        : [],
+			'investment_ranges' => isset( $data['investment_ranges'] ) && is_array( $data['investment_ranges'] ) ? $data['investment_ranges'] : [],
+			'timelines'         => isset( $data['timelines'] )         && is_array( $data['timelines'] )         ? $data['timelines']         : [],
+		] );
+	}
+
+	public static function origins_showcase_settings(): array {
+		$data = CH_Real_Loader::json( 'origins-showcase' );
+		if ( ! $data ) {
+			return [];
+		}
+		return [
+			'section_heading'  => $data['section_heading']  ?? '',
+			'section_title'    => $data['section_title']    ?? '',
+			'section_subtitle' => $data['section_subtitle'] ?? '',
+			'uk'               => isset( $data['uk'] )      && is_array( $data['uk'] )      ? $data['uk']      : [],
+			'origins'          => isset( $data['origins'] ) && is_array( $data['origins'] ) ? $data['origins'] : [],
+		];
+	}
+
+	public static function history_pages(): array {
+		$data = CH_Real_Loader::json( 'history-info' );
+		if ( ! $data || ! is_array( $data ) ) {
+			return [];
+		}
+		return $data;
+	}
 }

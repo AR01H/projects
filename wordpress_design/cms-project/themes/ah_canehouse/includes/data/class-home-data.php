@@ -60,4 +60,15 @@ class CH_Home_Data {
 			];
 		}, $rows );
 	}
+
+	public static function beyondjuice_settings(): array {
+		$heading = CH_Shared_Data::section_heading( 'beyondjuice' );
+		$data    = CH_Real_Loader::json( 'beyondjuice' );
+		return array_merge( $heading, [
+			'body_1'     => $data['body_1']     ?? '',
+			'body_2'     => $data['body_2']     ?? '',
+			'quote'      => $data['quote']      ?? '',
+			'badge_text' => $data['badge_text'] ?? '',
+		] );
+	}
 }

@@ -1,5 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+$_d      = CH_Shared_Data::review_carousel_settings();
 $reviews = ch_get_reviews( 6 );
 if ( empty( $reviews ) ) return;
 ?>
@@ -7,9 +8,9 @@ if ( empty( $reviews ) ) return;
 <section id="reviews" class="ch-reviews-section">
 
 	<div class="ch-reviews-header fade-up">
-		<div class="section-tag">Happy Customers</div>
-		<h2 class="section-title">What Our <span class="accent">Fans Say</span></h2>
-		<p class="section-body">Real reviews from our sugarcane lovers across the UK - and beyond!</p>
+		<div class="section-tag"><?php echo esc_html( $_d['tag'] ?? '' ); ?></div>
+		<h2 class="section-title"><?php echo wp_kses( $_d['title'] ?? '', [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
+		<p class="section-body"><?php echo esc_html( $_d['body'] ?? '' ); ?></p>
 	</div>
 
 	<div class="ch-reviews-wrapper">
