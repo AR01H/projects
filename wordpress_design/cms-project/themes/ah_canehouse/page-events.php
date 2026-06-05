@@ -32,7 +32,6 @@ $_gallery      = CH_Shared_Data::section_heading( 'gallery_events' );
 	'tag'   => $_gallery['tag']   ?? '',
 	'title' => $_gallery['title'] ?? '',
 	'body'  => $_gallery['body']  ?? '',
-	'bg'    => 'var(--client-color-6)',
 	'id'    => 'mg-events',
 	'items' => $gallery_items
 ] ); ?>

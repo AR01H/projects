@@ -41,7 +41,6 @@ get_header(); ?>
 	'tag'   => $_gallery_about['tag']   ?? '',
 	'title' => $_gallery_about['title'] ?? '',
 	'body'  => $_gallery_about['body']  ?? '',
-	'bg'    => 'var(--accent)',
 	'id'    => 'mg-about',
 	'items' => ch_get_about_gallery(),
 ] );

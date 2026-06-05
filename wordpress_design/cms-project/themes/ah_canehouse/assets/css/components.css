@@ -11,7 +11,7 @@
 .ch-ticker__sep { opacity: 0.4; padding: 0 0.3rem; }
 
 /* How-to-order */
-.ch-how-section { background: var(--client-color-6) !important; }
+
 .ch-how__header, .ch-how-header { text-align: center; margin-bottom: 4rem; display: flex; flex-direction: column; align-items: center; }
 .ch-how__header .ch-section-body, .ch-how-header .ch-section-body { margin-inline: auto; }
 
@@ -50,15 +50,15 @@
 .ch-h-feature { display: flex; align-items: center; gap: 0.8rem; }
 
 /* FAQ aliases */
-.ch-faq-section { background: var(--client-color-5) !important; }
+
 .ch-faq__header { text-align: center; margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; }
 .ch-faq__header .ch-section-body { margin-inline: auto; text-align: center; }
 
 /* Story aliases */
-.ch-story-section { background: var(--client-color-6) !important; }
+
 
 /* Build/menu-builder aliases */
-.ch-build-section { background: var(--client-color-11) !important; }
+
 .ch-build__header { text-align: center; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
 .ch-build__header .ch-section-body { margin-inline: auto; }
 .ch-price-row--featured { border-color: var(--client-color-7); background: linear-gradient(135deg, rgba(200,232,48,0.08), rgba(106,191,58,0.08)); }
@@ -692,7 +692,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── How To Order / Steps ───────────────────────────────────────────────────── */
 #how-to-order,
 .ch-section-how-to-order {
-    background: var(--client-color-6) !important;
     padding: 6rem 4rem !important;
     position: relative;
     overflow: hidden;
@@ -807,7 +806,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── Reviews Section ────────────────────────────────────────────────────────── */
 #reviews,
 .ch-reviews-section {
-    background: rgba(46, 90, 27, 0.10) !important;
     padding: 4rem 2rem !important;
 }
 
@@ -1000,7 +998,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 }
 
 /* ── Events Reviews ─────────────────────────────────────────────────────────── */
-.ch-reviews-events-section { background: var(--client-color-11); padding: 5rem 0; }
+.ch-reviews-events-section { padding: 5rem 0; }
 .ch-rev-ev-carousel { margin-top: 3rem; }
 
 /* ── Single-row horizontal strip → mobile carousel ── */
@@ -1185,7 +1183,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── Menu / Build Section ────────────────────────────────────────────────────── */
 #build,
 .ch-section-build {
-    background: var(--client-color-7-glow) !important;
     padding: 6rem 4rem !important;
 }
 
@@ -1537,7 +1534,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── Story Section ──────────────────────────────────────────────────────────── */
 #story,
 .ch-section-story {
-    background: var(--client-color-6) !important;
     padding: 2rem !important;
 }
 
@@ -1666,7 +1662,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── Events / Hire Section ──────────────────────────────────────────────────── */
 #hire,
 .ch-section-hire {
-    background: var(--client-color-5);
     padding: 2rem !important;
     border-top: 1px solid rgba(45, 90, 27, 0.05);
 }
@@ -3724,7 +3719,6 @@ body.has-ticker .ch-nav { top: 32px; }
    STORY CARDS - interactive tabbed reveal section
    ═══════════════════════════════════════════════════════════════════════════ */
 .ch-sc-section {
-    background: var(--client-color-11);
     padding: 2rem;
     overflow: hidden;
 }
@@ -4221,7 +4215,6 @@ body.has-ticker .ch-nav { top: 32px; }
 
 .ch-orig-section {
     position: relative;
-    background: var(--client-color-6);
     padding: 2rem 0;
     overflow: hidden;
     isolation: isolate;
@@ -5395,7 +5388,7 @@ body.has-ticker .ch-nav { top: 32px; }
 @media (max-width:480px) { .ch-gallery-grid { grid-template-columns:1fr; } .ch-gallery-item--wide { grid-column:span 1; } }
 
 /* ── Gallery Strip ──────────────────────────────────────────────────────────── */
-.ch-gallery-strip-section { padding: 2rem 0; background: var(--accent);}
+.ch-gallery-strip-section { padding: 2rem 0; }
 
 /* Desktop: all cards in one row, hidden scrollbar for overflow */
 .ch-gstrip { margin-top: 2.5rem; }
@@ -5474,7 +5467,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-gstrip--about    .ch-gstrip__img { height: 220px; }
 
 /* What's inside */
-.ch-inside-section { background:var(--accent); padding:2rem; }
+.ch-inside-section { padding:2rem; }
 .ch-inside-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; max-width:1100px; margin-inline:auto; }
 .ch-nutrition-list { margin-top:1.5rem; display:flex; flex-direction:column; gap:0; }
 .ch-nutrition-row { display:grid; grid-template-columns:1fr 80px 1fr; gap:.8rem; align-items:center; padding:.85rem 0; border-bottom:1px solid var(--client-color-5); }
@@ -5493,7 +5486,7 @@ body.has-ticker .ch-nav { top: 32px; }
 @media (max-width:900px) { .ch-inside-grid { grid-template-columns:1fr; } .ch-nutrition-row { grid-template-columns:1fr 60px; } .ch-nutrition-note { display:none; } }
 
 /* History timeline */
-.ch-history-section { background:var(--client-color-6); padding:5rem 2rem; }
+.ch-history-section { padding:5rem 2rem; }
 .ch-timeline { max-width:800px; margin-inline:auto; position:relative; padding-left:3rem; }
 .ch-timeline::before { content:''; position:absolute; left:10px; top:8px; bottom:8px; width:3px; background:linear-gradient(to bottom,var(--client-color-7),var(--client-color-3),var(--client-color-2)); border-radius:2px; }
 .ch-timeline-item { position:relative; margin-bottom:2.5rem; }
@@ -5591,7 +5584,6 @@ body.has-ticker .ch-nav { top: 32px; }
 
 /* ── Events page: packages section ─────────────────────────────────────────── */
 .ch-events-packages-section {
-    background: var(--client-color-11);
     padding: 5rem 2rem;
 }
 @media (max-width: 768px) {
@@ -5603,7 +5595,6 @@ body.has-ticker .ch-nav { top: 32px; }
 
 /* ── Events page: why-choose-us section ────────────────────────────────────── */
 .ch-events-why-section {
-    background: var(--client-color-5);
     padding: 2rem;
 }
 
@@ -5699,8 +5690,8 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-fw-card p  { font-size:.88rem; color:var(--client-color-15-muted); line-height:1.65; }
 
 /* Franchise page sections */
-.ch-franchise-why-section      { background: var(--client-color-6); padding: 5rem 0; }
-.ch-franchise-steps-section    { background: var(--client-color-11); padding: 5rem 0; }
+.ch-franchise-why-section      { padding: 5rem 0; }
+.ch-franchise-steps-section    { padding: 5rem 0; }
 .ch-franchise-enquiry-section  { background: var(--client-color-1); padding: 5rem 0; }
 @media (max-width:768px) {
 	.ch-franchise-why-section,
@@ -5731,7 +5722,7 @@ body.has-ticker .ch-nav { top: 32px; }
 @media (max-width:480px) { .ch-juice-showcase-grid { grid-template-columns:1fr; } }
 
 /* ── Sugarcane Benefits ─────────────────────────────────────────────────────── */
-.ch-sc-benefits-section { background: var(--client-color-5); padding: 5rem 0; }
+.ch-sc-benefits-section { padding: 5rem 0; }
 
 /* ── Carousel track ── */
 .ch-scb-grid {
@@ -5966,7 +5957,7 @@ body.has-ticker .ch-nav { top: 32px; }
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Banner card ────────────────────────────────────────────────────────── */
-.ch-bkb-section { padding: 5rem 2rem; background: var(--client-color-6); }
+.ch-bkb-section { padding: 5rem 2rem; }
 .ch-bkb-card {
     margin-inline: auto;
     display: grid;
@@ -6723,7 +6714,7 @@ body.has-ticker .ch-nav { top: 32px; }
 .ch-cta-phone-btn { border-color: rgba(255,255,255,0.4); color: #fff; }
 
 /* ── Events Preview ─────────────────────────────────────────────────────────── */
-.ch-events-preview-section { background: var(--client-color-6); padding: 5rem 2rem; }
+.ch-events-preview-section { padding: 5rem 2rem; }
 /* .ch-events-preview-grid replaced by .ch-epc-carousel + .ch-epc-track */
 .ch-epc {
     background: var(--client-color-11);
@@ -7302,7 +7293,6 @@ a.ch-cq-card:hover { border-color: var(--client-color-7); transform: translateY(
 /* ── Sugarcane Experience Component ────────────────────────────────────────── */
 .ch-experience-section {
     padding: 6rem 2rem;
-    background: linear-gradient(135deg, var(--client-color-5) 0%, #fafaf8 100%);
     position: relative;
     overflow: hidden;
 }
@@ -7583,7 +7573,6 @@ a.ch-cq-card:hover { border-color: var(--client-color-7); transform: translateY(
 /* ── Sugarcane Experience Timeline Component (UPDATED) ────────────────────────── */
 .ch-experience-section {
     padding: 6rem 2rem;
-    background: linear-gradient(135deg, var(--client-color-5) 0%, #fafaf8 100%);
     position: relative;
     overflow: hidden;
 }
@@ -7952,7 +7941,6 @@ a.ch-cq-card:hover { border-color: var(--client-color-7); transform: translateY(
 
 /* ── History Section Layout ─────────────────────────────────────── */
 .ch-history-section {
-    background: var(--client-color-6);
     overflow: hidden;
 }
 
@@ -8770,7 +8758,7 @@ a.ch-cq-card:hover { border-color: var(--client-color-7); transform: translateY(
 }
 
 /* ── Franchise Why Carousel ──────────────────────────────────────────────── */
-.ch-franchise-why-section { padding: 3rem 1.5rem 2.5rem; background: var(--client-color-6, #f0f7e6); }
+.ch-franchise-why-section { padding: 3rem 1.5rem 2.5rem; }
 .ch-fwhy-carousel { position: relative; max-width: 1200px; margin: 0 auto; }
 
 /* Desktop: flex row, equal-height cards */
@@ -8855,4 +8843,15 @@ a.ch-cq-card:hover { border-color: var(--client-color-7); transform: translateY(
         width: 100%;
     }
     .ch-fw-card.active { display: flex; }
+}
+
+/* ── Section colour rotation ────────────────────────────────────────────────
+   Placed in a named @layer so it has the lowest possible priority.
+   Any section with its own class-level background (dark sections, heroes,
+   contact, franchise, etc.) automatically wins — no :not() chains needed.
+   ──────────────────────────────────────────────────────────────────────── */
+@layer ch-rotation {
+    .ch-main > section:nth-child(3n+1) { background: var(--client-color-11); }
+    .ch-main > section:nth-child(3n+2) { background: var(--client-color-6);  }
+    .ch-main > section:nth-child(3n)   { background: var(--client-color-5);  }
 }

@@ -26,7 +26,7 @@ $tag   = $args['tag']   ?? 'Gallery';
 $title = $args['title'] ?? '';
 $body  = $args['body']  ?? '';
 $items = $args['items'] ?? [];
-$bg    = $args['bg']    ?? 'var(--client-color-11)';
+$bg    = $args['bg']    ?? '';
 $uid   = esc_attr( $args['id'] ?? 'ch-mg-' . wp_rand( 100, 999 ) );
 
 if ( empty( $items ) ) return;
@@ -39,7 +39,7 @@ $size_cycle = [ 'wide', 'normal', 'tall', 'normal', 'normal', 'wide' ];
 $lightbox_id = $uid . '-lb';
 ?>
 
-<section class="ch-mg-section" style="background:<?php echo esc_attr( $bg ); ?>;" id="<?php echo $uid; ?>-section">
+<section class="ch-mg-section"<?php if ( $bg ) echo ' style="background:' . esc_attr( $bg ) . ';"'; ?> id="<?php echo $uid; ?>-section">
 <div class="container">
 
 	<?php get_template_part( 'components/section-header', null, [

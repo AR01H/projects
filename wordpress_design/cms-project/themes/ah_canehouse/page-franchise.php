@@ -25,7 +25,6 @@ $_gallery = CH_Shared_Data::section_heading( 'gallery_franchise' );
 	'tag'   => $_gallery['tag']   ?? '',
 	'title' => $_gallery['title'] ?? '',
 	'body'  => $_gallery['body']  ?? '',
-	'bg'    => 'var(--client-color-11)',
 	'id'    => 'mg-franchise',
 	'items' => ch_get_franchise_media_gallery(),
 ] ); ?>
