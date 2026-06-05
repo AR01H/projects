@@ -4,6 +4,10 @@
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
+
+$ew = class_exists( 'CH_Hire_Data' ) ? CH_Hire_Data::events_why() : [];
+$gallery_items =  ch_get_events_media_gallery();
+
 ?>
 
 <main class="ch-main" id="main-content">
@@ -20,7 +24,7 @@ get_header();
 
 <?php get_template_part( 'components/features-ribbon' ); ?>
 
-<?php get_template_part( 'components/events-packages' ); ?>
+<?php get_template_part( 'components/event-typesection' ); ?>
 
 <?php get_template_part( 'components/media-gallery', null, [
 	'tag'   => 'Events Gallery',
@@ -28,14 +32,13 @@ get_header();
 	'body'  => 'A glimpse of the live experience we bring - from intimate gatherings to 500-guest celebrations.',
 	'bg'    => 'var(--client-color-6)',
 	'id'    => 'mg-events',
-	'items' => ch_get_events_media_gallery(),
+	'items' => $gallery_items
 ] ); ?>
 
-<?php $ew = ch_get_events_why();
-get_template_part( 'components/events-why', null, [
-	'image' => $ew['image'] ?? '',
-	'items' => $ew['items'] ?? [],
-	] ); ?>
+<?php 
+	get_template_part( 'components/events-why', null, [
+	'items' => $ew['items'],
+] ); ?>
 
 <?php get_template_part( 'components/reviews-events' ); ?>
 

@@ -14,32 +14,9 @@ defined( 'ABSPATH' ) || exit;
 $tag   = $args['tag']   ?? 'Why Choose Us';
 $title = $args['title'] ?? 'What Makes Us <span class="accent">Different</span>';
 $body  = $args['body']  ?? 'We\'re not just another catering option - we\'re an experience your guests will be talking about for weeks.';
-$image = $args['image'] ?? 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&h=700&q=80';
+$image = 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&h=700&q=80';
 
-$default_items = [
-	[
-		'icon'  => '👀',
-		'title' => 'Live Pressing in Front of Guests',
-		'text'  => 'Watching fresh cane being pressed is a spectacle in itself - creating a natural talking point and crowd magnet at your event.',
-	],
-	[
-		'icon'  => '🌿',
-		'title' => '100% Natural - No Compromise',
-		'text'  => 'Everything we serve is pure, natural, and fresh. No artificial syrups, no chemicals - just real sugarcane juice.',
-	],
-	[
-		'icon'  => '📋',
-		'title' => 'Fully Insured & Certified',
-		'text'  => 'We carry full public liability insurance and comply with all food hygiene regulations - complete peace of mind for you.',
-	],
-	[
-		'icon'  => '🤝',
-		'title' => 'Flexible & Responsive',
-		'text'  => 'We work around your schedule, venue, and guest count. Packages from 50 to 1,000+ guests across the UK.',
-	],
-];
-
-$items   = $args['items'] ?? $default_items;
+$items   = $args['items'] ?? [];
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 

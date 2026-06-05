@@ -53,24 +53,5 @@ $settings = ch_get_settings();
 			</div>
 
 		</div><!-- .ch-hire-carousel -->
-
-		<!-- Features ribbon -->
-		<!-- <div class="ch-hire-features-bar fade-up">
-			<?php foreach ( $features as $feat ) :
-				$feat = (array) $feat;
-			?>
-				<div class="ch-h-feature">
-					<span class="ch-hf-icon" aria-hidden="true"><?php echo esc_html( $feat['icon'] ?? '✓' ); ?></span>
-					<div class="ch-hf-text"><?php echo esc_html( $feat['text'] ?? '' ); ?></div>
-				</div>
-			<?php endforeach; ?>
-		</div> -->
-
-		<!-- <div class="ch-hire-cta fade-up">
-			<a href="<?php echo esc_url( home_url( '/events/' ) ); ?>" class="btn-outline">
-				View & Hire →
-			</a>
-		</div> -->
-
 	</div>
 </section>

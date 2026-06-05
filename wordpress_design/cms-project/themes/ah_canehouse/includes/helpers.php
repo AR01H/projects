@@ -607,12 +607,7 @@ function ch_get_nutrition_facts(): array {
 	return (array) $opt; // DB-only: install mock data to populate.
 }
 
-// ── Events "Why Choose Us" items ──────────────────────────────────────────────
-function ch_get_events_why(): array {
-	$opt = get_option( 'ch_events_why', [] );
-	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
-	return (array) $opt; // DB-only: install mock data to populate.
-}
+
 
 // ── About Page: Mission / Vision / Values ─────────────────────────────────────
 function ch_get_about_mvv(): array {

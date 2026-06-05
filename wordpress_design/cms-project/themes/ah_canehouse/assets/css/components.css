@@ -5603,11 +5603,8 @@ body.has-ticker .ch-nav { top: 32px; }
 
 /* ── Events page: why-choose-us section ────────────────────────────────────── */
 .ch-events-why-section {
-    background: var(--client-color-6);
-    padding: 5rem 2rem;
-}
-@media (max-width: 768px) {
-    .ch-events-why-section { padding: 3rem 1.2rem; }
+    background: var(--client-color-5);
+    padding: 2rem;
 }
 
 /* ── Events page: quote section ────────────────────────────────────────────── */
@@ -6819,14 +6816,32 @@ body.has-ticker .ch-nav { top: 32px; }
 /* Desktop: full grid layout, nav hidden */
 .ch-pkg-carousel { position: relative; }
 .ch-pkg-track {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
     gap: 2rem;
     max-width: 1100px;
     margin-inline: auto;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
 }
-.ch-pkg-track .ch-package-card { display: flex; }
-.ch-pkg-nav { display: none; }
+.ch-pkg-track::-webkit-scrollbar {
+    display: none;
+}
+.ch-pkg-track .ch-package-card { 
+    display: flex; 
+    flex: 1 1 0;
+    min-width: 250px;
+    scroll-snap-align: start;
+}
+.ch-pkg-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
 
 /* Mobile: single-card, show nav */
 @media (max-width: 767px) {
@@ -6836,13 +6851,6 @@ body.has-ticker .ch-nav { top: 32px; }
     }
     .ch-pkg-track .ch-package-card { display: none; animation: ch-fade-in 0.35s ease; }
     .ch-pkg-track .ch-package-card.active { display: flex; }
-    .ch-pkg-nav {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-        margin-top: 1.5rem;
-    }
 }
 .ch-pkg-dots  { display: flex; gap: 0.5rem; align-items: center; }
 .ch-pkg-arrows { display: flex; gap: 0.5rem; }

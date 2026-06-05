@@ -317,7 +317,26 @@
                 d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
             });
             current = idx;
+            if (window.innerWidth > 767) {
+                cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+            }
         }
+        var raf;
+        track.addEventListener('scroll', function() {
+            if (window.innerWidth <= 767) return;
+            if (raf) cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(function() {
+                var cardWidth = cards[0].offsetWidth + 32;
+                var idx = Math.round(track.scrollLeft / cardWidth);
+                if (idx !== current && idx >= 0 && idx < cards.length) {
+                    current = idx;
+                    getDots().forEach(function (d, i) {
+                        d.classList.toggle('active', i === idx);
+                        d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+                    });
+                }
+            });
+        }, { passive: true });
         function advance() { show((current + 1) % cards.length); }
         function retreat() { show((current - 1 + cards.length) % cards.length); }
 

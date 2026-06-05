@@ -29,7 +29,7 @@ $s = ch_get_settings();
 
 	<?php get_template_part('components/story'); ?>
 
-	<?php get_template_part('components/hire-section'); ?>
+	<?php get_template_part('components/event-typesection'); ?>
 
 	<?php get_template_part('components/booking-wizard'); ?>
 

@@ -49,4 +49,11 @@ class CH_Hire_Data {
 			];
 		}, $rows );
 	}
+	public static function events_why(): array {
+		$rows = CH_Real_Loader::csv( 'events-why' );
+		if ( $rows ) {
+			return [ 'items' => $rows ];
+		}
+		return [];
+	}
 }
