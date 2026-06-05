@@ -6,6 +6,7 @@ $active_tab    = sanitize_key( $_GET['tab'] ?? 'business' );
 $saved         = isset( $_GET['saved'] ) ? (int) $_GET['saved'] : 0;
 
 $s               = ch_get_settings();
+$certifications  = ch_get_certifications();
 $enquiry_types   = ch_get_enquiry_types() ?? [];
 $occasions       = ch_get_occasions() ?? [];
 $events_why      = ch_get_events_why() ?? [];
@@ -23,6 +24,7 @@ $tabs = [
 	'galleries' => '🖼️ Gallery Images',
 	'eventswhy' => '🎯 Events Why',
 	'about'     => '🏢 About Page',
+	'certs'     => '✅ Certifications',
 ];
 ?>
 <div class="wrap ch-admin-wrap ch-cs-wrap">
@@ -333,6 +335,58 @@ $tabs = [
 
 		<?php submit_button( '💾 Save About Page', 'primary', 'submit', false ); ?>
 	</form>
+
+	<!-- ══════════════════════════════════════════════════════════════════════
+	     TAB - Certifications
+	     ══════════════════════════════════════════════════════════════════════ -->
+	<?php elseif ( $active_tab === 'certs' ) : ?>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<?php wp_nonce_field( 'ch_content_settings_certs' ); ?>
+		<input type="hidden" name="action" value="ch_content_settings_certs">
+
+		<div class="ch-card">
+			<h2>✅ Certification Badges</h2>
+			<p class="ch-cs-desc">
+				Each row is one card shown in the Certifications section.
+				<strong>Icon</strong> = emoji, <strong>Title</strong> is required, <strong>Description</strong> and <strong>Badge label</strong> are optional.
+			</p>
+
+			<div class="ch-rep-header ch-rep-header--certs">
+				<span>Icon</span><span>Title *</span><span>Description</span><span>Badge</span><span></span>
+			</div>
+
+			<div class="ch-repeater ch-repeater--certs" id="ch-certs-repeater">
+				<?php foreach ( $certifications as $i => $cert ) :
+					$cert = (array) $cert;
+				?>
+				<div class="ch-rep-row ch-rep-row--certs">
+					<input type="text" name="certs[<?php echo $i; ?>][icon]"
+						value="<?php echo esc_attr( $cert['icon'] ?? '✅' ); ?>"
+						placeholder="✅" style="text-align:center;font-size:1.3rem;">
+					<input type="text" name="certs[<?php echo $i; ?>][title]"
+						value="<?php echo esc_attr( $cert['title'] ?? '' ); ?>"
+						placeholder="e.g. Food Safety Registered">
+					<input type="text" name="certs[<?php echo $i; ?>][desc]"
+						value="<?php echo esc_attr( $cert['desc'] ?? '' ); ?>"
+						placeholder="Short description">
+					<input type="text" name="certs[<?php echo $i; ?>][badge]"
+						value="<?php echo esc_attr( $cert['badge'] ?? '' ); ?>"
+						placeholder="e.g. NCASS Member">
+					<button type="button" class="ch-rep-remove" title="Remove">✕</button>
+				</div>
+				<?php endforeach; ?>
+			</div>
+
+			<button type="button" class="ch-rep-add button"
+				data-target="ch-certs-repeater"
+				data-prefix="certs"
+				data-columns="icon,title,desc,badge">
+				+ Add Certification
+			</button>
+		</div>
+
+		<?php submit_button( '💾 Save Certifications', 'primary', 'submit', false ); ?>
+	</form>
 	<?php endif; ?>
 </div>
 
@@ -366,6 +420,8 @@ $tabs = [
 .ch-rep-row--nutrition  { grid-template-columns: 1fr 1fr 1.5fr 36px; }
 .ch-rep-row--eventswhy  { grid-template-columns: 60px 1fr 2fr 36px; }
 .ch-rep-row--mvv        { grid-template-columns: 60px 1fr 2fr 36px; }
+.ch-rep-header--certs,
+.ch-rep-row--certs      { grid-template-columns: 50px 1fr 2fr 1fr 36px; }
 
 /* ── CSV format boxes ───────────────────────────────────────────────────────── */
 .ch-cs-format-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; }
@@ -399,12 +455,13 @@ $tabs = [
 			var row = document.createElement('div');
 			var placeholders = { src:'https://...', label:'Label', desc:'Caption', num:'e.g. 100+', name:'Nutrient', value:'~10g', note:'Short note', icon:'🌿', title:'Title', text:'Description', quality:'Point' };
 
+			var rowMod = rep.querySelector('.ch-rep-row') ? rep.querySelector('.ch-rep-row').className.replace('ch-rep-row','').trim() : '';
 			if (isSingle) {
 				row.className = 'ch-rep-row ch-rep-row--single';
 				row.innerHTML = '<input type="text" name="' + prefix + '[' + idx + ']" placeholder="Type here..." />'
 					+ '<button type="button" class="ch-rep-remove" title="Remove">✕</button>';
 			} else if (columns.length >= 2) {
-				row.className = 'ch-rep-row';
+				row.className = 'ch-rep-row' + (rowMod ? ' ' + rowMod : '');
 				var inputs = columns.map(function(col){
 					var ph = placeholders[col] || col;
 					var st = col === 'icon' ? ' style="text-align:center;font-size:1.3rem;"' : '';

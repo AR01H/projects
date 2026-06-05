@@ -25,11 +25,15 @@ $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo
 				<h2 class="ch-frn-title"><?php echo wp_kses( $frn_heading, [ 'span' => [ 'class' => [] ], 'em' => [] ] ); ?></h2>
 				<p class="ch-frn-sub"><?php echo esc_html( $frn_sub ); ?></p>
 
+				<?php if ( ! empty( $_d['features'] ) ) : ?>
 				<ul class="ch-frn-features">
-					<li>💼 Full training &amp; ongoing support</li>
-					<li>📍 Exclusive territory rights</li>
-					<li>🚀 Launch-ready in weeks, not months</li>
+					<?php foreach ( $_d['features'] as $feat ) :
+						$feat = (array) $feat;
+					?>
+						<li><?php echo esc_html( $feat['icon'] ?? '' ); ?> <?php echo esc_html( $feat['text'] ?? '' ); ?></li>
+					<?php endforeach; ?>
 				</ul>
+				<?php endif; ?>
 
 				<button type="button" class="ch-frn-open btn-lime" id="ch-frn-open">
 					🌿 Enquire Now

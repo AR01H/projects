@@ -97,6 +97,7 @@ class CH_About_Data {
 		$heading = CH_Shared_Data::section_heading( 'franchise_enquiry' );
 		$data    = CH_Real_Loader::json( 'franchise-enquiry' );
 		return array_merge( $heading, [
+			'features'          => isset( $data['features'] )          && is_array( $data['features'] )          ? $data['features']          : [],
 			'steps'             => isset( $data['steps'] )             && is_array( $data['steps'] )             ? $data['steps']             : [],
 			'unit_types'        => isset( $data['unit_types'] )        && is_array( $data['unit_types'] )        ? $data['unit_types']        : [],
 			'investment_ranges' => isset( $data['investment_ranges'] ) && is_array( $data['investment_ranges'] ) ? $data['investment_ranges'] : [],

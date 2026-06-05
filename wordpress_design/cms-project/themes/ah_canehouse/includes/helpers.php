@@ -76,11 +76,22 @@ function ch_show_prices(): bool {
 
 // ── Certifications ────────────────────────────────────────────────────────────
 function ch_get_certifications(): array {
-	$s     = ch_get_settings();
-	$saved = isset( $s['certifications'] ) ? $s['certifications'] : [];
-	if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: [];
-	if ( ! empty( $saved ) ) return (array) $saved;
-	return []; // DB-only: install mock data to populate.
+	global $wpdb;
+	$table = ch_theme_table( 'certifications' );
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
+		return CH_Data::certifications(); // table not yet created — CSV fallback
+	}
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	$rows = $wpdb->get_results( "SELECT * FROM `{$table}` WHERE status = 'active' ORDER BY sort_order ASC, id ASC" );
+	if ( ! empty( $rows ) ) {
+		return array_map( fn( $r ) => [
+			'icon'  => $r->icon  ?? '✅',
+			'title' => $r->title ?? '',
+			'desc'  => $r->descr ?? '',
+			'badge' => $r->badge ?? '',
+		], (array) $rows );
+	}
+	return CH_Data::certifications(); // table is empty — CSV fallback
 }
 
 // ── Schema / SEO Settings ──────────────────────────────────────────────────────
@@ -260,6 +271,16 @@ function ch_get_order_steps(): array {
 	$opt = get_option( 'ch_order_steps', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	return (array) $opt; // DB-only: install mock data to populate.
+}
+
+// ── Delivery Products (Order-to-Deliver form) ─────────────────────────────────
+function ch_get_delivery_products(): array {
+	return CH_Order_Data::products();
+}
+
+// ── Delivery Features (Order-to-Deliver section cards) ────────────────────────
+function ch_get_delivery_features(): array {
+	return CH_Order_Data::features();
 }
 
 // ── Marquee Items ─────────────────────────────────────────────────────────────

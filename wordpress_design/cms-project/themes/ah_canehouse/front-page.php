@@ -9,10 +9,10 @@ $s = ch_get_settings();
 
 	<?php get_template_part('components/news-ticker'); ?>
 
+	<?php get_template_part('components/home-banners'); ?>
+
 	<?php get_template_part('components/hero'); ?>
 
-	<!-- Hero Banners(multiple and responsive) -->
-	<?php get_template_part('components/home-banners'); ?>
 
 	<?php get_template_part('components/showcase-carousel', null, [
 		'tag' => 'See It Live',

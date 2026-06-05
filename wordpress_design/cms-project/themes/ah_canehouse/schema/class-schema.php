@@ -19,9 +19,17 @@ class CH_Schema {
 		// FAQs are owned by the CMS plugin (ah_faqs); the theme has no faqs table.
 		self::create_news_bar( $cs );
 		self::create_contact_submissions( $cs );
+		self::create_contact_logs( $cs );
 		self::create_services( $cs );
 		self::create_about_team( $cs );
 		self::create_blog_posts( $cs );
+		self::create_order_requests( $cs );
+		self::create_order_activity_logs( $cs );
+		self::create_certifications( $cs );
+		self::create_booking_requests( $cs );
+		self::create_booking_logs( $cs );
+		self::create_franchise_enquiries( $cs );
+		self::create_franchise_logs( $cs );
 	}
 
 	// ── Table definitions ─────────────────────────────────────────────────────
@@ -62,9 +70,33 @@ class CH_Schema {
 			phone         VARCHAR(50)     NOT NULL DEFAULT '',
 			enquiry_type  VARCHAR(100)    NOT NULL DEFAULT 'general',
 			message       TEXT            NOT NULL DEFAULT '',
+			status        VARCHAR(50)     NOT NULL DEFAULT 'new',
+			admin_notes   TEXT            NOT NULL DEFAULT '',
 			ip_address    VARCHAR(50)     NOT NULL DEFAULT '',
 			created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (id)
+			updated_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY status (status),
+			KEY created_at (created_at)
+		) {$cs};";
+		dbDelta( $sql );
+	}
+
+	private static function create_contact_logs( string $cs ): void {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table = $wpdb->prefix . 'ch_contact_logs';
+		$sql   = "CREATE TABLE IF NOT EXISTS `{$table}` (
+			id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			submission_id   BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			action          VARCHAR(100)    NOT NULL DEFAULT '',
+			old_value       TEXT            NOT NULL DEFAULT '',
+			new_value       TEXT            NOT NULL DEFAULT '',
+			admin_user_id   BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			admin_user_name VARCHAR(200)    NOT NULL DEFAULT '',
+			created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY submission_id (submission_id)
 		) {$cs};";
 		dbDelta( $sql );
 	}
@@ -84,6 +116,113 @@ class CH_Schema {
 		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
+	private static function create_booking_requests( string $cs ): void {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table = $wpdb->prefix . 'ch_booking_requests';
+		$sql   = "CREATE TABLE IF NOT EXISTS `{$table}` (
+			id            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			name          VARCHAR(200)    NOT NULL DEFAULT '',
+			email         VARCHAR(200)    NOT NULL DEFAULT '',
+			phone         VARCHAR(50)     NOT NULL DEFAULT '',
+			cane_types    TEXT            NOT NULL DEFAULT '',
+			flavours      TEXT            NOT NULL DEFAULT '',
+			occasion      VARCHAR(200)    NOT NULL DEFAULT '',
+			event_date    DATE                         NULL,
+			guest_count   INT UNSIGNED    NOT NULL DEFAULT 0,
+			location      VARCHAR(300)    NOT NULL DEFAULT '',
+			notes         TEXT            NOT NULL DEFAULT '',
+			status        VARCHAR(50)     NOT NULL DEFAULT 'new',
+			admin_notes   TEXT            NOT NULL DEFAULT '',
+			ip_address    VARCHAR(50)     NOT NULL DEFAULT '',
+			created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY status (status),
+			KEY created_at (created_at)
+		) {$cs};";
+		dbDelta( $sql );
+	}
+
+	private static function create_booking_logs( string $cs ): void {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table = $wpdb->prefix . 'ch_booking_logs';
+		$sql   = "CREATE TABLE IF NOT EXISTS `{$table}` (
+			id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			booking_id      BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			action          VARCHAR(100)    NOT NULL DEFAULT '',
+			old_value       TEXT            NOT NULL DEFAULT '',
+			new_value       TEXT            NOT NULL DEFAULT '',
+			admin_user_id   BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			admin_user_name VARCHAR(200)    NOT NULL DEFAULT '',
+			created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY booking_id (booking_id)
+		) {$cs};";
+		dbDelta( $sql );
+	}
+
+	private static function create_franchise_enquiries( string $cs ): void {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table = $wpdb->prefix . 'ch_franchise_enquiries';
+		$sql   = "CREATE TABLE IF NOT EXISTS `{$table}` (
+			id               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			name             VARCHAR(200)    NOT NULL DEFAULT '',
+			email            VARCHAR(200)    NOT NULL DEFAULT '',
+			phone            VARCHAR(50)     NOT NULL DEFAULT '',
+			city             VARCHAR(200)    NOT NULL DEFAULT '',
+			franchise_type   VARCHAR(200)    NOT NULL DEFAULT '',
+			timeline         VARCHAR(200)    NOT NULL DEFAULT '',
+			investment_range VARCHAR(200)    NOT NULL DEFAULT '',
+			experience       VARCHAR(200)    NOT NULL DEFAULT '',
+			message          TEXT            NOT NULL DEFAULT '',
+			status           VARCHAR(50)     NOT NULL DEFAULT 'new',
+			admin_notes      TEXT            NOT NULL DEFAULT '',
+			ip_address       VARCHAR(50)     NOT NULL DEFAULT '',
+			created_at       DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY status (status),
+			KEY created_at (created_at)
+		) {$cs};";
+		dbDelta( $sql );
+	}
+
+	private static function create_franchise_logs( string $cs ): void {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table = $wpdb->prefix . 'ch_franchise_logs';
+		$sql   = "CREATE TABLE IF NOT EXISTS `{$table}` (
+			id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			enquiry_id      BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			action          VARCHAR(100)    NOT NULL DEFAULT '',
+			old_value       TEXT            NOT NULL DEFAULT '',
+			new_value       TEXT            NOT NULL DEFAULT '',
+			admin_user_id   BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			admin_user_name VARCHAR(200)    NOT NULL DEFAULT '',
+			created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY enquiry_id (enquiry_id)
+		) {$cs};";
+		dbDelta( $sql );
+	}
+
+	private static function create_certifications( string $cs ): void {
+		global $wpdb;
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ch_theme_table( 'certifications' ) . "` (
+			id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			icon       VARCHAR(20)  NOT NULL DEFAULT '✅',
+			title      VARCHAR(200) NOT NULL DEFAULT '',
+			descr      TEXT         NOT NULL DEFAULT '',
+			badge      VARCHAR(100) NOT NULL DEFAULT '',
+			sort_order INT          NOT NULL DEFAULT 0,
+			status     ENUM('active','inactive') DEFAULT 'active',
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
+
 	private static function create_about_team( string $cs ): void {
 		global $wpdb;
 		$wpdb->query( "CREATE TABLE IF NOT EXISTS `" . ch_theme_table( 'about_team' ) . "` (
@@ -96,6 +235,53 @@ class CH_Schema {
 			sort_order  INT DEFAULT 0,
 			created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	private static function create_order_requests( string $cs ): void {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table = $wpdb->prefix . 'ch_order_requests';
+		$sql   = "CREATE TABLE IF NOT EXISTS `{$table}` (
+			id               BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+			name             VARCHAR(200)     NOT NULL DEFAULT '',
+			email            VARCHAR(200)     NOT NULL DEFAULT '',
+			phone            VARCHAR(50)      NOT NULL DEFAULT '',
+			delivery_address TEXT             NOT NULL DEFAULT '',
+			delivery_area    VARCHAR(200)     NOT NULL DEFAULT '',
+			preferred_date   DATE                         NULL,
+			preferred_time   VARCHAR(50)      NOT NULL DEFAULT '',
+			items            LONGTEXT         NOT NULL DEFAULT '',
+			special_notes    TEXT             NOT NULL DEFAULT '',
+			status           VARCHAR(50)      NOT NULL DEFAULT 'new',
+			admin_notes      TEXT             NOT NULL DEFAULT '',
+			ip_address       VARCHAR(50)      NOT NULL DEFAULT '',
+			created_at       DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at       TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY status (status),
+			KEY created_at (created_at)
+		) {$cs};";
+		dbDelta( $sql );
+	}
+
+	private static function create_order_activity_logs( string $cs ): void {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table = $wpdb->prefix . 'ch_order_activity_logs';
+		$sql   = "CREATE TABLE IF NOT EXISTS `{$table}` (
+			id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			order_id        BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			action          VARCHAR(100)    NOT NULL DEFAULT '',
+			field_name      VARCHAR(100)    NOT NULL DEFAULT '',
+			old_value       TEXT            NOT NULL DEFAULT '',
+			new_value       TEXT            NOT NULL DEFAULT '',
+			admin_user_id   BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			admin_user_name VARCHAR(200)    NOT NULL DEFAULT '',
+			created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			KEY order_id (order_id)
+		) {$cs};";
+		dbDelta( $sql );
 	}
 
 	private static function create_blog_posts( string $cs ): void {

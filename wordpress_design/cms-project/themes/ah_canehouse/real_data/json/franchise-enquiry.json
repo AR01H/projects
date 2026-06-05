@@ -1,4 +1,9 @@
 {
+	"features": [
+		{ "icon": "💼", "text": "Full training & ongoing support" },
+		{ "icon": "📍", "text": "Exclusive territory rights" },
+		{ "icon": "🚀", "text": "Launch-ready in weeks, not months" }
+	],
 	"steps": ["📍 Location", "💼 Background", "✅ Confirm"],
 	"unit_types": [
 		"Kiosk / Cart (small footprint)",

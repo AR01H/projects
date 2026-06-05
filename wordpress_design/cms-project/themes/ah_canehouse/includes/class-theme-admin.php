@@ -16,6 +16,7 @@ class CH_Theme_Admin {
 		add_action( 'admin_post_ch_content_settings_galleries', [ self::class, 'handle_cs_galleries'  ] );
 		add_action( 'admin_post_ch_content_settings_eventswhy', [ self::class, 'handle_cs_eventswhy'  ] );
 		add_action( 'admin_post_ch_content_settings_about',     [ self::class, 'handle_cs_about'      ] );
+		add_action( 'admin_post_ch_content_settings_certs',     [ self::class, 'handle_cs_certs'      ] );
 		// ch_theme_settings handler lives in functions.php (complete version that
 		// also saves pricing, certifications and schema). Do NOT register a second
 		// handler here - it would overwrite those extended settings.
@@ -36,13 +37,19 @@ class CH_Theme_Admin {
 		// Navigation & Footer are managed by the CMS plugin (ah_cms_navigation / ah_cms_footer).
 		add_submenu_page( 'ch-theme-admin', 'Site Settings',        'Site Settings',        'manage_options', 'ch-theme-settings',    [ self::class, 'page_settings'    ] );
 		add_submenu_page( 'ch-theme-admin', 'Content Settings',     'Content Settings',     'manage_options', 'ch-content-settings',  [ self::class, 'page_content_settings' ] );
-		add_submenu_page( 'ch-theme-admin', 'Enquiry Submissions',  'Enquiry Submissions',  'manage_options', 'ch-theme-submissions', [ self::class, 'page_submissions' ] );
-		add_submenu_page( 'ch-theme-admin', 'Install Mock Data',    'Install Mock Data',    'manage_options', 'ch-theme-mock',        [ self::class, 'page_mock'        ] );
+		add_submenu_page( 'ch-theme-admin', 'Enquiry Submissions',  'Enquiry Submissions',  'manage_options', 'ch-theme-submissions',     [ self::class, 'page_submissions' ] );
+		add_submenu_page( 'ch-theme-admin', 'Order Requests',       'Order Requests 📦',    'manage_options', 'ch-order-requests',        [ self::class, 'page_orders'      ] );
+		add_submenu_page( 'ch-theme-admin', 'Booking Requests',     'Booking Requests 🎉',  'manage_options', 'ch-booking-requests',      [ self::class, 'page_bookings'    ] );
+		add_submenu_page( 'ch-theme-admin', 'Franchise Enquiries',  'Franchise Enquiries 🌿','manage_options','ch-franchise-enquiries',   [ self::class, 'page_franchise'   ] );
+		add_submenu_page( 'ch-theme-admin', 'Install Mock Data',    'Install Mock Data',    'manage_options', 'ch-theme-mock',            [ self::class, 'page_mock'        ] );
 		add_submenu_page( 'ch-theme-admin', 'Cleanup Data',         'Cleanup Data',         'manage_options', 'ch-theme-cleanup',     [ self::class, 'page_cleanup'     ] );
 	}
 
 	public static function enqueue_assets( string $hook ): void {
-		if ( strpos( $hook, 'ch-theme' ) === false ) return;
+		$pages = [ 'ch-theme', 'ch-order-requests', 'ch-booking-requests', 'ch-franchise-enquiries', 'ch-theme-submissions' ];
+		$match = false;
+		foreach ( $pages as $slug ) { if ( strpos( $hook, $slug ) !== false ) { $match = true; break; } }
+		if ( ! $match ) return;
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_add_inline_style( 'wp-admin', self::admin_css() );
 	}
@@ -54,7 +61,10 @@ class CH_Theme_Admin {
 	public static function page_settings(): void         { require get_template_directory() . '/admin/theme-settings.php';          }
 	public static function page_content_settings(): void { require get_template_directory() . '/admin/theme-content-settings.php';  }
 	public static function page_submissions(): void      { require get_template_directory() . '/admin/theme-submissions.php';       }
-	public static function page_mock(): void             { require get_template_directory() . '/admin/theme-mock-data.php';          }
+	public static function page_orders(): void           { require get_template_directory() . '/admin/theme-order-requests.php';       }
+	public static function page_bookings(): void         { require get_template_directory() . '/admin/theme-booking-requests.php';    }
+	public static function page_franchise(): void        { require get_template_directory() . '/admin/theme-franchise-enquiries.php'; }
+	public static function page_mock(): void             { require get_template_directory() . '/admin/theme-mock-data.php';           }
 	public static function page_cleanup(): void          { require get_template_directory() . '/admin/theme-cleanup.php';           }
 
 	// ── POST handlers ─────────────────────────────────────────────────────────
@@ -306,6 +316,40 @@ class CH_Theme_Admin {
 		update_option( 'ch_about_quality', wp_json_encode( $quality ) );
 
 		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'about', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	public static function handle_cs_certs(): void {
+		check_admin_referer( 'ch_content_settings_certs' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+
+		global $wpdb;
+		$table = ch_theme_table( 'certifications' );
+
+		// Ensure table exists before writing.
+		CH_Schema::create_all();
+
+		$wpdb->query( "DELETE FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+		$i = 0;
+		foreach ( (array) ( $_POST['certs'] ?? [] ) as $cert ) {
+			$title = sanitize_text_field( wp_unslash( $cert['title'] ?? '' ) );
+			if ( ! $title ) continue;
+			$wpdb->insert(
+				$table,
+				[
+					'icon'       => sanitize_text_field( wp_unslash( $cert['icon']  ?? '✅' ) ),
+					'title'      => $title,
+					'descr'      => sanitize_textarea_field( wp_unslash( $cert['desc']  ?? '' ) ),
+					'badge'      => sanitize_text_field( wp_unslash( $cert['badge'] ?? '' ) ),
+					'sort_order' => $i++,
+					'status'     => 'active',
+				],
+				[ '%s', '%s', '%s', '%s', '%d', '%s' ]
+			);
+		}
+
+		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'certs', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 

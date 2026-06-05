@@ -304,33 +304,23 @@
                 showMsg('Please enter a valid email address.', 'error'); email.focus(); return;
             }
 
-            var lines = [
-                '🥤 NEW ORDER REQUEST',
-                '',
-                'Cane:     ' + (selectedCanes().join(', ')    || '-'),
-                'Flavours: ' + (selectedFlavours().join(', ') || '-'),
-                '',
-                'Occasion: ' + (wizard.querySelector('[name="bk_occasion"]').value || '-'),
-                'Date:     ' + (wizard.querySelector('[name="bk_date"]').value     || '-'),
-                'Guests:   ' + (wizard.querySelector('[name="bk_guests"]').value   || '-'),
-                'Location: ' + (wizard.querySelector('[name="bk_location"]').value || '-'),
-                '',
-                'Notes:    ' + (wizard.querySelector('[name="bk_notes"]').value    || '-')
-            ];
-            var compiled = lines.join('\n');
-
             var originalText = submitBtn.textContent;
             submitBtn.disabled    = true;
             submitBtn.textContent = 'Sending… 🌿';
 
             var data = new FormData();
-            data.append('action',     'ch_contact_submit');
-            data.append('nonce',      chTheme.nonce);
-            data.append('ch_name',    name.value.trim());
-            data.append('ch_email',   email.value.trim());
-            data.append('ch_phone',   wizard.querySelector('[name="bk_phone"]').value.trim());
-            data.append('ch_enquiry', 'event');
-            data.append('ch_message', compiled);
+            data.append('action',      'ch_booking_submit');
+            data.append('nonce',       chTheme.nonce);
+            data.append('bk_name',     name.value.trim());
+            data.append('bk_email',    email.value.trim());
+            data.append('bk_phone',    wizard.querySelector('[name="bk_phone"]').value.trim());
+            data.append('bk_occasion', wizard.querySelector('[name="bk_occasion"]').value.trim());
+            data.append('bk_date',     wizard.querySelector('[name="bk_date"]').value.trim());
+            data.append('bk_guests',   wizard.querySelector('[name="bk_guests"]').value.trim());
+            data.append('bk_location', wizard.querySelector('[name="bk_location"]').value.trim());
+            data.append('bk_notes',    wizard.querySelector('[name="bk_notes"]').value.trim());
+            selectedCanes().forEach(function(v)    { data.append('bk_cane[]',    v); });
+            selectedFlavours().forEach(function(v) { data.append('bk_flavour[]', v); });
 
             fetch(chTheme.ajaxUrl, { method: 'POST', body: data })
                 .then(function (r) { return r.json(); })
@@ -488,27 +478,21 @@
             if (!name.value.trim())  { showMsg('Please enter your name.', 'error'); name.focus(); return; }
             if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { showMsg('Please enter a valid email address.', 'error'); email.focus(); return; }
 
-            var lines = [
-                '💼 FRANCHISE ENQUIRY', '',
-                'City / Area:      ' + val('frn_city'),
-                'Franchise Type:   ' + val('frn_type'),
-                'Timeline:         ' + val('frn_timeline'), '',
-                'Investment Range: ' + val('frn_investment'),
-                'Experience:       ' + val('frn_experience'), '',
-                'Message:          ' + val('frn_message'),
-            ];
-
             var originalText = submitBtn.textContent;
             submitBtn.disabled = true; submitBtn.textContent = 'Sending… 🌿';
 
             var data = new FormData();
-            data.append('action',     'ch_contact_submit');
-            data.append('nonce',      chTheme.nonce);
-            data.append('ch_name',    name.value.trim());
-            data.append('ch_email',   email.value.trim());
-            data.append('ch_phone',   val('frn_phone'));
-            data.append('ch_enquiry', 'franchise');
-            data.append('ch_message', lines.join('\n'));
+            data.append('action',          'ch_franchise_submit');
+            data.append('nonce',           chTheme.nonce);
+            data.append('frn_name',        name.value.trim());
+            data.append('frn_email',       email.value.trim());
+            data.append('frn_phone',       val('frn_phone'));
+            data.append('frn_city',        val('frn_city'));
+            data.append('frn_type',        val('frn_type'));
+            data.append('frn_timeline',    val('frn_timeline'));
+            data.append('frn_investment',  val('frn_investment'));
+            data.append('frn_experience',  val('frn_experience'));
+            data.append('frn_message',     val('frn_message'));
 
             fetch(chTheme.ajaxUrl, { method: 'POST', body: data })
                 .then(function(r){ return r.json(); })
@@ -531,11 +515,177 @@
         });
     }
 
+    // ── Order-to-Deliver Wizard ────────────────────────────────────────────────
+    function initOrderWizard() {
+        var form    = document.getElementById('ch-otd-form');
+        var modal   = document.getElementById('ch-otd-modal');
+        var openBtn = document.getElementById('ch-otd-open');
+        if (!form || !modal) return;
+
+        var box       = modal.querySelector('.ch-bk-modal-box');
+        var steps     = Array.prototype.slice.call(form.querySelectorAll('.ch-bk-step'));
+        var progSteps = Array.prototype.slice.call(modal.querySelectorAll('.ch-bk-prog-step'));
+        var progFill  = modal.querySelector('.ch-bk-prog-fill');
+        var msgEl     = document.getElementById('ch-otd-msg');
+        var submitBtn = document.getElementById('ch-otd-submit');
+        var summary   = document.getElementById('ch-otd-summary');
+        var total     = steps.length;
+        var current   = 1;
+
+        // ── Modal open / close ───────────────────────────────────────────────
+        function openModal()  { modal.classList.add('is-open');    modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; goTo(1); }
+        function closeModal() { modal.classList.remove('is-open'); modal.setAttribute('aria-hidden','true');  document.body.style.overflow=''; }
+
+        if (openBtn) openBtn.addEventListener('click', openModal);
+        modal.querySelectorAll('[data-otd-close]').forEach(function(el){ el.addEventListener('click', closeModal); });
+        document.addEventListener('keydown', function(e){ if (e.key==='Escape' && modal.classList.contains('is-open')) closeModal(); });
+
+        function showMsg(text, type) { if (!msgEl) return; msgEl.textContent=text; msgEl.className='ch-form-feedback '+type; msgEl.style.display='block'; }
+        function hideMsg() { if (msgEl) msgEl.style.display='none'; }
+
+        function goTo(step) {
+            current = step;
+            steps.forEach(function(s){ s.classList.toggle('active', parseInt(s.dataset.step,10)===step); });
+            progSteps.forEach(function(p){ var ps=parseInt(p.dataset.step,10); p.classList.toggle('active',ps===step); p.classList.toggle('done',ps<step); });
+            if (progFill) progFill.style.width = ((step-1)/(total-1)*100)+'%';
+            if (step===total) buildSummary();
+            hideMsg();
+            if (box) box.scrollTop=0;
+        }
+
+        // ── Quantity +/- buttons ─────────────────────────────────────────────
+        form.querySelectorAll('.ch-otd-qty-btn').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                var input = btn.closest('.ch-otd-qty-wrap').querySelector('.ch-otd-qty-input');
+                var v = parseInt(input.value,10) || 1;
+                input.value = btn.classList.contains('ch-otd-qty-plus') ? v+1 : Math.max(1,v-1);
+            });
+        });
+
+        // ── Validation ───────────────────────────────────────────────────────
+        function clearFieldErrors() {
+            form.querySelectorAll('.ch-field-error').forEach(function(e){ e.remove(); });
+            form.querySelectorAll('.ch-bk-field').forEach(function(e){ e.classList.remove('invalid'); });
+        }
+        function fieldError(field, msg) {
+            field.classList.add('invalid');
+            var e = document.createElement('span'); e.className='ch-field-error'; e.textContent=msg; field.appendChild(e);
+        }
+
+        function selectedItems() {
+            return Array.prototype.map.call(
+                form.querySelectorAll('[name="otd_items[]"]:checked'),
+                function(c){ return c.value; }
+            );
+        }
+
+        function validateStep(step) {
+            clearFieldErrors();
+            if (step===1) {
+                var custom = form.querySelector('[name="otd_custom_item"]');
+                if (selectedItems().length===0 && (!custom || !custom.value.trim())) {
+                    showMsg('Please select at least one item. 🥤', 'error'); return false;
+                }
+            }
+            if (step===2) {
+                var addr = form.querySelector('[name="otd_address"]');
+                var area = form.querySelector('[name="otd_area"]');
+                var ok = true;
+                if (!addr.value.trim()) { fieldError(addr.closest('.ch-bk-field'), 'Please enter your delivery address.'); ok=false; }
+                if (!area.value.trim()) { fieldError(area.closest('.ch-bk-field'), 'Please enter your area or city.'); ok=false; }
+                if (!ok) { showMsg('Please fill in your delivery details. 📦', 'error'); return false; }
+            }
+            return true;
+        }
+
+        // ── Summary ──────────────────────────────────────────────────────────
+        function escHtml(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+        function buildSummary() {
+            if (!summary) return;
+            var items = selectedItems();
+            var custom = (form.querySelector('[name="otd_custom_item"]') || {}).value || '';
+            var itemLines = items.map(function(name){
+                var qtyEl = form.querySelector('[name="otd_qty['+name+']"]');
+                var qty   = qtyEl ? qtyEl.value : '1';
+                return name + ' &times;' + qty;
+            });
+            if (custom) {
+                var cqty = (form.querySelector('[name="otd_custom_qty"]') || {}).value || '1';
+                itemLines.push(custom + ' &times;' + cqty);
+            }
+            function fv(n){ var el=form.querySelector('[name="'+n+'"]'); return el ? el.value.trim() : ''; }
+            var rows = [
+                ['🥤 Items',   itemLines.join('<br>')],
+                ['📦 Address', escHtml(fv('otd_address'))],
+                ['📍 Area',    escHtml(fv('otd_area'))],
+                ['📅 Date',    escHtml(fv('otd_date'))],
+                ['🕐 Time',    escHtml(fv('otd_time'))],
+            ];
+            var html = '<div class="ch-bk-summary-title">Your Order Summary</div><div class="ch-bk-summary-grid">';
+            rows.forEach(function(r){ if(!r[1]) return; html+='<div class="ch-bk-summary-row"><span class="ch-bk-summary-label">'+r[0]+'</span><span class="ch-bk-summary-val">'+r[1]+'</span></div>'; });
+            html += '</div>';
+            summary.innerHTML = html;
+        }
+
+        // ── Navigation ───────────────────────────────────────────────────────
+        form.querySelectorAll('.ch-bk-next').forEach(function(btn){
+            btn.addEventListener('click', function(){ if (!validateStep(current)) return; goTo(parseInt(btn.dataset.next,10)); });
+        });
+        form.querySelectorAll('.ch-bk-back').forEach(function(btn){
+            btn.addEventListener('click', function(){ goTo(parseInt(btn.dataset.back,10)); });
+        });
+
+        // ── Submit ───────────────────────────────────────────────────────────
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+            var name  = form.querySelector('[name="otd_name"]');
+            var email = form.querySelector('[name="otd_email"]');
+            if (!name.value.trim())  { showMsg('Please enter your name.', 'error'); name.focus(); return; }
+            if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+                showMsg('Please enter a valid email address.', 'error'); email.focus(); return;
+            }
+
+            var originalText = submitBtn.textContent;
+            submitBtn.disabled = true; submitBtn.textContent = 'Sending… 🌿';
+
+            var data = new FormData(form);
+            data.append('action', 'ch_order_submit');
+            data.append('nonce',  chTheme.nonce);
+
+            fetch(chTheme.ajaxUrl, { method:'POST', body:data })
+                .then(function(r){ return r.json(); })
+                .catch(function(){ return null; })
+                .then(function(res){
+                    if (res && res.success) {
+                        var lastStep = form.querySelector('.ch-bk-step[data-step="'+total+'"]');
+                        if (lastStep) {
+                            lastStep.innerHTML =
+                                '<div class="ch-bk-success">'+
+                                '<div class="ch-bk-success-icon">🎉</div>'+
+                                '<h3>Order Request Sent!</h3>'+
+                                '<p>'+ escHtml(res.data && res.data.message ? res.data.message : "Thanks! We'll review your order and contact you shortly. 🌿") +'</p>'+
+                                '<button type="button" class="btn-lime" data-otd-close style="margin-top:1.2rem;">Close</button>'+
+                                '</div>';
+                            var cb = lastStep.querySelector('[data-otd-close]');
+                            if (cb) cb.addEventListener('click', closeModal);
+                        }
+                        var prog = modal.querySelector('.ch-bk-progress');
+                        if (prog) prog.style.display = 'none';
+                    } else {
+                        showMsg((res && res.data && res.data.message) ? res.data.message : 'Something went wrong. Please try again.', 'error');
+                        submitBtn.disabled = false; submitBtn.textContent = originalText;
+                    }
+                });
+        });
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────────
     $(document).ready(function () {
         initContactForm();
         initBookingWizard();
         initFranchiseWizard();
+        initOrderWizard();
         initNativeShare();
     });
 

@@ -17,8 +17,13 @@ require_once get_template_directory() . '/includes/data/class-menu-data.php';
 require_once get_template_directory() . '/includes/data/class-about-data.php';
 require_once get_template_directory() . '/includes/data/class-story-data.php';
 require_once get_template_directory() . '/includes/data/class-hire-data.php';
+require_once get_template_directory() . '/includes/data/class-order-data.php';
+require_once get_template_directory() . '/includes/data/class-booking-data.php';
+require_once get_template_directory() . '/includes/data/class-franchise-data.php';
+require_once get_template_directory() . '/includes/data/class-contact-data.php';
 require_once get_template_directory() . '/includes/data/class-blog-data.php';
 require_once get_template_directory() . '/includes/data/class-shared-data.php';
+require_once get_template_directory() . '/includes/class-rules-config.php';
 require_once get_template_directory() . '/includes/class-theme-admin.php';
 require_once get_template_directory() . '/mail/common_contact.php';
 require_once get_template_directory() . '/admin/theme-reset.php';
@@ -46,6 +51,7 @@ function ch_get_page_definitions(): array {
 		[ 'title' => 'Contact',            'slug' => 'contact',        'template' => 'page-contact.php'                          ],
 		[ 'title' => 'Blog',               'slug' => 'blog',           'template' => 'page-blog.php' ],
 		[ 'title' => 'Testing',            'slug' => 'testing',        'template' => 'page-testing.php' ],
+		[ 'title' => 'Order To Deliver',   'slug' => 'ordertodeliver', 'template' => 'page-ordertodeliver.php' ],
 	];
 }
 

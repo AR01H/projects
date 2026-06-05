@@ -128,6 +128,21 @@
 		"heading": "Fresh Reads from <em>{brand_name}</em>",
 		"desc":    "Tips, recipes, and stories from South Asian juice culture."
 	},
+	"page_hero_order_deliver": {
+		"tag":     "Order Fresh",
+		"heading": "Delivered Fresh to <em>Your Door</em>",
+		"desc":    "Order our freshly pressed sugarcane juice for delivery. Select your items, tell us where and when — we'll handle the rest."
+	},
+	"order_deliver_section": {
+		"tag":   "Fresh Delivery",
+		"title": "Order Fresh Juice, <span class=\"accent\">Delivered</span>",
+		"body":  "Place a delivery request and our team will confirm all details directly with you — freshly pressed, no additives, right to your door."
+	},
+	"order_deliver_cta": {
+		"tag":     "Ready to Order?",
+		"heading": "Fresh Juice at <span class=\"accent\" style=\"color:var(--client-color-7);\">Your Doorstep</span>",
+		"body":    "It takes under 2 minutes. Select your items, drop your address, and we'll be in touch."
+	},
 	"gallery_about": {
 		"tag":   "Our Gallery",
 		"title": "View <span class=\"accent\">Our Hygiene</span>",
