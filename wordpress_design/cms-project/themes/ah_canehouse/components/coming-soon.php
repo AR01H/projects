@@ -36,7 +36,7 @@ $tag       = $args['tag']       ?? $_d['tag']       ?? 'Coming Soon';
 $title     = $args['title']     ?? $_d['title']     ?? '';
 $body      = $args['body']      ?? $_d['body']      ?? '';
 $cta_label = $args['cta_label'] ?? $_d['cta_label'] ?? '';
-$cta_url   = $args['cta_url']   ?? $_d['cta_url']   ?? '/contact';
+$cta_url   = $args['cta_url']   ?? $_d['cta_url']   ?? '';
 $note      = $args['note']      ?? $_d['note']      ?? '';
 
 $allowed = [

@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 // ── Includes - order matters ──────────────────────────────────────────────────
 require_once get_template_directory() . '/includes/common_terms.php';  // first - defines constants
+require_once get_template_directory() . '/includes/core_settings.php';
 require_once get_template_directory() . '/includes/usefulfuntions.php';
 require_once get_template_directory() . '/includes/mock-data.php';
 require_once get_template_directory() . '/includes/helpers.php';
@@ -53,6 +54,7 @@ function ch_get_page_definitions(): array {
 		[ 'title' => 'Blog',               'slug' => 'blog',           'template' => 'page-blog.php' ],
 		[ 'title' => 'Testing',            'slug' => 'testing',        'template' => 'page-testing.php' ],
 		[ 'title' => 'Order To Deliver',   'slug' => 'ordertodeliver', 'template' => 'page-ordertodeliver.php' ],
+		[ 'title' => 'Coming Soon',        'slug' => 'coming',         'template' => 'page-coming.php' ],
 	];
 }
 
@@ -321,6 +323,35 @@ add_action( 'wp_enqueue_scripts', function () {
 
 // ── Slug aliases: redirect alternative slugs to canonical URLs ────────────────
 add_action( 'template_redirect', function () {
+
+    if ( !defined( 'COMING_SOON' ) || ! COMING_SOON ) {
+        return; // ← maintenance mode is off, do nothing
+    }
+
+    $pages       = ch_get_page_definitions();
+    $coming_page = array_filter( $pages, fn( $p ) => $p['slug'] === 'coming' );
+    $coming_slug = array_values( $coming_page )[0]['slug'] ?? 'coming';
+
+    $maintenance_url = home_url( '/' . $coming_slug . '/' );
+
+    if ( isset( $GLOBALS['pagenow'] ) && $GLOBALS['pagenow'] === 'wp-login.php' ) {
+        return;
+    }
+
+    if ( is_page( $coming_slug ) ) {
+        return;
+    }
+
+    if ( current_user_can( 'administrator' ) ) {
+        return;
+    }
+
+    wp_redirect( $maintenance_url );
+    exit;
+
+}, 5 );
+
+add_action( 'template_redirect', function () {
 	$slug_aliases = [
 		'home'       => '/',
 		'index'      => '/',
@@ -339,4 +370,4 @@ add_action( 'template_redirect', function () {
 		wp_redirect( home_url( $slug_aliases[ $request ] ), 301 );
 		exit;
 	}
-} );
+},10 );
