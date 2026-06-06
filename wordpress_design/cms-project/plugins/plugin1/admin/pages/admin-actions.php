@@ -63,6 +63,19 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 			<div class="ah-action-result"></div>
 		</div>
 
+		<div class="ah-card ah-action-card" style="border-top:3px solid #dc2626;">
+			<div class="ah-action-icon" style="background:#fef2f2;">
+				<span class="dashicons dashicons-database" style="color:#dc2626;"></span>
+			</div>
+			<h3 style="color:#dc2626;">Schema Set up</h3>
+			<p>Install Whole Pending Schemas</p>
+			<button class="ah-btn ah-btn-danger ah-action-btn"
+				data-action="ah_schema_setup"
+				data-confirm=" Create Pending Schema"
+				data-double-confirm="YES">Schema Create</button>
+			<div class="ah-action-result"></div>
+		</div>
+
 		<!-- Delete & Create Schema -->
 		<div class="ah-card ah-action-card" style="border-top:3px solid #dc2626;">
 			<div class="ah-action-icon" style="background:#fef2f2;">

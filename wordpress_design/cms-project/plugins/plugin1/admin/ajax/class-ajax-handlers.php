@@ -24,6 +24,7 @@ class AH_Ajax_Handlers {
 			'ah_db_health_check',
 			'ah_clear_form_submissions',
 			'ah_rebuild_schema',
+			'ah_schema_setup',
 			// Posts quick-edit
 			'ah_quick_save_post_meta',
 		);
@@ -509,6 +510,16 @@ class AH_Ajax_Handlers {
 
 		wp_send_json_success( array(
 			'message' => "Schema rebuilt: {$dropped} table(s) dropped and recreated from scratch.",
+		) );
+	}
+
+	public static function handle_schema_setup(): void {
+		self::verify();
+		global $wpdb;
+		AH_DB_Installer::install();
+
+		wp_send_json_success( array(
+			'message' => "Schema Completed",
 		) );
 	}
 

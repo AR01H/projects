@@ -23,7 +23,7 @@ class AH_DB_Installer {
 		if ( get_option( AH_DB_VERSION_KEY ) !== AH_THEME_VERSION ) {
 			self::install();
 		}
-		self::ensure_builder_table();
+		// ALTER TABLE migrations and data seeding only — CREATE TABLE is in get_table_sqls().
 		self::ensure_required_settings();
 		self::ensure_content_taxonomies();
 		self::drop_broken_fks();
@@ -33,75 +33,15 @@ class AH_DB_Installer {
 		self::ensure_protected_taxonomy();
 		self::ensure_taxonomy_media();
 		self::ensure_taxonomy_parent_terms();
+		self::ensure_rules_table();
 		self::ensure_trigger_logs();
-		self::ensure_events_table();
 		self::ensure_events_notification_columns();
-		self::ensure_banners_table();
 		self::ensure_banners_mobile_column();
 		self::ensure_review_taxonomy_type();
 		self::ensure_review_categories_taxonomy_type();
-		self::ensure_review_images_table();
 		self::ensure_faq_tags_taxonomy_type();
 		self::ensure_sugarcane_contact_rule();
 		self::ensure_contact_form_rule_cc();
-	}
-
-	/**
-	 * Create the events (hire packages) table if it does not exist.
-	 */
-	public static function ensure_events_table(): void {
-		global $wpdb;
-		$t  = $wpdb->prefix . 'ah_events';
-		$cs = $wpdb->get_charset_collate();
-		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			"CREATE TABLE IF NOT EXISTS `{$t}` (
-				`id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				`icon`        VARCHAR(30)  NOT NULL DEFAULT '🎉',
-				`title`       VARCHAR(200) NOT NULL,
-				`description` TEXT         DEFAULT NULL,
-				`items`       JSON         DEFAULT NULL,
-				`color`       VARCHAR(30)  NOT NULL DEFAULT 'green',
-				`is_featured` TINYINT(1)   NOT NULL DEFAULT 0,
-				`sort_order`  INT          NOT NULL DEFAULT 0,
-				`status`      ENUM('active','inactive') NOT NULL DEFAULT 'active',
-				`created_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				`updated_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				PRIMARY KEY (`id`),
-				KEY `idx_status`   (`status`),
-				KEY `idx_featured` (`is_featured`),
-				KEY `idx_sort`     (`sort_order`)
-			) ENGINE=InnoDB {$cs}"
-		);
-	}
-
-	/**
-	 * Create the home hero banners table if it does not exist.
-	 */
-	public static function ensure_banners_table(): void {
-		global $wpdb;
-		$t  = $wpdb->prefix . 'ah_home_banners';
-		$cs = $wpdb->get_charset_collate();
-		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			"CREATE TABLE IF NOT EXISTS `{$t}` (
-				`id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				`image`        VARCHAR(500) NOT NULL DEFAULT '',
-				`image_mobile` VARCHAR(500) NOT NULL DEFAULT '',
-				`subtitle`    VARCHAR(255) NOT NULL DEFAULT '',
-				`title`       VARCHAR(500) NOT NULL DEFAULT '',
-				`description` TEXT         DEFAULT NULL,
-				`btn_text`    VARCHAR(255) NOT NULL DEFAULT '',
-				`btn_url`     VARCHAR(500) NOT NULL DEFAULT '',
-				`btn_target`  VARCHAR(10)  NOT NULL DEFAULT '_self',
-				`text_align`  VARCHAR(10)  NOT NULL DEFAULT 'center',
-				`text_pos`    VARCHAR(10)  NOT NULL DEFAULT 'middle',
-				`overlay`     VARCHAR(100) NOT NULL DEFAULT 'rgba(26,58,15,0.45)',
-				`status`      ENUM('active','inactive') NOT NULL DEFAULT 'active',
-				`sort_order`  INT          NOT NULL DEFAULT 0,
-				`created_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				PRIMARY KEY (`id`),
-				KEY `idx_status_sort` (`status`, `sort_order`)
-			) ENGINE=InnoDB {$cs}"
-		);
 	}
 
 	/**
@@ -328,57 +268,22 @@ class AH_DB_Installer {
 		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' );
 	}
 
-	/**
-	 * Create ah_trigger_logs if it does not already exist (for existing installations).
-	 * New installations get it via get_table_sqls() during install().
-	 */
-	public static function ensure_trigger_logs(): void {
+	/** Migration: add settings column to ah_rules if missing. */
+	public static function ensure_rules_table(): void {
 		global $wpdb;
-		$t  = $wpdb->prefix . 'ah_trigger_logs';
-		$cs = $wpdb->get_charset_collate();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$t}` (
-			`id`            BIGINT UNSIGNED     NOT NULL AUTO_INCREMENT,
-			`rule_id`       INT UNSIGNED        NOT NULL,
-			`trigger_name`  VARCHAR(100)        NOT NULL,
-			`context_data`  JSON                DEFAULT NULL,
-			`action_index`  TINYINT UNSIGNED    NOT NULL DEFAULT 0,
-			`action_type`   VARCHAR(50)         NOT NULL DEFAULT '',
-			`action_config` JSON                DEFAULT NULL,
-			`status`        ENUM('pending','sent','failed','unsent') NOT NULL DEFAULT 'pending',
-			`is_done`       TINYINT(1)          NOT NULL DEFAULT 0,
-			`is_unsent`     TINYINT(1)          NOT NULL DEFAULT 0,
-			`attempts`      TINYINT UNSIGNED    NOT NULL DEFAULT 0,
-			`error_message` TEXT                DEFAULT NULL,
-			`sent_at`       DATETIME            DEFAULT NULL,
-			`failed_at`     DATETIME            DEFAULT NULL,
-			`created_at`    DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (`id`),
-			KEY `idx_rule`    (`rule_id`),
-			KEY `idx_status`  (`status`),
-			KEY `idx_trigger` (`trigger_name`),
-			KEY `idx_done`    (`is_done`),
-			KEY `idx_unsent`  (`is_unsent`)
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$t = $wpdb->prefix . 'ah_rules';
+		if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'settings'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `settings` JSON DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
-	public static function ensure_builder_table(): void {
+	/** Migration: add scheduled_at column to ah_trigger_logs if missing. */
+	public static function ensure_trigger_logs(): void {
 		global $wpdb;
-		$p  = $wpdb->prefix;
-		$cs = $wpdb->get_charset_collate();
-		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			"CREATE TABLE IF NOT EXISTS {$p}ah_builder_pages (
-				id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				title            VARCHAR(255) NOT NULL,
-				slug             VARCHAR(280) NOT NULL UNIQUE,
-				blocks           LONGTEXT DEFAULT NULL,
-				status           ENUM('active','draft') DEFAULT 'draft',
-				meta_title       VARCHAR(255),
-				meta_description TEXT,
-				created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-				updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				KEY idx_slug (slug), KEY idx_status (status)
-			) ENGINE=InnoDB {$cs}"
-		);
+		$t = $wpdb->prefix . 'ah_trigger_logs';
+		if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'scheduled_at'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `scheduled_at` DATETIME DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	public static function ensure_required_settings(): void {
@@ -440,6 +345,9 @@ class AH_DB_Installer {
 				meta_description TEXT,
 				status           ENUM('active','inactive') DEFAULT 'active',
 				sort_order       INT DEFAULT 0,
+				is_protected     TINYINT(1) NOT NULL DEFAULT 0,
+				image_id         INT UNSIGNED DEFAULT NULL,
+				icon_emoji       VARCHAR(20) DEFAULT NULL,
 				created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 				updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				UNIQUE KEY uq_taxonomy_slug (type_id, slug),
@@ -539,6 +447,7 @@ class AH_DB_Installer {
 				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				text        VARCHAR(500) NOT NULL,
 				content     LONGTEXT NULL,
+				image_id    INT UNSIGNED DEFAULT NULL,
 				link_url    VARCHAR(500),
 				link_target ENUM('_self','_blank') DEFAULT '_self',
 				status      ENUM('active','inactive') DEFAULT 'active',
@@ -754,6 +663,7 @@ class AH_DB_Installer {
 				id                INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				reviewer_name     VARCHAR(200) NOT NULL,
 				reviewer_title    VARCHAR(200),
+				short_desc        VARCHAR(400) DEFAULT NULL,
 				reviewer_image_id INT UNSIGNED,
 				review_text       TEXT NOT NULL,
 				rating            TINYINT UNSIGNED DEFAULT 5,
@@ -1227,6 +1137,104 @@ class AH_DB_Installer {
 				KEY idx_action (action),
 				KEY idx_table (table_name)
 			) ENGINE=InnoDB {$cs}",
+
+			// 63. Events (hire packages)
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_events` (
+				`id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`icon`                 VARCHAR(30)  NOT NULL DEFAULT '🎉',
+				`title`                VARCHAR(200) NOT NULL,
+				`description`          TEXT         DEFAULT NULL,
+				`items`                JSON         DEFAULT NULL,
+				`color`                VARCHAR(30)  NOT NULL DEFAULT 'green',
+				`is_featured`          TINYINT(1)   NOT NULL DEFAULT 0,
+				`sort_order`           INT          NOT NULL DEFAULT 0,
+				`status`               ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				`notify_on_booking`    TINYINT(1)   NOT NULL DEFAULT 0,
+				`booking_trigger_name` VARCHAR(100) DEFAULT NULL,
+				`created_at`           TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				`updated_at`           TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_status`   (`status`),
+				KEY `idx_featured` (`is_featured`),
+				KEY `idx_sort`     (`sort_order`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 64. Home hero banners
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_home_banners` (
+				`id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`image`        VARCHAR(500) NOT NULL DEFAULT '',
+				`image_mobile` VARCHAR(500) NOT NULL DEFAULT '',
+				`subtitle`     VARCHAR(255) NOT NULL DEFAULT '',
+				`title`        VARCHAR(500) NOT NULL DEFAULT '',
+				`description`  TEXT         DEFAULT NULL,
+				`btn_text`     VARCHAR(255) NOT NULL DEFAULT '',
+				`btn_url`      VARCHAR(500) NOT NULL DEFAULT '',
+				`btn_target`   VARCHAR(10)  NOT NULL DEFAULT '_self',
+				`text_align`   VARCHAR(10)  NOT NULL DEFAULT 'center',
+				`text_pos`     VARCHAR(10)  NOT NULL DEFAULT 'middle',
+				`overlay`      VARCHAR(100) NOT NULL DEFAULT 'rgba(26,58,15,0.45)',
+				`status`       ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				`sort_order`   INT          NOT NULL DEFAULT 0,
+				`created_at`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_status_sort` (`status`, `sort_order`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 65. Page builder pages
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_builder_pages` (
+				`id`               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				`title`            VARCHAR(255) NOT NULL,
+				`slug`             VARCHAR(280) NOT NULL UNIQUE,
+				`blocks`           LONGTEXT DEFAULT NULL,
+				`status`           ENUM('active','draft') DEFAULT 'draft',
+				`meta_title`       VARCHAR(255),
+				`meta_description` TEXT,
+				`created_at`       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				`updated_at`       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				KEY `idx_slug` (`slug`),
+				KEY `idx_status` (`status`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 66. Review images
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_review_images` (
+				`id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`review_id`  INT UNSIGNED NOT NULL,
+				`image_id`   INT UNSIGNED NOT NULL,
+				`caption`    VARCHAR(300) DEFAULT NULL,
+				`sort_order` INT          NOT NULL DEFAULT 0,
+				PRIMARY KEY (`id`),
+				KEY `idx_review` (`review_id`),
+				KEY `idx_sort`   (`review_id`, `sort_order`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 67. Automation rules
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_rules` (
+				`id`               INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+				`name`             VARCHAR(200)      NOT NULL DEFAULT '',
+				`trigger_name`     VARCHAR(100)      NOT NULL DEFAULT 'form_submit',
+				`conditions_match` ENUM('all','any') NOT NULL DEFAULT 'all',
+				`conditions`       JSON              DEFAULT NULL,
+				`actions`          JSON              DEFAULT NULL,
+				`settings`         JSON              DEFAULT NULL,
+				`status`           ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				`run_count`        INT UNSIGNED      NOT NULL DEFAULT 0,
+				`last_run`         DATETIME          DEFAULT NULL,
+				`created_at`       DATETIME          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 68. Evaluate log (one row per AH_Rules_Engine::evaluate() call)
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_evaluate_log` (
+				`id`           BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+				`trigger_name` VARCHAR(100)     NOT NULL DEFAULT '',
+				`context_data` JSON             DEFAULT NULL,
+				`rules_found`  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+				`rules_fired`  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+				`created_at`   DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_trigger` (`trigger_name`),
+				KEY `idx_created` (`created_at`)
+			) ENGINE=InnoDB {$cs}",
 		);
 	}
 
@@ -1619,27 +1627,6 @@ class AH_DB_Installer {
 				) );
 			}
 		}
-	}
-
-	/**
-	 * Create ah_review_images table for per-review occasion/gallery images.
-	 */
-	public static function ensure_review_images_table(): void {
-		global $wpdb;
-		$t  = $wpdb->prefix . 'ah_review_images';
-		$cs = $wpdb->get_charset_collate();
-		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			"CREATE TABLE IF NOT EXISTS `{$t}` (
-				`id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				`review_id`  INT UNSIGNED NOT NULL,
-				`image_id`   INT UNSIGNED NOT NULL,
-				`caption`    VARCHAR(300) DEFAULT NULL,
-				`sort_order` INT          NOT NULL DEFAULT 0,
-				PRIMARY KEY (`id`),
-				KEY `idx_review` (`review_id`),
-				KEY `idx_sort`   (`review_id`, `sort_order`)
-			) ENGINE=InnoDB {$cs}"
-		);
 	}
 
 	/**
