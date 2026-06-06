@@ -14,7 +14,7 @@
  *  inner_class     string        Class on the inner grid wrapper (default: 'ch-split-grid')
  *  tag             string        Eyebrow label text
  *  tag_class       string        Class on the eyebrow element (default: 'section-tag')
- *  title           string        Heading HTML – wp_kses'd (span/em/strong allowed)
+ *  title           string        Heading HTML - wp_kses'd (span/em/strong allowed)
  *  title_tag       string        Heading tag h1|h2|h3 (default: 'h2')
  *  title_class     string        Class on the heading (default: 'section-title')
  *  body            string|array  Body text or array of paragraphs

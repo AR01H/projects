@@ -6,7 +6,7 @@
  *  tag           string  Eyebrow label text
  *  tag_class     string  Class on the eyebrow div   (default: 'section-tag')
  *  tag_style     string  Inline style on the eyebrow div
- *  title         string  Heading HTML – wp_kses'd (span/em/strong allowed)
+ *  title         string  Heading HTML - wp_kses'd (span/em/strong allowed)
  *  title_tag     string  Heading element h1|h2|h3   (default: 'h2')
  *  title_class   string  Class on the heading       (default: 'section-title')
  *  title_style   string  Inline style on the heading

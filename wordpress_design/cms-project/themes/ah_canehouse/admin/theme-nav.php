@@ -207,7 +207,7 @@ $page_suggestions = ch_get_nav_link_suggestions();
 			<label>Phone Note <small>(below phone number)</small></label>
 			<input type="text" name="footer[contact][phone_note]"
 				value="<?php echo esc_attr( $footer['contact']['phone_note'] ?? '' ); ?>"
-				placeholder="e.g. Mon–Sat 9am–9pm">
+				placeholder="e.g. Mon-Sat 9am-9pm">
 		</div>
 		<div class="ch-row">
 			<label>Email Note</label>

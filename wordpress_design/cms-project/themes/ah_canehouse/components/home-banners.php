@@ -1,6 +1,6 @@
 <?php
 /**
- * The Cane House – Hero Banner Carousel
+ * The Cane House - Hero Banner Carousel
  *
  * Banners are managed in the plugin: CMS ADMIN → Home Banners (stored in the DB).
  * This template just renders whatever ch_get_home_banners() returns.

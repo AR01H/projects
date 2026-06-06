@@ -10,8 +10,8 @@
 		<div class="ch-row">
 			<label>Opening Hours</label>
 			<input type="text" name="business_hours"
-				value="<?php echo esc_attr( $s['business_hours'] ?? 'Mon–Sat · 9am–9pm' ); ?>"
-				placeholder="e.g. Mon–Sat · 9am–9pm">
+				value="<?php echo esc_attr( $s['business_hours'] ?? 'Mon-Sat · 9am-9pm' ); ?>"
+				placeholder="e.g. Mon-Sat · 9am-9pm">
 			<span class="ch-cs-hint">Shown in contact info strip</span>
 		</div>
 		<div class="ch-row">

@@ -40,7 +40,7 @@ foreach ( [ 'reviews', 'news_bar' ] as $name ) {
 
     <!-- Step 1: Schema Only -->
     <div class="postbox" style="border-top:3px solid #0284c7;margin-bottom:0;padding:16px">
-      <h2 style="color:#0284c7;font-size:1.1rem;margin:0 0 8px">🏗️ Step 1 – Install Schema &amp; Settings</h2>
+      <h2 style="color:#0284c7;font-size:1.1rem;margin:0 0 8px">🏗️ Step 1 - Install Schema &amp; Settings</h2>
       <p style="font-size:.83rem;color:#64748b;margin-bottom:14px">
         Creates database tables (reviews, FAQs, news bar, contact submissions) and saves baseline site
         settings, hero text, section visibility, and contact config.<br>
@@ -64,7 +64,7 @@ foreach ( [ 'reviews', 'news_bar' ] as $name ) {
 
     <!-- Step 2: Mock Data -->
     <div class="postbox" style="border-top:3px solid #b7791f;margin-bottom:0;padding:16px">
-      <h2 style="color:#b7791f;font-size:1.1rem;margin:0 0 8px">📦 Step 2 – Install Mock Data</h2>
+      <h2 style="color:#b7791f;font-size:1.1rem;margin:0 0 8px">📦 Step 2 - Install Mock Data</h2>
       <p style="font-size:.83rem;color:#64748b;margin-bottom:14px">
         Seeds demo content from the CSVs in <code>mock_data/csv/</code>.
         Sections with no CSV rows are skipped automatically.

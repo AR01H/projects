@@ -9,7 +9,7 @@ $otd_sub      = $_b['sub'];
 $otd_image    = $_b['image'];
 $otd_features = CH_Order_Data::features();
 
-$time_slots = [ 'Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible','Now' ];
+$time_slots = [ 'Morning (8am-12pm)', 'Afternoon (12pm-5pm)', 'Evening (5pm-8pm)', 'Flexible','Now' ];
 ?>
 
 <!-- ═══ ORDER-TO-DELIVER BANNER ════════════════════════════════════════════ -->

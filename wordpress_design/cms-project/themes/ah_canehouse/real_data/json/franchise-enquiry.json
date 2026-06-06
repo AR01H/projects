@@ -13,16 +13,16 @@
 	],
 	"investment_ranges": [
 		"Under £10,000",
-		"£10,000 – £25,000",
-		"£25,000 – £50,000",
+		"£10,000 - £25,000",
+		"£25,000 - £50,000",
 		"£50,000+",
 		"Depends on the opportunity"
 	],
 	"timelines": [
 		"As soon as possible",
 		"Within 3 months",
-		"3–6 months",
-		"6–12 months",
+		"3-6 months",
+		"6-12 months",
 		"Just exploring for now"
 	]
 }
