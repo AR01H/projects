@@ -97,7 +97,6 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);font-weight:3
 .site-name{font-family:var(--ff);font-size:1.05rem;font-weight:800;color:var(--white);margin-top:.55rem;letter-spacing:.04em}
 .moto{font-size:11.5px;font-weight:300;color:var(--muted);letter-spacing:.06em;margin-top:.22rem;font-style:italic}
 .fresh-tag{margin-top:.75rem;display:inline-flex;align-items:center;gap:6px;background:rgba(212,245,60,.11);border:1px solid rgba(212,245,60,.28);border-radius:50px;padding:4px 14px;font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--lime)}
-.fresh-tag span{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
 
 /* ── LABELS & TITLES ── */
 .sec-lbl{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);opacity:.8;margin-bottom:.4rem}
@@ -194,7 +193,7 @@ footer em{color:var(--lime);font-style:normal}
   <header class="top">
     <img class="logo" src="<?php echo $logo_url; ?>" alt="<?php echo $site_name; ?>">
     <div class="moto"><?php echo $moto; ?></div>
-    <div class="fresh-tag"><span></span> Fresh Sugarcane Juice - Different Flavours</div>
+    <div class="fresh-tag"><span></span> A Taste of Tradition, Freshly Prepared Right in Front of You</div>
   </header>
 
   <!-- CONTACT -->
