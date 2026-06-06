@@ -70,13 +70,13 @@ body{
   animation: rise 1s ease both;
 }
 .logo-wrap {
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.25rem;
   animation: shimmer 3s ease-in-out infinite;
 }
 .logo-wrap img {
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1);
+  /* filter: brightness(0) invert(1); */
 }
 .main-title {
   font-family: var(--ch-font-display);
@@ -198,7 +198,7 @@ body{
 
     <div>
         <h1 class="main-title">
-          Launching Soon <br>with something <span class="accent">fresh</span>
+          <span class="accent">Lauching</span> Soon <br>with something <span class="accent">fresh</span>
         </h1>
     </div>
   </div>
