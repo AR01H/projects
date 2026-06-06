@@ -7,14 +7,14 @@
 defined( 'ABSPATH' ) || exit;
 
 
-define('CONTACT_NUMBER', '+44 7887 699 208');
-define('WHATASPP_CONTACT_NUMBER','+447887699208');
+define('CONTACT_NUMBER', '+44 7770 461939');
+define('WHATASPP_CONTACT_NUMBER','+447770461939');
 define('CONTACT_EMAIL','thecanehouseuk@gmail.com');
 define('WEBSITE_URL','thecanehouse.co.uk');
 
 // ── Brand ───────────────────────────────────────────────────────────────────
 define( 'CH_BRAND_NAME',    'The Cane House' );
-define( 'CH_BRAND_TAGLINE', 'Freshly Pressed. Naturally Refreshing' );
+define( 'CH_BRAND_TAGLINE', 'Pressed Fresh. Served Cool.' );
 define( 'CH_BRAND_DESC',    'Fresh sugarcane juice pressed live, served cool. No added sugar, no preservatives - pure natural refreshment wherever you are.' );
 
 // ── Nav Labels ───────────────────────────────────────────────────────────────
