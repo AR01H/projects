@@ -77,7 +77,7 @@ function ch_handle_contact_submit(): void {
 
 	// ── Send response immediately, then run Rules Engine in background ───────
 	$contact_settings = ch_get_contact_settings();
-	$thank_you = $contact_settings['thank_you_msg'] ?? "Thanks for your message! We'll be in touch shortly. Pressed Fresh. Served Cool. 🌿";
+	$thank_you = $contact_settings['thank_you_msg'] ?? "Thanks for your message! We'll be in touch shortly.";
 
 	$response = wp_json_encode( [ 'success' => true, 'data' => [ 'message' => $thank_you ] ] );
 

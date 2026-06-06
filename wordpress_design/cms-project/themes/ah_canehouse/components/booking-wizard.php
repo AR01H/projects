@@ -40,7 +40,7 @@ $occasions = ch_get_occasions();
 
 			<!-- Right: image -->
 			<div class="ch-bkb-visual">
-				<img src="<?php echo esc_url( $wiz_image ); ?>" alt="Fresh sugarcane juice" loading="lazy">
+				<img src="<?php echo esc_url( $wiz_image ); ?>" alt="Fresh juice" loading="lazy">
 				<div class="ch-bkb-visual-badge">Pressed Fresh 🌿</div>
 			</div>
 

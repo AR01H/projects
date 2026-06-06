@@ -145,8 +145,8 @@ $page_suggestions = ch_get_nav_link_suggestions();
 		<div class="ch-row">
 			<label>Copyright Suffix</label>
 			<input type="text" name="footer[copyright_suffix]"
-				value="<?php echo esc_attr( $footer['copyright_suffix'] ?? 'Pressed Fresh. Served Cool.' ); ?>"
-				placeholder="Pressed Fresh. Served Cool.">
+				value="<?php echo esc_attr( $footer['copyright_suffix'] ?? CH_BRAND_TAGLINE ); ?>"
+				placeholder="">
 		</div>
 		<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
 			<div class="ch-row">

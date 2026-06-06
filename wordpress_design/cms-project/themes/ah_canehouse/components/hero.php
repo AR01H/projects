@@ -40,11 +40,11 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 			</div>
 
 			<h1 class="ch-hero__title">
-				<?php echo wp_kses( $h['hero_headline'] ?? "Pressed Fresh.<span class=\"accent\">Served Cool.</span>", [ 'span' => [ 'class' => [] ], 'em' => [], 'br' => [] ] ); ?>
+				<?php echo wp_kses( $h['hero_headline'] ?? "Freshly Pressed.<span class=\"accent\">Naturally Refreshing.</span>", [ 'span' => [ 'class' => [] ], 'em' => [], 'br' => [] ] ); ?>
 			</h1>
 
 			<div class="ch-hero__brand">
-				<?php echo esc_html( $h['hero_brand'] ?? 'The Cane House' ); ?>
+				<?php echo esc_html( $h['hero_brand'] ?? 'Not every drink has a story.' ); ?>
 			</div>
 
 			<p class="ch-hero__desc">

@@ -28,7 +28,7 @@ $s           = ch_get_settings();
 			<h2>🌿 Hero Section</h2>
 			<?php foreach ( [
 				'hero_tag'       => [ 'Top Tag Line', 'text', '100% Natural · No Additives · Pressed Live' ],
-				'hero_headline'  => [ 'Main Headline (HTML allowed)', 'text', 'Pressed Fresh.<span class="accent">Served Cool.</span>' ],
+				'hero_headline'  => [ 'Main Headline (HTML allowed)', 'text', 'Freshly Pressed.<span class="accent"> Naturally Refreshing.</span>' ],
 				'hero_brand'     => [ 'Brand Sub-title', 'text', 'The Cane House' ],
 				'hero_desc'      => [ 'Description', 'text', 'Fresh sugarcane juice pressed live...' ],
 				'hero_cta_label' => [ 'CTA 1 Label', 'text', '🥤 Build Your Juice' ],
@@ -119,8 +119,8 @@ $s           = ch_get_settings();
 		<div class="ch-card">
 			<h2>🏠 Homepage Display Limits</h2>
 			<p style="font-size:.83rem;color:#666;margin-bottom:1rem;">
-				Control how many items each section shows on the homepage. When <strong>“Limit on homepage”</strong> is
-				ticked, only the chosen number is shown with a <em>“View all”</em> button to the full page.
+				Control how many items each section shows on the homepage. When <strong>"Limit on homepage"</strong> is
+				ticked, only the chosen number is shown with a <em>"View all"</em> button to the full page.
 				Untick to show <strong>all</strong> items on the homepage (no button).
 			</p>
 			<input type="hidden" name="home_limits_present" value="1">

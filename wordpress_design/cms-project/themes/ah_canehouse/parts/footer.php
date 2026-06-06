@@ -169,7 +169,7 @@ if ( empty( $cols ) ) {
 		<div class="ch-footer__bottom">
 			<div>
 				&copy; <?php echo esc_html( $year ); ?> The Cane House.
-				<?php echo esc_html( $footer['copyright_suffix'] ?? 'Pressed Fresh. Served Cool.' ); ?>
+				<?php echo esc_html( $footer['copyright_suffix'] ?? '' ); ?>
 			</div>
 			<?php if ( ! empty( $footer['legal_links'] ) ) : ?>
 				<div class="ch-footer__legal">

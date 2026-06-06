@@ -25,7 +25,7 @@ $schema = ch_get_schema_settings();
 				'address'  => [ 'Address / Coverage Area',           'text',  'Available across the UK' ],
 				'website'  => [ 'Website URL',                       'text',  'www.thecanehouse.co.uk' ],
 				'whatsapp' => [ 'WhatsApp Number (digits + country)', 'text',  WHATASPP_CONTACT_NUMBER ],
-				'tagline'  => [ 'Business Tagline',                  'text',  'Pressed Fresh. Served Cool.' ],
+				'tagline'  => [ 'Business Tagline',                  'text',  CH_BRAND_TAGLINE ],
 			];
 			foreach ( $fields as $key => [ $label, $type, $placeholder ] ) : ?>
 				<div class="ch-row">

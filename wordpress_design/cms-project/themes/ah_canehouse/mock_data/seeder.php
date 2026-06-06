@@ -273,7 +273,7 @@ class CH_Theme_Seeder {
 		$promise = [
 			'icon'  => $kv['promise_icon']  ?? '🌱',
 			'title' => $kv['promise_title'] ?? 'Our Promise',
-			'sub'   => $kv['promise_sub']   ?? 'Pressed Fresh. Served Cool.',
+			'sub'   => $kv['promise_sub']   ?? '',
 			'tags'  => $kv['promise_tags']  ?? [],
 		];
 		update_option( 'ch_about_promise', wp_json_encode( $promise ) );

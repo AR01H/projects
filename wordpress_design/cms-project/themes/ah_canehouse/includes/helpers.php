@@ -233,11 +233,11 @@ function ch_build_default_footer(): array {
 	return function_exists( 'ch_default_footer_data' )
 		? ch_default_footer_data( $s )
 		: [
-			'brand_description' => defined( 'CH_BRAND_DESC' ) ? CH_BRAND_DESC : 'Fresh sugarcane juice pressed live, served cool.',
+			'brand_description' => defined( 'CH_BRAND_DESC' ) ? CH_BRAND_DESC : '',
 			'columns'           => [],
 			'legal_links'       => [ [ 'label' => 'Privacy Policy', 'url' => home_url( '/privacy-policy/' ) ] ],
 			'social'            => [ 'instagram' => '', 'facebook' => '', 'tiktok' => '', 'youtube' => '' ],
-			'copyright'         => '© ' . date( 'Y' ) . ' The Cane House. Pressed Fresh. Served Cool.',
+			'copyright'         => '© ' . date( 'Y' ) . CH_BRAND_NAME,
 		];
 }
 

@@ -188,7 +188,7 @@ class CH_Data {
 		return [
 			'brand_description' => $kv['brand_description'] ?? '',
 			'badge_text'        => $kv['badge_text'] ?? '',
-			'copyright_suffix'  => $kv['copyright_suffix'] ?? 'Pressed Fresh. Served Cool.',
+			'copyright_suffix'  => $kv['copyright_suffix'] ?? '',
 			'columns'           => array_values( $columns ),
 			'cta'               => [
 				'label' => $kv['cta_label'] ?? 'Send a Message 🌿',
