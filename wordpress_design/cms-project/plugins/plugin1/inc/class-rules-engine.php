@@ -26,64 +26,17 @@ class AH_Rules_Engine {
 		return $wpdb->prefix . 'ah_trigger_logs';
 	}
 
-	public static function install_tables(): void {
+	/** Every evaluate() call gets one row here — even when no rule matches. */
+	public static function evaluate_table(): string {
 		global $wpdb;
-		$cs = $wpdb->get_charset_collate();
+		return $wpdb->prefix . 'ah_evaluate_log';
+	}
 
-		// Rules table
-		$t = self::table();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$t}` (
-			`id`               INT UNSIGNED      NOT NULL AUTO_INCREMENT,
-			`name`             VARCHAR(200)      NOT NULL DEFAULT '',
-			`trigger_name`     VARCHAR(100)      NOT NULL DEFAULT 'form_submit',
-			`conditions_match` ENUM('all','any') NOT NULL DEFAULT 'all',
-			`conditions`       JSON              DEFAULT NULL,
-			`actions`          JSON              DEFAULT NULL,
-			`status`           ENUM('active','inactive') NOT NULL DEFAULT 'active',
-			`run_count`        INT UNSIGNED      NOT NULL DEFAULT 0,
-			`last_run`         DATETIME          DEFAULT NULL,
-			`created_at`       DATETIME          NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (`id`)
-		) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
-		// Trigger logs table - also created by AH_DB_Installer but install_tables()
-		// is called on every admin page load so we guard with IF NOT EXISTS.
+	public static function install_tables(): void {
 		if ( class_exists( 'AH_DB_Installer' ) ) {
+			AH_DB_Installer::ensure_rules_table();
 			AH_DB_Installer::ensure_trigger_logs();
-		} else {
-			$lg = self::logs_table();
-			$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$lg}` (
-				`id`            BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
-				`rule_id`       INT UNSIGNED     NOT NULL,
-				`trigger_name`  VARCHAR(100)     NOT NULL,
-				`context_data`  JSON             DEFAULT NULL,
-				`action_index`  TINYINT UNSIGNED NOT NULL DEFAULT 0,
-				`action_type`   VARCHAR(50)      NOT NULL DEFAULT '',
-				`action_config` JSON             DEFAULT NULL,
-				`status`        ENUM('pending','sent','failed','unsent') NOT NULL DEFAULT 'pending',
-				`is_done`       TINYINT(1)       NOT NULL DEFAULT 0,
-				`is_unsent`     TINYINT(1)       NOT NULL DEFAULT 0,
-				`attempts`      TINYINT UNSIGNED NOT NULL DEFAULT 0,
-				`error_message` TEXT             DEFAULT NULL,
-				`sent_at`       DATETIME         DEFAULT NULL,
-				`failed_at`     DATETIME         DEFAULT NULL,
-				`created_at`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				PRIMARY KEY (`id`),
-				KEY `idx_rule`    (`rule_id`),
-				KEY `idx_status`  (`status`),
-				KEY `idx_trigger` (`trigger_name`),
-				KEY `idx_done`    (`is_done`),
-				KEY `idx_unsent`  (`is_unsent`)
-			) ENGINE=InnoDB {$cs}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		}
-
-		// Schema migrations - add new columns if missing
-		if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'settings'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `settings` JSON DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		}
-		$lg = self::logs_table();
-		if ( ! $wpdb->get_var( "SHOW COLUMNS FROM `{$lg}` LIKE 'scheduled_at'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->query( "ALTER TABLE `{$lg}` ADD COLUMN `scheduled_at` DATETIME DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			AH_DB_Installer::ensure_evaluate_log();
 		}
 	}
 
@@ -206,6 +159,17 @@ class AH_Rules_Engine {
 		global $wpdb;
 		self::install_tables();
 
+		// ── Log every evaluate() call before rule check ───────────────────────
+		$el = self::evaluate_table();
+		$wpdb->insert( $el, array(
+			'trigger_name' => $trigger_name,
+			'context_data' => wp_json_encode( $context ),
+			'rules_found'  => 0,
+			'rules_fired'  => 0,
+			'created_at'   => current_time( 'mysql' ),
+		) );
+		$entry_id = (int) $wpdb->insert_id;
+
 		$t  = self::table();
 		$lg = self::logs_table();
 
@@ -218,13 +182,16 @@ class AH_Rules_Engine {
 			error_log( 'AH_Rules_Engine::evaluate() DB error: ' . $wpdb->last_error );
 		}
 
-		$now    = current_time( 'mysql' );
-		$now_ts = current_time( 'timestamp' );
+		$now         = current_time( 'mysql' );
+		$now_ts      = current_time( 'timestamp' );
+		$rules_found = count( $rows );
+		$rules_fired = 0;
 
 		foreach ( $rows as $rule ) {
 			$rule = self::decode( $rule );
 			if ( ! self::conditions_pass( $rule, $context ) ) continue;
 			if ( ! self::passes_dedup( $rule, $context, $lg ) ) continue;
+			$rules_fired++;
 
 			$delay_seconds = 0;
 
@@ -286,6 +253,14 @@ class AH_Rules_Engine {
 				"UPDATE `{$t}` SET run_count = run_count + 1, last_run = %s WHERE id = %d",
 				$now, (int) $rule->id
 			) );
+		}
+
+		// ── Update entry with final match counts ──────────────────────────────
+		if ( $entry_id ) {
+			$wpdb->update( $el, array(
+				'rules_found' => $rules_found,
+				'rules_fired' => $rules_fired,
+			), array( 'id' => $entry_id ) );
 		}
 	}
 

@@ -1,6 +1,40 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+// ── Background execution after HTTP response ─────────────────────────────────
+//
+// Usage:
+//   ch_run_after_response( function() use ( $data ) {
+//       AH_Rules_Engine::evaluate( CH_Rules::BOOKING_REQUEST, $data, true );
+//   } );
+//   wp_send_json_success( [...] );   ← response goes to browser first
+//
+// How it works:
+//   wp_send_json_success() → wp_die() → PHP shutdown → fastcgi_finish_request()
+//   closes the HTTP connection while PHP continues running the callback.
+//   On non-FPM servers (mod_php) the callback still runs but the browser waits.
+
+/**
+ * Queue a callable to run after the HTTP response has been sent to the browser.
+ * Call this BEFORE wp_send_json_success() / wp_send_json_error().
+ */
+function ch_run_after_response( callable $fn ): void {
+	add_action( 'shutdown', static function () use ( $fn ) {
+		// PHP-FPM: flush + close the connection, keep PHP alive
+		if ( function_exists( 'fastcgi_finish_request' ) ) {
+			fastcgi_finish_request();
+		} else {
+			// Apache mod_php fallback: set headers and flush buffers
+			ignore_user_abort( true );
+			if ( ob_get_level() ) ob_end_flush();
+			flush();
+		}
+
+		set_time_limit( 60 ); // give background work up to 60 s
+		$fn();
+	} );
+}
+
 // ── Asset URL resolution & type detection ────────────────────────────────────
 //
 // Usage examples:

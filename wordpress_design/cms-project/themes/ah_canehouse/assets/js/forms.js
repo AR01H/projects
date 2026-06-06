@@ -242,7 +242,7 @@
             if (step === 2 && selectedFlavours().length === 0) {
                 showMsg('Please pick at least one flavour. 🍋', 'error'); return false;
             }
-            if (step === 3) {
+            if (step === 4) {
                 var occasion = wizard.querySelector('[name="bk_occasion"]');
                 var date     = wizard.querySelector('[name="bk_date"]');
                 var guests   = wizard.querySelector('[name="bk_guests"]');
@@ -340,7 +340,7 @@
                 });
 
             function renderSuccess(message) {
-                var step = wizard.querySelector('.ch-bk-step[data-step="4"]');
+                var step = wizard.querySelector('.ch-bk-step[data-step="5"]');
                 if (step) {
                     step.innerHTML =
                         '<div class="ch-bk-success">' +

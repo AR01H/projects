@@ -327,18 +327,4 @@ class CH_Order_Data {
 		];
 	}
 
-	// ── Ensure tables exist (called from AJAX handler as a safety net) ────────
-
-	public static function ensure_tables(): void {
-		static $checked = false;
-		if ( $checked ) return;
-		$checked = true;
-
-		global $wpdb;
-		$t = self::table();
-		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $t ) ) !== $t ) {
-			$cs = $wpdb->get_charset_collate();
-			CH_Schema::create_all(); // re-runs all CREATE TABLE IF NOT EXISTS safely
-		}
-	}
 }

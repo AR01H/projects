@@ -36,29 +36,29 @@ $has_logo = file_exists( get_template_directory() . '/assets/images/logo.png' );
 	<div class="ch-hero__inner">
 		<div class="ch-hero__left">
 			<div class="ch-hero__tag">
-				<?php echo esc_html( $h['hero_tag'] ?? '100% Natural · No Additives · Pressed Live' ); ?>
+				<?php echo esc_html( $h['hero_tag'] ?? '' ); ?>
 			</div>
 
 			<h1 class="ch-hero__title">
-				<?php echo wp_kses( $h['hero_headline'] ?? "Freshly Pressed.<span class=\"accent\">Naturally Refreshing.</span>", [ 'span' => [ 'class' => [] ], 'em' => [], 'br' => [] ] ); ?>
+				<?php echo wp_kses( $h['hero_headline'] ?? "", [ 'span' => [ 'class' => [] ], 'em' => [], 'br' => [] ] ); ?>
 			</h1>
 
 			<div class="ch-hero__brand">
-				<?php echo esc_html( $h['hero_brand'] ?? 'Not every drink has a story.' ); ?>
+				<?php echo esc_html( $h['hero_brand'] ?? '' ); ?>
 			</div>
 
 			<p class="ch-hero__desc">
-				<?php echo wp_kses( $h['hero_desc'] ?? 'Fresh sugarcane juice pressed live and blended with authentic cold-pressed fruit extracts &amp; natural botanicals. Build your perfect juice - your way.', [ 'br' => [], 'em' => [], 'strong' => [], 'amp' => [] ] ); ?>
+				<?php echo wp_kses( $h['hero_desc'] ?? '', [ 'br' => [], 'em' => [], 'strong' => [], 'amp' => [] ] ); ?>
 			</p>
 
 			<div class="ch-hero__btns">
-				<a href="<?php echo esc_url( ch_normalize_theme_url( $h['hero_cta_url'] ?? '#build' ) ); ?>"
+				<a href="<?php echo esc_url( ch_normalize_theme_url( $h['hero_cta_url'] ?? '' ) ); ?>"
 					class="btn-lime">
-					<?php echo esc_html( $h['hero_cta_label'] ?? '🥤 Build Your Juice' ); ?>
+					<?php echo esc_html( $h['hero_cta_label'] ?? '' ); ?>
 				</a>
-				<a href="<?php echo esc_url( ch_normalize_theme_url( $h['hero_cta2_url'] ?? '#hire' ) ); ?>"
+				<a href="<?php echo esc_url( ch_normalize_theme_url( $h['hero_cta2_url'] ?? '' ) ); ?>"
 					class="btn-outline">
-					<?php echo esc_html( $h['hero_cta2_label'] ?? 'Hire for Events →' ); ?>
+					<?php echo esc_html( $h['hero_cta2_label'] ?? '' ); ?>
 				</a>
 			</div>
 

@@ -39,30 +39,13 @@ function ch_handle_contact_submit(): void {
 		wp_send_json_error( [ 'message' => 'Please enter a valid email address.' ] );
 	}
 
+	// ── Ensure tables exist ───────────────────────────────────────────────────
+	CH_Schema::create_all();
+
 	// ── Store in DB ───────────────────────────────────────────────────────────
 	global $wpdb;
-	$table = $wpdb->prefix . 'ch_contact_submissions';
-
-	// Create table if not exists
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
-		$charset_collate = $wpdb->get_charset_collate();
-		$sql = "CREATE TABLE IF NOT EXISTS `{$table}` (
-			id            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-			name          VARCHAR(200)    NOT NULL DEFAULT '',
-			email         VARCHAR(200)    NOT NULL DEFAULT '',
-			phone         VARCHAR(50)     NOT NULL DEFAULT '',
-			enquiry_type  VARCHAR(100)    NOT NULL DEFAULT 'general',
-			message       TEXT            NOT NULL DEFAULT '',
-			ip_address    VARCHAR(50)     NOT NULL DEFAULT '',
-			created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (id)
-		) {$charset_collate};";
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
-	}
-
 	$wpdb->insert(
-		$table,
+		$wpdb->prefix . 'ch_contact_submissions',
 		[
 			'name'         => $name,
 			'email'        => $email,
@@ -75,47 +58,32 @@ function ch_handle_contact_submit(): void {
 		[ '%s', '%s', '%s', '%s', '%s', '%s', '%s' ]
 	);
 
-	// ── Send response immediately, then run Rules Engine in background ───────
+	// ── Rules Engine — queued to run after browser receives the response ──────
+	if ( class_exists( 'AH_Rules_Engine' ) ) {
+		ch_run_after_response( static function () use ( $name, $email, $phone, $enquiry, $message ) {
+			$enquiry_labels = [
+				'general'   => 'General Enquiry',
+				'event'     => 'Event / Stall Hire',
+				'wedding'   => 'Wedding or Asian Celebration',
+				'franchise' => 'Franchise Opportunity',
+				'other'     => 'Something Else',
+			];
+			AH_Rules_Engine::evaluate( CH_Rules::CONTACT_FORM, [
+				'name'          => $name,
+				'email'         => $email,
+				'phone'         => $phone,
+				'enquiry'       => $enquiry,
+				'enquiry_label' => $enquiry_labels[ $enquiry ] ?? $enquiry,
+				'message'       => $message,
+				'site_url'      => home_url(),
+				'submitted_at'  => current_time( 'Y-m-d H:i:s' ),
+			], true );
+		} );
+	}
+
 	$contact_settings = ch_get_contact_settings();
 	$thank_you = $contact_settings['thank_you_msg'] ?? "Thanks for your message! We'll be in touch shortly.";
-
-	$response = wp_json_encode( [ 'success' => true, 'data' => [ 'message' => $thank_you ] ] );
-
-	// Close the HTTP connection so the user gets their response now.
-	header( 'Content-Type: application/json; charset=UTF-8' );
-	header( 'Content-Length: ' . strlen( $response ) );
-	header( 'Connection: close' );
-	ob_end_clean();
-	echo $response;
-	flush();
-	if ( function_exists( 'fastcgi_finish_request' ) ) {
-		fastcgi_finish_request();
-	}
-
-	// ── Everything below runs AFTER the browser receives the response ─────────
-	ignore_user_abort( true );
-	set_time_limit( 60 );
-
-	$enquiry_labels = [
-		'general'   => 'General Enquiry',
-		'event'     => 'Event / Stall Hire',
-		'wedding'   => 'Wedding or Asian Celebration',
-		'franchise' => 'Franchise Opportunity',
-		'other'     => 'Something Else',
-	];
-
-	if ( class_exists( 'AH_Rules_Engine' ) ) {
-		AH_Rules_Engine::evaluate( CH_Rules::CONTACT_FORM, [
-			'name'          => $name,
-			'email'         => $email,
-			'phone'         => $phone,
-			'enquiry'       => $enquiry,
-			'enquiry_label' => $enquiry_labels[ $enquiry ] ?? $enquiry,
-			'message'       => $message,
-			'site_url'      => home_url(),
-			'submitted_at'  => current_time( 'Y-m-d H:i:s' ),
-		], true );
-	}
+	wp_send_json_success( [ 'message' => $thank_you ] );
 }
 
 // ── Order-to-Deliver handler ──────────────────────────────────────────────────
@@ -172,8 +140,8 @@ function ch_handle_order_submit(): void {
 		}
 	}
 
-	// ── Ensure tables exist, then insert ─────────────────────────────────────
-	CH_Order_Data::ensure_tables();
+	// ── Ensure tables exist ───────────────────────────────────────────────────
+	CH_Schema::create_all();
 
 	$order_id = CH_Order_Data::insert( [
 		'name'             => $name,
@@ -203,45 +171,33 @@ function ch_handle_order_submit(): void {
 		'admin_user_name' => 'Customer',
 	] );
 
-	// ── Send response immediately, then run Rules Engine in background ────────
-	$thank_you = 'Thank you for your order request! Our team will review it and contact you shortly. 🌿';
-
-	$response = wp_json_encode( [ 'success' => true, 'data' => [ 'message' => $thank_you ] ] );
-
-	header( 'Content-Type: application/json; charset=UTF-8' );
-	header( 'Content-Length: ' . strlen( $response ) );
-	header( 'Connection: close' );
-	ob_end_clean();
-	echo $response;
-	flush();
-	if ( function_exists( 'fastcgi_finish_request' ) ) {
-		fastcgi_finish_request();
-	}
-
-	// ── Everything below runs AFTER the browser receives the response ─────────
-	ignore_user_abort( true );
-	set_time_limit( 60 );
-
-	$items_label = implode( ', ', array_map( static function ( $i ) {
-		return $i['name'] . ' ×' . $i['qty'];
-	}, $items_data ) );
-
+	// ── Rules Engine — queued to run after browser receives the response ─────
 	if ( class_exists( 'AH_Rules_Engine' ) ) {
-		AH_Rules_Engine::evaluate( CH_Rules::ORDER_TO_DELIVER, [
-			'order_id'       => $order_id,
-			'name'           => $name,
-			'email'          => $email,
-			'phone'          => $phone,
-			'address'        => $address,
-			'area'           => $area,
-			'preferred_date' => $preferred_date,
-			'preferred_time' => $time,
-			'items'          => $items_label,
-			'special_notes'  => $notes,
-			'site_url'       => home_url(),
-			'submitted_at'   => current_time( 'Y-m-d H:i:s' ),
-		], true );
+		ch_run_after_response( static function () use (
+			$order_id, $name, $email, $phone,
+			$address, $area, $preferred_date, $time, $items_data, $notes
+		) {
+			$items_label = implode( ', ', array_map( static function ( $i ) {
+				return $i['name'] . ' ×' . $i['qty'];
+			}, $items_data ) );
+			AH_Rules_Engine::evaluate( CH_Rules::ORDER_TO_DELIVER, [
+				'order_id'       => $order_id,
+				'name'           => $name,
+				'email'          => $email,
+				'phone'          => $phone,
+				'address'        => $address,
+				'area'           => $area,
+				'preferred_date' => $preferred_date,
+				'preferred_time' => $time,
+				'items'          => $items_label,
+				'special_notes'  => $notes,
+				'site_url'       => home_url(),
+				'submitted_at'   => current_time( 'Y-m-d H:i:s' ),
+			], true );
+		} );
 	}
+
+	wp_send_json_success( [ 'message' => 'Thank you for your order request! Our team will review it and contact you shortly. 🌿' ] );
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -320,29 +276,33 @@ function ch_handle_booking_submit(): void {
 		], [ '%d','%s','%s','%s','%d','%s','%s' ] );
 	}
 
-	// ── Fast response ─────────────────────────────────────────────────────────
-	wp_send_json_success( [ 'message' => "Thanks {$name}! We've received your booking request and will be in touch within 24 hours. 🥤" ] );
-
-	// ── Rules Engine (runs after response) ───────────────────────────────────
-	if ( function_exists( 'fastcgi_finish_request' ) ) fastcgi_finish_request();
-
+	// ── Rules Engine — queued to run after browser receives the response ─────
 	if ( class_exists( 'AH_Rules_Engine' ) ) {
-		AH_Rules_Engine::evaluate( CH_Rules::BOOKING_REQUEST, [
-			'booking_id'  => $booking_id,
-			'name'        => $name,
-			'email'       => $email,
-			'phone'       => $phone,
-			'cane_types'  => implode( ', ', $cane_types ),
-			'flavours'    => implode( ', ', $flavours ),
-			'occasion'    => $occasion,
-			'event_date'  => $event_date ?? '',
-			'guests'      => $guests_raw,
-			'location'    => $location,
-			'notes'       => $notes,
-			'site_url'    => home_url(),
-			'submitted_at'=> current_time( 'Y-m-d H:i:s' ),
-		], true );
+		ch_run_after_response( static function () use (
+			$booking_id, $name, $email, $phone,
+			$cane_types, $textures, $flavours,
+			$occasion, $event_date, $guests_raw, $location, $notes
+		) {
+			AH_Rules_Engine::evaluate( CH_Rules::BOOKING_REQUEST, [
+				'booking_id'   => $booking_id,
+				'name'         => $name,
+				'email'        => $email,
+				'phone'        => $phone,
+				'cane_types'   => implode( ', ', $cane_types ),
+				'textures'     => $textures,
+				'flavours'     => implode( ', ', $flavours ),
+				'occasion'     => $occasion,
+				'event_date'   => $event_date ?? '',
+				'guests'       => $guests_raw,
+				'location'     => $location,
+				'notes'        => $notes,
+				'site_url'     => home_url(),
+				'submitted_at' => current_time( 'Y-m-d H:i:s' ),
+			], true );
+		} );
 	}
+
+	wp_send_json_success( [ 'message' => "Thanks {$name}! We've received your booking request and will be in touch within 24 hours. 🥤" ] );
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -372,7 +332,7 @@ function ch_handle_franchise_submit(): void {
 	if ( ! $frn_type )          { wp_send_json_error( [ 'message' => 'Please select a franchise type.' ] ); }
 
 	// ── Ensure tables exist ───────────────────────────────────────────────────
-	CH_Schema::create_all();
+	// CH_Schema::create_all();
 
 	// ── Insert row ────────────────────────────────────────────────────────────
 	global $wpdb;
@@ -407,26 +367,28 @@ function ch_handle_franchise_submit(): void {
 		], [ '%d','%s','%s','%s','%d','%s','%s' ] );
 	}
 
-	// ── Fast response ─────────────────────────────────────────────────────────
-	wp_send_json_success( [ 'message' => "Thanks {$name}! We've received your franchise enquiry and will reply personally within 24 hours. 🌿" ] );
-
-	// ── Rules Engine (runs after response) ───────────────────────────────────
-	if ( function_exists( 'fastcgi_finish_request' ) ) fastcgi_finish_request();
-
+	// ── Rules Engine — queued to run after browser receives the response ─────
 	if ( class_exists( 'AH_Rules_Engine' ) ) {
-		AH_Rules_Engine::evaluate( CH_Rules::FRANCHISE_ENQUIRY, [
-			'enquiry_id'       => $enquiry_id,
-			'name'             => $name,
-			'email'            => $email,
-			'phone'            => $phone,
-			'city'             => $city,
-			'franchise_type'   => $frn_type,
-			'timeline'         => $timeline,
-			'investment_range' => $investment,
-			'experience'       => $experience,
-			'message'          => $message,
-			'site_url'         => home_url(),
-			'submitted_at'     => current_time( 'Y-m-d H:i:s' ),
-		], true );
+		ch_run_after_response( static function () use (
+			$enquiry_id, $name, $email, $phone,
+			$city, $frn_type, $timeline, $investment, $experience, $message
+		) {
+			AH_Rules_Engine::evaluate( CH_Rules::FRANCHISE_ENQUIRY, [
+				'enquiry_id'       => $enquiry_id,
+				'name'             => $name,
+				'email'            => $email,
+				'phone'            => $phone,
+				'city'             => $city,
+				'franchise_type'   => $frn_type,
+				'timeline'         => $timeline,
+				'investment_range' => $investment,
+				'experience'       => $experience,
+				'message'          => $message,
+				'site_url'         => home_url(),
+				'submitted_at'     => current_time( 'Y-m-d H:i:s' ),
+			], true );
+		} );
 	}
+
+	wp_send_json_success( [ 'message' => "Thanks {$name}! We've received your franchise enquiry and will reply personally within 24 hours. 🌿" ] );
 }
