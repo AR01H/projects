@@ -55,7 +55,7 @@ class AH_About_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_value( array $data, int $id = 0 ): int|false {
+	public function save_value( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'about_values' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );

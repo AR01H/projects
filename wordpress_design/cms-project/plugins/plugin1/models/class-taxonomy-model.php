@@ -15,7 +15,7 @@ class AH_Taxonomy_Model extends AH_Model_Base {
 		return AH_DB_Helper::get_row( AH_DB_Helper::table( 'taxonomy_types' ), $id );
 	}
 
-	public function create_type( array $data ): int|false {
+	public function create_type( array $data ): int {
 		return AH_DB_Helper::insert( AH_DB_Helper::table( 'taxonomy_types' ), $data );
 	}
 

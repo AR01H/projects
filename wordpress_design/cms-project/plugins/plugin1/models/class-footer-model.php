@@ -24,7 +24,7 @@ class AH_Footer_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_contact_link( array $data, int $id = 0 ): int|false {
+	public function save_contact_link( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'footer_contact_links' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
@@ -40,7 +40,7 @@ class AH_Footer_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_social_link( array $data, int $id = 0 ): int|false {
+	public function save_social_link( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'footer_social_links' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );

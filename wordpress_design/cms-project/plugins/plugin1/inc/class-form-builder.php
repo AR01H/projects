@@ -115,7 +115,7 @@ class AH_Form_Builder {
 
 	// ── Submissions ──────────────────────────────────────────────────────────
 
-	public static function submit( int $form_id, array $data ): int|false {
+	public static function submit( int $form_id, array $data ): int {
 		global $wpdb;
 		$result = $wpdb->insert( $wpdb->prefix . 'ah_form_submissions', array(
 			'form_id'    => $form_id,

@@ -77,6 +77,7 @@ body{
   width: auto;
   object-fit: contain;
   /* filter: brightness(0) invert(1); */
+  min-height: 70vh;
 }
 .main-title {
   font-family: var(--ch-font-display);
@@ -193,7 +194,7 @@ body{
   <!-- Main content -->
   <div class="content">
     <div class="logo-wrap">
-      <img src="/wp-content/themes/the_cane_house/assets/images/logo.png" alt="The Cane House">
+      <img src="<?php echo (get_template_directory_uri() . '/assets/images/logo.png') ?>" alt="The Cane House">
     </div>
 
     <div>

@@ -35,7 +35,7 @@ class AH_Nav_Model extends AH_Model_Base {
 		return $tree;
 	}
 
-	public function add_item( array $data ): int|false {
+	public function add_item( array $data ): int {
 		$t = AH_DB_Helper::table( 'nav_menu_items' );
 		return AH_DB_Helper::insert( $t, $data );
 	}

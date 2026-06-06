@@ -326,7 +326,7 @@ $model->paginate(int $page, int $per_page, array $where, string $search, array $
 $model->count(array $where = []): int
 
 // Write (all auto-log to audit_logs)
-$model->create(array $data): int|false      // returns insert ID
+$model->create(array $data): int      // returns insert ID
 $model->update(int $id, array $data): bool
 $model->delete(int $id): bool
 

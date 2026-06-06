@@ -52,7 +52,7 @@ abstract class AH_Model_Base {
 		);
 	}
 
-	public function create( array $data ): int|false {
+	public function create( array $data ): int {
 		$id = AH_DB_Helper::insert( $this->table(), $data );
 		if ( $id ) {
 			AH_DB_Helper::log_action( 'create', $this->table_suffix, $id, null, $data );

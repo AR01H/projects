@@ -1450,8 +1450,26 @@ class AH_DB_Installer {
 		);
 
 		foreach ( $fks as $sql ) {
-			// Silently fail if FK already exists - ignore duplicate FK errors.
-			$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			// Extract constraint names from the SQL
+			preg_match_all( '/ADD CONSTRAINT (\w+)/', $sql, $matches );
+
+			$already_exists = false;
+			foreach ( $matches[1] as $constraint_name ) {
+				$exists = $wpdb->get_var( $wpdb->prepare(
+					"SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS
+					WHERE TABLE_SCHEMA = DATABASE()
+					AND CONSTRAINT_NAME = %s",
+					$constraint_name
+				) );
+				if ( $exists ) {
+					$already_exists = true;
+					break;
+				}
+			}
+
+			if ( ! $already_exists ) {
+				$wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			}
 		}
 	}
 

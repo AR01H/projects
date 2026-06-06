@@ -91,7 +91,7 @@ class AH_DB_Helper {
 	// Write helpers
 	// ----------------------------------------------------------------
 
-	public static function insert( string $table, array $data ): int|false {
+	public static function insert( string $table, array $data ): int {
 		global $wpdb;
 		$result = $wpdb->insert( $table, $data );
 		return $result !== false ? $wpdb->insert_id : false;

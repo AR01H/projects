@@ -34,7 +34,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_highlight( array $data, int $id = 0 ): int|false {
+	public function save_highlight( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_highlights' );
 		if ( $id ) {
 			AH_DB_Helper::update( $t, $data, $id );
@@ -67,7 +67,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_why_us_card( array $data, int $id = 0 ): int|false {
+	public function save_why_us_card( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_why_us_cards' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
@@ -97,7 +97,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_guide_point( array $data, int $id = 0 ): int|false {
+	public function save_guide_point( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_guide_through_points' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
@@ -116,7 +116,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_stack_item( array $data, int $id = 0 ): int|false {
+	public function save_stack_item( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_stack_items' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
@@ -146,7 +146,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_difference_row( array $data, int $id = 0 ): int|false {
+	public function save_difference_row( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_difference_table' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
@@ -176,7 +176,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_experience_card( array $data, int $id = 0 ): int|false {
+	public function save_experience_card( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_experience_cards' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
@@ -206,7 +206,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_why_required_card( array $data, int $id = 0 ): int|false {
+	public function save_why_required_card( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_why_required_cards' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
@@ -236,7 +236,7 @@ class AH_Home_Model extends AH_Model_Base {
 		) );
 	}
 
-	public function save_featured_item( array $data, int $id = 0 ): int|false {
+	public function save_featured_item( array $data, int $id = 0 ): int {
 		$t = AH_DB_Helper::table( 'section_featured_properties_items' );
 		if ( $id ) { AH_DB_Helper::update( $t, $data, $id ); return $id; }
 		return AH_DB_Helper::insert( $t, $data );
