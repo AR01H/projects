@@ -78,10 +78,6 @@ function ch_show_prices(): bool {
 function ch_get_certifications(): array {
 	global $wpdb;
 	$table = ch_theme_table( 'certifications' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
-		return CH_Data::certifications(); // table not yet created — CSV fallback
-	}
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	$rows = $wpdb->get_results( "SELECT * FROM `{$table}` WHERE status = 'active' ORDER BY sort_order ASC, id ASC" );
 	if ( ! empty( $rows ) ) {
 		return array_map( fn( $r ) => [

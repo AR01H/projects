@@ -23,7 +23,7 @@ $services = [
   ]
 ];
 
-$launching_soon_text = "Order your favourite flavours online, book event catering, and explore our full menu — all from your phone. We're almost ready.";
+$launching_soon_text = "Order your favourite <b>sugarcane juice</b> flavours online, book event catering, and explore our full menu — all from your phone. We're almost ready.";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +92,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);font-weight:3
 .page{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:2.2rem 1.4rem 4rem;animation:rise .75s ease both}
 
 /* ── HEADER ── */
-.top{display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:1.8rem;border-bottom:1px solid var(--border)}
+.top{display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:1.8rem;}
 .logo{height:50vh;width:auto;object-fit:contain;animation:shimmer 3s ease-in-out infinite}
 .site-name{font-family:var(--ff);font-size:1.05rem;font-weight:800;color:var(--white);margin-top:.55rem;letter-spacing:.04em}
 .moto{font-size:11.5px;font-weight:300;color:var(--muted);letter-spacing:.06em;margin-top:.22rem;font-style:italic}
@@ -196,7 +196,16 @@ footer em{color:var(--lime);font-style:normal}
     <div class="fresh-tag"><span></span> A Taste of Tradition, Freshly Prepared Right in Front of You</div>
   </header>
 
-  <!-- CONTACT -->
+
+
+  <div class="launch">
+    <div class="launch-badge"><span class="launch-dot"></span> Coming Soon</div>
+    <h2>Website &amp; Online Ordering <em>Launching Soon</em></h2>
+    <p><?php echo $launching_soon_text; ?></p>
+  </div>
+  <!-- LAUNCHING SOON -->
+
+    <!-- CONTACT -->
   <div style="margin-top:2.2rem">
     <p class="sec-lbl">Contact Us</p>
     <div class="sec-title">Get in touch &amp; <em>place your order</em></div>
@@ -217,39 +226,8 @@ footer em{color:var(--lime);font-style:normal}
         </div>
       </a>
     </div>
-
-    <!-- services -->
-    <div style="margin-top:1.7rem">
-      <p style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);opacity:.75;margin-bottom:.5rem">We Also Offer</p>
-      <p class="svc-note">For franchise, event catering &amp; bulk orders — <em>contact us above</em> and our team will get back to you promptly.</p>
-      <div class="svc-grid">
-        <?php foreach($services as $si => $svc): ?>
-        <div class="svc">
-          <div class="svc-ico">
-            <?php if($svc['icon']==='home'): ?>
-            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <?php elseif($svc['icon']==='users'): ?>
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <?php else: ?>
-            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            <?php endif; ?>
-          </div>
-          <div class="svc-name"><?php echo $svc['title']; ?></div>
-          <div class="svc-txt"><?php echo $svc['desc']; ?></div>
-        </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
   </div>
 
-  <hr class="rule">
-
-  <!-- LAUNCHING SOON -->
-  <div class="launch">
-    <div class="launch-badge"><span class="launch-dot"></span> Coming Soon</div>
-    <h2>Website &amp; Online Ordering <em>Launching Soon</em></h2>
-    <p><?php echo $launching_soon_text; ?></p>
-  </div>
 
 </div><!-- .page -->
 

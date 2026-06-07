@@ -156,7 +156,7 @@ class CH_Theme_Seeder {
 			'menu-sizes'          => [ 'csv' => 'menu-sizes',          'method' => 'seed_menu_sizes',          'label' => '📏 Menu sizes',            'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
 			'cane-types'          => [ 'csv' => 'cane-types',          'method' => 'seed_cane_types',          'label' => '🌾 Cane types',            'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
 			'textures'            => [ 'csv' => 'textures',            'method' => 'seed_textures',            'label' => '🥢 Textures',              'cols' => 'icon, name, desc, price, badge, featured', 'append' => false ],
-			'flavours'            => [ 'csv' => 'flavours',            'method' => 'seed_flavours',            'label' => '🍋 Flavours',              'cols' => 'emoji, name, desc, category',              'append' => false ],
+			'flavours'            => [ 'csv' => 'flavours',            'method' => 'seed_flavours',            'label' => '🍋 Flavours',              'cols' => 'emoji, name, type',              'append' => false ],
 			'order-steps'         => [ 'csv' => 'order-steps',         'method' => 'seed_order_steps',         'label' => '🔢 How-to-order steps',    'cols' => 'num, emoji, title, desc, highlight',       'append' => false ],
 			'marquee-items'       => [ 'csv' => 'marquee-items',       'method' => 'seed_marquee_items',       'label' => '🎞️ Marquee strip items',  'cols' => 'item',                                     'append' => false ],
 			'benefits'            => [ 'csv' => 'benefits',            'method' => 'seed_benefits',            'label' => '💪 Benefits',              'cols' => 'icon, title, desc',                        'append' => false ],
@@ -181,8 +181,8 @@ class CH_Theme_Seeder {
 			'occasions'           => [ 'csv' => 'occasions',           'method' => 'seed_occasions',           'label' => '🎉 Occasions',                   'cols' => 'value',                     'append' => false ],
 			// ── CMS table rows (APPEND - may duplicate on re-run) ──
 			'reviews'             => [ 'csv' => 'reviews',             'method' => 'seed_reviews',             'label' => '⭐ Customer reviews',       'cols' => 'author_name, location, review_text, rating, result, status', 'append' => true ],
-			'news-bar'            => [ 'csv' => 'news_bar',            'method' => 'seed_news_bar',            'label' => '📰 News bar items',        'cols' => 'message, status, sort_order',              'append' => true ],
-			'journal'             => [ 'csv' => 'journal-posts',       'method' => 'seed_journal_posts',       'label' => '📝 Journal blog posts',    'cols' => 'title, excerpt, category, content',         'append' => true ],
+			'news-bar'            => [ 'csv' => 'news_bar',            'method' => 'seed_news_bar',            'label' => '📰 News bar items',        'cols' => 'message, status, sort_order',              'append' => false ],
+			'journal'             => [ 'csv' => 'journal-posts',       'method' => 'seed_journal_posts',       'label' => '📝 Journal blog posts',    'cols' => 'title, excerpt, category, content',         'append' => false ],
 		];
 	}
 

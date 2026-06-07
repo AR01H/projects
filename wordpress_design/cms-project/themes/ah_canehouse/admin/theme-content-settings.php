@@ -18,6 +18,7 @@ $events_gallery    = ch_get_events_gallery();
 $franchise_gallery = ch_get_franchise_gallery();
 $about_gallery     = ch_get_about_gallery();
 $equipment_gallery = ch_get_equipment_gallery();
+$flavours          = ch_get_flavours()         ?? [];
 
 // ── Tab registry — add a new entry here to get a new tab ─────────────────────
 $tabs = [
@@ -28,6 +29,7 @@ $tabs = [
 	'eventswhy' => '🎯 Events Why',
 	'about'     => '🏢 About Page',
 	'certs'     => '✅ Certifications',
+	'flavours'  => '🍋 Flavours',
 ];
 
 // ── Safe tab file map ─────────────────────────────────────────────────────────
@@ -39,6 +41,7 @@ $tab_files = [
 	'eventswhy' => __DIR__ . '/content-settings/tab-eventswhy.php',
 	'about'     => __DIR__ . '/content-settings/tab-about.php',
 	'certs'     => __DIR__ . '/content-settings/tab-certs.php',
+	'flavours'     => __DIR__ . '/content-settings/tab-flavours.php',
 ];
 ?>
 <div class="wrap ch-admin-wrap ch-cs-wrap">

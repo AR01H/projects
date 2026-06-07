@@ -4,10 +4,7 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 
 global $wpdb;
 
-// ── Ensure tables exist ───────────────────────────────────────────────────────
-if ( class_exists( 'CH_Order_Data' ) ) {
-	CH_Order_Data::ensure_tables();
-}
+
 
 $table_exists = $wpdb->get_var( $wpdb->prepare(
 	'SHOW TABLES LIKE %s', $wpdb->prefix . 'ch_order_requests'

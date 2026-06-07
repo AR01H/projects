@@ -17,6 +17,7 @@ class CH_Theme_Admin {
 		add_action( 'admin_post_ch_content_settings_eventswhy', [ self::class, 'handle_cs_eventswhy'  ] );
 		add_action( 'admin_post_ch_content_settings_about',     [ self::class, 'handle_cs_about'      ] );
 		add_action( 'admin_post_ch_content_settings_certs',     [ self::class, 'handle_cs_certs'      ] );
+		add_action( 'admin_post_ch_content_settings_flavours', [ self::class, 'handle_cs_flavours'  ] );
 		// ch_theme_settings handler lives in functions.php (complete version that
 		// also saves pricing, certifications and schema). Do NOT register a second
 		// handler here - it would overwrite those extended settings.
@@ -290,6 +291,28 @@ class CH_Theme_Admin {
 		];
 		update_option( 'ch_events_why', wp_json_encode( $data ) );
 		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'eventswhy', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	public static function handle_cs_flavours(): void {
+		// Verify nonce and permissions
+		check_admin_referer( 'ch_content_settings_flavours' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( 'Unauthorised' );
+		}
+
+		$items = [];
+		foreach ( (array) ( $_POST['flavours_items'] ?? [] ) as $item ) {
+			$name = sanitize_text_field( wp_unslash( $item['name'] ?? '' ) );
+			if ( $name ) $items[] = [
+				'emoji'  => sanitize_text_field( wp_unslash( $item['emoji'] ?? '' ) ),
+				'name' => $name,
+				'type'  => sanitize_text_field( wp_unslash( $item['type'] ?? '' ) ),
+			];
+		}
+		$data = $items;
+		update_option( 'ch_flavours', wp_json_encode( $data ) );
+		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'flavours', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 

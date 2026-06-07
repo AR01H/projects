@@ -5,7 +5,6 @@ $sizes        = ch_get_menu_sizes();
 $cane_types   = ch_get_cane_types();
 $textures     = ch_get_textures();
 $flavours     = ch_get_flavours();
-$show_prices  = ch_show_prices();
 ?>
 
 <section id="build" class="ch-build-section">
@@ -18,45 +17,9 @@ $show_prices  = ch_show_prices();
 
 	<div class="ch-build-grid">
 
-		<!-- SIZES -->
-		<!-- <div class="ch-option-card fade-left">
-			<div class="ch-option-header">
-				<div class="ch-option-num">1</div>
-				<div>
-					<div class="ch-option-title">Size</div>
-					<div class="ch-option-sub">Pick your cup size</div>
-				</div>
-			</div>
-			<div class="ch-price-rows">
-				<?php foreach ( $sizes as $size ) :
-					$size     = (array) $size;
-					$featured = ! empty( $size['featured'] );
-				?>
-					<div class="ch-price-row<?php echo $featured ? ' ch-price-row--featured' : ''; ?>">
-						<div class="ch-row-left">
-							<div class="ch-row-icon"><?php echo esc_html( $size['icon'] ?? '🥤' ); ?></div>
-							<div>
-								<div class="ch-row-name"><?php echo esc_html( $size['name'] ?? '' ); ?></div>
-								<div class="ch-row-desc"><?php echo esc_html( $size['desc'] ?? '' ); ?></div>
-							</div>
-						</div>
-						<div class="ch-row-right">
-							<?php if ( ! empty( $size['badge'] ) ) : ?>
-								<span class="ch-row-badge"><?php echo esc_html( $size['badge'] ); ?></span>
-							<?php endif; ?>
-							<?php if ( $show_prices && ! empty( $size['price'] ) ) : ?>
-								<div class="ch-row-price"><?php echo esc_html( $size['price'] ); ?></div>
-							<?php endif; ?>
-						</div>
-					</div>
-				<?php endforeach; ?>
-			</div>
-		</div> -->
-
 		<!-- CANE TYPE + TEXTURE -->
 		<div class="ch-option-card fade-right">
 			<div class="ch-option-header">
-				<!-- <div class="ch-option-num"></div> -->
 				<div>
 					<div class="ch-option-title">Cane Type</div>
 					<div class="ch-option-sub">Choose your cane</div>
@@ -75,14 +38,6 @@ $show_prices  = ch_show_prices();
 								<div class="ch-row-desc"><?php echo esc_html( $cane['desc'] ?? '' ); ?></div>
 							</div>
 						</div>
-						<div class="ch-row-right">
-							<?php if ( ! empty( $cane['badge'] ) ) : ?>
-								<!-- <span class="ch-row-badge"><?php echo esc_html( $cane['badge'] ); ?></span> -->
-							<?php endif; ?>
-							<?php if ( $show_prices && ! empty( $cane['price'] ) ) : ?>
-								<div class="ch-row-price"><?php echo esc_html( $cane['price'] ); ?></div>
-							<?php endif; ?>
-						</div>
 					</div>
 				<?php endforeach; ?>
 			</div>
@@ -90,7 +45,6 @@ $show_prices  = ch_show_prices();
 
 		<div class="ch-option-card fade-left" >
 			<div class="ch-option-header" style="margin-top:.5rem;">
-				<!-- <div class="ch-option-num"></div> -->
 				<div>
 					<div class="ch-option-title">Texture</div>
 					<div class="ch-option-sub">How it's pressed</div>
@@ -109,14 +63,6 @@ $show_prices  = ch_show_prices();
 								<div class="ch-row-desc"><?php echo esc_html( $tex['desc'] ?? '' ); ?></div>
 							</div>
 						</div>
-						<div class="ch-row-right">
-							<?php if ( ! empty( $tex['badge'] ) ) : ?>
-								<!-- <span class="ch-row-badge"><?php echo esc_html( $tex['badge'] ); ?></span> -->
-							<?php endif; ?>
-							<?php if ( $show_prices && ! empty( $tex['price'] ) ) : ?>
-								<div class="ch-row-price"><?php echo esc_html( $tex['price'] ); ?></div>
-							<?php endif; ?>
-						</div>
 					</div>
 				<?php endforeach; ?>
 			</div>
@@ -125,7 +71,6 @@ $show_prices  = ch_show_prices();
 		<!-- FLAVOURS -->
 		<div class="ch-option-card fade-up ch-option-card--full">
 			<div class="ch-option-header">
-				<!-- <div class="ch-option-num"></div> -->
 				<div>
 					<div class="ch-option-title">Flavour</div>
 					<div class="ch-option-sub">Pick your blend</div>
@@ -138,11 +83,7 @@ $show_prices  = ch_show_prices();
 					<div class="ch-flavour-chip">
 						<span class="ch-chip-emoji ch-shaking-leaf"><?php echo esc_html( $fl['emoji'] ?? '🌿' ); ?></span>
 						<div class="ch-chip-name"><?php echo esc_html( $fl['name'] ?? '' ); ?></div>
-						<?php if ( $show_prices ) : ?>
-							<div class="ch-chip-price"><?php echo esc_html( $fl['desc'] ?? '' ); ?></div>
-						<?php else : ?>
-							<div class="ch-chip-price"><?php echo esc_html( $fl['type'] ?? '' ); ?></div>
-						<?php endif; ?>
+						<div class="ch-chip-price"><?php echo esc_html( $fl['type'] ?? '' ); ?></div>
 					</div>
 				<?php endforeach; ?>
 			</div>

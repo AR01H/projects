@@ -286,7 +286,7 @@ class CH_Data {
 				];
 			}, $rows );
 		}
-		return self::default_textures();
+		return [];
 	}
 
 	public static function flavours(): array {
@@ -296,12 +296,11 @@ class CH_Data {
 				return [
 					'emoji'    => $r['emoji']    ?? '',
 					'name'     => $r['name']     ?? '',
-					'desc'     => $r['desc']     ?? '',
-					'category' => $r['category'] ?? 'pure',
+					'type'     => $r['type']     ?? ''
 				];
 			}, $rows );
 		}
-		return self::default_flavours();
+		return [];
 	}
 
 	public static function order_steps(): array {
