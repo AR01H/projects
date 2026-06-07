@@ -3775,7 +3775,6 @@ body.has-ticker .ch-nav { top: 32px; }
    STORY CARDS - interactive tabbed reveal section
    ═══════════════════════════════════════════════════════════════════════════ */
 .ch-sc-section {
-    padding: 2rem;
     overflow: hidden;
 }
 

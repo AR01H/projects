@@ -591,8 +591,8 @@ function ch_get_equipment_gallery(): array {
  * Home showcase carousel - machines, bottles, products (after hero).
  * Each item supports type: 'image' | 'gif' | 'video' (mp4/webm, autoplays muted+loop).
  */
-function ch_get_showcase(): array {
-	$opt = get_option( 'ch_showcase_items', [] );
+function ch_get_equipment_media_gallery(): array {
+	$opt = get_option( 'ch_equipment_gallery', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	return (array) $opt; // DB-only: install mock data to populate.
 }

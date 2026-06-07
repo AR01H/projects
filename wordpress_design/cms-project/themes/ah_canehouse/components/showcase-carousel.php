@@ -38,6 +38,7 @@ if ( empty( $items ) ) return;
 			'title' => $title,
 			'body'  => $body,
 		] ); ?>
+	</div>
 
 		<div class="ch-sc" id="<?php echo $uid; ?>" data-autoplay="<?php echo esc_attr( $autoplay ); ?>">
 			<div class="ch-sc-viewport" id="<?php echo $uid; ?>-vp">
@@ -74,7 +75,6 @@ if ( empty( $items ) ) return;
 			</div>
 		</div>
 
-	</div>
 </section>
 
 <style>
@@ -121,7 +121,7 @@ if ( empty( $items ) ) return;
 	var timer    = null;
 
 	/* Clone all cards for seamless infinite loop */
-	cards.forEach(function(c){ track.appendChild(c.cloneNode(true)); });
+	// cards.forEach(function(c){ track.appendChild(c.cloneNode(true)); });
 	track.style.transition = 'none';
 
 	function cardStep() {
