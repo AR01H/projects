@@ -1135,7 +1135,6 @@
 /* ── HERO variant of the banner (top section) ── */
 .nhp-banner--hero {
   min-height: clamp(540px, 56vw, 700px);
-  padding-top: var(--nav-h);
 }
 .nhp-banner--hero .nhp-banner__media {
   background-position: center 30%;
