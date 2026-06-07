@@ -193,7 +193,11 @@ footer em{color:var(--lime);font-style:normal}
   <header class="top">
     <img class="logo" src="<?php echo $logo_url; ?>" alt="<?php echo $site_name; ?>">
     <div class="moto"><?php echo $moto; ?></div>
-    <div class="fresh-tag"><span></span> A Taste of Tradition, Freshly Prepared Right in Front of You</div>
+	 <div class="fresh-tag">
+   <p>
+	    Bringing Back Childhood Memories, Freshly pressed Sugarcane juice right before your eyes, enjoyed across the world for generations.</p>
+    
+</div>
   </header>
 
 
