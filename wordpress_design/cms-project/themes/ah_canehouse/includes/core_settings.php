@@ -1,3 +1,3 @@
 <?php
 
-define("COMING_SOON",TRUE);
+define("COMING_SOON",FALSE);

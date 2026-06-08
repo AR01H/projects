@@ -4,20 +4,14 @@
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
-
-$ew            = class_exists( 'CH_Hire_Data' ) ? CH_Hire_Data::events_why() : [];
-$gallery_items = ch_get_events_media_gallery();
-$_hero         = CH_Shared_Data::section_heading( 'page_hero_events' );
-$_gallery      = CH_Shared_Data::section_heading( 'gallery_events' );
-
+$data = require get_template_directory() . '/intermediate_logics/events.php';
 ?>
-
 <main class="ch-main" id="main-content">
 
 <?php get_template_part( 'components/page-hero', null, [
-	'tag'        => $_hero['tag']     ?? '',
-	'heading'    => $_hero['heading'] ?? '',
-	'desc'       => $_hero['desc']    ?? '',
+	'tag'        => $data['hero']['tag']     ?? '',
+	'heading'    => $data['hero']['heading'] ?? '',
+	'desc'       => $data['hero']['desc']    ?? '',
 	'modifier'   => 'ch-page-hero--events',
 	'btn1_label' => 'Hire Us',
 	'btn1_url'   => '#booking',
@@ -25,24 +19,21 @@ $_gallery      = CH_Shared_Data::section_heading( 'gallery_events' );
 ] ); ?>
 
 <?php get_template_part( 'components/features-ribbon' ); ?>
-
 <?php get_template_part( 'components/event-typesection' ); ?>
 
 <?php get_template_part( 'components/media-gallery', null, [
-	'tag'   => $_gallery['tag']   ?? '',
-	'title' => $_gallery['title'] ?? '',
-	'body'  => $_gallery['body']  ?? '',
+	'tag'   => $data['gallery_h']['tag']   ?? '',
+	'title' => $data['gallery_h']['title'] ?? '',
+	'body'  => $data['gallery_h']['body']  ?? '',
 	'id'    => 'mg-events',
-	'items' => $gallery_items
+	'items' => $data['gallery'],
 ] ); ?>
 
-<?php 
-	get_template_part( 'components/events-why', null, [
-	'items' => $ew['items'],
+<?php get_template_part( 'components/events-why', null, [
+	'items' => $data['events_why']['items'] ?? [],
 ] ); ?>
 
 <?php get_template_part( 'components/reviews-events' ); ?>
-
 <?php get_template_part( 'components/booking-wizard' ); ?>
 
 </main>

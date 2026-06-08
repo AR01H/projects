@@ -4,17 +4,16 @@
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
-
-$_hero = CH_Shared_Data::section_heading( 'page_hero_order_deliver' );
-$_cta  = CH_Shared_Data::section_heading( 'order_deliver_cta' );
+$data = require get_template_directory() . '/intermediate_logics/ordertodeliver.php';
+$hero = $data['hero'];
+$cta  = $data['cta'];
 ?>
-
 <main class="ch-main" id="main-content">
 
 <?php get_template_part( 'components/page-hero', null, [
-	'tag'        => $_hero['tag']     ?? 'Order Fresh',
-	'heading'    => $_hero['heading'] ?? 'Delivered Fresh to <em>Your Door</em>',
-	'desc'       => $_hero['desc']    ?? '',
+	'tag'        => $hero['tag']     ?? 'Order Fresh',
+	'heading'    => $hero['heading'] ?? 'Delivered Fresh to <em>Your Door</em>',
+	'desc'       => $hero['desc']    ?? '',
 	'modifier'   => 'ch-page-hero--sugarcane',
 	'btn1_label' => 'Order Now',
 	'btn1_url'   => '#order-to-deliver',
@@ -22,19 +21,15 @@ $_cta  = CH_Shared_Data::section_heading( 'order_deliver_cta' );
 ] ); ?>
 
 <?php get_template_part( 'components/features-ribbon' ); ?>
-
 <?php get_template_part( 'components/order-to-deliver' ); ?>
-
 <?php get_template_part( 'components/how-to-order' ); ?>
-
 <?php get_template_part( 'components/review-carousel' ); ?>
-
 <?php get_template_part( 'components/certifications' ); ?>
 
 <?php get_template_part( 'components/cta-section', null, [
-	'tag'        => $_cta['tag']     ?? 'Ready to Order?',
-	'heading'    => $_cta['heading'] ?? 'Fresh Juice at <span class="accent" style="color:var(--client-color-7);">Your Doorstep</span>',
-	'body'       => $_cta['body']    ?? '',
+	'tag'        => $cta['tag']     ?? 'Ready to Order?',
+	'heading'    => $cta['heading'] ?? 'Fresh Juice at <span class="accent" style="color:var(--client-color-7);">Your Doorstep</span>',
+	'body'       => $cta['body']    ?? '',
 	'btn_label'  => '🥤 Order Now',
 	'btn_url'    => '#order-to-deliver',
 	'show_phone' => true,

@@ -4,17 +4,14 @@
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
-
-$_hero    = CH_Shared_Data::section_heading( 'page_hero_franchise' );
-$_gallery = CH_Shared_Data::section_heading( 'gallery_franchise' );
+$data = require get_template_directory() . '/intermediate_logics/franchise.php';
 ?>
-
 <main class="ch-main" id="main-content">
 
 <?php get_template_part( 'components/page-hero', null, [
-	'tag'        => $_hero['tag']     ?? '',
-	'heading'    => $_hero['heading'] ?? '',
-	'desc'       => $_hero['desc']    ?? '',
+	'tag'        => $data['hero']['tag']     ?? '',
+	'heading'    => $data['hero']['heading'] ?? '',
+	'desc'       => $data['hero']['desc']    ?? '',
 	'modifier'   => 'ch-page-hero--franchise',
 	'btn1_label' => 'Start Your Enquiry',
 	'btn1_url'   => '#franchise-enquiry',
@@ -22,21 +19,17 @@ $_gallery = CH_Shared_Data::section_heading( 'gallery_franchise' );
 ] ); ?>
 
 <?php get_template_part( 'components/media-gallery', null, [
-	'tag'   => $_gallery['tag']   ?? '',
-	'title' => $_gallery['title'] ?? '',
-	'body'  => $_gallery['body']  ?? '',
+	'tag'   => $data['gallery_h']['tag']   ?? '',
+	'title' => $data['gallery_h']['title'] ?? '',
+	'body'  => $data['gallery_h']['body']  ?? '',
 	'id'    => 'mg-franchise',
-	'items' => ch_get_franchise_media_gallery(),
+	'items' => $data['gallery'],
 ] ); ?>
 
 <?php get_template_part( 'components/franchise-why' ); ?>
-
 <?php get_template_part( 'components/franchise-steps' ); ?>
-
 <?php get_template_part( 'components/reviews-franchise' ); ?>
-
 <?php get_template_part( 'components/franchise-locations' ); ?>
-
 <?php get_template_part( 'components/franchise-enquiry' ); ?>
 
 </main>

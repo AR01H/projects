@@ -184,8 +184,9 @@
 		"body":    "Book us for your next event or explore a franchise opportunity in your city."
 	},
 	"nutrition_split": {
-		"tag":   "Nutritional Profile",
-		"title": "What's Inside <span class=\"accent\">Every Sip</span>",
-		"body":  "A single 350ml glass of freshly pressed {product_name} delivers a surprising range of natural nutrients:"
+		"tag":        "Nutritional Profile",
+		"title":      "What's Inside <span class=\"accent\">Every Sip</span>",
+		"body":       "A single 350ml glass of freshly pressed {product_name} delivers a surprising range of natural nutrients:",
+		"disclaimer": "* Values are approximate for 350ml fresh-pressed yellow cane, no additives."
 	}
 }

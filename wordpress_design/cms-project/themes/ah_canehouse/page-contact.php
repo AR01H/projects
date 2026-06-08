@@ -4,21 +4,17 @@
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
-
-$_cta = CH_Shared_Data::section_heading( 'cta_contact' );
+$data = require get_template_directory() . '/intermediate_logics/contact.php';
+$cta  = $data['cta'];
 ?>
-
-
-<!-- ── Contact form (reuses the shared component) ───────────────────────────── -->
 <div class="ch-contact-page-form">
-	<?php get_template_part( 'components/contact-section' ); ?>
+  <?php get_template_part( 'components/contact-section' ); ?>
 </div>
 
-
 <?php get_template_part( 'components/cta-section', null, [
-	'tag'        => $_cta['tag']     ?? '',
-	'heading'    => $_cta['heading'] ?? '',
-	'body'       => $_cta['body']    ?? '',
+	'tag'        => $cta['tag']     ?? '',
+	'heading'    => $cta['heading'] ?? '',
+	'body'       => $cta['body']    ?? '',
 	'btn_label'  => '🥤View Event',
 	'btn_url'    => home_url( '/events/' ),
 	'btn2_label' => 'Explore Franchise',
