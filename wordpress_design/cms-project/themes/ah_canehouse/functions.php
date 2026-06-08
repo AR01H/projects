@@ -372,3 +372,20 @@ add_action( 'template_redirect', function () {
 		exit;
 	}
 },10 );
+
+/* ── 500 error helper ────────────────────────────────────────────────────────
+ * Usage anywhere in the theme/plugin:
+ *   ch_render_500();                  // generic 500
+ *   ch_render_500( $exception );      // pass a caught Throwable for debug panel
+ *
+ * In production the debug panel is hidden unless the visitor is an admin
+ * AND adds ?debug=true to the URL.
+ * ──────────────────────────────────────────────────────────────────────────*/
+function ch_render_500( ?Throwable $e = null ): void {
+	global $ch_500_exception;
+	$ch_500_exception = $e;
+	status_header( 500 );
+	nocache_headers();
+	include get_template_directory() . '/500.php';
+	exit;
+}
