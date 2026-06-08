@@ -23,7 +23,7 @@ class AH_DB_Installer {
 		if ( get_option( AH_DB_VERSION_KEY ) !== AH_THEME_VERSION ) {
 			self::install();
 		}
-		// ALTER TABLE migrations and data seeding only — CREATE TABLE is in get_table_sqls().
+		// ALTER TABLE migrations and data seeding only - CREATE TABLE is in get_table_sqls().
 		self::ensure_required_settings();
 		self::ensure_content_taxonomies();
 		self::drop_broken_fks();
@@ -42,6 +42,7 @@ class AH_DB_Installer {
 		self::ensure_faq_tags_taxonomy_type();
 		self::ensure_sugarcane_contact_rule();
 		self::ensure_contact_form_rule_cc();
+		self::ensure_analytics_tables();
 	}
 
 	/**
@@ -1776,6 +1777,52 @@ class AH_DB_Installer {
 				array( 'id' => (int) $row->id ),
 				array( '%s' ),
 				array( '%d' )
+			);
+		}
+	}
+
+	/**
+	 * Create the analytics reports and results tables if they don't exist.
+	 * Called from maybe_upgrade() on every admin load - fully idempotent.
+	 */
+	public static function ensure_analytics_tables(): void {
+		global $wpdb;
+		$cs = $wpdb->get_charset_collate();
+		$p  = $wpdb->prefix;
+
+		if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$p}ah_analytics_reports'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				"CREATE TABLE `{$p}ah_analytics_reports` (
+					`id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+					`name`        VARCHAR(200) NOT NULL DEFAULT '',
+					`description` TEXT         DEFAULT NULL,
+					`query_sql`   LONGTEXT     NOT NULL,
+					`run_count`   INT UNSIGNED NOT NULL DEFAULT 0,
+					`last_run_at` DATETIME     DEFAULT NULL,
+					`created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+					`updated_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+					PRIMARY KEY (`id`),
+					KEY `idx_name` (`name`)
+				) ENGINE=InnoDB {$cs}"
+			);
+		}
+
+		if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$p}ah_analytics_results'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				"CREATE TABLE `{$p}ah_analytics_results` (
+					`id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+					`report_id`     INT UNSIGNED NOT NULL,
+					`run_at`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+					`row_count`     INT UNSIGNED NOT NULL DEFAULT 0,
+					`exec_ms`       INT UNSIGNED NOT NULL DEFAULT 0,
+					`status`        ENUM('success','error') NOT NULL DEFAULT 'success',
+					`result_json`   LONGTEXT     DEFAULT NULL,
+					`error_message` TEXT         DEFAULT NULL,
+					`export_file`   VARCHAR(500) DEFAULT NULL,
+					PRIMARY KEY (`id`),
+					KEY `idx_report` (`report_id`),
+					KEY `idx_run_at` (`report_id`, `run_at`)
+				) ENGINE=InnoDB {$cs}"
 			);
 		}
 	}

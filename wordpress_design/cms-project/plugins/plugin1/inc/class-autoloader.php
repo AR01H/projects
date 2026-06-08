@@ -41,9 +41,13 @@ class AH_Autoloader {
 		'AH_Banners_Helper'   => 'helper/class-banners-helper.php',
 
 		// Admin
+		'AH_Analytics_Report_Model' => 'models/class-analytics-model.php',
+		'AH_Analytics_Result_Model' => 'models/class-analytics-model.php',
+
 		'AH_Admin_Bootstrap'  => 'admin/class-admin-bootstrap.php',
 		'AH_Admin_Menus'      => 'admin/menus/class-admin-menus.php',
 		'AH_Ajax_Handlers'    => 'admin/ajax/class-ajax-handlers.php',
+		'AH_Analytics_Ajax'   => 'admin/ajax/class-analytics-ajax.php',
 		'AH_CSV_Importer'     => 'admin/import/class-csv-importer.php',
 		'AH_Form_Builder'     => 'inc/class-form-builder.php',
 		'AH_Rules_Engine'     => 'inc/class-rules-engine.php',

@@ -13,6 +13,7 @@ class AH_Admin_Bootstrap {
 		add_action( 'add_meta_boxes', array( self::class, 'register_post_metaboxes' ) );
 		add_action( 'save_post', array( self::class, 'save_post_metabox' ), 10, 1 );
 		AH_Ajax_Handlers::init();
+		AH_Analytics_Ajax::init();
 	}
 
 	public static function enqueue_assets( string $hook ): void {
@@ -103,6 +104,7 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-admin-actions"]::before{ content:"\f534"; }
 #adminmenu .wp-submenu a[href*="page=ah-help"]::before         { content:"\f223"; }
 #adminmenu .wp-submenu a[href*="page=ah-rules-engine"]::before { content:"\f211"; }
+#adminmenu .wp-submenu a[href*="page=ah-analytics"]::before   { content:"\f185"; }
 
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),

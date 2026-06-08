@@ -26,7 +26,7 @@ class AH_Rules_Engine {
 		return $wpdb->prefix . 'ah_trigger_logs';
 	}
 
-	/** Every evaluate() call gets one row here — even when no rule matches. */
+	/** Every evaluate() call gets one row here - even when no rule matches. */
 	public static function evaluate_table(): string {
 		global $wpdb;
 		return $wpdb->prefix . 'ah_evaluate_log';

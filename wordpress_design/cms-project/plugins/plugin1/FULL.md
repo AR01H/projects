@@ -1,10 +1,10 @@
-# CMS ADMIN — Complete Project Documentation
+# CMS ADMIN - Complete Project Documentation
 
 ---
 
 ## 1. Project Overview
 
-**CMS ADMIN** is a custom WordPress plugin that provides a full-featured Content Management System (CMS) for building and managing business websites. Instead of relying on WordPress's native post types and the block editor, it creates its own database tables, admin interface, models, and front-end rendering system. The plugin is designed to power a professional services or business website — with sections for home page management, services, about us, team, reviews, blog/news posts, FAQs, events, contact forms, and more — all controlled from a unified custom admin dashboard inside WordPress.
+**CMS ADMIN** is a custom WordPress plugin that provides a full-featured Content Management System (CMS) for building and managing business websites. Instead of relying on WordPress's native post types and the block editor, it creates its own database tables, admin interface, models, and front-end rendering system. The plugin is designed to power a professional services or business website - with sections for home page management, services, about us, team, reviews, blog/news posts, FAQs, events, contact forms, and more - all controlled from a unified custom admin dashboard inside WordPress.
 
 ### Who is it for?
 
@@ -16,7 +16,7 @@ The plugin was originally built for a business called "Advith Homes" / "The Cane
 - **Dual-mode operation**: Works as a standalone WordPress theme or as a plugin paired with any front-end theme.
 - **Full admin portal**: Custom admin pages for every content area, accessed under a single "CMS ADMIN" sidebar menu.
 - **Automation engine**: A built-in "Triggers Maker" (rules engine) automates actions like sending emails or calling webhooks when events occur (form submissions, bookings, etc.).
-- **Dynamic form builder**: Create forms via the admin UI, embed them via shortcodes, and view submissions — no code needed.
+- **Dynamic form builder**: Create forms via the admin UI, embed them via shortcodes, and view submissions - no code needed.
 - **Page builder**: A block-based page builder for creating custom landing pages stored in a dedicated table and served via slug routing.
 - **CSV data import**: Bulk import services, reviews, FAQs, posts, team members, taxonomies, events, and news bar items from CSV files.
 
@@ -279,7 +279,7 @@ If it results in a 404:
       └─→ Loads template-builder-page.php
            └─→ Decodes the JSON `blocks` column
            └─→ Renders each block in order
-           └─→ exit() — WordPress's 404 is suppressed
+           └─→ exit() - WordPress's 404 is suppressed
         │
    If not found:
       └─→ Normal WordPress 404 page is shown
@@ -335,9 +335,9 @@ The plugin creates 60+ custom tables, all prefixed with `{wp_prefix}ah_`. Below 
 |-------|---------|
 | `ah_admin_roles` | Role definitions with JSON permissions (e.g., `super_admin` with `["*"]`) |
 | `ah_admin_users` | CMS-specific admin user accounts (separate from WordPress users) |
-| `ah_site_settings` | Key-value store for site configuration — grouped by `group_name` (general, contact, social, design, notifications). Supports types: text, textarea, image, color, url, email, phone, toggle, json |
+| `ah_site_settings` | Key-value store for site configuration - grouped by `group_name` (general, contact, social, design, notifications). Supports types: text, textarea, image, color, url, email, phone, toggle, json |
 | `ah_media` | Custom media library records (file name, path, URL, MIME type, dimensions) |
-| `ah_audit_logs` | Complete audit trail — every create, update, delete is logged with old/new values, user ID, IP address, and user agent |
+| `ah_audit_logs` | Complete audit trail - every create, update, delete is logged with old/new values, user ID, IP address, and user agent |
 | `ah_pages` | CMS page registry. Each page has a `page_type` (home, about, services, contact, client_stories, blog_listing, news_listing, custom) plus SEO fields |
 | `ah_page_sections` | Controls which sections are visible on each page, with sort ordering |
 
@@ -554,7 +554,7 @@ Each post has: title, auto-generated slug (unique per type), excerpt, rich-text 
 ### 6.10 Events / Hire Packages
 
 - Emoji icon, title, rich description.
-- Items list (stored as JSON — line items within the package).
+- Items list (stored as JSON - line items within the package).
 - Color theme, featured flag, sort ordering.
 - Booking notification integration: `notify_on_booking` flag and `booking_trigger_name` for Rules Engine integration.
 
@@ -602,8 +602,8 @@ A no-code form creation system:
 A general-purpose automation platform:
 
 **Triggers** (events that start the automation):
-- `form_submit` — fired automatically when any AH form is submitted.
-- Custom trigger names (e.g., `sugarcane_contact_form`, `order_placed`, `user_signup`) — fired programmatically via `AH_Rules_Engine::evaluate('trigger_name', $context)`.
+- `form_submit` - fired automatically when any AH form is submitted.
+- Custom trigger names (e.g., `sugarcane_contact_form`, `order_placed`, `user_signup`) - fired programmatically via `AH_Rules_Engine::evaluate('trigger_name', $context)`.
 
 **Conditions** (when should actions run):
 - Grouped conditions with AND/OR logic at both the group and inter-group level.
@@ -834,13 +834,13 @@ The system supports two operation modes:
 
 **Plugin Mode** (recommended): Install as a WordPress plugin. The `ah-cms.php` file handles all bootstrapping. Pair it with any front-end theme that reads from the `ah_` tables.
 
-**Standalone Theme Mode**: Place all files in a WordPress theme directory. The `functions.php` file detects that the plugin constant `AH_PLUGIN_DIR` is not defined and performs full bootstrap itself — defining constants, registering the autoloader, initializing admin, AJAX, and database, and setting up theme support.
+**Standalone Theme Mode**: Place all files in a WordPress theme directory. The `functions.php` file detects that the plugin constant `AH_PLUGIN_DIR` is not defined and performs full bootstrap itself - defining constants, registering the autoloader, initializing admin, AJAX, and database, and setting up theme support.
 
 ### 9.4 Key Constants
 
 | Constant | Default | Purpose |
 |----------|---------|---------|
-| `AH_PLUGIN_VERSION` | `'1.0.3'` | Current version — triggers DB migration when changed |
+| `AH_PLUGIN_VERSION` | `'1.0.3'` | Current version - triggers DB migration when changed |
 | `AH_DB_VERSION_KEY` | `'ah_cms_db_version'` | WordPress option key storing the installed DB version |
 | `TABLE_MID_FIX` | `'_cms_plug_'` | Infix for table names (change only before first install) |
 | `AH_PLUGIN_DIR` | Plugin directory path | Absolute filesystem path to the plugin root |
@@ -872,7 +872,7 @@ The plugin uses a version-check migration pattern:
 1. On every page load, `maybe_upgrade()` compares the stored DB version with the current plugin version.
 2. If they differ, the full `install()` method runs (using `CREATE TABLE IF NOT EXISTS`, so existing tables are not destroyed).
 3. After the full install, individual `ensure_*()` methods run to add new columns, create new tables, seed new data, and fix legacy issues.
-4. This design means every migration is idempotent — safe to run multiple times.
+4. This design means every migration is idempotent - safe to run multiple times.
 
 ### 10.2 Broken Foreign Key Cleanup
 
@@ -968,7 +968,7 @@ Action templates use `{token}` syntax that gets replaced with context data:
 
 ### No External PHP Dependencies
 
-The plugin has zero Composer dependencies — it uses only WordPress core functions and native PHP.
+The plugin has zero Composer dependencies - it uses only WordPress core functions and native PHP.
 
 ---
 
@@ -1016,10 +1016,10 @@ Based on the current architecture, natural extensions include:
 - **REST API layer**: Expose content via WordPress REST API endpoints for headless front-end frameworks (React, Next.js, etc.).
 - **Role-based access control**: The `ah_admin_roles` and `ah_admin_users` tables exist but are largely unused. Implementing granular permissions per admin page would add multi-user support.
 - **Media image optimization**: Auto-generate thumbnails and WebP variants on upload.
-- **Scheduled content publishing**: The `scheduled_at` column exists in `ah_posts` — implementing a cron job to auto-publish at the scheduled time would complete the feature.
+- **Scheduled content publishing**: The `scheduled_at` column exists in `ah_posts` - implementing a cron job to auto-publish at the scheduled time would complete the feature.
 - **Search indexing**: Add full-text search indexes to content tables for faster search.
 - **Revision history**: Store content revisions to allow rollback.
-- **Drag-and-drop Page Builder UI**: The JSON block structure supports it — a React-based visual editor would enhance the page builder experience.
+- **Drag-and-drop Page Builder UI**: The JSON block structure supports it - a React-based visual editor would enhance the page builder experience.
 - **Multi-language support**: The taxonomy system could support language variants.
 - **Analytics dashboard**: Track page views, form submissions, and engagement metrics over time.
 - **Export functionality**: CSV/JSON export of content and submissions.
