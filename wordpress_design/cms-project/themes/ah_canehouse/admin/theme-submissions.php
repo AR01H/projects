@@ -76,20 +76,20 @@ if ( $view === 'detail' && $sub_id && $table_exists ) {
 					<table class="ch-detail-table">
 						<tr><th>Name</th><td><?php echo esc_html( $sub->name ?? '' ); ?></td></tr>
 						<tr><th>Email</th><td><a href="mailto:<?php echo esc_attr( $sub->email ?? '' ); ?>"><?php echo esc_html( $sub->email ?? '' ); ?></a></td></tr>
-						<tr><th>Phone</th><td><?php echo esc_html( $sub->phone ?: '—' ); ?></td></tr>
+						<tr><th>Phone</th><td><?php echo esc_html( $sub->phone ?: '-' ); ?></td></tr>
 						<tr><th>Enquiry Type</th><td>
 							<span class="ch-badge ch-badge--green"><?php echo esc_html( $sub->enquiry_type ?? 'general' ); ?></span>
 						</td></tr>
 						<tr><th>Message</th><td style="white-space:pre-wrap"><?php echo esc_html( $sub->message ?? '' ); ?></td></tr>
 						<tr><th>Submitted</th><td><?php echo esc_html( $sub->created_at ?? '' ); ?></td></tr>
-						<tr><th>IP Address</th><td><?php echo esc_html( $sub->ip_address ?: '—' ); ?></td></tr>
+						<tr><th>IP Address</th><td><?php echo esc_html( $sub->ip_address ?: '-' ); ?></td></tr>
 					</table>
 				</div>
 
 				<!-- Quick reply link -->
 				<?php if ( ! empty( $sub->email ) ) : ?>
 				<div class="ch-card" style="padding:1rem 1.5rem;">
-					<a href="mailto:<?php echo esc_attr( $sub->email ); ?>?subject=Re: Your Enquiry — The Cane House"
+					<a href="mailto:<?php echo esc_attr( $sub->email ); ?>?subject=Re: Your Enquiry - The Cane House"
 						class="button button-primary">
 						✉️ Reply by Email
 					</a>
@@ -124,8 +124,8 @@ if ( $view === 'detail' && $sub_id && $table_exists ) {
 										<td style="white-space:nowrap;"><?php echo esc_html( $log->created_at ); ?></td>
 										<td><?php echo esc_html( str_replace( '_', ' ', ucfirst( $log->action ?? '' ) ) ); ?></td>
 										<td><?php echo esc_html( $log->admin_user_name ?: 'Visitor' ); ?></td>
-										<td><?php echo esc_html( $log->old_value ?: '—' ); ?></td>
-										<td><?php echo esc_html( $log->new_value ?: '—' ); ?></td>
+										<td><?php echo esc_html( $log->old_value ?: '-' ); ?></td>
+										<td><?php echo esc_html( $log->new_value ?: '-' ); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
@@ -286,7 +286,7 @@ function ch_contact_list_url( array $extra = [] ): string {
 							<td style="white-space:nowrap;font-size:.82rem;"><?php echo esc_html( substr( $row->created_at, 0, 16 ) ); ?></td>
 							<td><?php echo esc_html( $row->name ); ?></td>
 							<td><a href="mailto:<?php echo esc_attr( $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a></td>
-							<td><?php echo esc_html( $row->phone ?: '—' ); ?></td>
+							<td><?php echo esc_html( $row->phone ?: '-' ); ?></td>
 							<td><span class="ch-badge ch-badge--green" style="font-size:.75rem;"><?php echo esc_html( $row->enquiry_type ?? 'general' ); ?></span></td>
 							<td style="max-width:280px;word-break:break-word;font-size:.82rem;color:#555;">
 								<?php echo esc_html( mb_strimwidth( $row->message ?? '', 0, 120, '…' ) ); ?>

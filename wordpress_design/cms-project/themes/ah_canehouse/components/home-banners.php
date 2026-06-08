@@ -47,7 +47,7 @@ $uid = 'ch-hero-' . wp_unique_id();
              aria-hidden="<?php echo $i === 0 ? 'false' : 'true'; ?>"
              data-media-type="<?php echo esc_attr( $media_type ); ?>">
 
-            <!-- Background — image / video / YouTube / Vimeo -->
+            <!-- Background - image / video / YouTube / Vimeo -->
             <?php if ( $media_type === 'image' ) : ?>
             <div class="ch-hero-slide__bg"
                  style="--bg:url('<?php echo $media_url; ?>');--bg-mobile:url('<?php echo $img_mob; ?>');"
@@ -207,7 +207,7 @@ $uid = 'ch-hero-' . wp_unique_id();
     transform: scale(1);
 }
 
-/* Background video — fills the slide like object-fit:cover */
+/* Background video - fills the slide like object-fit:cover */
 .ch-hero-slide__bg--video {
     position: absolute;
     inset: 0;
@@ -219,7 +219,7 @@ $uid = 'ch-hero-' . wp_unique_id();
     transition: none;
 }
 
-/* YouTube / Vimeo iframe background — oversized + centred to simulate cover */
+/* YouTube / Vimeo iframe background - oversized + centred to simulate cover */
 .ch-hero-slide__bg--embed {
     position: absolute;
     top: 50%;
@@ -584,7 +584,7 @@ $uid = 'ch-hero-' . wp_unique_id();
         /* ── Autoplay ─────────────────────────────────────── */
         function startAutoplay() {
             stopAutoplay();
-            // Video slides advance via the video's own 'ended' event — no timer needed
+            // Video slides advance via the video's own 'ended' event - no timer needed
             if (isVideoSlide(slides[current])) return;
             timer = setInterval(function () { goTo(current + 1); }, autoplayMs);
             resetProgress();
@@ -633,7 +633,7 @@ $uid = 'ch-hero-' . wp_unique_id();
         }, { passive: true });
 
         /* ── Pause on hover ───────────────────────────────── */
-        // Only the image slide timer is paused on hover — videos keep playing uninterrupted.
+        // Only the image slide timer is paused on hover - videos keep playing uninterrupted.
         carousel.addEventListener('mouseenter', stopAutoplay);
         carousel.addEventListener('mouseleave', startAutoplay);
 

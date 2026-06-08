@@ -20,7 +20,7 @@ $about_gallery     = ch_get_about_gallery();
 $equipment_gallery = ch_get_equipment_gallery();
 $flavours          = ch_get_flavours()         ?? [];
 
-// ── Tab registry — add a new entry here to get a new tab ─────────────────────
+// ── Tab registry - add a new entry here to get a new tab ─────────────────────
 $tabs = [
 	'business'  => '📋 Business Details',
 	'contact'   => '📬 Contact Form',

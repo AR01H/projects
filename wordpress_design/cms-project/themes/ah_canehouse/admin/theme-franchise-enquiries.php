@@ -73,15 +73,15 @@ if ( $view === 'detail' && $enquiry_id && $table_exists ) {
 					<table class="ch-detail-table">
 						<tr><th>Name</th><td><?php echo esc_html( $enquiry->name ); ?></td></tr>
 						<tr><th>Email</th><td><a href="mailto:<?php echo esc_attr( $enquiry->email ); ?>"><?php echo esc_html( $enquiry->email ); ?></a></td></tr>
-						<tr><th>Phone</th><td><?php echo esc_html( $enquiry->phone ?: '—' ); ?></td></tr>
-						<tr><th>City / Area</th><td><?php echo esc_html( $enquiry->city ?: '—' ); ?></td></tr>
-						<tr><th>Franchise Type</th><td><?php echo esc_html( $enquiry->franchise_type ?: '—' ); ?></td></tr>
-						<tr><th>Timeline</th><td><?php echo esc_html( $enquiry->timeline ?: '—' ); ?></td></tr>
-						<tr><th>Investment Range</th><td><?php echo esc_html( $enquiry->investment_range ?: '—' ); ?></td></tr>
-						<tr><th>Experience</th><td><?php echo esc_html( $enquiry->experience ?: '—' ); ?></td></tr>
-						<tr><th>Message</th><td style="white-space:pre-wrap"><?php echo esc_html( $enquiry->message ?: '—' ); ?></td></tr>
+						<tr><th>Phone</th><td><?php echo esc_html( $enquiry->phone ?: '-' ); ?></td></tr>
+						<tr><th>City / Area</th><td><?php echo esc_html( $enquiry->city ?: '-' ); ?></td></tr>
+						<tr><th>Franchise Type</th><td><?php echo esc_html( $enquiry->franchise_type ?: '-' ); ?></td></tr>
+						<tr><th>Timeline</th><td><?php echo esc_html( $enquiry->timeline ?: '-' ); ?></td></tr>
+						<tr><th>Investment Range</th><td><?php echo esc_html( $enquiry->investment_range ?: '-' ); ?></td></tr>
+						<tr><th>Experience</th><td><?php echo esc_html( $enquiry->experience ?: '-' ); ?></td></tr>
+						<tr><th>Message</th><td style="white-space:pre-wrap"><?php echo esc_html( $enquiry->message ?: '-' ); ?></td></tr>
 						<tr><th>Submitted</th><td><?php echo esc_html( $enquiry->created_at ); ?></td></tr>
-						<tr><th>IP Address</th><td><?php echo esc_html( $enquiry->ip_address ?: '—' ); ?></td></tr>
+						<tr><th>IP Address</th><td><?php echo esc_html( $enquiry->ip_address ?: '-' ); ?></td></tr>
 					</table>
 				</div>
 
@@ -113,8 +113,8 @@ if ( $view === 'detail' && $enquiry_id && $table_exists ) {
 										<td style="white-space:nowrap;"><?php echo esc_html( $log->created_at ); ?></td>
 										<td><?php echo esc_html( str_replace( '_', ' ', ucfirst( $log->action ?? '' ) ) ); ?></td>
 										<td><?php echo esc_html( $log->admin_user_name ?: 'Visitor' ); ?></td>
-										<td><?php echo esc_html( $log->old_value ?: '—' ); ?></td>
-										<td><?php echo esc_html( $log->new_value ?: '—' ); ?></td>
+										<td><?php echo esc_html( $log->old_value ?: '-' ); ?></td>
+										<td><?php echo esc_html( $log->new_value ?: '-' ); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
@@ -270,10 +270,10 @@ function ch_franchise_list_url( array $extra = [] ): string {
 									<br><small><?php echo esc_html( $row->phone ); ?></small>
 								<?php endif; ?>
 							</td>
-							<td><?php echo esc_html( $row->city ?: '—' ); ?></td>
-							<td><?php echo esc_html( $row->franchise_type ?: '—' ); ?></td>
-							<td style="font-size:.82rem;"><?php echo esc_html( $row->investment_range ?: '—' ); ?></td>
-							<td style="font-size:.82rem;"><?php echo esc_html( $row->timeline ?: '—' ); ?></td>
+							<td><?php echo esc_html( $row->city ?: '-' ); ?></td>
+							<td><?php echo esc_html( $row->franchise_type ?: '-' ); ?></td>
+							<td style="font-size:.82rem;"><?php echo esc_html( $row->investment_range ?: '-' ); ?></td>
+							<td style="font-size:.82rem;"><?php echo esc_html( $row->timeline ?: '-' ); ?></td>
 							<td>
 								<span class="ch-badge" style="background:<?php echo esc_attr( $s_info['color'] ); ?>22;color:<?php echo esc_attr( $s_info['color'] ); ?>;">
 									<?php echo esc_html( $s_info['label'] ); ?>

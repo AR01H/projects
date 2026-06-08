@@ -8904,7 +8904,7 @@ a.ch-cq-card:hover { border-color: var(--client-color-7); transform: translateY(
 /* ── Section colour rotation ────────────────────────────────────────────────
    Placed in a named @layer so it has the lowest possible priority.
    Any section with its own class-level background (dark sections, heroes,
-   contact, franchise, etc.) automatically wins — no :not() chains needed.
+   contact, franchise, etc.) automatically wins - no :not() chains needed.
    ──────────────────────────────────────────────────────────────────────── */
 @layer ch-rotation {
     .ch-main > section:nth-child(3n+1) { background: var(--client-color-11); }

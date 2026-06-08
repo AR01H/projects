@@ -8,7 +8,7 @@ get_header();
 
 <main id="page-testing" style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
 
-    <h2 style="margin-bottom: 2rem;">1. Image Cards — 3 visible, autoplay</h2>
+    <h2 style="margin-bottom: 2rem;">1. Image Cards - 3 visible, autoplay</h2>
     <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'image',
         'visible'    => 3,
@@ -32,7 +32,7 @@ get_header();
         ],
     ] ); ?>
 
-    <h2 style="margin: 3rem 0 2rem;">2. Feature Cards — 2 visible, top border</h2>
+    <h2 style="margin: 3rem 0 2rem;">2. Feature Cards - 2 visible, top border</h2>
     <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'feature',
         'visible'    => 2,
@@ -49,7 +49,7 @@ get_header();
         ],
     ] ); ?>
 
-    <h2 style="margin: 3rem 0 2rem;">3. Feature Cards + Checklist — left-aligned</h2>
+    <h2 style="margin: 3rem 0 2rem;">3. Feature Cards + Checklist - left-aligned</h2>
     <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'feature',
         'visible'    => 2,
@@ -65,7 +65,7 @@ get_header();
         ],
     ] ); ?>
 
-    <h2 style="margin: 3rem 0 2rem;">4. Step Cards — How It Works</h2>
+    <h2 style="margin: 3rem 0 2rem;">4. Step Cards - How It Works</h2>
     <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'step',
         'visible'    => 2,
@@ -106,7 +106,7 @@ get_header();
         ],
     ] ); ?>
 
-    <h2 style="margin: 3rem 0 2rem;">6. Ticker — Continuous Scroll</h2>
+    <h2 style="margin: 3rem 0 2rem;">6. Ticker - Continuous Scroll</h2>
     <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'         => 'feature',
         'ticker'       => true,
@@ -125,7 +125,7 @@ get_header();
         ],
     ] ); ?>
 
-    <h2 style="margin: 3rem 0 2rem;">7. Vertical — 1 visible, autoplay</h2>
+    <h2 style="margin: 3rem 0 2rem;">7. Vertical - 1 visible, autoplay</h2>
     <div style="max-width: 480px;">
         <?php get_template_part( 'components/carousels/generic-carousel', null, [
             'type'      => 'feature',
@@ -145,7 +145,7 @@ get_header();
         ] ); ?>
     </div>
 
-    <h2 style="margin: 3rem 0 2rem;">8. Vertical Ticker — Continuous Scroll Up</h2>
+    <h2 style="margin: 3rem 0 2rem;">8. Vertical Ticker - Continuous Scroll Up</h2>
     <div style="max-width: 480px; height: 220px; overflow: hidden;">
         <?php get_template_part( 'components/carousels/generic-carousel', null, [
             'type'         => 'feature',
@@ -166,7 +166,7 @@ get_header();
         ] ); ?>
     </div>
 
-    <h2 style="margin: 3rem 0 2rem;">9. Floating Nav — arrows beside track</h2>
+    <h2 style="margin: 3rem 0 2rem;">9. Floating Nav - arrows beside track</h2>
     <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'         => 'feature',
         'visible'      => 3,
@@ -185,7 +185,7 @@ get_header();
         ],
     ] ); ?>
 
-    <h2 style="margin: 3rem 0 2rem;">10. Three-Column Grid — each column independent</h2>
+    <h2 style="margin: 3rem 0 2rem;">10. Three-Column Grid - each column independent</h2>
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
 
         <div>

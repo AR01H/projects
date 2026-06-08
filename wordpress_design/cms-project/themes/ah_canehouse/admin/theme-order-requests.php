@@ -77,14 +77,14 @@ if ( $view === 'detail' && $order_id && $table_exists ) {
 					<table class="ch-detail-table">
 						<tr><th>Name</th><td><?php echo esc_html( $order->name ); ?></td></tr>
 						<tr><th>Email</th><td><a href="mailto:<?php echo esc_attr( $order->email ); ?>"><?php echo esc_html( $order->email ); ?></a></td></tr>
-						<tr><th>Phone</th><td><?php echo esc_html( $order->phone ?: '—' ); ?></td></tr>
+						<tr><th>Phone</th><td><?php echo esc_html( $order->phone ?: '-' ); ?></td></tr>
 						<tr><th>Delivery Address</th><td style="white-space:pre-wrap"><?php echo esc_html( $order->delivery_address ); ?></td></tr>
-						<tr><th>Area / City</th><td><?php echo esc_html( $order->delivery_area ?: '—' ); ?></td></tr>
-						<tr><th>Preferred Date</th><td><?php echo esc_html( $order->preferred_date ?: '—' ); ?></td></tr>
-						<tr><th>Preferred Time</th><td><?php echo esc_html( $order->preferred_time ?: '—' ); ?></td></tr>
-						<tr><th>Special Notes</th><td style="white-space:pre-wrap"><?php echo esc_html( $order->special_notes ?: '—' ); ?></td></tr>
+						<tr><th>Area / City</th><td><?php echo esc_html( $order->delivery_area ?: '-' ); ?></td></tr>
+						<tr><th>Preferred Date</th><td><?php echo esc_html( $order->preferred_date ?: '-' ); ?></td></tr>
+						<tr><th>Preferred Time</th><td><?php echo esc_html( $order->preferred_time ?: '-' ); ?></td></tr>
+						<tr><th>Special Notes</th><td style="white-space:pre-wrap"><?php echo esc_html( $order->special_notes ?: '-' ); ?></td></tr>
 						<tr><th>Submitted</th><td><?php echo esc_html( $order->created_at ); ?></td></tr>
-						<tr><th>IP Address</th><td><?php echo esc_html( $order->ip_address ?: '—' ); ?></td></tr>
+						<tr><th>IP Address</th><td><?php echo esc_html( $order->ip_address ?: '-' ); ?></td></tr>
 					</table>
 				</div>
 
@@ -98,7 +98,7 @@ if ( $view === 'detail' && $order_id && $table_exists ) {
 								<?php foreach ( $items as $idx => $item ) : ?>
 									<tr>
 										<td><?php echo $idx + 1; ?></td>
-										<td><?php echo esc_html( $item['name'] ?? '—' ); ?></td>
+										<td><?php echo esc_html( $item['name'] ?? '-' ); ?></td>
 										<td><strong><?php echo esc_html( $item['qty'] ?? 1 ); ?></strong></td>
 									</tr>
 								<?php endforeach; ?>
@@ -142,8 +142,8 @@ if ( $view === 'detail' && $order_id && $table_exists ) {
 										<td style="white-space:nowrap;"><?php echo esc_html( $log->created_at ); ?></td>
 										<td><?php echo esc_html( $action_label ); ?></td>
 										<td><?php echo esc_html( $log->admin_user_name ?: 'Customer' ); ?></td>
-										<td><?php echo esc_html( $log->old_value ?: '—' ); ?></td>
-										<td><?php echo esc_html( $log->new_value ?: '—' ); ?></td>
+										<td><?php echo esc_html( $log->old_value ?: '-' ); ?></td>
+										<td><?php echo esc_html( $log->new_value ?: '-' ); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
@@ -309,9 +309,9 @@ function ch_order_list_url( array $extra = [] ): string {
 									<br><small><?php echo esc_html( $row->phone ); ?></small>
 								<?php endif; ?>
 							</td>
-							<td><?php echo esc_html( $row->delivery_area ?: '—' ); ?></td>
-							<td style="max-width:220px;word-break:break-word;font-size:.82rem;"><?php echo esc_html( $items_text ?: '—' ); ?></td>
-							<td><?php echo esc_html( $row->preferred_date ?: '—' ); ?></td>
+							<td><?php echo esc_html( $row->delivery_area ?: '-' ); ?></td>
+							<td style="max-width:220px;word-break:break-word;font-size:.82rem;"><?php echo esc_html( $items_text ?: '-' ); ?></td>
+							<td><?php echo esc_html( $row->preferred_date ?: '-' ); ?></td>
 							<td>
 								<span class="ch-badge" style="background:<?php echo esc_attr( $s_info['color'] ); ?>22;color:<?php echo esc_attr( $s_info['color'] ); ?>;">
 									<?php echo esc_html( $s_info['label'] ); ?>

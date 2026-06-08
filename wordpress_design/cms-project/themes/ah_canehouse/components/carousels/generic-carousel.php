@@ -57,7 +57,7 @@
  *
  * ── EXAMPLES ─────────────────────────────────────────────────────────────────
  *
- *  // Full-width — 3 image cards
+ *  // Full-width - 3 image cards
  *  get_template_part( 'components/generic-carousel', null, [
  *      'type'     => 'image',
  *      'visible'  => 3,
@@ -69,7 +69,7 @@
  *      ],
  *  ] );
  *
- *  // Inside a narrow grid column — 1 feature card visible, auto-detects container
+ *  // Inside a narrow grid column - 1 feature card visible, auto-detects container
  *  get_template_part( 'components/generic-carousel', null, [
  *      'type'       => 'feature',
  *      'visible'    => 1,
@@ -81,7 +81,7 @@
  *      ],
  *  ] );
  *
- *  // Blend selector — inside any column width
+ *  // Blend selector - inside any column width
  *  get_template_part( 'components/generic-carousel', null, [
  *      'type'     => 'selector',
  *      'visible'  => 3,
@@ -106,7 +106,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   CARD RENDERER — self-contained, no external dependency needed.
+   CARD RENDERER - self-contained, no external dependency needed.
    Extend the switch below to add more card types.
    ══════════════════════════════════════════════════════════════════════════════ */
 if ( ! function_exists( 'ch_carousel_render_card' ) ) {

@@ -4,7 +4,7 @@
 	<input type="hidden" name="action" value="ch_content_settings_booking">
 
 	<div class="ch-card">
-		<h2>📅 Booking Wizard — Occasion Options</h2>
+		<h2>📅 Booking Wizard - Occasion Options</h2>
 		<p class="ch-cs-desc">Occasion types shown in Step 3 of the booking wizard. Add, remove or drag to reorder.</p>
 
 		<div class="ch-rep-header ch-rep-header--single">

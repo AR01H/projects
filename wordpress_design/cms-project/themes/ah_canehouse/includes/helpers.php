@@ -87,7 +87,7 @@ function ch_get_certifications(): array {
 			'badge' => $r->badge ?? '',
 		], (array) $rows );
 	}
-	return CH_Data::certifications(); // table is empty — CSV fallback
+	return CH_Data::certifications(); // table is empty - CSV fallback
 }
 
 // ── Schema / SEO Settings ──────────────────────────────────────────────────────
@@ -508,7 +508,7 @@ function ch_get_hire_packages( int $limit = 0 ): array {
 			}, $rows );
 		}
 	}
-	// Fallback: legacy WP option — DB-only, no mock fallback.
+	// Fallback: legacy WP option - DB-only, no mock fallback.
 	$opt = get_option( 'ch_hire_packages', [] );
 	if ( is_string( $opt ) ) $opt = json_decode( $opt, true ) ?: [];
 	$packages = (array) $opt;

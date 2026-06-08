@@ -1,6 +1,6 @@
 <?php
 /**
- * CH Carousel — Helpers
+ * CH Carousel - Helpers
  *
  * Include in functions.php:
  *   require_once get_template_directory() . '/includes/carousel-helpers.php';

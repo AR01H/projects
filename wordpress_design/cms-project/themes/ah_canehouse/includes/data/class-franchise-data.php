@@ -102,7 +102,7 @@ class CH_Franchise_Data {
 		global $wpdb;
 		$table   = $wpdb->prefix . 'ch_franchise_enquiries';
 		$current = $wpdb->get_var( $wpdb->prepare( "SELECT admin_notes FROM `{$table}` WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$updated = trim( $current . "\n\n[" . current_time( 'Y-m-d H:i' ) . " — {$admin_name}]\n{$note}" );
+		$updated = trim( $current . "\n\n[" . current_time( 'Y-m-d H:i' ) . " - {$admin_name}]\n{$note}" );
 		$wpdb->update( $table, [ 'admin_notes' => $updated, 'updated_at' => current_time( 'mysql' ) ], [ 'id' => $id ], [ '%s', '%s' ], [ '%d' ] );
 
 		$wpdb->insert( $wpdb->prefix . 'ch_franchise_logs', [

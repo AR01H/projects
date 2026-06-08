@@ -48,7 +48,7 @@ class CH_Shared_Data {
 	/**
 	 * Load one component's heading data from section-headings.json.
 	 * Substitutes brand tokens: {brand_name}, {product_name}, {Product_name},
-	 * {product_short}, {Product_short} — values from brand.json.
+	 * {product_short}, {Product_short} - values from brand.json.
 	 * Static cache so both files are parsed only once per request.
 	 */
 	public static function section_heading( string $key ): array {

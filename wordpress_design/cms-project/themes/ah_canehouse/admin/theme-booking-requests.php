@@ -73,16 +73,16 @@ if ( $view === 'detail' && $booking_id && $table_exists ) {
 					<table class="ch-detail-table">
 						<tr><th>Name</th><td><?php echo esc_html( $booking->name ); ?></td></tr>
 						<tr><th>Email</th><td><a href="mailto:<?php echo esc_attr( $booking->email ); ?>"><?php echo esc_html( $booking->email ); ?></a></td></tr>
-						<tr><th>Phone</th><td><?php echo esc_html( $booking->phone ?: '—' ); ?></td></tr>
-						<tr><th>Occasion</th><td><?php echo esc_html( $booking->occasion ?: '—' ); ?></td></tr>
-						<tr><th>Event Date</th><td><?php echo esc_html( $booking->event_date ?: '—' ); ?></td></tr>
-						<tr><th>Guest Count</th><td><?php echo esc_html( $booking->guest_count ?: '—' ); ?></td></tr>
-						<tr><th>Location / Venue</th><td style="white-space:pre-wrap"><?php echo esc_html( $booking->location ?: '—' ); ?></td></tr>
-						<tr><th>Cane Types</th><td><?php echo esc_html( $booking->cane_types ?: '—' ); ?></td></tr>
-						<tr><th>Flavours</th><td><?php echo esc_html( $booking->flavours ?: '—' ); ?></td></tr>
-						<tr><th>Notes</th><td style="white-space:pre-wrap"><?php echo esc_html( $booking->notes ?: '—' ); ?></td></tr>
+						<tr><th>Phone</th><td><?php echo esc_html( $booking->phone ?: '-' ); ?></td></tr>
+						<tr><th>Occasion</th><td><?php echo esc_html( $booking->occasion ?: '-' ); ?></td></tr>
+						<tr><th>Event Date</th><td><?php echo esc_html( $booking->event_date ?: '-' ); ?></td></tr>
+						<tr><th>Guest Count</th><td><?php echo esc_html( $booking->guest_count ?: '-' ); ?></td></tr>
+						<tr><th>Location / Venue</th><td style="white-space:pre-wrap"><?php echo esc_html( $booking->location ?: '-' ); ?></td></tr>
+						<tr><th>Cane Types</th><td><?php echo esc_html( $booking->cane_types ?: '-' ); ?></td></tr>
+						<tr><th>Flavours</th><td><?php echo esc_html( $booking->flavours ?: '-' ); ?></td></tr>
+						<tr><th>Notes</th><td style="white-space:pre-wrap"><?php echo esc_html( $booking->notes ?: '-' ); ?></td></tr>
 						<tr><th>Submitted</th><td><?php echo esc_html( $booking->created_at ); ?></td></tr>
-						<tr><th>IP Address</th><td><?php echo esc_html( $booking->ip_address ?: '—' ); ?></td></tr>
+						<tr><th>IP Address</th><td><?php echo esc_html( $booking->ip_address ?: '-' ); ?></td></tr>
 					</table>
 				</div>
 
@@ -114,8 +114,8 @@ if ( $view === 'detail' && $booking_id && $table_exists ) {
 										<td style="white-space:nowrap;"><?php echo esc_html( $log->created_at ); ?></td>
 										<td><?php echo esc_html( str_replace( '_', ' ', ucfirst( $log->action ?? '' ) ) ); ?></td>
 										<td><?php echo esc_html( $log->admin_user_name ?: 'Visitor' ); ?></td>
-										<td><?php echo esc_html( $log->old_value ?: '—' ); ?></td>
-										<td><?php echo esc_html( $log->new_value ?: '—' ); ?></td>
+										<td><?php echo esc_html( $log->old_value ?: '-' ); ?></td>
+										<td><?php echo esc_html( $log->new_value ?: '-' ); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
@@ -271,10 +271,10 @@ function ch_booking_list_url( array $extra = [] ): string {
 									<br><small><?php echo esc_html( $row->phone ); ?></small>
 								<?php endif; ?>
 							</td>
-							<td><?php echo esc_html( $row->occasion ?: '—' ); ?></td>
-							<td><?php echo esc_html( $row->event_date ?: '—' ); ?></td>
-							<td><?php echo esc_html( $row->guest_count ?: '—' ); ?></td>
-							<td style="max-width:180px;word-break:break-word;font-size:.82rem;"><?php echo esc_html( $row->location ?: '—' ); ?></td>
+							<td><?php echo esc_html( $row->occasion ?: '-' ); ?></td>
+							<td><?php echo esc_html( $row->event_date ?: '-' ); ?></td>
+							<td><?php echo esc_html( $row->guest_count ?: '-' ); ?></td>
+							<td style="max-width:180px;word-break:break-word;font-size:.82rem;"><?php echo esc_html( $row->location ?: '-' ); ?></td>
 							<td>
 								<span class="ch-badge" style="background:<?php echo esc_attr( $s_info['color'] ); ?>22;color:<?php echo esc_attr( $s_info['color'] ); ?>;">
 									<?php echo esc_html( $s_info['label'] ); ?>

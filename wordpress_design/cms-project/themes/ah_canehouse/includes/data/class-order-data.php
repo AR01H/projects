@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
  * CH_Order_Data
  * Data layer for Order-to-Deliver requests.
  * Handles all DB reads/writes for orders and their activity logs.
- * Never outputs HTML — only returns data or writes to DB.
+ * Never outputs HTML - only returns data or writes to DB.
  */
 class CH_Order_Data {
 
@@ -122,7 +122,7 @@ class CH_Order_Data {
 	}
 
 	/**
-	 * Count orders grouped by status — used for dashboard stats.
+	 * Count orders grouped by status - used for dashboard stats.
 	 */
 	public static function count_by_status(): array {
 		global $wpdb;
@@ -289,7 +289,7 @@ class CH_Order_Data {
 	// ── Static content from JSON (no DB needed) ──────────────────────────────
 
 	/**
-	 * Delivery product list — reads from delivery-products.json.
+	 * Delivery product list - reads from delivery-products.json.
 	 * Admin can override via ch_delivery_products wp_option (JSON string or array).
 	 */
 	public static function products(): array {
@@ -300,7 +300,7 @@ class CH_Order_Data {
 	}
 
 	/**
-	 * Delivery feature cards — reads features[] from order-to-deliver.json.
+	 * Delivery feature cards - reads features[] from order-to-deliver.json.
 	 * Admin can override via ch_delivery_features wp_option.
 	 */
 	public static function features(): array {

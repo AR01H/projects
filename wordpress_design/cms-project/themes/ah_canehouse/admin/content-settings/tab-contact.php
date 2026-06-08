@@ -4,7 +4,7 @@
 	<input type="hidden" name="action" value="ch_content_settings_contact">
 
 	<div class="ch-card">
-		<h2>📬 Contact Form — Enquiry Types</h2>
+		<h2>📬 Contact Form - Enquiry Types</h2>
 		<p class="ch-cs-desc">Options shown in the "I'm enquiring about" dropdown. Each item needs a <strong>Value</strong> (no spaces, lowercase) and a <strong>Label</strong> (what the visitor sees).</p>
 
 		<div class="ch-rep-header">

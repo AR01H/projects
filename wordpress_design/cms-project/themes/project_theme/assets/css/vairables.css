@@ -1,0 +1,58 @@
+/*
+ * CSS Custom Properties — project_theme
+ * Replace placeholder values with actual brand colours before launch.
+ * Naming: --pt-{category}-{name}
+ */
+
+:root {
+
+	/* ── Brand Colours ──────────────────────────────────────────── */
+	--pt-color-1:  #1a2c4e;
+	--pt-color-2:  #2a4a82;
+	--pt-color-3:  #3a6abf;
+	--pt-color-4:  #6e9ad9;
+	--pt-color-5:  #c8daf5;
+	--pt-color-6:  #e8f0fb;
+	--pt-color-7:  #f0a500;
+	--pt-color-8:  #c87800;
+	--pt-color-9:  rgba(240,165,0,.2);
+	--pt-color-10: #f9f3e3;
+	--pt-color-11: #f7f9fc;
+	--pt-color-12: #edf2f9;
+	--pt-color-13: #0f1c30;
+	--pt-color-14: rgba(255,255,255,.06);
+	--pt-color-15: #1a2c4e;
+	--pt-color-16: #5a6e8a;
+	--pt-color-17: rgba(255,255,255,.85);
+	--pt-color-18: rgba(26,44,78,.10);
+	--pt-color-19: rgba(26,44,78,.20);
+	--pt-color-20: rgba(110,154,217,.25);
+
+	/* ── Semantic aliases ───────────────────────────────────────── */
+	--pt-accent:     var(--pt-color-7);
+	--pt-text:       var(--pt-color-15);
+	--pt-text-muted: var(--pt-color-16);
+	--pt-bg:         #ffffff;
+	--pt-bg-alt:     var(--pt-color-11);
+	--pt-border:     var(--pt-color-20);
+
+	/* ── Typography ─────────────────────────────────────────────── */
+	--pt-font-body:    'Inter', 'Helvetica Neue', sans-serif;
+	--pt-font-display: 'Sora', 'Inter', sans-serif;
+
+	/* ── Layout ──────────────────────────────────────────────────── */
+	--pt-container:     1200px;
+	--pt-section-py:    5rem;
+	--pt-section-py-sm: 3rem;
+	--pt-nav-height:    72px;
+
+	/* ── Shape ───────────────────────────────────────────────────── */
+	--pt-radius:     12px;
+	--pt-radius-sm:  6px;
+	--pt-radius-lg:  20px;
+	--pt-radius-pill: 100px;
+
+	/* ── Transitions ─────────────────────────────────────────────── */
+	--pt-transition:      all 0.28s ease;
+	--pt-transition-fast: all 0.16s ease;
+}

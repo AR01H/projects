@@ -1,5 +1,5 @@
 /**
- * CH Generic Carousel — carousel.js
+ * CH Generic Carousel - carousel.js
  */
 ( function ( window ) {
     'use strict';
@@ -182,7 +182,7 @@
     CHCarousel.prototype._slide = function () {
         if ( ! this.items[ this._index ] ) return;
 
-        /* Measure the actual rendered item — includes its margin/gap share */
+        /* Measure the actual rendered item - includes its margin/gap share */
         var trackStyle = getComputedStyle( this.track );
         var gap = parseFloat( this._isV
             ? ( trackStyle.rowGap    || trackStyle.gap )

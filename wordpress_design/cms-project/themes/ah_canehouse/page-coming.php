@@ -1,6 +1,6 @@
 <?php
 /* ═══════════════════════════════════════════
-   THE CANE HOUSE — CONTACT PAGE
+   THE CANE HOUSE - CONTACT PAGE
    All editable values live here at the top
    ═══════════════════════════════════════════ */
 
@@ -23,7 +23,7 @@ $services = [
   ]
 ];
 
-$launching_soon_text = "Order your favourite <b>sugarcane juice</b> flavours online, book event catering, and explore our full menu — all from your phone. We're almost ready.";
+$launching_soon_text = "Order your favourite <b>sugarcane juice</b> flavours online, book event catering, and explore our full menu - all from your phone. We're almost ready.";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +56,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);font-weight:3
 @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.55);opacity:.55}}
 @keyframes bubble{0%{transform:translateY(0);opacity:.7}100%{transform:translateY(-38px);opacity:0}}
 
-/* floating fruit icons — pop in once then float gently */
+/* floating fruit icons - pop in once then float gently */
 @keyframes fruit-pop{
   0%  {opacity:0;transform:scale(0) rotate(-20deg) translateY(0)}
   55% {opacity:1;transform:scale(1.15) rotate(6deg) translateY(-12px)}

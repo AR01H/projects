@@ -28,13 +28,13 @@ get_header();
 <main class="carousel-test-page">
 
 	<h1>Carousel Component</h1>
-	<p class="page-intro">All examples use <code>components/carousels/carousel.php</code> — one component, fully configurable.</p>
+	<p class="page-intro">All examples use <code>components/carousels/carousel.php</code> - one component, fully configurable.</p>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 1. Default — dots + arrows, 3 visible, feature cards          -->
+	<!-- 1. Default - dots + arrows, 3 visible, feature cards          -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>1. Feature Cards — Dots + Arrows (default)</h2>
+		<h2>1. Feature Cards - Dots + Arrows (default)</h2>
 		<div class="ct-label">
 			<span class="ct-badge">showDots: true</span>
 			<span class="ct-badge">showArrows: true</span>
@@ -48,17 +48,17 @@ get_header();
 				[ 'icon' => '⚡', 'title' => 'Instant Energy',   'text' => 'Natural sugars and electrolytes for a quick, lasting boost.' ],
 				[ 'icon' => '💪', 'title' => 'Nutrient Rich',    'text' => 'Potassium, magnesium, and antioxidants in every glass.' ],
 				[ 'icon' => '🌍', 'title' => 'Globally Loved',   'text' => 'Enjoyed for thousands of years across continents.' ],
-				[ 'icon' => '🎉', 'title' => 'Event Ready',      'text' => 'Weddings, festivals, corporates — we come to you.' ],
+				[ 'icon' => '🎉', 'title' => 'Event Ready',      'text' => 'Weddings, festivals, corporates - we come to you.' ],
 				[ 'icon' => '♻️', 'title' => 'Eco Friendly',     'text' => 'Biodegradable cups and zero-waste operation at every event.' ],
 			],
 		] ); ?>
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 2. Image Cards — dots only, infinite loop                     -->
+	<!-- 2. Image Cards - dots only, infinite loop                     -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>2. Image Cards — Dots only, infinite loop</h2>
+		<h2>2. Image Cards - Dots only, infinite loop</h2>
 		<div class="ct-label">
 			<span class="ct-badge">showArrows: false</span>
 			<span class="ct-badge">showDots: true</span>
@@ -78,10 +78,10 @@ get_header();
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 3. Arrows only — no dots, step=1 (item-by-item)              -->
+	<!-- 3. Arrows only - no dots, step=1 (item-by-item)              -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>3. Arrows only — scrollStep: 1 (one card at a time)</h2>
+		<h2>3. Arrows only - scrollStep: 1 (one card at a time)</h2>
 		<div class="ct-label">
 			<span class="ct-badge">showDots: false</span>
 			<span class="ct-badge">showArrows: true</span>
@@ -92,20 +92,20 @@ get_header();
 			'showDots'    => false,
 			'scrollStep'  => 1,
 			'items'       => [
-				[ 'step' => '01', 'icon' => '📋', 'title' => 'Fill the Form',     'text' => 'Tell us about your event — date, location, expected footfall.' ],
+				[ 'step' => '01', 'icon' => '📋', 'title' => 'Fill the Form',     'text' => 'Tell us about your event - date, location, expected footfall.' ],
 				[ 'step' => '02', 'icon' => '💬', 'title' => 'We Get in Touch',   'text' => 'Our team contacts you within 24 hours to confirm availability.' ],
 				[ 'step' => '03', 'icon' => '🤝', 'title' => 'Lock the Booking',  'text' => 'Pay a small deposit to secure your date and chosen package.' ],
 				[ 'step' => '04', 'icon' => '🚐', 'title' => 'We Arrive & Setup', 'text' => 'Our crew arrives early, sets up, and is ready before your guests.' ],
-				[ 'step' => '05', 'icon' => '🥤', 'title' => 'Serve & Enjoy',     'text' => 'Fresh juice flows all event long — zero effort on your end.' ],
+				[ 'step' => '05', 'icon' => '🥤', 'title' => 'Serve & Enjoy',     'text' => 'Fresh juice flows all event long - zero effort on your end.' ],
 			],
 		] ); ?>
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 4. Autoplay — no pause on hover                               -->
+	<!-- 4. Autoplay - no pause on hover                               -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>4. Autoplay — 3 s interval, no pause on hover</h2>
+		<h2>4. Autoplay - 3 s interval, no pause on hover</h2>
 		<div class="ct-label">
 			<span class="ct-badge">autoplay: true</span>
 			<span class="ct-badge">autoplaySpeed: 3000</span>
@@ -127,10 +127,10 @@ get_header();
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 5. Card variant — testimonials                                -->
+	<!-- 5. Card variant - testimonials                                -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>5. Card Variants — Testimonials</h2>
+		<h2>5. Card Variants - Testimonials</h2>
 		<div class="ct-label">
 			<span class="ct-badge">variant: testimonial</span>
 			<span class="ct-badge">cardsPerView: 3</span>
@@ -160,7 +160,7 @@ get_header();
 				],
 				[
 					'variant' => 'testimonial',
-					'quote'   => '"Booked for a birthday party of 80 guests — everything ran smoothly and tasted amazing."',
+					'quote'   => '"Booked for a birthday party of 80 guests - everything ran smoothly and tasted amazing."',
 					'author'  => 'Lakshmi Patel',
 					'role'    => 'Private Client',
 					'rating'  => 5,
@@ -170,10 +170,10 @@ get_header();
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 6. Card variant — stats                                       -->
+	<!-- 6. Card variant - stats                                       -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>6. Card Variants — Stats</h2>
+		<h2>6. Card Variants - Stats</h2>
 		<div class="ct-label">
 			<span class="ct-badge">variant: stat</span>
 			<span class="ct-badge">showArrows: false</span>
@@ -193,7 +193,7 @@ get_header();
 	<!-- 7. Mixed card variants                                        -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>7. Mixed Variants — image-overlay + minimal + feature-detailed</h2>
+		<h2>7. Mixed Variants - image-overlay + minimal + feature-detailed</h2>
 		<div class="ct-label">
 			<span class="ct-badge">mixed variants</span>
 			<span class="ct-badge">cardsPerView: 3</span>
@@ -210,7 +210,7 @@ get_header();
 				[
 					'variant' => 'minimal',
 					'title'   => 'Clean. Fresh. Fast.',
-					'text'    => 'We arrive, set up, and serve — all within 30 minutes of your event starting.',
+					'text'    => 'We arrive, set up, and serve - all within 30 minutes of your event starting.',
 				],
 				[
 					'variant'   => 'feature-detailed',
@@ -238,10 +238,10 @@ get_header();
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 8. Non-infinite — arrows disabled at edges                   -->
+	<!-- 8. Non-infinite - arrows disabled at edges                   -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>8. Non-infinite — arrows disable at start / end</h2>
+		<h2>8. Non-infinite - arrows disable at start / end</h2>
 		<div class="ct-label">
 			<span class="ct-badge">infiniteLoop: false</span>
 		</div>

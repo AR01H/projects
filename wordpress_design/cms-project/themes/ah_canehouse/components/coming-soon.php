@@ -1,6 +1,6 @@
 <?php
 /**
- * Coming Soon section — drop onto any page that isn't live yet.
+ * Coming Soon section - drop onto any page that isn't live yet.
  *
  * Args (all optional):
  *   key        string  Key from coming-soon.json  (default: 'default')

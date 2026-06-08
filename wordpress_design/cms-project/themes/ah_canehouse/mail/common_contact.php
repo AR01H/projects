@@ -58,7 +58,7 @@ function ch_handle_contact_submit(): void {
 		[ '%s', '%s', '%s', '%s', '%s', '%s', '%s' ]
 	);
 
-	// ── Rules Engine — queued to run after browser receives the response ──────
+	// ── Rules Engine - queued to run after browser receives the response ──────
 	if ( class_exists( 'AH_Rules_Engine' ) ) {
 		ch_run_after_response( static function () use ( $name, $email, $phone, $enquiry, $message ) {
 			$enquiry_labels = [
@@ -171,7 +171,7 @@ function ch_handle_order_submit(): void {
 		'admin_user_name' => 'Customer',
 	] );
 
-	// ── Rules Engine — queued to run after browser receives the response ─────
+	// ── Rules Engine - queued to run after browser receives the response ─────
 	if ( class_exists( 'AH_Rules_Engine' ) ) {
 		ch_run_after_response( static function () use (
 			$order_id, $name, $email, $phone,
@@ -276,7 +276,7 @@ function ch_handle_booking_submit(): void {
 		], [ '%d','%s','%s','%s','%d','%s','%s' ] );
 	}
 
-	// ── Rules Engine — queued to run after browser receives the response ─────
+	// ── Rules Engine - queued to run after browser receives the response ─────
 	if ( class_exists( 'AH_Rules_Engine' ) ) {
 		ch_run_after_response( static function () use (
 			$booking_id, $name, $email, $phone,
@@ -367,7 +367,7 @@ function ch_handle_franchise_submit(): void {
 		], [ '%d','%s','%s','%s','%d','%s','%s' ] );
 	}
 
-	// ── Rules Engine — queued to run after browser receives the response ─────
+	// ── Rules Engine - queued to run after browser receives the response ─────
 	if ( class_exists( 'AH_Rules_Engine' ) ) {
 		ch_run_after_response( static function () use (
 			$enquiry_id, $name, $email, $phone,

@@ -1,5 +1,5 @@
 /* ============================================================
-   CH Generic Carousel — carousel.css
+   CH Generic Carousel - carousel.css
    Container-query aware: works inside any grid column width.
    ============================================================ */
 
@@ -72,7 +72,7 @@
     /* Transitions */
     --cc-transition:        transform 0.45s cubic-bezier(.4,0,.2,1);
 
-    /* ── container query setup — on viewport, NOT the root
+    /* ── container query setup - on viewport, NOT the root
        (root needs to stay outside isolation so JS can read
         --cc-items-visible via getComputedStyle on .track)     */
     position: relative;

@@ -131,12 +131,12 @@
 	"page_hero_order_deliver": {
 		"tag":     "Order Fresh",
 		"heading": "Delivered Fresh to <em>Your Door</em>",
-		"desc":    "Order our freshly pressed sugarcane juice for delivery. Select your items, tell us where and when — we'll handle the rest."
+		"desc":    "Order our freshly pressed sugarcane juice for delivery. Select your items, tell us where and when - we'll handle the rest."
 	},
 	"order_deliver_section": {
 		"tag":   "Fresh Delivery",
 		"title": "Order Fresh Juice, <span class=\"accent\">Delivered</span>",
-		"body":  "Place a delivery request and our team will confirm all details directly with you — freshly pressed, no additives, right to your door."
+		"body":  "Place a delivery request and our team will confirm all details directly with you - freshly pressed, no additives, right to your door."
 	},
 	"order_deliver_cta": {
 		"tag":     "Ready to Order?",
