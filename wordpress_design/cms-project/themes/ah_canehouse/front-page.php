@@ -9,7 +9,7 @@ $data = require get_template_directory() . '/intermediate_logics/home.php';
 <?php get_template_part( 'components/home-banners' ); ?>
 <?php get_template_part( 'components/hero' ); ?>
 
-<?php get_template_part( 'components/showcase-carousel', null, [
+<?php get_template_part( 'components/carousels/showcase-carousel', null, [
 	'tag'   => 'See It Live',
 	'title' => 'Our Machines, <span class="accent">Our Craft</span>',
 	'body'  => 'From the press to the bottle - a closer look at how we bring fresh sugarcane to life.',

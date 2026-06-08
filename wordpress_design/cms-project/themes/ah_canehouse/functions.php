@@ -53,6 +53,7 @@ function ch_get_page_definitions(): array {
 		[ 'title' => 'Contact',            'slug' => 'contact',        'template' => 'page-contact.php'                          ],
 		[ 'title' => 'Blog',               'slug' => 'blog',           'template' => 'page-blog.php' ],
 		[ 'title' => 'Testing',            'slug' => 'testing',        'template' => 'page-testing.php' ],
+		[ 'title' => 'Carousel Testing',   'slug' => 'carousel-testing', 'template' => 'page-carousel-testing.php' ],
 		[ 'title' => 'Order To Deliver',   'slug' => 'ordertodeliver', 'template' => 'page-ordertodeliver.php' ],
 		[ 'title' => 'Coming Soon',        'slug' => 'coming',         'template' => 'page-coming.php' ],
 	];
@@ -125,7 +126,7 @@ add_action( 'after_switch_theme', function () {
 // (runs once per WP version bump or if option is missing)
 add_action( 'admin_init', function () {
 	// Bump this key whenever new page templates are added to ch_get_page_definitions().
-	$done_key = 'ch_pages_created_v3';
+	$done_key = 'ch_pages_created_v4';
 	if ( get_option( $done_key ) ) return;
 	if ( ! current_theme_supports( 'title-tag' ) ) return; // not our theme
 	ch_setup_theme_pages();
@@ -136,7 +137,7 @@ add_action( 'admin_init', function () {
 add_action( 'admin_init', function () {
 	if ( ! isset( $_GET['ch_regen_pages'] ) ) return;
 	if ( ! current_user_can( 'manage_options' ) ) return;
-	delete_option( 'ch_pages_created_v3' );
+	delete_option( 'ch_pages_created_v4' );
 	ch_setup_theme_pages();
 	wp_safe_redirect( admin_url( 'themes.php?ch_regen=1' ) );
 	exit;

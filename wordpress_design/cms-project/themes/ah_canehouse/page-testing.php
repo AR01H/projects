@@ -9,7 +9,7 @@ get_header();
 <main id="page-testing" style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
 
     <h2 style="margin-bottom: 2rem;">1. Image Cards — 3 visible, autoplay</h2>
-    <?php get_template_part( 'components/generic-carousel', null, [
+    <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'image',
         'visible'    => 3,
         'visible_md' => 2,
@@ -33,7 +33,7 @@ get_header();
     ] ); ?>
 
     <h2 style="margin: 3rem 0 2rem;">2. Feature Cards — 2 visible, top border</h2>
-    <?php get_template_part( 'components/generic-carousel', null, [
+    <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'feature',
         'visible'    => 2,
         'visible_sm' => 1,
@@ -50,7 +50,7 @@ get_header();
     ] ); ?>
 
     <h2 style="margin: 3rem 0 2rem;">3. Feature Cards + Checklist — left-aligned</h2>
-    <?php get_template_part( 'components/generic-carousel', null, [
+    <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'feature',
         'visible'    => 2,
         'visible_sm' => 1,
@@ -66,7 +66,7 @@ get_header();
     ] ); ?>
 
     <h2 style="margin: 3rem 0 2rem;">4. Step Cards — How It Works</h2>
-    <?php get_template_part( 'components/generic-carousel', null, [
+    <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'step',
         'visible'    => 2,
         'visible_sm' => 1,
@@ -85,7 +85,7 @@ get_header();
     ] ); ?>
 
     <h2 style="margin: 3rem 0 2rem;">5. Selector / Blend Picker</h2>
-    <?php get_template_part( 'components/generic-carousel', null, [
+    <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'       => 'selector',
         'visible'    => 3,
         'visible_sm' => 2,
@@ -107,7 +107,7 @@ get_header();
     ] ); ?>
 
     <h2 style="margin: 3rem 0 2rem;">6. Ticker — Continuous Scroll</h2>
-    <?php get_template_part( 'components/generic-carousel', null, [
+    <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'         => 'feature',
         'ticker'       => true,
         'ticker_speed' => 500,
@@ -127,7 +127,7 @@ get_header();
 
     <h2 style="margin: 3rem 0 2rem;">7. Vertical — 1 visible, autoplay</h2>
     <div style="max-width: 480px;">
-        <?php get_template_part( 'components/generic-carousel', null, [
+        <?php get_template_part( 'components/carousels/generic-carousel', null, [
             'type'      => 'feature',
             'direction' => 'vertical',
             'visible'   => 1,
@@ -147,7 +147,7 @@ get_header();
 
     <h2 style="margin: 3rem 0 2rem;">8. Vertical Ticker — Continuous Scroll Up</h2>
     <div style="max-width: 480px; height: 220px; overflow: hidden;">
-        <?php get_template_part( 'components/generic-carousel', null, [
+        <?php get_template_part( 'components/carousels/generic-carousel', null, [
             'type'         => 'feature',
             'direction'    => 'vertical',
             'ticker'       => true,
@@ -167,7 +167,7 @@ get_header();
     </div>
 
     <h2 style="margin: 3rem 0 2rem;">9. Floating Nav — arrows beside track</h2>
-    <?php get_template_part( 'components/generic-carousel', null, [
+    <?php get_template_part( 'components/carousels/generic-carousel', null, [
         'type'         => 'feature',
         'visible'      => 3,
         'visible_sm'   => 1,
@@ -190,7 +190,7 @@ get_header();
 
         <div>
             <h3 style="margin-bottom: 1rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: #666;">Image</h3>
-            <?php get_template_part( 'components/generic-carousel', null, [
+            <?php get_template_part( 'components/carousels/generic-carousel', null, [
                 'type'       => 'image',
                 'visible'    => 1,
                 'visible_md' => 1,
@@ -205,7 +205,7 @@ get_header();
 
         <div>
             <h3 style="margin-bottom: 1rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: #666;">Feature</h3>
-            <?php get_template_part( 'components/generic-carousel', null, [
+            <?php get_template_part( 'components/carousels/generic-carousel', null, [
                 'type'       => 'feature',
                 'visible'    => 1,
                 'visible_md' => 1,
@@ -223,7 +223,7 @@ get_header();
 
         <div>
             <h3 style="margin-bottom: 1rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: #666;">Step</h3>
-            <?php get_template_part( 'components/generic-carousel', null, [
+            <?php get_template_part( 'components/carousels/generic-carousel', null, [
                 'type'       => 'step',
                 'visible'    => 1,
                 'visible_md' => 1,

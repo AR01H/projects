@@ -23,7 +23,7 @@ $cta  = $data['cta'];
 <?php get_template_part( 'components/features-ribbon' ); ?>
 <?php get_template_part( 'components/order-to-deliver' ); ?>
 <?php get_template_part( 'components/how-to-order' ); ?>
-<?php get_template_part( 'components/review-carousel' ); ?>
+<?php get_template_part( 'components/carousels/review-carousel' ); ?>
 <?php get_template_part( 'components/certifications' ); ?>
 
 <?php get_template_part( 'components/cta-section', null, [

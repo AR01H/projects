@@ -65,6 +65,7 @@ function ah_get_page_definitions(): array {
 		[ 'title' => 'Client Stories', 'slug' => 'client-stories', 'template' => 'page-client-stories.php'                                ],
 		[ 'title' => 'Content Atlas',  'slug' => 'content-atlas',  'template' => 'page-content-atlas.php'                                 ],
 		[ 'title' => 'Home Section',   'slug' => 'homesection',    'template' => 'page-homesection.php'                                   ],
+		[ 'title' => 'Carousel Testing', 'slug' => 'carousel-testing', 'template' => 'page-carousel-testing.php'                          ],
 		[ 'title' => 'Coming Soon',    'slug' => 'coming',         'template' => 'page-coming.php'                                        ],
 	];
 }

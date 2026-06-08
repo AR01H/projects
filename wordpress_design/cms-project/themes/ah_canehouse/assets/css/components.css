@@ -2407,7 +2407,7 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 /* ── Inner Page Hero (About, Services, Blog) ────────────────────────────────── */
 .ch-page-hero {
     background: linear-gradient(160deg, #1e4010 0%, #2d5a1b 50%, #4a8c2a 100%);
-    padding: calc(var(--ch-nav-height) + 3rem) 2rem 2rem;
+    padding: calc(var(--ch-nav-height)) 2rem 2rem;
     text-align: center;
     position: relative;
     overflow: hidden;

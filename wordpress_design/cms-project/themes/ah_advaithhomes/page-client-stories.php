@@ -19,7 +19,7 @@ get_template_part( 'components/page-header', null, [
 	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'Client Stories', '' ] ],
 ] );
 get_template_part( 'components/client-stories/rating-summary', null, $data );
-get_template_part( 'components/review-carousel' );
+get_template_part( 'components/carousels/review-carousel' );
 get_template_part( 'components/client-stories/reviews-grid', null, [ 'reviews' => $data['reviews'] ] );
 get_template_part( 'components/cta-section', null, [] );
 get_footer();
