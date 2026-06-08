@@ -76,7 +76,7 @@ $section_groups = [
               <div class="ah-section-row__desc"><?php echo esc_html( $sec['desc'] ); ?></div>
             </div>
           </div>
-          <label class="ah-toggle" title="Toggle.<?php echo esc_attr( $sec[name] ); ?>">
+          <label class="ah-toggle" title="Toggle.<?php echo esc_attr( $sec['name'] ); ?>">
             <input type="checkbox"
                    name="section_<?php echo esc_attr( $sec['key'] ); ?>"
                    value="1"

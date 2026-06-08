@@ -1,6 +1,21 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+// ── Section Headings (static, from real_data/json/section-headings.json) ─────
+/**
+ * Returns one section heading entry by key, e.g. 'services', 'reviews', 'faqs'.
+ * Keys: tag, title, body  (all strings, defaults to '' when absent).
+ * To change content, edit real_data/json/section-headings.json directly.
+ */
+function ah_get_section_heading( string $key ): array {
+	$h = AH_Page_Data::section_heading( $key );
+	return [
+		'tag'   => $h['tag']   ?? '',
+		'title' => $h['title'] ?? '',
+		'body'  => $h['body']  ?? '',
+	];
+}
+
 // ── Table helper (mirrors CMS plugin logic) ───────────────────────────────────
 function ah_theme_table( string $name ): string {
 	global $wpdb;

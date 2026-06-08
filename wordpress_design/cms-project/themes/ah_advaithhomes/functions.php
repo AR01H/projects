@@ -2,10 +2,14 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Includes - order matters ──────────────────────────────────────────────────
-require_once get_template_directory() . '/includes/mini-helping-functions.php';  
+require_once get_template_directory() . '/includes/mini-helping-functions.php';
 require_once get_template_directory() . '/includes/common_constants.php';  // CTA & site-wide string constants
 require_once get_template_directory() . '/includes/common_terms.php';      // client brand name constants
-require_once get_template_directory() . '/includes/mock-data.php';         // fallback data arrays
+require_once get_template_directory() . '/includes/core_settings.php';      // client brand name constants
+require_once get_template_directory() . '/includes/data/class-real-loader.php'; // reads real_data/ CSV + JSON files
+require_once get_template_directory() . '/includes/data/class-page-data.php';   // static page content (section headings, etc.)
+require_once get_template_directory() . '/includes/data/class-home-data.php';   // homepage data aggregation
+require_once get_template_directory() . '/includes/mock-data.php';         // seeder-only data — NOT for runtime display
 require_once get_template_directory() . '/includes/helpers.php';           // DB-first data functions + utilities
 require_once get_template_directory() . '/includes/class-theme-admin.php'; // WP admin menu for this theme
 require_once get_template_directory() . '/mail/common_contact.php';        // AJAX form handlers
@@ -38,24 +42,104 @@ add_action( 'after_setup_theme', function () {
 	] );
 } );
 
+// ── Page Registry ─────────────────────────────────────────────────────────────
 /**
- * Ensure required theme pages exist (idempotent).
- * Creates the /mortgages/ page so page-mortgages.php activates.
+ * Central registry of all theme pages.
+ * slug     = WP page slug / URL path segment
+ * template = PHP template file WordPress loads for this page
+ * front    = true → mark as static front page after creation
+ * aliases  = extra URL slugs that 301-redirect to this page's canonical slug
  */
+function ah_get_page_definitions(): array {
+	return [
+		[ 'title' => 'Home',           'slug' => 'home',           'template' => 'front-page.php',          'front' => true              ],
+		[ 'title' => 'About',          'slug' => 'about',          'template' => 'page-about.php'                                         ],
+		[ 'title' => 'Services',       'slug' => 'services',       'template' => 'page-services.php',        'aliases' => ['ourservices'] ],
+		[ 'title' => 'Blog',           'slug' => 'blog',           'template' => 'page-blog.php'                                          ],
+		[ 'title' => 'News',           'slug' => 'news',           'template' => 'page-news.php'                                          ],
+		[ 'title' => 'All News',       'slug' => 'allnews',        'template' => 'page-allnews.php'                                       ],
+		[ 'title' => 'Guides',         'slug' => 'guides',         'template' => 'page-guides.php'                                        ],
+		[ 'title' => 'Mortgages',      'slug' => 'mortgages',      'template' => 'page-mortgages.php'                                     ],
+		[ 'title' => 'FAQ',            'slug' => 'faq',            'template' => 'page-faq.php'                                           ],
+		[ 'title' => 'Contact',        'slug' => 'contact',        'template' => 'page-contact.php'                                       ],
+		[ 'title' => 'Client Stories', 'slug' => 'client-stories', 'template' => 'page-client-stories.php'                                ],
+		[ 'title' => 'Content Atlas',  'slug' => 'content-atlas',  'template' => 'page-content-atlas.php'                                 ],
+		[ 'title' => 'Home Section',   'slug' => 'homesection',    'template' => 'page-homesection.php'                                   ],
+		[ 'title' => 'Coming Soon',    'slug' => 'coming',         'template' => 'page-coming.php'                                        ],
+	];
+}
+
+// ── Page Provisioning (idempotent) ────────────────────────────────────────────
+// One SELECT checks which slugs are missing, then inserts only those.
+// A daily transient short-circuits the check on normal requests.
 add_action( 'init', function () {
-	if ( ! is_admin() && ! wp_doing_cron() ) {
-		// Only provision once; cheap slug lookup.
-		if ( ! get_page_by_path( 'mortgages' ) ) {
-			wp_insert_post( [
-				'post_title'   => 'Mortgages',
-				'post_name'    => 'mortgages',
-				'post_status'  => 'publish',
-				'post_type'    => 'page',
-				'post_content' => '',
-			] );
+	if ( is_admin() || wp_doing_cron() ) return;
+	if ( get_transient( 'ah_pages_provisioned' ) ) return;
+
+	global $wpdb;
+	$needed       = array_column( ah_get_page_definitions(), 'slug' );
+	$placeholders = implode( ',', array_fill( 0, count( $needed ), '%s' ) );
+	$existing     = $wpdb->get_col( $wpdb->prepare(
+		"SELECT post_name FROM {$wpdb->posts}
+		 WHERE post_type = 'page' AND post_status = 'publish'
+		 AND post_name IN ({$placeholders})",
+		...$needed
+	) );
+	$missing = array_diff( $needed, $existing );
+
+	if ( empty( $missing ) ) {
+		set_transient( 'ah_pages_provisioned', true, DAY_IN_SECONDS );
+		return;
+	}
+
+	foreach ( ah_get_page_definitions() as $defn ) {
+		if ( ! in_array( $defn['slug'], $missing, true ) ) continue;
+
+		$page_id = wp_insert_post( [
+			'post_title'   => $defn['title'],
+			'post_name'    => $defn['slug'],
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+			'post_content' => '',
+		] );
+
+		if ( is_wp_error( $page_id ) ) continue;
+
+		if ( ! empty( $defn['front'] ) ) {
+			update_option( 'show_on_front', 'page' );
+			update_option( 'page_on_front', $page_id );
 		}
 	}
 }, 20 );
+
+// ── Page Alias Redirects ──────────────────────────────────────────────────────
+// Visiting /ourservices/ → 301 → /services/ (or any alias defined above).
+add_action( 'template_redirect', function (): void {
+	$path = trim( (string) parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH ), '/' );
+	if ( $path === '' ) return;
+
+	foreach ( ah_get_page_definitions() as $defn ) {
+		if ( empty( $defn['aliases'] ) ) continue;
+		if ( in_array( $path, (array) $defn['aliases'], true ) ) {
+			wp_safe_redirect( home_url( '/' . $defn['slug'] . '/' ), 301 );
+			exit;
+		}
+	}
+}, 1 );
+
+// ── Coming Soon Gate ──────────────────────────────────────────────────────────
+// When COMING_SOON is TRUE, non-logged-in visitors are sent to /coming/.
+// Logged-in users bypass the gate and see the full site.
+add_action( 'template_redirect', function (): void {
+	if ( ! defined( 'COMING_SOON' ) || ! COMING_SOON ) return;
+	if ( is_user_logged_in() ) return;
+
+	$path = trim( (string) parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH ), '/' );
+	if ( $path === 'coming' ) return;
+
+	wp_safe_redirect( home_url( '/coming/' ), 302 );
+	exit;
+}, 2 );
 
 // ── Enqueue Assets ────────────────────────────────────────────────────────────
 add_action( 'wp_enqueue_scripts', function () {

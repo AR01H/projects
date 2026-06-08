@@ -1,0 +1,97 @@
+{
+  "services": {
+    "tag": "What We Do",
+    "title": "Our Services",
+    "body": "From property search to completion day, we handle every step exclusively on your behalf."
+  },
+  "reviews": {
+    "tag": "Client Stories",
+    "title": "What Our Clients Say",
+    "body": "Real results from real buyers across the UK."
+  },
+  "faqs": {
+    "tag": "Questions",
+    "title": "Frequently Asked Questions",
+    "body": "Everything you need to know about working with a buyer's agent."
+  },
+  "process": {
+    "tag": "How It Works",
+    "title": "Our Process",
+    "body": "A clear, proven path from first call to completion."
+  },
+  "stats": {
+    "tag": "Our Track Record",
+    "title": "The Numbers Speak",
+    "body": ""
+  },
+  "trust": {
+    "tag": "Why Us",
+    "title": "Why Clients Choose Us",
+    "body": ""
+  },
+  "properties": {
+    "tag": "Case Studies",
+    "title": "Properties We've Secured",
+    "body": "A snapshot of recent purchases made on behalf of our clients."
+  },
+  "team": {
+    "tag": "The Team",
+    "title": "Meet Your Buyer's Agents",
+    "body": "Experienced, independent, and working exclusively for you."
+  },
+  "about_mission": {
+    "tag": "About Us",
+    "title": "We Work For You, Not The Seller",
+    "body": "Unlike estate agents who are paid by sellers, we are instructed and paid by buyers. Our only loyalty is to you."
+  },
+  "about_values": {
+    "tag": "Our Values",
+    "title": "Honest. Independent. Expert.",
+    "body": ""
+  },
+  "contact_form": {
+    "tag": "Get In Touch",
+    "title": "Book a Free Consultation",
+    "body": "Tell us your brief and we'll show you what's possible. No obligation, no hard sell."
+  },
+  "contact_cta": {
+    "tag": "Ready to Start?",
+    "title": "Let's Find Your Next Property",
+    "body": "Speak to a buyer's agent today. We respond within one working day."
+  },
+  "guides_hero": {
+    "tag": "Knowledge Base",
+    "title": "UK Property Buying Guides",
+    "body": "Independent, practical guides written by buyer's agents — not mortgage brokers or estate agents."
+  },
+  "mortgages_hero": {
+    "tag": "Mortgage Advice",
+    "title": "Understanding UK Mortgages",
+    "body": "Rates, types, and how to get the best deal for your circumstances."
+  },
+  "news_hero": {
+    "tag": "Market News",
+    "title": "UK Property Market Updates",
+    "body": "Weekly analysis and commentary from our team of buyer's agents."
+  },
+  "client_stories_hero": {
+    "tag": "Client Stories",
+    "title": "Real Buyers, Real Results",
+    "body": "Every purchase is different. Here's how we helped clients across the UK."
+  },
+  "home_hero_section": {
+    "tag": "Buyer's Agent",
+    "title": "Make Smarter Property Decisions",
+    "body": ""
+  },
+  "home_why_us": {
+    "tag": "Why a Buyer's Agent?",
+    "title": "The Market Works Against Buyers — We Level It",
+    "body": "Estate agents are legally required to act in the seller's interest. We flip that dynamic entirely."
+  },
+  "home_cta": {
+    "tag": "Free Consultation",
+    "title": "Start With a Free 30-Minute Call",
+    "body": "We'll understand your brief, share what's possible, and explain exactly how we work — no commitment required."
+  }
+}
