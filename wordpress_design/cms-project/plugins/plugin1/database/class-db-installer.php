@@ -287,6 +287,28 @@ class AH_DB_Installer {
 		}
 	}
 
+	/** Migration: create ah_evaluate_log (one row per AH_Rules_Engine::evaluate() call) if missing. */
+	public static function ensure_evaluate_log(): void {
+		global $wpdb;
+		$p  = $wpdb->prefix;
+		$cs = $wpdb->get_charset_collate();
+		if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$p}ah_evaluate_log'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				"CREATE TABLE IF NOT EXISTS `{$p}ah_evaluate_log` (
+					`id`           BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
+					`trigger_name` VARCHAR(100)     NOT NULL DEFAULT '',
+					`context_data` JSON             DEFAULT NULL,
+					`rules_found`  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+					`rules_fired`  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+					`created_at`   DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+					PRIMARY KEY (`id`),
+					KEY `idx_trigger` (`trigger_name`),
+					KEY `idx_created` (`created_at`)
+				) ENGINE=InnoDB {$cs}"
+			);
+		}
+	}
+
 	public static function ensure_required_settings(): void {
 		global $wpdb;
 		$table = $wpdb->prefix . 'ah_site_settings';

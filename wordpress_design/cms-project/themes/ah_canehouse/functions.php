@@ -312,7 +312,8 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ch-style',      get_stylesheet_uri(),                [ 'ch-layout' ],       $ver( '/style.css' ) );
 
 	wp_enqueue_script( 'ch-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $ver( '/assets/js/main.js' ), true );
-	wp_enqueue_script( 'ch-forms', $uri . '/assets/js/forms.js', [ 'ch-main' ], $ver( '/assets/js/forms.js' ), true );
+	wp_enqueue_script( 'ch-form-step-modal', $uri . '/assets/js/form-step-modal.js', [ 'ch-main' ], $ver( '/assets/js/form-step-modal.js' ), true );
+	wp_enqueue_script( 'ch-forms', $uri . '/assets/js/forms.js', [ 'ch-main', 'ch-form-step-modal' ], $ver( '/assets/js/forms.js' ), true );
 	wp_enqueue_script( 'ch-history-info', $uri . '/assets/js/history-info.js', [ 'ch-main' ], $ver( '/assets/js/history-info.js' ), true );
 	wp_enqueue_script( 'ch-carousel', $uri . '/assets/js/carousel.js', [ 'ch-main' ], $ver( '/assets/js/carousel.js' ), true );
 	wp_enqueue_script( 'ch-carousel-video', $uri . '/assets/js/carousel-video.js', [ 'ch-main' ], $ver( '/assets/js/carousel-video.js' ), true );
