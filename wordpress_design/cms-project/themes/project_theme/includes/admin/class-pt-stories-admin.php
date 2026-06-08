@@ -21,6 +21,10 @@ class PT_Stories_Admin {
 		add_action( 'admin_post_pt_story_reorder', [ self::class, 'handle_reorder' ] );
 		add_action( 'admin_post_pt_theme_seed',    [ self::class, 'handle_seed' ] );
 		add_action( 'admin_post_pt_theme_cleanup', [ self::class, 'handle_cleanup' ] );
+
+		/* AJAX */
+		require_once get_template_directory() . '/includes/admin/class-pt-ajax.php';
+		PT_Ajax::init();
 	}
 
 	/* ── Menu ────────────────────────────────────────────────────── */
@@ -54,47 +58,25 @@ class PT_Stories_Admin {
 
 	public static function enqueue_assets( string $hook ): void {
 		if ( strpos( $hook, 'pt-' ) === false && strpos( $hook, 'pt_' ) === false ) return;
+
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_add_inline_style( 'wp-admin', self::admin_css() );
+
+		/* Admin JS — AJAX + API helper */
+		$js = get_template_directory_uri() . '/assets/js/pt-admin.js';
+		wp_enqueue_script( 'pt-admin', $js, [ 'jquery' ], wp_get_theme()->get( 'Version' ), true );
+		wp_localize_script( 'pt-admin', 'PT_Admin', [
+			'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'pt_admin_ajax' ),
+			'apiBase'  => rest_url( 'pt/v1' ),
+			'apiNonce' => wp_create_nonce( 'wp_rest' ),
+		] );
 	}
 
 	/* ── Page renderers ──────────────────────────────────────────── */
 
 	public static function page_dashboard(): void {
-		$count = class_exists( 'PT_Stories_DB' ) ? PT_Stories_DB::count() : '-';
-		?>
-		<div class="wrap pt-admin-wrap">
-			<div class="pt-admin-header">
-				<div class="pt-admin-logo">PT</div>
-				<div>
-					<h1>Project Theme</h1>
-					<p>Manage stories, pages, and theme content.</p>
-				</div>
-			</div>
-			<div class="pt-admin-cards">
-				<div class="pt-admin-card <?php echo $count > 0 ? 'pt-admin-card--ok' : 'pt-admin-card--warn'; ?>">
-					<div class="pt-admin-card__label">Stories</div>
-					<div class="pt-admin-card__value"><?php echo esc_html( $count ); ?></div>
-					<div class="pt-admin-card__sub">rows in wp_pt_stories</div>
-				</div>
-			</div>
-			<div class="pt-admin-box">
-				<h2>Quick Links</h2>
-				<div style="display:flex;gap:12px;flex-wrap:wrap">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=pt-stories' ) ); ?>" class="button button-primary">Manage Stories</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=pt-stories&action=add' ) ); ?>" class="button">Add New Story</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=pt-stories&action=install_schema' ) ); ?>" class="button"
-					   onclick="return confirm('Re-run dbDelta to sync the stories table?')">Re-install Schema</a>
-				</div>
-			</div>
-		</div>
-		<?php
-
-		/* Handle schema re-install trigger from the Quick Links button */
-		if ( isset( $_GET['action'] ) && $_GET['action'] === 'install_schema' && current_user_can( 'manage_options' ) ) {
-			PT_Stories_DB::create_table();
-			echo '<div class="notice notice-success"><p>Schema synced via dbDelta.</p></div>';
-		}
+		require get_template_directory() . '/admin/theme-dashboard.php';
 	}
 
 	public static function page_stories(): void {

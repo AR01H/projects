@@ -188,6 +188,16 @@ if ( is_admin() ) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+ * 6. REST API
+ * ═════════════════════════════════════════════════════════════*/
+
+$pt_api = get_template_directory() . '/includes/api/class-pt-stories-api.php';
+if ( file_exists( $pt_api ) ) {
+	require_once $pt_api;
+	PT_Stories_API::init();
+}
+
+/* ═══════════════════════════════════════════════════════════════
  * 6. INCLUDES
  * Load helper files as the theme grows.
  * ═════════════════════════════════════════════════════════════*/
