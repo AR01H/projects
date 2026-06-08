@@ -27,9 +27,16 @@
 		"btn_label": "Send a Message 🌿"
 	},
 	"certifications": {
-		"tag":     "Official & Verified",
-		"heading": "Food Safety Registered & Fully Compliant",
-		"sub":     "Every event we attend comes with full documentation, insurance, and Food Safety Registered compliance. We take the trust of our clients and their guests very seriously."
+		"tag":        "Official & Verified",
+		"heading":    "Food Safety Registered & Fully Compliant",
+		"sub":        "Every event we attend comes with full documentation, insurance, and Food Safety Registered compliance. We take the trust of our clients and their guests very seriously.",
+		"visual_alt":   "The Cane House Food Hygiene Certificate",
+		"visual_label": "We are officially member of"
+	},
+	"franchise_showcase": {
+		"tag":   "Grow With Us",
+		"title": "Franchise <em style=\"color:var(--client-color-2);\">Opportunities</em>",
+		"body":  "Be part of the fresh juice revolution. Bring the live-pressed cane experience to your city. Join our growing network of franchise partners across the UK."
 	},
 	"franchise_why": {
 		"tag":   "The Opportunity",
@@ -142,6 +149,21 @@
 		"tag":     "Ready to Order?",
 		"heading": "Fresh Juice at <span class=\"accent\" style=\"color:var(--client-color-7);\">Your Doorstep</span>",
 		"body":    "It takes under 2 minutes. Select your items, drop your address, and we'll be in touch."
+	},
+	"showcase_home": {
+		"tag":   "See It Live",
+		"title": "Our Machines, <span class=\"accent\">Our Craft</span>",
+		"body":  "From the press to the bottle - a closer look at how we bring fresh sugarcane to life."
+	},
+	"video_showcase_home": {
+		"tag":   "Watch Us Work",
+		"title": "See The <span class=\"accent\">Experience</span>",
+		"body":  "Real footage from our events - live pressing, branded stalls, and happy guests."
+	},
+	"mini_video_home": {
+		"tag":   "Happy Customers",
+		"title": "Hear From <span class=\"accent\">Our Guests</span>",
+		"body":  "Short clips from real events - weddings, parties, and celebrations across the UK."
 	},
 	"gallery_about": {
 		"tag":   "Our Gallery",

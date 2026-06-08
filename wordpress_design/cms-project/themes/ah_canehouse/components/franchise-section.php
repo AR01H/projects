@@ -1,61 +1,62 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$locations = ch_get_franchise_locations();
-$showcase  = ch_get_juice_showcase();
-$settings  = ch_get_settings();
-$phone     = $settings['phone'] ?? CONTACT_NUMBER;
-?>
 
-<section id="franchise" class="ch-franchise-section">
-	<?php get_template_part( 'components/section-header', null, [
-		'tag'   => 'Grow With Us',
-		'title' => 'Franchise <em style="color:var(--client-color-2);">Opportunities</em>',
-		'body'  => 'Be part of the fresh juice revolution. Bring the live-pressed cane experience to your city. Join our growing network of franchise partners across the UK.',
-	] ); ?>
+/* ── Data ───────────────────────────────────────────────────────────────────── */
 
-	<div class="ch-juice-showcase">
-		<div class="ch-showcase-container" id="ch-showcase-track">
-			<?php foreach ( $showcase as $idx => $card ) :
-				$card   = (array) $card;
-				$cls    = 'ch-showcase-card';
-				if ( $idx === 0 ) $cls .= ' active';
-				if ( $idx === 1 ) $cls .= ' next';
-				if ( $idx === count( $showcase ) - 1 ) $cls .= ' prev';
-			?>
-				<div class="<?php echo esc_attr( $cls ); ?>" data-index="<?php echo $idx; ?>">
-					<img src="<?php echo esc_url( $card['image'] ?? '' ); ?>"
-						alt="<?php echo esc_attr( $card['title'] ?? '' ); ?>" loading="lazy">
-					<div class="ch-showcase-info">
-						<h3><?php echo esc_html( $card['title'] ?? '' ); ?></h3>
-						<p><?php echo esc_html( $card['desc'] ?? '' ); ?></p>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-		<div class="ch-showcase-controls">
-			<button class="ch-s-btn" id="ch-showcase-prev" aria-label="<?php esc_attr_e( 'Previous', 'ch-theme' ); ?>">←</button>
-			<button class="ch-s-btn" id="ch-showcase-next" aria-label="<?php esc_attr_e( 'Next', 'ch-theme' ); ?>">→</button>
-		</div>
-	</div>
+$_d = CH_Shared_Data::section_heading( 'franchise_showcase' );
 
-	<div class="ch-franchise-marquee" aria-hidden="true">
-		<div class="ch-franchise-track">
-			<?php foreach ( $locations as $loc ) :
-				$loc = (array) $loc;
-			?>
-				<div class="ch-f-item">
-					<span class="ch-f-icon"><?php echo esc_html( $loc['icon'] ?? '📍' ); ?></span>
-					<span class="ch-f-name"><?php echo esc_html( $loc['name'] ?? '' ); ?></span>
-				</div>
-			<?php endforeach; ?>
-			<?php foreach ( $locations as $loc ) :
-				$loc = (array) $loc;
-			?>
-				<div class="ch-f-item">
-					<span class="ch-f-icon"><?php echo esc_html( $loc['icon'] ?? '📍' ); ?></span>
-					<span class="ch-f-name"><?php echo esc_html( $loc['name'] ?? '' ); ?></span>
-				</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
+$cards = array_map( static function ( $card ): array {
+	$card = (array) $card;
+	return [
+		'image' => $card['image'] ?? '',
+		'title' => $card['title'] ?? '',
+		'desc'  => $card['desc']  ?? '',
+	];
+}, ch_get_juice_showcase() );
+
+$locations = array_map( static function ( $loc ): array {
+	$loc = (array) $loc;
+	return [
+		'icon' => $loc['icon'] ?? '📍',
+		'name' => $loc['name'] ?? '',
+	];
+}, ch_get_franchise_locations() );
+
+/* ── Render ─────────────────────────────────────────────────────────────────── */
+
+get_template_part( 'components/carousel_image_with_title', null, [
+
+	/* Section wrapper */
+	'section_id'    => 'franchise',
+	'section_class' => 'ch-franchise-section',
+
+	/* Header — sourced from real_data/json/section-headings.json → franchise_showcase */
+	'tag'   => $_d['tag']   ?? '',
+	'title' => $_d['title'] ?? '',
+	'body'  => $_d['body']  ?? '',
+
+	/* Showcase class overrides — original stylesheet uses ch-juice-showcase / ch-showcase-* names */
+	'showcase_class'  => 'ch-juice-showcase',
+	'track_class'     => 'ch-showcase-container',
+	'card_class'      => 'ch-showcase-card',
+	'card_info_class' => 'ch-showcase-info',
+	'controls_class'  => 'ch-showcase-controls',
+	'btn_class'       => 'ch-s-btn',
+
+	/* IDs — JS uses these to wire up the carousel */
+	'track_id' => 'ch-showcase-track',
+	'prev_id'  => 'ch-showcase-prev',
+	'next_id'  => 'ch-showcase-next',
+
+	/* Cards + marquee — prepared above */
+	'items'         => $cards,
+	'marquee_items' => $locations,
+
+	/* Marquee class overrides */
+	'marquee_class'       => 'ch-franchise-marquee',
+	'marquee_track_class' => 'ch-franchise-track',
+	'marquee_item_class'  => 'ch-f-item',
+	'marquee_icon_class'  => 'ch-f-icon',
+	'marquee_name_class'  => 'ch-f-name',
+
+] );

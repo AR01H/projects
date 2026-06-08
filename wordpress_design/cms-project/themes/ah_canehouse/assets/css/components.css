@@ -2745,7 +2745,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
     font-size: 0.95rem;
     color: var(--client-color-1);
     font-weight: 600;
-    padding: 0.5rem 0;
 }
 
 /* About promise card overrides for light bg context */

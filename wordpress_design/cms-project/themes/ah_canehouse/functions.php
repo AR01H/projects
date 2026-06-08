@@ -53,7 +53,6 @@ function ch_get_page_definitions(): array {
 		[ 'title' => 'Contact',            'slug' => 'contact',        'template' => 'page-contact.php'                          ],
 		[ 'title' => 'Blog',               'slug' => 'blog',           'template' => 'page-blog.php' ],
 		[ 'title' => 'Testing',            'slug' => 'testing',        'template' => 'page-testing.php' ],
-		[ 'title' => 'Carousel Testing',   'slug' => 'carousel-testing', 'template' => 'page-carousel-testing.php' ],
 		[ 'title' => 'Order To Deliver',   'slug' => 'ordertodeliver', 'template' => 'page-ordertodeliver.php' ],
 		[ 'title' => 'Coming Soon',        'slug' => 'coming',         'template' => 'page-coming.php' ],
 	];
@@ -307,6 +306,8 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ch-animations', $uri . '/assets/css/animations.css', [ 'ch-base' ],         $ver( '/assets/css/animations.css' ) );
 	wp_enqueue_style( 'ch-cursors', $uri . '/assets/css/ch-cursors.css',    [ 'ch-base' ],         $ver( '/assets/css/ch-cursors.css' ) );
 	wp_enqueue_style( 'ch-carousel', $uri . '/assets/css/carousel.css',    [ 'ch-base' ],         $ver( '/assets/css/carousel.css' ) );
+	wp_enqueue_style( 'ch-carousel-video', $uri . '/assets/css/carousel-video.css', [ 'ch-base' ], $ver( '/assets/css/carousel-video.css' ) );
+	wp_enqueue_style( 'ch-carousel-mini-video', $uri . '/assets/css/carousel-mini-video.css', [ 'ch-base' ], $ver( '/assets/css/carousel-mini-video.css' ) );
 
 	wp_enqueue_style( 'ch-style',      get_stylesheet_uri(),                [ 'ch-layout' ],       $ver( '/style.css' ) );
 
@@ -314,6 +315,8 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_script( 'ch-forms', $uri . '/assets/js/forms.js', [ 'ch-main' ], $ver( '/assets/js/forms.js' ), true );
 	wp_enqueue_script( 'ch-history-info', $uri . '/assets/js/history-info.js', [ 'ch-main' ], $ver( '/assets/js/history-info.js' ), true );
 	wp_enqueue_script( 'ch-carousel', $uri . '/assets/js/carousel.js', [ 'ch-main' ], $ver( '/assets/js/carousel.js' ), true );
+	wp_enqueue_script( 'ch-carousel-video', $uri . '/assets/js/carousel-video.js', [ 'ch-main' ], $ver( '/assets/js/carousel-video.js' ), true );
+	wp_enqueue_script( 'ch-carousel-mini-video', $uri . '/assets/js/carousel-mini-video.js', [ 'ch-main' ], $ver( '/assets/js/carousel-mini-video.js' ), true );
 
 	wp_localize_script( 'ch-forms', 'chTheme', [
 		'ajaxUrl' => admin_url( 'admin-ajax.php' ),

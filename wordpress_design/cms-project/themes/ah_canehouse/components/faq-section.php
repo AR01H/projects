@@ -6,6 +6,11 @@ $faqs_all   = ch_get_faqs( '', 100 );
 $home_limit = ch_home_limit( 'faqs', 6 );
 $faqs       = $home_limit > 0 ? array_slice( $faqs_all, 0, $home_limit ) : $faqs_all;
 $has_more   = $home_limit > 0 && count( $faqs_all ) > $home_limit;
+
+if(count($faqs) <= 0) {
+    return '';
+}
+
 ?>
 
 <section id="faq" class="ch-faq-section">

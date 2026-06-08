@@ -1,59 +1,46 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$_d       = CH_Shared_Data::section_heading( 'event_type' );
+
+$_d      = CH_Shared_Data::section_heading( 'event_type' );
 $packages = ch_get_hire_packages();
-$features = ch_get_hire_features();
-$settings = ch_get_settings();
-?>
 
-<section id="hire" class="ch-hire-section">
-	<div class="ch-hire-container">
+get_template_part( 'components/carousel_text_info', null, [
 
-		<?php get_template_part( 'components/section-header', null, [
-			'tag'           => $_d['tag']   ?? '',
-			'title'         => $_d['title'] ?? '',
-			'body'          => $_d['body']  ?? '',
-			'wrapper_class' => 'ch-hire__header',
-		] ); ?>
+	/* CSS prefix — tells the component to emit ch-hire-* classes to match existing stylesheet */
+	'prefix'          => 'ch-hire',
 
-		<!-- ── Carousel wrapper ───────────────────────────────────────────────── -->
-		<div class="ch-hire-carousel ch-carousel" id="ch-hire-carousel" style="--cc-items-visible: 3;">
-			<div class="ch-carousel__viewport">
-				<div class="ch-hire-track ch-carousel__track" id="ch-hire-track">
-					<?php foreach ( $packages as $i => $pkg ) :
-						$pkg = (array) $pkg;
-					?>
-						<div class="ch-hire-card ch-carousel__item fade-up">
-							<div class="ch-h-card-icon" aria-hidden="true"><?php echo esc_html( $pkg['icon'] ?? '🎉' ); ?></div>
-							<h3><?php echo esc_html( $pkg['title'] ?? '' ); ?></h3>
-							<p><?php echo esc_html( $pkg['desc'] ?? '' ); ?></p>
-							<?php if ( ! empty( $pkg['items'] ) ) : ?>
-								<ul class="ch-h-card-list">
-									<?php foreach ( (array) $pkg['items'] as $item ) : ?>
-										<li><?php echo esc_html( $item ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							<?php endif; ?>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			</div>
+	/* Section wrapper */
+	'section_id'      => 'hire',
+	'section_class'   => 'ch-hire-section',
+	'container_class' => 'ch-hire-container',
 
-			<!-- Dots + arrows -->
-			<div class="ch-hire-nav ch-carousel__nav">
-				<div class="ch-hire-dots ch-carousel__dots" id="ch-hire-dots" role="tablist" aria-label="Event packages navigation">
-					<?php foreach ( $packages as $i => $_ ) : ?>
-						<button class="ch-dot ch-carousel__dot"
-							role="tab"
-							aria-label="Package <?php echo $i + 1; ?>"></button>
-					<?php endforeach; ?>
-				</div>
-				<div class="ch-hire-arrows ch-carousel__arrows">
-					<button class="ch-v-btn ch-carousel__arrow" data-dir="prev" aria-label="Previous package">←</button>
-					<button class="ch-v-btn ch-carousel__arrow" data-dir="next" aria-label="Next package">→</button>
-				</div>
-			</div>
+	/* Header */
+	'tag'             => $_d['tag']   ?? '',
+	'title'           => $_d['title'] ?? '',
+	'body'            => $_d['body']  ?? '',
+	'header_class'    => 'ch-hire__header',
 
-		</div><!-- .ch-hire-carousel -->
-	</div>
-</section>
+	/* Carousel */
+	'carousel_id'     => 'ch-hire-carousel',
+	'track_id'        => 'ch-hire-track',
+	'dots_id'         => 'ch-hire-dots',
+	'items_visible'   => 3,
+	'nav_label'       => 'Event packages navigation',
+
+	/* Class overrides to match existing stylesheet (ch-h-card-icon / ch-h-card-list) */
+	'card_icon_class' => 'ch-h-card-icon',
+	'card_list_class' => 'ch-h-card-list',
+
+	/* Cards — mapped from the data source */
+	'items' => array_map( static function ( $pkg ): array {
+		$pkg = (array) $pkg;
+		return [
+			'icon'  => $pkg['icon']  ?? '🎉',
+			'title' => $pkg['title'] ?? '',
+			'desc'  => $pkg['description'] ?? $pkg['desc'] ?? '',
+			'items' => (array) ( $pkg['items'] ?? [] ),
+			'color' => $pkg['color'] ?? '',
+		];
+	}, $packages ),
+
+] );

@@ -1,78 +1,66 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-$s      = ch_get_settings();
-$certs  = ch_get_certifications();
-$_d           = CH_Shared_Data::certifications_section_settings();
-$cert_tag     = $_d['tag']     ?? '';
-$cert_heading = $s['cert_heading'] ?? $_d['heading'] ?? '';
-$cert_sub     = $s['cert_subtext'] ?? $_d['sub']     ?? '';
-$cert_img     = get_template_directory_uri() . '/assets/images/ncass_logo.png';
-?>
 
-<section id="certifications" class="ch-certs-section">
-	<div class="container">
+/* ── Data ───────────────────────────────────────────────────────────────────── */
 
-		<?php get_template_part( 'components/section-header', null, [
-			'tag'           => $cert_tag,
-			'title'         => $cert_heading,
-			'body'          => $cert_sub,
-			'wrapper_class' => 'ch-certs-header',
-		] ); ?>
+$_d  = CH_Shared_Data::certifications_section_settings();
+$_s  = ch_get_settings();
 
-		<div class="ch-certs-layout">
+$cards = array_map( static function ( $cert ): array {
+	$cert = (array) $cert;
+	return [
+		'icon'  => $cert['icon']  ?? '✅',
+		'title' => $cert['title'] ?? '',
+		'desc'  => $cert['desc']  ?? '',
+		'badge' => $cert['badge'] ?? '',
+	];
+}, ch_get_certifications() );
 
-			<!-- ── Carousel ──────────────────────────────────────────────────── -->
-			<div class="ch-certs-carousel" id="ch-certs-carousel">
+/* ── Render ─────────────────────────────────────────────────────────────────── */
 
-				<div class="ch-certs-track" id="ch-certs-track">
-					<?php foreach ( $certs as $i => $cert ) :
-						$cert = (array) $cert;
-						if ( empty( $cert['title'] ) ) continue;
-					?>
-						<div class="ch-cert-card<?php echo $i === 0 ? ' active' : ''; ?>">
-							<div class="ch-cert-icon"><?php echo esc_html( $cert['icon'] ?? '✅' ); ?></div>
-							<div class="ch-cert-body">
-								<div class="ch-cert-title"><?php echo esc_html( $cert['title'] ); ?></div>
-								<div class="ch-cert-desc"><?php echo esc_html( $cert['desc'] ?? '' ); ?></div>
-							</div>
-							<?php if ( ! empty( $cert['badge'] ) && $cert['badge'] !== "''" ) : ?>
-								<span class="ch-cert-badge"><?php echo esc_html( $cert['badge'] ); ?></span>
-							<?php endif; ?>
-						</div>
-					<?php endforeach; ?>
-				</div>
+get_template_part( 'components/carousel_mini_grid_with_badge_container', null, [
 
-				<!-- Dots + arrows -->
-				<div class="ch-certs-nav">
-					<div class="ch-certs-dots" id="ch-certs-dots" role="tablist" aria-label="Certifications navigation">
-						<?php foreach ( $certs as $i => $cert ) :
-							$cert = (array) $cert;
-							if ( empty( $cert['title'] ) ) continue;
-						?>
-							<button class="ch-dot<?php echo $i === 0 ? ' active' : ''; ?>"
-								role="tab"
-								aria-selected="<?php echo $i === 0 ? 'true' : 'false'; ?>"
-								aria-label="Certification <?php echo $i + 1; ?>"></button>
-						<?php endforeach; ?>
-					</div>
-					<div class="ch-certs-arrows">
-						<button class="ch-v-btn" id="ch-certs-prev" aria-label="Previous certification">←</button>
-						<button class="ch-v-btn" id="ch-certs-next" aria-label="Next certification">→</button>
-					</div>
-				</div>
+	/* Section wrapper */
+	'section_id'    => 'certifications',
+	'section_class' => 'ch-certs-section',
 
-			</div><!-- .ch-certs-carousel -->
+	/* Header — cert_heading / cert_subtext from settings override JSON fallback */
+	'tag'          => $_d['tag']                              ?? '',
+	'title'        => $_s['cert_heading'] ?? $_d['heading']  ?? '',
+	'body'         => $_s['cert_subtext'] ?? $_d['sub']      ?? '',
+	'header_class' => 'ch-certs-header',
 
-			<!-- Certificate image -->
-			<?php if ( $cert_img ) : ?>
-				<div class="ch-cert-visual fade-right">
-					<img src="<?php echo esc_url( $cert_img ); ?>"
-						alt="The Cane House Food Hygiene Certificate"
-						class="ch-cert-img" loading="lazy">
-						<span class="ch-cert-badge">We are officially member of</span>
-				</div>
-			<?php endif; ?>
+	/* CSS prefix — structural classes (carousel, track, nav) use ch-certs-* */
+	'prefix'       => 'ch-certs',
 
-		</div><!-- .ch-certs-layout -->
-	</div>
-</section>
+	/* Card class overrides — existing stylesheet uses ch-cert-* (singular) for cards */
+	'card_class'        => 'ch-cert-card',
+	'card_icon_class'   => 'ch-cert-icon',
+	'card_body_class'   => 'ch-cert-body',
+	'card_title_class'  => 'ch-cert-title',
+	'card_desc_class'   => 'ch-cert-desc',
+	'card_badge_class'  => 'ch-cert-badge',
+
+	/* IDs — JS uses these to drive the carousel */
+	'track_id' => 'ch-certs-track',
+	'dots_id'  => 'ch-certs-dots',
+	'prev_id'  => 'ch-certs-prev',
+	'next_id'  => 'ch-certs-next',
+
+	/* Nav labels */
+	'nav_label'  => 'Certifications navigation',
+	'prev_label' => 'Previous certification',
+	'next_label' => 'Next certification',
+
+	/* Cards */
+	'items' => $cards,
+
+	/* Visual panel */
+	'visual_image'       => get_template_directory_uri() . '/assets/images/ncass_logo.png',
+	'visual_alt'         => $_d['visual_alt']   ?? '',
+	'visual_label'       => $_d['visual_label'] ?? '',
+	'visual_class'       => 'ch-cert-visual',
+	'visual_img_class'   => 'ch-cert-img',
+	'visual_badge_class' => 'ch-cert-badge',
+
+] );
