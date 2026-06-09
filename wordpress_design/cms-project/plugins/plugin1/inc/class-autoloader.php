@@ -10,6 +10,10 @@ class AH_Autoloader {
 
 		// Database
 		'AH_DB_Installer'     => 'database/class-db-installer.php',
+		'AH_DB_Schema'        => 'database/class-db-schema.php',
+		'AH_DB_Foreign_Keys'  => 'database/class-db-foreign-keys.php',
+		'AH_DB_Seed'          => 'database/class-db-seed.php',
+		'AH_DB_Migrations'    => 'database/class-db-migrations.php',
 		'AH_DB_Helper'        => 'database/class-db-helper.php',
 
 		// Models
