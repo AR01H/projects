@@ -105,11 +105,14 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-help"]::before         { content:"\f223"; }
 #adminmenu .wp-submenu a[href*="page=ah-rules-engine"]::before { content:"\f211"; }
 #adminmenu .wp-submenu a[href*="page=ah-analytics"]::before   { content:"\f185"; }
+#adminmenu .wp-submenu a[href*="page=ah-banners"]::before   { content:"\f232"; }
+#adminmenu .wp-submenu a[href*="page=ah-notices"]::before   { content:"\f148"; }
 
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-team"]),
-#adminmenu .wp-submenu li:has(> a[href*="page=ah-audit"]) {
+#adminmenu .wp-submenu li:has(> a[href*="page=ah-audit"])
+{
 	border-top:1px solid rgba(255,255,255,.12); margin-top:6px; padding-top:4px;
 }
 CSS;

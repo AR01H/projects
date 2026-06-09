@@ -10,34 +10,47 @@ class AH_Admin_Menus {
 		add_menu_page(__( 'CMS ADMIN', 'ah-theme' ),__( 'CMS ADMIN', 'ah-theme' ),self::$cap,'ah-dashboard',[self::class,'page_dashboard'],'dashicons-admin-home',3);
 
 		$submenus = [
-			['title' => 'Dashboard','menu' => 'Dashboard','slug' => 'ah-dashboard','callback' => 'page_dashboard'],
-			['title' => 'Site Notices','menu' => 'Site Notices','slug' => 'ah-notices','callback' => 'page_notices'],
-			['title' => 'Home Banners','menu' => 'Home Banners','slug' => 'ah-banners','callback' => 'page_banners'],
-			['title' => 'Media Library','menu' => 'Media Library','slug' => 'ah-media','callback' => 'page_media'],
-			['title' => 'File Links','menu' => 'File Links','slug' => 'ah-file-links','callback' => 'page_file_links'],
-			['title' => 'News Bar','menu' => 'News Bar','slug' => 'ah-news-bar','callback' => 'page_news_bar'],
-			['title' => 'Navigation','menu' => 'Navigation Editor','slug' => 'ah-navigation','callback' => 'page_navigation'],
-			['title' => 'Home Sections','menu' => 'Home Sections','slug' => 'ah-home','callback' => 'page_home'],
-			['title' => 'Services','menu' => 'Services','slug' => 'ah-services','callback' => 'page_services'],
-			['title' => 'About Page','menu' => 'About Page','slug' => 'ah-about','callback' => 'page_about'],
-			['title' => 'Reviews','menu' => 'Reviews','slug' => 'ah-reviews','callback' => 'page_reviews'],
-			['title' => 'Client Stories','menu' => 'Client Stories','slug' => 'ah-client-stories','callback' => 'page_client_stories'],
-			['title' => 'FAQs','menu' => 'FAQs','slug' => 'ah-faqs','callback' => 'page_faqs'],
-			['title' => 'Posts / Blog','menu' => 'Posts / Blog','slug' => 'ah-posts','callback' => 'page_posts'],
-			['title' => 'Page Builder','menu' => 'Page Builder','slug' => 'ah-page-builder','callback' => 'page_builder'],
-			['title' => 'Static Pages','menu' => 'Static Pages','slug' => 'ah-static-pages','callback' => 'page_static_pages'],
-			['title' => 'Pages Manager','menu' => 'Pages Manager','slug' => 'ah-pages','callback' => 'page_pages'],
-			['title' => 'Form Builder','menu' => 'Form Builder','slug' => 'ah-form-builder','callback' => 'page_form_builder'],
-			['title' => 'Triggers Maker','menu' => 'Triggers Maker','slug' => 'ah-rules-engine','callback' => 'page_rules_engine'],
-			['title' => 'Team Members','menu' => 'Team Members','slug' => 'ah-team','callback' => 'page_team'],
-			['title' => 'Taxonomies','menu' => 'Taxonomies','slug' => 'ah-taxonomy','callback' => 'page_taxonomy'],
-			['title' => 'Data Import','menu' => 'Data Import','slug' => 'ah-import','callback' => 'page_import'],
-			['title' => 'Site Settings','menu' => 'Site Settings','slug' => 'ah-settings','callback' => 'page_settings'],
-			['title' => 'Audit Log','menu' => 'Audit Log','slug' => 'ah-audit','callback' => 'page_audit'],
-			['title' => 'Admin Actions','menu' => 'Admin Actions','slug' => 'ah-admin-actions','callback' => 'page_admin_actions'],
-			['title' => 'Analytics Reports','menu' => 'Analytics Reports','slug' => 'ah-analytics','callback' => 'page_analytics'],
-			['title' => 'Help & Guide','menu' => 'Help & Guide','slug' => 'ah-help','callback' => 'page_help'],
+			// ── Core ──────────────────────────────────────────────────
+			['title' => 'Dashboard',         'menu' => 'Dashboard',         'slug' => 'ah-dashboard',     'callback' => 'page_dashboard'    ],
+			// ── Content ───────────────────────────────────────────────
+			['title' => 'Home Sections',     'menu' => 'Home Sections',     'slug' => 'ah-home',          'callback' => 'page_home'         ],
+			['title' => 'Services',          'menu' => 'Services',          'slug' => 'ah-services',      'callback' => 'page_services'     ],
+			['title' => 'About Page',        'menu' => 'About Page',        'slug' => 'ah-about',         'callback' => 'page_about'        ],
+			['title' => 'Reviews',           'menu' => 'Reviews',           'slug' => 'ah-reviews',       'callback' => 'page_reviews'      ],
+			['title' => 'Client Stories',    'menu' => 'Client Stories',    'slug' => 'ah-client-stories','callback' => 'page_client_stories'],
+			['title' => 'FAQs',              'menu' => 'FAQs',              'slug' => 'ah-faqs',          'callback' => 'page_faqs'         ],
+			['title' => 'Posts / Blog',      'menu' => 'Posts / Blog',      'slug' => 'ah-posts',         'callback' => 'page_posts'        ],
+			['title' => 'Team Members',      'menu' => 'Team Members',      'slug' => 'ah-team',          'callback' => 'page_team'         ],
+			// ── Site Structure ────────────────────────────────────────
+			['title' => 'Navigation',        'menu' => 'Navigation Editor', 'slug' => 'ah-navigation',    'callback' => 'page_navigation'   ],
+			['title' => 'Home Banners',      'menu' => 'Home Banners',      'slug' => 'ah-banners',       'callback' => 'page_banners'      ],
+			['title' => 'Site Notices',      'menu' => 'Site Notices',      'slug' => 'ah-notices',       'callback' => 'page_notices'      ],
+			['title' => 'News Bar',          'menu' => 'News Bar',          'slug' => 'ah-news-bar',      'callback' => 'page_news_bar'     ],
+			['title' => 'Media Library',     'menu' => 'Media Library',     'slug' => 'ah-media',         'callback' => 'page_media'        ],
+			['title' => 'File Links',        'menu' => 'File Links',        'slug' => 'ah-file-links',    'callback' => 'page_file_links'   ],
+			// ── Builder Tools ─────────────────────────────────────────
+			['title' => 'Page Builder',      'menu' => 'Page Builder',      'slug' => 'ah-page-builder',  'callback' => 'page_builder'      ],
+			['title' => 'Static Pages',      'menu' => 'Static Pages',      'slug' => 'ah-static-pages',  'callback' => 'page_static_pages' ],
+			['title' => 'Pages Manager',     'menu' => 'Pages Manager',     'slug' => 'ah-pages',         'callback' => 'page_pages'        ],
+			['title' => 'Form Builder',      'menu' => 'Form Builder',      'slug' => 'ah-form-builder',  'callback' => 'page_form_builder' ],
+			['title' => 'Taxonomies',        'menu' => 'Taxonomies',        'slug' => 'ah-taxonomy',      'callback' => 'page_taxonomy'     ],
+			// ── System ────────────────────────────────────────────────
+			['title' => 'Triggers Maker',    'menu' => 'Triggers Maker',    'slug' => 'ah-rules-engine',  'callback' => 'page_rules_engine' ],
+			['title' => 'Data Import',       'menu' => 'Data Import',       'slug' => 'ah-import',        'callback' => 'page_import'       ],
+			['title' => 'Analytics Reports', 'menu' => 'Analytics Reports', 'slug' => 'ah-analytics',     'callback' => 'page_analytics'    ],
+			['title' => 'Site Settings',     'menu' => 'Site Settings',     'slug' => 'ah-settings',      'callback' => 'page_settings'     ],
+			['title' => 'Audit Log',         'menu' => 'Audit Log',         'slug' => 'ah-audit',         'callback' => 'page_audit'        ],
+			['title' => 'Admin Actions',     'menu' => 'Admin Actions',     'slug' => 'ah-admin-actions', 'callback' => 'page_admin_actions'],
+			['title' => 'Help & Guide',      'menu' => 'Help & Guide',      'slug' => 'ah-help',          'callback' => 'page_help'         ],
 		];
+
+		// Let theme define which menus to exclude
+		$excluded_slugs = apply_filters( 'ah_admin_menu_exclude_slugs', [] );
+		if ( ! empty( $excluded_slugs ) ) {
+			$submenus = array_filter( $submenus, function( $item ) use ( $excluded_slugs ) {
+				return ! in_array( $item['slug'], $excluded_slugs, true );
+			});
+		}
 
 		foreach ( $submenus as $submenu ) {
 			add_submenu_page('ah-dashboard',__( $submenu['title'], 'ah-theme' ),__( $submenu['menu'], 'ah-theme' ),self::$cap,$submenu['slug'],[ self::class, $submenu['callback'] ]);

@@ -16,6 +16,12 @@ require_once get_template_directory() . '/mail/common_contact.php';        // AJ
 require_once get_template_directory() . '/models/class-content-taxonomy.php'; // AH_Theme_Content_Taxonomy
 require_once get_template_directory() . '/cors-origin.php'; // Allowign cors origin
 require_once get_template_directory() . '/url-fixer.php';
+
+// ── Admin menu filtering ──────────────────────────────────────────────────────
+add_filter( 'ah_admin_menu_exclude_slugs', function () {
+	return [ 'ah-team' ];
+} );
+
 // ── Init Theme Admin ──────────────────────────────────────────────────────────
 if ( is_admin() ) {
 	AH_Theme_Admin::init();

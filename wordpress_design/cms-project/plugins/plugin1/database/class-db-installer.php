@@ -37,12 +37,26 @@ class AH_DB_Installer {
 		self::ensure_trigger_logs();
 		self::ensure_events_notification_columns();
 		self::ensure_banners_mobile_column();
+		self::ensure_hero_description_column();
 		self::ensure_review_taxonomy_type();
 		self::ensure_review_categories_taxonomy_type();
 		self::ensure_faq_tags_taxonomy_type();
 		self::ensure_sugarcane_contact_rule();
 		self::ensure_contact_form_rule_cc();
 		self::ensure_analytics_tables();
+	}
+
+	public static function ensure_hero_description_column(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_section_hero';
+		$has   = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'description'",
+			DB_NAME,
+			$table
+		) );
+		if ( empty( $has ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `description` TEXT DEFAULT NULL AFTER `subheading`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	/**
@@ -319,15 +333,6 @@ class AH_DB_Installer {
 			array( 'setting_key' => 'address',          'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'contact',       'label' => 'Address'                   ),
 			array( 'setting_key' => 'consultation_url', 'setting_val' => '', 'field_type' => 'url',      'group_name' => 'contact',       'label' => 'Consultation URL'          ),
 			array( 'setting_key' => 'youtube_url',      'setting_val' => '', 'field_type' => 'url',      'group_name' => 'social',        'label' => 'YouTube URL'               ),
-			// Notification / outbound email identity
-			array( 'setting_key' => 'notif_from_name',  'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'Notification From Name'    ),
-			array( 'setting_key' => 'notif_from_email', 'setting_val' => '', 'field_type' => 'email',    'group_name' => 'notifications', 'label' => 'Notification From Email'   ),
-			// SMTP overrides (leave blank to use WordPress default mailer)
-			array( 'setting_key' => 'smtp_host',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Host'                 ),
-			array( 'setting_key' => 'smtp_port',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Port'                 ),
-			array( 'setting_key' => 'smtp_user',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Username'             ),
-			array( 'setting_key' => 'smtp_pass',        'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Password'             ),
-			array( 'setting_key' => 'smtp_secure',      'setting_val' => '', 'field_type' => 'text',     'group_name' => 'notifications', 'label' => 'SMTP Encryption (tls/ssl)' ),
 		);
 		foreach ( $required as $s ) {
 			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE setting_key = %s", $s['setting_key'] ) ) ) {
@@ -489,6 +494,7 @@ class AH_DB_Installer {
 				badge_text          VARCHAR(150),
 				heading             VARCHAR(300) NOT NULL,
 				subheading          TEXT,
+				description         TEXT,
 				cta_primary_text    VARCHAR(100),
 				cta_primary_url     VARCHAR(500),
 				cta_secondary_text  VARCHAR(100),
@@ -1534,10 +1540,7 @@ class AH_DB_Installer {
 			array( 'setting_key' => 'whatsapp_number', 'setting_val' => '',                           'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'WhatsApp Number'  ),
 			array( 'setting_key' => 'contact_email',   'setting_val' => '',                           'field_type' => 'email',    'group_name' => 'contact', 'label' => 'Contact Email'    ),
 			array( 'setting_key' => 'contact_phone',   'setting_val' => '',                           'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'Contact Phone'    ),
-			array( 'setting_key' => 'primary_color',   'setting_val' => '#2563eb',                    'field_type' => 'color',    'group_name' => 'design',  'label' => 'Primary Color'    ),
 			array( 'setting_key' => 'facebook_url',    'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'Facebook URL'     ),
-			array( 'setting_key' => 'twitter_url',     'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'Twitter URL'      ),
-			array( 'setting_key' => 'linkedin_url',    'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'LinkedIn URL'     ),
 			array( 'setting_key' => 'instagram_url',   'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'Instagram URL'    ),
 			array( 'setting_key' => 'google_maps_url', 'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'contact', 'label' => 'Google Maps URL'  ),
 			array( 'setting_key' => 'footer_tagline',  'setting_val' => 'Your trusted home partner.', 'field_type' => 'textarea', 'group_name' => 'general', 'label' => 'Footer Tagline'   ),

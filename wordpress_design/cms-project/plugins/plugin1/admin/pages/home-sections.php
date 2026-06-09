@@ -20,12 +20,12 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && wp_verify_nonce( $_POST['ah_home_n
 			'badge_text'         => sanitize_text_field( $_POST['badge_text'] ?? '' ),
 			'heading'            => sanitize_text_field( $_POST['heading'] ?? '' ),
 			'subheading'         => sanitize_textarea_field( $_POST['subheading'] ?? '' ),
+			'description'        => sanitize_textarea_field( $_POST['description'] ?? '' ),
 			'cta_primary_text'   => sanitize_text_field( $_POST['cta_primary_text'] ?? '' ),
 			'cta_primary_url'    => esc_url_raw( $_POST['cta_primary_url'] ?? '' ),
 			'cta_secondary_text' => sanitize_text_field( $_POST['cta_secondary_text'] ?? '' ),
 			'cta_secondary_url'  => esc_url_raw( $_POST['cta_secondary_url'] ?? '' ),
 			'image_id'           => (int) ( $_POST['image_id'] ?? 0 ) ?: null,
-			'bg_color'           => AH_Validator::sanitize_color( $_POST['bg_color'] ?? '' ),
 			'is_visible'         => (int) ( $_POST['is_visible'] ?? 1 ),
 			'updated_by'         => $shared_updated_by,
 		) );
@@ -92,12 +92,7 @@ $sections = array(
 	'hero'       => 'Hero Section',
 	'why_us'     => 'Why You Need Us',
 	'guide'      => 'Guide Through',
-	'difference' => 'Difference From Others',
-	'highlights' => 'Highlights Bar',
-	'stack'      => 'Stack Details',
-	'experience' => 'Our Experience',
-	'why_req'    => 'Why Required',
-	'featured'   => 'Featured Properties',
+	'difference' => 'Difference From Others'
 );
 ?>
 <div class="wrap ah-wrap">
@@ -122,14 +117,14 @@ $sections = array(
           <div>
             <div class="ah-form-row"><label>Badge Text</label><input type="text" name="badge_text" value="<?php echo esc_attr( $hero->badge_text ?? '' ); ?>" placeholder="e.g. '#1 Trusted'"></div>
             <div class="ah-form-row"><label>Main Heading *</label><input type="text" name="heading" value="<?php echo esc_attr( $hero->heading ?? '' ); ?>" required></div>
-            <div class="ah-form-row"><label>Sub-heading</label><textarea name="subheading" rows="4"><?php echo esc_textarea( $hero->subheading ?? '' ); ?></textarea></div>
+            <div class="ah-form-row"><label>Sub-heading</label><textarea name="subheading" rows="3"><?php echo esc_textarea( $hero->subheading ?? '' ); ?></textarea></div>
+            <div class="ah-form-row"><label>Description</label><textarea name="description" rows="4" placeholder="Optional longer description below the sub-heading"><?php echo esc_textarea( $hero->description ?? '' ); ?></textarea></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
               <div class="ah-form-row"><label>Primary CTA Text</label><input type="text" name="cta_primary_text" value="<?php echo esc_attr( $hero->cta_primary_text ?? '' ); ?>"></div>
               <div class="ah-form-row"><label>Primary CTA URL</label><input type="url" name="cta_primary_url" value="<?php echo esc_attr( $hero->cta_primary_url ?? '' ); ?>"></div>
               <div class="ah-form-row"><label>Secondary CTA Text</label><input type="text" name="cta_secondary_text" value="<?php echo esc_attr( $hero->cta_secondary_text ?? '' ); ?>"></div>
               <div class="ah-form-row"><label>Secondary CTA URL</label><input type="url" name="cta_secondary_url" value="<?php echo esc_attr( $hero->cta_secondary_url ?? '' ); ?>"></div>
             </div>
-            <div class="ah-form-row"><label>Background Color</label><input type="text" name="bg_color" value="<?php echo esc_attr( $hero->bg_color ?? '#ffffff' ); ?>" class="wp-color-picker-field"></div>
             <div class="ah-form-row"><label>Visible</label><select name="is_visible"><option value="1" <?php selected( $hero->is_visible ?? 1, 1 ); ?>>Yes</option><option value="0">No</option></select></div>
           </div>
           <div>

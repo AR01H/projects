@@ -45,10 +45,11 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_settings_nonce']
 }
 
 $groups  = $model->get_all_grouped();
-$g_list  = array_keys( $groups );
+$hidden_groups = array( 'design', 'notifications' );
+$g_list  = array_values( array_diff( array_keys( $groups ), $hidden_groups ) );
 if ( ! in_array( $group, $g_list, true ) ) $group = $g_list[0] ?? 'general';
 $current     = $groups[ $group ] ?? array();
-$all_groups  = array_unique( array_merge( $g_list, array( 'general','contact','social','design','seo' ) ) );
+$all_groups  = array_unique( array_merge( $g_list, array( 'general','contact','social','seo' ) ) );
 sort( $all_groups );
 
 if ( ! function_exists( 'ah_settings_image_url' ) ) {

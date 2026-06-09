@@ -22,7 +22,7 @@ $saved = isset( $_GET['saved'] ) ? (int) $_GET['saved'] : 0;
 		<?php wp_nonce_field( 'ah_notices_save' ); ?>
 		<input type="hidden" name="action" value="ah_save_notice">
 
-		<div style="background:#fff;border:1px solid #ccc;border-radius:8px;padding:2rem;max-width:600px;">
+		<div style="background:#fff;border:1px solid #ccc;border-radius:8px;padding:2rem;">
 
 			<!-- Enable Toggle -->
 			<div style="margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid #e0e0e0;">

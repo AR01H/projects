@@ -30,6 +30,22 @@ require_once get_template_directory() . '/includes/class-theme-admin.php';
 require_once get_template_directory() . '/mail/common_contact.php';
 require_once get_template_directory() . '/admin/theme-reset.php';
 
+// ── Admin menu filtering ──────────────────────────────────────────────────────
+add_filter( 'ah_admin_menu_exclude_slugs', function () {
+	return [
+		'ah-posts',
+		'ah-page-builder',
+		'ah-static-pages',
+		'ah-pages',
+		'ah-form-builder',
+		'ah-team',
+		'ah-client-stories',
+		'ah-news-bar',
+		'ah-import',
+		'ah-services'
+	];
+} );
+
 // ── Clear stale nav data from other themes (runs once per session) ────────────
 add_action( 'init', function () {
 	if ( get_option( 'ch_nav_cleaned_v2' ) ) return;
