@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || exit;
 require_once get_template_directory() . '/includes/mini-helping-functions.php';
 require_once get_template_directory() . '/includes/common_constants.php';  // CTA & site-wide string constants
 require_once get_template_directory() . '/includes/common_terms.php';      // client brand name constants
+require_once get_template_directory() . '/includes/core_terms.php'; 
 require_once get_template_directory() . '/includes/core_settings.php';      // client brand name constants
 require_once get_template_directory() . '/includes/data/class-real-loader.php'; // reads real_data/ CSV + JSON files
 require_once get_template_directory() . '/includes/data/class-page-data.php';   // static page content (section headings, etc.)

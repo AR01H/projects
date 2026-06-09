@@ -1525,3 +1525,191 @@ body.design-traditional .ch-frn-visual::before{
         font-size:18px;
     }
 }
+
+
+/* ── 28. FORMS — TRADITIONAL PARCHMENT TREATMENT ───────────────────────────
+   Replaces the modern green-gradient form look with the vintage parchment
+   aesthetic shown in the reference: cream paper card, sepia-toned inputs,
+   solid forest-green submit button, gold focus ring.                        */
+
+/* ── Form card container ── */
+body.design-traditional .ch-contact-form {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+    box-shadow:
+        2px 4px 16px rgba(30,40,12,0.12),
+        0 1px 3px rgba(30,40,12,0.08);
+    padding: 2.2rem 2rem;
+}
+
+/* Inner double-frame on the form card */
+body.design-traditional .ch-contact-form::after {
+    /* inherits zigzag rule from Section 26 — ensure it still shows */
+    z-index: 0;
+}
+
+/* ── Form title ── */
+body.design-traditional .ch-form-title {
+    font-family: var(--ch-font-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--trad-ink);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0.35rem;
+}
+/* Heart ornament under form title */
+body.design-traditional .ch-form-title::after {
+    content: "— \2665 —";
+    display: block;
+    color: var(--trad-gold);
+    font-size: 0.72rem;
+    letter-spacing: 0.55em;
+    margin: 0.3rem 0 1.6rem;
+    font-weight: 400;
+}
+
+/* ── Labels ── */
+body.design-traditional .ch-form-label {
+    font-family: var(--ch-font-body);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--trad-ink);
+    opacity: 0.75;
+    margin-bottom: 0.4rem;
+}
+
+/* ── Inputs, select, textarea ── */
+body.design-traditional .ch-form-input,
+body.design-traditional .ch-form-select,
+body.design-traditional .ch-form-textarea {
+    background: var(--trad-bg);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius-sm);
+    color: var(--trad-ink);
+    font-family: var(--ch-font-body);
+    font-size: 0.88rem;
+    padding: 0.78rem 0.9rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+body.design-traditional .ch-form-input::placeholder,
+body.design-traditional .ch-form-textarea::placeholder {
+    color: var(--trad-ink);
+    opacity: 0.38;
+    font-style: italic;
+}
+
+/* Gold focus ring instead of green */
+body.design-traditional .ch-form-input:focus,
+body.design-traditional .ch-form-select:focus,
+body.design-traditional .ch-form-textarea:focus {
+    border-color: var(--trad-gold);
+    box-shadow: 0 0 0 2px rgba(185,146,58,0.20);
+    outline: none;
+}
+
+/* Select: sepia-toned chevron */
+body.design-traditional .ch-form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b9923a' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+body.design-traditional .ch-form-select option {
+    background: var(--trad-card);
+    color: var(--trad-ink);
+}
+
+/* Textarea */
+body.design-traditional .ch-form-textarea {
+    min-height: 120px;
+    line-height: 1.65;
+    resize: vertical;
+}
+
+/* ── Submit button ── */
+body.design-traditional .ch-form-submit {
+    background: var(--trad-green);
+    background-image: none;
+    color: var(--trad-cream);
+    font-family: var(--ch-font-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border: 2px solid var(--trad-green-2);
+    border-radius: var(--ch-radius);
+    box-shadow: 2px 3px 10px rgba(30,40,12,0.30);
+    padding: 1rem 2rem;
+    transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+}
+
+body.design-traditional .ch-form-submit:hover {
+    background: var(--trad-green-2);
+    box-shadow: 3px 5px 18px rgba(30,40,12,0.40);
+    transform: translateY(-2px);
+}
+
+body.design-traditional .ch-form-submit:disabled {
+    background: var(--trad-border);
+    box-shadow: none;
+    color: var(--trad-ink);
+    opacity: 0.6;
+    transform: none;
+}
+
+/* ── Feedback messages ── */
+body.design-traditional .ch-form-feedback.success {
+    background: rgba(46,80,22,0.08);
+    border: 1px solid var(--trad-green);
+    color: var(--trad-green);
+}
+
+body.design-traditional .ch-form-feedback.error {
+    background: rgba(122,28,18,0.08);
+    border: 1px solid var(--trad-red);
+    color: var(--trad-red);
+}
+
+/* ── Disclaimer / consent checkbox ── */
+body.design-traditional .ch-disclaimer-box {
+    border-color: var(--trad-border);
+    background: var(--trad-bg);
+    border-radius: 3px;
+}
+
+body.design-traditional .ch-disclaimer-check:checked + .ch-disclaimer-box {
+    background: var(--trad-green);
+    border-color: var(--trad-green);
+}
+
+body.design-traditional .ch-disclaimer-check:focus-visible + .ch-disclaimer-box {
+    box-shadow: 0 0 0 3px rgba(185,146,58,0.25);
+}
+
+body.design-traditional .ch-disclaimer-text {
+    color: var(--client-color-16);
+}
+
+body.design-traditional .ch-disclaimer-text a {
+    color: var(--trad-green);
+}
+
+/* Validation error colour */
+body.design-traditional .ch-form-input.invalid,
+body.design-traditional .ch-form-textarea.invalid {
+    border-color: var(--trad-red);
+    box-shadow: 0 0 0 2px rgba(122,28,18,0.12);
+}
+
+body.design-traditional .ch-field-error,
+body.design-traditional .ch-consent-error {
+    color: var(--trad-red);
+}

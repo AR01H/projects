@@ -4,13 +4,13 @@
    Edit values here
    ═══════════════════════════════════════════ */
 
-$site_name = defined('AH_BRAND_NAME')    ? AH_BRAND_NAME    : 'Advaith Homes';
-$tagline   = defined('AH_BRAND_TAGLINE') ? AH_BRAND_TAGLINE : 'Your trusted partner for home buying in the UK';
+$site_name =  AH_BRAND_NAME;
+$tagline   =  AH_BRAND_TAGLINE;
 $logo_url  = function_exists('get_template_directory_uri')
                ? get_template_directory_uri() . '/assets/images/logo.png'
                : '/assets/images/logo.png';
-$phone     = defined('CONTACT_NUMBER') ? CONTACT_NUMBER : '+44 1234 567 890';
-$email     = defined('CONTACT_EMAIL')  ? CONTACT_EMAIL  : 'hello@advaithhomes.co.uk';
+$phone     = CONTACT_NUMBER ;
+$email     = CONTACT_EMAIL ;
 
 ?>
 <!DOCTYPE html>
