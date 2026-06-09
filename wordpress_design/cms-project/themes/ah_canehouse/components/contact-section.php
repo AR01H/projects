@@ -21,7 +21,15 @@ $contact_details = [
     'franchise_info_text' => [ 'icon' => '🤝', 'label' => 'Franchise' ],
 ];
 
-
+/* Traditional-only decorative assets: pinned polaroid + rubber-stamp sticker.
+   Gated by ch_design_is() so the modern design renders exactly as before. */
+$is_trad     = function_exists( 'ch_design_is' ) && ch_design_is( 'traditional' );
+$trad_photo  = '';
+if ( $is_trad && function_exists( 'ch_get_equipment_media_gallery' ) ) {
+    $_g     = ch_get_equipment_media_gallery();
+    $_first = is_array( $_g ) && ! empty( $_g ) ? (array) $_g[0] : [];
+    $trad_photo = $_first['src'] ?? $_first['url'] ?? $_first['image'] ?? '';
+}
 ?>
 
 <section id="contact" class="ch-contact-section">
@@ -67,9 +75,28 @@ $contact_details = [
 				</div>
 			</div>
 		<?php endforeach; ?>
+
+		<?php if ( $is_trad && $trad_photo ) : ?>
+			<!-- Pinned polaroid (traditional only) -->
+			<figure class="ch-contact-polaroid" aria-hidden="true">
+				<span class="ch-contact-pin"></span>
+				<div class="ch-contact-polaroid__mount">
+					<img src="<?php echo esc_url( $trad_photo ); ?>" alt="" loading="lazy">
+				</div>
+				<figcaption class="ch-contact-polaroid__cap">Good Times. Sweet Memories. ♥</figcaption>
+			</figure>
+		<?php endif; ?>
 	</div>
 
 	<div class="ch-contact-form fade-right">
+		<?php if ( $is_trad ) : ?>
+			<span class="ch-form-clip" aria-hidden="true"></span>
+			<span class="ch-contact-stamp" aria-hidden="true">
+				<span class="ch-contact-stamp__top">Freshly Pressed</span>
+				<span class="ch-contact-stamp__big">100%</span>
+				<span class="ch-contact-stamp__bot">Natural</span>
+			</span>
+		<?php endif; ?>
 		<div class="ch-form-title"><?php echo esc_html( $form_title ); ?></div>
 
 		<div id="ch-form-msg" class="ch-form-feedback" style="display:none;" role="alert"></div>

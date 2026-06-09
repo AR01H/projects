@@ -33,6 +33,7 @@ class CH_Hire_Data {
 			return [
 				'icon' => $r['icon'] ?? '',
 				'text' => $r['text'] ?? '',
+				'sub'  => $r['sub']  ?? '',
 			];
 		}, $rows );
 	}

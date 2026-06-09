@@ -22,6 +22,9 @@ if ( empty( $features ) ) return;
 				<div class="ch-ribbon-item">
 					<span class="ch-ribbon-icon"><?php echo esc_html( $feat['icon'] ?? '✓' ); ?></span>
 					<span class="ch-ribbon-text"><?php echo esc_html( $feat['text'] ?? '' ); ?></span>
+					<?php if ( ! empty( $feat['sub'] ) ) : ?>
+					<span class="ch-ribbon-sub"><?php echo esc_html( $feat['sub'] ); ?></span>
+					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>

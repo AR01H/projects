@@ -1964,7 +1964,6 @@ body.nav--collapsed .ch-nav__cta-btn    { display: none !important; }
 
 /* Franchise marquee */
 .ch-franchise-marquee {
-    margin-top: 1.5rem;
     padding: 0.5rem 0;
     background: rgba(45, 90, 27, 0.05);
     border-top: 1px solid rgba(45, 90, 27, 0.1);
