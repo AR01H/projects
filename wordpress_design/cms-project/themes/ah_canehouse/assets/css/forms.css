@@ -4,7 +4,7 @@
     background: var(--client-color-11);
     border: 2px solid var(--client-color-5);
     border-radius: 24px;
-    padding: 2.5rem;
+    padding: 1.5rem;
     box-shadow: 0 8px 40px var(--client-color-18);
 }
 

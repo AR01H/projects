@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) || exit;
 // ── Includes - order matters ──────────────────────────────────────────────────
 require_once get_template_directory() . '/includes/common_terms.php';  // first - defines constants
 require_once get_template_directory() . '/includes/core_settings.php';
+require_once get_template_directory() . '/includes/class-design-config.php';
 require_once get_template_directory() . '/includes/usefulfuntions.php';
 require_once get_template_directory() . '/includes/mock-data.php';
 require_once get_template_directory() . '/includes/helpers.php';
@@ -54,6 +55,12 @@ add_action( 'init', function () {
 	delete_option( 'ah_cms_nav_cta' );
 	delete_option( 'ch_nav_cta' );
 	update_option( 'ch_nav_cleaned_v2', true );
+} );
+
+// ── Design variant body class ─────────────────────────────────────────────
+add_filter( 'body_class', function ( array $classes ): array {
+	$classes[] = CH_Design_Config::body_class();
+	return $classes;
 } );
 
 // ── Page definitions ──────────────────────────────────────────────────────────
@@ -314,6 +321,12 @@ add_action( 'wp_enqueue_scripts', function () {
 		null
 	);
 
+	// Design-variant fonts (only loaded when a non-modern design is active)
+	$design_fonts_url = CH_Design_Config::fonts_url();
+	if ( $design_fonts_url ) {
+		wp_enqueue_style( 'ch-design-fonts', $design_fonts_url, [], null );
+	}
+
 	wp_enqueue_style( 'ch-variables',  $uri . '/assets/css/variables.css',  [ 'ch-google-fonts' ], $ver( '/assets/css/variables.css' ) );
 	wp_enqueue_style( 'ch-base',       $uri . '/assets/css/base.css',       [ 'ch-variables' ],    $ver( '/assets/css/base.css' ) );
 	wp_enqueue_style( 'ch-components', $uri . '/assets/css/components.css', [ 'ch-base' ],         $ver( '/assets/css/components.css' ) );
@@ -324,8 +337,15 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ch-carousel', $uri . '/assets/css/carousel.css',    [ 'ch-base' ],         $ver( '/assets/css/carousel.css' ) );
 	wp_enqueue_style( 'ch-carousel-video', $uri . '/assets/css/carousel-video.css', [ 'ch-base' ], $ver( '/assets/css/carousel-video.css' ) );
 	wp_enqueue_style( 'ch-carousel-mini-video', $uri . '/assets/css/carousel-mini-video.css', [ 'ch-base' ], $ver( '/assets/css/carousel-mini-video.css' ) );
+	wp_enqueue_style( 'ch-carousel-image-scroll', $uri . '/assets/css/carousel-image-scroll.css', [ 'ch-base' ], $ver( '/assets/css/carousel-image-scroll.css' ) );
 
 	wp_enqueue_style( 'ch-style',      get_stylesheet_uri(),                [ 'ch-layout' ],       $ver( '/style.css' ) );
+
+	// Design-variant CSS — loaded last so it overrides the base stylesheet
+	$design_css = CH_Design_Config::css_file();
+	if ( $design_css ) {
+		wp_enqueue_style( 'ch-design', $uri . $design_css, [ 'ch-style' ], $ver( $design_css ) );
+	}
 
 	wp_enqueue_script( 'ch-main',  $uri . '/assets/js/main.js',  [ 'jquery' ], $ver( '/assets/js/main.js' ), true );
 	wp_enqueue_script( 'ch-form-step-modal', $uri . '/assets/js/form-step-modal.js', [ 'ch-main' ], $ver( '/assets/js/form-step-modal.js' ), true );

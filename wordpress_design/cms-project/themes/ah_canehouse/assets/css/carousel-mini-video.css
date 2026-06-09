@@ -100,8 +100,8 @@
 }
 .ch-mvs-title:hover { color: var(--client-color-7, #7cb518); }
 .ch-mvs-desc {
-	margin: 6px 0 0; font-size: .88rem; line-height: 1.45;
-	color: var(--client-color-9, #555);
+	margin: 6px 0 0; font-size: .88rem; line-height: 1.1;
+	/* color: var(--client-color-9, #555); */
 	display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 

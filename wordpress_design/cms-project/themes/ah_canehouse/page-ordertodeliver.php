@@ -6,7 +6,6 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 $data = require get_template_directory() . '/intermediate_logics/ordertodeliver.php';
 $hero = $data['hero'];
-$cta  = $data['cta'];
 ?>
 <main class="ch-main" id="main-content">
 
@@ -25,15 +24,6 @@ $cta  = $data['cta'];
 <?php get_template_part( 'components/how-to-order' ); ?>
 <?php get_template_part( 'components/carousels/review-carousel' ); ?>
 <?php get_template_part( 'components/certifications' ); ?>
-
-<?php get_template_part( 'components/cta-section', null, [
-	'tag'        => $cta['tag']     ?? 'Ready to Order?',
-	'heading'    => $cta['heading'] ?? 'Fresh Juice at <span class="accent" style="color:var(--client-color-7);">Your Doorstep</span>',
-	'body'       => $cta['body']    ?? '',
-	'btn_label'  => '🥤 Order Now',
-	'btn_url'    => '#order-to-deliver',
-	'show_phone' => true,
-] ); ?>
 
 <?php get_template_part( 'components/contact-section' ); ?>
 

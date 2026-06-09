@@ -116,46 +116,27 @@ $cards_html = ob_get_clean();
 </div><!-- .ch-sc -->
 
 <style>
-#<?php echo $uid; ?> .ch-sc-viewport { width: 100%; overflow: hidden; }
+/* Instance-specific: dimensions and animation only.
+   Base layout/cosmetic rules live in carousel-image-scroll.css. */
 
+/* Card dimensions — each card carries its trailing gap so the 2-set loop is pixel-perfect */
+#<?php echo $uid; ?> .ch-sc-card  { width: <?php echo $card_width; ?>px; margin-right: <?php echo $card_gap; ?>px; }
+#<?php echo $uid; ?> .ch-sc-media { width: <?php echo $card_width; ?>px; height: <?php echo $card_height; ?>px; }
+
+/* Animation — name and duration are per-instance */
 #<?php echo $uid; ?> .ch-sc-track {
-	display: flex;
-	flex-wrap: nowrap;
-	width: max-content;
-	will-change: transform;
 	animation: <?php echo $anim_name; ?> <?php echo $duration_s; ?>s linear infinite;
 	animation-direction: <?php echo $direction === 'ltr' ? 'reverse' : 'normal'; ?>;
-}
-<?php if ( $pause_hover ) : ?>
-#<?php echo $uid; ?> .ch-sc:hover .ch-sc-track,
-#<?php echo $uid; ?>.ch-sc:hover .ch-sc-track { animation-play-state: paused; }
+<?php if ( ! $pause_hover ) : ?>
+	/* pause_on_hover disabled for this instance — override the shared rule */
 <?php endif; ?>
-
-/* Each card carries its own trailing gap → 2 sets line up pixel-perfect */
-#<?php echo $uid; ?> .ch-sc-card {
-	flex: 0 0 auto;
-	width: <?php echo $card_width; ?>px;
-	margin-right: <?php echo $card_gap; ?>px;
 }
-#<?php echo $uid; ?> .ch-sc-media {
-	position: relative;
-	width: <?php echo $card_width; ?>px;
-	height: <?php echo $card_height; ?>px;
-	overflow: hidden;
-	border-radius: 12px;
-}
-#<?php echo $uid; ?> .ch-sc-img,
-#<?php echo $uid; ?> .ch-sc-vid {
-	width: 100%; height: 100%;
-	object-fit: cover; display: block;
-}
+<?php if ( ! $pause_hover ) : ?>
+#<?php echo $uid; ?>.ch-sc:hover .ch-sc-track { animation-play-state: running; }
+<?php endif; ?>
 
 @keyframes <?php echo $anim_name; ?> {
 	from { transform: translateX(0); }
 	to   { transform: translateX(-<?php echo (int) $one_set_px; ?>px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-	#<?php echo $uid; ?> .ch-sc-track { animation: none; }
 }
 </style>

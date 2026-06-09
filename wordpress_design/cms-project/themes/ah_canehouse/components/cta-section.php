@@ -17,7 +17,7 @@ $btn2_url   = $args['btn2_url']   ?? '#';
 $btn2_icon  = $args['btn2_icon']  ?? '';
 $btn2_class = $args['btn2_class'] ?? 'btn-outline ch-btn-outline-light';
 $show_phone = $args['show_phone'] ?? true;
-$bg         = $args['bg']         ?? 'var(--client-color-1)';
+$bg         = $args['bg']         ?? 'var(--client-color-3)';
 ?>
 
 <section class="ch-cta-section" style="background:<?php echo esc_attr( $bg ); ?>;">

@@ -202,7 +202,7 @@ $total = count( $slides );
 		<?php if ( $show_dots && $total > 1 ) : ?>
 			<div class="ch-vs-dots" role="tablist" aria-label="Slide navigation">
 				<?php foreach ( $slides as $i => $s ) : ?>
-					<button class="ch-vs-dot<?php echo $i === 0 ? ' is-active' : ''; ?>"
+					<button class="ch-carousel__dot ch-vs-dot<?php echo $i === 0 ? ' is-active' : ''; ?>"
 					        role="tab"
 					        aria-selected="<?php echo $i === 0 ? 'true' : 'false'; ?>"
 					        data-go="<?php echo (int) $i; ?>"
