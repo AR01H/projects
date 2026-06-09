@@ -1,6 +1,6 @@
 <?php
 /**
- * PT_Stories_DB — database layer for the wp_pt_stories table.
+ * PT_Stories_DB - database layer for the wp_pt_stories table.
  *
  * Call PT_Stories_DB::maybe_create() on admin_init (done in class-pt-stories-admin.php).
  * Bump DB_VERSION when columns change to trigger an automatic dbDelta upgrade.

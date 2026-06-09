@@ -249,7 +249,7 @@ $id = 'ccr-' . $uid;
 
 	if (!TRACK || !WIN) return;
 
-	/* Snapshot of real (non-clone) cells — captured once before cloning */
+	/* Snapshot of real (non-clone) cells - captured once before cloning */
 	var ORIG  = Array.from(TRACK.children);
 	var TOTAL = ORIG.length;
 	if (!TOTAL) return;
@@ -282,7 +282,7 @@ $id = 'ccr-' . $uid;
 
 	/* ── Move track ──────────────────────────────────────────────── */
 
-	/* Instant snap — no animation.
+	/* Instant snap - no animation.
 	   We remove the .is-sliding class, force a reflow so the browser
 	   applies 'transition: none' synchronously, then set the transform. */
 	function snapTo(cellIdx) {
@@ -291,7 +291,7 @@ $id = 'ccr-' . $uid;
 		TRACK.style.transform = 'translateX(' + offsetFor(cellIdx) + 'px)';
 	}
 
-	/* Animated slide — adds .is-sliding so CSS transition fires */
+	/* Animated slide - adds .is-sliding so CSS transition fires */
 	function slideTo(cellIdx) {
 		TRACK.classList.add('is-sliding');
 		TRACK.style.transform = 'translateX(' + offsetFor(cellIdx) + 'px)';
@@ -433,7 +433,7 @@ $id = 'ccr-' . $uid;
 	/* ── Compute widths ──────────────────────────────────────────── */
 	function applyWidths() {
 		var ww = WIN.offsetWidth;
-		if (ww <= 0) return; /* layout not ready yet — skip */
+		if (ww <= 0) return; /* layout not ready yet - skip */
 
 		itemW = (ww - GAP * (vis - 1)) / vis;
 

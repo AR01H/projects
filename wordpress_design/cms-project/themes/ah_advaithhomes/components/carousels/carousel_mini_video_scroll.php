@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_mini_video_scroll — horizontal shelf of portrait "Shorts-style" video cards.
+ * carousel_mini_video_scroll - horizontal shelf of portrait "Shorts-style" video cards.
  *
  * Each card: thumbnail + channel avatar/name overlay + themed play badge,
  * with a title (link) and description below. Scrolls with ← → buttons under the row.

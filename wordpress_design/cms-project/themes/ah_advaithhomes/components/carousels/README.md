@@ -122,11 +122,11 @@ All carousels use CSS custom properties for theming. Edit the style sections or 
 ```
 
 **Color variables:**
-- `--client-color-1` — text
-- `--client-color-4` — borders
-- `--client-color-7` — accent (active states)
-- `--client-color-11` — card background
-- `--ch-radius` — border radius
+- `--client-color-1` - text
+- `--client-color-4` - borders
+- `--client-color-7` - accent (active states)
+- `--client-color-11` - card background
+- `--ch-radius` - border radius
 
 ---
 

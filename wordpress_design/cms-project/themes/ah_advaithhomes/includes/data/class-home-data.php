@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Fetches and normalises all data for front-page.php.
  * Returns a single flat array consumed by the home/* components.
- * No HTML here — only data transformation.
+ * No HTML here - only data transformation.
  */
 class AH_Home_Data {
 
@@ -64,7 +64,7 @@ class AH_Home_Data {
 	}
 
 	/**
-	 * Accent colour mapped from a card slug — used by bento and article components.
+	 * Accent colour mapped from a card slug - used by bento and article components.
 	 */
 	public static function slug_color( string $slug ): string {
 		$map = [

@@ -81,14 +81,14 @@ $error = sanitize_key( $_GET['error'] ?? '' );
 						<label for="f-title">Title</label>
 						<input type="text" id="f-title" name="title"
 						       value="<?php echo esc_attr( $f['title'] ); ?>"
-						       placeholder="Landmark Residences — Sold Out in 90 Days" required>
+						       placeholder="Landmark Residences - Sold Out in 90 Days" required>
 					</div>
 
 					<div class="pt-form-group">
 						<label for="f-id">
 							Story Slug (ID)
 							<?php if ( ! $is_new ) : ?>
-								<span style="font-weight:400;text-transform:none;letter-spacing:0;color:#d97706">— changing this creates a new record</span>
+								<span style="font-weight:400;text-transform:none;letter-spacing:0;color:#d97706">- changing this creates a new record</span>
 							<?php endif; ?>
 						</label>
 						<input type="text" id="f-id" name="id"
@@ -170,7 +170,7 @@ $error = sanitize_key( $_GET['error'] ?? '' );
 						<div class="pt-result-preview" id="pt-preview-<?php echo $i; ?>">
 							<div>
 								<div class="pt-result-preview__val" id="pt-pv-<?php echo $i; ?>">
-									<?php echo esc_html( $f[ $vk ] ?: '—' ); ?>
+									<?php echo esc_html( $f[ $vk ] ?: '-' ); ?>
 								</div>
 								<div class="pt-result-preview__lbl" id="pt-pl-<?php echo $i; ?>">
 									<?php echo esc_html( $f[ $lk ] ?: 'Label' ); ?>
@@ -269,7 +269,7 @@ $error = sanitize_key( $_GET['error'] ?? '' );
 			var plEl  = document.getElementById('pt-pl-' + idx);
 
 			if ( valEl && pvEl ) {
-				valEl.addEventListener('input', function(){ pvEl.textContent = this.value || '—'; });
+				valEl.addEventListener('input', function(){ pvEl.textContent = this.value || '-'; });
 			}
 			if ( lblEl && plEl ) {
 				lblEl.addEventListener('input', function(){ plEl.textContent = this.value || 'Label'; });

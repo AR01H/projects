@@ -4,7 +4,7 @@ Professional card designs for different content types. Mix and match based on yo
 
 ## Available Variants
 
-### 1. `image-overlay` — Image with text overlay
+### 1. `image-overlay` - Image with text overlay
 Large image background with title and text overlaid. Perfect for hero/showcase content.
 
 **Data Structure:**
@@ -21,7 +21,7 @@ Large image background with title and text overlaid. Perfect for hero/showcase c
 
 ---
 
-### 2. `image-split` — Image left, content right
+### 2. `image-split` - Image left, content right
 Side-by-side layout with image on left, content on right. Great for detailed product/service cards.
 
 **Data Structure:**
@@ -42,7 +42,7 @@ Side-by-side layout with image on left, content on right. Great for detailed pro
 
 ---
 
-### 3. `stat` — Large number + label
+### 3. `stat` - Large number + label
 Emphasis on statistics or metrics with icon, big number, and description.
 
 **Data Structure:**
@@ -60,7 +60,7 @@ Emphasis on statistics or metrics with icon, big number, and description.
 
 ---
 
-### 4. `testimonial` — Quote + author + rating
+### 4. `testimonial` - Quote + author + rating
 Customer review/testimonial card with quote, author, role, and star rating.
 
 **Data Structure:**
@@ -77,7 +77,7 @@ Customer review/testimonial card with quote, author, role, and star rating.
 
 ---
 
-### 5. `minimal` — Title + description (clean)
+### 5. `minimal` - Title + description (clean)
 Simplest design - just title and text. Perfect for minimalist layouts.
 
 **Data Structure:**
@@ -92,7 +92,7 @@ Simplest design - just title and text. Perfect for minimalist layouts.
 
 ---
 
-### 6. `feature-detailed` — Icon + title + text + checklist
+### 6. `feature-detailed` - Icon + title + text + checklist
 Icon-based card with title, description, and feature list. Current default.
 
 **Data Structure:**
@@ -169,11 +169,11 @@ get_template_part( 'components/carousels/carousel-dots', null, [
 ## Color & Spacing
 
 All variants respect theme CSS variables:
-- `--client-color-1` — primary text
-- `--client-color-4` — borders/secondary
-- `--client-color-7` — accent/highlight
-- `--client-color-11` — card background
-- `--client-color-16` — muted text
+- `--client-color-1` - primary text
+- `--client-color-4` - borders/secondary
+- `--client-color-7` - accent/highlight
+- `--client-color-11` - card background
+- `--client-color-16` - muted text
 
 Customize via carousel's `css_vars` parameter if needed.
 

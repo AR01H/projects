@@ -118,7 +118,7 @@ $enq_options = [
             <span class="contact-info-item__icon">🕐</span>
             <div>
               <div class="contact-info-item__label">Response Time</div>
-              <div class="contact-info-item__value">Within 24 hours, Mon–Fri</div>
+              <div class="contact-info-item__value">Within 24 hours, Mon-Fri</div>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_video_scroll — one-slide-at-a-time media slider with dots + arrows.
+ * carousel_video_scroll - one-slide-at-a-time media slider with dots + arrows.
  *
  * Plays/shows any mix of:  YouTube  •  local/remote video file  •  image.
  * Data lives in a CSV (real_data/csv/video-showcase.csv by default).
@@ -12,7 +12,7 @@
  * │  HOW TO USE                                                     │
  * └─────────────────────────────────────────────────────────────────┘
  *
- *  // Simplest — auto-loads real_data/csv/video-showcase.csv
+ *  // Simplest - auto-loads real_data/csv/video-showcase.csv
  *  get_template_part( 'components/carousels/carousel_video_scroll' );
  *
  *  // With a heading + optional different CSV
@@ -58,7 +58,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-/* ── YouTube id parser (guarded — component may be included more than once) ──── */
+/* ── YouTube id parser (guarded - component may be included more than once) ──── */
 if ( ! function_exists( 'ah_vs_youtube_id' ) ) {
 	function ah_vs_youtube_id( string $url ): string {
 		$url = trim( $url );

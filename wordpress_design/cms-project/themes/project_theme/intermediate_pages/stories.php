@@ -3,7 +3,7 @@
  * Intermediate Page: Stories
  *
  * Assembles all data needed by page-stories.php.
- * Returns an associative array — page template consumes $data['key'].
+ * Returns an associative array - page template consumes $data['key'].
  *
  * Data flow:
  *   real_data/ → PT_Stories_Data → here → page-stories.php → components

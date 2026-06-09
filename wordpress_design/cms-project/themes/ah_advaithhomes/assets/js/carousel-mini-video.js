@@ -1,5 +1,5 @@
 /* ==========================================================================
-   carousel_mini_video_scroll — shelf scrolling + YouTube/video play facade.
+   carousel_mini_video_scroll - shelf scrolling + YouTube/video play facade.
    Initialises every .ah-mvs on the page.
    Markup: components/carousels/carousel_mini_video_scroll.php
    ========================================================================== */

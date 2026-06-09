@@ -60,7 +60,7 @@ $msg      = isset( $_GET['msg'] )    ? urldecode( sanitize_text_field( $_GET['ms
 	<div class="pt-admin-box">
 		<h2>Schema Only</h2>
 		<p style="color:#64748b;font-size:.875rem;margin-bottom:18px;">
-			Runs <code>dbDelta</code> to create or update DB tables — no demo rows inserted.
+			Runs <code>dbDelta</code> to create or update DB tables - no demo rows inserted.
 			Run this after a theme update when column changes are expected.
 		</p>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -86,7 +86,7 @@ $msg      = isset( $_GET['msg'] )    ? urldecode( sanitize_text_field( $_GET['ms
 			<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
 				<label style="display:flex;align-items:center;gap:10px;font-size:.9rem;">
 					<input type="checkbox" name="seed_types[]" value="stories" checked>
-					<strong>Stories</strong> — 5 sample client case studies
+					<strong>Stories</strong> - 5 sample client case studies
 				</label>
 			</div>
 			<button type="submit" class="button button-primary">

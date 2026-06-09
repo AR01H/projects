@@ -1,6 +1,6 @@
 <?php
 /**
- * intermediate_pages/home.php — data layer for front-page.php.
+ * intermediate_pages/home.php - data layer for front-page.php.
  *
  * Loads section headings, prepares showcase strip items, and
  * builds the consultation modal steps HTML via ob_start().
@@ -39,7 +39,7 @@ ob_start();
 	<div class="pt-bk-field">
 		<label for="consult_service">What are you looking for?</label>
 		<select name="consult_service" id="consult_service">
-			<option value="">— Select a service —</option>
+			<option value="">- Select a service -</option>
 			<option value="web_design">Web Design</option>
 			<option value="branding">Branding &amp; Identity</option>
 			<option value="development">Development</option>
@@ -51,10 +51,10 @@ ob_start();
 	<div class="pt-bk-field">
 		<label for="consult_budget">Approximate budget</label>
 		<select name="consult_budget" id="consult_budget">
-			<option value="">— Select a range —</option>
+			<option value="">- Select a range -</option>
 			<option value="under_5k">Under $5,000</option>
-			<option value="5k_15k">$5,000 – $15,000</option>
-			<option value="15k_50k">$15,000 – $50,000</option>
+			<option value="5k_15k">$5,000 - $15,000</option>
+			<option value="15k_50k">$15,000 - $50,000</option>
 			<option value="50k_plus">$50,000+</option>
 		</select>
 	</div>

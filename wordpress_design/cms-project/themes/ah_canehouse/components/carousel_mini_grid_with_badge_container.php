@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_mini_grid_with_badge_container — mini-card carousel in a two-column layout:
+ * carousel_mini_grid_with_badge_container - mini-card carousel in a two-column layout:
  * left = card carousel (icon + title + desc + optional badge), right = visual panel (image + label).
  *
  * HOW TO USE
@@ -96,7 +96,7 @@
  *    'badge'           string   Badge pill text  (hidden when empty or not set)
  *    'default_icon'    string   Fallback icon when item has none      default: '✅'
  *
- *  VISUAL PANEL  (right column — omit 'visual_image' to hide entirely)
+ *  VISUAL PANEL  (right column - omit 'visual_image' to hide entirely)
  *    'visual_image'        string   Image URL
  *    'visual_alt'          string   Image alt text                    default: ''
  *    'visual_label'        string   Text shown below image            default: ''
@@ -163,7 +163,7 @@ $visual_extra_class = $args['visual_extra_class'] ?? 'fade-right';
 
 if ( empty( $items ) ) return;
 
-/* Skip cards that have no title — matches the original foreach guard */
+/* Skip cards that have no title - matches the original foreach guard */
 $items = array_values( array_filter( $items, static fn( $c ) => ! empty( (array) $c['title'] ) ) );
 if ( empty( $items ) ) return;
 ?>

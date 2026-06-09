@@ -1,6 +1,6 @@
 <?php
 /**
- * front-page.php — Advaith Homes home page.
+ * front-page.php - Advaith Homes home page.
  *
  * Data flow: intermediate_logics/home-page.php → components
  *
@@ -76,7 +76,7 @@ get_template_part( 'components/forms/form_cta_banner', null, [
 	'title_class'    => 'ah-ctab-title',
 	'heading'        => $hp['cta_heading']['title'] ?? 'Start With a Free <em>30-Minute Call</em>',
 	'sub_class'      => 'ah-ctab-sub',
-	'sub'            => $hp['cta_heading']['body']  ?? "We'll understand your brief, share what's possible, and explain exactly how we work — no commitment required.",
+	'sub'            => $hp['cta_heading']['body']  ?? "We'll understand your brief, share what's possible, and explain exactly how we work - no commitment required.",
 	'features_class' => 'ah-ctab-features',
 	'features'       => [
 		[ 'icon' => '✓', 'text' => 'No obligation or hard sell'     ],
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		sendingLabel:   'Sending…',
 		successIcon:    '✓',
 		successTitle:   'Request Received!',
-		successMessage: "Thank you — we'll be in touch within one working day.",
+		successMessage: "Thank you - we'll be in touch within one working day.",
 
 		validateStep: function (ctx, step) {
 			ctx.clearErrors();
@@ -135,16 +135,16 @@ document.addEventListener('DOMContentLoaded', function () {
 			};
 			var budgetMap = {
 				'under_500k': 'Under £500,000',
-				'500k_1m':    '£500,000 – £1,000,000',
-				'1m_2m':      '£1m – £2m',
+				'500k_1m':    '£500,000 - £1,000,000',
+				'1m_2m':      '£1m - £2m',
 				'2m_plus':    '£2m+',
 			};
 			var ptype    = ctx.val('consult_type');
 			var budget   = ctx.val('consult_budget');
 			var location = ctx.val('consult_location');
 			return '<table class="ah-bk-summary-table">' +
-				'<tr><td>Purchase type</td><td>' + ctx.escHtml(typeMap[ptype]     || ptype   || '—') + '</td></tr>' +
-				'<tr><td>Budget</td><td>'        + ctx.escHtml(budgetMap[budget]  || budget  || '—') + '</td></tr>' +
+				'<tr><td>Purchase type</td><td>' + ctx.escHtml(typeMap[ptype]     || ptype   || '-') + '</td></tr>' +
+				'<tr><td>Budget</td><td>'        + ctx.escHtml(budgetMap[budget]  || budget  || '-') + '</td></tr>' +
 				(location ? '<tr><td>Location</td><td>' + ctx.escHtml(location) + '</td></tr>' : '') +
 				'<tr><td>Name</td><td>'   + ctx.escHtml(ctx.val('consult_name'))  + '</td></tr>' +
 				'<tr><td>Email</td><td>'  + ctx.escHtml(ctx.val('consult_email')) + '</td></tr>' +

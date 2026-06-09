@@ -12,7 +12,7 @@
 	<div class="pt-site-header__inner pt-container">
 
 		<!-- Logo -->
-		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="pt-site-header__logo" aria-label="<?php bloginfo( 'name' ); ?> — Home">
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="pt-site-header__logo" aria-label="<?php bloginfo( 'name' ); ?> - Home">
 			<?php
 			if ( has_custom_logo() ) {
 				the_custom_logo();
@@ -44,7 +44,7 @@
 </header>
 
 <style>
-/* ── Site header — starter styles ──────────────────────────── */
+/* ── Site header - starter styles ──────────────────────────── */
 .pt-site-header {
 	position: sticky;
 	top: 0;

@@ -4,15 +4,15 @@ defined( 'ABSPATH' ) || exit;
 /**
  * AH_Page_Data
  *
- * Static page content served directly from real_data/ files — no DB roundtrip.
+ * Static page content served directly from real_data/ files - no DB roundtrip.
  * Use this for content that is rarely changed and has NO admin edit UI.
  *
  * Data lives in:
- *   real_data/json/section-headings.json  — page/section titles, tags, body copy
- *   real_data/json/brand.json             — brand name, tagline
- *   real_data/csv/process-steps.csv       — step-by-step process (num, title, desc)
- *   real_data/csv/site-stats.csv          — headline stats (num, label)
- *   real_data/csv/trust-signals.csv       — trust badges (icon, text)
+ *   real_data/json/section-headings.json  - page/section titles, tags, body copy
+ *   real_data/json/brand.json             - brand name, tagline
+ *   real_data/csv/process-steps.csv       - step-by-step process (num, title, desc)
+ *   real_data/csv/site-stats.csv          - headline stats (num, label)
+ *   real_data/csv/trust-signals.csv       - trust badges (icon, text)
  *
  * To add content: edit (or create) the matching file in real_data/, no code change needed.
  */

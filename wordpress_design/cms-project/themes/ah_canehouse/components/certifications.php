@@ -24,16 +24,16 @@ get_template_part( 'components/carousel_mini_grid_with_badge_container', null, [
 	'section_id'    => 'certifications',
 	'section_class' => 'ch-certs-section',
 
-	/* Header — cert_heading / cert_subtext from settings override JSON fallback */
+	/* Header - cert_heading / cert_subtext from settings override JSON fallback */
 	'tag'          => $_d['tag']                              ?? '',
 	'title'        => $_s['cert_heading'] ?? $_d['heading']  ?? '',
 	'body'         => $_s['cert_subtext'] ?? $_d['sub']      ?? '',
 	'header_class' => 'ch-certs-header',
 
-	/* CSS prefix — structural classes (carousel, track, nav) use ch-certs-* */
+	/* CSS prefix - structural classes (carousel, track, nav) use ch-certs-* */
 	'prefix'       => 'ch-certs',
 
-	/* Card class overrides — existing stylesheet uses ch-cert-* (singular) for cards */
+	/* Card class overrides - existing stylesheet uses ch-cert-* (singular) for cards */
 	'card_class'        => 'ch-cert-card',
 	'card_icon_class'   => 'ch-cert-icon',
 	'card_body_class'   => 'ch-cert-body',
@@ -41,7 +41,7 @@ get_template_part( 'components/carousel_mini_grid_with_badge_container', null, [
 	'card_desc_class'   => 'ch-cert-desc',
 	'card_badge_class'  => 'ch-cert-badge',
 
-	/* IDs — JS uses these to drive the carousel */
+	/* IDs - JS uses these to drive the carousel */
 	'track_id' => 'ch-certs-track',
 	'dots_id'  => 'ch-certs-dots',
 	'prev_id'  => 'ch-certs-prev',

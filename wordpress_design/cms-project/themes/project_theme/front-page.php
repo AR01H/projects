@@ -1,6 +1,6 @@
 <?php
 /**
- * front-page.php — Site home page template.
+ * front-page.php - Site home page template.
  *
  * Data flow: intermediate_pages/home.php → components (carousels, forms)
  *
@@ -28,7 +28,7 @@ get_header();
 			<p class="pt-section-tag">Welcome</p>
 			<h1 class="pt-home-hero__title">Build Something <em>Remarkable</em></h1>
 			<p class="pt-home-hero__sub">
-				We partner with ambitious teams to design and deliver exceptional digital experiences — on time, on brief, and beyond expectations.
+				We partner with ambitious teams to design and deliver exceptional digital experiences - on time, on brief, and beyond expectations.
 			</p>
 			<div class="pt-home-hero__actions">
 				<button type="button" class="pt-btn pt-btn--primary" id="pt-hero-consult-open">
@@ -91,7 +91,7 @@ get_header();
 		'title_class'    => 'pt-ctab-title',
 		'heading'        => 'Ready to build something <em>great?</em>',
 		'sub_class'      => 'pt-ctab-sub',
-		'sub'            => "Let's talk about your goals. Our first session is completely free — no pitch, just strategy.",
+		'sub'            => "Let's talk about your goals. Our first session is completely free - no pitch, just strategy.",
 		'features_class' => 'pt-ctab-features',
 		'features'       => [
 			[ 'icon' => '✓', 'text' => 'No obligation, ever'         ],
@@ -155,16 +155,16 @@ document.addEventListener('DOMContentLoaded', function () {
 			};
 			var budgetMap = {
 				under_5k: 'Under $5,000',
-				'5k_15k': '$5,000 – $15,000',
-				'15k_50k':'$15,000 – $50,000',
+				'5k_15k': '$5,000 - $15,000',
+				'15k_50k':'$15,000 - $50,000',
 				'50k_plus':'$50,000+',
 			};
 			var svc    = ctx.val('consult_service');
 			var budget = ctx.val('consult_budget');
 			var brief  = ctx.val('consult_brief');
 			return '<table class="pt-bk-summary-table">' +
-				'<tr><td>Service</td><td>' + ctx.escHtml(serviceMap[svc] || svc || '—')     + '</td></tr>' +
-				'<tr><td>Budget</td><td>'  + ctx.escHtml(budgetMap[budget] || budget || '—') + '</td></tr>' +
+				'<tr><td>Service</td><td>' + ctx.escHtml(serviceMap[svc] || svc || '-')     + '</td></tr>' +
+				'<tr><td>Budget</td><td>'  + ctx.escHtml(budgetMap[budget] || budget || '-') + '</td></tr>' +
 				(brief ? '<tr><td>Brief</td><td>' + ctx.escHtml(brief) + '</td></tr>' : '') +
 				'<tr><td>Name</td><td>'    + ctx.escHtml(ctx.val('consult_name'))   + '</td></tr>' +
 				'<tr><td>Email</td><td>'   + ctx.escHtml(ctx.val('consult_email'))  + '</td></tr>' +

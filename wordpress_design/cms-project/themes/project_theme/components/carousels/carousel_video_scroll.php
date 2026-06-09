@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_video_scroll — one-slide-at-a-time media slider with dots + arrows.
+ * carousel_video_scroll - one-slide-at-a-time media slider with dots + arrows.
  *
  * Supports: YouTube • local/remote video • image.
  * Data from real_data/csv/video-showcase.csv (or pass items inline).

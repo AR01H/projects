@@ -1,9 +1,9 @@
 <?php
 /**
- * carousel_image_view — standalone, continuous auto-scroll image/video strip (marquee style).
+ * carousel_image_view - standalone, continuous auto-scroll image/video strip (marquee style).
  *
  * Pure CSS infinite scroll: the item set is rendered twice and the track is
- * animated by exactly one set-width, so the loop is perfectly seamless — no
+ * animated by exactly one set-width, so the loop is perfectly seamless - no
  * gaps, no snap-back. Works in both directions independently.
  *
  * ┌─────────────────────────────────────────────────────────────────┐
@@ -11,7 +11,7 @@
  * └─────────────────────────────────────────────────────────────────┘
  *
  *  get_template_part( 'components/carousels/carousel_image_view', null, [
- *    'uid'       => 'gallery-strip',   // unique — never reuse on the same page
+ *    'uid'       => 'gallery-strip',   // unique - never reuse on the same page
  *    'direction' => 'ltr',             // 'rtl' (default) or 'ltr'
  *    'speed'     => 60,                // scroll speed in pixels / second
  *    'items'     => [
@@ -37,7 +37,7 @@
  *
  *  ITEM FIELDS  (one array entry per card)
  *  'type'    string  'image' | 'gif' | 'video'                   Default: 'image'
- *  'src'     string  Media URL                                   (required — card skipped if empty)
+ *  'src'     string  Media URL                                   (required - card skipped if empty)
  *  'poster'  string  Poster image URL for video                  (optional)
  *  'label'   string  Caption heading
  *  'desc'    string  Caption sub-text
@@ -119,16 +119,16 @@ $cards_html = ob_get_clean();
 /* Instance-specific: dimensions and animation only.
    Base layout/cosmetic rules live in carousel-image-scroll.css. */
 
-/* Card dimensions — each card carries its trailing gap so the 2-set loop is pixel-perfect */
+/* Card dimensions - each card carries its trailing gap so the 2-set loop is pixel-perfect */
 #<?php echo $uid; ?> .ch-sc-card  { width: <?php echo $card_width; ?>px; margin-right: <?php echo $card_gap; ?>px; }
 #<?php echo $uid; ?> .ch-sc-media { width: <?php echo $card_width; ?>px; height: <?php echo $card_height; ?>px; }
 
-/* Animation — name and duration are per-instance */
+/* Animation - name and duration are per-instance */
 #<?php echo $uid; ?> .ch-sc-track {
 	animation: <?php echo $anim_name; ?> <?php echo $duration_s; ?>s linear infinite;
 	animation-direction: <?php echo $direction === 'ltr' ? 'reverse' : 'normal'; ?>;
 <?php if ( ! $pause_hover ) : ?>
-	/* pause_on_hover disabled for this instance — override the shared rule */
+	/* pause_on_hover disabled for this instance - override the shared rule */
 <?php endif; ?>
 }
 <?php if ( ! $pause_hover ) : ?>

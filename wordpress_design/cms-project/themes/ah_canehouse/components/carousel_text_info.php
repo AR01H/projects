@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_text_info — reusable carousel: section header + icon cards + dots/arrows.
+ * carousel_text_info - reusable carousel: section header + icon cards + dots/arrows.
  *
  * HOW TO USE
  * ──────────
@@ -76,7 +76,7 @@
  *    'icon'            string   Emoji at top of card
  *    'title'           string   Card heading  (h3)
  *    'desc'            string   Short paragraph
- *    'items'           array    List of strings — styled by card_list_class CSS
+ *    'items'           array    List of strings - styled by card_list_class CSS
  *    'color'           string   Accent CSS value  e.g. '#e74c3c'
  *    'cta_text'        string   Button label  (only shown when cta_url is also set)
  *    'cta_url'         string   Button URL
@@ -94,7 +94,7 @@ defined( 'ABSPATH' ) || exit;
 
 /* ── Read args ─────────────────────────────────────────────────────────────── */
 
-/* CSS prefix used for all variant classes — defaults to 'ch-cti'.
+/* CSS prefix used for all variant classes - defaults to 'ch-cti'.
  * Pass 'prefix' => 'ch-hire' to reuse the existing ch-hire-* stylesheet. */
 $p = sanitize_html_class( $args['prefix'] ?? 'ch-cti' );
 
@@ -110,7 +110,7 @@ $track_id        = $args['track_id']        ?? "{$p}-track";
 $dots_id         = $args['dots_id']         ?? "{$p}-dots";
 $items_visible     = (int) ( $args['items_visible'] ?? 3 );
 
-/* Per-element class overrides — useful when the stylesheet uses a different
+/* Per-element class overrides - useful when the stylesheet uses a different
  * naming convention from the prefix pattern (e.g. ch-h-card-icon vs ch-hire-card-icon). */
 $card_icon_class   = $args['card_icon_class'] ?? "{$p}-card-icon";
 $card_list_class   = $args['card_list_class'] ?? "{$p}-card-list";

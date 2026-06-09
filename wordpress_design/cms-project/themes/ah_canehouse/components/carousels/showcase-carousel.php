@@ -1,6 +1,6 @@
 <?php
 /**
- * showcase-carousel — section wrapper (header + bg) around two carousel_image_view strips.
+ * showcase-carousel - section wrapper (header + bg) around two carousel_image_view strips.
  * Strip 1 runs in the passed direction (default rtl), strip 2 always runs ltr.
  *
  * Args:
@@ -44,7 +44,7 @@ if ( empty( $items ) ) return;
 	] ); ?>
 <br/>
 	<?php get_template_part( 'components/carousels/carousel_image_view', null, [
-		'uid'       => $uid . '-ltr',   /* distinct uid — two strips cannot share the same id */
+		'uid'       => $uid . '-ltr',   /* distinct uid - two strips cannot share the same id */
 		'direction' => 'ltr',
 		'speed'     => $speed,
 		'items'     => array_reverse($items),

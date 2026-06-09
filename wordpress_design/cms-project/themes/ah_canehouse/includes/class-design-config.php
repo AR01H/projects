@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  *   4. Set THEME_DESIGN_STATUS = '<name>'.
  *
  * ── Per-section / per-page override (two ways) ───────────────────────────────
- *   A) Config-driven slot (preferred — central, no template conditionals):
+ *   A) Config-driven slot (preferred - central, no template conditionals):
  *        // register once, here in $overrides:
  *        'traditional' => [ 'hero' => 'ch-hero--parchment', ... ]
  *        // then in any template:
@@ -62,7 +62,7 @@ class CH_Design_Config {
 	 */
 	private static array $overrides = [
 		'traditional' => [
-			// Section / layout slots — opt-in hooks for parchment-specific tweaks.
+			// Section / layout slots - opt-in hooks for parchment-specific tweaks.
 			'hero'        => 'ch-hero--trad',
 			'page_hero'   => 'ch-page-hero--trad',
 			'section'     => 'ch-section--trad',

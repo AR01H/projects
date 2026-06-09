@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_image_with_title — reusable image-card carousel: section header + image cards + optional marquee strip.
+ * carousel_image_with_title - reusable image-card carousel: section header + image cards + optional marquee strip.
  *
  * HOW TO USE
  * ──────────
@@ -78,7 +78,7 @@
  *    'title'           string   Card heading (h3)
  *    'desc'            string   Card sub-text (p)
  *
- *  MARQUEE STRIP  (optional — omit 'marquee_items' to hide entirely)
+ *  MARQUEE STRIP  (optional - omit 'marquee_items' to hide entirely)
  *    'marquee_items'        array    List of { icon, name } objects
  *    'default_icon'         string   Fallback icon when item has none  default: '📍'
  *    'marquee_class'        string   Class on marquee <div>            default: '{prefix}-marquee'
@@ -191,7 +191,7 @@ $item_count = count( $items );
 		<div class="<?php echo esc_attr( $marquee_track_class ); ?>">
 
 			<?php
-			/* Rendered twice — second pass keeps the infinite-scroll illusion. */
+			/* Rendered twice - second pass keeps the infinite-scroll illusion. */
 			for ( $pass = 0; $pass < 2; $pass++ ) :
 				foreach ( $marquee_items as $loc ) :
 					$loc = (array) $loc;

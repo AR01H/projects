@@ -32,7 +32,7 @@ ob_start();
 	<div class="ah-bk-field">
 		<label for="consult_type">Type of purchase</label>
 		<select name="consult_type" id="consult_type">
-			<option value="">— Select —</option>
+			<option value="">- Select -</option>
 			<option value="primary">Primary residence</option>
 			<option value="investment">Investment property</option>
 			<option value="holiday">Holiday home</option>
@@ -43,10 +43,10 @@ ob_start();
 	<div class="ah-bk-field">
 		<label for="consult_budget">Approximate budget</label>
 		<select name="consult_budget" id="consult_budget">
-			<option value="">— Select —</option>
+			<option value="">- Select -</option>
 			<option value="under_500k">Under £500,000</option>
-			<option value="500k_1m">£500,000 – £1,000,000</option>
-			<option value="1m_2m">£1m – £2m</option>
+			<option value="500k_1m">£500,000 - £1,000,000</option>
+			<option value="1m_2m">£1m - £2m</option>
 			<option value="2m_plus">£2m+</option>
 		</select>
 	</div>

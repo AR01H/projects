@@ -32,7 +32,7 @@ $section_groups = [
 	'Home Page' => [
 		[ 'key' => 'home_hero',          'icon' => '🏠', 'name' => 'Hero Section',         'desc' => 'Main headline, CTA, and hero image' ],
 		[ 'key' => 'home_guide_cards',   'icon' => '📚', 'name' => 'Guide Cards',          'desc' => '4-column guide category cards' ],
-		[ 'key' => 'home_process',       'icon' => '📋', 'name' => 'How It Works',         'desc' => 'Step-by-step process cards (01–06)' ],
+		[ 'key' => 'home_process',       'icon' => '📋', 'name' => 'How It Works',         'desc' => 'Step-by-step process cards (01-06)' ],
 		[ 'key' => 'home_services',      'icon' => '✦',  'name' => 'Services Section',     'desc' => 'Service cards pulled from DB or mock' ],
 		[ 'key' => 'home_properties',    'icon' => '🏡', 'name' => 'Property Showcase',    'desc' => '3D carousel of recently secured properties' ],
 		[ 'key' => 'home_team',          'icon' => '👥', 'name' => 'Team Section',         'desc' => 'Team member cards' ],

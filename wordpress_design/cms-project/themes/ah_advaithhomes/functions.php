@@ -10,7 +10,7 @@ require_once get_template_directory() . '/includes/core_settings.php';      // c
 require_once get_template_directory() . '/includes/data/class-real-loader.php'; // reads real_data/ CSV + JSON files
 require_once get_template_directory() . '/includes/data/class-page-data.php';   // static page content (section headings, etc.)
 require_once get_template_directory() . '/includes/data/class-home-data.php';   // homepage data aggregation
-require_once get_template_directory() . '/includes/mock-data.php';         // seeder-only data — NOT for runtime display
+require_once get_template_directory() . '/includes/mock-data.php';         // seeder-only data - NOT for runtime display
 require_once get_template_directory() . '/includes/helpers.php';           // DB-first data functions + utilities
 require_once get_template_directory() . '/includes/class-theme-admin.php'; // WP admin menu for this theme
 require_once get_template_directory() . '/mail/common_contact.php';        // AJAX form handlers
@@ -182,7 +182,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-carousel-mini-video', $uri . '/assets/css/carousel-mini-video.css', [ 'ah-components' ], $fv( '/assets/css/carousel-mini-video.css' ) );
 	wp_enqueue_style( 'ah-form-step-modal',     $uri . '/assets/css/form-step-modal.css',     [ 'ah-components' ], $fv( '/assets/css/form-step-modal.css' ) );
 
-	/* Home-page carousel + CTA banner styles — only on the front page */
+	/* Home-page carousel + CTA banner styles - only on the front page */
 	if ( is_front_page() ) {
 		wp_enqueue_style( 'ah-home-carousel', $uri . '/assets/css/home-carousel.css', [ 'ah-components', 'ah-carousel-video', 'ah-carousel-mini-video' ], $fv( '/assets/css/home-carousel.css' ) );
 	}

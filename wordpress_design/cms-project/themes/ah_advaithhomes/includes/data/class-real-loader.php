@@ -11,12 +11,12 @@ defined( 'ABSPATH' ) || exit;
  * For plugin-managed DB data (services, team, reviews, FAQs) use the DB helpers instead.
  *
  * CSV shapes:
- *   csv($name)  — first row = headers, one item per row → array of assoc rows
- *   kv($name)   — two columns "key,value"              → [ key => value ]
+ *   csv($name)  - first row = headers, one item per row → array of assoc rows
+ *   kv($name)   - two columns "key,value"              → [ key => value ]
  *
  * JSON shapes:
- *   json($name)    — JSON array of objects  → array of assoc rows
- *   kv_json($name) — JSON object (key→val)  → [ key => value ]
+ *   json($name)    - JSON array of objects  → array of assoc rows
+ *   kv_json($name) - JSON object (key→val)  → [ key => value ]
  */
 class AH_Real_Loader {
 

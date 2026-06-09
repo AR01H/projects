@@ -22,7 +22,7 @@ $theme  = wp_get_theme();
 					v<?php echo esc_html( $theme->get( 'Version' ) ); ?>
 				</span>
 			</h1>
-			<p>Theme admin — schema, mock data, and content management.</p>
+			<p>Theme admin - schema, mock data, and content management.</p>
 		</div>
 		<div style="margin-left:auto">
 			<button class="button" data-pt-action="refresh-status">&#8635; Refresh</button>
@@ -47,7 +47,7 @@ $theme  = wp_get_theme();
 			<tbody>
 				<?php foreach ( $schema as $key => $info ) :
 					$label   = ucfirst( $key );
-					$version = $info['version'] ?: '—';
+					$version = $info['version'] ?: '-';
 				?>
 				<tr>
 					<td><code><?php echo esc_html( $info['table'] ); ?></code></td>
@@ -59,7 +59,7 @@ $theme  = wp_get_theme();
 					</td>
 					<td>
 						<strong data-count="<?php echo esc_attr( $key ); ?>">
-							<?php echo esc_html( $counts[ $key ] ?? '—' ); ?>
+							<?php echo esc_html( $counts[ $key ] ?? '-' ); ?>
 						</strong>
 					</td>
 					<td><code style="color:#94a3b8;font-size:.78rem"><?php echo esc_html( $version ); ?></code></td>
@@ -73,7 +73,7 @@ $theme  = wp_get_theme();
 	<div class="pt-admin-box">
 		<h2>Schema Actions</h2>
 		<p style="color:#64748b;font-size:.875rem;margin-bottom:18px;">
-			All actions run via AJAX — no page reload needed.
+			All actions run via AJAX - no page reload needed.
 		</p>
 		<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
 			<button class="button button-primary" data-pt-action="schema-install">
@@ -84,8 +84,8 @@ $theme  = wp_get_theme();
 			</button>
 		</div>
 		<p style="margin-top:10px;font-size:.78rem;color:#94a3b8">
-			<strong>Install / Update</strong> — runs <code>dbDelta()</code>: creates missing tables, adds missing columns. Safe to re-run anytime.<br>
-			<strong>Drop</strong> — runs <code>DROP TABLE</code>: permanently destroys all data.
+			<strong>Install / Update</strong> - runs <code>dbDelta()</code>: creates missing tables, adds missing columns. Safe to re-run anytime.<br>
+			<strong>Drop</strong> - runs <code>DROP TABLE</code>: permanently destroys all data.
 		</p>
 	</div>
 

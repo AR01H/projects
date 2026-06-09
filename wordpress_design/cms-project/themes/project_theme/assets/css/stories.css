@@ -1,5 +1,5 @@
 /*
- * Stories — page styles
+ * Stories - page styles
  * Covers: story-hero, story-card (default + featured), story-grid, story-cta
  * Depends on: vairables.css (--pt-* tokens)
  */
@@ -119,7 +119,7 @@
 	padding: var(--pt-section-py, 5rem) 0 0;
 }
 
-/* ── Story Card — Base ────────────────────────────────────────── */
+/* ── Story Card - Base ────────────────────────────────────────── */
 
 .pt-story-card {
 	background: #fff;
@@ -281,7 +281,7 @@
 	flex-shrink: 0;
 }
 
-/* ── Story Card — Featured variant ───────────────────────────── */
+/* ── Story Card - Featured variant ───────────────────────────── */
 
 .pt-story-card--featured {
 	flex-direction: row;

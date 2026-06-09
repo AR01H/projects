@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_mini_video_scroll — horizontal shelf of portrait "Shorts-style" video cards.
+ * carousel_mini_video_scroll - horizontal shelf of portrait "Shorts-style" video cards.
  *
  * Data from real_data/csv/mini-video-showcase.csv (or pass items inline).
  *

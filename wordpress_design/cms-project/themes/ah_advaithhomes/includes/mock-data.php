@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * RULES:
  *   - Plugin-managed tables (services, team, reviews, FAQs, properties):
  *     The seeder reads from mock_data/csv/ via AH_Data::load_csv().
- *     The functions below return [] — kept as stubs so any old call fails gracefully.
+ *     The functions below return [] - kept as stubs so any old call fails gracefully.
  *
  *   - WP-option data seeded inline (guide_nav, nav_topics, process_steps,
  *     site_stats, trust_signals): seeder still calls these functions;
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  */
 
 // ── Plugin-managed (seeded from CSV, admin-editable via CMS portal) ───────────
-// Seeder uses AH_Data::load_csv() for these — functions kept as stubs only.
+// Seeder uses AH_Data::load_csv() for these - functions kept as stubs only.
 
 function ah_mock_default_settings(): array    { return []; }
 function ah_mock_home_settings_array(): array  { return []; }
@@ -94,7 +94,7 @@ function ah_mock_process_steps(): array {
 	return [
 		[ 'num' => '01', 'title' => 'Free Consultation', 'desc' => 'We learn your brief - budget, location, must-haves, timeline. No obligation, no pressure.' ],
 		[ 'num' => '02', 'title' => 'Property Search',   'desc' => 'We activate our network - estate agents, developers, and off-market connections - to source matched properties.' ],
-		[ 'num' => '03', 'title' => 'Shortlisting',      'desc' => 'We visit, assess, and report on every property before you see it. You only view the best 3–5 options.' ],
+		[ 'num' => '03', 'title' => 'Shortlisting',      'desc' => 'We visit, assess, and report on every property before you see it. You only view the best 3-5 options.' ],
 		[ 'num' => '04', 'title' => 'Offer & Negotiation','desc' => 'We advise on value and negotiate hard. Our data-backed approach regularly achieves below-asking results.' ],
 		[ 'num' => '05', 'title' => 'Due Diligence',     'desc' => 'Planning checks, flood risk, structural surveys, local searches - we dig deep before you commit.' ],
 		[ 'num' => '06', 'title' => 'Completion Day',    'desc' => 'We manage solicitors, lenders, and agents to the finish line. You just need to pick up the keys.' ],

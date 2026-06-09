@@ -1,5 +1,5 @@
 /* ==========================================================================
-   carousel_video_scroll — slider behaviour (dots, arrows, swipe, video facade).
+   carousel_video_scroll - slider behaviour (dots, arrows, swipe, video facade).
    Initialises every .ah-vs on the page; reads config from data- attributes.
    Markup: components/carousels/carousel_video_scroll.php
    ========================================================================== */

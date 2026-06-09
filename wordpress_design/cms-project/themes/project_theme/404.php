@@ -1,6 +1,6 @@
 <?php
 /**
- * 404 — Page Not Found
+ * 404 - Page Not Found
  * Self-contained template (no dependency on header.php / footer.php).
  * Refactor to use get_header()/get_footer() once those exist.
  */
@@ -15,7 +15,7 @@ $home_url  = home_url( '/' );
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>404 – Page Not Found | <?php echo esc_html( $site_name ); ?></title>
+<title>404 - Page Not Found | <?php echo esc_html( $site_name ); ?></title>
 <meta name="robots" content="noindex,nofollow">
 <?php wp_head(); ?>
 <style>

@@ -1,6 +1,6 @@
 <?php
 /**
- * form_cta_banner — reusable two-column CTA card that opens a modal form.
+ * form_cta_banner - reusable two-column CTA card that opens a modal form.
  *
  * get_template_part( 'components/forms/form_cta_banner', null, [
  *   'section_id'    => 'consultation',

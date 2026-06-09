@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  500 — Server Error
+  500 - Server Error
   Pure static HTML. No PHP, no WordPress dependencies.
 
   WordPress doesn't load theme templates on fatal errors.
@@ -17,7 +17,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>500 – Server Error</title>
+<title>500 - Server Error</title>
 <meta name="robots" content="noindex,nofollow">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}

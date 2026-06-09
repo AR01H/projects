@@ -1,11 +1,11 @@
 <?php
 /**
- * project_theme — functions.php
+ * project_theme - functions.php
  *
  * Theme setup, asset enqueueing, and page auto-provisioning.
  * Follows the same pattern as ah_canehouse/functions.php.
  *
- * Prefix: pt_ (project theme — replace with client-specific prefix before launch)
+ * Prefix: pt_ (project theme - replace with client-specific prefix before launch)
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -35,7 +35,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	$v   = wp_get_theme()->get( 'Version' ) ?: '1.0.0';
 	$dir = get_template_directory_uri() . '/assets';
 
-	/* CSS — chain: variables → common → components → page-specific */
+	/* CSS - chain: variables → common → components → page-specific */
 	wp_enqueue_style( 'pt-variables',  "$dir/css/vairables.css",  [],                    $v );
 	wp_enqueue_style( 'pt-common',     "$dir/css/common.css",     [ 'pt-variables' ],    $v );
 	wp_enqueue_style( 'pt-components', "$dir/css/components.css", [ 'pt-common' ],       $v );
@@ -43,12 +43,12 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'pt-carousel-mini-video', "$dir/css/carousel-mini-video.css", [ 'pt-components' ], $v );
 	wp_enqueue_style( 'pt-form-step-modal',     "$dir/css/form-step-modal.css",     [ 'pt-components' ], $v );
 
-	/* Home-page styles — only on the static front page */
+	/* Home-page styles - only on the static front page */
 	if ( is_front_page() ) {
 		wp_enqueue_style( 'pt-home', "$dir/css/home.css", [ 'pt-components', 'pt-carousel-video', 'pt-carousel-mini-video' ], $v );
 	}
 
-	/* Stories CSS — loaded only on the stories page template */
+	/* Stories CSS - loaded only on the stories page template */
 	if ( is_page_template( 'page-stories.php' ) ) {
 		wp_enqueue_style( 'pt-stories', "$dir/css/stories.css", [ 'pt-components' ], $v );
 	}
@@ -179,7 +179,7 @@ add_action( 'init', function () {
 	}
 } );
 
-/* Manual trigger — visit WP admin with ?pt_regen_pages=1 */
+/* Manual trigger - visit WP admin with ?pt_regen_pages=1 */
 add_action( 'admin_init', function () {
 	if ( isset( $_GET['pt_regen_pages'] ) && current_user_can( 'manage_options' ) ) {
 		delete_option( PT_PAGES_VERSION );
@@ -190,7 +190,7 @@ add_action( 'admin_init', function () {
 } );
 
 /* ═══════════════════════════════════════════════════════════════
- * 5. ADMIN — Stories manager
+ * 5. ADMIN - Stories manager
  * ═════════════════════════════════════════════════════════════*/
 
 if ( is_admin() ) {

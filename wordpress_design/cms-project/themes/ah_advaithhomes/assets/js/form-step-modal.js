@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ahStepModal — reusable multi-step modal wizard controller.
+   ahStepModal - reusable multi-step modal wizard controller.
 
    Pairs with the PHP component components/forms/form_step_modal.php.
    Drives the shared chrome (open/close, step nav, progress bar, summary,
@@ -17,7 +17,7 @@
      .ah-bk-step / .ah-bk-next / .ah-bk-back / .ah-bk-prog-step (shared classes)
 
    Options:
-     prefix         (string)  required — id/attr prefix
+     prefix         (string)  required - id/attr prefix
      formId         (string)  override form id (default 'ah-{prefix}-form')
      action         (string)  WP ajax action for submit
      sendingLabel   (string)  submit button text while sending

@@ -1,12 +1,12 @@
 <?php
 /**
- * index.php — WordPress fallback template.
+ * index.php - WordPress fallback template.
  *
  * WordPress requires this file. It is only rendered when no more specific
  * template (front-page.php, page-*.php, single.php, etc.) matches the request.
  *
  * In normal operation this file should never be seen. If it is, it means a
- * page was loaded without an assigned template — add the correct template and
+ * page was loaded without an assigned template - add the correct template and
  * assign it in WP Admin → Pages.
  */
 

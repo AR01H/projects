@@ -1,5 +1,5 @@
 /* ==========================================================================
-   carousel_video_scroll — one-slide-at-a-time media slider (dots + arrows).
+   carousel_video_scroll - one-slide-at-a-time media slider (dots + arrows).
    Markup is produced by components/carousels/carousel_video_scroll.php.
    The only per-instance value (aspect-ratio) is set inline on .ch-vs-media.
    ========================================================================== */

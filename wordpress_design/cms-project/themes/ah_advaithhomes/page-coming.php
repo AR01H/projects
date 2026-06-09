@@ -1,6 +1,6 @@
 <?php
 /* ═══════════════════════════════════════════
-   ADVAITH HOMES — COMING SOON PAGE
+   COMING SOON PAGE
    Edit values here
    ═══════════════════════════════════════════ */
 
@@ -18,7 +18,7 @@ $email     = CONTACT_EMAIL ;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo htmlspecialchars($site_name); ?> – Coming Soon</title>
+<title><?php echo htmlspecialchars($site_name); ?> - Coming Soon</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
@@ -137,7 +137,7 @@ footer em{color:var(--g500);font-style:normal}
   <rect width="1440" height="900" fill="url(#ga)"/>
   <rect width="1440" height="900" fill="url(#gb)"/>
 
-  <!-- LARGE HOUSE — left -->
+  <!-- LARGE HOUSE - left -->
   <g opacity=".065" style="animation:drift 20s ease-in-out infinite">
     <polygon points="100,560 280,370 460,560" fill="none" stroke="#f7c62f" stroke-width="1.5"/>
     <rect x="138" y="560" width="240" height="170" fill="none" stroke="#f7c62f" stroke-width="1.3"/>
@@ -147,7 +147,7 @@ footer em{color:var(--g500);font-style:normal}
     <rect x="268" y="378" width="14" height="38" fill="none" stroke="#f7c62f" stroke-width=".9"/>
   </g>
 
-  <!-- LARGE HOUSE — right -->
+  <!-- LARGE HOUSE - right -->
   <g opacity=".055" style="animation:drift2 24s ease-in-out infinite">
     <polygon points="980,530 1160,345 1340,530" fill="none" stroke="#eab308" stroke-width="1.3"/>
     <rect x="1018" y="530" width="228" height="160" fill="none" stroke="#eab308" stroke-width="1.1"/>
@@ -319,7 +319,7 @@ footer em{color:var(--g500);font-style:normal}
       <div class="cs-body">
         <div class="cs-badge"><span class="cs-dot"></span> Coming Soon</div>
         <h2 class="cs-title">Your UK Home Buying<br><em>Platform is on its Way</em></h2>
-        <p class="cs-desc">Search properties, compare mortgages, explore areas, and manage your entire buying journey — all in one place. We're almost ready. For now, we're here to guide you every step of the way.</p>
+        <p class="cs-desc">Search properties, compare mortgages, explore areas, and manage your entire buying journey - all in one place. We're almost ready. For now, we're here to guide you every step of the way.</p>
       </div>
     </div>
   </section>

@@ -366,7 +366,7 @@ else :
   <!-- Pagination -->
   <?php if ( $total_pages > 1 ) : ?>
     <div class="ahts-pager">
-      <span style="color:#64748b">Showing <?php echo esc_html( ( ( $paged - 1 ) * $per_page ) + 1 ); ?>–<?php echo esc_html( min( $paged * $per_page, $total ) ); ?> of <?php echo esc_html( $total ); ?></span>
+      <span style="color:#64748b">Showing <?php echo esc_html( ( ( $paged - 1 ) * $per_page ) + 1 ); ?>-<?php echo esc_html( min( $paged * $per_page, $total ) ); ?> of <?php echo esc_html( $total ); ?></span>
       <?php if ( $paged > 1 ) : ?>
         <a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ah-theme-submissions', 'paged' => $paged - 1, 's' => $search, 'status' => $status_f, 'type' => $type_f ], $base_url ) ); ?>">&larr; Prev</a>
       <?php endif; ?>

@@ -43,7 +43,7 @@
 </footer>
 
 <style>
-/* ── Site footer — starter styles ──────────────────────────── */
+/* ── Site footer - starter styles ──────────────────────────── */
 .pt-site-footer {
 	background: var(--pt-color-1, #1a2c4e);
 	color: rgba(255,255,255,.85);

@@ -34,7 +34,7 @@
 </form>
 
 <script>
-/* Add-row for franchise locations — sets icon default "📍" */
+/* Add-row for franchise locations - sets icon default "📍" */
 document.getElementById('ch-add-loc-cs').addEventListener('click', function () {
 	var rep = document.getElementById('ch-locs-repeater');
 	var idx = rep.querySelectorAll('.ch-rep-row').length;

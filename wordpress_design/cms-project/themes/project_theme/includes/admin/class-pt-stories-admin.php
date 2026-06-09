@@ -1,6 +1,6 @@
 <?php
 /**
- * PT_Stories_Admin — registers the Stories admin menu, routes views, handles form submissions.
+ * PT_Stories_Admin - registers the Stories admin menu, routes views, handles form submissions.
  *
  * Two views, same menu page:
  *   ?page=pt-stories              → list (all stories table)
@@ -62,7 +62,7 @@ class PT_Stories_Admin {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_add_inline_style( 'wp-admin', self::admin_css() );
 
-		/* Admin JS — AJAX + API helper */
+		/* Admin JS - AJAX + API helper */
 		$js = get_template_directory_uri() . '/assets/js/pt-admin.js';
 		wp_enqueue_script( 'pt-admin', $js, [ 'jquery' ], wp_get_theme()->get( 'Version' ), true );
 		wp_localize_script( 'pt-admin', 'PT_Admin', [
@@ -139,7 +139,7 @@ class PT_Stories_Admin {
 		require_once get_template_directory() . '/mock_data/seeder.php';
 
 		$result = PT_Theme_Seeder::cleanup_all();
-		$msg    = 'Cleanup complete — ' . $result['deleted'] . ' rows removed.';
+		$msg    = 'Cleanup complete - ' . $result['deleted'] . ' rows removed.';
 
 		wp_redirect( add_query_arg(
 			[ 'page' => 'pt-cleanup', 'cleaned' => '1', 'msg' => urlencode( $msg ) ],

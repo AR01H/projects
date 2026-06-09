@@ -1,5 +1,5 @@
 /* ==========================================================================
-   carousel_video_scroll — slider behaviour (dots, arrows, swipe, video facade).
+   carousel_video_scroll - slider behaviour (dots, arrows, swipe, video facade).
    Initialises every .pt-vs on the page.
    Markup: components/carousels/carousel_video_scroll.php
    ========================================================================== */

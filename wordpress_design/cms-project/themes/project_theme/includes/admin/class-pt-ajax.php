@@ -1,16 +1,16 @@
 <?php
 /**
- * PT_Ajax — admin AJAX handlers.
+ * PT_Ajax - admin AJAX handlers.
  *
  * All handlers require manage_options + a per-action nonce.
  * Registered via wp_ajax_pt_* hooks (admin-only, no nopriv).
  *
  * Actions:
- *   pt_schema_install   — run dbDelta on all tables
- *   pt_schema_drop      — DROP all theme tables
- *   pt_seed_mock        — seed all mock data from CSV
- *   pt_cleanup          — DELETE all rows (keep tables)
- *   pt_get_status       — return table counts + schema state
+ *   pt_schema_install   - run dbDelta on all tables
+ *   pt_schema_drop      - DROP all theme tables
+ *   pt_seed_mock        - seed all mock data from CSV
+ *   pt_cleanup          - DELETE all rows (keep tables)
+ *   pt_get_status       - return table counts + schema state
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -113,7 +113,7 @@ class PT_Ajax {
 		$result = PT_Theme_Seeder::cleanup_all();
 
 		wp_send_json_success( [
-			'message' => 'Cleanup complete — ' . $result['deleted'] . ' rows removed.',
+			'message' => 'Cleanup complete - ' . $result['deleted'] . ' rows removed.',
 			'counts'  => self::get_counts(),
 		] );
 	}

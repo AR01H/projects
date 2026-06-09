@@ -1,6 +1,6 @@
 <?php
 /**
- * form_cta_banner — reusable "banner card" that opens a modal form.
+ * form_cta_banner - reusable "banner card" that opens a modal form.
  *
  * A two-column card: image on one side, heading + sub + feature list + an
  * "open" button on the other. Used to launch the booking / franchise / etc. modals.
@@ -37,7 +37,7 @@
  * └─────────────────────────────────────────────────────────────────┘
  *   section_id / section_class   <section> id + class
  *   card_class                   class on the inner card (include 'fade-up' if wanted)
- *   image_side                   'left' | 'right'  — which side the image sits
+ *   image_side                   'left' | 'right'  - which side the image sits
  *   content_class                class on the text column
  *   visual_class                 class on the image column
  *   badge_class / badge          floating badge over the image (omit badge to hide)
@@ -79,7 +79,7 @@ $button_id    = $args['button_id']    ?? '';
 $button_class = $args['button_class'] ?? 'btn-lime';
 $button_label = $args['button_label'] ?? 'Open';
 
-/* The image column — rendered on whichever side image_side asks for. */
+/* The image column - rendered on whichever side image_side asks for. */
 $render_visual = static function () use ( $visual_class, $image, $image_alt, $badge_class, $badge ) {
 	if ( ! $image ) return;
 	?>

@@ -251,7 +251,7 @@
       return duty + surcharge;
     }
     if (isFirstTime && price <= 625000) {
-      // First-time buyer: 0% up to 425k, 5% 425k–625k
+      // First-time buyer: 0% up to 425k, 5% 425k-625k
       if (price <= 425000) return 0;
       return (price - 425000) * 0.05;
     }

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   form_step_modal — overlay wizard (backdrop + progress bar + steps).
+   form_step_modal - overlay wizard (backdrop + progress bar + steps).
    Markup  : components/forms/form_step_modal.php
    Controller: assets/js/form-step-modal.js  (window.ahStepModal)
    ========================================================================== */

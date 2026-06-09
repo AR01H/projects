@@ -341,7 +341,7 @@ add_action( 'wp_enqueue_scripts', function () {
 
 	wp_enqueue_style( 'ch-style',      get_stylesheet_uri(),                [ 'ch-layout' ],       $ver( '/style.css' ) );
 
-	// Design-variant CSS — loaded last so it overrides the base stylesheet
+	// Design-variant CSS - loaded last so it overrides the base stylesheet
 	$design_css = CH_Design_Config::css_file();
 	if ( $design_css ) {
 		wp_enqueue_style( 'ch-design', $uri . $design_css, [ 'ch-style' ], $ver( $design_css ) );

@@ -1,6 +1,6 @@
 <?php
 /**
- * PT_Theme_Seeder — installs mock data for project_theme.
+ * PT_Theme_Seeder - installs mock data for project_theme.
  *
  * Triggered from WP Admin → Project Theme → Mock Data.
  * All operations are idempotent (safe to run multiple times).

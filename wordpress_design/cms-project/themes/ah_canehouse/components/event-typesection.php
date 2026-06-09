@@ -6,7 +6,7 @@ $packages = ch_get_hire_packages();
 
 get_template_part( 'components/carousel_text_info', null, [
 
-	/* CSS prefix — tells the component to emit ch-hire-* classes to match existing stylesheet */
+	/* CSS prefix - tells the component to emit ch-hire-* classes to match existing stylesheet */
 	'prefix'          => 'ch-hire',
 
 	/* Section wrapper */
@@ -31,7 +31,7 @@ get_template_part( 'components/carousel_text_info', null, [
 	'card_icon_class' => 'ch-h-card-icon',
 	'card_list_class' => 'ch-h-card-list',
 
-	/* Cards — mapped from the data source */
+	/* Cards - mapped from the data source */
 	'items' => array_map( static function ( $pkg ): array {
 		$pkg = (array) $pkg;
 		return [

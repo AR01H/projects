@@ -1,9 +1,9 @@
 <?php
 /**
- * carousel_image_view — standalone, continuous auto-scroll image/video strip (marquee style).
+ * carousel_image_view - standalone, continuous auto-scroll image/video strip (marquee style).
  *
  * Pure CSS infinite scroll: the item set is rendered twice and the track is
- * animated by exactly one set-width, so the loop is perfectly seamless — no
+ * animated by exactly one set-width, so the loop is perfectly seamless - no
  * gaps, no snap-back. Works in both directions independently.
  *
  * ┌─────────────────────────────────────────────────────────────────┐
@@ -11,7 +11,7 @@
  * └─────────────────────────────────────────────────────────────────┘
  *
  *  get_template_part( 'components/carousels/carousel_image_view', null, [
- *    'uid'       => 'gallery-strip',   // unique — never reuse on the same page
+ *    'uid'       => 'gallery-strip',   // unique - never reuse on the same page
  *    'direction' => 'ltr',             // 'rtl' (default) or 'ltr'
  *    'speed'     => 60,                // scroll speed in pixels / second
  *    'items'     => [

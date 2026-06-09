@@ -366,7 +366,7 @@ function ah_send_auto_reply( string $to, string $name, string $type ): void {
 	$headers   = [ 'Content-Type: text/html; charset=UTF-8', "From: {$from}" ];
 
 	$messages = [
-		'contact'      => "We've received your message and a member of our team will reply within 24 hours during business hours (Mon–Sat, 9am–6pm).",
+		'contact'      => "We've received your message and a member of our team will reply within 24 hours during business hours (Mon-Sat, 9am-6pm).",
 		'consultation' => "We've received your consultation request. One of our buyer's agents will call you within 4 business hours to confirm a time that works for you.",
 	];
 

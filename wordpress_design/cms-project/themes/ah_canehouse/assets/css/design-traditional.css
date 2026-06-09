@@ -1527,7 +1527,7 @@ body.design-traditional .ch-frn-visual::before{
 }
 
 
-/* ── 28. FORMS — TRADITIONAL PARCHMENT TREATMENT ───────────────────────────
+/* ── 28. FORMS - TRADITIONAL PARCHMENT TREATMENT ───────────────────────────
    Replaces the modern green-gradient form look with the vintage parchment
    aesthetic shown in the reference: cream paper card, sepia-toned inputs,
    solid forest-green submit button, gold focus ring.                        */
@@ -1545,7 +1545,7 @@ body.design-traditional .ch-contact-form {
 
 /* Inner double-frame on the form card */
 body.design-traditional .ch-contact-form::after {
-    /* inherits zigzag rule from Section 26 — ensure it still shows */
+    /* inherits zigzag rule from Section 26 - ensure it still shows */
     z-index: 0;
 }
 
@@ -1562,7 +1562,7 @@ body.design-traditional .ch-form-title {
 }
 /* Heart ornament under form title */
 body.design-traditional .ch-form-title::after {
-    content: "— \2665 —";
+    content: "- \2665 -";
     display: block;
     color: var(--trad-gold);
     font-size: 0.72rem;

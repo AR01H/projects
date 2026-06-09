@@ -1,6 +1,6 @@
 <?php
 /**
- * form_step_modal — reusable multi-step modal shell (backdrop + progress bar + form).
+ * form_step_modal - reusable multi-step modal shell (backdrop + progress bar + form).
  *
  * Wraps any set of `.ch-bk-step` blocks in the shared modal chrome used by the
  * booking / franchise / order-to-deliver wizards. You supply the step markup as a

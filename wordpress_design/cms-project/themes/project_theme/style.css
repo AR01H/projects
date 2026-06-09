@@ -13,19 +13,19 @@ Tags:              custom, cms, starter
 */
 
 /*
- * IMPORTANT — this file is the WordPress theme registration file.
+ * IMPORTANT - this file is the WordPress theme registration file.
  * WordPress reads the comment block above to detect and display this theme
  * in WP Admin → Appearance → Themes.
  *
  * DO NOT add global CSS here. All styles live in:
- *   assets/css/vairables.css   — CSS custom properties (brand tokens)
- *   assets/css/common.css      — base / reset / typography
- *   assets/css/components.css  — shared UI components
- *   assets/css/stories.css     — stories page styles
+ *   assets/css/vairables.css   - CSS custom properties (brand tokens)
+ *   assets/css/common.css      - base / reset / typography
+ *   assets/css/components.css  - shared UI components
+ *   assets/css/stories.css     - stories page styles
  *
  * These are enqueued by functions.php via wp_enqueue_style().
  * Adding styles here would bypass the enqueue system and break cache-busting.
  *
- * Before launch — update:
+ * Before launch - update:
  *   Theme Name, Theme URI, Author URI, Description, Text Domain
  */

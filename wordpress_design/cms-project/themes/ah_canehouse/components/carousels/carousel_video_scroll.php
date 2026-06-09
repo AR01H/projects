@@ -1,10 +1,10 @@
 <?php
 /**
- * carousel_video_scroll — one-slide-at-a-time media slider with dots + arrows.
+ * carousel_video_scroll - one-slide-at-a-time media slider with dots + arrows.
  *
  * Plays/shows any mix of:  YouTube  •  local/remote video file  •  image  •  image URL.
  * Data lives in a CSV (real_data/csv/video-showcase.csv by default) so you can just
- * add rows — no code changes needed.
+ * add rows - no code changes needed.
  *
  * Styles  → assets/css/carousel-video.css   (enqueued as 'ch-carousel-video')
  * Behaviour → assets/js/carousel-video.js    (enqueued as 'ch-carousel-video')
@@ -14,7 +14,7 @@
  * │  HOW TO USE                                                     │
  * └─────────────────────────────────────────────────────────────────┘
  *
- *  // Simplest — auto-loads real_data/csv/video-showcase.csv
+ *  // Simplest - auto-loads real_data/csv/video-showcase.csv
  *  get_template_part( 'components/carousels/carousel_video_scroll' );
  *
  *  // With a heading + a different CSV
@@ -39,7 +39,7 @@
  * └─────────────────────────────────────────────────────────────────┘
  *   type   image | video | youtube | gif   (leave blank to auto-detect from src)
  *   src    media URL or YouTube link/ID
- *   poster thumbnail image URL (optional — used for video & youtube)
+ *   poster thumbnail image URL (optional - used for video & youtube)
  *   label  caption heading
  *   desc   caption sub-text
  *
@@ -60,7 +60,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-/* ── YouTube id parser (guarded — component may be included more than once) ──── */
+/* ── YouTube id parser (guarded - component may be included more than once) ──── */
 if ( ! function_exists( 'ch_vs_youtube_id' ) ) {
 	function ch_vs_youtube_id( string $url ): string {
 		$url = trim( $url );

@@ -1,5 +1,5 @@
 /**
- * pt-admin.js — AJAX + UI logic for Project Theme admin pages.
+ * pt-admin.js - AJAX + UI logic for Project Theme admin pages.
  * Loaded only on pt-* admin pages via wp_enqueue_script.
  * Depends on: jQuery, PT_Admin (localized by wp_localize_script).
  *

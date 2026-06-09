@@ -30,12 +30,12 @@ get_template_part( 'components/carousel_image_with_title', null, [
 	'section_id'    => 'franchise',
 	'section_class' => 'ch-franchise-section',
 
-	/* Header — sourced from real_data/json/section-headings.json → franchise_showcase */
+	/* Header - sourced from real_data/json/section-headings.json → franchise_showcase */
 	'tag'   => $_d['tag']   ?? '',
 	'title' => $_d['title'] ?? '',
 	'body'  => $_d['body']  ?? '',
 
-	/* Showcase class overrides — original stylesheet uses ch-juice-showcase / ch-showcase-* names */
+	/* Showcase class overrides - original stylesheet uses ch-juice-showcase / ch-showcase-* names */
 	'showcase_class'  => 'ch-juice-showcase',
 	'track_class'     => 'ch-showcase-container',
 	'card_class'      => 'ch-showcase-card',
@@ -43,12 +43,12 @@ get_template_part( 'components/carousel_image_with_title', null, [
 	'controls_class'  => 'ch-showcase-controls',
 	'btn_class'       => 'ch-s-btn',
 
-	/* IDs — JS uses these to wire up the carousel */
+	/* IDs - JS uses these to wire up the carousel */
 	'track_id' => 'ch-showcase-track',
 	'prev_id'  => 'ch-showcase-prev',
 	'next_id'  => 'ch-showcase-next',
 
-	/* Cards + marquee — prepared above */
+	/* Cards + marquee - prepared above */
 	'items'         => $cards,
 	'marquee_items' => $locations,
 

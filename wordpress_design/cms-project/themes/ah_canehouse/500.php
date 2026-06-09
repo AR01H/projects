@@ -30,9 +30,9 @@ get_header();
 	<div class="ch-500" style="text-align:center;padding:8rem 2rem;">
 
 		<div class="ch-500__icon" style="font-size:5rem;">⚠️</div>
-		<h1 class="ch-500__title">500 — Something Went Wrong</h1>
+		<h1 class="ch-500__title">500 - Something Went Wrong</h1>
 		<p class="ch-500__desc">
-			Our server hit an unexpected snag. Don't worry — it's not you.<br>
+			Our server hit an unexpected snag. Don't worry - it's not you.<br>
 			Please try again in a moment.
 		</p>
 		<div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem">

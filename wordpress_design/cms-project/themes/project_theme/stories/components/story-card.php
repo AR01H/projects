@@ -4,8 +4,8 @@
  * Renders a single story. Used by story-grid.php and the featured slot.
  *
  * Variants:
- *   default  — standard grid card (image top, content bottom)
- *   featured — wide horizontal layout (image left, content right)
+ *   default  - standard grid card (image top, content bottom)
+ *   featured - wide horizontal layout (image left, content right)
  *
  * Data keys (all optional with safe fallbacks):
  * @param string $args['id']              Unique story slug (used to build URL)
@@ -35,7 +35,7 @@ $summary  = esc_html(       $args['summary']  ?? '' );
 $image    = esc_url(        $args['image']    ?? '' );
 $variant  = esc_attr(       $args['variant']  ?? 'default' );
 
-/* Build results array — only include complete label+value pairs */
+/* Build results array - only include complete label+value pairs */
 $results = [];
 for ( $i = 1; $i <= 3; $i++ ) {
 	$lbl = trim( $args[ "result_{$i}_label" ] ?? '' );
@@ -45,7 +45,7 @@ for ( $i = 1; $i <= 3; $i++ ) {
 	}
 }
 
-/* Build permalink — /stories/{slug} or just # if no id */
+/* Build permalink - /stories/{slug} or just # if no id */
 $permalink = $id ? esc_url( home_url( '/stories/' . $id ) ) : '#';
 
 $classes = 'pt-story-card';

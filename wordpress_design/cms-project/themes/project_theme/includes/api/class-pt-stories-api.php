@@ -1,17 +1,17 @@
 <?php
 /**
- * PT_Stories_API — WordPress REST API endpoints for stories.
+ * PT_Stories_API - WordPress REST API endpoints for stories.
  *
  * Base URL:  /wp-json/pt/v1/
  *
  * Public routes (no auth):
- *   GET  /stories              — list published stories (admin sees all)
- *   GET  /stories/{id}        — single story (admin sees unpublished too)
+ *   GET  /stories              - list published stories (admin sees all)
+ *   GET  /stories/{id}        - single story (admin sees unpublished too)
  *
  * Protected routes (manage_options):
- *   POST   /stories            — create a story
- *   PUT    /stories/{id}      — update a story
- *   DELETE /stories/{id}      — delete a story
+ *   POST   /stories            - create a story
+ *   PUT    /stories/{id}      - update a story
+ *   DELETE /stories/{id}      - delete a story
  *
  * Response shape (single story):
  * {

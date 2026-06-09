@@ -1,6 +1,6 @@
 <?php
 /**
- * carousel_image_view — standalone, continuous auto-scroll image/video strip (marquee style).
+ * carousel_image_view - standalone, continuous auto-scroll image/video strip (marquee style).
  *
  * Pure CSS infinite scroll: the item set is rendered twice and the track is
  * animated by exactly one set-width so the loop is perfectly seamless.

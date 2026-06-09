@@ -28,13 +28,13 @@ get_header();
 <main class="carousel-test-page">
 
 	<h1>Carousel Component</h1>
-	<p class="page-intro">All examples use <code>components/carousels/carousel.php</code> — one component, fully configurable.</p>
+	<p class="page-intro">All examples use <code>components/carousels/carousel.php</code> - one component, fully configurable.</p>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 1. Default — dots + arrows, 3 visible, feature cards          -->
+	<!-- 1. Default - dots + arrows, 3 visible, feature cards          -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>1. Feature Cards — Dots + Arrows (default)</h2>
+		<h2>1. Feature Cards - Dots + Arrows (default)</h2>
 		<div class="ct-label">
 			<span class="ct-badge">showDots: true</span>
 			<span class="ct-badge">showArrows: true</span>
@@ -46,7 +46,7 @@ get_header();
 			'items' => [
 				[ 'icon' => '🏡', 'title' => 'Find Your Home',    'text' => 'Browse our curated listings across premium residential locations.' ],
 				[ 'icon' => '💰', 'title' => 'Best Value',         'text' => 'Competitive pricing backed by local market expertise.' ],
-				[ 'icon' => '🔑', 'title' => 'Smooth Handover',   'text' => 'From offer accepted to keys in hand — we manage every step.' ],
+				[ 'icon' => '🔑', 'title' => 'Smooth Handover',   'text' => 'From offer accepted to keys in hand - we manage every step.' ],
 				[ 'icon' => '📐', 'title' => 'Custom Builds',     'text' => 'Design your dream home with our trusted construction partners.' ],
 				[ 'icon' => '📊', 'title' => 'Market Insights',   'text' => 'Data-driven advice to help you buy or sell at the right time.' ],
 				[ 'icon' => '🤝', 'title' => 'Dedicated Agent',   'text' => 'One point of contact from start to completion.' ],
@@ -55,10 +55,10 @@ get_header();
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 2. Arrows only — no dots, scrollStep 1                       -->
+	<!-- 2. Arrows only - no dots, scrollStep 1                       -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>2. Process Steps — Arrows only, one card at a time</h2>
+		<h2>2. Process Steps - Arrows only, one card at a time</h2>
 		<div class="ct-label">
 			<span class="ct-badge">showDots: false</span>
 			<span class="ct-badge">scrollStep: 1</span>
@@ -68,20 +68,20 @@ get_header();
 			'showDots'   => false,
 			'scrollStep' => 1,
 			'items'      => [
-				[ 'step' => '01', 'icon' => '📝', 'title' => 'Register Interest',  'text' => 'Fill in your requirements — budget, location, size.' ],
+				[ 'step' => '01', 'icon' => '📝', 'title' => 'Register Interest',  'text' => 'Fill in your requirements - budget, location, size.' ],
 				[ 'step' => '02', 'icon' => '🔍', 'title' => 'Property Search',    'text' => 'We curate a shortlist of matching properties for you.' ],
 				[ 'step' => '03', 'icon' => '🏠', 'title' => 'Viewings',           'text' => 'Guided viewings at your convenience, in-person or virtual.' ],
 				[ 'step' => '04', 'icon' => '📋', 'title' => 'Offer & Negotiate',  'text' => 'Our agents negotiate the best deal on your behalf.' ],
-				[ 'step' => '05', 'icon' => '✅', 'title' => 'Completion',         'text' => 'Legal checks done, keys collected — you\'re home.' ],
+				[ 'step' => '05', 'icon' => '✅', 'title' => 'Completion',         'text' => 'Legal checks done, keys collected - you\'re home.' ],
 			],
 		] ); ?>
 	</section>
 
 	<!-- ══════════════════════════════════════════════════════════════ -->
-	<!-- 3. Testimonials — autoplay 4 s, 3 visible                    -->
+	<!-- 3. Testimonials - autoplay 4 s, 3 visible                    -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>3. Testimonials — Autoplay, 3 visible</h2>
+		<h2>3. Testimonials - Autoplay, 3 visible</h2>
 		<div class="ct-label">
 			<span class="ct-badge">variant: testimonial</span>
 			<span class="ct-badge">autoplay: true</span>
@@ -100,7 +100,7 @@ get_header();
 				],
 				[
 					'variant' => 'testimonial',
-					'quote'   => '"We sold our home in 12 days — above asking price. Couldn\'t have asked for a better outcome."',
+					'quote'   => '"We sold our home in 12 days - above asking price. Couldn\'t have asked for a better outcome."',
 					'author'  => 'Rajan Pillai',
 					'role'    => 'Seller, Kochi',
 					'rating'  => 5,
@@ -114,7 +114,7 @@ get_header();
 				],
 				[
 					'variant' => 'testimonial',
-					'quote'   => '"Professional, honest, and genuinely invested in finding us the right home — not just any home."',
+					'quote'   => '"Professional, honest, and genuinely invested in finding us the right home - not just any home."',
 					'author'  => 'Arjun Menon',
 					'role'    => 'Property investor',
 					'rating'  => 4,
@@ -196,7 +196,7 @@ get_header();
 	<!-- 6. Non-infinite                                               -->
 	<!-- ══════════════════════════════════════════════════════════════ -->
 	<section class="ct-section">
-		<h2>6. Non-infinite — arrows disable at boundaries</h2>
+		<h2>6. Non-infinite - arrows disable at boundaries</h2>
 		<div class="ct-label">
 			<span class="ct-badge">infiniteLoop: false</span>
 		</div>

@@ -6,10 +6,10 @@
  * Zero dependency on mock_data/ or any DB class.
  *
  * CSV shapes:
- *   csv($name)  — first row = headers, one item per row → array of assoc rows
+ *   csv($name)  - first row = headers, one item per row → array of assoc rows
  *
  * JSON shapes:
- *   section_heading($key)  — reads real_data/json/section-headings.json, returns one entry
+ *   section_heading($key)  - reads real_data/json/section-headings.json, returns one entry
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;

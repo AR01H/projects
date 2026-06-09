@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ptStepModal — reusable multi-step modal wizard controller.
+   ptStepModal - reusable multi-step modal wizard controller.
 
    Pairs with components/forms/form_step_modal.php.
    Drives open/close, step nav, progress bar, summary, submit + success

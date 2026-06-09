@@ -241,7 +241,7 @@ The "page hero" is the top section of a page - usually contains a title, subtitl
       <span class="section__eyebrow">Free Resources</span>
       <h1 class="page-hero__title">The Complete<br><em>Home Buying Library</em></h1>
       <p class="page-hero__desc">
-        A longer subtitle description here. Keep it to 1–2 sentences.
+        A longer subtitle description here. Keep it to 1-2 sentences.
       </p>
       <!-- Optional CTA buttons -->
       <div style="display:flex;gap:12px;justify-content:center;margin-top:24px">

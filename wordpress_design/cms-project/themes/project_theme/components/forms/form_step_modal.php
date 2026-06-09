@@ -1,6 +1,6 @@
 <?php
 /**
- * form_step_modal — reusable multi-step modal shell (backdrop + progress bar + form).
+ * form_step_modal - reusable multi-step modal shell (backdrop + progress bar + form).
  *
  * Pairs with assets/js/form-step-modal.js (window.ptStepModal controller).
  *

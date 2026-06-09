@@ -6,7 +6,7 @@ get_header();
 	'eyebrow'    => 'Insights & Expertise',
 	'title'      => 'The ' . CLIENT_FULL_TITLE,
 	'title_em'   => 'Blog',
-	'desc'       => 'Practical advice from buyer\'s agents – market insights, step-by-step guides, and everything you need to buy smarter.',
+	'desc'       => 'Practical advice from buyer\'s agents - market insights, step-by-step guides, and everything you need to buy smarter.',
 	'breadcrumb' => [ [ 'Home', home_url( '/' ) ], [ 'Blog', '' ] ],
 ] ); ?>
 
@@ -58,7 +58,7 @@ get_header();
     <div class="text-center" style="padding:80px 24px">
       <div style="font-size:3.5rem;margin-bottom:16px">✍️</div>
       <h2 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:12px">No posts yet</h2>
-      <p style="color:var(--text-secondary)">We're working on something great – check back soon.</p>
+      <p style="color:var(--text-secondary)">We're working on something great - check back soon.</p>
     </div>
     <?php endif; ?>
   </div>
