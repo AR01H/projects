@@ -1825,7 +1825,7 @@ body.design-traditional .ch-consent-error {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   29. FEATURES RIBBON — REFERENCE-MATCH (DARK GREEN + VERTICAL ICON/TITLE/SUB)
+   29. FEATURES RIBBON - REFERENCE-MATCH (DARK GREEN + VERTICAL ICON/TITLE/SUB)
    ══════════════════════════════════════════════════════════════════════════
    Reference: deep-green band, 5 equal items, icon on top, bold uppercase
    title, italic subtitle, gold hairline dividers between items.            */
@@ -1892,11 +1892,11 @@ body.design-traditional .ch-ribbon-sub {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   30. MEMORY / POLAROID SECTION — "MORE THAN A DRINK. IT'S A MEMORY."
+   30. MEMORY / POLAROID SECTION - "MORE THAN A DRINK. IT'S A MEMORY."
    ══════════════════════════════════════════════════════════════════════════
    Two-column layout:
-   Left  — eyebrow + script heading + ♥ ornament + body paragraphs
-   Right — 2×2 grid of Polaroid photos (cream mount, sepia, scrapbook tilt) */
+   Left  - eyebrow + script heading + ♥ ornament + body paragraphs
+   Right - 2×2 grid of Polaroid photos (cream mount, sepia, scrapbook tilt) */
 
 body.design-traditional .ch-memory-section {
     background: var(--trad-bg);
@@ -1951,7 +1951,7 @@ body.design-traditional .ch-memory-body {
     max-width: 40ch;
 }
 
-/* Right column — photo grid */
+/* Right column - photo grid */
 body.design-traditional .ch-memory-photos {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2002,7 +2002,7 @@ body.design-traditional .ch-polaroid-caption {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   31. GALLERY STRIP — POLAROID CARDS + GREEN TITLE TILE
+   31. GALLERY STRIP - POLAROID CARDS + GREEN TITLE TILE
    ══════════════════════════════════════════════════════════════════════════
    Section background: alt parchment.
    Container becomes flex-row: section-header = dark green "title card" tile,
@@ -2107,7 +2107,7 @@ body.design-traditional .ch-gstrip__caption strong {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   32. PAGE HERO — LARGE SERIF HEADINGS (REFERENCE MATCH)
+   32. PAGE HERO - LARGE SERIF HEADINGS (REFERENCE MATCH)
    ══════════════════════════════════════════════════════════════════════════
    Reference pages show very large bold-serif uppercase headings (4-5rem)
    on a parchment background, with a script italic subtitle in burgundy,
@@ -2115,7 +2115,7 @@ body.design-traditional .ch-gstrip__caption strong {
 
 body.design-traditional .ch-page-hero {
     background: var(--trad-bg) !important;
-    padding-top: calc(var(--ch-nav-height, 72px) + 3.5rem);
+    padding-top: calc(var(--ch-nav-height, 72px));
     padding-bottom: 4rem;
     text-align: center;
 }
@@ -2177,7 +2177,7 @@ body.design-traditional .ch-page-hero__badge {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   33. RESPONSIVE — NEW SECTIONS (29–32)
+   33. RESPONSIVE - NEW SECTIONS (29–32)
    ══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 1024px) {
@@ -2219,10 +2219,10 @@ body.design-traditional .ch-page-hero__badge {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   34. CONTACT — CLIPBOARD FORM + PINNED POLAROID + RUBBER-STAMP STICKER
+   34. CONTACT - CLIPBOARD FORM + PINNED POLAROID + RUBBER-STAMP STICKER
    ══════════════════════════════════════════════════════════════════════════
    Reference-match decorations for the contact section:
-     • Form card reads as a clipboard — a metal clip clamps the top edge
+     • Form card reads as a clipboard - a metal clip clamps the top edge
      • A pinned Polaroid photo sits in the info column (pushpin + tilt + tape)
      • A rotated rubber-stamp "100% NATURAL" sticker overlaps the form corner
      • Contact icons become circular forest-green badges
@@ -2416,7 +2416,6 @@ body.design-traditional .ch-contact-info .ch-cd-icon {
     height: 42px;
     min-width: 42px;
     border-radius: 50%;
-    background: linear-gradient(145deg, var(--trad-green), var(--trad-green-2));
     color: var(--trad-cream);
     display: flex;
     align-items: center;

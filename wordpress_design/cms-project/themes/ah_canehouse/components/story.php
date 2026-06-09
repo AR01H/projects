@@ -1,6 +1,6 @@
 <?php
 /**
- * Memory / Polaroid section — home page.
+ * Memory / Polaroid section - home page.
  * "More Than A Drink. It's a Memory."
  * Renders four Polaroid-style photos from the equipment media gallery.
  */
@@ -22,7 +22,7 @@ $photos   = array_slice( (array) $gallery, 0, 4 );
 			<div class="ch-memory-text fade-left">
 				<p class="ch-memory-eyebrow">More Than A Drink.</p>
 				<h2 class="ch-memory-heading">It's a <em>Memory.</em></h2>
-				<span class="ch-ornament-heart">— ♥ —</span>
+				<span class="ch-ornament-heart">- ♥ -</span>
 				<p class="ch-memory-body"><?php echo esc_html( $body_1 ); ?></p>
 				<p class="ch-memory-body"><?php echo esc_html( $body_2 ); ?></p>
 			</div>
