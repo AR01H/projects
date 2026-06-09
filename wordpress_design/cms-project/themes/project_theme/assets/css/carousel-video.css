@@ -1,0 +1,115 @@
+/* ==========================================================================
+   carousel_video_scroll — one-slide-at-a-time media slider (dots + arrows).
+   Markup: components/carousels/carousel_video_scroll.php
+   ========================================================================== */
+
+.pt-vs-header { text-align: center; margin-bottom: 2rem; }
+
+.pt-section-tag {
+	display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+	text-transform: uppercase; color: var(--pt-accent, #f0a500); margin-bottom: .6rem;
+}
+.pt-section-title {
+	font-family: var(--pt-font-display, sans-serif);
+	font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700;
+	color: var(--pt-text, #1a2c4e); margin: 0 0 .75rem;
+}
+.pt-section-body {
+	font-size: 1rem; color: var(--pt-text-muted, #5a6e8a);
+	max-width: 600px; margin-inline: auto;
+}
+
+.pt-vs { position: relative; max-width: 960px; margin-inline: auto; }
+
+.pt-vs-viewport { position: relative; overflow: hidden; border-radius: var(--pt-radius-lg, 20px); }
+
+.pt-vs-track {
+	display: flex;
+	flex-wrap: nowrap;
+	transition: transform .5s ease;
+	will-change: transform;
+}
+
+.pt-vs-slide { flex: 0 0 100%; min-width: 100%; }
+
+.pt-vs-media {
+	position: relative;
+	width: 100%;
+	background: #000;
+	overflow: hidden;
+}
+.pt-vs-media > img,
+.pt-vs-media > video,
+.pt-vs-media > iframe {
+	position: absolute; inset: 0;
+	width: 100%; height: 100%;
+	object-fit: cover; border: 0; display: block;
+}
+
+/* ── Facade ──────────────────────────────────────────────────────────────── */
+.pt-vs-yt {
+	position: absolute; inset: 0;
+	width: 100%; height: 100%;
+	padding: 0; border: 0; cursor: pointer;
+	background: #000; display: block;
+}
+.pt-vs-yt img {
+	position: absolute; inset: 0;
+	width: 100%; height: 100%;
+	object-fit: cover; opacity: .85; transition: opacity .25s;
+}
+.pt-vs-yt:hover img { opacity: 1; }
+
+.pt-vs-play {
+	position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+	z-index: 3;
+	width: 76px; height: 76px; border-radius: 50%;
+	display: grid; place-items: center;
+	color: #fff;
+	background: rgba(0,0,0,.5);
+	box-shadow: 0 6px 20px rgba(0,0,0,.35);
+	transition: transform .2s ease, background .2s ease;
+}
+.pt-vs-play svg { margin-left: 3px; }
+.pt-vs-yt:hover .pt-vs-play {
+	transform: translate(-50%, -50%) scale(1.12);
+	background: var(--pt-accent, #f0a500);
+}
+
+/* ── Overlay ─────────────────────────────────────────────────────────────── */
+.pt-vs-overlay {
+	position: absolute; left: 0; right: 0; top: 0;
+	z-index: 2; pointer-events: none;
+	padding: 18px 22px 46px;
+	color: #fff; text-align: left;
+	background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%, rgba(0,0,0,.15) 55%, rgba(0,0,0,0) 100%);
+}
+.pt-vs-otitle {
+	display: block; font-size: 1.2rem; font-weight: 700; line-height: 1.25;
+	text-shadow: 0 1px 3px rgba(0,0,0,.55);
+}
+.pt-vs-odesc {
+	display: block; font-size: .92rem; opacity: .92; margin-top: 4px;
+	text-shadow: 0 1px 3px rgba(0,0,0,.55);
+}
+.pt-vs-media[data-yt-open="1"] .pt-vs-overlay { display: none; }
+
+/* ── Arrows ──────────────────────────────────────────────────────────────── */
+.pt-vs-arrow {
+	position: absolute; top: 50%; transform: translateY(-50%);
+	z-index: 3; width: 44px; height: 44px; border-radius: 50%;
+	border: 0; cursor: pointer; font-size: 18px; color: #fff;
+	background: rgba(0,0,0,.45); transition: background .2s;
+}
+.pt-vs-arrow:hover { background: var(--pt-accent, #f0a500); }
+.pt-vs-arrow--prev { left: 12px; }
+.pt-vs-arrow--next { right: 12px; }
+
+/* ── Dots ────────────────────────────────────────────────────────────────── */
+.pt-vs-dots { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+.pt-vs-dot {
+	width: 11px; height: 11px; border-radius: 50%;
+	border: 0; padding: 0; cursor: pointer;
+	background: var(--pt-border, rgba(26,44,78,.2)); transition: transform .2s, background .2s;
+}
+.pt-vs-dot.is-active { background: var(--pt-accent, #f0a500); transform: scale(1.35); }

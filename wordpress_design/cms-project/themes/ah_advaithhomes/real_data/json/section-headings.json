@@ -93,5 +93,20 @@
     "tag": "Free Consultation",
     "title": "Start With a Free 30-Minute Call",
     "body": "We'll understand your brief, share what's possible, and explain exactly how we work — no commitment required."
+  },
+  "showcase_home": {
+    "tag": "Case Studies",
+    "title": "Properties We've Secured",
+    "body": "A snapshot of recent purchases made on behalf of our clients across the UK."
+  },
+  "video_showcase_home": {
+    "tag": "Watch & Learn",
+    "title": "Insights in Action",
+    "body": "See how we help buyers navigate the UK property market."
+  },
+  "mini_video_home": {
+    "tag": "Client Stories",
+    "title": "Hear From Our Clients",
+    "body": "Real buyers share their experience working with us."
   }
 }

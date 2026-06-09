@@ -39,6 +39,14 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'pt-variables',  "$dir/css/vairables.css",  [],                    $v );
 	wp_enqueue_style( 'pt-common',     "$dir/css/common.css",     [ 'pt-variables' ],    $v );
 	wp_enqueue_style( 'pt-components', "$dir/css/components.css", [ 'pt-common' ],       $v );
+	wp_enqueue_style( 'pt-carousel-video',      "$dir/css/carousel-video.css",      [ 'pt-components' ], $v );
+	wp_enqueue_style( 'pt-carousel-mini-video', "$dir/css/carousel-mini-video.css", [ 'pt-components' ], $v );
+	wp_enqueue_style( 'pt-form-step-modal',     "$dir/css/form-step-modal.css",     [ 'pt-components' ], $v );
+
+	/* Home-page styles — only on the static front page */
+	if ( is_front_page() ) {
+		wp_enqueue_style( 'pt-home', "$dir/css/home.css", [ 'pt-components', 'pt-carousel-video', 'pt-carousel-mini-video' ], $v );
+	}
 
 	/* Stories CSS — loaded only on the stories page template */
 	if ( is_page_template( 'page-stories.php' ) ) {
@@ -49,6 +57,18 @@ add_action( 'wp_enqueue_scripts', function () {
 	if ( file_exists( get_template_directory() . '/assets/js/main.js' ) ) {
 		wp_enqueue_script( 'pt-main', "$dir/js/main.js", [], $v, true );
 	}
+
+	/* Carousel JS */
+	wp_enqueue_script( 'pt-carousel-video',      "$dir/js/carousel-video.js",      [], $v, true );
+	wp_enqueue_script( 'pt-carousel-mini-video', "$dir/js/carousel-mini-video.js", [], $v, true );
+
+	/* Form step-modal JS + ptTheme global */
+	wp_enqueue_script( 'pt-form-step-modal', "$dir/js/form-step-modal.js", [], $v, true );
+	wp_localize_script( 'pt-form-step-modal', 'ptTheme', [
+		'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+		'nonce'   => wp_create_nonce( 'pt_frontend_nonce' ),
+		'siteUrl' => esc_url( home_url( '/' ) ),
+	] );
 } );
 
 /* ═══════════════════════════════════════════════════════════════
@@ -206,6 +226,7 @@ $pt_includes = [
 	'/includes/core_settings.php',
 	'/includes/core_titles.php',
 	'/includes/helper_functions.php',
+	'/includes/data/class-pt-real-loader.php',
 ];
 
 foreach ( $pt_includes as $file ) {

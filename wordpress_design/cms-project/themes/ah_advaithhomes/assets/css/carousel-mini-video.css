@@ -1,0 +1,119 @@
+/* ==========================================================================
+   carousel_mini_video_scroll — horizontal shelf of portrait video cards.
+   Markup: components/carousels/carousel_mini_video_scroll.php
+   ========================================================================== */
+
+.ah-mvs-header { text-align: center; margin-bottom: 2rem; }
+
+.ah-mvs { position: relative; max-width: 1200px; margin-inline: auto; padding: 0 16px; }
+
+/* ── Scrolling row ───────────────────────────────────────────────────────── */
+.ah-mvs-track {
+	display: flex;
+	gap: 18px;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scroll-padding-left: 16px;
+	padding: 6px 4px 10px;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+.ah-mvs-track::-webkit-scrollbar { display: none; }
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.ah-mvs-card {
+	flex: 0 0 auto;
+	width: min(230px, 72vw);
+	scroll-snap-align: start;
+}
+
+/* Portrait thumbnail */
+.ah-mvs-thumb {
+	position: relative; display: block;
+	width: 100%; aspect-ratio: 9 / 16;
+	border: 0; padding: 0; margin: 0;
+	border-radius: 16px; overflow: hidden;
+	background: #1a1a1a; cursor: pointer;
+}
+.ah-mvs-thumb > img,
+.ah-mvs-frame {
+	position: absolute; inset: 0;
+	width: 100%; height: 100%;
+	object-fit: cover; border: 0; display: block;
+}
+.ah-mvs-thumb::before {
+	content: ""; position: absolute; inset: 0 0 auto 0; height: 40%;
+	background: linear-gradient(to bottom, rgba(0,0,0,.6), rgba(0,0,0,0));
+	z-index: 1; pointer-events: none;
+}
+
+/* Channel avatar + name overlay */
+.ah-mvs-channel {
+	position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2;
+	display: flex; align-items: center; gap: 8px;
+	color: #fff; text-align: left;
+}
+.ah-mvs-avatar {
+	width: 34px; height: 34px; border-radius: 50%;
+	object-fit: cover; flex: 0 0 auto;
+	border: 2px solid rgba(255,255,255,.85);
+}
+.ah-mvs-channel-text { min-width: 0; line-height: 1.15; }
+.ah-mvs-channel-text strong {
+	display: block; font-size: .82rem; font-weight: 700;
+	white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+	text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+.ah-mvs-channel-text span {
+	display: block; font-size: .72rem; opacity: .9;
+	text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+/* Themed play badge */
+.ah-mvs-play {
+	position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+	z-index: 2;
+	width: 44px; height: 54px; border-radius: 14px;
+	display: grid; place-items: center;
+	background: var(--accent, #b7791f);
+	box-shadow: 0 6px 18px rgba(0,0,0,.35);
+	transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.ah-mvs-play svg { margin-left: 2px; }
+.ah-mvs-thumb:hover .ah-mvs-play {
+	transform: translate(-50%, -50%) scale(1.1);
+	background: var(--gold-600, #d97706);
+	box-shadow: 0 8px 22px rgba(0,0,0,.45);
+}
+
+/* Hide overlays once playing */
+.ah-mvs-thumb.is-playing::before,
+.ah-mvs-thumb.is-playing .ah-mvs-channel,
+.ah-mvs-thumb.is-playing .ah-mvs-play { display: none; }
+
+/* ── Title + description below the card ──────────────────────────────────── */
+.ah-mvs-meta { padding: 12px 2px 0; }
+.ah-mvs-title {
+	display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+	font-size: 1rem; font-weight: 700; line-height: 1.3;
+	color: var(--slate-900, #0f172a);
+	text-decoration: none;
+}
+.ah-mvs-title:hover { color: var(--accent, #b7791f); }
+.ah-mvs-desc {
+	margin: 6px 0 0; font-size: .88rem; line-height: 1.45;
+	color: var(--text-secondary, #475569);
+	display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ── Nav buttons below the row ───────────────────────────────────────────── */
+.ah-mvs-nav { display: flex; justify-content: center; gap: 12px; margin-top: 18px; }
+.ah-mvs-arrow {
+	width: 36px; height: 36px; border-radius: 50%;
+	border: 0; cursor: pointer; font-size: 15px; line-height: 1; color: #fff;
+	display: grid; place-items: center;
+	background: var(--accent, #b7791f);
+	transition: transform .2s ease, opacity .2s ease, background .2s ease;
+}
+.ah-mvs-arrow:hover { transform: translateY(-2px); background: var(--gold-600, #d97706); }
+.ah-mvs-arrow.is-disabled { opacity: .3; cursor: default; pointer-events: none; }

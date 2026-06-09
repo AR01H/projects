@@ -171,8 +171,20 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-nhp',      $uri . '/assets/css/nhp.css',      [ 'ah-components' ], $fv( '/assets/css/nhp.css' ) );
 	wp_enqueue_style( 'ah-theme-builder-css',     $uri . '/assets/css/themebuilder.css',     [ 'ah-common' ],         $fv( '/assets/css/themebuilder.css' ) );
 
+	wp_enqueue_style( 'ah-carousel-video',      $uri . '/assets/css/carousel-video.css',      [ 'ah-components' ], $fv( '/assets/css/carousel-video.css' ) );
+	wp_enqueue_style( 'ah-carousel-mini-video', $uri . '/assets/css/carousel-mini-video.css', [ 'ah-components' ], $fv( '/assets/css/carousel-mini-video.css' ) );
+	wp_enqueue_style( 'ah-form-step-modal',     $uri . '/assets/css/form-step-modal.css',     [ 'ah-components' ], $fv( '/assets/css/form-step-modal.css' ) );
+
+	/* Home-page carousel + CTA banner styles — only on the front page */
+	if ( is_front_page() ) {
+		wp_enqueue_style( 'ah-home-carousel', $uri . '/assets/css/home-carousel.css', [ 'ah-components', 'ah-carousel-video', 'ah-carousel-mini-video' ], $fv( '/assets/css/home-carousel.css' ) );
+	}
+
 	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ],  $fv( '/assets/js/main.js' ),  true );
-	wp_enqueue_script( 'ah-forms', $uri . '/assets/js/forms.js', [ 'ah-main' ], $fv( '/assets/js/forms.js' ), true );
+	wp_enqueue_script( 'ah-carousel-video',      $uri . '/assets/js/carousel-video.js',      [ 'ah-main' ], $fv( '/assets/js/carousel-video.js' ),      true );
+	wp_enqueue_script( 'ah-carousel-mini-video', $uri . '/assets/js/carousel-mini-video.js', [ 'ah-main' ], $fv( '/assets/js/carousel-mini-video.js' ),  true );
+	wp_enqueue_script( 'ah-form-step-modal',     $uri . '/assets/js/form-step-modal.js',     [ 'ah-main' ], $fv( '/assets/js/form-step-modal.js' ),      true );
+	wp_enqueue_script( 'ah-forms', $uri . '/assets/js/forms.js', [ 'ah-main', 'ah-form-step-modal' ], $fv( '/assets/js/forms.js' ), true );
 	wp_enqueue_script( 'ah-js-scroll-to-top', $uri . '/assets/js/scroll-to-top.js', [ 'ah-main' ], $fv( '/assets/js/scroll-to-top.js' ), true );
 
 	wp_localize_script( 'ah-forms', 'ahTheme', [

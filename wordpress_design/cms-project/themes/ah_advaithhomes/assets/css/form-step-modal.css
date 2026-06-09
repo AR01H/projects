@@ -1,0 +1,204 @@
+/* ==========================================================================
+   form_step_modal — overlay wizard (backdrop + progress bar + steps).
+   Markup  : components/forms/form_step_modal.php
+   Controller: assets/js/form-step-modal.js  (window.ahStepModal)
+   ========================================================================== */
+
+/* ── Backdrop + wrapper ───────────────────────────────────────────────────── */
+.ah-bk-modal {
+	position: fixed; inset: 0; z-index: 9000;
+	display: none; align-items: center; justify-content: center;
+	padding: 1rem;
+}
+.ah-bk-modal.is-open { display: flex; }
+
+.ah-bk-modal-backdrop {
+	position: absolute; inset: 0;
+	background: rgba(15, 23, 42, .72);
+	backdrop-filter: blur(3px);
+	cursor: pointer;
+}
+
+/* ── Box ──────────────────────────────────────────────────────────────────── */
+.ah-bk-modal-box {
+	position: relative; z-index: 1;
+	width: 100%; max-width: 540px; max-height: calc(100dvh - 2rem);
+	background: var(--surface, #fff);
+	border-radius: var(--r-lg, 20px);
+	box-shadow: 0 24px 60px rgba(15,23,42,.25);
+	display: flex; flex-direction: column;
+	animation: ah-modal-in .3s ease;
+}
+@keyframes ah-modal-in {
+	from { opacity: 0; transform: scale(.94) translateY(16px); }
+	to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
+.ah-bk-modal-scroll {
+	overflow-y: auto; flex: 1;
+	padding: 2rem 2rem 1.5rem;
+	scrollbar-width: thin;
+}
+
+.ah-bk-modal-close {
+	position: absolute; top: 14px; right: 14px; z-index: 2;
+	width: 34px; height: 34px; border-radius: 50%; border: 0;
+	background: var(--bg-alt, #f4f2ff); cursor: pointer;
+	font-size: 1.2rem; line-height: 1; display: grid; place-items: center;
+	color: var(--text-secondary, #475569); transition: all .16s ease;
+}
+.ah-bk-modal-close:hover {
+	background: var(--border, #e8e4f3);
+	color: var(--text-primary, #0f172a);
+}
+
+/* ── Progress bar ─────────────────────────────────────────────────────────── */
+.ah-bk-progress {
+	display: flex; align-items: flex-start; justify-content: center;
+	position: relative; margin-bottom: 2rem;
+}
+
+.ah-bk-prog-line {
+	position: absolute; top: 15px; left: 15%; right: 15%; height: 2px;
+	background: var(--border, #e8e4f3); z-index: 0;
+}
+.ah-bk-prog-fill {
+	display: block; height: 100%; width: 0%;
+	background: var(--accent, #b7791f); transition: width .45s ease;
+}
+
+.ah-bk-prog-step {
+	display: flex; flex-direction: column; align-items: center; gap: 6px;
+	flex: 1; position: relative; z-index: 1; cursor: pointer;
+}
+
+.ah-bk-prog-dot {
+	width: 32px; height: 32px; border-radius: 50%;
+	border: 2px solid var(--border, #e8e4f3);
+	display: grid; place-items: center;
+	font-size: .8rem; font-weight: 700;
+	color: var(--text-secondary, #475569);
+	background: var(--surface, #fff);
+	transition: all .28s ease;
+}
+.ah-bk-prog-step.active .ah-bk-prog-dot {
+	background: var(--accent, #b7791f);
+	border-color: var(--accent, #b7791f);
+	color: #fff; transform: scale(1.1);
+}
+.ah-bk-prog-step.done .ah-bk-prog-dot {
+	background: var(--client-color-100, #fff2bf);
+	border-color: var(--client-color-400, #f7c62f);
+	color: var(--client-color-800, #8c5a12);
+}
+
+.ah-bk-prog-label {
+	font-size: .72rem; font-weight: 600; text-align: center;
+	color: var(--text-muted, #64748b);
+	white-space: nowrap; max-width: 80px; overflow: hidden; text-overflow: ellipsis;
+}
+.ah-bk-prog-step.active .ah-bk-prog-label { color: var(--text-primary, #0f172a); }
+
+/* ── Steps ────────────────────────────────────────────────────────────────── */
+.ah-bk-step { display: none; }
+.ah-bk-step.active { display: block; }
+
+.ah-bk-step h3 {
+	font-family: var(--font-display, 'Cormorant Garamond', serif);
+	font-size: 1.4rem; font-weight: 700;
+	color: var(--text-primary, #0f172a); margin-bottom: .35rem;
+}
+.ah-bk-hint {
+	font-size: .9rem; color: var(--text-secondary, #475569); margin-bottom: 1.25rem;
+}
+
+/* ── Fields ───────────────────────────────────────────────────────────────── */
+.ah-bk-field {
+	display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1rem;
+}
+.ah-bk-field label {
+	font-size: .88rem; font-weight: 600; color: var(--text-primary, #0f172a);
+}
+.ah-bk-field input,
+.ah-bk-field select,
+.ah-bk-field textarea {
+	width: 100%; padding: .65rem .9rem;
+	border: 1.5px solid var(--border, #e8e4f3);
+	border-radius: var(--r-md, 12px);
+	font: inherit; color: var(--text-primary, #0f172a);
+	background: var(--surface, #fff);
+	transition: border-color .2s;
+	appearance: none; -webkit-appearance: none;
+}
+.ah-bk-field input:focus,
+.ah-bk-field select:focus,
+.ah-bk-field textarea:focus {
+	outline: none;
+	border-color: var(--accent, #b7791f);
+	box-shadow: 0 0 0 3px rgba(183,121,31,.15);
+}
+.ah-bk-field.invalid input,
+.ah-bk-field.invalid select { border-color: #b91c1c; }
+.ah-field-error { font-size: .8rem; color: #b91c1c; display: block; margin-top: 2px; }
+
+/* ── Action row ───────────────────────────────────────────────────────────── */
+.ah-bk-actions {
+	display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1.25rem;
+}
+
+/* Ghost back-button (uses theme btn system) */
+.ah-bk-back {
+	background: transparent;
+	border: 1.5px solid var(--border, #e8e4f3);
+	color: var(--text-secondary, #475569);
+	padding: .6rem 1.2rem; border-radius: 100px;
+	font: inherit; font-weight: 600; font-size: .9rem;
+	cursor: pointer; transition: all .2s ease;
+}
+.ah-bk-back:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Summary ──────────────────────────────────────────────────────────────── */
+.ah-bk-summary {
+	margin: 1rem 0 1.5rem;
+	border: 1px solid var(--border, #e8e4f3);
+	border-radius: var(--r-md, 12px); overflow: hidden;
+}
+.ah-bk-summary-table {
+	width: 100%; border-collapse: collapse; font-size: .92rem;
+}
+.ah-bk-summary-table td {
+	padding: .65rem .9rem;
+	border-bottom: 1px solid var(--border, #e8e4f3);
+	color: var(--text-primary, #0f172a);
+}
+.ah-bk-summary-table tr:last-child td { border-bottom: 0; }
+.ah-bk-summary-table td:first-child {
+	font-weight: 600; color: var(--text-secondary, #475569); width: 38%;
+}
+
+/* ── Form feedback ────────────────────────────────────────────────────────── */
+.ah-form-feedback {
+	padding: .75rem 1rem; border-radius: var(--r-sm, 6px);
+	font-size: .9rem; margin-bottom: 1rem;
+}
+.ah-form-feedback.error   { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.ah-form-feedback.success { background: #fefce8; color: #92400e; border: 1px solid #fde68a; }
+
+/* ── Success state ────────────────────────────────────────────────────────── */
+.ah-bk-success { text-align: center; padding: 2rem 1rem; }
+.ah-bk-success-icon {
+	width: 64px; height: 64px; border-radius: 50%;
+	background: var(--accent, #b7791f); color: #fff;
+	font-size: 2rem; font-weight: 700;
+	display: grid; place-items: center; margin: 0 auto 1.25rem;
+}
+.ah-bk-success h3 {
+	font-family: var(--font-display, serif); font-size: 1.4rem; margin-bottom: .5rem;
+}
+.ah-bk-success p  { color: var(--text-secondary, #475569); font-size: .95rem; margin-bottom: 1rem; }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+	.ah-bk-modal-scroll { padding: 1.5rem 1.25rem 1rem; }
+	.ah-bk-prog-label { display: none; }
+}

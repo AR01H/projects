@@ -70,6 +70,22 @@ if ( isset( $_GET['retry_log'], $_GET['_wpnonce'] ) ) {
 	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=logs&notice=' . ( $ok ? 'retry_ok' : 'retry_fail' ) ) );
 }
 
+// ── Handle: clear the whole evaluate log ──────────────────────────────────────
+if ( isset( $_POST['ah_re_clear_evallog_nonce'] ) ) {
+	if ( ! wp_verify_nonce( $_POST['ah_re_clear_evallog_nonce'], 'ah_clear_evallog' ) ) wp_die( 'Security.' );
+	global $wpdb;
+	$wpdb->query( 'TRUNCATE TABLE `' . AH_Rules_Engine::evaluate_table() . '`' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=evallog&notice=evallog_cleared' ) );
+}
+
+// ── Handle: delete one evaluate-log entry ─────────────────────────────────────
+if ( isset( $_GET['del_evallog'], $_GET['_wpnonce'] ) ) {
+	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_evallog' ) ) wp_die( 'Security.' );
+	global $wpdb;
+	$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . AH_Rules_Engine::evaluate_table() . '` WHERE id = %d', (int) $_GET['del_evallog'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=evallog&notice=evallog_deleted' ) );
+}
+
 // ── Handle delete ──────────────────────────────────────────────────────────────
 if ( isset( $_GET['delete'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_rule' ) ) wp_die( 'Security.' );
@@ -115,6 +131,8 @@ if ( isset( $_GET['notice'] ) ) {
 		'retry_fail'  => 'warning:Retry failed - check the error column.',
 		'run_now_ok'  => 'success:Cron batch processed - check Trigger Logs for updated statuses.',
 		'test_fired'  => 'success:Test trigger fired - check Trigger Logs to confirm a new entry was created.',
+		'evallog_cleared' => 'success:Evaluate log cleared.',
+		'evallog_deleted' => 'success:Evaluate log entry deleted.',
 	);
 	$notice = $n_map[ sanitize_key( $_GET['notice'] ) ] ?? '';
 }
@@ -224,7 +242,7 @@ details.re-adv .re-adv-body{padding:12px}
 <!-- Top-level tab nav -->
 <div style="display:flex;gap:2px;border-bottom:2px solid #e5e7eb;margin-bottom:24px">
 	<?php
-	$tabs = array( 'list' => '⚡ Rules', 'logs' => '📋 Trigger Logs', 'config' => '⚙️ Config' );
+	$tabs = array( 'list' => '⚡ Rules', 'logs' => '📋 Trigger Logs', 'evallog' => '🧪 Evaluate Log', 'config' => '⚙️ Config' );
 	foreach ( $tabs as $tslug => $tlabel ) :
 		$active = ( $view === $tslug || ( $tslug === 'list' && $view === 'edit' ) );
 	?>
@@ -236,7 +254,7 @@ details.re-adv .re-adv-body{padding:12px}
 </div>
 <?php endif; ?>
 
-<?php if ( ! in_array( $view, array( 'config', 'logs' ), true ) ) : ?>
+<?php if ( ! in_array( $view, array( 'config', 'logs', 'evallog' ), true ) ) : ?>
 <p style="color:#6b7280;font-size:13px;margin:-8px 0 20px">
 	Automate anything. Define a <strong>trigger name</strong>, set optional <strong>conditions</strong>, and run <strong>actions</strong> - send emails, WhatsApp messages, or call any API. Use <code>{field_key}</code> tokens in action text; global defaults are available as <code>{config_email_from_name}</code>, <code>{config_wa_api_url}</code>, etc.
 </p>
@@ -968,6 +986,141 @@ if ( 'logs' === $view ) :
 <?php endif; ?>
 
 <?php endif; // logs view ?>
+
+<?php
+// ════════════════════════════════════════════════════════════
+// EVALUATE LOG VIEW  (one row per AH_Rules_Engine::evaluate() call)
+// ════════════════════════════════════════════════════════════
+if ( 'evallog' === $view ) :
+	global $wpdb;
+	$ev_tbl    = AH_Rules_Engine::evaluate_table();
+	$ev_exists = ( $wpdb->get_var( "SHOW TABLES LIKE '{$ev_tbl}'" ) === $ev_tbl ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+	$ev_paged  = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
+	$ev_limit  = 20;
+	$ev_offset = ( $ev_paged - 1 ) * $ev_limit;
+	$ev_search = sanitize_text_field( $_GET['ev_search'] ?? '' );
+
+	$ev_where = '';
+	if ( '' !== $ev_search ) {
+		$ev_where = $wpdb->prepare( ' WHERE trigger_name LIKE %s', '%' . $wpdb->esc_like( $ev_search ) . '%' );
+	}
+	$ev_total = $ev_exists ? (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$ev_tbl}`{$ev_where}" ) : 0; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	$ev_pages = (int) ceil( $ev_total / $ev_limit );
+	$ev_rows  = $ev_exists
+		? $wpdb->get_results( "SELECT * FROM `{$ev_tbl}`{$ev_where} ORDER BY id DESC LIMIT {$ev_limit} OFFSET {$ev_offset}" ) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		: array();
+	$ev_filter_qs = array_filter( array( 'ev_search' => $ev_search ) );
+?>
+
+<p style="color:#6b7280;font-size:13px;margin:-8px 0 16px">
+	One row is recorded for <strong>every</strong> <code>AH_Rules_Engine::evaluate()</code> call - even when no rule matched.
+	Use it to confirm a trigger actually fired, and see how many rules it found vs. ran.
+</p>
+
+<!-- Toolbar: search + clear all -->
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
+	<form method="get" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0">
+		<input type="hidden" name="page" value="ah-rules-engine">
+		<input type="hidden" name="view" value="evallog">
+		<input type="text" name="ev_search" value="<?php echo esc_attr( $ev_search ); ?>" placeholder="Search trigger…"
+			style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:200px">
+		<button type="submit" class="ah-btn ah-btn-primary ah-btn-sm">Filter</button>
+		<?php if ( $ev_filter_qs ) : ?>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine&view=evallog' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
+		<?php endif; ?>
+	</form>
+	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo number_format( $ev_total ); ?> entries</span>
+	<?php if ( $ev_total > 0 ) : ?>
+	<form method="post" style="margin:0" onsubmit="return confirm('Delete ALL evaluate-log entries? This cannot be undone.')">
+		<?php wp_nonce_field( 'ah_clear_evallog', 'ah_re_clear_evallog_nonce' ); ?>
+		<button type="submit" class="ah-btn ah-btn-danger ah-btn-sm">Clear All</button>
+	</form>
+	<?php endif; ?>
+</div>
+
+<?php if ( $ev_rows ) : ?>
+<div class="ah-card">
+	<div class="ah-table-wrap" style="overflow-x:auto">
+		<table class="re-tbl" style="min-width:760px">
+			<thead>
+				<tr>
+					<th>#</th><th>Trigger</th>
+					<th style="text-align:center">Rules Found</th>
+					<th style="text-align:center">Rules Fired</th>
+					<th>Context</th><th>Time</th><th></th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach ( $ev_rows as $ev ) :
+				$ev_ctx     = json_decode( $ev->context_data ?? '{}', true ) ?: array();
+				$ev_det_id  = 're-det-ev-' . (int) $ev->id;
+				$found      = (int) $ev->rules_found;
+				$fired      = (int) $ev->rules_fired;
+				$fire_color = $fired > 0 ? '#16a34a' : ( $found > 0 ? '#d97706' : '#9ca3af' );
+			?>
+			<tr>
+				<td style="color:#9ca3af;font-size:12px">#<?php echo (int) $ev->id; ?></td>
+				<td><code style="font-size:11px"><?php echo esc_html( $ev->trigger_name ); ?></code></td>
+				<td style="text-align:center;font-size:13px"><?php echo $found; ?></td>
+				<td style="text-align:center;font-size:13px;font-weight:600;color:<?php echo $fire_color; ?>"><?php echo $fired; ?></td>
+				<td style="font-size:12px;color:#6b7280">
+					<?php echo $ev_ctx ? esc_html( count( $ev_ctx ) . ' field' . ( 1 !== count( $ev_ctx ) ? 's' : '' ) ) : '-'; ?>
+				</td>
+				<td style="font-size:11px;color:#6b7280;white-space:nowrap">
+					<?php echo $ev->created_at ? esc_html( wp_date( 'M j, Y g:i a', strtotime( $ev->created_at ) ) ) : '-'; ?>
+				</td>
+				<td style="white-space:nowrap">
+					<?php if ( $ev_ctx ) : ?>
+					<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm"
+						onclick="var r=document.getElementById('<?php echo esc_js( $ev_det_id ); ?>');r.style.display=r.style.display==='none'?'table-row':'none'">Details</button>
+					<?php endif; ?>
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'evallog', 'del_evallog' => $ev->id ), admin_url( 'admin.php' ) ), 'ah_del_evallog' ) ); ?>"
+					   class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete this entry?')">×</a>
+				</td>
+			</tr>
+			<?php if ( $ev_ctx ) : ?>
+			<tr id="<?php echo esc_attr( $ev_det_id ); ?>" style="display:none;background:#f9fafb">
+				<td colspan="7" style="padding:16px;border-bottom:2px solid #e5e7eb">
+					<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">📥 Context Data</h4>
+					<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:12px;max-width:640px">
+						<?php foreach ( $ev_ctx as $k => $v ) :
+							if ( is_array( $v ) ) $v = wp_json_encode( $v );
+						?>
+						<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6;display:flex;gap:12px">
+							<strong style="color:#6b7280;min-width:120px;word-break:break-word"><?php echo esc_html( $k ); ?>:</strong>
+							<span style="color:#374151;word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $v, 0, 200, '…' ) ); ?></span>
+						</div>
+						<?php endforeach; ?>
+					</div>
+				</td>
+			</tr>
+			<?php endif; ?>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<?php if ( $ev_pages > 1 ) : ?>
+<div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;align-items:center">
+	<span style="font-size:12px;color:#6b7280">Page <?php echo $ev_paged; ?> of <?php echo $ev_pages; ?></span>
+	<?php for ( $p = 1; $p <= $ev_pages; $p++ ) : ?>
+	<a href="<?php echo esc_url( add_query_arg( array_merge( $ev_filter_qs, array( 'page' => 'ah-rules-engine', 'view' => 'evallog', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
+	   class="ah-btn <?php echo $p === $ev_paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?> ah-btn-sm"><?php echo $p; ?></a>
+	<?php endfor; ?>
+</div>
+<?php endif; ?>
+
+<?php else : ?>
+<div class="ah-card re-empty">
+	<div style="font-size:2.5rem;margin-bottom:12px">🧪</div>
+	<h2 style="font-family:inherit;font-size:1rem;margin:0 0 6px;color:#374151"><?php echo $ev_search ? 'No matching entries' : 'No evaluate calls logged yet'; ?></h2>
+	<p style="color:#9ca3af;font-size:13px;margin:0">A row is added here every time <code>AH_Rules_Engine::evaluate()</code> runs.</p>
+</div>
+<?php endif; ?>
+
+<?php endif; // evallog view ?>
 
 </div><!-- .wrap -->
 
