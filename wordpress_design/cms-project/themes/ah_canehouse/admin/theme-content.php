@@ -5,8 +5,6 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 $home        = ch_get_home_settings();
 $faqs        = ch_get_faqs( '', 20 );
 
-$pkgs        = ch_get_hire_packages();
-$locs        = ch_get_franchise_locations();
 $marquee     = ch_get_marquee_items();
 $badges      = ch_get_hero_badges();
 
@@ -59,52 +57,6 @@ $s           = ch_get_settings();
 			<textarea name="marquee_items" rows="8" style="width:100%;"><?php echo esc_textarea( implode( "\n", $marquee ) ); ?></textarea>
 		</div>
 
-		<!-- HIRE PACKAGES -->
-		<div class="ch-card">
-			<h2>🎪 Event Hire Packages</h2>
-			<?php foreach ( $pkgs as $idx => $pkg ) :
-				$pkg = (array) $pkg;
-				$pkg_items = implode( "\n", (array) ( $pkg['items'] ?? [] ) );
-			?>
-				<div style="background:#f9f9f9;border-radius:6px;padding:1rem;margin-bottom:.8rem;">
-					<div class="ch-row">
-						<label>Icon</label>
-						<input type="text" name="hire_packages[<?php echo $idx; ?>][icon]" value="<?php echo esc_attr( $pkg['icon'] ?? '' ); ?>" style="width:60px;">
-					</div>
-					<div class="ch-row">
-						<label>Title</label>
-						<input type="text" name="hire_packages[<?php echo $idx; ?>][title]" value="<?php echo esc_attr( $pkg['title'] ?? '' ); ?>">
-					</div>
-					<div class="ch-row">
-						<label>Description</label>
-						<textarea name="hire_packages[<?php echo $idx; ?>][desc]" rows="2" style="width:100%;flex:1;"><?php echo esc_textarea( $pkg['desc'] ?? '' ); ?></textarea>
-					</div>
-					<div class="ch-row">
-						<label>List Items<br><small>(one per line)</small></label>
-						<textarea name="hire_packages[<?php echo $idx; ?>][items]" rows="4" style="width:100%;flex:1;"><?php echo esc_textarea( $pkg_items ); ?></textarea>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-		<!-- FRANCHISE LOCATIONS -->
-		<div class="ch-card">
-			<h2>📍 Franchise Locations</h2>
-			<p style="font-size:.85rem;color:#666;margin-bottom:.5rem;">Locations shown in the scrolling franchise marquee.</p>
-			<div id="ch-loc-wrap">
-				<?php foreach ( $locs as $idx => $loc ) :
-					$loc = (array) $loc;
-				?>
-					<div style="display:flex;gap:.5rem;margin-bottom:.4rem;align-items:center;">
-						<input type="text" name="franchise_locations[<?php echo $idx; ?>][icon]" value="<?php echo esc_attr( $loc['icon'] ?? '📍' ); ?>" style="width:50px;">
-						<input type="text" name="franchise_locations[<?php echo $idx; ?>][name]" value="<?php echo esc_attr( $loc['name'] ?? '' ); ?>" placeholder="City - Area" style="flex:1;">
-						<button type="button" onclick="this.closest('div').remove()" class="button" style="color:red;">✕</button>
-					</div>
-				<?php endforeach; ?>
-			</div>
-			<button type="button" id="ch-add-loc" class="button" style="margin-top:.5rem;">+ Add Location</button>
-		</div>
-
 		<!-- HOMEPAGE DISPLAY LIMITS -->
 		<?php
 		$home_limits = $s['home_limits'] ?? [];
@@ -149,19 +101,3 @@ $s           = ch_get_settings();
 	</form>
 </div>
 
-<script>
-let chLocIdx = <?php echo count( $locs ); ?>;
-document.getElementById('ch-add-loc').addEventListener('click', function() {
-	const wrap = document.getElementById('ch-loc-wrap');
-	const row  = document.createElement('div');
-	row.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.4rem;align-items:center;';
-	row.innerHTML = `
-		<input type="text" name="franchise_locations[${chLocIdx}][icon]" value="📍" style="width:50px;">
-		<input type="text" name="franchise_locations[${chLocIdx}][name]" placeholder="City - Area" style="flex:1;">
-		<button type="button" onclick="this.closest('div').remove()" class="button" style="color:red;">✕</button>`;
-	wrap.appendChild(row);
-	chLocIdx++;
-});
-
-
-</script>

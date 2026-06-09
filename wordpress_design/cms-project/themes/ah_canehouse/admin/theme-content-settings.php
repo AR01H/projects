@@ -19,6 +19,8 @@ $franchise_gallery = ch_get_franchise_gallery();
 $about_gallery     = ch_get_about_gallery();
 $equipment_gallery = ch_get_equipment_gallery();
 $flavours          = ch_get_flavours()         ?? [];
+$pkgs              = ch_get_hire_packages();
+$locs              = ch_get_franchise_locations();
 
 // ── Tab registry - add a new entry here to get a new tab ─────────────────────
 $tabs = [
@@ -29,7 +31,9 @@ $tabs = [
 	'eventswhy' => '🎯 Events Why',
 	'about'     => '🏢 About Page',
 	'certs'     => '✅ Certifications',
-	'flavours'  => '🍋 Flavours',
+	'flavours'          => '🍋 Flavours',
+	'hire-packages'     => '🎪 Event Hire Packages',
+	'franchise-locations' => '📍 Franchise Locations',
 ];
 
 // ── Safe tab file map ─────────────────────────────────────────────────────────
@@ -41,7 +45,9 @@ $tab_files = [
 	'eventswhy' => __DIR__ . '/content-settings/tab-eventswhy.php',
 	'about'     => __DIR__ . '/content-settings/tab-about.php',
 	'certs'     => __DIR__ . '/content-settings/tab-certs.php',
-	'flavours'     => __DIR__ . '/content-settings/tab-flavours.php',
+	'flavours'             => __DIR__ . '/content-settings/tab-flavours.php',
+	'hire-packages'        => __DIR__ . '/content-settings/tab-hire-packages.php',
+	'franchise-locations'  => __DIR__ . '/content-settings/tab-franchise-locations.php',
 ];
 ?>
 <div class="wrap ch-admin-wrap ch-cs-wrap">

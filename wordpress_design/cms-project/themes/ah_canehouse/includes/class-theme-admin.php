@@ -17,7 +17,9 @@ class CH_Theme_Admin {
 		add_action( 'admin_post_ch_content_settings_eventswhy', [ self::class, 'handle_cs_eventswhy'  ] );
 		add_action( 'admin_post_ch_content_settings_about',     [ self::class, 'handle_cs_about'      ] );
 		add_action( 'admin_post_ch_content_settings_certs',     [ self::class, 'handle_cs_certs'      ] );
-		add_action( 'admin_post_ch_content_settings_flavours', [ self::class, 'handle_cs_flavours'  ] );
+		add_action( 'admin_post_ch_content_settings_flavours',           [ self::class, 'handle_cs_flavours'            ] );
+		add_action( 'admin_post_ch_content_settings_hire_packages',     [ self::class, 'handle_cs_hire_packages'       ] );
+		add_action( 'admin_post_ch_content_settings_franchise_locations', [ self::class, 'handle_cs_franchise_locations' ] );
 		// ch_theme_settings handler lives in functions.php (complete version that
 		// also saves pricing, certifications and schema). Do NOT register a second
 		// handler here - it would overwrite those extended settings.
@@ -146,33 +148,6 @@ class CH_Theme_Admin {
 		if ( ! empty( $faqs ) ) update_option( 'ch_faqs_manual', wp_json_encode( $faqs ) );
 
 
-
-		// Hire packages
-		$packages = [];
-		foreach ( (array) ( $_POST['hire_packages'] ?? [] ) as $pkg ) {
-			$title = sanitize_text_field( $pkg['title'] ?? '' );
-			if ( ! $title ) continue;
-			$items = array_filter( array_map( 'sanitize_text_field', (array) ( $pkg['items'] ?? [] ) ) );
-			$packages[] = [
-				'icon'  => sanitize_text_field( $pkg['icon']  ?? '' ),
-				'title' => $title,
-				'desc'  => sanitize_textarea_field( $pkg['desc'] ?? '' ),
-				'items' => array_values( $items ),
-			];
-		}
-		if ( ! empty( $packages ) ) update_option( 'ch_hire_packages', wp_json_encode( $packages ) );
-
-		// Franchise locations
-		$locations = [];
-		foreach ( (array) ( $_POST['franchise_locations'] ?? [] ) as $loc ) {
-			$name = sanitize_text_field( $loc['name'] ?? '' );
-			if ( ! $name ) continue;
-			$locations[] = [
-				'icon' => sanitize_text_field( $loc['icon'] ?? '📍' ),
-				'name' => $name,
-			];
-		}
-		if ( ! empty( $locations ) ) update_option( 'ch_franchise_locations', wp_json_encode( $locations ) );
 
 		// Story cards → merge into site settings
 		$existing_settings = get_option( 'ch_site_settings', [] );
@@ -373,6 +348,51 @@ class CH_Theme_Admin {
 		}
 
 		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'certs', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	public static function handle_cs_hire_packages(): void {
+		check_admin_referer( 'ch_content_settings_hire_packages' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+
+		$packages = [];
+		foreach ( (array) ( $_POST['hire_packages'] ?? [] ) as $pkg ) {
+			$title = sanitize_text_field( wp_unslash( $pkg['title'] ?? '' ) );
+			if ( ! $title ) continue;
+			$raw_items = wp_unslash( $pkg['items'] ?? '' );
+			$items     = array_values( array_filter( array_map(
+				'sanitize_text_field',
+				is_array( $raw_items )
+					? $raw_items
+					: array_filter( array_map( 'trim', explode( "\n", (string) $raw_items ) ) )
+			) ) );
+			$packages[] = [
+				'icon'  => sanitize_text_field( wp_unslash( $pkg['icon'] ?? '' ) ),
+				'title' => $title,
+				'desc'  => sanitize_textarea_field( wp_unslash( $pkg['desc'] ?? '' ) ),
+				'items' => $items,
+			];
+		}
+		update_option( 'ch_hire_packages', wp_json_encode( $packages ) );
+		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'hire-packages', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	public static function handle_cs_franchise_locations(): void {
+		check_admin_referer( 'ch_content_settings_franchise_locations' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+
+		$locations = [];
+		foreach ( (array) ( $_POST['franchise_locations'] ?? [] ) as $loc ) {
+			$name = sanitize_text_field( wp_unslash( $loc['name'] ?? '' ) );
+			if ( ! $name ) continue;
+			$locations[] = [
+				'icon' => sanitize_text_field( wp_unslash( $loc['icon'] ?? '📍' ) ),
+				'name' => $name,
+			];
+		}
+		update_option( 'ch_franchise_locations', wp_json_encode( $locations ) );
+		wp_redirect( add_query_arg( [ 'page' => 'ch-content-settings', 'tab' => 'franchise-locations', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 
