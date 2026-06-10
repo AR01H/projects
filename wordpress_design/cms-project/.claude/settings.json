@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"l:\\\\MY-GITHUB\\\\AR01H\\\\projects\\\\wordpress_design\\\\cms-project\\\\themes\\\\ah_canehouse\" -Recurse -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object FullName)",
+      "Bash(grep -E \"\\\\.php$\")",
+      "PowerShell($txt = Get-Content 'l:\\\\MY-GITHUB\\\\AR01H\\\\projects\\\\wordpress_design\\\\cms-project\\\\themes\\\\ah_canehouse\\\\assets\\\\css\\\\design-traditional.css' -Raw; $o = \\([regex]::Matches\\($txt,'\\\\{'\\)\\).Count; $c = \\([regex]::Matches\\($txt,'\\\\}'\\)\\).Count; \"Open: $o  Close: $c  Balanced: $\\($o -eq $c\\)\")",
+      "PowerShell($base = 'l:\\\\MY-GITHUB\\\\AR01H\\\\projects\\\\wordpress_design\\\\cms-project\\\\themes\\\\ah_canehouse'; $files = @\\( 'assets/css/ch-design-constants.css', 'components/trad-memory-section.php', 'page-story.php', 'page-drinks.php', 'intermediate_logics/drinks.php' \\); foreach \\($f in $files\\) { $p = \"$base\\\\$f\"; \"$\\(if \\(Test-Path $p\\) {'✓'} else {'✗'}\\) $f\" })",
+      "Bash(xargs grep -l \"get_template_part.*benefits\\\\|get_template_part.*story\")",
+      "Bash(awk '{o+=gsub\\(/{/,\"{\"\\); c+=gsub\\(/}/,\"}\"\\)} END{print \"open=\"o\" close=\"c\" diff=\"o-c}' \"l:/MY-GITHUB/AR01H/projects/wordpress_design/cms-project/themes/ah_canehouse/assets/css/design-traditional.css\")",
+      "Bash(php -l models/class-related-links-model.php)",
+      "Bash(php -l ah-cms.php)",
+      "Bash(php -l intermediate_logics/knowledge-hub.php)",
+      "Bash(php -r \"json_decode\\(file_get_contents\\('real_data/json/knowledge-hub.json'\\)\\); echo json_last_error\\(\\)===JSON_ERROR_NONE ? 'JSON OK' : 'JSON ERROR: '.json_last_error_msg\\(\\);\")",
+      "Bash(php -l functions.php)",
+      "Bash(php -l single.php)",
+      "Bash(php -l components/article-byline.php)",
+      "Bash(awk '{o+=gsub\\(/{/,\"{\"\\); c+=gsub\\(/}/,\"}\"\\)} END{print \"article.css open=\"o\" close=\"c\" diff=\"o-c}' assets/css/article.css)"
+    ]
+  }
+}

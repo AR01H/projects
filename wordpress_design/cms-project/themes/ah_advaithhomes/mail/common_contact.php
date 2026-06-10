@@ -295,18 +295,41 @@ function ah_process_newsletter_form(): void {
 		wp_send_json_error( [ 'message' => 'Please enter a valid email address.' ] );
 	}
 
-	$settings  = ah_get_settings();
-	$to        = $settings['email'] ?? get_option( 'admin_email' );
-	$blog_name = get_bloginfo( 'name' );
+	// ── Persist the subscriber (deduplicated) so you actually keep the list ──
+	$subs = get_option( 'ah_newsletter_subscribers', [] );
+	if ( ! is_array( $subs ) ) {
+		$subs = [];
+	}
+	$already = isset( $subs[ $email ] );
+	if ( ! $already ) {
+		$subs[ $email ] = [
+			'email'  => $email,
+			'date'   => current_time( 'mysql' ),
+			'source' => esc_url_raw( $_POST['page_url'] ?? '' ),
+		];
+		update_option( 'ah_newsletter_subscribers', $subs, false );
 
-	wp_mail(
-		$to,
-		"[{$blog_name}] Newsletter Signup: {$email}",
-		ah_email_wrap( "<p>New newsletter subscriber: <strong>" . esc_html( $email ) . "</strong></p>" ),
-		[ 'Content-Type: text/html; charset=UTF-8' ]
-	);
+		// Notify admin only on a genuinely new signup.
+		$settings  = ah_get_settings();
+		$to        = $settings['email'] ?? get_option( 'admin_email' );
+		$blog_name = get_bloginfo( 'name' );
+		wp_mail(
+			$to,
+			"[{$blog_name}] Newsletter Signup: {$email}",
+			ah_email_wrap( "<p>New newsletter subscriber: <strong>" . esc_html( $email ) . "</strong></p>" ),
+			[ 'Content-Type: text/html; charset=UTF-8' ]
+		);
 
-	wp_send_json_success( [ 'message' => 'You\'re subscribed! Expect our next update within the week.' ] );
+		if ( class_exists( 'AH_Rules_Engine' ) ) {
+			AH_Rules_Engine::evaluate( 'newsletter_subscribed', [ 'email' => $email ] );
+		}
+	}
+
+	wp_send_json_success( [
+		'message' => $already
+			? "You're already on the list - thank you!"
+			: "You're subscribed! Expect our next update within the week.",
+	] );
 }
 
 function ah_process_valuation_form(): void {

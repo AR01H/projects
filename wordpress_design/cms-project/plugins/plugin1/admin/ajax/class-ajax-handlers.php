@@ -540,26 +540,11 @@ class AH_Ajax_Handlers {
 			wp_send_json_error( array( 'message' => 'Invalid or empty slug.' ) );
 		}
 
-		$static_dir = get_template_directory() . '/static/';
-		if ( ! file_exists( $static_dir ) ) {
-			wp_mkdir_p( $static_dir );
-		}
-
-		$file_path = realpath( $static_dir ) . DIRECTORY_SEPARATOR . $slug . '.html';
-		// Prevent path traversal: the resolved dir must match static_dir.
-		if ( realpath( $static_dir ) === false || strpos( $file_path, realpath( $static_dir ) ) !== 0 ) {
-			wp_send_json_error( array( 'message' => 'Invalid file path.' ) );
-		}
-
-		$is_new = ! file_exists( $file_path );
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-		file_put_contents( $file_path, $html );
-
-		// Create or update the matching WordPress page.
+		// Create or update the backing WordPress page (gives a permalink + template route).
 		$existing = get_page_by_path( $slug );
 		if ( $existing ) {
-			$page_id = (int) $existing->ID;
-			update_post_meta( $existing->ID, '_wp_page_template', 'template-static-page.php' );
+			$page_id  = (int) $existing->ID;
+			update_post_meta( $page_id, '_wp_page_template', 'template-static-page.php' );
 			$message  = 'HTML saved.';
 			$redirect = null;
 		} else {
@@ -574,10 +559,14 @@ class AH_Ajax_Handlers {
 				$message  = 'Page created and HTML saved.';
 				$redirect = admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $slug ) );
 			} else {
+				$page_id  = 0;
 				$message  = 'HTML saved (could not auto-create WP page - create it manually and set template to "Static HTML Page").';
 				$redirect = null;
 			}
 		}
+
+		// Store the HTML in the database (source of truth - no more flat files).
+		( new AH_Static_Pages_Model() )->upsert( $slug, $html, (int) $page_id );
 
 		if ( ! empty( $page_id ) ) {
 			( new AH_Content_Taxonomy_Model() )->sync_terms( 'static_page', (int) $page_id, $taxonomy_ids );
@@ -618,6 +607,13 @@ class AH_Ajax_Handlers {
 		if ( class_exists( 'AH_Content_Taxonomy_Model' ) ) {
 			$taxonomy_ids = array_map( 'intval', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
 			( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', $post_id, $taxonomy_ids );
+		}
+
+		// Related Content - polymorphic links (articles, calculators, components, external/support)
+		if ( class_exists( 'AH_Related_Links_Model' ) ) {
+			$rl_raw  = json_decode( wp_unslash( $_POST['related_links'] ?? '[]' ), true );
+			$rl_rows = is_array( $rl_raw ) ? $rl_raw : array();
+			( new AH_Related_Links_Model() )->sync( 'wp_post', $post_id, $rl_rows );
 		}
 
 		AH_DB_Helper::log_action( 'update', 'posts', $post_id, array( 'action' => 'quick_edit' ) );

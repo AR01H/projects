@@ -8,20 +8,32 @@
 defined( 'ABSPATH' ) || exit;
 
 $slug = get_post_field( 'post_name', get_the_ID() );
-$file = get_template_directory() . '/static/' . sanitize_file_name( $slug ) . '.html';
+
+// Primary source: HTML stored in the database (wp_ah_static_pages).
+$html = '';
+if ( class_exists( 'AH_Static_Pages_Model' ) ) {
+	$html = ( new AH_Static_Pages_Model() )->get_html( $slug );
+}
+// Legacy fallback: static/{slug}.html file (pre-migration pages).
+if ( $html === '' ) {
+	$file = get_template_directory() . '/static/' . sanitize_file_name( $slug ) . '.html';
+	if ( file_exists( $file ) ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_get_contents
+		$html = (string) file_get_contents( $file );
+	}
+}
 
 // ── Raw mode ──────────────────────────────────────────────────────────────────
 // Returns bare HTML with no WordPress wrapper.
 // Used as the iframe src for style isolation, or for direct embedding elsewhere.
 if ( isset( $_GET['raw'] ) && '1' === $_GET['raw'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	if ( file_exists( $file ) ) {
+	if ( $html !== '' ) {
 		header( 'Content-Type: text/html; charset=UTF-8' );
 		header( 'X-Frame-Options: SAMEORIGIN' );
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
-		readfile( $file );
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — raw HTML component by design
 	} else {
 		status_header( 404 );
-		echo '<!DOCTYPE html><html><body><p>File not found.</p></body></html>';
+		echo '<!DOCTYPE html><html><body><p>Content not found.</p></body></html>';
 	}
 	exit;
 }
@@ -32,7 +44,7 @@ get_header();
 $raw_url = add_query_arg( 'raw', '1', get_permalink() );
 ?>
 <main class="ah-static-page-outer">
-	<?php if ( file_exists( $file ) ) : ?>
+	<?php if ( $html !== '' ) : ?>
 
 		<iframe
 			id="ah-static-frame"

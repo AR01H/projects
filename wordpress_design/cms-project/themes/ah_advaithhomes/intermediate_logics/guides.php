@@ -35,25 +35,16 @@ $active_pt_slug = sanitize_title( $_GET['parent_term'] ?? '' );
 $paged          = max( 1, absint( $_GET['pg'] ?? get_query_var( 'paged', 1 ) ) );
 $base_url       = get_permalink();
 
-$active_pt        = null;
-$pt_child_cat_ids = [];
+// Parent-term grouping via the shared helpers (single source of truth).
+$active_pt        = $active_pt_slug ? ah_get_parent_term_by_slug( $active_pt_slug ) : null;
+$pt_child_cat_ids = $active_pt ? ah_parent_term_cat_ids( $active_pt_slug ) : [];
 $_child_slugs     = [];
-if ( $active_pt_slug && class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
-	$_ptm = new AH_Taxonomy_Parent_Model();
-	foreach ( $_ptm->get_all_active() as $_pt ) {
-		if ( ( $_pt->slug ?? '' ) === $active_pt_slug ) { $active_pt = $_pt; break; }
-	}
-	if ( $active_pt ) {
-		$_tax_table   = AH_DB_Helper::table( 'taxonomies' );
-		$_child_slugs = $wpdb->get_col( $wpdb->prepare(
-			"SELECT slug FROM `{$_tax_table}` WHERE parent_term_id = %d AND status = 1",
-			(int) $active_pt->id
-		) ) ?: [];
-		foreach ( $_child_slugs as $_cs ) {
-			$_wc = get_term_by( 'slug', $_cs, 'category' );
-			if ( $_wc ) $pt_child_cat_ids[] = $_wc->term_id;
-		}
-	}
+if ( $active_pt && class_exists( 'AH_DB_Helper' ) ) {
+	$_tax_table   = AH_DB_Helper::table( 'taxonomies' );
+	$_child_slugs = $wpdb->get_col( $wpdb->prepare(
+		"SELECT slug FROM `{$_tax_table}` WHERE parent_term_id = %d AND status = 1",
+		(int) $active_pt->id
+	) ) ?: [];
 }
 
 $display_cats = ( $active_pt_slug && ! empty( $_child_slugs ) )
@@ -119,6 +110,35 @@ if ( $is_filtered ) {
 	$popular_guides = get_posts( [ 'posts_per_page' => 4,  'post_status' => 'publish', 'meta_key' => '_ah_is_popular', 'meta_value' => '1', 'orderby' => 'date', 'order' => 'DESC' ] );
 }
 
+/* ── Hub view (mockup #2): featured guide + paginated "All Guides" + popular topics ── */
+$featured_guide   = null;
+$all_guides_query = null;
+$popular_topics   = [];
+if ( ! $is_filtered ) {
+	$_feat = get_posts( [ 'posts_per_page' => 1, 'post_status' => 'publish', 'meta_key' => '_ah_is_featured', 'meta_value' => '1', 'orderby' => 'date', 'order' => 'DESC' ] );
+	if ( ! $_feat ) {
+		$_feat = get_posts( [ 'posts_per_page' => 1, 'post_status' => 'publish', 'orderby' => 'date', 'order' => 'DESC' ] );
+	}
+	$featured_guide = $_feat ? $_feat[0] : null;
+
+	$_sort    = sanitize_key( $_GET['sort'] ?? 'latest' );
+	$_orderby = [ 'orderby' => 'date', 'order' => 'DESC' ];
+	if ( 'oldest' === $_sort ) {
+		$_orderby = [ 'orderby' => 'date', 'order' => 'ASC' ];
+	} elseif ( 'popular' === $_sort ) {
+		$_orderby = [ 'meta_key' => '_ah_is_popular', 'orderby' => [ 'meta_value' => 'DESC', 'date' => 'DESC' ] ];
+	}
+	$all_guides_query = new WP_Query( array_merge( [
+		'post_type'      => 'post',
+		'post_status'    => 'publish',
+		'posts_per_page' => 9,
+		'paged'          => $paged,
+		'post__not_in'   => ( $featured_guide && 1 === $paged ) ? [ $featured_guide->ID ] : [],
+	], $_orderby ) );
+
+	$popular_topics = get_tags( [ 'orderby' => 'count', 'order' => 'DESC', 'number' => 6, 'hide_empty' => true ] ) ?: [];
+}
+
 return [
 	'base_url'       => $base_url,
 	'is_filtered'    => $is_filtered,
@@ -129,8 +149,11 @@ return [
 	'display_cats'   => $display_cats,
 	'sidebar_pts'    => $sidebar_pts,
 	'cat_pt_map'     => $cat_pt_map,
-	'guides_query'   => $guides_query,
-	'latest_guides'  => $latest_guides,
-	'popular_guides' => $popular_guides,
-	'paged'          => $paged,
+	'guides_query'    => $guides_query,
+	'latest_guides'   => $latest_guides,
+	'popular_guides'  => $popular_guides,
+	'paged'           => $paged,
+	'featured_guide'  => $featured_guide,
+	'all_guides_query'=> $all_guides_query,
+	'popular_topics'  => $popular_topics,
 ];

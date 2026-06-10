@@ -86,8 +86,8 @@ function seo_output_tags(): void {
             'query-input' => 'required name=search_term_string',
         ],
     ];
-    echo '<script type="application/ld+json">' . json_encode( $org_schema ) . '</script>\n';
-    echo '<script type="application/ld+json">' . json_encode( $website_schema ) . '</script>\n';
+    echo '<script type="application/ld+json">' . json_encode( $org_schema ) . "</script>\n";
+    echo '<script type="application/ld+json">' . json_encode( $website_schema ) . "</script>\n";
 }
 add_action( 'wp_head', 'seo_output_tags' );
 

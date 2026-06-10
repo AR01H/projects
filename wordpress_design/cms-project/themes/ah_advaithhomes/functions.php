@@ -12,6 +12,7 @@ require_once get_template_directory() . '/includes/data/class-page-data.php';   
 require_once get_template_directory() . '/includes/data/class-home-data.php';   // homepage data aggregation
 require_once get_template_directory() . '/includes/mock-data.php';         // seeder-only data - NOT for runtime display
 require_once get_template_directory() . '/includes/helpers.php';           // DB-first data functions + utilities
+require_once get_template_directory() . '/includes/structured-data.php';   // schema.org JSON-LD (Article/Breadcrumb/FAQ)
 require_once get_template_directory() . '/includes/class-theme-admin.php'; // WP admin menu for this theme
 require_once get_template_directory() . '/mail/common_contact.php';        // AJAX form handlers
 require_once get_template_directory() . '/models/class-content-taxonomy.php'; // AH_Theme_Content_Taxonomy
@@ -178,6 +179,20 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'ah-nhp',      $uri . '/assets/css/nhp.css',      [ 'ah-components' ], $fv( '/assets/css/nhp.css' ) );
 	wp_enqueue_style( 'ah-theme-builder-css',     $uri . '/assets/css/themebuilder.css',     [ 'ah-common' ],         $fv( '/assets/css/themebuilder.css' ) );
 
+	/* Shared design system - enqueued last so it harmonises every page with the
+	   Knowledge Hub look (cream bg, navy headings, gold accents, soft cards). */
+	wp_enqueue_style( 'ah-design-system', $uri . '/assets/css/design-system.css', [ 'ah-common', 'ah-components' ], $fv( '/assets/css/design-system.css' ) );
+
+	/* Article / guide page styles - only on single posts */
+	if ( is_single() ) {
+		wp_enqueue_style( 'ah-article', $uri . '/assets/css/article.css', [ 'ah-design-system' ], $fv( '/assets/css/article.css' ) );
+	}
+
+	/* Hub card styles - shared by the Guides Archive and Blog/Insights listings */
+	if ( is_page_template( 'page-guides.php' ) || is_page_template( 'page-blog.php' ) ) {
+		wp_enqueue_style( 'ah-guides-hub', $uri . '/assets/css/guides-hub.css', [ 'ah-design-system' ], $fv( '/assets/css/guides-hub.css' ) );
+	}
+
 	wp_enqueue_style( 'ah-carousel-video',      $uri . '/assets/css/carousel-video.css',      [ 'ah-components' ], $fv( '/assets/css/carousel-video.css' ) );
 	wp_enqueue_style( 'ah-carousel-mini-video', $uri . '/assets/css/carousel-mini-video.css', [ 'ah-components' ], $fv( '/assets/css/carousel-mini-video.css' ) );
 	wp_enqueue_style( 'ah-form-step-modal',     $uri . '/assets/css/form-step-modal.css',     [ 'ah-components' ], $fv( '/assets/css/form-step-modal.css' ) );
@@ -185,6 +200,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	/* Home-page carousel + CTA banner styles - only on the front page */
 	if ( is_front_page() ) {
 		wp_enqueue_style( 'ah-home-carousel', $uri . '/assets/css/home-carousel.css', [ 'ah-components', 'ah-carousel-video', 'ah-carousel-mini-video' ], $fv( '/assets/css/home-carousel.css' ) );
+		wp_enqueue_style( 'ah-khub', $uri . '/assets/css/khub.css', [ 'ah-components' ], $fv( '/assets/css/khub.css' ) );
 	}
 
 	wp_enqueue_script( 'ah-main',  $uri . '/assets/js/main.js',  [ 'jquery' ],  $fv( '/assets/js/main.js' ),  true );
@@ -466,7 +482,7 @@ function ah_highlight_links_render( WP_Post $post ): void {
 		       style="flex:1;min-width:0">
 		<input type="text" name="ah_hl_url[]"
 		       value="<?php echo esc_attr( $link['url'] ?? '' ); ?>"
-		       placeholder="<?php echo esc_attr( TXT_SLUG_OR_URL ); ?>"
+		       placeholder=""
 		       style="flex:1.4;min-width:0">
 		<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>
 	</div>
@@ -481,7 +497,7 @@ function ah_highlight_links_render( WP_Post $post ): void {
 			$('#ah-hl-rows').append(
 				'<div class="ah-hl-row" style="display:flex;gap:5px;margin-bottom:5px">' +
 				'<input type="text" name="ah_hl_name[]" placeholder="<?php echo esc_js( TXT_LABEL ); ?>" style="flex:1;min-width:0">' +
-				'<input type="text" name="ah_hl_url[]"  placeholder="<?php echo esc_js( TXT_SLUG_OR_URL ); ?>" style="flex:1.4;min-width:0">' +
+				'<input type="text" name="ah_hl_url[]"  placeholder="" style="flex:1.4;min-width:0">' +
 				'<button type="button" class="ah-hl-remove button" style="flex-shrink:0">✕</button>' +
 				'</div>'
 			);
@@ -538,3 +554,28 @@ function ah_search_suggest_handler(): void {
 	}
 	wp_send_json_success( $out );
 }
+
+// ── Article callout shortcodes ────────────────────────────────────────────────
+// [key_takeaway]…[/key_takeaway]  - amber "Key takeaway" box (matches the design)
+// [callout type="info|warning|tip" title="…"]…[/callout]  - generic callout
+add_action( 'init', function () {
+	add_shortcode( 'key_takeaway', function ( $atts, $content = '' ) {
+		$title = ! empty( $atts['title'] ) ? sanitize_text_field( $atts['title'] ) : 'Key takeaway';
+		return '<aside class="ah-callout ah-callout--key">'
+			. '<span class="ah-callout__icon" aria-hidden="true">★</span>'
+			. '<div class="ah-callout__body"><strong class="ah-callout__title">' . esc_html( $title ) . '</strong>'
+			. '<div class="ah-callout__text">' . do_shortcode( wpautop( trim( (string) $content ) ) ) . '</div></div></aside>';
+	} );
+
+	add_shortcode( 'callout', function ( $atts, $content = '' ) {
+		$type  = isset( $atts['type'] ) ? sanitize_key( $atts['type'] ) : 'info';
+		$type  = in_array( $type, array( 'info', 'warning', 'tip', 'key' ), true ) ? $type : 'info';
+		$icons = array( 'info' => 'ℹ', 'warning' => '⚠', 'tip' => '💡', 'key' => '★' );
+		$title = ! empty( $atts['title'] ) ? sanitize_text_field( $atts['title'] ) : '';
+		return '<aside class="ah-callout ah-callout--' . esc_attr( $type ) . '">'
+			. '<span class="ah-callout__icon" aria-hidden="true">' . esc_html( $icons[ $type ] ?? 'ℹ' ) . '</span>'
+			. '<div class="ah-callout__body">'
+			. ( $title ? '<strong class="ah-callout__title">' . esc_html( $title ) . '</strong>' : '' )
+			. '<div class="ah-callout__text">' . do_shortcode( wpautop( trim( (string) $content ) ) ) . '</div></div></aside>';
+	} );
+} );

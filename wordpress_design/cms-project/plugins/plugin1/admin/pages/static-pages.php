@@ -2,21 +2,21 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-$static_dir = get_template_directory() . '/static/';
-$files      = glob( $static_dir . '*.html' ) ?: array();
+$static_model  = new AH_Static_Pages_Model();
+$static_pages  = $static_model->all();   // DB rows (HTML stored in the database)
 $content_tax_m = new AH_Content_Taxonomy_Model();
 
 $edit_slug    = isset( $_GET['edit'] ) ? sanitize_file_name( wp_unslash( $_GET['edit'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $edit_content = '';
 $edit_page_id = 0;
 if ( $edit_slug ) {
-	$edit_path = $static_dir . $edit_slug . '.html';
-	if ( file_exists( $edit_path ) ) {
-		$edit_content = file_get_contents( $edit_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+	$edit_row = $static_model->get_by_slug( $edit_slug );
+	if ( $edit_row ) {
+		$edit_content = (string) $edit_row->html;
 		$edit_page    = get_page_by_path( $edit_slug );
-		$edit_page_id = $edit_page ? (int) $edit_page->ID : 0;
+		$edit_page_id = $edit_page ? (int) $edit_page->ID : (int) ( $edit_row->page_id ?? 0 );
 	} else {
-		$edit_slug = ''; // File doesn't exist - treat as new with that slug pre-filled
+		$edit_slug = ''; // Not in the DB - treat as new with that slug pre-filled
 	}
 }
 ?>
@@ -32,8 +32,8 @@ if ( $edit_slug ) {
 				<h3 style="margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--ah-muted);">Pages</h3>
 
 				<div id="ah-page-list">
-					<?php foreach ( $files as $fpath ) :
-						$s    = basename( $fpath, '.html' );
+					<?php foreach ( $static_pages as $sp ) :
+						$s    = $sp->slug;
 						$page = get_page_by_path( $s );
 						$url  = $page ? get_permalink( $page->ID ) : null;
 					?>
@@ -52,7 +52,7 @@ if ( $edit_slug ) {
 						</div>
 					</div>
 					<?php endforeach; ?>
-					<?php if ( empty( $files ) ) : ?>
+					<?php if ( empty( $static_pages ) ) : ?>
 					<p style="color:var(--ah-muted);font-size:13px;margin:0 0 8px;">No pages yet. Create your first one →</p>
 					<?php endif; ?>
 				</div>

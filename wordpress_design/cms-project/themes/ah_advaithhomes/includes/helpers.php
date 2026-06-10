@@ -108,6 +108,84 @@ function ah_get_guide_categories(): array {
 	) ?: [];
 }
 
+// ── Parent Terms = main content groups (Buying, Selling, …) ───────────────────
+// One reusable source of truth for grouping content by parent term, so the same
+// "show only Buying things" filter works on guides, blog, and anywhere else.
+
+/** All active parent terms (the main groups). */
+function ah_get_parent_terms(): array {
+	if ( ! class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
+		return [];
+	}
+	static $cache = null;
+	if ( null === $cache ) {
+		$cache = ( new AH_Taxonomy_Parent_Model() )->get_all_active() ?: [];
+	}
+	return $cache;
+}
+
+/** A single parent term object by slug, or null. */
+function ah_get_parent_term_by_slug( string $slug ): ?object {
+	$slug = sanitize_title( $slug );
+	if ( '' === $slug ) {
+		return null;
+	}
+	foreach ( ah_get_parent_terms() as $pt ) {
+		if ( sanitize_title( $pt->slug ?? '' ) === $slug ) {
+			return $pt;
+		}
+	}
+	return null;
+}
+
+/** WP category IDs that belong to a parent term (its child categories). */
+function ah_parent_term_cat_ids( string $slug ): array {
+	if ( ! class_exists( 'AH_DB_Helper' ) ) {
+		return [];
+	}
+	$pt = ah_get_parent_term_by_slug( $slug );
+	if ( ! $pt ) {
+		return [];
+	}
+	global $wpdb;
+	$tax         = AH_DB_Helper::table( 'taxonomies' );
+	$child_slugs = $wpdb->get_col( $wpdb->prepare(
+		"SELECT slug FROM `{$tax}` WHERE parent_term_id = %d AND status = 1",
+		(int) $pt->id
+	) ) ?: [];
+
+	$ids = [];
+	foreach ( $child_slugs as $cs ) {
+		$wc = get_term_by( 'slug', $cs, 'category' );
+		if ( $wc ) {
+			$ids[] = (int) $wc->term_id;
+		}
+	}
+	return $ids;
+}
+
+/** Resilient match: find a parent term whose name/slug contains a hint (e.g. "buying"). */
+function ah_parent_term_by_hint( string $hint ): ?object {
+	$hint = strtolower( trim( $hint ) );
+	if ( '' === $hint ) {
+		return null;
+	}
+	foreach ( ah_get_parent_terms() as $pt ) {
+		$hay = strtolower( ( $pt->name ?? '' ) . ' ' . ( $pt->slug ?? '' ) );
+		if ( false !== strpos( $hay, $hint ) ) {
+			return $pt;
+		}
+	}
+	return null;
+}
+
+/** Guides URL filtered to a parent term group (falls back to /guides/). */
+function ah_parent_term_guides_url( string $slug ): string {
+	$guides = home_url( '/guides/' );
+	$slug   = sanitize_title( $slug );
+	return $slug ? add_query_arg( 'parent_term', $slug, $guides ) : $guides;
+}
+
 // ── Nav Topic Groups (for header dropdowns) ───────────────────────────────────
 function ah_get_nav_buying_topics(): array {
 	$opt = get_option( 'ah_nav_buying_topics', [] );

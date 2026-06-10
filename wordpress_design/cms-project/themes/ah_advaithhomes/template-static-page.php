@@ -2,14 +2,25 @@
 /*
 Template Name: Static HTML Page
 */
-$slug       = get_post_field( 'post_name', get_queried_object_id() );
-$static_dir = trailingslashit( get_template_directory() ) . 'static/';
-$real_dir   = realpath( $static_dir );
-$file       = $real_dir ? realpath( $real_dir . DIRECTORY_SEPARATOR . sanitize_file_name( $slug ) . '.html' ) : false;
+$slug = get_post_field( 'post_name', get_queried_object_id() );
 
-if ( $file && strpos( $file, $real_dir ) === 0 && file_exists( $file ) ) {
-	$html_raw = file_get_contents( $file );
-} else {
+// Primary source: HTML stored in the database (wp_ah_static_pages).
+$html_raw = '';
+if ( class_exists( 'AH_Static_Pages_Model' ) ) {
+	$html_raw = ( new AH_Static_Pages_Model() )->get_html( $slug );
+}
+
+// Legacy fallback: static/{slug}.html file (for pages not yet migrated).
+if ( $html_raw === '' ) {
+	$static_dir = trailingslashit( get_template_directory() ) . 'static/';
+	$real_dir   = realpath( $static_dir );
+	$file       = $real_dir ? realpath( $real_dir . DIRECTORY_SEPARATOR . sanitize_file_name( $slug ) . '.html' ) : false;
+	if ( $file && strpos( $file, $real_dir ) === 0 && file_exists( $file ) ) {
+		$html_raw = file_get_contents( $file );
+	}
+}
+
+if ( $html_raw === '' ) {
 	$html_raw = '<h2 style="font-family:sans-serif;padding:40px 24px;color:#1e293b">Page content not found.</h2>';
 }
 

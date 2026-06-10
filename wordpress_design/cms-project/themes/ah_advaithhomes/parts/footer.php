@@ -23,6 +23,52 @@ $year     = gmdate( 'Y' );
 </div>
 <?php endif; ?>
 
+<!-- ── Newsletter signup band ─────────────────────────────────────────────── -->
+<section class="ah-news-cta" aria-label="<?php echo esc_attr( 'Newsletter signup' ); ?>">
+  <div class="container ah-news-cta__inner">
+    <div class="ah-news-cta__text">
+      <h3 class="ah-news-cta__title">Stay informed with expert guides, updates &amp; practical tips.</h3>
+      <p class="ah-news-cta__sub">Straight to your inbox. No spam — unsubscribe anytime.</p>
+    </div>
+    <form class="ah-news-cta__form" id="ahNewsletterForm" novalidate>
+      <input type="hidden" name="page_url" value="<?php echo esc_url( ( is_ssl() ? 'https://' : 'http://' ) . ( $_SERVER['HTTP_HOST'] ?? '' ) . ( $_SERVER['REQUEST_URI'] ?? '' ) ); ?>">
+      <label for="ahNewsletterEmail" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Your email address</label>
+      <input type="email" id="ahNewsletterEmail" name="email" class="ah-news-cta__input" placeholder="Your email address" autocomplete="email" required>
+      <button type="submit" class="btn btn-gold ah-news-cta__btn">Subscribe</button>
+      <span class="ah-news-cta__msg" id="ahNewsletterMsg" role="status" aria-live="polite"></span>
+    </form>
+  </div>
+</section>
+<script>
+(function () {
+  var form = document.getElementById('ahNewsletterForm');
+  if (!form || typeof window.ahTheme === 'undefined') return;
+  var msg = document.getElementById('ahNewsletterMsg');
+  var btn = form.querySelector('.ah-news-cta__btn');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = form.querySelector('[name=email]').value.trim();
+    if (!email) { msg.textContent = 'Please enter your email.'; msg.className = 'ah-news-cta__msg is-error'; return; }
+    btn.disabled = true; var label = btn.textContent; btn.textContent = 'Subscribing…';
+    var body = new URLSearchParams({
+      action: 'ah_theme_form_submit', form_type: 'newsletter',
+      nonce: window.ahTheme.nonce, email: email,
+      page_url: (form.querySelector('[name=page_url]') || {}).value || location.href
+    });
+    fetch(window.ahTheme.ajaxUrl, { method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        msg.textContent = (res.data && res.data.message) ? res.data.message : (res.success ? 'Subscribed!' : 'Something went wrong.');
+        msg.className = 'ah-news-cta__msg ' + (res.success ? 'is-ok' : 'is-error');
+        if (res.success) form.reset();
+      })
+      .catch(function () { msg.textContent = 'Network error. Please try again.'; msg.className = 'ah-news-cta__msg is-error'; })
+      .finally(function () { btn.disabled = false; btn.textContent = label; });
+  });
+})();
+</script>
+
 <footer class="footer" role="contentinfo">
 	<div class="container">
 		<div class="footer__grid">

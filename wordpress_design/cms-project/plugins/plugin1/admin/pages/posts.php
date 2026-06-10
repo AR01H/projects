@@ -1040,87 +1040,105 @@ if ( $action === 'edit-custom' ) {
                    class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Move to trash?');">Trash</a>
               </td>
             </tr>
-            <tr class="ah-qe-row" id="ah-qe-<?php echo esc_attr( $p->ID ); ?>" style="display:none;">
-              <td colspan="8" style="padding:0;background:#f8faff;border-bottom:2px solid var(--ah-primary,#1e40af);">
-                <div style="padding:14px 20px 16px;border-top:2px solid var(--ah-primary,#1e40af);">
-                  <!-- Header -->
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-                    <div style="display:flex;align-items:center;gap:10px;">
-                      <span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ah-primary,#1e40af);background:#e8efff;padding:2px 8px;border-radius:4px;">Meta</span>
-                      <strong style="font-size:.88rem;color:#1e293b;"><?php echo esc_html( wp_trim_words( $p->post_title ?: '(no title)', 8 ) ); ?></strong>
-                    </div>
-                    <button type="button" class="ah-qe-close ah-btn ah-btn-secondary ah-btn-sm" data-id="<?php echo esc_attr( $p->ID ); ?>">✕ Close</button>
-                  </div>
-                  <!-- Body: Flags + Taxonomy -->
-                  <div style="display:grid;grid-template-columns:160px 1fr;gap:20px;align-items:start;">
-                    <!-- Flags -->
-                    <div style="background:#fff;border:1px solid #dde6f5;border-radius:8px;padding:12px 14px;">
-                      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:10px;">Post Flags</div>
-                      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.84rem;padding:5px 0;border-bottom:1px solid #f1f5f9;">
-                        <input type="checkbox" class="ah-qe-featured" <?php checked( $qe_is_feat ); ?> style="width:14px;height:14px;accent-color:#f59e0b;">
-                        <span>⭐ Featured</span>
-                      </label>
-                      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.84rem;padding:5px 0;border-bottom:1px solid #f1f5f9;">
-                        <input type="checkbox" class="ah-qe-popular" <?php checked( $qe_is_popular ); ?> style="width:14px;height:14px;accent-color:#ef4444;">
-                        <span>🔥 Popular</span>
-                      </label>
-                      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.84rem;padding:5px 0;">
-                        <input type="checkbox" class="ah-qe-suggested" <?php checked( $qe_is_sug ); ?> style="width:14px;height:14px;accent-color:#3b82f6;">
-                        <span>💡 Suggested</span>
-                      </label>
-                    </div>
-                    <!-- CMS Taxonomy Terms -->
-                    <div>
-                      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:10px;">CMS Taxonomy Terms</div>
-                      <?php if ( ! empty( $qe_tax_groups ) ) : ?>
-                        <div style="display:flex;flex-direction:column;gap:10px;">
-                        <?php foreach ( $qe_tax_groups as $grp ) : ?>
-                          <?php if ( empty( $grp['items'] ) ) continue; ?>
-                          <div>
-                            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#94a3b8;margin-bottom:5px;"><?php echo esc_html( $grp['label'] ); ?></div>
-                            <div style="display:flex;flex-wrap:wrap;gap:4px;">
-                              <?php foreach ( $grp['items'] as $term ) :
-                                $checked = in_array( (int) $term->id, $qe_term_ids, true );
-                              ?>
-                                <label style="display:inline-flex;align-items:center;gap:4px;font-size:.78rem;padding:3px 10px;border:1px solid <?php echo $checked ? '#4f7cf5' : '#d1dae8'; ?>;border-radius:20px;cursor:pointer;background:<?php echo $checked ? '#e8efff' : '#fff'; ?>;color:<?php echo $checked ? '#1a49c4' : 'inherit'; ?>;user-select:none;transition:all .12s;" class="ah-qe-chip">
-                                  <input type="checkbox" class="ah-qe-term" value="<?php echo esc_attr( $term->id ); ?>" <?php checked( $checked ); ?> style="margin:0;display:none;">
-                                  <?php echo esc_html( $term->name ); ?>
-                                </label>
-                              <?php endforeach; ?>
-                            </div>
-                          </div>
-                        <?php endforeach; ?>
-                        </div>
-                      <?php else : ?>
-                        <p style="font-size:.82rem;color:#94a3b8;margin:0;">No taxonomy terms yet - <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ); ?>">add some →</a></p>
-                      <?php endif; ?>
-                    </div>
-                  </div>
-                  <!-- Highlight Links -->
-                  <div style="margin-top:14px;background:#fff;border:1px solid #dde6f5;border-radius:8px;padding:12px 14px;">
-                    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:8px;">🔗 Highlight Links <span style="font-weight:400;font-size:.68rem;text-transform:none;letter-spacing:0;color:#94a3b8">(shown as highlight buttons in the blog sidebar)</span></div>
-                    <div id="ah-qe-hl-rows-<?php echo esc_attr( $p->ID ); ?>">
-                      <?php foreach ( $qe_hl_links as $hl ) : ?>
-                      <div class="ah-qe-hl-row" style="display:flex;gap:6px;margin-bottom:5px;align-items:center;">
-                        <input type="text" class="ah-qe-hl-name" value="<?php echo esc_attr( $hl['name'] ?? '' ); ?>" placeholder="Label"
-                               style="flex:1;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">
-                        <input type="text" class="ah-qe-hl-url"  value="<?php echo esc_attr( $hl['url'] ?? '' ); ?>"  placeholder="/slug/ or URL"
-                               style="flex:1.6;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">
-                        <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-remove" style="flex-shrink:0;padding:3px 8px;">✕</button>
-                      </div>
-                      <?php endforeach; ?>
-                    </div>
-                    <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-add"
-                            data-id="<?php echo esc_attr( $p->ID ); ?>"
-                            style="margin-top:2px;font-size:.78rem;">+ Add Link</button>
-                  </div>
+            <tr class="ah-qe-holder">
+              <td colspan="8" style="padding:0;border:0;">
+                <div class="ah-qe-modal" id="ah-qe-<?php echo esc_attr( $p->ID ); ?>" role="dialog" aria-modal="true" aria-hidden="true">
+                  <div class="ah-qe-backdrop" data-id="<?php echo esc_attr( $p->ID ); ?>"></div>
+                  <div class="ah-qe-card" role="document">
 
-                  <!-- Footer actions -->
-                  <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #e2ecf9;padding-top:12px;">
-                    <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-close" data-id="<?php echo esc_attr( $p->ID ); ?>">Cancel</button>
-                    <button type="button" class="ah-btn ah-btn-primary ah-btn-sm ah-qe-save" data-id="<?php echo esc_attr( $p->ID ); ?>">Save Changes</button>
-                  </div>
-                </div>
+                    <!-- Header -->
+                    <header class="ah-qe-head">
+                      <div class="ah-qe-head-l">
+                        <span class="ah-qe-pill">Meta</span>
+                        <strong class="ah-qe-head-title"><?php echo esc_html( wp_trim_words( $p->post_title ?: '(no title)', 10 ) ); ?></strong>
+                      </div>
+                      <button type="button" class="ah-qe-x ah-qe-close" data-id="<?php echo esc_attr( $p->ID ); ?>" aria-label="Close">&times;</button>
+                    </header>
+
+                    <!-- Scrollable body -->
+                    <div class="ah-qe-body">
+
+                      <div class="ah-qe-grid">
+                        <!-- Flags -->
+                        <section class="ah-qe-sec ah-qe-sec--flags">
+                          <div class="ah-qe-sec-h">Post Flags</div>
+                          <label class="ah-qe-flag">
+                            <input type="checkbox" class="ah-qe-featured" <?php checked( $qe_is_feat ); ?> style="accent-color:#f59e0b;">
+                            <span>⭐ Featured</span>
+                          </label>
+                          <label class="ah-qe-flag">
+                            <input type="checkbox" class="ah-qe-popular" <?php checked( $qe_is_popular ); ?> style="accent-color:#ef4444;">
+                            <span>🔥 Popular</span>
+                          </label>
+                          <label class="ah-qe-flag ah-qe-flag--last">
+                            <input type="checkbox" class="ah-qe-suggested" <?php checked( $qe_is_sug ); ?> style="accent-color:#3b82f6;">
+                            <span>💡 Suggested</span>
+                          </label>
+                        </section>
+
+                        <!-- CMS Taxonomy Terms -->
+                        <section class="ah-qe-sec">
+                          <div class="ah-qe-sec-h">CMS Taxonomy Terms</div>
+                          <?php if ( ! empty( $qe_tax_groups ) ) : ?>
+                            <div style="display:flex;flex-direction:column;gap:10px;">
+                            <?php foreach ( $qe_tax_groups as $grp ) : ?>
+                              <?php if ( empty( $grp['items'] ) ) continue; ?>
+                              <div>
+                                <div class="ah-qe-sub-h"><?php echo esc_html( $grp['label'] ); ?></div>
+                                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                                  <?php foreach ( $grp['items'] as $term ) :
+                                    $checked = in_array( (int) $term->id, $qe_term_ids, true );
+                                  ?>
+                                    <label class="ah-qe-chip<?php echo $checked ? ' is-on' : ''; ?>">
+                                      <input type="checkbox" class="ah-qe-term" value="<?php echo esc_attr( $term->id ); ?>" <?php checked( $checked ); ?> style="margin:0;display:none;">
+                                      <?php echo esc_html( $term->name ); ?>
+                                    </label>
+                                  <?php endforeach; ?>
+                                </div>
+                              </div>
+                            <?php endforeach; ?>
+                            </div>
+                          <?php else : ?>
+                            <p style="font-size:.82rem;color:#94a3b8;margin:0;">No taxonomy terms yet - <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ); ?>">add some →</a></p>
+                          <?php endif; ?>
+                        </section>
+                      </div>
+
+                      <!-- Highlight Links -->
+                      <section class="ah-qe-sec" style="margin-top:14px;">
+                        <div class="ah-qe-sec-h">🔗 Highlight Links <span class="ah-qe-hint">(shown as highlight buttons in the blog sidebar)</span></div>
+                        <div id="ah-qe-hl-rows-<?php echo esc_attr( $p->ID ); ?>">
+                          <?php foreach ( $qe_hl_links as $hl ) : ?>
+                          <div class="ah-qe-hl-row" style="display:flex;gap:6px;margin-bottom:6px;align-items:center;">
+                            <input type="text" class="ah-qe-hl-name" value="<?php echo esc_attr( $hl['name'] ?? '' ); ?>" placeholder="Label"
+                                   style="flex:1;min-width:0;padding:6px 9px;border:1px solid #d1dae8;border-radius:6px;font-size:.82rem;outline:none;">
+                            <input type="text" class="ah-qe-hl-url"  value="<?php echo esc_attr( $hl['url'] ?? '' ); ?>"  placeholder="/slug/ or URL"
+                                   style="flex:1.6;min-width:0;padding:6px 9px;border:1px solid #d1dae8;border-radius:6px;font-size:.82rem;outline:none;">
+                            <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-remove" style="flex-shrink:0;padding:3px 8px;">✕</button>
+                          </div>
+                          <?php endforeach; ?>
+                        </div>
+                        <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-add"
+                                data-id="<?php echo esc_attr( $p->ID ); ?>"
+                                style="margin-top:4px;font-size:.78rem;">+ Add Link</button>
+                      </section>
+
+                      <!-- Related Content (calculators, articles, static components, external/support) -->
+                      <section class="ah-qe-sec" style="margin-top:14px;">
+                        <div class="ah-qe-sec-h">🧩 Related Content <span class="ah-qe-hint">(articles, calculators, static components, external &amp; support links — grouped by section)</span></div>
+                        <?php ( new AH_Related_Links_Model() )->render_admin_panel( 'wp_post', (int) $p->ID ); ?>
+                      </section>
+
+                    </div><!-- /.ah-qe-body -->
+
+                    <!-- Sticky footer -->
+                    <footer class="ah-qe-foot">
+                      <button type="button" class="ah-btn ah-btn-secondary ah-qe-close" data-id="<?php echo esc_attr( $p->ID ); ?>">Cancel</button>
+                      <button type="button" class="ah-btn ah-btn-primary ah-qe-save" data-id="<?php echo esc_attr( $p->ID ); ?>">Save Changes</button>
+                    </footer>
+
+                  </div><!-- /.ah-qe-card -->
+                </div><!-- /.ah-qe-modal -->
               </td>
             </tr>
           <?php endforeach; ?>
@@ -1140,27 +1158,78 @@ if ( $action === 'edit-custom' ) {
 
 <?php endif; ?>
 
+<style>
+/* ── Edit-Meta modal ─────────────────────────────────────────────────────── */
+body.ah-qe-lock { overflow: hidden; }
+.ah-qe-holder td { padding: 0 !important; border: 0 !important; }
+.ah-qe-modal { display: none; position: fixed; inset: 0; z-index: 100000; }
+.ah-qe-modal.is-open { display: block; }
+.ah-qe-backdrop { position: absolute; inset: 0; background: rgba(15,23,42,.55); }
+.ah-qe-card {
+  position: relative; z-index: 1;
+  width: min(940px, 94vw); max-height: 90vh;
+  margin: 5vh auto 0;
+  display: flex; flex-direction: column;
+  background: #fff; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 24px 70px rgba(2,6,23,.35);
+  animation: ahQePop .18s ease;
+}
+@keyframes ahQePop { from { opacity: 0; transform: translateY(16px) scale(.985); } to { opacity: 1; transform: none; } }
+.ah-qe-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 20px; border-bottom: 1px solid #eef2f9;
+  background: linear-gradient(180deg,#f8faff,#fff);
+  flex: 0 0 auto;
+}
+.ah-qe-head-l { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.ah-qe-head-title { font-size: .95rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ah-qe-pill { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #1e40af; background: #e8efff; padding: 3px 9px; border-radius: 5px; flex: 0 0 auto; }
+.ah-qe-x { border: 0; background: transparent; font-size: 1.5rem; line-height: 1; cursor: pointer; color: #64748b; padding: 0 6px; border-radius: 6px; }
+.ah-qe-x:hover { background: #f1f5f9; color: #0f172a; }
+.ah-qe-body { padding: 18px 20px; overflow-y: auto; }
+.ah-qe-foot { padding: 13px 20px; border-top: 1px solid #eef2f9; background: #fafbff; display: flex; justify-content: flex-end; gap: 10px; flex: 0 0 auto; }
+.ah-qe-grid { display: grid; grid-template-columns: 210px 1fr; gap: 16px; align-items: start; }
+@media (max-width: 782px) { .ah-qe-grid { grid-template-columns: 1fr; } }
+.ah-qe-sec { background: #fff; border: 1px solid #e2ecf9; border-radius: 10px; padding: 13px 15px; }
+.ah-qe-sec-h { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #64748b; margin-bottom: 10px; }
+.ah-qe-hint { font-weight: 400; font-size: .68rem; text-transform: none; letter-spacing: 0; color: #94a3b8; }
+.ah-qe-sub-h { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: #94a3b8; margin-bottom: 5px; }
+.ah-qe-flag { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: .85rem; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+.ah-qe-flag input { width: 15px; height: 15px; }
+.ah-qe-flag--last { border-bottom: 0; }
+.ah-qe-chip { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; padding: 4px 11px; border: 1px solid #d1dae8; border-radius: 20px; cursor: pointer; background: #fff; user-select: none; transition: all .12s; }
+.ah-qe-chip:hover { border-color: #b9c6e0; }
+.ah-qe-chip.is-on { border-color: #4f7cf5; background: #e8efff; color: #1a49c4; }
+</style>
+
 <script>
 (function($){
+  function openModal(id){
+    $('.ah-qe-modal.is-open').removeClass('is-open').attr('aria-hidden','true');
+    $('#ah-qe-' + id).addClass('is-open').attr('aria-hidden','false');
+    $('body').addClass('ah-qe-lock');
+  }
+  function closeModals(){
+    $('.ah-qe-modal.is-open').removeClass('is-open').attr('aria-hidden','true');
+    $('body').removeClass('ah-qe-lock');
+  }
   $(document).on('click', '.ah-qe-open', function() {
-    var id = $(this).data('id');
-    $('.ah-qe-row').not('#ah-qe-' + id).hide();
-    $('#ah-qe-' + id).toggle();
+    openModal($(this).data('id'));
   });
-  $(document).on('click', '.ah-qe-close', function() {
-    $('#ah-qe-' + $(this).data('id')).hide();
+  $(document).on('click', '.ah-qe-close, .ah-qe-backdrop', function() {
+    closeModals();
   });
-  /* Chip toggle: click label → toggle checkbox + restyle */
+  /* Esc closes the open modal */
+  $(document).on('keydown', function(e){
+    if (e.key === 'Escape' || e.keyCode === 27) closeModals();
+  });
+  /* Chip toggle: click label → toggle checkbox + restyle via class */
   $(document).on('click', '.ah-qe-chip', function(e) {
     e.preventDefault();
     var $chip = $(this), $cb = $chip.find('.ah-qe-term');
     var checked = !$cb.prop('checked');
     $cb.prop('checked', checked);
-    $chip.css({
-      background: checked ? '#e8efff' : '#fff',
-      border:     '1px solid ' + (checked ? '#4f7cf5' : '#d1dae8'),
-      color:      checked ? '#1a49c4' : ''
-    });
+    $chip.toggleClass('is-on', checked);
   });
   /* Highlight Links: add row */
   $(document).on('click', '.ah-qe-hl-add', function() {
@@ -1178,6 +1247,17 @@ if ( $action === 'edit-custom' ) {
     $(this).closest('.ah-qe-hl-row').remove();
   });
 
+  /* Related Content: add row (clone the per-panel hidden template) */
+  $(document).on('click', '.ah-rl-add', function() {
+    var $wrap = $(this).closest('.ah-rl-wrap');
+    var $new  = $wrap.children('.ah-rl-template').children('.ah-rl-row').first().clone();
+    $wrap.children('.ah-rl-rows').append($new);
+  });
+  /* Related Content: remove row */
+  $(document).on('click', '.ah-rl-remove', function() {
+    $(this).closest('.ah-rl-row').remove();
+  });
+
   $(document).on('click', '.ah-qe-save', function() {
     var $btn = $(this), id = $btn.data('id'), $row = $('#ah-qe-' + id);
     var taxIds = [];
@@ -1189,6 +1269,23 @@ if ( $action === 'edit-custom' ) {
       var url  = $.trim($(this).find('.ah-qe-hl-url').val());
       if (name || url) hlLinks.push({ name: name, url: url });
     });
+    /* Collect Related Content rows (real rows only, not the hidden template) */
+    var relatedLinks = [];
+    $row.find('.ah-rl-wrap .ah-rl-rows .ah-rl-row').each(function() {
+      var $r     = $(this);
+      var url    = $.trim($r.find('.ah-rl-url').val());
+      var target = $r.find('.ah-rl-target').val();
+      if (!url && !target) return; // skip empty rows
+      relatedLinks.push({
+        link_type:     $r.find('.ah-rl-type').val(),
+        target:        target,
+        url:           url,
+        label:         $.trim($r.find('.ah-rl-label').val()),
+        container:     $.trim($r.find('.ah-rl-container').val()),
+        target_window: $r.find('.ah-rl-window').val(),
+        sort_order:    $r.find('.ah-rl-order').val()
+      });
+    });
     $btn.text('Saving…').prop('disabled', true);
     $.post(ahAdmin.ajaxUrl, {
       action:          'ah_quick_save_post_meta',
@@ -1198,7 +1295,8 @@ if ( $action === 'edit-custom' ) {
       is_popular:      $row.find('.ah-qe-popular').is(':checked')   ? 1 : 0,
       is_suggested:    $row.find('.ah-qe-suggested').is(':checked') ? 1 : 0,
       taxonomy_ids:    taxIds,
-      highlight_links: JSON.stringify(hlLinks)
+      highlight_links: JSON.stringify(hlLinks),
+      related_links:   JSON.stringify(relatedLinks)
     }, function(res) {
       if (res.success) {
         window.location.reload();

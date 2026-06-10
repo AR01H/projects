@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Constants ────────────────────────────────────────────────────────────────
-define( 'AH_PLUGIN_VERSION', '1.0.3' );
+define( 'AH_PLUGIN_VERSION', '1.0.5' );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
 
 // Table name infix - all custom tables are named: {wpdb_prefix}ah{TABLE_MID_FIX}{table_suffix}
@@ -43,10 +43,87 @@ if ( is_admin() ) {
 // ── Public AJAX (form builder frontend - works for logged-in and guests) ─────
 AH_Ajax_Handlers::init_public();
 
-// ── Shortcode [ah_form id="N"] ───────────────────────────────────────────────
+// ── Shortcodes ───────────────────────────────────────────────────────────────
 add_action( 'init', static function () {
 	add_shortcode( 'ah_form', array( 'AH_Form_Builder', 'render' ) );
+	add_shortcode( 'ah_related_links', 'ah_render_related_links_shortcode' );
 } );
+
+/**
+ * Theme helper: grouped related content for a post (or any object).
+ * Returns [ [ 'container' => '…', 'items' => [ [label,url,link_type,type_label,icon,target] ] ] ].
+ *
+ *   $groups = ah_get_related_links( get_the_ID() );
+ */
+function ah_get_related_links( int $object_id = 0, string $object_type = 'wp_post' ): array {
+	if ( ! class_exists( 'AH_Related_Links_Model' ) ) {
+		return array();
+	}
+	$object_id = $object_id ?: (int) get_the_ID();
+	if ( ! $object_id ) {
+		return array();
+	}
+	return ( new AH_Related_Links_Model() )->get_grouped( $object_type, $object_id );
+}
+
+/**
+ * Shortcode [ah_related_links id="123" object="wp_post" container="Calculators" title="Tools"].
+ * All attrs optional — defaults to the current post and every container.
+ */
+function ah_render_related_links_shortcode( $atts ): string {
+	$atts = shortcode_atts( array(
+		'id'        => 0,
+		'object'    => 'wp_post',
+		'container' => '',   // optional: render only this section
+		'title'     => '',   // optional wrapper heading
+		'class'     => '',
+	), $atts, 'ah_related_links' );
+
+	$object_id = (int) $atts['id'] ?: (int) get_the_ID();
+	if ( ! $object_id ) {
+		return '';
+	}
+
+	$groups = ah_get_related_links( $object_id, sanitize_key( $atts['object'] ) );
+	if ( empty( $groups ) ) {
+		return '';
+	}
+
+	$filter = trim( (string) $atts['container'] );
+
+	ob_start();
+	echo '<div class="ah-related-links ' . esc_attr( $atts['class'] ) . '">';
+	if ( $atts['title'] !== '' ) {
+		echo '<h3 class="ah-related-links__title">' . esc_html( $atts['title'] ) . '</h3>';
+	}
+	foreach ( $groups as $group ) {
+		if ( $filter !== '' && strcasecmp( $group['container'], $filter ) !== 0 ) {
+			continue;
+		}
+		echo '<div class="ah-related-links__group" data-container="' . esc_attr( $group['container'] ) . '">';
+		echo '<h4 class="ah-related-links__heading">' . esc_html( $group['container'] ) . '</h4>';
+		echo '<ul class="ah-related-links__list">';
+		foreach ( $group['items'] as $item ) {
+			$rel = ( $item['target'] === '_blank' ) ? ' rel="noopener noreferrer"' : '';
+			printf(
+				'<li class="ah-related-links__item ah-related-links__item--%1$s">'
+					. '<a href="%2$s" target="%3$s"%4$s>'
+					. '<span class="ah-related-links__icon" aria-hidden="true">%5$s</span>'
+					. '<span class="ah-related-links__label">%6$s</span>'
+					. '</a></li>',
+				esc_attr( $item['link_type'] ),
+				esc_url( $item['url'] ),
+				esc_attr( $item['target'] ),
+				$rel, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — static literal
+				esc_html( $item['icon'] ),
+				esc_html( $item['label'] )
+			);
+		}
+		echo '</ul></div>';
+	}
+	echo '</div>';
+	return ob_get_clean();
+}
 
 // ── ahTheme JS object (needed by form-builder shortcode frontend JS) ─────────
 // The active theme's functions.php should enqueue its own scripts; this only

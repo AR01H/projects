@@ -1,0 +1,123 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   ADVAITH HOMES - SHARED DESIGN SYSTEM
+   ──────────────────────────────────────────────────────────────────────────
+   One global layer that brings every page in line with the Knowledge Hub
+   homepage: warm cream background, navy headings, gold accents, soft cards.
+   Enqueued LAST so it harmonises the existing components without rewriting
+   each page. Tweak the palette here and the whole site follows.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --ds-cream:   #f6f3ea;   /* page background        */
+  --ds-cream-2: #efe9da;   /* alternating band       */
+  --ds-card:    #fffefb;   /* card / surface         */
+  --ds-navy:    #16243f;   /* primary / headings     */
+  --ds-navy-2:  #21345a;   /* navy hover             */
+  --ds-gold:    #b7791f;   /* accent                 */
+  --ds-ink:     #1e293b;   /* body text              */
+  --ds-muted:   #64748b;   /* secondary text         */
+  --ds-line:    #e7e1d3;   /* hairline border        */
+  --ds-shadow:  0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+
+  /* Re-point the theme's high-level tokens so existing components inherit it */
+  --bg:        var(--ds-cream);
+  --bg-alt:    var(--ds-cream-2);
+  --border:    var(--ds-line);
+  --card-bg:   var(--ds-card);
+}
+
+/* Warm cream background site-wide */
+body { background: var(--ds-cream); }
+
+/* ── PAGE HEADER (.ph) → calm cream/navy/gold (was a bold gold banner) ─────── */
+.ph {
+  background: var(--ds-cream) !important;
+  border-bottom: 1px solid var(--ds-line);
+}
+.ph::after { display: none; }                 /* drop the dark fade */
+.ph__blob  { display: none; }                 /* drop the white blob */
+.ph__grid-lines { opacity: .35; }
+.ph__anim-bg    { opacity: .22; }
+
+.ph__title  { color: var(--ds-navy); }
+.ph__title em { color: var(--ds-gold); font-style: italic; }
+
+.ph__eyebrow {
+  background: rgba(183,121,31,.12) !important;
+  color: var(--ds-gold) !important;
+  border-color: rgba(183,121,31,.28);
+  backdrop-filter: none;
+}
+.ph__desc { color: var(--ds-muted); }
+
+.ph__breadcrumb { background: rgba(22,36,63,.06); color: var(--ds-muted); }
+.ph__breadcrumb a { color: var(--ds-muted); }
+.ph__breadcrumb a:hover { color: var(--ds-navy); }
+.ph__breadcrumb span[aria-current] { color: var(--ds-navy); }
+
+.ph__badge {
+  background: rgba(22,36,63,.08);
+  border-color: rgba(22,36,63,.16);
+  color: var(--ds-navy);
+}
+.ph__accent { background: linear-gradient(90deg, var(--ds-navy), var(--ds-gold)); opacity: 1; }
+
+/* ── BUTTONS → navy primary, gold accent (matches the design) ─────────────── */
+.btn-primary { background: var(--ds-navy); color: #fff; }
+.btn-primary:hover { background: var(--ds-navy-2); }
+
+.btn-gold { background: var(--ds-gold); color: #fff; }
+.btn-gold:hover { background: #9c6518; }
+
+.btn-outline { border-color: var(--ds-navy); color: var(--ds-navy); }
+.btn-outline:hover { background: var(--ds-navy); color: #fff; }
+
+.btn-ghost { border-color: var(--ds-line); color: var(--ds-navy); background: transparent; }
+.btn-ghost:hover { background: var(--ds-card); border-color: var(--ds-navy); }
+
+/* ── SECTION HEADINGS / EYEBROWS ──────────────────────────────────────────── */
+.section__eyebrow,
+.section-eyebrow { color: var(--ds-gold); }
+
+/* ── CARDS / SURFACES → soft cream-white with tan hairline + soft shadow ──── */
+.card,
+.sidebar-card,
+.mini-blog-post-cart,
+.feed-info-card,
+.info-card,
+.svc-card,
+.team-card,
+.story-card {
+  background: var(--ds-card);
+  border-color: var(--ds-line);
+}
+
+/* Accent sidebar cards keep a gold-tinted look, now consistent */
+.sidebar-card--accent {
+  background: linear-gradient(160deg, var(--ds-navy), var(--ds-navy-2));
+  border-color: var(--ds-navy);
+}
+.sidebar-card--accent,
+.sidebar-card--accent .sidebar-card__title,
+.sidebar-card--accent p { color: #fff; }
+
+/* Links pick up the gold accent on hover for a consistent feel */
+a { text-decoration-color: rgba(183,121,31,.4); }
+
+/* Selection */
+::selection { background: rgba(183,121,31,.2); color: var(--ds-navy); }
+
+/* ── Parent-term / group filter tabs (reusable on any listing) ────────────── */
+.pt-tabs {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 0 0 22px; padding-bottom: 4px;
+}
+.pt-tab {
+  display: inline-flex; align-items: center;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--ds-line); background: var(--ds-card);
+  color: var(--ds-ink); font-size: .85rem; font-weight: 600;
+  text-decoration: none; transition: all .14s ease; white-space: nowrap;
+}
+.pt-tab:hover { border-color: var(--ds-navy); color: var(--ds-navy); }
+.pt-tab.is-active { background: var(--ds-navy); border-color: var(--ds-navy); color: #fff; }

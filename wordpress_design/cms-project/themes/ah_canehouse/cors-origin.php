@@ -79,5 +79,5 @@ Include this file at the top of wp-config.php BEFORE wp-settings.php:
 require_once __DIR__ . '/wp-content/themes/thecanehouse/cors-origin.php';
 
 For ngrok tunnel:
-ngrok http --host-header=rewrite wp_advithhomes_project.test:80
+ngrok http --host-header=rewrite thecanehouse.co.uk.test:80
 */

@@ -1,5 +1,8 @@
 <?php get_header(); ?>
 
+<!-- Reading progress bar (fills as the article is scrolled) -->
+<div class="ah-readbar" aria-hidden="true"><span class="ah-readbar__fill" id="ahReadbarFill"></span></div>
+
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
 <?php
@@ -35,6 +38,8 @@ $crumbs[] = [ get_the_title(), '' ];
       <!-- Article -->
       <article class="prose" id="article-body">
 
+        <?php get_template_part( 'components/article-byline' ); ?>
+
         <?php if ( has_post_thumbnail() ) : ?>
         <figure class="sp-feat-img">
           <?php the_post_thumbnail( 'large', [ 'loading' => 'eager', 'decoding' => 'async' ] ); ?>
@@ -54,10 +59,20 @@ $crumbs[] = [ get_the_title(), '' ];
         <?php endif; ?>
 
         <div class="post-share">
+          <span class="post-share__label">Share</span>
           <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink() ); ?>&text=<?php echo urlencode( get_the_title() ); ?>"
              class="post-share__btn" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( TXT_SHARE_ON_X ); ?>">𝕏</a>
           <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode( get_permalink() ); ?>"
              class="post-share__btn" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( TXT_SHARE_ON_LINKEDIN ); ?>">in</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode( get_permalink() ); ?>"
+             class="post-share__btn" target="_blank" rel="noopener" aria-label="Share on Facebook">f</a>
+          <a href="https://wa.me/?text=<?php echo urlencode( get_the_title() . ' ' . get_permalink() ); ?>"
+             class="post-share__btn" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.297zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.29.173-1.414z"/></svg>
+          </a>
+          <button type="button" class="post-share__btn post-share__btn--copy" data-url="<?php echo esc_attr( get_permalink() ); ?>" aria-label="Copy link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
 
           <button class="post-share__icon post-share__icon--native"
                   data-url="<?php echo esc_attr( get_permalink() ); ?>"
@@ -67,6 +82,26 @@ $crumbs[] = [ get_the_title(), '' ];
           </button>
         </div>
         <div style="clear:both"></div><!-- clears sp-feat-img float -->
+
+        <?php
+        $ah_prev = get_previous_post();
+        $ah_next = get_next_post();
+        if ( $ah_prev || $ah_next ) : ?>
+        <nav class="ah-prevnext" aria-label="<?php printf( esc_attr( '%s navigation' ), AH_TERM_SINGULAR ); ?>">
+          <?php if ( $ah_prev ) : ?>
+            <a class="ah-prevnext__link ah-prevnext__link--prev" href="<?php echo esc_url( get_permalink( $ah_prev ) ); ?>">
+              <span class="ah-prevnext__dir">&larr; Previous</span>
+              <span class="ah-prevnext__title"><?php echo esc_html( get_the_title( $ah_prev ) ); ?></span>
+            </a>
+          <?php else : ?><span aria-hidden="true"></span><?php endif; ?>
+          <?php if ( $ah_next ) : ?>
+            <a class="ah-prevnext__link ah-prevnext__link--next" href="<?php echo esc_url( get_permalink( $ah_next ) ); ?>">
+              <span class="ah-prevnext__dir">Next &rarr;</span>
+              <span class="ah-prevnext__title"><?php echo esc_html( get_the_title( $ah_next ) ); ?></span>
+            </a>
+          <?php endif; ?>
+        </nav>
+        <?php endif; ?>
       </article>
 
       <!-- Sidebar -->
@@ -274,4 +309,55 @@ endif; ?>
 <?php get_template_part( 'components/cta-section' ); ?>
 
 <?php get_template_part( 'components/scroll-to-top' ); ?>
+
+<script>
+(function () {
+	/* ── Reading progress bar ── */
+	var fill    = document.getElementById('ahReadbarFill');
+	var article = document.getElementById('article-body');
+	if (fill && article) {
+		var ticking = false;
+		function update() {
+			var rect   = article.getBoundingClientRect();
+			var top    = rect.top + window.pageYOffset;
+			var height = article.offsetHeight - window.innerHeight;
+			var scrolled = window.pageYOffset - top;
+			var pct = height > 0 ? (scrolled / height) * 100 : 0;
+			fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
+			ticking = false;
+		}
+		function onScroll() {
+			if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+		}
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll);
+		update();
+	}
+
+	/* ── Copy-link share button ── */
+	var copyBtn = document.querySelector('.post-share__btn--copy');
+	if (copyBtn) {
+		copyBtn.addEventListener('click', function () {
+			var url = copyBtn.getAttribute('data-url') || window.location.href;
+			var done = function () {
+				copyBtn.classList.add('is-copied');
+				copyBtn.setAttribute('aria-label', 'Link copied');
+				setTimeout(function () {
+					copyBtn.classList.remove('is-copied');
+					copyBtn.setAttribute('aria-label', 'Copy link');
+				}, 1600);
+			};
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				navigator.clipboard.writeText(url).then(done).catch(done);
+			} else {
+				var t = document.createElement('textarea');
+				t.value = url; document.body.appendChild(t); t.select();
+				try { document.execCommand('copy'); } catch (e) {}
+				document.body.removeChild(t); done();
+			}
+		});
+	}
+})();
+</script>
+
 <?php get_footer(); ?>

@@ -562,6 +562,43 @@ class AH_DB_Schema {
 				KEY idx_taxonomy (taxonomy_id)
 			) ENGINE=InnoDB {$cs}",
 
+			// 41c. Universal related-content links (polymorphic source + target)
+			"CREATE TABLE IF NOT EXISTS {$p}ah_related_links (
+				id            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				object_type   VARCHAR(50)  NOT NULL,
+				object_id     BIGINT UNSIGNED NOT NULL,
+				link_type     VARCHAR(50)  NOT NULL DEFAULT 'external',
+				target_kind   VARCHAR(20)  NOT NULL DEFAULT 'url',
+				target_id     BIGINT UNSIGNED NULL,
+				url           TEXT NULL,
+				label         VARCHAR(255) NULL,
+				container     VARCHAR(120) NULL,
+				target_window VARCHAR(10)  NOT NULL DEFAULT '_self',
+				sort_order    INT NOT NULL DEFAULT 0,
+				status        VARCHAR(20)  NOT NULL DEFAULT 'active',
+				created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (id),
+				KEY idx_object (object_type, object_id),
+				KEY idx_link_type (link_type),
+				KEY idx_container (container),
+				KEY idx_target (target_kind, target_id)
+			) ENGINE=InnoDB {$cs}",
+
+			// 41d. Static HTML pages/components (HTML stored in DB, not flat files)
+			"CREATE TABLE IF NOT EXISTS {$p}ah_static_pages (
+				id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				slug       VARCHAR(190) NOT NULL,
+				title      VARCHAR(255) NULL,
+				html       LONGTEXT NULL,
+				page_id    BIGINT UNSIGNED NULL,
+				status     VARCHAR(20) NOT NULL DEFAULT 'active',
+				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				PRIMARY KEY (id),
+				UNIQUE KEY uq_slug (slug),
+				KEY idx_page (page_id)
+			) ENGINE=InnoDB {$cs}",
+
 			// 42. Post Table Blocks
 			"CREATE TABLE IF NOT EXISTS {$p}ah_post_table_blocks (
 				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

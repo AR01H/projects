@@ -25,6 +25,7 @@ class AH_DB_Migrations {
 		// Table creations via migration (tables added after initial schema)
 		self::ensure_content_taxonomies();
 		self::ensure_taxonomy_parent_terms();
+		self::ensure_static_pages();
 
 		// Data migrations
 		self::required_settings();
@@ -101,6 +102,14 @@ class AH_DB_Migrations {
 	public static function ensure_taxonomy_parent_terms(): void {
 		if ( class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
 			AH_Taxonomy_Parent_Model::ensure_table();
+		}
+	}
+
+	/** Ensure the static-pages table exists and import any legacy HTML files once. */
+	public static function ensure_static_pages(): void {
+		if ( class_exists( 'AH_Static_Pages_Model' ) ) {
+			AH_Static_Pages_Model::ensure_table();
+			AH_Static_Pages_Model::import_files_once();
 		}
 	}
 
