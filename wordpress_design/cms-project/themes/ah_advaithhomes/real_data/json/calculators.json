@@ -1,0 +1,39 @@
+{
+  "header": {
+    "eyebrow": "Tools & Calculators",
+    "title": "All Calculators",
+    "sub": "Smart tools and calculators to help you plan, budget and make confident property decisions.",
+    "trust": [
+      { "icon": "shield", "text": "Accurate & Up to Date" },
+      { "icon": "heart",  "text": "Free to Use" },
+      { "icon": "steps",  "text": "Easy to Understand" },
+      { "icon": "users",  "text": "Independent" }
+    ],
+    "help_title": "Need Help Using a Calculator?",
+    "help_desc": "Our guides explain how each calculator works and what the results mean.",
+    "help_cta": { "label": "View Calculator Guide", "url": "/guides/" }
+  },
+
+  "categories": [
+    { "slug": "all",           "label": "All Calculators" },
+    { "slug": "buying",        "label": "Buying Calculators" },
+    { "slug": "selling",       "label": "Selling Calculators" },
+    { "slug": "moving",        "label": "Moving Home Calculators" },
+    { "slug": "mortgage",      "label": "Mortgage Calculators" },
+    { "slug": "tax",           "label": "Tax Calculators" },
+    { "slug": "affordability", "label": "Affordability Calculators" }
+  ],
+
+  "calculators": [
+    { "icon": "calc",     "title": "Stamp Duty Calculator",          "desc": "Calculate how much Stamp Duty Land Tax you'll pay when buying.", "url": "/stamp-duty-calculator/",  "category": "tax",           "popular": true },
+    { "icon": "mortgage", "title": "Mortgage Affordability Calculator", "desc": "See how much you can borrow and what you can afford.",        "url": "/mortgage-calculator/",    "category": "mortgage",      "popular": true },
+    { "icon": "home",     "title": "Buying Cost Calculator",         "desc": "Estimate all the costs involved in buying a property.",          "url": "/all-calculatores/",       "category": "buying",        "popular": true },
+    { "icon": "calc",     "title": "Monthly Payment Calculator",     "desc": "Calculate your monthly mortgage payments.",                      "url": "/monthly-mortage-payment/","category": "mortgage",      "popular": true },
+    { "icon": "tag",      "title": "Selling Cost Calculator",        "desc": "Work out the total costs of selling your home.",                 "url": "/all-calculatores/",       "category": "selling" },
+    { "icon": "calc",     "title": "Rent vs Buy Calculator",         "desc": "Compare the cost of renting versus buying over time.",           "url": "/all-calculatores/",       "category": "affordability" },
+    { "icon": "truck",    "title": "Moving Cost Calculator",         "desc": "Estimate the total cost of your house move.",                    "url": "/all-calculatores/",       "category": "moving" },
+    { "icon": "survey",   "title": "Survey Cost Estimator",          "desc": "Estimate survey costs for the property you're buying.",          "url": "/all-calculatores/",       "category": "buying" },
+    { "icon": "calc",     "title": "Mortgage Overpayment Calculator","desc": "See how overpayments can reduce your loan and save interest.",   "url": "/monthly-mortage-payment/","category": "mortgage" },
+    { "icon": "home",     "title": "Land Transaction Tax Calculator","desc": "Calculate Land Transaction Tax (Scotland) on property purchases.","url": "/all-calculatores/",      "category": "tax" }
+  ]
+}

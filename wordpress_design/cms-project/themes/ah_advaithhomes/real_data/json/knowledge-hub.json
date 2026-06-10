@@ -60,8 +60,7 @@
     "links": [
       { "icon": "calc", "label": "Stamp Duty Calculator",   "url": "/stamp-duty-calculator/" },
       { "icon": "calc", "label": "Mortgage Affordability",  "url": "/mortgage-calculator/" },
-      { "icon": "calc", "label": "Buy vs Rent Calculator",  "url": "/all-calculatores/" },
-      { "icon": "calc", "label": "Rental Yield Calculator", "url": "/all-calculatores/" }
+      { "icon": "calc", "label": "Buy vs Rent Calculator",  "url": "/all-calculatores/" }
     ],
     "foot": { "label": "Explore Calculators", "url": "/all-calculatores/" }
   },

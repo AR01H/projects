@@ -1,29 +1,35 @@
 /* ══════════════════════════════════════════════════════════════════════════
    ADVAITH HOMES - SHARED DESIGN SYSTEM
    ──────────────────────────────────────────────────────────────────────────
-   One global layer that brings every page in line with the Knowledge Hub
-   homepage: warm cream background, navy headings, gold accents, soft cards.
-   Enqueued LAST so it harmonises the existing components without rewriting
-   each page. Tweak the palette here and the whole site follows.
+   One global layer that brings every page in line with the reference design:
+   deep forest-green primary, tan-gold accent, warm-cream backgrounds, white
+   cards, serif headings. Enqueued LAST so it harmonises existing components
+   without rewriting each page. Tweak the palette here and the whole site
+   follows. (--ds-navy keeps its name for back-compat but now holds the brand
+   forest green, so every component that referenced it shifts automatically.)
    ══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --ds-cream:   #f6f3ea;   /* page background        */
-  --ds-cream-2: #efe9da;   /* alternating band       */
-  --ds-card:    #fffefb;   /* card / surface         */
-  --ds-navy:    #16243f;   /* primary / headings     */
-  --ds-navy-2:  #21345a;   /* navy hover             */
-  --ds-gold:    #b7791f;   /* accent                 */
-  --ds-ink:     #1e293b;   /* body text              */
-  --ds-muted:   #64748b;   /* secondary text         */
-  --ds-line:    #e7e1d3;   /* hairline border        */
-  --ds-shadow:  0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+  --ds-cream:   #f7f4ee;   /* page background (warm off-white) */
+  --ds-cream-2: #efe9dd;   /* alternating band                */
+  --ds-card:    #ffffff;   /* card / surface (pure white)     */
+  --ds-navy:    #1e3a32;   /* PRIMARY brand forest green (buttons/footer/headings) */
+  --ds-navy-2:  #2a4d42;   /* green hover                     */
+  --ds-green:   #1e3a32;   /* semantic alias for the brand green */
+  --ds-green-2: #2a4d42;
+  --ds-gold:    #b08a4e;   /* tan-gold accent                 */
+  --ds-gold-2:  #c4a064;   /* lighter gold                    */
+  --ds-ink:     #3a3a37;   /* body text (warm dark grey)      */
+  --ds-muted:   #6b7280;   /* secondary text                  */
+  --ds-line:    #e7e2d8;   /* warm hairline border            */
+  --ds-shadow:  0 1px 2px rgba(20,30,25,.05), 0 8px 24px rgba(20,30,25,.07);
 
   /* Re-point the theme's high-level tokens so existing components inherit it */
   --bg:        var(--ds-cream);
   --bg-alt:    var(--ds-cream-2);
   --border:    var(--ds-line);
   --card-bg:   var(--ds-card);
+  --accent:    var(--ds-gold);
 }
 
 /* Warm cream background site-wide */
@@ -67,7 +73,7 @@ body { background: var(--ds-cream); }
 .btn-primary:hover { background: var(--ds-navy-2); }
 
 .btn-gold { background: var(--ds-gold); color: #fff; }
-.btn-gold:hover { background: #9c6518; }
+.btn-gold:hover { background: #97743f; }
 
 .btn-outline { border-color: var(--ds-navy); color: var(--ds-navy); }
 .btn-outline:hover { background: var(--ds-navy); color: #fff; }
@@ -121,3 +127,65 @@ a { text-decoration-color: rgba(183,121,31,.4); }
 }
 .pt-tab:hover { border-color: var(--ds-navy); color: var(--ds-navy); }
 .pt-tab.is-active { background: var(--ds-navy); border-color: var(--ds-navy); color: #fff; }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Reference-match harmonisation (typography · footer · forms · newsletter)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Serif headings (the reference's signature look) ──────────────────────── */
+h1, h2, h3,
+.ph__title, .section-title, .section__title,
+.ghub-head__title, .ghub-card__title, .ghub-featured__title, .ghub-gcard__title {
+  font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+  letter-spacing: -.01em;
+}
+/* Heading colour is left to each component so headings on dark sections
+   (footer, CTA band, newsletter) keep their light colour. */
+
+/* ── Footer → deep forest green ───────────────────────────────────────────── */
+.footer { background: var(--ds-green); }
+.footer__bottom { border-top-color: rgba(255,255,255,.12); }
+
+/* ── Newsletter band → forest green + gold button (was off-palette) ───────── */
+.ah-news-cta { background: var(--ds-green); }
+.ah-news-cta__title { color: #fff; }
+.ah-news-cta__input:focus { border-color: var(--ds-gold); }
+
+/* ── Forms → green focus ring + tan inputs (reference style) ──────────────── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):focus,
+textarea:focus,
+select:focus,
+.ah-form-input:focus,
+.form-input:focus {
+  outline: none;
+  border-color: var(--ds-green);
+  box-shadow: 0 0 0 3px rgba(30,58,50,.12);
+}
+
+/* ── Nav active link + CTA stay on brand ──────────────────────────────────── */
+.nav__link.is-active,
+.nav__dropdown-toggle.is-active { color: var(--ds-green); }
+.nav .btn-primary { background: var(--ds-green); }
+
+/* ── Accent links / selection use the tan-gold ────────────────────────────── */
+a { text-decoration-color: rgba(176,138,78,.4); }
+::selection { background: rgba(176,138,78,.22); color: var(--ds-navy); }
+
+/* ── Carousel controls → brand circular arrows + gold active dots ─────────── */
+.ah-vs-arrow, .ah-mvs-arrow, .sp-carousel-btn, .carousel-nav-btn,
+.sp-carousel-btn--prev, .sp-carousel-btn--next,
+.ah-vs-arrow--prev, .ah-vs-arrow--next {
+  background: var(--ds-card);
+  border: 1px solid var(--ds-line);
+  color: var(--ds-green);
+  box-shadow: var(--ds-shadow);
+}
+.ah-vs-arrow:hover, .ah-mvs-arrow:hover, .sp-carousel-btn:hover, .carousel-nav-btn:hover {
+  background: var(--ds-green);
+  border-color: var(--ds-green);
+  color: #fff;
+}
+.ah-vs-dot { background: var(--ds-line); }
+.ah-vs-dot.is-active, .ah-vs-dot.active,
+.nif-meta-dot--active { background: var(--ds-gold); }

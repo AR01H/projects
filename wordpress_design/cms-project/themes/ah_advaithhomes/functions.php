@@ -188,9 +188,14 @@ add_action( 'wp_enqueue_scripts', function () {
 		wp_enqueue_style( 'ah-article', $uri . '/assets/css/article.css', [ 'ah-design-system' ], $fv( '/assets/css/article.css' ) );
 	}
 
-	/* Hub card styles - shared by the Guides Archive and Blog/Insights listings */
-	if ( is_page_template( 'page-guides.php' ) || is_page_template( 'page-blog.php' ) ) {
+	/* Hub card styles - shared by the Guides, Blog/Insights and Calculators listings */
+	if ( is_page_template( 'page-guides.php' ) || is_page_template( 'page-blog.php' ) || is_page_template( 'page-calculators.php' ) ) {
 		wp_enqueue_style( 'ah-guides-hub', $uri . '/assets/css/guides-hub.css', [ 'ah-design-system' ], $fv( '/assets/css/guides-hub.css' ) );
+	}
+
+	/* Calculators Hub specifics */
+	if ( is_page_template( 'page-calculators.php' ) ) {
+		wp_enqueue_style( 'ah-calculators', $uri . '/assets/css/calculators.css', [ 'ah-guides-hub' ], $fv( '/assets/css/calculators.css' ) );
 	}
 
 	wp_enqueue_style( 'ah-carousel-video',      $uri . '/assets/css/carousel-video.css',      [ 'ah-components' ], $fv( '/assets/css/carousel-video.css' ) );
@@ -578,4 +583,29 @@ add_action( 'init', function () {
 			. ( $title ? '<strong class="ah-callout__title">' . esc_html( $title ) . '</strong>' : '' )
 			. '<div class="ah-callout__text">' . do_shortcode( wpautop( trim( (string) $content ) ) ) . '</div></div></aside>';
 	} );
+} );
+
+// ── Ensure the Calculators hub page exists with its template (self-healing) ────
+// Runs once (option-guarded). Creates /calculators/ if missing, or assigns the
+// template to an existing page at that slug, so the hub is reachable without a
+// manual template assignment or a re-seed.
+add_action( 'init', function () {
+	if ( get_option( 'ah_calc_page_v1' ) ) {
+		return;
+	}
+	$page = get_page_by_path( 'calculators' );
+	if ( $page ) {
+		update_post_meta( $page->ID, '_wp_page_template', 'page-calculators.php' );
+	} else {
+		$id = wp_insert_post( [
+			'post_title'  => 'Calculators',
+			'post_name'   => 'calculators',
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+		] );
+		if ( $id && ! is_wp_error( $id ) ) {
+			update_post_meta( $id, '_wp_page_template', 'page-calculators.php' );
+		}
+	}
+	update_option( 'ah_calc_page_v1', 1 );
 } );
