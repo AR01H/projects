@@ -14,8 +14,8 @@
 }
 .calc-help .btn { margin-top: 12px; }
 
-/* ── Popular calculator cards ────────────────────────────────────────────── */
-.calc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+/* ── Popular calculator cards (auto-fill to fill the width like the reference) ── */
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
 .calc-card {
   display: flex; flex-direction: column; gap: 8px;
   background: var(--ds-card, #fff); border: 1px solid var(--ds-line, #e7e2d8);

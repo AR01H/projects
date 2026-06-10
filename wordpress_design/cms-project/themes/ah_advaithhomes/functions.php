@@ -67,6 +67,8 @@ function ah_get_page_definitions(): array {
 		[ 'title' => 'News',           'slug' => 'news',           'template' => 'page-news.php'                                          ],
 		[ 'title' => 'All News',       'slug' => 'allnews',        'template' => 'page-allnews.php'                                       ],
 		[ 'title' => 'Guides',         'slug' => 'guides',         'template' => 'page-guides.php'                                        ],
+		[ 'title' => 'Calculators',    'slug' => 'calculators',    'template' => 'page-calculators.php'                                   ],
+		[ 'title' => 'Areas',          'slug' => 'areas',          'template' => 'page-areas.php'                                         ],
 		[ 'title' => 'Mortgages',      'slug' => 'mortgages',      'template' => 'page-mortgages.php'                                     ],
 		[ 'title' => 'FAQ',            'slug' => 'faq',            'template' => 'page-faq.php'                                           ],
 		[ 'title' => 'Contact',        'slug' => 'contact',        'template' => 'page-contact.php'                                       ],
@@ -196,6 +198,17 @@ add_action( 'wp_enqueue_scripts', function () {
 	/* Calculators Hub specifics */
 	if ( is_page_template( 'page-calculators.php' ) ) {
 		wp_enqueue_style( 'ah-calculators', $uri . '/assets/css/calculators.css', [ 'ah-guides-hub' ], $fv( '/assets/css/calculators.css' ) );
+	}
+
+	/* About page */
+	if ( is_page_template( 'page-about.php' ) ) {
+		wp_enqueue_style( 'ah-about', $uri . '/assets/css/about.css', [ 'ah-design-system' ], $fv( '/assets/css/about.css' ) );
+	}
+
+	/* Areas page (reuses about.css for the feature icon-grid) */
+	if ( is_page_template( 'page-areas.php' ) ) {
+		wp_enqueue_style( 'ah-about', $uri . '/assets/css/about.css', [ 'ah-design-system' ], $fv( '/assets/css/about.css' ) );
+		wp_enqueue_style( 'ah-areas', $uri . '/assets/css/areas.css', [ 'ah-about' ], $fv( '/assets/css/areas.css' ) );
 	}
 
 	wp_enqueue_style( 'ah-carousel-video',      $uri . '/assets/css/carousel-video.css',      [ 'ah-components' ], $fv( '/assets/css/carousel-video.css' ) );
@@ -585,27 +598,15 @@ add_action( 'init', function () {
 	} );
 } );
 
-// ── Ensure the Calculators hub page exists with its template (self-healing) ────
-// Runs once (option-guarded). Creates /calculators/ if missing, or assigns the
-// template to an existing page at that slug, so the hub is reachable without a
-// manual template assignment or a re-seed.
+// ── Re-provision pages once when new page definitions are added ───────────────
+// The provisioning routine short-circuits on a daily transient, so newly added
+// pages (e.g. Calculators, Areas) wouldn't appear until it expires. Bumping this
+// version clears the transient once so the next request provisions them. Pages
+// auto-load their template via the WP `page-{slug}.php` hierarchy - no meta.
 add_action( 'init', function () {
-	if ( get_option( 'ah_calc_page_v1' ) ) {
+	if ( get_option( 'ah_pages_def_ver' ) === '2' ) {
 		return;
 	}
-	$page = get_page_by_path( 'calculators' );
-	if ( $page ) {
-		update_post_meta( $page->ID, '_wp_page_template', 'page-calculators.php' );
-	} else {
-		$id = wp_insert_post( [
-			'post_title'  => 'Calculators',
-			'post_name'   => 'calculators',
-			'post_status' => 'publish',
-			'post_type'   => 'page',
-		] );
-		if ( $id && ! is_wp_error( $id ) ) {
-			update_post_meta( $id, '_wp_page_template', 'page-calculators.php' );
-		}
-	}
-	update_option( 'ah_calc_page_v1', 1 );
-} );
+	delete_transient( 'ah_pages_provisioned' );
+	update_option( 'ah_pages_def_ver', '2' );
+}, 5 );

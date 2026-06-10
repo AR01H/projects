@@ -4,7 +4,7 @@
    ══════════════════════════════════════════════════════════════════════════ */
 
 .ghub { background: var(--ds-cream, #f6f3ea); padding: clamp(28px, 4vw, 56px) 0 clamp(36px, 5vw, 64px); }
-.ghub .container { max-width: 1200px; }
+/* inherits the global --ds-container width so hubs fill the same content area */
 
 .ghub-head { margin-bottom: clamp(20px, 3vw, 32px); }
 .ghub-head__title {
@@ -99,8 +99,8 @@
   background: var(--ds-card, #fffefb); color: var(--ds-navy, #16243f); font-size: .85rem; cursor: pointer;
 }
 
-/* Guide grid */
-.ghub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+/* Guide grid - auto-fills the available width (3-4 cols like the reference) */
+.ghub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(238px, 1fr)); gap: 18px; }
 .ghub-gcard {
   display: flex; flex-direction: column;
   background: var(--ds-card, #fffefb); border: 1px solid var(--ds-line, #e7e1d3);
