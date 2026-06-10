@@ -1378,24 +1378,40 @@ body.design-traditional .ch-frn-card{
     display:grid;
     grid-template-columns: 1.05fr 0.95fr;
     overflow:hidden;
-    background:var(--trad-bg);
+    background-color: var(--trad-card);
+    /* aged-paper grain + warm corner vignette */
     background-image:
-        radial-gradient(circle at top left, var(--client-color-18), transparent 220px),
-        radial-gradient(circle at bottom right, var(--client-color-18), transparent 220px);
-    border:4px solid var(--trad-gold);
-    border-radius:16px;
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+        radial-gradient(circle at top left, rgba(122,28,18,0.06), transparent 240px),
+        radial-gradient(circle at bottom right, rgba(30,58,14,0.07), transparent 240px);
+    border: 2px solid var(--trad-border);
+    border-radius: var(--ch-radius);
     box-shadow:
         0 14px 36px var(--client-color-19),
-        inset 0 0 40px rgba(0,0,0,.05);
+        inset 0 0 60px rgba(80,55,20,0.08);
 }
 
+/* warm aging glaze over the whole card (behind the text content) */
 body.design-traditional .ch-bkb-card::before,
 body.design-traditional .ch-frn-card::before{
     content:"";
     position:absolute;
     inset:0;
+    z-index:1;
     pointer-events:none;
-    background: linear-gradient( var(--client-color-14),rgba(0,0,0,.025) );
+    background: linear-gradient(135deg, rgba(255,248,220,0.10), rgba(80,55,20,0.05));
+}
+
+/* signature double-outline: a gold hairline frame set in from the tan edge */
+body.design-traditional .ch-bkb-card::after,
+body.design-traditional .ch-frn-card::after{
+    content:"";
+    position:absolute;
+    inset:8px;
+    z-index:3;
+    pointer-events:none;
+    border:1px solid var(--trad-frame-line);
+    border-radius:calc(var(--ch-radius) - 2px);
 }
 
 /* LEFT CONTENT */
@@ -1497,19 +1513,24 @@ body.design-traditional .ch-frn-features li::before{
 body.design-traditional .ch-bkb-open,
 body.design-traditional .ch-frn-open{
     align-self:flex-start;
-    margin-top:0.3rem;
-    padding:0.85rem 2rem !important;
+    margin-top:0.5rem;
+    padding:0.95rem 2.2rem !important;
     background:var(--trad-green);
     color:var(--trad-cream);
-    border:2px solid var(--trad-gold);
-    border-radius:8px;
+    border:1px solid #14260a;
+    border-radius:var(--ch-radius);
     font-family:var(--ch-font-display);
-    font-size:0.92rem !important;
+    font-size:0.9rem !important;
     font-weight:700;
-    letter-spacing:0.08em;
+    letter-spacing:0.12em;
     text-transform:uppercase;
     cursor:pointer;
-    box-shadow: 0 6px 16px var(--client-color-19);
+    transform:rotate(-1deg);
+    /* framed-plaque: dark outer edge → gap → gold hairline → drop shadow */
+    box-shadow:
+        inset 0 0 0 4px var(--trad-green),
+        inset 0 0 0 5px rgba(201,168,76,0.55),
+        0 5px 16px var(--client-color-19);
     transition:.25s ease;
 }
 
@@ -1517,7 +1538,11 @@ body.design-traditional .ch-bkb-open:hover,
 body.design-traditional .ch-frn-open:hover{
     background:var(--trad-gold);
     color:var(--trad-green);
-    transform:translateY(-2px);
+    transform:translateY(-2px) rotate(0deg);
+    box-shadow:
+        inset 0 0 0 4px var(--trad-gold),
+        inset 0 0 0 5px rgba(30,58,14,0.50),
+        0 8px 20px var(--client-color-19);
 }
 
 /* RIGHT VISUAL */
@@ -1530,9 +1555,10 @@ body.design-traditional .ch-frn-visual{
     background-size:cover;
     background-position:center;
 }
+/* aged sepia print */
 body.design-traditional .ch-bkb-visual img,
 body.design-traditional .ch-frn-visual img{
-    filter: sepia(0.34) saturate(0.9) contrast(1.02);
+    filter: sepia(0.5) saturate(0.8) contrast(1.05) brightness(0.98);
 }
 
 body.design-traditional .ch-bkb-visual::before,
@@ -1542,24 +1568,52 @@ body.design-traditional .ch-frn-visual::before{
     inset:0;
     z-index:1;
     pointer-events:none;
-    /* parchment colour derived from the card bg so the photo blends in
+    /* parchment colour matched to the card bg so the photo blends in
        with no hard seam between content and image */
-    background: linear-gradient(to right, var(--trad-bg) 0%, color-mix(in srgb, var(--trad-bg) 55%, transparent) 22%, transparent 45%);
+    background: linear-gradient(to right, var(--trad-card) 0%, color-mix(in srgb, var(--trad-card) 60%, transparent) 26%, transparent 52%);
 }
 /* franchise has the image on the LEFT, so fade from the right edge instead */
 body.design-traditional .ch-frn-visual::before{
-    background: linear-gradient(to left, var(--trad-bg) 0%, color-mix(in srgb, var(--trad-bg) 55%, transparent) 22%, transparent 45%);
+    background: linear-gradient(to left, var(--trad-card) 0%, color-mix(in srgb, var(--trad-card) 60%, transparent) 26%, transparent 52%);
+}
+/* warm the near-black areas to dark brown + scatter faint aged stains so the
+   photo reads like a real vintage print rather than a flat black bar */
+body.design-traditional .ch-bkb-visual::after,
+body.design-traditional .ch-frn-visual::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:2;
+    pointer-events:none;
+    background:
+        radial-gradient(135% 120% at 100% 50%, rgba(48,30,14,0.55) 0%, rgba(48,30,14,0.18) 45%, transparent 72%),
+        radial-gradient(circle at 80% 20%, rgba(95,62,30,0.20), transparent 10%),
+        radial-gradient(circle at 90% 72%, rgba(70,46,22,0.18), transparent 12%),
+        radial-gradient(circle at 62% 86%, rgba(110,78,40,0.16), transparent 9%),
+        radial-gradient(circle at 72% 45%, rgba(80,52,24,0.12), transparent 14%);
+}
+body.design-traditional .ch-frn-visual::after{
+    background:
+        radial-gradient(135% 120% at 0% 50%, rgba(48,30,14,0.55) 0%, rgba(48,30,14,0.18) 45%, transparent 72%),
+        radial-gradient(circle at 20% 20%, rgba(95,62,30,0.20), transparent 10%),
+        radial-gradient(circle at 12% 72%, rgba(70,46,22,0.18), transparent 12%),
+        radial-gradient(circle at 34% 86%, rgba(110,78,40,0.16), transparent 9%);
 }
 
 /* Badge → gold pill in theme */
 body.design-traditional .ch-bkb-visual-badge,
 body.design-traditional .ch-frn-visual-badge{
-    z-index:2;
+    z-index:4;
     background:var(--trad-gold);
     color:var(--trad-green);
     font-family:var(--ch-font-display);
     font-weight:700;
-    border-radius:6px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    border:1px solid rgba(122,28,18,0.35);
+    border-radius:var(--ch-radius-sm);
+    box-shadow:0 3px 10px rgba(0,0,0,0.22);
+    transform:rotate(-3deg);
 }
 
 /* ── TABLET: stack, image on top, scaled down ── */
@@ -1581,7 +1635,7 @@ body.design-traditional .ch-frn-visual-badge{
     /* when stacked, the side-fade looks wrong → fade from the bottom */
     body.design-traditional .ch-bkb-visual::before,
     body.design-traditional .ch-frn-visual::before{
-        background: linear-gradient(to top, var(--trad-bg) 0%, color-mix(in srgb, var(--trad-bg) 50%, transparent) 18%, transparent 36%);
+        background: linear-gradient(to top, var(--trad-card) 0%, color-mix(in srgb, var(--trad-card) 50%, transparent) 18%, transparent 36%);
     }
     body.design-traditional .ch-bkb-content,
     body.design-traditional .ch-frn-content{
@@ -2431,3 +2485,502 @@ body.design-traditional .ch-contact-info .ch-cd-icon {
     body.design-traditional .ch-contact-stamp__big { font-size: 1.05rem; }
     body.design-traditional .ch-contact-polaroid { transform: none; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   36. TRADITIONAL HOME PAGE — OUR STORY / OUR DRINKS / EVENTS & CATERING
+   ──────────────────────────────────────────────────────────────────────────
+   Markup: components/traditional/{our-story-home,our-drinks,events-catering}.php,
+   added in front-page.php behind ch_design_is() (alongside the existing
+   animated hero + menu, which are kept). All rules scoped under
+   body.design-traditional so the Modern home is untouched.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 36.1 OUR STORY — polaroid + stamp / text / machine photo ───────────────── */
+body.design-traditional .ch-tstory { background: var(--trad-bg); padding: 4.5rem 0; }
+body.design-traditional .ch-tstory__inner {
+    display: grid;
+    grid-template-columns: 0.85fr 1.1fr 0.7fr;
+    gap: 2.4rem;
+    align-items: center;
+}
+body.design-traditional .ch-tstory__photo { position: relative; margin: 0; }
+/* round "Made Fresh Every Day" stamp overlapping the photo */
+body.design-traditional .ch-tstory__stamp {
+    position: absolute;
+    bottom: -22px; right: -22px;
+    width: 92px; height: 92px;
+    border-radius: 50%;
+    border: 2px solid var(--trad-red);
+    box-shadow: inset 0 0 0 3px rgba(122,28,18,0.18);
+    background: rgba(250,240,216,0.88);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    color: var(--trad-red);
+    font-family: var(--ch-font-display);
+    transform: rotate(-10deg);
+    z-index: 4;
+}
+body.design-traditional .ch-tstory__stamp span { font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; }
+body.design-traditional .ch-tstory__stamp strong { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+body.design-traditional .ch-tstory__heading {
+    font-family: var(--ch-font-display);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--trad-green);
+    margin: 0.4rem 0 0;
+}
+body.design-traditional .ch-tstory__heading em { color: var(--trad-red); font-style: italic; }
+body.design-traditional .ch-tstory__script {
+    font-family: var(--ch-font-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--trad-red);
+    margin: 0.5rem 0 1.2rem;
+    line-height: 1.5;
+}
+body.design-traditional .ch-tstory__body {
+    font-family: var(--ch-font-body);
+    color: var(--trad-ink);
+    opacity: 0.86;
+    line-height: 1.85;
+    margin: 0 0 0.8rem;
+}
+body.design-traditional .ch-tstory__machine img {
+    width: 100%;
+    filter: sepia(0.5) saturate(0.7) contrast(1.05) brightness(0.98);
+    mix-blend-mode: multiply;
+}
+
+
+/* ── 36.3 OUR DRINKS — parchment product cards ──────────────────────────────── */
+body.design-traditional .ch-tdrinks { background: var(--trad-bg-alt); padding: 4.5rem 0; }
+body.design-traditional .ch-tdrinks__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+    margin-top: 2.5rem;
+}
+body.design-traditional .ch-tdrink-card {
+    position: relative;
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+    padding: 1.4rem 1.4rem 1.6rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+body.design-traditional .ch-tdrink-card::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--trad-frame-line);
+    border-radius: calc(var(--ch-radius) - 2px);
+    pointer-events: none;
+}
+body.design-traditional .ch-tdrink-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.16);
+    border-color: var(--trad-gold);
+}
+body.design-traditional .ch-tdrink-card__media {
+    width: 130px; height: 130px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, rgba(201,168,76,0.12), rgba(74,124,35,0.06));
+    border: 2px solid var(--trad-gold);
+    box-shadow: inset 0 0 0 4px var(--trad-card);
+}
+body.design-traditional .ch-tdrink-card__media img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: sepia(0.30) saturate(0.92) contrast(1.02);
+}
+body.design-traditional .ch-tdrink-card__emoji { font-size: 3.2rem; line-height: 1; }
+body.design-traditional .ch-tdrink-card__name {
+    font-family: var(--ch-font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--trad-green);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.35rem;
+}
+body.design-traditional .ch-tdrink-card__desc {
+    font-family: var(--ch-font-body);
+    font-size: 0.84rem;
+    color: var(--client-color-16);
+    margin: 0;
+    line-height: 1.5;
+}
+body.design-traditional .ch-tdrinks__cta { text-align: center; margin-top: 2.6rem; }
+
+
+/* ── 36.4 EVENTS & CATERING — text + feature icons / event photo ────────────── */
+body.design-traditional .ch-tevents { background: var(--trad-bg); padding: 4.5rem 0; }
+body.design-traditional .ch-tevents__inner {
+    display: grid;
+    grid-template-columns: 1fr 0.9fr;
+    gap: 3rem;
+    align-items: center;
+}
+body.design-traditional .ch-tevents__heading {
+    font-family: var(--ch-font-display);
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--trad-green);
+    margin: 0.3rem 0 0;
+}
+body.design-traditional .ch-tevents__heading em { color: var(--trad-red); font-style: italic; }
+body.design-traditional .ch-tevents__script {
+    font-family: var(--ch-font-display);
+    font-style: italic;
+    color: var(--trad-red);
+    font-size: 1.05rem;
+    margin: 0.4rem 0 1.6rem;
+}
+body.design-traditional .ch-tevents__features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem 2rem;
+    margin-bottom: 2rem;
+}
+body.design-traditional .ch-tevents__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+    min-width: 84px;
+}
+body.design-traditional .ch-tevents__feature-icon {
+    width: 54px; height: 54px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: rgba(30,58,14,0.06);
+    border: 1px solid var(--trad-border);
+    font-size: 1.5rem;
+    filter: sepia(0.2);
+}
+body.design-traditional .ch-tevents__feature-label {
+    font-family: var(--ch-font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--trad-green);
+    font-weight: 600;
+    line-height: 1.3;
+}
+body.design-traditional .ch-tevents__visual { margin: 0; }
+body.design-traditional .ch-tevents__visual img { width: 100%; display: block; }
+
+
+/* ── 36.5 RESPONSIVE ────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    body.design-traditional .ch-tstory__inner { grid-template-columns: 1fr 1fr; }
+    body.design-traditional .ch-tstory__machine { display: none; }
+    body.design-traditional .ch-tdrinks__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    body.design-traditional .ch-tstory__inner { grid-template-columns: 1fr; gap: 2.6rem; }
+    body.design-traditional .ch-tstory__stamp { right: 12px; bottom: -18px; }
+    body.design-traditional .ch-tevents__inner { grid-template-columns: 1fr; gap: 2rem; }
+    body.design-traditional .ch-tevents__visual { order: -1; }
+}
+@media (max-width: 480px) {
+    body.design-traditional .ch-tdrinks__grid { grid-template-columns: 1fr; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   37. BOOKING MODAL — TRADITIONAL (matches mockups 5–8)
+   ──────────────────────────────────────────────────────────────────────────
+   Markup: components/booking-wizard.php + components/forms/form_step_modal.php.
+   These inherit the parchment palette via the §1 token remap, but keep the modern
+   pill radii and a few hardcoded lime check-states (rgba(200,232,48,…)). Squared
+   to the vintage frame + lime → gold/green here. Scoped to body.design-traditional.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Modal paper box → parchment card, tan border + gold inner frame */
+body.design-traditional .ch-bk-modal-box {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+    box-shadow: 0 30px 70px rgba(15,25,5,0.45);
+}
+body.design-traditional .ch-bk-modal-box::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid var(--trad-frame-line);
+    border-radius: calc(var(--ch-radius) - 1px);
+    pointer-events: none;
+    z-index: 0;
+}
+body.design-traditional .ch-bk-modal-scroll { position: relative; z-index: 1; }
+body.design-traditional .ch-bk-modal-backdrop { background: rgba(20,30,8,0.74); }
+body.design-traditional .ch-bk-modal-close {
+    background: var(--trad-bg);
+    color: var(--trad-green);
+    border: 1px solid var(--trad-border);
+}
+body.design-traditional .ch-bk-modal-close:hover { background: var(--trad-gold); color: var(--trad-green); }
+
+/* Stepper: tan rail, gold fill, green active dot w/ cream numeral, serif labels */
+body.design-traditional .ch-bk-prog-line { background: var(--trad-border); }
+body.design-traditional .ch-bk-prog-fill { background: linear-gradient(90deg, var(--trad-green), var(--trad-gold)); }
+body.design-traditional .ch-bk-prog-dot {
+    background: var(--trad-card);
+    border: 2px solid var(--trad-border);
+    color: var(--client-color-16);
+    font-family: var(--ch-font-display);
+}
+body.design-traditional .ch-bk-prog-step.active .ch-bk-prog-dot {
+    background: var(--trad-green);
+    border-color: var(--trad-green);
+    color: var(--trad-cream);
+}
+body.design-traditional .ch-bk-prog-step.done .ch-bk-prog-dot {
+    background: var(--trad-gold);
+    border-color: var(--trad-gold);
+    color: var(--trad-green);
+}
+body.design-traditional .ch-bk-prog-label {
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--client-color-16);
+}
+body.design-traditional .ch-bk-prog-step.active .ch-bk-prog-label { color: var(--trad-green); }
+
+/* Step heading → serif forest-green */
+body.design-traditional .ch-bk-step-title {
+    font-family: var(--ch-font-display);
+    color: var(--trad-green);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+body.design-traditional .ch-bk-step-desc { color: var(--client-color-16); font-style: italic; }
+
+/* Option + chip + qty cards → squared parchment w/ tan border; lime → gold/green */
+body.design-traditional .ch-bk-option-card,
+body.design-traditional .ch-bk-chip-card,
+body.design-traditional .ch-bk-qty-row,
+body.design-traditional .ch-bk-qty-control {
+    background: var(--trad-bg);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius-sm);
+}
+body.design-traditional .ch-bk-option:hover .ch-bk-option-card,
+body.design-traditional .ch-bk-option--chip:hover .ch-bk-chip-card {
+    border-color: var(--trad-gold);
+}
+body.design-traditional .ch-bk-option input:checked + .ch-bk-option-card,
+body.design-traditional .ch-bk-option--chip input:checked + .ch-bk-chip-card,
+body.design-traditional .ch-bk-qty-row.has-qty {
+    border-color: var(--trad-gold);
+    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(74,124,35,0.06));
+    box-shadow: 0 6px 18px rgba(30,40,12,0.14);
+}
+/* check badges → gold disc, green tick */
+body.design-traditional .ch-bk-option-check,
+body.design-traditional .ch-bk-chip-check {
+    background: var(--trad-gold);
+    color: var(--trad-green);
+}
+body.design-traditional .ch-bk-option-name,
+body.design-traditional .ch-bk-chip-name,
+body.design-traditional .ch-bk-qty-name { font-family: var(--ch-font-display); color: var(--trad-green); }
+body.design-traditional .ch-bk-option-desc,
+body.design-traditional .ch-bk-qty-desc { color: var(--client-color-16); }
+body.design-traditional .ch-bk-option-badge,
+body.design-traditional .ch-bk-qty-badge {
+    background: var(--trad-green);
+    color: var(--trad-cream);
+    border-radius: var(--ch-radius-sm);
+}
+body.design-traditional .ch-bk-qty-btn:hover { background: var(--trad-gold); color: var(--trad-green); }
+
+/* Summary card → parchment, ruled rows */
+body.design-traditional .ch-bk-summary {
+    background: var(--trad-bg);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius-sm);
+}
+body.design-traditional .ch-bk-summary-title { font-family: var(--ch-font-display); color: var(--trad-green); }
+body.design-traditional .ch-bk-summary-label { color: var(--client-color-16); }
+body.design-traditional .ch-bk-summary-val { color: var(--trad-green); }
+body.design-traditional .ch-bk-summary-row { border-bottom-color: var(--trad-border-soft); }
+
+/* Wizard field labels → serif */
+body.design-traditional .ch-bk-field label {
+    font-family: var(--ch-font-display);
+    color: var(--trad-green);
+    letter-spacing: 0.04em;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   38. HISTORY BOOK + ORIGIN TIMELINE — PARCHMENT REFINEMENTS
+   ──────────────────────────────────────────────────────────────────────────
+   The Why-Sugarcane page-turn book (.ch-book*) and the About origin timeline
+   (.ch-origin-timeline) inherit the palette via §1, but a few values were
+   hardcoded lime or use a token this design never defines
+   (.ch-page-country → --client-color-7-dark → lime #9bb800). They also missed
+   the sepia photo wash applied to every other traditional image (§13). Patched
+   here so both read as aged parchment. Additive + body.design-traditional-scoped.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* History book: aged photos + gold/green accents */
+body.design-traditional .ch-page-img {
+    filter: sepia(0.34) saturate(0.88) contrast(1.03) brightness(0.97);
+}
+body.design-traditional .ch-book-page.is-active .ch-page-img {
+    filter: sepia(0.18) saturate(0.96) contrast(1.03);
+}
+body.design-traditional .ch-page-spine {
+    background: linear-gradient(to right, var(--trad-gold) 0%, rgba(216,189,98,0.6) 40%, var(--trad-gold) 100%);
+}
+body.design-traditional .ch-page-era-badge {
+    background: var(--trad-green);
+    color: var(--trad-cream);
+    border: 1px solid var(--trad-gold);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.12em;
+}
+body.design-traditional .ch-page-num-left,
+body.design-traditional .ch-page-num-right { color: var(--trad-gold); }
+body.design-traditional .ch-page-title { color: var(--trad-green); }
+/* lime country chips (undefined --client-color-7-dark) → parchment + gold edge */
+body.design-traditional .ch-page-country {
+    background: rgba(185,146,58,0.12);
+    border: 1px solid var(--trad-border);
+    color: var(--trad-green);
+    font-family: var(--ch-font-body);
+}
+body.design-traditional .ch-page-fact { color: var(--trad-green); }
+body.design-traditional .ch-page-impacts li::before { color: var(--trad-gold); }
+
+/* History nav dots + progress → green/gold (drop lime fallbacks) */
+body.design-traditional .ch-hdot { background: var(--trad-border); }
+body.design-traditional .ch-hdot.active { background: var(--trad-green); }
+body.design-traditional .ch-hist-progress-track { background: rgba(185,146,58,0.22); }
+body.design-traditional .ch-hist-progress-fill { background: var(--trad-gold); }
+body.design-traditional .ch-hist-tick { background: var(--trad-border); border-color: var(--trad-bg); }
+body.design-traditional .ch-hist-tick[data-active="true"] { background: var(--trad-gold); }
+body.design-traditional .ch-hist-tick::after {
+    background: var(--trad-green);
+    color: var(--trad-cream);
+    font-family: var(--ch-font-body);
+}
+
+/* About origin timeline: gold-ringed dots + tan connector */
+body.design-traditional .ch-timeline-item + .ch-timeline-item::before { background: var(--trad-border); }
+body.design-traditional .ch-timeline-year {
+    background: var(--trad-gold);
+    color: var(--trad-green);
+    font-family: var(--ch-font-display);
+}
+body.design-traditional .ch-timeline-dot {
+    background: var(--trad-green);
+    border-color: var(--trad-gold);
+}
+body.design-traditional .ch-timeline-text { color: var(--client-color-16); }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   39. VIDEO CAROUSELS — TRADITIONAL (vintage framed prints)
+   ──────────────────────────────────────────────────────────────────────────
+   carousel_video_scroll (.ch-vs-*) + carousel_mini_video_scroll (.ch-mvs-*).
+   These inherit the palette via §1 but keep modern 16px radii + black chrome.
+   Restyled into matted sepia prints with tan/gold frames + a scrapbook stagger,
+   consistent with the image strip (§27/§31). Scoped to body.design-traditional.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 39.1 Single video slider (.ch-vs) → framed sepia screen ── */
+body.design-traditional .ch-vs-viewport {
+    border-radius: var(--ch-radius-sm);
+    border: 1px solid var(--trad-border);
+    box-shadow:
+        inset 0 0 0 6px var(--trad-card),
+        inset 0 0 0 7px var(--trad-frame-line),
+        0 8px 24px rgba(30,40,12,0.20);
+}
+body.design-traditional .ch-vs-media { background: #1c160c; }
+body.design-traditional .ch-vs-media > img,
+body.design-traditional .ch-vs-media > video,
+body.design-traditional .ch-vs-media > iframe,
+body.design-traditional .ch-vs-yt img {
+    filter: sepia(0.42) saturate(0.85) contrast(1.04) brightness(0.97);
+}
+/* play button → gold disc, forest-green glyph */
+body.design-traditional .ch-vs-play {
+    background: rgba(201,168,76,0.92);
+    color: var(--trad-green);
+    border: 2px solid var(--trad-cream);
+}
+body.design-traditional .ch-vs-yt:hover .ch-vs-play { background: var(--trad-gold); }
+/* overlay title → serif, warm scrim */
+body.design-traditional .ch-vs-otitle { font-family: var(--ch-font-display); letter-spacing: 0.02em; }
+body.design-traditional .ch-vs-overlay {
+    background: linear-gradient(to bottom, rgba(20,28,8,0.72) 0%, rgba(20,28,8,0.12) 55%, transparent 100%);
+}
+/* arrows → squared parchment w/ gold edge */
+body.design-traditional .ch-vs-arrow {
+    background: rgba(30,58,14,0.78);
+    border: 1px solid var(--trad-gold);
+    border-radius: var(--ch-radius-sm);
+    color: var(--trad-cream);
+}
+body.design-traditional .ch-vs-arrow:hover { background: var(--trad-gold); color: var(--trad-green); }
+/* dots → gold diamonds */
+body.design-traditional .ch-vs-dot { background: var(--trad-border); border-radius: 1px; transform: rotate(45deg); }
+body.design-traditional .ch-vs-dot.is-active { background: var(--trad-gold); transform: rotate(45deg) scale(1.3); }
+
+/* ── 39.2 Mini-video strip (.ch-mvs) → portrait polaroid prints + stagger ── */
+body.design-traditional .ch-mvs-card {
+    background: var(--trad-cream);
+    border: 1px solid var(--trad-border);
+    box-shadow: 3px 5px 16px rgba(0,0,0,0.16);
+    padding: 7px 7px 0;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+/* scrapbook stagger - flattened while the row is hovered */
+body.design-traditional .ch-mvs-card:nth-child(3n+1) { transform: rotate(-1.6deg) translateY(-4px); }
+body.design-traditional .ch-mvs-card:nth-child(3n+2) { transform: rotate(1.2deg)  translateY(5px);  }
+body.design-traditional .ch-mvs-card:nth-child(3n)   { transform: rotate(-0.8deg) translateY(-2px); }
+body.design-traditional .ch-mvs-track:hover .ch-mvs-card { transform: none; }
+body.design-traditional .ch-mvs-card:hover {
+    transform: rotate(0deg) translateY(-6px) scale(1.02) !important;
+    box-shadow: 4px 12px 26px rgba(0,0,0,0.26);
+    z-index: 3;
+}
+body.design-traditional .ch-mvs-thumb { border-radius: 0; background: #1c160c; }
+body.design-traditional .ch-mvs-thumb > img,
+body.design-traditional .ch-mvs-frame { filter: sepia(0.42) saturate(0.85) contrast(1.04) brightness(0.96); }
+/* shorts play badge → gold w/ green glyph */
+body.design-traditional .ch-mvs-play {
+    background: var(--trad-gold);
+    border-radius: var(--ch-radius-sm);
+    color: var(--trad-green);
+}
+body.design-traditional .ch-mvs-thumb:hover .ch-mvs-play { background: var(--trad-green); color: var(--trad-cream); }
+body.design-traditional .ch-mvs-avatar { border-color: var(--trad-gold); }
+/* meta on the cream mount → serif */
+body.design-traditional .ch-mvs-meta { padding: 10px 8px 14px; }
+body.design-traditional .ch-mvs-title { font-family: var(--ch-font-display); color: var(--trad-green); }
+body.design-traditional .ch-mvs-title:hover { color: var(--trad-red); }
+body.design-traditional .ch-mvs-desc { color: var(--client-color-16); font-family: var(--ch-font-body); }
+/* nav arrows → vintage green/gold */
+body.design-traditional .ch-mvs-arrow {
+    background: var(--trad-green);
+    border: 1px solid var(--trad-gold);
+    color: var(--trad-cream);
+}
+body.design-traditional .ch-mvs-arrow:hover { background: var(--trad-gold); color: var(--trad-green); }

@@ -13,6 +13,7 @@ $data = require get_template_directory() . '/intermediate_logics/franchise.php';
 	'heading'    => $data['hero']['heading'] ?? '',
 	'desc'       => $data['hero']['desc']    ?? '',
 	'modifier'   => 'ch-page-hero--franchise',
+	'badge'      => ( function_exists( 'ch_design_is' ) && ch_design_is( 'traditional' ) ) ? 'Proven Model' : '',
 	'btn1_label' => 'Start Your Enquiry',
 	'btn1_url'   => '#franchise-enquiry',
 	'btn1_icon'  => '🌿',

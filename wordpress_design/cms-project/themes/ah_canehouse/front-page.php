@@ -2,12 +2,19 @@
 defined( 'ABSPATH' ) || exit;
 get_header();
 $data = require get_template_directory() . '/intermediate_logics/home.php';
+
+// Traditional design adds the mockup sections (Our Story / Our Drinks /
+// Events & Catering) alongside the existing home sections. Gated on the
+// constant so the Modern home is byte-identical to before.
+$is_trad = function_exists( 'ch_design_is' ) && ch_design_is( 'traditional' );
 ?>
-<main class="ch-main" id="main-content">
+<main class="ch-main<?php echo $is_trad ? ' ch-trad-home' : ''; ?>" id="main-content">
 
 <?php get_template_part( 'components/news-ticker' ); ?>
 <?php get_template_part( 'components/home-banners' ); ?>
 <?php get_template_part( 'components/hero' ); ?>
+
+<?php if ( $is_trad ) { get_template_part( 'components/traditional/our-story-home' ); } ?>
 
 <?php get_template_part( 'components/carousels/showcase-carousel', null, [
 	'tag'   => $data['showcase_h']['tag']   ?? '',
@@ -33,9 +40,15 @@ $data = require get_template_directory() . '/intermediate_logics/home.php';
 ] ); ?>
 
 <?php get_template_part( 'components/menu-builder' ); ?>
+
+<?php if ( $is_trad ) { get_template_part( 'components/traditional/our-drinks' ); } ?>
+
 <?php get_template_part( 'components/benefits' ); ?>
 <?php get_template_part( 'components/story' ); ?>
 <?php get_template_part( 'components/event-typesection' ); ?>
+
+<?php if ( $is_trad ) { get_template_part( 'components/traditional/events-catering' ); } ?>
+
 <?php get_template_part( 'components/booking-wizard' ); ?>
 <?php get_template_part( 'components/franchise-section' ); ?>
 <?php get_template_part( 'components/franchise-enquiry' ); ?>

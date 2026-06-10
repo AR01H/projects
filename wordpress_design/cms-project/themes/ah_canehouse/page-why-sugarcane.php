@@ -14,6 +14,7 @@ $cta  = $data['cta'];
 	'tag'      => $data['hero']['tag']     ?? '',
 	'heading'  => $data['hero']['heading'] ?? '',
 	'desc'     => $data['hero']['desc']    ?? '',
+	'badge'    => ( function_exists( 'ch_design_is' ) && ch_design_is( 'traditional' ) ) ? "Nature's Purest Gift" : '',
 ] ); ?>
 
 <?php get_template_part( 'components/history-info' ); ?>
