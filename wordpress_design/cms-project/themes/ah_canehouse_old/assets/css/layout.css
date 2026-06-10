@@ -1,0 +1,68 @@
+/* ── The Cane House - Layout / Responsive ───────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    /* .ch-nav { padding: 1rem 2rem; } */
+    .ch-hero__inner { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+    .ch-hero__desc { margin-inline: auto; }
+    .ch-hero__btns { justify-content: center; }
+    .ch-hero__badges { justify-content: center; }
+    .ch-benefits-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ch-story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ch-story-visual { display: none; }
+    .ch-contact-section { grid-template-columns: 1fr; gap: 2rem; padding-inline: 2rem; }
+    .ch-footer__grid { grid-template-columns: 1fr 1fr; }
+    .ch-build-grid { grid-template-columns: 1fr; }
+    .ch-option-card--full { grid-column: 1; }
+}
+
+/* Hamburger/mobile controlled by JS - show only when nav items don't fit */
+body.nav--collapsed .ch-nav__links      { display: none; }
+body.nav--collapsed .ch-nav__hamburger  { display: flex; }
+
+@media (max-width: 768px) {
+    :root { --ch-section-py: 3.5rem; }
+
+    /* .ch-nav { padding: .8rem 1.5rem; } */
+
+    .ch-section-title { font-size: 1.8rem; }
+
+    .ch-reviews-container { grid-template-columns: 1fr; }
+    .ch-reviews-nav { flex-direction: row; justify-content: center; }
+    .ch-nav-dots { flex-direction: row; }
+    .ch-review-card.active { flex-direction: column; }
+
+    .ch-hire-grid { grid-template-columns: 1fr; }
+    .ch-hire-features-bar { flex-direction: column; text-align: center; }
+
+    .ch-franchise-section { padding: 3.5rem 1.5rem; }
+
+    .ch-steps-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .ch-benefits-inner { gap: 2rem; }
+
+    .ch-footer { padding: 3rem 1.5rem 0; }
+    .ch-footer__grid { grid-template-columns: 1fr; gap: 1rem; }
+    .ch-footer__bottom { flex-direction: column; text-align: center; }
+
+    .ch-flavour-grid { grid-template-columns: repeat(3, 1fr); }
+
+    .ch-story-facts { grid-template-columns: repeat(2, 1fr); }
+
+    section { padding: 3.5rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+    .ch-steps-grid { grid-template-columns: 1fr; }
+    .ch-flavour-grid { grid-template-columns: repeat(2, 1fr); }
+    .ch-hero__btns { flex-direction: column; align-items: center; }
+    .ch-hire-features-bar { gap: .8rem; }
+    .ch-story-facts { grid-template-columns: 1fr; }
+    .ch-contact-section { padding-inline: 1.5rem; }
+    .ch-footer { padding: 2.5rem 1rem 0; }
+}
+
+/* Print */
+@media print {
+    .ch-nav, .ch-whatsapp-float, .ch-ticker { display: none !important; }
+    #ch-page-content { padding-top: 0 !important; }
+}

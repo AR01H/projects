@@ -1,0 +1,11 @@
+{
+	"tag":     "Fresh Delivery",
+	"heading": "Order Fresh Juice, <span class=\"accent\">Delivered</span>",
+	"sub":     "Place a delivery request and our team will confirm all details directly with you - freshly pressed, no additives, right to your door.",
+	"image":   "",
+	"features": [
+		{ "icon": "🌿", "text": "100% natural - no additives, no preservatives" },
+		{ "icon": "📦", "text": "Delivered in sealed bottles, fully hygiene compliant" },
+		{ "icon": "📞", "text": "Our team confirms every order before dispatch" }
+	]
+}

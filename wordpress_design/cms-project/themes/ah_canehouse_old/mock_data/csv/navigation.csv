@@ -1,0 +1,10 @@
+id,label,url,visible,is_cta
+how-to-order,How To Order,#how-to-order,true,false
+about,About,/about/,true,false
+services,Services,/services/,true,false
+build,Build Juice,#build,true,false
+hire,Hire Us,#hire,true,false
+franchise,Franchise,#franchise,true,false
+faq,FAQ,#faq,true,false
+journal,Journal,/journal/,true,false
+contact-us,Hire Us,#contact,true,true

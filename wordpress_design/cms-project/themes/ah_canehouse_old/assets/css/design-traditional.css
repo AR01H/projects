@@ -1,0 +1,2433 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   THE CANE HOUSE - TRADITIONAL / PARCHMENT DESIGN SYSTEM
+   ──────────────────────────────────────────────────────────────────────────
+   Activated by: THEME_DESIGN_STATUS = 'traditional' (includes/core_settings.php)
+   Every rule is scoped under body.design-traditional, so the Modern design is
+   never touched. Loaded LAST in functions.php, so it overrides the base sheets.
+
+   STRUCTURE
+     1.  Palette + token remap            10. Buttons
+     2.  Body texture                     11. Carousel (--cc-* overrides)
+     3.  Typography + ornamental rules    12. Cards (all variants)
+     4.  Navigation                       13. Photos / images (sepia + polaroid)
+     5.  Mobile nav                        14. Forms
+     6.  News ticker                       15. Reviews / stories / certs
+     7.  Hero (parchment)                  16. Footer + floating UI
+     8.  Page-hero (parchment)             17. Scrollbar
+     9.  Sections + dark areas             18. Slot hooks  19. Responsive
+   ══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ── 1. PALETTE + TOKEN REMAP ───────────────────────────────────────────────
+   Re-declared on <body> (not :root) so they only apply in traditional mode.
+   Every --client-color-* / --ch-font-* consumed by the base sheets is remapped
+   here, so sections that read e.g. background:var(--client-color-1) become deep
+   forest-green automatically - no per-section targeting required.            */
+body.design-traditional {
+    --client-color-1:  #1e3a0e;                  /* deep forest green (dark bg / primary) */
+    --client-color-2:  #2d5016;                  /* mid forest green */
+    --client-color-3:  #4a7c23;                  /* bright green */
+    --client-color-4:  #8cb85a;                  /* light green */
+    --client-color-5:  #d4e8b4;                  /* pale green */
+    --client-color-6:  #efe3c0;                  /* parchment field bg (was pale green) */
+
+    --client-color-7:  #c9a84c;                  /* GOLD - replaces lime accent */
+    --client-color-8:  #a88230;                  /* gold dark */
+    --client-color-9:  rgba(201,168,76,0.30);    /* gold glow */
+    --client-color-10: #d8bd62;                  /* gold light */
+
+    --client-color-11: #faf3e0;                  /* warm parchment (page bg) */
+    --client-color-12: #f0e4c0;                  /* alt parchment */
+    --client-color-13: #16280a;                  /* darkest green (scrollbar track) */
+    --client-color-14: rgba(255,248,220,0.06);
+
+    --client-color-15: #24300f;                  /* body text - near-black green */
+    --client-color-16: #6a7550;                  /* muted */
+    --client-color-17: rgba(36,48,15,0.62);
+    --client-color-18: rgba(30,58,14,0.12);      /* shadow */
+    --client-color-19: rgba(30,58,14,0.22);      /* shadow md */
+    --client-color-20: rgba(178,150,96,0.45);    /* tan border */
+
+    /* base.css references this undefined token for muted text - give it a value
+       so muted copy renders correctly in traditional mode (modern unaffected) */
+    --client-color-15-muted: #6a7550;
+
+    --ch-font-body:    'Lora', Georgia, 'Times New Roman', serif;
+    --ch-font-display: 'Playfair Display', Georgia, serif;
+
+    --ch-radius:       6px;
+    --ch-radius-sm:    3px;
+    --ch-radius-pill:  8px;
+
+    /* Design-only tokens used throughout this sheet */
+    --trad-bg:           #f5e8c4;   /* main parchment surface */
+    --trad-bg-alt:       #ece0b6;   /* alternating section */
+    --trad-card:         #fbf4e2;   /* card / paper */
+    --trad-card-edge:    #efe2bd;   /* paper shadow edge */
+    --trad-border:       #c8b488;   /* tan rule (outer frame edge) */
+    --trad-border-soft:  rgba(178,150,96,0.40);
+    --trad-frame-line:   rgba(185,146,58,0.55);  /* gold hairline (inner frame) */
+    --trad-ink:          #24300f;   /* dark green ink */
+    --trad-green:        #1e3a0e;   /* deep forest green */
+    --trad-green-2:      #2d5016;
+    --trad-red:          #7a1c12;   /* burgundy accent (italic / 2nd-tone) */
+    --trad-gold:         #b9923a;   /* aged gold */
+    --trad-cream:        #faf0d8;   /* text on dark green */
+
+    background-color: var(--trad-bg);
+    color: var(--client-color-15);
+    font-family: var(--ch-font-body);
+}
+
+
+/* ── 2. BODY TEXTURE ────────────────────────────────────────────────────────
+   Warmer, slightly stronger paper grain than the modern noise.              */
+body.design-traditional::after {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 1;
+}
+
+
+/* ── 3. TYPOGRAPHY + ORNAMENTAL RULES ──────────────────────────────────────── */
+body.design-traditional h1,
+body.design-traditional h2,
+body.design-traditional h3,
+body.design-traditional h4,
+body.design-traditional .section-title,
+body.design-traditional .ch-section-title,
+body.design-traditional .ch-hero__title,
+body.design-traditional .ch-page-hero__title,
+body.design-traditional .ch-form-title {
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.005em;
+}
+
+body.design-traditional h1 { font-size: 3.6rem; font-weight: 800; }
+body.design-traditional h2 { font-size: 2.6rem; font-weight: 700; }
+body.design-traditional h3 { font-size: 1.5rem; font-weight: 600; }
+body.design-traditional h4 { font-size: 1.25rem; font-weight: 600; }
+
+body.design-traditional .section-title,
+body.design-traditional .ch-section-title { font-size: 2.6rem; font-weight: 700; }
+
+/* Two-tone display: wrapped accent words go burgundy red */
+body.design-traditional .section-title .accent,
+body.design-traditional .ch-section-title .accent,
+body.design-traditional .section-title em,
+body.design-traditional em {
+    color: var(--trad-red);
+    font-style: italic;
+    font-family: var(--ch-font-display);
+}
+
+body.design-traditional strong { color: var(--trad-green-2); }
+
+/* Eyebrow / section tag → bordered serif label */
+body.design-traditional .section-tag,
+body.design-traditional .ch-section-tag {
+    background: transparent;
+    color: var(--trad-green);
+    border: 0;
+    border-radius: 0;
+    font-family: var(--ch-font-display);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+}
+/* flourish dashes either side of the eyebrow */
+body.design-traditional .section-tag::before,
+body.design-traditional .section-tag::after,
+body.design-traditional .ch-section-tag::before,
+body.design-traditional .ch-section-tag::after {
+    content: "";
+    display: inline-block;
+    width: 26px;
+    height: 1px;
+    background: var(--trad-gold);
+    vertical-align: middle;
+    margin: 0 0.55rem;
+}
+
+/* Ornamental divider under centred section titles + page-hero titles.
+   ❦ glyph flanked by hair-lines - the recurring motif from the references. */
+body.design-traditional .ch-section-center .section-title::after,
+body.design-traditional .ch-page-hero__title::after,
+body.design-traditional .ch-divider--trad::after,
+body.design-traditional .ch-section-header--center .section-title::after {
+    content: "❦";
+    display: block;
+    width: 100%;
+    margin: 1rem auto 0;
+    text-align: center;
+    color: var(--trad-red);
+    font-size: 1.15rem;
+    line-height: 1;
+    position: relative;
+}
+/* the flanking rules */
+body.design-traditional .ch-section-center .section-title::after {
+    background: none;
+}
+
+body.design-traditional ::selection      { background: var(--trad-gold); color: var(--trad-green); }
+body.design-traditional ::-moz-selection { background: var(--trad-gold); color: var(--trad-green); }
+
+
+/* ── 4. NAVIGATION (deep green bar, gold accents) ──────────────────────────── */
+body.design-traditional .ch-nav {
+    background: var(--trad-green);
+    border-bottom: 2px solid rgba(201,168,76,0.30);
+    box-shadow: 0 2px 14px rgba(0,0,0,0.28);
+}
+body.design-traditional .ch-nav__link {
+    color: var(--trad-cream);
+    font-family: var(--ch-font-display);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+}
+body.design-traditional .ch-nav__link:hover { color: var(--trad-gold); }
+body.design-traditional .ch-nav__link.is-active {
+    color: var(--trad-gold);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--trad-gold);
+}
+body.design-traditional .ch-nav__cta-btn {
+    background: transparent;
+    color: var(--trad-cream);
+    border: 2px solid rgba(250,240,216,0.6);
+    border-radius: var(--ch-radius);
+    font-family: var(--ch-font-display);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.6rem 1.2rem;
+    transition: all 0.25s ease;
+}
+body.design-traditional .ch-nav__cta-btn:hover {
+    background: var(--trad-gold);
+    border-color: var(--trad-gold);
+    color: var(--trad-green);
+}
+body.design-traditional .ch-nav__logo-text { color: var(--trad-cream); }
+body.design-traditional .ch-nav__hamburger span { background: var(--trad-cream); }
+
+/* Dropdown */
+body.design-traditional .ch-nav__dropdown-menu {
+    background: var(--trad-green);
+    border: 1px solid rgba(201,168,76,0.30);
+    border-radius: var(--ch-radius);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.32);
+}
+body.design-traditional .ch-nav__dropdown-item:hover { background: rgba(201,168,76,0.12); }
+body.design-traditional .ch-nav__ddi-label { color: var(--trad-cream); }
+body.design-traditional .ch-nav__ddi-label--accent { color: var(--trad-gold); }
+body.design-traditional .ch-nav__ddi-desc  { color: rgba(250,240,216,0.55); }
+body.design-traditional .ch-nav__dropdown-icon { background: rgba(201,168,76,0.14); color: var(--trad-gold); }
+
+
+/* ── 5. MOBILE NAV ─────────────────────────────────────────────────────────── */
+body.design-traditional .ch-mobile-nav {
+    background: var(--trad-green);
+    border-top: 1px solid rgba(201,168,76,0.22);
+}
+body.design-traditional .ch-mobile-nav__link,
+body.design-traditional .ch-mobile-nav__summary {
+    color: var(--trad-cream);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.06em;
+    border-bottom-color: rgba(201,168,76,0.16);
+}
+body.design-traditional .ch-mobile-nav__link:hover,
+body.design-traditional .ch-mobile-nav__link.is-active {
+    color: var(--trad-gold);
+    background: rgba(201,168,76,0.08);
+}
+body.design-traditional .ch-mobile-nav__sub-link { color: rgba(250,240,216,0.82); }
+body.design-traditional .ch-mobile-nav__sub-link:hover { color: var(--trad-gold); }
+body.design-traditional .ch-mobile-nav__cta {
+    background: transparent;
+    border: 2px solid var(--trad-gold);
+    color: var(--trad-gold);
+    border-radius: var(--ch-radius);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+
+/* ── 6. NEWS TICKER ────────────────────────────────────────────────────────── */
+body.design-traditional .ch-ticker {
+    background: var(--trad-green);
+    color: var(--trad-gold);
+    letter-spacing: 0.16em;
+    font-family: var(--ch-font-display);
+    border-top: 1px solid rgba(201,168,76,0.28);
+    border-bottom: 1px solid rgba(201,168,76,0.28);
+}
+
+
+/* ── 7. HERO → PARCHMENT ────────────────────────────────────────────────────
+   Reference heroes are light parchment with two-tone serif titles, not the
+   modern dark-green gradient. Flip bg + recolour everything that assumed dark. */
+body.design-traditional .ch-hero {
+    background: var(--trad-bg);
+    min-height: auto;
+    padding: calc(var(--ch-nav-height)) 2rem 2rem;
+    border-bottom: 1px solid var(--trad-border-soft);
+}
+body.design-traditional .ch-hero::after { display: none; }      /* mobile dark fade off */
+body.design-traditional .ch-hero__deco { opacity: 0.05; color: var(--trad-green); }
+body.design-traditional .ch-bubble { background: rgba(201,168,76,0.07); }
+body.design-traditional .ch-floating-leaf { opacity: 0.16; }
+
+body.design-traditional .ch-hero__tag {
+    background: transparent;
+    border: 1px solid var(--trad-border);
+    color: var(--trad-green);
+    border-radius: var(--ch-radius-sm);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.18em;
+}
+body.design-traditional .ch-hero__title {
+    color: var(--trad-green);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+body.design-traditional .ch-hero__title .accent {
+    color: var(--trad-red);
+    font-style: italic;
+}
+body.design-traditional .ch-hero__brand {
+    color: var(--trad-gold);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.16em;
+}
+body.design-traditional .ch-hero__desc { color: var(--client-color-17); }
+body.design-traditional .ch-badge-item { color: var(--trad-ink); }
+body.design-traditional .ch-badge-item::before { color: var(--trad-gold); }
+
+/* outline button sits on light bg now, restore dark ink */
+body.design-traditional .ch-hero .btn-outline,
+body.design-traditional .btn-outline--light {
+    border-color: var(--trad-green) !important;
+    color: var(--trad-green) !important;
+}
+body.design-traditional .ch-hero .btn-outline:hover,
+body.design-traditional .btn-outline--light:hover {
+    background: var(--trad-green) !important;
+    color: var(--trad-cream) !important;
+    border-color: var(--trad-green) !important;
+}
+/* the spinning-logo glow was tuned for dark bg - soften on parchment */
+body.design-traditional .hero-glow { background: radial-gradient(circle, rgba(201,168,76,0.20) 0%, transparent 70%); }
+
+
+/* ── 8. PAGE-HERO → PARCHMENT ──────────────────────────────────────────────── */
+body.design-traditional .ch-page-hero {
+    background: var(--client-color-9) !important;
+    border-bottom: 1px solid var(--trad-border-soft);
+}
+body.design-traditional .ch-page-hero::before { opacity: 0.4; }
+body.design-traditional .ch-page-hero::after {                 /* top accent line → gold */
+    background: linear-gradient(90deg, transparent, var(--trad-gold), transparent);
+}
+body.design-traditional .ch-ph-line { display: none; }          /* laser lines off in traditional */
+
+body.design-traditional .ch-page-hero__title {
+    color: var(--trad-green);
+    font-weight: 800;
+}
+body.design-traditional .ch-page-hero__title em { color: var(--trad-red); }
+body.design-traditional .ch-page-hero__desc { color: var(--client-color-17); }
+
+body.design-traditional .ch-eyebrow,
+body.design-traditional .ch-page-hero__badge {
+    background: transparent;
+    border: 1px solid var(--trad-border);
+    color: var(--trad-green);
+    border-radius: var(--ch-radius-sm);
+    backdrop-filter: none;
+    font-family: var(--ch-font-display);
+}
+body.design-traditional .ch-eyebrow::before { background: var(--trad-gold); }
+
+
+/* ── 9. SECTIONS + DARK AREAS ──────────────────────────────────────────────── */
+body.design-traditional section { background-color: var(--trad-bg); }
+
+/* alternating bands give the scrapbook rhythm of the references.
+   Heroes and intentionally-dark sections are excluded so they keep their own bg. */
+body.design-traditional section:nth-of-type(even):not(.ch-hero):not(.ch-page-hero):not(.ch-certs-section):not(.ch-reviews-franchise-section) {
+    background-color: var(--trad-bg-alt);
+}
+
+/* hair-line rule between stacked sections */
+body.design-traditional section + section::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 72%; height: 1px;
+    background: linear-gradient(to right, transparent, var(--trad-border), transparent);
+}
+
+/* Any section explicitly painted with the primary green (benefits strip, certs,
+   franchise reviews) keeps its dark treatment - text there must read as cream. */
+body.design-traditional .ch-certs-section,
+body.design-traditional .ch-reviews-franchise-section {
+    background: var(--trad-green) !important;
+}
+
+
+/* ── 10. BUTTONS - DOUBLE-FRAME PLAQUE ──────────────────────────────────────
+   The reference CTA is a forest-green plaque with a darker outer edge and a
+   gold hairline rule set in ~4px from the edge (a "framed" look). Built with
+   layered inset box-shadows so it composes with hover + needs no pseudo:
+     1px dark outer edge → 4px fill gap → 1px gold inner line → drop shadow.   */
+body.design-traditional .btn-lime,
+body.design-traditional .btn-dark,
+body.design-traditional .ch-form-submit {
+    background: var(--trad-green);
+    color: var(--trad-cream);
+    border: 1px solid #14260a;
+    border-radius: var(--ch-radius);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    transform: rotate(-1deg);
+    font-size: 0.86rem;
+    padding: 1rem 2.4rem;
+    box-shadow:
+        inset 0 0 0 4px var(--trad-green),
+        inset 0 0 0 5px rgba(201,168,76,0.55),
+        0 4px 14px rgba(0,0,0,0.30);
+    transition: all 0.25s ease;
+}
+body.design-traditional .btn-lime:hover,
+body.design-traditional .btn-dark:hover,
+body.design-traditional .ch-form-submit:hover {
+    background: var(--trad-gold);
+    border-color: #7a5e1e;
+    color: var(--trad-green);
+    transform: translateY(-2px);
+    box-shadow:
+        inset 0 0 0 4px var(--trad-gold),
+        inset 0 0 0 5px rgba(30,58,14,0.50),
+        0 7px 20px rgba(0,0,0,0.26);
+}
+
+/* Small filled button - lighter single-inset frame (full frame would crowd it) */
+body.design-traditional .btn-lime-sm {
+    background: var(--trad-green);
+    color: var(--trad-cream);
+    border: 1px solid #14260a;
+    border-radius: var(--ch-radius-sm);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    box-shadow: inset 0 0 0 3px var(--trad-green), inset 0 0 0 4px rgba(201,168,76,0.5);
+}
+body.design-traditional .btn-lime-sm:hover {
+    background: var(--trad-gold);
+    color: var(--trad-green);
+    box-shadow: inset 0 0 0 3px var(--trad-gold), inset 0 0 0 4px rgba(30,58,14,0.45);
+    transform: translateY(-1px);
+}
+
+/* Outline button - matching framed ghost variant */
+body.design-traditional .btn-outline {
+    background: transparent;
+    border: 1px solid var(--trad-green);
+    color: var(--trad-green);
+    border-radius: var(--ch-radius);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    font-size: 0.86rem;
+    box-shadow: inset 0 0 0 4px transparent, inset 0 0 0 5px rgba(30,58,14,0.18);
+    transform:rotate(2deg)
+}
+body.design-traditional .btn-outline:hover {
+    background: var(--trad-green);
+    color: var(--trad-cream);
+    box-shadow: inset 0 0 0 4px var(--trad-green), inset 0 0 0 5px rgba(201,168,76,0.45);
+    transform: rotate(0deg);
+}
+
+
+/* ── 11. CAROUSEL (theme via --cc-* overrides on .ch-carousel) ───────────────
+   The carousel exposes per-instance CSS vars; remapping them here restyles
+   every carousel (cards, arrows, dots, CTAs, checklists) in one place.       */
+body.design-traditional .ch-carousel {
+    --cc-card-bg:           var(--trad-card);
+    --cc-card-radius:       var(--ch-radius);
+    --cc-card-padding:      1.5rem;
+    --cc-card-border:       1px solid var(--trad-border);
+    --cc-card-shadow:       0 2px 10px rgba(0,0,0,0.08);
+    --cc-card-shadow-hover: 0 8px 22px rgba(0,0,0,0.14);
+    --cc-card-border-active:1px solid var(--trad-gold);
+
+    --cc-img-radius:        var(--ch-radius-sm);
+
+    --cc-title-color:       var(--trad-green);
+
+    --cc-badge-bg:          var(--trad-green);
+    --cc-badge-color:       var(--trad-cream);
+    --cc-check-color:       var(--trad-gold);
+
+    --cc-arrow-bg:          var(--trad-card);
+    --cc-arrow-color:       var(--trad-green);
+    --cc-arrow-border:      1px solid var(--trad-border);
+    --cc-arrow-radius:      var(--ch-radius-sm);
+    --cc-arrow-shadow:      0 2px 8px rgba(0,0,0,0.12);
+    --cc-arrow-bg-hover:    var(--trad-green);
+    --cc-arrow-color-hover: var(--trad-gold);
+
+    --cc-dot-bg:            var(--trad-border);
+    --cc-dot-bg-active:     var(--trad-green);
+}
+/* dots → small diamonds (rotated squares) for the vintage feel */
+body.design-traditional .ch-carousel__dot {
+    border-radius: 1px;
+    transform: rotate(45deg);
+}
+body.design-traditional .ch-carousel__dot.is-active {
+    transform: rotate(45deg) scale(1.3);
+    background: var(--trad-gold);
+}
+body.design-traditional .ch-card__title { font-family: var(--ch-font-display); }
+
+
+/* ── 12. CARDS (all variants) ──────────────────────────────────────────────── */
+body.design-traditional .ch-card,
+body.design-traditional .ch-step-card,
+body.design-traditional .ch-hire-card,
+body.design-traditional .ch-faq-item,
+body.design-traditional .ch-price-row,
+body.design-traditional .ch-option-card,
+body.design-traditional .ch-promise-card,
+body.design-traditional .ch-story-card {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+/* featured / highlighted cards keep a gold edge */
+body.design-traditional .ch-price-row--featured,
+body.design-traditional .ch-step-card--highlight,
+body.design-traditional .ch-option-card.is-active {
+    border-color: var(--trad-gold);
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(74,124,35,0.05));
+}
+/* card titles → serif */
+body.design-traditional .ch-step-card h3,
+body.design-traditional .ch-hire-card h3,
+body.design-traditional .ch-faq-question,
+body.design-traditional .ch-price-row__title {
+    font-family: var(--ch-font-display);
+    color: var(--trad-green);
+}
+body.design-traditional .ch-h-card-list li::before { color: var(--trad-gold); }
+body.design-traditional .ch-faq-icon { color: var(--trad-gold); }
+
+
+/* ── 13. PHOTOS / IMAGES (sepia duotone + polaroid frame) ───────────────────
+   Content photography gets a gentle sepia wash to match the aged references.
+   Logos, SVG icons and emoji are excluded (they live in nav/footer/icons).   */
+body.design-traditional .ch-card__img,
+body.design-traditional .ch-cert-img,
+body.design-traditional .ch-storypage-img,
+body.design-traditional .ch-story-main-card img,
+body.design-traditional .ch-story-secondary-card img,
+body.design-traditional .ch-reviews-section img,
+body.design-traditional .ch-media-gallery img,
+body.design-traditional .ch-gallery-strip img,
+body.design-traditional .ch-equipment-gallery img,
+body.design-traditional .ch-photo--trad img {
+    filter: sepia(0.30) saturate(0.92) contrast(1.02) brightness(0.99);
+    transition: filter 0.3s ease;
+}
+body.design-traditional .ch-card--image:hover .ch-card__img,
+body.design-traditional .ch-photo--trad:hover img {
+    filter: sepia(0.12) saturate(1) contrast(1.02);
+}
+/* image-card overlay → warm sepia gradient instead of cold black */
+body.design-traditional .ch-carousel {
+    --cc-img-overlay: linear-gradient(to top, rgba(30,40,12,0.72) 35%, transparent);
+}
+
+/* Polaroid / taped photo frame - opt-in via the 'photo' slot (.ch-photo--trad).
+   Adds a cream mount, soft shadow and a faint adhesive-tape strip on top. */
+body.design-traditional .ch-photo--trad {
+    background: var(--trad-card);
+    padding: 0.7rem 0.7rem 1.6rem;
+    border: 1px solid var(--trad-border);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    position: relative;
+    display: inline-block;
+}
+body.design-traditional .ch-photo--trad::before {     /* tape */
+    content: "";
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 84px; height: 22px;
+    background: rgba(201,168,76,0.32);
+    border: 1px solid rgba(201,168,76,0.42);
+}
+body.design-traditional .ch-photo--trad figcaption,
+body.design-traditional .ch-photo--trad .ch-photo__caption {
+    font-family: var(--ch-font-display);
+    font-style: italic;
+    color: var(--trad-red);
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+
+/* ── 14. FORMS ─────────────────────────────────────────────────────────────── */
+body.design-traditional .ch-contact-form,
+body.design-traditional .ch-form--trad {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+    box-shadow: 0 6px 26px rgba(0,0,0,0.10);
+    /* transform: rotate(-1deg); */
+    /* box-shadow: 0px 21px 20px -5px var(--client-color-7); */
+}
+body.design-traditional .ch-form-title {
+    font-family: var(--ch-font-display);
+    color: var(--trad-green);
+    font-weight: 700;
+}
+body.design-traditional .ch-form-label {
+    font-family: var(--ch-font-display);
+    color: var(--trad-green);
+    letter-spacing: 0.08em;
+}
+body.design-traditional .ch-form-input,
+body.design-traditional .ch-form-select,
+body.design-traditional .ch-form-textarea {
+    background: #fffaf0;
+    border: 1.5px solid var(--trad-border);
+    border-radius: var(--ch-radius-sm);
+    font-family: var(--ch-font-body);
+    color: var(--client-color-15);
+}
+body.design-traditional .ch-form-input:focus,
+body.design-traditional .ch-form-select:focus,
+body.design-traditional .ch-form-textarea:focus {
+    border-color: var(--trad-green-2);
+    box-shadow: 0 0 0 3px rgba(45,80,22,0.14);
+}
+
+/* .ch-form-submit is styled with the framed-plaque buttons in section 10 */
+/* custom consent checkbox → green/gold */
+body.design-traditional .ch-disclaimer-box { border-color: var(--trad-green-2); }
+body.design-traditional .ch-disclaimer-check:checked + .ch-disclaimer-box {
+    background: var(--trad-green-2);
+    border-color: var(--trad-green-2);
+}
+body.design-traditional .ch-disclaimer-text a { color: var(--trad-green-2); }
+body.design-traditional .ch-form-feedback.success {
+    background: rgba(74,124,35,0.10);
+    border-color: var(--client-color-3);
+    color: var(--client-color-1);
+}
+
+
+/* ── 15. REVIEWS / STORIES / CERTS ─────────────────────────────────────────── */
+/* dark cert/franchise sections: ensure cream text + gold headings */
+body.design-traditional .ch-cert-title,
+body.design-traditional .ch-cert-trust__title { color: var(--trad-gold); }
+body.design-traditional .ch-cert-card {
+    background: rgba(255,248,220,0.05);
+    border-color: rgba(201,168,76,0.22);
+    border-radius: var(--ch-radius);
+}
+body.design-traditional .ch-cert-badge,
+body.design-traditional .ch-cert-stamp,
+body.design-traditional .ch-stamp--trad {
+    background: var(--trad-gold);
+    color: var(--trad-green);
+}
+/* circular rubber-stamp badge (opt-in via 'stamp' slot) */
+body.design-traditional .ch-stamp--trad {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 104px; height: 104px;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--trad-red);
+    border: 2px solid var(--trad-red);
+    box-shadow: inset 0 0 0 3px rgba(122,28,18,0.18);
+    font-family: var(--ch-font-display);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    transform: rotate(-8deg);
+    opacity: 0.85;
+}
+/* story-card avatar ring → gold */
+body.design-traditional .ch-story-card__avatar { border-color: var(--trad-gold); }
+body.design-traditional .ch-story-card__badge {
+    color: var(--trad-green);
+    background: rgba(201,168,76,0.16);
+    border-radius: var(--ch-radius-sm);
+}
+body.design-traditional .ch-story-card__name,
+body.design-traditional .ch-storypage-heading { font-family: var(--ch-font-display); }
+
+
+/* ── 16. FOOTER + FLOATING UI ──────────────────────────────────────────────── */
+body.design-traditional .ch-footer {
+    background: var(--trad-green);
+    color: var(--trad-cream);
+    border-top: 3px solid var(--trad-gold);
+}
+body.design-traditional .ch-footer__col-title,
+body.design-traditional .ch-footer__acc-toggle {
+    color: var(--trad-gold);
+    font-family: var(--ch-font-display);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    font-size: 0.80rem;
+    border-bottom-color: rgba(201,168,76,0.24);
+}
+body.design-traditional .ch-footer__acc-icon { color: var(--trad-gold); }
+body.design-traditional .ch-footer__link { color: rgba(250,240,216,0.74); font-family: var(--ch-font-body); }
+body.design-traditional .ch-footer__link:hover,
+body.design-traditional .ch-footer__link--highlight { color: var(--trad-gold); }
+body.design-traditional .ch-footer__bottom {
+    border-top-color: rgba(201,168,76,0.20);
+    color: rgba(250,240,216,0.46);
+    font-size: 0.80rem;
+}
+body.design-traditional .ch-footer__badge {
+    background: rgba(201,168,76,0.14);
+    color: var(--trad-gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: var(--ch-radius-sm);
+}
+body.design-traditional .ch-footer__social {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: var(--ch-radius-sm);
+}
+body.design-traditional .ch-footer__social:hover { background: var(--trad-gold); border-color: var(--trad-gold); }
+
+body.design-traditional .ch-scroll-to-top,
+body.design-traditional .ch-wa-fab {
+    background: var(--trad-green);
+    border: 2px solid var(--trad-gold);
+    color: var(--trad-gold);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+body.design-traditional .ch-scroll-to-top:hover { background: var(--trad-gold); color: var(--trad-green); }
+
+
+/* ── 17. SCROLLBAR ─────────────────────────────────────────────────────────── */
+body.design-traditional::-webkit-scrollbar-track { background: var(--trad-bg-alt); }
+body.design-traditional::-webkit-scrollbar-thumb {
+    background: var(--trad-border);
+    border-color: var(--trad-bg-alt);
+}
+body.design-traditional::-webkit-scrollbar-thumb:hover { background: var(--trad-gold); }
+
+
+/* ── 18. SLOT HOOKS ────────────────────────────────────────────────────────
+   Classes emitted by ch_design_slot('…') / ch_design_class(). They carry NO
+   styling unless a section opts in, so shared components stay untouched.
+   Base (empty) declarations documented here; specific looks defined above
+   (.ch-photo--trad, .ch-stamp--trad, .ch-divider--trad, .ch-form--trad).    */
+body.design-traditional .ch-hero--trad,
+body.design-traditional .ch-page-hero--trad,
+body.design-traditional .ch-section--trad,
+body.design-traditional .ch-card--trad,
+body.design-traditional .ch-carousel--trad { /* reserved for per-section opt-ins */ }
+
+
+/* ── 20. FRAMED SURFACES + CONTACT ─────────────────────────────────────────
+   The reference design language = layered double outlines, not flat fills.
+   Every key surface gets: a tan OUTER border + a gold hairline INNER frame set
+   ~6px in (via ::after). Together they read as the same framed plaque as the
+   CTA button, tying buttons, cards, forms and the contact card together.     */
+
+/* Contact section: base paints it solid gold (var(--accent)); restore parchment */
+body.design-traditional .ch-contact-section { background: var(--trad-bg) !important; }
+
+/* Contact / query cards */
+body.design-traditional .ch-contact-detail {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+}
+body.design-traditional .ch-contact-detail:hover { border-color: var(--trad-gold); }
+body.design-traditional .ch-cd-icon {
+    background: linear-gradient(135deg, var(--trad-green), var(--trad-green-2));
+    border-radius: var(--ch-radius-sm);
+    color: var(--trad-cream);
+}
+body.design-traditional .ch-cd-label {
+    color: var(--client-color-16);
+    font-family: var(--ch-font-display);
+}
+body.design-traditional .ch-cd-val { color: var(--trad-green); }
+body.design-traditional .ch-contact-pill,
+body.design-traditional .ch-contact-quick {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+}
+
+/* ── Inner gold frame (the "double outline") ──
+   Applied to framed surfaces. position:relative so ::after anchors correctly.
+   Image cards are excluded (they get a photo-mount frame just below).         */
+body.design-traditional .ch-contact-form,
+body.design-traditional .ch-form--trad,
+body.design-traditional .ch-contact-detail,
+body.design-traditional .ch-contact-quick,
+body.design-traditional .ch-card:not(.ch-card--image),
+body.design-traditional .ch-step-card,
+body.design-traditional .ch-hire-card,
+body.design-traditional .ch-faq-item,
+body.design-traditional .ch-promise-card,
+body.design-traditional .ch-story-card,
+body.design-traditional .ch-cert-card {
+    position: relative;
+}
+body.design-traditional .ch-contact-form::after,
+body.design-traditional .ch-form--trad::after,
+body.design-traditional .ch-contact-detail::after,
+body.design-traditional .ch-contact-quick::after,
+body.design-traditional .ch-card:not(.ch-card--image)::after,
+body.design-traditional .ch-step-card::after,
+body.design-traditional .ch-hire-card::after,
+body.design-traditional .ch-faq-item::after,
+body.design-traditional .ch-promise-card::after,
+body.design-traditional .ch-story-card::after,
+body.design-traditional .ch-cert-card::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--trad-frame-line);
+    border-radius: calc(var(--ch-radius) - 2px);
+    pointer-events: none;
+    z-index: 1;
+}
+/* tighter inset for the smaller, denser cards */
+body.design-traditional .ch-contact-detail::after { inset: 5px; }
+
+/* ── Images → vintage photo mount + frame ──
+   A cream passe-partout mat + gold inner line drawn over the photo edge with
+   inset shadows, plus a tan outer border. Sepia wash already applied earlier. */
+body.design-traditional .ch-card--image {
+    border: 1px solid var(--trad-border);
+    box-shadow:
+        inset 0 0 0 3px var(--trad-card),
+        inset 0 0 0 4px var(--trad-frame-line),
+        0 4px 14px rgba(0,0,0,0.14);
+}
+body.design-traditional .ch-cert-img,
+body.design-traditional .ch-storypage-img {
+    border: 1px solid var(--trad-border);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.16), inset 0 0 0 4px rgba(250,240,216,0.5);
+}
+
+/* ── Ledger / ruled-paper texture (opt-in via the 'section' slot) ──
+   ch_design_slot('section') → .ch-section--trad. Adds the faint ruled lines
+   seen on the reference backgrounds without disturbing shared sections.       */
+body.design-traditional .ch-section--trad {
+    background-image:
+        repeating-linear-gradient(0deg,
+            transparent 0, transparent 31px,
+            rgba(120,100,60,0.055) 31px, rgba(120,100,60,0.055) 32px);
+}
+
+
+/* ── 21. GALLERIES → OUTLINED SCRAPBOOK ────────────────────────────────────
+   Modern galleries are colour-filled tiles in a rigid grid. Traditional turns
+   each tile into a matted photo PRINT: cream passe-partout mat + gold hairline
+   frame (drawn with inset shadows, NOT a flat fill), a tape strip, and an
+   alternating up/down tilt so the wall reads as hand-placed scrapbook photos.
+   Rotation/offset are visual only (transform) - they don't reflow the grid.   */
+
+/* ── CUT-CORNER PHOTO FRAME (reusable) ──────────────────────────────────────
+   --cut controls the 45° chamfer. clip-path draws the silhouette; because
+   clip-path also clips box-shadow, the lift uses filter:drop-shadow (which
+   DOES follow the clipped shape). The double gold line is built from layers:
+     element bg = gold OUTER edge
+     ::after    = cream mat (also the empty-state surface)
+     the photo  = inset, chamfered, with an INNER gold hairline (inset shadow,
+                  clipped to the chamfer so it follows the cut).               */
+body.design-traditional .ch-cut-frame,
+body.design-traditional .ch-mg-item,
+body.design-traditional .ch-mg-item--wide,
+body.design-traditional .ch-mg-item--tall,
+body.design-traditional .ch-mg-item--normal,
+body.design-traditional .ch-gallery-item {
+    --cut: 16px;
+    background: var(--trad-gold);
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    clip-path: polygon(
+        var(--cut) 0, calc(100% - var(--cut)) 0,
+        100% var(--cut), 100% calc(100% - var(--cut)),
+        calc(100% - var(--cut)) 100%, var(--cut) 100%,
+        0 calc(100% - var(--cut)), 0 var(--cut)
+    );
+    filter: drop-shadow(0 7px 12px rgba(0,0,0,0.22));
+    box-shadow: none;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+body.design-traditional .ch-cut-frame::after,
+body.design-traditional .ch-mg-item::after,
+body.design-traditional .ch-gallery-item::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    clip-path: inherit;                 /* cream mat follows the same chamfer */
+    background: var(--trad-card);
+    z-index: 1;
+    pointer-events: none;
+}
+/* photos: inset so the gold edge + cream mat show, chamfered, inner gold line */
+body.design-traditional .ch-mg-img,
+body.design-traditional .ch-gallery-item img {
+    inset: 7px;
+    width: auto;
+    height: auto;
+    clip-path: inherit;
+    z-index: 2;
+    box-shadow: inset 0 0 0 1px var(--trad-frame-line);
+}
+body.design-traditional .ch-mg-play-btn,
+body.design-traditional .ch-mg-caption,
+body.design-traditional .ch-gallery-caption { z-index: 3; }
+
+/* ── Media gallery section + scrapbook stagger ── */
+body.design-traditional .ch-mg-section { background: var(--trad-bg-alt); }
+body.design-traditional .ch-mg-grid { gap: 1.6rem; }
+body.design-traditional .ch-mg-grid > div:nth-child(3n+1) { transform: rotate(-1.6deg) translateY(-6px); }
+body.design-traditional .ch-mg-grid > div:nth-child(3n+2) { transform: rotate(1.2deg)  translateY(8px);  }
+body.design-traditional .ch-mg-grid > div:nth-child(3n)   { transform: rotate(-0.8deg) translateY(-3px); }
+body.design-traditional .ch-mg-item:hover {
+    transform: rotate(0deg) translateY(-10px) scale(1.02) !important;
+    z-index: 5;
+    filter: drop-shadow(0 14px 22px rgba(0,0,0,0.30));
+}
+body.design-traditional .ch-mg-caption {
+    background: linear-gradient(to top, rgba(30,40,12,0.88) 0%, transparent 100%);
+}
+body.design-traditional .ch-mg-caption strong { font-family: var(--ch-font-display); }
+
+/* ── Generic image gallery section + stagger ── */
+body.design-traditional .ch-gallery-section { background: var(--trad-bg-alt); }
+body.design-traditional .ch-gallery-grid { gap: 1.6rem; }
+body.design-traditional .ch-gallery-grid > *:nth-child(odd)  { transform: rotate(-1.2deg) translateY(-5px); }
+body.design-traditional .ch-gallery-grid > *:nth-child(even) { transform: rotate(1.2deg)  translateY(5px);  }
+body.design-traditional .ch-gallery-item:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.02) !important;
+    z-index: 3;
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.26));
+}
+
+/* Reusable opt-in: add class 'ch-scrapbook--trad' (via ch_design_slot or by hand)
+   to ANY grid wrapper to give its direct children the same staggered tilt. */
+body.design-traditional .ch-scrapbook--trad > *:nth-child(3n+1) { transform: rotate(-1.5deg) translateY(-6px); }
+body.design-traditional .ch-scrapbook--trad > *:nth-child(3n+2) { transform: rotate(1.1deg)  translateY(7px);  }
+body.design-traditional .ch-scrapbook--trad > *:nth-child(3n)   { transform: rotate(-0.7deg) translateY(-3px); }
+
+
+/* ── 22. DARK-SECTION TYPOGRAPHY CONTRAST ──────────────────────────────────────
+   Dark-background sections (.ch-cta-section, .ch-certs-section, etc.) have their
+   heading and body colours already set to cream / white-70 in components.css.
+   The one failure: our global em rule (Section 3) sets em to --trad-red (#7a1c12)
+   which is near-invisible against forest-green (#1e3a0e). Switch accent to gold
+   on every dark section so it reads clearly.
+
+   Also: outline buttons on the dark CTA bg need a cream ghost variant (not the
+   green ghost variant that works on parchment).                                 */
+
+body.design-traditional .ch-cta-section .section-title em,
+body.design-traditional .ch-cta-section .section-title .accent,
+body.design-traditional .ch-cta-section em,
+body.design-traditional .ch-certs-section .section-title em,
+body.design-traditional .ch-certs-section .section-title .accent,
+body.design-traditional .ch-reviews-franchise-section .section-title em,
+body.design-traditional .ch-reviews-franchise-section .section-title .accent,
+body.design-traditional .ch-franchise-why-section .section-title em,
+body.design-traditional .ch-franchise-why-section .section-title .accent {
+    color: var(--trad-gold) !important;
+}
+
+/* Eyebrow dash rules: gold on dark bg */
+body.design-traditional .ch-cta-section .section-tag::before,
+body.design-traditional .ch-cta-section .section-tag::after,
+body.design-traditional .ch-certs-section .section-tag::before,
+body.design-traditional .ch-certs-section .section-tag::after {
+    background: var(--trad-gold);
+}
+
+/* Ghost / outline button on dark CTA bg → cream variant */
+body.design-traditional .ch-cta-section .btn-outline,
+body.design-traditional .ch-cta-section .ch-btn-outline-light {
+    border-color: rgba(250,240,216,0.60);
+    color: var(--trad-cream);
+    box-shadow:
+        inset 0 0 0 4px transparent,
+        inset 0 0 0 5px rgba(250,240,216,0.10);
+}
+body.design-traditional .ch-cta-section .btn-outline:hover,
+body.design-traditional .ch-cta-section .ch-btn-outline-light:hover {
+    background: var(--trad-gold);
+    border-color: var(--trad-gold);
+    color: var(--trad-green);
+    box-shadow:
+        inset 0 0 0 4px var(--trad-gold),
+        inset 0 0 0 5px rgba(30,58,14,0.40);
+}
+
+
+/* ── 23. EXTENDED DOUBLE-FRAME INNER OUTLINE ────────────────────────────────────
+   Extend the gold hairline inner frame (Section 20) to components that have the
+   outer tan border (Section 12) but were not yet included in the ::after group. */
+
+body.design-traditional .ch-option-card,
+body.design-traditional .ch-price-row,
+body.design-traditional .ch-fw-card,
+body.design-traditional .ch-scb-card {
+    position: relative;
+}
+body.design-traditional .ch-option-card::after,
+body.design-traditional .ch-price-row::after,
+body.design-traditional .ch-fw-card::after,
+body.design-traditional .ch-scb-card::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--trad-frame-line);
+    border-radius: calc(var(--ch-radius) - 2px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+/* ── 24. CONTACT SECTION - VISUAL INTEGRATION ──────────────────────────────────
+   The info column (heading + contact cards) is currently unstyled, making it
+   read as bare floating text beside the framed form card. Giving it the same
+   parchment-card treatment creates a symmetric two-panel block. The ❦ divider
+   after the heading and a gold top-accent line anchor the section to the rest
+   of the page.
+
+   Also: section::before separators need position:relative on the parent section
+   to anchor correctly. Added here so all ornamental hairlines render in place.  */
+
+body.design-traditional section { position: relative; }
+
+/* Gold top-accent hairline for the contact section - wider than the standard
+   tan section separator so it visually "introduces" the contact block.          */
+body.design-traditional section + .ch-contact-section::before {
+    width: 48%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--trad-gold), transparent);
+}
+
+/* Contact section: tighten the gap between the two columns when both are framed */
+body.design-traditional .ch-contact-section { gap: 3rem !important; }
+
+/* Info column: parchment-card frame - mirrors the form card beside it */
+body.design-traditional .ch-contact-info {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+    padding: 2rem;
+    position: relative;
+}
+body.design-traditional .ch-contact-info::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--trad-frame-line);
+    border-radius: calc(var(--ch-radius) - 2px);
+    pointer-events: none;
+    z-index: 1;
+}
+/* ❦ ornamental divider after the info-column heading */
+body.design-traditional .ch-contact-info .ch-section-title::after {
+    content: "❦";
+    display: block;
+    color: var(--trad-red);
+    font-size: 1.0rem;
+    line-height: 1;
+    margin-top: 0.65rem;
+}
+body.design-traditional .ch-contact-info .ch-section-title { color: var(--trad-green); }
+body.design-traditional .ch-contact-info .ch-section-body  { color: var(--client-color-17); }
+
+
+/* ── 25. CONTACT SECTION - FULL TRADITIONAL RESTYLE ────────────────────────────
+   Three problems fixed + full reference-match styling:
+   ① #contact in components.css is an ID selector (specificity 1,0,0) which
+     beats our class-only rule (0,2,1). Adding #contact to the override wins.
+   ② Layout: form on LEFT, info on RIGHT (grid order swap via CSS order property).
+   ③ Visual treatment:
+     • Centered uppercase headings with ─ ♥ ─ ornamental dividers (both panels)
+     • Info card: torn-paper top edge via ::before clip-path + no top border
+     • Info contact-detail rows → open ruled list (icon + label + value + hairline)
+     • Column ratio 3:2 (form wider, matching the reference proportions)          */
+
+/* ① Background fix: ID wins over class - match it */
+body.design-traditional #contact { background: var(--trad-bg) !important; }
+
+/* ① Also: reduce the large 5rem column gap */
+body.design-traditional .ch-contact-section {
+    grid-template-columns: 3fr 2fr !important;
+}
+
+/* ② Column order swap */
+body.design-traditional .ch-contact-form { order: 1; }
+body.design-traditional .ch-contact-info { order: 2; overflow: visible; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   FORM PANEL (left)
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* Centered uppercase heading with ─ ♥ ─ divider */
+body.design-traditional .ch-contact-form .ch-form-title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--trad-green);
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+body.design-traditional .ch-contact-form .ch-form-title::after {
+    content: "-\2665 -";        /* - ♥ - */
+    display: block;
+    text-align: center;
+    color: var(--trad-gold);
+    font-size: 0.80rem;
+    letter-spacing: 0.55em;
+    margin: 0.4rem 0 1.6rem;
+    font-style: normal;
+    font-weight: 400;
+    font-family: var(--ch-font-body);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   INFO PANEL (right) - aged parchment with torn-paper top edge
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* Base card: remove top border (torn-edge ::before provides it) */
+body.design-traditional .ch-contact-info {
+    border-top: none;
+    padding-top: 2.8rem;
+    background: var(--trad-card);
+}
+
+/* Centered uppercase heading with ─ ♥ ─ divider */
+body.design-traditional .ch-contact-info .ch-section-title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--trad-green);
+}
+/* override the ❦ added in Section 24 → use ─ ♥ ─ to match the form panel */
+body.design-traditional .ch-contact-info .ch-section-title::after {
+    content: "-\2665 -";
+    display: block;
+    text-align: center;
+    color: var(--trad-gold);
+    font-size: 0.80rem;
+    letter-spacing: 0.55em;
+    margin: 0.4rem 0 1.2rem;
+    font-style: normal;
+    font-weight: 400;
+    font-family: var(--ch-font-body);
+}
+/* Section-tag: small centred label above the heading */
+body.design-traditional .ch-contact-info .ch-section-tag {
+    text-align: center;
+    font-size: 0.66rem;
+    justify-content: center;
+    width: 100%;
+}
+/* Intro body paragraph: compact italic sub-heading below the ornament */
+body.design-traditional .ch-contact-info .ch-section-body {
+    text-align: center;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--client-color-17);
+    margin-bottom: 1.2rem;
+}
+
+/* Contact-detail rows → open ruled list, not boxed cards */
+body.design-traditional .ch-contact-info .ch-contact-detail {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--trad-border-soft) !important;
+    border-radius: 0 !important;
+    padding: 0.85rem 0 !important;
+    margin-bottom: 0 !important;
+    box-shadow: none !important;
+}
+body.design-traditional .ch-contact-info .ch-contact-detail:last-of-type {
+    border-bottom: none !important;
+}
+/* suppress the inner-frame ::after on these list items */
+body.design-traditional .ch-contact-info .ch-contact-detail::after { display: none !important; }
+body.design-traditional .ch-contact-info .ch-contact-detail:hover {
+    background: rgba(185,146,58,0.06) !important;
+    border-radius: var(--ch-radius-sm) !important;
+}
+
+/* Icon badge → flat, green-tinted */
+body.design-traditional .ch-contact-info .ch-cd-icon {
+    background: rgba(30,58,14,0.08);
+    color: var(--trad-green);
+    font-size: 1.1rem;
+    border-radius: var(--ch-radius-sm);
+}
+/* Label and value typography */
+body.design-traditional .ch-contact-info .ch-cd-label {
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--client-color-16);
+    margin-bottom: 0.1rem;
+}
+body.design-traditional .ch-contact-info .ch-cd-val {
+    color: var(--trad-green);
+    font-family: var(--ch-font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+body.design-traditional .ch-contact-info .ch-cd-val a { color: var(--trad-green-2); text-decoration: none; }
+body.design-traditional .ch-contact-info .ch-cd-val a:hover { color: var(--trad-gold); }
+
+
+/* ── 27. IMAGE SCROLL CAROUSEL - TRADITIONAL (POLAROID STRIP) ──────────────────
+   Transforms the modern auto-scroll strip into a polaroid / scrapbook strip
+   matching the reference: cream-mounted prints, sepia filter, uppercase serif
+   labels, and a hand-placed stagger so the row reads like pinned photos.
+
+   The inset box-shadow on .ch-sc-img renders ON TOP of the image (replaced
+   content) and creates the cream Polaroid mount without changing any dimensions
+   set by the instance inline CSS.                                               */
+
+/* ── Card: cream Polaroid mount + drop shadow ── */
+body.design-traditional .ch-sc-card {
+    background: var(--trad-cream);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Scrapbook stagger - alternating tilt so prints look hand-placed */
+body.design-traditional .ch-sc-card:nth-child(3n+1) { transform: rotate(-1.8deg) translateY(-4px); }
+body.design-traditional .ch-sc-card:nth-child(3n+2) { transform: rotate(1.4deg)  translateY( 5px); }
+body.design-traditional .ch-sc-card:nth-child(3n)   { transform: rotate(-0.9deg) translateY(-2px); }
+/* Flatten tilt while the strip is paused (hover) */
+body.design-traditional .ch-sc:hover .ch-sc-card { transform: none !important; }
+
+/* ── Media: square Polaroid corners, no radius ── */
+body.design-traditional .ch-sc-media { border-radius: 0 !important; }
+
+/* ── Photo → aged sepia print + cream inset mount ──
+   inset box-shadow renders above replaced content (the img pixel data),
+   creating a visible cream frame without touching layout dimensions.   */
+body.design-traditional .ch-sc-img {
+    filter: sepia(0.38) saturate(0.86) contrast(1.05) brightness(0.97);
+    box-shadow: inset 0 0 0 9px var(--trad-cream);
+}
+body.design-traditional .ch-sc-vid {
+    filter: sepia(0.20) saturate(0.90);
+}
+
+/* ── Caption: cream paper area below the print ── */
+body.design-traditional .ch-sc-caption {
+    padding: 10px 8px 16px;
+    background: var(--trad-cream);
+    text-align: center;
+}
+body.design-traditional .ch-sc-caption strong {
+    font-family: var(--ch-font-display);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--trad-ink);
+}
+body.design-traditional .ch-sc-caption span {
+    color: var(--client-color-16);
+    font-size: 0.70rem;
+    font-family: var(--ch-font-body);
+    font-style: italic;
+}
+
+/* ── Video badge ── */
+body.design-traditional .ch-sc-badge {
+    background: rgba(30,40,12,0.72);
+    color: var(--trad-cream);
+    font-family: var(--ch-font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    border-radius: var(--ch-radius-sm);
+}
+
+
+/* ── 26. ZIGZAG INNER-FRAME BORDER ─────────────────────────────────────────────
+   Replaces the straight gold hairline on every ::after inner frame with a
+   sawtooth/zigzag line - matching the torn-paper top-edge motif. Two SVG data-URI
+   layers draw repeating V-shapes at the top and bottom; two 1px gradient layers
+   fill the left and right sides, connecting at the zigzag corners.              */
+
+body.design-traditional .ch-contact-form::after,
+body.design-traditional .ch-form--trad::after,
+body.design-traditional .ch-contact-detail::after,
+body.design-traditional .ch-contact-quick::after,
+body.design-traditional .ch-card:not(.ch-card--image)::after,
+body.design-traditional .ch-step-card::after,
+body.design-traditional .ch-hire-card::after,
+body.design-traditional .ch-faq-item::after,
+body.design-traditional .ch-promise-card::after,
+body.design-traditional .ch-story-card::after,
+body.design-traditional .ch-cert-card::after,
+body.design-traditional .ch-option-card::after,
+body.design-traditional .ch-price-row::after,
+body.design-traditional .ch-fw-card::after,
+body.design-traditional .ch-scb-card::after,
+body.design-traditional .ch-contact-info::after {
+    border: none;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath d='M0 0 L4 4 L8 0' fill='none' stroke='%23b9923a' stroke-opacity='.48' stroke-width='1.2' stroke-linejoin='miter'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath d='M0 4 L4 0 L8 4' fill='none' stroke='%23b9923a' stroke-opacity='.48' stroke-width='1.2' stroke-linejoin='miter'/%3E%3C/svg%3E"),
+        linear-gradient(rgba(185,146,58,0.48), rgba(185,146,58,0.48)),
+        linear-gradient(rgba(185,146,58,0.48), rgba(185,146,58,0.48));
+    background-size:     8px 4px,          8px 4px,          1px calc(100% - 8px), 1px calc(100% - 8px);
+    background-position: 0   0,            0   100%,          0   4px,              100% 4px;
+    background-repeat:   repeat-x,         repeat-x,          no-repeat,            no-repeat;
+}
+
+
+/* ── 19. RESPONSIVE ────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    body.design-traditional h1               { font-size: 2.8rem; }
+    body.design-traditional h2,
+    body.design-traditional .section-title,
+    body.design-traditional .ch-section-title{ font-size: 2.2rem; }
+}
+@media (max-width: 768px) {
+    body.design-traditional h1               { font-size: 2.2rem; }
+    body.design-traditional h2,
+    body.design-traditional .section-title,
+    body.design-traditional .ch-section-title{ font-size: 1.9rem; }
+    body.design-traditional .ch-photo--trad  { padding: 0.5rem 0.5rem 1.3rem; }
+
+    /* Contact section: reset to single column on mobile */
+    body.design-traditional .ch-contact-section {
+        grid-template-columns: 1fr !important;
+    }
+    body.design-traditional .ch-contact-form,
+    body.design-traditional .ch-contact-info { order: unset; }
+    /* Torn edge not needed when stacked */
+    body.design-traditional .ch-contact-info { border-top: 1px solid var(--trad-border); padding-top: 2rem; }
+
+    /* flatten the scrapbook tilt once tiles stack, so they don't overlap */
+    body.design-traditional .ch-mg-grid > div:nth-child(3n+1),
+    body.design-traditional .ch-mg-grid > div:nth-child(3n+2),
+    body.design-traditional .ch-mg-grid > div:nth-child(3n),
+    body.design-traditional .ch-gallery-grid > *:nth-child(odd),
+    body.design-traditional .ch-gallery-grid > *:nth-child(even),
+    body.design-traditional .ch-scrapbook--trad > * {
+        transform: none;
+    }
+}
+
+
+
+/* ── BOOKING + FRANCHISE BANNER CARDS (ch-bkb / ch-frn) ─────────────────────
+   Parchment card with a gold frame. Kept compact: sensible type scale, tight
+   rhythm, and a mobile layout that scales DOWN (not up) so it matches the
+   rest of the traditional theme.                                            */
+
+/* Section: trim the outer padding so the card isn't floating in dead space */
+body.design-traditional .ch-bkb-section,
+body.design-traditional .ch-frn-section{
+    padding: 3rem 1.5rem;
+}
+
+body.design-traditional .ch-bkb-card,
+body.design-traditional .ch-frn-card{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    overflow:hidden;
+    background:var(--trad-bg);
+    background-image:
+        radial-gradient(circle at top left, var(--client-color-18), transparent 220px),
+        radial-gradient(circle at bottom right, var(--client-color-18), transparent 220px);
+    border:4px solid var(--trad-gold);
+    border-radius:16px;
+    box-shadow:
+        0 14px 36px var(--client-color-19),
+        inset 0 0 40px rgba(0,0,0,.05);
+}
+
+body.design-traditional .ch-bkb-card::before,
+body.design-traditional .ch-frn-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: linear-gradient( var(--client-color-14),rgba(0,0,0,.025) );
+}
+
+/* LEFT CONTENT */
+
+body.design-traditional .ch-bkb-content,
+body.design-traditional .ch-frn-content{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:0.85rem;
+    padding:2.6rem 2.8rem;
+    z-index:2;
+}
+
+body.design-traditional .ch-bkb-tag,
+body.design-traditional .ch-frn-tag{
+    display:flex;
+    align-items:center;
+    gap:0.7rem;
+    font-family:var(--ch-font-display);
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--trad-gold);
+    margin:0;
+}
+
+body.design-traditional .ch-bkb-tag::before,
+body.design-traditional .ch-bkb-tag::after,
+body.design-traditional .ch-frn-tag::before,
+body.design-traditional .ch-frn-tag::after{
+    content:"";
+    width:34px;
+    height:1px;
+    background:currentColor;
+}
+
+body.design-traditional .ch-bkb-title,
+body.design-traditional .ch-frn-title{
+    font-family:var(--ch-font-display);
+    font-size:clamp(1.7rem, 2.6vw, 2.4rem);
+    line-height:1.08;
+    font-weight:800;
+    color: var(--trad-green);
+    text-transform:uppercase;
+    margin:0;
+}
+
+body.design-traditional .ch-bkb-title span,
+body.design-traditional .ch-frn-title span,
+body.design-traditional .ch-bkb-title .accent,
+body.design-traditional .ch-frn-title .accent{
+    color: var(--trad-red);
+    font-style:italic;
+}
+
+body.design-traditional .ch-bkb-sub,
+body.design-traditional .ch-frn-sub{
+    font-family:var(--ch-font-body);
+    font-size:clamp(0.92rem, 1.4vw, 1.02rem);
+    line-height:1.7;
+    color:var(--trad-ink);
+    opacity:0.85;
+    margin:0;
+    max-width:46ch;
+}
+
+body.design-traditional .ch-bkb-features,
+body.design-traditional .ch-frn-features{
+    padding:0;
+    margin:0.2rem 0 0.6rem;
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:0.55rem;
+}
+
+body.design-traditional .ch-bkb-features li,
+body.design-traditional .ch-frn-features li{
+    display:flex;
+    align-items:center;
+    gap:0.7rem;
+    font-family:var(--ch-font-body);
+    font-size:0.92rem;
+    color:var(--trad-ink);
+    font-weight:600;
+}
+
+body.design-traditional .ch-bkb-features li::before,
+body.design-traditional .ch-frn-features li::before{
+    content:"✦";
+    color:var(--trad-gold);
+    font-size:0.85rem;
+}
+
+/* BUTTON */
+
+body.design-traditional .ch-bkb-open,
+body.design-traditional .ch-frn-open{
+    align-self:flex-start;
+    margin-top:0.3rem;
+    padding:0.85rem 2rem !important;
+    background:var(--trad-green);
+    color:var(--trad-cream);
+    border:2px solid var(--trad-gold);
+    border-radius:8px;
+    font-family:var(--ch-font-display);
+    font-size:0.92rem !important;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow: 0 6px 16px var(--client-color-19);
+    transition:.25s ease;
+}
+
+body.design-traditional .ch-bkb-open:hover,
+body.design-traditional .ch-frn-open:hover{
+    background:var(--trad-gold);
+    color:var(--trad-green);
+    transform:translateY(-2px);
+}
+
+/* RIGHT VISUAL */
+
+body.design-traditional .ch-bkb-visual,
+body.design-traditional .ch-frn-visual{
+    position:relative;
+    overflow:hidden;
+    min-height:300px;
+    background-size:cover;
+    background-position:center;
+}
+body.design-traditional .ch-bkb-visual img,
+body.design-traditional .ch-frn-visual img{
+    filter: sepia(0.34) saturate(0.9) contrast(1.02);
+}
+
+body.design-traditional .ch-bkb-visual::before,
+body.design-traditional .ch-frn-visual::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    /* parchment colour derived from the card bg so the photo blends in
+       with no hard seam between content and image */
+    background: linear-gradient(to right, var(--trad-bg) 0%, color-mix(in srgb, var(--trad-bg) 55%, transparent) 22%, transparent 45%);
+}
+/* franchise has the image on the LEFT, so fade from the right edge instead */
+body.design-traditional .ch-frn-visual::before{
+    background: linear-gradient(to left, var(--trad-bg) 0%, color-mix(in srgb, var(--trad-bg) 55%, transparent) 22%, transparent 45%);
+}
+
+/* Badge → gold pill in theme */
+body.design-traditional .ch-bkb-visual-badge,
+body.design-traditional .ch-frn-visual-badge{
+    z-index:2;
+    background:var(--trad-gold);
+    color:var(--trad-green);
+    font-family:var(--ch-font-display);
+    font-weight:700;
+    border-radius:6px;
+}
+
+/* ── TABLET: stack, image on top, scaled down ── */
+@media (max-width:880px){
+    body.design-traditional .ch-bkb-section,
+    body.design-traditional .ch-frn-section{
+        padding:2.25rem 1rem;
+    }
+    body.design-traditional .ch-bkb-card,
+    body.design-traditional .ch-frn-card{
+        grid-template-columns:1fr;
+        border-width:3px;
+    }
+    body.design-traditional .ch-bkb-visual,
+    body.design-traditional .ch-frn-visual{
+        min-height:220px;
+        order:-1;
+    }
+    /* when stacked, the side-fade looks wrong → fade from the bottom */
+    body.design-traditional .ch-bkb-visual::before,
+    body.design-traditional .ch-frn-visual::before{
+        background: linear-gradient(to top, var(--trad-bg) 0%, color-mix(in srgb, var(--trad-bg) 50%, transparent) 18%, transparent 36%);
+    }
+    body.design-traditional .ch-bkb-content,
+    body.design-traditional .ch-frn-content{
+        padding:1.9rem 1.6rem;
+        gap:0.7rem;
+    }
+}
+
+/* ── PHONE: tighten type + full-width button ── */
+@media (max-width:520px){
+    body.design-traditional .ch-bkb-section,
+    body.design-traditional .ch-frn-section{
+        padding:1.75rem 0.75rem;
+    }
+    body.design-traditional .ch-bkb-card,
+    body.design-traditional .ch-frn-card{
+        border-radius:12px;
+    }
+    body.design-traditional .ch-bkb-content,
+    body.design-traditional .ch-frn-content{
+        padding:1.6rem 1.25rem;
+    }
+    body.design-traditional .ch-bkb-title,
+    body.design-traditional .ch-frn-title{
+        font-size:1.55rem;
+    }
+    body.design-traditional .ch-bkb-sub,
+    body.design-traditional .ch-frn-sub{
+        font-size:0.9rem;
+        line-height:1.6;
+    }
+    body.design-traditional .ch-bkb-features li,
+    body.design-traditional .ch-frn-features li{
+        font-size:0.86rem;
+    }
+    body.design-traditional .ch-bkb-tag::before,
+    body.design-traditional .ch-bkb-tag::after,
+    body.design-traditional .ch-frn-tag::before,
+    body.design-traditional .ch-frn-tag::after{
+        width:20px;
+    }
+    body.design-traditional .ch-bkb-open,
+    body.design-traditional .ch-frn-open{
+        align-self:stretch;
+        text-align:center;
+        justify-content:center;
+    }
+    body.design-traditional .ch-bkb-visual,
+    body.design-traditional .ch-frn-visual{
+        min-height:180px;
+    }
+}
+
+
+/* ── 28. FORMS - TRADITIONAL PARCHMENT TREATMENT ───────────────────────────
+   Replaces the modern green-gradient form look with the vintage parchment
+   aesthetic shown in the reference: cream paper card, sepia-toned inputs,
+   solid forest-green submit button, gold focus ring.                        */
+
+/* ── Form card container ── */
+body.design-traditional .ch-contact-form {
+    background: var(--trad-card);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius);
+    box-shadow:
+        2px 4px 16px rgba(30,40,12,0.12),
+        0 1px 3px rgba(30,40,12,0.08);
+    padding: 2.2rem 2rem;
+}
+
+/* Inner double-frame on the form card */
+body.design-traditional .ch-contact-form::after {
+    /* inherits zigzag rule from Section 26 - ensure it still shows */
+    z-index: 0;
+}
+
+/* ── Form title ── */
+body.design-traditional .ch-form-title {
+    font-family: var(--ch-font-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--trad-ink);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0.35rem;
+}
+/* Heart ornament under form title */
+body.design-traditional .ch-form-title::after {
+    content: "- \2665 -";
+    display: block;
+    color: var(--trad-gold);
+    font-size: 0.72rem;
+    letter-spacing: 0.55em;
+    margin: 0.3rem 0 1.6rem;
+    font-weight: 400;
+}
+
+/* ── Labels ── */
+body.design-traditional .ch-form-label {
+    font-family: var(--ch-font-body);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--trad-ink);
+    opacity: 0.75;
+    margin-bottom: 0.4rem;
+}
+
+/* ── Inputs, select, textarea ── */
+body.design-traditional .ch-form-input,
+body.design-traditional .ch-form-select,
+body.design-traditional .ch-form-textarea {
+    background: var(--trad-bg);
+    border: 1px solid var(--trad-border);
+    border-radius: var(--ch-radius-sm);
+    color: var(--trad-ink);
+    font-family: var(--ch-font-body);
+    font-size: 0.88rem;
+    padding: 0.78rem 0.9rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+body.design-traditional .ch-form-input::placeholder,
+body.design-traditional .ch-form-textarea::placeholder {
+    color: var(--trad-ink);
+    opacity: 0.38;
+    font-style: italic;
+}
+
+/* Gold focus ring instead of green */
+body.design-traditional .ch-form-input:focus,
+body.design-traditional .ch-form-select:focus,
+body.design-traditional .ch-form-textarea:focus {
+    border-color: var(--trad-gold);
+    box-shadow: 0 0 0 2px rgba(185,146,58,0.20);
+    outline: none;
+}
+
+/* Select: sepia-toned chevron */
+body.design-traditional .ch-form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b9923a' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+body.design-traditional .ch-form-select option {
+    background: var(--trad-card);
+    color: var(--trad-ink);
+}
+
+/* Textarea */
+body.design-traditional .ch-form-textarea {
+    min-height: 120px;
+    line-height: 1.65;
+    resize: vertical;
+}
+
+/* ── Submit button ── */
+body.design-traditional .ch-form-submit {
+    background: var(--trad-green);
+    background-image: none;
+    color: var(--trad-cream);
+    font-family: var(--ch-font-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border: 2px solid var(--trad-green-2);
+    border-radius: var(--ch-radius);
+    box-shadow: 2px 3px 10px rgba(30,40,12,0.30);
+    padding: 1rem 2rem;
+    transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+}
+
+body.design-traditional .ch-form-submit:hover {
+    background: var(--trad-green-2);
+    box-shadow: 3px 5px 18px rgba(30,40,12,0.40);
+    transform: translateY(-2px);
+}
+
+body.design-traditional .ch-form-submit:disabled {
+    background: var(--trad-border);
+    box-shadow: none;
+    color: var(--trad-ink);
+    opacity: 0.6;
+    transform: none;
+}
+
+/* ── Feedback messages ── */
+body.design-traditional .ch-form-feedback.success {
+    background: rgba(46,80,22,0.08);
+    border: 1px solid var(--trad-green);
+    color: var(--trad-green);
+}
+
+body.design-traditional .ch-form-feedback.error {
+    background: rgba(122,28,18,0.08);
+    border: 1px solid var(--trad-red);
+    color: var(--trad-red);
+}
+
+/* ── Disclaimer / consent checkbox ── */
+body.design-traditional .ch-disclaimer-box {
+    border-color: var(--trad-border);
+    background: var(--trad-bg);
+    border-radius: 3px;
+}
+
+body.design-traditional .ch-disclaimer-check:checked + .ch-disclaimer-box {
+    background: var(--trad-green);
+    border-color: var(--trad-green);
+}
+
+body.design-traditional .ch-disclaimer-check:focus-visible + .ch-disclaimer-box {
+    box-shadow: 0 0 0 3px rgba(185,146,58,0.25);
+}
+
+body.design-traditional .ch-disclaimer-text {
+    color: var(--client-color-16);
+}
+
+body.design-traditional .ch-disclaimer-text a {
+    color: var(--trad-green);
+}
+
+/* Validation error colour */
+body.design-traditional .ch-form-input.invalid,
+body.design-traditional .ch-form-textarea.invalid {
+    border-color: var(--trad-red);
+    box-shadow: 0 0 0 2px rgba(122,28,18,0.12);
+}
+
+body.design-traditional .ch-field-error,
+body.design-traditional .ch-consent-error {
+    color: var(--trad-red);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   29. FEATURES RIBBON - REFERENCE-MATCH (DARK GREEN + VERTICAL ICON/TITLE/SUB)
+   ══════════════════════════════════════════════════════════════════════════
+   Reference: deep-green band, 5 equal items, icon on top, bold uppercase
+   title, italic subtitle, gold hairline dividers between items.            */
+
+body.design-traditional .ch-features-ribbon {
+    background: var(--trad-green) !important;
+    border-top: 2px solid var(--trad-gold);
+    border-bottom: 2px solid var(--trad-gold);
+    padding: 1.6rem 0;
+}
+body.design-traditional .ch-ribbon-grid {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 0;
+    flex-wrap: nowrap;
+}
+body.design-traditional .ch-ribbon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.32rem;
+    padding: 0.75rem 2rem;
+    flex: 1;
+    min-width: 100px;
+    position: relative;
+}
+/* gold hairline divider between items */
+body.design-traditional .ch-ribbon-item + .ch-ribbon-item::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 12%;
+    height: 76%;
+    width: 1px;
+    background: rgba(201,168,76,0.32);
+}
+body.design-traditional .ch-ribbon-icon {
+    font-size: 1.45rem;
+    display: block;
+    filter: sepia(0.4) brightness(1.35);
+    line-height: 1;
+    margin-bottom: 0.1rem;
+}
+body.design-traditional .ch-ribbon-text {
+    color: var(--trad-cream);
+    font-family: var(--ch-font-display);
+    font-size: 0.60rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1.4;
+}
+body.design-traditional .ch-ribbon-sub {
+    color: rgba(250,240,216,0.58);
+    font-family: var(--ch-font-body);
+    font-size: 0.58rem;
+    font-style: italic;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    margin-top: -0.1rem;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   30. MEMORY / POLAROID SECTION - "MORE THAN A DRINK. IT'S A MEMORY."
+   ══════════════════════════════════════════════════════════════════════════
+   Two-column layout:
+   Left  - eyebrow + script heading + ♥ ornament + body paragraphs
+   Right - 2×2 grid of Polaroid photos (cream mount, sepia, scrapbook tilt) */
+
+body.design-traditional .ch-memory-section {
+    background: var(--trad-bg);
+    padding: 5rem 0;
+    border-top: 1px solid var(--trad-border-soft);
+    border-bottom: 1px solid var(--trad-border-soft);
+}
+body.design-traditional .ch-memory-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* Left column */
+body.design-traditional .ch-memory-eyebrow {
+    font-family: var(--ch-font-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--trad-green);
+    margin: 0 0 0.2rem;
+}
+body.design-traditional .ch-memory-heading {
+    font-family: var(--ch-font-display);
+    font-size: clamp(2.2rem, 3.5vw, 3.0rem);
+    font-weight: 800;
+    color: var(--trad-ink);
+    line-height: 1.1;
+    margin: 0;
+}
+body.design-traditional .ch-memory-heading em {
+    color: var(--trad-red);
+    font-style: italic;
+}
+body.design-traditional .ch-ornament-heart {
+    display: block;
+    color: var(--trad-red);
+    font-size: 0.88rem;
+    letter-spacing: 0.55em;
+    margin: 0.9rem 0 1.2rem;
+    font-family: var(--ch-font-body);
+}
+body.design-traditional .ch-memory-body {
+    font-family: var(--ch-font-body);
+    font-size: 0.94rem;
+    line-height: 1.85;
+    color: var(--trad-ink);
+    opacity: 0.85;
+    margin-bottom: 0.85rem;
+    max-width: 40ch;
+}
+
+/* Right column - photo grid */
+body.design-traditional .ch-memory-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+}
+
+/* Polaroid card */
+body.design-traditional .ch-polaroid {
+    background: var(--trad-cream);
+    padding: 7px 7px 36px;
+    border: 1px solid var(--trad-border);
+    box-shadow: 3px 5px 18px rgba(0,0,0,0.18);
+    position: relative;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+body.design-traditional .ch-polaroid--1 { transform: rotate(-1.8deg) translateY(-5px); }
+body.design-traditional .ch-polaroid--2 { transform: rotate( 1.4deg) translateY( 4px); }
+body.design-traditional .ch-polaroid--3 { transform: rotate(-0.9deg) translateY( 3px); }
+body.design-traditional .ch-polaroid--4 { transform: rotate( 1.6deg) translateY(-5px); }
+/* flatten on parent hover */
+body.design-traditional .ch-memory-photos:hover .ch-polaroid { transform: none !important; }
+
+body.design-traditional .ch-polaroid-mount {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+}
+body.design-traditional .ch-polaroid-mount img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: sepia(0.42) saturate(0.82) contrast(1.06) brightness(0.96);
+    box-shadow: inset 0 0 0 2px rgba(201,168,76,0.22);
+}
+body.design-traditional .ch-polaroid-caption {
+    position: absolute;
+    bottom: 7px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: var(--ch-font-body);
+    font-size: 0.70rem;
+    font-style: italic;
+    color: var(--trad-ink);
+    opacity: 0.80;
+    letter-spacing: 0.03em;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   31. GALLERY STRIP - POLAROID CARDS + GREEN TITLE TILE
+   ══════════════════════════════════════════════════════════════════════════
+   Section background: alt parchment.
+   Container becomes flex-row: section-header = dark green "title card" tile,
+   gallery track = polaroid prints alongside it.                            */
+
+body.design-traditional .ch-gallery-strip-section {
+    background: var(--trad-bg-alt);
+    border-top: 1px solid var(--trad-border-soft);
+    border-bottom: 1px solid var(--trad-border-soft);
+    padding: 4rem 0;
+}
+
+/* Make container flex so header sits beside the strip */
+body.design-traditional .ch-gallery-strip-section .container {
+    display: flex;
+    gap: 1.8rem;
+    align-items: flex-start;
+}
+body.design-traditional .ch-gallery-strip-section .ch-section-header {
+    flex: 0 0 150px;
+    background: var(--trad-green);
+    border: 2px solid var(--trad-gold);
+    border-radius: var(--ch-radius);
+    padding: 2rem 1.2rem;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+body.design-traditional .ch-gallery-strip-section .ch-section-header::after { display: none; }
+/* Green tile: recolour its internal text */
+body.design-traditional .ch-gallery-strip-section .ch-section-tag {
+    color: var(--trad-gold);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+}
+body.design-traditional .ch-gallery-strip-section .ch-section-tag::before,
+body.design-traditional .ch-gallery-strip-section .ch-section-tag::after {
+    display: none;
+}
+body.design-traditional .ch-gallery-strip-section .section-title {
+    color: var(--trad-cream);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0.3rem 0 0;
+}
+body.design-traditional .ch-gallery-strip-section .section-title em { color: var(--trad-gold); }
+body.design-traditional .ch-gallery-strip-section .section-title::after { display: none; }
+body.design-traditional .ch-gallery-strip-section .ch-section-body {
+    color: rgba(250,240,216,0.60);
+    font-size: 0.74rem;
+    margin-top: 0.5rem;
+}
+
+/* Gallery track fills remaining space */
+body.design-traditional .ch-gstrip { flex: 1; margin-top: 0; }
+body.design-traditional .ch-gstrip__track { gap: 1.2rem; padding: 0.3rem 0; }
+
+/* Each card = cream Polaroid print */
+body.design-traditional .ch-gstrip__card {
+    background: var(--trad-cream);
+    border: 1px solid var(--trad-border);
+    box-shadow: 3px 5px 14px rgba(0,0,0,0.16);
+    padding: 6px 6px 28px;
+    border-radius: 0;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: visible;
+}
+/* Scrapbook stagger */
+body.design-traditional .ch-gstrip__card:nth-child(odd)  { transform: rotate(-1.3deg) translateY(-4px); }
+body.design-traditional .ch-gstrip__card:nth-child(even) { transform: rotate( 1.1deg) translateY( 4px); }
+body.design-traditional .ch-gstrip__card:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.02) !important;
+    box-shadow: 4px 12px 26px rgba(0,0,0,0.24);
+    z-index: 3;
+}
+body.design-traditional .ch-gstrip__img {
+    filter: sepia(0.38) saturate(0.88) contrast(1.02) brightness(0.97);
+    display: block;
+    border-radius: 0;
+}
+body.design-traditional .ch-gstrip__caption {
+    position: absolute;
+    bottom: 5px; left: 0; right: 0;
+    text-align: center;
+    background: transparent;
+    padding: 0;
+}
+body.design-traditional .ch-gstrip__caption strong {
+    font-family: var(--ch-font-body);
+    font-size: 0.64rem;
+    font-style: italic;
+    color: var(--trad-ink);
+    opacity: 0.75;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   32. PAGE HERO - LARGE SERIF HEADINGS (REFERENCE MATCH)
+   ══════════════════════════════════════════════════════════════════════════
+   Reference pages show very large bold-serif uppercase headings (4-5rem)
+   on a parchment background, with a script italic subtitle in burgundy,
+   small eyebrow tag, and ❦ ornamental divider below.                      */
+
+body.design-traditional .ch-page-hero {
+    background: var(--trad-bg) !important;
+    padding-top: calc(var(--ch-nav-height, 72px));
+    padding-bottom: 4rem;
+    text-align: center;
+}
+body.design-traditional .ch-page-hero__inner { max-width: 700px; margin: 0 auto; }
+
+body.design-traditional .ch-page-hero__title {
+    font-family: var(--ch-font-display);
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--trad-green);
+    line-height: 1.0;
+    margin-bottom: 0.5rem;
+}
+/* Ornament divider under page-hero title */
+body.design-traditional .ch-page-hero__title::after {
+    content: "❦";
+    display: block;
+    color: var(--trad-red);
+    font-size: 1.0rem;
+    margin: 0.7rem auto 0;
+    letter-spacing: 0;
+}
+/* Subtitle / desc in italic burgundy */
+body.design-traditional .ch-page-hero__desc {
+    font-family: var(--ch-font-display);
+    font-size: clamp(1.0rem, 2vw, 1.3rem);
+    font-style: italic;
+    color: var(--trad-red);
+    margin-top: 0.6rem;
+    line-height: 1.5;
+}
+/* Eyebrow */
+body.design-traditional .ch-eyebrow {
+    font-family: var(--ch-font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--trad-green);
+    border: 0;
+    background: transparent;
+    margin-bottom: 0.6rem;
+}
+/* Stamp badge */
+body.design-traditional .ch-page-hero__badge {
+    display: inline-block;
+    border: 2px solid var(--trad-red);
+    color: var(--trad-red);
+    font-family: var(--ch-font-display);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.8rem;
+    border-radius: 2px;
+    transform: rotate(-1.5deg);
+    margin-bottom: 0.8rem;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   33. RESPONSIVE - NEW SECTIONS (29–32)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    body.design-traditional .ch-ribbon-grid { flex-wrap: wrap; }
+    body.design-traditional .ch-ribbon-item { min-width: 180px; padding: 0.7rem 1.5rem; }
+    body.design-traditional .ch-memory-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    body.design-traditional .ch-gallery-strip-section .container { flex-wrap: wrap; }
+    body.design-traditional .ch-gallery-strip-section .ch-section-header { flex: 0 0 100%; align-self: auto; padding: 1.5rem 2rem; flex-direction: row; gap: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+    /* Ribbon: 2-col wrap */
+    body.design-traditional .ch-ribbon-item {
+        min-width: calc(50% - 1rem);
+        border-bottom: 1px solid rgba(201,168,76,0.16);
+    }
+    body.design-traditional .ch-ribbon-item + .ch-ribbon-item::before { display: none; }
+
+    /* Memory: stack */
+    body.design-traditional .ch-memory-inner { grid-template-columns: 1fr; gap: 2rem; }
+    body.design-traditional .ch-memory-photos { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    body.design-traditional .ch-memory-body { max-width: 100%; }
+    body.design-traditional .ch-polaroid--1,
+    body.design-traditional .ch-polaroid--2,
+    body.design-traditional .ch-polaroid--3,
+    body.design-traditional .ch-polaroid--4 { transform: none; }
+
+    /* Gallery strip: header full-width above */
+    body.design-traditional .ch-gallery-strip-section .container { flex-direction: column; }
+    body.design-traditional .ch-gallery-strip-section .ch-section-header {
+        width: 100%; flex: 0 0 auto;
+        flex-direction: row; align-items: center; gap: 1rem;
+        padding: 1.2rem 1.5rem;
+    }
+
+    /* Page hero */
+    body.design-traditional .ch-page-hero__title { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   34. CONTACT - CLIPBOARD FORM + PINNED POLAROID + RUBBER-STAMP STICKER
+   ══════════════════════════════════════════════════════════════════════════
+   Reference-match decorations for the contact section:
+     • Form card reads as a clipboard - a metal clip clamps the top edge
+     • A pinned Polaroid photo sits in the info column (pushpin + tilt + tape)
+     • A rotated rubber-stamp "100% NATURAL" sticker overlaps the form corner
+     • Contact icons become circular forest-green badges
+     • Both panels get a torn-paper top edge
+   All elements are emitted only in traditional mode (PHP-gated), so modern
+   is untouched. Decorations are pointer-events:none / aria-hidden.          */
+
+/* Give both panels room for the overhanging clip / stamp / pins */
+body.design-traditional .ch-contact-form,
+body.design-traditional .ch-contact-info {
+    overflow: visible;
+    margin-top: 1.6rem;
+}
+
+/* ── CLIPBOARD CLIP on the form ──────────────────────────────────────────── */
+body.design-traditional .ch-form-clip {
+    position: absolute;
+    top: -19px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92px;
+    height: 34px;
+    z-index: 6;
+    background:
+        linear-gradient(180deg, #5a5f52 0%, #3c4036 55%, #2b2e26 100%);
+    border-radius: 7px 7px 5px 5px;
+    box-shadow:
+        0 3px 7px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        inset 0 -2px 3px rgba(0,0,0,0.30);
+}
+/* the rounded pressure-pad / lever on top of the clip */
+body.design-traditional .ch-form-clip::before {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 46px;
+    height: 16px;
+    background: linear-gradient(180deg, #6b7062 0%, #3c4036 100%);
+    border-radius: 8px 8px 3px 3px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), 0 1px 2px rgba(0,0,0,0.3);
+}
+/* the slot / hole through the clip */
+body.design-traditional .ch-form-clip::after {
+    content: "";
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 5px;
+    background: rgba(0,0,0,0.40);
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.5);
+}
+
+/* lift the form title clear of the clip */
+body.design-traditional .ch-contact-form .ch-form-title { margin-top: 1.1rem; }
+
+/* ── TORN-PAPER TOP EDGE on both panels ──────────────────────────────────── */
+body.design-traditional .ch-contact-form::before,
+body.design-traditional .ch-contact-info::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: var(--trad-card);
+    /* ragged tear silhouette */
+    clip-path: polygon(
+        0 60%, 3% 35%, 6% 70%, 9% 30%, 12% 65%, 15% 40%, 18% 72%, 21% 33%,
+        24% 62%, 27% 38%, 30% 70%, 33% 30%, 36% 64%, 39% 42%, 42% 71%, 45% 34%,
+        48% 60%, 51% 38%, 54% 70%, 57% 32%, 60% 66%, 63% 40%, 66% 72%, 69% 33%,
+        72% 62%, 75% 36%, 78% 70%, 81% 31%, 84% 64%, 87% 41%, 90% 71%, 93% 34%,
+        96% 62%, 100% 40%, 100% 100%, 0 100%
+    );
+    z-index: 2;
+}
+
+/* ── PINNED POLAROID in the info column ──────────────────────────────────── */
+body.design-traditional .ch-contact-polaroid {
+    position: relative;
+    margin: 1.8rem auto 0.4rem;
+    width: 78%;
+    max-width: 230px;
+    background: var(--trad-cream);
+    padding: 9px 9px 34px;
+    border: 1px solid var(--trad-border);
+    box-shadow: 3px 6px 18px rgba(0,0,0,0.22);
+    transform: rotate(-2.4deg);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    z-index: 3;
+}
+body.design-traditional .ch-contact-polaroid:hover {
+    transform: rotate(0deg) translateY(-3px);
+    box-shadow: 4px 10px 26px rgba(0,0,0,0.28);
+}
+body.design-traditional .ch-contact-polaroid__mount {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+}
+body.design-traditional .ch-contact-polaroid__mount img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: sepia(0.42) saturate(0.82) contrast(1.06) brightness(0.96);
+}
+body.design-traditional .ch-contact-polaroid__cap {
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--ch-font-display);
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--trad-red);
+    letter-spacing: 0.02em;
+}
+/* push-pin head + needle */
+body.design-traditional .ch-contact-pin {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%,
+        color-mix(in srgb, var(--trad-red) 55%, #fff) 0%,
+        color-mix(in srgb, var(--trad-red) 85%, #fff) 55%,
+        var(--trad-red) 100%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    z-index: 4;
+}
+body.design-traditional .ch-contact-pin::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 8px;
+    background: rgba(0,0,0,0.35);
+}
+
+/* ── RUBBER-STAMP "100% NATURAL" STICKER on the form corner ──────────────── */
+body.design-traditional .ch-contact-stamp {
+    position: absolute;
+    top: 18px;
+    right: -26px;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    border: 2px solid var(--trad-red);
+    box-shadow: inset 0 0 0 3px rgba(122,28,18,0.20);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--trad-red);
+    font-family: var(--ch-font-display);
+    transform: rotate(-13deg);
+    opacity: 0.88;
+    background: rgba(250,240,216,0.55);
+    z-index: 6;
+    pointer-events: none;
+}
+body.design-traditional .ch-contact-stamp__top,
+body.design-traditional .ch-contact-stamp__bot {
+    font-size: 0.50rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+body.design-traditional .ch-contact-stamp__big {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1;
+    margin: 1px 0;
+}
+
+/* ── CONTACT ICONS → circular forest-green badges (reference match) ──────── */
+body.design-traditional .ch-contact-info .ch-cd-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    color: var(--trad-cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    box-shadow: 0 2px 6px var(--client-color-19);
+    border: 2px solid var(--trad-gold);
+}
+
+/* ── RESPONSIVE: tuck decorations in on small screens ────────────────────── */
+@media (max-width: 768px) {
+    body.design-traditional .ch-contact-stamp { right: 8px; top: 10px; width: 72px; height: 72px; }
+    body.design-traditional .ch-contact-stamp__big { font-size: 1.05rem; }
+    body.design-traditional .ch-contact-polaroid { transform: none; }
+}
