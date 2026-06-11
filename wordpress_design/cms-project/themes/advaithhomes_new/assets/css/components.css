@@ -1,0 +1,99 @@
+/* ============================================
+   Component styles (loaded site-wide)
+   ============================================ */
+
+/* ── Form Builder (.adn-form) ─────────────── */
+.adn-form {
+	max-width: 640px;
+}
+.adn-form__grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+.adn-form__field {
+	flex: 1 1 100%;
+	display: flex;
+	flex-direction: column;
+	gap: .35rem;
+}
+.adn-form__field--half {
+	flex: 1 1 calc(50% - .5rem);
+	min-width: 220px;
+}
+.adn-form__label {
+	font-weight: 600;
+	font-size: .9rem;
+}
+.adn-form__req {
+	color: #c0392b;
+	margin-left: .15rem;
+}
+.adn-form__input {
+	padding: .6rem .75rem;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	font: inherit;
+	width: 100%;
+	box-sizing: border-box;
+}
+.adn-form__input:focus {
+	outline: 2px solid #2d5a1b;
+	outline-offset: 1px;
+}
+.adn-form__radios {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+.adn-form__radio,
+.adn-form__checkbox {
+	display: inline-flex;
+	align-items: center;
+	gap: .4rem;
+	font-size: .92rem;
+	cursor: pointer;
+}
+.adn-form__help {
+	color: #777;
+	font-size: .8rem;
+}
+.adn-form__submit {
+	margin-top: 1.1rem;
+	padding: .65rem 1.6rem;
+	border: 0;
+	border-radius: 6px;
+	background: #2d5a1b;
+	color: #fff;
+	font-weight: 700;
+	cursor: pointer;
+}
+.adn-form__submit:disabled {
+	opacity: .6;
+	cursor: wait;
+}
+.adn-form__msg {
+	margin-top: 1rem;
+	padding: .7rem 1rem;
+	border-radius: 6px;
+	font-size: .92rem;
+}
+.adn-form__msg--success {
+	background: #d4edda;
+	color: #155724;
+	border-left: 4px solid #28a745;
+}
+.adn-form__msg--error {
+	background: #f8d7da;
+	color: #721c24;
+	border-left: 4px solid #dc3545;
+}
+
+/* Honeypot: visually removed but still in the DOM for bots. */
+.adn-form__hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}

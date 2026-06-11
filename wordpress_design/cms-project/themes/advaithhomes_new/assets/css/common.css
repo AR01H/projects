@@ -1,0 +1,136 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+	scroll-behavior: smooth;
+	-webkit-text-size-adjust: 100%;
+	font-size: 16px;
+}
+
+body {
+	font-family: var(--font-body);
+	font-size: 1rem;
+	line-height: 1.7;
+	color: var(--text-primary);
+	background: var(--bg);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+img, video, svg { display: block; max-width: 100%; height: auto; }
+img { object-fit: contain; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font: inherit; border: none; background: none; }
+ul, ol { list-style: none; }
+input, textarea, select { font: inherit; }
+
+/* ── Typography ───────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-display);
+	font-weight: 600;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: var(--text-primary);
+}
+
+h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); }
+h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
+h4 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+em { font-family: var(--font-accent); font-style: italic; }
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--client-color-700);
+    border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--client-color-600);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--client-color-700) transparent;
+}
+
+/* ── Text selection ── */
+::selection {
+    background: var(--client-color-600);
+    color: #fff;
+}
+
+/* =========================================
+   REMOVE SCROLLBAR ARROWS
+========================================= */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar-button{
+	display:none;
+	width:0;
+	height:0;
+}
+
+/* =========================================
+   CUSTOM SCROLLBAR
+========================================= */
+
+/* Width */
+::-webkit-scrollbar{
+	width:10px;
+	height:10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track{
+	background:var(--slate-100);
+	border-radius:999px;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb{
+	background:
+		linear-gradient(
+			180deg,
+			var(--gold-400),
+			var(--gold-600)
+		);
+
+	border-radius:999px;
+
+	border:2px solid var(--slate-100);
+}
+
+/* Hover */
+::-webkit-scrollbar-thumb:hover{
+	background:
+		linear-gradient(
+			180deg,
+			var(--gold-500),
+			var(--gold-700)
+		);
+}
+
+/* Firefox */
+*{
+	scrollbar-width:thin;
+	scrollbar-color:var(--gold-500) var(--slate-100);
+}

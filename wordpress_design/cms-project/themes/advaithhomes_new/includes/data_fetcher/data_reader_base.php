@@ -1,0 +1,49 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * ADN_Data_Reader
+ *
+ * Shared base for the CSV / JSON / HTML readers. Its only job is to turn a
+ * short data name (e.g. "faqs") into a safe absolute path inside data/{type}/.
+ *
+ * Security: the name is stripped to [a-z0-9_-] and the resolved path is
+ * realpath-contained inside the data folder, so a value like "../../wp-config"
+ * can never escape the data directory (path-traversal proof).
+ */
+abstract class ADN_Data_Reader {
+
+	/**
+	 * @param string $subdir data sub-folder: 'csv' | 'json' | 'html' | 'pdfs'
+	 * @param string $name   bare file name without extension
+	 * @param string $ext    file extension without the dot
+	 * @return string Absolute path, or '' when the name is unsafe / file missing.
+	 */
+	protected static function resolve( $subdir, $name, $ext ) {
+		$name = preg_replace( '/[^a-zA-Z0-9_-]/', '', (string) $name );
+		if ( '' === $name ) {
+			return '';
+		}
+
+		$base = realpath( ADN_THEME_DIR . '/data/' . $subdir );
+		if ( ! $base ) {
+			return '';
+		}
+
+		$path = realpath( $base . '/' . $name . '.' . $ext );
+		if ( ! $path || 0 !== strpos( $path, $base ) || ! is_file( $path ) ) {
+			return '';
+		}
+
+		return $path;
+	}
+
+	/** Public URL for a data file (used for PDFs / downloads). '' when missing. */
+	protected static function resolve_url( $subdir, $name, $ext ) {
+		$name = preg_replace( '/[^a-zA-Z0-9_-]/', '', (string) $name );
+		if ( '' === $name || ! self::resolve( $subdir, $name, $ext ) ) {
+			return '';
+		}
+		return ADN_THEME_URI . '/data/' . $subdir . '/' . $name . '.' . $ext;
+	}
+}

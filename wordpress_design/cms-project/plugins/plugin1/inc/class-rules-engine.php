@@ -157,7 +157,6 @@ class AH_Rules_Engine {
 	 */
 	public static function evaluate( string $trigger_name, array $context, bool $immediate = false ): void {
 		global $wpdb;
-		self::install_tables();
 
 		// ── Log every evaluate() call before rule check ───────────────────────
 		$el = self::evaluate_table();
