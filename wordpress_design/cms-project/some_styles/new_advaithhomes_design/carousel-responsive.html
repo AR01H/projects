@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Repeating Carousel – Advaith Homes</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ============================================================
+     RESPONSIVE REPEATING CAROUSEL
+     Desktop: 4 cards · Tablet: 2 cards · Mobile: 1 card
+     Side arrow buttons · Infinite loop · Repositionable dots
+  ============================================================ */
+
+  /* ---------- PAGE SHELL ---------- */
+  .page-hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
+    padding: 56px 0 48px;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 75% 50%, rgba(201,168,76,.14) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .page-hero-inner { position: relative; z-index: 1; }
+  .page-hero h1 { color: #fff; margin-bottom: 10px; font-size: clamp(1.8rem,3.5vw,2.6rem); }
+  .page-hero p  { color: rgba(255,255,255,.72); font-size: 1rem; max-width: 540px; margin: 0; }
+  .page-hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(201,168,76,.2); border: 1px solid rgba(201,168,76,.35);
+    color: var(--color-accent); font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .1em;
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+
+  .demo-section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .demo-section:nth-child(even) { background: var(--color-bg-section); }
+
+  .demo-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--color-tag-bg); color: var(--color-primary);
+    font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .demo-title { font-size: 1.3rem; margin-bottom: 4px; }
+  .demo-desc  { font-size: .85rem; color: var(--color-text-muted); margin-bottom: 32px; }
+
+  /* ============================================================
+     CORE CAROUSEL COMPONENT
+  ============================================================ */
+  /*
+    Usage:
+      <div class="rc"
+           data-per-desktop="4"
+           data-per-tablet="2"
+           data-per-mobile="1"
+           data-dots="below"          ← below | above | left | right | none
+           data-dots-style="pill"     ← pill | dot | line | dash | number
+           data-autoplay="0"          ← ms, 0 = off
+           data-gap="20">
+        <div class="rc-track-wrap">
+          <button class="rc-btn rc-btn-prev">←</button>
+          <div class="rc-viewport">
+            <div class="rc-track">
+              <div class="rc-slide"> …card… </div>
+              …
+            </div>
+          </div>
+          <button class="rc-btn rc-btn-next">→</button>
+        </div>
+        <div class="rc-dots-wrap"></div>   ← injected by JS
+      </div>
+  */
+
+  .rc { position: relative; }
+
+  /* track wrapper: side buttons + viewport in a row */
+  .rc-track-wrap {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  /* viewport clips the sliding track */
+  .rc-viewport {
+    overflow: hidden; flex: 1; min-width: 0;
+  }
+
+  /* sliding track */
+  .rc-track {
+    display: flex;
+    transition: transform .48s cubic-bezier(.25,.46,.45,.94);
+    will-change: transform;
+  }
+
+  /* each slide */
+  .rc-slide {
+    flex-shrink: 0;
+    /* width set by JS via --rc-per and gap */
+  }
+
+  /* ---- Side arrow buttons ---- */
+  .rc-btn {
+    flex-shrink: 0;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-dark); font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .2s; user-select: none;
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font-body); font-weight: 700;
+    z-index: 2;
+  }
+  .rc-btn:hover  { background: var(--color-primary); color: #fff; border-color: var(--color-primary); box-shadow: var(--shadow-md); transform: scale(1.06); }
+  .rc-btn:active { transform: scale(.97); }
+  /* dark variant */
+  .rc-btn.dark   { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); color: #fff; }
+  .rc-btn.dark:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-dark); }
+
+  /* ---- Dots wrapper ---- */
+  .rc-dots-wrap {
+    display: flex;
+    align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 6px;
+  }
+  /* positions */
+  .rc.dots-below  { flex-direction: column; }
+  .rc.dots-above  { flex-direction: column-reverse; }
+  .rc.dots-above  .rc-dots-wrap { margin-bottom: 16px; margin-top: 0; }
+  .rc.dots-below  .rc-dots-wrap { margin-top: 20px; }
+  .rc.dots-left   .rc-dots-wrap { margin-right: 16px; flex-direction: column; }
+  .rc.dots-right  .rc-dots-wrap { margin-left:  16px; flex-direction: column; }
+  .rc.dots-left,
+  .rc.dots-right  { flex-direction: row; align-items: center; }
+  .rc.dots-none   .rc-dots-wrap { display: none; }
+
+  /* ---- Dot style: dot (default round) ---- */
+  .rc-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-border-dark);
+    border: none; padding: 0; cursor: pointer;
+    transition: all .3s;
+  }
+  .rc-dot.active { background: var(--color-primary); }
+
+  /* ---- Dot style: pill ---- */
+  .rc.style-pill .rc-dot {
+    width: 8px; height: 8px; border-radius: 4px;
+    background: var(--color-border-dark);
+  }
+  .rc.style-pill .rc-dot.active {
+    width: 28px; background: var(--color-primary);
+  }
+
+  /* ---- Dot style: line ---- */
+  .rc.style-line .rc-dot {
+    width: 28px; height: 3px; border-radius: 2px;
+    background: var(--color-border-dark);
+  }
+  .rc.style-line .rc-dot.active { background: var(--color-primary); }
+
+  /* ---- Dot style: dash ---- */
+  .rc.style-dash .rc-dot {
+    width: 16px; height: 3px; border-radius: 1px;
+    background: var(--color-border-dark);
+  }
+  .rc.style-dash .rc-dot.active { width: 40px; background: var(--color-accent); }
+
+  /* ---- Dot style: number ---- */
+  .rc.style-number .rc-dot {
+    width: auto; height: auto;
+    border-radius: 4px;
+    background: var(--color-bg-section);
+    color: var(--color-text-muted);
+    font-size: .72rem; font-weight: 700;
+    padding: 4px 9px; line-height: 1;
+    font-family: var(--font-body);
+  }
+  .rc.style-number .rc-dot.active {
+    background: var(--color-primary); color: #fff;
+  }
+
+  /* dark bg variants */
+  .rc.dark-dots .rc-dot            { background: rgba(255,255,255,.25); }
+  .rc.dark-dots .rc-dot.active     { background: #fff; }
+  .rc.dark-dots.style-dash .rc-dot.active { background: var(--color-accent); }
+
+  /* ============================================================
+     CARD DESIGNS (reuse across all demos)
+  ============================================================ */
+  .guide-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden; height: 100%;
+    text-decoration: none; color: inherit;
+    transition: box-shadow .25s, transform .25s;
+    display: flex; flex-direction: column;
+  }
+  .guide-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+
+  .gc-img {
+    height: 148px; display: flex; align-items: center;
+    justify-content: center; font-size: 3rem; position: relative;
+  }
+  .gc-img.c1 { background: linear-gradient(135deg,#e8f0ec,#c8dece); }
+  .gc-img.c2 { background: linear-gradient(135deg,#fdf3d9,#f5e0a0); }
+  .gc-img.c3 { background: linear-gradient(135deg,#dde3ee,#b8c3d8); }
+  .gc-img.c4 { background: linear-gradient(135deg,#fce8e0,#f5c4b0); }
+  .gc-img.c5 { background: linear-gradient(135deg,#e9ede8,#d0dace); }
+  .gc-img.c6 { background: linear-gradient(135deg,#ede9fe,#c9bff5); }
+  .gc-img.c7 { background: linear-gradient(135deg,#dbeafe,#93c5fd); }
+  .gc-img.c8 { background: linear-gradient(135deg,#fce7f3,#f9a8d4); }
+
+  .gc-pill {
+    position: absolute; top: 10px; left: 10px;
+    font-size: .67rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; padding: 3px 9px; border-radius: 20px;
+  }
+  .pill-green { background: var(--color-tag-bg); color: var(--color-primary); }
+  .pill-gold  { background: #fdf3d9; color: #92660a; }
+  .pill-navy  { background: #dde8fb; color: #1e40af; }
+  .pill-red   { background: #fee2e2; color: #b91c1c; }
+  .pill-purple{ background: #ede9fe; color: #5b21b6; }
+
+  .gc-body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+  .gc-body h4 {
+    font-size: .92rem; color: var(--color-dark);
+    line-height: 1.35; margin-bottom: 6px;
+  }
+  .gc-body p  { font-size: .78rem; line-height: 1.5; flex: 1; margin-bottom: 12px; }
+  .gc-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: .74rem; color: var(--color-text-light);
+    border-top: 1px solid var(--color-border); padding-top: 10px; margin-top: auto;
+  }
+  .gc-read { color: var(--color-primary); font-weight: 600; }
+
+  /* dark card variant */
+  .guide-card.dark-card {
+    background: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.12);
+  }
+  .guide-card.dark-card h4  { color: #fff; }
+  .guide-card.dark-card p   { color: rgba(255,255,255,.65); }
+  .guide-card.dark-card .gc-meta { border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.4); }
+  .guide-card.dark-card .gc-read { color: var(--color-accent); }
+
+  /* dark section */
+  .dark-section {
+    background: var(--color-primary) !important;
+  }
+  .dark-section .demo-label {
+    background: rgba(255,255,255,.12); color: rgba(255,255,255,.85);
+  }
+  .dark-section .demo-title { color: #fff; }
+  .dark-section .demo-desc  { color: rgba(255,255,255,.6); }
+
+  /* position switcher UI */
+  .switcher {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;
+    align-items: center;
+  }
+  .switcher-label { font-size: .8rem; font-weight: 600; color: var(--color-text-muted); margin-right: 4px; }
+  .sw-btn {
+    padding: 7px 14px; border: 1.5px solid var(--color-border);
+    border-radius: 20px; font-size: .78rem; font-weight: 500;
+    cursor: pointer; background: var(--color-white); color: var(--color-text);
+    transition: all .2s; font-family: var(--font-body);
+  }
+  .sw-btn:hover  { border-color: var(--color-primary); color: var(--color-primary); }
+  .sw-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+  .sw-sep { width: 1px; height: 24px; background: var(--color-border); margin: 0 4px; }
+
+  .dark-section .sw-btn { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.75); }
+  .dark-section .sw-btn:hover { background: rgba(255,255,255,.2); color: #fff; }
+  .dark-section .sw-btn.active { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-dark); }
+  .dark-section .sw-sep  { background: rgba(255,255,255,.15); }
+  .dark-section .switcher-label { color: rgba(255,255,255,.55); }
+
+  @media (max-width: 768px) {
+    .rc-btn { width: 38px; height: 38px; font-size: .9rem; }
+    .demo-section { padding: 44px 0; }
+  }
+  @media (max-width: 480px) {
+    .rc-btn { width: 34px; height: 34px; font-size: .85rem; }
+  }
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🏠</div>
+        <div class="logo-text">
+          <span class="logo-name">ADVAITH</span>
+          <span class="logo-sub">HOMES</span>
+        </div>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="buying.html"       class="nav-link">Buying</a>
+        <a href="selling.html"      class="nav-link">Selling</a>
+        <a href="house-movers.html" class="nav-link">House Movers</a>
+        <a href="calculators.html"  class="nav-link">Calculators</a>
+        <a href="guides.html"       class="nav-link">Guides</a>
+        <a href="news.html"         class="nav-link">News</a>
+        <a href="regulations.html"  class="nav-link">Regulations</a>
+        <a href="ask-expert.html"   class="nav-link">Ask an Expert</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn-search" aria-label="Search">🔍</button>
+        <a href="ask-expert.html" class="btn btn-primary btn-sm">Get Guidance</a>
+        <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="page-hero-tag">🎠 Component</div>
+    <h1>Responsive Repeating Carousel</h1>
+    <p>4 cards desktop · 2 tablet · 1 mobile · Side buttons · Infinite loop · Repositionable dots with 5 styles</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DEMO 1 — Default: dots BELOW · style PILL
+============================================================ -->
+<section class="demo-section">
+  <div class="container">
+    <div class="demo-label">Demo 1</div>
+    <h2 class="demo-title">Dots below — Pill style</h2>
+    <p class="demo-desc">Desktop: 4 cards · Tablet: 2 · Mobile: 1 · Dots below · Pill indicators · Infinite loop</p>
+
+    <!-- Live position + style switcher -->
+    <div class="switcher" id="d1-switcher">
+      <span class="switcher-label">Dot position:</span>
+      <button class="sw-btn active" data-pos="below">Below</button>
+      <button class="sw-btn" data-pos="above">Above</button>
+      <button class="sw-btn" data-pos="left">Left</button>
+      <button class="sw-btn" data-pos="right">Right</button>
+      <button class="sw-btn" data-pos="none">None</button>
+      <span class="sw-sep"></span>
+      <span class="switcher-label">Dot style:</span>
+      <button class="sw-btn active" data-style="pill">Pill</button>
+      <button class="sw-btn" data-style="dot">Dot</button>
+      <button class="sw-btn" data-style="line">Line</button>
+      <button class="sw-btn" data-style="dash">Dash</button>
+      <button class="sw-btn" data-style="number">Number</button>
+    </div>
+
+    <div class="rc dots-below style-pill"
+         id="rc1"
+         data-per-desktop="4"
+         data-per-tablet="2"
+         data-per-mobile="1"
+         data-gap="20"
+         data-autoplay="0">
+      <div class="rc-track-wrap">
+        <button class="rc-btn rc-btn-prev" aria-label="Previous">&#8592;</button>
+        <div class="rc-viewport">
+          <div class="rc-track">
+            <div class="rc-slide"><a href="guide-buying-step-by-step.html" class="guide-card"><div class="gc-img c1"><span class="gc-pill pill-green">Guide</span>🏡</div><div class="gc-body"><h4>Step-by-Step Guide to Buying a Home</h4><p>From deposit to keys — everything in plain English.</p><div class="gc-meta"><span>12 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="stamp-duty.html" class="guide-card"><div class="gc-img c2"><span class="gc-pill pill-gold">Tax</span>🏷</div><div class="gc-body"><h4>Stamp Duty: Complete 2024/25 Guide</h4><p>Understand exactly what SDLT you owe and when to pay it.</p><div class="gc-meta"><span>8 min read</span><span class="gc-read">Calculate →</span></div></div></a></div>
+            <div class="rc-slide"><a href="article-template.html" class="guide-card"><div class="gc-img c3"><span class="gc-pill pill-navy">Mortgage</span>🏦</div><div class="gc-body"><h4>How to Choose the Right Mortgage Deal</h4><p>Fixed, tracker, offset — we explain every option clearly.</p><div class="gc-meta"><span>9 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="article-template.html" class="guide-card"><div class="gc-img c4"><span class="gc-pill pill-red">Legal</span>⚖️</div><div class="gc-body"><h4>Leasehold vs Freehold Explained</h4><p>What the difference means for your rights and costs.</p><div class="gc-meta"><span>10 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="article-template.html" class="guide-card"><div class="gc-img c5"><span class="gc-pill pill-green">Selling</span>🔑</div><div class="gc-body"><h4>Best Time to Sell — Data Breakdown</h4><p>When buyers are most active and prices are highest.</p><div class="gc-meta"><span>7 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="article-template.html" class="guide-card"><div class="gc-img c6"><span class="gc-pill pill-purple">Moving</span>🚚</div><div class="gc-body"><h4>Full Moving Home Checklist 2024</h4><p>Every task before, during and after moving day.</p><div class="gc-meta"><span>6 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="article-template.html" class="guide-card"><div class="gc-img c7"><span class="gc-pill pill-navy">Market</span>📊</div><div class="gc-body"><h4>Regional House Price Tracker: April 2024</h4><p>Every UK region's price movement at a glance.</p><div class="gc-meta"><span>5 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="article-template.html" class="guide-card"><div class="gc-img c8"><span class="gc-pill pill-red">Regulation</span>📋</div><div class="gc-body"><h4>Renters Reform Bill: Key Changes</h4><p>Section 21 abolished — what this means in practice.</p><div class="gc-meta"><span>8 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+          </div>
+        </div>
+        <button class="rc-btn rc-btn-next" aria-label="Next">&#8594;</button>
+      </div>
+      <div class="rc-dots-wrap"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DEMO 2 — Dots ABOVE · style LINE · auto-advance
+============================================================ -->
+<section class="demo-section">
+  <div class="container">
+    <div class="demo-label">Demo 2</div>
+    <h2 class="demo-title">Dots above — Line style · Auto-advances every 3 s</h2>
+    <p class="demo-desc">Desktop: 4 · Tablet: 2 · Mobile: 1 · Dots above · Line indicators · 3 second autoplay</p>
+
+    <div class="rc dots-above style-line"
+         id="rc2"
+         data-per-desktop="4"
+         data-per-tablet="2"
+         data-per-mobile="1"
+         data-gap="20"
+         data-autoplay="3000">
+      <div class="rc-track-wrap">
+        <button class="rc-btn rc-btn-prev">&#8592;</button>
+        <div class="rc-viewport">
+          <div class="rc-track">
+            <div class="rc-slide"><a href="ask-expert.html" class="guide-card"><div class="gc-img c1"><span class="gc-pill pill-green">Expert</span>🤝</div><div class="gc-body"><h4>Find a Solicitor for Your Purchase</h4><p>Get matched with a regulated conveyancer in your area.</p><div class="gc-meta"><span>Free service</span><span class="gc-read">Get Matched →</span></div></div></a></div>
+            <div class="rc-slide"><a href="ask-expert.html" class="guide-card"><div class="gc-img c2"><span class="gc-pill pill-gold">Expert</span>🏦</div><div class="gc-body"><h4>Find an FCA Mortgage Adviser</h4><p>Whole-of-market broker — no obligation, free matching.</p><div class="gc-meta"><span>Free service</span><span class="gc-read">Get Matched →</span></div></div></a></div>
+            <div class="rc-slide"><a href="ask-expert.html" class="guide-card"><div class="gc-img c3"><span class="gc-pill pill-navy">Expert</span>🔭</div><div class="gc-body"><h4>Book a RICS Chartered Surveyor</h4><p>HomeBuyer Report or Building Survey, matched to you.</p><div class="gc-meta"><span>Free service</span><span class="gc-read">Get Matched →</span></div></div></a></div>
+            <div class="rc-slide"><a href="ask-expert.html" class="guide-card"><div class="gc-img c4"><span class="gc-pill pill-red">Expert</span>📦</div><div class="gc-body"><h4>Find a Removal Company</h4><p>Compare quotes from vetted removal firms near you.</p><div class="gc-meta"><span>Free service</span><span class="gc-read">Get Quotes →</span></div></div></a></div>
+            <div class="rc-slide"><a href="ask-expert.html" class="guide-card"><div class="gc-img c5"><span class="gc-pill pill-green">Expert</span>💼</div><div class="gc-body"><h4>Buyer-Side Property Consultant</h4><p>End-to-end guidance from an independent property expert.</p><div class="gc-meta"><span>Free service</span><span class="gc-read">Get Matched →</span></div></div></a></div>
+            <div class="rc-slide"><a href="ask-expert.html" class="guide-card"><div class="gc-img c6"><span class="gc-pill pill-purple">Expert</span>⚖️</div><div class="gc-body"><h4>Tax Adviser for Your Property</h4><p>CGT, SDLT, income tax — specialist advice matched fast.</p><div class="gc-meta"><span>Free service</span><span class="gc-read">Get Matched →</span></div></div></a></div>
+          </div>
+        </div>
+        <button class="rc-btn rc-btn-next">&#8594;</button>
+      </div>
+      <div class="rc-dots-wrap"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DEMO 3 — Dots LEFT · style DASH
+============================================================ -->
+<section class="demo-section">
+  <div class="container">
+    <div class="demo-label">Demo 3</div>
+    <h2 class="demo-title">Dots left — Dash style</h2>
+    <p class="demo-desc">Desktop: 4 · Tablet: 2 · Mobile: 1 · Dot column on left · Active dash grows wider</p>
+
+    <div class="rc dots-left style-dash"
+         id="rc3"
+         data-per-desktop="4"
+         data-per-tablet="2"
+         data-per-mobile="1"
+         data-gap="20"
+         data-autoplay="0">
+      <div class="rc-dots-wrap"></div>
+      <div style="flex:1;min-width:0;">
+        <div class="rc-track-wrap">
+          <button class="rc-btn rc-btn-prev">&#8592;</button>
+          <div class="rc-viewport">
+            <div class="rc-track">
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c1"><span class="gc-pill pill-green">Calculator</span>🧮</div><div class="gc-body"><h4>Stamp Duty Calculator</h4><p>Instant SDLT estimate — first-time buyer relief included.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c2"><span class="gc-pill pill-gold">Calculator</span>💰</div><div class="gc-body"><h4>Mortgage Affordability Calculator</h4><p>See your maximum borrowing based on income and outgoings.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c3"><span class="gc-pill pill-navy">Calculator</span>📅</div><div class="gc-body"><h4>Monthly Payment Calculator</h4><p>Work out your exact monthly mortgage repayment amount.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c4"><span class="gc-pill pill-red">Calculator</span>🔑</div><div class="gc-body"><h4>Rent vs Buy Calculator</h4><p>Compare the true financial cost of renting versus buying.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c5"><span class="gc-pill pill-green">Calculator</span>📉</div><div class="gc-body"><h4>Overpayment Calculator</h4><p>See how overpaying cuts your term and saves thousands.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c6"><span class="gc-pill pill-purple">Calculator</span>🏡</div><div class="gc-body"><h4>Buying Cost Calculator</h4><p>All costs — legal fees, survey, tax — in one total.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c7"><span class="gc-pill pill-navy">Calculator</span>🔓</div><div class="gc-body"><h4>Equity Release Calculator</h4><p>Find out how much equity you could unlock from your home.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+              <div class="rc-slide"><a href="calculators.html" class="guide-card"><div class="gc-img c8"><span class="gc-pill pill-red">Calculator</span>📊</div><div class="gc-body"><h4>Selling Cost Calculator</h4><p>Estimate agent fees and total cost of selling your home.</p><div class="gc-meta"><span>Free tool</span><span class="gc-read">Calculate →</span></div></div></a></div>
+            </div>
+          </div>
+          <button class="rc-btn rc-btn-next">&#8594;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DEMO 4 — Dots RIGHT · style NUMBER · dark background
+============================================================ -->
+<section class="demo-section dark-section">
+  <div class="container">
+    <div class="demo-label">Demo 4</div>
+    <h2 class="demo-title">Dots right — Number style · Dark background</h2>
+    <p class="demo-desc">Desktop: 4 · Tablet: 2 · Mobile: 1 · Number dots on right · Infinite loop on dark</p>
+
+    <div class="rc dots-right style-number dark-dots"
+         id="rc4"
+         data-per-desktop="4"
+         data-per-tablet="2"
+         data-per-mobile="1"
+         data-gap="20"
+         data-autoplay="0">
+      <div style="flex:1;min-width:0;">
+        <div class="rc-track-wrap">
+          <button class="rc-btn dark rc-btn-prev">&#8592;</button>
+          <div class="rc-viewport">
+            <div class="rc-track">
+              <div class="rc-slide"><a href="news.html" class="guide-card dark-card"><div class="gc-img" style="background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.12));height:148px;display:flex;align-items:center;justify-content:center;font-size:3rem;">🏡</div><div class="gc-body"><h4>UK House Prices Rise for Third Month</h4><p>Average values up 1.4% in April — North West leads growth.</p><div class="gc-meta"><span>May 22</span><span class="gc-read">Read →</span></div></div></a></div>
+              <div class="rc-slide"><a href="news.html" class="guide-card dark-card"><div class="gc-img" style="background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.12));height:148px;display:flex;align-items:center;justify-content:center;font-size:3rem;">🏦</div><div class="gc-body"><h4>Mortgage Rates Fall Below 4.8%</h4><p>Barclays and Halifax lead cuts as spring competition intensifies.</p><div class="gc-meta"><span>May 21</span><span class="gc-read">Read →</span></div></div></a></div>
+              <div class="rc-slide"><a href="news.html" class="guide-card dark-card"><div class="gc-img" style="background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.12));height:148px;display:flex;align-items:center;justify-content:center;font-size:3rem;">⚖️</div><div class="gc-body"><h4>Renters Reform Bill Passes Final Reading</h4><p>Section 21 abolition finally becomes law after years of delay.</p><div class="gc-meta"><span>May 20</span><span class="gc-read">Read →</span></div></div></a></div>
+              <div class="rc-slide"><a href="news.html" class="guide-card dark-card"><div class="gc-img" style="background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.12));height:148px;display:flex;align-items:center;justify-content:center;font-size:3rem;">📋</div><div class="gc-body"><h4>Stamp Duty Surcharge Rises to 5%</h4><p>Additional property surcharge up from 3% — effective immediately.</p><div class="gc-meta"><span>May 18</span><span class="gc-read">Read →</span></div></div></a></div>
+              <div class="rc-slide"><a href="news.html" class="guide-card dark-card"><div class="gc-img" style="background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.12));height:148px;display:flex;align-items:center;justify-content:center;font-size:3rem;">📊</div><div class="gc-body"><h4>Rightmove Reports Record Asking Prices</h4><p>Average home now £375,131 as supply stays tight nationwide.</p><div class="gc-meta"><span>May 14</span><span class="gc-read">Read →</span></div></div></a></div>
+              <div class="rc-slide"><a href="news.html" class="guide-card dark-card"><div class="gc-img" style="background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.12));height:148px;display:flex;align-items:center;justify-content:center;font-size:3rem;">🏙</div><div class="gc-body"><h4>New Build Completions Fall 22% Year-on-Year</h4><p>Sharpest single-year drop since 2009 raises supply concerns.</p><div class="gc-meta"><span>May 10</span><span class="gc-read">Read →</span></div></div></a></div>
+            </div>
+          </div>
+          <button class="rc-btn dark rc-btn-next">&#8594;</button>
+        </div>
+      </div>
+      <div class="rc-dots-wrap"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DEMO 5 — No dots · number counter in header
+============================================================ -->
+<section class="demo-section">
+  <div class="container">
+    <div class="demo-label">Demo 5</div>
+    <h2 class="demo-title">No dots — Number counter in header</h2>
+    <p class="demo-desc">Desktop: 4 · Tablet: 2 · Mobile: 1 · No dot indicators at all — counter in header row instead</p>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <span style="font-size:.85rem;color:var(--color-text-muted);">Showing <strong id="rc5-num">1</strong>–<strong id="rc5-end">4</strong> of <strong id="rc5-total">8</strong> guides</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="guides.html" class="btn btn-outline btn-sm">View All Guides</a>
+      </div>
+    </div>
+
+    <div class="rc dots-none"
+         id="rc5"
+         data-per-desktop="4"
+         data-per-tablet="2"
+         data-per-mobile="1"
+         data-gap="20"
+         data-autoplay="0">
+      <div class="rc-track-wrap">
+        <button class="rc-btn rc-btn-prev">&#8592;</button>
+        <div class="rc-viewport">
+          <div class="rc-track">
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c1"><span class="gc-pill pill-green">Beginner</span>🏠</div><div class="gc-body"><h4>What Is Conveyancing and How Does It Work?</h4><p>The legal process of transferring property ownership explained.</p><div class="gc-meta"><span>11 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c2"><span class="gc-pill pill-gold">Intermediate</span>💵</div><div class="gc-body"><h4>How Much Deposit Do I Really Need?</h4><p>5%, 10%, 20% — what changes at each threshold.</p><div class="gc-meta"><span>7 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c3"><span class="gc-pill pill-navy">Beginner</span>📝</div><div class="gc-body"><h4>Making an Offer: Strategy and Negotiation</h4><p>How to price your offer and handle counter-offers confidently.</p><div class="gc-meta"><span>9 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c4"><span class="gc-pill pill-red">Advanced</span>🔭</div><div class="gc-body"><h4>Survey Types: HomeBuyer Report vs Building Survey</h4><p>Which survey you need — and when to spend more on it.</p><div class="gc-meta"><span>10 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c5"><span class="gc-pill pill-green">Beginner</span>🗓</div><div class="gc-body"><h4>Exchange of Contracts Explained</h4><p>What happens at exchange and why it makes the sale binding.</p><div class="gc-meta"><span>6 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c6"><span class="gc-pill pill-purple">Intermediate</span>🏛</div><div class="gc-body"><h4>Help to Buy: Is It Still Available in 2024?</h4><p>The scheme has closed — here are the current alternatives.</p><div class="gc-meta"><span>8 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c7"><span class="gc-pill pill-navy">Advanced</span>📐</div><div class="gc-body"><h4>Understanding a RICS Building Survey Report</h4><p>How to read condition ratings and what to do next.</p><div class="gc-meta"><span>12 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+            <div class="rc-slide"><a href="guides.html" class="guide-card"><div class="gc-img c8"><span class="gc-pill pill-red">Beginner</span>🔐</div><div class="gc-body"><h4>What Is Gazumping and How Do I Avoid It?</h4><p>What happens, what you can do, and how to protect yourself.</p><div class="gc-meta"><span>5 min read</span><span class="gc-read">Read →</span></div></div></a></div>
+          </div>
+        </div>
+        <button class="rc-btn rc-btn-next">&#8594;</button>
+      </div>
+      <div class="rc-dots-wrap"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">🏠</div>
+          <div>
+            <div class="footer-logo-name">ADVAITH HOMES</div>
+            <div class="footer-logo-sub">HOMES</div>
+          </div>
+        </div>
+        <p class="footer-desc">Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><div class="footer-links">
+        <a href="guides.html"      class="footer-link">Buying Guides</a>
+        <a href="calculators.html" class="footer-link">Calculators</a>
+        <a href="news.html"        class="footer-link">News</a>
+        <a href="carousels.html"   class="footer-link">Carousel Library</a>
+      </div></div>
+      <div class="footer-col"><h4>Get Help</h4><div class="footer-links">
+        <a href="ask-expert.html" class="footer-link">Ask an Expert</a>
+        <a href="contact.html"    class="footer-link">Contact Us</a>
+      </div></div>
+      <div class="footer-col"><h4>About</h4><div class="footer-links">
+        <a href="about.html"   class="footer-link">About Us</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+      </div></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 ADVAITH HOMES. All rights reserved.</span>
+      <span>Made with <span class="footer-heart">♥</span> in the UK</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     JAVASCRIPT — CORE CAROUSEL ENGINE
+============================================================ -->
+<script src="assets/js/main.js"></script>
+<script>
+/* =============================================================
+   RCCarousel — Responsive, repeating, repositionable dots
+   Options via data attributes on the .rc element:
+     data-per-desktop  (default 4)
+     data-per-tablet   (default 2)
+     data-per-mobile   (default 1)
+     data-gap          (px, default 20)
+     data-autoplay     (ms, 0 = off)
+============================================================= */
+class RCCarousel {
+  constructor(el) {
+    this.el        = el;
+    this.viewport  = el.querySelector('.rc-viewport');
+    this.track     = el.querySelector('.rc-track');
+    this.slides    = Array.from(el.querySelectorAll('.rc-slide'));
+    this.dotsWrap  = el.querySelector('.rc-dots-wrap');
+    this.btnPrev   = el.querySelector('.rc-btn-prev');
+    this.btnNext   = el.querySelector('.rc-btn-next');
+
+    this.perDesktop = parseInt(el.dataset.perDesktop) || 4;
+    this.perTablet  = parseInt(el.dataset.perTablet)  || 2;
+    this.perMobile  = parseInt(el.dataset.perMobile)  || 1;
+    this.gap        = parseInt(el.dataset.gap)        || 20;
+    this.autoDelay  = parseInt(el.dataset.autoplay)   || 0;
+
+    this.current   = 0;
+    this.autoTimer = null;
+
+    this.init();
+  }
+
+  /* --- how many cards are visible right now --- */
+  perView() {
+    const w = window.innerWidth;
+    if (w >= 1024) return this.perDesktop;
+    if (w >= 640)  return this.perTablet;
+    return this.perMobile;
+  }
+
+  /* --- total "pages" (groups) --- */
+  pageCount() {
+    return Math.ceil(this.slides.length / this.perView());
+  }
+
+  /* --- set slide widths based on viewport --- */
+  setWidths() {
+    const vw  = this.viewport.offsetWidth;
+    const pv  = this.perView();
+    const gap = this.gap;
+    const w   = (vw - gap * (pv - 1)) / pv;
+    this.slides.forEach(s => {
+      s.style.width      = w + 'px';
+      s.style.marginRight = gap + 'px';
+    });
+  }
+
+  /* --- move track to a page index --- */
+  goTo(page, wrap = true) {
+    const pc = this.pageCount();
+    if (wrap) {
+      if (page >= pc) page = 0;
+      if (page < 0)   page = pc - 1;
+    } else {
+      page = Math.max(0, Math.min(page, pc - 1));
+    }
+    this.current = page;
+
+    const vw  = this.viewport.offsetWidth;
+    const pv  = this.perView();
+    const gap = this.gap;
+    const w   = (vw - gap * (pv - 1)) / pv;
+    const offset = page * (w + gap) * pv;
+
+    this.track.style.transform = `translateX(-${offset}px)`;
+    this.updateDots();
+    this.updateCounter();
+  }
+
+  /* --- build or rebuild dot buttons --- */
+  buildDots() {
+    if (!this.dotsWrap) return;
+    this.dotsWrap.innerHTML = '';
+    const pc = this.pageCount();
+    for (let i = 0; i < pc; i++) {
+      const d = document.createElement('button');
+      d.className = 'rc-dot' + (i === this.current ? ' active' : '');
+      d.setAttribute('aria-label', 'Page ' + (i + 1));
+      // number style: put the numeral as text
+      if (this.el.classList.contains('style-number')) d.textContent = i + 1;
+      d.addEventListener('click', () => { this.stopAuto(); this.goTo(i); this.startAuto(); });
+      this.dotsWrap.appendChild(d);
+    }
+  }
+
+  updateDots() {
+    if (!this.dotsWrap) return;
+    this.dotsWrap.querySelectorAll('.rc-dot').forEach((d, i) => d.classList.toggle('active', i === this.current));
+  }
+
+  /* --- external counter (demo 5 only) --- */
+  updateCounter() {
+    const n5 = document.getElementById('rc5-num');
+    if (!n5 || this.el.id !== 'rc5') return;
+    const pv    = this.perView();
+    const start = this.current * pv + 1;
+    const end   = Math.min(start + pv - 1, this.slides.length);
+    document.getElementById('rc5-num').textContent   = start;
+    document.getElementById('rc5-end').textContent   = end;
+    document.getElementById('rc5-total').textContent = this.slides.length;
+  }
+
+  /* --- autoplay --- */
+  startAuto() {
+    if (!this.autoDelay) return;
+    this.autoTimer = setInterval(() => this.goTo(this.current + 1), this.autoDelay);
+  }
+  stopAuto() { clearInterval(this.autoTimer); }
+
+  /* --- touch / drag --- */
+  initDrag() {
+    let startX, isDragging = false;
+    const vp = this.viewport;
+    vp.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; }, { passive: true });
+    vp.addEventListener('touchend',   e => {
+      if (!isDragging) return; isDragging = false;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) { this.stopAuto(); this.goTo(dx < 0 ? this.current + 1 : this.current - 1); this.startAuto(); }
+    });
+    vp.addEventListener('mousedown',  e => { startX = e.clientX; isDragging = true; vp.style.cursor = 'grabbing'; });
+    vp.addEventListener('mouseup',    e => {
+      if (!isDragging) return; isDragging = false; vp.style.cursor = '';
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 40) { this.stopAuto(); this.goTo(dx < 0 ? this.current + 1 : this.current - 1); this.startAuto(); }
+    });
+    vp.addEventListener('mouseleave', () => { isDragging = false; vp.style.cursor = ''; });
+  }
+
+  /* --- wire buttons --- */
+  initButtons() {
+    this.btnPrev?.addEventListener('click', () => { this.stopAuto(); this.goTo(this.current - 1); this.startAuto(); });
+    this.btnNext?.addEventListener('click', () => { this.stopAuto(); this.goTo(this.current + 1); this.startAuto(); });
+  }
+
+  /* --- rebuild on resize --- */
+  initResize() {
+    let timer;
+    window.addEventListener('resize', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        this.setWidths();
+        // clamp current page to new count
+        if (this.current >= this.pageCount()) this.current = 0;
+        this.goTo(this.current, false);
+        this.buildDots();
+      }, 120);
+    });
+  }
+
+  /* --- bootstrap --- */
+  init() {
+    this.setWidths();
+    this.buildDots();
+    this.goTo(0, false);
+    this.initButtons();
+    this.initDrag();
+    this.initResize();
+    this.startAuto();
+  }
+
+  /* --- public: change dot position class --- */
+  setDotPosition(pos) {
+    ['dots-below','dots-above','dots-left','dots-right','dots-none'].forEach(c => this.el.classList.remove(c));
+    this.el.classList.add('dots-' + pos);
+    // when dots move to left/right, the dots-wrap needs to be repositioned in the DOM
+    if (pos === 'left') {
+      this.el.insertBefore(this.dotsWrap, this.el.querySelector('.rc-track-wrap'));
+    } else {
+      this.el.appendChild(this.dotsWrap);
+    }
+  }
+
+  /* --- public: change dot style class --- */
+  setDotStyle(style) {
+    ['style-pill','style-dot','style-line','style-dash','style-number'].forEach(c => this.el.classList.remove(c));
+    this.el.classList.add('style-' + style);
+    this.buildDots(); // rebuild so number style can inject text
+  }
+}
+
+/* --- Instantiate all carousels --- */
+const rcInstances = {};
+document.querySelectorAll('.rc').forEach(el => {
+  rcInstances[el.id] = new RCCarousel(el);
+});
+
+
+/* =============================================================
+   DEMO 1: LIVE SWITCHER
+   Controls both dot position AND dot style interactively
+============================================================= */
+(function() {
+  const rc1     = rcInstances['rc1'];
+  const sw      = document.getElementById('d1-switcher');
+  if (!sw || !rc1) return;
+
+  sw.querySelectorAll('[data-pos]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      sw.querySelectorAll('[data-pos]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      rc1.setDotPosition(btn.dataset.pos);
+    });
+  });
+
+  sw.querySelectorAll('[data-style]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      sw.querySelectorAll('[data-style]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      rc1.setDotStyle(btn.dataset.style);
+    });
+  });
+})();
+</script>
+</body>
+</html>

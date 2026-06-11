@@ -4,6 +4,7 @@ function ahn_include_files() {
     $files = array(
         '/common/common_functions.php',
         '/admin/schema-installer.php', // ADN_Schema - needed at REST time too, not only wp-admin
+        '/apis/services.php',          // data services (JSON today, real API later) + adn_link()
         '/apis/models/post.php',       // API models must load before the routes that use them
         '/apis/fetch_functions.php',   // REST route registration + callbacks
         '/apis/callbacks.php',
@@ -18,9 +19,11 @@ function ahn_include_files() {
 function adn_enqueue_common_css() {
     $styles = array(
         'adn-varaibles-style' => '/assets/css/variables.css',
+        'adn-chrome-style' => '/assets/css/chrome.css', // design tokens + header/nav/search/footer
         'adn-main-style' => '/assets/css/main.css',
         'adn-common-style' => '/assets/css/common.css',
         'adn-components-style' => '/assets/css/components.css',
+        'adn-temp-style' => '/assets/css/temp.css',
     );
     foreach ( $styles as $handle => $file ) {
         wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), ADN_THEME_VERSION );
@@ -48,6 +51,25 @@ function adn_enqueue_template_specific_assets() {
             'css' => '/assets/css/contact.css',
             'js'  => '/assets/js/contact.js',
         ),
+        'pages/page-newsall.php' => array(
+            'css' => '/assets/css/news.css',
+            'js'  => '/assets/js/news.js',
+        ),
+        'pages/page-guides_listing.php' => array(
+            'css' => '/assets/css/guides_listing.css',
+            'js'  => '/assets/js/guides_listing.js',
+        ),
+        'pages/page-calculator.php' => array(
+            'css' => '/assets/css/calculators.css',
+            'js'  => '/assets/js/calculators.js',
+        ),
+        'pages/page-guidance.php' => array(
+            'css' => '/assets/css/guidance.css',
+        ),
+        'pages/page-ask-expert.php' => array(
+            'css' => '/assets/css/ask_expert.css',
+            'js'  => '/assets/js/ask_expert.js',
+        ),
     );
     foreach ( $template_assets as $template => $assets ) {
         if ( ! is_page_template( $template ) ) {
@@ -62,8 +84,13 @@ function adn_enqueue_template_specific_assets() {
             wp_enqueue_script( $handle . '-script', ADN_THEME_URI . $assets['js'], array( 'jquery' ), ADN_THEME_VERSION, true );
         }
     }
-    if ( is_single() && file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ) {
-        wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), ADN_THEME_VERSION );
+    if ( is_single() ) {
+        if ( file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ) {
+            wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), ADN_THEME_VERSION );
+        }
+        if ( file_exists( ADN_THEME_DIR . '/assets/js/single.js' ) ) {
+            wp_enqueue_script( 'adn-single-script', ADN_THEME_URI . '/assets/js/single.js', array(), ADN_THEME_VERSION, true );
+        }
     }
 }
 function adn_get_page_definitions() {
@@ -79,6 +106,30 @@ function adn_get_page_definitions() {
         'allinone' => array(
             'title'    => 'All In One (Demo)',
             'template' => 'pages/page-allinone.php',
+        ),
+        'buying' => array(
+            'title'    => 'Buying',
+            'template' => 'pages/page-category_guide.php',
+        ),
+        'news' => array(
+            'title'    => 'News & Insights',
+            'template' => 'pages/page-newsall.php',
+        ),
+        'buying-guides' => array(
+            'title'    => 'Buying Guides',
+            'template' => 'pages/page-guides_listing.php',
+        ),
+        'calculators' => array(
+            'title'    => 'Calculators',
+            'template' => 'pages/page-calculator.php',
+        ),
+        'guidance' => array(
+            'title'    => 'Get Expert Guidance',
+            'template' => 'pages/page-guidance.php',
+        ),
+        'ask-an-expert' => array(
+            'title'    => 'Ask an Expert',
+            'template' => 'pages/page-ask-expert.php',
         ),
         // Slug must match COMING_SOON_PAGE_SLUG so the coming-soon redirect target exists.
         COMING_SOON_PAGE_SLUG => array(
@@ -118,7 +169,31 @@ function adn_create_default_pages() {
         }
     }
 
+    // Make the Home page the site's default landing page (static front page).
+    adn_set_home_as_front_page();
+
     return $created;
+}
+
+/**
+ * Set the "Home" page as the WordPress static front page, so visiting the site
+ * root ("/") shows it (rendered with its pages/page-home.php template) instead
+ * of the latest-posts blog index.
+ *
+ * Idempotent: only writes the reading options when they are not already set,
+ * so it is safe to call on every theme (re)activation.
+ */
+function adn_set_home_as_front_page() {
+    $home = get_page_by_path( 'home' );
+    if ( ! ( $home instanceof WP_Post ) ) {
+        return;
+    }
+    if ( 'page' !== get_option( 'show_on_front' ) ) {
+        update_option( 'show_on_front', 'page' );
+    }
+    if ( (int) get_option( 'page_on_front' ) !== (int) $home->ID ) {
+        update_option( 'page_on_front', (int) $home->ID );
+    }
 }
 
 function adn_theme_register() {

@@ -1,0 +1,20 @@
+{
+    "calculators": {
+        "view_all_url": "/calculators/",
+        "items": [
+            { "icon": "🏷",  "label": "Stamp Duty Calculator",              "url": "/stamp-duty/"  },
+            { "icon": "💰",  "label": "Mortgage Affordability Calculator",  "url": "/calculators/" },
+            { "icon": "🏠",  "label": "Buying Cost Calculator",             "url": "/calculators/" },
+            { "icon": "📅",  "label": "Monthly Payment Calculator",         "url": "/calculators/" },
+            { "icon": "🔑",  "label": "Rent vs Buy Calculator",             "url": "/calculators/" }
+        ]
+    },
+    "newsletter": {
+        "icon": "✉️",
+        "heading": "Stay Informed",
+        "description": "Get the latest property guides, news and regulation updates straight to your inbox.",
+        "placeholder": "Enter your email address",
+        "button_label": "Subscribe",
+        "note": "No spam. Unsubscribe anytime."
+    }
+}

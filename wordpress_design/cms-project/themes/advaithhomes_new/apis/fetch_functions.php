@@ -39,6 +39,12 @@ $adn_routes = array(
 		'permission' => '__return_true',
 	),
 	array(
+		'route'      => '/home',
+		'methods'    => 'GET',
+		'callback'   => 'adn_api_get_home',
+		'permission' => '__return_true',
+	),
+	array(
 		'route'      => '/contact',
 		'methods'    => 'POST',
 		'callback'   => 'adn_api_submit_contact',
@@ -135,6 +141,21 @@ function adn_api_get_faqs( WP_REST_Request $request ): WP_REST_Response {
 		'data'  => $faqs,
 		'total' => count( $faqs ),
 	), 200 );
+}
+
+/**
+ * GET /advaithhomes/v1/home - full home page content (all sections).
+ * Same payload the theme renders from; lets a future headless/mobile
+ * frontend consume the identical data.
+ */
+function adn_api_get_home( WP_REST_Request $request ): WP_REST_Response {
+	$data = function_exists( 'adn_service_home_data' ) ? adn_service_home_data() : array();
+
+	if ( empty( $data ) ) {
+		return new WP_REST_Response( array( 'error' => 'Home content not found.' ), 404 );
+	}
+
+	return new WP_REST_Response( array( 'data' => $data ), 200 );
 }
 
 /**

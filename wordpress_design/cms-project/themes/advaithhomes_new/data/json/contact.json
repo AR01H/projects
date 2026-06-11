@@ -1,0 +1,75 @@
+{
+    "meta": {
+        "page_title": "Contact Us",
+        "meta_description": "Send us your property enquiry and get guidance tailored to your situation."
+    },
+    "breadcrumb": [
+        { "label": "Home", "url": "/" },
+        { "label": "Contact Us", "url": null }
+    ],
+    "hero": {
+        "title": "How can we help you?",
+        "description": "Whether you're buying, selling, moving home or simply looking for information, send us your enquiry and we'll point you in the right direction.",
+        "bg_icon": "🏠",
+        "trust_items": [
+            { "icon": "🤝", "title": "Expert Guidance",          "subtitle": "Advice from property information experts" },
+            { "icon": "⚖️", "title": "Impartial & Independent", "subtitle": "We provide unbiased information to help you decide better" },
+            { "icon": "✅", "title": "Reliable Information",     "subtitle": "Practical, up-to-date and easy to understand" },
+            { "icon": "⏱",  "title": "Response Within 24-48 Hours", "subtitle": "We aim to respond to all enquiries within 1–2 working days" }
+        ]
+    },
+    "form": {
+        "heading": "Send us your enquiry",
+        "description": "Tell us about your situation and we'll get back to you with the right guidance.",
+        "enquiry_types": [
+            { "key": "buying",        "icon": "🏠", "label": "Buying a Home" },
+            { "key": "selling",       "icon": "🔑", "label": "Selling a Home" },
+            { "key": "moving",        "icon": "🚚", "label": "Moving Home" },
+            { "key": "new-to-uk",     "icon": "🇬🇧","label": "New to the UK Property System" },
+            { "key": "mortgage",      "icon": "💰", "label": "Mortgage Question" },
+            { "key": "conveyancing",  "icon": "📋", "label": "Conveyancing Question" },
+            { "key": "survey",        "icon": "🔍", "label": "Survey Question" },
+            { "key": "general",       "icon": "💬", "label": "General Property Question" }
+        ],
+        "submit_label": "Submit Enquiry"
+    },
+    "contact_sidebar": {
+        "whatsapp": {
+            "icon":          "💬",
+            "heading":       "Prefer WhatsApp?",
+            "number":        "+44 7747 223 762",
+            "note":          "This is the quickest way to reach us. We aim to respond within 24 hours.",
+            "button_label":  "Start WhatsApp Chat",
+            "url":           "#"
+        },
+        "email": {
+            "icon":          "📧",
+            "heading":       "Prefer Email?",
+            "address":       "contact@advaithhomes.co.uk",
+            "note":          "Send us an email and we'll get back to you within 1–2 working days.",
+            "button_label":  "Send an Email",
+            "url":           "#"
+        },
+        "coming_soon": [
+            { "icon": "📞", "label": "Phone Support" },
+            { "icon": "💬", "label": "Live Chat" },
+            { "icon": "📍", "label": "Office Address" }
+        ]
+    },
+    "process_steps": [
+        { "number": "1", "icon": "📝", "title": "Send your enquiry",      "description": "Fill out a short form or choose an expert." },
+        { "number": "2", "icon": "🔍", "title": "We review your situation","description": "Our team reviews your enquiry and understands your requirements." },
+        { "number": "3", "icon": "💡", "title": "We provide guidance",    "description": "We send you helpful guidance or connect you with the right professional." }
+    ],
+    "resources": {
+        "heading":     "While you wait, explore popular resources",
+        "items": [
+            { "icon": "🏠", "title": "Buying Guides",       "desc": "Step-by-step guides for buyers",          "url": "/buying/" },
+            { "icon": "🔑", "title": "Selling Guides",      "desc": "Everything you need to sell your home",   "url": "/selling/" },
+            { "icon": "🚚", "title": "Moving Home Guides",  "desc": "Advice for a smooth move",                "url": "/moving/" },
+            { "icon": "🧮", "title": "Calculators",         "desc": "Useful tools for smart decisions",        "url": "/calculators/" },
+            { "icon": "📰", "title": "Property News",       "desc": "Latest updates and market insights",      "url": "/news/" },
+            { "icon": "⚖️", "title": "Regulations",         "desc": "Stay informed about UK property rules",   "url": "/regulations/" }
+        ]
+    }
+}

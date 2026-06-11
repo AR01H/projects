@@ -10,18 +10,11 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Block direct file access.
+    exit;
 }
+
+get_header();
 ?>
-<!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-    <meta charset="<?php bloginfo( 'charset' ); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php wp_head(); ?>
-</head>
-<body <?php body_class(); ?>>
-<?php wp_body_open(); ?>
 
 <main id="primary" class="site-main">
 <?php
@@ -49,6 +42,4 @@ endif;
 ?>
 </main>
 
-<?php wp_footer(); ?>
-</body>
-</html>
+<?php get_footer(); ?>

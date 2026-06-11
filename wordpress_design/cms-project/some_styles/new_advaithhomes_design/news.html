@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Property News &amp; Insights – Advaith Homes</title>
+  <meta name="description" content="The latest UK property news, market updates, regulation changes and expert commentary from Advaith Homes.">
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* ===== NEWS PAGE STYLES ===== */
+
+    /* Hero */
+    .news-hero {
+      background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
+      padding: 52px 0 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .news-hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 80% 50%, rgba(201,168,76,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .news-hero-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+    }
+    .news-hero h1 { color: #fff; font-size: clamp(1.9rem, 3.5vw, 2.8rem); margin-bottom: 12px; }
+    .news-hero p { color: rgba(255,255,255,0.72); font-size: 1rem; line-height: 1.7; max-width: 520px; margin-bottom: 0; }
+    .news-hero-stats {
+      display: flex; flex-direction: column; gap: 12px; text-align: center;
+    }
+    .nhs-item {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 24px; min-width: 140px;
+    }
+    .nhs-item strong { display: block; font-size: 1.4rem; font-family: var(--font-display); color: var(--color-accent); }
+    .nhs-item span { font-size: 0.78rem; color: rgba(255,255,255,0.6); }
+
+    /* Category tabs strip */
+    .news-cats-strip {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky; top: 72px; z-index: 40;
+    }
+    .news-cats-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; gap: 0; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .news-cats-inner::-webkit-scrollbar { display: none; }
+    .news-cat-tab {
+      padding: 16px 20px; white-space: nowrap;
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--color-text-muted); cursor: pointer;
+      border-bottom: 3px solid transparent;
+      background: none; border-top: none; border-left: none; border-right: none;
+      font-family: var(--font-body); transition: all var(--transition);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .news-cat-tab:hover { color: var(--color-primary); }
+    .news-cat-tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
+    .news-cat-count {
+      font-size: 0.72rem; background: var(--color-bg-section);
+      padding: 2px 7px; border-radius: 20px; font-weight: 600;
+      color: var(--color-text-muted);
+    }
+    .news-cat-tab.active .news-cat-count { background: #e8f0ec; color: var(--color-primary); }
+
+    /* Main layout */
+    .news-layout {
+      max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
+      display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: start;
+    }
+
+    /* Featured article */
+    .featured-article {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 32px;
+      text-decoration: none;
+      transition: box-shadow var(--transition-md);
+    }
+    .featured-article:hover { box-shadow: var(--shadow-lg); }
+    .featured-img {
+      min-height: 280px;
+      background: linear-gradient(135deg, #1e3a2f 0%, #2d5a44 50%, #c9a84c44 100%);
+      display: flex; align-items: flex-end; padding: 24px;
+      position: relative; overflow: hidden;
+    }
+    .featured-img-bg {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem; opacity: 0.18;
+    }
+    .featured-label {
+      position: relative; z-index: 1;
+      background: var(--color-accent); color: var(--color-dark);
+      font-size: 0.72rem; font-weight: 700; padding: 4px 10px;
+      border-radius: 4px; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .featured-body { padding: 32px 28px; display: flex; flex-direction: column; justify-content: center; }
+    .featured-tag {
+      font-size: 0.75rem; font-weight: 700; color: var(--color-primary);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;
+    }
+    .featured-body h2 { font-size: 1.3rem; line-height: 1.3; margin-bottom: 12px; color: var(--color-dark); }
+    .featured-body p { font-size: 0.88rem; line-height: 1.6; margin-bottom: 20px; }
+    .featured-meta { display: flex; align-items: center; gap: 16px; font-size: 0.78rem; color: var(--color-text-muted); }
+    .featured-meta .read-more { color: var(--color-primary); font-weight: 600; margin-left: auto; }
+
+    /* News section header */
+    .news-section-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; padding-bottom: 12px;
+      border-bottom: 2px solid var(--color-border);
+    }
+    .news-section-hd h2 { font-size: 1.15rem; }
+    .news-section-hd a { font-size: 0.83rem; color: var(--color-primary); font-weight: 500; text-decoration: none; }
+    .news-section-hd a:hover { text-decoration: underline; }
+
+    /* Grid of news cards */
+    .news-cards-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      margin-bottom: 36px;
+    }
+    .news-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden; text-decoration: none;
+      transition: all var(--transition-md);
+    }
+    .news-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .news-card-img {
+      height: 140px;
+      background: linear-gradient(135deg, #e8f0ec, #d4e6d8);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; position: relative;
+    }
+    .news-card-img.accent { background: linear-gradient(135deg, #c9a84c22, #e6c97a33); }
+    .news-card-img.dark { background: linear-gradient(135deg, #1a2332, #2d5a44); }
+    .news-card-cat-pill {
+      position: absolute; top: 12px; left: 12px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; padding: 3px 9px; border-radius: 20px;
+    }
+    .pill-market { background: #e8f0ec; color: var(--color-primary); }
+    .pill-mortgage { background: #dbeafe; color: #1d4ed8; }
+    .pill-regulation { background: #fef3c7; color: #92400e; }
+    .pill-buying { background: #ede9fe; color: #5b21b6; }
+    .pill-selling { background: #fce7f3; color: #9d174d; }
+    .pill-economy { background: #f0fdf4; color: #166534; }
+    .news-card-body { padding: 16px 18px 18px; }
+    .news-card-body h3 { font-size: 0.9rem; color: var(--color-dark); line-height: 1.4; margin-bottom: 8px; }
+    .news-card-body p { font-size: 0.8rem; line-height: 1.5; margin-bottom: 12px; }
+    .news-card-meta { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; color: var(--color-text-light); }
+    .news-card-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--color-border); }
+
+    /* List-style news rows */
+    .news-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 36px; }
+    .news-list-item {
+      display: flex; gap: 16px;
+      padding: 18px 0; border-bottom: 1px solid var(--color-border);
+      text-decoration: none; transition: background var(--transition);
+    }
+    .news-list-item:last-child { border-bottom: none; }
+    .news-list-item:hover .nli-title { color: var(--color-primary); }
+    .nli-img {
+      width: 80px; height: 64px; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #e8f0ec, #d4e6d8);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+    .nli-body { flex: 1; }
+    .nli-tags { display: flex; gap: 6px; margin-bottom: 6px; }
+    .nli-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .nli-tag.market { color: var(--color-primary); }
+    .nli-tag.regulation { color: #92400e; }
+    .nli-tag.mortgage { color: #1d4ed8; }
+    .nli-title { font-size: 0.9rem; font-weight: 600; color: var(--color-dark); line-height: 1.4; margin-bottom: 5px; transition: color var(--transition); }
+    .nli-excerpt { font-size: 0.78rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 6px; }
+    .nli-meta { font-size: 0.74rem; color: var(--color-text-light); display: flex; gap: 8px; align-items: center; }
+
+    /* Load more */
+    .load-more-wrap { text-align: center; padding: 8px 0 16px; }
+    .load-more-btn {
+      padding: 13px 32px; border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm); background: var(--color-white);
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      font-family: var(--font-body); color: var(--color-text);
+      transition: all var(--transition);
+    }
+    .load-more-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+    /* ---- Sidebar ---- */
+    .news-sidebar { display: flex; flex-direction: column; gap: 24px; }
+    .news-sb-box {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .news-sb-hd { padding: 16px 20px 12px; border-bottom: 1px solid var(--color-border); }
+    .news-sb-hd h3 { font-size: 0.92rem; }
+
+    /* Search */
+    .news-search-wrap { padding: 16px 20px; }
+    .news-search-input-wrap { position: relative; }
+    .news-search-input-wrap input {
+      width: 100%; padding: 11px 16px 11px 38px;
+      border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+      font-size: 0.87rem; font-family: var(--font-body); color: var(--color-text);
+      background: var(--color-bg); outline: none; transition: border-color var(--transition);
+    }
+    .news-search-input-wrap input:focus { border-color: var(--color-primary); background: #fff; }
+    .news-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: var(--color-text-muted); }
+
+    /* Trending topics */
+    .trending-list { padding: 12px 20px 16px; display: flex; flex-direction: column; gap: 0; }
+    .trending-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 0; border-bottom: 1px solid var(--color-bg-section);
+      text-decoration: none; transition: background var(--transition);
+    }
+    .trending-item:last-child { border-bottom: none; }
+    .trending-item:hover .trending-title { color: var(--color-primary); }
+    .trending-num { font-size: 0.9rem; font-weight: 700; color: var(--color-accent); width: 20px; flex-shrink: 0; }
+    .trending-body { flex: 1; }
+    .trending-title { font-size: 0.83rem; color: var(--color-dark); font-weight: 500; line-height: 1.35; margin-bottom: 2px; transition: color var(--transition); }
+    .trending-meta { font-size: 0.72rem; color: var(--color-text-light); }
+    .trending-arrow { color: var(--color-text-light); font-size: 0.8rem; }
+
+    /* Categories sidebar */
+    .sb-cat-list { padding: 8px 20px 16px; display: flex; flex-direction: column; gap: 4px; }
+    .sb-cat-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 10px; border-radius: var(--radius-sm);
+      text-decoration: none; transition: background var(--transition); font-size: 0.85rem;
+      color: var(--color-text);
+    }
+    .sb-cat-item:hover { background: var(--color-bg-section); }
+    .sb-cat-item.active { background: var(--color-primary); color: #fff; }
+    .sb-cat-count { font-size: 0.75rem; background: rgba(0,0,0,0.07); padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+    .sb-cat-item.active .sb-cat-count { background: rgba(255,255,255,0.2); }
+
+    /* Newsletter in sidebar */
+    .sb-newsletter-body { padding: 18px 20px 20px; }
+    .sb-newsletter-body p { font-size: 0.82rem; line-height: 1.6; margin-bottom: 14px; }
+    .sb-newsletter-body input {
+      width: 100%; padding: 11px 14px; border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm); font-size: 0.85rem; font-family: var(--font-body);
+      margin-bottom: 10px; outline: none; transition: border-color var(--transition);
+      background: var(--color-bg); color: var(--color-text);
+    }
+    .sb-newsletter-body input:focus { border-color: var(--color-primary); background: #fff; }
+    .sb-newsletter-body button {
+      width: 100%; padding: 12px; background: var(--color-primary); color: #fff;
+      border: none; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body); transition: background var(--transition);
+    }
+    .sb-newsletter-body button:hover { background: var(--color-primary-light); }
+    .sb-newsletter-body small { font-size: 0.74rem; color: var(--color-text-light); display: block; margin-top: 8px; }
+
+    /* Market snapshot */
+    .market-snap-list { padding: 8px 20px 16px; display: flex; flex-direction: column; gap: 0; }
+    .market-snap-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 0; border-bottom: 1px solid var(--color-bg-section); font-size: 0.83rem;
+    }
+    .market-snap-item:last-child { border-bottom: none; }
+    .msi-label { color: var(--color-text-muted); }
+    .msi-val { font-weight: 700; color: var(--color-dark); }
+    .msi-change { font-size: 0.75rem; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+    .msi-up { background: #dcfce7; color: #15803d; }
+    .msi-down { background: #fee2e2; color: #dc2626; }
+    .msi-flat { background: var(--color-bg-section); color: var(--color-text-muted); }
+    .market-snap-updated { padding: 0 20px 14px; font-size: 0.73rem; color: var(--color-text-light); }
+
+    @media (max-width: 1024px) {
+      .news-hero-inner { grid-template-columns: 1fr; }
+      .news-hero-stats { flex-direction: row; flex-wrap: wrap; }
+      .nhs-item { flex: 1; min-width: 120px; }
+      .news-layout { grid-template-columns: 1fr 280px; gap: 28px; }
+      .news-cards-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .news-layout { grid-template-columns: 1fr; }
+      .featured-article { grid-template-columns: 1fr; }
+      .featured-img { min-height: 180px; }
+      .news-cards-grid { grid-template-columns: 1fr; }
+      .news-cats-inner { padding: 0 16px; }
+      .news-sidebar { order: -1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🏠</div>
+        <div class="logo-text">
+          <span class="logo-name">ADVAITH</span>
+          <span class="logo-sub">HOMES</span>
+        </div>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="buying.html" class="nav-link">Buying</a>
+        <a href="selling.html" class="nav-link">Selling</a>
+        <a href="house-movers.html" class="nav-link">House Movers</a>
+        <a href="calculators.html" class="nav-link">Calculators</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="news.html" class="nav-link active">News</a>
+        <a href="regulations.html" class="nav-link">Regulations</a>
+        <a href="ask-expert.html" class="nav-link">Ask an Expert</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn-search" aria-label="Search">🔍</button>
+        <a href="ask-expert.html" class="btn btn-primary btn-sm">Get Guidance</a>
+        <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu-overlay">
+  <a href="buying.html" class="mobile-nav-link">Buying</a>
+  <a href="selling.html" class="mobile-nav-link">Selling</a>
+  <a href="house-movers.html" class="mobile-nav-link">House Movers</a>
+  <a href="calculators.html" class="mobile-nav-link">Calculators</a>
+  <a href="guides.html" class="mobile-nav-link">Guides</a>
+  <a href="news.html" class="mobile-nav-link">News</a>
+  <a href="regulations.html" class="mobile-nav-link">Regulations</a>
+  <a href="ask-expert.html" class="mobile-nav-link">Ask an Expert</a>
+</div>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-inner">
+      <a href="index.html" class="breadcrumb-item">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-item active">News &amp; Insights</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="news-hero">
+  <div class="news-hero-inner">
+    <div>
+      <h1>Property News &amp; Insights</h1>
+      <p>Stay up to date with the latest UK property market news, mortgage rate changes, regulation updates and expert commentary — all in one place.</p>
+    </div>
+    <div class="news-hero-stats">
+      <div class="nhs-item">
+        <strong>Weekly</strong>
+        <span>New articles</span>
+      </div>
+      <div class="nhs-item">
+        <strong>6</strong>
+        <span>Topics covered</span>
+      </div>
+      <div class="nhs-item">
+        <strong>Free</strong>
+        <span>Always independent</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY TABS -->
+<div class="news-cats-strip">
+  <div class="news-cats-inner">
+    <button class="news-cat-tab active" data-cat="all">All News <span class="news-cat-count">48</span></button>
+    <button class="news-cat-tab" data-cat="market">Market Updates <span class="news-cat-count">14</span></button>
+    <button class="news-cat-tab" data-cat="mortgage">Mortgages &amp; Rates <span class="news-cat-count">11</span></button>
+    <button class="news-cat-tab" data-cat="regulation">Regulations <span class="news-cat-count">9</span></button>
+    <button class="news-cat-tab" data-cat="buying">Buying <span class="news-cat-count">8</span></button>
+    <button class="news-cat-tab" data-cat="selling">Selling <span class="news-cat-count">6</span></button>
+    <button class="news-cat-tab" data-cat="economy">Economy &amp; Policy <span class="news-cat-count">5</span></button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="news-layout">
+  <main>
+    <!-- Featured story -->
+    <a href="article-template.html" class="featured-article" aria-label="Featured: UK House Prices Rise for Third Month">
+      <div class="featured-img">
+        <div class="featured-img-bg">🏘</div>
+        <span class="featured-label">⭐ Featured Story</span>
+      </div>
+      <div class="featured-body">
+        <div class="featured-tag">📈 Market Update</div>
+        <h2>UK House Prices Rise for Third Consecutive Month as Demand Outpaces Supply</h2>
+        <p>Average property values climbed 1.4% in April, with the North West and East Midlands leading growth, according to the latest ONS House Price Index data.</p>
+        <div class="featured-meta">
+          <span>📅 May 22, 2024</span>
+          <span>·</span>
+          <span>⏱ 5 min read</span>
+          <span class="read-more">Read more →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Latest news grid -->
+    <div class="news-section-hd">
+      <h2>Latest News</h2>
+      <a href="#">View all →</a>
+    </div>
+    <div class="news-cards-grid" id="newsGrid">
+      <a href="article-template.html" class="news-card" data-cat="mortgage">
+        <div class="news-card-img">
+          <span class="news-card-cat-pill pill-mortgage">Mortgages</span>
+          🏦
+        </div>
+        <div class="news-card-body">
+          <h3>Mortgage Rates Fall for Third Month in a Row</h3>
+          <p>Average two-year fixed rates have dropped to 4.8%, the lowest since early 2023, as lenders compete for market share.</p>
+          <div class="news-card-meta">
+            <span>May 21, 2024</span>
+            <span class="dot"></span>
+            <span>4 min read</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-card" data-cat="regulation">
+        <div class="news-card-img accent">
+          <span class="news-card-cat-pill pill-regulation">Regulation</span>
+          ⚖️
+        </div>
+        <div class="news-card-body">
+          <h3>Renters Reform Bill: What It Means for Landlords and Tenants</h3>
+          <p>The long-awaited legislation abolishing Section 21 no-fault evictions has passed its final reading in Parliament.</p>
+          <div class="news-card-meta">
+            <span>May 20, 2024</span>
+            <span class="dot"></span>
+            <span>6 min read</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-card" data-cat="buying">
+        <div class="news-card-img">
+          <span class="news-card-cat-pill pill-buying">Buying</span>
+          🔑
+        </div>
+        <div class="news-card-body">
+          <h3>Stamp Duty Changes: What First-Time Buyers Need to Know in 2024</h3>
+          <p>The temporary Stamp Duty thresholds introduced in 2022 are set to end — here is how buyers will be affected.</p>
+          <div class="news-card-meta">
+            <span>May 18, 2024</span>
+            <span class="dot"></span>
+            <span>5 min read</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-card" data-cat="market">
+        <div class="news-card-img dark">
+          <span class="news-card-cat-pill pill-market">Market</span>
+          🏙
+        </div>
+        <div class="news-card-body">
+          <h3>London vs the Regions: Where is Property Offering the Best Value in 2024?</h3>
+          <p>New data shows northern cities outperforming the capital on price growth, yield and buyer demand for the second year running.</p>
+          <div class="news-card-meta">
+            <span>May 17, 2024</span>
+            <span class="dot"></span>
+            <span>7 min read</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-card" data-cat="selling">
+        <div class="news-card-img accent">
+          <span class="news-card-cat-pill pill-selling">Selling</span>
+          📊
+        </div>
+        <div class="news-card-body">
+          <h3>Estate Agent Fees Rise Slightly as Competition Intensifies in Spring Market</h3>
+          <p>Average fees for high street agents have nudged up to 1.42%, while online-only agents are gaining market share in urban areas.</p>
+          <div class="news-card-meta">
+            <span>May 16, 2024</span>
+            <span class="dot"></span>
+            <span>4 min read</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-card" data-cat="economy">
+        <div class="news-card-img">
+          <span class="news-card-cat-pill pill-economy">Economy</span>
+          📉
+        </div>
+        <div class="news-card-body">
+          <h3>Bank of England Holds Base Rate at 5.25% — What Next for Borrowers?</h3>
+          <p>The MPC voted 7-2 to hold, with the two dissenters calling for a cut. Markets now expect the first reduction in August 2024.</p>
+          <div class="news-card-meta">
+            <span>May 15, 2024</span>
+            <span class="dot"></span>
+            <span>5 min read</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Market Updates section -->
+    <div class="news-section-hd">
+      <h2>Market Updates</h2>
+      <a href="#">See all market news →</a>
+    </div>
+    <div class="news-list">
+      <a href="article-template.html" class="news-list-item" data-cat="market">
+        <div class="nli-img">🏡</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag market">Market</span></div>
+          <div class="nli-title">Rightmove Reports Record Spring Asking Prices — Average Home Now £375,131</div>
+          <div class="nli-excerpt">New seller asking prices hit an all-time high in May, driven by low supply and improving buyer confidence ahead of a potential rate cut.</div>
+          <div class="nli-meta"><span>May 14, 2024</span><span>·</span><span>4 min read</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-list-item" data-cat="market">
+        <div class="nli-img">📊</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag market">Market</span></div>
+          <div class="nli-title">Halifax: Annual House Price Growth Turns Positive for First Time in 14 Months</div>
+          <div class="nli-excerpt">The lender's index showed prices up 0.2% year-on-year in April, reversing a sustained period of modest declines.</div>
+          <div class="nli-meta"><span>May 12, 2024</span><span>·</span><span>3 min read</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-list-item" data-cat="market">
+        <div class="nli-img">🔭</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag market">Market</span></div>
+          <div class="nli-title">New Build Completions Fall 22% Year-on-Year as Construction Costs Bite</div>
+          <div class="nli-excerpt">NHBC data shows the sharpest single-year drop in new build registrations since 2009, raising concerns about long-term housing supply.</div>
+          <div class="nli-meta"><span>May 10, 2024</span><span>·</span><span>5 min read</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-list-item" data-cat="market">
+        <div class="nli-img">🗓</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag market">Market</span></div>
+          <div class="nli-title">Zoopla: Time to Sell Falls to 25 Days in Most Active Regions</div>
+          <div class="nli-excerpt">Properties in Yorkshire, the North West and the East Midlands are selling fastest, with competitive pricing the key driver.</div>
+          <div class="nli-meta"><span>May 8, 2024</span><span>·</span><span>3 min read</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Regulations section -->
+    <div class="news-section-hd">
+      <h2>Regulations &amp; Policy</h2>
+      <a href="regulations.html">See all regulations →</a>
+    </div>
+    <div class="news-list">
+      <a href="article-template.html" class="news-list-item" data-cat="regulation">
+        <div class="nli-img">📋</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag regulation">Regulation</span></div>
+          <div class="nli-title">New EPC Requirements for Landlords: What You Must Do by 2025</div>
+          <div class="nli-excerpt">All privately rented properties in England and Wales will need at least an EPC rating of C by 2025, affecting an estimated 2.3 million homes.</div>
+          <div class="nli-meta"><span>May 9, 2024</span><span>·</span><span>6 min read</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-list-item" data-cat="regulation">
+        <div class="nli-img">🏛</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag regulation">Regulation</span></div>
+          <div class="nli-title">Leasehold Reform Act 2024: Key Changes Explained</div>
+          <div class="nli-excerpt">The Act makes it easier and cheaper for leaseholders to extend their lease or buy the freehold — here is what has changed and when it takes effect.</div>
+          <div class="nli-meta"><span>May 6, 2024</span><span>·</span><span>8 min read</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-list-item" data-cat="regulation">
+        <div class="nli-img">🔒</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag regulation">Regulation</span></div>
+          <div class="nli-title">SDLT Surcharge on Second Homes Rises to 5% — What Buyers Need to Know</div>
+          <div class="nli-excerpt">The additional Stamp Duty surcharge on additional residential properties rose from 3% to 5% with immediate effect following the Autumn Statement.</div>
+          <div class="nli-meta"><span>May 4, 2024</span><span>·</span><span>4 min read</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Mortgages section -->
+    <div class="news-section-hd">
+      <h2>Mortgages &amp; Rates</h2>
+      <a href="#">See all mortgage news →</a>
+    </div>
+    <div class="news-list">
+      <a href="article-template.html" class="news-list-item" data-cat="mortgage">
+        <div class="nli-img">🏦</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag mortgage">Mortgage</span></div>
+          <div class="nli-title">Barclays and Halifax Cut Fixed Rates — What the New Deals Mean for You</div>
+          <div class="nli-excerpt">Two of the UK's biggest lenders have cut their headline fixed rates by up to 0.3%, offering a boost to buyers and remortgagers looking to lock in.</div>
+          <div class="nli-meta"><span>May 13, 2024</span><span>·</span><span>4 min read</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-list-item" data-cat="mortgage">
+        <div class="nli-img">📉</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag mortgage">Mortgage</span></div>
+          <div class="nli-title">More Borrowers Choosing 5-Year Fixes Over 2-Year Deals — Here's Why</div>
+          <div class="nli-excerpt">With rate certainty increasingly valuable, data shows a growing preference for longer-term fixes as borrowers look to shield themselves from future uncertainty.</div>
+          <div class="nli-meta"><span>May 11, 2024</span><span>·</span><span>5 min read</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="news-list-item" data-cat="mortgage">
+        <div class="nli-img">📑</div>
+        <div class="nli-body">
+          <div class="nli-tags"><span class="nli-tag mortgage">Mortgage</span></div>
+          <div class="nli-title">Mortgage Approvals Hit Highest Level Since October 2022, Bank of England Data Shows</div>
+          <div class="nli-excerpt">Net mortgage approvals for house purchases rose to 61,300 in March, the highest reading in 18 months and a sign of recovering buyer confidence.</div>
+          <div class="nli-meta"><span>May 3, 2024</span><span>·</span><span>3 min read</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Load more -->
+    <div class="load-more-wrap">
+      <button class="load-more-btn" id="loadMoreBtn">Load More Stories</button>
+    </div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="news-sidebar">
+    <!-- Search -->
+    <div class="news-sb-box">
+      <div class="news-sb-hd"><h3>Search News</h3></div>
+      <div class="news-search-wrap">
+        <div class="news-search-input-wrap">
+          <span class="news-search-icon">🔍</span>
+          <input type="text" placeholder="e.g. mortgage rates, stamp duty..." id="newsSearchInput">
+        </div>
+      </div>
+    </div>
+
+    <!-- Trending topics -->
+    <div class="news-sb-box">
+      <div class="news-sb-hd"><h3>Trending This Week</h3></div>
+      <div class="trending-list">
+        <a href="article-template.html" class="trending-item">
+          <span class="trending-num">1</span>
+          <div class="trending-body">
+            <div class="trending-title">Mortgage Rates Fall for Third Month</div>
+            <div class="trending-meta">12,400 readers · May 21</div>
+          </div>
+          <span class="trending-arrow">›</span>
+        </a>
+        <a href="article-template.html" class="trending-item">
+          <span class="trending-num">2</span>
+          <div class="trending-body">
+            <div class="trending-title">Stamp Duty Changes for First-Time Buyers</div>
+            <div class="trending-meta">9,800 readers · May 18</div>
+          </div>
+          <span class="trending-arrow">›</span>
+        </a>
+        <a href="article-template.html" class="trending-item">
+          <span class="trending-num">3</span>
+          <div class="trending-body">
+            <div class="trending-title">Renters Reform Bill Passes Final Reading</div>
+            <div class="trending-meta">8,200 readers · May 20</div>
+          </div>
+          <span class="trending-arrow">›</span>
+        </a>
+        <a href="article-template.html" class="trending-item">
+          <span class="trending-num">4</span>
+          <div class="trending-body">
+            <div class="trending-title">UK House Prices Rise for Third Month</div>
+            <div class="trending-meta">7,600 readers · May 22</div>
+          </div>
+          <span class="trending-arrow">›</span>
+        </a>
+        <a href="article-template.html" class="trending-item">
+          <span class="trending-num">5</span>
+          <div class="trending-body">
+            <div class="trending-title">Leasehold Reform Act 2024 Explained</div>
+            <div class="trending-meta">6,100 readers · May 6</div>
+          </div>
+          <span class="trending-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Market snapshot -->
+    <div class="news-sb-box">
+      <div class="news-sb-hd"><h3>Market Snapshot</h3></div>
+      <div class="market-snap-list">
+        <div class="market-snap-item">
+          <span class="msi-label">Average UK House Price</span>
+          <div style="display:flex;align-items:center;gap:8px;"><span class="msi-val">£285,000</span><span class="msi-change msi-up">+1.4%</span></div>
+        </div>
+        <div class="market-snap-item">
+          <span class="msi-label">BoE Base Rate</span>
+          <div style="display:flex;align-items:center;gap:8px;"><span class="msi-val">5.25%</span><span class="msi-change msi-flat">Held</span></div>
+        </div>
+        <div class="market-snap-item">
+          <span class="msi-label">Avg 2-Year Fixed Rate</span>
+          <div style="display:flex;align-items:center;gap:8px;"><span class="msi-val">4.80%</span><span class="msi-change msi-down">−0.3%</span></div>
+        </div>
+        <div class="market-snap-item">
+          <span class="msi-label">Avg 5-Year Fixed Rate</span>
+          <div style="display:flex;align-items:center;gap:8px;"><span class="msi-val">4.52%</span><span class="msi-change msi-down">−0.2%</span></div>
+        </div>
+        <div class="market-snap-item">
+          <span class="msi-label">Mortgage Approvals (Mar)</span>
+          <div style="display:flex;align-items:center;gap:8px;"><span class="msi-val">61,300</span><span class="msi-change msi-up">↑18m high</span></div>
+        </div>
+        <div class="market-snap-item">
+          <span class="msi-label">Avg Time to Sell</span>
+          <div style="display:flex;align-items:center;gap:8px;"><span class="msi-val">25 days</span><span class="msi-change msi-up">Faster</span></div>
+        </div>
+      </div>
+      <div class="market-snap-updated">Updated: 22 May 2024 · Sources: ONS, BoE, Moneyfacts</div>
+    </div>
+
+    <!-- Browse by category -->
+    <div class="news-sb-box">
+      <div class="news-sb-hd"><h3>Browse by Category</h3></div>
+      <div class="sb-cat-list">
+        <a href="#" class="sb-cat-item active" data-cat="all">All News <span class="sb-cat-count">48</span></a>
+        <a href="#" class="sb-cat-item" data-cat="market">Market Updates <span class="sb-cat-count">14</span></a>
+        <a href="#" class="sb-cat-item" data-cat="mortgage">Mortgages &amp; Rates <span class="sb-cat-count">11</span></a>
+        <a href="#" class="sb-cat-item" data-cat="regulation">Regulations <span class="sb-cat-count">9</span></a>
+        <a href="#" class="sb-cat-item" data-cat="buying">Buying <span class="sb-cat-count">8</span></a>
+        <a href="#" class="sb-cat-item" data-cat="selling">Selling <span class="sb-cat-count">6</span></a>
+        <a href="#" class="sb-cat-item" data-cat="economy">Economy &amp; Policy <span class="sb-cat-count">5</span></a>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="news-sb-box">
+      <div class="news-sb-hd"><h3>📬 News by Email</h3></div>
+      <div class="sb-newsletter-body">
+        <p>Get the most important property news delivered to your inbox every week. No spam, unsubscribe anytime.</p>
+        <input type="email" placeholder="Your email address">
+        <button type="button">Subscribe for Free</button>
+        <small>Weekly digest · No spam · Unsubscribe anytime</small>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- NEWSLETTER CTA BANNER -->
+<div class="newsletter-cta">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div class="newsletter-content">
+        <div class="newsletter-icon">✉️</div>
+        <h3>Stay Informed on Property News</h3>
+        <p>Join thousands of buyers, sellers and investors who get our weekly property briefing — market moves, rate changes, and regulation updates.</p>
+        <div class="newsletter-spam">No spam · Unsubscribe any time · 100% free</div>
+      </div>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="Enter your email address">
+        <button type="submit" class="btn btn-accent">Subscribe →</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">🏠</div>
+          <div>
+            <div class="footer-logo-name">ADVAITH HOMES</div>
+            <div class="footer-logo-sub">HOMES</div>
+          </div>
+        </div>
+        <p class="footer-desc">Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+          <a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <div class="footer-links">
+          <a href="guides.html" class="footer-link">Buying Guides</a>
+          <a href="guides.html" class="footer-link">Selling Guides</a>
+          <a href="house-movers.html" class="footer-link">House Movers</a>
+          <a href="calculators.html" class="footer-link">Calculators</a>
+          <a href="news.html" class="footer-link">News &amp; Insights</a>
+          <a href="regulations.html" class="footer-link">Regulations</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Popular Tools</h4>
+        <div class="footer-links">
+          <a href="stamp-duty.html" class="footer-link">Stamp Duty Calculator</a>
+          <a href="calculators.html" class="footer-link">Mortgage Calculator</a>
+          <a href="calculators.html" class="footer-link">Buying Cost Calculator</a>
+          <a href="calculators.html" class="footer-link">Affordability Calculator</a>
+          <a href="calculators.html" class="footer-link">All Calculators</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Get Help</h4>
+        <div class="footer-links">
+          <a href="ask-expert.html" class="footer-link">Ask an Expert</a>
+          <a href="ask-expert.html" class="footer-link">Find a Solicitor</a>
+          <a href="ask-expert.html" class="footer-link">Find a Mortgage Adviser</a>
+          <a href="ask-expert.html" class="footer-link">Surveyors</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <div class="footer-links">
+          <a href="about.html" class="footer-link">About Us</a>
+          <a href="about.html" class="footer-link">Our Mission</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
+          <a href="#" class="footer-link">Terms of Use</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 ADVAITH HOMES. All rights reserved.</span>
+      <span>Made with <span class="footer-heart">♥</span> in the UK</span>
+    </div>
+  </div>
+  <div style="background:rgba(0,0,0,0.2);padding:14px 0;text-align:center;">
+    <div class="container" style="font-size:0.75rem;color:rgba(255,255,255,0.35);">
+      News articles are for informational purposes only and do not constitute financial, legal or investment advice. Always consult a qualified professional.
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+  // Category tab filtering
+  const tabBtns = document.querySelectorAll('.news-cat-tab');
+  const sbCatItems = document.querySelectorAll('.sb-cat-item');
+
+  function filterNews(cat) {
+    // Filter grid cards
+    document.querySelectorAll('.news-cards-grid .news-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    });
+    // Filter list items
+    document.querySelectorAll('.news-list-item').forEach(item => {
+      item.style.display = (cat === 'all' || item.dataset.cat === cat) ? 'flex' : 'none';
+    });
+    // Sync tab and sidebar
+    tabBtns.forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+    sbCatItems.forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  }
+
+  tabBtns.forEach(btn => btn.addEventListener('click', () => filterNews(btn.dataset.cat)));
+  sbCatItems.forEach(item => item.addEventListener('click', e => { e.preventDefault(); filterNews(item.dataset.cat); }));
+
+  // Search
+  document.getElementById('newsSearchInput').addEventListener('input', function () {
+    const q = this.value.toLowerCase().trim();
+    if (!q) { filterNews('all'); return; }
+    document.querySelectorAll('.news-cards-grid .news-card, .news-list-item').forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+
+  // Load more (simulated)
+  document.getElementById('loadMoreBtn').addEventListener('click', function () {
+    this.textContent = 'Loading…';
+    setTimeout(() => { this.textContent = 'No more stories to load'; this.disabled = true; this.style.opacity = '0.5'; }, 1000);
+  });
+</script>
+</body>
+</html>

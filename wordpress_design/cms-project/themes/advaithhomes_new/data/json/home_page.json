@@ -1,0 +1,192 @@
+{
+    "hero": {
+        "title_lines": [
+            { "text": "Your UK Property Journey,", "accent": false },
+            { "text": "Explained.", "accent": true },
+            { "text": "Simply. Clearly. Confidently.", "accent": false }
+        ],
+        "description": "Independent information hub for buyers, sellers and house movers. Clear guides, smart tools and expert insights to help you make better property decisions.",
+        "actions": [
+            { "label": "Start Your Journey →", "url": "/buying/", "style": "primary" },
+            { "label": "Ask an Expert", "url": "/ask-expert/", "style": "outline" }
+        ],
+        "trust_items": [
+            "Independent Information",
+            "UK Focused & Trusted",
+            "Plain English Guides",
+            "For Buyers, Sellers & Movers"
+        ],
+        "diagram": {
+            "center_icon": "🏠",
+            "center_lines": [ "Property", "Made Simple" ],
+            "nodes": [
+                { "icon": "💰", "label": "Budget & Mortgage" },
+                { "icon": "🔍", "label": "Find & View" },
+                { "icon": "🤝", "label": "Offer & Negotiate" },
+                { "icon": "⚖️", "label": "Solicitor & Searches" },
+                { "icon": "📋", "label": "Exchange & Completion" },
+                { "icon": "📐", "label": "Survey & Checks" }
+            ]
+        }
+    },
+    "journey": {
+        "heading": { "title": "Where are you in your journey?" },
+        "cards": [
+            {
+                "icon": "🏡",
+                "gradient": "linear-gradient(135deg,#dce8d4,#a8c5a0)",
+                "title": "I am Buying",
+                "description": "Step-by-step guides from budgeting to moving in.",
+                "link_label": "Explore Buying Guides →",
+                "url": "/buying/"
+            },
+            {
+                "icon": "🏘️",
+                "gradient": "linear-gradient(135deg,#f0e0d6,#d4956a)",
+                "title": "I am Selling",
+                "description": "Expert information to help you sell with confidence.",
+                "link_label": "Explore Selling Guides →",
+                "url": "/selling/"
+            },
+            {
+                "icon": "📦",
+                "gradient": "linear-gradient(135deg,#e0e8f4,#8eb4d8)",
+                "title": "I am a House Mover",
+                "description": "Planning to move? Find checklists, timelines & tips.",
+                "link_label": "Explore Moving Guides →",
+                "url": "/house-movers/"
+            },
+            {
+                "icon": "👥",
+                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
+                "title": "I need Professional Help",
+                "description": "Connect with the right professionals at the right time.",
+                "link_label": "Find Expert Help →",
+                "url": "/ask-expert/"
+            }
+        ]
+    },
+    "news": {
+        "heading": { "title": "Latest Property News", "link_label": "View all →", "link_url": "/news/" },
+        "items": [
+            {
+                "title": "UK House Prices Rise 1.4% in April – Latest ONS Data",
+                "date": "May 20, 2024",
+                "tag": "MARKET NEWS",
+                "gradient": "linear-gradient(135deg,#c8d8c4,#8fad87)",
+                "url": "/news/"
+            },
+            {
+                "title": "Mortgage Rates Hold Steady – What It Means for Buyers",
+                "date": "May 18, 2024",
+                "tag": "MORTGAGE NEWS",
+                "gradient": "linear-gradient(135deg,#d4c8b8,#a89080)",
+                "url": "/news/"
+            },
+            {
+                "title": "RICS: Buyer Enquiries Reach 12-Month High",
+                "date": "May 16, 2024",
+                "tag": "MARKET NEWS",
+                "gradient": "linear-gradient(135deg,#c8d4e4,#7090b0)",
+                "url": "/news/"
+            },
+            {
+                "title": "Stamp Duty Receipts Hit Record High in Q1 2024",
+                "date": "May 15, 2024",
+                "tag": "GOV.UK NEWS",
+                "gradient": "linear-gradient(135deg,#e4d4c8,#c09080)",
+                "url": "/news/"
+            }
+        ]
+    },
+    "regulations": {
+        "heading": { "title": "Latest Regulations & Updates", "link_label": "View all →", "link_url": "/regulations/" },
+        "items": [
+            { "badge_lines": [ "GOV", ".UK" ], "title": "Changes to EPC Rules for Private Landlords", "date": "May 17, 2024", "url": "/regulations/" },
+            { "badge_lines": [ "GOV", ".UK" ], "title": "New Building Safety Act Requirements", "date": "May 10, 2024", "url": "/regulations/" },
+            { "badge_lines": [ "GOV", ".UK" ], "title": "Right to Buy – New Income Thresholds from April 2024", "date": "May 05, 2024", "url": "/regulations/" },
+            { "badge_lines": [ "GOV", ".UK" ], "title": "Planning Permission Fees Increase from June 2024", "date": "May 01, 2024", "url": "/regulations/" }
+        ]
+    },
+    "hot_topics": {
+        "title": "🔥 Hot Topics",
+        "items": [
+            { "icon": "💡", "text": "Should you buy now or wait? Latest expert insights", "url": "/guides/" },
+            { "icon": "🏦", "text": "Is a 5% deposit enough in 2024? Here's what you need to know", "url": "/guides/" },
+            { "icon": "⚖️", "text": "Leasehold Reform – What Buyers & Sellers Should Know", "url": "/guides/" },
+            { "icon": "🕐", "text": "How long does it take to buy a house in the UK?", "url": "/guides/" }
+        ],
+        "cta": { "label": "Explore All Topics →", "url": "/guides/" }
+    },
+    "calculators": {
+        "heading": { "title": "Popular Calculators", "link_label": "View all calculators →", "link_url": "/calculators/" },
+        "items": [
+            { "icon": "🧮", "name": "Stamp Duty Calculator", "url": "/stamp-duty/" },
+            { "icon": "🏦", "name": "Mortgage Affordability Calculator", "url": "/calculators/" },
+            { "icon": "💳", "name": "Buying Cost Calculator", "url": "/calculators/" },
+            { "icon": "💰", "name": "Selling Cost Calculator", "url": "/calculators/" },
+            { "icon": "📅", "name": "Monthly Payment Calculator", "url": "/calculators/" },
+            { "icon": "⚖️", "name": "Rent vs Buy Calculator", "url": "/calculators/" },
+            { "icon": "🚚", "name": "Moving Cost Calculator", "url": "/calculators/" },
+            { "icon": "🔍", "name": "Survey Cost Estimator", "url": "/calculators/" }
+        ]
+    },
+    "guides": {
+        "heading": { "title": "Guides & Insights", "link_label": "View all guides →", "link_url": "/guides/" },
+        "items": [
+            {
+                "icon": "🏡",
+                "gradient": "linear-gradient(135deg,#c8d8c4,#7a9a74)",
+                "category": "Buying Guide",
+                "title": "First-Time Buyer Guide in the UK",
+                "description": "A complete step-by-step guide for first-time buyers.",
+                "read_more": "Read More →",
+                "url": "/guide-buying-step-by-step/"
+            },
+            {
+                "icon": "🏠",
+                "gradient": "linear-gradient(135deg,#e4d4c8,#b88070)",
+                "category": "Selling Guide",
+                "title": "How to Sell Your Home Successfully",
+                "description": "Expert tips to help you sell faster and for the right price.",
+                "read_more": "Read More →",
+                "url": "/guides/"
+            },
+            {
+                "icon": "🏦",
+                "gradient": "linear-gradient(135deg,#c8d4e4,#6888aa)",
+                "category": "Mortgages",
+                "title": "Understanding Mortgage in Principle",
+                "description": "Why it's important and how it strengthens your offer.",
+                "read_more": "Read More →",
+                "url": "/guides/"
+            },
+            {
+                "icon": "⚖️",
+                "gradient": "linear-gradient(135deg,#e4e8c4,#909848)",
+                "category": "Legal & Process",
+                "title": "Conveyancing Process Explained",
+                "description": "Understand each step of the legal process in simple terms.",
+                "read_more": "Read More →",
+                "url": "/guides/"
+            },
+            {
+                "icon": "📦",
+                "gradient": "linear-gradient(135deg,#e8d4e8,#9868a8)",
+                "category": "Moving Tips",
+                "title": "Moving Home Checklist",
+                "description": "Your ultimate checklist for a smooth move.",
+                "read_more": "Read More →",
+                "url": "/guides/"
+            }
+        ]
+    },
+    "newsletter": {
+        "icon": "✉️",
+        "title": "Stay Informed, Stay Ahead",
+        "description": "Subscribe to get the latest property news, guides, regulation updates and expert insights.",
+        "placeholder": "Enter your email address",
+        "button_label": "Subscribe Now",
+        "note": "No spam. Unsubscribe anytime."
+    }
+}

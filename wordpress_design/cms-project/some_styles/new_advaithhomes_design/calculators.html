@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Calculators – Advaith Homes</title>
+  <meta name="description" content="Free property calculators to help you plan, budget and make confident property decisions in the UK.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Calculators Page Styles ---- */
+    .calcs-hero {
+      background: var(--color-bg);
+      padding: 48px 0 0;
+      border-bottom: 1px solid var(--color-border);
+      overflow: hidden;
+    }
+    .calcs-hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      align-items: flex-end;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .calcs-hero-text { padding-bottom: 40px; }
+    .calcs-hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 12px; }
+    .calcs-hero p { font-size: 1.05rem; max-width: 480px; }
+    .calcs-hero-img {
+      width: 100%;
+      max-width: 400px;
+      height: 220px;
+      background: linear-gradient(135deg, #e8f0ec 0%, #d4e6d8 40%, #c9a84c22 100%);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      align-self: flex-end;
+    }
+    .calcs-trust-bar {
+      background: var(--color-white);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: 18px 0;
+    }
+    .calcs-trust-inner {
+      display: flex;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .calcs-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+    .calcs-trust-item .trust-icon {
+      width: 32px; height: 32px;
+      background: var(--color-bg-section);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      color: var(--color-primary);
+      flex-shrink: 0;
+    }
+    .calcs-trust-item strong { display: block; font-size: 0.85rem; color: var(--color-dark); }
+    .calcs-trust-item span { color: var(--color-text-muted); font-size: 0.78rem; }
+
+    /* Search bar */
+    .calcs-search-bar {
+      background: var(--color-bg);
+      padding: 28px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .calcs-search-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    }
+    .search-input-wrap {
+      position: relative;
+      max-width: 800px;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 14px 20px 14px 44px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-white);
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      color: var(--color-text);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .search-input-wrap input:focus { border-color: var(--color-primary); }
+    .search-input-wrap input::placeholder { color: var(--color-text-light); }
+    .search-input-wrap .search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--color-text-muted); font-size: 1rem;
+    }
+    .search-input-wrap .search-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--color-text-muted); font-size: 1.1rem; cursor: pointer;
+    }
+
+    /* Main layout */
+    .calcs-main-layout {
+      max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* Sidebar */
+    .calcs-sidebar { position: sticky; top: 90px; }
+    .calcs-sidebar-section { margin-bottom: 8px; }
+    .calcs-sidebar h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--color-dark);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .calcs-cat-list { display: flex; flex-direction: column; gap: 2px; }
+    .calcs-cat-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 0.88rem;
+      color: var(--color-text);
+      border: none; background: none; text-align: left; width: 100%;
+    }
+    .calcs-cat-item:hover { background: var(--color-bg-section); }
+    .calcs-cat-item.active {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+    .calcs-cat-count {
+      font-size: 0.78rem;
+      background: rgba(0,0,0,0.08);
+      padding: 2px 7px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .calcs-cat-item.active .calcs-cat-count { background: rgba(255,255,255,0.2); }
+
+    .calcs-sidebar-help {
+      background: var(--color-bg-section);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 24px;
+    }
+    .calcs-sidebar-help h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--color-dark);
+      margin-bottom: 8px;
+    }
+    .calcs-sidebar-help p {
+      font-size: 0.82rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    /* Popular calculators section */
+    .popular-calcs-section { margin-bottom: 48px; }
+    .popular-calcs-section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+    .popular-calcs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .popular-calc-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      text-align: center;
+      transition: all var(--transition-md);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .popular-calc-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+      border-color: var(--color-primary);
+    }
+    .popular-calc-icon {
+      width: 52px; height: 52px;
+      background: var(--color-bg-section);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin: 0 auto 14px;
+      color: var(--color-primary);
+    }
+    .popular-calc-card h4 {
+      font-size: 0.92rem;
+      color: var(--color-dark);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .popular-calc-card p {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+    .popular-calc-card .calc-cta {
+      font-size: 0.82rem;
+      color: var(--color-primary);
+      font-weight: 500;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+
+    /* All calcs section */
+    .all-calcs-section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+    .calcs-filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .calc-tab {
+      padding: 8px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      font-size: 0.83rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--color-white);
+      color: var(--color-text);
+      transition: all var(--transition);
+    }
+    .calc-tab:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .calc-tab.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-white);
+    }
+    .calcs-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .calc-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .calc-list-item:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .calc-list-item-left { display: flex; align-items: center; gap: 14px; }
+    .calc-list-icon {
+      width: 40px; height: 40px;
+      background: var(--color-bg-section);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      color: var(--color-primary);
+      flex-shrink: 0;
+    }
+    .calc-list-text h4 {
+      font-size: 0.9rem;
+      color: var(--color-dark);
+      margin-bottom: 3px;
+    }
+    .calc-list-text p {
+      font-size: 0.78rem;
+      line-height: 1.3;
+    }
+    .calc-list-arrow {
+      color: var(--color-text-muted);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Find my calculator CTA */
+    .find-calc-cta {
+      background: var(--color-bg-section);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 24px 32px;
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .find-calc-cta-text h4 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .find-calc-cta-text p { font-size: 0.85rem; }
+
+    @media (max-width: 1024px) {
+      .calcs-main-layout { grid-template-columns: 200px 1fr; gap: 28px; }
+      .popular-calcs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .calcs-hero-inner { grid-template-columns: 1fr; }
+      .calcs-hero-img { display: none; }
+      .calcs-trust-inner { flex-wrap: wrap; gap: 16px; }
+      .calcs-main-layout { grid-template-columns: 1fr; }
+      .calcs-sidebar { position: static; }
+      .popular-calcs-grid { grid-template-columns: repeat(2, 1fr); }
+      .calcs-list { grid-template-columns: 1fr; }
+      .find-calc-cta { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .popular-calcs-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner container-wide">
+      <a href="index.html" class="site-logo">
+        <div class="logo-icon">🏠</div>
+        <div class="logo-text">
+          <span class="logo-name">ADVAITH</span>
+          <span class="logo-sub">HOMES</span>
+        </div>
+      </a>
+      <nav class="main-nav" id="mainNav">
+        <a href="buying.html">Buying</a>
+        <a href="selling.html">Selling</a>
+        <a href="house-movers.html">House Movers</a>
+        <a href="calculators.html" class="nav-active">Calculators</a>
+        <a href="guides.html">Guides</a>
+        <a href="news.html">News</a>
+        <a href="regulations.html">Regulations</a>
+        <a href="ask-expert.html">Ask an Expert</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-search-btn" aria-label="Search">🔍</button>
+        <a href="ask-expert.html" class="btn btn-primary">Get Guidance</a>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div style="background: var(--color-bg); border-bottom: 1px solid var(--color-border); padding: 12px 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Calculators</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="calcs-hero">
+    <div class="calcs-hero-inner">
+      <div class="calcs-hero-text">
+        <h1>All Calculators</h1>
+        <p>Smart tools and calculators to help you plan, budget and make confident property decisions.</p>
+      </div>
+      <div class="calcs-hero-img">🏠🧮</div>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <div class="calcs-trust-bar">
+    <div class="calcs-trust-inner">
+      <div class="calcs-trust-item">
+        <div class="trust-icon">⏱</div>
+        <div>
+          <strong>Accurate &amp; Up to Date</strong>
+          <span>Based on latest UK data</span>
+        </div>
+      </div>
+      <div class="calcs-trust-item">
+        <div class="trust-icon">✓</div>
+        <div>
+          <strong>Free to Use</strong>
+          <span>No sign-up required</span>
+        </div>
+      </div>
+      <div class="calcs-trust-item">
+        <div class="trust-icon">≡</div>
+        <div>
+          <strong>Easy to Understand</strong>
+          <span>Simple, clear results</span>
+        </div>
+      </div>
+      <div class="calcs-trust-item">
+        <div class="trust-icon">◎</div>
+        <div>
+          <strong>Independent</strong>
+          <span>Unbiased information</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="calcs-search-bar">
+    <div class="calcs-search-inner">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search calculators..." id="calcSearchInput">
+        <button class="search-btn">›</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main layout: sidebar + content -->
+  <div class="calcs-main-layout">
+    <!-- Sidebar -->
+    <aside class="calcs-sidebar">
+      <div class="calcs-sidebar-section">
+        <h3>Browse by Category</h3>
+        <div class="calcs-cat-list">
+          <button class="calcs-cat-item active" data-category="all">All Calculators <span class="calcs-cat-count">16</span></button>
+          <button class="calcs-cat-item" data-category="buying">Buying Calculators <span class="calcs-cat-count">7</span></button>
+          <button class="calcs-cat-item" data-category="selling">Selling Calculators <span class="calcs-cat-count">4</span></button>
+          <button class="calcs-cat-item" data-category="moving">Moving Home Calculators <span class="calcs-cat-count">3</span></button>
+          <button class="calcs-cat-item" data-category="mortgage">Mortgage Calculators <span class="calcs-cat-count">6</span></button>
+          <button class="calcs-cat-item" data-category="tax">Tax Calculators <span class="calcs-cat-count">3</span></button>
+          <button class="calcs-cat-item" data-category="affordability">Affordability Calculators <span class="calcs-cat-count">2</span></button>
+        </div>
+      </div>
+
+      <div class="calcs-sidebar-help">
+        <h4>Need Help Using a Calculator?</h4>
+        <p>Our guides explain how each calculator works and what the results mean.</p>
+        <a href="guides.html" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.85rem;">View Calculator Guide →</a>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main>
+      <!-- Popular Calculators -->
+      <section class="popular-calcs-section">
+        <h2>Popular Calculators</h2>
+        <div class="popular-calcs-grid">
+          <a href="stamp-duty.html" class="popular-calc-card">
+            <div class="popular-calc-icon">🏷</div>
+            <h4>Stamp Duty Calculator</h4>
+            <p>Calculate how much Stamp Duty Land Tax you'll pay.</p>
+            <span class="calc-cta">Calculate Now →</span>
+          </a>
+          <a href="#" class="popular-calc-card">
+            <div class="popular-calc-icon">💰</div>
+            <h4>Mortgage Affordability Calculator</h4>
+            <p>See how much you can borrow and what you can afford.</p>
+            <span class="calc-cta">Calculate Now →</span>
+          </a>
+          <a href="#" class="popular-calc-card">
+            <div class="popular-calc-icon">🏠</div>
+            <h4>Buying Cost Calculator</h4>
+            <p>Estimates all the costs involved in buying a property.</p>
+            <span class="calc-cta">Calculate Now →</span>
+          </a>
+          <a href="#" class="popular-calc-card">
+            <div class="popular-calc-icon">📅</div>
+            <h4>Monthly Payment Calculator</h4>
+            <p>Calculate your monthly mortgage payments.</p>
+            <span class="calc-cta">Calculate Now →</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- All Calculators -->
+      <section class="all-calcs-section">
+        <h2>All Calculators</h2>
+        <div class="calcs-filter-tabs">
+          <button class="calc-tab active" data-tab="all">All</button>
+          <button class="calc-tab" data-tab="buying">Buying</button>
+          <button class="calc-tab" data-tab="selling">Selling</button>
+          <button class="calc-tab" data-tab="moving">Moving Home</button>
+          <button class="calc-tab" data-tab="mortgage">Mortgage</button>
+          <button class="calc-tab" data-tab="tax">Tax</button>
+          <button class="calc-tab" data-tab="affordability">Affordability</button>
+        </div>
+
+        <div class="calcs-list" id="calcsList">
+          <a href="stamp-duty.html" class="calc-list-item" data-category="buying tax">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🏷</div>
+              <div class="calc-list-text">
+                <h4>Stamp Duty Calculator</h4>
+                <p>Calculate how much Stamp Duty Land Tax you'll pay.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="buying mortgage affordability">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">💰</div>
+              <div class="calc-list-text">
+                <h4>Mortgage Affordability Calculator</h4>
+                <p>Check how much you can borrow and what you can afford.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="buying">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🏠</div>
+              <div class="calc-list-text">
+                <h4>Buying Cost Calculator</h4>
+                <p>Estimate legal fees, surveys, taxes and other buying costs.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="mortgage buying">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">📅</div>
+              <div class="calc-list-text">
+                <h4>Monthly Payment Calculator</h4>
+                <p>Calculate your monthly mortgage payments.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="mortgage">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">📉</div>
+              <div class="calc-list-text">
+                <h4>Mortgage Overpayment Calculator</h4>
+                <p>See how overpayments can reduce your loan and save interest.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="tax">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+              <div class="calc-list-text">
+                <h4>Land Transaction Tax Calculator</h4>
+                <p>Calculate Land Transaction Tax (Scotland) on property purchases.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="affordability buying">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🔑</div>
+              <div class="calc-list-text">
+                <h4>Rent vs Buy Calculator</h4>
+                <p>Compare the cost of renting vs buying a home.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="buying mortgage">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">💵</div>
+              <div class="calc-list-text">
+                <h4>How Much Deposit Do I Need?</h4>
+                <p>See how much deposit you need based on property price and mortgage.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="selling">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">📊</div>
+              <div class="calc-list-text">
+                <h4>Selling Cost Calculator</h4>
+                <p>Estimate estate agent fees and other costs of selling.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="selling tax">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">📋</div>
+              <div class="calc-list-text">
+                <h4>Capital Gains Tax Calculator</h4>
+                <p>Calculate CGT if you're selling a second property or buy-to-let.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="moving">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🚚</div>
+              <div class="calc-list-text">
+                <h4>Moving Cost Calculator</h4>
+                <p>Estimate removal company and moving home costs.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="buying">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🔭</div>
+              <div class="calc-list-text">
+                <h4>Survey Cost Estimator</h4>
+                <p>Get an estimate for different types of property surveys.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="selling mortgage">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🔓</div>
+              <div class="calc-list-text">
+                <h4>Equity Release Calculator</h4>
+                <p>See how much equity you could release from your home.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="mortgage affordability">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">🏦</div>
+              <div class="calc-list-text">
+                <h4>Offer Strategy Calculator</h4>
+                <p>Work out the best offer price based on market data.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="moving">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">⚡</div>
+              <div class="calc-list-text">
+                <h4>Energy Cost Estimator</h4>
+                <p>Estimate energy bills for a new property based on size and EPC.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+          <a href="#" class="calc-list-item" data-category="moving selling">
+            <div class="calc-list-item-left">
+              <div class="calc-list-icon">📦</div>
+              <div class="calc-list-text">
+                <h4>Conveyancing Cost Calculator</h4>
+                <p>Estimate your solicitor's conveyancing fees.</p>
+              </div>
+            </div>
+            <span class="calc-list-arrow">›</span>
+          </a>
+        </div>
+
+        <!-- Find my calculator CTA -->
+        <div class="find-calc-cta">
+          <div class="find-calc-cta-text">
+            <h4>Not sure which calculator you need?</h4>
+            <p>Answer a few simple questions and we'll recommend the right calculator for you.</p>
+          </div>
+          <a href="ask-expert.html" class="btn btn-primary" style="white-space: nowrap;">Find My Calculator →</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner container-wide">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="logo-icon">🏠</div>
+          <div class="logo-text">
+            <span class="logo-name">ADVAITH</span>
+            <span class="logo-sub">HOMES</span>
+          </div>
+        </div>
+        <p>Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="guides.html">Buying Guides</a></li>
+          <li><a href="guides.html">Selling Guides</a></li>
+          <li><a href="house-movers.html">House Movers</a></li>
+          <li><a href="calculators.html">Calculators</a></li>
+          <li><a href="news.html">News &amp; Insights</a></li>
+          <li><a href="regulations.html">Regulations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Popular Tools</h4>
+        <ul>
+          <li><a href="stamp-duty.html">Stamp Duty Calculator</a></li>
+          <li><a href="#">Mortgage Calculator</a></li>
+          <li><a href="#">Buying Cost Calculator</a></li>
+          <li><a href="#">Affordability Calculator</a></li>
+          <li><a href="#">Rent vs Buy Calculator</a></li>
+          <li><a href="calculators.html">All Calculators</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Help</h4>
+        <ul>
+          <li><a href="ask-expert.html">Ask an Expert</a></li>
+          <li><a href="ask-expert.html">Find a Solicitor</a></li>
+          <li><a href="ask-expert.html">Find a Mortgage Adviser</a></li>
+          <li><a href="ask-expert.html">Surveyors</a></li>
+          <li><a href="#">Removal Companies</a></li>
+          <li><a href="#">Buyer-side Guidance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html">Our Mission</a></li>
+          <li><a href="about.html">Contact Us</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom container-wide">
+      <span>© 2024 ADVAITH HOMES. All rights reserved.</span>
+      <span>Made with ♥ in the UK</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Category sidebar filtering
+    document.querySelectorAll('.calcs-cat-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.calcs-cat-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.category;
+        filterCalcs(cat);
+        // sync tabs
+        document.querySelectorAll('.calc-tab').forEach(t => {
+          t.classList.toggle('active', t.dataset.tab === cat);
+        });
+      });
+    });
+
+    // Tab filtering
+    document.querySelectorAll('.calc-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const cat = tab.dataset.tab;
+        filterCalcs(cat);
+        document.querySelectorAll('.calcs-cat-item').forEach(b => {
+          b.classList.toggle('active', b.dataset.category === cat);
+        });
+      });
+    });
+
+    function filterCalcs(cat) {
+      document.querySelectorAll('.calc-list-item').forEach(item => {
+        const cats = item.dataset.category || '';
+        item.style.display = (cat === 'all' || cats.includes(cat)) ? 'flex' : 'none';
+      });
+    }
+
+    // Search
+    document.getElementById('calcSearchInput').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll('.calc-list-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

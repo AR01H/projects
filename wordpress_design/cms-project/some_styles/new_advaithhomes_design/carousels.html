@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carousel Components – Advaith Homes</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ============================================================
+     SHARED CAROUSEL PRIMITIVES
+  ============================================================ */
+  .carousel-section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .carousel-section:last-of-type { border-bottom: none; }
+  .carousel-section:nth-child(even) { background: var(--color-bg-section); }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-tag-bg);
+    color: var(--color-primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .section-hd {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .section-hd h2 { margin-bottom: 4px; }
+  .section-hd p { font-size: 0.9rem; margin: 0; }
+  .section-hd-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+  /* ---- Arrow Buttons ---- */
+  .carousel-btn {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-dark);
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+  .carousel-btn:hover { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+  .carousel-btn:disabled { opacity: 0.3; pointer-events: none; }
+  .carousel-btn.dark { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white; }
+  .carousel-btn.dark:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-dark); }
+
+  /* ---- Dots ---- */
+  .carousel-dots {
+    display: flex; justify-content: center; align-items: center;
+    gap: 6px; margin-top: 24px;
+  }
+  .carousel-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--color-border);
+    border: none; padding: 0; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .carousel-dot.active { background: var(--color-primary); width: 24px; border-radius: 4px; }
+  .carousel-dot.white { background: rgba(255,255,255,0.35); }
+  .carousel-dot.white.active { background: white; width: 24px; border-radius: 4px; }
+
+  /* ---- Line Indicators ---- */
+  .carousel-lines {
+    display: flex; gap: 6px; margin-top: 20px;
+  }
+  .carousel-line {
+    flex: 1; height: 3px; border-radius: 2px;
+    background: var(--color-border); cursor: pointer;
+    transition: background 0.3s;
+    border: none; padding: 0;
+  }
+  .carousel-line.active { background: var(--color-primary); }
+
+  /* ---- Number indicator ---- */
+  .carousel-num-indicator {
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--color-text-muted);
+  }
+  .carousel-num-indicator span { color: var(--color-primary); }
+
+  /* ---- Progress bar indicator ---- */
+  .carousel-progress-bar {
+    height: 3px; background: var(--color-border);
+    border-radius: 2px; margin-top: 20px; overflow: hidden;
+  }
+  .carousel-progress-fill {
+    height: 100%; background: var(--color-primary);
+    border-radius: 2px; transition: width 0.4s ease;
+  }
+
+  /* ---- Thumbnail indicators ---- */
+  .carousel-thumbs {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .carousel-thumb {
+    width: 60px; height: 44px; border-radius: var(--radius-sm);
+    cursor: pointer; overflow: hidden;
+    border: 2px solid transparent; transition: border-color 0.2s;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .carousel-thumb.active { border-color: var(--color-primary); }
+
+
+  /* ============================================================
+     1. HERO / FULL-BLEED SINGLE IMAGE CAROUSEL
+  ============================================================ */
+  .hero-carousel { position: relative; overflow: hidden; border-radius: var(--radius-lg); }
+  .hero-carousel-track {
+    display: flex; transition: transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .hero-slide {
+    flex-shrink: 0; width: 100%;
+    min-height: 440px; position: relative;
+    display: flex; align-items: flex-end;
+    border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .hero-slide-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9rem;
+  }
+  .hero-slide-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,35,50,0.82) 0%, rgba(26,35,50,0.1) 55%, transparent 100%);
+  }
+  .hero-slide-content {
+    position: relative; z-index: 1; padding: 40px;
+    width: 100%; max-width: 640px;
+  }
+  .hero-slide-tag {
+    display: inline-block;
+    background: var(--color-accent); color: var(--color-dark);
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; padding: 4px 10px; border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .hero-slide-content h3 { color: white; font-size: clamp(1.3rem,2.5vw,1.9rem); margin-bottom: 8px; }
+  .hero-slide-content p { color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; }
+  .hero-carousel-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    display: flex; justify-content: space-between;
+    width: 100%; padding: 0 16px; pointer-events: none; z-index: 10;
+  }
+  .hero-carousel-nav button { pointer-events: all; }
+  .hero-carousel-dots {
+    position: absolute; bottom: 20px; right: 32px; z-index: 10;
+    display: flex; gap: 6px;
+  }
+
+
+  /* ============================================================
+     2. FADE CAROUSEL (single image, crossfade)
+  ============================================================ */
+  .fade-carousel { position: relative; border-radius: var(--radius-lg); overflow: hidden; }
+  .fade-slide {
+    position: absolute; inset: 0;
+    opacity: 0; transition: opacity 0.65s ease;
+    display: flex; align-items: flex-end;
+    min-height: 400px;
+  }
+  .fade-slide.active { opacity: 1; position: relative; }
+  .fade-slide-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8rem;
+  }
+  .fade-slide-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(30,58,47,0.75) 0%, rgba(26,35,50,0.4) 100%);
+  }
+  .fade-slide-content { position: relative; z-index: 1; padding: 40px; }
+  .fade-slide-content h3 { color: white; font-size: 1.6rem; margin-bottom: 8px; }
+  .fade-slide-content p { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 20px; }
+  .fade-carousel-ctrl {
+    display: flex; align-items: center; justify-content: space-between; margin-top: 20px;
+  }
+
+
+  /* ============================================================
+     3. MULTI-CARD DRAG / SCROLL CAROUSEL (no dots)
+  ============================================================ */
+  .cards-carousel-wrap { position: relative; }
+  .cards-carousel {
+    display: flex; gap: 20px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; cursor: grab;
+    padding-bottom: 4px;
+  }
+  .cards-carousel::-webkit-scrollbar { display: none; }
+  .cards-carousel.grabbing { cursor: grabbing; }
+  .carousel-card {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: box-shadow var(--transition-md), transform var(--transition-md);
+    text-decoration: none; color: inherit;
+  }
+  .carousel-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  .card-img {
+    height: 150px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.8rem; position: relative;
+  }
+  .card-img.green  { background: linear-gradient(135deg, #e8f0ec, #c8dece); }
+  .card-img.gold   { background: linear-gradient(135deg, #fdf3d9, #f5e0a0); }
+  .card-img.navy   { background: linear-gradient(135deg, #dde3ee, #b8c3d8); }
+  .card-img.sage   { background: linear-gradient(135deg, #e9ede8, #d0dace); }
+  .card-img.rust   { background: linear-gradient(135deg, #fce8e0, #f5c4b0); }
+  .card-img.slate  { background: linear-gradient(135deg, #e4e8ee, #c8cfd9); }
+  .card-body { padding: 18px 18px 20px; }
+  .card-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    padding: 3px 9px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .tag-green { background: var(--color-tag-bg); color: var(--color-primary); }
+  .tag-gold  { background: #fdf3d9; color: #92660a; }
+  .tag-navy  { background: #dde8fb; color: #1e40af; }
+  .card-body h4 { font-size: 0.92rem; color: var(--color-dark); margin-bottom: 6px; line-height: 1.35; }
+  .card-body p  { font-size: 0.8rem; line-height: 1.5; margin-bottom: 12px; }
+  .card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--color-text-light); }
+  .card-meta-read { color: var(--color-primary); font-weight: 600; }
+
+  /* widths – set via class */
+  .w-card-sm  { width: 240px; }
+  .w-card-md  { width: 300px; }
+  .w-card-lg  { width: 360px; }
+  .w-card-full { width: 100%; }
+
+  /* cards-3 grid (button-driven, no scroll bar) */
+  .cards3-carousel-track { overflow: hidden; }
+  .cards3-carousel-inner {
+    display: flex; gap: 20px;
+    transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .cards3-carousel-inner .carousel-card { flex-shrink: 0; }
+
+
+  /* ============================================================
+     4. AUTO-SCROLL TICKER (continuous, no interaction needed)
+  ============================================================ */
+  .ticker-wrap { overflow: hidden; position: relative; }
+  .ticker-wrap::before,
+  .ticker-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
+  }
+  .ticker-wrap::before { left: 0;  background: linear-gradient(to right, var(--color-bg), transparent); }
+  .ticker-wrap::after  { right: 0; background: linear-gradient(to left,  var(--color-bg), transparent); }
+  .ticker-track {
+    display: flex; gap: 20px;
+    animation: ticker-scroll 28s linear infinite;
+    width: max-content;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ticker-card {
+    flex-shrink: 0; width: 280px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden; text-decoration: none; color: inherit;
+    transition: box-shadow var(--transition);
+  }
+  .ticker-card:hover { box-shadow: var(--shadow-md); }
+  .ticker-card-img {
+    height: 120px; display: flex; align-items: center;
+    justify-content: center; font-size: 2.4rem;
+  }
+  .ticker-card-body { padding: 14px 16px; }
+  .ticker-card-body h4 { font-size: 0.85rem; color: var(--color-dark); margin-bottom: 5px; line-height: 1.35; }
+  .ticker-card-body p  { font-size: 0.76rem; line-height: 1.45; }
+
+  /* Dark-bg auto-scroll variant */
+  .ticker-wrap.dark-ticker::before { background: linear-gradient(to right, var(--color-primary), transparent); }
+  .ticker-wrap.dark-ticker::after  { background: linear-gradient(to left,  var(--color-primary), transparent); }
+  .ticker-card.dark-card {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.12);
+  }
+  .ticker-card.dark-card h4 { color: white; }
+  .ticker-card.dark-card p  { color: rgba(255,255,255,0.65); }
+
+
+  /* ============================================================
+     5. STACKED / PEEK CAROUSEL (center + peek sides)
+  ============================================================ */
+  .peek-carousel-outer { overflow: hidden; position: relative; }
+  .peek-carousel-track {
+    display: flex; gap: 24px; align-items: center;
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    padding: 16px 0;
+  }
+  .peek-card {
+    flex-shrink: 0; width: 480px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.45s ease;
+    transform: scale(0.9); opacity: 0.55;
+    display: grid; grid-template-columns: 220px 1fr;
+  }
+  .peek-card.active { transform: scale(1); opacity: 1; box-shadow: var(--shadow-xl); }
+  .peek-card-img {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; min-height: 220px;
+  }
+  .peek-card-body { padding: 28px 24px; }
+  .peek-card-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 10px; display: block; }
+  .peek-card-body h3 { font-size: 1.05rem; color: var(--color-dark); margin-bottom: 8px; line-height: 1.3; }
+  .peek-card-body p { font-size: 0.82rem; line-height: 1.55; margin-bottom: 16px; }
+  .peek-card-meta { display: flex; gap: 12px; font-size: 0.75rem; color: var(--color-text-light); }
+  .peek-carousel-ctrl {
+    display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px;
+  }
+
+
+  /* ============================================================
+     6. TESTIMONIAL CAROUSEL (quote style)
+  ============================================================ */
+  .testimonial-carousel { position: relative; }
+  .testimonial-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    overflow: hidden; border-radius: var(--radius-lg);
+  }
+  .testimonial-slide {
+    flex-shrink: 0; width: 100%;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 48px 40px;
+    display: flex; gap: 40px; align-items: flex-start;
+  }
+  .testimonial-quote-icon {
+    width: 52px; height: 52px;
+    background: var(--color-primary);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: white; flex-shrink: 0;
+  }
+  .testimonial-body { flex: 1; }
+  .testimonial-stars { color: var(--color-accent); font-size: 1rem; margin-bottom: 16px; letter-spacing: 2px; }
+  .testimonial-text { font-size: 1.05rem; line-height: 1.75; color: var(--color-dark); font-family: var(--font-display); margin-bottom: 24px; }
+  .testimonial-author { display: flex; align-items: center; gap: 14px; }
+  .testimonial-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .av-green { background: linear-gradient(135deg, #e8f0ec, #c8dece); }
+  .av-gold  { background: linear-gradient(135deg, #fdf3d9, #f5e0a0); }
+  .av-navy  { background: linear-gradient(135deg, #dde3ee, #b8c3d8); }
+  .testimonial-author strong { display: block; font-size: 0.88rem; color: var(--color-dark); }
+  .testimonial-author span   { font-size: 0.78rem; color: var(--color-text-muted); }
+  .testimonial-carousel-ctrl {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 24px; flex-wrap: wrap; gap: 12px;
+  }
+  .testimonial-carousel-ctrl .carousel-dots { margin-top: 0; }
+
+
+  /* ============================================================
+     7. PROPERTY CARD CAROUSEL WITH HOVER DETAILS
+  ============================================================ */
+  .prop-card {
+    flex-shrink: 0; width: 300px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden; cursor: pointer;
+    transition: all var(--transition-md);
+    text-decoration: none; color: inherit;
+    scroll-snap-align: start;
+  }
+  .prop-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+  .prop-card-img {
+    height: 180px; position: relative;
+    display: flex; align-items: center; justify-content: center; font-size: 4rem;
+  }
+  .prop-card-img.prop-green { background: linear-gradient(135deg, #e8f0ec, #c8dece); }
+  .prop-card-img.prop-gold  { background: linear-gradient(135deg, #fdf3d9, #f5e0a0); }
+  .prop-card-img.prop-navy  { background: linear-gradient(135deg, #dde3ee, #b8c3d8); }
+  .prop-card-img.prop-rust  { background: linear-gradient(135deg, #fce8e0, #f5c4b0); }
+  .prop-badge {
+    position: absolute; top: 12px; left: 12px;
+    font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+  }
+  .badge-new    { background: var(--color-primary); color: white; }
+  .badge-guide  { background: var(--color-accent); color: var(--color-dark); }
+  .badge-hot    { background: #ef4444; color: white; }
+  .prop-save {
+    position: absolute; top: 12px; right: 12px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.9); border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; cursor: pointer; transition: all var(--transition);
+  }
+  .prop-save:hover { background: white; box-shadow: var(--shadow-sm); }
+  .prop-card-body { padding: 16px 18px 18px; }
+  .prop-price { font-size: 1.1rem; font-weight: 700; font-family: var(--font-display); color: var(--color-primary); margin-bottom: 4px; }
+  .prop-title { font-size: 0.88rem; font-weight: 600; color: var(--color-dark); margin-bottom: 4px; }
+  .prop-loc { font-size: 0.78rem; color: var(--color-text-muted); margin-bottom: 12px; }
+  .prop-specs { display: flex; gap: 14px; font-size: 0.78rem; color: var(--color-text-muted); padding-top: 12px; border-top: 1px solid var(--color-border); }
+  .prop-spec { display: flex; align-items: center; gap: 4px; }
+
+
+  /* ============================================================
+     8. THUMBNAIL CAROUSEL (image + mini thumbs)
+  ============================================================ */
+  .thumb-carousel { position: relative; border-radius: var(--radius-lg); overflow: hidden; }
+  .thumb-main-track {
+    display: flex;
+    transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .thumb-main-slide {
+    flex-shrink: 0; width: 100%; height: 360px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7rem; position: relative;
+  }
+  .thumb-main-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,35,50,0.6) 0%, transparent 50%);
+  }
+  .thumb-main-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px 28px; z-index: 1;
+  }
+  .thumb-main-caption h3 { color: white; font-size: 1.2rem; margin-bottom: 4px; }
+  .thumb-main-caption p { color: rgba(255,255,255,0.75); font-size: 0.83rem; margin: 0; }
+  .thumb-nav { position: absolute; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; width: 100%; padding: 0 14px; z-index: 10; pointer-events: none; }
+  .thumb-nav button { pointer-events: all; }
+  .thumb-footer { display: flex; gap: 8px; margin-top: 10px; }
+  .thumb-item {
+    flex: 1; height: 70px; border-radius: var(--radius-sm);
+    cursor: pointer; overflow: hidden;
+    border: 2.5px solid transparent;
+    transition: border-color 0.2s;
+    display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+  }
+  .thumb-item.g1 { background: linear-gradient(135deg, #e8f0ec, #c8dece); }
+  .thumb-item.g2 { background: linear-gradient(135deg, #fdf3d9, #f5e0a0); }
+  .thumb-item.g3 { background: linear-gradient(135deg, #dde3ee, #b8c3d8); }
+  .thumb-item.g4 { background: linear-gradient(135deg, #fce8e0, #f5c4b0); }
+  .thumb-item.g5 { background: linear-gradient(135deg, #e9ede8, #d0dace); }
+  .thumb-item.active { border-color: var(--color-primary); }
+
+
+  /* ============================================================
+     9. STATS / COUNTER STRIP (auto-advancing, no dots)
+  ============================================================ */
+  .stats-carousel-outer {
+    background: var(--color-primary);
+    padding: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .stats-ticker-track {
+    display: flex; gap: 0;
+    animation: stats-ticker 20s linear infinite;
+    width: max-content;
+  }
+  .stats-ticker-track:hover { animation-play-state: paused; }
+  @keyframes stats-ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .stat-chip {
+    display: flex; align-items: center; gap: 16px;
+    padding: 22px 40px; white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+  .stat-chip-icon { font-size: 1.5rem; }
+  .stat-chip-val { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--color-accent); line-height: 1; }
+  .stat-chip-label { font-size: 0.78rem; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+
+  /* ============================================================
+     10. STEP / PROGRESS CAROUSEL
+  ============================================================ */
+  .step-carousel { position: relative; }
+  .step-track { overflow: hidden; }
+  .step-inner {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .step-slide {
+    flex-shrink: 0; width: 100%;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: start;
+  }
+  .step-number {
+    width: 56px; height: 56px;
+    border-radius: 50%; background: var(--color-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+  .step-content h3 { font-size: 1.2rem; margin-bottom: 10px; }
+  .step-content p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+  .step-tips { display: flex; flex-direction: column; gap: 8px; }
+  .step-tip { display: flex; align-items: flex-start; gap: 10px; font-size: 0.84rem; color: var(--color-text); }
+  .step-tip-check { width: 20px; height: 20px; background: var(--color-tag-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--color-primary); flex-shrink: 0; margin-top: 1px; }
+  .step-carousel-ctrl {
+    display: flex; align-items: center; justify-content: space-between; margin-top: 24px; flex-wrap: wrap; gap: 12px;
+  }
+  .step-progress-labels { display: flex; gap: 8px; flex-wrap: wrap; }
+  .step-label {
+    font-size: 0.75rem; padding: 5px 12px; border-radius: 20px;
+    background: var(--color-bg-section); color: var(--color-text-muted);
+    cursor: pointer; transition: all var(--transition); border: none; font-family: var(--font-body);
+  }
+  .step-label.active { background: var(--color-primary); color: white; }
+
+
+  /* ============================================================
+     PAGE HERO
+  ============================================================ */
+  .page-hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
+    padding: 56px 0 48px; position: relative; overflow: hidden;
+  }
+  .page-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 75% 50%, rgba(201,168,76,0.14) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .page-hero-inner { position: relative; z-index: 1; }
+  .page-hero h1 { color: white; margin-bottom: 14px; font-size: clamp(1.8rem,3.5vw,2.6rem); }
+  .page-hero p  { color: rgba(255,255,255,0.72); font-size: 1rem; max-width: 560px; margin: 0; }
+  .page-hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.35);
+    color: var(--color-accent); font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .toc-strip {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 32px;
+  }
+  .toc-pill {
+    padding: 8px 16px; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 20px;
+    font-size: 0.8rem; color: rgba(255,255,255,0.8); text-decoration: none;
+    transition: all var(--transition);
+  }
+  .toc-pill:hover { background: rgba(255,255,255,0.2); color: white; }
+
+
+  /* ============================================================
+     SECTION COLOR VARIANTS
+  ============================================================ */
+  .bg-primary-section {
+    background: var(--color-primary);
+  }
+  .bg-dark-section {
+    background: var(--color-dark);
+  }
+
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 1024px) {
+    .peek-card { width: 400px; }
+    .peek-card:not(.active) { transform: scale(0.88); }
+  }
+  @media (max-width: 768px) {
+    .hero-slide { min-height: 320px; }
+    .hero-slide-content { padding: 24px; }
+    .hero-slide-content h3 { font-size: 1.2rem; }
+    .testimonial-slide { flex-direction: column; gap: 20px; padding: 28px 24px; }
+    .peek-card { width: calc(100vw - 80px); grid-template-columns: 1fr; }
+    .peek-card-img { min-height: 140px; }
+    .step-slide { grid-template-columns: 1fr; gap: 16px; }
+    .step-number { width: 44px; height: 44px; font-size: 1rem; }
+    .thumb-main-slide { height: 240px; font-size: 5rem; }
+    .section-hd { flex-direction: column; align-items: flex-start; }
+    .section-hd-actions { flex-direction: row; }
+    .w-card-md { width: 260px; }
+    .w-card-lg { width: 280px; }
+  }
+  @media (max-width: 480px) {
+    .carousel-section { padding: 44px 0; }
+    .hero-slide { min-height: 280px; }
+    .w-card-sm { width: 220px; }
+    .w-card-md { width: 240px; }
+    .w-card-lg { width: 260px; }
+    .prop-card { width: 260px; }
+    .testimonial-text { font-size: 0.95rem; }
+    .thumb-footer { gap: 5px; }
+    .stat-chip { padding: 18px 28px; }
+  }
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🏠</div>
+        <div class="logo-text">
+          <span class="logo-name">ADVAITH</span>
+          <span class="logo-sub">HOMES</span>
+        </div>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="buying.html"       class="nav-link">Buying</a>
+        <a href="selling.html"      class="nav-link">Selling</a>
+        <a href="house-movers.html" class="nav-link">House Movers</a>
+        <a href="calculators.html"  class="nav-link">Calculators</a>
+        <a href="guides.html"       class="nav-link">Guides</a>
+        <a href="news.html"         class="nav-link">News</a>
+        <a href="regulations.html"  class="nav-link">Regulations</a>
+        <a href="ask-expert.html"   class="nav-link">Ask an Expert</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn-search" aria-label="Search">🔍</button>
+        <a href="ask-expert.html" class="btn btn-primary btn-sm">Get Guidance</a>
+        <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="page-hero-tag">🎠 Component Library</div>
+    <h1>Carousel Styles</h1>
+    <p>All reusable carousel patterns in the Advaith Homes design system — drop any section directly into your pages.</p>
+    <div class="toc-strip">
+      <a class="toc-pill" href="#hero-carousel">1. Hero Slider</a>
+      <a class="toc-pill" href="#fade-carousel">2. Fade Crossfade</a>
+      <a class="toc-pill" href="#cards-nodots">3. Drag &amp; Scroll</a>
+      <a class="toc-pill" href="#ticker">4. Auto-Ticker</a>
+      <a class="toc-pill" href="#peek">5. Peek / Centre</a>
+      <a class="toc-pill" href="#testimonial">6. Testimonials</a>
+      <a class="toc-pill" href="#property-cards">7. Property Cards</a>
+      <a class="toc-pill" href="#thumbnail">8. Thumbnail Nav</a>
+      <a class="toc-pill" href="#stats-ticker">9. Stats Strip</a>
+      <a class="toc-pill" href="#step-carousel">10. Step Carousel</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     1. HERO / FULL-BLEED SINGLE IMAGE CAROUSEL
+============================================================ -->
+<section class="carousel-section" id="hero-carousel">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 1</div>
+        <h2>Hero Full-Bleed Slider</h2>
+        <p>Single image at a time · Arrows on image · Dot indicators · Auto-advance · Slide-in transition</p>
+      </div>
+      <div class="section-hd-actions">
+        <button class="carousel-btn" id="heroBtn-prev" aria-label="Previous">&#8592;</button>
+        <span class="carousel-num-indicator"><span id="heroNum">1</span> / 4</span>
+        <button class="carousel-btn" id="heroBtn-next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+
+    <div class="hero-carousel" id="heroCarousel">
+      <div class="hero-carousel-track" id="heroTrack">
+
+        <div class="hero-slide" style="background:linear-gradient(135deg,#1e3a2f,#2d5a44);">
+          <div class="hero-slide-bg">🏡</div>
+          <div class="hero-slide-overlay"></div>
+          <div class="hero-slide-content">
+            <span class="hero-slide-tag">📈 Market Update</span>
+            <h3>UK House Prices Rise for Third Consecutive Month</h3>
+            <p>Average values climbed 1.4% in April, with the North West and East Midlands leading growth.</p>
+            <a href="article-template.html" class="btn btn-outline-white btn-sm">Read the Full Story →</a>
+          </div>
+        </div>
+
+        <div class="hero-slide" style="background:linear-gradient(135deg,#1a2332,#2d3a52);">
+          <div class="hero-slide-bg">🏙</div>
+          <div class="hero-slide-overlay"></div>
+          <div class="hero-slide-content">
+            <span class="hero-slide-tag">💰 Mortgages</span>
+            <h3>Mortgage Rates Fall Below 4.8% for First Time in 18 Months</h3>
+            <p>Major lenders cut two-year fixes as competition intensifies ahead of expected Bank of England rate cuts.</p>
+            <a href="stamp-duty.html" class="btn btn-outline-white btn-sm">Use Our Calculator →</a>
+          </div>
+        </div>
+
+        <div class="hero-slide" style="background:linear-gradient(135deg,#3a2410,#6b3c18);">
+          <div class="hero-slide-bg">📋</div>
+          <div class="hero-slide-overlay"></div>
+          <div class="hero-slide-content">
+            <span class="hero-slide-tag">⚖️ Regulation</span>
+            <h3>Renters Reform Bill: What Buyers and Landlords Need to Know</h3>
+            <p>The abolition of Section 21 no-fault evictions finally passes into law — full breakdown of key changes.</p>
+            <a href="article-template.html" class="btn btn-outline-white btn-sm">Read the Guide →</a>
+          </div>
+        </div>
+
+        <div class="hero-slide" style="background:linear-gradient(135deg,#1e2d3a,#2a4558);">
+          <div class="hero-slide-bg">🔑</div>
+          <div class="hero-slide-overlay"></div>
+          <div class="hero-slide-content">
+            <span class="hero-slide-tag">🏠 Buying Guide</span>
+            <h3>Your Complete Step-by-Step Guide to Buying a Home in 2024</h3>
+            <p>From saving your deposit to collecting the keys — everything you need to know in one comprehensive guide.</p>
+            <a href="guide-buying-step-by-step.html" class="btn btn-accent btn-sm">View the Guide →</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Arrows on image -->
+      <div class="hero-carousel-nav">
+        <button class="carousel-btn dark" id="heroOnBtn-prev" aria-label="Previous">&#8592;</button>
+        <button class="carousel-btn dark" id="heroOnBtn-next" aria-label="Next">&#8594;</button>
+      </div>
+      <!-- Dots on image -->
+      <div class="hero-carousel-dots" id="heroDots"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     2. FADE CROSSFADE CAROUSEL (single image, no slide)
+============================================================ -->
+<section class="carousel-section" id="fade-carousel">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 2</div>
+        <h2>Fade Crossfade Carousel</h2>
+        <p>Single image · Opacity crossfade · Line indicators · Manual only</p>
+      </div>
+    </div>
+
+    <div class="fade-carousel" id="fadeCarousel">
+      <div class="fade-slide active" style="background:linear-gradient(135deg,#1e3a2f,#3a6b50);">
+        <div class="fade-slide-bg">🏡</div>
+        <div class="fade-slide-overlay"></div>
+        <div class="fade-slide-content">
+          <h3>First-Time Buyer? Start Here.</h3>
+          <p>Everything you need to know about buying your first home — from deposits to completion.</p>
+          <a href="guide-buying-step-by-step.html" class="btn btn-accent btn-sm">Read the Guide →</a>
+        </div>
+      </div>
+      <div class="fade-slide" style="background:linear-gradient(135deg,#1a2332,#2d3a52);">
+        <div class="fade-slide-bg">🏦</div>
+        <div class="fade-slide-overlay"></div>
+        <div class="fade-slide-content">
+          <h3>Find the Right Mortgage Deal</h3>
+          <p>Compare rates, use our calculators and get matched with a qualified mortgage adviser.</p>
+          <a href="calculators.html" class="btn btn-accent btn-sm">Explore Calculators →</a>
+        </div>
+      </div>
+      <div class="fade-slide" style="background:linear-gradient(135deg,#2d1a0f,#5c3010);">
+        <div class="fade-slide-bg">📦</div>
+        <div class="fade-slide-overlay"></div>
+        <div class="fade-slide-content">
+          <h3>Moving Home? We've Got You Covered.</h3>
+          <p>Checklists, cost calculators, and practical guides for a stress-free move.</p>
+          <a href="house-movers.html" class="btn btn-accent btn-sm">House Movers Hub →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-carousel-ctrl">
+      <button class="carousel-btn" id="fadeBtn-prev" aria-label="Previous">&#8592;</button>
+      <div class="carousel-lines" id="fadeLines">
+        <button class="carousel-line active"></button>
+        <button class="carousel-line"></button>
+        <button class="carousel-line"></button>
+      </div>
+      <button class="carousel-btn" id="fadeBtn-next" aria-label="Next">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     3A. MULTI-CARD DRAG CAROUSEL — NO DOTS, NO BUTTONS
+============================================================ -->
+<section class="carousel-section" id="cards-nodots">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 3a</div>
+        <h2>Drag &amp; Scroll — No Controls</h2>
+        <p>Multiple cards · Touch &amp; mouse drag · No dots · No arrows · Scrolls freely</p>
+      </div>
+    </div>
+    <div class="cards-carousel" id="dragCarousel">
+      <a href="article-template.html" class="carousel-card w-card-md">
+        <div class="card-img green">🏡</div>
+        <div class="card-body">
+          <span class="card-tag tag-green">Buying</span>
+          <h4>How to Make a Competitive Offer in a Busy Market</h4>
+          <p>Tips on pricing strategy, conditions and how to stand out from other buyers.</p>
+          <div class="card-meta"><span>May 21, 2024</span><span class="card-meta-read">Read →</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="carousel-card w-card-md">
+        <div class="card-img gold">🏦</div>
+        <div class="card-body">
+          <span class="card-tag tag-gold">Mortgages</span>
+          <h4>Fixed vs Tracker: Which Mortgage Is Right for You Right Now?</h4>
+          <p>We weigh up the pros and cons as rates continue to move.</p>
+          <div class="card-meta"><span>May 19, 2024</span><span class="card-meta-read">Read →</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="carousel-card w-card-md">
+        <div class="card-img navy">📋</div>
+        <div class="card-body">
+          <span class="card-tag tag-navy">Regulation</span>
+          <h4>EPC Ratings Explained: What Grade Does Your Home Need?</h4>
+          <p>New requirements coming into force — here is what you need to do to comply.</p>
+          <div class="card-meta"><span>May 17, 2024</span><span class="card-meta-read">Read →</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="carousel-card w-card-md">
+        <div class="card-img sage">🔑</div>
+        <div class="card-body">
+          <span class="card-tag tag-green">Selling</span>
+          <h4>The Best Time of Year to Sell Your Home — Data Breakdown</h4>
+          <p>Spring and autumn still dominate, but data shows nuances worth knowing.</p>
+          <div class="card-meta"><span>May 15, 2024</span><span class="card-meta-read">Read →</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="carousel-card w-card-md">
+        <div class="card-img rust">🚚</div>
+        <div class="card-body">
+          <span class="card-tag tag-gold">Moving</span>
+          <h4>How Much Does It Cost to Move Home? Full 2024 Breakdown</h4>
+          <p>Removal firms, storage, utility transfers and hidden costs all covered.</p>
+          <div class="card-meta"><span>May 12, 2024</span><span class="card-meta-read">Read →</span></div>
+        </div>
+      </a>
+      <a href="article-template.html" class="carousel-card w-card-md">
+        <div class="card-img slate">📊</div>
+        <div class="card-body">
+          <span class="card-tag tag-navy">Market</span>
+          <h4>Regional House Price Tracker: April 2024</h4>
+          <p>A full breakdown of price movements across every UK region this month.</p>
+          <div class="card-meta"><span>May 10, 2024</span><span class="card-meta-read">Read →</span></div>
+        </div>
+      </a>
+    </div>
+    <p style="text-align:center;font-size:0.78rem;color:var(--color-text-light);margin-top:12px;">← Drag or swipe to scroll →</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     3B. MULTI-CARD WITH ARROWS + DOTS
+============================================================ -->
+<section class="carousel-section">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 3b</div>
+        <h2>Multi-Card — Arrows &amp; Dots</h2>
+        <p>Multiple cards visible · Arrow buttons · Dot indicators · Snap scrolling</p>
+      </div>
+      <div class="section-hd-actions">
+        <button class="carousel-btn" id="cards3Btn-prev">&#8592;</button>
+        <button class="carousel-btn" id="cards3Btn-next">&#8594;</button>
+      </div>
+    </div>
+    <div class="cards3-carousel-track">
+      <div class="cards3-carousel-inner" id="cards3Inner">
+        <a href="guides.html" class="carousel-card w-card-lg">
+          <div class="card-img green">🏠</div>
+          <div class="card-body">
+            <span class="card-tag tag-green">Guide</span>
+            <h4>The Complete First-Time Buyer Guide</h4>
+            <p>Everything from saving your deposit to picking up the keys — in plain English.</p>
+            <div class="card-meta"><span>12 min read</span><span class="card-meta-read">Read →</span></div>
+          </div>
+        </a>
+        <a href="stamp-duty.html" class="carousel-card w-card-lg">
+          <div class="card-img gold">🏷</div>
+          <div class="card-body">
+            <span class="card-tag tag-gold">Calculator</span>
+            <h4>Stamp Duty Calculator 2024/25</h4>
+            <p>Calculate your SDLT liability instantly — includes first-time buyer relief.</p>
+            <div class="card-meta"><span>Free tool</span><span class="card-meta-read">Calculate →</span></div>
+          </div>
+        </a>
+        <a href="article-template.html" class="carousel-card w-card-lg">
+          <div class="card-img navy">⚖️</div>
+          <div class="card-body">
+            <span class="card-tag tag-navy">Regulation</span>
+            <h4>Leasehold Reform Act 2024: Key Changes Explained</h4>
+            <p>What the new rules mean for leaseholders extending their lease or buying the freehold.</p>
+            <div class="card-meta"><span>8 min read</span><span class="card-meta-read">Read →</span></div>
+          </div>
+        </a>
+        <a href="ask-expert.html" class="carousel-card w-card-lg">
+          <div class="card-img sage">🤝</div>
+          <div class="card-body">
+            <span class="card-tag tag-green">Expert Help</span>
+            <h4>Find a Conveyancer for Your Purchase</h4>
+            <p>Get matched with a qualified solicitor or conveyancer in your area — free and no-obligation.</p>
+            <div class="card-meta"><span>Free matching</span><span class="card-meta-read">Get Matched →</span></div>
+          </div>
+        </a>
+        <a href="article-template.html" class="carousel-card w-card-lg">
+          <div class="card-img rust">📉</div>
+          <div class="card-body">
+            <span class="card-tag tag-gold">News</span>
+            <h4>Mortgage Rates Fall for Third Month in a Row</h4>
+            <p>Average two-year fixes drop to 4.8% as lenders compete for spring buyers.</p>
+            <div class="card-meta"><span>4 min read</span><span class="card-meta-read">Read →</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="carousel-dots" id="cards3Dots"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     3C. MULTI-CARD, ARROWS ONLY (no dots)
+============================================================ -->
+<section class="carousel-section">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 3c</div>
+        <h2>Multi-Card — Arrows Only, No Dots</h2>
+        <p>Multiple cards · Arrow buttons · Number counter · No dots · Progress bar instead</p>
+      </div>
+      <div class="section-hd-actions">
+        <button class="carousel-btn" id="cards4Btn-prev">&#8592;</button>
+        <span class="carousel-num-indicator"><span id="cards4Num">1</span>&thinsp;/&thinsp;<span id="cards4Total">5</span></span>
+        <button class="carousel-btn" id="cards4Btn-next">&#8594;</button>
+      </div>
+    </div>
+    <div class="cards-carousel" id="cards4Carousel">
+      <a href="calculators.html" class="carousel-card w-card-sm"><div class="card-img green">🧮</div><div class="card-body"><span class="card-tag tag-green">Calculator</span><h4>Buying Cost Calculator</h4><p>All costs — legal, survey, tax — in one place.</p><div class="card-meta"><span class="card-meta-read">Calculate →</span></div></div></a>
+      <a href="calculators.html" class="carousel-card w-card-sm"><div class="card-img gold">💰</div><div class="card-body"><span class="card-tag tag-gold">Calculator</span><h4>Mortgage Affordability</h4><p>See how much you can borrow based on your income.</p><div class="card-meta"><span class="card-meta-read">Calculate →</span></div></div></a>
+      <a href="calculators.html" class="carousel-card w-card-sm"><div class="card-img navy">📅</div><div class="card-body"><span class="card-tag tag-navy">Calculator</span><h4>Monthly Payments</h4><p>Work out your monthly mortgage repayments.</p><div class="card-meta"><span class="card-meta-read">Calculate →</span></div></div></a>
+      <a href="stamp-duty.html"  class="carousel-card w-card-sm"><div class="card-img sage">🏷</div><div class="card-body"><span class="card-tag tag-green">Calculator</span><h4>Stamp Duty</h4><p>Instant SDLT estimate with first-time buyer relief.</p><div class="card-meta"><span class="card-meta-read">Calculate →</span></div></div></a>
+      <a href="calculators.html" class="carousel-card w-card-sm"><div class="card-img rust">🔑</div><div class="card-body"><span class="card-tag tag-gold">Calculator</span><h4>Rent vs Buy</h4><p>Compare the true cost of renting versus buying.</p><div class="card-meta"><span class="card-meta-read">Calculate →</span></div></div></a>
+      <a href="calculators.html" class="carousel-card w-card-sm"><div class="card-img slate">📉</div><div class="card-body"><span class="card-tag tag-navy">Calculator</span><h4>Overpayment</h4><p>See how overpaying your mortgage saves you money.</p><div class="card-meta"><span class="card-meta-read">Calculate →</span></div></div></a>
+    </div>
+    <div class="carousel-progress-bar"><div class="carousel-progress-fill" id="cards4Progress" style="width:20%"></div></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     4. AUTO-SCROLL TICKER (continuous, no interaction)
+============================================================ -->
+<section class="carousel-section" id="ticker">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 4a</div>
+        <h2>Auto-Scroll Ticker — Light</h2>
+        <p>Cards scroll continuously · Pauses on hover · No controls needed</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="tickerTrack">
+      <!-- set 1 -->
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img green">🏡</div><div class="ticker-card-body"><h4>UK House Prices Rise for Third Month Running</h4><p>Average values climb 1.4% in April — North West leads growth.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img gold">🏦</div><div class="ticker-card-body"><h4>Mortgage Rates Fall Below 4.8%</h4><p>Barclays and Halifax lead fresh wave of cuts ahead of base rate decision.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img navy">⚖️</div><div class="ticker-card-body"><h4>Renters Reform Bill Passes Final Reading</h4><p>Section 21 no-fault evictions abolished after years of delay.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img sage">🏷</div><div class="ticker-card-body"><h4>Stamp Duty Surcharge Rises to 5% on Second Homes</h4><p>Change takes effect immediately — buyers need to act fast.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img rust">📊</div><div class="ticker-card-body"><h4>Rightmove Reports Record Spring Asking Prices</h4><p>Average home now £375,131 as supply remains constrained.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img slate">🏙</div><div class="ticker-card-body"><h4>New Build Completions Fall 22% Year-on-Year</h4><p>Sharpest single-year drop since 2009 raises supply concerns.</p></div></a>
+      <!-- duplicate set for seamless loop -->
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img green">🏡</div><div class="ticker-card-body"><h4>UK House Prices Rise for Third Month Running</h4><p>Average values climb 1.4% in April — North West leads growth.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img gold">🏦</div><div class="ticker-card-body"><h4>Mortgage Rates Fall Below 4.8%</h4><p>Barclays and Halifax lead fresh wave of cuts ahead of base rate decision.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img navy">⚖️</div><div class="ticker-card-body"><h4>Renters Reform Bill Passes Final Reading</h4><p>Section 21 no-fault evictions abolished after years of delay.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img sage">🏷</div><div class="ticker-card-body"><h4>Stamp Duty Surcharge Rises to 5% on Second Homes</h4><p>Change takes effect immediately — buyers need to act fast.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img rust">📊</div><div class="ticker-card-body"><h4>Rightmove Reports Record Spring Asking Prices</h4><p>Average home now £375,131 as supply remains constrained.</p></div></a>
+      <a href="article-template.html" class="ticker-card"><div class="ticker-card-img slate">🏙</div><div class="ticker-card-body"><h4>New Build Completions Fall 22% Year-on-Year</h4><p>Sharpest single-year drop since 2009 raises supply concerns.</p></div></a>
+    </div>
+  </div>
+
+  <!-- Dark variant -->
+  <div style="background:var(--color-primary);padding:40px 0;margin-top:40px;">
+    <div class="container" style="margin-bottom:24px;">
+      <div class="section-label" style="background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);">Style 4b</div>
+      <h2 style="color:white;margin-top:8px;">Auto-Scroll Ticker — Dark</h2>
+    </div>
+    <div class="ticker-wrap dark-ticker">
+      <div class="ticker-track">
+        <a href="guides.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🏠</div><div class="ticker-card-body"><h4>Step-by-Step Buying Guide</h4><p>Everything from deposit to completion in plain English.</p></div></a>
+        <a href="stamp-duty.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🏷</div><div class="ticker-card-body"><h4>Stamp Duty Calculator</h4><p>Free, instant SDLT estimate including first-time buyer relief.</p></div></a>
+        <a href="ask-expert.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🤝</div><div class="ticker-card-body"><h4>Find a Mortgage Adviser</h4><p>Get matched with an FCA-authorised broker — no obligation.</p></div></a>
+        <a href="calculators.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🧮</div><div class="ticker-card-body"><h4>All Property Calculators</h4><p>16 free tools to help you plan your property journey.</p></div></a>
+        <a href="news.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">📰</div><div class="ticker-card-body"><h4>Latest Property News</h4><p>Up-to-date market, mortgage and regulation news every week.</p></div></a>
+        <!-- duplicate for seamless loop -->
+        <a href="guides.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🏠</div><div class="ticker-card-body"><h4>Step-by-Step Buying Guide</h4><p>Everything from deposit to completion in plain English.</p></div></a>
+        <a href="stamp-duty.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🏷</div><div class="ticker-card-body"><h4>Stamp Duty Calculator</h4><p>Free, instant SDLT estimate including first-time buyer relief.</p></div></a>
+        <a href="ask-expert.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🤝</div><div class="ticker-card-body"><h4>Find a Mortgage Adviser</h4><p>Get matched with an FCA-authorised broker — no obligation.</p></div></a>
+        <a href="calculators.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">🧮</div><div class="ticker-card-body"><h4>All Property Calculators</h4><p>16 free tools to help you plan your property journey.</p></div></a>
+        <a href="news.html" class="ticker-card dark-card"><div class="ticker-card-img" style="background:rgba(255,255,255,0.06);">📰</div><div class="ticker-card-body"><h4>Latest Property News</h4><p>Up-to-date market, mortgage and regulation news every week.</p></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     5. PEEK / CENTRE-FOCUS CAROUSEL
+============================================================ -->
+<section class="carousel-section" id="peek">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 5</div>
+        <h2>Peek / Centre-Focus Carousel</h2>
+        <p>Active card is full-size · Side cards peek in &amp; are scaled down · Arrows + dots</p>
+      </div>
+    </div>
+  </div>
+  <div class="peek-carousel-outer" id="peekOuter">
+    <div class="peek-carousel-track" id="peekTrack">
+      <div class="peek-card active">
+        <div class="peek-card-img" style="background:linear-gradient(135deg,#e8f0ec,#c8dece);">🏠</div>
+        <div class="peek-card-body">
+          <span class="peek-card-tag">Step 1 of 5 · Buying Journey</span>
+          <h3>Save Your Deposit &amp; Understand Your Budget</h3>
+          <p>Start with a clear savings goal. Most lenders want at least 5–10% of the purchase price. Use our affordability calculator to understand how much you can borrow.</p>
+          <div class="peek-card-meta"><span>⏱ 3 min read</span><span>🏠 Buying</span></div>
+        </div>
+      </div>
+      <div class="peek-card">
+        <div class="peek-card-img" style="background:linear-gradient(135deg,#fdf3d9,#f5e0a0);">🏦</div>
+        <div class="peek-card-body">
+          <span class="peek-card-tag">Step 2 of 5 · Buying Journey</span>
+          <h3>Get a Mortgage Agreement in Principle</h3>
+          <p>An AIP shows sellers you're serious and gives you a clear borrowing limit. A broker can search the whole market to find you the best deal.</p>
+          <div class="peek-card-meta"><span>⏱ 4 min read</span><span>💰 Mortgage</span></div>
+        </div>
+      </div>
+      <div class="peek-card">
+        <div class="peek-card-img" style="background:linear-gradient(135deg,#dde3ee,#b8c3d8);">🔍</div>
+        <div class="peek-card-body">
+          <span class="peek-card-tag">Step 3 of 5 · Buying Journey</span>
+          <h3>Find Your Property &amp; Make an Offer</h3>
+          <p>Research areas carefully, view multiple properties, and when you find the right one, make a considered offer based on comparable sold prices nearby.</p>
+          <div class="peek-card-meta"><span>⏱ 5 min read</span><span>🔑 Buying</span></div>
+        </div>
+      </div>
+      <div class="peek-card">
+        <div class="peek-card-img" style="background:linear-gradient(135deg,#fce8e0,#f5c4b0);">📋</div>
+        <div class="peek-card-body">
+          <span class="peek-card-tag">Step 4 of 5 · Buying Journey</span>
+          <h3>Instruct a Solicitor &amp; Commission a Survey</h3>
+          <p>Your conveyancer handles the legal transfer of ownership. Your surveyor checks the property's condition and flags issues before you commit.</p>
+          <div class="peek-card-meta"><span>⏱ 6 min read</span><span>⚖️ Legal</span></div>
+        </div>
+      </div>
+      <div class="peek-card">
+        <div class="peek-card-img" style="background:linear-gradient(135deg,#e9ede8,#d0dace);">🎉</div>
+        <div class="peek-card-body">
+          <span class="peek-card-tag">Step 5 of 5 · Buying Journey</span>
+          <h3>Exchange Contracts &amp; Complete</h3>
+          <p>Exchange makes the sale legally binding. Completion is moving day — you get the keys and the property is yours. Congratulations!</p>
+          <div class="peek-card-meta"><span>⏱ 4 min read</span><span>🏠 Buying</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="peek-carousel-ctrl container">
+    <button class="carousel-btn" id="peekBtn-prev">&#8592;</button>
+    <div class="carousel-dots" id="peekDots"></div>
+    <button class="carousel-btn" id="peekBtn-next">&#8594;</button>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     6. TESTIMONIALS CAROUSEL
+============================================================ -->
+<section class="carousel-section" id="testimonial">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 6</div>
+        <h2>Testimonial Carousel</h2>
+        <p>Quote format · Single card · Arrows · Dot indicators · Auto-advance</p>
+      </div>
+    </div>
+
+    <div class="testimonial-carousel">
+      <div class="testimonial-track" id="testimonialTrack">
+        <div class="testimonial-slide">
+          <div class="testimonial-quote-icon">❝</div>
+          <div class="testimonial-body">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"Advaith Homes made the whole buying process so much less daunting. The step-by-step guide was exactly what I needed as a first-time buyer — I went from completely lost to exchange in just four months."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar av-green">👩</div>
+              <div>
+                <strong>Sarah T.</strong>
+                <span>First-time buyer, Manchester</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-slide">
+          <div class="testimonial-quote-icon">❝</div>
+          <div class="testimonial-body">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"The Stamp Duty calculator was spot-on and saved me having a nasty surprise at completion. The guides on leasehold were clearer than anything my solicitor gave me."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar av-gold">👨</div>
+              <div>
+                <strong>James P.</strong>
+                <span>Home mover, Bristol</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-slide">
+          <div class="testimonial-quote-icon">❝</div>
+          <div class="testimonial-body">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"I was completely overwhelmed trying to understand the chain. Advaith Homes' guides and the expert matching service meant I had a brilliant solicitor and mortgage adviser within 24 hours."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar av-navy">👩</div>
+              <div>
+                <strong>Priya M.</strong>
+                <span>Buyer &amp; seller, London</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-carousel-ctrl">
+        <button class="carousel-btn" id="testBtn-prev">&#8592;</button>
+        <div class="carousel-dots" id="testDots"></div>
+        <button class="carousel-btn" id="testBtn-next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     7. PROPERTY CARD CAROUSEL (drag, with hover details)
+============================================================ -->
+<section class="carousel-section" id="property-cards">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 7</div>
+        <h2>Property / Guide Cards — Drag Carousel</h2>
+        <p>Richer cards with badge, save button &amp; specs row · Touch &amp; drag scroll · No dots</p>
+      </div>
+      <div class="section-hd-actions">
+        <a href="guides.html" class="btn btn-outline btn-sm">View All Guides</a>
+      </div>
+    </div>
+    <div class="cards-carousel" id="propCarousel">
+      <a href="guide-buying-step-by-step.html" class="prop-card">
+        <div class="prop-card-img prop-green">
+          <span class="prop-badge badge-new">New Guide</span>
+          <button class="prop-save" aria-label="Save">🔖</button>
+          🏡
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-price">Buying</div>
+          <div class="prop-title">Step-by-Step Guide to Buying a Home</div>
+          <div class="prop-loc">📖 Beginner · 12 min read</div>
+          <div class="prop-specs">
+            <span class="prop-spec">🏷 Stamp Duty</span>
+            <span class="prop-spec">⚖️ Legal</span>
+            <span class="prop-spec">🏦 Mortgage</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="prop-card">
+        <div class="prop-card-img prop-gold">
+          <span class="prop-badge badge-hot">Popular</span>
+          <button class="prop-save" aria-label="Save">🔖</button>
+          🏷
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-price">Tax Guide</div>
+          <div class="prop-title">Stamp Duty: Complete 2024/25 Guide</div>
+          <div class="prop-loc">📖 Intermediate · 8 min read</div>
+          <div class="prop-specs">
+            <span class="prop-spec">🧮 Calculator</span>
+            <span class="prop-spec">🏠 First-Time</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="prop-card">
+        <div class="prop-card-img prop-navy">
+          <span class="prop-badge badge-guide">Regulation</span>
+          <button class="prop-save" aria-label="Save">🔖</button>
+          ⚖️
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-price">Legal</div>
+          <div class="prop-title">Leasehold vs Freehold Explained</div>
+          <div class="prop-loc">📖 Beginner · 10 min read</div>
+          <div class="prop-specs">
+            <span class="prop-spec">📋 Leasehold</span>
+            <span class="prop-spec">🏘 Freehold</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="prop-card">
+        <div class="prop-card-img prop-rust">
+          <span class="prop-badge badge-new">New</span>
+          <button class="prop-save" aria-label="Save">🔖</button>
+          🏦
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-price">Mortgage</div>
+          <div class="prop-title">How to Choose the Right Mortgage Deal</div>
+          <div class="prop-loc">📖 Intermediate · 9 min read</div>
+          <div class="prop-specs">
+            <span class="prop-spec">📉 Fixed</span>
+            <span class="prop-spec">📈 Tracker</span>
+          </div>
+        </div>
+      </a>
+      <a href="article-template.html" class="prop-card">
+        <div class="prop-card-img prop-green">
+          <span class="prop-badge badge-guide">Guide</span>
+          <button class="prop-save" aria-label="Save">🔖</button>
+          🚚
+        </div>
+        <div class="prop-card-body">
+          <div class="prop-price">Moving Home</div>
+          <div class="prop-title">Full Moving Home Checklist 2024</div>
+          <div class="prop-loc">📖 Beginner · 7 min read</div>
+          <div class="prop-specs">
+            <span class="prop-spec">📦 Removals</span>
+            <span class="prop-spec">💡 Utilities</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    <p style="text-align:center;font-size:0.78rem;color:var(--color-text-light);margin-top:12px;">← Drag or swipe to explore →</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     8. THUMBNAIL NAV CAROUSEL
+============================================================ -->
+<section class="carousel-section" id="thumbnail">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 8</div>
+        <h2>Thumbnail Navigation Carousel</h2>
+        <p>Large image area · Small thumbnail strip below · Click thumb to jump · Arrow buttons</p>
+      </div>
+      <div class="section-hd-actions">
+        <button class="carousel-btn" id="thumbBtn-prev">&#8592;</button>
+        <span class="carousel-num-indicator"><span id="thumbNum">1</span> / 5</span>
+        <button class="carousel-btn" id="thumbBtn-next">&#8594;</button>
+      </div>
+    </div>
+
+    <div class="thumb-carousel">
+      <div class="thumb-main-track" id="thumbTrack">
+        <div class="thumb-main-slide" style="background:linear-gradient(135deg,#1e3a2f,#2d5a44);">🏡
+          <div class="thumb-main-overlay"></div>
+          <div class="thumb-main-caption"><h3>Buying a Home</h3><p>Your complete guide from deposit to keys</p></div>
+        </div>
+        <div class="thumb-main-slide" style="background:linear-gradient(135deg,#2a3a10,#4a6a20);">🏷
+          <div class="thumb-main-overlay"></div>
+          <div class="thumb-main-caption"><h3>Stamp Duty Guide</h3><p>Understand exactly what you'll owe in tax</p></div>
+        </div>
+        <div class="thumb-main-slide" style="background:linear-gradient(135deg,#1a2332,#2d3a52);">🏦
+          <div class="thumb-main-overlay"></div>
+          <div class="thumb-main-caption"><h3>Mortgage Guide</h3><p>Fixed, tracker, offset — we explain the options</p></div>
+        </div>
+        <div class="thumb-main-slide" style="background:linear-gradient(135deg,#3a1a1a,#6b2020);">⚖️
+          <div class="thumb-main-overlay"></div>
+          <div class="thumb-main-caption"><h3>Regulation Guide</h3><p>Latest rules every buyer and seller needs to know</p></div>
+        </div>
+        <div class="thumb-main-slide" style="background:linear-gradient(135deg,#1a2e2a,#2d5047);">🚚
+          <div class="thumb-main-overlay"></div>
+          <div class="thumb-main-caption"><h3>Moving Home</h3><p>Stress-free planning with our complete checklist</p></div>
+        </div>
+      </div>
+      <div class="thumb-nav">
+        <button class="carousel-btn dark" id="thumbOnBtn-prev">&#8592;</button>
+        <button class="carousel-btn dark" id="thumbOnBtn-next">&#8594;</button>
+      </div>
+    </div>
+
+    <div class="thumb-footer" id="thumbFooter">
+      <div class="thumb-item g1 active">🏡</div>
+      <div class="thumb-item g2">🏷</div>
+      <div class="thumb-item g3">🏦</div>
+      <div class="thumb-item g4">⚖️</div>
+      <div class="thumb-item g5">🚚</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     9. STATS AUTO-TICKER STRIP
+============================================================ -->
+<section class="carousel-section" id="stats-ticker" style="padding:0;">
+  <div class="container" style="padding-top:64px;padding-bottom:24px;">
+    <div class="section-label">Style 9</div>
+    <h2 style="margin-top:8px;margin-bottom:6px;">Stats Ticker Strip</h2>
+    <p style="margin-bottom:28px;">Auto-scrolling marquee of data chips · No controls · Pauses on hover</p>
+  </div>
+  <div class="stats-carousel-outer">
+    <div style="overflow:hidden;">
+      <div class="stats-ticker-track">
+        <!-- set 1 -->
+        <div class="stat-chip"><span class="stat-chip-icon">🏠</span><div><div class="stat-chip-val">£285,000</div><div class="stat-chip-label">Avg UK House Price</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">📈</span><div><div class="stat-chip-val">+1.4%</div><div class="stat-chip-label">Annual Price Growth</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">🏦</span><div><div class="stat-chip-val">5.25%</div><div class="stat-chip-label">BoE Base Rate</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">📉</span><div><div class="stat-chip-val">4.80%</div><div class="stat-chip-label">Avg 2-Year Fix</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">📋</span><div><div class="stat-chip-val">61,300</div><div class="stat-chip-label">Mortgage Approvals (Mar)</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">🏘</span><div><div class="stat-chip-val">25 days</div><div class="stat-chip-label">Avg Time to Sell</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">🔑</span><div><div class="stat-chip-val">£375,131</div><div class="stat-chip-label">Avg Asking Price</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">💰</span><div><div class="stat-chip-val">4.52%</div><div class="stat-chip-label">Avg 5-Year Fix</div></div></div>
+        <!-- duplicate for seamless loop -->
+        <div class="stat-chip"><span class="stat-chip-icon">🏠</span><div><div class="stat-chip-val">£285,000</div><div class="stat-chip-label">Avg UK House Price</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">📈</span><div><div class="stat-chip-val">+1.4%</div><div class="stat-chip-label">Annual Price Growth</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">🏦</span><div><div class="stat-chip-val">5.25%</div><div class="stat-chip-label">BoE Base Rate</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">📉</span><div><div class="stat-chip-val">4.80%</div><div class="stat-chip-label">Avg 2-Year Fix</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">📋</span><div><div class="stat-chip-val">61,300</div><div class="stat-chip-label">Mortgage Approvals (Mar)</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">🏘</span><div><div class="stat-chip-val">25 days</div><div class="stat-chip-label">Avg Time to Sell</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">🔑</span><div><div class="stat-chip-val">£375,131</div><div class="stat-chip-label">Avg Asking Price</div></div></div>
+        <div class="stat-chip"><span class="stat-chip-icon">💰</span><div><div class="stat-chip-val">4.52%</div><div class="stat-chip-label">Avg 5-Year Fix</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     10. STEP / PROGRESS CAROUSEL
+============================================================ -->
+<section class="carousel-section" id="step-carousel">
+  <div class="container">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Style 10</div>
+        <h2>Step / Progress Carousel</h2>
+        <p>Labelled step tabs · Single slide · Progress bar · Next &amp; Back buttons</p>
+      </div>
+    </div>
+
+    <div class="step-carousel">
+      <div class="step-track">
+        <div class="step-inner" id="stepInner">
+
+          <div class="step-slide">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Save Your Deposit</h3>
+              <p>Most lenders require between 5% and 20% of the property's value as a deposit. The larger your deposit, the lower your interest rate and monthly payments will be.</p>
+              <div class="step-tips">
+                <div class="step-tip"><div class="step-tip-check">✓</div>Use a Help to Buy ISA or Lifetime ISA to boost your savings with a government bonus.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Aim for at least 10% to access a wider range of mortgage deals.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Use our Deposit Calculator to work out how long it will take to save.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-slide">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Get a Mortgage in Principle</h3>
+              <p>An Agreement in Principle (AIP) from a lender shows sellers you're serious and ready to proceed. It typically takes less than an hour and doesn't affect your credit score.</p>
+              <div class="step-tips">
+                <div class="step-tip"><div class="step-tip-check">✓</div>Use a whole-of-market broker to find the best deal across all lenders.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Check your credit report before applying — any errors can be corrected first.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>An AIP is usually valid for 60–90 days — renew it if needed.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-slide">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Find Your Property</h3>
+              <p>Start with a clear list of must-haves vs nice-to-haves, and focus on areas with good transport, schools and amenities for your lifestyle.</p>
+              <div class="step-tips">
+                <div class="step-tip"><div class="step-tip-check">✓</div>Register with multiple estate agents and set up Rightmove / Zoopla alerts.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Visit at different times of day to check noise, parking and neighbourhood feel.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Research sold prices nearby to understand if a listing is fairly priced.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-slide">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>Make an Offer &amp; Instruct a Solicitor</h3>
+              <p>Once your offer is accepted, instruct a conveyancing solicitor immediately. Delays in instructing can slow the whole chain down.</p>
+              <div class="step-tips">
+                <div class="step-tip"><div class="step-tip-check">✓</div>Get three conveyancing quotes — cheapest isn't always best.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Commission a HomeBuyer Survey or Building Survey at this stage.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Ask for a memorandum of sale to be issued promptly.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-slide">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h3>Exchange &amp; Complete</h3>
+              <p>Exchange of contracts makes the transaction legally binding. Completion is when you pay the balance and receive the keys — congratulations, the home is yours!</p>
+              <div class="step-tips">
+                <div class="step-tip"><div class="step-tip-check">✓</div>Agree a completion date that works for all parties in the chain.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Arrange buildings insurance from the day of exchange — not completion.</div>
+                <div class="step-tip"><div class="step-tip-check">✓</div>Do a final walkthrough on completion day before handing over money.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="carousel-progress-bar" style="margin-bottom:16px;">
+        <div class="carousel-progress-fill" id="stepProgress" style="width:20%"></div>
+      </div>
+
+      <div class="step-carousel-ctrl">
+        <div class="step-progress-labels" id="stepLabels">
+          <button class="step-label active" data-step="0">1. Deposit</button>
+          <button class="step-label" data-step="1">2. Mortgage AIP</button>
+          <button class="step-label" data-step="2">3. Search</button>
+          <button class="step-label" data-step="3">4. Offer</button>
+          <button class="step-label" data-step="4">5. Exchange</button>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="carousel-btn" id="stepBtn-prev">&#8592;</button>
+          <button class="carousel-btn" id="stepBtn-next">&#8594;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">🏠</div>
+          <div>
+            <div class="footer-logo-name">ADVAITH HOMES</div>
+            <div class="footer-logo-sub">HOMES</div>
+          </div>
+        </div>
+        <p class="footer-desc">Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><div class="footer-links">
+        <a href="guides.html" class="footer-link">Buying Guides</a>
+        <a href="calculators.html" class="footer-link">Calculators</a>
+        <a href="news.html" class="footer-link">News</a>
+        <a href="regulations.html" class="footer-link">Regulations</a>
+      </div></div>
+      <div class="footer-col"><h4>Popular Tools</h4><div class="footer-links">
+        <a href="stamp-duty.html" class="footer-link">Stamp Duty Calculator</a>
+        <a href="calculators.html" class="footer-link">Mortgage Calculator</a>
+        <a href="calculators.html" class="footer-link">All Calculators</a>
+      </div></div>
+      <div class="footer-col"><h4>Get Help</h4><div class="footer-links">
+        <a href="ask-expert.html" class="footer-link">Ask an Expert</a>
+        <a href="contact.html" class="footer-link">Contact Us</a>
+      </div></div>
+      <div class="footer-col"><h4>About</h4><div class="footer-links">
+        <a href="about.html" class="footer-link">About Us</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+      </div></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 ADVAITH HOMES. All rights reserved.</span>
+      <span>Made with <span class="footer-heart">♥</span> in the UK</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     JAVASCRIPT — ALL CAROUSEL LOGIC
+============================================================ -->
+<script src="assets/js/main.js"></script>
+<script>
+
+/* ---- UTILITY ---- */
+function buildDots(container, count, activeIndex, onClick) {
+  container.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot' + (i === activeIndex ? ' active' : '');
+    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    d.addEventListener('click', () => onClick(i));
+    container.appendChild(d);
+  }
+}
+function updateDots(container, index) {
+  container.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === index));
+}
+function updateLines(container, index) {
+  container.querySelectorAll('.carousel-line').forEach((l, i) => l.classList.toggle('active', i === index));
+}
+
+
+/* ============================================================
+   1. HERO CAROUSEL
+============================================================ */
+(function() {
+  const track    = document.getElementById('heroTrack');
+  const slides   = track.querySelectorAll('.hero-slide');
+  const dotsEl   = document.getElementById('heroDots');
+  const numEl    = document.getElementById('heroNum');
+  const total    = slides.length;
+  let current    = 0;
+  let autoTimer;
+
+  // Build white dots on image
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot white' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i+1));
+    d.addEventListener('click', () => go(i));
+    dotsEl.appendChild(d);
+  }
+
+  function go(n) {
+    current = (n + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    numEl.textContent = current + 1;
+    dotsEl.querySelectorAll('.carousel-dot').forEach((d,i) => d.classList.toggle('active', i === current));
+  }
+
+  function startAuto() { autoTimer = setInterval(() => go(current + 1), 5000); }
+  function stopAuto()  { clearInterval(autoTimer); }
+
+  ['heroBtn-prev','heroOnBtn-prev'].forEach(id => document.getElementById(id).addEventListener('click', () => { stopAuto(); go(current - 1); startAuto(); }));
+  ['heroBtn-next','heroOnBtn-next'].forEach(id => document.getElementById(id).addEventListener('click', () => { stopAuto(); go(current + 1); startAuto(); }));
+
+  startAuto();
+})();
+
+
+/* ============================================================
+   2. FADE CAROUSEL
+============================================================ */
+(function() {
+  const slides  = document.querySelectorAll('#fadeCarousel .fade-slide');
+  const linesEl = document.getElementById('fadeLines');
+  const lines   = linesEl.querySelectorAll('.carousel-line');
+  const total   = slides.length;
+  let current   = 0;
+
+  function go(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    updateLines(linesEl, current);
+  }
+
+  lines.forEach((l, i) => l.addEventListener('click', () => go(i)));
+  document.getElementById('fadeBtn-prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('fadeBtn-next').addEventListener('click', () => go(current + 1));
+})();
+
+
+/* ============================================================
+   3. DRAG / TOUCH CAROUSEL (reusable helper)
+============================================================ */
+function makeDraggable(el) {
+  let startX, scrollLeft, isDragging = false;
+  el.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft; el.classList.add('grabbing');
+  });
+  el.addEventListener('mouseleave', () => { isDragging = false; el.classList.remove('grabbing'); });
+  el.addEventListener('mouseup',    () => { isDragging = false; el.classList.remove('grabbing'); });
+  el.addEventListener('mousemove',  e => {
+    if (!isDragging) return; e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    el.scrollLeft = scrollLeft - (x - startX) * 1.2;
+  });
+}
+makeDraggable(document.getElementById('dragCarousel'));
+makeDraggable(document.getElementById('propCarousel'));
+
+/* cards4 drag + progress */
+(function() {
+  const el = document.getElementById('cards4Carousel');
+  makeDraggable(el);
+  const progEl = document.getElementById('cards4Progress');
+  const numEl  = document.getElementById('cards4Num');
+  const totalEl = document.getElementById('cards4Total');
+  const cards  = el.querySelectorAll('.carousel-card');
+  totalEl.textContent = cards.length;
+
+  function updateProgress() {
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const pct = maxScroll > 0 ? (el.scrollLeft / maxScroll) * 100 : 0;
+    progEl.style.width = Math.max(10, pct) + '%';
+    const idx = Math.round(el.scrollLeft / (cards[0]?.offsetWidth + 20));
+    numEl.textContent = Math.min(idx + 1, cards.length);
+  }
+  el.addEventListener('scroll', updateProgress);
+
+  document.getElementById('cards4Btn-prev').addEventListener('click', () => { el.scrollBy({ left: -(cards[0]?.offsetWidth + 20), behavior: 'smooth' }); });
+  document.getElementById('cards4Btn-next').addEventListener('click', () => { el.scrollBy({ left:  (cards[0]?.offsetWidth + 20), behavior: 'smooth' }); });
+})();
+
+
+/* ============================================================
+   3B. CARDS3 CAROUSEL (button-driven, snap)
+============================================================ */
+(function() {
+  const inner  = document.getElementById('cards3Inner');
+  const cards  = inner.querySelectorAll('.carousel-card');
+  const dotsEl = document.getElementById('cards3Dots');
+  const total  = cards.length;
+  let current  = 0;
+
+  // How many cards visible at once
+  function visCount() {
+    const w = inner.parentElement.offsetWidth;
+    if (w >= 1024) return 3;
+    if (w >= 640)  return 2;
+    return 1;
+  }
+  const groups = () => Math.ceil(total / visCount());
+
+  function buildDots3() {
+    buildDots(dotsEl, groups(), 0, goGroup);
+  }
+
+  function goGroup(g) {
+    current = g;
+    const cardW  = cards[0].offsetWidth + 20;
+    inner.style.transform = `translateX(-${g * visCount() * cardW}px)`;
+    updateDots(dotsEl, g);
+  }
+
+  document.getElementById('cards3Btn-prev').addEventListener('click', () => goGroup(Math.max(current - 1, 0)));
+  document.getElementById('cards3Btn-next').addEventListener('click', () => goGroup(Math.min(current + 1, groups() - 1)));
+
+  buildDots3();
+  window.addEventListener('resize', () => { buildDots3(); goGroup(0); });
+})();
+
+
+/* ============================================================
+   5. PEEK CAROUSEL
+============================================================ */
+(function() {
+  const track  = document.getElementById('peekTrack');
+  const cards  = track.querySelectorAll('.peek-card');
+  const dotsEl = document.getElementById('peekDots');
+  const total  = cards.length;
+  let current  = 0;
+
+  function go(n) {
+    current = (n + total) % total;
+    cards.forEach((c, i) => c.classList.toggle('active', i === current));
+    // centre the active card
+    const outer = document.getElementById('peekOuter');
+    const card  = cards[current];
+    const offset = card.offsetLeft - (outer.offsetWidth / 2) + (card.offsetWidth / 2);
+    track.style.transform = `translateX(-${offset}px)`;
+    updateDots(dotsEl, current);
+  }
+
+  buildDots(dotsEl, total, 0, go);
+  document.getElementById('peekBtn-prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('peekBtn-next').addEventListener('click', () => go(current + 1));
+})();
+
+
+/* ============================================================
+   6. TESTIMONIALS
+============================================================ */
+(function() {
+  const track  = document.getElementById('testimonialTrack');
+  const slides = track.querySelectorAll('.testimonial-slide');
+  const dotsEl = document.getElementById('testDots');
+  const total  = slides.length;
+  let current  = 0;
+  let timer;
+
+  function go(n) {
+    current = (n + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    updateDots(dotsEl, current);
+  }
+
+  buildDots(dotsEl, total, 0, (i) => { clearInterval(timer); go(i); });
+  document.getElementById('testBtn-prev').addEventListener('click', () => { clearInterval(timer); go(current - 1); });
+  document.getElementById('testBtn-next').addEventListener('click', () => { clearInterval(timer); go(current + 1); });
+
+  timer = setInterval(() => go(current + 1), 5500);
+})();
+
+
+/* ============================================================
+   8. THUMBNAIL CAROUSEL
+============================================================ */
+(function() {
+  const track   = document.getElementById('thumbTrack');
+  const slides  = track.querySelectorAll('.thumb-main-slide');
+  const thumbs  = document.querySelectorAll('#thumbFooter .thumb-item');
+  const numEl   = document.getElementById('thumbNum');
+  const total   = slides.length;
+  let current   = 0;
+
+  function go(n) {
+    current = (n + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    numEl.textContent = current + 1;
+    thumbs.forEach((t, i) => t.classList.toggle('active', i === current));
+  }
+
+  thumbs.forEach((t, i) => t.addEventListener('click', () => go(i)));
+  ['thumbBtn-prev','thumbOnBtn-prev'].forEach(id => document.getElementById(id).addEventListener('click', () => go(current - 1)));
+  ['thumbBtn-next','thumbOnBtn-next'].forEach(id => document.getElementById(id).addEventListener('click', () => go(current + 1)));
+})();
+
+
+/* ============================================================
+   10. STEP CAROUSEL
+============================================================ */
+(function() {
+  const inner   = document.getElementById('stepInner');
+  const slides  = inner.querySelectorAll('.step-slide');
+  const labels  = document.querySelectorAll('#stepLabels .step-label');
+  const progEl  = document.getElementById('stepProgress');
+  const total   = slides.length;
+  let current   = 0;
+
+  function go(n) {
+    current = Math.max(0, Math.min(n, total - 1));
+    inner.style.transform = `translateX(-${current * 100}%)`;
+    labels.forEach((l, i) => l.classList.toggle('active', i === current));
+    progEl.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  labels.forEach((l, i) => l.addEventListener('click', () => go(parseInt(l.dataset.step))));
+  document.getElementById('stepBtn-prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('stepBtn-next').addEventListener('click', () => go(current + 1));
+})();
+
+</script>
+</body>
+</html>

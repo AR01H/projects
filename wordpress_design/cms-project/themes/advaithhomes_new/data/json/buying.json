@@ -1,0 +1,164 @@
+{
+    "meta": {
+        "slug": "buying",
+        "page_title": "I am Buying a Home – Advaith Homes",
+        "meta_description": "Step-by-step guidance, smart tools and expert insights to help you buy the right home with confidence."
+    },
+    "breadcrumb": [
+        { "label": "Home", "url": "/" },
+        { "label": "Buying a Home", "url": null }
+    ],
+    "hero": {
+        "title": "I am Buying a Home",
+        "description": "Step-by-step guidance, smart tools and expert insights to help you buy the right home with confidence.",
+        "image_icon": "🏡",
+        "trust_items": [
+            "Independent & Unbiased",
+            "Plain English Guides",
+            "Updated with Latest UK Regulations",
+            "Tools to Plan Better"
+        ]
+    },
+    "journey": {
+        "heading": "Your Buying Journey",
+        "steps": [
+            { "icon": "🔍", "num": "1", "label": "Research & Budget", "desc": "Understand costs, set budget and plan.", "active": true },
+            { "icon": "🏦", "num": "2", "label": "Mortgage", "desc": "Check affordability and get an Agreement in Principle.", "active": false },
+            { "icon": "🏠", "num": "3", "label": "Find a Property", "desc": "Search, shortlist and arrange viewings.", "active": false },
+            { "icon": "🤝", "num": "4", "label": "Make an Offer", "desc": "Understand offers, negotiation and estate agents.", "active": false },
+            { "icon": "📋", "num": "5", "label": "Surveys & Checks", "desc": "Get survey done and review the property carefully.", "active": false }
+        ],
+        "tip": {
+            "icon": "💡",
+            "text": "Buying a home in the UK takes on average <strong>3–6 months</strong> from offer to completion. The timeline can be longer if there is a property chain.",
+            "link_label": "View Full Process Timeline →",
+            "link_url": "/guides/buying-step-by-step/"
+        }
+    },
+    "guides": {
+        "heading": { "title": "Explore Buying Guides", "link_label": "View all guides →", "link_url": "/guides/" },
+        "items": [
+            {
+                "icon": "🏡",
+                "gradient": "linear-gradient(135deg,#c8d8c4,#7a9a74)",
+                "category": "Getting Started",
+                "title": "Buying a House in the UK – Step by Step",
+                "description": "A complete guide for first-time buyers.",
+                "read_more": "Read More →",
+                "url": "/guides/buying-step-by-step/"
+            },
+            {
+                "icon": "🏦",
+                "gradient": "linear-gradient(135deg,#c8d4e4,#6888aa)",
+                "category": "Mortgages",
+                "title": "Mortgages Explained Simply",
+                "description": "Understand mortgages, rates, terms and fees.",
+                "read_more": "Read More →",
+                "url": "/guides/"
+            },
+            {
+                "icon": "⚖️",
+                "gradient": "linear-gradient(135deg,#e4e8c4,#909848)",
+                "category": "Legal & Process",
+                "title": "Conveyancing Process Explained",
+                "description": "Know what your solicitor does and key legal steps.",
+                "read_more": "Read More →",
+                "url": "/guides/"
+            },
+            {
+                "icon": "🏷️",
+                "gradient": "linear-gradient(135deg,#e4d4c8,#b88070)",
+                "category": "Costs & Taxes",
+                "title": "Stamp Duty Land Tax Explained",
+                "description": "Rates, exemptions and how much you will pay.",
+                "read_more": "Read More →",
+                "url": "/stamp-duty/"
+            },
+            {
+                "icon": "🔎",
+                "gradient": "linear-gradient(135deg,#d8c8e8,#8868a8)",
+                "category": "Property Checks",
+                "title": "Home Surveys Explained",
+                "description": "Types of surveys and what to look out for.",
+                "read_more": "Read More →",
+                "url": "/guides/"
+            }
+        ]
+    },
+    "news": {
+        "heading": { "title": "Latest Property News", "link_label": "View all news →", "link_url": "/news/" },
+        "items": [
+            { "title": "UK House Prices Rise 1.4% in April – Latest ONS Data", "date": "May 20, 2024", "tag": "MARKET NEWS", "gradient": "linear-gradient(135deg,#c8d8c4,#8fad87)", "url": "/news/" },
+            { "title": "Bank of England Keeps Base Rate Unchanged at 5.25%", "date": "May 18, 2024", "tag": "MORTGAGE NEWS", "gradient": "linear-gradient(135deg,#d4c8b8,#a89080)", "url": "/news/" },
+            { "title": "Stamp Duty Changes: What Buyers Need to Know", "date": "May 15, 2024", "tag": "GOV.UK NEWS", "gradient": "linear-gradient(135deg,#e4d4c8,#c09080)", "url": "/news/" }
+        ]
+    },
+    "regulations": {
+        "heading": { "title": "Latest Regulations & Updates", "link_label": "View all →", "link_url": "/regulations/" },
+        "items": [
+            { "badge_lines": ["GOV", ".UK"], "title": "New Building Safety Act Requirements", "date": "May 19, 2024", "url": "/regulations/" },
+            { "badge_lines": ["GOV", ".UK"], "title": "Changes to EPC Rules for Private Landlords", "date": "May 17, 2024", "url": "/regulations/" },
+            { "badge_lines": ["GOV", ".UK"], "title": "Right to Buy – New Income Thresholds from April 2024", "date": "May 05, 2024", "url": "/regulations/" },
+            { "badge_lines": ["GOV", ".UK"], "title": "Planning Permission Fees Increase from June 2024", "date": "May 01, 2024", "url": "/regulations/" }
+        ]
+    },
+    "calculators": {
+        "heading": { "title": "Popular Calculators for Buyers", "link_label": "View all calculators →", "link_url": "/calculators/" },
+        "items": [
+            { "icon": "🧮", "name": "Stamp Duty Calculator", "url": "/stamp-duty/" },
+            { "icon": "🏦", "name": "Mortgage Affordability Calculator", "url": "/calculators/" },
+            { "icon": "💳", "name": "Buying Cost Calculator", "url": "/calculators/" },
+            { "icon": "📅", "name": "Monthly Payment Calculator", "url": "/calculators/" },
+            { "icon": "🎯", "name": "Offer Strategy Calculator", "url": "/calculators/" },
+            { "icon": "🔍", "name": "Survey Cost Estimator", "url": "/calculators/" },
+            { "icon": "⚖️", "name": "Rent vs Buy Calculator", "url": "/calculators/" }
+        ]
+    },
+    "sidebar": {
+        "quick_tools": {
+            "heading": "Quick Tools",
+            "items": [
+                { "icon": "🧮", "label": "Stamp Duty Calculator", "url": "/stamp-duty/" },
+                { "icon": "🏦", "label": "Mortgage Affordability Calculator", "url": "/calculators/" },
+                { "icon": "💳", "label": "Buying Cost Calculator", "url": "/calculators/" },
+                { "icon": "📅", "label": "Monthly Payment Calculator", "url": "/calculators/" },
+                { "icon": "⚖️", "label": "Rent vs Buy Calculator", "url": "/calculators/" }
+            ],
+            "cta": { "label": "View All Calculators →", "url": "/calculators/" }
+        },
+        "hot_topics": {
+            "heading": "🔥 Hot Topics",
+            "items": [
+                { "icon": "💡", "label": "Is now a good time to buy?", "url": "/guides/" },
+                { "icon": "🏦", "label": "Fixed or tracker mortgage?", "url": "/guides/" },
+                { "icon": "💰", "label": "How much deposit do I need?", "url": "/guides/" },
+                { "icon": "🎁", "label": "Can I buy with a gifted deposit?", "url": "/guides/" },
+                { "icon": "⏱️", "label": "How long does conveyancing take?", "url": "/guides/" }
+            ],
+            "view_all": { "label": "View All Hot Topics →", "url": "/guides/" }
+        },
+        "expert_help": {
+            "heading": "Need Help From a Professional?",
+            "subtitle": "Speak to trusted property professionals.",
+            "experts": [
+                { "icon": "🏦", "name": "Mortgage Adviser", "desc": "Get mortgage advice", "url": "/ask-expert/" },
+                { "icon": "⚖️", "name": "Solicitor / Conveyancer", "desc": "Find a conveyancing expert", "url": "/ask-expert/" },
+                { "icon": "🔍", "name": "Surveyor", "desc": "Book a property survey", "url": "/ask-expert/" },
+                { "icon": "🎯", "name": "Buyer-side Guidance", "desc": "Get expert support before you buy", "url": "/ask-expert/" }
+            ],
+            "cta": { "label": "Find the Right Expert →", "url": "/ask-expert/" }
+        }
+    },
+    "cta_banner": {
+        "icon": "💬",
+        "title": "Need Personalised Guidance?",
+        "description": "Talk to the right expert and make informed property decisions with confidence.",
+        "cta": { "label": "Ask an Expert →", "url": "/ask-expert/" },
+        "trust_items": [
+            "100% Independent Advice",
+            "No Obligation Enquiry",
+            "Secure & Private Conversations",
+            "Save Time & Avoid Mistakes"
+        ]
+    }
+}

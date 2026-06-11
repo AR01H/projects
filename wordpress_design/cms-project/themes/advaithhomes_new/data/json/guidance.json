@@ -1,0 +1,80 @@
+{
+    "meta": {
+        "page_title": "Get Expert Guidance",
+        "meta_description": "Connect with a vetted UK property expert for personalised advice on buying, selling, mortgages, surveys and more."
+    },
+    "breadcrumb": [
+        { "label": "Home",             "url": "/" },
+        { "label": "Get Guidance",     "url": null }
+    ],
+    "hero": {
+        "title":       "Get Expert Guidance",
+        "description": "Fill in a few details and we'll connect you with the right property expert for personalised advice.",
+        "bg_icon":     "🤝",
+        "trust_items": [
+            { "icon": "✅", "label": "100% Free",          "note": "No obligation to use any service" },
+            { "icon": "👤", "label": "Vetted Experts",     "note": "Trusted and regulated professionals" },
+            { "icon": "🎯", "label": "Personalised Match", "note": "We connect you with the right expert" },
+            { "icon": "⚡", "label": "Quick Response",     "note": "Experts usually respond within 24 hrs" }
+        ]
+    },
+    "form": {
+        "heading":          "Tell us about your requirement",
+        "help_label":       "I am looking for help with",
+        "help_placeholder": "Select an option",
+        "help_options": [
+            "Buying a Home",
+            "Selling a Home",
+            "Mortgage Advice",
+            "Conveyancing",
+            "Survey & Valuation",
+            "Moving Home",
+            "Legal Advice",
+            "Other"
+        ],
+        "iam_label":       "I am a",
+        "iam_placeholder": "Select an option",
+        "iam_options": [
+            "First Time Buyer",
+            "Home Mover",
+            "Seller",
+            "Landlord",
+            "Investor",
+            "Other"
+        ],
+        "time_label":       "When do you need help?",
+        "time_placeholder": "Select time frame",
+        "time_options": [
+            "As soon as possible",
+            "Within 1 week",
+            "Within 1 month",
+            "Just exploring"
+        ],
+        "contact_methods": [
+            { "key": "email",    "label": "Email" },
+            { "key": "phone",    "label": "Phone" },
+            { "key": "whatsapp", "label": "WhatsApp" }
+        ],
+        "submit_label": "Submit Request"
+    },
+    "services": {
+        "heading": "We can help you with",
+        "items": [
+            { "icon": "🏠", "title": "Buying a Home",      "desc": "Get advice on mortgages, offers, surveys, conveyancing and more.",        "url": "/buying/", "cta": "Get Guidance" },
+            { "icon": "🔑", "title": "Selling a Home",     "desc": "Get help with valuation, marketing, legal process and costs.",            "url": "/selling/","cta": "Get Guidance" },
+            { "icon": "💰", "title": "Mortgage Advice",    "desc": "Find the right mortgage deal for your situation.",                         "url": "/calculators/","cta": "Get Guidance" },
+            { "icon": "📋", "title": "Conveyancing",       "desc": "Connect with experienced solicitors for smooth transactions.",             "url": "/buying/", "cta": "Get Guidance" },
+            { "icon": "🔍", "title": "Surveys & Valuation","desc": "Book a surveyor or get a property valuation.",                            "url": "/buying/", "cta": "Get Guidance" },
+            { "icon": "🚚", "title": "Moving Home",        "desc": "Removals, storage and utilities — we can help.",                          "url": "/moving/", "cta": "Get Guidance" }
+        ]
+    },
+    "why_choose": {
+        "heading": "Why people choose ADVAITH HOMES",
+        "items": [
+            { "icon": "⚖️", "title": "Independent Advice",  "desc": "We are not tied to any company or service." },
+            { "icon": "🇬🇧","title": "UK Property Experts", "desc": "Access to a wide network of qualified professionals." },
+            { "icon": "⏱",  "title": "Save Time & Money",  "desc": "Get the right advice and avoid costly mistakes." },
+            { "icon": "🏠", "title": "Peace of Mind",       "desc": "Make confident property decisions." }
+        ]
+    }
+}

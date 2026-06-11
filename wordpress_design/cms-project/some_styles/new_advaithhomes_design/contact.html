@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us – Advaith Homes</title>
+  <meta name="description" content="Get in touch with the Advaith Homes team. We're here to help with any questions about buying, selling or moving home in the UK.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Contact Page ---- */
+    .contact-hero {
+      background: linear-gradient(135deg, var(--color-primary) 0%, #2d5a44 60%, #1a2332 100%);
+      padding: 64px 0 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .contact-hero-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .contact-hero-text h1 {
+      color: var(--color-white);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      margin-bottom: 16px;
+    }
+    .contact-hero-text p {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+    .contact-quick-info {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .cqi-item {
+      display: flex; align-items: center; gap: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+    }
+    .cqi-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      background: rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .cqi-text strong { display: block; color: var(--color-white); font-size: 0.9rem; margin-bottom: 2px; }
+    .cqi-text span { color: rgba(255,255,255,0.6); font-size: 0.82rem; }
+
+    /* Main layout */
+    .contact-main {
+      max-width: 1200px; margin: 0 auto; padding: 52px 24px 80px;
+      display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start;
+    }
+
+    /* Form card */
+    .contact-form-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+    }
+    .contact-form-card h2 { font-size: 1.4rem; margin-bottom: 6px; }
+    .contact-form-card > p { font-size: 0.9rem; margin-bottom: 28px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 0.85rem; font-weight: 600;
+      color: var(--color-dark); margin-bottom: 8px;
+    }
+    .form-group label .required { color: #e53e3e; margin-left: 2px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 12px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem; font-family: var(--font-body);
+      color: var(--color-text); background: var(--color-bg);
+      outline: none; transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--color-primary);
+      background: var(--color-white);
+      box-shadow: 0 0 0 3px rgba(30,58,47,0.08);
+    }
+    .form-group textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--color-text-light); font-size: 0.87rem; }
+
+    .topic-chips {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;
+    }
+    .topic-chip {
+      padding: 8px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      font-size: 0.82rem; font-weight: 500;
+      cursor: pointer; background: var(--color-bg-section);
+      color: var(--color-text); transition: all var(--transition);
+      font-family: var(--font-body);
+    }
+    .topic-chip:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .topic-chip.active {
+      background: var(--color-primary); border-color: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .consent-check {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 16px; background: var(--color-bg-section);
+      border-radius: var(--radius-sm); border: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+    .consent-check input[type="checkbox"] {
+      width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0;
+      accent-color: var(--color-primary);
+    }
+    .consent-check label {
+      font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.5;
+      cursor: pointer; margin: 0;
+    }
+    .consent-check label a { color: var(--color-primary); text-decoration: underline; }
+
+    .contact-submit-btn {
+      width: 100%; padding: 15px;
+      background: var(--color-primary); color: var(--color-white);
+      border: none; border-radius: var(--radius-sm);
+      font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      transition: all var(--transition); font-family: var(--font-body);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .contact-submit-btn:hover { background: var(--color-primary-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+    /* Success state */
+    .form-success {
+      display: none; text-align: center; padding: 40px 20px;
+    }
+    .form-success .success-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #e8f5e9; margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center; font-size: 2rem;
+    }
+    .form-success h3 { font-size: 1.4rem; margin-bottom: 10px; }
+    .form-success p { font-size: 0.9rem; max-width: 360px; margin: 0 auto; }
+
+    /* Sidebar */
+    .contact-sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+    .contact-info-box {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .contact-info-header {
+      background: var(--color-primary); padding: 20px 24px;
+    }
+    .contact-info-header h3 { color: var(--color-white); font-size: 1rem; margin-bottom: 4px; }
+    .contact-info-header p { color: rgba(255,255,255,0.7); font-size: 0.82rem; margin: 0; }
+    .contact-info-items { padding: 8px 0; }
+    .contact-info-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 24px; border-bottom: 1px solid var(--color-bg-section);
+    }
+    .contact-info-item:last-child { border-bottom: none; }
+    .ci-icon {
+      width: 36px; height: 36px; border-radius: var(--radius-sm);
+      background: var(--color-bg-section);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0; color: var(--color-primary);
+    }
+    .ci-text strong { display: block; font-size: 0.85rem; color: var(--color-dark); margin-bottom: 3px; }
+    .ci-text span { font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.5; }
+    .ci-text a { color: var(--color-primary); font-size: 0.82rem; }
+
+    .faq-box {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .faq-box-header { padding: 18px 24px 14px; border-bottom: 1px solid var(--color-border); }
+    .faq-box-header h3 { font-size: 1rem; }
+    .faq-list { padding: 8px 0; }
+    .faq-item {
+      border-bottom: 1px solid var(--color-bg-section);
+    }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 24px; cursor: pointer; font-size: 0.85rem;
+      font-weight: 500; color: var(--color-dark); gap: 12px;
+      background: none; border: none; width: 100%; text-align: left;
+      font-family: var(--font-body); transition: background var(--transition);
+    }
+    .faq-q:hover { background: var(--color-bg-section); }
+    .faq-chevron { font-size: 0.75rem; transition: transform 0.2s; flex-shrink: 0; }
+    .faq-a {
+      display: none; padding: 0 24px 14px;
+      font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.6;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-item.open .faq-a { display: block; }
+
+    @media (max-width: 1024px) {
+      .contact-hero-inner { grid-template-columns: 1fr; gap: 32px; }
+      .contact-quick-info { flex-direction: row; flex-wrap: wrap; }
+      .cqi-item { flex: 1; min-width: 200px; }
+    }
+    @media (max-width: 768px) {
+      .contact-main { grid-template-columns: 1fr; }
+      .contact-form-card { padding: 24px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-sidebar { order: -1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner container-wide">
+      <a href="index.html" class="site-logo">
+        <div class="logo-icon">🏠</div>
+        <div class="logo-text">
+          <span class="logo-name">ADVAITH</span>
+          <span class="logo-sub">HOMES</span>
+        </div>
+      </a>
+      <nav class="main-nav" id="mainNav">
+        <a href="buying.html">Buying</a>
+        <a href="selling.html">Selling</a>
+        <a href="house-movers.html">House Movers</a>
+        <a href="calculators.html">Calculators</a>
+        <a href="guides.html">Guides</a>
+        <a href="news.html">News</a>
+        <a href="regulations.html">Regulations</a>
+        <a href="ask-expert.html">Ask an Expert</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-search-btn" aria-label="Search">🔍</button>
+        <a href="ask-expert.html" class="btn btn-primary">Get Guidance</a>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div style="background:var(--color-bg);border-bottom:1px solid var(--color-border);padding:12px 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span>›</span><span>Contact Us</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="contact-hero">
+    <div class="contact-hero-inner">
+      <div class="contact-hero-text">
+        <h1>Get in Touch</h1>
+        <p>Have a question about buying, selling or moving home? Our team is here to help. Send us a message and we'll get back to you within one working day.</p>
+      </div>
+      <div class="contact-quick-info">
+        <div class="cqi-item">
+          <div class="cqi-icon">📧</div>
+          <div class="cqi-text">
+            <strong>Email Us</strong>
+            <span>hello@advaithmomes.co.uk</span>
+          </div>
+        </div>
+        <div class="cqi-item">
+          <div class="cqi-icon">⏱</div>
+          <div class="cqi-text">
+            <strong>Response Time</strong>
+            <span>Within 1 working day</span>
+          </div>
+        </div>
+        <div class="cqi-item">
+          <div class="cqi-icon">🕐</div>
+          <div class="cqi-text">
+            <strong>Office Hours</strong>
+            <span>Mon–Fri, 9am – 5:30pm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main layout -->
+  <div class="contact-main">
+    <!-- Contact Form -->
+    <div class="contact-form-card">
+      <h2>Send Us a Message</h2>
+      <p>Fill in the form below and a member of our team will be in touch shortly.</p>
+
+      <div id="contactFormWrap">
+        <form id="contactForm" onsubmit="submitContactForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name <span class="required">*</span></label>
+              <input type="text" id="firstName" placeholder="e.g. Sarah" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name <span class="required">*</span></label>
+              <input type="text" id="lastName" placeholder="e.g. Thompson" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email Address <span class="required">*</span></label>
+              <input type="email" id="email" placeholder="sarah@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" placeholder="+44 7700 000000">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>What is your enquiry about? <span class="required">*</span></label>
+            <div class="topic-chips" id="topicChips">
+              <button type="button" class="topic-chip" data-topic="buying">🏠 Buying</button>
+              <button type="button" class="topic-chip" data-topic="selling">🔑 Selling</button>
+              <button type="button" class="topic-chip" data-topic="moving">🚚 Moving Home</button>
+              <button type="button" class="topic-chip" data-topic="calculators">🧮 Calculators</button>
+              <button type="button" class="topic-chip" data-topic="guides">📖 Guides</button>
+              <button type="button" class="topic-chip" data-topic="regulations">⚖️ Regulations</button>
+              <button type="button" class="topic-chip" data-topic="expert">🤝 Find an Expert</button>
+              <button type="button" class="topic-chip" data-topic="other">💬 Other</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject <span class="required">*</span></label>
+            <input type="text" id="subject" placeholder="Brief description of your question" required>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Your Message <span class="required">*</span></label>
+            <textarea id="message" placeholder="Please describe how we can help you. The more detail you can provide, the better we can assist..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="hearAbout">How did you hear about us?</label>
+            <select id="hearAbout">
+              <option value="">Please select...</option>
+              <option>Google Search</option>
+              <option>Social Media</option>
+              <option>Friend or Family</option>
+              <option>Estate Agent</option>
+              <option>Mortgage Adviser</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="consent-check">
+            <input type="checkbox" id="consent" required>
+            <label for="consent">I agree to the <a href="#">Privacy Policy</a> and consent to Advaith Homes processing my personal data to respond to my enquiry. You can unsubscribe at any time.</label>
+          </div>
+
+          <button type="submit" class="contact-submit-btn">
+            <span>Send Message</span>
+            <span>→</span>
+          </button>
+        </form>
+
+        <!-- Success state -->
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">✅</div>
+          <h3>Message Sent!</h3>
+          <p>Thank you for getting in touch. We'll reply to your email within one working day.</p>
+          <a href="index.html" class="btn btn-primary" style="margin-top:24px;">Back to Home</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="contact-sidebar">
+      <!-- Contact info -->
+      <div class="contact-info-box">
+        <div class="contact-info-header">
+          <h3>Other Ways to Reach Us</h3>
+          <p>Choose the channel that works for you</p>
+        </div>
+        <div class="contact-info-items">
+          <div class="contact-info-item">
+            <div class="ci-icon">📧</div>
+            <div class="ci-text">
+              <strong>Email</strong>
+              <a href="mailto:hello@advaithmomes.co.uk">hello@advaithmomes.co.uk</a>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">🤝</div>
+            <div class="ci-text">
+              <strong>Ask an Expert</strong>
+              <span>Get matched with a solicitor, mortgage adviser or surveyor for personalised help.</span>
+              <a href="ask-expert.html" style="display:block;margin-top:6px;font-weight:500;">Find an Expert →</a>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">𝕏</div>
+            <div class="ci-text">
+              <strong>Twitter / X</strong>
+              <a href="#">@AdvaithHomes</a>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">in</div>
+            <div class="ci-text">
+              <strong>LinkedIn</strong>
+              <a href="#">Advaith Homes UK</a>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">🕐</div>
+            <div class="ci-text">
+              <strong>Office Hours</strong>
+              <span>Monday – Friday<br>9:00am – 5:30pm GMT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-box">
+        <div class="faq-box-header">
+          <h3>Frequently Asked Questions</h3>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-q">Is Advaith Homes free to use? <span class="faq-chevron">▾</span></button>
+            <div class="faq-a">Yes, all guides, calculators and information on Advaith Homes are completely free to use. No registration or payment is required.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Do you provide financial or legal advice? <span class="faq-chevron">▾</span></button>
+            <div class="faq-a">No. We provide general information and guidance only. For advice specific to your situation, we recommend speaking to a qualified professional such as a solicitor or mortgage adviser.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">How quickly will you respond? <span class="faq-chevron">▾</span></button>
+            <div class="faq-a">We aim to respond to all enquiries within one working day. During busy periods it may take slightly longer, but we always respond to every message.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Can I suggest a guide topic? <span class="faq-chevron">▾</span></button>
+            <div class="faq-a">Absolutely — we love to hear from readers. Use the contact form and select "Guides" as your topic to suggest a guide you'd like us to write.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Can I submit a news tip or press release? <span class="faq-chevron">▾</span></button>
+            <div class="faq-a">Yes. Select "Other" as your topic in the contact form and include "Press" in your subject line. Our editorial team will review all submissions.</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner container-wide">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="logo-icon">🏠</div>
+          <div class="logo-text">
+            <span class="logo-name">ADVAITH</span>
+            <span class="logo-sub">HOMES</span>
+          </div>
+        </div>
+        <p>Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="guides.html">Buying Guides</a></li>
+          <li><a href="guides.html">Selling Guides</a></li>
+          <li><a href="house-movers.html">House Movers</a></li>
+          <li><a href="calculators.html">Calculators</a></li>
+          <li><a href="news.html">News &amp; Insights</a></li>
+          <li><a href="regulations.html">Regulations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Popular Tools</h4>
+        <ul>
+          <li><a href="stamp-duty.html">Stamp Duty Calculator</a></li>
+          <li><a href="#">Mortgage Calculator</a></li>
+          <li><a href="#">Buying Cost Calculator</a></li>
+          <li><a href="calculators.html">All Calculators</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Help</h4>
+        <ul>
+          <li><a href="ask-expert.html">Ask an Expert</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html">Our Mission</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom container-wide">
+      <span>© 2024 ADVAITH HOMES. All rights reserved.</span>
+      <span>Made with ♥ in the UK</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Topic chip selection
+    document.querySelectorAll('.topic-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    // Form submit
+    function submitContactForm(e) {
+      e.preventDefault();
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
