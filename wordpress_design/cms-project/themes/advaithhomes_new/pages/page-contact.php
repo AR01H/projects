@@ -19,15 +19,8 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_contact_logical.php';
 $ctx = adn_contact_get_context();
 
-get_header();
+adn_page_open( $ctx );
 ?>
-
-<?php adn_component( 'parts/main_header', array( 'chrome' => $ctx['chrome'] ) ); ?>
-
-<?php /* ============================== BREADCRUMB ============================== */ ?>
-<?php if ( ! empty( $ctx['breadcrumb'] ) ) : ?>
-	<?php adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) ); ?>
-<?php endif; ?>
 
 <?php /* ============================== HERO + TRUST BAR ============================== */ ?>
 <?php if ( ! empty( $ctx['hero'] ) ) : ?>
@@ -55,12 +48,4 @@ get_header();
 	<?php adn_component( 'sections/contact_resources', array( 'resources' => $ctx['resources'] ) ); ?>
 <?php endif; ?>
 
-<?php /* ============================== FOOTER ============================== */ ?>
-<?php
-adn_component( 'parts/pre_footer' );
-adn_component( 'parts/main_footer', array( 'footer' => isset( $ctx['chrome']['footer'] ) ? $ctx['chrome']['footer'] : array() ) );
-adn_component( 'parts/post_footer' );
-adn_component( 'parts/post_footer_notice' );
-
-get_footer();
-?>
+<?php adn_page_close( $ctx ); ?>

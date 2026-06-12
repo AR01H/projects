@@ -11,10 +11,14 @@
 
 .contact-hero-inner {
     display: grid;
-    grid-template-columns: 1fr 280px;
-    gap: 40px;
-    align-items: center;
-    padding-bottom: 40px;
+    grid-template-columns: 1fr 42%;
+    gap: 0;
+    align-items: stretch;
+    padding-bottom: 0;
+}
+
+.contact-hero-text {
+    padding: 56px 40px 56px 0;
 }
 
 .contact-hero-text h1 {
@@ -31,15 +35,19 @@
 }
 
 .contact-hero-img {
-    width: 200px;
-    height: 200px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(201,168,76,0.2) 100%);
-    border-radius: var(--radius-lg, 16px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    justify-self: center;
+    min-height: 320px;
+    border-radius: var(--radius-xl, 20px) var(--radius-xl, 20px) 0 0;
+    overflow: hidden;
+    align-self: flex-end;
+}
+
+.contact-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    min-height: 320px;
 }
 
 /* ── Trust Bar ──────────────────────────────────────────────── */
@@ -584,7 +592,8 @@
         grid-template-columns: 1fr;
     }
 
-    .contact-hero-img { display: none; }
+    .contact-hero-img { min-height: 200px; border-radius: var(--radius-lg, 16px); }
+    .contact-hero-img img { min-height: 200px; }
 
     .contact-trust-inner { gap: 16px; }
 

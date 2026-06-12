@@ -24,19 +24,12 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_category_logical.php';
 $ctx = adn_category_get_context();
 
-get_header();
+adn_page_open( $ctx );
 ?>
-
-<?php adn_component( 'parts/main_header', array( 'chrome' => $ctx['chrome'] ) ); ?>
-
-<?php /* ============================== BREADCRUMB ============================== */ ?>
-<?php adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) ); ?>
 
 <?php /* ============================== CATEGORY HERO ============================== */ ?>
 <section class="category-hero">
-	<div class="container">
-		<?php adn_component( 'sections/category_hero', array( 'hero' => $ctx['hero'] ) ); ?>
-	</div>
+	<?php adn_component( 'sections/category_hero', array( 'hero' => $ctx['hero'] ) ); ?>
 </section>
 
 <?php /* ============================== JOURNEY STEPS ============================== */ ?>
@@ -52,7 +45,7 @@ get_header();
 <div class="container">
 	<div class="page-with-sidebar">
 
-		<main>
+		<main style="display:grid;gap:10px;">
 
 			<?php /* ── Guides Grid ── */ ?>
 			<?php if ( ! empty( $ctx['guides']['items'] ) ) : ?>
@@ -73,7 +66,7 @@ get_header();
 
 			<?php /* ── Latest News ── */ ?>
 			<?php if ( ! empty( $ctx['news']['items'] ) ) : ?>
-			<section class="category-section category-news">
+			<section class="category-section category-news mini_card_container_design">
 				<?php
 				adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['news']['heading'] ) ? $ctx['news']['heading'] : array(),
@@ -88,7 +81,7 @@ get_header();
 
 			<?php /* ── Latest Regulations ── */ ?>
 			<?php if ( ! empty( $ctx['regulations']['items'] ) ) : ?>
-			<section class="category-section category-regulations">
+			<section class="category-section category-regulations mini_card_container_design">
 				<?php
 				adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['regulations']['heading'] ) ? $ctx['regulations']['heading'] : array(),
@@ -144,12 +137,4 @@ get_header();
 </div>
 <?php endif; ?>
 
-<?php /* ============================== FOOTER ============================== */ ?>
-<?php
-adn_component( 'parts/pre_footer' );
-adn_component( 'parts/main_footer', array( 'footer' => isset( $ctx['chrome']['footer'] ) ? $ctx['chrome']['footer'] : array() ) );
-adn_component( 'parts/post_footer' );
-adn_component( 'parts/post_footer_notice' );
-
-get_footer();
-?>
+<?php adn_page_close( $ctx ); ?>

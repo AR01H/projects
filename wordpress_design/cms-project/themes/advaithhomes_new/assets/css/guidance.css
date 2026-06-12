@@ -11,10 +11,10 @@
 
 .guidance-hero-inner {
     display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 40px;
-    align-items: center;
-    padding-bottom: 40px;
+    grid-template-columns: 1fr 42%;
+    gap: 0;
+    align-items: stretch;
+    padding-bottom: 0;
 }
 
 .guidance-hero-text h1 {
@@ -30,16 +30,24 @@
     max-width: 460px;
 }
 
+.guidance-hero-text {
+    padding: 56px 40px 56px 0;
+}
+
 .guidance-hero-img {
-    width: 180px;
-    height: 180px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-lg, 16px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    justify-self: center;
+    min-height: 320px;
+    border-radius: var(--radius-xl, 20px) var(--radius-xl, 20px) 0 0;
+    overflow: hidden;
+    align-self: flex-end;
+}
+
+.guidance-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    min-height: 320px;
 }
 
 /* ── Trust Bar ──────────────────────────────────────────────── */
@@ -213,7 +221,8 @@
 
 @media (max-width: 768px) {
     .guidance-hero-inner { grid-template-columns: 1fr; }
-    .guidance-hero-img   { display: none; }
+    .guidance-hero-img   { min-height: 200px; border-radius: var(--radius-lg, 16px); }
+    .guidance-hero-img img { min-height: 200px; }
 
     .guidance-main-layout {
         grid-template-columns: 1fr;

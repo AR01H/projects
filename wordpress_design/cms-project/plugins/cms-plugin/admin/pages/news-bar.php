@@ -8,9 +8,6 @@ $notice        = '';
 $action        = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id       = (int) ( $_GET['id'] ?? 0 );
 
-AH_DB_Installer::ensure_news_bar_content();
-AH_DB_Installer::ensure_news_bar_image();
-
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	if ( ! wp_verify_nonce( $_POST['ah_newsbar_nonce'] ?? '', 'ah_save_newsbar' ) ) wp_die( 'Security.' );
 	$data = array(

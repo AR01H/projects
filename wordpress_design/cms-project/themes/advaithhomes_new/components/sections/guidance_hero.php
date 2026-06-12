@@ -8,8 +8,10 @@ defined( 'ABSPATH' ) || exit;
 $_h     = isset( $hero ) ? (array) $hero : array();
 $_title = esc_html( isset( $_h['title'] )       ? (string) $_h['title']       : '' );
 $_desc  = esc_html( isset( $_h['description'] ) ? (string) $_h['description'] : '' );
-$_icon  = adn_icon( isset( $_h['bg_icon'] )     ? (string) $_h['bg_icon']     : '🤝' );
 $_trust = isset( $_h['trust_items'] ) ? (array) $_h['trust_items'] : array();
+
+$_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
 ?>
 <section class="guidance-hero">
 	<div class="guidance-hero-inner container">
@@ -19,7 +21,9 @@ $_trust = isset( $_h['trust_items'] ) ? (array) $_h['trust_items'] : array();
 				<p><?php echo $_desc; ?></p>
 			<?php endif; ?>
 		</div>
-		<div class="guidance-hero-img" aria-hidden="true"><?php echo $_icon; ?></div>
+		<div class="guidance-hero-img">
+			<img src="<?php echo esc_url( $_hero_img ); ?>" alt="" loading="eager" />
+		</div>
 	</div>
 
 	<?php if ( ! empty( $_trust ) ) : ?>

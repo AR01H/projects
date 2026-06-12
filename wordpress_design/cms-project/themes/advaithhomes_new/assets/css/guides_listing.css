@@ -17,19 +17,18 @@
     right: 0;
     top: 0;
     bottom: 0;
-    width: 50%;
+    width: 46%;
     overflow: hidden;
-    opacity: 0.55;
     pointer-events: none;
-    background: linear-gradient(135deg, #c8d8c4 0%, #4a7a44 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: var(--radius-xl, 20px) 0 0 var(--radius-xl, 20px);
 }
 
-.guides-hero-deco-icon {
-    font-size: 8rem;
-    opacity: 0.5;
+.guides-hero-deco img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 .guides-hero-body {

@@ -44,11 +44,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         <div class="header-inner">
 
             <a href="<?php echo esc_url( adn_link( isset( $logo['url'] ) ? $logo['url'] : '/' ) ); ?>" class="logo">
-                <div class="logo-icon"><?php echo adn_icon( isset( $logo['icon'] ) ? $logo['icon'] : '' ); ?></div>
-                <div class="logo-text">
-                    <span class="logo-name"><?php echo esc_html( isset( $logo['name'] ) ? $logo['name'] : '' ); ?></span>
-                    <span class="logo-sub"><?php echo esc_html( isset( $logo['sub'] ) ? $logo['sub'] : '' ); ?></span>
-                </div>
+                <img src="<?php echo (get_template_directory_uri().'/assets/images/logos/logo_with_text.png') ?>" alt="" width="200" />
             </a>
 
             <nav class="main-nav" aria-label="Main navigation">

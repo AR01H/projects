@@ -46,15 +46,17 @@ get_header();
 	<?php adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) ); ?>
 <?php endif; ?>
 
+<?php /* ============================== ARTICLE HERO (full-bleed) ============================== */ ?>
+<div class="article-hero-wrap">
+	<?php adn_component( 'sections/post_header', array( 'article' => $ctx['article'] ) ); ?>
+</div>
+
 <?php /* ============================== ARTICLE LAYOUT ============================== */ ?>
 <div class="article-outer">
 	<div class="article-layout">
 
 		<?php /* ── MAIN ARTICLE COLUMN ── */ ?>
 		<main class="article-main" id="main-content">
-
-			<?php /* Article header: category tag, h1, intro, meta, icon */ ?>
-			<?php adn_component( 'sections/post_header', array( 'article' => $ctx['article'] ) ); ?>
 
 			<?php /* Key takeaways box (renders nothing when empty) */ ?>
 			<?php adn_component( 'sections/post_key_takeaways', array( 'key_takeaways' => $ctx['key_takeaways'] ) ); ?>

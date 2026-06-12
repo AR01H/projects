@@ -74,8 +74,8 @@ em { font-family: var(--font-accent); font-style: italic; }
 
 /* ── Text selection ── */
 ::selection {
-    background: var(--client-color-600);
-    color: #fff;
+    background: var(--section-bg-color);
+    color: var(--section-color);
 }
 
 /* =========================================

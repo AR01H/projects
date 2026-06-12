@@ -10,13 +10,14 @@ defined( 'ABSPATH' ) || exit;
 
 $hero        = isset( $hero )  && is_array( $hero )  ? $hero  : array();
 $trust_items = isset( $hero['trust_items'] ) ? (array) $hero['trust_items'] : array();
+
+$_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
 ?>
 <section class="guides-hero">
-	<?php if ( ! empty( $hero['bg_icon'] ) ) : ?>
-		<div class="guides-hero-deco" aria-hidden="true">
-			<span class="guides-hero-deco-icon"><?php echo adn_icon( $hero['bg_icon'] ); ?></span>
-		</div>
-	<?php endif; ?>
+	<div class="guides-hero-deco" aria-hidden="true">
+		<img src="<?php echo esc_url( $_hero_img ); ?>" alt="" />
+	</div>
 
 	<div class="container">
 		<div class="guides-hero-body">

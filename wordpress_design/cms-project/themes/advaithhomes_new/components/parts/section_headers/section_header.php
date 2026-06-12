@@ -40,6 +40,6 @@ if ( '' === $title ) {
         <div class="underline-accent"></div>
     <?php endif; ?>
     <?php if ( '' !== $link_label && '' !== $link_url ) : ?>
-        <a href="<?php echo esc_url( adn_link( $link_url ) ); ?>" class="view-all-link"><?php echo esc_html( $link_label ); ?></a>
+        <a href="<?php echo esc_url( adn_link( $link_url ) ); ?>" class="read-more"><?php echo esc_html( $link_label ); ?></a>
     <?php endif; ?>
 </div>

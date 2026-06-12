@@ -25,7 +25,7 @@ $hot_cta = isset( $hot_topics['cta'] ) ? (array) $hot_topics['cta'] : array();
 ?>
 <div class="news-three-inner">
 
-    <div class="news-col news-col--news">
+    <div class="news-col news-col--news mini_card_container_design">
         <?php
         adn_component( 'parts/section_headers/section_header', array(
             'heading'       => isset( $news['heading'] ) ? $news['heading'] : array(),
@@ -38,7 +38,7 @@ $hot_cta = isset( $hot_topics['cta'] ) ? (array) $hot_topics['cta'] : array();
         ?>
     </div>
 
-    <div class="news-col news-col--regulations">
+    <div class="news-col news-col--regulations mini_card_container_design">
         <?php
         adn_component( 'parts/section_headers/section_header', array(
             'heading'       => isset( $regulations['heading'] ) ? $regulations['heading'] : array(),
@@ -51,7 +51,7 @@ $hot_cta = isset( $hot_topics['cta'] ) ? (array) $hot_topics['cta'] : array();
         ?>
     </div>
 
-    <div class="hot-topics-col">
+    <div class="hot-topics-col mini_card_container_design">
         <div class="hot-topics-title"><?php echo esc_html( isset( $hot_topics['title'] ) ? $hot_topics['title'] : '' ); ?></div>
         <?php
         foreach ( (array) ( isset( $hot_topics['items'] ) ? $hot_topics['items'] : array() ) as $item ) {

@@ -42,14 +42,19 @@
 .calcs-hero-img {
     width: 100%;
     max-width: 400px;
-    height: 220px;
-    background: linear-gradient(135deg, #e8f0ec 0%, #d4e6d8 40%, rgba(201, 168, 76, 0.13) 100%);
+    min-height: 260px;
     border-radius: var(--radius-lg, 16px) var(--radius-lg, 16px) 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
+    overflow: hidden;
     align-self: flex-end;
+}
+
+.calcs-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    min-height: 260px;
 }
 
 /* ── Trust Bar ──────────────────────────────────────────────── */
@@ -115,7 +120,6 @@
 
 .search-input-wrap {
     position: relative;
-    max-width: 800px;
 }
 
 .search-input-wrap input {
@@ -500,8 +504,10 @@
     }
 
     .calcs-hero-img {
-        display: none;
+        min-height: 200px;
+        border-radius: var(--radius-lg, 16px);
     }
+    .calcs-hero-img img { min-height: 200px; }
 
     .calcs-trust-inner {
         gap: 16px;

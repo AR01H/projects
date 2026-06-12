@@ -5,6 +5,13 @@
    components.css / common.css.
    ============================================================ */
 
+/* ── Full-bleed Article Hero ──────────────────────────────────── */
+.article-hero-wrap {
+    background: #fff;
+    padding: 0;
+    overflow: hidden;
+}
+
 /* ── Outer Wrapper ──────────────────────────────────────────── */
 .article-outer {
     max-width: 1200px;
@@ -25,17 +32,68 @@
     min-width: 0;
 }
 
-/* ── Article Header ─────────────────────────────────────────── */
+/* ── Article Header — 1fr / 1fr split ──────────────────────── */
 .article-header-section {
-    display: flex;
-    gap: 32px;
-    align-items: flex-start;
-    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    min-height: 400px;
 }
 
+/* Left column — content + decorative circles behind + right-edge fade */
 .article-header-left {
-    flex: 1;
-    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    padding: 56px 56px 52px max(24px, calc((100vw - 1200px) / 2 + 24px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Right-edge gradient fade — blends left column into the image */
+.article-header-left::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 72px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.55));
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Decorative radial circle blobs (behind the content) */
+.ahero-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+.ahero-circle--a {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(45,90,68,0.07) 0%, transparent 65%);
+    top: -100px;
+    right: -40px;
+}
+.ahero-circle--b {
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(201,168,76,0.09) 0%, transparent 65%);
+    bottom: -50px;
+    left: -20px;
+}
+.ahero-circle--c {
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(45,90,68,0.05) 0%, transparent 65%);
+    top: 40%;
+    left: 45%;
+}
+
+/* Content sits above circles */
+.article-header-body {
+    position: relative;
+    z-index: 1;
 }
 
 .article-category-tag {
@@ -99,16 +157,21 @@
     color: var(--color-primary, #1d4ed8);
 }
 
+/* Right column — image fills the full 1fr, no border-radius, grows with viewport */
 .article-header-img {
-    flex-shrink: 0;
-    width: 140px;
-    height: 140px;
-    background: linear-gradient(135deg, #e8f0ec 0%, #d4e6d8 50%, rgba(201, 168, 76, 0.12) 100%);
-    border-radius: var(--radius-lg, 16px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3.5rem;
+    position: relative;
+    min-height: 400px;
+    overflow: hidden;
+    background: #e8f0ec; /* placeholder while image loads */
+}
+.article-header-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 /* ── Key Takeaways Box ──────────────────────────────────────── */
@@ -815,21 +878,37 @@
     }
 }
 
+@media (max-width: 768px) {
+    .article-header-section {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .article-header-left {
+        padding: 36px 24px 28px;
+    }
+
+    .article-header-left::after { display: none; }
+
+    .ahero-circle--c { display: none; }
+
+    .article-header-img {
+        min-height: 240px;
+        position: relative;
+    }
+}
+
 @media (max-width: 600px) {
     .article-outer {
         padding: 24px 16px 48px;
     }
 
-    .article-header-section {
-        flex-direction: column-reverse;
-        gap: 16px;
+    .article-header-left {
+        padding: 24px 16px 20px;
     }
 
     .article-header-img {
-        width: 80px;
-        height: 80px;
-        font-size: 2rem;
-        align-self: flex-end;
+        min-height: 180px;
     }
 
     .article-title {

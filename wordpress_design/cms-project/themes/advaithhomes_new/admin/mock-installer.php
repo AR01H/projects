@@ -1,25 +1,23 @@
 <?php
 /**
- * admin/mock-installer.php — seed sample content into the CMS plugin tables.
+ * admin/mock-installer.php — seed sample content into the CMS plugin's real
+ * data model (exactly how the plugin stores it):
  *
- * Creates the Guide hierarchy the home page reads through apis/services_cms.php:
- *   Guide (type) → Buying / Selling / House Movers (parents) → topics → articles
- * plus a few news posts (independent of the tree).
+ *   - Parent Terms  → wp_ah_taxonomy_parent_terms  (Buying / Selling / House Movers, + News)
+ *   - Terms (topics)→ wp_ah_taxonomies  (type = Category, parent_term_id = the parent)
+ *   - Content       → WordPress posts (post_type='post', status='publish')
+ *   - Post ↔ Term   → AH_Content_Taxonomy_Model::sync_terms('wp_post', …)
+ *                     → wp_ah_content_taxonomies (object_type='wp_post')
  *
- * Idempotent: every row is matched by slug first, so running it twice never
- * duplicates. Writes directly to the plugin's wp_ah_* tables (the documented
- * integration point) and no-ops cleanly if those tables are absent.
+ * Idempotent (parent terms + terms matched by slug, posts by slug). No-ops when
+ * the plugin tables are absent.
  */
 
 defined( 'ABSPATH' ) || exit;
 
 class ADN_Mock_Installer {
 
-	/**
-	 * Seed the sample Guide terms, topics, articles and news.
-	 *
-	 * @return array { ok:bool, message:string, summary:array }
-	 */
+	/** @return array { ok:bool, message:string, summary:array } */
 	public static function seed() {
 		global $wpdb;
 
@@ -31,29 +29,29 @@ class ADN_Mock_Installer {
 			);
 		}
 
+		// Make sure the Parent Terms table + ah_taxonomies.parent_term_id column exist.
+		if ( class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
+			AH_Taxonomy_Parent_Model::ensure_table();
+		}
+
 		$types = $wpdb->prefix . 'ah_taxonomy_types';
 		$tax   = $wpdb->prefix . 'ah_taxonomies';
-		$posts = $wpdb->prefix . 'ah_posts';
-		$ct    = $wpdb->prefix . 'ah_content_taxonomies';
+		$pt    = $wpdb->prefix . 'ah_taxonomy_parent_terms';
 
-		$summary = array( 'type' => 0, 'parents' => 0, 'topics' => 0, 'articles' => 0, 'news' => 0 );
-
-		// 1. "Guide" taxonomy type.
-		$type_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$types}` WHERE slug = %s", 'guide' ) );
-		if ( ! $type_id ) {
-			$wpdb->insert( $types, array(
-				'name'        => 'Guide',
-				'slug'        => 'guide',
-				'description' => 'Property guide categories',
-			) );
-			$type_id          = (int) $wpdb->insert_id;
-			$summary['type']  = 1;
-		}
-		if ( ! $type_id ) {
-			return array( 'ok' => false, 'message' => __( 'Could not create the Guide taxonomy type.', ADN_TEXT_DOMAIN ), 'summary' => $summary );
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+			return array( 'ok' => false, 'message' => __( 'Parent Terms table is missing — open the plugin Taxonomies → Parent Terms once, then seed.', ADN_TEXT_DOMAIN ), 'summary' => array() );
 		}
 
-		// 2. Parent terms (the "journey" cards).
+		$summary = array( 'parents' => 0, 'terms' => 0, 'posts' => 0 );
+
+		// 1. "Category" taxonomy type for the terms (plugin seeds it; create if missing).
+		$type_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$types}` WHERE slug = %s", 'category' ) );
+		if ( ! $type_id ) {
+			$wpdb->insert( $types, array( 'name' => 'Category', 'slug' => 'category', 'description' => 'Content categories' ) );
+			$type_id = (int) $wpdb->insert_id;
+		}
+
+		// 2. Parent Terms (the "journey" cards).
 		$parents = array(
 			array( 'name' => 'Buying',       'slug' => 'buying',       'icon' => '🏡', 'desc' => 'Step-by-step guides from budgeting to moving in.' ),
 			array( 'name' => 'Selling',      'slug' => 'selling',      'icon' => '🏘️', 'desc' => 'Expert information to help you sell with confidence.' ),
@@ -61,123 +59,150 @@ class ADN_Mock_Installer {
 		);
 		$parent_id = array();
 		foreach ( $parents as $i => $p ) {
-			$row                      = self::ensure_term( $tax, $type_id, 0, $p['name'], $p['slug'], $p['desc'], $p['icon'], $i );
-			$parent_id[ $p['slug'] ]  = $row['id'];
-			$summary['parents']      += $row['created'] ? 1 : 0;
+			$row                     = self::ensure_parent_term( $pt, $p['name'], $p['slug'], $p['desc'], $p['icon'], $i );
+			$parent_id[ $p['slug'] ] = $row['id'];
+			$summary['parents']     += $row['created'] ? 1 : 0;
 		}
 
-		// 3. Topics (child terms) per parent.
+		// News parent (+ a term to attach news posts to).
+		$news_parent  = self::ensure_parent_term( $pt, 'News', 'news', 'Latest property news', '📰', 9 );
+		$summary['parents'] += $news_parent['created'] ? 1 : 0;
+
+		// 3. Terms (topics) under each parent term.
 		$topics = array(
 			'buying'       => array( 'First-Time Buyers', 'Mortgages', 'Conveyancing', 'Stamp Duty' ),
 			'selling'      => array( 'Preparing to Sell', 'Estate Agents', 'Selling Costs' ),
 			'house-movers' => array( 'Moving Checklist', 'Removals', 'Change of Address' ),
 		);
-		$topic_id = array(); // slug => id
+		$term_id = array(); // slug => id
 		foreach ( $topics as $pslug => $names ) {
 			foreach ( $names as $j => $tname ) {
-				$tslug              = sanitize_title( $pslug . '-' . $tname );
-				$row                = self::ensure_term( $tax, $type_id, (int) $parent_id[ $pslug ], $tname, $tslug, '', '', $j );
-				$topic_id[ $tslug ] = $row['id'];
-				$summary['topics'] += $row['created'] ? 1 : 0;
+				$tslug             = sanitize_title( $pslug . '-' . $tname );
+				$row               = self::ensure_term( $tax, $type_id, (int) $parent_id[ $pslug ], $tname, $tslug, $j );
+				$term_id[ $tslug ] = $row['id'];
+				$summary['terms'] += $row['created'] ? 1 : 0;
 			}
 		}
+		// A term to hang news posts on.
+		$news_term         = self::ensure_term( $tax, $type_id, (int) $news_parent['id'], 'Property News', 'news-property', 0 );
+		$summary['terms'] += $news_term['created'] ? 1 : 0;
 
-		// 4. Articles (post_type=article) linked to a topic term.
+		// 4. Articles → WordPress posts linked to a topic term.
 		$articles = array(
-			array( 'First-Time Buyer Guide in the UK',      'first-time-buyer-guide', 'A complete step-by-step guide for first-time buyers.',        'buying-first-time-buyers', 1 ),
-			array( 'Understanding Mortgage in Principle',   'mortgage-in-principle',  'Why it matters and how it strengthens your offer.',           'buying-mortgages',         0 ),
-			array( 'The Conveyancing Process Explained',    'conveyancing-process',   'Each step of the legal process in plain English.',            'buying-conveyancing',      0 ),
-			array( 'How to Sell Your Home Successfully',    'how-to-sell-your-home',  'Expert tips to help you sell faster and for the right price.', 'selling-preparing-to-sell',0 ),
-			array( 'Moving Home Checklist',                 'moving-home-checklist',  'Your ultimate checklist for a smooth move.',                  'house-movers-moving-checklist', 0 ),
+			array( 'First-Time Buyer Guide in the UK',    'first-time-buyer-guide', 'A complete step-by-step guide for first-time buyers.',        'buying-first-time-buyers', 1 ),
+			array( 'Understanding Mortgage in Principle', 'mortgage-in-principle',  'Why it matters and how it strengthens your offer.',           'buying-mortgages',         0 ),
+			array( 'The Conveyancing Process Explained',  'conveyancing-process',   'Each step of the legal process in plain English.',            'buying-conveyancing',      0 ),
+			array( 'How to Sell Your Home Successfully',  'how-to-sell-your-home',  'Expert tips to help you sell faster and for the right price.', 'selling-preparing-to-sell',0 ),
+			array( 'Moving Home Checklist',               'moving-home-checklist',  'Your ultimate checklist for a smooth move.',                  'house-movers-moving-checklist', 0 ),
 		);
 		foreach ( $articles as $a ) {
 			list( $title, $slug, $excerpt, $topic_slug, $featured ) = $a;
-			$row = self::ensure_post( $posts, 'article', $title, $slug, $excerpt, '<p>' . esc_html( $excerpt ) . '</p>', (bool) $featured );
-			if ( $row['created'] ) {
-				$summary['articles']++;
-			}
-			if ( isset( $topic_id[ $topic_slug ] ) ) {
-				self::link_term( $ct, $row['id'], (int) $topic_id[ $topic_slug ] );
-			}
+			$ids = isset( $term_id[ $topic_slug ] ) ? array( (int) $term_id[ $topic_slug ] ) : array();
+			$summary['posts'] += self::ensure_wp_post( $title, $slug, $excerpt, $ids, (bool) $featured );
 		}
 
-		// 5. News (post_type=news), independent of the Guide tree.
+		// 5. News → WordPress posts linked to the News term.
 		$news = array(
-			array( 'UK House Prices Rise 1.4% in April – Latest ONS Data', 'news-house-prices-april',     'The latest ONS figures show a modest monthly rise.' ),
-			array( 'Mortgage Rates Hold Steady – What It Means for Buyers', 'news-mortgage-rates-steady',  'Lenders keep rates flat as markets settle.' ),
-			array( 'RICS: Buyer Enquiries Reach 12-Month High',            'news-rics-buyer-enquiries',   'Surveyors report renewed buyer demand.' ),
-			array( 'Stamp Duty Receipts Hit Record High in Q1',            'news-stamp-duty-receipts',    'HMRC data shows record SDLT receipts.' ),
+			array( 'UK House Prices Rise 1.4% in April – Latest ONS Data', 'news-house-prices-april',    'The latest ONS figures show a modest monthly rise.' ),
+			array( 'Mortgage Rates Hold Steady – What It Means for Buyers', 'news-mortgage-rates-steady', 'Lenders keep rates flat as markets settle.' ),
+			array( 'RICS: Buyer Enquiries Reach 12-Month High',            'news-rics-buyer-enquiries',  'Surveyors report renewed buyer demand.' ),
+			array( 'Stamp Duty Receipts Hit Record High in Q1',           'news-stamp-duty-receipts',   'HMRC data shows record SDLT receipts.' ),
 		);
 		foreach ( $news as $n ) {
 			list( $title, $slug, $excerpt ) = $n;
-			$row = self::ensure_post( $posts, 'news', $title, $slug, $excerpt, '<p>' . esc_html( $excerpt ) . '</p>', false );
-			if ( $row['created'] ) {
-				$summary['news']++;
-			}
+			$summary['posts'] += self::ensure_wp_post( $title, $slug, $excerpt, array( (int) $news_term['id'] ), false );
 		}
 
 		$message = sprintf(
-			/* translators: 1: parents, 2: topics, 3: articles, 4: news created */
-			__( 'Sample content ready — %1$d guide(s), %2$d topic(s), %3$d article(s), %4$d news created (existing items were left untouched).', ADN_TEXT_DOMAIN ),
+			/* translators: 1: parent terms, 2: terms, 3: posts created */
+			__( 'Sample content ready — %1$d parent term(s), %2$d term(s) and %3$d WordPress post(s) created (existing items left untouched).', ADN_TEXT_DOMAIN ),
 			$summary['parents'],
-			$summary['topics'],
-			$summary['articles'],
-			$summary['news']
+			$summary['terms'],
+			$summary['posts']
 		);
 
 		return array( 'ok' => true, 'message' => $message, 'summary' => $summary );
 	}
 
-	/** Insert a taxonomy term if its slug is not already present (within the type). */
-	private static function ensure_term( $tax, $type_id, $parent_id, $name, $slug, $desc, $icon, $sort ) {
+	/** Insert a Parent Term if its slug is free. @return array{id:int,created:bool} */
+	private static function ensure_parent_term( $pt, $name, $slug, $desc, $icon, $sort ) {
+		global $wpdb;
+		$id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$pt}` WHERE slug = %s", $slug ) );
+		if ( $id ) {
+			return array( 'id' => $id, 'created' => false );
+		}
+		$wpdb->insert( $pt, array(
+			'name'        => $name,
+			'slug'        => $slug,
+			'description' => $desc,
+			'icon_emoji'  => $icon ? $icon : null,
+			'status'      => 'active',
+			'sort_order'  => (int) $sort,
+		) );
+		return array( 'id' => (int) $wpdb->insert_id, 'created' => true );
+	}
+
+	/** Insert a Term (topic) if its slug is free within the type. @return array{id:int,created:bool} */
+	private static function ensure_term( $tax, $type_id, $parent_term_id, $name, $slug, $sort ) {
 		global $wpdb;
 		$id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$tax}` WHERE slug = %s AND type_id = %d", $slug, $type_id ) );
 		if ( $id ) {
 			return array( 'id' => $id, 'created' => false );
 		}
 		$wpdb->insert( $tax, array(
-			'type_id'     => $type_id,
-			'parent_id'   => $parent_id ? $parent_id : null,
-			'name'        => $name,
-			'slug'        => $slug,
-			'description' => $desc,
-			'status'      => 'active',
-			'sort_order'  => (int) $sort,
-			'icon_emoji'  => $icon ? $icon : null,
+			'type_id'        => $type_id,
+			'parent_id'      => null,
+			'parent_term_id' => $parent_term_id ? $parent_term_id : null,
+			'name'           => $name,
+			'slug'           => $slug,
+			'status'         => 'active',
+			'sort_order'     => (int) $sort,
 		) );
 		return array( 'id' => (int) $wpdb->insert_id, 'created' => true );
 	}
 
-	/** Insert an ah_posts row if its (slug, post_type) is not already present. */
-	private static function ensure_post( $posts, $type, $title, $slug, $excerpt, $content, $featured ) {
-		global $wpdb;
-		$id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$posts}` WHERE slug = %s AND post_type = %s", $slug, $type ) );
-		if ( $id ) {
-			return array( 'id' => $id, 'created' => false );
-		}
-		$wpdb->insert( $posts, array(
-			'post_type'    => $type,
-			'title'        => $title,
-			'slug'         => $slug,
-			'excerpt'      => $excerpt,
-			'content'      => $content,
-			'status'       => 'active',
-			'is_featured'  => $featured ? 1 : 0,
-			'published_at' => current_time( 'mysql' ),
-		) );
-		return array( 'id' => (int) $wpdb->insert_id, 'created' => true );
-	}
+	/**
+	 * Create a WordPress post (if its slug is free) and link it to the given
+	 * Term ids the way the plugin does (sync_terms 'wp_post'). @return int created.
+	 */
+	private static function ensure_wp_post( $title, $slug, $excerpt, $term_ids, $featured = false ) {
+		$existing = get_page_by_path( $slug, OBJECT, 'post' );
+		$created  = 0;
 
-	/** Link a post to a taxonomy term (no-op if already linked). */
-	private static function link_term( $ct, $post_id, $term_id ) {
-		global $wpdb;
-		if ( ! $post_id || ! $term_id ) {
-			return;
+		if ( $existing instanceof WP_Post ) {
+			$post_id = (int) $existing->ID;
+		} else {
+			$post_id = wp_insert_post( array(
+				'post_type'    => 'post',
+				'post_status'  => 'publish',
+				'post_title'   => $title,
+				'post_name'    => $slug,
+				'post_excerpt' => $excerpt,
+				'post_content' => '<p>' . esc_html( $excerpt ) . '</p>',
+			) );
+			if ( $post_id && ! is_wp_error( $post_id ) ) {
+				$created = 1;
+			}
 		}
-		$wpdb->query( $wpdb->prepare(
-			"INSERT IGNORE INTO `{$ct}` (object_type, object_id, taxonomy_id) VALUES ('ah_post', %d, %d)",
-			$post_id,
-			$term_id
-		) );
+
+		if ( $post_id && ! is_wp_error( $post_id ) ) {
+			$term_ids = array_values( array_filter( array_map( 'intval', (array) $term_ids ) ) );
+			if ( class_exists( 'AH_Content_Taxonomy_Model' ) ) {
+				( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', (int) $post_id, $term_ids );
+			} else {
+				global $wpdb;
+				$ct = $wpdb->prefix . 'ah_content_taxonomies';
+				foreach ( $term_ids as $tid ) {
+					$wpdb->query( $wpdb->prepare(
+						"INSERT IGNORE INTO `{$ct}` (object_type, object_id, taxonomy_id) VALUES ('wp_post', %d, %d)",
+						(int) $post_id,
+						$tid
+					) );
+				}
+			}
+			update_post_meta( (int) $post_id, '_ah_is_featured', $featured ? '1' : '0' );
+		}
+
+		return $created;
 	}
 }

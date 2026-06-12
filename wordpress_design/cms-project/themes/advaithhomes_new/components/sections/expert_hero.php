@@ -9,7 +9,9 @@ $_h     = isset( $hero )  ? (array) $hero  : array();
 $_stats = isset( $stats ) ? (array) $stats : array();
 $_title = esc_html( isset( $_h['title'] )       ? (string) $_h['title']       : '' );
 $_desc  = esc_html( isset( $_h['description'] ) ? (string) $_h['description'] : '' );
-$_icon  = adn_icon( isset( $_h['bg_icon'] )     ? (string) $_h['bg_icon']     : '🤝' );
+
+$_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
 ?>
 <section class="expert-hero">
 	<div class="expert-hero-inner container">
@@ -19,7 +21,9 @@ $_icon  = adn_icon( isset( $_h['bg_icon'] )     ? (string) $_h['bg_icon']     : 
 				<p><?php echo $_desc; ?></p>
 			<?php endif; ?>
 		</div>
-		<div class="expert-hero-img" aria-hidden="true"><?php echo $_icon; ?></div>
+		<div class="expert-hero-img">
+			<img src="<?php echo esc_url( $_hero_img ); ?>" alt="" loading="eager" />
+		</div>
 	</div>
 
 	<?php if ( ! empty( $_stats ) ) : ?>

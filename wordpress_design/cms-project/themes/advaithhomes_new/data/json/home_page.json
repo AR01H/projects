@@ -33,30 +33,6 @@
         "heading": { "title": "Where are you in your journey?" },
         "cards": [
             {
-                "icon": "🏡",
-                "gradient": "linear-gradient(135deg,#dce8d4,#a8c5a0)",
-                "title": "I am Buying",
-                "description": "Step-by-step guides from budgeting to moving in.",
-                "link_label": "Explore Buying Guides →",
-                "url": "/buying/"
-            },
-            {
-                "icon": "🏘️",
-                "gradient": "linear-gradient(135deg,#f0e0d6,#d4956a)",
-                "title": "I am Selling",
-                "description": "Expert information to help you sell with confidence.",
-                "link_label": "Explore Selling Guides →",
-                "url": "/selling/"
-            },
-            {
-                "icon": "📦",
-                "gradient": "linear-gradient(135deg,#e0e8f4,#8eb4d8)",
-                "title": "I am a House Mover",
-                "description": "Planning to move? Find checklists, timelines & tips.",
-                "link_label": "Explore Moving Guides →",
-                "url": "/house-movers/"
-            },
-            {
                 "icon": "👥",
                 "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
                 "title": "I need Professional Help",
@@ -111,8 +87,8 @@
     "hot_topics": {
         "title": "🔥 Hot Topics",
         "items": [
-            { "icon": "💡", "text": "Should you buy now or wait? Latest expert insights", "url": "/guides/" },
-            { "icon": "🏦", "text": "Is a 5% deposit enough in 2024? Here's what you need to know", "url": "/guides/" },
+            { "icon": "💡", "text": "Should you buy now or wait? ","desc":"Latest expert insights", "url": "/guides/" },
+            { "icon": "🏦", "text": "Is a 5% deposit enough in 2024?","desc":"Here's what you need to know", "url": "/guides/" },
             { "icon": "⚖️", "text": "Leasehold Reform – What Buyers & Sellers Should Know", "url": "/guides/" },
             { "icon": "🕐", "text": "How long does it take to buy a house in the UK?", "url": "/guides/" }
         ],

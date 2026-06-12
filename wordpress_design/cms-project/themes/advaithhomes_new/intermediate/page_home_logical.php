@@ -55,23 +55,13 @@ function adn_home_get_context() {
 	if ( function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
 		$journey_cards = adn_home_cms_journey_cards();
 		if ( ! empty( $journey_cards ) ) {
-			$ctx['journey']['cards'] = $journey_cards;
+			$ctx['journey']['cards'] = array_merge($journey_cards,$ctx['journey']['cards']);
 		}
 
-		// Featured topics + count come from Theme → Home Page → Featured Guides.
-		$featured  = get_option( 'adn_home_featured' );
-		$count     = ( is_array( $featured ) && ! empty( $featured['count'] ) ) ? (int) $featured['count'] : 5;
-		$topic_ids = ( is_array( $featured ) && ! empty( $featured['topics'] ) ) ? array_map( 'intval', (array) $featured['topics'] ) : array();
+		$guide_items = adn_home_cms_guide_items();
+		$ctx['guides']['items'] = $guide_items; // DB only; empty array when no data — no JSON fallback
 
-		$guide_items = adn_home_cms_guide_items( $count, $topic_ids );
-		if ( ! empty( $guide_items ) ) {
-			$ctx['guides']['items'] = $guide_items;
-		}
-
-		$news_items = adn_home_cms_news_items();
-		if ( ! empty( $news_items ) ) {
-			$ctx['news']['items'] = $news_items;
-		}
+		$ctx['news']['items'] = adn_home_cms_news_items(); // DB only; empty array when no news data
 	}
 
 	return $ctx;
@@ -148,21 +138,19 @@ function adn_home_cms_journey_cards() {
 }
 
 /**
- * Map CMS articles → guide-card props
- * { icon, gradient, category, title, description, read_more, url }.
- *
- * @param int   $count        How many articles.
- * @param int[] $taxonomy_ids Restrict to these topic terms (empty = any).
+ * One guide card per Guide parent term (Buying / Selling / House Movers).
+ * DB only — no JSON fallback; returns empty array when no data.
  */
-function adn_home_cms_guide_items( $count = 5, $taxonomy_ids = array() ) {
+function adn_home_cms_guide_items() {
 	$items = array();
-	foreach ( adn_cms_articles( $count, $taxonomy_ids ) as $i => $post ) {
+	foreach ( adn_cms_one_article_per_parent() as $i => $post ) {
 		$title = isset( $post->title ) ? $post->title : '';
 		if ( '' === $title ) {
 			continue;
 		}
+		$icon = ! empty( $post->_parent_icon ) ? $post->_parent_icon : 'fa-book-open';
 		$items[] = array(
-			'icon'        => '📄',
+			'icon'        => $icon,
 			'gradient'    => adn_cms_gradient( $i ),
 			'category'    => ! empty( $post->category_name ) ? $post->category_name : 'Guide',
 			'title'       => $title,
@@ -175,23 +163,53 @@ function adn_home_cms_guide_items( $count = 5, $taxonomy_ids = array() ) {
 }
 
 /**
- * Map CMS latest-news posts → news-item props { title, date, tag, gradient, url }.
+ * News items for home "Latest Property News".
+ * Primary: plugin News Bar (ah_news_bar_items — active, date-filtered).
+ * Fallback: 4 most recent WP posts via WP_Query (so any post created shows here).
  */
 function adn_home_cms_news_items() {
 	$items = array();
-	foreach ( adn_cms_latest_news( 4 ) as $i => $post ) {
-		$title = isset( $post->title ) ? $post->title : '';
-		if ( '' === $title ) {
-			continue;
+
+	// Source 1: News Bar
+	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
+		foreach ( adn_cms_newsbar_items( 4 ) as $i => $item ) {
+			$title = isset( $item->text ) ? $item->text : '';
+			if ( '' === $title ) {
+				continue;
+			}
+			$stamp   = ! empty( $item->start_date ) ? $item->start_date : '';
+			$items[] = array(
+				'title'    => $title,
+				'date'     => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
+				'tag'      => 'NEWS',
+				'gradient' => adn_cms_gradient( $i ),
+				'url'      => ! empty( $item->link_url ) ? $item->link_url : '#',
+			);
 		}
-		$stamp = ! empty( $post->published_at ) ? $post->published_at : ( $post->created_at ?? '' );
-		$items[] = array(
-			'title'    => $title,
-			'date'     => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
-			'tag'      => 'NEWS',
-			'gradient' => adn_cms_gradient( $i ),
-			'url'      => adn_cms_post_url( $post ),
-		);
 	}
+
+	// Source 2: WP_Query fallback — plain WP posts, no taxonomy required
+	if ( empty( $items ) ) {
+		$q = new WP_Query( array(
+			'post_type'      => 'post',
+			'post_status'    => 'publish',
+			'posts_per_page' => 4,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		) );
+		if ( $q->have_posts() ) {
+			foreach ( $q->posts as $i => $post ) {
+				$items[] = array(
+					'title'    => $post->post_title,
+					'date'     => get_the_date( 'M j, Y', $post ),
+					'tag'      => 'NEWS',
+					'gradient' => adn_cms_gradient( $i ),
+					'url'      => get_permalink( $post ),
+				);
+			}
+			wp_reset_postdata();
+		}
+	}
+
 	return $items;
 }

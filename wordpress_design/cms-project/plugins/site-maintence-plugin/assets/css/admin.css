@@ -1,0 +1,236 @@
+/*
+ * Site Mode Manager - Admin Styles
+ * ===================================================
+ */
+
+/* ── Page wrapper ──────────────────────────────────── */
+.smm-admin-wrap {
+	max-width: 900px;
+	padding-bottom: 3rem;
+}
+
+/* ── Page title ────────────────────────────────────── */
+.smm-page-title {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1.6rem !important;
+	font-weight: 700 !important;
+	margin-bottom: 0.35rem !important;
+}
+
+.smm-page-title .dashicons {
+	font-size: 1.6rem;
+	width: 1.6rem;
+	height: 1.6rem;
+	color: #7c3aed;
+}
+
+.smm-subtitle {
+	color: #6b7280;
+	margin-bottom: 1.75rem;
+	font-size: 0.95rem;
+}
+
+/* ── Save feedback ─────────────────────────────────── */
+.smm-feedback {
+	min-height: 2rem;
+	margin-bottom: 0.75rem;
+	font-weight: 600;
+	font-size: 0.92rem;
+	transition: opacity 0.3s;
+}
+
+.smm-feedback--success { color: #16a34a; }
+.smm-feedback--error   { color: #dc2626; }
+.smm-feedback--saving  { color: #9333ea; }
+
+/* ── Mode grid ─────────────────────────────────────── */
+.smm-mode-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 1.1rem;
+	margin-bottom: 2rem;
+}
+
+/* ── Mode card ─────────────────────────────────────── */
+.smm-mode-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.4rem;
+	background: #fff;
+	border: 2px solid #e5e7eb;
+	border-radius: 0.875rem;
+	padding: 1.4rem 1.25rem 1.25rem;
+	cursor: pointer;
+	text-align: left;
+	transition: border-color 0.18s, box-shadow 0.18s, transform 0.12s;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.smm-mode-card:hover {
+	border-color: #a78bfa;
+	box-shadow: 0 4px 12px rgba(124,58,237,0.12);
+	transform: translateY(-2px);
+}
+
+.smm-mode-card:focus-visible {
+	outline: 3px solid #7c3aed;
+	outline-offset: 2px;
+}
+
+/* Active state */
+.smm-mode-card--active {
+	border-color: #7c3aed !important;
+	background: #faf5ff !important;
+	box-shadow: 0 4px 16px rgba(124,58,237,0.18) !important;
+}
+
+/* Icon */
+.smm-mode-icon {
+	font-size: 2rem;
+	line-height: 1;
+	margin-bottom: 0.2rem;
+}
+
+/* Label */
+.smm-mode-label {
+	font-size: 1rem;
+	font-weight: 700;
+	color: #111827;
+	line-height: 1.2;
+}
+
+/* Description */
+.smm-mode-desc {
+	font-size: 0.78rem;
+	color: #6b7280;
+	line-height: 1.45;
+}
+
+/* Active badge */
+.smm-active-badge {
+	margin-top: 0.5rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	background: #7c3aed;
+	color: #fff;
+	border-radius: 999px;
+	padding: 0.2rem 0.7rem;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+}
+
+/* Loading state */
+.smm-mode-card--loading {
+	opacity: 0.65;
+	pointer-events: none;
+}
+
+/* ── Divider ───────────────────────────────────────── */
+.smm-divider {
+	border: none;
+	border-top: 1px solid #e5e7eb;
+	margin: 2rem 0 1.5rem;
+}
+
+/* ── Info box ──────────────────────────────────────── */
+.smm-info-box {
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	border-radius: 0.625rem;
+	padding: 1rem 1.25rem;
+	font-size: 0.875rem;
+	color: #374151;
+}
+
+.smm-info-box summary {
+	cursor: pointer;
+	font-weight: 600;
+	color: #4b5563;
+	list-style: none;
+	user-select: none;
+}
+
+.smm-info-box summary::-webkit-details-marker { display: none; }
+
+.smm-info-box summary::before {
+	content: '▶ ';
+	font-size: 0.7rem;
+}
+
+.smm-info-box[open] summary::before { content: '▼ '; }
+
+.smm-info-box ul {
+	margin-top: 0.85rem;
+	padding-left: 1.25rem;
+}
+
+.smm-info-box ul li {
+	margin-bottom: 0.4rem;
+	line-height: 1.5;
+}
+
+/* ── Custom HTML Section ───────────────────────────── */
+.smm-custom-html-sections {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	display: grid;
+	gap: 2rem;
+}
+
+.smm-custom-html-section {
+	background: #fafbfc;
+	border: 1px solid #e5e7eb;
+	border-radius: 0.625rem;
+	padding: 1.5rem;
+}
+
+.smm-custom-html-section h3 {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: #111827;
+	margin-bottom: 0.5rem;
+}
+
+.smm-section-description {
+	color: #6b7280;
+	font-size: 0.875rem;
+	margin-bottom: 1rem;
+	line-height: 1.5;
+}
+
+.smm-custom-html-editor {
+	background: #fff;
+	border: 1px solid #e5e7eb !important;
+	margin-bottom: 1rem;
+	border-radius: 0.375rem;
+	overflow: hidden;
+}
+
+.smm-custom-html-editor textarea {
+	display: block;
+	background: #fff;
+	width: 100%;
+}
+
+.smm-custom-html-editor textarea:focus {
+	outline: 2px solid #7c3aed;
+	outline-offset: 0;
+}
+
+.smm-save-custom-html {
+	min-width: 160px;
+	font-weight: 600;
+}
+
+.smm-custom-html-feedback {
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: 600;
+	font-size: 0.92rem;
+}

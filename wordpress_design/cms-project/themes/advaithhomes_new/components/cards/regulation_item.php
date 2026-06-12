@@ -21,7 +21,7 @@ $badge_lines = isset( $item['badge_lines'] ) ? (array) $item['badge_lines'] : ar
         }
     ?></div>
     <div class="regulation-content">
-        <div class="regulation-title"><?php echo esc_html( isset( $item['title'] ) ? $item['title'] : '' ); ?></div>
-        <div class="regulation-date"><?php echo esc_html( isset( $item['date'] ) ? $item['date'] : '' ); ?></div>
+        <div class="card-title-highlight"><?php echo esc_html( isset( $item['title'] ) ? $item['title'] : '' ); ?></div>
+        <div class="card-desc-text"><?php echo esc_html( isset( $item['date'] ) ? $item['date'] : '' ); ?></div>
     </div>
 </a>

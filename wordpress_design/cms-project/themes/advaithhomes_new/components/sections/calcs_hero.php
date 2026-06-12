@@ -9,6 +9,9 @@
 defined( 'ABSPATH' ) || exit;
 
 $hero = isset( $hero ) && is_array( $hero ) ? $hero : array();
+
+$_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
 ?>
 <section class="calcs-hero">
 	<div class="calcs-hero-inner">
@@ -20,8 +23,8 @@ $hero = isset( $hero ) && is_array( $hero ) ? $hero : array();
 				<p><?php echo esc_html( $hero['description'] ); ?></p>
 			<?php endif; ?>
 		</div>
-		<div class="calcs-hero-img" aria-hidden="true">
-			<?php echo adn_icon( isset( $hero['bg_icon'] ) ? $hero['bg_icon'] : '' ); ?>
+		<div class="calcs-hero-img">
+			<img src="<?php echo esc_url( $_hero_img ); ?>" alt="" loading="eager" />
 		</div>
 	</div>
 </section>

@@ -111,6 +111,11 @@ function adn_post_get_context() {
 		wp_reset_postdata();
 	}
 
+	/* ── Hero image — featured image or theme default ── */
+	$thumbnail_url = get_the_post_thumbnail_url( null, 'large' );
+	$default_img   = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+	$hero_image    = $thumbnail_url ?: $default_img;
+
 	return array(
 		'breadcrumb'     => $breadcrumb,
 		'article'        => array(
@@ -118,6 +123,7 @@ function adn_post_get_context() {
 			'title'        => get_the_title(),
 			'intro'        => get_the_excerpt(),
 			'icon'         => $article_icon,
+			'image_url'    => $hero_image,
 			'date'         => get_the_date( 'F j, Y' ),
 			'read_time'    => $read_time,
 		),

@@ -26,6 +26,7 @@ function adn_enqueue_common_css() {
         'adn-common-style' => '/assets/css/common.css',
         'adn-components-style' => '/assets/css/components.css',
         'adn-temp-style' => '/assets/css/temp.css',
+        'adn-builded-style' => '/assets/css/builded.css',
     );
     foreach ( $styles as $handle => $file ) {
         wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), ADN_THEME_VERSION );

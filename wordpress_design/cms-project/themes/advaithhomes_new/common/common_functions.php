@@ -167,6 +167,35 @@ function adn_icon_emoji_map() {
     return apply_filters( 'adn_icon_emoji_map', $map );
 }
 
+/**
+ * Open a standard theme page.
+ * Calls get_header(), renders main_header, and breadcrumb if $ctx has one.
+ * Always pair with adn_page_close() at the bottom of the template.
+ *
+ * @param array $ctx Page context (must contain 'chrome'; optional 'breadcrumb').
+ */
+function adn_page_open( array $ctx ) {
+    get_header();
+    adn_component( 'parts/main_header', array( 'chrome' => isset( $ctx['chrome'] ) ? $ctx['chrome'] : array() ) );
+    if ( ! empty( $ctx['breadcrumb'] ) ) {
+        adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) );
+    }
+}
+
+/**
+ * Close a standard theme page.
+ * Renders pre_footer, main_footer, post_footer, post_footer_notice, then get_footer().
+ *
+ * @param array $ctx Page context (must contain 'chrome.footer').
+ */
+function adn_page_close( array $ctx ) {
+    adn_component( 'parts/pre_footer' );
+    adn_component( 'parts/main_footer', array( 'footer' => isset( $ctx['chrome']['footer'] ) ? $ctx['chrome']['footer'] : array() ) );
+    adn_component( 'parts/post_footer' );
+    adn_component( 'parts/post_footer_notice' );
+    get_footer();
+}
+
 function adn_get_allowed_languages() {
     return array( 'en', 'te' );
 }
