@@ -15,7 +15,7 @@ $url      = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 ?>
 <div class="news-card" data-cat="<?php echo esc_attr( $cat_key ); ?>">
 	<a href="<?php echo $url; ?>" class="news-card-img<?php echo $bg_class; ?>" tabindex="-1" aria-hidden="true">
-		<span class="news-card-icon"><?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
+		<span class="news-card-icon"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
 	</a>
 
 	<div class="news-card-body">

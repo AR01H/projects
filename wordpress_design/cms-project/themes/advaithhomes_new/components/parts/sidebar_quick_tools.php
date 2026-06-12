@@ -20,7 +20,7 @@ $cta         = isset( $quick_tools['cta'] )   ? (array) $quick_tools['cta']   : 
 	<?php foreach ( $items as $item ) : ?>
 		<a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>" class="sidebar-link-item">
 			<div>
-				<span class="sidebar-link-icon"><?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
+				<span class="sidebar-link-icon"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
 				<?php echo esc_html( isset( $item['label'] ) ? $item['label'] : '' ); ?>
 			</div>
 			<span class="sidebar-chevron">&rsaquo;</span>

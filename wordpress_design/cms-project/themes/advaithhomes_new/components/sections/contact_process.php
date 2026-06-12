@@ -14,7 +14,7 @@ if ( empty( $_steps ) ) return;
 		<div class="contact-process-steps">
 			<?php foreach ( $_steps as $_i => $_s ) :
 				$_num  = esc_html( isset( $_s['number'] )      ? (string) $_s['number']      : (string)( $_i + 1 ) );
-				$_ico  = esc_html( isset( $_s['icon'] )        ? (string) $_s['icon']        : '' );
+				$_ico  = adn_icon( isset( $_s['icon'] )        ? (string) $_s['icon']        : '' );
 				$_ttl  = esc_html( isset( $_s['title'] )       ? (string) $_s['title']       : '' );
 				$_dsc  = esc_html( isset( $_s['description'] ) ? (string) $_s['description'] : '' );
 				$_last = ( $_i === count( $_steps ) - 1 );

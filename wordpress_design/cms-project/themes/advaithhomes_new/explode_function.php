@@ -5,6 +5,8 @@ function ahn_include_files() {
         '/common/common_functions.php',
         '/admin/schema-installer.php', // ADN_Schema - needed at REST time too, not only wp-admin
         '/apis/services.php',          // data services (JSON today, real API later) + adn_link()
+        '/apis/services_cms.php',      // read-only services backed by the CMS plugin DB (taxonomy tree + posts)
+        '/calculators/calculators.php',// [ah_calculator] shortcode + isolated (iframe) calculator renderer
         '/apis/models/post.php',       // API models must load before the routes that use them
         '/apis/fetch_functions.php',   // REST route registration + callbacks
         '/apis/callbacks.php',
@@ -28,6 +30,8 @@ function adn_enqueue_common_css() {
     foreach ( $styles as $handle => $file ) {
         wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), ADN_THEME_VERSION );
     }
+    // Font Awesome 6 (free) — powers adn_icon() across the theme.
+    wp_enqueue_style( 'adn-fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css', array(), '6.5.2' );
 }
 function adn_enqueue_common_js() {
     $scripts = array(

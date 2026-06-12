@@ -33,11 +33,11 @@ class AH_Rules_Engine {
 	}
 
 	public static function install_tables(): void {
-		if ( class_exists( 'AH_DB_Installer' ) ) {
-			AH_DB_Installer::ensure_rules_table();
-			AH_DB_Installer::ensure_trigger_logs();
-			AH_DB_Installer::ensure_evaluate_log();
-		}
+		// if ( class_exists( 'AH_DB_Installer' ) ) {
+		// 	AH_DB_Installer::ensure_rules_table();
+		// 	AH_DB_Installer::ensure_trigger_logs();
+		// 	AH_DB_Installer::ensure_evaluate_log();
+		// }
 	}
 
 	// ── CRUD ─────────────────────────────────────────────────────────────────

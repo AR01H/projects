@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $_nl  = isset( $newsletter ) ? (array) $newsletter : array();
-$_ico = esc_html( isset( $_nl['icon'] )         ? (string) $_nl['icon']         : '✉️' );
+$_ico = adn_icon( isset( $_nl['icon'] )         ? (string) $_nl['icon']         : '✉️' );
 $_hdg = esc_html( isset( $_nl['heading'] )      ? (string) $_nl['heading']      : 'Stay Informed' );
 $_dsc = esc_html( isset( $_nl['description'] )  ? (string) $_nl['description']  : '' );
 $_ph  = esc_attr( isset( $_nl['placeholder'] )  ? (string) $_nl['placeholder']  : 'Enter your email address' );

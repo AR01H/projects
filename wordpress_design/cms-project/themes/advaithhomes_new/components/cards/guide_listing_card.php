@@ -18,7 +18,7 @@ $url       = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 <a href="<?php echo $url; ?>" class="guide-listing-card">
 	<div class="guide-listing-img">
 		<div class="guide-listing-img-bg<?php echo $img_class; ?>">
-			<span><?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
+			<span><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
 		</div>
 		<button class="guide-bookmark" type="button" onclick="event.preventDefault();" aria-label="<?php echo esc_attr__( 'Bookmark', ADN_TEXT_DOMAIN ); ?>">🔖</button>
 	</div>

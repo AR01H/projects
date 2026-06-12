@@ -17,7 +17,7 @@ $si = isset( $stay_informed ) && is_array( $stay_informed ) ? $stay_informed : a
 <div class="stay-informed-inner">
 	<div class="stay-informed-content">
 		<?php if ( ! empty( $si['icon'] ) ) : ?>
-			<div class="stay-informed-icon"><?php echo esc_html( $si['icon'] ); ?></div>
+			<div class="stay-informed-icon"><?php echo adn_icon( $si['icon'] ); ?></div>
 		<?php endif; ?>
 		<?php if ( ! empty( $si['title'] ) ) : ?>
 			<h3><?php echo esc_html( $si['title'] ); ?></h3>

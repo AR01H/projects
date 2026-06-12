@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 $_h     = isset( $hero ) ? (array) $hero : array();
 $_title = esc_html( isset( $_h['title'] )       ? (string) $_h['title']       : '' );
 $_desc  = esc_html( isset( $_h['description'] ) ? (string) $_h['description'] : '' );
-$_icon  = esc_html( isset( $_h['bg_icon'] )     ? (string) $_h['bg_icon']     : '🤝' );
+$_icon  = adn_icon( isset( $_h['bg_icon'] )     ? (string) $_h['bg_icon']     : '🤝' );
 $_trust = isset( $_h['trust_items'] ) ? (array) $_h['trust_items'] : array();
 ?>
 <section class="guidance-hero">
@@ -26,7 +26,7 @@ $_trust = isset( $_h['trust_items'] ) ? (array) $_h['trust_items'] : array();
 	<div class="guidance-trust-bar">
 		<div class="guidance-trust-inner container">
 			<?php foreach ( $_trust as $_t ) :
-				$_ti  = esc_html( isset( $_t['icon'] )  ? (string) $_t['icon']  : '' );
+				$_ti  = adn_icon( isset( $_t['icon'] )  ? (string) $_t['icon']  : '' );
 				$_tl  = esc_html( isset( $_t['label'] ) ? (string) $_t['label'] : '' );
 				$_tn  = esc_html( isset( $_t['note'] )  ? (string) $_t['note']  : '' );
 			?>

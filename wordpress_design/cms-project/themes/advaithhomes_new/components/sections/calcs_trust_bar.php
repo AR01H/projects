@@ -19,7 +19,7 @@ if ( empty( $trust_items ) ) {
 		<?php foreach ( $trust_items as $item ) : ?>
 			<div class="calcs-trust-item">
 				<div class="trust-icon" aria-hidden="true">
-					<?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>
+					<?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>
 				</div>
 				<div>
 					<strong><?php echo esc_html( isset( $item['title'] )    ? $item['title']    : '' ); ?></strong>

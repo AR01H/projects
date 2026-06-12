@@ -1,6 +1,9 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+require_once __DIR__ . '/settings-schemas.php';
+require_once __DIR__ . '/class-theme-settings.php';
+
 /**
  * ADN_Theme_Admin
  *
@@ -19,6 +22,19 @@ class ADN_Theme_Admin {
 
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ) );
+
+		// Reusable settings engine (shared admin-post save handler for all tabs).
+		ADN_Theme_Settings::init();
+
+		// Import / Export (theme settings as JSON).
+		add_action( 'admin_post_adn_export_settings', array( __CLASS__, 'handle_export_settings' ) );
+		add_action( 'admin_post_adn_import_settings', array( __CLASS__, 'handle_import_settings' ) );
+
+		// Manage Calculator → Calculator List (per-calculator controls).
+		add_action( 'admin_post_adn_save_calc_list', array( __CLASS__, 'handle_save_calc_list' ) );
+
+		// Admin Actions → Sample Data (seed Guide terms / articles / news).
+		add_action( 'admin_post_adn_seed_content', array( __CLASS__, 'handle_seed_content' ) );
 
 		// Admin Actions handlers (admin-post.php endpoints).
 		add_action( 'admin_post_adn_clear_cache',          array( __CLASS__, 'handle_clear_cache' ) );
@@ -40,6 +56,40 @@ class ADN_Theme_Admin {
 				'label' => __( 'Dashboard', ADN_TEXT_DOMAIN ),
 				'view'  => 'tab-dashboard.php',
 			),
+			'home' => array(
+				'label'   => __( 'Home Page', ADN_TEXT_DOMAIN ),
+				'subtabs' => array(
+					'sections' => array(
+						'label' => __( 'Sections', ADN_TEXT_DOMAIN ),
+						'view'  => 'home/sub-sections.php',
+					),
+					'hero' => array(
+						'label' => __( 'Hero & Intro', ADN_TEXT_DOMAIN ),
+						'view'  => 'home/sub-hero.php',
+					),
+					'featured' => array(
+						'label' => __( 'Featured Guides', ADN_TEXT_DOMAIN ),
+						'view'  => 'home/sub-featured.php',
+					),
+				),
+			),
+			'calculators' => array(
+				'label'   => __( 'Manage Calculator', ADN_TEXT_DOMAIN ),
+				'subtabs' => array(
+					'general' => array(
+						'label' => __( 'Heading & Banner', ADN_TEXT_DOMAIN ),
+						'view'  => 'calculators/sub-general.php',
+					),
+					'list' => array(
+						'label' => __( 'Calculator List', ADN_TEXT_DOMAIN ),
+						'view'  => 'calculators/sub-list.php',
+					),
+				),
+			),
+			'import-export' => array(
+				'label' => __( 'Import / Export', ADN_TEXT_DOMAIN ),
+				'view'  => 'tab-import-export.php',
+			),
 			'admin-actions' => array(
 				'label'   => __( 'Admin Actions', ADN_TEXT_DOMAIN ),
 				'subtabs' => array(
@@ -54,6 +104,10 @@ class ADN_Theme_Admin {
 					'rules' => array(
 						'label' => __( 'Rules Engine', ADN_TEXT_DOMAIN ),
 						'view'  => 'admin-actions/sub-rules.php',
+					),
+					'sample-data' => array(
+						'label' => __( 'Sample Data', ADN_TEXT_DOMAIN ),
+						'view'  => 'admin-actions/sub-sample-data.php',
 					),
 				),
 			),
@@ -70,13 +124,47 @@ class ADN_Theme_Admin {
 			'dashicons-admin-home',
 			3
 		);
+
+		// Register each top-level tab as a real WordPress submenu page, so the
+		// areas appear in the admin sidebar (a division mechanism beyond the
+		// in-page tabs). The first tab reuses the parent slug so WordPress does
+		// not show a duplicate entry. Subtabs stay as in-page tabs.
+		$first = array_key_first( self::tabs() );
+		foreach ( self::tabs() as $key => $def ) {
+			$slug = ( $key === $first ) ? self::MENU_SLUG : self::MENU_SLUG . '-' . $key;
+			add_submenu_page(
+				self::MENU_SLUG,
+				$def['label'],
+				$def['label'],
+				self::CAPABILITY,
+				$slug,
+				array( __CLASS__, 'render_page' )
+			);
+		}
+	}
+
+	/** The WP page slug for a tab's submenu (first tab reuses the parent slug). */
+	public static function tab_page_slug( $tab ) {
+		$first = array_key_first( self::tabs() );
+		return ( $tab === $first ) ? self::MENU_SLUG : self::MENU_SLUG . '-' . $tab;
 	}
 
 	// ── Routing helpers ─────────────────────────────────────────────────────────
 
 	private static function active_tab() {
 		$tabs = self::tabs();
-		$req  = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+
+		// Prefer the submenu page slug (adn-theme / adn-theme-{key}).
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+		if ( $page && $page !== self::MENU_SLUG && 0 === strpos( $page, self::MENU_SLUG . '-' ) ) {
+			$key = substr( $page, strlen( self::MENU_SLUG ) + 1 );
+			if ( isset( $tabs[ $key ] ) ) {
+				return $key;
+			}
+		}
+
+		// Back-compat: ?tab=, else the first tab.
+		$req = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
 		return isset( $tabs[ $req ] ) ? $req : array_key_first( $tabs );
 	}
 
@@ -91,7 +179,7 @@ class ADN_Theme_Admin {
 	}
 
 	private static function tab_url( $tab, $subtab = '' ) {
-		$args = array( 'page' => self::MENU_SLUG, 'tab' => $tab );
+		$args = array( 'page' => self::tab_page_slug( $tab ) );
 		if ( $subtab ) {
 			$args['subtab'] = $subtab;
 		}
@@ -131,34 +219,19 @@ class ADN_Theme_Admin {
 		self::render_notice();
 		?>
 		<div class="wrap adn-admin">
-			<h1><?php echo esc_html( COMPANY_NAME ); ?></h1>
+			<h1><?php echo esc_html( $tab['label'] ); ?></h1>
 
-			<h2 class="nav-tab-wrapper">
-				<?php foreach ( $tabs as $key => $def ) : ?>
-					<a href="<?php echo esc_url( self::tab_url( $key ) ); ?>"
-						class="nav-tab <?php echo $key === $active ? 'nav-tab-active' : ''; ?>">
-						<?php echo esc_html( $def['label'] ); ?>
-					</a>
-				<?php endforeach; ?>
-			</h2>
-
+			<?php /* Sidebar submenus are the top level; a section's own subtabs
+			         render here as its in-page tabs (no duplicate of the sidebar). */ ?>
 			<?php if ( ! empty( $tab['subtabs'] ) ) : ?>
-				<ul class="subsubsub adn-subtabs" style="margin-top:.8rem;">
-					<?php
-					$total = count( $tab['subtabs'] );
-					$i     = 0;
-					foreach ( $tab['subtabs'] as $skey => $sdef ) :
-						$i++;
-						?>
-						<li>
-							<a href="<?php echo esc_url( self::tab_url( $active, $skey ) ); ?>"
-								class="<?php echo $skey === $active_sub ? 'current' : ''; ?>">
-								<?php echo esc_html( $sdef['label'] ); ?>
-							</a><?php echo $i < $total ? ' |' : ''; ?>
-						</li>
+				<h2 class="nav-tab-wrapper">
+					<?php foreach ( $tab['subtabs'] as $skey => $sdef ) : ?>
+						<a href="<?php echo esc_url( self::tab_url( $active, $skey ) ); ?>"
+							class="nav-tab <?php echo $skey === $active_sub ? 'nav-tab-active' : ''; ?>">
+							<?php echo esc_html( $sdef['label'] ); ?>
+						</a>
 					<?php endforeach; ?>
-				</ul>
-				<div style="clear:both;"></div>
+				</h2>
 			<?php endif; ?>
 
 			<div class="adn-tab-body" style="margin-top:1rem;">
@@ -340,5 +413,110 @@ class ADN_Theme_Admin {
 			? __( 'Sample contact rule installed - submissions now email the site admin. Edit it in the CMS plugin.', ADN_TEXT_DOMAIN )
 			: __( 'Could not create the rule - check the CMS plugin.', ADN_TEXT_DOMAIN );
 		self::redirect_back( 'admin-actions', 'rules', $msg );
+	}
+
+	// ── Import / Export: theme settings as JSON ─────────────────────────────────
+
+	/** Stream every theme-settings option as a downloadable JSON file. */
+	public static function handle_export_settings() {
+		check_admin_referer( 'adn_export_settings' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		$settings = array();
+		foreach ( adn_settings_schemas() as $schema ) {
+			$settings[ $schema['option'] ] = get_option( $schema['option'], null );
+		}
+
+		$payload = array(
+			'theme'       => 'advaithhomes_new',
+			'exported_at' => gmdate( 'c' ),
+			'settings'    => $settings,
+		);
+
+		nocache_headers();
+		header( 'Content-Type: application/json; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename="advaith-settings-' . gmdate( 'Ymd-His' ) . '.json"' );
+		echo wp_json_encode( $payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+		exit;
+	}
+
+	/** Import theme settings from an uploaded JSON file (recognised options only). */
+	public static function handle_import_settings() {
+		check_admin_referer( 'adn_import_settings' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		if ( empty( $_FILES['settings_file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['settings_file']['tmp_name'] ) ) {
+			self::redirect_back( 'import-export', '', __( 'No file uploaded.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$raw    = file_get_contents( $_FILES['settings_file']['tmp_name'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+		$parsed = json_decode( (string) $raw, true );
+		if ( ! is_array( $parsed ) ) {
+			self::redirect_back( 'import-export', '', __( 'That file is not valid JSON.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$settings = ( isset( $parsed['settings'] ) && is_array( $parsed['settings'] ) ) ? $parsed['settings'] : $parsed;
+
+		// Whitelist: only recognised theme-settings options, array values only.
+		$allowed = array();
+		foreach ( adn_settings_schemas() as $schema ) {
+			$allowed[ $schema['option'] ] = true;
+		}
+
+		$count = 0;
+		foreach ( $settings as $option => $value ) {
+			if ( isset( $allowed[ $option ] ) && is_array( $value ) ) {
+				update_option( $option, $value );
+				$count++;
+			}
+		}
+
+		/* translators: %d: number of settings groups imported */
+		self::redirect_back( 'import-export', '', sprintf( __( 'Imported %d settings group(s).', ADN_TEXT_DOMAIN ), $count ) );
+	}
+
+	// ── Manage Calculator: per-calculator list (enabled / label / help / guide) ──
+
+	public static function handle_save_calc_list() {
+		check_admin_referer( 'adn_save_calc_list' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		$input = ( isset( $_POST['calc'] ) && is_array( $_POST['calc'] ) ) ? wp_unslash( $_POST['calc'] ) : array();
+		$meta  = array();
+
+		// Iterate the registered calculators (the source of truth), not POST keys.
+		foreach ( adn_calculators() as $key => $calc ) {
+			$row          = isset( $input[ $key ] ) && is_array( $input[ $key ] ) ? $input[ $key ] : array();
+			$meta[ $key ] = array(
+				'enabled'     => empty( $row['enabled'] ) ? 0 : 1,
+				'label'       => sanitize_text_field( $row['label'] ?? '' ),
+				'help'        => sanitize_textarea_field( $row['help'] ?? '' ),
+				'guide_label' => sanitize_text_field( $row['guide_label'] ?? '' ),
+				'guide_url'   => esc_url_raw( $row['guide_url'] ?? '' ),
+			);
+		}
+
+		update_option( 'adn_calculators_meta', $meta );
+		self::redirect_back( 'calculators', 'list', __( 'Calculator list saved.', ADN_TEXT_DOMAIN ) );
+	}
+
+	// ── Admin Actions: seed sample Guide content into the CMS plugin ─────────────
+
+	public static function handle_seed_content() {
+		check_admin_referer( 'adn_seed_content' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		require_once ADN_THEME_DIR . '/admin/mock-installer.php';
+		$result = ADN_Mock_Installer::seed();
+
+		self::redirect_back( 'admin-actions', 'sample-data', $result['message'] );
 	}
 }

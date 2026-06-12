@@ -26,13 +26,16 @@ get_header();
 <?php adn_component( 'parts/main_header', array( 'chrome' => $ctx['chrome'] ) ); ?>
 
 <?php /* ============================== HERO ============================== */ ?>
+<?php if ( adn_home_section_visible( 'hero' ) ) : ?>
 <section class="hero-home">
 	<div class="container">
 		<?php adn_component( 'sections/hero_home', array( 'hero' => $ctx['hero'] ) ); ?>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php /* ==================== WHERE ARE YOU IN YOUR JOURNEY ==================== */ ?>
+<?php if ( adn_home_section_visible( 'journey' ) ) : ?>
 <section class="journey-section">
 	<div class="container">
 		<?php
@@ -45,8 +48,10 @@ get_header();
 		?>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php /* ==================== NEWS + REGULATIONS + HOT TOPICS ==================== */ ?>
+<?php if ( adn_home_section_visible( 'news' ) ) : ?>
 <section class="news-three-col">
 	<div class="container">
 		<?php
@@ -58,8 +63,10 @@ get_header();
 		?>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php /* ============================== CALCULATORS ============================== */ ?>
+<?php if ( adn_home_section_visible( 'calculators' ) ) : ?>
 <section class="calculators-section">
 	<div class="container">
 		<?php
@@ -70,8 +77,10 @@ get_header();
 		?>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php /* ============================== GUIDES & INSIGHTS ============================== */ ?>
+<?php if ( adn_home_section_visible( 'guides' ) ) : ?>
 <section class="guides-section">
 	<div class="container">
 		<?php
@@ -82,13 +91,16 @@ get_header();
 		?>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php /* ============================== NEWSLETTER ============================== */ ?>
+<?php if ( adn_home_section_visible( 'newsletter' ) ) : ?>
 <section class="newsletter-cta">
 	<div class="container">
 		<?php adn_component( 'sections/newsletter_cta', array( 'newsletter' => $ctx['newsletter'] ) ); ?>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php /* ============================== FOOTER ============================== */ ?>
 <?php

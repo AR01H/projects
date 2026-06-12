@@ -21,7 +21,7 @@ $hero = isset( $hero ) && is_array( $hero ) ? $hero : array();
 			<?php endif; ?>
 		</div>
 		<div class="calcs-hero-img" aria-hidden="true">
-			<?php echo esc_html( isset( $hero['bg_icon'] ) ? $hero['bg_icon'] : '' ); ?>
+			<?php echo adn_icon( isset( $hero['bg_icon'] ) ? $hero['bg_icon'] : '' ); ?>
 		</div>
 	</div>
 </section>

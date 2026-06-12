@@ -19,7 +19,7 @@ $view_all   = isset( $hot_topics['view_all'] ) ? (array) $hot_topics['view_all']
 
 	<?php foreach ( $items as $item ) : ?>
 		<div class="hot-topic-sidebar-item">
-			<span class="hot-topic-sidebar-icon"><?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
+			<span class="hot-topic-sidebar-icon"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
 			<a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>" class="hot-topic-sidebar-text">
 				<?php echo esc_html( isset( $item['label'] ) ? $item['label'] : '' ); ?>
 			</a>

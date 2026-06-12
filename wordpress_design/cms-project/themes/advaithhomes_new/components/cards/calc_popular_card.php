@@ -13,7 +13,7 @@ $url  = esc_url( adn_link( isset( $calc['url'] ) ? $calc['url'] : '' ) );
 ?>
 <a href="<?php echo $url; ?>" class="popular-calc-card">
 	<div class="popular-calc-icon" aria-hidden="true">
-		<?php echo esc_html( isset( $calc['icon'] ) ? $calc['icon'] : '' ); ?>
+		<?php echo adn_icon( isset( $calc['icon'] ) ? $calc['icon'] : '' ); ?>
 	</div>
 
 	<?php if ( ! empty( $calc['title'] ) ) : ?>

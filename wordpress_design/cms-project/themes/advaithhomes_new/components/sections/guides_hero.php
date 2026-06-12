@@ -14,7 +14,7 @@ $trust_items = isset( $hero['trust_items'] ) ? (array) $hero['trust_items'] : ar
 <section class="guides-hero">
 	<?php if ( ! empty( $hero['bg_icon'] ) ) : ?>
 		<div class="guides-hero-deco" aria-hidden="true">
-			<span class="guides-hero-deco-icon"><?php echo esc_html( $hero['bg_icon'] ); ?></span>
+			<span class="guides-hero-deco-icon"><?php echo adn_icon( $hero['bg_icon'] ); ?></span>
 		</div>
 	<?php endif; ?>
 

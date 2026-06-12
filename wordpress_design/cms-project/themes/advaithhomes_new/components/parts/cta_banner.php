@@ -14,7 +14,7 @@ $trust_items = isset( $cta_banner['trust_items'] ) ? (array) $cta_banner['trust_
 ?>
 <div class="cta-banner">
 	<div class="cta-banner-img">
-		<?php echo esc_html( isset( $cta_banner['icon'] ) ? $cta_banner['icon'] : '' ); ?>
+		<?php echo adn_icon( isset( $cta_banner['icon'] ) ? $cta_banner['icon'] : '' ); ?>
 	</div>
 
 	<div class="cta-banner-content">

@@ -39,7 +39,7 @@ $meta    = isset( $article['meta'] ) && is_array( $article['meta'] ) ? $article[
 
 	<div>
 		<div class="article-hero-img" style="background:<?php echo esc_attr( isset( $article['image_gradient'] ) ? $article['image_gradient'] : '' ); ?>;">
-			<?php echo esc_html( isset( $article['image_icon'] ) ? $article['image_icon'] : '' ); ?>
+			<?php echo adn_icon( isset( $article['image_icon'] ) ? $article['image_icon'] : '' ); ?>
 		</div>
 	</div>
 </div>

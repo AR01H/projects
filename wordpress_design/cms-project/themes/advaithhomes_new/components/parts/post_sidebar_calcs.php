@@ -25,7 +25,7 @@ if ( empty( $_items ) ) {
 	<h3><?php esc_html_e( 'Popular Calculators', ADN_TEXT_DOMAIN ); ?></h3>
 	<ul class="sidebar-calc-list" role="list">
 		<?php foreach ( $_items as $_c ) :
-			$_c_icon  = esc_html( isset( $_c['icon'] )  ? (string) $_c['icon']  : '🧮' );
+			$_c_icon  = adn_icon( isset( $_c['icon'] )  ? (string) $_c['icon']  : '🧮' );
 			$_c_label = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );
 			$_c_url   = isset( $_c['url'] ) ? adn_link( (string) $_c['url'] ) : '#';
 		?>

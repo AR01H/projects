@@ -30,7 +30,7 @@ $trust_items = isset( $hero['trust_items'] ) ? (array) $hero['trust_items'] : ar
 
 	<div class="category-hero-img">
 		<div class="hero-placeholder-img">
-			<?php echo esc_html( isset( $hero['image_icon'] ) ? $hero['image_icon'] : '' ); ?>
+			<?php echo adn_icon( isset( $hero['image_icon'] ) ? $hero['image_icon'] : '' ); ?>
 		</div>
 	</div>
 </div>

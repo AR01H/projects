@@ -17,7 +17,7 @@ if ( empty( $_items ) ) return;
 		<?php endif; ?>
 		<div class="guidance-why-grid">
 			<?php foreach ( $_items as $_w ) :
-				$_wi = esc_html( isset( $_w['icon'] )  ? (string) $_w['icon']  : '' );
+				$_wi = adn_icon( isset( $_w['icon'] )  ? (string) $_w['icon']  : '' );
 				$_wt = esc_html( isset( $_w['title'] ) ? (string) $_w['title'] : '' );
 				$_wd = esc_html( isset( $_w['desc'] )  ? (string) $_w['desc']  : '' );
 			?>

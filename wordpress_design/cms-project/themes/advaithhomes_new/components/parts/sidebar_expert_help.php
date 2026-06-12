@@ -23,7 +23,7 @@ $cta         = isset( $expert_help['cta'] )     ? (array) $expert_help['cta']   
 
 	<?php foreach ( $experts as $expert ) : ?>
 		<a href="<?php echo esc_url( adn_link( isset( $expert['url'] ) ? $expert['url'] : '' ) ); ?>" class="expert-type">
-			<span class="expert-type-icon"><?php echo esc_html( isset( $expert['icon'] ) ? $expert['icon'] : '' ); ?></span>
+			<span class="expert-type-icon"><?php echo adn_icon( isset( $expert['icon'] ) ? $expert['icon'] : '' ); ?></span>
 			<div class="expert-type-content">
 				<div class="expert-type-name"><?php echo esc_html( isset( $expert['name'] ) ? $expert['name'] : '' ); ?></div>
 				<div class="expert-type-desc"><?php echo esc_html( isset( $expert['desc'] ) ? $expert['desc'] : '' ); ?></div>

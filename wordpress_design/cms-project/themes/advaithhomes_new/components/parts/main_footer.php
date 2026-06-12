@@ -21,7 +21,7 @@ $bottom_links = isset( $footer['bottom_links'] ) ? (array) $footer['bottom_links
         <div class="footer-top">
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <div class="footer-logo-icon"><?php echo esc_html( isset( $brand['icon'] ) ? $brand['icon'] : '' ); ?></div>
+                    <div class="footer-logo-icon"><?php echo adn_icon( isset( $brand['icon'] ) ? $brand['icon'] : '' ); ?></div>
                     <div>
                         <div class="footer-logo-name"><?php echo esc_html( isset( $brand['name'] ) ? $brand['name'] : '' ); ?></div>
                         <div class="footer-logo-sub"><?php echo esc_html( isset( $brand['sub'] ) ? $brand['sub'] : '' ); ?></div>
@@ -32,7 +32,7 @@ $bottom_links = isset( $footer['bottom_links'] ) ? (array) $footer['bottom_links
                     <?php foreach ( $social as $item ) : ?>
                         <a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>"
                            class="social-btn"
-                           aria-label="<?php echo esc_attr( isset( $item['label'] ) ? $item['label'] : '' ); ?>"><?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></a>
+                           aria-label="<?php echo esc_attr( isset( $item['label'] ) ? $item['label'] : '' ); ?>"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></a>
                     <?php endforeach; ?>
                 </div>
             </div>

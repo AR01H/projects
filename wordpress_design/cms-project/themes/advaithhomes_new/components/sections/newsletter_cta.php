@@ -15,7 +15,7 @@ $newsletter = isset( $newsletter ) && is_array( $newsletter ) ? $newsletter : ar
 ?>
 <div class="newsletter-inner">
     <div>
-        <div class="newsletter-icon"><?php echo esc_html( isset( $newsletter['icon'] ) ? $newsletter['icon'] : '' ); ?></div>
+        <div class="newsletter-icon"><?php echo adn_icon( isset( $newsletter['icon'] ) ? $newsletter['icon'] : '' ); ?></div>
         <h3><?php echo esc_html( isset( $newsletter['title'] ) ? $newsletter['title'] : '' ); ?></h3>
         <p><?php echo esc_html( isset( $newsletter['description'] ) ? $newsletter['description'] : '' ); ?></p>
     </div>

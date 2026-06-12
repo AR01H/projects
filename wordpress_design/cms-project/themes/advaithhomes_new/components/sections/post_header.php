@@ -22,7 +22,7 @@ $_article  = isset( $article )  ? (array) $article  : array();
 $_cat_tag  = isset( $_article['category_tag'] ) ? esc_html( $_article['category_tag'] ) : '';
 $_title    = isset( $_article['title'] )        ? esc_html( $_article['title'] )        : '';
 $_intro    = isset( $_article['intro'] )        ? esc_html( $_article['intro'] )        : '';
-$_icon     = isset( $_article['icon'] )         ? esc_html( $_article['icon'] )         : '🏠';
+$_icon     = isset( $_article['icon'] )         ? adn_icon( $_article['icon'] )         : '🏠';
 $_date     = isset( $_article['date'] )         ? esc_html( $_article['date'] )         : '';
 $_rt       = isset( $_article['read_time'] )    ? esc_html( $_article['read_time'] )    : '';
 ?>

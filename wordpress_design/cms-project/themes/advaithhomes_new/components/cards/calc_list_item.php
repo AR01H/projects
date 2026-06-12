@@ -23,7 +23,7 @@ $url        = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 >
 	<div class="calc-list-item-left">
 		<div class="calc-list-icon" aria-hidden="true">
-			<?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>
+			<?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>
 		</div>
 		<div class="calc-list-text">
 			<?php if ( ! empty( $item['title'] ) ) : ?>

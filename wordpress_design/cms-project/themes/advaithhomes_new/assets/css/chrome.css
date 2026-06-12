@@ -10,6 +10,17 @@
    uses and never recolors existing pages.
    ============================================================ */
 
+/* ── Icons (adn_icon() → Font Awesome, with emoji fallback) ──── */
+.ah-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-style: normal;
+    color: currentColor;
+}
+.ah-emoji { font-style: normal; line-height: 1; }
+
 /* ── Layout primitives ─────────────────────────────────────── */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .container-wide { max-width: 1320px; margin: 0 auto; padding: 0 24px; }

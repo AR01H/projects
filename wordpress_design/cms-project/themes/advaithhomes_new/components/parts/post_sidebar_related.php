@@ -20,7 +20,7 @@ if ( empty( $_items ) ) {
 	<h3><?php esc_html_e( 'Related Guides', ADN_TEXT_DOMAIN ); ?></h3>
 	<ul class="sidebar-related-list" role="list">
 		<?php foreach ( $_items as $_g ) :
-			$_g_icon = esc_html( isset( $_g['icon'] )      ? (string) $_g['icon']      : '🏠' );
+			$_g_icon = adn_icon( isset( $_g['icon'] )      ? (string) $_g['icon']      : '🏠' );
 			$_g_ttl  = esc_html( isset( $_g['title'] )     ? (string) $_g['title']     : '' );
 			$_g_rt   = esc_html( isset( $_g['read_time'] ) ? (string) $_g['read_time'] : '' );
 			$_g_url  = isset( $_g['url'] ) ? esc_url( (string) $_g['url'] ) : '#';

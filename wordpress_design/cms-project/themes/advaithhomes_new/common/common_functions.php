@@ -60,6 +60,113 @@ function adn_render_form( $config ) {
     adn_component( 'form_builder/form_builder', array( 'form' => $config ) );
 }
 
+/**
+ * Render an icon as Font Awesome.
+ *
+ * Accepts any of:
+ *   - a Font Awesome class ("fa-house", "fa-solid fa-house", "fa-brands fa-youtube")
+ *   - a known emoji, which is mapped to a Font Awesome icon
+ *   - any other glyph/text, returned as-is so nothing ever disappears
+ *
+ * Theme-wide icon output goes through this so data can stay as emojis while the
+ * site renders a consistent Font Awesome set.
+ *
+ * @param string $icon  Icon value from data.
+ * @param string $class Extra CSS classes for the <i>.
+ * @return string HTML (already escaped).
+ */
+function adn_icon( $icon, $class = '' ) {
+    $icon = trim( (string) $icon );
+    if ( '' === $icon ) {
+        return '';
+    }
+
+    // Already a Font Awesome class — use it directly (default to solid style).
+    if ( false !== strpos( $icon, 'fa-' ) ) {
+        $has_style = ( false !== strpos( $icon, 'fa-solid' ) || false !== strpos( $icon, 'fa-regular' ) || false !== strpos( $icon, 'fa-brands' ) );
+        $cls       = $has_style ? $icon : 'fa-solid ' . $icon;
+        return '<i class="ah-ico ' . esc_attr( trim( $cls . ' ' . $class ) ) . '" aria-hidden="true"></i>';
+    }
+
+    // Map a known emoji to a Font Awesome icon.
+    $map = adn_icon_emoji_map();
+    if ( isset( $map[ $icon ] ) ) {
+        return '<i class="ah-ico ' . esc_attr( trim( $map[ $icon ] . ' ' . $class ) ) . '" aria-hidden="true"></i>';
+    }
+
+    // Unknown glyph — keep it so layouts never lose their icon.
+    return '<span class="ah-emoji">' . esc_html( $icon ) . '</span>';
+}
+
+/**
+ * Emoji → Font Awesome class lookup used by adn_icon().
+ * Extend via the 'adn_icon_emoji_map' filter.
+ */
+function adn_icon_emoji_map() {
+    static $map = null;
+    if ( null !== $map ) {
+        return $map;
+    }
+    $map = array(
+        '🏠'  => 'fa-solid fa-house',
+        '🏡'  => 'fa-solid fa-house-chimney',
+        '🏘️' => 'fa-solid fa-house-chimney-window',
+        '🏘'  => 'fa-solid fa-house-chimney-window',
+        '📦'  => 'fa-solid fa-box',
+        '👥'  => 'fa-solid fa-users',
+        '🧮'  => 'fa-solid fa-calculator',
+        '🏦'  => 'fa-solid fa-building-columns',
+        '💳'  => 'fa-solid fa-credit-card',
+        '💰'  => 'fa-solid fa-coins',
+        '💵'  => 'fa-solid fa-money-bill-wave',
+        '💷'  => 'fa-solid fa-sterling-sign',
+        '📅'  => 'fa-solid fa-calendar-days',
+        '⚖️' => 'fa-solid fa-scale-balanced',
+        '⚖'  => 'fa-solid fa-scale-balanced',
+        '🚚'  => 'fa-solid fa-truck',
+        '🔍'  => 'fa-solid fa-magnifying-glass',
+        '💡'  => 'fa-solid fa-lightbulb',
+        '🕐'  => 'fa-solid fa-clock',
+        '⏱️' => 'fa-solid fa-stopwatch',
+        '✉️' => 'fa-solid fa-envelope',
+        '✉'  => 'fa-solid fa-envelope',
+        '📧'  => 'fa-solid fa-envelope',
+        '📞'  => 'fa-solid fa-phone',
+        '💬'  => 'fa-solid fa-comment-dots',
+        '🔥'  => 'fa-solid fa-fire',
+        '📋'  => 'fa-solid fa-clipboard',
+        '📝'  => 'fa-solid fa-pen-to-square',
+        '📐'  => 'fa-solid fa-ruler-combined',
+        '🤝'  => 'fa-solid fa-handshake',
+        '📊'  => 'fa-solid fa-chart-column',
+        '📈'  => 'fa-solid fa-chart-line',
+        '📄'  => 'fa-solid fa-file-lines',
+        '📰'  => 'fa-solid fa-newspaper',
+        'ℹ️' => 'fa-solid fa-circle-info',
+        '✓'  => 'fa-solid fa-check',
+        '✔️' => 'fa-solid fa-check',
+        '✅'  => 'fa-solid fa-circle-check',
+        '📍'  => 'fa-solid fa-location-dot',
+        '⭐'  => 'fa-solid fa-star',
+        '🎉'  => 'fa-solid fa-gift',
+        '🔑'  => 'fa-solid fa-key',
+        '🏷️' => 'fa-solid fa-tag',
+        '🛡️' => 'fa-solid fa-shield-halved',
+        '📱'  => 'fa-solid fa-mobile-screen',
+        '🌍'  => 'fa-solid fa-earth-europe',
+        '👤'  => 'fa-solid fa-user',
+        '🏗️' => 'fa-solid fa-helmet-safety',
+        // Brand / social glyphs used in the footer.
+        'f'   => 'fa-brands fa-facebook-f',
+        '𝕏'  => 'fa-brands fa-x-twitter',
+        'in'  => 'fa-brands fa-linkedin-in',
+        '◎'  => 'fa-brands fa-instagram',
+        '📷'  => 'fa-brands fa-instagram',
+        '▶'  => 'fa-brands fa-youtube',
+    );
+    return apply_filters( 'adn_icon_emoji_map', $map );
+}
+
 function adn_get_allowed_languages() {
     return array( 'en', 'te' );
 }

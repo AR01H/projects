@@ -14,7 +14,7 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 
 	<?php /* WhatsApp box */ ?>
 	<?php if ( ! empty( $_wa ) ) :
-		$_wa_ico = esc_html( isset( $_wa['icon'] )         ? (string) $_wa['icon']         : '💬' );
+		$_wa_ico = adn_icon( isset( $_wa['icon'] )         ? (string) $_wa['icon']         : '💬' );
 		$_wa_hdg = esc_html( isset( $_wa['heading'] )      ? (string) $_wa['heading']      : '' );
 		$_wa_num = esc_html( isset( $_wa['number'] )       ? (string) $_wa['number']       : '' );
 		$_wa_nte = esc_html( isset( $_wa['note'] )         ? (string) $_wa['note']         : '' );
@@ -40,7 +40,7 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 
 	<?php /* Email box */ ?>
 	<?php if ( ! empty( $_em ) ) :
-		$_em_ico = esc_html( isset( $_em['icon'] )         ? (string) $_em['icon']         : '📧' );
+		$_em_ico = adn_icon( isset( $_em['icon'] )         ? (string) $_em['icon']         : '📧' );
 		$_em_hdg = esc_html( isset( $_em['heading'] )      ? (string) $_em['heading']      : '' );
 		$_em_adr = esc_html( isset( $_em['address'] )      ? (string) $_em['address']      : '' );
 		$_em_nte = esc_html( isset( $_em['note'] )         ? (string) $_em['note']         : '' );
@@ -69,7 +69,7 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 		<h4><?php esc_html_e( 'More ways to connect', ADN_TEXT_DOMAIN ); ?> <span class="cs-tag"><?php esc_html_e( 'Coming Soon', ADN_TEXT_DOMAIN ); ?></span></h4>
 		<ul class="contact-cs-list">
 			<?php foreach ( $_cs as $_c ) :
-				$_c_ico = esc_html( isset( $_c['icon'] )  ? (string) $_c['icon']  : '' );
+				$_c_ico = adn_icon( isset( $_c['icon'] )  ? (string) $_c['icon']  : '' );
 				$_c_lbl = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );
 			?>
 				<li>

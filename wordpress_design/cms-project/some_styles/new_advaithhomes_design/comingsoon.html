@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Advaith Homes — Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ═══════════════════════════════════════════
+   ROOT — only non-animated base values here
+═══════════════════════════════════════════ */
+:root {
+  --ah-ink:   #1a2b2c;
+  --ah-speed: 1.6s;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--ah-ink);
+  position: relative;
+  background: #f7f4ee; /* starts warm-cream, swapped in JS */
+  transition: background var(--ah-speed) ease;
+}
+
+/* ═══════════════════════════════════════════
+   BACKGROUND
+═══════════════════════════════════════════ */
+.ah-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 65% 55% at 12% 50%, rgba(201,160,78,0.09) 0%, transparent 68%),
+    radial-gradient(ellipse 55% 75% at 88% 50%, rgba(181,83,42,0.05) 0%, transparent 68%);
+  transition: background var(--ah-speed) ease;
+}
+body.ah-done .ah-bg {
+  background:
+    radial-gradient(ellipse 65% 55% at 12% 50%, rgba(29,58,63,0.07) 0%, transparent 68%),
+    radial-gradient(ellipse 55% 75% at 88% 50%, rgba(47,90,94,0.09) 0%, transparent 68%);
+}
+
+/* subtle dot pattern */
+.ah-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(26,43,44,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ═══════════════════════════════════════════
+   PARTICLE CANVAS
+═══════════════════════════════════════════ */
+#ah-particles {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 1;
+}
+
+/* ═══════════════════════════════════════════
+   PAGE WRAPPER
+═══════════════════════════════════════════ */
+.ah-page {
+  position: relative; z-index: 2;
+  width: 100%; height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 20px 24px 48px;
+  gap: 0;
+}
+
+/* ═══════════════════════════════════════════
+   LOGO CONTAINER
+   Key fix: both images absolutely stacked
+   inside a sized container (aspect-ratio box)
+═══════════════════════════════════════════ */
+.ah-logo-outer {
+  width: 40%;
+  max-width: 460px;
+  min-width: 200px;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+/* intrinsic-size wrapper — matches the actual
+   image aspect ratio so absolute children
+   don't overflow or mis-stack               */
+.ah-logo-sizer {
+  position: relative;
+  width: 100%;
+  /* will be set to paddingTop by JS once image loads */
+  padding-top: 33%; /* safe fallback ~3:1 logo */
+}
+
+.ah-logo-sizer img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* OLD logo — visible initially */
+.ah-logo-old {
+  opacity: 1;
+  transform: scale(1);
+  filter: none;
+  transition:
+    opacity  var(--ah-speed) cubic-bezier(0.4,0,0.2,1),
+    transform var(--ah-speed) cubic-bezier(0.4,0,0.2,1),
+    filter   var(--ah-speed) ease;
+  z-index: 2;
+}
+.ah-logo-old.ah-fade-out {
+  opacity: 0;
+  transform: scale(0.94);
+  filter: blur(2px) brightness(1.5);
+}
+
+/* NEW logo — hidden initially */
+.ah-logo-new {
+  opacity: 0;
+  transform: scale(1.06);
+  filter: blur(3px) brightness(0.7);
+  transition:
+    opacity  var(--ah-speed) cubic-bezier(0.4,0,0.2,1),
+    transform var(--ah-speed) cubic-bezier(0.4,0,0.2,1),
+    filter   var(--ah-speed) ease;
+  z-index: 3;
+}
+.ah-logo-new.ah-fade-in {
+  opacity: 1;
+  transform: scale(1);
+  filter: none;
+}
+
+/* glow halos — pure opacity transitions */
+.ah-halo {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity var(--ah-speed) ease;
+  z-index: 1;
+}
+.ah-halo-gold {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(243,217,122,0.35) 0%,
+    rgba(232,201,126,0.12) 45%,
+    transparent 70%);
+  opacity: 1;
+}
+.ah-halo-teal {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(29,58,63,0.18) 0%,
+    rgba(47,90,94,0.06) 45%,
+    transparent 70%);
+  opacity: 0;
+}
+body.ah-done .ah-halo-gold { opacity: 0; }
+body.ah-done .ah-halo-teal { opacity: 1; }
+
+/* burst ring — pure animation, no transition */
+.ah-ring {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 1px solid rgba(243,217,122,0.6);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.ah-ring.ah-ring-go {
+  animation: ah-ring-expand 1.4s cubic-bezier(0.0, 0.0, 0.4, 1) forwards;
+}
+@keyframes ah-ring-expand {
+  0%   { opacity: 0.85; transform: scale(0.92); }
+  60%  { opacity: 0.3; }
+  100% { opacity: 0;   transform: scale(2.8); }
+}
+
+/* ═══════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════ */
+.ah-divider {
+  width: 1px;
+  height: 44px;
+  flex-shrink: 0;
+  margin: 8px auto;
+  position: relative;
+  overflow: visible;
+}
+.ah-divider::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 1px; height: 100%;
+  background: linear-gradient(to bottom, transparent, #e8c97e, transparent);
+  transition: background var(--ah-speed) ease;
+}
+body.ah-done .ah-divider::before {
+  background: linear-gradient(to bottom, transparent, #a9bfba, transparent);
+}
+
+/* ═══════════════════════════════════════════
+   CONTENT
+═══════════════════════════════════════════ */
+.ah-content {
+  text-align: center;
+  max-width: 540px;
+  width: 100%;
+  animation: ah-rise 1s cubic-bezier(0.4,0,0.2,1) 0.4s both;
+}
+@keyframes ah-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ah-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #c9a04e;
+  margin-bottom: 10px;
+  transition: color var(--ah-speed) ease;
+}
+body.ah-done .ah-eyebrow { color: #7f9a98; }
+
+.ah-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3.6vw, 42px);
+  font-weight: 500;
+  color: #1a2b2c;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
+}
+.ah-headline-em {
+  font-style: italic;
+  color: #c9a04e;
+  transition: color var(--ah-speed) ease;
+}
+body.ah-done .ah-headline-em { color: #2f5a5e; }
+
+.ah-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 1.5vw, 16.5px);
+  font-style: italic;
+  font-weight: 300;
+  color: #3f5658;
+  line-height: 1.7;
+  margin: 0 auto 18px;
+  max-width: 420px;
+}
+
+/* ═══════════════════════════════════════════
+   CONTACT PILLS
+═══════════════════════════════════════════ */
+.ah-pills {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.ah-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px 9px 9px;
+  border-radius: 50px;
+  border: 1px solid rgba(181,83,42,0.20);
+  background: rgba(255,255,255,0.52);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-decoration: none;
+  color: #1a2b2c;
+  transition:
+    border-color var(--ah-speed) ease,
+    background   0.22s ease,
+    transform    0.22s ease,
+    box-shadow   0.22s ease;
+}
+.ah-pill:hover {
+  background: rgba(255,255,255,0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(29,58,63,0.10);
+}
+body.ah-done .ah-pill {
+  border-color: rgba(29,58,63,0.16);
+}
+
+.ah-pill-dot {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: #f3d97a;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--ah-speed) ease;
+}
+body.ah-done .ah-pill-dot { background: #1d3a3f; }
+
+.ah-pill-dot svg {
+  width: 13px; height: 13px;
+  fill: none;
+  stroke: #b5532a;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke var(--ah-speed) ease;
+}
+body.ah-done .ah-pill-dot svg { stroke: #eef3f1; }
+
+.ah-pill-sub { line-height: 1.1; }
+.ah-pill-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c9a04e;
+  margin-bottom: 2px;
+  transition: color var(--ah-speed) ease;
+}
+body.ah-done .ah-pill-label { color: #7f9a98; }
+
+.ah-pill-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a2b2c;
+}
+
+/* ═══════════════════════════════════════════
+   BRAND FOOTNOTE
+═══════════════════════════════════════════ */
+.ah-footnote {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c9a04e;
+  transition: color var(--ah-speed) ease;
+}
+body.ah-done .ah-footnote { color: #a9bfba; }
+.ah-footnote-name {
+  color: #b5532a;
+  font-weight: 600;
+  transition: color var(--ah-speed) ease;
+}
+body.ah-done .ah-footnote-name { color: #3f5658; }
+
+/* ═══════════════════════════════════════════
+   TICKER BAR
+═══════════════════════════════════════════ */
+.ah-ticker {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 10;
+  height: 32px;
+  background: #3d1e0a;
+  display: flex; align-items: center;
+  overflow: hidden;
+  transition: background var(--ah-speed) ease;
+}
+body.ah-done .ah-ticker { background: #1d3a3f; }
+
+.ah-ticker-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: ah-tick 26s linear infinite;
+}
+@keyframes ah-tick {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ah-tick-word {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a9bfba;
+  padding: 0 26px;
+}
+.ah-tick-sep {
+  color: #c9a04e;
+  transition: color var(--ah-speed) ease;
+}
+body.ah-done .ah-tick-sep { color: #2f5a5e; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 580px) {
+  .ah-logo-outer { width: 64%; min-width: 180px; }
+  .ah-pill       { padding: 8px 14px 8px 8px; }
+  .ah-divider    { height: 30px; }
+}
+@media (max-height: 650px) {
+  .ah-divider    { height: 20px; margin: 4px auto; }
+  .ah-desc       { margin-bottom: 12px; }
+  .ah-pills      { margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="ah-bg"></div>
+<canvas id="ah-particles"></canvas>
+
+<div class="ah-page">
+
+  <!-- ── LOGO ── -->
+  <div class="ah-logo-outer" id="ah-logo-outer">
+    <div class="ah-logo-sizer" id="ah-logo-sizer">
+      <div class="ah-halo ah-halo-gold"></div>
+      <div class="ah-halo ah-halo-teal"></div>
+      <div class="ah-ring" id="ah-ring"></div>
+
+      <img
+        id="ah-logo-old"
+        class="ah-logo-old"
+        src="http://advaithhomes.co.uk.test/wp-content/uploads/2026/06/logo.png"
+        alt="Advaith Homes — previous identity"
+        draggable="false"
+      />
+      <img
+        id="ah-logo-new"
+        class="ah-logo-new"
+        src="http://advaithhomes.co.uk.test/wp-content/uploads/2026/06/logo-1.png"
+        alt="Advaith Homes — new identity"
+        draggable="false"
+      />
+    </div>
+  </div>
+
+  <!-- ── DIVIDER ── -->
+  <div class="ah-divider"></div>
+
+  <!-- ── CONTENT ── -->
+  <div class="ah-content">
+    <p class="ah-eyebrow">A new chapter for real estate guidance</p>
+
+    <h1 class="ah-headline">
+      Something <span class="ah-headline-em">exceptional</span><br>is on its way
+    </h1>
+
+    <p class="ah-desc">
+      Your trusted guide to buying, selling, and moving homes —
+      curated insights, expert resources, and everything you need
+      to make confident property decisions.
+    </p>
+
+    <div class="ah-pills">
+      <a class="ah-pill" href="tel:+919876543210">
+        <div class="ah-pill-dot">
+          <svg viewBox="0 0 24 24">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+        </div>
+        <div class="ah-pill-sub">
+          <span class="ah-pill-label">Call Us</span>
+          <span class="ah-pill-val">+91 98765 43210</span>
+        </div>
+      </a>
+
+      <a class="ah-pill" href="mailto:info@advaithhomes.com">
+        <div class="ah-pill-dot">
+          <svg viewBox="0 0 24 24">
+            <rect x="2" y="4" width="20" height="16" rx="2.5"/>
+            <polyline points="2,6 12,14 22,6"/>
+          </svg>
+        </div>
+        <div class="ah-pill-sub">
+          <span class="ah-pill-label">Email Us</span>
+          <span class="ah-pill-val">info@advaithhomes.com</span>
+        </div>
+      </a>
+    </div>
+
+    <p class="ah-footnote">
+      <span class="ah-footnote-name">Advaith Homes</span>
+      &nbsp;·&nbsp; Building Trust. Creating Legacies.
+    </p>
+  </div>
+
+</div>
+
+<!-- ── TICKER ── -->
+<div class="ah-ticker">
+  <div class="ah-ticker-inner" id="ah-ticker-inner"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   TICKER
+══════════════════════════════════════ */
+(function () {
+  const W = ['Planning','Designing','Building','Dream Home',
+             'Buying','Selling','Moving','Insights','Guides','Expert Advice'];
+  const el = document.getElementById('ah-ticker-inner');
+  const seg = W.map(w =>
+    `<span class="ah-tick-word">${w}<span class="ah-tick-sep"> ◆ </span></span>`
+  ).join('');
+  el.innerHTML = seg + seg;
+})();
+
+/* ══════════════════════════════════════
+   LOGO HEIGHT FIX
+   Wait for old logo to load, then set
+   the sizer's padding-top so both images
+   are the exact same height and stack
+   without any curling or overflow.
+══════════════════════════════════════ */
+const ahOld   = document.getElementById('ah-logo-old');
+const ahNew   = document.getElementById('ah-logo-new');
+const ahSizer = document.getElementById('ah-logo-sizer');
+
+function ahSetSizerHeight(img) {
+  if (img.naturalWidth > 0) {
+    const ratio = img.naturalHeight / img.naturalWidth;
+    ahSizer.style.paddingTop = (ratio * 100).toFixed(3) + '%';
+  }
+}
+
+if (ahOld.complete && ahOld.naturalWidth > 0) {
+  ahSetSizerHeight(ahOld);
+} else {
+  ahOld.addEventListener('load', () => ahSetSizerHeight(ahOld));
+  ahOld.addEventListener('error', () => { ahSizer.style.paddingTop = '30%'; });
+}
+
+/* ══════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════ */
+const ahCvs = document.getElementById('ah-particles');
+const ahCx  = ahCvs.getContext('2d');
+let   ahPts = [];
+let   ahRaf = null;
+
+function ahResizeCvs() {
+  ahCvs.width  = window.innerWidth;
+  ahCvs.height = window.innerHeight;
+}
+ahResizeCvs();
+window.addEventListener('resize', ahResizeCvs);
+
+function ahEmit(x, y) {
+  /* wave 1 — gold sparks */
+  for (let i = 0; i < 55; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const spd   = 0.6 + Math.random() * 2.8;
+    ahPts.push({
+      x, y,
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd - 0.6,
+      life: 1,
+      decay: 0.009 + Math.random() * 0.010,
+      size: 1.2 + Math.random() * 2.2,
+      rgb: Math.random() > 0.4 ? '201,160,78' : '232,201,126'
+    });
+  }
+  /* wave 2 — teal bloom (delayed via initial alpha) */
+  for (let i = 0; i < 35; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const spd   = 0.4 + Math.random() * 1.8;
+    ahPts.push({
+      x, y,
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd,
+      life: 0.0,  /* starts invisible, blooms later */
+      initDelay: 30 + Math.floor(Math.random() * 30),
+      decay: 0.008 + Math.random() * 0.009,
+      size: 1.6 + Math.random() * 2.8,
+      rgb: Math.random() > 0.5 ? '29,58,63' : '47,90,94'
+    });
+  }
+}
+
+let ahFrame = 0;
+function ahDrawPts() {
+  ahFrame++;
+  ahCx.clearRect(0, 0, ahCvs.width, ahCvs.height);
+  ahPts = ahPts.filter(p => p.life > 0 || (p.initDelay !== undefined && p.initDelay > 0));
+
+  ahPts.forEach(p => {
+    /* handle delayed teal bloom */
+    if (p.initDelay !== undefined && p.initDelay > 0) {
+      p.initDelay--;
+      p.x += p.vx * 0.3;
+      p.y += p.vy * 0.3;
+      return;
+    }
+    if (p.initDelay === 0) { p.life = 0.85; p.initDelay = undefined; }
+
+    p.x  += p.vx;
+    p.y  += p.vy;
+    p.vy += 0.038;
+    p.vx *= 0.995;
+    p.life -= p.decay;
+
+    ahCx.beginPath();
+    ahCx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ahCx.fillStyle = `rgba(${p.rgb},${Math.max(0, p.life).toFixed(3)})`;
+    ahCx.fill();
+  });
+
+  if (ahPts.length > 0) {
+    ahRaf = requestAnimationFrame(ahDrawPts);
+  } else {
+    ahRaf = null;
+  }
+}
+
+function ahFirePts(x, y) {
+  ahEmit(x, y);
+  if (!ahRaf) ahRaf = requestAnimationFrame(ahDrawPts);
+}
+
+/* ══════════════════════════════════════
+   LOGO TRANSITION
+══════════════════════════════════════ */
+const ahRingEl  = document.getElementById('ah-ring');
+const ahOuterEl = document.getElementById('ah-logo-outer');
+let   ahIsDone  = false;
+
+function ahCentre() {
+  const r = ahSizer.getBoundingClientRect();
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+}
+
+function ahDoTransition() {
+  const c = ahCentre();
+
+  /* 1 — ring burst (restart animation cleanly) */
+  ahRingEl.classList.remove('ah-ring-go');
+  void ahRingEl.offsetWidth;
+  ahRingEl.classList.add('ah-ring-go');
+
+  /* 2 — particles */
+  ahFirePts(c.x, c.y);
+
+  /* 3 — logo crossfade + full palette shift
+         staggered: start fade at 120ms so ring
+         fires visibly first                    */
+  setTimeout(() => {
+    ahOld.classList.add('ah-fade-out');
+    ahNew.classList.add('ah-fade-in');
+    document.body.classList.add('ah-done');
+    ahIsDone = true;
+  }, 120);
+}
+
+function ahUndoTransition() {
+  ahOld.classList.remove('ah-fade-out');
+  ahNew.classList.remove('ah-fade-in');
+  document.body.classList.remove('ah-done');
+  ahIsDone = false;
+}
+
+/* auto-play on load */
+setTimeout(ahDoTransition, 2400);
+
+/* click logo to replay */
+ahOuterEl.addEventListener('click', () => {
+  if (ahIsDone) {
+    ahUndoTransition();
+    setTimeout(ahDoTransition, 2200);
+  }
+});
+
+/* ══════════════════════════════════════
+   GENTLE PARALLAX (logo only)
+══════════════════════════════════════ */
+let ahMX = 0, ahMY = 0;
+document.addEventListener('mousemove', e => {
+  ahMX = (e.clientX / window.innerWidth  - 0.5) * 10;
+  ahMY = (e.clientY / window.innerHeight - 0.5) *  6;
+});
+(function ahParallax() {
+  ahSizer.style.transform = `translate(${ahMX * 0.08}px, ${ahMY * 0.08}px)`;
+  /* lerp for butter-smooth motion */
+  ahMX *= 0.92; ahMY *= 0.92;
+  /* actually accumulate properly */
+  requestAnimationFrame(ahParallax);
+})();
+
+/* corrected lerp parallax */
+let ahTX = 0, ahTY = 0, ahCurX = 0, ahCurY = 0;
+document.addEventListener('mousemove', e => {
+  ahTX = (e.clientX / window.innerWidth  - 0.5) * 9;
+  ahTY = (e.clientY / window.innerHeight - 0.5) * 5;
+});
+(function ahSmooth() {
+  ahCurX += (ahTX - ahCurX) * 0.07;
+  ahCurY += (ahTY - ahCurY) * 0.07;
+  ahSizer.style.transform = `translate(${ahCurX.toFixed(2)}px, ${ahCurY.toFixed(2)}px)`;
+  requestAnimationFrame(ahSmooth);
+})();
+</script>
+</body>
+</html>

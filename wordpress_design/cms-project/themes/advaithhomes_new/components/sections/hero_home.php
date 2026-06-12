@@ -57,7 +57,7 @@ $nodes       = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
         <div class="hero-process-diagram">
             <div class="process-circle"></div>
             <div class="process-center">
-                <span class="process-center-icon"><?php echo esc_html( isset( $diagram['center_icon'] ) ? $diagram['center_icon'] : '' ); ?></span>
+                <span class="process-center-icon"><?php echo adn_icon( isset( $diagram['center_icon'] ) ? $diagram['center_icon'] : '' ); ?></span>
                 <span class="process-center-text"><?php
                     $center_lines = isset( $diagram['center_lines'] ) ? (array) $diagram['center_lines'] : array();
                     $first        = true;
@@ -73,7 +73,7 @@ $nodes       = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
             <div class="process-nodes">
                 <?php foreach ( array_values( $nodes ) as $i => $node ) : ?>
                     <div class="process-node node-<?php echo esc_attr( (string) ( $i + 1 ) ); ?>">
-                        <div class="process-node-icon"><?php echo esc_html( isset( $node['icon'] ) ? $node['icon'] : '' ); ?></div>
+                        <div class="process-node-icon"><?php echo adn_icon( isset( $node['icon'] ) ? $node['icon'] : '' ); ?></div>
                         <div class="process-node-label"><?php echo esc_html( isset( $node['label'] ) ? $node['label'] : '' ); ?></div>
                     </div>
                 <?php endforeach; ?>

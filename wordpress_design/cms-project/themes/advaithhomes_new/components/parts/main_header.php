@@ -44,7 +44,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         <div class="header-inner">
 
             <a href="<?php echo esc_url( adn_link( isset( $logo['url'] ) ? $logo['url'] : '/' ) ); ?>" class="logo">
-                <div class="logo-icon"><?php echo esc_html( isset( $logo['icon'] ) ? $logo['icon'] : '' ); ?></div>
+                <div class="logo-icon"><?php echo adn_icon( isset( $logo['icon'] ) ? $logo['icon'] : '' ); ?></div>
                 <div class="logo-text">
                     <span class="logo-name"><?php echo esc_html( isset( $logo['name'] ) ? $logo['name'] : '' ); ?></span>
                     <span class="logo-sub"><?php echo esc_html( isset( $logo['sub'] ) ? $logo['sub'] : '' ); ?></span>
@@ -80,7 +80,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
             </nav>
 
             <div class="header-actions">
-                <button type="button" class="btn-search" aria-label="Search" aria-expanded="false" aria-controls="headerSearch">🔍</button>
+                <button type="button" class="btn-search" aria-label="Search" aria-expanded="false" aria-controls="headerSearch"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></button>
                 <?php if ( ! empty( $cta['label'] ) ) : ?>
                     <a href="<?php echo esc_url( adn_link( isset( $cta['url'] ) ? $cta['url'] : '' ) ); ?>" class="btn btn-primary btn-sm header-cta"><?php echo esc_html( $cta['label'] ); ?></a>
                 <?php endif; ?>
@@ -94,7 +94,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         <div class="container">
             <div class="header-search-box">
                 <form class="header-search-form" role="search" method="get" action="<?php echo $search_action; ?>" data-suggest="<?php echo $search_suggest; ?>">
-                    <span class="header-search-icon" aria-hidden="true">🔍</span>
+                    <span class="header-search-icon" aria-hidden="true"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></span>
                     <input type="search" name="s" class="header-search-input"
                            placeholder="<?php echo esc_attr( $search_placeholder ); ?>"
                            value="<?php echo esc_attr( $search_value ); ?>"
@@ -120,7 +120,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                    value="<?php echo esc_attr( $search_value ); ?>"
                    aria-label="<?php echo esc_attr( $search_placeholder ); ?>"
                    autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list">
-            <button type="submit" class="mobile-search-btn" aria-label="<?php echo esc_attr( $search_label ); ?>">🔍</button>
+            <button type="submit" class="mobile-search-btn" aria-label="<?php echo esc_attr( $search_label ); ?>"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></button>
         </form>
         <div class="search-suggest search-suggest--mobile js-suggest" role="listbox" hidden></div>
     </div>

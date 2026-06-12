@@ -77,7 +77,7 @@ $total_pages  = isset( $pagination['total'] )   ? (int) $pagination['total']   :
 	<?php if ( ! empty( $dl_cta['title'] ) ) : ?>
 		<div class="download-cta">
 			<?php if ( ! empty( $dl_cta['icon'] ) ) : ?>
-				<div class="download-cta-img" aria-hidden="true"><?php echo esc_html( $dl_cta['icon'] ); ?></div>
+				<div class="download-cta-img" aria-hidden="true"><?php echo adn_icon( $dl_cta['icon'] ); ?></div>
 			<?php endif; ?>
 			<div class="download-cta-content">
 				<h3><?php echo esc_html( $dl_cta['title'] ); ?></h3>

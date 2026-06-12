@@ -15,7 +15,7 @@ $url     = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 ?>
 <div class="news-list-item" data-cat="<?php echo esc_attr( $cat_key ); ?>">
 	<div class="nli-icon-wrap">
-		<span><?php echo esc_html( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
+		<span><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
 	</div>
 
 	<div class="nli-body">

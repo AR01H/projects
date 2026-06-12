@@ -40,7 +40,7 @@ $_hiw  = isset( $_sb['how_it_works'] )        ? (array) $_sb['how_it_works']    
 		<h3><?php echo $_pc_hdg; ?></h3>
 		<ul class="expert-cat-list">
 			<?php foreach ( $_pc_items as $_ci ) :
-				$_ci_icon = esc_html( isset( $_ci['icon'] )  ? (string) $_ci['icon']  : '' );
+				$_ci_icon = adn_icon( isset( $_ci['icon'] )  ? (string) $_ci['icon']  : '' );
 				$_ci_lbl  = esc_html( isset( $_ci['label'] ) ? (string) $_ci['label'] : '' );
 				$_ci_dsc  = esc_html( isset( $_ci['desc'] )  ? (string) $_ci['desc']  : '' );
 				$_ci_url  = esc_url( adn_link( isset( $_ci['url'] ) ? (string) $_ci['url'] : '#' ) );

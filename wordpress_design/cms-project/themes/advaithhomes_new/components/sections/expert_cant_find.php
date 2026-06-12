@@ -6,7 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $_c     = isset( $cant_find_cta ) ? (array) $cant_find_cta : array();
-$_ico   = esc_html( isset( $_c['icon'] )         ? (string) $_c['icon']         : '🔍' );
+$_ico   = adn_icon( isset( $_c['icon'] )         ? (string) $_c['icon']         : '🔍' );
 $_hdg   = esc_html( isset( $_c['heading'] )      ? (string) $_c['heading']      : "Can't find the right expert?" );
 $_dsc   = esc_html( isset( $_c['desc'] )         ? (string) $_c['desc']         : '' );
 $_btn   = esc_html( isset( $_c['button_label'] ) ? (string) $_c['button_label'] : 'Get Matched Now' );

@@ -15,7 +15,7 @@ if ( empty( $_items ) ) return;
 		<h2 class="contact-section-heading"><?php echo $_hdg; ?></h2>
 		<div class="contact-resources-grid">
 			<?php foreach ( $_items as $_r ) :
-				$_ri   = esc_html( isset( $_r['icon'] )  ? (string) $_r['icon']  : '' );
+				$_ri   = adn_icon( isset( $_r['icon'] )  ? (string) $_r['icon']  : '' );
 				$_rt   = esc_html( isset( $_r['title'] ) ? (string) $_r['title'] : '' );
 				$_rd   = esc_html( isset( $_r['desc'] )  ? (string) $_r['desc']  : '' );
 				$_rurl = esc_url( adn_link( isset( $_r['url'] ) ? (string) $_r['url'] : '#' ) );

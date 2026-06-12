@@ -14,7 +14,7 @@ if ( empty( $_items ) ) return;
 	<h2><?php echo $_hdg; ?></h2>
 	<div class="guidance-services-grid">
 		<?php foreach ( $_items as $_item ) :
-			$_si  = esc_html( isset( $_item['icon'] )  ? (string) $_item['icon']  : '' );
+			$_si  = adn_icon( isset( $_item['icon'] )  ? (string) $_item['icon']  : '' );
 			$_st  = esc_html( isset( $_item['title'] ) ? (string) $_item['title'] : '' );
 			$_sd  = esc_html( isset( $_item['desc'] )  ? (string) $_item['desc']  : '' );
 			$_sc  = esc_html( isset( $_item['cta'] )   ? (string) $_item['cta']   : 'Get Guidance' );

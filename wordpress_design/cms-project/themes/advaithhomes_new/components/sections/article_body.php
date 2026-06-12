@@ -43,7 +43,7 @@ foreach ( $sections as $section ) :
 				<div class="steps-list">
 					<?php foreach ( (array) $section['items'] as $step ) : ?>
 						<div class="step-item">
-							<div class="step-item-icon"><?php echo esc_html( isset( $step['icon'] ) ? $step['icon'] : '' ); ?></div>
+							<div class="step-item-icon"><?php echo adn_icon( isset( $step['icon'] ) ? $step['icon'] : '' ); ?></div>
 							<div class="step-item-content">
 								<div class="step-item-title"><?php echo esc_html( isset( $step['title'] ) ? $step['title'] : '' ); ?></div>
 								<?php if ( ! empty( $step['desc'] ) ) : ?>
@@ -64,7 +64,7 @@ foreach ( $sections as $section ) :
 				<?php $tip = (array) $section['tip']; ?>
 				<div class="journey-tip">
 					<div class="journey-tip-left">
-						<span class="journey-tip-icon"><?php echo esc_html( isset( $tip['icon'] ) ? $tip['icon'] : '' ); ?></span>
+						<span class="journey-tip-icon"><?php echo adn_icon( isset( $tip['icon'] ) ? $tip['icon'] : '' ); ?></span>
 						<span class="journey-tip-text"><?php
 							echo wp_kses(
 								isset( $tip['text'] ) ? $tip['text'] : '',
@@ -95,7 +95,7 @@ foreach ( $sections as $section ) :
 				<div class="costs-grid">
 					<?php foreach ( (array) $section['items'] as $cost ) : ?>
 						<div class="cost-item">
-							<div class="cost-icon"><?php echo esc_html( isset( $cost['icon'] ) ? $cost['icon'] : '' ); ?></div>
+							<div class="cost-icon"><?php echo adn_icon( isset( $cost['icon'] ) ? $cost['icon'] : '' ); ?></div>
 							<div class="cost-name"><?php echo esc_html( isset( $cost['name'] ) ? $cost['name'] : '' ); ?></div>
 							<div class="cost-value"><?php echo esc_html( isset( $cost['value'] ) ? $cost['value'] : '' ); ?></div>
 						</div>

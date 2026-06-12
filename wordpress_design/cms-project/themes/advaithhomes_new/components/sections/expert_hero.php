@@ -9,7 +9,7 @@ $_h     = isset( $hero )  ? (array) $hero  : array();
 $_stats = isset( $stats ) ? (array) $stats : array();
 $_title = esc_html( isset( $_h['title'] )       ? (string) $_h['title']       : '' );
 $_desc  = esc_html( isset( $_h['description'] ) ? (string) $_h['description'] : '' );
-$_icon  = esc_html( isset( $_h['bg_icon'] )     ? (string) $_h['bg_icon']     : '🤝' );
+$_icon  = adn_icon( isset( $_h['bg_icon'] )     ? (string) $_h['bg_icon']     : '🤝' );
 ?>
 <section class="expert-hero">
 	<div class="expert-hero-inner container">

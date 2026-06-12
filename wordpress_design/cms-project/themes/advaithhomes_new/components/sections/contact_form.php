@@ -25,7 +25,7 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 			<div class="enquiry-type-grid" id="enquiryTypeGrid">
 				<?php foreach ( $_types as $_et ) :
 					$_ek = esc_attr( sanitize_key( isset( $_et['key'] )   ? (string) $_et['key']   : '' ) );
-					$_ei = esc_html( isset( $_et['icon'] )  ? (string) $_et['icon']  : '' );
+					$_ei = adn_icon( isset( $_et['icon'] )  ? (string) $_et['icon']  : '' );
 					$_el = esc_html( isset( $_et['label'] ) ? (string) $_et['label'] : '' );
 				?>
 					<button type="button" class="enquiry-type-btn" data-type="<?php echo $_ek; ?>">

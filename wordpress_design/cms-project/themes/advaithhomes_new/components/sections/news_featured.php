@@ -18,7 +18,7 @@ $url = esc_url( adn_link( isset( $featured['url'] ) ? $featured['url'] : '' ) );
 ?>
 <div class="featured-article">
 	<a href="<?php echo $url; ?>" class="featured-article-img" aria-label="<?php echo esc_attr( isset( $featured['title'] ) ? $featured['title'] : '' ); ?>">
-		<div class="fa-bg-icon"><?php echo esc_html( isset( $featured['bg_icon'] ) ? $featured['bg_icon'] : '' ); ?></div>
+		<div class="fa-bg-icon"><?php echo adn_icon( isset( $featured['bg_icon'] ) ? $featured['bg_icon'] : '' ); ?></div>
 		<?php if ( ! empty( $featured['label'] ) ) : ?>
 			<div class="fa-label"><?php echo esc_html( $featured['label'] ); ?></div>
 		<?php endif; ?>

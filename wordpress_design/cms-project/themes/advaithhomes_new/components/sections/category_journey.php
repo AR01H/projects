@@ -23,7 +23,7 @@ $tip     = isset( $journey['tip'] )   ? (array) $journey['tip']   : array();
 		<?php foreach ( $steps as $step ) : ?>
 			<?php $active = ! empty( $step['active'] ) ? ' active' : ''; ?>
 			<div class="journey-step<?php echo esc_attr( $active ); ?>">
-				<div class="step-dot"><?php echo esc_html( isset( $step['icon'] ) ? $step['icon'] : '' ); ?></div>
+				<div class="step-dot"><?php echo adn_icon( isset( $step['icon'] ) ? $step['icon'] : '' ); ?></div>
 				<div class="step-num"><?php echo esc_html( isset( $step['num'] ) ? $step['num'] . '.' : '' ); ?></div>
 				<div class="step-label"><?php echo esc_html( isset( $step['label'] ) ? $step['label'] : '' ); ?></div>
 				<div class="step-desc"><?php echo esc_html( isset( $step['desc'] ) ? $step['desc'] : '' ); ?></div>
@@ -35,7 +35,7 @@ $tip     = isset( $journey['tip'] )   ? (array) $journey['tip']   : array();
 <?php if ( $tip ) : ?>
 	<div class="journey-tip">
 		<div class="journey-tip-left">
-			<span class="journey-tip-icon"><?php echo esc_html( isset( $tip['icon'] ) ? $tip['icon'] : '' ); ?></span>
+			<span class="journey-tip-icon"><?php echo adn_icon( isset( $tip['icon'] ) ? $tip['icon'] : '' ); ?></span>
 			<span class="journey-tip-text"><?php
 				echo wp_kses(
 					isset( $tip['text'] ) ? $tip['text'] : '',

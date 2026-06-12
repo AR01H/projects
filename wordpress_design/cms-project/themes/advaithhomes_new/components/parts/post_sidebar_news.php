@@ -20,7 +20,7 @@ if ( empty( $_items ) ) {
 	<h3><?php esc_html_e( 'Latest Property News', ADN_TEXT_DOMAIN ); ?></h3>
 	<ul class="sidebar-news-list" role="list">
 		<?php foreach ( $_items as $_n ) :
-			$_n_icon = esc_html( isset( $_n['icon'] )  ? (string) $_n['icon']  : '📰' );
+			$_n_icon = adn_icon( isset( $_n['icon'] )  ? (string) $_n['icon']  : '📰' );
 			$_n_ttl  = esc_html( isset( $_n['title'] ) ? (string) $_n['title'] : '' );
 			$_n_date = esc_html( isset( $_n['date'] )  ? (string) $_n['date']  : '' );
 			$_n_url  = isset( $_n['url'] ) ? esc_url( (string) $_n['url'] ) : '#';
