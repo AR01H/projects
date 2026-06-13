@@ -412,7 +412,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 					<p style="margin:0;font-size:13px;">
 						<strong><?php esc_html_e( 'Shortcode', ADN_TEXT_DOMAIN ); ?>:</strong>
 						<code>[adn_cat_calculators slug="<?php echo esc_attr( $slug ); ?>"]</code>
-						— <?php esc_html_e( 'Embeds these calculator shortcuts on any page or post.', ADN_TEXT_DOMAIN ); ?>
+						- <?php esc_html_e( 'Embeds these calculator shortcuts on any page or post.', ADN_TEXT_DOMAIN ); ?>
 					</p>
 				</div>
 			</div>

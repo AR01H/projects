@@ -34,7 +34,7 @@ function adn_route_parent_term_template( $template ) {
 		: '';
 	$path = trim( (string) parse_url( $raw_uri, PHP_URL_PATH ), '/' );
 
-	// Only match single-segment top-level paths like /buying/ — not /buying/step-2/.
+	// Only match single-segment top-level paths like /buying/ - not /buying/step-2/.
 	if ( '' === $path || false !== strpos( $path, '/' ) ) {
 		return $template;
 	}
@@ -63,10 +63,10 @@ function adn_route_parent_term_template( $template ) {
 	) );
 
 	if ( ! $row ) {
-		return $template; // No matching active term — keep 404.
+		return $template; // No matching active term - keep 404.
 	}
 
-	// Valid active parent term found — de-flag 404 and serve category guide.
+	// Valid active parent term found - de-flag 404 and serve category guide.
 	global $wp_query;
 	$wp_query->is_404  = false;
 	$wp_query->is_page = true;

@@ -7,7 +7,7 @@
  *
  * Props:
  *   $hero        array  { title, description, trust_items[] }
- *   $breadcrumb  array  [ { label, url } ] — optional; omit to hide
+ *   $breadcrumb  array  [ { label, url } ] - optional; omit to hide
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -22,7 +22,7 @@ $_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default
 
 <?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img ) ); ?>
 
-<?php /* Text content — sits above the overlay at z-index 2 */ ?>
+<?php /* Text content - sits above the overlay at z-index 2 */ ?>
 <div class="container">
 	<div class="category-hero-content">
 

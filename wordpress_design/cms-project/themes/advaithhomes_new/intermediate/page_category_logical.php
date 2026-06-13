@@ -3,7 +3,7 @@
  * intermediate/page_category_logical.php
  *
  * Intermediate logic for all category guide pages (buying, selling, house-movers…).
- * All data comes from the CMS plugin and WordPress — no JSON files.
+ * All data comes from the CMS plugin and WordPress - no JSON files.
  *
  * Data sources:
  *   hero / meta / breadcrumb  → ah_taxonomy_parent_terms (CMS plugin)
@@ -157,7 +157,7 @@ function adn_category_parent_term( $slug ) {
 
 /**
  * Build the full render context for a category guide page.
- * All data from CMS plugin and WordPress — no JSON dependency.
+ * All data from CMS plugin and WordPress - no JSON dependency.
  */
 function adn_category_get_context( $slug = '' ) {
 
@@ -283,7 +283,7 @@ function adn_category_get_context( $slug = '' ) {
 		);
 	}
 
-	// Calculators — built from selected_keys checked against the registry.
+	// Calculators - built from selected_keys checked against the registry.
 	$calculators = array();
 	if ( ! empty( $_cs_calc['selected_keys'] ) && is_array( $_cs_calc['selected_keys'] )
 		&& function_exists( 'adn_calculators' ) ) {

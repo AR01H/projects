@@ -2,7 +2,7 @@
 /**
  * components/cards/journey_card.php - Component: Journey Card
  * Props: $card { image, icon, gradient, title, description, link_label, url }
- *   image    — real photo URL (preferred); if absent falls back to gradient+icon
+ *   image    - real photo URL (preferred); if absent falls back to gradient+icon
  */
 
 defined( 'ABSPATH' ) || exit;

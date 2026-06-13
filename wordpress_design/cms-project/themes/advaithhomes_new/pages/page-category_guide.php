@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_category_logical.php';
 $ctx = adn_category_get_context();
 
-// Breadcrumb renders inside the hero banner — skip it from adn_page_open().
+// Breadcrumb renders inside the hero banner - skip it from adn_page_open().
 $_open_ctx                = $ctx;
 $_open_ctx['breadcrumb']  = array();
 adn_page_open( $_open_ctx );

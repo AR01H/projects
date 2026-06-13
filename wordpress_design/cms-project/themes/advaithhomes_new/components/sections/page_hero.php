@@ -12,10 +12,10 @@
  *     title       string   h1 text
  *     description string   paragraph
  *     trust_items array    string[]  OR  [{icon, title/label, subtitle/note}]
- *     stats       array    [{value, label}]  — merged with top-level $stats
+ *     stats       array    [{value, label}]  - merged with top-level $stats
  *   }
- *   $breadcrumb  array  [ { label, url } ]  — optional
- *   $stats       array  [ { value, label } ] — alternative way to pass stats
+ *   $breadcrumb  array  [ { label, url } ]  - optional
+ *   $stats       array  [ { value, label } ] - alternative way to pass stats
  *
  * Usage:
  *   adn_component( 'sections/page_hero', array(

@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_calculators_logical.php';
 $ctx = adn_calculators_get_context();
 
-// Breadcrumb renders inside the hero banner — suppress from adn_page_open.
+// Breadcrumb renders inside the hero banner - suppress from adn_page_open.
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );

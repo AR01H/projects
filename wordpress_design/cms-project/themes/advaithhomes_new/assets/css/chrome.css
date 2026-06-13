@@ -344,7 +344,7 @@
 }
 .mobile-menu-cta--top .btn { width: 100%; font-size: 1rem; padding: 14px; border-radius: 12px; }
 
-/* Nav items — card-row style */
+/* Nav items - card-row style */
 .mobile-nav-link,
 .mobile-nav-toggle {
     display: flex;
@@ -424,7 +424,7 @@
 .mobile-subnav-all { font-weight: 700; color: var(--color-primary, #1d4ed8); }
 .mobile-subnav-all::before { color: var(--color-primary, #1d4ed8); }
 
-/* Bottom CTA — hidden (top CTA is sufficient) */
+/* Bottom CTA - hidden (top CTA is sufficient) */
 .mobile-menu-cta { display: none; }
 
 /* ============================================================

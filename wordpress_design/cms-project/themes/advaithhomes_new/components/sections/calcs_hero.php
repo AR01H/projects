@@ -7,7 +7,7 @@
  *
  * Props:
  *   $hero        array  { title, description }
- *   $breadcrumb  array  [ { label, url } ] — optional
+ *   $breadcrumb  array  [ { label, url } ] - optional
  */
 
 defined( 'ABSPATH' ) || exit;
