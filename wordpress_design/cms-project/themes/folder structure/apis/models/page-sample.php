@@ -1,6 +1,6 @@
 <?php
 /**
- * apis/models/page-sample.php — API Model: Data Shape & Formatter
+ * apis/models/page-sample.php - API Model: Data Shape & Formatter
  *
  * RULE: Models transform raw WP data into clean API-ready arrays.
  *       They do NOT run queries or register hooks.
@@ -17,7 +17,7 @@
  *     NPT_META_ALT_SLUG   → npt_alternate_slug  (alternate slug / path alias)
  *     NPT_META_CANONICAL  → npt_canonical_url   (SEO canonical override)
  *
- *   Use npt_model_urls() to build the full URL block — call it from every model.
+ *   Use npt_model_urls() to build the full URL block - call it from every model.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -155,7 +155,7 @@ function npt_model_terms( int $post_id, string $taxonomy ): array {
  */
 function npt_maybe_redirect( array $model, string $context = 'template', int $status = 301 ) {
     if ( empty( $model['urls']['has_redirect'] ) ) {
-        return; // no redirect — continue normally
+        return; // no redirect - continue normally
     }
 
     $destination = $model['urls']['redirect_url'];

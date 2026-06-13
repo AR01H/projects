@@ -1,5 +1,5 @@
 /* ============================================================
-   calculators.css — styles for the standalone (iframe) calculators.
+   calculators.css - styles for the standalone (iframe) calculators.
 
    This file is loaded ONLY inside the calculator iframe document, so it is
    fully self-contained: it defines its own :root tokens and reset. Nothing

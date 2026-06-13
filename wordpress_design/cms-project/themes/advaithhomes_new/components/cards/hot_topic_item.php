@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/hot_topic_item.php — Component: Hot Topic List Item
+ * components/cards/hot_topic_item.php - Component: Hot Topic List Item
  * Props: $item { icon, text, url }
  */
 

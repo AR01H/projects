@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_market_snapshot.php — Market key/value stats with change badges.
+ * components/parts/sidebar_market_snapshot.php - Market key/value stats with change badges.
  *
  * Props: $market_snapshot { heading, items[] { label, value, change, change_class }, updated }
  * change_class values: msi-up | msi-down | msi-flat

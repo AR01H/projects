@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_expert_help.php — Sidebar: Expert Help panel.
+ * components/parts/sidebar_expert_help.php - Sidebar: Expert Help panel.
  *
  * Props: $expert_help { heading, subtitle, experts[], cta { label, url } }
  * Usage: adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) );

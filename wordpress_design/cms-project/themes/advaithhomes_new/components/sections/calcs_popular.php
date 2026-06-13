@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/calcs_popular.php — Popular calculators 4-col grid.
+ * components/sections/calcs_popular.php - Popular calculators 4-col grid.
  *
  * Props: $popular_calcs[] { icon, title, desc, url }
  * Usage: adn_component( 'sections/calcs_popular', array( 'popular_calcs' => $ctx['popular_calcs'] ) );

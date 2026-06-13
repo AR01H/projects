@@ -1,6 +1,6 @@
 <?php
 /**
- * admin/tabs/admin-actions/sub-sample-data.php — seed sample Guide content.
+ * admin/tabs/admin-actions/sub-sample-data.php - seed sample Guide content.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ $cms_ready = function_exists( 'adn_cms_available' ) && adn_cms_available();
 		<?php esc_html_e( 'Creates a starter Guide structure in the CMS plugin so the home page shows real data: the type "Guide" → parent terms Buying / Selling / House Movers (the "Where are you in your journey?" cards) → topics → a few articles, plus some news posts.', ADN_TEXT_DOMAIN ); ?>
 	</p>
 	<p class="description">
-		<?php esc_html_e( 'Safe to run more than once — existing items (matched by slug) are left untouched, never duplicated. You can edit or delete everything afterwards in the CMS plugin (Taxonomies / Posts).', ADN_TEXT_DOMAIN ); ?>
+		<?php esc_html_e( 'Safe to run more than once - existing items (matched by slug) are left untouched, never duplicated. You can edit or delete everything afterwards in the CMS plugin (Taxonomies / Posts).', ADN_TEXT_DOMAIN ); ?>
 	</p>
 
 	<?php if ( ! $cms_ready ) : ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * admin/settings-schemas.php — declarative field schemas for the theme's
+ * admin/settings-schemas.php - declarative field schemas for the theme's
  * settings tabs. ONE schema drives both the rendered form and the save handler,
  * so adding a settings tab means adding a schema here + a 3-line view file.
  *
@@ -59,7 +59,7 @@ function adn_settings_schemas() {
 
 		'calculators_general' => array(
 			'option' => 'adn_calculators_general',
-			'title'  => __( 'Calculators — Heading & Banner', ADN_TEXT_DOMAIN ),
+			'title'  => __( 'Calculators - Heading & Banner', ADN_TEXT_DOMAIN ),
 			'intro'  => __( 'The heading, banner image and intro shown on the calculators page.', ADN_TEXT_DOMAIN ),
 			'fields' => array(
 				array( 'key' => 'main_heading', 'type' => 'text', 'label' => __( 'Main heading', ADN_TEXT_DOMAIN ) ),

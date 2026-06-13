@@ -31,7 +31,7 @@ function adn_enqueue_common_css() {
     foreach ( $styles as $handle => $file ) {
         wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), ADN_THEME_VERSION );
     }
-    // Font Awesome 6 (free) — powers adn_icon() across the theme.
+    // Font Awesome 6 (free) - powers adn_icon() across the theme.
     wp_enqueue_style( 'adn-fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css', array(), '6.5.2' );
 }
 function adn_enqueue_common_js() {

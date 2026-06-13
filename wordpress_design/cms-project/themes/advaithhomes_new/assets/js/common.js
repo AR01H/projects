@@ -1,5 +1,5 @@
 /* ============================================================
-   common.js — Site chrome behaviour (loaded site-wide).
+   common.js - Site chrome behaviour (loaded site-wide).
 
    Powers the header/navigation/search and footer parts:
      • Mobile menu open/close (+ body scroll lock)
@@ -258,7 +258,7 @@
                     }).filter(function (it) { return it.title; });
                     render(list);
                 })
-                .catch(function () { /* aborted or network error — ignore */ });
+                .catch(function () { /* aborted or network error - ignore */ });
         }
 
         input.addEventListener('input', function () {

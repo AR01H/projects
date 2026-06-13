@@ -1,6 +1,6 @@
 <?php
 /**
- * includes/core_terms.php — CPT & Taxonomy Registration
+ * includes/core_terms.php - CPT & Taxonomy Registration
  *
  * RULE: Loop over $cfg['cpt'] and $cfg['taxonomies'].
  *       Never register a CPT/taxonomy with raw repetitive code.

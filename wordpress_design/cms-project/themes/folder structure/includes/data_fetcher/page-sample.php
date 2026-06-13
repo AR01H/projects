@@ -1,9 +1,9 @@
 <?php
 /**
- * includes/data_fetcher/page-sample.php — Data Fetcher Layer Sample
+ * includes/data_fetcher/page-sample.php - Data Fetcher Layer Sample
  *
  * PURPOSE: All WP_Query / get_posts calls live here.
- *          Returns clean, typed arrays — NOT WP_Post objects.
+ *          Returns clean, typed arrays - NOT WP_Post objects.
  *          Components and page templates call these functions.
  *
  * RULE: No HTML output. No hooks. Only data retrieval + formatting.

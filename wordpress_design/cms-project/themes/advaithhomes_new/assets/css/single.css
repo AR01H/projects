@@ -1,5 +1,5 @@
 /* ============================================================
-   single.css — WordPress single post / article styles
+   single.css - WordPress single post / article styles
    Loaded only on is_single() pages via explode_function.php.
    Global utilities (btn, container, breadcrumb, etc.) stay in
    components.css / common.css.
@@ -32,7 +32,7 @@
     min-width: 0;
 }
 
-/* ── Article Header — 1fr / 1fr split ──────────────────────── */
+/* ── Article Header - 1fr / 1fr split ──────────────────────── */
 .article-header-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -40,7 +40,7 @@
     min-height: 400px;
 }
 
-/* Left column — content + decorative circles behind + right-edge fade */
+/* Left column - content + decorative circles behind + right-edge fade */
 .article-header-left {
     position: relative;
     overflow: hidden;
@@ -50,7 +50,7 @@
     justify-content: center;
 }
 
-/* Right-edge gradient fade — blends left column into the image */
+/* Right-edge gradient fade - blends left column into the image */
 .article-header-left::after {
     content: '';
     position: absolute;
@@ -157,7 +157,7 @@
     color: var(--color-primary, #1d4ed8);
 }
 
-/* Right column — image fills the full 1fr, no border-radius, grows with viewport */
+/* Right column - image fills the full 1fr, no border-radius, grows with viewport */
 .article-header-img {
     position: relative;
     min-height: 400px;

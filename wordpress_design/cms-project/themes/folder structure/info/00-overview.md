@@ -1,4 +1,4 @@
-# Theme Architecture — Master Overview
+# Theme Architecture - Master Overview
 
 ## Purpose
 
@@ -11,14 +11,14 @@ Every concern is isolated in its own folder. To start a new project you copy the
 
 | # | Rule |
 |---|------|
-| 1 | `function.php` **only loads files** — zero logic |
+| 1 | `function.php` **only loads files** - zero logic |
 | 2 | **All config** lives in `includes/core_settings.php` as arrays |
 | 3 | **All constants** live in `static/page-sample.php` with `NPT_` prefix |
-| 4 | **Hooks/filters** are registered in loops — never repeated manually |
-| 5 | **Models** shape data — they never query or output HTML |
-| 6 | **Components** output HTML — they never query or register hooks |
-| 7 | **Page templates** fetch → redirect-check → render — nothing else |
-| 8 | **Middleware** only inspects the request — no data, no HTML |
+| 4 | **Hooks/filters** are registered in loops - never repeated manually |
+| 5 | **Models** shape data - they never query or output HTML |
+| 6 | **Components** output HTML - they never query or register hooks |
+| 7 | **Page templates** fetch → redirect-check → render - nothing else |
+| 8 | **Middleware** only inspects the request - no data, no HTML |
 
 ---
 
@@ -67,7 +67,7 @@ theme-root/
 │   └── common_functions.php
 │
 ├── languages/              ← .po / .mo translation files
-└── info/                   ← YOU ARE HERE — documentation
+└── info/                   ← YOU ARE HERE - documentation
 ```
 
 ---
@@ -144,10 +144,10 @@ Browser → /wp-json/npt/v1/posts
 
 | File | Covers |
 |------|--------|
-| `00-overview.md` | This file — big picture |
+| `00-overview.md` | This file - big picture |
 | `01-bootstrap.md` | How `function.php` loads the theme |
-| `02-config.md` | `core_settings.php` — config array reference |
-| `03-constants.md` | `static/page-sample.php` — all `NPT_*` constants |
+| `02-config.md` | `core_settings.php` - config array reference |
+| `03-constants.md` | `static/page-sample.php` - all `NPT_*` constants |
 | `04-setup.md` | Theme supports, menus, sidebars, CPTs, taxonomies |
 | `05-data-flow.md` | Fetcher → Model → Component → Template pipeline |
 | `06-api.md` | REST routes, alternate slugs, redirect handling |

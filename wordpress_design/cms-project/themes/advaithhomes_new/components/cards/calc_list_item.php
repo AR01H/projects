@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/calc_list_item.php — Calculator list row (icon, title, desc, arrow).
+ * components/cards/calc_list_item.php - Calculator list row (icon, title, desc, arrow).
  *
  * Props: $item { icon, categories[], title, desc, url }
  * categories[] values are joined into a space-separated data-category attribute

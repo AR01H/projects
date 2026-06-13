@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/guides_grid.php — Toolbar + grid of guide cards + pagination + download CTA.
+ * components/sections/guides_grid.php - Toolbar + grid of guide cards + pagination + download CTA.
  *
  * Props:
  *   $guides { search_placeholder, sort_options[], items[], pagination { current, total }, download_cta { icon, title, description, button_label, button_url } }

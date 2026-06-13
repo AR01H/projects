@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/guides_sidebar_filter.php — Left sidebar for guides listing.
+ * components/parts/guides_sidebar_filter.php - Left sidebar for guides listing.
  *
  * Props: $sidebar { browse_cats[], level_filters[], format_filters[], help_cta{title,text,button_label,button_url} }
  * Usage: adn_component( 'parts/guides_sidebar_filter', array( 'sidebar' => $ctx['sidebar'] ) );

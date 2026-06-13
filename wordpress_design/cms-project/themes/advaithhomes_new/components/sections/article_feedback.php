@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/article_feedback.php — Article feedback row + share buttons.
+ * components/sections/article_feedback.php - Article feedback row + share buttons.
  *
  * Props: $feedback { question, yes_label, no_label, share_label }
  * Usage: adn_component( 'sections/article_feedback', array( 'feedback' => $ctx['feedback'] ) );

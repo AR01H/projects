@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_newsletter_signup.php — Compact newsletter signup in sidebar.
+ * components/parts/sidebar_newsletter_signup.php - Compact newsletter signup in sidebar.
  *
  * Props: $newsletter { heading, description, placeholder, button_label, note }
  * Form is presentational until the REST route is wired.

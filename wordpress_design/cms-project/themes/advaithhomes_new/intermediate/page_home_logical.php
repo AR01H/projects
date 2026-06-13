@@ -1,6 +1,6 @@
 <?php
 /**
- * intermediate/page_home_logical.php — Home page container logic.
+ * intermediate/page_home_logical.php - Home page container logic.
  *
  * RULE: This layer fetches via the services (apis/services.php +
  *       apis/services_cms.php), applies defaults so the template never crashes
@@ -59,7 +59,7 @@ function adn_home_get_context() {
 		}
 
 		$guide_items = adn_home_cms_guide_items();
-		$ctx['guides']['items'] = $guide_items; // DB only; empty array when no data — no JSON fallback
+		$ctx['guides']['items'] = $guide_items; // DB only; empty array when no data - no JSON fallback
 
 		$ctx['news']['items'] = adn_home_cms_news_items(); // DB only; empty array when no news data
 	}
@@ -116,7 +116,7 @@ function adn_home_apply_hero_overrides( $hero, $opt ) {
 
 /**
  * Map CMS Guide parent terms → journey-card props
- * { icon, gradient, title, description, link_label, url }.
+ * { image, icon, gradient, title, description, link_label, url }.
  */
 function adn_home_cms_journey_cards() {
 	$cards = array();
@@ -125,7 +125,12 @@ function adn_home_cms_journey_cards() {
 		if ( '' === $name ) {
 			continue;
 		}
+		// Use the term's uploaded image when available; else card falls back to gradient+icon.
+		$image_id  = ! empty( $term->image_id ) ? (int) $term->image_id : 0;
+		$image_url = $image_id ? ( wp_get_attachment_image_url( $image_id, 'medium' ) ?: '' ) : '';
+
 		$cards[] = array(
+			'image'       => $image_url,
 			'icon'        => ! empty( $term->icon_emoji ) ? $term->icon_emoji : '🏡',
 			'gradient'    => adn_cms_gradient( $i ),
 			'title'       => $name,
@@ -139,7 +144,7 @@ function adn_home_cms_journey_cards() {
 
 /**
  * One guide card per Guide parent term (Buying / Selling / House Movers).
- * DB only — no JSON fallback; returns empty array when no data.
+ * DB only - no JSON fallback; returns empty array when no data.
  */
 function adn_home_cms_guide_items() {
 	$items = array();
@@ -164,7 +169,7 @@ function adn_home_cms_guide_items() {
 
 /**
  * News items for home "Latest Property News".
- * Primary: plugin News Bar (ah_news_bar_items — active, date-filtered).
+ * Primary: plugin News Bar (ah_news_bar_items - active, date-filtered).
  * Fallback: 4 most recent WP posts via WP_Query (so any post created shows here).
  */
 function adn_home_cms_news_items() {
@@ -188,7 +193,7 @@ function adn_home_cms_news_items() {
 		}
 	}
 
-	// Source 2: WP_Query fallback — plain WP posts, no taxonomy required
+	// Source 2: WP_Query fallback - plain WP posts, no taxonomy required
 	if ( empty( $items ) ) {
 		$q = new WP_Query( array(
 			'post_type'      => 'post',

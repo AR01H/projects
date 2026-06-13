@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/cta_banner.php — Full-width personalised guidance CTA banner.
+ * components/parts/cta_banner.php - Full-width personalised guidance CTA banner.
  *
  * Props: $cta_banner { icon, title, description, cta { label, url }, trust_items[] }
  * Usage: adn_component( 'parts/cta_banner', array( 'cta_banner' => $ctx['cta_banner'] ) );

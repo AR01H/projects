@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/article_author.php — Author box + last updated + disclaimer.
+ * components/sections/article_author.php - Author box + last updated + disclaimer.
  *
  * Props: $author { avatar, written_by, name, role, last_updated, disclaimer }
  * Usage: adn_component( 'sections/article_author', array( 'author' => $ctx['author'] ) );

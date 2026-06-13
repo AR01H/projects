@@ -2,8 +2,8 @@
 /**
  * components/sections/post_header.php
  *
- * Article hero: 1fr/1fr split — left content + decorative circles/fade,
- * right full-bleed image. No container wrapper — the parent .article-hero-wrap
+ * Article hero: 1fr/1fr split - left content + decorative circles/fade,
+ * right full-bleed image. No container wrapper - the parent .article-hero-wrap
  * spans the full viewport width so the image grows to the right edge.
  *
  * Props (via extract):
@@ -29,7 +29,7 @@ $_img     = isset( $_article['image_url'] )    ? esc_url( $_article['image_url']
 ?>
 <div class="article-header-section">
 
-	<?php /* Left column — decorative circles behind content, right-edge fade */ ?>
+	<?php /* Left column - decorative circles behind content, right-edge fade */ ?>
 	<div class="article-header-left">
 
 		<?php /* Decorative circle blobs (behind content via z-index) */ ?>
@@ -37,7 +37,7 @@ $_img     = isset( $_article['image_url'] )    ? esc_url( $_article['image_url']
 		<span class="ahero-circle ahero-circle--b" aria-hidden="true"></span>
 		<span class="ahero-circle ahero-circle--c" aria-hidden="true"></span>
 
-		<?php /* Actual content — z-index above circles */ ?>
+		<?php /* Actual content - z-index above circles */ ?>
 		<div class="article-header-body">
 
 			<?php if ( '' !== $_cat_tag ) : ?>
@@ -66,7 +66,7 @@ $_img     = isset( $_article['image_url'] )    ? esc_url( $_article['image_url']
 
 	</div>
 
-	<?php /* Right column — image grows with 1fr to fill the right half of viewport */ ?>
+	<?php /* Right column - image grows with 1fr to fill the right half of viewport */ ?>
 	<?php if ( '' !== $_img ) : ?>
 		<div class="article-header-img">
 			<img src="<?php echo $_img; ?>" alt="" loading="eager" />

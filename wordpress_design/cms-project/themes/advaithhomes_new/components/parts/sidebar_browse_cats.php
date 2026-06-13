@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_browse_cats.php — Browse by Category link list.
+ * components/parts/sidebar_browse_cats.php - Browse by Category link list.
  *
  * Mirrors the top category tabs. JS syncs both when a category is selected.
  *

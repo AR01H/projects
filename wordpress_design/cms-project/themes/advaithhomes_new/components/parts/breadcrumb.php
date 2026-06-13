@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/breadcrumb.php — Breadcrumb navigation trail.
+ * components/parts/breadcrumb.php - Breadcrumb navigation trail.
  *
  * Props: $items  array of { label, url }  (last item has url = null)
  * Usage: adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) );

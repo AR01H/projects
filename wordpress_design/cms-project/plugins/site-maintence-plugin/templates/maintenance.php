@@ -209,7 +209,7 @@ if ( ! empty( $custom_html ) ) {
 			echo esc_html(
 				apply_filters(
 					'smm_maintenance_message',
-					__( 'We\'re performing scheduled maintenance. The site will be back online shortly — thank you for your patience.', 'site-mode-manager' )
+					__( 'We\'re performing scheduled maintenance. The site will be back online shortly - thank you for your patience.', 'site-mode-manager' )
 				)
 			);
 			?>

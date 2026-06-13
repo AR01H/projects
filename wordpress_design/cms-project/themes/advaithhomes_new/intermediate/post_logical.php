@@ -9,12 +9,12 @@
  * and merges in static sidebar data from data/json/post_sidebar.json.
  *
  * Post meta keys this function reads:
- *   _adn_article_icon      (string)  — emoji displayed in the article header
- *   _adn_read_time         (string)  — e.g. "12 min read"
- *   _adn_key_takeaways     (string)  — JSON-encoded array of strings
- *   _adn_category_tag      (string)  — override display category name
+ *   _adn_article_icon      (string)  - emoji displayed in the article header
+ *   _adn_read_time         (string)  - e.g. "12 min read"
+ *   _adn_key_takeaways     (string)  - JSON-encoded array of strings
+ *   _adn_category_tag      (string)  - override display category name
  *
- * RULE: No markup here — only data shaping.
+ * RULE: No markup here - only data shaping.
  * RULE: Caller is single.php; the_post() must already have been called.
  */
 
@@ -63,7 +63,7 @@ function adn_post_get_context() {
 		$author_name = defined( 'COMPANY_NAME' ) ? COMPANY_NAME . ' Team' : 'Property Experts';
 	}
 
-	/* ── Related guides — same category, latest 4, excludes current ── */
+	/* ── Related guides - same category, latest 4, excludes current ── */
 	$related_guides = array();
 	$rq_args        = array(
 		'post_type'      => 'post',
@@ -89,7 +89,7 @@ function adn_post_get_context() {
 		wp_reset_postdata();
 	}
 
-	/* ── Latest news — most recent 3 posts ── */
+	/* ── Latest news - most recent 3 posts ── */
 	$latest_news = array();
 	$nq          = new WP_Query( array(
 		'post_type'      => 'post',
@@ -111,7 +111,7 @@ function adn_post_get_context() {
 		wp_reset_postdata();
 	}
 
-	/* ── Hero image — featured image or theme default ── */
+	/* ── Hero image - featured image or theme default ── */
 	$thumbnail_url = get_the_post_thumbnail_url( null, 'large' );
 	$default_img   = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
 	$hero_image    = $thumbnail_url ?: $default_img;

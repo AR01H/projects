@@ -2,7 +2,7 @@
 /**
  * components/sections/post_key_takeaways.php
  *
- * Key takeaways box — rendered only when the post has takeaway points stored
+ * Key takeaways box - rendered only when the post has takeaway points stored
  * in post meta _adn_key_takeaways (JSON array of strings).
  *
  * Props (via extract):

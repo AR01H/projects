@@ -1,8 +1,8 @@
 <?php
 /**
- * components/parts/sidebar_news_search.php — Sidebar search box.
+ * components/parts/sidebar_news_search.php - Sidebar search box.
  *
- * No props required — renders a static search input.
+ * No props required - renders a static search input.
  * JS (news.js) hooks into #newsSearchInput for live filtering.
  * Usage: adn_component( 'parts/sidebar_news_search' );
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/article_header.php — Article header with category tag, title, meta.
+ * components/sections/article_header.php - Article header with category tag, title, meta.
  *
  * Props: $article { category_tag, title, intro, image_icon, image_gradient,
  *                   meta { date, read_time, save_label } }

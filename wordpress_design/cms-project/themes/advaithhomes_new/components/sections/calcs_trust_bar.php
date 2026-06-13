@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/calcs_trust_bar.php — Trust bar strip below hero.
+ * components/sections/calcs_trust_bar.php - Trust bar strip below hero.
  *
  * Props: $trust_items[] { icon, title, subtitle }
  * Usage: adn_component( 'sections/calcs_trust_bar', array( 'trust_items' => $ctx['trust_items'] ) );

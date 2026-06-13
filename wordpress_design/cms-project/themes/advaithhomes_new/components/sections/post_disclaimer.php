@@ -2,7 +2,7 @@
 /**
  * components/sections/post_disclaimer.php
  *
- * Article disclaimer — static informational notice.
+ * Article disclaimer - static informational notice.
  * No props needed.
  */
 

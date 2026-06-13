@@ -6,7 +6,7 @@
  * Reads the current page slug, loads data/json/guide-{slug}.json via the
  * service layer, applies defaults and returns a single $ctx array.
  *
- * RULE: No markup here — only data shaping.
+ * RULE: No markup here - only data shaping.
  * RULE: Caller is pages/page-topic_category_guide.php.
  *
  * Usage:

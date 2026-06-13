@@ -1,10 +1,10 @@
 /* ============================================================
-   chrome.css — Site chrome: layout primitives, buttons, and the
+   chrome.css - Site chrome: layout primitives, buttons, and the
    header / navigation / search / footer that wrap every page.
 
    Loaded site-wide via adn_enqueue_common_css().
 
-   NOTE: This file defines NO :root color palette on purpose — it
+   NOTE: This file defines NO :root color palette on purpose - it
    uses the same `var(--token, #fallback)` pattern as the page
    stylesheets so it inherits whatever palette the site already
    uses and never recolors existing pages.
@@ -299,28 +299,30 @@
     display: none;
     position: fixed;
     top: 60px; left: 0; right: 0; bottom: 0;
-    background: var(--color-white, #fff);
+    background: #fff;
     z-index: 999;
     overflow-y: auto;
-    padding: 20px;
+    padding: 20px 20px 40px;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 1px solid var(--color-border, #e5e7eb);
 }
 .mobile-menu-overlay.open { display: block; transform: translateX(0); }
 
+/* Search */
 .mobile-search-form {
     display: flex;
     gap: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
 }
 .mobile-search-input {
     flex: 1;
     border: 1px solid var(--color-border, #e5e7eb);
-    border-radius: var(--radius-sm, 8px);
-    padding: 11px 14px;
-    font-size: 0.95rem;
+    border-radius: 24px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
     background: var(--color-bg, #f9fafb);
 }
 .mobile-search-input:focus { outline: none; border-color: var(--color-primary, #1d4ed8); background: #fff; }
@@ -328,52 +330,102 @@
     background: var(--color-primary, #1d4ed8);
     color: #fff;
     border: none;
-    border-radius: var(--radius-sm, 8px);
+    border-radius: 24px;
     padding: 0 16px;
     font-size: 1rem;
+    cursor: pointer;
 }
 
-.mobile-nav-link {
-    display: block;
-    padding: 14px 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-text, #374151);
-    border-bottom: 1px solid var(--color-border, #e5e7eb);
+/* Top CTA */
+.mobile-menu-cta--top {
+    padding: 0 0 16px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--color-border, #e5e7eb);
 }
-.mobile-nav-link:hover { color: var(--color-primary, #1d4ed8); }
+.mobile-menu-cta--top .btn { width: 100%; font-size: 1rem; padding: 14px; border-radius: 12px; }
 
-.mobile-nav-group { border-bottom: 1px solid var(--color-border, #e5e7eb); }
+/* Nav items — card-row style */
+.mobile-nav-link,
 .mobile-nav-toggle {
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-text, #374151);
-    background: none;
-    border: none;
+    width: 100%;
+    padding: 9px 14px !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-dark, #1a2332);
+    background: var(--color-bg, #f8f9fa);
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: 12px;
+    margin-bottom: 4px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
 }
-.mobile-nav-toggle:hover { color: var(--color-primary, #1d4ed8); }
-.mobile-nav-caret { font-size: 0.7rem; transition: transform 0.2s ease; }
+.mobile-nav-link:hover,
+.mobile-nav-toggle:hover {
+    background: #fff;
+    border-color: var(--color-primary, #1d4ed8);
+    color: var(--color-primary, #1d4ed8);
+}
+.mobile-nav-caret {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--color-border, #e5e7eb);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+    transition: transform 0.22s ease;
+    font-size: 0;
+}
 .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-caret { transform: rotate(180deg); }
-.mobile-nav-toggle[aria-expanded="true"] { color: var(--color-primary, #1d4ed8); }
+.mobile-nav-toggle[aria-expanded="true"] { background: #fff; border-color: var(--color-primary, #1d4ed8); color: var(--color-primary, #1d4ed8); border-radius: 12px 12px 0 0; margin-bottom: 0; }
 
-.mobile-submenu { padding: 4px 0 12px 12px; }
+/* Nav group wrapper */
+.mobile-nav-group {
+    margin-bottom: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--color-border, #e5e7eb);
+}
+.mobile-nav-group .mobile-nav-toggle {
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+.mobile-nav-group .mobile-nav-toggle[aria-expanded="true"] {
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+/* Submenu */
+.mobile-submenu {
+    padding: 8px 16px 12px;
+    background: #fff;
+}
 .mobile-submenu[hidden] { display: none; }
 .mobile-subnav-link {
-    display: block;
-    padding: 9px 0;
-    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
     color: var(--color-text-muted, #6b7280);
+    border-radius: 8px;
+    transition: background 0.12s, color 0.12s;
 }
-.mobile-subnav-link:hover { color: var(--color-primary, #1d4ed8); }
-.mobile-subnav-all { font-weight: 600; color: var(--color-primary, #1d4ed8); }
+.mobile-subnav-link::before { content: '→'; font-size: 0.75rem; color: var(--color-border, #d1d5db); }
+.mobile-subnav-link:hover { background: var(--color-bg, #f8f9fa); color: var(--color-primary, #1d4ed8); }
+.mobile-subnav-all { font-weight: 700; color: var(--color-primary, #1d4ed8); }
+.mobile-subnav-all::before { color: var(--color-primary, #1d4ed8); }
 
-.mobile-menu-cta { padding-top: 20px; }
-.mobile-menu-cta .btn { width: 100%; }
+/* Bottom CTA — hidden (top CTA is sufficient) */
+.mobile-menu-cta { display: none; }
 
 /* ============================================================
    FOOTER
@@ -447,8 +499,12 @@
     .main-nav { display: none; }
     .mobile-menu-btn { display: flex; }
     .header-inner { height: 60px; }
-    .header-cta { display: none; }
+    .header-cta { display: none !important; }
+    .logo img { max-width: 140px; width: 140px; }
     .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+    .logo img { max-width: 120px; width: 120px; }
 }
 @media (max-width: 560px) {
     .footer-top { grid-template-columns: 1fr; }

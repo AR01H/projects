@@ -1,60 +1,36 @@
 /* ============================================================
-   calculators.css — Calculators page styles
+   calculators.css - Calculators page styles
    Specific to pages/page-calculator.php.
    Global utilities (btn, container, breadcrumb, etc.) stay in
    components.css / common.css.
    ============================================================ */
 
-/* ── Hero ──────────────────────────────────────────────────── */
+/* ── Hero (full-bleed banner, same pattern as category_hero) ── */
 .calcs-hero {
-    background: var(--color-bg, #f9fafb);
-    padding: 48px 0 0;
-    border-bottom: 1px solid var(--color-border, #e5e7eb);
+    position: relative;
     overflow: hidden;
+    min-height: 320px;
 }
 
-.calcs-hero-inner {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 40px;
-    align-items: flex-end;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
-.calcs-hero-text {
-    padding-bottom: 40px;
+.calcs-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 520px;
+    padding: 72px 0;
 }
 
 .calcs-hero h1 {
-    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-size: clamp(1.9rem, 3.5vw, 2.8rem);
     margin-bottom: 12px;
+    color: var(--color-text, #1a2332);
 }
 
 .calcs-hero p {
     font-size: 1.05rem;
     max-width: 480px;
-    color: var(--color-text, #374151);
+    color: var(--color-text-muted, #374151);
     line-height: 1.65;
-}
-
-.calcs-hero-img {
-    width: 100%;
-    max-width: 400px;
-    min-height: 260px;
-    border-radius: var(--radius-lg, 16px) var(--radius-lg, 16px) 0 0;
-    overflow: hidden;
-    align-self: flex-end;
-}
-
-.calcs-hero-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    min-height: 260px;
+    margin-bottom: 0;
 }
 
 /* ── Trust Bar ──────────────────────────────────────────────── */
@@ -499,15 +475,8 @@
 }
 
 @media (max-width: 768px) {
-    .calcs-hero-inner {
-        grid-template-columns: 1fr;
-    }
-
-    .calcs-hero-img {
-        min-height: 200px;
-        border-radius: var(--radius-lg, 16px);
-    }
-    .calcs-hero-img img { min-height: 200px; }
+    .calcs-hero { min-height: 260px; }
+    .calcs-hero-content { padding: 48px 0; max-width: 100%; }
 
     .calcs-trust-inner {
         gap: 16px;

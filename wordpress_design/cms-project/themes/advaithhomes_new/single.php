@@ -1,6 +1,6 @@
 <?php
 /**
- * single.php — WordPress single post template.
+ * single.php - WordPress single post template.
  *
  * Renders any standard WordPress post.
  * Content (title, body, date, author, excerpt) comes from the WP post system.
@@ -16,9 +16,9 @@
  *   _adn_category_tag      string   display category name override
  *
  * Assets: single.css + single.js are auto-enqueued via explode_function.php
- * when is_single() is true — no Template Name comment needed here.
+ * when is_single() is true - no Template Name comment needed here.
  *
- * RULE: No hardcoded content or data reads here — only structure.
+ * RULE: No hardcoded content or data reads here - only structure.
  * RULE: Header/footer come from header.php / footer.php via get_header() / get_footer().
  */
 
@@ -61,7 +61,7 @@ get_header();
 			<?php /* Key takeaways box (renders nothing when empty) */ ?>
 			<?php adn_component( 'sections/post_key_takeaways', array( 'key_takeaways' => $ctx['key_takeaways'] ) ); ?>
 
-			<?php /* WordPress post content — blocks / classic editor HTML */ ?>
+			<?php /* WordPress post content - blocks / classic editor HTML */ ?>
 			<div class="article-body">
 				<?php the_content(); ?>
 			</div>
@@ -80,7 +80,7 @@ get_header();
 		<?php /* ── SIDEBAR ── */ ?>
 		<aside class="article-sidebar" aria-label="<?php esc_attr_e( 'Article sidebar', ADN_TEXT_DOMAIN ); ?>">
 
-			<?php /* TOC — single.js auto-generates links from .article-body h2 headings */ ?>
+			<?php /* TOC - single.js auto-generates links from .article-body h2 headings */ ?>
 			<?php adn_component( 'parts/post_sidebar_toc' ); ?>
 
 			<?php /* Popular calculators (from post_sidebar.json) */ ?>
@@ -88,12 +88,12 @@ get_header();
 				<?php adn_component( 'parts/post_sidebar_calcs', array( 'calculators' => $ctx['sidebar']['calculators'] ) ); ?>
 			<?php endif; ?>
 
-			<?php /* Related guides (from WP_Query — same category, latest 4) */ ?>
+			<?php /* Related guides (from WP_Query - same category, latest 4) */ ?>
 			<?php if ( ! empty( $ctx['related_guides'] ) ) : ?>
 				<?php adn_component( 'parts/post_sidebar_related', array( 'related_guides' => $ctx['related_guides'] ) ); ?>
 			<?php endif; ?>
 
-			<?php /* Latest news (from WP_Query — most recent 3 posts) */ ?>
+			<?php /* Latest news (from WP_Query - most recent 3 posts) */ ?>
 			<?php if ( ! empty( $ctx['latest_news'] ) ) : ?>
 				<?php adn_component( 'parts/post_sidebar_news', array( 'latest_news' => $ctx['latest_news'] ) ); ?>
 			<?php endif; ?>

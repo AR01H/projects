@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_toc.php — Sidebar sticky table of contents.
+ * components/parts/sidebar_toc.php - Sidebar sticky table of contents.
  *
  * Props: $toc { sidebar_title, items[] { num, label, target } }
  *   target maps to an id="" anchor in the article body for scroll-spy.

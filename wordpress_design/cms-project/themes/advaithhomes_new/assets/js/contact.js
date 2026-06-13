@@ -1,5 +1,5 @@
 /**
- * contact.js — Contact page interactions.
+ * contact.js - Contact page interactions.
  * - Enquiry type button grid: single-select toggle
  * - Syncs hidden input value with selected type
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_hot_topics.php — Sidebar: Hot Topics list.
+ * components/parts/sidebar_hot_topics.php - Sidebar: Hot Topics list.
  *
  * Props: $hot_topics { heading, items[], view_all { label, url } }
  * Usage: adn_component( 'parts/sidebar_hot_topics', array( 'hot_topics' => $ctx['sidebar']['hot_topics'] ) );

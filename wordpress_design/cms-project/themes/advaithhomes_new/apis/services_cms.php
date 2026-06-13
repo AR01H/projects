@@ -1,6 +1,6 @@
 <?php
 /**
- * apis/services_cms.php — Read-only data services backed by the CMS plugin DB.
+ * apis/services_cms.php - Read-only data services backed by the CMS plugin DB.
  *
  * The companion plugin (plugin1, class prefix AH_) stores the real content in
  * its own tables: wp_ah_taxonomy_types / wp_ah_taxonomies (a parent→child term
@@ -48,7 +48,7 @@ function adn_cms_available() {
 /**
  * The taxonomy-type id used for content categories. The plugin seeds a
  * "Category" type (slug 'category') whose top-level terms are the site sections
- * (Buying/Selling/House Movers …). 0 means "no specific type — use all terms".
+ * (Buying/Selling/House Movers …). 0 means "no specific type - use all terms".
  */
 function adn_cms_guide_type_id() {
 	if ( ! adn_cms_available() ) {
@@ -189,7 +189,7 @@ function adn_cms_articles( $limit = 6, $taxonomy_ids = array() ) {
 }
 
 /**
- * Latest news posts — WordPress posts linked to the "news" term. Falls back to
+ * Latest news posts - WordPress posts linked to the "news" term. Falls back to
  * the most recent posts when no news term exists.
  *
  * @return object[]
@@ -261,7 +261,7 @@ function adn_cms_one_article_per_parent() {
 }
 
 /**
- * Articles belonging to a Guide parent — i.e. linked to that parent term OR any
+ * Articles belonging to a Guide parent - i.e. linked to that parent term OR any
  * of its child topics. Used by the guides-listing / category pages.
  *
  * @param string $parent_slug e.g. 'buying'.
@@ -348,7 +348,7 @@ function adn_cms_term_url( $term ) {
 
 /**
  * URL for a post row. These are real WordPress posts, so prefer the actual
- * permalink (which routes to single.php — no 404). Falls back to a slug path.
+ * permalink (which routes to single.php - no 404). Falls back to a slug path.
  */
 function adn_cms_post_url( $post ) {
 	if ( is_object( $post ) && ! empty( $post->ID ) && function_exists( 'get_permalink' ) ) {

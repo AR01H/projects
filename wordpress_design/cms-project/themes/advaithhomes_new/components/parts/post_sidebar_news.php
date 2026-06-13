@@ -2,7 +2,7 @@
 /**
  * components/parts/post_sidebar_news.php
  *
- * Sidebar — Latest Property News list (from WP_Query in post_logical.php).
+ * Sidebar - Latest Property News list (from WP_Query in post_logical.php).
  *
  * Props (via extract):
  *   $latest_news = [ { icon, title, date, url }, … ]

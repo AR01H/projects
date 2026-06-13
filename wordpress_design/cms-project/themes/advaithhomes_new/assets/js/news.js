@@ -1,5 +1,5 @@
 /**
- * news.js — News & Insights page interactions.
+ * news.js - News & Insights page interactions.
  *
  * Features:
  *  - Category filtering: top strip tabs + sidebar category buttons

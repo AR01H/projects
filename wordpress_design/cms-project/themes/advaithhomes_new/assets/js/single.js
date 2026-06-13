@@ -1,5 +1,5 @@
 /**
- * single.js — WordPress single post interactions.
+ * single.js - WordPress single post interactions.
  *
  * Features:
  *  - TOC generation: scans .article-body h2 headings, assigns ids,

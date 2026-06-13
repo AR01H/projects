@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/main_footer.php — Component: Site Footer
+ * components/parts/main_footer.php - Component: Site Footer
  *
  * Props: $footer (from adn_service_site_chrome()['footer'])
  *        { brand, social[], columns[], copyright, made_with, bottom_links[], disclaimer }

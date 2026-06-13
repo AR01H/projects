@@ -2,7 +2,7 @@
 /**
  * components/parts/post_sidebar_related.php
  *
- * Sidebar — Related Guides list (populated from WP_Query in post_logical.php).
+ * Sidebar - Related Guides list (populated from WP_Query in post_logical.php).
  *
  * Props (via extract):
  *   $related_guides = [ { icon, title, read_time, url }, … ]

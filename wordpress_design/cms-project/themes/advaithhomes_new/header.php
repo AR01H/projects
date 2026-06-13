@@ -1,6 +1,6 @@
 <?php
 /**
- * header.php — HTML document opener.
+ * header.php - HTML document opener.
  *
  * Called via get_header() from every page template.
  * Contains ONLY the generic document wrapper: DOCTYPE, <html>, <head>,

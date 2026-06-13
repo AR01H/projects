@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/news_cats_strip.php — Sticky category tabs strip.
+ * components/sections/news_cats_strip.php - Sticky category tabs strip.
  *
  * Props: $categories[] { key, label, count }
  * The "all" tab is active by default; JS (news.js) handles switching.

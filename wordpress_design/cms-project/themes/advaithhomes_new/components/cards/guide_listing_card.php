@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/guide_listing_card.php — Guides listing page card (with image area, bookmark, meta).
+ * components/cards/guide_listing_card.php - Guides listing page card (with image area, bookmark, meta).
  *
  * Distinct from cards/guide_card.php which is the compact card used on home/category pages.
  *

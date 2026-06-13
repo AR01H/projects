@@ -1,6 +1,6 @@
 <?php
 /**
- * Traditional Home — "Events & Catering" split block.
+ * Traditional Home - "Events & Catering" split block.
  *
  *   Left  : heading + script line + a row of feature icons + "Book Us" CTA.
  *   Right : a sepia event-stall photo (matted Polaroid frame).

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/article_key_info.php — Key takeaways + In-this-guide TOC panel.
+ * components/sections/article_key_info.php - Key takeaways + In-this-guide TOC panel.
  *
  * Props:
  *   $key_takeaways  { title, items[] }

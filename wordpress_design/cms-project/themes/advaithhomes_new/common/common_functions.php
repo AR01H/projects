@@ -81,7 +81,7 @@ function adn_icon( $icon, $class = '' ) {
         return '';
     }
 
-    // Already a Font Awesome class — use it directly (default to solid style).
+    // Already a Font Awesome class - use it directly (default to solid style).
     if ( false !== strpos( $icon, 'fa-' ) ) {
         $has_style = ( false !== strpos( $icon, 'fa-solid' ) || false !== strpos( $icon, 'fa-regular' ) || false !== strpos( $icon, 'fa-brands' ) );
         $cls       = $has_style ? $icon : 'fa-solid ' . $icon;
@@ -94,7 +94,7 @@ function adn_icon( $icon, $class = '' ) {
         return '<i class="ah-ico ' . esc_attr( trim( $map[ $icon ] . ' ' . $class ) ) . '" aria-hidden="true"></i>';
     }
 
-    // Unknown glyph — keep it so layouts never lose their icon.
+    // Unknown glyph - keep it so layouts never lose their icon.
     return '<span class="ah-emoji">' . esc_html( $icon ) . '</span>';
 }
 

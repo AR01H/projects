@@ -5,16 +5,16 @@
  * Intermediate logic for the news listing page.
  *
  * Content priority (first source that returns data wins):
- *   1. CMS DB  — ah_taxonomy_parent_terms → ah_taxonomies → wp_posts (when plugin tables exist)
- *   2. WP_Query — all published posts ordered by date (no taxonomy required)
+ *   1. CMS DB  - ah_taxonomy_parent_terms → ah_taxonomies → wp_posts (when plugin tables exist)
+ *   2. WP_Query - all published posts ordered by date (no taxonomy required)
  *
  * Static layout (hero, sidebar, bottom_newsletter) still comes from news.json.
  * JSON article content is never used.
  *
  * "Easy post/page" rule: creating any WP post in the admin immediately populates
- * the news listing via the WP_Query fallback — no taxonomy tagging needed.
+ * the news listing via the WP_Query fallback - no taxonomy tagging needed.
  *
- * RULE: No markup here — only data shaping.
+ * RULE: No markup here - only data shaping.
  * RULE: Caller is pages/page-newsall.php.
  */
 
@@ -58,7 +58,7 @@ function adn_news_get_context() {
 		}
 	}
 
-	// ── Source 2: WP_Query fallback (plain WP posts — no plugin needed) ──────
+	// ── Source 2: WP_Query fallback (plain WP posts - no plugin needed) ──────
 	if ( ! $loaded ) {
 		$q = new WP_Query( array(
 			'post_type'      => 'post',

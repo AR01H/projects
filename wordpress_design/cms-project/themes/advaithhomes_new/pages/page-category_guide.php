@@ -2,12 +2,12 @@
 /**
  * Template Name: Category Guide
  *
- * pages/page-category_guide.php — Generic category landing page.
+ * pages/page-category_guide.php - Generic category landing page.
  *
  * Handles any slug-based category (buying, selling, house-movers…).
  * The page slug drives which JSON is loaded via the service layer, so
  * no content is hardcoded here.  When the plugin is ready to take over,
- * replace adn_service_category_data() internals — nothing else changes.
+ * replace adn_service_category_data() internals - nothing else changes.
  *
  * Architecture:
  *   data/json/{slug}.json
@@ -16,7 +16,7 @@
  *         → THIS FILE  (structure only)
  *           → components/sections/*  components/parts/*  components/cards/*
  *
- * RULE: No hardcoded content and no data reads here — only structure.
+ * RULE: No hardcoded content and no data reads here - only structure.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -24,13 +24,17 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_category_logical.php';
 $ctx = adn_category_get_context();
 
-adn_page_open( $ctx );
+// Breadcrumb renders inside the hero banner — skip it from adn_page_open().
+$_open_ctx                = $ctx;
+$_open_ctx['breadcrumb']  = array();
+adn_page_open( $_open_ctx );
 ?>
 
-<?php /* ============================== CATEGORY HERO ============================== */ ?>
-<section class="category-hero">
-	<?php adn_component( 'sections/category_hero', array( 'hero' => $ctx['hero'] ) ); ?>
-</section>
+<?php /* ============================== HERO ============================== */ ?>
+<?php adn_component( 'sections/page_hero', array(
+	'hero'       => $ctx['hero'],
+	'breadcrumb' => $ctx['breadcrumb'],
+) ); ?>
 
 <?php /* ============================== JOURNEY STEPS ============================== */ ?>
 <?php if ( ! empty( $ctx['journey'] ) ) : ?>
@@ -58,6 +62,23 @@ adn_page_open( $ctx );
 				?>
 				<div class="guides-grid guides-grid--5col">
 					<?php foreach ( (array) $ctx['guides']['items'] as $card ) : ?>
+						<?php adn_component( 'cards/guide_card', array( 'card' => $card ) ); ?>
+					<?php endforeach; ?>
+				</div>
+			</section>
+			<?php endif; ?>
+
+			<?php /* ── Popular Posts (admin-curated) ── */ ?>
+			<?php if ( ! empty( $ctx['popular_posts']['items'] ) ) : ?>
+			<section class="category-section category-popular">
+				<?php
+				adn_component( 'parts/section_headers/section_header', array(
+					'heading' => isset( $ctx['popular_posts']['heading'] ) ? $ctx['popular_posts']['heading'] : array(),
+					'tag'     => 'h2',
+				) );
+				?>
+				<div class="guides-grid guides-grid--5col">
+					<?php foreach ( (array) $ctx['popular_posts']['items'] as $card ) : ?>
 						<?php adn_component( 'cards/guide_card', array( 'card' => $card ) ); ?>
 					<?php endforeach; ?>
 				</div>
@@ -120,6 +141,12 @@ adn_page_open( $ctx );
 			endif;
 			if ( ! empty( $ctx['sidebar']['hot_topics'] ) ) :
 				adn_component( 'parts/sidebar_hot_topics', array( 'hot_topics' => $ctx['sidebar']['hot_topics'] ) );
+			endif;
+			if ( ! empty( $ctx['sidebar']['featured_topics'] ) ) :
+				adn_component( 'parts/sidebar_featured_topics', array( 'featured_topics' => $ctx['sidebar']['featured_topics'] ) );
+			endif;
+			if ( ! empty( $ctx['sidebar']['external_links'] ) ) :
+				adn_component( 'parts/sidebar_external_links', array( 'external_links' => $ctx['sidebar']['external_links'] ) );
 			endif;
 			if ( ! empty( $ctx['sidebar']['expert_help'] ) ) :
 				adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) );

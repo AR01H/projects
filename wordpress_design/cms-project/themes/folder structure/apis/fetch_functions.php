@@ -1,8 +1,8 @@
 <?php
 /**
- * apis/fetch_functions.php — REST API Route Registration
+ * apis/fetch_functions.php - REST API Route Registration
  *
- * RULE: All REST routes defined as one $routes array — loop registers them.
+ * RULE: All REST routes defined as one $routes array - loop registers them.
  *       All constants from static/page-sample.php (NPT_API_NS etc.).
  *       Every single-item callback runs npt_maybe_redirect() first.
  */
@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── 1. Route definitions (array-driven) ──────────────────────────
-// Add new routes here only — never add another register_rest_route() call.
+// Add new routes here only - never add another register_rest_route() call.
 $npt_routes = [
     [
         'route'      => '/posts',
@@ -51,7 +51,7 @@ $npt_routes = [
     // add more routes here …
 ];
 
-// ── 2. Register all routes (loop — no repetition) ─────────────────
+// ── 2. Register all routes (loop - no repetition) ─────────────────
 add_action( 'rest_api_init', function () use ( $npt_routes ): void {
     foreach ( $npt_routes as $route ) {
         register_rest_route( NPT_API_NS, $route['route'], [
@@ -85,7 +85,7 @@ function npt_api_get_posts( WP_REST_Request $request ): WP_REST_Response {
 
 /**
  * GET /npt/v1/posts/{id}
- * Single post by ID — handles redirect if post has one set.
+ * Single post by ID - handles redirect if post has one set.
  */
 function npt_api_get_single_post( WP_REST_Request $request ): WP_REST_Response {
     $id   = (int) $request->get_param( 'id' );
@@ -108,7 +108,7 @@ function npt_api_get_single_post( WP_REST_Request $request ): WP_REST_Response {
 
 /**
  * GET /npt/v1/posts/slug/{slug}
- * Alternate slug lookup — resolves by slug OR npt_alternate_slug meta.
+ * Alternate slug lookup - resolves by slug OR npt_alternate_slug meta.
  */
 function npt_api_get_post_by_slug( WP_REST_Request $request ): WP_REST_Response {
     $slug = sanitize_title( $request->get_param( 'slug' ) );
@@ -162,7 +162,7 @@ function npt_api_get_portfolios( WP_REST_Request $request ): WP_REST_Response {
 
 /**
  * GET /npt/v1/portfolios/{id}
- * Single portfolio — handles redirect.
+ * Single portfolio - handles redirect.
  */
 function npt_api_get_single_portfolio( WP_REST_Request $request ): WP_REST_Response {
     $id   = (int) $request->get_param( 'id' );
@@ -194,7 +194,7 @@ function npt_api_submit_contact( WP_REST_Request $request ): WP_REST_Response {
         return new WP_REST_Response( [ 'error' => 'Invalid input.' ], 422 );
     }
 
-    // stub — send email, save to DB, trigger CRM webhook, etc.
+    // stub - send email, save to DB, trigger CRM webhook, etc.
 
     return new WP_REST_Response( [ 'success' => true, 'message' => 'Message received.' ], 200 );
 }

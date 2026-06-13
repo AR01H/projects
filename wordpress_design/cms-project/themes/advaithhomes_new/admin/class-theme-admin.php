@@ -41,6 +41,25 @@ class ADN_Theme_Admin {
 		add_action( 'admin_post_adn_sync_pages',           array( __CLASS__, 'handle_sync_pages' ) );
 		add_action( 'admin_post_adn_flush_rewrites',       array( __CLASS__, 'handle_flush_rewrites' ) );
 		add_action( 'admin_post_adn_install_contact_rule', array( __CLASS__, 'handle_install_contact_rule' ) );
+
+		// Category Pages: per-term journey / calculators / sidebar / CTA settings.
+		add_action( 'admin_post_adn_save_category_term', array( __CLASS__, 'handle_save_category_term' ) );
+
+		// Category Pages: AJAX post search (Hot Topics + Popular Posts).
+		add_action( 'wp_ajax_adn_cat_post_search', array( __CLASS__, 'handle_cat_post_search' ) );
+
+		// Category Pages: AJAX taxonomy term search (Featured Topics).
+		add_action( 'wp_ajax_adn_cat_tax_search', array( __CLASS__, 'handle_cat_taxonomy_search' ) );
+
+		// Enqueue wp.media on our admin page (required for the thumbnail uploader).
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_assets' ) );
+	}
+
+	public static function enqueue_admin_assets( $hook ) {
+		if ( false === strpos( $hook, self::MENU_SLUG ) ) {
+			return;
+		}
+		wp_enqueue_media();
 	}
 
 	/**
@@ -89,6 +108,10 @@ class ADN_Theme_Admin {
 			'import-export' => array(
 				'label' => __( 'Import / Export', ADN_TEXT_DOMAIN ),
 				'view'  => 'tab-import-export.php',
+			),
+			'category-pages' => array(
+				'label'   => __( 'Category Pages', ADN_TEXT_DOMAIN ),
+				'subtabs' => self::category_subtabs(),
 			),
 			'admin-actions' => array(
 				'label'   => __( 'Admin Actions', ADN_TEXT_DOMAIN ),
@@ -504,6 +527,326 @@ class ADN_Theme_Admin {
 
 		update_option( 'adn_calculators_meta', $meta );
 		self::redirect_back( 'calculators', 'list', __( 'Calculator list saved.', ADN_TEXT_DOMAIN ) );
+	}
+
+	// ── Category Pages: AJAX post search ───────────────────────────────────────────
+
+	public static function handle_cat_post_search() {
+		check_ajax_referer( 'adn_cat_search', 'nonce' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_send_json_error( 'Unauthorised', 403 );
+		}
+
+		$q    = sanitize_text_field( wp_unslash( isset( $_GET['q'] )    ? $_GET['q']    : '' ) );
+		$slug = sanitize_key(        wp_unslash( isset( $_GET['slug'] ) ? $_GET['slug'] : '' ) );
+
+		if ( mb_strlen( $q ) < 2 ) {
+			wp_send_json_success( array() );
+		}
+
+		$results  = array();
+		$ids_seen = array();
+
+		// 1. Articles within this parent term (CMS plugin).
+		if ( $slug && function_exists( 'adn_cms_articles_for_parent' ) ) {
+			$cms_posts = adn_cms_articles_for_parent( $slug, 60 );
+			foreach ( (array) $cms_posts as $p ) {
+				$title = isset( $p->title ) ? (string) $p->title : '';
+				if ( '' === $title || false === stripos( $title, $q ) ) {
+					continue;
+				}
+				$pid       = (int) $p->ID;
+				$results[] = array( 'id' => $pid, 'title' => $title, 'url' => get_permalink( $pid ) );
+				$ids_seen[] = $pid;
+				if ( count( $results ) >= 8 ) {
+					break;
+				}
+			}
+		}
+
+		// 2. General WP post search to fill up to 10.
+		if ( count( $results ) < 10 ) {
+			$query_args = array(
+				'post_type'      => 'post',
+				'post_status'    => 'publish',
+				's'              => $q,
+				'posts_per_page' => 10 - count( $results ),
+				'no_found_rows'  => true,
+			);
+			if ( ! empty( $ids_seen ) ) {
+				$query_args['post__not_in'] = array_values( $ids_seen );
+			}
+			$wp_q = new WP_Query( $query_args );
+			foreach ( (array) $wp_q->posts as $p ) {
+				$results[] = array( 'id' => $p->ID, 'title' => $p->post_title, 'url' => get_permalink( $p ) );
+			}
+			wp_reset_postdata();
+		}
+
+		wp_send_json_success( array_slice( $results, 0, 10 ) );
+	}
+
+	// ── Category Pages: AJAX taxonomy term search (Featured Topics) ──────────────
+
+	public static function handle_cat_taxonomy_search() {
+		check_ajax_referer( 'adn_cat_search', 'nonce' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_send_json_error( 'Unauthorised', 403 );
+		}
+
+		$q    = sanitize_text_field( wp_unslash( isset( $_GET['q'] )    ? $_GET['q']    : '' ) );
+		$slug = sanitize_key(        wp_unslash( isset( $_GET['slug'] ) ? $_GET['slug'] : '' ) );
+
+		if ( '' === $q || '' === $slug ) {
+			wp_send_json_success( array() );
+		}
+
+		// Get the parent term to find child topics.
+		$parent = function_exists( 'adn_cms_parent_by_slug' ) ? adn_cms_parent_by_slug( $slug ) : null;
+		if ( ! $parent ) {
+			wp_send_json_success( array() );
+		}
+
+		$topics  = function_exists( 'adn_cms_topics' ) ? adn_cms_topics( (int) $parent->id, 100 ) : array();
+		$results = array();
+		foreach ( (array) $topics as $topic ) {
+			$name = isset( $topic->name ) ? (string) $topic->name : '';
+			if ( '' === $name || false === stripos( $name, $q ) ) {
+				continue;
+			}
+			$term_slug = isset( $topic->slug ) ? (string) $topic->slug : '';
+			$results[] = array(
+				'id'    => (int) $topic->id,
+				'title' => $name,
+				'url'   => '/' . $slug . '/?topic=' . rawurlencode( $term_slug ),
+				'icon'  => isset( $topic->icon_emoji ) ? (string) $topic->icon_emoji : '',
+			);
+			if ( count( $results ) >= 10 ) {
+				break;
+			}
+		}
+
+		wp_send_json_success( $results );
+	}
+
+	// ── Category Pages: dynamic subtabs, one per active parent term ────────────────
+
+	/**
+	 * Build the subtabs array for the "Category Pages" tab.
+	 * Returns one subtab per active parent term from the CMS plugin; falls back
+	 * to a single "no terms" placeholder when the plugin is absent or empty.
+	 */
+	private static function category_subtabs() {
+		$subtabs = array();
+		if ( function_exists( 'adn_cms_available' ) && adn_cms_available()
+			&& function_exists( 'adn_cms_guide_parents' ) ) {
+			foreach ( adn_cms_guide_parents( 20 ) as $term ) {
+				$slug = isset( $term->slug ) ? sanitize_key( $term->slug ) : '';
+				$name = isset( $term->name ) ? (string) $term->name        : ucwords( str_replace( '-', ' ', $slug ) );
+				if ( '' === $slug ) {
+					continue;
+				}
+				$subtabs[ $slug ] = array(
+					'label' => $name,
+					'view'  => 'category/sub-term.php',
+				);
+			}
+		}
+		if ( empty( $subtabs ) ) {
+			$subtabs['_none'] = array(
+				'label' => __( 'No Terms', ADN_TEXT_DOMAIN ),
+				'view'  => 'category/sub-no-terms.php',
+			);
+		}
+		return $subtabs;
+	}
+
+	// ── Category Pages: save handler ────────────────────────────────────────────
+
+	public static function handle_save_category_term() {
+		$slug = isset( $_POST['term_slug'] ) ? sanitize_key( wp_unslash( $_POST['term_slug'] ) ) : '';
+		if ( '' === $slug ) {
+			wp_die( esc_html__( 'Invalid term slug.', ADN_TEXT_DOMAIN ) );
+		}
+		check_admin_referer( 'adn_save_category_term_' . $slug );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		// ── Appearance ───────────────────────────────────────────────────────────
+		$raw_app      = ( isset( $_POST['appearance'] ) && is_array( $_POST['appearance'] ) ) ? wp_unslash( $_POST['appearance'] ) : array();
+		$appearance   = array(
+			'thumbnail_id' => (int) ( isset( $raw_app['thumbnail_id'] ) ? $raw_app['thumbnail_id'] : 0 ),
+		);
+		AH_Category_Settings::save( $slug, 'appearance', $appearance );
+
+		// ── Journey ──────────────────────────────────────────────────────────────
+		$raw_j = ( isset( $_POST['journey'] ) && is_array( $_POST['journey'] ) ) ? wp_unslash( $_POST['journey'] ) : array();
+		$steps = array();
+		if ( isset( $raw_j['steps'] ) && is_array( $raw_j['steps'] ) ) {
+			foreach ( $raw_j['steps'] as $s ) {
+				if ( ! is_array( $s ) || empty( $s['label'] ) ) { continue; }
+				$steps[] = array(
+					'icon'  => sanitize_text_field( isset( $s['icon'] )  ? $s['icon']  : '' ),
+					'label' => sanitize_text_field( $s['label'] ),
+					'desc'  => sanitize_text_field( isset( $s['desc'] )  ? $s['desc']  : '' ),
+				);
+			}
+		}
+		$journey = array(
+			'heading'        => sanitize_text_field( isset( $raw_j['heading'] )        ? $raw_j['heading']        : '' ),
+			'steps'          => $steps,
+			'tip_icon'       => sanitize_text_field( isset( $raw_j['tip_icon'] )       ? $raw_j['tip_icon']       : '' ),
+			'tip_text'       => sanitize_text_field( isset( $raw_j['tip_text'] )       ? $raw_j['tip_text']       : '' ),
+			'tip_link_label' => sanitize_text_field( isset( $raw_j['tip_link_label'] ) ? $raw_j['tip_link_label'] : '' ),
+			'tip_link_url'   => esc_url_raw(         isset( $raw_j['tip_link_url'] )   ? $raw_j['tip_link_url']   : '' ),
+		);
+		AH_Category_Settings::save( $slug, 'journey', $journey );
+
+		// ── Hot Topics ───────────────────────────────────────────────────────────
+		$raw_ht   = ( isset( $_POST['hot_topics'] ) && is_array( $_POST['hot_topics'] ) ) ? wp_unslash( $_POST['hot_topics'] ) : array();
+		$ht_items = array();
+		if ( isset( $raw_ht['items'] ) && is_array( $raw_ht['items'] ) ) {
+			foreach ( $raw_ht['items'] as $t ) {
+				if ( ! is_array( $t ) || empty( $t['label'] ) ) { continue; }
+				$ht_items[] = array(
+					'icon'  => sanitize_text_field( isset( $t['icon'] )  ? $t['icon']  : '' ),
+					'label' => sanitize_text_field( $t['label'] ),
+					'url'   => esc_url_raw(          isset( $t['url'] )   ? $t['url']   : '' ),
+				);
+			}
+		}
+		$hot_topics = array(
+			'heading'        => sanitize_text_field( isset( $raw_ht['heading'] )        ? $raw_ht['heading']        : '' ),
+			'items'          => $ht_items,
+			'view_all_label' => sanitize_text_field( isset( $raw_ht['view_all_label'] ) ? $raw_ht['view_all_label'] : '' ),
+			'view_all_url'   => esc_url_raw(          isset( $raw_ht['view_all_url'] )   ? $raw_ht['view_all_url']   : '' ),
+		);
+		AH_Category_Settings::save( $slug, 'hot_topics', $hot_topics );
+
+		// ── Popular Posts ────────────────────────────────────────────────────────
+		$raw_pp  = ( isset( $_POST['popular_posts'] ) && is_array( $_POST['popular_posts'] ) ) ? wp_unslash( $_POST['popular_posts'] ) : array();
+		$pp_items = array();
+		if ( isset( $raw_pp['items'] ) && is_array( $raw_pp['items'] ) ) {
+			foreach ( $raw_pp['items'] as $p ) {
+				if ( ! is_array( $p ) || empty( $p['post_id'] ) ) { continue; }
+				$pid = (int) $p['post_id'];
+				if ( $pid <= 0 ) { continue; }
+				$pp_items[] = array( 'post_id' => $pid );
+				if ( count( $pp_items ) >= 12 ) { break; }
+			}
+		}
+		$popular_posts = array(
+			'heading' => sanitize_text_field( isset( $raw_pp['heading'] ) ? $raw_pp['heading'] : '' ),
+			'items'   => $pp_items,
+		);
+		AH_Category_Settings::save( $slug, 'popular_posts', $popular_posts );
+
+		// ── Calculators (selected from registered list) ───────────────────────────
+		$raw_calc = ( isset( $_POST['calc'] ) && is_array( $_POST['calc'] ) ) ? wp_unslash( $_POST['calc'] ) : array();
+		$sel_keys = array();
+		if ( isset( $raw_calc['selected_keys'] ) && is_array( $raw_calc['selected_keys'] )
+			&& function_exists( 'adn_calculators' ) ) {
+			$registered = array_keys( adn_calculators() );
+			foreach ( $raw_calc['selected_keys'] as $k ) {
+				$k = sanitize_key( $k );
+				if ( in_array( $k, $registered, true ) ) {
+					$sel_keys[] = $k;
+				}
+			}
+		}
+		AH_Category_Settings::save( $slug, 'calculators', array(
+			'heading'       => sanitize_text_field( isset( $raw_calc['heading'] ) ? $raw_calc['heading'] : '' ),
+			'selected_keys' => $sel_keys,
+		) );
+
+		// ── Featured Topics ───────────────────────────────────────────────────────
+		$raw_ft   = ( isset( $_POST['featured_topics'] ) && is_array( $_POST['featured_topics'] ) ) ? wp_unslash( $_POST['featured_topics'] ) : array();
+		$ft_items = array();
+		if ( isset( $raw_ft['items'] ) && is_array( $raw_ft['items'] ) ) {
+			foreach ( $raw_ft['items'] as $t ) {
+				if ( ! is_array( $t ) || empty( $t['name'] ) ) { continue; }
+				$ft_items[] = array(
+					'term_id' => (int) ( isset( $t['term_id'] ) ? $t['term_id'] : 0 ),
+					'icon'    => sanitize_text_field( isset( $t['icon'] ) ? $t['icon'] : '' ),
+					'name'    => sanitize_text_field( $t['name'] ),
+					'url'     => esc_url_raw( isset( $t['url'] ) ? $t['url'] : '' ),
+				);
+			}
+		}
+		AH_Category_Settings::save( $slug, 'featured_topics', array(
+			'heading' => sanitize_text_field( isset( $raw_ft['heading'] ) ? $raw_ft['heading'] : '' ),
+			'items'   => $ft_items,
+		) );
+
+		// ── External Links ────────────────────────────────────────────────────────
+		$raw_el   = ( isset( $_POST['external_links'] ) && is_array( $_POST['external_links'] ) ) ? wp_unslash( $_POST['external_links'] ) : array();
+		$el_items = array();
+		if ( isset( $raw_el['items'] ) && is_array( $raw_el['items'] ) ) {
+			foreach ( $raw_el['items'] as $l ) {
+				if ( ! is_array( $l ) || empty( $l['title'] ) ) { continue; }
+				$el_items[] = array(
+					'icon'  => sanitize_text_field( isset( $l['icon'] )  ? $l['icon']  : '' ),
+					'title' => sanitize_text_field( $l['title'] ),
+					'url'   => esc_url_raw(          isset( $l['url'] )   ? $l['url']   : '' ),
+					'desc'  => sanitize_text_field( isset( $l['desc'] )  ? $l['desc']  : '' ),
+				);
+			}
+		}
+		AH_Category_Settings::save( $slug, 'external_links', array(
+			'heading' => sanitize_text_field( isset( $raw_el['heading'] ) ? $raw_el['heading'] : '' ),
+			'items'   => $el_items,
+		) );
+
+		// ── Sidebar ──────────────────────────────────────────────────────────────
+		$raw_sb = ( isset( $_POST['sidebar'] ) && is_array( $_POST['sidebar'] ) ) ? wp_unslash( $_POST['sidebar'] ) : array();
+		$tools  = array();
+		if ( isset( $raw_sb['tools'] ) && is_array( $raw_sb['tools'] ) ) {
+			foreach ( $raw_sb['tools'] as $t ) {
+				if ( ! is_array( $t ) || empty( $t['label'] ) ) { continue; }
+				$tools[] = array(
+					'icon'  => sanitize_text_field( isset( $t['icon'] )  ? $t['icon']  : '' ),
+					'label' => sanitize_text_field( $t['label'] ),
+					'url'   => esc_url_raw(          isset( $t['url'] )   ? $t['url']   : '' ),
+				);
+			}
+		}
+		$expert_list = array();
+		if ( isset( $raw_sb['experts'] ) && is_array( $raw_sb['experts'] ) ) {
+			foreach ( $raw_sb['experts'] as $e ) {
+				if ( ! is_array( $e ) || empty( $e['name'] ) ) { continue; }
+				$expert_list[] = array(
+					'icon' => sanitize_text_field( isset( $e['icon'] ) ? $e['icon'] : '' ),
+					'name' => sanitize_text_field( $e['name'] ),
+					'desc' => sanitize_text_field( isset( $e['desc'] ) ? $e['desc'] : '' ),
+					'url'  => esc_url_raw(          isset( $e['url'] )  ? $e['url']  : '' ),
+				);
+			}
+		}
+		$sidebar = array(
+			'tools'            => $tools,
+			'cta_label'        => sanitize_text_field( isset( $raw_sb['cta_label'] )        ? $raw_sb['cta_label']        : '' ),
+			'cta_url'          => esc_url_raw(          isset( $raw_sb['cta_url'] )          ? $raw_sb['cta_url']          : '' ),
+			'expert_heading'   => sanitize_text_field( isset( $raw_sb['expert_heading'] )   ? $raw_sb['expert_heading']   : '' ),
+			'expert_subtitle'  => sanitize_text_field( isset( $raw_sb['expert_subtitle'] )  ? $raw_sb['expert_subtitle']  : '' ),
+			'experts'          => $expert_list,
+			'expert_cta_label' => sanitize_text_field( isset( $raw_sb['expert_cta_label'] ) ? $raw_sb['expert_cta_label'] : '' ),
+			'expert_cta_url'   => esc_url_raw(          isset( $raw_sb['expert_cta_url'] )   ? $raw_sb['expert_cta_url']   : '' ),
+		);
+		AH_Category_Settings::save( $slug, 'sidebar', $sidebar );
+
+		// ── CTA Banner ───────────────────────────────────────────────────────────
+		$raw_cta = ( isset( $_POST['cta'] ) && is_array( $_POST['cta'] ) ) ? wp_unslash( $_POST['cta'] ) : array();
+		$cta     = array(
+			'icon'        => sanitize_text_field(    isset( $raw_cta['icon'] )        ? $raw_cta['icon']        : '' ),
+			'title'       => sanitize_text_field(    isset( $raw_cta['title'] )       ? $raw_cta['title']       : '' ),
+			'description' => sanitize_textarea_field( isset( $raw_cta['description'] ) ? $raw_cta['description'] : '' ),
+			'btn_label'   => sanitize_text_field(    isset( $raw_cta['btn_label'] )   ? $raw_cta['btn_label']   : '' ),
+			'btn_url'     => esc_url_raw(            isset( $raw_cta['btn_url'] )     ? $raw_cta['btn_url']     : '' ),
+		);
+		AH_Category_Settings::save( $slug, 'cta_banner', $cta );
+
+		self::redirect_back( 'category-pages', $slug, __( 'Category settings saved.', ADN_TEXT_DOMAIN ) );
 	}
 
 	// ── Admin Actions: seed sample Guide content into the CMS plugin ─────────────

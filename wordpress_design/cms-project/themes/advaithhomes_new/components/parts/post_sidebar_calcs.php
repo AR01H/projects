@@ -2,7 +2,7 @@
 /**
  * components/parts/post_sidebar_calcs.php
  *
- * Sidebar — Popular Calculators list.
+ * Sidebar - Popular Calculators list.
  *
  * Props (via extract):
  *   $calculators = [

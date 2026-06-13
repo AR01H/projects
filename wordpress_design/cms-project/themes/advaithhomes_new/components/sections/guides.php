@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/guides.php — Section: Guides & Insights carousel
+ * components/sections/guides.php - Section: Guides & Insights carousel
  *
  * Props: $items [ { icon, gradient, category, title, description, read_more, url } ]
  * Usage: adn_component( 'sections/guides', array( 'items' => $ctx['guides']['items'] ) );

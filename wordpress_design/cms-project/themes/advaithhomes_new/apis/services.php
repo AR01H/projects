@@ -1,6 +1,6 @@
 <?php
 /**
- * apis/services.php — Data services (API abstraction layer).
+ * apis/services.php - Data services (API abstraction layer).
  *
  * RULE: Templates and intermediate logic NEVER read data sources directly -
  *       they call these service functions. Today the data comes from
@@ -28,8 +28,8 @@ function adn_service_home_data() {
  *   1. The CMS plugin (the SAME options it already serves to other client
  *      sites): ah_cms_navigation, ah_cms_nav_cta, ah_cms_footer. The plugin's
  *      Navigation Editor saves these and notes "themes can render this data
- *      with their own markup" — this is that render side.
- *   2. data/json/site_chrome.json — defaults for everything the plugin does
+ *      with their own markup" - this is that render side.
+ *   2. data/json/site_chrome.json - defaults for everything the plugin does
  *      not manage (logo, social icons, copyright, disclaimer, search copy).
  *
  * If the plugin is inactive or a section is empty, the JSON default is used,
@@ -216,7 +216,7 @@ function adn_chrome_plugin_footer( $json_footer ) {
 }
 
 /**
- * Category page content — one call returns all sections for a given slug.
+ * Category page content - one call returns all sections for a given slug.
  * The slug maps to data/json/{slug}.json (e.g. 'buying' → data/json/buying.json).
  * When the plugin is ready, swap the internals here; callers are unchanged.
  *
@@ -228,7 +228,7 @@ function adn_service_category_data( $slug ) {
 }
 
 /**
- * Individual guide article content — loads data/json/guide-{slug}.json.
+ * Individual guide article content - loads data/json/guide-{slug}.json.
  * The "guide-" prefix avoids collisions with category slugs of the same name.
  * When the plugin is ready, swap internals here; callers are unchanged.
  *
@@ -240,14 +240,14 @@ function adn_service_guide_data( $slug ) {
 }
 
 /**
- * Calculators page content — loads data/json/calculators.json.
+ * Calculators page content - loads data/json/calculators.json.
  */
 function adn_service_calculators_data() {
 	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'calculators' ) : array();
 }
 
 /**
- * Guides listing page content — loads data/json/{slug}.json.
+ * Guides listing page content - loads data/json/{slug}.json.
  * The slug maps to the WP page slug (e.g. 'buying-guides').
  * Reusable for any category's guide listing when a plugin replaces this.
  *
@@ -259,7 +259,7 @@ function adn_service_guides_listing_data( $slug ) {
 }
 
 /**
- * News & Insights page content — loads data/json/news.json.
+ * News & Insights page content - loads data/json/news.json.
  * When the plugin is ready, swap internals here; callers are unchanged.
  */
 function adn_service_news_data() {
@@ -267,7 +267,7 @@ function adn_service_news_data() {
 }
 
 /**
- * Single post sidebar static data — loads data/json/post_sidebar.json.
+ * Single post sidebar static data - loads data/json/post_sidebar.json.
  * Contains the popular calculators list and newsletter signup copy.
  * Related guides and latest news come from WP_Query in post_logical.php.
  */
@@ -276,21 +276,21 @@ function adn_service_post_sidebar_data() {
 }
 
 /**
- * Contact page content — loads data/json/contact.json.
+ * Contact page content - loads data/json/contact.json.
  */
 function adn_service_contact_data() {
 	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'contact' ) : array();
 }
 
 /**
- * Get Expert Guidance page content — loads data/json/guidance.json.
+ * Get Expert Guidance page content - loads data/json/guidance.json.
  */
 function adn_service_guidance_data() {
 	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'guidance' ) : array();
 }
 
 /**
- * Ask an Expert directory content — loads data/json/ask-expert.json.
+ * Ask an Expert directory content - loads data/json/ask-expert.json.
  */
 function adn_service_ask_expert_data() {
 	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'ask-expert' ) : array();

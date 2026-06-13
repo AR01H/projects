@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/news_section.php — News section: heading + grid or list of items.
+ * components/sections/news_section.php - News section: heading + grid or list of items.
  *
  * Dispatches to cards/news_card (type=grid) or cards/news_list_item (type=list).
  *

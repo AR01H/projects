@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Reusable settings engine. Given a schema id (see settings-schemas.php) it
  * renders a standard WP settings form and saves it through ONE shared
- * admin-post handler — so each settings tab view is just:
+ * admin-post handler - so each settings tab view is just:
  *
  *     ADN_Theme_Settings::render( 'home_hero', 'home', 'hero' );
  *

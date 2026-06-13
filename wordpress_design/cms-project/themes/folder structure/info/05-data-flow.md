@@ -1,4 +1,4 @@
-# 05 — Data Flow: Fetcher → Model → Component → Template
+# 05 - Data Flow: Fetcher → Model → Component → Template
 
 ## The Core Principle
 
@@ -12,7 +12,7 @@ Each layer has one job and knows nothing about the others except its immediate n
 
 ---
 
-## Layer 1 — Data Fetcher (`includes/data_fetcher/`)
+## Layer 1 - Data Fetcher (`includes/data_fetcher/`)
 
 **Job:** Run WP_Query / get_posts calls and return a consistent array shape.
 **Rule:** Never output HTML. Never register hooks. Only query and return.
@@ -81,11 +81,11 @@ function npt_fetch_single( int|string $identifier, string $post_type = 'post' ):
 }
 ```
 
-Always returns `null` or a single shaped array — never a `WP_Post`.
+Always returns `null` or a single shaped array - never a `WP_Post`.
 
 ---
 
-## Layer 2 — Model (`apis/models/page-sample.php`)
+## Layer 2 - Model (`apis/models/page-sample.php`)
 
 **Job:** Transform a raw `WP_Post` object into a clean, typed PHP array.
 **Rule:** Accept `WP_Post`, return `array`. No queries, no HTML, no hooks.
@@ -147,7 +147,7 @@ $categories = $model['categories'];
 
 ---
 
-## Layer 3 — Component (`components/`)
+## Layer 3 - Component (`components/`)
 
 **Job:** Receive an array of data, output HTML.
 **Rule:** Accept context via `$context`, output HTML. No queries, no hooks.
@@ -167,7 +167,7 @@ function npt_component( string $name, array $context = [] ): void {
 Inside the component file, the context keys become local variables:
 ```php
 // Called with: npt_component( 'cards/page-sample', [ 'post' => $model ] )
-// Inside component — $post is available as a local variable
+// Inside component - $post is available as a local variable
 $title = $post['title'] ?? 'Untitled';
 ```
 
@@ -192,10 +192,10 @@ components/
 
 ---
 
-## Layer 4 — Page Template (`pages/`)
+## Layer 4 - Page Template (`pages/`)
 
 **Job:** Fetch data, check redirects, render components.
-**Rule:** The template is the orchestrator — it connects the layers.
+**Rule:** The template is the orchestrator - it connects the layers.
 
 ### Standard Template Pattern
 

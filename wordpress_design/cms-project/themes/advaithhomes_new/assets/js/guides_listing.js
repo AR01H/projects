@@ -1,5 +1,5 @@
 /**
- * guides_listing.js — Buying Guides listing page interactions.
+ * guides_listing.js - Buying Guides listing page interactions.
  *
  * Features:
  *  - Category filter: left sidebar category buttons

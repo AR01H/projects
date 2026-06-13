@@ -1,10 +1,10 @@
 <?php
 /**
- * includes/rules_conditions.php — Global Filters & Conditional Rules
+ * includes/rules_conditions.php - Global Filters & Conditional Rules
  *
  * RULE: Group related filters together.
  *       Use arrays of callbacks so rules can be added/removed easily.
- *       No business logic — only hook wiring.
+ *       No business logic - only hook wiring.
  *
  * Pattern:
  *   $filters = [ [ 'hook', 'callback', priority, args ], … ]
@@ -31,7 +31,7 @@ foreach ( $npt_filters as [ $hook, $cb, $prio, $args ] ) {
 
 /** Append a custom wrapper class to the content */
 function npt_filter_content( string $content ): string {
-    // stub — wrap content or modify here
+    // stub - wrap content or modify here
     return $content;
 }
 
@@ -55,6 +55,6 @@ function npt_filter_body_class( array $classes ): array {
 
 /** Modify document <title> parts */
 function npt_filter_title( array $parts ): array {
-    // stub — modify $parts['title'], $parts['tagline'], etc.
+    // stub - modify $parts['title'], $parts['tagline'], etc.
     return $parts;
 }

@@ -1,11 +1,11 @@
 <?php
 /**
- * components/sections/category_journey.php — Category journey steps with tip banner.
+ * components/sections/category_journey.php - Category journey steps with tip banner.
  *
  * Props: $journey { heading, steps[], tip { icon, text, link_label, link_url } }
  * Usage: adn_component( 'sections/category_journey', array( 'journey' => $ctx['journey'] ) );
  *
- * NOTE: tip.text may contain <strong> for emphasis — rendered with wp_kses.
+ * NOTE: tip.text may contain <strong> for emphasis - rendered with wp_kses.
  */
 
 defined( 'ABSPATH' ) || exit;

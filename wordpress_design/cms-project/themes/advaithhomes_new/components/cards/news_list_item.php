@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/news_list_item.php — List-style news row.
+ * components/cards/news_list_item.php - List-style news row.
  *
  * Props: $item { cat_key, icon, tags[] { label, class }, title, excerpt, date, read_time, url }
  * Usage: adn_component( 'cards/news_list_item', array( 'item' => $item ) );

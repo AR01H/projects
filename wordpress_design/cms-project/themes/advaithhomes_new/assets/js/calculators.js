@@ -1,5 +1,5 @@
 /**
- * calculators.js — Calculators page interactions.
+ * calculators.js - Calculators page interactions.
  *
  * Features:
  *  - Category sidebar filter: clicking a sidebar button filters the list

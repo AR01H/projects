@@ -1,6 +1,6 @@
 <?php
 /**
- * middleware/page-sample.php — Request Middleware Sample
+ * middleware/page-sample.php - Request Middleware Sample
  *
  * Covers:
  *   - REST API authentication middleware
@@ -58,7 +58,7 @@ function npt_mw_check_auth( mixed $result, WP_REST_Server $server, WP_REST_Reque
         return new WP_Error( 'rest_forbidden', 'Authorization header missing.', [ 'status' => 401 ] );
     }
 
-    // stub — validate JWT / API key here
+    // stub - validate JWT / API key here
     // if ( ! npt_validate_token( $token ) ) {
     //     return new WP_Error( 'rest_forbidden', 'Invalid token.', [ 'status' => 403 ] );
     // }

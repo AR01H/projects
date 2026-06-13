@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_most_read.php — Sidebar: numbered most-read list.
+ * components/parts/sidebar_most_read.php - Sidebar: numbered most-read list.
  *
  * Props: $most_read { heading, items[] { num, title, url }, view_all { label, url } }
  * Usage: adn_component( 'parts/sidebar_most_read', array( 'most_read' => $ctx['sidebar']['most_read'] ) );

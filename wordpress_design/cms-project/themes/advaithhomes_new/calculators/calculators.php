@@ -1,10 +1,10 @@
 <?php
 /**
- * calculators/calculators.php — Calculator engine (shortcode + isolated renderer).
+ * calculators/calculators.php - Calculator engine (shortcode + isolated renderer).
  *
  * Goal: embed a single calculator anywhere with [ah_calculator key="stamp-duty"]
- * and have ONLY the calculator appear — no header, footer, sidebar or page
- * content — fully isolated so its CSS/JS can neither affect nor be affected by
+ * and have ONLY the calculator appear - no header, footer, sidebar or page
+ * content - fully isolated so its CSS/JS can neither affect nor be affected by
  * the host page.
  *
  * How it stays isolated: the shortcode outputs an <iframe> pointing at
@@ -29,7 +29,7 @@ function adn_calculator_exists( $key ) {
 
 /**
  * Whether a calculator is enabled (Manage Calculator → Calculator List).
- * Default — before the list has ever been saved — is "all enabled".
+ * Default - before the list has ever been saved - is "all enabled".
  */
 function adn_calculator_is_enabled( $key ) {
 	$meta = get_option( 'adn_calculators_meta' );

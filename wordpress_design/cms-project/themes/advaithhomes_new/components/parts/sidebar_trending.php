@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_trending.php — Trending This Week list.
+ * components/parts/sidebar_trending.php - Trending This Week list.
  *
  * Props: $trending { heading, items[] { num, title, meta, url } }
  * Usage: adn_component( 'parts/sidebar_trending', array( 'trending' => $ctx['sidebar']['trending'] ) );

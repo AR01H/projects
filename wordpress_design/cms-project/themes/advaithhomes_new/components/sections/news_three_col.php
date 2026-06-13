@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/news_three_col.php — Section: News + Regulations + Hot Topics
+ * components/sections/news_three_col.php - Section: News + Regulations + Hot Topics
  *
  * Props:
  *   $news        { heading, items[] }   (news_item cards)

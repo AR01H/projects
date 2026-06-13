@@ -1,6 +1,6 @@
 <?php
 /**
- * footer.php — HTML document closer.
+ * footer.php - HTML document closer.
  *
  * Called via get_footer() from every page template.
  * Contains ONLY wp_footer() and the closing </body></html> tags.

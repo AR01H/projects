@@ -65,7 +65,7 @@
             { "icon": "💰", "title": "Mortgage Advice",    "desc": "Find the right mortgage deal for your situation.",                         "url": "/calculators/","cta": "Get Guidance" },
             { "icon": "📋", "title": "Conveyancing",       "desc": "Connect with experienced solicitors for smooth transactions.",             "url": "/buying/", "cta": "Get Guidance" },
             { "icon": "🔍", "title": "Surveys & Valuation","desc": "Book a surveyor or get a property valuation.",                            "url": "/buying/", "cta": "Get Guidance" },
-            { "icon": "🚚", "title": "Moving Home",        "desc": "Removals, storage and utilities — we can help.",                          "url": "/moving/", "cta": "Get Guidance" }
+            { "icon": "🚚", "title": "Moving Home",        "desc": "Removals, storage and utilities - we can help.",                          "url": "/moving/", "cta": "Get Guidance" }
         ]
     },
     "why_choose": {

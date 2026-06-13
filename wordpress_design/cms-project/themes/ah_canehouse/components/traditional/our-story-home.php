@@ -1,6 +1,6 @@
 <?php
 /**
- * Traditional Home — "Our Story" three-column block.
+ * Traditional Home - "Our Story" three-column block.
  *
  *   Left   : a pinned Polaroid photo + a "Made Fresh / Every Day" round stamp.
  *   Centre : heading + script subtitle + body copy.
@@ -23,7 +23,7 @@ if ( ! $photo ) {
 $machine = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80';
 
 $paras = [
-	$ss['body_1'] ?? 'The Cane House was born from simple memories of childhood summers — the sound of a sugarcane machine, the joy of watching fresh juice being made, and the taste that stayed with us forever.',
+	$ss['body_1'] ?? 'The Cane House was born from simple memories of childhood summers - the sound of a sugarcane machine, the joy of watching fresh juice being made, and the taste that stayed with us forever.',
 	$ss['body_2'] ?? 'Today, we carry that tradition forward, serving fresh, natural sugarcane juice while you watch.',
 	'A taste of home. A tradition shared across generations.',
 ];

@@ -7,9 +7,9 @@ defined( 'ABSPATH' ) || exit;
  * Stores raw HTML "static page / component" content in the database
  * ({prefix}ah_static_pages) instead of flat static/{slug}.html files.
  *
- *   • slug    — matches the backing WP page's post_name (resolves the permalink)
- *   • html    — the raw HTML the user pastes in the editor
- *   • page_id — the backing WP page (kept for permalink + template routing)
+ *   • slug    - matches the backing WP page's post_name (resolves the permalink)
+ *   • html    - the raw HTML the user pastes in the editor
+ *   • page_id - the backing WP page (kept for permalink + template routing)
  *
  * The table DDL lives ONLY in AH_DB_Schema (table 41d). This model reads/writes
  * and self-heals if the table is missing. A one-time migration imports any

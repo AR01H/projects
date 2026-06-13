@@ -1,6 +1,6 @@
 <?php
 /**
- * functions.php — Theme Bootstrap / Loader
+ * functions.php - Theme Bootstrap / Loader
  *
  * RULE: This file ONLY loads other files.
  *       NO business logic lives here.
@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ─────────────────────────────────────────────
-// 0. Static constants — MUST be first
+// 0. Static constants - MUST be first
 // ─────────────────────────────────────────────
 require_once __DIR__ . '/static/page-sample.php';
 

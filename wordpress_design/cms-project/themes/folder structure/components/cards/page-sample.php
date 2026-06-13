@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/page-sample.php — Component: Post Card
+ * components/cards/page-sample.php - Component: Post Card
  *
  * PURPOSE: Self-contained, re-usable UI partial.
  *          Receives data via $context (extracted by npt_component()).

@@ -30,7 +30,7 @@ if ( isset( $_GET['raw'] ) && '1' === $_GET['raw'] ) { // phpcs:ignore WordPress
 	if ( $html !== '' ) {
 		header( 'Content-Type: text/html; charset=UTF-8' );
 		header( 'X-Frame-Options: SAMEORIGIN' );
-		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — raw HTML component by design
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped - raw HTML component by design
 	} else {
 		status_header( 404 );
 		echo '<!DOCTYPE html><html><body><p>Content not found.</p></body></html>';

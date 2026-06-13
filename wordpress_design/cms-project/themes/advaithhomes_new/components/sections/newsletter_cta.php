@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/newsletter_cta.php — Section: Newsletter subscribe CTA
+ * components/sections/newsletter_cta.php - Section: Newsletter subscribe CTA
  *
  * Props: $newsletter { icon, title, description, placeholder, button_label, note }
  * Usage: adn_component( 'sections/newsletter_cta', array( 'newsletter' => $ctx['newsletter'] ) );

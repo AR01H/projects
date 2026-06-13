@@ -1,9 +1,9 @@
 <?php
 /**
- * includes/core_details.php — Theme Setup (Supports, Menus, Sidebars)
+ * includes/core_details.php - Theme Setup (Supports, Menus, Sidebars)
  *
  * RULE: One add_action per concern.
- *       Everything driven by $cfg arrays — no hardcoded values.
+ *       Everything driven by $cfg arrays - no hardcoded values.
  */
 
 defined( 'ABSPATH' ) || exit;

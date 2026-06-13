@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Column-level and data migrations.
- * Every method MUST be idempotent — safe to call on every admin load.
+ * Every method MUST be idempotent - safe to call on every admin load.
  * Add a new method here + register it in run() for each new migration.
  * Never put CREATE TABLE or FK constraints here.
  */

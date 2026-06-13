@@ -1,15 +1,15 @@
 <?php
 /**
- * components/sections/article_body.php — Article body: type-dispatched section renderer.
+ * components/sections/article_body.php - Article body: type-dispatched section renderer.
  *
  * Props: $sections  array of sections, each with a "type" key:
- *   paragraph  — { id, heading, text }
- *   steps_list — { id, heading, items[]{icon,title,desc,read_more,url}, tip{...} }
- *   costs_grid — { id, heading, text, items[]{icon,name,value}, cta{label,url} }
+ *   paragraph  - { id, heading, text }
+ *   steps_list - { id, heading, items[]{icon,title,desc,read_more,url}, tip{...} }
+ *   costs_grid - { id, heading, text, items[]{icon,name,value}, cta{label,url} }
  *
  * Adding a new section type: add a new elseif block below; the JSON drives everything.
  *
- * NOTE: tip.text and any field carrying HTML must use wp_kses — not esc_html.
+ * NOTE: tip.text and any field carrying HTML must use wp_kses - not esc_html.
  */
 
 defined( 'ABSPATH' ) || exit;

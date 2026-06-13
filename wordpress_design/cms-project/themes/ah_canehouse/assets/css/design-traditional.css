@@ -2488,7 +2488,7 @@ body.design-traditional .ch-contact-info .ch-cd-icon {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   36. TRADITIONAL HOME PAGE — OUR STORY / OUR DRINKS / EVENTS & CATERING
+   36. TRADITIONAL HOME PAGE - OUR STORY / OUR DRINKS / EVENTS & CATERING
    ──────────────────────────────────────────────────────────────────────────
    Markup: components/traditional/{our-story-home,our-drinks,events-catering}.php,
    added in front-page.php behind ch_design_is() (alongside the existing
@@ -2496,7 +2496,7 @@ body.design-traditional .ch-contact-info .ch-cd-icon {
    body.design-traditional so the Modern home is untouched.
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* ── 36.1 OUR STORY — polaroid + stamp / text / machine photo ───────────────── */
+/* ── 36.1 OUR STORY - polaroid + stamp / text / machine photo ───────────────── */
 body.design-traditional .ch-tstory { background: var(--trad-bg); padding: 4.5rem 0; }
 body.design-traditional .ch-tstory__inner {
     display: grid;
@@ -2556,7 +2556,7 @@ body.design-traditional .ch-tstory__machine img {
 }
 
 
-/* ── 36.3 OUR DRINKS — parchment product cards ──────────────────────────────── */
+/* ── 36.3 OUR DRINKS - parchment product cards ──────────────────────────────── */
 body.design-traditional .ch-tdrinks { background: var(--trad-bg-alt); padding: 4.5rem 0; }
 body.design-traditional .ch-tdrinks__grid {
     display: grid;
@@ -2621,7 +2621,7 @@ body.design-traditional .ch-tdrink-card__desc {
 body.design-traditional .ch-tdrinks__cta { text-align: center; margin-top: 2.6rem; }
 
 
-/* ── 36.4 EVENTS & CATERING — text + feature icons / event photo ────────────── */
+/* ── 36.4 EVENTS & CATERING - text + feature icons / event photo ────────────── */
 body.design-traditional .ch-tevents { background: var(--trad-bg); padding: 4.5rem 0; }
 body.design-traditional .ch-tevents__inner {
     display: grid;
@@ -2699,7 +2699,7 @@ body.design-traditional .ch-tevents__visual img { width: 100%; display: block; }
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   37. BOOKING MODAL — TRADITIONAL (matches mockups 5–8)
+   37. BOOKING MODAL - TRADITIONAL (matches mockups 5–8)
    ──────────────────────────────────────────────────────────────────────────
    Markup: components/booking-wizard.php + components/forms/form_step_modal.php.
    These inherit the parchment palette via the §1 token remap, but keep the modern
@@ -2827,7 +2827,7 @@ body.design-traditional .ch-bk-field label {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   38. HISTORY BOOK + ORIGIN TIMELINE — PARCHMENT REFINEMENTS
+   38. HISTORY BOOK + ORIGIN TIMELINE - PARCHMENT REFINEMENTS
    ──────────────────────────────────────────────────────────────────────────
    The Why-Sugarcane page-turn book (.ch-book*) and the About origin timeline
    (.ch-origin-timeline) inherit the palette via §1, but a few values were
@@ -2895,7 +2895,7 @@ body.design-traditional .ch-timeline-text { color: var(--client-color-16); }
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   39. VIDEO CAROUSELS — TRADITIONAL (vintage framed prints)
+   39. VIDEO CAROUSELS - TRADITIONAL (vintage framed prints)
    ──────────────────────────────────────────────────────────────────────────
    carousel_video_scroll (.ch-vs-*) + carousel_mini_video_scroll (.ch-mvs-*).
    These inherit the palette via §1 but keep modern 16px radii + black chrome.

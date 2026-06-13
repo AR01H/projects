@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  * Grouping : `container` lets the front end render sections (e.g. "Calculators").
  *
  * Mirrors the AH_Content_Taxonomy_Model pattern (ensure_table + sync + render).
- * New content types need NO schema change — register a link type via the filter.
+ * New content types need NO schema change - register a link type via the filter.
  */
 class AH_Related_Links_Model {
 
@@ -32,7 +32,7 @@ class AH_Related_Links_Model {
 
 	// ── Table guard ──────────────────────────────────────────────────────────
 	/**
-	 * The table DDL lives ONLY in AH_DB_Schema (table 41c) — the single source of
+	 * The table DDL lives ONLY in AH_DB_Schema (table 41c) - the single source of
 	 * truth. This guard just self-heals: if the table is somehow missing (e.g. the
 	 * version upgrade hasn't run yet), it triggers the idempotent installer once.
 	 */
@@ -52,7 +52,7 @@ class AH_Related_Links_Model {
 	// ── Extensible link-type registry ────────────────────────────────────────
 	/**
 	 * Each type: label, icon, and the default target kind it resolves to.
-	 * Add future content types by hooking `ah_related_link_types` — no schema change.
+	 * Add future content types by hooking `ah_related_link_types` - no schema change.
 	 */
 	public static function link_types(): array {
 		$types = array(
@@ -204,7 +204,7 @@ class AH_Related_Links_Model {
 				$link_type = 'external';
 			}
 
-			// Determine target kind/id — combined 'target' value wins when present.
+			// Determine target kind/id - combined 'target' value wins when present.
 			$target_kind = '';
 			$target_id   = 0;
 			if ( ! empty( $row['target'] ) && strpos( (string) $row['target'], ':' ) !== false ) {
@@ -362,7 +362,7 @@ class AH_Related_Links_Model {
 			</select>
 
 			<select class="ah-rl-target" title="Pick an internal target (or leave to use the URL field)" style="<?php echo $inp; ?>flex:1 1 170px;">
-				<option value="">— Use URL field —</option>
+				<option value="">- Use URL field -</option>
 				<?php if ( $static_pages ) : ?>
 					<optgroup label="Static Pages / Components">
 						<?php foreach ( $static_pages as $sp ) :
@@ -396,7 +396,7 @@ class AH_Related_Links_Model {
 		<?php
 	}
 
-	/** Container datalist — printed once per page. */
+	/** Container datalist - printed once per page. */
 	private static function print_shared_assets( string $dl_id ): void {
 		if ( self::$assets_printed ) {
 			return;

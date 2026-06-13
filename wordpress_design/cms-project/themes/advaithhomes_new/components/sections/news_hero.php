@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/news_hero.php — News page dark-gradient hero with stats.
+ * components/sections/news_hero.php - News page dark-gradient hero with stats.
  *
  * Props: $hero { title, description, stats[] { value, label } }
  * Usage: adn_component( 'sections/news_hero', array( 'hero' => $ctx['hero'] ) );

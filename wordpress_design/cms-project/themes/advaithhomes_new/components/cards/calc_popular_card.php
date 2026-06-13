@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/calc_popular_card.php — Popular calculator card (centred, with CTA link).
+ * components/cards/calc_popular_card.php - Popular calculator card (centred, with CTA link).
  *
  * Props: $calc { icon, title, desc, url }
  * Usage: adn_component( 'cards/calc_popular_card', array( 'calc' => $calc ) );

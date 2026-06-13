@@ -1,6 +1,6 @@
 <?php
 /**
- * admin/mock-installer.php — seed sample content into the CMS plugin's real
+ * admin/mock-installer.php - seed sample content into the CMS plugin's real
  * data model (exactly how the plugin stores it):
  *
  *   - Parent Terms  → wp_ah_taxonomy_parent_terms  (Buying / Selling / House Movers, + News)
@@ -24,7 +24,7 @@ class ADN_Mock_Installer {
 		if ( ! function_exists( 'adn_cms_available' ) || ! adn_cms_available() ) {
 			return array(
 				'ok'      => false,
-				'message' => __( 'CMS plugin tables not found — activate the CMS plugin first, then seed.', ADN_TEXT_DOMAIN ),
+				'message' => __( 'CMS plugin tables not found - activate the CMS plugin first, then seed.', ADN_TEXT_DOMAIN ),
 				'summary' => array(),
 			);
 		}
@@ -39,7 +39,7 @@ class ADN_Mock_Installer {
 		$pt    = $wpdb->prefix . 'ah_taxonomy_parent_terms';
 
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
-			return array( 'ok' => false, 'message' => __( 'Parent Terms table is missing — open the plugin Taxonomies → Parent Terms once, then seed.', ADN_TEXT_DOMAIN ), 'summary' => array() );
+			return array( 'ok' => false, 'message' => __( 'Parent Terms table is missing - open the plugin Taxonomies → Parent Terms once, then seed.', ADN_TEXT_DOMAIN ), 'summary' => array() );
 		}
 
 		$summary = array( 'parents' => 0, 'terms' => 0, 'posts' => 0 );
@@ -115,7 +115,7 @@ class ADN_Mock_Installer {
 
 		$message = sprintf(
 			/* translators: 1: parent terms, 2: terms, 3: posts created */
-			__( 'Sample content ready — %1$d parent term(s), %2$d term(s) and %3$d WordPress post(s) created (existing items left untouched).', ADN_TEXT_DOMAIN ),
+			__( 'Sample content ready - %1$d parent term(s), %2$d term(s) and %3$d WordPress post(s) created (existing items left untouched).', ADN_TEXT_DOMAIN ),
 			$summary['parents'],
 			$summary['terms'],
 			$summary['posts']

@@ -5,7 +5,7 @@
  * Intermediate logic for the calculators listing page.
  * Loads data/json/calculators.json via the service layer.
  *
- * RULE: No markup here — only data shaping.
+ * RULE: No markup here - only data shaping.
  * RULE: Caller is pages/page-calculator.php.
  */
 

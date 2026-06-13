@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/main_header.php — Component: Site Header
+ * components/parts/main_header.php - Component: Site Header
  *
  * Renders: logo, primary navigation (with multi-level submenus / dropdowns),
  *          a live site-search panel (WordPress core ?s= search), the header
@@ -90,17 +90,17 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         <div class="container">
             <div class="header-search-box">
                 <form class="header-search-form" role="search" method="get" action="<?php echo $search_action; ?>" data-suggest="<?php echo $search_suggest; ?>">
-                    <span class="header-search-icon" aria-hidden="true"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></span>
+                    <!-- <span class="header-search-icon" aria-hidden="true"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></span> -->
                     <input type="search" name="s" class="header-search-input"
                            placeholder="<?php echo esc_attr( $search_placeholder ); ?>"
                            value="<?php echo esc_attr( $search_value ); ?>"
                            aria-label="<?php echo esc_attr( $search_placeholder ); ?>"
                            autocomplete="off" role="combobox" aria-expanded="false"
                            aria-controls="headerSearchSuggest" aria-autocomplete="list">
-                    <button type="submit" class="btn btn-primary btn-sm"><?php echo esc_html( $search_label ); ?></button>
+                    <button type="submit" class="btn btn-primary btn-sm"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></button>
                     <button type="button" class="header-search-close" aria-label="Close search">✕</button>
                 </form>
-                <div class="search-suggest js-suggest" id="headerSearchSuggest" role="listbox" hidden></div>
+                <!-- <div class="search-suggest js-suggest" id="headerSearchSuggest" role="listbox" hidden></div> -->
             </div>
         </div>
     </div>
@@ -121,6 +121,12 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         <div class="search-suggest search-suggest--mobile js-suggest" role="listbox" hidden></div>
     </div>
 
+    <?php if ( ! empty( $cta['label'] ) ) : ?>
+        <div class="mobile-menu-cta mobile-menu-cta--top">
+            <a href="<?php echo esc_url( adn_link( isset( $cta['url'] ) ? $cta['url'] : '' ) ); ?>" class="btn btn-primary btn-lg"><?php echo esc_html( $cta['label'] ); ?></a>
+        </div>
+    <?php endif; ?>
+
     <?php foreach ( $nav as $item ) : ?>
         <?php
         $item     = (array) $item;
@@ -135,7 +141,6 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                     <span class="mobile-nav-caret" aria-hidden="true">▾</span>
                 </button>
                 <div class="mobile-submenu" hidden>
-                    <a href="<?php echo $url; ?>" class="mobile-subnav-link mobile-subnav-all"><?php echo esc_html( 'All ' . $label ); ?></a>
                     <?php foreach ( $children as $child ) : ?>
                         <?php $child = (array) $child; ?>
                         <a href="<?php echo esc_url( adn_link( isset( $child['url'] ) ? $child['url'] : '' ) ); ?>"

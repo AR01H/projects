@@ -1,6 +1,6 @@
 <?php
 /**
- * admin/tabs/tab-import-export.php — Import / Export.
+ * admin/tabs/tab-import-export.php - Import / Export.
  *
  * Theme-level: export/import the theme's own settings (Home hero, sections,
  * featured guides, calculators) as JSON.
@@ -16,7 +16,7 @@ $plugin_import_url = admin_url( 'admin.php?page=ah-import' );
 <div class="card" style="max-width:none;">
 	<h2><?php esc_html_e( 'Export theme settings (JSON)', ADN_TEXT_DOMAIN ); ?></h2>
 	<p class="description">
-		<?php esc_html_e( 'Download all theme settings (Home hero, sections, featured guides, calculators) as a JSON file — handy as a backup or to copy settings to another site.', ADN_TEXT_DOMAIN ); ?>
+		<?php esc_html_e( 'Download all theme settings (Home hero, sections, featured guides, calculators) as a JSON file - handy as a backup or to copy settings to another site.', ADN_TEXT_DOMAIN ); ?>
 	</p>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 		<input type="hidden" name="action" value="adn_export_settings">
@@ -42,7 +42,7 @@ $plugin_import_url = admin_url( 'admin.php?page=ah-import' );
 	<h2><?php esc_html_e( 'Content import (CSV)', ADN_TEXT_DOMAIN ); ?></h2>
 	<?php if ( $has_plugin_import ) : ?>
 		<p class="description">
-			<?php esc_html_e( 'Bulk content — services, posts, reviews, FAQs, team, taxonomies, news bar and more — is imported through the CMS plugin\'s CSV importer. It is kept there (one place) so the theme does not duplicate it.', ADN_TEXT_DOMAIN ); ?>
+			<?php esc_html_e( 'Bulk content - services, posts, reviews, FAQs, team, taxonomies, news bar and more - is imported through the CMS plugin\'s CSV importer. It is kept there (one place) so the theme does not duplicate it.', ADN_TEXT_DOMAIN ); ?>
 		</p>
 		<p><a class="button" href="<?php echo esc_url( $plugin_import_url ); ?>"><?php esc_html_e( 'Open Data Import (CSV) →', ADN_TEXT_DOMAIN ); ?></a></p>
 	<?php else : ?>

@@ -1,9 +1,9 @@
-# 01 — Bootstrap (`function.php`)
+# 01 - Bootstrap (`function.php`)
 
 ## What It Does
 
 `function.php` is the **only entry point** WordPress calls automatically.
-Its entire job is to load other files in the right order — nothing else.
+Its entire job is to load other files in the right order - nothing else.
 
 ---
 
@@ -35,53 +35,53 @@ No need to touch `function.php` at all.
 
 ## Load Order Explained
 
-### Step 0 — Constants (`static/`)
+### Step 0 - Constants (`static/`)
 ```php
 require_once __DIR__ . '/static/page-sample.php';
 ```
 Must be **first**. Every other file uses `NPT_*` constants.
 If this loads after config, PHP throws undefined constant errors.
 
-### Step 1 — Config (`includes/core_settings.php`)
+### Step 1 - Config (`includes/core_settings.php`)
 ```php
 $GLOBALS['theme_config'] = require __DIR__ . '/includes/core_settings.php';
 ```
 Returns a plain PHP array. Stored in `$GLOBALS` so every module can read it
-with `$cfg = $GLOBALS['theme_config']` — no global keyword needed.
+with `$cfg = $GLOBALS['theme_config']` - no global keyword needed.
 
 > **Why not a class or singleton?**
 > A plain array is simpler, faster, and easier to debug.
 > `var_dump( $GLOBALS['theme_config'] )` gives you the whole picture instantly.
 
-### Step 2 — Helpers (`common/`)
+### Step 2 - Helpers (`common/`)
 ```php
 theme_load_dir( __DIR__ . '/common' );
 ```
 Functions like `npt_component()`, `npt_fetch_posts()`, `npt_truncate()`.
 These must exist before includes/ modules call them.
 
-### Step 3 — Core Modules (`includes/`)
+### Step 3 - Core Modules (`includes/`)
 ```php
 theme_load_dir( __DIR__ . '/includes' );
 ```
 Loads `core_details.php`, `core_terms.php`, `rules_conditions.php`.
 Each file reads `$GLOBALS['theme_config']` and registers hooks.
 
-### Step 4 — Middleware (`middleware/`)
+### Step 4 - Middleware (`middleware/`)
 ```php
 theme_load_dir( __DIR__ . '/middleware' );
 ```
 Attaches REST lifecycle filters (auth, rate-limit, CORS).
 Must run before REST routes are registered.
 
-### Step 5 — Admin (`admin/`)
+### Step 5 - Admin (`admin/`)
 ```php
 theme_load_dir( __DIR__ . '/admin' );
 ```
 Admin pages, metaboxes, settings panels.
-WordPress guards admin-only hooks internally — safe to load always.
+WordPress guards admin-only hooks internally - safe to load always.
 
-### Step 6 — APIs (`apis/`)
+### Step 6 - APIs (`apis/`)
 ```php
 theme_load_dir( __DIR__ . '/apis' );
 ```
@@ -89,7 +89,7 @@ Defines REST routes and AJAX handlers.
 Routes are actually _registered_ on `rest_api_init` (inside each file),
 so loading the file here just defines the PHP functions.
 
-### Step 7 — Asset Enqueue (hook)
+### Step 7 - Asset Enqueue (hook)
 ```php
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_assets' );
 ```
@@ -102,7 +102,7 @@ Version comes from `NPT_VERSION` constant.
 
 1. Create a file in the right folder (e.g. `includes/my-new-feature.php`)
 2. Write your hook registrations inside it
-3. Done — `theme_load_dir()` picks it up automatically
+3. Done - `theme_load_dir()` picks it up automatically
 
 You **never** need to edit `function.php` to add a new feature.
 

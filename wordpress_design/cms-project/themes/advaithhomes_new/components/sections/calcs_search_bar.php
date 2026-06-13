@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/calcs_search_bar.php — Calculators search strip.
+ * components/sections/calcs_search_bar.php - Calculators search strip.
  *
  * Props: $search { placeholder }
  * JS (calculators.js) hooks into #calcSearchInput.

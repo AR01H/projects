@@ -1,6 +1,6 @@
 <?php
 /**
- * admin/page-sample.php — Admin Module Sample
+ * admin/page-sample.php - Admin Module Sample
  *
  * Covers:
  *   - Custom admin page (Settings panel)
@@ -38,7 +38,7 @@ foreach ( $npt_admin_hooks as $hook ) {
 
 /**
  * Register theme admin pages.
- * Add more pages to the $pages array — no extra add_menu_page() calls.
+ * Add more pages to the $pages array - no extra add_menu_page() calls.
  */
 function npt_admin_register_pages(): void {
     $pages = [
@@ -169,5 +169,5 @@ function npt_admin_register_dashboard_widget(): void {
 
 function npt_render_dashboard_widget(): void {
     echo '<p>Theme version: <strong>' . esc_html( $GLOBALS['theme_config']['version'] ) . '</strong></p>';
-    // stub — show quick stats, recent activity, etc.
+    // stub - show quick stats, recent activity, etc.
 }

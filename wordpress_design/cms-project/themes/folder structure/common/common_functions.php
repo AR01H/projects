@@ -1,6 +1,6 @@
 <?php
 /**
- * common/common_functions.php — Global Helper / Utility Functions
+ * common/common_functions.php - Global Helper / Utility Functions
  *
  * RULE: Pure functions only. No hooks, no globals.
  *       Every function must be prefixed `npt_` to avoid collisions.

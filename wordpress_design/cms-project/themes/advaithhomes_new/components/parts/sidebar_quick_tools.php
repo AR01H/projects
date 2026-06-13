@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_quick_tools.php — Sidebar: Quick Tools card (dark bg).
+ * components/parts/sidebar_quick_tools.php - Sidebar: Quick Tools card (dark bg).
  *
  * Props: $quick_tools { heading, items[], cta { label, url } }
  * Usage: adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $ctx['sidebar']['quick_tools'] ) );

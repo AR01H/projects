@@ -9,7 +9,7 @@
     ],
     "hero": {
         "title": "Property News & Insights",
-        "description": "Stay up to date with the latest UK property market news, mortgage rate changes, regulation updates and expert commentary — all in one place.",
+        "description": "Stay up to date with the latest UK property market news, mortgage rate changes, regulation updates and expert commentary - all in one place.",
         "stats": [
             { "value": "Weekly", "label": "New articles" },
             { "value": "6", "label": "Topics covered" },
@@ -44,10 +44,10 @@
             "items": [
                 { "cat_key": "mortgage",   "icon": "🏦", "bg_class": "",      "pill_class": "pill-mortgage",   "category": "Mortgages", "title": "Mortgage Rates Fall for Third Month in a Row", "excerpt": "Average two-year fixed rates have dropped to 4.8%, the lowest since early 2023, as lenders compete for market share.", "date": "May 21, 2024", "read_time": "4 min read", "url": "/news/" },
                 { "cat_key": "regulation", "icon": "⚖️", "bg_class": "accent","pill_class": "pill-regulation", "category": "Regulation", "title": "Renters Reform Bill: What It Means for Landlords and Tenants", "excerpt": "The long-awaited legislation abolishing Section 21 no-fault evictions has passed its final reading in Parliament.", "date": "May 20, 2024", "read_time": "6 min read", "url": "/news/" },
-                { "cat_key": "buying",     "icon": "🔑", "bg_class": "",      "pill_class": "pill-buying",     "category": "Buying", "title": "Stamp Duty Changes: What First-Time Buyers Need to Know in 2024", "excerpt": "The temporary Stamp Duty thresholds introduced in 2022 are set to end — here is how buyers will be affected.", "date": "May 18, 2024", "read_time": "5 min read", "url": "/news/" },
+                { "cat_key": "buying",     "icon": "🔑", "bg_class": "",      "pill_class": "pill-buying",     "category": "Buying", "title": "Stamp Duty Changes: What First-Time Buyers Need to Know in 2024", "excerpt": "The temporary Stamp Duty thresholds introduced in 2022 are set to end - here is how buyers will be affected.", "date": "May 18, 2024", "read_time": "5 min read", "url": "/news/" },
                 { "cat_key": "market",     "icon": "🏙", "bg_class": "dark",  "pill_class": "pill-market",     "category": "Market", "title": "London vs the Regions: Where is Property Offering the Best Value in 2024?", "excerpt": "New data shows northern cities outperforming the capital on price growth, yield and buyer demand for the second year running.", "date": "May 17, 2024", "read_time": "7 min read", "url": "/news/" },
                 { "cat_key": "selling",    "icon": "📊", "bg_class": "accent","pill_class": "pill-selling",    "category": "Selling", "title": "Estate Agent Fees Rise Slightly as Competition Intensifies in Spring Market", "excerpt": "Average fees for high street agents have nudged up to 1.42%, while online-only agents are gaining market share in urban areas.", "date": "May 16, 2024", "read_time": "4 min read", "url": "/news/" },
-                { "cat_key": "economy",    "icon": "📉", "bg_class": "",      "pill_class": "pill-economy",    "category": "Economy", "title": "Bank of England Holds Base Rate at 5.25% — What Next for Borrowers?", "excerpt": "The MPC voted 7-2 to hold, with the two dissenters calling for a cut. Markets now expect the first reduction in August 2024.", "date": "May 15, 2024", "read_time": "5 min read", "url": "/news/" }
+                { "cat_key": "economy",    "icon": "📉", "bg_class": "",      "pill_class": "pill-economy",    "category": "Economy", "title": "Bank of England Holds Base Rate at 5.25% - What Next for Borrowers?", "excerpt": "The MPC voted 7-2 to hold, with the two dissenters calling for a cut. Markets now expect the first reduction in August 2024.", "date": "May 15, 2024", "read_time": "5 min read", "url": "/news/" }
             ]
         },
         {
@@ -56,7 +56,7 @@
             "link_label": "See all market news →",
             "link_url": "/news/",
             "items": [
-                { "cat_key": "market", "icon": "🏡", "tags": [{ "label": "Market",     "class": "market"     }], "title": "Rightmove Reports Record Spring Asking Prices — Average Home Now £375,131", "excerpt": "New seller asking prices hit an all-time high in May, driven by low supply and improving buyer confidence ahead of a potential rate cut.", "date": "May 14, 2024", "read_time": "4 min read", "url": "/news/" },
+                { "cat_key": "market", "icon": "🏡", "tags": [{ "label": "Market",     "class": "market"     }], "title": "Rightmove Reports Record Spring Asking Prices - Average Home Now £375,131", "excerpt": "New seller asking prices hit an all-time high in May, driven by low supply and improving buyer confidence ahead of a potential rate cut.", "date": "May 14, 2024", "read_time": "4 min read", "url": "/news/" },
                 { "cat_key": "market", "icon": "📊", "tags": [{ "label": "Market",     "class": "market"     }], "title": "Halifax: Annual House Price Growth Turns Positive for First Time in 14 Months", "excerpt": "The lender's index showed prices up 0.2% year-on-year in April, reversing a sustained period of modest declines.", "date": "May 12, 2024", "read_time": "3 min read", "url": "/news/" },
                 { "cat_key": "market", "icon": "🔭", "tags": [{ "label": "Market",     "class": "market"     }], "title": "New Build Completions Fall 22% Year-on-Year as Construction Costs Bite", "excerpt": "NHBC data shows the sharpest single-year drop in new build registrations since 2009, raising concerns about long-term housing supply.", "date": "May 10, 2024", "read_time": "5 min read", "url": "/news/" },
                 { "cat_key": "market", "icon": "🗓", "tags": [{ "label": "Market",     "class": "market"     }], "title": "Zoopla: Time to Sell Falls to 25 Days in Most Active Regions", "excerpt": "Properties in Yorkshire, the North West and the East Midlands are selling fastest, with competitive pricing the key driver.", "date": "May 8, 2024", "read_time": "3 min read", "url": "/news/" }
@@ -69,8 +69,8 @@
             "link_url": "/regulations/",
             "items": [
                 { "cat_key": "regulation", "icon": "📋", "tags": [{ "label": "Regulation", "class": "regulation" }], "title": "New EPC Requirements for Landlords: What You Must Do by 2025", "excerpt": "All privately rented properties in England and Wales will need at least an EPC rating of C by 2025, affecting an estimated 2.3 million homes.", "date": "May 9, 2024", "read_time": "6 min read", "url": "/news/" },
-                { "cat_key": "regulation", "icon": "🏛", "tags": [{ "label": "Regulation", "class": "regulation" }], "title": "Leasehold Reform Act 2024: Key Changes Explained", "excerpt": "The Act makes it easier and cheaper for leaseholders to extend their lease or buy the freehold — here is what has changed and when it takes effect.", "date": "May 6, 2024", "read_time": "8 min read", "url": "/news/" },
-                { "cat_key": "regulation", "icon": "🔒", "tags": [{ "label": "Regulation", "class": "regulation" }], "title": "SDLT Surcharge on Second Homes Rises to 5% — What Buyers Need to Know", "excerpt": "The additional Stamp Duty surcharge on additional residential properties rose from 3% to 5% with immediate effect following the Autumn Statement.", "date": "May 4, 2024", "read_time": "4 min read", "url": "/news/" }
+                { "cat_key": "regulation", "icon": "🏛", "tags": [{ "label": "Regulation", "class": "regulation" }], "title": "Leasehold Reform Act 2024: Key Changes Explained", "excerpt": "The Act makes it easier and cheaper for leaseholders to extend their lease or buy the freehold - here is what has changed and when it takes effect.", "date": "May 6, 2024", "read_time": "8 min read", "url": "/news/" },
+                { "cat_key": "regulation", "icon": "🔒", "tags": [{ "label": "Regulation", "class": "regulation" }], "title": "SDLT Surcharge on Second Homes Rises to 5% - What Buyers Need to Know", "excerpt": "The additional Stamp Duty surcharge on additional residential properties rose from 3% to 5% with immediate effect following the Autumn Statement.", "date": "May 4, 2024", "read_time": "4 min read", "url": "/news/" }
             ]
         },
         {
@@ -79,8 +79,8 @@
             "link_label": "See all mortgage news →",
             "link_url": "/news/",
             "items": [
-                { "cat_key": "mortgage", "icon": "🏦", "tags": [{ "label": "Mortgage", "class": "mortgage" }], "title": "Barclays and Halifax Cut Fixed Rates — What the New Deals Mean for You", "excerpt": "Two of the UK's biggest lenders have cut their headline fixed rates by up to 0.3%, offering a boost to buyers and remortgagers looking to lock in.", "date": "May 13, 2024", "read_time": "4 min read", "url": "/news/" },
-                { "cat_key": "mortgage", "icon": "📉", "tags": [{ "label": "Mortgage", "class": "mortgage" }], "title": "More Borrowers Choosing 5-Year Fixes Over 2-Year Deals — Here's Why", "excerpt": "With rate certainty increasingly valuable, data shows a growing preference for longer-term fixes as borrowers look to shield themselves from future uncertainty.", "date": "May 11, 2024", "read_time": "5 min read", "url": "/news/" },
+                { "cat_key": "mortgage", "icon": "🏦", "tags": [{ "label": "Mortgage", "class": "mortgage" }], "title": "Barclays and Halifax Cut Fixed Rates - What the New Deals Mean for You", "excerpt": "Two of the UK's biggest lenders have cut their headline fixed rates by up to 0.3%, offering a boost to buyers and remortgagers looking to lock in.", "date": "May 13, 2024", "read_time": "4 min read", "url": "/news/" },
+                { "cat_key": "mortgage", "icon": "📉", "tags": [{ "label": "Mortgage", "class": "mortgage" }], "title": "More Borrowers Choosing 5-Year Fixes Over 2-Year Deals - Here's Why", "excerpt": "With rate certainty increasingly valuable, data shows a growing preference for longer-term fixes as borrowers look to shield themselves from future uncertainty.", "date": "May 11, 2024", "read_time": "5 min read", "url": "/news/" },
                 { "cat_key": "mortgage", "icon": "📑", "tags": [{ "label": "Mortgage", "class": "mortgage" }], "title": "Mortgage Approvals Hit Highest Level Since October 2022, Bank of England Data Shows", "excerpt": "Net mortgage approvals for house purchases rose to 61,300 in March, the highest reading in 18 months and a sign of recovering buyer confidence.", "date": "May 3, 2024", "read_time": "3 min read", "url": "/news/" }
             ]
         }
@@ -119,7 +119,7 @@
     "bottom_newsletter": {
         "icon": "✉️",
         "title": "Stay Informed on Property News",
-        "description": "Join thousands of buyers, sellers and investors who get our weekly property briefing — market moves, rate changes, and regulation updates.",
+        "description": "Join thousands of buyers, sellers and investors who get our weekly property briefing - market moves, rate changes, and regulation updates.",
         "placeholder": "Enter your email address",
         "button_label": "Subscribe →",
         "note": "No spam · Unsubscribe any time · 100% free"

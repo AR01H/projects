@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_news_mini.php — Sidebar: compact news list.
+ * components/parts/sidebar_news_mini.php - Sidebar: compact news list.
  *
  * Wraps cards/news_item in a sidebar card shell with a heading and view-all link.
  * Reuses the same data shape as news_item: { title, date, gradient, url }.

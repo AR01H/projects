@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/calculators.php — Section: Popular Calculators grid
+ * components/sections/calculators.php - Section: Popular Calculators grid
  *
  * Props: $items [ { icon, name, url } ]
  * Usage: adn_component( 'sections/calculators', array( 'items' => $ctx['calculators']['items'] ) );

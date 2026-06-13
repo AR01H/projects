@@ -28,7 +28,7 @@ $year     = gmdate( 'Y' );
   <div class="container ah-news-cta__inner">
     <div class="ah-news-cta__text">
       <h3 class="ah-news-cta__title">Stay informed with expert guides, updates &amp; practical tips.</h3>
-      <p class="ah-news-cta__sub">Straight to your inbox. No spam — unsubscribe anytime.</p>
+      <p class="ah-news-cta__sub">Straight to your inbox. No spam - unsubscribe anytime.</p>
     </div>
     <form class="ah-news-cta__form" id="ahNewsletterForm" novalidate>
       <input type="hidden" name="page_url" value="<?php echo esc_url( ( is_ssl() ? 'https://' : 'http://' ) . ( $_SERVER['HTTP_HOST'] ?? '' ) . ( $_SERVER['REQUEST_URI'] ?? '' ) ); ?>">

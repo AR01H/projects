@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/news_card.php — Grid news card (used inside news_section grid).
+ * components/cards/news_card.php - Grid news card (used inside news_section grid).
  *
  * Props: $item { cat_key, icon, bg_class, pill_class, category, title, excerpt, date, read_time, url }
  * Usage: adn_component( 'cards/news_card', array( 'item' => $item ) );

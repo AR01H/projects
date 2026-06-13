@@ -1,6 +1,6 @@
 <?php
 /**
- * includes/core_settings.php — Central Configuration
+ * includes/core_settings.php - Central Configuration
  *
  * RULE: All "what" is defined here as arrays.
  *       Loaders read this and register everything.

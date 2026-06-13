@@ -2,10 +2,10 @@
 /**
  * Template Name: Guide Article
  *
- * pages/page-topic_category_guide.php — Generic guide/article page.
+ * pages/page-topic_category_guide.php - Generic guide/article page.
  *
  * Works for any category's guide articles: buying, selling, moving or any future type.
- * The page slug drives which JSON is loaded — no content is hardcoded here.
+ * The page slug drives which JSON is loaded - no content is hardcoded here.
  *
  * Architecture:
  *   data/json/guide-{slug}.json
@@ -16,7 +16,7 @@
  *           → components/parts/*     (sidebar, stay-informed bar)
  *           → components/cards/*     (reused from home/category pages)
  *
- * RULE: No hardcoded content and no data reads here — only structure.
+ * RULE: No hardcoded content and no data reads here - only structure.
  * RULE: Header/footer come from header.php / footer.php via get_header() / get_footer().
  */
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/calcs_sidebar.php — Calculators sidebar: category list + help CTA.
+ * components/parts/calcs_sidebar.php - Calculators sidebar: category list + help CTA.
  *
  * Props: $sidebar { categories[] { key, label, count }, help { title, text, button_label, button_url } }
  * JS syncs active state with the filter tabs via data-category attributes.

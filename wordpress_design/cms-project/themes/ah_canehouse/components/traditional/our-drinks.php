@@ -1,6 +1,6 @@
 <?php
 /**
- * Traditional Home — "Our Drinks" grid.
+ * Traditional Home - "Our Drinks" grid.
  *
  * Data-driven from ch_get_flavours() (the same source the booking wizard uses).
  * Each drink renders as a parchment product card: a photo when one is supplied,

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/news_item.php — Component: News List Item
+ * components/cards/news_item.php - Component: News List Item
  * Props: $item { title, date, tag, gradient, url }
  */
 

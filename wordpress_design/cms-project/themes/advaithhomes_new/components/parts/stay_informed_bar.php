@@ -1,9 +1,9 @@
 <?php
 /**
- * components/parts/stay_informed_bar.php — Horizontal newsletter strip.
+ * components/parts/stay_informed_bar.php - Horizontal newsletter strip.
  *
  * Distinct from newsletter_cta (which is a full centred section).
- * This is a compact horizontal bar — icon + title/desc on the left, form on the right.
+ * This is a compact horizontal bar - icon + title/desc on the left, form on the right.
  * Form is presentational for now; wire to a REST route when ready.
  *
  * Props: $stay_informed { icon, title, description, placeholder, button_label, note }

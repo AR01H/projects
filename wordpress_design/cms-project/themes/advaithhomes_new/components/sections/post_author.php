@@ -2,7 +2,7 @@
 /**
  * components/sections/post_author.php
  *
- * Author box — avatar icon, author name, role, last updated date.
+ * Author box - avatar icon, author name, role, last updated date.
  *
  * Props (via extract):
  *   $author = [

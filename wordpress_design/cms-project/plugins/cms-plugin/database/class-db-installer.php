@@ -5,10 +5,10 @@ defined( 'ABSPATH' ) || exit;
  * Orchestrates database setup and upgrades.
  *
  * Delegates to four focused classes:
- *   AH_DB_Schema        — CREATE TABLE definitions
- *   AH_DB_Foreign_Keys  — ALTER TABLE FK constraints
- *   AH_DB_Seed          — default data on fresh install
- *   AH_DB_Migrations    — idempotent column/data migrations per client
+ *   AH_DB_Schema        - CREATE TABLE definitions
+ *   AH_DB_Foreign_Keys  - ALTER TABLE FK constraints
+ *   AH_DB_Seed          - default data on fresh install
+ *   AH_DB_Migrations    - idempotent column/data migrations per client
  *
  * For new clients  → install() creates everything fresh.
  * For existing clients → maybe_upgrade() runs only migrations.

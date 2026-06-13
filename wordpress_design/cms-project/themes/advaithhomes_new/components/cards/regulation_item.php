@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/regulation_item.php — Component: Regulation List Item
+ * components/cards/regulation_item.php - Component: Regulation List Item
  * Props: $item { badge_lines[], title, date, url }
  */
 

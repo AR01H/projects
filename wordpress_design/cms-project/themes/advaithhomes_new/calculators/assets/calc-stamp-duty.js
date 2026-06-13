@@ -1,5 +1,5 @@
 /* ============================================================
-   calc-stamp-duty.js — Stamp Duty (SDLT) calculator logic.
+   calc-stamp-duty.js - Stamp Duty (SDLT) calculator logic.
    Runs standalone inside the calculator iframe. No dependencies.
    ============================================================ */
 (function () {

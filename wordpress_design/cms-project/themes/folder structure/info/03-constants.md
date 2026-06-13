@@ -1,4 +1,4 @@
-# 03 — Constants (`static/page-sample.php`)
+# 03 - Constants (`static/page-sample.php`)
 
 ## What It Is
 
@@ -54,7 +54,7 @@ Always use this pattern for theme constants.
 
 ### Meta Keys
 These are post meta (`_postmeta` table) key names.
-**Never hardcode these strings** — always reference the constant.
+**Never hardcode these strings** - always reference the constant.
 
 | Constant | Meta Key | Purpose |
 |----------|----------|---------|
@@ -139,7 +139,7 @@ if ( false === $data ) {
 
 1. Open `static/page-sample.php`
 2. Add: `defined( 'NPT_MY_CONSTANT' ) || define( 'NPT_MY_CONSTANT', 'value' );`
-3. Use `NPT_MY_CONSTANT` everywhere — never the raw string
+3. Use `NPT_MY_CONSTANT` everywhere - never the raw string
 
 **Naming rule:** `NPT_` + `CATEGORY_` + `NAME` in `UPPER_SNAKE_CASE`
 - Meta keys: `NPT_META_*`

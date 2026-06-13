@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/journey.php — Section: "Where are you in your journey?" cards
+ * components/sections/journey.php - Section: "Where are you in your journey?" cards
  *
  * Props: $cards [ { icon, gradient, title, description, link_label, url } ]
  * Usage: adn_component( 'sections/journey', array( 'cards' => $ctx['journey']['cards'] ) );

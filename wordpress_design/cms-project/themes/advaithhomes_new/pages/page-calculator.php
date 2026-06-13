@@ -2,10 +2,10 @@
 /**
  * Template Name: Calculators
  *
- * pages/page-calculator.php — All Calculators listing page.
+ * pages/page-calculator.php - All Calculators listing page.
  *
  * All content comes from data/json/calculators.json via the service layer.
- * No content is hardcoded here — only structure.
+ * No content is hardcoded here - only structure.
  *
  * Architecture:
  *   data/json/calculators.json
@@ -13,7 +13,7 @@
  *       → intermediate/page_calculators_logical.php  adn_calculators_get_context()
  *         → THIS FILE  (structure only)
  *
- * RULE: No hardcoded content and no data reads here — only structure.
+ * RULE: No hardcoded content and no data reads here - only structure.
  * RULE: Header/footer come from header.php / footer.php via get_header() / get_footer().
  */
 
@@ -22,12 +22,18 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_calculators_logical.php';
 $ctx = adn_calculators_get_context();
 
-adn_page_open( $ctx );
+// Breadcrumb renders inside the hero banner — suppress from adn_page_open.
+$_open_ctx               = $ctx;
+$_open_ctx['breadcrumb'] = array();
+adn_page_open( $_open_ctx );
 ?>
 
 <?php /* ============================== HERO ============================== */ ?>
 <?php if ( ! empty( $ctx['hero'] ) ) : ?>
-	<?php adn_component( 'sections/calcs_hero', array( 'hero' => $ctx['hero'] ) ); ?>
+	<?php adn_component( 'sections/page_hero', array(
+		'hero'       => $ctx['hero'],
+		'breadcrumb' => $ctx['breadcrumb'],
+	) ); ?>
 <?php endif; ?>
 
 <?php /* ============================== TRUST BAR ============================== */ ?>
@@ -41,12 +47,12 @@ adn_page_open( $ctx );
 <?php /* ============================== MAIN LAYOUT: SIDEBAR + CONTENT ============================== */ ?>
 <div class="calcs-main-layout">
 
-	<?php /* LEFT SIDEBAR — category nav + help CTA */ ?>
+	<?php /* LEFT SIDEBAR - category nav + help CTA */ ?>
 	<?php if ( ! empty( $ctx['sidebar'] ) ) : ?>
 		<?php adn_component( 'parts/calcs_sidebar', array( 'sidebar' => $ctx['sidebar'] ) ); ?>
 	<?php endif; ?>
 
-	<?php /* MAIN — popular grid + all calculators list */ ?>
+	<?php /* MAIN - popular grid + all calculators list */ ?>
 	<main>
 
 		<?php if ( ! empty( $ctx['popular_calcs'] ) ) : ?>

@@ -1,5 +1,5 @@
 /**
- * ask_expert.js — Ask an Expert directory interactions.
+ * ask_expert.js - Ask an Expert directory interactions.
  * - Category filter tabs: show/hide expert cards by data-cat
  */
 

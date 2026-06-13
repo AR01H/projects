@@ -1,6 +1,6 @@
 <?php
 /**
- * pages/page-sample.php — Page Template Sample
+ * pages/page-sample.php - Page Template Sample
  *
  * Template Name: Sample Archive Page
  *

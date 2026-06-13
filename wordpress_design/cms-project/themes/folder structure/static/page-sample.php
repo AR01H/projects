@@ -1,8 +1,8 @@
 <?php
 /**
- * static/page-sample.php — Static Constants & Defines
+ * static/page-sample.php - Static Constants & Defines
  *
- * RULE: All constants defined here — one file, one place.
+ * RULE: All constants defined here - one file, one place.
  *       Everything lowercase with the npt_ prefix.
  *       Load this FIRST (before any module) from function.php.
  *
@@ -27,7 +27,7 @@ defined( 'NPT_API_RATE_WINDOW') || define( 'NPT_API_RATE_WINDOW', 60  );   // se
 // ── Pagination ────────────────────────────────────────────────────
 defined( 'NPT_POSTS_PER_PAGE' ) || define( 'NPT_POSTS_PER_PAGE', 12 );
 
-// ── Meta key names (always use these — never hardcode strings) ────
+// ── Meta key names (always use these - never hardcode strings) ────
 defined( 'NPT_META_REDIRECT'   ) || define( 'NPT_META_REDIRECT',   'npt_redirect_url' );
 defined( 'NPT_META_ALT_URL'    ) || define( 'NPT_META_ALT_URL',    'npt_alternate_url' );
 defined( 'NPT_META_ALT_TITLE'  ) || define( 'NPT_META_ALT_TITLE',  'npt_alternate_title' );

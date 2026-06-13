@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/calc_card.php — Component: Calculator Card
+ * components/cards/calc_card.php - Component: Calculator Card
  * Props: $card { icon, name, url }
  */
 

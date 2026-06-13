@@ -2,7 +2,7 @@
 /**
  * Template Name: Home
  *
- * pages/page-home.php — Home page container.
+ * pages/page-home.php - Home page container.
  *
  * Architecture (mirrors some_styles/new_advaithhomes_design/index.html):
  *   data/json/home_page.json + site_chrome.json   (content - the mock API response)

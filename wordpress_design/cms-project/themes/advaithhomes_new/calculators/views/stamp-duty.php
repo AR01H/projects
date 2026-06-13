@@ -1,6 +1,6 @@
 <?php
 /**
- * calculators/views/stamp-duty.php — Stamp Duty (SDLT) calculator markup.
+ * calculators/views/stamp-duty.php - Stamp Duty (SDLT) calculator markup.
  * Rendered standalone inside the isolated iframe; logic in assets/calc-stamp-duty.js.
  */
 

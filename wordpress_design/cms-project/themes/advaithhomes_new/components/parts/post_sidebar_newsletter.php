@@ -2,7 +2,7 @@
 /**
  * components/parts/post_sidebar_newsletter.php
  *
- * Sidebar — Stay Informed newsletter signup form.
+ * Sidebar - Stay Informed newsletter signup form.
  *
  * Props (via extract):
  *   $newsletter = [

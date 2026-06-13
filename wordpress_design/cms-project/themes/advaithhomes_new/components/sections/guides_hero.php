@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/guides_hero.php — Guides listing hero (light theme).
+ * components/sections/guides_hero.php - Guides listing hero (light theme).
  *
  * Props: $hero { eyebrow, title, description, bg_icon, trust_items[] }
  * Usage: adn_component( 'sections/guides_hero', array( 'hero' => $ctx['hero'] ) );

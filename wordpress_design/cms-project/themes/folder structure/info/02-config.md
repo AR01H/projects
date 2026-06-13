@@ -1,4 +1,4 @@
-# 02 — Config (`includes/core_settings.php`)
+# 02 - Config (`includes/core_settings.php`)
 
 ## What It Is
 
@@ -20,9 +20,9 @@ $GLOBALS['theme_config'] = require __DIR__ . '/includes/core_settings.php';
 | Constants | Fast | Can't loop over them |
 
 **Decision:** Plain array wins for theme config because:
-- You loop over CPTs, menus, sidebars to register them — arrays are loop-friendly
+- You loop over CPTs, menus, sidebars to register them - arrays are loop-friendly
 - `var_dump( $GLOBALS['theme_config'] )` shows everything at once
-- No class to instantiate — just `require` and use
+- No class to instantiate - just `require` and use
 
 ---
 
@@ -39,7 +39,7 @@ $GLOBALS['theme_config'] = require __DIR__ . '/includes/core_settings.php';
 
 ---
 
-### `assets` — Front-end files
+### `assets` - Front-end files
 ```php
 'assets' => [
     'styles' => [
@@ -66,7 +66,7 @@ To add a new stylesheet: add one line to the `styles` array. Done.
 
 ---
 
-### `menus` — Navigation locations
+### `menus` - Navigation locations
 ```php
 'menus' => [
     'primary' => 'Primary Navigation',
@@ -78,7 +78,7 @@ Add a new menu location here → it appears in WP Admin → Appearance → Menus
 
 ---
 
-### `sidebars` — Widget areas
+### `sidebars` - Widget areas
 ```php
 'sidebars' => [
     [
@@ -95,7 +95,7 @@ Add a new menu location here → it appears in WP Admin → Appearance → Menus
 
 ---
 
-### `cpt` — Custom Post Types
+### `cpt` - Custom Post Types
 ```php
 'cpt' => [
     [
@@ -116,7 +116,7 @@ Labels (Add New, Edit, View…) are auto-generated from `singular` / `plural`.
 
 ---
 
-### `taxonomies` — Custom taxonomies
+### `taxonomies` - Custom taxonomies
 ```php
 'taxonomies' => [
     [
@@ -128,7 +128,7 @@ Labels (Add New, Edit, View…) are auto-generated from `singular` / `plural`.
     ],
 ],
 ```
-Same loop pattern — `core_terms.php` calls `register_taxonomy()` for each one.
+Same loop pattern - `core_terms.php` calls `register_taxonomy()` for each one.
 
 ---
 

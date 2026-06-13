@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/calcs_all.php — All calculators: filter tabs + 2-col list + find-my-calc CTA.
+ * components/sections/calcs_all.php - All calculators: filter tabs + 2-col list + find-my-calc CTA.
  *
  * Props:
  *   $filter_tabs[]  { key, label }

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/guide_card.php — Component: Guide / Insight Card
+ * components/cards/guide_card.php - Component: Guide / Insight Card
  * Props: $card { icon, gradient, category, title, description, read_more, url }
  */
 

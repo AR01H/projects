@@ -2,10 +2,10 @@
 /**
  * Template Name: News & Insights
  *
- * pages/page-newsall.php — News listing page.
+ * pages/page-newsall.php - News listing page.
  *
  * All content comes from data/json/news.json via the service layer.
- * No content is hardcoded here — only structure.
+ * No content is hardcoded here - only structure.
  *
  * Architecture:
  *   data/json/news.json
@@ -13,7 +13,7 @@
  *       → intermediate/page_news_logical.php  adn_news_get_context()
  *         → THIS FILE  (structure only)
  *
- * RULE: No hardcoded content and no data reads here — only structure.
+ * RULE: No hardcoded content and no data reads here - only structure.
  * RULE: Header/footer come from header.php / footer.php via get_header() / get_footer().
  */
 
@@ -22,14 +22,17 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_news_logical.php';
 $ctx = adn_news_get_context();
 
-adn_page_open( $ctx );
+$_open_ctx               = $ctx;
+$_open_ctx['breadcrumb'] = array();
+adn_page_open( $_open_ctx );
 ?>
 
 <?php /* ============================== HERO ============================== */ ?>
 <?php if ( ! empty( $ctx['hero'] ) ) : ?>
-<section class="news-hero">
-	<?php adn_component( 'sections/news_hero', array( 'hero' => $ctx['hero'] ) ); ?>
-</section>
+	<?php adn_component( 'sections/page_hero', array(
+		'hero'       => $ctx['hero'],
+		'breadcrumb' => $ctx['breadcrumb'],
+	) ); ?>
 <?php endif; ?>
 
 <?php /* ============================== CATEGORY TABS ============================== */ ?>

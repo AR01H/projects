@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Foreign key constraints — applied after all tables exist.
+ * Foreign key constraints - applied after all tables exist.
  * Each constraint is checked before adding (idempotent).
  * Add new constraints here. Never put CREATE TABLE or data here.
  */

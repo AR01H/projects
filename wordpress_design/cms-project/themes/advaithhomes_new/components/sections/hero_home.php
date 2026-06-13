@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/hero_home.php — Section: Home Hero
+ * components/sections/hero_home.php - Section: Home Hero
  *
  * Props: $hero { title_lines[], description, actions[], trust_items[], diagram }
  *   title_lines : [ { text, accent(bool) } ]   rendered with <br> between lines
@@ -19,7 +19,13 @@ $actions     = isset( $hero['actions'] ) ? (array) $hero['actions'] : array();
 $trust_items = isset( $hero['trust_items'] ) ? (array) $hero['trust_items'] : array();
 $diagram     = isset( $hero['diagram'] ) ? (array) $hero['diagram'] : array();
 $nodes       = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
+$_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+
+$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
+
 ?>
+<?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img ) ); ?>
+
 <div class="hero-home-inner">
     <div class="hero-content">
         <h1 class="hero-title">

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/section_headers/section_header.php — Component: Section Header
+ * components/parts/section_headers/section_header.php - Component: Section Header
  *
  * One heading component for every section-title style in the design:
  *   - "section-header"  : h2 + "View all →" link        (calculators, guides)

@@ -1,5 +1,5 @@
 /* ============================================================
-   guides_listing.css — Guides listing page styles
+   guides_listing.css - Guides listing page styles
    Specific to pages/page-guides_listing.php.
    Global utilities (btn, container, hero-eyebrow, trust-bar,
    sidebar-card, etc.) remain in components.css / common.css.
@@ -318,7 +318,7 @@
     font-size: 2.5rem;
 }
 
-/* Gradient variants — one per card in the JSON */
+/* Gradient variants - one per card in the JSON */
 .guide-img-green   { background: linear-gradient(135deg, #c8d8c4 0%, #4a7a44 100%); }
 .guide-img-blue    { background: linear-gradient(135deg, #c8d4e4 0%, #6888aa 100%); }
 .guide-img-brown   { background: linear-gradient(135deg, #e8d8c4 0%, #b09060 100%); }

@@ -1,6 +1,6 @@
 <?php
 /**
- * components/sections/news_featured.php — Featured article split card.
+ * components/sections/news_featured.php - Featured article split card.
  *
  * Props: $featured { bg_icon, label, tag, title, excerpt, date, read_time, url }
  * Usage: adn_component( 'sections/news_featured', array( 'featured' => $ctx['featured'] ) );

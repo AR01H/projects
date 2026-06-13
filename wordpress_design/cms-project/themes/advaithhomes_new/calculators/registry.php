@@ -1,6 +1,6 @@
 <?php
 /**
- * calculators/registry.php — the list of available calculators.
+ * calculators/registry.php - the list of available calculators.
  *
  * Each entry's KEY is what you pass to the shortcode: [ah_calculator key="stamp-duty"].
  * The view file is calculators/views/{key}.php and its script (optional) is

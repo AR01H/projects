@@ -1,6 +1,6 @@
 <?php
 /**
- * admin/tabs/calculators/sub-list.php — per-calculator controls.
+ * admin/tabs/calculators/sub-list.php - per-calculator controls.
  *
  * Lists every registered calculator (calculators/registry.php) and lets the
  * admin set: enabled, display label, help text and a "read guide" link.

@@ -1,4 +1,4 @@
-# 04 — Theme Setup: CPTs, Taxonomies, Menus, Sidebars
+# 04 - Theme Setup: CPTs, Taxonomies, Menus, Sidebars
 
 ## Files Involved
 
@@ -124,7 +124,7 @@ $labels = [
     // … etc
 ];
 ```
-You only provide `singular` and `plural` — the rest is derived.
+You only provide `singular` and `plural` - the rest is derived.
 
 ### `show_in_rest: true`
 Always enabled. This allows:
@@ -227,7 +227,7 @@ No need to find and delete `add_filter()` calls scattered across files.
 |----------|-------------|
 | `0–4` | Must run before WP core (rare) |
 | `5–9` | Before most plugins |
-| `10` | Default — run alongside plugins |
+| `10` | Default - run alongside plugins |
 | `15–20` | After most plugins |
 | `99–999` | Must run last (e.g. cleanup, overrides) |
 
