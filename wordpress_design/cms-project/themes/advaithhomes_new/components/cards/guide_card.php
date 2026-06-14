@@ -6,14 +6,26 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$card = isset( $card ) && is_array( $card ) ? $card : array();
+$card       = isset( $card ) && is_array( $card ) ? $card : array();
+$_gc_imgurl = isset( $card['image'] ) ? (string) $card['image'] : '';
 ?>
 <a href="<?php echo esc_url( adn_link( isset( $card['url'] ) ? $card['url'] : '' ) ); ?>" class="guide-card">
-    <div class="guide-card-img" style="background:<?php echo esc_attr( isset( $card['gradient'] ) ? $card['gradient'] : '' ); ?>;"><?php echo adn_icon( isset( $card['icon'] ) ? $card['icon'] : '' ); ?></div>
-    <div class="guide-card-body">
+    <?php if ( '' !== $_gc_imgurl ) : ?>
+    <div class="guide-card-img guide-card-img--photo">
+        <img src="<?php echo esc_url( $_gc_imgurl ); ?>" alt="" loading="lazy" />
         <?php if ( ! empty( $card['parent_name'] ) ) : ?>
-            <div class="guide-card-parent"><?php echo esc_html( $card['parent_name'] ); ?></div>
+            <span class="guide-card-parent-badge"><?php echo esc_html( $card['parent_name'] ); ?></span>
         <?php endif; ?>
+    </div>
+    <?php else : ?>
+    <div class="guide-card-img" style="background:<?php echo esc_attr( isset( $card['gradient'] ) ? $card['gradient'] : '' ); ?>;">
+        <?php echo adn_icon( isset( $card['icon'] ) ? $card['icon'] : '' ); ?>
+        <?php if ( ! empty( $card['parent_name'] ) ) : ?>
+            <span class="guide-card-parent-badge"><?php echo esc_html( $card['parent_name'] ); ?></span>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+    <div class="guide-card-body">
         <div class="guide-card-category highlight-textblock"><?php echo esc_html( isset( $card['category'] ) ? $card['category'] : '' ); ?></div>
         <?php if ( ! empty( $card['title'] ) ) : ?>
         <div class="card-title-highlight"><?php echo esc_html( $card['title'] ); ?></div>

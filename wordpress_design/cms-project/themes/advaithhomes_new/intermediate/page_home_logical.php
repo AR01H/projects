@@ -211,9 +211,15 @@ function adn_home_cms_guide_items() {
 		// Card URL goes to the category listing page for this term.
 		$term_url = home_url( '/' . trim( (string) $post->_term_slug, '/' ) . '/' );
 
+		$_term_img_url = '';
+		if ( ! empty( $post->term_image_id ) ) {
+			$_tiu          = wp_get_attachment_image_url( (int) $post->term_image_id, 'medium' );
+			$_term_img_url = $_tiu ? (string) $_tiu : '';
+		}
 		$items[] = array(
 			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : '📚' ),
 			'gradient'    => adn_cms_gradient( $i ),
+			'image'       => $_term_img_url,
 			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
 			'category'    => $cat_name,
 			'title'       => '',
@@ -249,7 +255,7 @@ function adn_home_cms_news_items() {
 				'date'        => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
 				'tag'         => 'NEWS',
 				'gradient'    => adn_cms_gradient( $i ),
-				'url'         => ! empty( $item->link_url ) ? $item->link_url : '#',
+				'url'         => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '#',
 			);
 		}
 	}

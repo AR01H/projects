@@ -23,16 +23,17 @@ function adn_ask_expert_sidebar_data() {
 	/* ── Latest news → sidebar_news_mini shape ──────────────────────── */
 	// Items need: { gradient, title, date, tag, url }
 	$news_items = array();
-	if ( function_exists( 'adn_cms_latest_news' ) && function_exists( 'adn_cms_gradient' ) ) {
+	if ( function_exists( 'adn_cms_newsbar_items' ) && function_exists( 'adn_cms_gradient' ) ) {
 		$_ni = 0;
-		foreach ( (array) adn_cms_latest_news( 3 ) as $np ) {
-			if ( empty( $np->title ) ) { continue; }
+		foreach ( adn_cms_newsbar_items( 3 ) as $np ) {
+			if ( empty( $np->text ) ) { continue; }
+			$_stamp       = ! empty( $np->start_date ) ? $np->start_date : ( isset( $np->created_at ) ? $np->created_at : '' );
 			$news_items[] = array(
 				'gradient' => adn_cms_gradient( $_ni ),
-				'title'    => (string) $np->title,
-				'date'     => function_exists( 'adn_cms_post_date' ) ? adn_cms_post_date( $np ) : '',
-				'tag'      => isset( $np->category_name ) ? (string) $np->category_name : '',
-				'url'      => function_exists( 'adn_cms_post_url' ) ? adn_cms_post_url( $np ) : '#',
+				'title'    => (string) $np->text,
+				'date'     => $_stamp ? date_i18n( 'M j, Y', strtotime( $_stamp ) ) : '',
+				'tag'      => 'NEWS',
+				'url'      => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $np->id ) : '',
 			);
 			$_ni++;
 		}

@@ -48,10 +48,36 @@ adn_page_open( $_open_ctx );
 
 	<?php /* MAIN - expert cards */ ?>
 	<main>
+
+		<?php /* Loader — shown during search debounce */ ?>
+		<div class="expert-grid-loader" id="expertGridLoader" hidden aria-hidden="true">
+			<div class="egl-spinner"></div>
+			<p><?php esc_html_e( 'Finding experts…', ADN_TEXT_DOMAIN ); ?></p>
+		</div>
+
 		<div class="expert-cards-grid" id="expertGrid">
 			<?php foreach ( $ctx['experts'] as $_expert ) : ?>
 				<?php adn_component( 'cards/expert_card', array( 'item' => (array) $_expert ) ); ?>
 			<?php endforeach; ?>
+
+			<?php /* Permanent placeholder — always visible, never filtered */ ?>
+			<div class="expert-card expert-card-more" data-permanent="1">
+				<div class="ecm-inner">
+					<span class="ecm-icon" aria-hidden="true">🤝</span>
+					<p class="ecm-heading"><?php esc_html_e( 'More experts here to help', ADN_TEXT_DOMAIN ); ?></p>
+					<p class="ecm-sub"><?php esc_html_e( "Can't find who you need? Our network is growing — contact us and we'll match you with the right professional.", ADN_TEXT_DOMAIN ); ?></p>
+					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary ecm-btn">
+						<?php esc_html_e( 'Get Matched', ADN_TEXT_DOMAIN ); ?>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<?php /* Empty state — shown when search/filter returns no results (placeholder card always stays visible) */ ?>
+		<div class="expert-no-results" id="expertNoResults" hidden aria-live="polite">
+			<span class="enr-icon" aria-hidden="true">🔍</span>
+			<p class="enr-heading"><?php esc_html_e( 'No experts found', ADN_TEXT_DOMAIN ); ?></p>
+			<p class="enr-sub"><?php esc_html_e( 'Try a different name or specialism.', ADN_TEXT_DOMAIN ); ?></p>
 		</div>
 
 		<?php /* "Can't find the right expert?" banner */ ?>

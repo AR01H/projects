@@ -5,16 +5,18 @@
  * Article footer row: helpful counter + social share links.
  *
  * Props (via extract):
- *   $share = [ 'url' => string, 'title' => string ]
+ *   $share        = [ 'url' => string, 'title' => string ]
+ *   $hide_helpful = bool  — when true, omits the helpful counter (e.g. on newsbar single views)
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$_share  = isset( $share ) ? (array) $share : array();
-$_url    = esc_url( isset( $_share['url'] ) ? (string) $_share['url'] : '' );
-$_title  = rawurlencode( isset( $_share['title'] ) ? (string) $_share['title'] : '' );
-$_post   = get_the_ID();
-$_count  = max( 0, (int) get_post_meta( $_post, '_adn_helpful_count', true ) );
+$_share        = isset( $share ) ? (array) $share : array();
+$_url          = esc_url( isset( $_share['url'] ) ? (string) $_share['url'] : '' );
+$_title        = rawurlencode( isset( $_share['title'] ) ? (string) $_share['title'] : '' );
+$_post         = get_the_ID();
+$_count        = max( 0, (int) get_post_meta( $_post, '_adn_helpful_count', true ) );
+$_hide_helpful = ! empty( $hide_helpful );
 
 $_tw = 'https://twitter.com/intent/tweet?url=' . rawurlencode( $_url ) . '&text=' . $_title;
 $_li = 'https://www.linkedin.com/sharing/share-offsite/?url=' . rawurlencode( $_url );
@@ -23,7 +25,7 @@ $_em = 'mailto:?subject=' . $_title . '&body=' . rawurlencode( $_url );
 ?>
 <div class="post-feedback-bar">
 
-	<?php /* ── Helpful counter ── */ ?>
+	<?php if ( ! $_hide_helpful ) : ?>
 	<button class="pf-helpful-btn"
 	        type="button"
 	        id="pf-helpful-<?php echo esc_attr( (string) $_post ); ?>"
@@ -37,9 +39,9 @@ $_em = 'mailto:?subject=' . $_title . '&body=' . rawurlencode( $_url );
 		<span class="pf-helpful-label"><?php esc_html_e( 'Helpful', ADN_TEXT_DOMAIN ); ?></span>
 		<span class="pf-helpful-count"><?php echo esc_html( number_format_i18n( $_count ) ); ?></span>
 	</button>
+	<?php endif; ?>
 
 	<?php if ( '' !== $_url ) : ?>
-	<?php /* ── Share row ── */ ?>
 	<div class="pf-share">
 		<span class="pf-share-label"><?php esc_html_e( 'Share', ADN_TEXT_DOMAIN ); ?></span>
 		<div class="pf-share-btns">
@@ -73,53 +75,54 @@ $_em = 'mailto:?subject=' . $_title . '&body=' . rawurlencode( $_url );
 	<?php endif; ?>
 
 </div>
-
 <script>
-(function(){
-'use strict';
-var btn = document.getElementById('pf-helpful-<?php echo esc_js( (string) $_post ); ?>');
-if (!btn) return;
+(function () {
+	'use strict';
 
-// Restore from sessionStorage
-var stored = sessionStorage.getItem('adn_helpful_<?php echo esc_js( (string) $_post ); ?>');
-if (stored === '1') { btn.dataset.liked = '1'; btn.classList.add('pf-helpful-btn--active'); btn.setAttribute('aria-pressed','true'); }
+	<?php if ( ! $_hide_helpful ) : ?>
+	var helpBtn = document.getElementById( 'pf-helpful-<?php echo esc_js( (string) $_post ); ?>' );
+	if ( helpBtn ) {
+		var stored = sessionStorage.getItem( 'adn_helpful_<?php echo esc_js( (string) $_post ); ?>' );
+		if ( stored === '1' ) {
+			helpBtn.dataset.liked = '1';
+			helpBtn.classList.add( 'pf-helpful-btn--active' );
+			helpBtn.setAttribute( 'aria-pressed', 'true' );
+		}
+		helpBtn.addEventListener( 'click', function () {
+			var liked = helpBtn.dataset.liked === '1';
+			helpBtn.disabled = true;
+			var fd = new FormData();
+			fd.append( 'action',  'adn_post_helpful' );
+			fd.append( 'nonce',   helpBtn.dataset.nonce );
+			fd.append( 'post_id', helpBtn.dataset.post );
+			fd.append( 'liked',   liked ? '1' : '0' );
+			fetch( '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>', { method: 'POST', body: fd } )
+				.then( function ( r ) { return r.json(); } )
+				.then( function ( d ) {
+					if ( d.success ) {
+						var nowLiked = d.data.liked;
+						helpBtn.dataset.liked = nowLiked ? '1' : '0';
+						helpBtn.classList.toggle( 'pf-helpful-btn--active', nowLiked );
+						helpBtn.setAttribute( 'aria-pressed', nowLiked ? 'true' : 'false' );
+						helpBtn.querySelector( '.pf-helpful-count' ).textContent = d.data.count;
+						sessionStorage.setItem( 'adn_helpful_<?php echo esc_js( (string) $_post ); ?>', nowLiked ? '1' : '0' );
+					}
+					helpBtn.disabled = false;
+				} )
+				.catch( function () { helpBtn.disabled = false; } );
+		} );
+	}
+	<?php endif; ?>
 
-btn.addEventListener('click', function() {
-    var liked = btn.dataset.liked === '1';
-    btn.disabled = true;
-    var fd = new FormData();
-    fd.append('action', 'adn_post_helpful');
-    fd.append('nonce',   btn.dataset.nonce);
-    fd.append('post_id', btn.dataset.post);
-    fd.append('liked',   liked ? '1' : '0');
-
-    fetch('<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>', { method:'POST', body:fd })
-        .then(function(r){ return r.json(); })
-        .then(function(d){
-            if (d.success) {
-                var nowLiked = d.data.liked;
-                btn.dataset.liked = nowLiked ? '1' : '0';
-                btn.classList.toggle('pf-helpful-btn--active', nowLiked);
-                btn.setAttribute('aria-pressed', nowLiked ? 'true' : 'false');
-                btn.querySelector('.pf-helpful-count').textContent = d.data.count;
-                sessionStorage.setItem('adn_helpful_<?php echo esc_js( (string) $_post ); ?>', nowLiked ? '1' : '0');
-            }
-            btn.disabled = false;
-        })
-        .catch(function(){ btn.disabled = false; });
-});
-
-// Native share button - show only when Web Share API is available
-(function(){
-    var nsBtn = document.getElementById('pf-native-share-<?php echo esc_js( (string) $_post ); ?>');
-    if (!nsBtn || !navigator.share) return;
-    nsBtn.style.display = '';
-    nsBtn.addEventListener('click', function(){
-        navigator.share({
-            title: nsBtn.dataset.title || document.title,
-            url:   nsBtn.dataset.url   || location.href
-        }).catch(function(){});
-    });
-}());
+	var nsBtn = document.getElementById( 'pf-native-share-<?php echo esc_js( (string) $_post ); ?>' );
+	if ( nsBtn && navigator.share ) {
+		nsBtn.style.display = '';
+		nsBtn.addEventListener( 'click', function () {
+			navigator.share( {
+				title: nsBtn.dataset.title || document.title,
+				url:   nsBtn.dataset.url   || location.href,
+			} ).catch( function () {} );
+		} );
+	}
 }());
 </script>

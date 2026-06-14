@@ -50,18 +50,96 @@
     }
 
     function filterCards( cat ) {
+        var input = document.getElementById( 'expertSearch' );
+        var q     = input ? input.value.trim() : '';
+        applyFilter( cat, q );
+    }
+
+    function applyFilter( cat, query ) {
+        showLoader( false );
+        var q   = query.toLowerCase();
+        var any = false;
         document.querySelectorAll( '.expert-card' ).forEach( function ( card ) {
-            var cardCat = card.getAttribute( 'data-cat' ) || '';
-            var show    = cat === 'all' || cardCat === cat;
+            // Permanent placeholder card — always stays visible, never filtered.
+            if ( card.getAttribute( 'data-permanent' ) ) { return; }
+            var cardCat   = ( card.getAttribute( 'data-cat' ) || '' );
+            var catMatch  = cat === 'all' || cardCat === cat;
+            var textMatch = q === '' || ( card.textContent || '' ).toLowerCase().indexOf( q ) !== -1;
+            var show      = catMatch && textMatch;
             if ( show ) {
                 card.removeAttribute( 'hidden' );
+                any = true;
             } else {
                 card.setAttribute( 'hidden', '' );
             }
         } );
+        var noRes = document.getElementById( 'expertNoResults' );
+        if ( noRes ) {
+            if ( any ) { noRes.setAttribute( 'hidden', '' ); }
+            else        { noRes.removeAttribute( 'hidden' ); }
+        }
     }
 
-    /* ── 2. Contact Modal ───────────────────────────────────────── */
+    function showLoader( on ) {
+        var loader = document.getElementById( 'expertGridLoader' );
+        var grid   = document.getElementById( 'expertGrid' );
+        if ( ! loader ) { return; }
+        if ( on ) {
+            loader.removeAttribute( 'hidden' );
+            loader.setAttribute( 'aria-hidden', 'false' );
+            if ( grid ) { grid.classList.add( 'is-loading' ); }
+        } else {
+            loader.setAttribute( 'hidden', '' );
+            loader.setAttribute( 'aria-hidden', 'true' );
+            if ( grid ) { grid.classList.remove( 'is-loading' ); }
+        }
+    }
+
+    /* ── 2. Text Search ─────────────────────────────────────────── */
+
+    var searchTimer = null;
+
+    function initSearch() {
+        var input = document.getElementById( 'expertSearch' );
+        var clear = document.getElementById( 'expertSearchClear' );
+        var reset = document.getElementById( 'expertSearchReset' );
+        if ( ! input ) { return; }
+
+        input.addEventListener( 'input', function () {
+            var q = input.value;
+            if ( clear ) {
+                clear.hidden = q === '';
+                clear.classList.toggle( 'is-searching', q !== '' );
+            }
+            clearTimeout( searchTimer );
+            showLoader( true );
+            searchTimer = window.setTimeout( function () {
+                if ( clear ) { clear.classList.remove( 'is-searching' ); }
+                applyFilter( activeCategory, q.trim() );
+            }, 250 );
+        } );
+
+        if ( clear ) {
+            clear.addEventListener( 'click', function () {
+                clearTimeout( searchTimer );
+                input.value = '';
+                clear.hidden = true;
+                clear.classList.remove( 'is-searching' );
+                input.focus();
+                applyFilter( activeCategory, '' );
+            } );
+        }
+
+        if ( reset ) {
+            reset.addEventListener( 'click', function () {
+                if ( input ) { input.value = ''; }
+                if ( clear ) { clear.hidden = true; }
+                applyFilter( activeCategory, '' );
+            } );
+        }
+    }
+
+    /* ── 3. Contact Modal ───────────────────────────────────────── */
 
     var openModal = null; // currently open modal element
 
@@ -199,6 +277,7 @@
     /* ── Init ───────────────────────────────────────────────────── */
 
     function init() {
+        initSearch();
         initCategoryTabs();
         initContactModals();
         initContactForms();

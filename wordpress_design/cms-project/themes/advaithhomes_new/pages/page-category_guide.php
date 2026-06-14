@@ -134,7 +134,7 @@ adn_page_open( $_open_ctx );
 			// Pre-filter: only items with real data.
 			$_pdfs  = array_filter( (array) ( $_res['pdfs']   ?? array() ), function( $p ) { return ! empty( $p['file_url'] ) && ! empty( $p['title'] ); } );
 			$_links = array_filter( (array) ( $_res['links']  ?? array() ), function( $l ) { return ! empty( $l['title'] ); } );
-			$_vids  = array_filter( (array) ( $_res['videos'] ?? array() ), function( $v ) { return ! empty( $v['vid_id'] ); } );
+			$_vids  = array_filter( (array) ( $_res['videos'] ?? array() ), function( $v ) { return ! empty( $v['url'] ); } );
 
 			if ( $_pdfs || $_links || $_vids ) :
 			?>
@@ -201,10 +201,10 @@ adn_page_open( $_open_ctx );
 				<?php if ( $_vids ) : ?>
 				<div class="res-subsection">
 					<p class="res-sub-label"><?php esc_html_e( 'Videos', ADN_TEXT_DOMAIN ); ?></p>
-					<div class="res-grid">
+					<div class="res-grid res-grid-youtube">
 						<?php foreach ( $_vids as $vid ) : ?>
 						<div class="res-video-item">
-							<div class="res-video-embed">
+							<div class="res-video-embed ">
 								<iframe
 									src="<?php echo esc_url( 'https://www.youtube.com/embed/' . $vid['vid_id'] . '?rel=0&modestbranding=1' ); ?>"
 									title="<?php echo esc_attr( $vid['title'] ); ?>"

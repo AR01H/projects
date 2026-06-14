@@ -309,6 +309,17 @@ function adn_cms_newsbar_items( $limit = 6 ) {
 	) ) ?: array();
 }
 
+/**
+ * Internal URL for a single news-bar item single view.
+ * Format: /news/?ah_news_id={id}
+ *
+ * @param int $id  news_bar_items.id
+ * @return string
+ */
+function adn_newsbar_item_url( $id ) {
+	return add_query_arg( 'ah_news_id', absint( $id ), trailingslashit( home_url( '/news/' ) ) );
+}
+
 /* ── Presentation helpers (shared by any page mapping CMS rows to cards) ───── */
 
 /** Rough "N min read" from body content (≈200 words/min). */
@@ -413,6 +424,7 @@ function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
 	$rows = $wpdb->get_results(
 		"SELECT t.id AS term_id, t.name AS category_name, t.slug AS term_slug,
 		        t.description AS term_desc, t.icon_emoji AS term_icon,
+		        t.image_id AS term_image_id,
 		        pt_self.name AS parent_name, pt_self.icon_emoji AS parent_icon
 		 FROM `{$tax}` t
 		 LEFT JOIN `{$tax}` pt_self ON pt_self.id = t.parent_id
@@ -458,12 +470,13 @@ function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
 		}
 
 		$post               = new stdClass();
-		$post->category_name = (string) $row->category_name;
-		$post->_term_slug    = (string) $row->term_slug;
-		$post->_term_desc    = ! empty( $row->term_desc ) ? (string) $row->term_desc : '';
-		$post->term_icon     = ! empty( $row->term_icon ) ? (string) $row->term_icon : '';
-		$post->parent_name   = $parent_name;
-		$post->parent_icon   = $parent_icon ?: $post->term_icon;
+		$post->category_name   = (string) $row->category_name;
+		$post->_term_slug      = (string) $row->term_slug;
+		$post->_term_desc      = ! empty( $row->term_desc ) ? (string) $row->term_desc : '';
+		$post->term_icon       = ! empty( $row->term_icon ) ? (string) $row->term_icon : '';
+		$post->term_image_id   = ! empty( $row->term_image_id ) ? (int) $row->term_image_id : 0;
+		$post->parent_name     = $parent_name;
+		$post->parent_icon     = $parent_icon ?: $post->term_icon;
 
 		$result[] = $post;
 	}
@@ -512,6 +525,77 @@ function adn_cms_taxonomy_term_by_slug( $slug ) {
 		"SELECT * FROM `{$tax}` WHERE slug = %s AND status = 'active' LIMIT 1",
 		$slug
 	) );
+}
+
+/**
+ * CMS taxonomy breadcrumb for a WP post.
+ *
+ * Looks up the plugin tables to find the child term (and its parent) linked to
+ * the given WP post ID, then builds a breadcrumb trail:
+ *   Home > ParentTermName > ChildTermName > PostTitle
+ *
+ * Returns null when tables are absent or the post has no linked CMS terms
+ * (caller falls back to WP categories).
+ *
+ * @param int    $post_id
+ * @param string $post_title
+ * @return array[]|null
+ */
+function adn_cms_post_breadcrumb( $post_id, $post_title ) {
+	$post_id = absint( $post_id );
+	if ( ! $post_id || ! adn_cms_available() ) {
+		return null;
+	}
+	global $wpdb;
+	$ct  = adn_cms_table( 'content_taxonomies' );
+	$tax = adn_cms_table( 'taxonomies' );
+	$pt  = adn_cms_table( 'taxonomy_parent_terms' );
+
+	$has_pt = (bool) $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) );
+
+	if ( $has_pt ) {
+		$term = $wpdb->get_row( $wpdb->prepare(
+			"SELECT t.id, t.name, t.slug, t.parent_term_id,
+			        pt.name AS parent_name, pt.slug AS parent_slug
+			 FROM `{$ct}` ct
+			 INNER JOIN `{$tax}` t  ON t.id  = ct.taxonomy_id
+			 LEFT  JOIN `{$pt}`  pt ON pt.id = t.parent_term_id
+			 WHERE ct.object_type = 'wp_post' AND ct.object_id = %d
+			   AND t.status = 'active'
+			 ORDER BY (t.parent_term_id IS NOT NULL) DESC, t.id ASC
+			 LIMIT 1",
+			$post_id
+		) );
+	} else {
+		$term = $wpdb->get_row( $wpdb->prepare(
+			"SELECT t.id, t.name, t.slug, t.parent_term_id
+			 FROM `{$ct}` ct
+			 INNER JOIN `{$tax}` t ON t.id = ct.taxonomy_id
+			 WHERE ct.object_type = 'wp_post' AND ct.object_id = %d
+			   AND t.status = 'active'
+			 ORDER BY t.id ASC
+			 LIMIT 1",
+			$post_id
+		) );
+	}
+
+	if ( ! $term ) {
+		return null;
+	}
+
+	$crumbs = array( array( 'label' => 'Home', 'url' => '/' ) );
+
+	$parent_name = ! empty( $term->parent_name ) ? (string) $term->parent_name : '';
+	$parent_slug = ! empty( $term->parent_slug ) ? (string) $term->parent_slug : '';
+
+	if ( '' !== $parent_name && '' !== $parent_slug ) {
+		$crumbs[] = array( 'label' => $parent_name, 'url' => '/' . trim( $parent_slug, '/' ) . '/' );
+	}
+
+	$crumbs[] = array( 'label' => (string) $term->name, 'url' => '/' . trim( (string) $term->slug, '/' ) . '/' );
+	$crumbs[] = array( 'label' => (string) $post_title, 'url' => null );
+
+	return $crumbs;
 }
 
 /**

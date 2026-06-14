@@ -44,7 +44,7 @@
             btn.setAttribute('aria-expanded', open ? 'true' : 'false');
             btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             btn.innerHTML = open ? '✕' : '☰';
-            document.body.style.overflow = open ? 'hidden' : '';
+            /* overlay is position:fixed so background scroll is already blocked */
         }
 
         btn.addEventListener('click', function () {

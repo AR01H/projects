@@ -305,7 +305,7 @@
 
 .guide-listing-img {
     position: relative;
-    height: 110px;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
 }
 

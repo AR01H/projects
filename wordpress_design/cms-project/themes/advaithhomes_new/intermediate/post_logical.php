@@ -48,14 +48,23 @@ function adn_post_get_context() {
 	}
 
 	/* ── Breadcrumb ── */
-	$breadcrumb = array( array( 'label' => 'Home', 'url' => '/' ) );
-	if ( ! empty( $cats ) ) {
-		$breadcrumb[] = array(
-			'label' => $cats[0]->name,
-			'url'   => get_category_link( $cats[0]->term_id ),
-		);
+	// Prefer CMS taxonomy path: Home > ParentTerm > CategoryTerm > PostTitle.
+	// Falls back to WP native category when CMS tables are absent.
+	$_cms_bc    = function_exists( 'adn_cms_post_breadcrumb' )
+	              ? adn_cms_post_breadcrumb( $post->ID, get_the_title() )
+	              : null;
+	if ( $_cms_bc ) {
+		$breadcrumb = $_cms_bc;
+	} else {
+		$breadcrumb = array( array( 'label' => 'Home', 'url' => '/' ) );
+		if ( ! empty( $cats ) ) {
+			$breadcrumb[] = array(
+				'label' => $cats[0]->name,
+				'url'   => get_category_link( $cats[0]->term_id ),
+			);
+		}
+		$breadcrumb[] = array( 'label' => get_the_title(), 'url' => null );
 	}
-	$breadcrumb[] = array( 'label' => get_the_title(), 'url' => null );
 
 	/* ── Author ── */
 	$author_name = get_the_author_meta( 'display_name' );

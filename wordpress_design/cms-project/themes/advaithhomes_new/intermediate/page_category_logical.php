@@ -79,9 +79,15 @@ function adn_category_cms_guides( $slug ) {
 			continue;
 		}
 		$term_url = home_url( '/' . trim( (string) $post->_term_slug, '/' ) . '/' );
+		$_cg_img = '';
+		if ( ! empty( $post->term_image_id ) ) {
+			$_cgu    = wp_get_attachment_image_url( (int) $post->term_image_id, 'medium' );
+			$_cg_img = $_cgu ? (string) $_cgu : '';
+		}
 		$items[] = array(
 			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : '📚' ),
 			'gradient'    => adn_cms_gradient( $i ),
+			'image'       => $_cg_img,
 			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
 			'category'    => $cat_name,
 			'title'       => '',

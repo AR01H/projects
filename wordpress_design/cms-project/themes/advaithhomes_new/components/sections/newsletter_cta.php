@@ -12,17 +12,27 @@ $newsletter = isset( $newsletter ) && is_array( $newsletter ) ? $newsletter : ar
 $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
 ?>
 <div class="newsletter-inner">
-    <div>
-        <h3 class="newsletter-inner-header"><div class="newsletter-icon"><?php echo adn_icon( isset( $newsletter['icon'] ) ? $newsletter['icon'] : '' ); ?></div><?php echo esc_html( isset( $newsletter['title'] ) ? $newsletter['title'] : '' ); ?></h3>
+    <div class="newsletter-text">
+        <h3 class="newsletter-inner-header">
+            <div class="newsletter-icon"><?php echo adn_icon( isset( $newsletter['icon'] ) ? $newsletter['icon'] : '' ); ?></div>
+            <?php echo esc_html( isset( $newsletter['title'] ) ? $newsletter['title'] : '' ); ?>
+        </h3>
         <p><?php echo esc_html( isset( $newsletter['description'] ) ? $newsletter['description'] : '' ); ?></p>
     </div>
     <div class="newsletter-form-wrap">
         <form class="newsletter-form adn-nl-form" onsubmit="return false;" data-nonce="<?php echo esc_attr( $nl_nonce ); ?>" data-ajaxurl="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
-            <input type="email" name="nl_email" class="adn-nl-email"
-                   placeholder="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Your email address' ); ?>"
-                   aria-label="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Email address' ); ?>"
-                   required />
-            <button type="submit" class="btn btn-accent adn-nl-btn"><?php echo esc_html( isset( $newsletter['button_label'] ) ? $newsletter['button_label'] : 'Subscribe' ); ?></button>
+            <div class="nl-input-row">
+                <input type="email" name="nl_email" class="adn-nl-email"
+                       placeholder="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Your email address' ); ?>"
+                       aria-label="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Email address' ); ?>"
+                       required />
+                <button type="submit" class="adn-nl-btn" aria-label="<?php esc_attr_e( 'Subscribe', ADN_TEXT_DOMAIN ); ?>">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </form>
         <div class="newsletter-spam"><?php echo esc_html( isset( $newsletter['note'] ) ? $newsletter['note'] : '' ); ?></div>
         <div class="adn-nl-msg" style="display:none;margin-top:10px;font-size:13.5px;font-weight:500"></div>
@@ -38,8 +48,8 @@ $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
             var msg   = form.parentNode.querySelector('.adn-nl-msg');
             if (!email) return;
             btn.disabled = true;
-            var orig = btn.textContent;
-            btn.textContent = '…';
+            var orig = btn.innerHTML;
+            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-dasharray="56" stroke-dashoffset="0" style="animation:nl-spin .8s linear infinite;transform-origin:center"/></svg>';
             var fd = new FormData();
             fd.append('action', 'ah_newsletter_subscribe');
             fd.append('nonce',  form.dataset.nonce);
@@ -49,7 +59,7 @@ $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
                 .then(function (r) { return r.json(); })
                 .then(function (res) {
                     btn.disabled = false;
-                    btn.textContent = orig;
+                    btn.innerHTML = orig;
                     if (msg) {
                         msg.style.display = 'block';
                         msg.textContent   = res.data && res.data.message ? res.data.message : (res.success ? 'Thank you!' : 'Something went wrong.');
@@ -58,8 +68,8 @@ $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
                     if (res.success) { form.reset(); }
                 })
                 .catch(function () {
-                    btn.disabled    = false;
-                    btn.textContent = orig;
+                    btn.disabled  = false;
+                    btn.innerHTML = orig;
                     if (msg) { msg.style.display = 'block'; msg.textContent = 'Request failed. Please try again.'; msg.style.color = '#dc2626'; }
                 });
         });
