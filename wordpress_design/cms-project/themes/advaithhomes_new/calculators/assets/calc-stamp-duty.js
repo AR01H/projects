@@ -59,7 +59,7 @@
 					{ threshold: Infinity, rate: 0.12 }
 				];
 			}
-			labels = ['£0–£250,000', '£250,001–£925,000', '£925,001–£1.5m', 'Over £1.5m'];
+			labels = ['£0-£250,000', '£250,001-£925,000', '£925,001-£1.5m', 'Over £1.5m'];
 		} else {
 			bands = [
 				{ threshold: 145000, rate: 0.00 },
@@ -68,7 +68,7 @@
 				{ threshold: 750000, rate: 0.10 },
 				{ threshold: Infinity, rate: 0.12 }
 			];
-			labels = ['£0–£145,000', '£145,001–£250,000', '£250,001–£325,000', '£325,001–£750,000', 'Over £750,000'];
+			labels = ['£0-£145,000', '£145,001-£250,000', '£250,001-£325,000', '£325,001-£750,000', 'Over £750,000'];
 		}
 
 		var prev = 0;
@@ -86,7 +86,7 @@
 			prev = band.threshold;
 		});
 
-		// First-time buyer relief (England): 0% to £425k, 5% on £425k–£625k, none above.
+		// First-time buyer relief (England): 0% to £425k, 5% on £425k-£625k, none above.
 		var relief = 0;
 		if (isFirstTime && loc === 'england') {
 			if (price <= 425000) {

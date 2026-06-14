@@ -12,34 +12,6 @@ $content_tax_m = new AH_Content_Taxonomy_Model();
 // ── Template presets ──────────────────────────────────────────────────────────
 function ah_builder_templates(): array {
 	return array(
-		'landing' => array(
-			'label' => 'Landing Page', 'icon' => '🚀', 'desc' => 'Hero + feature cards + CTA + FAQ',
-			'blocks' => array(
-				array( 'type' => 'hero', 'data' => array( 'heading' => 'Welcome - We Make It Simple', 'subheading' => 'Expert guidance for your property journey. Book a free consultation today.', 'cta1_text' => 'Book Free Call', 'cta1_url' => '/free-consultation/', 'cta2_text' => 'Learn More', 'cta2_url' => '/about/', 'bg' => 'dark' ) ),
-				array( 'type' => 'section_heading', 'data' => array( 'title' => 'Why Choose Us', 'subtitle' => 'Trusted by hundreds of families across the UK', 'align' => 'center' ) ),
-				array( 'type' => 'cards', 'data' => array( 'heading' => '', 'cols' => '3', 'cards' => array( array( 'icon' => '🏠', 'title' => 'Expert Advice', 'text' => 'Personalised guidance at every step of your journey.' ), array( 'icon' => '💷', 'title' => 'Best Value', 'text' => 'We negotiate the best deals so you don\'t have to.' ), array( 'icon' => '✅', 'title' => 'Proven Results', 'text' => 'Hundreds of happy clients and successful completions.' ) ) ) ),
-				array( 'type' => 'stats_row', 'data' => array( 'stats' => array( array( 'prefix' => '', 'number' => '500', 'suffix' => '+', 'label' => 'Happy Clients' ), array( 'prefix' => '£', 'number' => '18', 'suffix' => 'k', 'label' => 'Average Saving' ), array( 'prefix' => '', 'number' => '12', 'suffix' => '+', 'label' => 'Years Experience' ) ) ) ),
-				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Ready to Get Started?', 'text' => 'Book your free no-obligation consultation today.', 'btn1_text' => 'Book Free Call', 'btn1_url' => '/free-consultation/', 'btn2_text' => 'Call Us Now', 'btn2_url' => 'tel:+447747223762', 'theme' => 'gold' ) ),
-				array( 'type' => 'faq', 'data' => array( 'heading' => 'Common Questions', 'items' => array( array( 'q' => 'Is the consultation really free?', 'a' => 'Yes, completely free with no obligation.' ), array( 'q' => 'Which areas do you cover?', 'a' => 'We cover London and nationwide UK.' ) ) ) ),
-			),
-		),
-		'about' => array(
-			'label' => 'About Us', 'icon' => '👥', 'desc' => 'Story + image-text + stats + CTA',
-			'blocks' => array(
-				array( 'type' => 'hero', 'data' => array( 'heading' => 'About Our Company', 'subheading' => 'A dedicated team passionate about helping you find your perfect property.', 'cta1_text' => 'Meet the Team', 'cta1_url' => '#team', 'bg' => 'light' ) ),
-				array( 'type' => 'image_text', 'data' => array( 'image_url' => '', 'image_alt' => 'Our team', 'heading' => 'Our Story', 'text' => 'Founded with a simple mission - to make property buying and selling straightforward, transparent, and stress-free. We\'ve helped hundreds of families across the UK find their perfect homes.', 'btn_text' => 'Our Services', 'btn_url' => '/services/', 'layout' => 'image-left' ) ),
-				array( 'type' => 'stats_row', 'data' => array( 'stats' => array( array( 'prefix' => '', 'number' => '2012', 'suffix' => '', 'label' => 'Year Founded' ), array( 'prefix' => '', 'number' => '500', 'suffix' => '+', 'label' => 'Clients Helped' ), array( 'prefix' => '', 'number' => '4.9', 'suffix' => '★', 'label' => 'Average Rating' ) ) ) ),
-				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Let\'s Work Together', 'text' => 'Get in touch and let us help you with your property goals.', 'btn1_text' => 'Contact Us', 'btn1_url' => '/contact/', 'theme' => 'dark' ) ),
-			),
-		),
-		'services' => array(
-			'label' => 'Services', 'icon' => '⚙️', 'desc' => 'Heading + service cards + links + CTA',
-			'blocks' => array(
-				array( 'type' => 'hero', 'data' => array( 'heading' => 'Our Services', 'subheading' => 'Comprehensive property solutions tailored to your needs.', 'bg' => 'light' ) ),
-				array( 'type' => 'cards', 'data' => array( 'heading' => 'What We Offer', 'cols' => '3', 'cards' => array( array( 'icon' => '🏠', 'title' => 'Property Search', 'text' => 'We find the right properties matched to your criteria.', 'link_url' => '/services/property-search/' ), array( 'icon' => '📋', 'title' => 'Conveyancing', 'text' => 'Smooth legal process from offer to completion.', 'link_url' => '/services/conveyancing/' ), array( 'icon' => '💰', 'title' => 'Mortgage Advice', 'text' => 'Expert mortgage guidance and lender introductions.', 'link_url' => '/services/mortgages/' ), array( 'icon' => '🔑', 'title' => 'Lettings', 'text' => 'Full lettings and property management service.', 'link_url' => '/services/lettings/' ), array( 'icon' => '📊', 'title' => 'Valuations', 'text' => 'Accurate market valuations backed by local data.', 'link_url' => '/services/valuations/' ), array( 'icon' => '🤝', 'title' => 'Investment', 'text' => 'BTL and investment property sourcing for landlords.', 'link_url' => '/services/investment/' ) ) ) ),
-				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Not Sure Where to Start?', 'text' => 'Book a free call and we\'ll guide you to the right service.', 'btn1_text' => 'Book Free Consultation', 'btn1_url' => '/free-consultation/', 'theme' => 'gold' ) ),
-			),
-		),
 		'faq' => array(
 			'label' => 'FAQ Page', 'icon' => '❓', 'desc' => 'Hero + accordion + links + CTA',
 			'blocks' => array(
@@ -155,7 +127,7 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
          class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;border-top:3px solid var(--ah-primary);" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
         <div style="font-size:2.5rem;margin-bottom:12px;">📋</div>
         <h3 style="margin:0 0 8px;">From Template</h3>
-        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Pick a pre-built layout - Landing Page, About Us, Services, FAQ, and more.</p>
+        <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Pick a pre-built layout - FAQ, and more.</p>
       </a>
     </div>
   <?php else : ?>
@@ -447,7 +419,6 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
       <div class="ah-palette-block" data-type="cards">         <span class="icon">🃏</span> Card Grid</div>
       <div class="ah-palette-block" data-type="image_text">    <span class="icon">🖼️</span> Image + Text</div>
       <div class="ah-palette-block" data-type="testimonial">   <span class="icon">💬</span> Testimonial</div>
-      <div class="ah-palette-block" data-type="team">          <span class="icon">👥</span> Team Members</div>
       <div class="ah-palette-block" data-type="steps">         <span class="icon">🔢</span> Steps / Process</div>
       <div class="ah-palette-block" data-type="timeline">      <span class="icon">📅</span> Timeline</div>
       <div class="ah-palette-block" data-type="icon_list">     <span class="icon">✅</span> Icon List</div>
@@ -930,24 +901,6 @@ var BLOCK_DEFS = {
       { key:'cta_url', label:'CTA URL',    type:'text',     ph:'/book/'                        },
       { key:'layout',  label:'Layout',     type:'select',   options:['horizontal','vertical'], def:'horizontal' },
     ]
-  },
-  team: {
-    label: 'Team Members', icon: '👥', color: '#0891b2',
-    fields: [
-      { key:'heading', label:'Section Heading', type:'text',   ph:'Meet the Team' },
-      { key:'cols',    label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
-    ],
-    repeater: {
-      key: 'members', label: 'Members', addLabel: '+ Add Member',
-      fields: [
-        { key:'photo', label:'Photo URL', type:'text',     ph:'/wp-content/uploads/…'  },
-        { key:'name',  label:'Name',      type:'text',     ph:'Jane Smith'             },
-        { key:'role',  label:'Role',      type:'text',     ph:'Buyer\'s Agent'         },
-        { key:'bio',   label:'Bio',       type:'textarea', ph:'Short bio…'             },
-        { key:'email', label:'Email',     type:'text',     ph:'jane@agency.com'        },
-        { key:'link',  label:'Profile URL',type:'text',   ph:'/team/jane/'            },
-      ]
-    }
   },
 };
 

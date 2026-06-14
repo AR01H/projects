@@ -51,59 +51,6 @@
 	.stats-strip { grid-template-columns: 1fr; }
 }
 
-/* ── About / Value card ──────────────────────────────────────────────────── */
-.about-value-card {
-	background: var(--surface, #fff);
-	border: 1px solid var(--border);
-	border-radius: var(--r-lg);
-	padding: 32px 28px 26px;
-	text-align: center;
-	position: relative;
-	overflow: hidden;
-	transition: transform .25s, border-color .25s;
-}
-.about-value-card::before {
-	content: '';
-	position: absolute;
-	top: 0; left: 0; right: 0;
-	height: 3px;
-	background: linear-gradient(90deg, var(--accent), var(--client-color-400));
-	opacity: 0;
-	transition: opacity .25s;
-}
-.about-value-card:hover {
-	transform: translateY(-4px);
-	border-color: var(--client-color-200);
-}
-.about-value-card:hover::before { opacity: 1; }
-
-.about-value-card__icon {
-	width: 56px; height: 56px;
-	background: var(--client-color-50, #fffbeb);
-	border: 1px solid var(--client-color-200, #fde68a);
-	border-radius: var(--r-md);
-	display: inline-grid;
-	place-items: center;
-	font-size: 1.6rem;
-	margin-bottom: 18px;
-}
-
-.about-value-card__title {
-	font-family: var(--font-display);
-	font-size: 1.15rem;
-	font-weight: 700;
-	color: var(--text-primary);
-	margin-bottom: 10px;
-	line-height: 1.25;
-}
-
-.about-value-card__body {
-	font-size: .875rem;
-	color: var(--text-secondary);
-	line-height: 1.7;
-	margin: 0;
-}
-
 /* ── Plain card ──────────────────────────────────────────────────────────── */
 .ah-plain-card {
 	padding: 24px 22px;

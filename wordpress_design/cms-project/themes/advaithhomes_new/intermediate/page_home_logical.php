@@ -64,6 +64,44 @@ function adn_home_get_context() {
 		$ctx['news']['items'] = adn_home_cms_news_items(); // DB only; empty array when no news data
 	}
 
+	// Overlay admin-selected posts for regulations and hot_topics (no CMS plugin required).
+	$reg_items = adn_home_cms_regulations_items();
+	if ( ! empty( $reg_items ) ) {
+		$ctx['regulations']['items'] = $reg_items;
+	}
+	$ht_items = adn_home_cms_hot_topics_items();
+	if ( ! empty( $ht_items ) ) {
+		$ctx['hot_topics']['items'] = $ht_items;
+	}
+
+	// Overlay popular calculators from registry (is_popular flag) — always replaces JSON if any exist.
+	if ( function_exists( 'adn_calculators' ) ) {
+		$_hp_registry = adn_calculators();
+		$_hp_meta_all = get_option( 'adn_calculators_meta', array() );
+		$_hp_items    = array();
+		foreach ( $_hp_registry as $_hpk => $_hpc ) {
+			$_hpm = ( isset( $_hp_meta_all[ $_hpk ] ) && is_array( $_hp_meta_all[ $_hpk ] ) ) ? $_hp_meta_all[ $_hpk ] : array();
+			if ( array_key_exists( 'enabled', $_hpm ) && empty( $_hpm['enabled'] ) ) { continue; }
+			if ( ! empty( $_hpm['hidden_from_listing'] ) ) { continue; }
+			if ( empty( $_hpm['is_popular'] ) ) { continue; }
+			$_hpthumb = '';
+			if ( ! empty( $_hpm['thumbnail_id'] ) ) {
+				$_hpt = wp_get_attachment_image_url( (int) $_hpm['thumbnail_id'], 'thumbnail' );
+				$_hpthumb = $_hpt ? (string) $_hpt : '';
+			}
+			$_hp_items[] = array(
+				'icon'      => ! empty( $_hpc['icon'] )      ? (string) $_hpc['icon']      : '🧮',
+				'name'      => ! empty( $_hpm['label'] )     ? (string) $_hpm['label']     : ( ! empty( $_hpc['title'] ) ? (string) $_hpc['title'] : $_hpk ),
+				'url'       => ! empty( $_hpm['card_url'] )  ? (string) $_hpm['card_url']  : home_url( '/?ah_calc_page=' . rawurlencode( $_hpk ) ),
+				'thumbnail' => $_hpthumb,
+				'highlight' => ! empty( $_hpm['highlight'] ) ? (string) $_hpm['highlight'] : '',
+			);
+		}
+		if ( ! empty( $_hp_items ) ) {
+			$ctx['calculators']['items'] = $_hp_items;
+		}
+	}
+
 	return $ctx;
 }
 
@@ -143,34 +181,48 @@ function adn_home_cms_journey_cards() {
 }
 
 /**
- * One guide card per Guide parent term (Buying / Selling / House Movers).
+ * Guide cards for the home page — one card per taxonomy category term.
+ * Each card links to the term's category listing page (/term-slug/),
+ * not to an individual article.
+ * Respects adn_home_featured option (topic filter + count).
  * DB only - no JSON fallback; returns empty array when no data.
  */
 function adn_home_cms_guide_items() {
+	$featured  = get_option( 'adn_home_featured', array() );
+	$count     = ( isset( $featured['count'] ) && (int) $featured['count'] > 0 )
+	             ? (int) $featured['count'] : 10;
+	$topic_ids = ( isset( $featured['topics'] ) && is_array( $featured['topics'] ) )
+	             ? array_map( 'intval', $featured['topics'] ) : array();
+
 	$items = array();
-	foreach ( adn_cms_one_article_per_parent() as $i => $post ) {
-		$title = isset( $post->title ) ? $post->title : '';
-		if ( '' === $title ) {
+	foreach ( adn_cms_guides_by_category( $count, $topic_ids ) as $i => $post ) {
+		$cat_name = isset( $post->category_name ) ? (string) $post->category_name : '';
+		if ( '' === $cat_name ) {
 			continue;
 		}
-		$icon = ! empty( $post->_parent_icon ) ? $post->_parent_icon : 'fa-book-open';
+
+		// Card URL goes to the category listing page for this term.
+		$term_url = home_url( '/' . trim( (string) $post->_term_slug, '/' ) . '/' );
+
 		$items[] = array(
-			'icon'        => $icon,
+			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : '📚' ),
 			'gradient'    => adn_cms_gradient( $i ),
-			'category'    => ! empty( $post->category_name ) ? $post->category_name : 'Guide',
-			'title'       => $title,
-			'description' => isset( $post->excerpt ) ? (string) $post->excerpt : '',
-			'read_more'   => 'Read More →',
-			'url'         => adn_cms_post_url( $post ),
+			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
+			'category'    => $cat_name,
+			'title'       => '',
+			'description' => ! empty( $post->_term_desc ) ? $post->_term_desc : '',
+			'read_more'   => 'Explore →',
+			'url'         => $term_url,
 		);
 	}
 	return $items;
 }
 
 /**
- * News items for home "Latest Property News".
- * Primary: plugin News Bar (ah_news_bar_items - active, date-filtered).
- * Fallback: 4 most recent WP posts via WP_Query (so any post created shows here).
+ * News items for home "Latest News".
+ * Primary: plugin News Bar (ah_news_bar_items — active, date-filtered).
+ * Fallback: 4 most recent WP posts via WP_Query.
+ * Each item carries a 'description' key for the accordion expand.
  */
 function adn_home_cms_news_items() {
 	$items = array();
@@ -183,12 +235,14 @@ function adn_home_cms_news_items() {
 				continue;
 			}
 			$stamp   = ! empty( $item->start_date ) ? $item->start_date : '';
+			$desc    = ! empty( $item->content ) ? wp_strip_all_tags( (string) $item->content ) : '';
 			$items[] = array(
-				'title'    => $title,
-				'date'     => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
-				'tag'      => 'NEWS',
-				'gradient' => adn_cms_gradient( $i ),
-				'url'      => ! empty( $item->link_url ) ? $item->link_url : '#',
+				'title'       => $title,
+				'description' => $desc,
+				'date'        => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
+				'tag'         => 'NEWS',
+				'gradient'    => adn_cms_gradient( $i ),
+				'url'         => ! empty( $item->link_url ) ? $item->link_url : '#',
 			);
 		}
 	}
@@ -204,17 +258,85 @@ function adn_home_cms_news_items() {
 		) );
 		if ( $q->have_posts() ) {
 			foreach ( $q->posts as $i => $post ) {
+				$excerpt = $post->post_excerpt
+					?: wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '…' );
 				$items[] = array(
-					'title'    => $post->post_title,
-					'date'     => get_the_date( 'M j, Y', $post ),
-					'tag'      => 'NEWS',
-					'gradient' => adn_cms_gradient( $i ),
-					'url'      => get_permalink( $post ),
+					'title'       => $post->post_title,
+					'description' => $excerpt,
+					'date'        => get_the_date( 'M j, Y', $post ),
+					'tag'         => 'NEWS',
+					'gradient'    => adn_cms_gradient( $i ),
+					'url'         => get_permalink( $post ),
 				);
 			}
 			wp_reset_postdata();
 		}
 	}
 
+	return $items;
+}
+
+/**
+ * Regulations items from admin-selected posts (adn_home_newsblocks option).
+ * Falls back to empty (JSON defaults stay in place).
+ *
+ * @return array[]  regulation_item shape: { badge_lines[], title, date, url }
+ */
+function adn_home_cms_regulations_items() {
+	$opt = get_option( 'adn_home_newsblocks', array() );
+	$raw = ( isset( $opt['regulations']['items'] ) && is_array( $opt['regulations']['items'] ) )
+	       ? $opt['regulations']['items'] : array();
+	$items = array();
+	foreach ( $raw as $row ) {
+		$pid  = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
+		if ( ! $pid ) {
+			continue;
+		}
+		$post = get_post( $pid );
+		if ( ! $post || 'publish' !== $post->post_status ) {
+			continue;
+		}
+		$badge_raw   = isset( $row['badge'] ) ? sanitize_text_field( $row['badge'] ) : 'GOV UK';
+		$badge_lines = array_filter( array_map( 'trim', explode( "\n", $badge_raw ) ) );
+		if ( empty( $badge_lines ) ) {
+			$badge_lines = array( 'GOV', 'UK' );
+		}
+		$items[] = array(
+			'badge_lines' => array_values( $badge_lines ),
+			'title'       => $post->post_title,
+			'date'        => get_the_date( 'M j, Y', $post ),
+			'url'         => get_permalink( $post ),
+		);
+	}
+	return $items;
+}
+
+/**
+ * Hot Topics items from admin-selected posts (adn_home_newsblocks option).
+ * Falls back to empty (JSON defaults stay in place).
+ *
+ * @return array[]  hot_topic_item shape: { icon, text, desc, url }
+ */
+function adn_home_cms_hot_topics_items() {
+	$opt = get_option( 'adn_home_newsblocks', array() );
+	$raw = ( isset( $opt['hot_topics']['items'] ) && is_array( $opt['hot_topics']['items'] ) )
+	       ? $opt['hot_topics']['items'] : array();
+	$items = array();
+	foreach ( $raw as $row ) {
+		$pid  = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
+		if ( ! $pid ) {
+			continue;
+		}
+		$post = get_post( $pid );
+		if ( ! $post || 'publish' !== $post->post_status ) {
+			continue;
+		}
+		$items[] = array(
+			'icon' => ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : '🔥',
+			'text' => $post->post_title,
+			'desc' => $post->post_excerpt,
+			'url'  => get_permalink( $post ),
+		);
+	}
 	return $items;
 }

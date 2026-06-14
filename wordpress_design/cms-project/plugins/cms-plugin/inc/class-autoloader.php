@@ -22,13 +22,9 @@ class AH_Autoloader {
 		'AH_Media_Model'      => 'models/class-media-model.php',
 		'AH_Pages_Model'      => 'models/class-pages-model.php',
 		'AH_Nav_Model'        => 'models/class-nav-model.php',
-		'AH_Home_Model'       => 'models/class-home-model.php',
-		'AH_Services_Model'   => 'models/class-services-model.php',
-		'AH_About_Model'      => 'models/class-about-model.php',
 		'AH_Reviews_Model'    => 'models/class-reviews-model.php',
 		'AH_Faqs_Model'       => 'models/class-faqs-model.php',
 		'AH_Posts_Model'      => 'models/class-posts-model.php',
-		'AH_Team_Model'       => 'models/class-team-model.php',
 		'AH_Taxonomy_Model'        => 'models/class-taxonomy-model.php',
 		'AH_Taxonomy_Parent_Model' => 'models/class-taxonomy-parent-model.php',
 		'AH_Content_Taxonomy_Model' => 'models/class-content-taxonomy-model.php',
@@ -56,6 +52,7 @@ class AH_Autoloader {
 		'AH_Analytics_Ajax'   => 'admin/ajax/class-analytics-ajax.php',
 		'AH_CSV_Importer'     => 'admin/import/class-csv-importer.php',
 		'AH_Form_Builder'     => 'inc/class-form-builder.php',
+		'AH_Newsletter'       => 'inc/class-newsletter.php',
 		'AH_Rules_Engine'     => 'inc/class-rules-engine.php',
 	);
 

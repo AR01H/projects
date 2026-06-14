@@ -80,7 +80,6 @@ class AH_DB_Seed {
 		global $wpdb;
 		foreach ( array(
 			array( 'title' => 'Home',           'slug' => 'home',           'page_type' => 'home'           ),
-			array( 'title' => 'About',          'slug' => 'about',          'page_type' => 'about'          ),
 			array( 'title' => 'Services',       'slug' => 'services',       'page_type' => 'services'       ),
 			array( 'title' => 'Contact',        'slug' => 'contact',        'page_type' => 'contact'        ),
 			array( 'title' => 'Client Stories', 'slug' => 'client-stories', 'page_type' => 'client_stories' ),

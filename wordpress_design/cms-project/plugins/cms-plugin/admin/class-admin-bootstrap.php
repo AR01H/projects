@@ -14,6 +14,30 @@ class AH_Admin_Bootstrap {
 		add_action( 'save_post', array( self::class, 'save_post_metabox' ), 10, 1 );
 		AH_Ajax_Handlers::init();
 		AH_Analytics_Ajax::init();
+
+		// Ensure newsletter table exists.
+		add_action( 'admin_init', array( 'AH_Newsletter', 'maybe_install' ) );
+
+		// Public unsubscribe endpoint: /?ah_nl_unsub=1&email=X&token=Y
+		add_action( 'init', array( self::class, 'handle_newsletter_unsub' ) );
+	}
+
+	public static function handle_newsletter_unsub(): void {
+		if ( empty( $_GET['ah_nl_unsub'] ) || empty( $_GET['email'] ) || empty( $_GET['token'] ) ) {
+			return;
+		}
+		AH_Newsletter::maybe_install();
+		$email = sanitize_email( wp_unslash( $_GET['email'] ) );
+		$token = sanitize_text_field( wp_unslash( $_GET['token'] ) );
+		if ( ! is_email( $email ) || ! hash_equals( AH_Newsletter::unsub_token( $email ), $token ) ) {
+			wp_die( 'Invalid unsubscribe link.', 'Unsubscribe', array( 'response' => 400 ) );
+		}
+		AH_Newsletter::unsubscribe( $email );
+		wp_die(
+			'<p style="font-family:sans-serif;font-size:18px;text-align:center;padding:60px 20px">You have been unsubscribed successfully. You will no longer receive newsletters from ' . esc_html( get_bloginfo( 'name' ) ) . '.</p>',
+			'Unsubscribed',
+			array( 'response' => 200 )
+		);
 	}
 
 	public static function enqueue_assets( string $hook ): void {
@@ -87,8 +111,6 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-navigation"]::before   { content:"\f333"; }
 #adminmenu .wp-submenu a[href*="page=ah-home"]::before         { content:"\f102"; }
 #adminmenu .wp-submenu a[href*="page=ah-services"]::before     { content:"\f313"; }
-#adminmenu .wp-submenu a[href*="page=ah-about"]::before        { content:"\f488"; }
-#adminmenu .wp-submenu a[href*="page=ah-team"]::before         { content:"\f307"; }
 #adminmenu .wp-submenu a[href*="page=ah-client-stories"]::before { content:"\f109"; }
 #adminmenu .wp-submenu a[href*="page=ah-reviews"]::before      { content:"\f205"; }
 #adminmenu .wp-submenu a[href*="page=ah-faqs"]::before         { content:"\f223"; }
@@ -110,7 +132,6 @@ class AH_Admin_Bootstrap {
 
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),
-#adminmenu .wp-submenu li:has(> a[href*="page=ah-team"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-audit"])
 {
 	border-top:1px solid rgba(255,255,255,.12); margin-top:6px; padding-top:4px;

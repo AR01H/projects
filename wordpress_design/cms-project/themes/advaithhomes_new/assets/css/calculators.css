@@ -165,72 +165,86 @@
 }
 
 .calcs-sidebar-section {
-    margin-bottom: 8px;
+    background: var(--color-white, #fff);
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: var(--card-radius, 8px);
+    padding: 16px 18px;
+    margin-bottom: 18px;
 }
 
 .calcs-sidebar h3 {
-    font-size: 1rem;
-    color: var(--color-heading, #111827);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #6b7280);
     margin-bottom: 12px;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
 }
 
 .calcs-cat-list {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
 }
 
 .calcs-cat-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 9px 12px;
-    border-radius: var(--radius-sm, 8px);
+    padding: 8px 10px 8px 12px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     color: var(--color-text, #374151);
     border: none;
     background: none;
     text-align: left;
     width: 100%;
     transition: background 0.12s, color 0.12s;
+    border-left: 3px solid transparent;
 }
 
 .calcs-cat-item:hover {
-    background: var(--color-surface, #f3f4f6);
+    background: var(--color-bg, #f8f7f4);
+    border-left-color: var(--color-border-dark, #d1c9bc);
 }
 
 .calcs-cat-item.active {
-    background: var(--color-primary, #1d4ed8);
-    color: #fff;
+    background: var(--color-tag-bg, #e8f0ec);
+    border-left-color: var(--color-primary, #1e3a2f);
+    color: var(--color-primary, #1e3a2f);
+    font-weight: 600;
 }
 
 .calcs-cat-count {
-    font-size: 0.78rem;
-    background: rgba(0, 0, 0, 0.08);
-    padding: 2px 7px;
+    font-size: 0.73rem;
+    background: var(--color-border, #e5e7eb);
+    color: var(--color-text-muted, #6b7280);
+    padding: 1px 7px;
     border-radius: 20px;
     font-weight: 600;
     flex-shrink: 0;
 }
 
 .calcs-cat-item.active .calcs-cat-count {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(30, 58, 47, 0.12);
+    color: var(--color-primary, #1e3a2f);
 }
 
 .calcs-sidebar-help {
-    background: var(--color-surface, #f3f4f6);
+    background: var(--color-white, #fff);
     border: 1px solid var(--color-border, #e5e7eb);
-    border-radius: var(--radius-md, 12px);
-    padding: 20px;
-    margin-top: 24px;
+    border-radius: var(--card-radius, 8px);
+    padding: 18px;
+    margin-top: 0;
 }
 
 .calcs-sidebar-help h4 {
-    font-size: 0.95rem;
-    color: var(--color-heading, #111827);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-dark, #1a2332);
     margin-bottom: 8px;
 }
 
@@ -505,4 +519,135 @@
     .popular-calcs-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ── Calculator badge (highlight label) ─────────────────────────── */
+.calc-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    background: #e0f2fe;
+    color: #0369a1;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.calc-badge--inline {
+    margin-left: 6px;
+    vertical-align: middle;
+    font-size: 10px;
+}
+
+.calc-badge--large {
+    font-size: 13px;
+    padding: 4px 14px;
+}
+
+/* Badge positioned top-right on calc-card and popular-calc-card */
+.calc-card,
+.popular-calc-card {
+    position: relative;
+}
+
+.calc-card > .calc-badge,
+.popular-calc-card > .calc-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+}
+
+/* ── Thumbnail images inside cards ──────────────────────────────── */
+.calc-card-thumb,
+.calc-list-thumb,
+.calc-popular-thumb {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.calc-card .calc-card-icon {
+    overflow: hidden;
+}
+
+.calc-list-icon {
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+/* ── Single calculator page ─────────────────────────────────────── */
+.calc-single-layout {
+    padding-top: 28px;
+}
+
+.calc-single-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.calc-single-thumb {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.calc-single-widget {
+    margin-bottom: 20px;
+}
+
+.calc-single-help {
+    background: #f8fafc;
+    border-left: 3px solid #0ea5e9;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.calc-single-guide-link {
+    margin-bottom: 28px;
+}
+
+.calc-single-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    margin-top: 0;
+    color: #1e293b;
+}
+
+@media (max-width: 768px) {
+    .calc-single-layout {
+        padding-top: 16px;
+    }
+
+    .calc-single-thumb {
+        width: 80px;
+        height: 56px;
+    }
+}
+
+/* ── Inline embed mode (mode="inline" shortcode) ────────────────── */
+.ah-calc-inline-wrap {
+    display: block;
+    width: 100%;
+    overflow: visible;
+}
+
+/* Allow .ah-calc-body rules to apply to the inline wrapper too */
+.ah-calc-inline-wrap.ah-calc-body {
+    background: transparent;
+    padding: 0;
+    margin: 0;
 }

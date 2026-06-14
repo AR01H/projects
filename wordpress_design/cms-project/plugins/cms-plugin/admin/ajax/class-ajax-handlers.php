@@ -51,8 +51,8 @@ class AH_Ajax_Handlers {
 		if ( ! $id || ! $table ) wp_send_json_error( array( 'message' => 'Missing parameters.' ) );
 
 		$allowed_tables = array(
-			'pages', 'posts', 'services', 'reviews', 'faqs', 'team_members',
-			'taxonomies', 'news_bar_items', 'nav_menus', 'about_values',
+			'pages', 'posts', 'reviews', 'faqs',
+			'taxonomies', 'news_bar_items', 'nav_menus',
 			'client_gallery', 'client_video_links', 'home_highlights',
 			'home_why_us_cards', 'home_guide_points', 'home_stack_items',
 			'home_difference_rows', 'home_experience_cards', 'home_why_req_cards',
@@ -88,8 +88,8 @@ class AH_Ajax_Handlers {
 		if ( ! $id || ! $model ) wp_send_json_error( array( 'message' => 'Missing parameters.' ) );
 
 		$allowed_models = array(
-			'pages', 'posts', 'services', 'reviews', 'faqs', 'team_members',
-			'taxonomies', 'taxonomy_types', 'news_bar_items', 'about_values',
+			'pages', 'posts', 'reviews', 'faqs',
+			'taxonomies', 'taxonomy_types', 'news_bar_items',
 			'home_highlights', 'home_why_us_cards', 'home_guide_points',
 			'home_stack_items', 'home_difference_rows', 'home_experience_cards',
 			'home_why_req_cards', 'home_featured_items',
@@ -124,8 +124,8 @@ class AH_Ajax_Handlers {
 		if ( ! $model || ! is_array( $order ) ) wp_send_json_error( array( 'message' => 'Missing parameters.' ) );
 
 		$allowed_models = array(
-			'pages', 'posts', 'services', 'reviews', 'faqs', 'team_members',
-			'taxonomies', 'news_bar_items', 'nav_menu_items', 'about_values',
+			'pages', 'posts', 'reviews', 'faqs',
+			'taxonomies', 'news_bar_items', 'nav_menu_items',
 			'home_highlights', 'home_why_us_cards', 'home_guide_points',
 			'home_stack_items', 'home_difference_rows', 'home_experience_cards',
 			'home_why_req_cards', 'home_featured_items',
@@ -308,8 +308,11 @@ class AH_Ajax_Handlers {
 	// -------------------------------------------------------------------------
 
 	public static function init_public(): void {
-		add_action( 'wp_ajax_ah_form_submit',           array( __CLASS__, 'handle_form_submit' ) );
-		add_action( 'wp_ajax_nopriv_ah_form_submit',    array( __CLASS__, 'handle_form_submit' ) );
+		add_action( 'wp_ajax_ah_form_submit',              array( __CLASS__, 'handle_form_submit' ) );
+		add_action( 'wp_ajax_nopriv_ah_form_submit',       array( __CLASS__, 'handle_form_submit' ) );
+		add_action( 'wp_ajax_ah_newsletter_subscribe',     array( __CLASS__, 'handle_newsletter_subscribe' ) );
+		add_action( 'wp_ajax_nopriv_ah_newsletter_subscribe', array( __CLASS__, 'handle_newsletter_subscribe' ) );
+		add_action( 'wp_ajax_ah_save_submission_meta',     array( __CLASS__, 'handle_save_submission_meta' ) );
 	}
 
 	// -------------------------------------------------------------------------
@@ -344,7 +347,7 @@ class AH_Ajax_Handlers {
 
 		foreach ( $fields as $field ) {
 			$key = $field->field_key;
-			$raw = $_POST[ $key ] ?? '';
+			$raw = isset( $_POST[ $key ] ) ? $_POST[ $key ] : '';
 
 			$val = ( 'textarea' === $field->field_type )
 				? sanitize_textarea_field( wp_unslash( $raw ) )
@@ -353,7 +356,6 @@ class AH_Ajax_Handlers {
 					: sanitize_text_field( wp_unslash( $raw ) ) );
 
 			if ( $field->is_required && '' === $val ) {
-				/* translators: field label */
 				wp_send_json_error( array( 'message' => $field->label . ' is required.' ) );
 			}
 
@@ -367,14 +369,23 @@ class AH_Ajax_Handlers {
 			}
 		}
 
+		// Form-level agreement checkbox validation.
+		$agr = AH_Form_Builder::get_agreement( $form_id );
+		if ( ! empty( $agr['enabled'] ) ) {
+			$agreed = isset( $_POST['ah_agreement'] ) && '1' === (string) $_POST['ah_agreement'];
+			if ( ! $agreed ) {
+				$link_label = ! empty( $agr['link_text'] ) ? $agr['link_text'] : 'Terms & Conditions';
+				wp_send_json_error( array( 'message' => 'Please agree to the ' . $link_label . ' to continue.' ) );
+			}
+			$data['_agreement'] = 'agreed';
+			$email_rows[]       = array( 'label' => 'Agreement', 'value' => 'Agreed' );
+		}
+
 		// Store submission
 		$sub_id = AH_Form_Builder::submit( $form_id, $data );
 		if ( ! $sub_id ) {
 			wp_send_json_error( array( 'message' => 'Could not save your submission. Please try again.' ) );
 		}
-
-		// Fire Triggers Maker
-		AH_Rules_Engine::evaluate( 'form_submit', array_merge( array( 'form_id' => $form_id ), $data ) );
 
 		// Send email notification
 		$notify = ! empty( $form->notify_email ) ? $form->notify_email : get_option( 'admin_email' );
@@ -388,7 +399,61 @@ class AH_Ajax_Handlers {
 			wp_mail( $notify, $subject, $body );
 		}
 
+		// Conditionally fire rules engine (per-form setting).
+		if ( empty( $form->disable_rules ) ) {
+			AH_Rules_Engine::evaluate( 'form_submit', array_merge( array( 'form_id' => $form_id ), $data ) );
+		}
+
 		wp_send_json_success( array( 'message' => $form->success_message ?: 'Thank you! We will get back to you shortly.' ) );
+	}
+
+	// -------------------------------------------------------------------------
+	// ah_save_submission_meta - admin-only: update status + notes per submission
+	// -------------------------------------------------------------------------
+	public static function handle_save_submission_meta(): void {
+		if ( ! check_ajax_referer( 'ah_admin_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array( 'message' => 'Security check failed.' ), 403 );
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => 'Not allowed.' ), 403 );
+		}
+		$id     = (int) ( isset( $_POST['sub_id'] ) ? $_POST['sub_id'] : 0 );
+		$status = sanitize_key( isset( $_POST['sub_status'] ) ? wp_unslash( $_POST['sub_status'] ) : 'new' );
+		$notes  = sanitize_textarea_field( wp_unslash( isset( $_POST['admin_notes'] ) ? $_POST['admin_notes'] : '' ) );
+
+		AH_Form_Builder::maybe_upgrade_submissions();
+		if ( AH_Form_Builder::update_submission_meta( $id, $status, $notes ) ) {
+			wp_send_json_success( array( 'message' => 'Saved.' ) );
+		} else {
+			wp_send_json_error( array( 'message' => 'Could not save.' ) );
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// ah_newsletter_subscribe - public: save newsletter subscription
+	// -------------------------------------------------------------------------
+	public static function handle_newsletter_subscribe(): void {
+		if ( ! check_ajax_referer( 'ah_newsletter_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array( 'message' => 'Security check failed. Please refresh and try again.' ), 403 );
+		}
+		$email  = sanitize_email( wp_unslash( isset( $_POST['email'] ) ? $_POST['email'] : '' ) );
+		$name   = sanitize_text_field( wp_unslash( isset( $_POST['name'] ) ? $_POST['name'] : '' ) );
+		$source = sanitize_key( wp_unslash( isset( $_POST['source'] ) ? $_POST['source'] : 'website' ) );
+
+		if ( ! is_email( $email ) ) {
+			wp_send_json_error( array( 'message' => 'Please enter a valid email address.' ) );
+		}
+
+		AH_Newsletter::maybe_install();
+		$result = AH_Newsletter::subscribe( $email, $name, $source );
+
+		if ( 'already_subscribed' === $result ) {
+			wp_send_json_success( array( 'message' => 'You are already subscribed — thank you!' ) );
+		} elseif ( 'subscribed' === $result ) {
+			wp_send_json_success( array( 'message' => 'Thank you for subscribing! You\'ll hear from us soon.' ) );
+		} else {
+			wp_send_json_error( array( 'message' => 'Could not save your subscription. Please try again.' ) );
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -434,13 +499,8 @@ class AH_Ajax_Handlers {
 
 		$required = array(
 			'pages', 'page_sections', 'site_settings', 'admin_roles', 'nav_menus', 'nav_menu_items',
-			'media', 'posts', 'services', 'reviews', 'faqs', 'team_members', 'taxonomies',
-			'taxonomy_types', 'content_taxonomies', 'news_bar_items', 'contact_submissions', 'contact_config', 'audit_logs',
-			'home_hero', 'home_highlights', 'home_why_us', 'home_why_us_cards', 'home_guide',
-			'home_guide_points', 'home_stack_items', 'home_difference', 'home_difference_rows',
-			'home_experience', 'home_experience_cards', 'home_why_req', 'home_why_req_cards',
-			'home_featured', 'home_featured_items', 'about_page_header', 'about_story',
-			'about_story_points', 'about_values', 'services_page_header', 'reviews_page_header',
+			'media', 'posts', 'reviews', 'faqs', 'taxonomies',
+			'taxonomy_types', 'content_taxonomies', 'news_bar_items', 'contact_submissions', 'contact_config', 'audit_logs', 'reviews_page_header',
 			'faqs_page_header', 'posts_listing_header', 'client_stories_header', 'client_gallery',
 			'client_video_links', 'footer_config', 'footer_contact_links', 'footer_social_links',
 			'file_links', 'forms', 'form_fields', 'form_submissions',

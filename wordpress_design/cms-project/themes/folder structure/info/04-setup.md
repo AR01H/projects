@@ -225,10 +225,10 @@ No need to find and delete `add_filter()` calls scattered across files.
 
 | Priority | When to use |
 |----------|-------------|
-| `0–4` | Must run before WP core (rare) |
-| `5–9` | Before most plugins |
+| `0-4` | Must run before WP core (rare) |
+| `5-9` | Before most plugins |
 | `10` | Default - run alongside plugins |
-| `15–20` | After most plugins |
-| `99–999` | Must run last (e.g. cleanup, overrides) |
+| `15-20` | After most plugins |
+| `99-999` | Must run last (e.g. cleanup, overrides) |
 
 CPTs are registered at priority `0` so they're available before any plugin tries to use them.

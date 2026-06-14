@@ -93,7 +93,6 @@ class ADN_Mock_Installer {
 			array( 'Understanding Mortgage in Principle', 'mortgage-in-principle',  'Why it matters and how it strengthens your offer.',           'buying-mortgages',         0 ),
 			array( 'The Conveyancing Process Explained',  'conveyancing-process',   'Each step of the legal process in plain English.',            'buying-conveyancing',      0 ),
 			array( 'How to Sell Your Home Successfully',  'how-to-sell-your-home',  'Expert tips to help you sell faster and for the right price.', 'selling-preparing-to-sell',0 ),
-			array( 'Moving Home Checklist',               'moving-home-checklist',  'Your ultimate checklist for a smooth move.',                  'house-movers-moving-checklist', 0 ),
 		);
 		foreach ( $articles as $a ) {
 			list( $title, $slug, $excerpt, $topic_slug, $featured ) = $a;
@@ -103,8 +102,8 @@ class ADN_Mock_Installer {
 
 		// 5. News → WordPress posts linked to the News term.
 		$news = array(
-			array( 'UK House Prices Rise 1.4% in April – Latest ONS Data', 'news-house-prices-april',    'The latest ONS figures show a modest monthly rise.' ),
-			array( 'Mortgage Rates Hold Steady – What It Means for Buyers', 'news-mortgage-rates-steady', 'Lenders keep rates flat as markets settle.' ),
+			array( 'UK House Prices Rise 1.4% in April - Latest ONS Data', 'news-house-prices-april',    'The latest ONS figures show a modest monthly rise.' ),
+			array( 'Mortgage Rates Hold Steady - What It Means for Buyers', 'news-mortgage-rates-steady', 'Lenders keep rates flat as markets settle.' ),
 			array( 'RICS: Buyer Enquiries Reach 12-Month High',            'news-rics-buyer-enquiries',  'Surveyors report renewed buyer demand.' ),
 			array( 'Stamp Duty Receipts Hit Record High in Q1',           'news-stamp-duty-receipts',   'HMRC data shows record SDLT receipts.' ),
 		);

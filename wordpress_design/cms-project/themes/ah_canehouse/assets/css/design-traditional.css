@@ -2231,7 +2231,7 @@ body.design-traditional .ch-page-hero__badge {
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   33. RESPONSIVE - NEW SECTIONS (29–32)
+   33. RESPONSIVE - NEW SECTIONS (29-32)
    ══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 1024px) {
@@ -2699,7 +2699,7 @@ body.design-traditional .ch-tevents__visual img { width: 100%; display: block; }
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   37. BOOKING MODAL - TRADITIONAL (matches mockups 5–8)
+   37. BOOKING MODAL - TRADITIONAL (matches mockups 5-8)
    ──────────────────────────────────────────────────────────────────────────
    Markup: components/booking-wizard.php + components/forms/form_step_modal.php.
    These inherit the parchment palette via the §1 token remap, but keep the modern

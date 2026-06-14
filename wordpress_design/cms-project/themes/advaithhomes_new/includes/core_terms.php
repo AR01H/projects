@@ -6,7 +6,7 @@
 define( 'ADN_THEME_NAME', 'advaithhomes_new' );
 define( 'ADN_THEME_DIR', get_template_directory() );
 define( 'ADN_THEME_URI', get_template_directory_uri() );
-define( 'ADN_THEME_VERSION', '1.0.0' );
+define( 'ADN_THEME_VERSION', '1.0.3' );
 
 // Translation text domain. Must match the "Text Domain:" header in style.css
 // (that header is parsed by WP and cannot read a constant). NOTE: using a

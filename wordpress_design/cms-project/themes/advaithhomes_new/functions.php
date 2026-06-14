@@ -13,6 +13,8 @@ require_once get_template_directory() . '/includes/core_info.php';
 require_once get_template_directory() . '/includes/rules_conditions.php';
 require_once get_template_directory() . '/includes/core_routing.php';
 require_once get_template_directory() . '/includes/class-category-settings.php';
+require_once get_template_directory() . '/includes/class-calculator-db.php';
+require_once get_template_directory() . '/includes/class-expert-db.php';
 
 // ===========================
 // LOAD HELPER FUNCTIONS
@@ -45,6 +47,100 @@ add_action( 'after_switch_theme', 'adn_create_default_pages' );
 add_action( 'after_switch_theme', array( 'AH_Category_Settings', 'install' ) );
 add_action( 'admin_init',         array( 'AH_Category_Settings', 'maybe_install' ) );
 
+// Install calculator DB table.
+add_action( 'after_switch_theme', array( 'AH_Calculator_DB', 'install' ) );
+add_action( 'admin_init',         array( 'AH_Calculator_DB', 'maybe_install' ) );
+
+// Install expert DB table.
+add_action( 'after_switch_theme', array( 'AH_Expert_DB', 'install' ) );
+add_action( 'admin_init',         array( 'AH_Expert_DB', 'maybe_install' ) );
+
+// Merge DB-stored (admin-created) calculators into the adn_calculators() registry.
+// File-based calculators already in the array take priority — DB only adds new keys.
+add_filter( 'adn_calculators', 'adn_merge_db_calculators' );
+function adn_merge_db_calculators( $calcs ) {
+	if ( ! class_exists( 'AH_Calculator_DB' ) ) { return $calcs; }
+	foreach ( AH_Calculator_DB::get_all( 'active' ) as $row ) {
+		$k = $row['calc_key'];
+		if ( isset( $calcs[ $k ] ) ) { continue; }
+		$calcs[ $k ] = array(
+			'title' => $row['title'],
+			'label' => '' !== $row['label'] ? $row['label'] : $row['title'],
+			'icon'  => $row['icon'],
+			'view'  => '__db__',
+		);
+	}
+	return $calcs;
+}
+
+// Expert profile page routing (?ah_expert=SLUG).
+add_action( 'template_redirect', 'adn_expert_full_page_render', 0 );
+
+// Expert contact form AJAX (listing page and profile page).
+add_action( 'wp_ajax_adn_expert_contact',        'adn_expert_contact_ajax' );
+add_action( 'wp_ajax_nopriv_adn_expert_contact', 'adn_expert_contact_ajax' );
+
+// Inline comment moderation (admin only).
+add_action( 'wp_ajax_adn_moderate_comment', 'adn_moderate_comment_ajax' );
+
+// Post helpful / like counter.
+add_action( 'wp_ajax_adn_post_helpful',        'adn_post_helpful_ajax' );
+add_action( 'wp_ajax_nopriv_adn_post_helpful', 'adn_post_helpful_ajax' );
+
+function adn_moderate_comment_ajax() {
+	check_ajax_referer( 'adn_moderate_comment', 'nonce' );
+
+	if ( ! current_user_can( 'moderate_comments' ) ) {
+		wp_send_json_error( array( 'message' => 'Permission denied' ), 403 );
+	}
+
+	$comment_id = isset( $_POST['comment_id'] ) ? (int) $_POST['comment_id'] : 0;
+	$mod_action = isset( $_POST['mod_action'] ) ? sanitize_key( (string) $_POST['mod_action'] ) : '';
+
+	if ( ! $comment_id || ! in_array( $mod_action, array( 'approve', 'unapprove', 'spam', 'trash' ), true ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid request' ), 400 );
+	}
+
+	if ( ! get_comment( $comment_id ) ) {
+		wp_send_json_error( array( 'message' => 'Comment not found' ), 404 );
+	}
+
+	$ok = false;
+	switch ( $mod_action ) {
+		case 'approve':   $ok = wp_set_comment_status( $comment_id, 'approve' ); break;
+		case 'unapprove': $ok = wp_set_comment_status( $comment_id, 'hold' );    break;
+		case 'spam':      $ok = wp_spam_comment( $comment_id );                  break;
+		case 'trash':     $ok = wp_trash_comment( $comment_id );                 break;
+	}
+
+	if ( $ok ) {
+		wp_send_json_success( array( 'action' => $mod_action ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Action failed' ) );
+	}
+}
+
+function adn_post_helpful_ajax() {
+	check_ajax_referer( 'adn_post_helpful', 'nonce' );
+
+	$post_id = isset( $_POST['post_id'] ) ? (int) $_POST['post_id'] : 0;
+	if ( ! $post_id || ! get_post( $post_id ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid post' ), 400 );
+	}
+
+	$count        = max( 0, (int) get_post_meta( $post_id, '_adn_helpful_count', true ) );
+	$already      = isset( $_POST['liked'] ) && '1' === (string) $_POST['liked'];
+
+	if ( $already ) {
+		$count = max( 0, $count - 1 );
+	} else {
+		$count++;
+	}
+
+	update_post_meta( $post_id, '_adn_helpful_count', $count );
+	wp_send_json_success( array( 'count' => $count, 'liked' => ! $already ) );
+}
+
 // Persist the language choice early, before any template output starts.
 add_action( 'init', 'adn_set_language_cookie' );
 
@@ -57,6 +153,65 @@ add_action( 'template_redirect', 'adn_check_coming_soon' );
 // SHORTCODES
 // ===========================
 add_shortcode( 'adn_cat_calculators', 'adn_shortcode_cat_calculators' );
+
+/**
+ * Expert profile page: serve pages/page-expert-single.php for ?ah_expert=SLUG.
+ */
+function adn_expert_full_page_render() {
+	if ( ! isset( $_GET['ah_expert'] ) || '' === $_GET['ah_expert'] ) { return; }
+	$slug = sanitize_key( wp_unslash( $_GET['ah_expert'] ) );
+	if ( ! class_exists( 'AH_Expert_DB' ) ) { return; }
+	$expert = AH_Expert_DB::get( $slug );
+	if ( ! $expert || 'active' !== $expert['status'] ) { return; }
+	$base     = realpath( ADN_THEME_DIR . '/pages' );
+	$template = realpath( ADN_THEME_DIR . '/pages/page-expert-single.php' );
+	if ( $base && $template && 0 === strpos( $template, $base ) && is_file( $template ) ) {
+		nocache_headers();
+		$_ver = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0';
+		wp_enqueue_style( 'adn-ask-expert-style', ADN_THEME_URI . '/assets/css/ask_expert.css', array(), $_ver );
+		wp_enqueue_script( 'adn-ask-expert-script', ADN_THEME_URI . '/assets/js/ask_expert.js', array(), $_ver, true );
+		wp_localize_script( 'adn-ask-expert-script', 'adnExpert', array(
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( 'adn_expert_contact' ),
+		) );
+		include $template;
+		exit;
+	}
+}
+
+/**
+ * Expert contact form AJAX handler — used by both the listing page and the profile page.
+ */
+function adn_expert_contact_ajax() {
+	check_ajax_referer( 'adn_expert_contact', 'nonce' );
+	$slug         = sanitize_key( wp_unslash( isset( $_POST['expert_slug'] )   ? $_POST['expert_slug']   : '' ) );
+	$sender_name  = sanitize_text_field( wp_unslash( isset( $_POST['sender_name'] )  ? $_POST['sender_name']  : '' ) );
+	$sender_email = sanitize_email( wp_unslash( isset( $_POST['sender_email'] ) ? $_POST['sender_email'] : '' ) );
+	$sender_phone = sanitize_text_field( wp_unslash( isset( $_POST['sender_phone'] ) ? $_POST['sender_phone'] : '' ) );
+	$message      = sanitize_textarea_field( wp_unslash( isset( $_POST['message'] )  ? $_POST['message']  : '' ) );
+
+	if ( '' === $sender_name || '' === $sender_email || '' === $message ) {
+		wp_send_json_error( array( 'message' => __( 'Please fill in all required fields.', ADN_TEXT_DOMAIN ) ) );
+	}
+	if ( ! is_email( $sender_email ) ) {
+		wp_send_json_error( array( 'message' => __( 'Please enter a valid email address.', ADN_TEXT_DOMAIN ) ) );
+	}
+
+	$expert      = class_exists( 'AH_Expert_DB' ) ? AH_Expert_DB::get( $slug ) : null;
+	$expert_name = $expert ? $expert['name'] : 'Expert';
+	$to_email    = ( $expert && ! empty( $expert['email'] ) ) ? $expert['email'] : get_option( 'admin_email' );
+
+	$subject = sprintf( '[Advaith Homes] Enquiry for %s from %s', $expert_name, $sender_name );
+	$body    = "Name: {$sender_name}\nEmail: {$sender_email}\nPhone: {$sender_phone}\n\nMessage:\n{$message}";
+	$headers = array( 'Content-Type: text/plain; charset=UTF-8', "Reply-To: {$sender_name} <{$sender_email}>" );
+
+	$sent = wp_mail( $to_email, $subject, $body, $headers );
+	if ( $sent ) {
+		wp_send_json_success( array( 'message' => sprintf( __( '%s will be in touch shortly.', ADN_TEXT_DOMAIN ), $expert_name ) ) );
+	} else {
+		wp_send_json_error( array( 'message' => __( 'Message could not be sent. Please try again.', ADN_TEXT_DOMAIN ) ) );
+	}
+}
 
 /**
  * [adn_cat_calculators slug="buying"]
@@ -77,12 +232,12 @@ function adn_shortcode_cat_calculators( $atts ) {
 	foreach ( $selected as $key ) {
 		$key = sanitize_key( $key );
 		if ( ! isset( $all_calcs[ $key ] ) ) { continue; }
-		$reg  = $all_calcs[ $key ];
-		$meta = isset( $calc_meta[ $key ] ) && is_array( $calc_meta[ $key ] ) ? $calc_meta[ $key ] : array();
+		$reg   = $all_calcs[ $key ];
+		$cmeta = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
 		$items[] = array(
-			'icon' => ! empty( $reg['icon'] )  ? (string) $reg['icon']  : '🧮',
-			'name' => ! empty( $reg['title'] ) ? (string) $reg['title'] : $key,
-			'url'  => ! empty( $meta['guide_url'] ) ? (string) $meta['guide_url'] : '/calculators/?calc=' . rawurlencode( $key ),
+			'icon' => ! empty( $reg['icon'] )       ? (string) $reg['icon']        : '🧮',
+			'name' => ! empty( $reg['title'] )      ? (string) $reg['title']       : $key,
+			'url'  => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url']  : home_url( '/?ah_calc_page=' . rawurlencode( $key ) ),
 		);
 	}
 	if ( empty( $items ) ) { return ''; }

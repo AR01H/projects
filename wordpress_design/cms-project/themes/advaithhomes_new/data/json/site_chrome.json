@@ -4,73 +4,7 @@
         "placeholder": "Search guides, calculators, news…",
         "submit_label": "Search"
     },
-    "nav": [
-        {
-            "label": "Buying",
-            "url": "/buying/",
-            "children": [
-                { "label": "First-Time Buyer Guide", "url": "/guides/" },
-                { "label": "The Buying Process", "url": "/buying/" },
-                { "label": "Mortgages in Principle", "url": "/calculators/" },
-                { "label": "Stamp Duty (SDLT)", "url": "/stamp-duty/" },
-                { "label": "Buying Costs", "url": "/calculators/" }
-            ]
-        },
-        {
-            "label": "Selling",
-            "url": "/selling/",
-            "children": [
-                { "label": "How to Sell Your Home", "url": "/guides/" },
-                { "label": "Selling Costs", "url": "/calculators/" },
-                { "label": "Choosing an Estate Agent", "url": "/guides/" },
-                { "label": "EPC & Compliance", "url": "/regulations/" }
-            ]
-        },
-        {
-            "label": "House Movers",
-            "url": "/house-movers/",
-            "children": [
-                { "label": "Moving Checklist", "url": "/guides/" },
-                { "label": "Removal Companies", "url": "/ask-expert/" },
-                { "label": "Change of Address", "url": "/guides/" },
-                { "label": "Moving Cost Calculator", "url": "/calculators/" }
-            ]
-        },
-        {
-            "label": "Calculators",
-            "url": "/calculators/",
-            "children": [
-                { "label": "Stamp Duty Calculator", "url": "/stamp-duty/" },
-                { "label": "Mortgage Affordability", "url": "/calculators/" },
-                { "label": "Buying Cost Calculator", "url": "/calculators/" },
-                { "label": "Selling Cost Calculator", "url": "/calculators/" },
-                { "label": "All Calculators", "url": "/calculators/" }
-            ]
-        },
-        {
-            "label": "Guides",
-            "url": "/guides/",
-            "children": [
-                { "label": "Buying Guides", "url": "/buying-guides/" },
-                { "label": "Selling Guides", "url": "/guides/" },
-                { "label": "Moving Guides", "url": "/guides/" },
-                { "label": "All Guides", "url": "/guides/" }
-            ]
-        },
-        { "label": "News", "url": "/news/" },
-        { "label": "Regulations", "url": "/regulations/" },
-        {
-            "label": "Ask an Expert",
-            "url": "/ask-expert/",
-            "children": [
-                { "label": "Mortgage Advisers", "url": "/ask-expert/" },
-                { "label": "Solicitors & Conveyancers", "url": "/ask-expert/" },
-                { "label": "Surveyors", "url": "/ask-expert/" },
-                { "label": "Removal Companies", "url": "/ask-expert/" },
-                { "label": "Get Expert Guidance", "url": "/guidance/" }
-            ]
-        }
-    ],
+    "nav": [],
     "header_cta": { "label": "Get Guidance", "url": "/ask-expert/" },
     "footer": {
         "brand": {
@@ -81,8 +15,6 @@
         },
         "social": [
             { "label": "Facebook", "icon": "f", "url": "#" },
-            { "label": "X", "icon": "𝕏", "url": "#" },
-            { "label": "LinkedIn", "icon": "in", "url": "#" },
             { "label": "Instagram", "icon": "◎", "url": "#" },
             { "label": "YouTube", "icon": "▶", "url": "#" }
         ],

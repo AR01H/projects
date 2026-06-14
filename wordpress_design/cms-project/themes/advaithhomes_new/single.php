@@ -43,13 +43,11 @@ get_header();
 
 <?php /* ============================== BREADCRUMB ============================== */ ?>
 <?php if ( ! empty( $ctx['breadcrumb'] ) ) : ?>
-	<?php adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) ); ?>
+	<?php adn_component( 'sections/page_hero', array(
+		'hero'       => $ctx['article'],
+		'breadcrumb' => $ctx['breadcrumb'],
+	) ); ?>
 <?php endif; ?>
-
-<?php /* ============================== ARTICLE HERO (full-bleed) ============================== */ ?>
-<div class="article-hero-wrap">
-	<?php adn_component( 'sections/post_header', array( 'article' => $ctx['article'] ) ); ?>
-</div>
 
 <?php /* ============================== ARTICLE LAYOUT ============================== */ ?>
 <div class="article-outer">
@@ -70,10 +68,15 @@ get_header();
 			<?php adn_component( 'sections/post_feedback', array( 'share' => $ctx['share'] ) ); ?>
 
 			<?php /* Author box */ ?>
-			<?php adn_component( 'sections/post_author', array( 'author' => $ctx['author'] ) ); ?>
+			<!-- <?php adn_component( 'sections/post_author', array( 'author' => $ctx['author'] ) ); ?> -->
 
 			<?php /* Disclaimer */ ?>
-			<?php adn_component( 'sections/post_disclaimer' ); ?>
+			<!-- <?php adn_component( 'sections/post_disclaimer' ); ?> -->
+
+			<?php /* Comments */ ?>
+			<?php if ( comments_open() || get_comments_number() ) : ?>
+				<?php comments_template(); ?>
+			<?php endif; ?>
 
 		</main>
 

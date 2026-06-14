@@ -15,7 +15,7 @@
             { "icon": "🤝", "title": "Expert Guidance",          "subtitle": "Advice from property information experts" },
             { "icon": "⚖️", "title": "Impartial & Independent", "subtitle": "We provide unbiased information to help you decide better" },
             { "icon": "✅", "title": "Reliable Information",     "subtitle": "Practical, up-to-date and easy to understand" },
-            { "icon": "⏱",  "title": "Response Within 24-48 Hours", "subtitle": "We aim to respond to all enquiries within 1–2 working days" }
+            { "icon": "⏱",  "title": "Response Within 24-48 Hours", "subtitle": "We aim to respond to all enquiries within 1-2 working days" }
         ]
     },
     "form": {
@@ -46,7 +46,7 @@
             "icon":          "📧",
             "heading":       "Prefer Email?",
             "address":       "contact@advaithhomes.co.uk",
-            "note":          "Send us an email and we'll get back to you within 1–2 working days.",
+            "note":          "Send us an email and we'll get back to you within 1-2 working days.",
             "button_label":  "Send an Email",
             "url":           "#"
         },

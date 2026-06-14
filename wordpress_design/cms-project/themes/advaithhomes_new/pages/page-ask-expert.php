@@ -20,6 +20,13 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_ask_expert_logical.php';
 $ctx = adn_ask_expert_get_context();
 
+// Pass AJAX url and contact nonce to ask_expert.js on the listing page.
+// The script handle auto-registered in explode_function.php is 'adn-page-ask-expert-script'.
+wp_localize_script( 'adn-page-ask-expert-script', 'adnExpert', array(
+	'ajaxUrl' => isset( $ctx['ajax_url'] )      ? $ctx['ajax_url']      : admin_url( 'admin-ajax.php' ),
+	'nonce'   => isset( $ctx['contact_nonce'] ) ? $ctx['contact_nonce'] : '',
+) );
+
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );

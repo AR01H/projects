@@ -2,7 +2,7 @@
 /**
  * components/cards/calc_list_item.php - Calculator list row (icon, title, desc, arrow).
  *
- * Props: $item { icon, categories[], title, desc, url }
+ * Props: $item { icon, categories[], title, desc, url, thumbnail?, highlight? }
  * categories[] values are joined into a space-separated data-category attribute
  * used by calculators.js for client-side filtering.
  *
@@ -11,10 +11,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$item       = isset( $item ) && is_array( $item ) ? $item : array();
-$cats_raw   = isset( $item['categories'] ) ? (array) $item['categories'] : array();
-$cats_safe  = implode( ' ', array_map( 'sanitize_key', $cats_raw ) );
-$url        = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
+$item      = isset( $item ) && is_array( $item ) ? $item : array();
+$cats_raw  = isset( $item['categories'] ) ? (array) $item['categories'] : array();
+$cats_safe = implode( ' ', array_map( 'sanitize_key', $cats_raw ) );
+$url       = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
+$thumbnail = isset( $item['thumbnail'] ) && '' !== $item['thumbnail'] ? (string) $item['thumbnail'] : '';
+$highlight = isset( $item['highlight'] ) && '' !== $item['highlight'] ? (string) $item['highlight'] : '';
 ?>
 <a
 	href="<?php echo $url; ?>"
@@ -23,11 +25,20 @@ $url        = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 >
 	<div class="calc-list-item-left">
 		<div class="calc-list-icon" aria-hidden="true">
-			<?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>
+			<?php if ( $thumbnail ) : ?>
+				<img src="<?php echo esc_url( $thumbnail ); ?>" alt="" class="calc-list-thumb" loading="lazy">
+			<?php else : ?>
+				<?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>
+			<?php endif; ?>
 		</div>
 		<div class="calc-list-text">
 			<?php if ( ! empty( $item['title'] ) ) : ?>
-				<h4><?php echo esc_html( $item['title'] ); ?></h4>
+				<h4>
+					<?php echo esc_html( $item['title'] ); ?>
+					<?php if ( $highlight ) : ?>
+						<span class="calc-badge calc-badge--inline"><?php echo esc_html( $highlight ); ?></span>
+					<?php endif; ?>
+				</h4>
 			<?php endif; ?>
 			<?php if ( ! empty( $item['desc'] ) ) : ?>
 				<p><?php echo esc_html( $item['desc'] ); ?></p>

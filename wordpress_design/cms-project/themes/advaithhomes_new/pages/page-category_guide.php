@@ -49,9 +49,9 @@ adn_page_open( $_open_ctx );
 <div class="container">
 	<div class="page-with-sidebar">
 
-		<main style="display:grid;gap:10px;">
+		<main class="cat-guide-main">
 
-			<?php /* ── Guides Grid ── */ ?>
+			<?php /* ── Guides Carousel ── */ ?>
 			<?php if ( ! empty( $ctx['guides']['items'] ) ) : ?>
 			<section class="category-section category-guides">
 				<?php
@@ -59,12 +59,8 @@ adn_page_open( $_open_ctx );
 					'heading' => isset( $ctx['guides']['heading'] ) ? $ctx['guides']['heading'] : array(),
 					'tag'     => 'h2',
 				) );
+				adn_component( 'sections/guides', array( 'items' => $ctx['guides']['items'] ) );
 				?>
-				<div class="guides-grid guides-grid--5col">
-					<?php foreach ( (array) $ctx['guides']['items'] as $card ) : ?>
-						<?php adn_component( 'cards/guide_card', array( 'card' => $card ) ); ?>
-					<?php endforeach; ?>
-				</div>
 			</section>
 			<?php endif; ?>
 
@@ -76,42 +72,41 @@ adn_page_open( $_open_ctx );
 					'heading' => isset( $ctx['popular_posts']['heading'] ) ? $ctx['popular_posts']['heading'] : array(),
 					'tag'     => 'h2',
 				) );
+				adn_component( 'sections/guides', array( 'items' => $ctx['popular_posts']['items'] ) );
 				?>
-				<div class="guides-grid guides-grid--5col">
-					<?php foreach ( (array) $ctx['popular_posts']['items'] as $card ) : ?>
-						<?php adn_component( 'cards/guide_card', array( 'card' => $card ) ); ?>
-					<?php endforeach; ?>
+			</section>
+			<?php endif; ?>
+
+			<?php /* ── Latest News + Regulations (side by side) ── */ ?>
+			<?php $_has_news = ! empty( $ctx['news']['items'] ); $_has_regs = ! empty( $ctx['regulations']['items'] ); ?>
+			<?php if ( $_has_news || $_has_regs ) : ?>
+			<section class="category-section category-news-regs">
+				<div class="cat-news-regs-grid">
+
+					<?php if ( $_has_news ) : ?>
+					<div class="cat-news-col">
+						<?php adn_component( 'parts/news_widget', array( 'widget' => array(
+							'heading' => $ctx['news']['heading'],
+							'items'   => $ctx['news']['items'],
+						) ) ); ?>
+					</div>
+					<?php endif; ?>
+
+					<?php if ( $_has_regs ) : ?>
+					<div class="cat-regs-col mini_card_container_design">
+						<?php
+						adn_component( 'parts/section_headers/section_header', array(
+							'heading' => isset( $ctx['regulations']['heading'] ) ? $ctx['regulations']['heading'] : array(),
+							'tag'     => 'h3',
+						) );
+						foreach ( (array) $ctx['regulations']['items'] as $item ) :
+							adn_component( 'cards/regulation_item', array( 'item' => $item ) );
+						endforeach;
+						?>
+					</div>
+					<?php endif; ?>
+
 				</div>
-			</section>
-			<?php endif; ?>
-
-			<?php /* ── Latest News ── */ ?>
-			<?php if ( ! empty( $ctx['news']['items'] ) ) : ?>
-			<section class="category-section category-news mini_card_container_design">
-				<?php
-				adn_component( 'parts/section_headers/section_header', array(
-					'heading' => isset( $ctx['news']['heading'] ) ? $ctx['news']['heading'] : array(),
-					'tag'     => 'h3',
-				) );
-				foreach ( (array) $ctx['news']['items'] as $item ) :
-					adn_component( 'cards/news_item', array( 'item' => $item ) );
-				endforeach;
-				?>
-			</section>
-			<?php endif; ?>
-
-			<?php /* ── Latest Regulations ── */ ?>
-			<?php if ( ! empty( $ctx['regulations']['items'] ) ) : ?>
-			<section class="category-section category-regulations mini_card_container_design">
-				<?php
-				adn_component( 'parts/section_headers/section_header', array(
-					'heading' => isset( $ctx['regulations']['heading'] ) ? $ctx['regulations']['heading'] : array(),
-					'tag'     => 'h3',
-				) );
-				foreach ( (array) $ctx['regulations']['items'] as $item ) :
-					adn_component( 'cards/regulation_item', array( 'item' => $item ) );
-				endforeach;
-				?>
 			</section>
 			<?php endif; ?>
 
@@ -135,23 +130,32 @@ adn_page_open( $_open_ctx );
 		</main>
 
 		<aside class="sidebar-col">
-			<?php
-			if ( ! empty( $ctx['sidebar']['quick_tools'] ) ) :
-				adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $ctx['sidebar']['quick_tools'] ) );
-			endif;
-			if ( ! empty( $ctx['sidebar']['hot_topics'] ) ) :
-				adn_component( 'parts/sidebar_hot_topics', array( 'hot_topics' => $ctx['sidebar']['hot_topics'] ) );
-			endif;
-			if ( ! empty( $ctx['sidebar']['featured_topics'] ) ) :
-				adn_component( 'parts/sidebar_featured_topics', array( 'featured_topics' => $ctx['sidebar']['featured_topics'] ) );
-			endif;
-			if ( ! empty( $ctx['sidebar']['external_links'] ) ) :
-				adn_component( 'parts/sidebar_external_links', array( 'external_links' => $ctx['sidebar']['external_links'] ) );
-			endif;
-			if ( ! empty( $ctx['sidebar']['expert_help'] ) ) :
-				adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) );
-			endif;
-			?>
+
+			<?php /* ── Quick Tools / Related Calculators (dark card) ── */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['quick_tools'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $ctx['sidebar']['quick_tools'] ) ); ?>
+			<?php endif; ?>
+
+			<?php /* ── Hot Topics ── */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['hot_topics'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_hot_topics', array( 'hot_topics' => $ctx['sidebar']['hot_topics'] ) ); ?>
+			<?php endif; ?>
+
+			<?php /* ── Featured Topics ── */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['featured_topics'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_featured_topics', array( 'featured_topics' => $ctx['sidebar']['featured_topics'] ) ); ?>
+			<?php endif; ?>
+
+			<?php /* ── External Links ── */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['external_links'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_external_links', array( 'external_links' => $ctx['sidebar']['external_links'] ) ); ?>
+			<?php endif; ?>
+
+			<?php /* ── Expert Help / Need Help From a Professional? ── */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['expert_help'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) ); ?>
+			<?php endif; ?>
+
 		</aside>
 
 	</div>

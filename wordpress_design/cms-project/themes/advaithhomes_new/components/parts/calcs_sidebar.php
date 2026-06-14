@@ -20,18 +20,31 @@ $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       :
 			<h3><?php echo esc_html__( 'Browse by Category', ADN_TEXT_DOMAIN ); ?></h3>
 			<div class="calcs-cat-list">
 				<?php foreach ( $categories as $cat ) :
-					$key   = isset( $cat['key'] )   ? sanitize_key( $cat['key'] )   : '';
-					$label = isset( $cat['label'] )  ? (string) $cat['label']        : '';
-					$count = isset( $cat['count'] )  ? (int)    $cat['count']        : 0;
+					$key      = isset( $cat['key'] )   ? sanitize_key( $cat['key'] )   : '';
+					$label    = isset( $cat['label'] )  ? (string) $cat['label']        : '';
+					$count    = isset( $cat['count'] )  ? (int)    $cat['count']        : 0;
+					$cat_url  = isset( $cat['url'] )    ? (string) $cat['url']          : '';
+					$cls      = 'calcs-cat-item' . ( 'all' === $key ? ' active' : '' );
 				?>
-					<button
-						class="calcs-cat-item<?php echo 'all' === $key ? ' active' : ''; ?>"
-						data-category="<?php echo esc_attr( $key ); ?>"
-						type="button"
-					>
-						<?php echo esc_html( $label ); ?>
-						<span class="calcs-cat-count"><?php echo esc_html( (string) $count ); ?></span>
-					</button>
+					<?php if ( '' !== $cat_url ) : ?>
+						<a
+							href="<?php echo esc_url( $cat_url ); ?>"
+							class="<?php echo esc_attr( $cls ); ?>"
+							data-category="<?php echo esc_attr( $key ); ?>"
+						>
+							<?php echo esc_html( $label ); ?>
+							<span class="calcs-cat-count"><?php echo esc_html( (string) $count ); ?></span>
+						</a>
+					<?php else : ?>
+						<button
+							class="<?php echo esc_attr( $cls ); ?>"
+							data-category="<?php echo esc_attr( $key ); ?>"
+							type="button"
+						>
+							<?php echo esc_html( $label ); ?>
+							<span class="calcs-cat-count"><?php echo esc_html( (string) $count ); ?></span>
+						</button>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</div>
 		</div>

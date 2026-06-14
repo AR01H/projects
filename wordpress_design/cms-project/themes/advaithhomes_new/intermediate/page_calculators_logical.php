@@ -2,30 +2,185 @@
 /**
  * intermediate/page_calculators_logical.php
  *
- * Intermediate logic for the calculators listing page.
- * Loads data/json/calculators.json via the service layer.
+ * Builds context for the /calculators/ page.
  *
- * RULE: No markup here - only data shaping.
- * RULE: Caller is pages/page-calculator.php.
+ * Priority for every section:
+ *   1. Admin options (adn_calculators_page + adn_calculators_general)
+ *   2. Live registry (adn_calculators() + adn_calculators_meta)
+ *   3. Hardcoded defaults  — no JSON file ever used.
+ *
+ * RULE: No markup here — only data shaping.
  */
 
 defined( 'ABSPATH' ) || exit;
 
 function adn_calculators_get_context() {
-	$data   = function_exists( 'adn_service_calculators_data' ) ? adn_service_calculators_data()  : array();
-	$chrome = function_exists( 'adn_service_site_chrome' )      ? adn_service_site_chrome()        : array();
+	$pg     = get_option( 'adn_calculators_page', array() );
+	$gen    = get_option( 'adn_calculators_general', array() );
+	$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
+
+	$pg_str = function( $key ) use ( $pg ) {
+		return ( isset( $pg[ $key ] ) && '' !== $pg[ $key ] ) ? (string) $pg[ $key ] : '';
+	};
+
+	// Helper: first non-empty value.
+	$first = function() {
+		foreach ( func_get_args() as $v ) {
+			if ( '' !== $v && null !== $v && false !== $v ) { return $v; }
+		}
+		return '';
+	};
+
+	// ── Hero ─────────────────────────────────────────────────────────────
+	$hero = array(
+		'title'       => $first( $pg_str( 'hero_title' ), isset( $gen['main_heading'] ) ? (string) $gen['main_heading'] : '', 'All Calculators' ),
+		'description' => $first( $pg_str( 'hero_desc' ),  isset( $gen['intro'] )        ? (string) $gen['intro']        : '' ),
+		'bg_icon'     => $first( $pg_str( 'hero_icon' ),  '🏠🧮' ),
+	);
+
+	// ── Trust bar ─────────────────────────────────────────────────────────
+	$trust_defaults = array(
+		array( 'icon' => '⏱', 'title' => 'Accurate & Up to Date', 'subtitle' => 'Based on latest UK data' ),
+		array( 'icon' => '✓',  'title' => 'Free to Use',           'subtitle' => 'No sign-up required' ),
+		array( 'icon' => '≡',  'title' => 'Easy to Understand',    'subtitle' => 'Simple, clear results' ),
+		array( 'icon' => '◎',  'title' => 'Independent',           'subtitle' => 'Unbiased information' ),
+	);
+	$trust_items = array();
+	for ( $i = 1; $i <= 4; $i++ ) {
+		$icon     = $pg_str( 'trust_' . $i . '_icon' );
+		$title    = $pg_str( 'trust_' . $i . '_title' );
+		$subtitle = $pg_str( 'trust_' . $i . '_subtitle' );
+		if ( $icon || $title ) {
+			$trust_items[] = array( 'icon' => $icon, 'title' => $title, 'subtitle' => $subtitle );
+		}
+	}
+	if ( empty( $trust_items ) ) {
+		$trust_items = $trust_defaults;
+	}
+
+	// ── Search ────────────────────────────────────────────────────────────
+	$search = array(
+		'placeholder' => $first( $pg_str( 'search_placeholder' ), 'Search calculators…' ),
+	);
+
+	// ── All calcs from registry ───────────────────────────────────────────
+	$registry = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+	$meta_all = get_option( 'adn_calculators_meta', array() );
+
+	$defined_cats = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array(
+		'buying'        => 'Buying',
+		'selling'       => 'Selling',
+		'moving'        => 'Moving Home',
+		'mortgage'      => 'Mortgage',
+		'tax'           => 'Tax',
+		'affordability' => 'Affordability',
+	);
+	$cat_counts = array_fill_keys( array_keys( $defined_cats ), 0 );
+
+	$all_calcs = array();
+	foreach ( $registry as $key => $calc ) {
+		$meta = ( isset( $meta_all[ $key ] ) && is_array( $meta_all[ $key ] ) ) ? $meta_all[ $key ] : array();
+
+		if ( array_key_exists( 'enabled', $meta ) && empty( $meta['enabled'] ) ) { continue; }
+		if ( ! empty( $meta['hidden_from_listing'] ) ) { continue; }
+
+		$cats = isset( $meta['categories'] ) && is_array( $meta['categories'] ) ? $meta['categories'] : array();
+		$url  = ! empty( $meta['card_url'] )
+			? (string) $meta['card_url']
+			: home_url( '/?ah_calc_page=' . rawurlencode( $key ) );
+
+		$thumb = '';
+		if ( ! empty( $meta['thumbnail_id'] ) ) {
+			$t = wp_get_attachment_image_url( (int) $meta['thumbnail_id'], 'medium' );
+			$thumb = $t ? (string) $t : '';
+		}
+
+		foreach ( $cats as $c ) {
+			if ( isset( $cat_counts[ $c ] ) ) { $cat_counts[ $c ]++; }
+		}
+
+		$all_calcs[] = array(
+			'icon'       => ! empty( $calc['icon'] )      ? (string) $calc['icon']      : '🧮',
+			'categories' => $cats,
+			'title'      => ! empty( $meta['label'] )     ? (string) $meta['label']     : ( ! empty( $calc['title'] ) ? (string) $calc['title'] : $key ),
+			'desc'       => ! empty( $meta['desc'] )      ? (string) $meta['desc']      : '',
+			'url'        => $url,
+			'thumbnail'  => $thumb,
+			'highlight'  => ! empty( $meta['highlight'] ) ? (string) $meta['highlight'] : '',
+		);
+	}
+
+	// ── Filter tabs ───────────────────────────────────────────────────────
+	$filter_tabs = array( array( 'key' => 'all', 'label' => 'All' ) );
+	foreach ( $defined_cats as $ckey => $clabel ) {
+		if ( $cat_counts[ $ckey ] > 0 ) {
+			$filter_tabs[] = array( 'key' => $ckey, 'label' => $clabel );
+		}
+	}
+
+	// ── Sidebar categories ────────────────────────────────────────────────
+	$sidebar_cats = array( array( 'key' => 'all', 'label' => 'All Calculators', 'count' => count( $all_calcs ) ) );
+	foreach ( $defined_cats as $ckey => $clabel ) {
+		if ( $cat_counts[ $ckey ] > 0 ) {
+			$sidebar_cats[] = array( 'key' => $ckey, 'label' => $clabel . ' Calculators', 'count' => $cat_counts[ $ckey ] );
+		}
+	}
+
+	// ── Sidebar help CTA ─────────────────────────────────────────────────
+	$help = array(
+		'title'        => $pg_str( 'sidebar_help_title' ),
+		'text'         => $pg_str( 'sidebar_help_text' ),
+		'button_label' => $pg_str( 'sidebar_help_btn_label' ),
+		'button_url'   => $pg_str( 'sidebar_help_btn_url' ),
+	);
+
+	// ── Popular calcs — driven by per-calc is_popular toggle ─────────────
+	$popular_calcs = array();
+	foreach ( $registry as $pk => $pcalc ) {
+		$pmeta = ( isset( $meta_all[ $pk ] ) && is_array( $meta_all[ $pk ] ) ) ? $meta_all[ $pk ] : array();
+		if ( array_key_exists( 'enabled', $pmeta ) && empty( $pmeta['enabled'] ) ) { continue; }
+		if ( ! empty( $pmeta['hidden_from_listing'] ) ) { continue; }
+		if ( empty( $pmeta['is_popular'] ) ) { continue; }
+		$pthumb = '';
+		if ( ! empty( $pmeta['thumbnail_id'] ) ) {
+			$t = wp_get_attachment_image_url( (int) $pmeta['thumbnail_id'], 'medium' );
+			$pthumb = $t ? (string) $t : '';
+		}
+		$popular_calcs[] = array(
+			'icon'      => ! empty( $pcalc['icon'] )       ? (string) $pcalc['icon']       : '🧮',
+			'title'     => ! empty( $pmeta['label'] )      ? (string) $pmeta['label']      : ( ! empty( $pcalc['title'] ) ? (string) $pcalc['title'] : $pk ),
+			'desc'      => ! empty( $pmeta['desc'] )       ? (string) $pmeta['desc']       : '',
+			'url'       => ! empty( $pmeta['card_url'] )   ? (string) $pmeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $pk ) ),
+			'thumbnail' => $pthumb,
+			'highlight' => ! empty( $pmeta['highlight'] )  ? (string) $pmeta['highlight']  : '',
+		);
+	}
+
+	// ── Find CTA ─────────────────────────────────────────────────────────
+	$find_cta = array(
+		'title'        => $pg_str( 'find_cta_title' ),
+		'description'  => $pg_str( 'find_cta_desc' ),
+		'button_label' => $pg_str( 'find_cta_btn_label' ),
+		'button_url'   => $pg_str( 'find_cta_btn_url' ),
+	);
+
+	// ── Breadcrumb ────────────────────────────────────────────────────────
+	$breadcrumb = array(
+		array( 'label' => 'Home',        'url' => '/' ),
+		array( 'label' => 'Calculators', 'url' => null ),
+	);
 
 	return array(
-		'meta'          => isset( $data['meta'] )          ? (array) $data['meta']          : array(),
-		'breadcrumb'    => isset( $data['breadcrumb'] )    ? (array) $data['breadcrumb']    : array(),
-		'hero'          => isset( $data['hero'] )          ? (array) $data['hero']          : array(),
-		'trust_items'   => isset( $data['trust_items'] )   ? (array) $data['trust_items']   : array(),
-		'search'        => isset( $data['search'] )        ? (array) $data['search']        : array(),
-		'sidebar'       => isset( $data['sidebar'] )       ? (array) $data['sidebar']       : array(),
-		'filter_tabs'   => isset( $data['filter_tabs'] )   ? (array) $data['filter_tabs']   : array(),
-		'popular_calcs' => isset( $data['popular_calcs'] ) ? (array) $data['popular_calcs'] : array(),
-		'all_calcs'     => isset( $data['all_calcs'] )     ? (array) $data['all_calcs']     : array(),
-		'find_cta'      => isset( $data['find_cta'] )      ? (array) $data['find_cta']      : array(),
+		'meta'          => array(),
+		'breadcrumb'    => $breadcrumb,
+		'hero'          => $hero,
+		'trust_items'   => $trust_items,
+		'search'        => $search,
+		'sidebar'       => array( 'categories' => $sidebar_cats, 'help' => $help ),
+		'filter_tabs'   => $filter_tabs,
+		'popular_calcs' => $popular_calcs,
+		'all_calcs'     => $all_calcs,
+		'find_cta'      => $find_cta,
 		'chrome'        => $chrome,
 	);
 }

@@ -1,6 +1,6 @@
 {
     "meta": {
-        "page_title": "Buying Guides – Advaith Homes",
+        "page_title": "Buying Guides - Advaith Homes",
         "meta_description": "Practical, easy-to-understand guides to help you buy your ideal home in the UK with confidence."
     },
     "breadcrumb": [
@@ -55,13 +55,13 @@
     },
     "guides": {
         "search_placeholder": "Search guides…",
-        "sort_options": ["Latest", "Most Popular", "A–Z"],
+        "sort_options": ["Latest", "Most Popular", "A-Z"],
         "items": [
             {
                 "img_class": "guide-img-green",
                 "icon": "🔑",
                 "category": "Getting Started",
-                "title": "Buying a House in the UK – Step by Step",
+                "title": "Buying a House in the UK - Step by Step",
                 "desc": "A complete guide for first-time buyers.",
                 "date": "May 20, 2024",
                 "read_time": "12 min read",
@@ -161,7 +161,7 @@
                 "img_class": "guide-img-sky",
                 "icon": "🎉",
                 "category": "Completion",
-                "title": "Completion Day – What Happens?",
+                "title": "Completion Day - What Happens?",
                 "desc": "Step-by-step of what happens on completion day.",
                 "date": "Apr 28, 2024",
                 "read_time": "7 min read",

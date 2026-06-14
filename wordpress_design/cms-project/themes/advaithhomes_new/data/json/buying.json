@@ -1,7 +1,7 @@
 {
     "meta": {
         "slug": "buying",
-        "page_title": "I am Buying a Home – Advaith Homes",
+        "page_title": "I am Buying a Home - Advaith Homes",
         "meta_description": "Step-by-step guidance, smart tools and expert insights to help you buy the right home with confidence."
     },
     "breadcrumb": [
@@ -30,7 +30,7 @@
         ],
         "tip": {
             "icon": "💡",
-            "text": "Buying a home in the UK takes on average <strong>3–6 months</strong> from offer to completion. The timeline can be longer if there is a property chain.",
+            "text": "Buying a home in the UK takes on average <strong>3-6 months</strong> from offer to completion. The timeline can be longer if there is a property chain.",
             "link_label": "View Full Process Timeline →",
             "link_url": "/guides/buying-step-by-step/"
         }
@@ -42,7 +42,7 @@
                 "icon": "🏡",
                 "gradient": "linear-gradient(135deg,#c8d8c4,#7a9a74)",
                 "category": "Getting Started",
-                "title": "Buying a House in the UK – Step by Step",
+                "title": "Buying a House in the UK - Step by Step",
                 "description": "A complete guide for first-time buyers.",
                 "read_more": "Read More →",
                 "url": "/guides/buying-step-by-step/"
@@ -88,7 +88,7 @@
     "news": {
         "heading": { "title": "Latest Property News", "link_label": "View all news →", "link_url": "/news/" },
         "items": [
-            { "title": "UK House Prices Rise 1.4% in April – Latest ONS Data", "date": "May 20, 2024", "tag": "MARKET NEWS", "gradient": "linear-gradient(135deg,#c8d8c4,#8fad87)", "url": "/news/" },
+            { "title": "UK House Prices Rise 1.4% in April - Latest ONS Data", "date": "May 20, 2024", "tag": "MARKET NEWS", "gradient": "linear-gradient(135deg,#c8d8c4,#8fad87)", "url": "/news/" },
             { "title": "Bank of England Keeps Base Rate Unchanged at 5.25%", "date": "May 18, 2024", "tag": "MORTGAGE NEWS", "gradient": "linear-gradient(135deg,#d4c8b8,#a89080)", "url": "/news/" },
             { "title": "Stamp Duty Changes: What Buyers Need to Know", "date": "May 15, 2024", "tag": "GOV.UK NEWS", "gradient": "linear-gradient(135deg,#e4d4c8,#c09080)", "url": "/news/" }
         ]
@@ -98,7 +98,7 @@
         "items": [
             { "badge_lines": ["GOV", ".UK"], "title": "New Building Safety Act Requirements", "date": "May 19, 2024", "url": "/regulations/" },
             { "badge_lines": ["GOV", ".UK"], "title": "Changes to EPC Rules for Private Landlords", "date": "May 17, 2024", "url": "/regulations/" },
-            { "badge_lines": ["GOV", ".UK"], "title": "Right to Buy – New Income Thresholds from April 2024", "date": "May 05, 2024", "url": "/regulations/" },
+            { "badge_lines": ["GOV", ".UK"], "title": "Right to Buy - New Income Thresholds from April 2024", "date": "May 05, 2024", "url": "/regulations/" },
             { "badge_lines": ["GOV", ".UK"], "title": "Planning Permission Fees Increase from June 2024", "date": "May 01, 2024", "url": "/regulations/" }
         ]
     },

@@ -71,7 +71,7 @@ $el_d       = isset( $all['external_links'] ) && is_array( $all['external_links'
 $el_heading = isset( $el_d['heading'] ) ? $el_d['heading'] : '';
 $el_items   = isset( $el_d['items'] )   && is_array( $el_d['items'] ) ? $el_d['items'] : array();
 
-// Calculators – registered + selected.
+// Calculators - registered + selected.
 $calc_heading       = isset( $calc_d['heading'] )       ? $calc_d['heading']       : '';
 $calc_selected_keys = isset( $calc_d['selected_keys'] ) && is_array( $calc_d['selected_keys'] ) ? $calc_d['selected_keys'] : array();
 $all_calcs          = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
@@ -190,7 +190,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 					</tr>
 					<tr>
 						<th><?php esc_html_e( 'Text', ADN_TEXT_DOMAIN ); ?></th>
-						<td><input type="text" class="large-text" name="journey[tip_text]" value="<?php echo esc_attr( $journey_tip_text ); ?>" placeholder="<?php esc_attr_e( 'Buying takes 3–6 months on average.', ADN_TEXT_DOMAIN ); ?>"></td>
+						<td><input type="text" class="large-text" name="journey[tip_text]" value="<?php echo esc_attr( $journey_tip_text ); ?>" placeholder="<?php esc_attr_e( 'Buying takes 3-6 months on average.', ADN_TEXT_DOMAIN ); ?>"></td>
 					</tr>
 					<tr>
 						<th><?php esc_html_e( 'Link Label', ADN_TEXT_DOMAIN ); ?></th>

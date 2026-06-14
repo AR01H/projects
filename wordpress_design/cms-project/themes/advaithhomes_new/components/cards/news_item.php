@@ -1,14 +1,19 @@
 <?php
 /**
- * components/cards/news_item.php - Component: News List Item
+ * components/cards/news_item.php - News list item card (direct link).
  * Props: $item { title, date, tag, gradient, url }
+ *
+ * Clicking anywhere on the card navigates to the article URL — no dropdown.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$item = isset( $item ) && is_array( $item ) ? $item : array();
+$item     = isset( $item ) && is_array( $item ) ? $item : array();
+$item_url = ! empty( $item['url'] ) && '#' !== $item['url'] ? esc_url( adn_link( $item['url'] ) ) : '';
+$tag      = $item_url ? 'a' : 'div';
+$attrs    = $item_url ? ' href="' . $item_url . '"' : '';
 ?>
-<a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>" class="news-item">
+<<?php echo $tag . $attrs; ?> class="news-item<?php echo $item_url ? '' : ' news-item--no-link'; ?>">
     <div class="news-item-img" style="background:<?php echo esc_attr( isset( $item['gradient'] ) ? $item['gradient'] : '' ); ?>;border-radius:6px;"></div>
     <div class="news-item-content">
         <div class="card-title-highlight"><?php echo esc_html( isset( $item['title'] ) ? $item['title'] : '' ); ?></div>
@@ -19,4 +24,7 @@ $item = isset( $item ) && is_array( $item ) ? $item : array();
             <?php endif; ?>
         </div>
     </div>
-</a>
+    <?php if ( $item_url ) : ?>
+        <span class="news-item-arrow" aria-hidden="true">&#8250;</span>
+    <?php endif; ?>
+</<?php echo $tag; ?>>

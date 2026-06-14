@@ -130,9 +130,14 @@ function adn_get_page_definitions() {
         ),
         'guidance' => array(
             'title'    => 'Get Expert Guidance',
-            'template' => 'pages/page-guidance.php',
+            'template' => 'pages/page-contact.php',
+            // 'template' => 'pages/page-guidance.php',
         ),
         'ask-an-expert' => array(
+            'title'    => 'Ask an Expert',
+            'template' => 'pages/page-ask-expert.php',
+        ),
+        'ask-expert' => array(
             'title'    => 'Ask an Expert',
             'template' => 'pages/page-ask-expert.php',
         ),

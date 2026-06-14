@@ -86,9 +86,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <div class="ah-feature-grid">
         <div class="ah-feature-card"><div class="icon">⚙️</div><strong>Site Settings</strong><p>Logo, contact details, social links, footer text</p></div>
         <div class="ah-feature-card"><div class="icon">📰</div><strong>News Bar</strong><p>Scrolling ticker messages across the top of the site</p></div>
-        <div class="ah-feature-card"><div class="icon">🏠</div><strong>Home Sections</strong><p>Hero, services preview, stats, CTAs on the homepage</p></div>
-        <div class="ah-feature-card"><div class="icon">🛎</div><strong>Services</strong><p>Service cards, features, pricing highlights</p></div>
-        <div class="ah-feature-card"><div class="icon">👥</div><strong>Team Members</strong><p>Staff photos, names, roles, bio text</p></div>
         <div class="ah-feature-card"><div class="icon">⭐</div><strong>Reviews</strong><p>Customer testimonials and star ratings</p></div>
         <div class="ah-feature-card"><div class="icon">❓</div><strong>FAQs</strong><p>Frequently asked questions and answers</p></div>
         <div class="ah-feature-card"><div class="icon">✍️</div><strong>Posts / Blog</strong><p>Blog posts, news articles, guides, case studies</p></div>
@@ -106,14 +103,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       <div class="ah-step">
         <div class="ah-step-num">1</div>
         <div class="ah-step-body"><strong>Set up Site Settings</strong><p>Add your logo, business name, phone number, email, address, and social media links. These feed into the header and footer automatically.</p></div>
-      </div>
-      <div class="ah-step">
-        <div class="ah-step-num">3</div>
-        <div class="ah-step-body"><strong>Fill in the Homepage</strong><p>Go to Home Sections and update each tab - Hero, Services, Stats, About, and CTA sections. This is what visitors see first.</p></div>
-      </div>
-      <div class="ah-step">
-        <div class="ah-step-num">4</div>
-        <div class="ah-step-body"><strong>Add your Services</strong><p>Head to Services and add each service your business offers with a title, description, icon, and features list.</p></div>
       </div>
       <div class="ah-step">
         <div class="ah-step-num">5</div>
@@ -193,37 +182,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     </div>
 
     <div class="ah-help-section">
-      <h2>Home Sections</h2>
-      <dl class="ah-section-ref">
-        <dt>Hero</dt><dd>The large banner at the top of the homepage. Set the headline, subtext, background image, and call-to-action button.</dd>
-        <dt>Services</dt><dd>A preview grid of your main services shown on the homepage. Controls which services appear and the section heading.</dd>
-        <dt>Stats</dt><dd>Numbers/metrics bar (e.g. "500+ clients", "10 years experience"). Add each stat with a value, label, and optional icon.</dd>
-        <dt>About Snippet</dt><dd>A short "About Us" teaser on the homepage linking to the full About page.</dd>
-        <dt>CTA</dt><dd>A prominent call-to-action banner encouraging visitors to book or contact you.</dd>
-      </dl>
-    </div>
-
-    <div class="ah-help-section">
-      <h2>Services</h2>
-      <p>Each service record has:</p>
-      <ul>
-        <li><strong>Title</strong> - name of the service</li>
-        <li><strong>Slug</strong> - auto-generated URL-friendly name (used in the service's page URL)</li>
-        <li><strong>Short Description</strong> - shown in service cards/grids</li>
-        <li><strong>Full Description</strong> - detailed text shown on the service's own page</li>
-        <li><strong>Icon</strong> - dashicon or image used in listings</li>
-        <li><strong>Features list</strong> - bullet points of what's included</li>
-        <li><strong>Status</strong> - Active services appear on the site; Inactive are hidden</li>
-        <li><strong>Sort Order</strong> - controls the display order. Lower numbers appear first</li>
-      </ul>
-    </div>
-
-    <div class="ah-help-section">
-      <h2>Team Members</h2>
-      <p>Each team member record includes name, role/title, bio, and a photo. Team members are displayed on the About page and anywhere the team section shortcode or block is used. Use <strong>Sort Order</strong> to control who appears first.</p>
-    </div>
-
-    <div class="ah-help-section">
       <h2>Reviews</h2>
       <p>Add customer testimonials with a name, rating (1–5 stars), review text, and optional company/location. Reviews with <strong>Active</strong> status appear in the reviews section and homepage testimonial slider.</p>
       <div class="ah-tip"><strong>Best practice:</strong> Use real first names and genuine quotes. Specificity builds trust - "saved us $4,000" is more compelling than "saved us money".</div>
@@ -247,7 +205,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
     <div class="ah-help-section">
       <h2>About Page</h2>
-      <p>Controls all content on the About page including the main headline, intro text, mission statement, values list, and the team section. Changes here only affect the About page.</p>
+      <p>Controls all content on the About page including the main headline, intro text, mission statement, values list. Changes here only affect the About page.</p>
     </div>
 
   </div>
@@ -395,7 +353,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
     <div class="ah-help-section">
       <h2>Data Import</h2>
-      <p>Bulk-load content from a CSV file. Each import type (Services, FAQs, Team Members, etc.) has its own CSV template you can download, fill in, and upload.</p>
+      <p>Bulk-load content from a CSV file. Each import type (Services, FAQs, etc.) has its own CSV template you can download, fill in, and upload.</p>
       <div class="ah-warn"><strong>Warning:</strong> Imports add new records - they don't update existing ones. Running the same import twice will create duplicates. Double-check your CSV before importing.</div>
     </div>
 

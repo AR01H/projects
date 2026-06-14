@@ -1,13 +1,13 @@
 <?php
 /**
- * includes/class-category-settings.php  –  Per-category admin settings DB model.
+ * includes/class-category-settings.php  -  Per-category admin settings DB model.
  *
  * Table: {prefix}ah_category_settings
  *   id          bigint UNSIGNED AUTO_INCREMENT
- *   slug        varchar(100)   – parent term slug (buying, selling …)
- *   section     varchar(50)    – appearance | journey | hot_topics |
+ *   slug        varchar(100)   - parent term slug (buying, selling …)
+ *   section     varchar(50)    - appearance | journey | hot_topics |
  *                                popular_posts | calculators | sidebar | cta_banner
- *   data        longtext       – JSON payload for that section
+ *   data        longtext       - JSON payload for that section
  *   updated_at  datetime
  *
  * One row per (slug × section). Upserted on save.

@@ -68,20 +68,6 @@ class AH_CSV_Importer {
 					'meta_keywords'    => 'SEO keywords',
 				),
 			),
-			'team'       => array(
-				'label'    => 'Team Members',
-				'required' => array( 'name', 'designation' ),
-				'columns'  => array(
-					'name'         => 'Full name (required)',
-					'designation'  => 'Job title / role (required)',
-					'bio'          => 'Short biography',
-					'email'        => 'Email address',
-					'linkedin_url' => 'LinkedIn profile URL',
-					'is_featured'  => '1 = featured (default 0)',
-					'sort_order'   => 'Integer display order (default 0)',
-					'status'       => 'active | inactive (default active)',
-				),
-			),
 			'taxonomies' => array(
 				'label'    => 'Categories & Tags',
 				'required' => array( 'name', 'type_slug' ),
@@ -179,7 +165,6 @@ class AH_CSV_Importer {
 			case 'reviews':    return self::import_reviews( $rows );
 			case 'faqs':       return self::import_faqs( $rows );
 			case 'posts':      return self::import_posts( $rows );
-			case 'team':       return self::import_team( $rows );
 			case 'taxonomies': return self::import_taxonomies( $rows );
 			case 'news_bar':   return self::import_news_bar( $rows );
 			case 'events':     return self::import_events( $rows );
@@ -414,38 +399,6 @@ class AH_CSV_Importer {
 				'meta_title'       => sanitize_text_field( $row['meta_title'] ?? '' ),
 				'meta_description' => sanitize_textarea_field( $row['meta_description'] ?? '' ),
 				'meta_keywords'    => sanitize_text_field( $row['meta_keywords'] ?? '' ),
-			) );
-			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
-		}
-
-		return $result;
-	}
-
-	// -------------------------------------------------------------------------
-	// Team
-	// -------------------------------------------------------------------------
-	private static function import_team( array $rows ): array {
-		global $wpdb;
-		$table  = AH_DB_Helper::table( 'team_members' );
-		$result = array( 'imported' => 0, 'skipped' => 0, 'errors' => array() );
-
-		foreach ( $rows as $i => $row ) {
-			$line        = $i + 2;
-			$name        = sanitize_text_field( $row['name'] ?? '' );
-			$designation = sanitize_text_field( $row['designation'] ?? '' );
-
-			if ( ! $name )        { self::result_add( $result, false, "Row {$line}: 'name' is required." ); continue; }
-			if ( ! $designation ) { self::result_add( $result, false, "Row {$line}: 'designation' is required." ); continue; }
-
-			$wpdb->insert( $table, array(
-				'name'         => $name,
-				'designation'  => $designation,
-				'bio'          => sanitize_textarea_field( $row['bio'] ?? '' ),
-				'email'        => sanitize_email( $row['email'] ?? '' ),
-				'linkedin_url' => esc_url_raw( $row['linkedin_url'] ?? '' ),
-				'is_featured'  => (int) ( $row['is_featured'] ?? 0 ) ? 1 : 0,
-				'sort_order'   => (int) ( $row['sort_order'] ?? 0 ),
-				'status'       => self::status( $row['status'] ?? '', array( 'active', 'inactive' ) ),
 			) );
 			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
 		}

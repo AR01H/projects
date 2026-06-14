@@ -4,7 +4,7 @@
  * Features:
  *  - Category filter: left sidebar category buttons
  *  - Search: toolbar search input filters cards by title text
- *  - Sort: latest / most popular / A–Z (client-side reorder)
+ *  - Sort: latest / most popular / A-Z (client-side reorder)
  *
  * Cards carry data-category (set by PHP from item.category) for filtering.
  * The category filter matches by text label, not a slug key.
@@ -76,7 +76,7 @@
 
         var cards = Array.prototype.slice.call( grid.querySelectorAll( '.guide-listing-card' ) );
 
-        if ( mode === 'A–5' || mode === 'A–Z' || mode.toLowerCase() === 'a–z' || mode === 'A-Z' ) {
+        if ( mode === 'A-5' || mode === 'A-Z' || mode.toLowerCase() === 'a-z' || mode === 'A-Z' ) {
             cards.sort( function ( a, b ) {
                 return getText( a ).localeCompare( getText( b ) );
             } );

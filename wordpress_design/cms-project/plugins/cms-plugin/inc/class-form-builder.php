@@ -5,6 +5,9 @@ class AH_Form_Builder {
 
 	// ── Tables ───────────────────────────────────────────────────────────────
 
+	const SUB_DB_VERSION = '2';
+	const SUB_DB_OPTION  = 'ah_form_sub_db_v';
+
 	public static function install_tables(): void {
 		global $wpdb;
 		$p  = $wpdb->prefix;
@@ -16,6 +19,7 @@ class AH_Form_Builder {
 			`notify_email`    VARCHAR(200) DEFAULT NULL,
 			`success_message` VARCHAR(500) NOT NULL DEFAULT 'Thank you! We will get back to you shortly.',
 			`status`          ENUM('active','inactive') NOT NULL DEFAULT 'active',
+			`disable_rules`   TINYINT(1) NOT NULL DEFAULT 0,
 			`created_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
 		) ENGINE=InnoDB {$cs}" );
@@ -35,15 +39,46 @@ class AH_Form_Builder {
 		) ENGINE=InnoDB {$cs}" );
 
 		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$p}ah_form_submissions` (
-			`id`         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-			`form_id`    INT UNSIGNED NOT NULL,
-			`data`       JSON NOT NULL,
-			`ip_address` VARCHAR(45) DEFAULT NULL,
-			`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			`form_id`     INT UNSIGNED NOT NULL,
+			`data`        JSON NOT NULL,
+			`ip_address`  VARCHAR(45) DEFAULT NULL,
+			`sub_status`  VARCHAR(20) NOT NULL DEFAULT 'new',
+			`admin_notes` TEXT NOT NULL DEFAULT '',
+			`created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`),
 			KEY `idx_form`    (`form_id`),
+			KEY `idx_status`  (`sub_status`),
 			KEY `idx_created` (`created_at`)
 		) ENGINE=InnoDB {$cs}" );
+
+		self::maybe_upgrade_submissions();
+	}
+
+	/** Add new columns to existing submissions table (safe to call on upgrade). */
+	public static function maybe_upgrade_submissions(): void {
+		global $wpdb;
+		if ( get_option( self::SUB_DB_OPTION ) === self::SUB_DB_VERSION ) { return; }
+		$t = $wpdb->prefix . 'ah_form_submissions';
+		$cols = $wpdb->get_results( "SHOW COLUMNS FROM `{$t}`", ARRAY_A );
+		if ( ! $cols ) { update_option( self::SUB_DB_OPTION, self::SUB_DB_VERSION ); return; }
+		$existing = array_column( $cols, 'Field' );
+		if ( ! in_array( 'sub_status', $existing, true ) ) {
+			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `sub_status` VARCHAR(20) NOT NULL DEFAULT 'new' AFTER `ip_address`" );
+			$wpdb->query( "ALTER TABLE `{$t}` ADD INDEX `idx_status` (`sub_status`)" );
+		}
+		if ( ! in_array( 'admin_notes', $existing, true ) ) {
+			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `admin_notes` TEXT NOT NULL DEFAULT '' AFTER `sub_status`" );
+		}
+		$ft = $wpdb->prefix . 'ah_forms';
+		$fcols = $wpdb->get_results( "SHOW COLUMNS FROM `{$ft}`", ARRAY_A );
+		if ( $fcols ) {
+			$fexisting = array_column( $fcols, 'Field' );
+			if ( ! in_array( 'disable_rules', $fexisting, true ) ) {
+				$wpdb->query( "ALTER TABLE `{$ft}` ADD COLUMN `disable_rules` TINYINT(1) NOT NULL DEFAULT 0 AFTER `status`" );
+			}
+		}
+		update_option( self::SUB_DB_OPTION, self::SUB_DB_VERSION );
 	}
 
 	// ── Form CRUD ────────────────────────────────────────────────────────────
@@ -148,6 +183,60 @@ class AH_Form_Builder {
 		$wpdb->delete( $wpdb->prefix . 'ah_form_submissions', array( 'id' => $id ), array( '%d' ) );
 	}
 
+	/** Save admin status and notes for a single submission. */
+	public static function update_submission_meta( int $id, string $status, string $notes ): bool {
+		global $wpdb;
+		$allowed = array( 'new', 'read', 'replied', 'closed' );
+		$status  = in_array( $status, $allowed, true ) ? $status : 'new';
+		return (bool) $wpdb->update(
+			$wpdb->prefix . 'ah_form_submissions',
+			array(
+				'sub_status'  => $status,
+				'admin_notes' => sanitize_textarea_field( $notes ),
+			),
+			array( 'id' => $id ),
+			array( '%s', '%s' ),
+			array( '%d' )
+		);
+	}
+
+	/** Get submissions optionally filtered by sub_status. */
+	public static function get_submissions_filtered( int $form_id, string $status = '', int $limit = 100, int $offset = 0 ): array {
+		global $wpdb;
+		$t = $wpdb->prefix . 'ah_form_submissions';
+		if ( '' !== $status ) {
+			$rows = $wpdb->get_results(
+				$wpdb->prepare( "SELECT * FROM `{$t}` WHERE form_id = %d AND sub_status = %s ORDER BY created_at DESC LIMIT %d OFFSET %d", $form_id, $status, $limit, $offset ),
+				ARRAY_A
+			) ?: array();
+		} else {
+			$rows = $wpdb->get_results(
+				$wpdb->prepare( "SELECT * FROM `{$t}` WHERE form_id = %d ORDER BY created_at DESC LIMIT %d OFFSET %d", $form_id, $limit, $offset ),
+				ARRAY_A
+			) ?: array();
+		}
+		foreach ( $rows as &$row ) {
+			$row['data'] = $row['data'] ? json_decode( $row['data'], true ) : array();
+		}
+		return $rows;
+	}
+
+	/** Count submissions by status for a form. */
+	public static function count_by_status( int $form_id ): array {
+		global $wpdb;
+		$t    = $wpdb->prefix . 'ah_form_submissions';
+		$rows = $wpdb->get_results(
+			$wpdb->prepare( "SELECT sub_status, COUNT(*) AS cnt FROM `{$t}` WHERE form_id = %d GROUP BY sub_status", $form_id ),
+			ARRAY_A
+		) ?: array();
+		$counts = array( 'new' => 0, 'read' => 0, 'replied' => 0, 'closed' => 0 );
+		foreach ( $rows as $r ) {
+			if ( isset( $counts[ $r['sub_status'] ] ) ) { $counts[ $r['sub_status'] ] = (int) $r['cnt']; }
+		}
+		$counts['all'] = array_sum( $counts );
+		return $counts;
+	}
+
 	// ── Shortcode renderer ───────────────────────────────────────────────────
 
 	public static function render( array $atts ): string {
@@ -168,8 +257,38 @@ class AH_Form_Builder {
 		?>
 <style>
 @keyframes ah-spin{to{transform:rotate(360deg)}}
+.ah-fw{max-width:640px}
 .ah-fw .ah-sp{animation:ah-spin .8s linear infinite;display:none}
 .ah-fw .ah-req{color:#e53935;margin-left:2px}
+/* Form fields */
+.ch-form-group{margin-bottom:20px}
+.ch-form-label{display:block;font-size:14px;font-weight:600;color:#1f2937;margin-bottom:7px}
+.ch-form-input,
+.ch-form-textarea,
+.ch-form-select{width:100%;padding:12px 16px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;font-family:inherit;color:#111827;background:#fff;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;outline:none;appearance:none}
+.ch-form-input:focus,
+.ch-form-textarea:focus,
+.ch-form-select:focus{border-color:#1a3c5e;box-shadow:0 0 0 3px rgba(26,60,94,.1)}
+.ch-form-input::placeholder,
+.ch-form-textarea::placeholder{color:#9ca3af}
+.ch-form-textarea{min-height:130px;resize:vertical;line-height:1.6}
+.ch-form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:40px;cursor:pointer}
+.ch-form-submit{display:inline-flex;align-items:center;gap:8px;background:#1a3c5e;color:#fff;border:none;border-radius:8px;padding:13px 32px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:.01em;transition:background .15s,transform .1s}
+.ch-form-submit:hover{background:#15304d}
+.ch-form-submit:active{transform:scale(.98)}
+.ch-form-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* Feedback messages */
+.ch-form-feedback{display:none;border-radius:8px;padding:12px 16px;font-size:14px;margin-bottom:16px}
+.ch-form-feedback.success{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.ch-form-feedback.error{display:block;background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+/* Agreement section */
+.ch-agr-intro{font-size:14px;line-height:1.7;color:#4b5563;margin-bottom:14px;padding:14px 16px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px}
+.ch-agr-iframe-wrap{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:14px}
+.ch-agr-iframe{width:100%;height:240px;border:none;display:block}
+.ch-form-agreement .ch-agreement-label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:14px;line-height:1.6;font-weight:400;color:#374151}
+.ch-form-agreement .ch-agreement-chk{margin-top:3px;flex-shrink:0;width:17px;height:17px;cursor:pointer;accent-color:#1a3c5e}
+.ch-terms-link{color:#1a3c5e;text-decoration:underline;font-weight:600;margin-left:3px;margin-right:3px}
+.ch-terms-link:hover{color:#15304d}
 </style>
 
 <div class="ah-fw" id="<?php echo esc_attr( $uid ); ?>">
@@ -201,6 +320,37 @@ class AH_Form_Builder {
       <?php endif; ?>
     </div>
     <?php endforeach; ?>
+
+    <?php
+    // ── Form-level Agreement / Terms section ──────────────────────────────
+    $agr = self::get_agreement( $form_id );
+    if ( ! empty( $agr['enabled'] ) ) :
+      $agr_uid  = esc_attr( $uid . '_agr' );
+      $agr_url  = $agr['url'];
+      $agr_type = $agr['type'];
+    ?>
+    <div style="margin-bottom:20px">
+      <?php if ( $agr_type === 'iframe' && $agr_url ) : ?>
+        <div class="ch-agr-iframe-wrap">
+          <iframe class="ch-agr-iframe" src="<?php echo esc_url( $agr_url ); ?>" loading="lazy" title="<?php echo esc_attr( $agr['link_text'] ); ?>"></iframe>
+        </div>
+      <?php endif; ?>
+      <div class="ch-form-group ch-form-agreement" style="margin-bottom:0">
+        <label class="ch-agreement-label" for="<?php echo $agr_uid; ?>">
+          <input type="checkbox" class="ch-agreement-chk" id="<?php echo $agr_uid; ?>" name="ah_agreement" value="1" required>
+          <span>
+            <?php if ( $agr['before'] ) echo esc_html( $agr['before'] ); ?>
+            <?php if ( $agr_url && $agr_type === 'link' ) : ?>
+              <a class="ch-terms-link" href="<?php echo esc_url( $agr_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $agr['link_text'] ); ?></a>
+            <?php elseif ( $agr['link_text'] ) : ?>
+              <strong class="ch-terms-link" style="text-decoration:none"><?php echo esc_html( $agr['link_text'] ); ?></strong>
+            <?php endif; ?>
+            <?php if ( $agr['after'] ) echo esc_html( $agr['after'] ); ?>
+          </span>
+        </label>
+      </div>
+    </div>
+    <?php endif; ?>
 
     <div>
       <button type="submit" class="ch-form-submit ah-sb">
@@ -260,6 +410,33 @@ class AH_Form_Builder {
 </script>
 		<?php
 		return ob_get_clean();
+	}
+
+	// ── Agreement config (form-level, stored in wp_option) ──────────────────
+
+	public static function get_agreement( int $form_id ): array {
+		$defaults = array(
+			'enabled'   => 0,
+			'before'    => 'I have read and agree to the',
+			'link_text' => 'Terms & Conditions',
+			'type'      => 'link',
+			'url'       => '',
+			'after'     => '',
+		);
+		$saved = get_option( 'ah_form_agr_' . $form_id, array() );
+		return array_merge( $defaults, is_array( $saved ) ? $saved : array() );
+	}
+
+	public static function save_agreement( int $form_id, array $data ): void {
+		$clean = array(
+			'enabled'   => ! empty( $data['enabled'] ) ? 1 : 0,
+			'before'    => sanitize_text_field( isset( $data['before'] )    ? $data['before']    : 'I have read and agree to the' ),
+			'link_text' => sanitize_text_field( isset( $data['link_text'] ) ? $data['link_text'] : 'Terms & Conditions' ),
+			'type'      => in_array( isset( $data['type'] ) ? $data['type'] : '', array( 'link', 'iframe' ), true ) ? $data['type'] : 'link',
+			'url'       => esc_url_raw( isset( $data['url'] )   ? $data['url']   : '' ),
+			'after'     => sanitize_text_field( isset( $data['after'] )  ? $data['after']  : '' ),
+		);
+		update_option( 'ah_form_agr_' . $form_id, $clean );
 	}
 
 	// ── Helpers ──────────────────────────────────────────────────────────────

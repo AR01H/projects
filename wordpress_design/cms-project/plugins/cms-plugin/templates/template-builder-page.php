@@ -230,15 +230,8 @@ function ah_render_builder_block( string $type, array $d ): void {
 						</div>
 					<?php endif; ?>
 					<div <?php if ( $grid_class ) echo 'class="' . esc_attr( $grid_class ) . '"'; ?>>
-						<?php foreach ( $cards as $i => $card ) :
-							if ( $cstyle === 'value' ) : ?>
-								<div class="about-value-card" data-aos="fade-up" data-aos-delay="<?php echo $i * 80; ?>">
-									<?php if ( ! empty( $card['icon'] ) ) : ?><div class="about-value-card__icon"><?php echo esc_html( $card['icon'] ); ?></div><?php endif; ?>
-									<?php if ( ! empty( $card['title'] ) ) : ?><div class="about-value-card__title"><?php echo esc_html( $card['title'] ); ?></div><?php endif; ?>
-									<?php if ( ! empty( $card['text'] ) ) : ?><p class="about-value-card__body"><?php echo esc_html( $card['text'] ); ?></p><?php endif; ?>
-									<?php if ( ! empty( $card['link_url'] ) ) : ?><a href="<?php echo esc_url( $card['link_url'] ); ?>" class="ah-feat-card__cta"><?php echo esc_html( $card['link_text'] ?? 'Learn more' ); ?> →</a><?php endif; ?>
-								</div>
-							<?php elseif ( $cstyle === 'plain' ) : ?>
+						<?php foreach ( $cards as $i => $card ) :?>
+							<?php if ( $cstyle === 'plain' ) : ?>
 								<div class="ah-plain-card" data-aos="fade-up" data-aos-delay="<?php echo $i * 80; ?>">
 									<?php if ( ! empty( $card['icon'] ) ) : ?><div style="font-size:1.8rem;margin-bottom:10px;"><?php echo esc_html( $card['icon'] ); ?></div><?php endif; ?>
 									<?php if ( ! empty( $card['title'] ) ) : ?><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:8px;"><?php echo esc_html( $card['title'] ); ?></div><?php endif; ?>
@@ -1093,46 +1086,6 @@ function ah_render_builder_block( string $type, array $d ): void {
 								<a href="<?php echo esc_url( $d['cta_url'] ?? '#' ); ?>" class="btn btn-gold" style="margin-top:16px;"><?php echo esc_html( $d['cta_text'] ); ?></a>
 							<?php endif; ?>
 						</div>
-					</div>
-				</div>
-			</section>
-			<?php break;
-
-		// ── Team Members ──────────────────────────────────────────────────────
-		case 'team':
-			$members = $d['members'] ?? array();
-			if ( empty( $members ) ) break;
-			$cols = max( 2, min( 4, (int) ( $d['cols'] ?? 3 ) ) );
-			?>
-			<?php echo ah_section_open( $d, 'section' ); ?>
-				<div class="container">
-					<?php if ( ! empty( $d['heading'] ) ) : ?>
-						<div class="section__header text-center" style="margin-bottom:40px;" data-aos="fade-up">
-							<h2 class=" "><?php echo esc_html( $d['heading'] ); ?></h2>
-							<span class="ah-accent-bar"></span>
-						</div>
-					<?php endif; ?>
-					<div class="grid-<?php echo $cols; ?>">
-						<?php foreach ( $members as $i => $m ) : ?>
-							<div class="ah-team-card" data-aos="fade-up" data-aos-delay="<?php echo $i * 80; ?>">
-								<?php if ( ! empty( $m['photo'] ) ) : ?>
-									<img src="<?php echo esc_url( $m['photo'] ); ?>"
-									     alt="<?php echo esc_attr( $m['name'] ?? '' ); ?>"
-									     class="ah-team-card__photo">
-								<?php else : ?>
-									<div class="ah-team-card__photo ah-team-card__photo--placeholder"><?php echo esc_html( mb_substr( $m['name'] ?? '?', 0, 1 ) ); ?></div>
-								<?php endif; ?>
-								<div class="ah-team-card__body">
-									<?php if ( ! empty( $m['name'] ) ) : ?><div class="ah-team-card__name"><?php echo esc_html( $m['name'] ); ?></div><?php endif; ?>
-									<?php if ( ! empty( $m['role'] ) ) : ?><div class="ah-team-card__role"><?php echo esc_html( $m['role'] ); ?></div><?php endif; ?>
-									<?php if ( ! empty( $m['bio'] ) ) : ?><p class="ah-team-card__bio"><?php echo esc_html( $m['bio'] ); ?></p><?php endif; ?>
-									<div class="ah-team-card__links">
-										<?php if ( ! empty( $m['email'] ) ) : ?><a href="mailto:<?php echo esc_attr( $m['email'] ); ?>" class="ah-team-card__link">✉️</a><?php endif; ?>
-										<?php if ( ! empty( $m['link'] ) ) : ?><a href="<?php echo esc_url( $m['link'] ); ?>" class="ah-team-card__link">→</a><?php endif; ?>
-									</div>
-								</div>
-							</div>
-						<?php endforeach; ?>
 					</div>
 				</div>
 			</section>

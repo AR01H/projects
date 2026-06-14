@@ -1,8 +1,8 @@
 /* ============================================================
-   ask_expert.css - Ask an Expert directory (pages/page-ask-expert.php)
+   ask_expert.css - Ask an Expert directory + Expert profile pages
    ============================================================ */
 
-/* ── Hero ──────────────────────────────────────────────────── */
+/* ── Hero (listing page) ────────────────────────────────────── */
 .expert-hero {
     background: linear-gradient(135deg, var(--color-primary, #1d4ed8) 0%, #2d5a44 60%, #1a2332 100%);
     padding: 52px 0 0;
@@ -132,9 +132,8 @@
     color: #fff;
 }
 
-/* ── Main Layout ────────────────────────────────────────────── */
+/* ── Main Layout (listing page) ─────────────────────────────── */
 .expert-main-layout {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 40px 24px 80px;
     display: grid;
@@ -146,7 +145,7 @@
 /* ── Expert Cards Grid ──────────────────────────────────────── */
 .expert-cards-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
 }
 
@@ -159,6 +158,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width:100%;
 }
 
 .expert-card:hover {
@@ -174,6 +174,7 @@
     align-items: flex-start;
 }
 
+/* ── Avatar: photo or initials ──────────────────────────────── */
 .expert-avatar {
     width: 52px;
     height: 52px;
@@ -184,6 +185,23 @@
     justify-content: center;
     font-size: 1.4rem;
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.expert-avatar-img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.expert-initials {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary, #1d4ed8);
+    letter-spacing: 0.02em;
+    line-height: 1;
 }
 
 .expert-card-meta { flex: 1; min-width: 0; }
@@ -232,6 +250,18 @@
     color: var(--color-text-muted, #6b7280);
 }
 
+/* Phone/email mini line on card */
+.expert-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.expert-contact-detail {
+    font-size: 0.78rem;
+    color: var(--color-text-muted, #6b7280);
+}
+
 .expert-tags {
     display: flex;
     gap: 6px;
@@ -247,14 +277,42 @@
     border: 1px solid var(--color-border, #e5e7eb);
 }
 
-.expert-profile-btn {
+/* ── Card action buttons ─────────────────────────────────────── */
+.expert-card-actions {
     margin-top: auto;
-    width: 100%;
-    justify-content: center;
-    font-size: 0.85rem;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-/* ── Sidebar ────────────────────────────────────────────────── */
+.expert-profile-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.85rem;
+    min-width: 0;
+}
+
+.expert-contact-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.85rem;
+    min-width: 0;
+    background: transparent;
+    border: 1px solid var(--color-border, #e5e7eb);
+    color: var(--color-text, #374151);
+    border-radius: var(--radius-sm, 6px);
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.12s, color 0.12s;
+}
+
+.expert-contact-btn:hover {
+    border-color: var(--color-primary, #1d4ed8);
+    color: var(--color-primary, #1d4ed8);
+}
+
+/* ── Sidebar (listing page) ─────────────────────────────────── */
 .expert-sidebar {
     position: sticky;
     top: 90px;
@@ -351,7 +409,6 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    counter-reset: none;
 }
 
 .expert-hiw-step {
@@ -426,27 +483,617 @@
 
 .ecf-btn { white-space: nowrap; flex-shrink: 0; }
 
-/* ── Responsive ─────────────────────────────────────────────── */
+/* ── Contact Modal ──────────────────────────────────────────── */
+.expert-contact-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.expert-contact-modal[hidden] { display: none; }
+
+.ecm-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    cursor: pointer;
+}
+
+.ecm-panel {
+    position: relative;
+    background: var(--color-white, #fff);
+    border-radius: var(--radius-lg, 16px);
+    padding: 32px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.ecm-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--color-text-muted, #6b7280);
+    padding: 4px 8px;
+    border-radius: 4px;
+    line-height: 1;
+    transition: color 0.12s, background 0.12s;
+}
+
+.ecm-close:hover {
+    color: var(--color-heading, #111827);
+    background: var(--color-surface, #f3f4f6);
+}
+
+.ecm-title {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding-right: 32px;
+}
+
+/* ── Contact Form (modal + single page) ─────────────────────── */
+.expert-contact-form .ecf-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+
+.expert-contact-form label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-heading, #111827);
+}
+
+.ecf-req { color: #b91c1c; }
+
+.expert-contact-form input,
+.expert-contact-form textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: var(--radius-sm, 6px);
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--color-text, #374151);
+    background: var(--color-white, #fff);
+    transition: border-color 0.12s;
+    box-sizing: border-box;
+}
+
+.expert-contact-form input:focus,
+.expert-contact-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary, #1d4ed8);
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+.expert-contact-form textarea { resize: vertical; }
+
+.ecf-actions { margin-top: 4px; }
+
+.ecf-submit {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.ecf-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ecf-feedback {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    padding: 0;
+    min-height: 0;
+    transition: padding 0.12s;
+}
+
+.ecf-feedback.ecf-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 10px 14px;
+}
+
+.ecf-feedback.ecf-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    padding: 10px 14px;
+}
+
+/* ── Expert Profile Hero ────────────────────────────────────── */
+.expert-profile-hero {
+    background: linear-gradient(135deg, var(--color-primary, #1d4ed8) 0%, #2d5a44 60%, #1a2332 100%);
+    padding: 48px 0;
+    overflow: hidden;
+}
+
+.expert-profile-hero-inner {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.expert-profile-photo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expert-profile-photo {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    display: block;
+}
+
+.expert-profile-initials {
+    width: 160px;
+    height: 160px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #fff;
+    border: 4px solid rgba(255, 255, 255, 0.25);
+}
+
+.expert-profile-hero-info { color: #fff; }
+
+.expert-profile-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.epbc-link {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.12s;
+}
+
+.epbc-link:hover { color: #fff; }
+
+.epbc-sep {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.epbc-current {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.expert-profile-name {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: #fff;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.expert-profile-specialisation {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+}
+
+.expert-profile-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.expert-profile-rating .rating-stars { font-size: 1rem; }
+.expert-profile-rating .rating-value { color: #fff; font-size: 0.95rem; font-weight: 600; }
+.expert-profile-rating .rating-count { color: rgba(255, 255, 255, 0.7); font-size: 0.82rem; }
+
+.expert-profile-location {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+}
+
+.expert-profile-cat-pill {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+/* ── Profile Page Layout ────────────────────────────────────── */
+.expert-profile-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+    align-items: start;
+    padding: 48px 0 80px;
+}
+
+.expert-profile-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.expert-profile-section {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.expert-profile-section:last-child { border-bottom: none; }
+
+.expert-profile-section h2 {
+    font-size: 1.1rem;
+    color: var(--color-heading, #111827);
+    margin-bottom: 16px;
+}
+
+.expert-bio-section p {
+    font-size: 0.95rem;
+    color: var(--color-text, #374151);
+    line-height: 1.7;
+}
+
+/* ── Bullets list ───────────────────────────────────────────── */
+.expert-bullets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.expert-bullets-list li {
+    font-size: 0.9rem;
+    color: var(--color-text, #374151);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.expert-bullets-list li::before {
+    content: '✓';
+    color: var(--color-primary, #1d4ed8);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── Client work grid ───────────────────────────────────────── */
+.expert-clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.client-img-wrap {
+    position: relative;
+    border-radius: var(--radius-md, 12px);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+}
+
+.client-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s;
+}
+
+.client-img-wrap:hover img { transform: scale(1.03); }
+
+.client-img-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    color: #fff;
+    font-size: 0.78rem;
+    padding: 20px 10px 8px;
+    display: block;
+}
+
+/* ── Profile sidebar ────────────────────────────────────────── */
+.expert-profile-sidebar {
+    position: sticky;
+    top: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Profile sidebar inherits .expert-sb-box, .expert-need-help */
+
+.expert-sb-contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.expert-sb-contact-list li {
+    font-size: 0.85rem;
+    color: var(--color-text, #374151);
+}
+
+.expert-sb-contact-list a {
+    color: var(--color-primary, #1d4ed8);
+    text-decoration: none;
+}
+
+.expert-sb-contact-list a:hover { text-decoration: underline; }
+
+/* Profile page: cat pill is shown on white bg */
+.expert-profile-sidebar .expert-profile-cat-pill {
+    background: var(--color-surface, #f3f4f6);
+    border-color: var(--color-border, #e5e7eb);
+    color: var(--color-text, #374151);
+}
+
+/* ── Contact form on single page ────────────────────────────── */
+.expert-contact-form-section .expert-contact-intro {
+    font-size: 0.88rem;
+    color: var(--color-text-muted, #6b7280);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* ── Form Builder (ch-form-*) on Expert pages ───────────────── */
+.expert-mega-section .ch-form-wrap {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    box-shadow: 0 2px 12px rgba(26,60,94,0.06);
+}
+
+.expert-mega-section .ch-form-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a3c5e;
+    margin: 0 0 6px;
+}
+
+.expert-mega-section .ch-form-desc {
+    font-size: 0.88rem;
+    color: #6b7280;
+    margin: 0 0 20px;
+    line-height: 1.6;
+}
+
+.expert-mega-section .ch-form-group {
+    margin-bottom: 18px;
+}
+
+.expert-mega-section .ch-form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 6px;
+}
+
+.expert-mega-section .ch-form-req {
+    color: #b91c1c;
+    margin-left: 2px;
+}
+
+.expert-mega-section .ch-form-input,
+.expert-mega-section .ch-form-textarea,
+.expert-mega-section .ch-form-select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: #374151;
+    background: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+}
+
+.expert-mega-section .ch-form-input:focus,
+.expert-mega-section .ch-form-textarea:focus,
+.expert-mega-section .ch-form-select:focus {
+    outline: none;
+    border-color: #1a3c5e;
+    box-shadow: 0 0 0 3px rgba(26,60,94,0.12);
+}
+
+.expert-mega-section .ch-form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.expert-mega-section .ch-form-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1a3c5e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.1s;
+    width: 100%;
+    justify-content: center;
+}
+
+.expert-mega-section .ch-form-submit:hover {
+    background: #244f7a;
+}
+
+.expert-mega-section .ch-form-submit:active {
+    transform: scale(0.98);
+}
+
+.expert-mega-section .ch-form-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.expert-mega-section .ch-form-feedback {
+    margin-top: 12px;
+    font-size: 0.87rem;
+    border-radius: 8px;
+    padding: 0;
+    min-height: 0;
+    transition: padding 0.12s;
+}
+
+.expert-mega-section .ch-form-feedback.success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 10px 14px;
+}
+
+.expert-mega-section .ch-form-feedback.error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 10px 14px;
+}
+
+/* Agreement / Terms section */
+.expert-mega-section .ch-agr-intro {
+    font-size: 0.87rem;
+    line-height: 1.7;
+    color: #4b5563;
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.expert-mega-section .ch-agr-iframe-wrap {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.expert-mega-section .ch-agr-iframe {
+    width: 100%;
+    height: 220px;
+    border: none;
+    display: block;
+}
+
+.expert-mega-section .ch-form-agreement .ch-agreement-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+.expert-mega-section .ch-form-agreement input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: #1a3c5e;
+    cursor: pointer;
+}
+
+.expert-mega-section .ch-terms-link {
+    color: #1a3c5e;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.15s;
+}
+
+.expert-mega-section .ch-terms-link:hover {
+    color: #244f7a;
+}
+
+/* ── Responsive: 1200px ─────────────────────────────────────── */
+@media (max-width: 1200px) {
+    .expert-profile-layout { grid-template-columns: 1fr 280px; gap: 28px; }
+}
+
+/* ── Responsive: 1024px ─────────────────────────────────────── */
 @media (max-width: 1024px) {
     .expert-main-layout { grid-template-columns: 1fr 260px; gap: 28px; }
 }
 
+/* ── Responsive: 900px ──────────────────────────────────────── */
 @media (max-width: 900px) {
-    .expert-main-layout  { grid-template-columns: 1fr; }
-    .expert-sidebar      { position: static; }
-    .expert-cards-grid   { grid-template-columns: 1fr 1fr; }
-    .expert-cant-find-cta{ flex-direction: column; align-items: flex-start; }
+    .expert-main-layout     { grid-template-columns: 1fr; }
+    .expert-sidebar         { position: static; }
+    .expert-cards-grid      { grid-template-columns: 1fr 1fr; }
+    .expert-cant-find-cta   { flex-direction: column; align-items: flex-start; }
+    .expert-profile-layout  { grid-template-columns: 1fr; }
+    .expert-profile-sidebar { position: static; }
+    .expert-profile-hero-inner { grid-template-columns: 140px 1fr; gap: 24px; }
+    .expert-profile-photo,
+    .expert-profile-initials { width: 120px; height: 120px; }
+    .expert-profile-initials { font-size: 2.2rem; }
 }
 
+/* ── Responsive: 768px ──────────────────────────────────────── */
 @media (max-width: 768px) {
-    .expert-hero-inner { grid-template-columns: 1fr; }
-    .expert-hero-img   { min-height: 200px; border-radius: var(--radius-lg, 16px); }
-    .expert-hero-img img { min-height: 200px; }
-    .expert-stats-inner{ flex-wrap: wrap; }
-    .expert-stat-item  { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 16px; flex: none; width: 50%; }
+    .expert-hero-inner          { grid-template-columns: 1fr; }
+    .expert-hero-img            { min-height: 200px; border-radius: var(--radius-lg, 16px); }
+    .expert-hero-img img        { min-height: 200px; }
+    .expert-stats-inner         { flex-wrap: wrap; }
+    .expert-stat-item           { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 16px; flex: none; width: 50%; }
+    .expert-profile-hero-inner  { grid-template-columns: 1fr; text-align: center; gap: 20px; }
+    .expert-profile-photo-wrap  { justify-content: center; }
+    .expert-profile-breadcrumb  { justify-content: center; }
+    .expert-profile-rating      { justify-content: center; }
+    .ecm-panel                  { padding: 24px 20px; }
 }
 
+/* ── Responsive: 560px ──────────────────────────────────────── */
 @media (max-width: 560px) {
-    .expert-cards-grid { grid-template-columns: 1fr; }
-    .expert-stat-item  { width: 100%; }
+    .expert-cards-grid  { grid-template-columns: 1fr; }
+    .expert-stat-item   { width: 100%; }
+    .expert-card-actions { flex-direction: column; }
+    .expert-profile-btn,
+    .expert-contact-btn { flex: none; width: 100%; }
+    .expert-clients-grid { grid-template-columns: 1fr 1fr; }
 }

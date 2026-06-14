@@ -1,6 +1,6 @@
 <?php
 /**
- * includes/core_routing.php  –  Dynamic parent-term URL routing.
+ * includes/core_routing.php  -  Dynamic parent-term URL routing.
  *
  * Intercepts WordPress 404 responses for top-level URL slugs that match an
  * active row in ah_taxonomy_parent_terms.  Serves pages/page-category_guide.php
@@ -62,19 +62,45 @@ function adn_route_parent_term_template( $template ) {
 		$slug
 	) );
 
-	if ( ! $row ) {
-		return $template; // No matching active term - keep 404.
+	if ( $row ) {
+		// Valid active parent term found - de-flag 404 and serve category guide.
+		global $wp_query;
+		$wp_query->is_404  = false;
+		$wp_query->is_page = true;
+		status_header( 200 );
+		nocache_headers();
+
+		// Pass the slug to adn_category_get_context() via query var.
+		set_query_var( 'adn_cat_slug', $slug );
+
+		return get_template_directory() . '/pages/page-category_guide.php';
 	}
 
-	// Valid active parent term found - de-flag 404 and serve category guide.
+	// No parent term match — check child taxonomy terms (wp_ah_taxonomies).
+	// These route to the topic/category listing page.
+	$tax_table = $wpdb->prefix . 'ah_taxonomies';
+
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $tax_table ) ) !== $tax_table ) {
+		return $template;
+	}
+
+	$tax_row = $wpdb->get_row( $wpdb->prepare(
+		"SELECT id FROM {$tax_table} WHERE slug = %s AND status = 'active' LIMIT 1",
+		$slug
+	) );
+
+	if ( ! $tax_row ) {
+		return $template; // No matching active topic term - keep 404.
+	}
+
+	// Valid active topic term — serve the category listing page.
 	global $wp_query;
 	$wp_query->is_404  = false;
 	$wp_query->is_page = true;
 	status_header( 200 );
 	nocache_headers();
 
-	// Pass the slug to adn_category_get_context() via query var.
-	set_query_var( 'adn_cat_slug', $slug );
+	set_query_var( 'adn_guide_term_slug', $slug );
 
-	return get_template_directory() . '/pages/page-category_guide.php';
+	return get_template_directory() . '/pages/page-topic_category_guide.php';
 }

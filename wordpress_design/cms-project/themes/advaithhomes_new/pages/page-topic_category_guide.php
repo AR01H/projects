@@ -1,29 +1,32 @@
 <?php
 /**
- * Template Name: Guide Article
+ * pages/page-topic_category_guide.php
  *
- * pages/page-topic_category_guide.php - Generic guide/article page.
+ * Topic/category listing page — articles within one taxonomy term.
  *
- * Works for any category's guide articles: buying, selling, moving or any future type.
- * The page slug drives which JSON is loaded - no content is hardcoded here.
+ * Layout:
+ *   1. Hero (term name, parent label, description)
+ *   2. page-with-sidebar:
+ *      Main — article grid (guide_listing_card) + pagination
+ *      Sidebar — buying topics, calculators quick tools, expert help
+ *   3. Related categories carousel (full-width)
+ *   4. Help CTA banner
  *
- * Architecture:
- *   data/json/guide-{slug}.json
- *     → apis/services.php  adn_service_guide_data($slug)
- *       → intermediate/page_guide_logical.php  adn_guide_get_context()
- *         → THIS FILE  (structure only)
- *           → components/sections/*  (article sections)
- *           → components/parts/*     (sidebar, stay-informed bar)
- *           → components/cards/*     (reused from home/category pages)
- *
- * RULE: No hardcoded content and no data reads here - only structure.
- * RULE: Header/footer come from header.php / footer.php via get_header() / get_footer().
+ * Routed from includes/core_routing.php; query var `adn_guide_term_slug` carries the slug.
+ * RULE: No hardcoded content and no data reads here — only structure.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-require_once ADN_THEME_DIR . '/intermediate/page_guide_logical.php';
-$ctx = adn_guide_get_context();
+require_once ADN_THEME_DIR . '/intermediate/page_topic_category_logical.php';
+$ctx = adn_topic_category_get_context();
+
+$term   = $ctx['term'];
+$parent = $ctx['parent'];
+
+$term_name = $term ? (string) $term->name : '';
+$term_desc = $term ? (string) $term->description : '';
+$term_icon = $term ? (string) $term->icon_emoji : '';
 
 get_header();
 ?>
@@ -33,70 +36,179 @@ get_header();
 <?php /* ============================== BREADCRUMB ============================== */ ?>
 <?php adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) ); ?>
 
-<?php /* ============================== ARTICLE HEADER ============================== */ ?>
-<section class="article-header-section">
-	<div class="container">
-		<?php adn_component( 'sections/article_header', array( 'article' => $ctx['article'] ) ); ?>
-	</div>
+<?php /* ============================== HERO ============================== */ ?>
+<section class="cat-guide-hero-section">
+    <div class="container">
+        <div class="cat-guide-hero">
+            <?php if ( $parent && ! empty( $parent->name ) ) : ?>
+                <div class="cat-guide-journey-label">
+                    <?php if ( ! empty( $parent->icon_emoji ) ) : ?>
+                        <?php echo esc_html( $parent->icon_emoji ); ?>
+                    <?php endif; ?>
+                    <?php echo esc_html( $parent->name ); ?>
+                </div>
+            <?php endif; ?>
+
+            <h1 class="cat-guide-title">
+                <?php if ( '' !== $term_icon ) : ?>
+                    <span class="cat-guide-icon"><?php echo esc_html( $term_icon ); ?></span>
+                <?php endif; ?>
+                <?php echo esc_html( $term_name ); ?>
+            </h1>
+
+            <?php if ( '' !== $term_desc ) : ?>
+                <p class="cat-guide-desc"><?php echo esc_html( $term_desc ); ?></p>
+            <?php endif; ?>
+        </div>
+    </div>
 </section>
 
-<?php /* ============================== KEY TAKEAWAYS + IN-THIS-GUIDE ============================== */ ?>
-<?php if ( ! empty( $ctx['key_takeaways'] ) || ! empty( $ctx['toc']['items'] ) ) : ?>
+<?php /* ============================== MAIN + SIDEBAR ============================== */ ?>
 <div class="container">
-	<?php adn_component( 'sections/article_key_info', array(
-		'key_takeaways' => $ctx['key_takeaways'],
-		'toc'           => $ctx['toc'],
-	) ); ?>
+    <div class="page-with-sidebar topic-listing-layout">
+
+        <main class="topic-listing-main">
+
+            <?php if ( ! empty( $ctx['articles'] ) ) : ?>
+
+                <?php
+                adn_component( 'parts/section_headers/section_header', array(
+                    'heading' => array(
+                        'title'      => $term_name . ' Guides',
+                        'link_label' => '',
+                        'link_url'   => '',
+                    ),
+                    'tag' => 'h2',
+                ) );
+                ?>
+
+                <div class="topic-articles-grid">
+                    <?php foreach ( $ctx['articles'] as $article ) : ?>
+                        <?php adn_component( 'cards/guide_listing_card', array( 'item' => $article ) ); ?>
+                    <?php endforeach; ?>
+                </div>
+
+                <?php /* ── Pagination ── */ ?>
+                <?php
+                $_pag = $ctx['pagination'];
+                $_cur = isset( $_pag['current'] ) ? (int) $_pag['current'] : 1;
+                $_tot = isset( $_pag['total'] )   ? (int) $_pag['total']   : 1;
+                $_base = isset( $_pag['base_url'] ) ? trailingslashit( $_pag['base_url'] ) : '';
+                if ( $_tot > 1 ) :
+                    $links = paginate_links( array(
+                        'base'      => add_query_arg( 'paged', '%#%', $_base ),
+                        'format'    => '',
+                        'current'   => $_cur,
+                        'total'     => $_tot,
+                        'prev_text' => '&laquo; Previous',
+                        'next_text' => 'Next &raquo;',
+                        'type'      => 'array',
+                        'end_size'  => 2,
+                        'mid_size'  => 1,
+                    ) );
+                    if ( ! empty( $links ) ) :
+                ?>
+                <nav class="topic-pagination" aria-label="<?php esc_attr_e( 'Page navigation', ADN_TEXT_DOMAIN ); ?>">
+                    <?php foreach ( $links as $link ) : ?>
+                        <?php echo wp_kses( $link, array( 'a' => array( 'href' => true, 'class' => true, 'aria-current' => true ), 'span' => array( 'class' => true, 'aria-current' => true ) ) ); ?>
+                    <?php endforeach; ?>
+                </nav>
+                <?php endif; endif; ?>
+
+            <?php else : ?>
+                <p class="cat-guide-empty"><?php esc_html_e( 'No guides found for this topic yet. Check back soon.', 'advaithhomes' ); ?></p>
+            <?php endif; ?>
+
+        </main>
+
+        <aside class="sidebar-col topic-listing-sidebar">
+
+            <?php /* ── Explore buying topics ── */ ?>
+            <?php if ( ! empty( $ctx['sidebar']['buying_topics'] ) ) :
+                $bt = $ctx['sidebar']['buying_topics'];
+            ?>
+            <div class="sidebar-card topic-topics-card">
+                <?php if ( ! empty( $bt['heading'] ) ) : ?>
+                    <div class="sidebar-card-title"><?php echo esc_html( $bt['heading'] ); ?></div>
+                <?php endif; ?>
+                <?php foreach ( (array) $bt['items'] as $titem ) : ?>
+                    <a href="<?php echo esc_url( adn_link( isset( $titem['url'] ) ? $titem['url'] : '' ) ); ?>"
+                       class="sidebar-link-item topic-topic-link<?php echo ! empty( $titem['is_active'] ) ? ' topic-topic-link--active' : ''; ?>">
+                        <div>
+                            <?php if ( ! empty( $titem['icon'] ) ) : ?>
+                                <span class="sidebar-link-icon"><?php echo esc_html( $titem['icon'] ); ?></span>
+                            <?php endif; ?>
+                            <?php echo esc_html( isset( $titem['label'] ) ? $titem['label'] : '' ); ?>
+                        </div>
+                        <span class="sidebar-chevron">&rsaquo;</span>
+                    </a>
+                <?php endforeach; ?>
+                <?php if ( ! empty( $bt['view_all']['label'] ) ) : ?>
+                    <a href="<?php echo esc_url( adn_link( $bt['view_all']['url'] ) ); ?>" class="view-all-small">
+                        <?php echo esc_html( $bt['view_all']['label'] ); ?>
+                    </a>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+
+            <?php /* ── Quick tools / calculators ── */ ?>
+            <?php if ( ! empty( $ctx['sidebar']['quick_tools'] ) ) : ?>
+                <?php adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $ctx['sidebar']['quick_tools'] ) ); ?>
+            <?php endif; ?>
+
+            <?php /* ── Expert help ── */ ?>
+            <?php if ( ! empty( $ctx['sidebar']['expert_help'] ) ) : ?>
+                <?php adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) ); ?>
+            <?php endif; ?>
+
+        </aside>
+
+    </div>
 </div>
+
+<?php /* ============================== MORE TOPICS (full-width) ============================== */ ?>
+<?php if ( ! empty( $ctx['related_categories'] ) ) : ?>
+<section class="cat-guide-related-section">
+    <div class="container">
+        <?php
+        adn_component( 'parts/section_headers/section_header', array(
+            'heading' => array(
+                'title'      => 'More ' . ( $parent ? esc_html( $parent->name ) : '' ) . ' Topics',
+                'link_label' => $parent ? 'View all ' . esc_html( $parent->name ) . ' guides →' : '',
+                'link_url'   => $parent ? home_url( '/' . trim( $parent->slug, '/' ) . '/' ) : '',
+            ),
+            'tag' => 'h2',
+        ) );
+        ?>
+        <?php adn_component( 'sections/guides', array( 'items' => $ctx['related_categories'] ) ); ?>
+    </div>
+</section>
 <?php endif; ?>
 
-<?php /* ============================== MAIN ARTICLE + SIDEBAR ============================== */ ?>
-<div class="container">
-	<div class="article-layout">
-
-		<article class="article-main">
-			<div class="article-body">
-				<?php adn_component( 'sections/article_body', array( 'sections' => $ctx['sections'] ) ); ?>
-			</div>
-
-			<?php adn_component( 'sections/article_feedback', array( 'feedback' => $ctx['feedback'] ) ); ?>
-			<?php adn_component( 'sections/article_author', array( 'author' => $ctx['author'] ) ); ?>
-		</article>
-
-		<aside class="article-sidebar">
-			<?php
-			if ( ! empty( $ctx['toc']['items'] ) ) :
-				adn_component( 'parts/sidebar_toc', array( 'toc' => $ctx['toc'] ) );
-			endif;
-
-			if ( ! empty( $ctx['sidebar']['quick_tools'] ) ) :
-				adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $ctx['sidebar']['quick_tools'] ) );
-			endif;
-
-			if ( ! empty( $ctx['sidebar']['most_read'] ) ) :
-				adn_component( 'parts/sidebar_most_read', array( 'most_read' => $ctx['sidebar']['most_read'] ) );
-			endif;
-
-			if ( ! empty( $ctx['sidebar']['news']['items'] ) ) :
-				adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => $ctx['sidebar']['news'] ) );
-			endif;
-
-			if ( ! empty( $ctx['sidebar']['expert_help'] ) ) :
-				adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) );
-			endif;
-			?>
-		</aside>
-
-	</div>
-</div>
-
-<?php /* ============================== STAY INFORMED ============================== */ ?>
-<?php if ( ! empty( $ctx['stay_informed'] ) ) : ?>
-<section class="stay-informed-bar">
-	<div class="container">
-		<?php adn_component( 'parts/stay_informed_bar', array( 'stay_informed' => $ctx['stay_informed'] ) ); ?>
-	</div>
+<?php /* ============================== CALCULATORS (full-width) ============================== */ ?>
+<?php if ( ! empty( $ctx['calculators']['items'] ) ) : ?>
+<section class="cat-guide-calcs-section">
+    <div class="container">
+        <?php
+        adn_component( 'parts/section_headers/section_header', array(
+            'heading' => $ctx['calculators']['heading'],
+            'tag'     => 'h2',
+        ) );
+        ?>
+        <div class="calc-grid calc-grid--7col">
+            <?php foreach ( $ctx['calculators']['items'] as $card ) : ?>
+                <?php adn_component( 'cards/calc_card', array( 'card' => $card ) ); ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
 </section>
+<?php endif; ?>
+
+<?php /* ============================== HELP CTA ============================== */ ?>
+<?php if ( ! empty( $ctx['cta_help']['title'] ) ) : ?>
+<div class="container">
+    <?php adn_component( 'parts/cta_banner', array( 'cta_banner' => $ctx['cta_help'] ) ); ?>
+</div>
 <?php endif; ?>
 
 <?php /* ============================== FOOTER ============================== */ ?>

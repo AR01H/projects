@@ -25,16 +25,12 @@ $hot_cta = isset( $hot_topics['cta'] ) ? (array) $hot_topics['cta'] : array();
 ?>
 <div class="news-three-inner">
 
-    <div class="news-col news-col--news mini_card_container_design">
+    <div class="news-col news-col--news">
         <?php
-        adn_component( 'parts/section_headers/section_header', array(
-            'heading'       => isset( $news['heading'] ) ? $news['heading'] : array(),
-            'tag'           => 'h3',
-            'wrapper_class' => 'news-col-title',
-        ) );
-        foreach ( (array) ( isset( $news['items'] ) ? $news['items'] : array() ) as $item ) {
-            adn_component( 'cards/news_item', array( 'item' => $item ) );
-        }
+        adn_component( 'parts/news_widget', array( 'widget' => array(
+            'heading' => isset( $news['heading'] ) ? $news['heading'] : array(),
+            'items'   => isset( $news['items'] )   ? $news['items']   : array(),
+        ) ) );
         ?>
     </div>
 

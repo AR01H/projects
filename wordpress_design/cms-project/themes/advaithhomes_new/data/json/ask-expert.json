@@ -28,78 +28,7 @@
         { "key": "tax",          "label": "Tax Advisers" }
     ],
     "experts": [
-        {
-            "avatar":      "👨‍💼",
-            "name":        "James Carter",
-            "title":       "Mortgage Adviser",
-            "category":    "mortgage",
-            "rating":      4.9,
-            "reviews":     128,
-            "description": "Whole of market mortgage advice for home buyers, remortgages and investors.",
-            "location":    "London & Nationwide",
-            "tags":        ["Residential Mortgages", "Buy to Let"],
-            "url":         "/ask-an-expert/"
-        },
-        {
-            "avatar":      "👩‍💼",
-            "name":        "Sarah Mitchell",
-            "title":       "Solicitor",
-            "category":    "solicitor",
-            "rating":      4.8,
-            "reviews":     96,
-            "description": "Conveyancing specialist with 10+ years experience in residential property.",
-            "location":    "Manchester & Nationwide",
-            "tags":        ["Conveyancing", "Leasehold", "New Build"],
-            "url":         "/ask-an-expert/"
-        },
-        {
-            "avatar":      "👨‍🔬",
-            "name":        "David Thompson",
-            "title":       "Chartered Surveyor",
-            "category":    "surveyor",
-            "rating":      4.9,
-            "reviews":     72,
-            "description": "RICS surveyor providing HomeBuyer Reports, valuations and expert advice.",
-            "location":    "Birmingham & Midlands",
-            "tags":        ["HomeBuyer Reports", "Valuations", "RICS"],
-            "url":         "/ask-an-expert/"
-        },
-        {
-            "avatar":      "👨‍💼",
-            "name":        "Michael Roberts",
-            "title":       "Buyer-side Agent",
-            "category":    "buyer-agent",
-            "rating":      4.8,
-            "reviews":     54,
-            "description": "Helping buyers find the right property and negotiate the best price.",
-            "location":    "London & Southwest",
-            "tags":        ["Property Search", "Negotiation", "Advice"],
-            "url":         "/ask-an-expert/"
-        },
-        {
-            "avatar":      "👩‍🔬",
-            "name":        "Emma Johnson",
-            "title":       "Removal Specialist",
-            "category":    "removal",
-            "rating":      4.7,
-            "reviews":     43,
-            "description": "Home moving, packing and storage solutions across the UK.",
-            "location":    "Nationwide",
-            "tags":        ["Storage", "Packing"],
-            "url":         "/ask-an-expert/"
-        },
-        {
-            "avatar":      "👨‍💼",
-            "name":        "Daniel Lee",
-            "title":       "Tax Adviser",
-            "category":    "tax",
-            "rating":      4.9,
-            "reviews":     38,
-            "description": "Property tax advice including CGT, SDLT and tax planning for investors.",
-            "location":    "London & Nationwide",
-            "tags":        ["SDLT", "CGT", "Tax Planning"],
-            "url":         "/ask-an-expert/"
-        }
+        
     ],
     "sidebar": {
         "need_help": {

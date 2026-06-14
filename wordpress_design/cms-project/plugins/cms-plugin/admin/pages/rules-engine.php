@@ -274,7 +274,7 @@ details.re-adv .re-adv-body{padding:12px}
 	<div style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end">
 		<div class="re-field-group" style="margin:0">
 			<label>Rule Name</label>
-			<input type="text" name="re_name" value="<?php echo esc_attr( $editing->name ); ?>" placeholder="e.g. New enquiry → notify team" required>
+			<input type="text" name="re_name" value="<?php echo esc_attr( $editing->name ); ?>" placeholder="e.g. New enquiry → notify" required>
 		</div>
 		<div class="re-field-group" style="margin:0">
 			<label>Status</label>

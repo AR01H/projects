@@ -267,12 +267,44 @@ function adn_service_news_data() {
 }
 
 /**
- * Single post sidebar static data - loads data/json/post_sidebar.json.
- * Contains the popular calculators list and newsletter signup copy.
- * Related guides and latest news come from WP_Query in post_logical.php.
+ * Single post sidebar data.
+ * Calculators come from the live registry (adn_calculators() merged with AH_Calculator_DB
+ * via the adn_calculators filter) + adn_calculators_meta option for per-calc URLs.
+ * Newsletter copy falls back to post_sidebar.json so it can still be edited there.
  */
 function adn_service_post_sidebar_data() {
-	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'post_sidebar' ) : array();
+	/* ── Calculators from DB/registry ── */
+	$calcs_raw = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+	$meta_all  = get_option( 'adn_calculators_meta', array() );
+	if ( ! is_array( $meta_all ) ) {
+		$meta_all = array();
+	}
+
+	$view_all_url = home_url( '/calculators/' );
+
+	$items = array();
+	foreach ( array_slice( $calcs_raw, 0, 5, true ) as $key => $reg ) {
+		$cmeta   = isset( $meta_all[ $key ] ) && is_array( $meta_all[ $key ] ) ? $meta_all[ $key ] : array();
+		$items[] = array(
+			'icon'  => isset( $reg['icon'] )  && '' !== $reg['icon']  ? (string) $reg['icon']  : '🧮',
+			'label' => isset( $reg['title'] ) && '' !== $reg['title'] ? (string) $reg['title'] : (string) $key,
+			'url'   => ! empty( $cmeta['card_url'] )
+				? (string) $cmeta['card_url']
+				: home_url( '/?ah_calc_page=' . rawurlencode( $key ) ),
+		);
+	}
+
+	/* ── Newsletter copy from JSON fallback ── */
+	$json        = class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'post_sidebar' ) : array();
+	$newsletter  = isset( $json['newsletter'] ) && is_array( $json['newsletter'] ) ? $json['newsletter'] : array();
+
+	return array(
+		'calculators' => array(
+			'view_all_url' => $view_all_url,
+			'items'        => $items,
+		),
+		'newsletter' => $newsletter,
+	);
 }
 
 /**

@@ -1,18 +1,18 @@
 {
     "meta": {
         "slug": "buying-step-by-step",
-        "page_title": "Buying a House in the UK – Step by Step Process – Advaith Homes",
+        "page_title": "Buying a House in the UK - Step by Step Process - Advaith Homes",
         "meta_description": "A complete guide for first-time buyers. Understand the entire process from budgeting to getting the keys to your new home."
     },
     "breadcrumb": [
         { "label": "Home", "url": "/" },
         { "label": "Guides", "url": "/guides/" },
         { "label": "Buying Guides", "url": "/buying/" },
-        { "label": "Buying a House in the UK – Step by Step", "url": null }
+        { "label": "Buying a House in the UK - Step by Step", "url": null }
     ],
     "article": {
         "category_tag": "GETTING STARTED",
-        "title": "Buying a House in the UK – Step by Step Process",
+        "title": "Buying a House in the UK - Step by Step Process",
         "intro": "A complete guide for first-time buyers. Understand the entire process from budgeting to getting the keys to your new home.",
         "image_icon": "🏡",
         "image_gradient": "linear-gradient(135deg,#c8d8c4,#5a8a54)",
@@ -67,7 +67,7 @@
             ],
             "tip": {
                 "icon": "💡",
-                "text": "The full process usually takes <strong>8–12 weeks</strong> on average, but it can be shorter or longer depending on your circumstances.",
+                "text": "The full process usually takes <strong>8-12 weeks</strong> on average, but it can be shorter or longer depending on your circumstances.",
                 "link_label": "View Timeline →",
                 "link_url": "/guides/"
             }
@@ -78,10 +78,10 @@
             "heading": "3. Costs You Should Know",
             "text": "When buying a home, there are several costs to consider beyond the purchase price.",
             "items": [
-                { "icon": "🏦", "name": "Deposit", "value": "Typically 5% – 20%" },
+                { "icon": "🏦", "name": "Deposit", "value": "Typically 5% - 20%" },
                 { "icon": "🏷️", "name": "Stamp Duty", "value": "Varies by property price" },
-                { "icon": "⚖️", "name": "Legal Fees", "value": "£800 – £2,000+" },
-                { "icon": "🔍", "name": "Survey", "value": "£300 – £1,500" },
+                { "icon": "⚖️", "name": "Legal Fees", "value": "£800 - £2,000+" },
+                { "icon": "🔍", "name": "Survey", "value": "£300 - £1,500" },
                 { "icon": "📦", "name": "Other Costs", "value": "Moving, insurance, etc." }
             ],
             "cta": { "label": "See full breakdown of buying costs →", "url": "/calculators/" }
@@ -127,7 +127,7 @@
             "heading": "Latest Property News",
             "items": [
                 { "title": "Mortgage rates fall for third month in a row", "date": "May 18, 2024", "gradient": "linear-gradient(135deg,#c8d8c4,#8fad87)", "url": "/news/" },
-                { "title": "UK House prices rise 1.4% in April – Latest ONS data", "date": "May 16, 2024", "gradient": "linear-gradient(135deg,#c8d4e4,#6888aa)", "url": "/news/" },
+                { "title": "UK House prices rise 1.4% in April - Latest ONS data", "date": "May 16, 2024", "gradient": "linear-gradient(135deg,#c8d4e4,#6888aa)", "url": "/news/" },
                 { "title": "Stamp Duty Changes: What Buyers Need to Know", "date": "May 14, 2024", "gradient": "linear-gradient(135deg,#e4d4c8,#c09080)", "url": "/news/" }
             ],
             "view_all": { "label": "View all news →", "url": "/news/" }

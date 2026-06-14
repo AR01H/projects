@@ -105,7 +105,7 @@ class AH_DB_Schema {
 				id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				title            VARCHAR(255) NOT NULL,
 				slug             VARCHAR(255) NOT NULL UNIQUE,
-				page_type        ENUM('home','about','services','contact','client_stories','blog_listing','news_listing','custom') DEFAULT 'custom',
+				page_type        ENUM('home','services','contact','client_stories','blog_listing','news_listing','custom') DEFAULT 'custom',
 				meta_title       VARCHAR(255),
 				meta_description TEXT,
 				meta_keywords    TEXT,
@@ -407,113 +407,6 @@ class AH_DB_Schema {
 				is_visible  TINYINT(1) DEFAULT 1
 			) ENGINE=InnoDB {$cs}",
 
-			// 31. Services
-			"CREATE TABLE IF NOT EXISTS {$p}ah_services (
-				id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				title            VARCHAR(255) NOT NULL,
-				slug             VARCHAR(280) NOT NULL UNIQUE,
-				image_id         INT UNSIGNED,
-				short_desc       TEXT,
-				full_desc        LONGTEXT,
-				meta_title       VARCHAR(255),
-				meta_description TEXT,
-				sort_order       INT DEFAULT 0,
-				status           ENUM('active','inactive') DEFAULT 'active',
-				created_by       INT UNSIGNED,
-				created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-				updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				KEY idx_slug (slug),
-				KEY idx_status (status)
-			) ENGINE=InnoDB {$cs}",
-
-			// 32. Service Bullet Points
-			"CREATE TABLE IF NOT EXISTS {$p}ah_service_bullet_points (
-				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				service_id INT UNSIGNED NOT NULL,
-				point_text VARCHAR(500) NOT NULL,
-				sort_order INT DEFAULT 0,
-				KEY idx_service (service_id)
-			) ENGINE=InnoDB {$cs}",
-
-			// 33. Services Page Header
-			"CREATE TABLE IF NOT EXISTS {$p}ah_services_page_header (
-				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				page_id     INT UNSIGNED NOT NULL UNIQUE,
-				heading     VARCHAR(255),
-				information TEXT,
-				is_visible  TINYINT(1) DEFAULT 1,
-				updated_by  INT UNSIGNED,
-				updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-			) ENGINE=InnoDB {$cs}",
-
-			// 34. Service Taxonomies pivot
-			"CREATE TABLE IF NOT EXISTS {$p}ah_service_taxonomies (
-				service_id  INT UNSIGNED NOT NULL,
-				taxonomy_id INT UNSIGNED NOT NULL,
-				PRIMARY KEY (service_id, taxonomy_id)
-			) ENGINE=InnoDB {$cs}",
-
-			// 35. About Page Header
-			"CREATE TABLE IF NOT EXISTS {$p}ah_about_page_header (
-				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				page_id     INT UNSIGNED NOT NULL UNIQUE,
-				heading     VARCHAR(255),
-				information TEXT,
-				is_visible  TINYINT(1) DEFAULT 1,
-				updated_by  INT UNSIGNED,
-				updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-			) ENGINE=InnoDB {$cs}",
-
-			// 36. About Story
-			"CREATE TABLE IF NOT EXISTS {$p}ah_about_story (
-				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				page_id     INT UNSIGNED NOT NULL UNIQUE,
-				image_id    INT UNSIGNED,
-				heading     VARCHAR(255),
-				subheading  VARCHAR(255),
-				is_visible  TINYINT(1) DEFAULT 1,
-				updated_by  INT UNSIGNED,
-				updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-			) ENGINE=InnoDB {$cs}",
-
-			// 37. About Story Points
-			"CREATE TABLE IF NOT EXISTS {$p}ah_about_story_points (
-				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				story_id   INT UNSIGNED NOT NULL,
-				point_text VARCHAR(500) NOT NULL,
-				sort_order INT DEFAULT 0,
-				KEY idx_story (story_id)
-			) ENGINE=InnoDB {$cs}",
-
-			// 38. Team Members
-			"CREATE TABLE IF NOT EXISTS {$p}ah_team_members (
-				id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				photo_id     INT UNSIGNED,
-				name         VARCHAR(200) NOT NULL,
-				designation  VARCHAR(200),
-				bio          TEXT,
-				email        VARCHAR(200),
-				linkedin_url VARCHAR(500),
-				sort_order   INT DEFAULT 0,
-				is_featured  TINYINT(1) DEFAULT 0,
-				status       ENUM('active','inactive') DEFAULT 'active',
-				created_by   INT UNSIGNED,
-				created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-				updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				KEY idx_status (status)
-			) ENGINE=InnoDB {$cs}",
-
-			// 39. About Values
-			"CREATE TABLE IF NOT EXISTS {$p}ah_about_values (
-				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				page_id     INT UNSIGNED NOT NULL,
-				image_id    INT UNSIGNED,
-				heading     VARCHAR(255),
-				information TEXT,
-				sort_order  INT DEFAULT 0,
-				status      ENUM('active','inactive') DEFAULT 'active',
-				KEY idx_page (page_id)
-			) ENGINE=InnoDB {$cs}",
 
 			// 40. Posts
 			"CREATE TABLE IF NOT EXISTS {$p}ah_posts (

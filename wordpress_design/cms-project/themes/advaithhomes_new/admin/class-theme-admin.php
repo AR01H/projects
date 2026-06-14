@@ -33,6 +33,17 @@ class ADN_Theme_Admin {
 		// Manage Calculator → Calculator List (per-calculator controls).
 		add_action( 'admin_post_adn_save_calc_list', array( __CLASS__, 'handle_save_calc_list' ) );
 
+		// Manage Calculator → Add / Edit DB calculator.
+		add_action( 'admin_post_adn_save_calc_new',   array( __CLASS__, 'handle_save_calc_new' ) );
+		add_action( 'admin_post_adn_delete_calc',     array( __CLASS__, 'handle_delete_calc' ) );
+
+		// Experts / Team → Add / Edit / Delete DB expert.
+		add_action( 'admin_post_adn_save_expert',   array( __CLASS__, 'handle_save_expert' ) );
+		add_action( 'admin_post_adn_delete_expert', array( __CLASS__, 'handle_delete_expert' ) );
+
+		// Manage Calculator → Page Content settings.
+		add_action( 'admin_post_adn_save_calcs_page', array( __CLASS__, 'handle_save_calcs_page' ) );
+
 		// Admin Actions → Sample Data (seed Guide terms / articles / news).
 		add_action( 'admin_post_adn_seed_content', array( __CLASS__, 'handle_seed_content' ) );
 
@@ -43,7 +54,8 @@ class ADN_Theme_Admin {
 		add_action( 'admin_post_adn_install_contact_rule', array( __CLASS__, 'handle_install_contact_rule' ) );
 
 		// Category Pages: per-term journey / calculators / sidebar / CTA settings.
-		add_action( 'admin_post_adn_save_category_term', array( __CLASS__, 'handle_save_category_term' ) );
+		add_action( 'admin_post_adn_save_category_term',  array( __CLASS__, 'handle_save_category_term' ) );
+		add_action( 'admin_post_adn_save_home_newsblocks', array( __CLASS__, 'handle_save_home_newsblocks' ) );
 
 		// Category Pages: AJAX post search (Hot Topics + Popular Posts).
 		add_action( 'wp_ajax_adn_cat_post_search', array( __CLASS__, 'handle_cat_post_search' ) );
@@ -53,6 +65,10 @@ class ADN_Theme_Admin {
 
 		// Enqueue wp.media on our admin page (required for the thumbnail uploader).
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_assets' ) );
+
+		// Redirect to include &subtab= in the URL when missing, so form hidden fields work.
+		// Must run on admin_init (before any output) — NOT inside render_page().
+		add_action( 'admin_init', array( __CLASS__, 'maybe_redirect_to_subtab' ) );
 	}
 
 	public static function enqueue_admin_assets( $hook ) {
@@ -90,6 +106,10 @@ class ADN_Theme_Admin {
 						'label' => __( 'Featured Guides', ADN_TEXT_DOMAIN ),
 						'view'  => 'home/sub-featured.php',
 					),
+					'newsblocks' => array(
+						'label' => __( 'Regulations & Hot Topics', ADN_TEXT_DOMAIN ),
+						'view'  => 'home/sub-newsblocks.php',
+					),
 				),
 			),
 			'calculators' => array(
@@ -102,6 +122,27 @@ class ADN_Theme_Admin {
 					'list' => array(
 						'label' => __( 'Calculator List', ADN_TEXT_DOMAIN ),
 						'view'  => 'calculators/sub-list.php',
+					),
+					'page' => array(
+						'label' => __( 'Page Content', ADN_TEXT_DOMAIN ),
+						'view'  => 'calculators/sub-page.php',
+					),
+					'new' => array(
+						'label' => __( '+ Add / Edit', ADN_TEXT_DOMAIN ),
+						'view'  => 'calculators/sub-new.php',
+					),
+				),
+			),
+			'experts' => array(
+				'label'   => __( 'Experts / Team', ADN_TEXT_DOMAIN ),
+				'subtabs' => array(
+					'list' => array(
+						'label' => __( 'Expert List', ADN_TEXT_DOMAIN ),
+						'view'  => 'experts/sub-list.php',
+					),
+					'new' => array(
+						'label' => __( '+ Add / Edit', ADN_TEXT_DOMAIN ),
+						'view'  => 'experts/sub-new.php',
 					),
 				),
 			),
@@ -207,6 +248,55 @@ class ADN_Theme_Admin {
 			$args['subtab'] = $subtab;
 		}
 		return add_query_arg( $args, admin_url( 'admin.php' ) );
+	}
+
+	/**
+	 * Fired on admin_init (before any output).
+	 * When the active tab has subtabs but &subtab= is absent from the URL,
+	 * redirect to add it — so sub-views can safely read $_GET['subtab'] for form fields.
+	 */
+	public static function maybe_redirect_to_subtab() {
+		if ( ! is_admin() || ! current_user_can( self::CAPABILITY ) ) {
+			return;
+		}
+
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+		if ( '' === $page ) {
+			return;
+		}
+
+		// Only act when viewing one of our admin pages.
+		$tabs = self::tabs();
+		$matched_tab = '';
+		foreach ( $tabs as $tab_key => $tab_def ) {
+			if ( self::tab_page_slug( $tab_key ) === $page ) {
+				$matched_tab = $tab_key;
+				break;
+			}
+		}
+		if ( '' === $matched_tab ) {
+			return;
+		}
+
+		// Only tabs that have subtabs need this redirect.
+		if ( empty( $tabs[ $matched_tab ]['subtabs'] ) ) {
+			return;
+		}
+
+		// If &subtab= is already present and valid, nothing to do.
+		$req_sub = isset( $_GET['subtab'] ) ? sanitize_key( wp_unslash( $_GET['subtab'] ) ) : '';
+		if ( '' !== $req_sub && isset( $tabs[ $matched_tab ]['subtabs'][ $req_sub ] ) ) {
+			return;
+		}
+
+		// Redirect to inject the first (default) subtab key.
+		$first_sub = (string) array_key_first( $tabs[ $matched_tab ]['subtabs'] );
+		if ( '' === $first_sub ) {
+			return;
+		}
+
+		wp_safe_redirect( self::tab_url( $matched_tab, $first_sub ) );
+		exit;
 	}
 
 	/**
@@ -513,20 +603,201 @@ class ADN_Theme_Admin {
 		$input = ( isset( $_POST['calc'] ) && is_array( $_POST['calc'] ) ) ? wp_unslash( $_POST['calc'] ) : array();
 		$meta  = array();
 
+		// Allowed category slugs — dynamic when the categories function is available.
+		$allowed_cats = function_exists( 'adn_calculator_categories' )
+			? array_keys( adn_calculator_categories() )
+			: array( 'buying', 'selling', 'moving', 'mortgage', 'tax', 'affordability' );
+
 		// Iterate the registered calculators (the source of truth), not POST keys.
 		foreach ( adn_calculators() as $key => $calc ) {
-			$row          = isset( $input[ $key ] ) && is_array( $input[ $key ] ) ? $input[ $key ] : array();
+			$row       = isset( $input[ $key ] ) && is_array( $input[ $key ] ) ? $input[ $key ] : array();
+			$raw_cats  = ( isset( $row['categories'] ) && is_array( $row['categories'] ) ) ? $row['categories'] : array();
+			$clean_cats = array();
+			foreach ( $raw_cats as $c ) {
+				$c = sanitize_key( $c );
+				if ( in_array( $c, $allowed_cats, true ) ) { $clean_cats[] = $c; }
+			}
 			$meta[ $key ] = array(
-				'enabled'     => empty( $row['enabled'] ) ? 0 : 1,
-				'label'       => sanitize_text_field( $row['label'] ?? '' ),
-				'help'        => sanitize_textarea_field( $row['help'] ?? '' ),
-				'guide_label' => sanitize_text_field( $row['guide_label'] ?? '' ),
-				'guide_url'   => esc_url_raw( $row['guide_url'] ?? '' ),
+				'enabled'             => empty( $row['enabled'] ) ? 0 : 1,
+				'label'               => sanitize_text_field( isset( $row['label'] ) ? $row['label'] : '' ),
+				'desc'                => sanitize_textarea_field( isset( $row['desc'] ) ? $row['desc'] : '' ),
+				'categories'          => $clean_cats,
+				'thumbnail_id'        => absint( isset( $row['thumbnail_id'] ) ? $row['thumbnail_id'] : 0 ),
+				'highlight'           => sanitize_text_field( isset( $row['highlight'] ) ? $row['highlight'] : '' ),
+				'is_popular'          => empty( $row['is_popular'] ) ? 0 : 1,
+				'hidden_from_listing' => empty( $row['hidden_from_listing'] ) ? 0 : 1,
+				'help'                => sanitize_textarea_field( isset( $row['help'] ) ? $row['help'] : '' ),
+				'card_url'            => esc_url_raw( isset( $row['card_url'] ) ? $row['card_url'] : '' ),
+				'guide_label'         => sanitize_text_field( isset( $row['guide_label'] ) ? $row['guide_label'] : '' ),
+				'guide_url'           => esc_url_raw( isset( $row['guide_url'] ) ? $row['guide_url'] : '' ),
 			);
 		}
 
 		update_option( 'adn_calculators_meta', $meta );
 		self::redirect_back( 'calculators', 'list', __( 'Calculator list saved.', ADN_TEXT_DOMAIN ) );
+	}
+
+	// ── Add / Edit DB calculator ────────────────────────────────────────────────────
+
+	public static function handle_save_calc_new() {
+		check_admin_referer( 'adn_save_calc_new' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+		if ( ! class_exists( 'AH_Calculator_DB' ) ) {
+			wp_die( esc_html__( 'Calculator DB class not available.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$edit_key = isset( $_POST['edit_key'] ) ? sanitize_key( wp_unslash( $_POST['edit_key'] ) ) : '';
+		$is_edit  = '' !== $edit_key;
+
+		// Determine the key: for new calcs use submitted value; for edits reuse the existing key.
+		$key = $is_edit ? $edit_key : sanitize_key( isset( $_POST['calc_key'] ) ? wp_unslash( $_POST['calc_key'] ) : '' );
+
+		if ( '' === $key ) {
+			wp_die( esc_html__( 'Calculator key is required.', ADN_TEXT_DOMAIN ) );
+		}
+		if ( sanitize_text_field( wp_unslash( isset( $_POST['title'] ) ? $_POST['title'] : '' ) ) === '' ) {
+			wp_die( esc_html__( 'Title is required.', ADN_TEXT_DOMAIN ) );
+		}
+
+		// When adding a new calc, prevent overwriting an existing one (file or DB).
+		if ( ! $is_edit ) {
+			$file_calcs = function_exists( 'adn_calculators' ) ? array_keys( adn_calculators() ) : array();
+			if ( in_array( $key, $file_calcs, true ) || null !== AH_Calculator_DB::get( $key ) ) {
+				wp_die( esc_html( sprintf(
+					__( 'A calculator with the key "%s" already exists. Choose a different key.', ADN_TEXT_DOMAIN ),
+					$key
+				) ) );
+			}
+		}
+
+		// Ensure the DB table exists before inserting (lazy install fallback).
+		AH_Calculator_DB::maybe_install();
+
+		$saved = AH_Calculator_DB::save( array(
+			'calc_key'     => $key,
+			'title'        => wp_unslash( isset( $_POST['title'] )        ? $_POST['title']        : '' ),
+			'icon'         => wp_unslash( isset( $_POST['icon'] )         ? $_POST['icon']         : '' ),
+			'label'        => wp_unslash( isset( $_POST['label'] )        ? $_POST['label']        : '' ),
+			'html_content' => wp_unslash( isset( $_POST['html_content'] ) ? $_POST['html_content'] : '' ),
+			'js_content'   => wp_unslash( isset( $_POST['js_content'] )   ? $_POST['js_content']   : '' ),
+			'status'       => wp_unslash( isset( $_POST['status'] )       ? $_POST['status']       : 'active' ),
+		) );
+
+		if ( ! $saved ) {
+			global $wpdb;
+			wp_die( esc_html__( 'Could not save calculator to the database.', ADN_TEXT_DOMAIN )
+				. ( $wpdb->last_error ? ' Error: ' . esc_html( $wpdb->last_error ) : '' ) );
+		}
+
+		// Persist admin meta settings for this calculator.
+		$all_meta = get_option( 'adn_calculators_meta', array() );
+		if ( ! is_array( $all_meta ) ) { $all_meta = array(); }
+
+		$raw_cats = ( isset( $_POST['meta_categories'] ) && is_array( $_POST['meta_categories'] ) )
+			? array_map( 'sanitize_key', wp_unslash( $_POST['meta_categories'] ) )
+			: array();
+
+		$all_meta[ $key ] = array_merge(
+			isset( $all_meta[ $key ] ) && is_array( $all_meta[ $key ] ) ? $all_meta[ $key ] : array(),
+			array(
+				'desc'         => sanitize_textarea_field( wp_unslash( isset( $_POST['meta_desc'] )        ? $_POST['meta_desc']        : '' ) ),
+				'categories'   => $raw_cats,
+				'thumbnail_id' => absint( isset( $_POST['meta_thumbnail_id'] ) ? $_POST['meta_thumbnail_id'] : 0 ),
+				'highlight'    => sanitize_text_field( wp_unslash( isset( $_POST['meta_highlight'] )  ? $_POST['meta_highlight']  : '' ) ),
+				'is_popular'          => empty( $_POST['meta_is_popular'] ) ? 0 : 1,
+				'hidden_from_listing' => empty( $_POST['meta_hidden_from_listing'] ) ? 0 : 1,
+				'card_url'     => esc_url_raw( wp_unslash( isset( $_POST['meta_card_url'] )    ? $_POST['meta_card_url']    : '' ) ),
+				'help'         => sanitize_textarea_field( wp_unslash( isset( $_POST['meta_help'] )        ? $_POST['meta_help']        : '' ) ),
+				'guide_label'  => sanitize_text_field( wp_unslash( isset( $_POST['meta_guide_label'] ) ? $_POST['meta_guide_label'] : '' ) ),
+				'guide_url'    => esc_url_raw( wp_unslash( isset( $_POST['meta_guide_url'] )   ? $_POST['meta_guide_url']   : '' ) ),
+			)
+		);
+
+		update_option( 'adn_calculators_meta', $all_meta );
+
+		if ( $is_edit ) {
+			// Editing: redirect back to the same edit form so user sees their saved data.
+			$msg = __( 'Calculator updated.', ADN_TEXT_DOMAIN );
+			wp_safe_redirect( add_query_arg(
+				array( 'edit_key' => $key, 'adn_done' => 1, 'adn_msg' => rawurlencode( $msg ) ),
+				self::tab_url( 'calculators', 'new' )
+			) );
+		} else {
+			// New: redirect to the edit form so user sees the saved row (not a blank add form).
+			$msg = sprintf(
+				__( 'Calculator saved. Embed with [ah_calculator key="%s"]', ADN_TEXT_DOMAIN ),
+				$key
+			);
+			wp_safe_redirect( add_query_arg(
+				array( 'edit_key' => $key, 'adn_done' => 1, 'adn_msg' => rawurlencode( $msg ) ),
+				self::tab_url( 'calculators', 'new' )
+			) );
+		}
+		exit;
+	}
+
+	public static function handle_delete_calc() {
+		check_admin_referer( 'adn_delete_calc' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+		if ( ! class_exists( 'AH_Calculator_DB' ) ) {
+			wp_die( esc_html__( 'Calculator DB class not available.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$key = sanitize_key( wp_unslash( isset( $_POST['calc_key'] ) ? $_POST['calc_key'] : '' ) );
+		if ( '' === $key ) { wp_die( esc_html__( 'No key provided.', ADN_TEXT_DOMAIN ) ); }
+
+		// Safety: only delete DB-stored calcs, not file-based ones.
+		if ( null === AH_Calculator_DB::get( $key ) ) {
+			wp_die( esc_html__( 'This calculator is file-based and cannot be deleted from the admin.', ADN_TEXT_DOMAIN ) );
+		}
+
+		AH_Calculator_DB::delete( $key );
+		self::redirect_back( 'calculators', 'list', __( 'Calculator deleted.', ADN_TEXT_DOMAIN ) );
+	}
+
+	// ── Calculators: page content settings ──────────────────────────────────────────
+
+	public static function handle_save_calcs_page() {
+		check_admin_referer( 'adn_save_calcs_page' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		$pg = array();
+
+		// Hero.
+		$pg['hero_title'] = sanitize_text_field( wp_unslash( isset( $_POST['hero_title'] ) ? $_POST['hero_title'] : '' ) );
+		$pg['hero_desc']  = sanitize_textarea_field( wp_unslash( isset( $_POST['hero_desc'] ) ? $_POST['hero_desc'] : '' ) );
+		$pg['hero_icon']  = sanitize_text_field( wp_unslash( isset( $_POST['hero_icon'] ) ? $_POST['hero_icon'] : '' ) );
+
+		// Trust bar (4 items).
+		for ( $i = 1; $i <= 4; $i++ ) {
+			$pg[ 'trust_' . $i . '_icon' ]     = sanitize_text_field( wp_unslash( isset( $_POST[ 'trust_' . $i . '_icon' ] ) ? $_POST[ 'trust_' . $i . '_icon' ] : '' ) );
+			$pg[ 'trust_' . $i . '_title' ]    = sanitize_text_field( wp_unslash( isset( $_POST[ 'trust_' . $i . '_title' ] ) ? $_POST[ 'trust_' . $i . '_title' ] : '' ) );
+			$pg[ 'trust_' . $i . '_subtitle' ] = sanitize_text_field( wp_unslash( isset( $_POST[ 'trust_' . $i . '_subtitle' ] ) ? $_POST[ 'trust_' . $i . '_subtitle' ] : '' ) );
+		}
+
+		// Search.
+		$pg['search_placeholder'] = sanitize_text_field( wp_unslash( isset( $_POST['search_placeholder'] ) ? $_POST['search_placeholder'] : '' ) );
+
+		// Sidebar help CTA.
+		$pg['sidebar_help_title']     = sanitize_text_field( wp_unslash( isset( $_POST['sidebar_help_title'] ) ? $_POST['sidebar_help_title'] : '' ) );
+		$pg['sidebar_help_text']      = sanitize_textarea_field( wp_unslash( isset( $_POST['sidebar_help_text'] ) ? $_POST['sidebar_help_text'] : '' ) );
+		$pg['sidebar_help_btn_label'] = sanitize_text_field( wp_unslash( isset( $_POST['sidebar_help_btn_label'] ) ? $_POST['sidebar_help_btn_label'] : '' ) );
+		$pg['sidebar_help_btn_url']   = esc_url_raw( wp_unslash( isset( $_POST['sidebar_help_btn_url'] ) ? $_POST['sidebar_help_btn_url'] : '' ) );
+
+		// Find CTA.
+		$pg['find_cta_title']     = sanitize_text_field( wp_unslash( isset( $_POST['find_cta_title'] ) ? $_POST['find_cta_title'] : '' ) );
+		$pg['find_cta_desc']      = sanitize_textarea_field( wp_unslash( isset( $_POST['find_cta_desc'] ) ? $_POST['find_cta_desc'] : '' ) );
+		$pg['find_cta_btn_label'] = sanitize_text_field( wp_unslash( isset( $_POST['find_cta_btn_label'] ) ? $_POST['find_cta_btn_label'] : '' ) );
+		$pg['find_cta_btn_url']   = esc_url_raw( wp_unslash( isset( $_POST['find_cta_btn_url'] ) ? $_POST['find_cta_btn_url'] : '' ) );
+
+		update_option( 'adn_calculators_page', $pg );
+		self::redirect_back( 'calculators', 'page', __( 'Page settings saved.', ADN_TEXT_DOMAIN ) );
 	}
 
 	// ── Category Pages: AJAX post search ───────────────────────────────────────────
@@ -659,6 +930,63 @@ class ADN_Theme_Admin {
 			);
 		}
 		return $subtabs;
+	}
+
+	// ── Home: Regulations & Hot Topics save handler ─────────────────────────────
+
+	public static function handle_save_home_newsblocks() {
+		check_admin_referer( 'adn_save_home_newsblocks' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Permission denied.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$data = array();
+
+		// Regulations items: post_id (int) + badge (text).
+		$reg_raw = ( isset( $_POST['regulations']['items'] ) && is_array( $_POST['regulations']['items'] ) )
+		           ? $_POST['regulations']['items'] : array();
+		$reg_items = array();
+		foreach ( array_values( $reg_raw ) as $row ) {
+			$pid = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
+			if ( ! $pid ) {
+				continue;
+			}
+			$reg_items[] = array(
+				'post_id' => $pid,
+				'badge'   => sanitize_textarea_field( wp_unslash( isset( $row['badge'] ) ? $row['badge'] : 'GOV UK' ) ),
+			);
+			if ( count( $reg_items ) >= 5 ) {
+				break;
+			}
+		}
+		$data['regulations']['items'] = $reg_items;
+
+		// Hot Topics items: post_id (int) + icon (text).
+		$ht_raw = ( isset( $_POST['hot_topics']['items'] ) && is_array( $_POST['hot_topics']['items'] ) )
+		          ? $_POST['hot_topics']['items'] : array();
+		$ht_items = array();
+		foreach ( array_values( $ht_raw ) as $row ) {
+			$pid = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
+			if ( ! $pid ) {
+				continue;
+			}
+			$ht_items[] = array(
+				'post_id' => $pid,
+				'icon'    => sanitize_text_field( wp_unslash( isset( $row['icon'] ) ? $row['icon'] : '🔥' ) ),
+			);
+			if ( count( $ht_items ) >= 5 ) {
+				break;
+			}
+		}
+		$data['hot_topics']['items'] = $ht_items;
+
+		update_option( 'adn_home_newsblocks', $data );
+
+		wp_safe_redirect( add_query_arg(
+			array( 'page' => self::tab_page_slug( 'home' ), 'subtab' => 'newsblocks', 'adn_saved' => 'regulations' ),
+			admin_url( 'admin.php' )
+		) );
+		exit;
 	}
 
 	// ── Category Pages: save handler ────────────────────────────────────────────
@@ -861,5 +1189,97 @@ class ADN_Theme_Admin {
 		$result = ADN_Mock_Installer::seed();
 
 		self::redirect_back( 'admin-actions', 'sample-data', $result['message'] );
+	}
+
+	// ── Experts / Team: save ────────────────────────────────────────────────────
+
+	public static function handle_save_expert() {
+		check_admin_referer( 'adn_save_expert' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+		if ( ! class_exists( 'AH_Expert_DB' ) ) {
+			wp_die( esc_html__( 'Expert DB class not available.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$edit_slug = isset( $_POST['edit_slug'] ) ? sanitize_key( wp_unslash( $_POST['edit_slug'] ) ) : '';
+		$is_edit   = '' !== $edit_slug;
+
+		$slug = $is_edit ? $edit_slug : sanitize_key( wp_unslash( isset( $_POST['expert_slug'] ) ? $_POST['expert_slug'] : '' ) );
+
+		if ( '' === $slug ) {
+			wp_die( esc_html__( 'Expert slug is required.', ADN_TEXT_DOMAIN ) );
+		}
+		if ( ! $is_edit && null !== AH_Expert_DB::get( $slug ) ) {
+			wp_die( esc_html( sprintf(
+				__( 'An expert with the slug "%s" already exists. Choose a different slug.', ADN_TEXT_DOMAIN ),
+				$slug
+			) ) );
+		}
+
+		// Bullets: one per line in a textarea → sanitised array.
+		$bullets_raw = isset( $_POST['bullets_text'] ) ? wp_unslash( $_POST['bullets_text'] ) : '';
+		$bullets     = array_values( array_filter( array_map(
+			'sanitize_text_field',
+			explode( "\n", $bullets_raw )
+		) ) );
+
+		// Client images: JSON from hidden field — decode, sanitise IDs and captions, re-encode.
+		$ci_json = isset( $_POST['client_images_json'] ) ? wp_unslash( $_POST['client_images_json'] ) : '';
+		$ci_raw  = json_decode( $ci_json, true );
+		$client_images = array();
+		if ( is_array( $ci_raw ) ) {
+			foreach ( $ci_raw as $ci ) {
+				if ( ! is_array( $ci ) ) { continue; }
+				$client_images[] = array(
+					'image_id' => absint( isset( $ci['image_id'] ) ? $ci['image_id'] : 0 ),
+					'caption'  => sanitize_text_field( isset( $ci['caption'] ) ? $ci['caption'] : '' ),
+				);
+			}
+		}
+
+		AH_Expert_DB::save( array(
+			'expert_slug'   => $slug,
+			'name'          => wp_unslash( isset( $_POST['name'] )          ? $_POST['name']          : '' ),
+			'title'         => wp_unslash( isset( $_POST['title'] )         ? $_POST['title']         : '' ),
+			'category'      => wp_unslash( isset( $_POST['category'] )      ? $_POST['category']      : '' ),
+			'status'        => wp_unslash( isset( $_POST['status'] )        ? $_POST['status']        : 'active' ),
+			'photo_id'      => isset( $_POST['photo_id'] )      ? absint( $_POST['photo_id'] )      : 0,
+			'bio'           => wp_unslash( isset( $_POST['bio'] )           ? $_POST['bio']           : '' ),
+			'rating'        => isset( $_POST['rating'] )        ? floatval( $_POST['rating'] )        : 0,
+			'reviews_count' => isset( $_POST['reviews_count'] ) ? absint( $_POST['reviews_count'] )  : 0,
+			'location'      => wp_unslash( isset( $_POST['location'] )      ? $_POST['location']      : '' ),
+			'phone'         => wp_unslash( isset( $_POST['phone'] )         ? $_POST['phone']         : '' ),
+			'email'         => wp_unslash( isset( $_POST['email'] )         ? $_POST['email']         : '' ),
+			'bullets'       => $bullets,
+			'client_images' => $client_images,
+			'mega_html'     => isset( $_POST['mega_html'] ) ? $_POST['mega_html'] : '',
+		) );
+
+		$msg = $is_edit
+			? __( 'Expert updated.', ADN_TEXT_DOMAIN )
+			: __( 'Expert saved.', ADN_TEXT_DOMAIN );
+
+		self::redirect_back( 'experts', 'new', $msg );
+	}
+
+	// ── Experts / Team: delete ──────────────────────────────────────────────────
+
+	public static function handle_delete_expert() {
+		check_admin_referer( 'adn_delete_expert' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+		if ( ! class_exists( 'AH_Expert_DB' ) ) {
+			wp_die( esc_html__( 'Expert DB class not available.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$slug = sanitize_key( wp_unslash( isset( $_POST['expert_slug'] ) ? $_POST['expert_slug'] : '' ) );
+		if ( '' === $slug ) {
+			wp_die( esc_html__( 'No slug provided.', ADN_TEXT_DOMAIN ) );
+		}
+
+		AH_Expert_DB::delete( $slug );
+		self::redirect_back( 'experts', 'list', __( 'Expert deleted.', ADN_TEXT_DOMAIN ) );
 	}
 }

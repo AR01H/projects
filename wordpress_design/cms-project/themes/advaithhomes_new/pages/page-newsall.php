@@ -66,16 +66,6 @@ adn_page_open( $_open_ctx );
 	</main>
 
 	<aside class="news-sidebar">
-		<?php adn_component( 'parts/sidebar_news_search' ); ?>
-
-		<?php if ( ! empty( $ctx['sidebar']['trending'] ) ) : ?>
-			<?php adn_component( 'parts/sidebar_trending', array( 'trending' => $ctx['sidebar']['trending'] ) ); ?>
-		<?php endif; ?>
-
-		<?php if ( ! empty( $ctx['sidebar']['market_snapshot'] ) ) : ?>
-			<?php adn_component( 'parts/sidebar_market_snapshot', array( 'market_snapshot' => $ctx['sidebar']['market_snapshot'] ) ); ?>
-		<?php endif; ?>
-
 		<?php if ( ! empty( $ctx['categories'] ) ) : ?>
 			<?php adn_component( 'parts/sidebar_browse_cats', array( 'categories' => $ctx['categories'] ) ); ?>
 		<?php endif; ?>

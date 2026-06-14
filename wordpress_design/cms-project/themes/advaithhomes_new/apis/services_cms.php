@@ -347,6 +347,174 @@ function adn_cms_term_url( $term ) {
 }
 
 /**
+ * One card per active taxonomy term that has at least one published WP post.
+ *
+ * Queries directly against wp_ah_taxonomies — does NOT require the
+ * parent_term / journey hierarchy.  This means flat terms (like "First Time
+ * Buyers") work even when parent_term_id is NULL.
+ *
+ * Each returned stdClass has:
+ *   ID, title, slug, excerpt, published_at, created_at  (WP post fields)
+ *   category_name  - the taxonomy term name
+ *   _term_slug     - taxonomy term slug (for building the category page URL)
+ *   _term_desc     - taxonomy term description
+ *   parent_name    - parent term name (via parent_id within same table,
+ *                    or via parent_term_id → taxonomy_parent_terms)
+ *   parent_icon    - parent icon emoji
+ *
+ * @param int   $limit      Max category cards (default 10).
+ * @param int[] $topic_ids  If non-empty, restrict to these term IDs.
+ * @return stdClass[]
+ */
+/**
+ * Category-card data for one active taxonomy "Category" term per row.
+ *
+ * Returns term rows — NOT articles. Cards display the taxonomy term's own name,
+ * icon and description.  The card URL goes to the category listing page
+ * (/<term-slug>/), which then shows linked articles.
+ *
+ * Cards are shown even when a term has zero linked WP posts, because the term
+ * itself carries all display data (icon, description) set in the CMS admin.
+ *
+ * @param int   $limit      Max terms to return.
+ * @param int[] $topic_ids  Restrict to these specific term IDs (empty = all active Category terms).
+ * @return object[]  stdClass per term: category_name, _term_slug, _term_desc, term_icon, parent_name, parent_icon.
+ */
+function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
+	if ( ! adn_cms_available() ) {
+		return array();
+	}
+
+	global $wpdb;
+	$tax   = adn_cms_table( 'taxonomies' );
+	$pt    = adn_cms_table( 'taxonomy_parent_terms' );
+	$limit = max( 1, (int) $limit );
+
+	// Filter by topic IDs when provided (used for parent-term category page).
+	$id_filter = '';
+	if ( ! empty( $topic_ids ) ) {
+		$ids       = implode( ',', array_map( 'absint', (array) $topic_ids ) );
+		$id_filter = "AND t.id IN ({$ids})";
+	}
+
+	// Restrict to the "Category" taxonomy type so review-types, FAQ tags etc. are excluded.
+	// When topic_ids is given we trust those IDs directly; type filter is still applied for safety.
+	$type_id   = adn_cms_guide_type_id();
+	$type_cond = '';
+	if ( $type_id ) {
+		$type_cond = "AND t.type_id = {$type_id}";
+	} elseif ( empty( $topic_ids ) ) {
+		// No recognised type and no ID filter — require a parent_term_id so we
+		// don't accidentally show flat utility terms.
+		$type_cond = 'AND t.parent_term_id IS NOT NULL';
+	}
+
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$rows = $wpdb->get_results(
+		"SELECT t.id AS term_id, t.name AS category_name, t.slug AS term_slug,
+		        t.description AS term_desc, t.icon_emoji AS term_icon,
+		        pt_self.name AS parent_name, pt_self.icon_emoji AS parent_icon
+		 FROM `{$tax}` t
+		 LEFT JOIN `{$tax}` pt_self ON pt_self.id = t.parent_id
+		 WHERE t.status = 'active'
+		   {$type_cond}
+		   {$id_filter}
+		 ORDER BY t.sort_order ASC, t.name ASC
+		 LIMIT " . ( $limit * 2 )
+	) ?: array();
+
+	if ( empty( $rows ) ) {
+		return array();
+	}
+
+	// Enrich parent_name from ah_taxonomy_parent_terms when the self-join gave nothing.
+	$has_pt = ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) === $pt );
+
+	$result = array();
+
+	foreach ( $rows as $row ) {
+		if ( count( $result ) >= $limit ) {
+			break;
+		}
+
+		$parent_name = ! empty( $row->parent_name ) ? (string) $row->parent_name : '';
+		$parent_icon = ! empty( $row->parent_icon ) ? (string) $row->parent_icon : '';
+
+		if ( '' === $parent_name && $has_pt ) {
+			$ptid = (int) $wpdb->get_var( $wpdb->prepare(
+				"SELECT parent_term_id FROM `{$tax}` WHERE id = %d LIMIT 1",
+				(int) $row->term_id
+			) );
+			if ( $ptid ) {
+				$pt_row = $wpdb->get_row( $wpdb->prepare(
+					"SELECT name, icon_emoji FROM `{$pt}` WHERE id = %d LIMIT 1",
+					$ptid
+				) );
+				if ( $pt_row ) {
+					$parent_name = (string) $pt_row->name;
+					$parent_icon = ! empty( $pt_row->icon_emoji ) ? (string) $pt_row->icon_emoji : '';
+				}
+			}
+		}
+
+		$post               = new stdClass();
+		$post->category_name = (string) $row->category_name;
+		$post->_term_slug    = (string) $row->term_slug;
+		$post->_term_desc    = ! empty( $row->term_desc ) ? (string) $row->term_desc : '';
+		$post->term_icon     = ! empty( $row->term_icon ) ? (string) $row->term_icon : '';
+		$post->parent_name   = $parent_name;
+		$post->parent_icon   = $parent_icon ?: $post->term_icon;
+
+		$result[] = $post;
+	}
+
+	return $result;
+}
+
+/**
+ * All published WP posts linked to a single taxonomy term slug.
+ * Used by the topic category page (page-topic_category_guide.php).
+ *
+ * @param string $term_slug  Slug from wp_ah_taxonomies.
+ * @param int    $limit
+ * @return object[]  Standard WP post objects.
+ */
+function adn_cms_posts_for_term_slug( $term_slug, $limit = 20 ) {
+	$term_slug = sanitize_key( (string) $term_slug );
+	if ( ! adn_cms_available() || '' === $term_slug ) {
+		return array();
+	}
+	global $wpdb;
+	$tax = adn_cms_table( 'taxonomies' );
+	$ct  = adn_cms_table( 'content_taxonomies' );
+
+	$term = $wpdb->get_row( $wpdb->prepare(
+		"SELECT id FROM `{$tax}` WHERE slug = %s AND status = 'active' LIMIT 1",
+		$term_slug
+	) );
+	if ( ! $term ) {
+		return array();
+	}
+	return adn_cms_articles( max( 1, (int) $limit ), array( (int) $term->id ) );
+}
+
+/**
+ * Full taxonomy term row from wp_ah_taxonomies by slug, or null.
+ */
+function adn_cms_taxonomy_term_by_slug( $slug ) {
+	$slug = sanitize_key( (string) $slug );
+	if ( ! adn_cms_available() || '' === $slug ) {
+		return null;
+	}
+	global $wpdb;
+	$tax = adn_cms_table( 'taxonomies' );
+	return $wpdb->get_row( $wpdb->prepare(
+		"SELECT * FROM `{$tax}` WHERE slug = %s AND status = 'active' LIMIT 1",
+		$slug
+	) );
+}
+
+/**
  * URL for a post row. These are real WordPress posts, so prefer the actual
  * permalink (which routes to single.php - no 404). Falls back to a slug path.
  */

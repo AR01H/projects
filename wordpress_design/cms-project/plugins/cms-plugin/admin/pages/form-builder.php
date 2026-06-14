@@ -2,21 +2,23 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-// Ensure tables exist
 AH_Form_Builder::install_tables();
+AH_Form_Builder::maybe_upgrade_submissions();
 
 $content_tax_m = new AH_Content_Taxonomy_Model();
-$notice     = '';
-$active_tab = sanitize_key( $_GET['tab'] ?? 'build' );
-$form_id    = (int) ( $_GET['form_id'] ?? 0 );
+$notice        = '';
+$active_tab    = sanitize_key( isset( $_GET['tab'] ) ? $_GET['tab'] : 'build' );
+$form_id       = (int) ( isset( $_GET['form_id'] ) ? $_GET['form_id'] : 0 );
+$sub_status    = sanitize_key( isset( $_GET['sub_status'] ) ? $_GET['sub_status'] : '' );
 
 // ── Handle: create new form ───────────────────────────────────────────────────
 if ( isset( $_POST['ah_new_form_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_new_form_nonce'], 'ah_new_form' ) ) wp_die( 'Security.' );
 	$new_id = AH_Form_Builder::upsert( 0, array(
-		'name'            => sanitize_text_field( $_POST['new_form_name'] ?? 'New Form' ),
+		'name'            => sanitize_text_field( isset( $_POST['new_form_name'] ) ? $_POST['new_form_name'] : 'New Form' ),
 		'notify_email'    => sanitize_email( get_option( 'admin_email' ) ),
 		'success_message' => 'Thank you! We will get back to you shortly.',
+		'disable_rules'   => 0,
 	) );
 	AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $new_id, 'tab' => 'build' ), admin_url( 'admin.php' ) ) );
 }
@@ -41,23 +43,31 @@ if ( isset( $_GET['del_sub'] ) && isset( $_GET['_wpnonce'] ) ) {
 if ( isset( $_POST['ah_save_form_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_save_form_nonce'], 'ah_save_form' ) ) wp_die( 'Security.' );
 
-	// Save form meta
 	$form_id = AH_Form_Builder::upsert( $form_id, array(
-		'name'            => sanitize_text_field( $_POST['form_name'] ?? '' ),
-		'notify_email'    => sanitize_email( $_POST['notify_email'] ?? '' ),
-		'success_message' => sanitize_text_field( $_POST['success_message'] ?? '' ),
-		'status'          => sanitize_key( $_POST['form_status'] ?? 'active' ),
+		'name'            => sanitize_text_field( isset( $_POST['form_name'] ) ? $_POST['form_name'] : '' ),
+		'notify_email'    => sanitize_email( isset( $_POST['notify_email'] ) ? $_POST['notify_email'] : '' ),
+		'success_message' => sanitize_text_field( isset( $_POST['success_message'] ) ? $_POST['success_message'] : '' ),
+		'status'          => sanitize_key( isset( $_POST['form_status'] ) ? $_POST['form_status'] : 'active' ),
+		'disable_rules'   => isset( $_POST['disable_rules'] ) ? 1 : 0,
 	) );
 
-	// Save fields from JSON payload
-	$raw    = wp_unslash( $_POST['fields_json'] ?? '[]' );
+	$raw    = wp_unslash( isset( $_POST['fields_json'] ) ? $_POST['fields_json'] : '[]' );
 	$parsed = json_decode( $raw, true );
 	if ( is_array( $parsed ) ) {
 		AH_Form_Builder::save_fields( $form_id, $parsed );
 	}
-	$content_tax_m->sync_terms( 'form', $form_id, $_POST['taxonomy_ids'] ?? array() );
+	$content_tax_m->sync_terms( 'form', $form_id, isset( $_POST['taxonomy_ids'] ) ? $_POST['taxonomy_ids'] : array() );
 
-	$notice = 'success:Form saved successfully.';
+	// Save agreement config.
+	AH_Form_Builder::save_agreement( $form_id, array(
+		'enabled'   => isset( $_POST['agr_enabled'] ) ? 1 : 0,
+		'before'    => isset( $_POST['agr_before'] )    ? wp_unslash( $_POST['agr_before'] )    : '',
+		'link_text' => isset( $_POST['agr_link_text'] ) ? wp_unslash( $_POST['agr_link_text'] ) : '',
+		'type'      => isset( $_POST['agr_type'] )      ? wp_unslash( $_POST['agr_type'] )      : 'link',
+		'url'       => isset( $_POST['agr_url'] )       ? wp_unslash( $_POST['agr_url'] )       : '',
+		'after'     => isset( $_POST['agr_after'] )     ? wp_unslash( $_POST['agr_after'] )     : '',
+	) );
+
 	AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'build', 'saved' => 1 ), admin_url( 'admin.php' ) ) );
 }
 
@@ -66,8 +76,10 @@ if ( isset( $_GET['saved'] ) ) $notice = 'success:Form saved successfully.';
 $all_forms   = AH_Form_Builder::get_all();
 $current     = $form_id ? AH_Form_Builder::get( $form_id ) : null;
 $fields      = $form_id ? AH_Form_Builder::get_fields( $form_id ) : array();
-$sub_count   = $form_id ? AH_Form_Builder::count_submissions( $form_id ) : 0;
+$status_counts = $form_id ? AH_Form_Builder::count_by_status( $form_id ) : array( 'all' => 0, 'new' => 0, 'read' => 0, 'replied' => 0, 'closed' => 0 );
 $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Tel', 'textarea' => 'Textarea', 'select' => 'Dropdown', 'number' => 'Number', 'date' => 'Date', 'url' => 'URL' );
+$agr         = $form_id ? AH_Form_Builder::get_agreement( $form_id ) : array( 'enabled' => 0, 'before' => 'I have read and agree to the', 'link_text' => 'Terms & Conditions', 'type' => 'link', 'url' => '', 'after' => '' );
+$admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 ?>
 <style>
 /* ── Layout ── */
@@ -98,11 +110,28 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
 .fb-sc-copy{background:#2563eb;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap}
 .fb-sc-copy:hover{background:#1d4ed8}
 /* ── Submissions ── */
+.sub-status-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;align-items:center}
+.sub-status-pill{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:2px solid #e5e7eb;background:#fff;color:#6b7280;text-decoration:none;transition:all .15s}
+.sub-status-pill:hover{border-color:#2563eb;color:#2563eb}
+.sub-status-pill.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.sub-status-pill .badge{display:inline-block;background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;min-width:18px;text-align:center}
+.sub-status-pill:not(.active) .badge{background:#f3f4f6;color:#374151}
 .sub-data-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px}
 .sub-data-item{background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px}
 .sub-data-lbl{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .sub-data-val{font-size:13.5px;color:#1f2937;word-break:break-word}
 .sub-row-open td{background:#f0f9ff!important}
+.sub-meta-box{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-top:14px;display:grid;grid-template-columns:200px 1fr auto;gap:12px;align-items:start}
+.sub-status-select{padding:7px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;background:#fff}
+.sub-notes-ta{width:100%;font-size:13px;padding:7px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-family:inherit;min-height:60px;resize:vertical;box-sizing:border-box}
+.sub-notes-ta:focus{outline:none;border-color:#2563eb}
+.sub-save-btn{padding:8px 18px;background:#16a34a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;white-space:nowrap}
+.sub-save-btn:hover{background:#15803d}
+.sub-status-badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11.5px;font-weight:600;text-transform:capitalize}
+.ssb-new{background:#fef3c7;color:#92400e}.ssb-read{background:#dbeafe;color:#1e40af}.ssb-replied{background:#d1fae5;color:#065f46}.ssb-closed{background:#f3f4f6;color:#4b5563}
+/* ── Disable-rules flag ── */
+.fb-flag-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #f3f4f6;margin-top:12px}
+.fb-flag-row label{margin:0;font-size:13px;color:#374151;cursor:pointer}
 </style>
 
 <div class="wrap ah-wrap">
@@ -113,7 +142,6 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
 
   <div class="fb-header">
     <h1><span class="dashicons dashicons-feedback"></span> Form Builder</h1>
-    <!-- New form modal trigger -->
     <button class="ah-btn ah-btn-primary" id="fb-new-btn">+ New Form</button>
   </div>
 
@@ -170,7 +198,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
   <div class="fb-tab-nav">
     <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'build' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'build' === $active_tab ? 'on' : ''; ?>">Build Form</a>
     <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'submissions' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'submissions' === $active_tab ? 'on' : ''; ?>">
-      Submissions <span style="background:#e5e7eb;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700"><?php echo esc_html( $sub_count ); ?></span>
+      Submissions <span style="background:#e5e7eb;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700"><?php echo esc_html( $status_counts['all'] ); ?></span>
     </a>
   </div>
 
@@ -185,7 +213,10 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
       <div class="ah-card-header"><h2>Form Settings</h2></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:16px;align-items:end">
         <div class="ah-form-row" style="margin:0"><label>Form Name</label><input type="text" name="form_name" value="<?php echo esc_attr( $current->name ); ?>" required></div>
-        <div class="ah-form-row" style="margin:0"><label>Notify Email <small>(receives submissions)</small></label><input type="email" name="notify_email" value="<?php echo esc_attr( $current->notify_email ?? get_option( 'admin_email' ) ); ?>"></div>
+        <div class="ah-form-row" style="margin:0">
+          <label>Notify Email <small>(receives submissions)</small></label>
+          <input type="email" name="notify_email" value="<?php echo esc_attr( isset( $current->notify_email ) ? $current->notify_email : get_option( 'admin_email' ) ); ?>">
+        </div>
         <div class="ah-form-row" style="margin:0"><label>Success Message</label><input type="text" name="success_message" value="<?php echo esc_attr( $current->success_message ); ?>"></div>
         <div class="ah-form-row" style="margin:0"><label>Status</label>
           <select name="form_status">
@@ -194,11 +225,69 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
           </select>
         </div>
       </div>
+      <div class="fb-flag-row">
+        <input type="checkbox" name="disable_rules" id="fb-disable-rules" class="fb-chk" value="1" <?php checked( ! empty( $current->disable_rules ) ); ?>>
+        <label for="fb-disable-rules"><strong>Disable Rules Engine</strong> — submissions from this form will NOT trigger any automation rules (useful for contact-only forms where email is handled by Notify Email above)</label>
+      </div>
     </div>
 
     <div class="ah-card" style="margin-bottom:20px">
       <div class="ah-card-header"><h2>Taxonomy Terms</h2></div>
       <?php $content_tax_m->render_picker( 'form', $form_id ); ?>
+    </div>
+
+    <!-- ── Agreement / Terms section ── -->
+    <div class="ah-card" style="margin-bottom:20px">
+      <div class="ah-card-header" style="gap:16px">
+        <h2 style="margin:0">Agreement / Terms</h2>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:500;margin-left:auto">
+          <input type="checkbox" name="agr_enabled" id="agr_enabled" class="fb-chk" value="1" <?php checked( ! empty( $agr['enabled'] ) ); ?>>
+          Show agreement checkbox on this form
+        </label>
+      </div>
+      <div id="agr-body" style="<?php echo empty( $agr['enabled'] ) ? 'display:none;' : ''; ?>padding-top:4px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="ah-form-row" style="margin:0">
+            <label>Text before the link <small style="font-weight:400">(before checkbox text)</small></label>
+            <input type="text" name="agr_before" id="agr_before" value="<?php echo esc_attr( $agr['before'] ); ?>" placeholder="I have read and agree to the">
+          </div>
+          <div class="ah-form-row" style="margin:0">
+            <label>Link / label text</label>
+            <input type="text" name="agr_link_text" id="agr_link_text" value="<?php echo esc_attr( $agr['link_text'] ); ?>" placeholder="Terms & Conditions">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start;margin-bottom:16px">
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:8px">Display as</label>
+            <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;margin-bottom:8px">
+              <input type="radio" name="agr_type" id="agr_type_link" value="link" <?php checked( $agr['type'], 'link' ); ?>> Link (opens in new tab)
+            </label>
+            <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px">
+              <input type="radio" name="agr_type" id="agr_type_iframe" value="iframe" <?php checked( $agr['type'], 'iframe' ); ?>> Inline iframe (embed page)
+            </label>
+          </div>
+          <div class="ah-form-row" style="margin:0">
+            <label>URL <small style="font-weight:400">(page to link to or embed)</small></label>
+            <input type="url" name="agr_url" id="agr_url" value="<?php echo esc_attr( $agr['url'] ); ?>" placeholder="https://advaithhomes.co.uk/privacy-policy/">
+          </div>
+        </div>
+        <div class="ah-form-row" style="margin:0 0 16px">
+          <label>Text after the link <small style="font-weight:400">(optional)</small></label>
+          <input type="text" name="agr_after" id="agr_after" value="<?php echo esc_attr( $agr['after'] ); ?>" placeholder="before submitting this form.">
+        </div>
+        <!-- Live preview -->
+        <div style="padding:14px 18px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px">
+          <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px">Preview</div>
+          <label style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#374151;cursor:default">
+            <input type="checkbox" disabled style="margin-top:3px;width:17px;height:17px;flex-shrink:0">
+            <span>
+              <span id="agr-prev-before"><?php echo esc_html( $agr['before'] ); ?></span>
+              <a id="agr-prev-link" href="#" onclick="return false" style="color:#1a3c5e;text-decoration:underline;font-weight:600;margin:0 3px"><?php echo esc_html( $agr['link_text'] ); ?></a>
+              <span id="agr-prev-after"><?php echo esc_html( $agr['after'] ); ?></span>
+            </span>
+          </label>
+        </div>
+      </div>
     </div>
 
     <!-- Fields builder card -->
@@ -232,14 +321,13 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
                   <?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>" <?php selected( $f->field_type, $tv ); ?>><?php echo esc_html( $tl ); ?></option><?php endforeach; ?>
                 </select>
               </td>
-              <td><input type="text" class="fb-ph<?php echo 'select' === $f->field_type ? ' fb-hidden' : ''; ?>" value="<?php echo esc_attr( $f->placeholder ?? '' ); ?>" placeholder="Placeholder text"></td>
-              <td><textarea class="fb-opts<?php echo 'select' !== $f->field_type ? ' fb-hidden' : ''; ?>" rows="3" placeholder="Option A&#10;Option B&#10;Option C"><?php echo esc_textarea( implode( "\n", $f->options ?? array() ) ); ?></textarea></td>
+              <td><input type="text" class="fb-ph<?php echo 'select' === $f->field_type ? ' fb-hidden' : ''; ?>" value="<?php echo esc_attr( isset( $f->placeholder ) ? $f->placeholder : '' ); ?>" placeholder="Placeholder text"></td>
+              <td><textarea class="fb-opts<?php echo 'select' !== $f->field_type ? ' fb-hidden' : ''; ?>" rows="3" placeholder="Option A&#10;Option B&#10;Option C"><?php echo esc_textarea( implode( "\n", isset( $f->options ) ? $f->options : array() ) ); ?></textarea></td>
               <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"<?php checked( $f->is_required ); ?>></td>
               <td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">✕</button></td>
             </tr>
             <?php endforeach; ?>
             <?php if ( empty( $fields ) ) : ?>
-            <!-- Default starter row -->
             <tr class="fb-row" data-key="">
               <td><span class="fb-drag">⠿</span></td>
               <td><input type="text" class="fb-label" value="" placeholder="Field label"></td>
@@ -260,7 +348,6 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
     </div>
   </form>
 
-  <!-- Row template -->
   <template id="fb-row-tpl">
     <tr class="fb-row" data-key="">
       <td><span class="fb-drag">⠿</span></td>
@@ -276,9 +363,30 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
   <?php else : ?>
   <!-- ════════════════════ Submissions ════════════════════ -->
   <?php
-  $subs   = AH_Form_Builder::get_submissions( $form_id, 100 );
+  $subs   = AH_Form_Builder::get_submissions_filtered( $form_id, $sub_status, 200, 0 );
   $f_keys = array_column( $fields, 'label', 'field_key' );
   ?>
+
+  <!-- Status filter pills -->
+  <div class="sub-status-bar">
+    <span style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px">Filter:</span>
+    <?php
+    $pill_defs = array(
+      ''        => array( 'label' => 'All',     'count' => $status_counts['all'] ),
+      'new'     => array( 'label' => 'New',     'count' => $status_counts['new'] ),
+      'read'    => array( 'label' => 'Read',    'count' => $status_counts['read'] ),
+      'replied' => array( 'label' => 'Replied', 'count' => $status_counts['replied'] ),
+      'closed'  => array( 'label' => 'Closed',  'count' => $status_counts['closed'] ),
+    );
+    foreach ( $pill_defs as $pv => $pd ) :
+      $url = add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'submissions', 'sub_status' => $pv ), admin_url( 'admin.php' ) );
+    ?>
+    <a href="<?php echo esc_url( $url ); ?>" class="sub-status-pill <?php echo $sub_status === $pv ? 'active' : ''; ?>">
+      <?php echo esc_html( $pd['label'] ); ?> <span class="badge"><?php echo esc_html( $pd['count'] ); ?></span>
+    </a>
+    <?php endforeach; ?>
+  </div>
+
   <?php if ( $subs ) : ?>
   <div class="ah-table-wrap">
     <table class="ah-table" id="fb-subs">
@@ -286,37 +394,61 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
         <tr>
           <th style="width:30px"></th>
           <th>#</th>
+          <th>Status</th>
           <?php foreach ( $fields as $fi ) : ?><th><?php echo esc_html( $fi->label ); ?></th><?php endforeach; ?>
           <th>Date</th>
-          <th>IP</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <?php foreach ( $subs as $s ) : ?>
-        <tr class="fb-sub-row" data-id="<?php echo esc_attr( $s->id ); ?>">
+        <?php foreach ( $subs as $s ) :
+          $s_status = isset( $s['sub_status'] ) ? $s['sub_status'] : 'new';
+          $ssb_cls  = 'ssb-' . esc_attr( $s_status );
+          $s_id     = (int) $s['id'];
+        ?>
+        <tr class="fb-sub-row" data-id="<?php echo esc_attr( $s_id ); ?>">
           <td style="text-align:center;cursor:pointer" class="fb-toggle">▶</td>
-          <td style="color:var(--ah-muted);font-size:12px">#<?php echo esc_html( $s->id ); ?></td>
+          <td style="color:var(--ah-muted);font-size:12px">#<?php echo esc_html( $s_id ); ?></td>
+          <td><span class="sub-status-badge <?php echo esc_attr( $ssb_cls ); ?>"><?php echo esc_html( $s_status ); ?></span></td>
           <?php foreach ( $fields as $fi ) : ?>
-            <td><?php $v = $s->data[ $fi->field_key ] ?? ''; echo esc_html( mb_strimwidth( $v, 0, 60, '…' ) ); ?></td>
+            <?php $v = isset( $s['data'][ $fi->field_key ] ) ? (string) $s['data'][ $fi->field_key ] : ''; ?>
+            <td><?php echo esc_html( mb_strimwidth( $v, 0, 60, '…' ) ); ?></td>
           <?php endforeach; ?>
-          <td><small><?php echo esc_html( wp_date( 'M j, Y g:i a', strtotime( $s->created_at ) ) ); ?></small></td>
-          <td><small style="color:var(--ah-muted)"><?php echo esc_html( $s->ip_address ); ?></small></td>
+          <td><small><?php echo esc_html( wp_date( 'M j, Y g:i a', strtotime( $s['created_at'] ) ) ); ?></small></td>
           <td>
-            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'submissions', 'del_sub' => $s->id ), admin_url( 'admin.php' ) ), 'ah_del_sub_fb' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete this submission?')">Delete</a>
+            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'submissions', 'del_sub' => $s_id ), admin_url( 'admin.php' ) ), 'ah_del_sub_fb' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete this submission?')">Delete</a>
           </td>
         </tr>
-        <!-- Expanded row (hidden by default) -->
-        <tr class="fb-sub-detail fb-hidden" id="fb-det-<?php echo esc_attr( $s->id ); ?>">
-          <td colspan="<?php echo 4 + count( $fields ) + 2; ?>" style="padding:0">
+        <!-- Expanded detail row -->
+        <tr class="fb-sub-detail fb-hidden" id="fb-det-<?php echo esc_attr( $s_id ); ?>">
+          <td colspan="<?php echo 5 + count( $fields ); ?>" style="padding:0">
             <div style="padding:16px 20px;background:#f8fafc;border-top:1px solid #e5e7eb">
               <div class="sub-data-grid">
-                <?php foreach ( $s->data as $k => $v ) : if ( ! $v ) continue; ?>
+                <?php foreach ( $s['data'] as $k => $v ) : if ( ! $v || 'agreed' === $v ) continue; ?>
                 <div class="sub-data-item">
-                  <div class="sub-data-lbl"><?php echo esc_html( $f_keys[ $k ] ?? $k ); ?></div>
+                  <div class="sub-data-lbl"><?php echo esc_html( isset( $f_keys[ $k ] ) ? $f_keys[ $k ] : $k ); ?></div>
                   <div class="sub-data-val"><?php echo nl2br( esc_html( $v ) ); ?></div>
                 </div>
                 <?php endforeach; ?>
+              </div>
+              <!-- Admin notes + status -->
+              <div class="sub-meta-box">
+                <div>
+                  <label style="font-size:11.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">Status</label>
+                  <select class="sub-status-select" data-id="<?php echo esc_attr( $s_id ); ?>">
+                    <?php foreach ( array( 'new', 'read', 'replied', 'closed' ) as $sv ) : ?>
+                      <option value="<?php echo esc_attr( $sv ); ?>" <?php selected( $s_status, $sv ); ?>><?php echo esc_html( ucfirst( $sv ) ); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:11.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">Admin Notes</label>
+                  <textarea class="sub-notes-ta" data-id="<?php echo esc_attr( $s_id ); ?>" placeholder="Internal notes about this submission..."><?php echo esc_textarea( isset( $s['admin_notes'] ) ? $s['admin_notes'] : '' ); ?></textarea>
+                </div>
+                <div style="padding-top:22px">
+                  <button class="sub-save-btn" data-id="<?php echo esc_attr( $s_id ); ?>">Save</button>
+                  <div class="sub-save-msg" data-id="<?php echo esc_attr( $s_id ); ?>" style="font-size:12px;margin-top:6px;display:none"></div>
+                </div>
               </div>
             </div>
           </td>
@@ -327,7 +459,7 @@ $field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Te
   </div>
   <?php else : ?>
     <div class="ah-card" style="text-align:center;padding:48px;color:var(--ah-muted)">
-      <p style="font-size:1.1rem;margin:0">No submissions yet for this form.</p>
+      <p style="font-size:1.1rem;margin:0">No submissions<?php echo $sub_status ? ' with status <strong>' . esc_html( $sub_status ) . '</strong>' : ''; ?> for this form.</p>
       <p style="margin:8px 0 0;font-size:13px">Use the shortcode <strong>[ah_form id="<?php echo esc_html( $form_id ); ?>"]</strong> to embed the form on your site.</p>
     </div>
   <?php endif; ?>
@@ -361,17 +493,46 @@ jQuery(function ($) {
     $(this).closest('tr').fadeOut(160, function () { $(this).remove(); });
   });
 
-  // ── Toggle placeholder ↔ options on type change ──
-  $('#fb-body').on('change', '.fb-type', function () {
-    var $r = $(this).closest('tr');
-    if ($(this).val() === 'select') {
-      $r.find('.fb-ph').addClass('fb-hidden');
-      $r.find('.fb-opts').removeClass('fb-hidden');
+  // ── Toggle columns based on field type ──
+  function applyTypeUI($r, type) {
+    var $ph   = $r.find('.fb-ph');
+    var $opts = $r.find('.fb-opts');
+    if (type === 'select') {
+      $ph.addClass('fb-hidden');
+      $opts.removeClass('fb-hidden').attr('placeholder', 'Option A\nOption B\nOption C').css('min-height', '');
     } else {
-      $r.find('.fb-ph').removeClass('fb-hidden');
-      $r.find('.fb-opts').addClass('fb-hidden');
+      $ph.removeClass('fb-hidden').attr('placeholder', 'Placeholder text');
+      $opts.addClass('fb-hidden');
     }
+  }
+  // Apply on page load for existing rows
+  $('#fb-body .fb-row').each(function() {
+    applyTypeUI($(this), $(this).find('.fb-type').val());
   });
+  $('#fb-body').on('change', '.fb-type', function () {
+    applyTypeUI($(this).closest('tr'), $(this).val());
+  });
+
+  // ── Agreement card toggle ──
+  $('#agr_enabled').on('change', function () {
+    $('#agr-body').slideToggle(200);
+  });
+
+  // ── Agreement live preview ──
+  function updateAgrPreview() {
+    $('#agr-prev-before').text($('#agr_before').val() || '');
+    $('#agr-prev-link').text($('#agr_link_text').val() || 'Terms & Conditions');
+    var after = $('#agr_after').val();
+    $('#agr-prev-after').text(after ? ' ' + after : '');
+    var url = $('#agr_url').val();
+    if (url && $('input[name="agr_type"]:checked').val() === 'link') {
+      $('#agr-prev-link').attr('href', url);
+    } else {
+      $('#agr-prev-link').attr('href', '#').on('click', function(){ return false; });
+    }
+  }
+  $('#agr_before, #agr_link_text, #agr_after, #agr_url').on('input', updateAgrPreview);
+  $('input[name="agr_type"]').on('change', updateAgrPreview);
 
   // ── Serialize fields to JSON before submit ──
   $('#fb-form').on('submit', function () {
@@ -399,18 +560,55 @@ jQuery(function ($) {
   // ── Copy shortcode ──
   $('#fb-sc-copy').on('click', function () {
     var sc = $('#fb-sc-text').text();
-    navigator.clipboard ? navigator.clipboard.writeText(sc) : (function () { var ta = $('<textarea>').val(sc).appendTo('body').select(); document.execCommand('copy'); ta.remove(); })();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(sc);
+    } else {
+      var ta = $('<textarea>').val(sc).appendTo('body').select();
+      document.execCommand('copy');
+      ta.remove();
+    }
     $(this).text('Copied!');
     setTimeout(function () { $('#fb-sc-copy').text('Copy'); }, 2000);
   });
 
   // ── Expand/collapse submission rows ──
   $('#fb-subs').on('click', '.fb-toggle', function () {
-    var id  = $(this).closest('tr').data('id');
+    var id   = $(this).closest('tr').data('id');
     var $det = $('#fb-det-' + id);
     $det.toggleClass('fb-hidden');
     $(this).text($det.hasClass('fb-hidden') ? '▶' : '▼');
     $(this).closest('tr').toggleClass('sub-row-open');
+  });
+
+  // ── Save submission meta (status + notes) via AJAX ──
+  $('#fb-subs').on('click', '.sub-save-btn', function () {
+    var id      = $(this).data('id');
+    var $btn    = $(this);
+    var $msg    = $('.sub-save-msg[data-id="' + id + '"]');
+    var status  = $('.sub-status-select[data-id="' + id + '"]').val();
+    var notes   = $('.sub-notes-ta[data-id="' + id + '"]').val();
+    $btn.prop('disabled', true).text('Saving…');
+    $.post(ajaxurl, {
+      action:       'ah_save_submission_meta',
+      nonce:        '<?php echo esc_js( $admin_nonce ); ?>',
+      sub_id:       id,
+      sub_status:   status,
+      admin_notes:  notes,
+    }, function (res) {
+      $btn.prop('disabled', false).text('Save');
+      $msg.show().text(res.success ? 'Saved!' : (res.data && res.data.message ? res.data.message : 'Error'));
+      $msg.css('color', res.success ? '#16a34a' : '#dc2626');
+      if (res.success) {
+        // update badge in header row
+        var $badge = $btn.closest('tr').prev('.fb-sub-row').find('.sub-status-badge');
+        $badge.attr('class', 'sub-status-badge ssb-' + status).text(status);
+      }
+      setTimeout(function () { $msg.fadeOut(400); }, 2500);
+    }).fail(function () {
+      $btn.prop('disabled', false).text('Save');
+      $msg.show().css('color','#dc2626').text('Request failed.');
+      setTimeout(function () { $msg.fadeOut(400); }, 2500);
+    });
   });
 });
 </script>

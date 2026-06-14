@@ -17,26 +17,72 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Map CMS articles for a parent slug to guide card shape.
+ * Category cards for the Guides & Insights section on a parent-term page.
+ *
+ * Shows one card per child taxonomy term (not per article).
+ * Filters to terms whose parent_term_id matches the parent slug's DB row.
+ * Falls back to all terms when no parent_term_id associations exist.
+ * Card URL → /term-slug/ category listing page.
  */
 function adn_category_cms_guides( $slug ) {
-	if ( ! function_exists( 'adn_cms_articles_for_parent' ) ) {
+	if ( ! function_exists( 'adn_cms_guides_by_category' ) ) {
 		return array();
 	}
-	$posts = adn_cms_articles_for_parent( $slug, 6 );
-	if ( empty( $posts ) ) {
-		return array();
+
+	// Try to filter by the parent term's child terms.
+	$topic_ids = array();
+	if ( $slug !== '' && function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
+		global $wpdb;
+		$pt_table = $wpdb->prefix . 'ah_taxonomy_parent_terms';
+		$tax_table = $wpdb->prefix . 'ah_taxonomies';
+
+		$parent = $wpdb->get_row( $wpdb->prepare(
+			"SELECT id FROM `{$pt_table}` WHERE slug = %s AND status = 'active' LIMIT 1",
+			$slug
+		) );
+
+		if ( $parent && function_exists( 'adn_cms_topics' ) ) {
+			$children = adn_cms_topics( (int) $parent->id, 50 );
+			foreach ( (array) $children as $child ) {
+				if ( ! empty( $child->id ) ) {
+					$topic_ids[] = (int) $child->id;
+				}
+			}
+		}
+
+		// If adn_cms_topics() returned nothing, try a direct column query as fallback.
+		if ( empty( $topic_ids ) && $parent ) {
+			$has_col = $wpdb->get_var( "SHOW COLUMNS FROM `{$tax_table}` LIKE 'parent_term_id'" );
+			if ( $has_col ) {
+				$rows = $wpdb->get_results( $wpdb->prepare(
+					"SELECT id FROM `{$tax_table}` WHERE parent_term_id = %d AND status = 'active'",
+					(int) $parent->id
+				) );
+				foreach ( (array) $rows as $r ) {
+					$topic_ids[] = (int) $r->id;
+				}
+			}
+		}
 	}
+
+	// Fetch category rows (pass topic_ids filter; empty = all active terms).
+	$rows  = adn_cms_guides_by_category( 10, $topic_ids );
 	$items = array();
-	foreach ( $posts as $i => $post ) {
+	foreach ( $rows as $i => $post ) {
+		$cat_name = isset( $post->category_name ) ? (string) $post->category_name : '';
+		if ( '' === $cat_name ) {
+			continue;
+		}
+		$term_url = home_url( '/' . trim( (string) $post->_term_slug, '/' ) . '/' );
 		$items[] = array(
-			'icon'        => '📄',
+			'icon'        => ! empty( $post->parent_icon ) ? $post->parent_icon : '📚',
 			'gradient'    => adn_cms_gradient( $i ),
-			'category'    => isset( $post->category_name ) ? (string) $post->category_name : '',
-			'title'       => isset( $post->title )         ? (string) $post->title         : '',
-			'description' => isset( $post->excerpt )       ? wp_trim_words( (string) $post->excerpt, 18, '…' ) : '',
-			'read_more'   => 'Read More →',
-			'url'         => adn_cms_post_url( $post ),
+			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
+			'category'    => $cat_name,
+			'title'       => '',
+			'description' => ! empty( $post->_term_desc ) ? $post->_term_desc : '',
+			'read_more'   => 'Explore →',
+			'url'         => $term_url,
 		);
 	}
 	return $items;
@@ -205,7 +251,7 @@ function adn_category_get_context( $slug = '' ) {
 	// ── 4. Meta & Breadcrumb ──────────────────────────────────────────
 	$meta = array(
 		'slug'             => $slug,
-		'page_title'       => $name . ' – Advaith Homes',
+		'page_title'       => $name . ' - Advaith Homes',
 		'meta_description' => $desc,
 	);
 	$breadcrumb = array(
@@ -221,16 +267,6 @@ function adn_category_get_context( $slug = '' ) {
 			'link_url'   => '/guides/',
 		),
 		'items' => adn_category_cms_guides( $slug ),
-	);
-
-	// ── 6. News: plugin / CMS news / WP posts ────────────────────────
-	$news = array(
-		'heading' => array(
-			'title'      => 'Latest News',
-			'link_label' => 'View all news →',
-			'link_url'   => '/news/',
-		),
-		'items' => adn_category_cms_news( 3 ),
 	);
 
 	// ── 7. Latest posts (replaces JSON "Regulations & Updates") ───────
@@ -294,11 +330,11 @@ function adn_category_get_context( $slug = '' ) {
 			$key = sanitize_key( $key );
 			if ( ! isset( $all_calcs[ $key ] ) ) { continue; }
 			$reg  = $all_calcs[ $key ];
-			$meta = isset( $calc_meta[ $key ] ) && is_array( $calc_meta[ $key ] ) ? $calc_meta[ $key ] : array();
+			$cmeta = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
 			$items[] = array(
-				'icon' => ! empty( $reg['icon'] )  ? (string) $reg['icon']  : '🧮',
-				'name' => ! empty( $reg['title'] ) ? (string) $reg['title'] : $key,
-				'url'  => ! empty( $meta['guide_url'] ) ? (string) $meta['guide_url'] : '/calculators/?calc=' . rawurlencode( $key ),
+				'icon' => ! empty( $reg['icon'] )      ? (string) $reg['icon']        : '🧮',
+				'name' => ! empty( $reg['title'] )     ? (string) $reg['title']       : $key,
+				'url'  => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( '/calculators/?calc=' . rawurlencode( $key ) ),
 			);
 		}
 		if ( ! empty( $items ) ) {
@@ -424,6 +460,39 @@ function adn_category_get_context( $slug = '' ) {
 		}
 	}
 
+	// Sidebar: related calculators (remapped to quick_tools shape for sidebar_quick_tools).
+	if ( ! empty( $calculators['items'] ) ) {
+		$_calc_tools = array();
+		foreach ( $calculators['items'] as $c ) {
+			$_calc_tools[] = array(
+				'icon'  => isset( $c['icon'] ) ? (string) $c['icon'] : '🧮',
+				'label' => isset( $c['name'] ) ? (string) $c['name'] : '',
+				'url'   => isset( $c['url'] )  ? (string) $c['url']  : '#',
+			);
+		}
+		if ( empty( $sidebar['quick_tools'] ) ) {
+			$sidebar['quick_tools'] = array(
+				'heading' => ! empty( $calculators['heading']['title'] ) ? (string) $calculators['heading']['title'] : 'Related Calculators',
+				'items'   => $_calc_tools,
+				'cta'     => array( 'label' => 'All Calculators →', 'url' => '/calculators/' ),
+			);
+		}
+	}
+
+	// Sidebar: expert help — fallback to global page settings when not set in admin.
+	if ( empty( $sidebar['expert_help'] ) ) {
+		$_eh_pg = get_option( 'adn_calculators_page', array() );
+		$sidebar['expert_help'] = array(
+			'heading'  => ! empty( $_cs_sidebar['expert_heading'] )   ? (string) $_cs_sidebar['expert_heading']   : ( ! empty( $_eh_pg['sidebar_help_title'] ) ? (string) $_eh_pg['sidebar_help_title'] : 'Need Expert Help?' ),
+			'subtitle' => ! empty( $_cs_sidebar['expert_subtitle'] )  ? (string) $_cs_sidebar['expert_subtitle']  : ( ! empty( $_eh_pg['sidebar_help_text'] )  ? (string) $_eh_pg['sidebar_help_text']  : 'Speak to one of our property experts today.' ),
+			'experts'  => array(),
+			'cta'      => array(
+				'label' => ! empty( $_cs_sidebar['expert_cta_label'] ) ? (string) $_cs_sidebar['expert_cta_label'] : ( ! empty( $_eh_pg['sidebar_help_btn_label'] ) ? (string) $_eh_pg['sidebar_help_btn_label'] : 'Ask an Expert' ),
+				'url'   => ! empty( $_cs_sidebar['expert_cta_url'] )   ? (string) $_cs_sidebar['expert_cta_url']   : ( ! empty( $_eh_pg['sidebar_help_btn_url'] )   ? (string) $_eh_pg['sidebar_help_btn_url']   : '/ask-an-expert/' ),
+			),
+		);
+	}
+
 	// CTA banner.
 	$cta_banner = array();
 	if ( ! empty( $_cs_cta['title'] ) ) {
@@ -470,6 +539,25 @@ function adn_category_get_context( $slug = '' ) {
 			);
 		}
 	}
+
+	// News for main content area (4 items).
+	$_main_news_items = array();
+	foreach ( array_slice( adn_category_cms_news( 4 ), 0, 4 ) as $n ) {
+		$_main_news_items[] = array(
+			'title'    => $n['title'],
+			'url'      => $n['url'],
+			'date'     => $n['date'],
+			'gradient' => $n['gradient'],
+		);
+	}
+	$news = array(
+		'heading' => array(
+			'title'      => 'Latest Property News',
+			'link_label' => 'View all news →',
+			'link_url'   => '/news/',
+		),
+		'items' => $_main_news_items,
+	);
 
 	return array(
 		'slug'          => $slug,

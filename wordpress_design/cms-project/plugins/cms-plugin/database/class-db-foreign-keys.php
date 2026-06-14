@@ -123,27 +123,6 @@ class AH_DB_Foreign_Keys {
 			"ALTER TABLE {$p}ah_service_taxonomies
 				ADD CONSTRAINT fk_stax_svc FOREIGN KEY (service_id)  REFERENCES {$p}ah_services(id)  ON DELETE CASCADE,
 				ADD CONSTRAINT fk_stax_tax FOREIGN KEY (taxonomy_id) REFERENCES {$p}ah_taxonomies(id) ON DELETE CASCADE",
-
-			"ALTER TABLE {$p}ah_about_page_header
-				ADD CONSTRAINT fk_aph_page FOREIGN KEY (page_id)    REFERENCES {$p}ah_pages(id)       ON DELETE CASCADE,
-				ADD CONSTRAINT fk_aph_user FOREIGN KEY (updated_by) REFERENCES {$p}ah_admin_users(id) ON DELETE SET NULL",
-
-			"ALTER TABLE {$p}ah_about_story
-				ADD CONSTRAINT fk_ast_page FOREIGN KEY (page_id)    REFERENCES {$p}ah_pages(id)       ON DELETE CASCADE,
-				ADD CONSTRAINT fk_ast_img  FOREIGN KEY (image_id)   REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,
-				ADD CONSTRAINT fk_ast_user FOREIGN KEY (updated_by) REFERENCES {$p}ah_admin_users(id) ON DELETE SET NULL",
-
-			"ALTER TABLE {$p}ah_about_story_points
-				ADD CONSTRAINT fk_asp_story FOREIGN KEY (story_id) REFERENCES {$p}ah_about_story(id) ON DELETE CASCADE",
-
-			"ALTER TABLE {$p}ah_team_members
-				ADD CONSTRAINT fk_tm_photo FOREIGN KEY (photo_id)   REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,
-				ADD CONSTRAINT fk_tm_user  FOREIGN KEY (created_by) REFERENCES {$p}ah_admin_users(id) ON DELETE SET NULL",
-
-			"ALTER TABLE {$p}ah_about_values
-				ADD CONSTRAINT fk_av_page FOREIGN KEY (page_id)  REFERENCES {$p}ah_pages(id) ON DELETE CASCADE,
-				ADD CONSTRAINT fk_av_img  FOREIGN KEY (image_id) REFERENCES {$p}ah_media(id) ON DELETE SET NULL",
-
 			"ALTER TABLE {$p}ah_posts
 				ADD CONSTRAINT fk_pt_feat   FOREIGN KEY (featured_image_id) REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,
 				ADD CONSTRAINT fk_pt_banner FOREIGN KEY (banner_image_id)   REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,

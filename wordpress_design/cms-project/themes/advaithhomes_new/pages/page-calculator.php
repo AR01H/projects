@@ -42,7 +42,7 @@ adn_page_open( $_open_ctx );
 <?php endif; ?>
 
 <?php /* ============================== SEARCH BAR ============================== */ ?>
-<?php adn_component( 'sections/calcs_search_bar', array( 'search' => $ctx['search'] ) ); ?>
+<!-- <?php adn_component( 'sections/calcs_search_bar', array( 'search' => $ctx['search'] ) ); ?> -->
 
 <?php /* ============================== MAIN LAYOUT: SIDEBAR + CONTENT ============================== */ ?>
 <div class="calcs-main-layout">
