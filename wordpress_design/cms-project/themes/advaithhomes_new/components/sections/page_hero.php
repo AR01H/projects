@@ -89,56 +89,18 @@ $_hero_img     = $_hero_img_id
 	</div>
 
 	<?php /* ── Bottom bar: stats take priority; else trust items ── */ ?>
+	<?php if ( ! empty( $_trust ) ) :
+		$_first     = reset( $_trust );
+		$_is_string = is_string( $_first );
+		$_is_icon   = ! $_is_string && is_array( $_first ) && isset( $_first['icon'] );
 
-	<?php if ( ! empty( $_stats ) ) : ?>
-		<div class="page-hero-bar">
-			<div class="container">
-				<div class="page-hero-bar-inner">
-					<?php foreach ( $_stats as $_s ) : ?>
-						<div class="phb-stat-item">
-							<strong class="phb-stat-value"><?php echo esc_html( isset( $_s['value'] ) ? (string) $_s['value'] : '' ); ?></strong>
-							<span  class="phb-stat-label"><?php echo esc_html( isset( $_s['label'] ) ? (string) $_s['label'] : '' ); ?></span>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</div>
-
-	<?php elseif ( ! empty( $_trust ) ) :
-		// Detect format from first item.
-		$_first = reset( $_trust );
-		$_is_string  = is_string( $_first );
-		$_is_icon    = ! $_is_string && is_array( $_first ) && isset( $_first['icon'] );
+		get_template_part( 'components/marque_scroll/point_marque', null, [
+			'trust'     => $_trust,
+			'is_string' => $_is_string,
+			'is_icon'   => $_is_icon,
+		] );
 	?>
-		<div class="page-hero-bar">
-			<div class="container">
-				<div class="page-hero-bar-inner">
-					<?php foreach ( $_trust as $_t ) :
-						if ( $_is_string ) : ?>
-							<div class="phb-trust-simple">
-								<span class="phb-trust-check" aria-hidden="true">✓</span>
-								<?php echo esc_html( (string) $_t ); ?>
-							</div>
-						<?php elseif ( $_is_icon ) :
-							$_ti = adn_icon( isset( $_t['icon'] ) ? (string) $_t['icon'] : '' );
-							// Support both label/title and note/subtitle key names.
-							$_tp = esc_html( isset( $_t['label'] )    ? (string) $_t['label']    : ( isset( $_t['title'] )    ? (string) $_t['title']    : '' ) );
-							$_ts = esc_html( isset( $_t['note'] )     ? (string) $_t['note']     : ( isset( $_t['subtitle'] ) ? (string) $_t['subtitle'] : '' ) );
-						?>
-							<div class="phb-trust-icon-item">
-								<span class="phb-trust-icon" aria-hidden="true"><?php echo $_ti; ?></span>
-								<div>
-									<strong><?php echo $_tp; ?></strong>
-									<?php if ( '' !== $_ts ) : ?>
-										<span><?php echo $_ts; ?></span>
-									<?php endif; ?>
-								</div>
-							</div>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</div>
-	<?php endif; ?>
+       
+<?php endif; ?>
 
 </section>

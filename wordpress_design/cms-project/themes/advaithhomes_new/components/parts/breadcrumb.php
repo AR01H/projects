@@ -13,7 +13,7 @@ if ( empty( $items ) ) {
 	return;
 }
 ?>
-<nav class="breadcrumb" aria-label="<?php esc_attr_e( 'Breadcrumb', ADN_TEXT_DOMAIN ); ?>">
+<!-- <nav class="breadcrumb" aria-label="<?php esc_attr_e( 'Breadcrumb', ADN_TEXT_DOMAIN ); ?>">
 	<div class="container">
 		<div class="breadcrumb-inner">
 			<?php foreach ( $items as $i => $crumb ) : ?>
@@ -34,4 +34,4 @@ if ( empty( $items ) ) {
 			<?php endforeach; ?>
 		</div>
 	</div>
-</nav>
+</nav> -->

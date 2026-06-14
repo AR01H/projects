@@ -2,8 +2,8 @@
 /**
  * admin/tabs/experts/sub-new.php - Add or Edit a DB-stored expert / team member.
  *
- * Add mode  : no query params — shows a blank form.
- * Edit mode : ?edit_slug=SLUG — loads the existing DB row and pre-fills everything.
+ * Add mode  : no query params - shows a blank form.
+ * Edit mode : ?edit_slug=SLUG - loads the existing DB row and pre-fills everything.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -131,12 +131,12 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 					<td>
 						<label>
 							<input type="radio" name="status" value="active" <?php checked( $f_status, 'active' ); ?>>
-							<?php esc_html_e( 'Active — shown on the listing page and profile', ADN_TEXT_DOMAIN ); ?>
+							<?php esc_html_e( 'Active - shown on the listing page and profile', ADN_TEXT_DOMAIN ); ?>
 						</label>
 						&nbsp;&nbsp;
 						<label>
 							<input type="radio" name="status" value="inactive" <?php checked( $f_status, 'inactive' ); ?>>
-							<?php esc_html_e( 'Inactive — hidden everywhere', ADN_TEXT_DOMAIN ); ?>
+							<?php esc_html_e( 'Inactive - hidden everywhere', ADN_TEXT_DOMAIN ); ?>
 						</label>
 					</td>
 				</tr>

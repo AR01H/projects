@@ -63,6 +63,11 @@ function adn_category_cms_guides( $slug ) {
 				}
 			}
 		}
+
+		// Parent exists but has no linked child topics - don't fall back to showing all site guides.
+		if ( ! empty( $parent ) && empty( $topic_ids ) ) {
+			return array();
+		}
 	}
 
 	// Fetch category rows (pass topic_ids filter; empty = all active terms).
@@ -75,7 +80,7 @@ function adn_category_cms_guides( $slug ) {
 		}
 		$term_url = home_url( '/' . trim( (string) $post->_term_slug, '/' ) . '/' );
 		$items[] = array(
-			'icon'        => ! empty( $post->parent_icon ) ? $post->parent_icon : '📚',
+			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : '📚' ),
 			'gradient'    => adn_cms_gradient( $i ),
 			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
 			'category'    => $cat_name,
@@ -157,29 +162,49 @@ function adn_category_cms_news( $limit = 3 ) {
 }
 
 /**
- * Latest published WP posts shaped for the regulation_item card.
- * Replaces the JSON "Latest Regulations & Updates" section.
+ * Latest posts for this category, shaped for regulation_item cards.
+ * Primary source: CMS articles linked to the parent term slug.
+ * Fallback: most recent WP posts site-wide.
  */
-function adn_category_cms_latest_posts( $limit = 4 ) {
+function adn_category_latest_updates( $slug, $limit = 4 ) {
 	$items = array();
-	$q = new WP_Query( array(
-		'post_type'      => 'post',
-		'post_status'    => 'publish',
-		'posts_per_page' => $limit,
-		'orderby'        => 'date',
-		'order'          => 'DESC',
-	) );
-	if ( $q->have_posts() ) {
-		foreach ( $q->posts as $wp_post ) {
+
+	// 1. CMS articles filtered by this parent term's topic taxonomy.
+	if ( function_exists( 'adn_cms_articles_for_parent' ) ) {
+		$rows = adn_cms_articles_for_parent( $slug, $limit );
+		foreach ( (array) $rows as $post ) {
+			if ( empty( $post->title ) ) { continue; }
 			$items[] = array(
 				'badge_lines' => array( 'LATEST', 'UPDATE' ),
-				'title'       => $wp_post->post_title,
-				'date'        => get_the_date( 'M j, Y', $wp_post ),
-				'url'         => get_permalink( $wp_post ),
+				'title'       => (string) $post->title,
+				'date'        => function_exists( 'adn_cms_post_date' ) ? adn_cms_post_date( $post ) : '',
+				'url'         => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $post )  : '#',
 			);
 		}
-		wp_reset_postdata();
 	}
+
+	// 2. WP_Query fallback when no CMS articles exist for this category.
+	if ( empty( $items ) ) {
+		$q = new WP_Query( array(
+			'post_type'      => 'post',
+			'post_status'    => 'publish',
+			'posts_per_page' => $limit,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		) );
+		if ( $q->have_posts() ) {
+			foreach ( $q->posts as $wp_post ) {
+				$items[] = array(
+					'badge_lines' => array( 'LATEST', 'UPDATE' ),
+					'title'       => $wp_post->post_title,
+					'date'        => get_the_date( 'M j, Y', $wp_post ),
+					'url'         => get_permalink( $wp_post ),
+				);
+			}
+			wp_reset_postdata();
+		}
+	}
+
 	return $items;
 }
 
@@ -235,17 +260,25 @@ function adn_category_get_context( $slug = '' ) {
 	$_cs_thumb_id = ! empty( $_cs_app['thumbnail_id'] ) ? (int) $_cs_app['thumbnail_id'] : 0;
 
 	// ── 3. Hero ──────────────────────────────────────────────────────
+	// 1st: per-term marquee (adn-theme-category-pages → Marquee tab).
+	$_cs_mq     = isset( $_cs_all['marquee'] ) && is_array( $_cs_all['marquee'] ) ? $_cs_all['marquee'] : array();
+	$_mq_parsed = function_exists( 'adn_parse_marquee_settings' ) ? adn_parse_marquee_settings( $_cs_mq ) : null;
+
+	// 2nd fallback: home-page marquee (adn-theme-home → Sections → Marquee bar).
+	if ( ! $_mq_parsed ) {
+		$_home_s    = get_option( 'adn_home_sections', array() );
+		$_mq_parsed = function_exists( 'adn_parse_marquee_settings' ) ? adn_parse_marquee_settings( $_home_s ) : null;
+	}
+
+	$_trust_items = $_mq_parsed
+		? $_mq_parsed['trust']
+		:[];
 	$hero = array(
 		'title'       => $name,
 		'description' => $desc,
 		'image_icon'  => $icon,
 		'image_id'    => $_cs_thumb_id ?: $img,
-		'trust_items' => array(
-			'Independent & Unbiased',
-			'Plain English Guides',
-			'Updated with Latest UK Regulations',
-			'Tools to Plan Better',
-		),
+		'trust_items' => $_trust_items,
 	);
 
 	// ── 4. Meta & Breadcrumb ──────────────────────────────────────────
@@ -269,14 +302,14 @@ function adn_category_get_context( $slug = '' ) {
 		'items' => adn_category_cms_guides( $slug ),
 	);
 
-	// ── 7. Latest posts (replaces JSON "Regulations & Updates") ───────
+	// ── 7. Latest Updates - CMS articles for this category (fallback: all posts) ──
 	$regulations = array(
 		'heading' => array(
 			'title'      => 'Latest Updates',
 			'link_label' => 'View all →',
 			'link_url'   => '/news/',
 		),
-		'items' => adn_category_cms_latest_posts( 4 ),
+		'items' => adn_category_latest_updates( $slug, 4 ),
 	);
 
 	// ── 8. Admin-managed sections (AH_Category_Settings DB model) ───────
@@ -284,7 +317,6 @@ function adn_category_get_context( $slug = '' ) {
 	$_cs_ht       = isset( $_cs_all['hot_topics'] )     && is_array( $_cs_all['hot_topics'] )     ? $_cs_all['hot_topics']     : array();
 	$_cs_pp       = isset( $_cs_all['popular_posts'] )  && is_array( $_cs_all['popular_posts'] )  ? $_cs_all['popular_posts']  : array();
 	$_cs_ft       = isset( $_cs_all['featured_topics'] ) && is_array( $_cs_all['featured_topics'] ) ? $_cs_all['featured_topics'] : array();
-	$_cs_el       = isset( $_cs_all['external_links'] ) && is_array( $_cs_all['external_links'] ) ? $_cs_all['external_links'] : array();
 	$_cs_calc     = isset( $_cs_all['calculators'] )    && is_array( $_cs_all['calculators'] )    ? $_cs_all['calculators']    : array();
 	$_cs_sidebar  = isset( $_cs_all['sidebar'] )        && is_array( $_cs_all['sidebar'] )        ? $_cs_all['sidebar']        : array();
 	$_cs_cta      = isset( $_cs_all['cta_banner'] )     && is_array( $_cs_all['cta_banner'] )     ? $_cs_all['cta_banner']     : array();
@@ -440,26 +472,6 @@ function adn_category_get_context( $slug = '' ) {
 		}
 	}
 
-	// Sidebar external links (manually entered rows in admin Content tab).
-	if ( ! empty( $_cs_el['items'] ) && is_array( $_cs_el['items'] ) ) {
-		$el_items = array();
-		foreach ( $_cs_el['items'] as $l ) {
-			if ( empty( $l['title'] ) && empty( $l['url'] ) ) { continue; }
-			$el_items[] = array(
-				'icon'  => ! empty( $l['icon'] )  ? (string) $l['icon']  : '',
-				'title' => ! empty( $l['title'] ) ? (string) $l['title'] : '',
-				'url'   => ! empty( $l['url'] )   ? (string) $l['url']   : '#',
-				'desc'  => ! empty( $l['desc'] )  ? (string) $l['desc']  : '',
-			);
-		}
-		if ( ! empty( $el_items ) ) {
-			$sidebar['external_links'] = array(
-				'heading' => ! empty( $_cs_el['heading'] ) ? (string) $_cs_el['heading'] : 'Useful Links',
-				'items'   => $el_items,
-			);
-		}
-	}
-
 	// Sidebar: related calculators (remapped to quick_tools shape for sidebar_quick_tools).
 	if ( ! empty( $calculators['items'] ) ) {
 		$_calc_tools = array();
@@ -479,7 +491,7 @@ function adn_category_get_context( $slug = '' ) {
 		}
 	}
 
-	// Sidebar: expert help — fallback to global page settings when not set in admin.
+	// Sidebar: expert help - fallback to global page settings when not set in admin.
 	if ( empty( $sidebar['expert_help'] ) ) {
 		$_eh_pg = get_option( 'adn_calculators_page', array() );
 		$sidebar['expert_help'] = array(
@@ -490,6 +502,53 @@ function adn_category_get_context( $slug = '' ) {
 				'label' => ! empty( $_cs_sidebar['expert_cta_label'] ) ? (string) $_cs_sidebar['expert_cta_label'] : ( ! empty( $_eh_pg['sidebar_help_btn_label'] ) ? (string) $_eh_pg['sidebar_help_btn_label'] : 'Ask an Expert' ),
 				'url'   => ! empty( $_cs_sidebar['expert_cta_url'] )   ? (string) $_cs_sidebar['expert_cta_url']   : ( ! empty( $_eh_pg['sidebar_help_btn_url'] )   ? (string) $_eh_pg['sidebar_help_btn_url']   : '/ask-an-expert/' ),
 			),
+		);
+	}
+
+	// Resources (PDFs, external links, YouTube videos) from admin Resources tab.
+	$resources  = array( 'pdfs' => array(), 'links' => array(), 'videos' => array() );
+	$_cs_res    = isset( $_cs_all['resources'] ) && is_array( $_cs_all['resources'] ) ? $_cs_all['resources'] : array();
+
+	foreach ( (array) ( isset( $_cs_res['pdfs'] ) ? $_cs_res['pdfs'] : array() ) as $p ) {
+		if ( empty( $p['title'] ) ) { continue; }
+		$fid      = ! empty( $p['file_id'] )  ? (int)    $p['file_id']  : 0;
+		$furl     = ! empty( $p['file_url'] ) ? (string) $p['file_url'] : '';
+		// Prefer WP attachment URL (always fresh) over stored URL.
+		if ( $fid ) {
+			$_att = wp_get_attachment_url( $fid );
+			if ( $_att ) { $furl = $_att; }
+		}
+		if ( ! $furl ) { continue; }
+		$resources['pdfs'][] = array(
+			'title'    => (string) $p['title'],
+			'desc'     => ! empty( $p['desc'] ) ? (string) $p['desc'] : '',
+			'file_url' => $furl,
+		);
+	}
+
+	foreach ( (array) ( isset( $_cs_res['links'] ) ? $_cs_res['links'] : array() ) as $l ) {
+		if ( empty( $l['title'] ) ) { continue; }
+		$resources['links'][] = array(
+			'icon'  => ! empty( $l['icon'] )  ? (string) $l['icon']  : '🔗',
+			'title' => (string) $l['title'],
+			'desc'  => ! empty( $l['desc'] )  ? (string) $l['desc']  : '',
+			'url'   => ! empty( $l['url'] )   ? (string) $l['url']   : '#',
+		);
+	}
+
+	foreach ( (array) ( isset( $_cs_res['videos'] ) ? $_cs_res['videos'] : array() ) as $v ) {
+		if ( empty( $v['title'] ) ) { continue; }
+		$vid_url = ! empty( $v['url'] ) ? (string) $v['url'] : '';
+		$vid_id  = '';
+		if ( preg_match( '#(?:youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})#', $vid_url, $_m ) ) {
+			$vid_id = $_m[1];
+		}
+		$resources['videos'][] = array(
+			'title'  => (string) $v['title'],
+			'desc'   => ! empty( $v['desc'] ) ? (string) $v['desc'] : '',
+			'url'    => $vid_url,
+			'vid_id' => $vid_id,
+			'thumb'  => $vid_id ? 'https://img.youtube.com/vi/' . $vid_id . '/mqdefault.jpg' : '',
 		);
 	}
 
@@ -510,33 +569,50 @@ function adn_category_get_context( $slug = '' ) {
 	// Popular Posts (curated WP posts, loaded live by post ID).
 	$popular_posts = array();
 	if ( ! empty( $_cs_pp['items'] ) && is_array( $_cs_pp['items'] ) ) {
-		$pp_cards = array();
-		foreach ( $_cs_pp['items'] as $i => $item ) {
-			$pid     = ! empty( $item['post_id'] ) ? (int) $item['post_id'] : 0;
-			if ( ! $pid ) { continue; }
-			$wp_post = get_post( $pid );
-			if ( ! $wp_post || 'publish' !== $wp_post->post_status ) { continue; }
-			$excerpt   = $wp_post->post_excerpt ? $wp_post->post_excerpt : $wp_post->post_content;
-			$pp_cards[] = array(
-				'icon'        => '📌',
-				'gradient'    => adn_cms_gradient( $i ),
-				'category'    => 'Guide',
-				'title'       => $wp_post->post_title,
-				'description' => wp_trim_words( $excerpt, 18, '…' ),
-				'read_more'   => 'Read More →',
-				'url'         => get_permalink( $wp_post ),
-			);
-			if ( count( $pp_cards ) >= 6 ) { break; }
+		// Collect IDs preserving admin-defined order (up to 6).
+		$_pp_ids = array();
+		foreach ( (array) $_cs_pp['items'] as $_item ) {
+			if ( ! empty( $_item['post_id'] ) ) {
+				$_pp_ids[] = (int) $_item['post_id'];
+			}
+			if ( count( $_pp_ids ) >= 6 ) { break; }
 		}
-		if ( ! empty( $pp_cards ) ) {
-			$popular_posts = array(
-				'heading' => array(
-					'title'      => ! empty( $_cs_pp['heading'] ) ? (string) $_cs_pp['heading'] : 'Popular Guides',
-					'link_label' => '',
-					'link_url'   => '',
-				),
-				'items' => $pp_cards,
-			);
+		$_pp_ids = array_filter( $_pp_ids );
+
+		if ( ! empty( $_pp_ids ) ) {
+			$_pp_q = new WP_Query( array(
+				'post_type'      => 'post',
+				'post_status'    => 'publish',
+				'post__in'       => $_pp_ids,
+				'orderby'        => 'post__in',
+				'posts_per_page' => 6,
+				'no_found_rows'  => true,
+			) );
+			$pp_cards = array();
+			foreach ( $_pp_q->posts as $i => $_pp_post ) {
+				$_ex = $_pp_post->post_excerpt ? $_pp_post->post_excerpt : $_pp_post->post_content;
+				$pp_cards[] = array(
+					'icon'        => '📌',
+					'gradient'    => adn_cms_gradient( $i ),
+					'category'    => 'Guide',
+					'title'       => $_pp_post->post_title,
+					'description' => wp_trim_words( $_ex, 18, '…' ),
+					'read_more'   => 'Read More →',
+					'url'         => get_permalink( $_pp_post ),
+				);
+			}
+			wp_reset_postdata();
+
+			if ( ! empty( $pp_cards ) ) {
+				$popular_posts = array(
+					'heading' => array(
+						'title'      => ! empty( $_cs_pp['heading'] ) ? (string) $_cs_pp['heading'] : 'Popular Guides',
+						'link_label' => '',
+						'link_url'   => '',
+					),
+					'items' => $pp_cards,
+				);
+			}
 		}
 	}
 
@@ -570,6 +646,7 @@ function adn_category_get_context( $slug = '' ) {
 		'news'          => $news,
 		'regulations'   => $regulations,
 		'calculators'   => $calculators,
+		'resources'     => $resources,
 		'sidebar'       => $sidebar,
 		'cta_banner'    => $cta_banner,
 		'chrome'        => $chrome,

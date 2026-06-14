@@ -349,7 +349,7 @@ function adn_cms_term_url( $term ) {
 /**
  * One card per active taxonomy term that has at least one published WP post.
  *
- * Queries directly against wp_ah_taxonomies — does NOT require the
+ * Queries directly against wp_ah_taxonomies - does NOT require the
  * parent_term / journey hierarchy.  This means flat terms (like "First Time
  * Buyers") work even when parent_term_id is NULL.
  *
@@ -369,7 +369,7 @@ function adn_cms_term_url( $term ) {
 /**
  * Category-card data for one active taxonomy "Category" term per row.
  *
- * Returns term rows — NOT articles. Cards display the taxonomy term's own name,
+ * Returns term rows - NOT articles. Cards display the taxonomy term's own name,
  * icon and description.  The card URL goes to the category listing page
  * (/<term-slug>/), which then shows linked articles.
  *
@@ -404,7 +404,7 @@ function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
 	if ( $type_id ) {
 		$type_cond = "AND t.type_id = {$type_id}";
 	} elseif ( empty( $topic_ids ) ) {
-		// No recognised type and no ID filter — require a parent_term_id so we
+		// No recognised type and no ID filter - require a parent_term_id so we
 		// don't accidentally show flat utility terms.
 		$type_cond = 'AND t.parent_term_id IS NOT NULL';
 	}

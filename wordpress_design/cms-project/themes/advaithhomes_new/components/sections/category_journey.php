@@ -20,14 +20,31 @@ $tip     = isset( $journey['tip'] )   ? (array) $journey['tip']   : array();
 
 <?php if ( $steps ) : ?>
 	<div class="journey-steps">
-		<?php foreach ( $steps as $step ) : ?>
-			<?php $active = ! empty( $step['active'] ) ? ' active' : ''; ?>
-			<div class="journey-step<?php echo esc_attr( $active ); ?>">
-				<div class="step-dot"><?php echo adn_icon( isset( $step['icon'] ) ? $step['icon'] : '' ); ?></div>
-				<div class="step-num"><?php echo esc_html( isset( $step['num'] ) ? $step['num'] . '.' : '' ); ?></div>
-				<div class="step-label"><?php echo esc_html( isset( $step['label'] ) ? $step['label'] : '' ); ?></div>
-				<div class="step-desc"><?php echo esc_html( isset( $step['desc'] ) ? $step['desc'] : '' ); ?></div>
+		<?php foreach ( $steps as $step ) :
+			$active    = ! empty( $step['active'] ) ? ' active' : '';
+			$step_num  = isset( $step['num'] ) ? (int) $step['num'] : 0;
+			$step_lbl  = isset( $step['label'] ) ? $step['label'] : '';
+			$step_desc = isset( $step['desc'] )  ? $step['desc']  : '';
+		?>
+		<div class="journey-step<?php echo esc_attr( $active ); ?>">
+			<div class="step-badge-wrap">
+				<div class="step-badge">
+					<?php if ( $step_num ) : ?>
+						<span><?php echo esc_html( $step_num ); ?></span>
+					<?php else : ?>
+						<span><?php echo adn_icon( isset( $step['icon'] ) ? $step['icon'] : '' ); ?></span>
+					<?php endif; ?>
+				</div>
 			</div>
+			<div class="step-body">
+				<?php if ( $step_lbl ) : ?>
+					<strong class="step-label"><?php echo esc_html( $step_lbl ); ?></strong>
+				<?php endif; ?>
+				<?php if ( $step_desc ) : ?>
+					<p class="step-desc"><?php echo esc_html( $step_desc ); ?></p>
+				<?php endif; ?>
+			</div>
+		</div>
 		<?php endforeach; ?>
 	</div>
 <?php endif; ?>
@@ -44,7 +61,7 @@ $tip     = isset( $journey['tip'] )   ? (array) $journey['tip']   : array();
 			?></span>
 		</div>
 		<?php if ( ! empty( $tip['link_label'] ) && ! empty( $tip['link_url'] ) ) : ?>
-			<a href="<?php echo esc_url( adn_link( $tip['link_url'] ) ); ?>" class="btn btn-outline btn-sm">
+			<a href="<?php echo esc_url( adn_link( $tip['link_url'] ) ); ?>" class="journey-tip-cta">
 				<?php echo esc_html( $tip['link_label'] ); ?>
 			</a>
 		<?php endif; ?>

@@ -1,107 +1,17 @@
 <?php
 /**
- * comments.php — Custom comments template for advaithhomes_new.
+ * comments.php - Custom comments template for advaithhomes_new.
  *
  * Called via comments_template() from single.php.
- * Callback functions MUST be defined before wp_list_comments() is called,
- * so they are placed at the top of this file before any output.
+ * Render callbacks live in includes/comment-callbacks.php (loaded in functions.php)
+ * so they are also available to the AJAX handlers.
+ *
+ * Initial page load: first 10 approved comments rendered server-side.
+ * Additional comments: loaded on demand via AJAX (adn_load_comments).
+ * Comment submission: AJAX (adn_submit_comment) - never redirects to wp-comments-post.php.
  */
 
 defined( 'ABSPATH' ) || exit;
-
-// ─── Comment render callbacks (defined first — called by wp_list_comments) ───
-
-function adn_comment_callback( $comment, $args, $depth ) {
-	$GLOBALS['comment'] = $comment;
-	$tag         = ( 'div' === $args['style'] ) ? 'div' : 'li';
-	$is_pingback = in_array( $comment->comment_type, array( 'pingback', 'trackback' ), true );
-	?>
-	<<?php echo esc_html( $tag ); ?> id="comment-<?php comment_ID(); ?>"
-	    class="adn-comment<?php
-	    	echo ( $is_pingback             ? ' adn-comment--ping'    : '' );
-	    	echo ( $depth > 1               ? ' adn-comment--reply'   : '' );
-	    	echo ( ! $comment->comment_approved ? ' adn-comment--pending' : '' );
-	    ?>">
-
-		<?php if ( $is_pingback ) : ?>
-
-			<div class="adn-comment-ping">
-				<?php esc_html_e( 'Pingback:', ADN_TEXT_DOMAIN ); ?>
-				<a href="<?php comment_author_url(); ?>"><?php comment_author(); ?></a>
-			</div>
-
-		<?php else : ?>
-
-			<div class="adn-comment-body">
-
-				<div class="adn-comment-avatar">
-					<?php echo get_avatar( $comment, 48, '', '', array( 'class' => 'adn-avatar' ) ); ?>
-				</div>
-
-				<div class="adn-comment-content">
-
-					<div class="adn-comment-meta">
-						<span class="adn-comment-author"><?php comment_author(); ?></span>
-						<time class="adn-comment-date" datetime="<?php comment_date( 'Y-m-d' ); ?>">
-							<?php comment_date( 'M j, Y' ); ?>
-						</time>
-						<?php if ( ! $comment->comment_approved ) : ?>
-							<span class="adn-comment-pending">
-								<?php esc_html_e( 'Awaiting moderation', ADN_TEXT_DOMAIN ); ?>
-							</span>
-						<?php endif; ?>
-					</div>
-
-					<div class="adn-comment-text">
-						<?php comment_text(); ?>
-					</div>
-
-					<div class="adn-comment-actions">
-						<?php
-						comment_reply_link( array_merge( $args, array(
-							'reply_text' => esc_html__( 'Reply', ADN_TEXT_DOMAIN ),
-							'depth'      => $depth,
-							'max_depth'  => $args['max_depth'],
-							'before'     => '<span class="adn-reply-link">',
-							'after'      => '</span>',
-						) ) );
-						edit_comment_link( esc_html__( 'Edit', ADN_TEXT_DOMAIN ), '<span class="adn-edit-link">', '</span>' );
-						?>
-
-						<?php if ( current_user_can( 'moderate_comments' ) ) :
-							$_cid   = (int) $comment->comment_ID;
-							$_nonce = wp_create_nonce( 'adn_moderate_comment' );
-							$_approved = (int) $comment->comment_approved; // 1=approved, 0=pending, spam='spam', trash='trash'
-						?>
-						<span class="adn-mod-actions"
-						      data-comment="<?php echo esc_attr( (string) $_cid ); ?>"
-						      data-nonce="<?php echo esc_attr( $_nonce ); ?>">
-							<?php if ( 1 === $_approved ) : ?>
-								<button type="button" class="adn-mod-btn adn-mod-unapprove" data-action="unapprove" title="<?php esc_attr_e( 'Unapprove', ADN_TEXT_DOMAIN ); ?>">⏸ <?php esc_html_e( 'Unapprove', ADN_TEXT_DOMAIN ); ?></button>
-							<?php else : ?>
-								<button type="button" class="adn-mod-btn adn-mod-approve" data-action="approve" title="<?php esc_attr_e( 'Approve', ADN_TEXT_DOMAIN ); ?>">✓ <?php esc_html_e( 'Approve', ADN_TEXT_DOMAIN ); ?></button>
-							<?php endif; ?>
-							<button type="button" class="adn-mod-btn adn-mod-spam" data-action="spam" title="<?php esc_attr_e( 'Mark as Spam', ADN_TEXT_DOMAIN ); ?>">⚑ <?php esc_html_e( 'Spam', ADN_TEXT_DOMAIN ); ?></button>
-							<button type="button" class="adn-mod-btn adn-mod-trash" data-action="trash" title="<?php esc_attr_e( 'Trash', ADN_TEXT_DOMAIN ); ?>">🗑 <?php esc_html_e( 'Trash', ADN_TEXT_DOMAIN ); ?></button>
-						</span>
-						<?php endif; ?>
-
-					</div>
-
-				</div>
-			</div>
-
-		<?php endif; ?>
-	<?php
-	// Closing tag handled by adn_comment_end_callback.
-}
-
-function adn_comment_end_callback( $comment, $args, $depth ) {
-	$tag = ( 'div' === $args['style'] ) ? 'div' : 'li';
-	echo '</' . esc_html( $tag ) . ">\n";
-}
-
-// ─── Template output ─────────────────────────────────────────────────────────
 
 if ( post_password_required() ) {
 	echo '<p class="adn-comments-protected">'
@@ -110,44 +20,95 @@ if ( post_password_required() ) {
 	return;
 }
 
-$comment_count = (int) get_comments_number();
+$_post_id      = get_the_ID();
+$_per_page     = 10;
+$_total        = (int) get_comments( array(
+	'post_id' => $_post_id,
+	'status'  => 'approve',
+	'count'   => true,
+	'type'    => 'comment',
+) );
+
+/* First batch - newest first by default */
+$_initial = get_comments( array(
+	'post_id' => $_post_id,
+	'status'  => 'approve',
+	'number'  => $_per_page,
+	'offset'  => 0,
+	'orderby' => 'comment_date_gmt',
+	'order'   => 'DESC',
+	'type'    => 'comment',
+) );
+
+$_loaded   = count( $_initial );
+$_has_more = $_loaded < $_total;
+
+$_cb_args = array(
+	'style'     => 'ol',
+	'max_depth' => (int) get_option( 'thread_comments_depth', 5 ),
+);
 ?>
 
-<section class="adn-comments-section" id="comments">
+<section class="adn-comments-section" id="comments"
+         data-post-id="<?php echo esc_attr( (string) $_post_id ); ?>"
+         data-total="<?php echo esc_attr( (string) $_total ); ?>"
+         data-loaded="<?php echo esc_attr( (string) $_loaded ); ?>"
+         data-per-page="<?php echo esc_attr( (string) $_per_page ); ?>">
 
 	<?php /* ── Comment list ── */ ?>
-	<?php if ( have_comments() ) : ?>
+	<?php if ( $_total > 0 ) : ?>
 
-		<h2 class="adn-comments-heading">
-			<?php
-			if ( 1 === $comment_count ) {
-				esc_html_e( '1 Comment', ADN_TEXT_DOMAIN );
-			} else {
-				printf( esc_html__( '%s Comments', ADN_TEXT_DOMAIN ), number_format_i18n( $comment_count ) );
-			}
-			?>
-		</h2>
+		<?php /* Header row: count + filter tabs */ ?>
+		<div class="adn-comments-header">
+			<h2 class="adn-comments-heading">
+				<span class="adn-comments-count"><?php echo esc_html( number_format_i18n( $_total ) ); ?></span>
+				<?php echo esc_html( 1 === $_total ? __( 'Comment', ADN_TEXT_DOMAIN ) : __( 'Comments', ADN_TEXT_DOMAIN ) ); ?>
+			</h2>
+			<div class="adn-filter-tabs" role="group" aria-label="<?php esc_attr_e( 'Sort comments', ADN_TEXT_DOMAIN ); ?>">
+				<button type="button" class="adn-filter-btn is-active" data-order="desc" data-status="approve">
+					<?php esc_html_e( 'Latest', ADN_TEXT_DOMAIN ); ?>
+				</button>
+				<button type="button" class="adn-filter-btn" data-order="asc" data-status="approve">
+					<?php esc_html_e( 'Oldest', ADN_TEXT_DOMAIN ); ?>
+				</button>
+				<?php if ( current_user_can( 'moderate_comments' ) ) : ?>
+				<button type="button" class="adn-filter-btn" data-order="desc" data-status="hold">
+					<?php esc_html_e( 'Pending', ADN_TEXT_DOMAIN ); ?>
+				</button>
+				<?php endif; ?>
+			</div>
+		</div>
 
-		<ol class="adn-comment-list">
-			<?php
-			wp_list_comments( array(
-				'style'        => 'ol',
-				'short_ping'   => true,
-				'avatar_size'  => 48,
-				'callback'     => 'adn_comment_callback',
-				'end-callback' => 'adn_comment_end_callback',
-			) );
-			?>
-		</ol>
+		<?php /* Spinner overlay */ ?>
+		<div class="adn-comments-wrap" id="adn-comments-wrap">
+			<div class="adn-comments-spinner" id="adn-comments-spinner" hidden>
+				<span class="adn-spinner-icon" aria-hidden="true">⟳</span>
+			</div>
+			<ol class="adn-comment-list" id="adn-comment-list">
+				<?php foreach ( $_initial as $_c ) :
+					adn_comment_callback( $_c, $_cb_args, 1 );
+					adn_comment_end_callback( $_c, $_cb_args, 1 );
+				endforeach; ?>
+			</ol>
+		</div>
 
-		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
-			<nav class="adn-comment-pagination">
-				<?php paginate_comments_links( array(
-					'prev_text' => '&laquo; ' . esc_html__( 'Older Comments', ADN_TEXT_DOMAIN ),
-					'next_text' => esc_html__( 'Newer Comments', ADN_TEXT_DOMAIN ) . ' &raquo;',
-				) ); ?>
-			</nav>
-		<?php endif; ?>
+		<?php /* Pagination - replace mode */ ?>
+		<?php $_total_pages = (int) ceil( $_total / $_per_page ); ?>
+		<div class="adn-comments-pagination" id="adn-comments-pagination"
+		     data-page="1" data-total-pages="<?php echo esc_attr( (string) $_total_pages ); ?>">
+			<button type="button" class="adn-page-btn adn-page-prev" aria-label="<?php esc_attr_e( 'Previous page', ADN_TEXT_DOMAIN ); ?>" <?php echo 1 >= $_total_pages ? 'hidden' : 'disabled'; ?>>
+				&#8592; <?php esc_html_e( 'Prev', ADN_TEXT_DOMAIN ); ?>
+			</button>
+			<span class="adn-page-info">
+				<?php printf( esc_html__( 'Page %1$s of %2$s', ADN_TEXT_DOMAIN ),
+					'<span id="adn-page-current">1</span>',
+					'<span id="adn-page-total">' . esc_html( (string) $_total_pages ) . '</span>'
+				); ?>
+			</span>
+			<button type="button" class="adn-page-btn adn-page-next" aria-label="<?php esc_attr_e( 'Next page', ADN_TEXT_DOMAIN ); ?>" <?php echo $_total_pages <= 1 ? 'hidden' : ''; ?>>
+				<?php esc_html_e( 'Next', ADN_TEXT_DOMAIN ); ?> &#8594;
+			</button>
+		</div>
 
 	<?php elseif ( ! comments_open() ) : ?>
 
@@ -157,64 +118,69 @@ $comment_count = (int) get_comments_number();
 
 	<?php endif; ?>
 
+	<?php /* ── Inline status message (AJAX feedback) ── */ ?>
+	<div class="adn-comment-status" id="adn-comment-status" role="alert" aria-live="polite" hidden></div>
+
 	<?php /* ── Comment form ── */ ?>
-	<?php
-	$commenter = wp_get_current_commenter();
-	$user      = wp_get_current_user();
-	$user_id   = get_current_user_id();
-	$req       = get_option( 'require_name_email' );
-	$req_mark  = $req ? ' <span class="adn-required">*</span>' : '';
+	<?php if ( comments_open() ) :
+		$commenter = wp_get_current_commenter();
+		$user      = wp_get_current_user();
+		$user_id   = get_current_user_id();
+		$req       = get_option( 'require_name_email' );
+		$req_mark  = $req ? ' <span class="adn-required">*</span>' : '';
 
-	$fields = array(
-		'author' => '<div class="adn-form-row">'
-			. '<label for="author">' . esc_html__( 'Name', ADN_TEXT_DOMAIN ) . $req_mark . '</label>'
-			. '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" placeholder="' . esc_attr__( 'Your name', ADN_TEXT_DOMAIN ) . '" autocomplete="name"' . ( $req ? ' aria-required="true"' : '' ) . '>'
-			. '</div>',
-		'email'  => '<div class="adn-form-row">'
-			. '<label for="email">' . esc_html__( 'Email', ADN_TEXT_DOMAIN ) . $req_mark . '</label>'
-			. '<input id="email" name="email" type="email" value="' . esc_attr( $commenter['comment_author_email'] ) . '" placeholder="' . esc_attr__( 'your@email.com', ADN_TEXT_DOMAIN ) . '" autocomplete="email"' . ( $req ? ' aria-required="true"' : '' ) . '>'
-			. '</div>',
-		'url'    => '<div class="adn-form-row">'
-			. '<label for="url">' . esc_html__( 'Website (optional)', ADN_TEXT_DOMAIN ) . '</label>'
-			. '<input id="url" name="url" type="url" value="' . esc_attr( $commenter['comment_author_url'] ) . '" placeholder="' . esc_attr__( 'https://yoursite.com', ADN_TEXT_DOMAIN ) . '" autocomplete="url">'
-			. '</div>',
-	);
+		$fields = array(
+			'author' => '<div class="adn-form-row">'
+				. '<label for="author">' . esc_html__( 'Name', ADN_TEXT_DOMAIN ) . $req_mark . '</label>'
+				. '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" placeholder="' . esc_attr__( 'Your name', ADN_TEXT_DOMAIN ) . '" autocomplete="name"' . ( $req ? ' aria-required="true"' : '' ) . '>'
+				. '</div>',
+			'email'  => '<div class="adn-form-row">'
+				. '<label for="email">' . esc_html__( 'Email', ADN_TEXT_DOMAIN ) . $req_mark . '</label>'
+				. '<input id="email" name="email" type="email" value="' . esc_attr( $commenter['comment_author_email'] ) . '" placeholder="' . esc_attr__( 'your@email.com', ADN_TEXT_DOMAIN ) . '" autocomplete="email"' . ( $req ? ' aria-required="true"' : '' ) . '>'
+				. '</div>',
+			'url'    => '<div class="adn-form-row">'
+				. '<label for="url">' . esc_html__( 'Website (optional)', ADN_TEXT_DOMAIN ) . '</label>'
+				. '<input id="url" name="url" type="url" value="' . esc_attr( $commenter['comment_author_url'] ) . '" placeholder="' . esc_attr__( 'https://yoursite.com', ADN_TEXT_DOMAIN ) . '" autocomplete="url">'
+				. '</div>',
+			/* AJAX nonce - verified server-side before wp_handle_comment_submission() */
+			'adn_nonce' => '<input type="hidden" name="adn_nonce" value="' . esc_attr( wp_create_nonce( 'adn_comment_nonce' ) ) . '">',
+		);
 
-	comment_form( array(
-		'title_reply'          => esc_html__( 'Leave a Comment', ADN_TEXT_DOMAIN ),
-		'title_reply_to'       => esc_html__( 'Reply to %s', ADN_TEXT_DOMAIN ),
-		'title_reply_before'   => '<h2 id="reply-title" class="adn-form-heading">',
-		'title_reply_after'    => '</h2>',
-		'cancel_reply_before'  => ' <span class="adn-cancel-reply">',
-		'cancel_reply_after'   => '</span>',
-		'cancel_reply_link'    => esc_html__( 'Cancel reply', ADN_TEXT_DOMAIN ),
-		'label_submit'         => esc_html__( 'Post Comment', ADN_TEXT_DOMAIN ),
-		'submit_button'        => '<button name="%1$s" type="submit" id="%2$s" class="%3$s btn btn-primary">%4$s</button>',
-		'submit_field'         => '<div class="adn-form-submit">%1$s %2$s</div>',
-		'comment_field'        => '<div class="adn-form-row adn-form-row--full">'
-			. '<label for="comment">' . esc_html__( 'Comment', ADN_TEXT_DOMAIN ) . ' <span class="adn-required">*</span></label>'
-			. '<textarea id="comment" name="comment" rows="5" placeholder="' . esc_attr__( 'Share your thoughts…', ADN_TEXT_DOMAIN ) . '" required></textarea>'
-			. '</div>',
-		'must_log_in'          => '<p class="adn-must-login">' . sprintf(
-			esc_html__( 'You must be %s to post a comment.', ADN_TEXT_DOMAIN ),
-			'<a href="' . esc_url( wp_login_url( get_permalink() ) ) . '">' . esc_html__( 'logged in', ADN_TEXT_DOMAIN ) . '</a>'
-		) . '</p>',
-		'logged_in_as'         => $user_id ? '<p class="adn-logged-in">' . sprintf(
-			esc_html__( 'Logged in as %1$s. %2$s', ADN_TEXT_DOMAIN ),
-			'<strong>' . esc_html( $user->display_name ) . '</strong>',
-			'<a href="' . esc_url( wp_logout_url( get_permalink() ) ) . '">' . esc_html__( 'Log out?', ADN_TEXT_DOMAIN ) . '</a>'
-		) . '</p>' : '',
-		'comment_notes_before' => '<p class="adn-comment-note">'
-			. esc_html__( 'Your email address will not be published.', ADN_TEXT_DOMAIN )
-			. ( $req ? ' ' . esc_html__( 'Required fields are marked', ADN_TEXT_DOMAIN ) . ' <span class="adn-required">*</span>' : '' )
-			. '</p>',
-		'comment_notes_after'  => '',
-		'fields'               => $fields,
-		'class_form'           => 'adn-comment-form',
-		'class_container'      => 'adn-comment-form-wrap',
-		'id_form'              => 'adn-comment-form',
-	) );
-	?>
+		comment_form( array(
+			'title_reply'          => esc_html__( 'Leave a Comment', ADN_TEXT_DOMAIN ),
+			'title_reply_to'       => esc_html__( 'Reply to %s', ADN_TEXT_DOMAIN ),
+			'title_reply_before'   => '<h2 id="reply-title" class="adn-form-heading">',
+			'title_reply_after'    => '</h2>',
+			'cancel_reply_before'  => ' <span class="adn-cancel-reply">',
+			'cancel_reply_after'   => '</span>',
+			'cancel_reply_link'    => esc_html__( 'Cancel reply', ADN_TEXT_DOMAIN ),
+			'label_submit'         => esc_html__( 'Post Comment', ADN_TEXT_DOMAIN ),
+			'submit_button'        => '<button name="%1$s" type="submit" id="%2$s" class="%3$s btn btn-primary">%4$s</button>',
+			'submit_field'         => '<div class="adn-form-submit">%1$s %2$s</div>',
+			'comment_field'        => '<div class="adn-form-row adn-form-row--full">'
+				. '<label for="comment">' . esc_html__( 'Comment', ADN_TEXT_DOMAIN ) . ' <span class="adn-required">*</span></label>'
+				. '<textarea id="comment" name="comment" rows="5" placeholder="' . esc_attr__( 'Share your thoughts…', ADN_TEXT_DOMAIN ) . '" required></textarea>'
+				. '</div>',
+			'must_log_in'          => '<p class="adn-must-login">' . sprintf(
+				esc_html__( 'You must be %s to post a comment.', ADN_TEXT_DOMAIN ),
+				'<a href="' . esc_url( wp_login_url( get_permalink() ) ) . '">' . esc_html__( 'logged in', ADN_TEXT_DOMAIN ) . '</a>'
+			) . '</p>',
+			'logged_in_as'         => $user_id ? '<p class="adn-logged-in">' . sprintf(
+				esc_html__( 'Logged in as %1$s. %2$s', ADN_TEXT_DOMAIN ),
+				'<strong>' . esc_html( $user->display_name ) . '</strong>',
+				'<a href="' . esc_url( wp_logout_url( get_permalink() ) ) . '">' . esc_html__( 'Log out?', ADN_TEXT_DOMAIN ) . '</a>'
+			) . '</p>' : '',
+			'comment_notes_before' => '<p class="adn-comment-note">'
+				. esc_html__( 'Your email address will not be published.', ADN_TEXT_DOMAIN )
+				. ( $req ? ' ' . esc_html__( 'Required fields are marked', ADN_TEXT_DOMAIN ) . ' <span class="adn-required">*</span>' : '' )
+				. '</p>',
+			'comment_notes_after'  => '',
+			'fields'               => $fields,
+			'class_form'           => 'adn-comment-form',
+			'class_container'      => 'adn-comment-form-wrap',
+			'id_form'              => 'adn-comment-form',
+		) );
+	endif; ?>
 
 </section>
 
@@ -223,7 +189,6 @@ $comment_count = (int) get_comments_number();
 (function(){
 'use strict';
 var AJAX = '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>';
-
 document.querySelectorAll('.adn-mod-actions').forEach(function(wrap){
     wrap.addEventListener('click', function(e){
         var btn = e.target.closest('.adn-mod-btn');
@@ -233,40 +198,27 @@ document.querySelectorAll('.adn-mod-actions').forEach(function(wrap){
         var nonce   = wrap.dataset.nonce;
         var comment = document.getElementById('comment-' + cid);
         btn.disabled = true;
-
         var fd = new FormData();
-        fd.append('action',     'adn_moderate_comment');
-        fd.append('nonce',      nonce);
+        fd.append('action','adn_moderate_comment');
+        fd.append('nonce', nonce);
         fd.append('comment_id', cid);
         fd.append('mod_action', action);
-
-        fetch(AJAX, { method:'POST', body:fd })
-            .then(function(r){ return r.json(); })
+        fetch(AJAX, {method:'POST', body:fd})
+            .then(function(r){return r.json();})
             .then(function(d){
                 if (!d.success) { btn.disabled = false; return; }
                 if (action === 'trash' || action === 'spam') {
-                    // Fade and remove the comment card
-                    if (comment) {
-                        comment.style.transition = 'opacity .4s';
-                        comment.style.opacity    = '0';
-                        setTimeout(function(){ comment.remove(); }, 420);
-                    }
+                    if (comment) { comment.style.transition='opacity .4s'; comment.style.opacity='0'; setTimeout(function(){comment.remove();},420); }
                 } else if (action === 'approve') {
                     if (comment) {
                         comment.classList.remove('adn-comment--pending');
-                        comment.querySelector('.adn-comment-pending') && comment.querySelector('.adn-comment-pending').remove();
-                        // Swap button to Unapprove
-                        btn.dataset.action = 'unapprove';
-                        btn.className = 'adn-mod-btn adn-mod-unapprove';
-                        btn.textContent = '⏸ Unapprove';
+                        var p = comment.querySelector('.adn-comment-pending'); if(p) p.remove();
+                        btn.dataset.action='unapprove'; btn.className='adn-mod-btn adn-mod-unapprove'; btn.textContent='⏸ Unapprove';
                     }
                 } else if (action === 'unapprove') {
                     if (comment) {
                         comment.classList.add('adn-comment--pending');
-                        // Swap button to Approve
-                        btn.dataset.action = 'approve';
-                        btn.className = 'adn-mod-btn adn-mod-approve';
-                        btn.textContent = '✓ Approve';
+                        btn.dataset.action='approve'; btn.className='adn-mod-btn adn-mod-approve'; btn.textContent='✓ Approve';
                     }
                 }
                 btn.disabled = false;

@@ -61,15 +61,22 @@ $cta_description = isset( $cta_d['description'] ) ? $cta_d['description'] : '';
 $cta_btn_label   = isset( $cta_d['btn_label'] )   ? $cta_d['btn_label']   : '';
 $cta_btn_url     = isset( $cta_d['btn_url'] )     ? $cta_d['btn_url']     : '';
 
+// Marquee.
+$mq_d       = isset( $all['marquee'] ) && is_array( $all['marquee'] ) ? $all['marquee'] : array();
+$mq_enabled = ! empty( $mq_d['marquee_enabled'] ) ? 1 : 0;
+$mq_mode    = ( isset( $mq_d['marquee_mode'] ) && 'icon' === $mq_d['marquee_mode'] ) ? 'icon' : 'string';
+$mq_items   = isset( $mq_d['marquee_items'] ) ? $mq_d['marquee_items'] : '';
+
+// Resources (PDFs, external links, YouTube videos).
+$res_d      = isset( $all['resources'] ) && is_array( $all['resources'] ) ? $all['resources'] : array();
+$res_pdfs   = isset( $res_d['pdfs'] )   && is_array( $res_d['pdfs'] )   ? $res_d['pdfs']   : array();
+$res_links  = isset( $res_d['links'] )  && is_array( $res_d['links'] )  ? $res_d['links']  : array();
+$res_videos = isset( $res_d['videos'] ) && is_array( $res_d['videos'] ) ? $res_d['videos'] : array();
+
 // Featured Topics.
 $ft_d       = isset( $all['featured_topics'] ) && is_array( $all['featured_topics'] ) ? $all['featured_topics'] : array();
 $ft_heading = isset( $ft_d['heading'] ) ? $ft_d['heading'] : '';
 $ft_items   = isset( $ft_d['items'] )   && is_array( $ft_d['items'] ) ? $ft_d['items'] : array();
-
-// External Links.
-$el_d       = isset( $all['external_links'] ) && is_array( $all['external_links'] ) ? $all['external_links'] : array();
-$el_heading = isset( $el_d['heading'] ) ? $el_d['heading'] : '';
-$el_items   = isset( $el_d['items'] )   && is_array( $el_d['items'] ) ? $el_d['items'] : array();
 
 // Calculators - registered + selected.
 $calc_heading       = isset( $calc_d['heading'] )       ? $calc_d['heading']       : '';
@@ -113,6 +120,8 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 			<a href="#adn-tab-calc"         class="nav-tab" data-panel="adn-tab-calc">Calculators</a>
 			<a href="#adn-tab-sidebar"      class="nav-tab" data-panel="adn-tab-sidebar">Sidebar</a>
 			<a href="#adn-tab-cta"          class="nav-tab" data-panel="adn-tab-cta">CTA Banner</a>
+			<a href="#adn-tab-marquee"      class="nav-tab" data-panel="adn-tab-marquee">Marquee</a>
+			<a href="#adn-tab-resources"    class="nav-tab" data-panel="adn-tab-resources">Resources</a>
 		</div>
 
 		<?php /* ══════════════════════ APPEARANCE ══════════════════════ */ ?>
@@ -322,46 +331,6 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				</div>
 			</div>
 
-			<?php /* ── Related External Links ────────────────────────────── */ ?>
-			<div class="card" style="max-width:none;margin-bottom:20px;">
-				<h2><?php esc_html_e( 'Related External Links', ADN_TEXT_DOMAIN ); ?></h2>
-				<p class="description"><?php esc_html_e( 'External resource links shown in the sidebar. Add icon, title, URL and optional description.', ADN_TEXT_DOMAIN ); ?></p>
-
-				<table class="form-table" role="presentation"><tbody>
-					<tr>
-						<th><?php esc_html_e( 'Section Heading', ADN_TEXT_DOMAIN ); ?></th>
-						<td><input type="text" class="regular-text" name="external_links[heading]" value="<?php echo esc_attr( $el_heading ); ?>" placeholder="Useful Resources"></td>
-					</tr>
-				</tbody></table>
-
-				<p style="margin:16px 0 6px;font-weight:600;"><?php esc_html_e( 'Links', ADN_TEXT_DOMAIN ); ?></p>
-				<div id="ext-links-wrap">
-					<?php foreach ( $el_items as $i => $item ) : ?>
-						<div class="adn-rep-row" style="flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;">
-							<div style="display:flex;gap:6px;align-items:center;width:100%;">
-								<input type="text" name="external_links[items][<?php echo (int) $i; ?>][icon]"
-									value="<?php echo esc_attr( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>"
-									placeholder="🔗" style="width:52px;text-align:center;">
-								<input type="text" name="external_links[items][<?php echo (int) $i; ?>][title]"
-									value="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>"
-									placeholder="<?php esc_attr_e( 'Link title', ADN_TEXT_DOMAIN ); ?>" style="flex:1;">
-								<input type="url" name="external_links[items][<?php echo (int) $i; ?>][url]"
-									value="<?php echo esc_attr( isset( $item['url'] ) ? $item['url'] : '' ); ?>"
-									placeholder="https://" style="width:240px;">
-								<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>
-							</div>
-							<input type="text" name="external_links[items][<?php echo (int) $i; ?>][desc]"
-								value="<?php echo esc_attr( isset( $item['desc'] ) ? $item['desc'] : '' ); ?>"
-								placeholder="<?php esc_attr_e( 'Brief description (optional)', ADN_TEXT_DOMAIN ); ?>" style="width:100%;margin-top:4px;">
-						</div>
-					<?php endforeach; ?>
-				</div>
-				<button type="button" class="button adn-rep-add"
-					data-wrap="ext-links-wrap" data-prefix="external_links[items]" data-tpl="extlink">
-					<?php esc_html_e( '+ Add Link', ADN_TEXT_DOMAIN ); ?>
-				</button>
-			</div>
-
 		</div><?php /* end #adn-tab-content */ ?>
 
 		<?php /* ══════════════════════ CALCULATORS ═══════════════════════ */ ?>
@@ -539,6 +508,161 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 			</div>
 		</div>
 
+		<?php /* ══════════════════════ MARQUEE ══════════════════════════ */ ?>
+		<div id="adn-tab-marquee" class="adn-inner-panel">
+			<div class="card" style="max-width:none;">
+				<h2><?php esc_html_e( 'Marquee Bar', ADN_TEXT_DOMAIN ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Scrolling trust/highlight bar displayed inside the hero bottom strip on this category page. Uses the same point_marque component as the rest of the site.', ADN_TEXT_DOMAIN ); ?></p>
+
+				<table class="form-table" role="presentation"><tbody>
+					<tr>
+						<th><?php esc_html_e( 'Enable', ADN_TEXT_DOMAIN ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="marquee[enabled]" value="1" <?php checked( $mq_enabled, 1 ); ?>>
+								<?php esc_html_e( 'Show marquee bar on this page', ADN_TEXT_DOMAIN ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Display mode', ADN_TEXT_DOMAIN ); ?></th>
+						<td>
+							<label style="margin-right:20px;">
+								<input type="radio" name="marquee[mode]" value="string" <?php checked( $mq_mode, 'string' ); ?>>
+								<?php esc_html_e( 'Plain text (✓ prefix)', ADN_TEXT_DOMAIN ); ?>
+							</label>
+							<label>
+								<input type="radio" name="marquee[mode]" value="icon" <?php checked( $mq_mode, 'icon' ); ?>>
+								<?php esc_html_e( 'Icon + label + note', ADN_TEXT_DOMAIN ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Items', ADN_TEXT_DOMAIN ); ?></th>
+						<td>
+							<textarea name="marquee[items]" rows="6" class="large-text"><?php echo esc_textarea( $mq_items ); ?></textarea>
+							<p class="description">
+								<?php esc_html_e( 'One item per line.', ADN_TEXT_DOMAIN ); ?><br>
+								<strong><?php esc_html_e( 'Plain text mode:', ADN_TEXT_DOMAIN ); ?></strong> <?php esc_html_e( 'Independent & Unbiased', ADN_TEXT_DOMAIN ); ?><br>
+								<strong><?php esc_html_e( 'Icon mode:', ADN_TEXT_DOMAIN ); ?></strong> ✓|<?php esc_html_e( 'Free Advice', ADN_TEXT_DOMAIN ); ?>|<?php esc_html_e( 'No sign-up required', ADN_TEXT_DOMAIN ); ?>
+							</p>
+						</td>
+					</tr>
+				</tbody></table>
+
+				<?php if ( $mq_items ) :
+					$_prev_mq = function_exists( 'adn_parse_marquee_settings' )
+						? adn_parse_marquee_settings( array(
+							'marquee_enabled' => 1,
+							'marquee_mode'    => $mq_mode,
+							'marquee_items'   => $mq_items,
+						  ) )
+						: null;
+				?>
+					<?php if ( $_prev_mq ) : ?>
+						<h4 style="margin-top:20px;"><?php esc_html_e( 'Preview', ADN_TEXT_DOMAIN ); ?></h4>
+						<?php get_template_part( 'components/marque_scroll/point_marque', null, $_prev_mq ); ?>
+					<?php endif; ?>
+				<?php endif; ?>
+			</div>
+		</div><?php /* end #adn-tab-marquee */ ?>
+
+		<?php /* ══════════════════════ RESOURCES ══════════════════════ */ ?>
+		<div id="adn-tab-resources" class="adn-inner-panel">
+
+			<?php /* ── PDFs ─────────────────────────────────────────── */ ?>
+			<div class="card" style="max-width:none;margin-bottom:16px;">
+				<h2><?php esc_html_e( 'PDF Documents', ADN_TEXT_DOMAIN ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Downloadable PDFs shown as resource cards. Each needs a title and a file.', ADN_TEXT_DOMAIN ); ?></p>
+
+				<div id="res-pdfs-wrap" style="margin-top:12px;">
+					<?php foreach ( $res_pdfs as $i => $pdf ) :
+						$fid   = ! empty( $pdf['file_id'] )  ? (int) $pdf['file_id']         : 0;
+						$furl  = ! empty( $pdf['file_url'] ) ? esc_url( $pdf['file_url'] )    : '';
+						$fname = $fid ? basename( get_attached_file( $fid ) ) : ( $furl ? basename( $furl ) : '' );
+					?>
+					<div class="adn-pdf-row adn-rep-row" style="flex-direction:column;align-items:flex-start;padding:10px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;">
+						<div style="display:flex;gap:8px;align-items:center;width:100%;margin-bottom:6px;">
+							<input type="text" name="resources[pdfs][<?php echo (int) $i; ?>][title]"
+								placeholder="<?php esc_attr_e( 'PDF title', ADN_TEXT_DOMAIN ); ?>"
+								style="flex:1;" value="<?php echo esc_attr( $pdf['title'] ?? '' ); ?>">
+							<button type="button" class="button adn-pdf-select">
+								<?php echo $fid || $furl ? '🔄 ' . esc_html__( 'Change PDF', ADN_TEXT_DOMAIN ) : '📎 ' . esc_html__( 'Select PDF', ADN_TEXT_DOMAIN ); ?>
+							</button>
+							<button type="button" class="button adn-rep-remove" title="<?php esc_attr_e( 'Remove row', ADN_TEXT_DOMAIN ); ?>">&#x2715;</button>
+						</div>
+						<input type="text" name="resources[pdfs][<?php echo (int) $i; ?>][desc]"
+							placeholder="<?php esc_attr_e( 'Brief description (optional)', ADN_TEXT_DOMAIN ); ?>"
+							style="width:100%;margin-bottom:6px;" value="<?php echo esc_attr( $pdf['desc'] ?? '' ); ?>">
+						<div class="pdf-preview-wrap" style="<?php echo ( $fid || $furl ) ? 'display:flex;' : 'display:none;'; ?>align-items:center;gap:6px;font-size:12px;color:#1d5c8e;margin-bottom:2px;">
+							<span>📄</span>
+							<span class="pdf-filename"><?php echo esc_html( $fname ); ?></span>
+							<button type="button" class="button-link adn-pdf-clear" style="color:#d63638;"><?php esc_html_e( 'Remove file', ADN_TEXT_DOMAIN ); ?></button>
+						</div>
+						<input type="hidden" name="resources[pdfs][<?php echo (int) $i; ?>][file_id]"  class="pdf-file-id"  value="<?php echo esc_attr( $fid ); ?>">
+						<input type="hidden" name="resources[pdfs][<?php echo (int) $i; ?>][file_url]" class="pdf-file-url" value="<?php echo esc_attr( $furl ); ?>">
+					</div>
+					<?php endforeach; ?>
+				</div>
+
+				<button type="button" class="button adn-rep-add" data-wrap="res-pdfs-wrap" data-prefix="resources[pdfs]" data-tpl="respdf">
+					+ <?php esc_html_e( 'Add PDF', ADN_TEXT_DOMAIN ); ?>
+				</button>
+			</div>
+
+			<?php /* ── External Links ──────────────────────────────── */ ?>
+			<div class="card" style="max-width:none;margin-bottom:16px;">
+				<h2><?php esc_html_e( 'External Links', ADN_TEXT_DOMAIN ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Resource links displayed with icon, title and description.', ADN_TEXT_DOMAIN ); ?></p>
+
+				<div id="res-links-wrap" style="margin-top:12px;">
+					<?php foreach ( $res_links as $i => $lnk ) : ?>
+					<div class="adn-rep-row" style="flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;">
+						<div style="display:flex;gap:6px;align-items:center;width:100%;">
+							<input type="text" name="resources[links][<?php echo (int) $i; ?>][icon]"  placeholder="🔗" style="width:52px;text-align:center;" value="<?php echo esc_attr( $lnk['icon'] ?? '' ); ?>">
+							<input type="text" name="resources[links][<?php echo (int) $i; ?>][title]" placeholder="<?php esc_attr_e( 'Link title', ADN_TEXT_DOMAIN ); ?>" style="flex:1;" value="<?php echo esc_attr( $lnk['title'] ?? '' ); ?>">
+							<input type="url"  name="resources[links][<?php echo (int) $i; ?>][url]"   placeholder="https://" style="width:220px;" value="<?php echo esc_attr( $lnk['url'] ?? '' ); ?>">
+							<button type="button" class="button adn-rep-remove" title="<?php esc_attr_e( 'Remove', ADN_TEXT_DOMAIN ); ?>">&#x2715;</button>
+						</div>
+						<input type="text" name="resources[links][<?php echo (int) $i; ?>][desc]"
+							placeholder="<?php esc_attr_e( 'Brief description (optional)', ADN_TEXT_DOMAIN ); ?>"
+							style="width:100%;margin-top:4px;" value="<?php echo esc_attr( $lnk['desc'] ?? '' ); ?>">
+					</div>
+					<?php endforeach; ?>
+				</div>
+
+				<button type="button" class="button adn-rep-add" data-wrap="res-links-wrap" data-prefix="resources[links]" data-tpl="reslink">
+					+ <?php esc_html_e( 'Add Link', ADN_TEXT_DOMAIN ); ?>
+				</button>
+			</div>
+
+			<?php /* ── YouTube Videos ───────────────────────────────── */ ?>
+			<div class="card" style="max-width:none;">
+				<h2><?php esc_html_e( 'YouTube Videos', ADN_TEXT_DOMAIN ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Videos displayed as embeds or cards. Paste the full YouTube URL (youtube.com/watch?v=… or youtu.be/…).', ADN_TEXT_DOMAIN ); ?></p>
+
+				<div id="res-videos-wrap" style="margin-top:12px;">
+					<?php foreach ( $res_videos as $i => $vid ) : ?>
+					<div class="adn-rep-row" style="flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;">
+						<div style="display:flex;gap:6px;align-items:center;width:100%;">
+							<input type="text" name="resources[videos][<?php echo (int) $i; ?>][title]" placeholder="<?php esc_attr_e( 'Video title', ADN_TEXT_DOMAIN ); ?>" style="flex:1;" value="<?php echo esc_attr( $vid['title'] ?? '' ); ?>">
+							<input type="url"  name="resources[videos][<?php echo (int) $i; ?>][url]"   placeholder="https://youtube.com/watch?v=…" style="width:280px;" value="<?php echo esc_attr( $vid['url'] ?? '' ); ?>">
+							<button type="button" class="button adn-rep-remove" title="<?php esc_attr_e( 'Remove', ADN_TEXT_DOMAIN ); ?>">&#x2715;</button>
+						</div>
+						<input type="text" name="resources[videos][<?php echo (int) $i; ?>][desc]"
+							placeholder="<?php esc_attr_e( 'Brief description (optional)', ADN_TEXT_DOMAIN ); ?>"
+							style="width:100%;margin-top:4px;" value="<?php echo esc_attr( $vid['desc'] ?? '' ); ?>">
+					</div>
+					<?php endforeach; ?>
+				</div>
+
+				<button type="button" class="button adn-rep-add" data-wrap="res-videos-wrap" data-prefix="resources[videos]" data-tpl="resvideo">
+					+ <?php esc_html_e( 'Add Video', ADN_TEXT_DOMAIN ); ?>
+				</button>
+			</div>
+
+		</div><?php /* end #adn-tab-resources */ ?>
+
 	</div><?php /* end .adn-inner-tabs */ ?>
 
 	<?php submit_button( __( 'Save Settings', ADN_TEXT_DOMAIN ) ); ?>
@@ -586,6 +710,37 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				+ '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>'
 				+ '</div>'
 				+ '<input type="text" name="' + p + '[' + i + '][desc]" placeholder="Brief description (optional)" style="width:100%;margin-top:4px;">';
+		},
+		respdf: function (p, i) {
+			return '<div style="display:flex;gap:8px;align-items:center;width:100%;margin-bottom:6px;">'
+				+ '<input type="text" name="' + p + '[' + i + '][title]" placeholder="PDF title" style="flex:1;">'
+				+ '<button type="button" class="button adn-pdf-select">📎 Select PDF</button>'
+				+ '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>'
+				+ '</div>'
+				+ '<input type="text" name="' + p + '[' + i + '][desc]" placeholder="Brief description (optional)" style="width:100%;margin-bottom:6px;">'
+				+ '<div class="pdf-preview-wrap" style="display:none;align-items:center;gap:6px;font-size:12px;color:#1d5c8e;margin-bottom:2px;">'
+				+ '<span>📄</span><span class="pdf-filename"></span>'
+				+ '<button type="button" class="button-link adn-pdf-clear" style="color:#d63638;">Remove file</button>'
+				+ '</div>'
+				+ '<input type="hidden" name="' + p + '[' + i + '][file_id]" class="pdf-file-id" value="">'
+				+ '<input type="hidden" name="' + p + '[' + i + '][file_url]" class="pdf-file-url" value="">';
+		},
+		reslink: function (p, i) {
+			return '<div style="display:flex;gap:6px;align-items:center;width:100%;">'
+				+ '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="🔗" style="width:52px;text-align:center;">'
+				+ '<input type="text" name="' + p + '[' + i + '][title]" placeholder="Link title" style="flex:1;">'
+				+ '<input type="url" name="' + p + '[' + i + '][url]" placeholder="https://" style="width:220px;">'
+				+ '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>'
+				+ '</div>'
+				+ '<input type="text" name="' + p + '[' + i + '][desc]" placeholder="Brief description (optional)" style="width:100%;margin-top:4px;">';
+		},
+		resvideo: function (p, i) {
+			return '<div style="display:flex;gap:6px;align-items:center;width:100%;">'
+				+ '<input type="text" name="' + p + '[' + i + '][title]" placeholder="Video title" style="flex:1;">'
+				+ '<input type="url" name="' + p + '[' + i + '][url]" placeholder="https://youtube.com/watch?v=…" style="width:280px;">'
+				+ '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>'
+				+ '</div>'
+				+ '<input type="text" name="' + p + '[' + i + '][desc]" placeholder="Brief description (optional)" style="width:100%;margin-top:4px;">';
 		}
 	};
 
@@ -599,9 +754,11 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		return max + 1;
 	}
 
+	var BLOCK_TPLS = { extlink: 1, respdf: 1, reslink: 1, resvideo: 1 };
+
 	document.addEventListener('click', function (e) {
 		if (e.target.classList.contains('adn-rep-remove')) {
-			e.target.closest('.adn-rep-row').remove();
+			e.target.closest('.adn-rep-row, .adn-pdf-row').remove();
 			return;
 		}
 		var btn = e.target.closest('.adn-rep-add');
@@ -613,9 +770,16 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 			if (!wrap || !TPL[tpl]) { return; }
 			var idx = nextRepIndex(wrapId, prefix);
 			var div = document.createElement('div');
-			div.className = 'adn-rep-row';
-			if (tpl === 'extlink') {
-				div.style.cssText = 'flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;';
+			if (tpl === 'respdf') {
+				div.className = 'adn-pdf-row adn-rep-row';
+				div.style.cssText = 'flex-direction:column;align-items:flex-start;padding:10px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;';
+			} else {
+				div.className = 'adn-rep-row';
+				if (BLOCK_TPLS[tpl]) {
+					div.style.cssText = 'flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;';
+				}
+			}
+			if (BLOCK_TPLS[tpl]) {
 				div.innerHTML = TPL[tpl](prefix, idx);
 			} else {
 				div.innerHTML = TPL[tpl](prefix, idx)
@@ -784,6 +948,51 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				+ '<input type="hidden" name="' + prefix + '[' + idx + '][url]" value="' + d.url.replace(/"/g,'&quot;') + '">'
 				+ '<input type="hidden" name="' + prefix + '[' + idx + '][term_id]" value="' + d.id + '">'
 				+ '<button type="button" class="button adn-pill-remove" title="Remove">&#x2715;</button>';
+		}
+	});
+
+	// ── PDF Media Picker ────────────────────────────────────────────────────────
+	// Single shared frame; track which row triggered it.
+	var _pdfFrame      = null;
+	var _pdfActiveRow  = null;
+
+	document.addEventListener('click', function (e) {
+		// Open picker.
+		var btn = e.target.closest('.adn-pdf-select');
+		if (btn) {
+			_pdfActiveRow = btn.closest('.adn-pdf-row, .adn-rep-row');
+			if (!_pdfFrame) {
+				_pdfFrame = wp.media({
+					title:    'Select PDF',
+					button:   { text: 'Use this file' },
+					multiple: false
+				});
+				_pdfFrame.on('select', function () {
+					if (!_pdfActiveRow) { return; }
+					var att  = _pdfFrame.state().get('selection').first().toJSON();
+					var name = att.filename || att.url.split('/').pop();
+					_pdfActiveRow.querySelector('.pdf-file-id').value  = att.id;
+					_pdfActiveRow.querySelector('.pdf-file-url').value = att.url;
+					_pdfActiveRow.querySelector('.pdf-filename').textContent = name;
+					_pdfActiveRow.querySelector('.pdf-preview-wrap').style.display = 'flex';
+					var selBtn = _pdfActiveRow.querySelector('.adn-pdf-select');
+					if (selBtn) { selBtn.textContent = '🔄 Change PDF'; }
+				});
+			}
+			_pdfFrame.open();
+			return;
+		}
+
+		// Clear attached file.
+		var clr = e.target.closest('.adn-pdf-clear');
+		if (clr) {
+			var row = clr.closest('.adn-pdf-row, .adn-rep-row');
+			row.querySelector('.pdf-file-id').value  = '';
+			row.querySelector('.pdf-file-url').value = '';
+			row.querySelector('.pdf-filename').textContent = '';
+			row.querySelector('.pdf-preview-wrap').style.display = 'none';
+			var selBtn2 = row.querySelector('.adn-pdf-select');
+			if (selBtn2) { selBtn2.textContent = '📎 Select PDF'; }
 		}
 	});
 

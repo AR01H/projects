@@ -100,7 +100,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                     <button type="submit" class="btn btn-primary btn-sm"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></button>
                     <button type="button" class="header-search-close" aria-label="Close search">✕</button>
                 </form>
-                <!-- <div class="search-suggest js-suggest" id="headerSearchSuggest" role="listbox" hidden></div> -->
+                <div class="search-suggest js-suggest" id="headerSearchSuggest" role="listbox" hidden></div>
             </div>
         </div>
     </div>

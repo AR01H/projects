@@ -9,12 +9,7 @@
     ],
     "hero": {
         "title": "Property News & Insights",
-        "description": "Stay up to date with the latest UK property market news, mortgage rate changes, regulation updates and expert commentary - all in one place.",
-        "stats": [
-            { "value": "Weekly", "label": "New articles" },
-            { "value": "6", "label": "Topics covered" },
-            { "value": "Free", "label": "Always independent" }
-        ]
+        "description": "Stay up to date with the latest UK property market news, mortgage rate changes, regulation updates and expert commentary - all in one place."
     },
     "categories": [
         { "key": "all",        "label": "All News",           "count": 48 },
@@ -107,13 +102,6 @@
                 { "label": "Avg Time to Sell",          "value": "25 days",  "change": "Faster",     "change_class": "msi-up"   }
             ],
             "updated": "Updated: 22 May 2024 · Sources: ONS, BoE, Moneyfacts"
-        },
-        "newsletter": {
-            "heading": "📬 News by Email",
-            "description": "Get the most important property news delivered to your inbox every week. No spam, unsubscribe anytime.",
-            "placeholder": "Your email address",
-            "button_label": "Subscribe for Free",
-            "note": "Weekly digest · No spam · Unsubscribe anytime"
         }
     },
     "bottom_newsletter": {
@@ -122,6 +110,6 @@
         "description": "Join thousands of buyers, sellers and investors who get our weekly property briefing - market moves, rate changes, and regulation updates.",
         "placeholder": "Enter your email address",
         "button_label": "Subscribe →",
-        "note": "No spam · Unsubscribe any time · 100% free"
+        "note": "Always be updated"
     }
 }

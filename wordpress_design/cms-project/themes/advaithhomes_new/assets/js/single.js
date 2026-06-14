@@ -12,12 +12,6 @@
 ( function () {
     'use strict';
 
-    function init() {
-        buildToc();
-        bindFeedback();
-        bindSaveGuide();
-    }
-
     /* ── TOC generation ──────────────────────────────────────── */
 
     function buildToc() {
@@ -117,7 +111,206 @@
         } );
     }
 
+    /* ── AJAX comment submit ─────────────────────────────────── */
+
+    function initCommentForm() {
+        var cfg = window.adnComments;
+        if ( ! cfg ) { return; }
+
+        var form    = document.getElementById( 'adn-comment-form' );
+        var status  = document.getElementById( 'adn-comment-status' );
+        var list    = document.getElementById( 'adn-comment-list' );
+        var section = document.getElementById( 'comments' );
+        if ( ! form ) { return; }
+
+        form.addEventListener( 'submit', function ( e ) {
+            e.preventDefault();
+
+            var submit = form.querySelector( '[type="submit"]' );
+            var orig   = submit ? submit.textContent : '';
+            if ( submit ) { submit.disabled = true; submit.textContent = cfg.i18n.posting; }
+
+            if ( status ) { status.hidden = true; status.className = 'adn-comment-status'; }
+
+            var fd = new FormData( form );
+            fd.set( 'action',   'adn_submit_comment' );
+            fd.set( 'adn_nonce', cfg.submitNonce );
+
+            fetch( cfg.ajaxUrl, { method: 'POST', body: fd } )
+                .then( function ( r ) { return r.json(); } )
+                .then( function ( d ) {
+                    if ( submit ) { submit.disabled = false; submit.textContent = orig; }
+
+                    if ( ! d.success ) {
+                        showStatus( d.data && d.data.message ? d.data.message : 'An error occurred.', 'error' );
+                        return;
+                    }
+
+                    /* Inject the new comment */
+                    if ( list && d.data.html ) {
+                        var tmp = document.createElement( 'ol' );
+                        tmp.innerHTML = d.data.html;
+                        while ( tmp.firstChild ) { list.appendChild( tmp.firstChild ); }
+                    } else if ( ! list && d.data.html ) {
+                        /* No list yet - build it */
+                        var heading = section ? section.querySelector( '.adn-comments-heading' ) : null;
+                        var newList = document.createElement( 'ol' );
+                        newList.id        = 'adn-comment-list';
+                        newList.className = 'adn-comment-list';
+                        newList.innerHTML = d.data.html;
+                        if ( heading ) {
+                            heading.insertAdjacentElement( 'afterend', newList );
+                        } else if ( section ) {
+                            section.insertBefore( newList, section.firstChild );
+                        }
+                    }
+
+                    /* Update total counter */
+                    if ( section ) {
+                        var totalEl = section.querySelector( '#adn-total-count' );
+                        var cntEl   = section.querySelector( '.adn-comments-count' );
+                        if ( totalEl ) { totalEl.textContent = parseInt( totalEl.textContent, 10 ) + 1; }
+                        if ( cntEl )   { cntEl.textContent   = parseInt( cntEl.textContent, 10 )   + 1; }
+                    }
+
+                    showStatus( d.data.message, d.data.approved ? 'success' : 'pending' );
+                    form.reset();
+
+                    /* Scroll to new comment */
+                    if ( list && list.lastElementChild ) {
+                        list.lastElementChild.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );
+                    }
+                } )
+                .catch( function () {
+                    if ( submit ) { submit.disabled = false; submit.textContent = orig; }
+                    showStatus( 'Network error. Please try again.', 'error' );
+                } );
+        } );
+
+        function showStatus( msg, type ) {
+            if ( ! status ) { return; }
+            status.textContent = msg;
+            status.className   = 'adn-comment-status adn-comment-status--' + type;
+            status.hidden      = false;
+            status.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );
+        }
+    }
+
+    /* ── Filter tabs + replace-mode pagination ──────────────── */
+
+    function initCommentsFilter() {
+        var cfg = window.adnComments;
+        if ( ! cfg ) { return; }
+
+        var section = document.getElementById( 'comments' );
+        if ( ! section ) { return; }
+
+        var pager   = document.getElementById( 'adn-comments-pagination' );
+        var spinner = document.getElementById( 'adn-comments-spinner' );
+
+        var state = { page: 1, order: 'desc', status: 'approve' };
+
+        function setLoading( on ) {
+            if ( spinner ) { spinner.hidden = ! on; }
+            if ( pager ) {
+                pager.querySelectorAll( '.adn-page-btn' ).forEach( function ( b ) {
+                    b.disabled = on;
+                } );
+            }
+        }
+
+        function updatePager( page, totalPages ) {
+            if ( ! pager ) { return; }
+            var cur   = document.getElementById( 'adn-page-current' );
+            var total = document.getElementById( 'adn-page-total' );
+            var prev  = pager.querySelector( '.adn-page-prev' );
+            var next  = pager.querySelector( '.adn-page-next' );
+            if ( cur )   { cur.textContent   = page; }
+            if ( total ) { total.textContent = totalPages; }
+            if ( prev ) {
+                prev.disabled = ( page <= 1 );
+                prev.hidden   = ( totalPages <= 1 );
+            }
+            if ( next ) {
+                next.disabled = ( page >= totalPages );
+                next.hidden   = ( totalPages <= 1 );
+            }
+            pager.dataset.page       = String( page );
+            pager.dataset.totalPages = String( totalPages );
+        }
+
+        function loadComments() {
+            setLoading( true );
+            var fd = new FormData();
+            fd.append( 'action',  'adn_load_comments' );
+            fd.append( 'nonce',   cfg.loadNonce );
+            fd.append( 'post_id', cfg.postId );
+            fd.append( 'page',    state.page );
+            fd.append( 'order',   state.order );
+            fd.append( 'status',  state.status );
+
+            fetch( cfg.ajaxUrl, { method: 'POST', body: fd } )
+                .then( function ( r ) { return r.json(); } )
+                .then( function ( d ) {
+                    setLoading( false );
+                    if ( ! d.success ) { return; }
+
+                    var list = document.getElementById( 'adn-comment-list' );
+                    if ( list ) {
+                        var tmp = document.createElement( 'ol' );
+                        tmp.innerHTML = d.data.html || '';
+                        list.innerHTML = '';
+                        while ( tmp.firstChild ) { list.appendChild( tmp.firstChild ); }
+                        list.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );
+                    }
+
+                    updatePager( d.data.page, d.data.total_pages );
+                    state.page = d.data.page;
+                } )
+                .catch( function () { setLoading( false ); } );
+        }
+
+        /* Filter tab clicks */
+        section.addEventListener( 'click', function ( e ) {
+            var btn = e.target.closest( '.adn-filter-btn' );
+            if ( ! btn ) { return; }
+            section.querySelectorAll( '.adn-filter-btn' ).forEach( function ( b ) {
+                b.classList.remove( 'is-active' );
+            } );
+            btn.classList.add( 'is-active' );
+            state.order  = btn.dataset.order  || 'desc';
+            state.status = btn.dataset.status || 'approve';
+            state.page   = 1;
+            loadComments();
+        } );
+
+        /* Prev / Next */
+        if ( pager ) {
+            pager.addEventListener( 'click', function ( e ) {
+                var btn = e.target.closest( '.adn-page-btn' );
+                if ( ! btn || btn.disabled || btn.hidden ) { return; }
+                var totalPages = parseInt( pager.dataset.totalPages, 10 ) || 1;
+                if ( btn.classList.contains( 'adn-page-prev' ) && state.page > 1 ) {
+                    state.page--;
+                } else if ( btn.classList.contains( 'adn-page-next' ) && state.page < totalPages ) {
+                    state.page++;
+                } else {
+                    return;
+                }
+                loadComments();
+            } );
+        }
+    }
+
     /* ── Bootstrap ───────────────────────────────────────────── */
+
+    function init() {
+        buildToc();
+        bindFeedback();
+        bindSaveGuide();
+        initCommentForm();
+        initCommentsFilter();
+    }
 
     if ( document.readyState === 'loading' ) {
         document.addEventListener( 'DOMContentLoaded', init );

@@ -2,8 +2,8 @@
 /**
  * admin/tabs/calculators/sub-new.php - Add or Edit a DB-stored calculator.
  *
- * Add mode  : no query params — shows a blank form.
- * Edit mode : ?edit_key=KEY — loads the existing DB row and pre-fills everything.
+ * Add mode  : no query params - shows a blank form.
+ * Edit mode : ?edit_key=KEY - loads the existing DB row and pre-fills everything.
  *
  * Shortcode to embed: [ah_calculator key="your-key"]
  */
@@ -23,7 +23,7 @@ $f_html   = $is_edit ? $row['html_content'] : '';
 $f_js     = $is_edit ? $row['js_content']   : '';
 $f_status = $is_edit ? $row['status']       : 'active';
 
-// Meta settings — read from adn_calculators_meta when editing an existing calc.
+// Meta settings - read from adn_calculators_meta when editing an existing calc.
 $f_meta = ( $is_edit && function_exists( 'adn_calculator_meta' ) ) ? adn_calculator_meta( $f_key ) : array();
 
 $_cat_labels = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array(
@@ -170,12 +170,12 @@ $example_js = '(function () {
 					<td>
 						<label>
 							<input type="radio" name="status" value="active" <?php checked( $f_status, 'active' ); ?>>
-							<?php esc_html_e( 'Active — visible and embeddable', ADN_TEXT_DOMAIN ); ?>
+							<?php esc_html_e( 'Active - visible and embeddable', ADN_TEXT_DOMAIN ); ?>
 						</label>
 						&nbsp;&nbsp;
 						<label>
 							<input type="radio" name="status" value="inactive" <?php checked( $f_status, 'inactive' ); ?>>
-							<?php esc_html_e( 'Inactive — hidden everywhere', ADN_TEXT_DOMAIN ); ?>
+							<?php esc_html_e( 'Inactive - hidden everywhere', ADN_TEXT_DOMAIN ); ?>
 						</label>
 					</td>
 				</tr>
@@ -331,7 +331,7 @@ $example_js = '(function () {
 			<p class="description" style="margin-bottom:10px;">
 				<?php esc_html_e( 'Full HTML for the calculator widget. Use class="ah-calc ah-{your-key}" on the root element. The shared', ADN_TEXT_DOMAIN ); ?>
 				<code>calculators.css</code>
-				<?php esc_html_e( 'is already loaded — CSS variables like --color-primary, --color-bg, --radius-sm are available. Inputs must use IDs your JS reads.', ADN_TEXT_DOMAIN ); ?>
+				<?php esc_html_e( 'is already loaded - CSS variables like --color-primary, --color-bg, --radius-sm are available. Inputs must use IDs your JS reads.', ADN_TEXT_DOMAIN ); ?>
 			</p>
 			<?php if ( ! $is_edit && empty( $f_html ) ) : ?>
 			<details style="margin-bottom:8px;">
@@ -348,7 +348,7 @@ $example_js = '(function () {
 		<div style="margin-bottom:28px;">
 			<h3 style="margin-bottom:6px;"><?php esc_html_e( 'JavaScript', ADN_TEXT_DOMAIN ); ?></h3>
 			<p class="description" style="margin-bottom:10px;">
-				<?php esc_html_e( 'Vanilla JS only — no libraries, no imports. Runs inside the isolated iframe. Use document.getElementById() to read inputs and write results. Wrap everything in an IIFE to avoid polluting globals.', ADN_TEXT_DOMAIN ); ?>
+				<?php esc_html_e( 'Vanilla JS only - no libraries, no imports. Runs inside the isolated iframe. Use document.getElementById() to read inputs and write results. Wrap everything in an IIFE to avoid polluting globals.', ADN_TEXT_DOMAIN ); ?>
 			</p>
 			<?php if ( ! $is_edit && empty( $f_js ) ) : ?>
 			<details style="margin-bottom:8px;">

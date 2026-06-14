@@ -1,44 +1,38 @@
 <?php
 /**
- * components/parts/news_widget.php - Reusable Latest News aside widget.
+ * components/parts/news_widget.php - Thin wrapper around parts/list_widget.
  *
- * Props: $widget { heading {title, link_label, link_url}, items[] }
- * Usage: adn_component( 'parts/news_widget', array( 'widget' => array(
- *            'heading' => $ctx['news']['heading'],
- *            'items'   => $ctx['news']['items'],
- *        ) ) );
+ * Maps legacy news_widget props { heading, items[] } into list_widget format
+ * (each item's gradient/title/date/tag/url → mini_card img-variant props).
+ * The white card shell (.news-widget) is kept here for layout; inner content
+ * is rendered by list_widget → mini_card.
  *
- * Designed as a self-contained white card that can be dropped into any
- * sidebar, section, or page layout.
+ * Props via $widget array:
+ *   heading  array  { title, link_label?, link_url? }
+ *   items    array  { gradient, title, date, tag, url }[]
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$widget   = isset( $widget ) && is_array( $widget ) ? $widget : array();
-$heading  = isset( $widget['heading'] ) && is_array( $widget['heading'] ) ? $widget['heading'] : array();
-$items    = isset( $widget['items'] )   && is_array( $widget['items'] )   ? $widget['items']   : array();
-$view_url = ! empty( $heading['link_url'] )   ? (string) $heading['link_url']   : '';
-$view_lbl = ! empty( $heading['link_label'] ) ? (string) $heading['link_label'] : 'View all →';
+$widget = isset( $widget ) && is_array( $widget ) ? $widget : array();
+$items  = isset( $widget['items'] ) && is_array( $widget['items'] ) ? $widget['items'] : array();
 
 if ( empty( $items ) ) { return; }
+
+$cards = array();
+foreach ( $items as $_item ) {
+	$cards[] = array(
+		'img'   => isset( $_item['gradient'] ) ? (string) $_item['gradient'] : '',
+		'title' => isset( $_item['title'] )    ? (string) $_item['title']    : '',
+		'meta'  => isset( $_item['date'] )     ? (string) $_item['date']     : '',
+		'tag'   => isset( $_item['tag'] )      ? (string) $_item['tag']      : '',
+		'url'   => isset( $_item['url'] )      ? (string) $_item['url']      : '',
+	);
+}
 ?>
 <div class="news-widget">
-    <?php if ( ! empty( $heading['title'] ) || $view_url ) : ?>
-    <div class="news-widget-header">
-        <?php if ( ! empty( $heading['title'] ) ) : ?>
-            <span class="news-widget-title"><?php echo esc_html( $heading['title'] ); ?></span>
-        <?php endif; ?>
-        <?php if ( $view_url ) : ?>
-            <a href="<?php echo esc_url( adn_link( $view_url ) ); ?>" class="news-widget-view-all">
-                <?php echo esc_html( $view_lbl ); ?>
-            </a>
-        <?php endif; ?>
-    </div>
-    <?php endif; ?>
-
-    <div class="news-widget-items mini_card_container_design">
-        <?php foreach ( $items as $item ) : ?>
-            <?php adn_component( 'cards/news_item', array( 'item' => $item ) ); ?>
-        <?php endforeach; ?>
-    </div>
+	<?php adn_component( 'parts/list_widget', array( 'widget' => array(
+		'heading' => isset( $widget['heading'] ) && is_array( $widget['heading'] ) ? $widget['heading'] : array(),
+		'items'   => $cards,
+	) ) ); ?>
 </div>

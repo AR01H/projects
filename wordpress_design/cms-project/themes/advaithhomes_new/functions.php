@@ -15,6 +15,7 @@ require_once get_template_directory() . '/includes/core_routing.php';
 require_once get_template_directory() . '/includes/class-category-settings.php';
 require_once get_template_directory() . '/includes/class-calculator-db.php';
 require_once get_template_directory() . '/includes/class-expert-db.php';
+require_once get_template_directory() . '/includes/comment-callbacks.php';
 
 // ===========================
 // LOAD HELPER FUNCTIONS
@@ -40,6 +41,14 @@ if ( is_admin() ) {
 add_action( 'after_setup_theme', 'ahn_include_files' );
 add_action( 'after_setup_theme', 'adn_theme_register' );
 
+// Site-wide notice popup - once per day, resets if content changes.
+add_action( 'wp_footer', 'adn_render_site_notice_popup' );
+function adn_render_site_notice_popup(): void {
+	if ( class_exists( 'AH_Notice_Helper' ) ) {
+		AH_Notice_Helper::render_frontend_popup();
+	}
+}
+
 // Create default pages only once, when the theme is activated, instead of on every admin load.
 add_action( 'after_switch_theme', 'adn_create_default_pages' );
 
@@ -56,7 +65,7 @@ add_action( 'after_switch_theme', array( 'AH_Expert_DB', 'install' ) );
 add_action( 'admin_init',         array( 'AH_Expert_DB', 'maybe_install' ) );
 
 // Merge DB-stored (admin-created) calculators into the adn_calculators() registry.
-// File-based calculators already in the array take priority — DB only adds new keys.
+// File-based calculators already in the array take priority - DB only adds new keys.
 add_filter( 'adn_calculators', 'adn_merge_db_calculators' );
 function adn_merge_db_calculators( $calcs ) {
 	if ( ! class_exists( 'AH_Calculator_DB' ) ) { return $calcs; }
@@ -82,6 +91,14 @@ add_action( 'wp_ajax_nopriv_adn_expert_contact', 'adn_expert_contact_ajax' );
 
 // Inline comment moderation (admin only).
 add_action( 'wp_ajax_adn_moderate_comment', 'adn_moderate_comment_ajax' );
+
+// AJAX comment submission (replaces wp-comments-post.php redirect).
+add_action( 'wp_ajax_adn_submit_comment',        'adn_ajax_submit_comment' );
+add_action( 'wp_ajax_nopriv_adn_submit_comment', 'adn_ajax_submit_comment' );
+
+// AJAX load-more comments pagination.
+add_action( 'wp_ajax_adn_load_comments',        'adn_ajax_load_comments' );
+add_action( 'wp_ajax_nopriv_adn_load_comments', 'adn_ajax_load_comments' );
 
 // Post helpful / like counter.
 add_action( 'wp_ajax_adn_post_helpful',        'adn_post_helpful_ajax' );
@@ -118,6 +135,106 @@ function adn_moderate_comment_ajax() {
 	} else {
 		wp_send_json_error( array( 'message' => 'Action failed' ) );
 	}
+}
+
+function adn_ajax_submit_comment() {
+	if ( ! check_ajax_referer( 'adn_comment_nonce', 'adn_nonce', false ) ) {
+		wp_send_json_error( array( 'message' => __( 'Security check failed. Please refresh and try again.', ADN_TEXT_DOMAIN ) ), 403 );
+	}
+
+	$comment = wp_handle_comment_submission( wp_unslash( $_POST ) );
+
+	if ( is_wp_error( $comment ) ) {
+		wp_send_json_error( array( 'message' => $comment->get_error_message() ) );
+	}
+
+	/* Render the new comment as HTML so JS can inject it */
+	$_args = array(
+		'style'     => 'ol',
+		'max_depth' => (int) get_option( 'thread_comments_depth', 5 ),
+	);
+	ob_start();
+	adn_comment_callback( $comment, $_args, 1 );
+	adn_comment_end_callback( $comment, $_args, 1 );
+	$html = ob_get_clean();
+
+	wp_send_json_success( array(
+		'html'     => $html,
+		'approved' => (bool) $comment->comment_approved,
+		'message'  => $comment->comment_approved
+			? __( 'Your comment has been posted.', ADN_TEXT_DOMAIN )
+			: __( 'Your comment is awaiting moderation. Thank you.', ADN_TEXT_DOMAIN ),
+	) );
+}
+
+/** Fetch a page of comments (replace mode - always 10 max). */
+function adn_ajax_load_comments() {
+	check_ajax_referer( 'adn_load_comments', 'nonce' );
+
+	$post_id  = isset( $_POST['post_id'] ) ? (int) $_POST['post_id']       : 0;
+	$page     = isset( $_POST['page'] )    ? max( 1, (int) $_POST['page'] ) : 1;
+	$per_page = 10;
+
+	/* Order: desc = newest first (default), asc = oldest first */
+	$order = ( isset( $_POST['order'] ) && 'asc' === (string) $_POST['order'] ) ? 'ASC' : 'DESC';
+
+	/* Status: admins may request pending; everyone else sees approved only */
+	$allowed_statuses = array( 'approve' );
+	if ( current_user_can( 'moderate_comments' ) ) {
+		$allowed_statuses[] = 'hold';
+	}
+	$req_status = isset( $_POST['status'] ) ? sanitize_key( (string) $_POST['status'] ) : 'approve';
+	$status     = in_array( $req_status, $allowed_statuses, true ) ? $req_status : 'approve';
+
+	if ( ! $post_id || ! get_post( $post_id ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid post.' ), 400 );
+	}
+
+	$total       = (int) get_comments( array(
+		'post_id' => $post_id,
+		'status'  => $status,
+		'count'   => true,
+		'type'    => 'comment',
+	) );
+	$total_pages = $total > 0 ? (int) ceil( $total / $per_page ) : 1;
+	$offset      = ( $page - 1 ) * $per_page;
+
+	$comments = get_comments( array(
+		'post_id' => $post_id,
+		'status'  => $status,
+		'number'  => $per_page,
+		'offset'  => $offset,
+		'orderby' => 'comment_date_gmt',
+		'order'   => $order,
+		'type'    => 'comment',
+	) );
+
+	if ( empty( $comments ) ) {
+		wp_send_json_success( array( 'html' => '', 'total' => 0, 'page' => 1, 'total_pages' => 1 ) );
+	}
+
+	$GLOBALS['post'] = get_post( $post_id );
+	setup_postdata( $GLOBALS['post'] );
+
+	$_args = array(
+		'style'     => 'ol',
+		'max_depth' => (int) get_option( 'thread_comments_depth', 5 ),
+	);
+
+	ob_start();
+	foreach ( $comments as $_c ) {
+		adn_comment_callback( $_c, $_args, 1 );
+		adn_comment_end_callback( $_c, $_args, 1 );
+	}
+	$html = ob_get_clean();
+	wp_reset_postdata();
+
+	wp_send_json_success( array(
+		'html'        => $html,
+		'total'       => $total,
+		'page'        => $page,
+		'total_pages' => $total_pages,
+	) );
 }
 
 function adn_post_helpful_ajax() {
@@ -180,7 +297,7 @@ function adn_expert_full_page_render() {
 }
 
 /**
- * Expert contact form AJAX handler — used by both the listing page and the profile page.
+ * Expert contact form AJAX handler - used by both the listing page and the profile page.
  */
 function adn_expert_contact_ajax() {
 	check_ajax_referer( 'adn_expert_contact', 'nonce' );

@@ -53,9 +53,7 @@ class ADN_Mock_Installer {
 
 		// 2. Parent Terms (the "journey" cards).
 		$parents = array(
-			array( 'name' => 'Buying',       'slug' => 'buying',       'icon' => '🏡', 'desc' => 'Step-by-step guides from budgeting to moving in.' ),
-			array( 'name' => 'Selling',      'slug' => 'selling',      'icon' => '🏘️', 'desc' => 'Expert information to help you sell with confidence.' ),
-			array( 'name' => 'House Movers', 'slug' => 'house-movers', 'icon' => '📦', 'desc' => 'Planning to move? Find checklists, timelines & tips.' ),
+			
 		);
 		$parent_id = array();
 		foreach ( $parents as $i => $p ) {
@@ -70,9 +68,6 @@ class ADN_Mock_Installer {
 
 		// 3. Terms (topics) under each parent term.
 		$topics = array(
-			'buying'       => array( 'First-Time Buyers', 'Mortgages', 'Conveyancing', 'Stamp Duty' ),
-			'selling'      => array( 'Preparing to Sell', 'Estate Agents', 'Selling Costs' ),
-			'house-movers' => array( 'Moving Checklist', 'Removals', 'Change of Address' ),
 		);
 		$term_id = array(); // slug => id
 		foreach ( $topics as $pslug => $names ) {
@@ -89,10 +84,6 @@ class ADN_Mock_Installer {
 
 		// 4. Articles → WordPress posts linked to a topic term.
 		$articles = array(
-			array( 'First-Time Buyer Guide in the UK',    'first-time-buyer-guide', 'A complete step-by-step guide for first-time buyers.',        'buying-first-time-buyers', 1 ),
-			array( 'Understanding Mortgage in Principle', 'mortgage-in-principle',  'Why it matters and how it strengthens your offer.',           'buying-mortgages',         0 ),
-			array( 'The Conveyancing Process Explained',  'conveyancing-process',   'Each step of the legal process in plain English.',            'buying-conveyancing',      0 ),
-			array( 'How to Sell Your Home Successfully',  'how-to-sell-your-home',  'Expert tips to help you sell faster and for the right price.', 'selling-preparing-to-sell',0 ),
 		);
 		foreach ( $articles as $a ) {
 			list( $title, $slug, $excerpt, $topic_slug, $featured ) = $a;
@@ -102,10 +93,7 @@ class ADN_Mock_Installer {
 
 		// 5. News → WordPress posts linked to the News term.
 		$news = array(
-			array( 'UK House Prices Rise 1.4% in April - Latest ONS Data', 'news-house-prices-april',    'The latest ONS figures show a modest monthly rise.' ),
-			array( 'Mortgage Rates Hold Steady - What It Means for Buyers', 'news-mortgage-rates-steady', 'Lenders keep rates flat as markets settle.' ),
-			array( 'RICS: Buyer Enquiries Reach 12-Month High',            'news-rics-buyer-enquiries',  'Surveyors report renewed buyer demand.' ),
-			array( 'Stamp Duty Receipts Hit Record High in Q1',           'news-stamp-duty-receipts',   'HMRC data shows record SDLT receipts.' ),
+
 		);
 		foreach ( $news as $n ) {
 			list( $title, $slug, $excerpt ) = $n;

@@ -2,18 +2,18 @@
 /**
  * pages/page-topic_category_guide.php
  *
- * Topic/category listing page — articles within one taxonomy term.
+ * Topic/category listing page - articles within one taxonomy term.
  *
  * Layout:
  *   1. Hero (term name, parent label, description)
  *   2. page-with-sidebar:
- *      Main — article grid (guide_listing_card) + pagination
- *      Sidebar — buying topics, calculators quick tools, expert help
+ *      Main - article grid (guide_listing_card) + pagination
+ *      Sidebar - buying topics, calculators quick tools, expert help
  *   3. Related categories carousel (full-width)
  *   4. Help CTA banner
  *
  * Routed from includes/core_routing.php; query var `adn_guide_term_slug` carries the slug.
- * RULE: No hardcoded content and no data reads here — only structure.
+ * RULE: No hardcoded content and no data reads here - only structure.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -25,43 +25,17 @@ $term   = $ctx['term'];
 $parent = $ctx['parent'];
 
 $term_name = $term ? (string) $term->name : '';
-$term_desc = $term ? (string) $term->description : '';
-$term_icon = $term ? (string) $term->icon_emoji : '';
 
 get_header();
 ?>
 
 <?php adn_component( 'parts/main_header', array( 'chrome' => $ctx['chrome'] ) ); ?>
 
-<?php /* ============================== BREADCRUMB ============================== */ ?>
-<?php adn_component( 'parts/breadcrumb', array( 'items' => $ctx['breadcrumb'] ) ); ?>
-
-<?php /* ============================== HERO ============================== */ ?>
-<section class="cat-guide-hero-section">
-    <div class="container">
-        <div class="cat-guide-hero">
-            <?php if ( $parent && ! empty( $parent->name ) ) : ?>
-                <div class="cat-guide-journey-label">
-                    <?php if ( ! empty( $parent->icon_emoji ) ) : ?>
-                        <?php echo esc_html( $parent->icon_emoji ); ?>
-                    <?php endif; ?>
-                    <?php echo esc_html( $parent->name ); ?>
-                </div>
-            <?php endif; ?>
-
-            <h1 class="cat-guide-title">
-                <?php if ( '' !== $term_icon ) : ?>
-                    <span class="cat-guide-icon"><?php echo esc_html( $term_icon ); ?></span>
-                <?php endif; ?>
-                <?php echo esc_html( $term_name ); ?>
-            </h1>
-
-            <?php if ( '' !== $term_desc ) : ?>
-                <p class="cat-guide-desc"><?php echo esc_html( $term_desc ); ?></p>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
+<?php /* ============================== HERO (breadcrumb renders inside) ============================== */ ?>
+<?php adn_component( 'sections/page_hero', array(
+	'hero'       => $ctx['hero'],
+	'breadcrumb' => $ctx['breadcrumb'],
+) ); ?>
 
 <?php /* ============================== MAIN + SIDEBAR ============================== */ ?>
 <div class="container">

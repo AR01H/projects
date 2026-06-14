@@ -89,7 +89,7 @@
 
 /* ── Category Tabs Strip ────────────────────────────────────── */
 .expert-cats-strip {
-    background: var(--color-white, #fff);
+    background: var(--color-surface, #f3f4f6);
     border-bottom: 1px solid var(--color-border, #e5e7eb);
     position: sticky;
     top: 64px;
@@ -98,38 +98,43 @@
 
 .expert-cats-inner {
     display: flex;
-    gap: 4px;
-    padding: 10px 0;
+    gap: 10px;
+    padding: 18px 0;
     overflow-x: auto;
     scrollbar-width: none;
+    align-items: center;
 }
 
 .expert-cats-inner::-webkit-scrollbar { display: none; }
 
 .expert-cat-tab {
-    padding: 8px 18px;
-    border: 1px solid var(--color-border, #e5e7eb);
+    padding: 10px 24px;
+    border: 1.5px solid var(--color-border, #e5e7eb);
     border-radius: 20px;
     font-size: 0.83rem;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     cursor: pointer;
     background: var(--color-white, #fff);
-    color: var(--color-text, #374151);
+    color: var(--color-text-muted, #6b7280);
     white-space: nowrap;
     flex-shrink: 0;
-    transition: border-color 0.12s, background 0.12s, color 0.12s;
+    transition: border-color 0.14s, background 0.14s, color 0.14s, box-shadow 0.14s;
     font-family: inherit;
 }
 
 .expert-cat-tab:hover {
-    border-color: var(--color-primary, #1d4ed8);
-    color: var(--color-primary, #1d4ed8);
+    border-color: var(--color-primary, #1d5c8e);
+    color: var(--color-primary, #1d5c8e);
+    background: #fff;
 }
 
 .expert-cat-tab.active {
-    background: var(--color-primary, #1d4ed8);
-    border-color: var(--color-primary, #1d4ed8);
+    background: var(--color-primary, #1d5c8e);
+    border-color: var(--color-primary, #1d5c8e);
     color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(29, 92, 142, 0.22);
 }
 
 /* ── Main Layout (listing page) ─────────────────────────────── */
@@ -444,6 +449,98 @@
     color: var(--color-text-muted, #6b7280);
     line-height: 1.5;
     margin: 0;
+}
+
+/* Latest news list */
+.expert-news-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.expert-news-item { border-bottom: 1px solid var(--color-border, #e5e7eb); }
+.expert-news-item:last-child { border-bottom: none; }
+
+.expert-news-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 9px 4px;
+    text-decoration: none;
+    transition: background 0.12s;
+    border-radius: 4px;
+}
+
+.expert-news-link:hover { background: var(--color-surface, #f9fafb); }
+
+.enl-date {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #9ca3af);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.enl-title {
+    font-size: 0.82rem;
+    color: var(--color-text, #374151);
+    line-height: 1.45;
+}
+
+.expert-news-link:hover .enl-title { color: var(--color-primary, #1d4ed8); }
+
+/* Calculator quick-links */
+.expert-calc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.expert-calc-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.83rem;
+    color: var(--color-text, #374151);
+    transition: background 0.12s;
+}
+
+.expert-calc-link:hover {
+    background: var(--color-surface, #f3f4f6);
+    color: var(--color-primary, #1d4ed8);
+}
+
+/* Newsletter CTA box */
+.expert-nl-cta {
+    background: linear-gradient(135deg, #eef3fb 0%, #e8eef8 100%);
+    border-color: var(--color-border, #d1d5db);
+}
+
+.expert-nl-btn {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 6px;
+    color: var(--color-primary, #1d4ed8);
+    border: 1.5px solid var(--color-primary, #1d4ed8);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+
+.expert-nl-btn:hover {
+    background: var(--color-primary, #1d4ed8);
+    color: #fff;
 }
 
 /* ── Can't Find CTA ─────────────────────────────────────────── */

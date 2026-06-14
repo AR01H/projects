@@ -10,7 +10,7 @@
         "brand": {
             "icon": "🏠",
             "name": "ADVAITH HOMES",
-            "sub": "HOMES",
+            "sub": "",
             "description": "Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK."
         },
         "social": [
@@ -19,50 +19,6 @@
             { "label": "YouTube", "icon": "▶", "url": "#" }
         ],
         "columns": [
-            {
-                "title": "Explore",
-                "links": [
-                    { "label": "Buying Guides", "url": "/guides/" },
-                    { "label": "Selling Guides", "url": "/guides/" },
-                    { "label": "House Movers", "url": "/house-movers/" },
-                    { "label": "Calculators", "url": "/calculators/" },
-                    { "label": "News & Insights", "url": "/news/" },
-                    { "label": "Regulations", "url": "/regulations/" }
-                ]
-            },
-            {
-                "title": "Popular Tools",
-                "links": [
-                    { "label": "Stamp Duty Calculator", "url": "/stamp-duty/" },
-                    { "label": "Mortgage Calculator", "url": "/calculators/" },
-                    { "label": "Buying Cost Calculator", "url": "/calculators/" },
-                    { "label": "Selling Cost Calculator", "url": "/calculators/" },
-                    { "label": "Affordability Calculator", "url": "/calculators/" },
-                    { "label": "Rent vs Buy Calculator", "url": "/calculators/" },
-                    { "label": "All Calculators", "url": "/calculators/" }
-                ]
-            },
-            {
-                "title": "Get Help",
-                "links": [
-                    { "label": "Ask an Expert", "url": "/ask-expert/" },
-                    { "label": "Find a Solicitor", "url": "/ask-expert/" },
-                    { "label": "Find a Mortgage Adviser", "url": "/ask-expert/" },
-                    { "label": "Surveyors", "url": "/ask-expert/" },
-                    { "label": "Removal Companies", "url": "/ask-expert/" },
-                    { "label": "Buyer-side Guidance", "url": "/ask-expert/" }
-                ]
-            },
-            {
-                "title": "About",
-                "links": [
-                    { "label": "About Us", "url": "/about/" },
-                    { "label": "Our Mission", "url": "/about/" },
-                    { "label": "Contact Us", "url": "/contact/" },
-                    { "label": "Terms of Use", "url": "/terms/" },
-                    { "label": "Privacy Policy", "url": "/privacy/" }
-                ]
-            }
         ],
         "copyright": "© 2024 ADVAITH HOMES. All rights reserved.",
         "made_with": "Made with ♥ in the UK",

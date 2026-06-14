@@ -53,11 +53,6 @@ $_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default
                    class="btn <?php echo esc_attr( $style ); ?> btn-lg"><?php echo esc_html( isset( $action['label'] ) ? $action['label'] : '' ); ?></a>
             <?php endforeach; ?>
         </div>
-        <div class="hero-trust">
-            <?php foreach ( $trust_items as $trust ) : ?>
-                <div class="trust-item"><span class="trust-icon">✓</span> <?php echo esc_html( $trust ); ?></div>
-            <?php endforeach; ?>
-        </div>
     </div>
     <div class="hero-visual">
         <div class="hero-process-diagram">

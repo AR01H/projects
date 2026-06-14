@@ -24,6 +24,7 @@ function adn_topic_category_get_context() {
 		'slug'               => $slug,
 		'term'               => null,
 		'parent'             => null,
+		'hero'               => array(),
 		'breadcrumb'         => array(),
 		'articles'           => array(),
 		'pagination'         => array(),
@@ -47,7 +48,7 @@ function adn_topic_category_get_context() {
 		return $ctx;
 	}
 
-	// Unslash name/description — data may have been inserted with addslashes().
+	// Unslash name/description - data may have been inserted with addslashes().
 	if ( ! empty( $term->name ) )        { $term->name        = wp_unslash( $term->name ); }
 	if ( ! empty( $term->description ) ) { $term->description = wp_unslash( $term->description ); }
 
@@ -72,6 +73,22 @@ function adn_topic_category_get_context() {
 		) );
 	}
 	$ctx['parent'] = $parent;
+
+	// ── Hero ─────────────────────────────────────────────────────────────────────
+	$_cs_all      = class_exists( 'AH_Category_Settings' ) ? AH_Category_Settings::get_all( $slug ) : array();
+	$_cs_app      = isset( $_cs_all['appearance'] ) && is_array( $_cs_all['appearance'] ) ? $_cs_all['appearance'] : array();
+	$_cs_thumb_id = ! empty( $_cs_app['thumbnail_id'] ) ? (int) $_cs_app['thumbnail_id'] : 0;
+	$_term_img_id = ! empty( $term->image_id ) ? (int) $term->image_id : 0;
+
+	$ctx['hero'] = array(
+		'eyebrow'     => $parent
+			? ( ! empty( $parent->icon_emoji ) ? $parent->icon_emoji . ' ' : '' ) . $parent->name
+			: '',
+		'title'       => isset( $term->name )        ? wp_unslash( (string) $term->name )        : '',
+		'description' => isset( $term->description ) ? wp_unslash( (string) $term->description ) : '',
+		'image_id'    => $_cs_thumb_id ?: $_term_img_id,
+		'trust_items' => array(),
+	);
 
 	$parent_label = $parent && ! empty( $parent->name ) ? (string) $parent->name : 'Property';
 
@@ -129,7 +146,7 @@ function adn_topic_category_get_context() {
 	}
 
 	// WP_Query fallback when CMS has no linked posts.
-	// Only runs when a specific WP category match is found — never queries all posts.
+	// Only runs when a specific WP category match is found - never queries all posts.
 	if ( empty( $articles ) ) {
 		$match_terms = array();
 
@@ -155,7 +172,7 @@ function adn_topic_category_get_context() {
 			}
 		}
 
-		// Only run query when a specific category was found — avoid returning ALL posts.
+		// Only run query when a specific category was found - avoid returning ALL posts.
 		if ( ! empty( $match_terms ) ) {
 			$q_args = array(
 				'post_type'      => 'post',
@@ -251,7 +268,7 @@ function adn_topic_category_get_context() {
 	// ── Sidebar ───────────────────────────────────────────────────────────────────
 	$sidebar = array();
 
-	// Buying/parent topic types — all sibling terms including current, for navigation.
+	// Buying/parent topic types - all sibling terms including current, for navigation.
 	$topic_items = array();
 	if ( $parent ) {
 		if ( ! empty( $term->parent_term_id ) ) {
@@ -291,7 +308,7 @@ function adn_topic_category_get_context() {
 		);
 	}
 
-	// Quick tools — top 4 calculators as sidebar links.
+	// Quick tools - top 4 calculators as sidebar links.
 	if ( function_exists( 'adn_calculators' ) ) {
 		$all_calcs  = adn_calculators();
 		$meta_all   = get_option( 'adn_calculators_meta', array() );
@@ -316,7 +333,7 @@ function adn_topic_category_get_context() {
 		}
 	}
 
-	// Expert help — from global calculator page option.
+	// Expert help - from global calculator page option.
 	$_eh = get_option( 'adn_calculators_page', array() );
 	$sidebar['expert_help'] = array(
 		'heading'  => ! empty( $_eh['sidebar_help_title'] )     ? $_eh['sidebar_help_title']     : 'Need Expert Help?',

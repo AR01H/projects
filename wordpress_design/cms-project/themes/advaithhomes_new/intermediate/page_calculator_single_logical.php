@@ -2,11 +2,11 @@
 /**
  * intermediate/page_calculator_single_logical.php
  *
- * Builds context for /calculators/?ah_calc_page=KEY — the full single-calculator
+ * Builds context for /calculators/?ah_calc_page=KEY - the full single-calculator
  * detail page (header + footer + sidebar).
  *
  * Returns null when $key does not match any active calculator.
- * RULE: No markup here — only data shaping.
+ * RULE: No markup here - only data shaping.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -85,7 +85,7 @@ function adn_calculator_single_get_context( $key ) {
 		'url'   => ( isset( $meta['guide_url'] )   && '' !== $meta['guide_url'] )   ? (string) $meta['guide_url']   : '',
 	);
 
-	// ── Sidebar categories (all calcs — links back to listing page) ───────
+	// ── Sidebar categories (all calcs - links back to listing page) ───────
 	$defined_cats = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array(
 		'buying'        => 'Buying',
 		'selling'       => 'Selling',
@@ -162,7 +162,7 @@ function adn_calculator_single_get_context( $key ) {
 		}
 	}
 
-	// ── News mini (sidebar) — first 3 newsbar items ─────────────────────
+	// ── News mini (sidebar) - first 3 newsbar items ─────────────────────
 	$news_mini_items = array();
 	foreach ( array_slice( $news_items, 0, 3 ) as $n ) {
 		$news_mini_items[] = array(

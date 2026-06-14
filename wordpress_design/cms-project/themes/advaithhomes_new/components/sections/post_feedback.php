@@ -109,7 +109,7 @@ btn.addEventListener('click', function() {
         .catch(function(){ btn.disabled = false; });
 });
 
-// Native share button — show only when Web Share API is available
+// Native share button - show only when Web Share API is available
 (function(){
     var nsBtn = document.getElementById('pf-native-share-<?php echo esc_js( (string) $_post ); ?>');
     if (!nsBtn || !navigator.share) return;

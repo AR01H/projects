@@ -95,11 +95,11 @@ $saved = isset( $_GET['saved'] ) ? (int) $_GET['saved'] : 0;
 			<div style="background:#f0f8ff;border-left:4px solid #0073aa;padding:1rem;border-radius:4px;margin-bottom:1.5rem;">
 				<p style="margin:0;font-size:0.95rem;color:#333;">
 					<strong>How it works:</strong><br>
-					✓ Banner appears at top of all pages<br>
-					✓ Shows once per visitor per day (via browser session)<br>
-					✓ Visitors can dismiss with ✕ button<br>
-					✓ Managed here, displayed by theme component<br>
-					✓ Can be used in different templates
+					✓ Popup appears on every page of the site<br>
+					✓ Shows once per visitor per day (via localStorage)<br>
+					✓ Visitors can dismiss with ✕ button or Escape key<br>
+					✓ If you change the title/message/button, the popup reappears even for visitors who already dismissed it today<br>
+					✓ Same content on the same day = never repeats
 				</p>
 			</div>
 

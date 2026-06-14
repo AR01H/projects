@@ -95,6 +95,19 @@ function adn_enqueue_template_specific_assets() {
         }
         if ( file_exists( ADN_THEME_DIR . '/assets/js/single.js' ) ) {
             wp_enqueue_script( 'adn-single-script', ADN_THEME_URI . '/assets/js/single.js', array(), ADN_THEME_VERSION, true );
+            wp_localize_script( 'adn-single-script', 'adnComments', array(
+                'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
+                'submitNonce'   => wp_create_nonce( 'adn_comment_nonce' ),
+                'loadNonce'     => wp_create_nonce( 'adn_load_comments' ),
+                'postId'        => (int) get_queried_object_id(),
+                'perPage'       => 10,
+                'i18n'          => array(
+                    'posting'   => __( 'Posting…', ADN_TEXT_DOMAIN ),
+                    'loading'   => __( 'Loading…', ADN_TEXT_DOMAIN ),
+                    'loadMore'  => __( 'Load more comments', ADN_TEXT_DOMAIN ),
+                    'noMore'    => __( 'All comments loaded', ADN_TEXT_DOMAIN ),
+                ),
+            ) );
         }
     }
 }

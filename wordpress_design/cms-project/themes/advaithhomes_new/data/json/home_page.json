@@ -11,10 +11,6 @@
             { "label": "Ask an Expert", "url": "/ask-expert/", "style": "outline" }
         ],
         "trust_items": [
-            "Independent Information",
-            "UK Focused & Trusted",
-            "Plain English Guides",
-            "For Buyers, Sellers & Movers"
         ],
         "diagram": {
             "center_icon": "🏠",

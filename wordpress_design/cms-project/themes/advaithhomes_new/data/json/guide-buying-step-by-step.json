@@ -143,13 +143,5 @@
             ],
             "cta": { "label": "Find an Expert →", "url": "/ask-expert/" }
         }
-    },
-    "stay_informed": {
-        "icon": "✉️",
-        "title": "Stay Informed",
-        "description": "Get the latest property guides, news and regulation updates straight to your inbox.",
-        "placeholder": "Enter your email address",
-        "button_label": "Subscribe",
-        "note": "No spam. Unsubscribe anytime."
     }
 }

@@ -8,13 +8,5 @@
             { "icon": "📅",  "label": "Monthly Payment Calculator",         "url": "/calculators/" },
             { "icon": "🔑",  "label": "Rent vs Buy Calculator",             "url": "/calculators/" }
         ]
-    },
-    "newsletter": {
-        "icon": "✉️",
-        "heading": "Stay Informed",
-        "description": "Get the latest property guides, news and regulation updates straight to your inbox.",
-        "placeholder": "Enter your email address",
-        "button_label": "Subscribe",
-        "note": "No spam. Unsubscribe anytime."
     }
 }

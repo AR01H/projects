@@ -38,8 +38,9 @@ class ADN_Theme_Admin {
 		add_action( 'admin_post_adn_delete_calc',     array( __CLASS__, 'handle_delete_calc' ) );
 
 		// Experts / Team → Add / Edit / Delete DB expert.
-		add_action( 'admin_post_adn_save_expert',   array( __CLASS__, 'handle_save_expert' ) );
-		add_action( 'admin_post_adn_delete_expert', array( __CLASS__, 'handle_delete_expert' ) );
+		add_action( 'admin_post_adn_save_expert',        array( __CLASS__, 'handle_save_expert' ) );
+		add_action( 'admin_post_adn_delete_expert',      array( __CLASS__, 'handle_delete_expert' ) );
+		add_action( 'admin_post_adn_save_expert_banner', array( __CLASS__, 'handle_save_expert_banner' ) );
 
 		// Manage Calculator → Page Content settings.
 		add_action( 'admin_post_adn_save_calcs_page', array( __CLASS__, 'handle_save_calcs_page' ) );
@@ -67,7 +68,7 @@ class ADN_Theme_Admin {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_assets' ) );
 
 		// Redirect to include &subtab= in the URL when missing, so form hidden fields work.
-		// Must run on admin_init (before any output) — NOT inside render_page().
+		// Must run on admin_init (before any output) - NOT inside render_page().
 		add_action( 'admin_init', array( __CLASS__, 'maybe_redirect_to_subtab' ) );
 	}
 
@@ -143,6 +144,10 @@ class ADN_Theme_Admin {
 					'new' => array(
 						'label' => __( '+ Add / Edit', ADN_TEXT_DOMAIN ),
 						'view'  => 'experts/sub-new.php',
+					),
+					'banner' => array(
+						'label' => __( 'Expert Banner', ADN_TEXT_DOMAIN ),
+						'view'  => 'experts/sub-banner.php',
 					),
 				),
 			),
@@ -253,7 +258,7 @@ class ADN_Theme_Admin {
 	/**
 	 * Fired on admin_init (before any output).
 	 * When the active tab has subtabs but &subtab= is absent from the URL,
-	 * redirect to add it — so sub-views can safely read $_GET['subtab'] for form fields.
+	 * redirect to add it - so sub-views can safely read $_GET['subtab'] for form fields.
 	 */
 	public static function maybe_redirect_to_subtab() {
 		if ( ! is_admin() || ! current_user_can( self::CAPABILITY ) ) {
@@ -603,7 +608,7 @@ class ADN_Theme_Admin {
 		$input = ( isset( $_POST['calc'] ) && is_array( $_POST['calc'] ) ) ? wp_unslash( $_POST['calc'] ) : array();
 		$meta  = array();
 
-		// Allowed category slugs — dynamic when the categories function is available.
+		// Allowed category slugs - dynamic when the categories function is available.
 		$allowed_cats = function_exists( 'adn_calculator_categories' )
 			? array_keys( adn_calculator_categories() )
 			: array( 'buying', 'selling', 'moving', 'mortgage', 'tax', 'affordability' );
@@ -1107,25 +1112,6 @@ class ADN_Theme_Admin {
 			'items'   => $ft_items,
 		) );
 
-		// ── External Links ────────────────────────────────────────────────────────
-		$raw_el   = ( isset( $_POST['external_links'] ) && is_array( $_POST['external_links'] ) ) ? wp_unslash( $_POST['external_links'] ) : array();
-		$el_items = array();
-		if ( isset( $raw_el['items'] ) && is_array( $raw_el['items'] ) ) {
-			foreach ( $raw_el['items'] as $l ) {
-				if ( ! is_array( $l ) || empty( $l['title'] ) ) { continue; }
-				$el_items[] = array(
-					'icon'  => sanitize_text_field( isset( $l['icon'] )  ? $l['icon']  : '' ),
-					'title' => sanitize_text_field( $l['title'] ),
-					'url'   => esc_url_raw(          isset( $l['url'] )   ? $l['url']   : '' ),
-					'desc'  => sanitize_text_field( isset( $l['desc'] )  ? $l['desc']  : '' ),
-				);
-			}
-		}
-		AH_Category_Settings::save( $slug, 'external_links', array(
-			'heading' => sanitize_text_field( isset( $raw_el['heading'] ) ? $raw_el['heading'] : '' ),
-			'items'   => $el_items,
-		) );
-
 		// ── Sidebar ──────────────────────────────────────────────────────────────
 		$raw_sb = ( isset( $_POST['sidebar'] ) && is_array( $_POST['sidebar'] ) ) ? wp_unslash( $_POST['sidebar'] ) : array();
 		$tools  = array();
@@ -1173,6 +1159,61 @@ class ADN_Theme_Admin {
 			'btn_url'     => esc_url_raw(            isset( $raw_cta['btn_url'] )     ? $raw_cta['btn_url']     : '' ),
 		);
 		AH_Category_Settings::save( $slug, 'cta_banner', $cta );
+
+		// ── Marquee ───────────────────────────────────────────────────────────────
+		$raw_mq = ( isset( $_POST['marquee'] ) && is_array( $_POST['marquee'] ) ) ? wp_unslash( $_POST['marquee'] ) : array();
+		AH_Category_Settings::save( $slug, 'marquee', array(
+			'marquee_enabled' => ! empty( $raw_mq['enabled'] ) ? 1 : 0,
+			'marquee_mode'    => ( isset( $raw_mq['mode'] ) && 'icon' === $raw_mq['mode'] ) ? 'icon' : 'string',
+			'marquee_items'   => sanitize_textarea_field( isset( $raw_mq['items'] ) ? (string) $raw_mq['items'] : '' ),
+		) );
+
+		// ── Resources (PDFs, external links, YouTube videos) ─────────────────────
+		$raw_res = ( isset( $_POST['resources'] ) && is_array( $_POST['resources'] ) ) ? wp_unslash( $_POST['resources'] ) : array();
+
+		$res_pdfs = array();
+		if ( isset( $raw_res['pdfs'] ) && is_array( $raw_res['pdfs'] ) ) {
+			foreach ( $raw_res['pdfs'] as $p ) {
+				if ( ! is_array( $p ) || empty( $p['title'] ) ) { continue; }
+				$res_pdfs[] = array(
+					'file_id'  => absint( isset( $p['file_id'] ) ? $p['file_id'] : 0 ),
+					'file_url' => esc_url_raw( isset( $p['file_url'] ) ? $p['file_url'] : '' ),
+					'title'    => sanitize_text_field( $p['title'] ),
+					'desc'     => sanitize_textarea_field( isset( $p['desc'] ) ? $p['desc'] : '' ),
+				);
+			}
+		}
+
+		$res_links = array();
+		if ( isset( $raw_res['links'] ) && is_array( $raw_res['links'] ) ) {
+			foreach ( $raw_res['links'] as $l ) {
+				if ( ! is_array( $l ) || empty( $l['title'] ) ) { continue; }
+				$res_links[] = array(
+					'icon'  => sanitize_text_field( isset( $l['icon'] )  ? $l['icon']  : '' ),
+					'title' => sanitize_text_field( $l['title'] ),
+					'desc'  => sanitize_textarea_field( isset( $l['desc'] ) ? $l['desc'] : '' ),
+					'url'   => esc_url_raw( isset( $l['url'] ) ? $l['url'] : '' ),
+				);
+			}
+		}
+
+		$res_videos = array();
+		if ( isset( $raw_res['videos'] ) && is_array( $raw_res['videos'] ) ) {
+			foreach ( $raw_res['videos'] as $v ) {
+				if ( ! is_array( $v ) || empty( $v['title'] ) ) { continue; }
+				$res_videos[] = array(
+					'title' => sanitize_text_field( $v['title'] ),
+					'desc'  => sanitize_textarea_field( isset( $v['desc'] ) ? $v['desc'] : '' ),
+					'url'   => esc_url_raw( isset( $v['url'] ) ? $v['url'] : '' ),
+				);
+			}
+		}
+
+		AH_Category_Settings::save( $slug, 'resources', array(
+			'pdfs'   => $res_pdfs,
+			'links'  => $res_links,
+			'videos' => $res_videos,
+		) );
 
 		self::redirect_back( 'category-pages', $slug, __( 'Category settings saved.', ADN_TEXT_DOMAIN ) );
 	}
@@ -1224,7 +1265,7 @@ class ADN_Theme_Admin {
 			explode( "\n", $bullets_raw )
 		) ) );
 
-		// Client images: JSON from hidden field — decode, sanitise IDs and captions, re-encode.
+		// Client images: JSON from hidden field - decode, sanitise IDs and captions, re-encode.
 		$ci_json = isset( $_POST['client_images_json'] ) ? wp_unslash( $_POST['client_images_json'] ) : '';
 		$ci_raw  = json_decode( $ci_json, true );
 		$client_images = array();
@@ -1237,6 +1278,8 @@ class ADN_Theme_Admin {
 				);
 			}
 		}
+
+		AH_Expert_DB::maybe_install();
 
 		AH_Expert_DB::save( array(
 			'expert_slug'   => $slug,
@@ -1253,14 +1296,55 @@ class ADN_Theme_Admin {
 			'email'         => wp_unslash( isset( $_POST['email'] )         ? $_POST['email']         : '' ),
 			'bullets'       => $bullets,
 			'client_images' => $client_images,
-			'mega_html'     => isset( $_POST['mega_html'] ) ? $_POST['mega_html'] : '',
+			'mega_html'     => wp_unslash( isset( $_POST['mega_html'] ) ? $_POST['mega_html'] : '' ),
 		) );
 
 		$msg = $is_edit
 			? __( 'Expert updated.', ADN_TEXT_DOMAIN )
 			: __( 'Expert saved.', ADN_TEXT_DOMAIN );
 
-		self::redirect_back( 'experts', 'new', $msg );
+		if ( $is_edit ) {
+			// Redirect back to the same edit form so admin can see their saved data.
+			wp_safe_redirect( add_query_arg(
+				array( 'edit_slug' => $slug, 'adn_done' => 1, 'adn_msg' => rawurlencode( $msg ) ),
+				self::tab_url( 'experts', 'new' )
+			) );
+			exit;
+		}
+
+		self::redirect_back( 'experts', 'list', $msg );
+	}
+
+	// ── Experts / Team: banner settings ───────────────────────────────────────
+
+	public static function handle_save_expert_banner() {
+		check_admin_referer( 'adn_save_expert_banner' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		$raw_items     = isset( $_POST['marquee_items'] ) ? (array) wp_unslash( $_POST['marquee_items'] ) : array();
+		$marquee_items = array();
+		foreach ( $raw_items as $_mi ) {
+			if ( ! is_array( $_mi ) ) { continue; }
+			$_label = sanitize_text_field( isset( $_mi['label'] ) ? (string) $_mi['label'] : '' );
+			if ( '' === $_label ) { continue; }
+			$marquee_items[] = array(
+				'icon'  => sanitize_text_field( isset( $_mi['icon'] ) ? (string) $_mi['icon'] : '' ),
+				'label' => $_label,
+				'note'  => sanitize_text_field( isset( $_mi['note'] ) ? (string) $_mi['note'] : '' ),
+			);
+		}
+
+		$banner = array(
+			'heading'       => sanitize_text_field( wp_unslash( isset( $_POST['banner_heading'] ) ? $_POST['banner_heading'] : '' ) ),
+			'info'          => sanitize_textarea_field( wp_unslash( isset( $_POST['banner_info'] ) ? $_POST['banner_info'] : '' ) ),
+			'enabled'       => ! empty( $_POST['banner_enabled'] ) ? 1 : 0,
+			'marquee_items' => $marquee_items,
+		);
+
+		update_option( 'adn_expert_banner', $banner );
+		self::redirect_back( 'experts', 'banner', __( 'Expert banner saved.', ADN_TEXT_DOMAIN ) );
 	}
 
 	// ── Experts / Team: delete ──────────────────────────────────────────────────

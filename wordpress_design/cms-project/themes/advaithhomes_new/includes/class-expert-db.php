@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 class AH_Expert_DB {
 
-	const DB_VERSION = '1';
+	const DB_VERSION = '2';
 	const DB_OPTION  = 'adn_expert_db_v';
 
 	public static function table() {
@@ -142,9 +142,9 @@ class AH_Expert_DB {
 			location       VARCHAR(300)     NOT NULL DEFAULT '',
 			phone          VARCHAR(50)      NOT NULL DEFAULT '',
 			email          VARCHAR(200)     NOT NULL DEFAULT '',
-			bullets        LONGTEXT         NOT NULL DEFAULT '',
-			client_images  LONGTEXT         NOT NULL DEFAULT '',
-			mega_html      LONGTEXT         NOT NULL DEFAULT '',
+			bullets        LONGTEXT         NOT NULL,
+			client_images  LONGTEXT         NOT NULL,
+			mega_html      LONGTEXT         NOT NULL,
 			created_at     DATETIME         NOT NULL,
 			updated_at     DATETIME         NOT NULL,
 			PRIMARY KEY    (id),
@@ -153,9 +153,9 @@ class AH_Expert_DB {
 		update_option( self::DB_OPTION, self::DB_VERSION );
 	}
 
-	/** Run install only when the stored version doesn't match. */
+	/** Run install only when the stored version doesn't match OR the table is missing. */
 	public static function maybe_install() {
-		if ( get_option( self::DB_OPTION ) !== self::DB_VERSION ) {
+		if ( get_option( self::DB_OPTION ) !== self::DB_VERSION || ! self::table_exists() ) {
 			self::install();
 		}
 	}

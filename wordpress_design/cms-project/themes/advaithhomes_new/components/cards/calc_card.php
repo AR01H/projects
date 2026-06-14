@@ -12,7 +12,7 @@ $highlight = isset( $card['highlight'] ) && '' !== $card['highlight'] ? (string)
 ?>
 <a href="<?php echo esc_url( adn_link( isset( $card['url'] ) ? $card['url'] : '' ) ); ?>" class="calc-card">
 	<?php if ( $highlight ) : ?>
-		<span class="calc-badge"><?php echo esc_html( $highlight ); ?></span>
+		<span class="highlight-textblock"><?php echo esc_html( $highlight ); ?></span>
 	<?php endif; ?>
 	<div class="calc-card-icon" aria-hidden="true">
 		<?php if ( $thumbnail ) : ?>

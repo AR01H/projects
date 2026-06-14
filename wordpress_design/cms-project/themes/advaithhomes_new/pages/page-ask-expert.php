@@ -6,10 +6,9 @@
  * Category filter tabs + expert cards grid + sidebar.
  *
  * Architecture:
- *   data/json/ask-expert.json
- *     → apis/services.php  adn_service_ask_expert_data()
- *       → intermediate/page_ask_expert_logical.php  adn_ask_expert_get_context()
- *         → THIS FILE (structure only)
+ *   DB (AH_Expert_DB) + WP page + admin banner option
+ *     → intermediate/page_ask_expert_logical.php  adn_ask_expert_get_context()
+ *       → THIS FILE (structure only)
  *
  * RULE: No hardcoded content or data reads here - only structure.
  * RULE: Header/footer come from header.php / footer.php via get_header() / get_footer().

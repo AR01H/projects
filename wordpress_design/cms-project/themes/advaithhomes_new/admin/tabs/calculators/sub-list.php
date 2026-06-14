@@ -3,7 +3,7 @@
  * admin/tabs/calculators/sub-list.php - per-calculator controls.
  *
  * Top section  : DB-created calculators (editable HTML/JS, deletable).
- * Bottom section: all registered calculators (both file + DB) — settings form.
+ * Bottom section: all registered calculators (both file + DB) - settings form.
  */
 
 defined( 'ABSPATH' ) || exit;

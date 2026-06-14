@@ -1,18 +1,17 @@
 <?php
 /**
- * components/cards/hot_topic_item.php - Component: Hot Topic List Item
- * Props: $item { icon, text, url }
+ * components/cards/hot_topic_item.php
+ * Thin wrapper → cards/mini_card (icon variant).
+ * Props: $item { icon, text, desc, url }
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $item = isset( $item ) && is_array( $item ) ? $item : array();
-?>
-<div class="hot-topic-item">
-    <span class="hot-topic-icon"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
-    <a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>" class="hot-topic-text">
-        <span class="card-title-highlight"><?php echo esc_html( isset( $item['text'] ) ? $item['text'] : '' ); ?></span>
-        <br/>
-        <span class="card-desc-text"><?php echo esc_html( isset( $item['desc'] ) ? $item['desc'] : '' ); ?></span>
-    </a>
-</div>
+
+adn_component( 'cards/mini_card', array( 'card' => array(
+	'icon'  => isset( $item['icon'] ) ? (string) $item['icon'] : '',
+	'title' => isset( $item['text'] ) ? (string) $item['text'] : '',
+	'meta'  => isset( $item['desc'] ) ? (string) $item['desc'] : '',
+	'url'   => isset( $item['url'] )  ? (string) $item['url']  : '',
+) ) );

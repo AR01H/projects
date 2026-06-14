@@ -51,6 +51,13 @@ function adn_home_get_context() {
 		$ctx['hero'] = adn_home_apply_hero_overrides( $ctx['hero'], $hero_opt );
 	}
 
+	// Marquee: admin-configured trust items override the JSON default.
+	$_hs = get_option( 'adn_home_sections', array() );
+	$_mq = function_exists( 'adn_parse_marquee_settings' ) ? adn_parse_marquee_settings( $_hs ) : null;
+	if ( $_mq ) {
+		$ctx['hero']['trust_items'] = $_mq['trust'];
+	}
+
 	// Overlay live CMS content where it exists; JSON stays as the fallback.
 	if ( function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
 		$journey_cards = adn_home_cms_journey_cards();
@@ -74,7 +81,7 @@ function adn_home_get_context() {
 		$ctx['hot_topics']['items'] = $ht_items;
 	}
 
-	// Overlay popular calculators from registry (is_popular flag) — always replaces JSON if any exist.
+	// Overlay popular calculators from registry (is_popular flag) - always replaces JSON if any exist.
 	if ( function_exists( 'adn_calculators' ) ) {
 		$_hp_registry = adn_calculators();
 		$_hp_meta_all = get_option( 'adn_calculators_meta', array() );
@@ -158,7 +165,7 @@ function adn_home_apply_hero_overrides( $hero, $opt ) {
  */
 function adn_home_cms_journey_cards() {
 	$cards = array();
-	foreach ( adn_cms_guide_parents( 4 ) as $i => $term ) {
+	foreach ( adn_cms_guide_parents( ) as $i => $term ) {
 		$name = isset( $term->name ) ? $term->name : '';
 		if ( '' === $name ) {
 			continue;
@@ -181,7 +188,7 @@ function adn_home_cms_journey_cards() {
 }
 
 /**
- * Guide cards for the home page — one card per taxonomy category term.
+ * Guide cards for the home page - one card per taxonomy category term.
  * Each card links to the term's category listing page (/term-slug/),
  * not to an individual article.
  * Respects adn_home_featured option (topic filter + count).
@@ -220,7 +227,7 @@ function adn_home_cms_guide_items() {
 
 /**
  * News items for home "Latest News".
- * Primary: plugin News Bar (ah_news_bar_items — active, date-filtered).
+ * Primary: plugin News Bar (ah_news_bar_items - active, date-filtered).
  * Fallback: 4 most recent WP posts via WP_Query.
  * Each item carries a 'description' key for the accordion expand.
  */

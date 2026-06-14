@@ -58,8 +58,8 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 		if (next) { sl < maxScroll - 4 ? next.removeAttribute('hidden') : next.setAttribute('hidden', ''); }
 	}
 
-	if (prev) prev.addEventListener('click', function(){ track.scrollBy({ left: -cardWidth() * 2, behavior: 'smooth' }); });
-	if (next) next.addEventListener('click', function(){ track.scrollBy({ left:  cardWidth() * 2, behavior: 'smooth' }); });
+	if (prev) prev.addEventListener('click', function(){ track.scrollBy({ left: -cardWidth(), behavior: 'smooth' }); });
+	if (next) next.addEventListener('click', function(){ track.scrollBy({ left:  cardWidth(), behavior: 'smooth' }); });
 	track.addEventListener('scroll', updateBtns, { passive: true });
 	window.addEventListener('resize', updateBtns);
 	updateBtns();

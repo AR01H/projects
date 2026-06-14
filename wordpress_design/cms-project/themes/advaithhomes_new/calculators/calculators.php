@@ -119,7 +119,7 @@ function adn_load_calculator_view( $key ) {
 		include $file;
 		return;
 	}
-	// No file — try DB-stored HTML.
+	// No file - try DB-stored HTML.
 	if ( class_exists( 'AH_Calculator_DB' ) ) {
 		$row = AH_Calculator_DB::get( $key );
 		if ( $row && '' !== $row['html_content'] ) {
@@ -226,7 +226,7 @@ function adn_render_calculator_standalone( $key ) {
 }
 
 /**
- * Render a calculator directly (inline) in the current page — no iframe.
+ * Render a calculator directly (inline) in the current page - no iframe.
  * The calculator HTML is output inside a wrapper div. The shared
  * calculators.css is enqueued; any per-calc JS is loaded/inlined.
  * Returns the rendered HTML as a string.
@@ -278,8 +278,8 @@ function adn_render_calculator_inline( $key ) {
 /**
  * [ah_calculator key="stamp-duty" height="560" mode="iframe|inline"]
  *
- * mode="iframe"  (default) — isolated auto-resizing iframe.
- * mode="inline"            — renders the calculator HTML directly in the page
+ * mode="iframe"  (default) - isolated auto-resizing iframe.
+ * mode="inline"            - renders the calculator HTML directly in the page
  *                            (no iframe overhead; shares the page's CSS context).
  */
 function adn_calculator_shortcode( $atts ) {

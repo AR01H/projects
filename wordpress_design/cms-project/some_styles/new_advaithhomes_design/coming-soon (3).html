@@ -1,471 +1,285 @@
-<!-- ===================================================================
-  ADVAITH HOMES - "We're Re-Homing" coming soon section
-  Drop into a WordPress page/post via a Custom HTML block.
-  Replace the two image src values below with your uploaded logo URLs.
-  All styles/classes are prefixed "advh-" so they won't collide with
-  your existing theme or page builder styles.
-=================================================================== -->
-<section class="advh-coming-soon">
-  <div class="advh-bg-grid"></div>
-  <div class="advh-glow"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADVAITH HOMES - Something Better Is Coming Soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="https://advaithhomes.co.uk/wp-content/uploads/2026/06/cropped-logo_with_text-192x192.png">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{font-family:'Inter',sans-serif;background:#ffffff;color:#131f20;}
 
-  <div class="advh-wrap">
+.ah-topbar{width:100%;background:#1a3a3c;padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:9px;}
+.ah-topbar-dot{width:7px;height:7px;border-radius:50%;background:#e0a526;flex-shrink:0;animation:ah-blink 2s ease-in-out infinite;}
+.ah-topbar-text{font-size:12px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;color:rgba(255,255,255,0.85);text-align:center;}
+@keyframes ah-blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.sp-el-section,
+.sp-el-col,
+.sp-el-block,
+.sp-el-row{
+max-width:unset !important;
+padding:unset !important;
+}
+.ah-hero{display:flex;flex-direction:column;align-items:center;padding:24px;background:linear-gradient(180deg,#f8f5ef 0%,#ffffff 100%);border-bottom:1px solid #ede9e0;position:relative;overflow:hidden;}
+.ah-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(26,58,60,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,60,0.055) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 85% 80% at 50% 0%,black 0%,transparent 100%);pointer-events:none;}
 
-    <!-- Eyebrow -->
-    <p class="advh-eyebrow advh-reveal" style="--advh-delay: 0s">Advaith Homes is moving house</p>
+.ah-badge{position:relative;display:inline-flex;align-items:center;gap:8px;background:#1a3a3c;color:#f0ebe0;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:7px 18px;border-radius:99px;margin-bottom:38px;animation:ah-fadeup 0.6s ease-out 0.1s both;}
+.ah-badge-dot{width:6px;height:6px;border-radius:50%;background:#e0a526;animation:ah-pulse 2s ease-out infinite;}
 
-    <!-- Logo transition -->
-    <div class="advh-logo-stage advh-reveal" style="--advh-delay: 0.15s" role="img" aria-label="Advaith Homes logo, refreshed from Work4Buyers to Advaith Homes">
-      <img class="advh-logo advh-logo-old"
-           src="https://your-site.com/wp-content/uploads/2026/06/logo-old.png"
-           alt="Work4Buyers - old Advaith Homes logo">
-      <img class="advh-logo advh-logo-new"
-           src="https://your-site.com/wp-content/uploads/2026/06/logo-new.png"
-           alt="Advaith Homes - new logo">
-      <span class="advh-stage-ring"></span>
+.ah-logo-stage{position:relative;width:360px;max-width:100%;height:120px;margin:0 auto 48px;animation:ah-fadeup 0.7s ease-out 0.25s both;}
+.ah-logo-frame{position:absolute;inset:-16px -22px;border:1.5px solid #ede9e0;border-radius:18px;background:#ffffff;box-shadow:0 4px 28px rgba(26,58,60,0.09);margin:10px;}
+.ah-logo-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.ah-logo-inner img{position:absolute;max-width:88%;max-height:88%;object-fit:contain;}
+.ah-logo-old{animation:ah-logoout 1.6s cubic-bezier(0.4,0,0.2,1) 1s forwards;}
+.ah-logo-new{opacity:0;animation:ah-logoin 1.6s cubic-bezier(0.4,0,0.2,1) 1s forwards;}
+@keyframes ah-logoout{0%{opacity:1;transform:scale(1) translateX(0);filter:blur(0);}42%{opacity:0;transform:scale(0.7) translateX(-22px);filter:blur(3px);}100%{opacity:0;transform:scale(0.7) translateX(-22px);filter:blur(3px);}}
+@keyframes ah-logoin{0%{opacity:0;transform:scale(0.7) translateX(22px);filter:blur(3px);}42%{opacity:0;transform:scale(0.7) translateX(22px);filter:blur(3px);}100%{opacity:1;transform:scale(1) translateX(0);filter:blur(0);}}
+
+.ah-headline{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:700;line-height:1.18;color:#131f20;text-align:center;margin-bottom:16px;animation:ah-fadeup 0.7s ease-out 1.7s both;position:relative;}
+.ah-headline em{font-style:normal;color:#c4561f;}
+.ah-herosub{font-size:15.5px;line-height:1.78;color:#5a6b6c;text-align:center;max-width:560px;animation:ah-fadeup 0.7s ease-out 1.9s both;position:relative;margin-bottom:6px;}
+
+.ah-commitment{font-size:14px;font-weight:600;color:#1a3a3c;text-align:center;margin-top:18px;padding:14px 24px;border:1.5px solid #ddd7c8;border-radius:10px;background:#f8f5ef;max-width:440px;animation:ah-fadeup 0.7s ease-out 2.0s both;position:relative;font-style:italic;}
+.ah-commitment strong{font-style:normal;color:#c4561f;font-weight:700;}
+
+.ah-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:26px;animation:ah-fadeup 0.7s ease-out 2.1s both;position:relative;}
+.ah-pill{background:#f0ebe0;color:#1a3a3c;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:7px 20px;border-radius:99px;border:1.5px solid #ddd7c8;}
+.ah-pill.ah-hl{background:#1a3a3c;color:#f0ebe0;border-color:#1a3a3c;}
+
+.ah-banner{background:#1a3a3c;padding:36px 24px;text-align:center;}
+.ah-banner-eye{font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#e0a526;margin-bottom:14px;}
+.ah-banner-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:#f0ebe0;margin-bottom:10px;}
+.ah-banner-sub{font-size:14px;color:rgba(240,235,224,0.65);max-width:480px;margin:0 auto;line-height:1.7;}
+
+.ah-grid{display:grid;grid-template-columns:1fr 1fr;}
+.ah-left{padding:48px 40px;border-right:1px solid #ede9e0;background:#ffffff;}
+.ah-right{padding:48px 40px;background:#f8f5ef;}
+
+.ah-sec-label{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#c4561f;margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+.ah-sec-label::after{content:'';flex:1;height:1px;background:#ede9e0;}
+
+.ah-step{display:flex;gap:14px;margin-bottom:8px;}
+.ah-step-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-top:2px;}
+.ah-step-icon.done{background:#d4eddf;color:#1e7a4a;}
+.ah-step-icon.active{background:#e0a526;color:#fff;animation:ah-pulse 2s infinite;}
+.ah-step-icon.todo{background:#ede9e0;color:#9aa5a6;}
+.ah-step-title{font-size:14px;font-weight:600;color:#131f20;margin-bottom:3px;}
+.ah-step-desc{font-size:13px;color:#6b7d7e;line-height:1.55;}
+.ah-connector{width:2px;height:16px;background:#ede9e0;margin:0 0 8px 16px;}
+
+.ah-hlbox{background:#1a3a3c;border-radius:12px;padding:18px 20px;margin-top:20px;display:flex;align-items:flex-start;gap:13px;}
+.ah-hlbox-icon{width:36px;height:36px;border-radius:8px;background:rgba(224,165,38,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#e0a526;font-size:18px;}
+.ah-hlbox-title{font-size:13px;font-weight:600;color:#f0ebe0;margin-bottom:4px;}
+.ah-hlbox-sub{font-size:12px;color:rgba(240,235,224,0.65);line-height:1.6;}
+
+.ah-ctitle{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:600;color:#131f20;margin-bottom:6px;}
+.ah-csub{font-size:13px;color:#6b7d7e;line-height:1.65;margin-bottom:24px;}
+
+.ah-card{display:flex;align-items:center;gap:13px;padding:4px 9px;background:#ffffff;border:1.5px solid #ede9e0;border-radius:12px;text-decoration:none;color:#131f20;margin-bottom:12px;transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;}
+.ah-card:hover{border-color:#1a3a3c;box-shadow:0 4px 18px rgba(26,58,60,0.1);transform:translateY(-2px);}
+.ah-card-icon{width:40px;height:40px;border-radius:10px;background:#f0ebe0;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#1a3a3c;}
+.ah-card-icon svg{width:18px;height:18px;}
+.ah-card-label{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#9aa5a6;margin-bottom:2px;}
+.ah-card-value{font-size:14px;font-weight:600;color:#1a3a3c;}
+.ah-card-arrow{margin-left:auto;color:#c4d0d1;font-size:20px;line-height:1;}
+
+.ah-note{margin-top:20px;padding:14px 16px;background:#eef7f1;border:1.5px solid #c2dfc9;border-radius:10px;font-size:13px;color:#2d6645;line-height:1.6;}
+.ah-note strong{font-weight:600;}
+
+.ah-journey{background:#f8f5ef;border-top:1px solid #ede9e0;border-bottom:1px solid #ede9e0;padding:40px 24px;text-align:center;}
+.ah-journey-label{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#c4561f;margin-bottom:28px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.ah-journey-label::before,.ah-journey-label::after{content:'';width:48px;height:1px;background:#ddd7c8;}
+.ah-journey-row{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;}
+.ah-bcard{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 28px;background:#ffffff;border:1.5px solid #ede9e0;border-radius:14px;min-width:160px;max-width:200px;flex:1;}
+.ah-bcard.ah-bcard-new{border-color:#1a3a3c;box-shadow:0 4px 20px rgba(26,58,60,0.1);}
+.ah-bcard img{height:64px;width:auto;max-width:140px;object-fit:contain;}
+.ah-bcard-tag{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:99px;}
+.ah-bcard-tag.old{background:#f0ebe0;color:#7a6b50;border:1px solid #ddd7c8;}
+.ah-bcard-tag.new{background:#1a3a3c;color:#f0ebe0;}
+.ah-bcard-name{font-size:12px;font-weight:600;color:#6b7d7e;text-align:center;line-height:1.4;}
+.ah-barrow{font-size:28px;color:#e0a526;font-weight:300;line-height:1;flex-shrink:0;}
+.ah-journey-note{margin-top:20px;font-size:13px;color:#8a9a9b;font-style:italic;}
+
+.ah-footer{background:#131f20;color:rgba(240,235,224,0.5);font-size:12px;text-align:center;padding:20px 24px;letter-spacing:0.04em;line-height:1.8;}
+.ah-footer strong{color:rgba(240,235,224,0.88);}
+.ah-footer-tag{display:block;margin-top:4px;font-size:11px;font-style:italic;color:rgba(240,235,224,0.38);letter-spacing:0.06em;}
+
+@keyframes ah-fadeup{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes ah-pulse{0%{box-shadow:0 0 0 0 rgba(224,165,38,0.65);}70%{box-shadow:0 0 0 9px rgba(224,165,38,0);}100%{box-shadow:0 0 0 0 rgba(224,165,38,0);}}
+
+@media(max-width:640px){.ah-grid{grid-template-columns:1fr;}.ah-left{border-right:none;border-bottom:1px solid #ede9e0;padding:36px 24px;}.ah-right{padding:36px 14px;}.ah-logo-stage{width:100%;}.ah-barrow{display: none;}.ah-bcard{padding: 10px;}}
+@media(prefers-reduced-motion:reduce){.ah-logo-old{opacity:0;animation:none;}.ah-logo-new{opacity:1;transform:none;filter:none;animation:none;}.ah-badge,.ah-logo-stage,.ah-headline,.ah-herosub,.ah-commitment,.ah-pills{animation:none;opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+<div class="ah-topbar">
+  <span class="ah-topbar-text">Something better is coming - we're working hard behind the scenes</span>
+</div>
+
+<section class="ah-hero">
+  <div class="ah-badge">
+    <div class="ah-badge-dot"></div>
+    Coming Soon
+  </div>
+
+  <div class="ah-logo-stage">
+    <div class="ah-logo-frame"></div>
+    <div class="ah-logo-inner">
+      <img class="ah-logo-old"
+           src="https://advaithhomes.co.uk/wp-content/uploads/2026/06/logo.png"
+           alt="ADVAITH HOMES current logo"
+           height="90">
+      <img class="ah-logo-new"
+           src="https://advaithhomes.co.uk/wp-content/uploads/2026/06/logo_with_text.png"
+           alt="ADVAITH HOMES new logo"
+           height="74">
     </div>
+  </div>
 
-    <!-- Headline -->
-    <h1 class="advh-title advh-reveal" style="--advh-delay: 1.6s">
-      A new look, the same promise<span class="advh-dot">.</span>
-    </h1>
+  <h1 class="ah-headline">Something Better Is<br>Coming Soon</h1>
+<br/>
+  <p class="ah-herosub">
+    We're currently enhancing our website to bring you even more valuable property
+    information, guidance, tools and resources. The ADVAITH HOMES you know isn't
+    changing - we're simply making it better.
+  </p>
 
-    <!-- Tagline highlight -->
-    <p class="advh-tagline advh-reveal" style="--advh-delay: 1.8s">
-      <span class="advh-tagline-word">Buying</span>
-      <span class="advh-sep">·</span>
-      <span class="advh-tagline-word">Selling</span>
-      <span class="advh-sep">·</span>
-      <span class="advh-tagline-word">Moving</span>
-      <span class="advh-sep">·</span>
-      <span class="advh-tagline-word">Sorted</span>
-    </p>
+  <div class="ah-commitment">
+    <strong>Our commitment remains the same:</strong><br>
+    Helping people make better property decisions with confidence.
+  </div>
 
-    <!-- Body copy -->
-    <p class="advh-body advh-reveal" style="--advh-delay: 2.0s">
-      Advaith Homes is getting a brand-new look. Behind it, the same
-      independent, one-stop-shop support for buying, selling and moving
-      home across the UK - honest advice, expert guidance and every
-      resource you need, all kept in one place. Our refreshed site is on
-      its way; in the meantime, our team is on hand as always.
-    </p>
-
-    <!-- Status pills -->
-    <ul class="advh-status-list advh-reveal" style="--advh-delay: 2.2s">
-      <li class="advh-status">
-        <span class="advh-status-dot advh-status-dot--done"></span>
-        New brand identity
-      </li>
-      <li class="advh-status">
-        <span class="advh-status-dot advh-status-dot--active"></span>
-        New site &amp; resources - coming soon
-      </li>
-      <li class="advh-status">
-        <span class="advh-status-dot"></span>
-        Buyer &amp; seller hub
-      </li>
-    </ul>
-
-    <!-- Keep in touch -->
-    <div class="advh-contact advh-reveal" style="--advh-delay: 2.4s">
-      <p class="advh-contact-label">Keep in touch in the meantime</p>
-      <div class="advh-contact-row">
-        <a class="advh-contact-card" href="mailto:hello@advaithhomes.co.uk">
-          <span class="advh-contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"></rect>
-              <path d="M3.5 6.5 11 12.5a1.6 1.6 0 0 0 2 0L20.5 6.5"></path>
-            </svg>
-          </span>
-          <span class="advh-contact-meta">
-            <span class="advh-contact-kicker">Email us</span>
-            <span class="advh-contact-text">hello@advaithhomes.co.uk</span>
-          </span>
-        </a>
-        <a class="advh-contact-card" href="tel:+441234567890">
-          <span class="advh-contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4.5 4.5h3.4l1.6 4.2-2 1.7a11.5 11.5 0 0 0 5.7 5.7l1.7-2 4.2 1.6v3.4c0 1-1 1.7-1.9 1.5-4-.8-7.8-3-10.6-5.8C3.8 11.8 1.6 8 .8 4c-.2-.9.5-1.9 1.5-1.9z"></path>
-            </svg>
-          </span>
-          <span class="advh-contact-meta">
-            <span class="advh-contact-kicker">Call us</span>
-            <span class="advh-contact-text">01234 567 890</span>
-          </span>
-        </a>
-      </div>
-    </div>
-
+  <div class="ah-pills">
+    <div class="ah-pill ah-hl">Buying</div>
+    <div class="ah-pill ah-hl">Selling</div>
+    <div class="ah-pill ah-hl">Moving</div>
   </div>
 </section>
 
-<style>
-  /* ---------------------------------------------------------------
-     Advaith Homes - scoped tokens (won't leak to rest of theme)
-  --------------------------------------------------------------- */
-  .advh-coming-soon {
-    --advh-ink:       #15292c;
-    --advh-teal:      #203c3f;
-    --advh-teal-soft: #2f5256;
-    --advh-cream:     #f5f1e6;
-    --advh-gold:      #e0a526;
-    --advh-rust:      #c4561f;
-    --advh-line:      rgba(245, 241, 230, 0.12);
+<div class="ah-banner">
+  <div class="ah-banner-eye">✦ &nbsp; New platform &nbsp; ✦</div>
+  <div class="ah-banner-title">A better property experience is on its way</div>
+  <div class="ah-banner-sub">
+    Practical information, helpful calculators, property guides, reports and connections
+    to trusted professionals - all in one place to support your property journey.
+  </div>
+</div>
 
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    background: var(--advh-ink);
-    background-image:
-      radial-gradient(120% 80% at 18% -10%, rgba(47,82,86,0.55) 0%, rgba(21,41,44,0) 55%),
-      linear-gradient(160deg, #15292c 0%, #1d3437 55%, #16282b 100%);
-    color: var(--advh-cream);
-    padding: clamp(64px, 10vw, 120px) 24px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    text-align: center;
-  }
+<div class="ah-grid">
 
-  .advh-coming-soon * {
-    box-sizing: border-box;
-  }
+  <div class="ah-left">
+    <div class="ah-sec-label">What's coming</div>
 
-  /* faint architectural grid, nods to the house/roofline mark */
-  .advh-coming-soon .advh-bg-grid {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background-image:
-      linear-gradient(var(--advh-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--advh-line) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent 70%);
-    opacity: 0.35;
-    pointer-events: none;
-  }
+    <div class="ah-step">
+      <div class="ah-step-icon done">✓</div>
+      <div>
+        <div class="ah-step-title">New brand identity</div>
+        <div class="ah-step-desc">Fresh logo, colours and visual direction - complete.</div>
+      </div>
+    </div>
+    <div class="ah-connector"></div>
 
-  .advh-coming-soon .advh-glow {
-    position: absolute;
-    z-index: 0;
-    top: -20%;
-    left: 50%;
-    width: 900px;
-    height: 900px;
-    transform: translateX(-50%);
-    background: radial-gradient(circle, rgba(224,165,38,0.16) 0%, rgba(224,165,38,0) 60%);
-    pointer-events: none;
-  }
+    <div class="ah-step">
+      <div class="ah-step-icon active">→</div>
+      <div>
+        <div class="ah-step-title">Enhanced website &amp; resources</div>
+        <div class="ah-step-desc">Property guides, calculators and tools - being built now.</div>
+      </div>
+    </div>
+    <div class="ah-connector"></div>
 
-  .advh-coming-soon .advh-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 720px;
-    margin: 0 auto;
-  }
+    <div class="ah-step">
+      <div class="ah-step-icon todo">○</div>
+      <div>
+        <div class="ah-step-title">Buyer &amp; seller hub</div>
+        <div class="ah-step-desc">Connections to trusted professionals, all in one place.</div>
+      </div>
+    </div>
 
-  /* Sequential fade + slide-in reveal, whole page completes within ~3s */
-  .advh-coming-soon .advh-reveal {
-    opacity: 0;
-    transform: translateY(18px);
-    animation: advh-reveal 0.7s ease-out forwards;
-    animation-delay: var(--advh-delay, 0s);
-  }
+    <div class="ah-hlbox">
+      <div class="ah-hlbox-icon">★</div>
+      <div>
+        <div class="ah-hlbox-title">Whether you're buying, selling or moving</div>
+        <div class="ah-hlbox-sub">Our new platform will give you everything you need to make confident property decisions - practical, honest and in one place.</div>
+      </div>
+    </div>
+  </div>
 
-  @keyframes advh-reveal {
-    to { opacity: 1; transform: translateY(0); }
-  }
+  <div class="ah-right">
+    <div class="ah-sec-label">Get in touch</div>
 
-  /* Eyebrow */
-  .advh-coming-soon .advh-eyebrow {
-    display: inline-block;
-    margin: 0 0 28px;
-    padding: 6px 16px;
-    border: 1px solid var(--advh-line);
-    border-radius: 999px;
-    font-size: 0.75rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--advh-gold);
-    background: rgba(245,241,230,0.04);
-  }
+    <div class="ah-ctitle">We're here while we build.</div>
+    <p class="ah-csub">
+      For any enquiries, our team is on hand as always. Reach out by
+      email or phone and we'll be happy to help.
+    </p>
 
-  /* ---------------------------------------------------------------
-     Logo transition stage
-     Old (yellow Work4Buyers) logo fades & shrinks out,
-     new Advaith Homes logo fades & grows in - looping.
-  --------------------------------------------------------------- */
-  .advh-coming-soon .advh-logo-stage {
-    position: relative;
-    width: min(100%, 460px);
-    height: 130px;
-    margin: 0 auto 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    <a class="ah-card" href="mailto:contact@advaithhomes.co.uk">
+      <div class="ah-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"></rect>
+          <path d="M3.5 6.5 11 12.5a1.6 1.6 0 0 0 2 0L20.5 6.5"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="ah-card-label">Email us</div>
+        <div class="ah-card-value">contact@advaithhomes.co.uk</div>
+      </div>
+      <div class="ah-card-arrow">›</div>
+    </a>
 
-  .advh-coming-soon .advh-stage-ring {
-    position: absolute;
-    inset: -22px;
-    border: 1px dashed rgba(245,241,230,0.18);
-    border-radius: 28px;
-  }
+    <a class="ah-card" href="tel:+447747223762">
+      <div class="ah-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4.5 4.5h3.4l1.6 4.2-2 1.7a11.5 11.5 0 0 0 5.7 5.7l1.7-2 4.2 1.6v3.4c0 1-1 1.7-1.9 1.5-4-.8-7.8-3-10.6-5.8C3.8 11.8 1.6 8 .8 4c-.2-.9.5-1.9 1.5-1.9z"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="ah-card-label">Call us</div>
+        <div class="ah-card-value">+44 7747 223 762</div>
+      </div>
+      <div class="ah-card-arrow">›</div>
+    </a>
 
-  .advh-coming-soon .advh-logo {
-    position: absolute;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    object-fit: contain;
-    will-change: opacity, transform, filter;
-  }
+    <div class="ah-note">
+      <strong>Thank you for your patience</strong> while we work behind the scenes.
+      We look forward to welcoming you to the new Advaith Homes very soon.
+    </div>
+  </div>
 
-  .advh-coming-soon .advh-logo-old {
-    height: 96px;
-    animation: advh-zoom-old 1.4s ease-in-out 0.8s forwards;
-  }
+</div>
 
-  .advh-coming-soon .advh-logo-new {
-    height: 78px;
-    opacity: 0;
-    animation: advh-zoom-new 1.4s ease-in-out 0.8s forwards;
-  }
+<div class="ah-journey">
+  <div class="ah-journey-label">Our brand journey</div>
+  <div class="ah-journey-row">
 
-  @keyframes advh-zoom-old {
-    0%   { opacity: 1; transform: scale(1);    filter: blur(0); }
-    50%  { opacity: 0; transform: scale(0.05); filter: blur(3px); }
-    100% { opacity: 0; transform: scale(0.05); filter: blur(3px); }
-  }
+    <div class="ah-bcard">
+      <img src="https://advaithhomes.co.uk/wp-content/uploads/2026/06/logo.png"
+           alt="Work4Buyers - previously known as">
+      <span class="ah-bcard-tag old">Known As</span>
+      <div class="ah-bcard-name">Work4Buyers</div>
+    </div>
 
-  @keyframes advh-zoom-new {
-    0%   { opacity: 0; transform: scale(0.05); filter: blur(3px); }
-    50%  { opacity: 0; transform: scale(0.05); filter: blur(3px); }
-    100% { opacity: 1; transform: scale(1);    filter: blur(0); }
-  }
+    <div class="ah-barrow">→</div>
 
-  /* Title */
-  .advh-coming-soon .advh-title {
-    margin: 0 0 18px;
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight: 600;
-    font-size: clamp(1.9rem, 5vw, 3.1rem);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    color: var(--advh-cream);
-  }
+    <div class="ah-bcard ah-bcard-new">
+      <img src="https://advaithhomes.co.uk/wp-content/uploads/2026/06/logo_with_text.png"
+           alt="Advaith Homes - new brand">
+      <span class="ah-bcard-tag new">New look</span>
+      <div class="ah-bcard-name">ADVAITH HOMES</div>
+    </div>
 
-  .advh-coming-soon .advh-dot {
-    color: var(--advh-rust);
-  }
+  </div>
+  <p class="ah-journey-note">Same team · Same values · Refreshed for you</p>
+</div>
 
-  /* Tagline - the highlighted "selling, buying, moving" strapline */
-  .advh-coming-soon .advh-tagline {
-    margin: 0 0 24px;
-    font-size: clamp(0.95rem, 2.4vw, 1.15rem);
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--advh-gold);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
+<div class="ah-footer">
+  <strong>© 2026 ADVAITH HOMES</strong> &nbsp;·&nbsp; advaithhomes.co.uk
+  <span class="ah-footer-tag">Helping You Make Better Property Decisions</span>
+</div>
 
-  .advh-coming-soon .advh-tagline-word {
-    padding: 4px 2px;
-    position: relative;
-  }
-
-  .advh-coming-soon .advh-tagline-word::after {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; bottom: -2px;
-    height: 2px;
-    background: var(--advh-rust);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: advh-underline 9s ease-in-out infinite;
-  }
-
-  .advh-coming-soon .advh-tagline-word:nth-child(1)::after { animation-delay: 0s; }
-  .advh-coming-soon .advh-tagline-word:nth-child(3)::after { animation-delay: 0.6s; }
-  .advh-coming-soon .advh-tagline-word:nth-child(5)::after { animation-delay: 1.2s; }
-  .advh-coming-soon .advh-tagline-word:nth-child(7)::after { animation-delay: 1.8s; }
-
-  @keyframes advh-underline {
-    0%, 4%   { transform: scaleX(0); }
-    14%, 90% { transform: scaleX(1); }
-    100%     { transform: scaleX(0); }
-  }
-
-  .advh-coming-soon .advh-sep {
-    color: rgba(245,241,230,0.35);
-    font-weight: 400;
-  }
-
-  /* Body */
-  .advh-coming-soon .advh-body {
-    margin: 0 auto 36px;
-    max-width: 560px;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: rgba(245,241,230,0.82);
-  }
-
-  /* Status list */
-  .advh-coming-soon .advh-status-list {
-    list-style: none;
-    margin: 0 0 40px;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px 24px;
-    font-size: 0.9rem;
-    color: rgba(245,241,230,0.75);
-  }
-
-  .advh-coming-soon .advh-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .advh-coming-soon .advh-status-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: rgba(245,241,230,0.25);
-    flex-shrink: 0;
-  }
-
-  .advh-coming-soon .advh-status-dot--done {
-    background: #6fae8a;
-  }
-
-  .advh-coming-soon .advh-status-dot--active {
-    background: var(--advh-gold);
-    box-shadow: 0 0 0 0 rgba(224,165,38,0.6);
-    animation: advh-pulse 2s ease-out infinite;
-  }
-
-  @keyframes advh-pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(224,165,38,0.55); }
-    70%  { box-shadow: 0 0 0 8px rgba(224,165,38,0); }
-    100% { box-shadow: 0 0 0 0 rgba(224,165,38,0); }
-  }
-
-  /* Keep in touch */
-  .advh-coming-soon .advh-contact {
-    margin-top: 40px;
-    padding-top: 28px;
-    border-top: 1px solid var(--advh-line);
-  }
-
-  .advh-coming-soon .advh-contact-label {
-    margin: 0 0 16px;
-    font-size: 0.8rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(245,241,230,0.5);
-  }
-
-  .advh-coming-soon .advh-contact-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-  }
-
-  .advh-coming-soon .advh-contact-card {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    flex: 1 1 220px;
-    max-width: 280px;
-    padding: 18px 20px;
-    border-radius: 12px;
-    border: 1px solid var(--advh-line);
-    background: rgba(245,241,230,0.05);
-    color: var(--advh-cream);
-    text-decoration: none;
-    text-align: left;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-  }
-
-  .advh-coming-soon .advh-contact-card:hover,
-  .advh-coming-soon .advh-contact-card:focus-visible {
-    background: rgba(245,241,230,0.1);
-    border-color: var(--advh-gold);
-    transform: translateY(-2px);
-  }
-
-  .advh-coming-soon .advh-contact-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: rgba(224,165,38,0.12);
-    color: var(--advh-gold);
-    flex-shrink: 0;
-  }
-
-  .advh-coming-soon .advh-contact-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .advh-coming-soon .advh-contact-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .advh-coming-soon .advh-contact-kicker {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(245,241,230,0.5);
-  }
-
-  .advh-coming-soon .advh-contact-text {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .advh-coming-soon .advh-logo-old,
-    .advh-coming-soon .advh-logo-new,
-    .advh-coming-soon .advh-tagline-word::after,
-    .advh-coming-soon .advh-status-dot--active,
-    .advh-coming-soon .advh-reveal {
-      animation: none;
-    }
-    .advh-coming-soon .advh-reveal {
-      opacity: 1;
-      transform: none;
-    }
-    .advh-coming-soon .advh-logo-old { opacity: 0; display: none; }
-    .advh-coming-soon .advh-logo-new { opacity: 1; transform: scale(1); filter: blur(0); }
-  }
-
-  /* Small screens */
-  @media (max-width: 480px) {
-    .advh-coming-soon .advh-logo-stage { height: 100px; }
-    .advh-coming-soon .advh-logo-old { height: 76px; }
-    .advh-coming-soon .advh-logo-new { height: 60px; }
-    .advh-coming-soon .advh-notify-row { flex-direction: column; }
-    .advh-coming-soon .advh-notify-btn { width: 100%; }
-  }
-</style>
+</body>
+</html>

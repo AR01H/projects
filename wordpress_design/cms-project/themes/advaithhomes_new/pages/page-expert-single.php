@@ -5,7 +5,7 @@
  * Served by template_redirect when ?ah_expert=SLUG is present.
  * Renders the full WP page (header + footer) with the expert profile.
  *
- * RULE: No hardcoded content — only structure.
+ * RULE: No hardcoded content - only structure.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ if ( ! $ctx ) {
 	return;
 }
 
-// Breadcrumb renders inside the hero — suppress from adn_page_open.
+// Breadcrumb renders inside the hero - suppress from adn_page_open.
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );

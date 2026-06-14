@@ -32,7 +32,7 @@ $trust_items = isset( $cta_banner['trust_items'] ) ? (array) $cta_banner['trust_
 		<?php if ( $trust_items ) : ?>
 			<div class="cta-trust-items">
 				<?php foreach ( $trust_items as $item ) : ?>
-					<div class="cta-trust-item">&#x2713; <?php echo esc_html( $item ); ?></div>
+					<div class="cta-trust-item"><?php echo esc_html( $item ); ?></div>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>

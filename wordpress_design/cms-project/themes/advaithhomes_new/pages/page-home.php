@@ -32,6 +32,20 @@ adn_page_open( $ctx );
 </section>
 <?php endif; ?>
 
+<?php if ( ! empty( $ctx['hero']['trust_items'] ) ) {
+		$_trust = $ctx['hero']['trust_items'];
+		$_first     = reset( $_trust );
+		$_is_string = is_string( $_first );
+		$_is_icon   = ! $_is_string && is_array( $_first ) && isset( $_first['icon'] );
+
+		get_template_part( 'components/marque_scroll/point_marque', null, [
+			'trust'     => $_trust,
+			'is_string' => $_is_string,
+			'is_icon'   => $_is_icon,
+		] );
+	}
+?>
+
 <?php /* ==================== WHERE ARE YOU IN YOUR JOURNEY ==================== */ ?>
 <?php if ( adn_home_section_visible( 'journey' ) ) : ?>
 <section class="journey-section">

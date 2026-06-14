@@ -7,9 +7,9 @@
  * Priority for every section:
  *   1. Admin options (adn_calculators_page + adn_calculators_general)
  *   2. Live registry (adn_calculators() + adn_calculators_meta)
- *   3. Hardcoded defaults  — no JSON file ever used.
+ *   3. Hardcoded defaults  - no JSON file ever used.
  *
- * RULE: No markup here — only data shaping.
+ * RULE: No markup here - only data shaping.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -56,6 +56,13 @@ function adn_calculators_get_context() {
 	}
 	if ( empty( $trust_items ) ) {
 		$trust_items = $trust_defaults;
+	}
+
+	// Marquee: admin override replaces default trust icons in the hero bottom bar.
+	$_mq = function_exists( 'adn_parse_marquee_settings' ) ? adn_parse_marquee_settings( $gen ) : null;
+	if ( $_mq ) {
+		$trust_items      = array();   // hide the static calcs_trust_bar
+		$hero['trust_items'] = $_mq['trust'];
 	}
 
 	// ── Search ────────────────────────────────────────────────────────────
@@ -134,7 +141,7 @@ function adn_calculators_get_context() {
 		'button_url'   => $pg_str( 'sidebar_help_btn_url' ),
 	);
 
-	// ── Popular calcs — driven by per-calc is_popular toggle ─────────────
+	// ── Popular calcs - driven by per-calc is_popular toggle ─────────────
 	$popular_calcs = array();
 	foreach ( $registry as $pk => $pcalc ) {
 		$pmeta = ( isset( $meta_all[ $pk ] ) && is_array( $meta_all[ $pk ] ) ) ? $meta_all[ $pk ] : array();

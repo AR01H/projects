@@ -329,6 +329,41 @@ function adn_service_ask_expert_data() {
 }
 
 /**
+ * Parse marquee admin settings into args for point_marque.php.
+ *
+ * @param  array $settings  Array that contains marquee_enabled, marquee_mode, marquee_items keys.
+ * @return array|null       Ready-to-pass args { trust, is_string, is_icon }, or null when disabled/empty.
+ */
+function adn_parse_marquee_settings( $settings ) {
+	if ( empty( $settings['marquee_enabled'] ) || empty( $settings['marquee_items'] ) ) {
+		return null;
+	}
+	$mode  = ( isset( $settings['marquee_mode'] ) && 'icon' === $settings['marquee_mode'] ) ? 'icon' : 'string';
+	$lines = array_values( array_filter( array_map( 'trim', explode( "\n", (string) $settings['marquee_items'] ) ) ) );
+	if ( empty( $lines ) ) {
+		return null;
+	}
+	$trust = array();
+	if ( 'string' === $mode ) {
+		$trust = $lines;
+	} else {
+		foreach ( $lines as $line ) {
+			$parts   = array_pad( explode( '|', $line, 3 ), 3, '' );
+			$trust[] = array(
+				'icon'  => trim( $parts[0] ),
+				'label' => trim( $parts[1] ),
+				'note'  => trim( $parts[2] ),
+			);
+		}
+	}
+	return array(
+		'trust'     => $trust,
+		'is_string' => 'string' === $mode,
+		'is_icon'   => 'icon' === $mode,
+	);
+}
+
+/**
  * Resolve a JSON-stored link for output:
  *  - ""        → "#"
  *  - "#..."    → unchanged (placeholder anchors)

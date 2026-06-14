@@ -6,7 +6,7 @@
  * Renders the full WP page (header + footer) with the calculator widget,
  * guide link, help text, related calculators, and the calcs sidebar.
  *
- * RULE: No hardcoded content — only structure.
+ * RULE: No hardcoded content - only structure.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -27,7 +27,7 @@ if ( ! $ctx ) {
 	return;
 }
 
-// Breadcrumb renders inside the hero — suppress from adn_page_open.
+// Breadcrumb renders inside the hero - suppress from adn_page_open.
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );

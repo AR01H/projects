@@ -128,7 +128,7 @@
     background: var(--color-primary, #1d4ed8);
     border-radius: 2px;
 }
-.nav-caret { font-size: 0.6rem; line-height: 1; transition: transform 0.2s ease; }
+.nav-caret { font-size: 1rem; line-height: 1; transition: transform 0.2s ease; }
 .nav-item.has-dropdown:hover .nav-caret,
 .nav-item.has-dropdown.open .nav-caret { transform: rotate(180deg); }
 

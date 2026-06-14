@@ -1,7 +1,7 @@
 <?php
 /**
  * components/sections/expert_cats_strip.php
- * Props: $categories[] { key, label, active }
+ * Props: $categories[] { key, label, icon?, active? }
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -11,9 +11,10 @@ if ( empty( $_cats ) ) return;
 <div class="expert-cats-strip" role="tablist" aria-label="<?php esc_attr_e( 'Filter experts by category', ADN_TEXT_DOMAIN ); ?>">
 	<div class="expert-cats-inner container">
 		<?php foreach ( $_cats as $_c ) :
-			$_ck      = esc_attr( sanitize_key( isset( $_c['key'] )   ? (string) $_c['key']   : 'all' ) );
-			$_cl      = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );
-			$_active  = ! empty( $_c['active'] );
+			$_ck     = esc_attr( sanitize_key( isset( $_c['key'] )   ? (string) $_c['key']   : 'all' ) );
+			$_cl     = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );
+			$_ci     = isset( $_c['icon'] ) ? (string) $_c['icon'] : '';
+			$_active = ! empty( $_c['active'] );
 		?>
 			<button
 				type="button"

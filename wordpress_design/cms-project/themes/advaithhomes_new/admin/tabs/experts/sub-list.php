@@ -46,7 +46,7 @@ $new_url = ADN_Theme_Admin::tab_url( 'experts', 'new' );
 					$photo_url = ( ! empty( $r['photo_id'] ) && (int) $r['photo_id'] > 0 )
 						? wp_get_attachment_image_url( (int) $r['photo_id'], 'thumbnail' )
 						: false;
-					$rating    = ! empty( $r['rating'] ) ? number_format( (float) $r['rating'], 1 ) : '—';
+					$rating    = ! empty( $r['rating'] ) ? number_format( (float) $r['rating'], 1 ) : '-';
 				?>
 				<tr>
 					<td>

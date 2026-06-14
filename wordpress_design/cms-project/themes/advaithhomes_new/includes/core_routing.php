@@ -12,6 +12,25 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Route the /guides/ page to pages/page-guides.php regardless of which WP
+ * page template is selected in the editor. Priority 98 runs before the
+ * parent-term router (99) so a parent term named "guides" can't shadow it.
+ */
+add_filter( 'template_include', 'adn_route_guides_hub', 98 );
+
+function adn_route_guides_hub( $template ) {
+	if ( ! is_page( 'guides' ) ) {
+		return $template;
+	}
+	$base = realpath( ADN_THEME_DIR . '/pages' );
+	$file = realpath( ADN_THEME_DIR . '/pages/page-guides.php' );
+	if ( $base && $file && 0 === strpos( $file, $base ) && is_file( $file ) ) {
+		return $file;
+	}
+	return $template;
+}
+
 add_filter( 'template_include', 'adn_route_parent_term_template', 99 );
 
 /**
@@ -76,7 +95,7 @@ function adn_route_parent_term_template( $template ) {
 		return get_template_directory() . '/pages/page-category_guide.php';
 	}
 
-	// No parent term match — check child taxonomy terms (wp_ah_taxonomies).
+	// No parent term match - check child taxonomy terms (wp_ah_taxonomies).
 	// These route to the topic/category listing page.
 	$tax_table = $wpdb->prefix . 'ah_taxonomies';
 
@@ -93,7 +112,7 @@ function adn_route_parent_term_template( $template ) {
 		return $template; // No matching active topic term - keep 404.
 	}
 
-	// Valid active topic term — serve the category listing page.
+	// Valid active topic term - serve the category listing page.
 	global $wp_query;
 	$wp_query->is_404  = false;
 	$wp_query->is_page = true;

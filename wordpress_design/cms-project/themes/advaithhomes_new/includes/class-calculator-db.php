@@ -4,7 +4,7 @@
  *
  * Table: {prefix}ah_calculators
  * One row per calculator: stores the key, display info, HTML markup and JS logic.
- * File-based calculators (calculators/views/*.php) are NOT stored here — they work
+ * File-based calculators (calculators/views/*.php) are NOT stored here - they work
  * independently. Only calculators created via the admin "Add Calculator" tab live here.
  */
 
@@ -26,7 +26,7 @@ class AH_Calculator_DB {
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $t ) ) === $t ) {
 			return true;
 		}
-		// Table missing — attempt creation and re-check.
+		// Table missing - attempt creation and re-check.
 		self::install();
 		return $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $t ) ) === $t;
 	}
