@@ -253,7 +253,7 @@ function adn_home_cms_news_items() {
 				'title'       => $title,
 				'description' => $desc,
 				'date'        => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
-				'tag'         => 'NEWS',
+				'tag'         => strtoupper( CONTENT_TERM ),
 				'gradient'    => adn_cms_gradient( $i ),
 				'url'         => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '#',
 			);
@@ -277,7 +277,7 @@ function adn_home_cms_news_items() {
 					'title'       => $post->post_title,
 					'description' => $excerpt,
 					'date'        => get_the_date( 'M j, Y', $post ),
-					'tag'         => 'NEWS',
+					'tag'         => strtoupper( CONTENT_TERM ),
 					'gradient'    => adn_cms_gradient( $i ),
 					'url'         => get_permalink( $post ),
 				);

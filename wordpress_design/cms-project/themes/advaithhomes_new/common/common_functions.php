@@ -94,8 +94,75 @@ function adn_icon( $icon, $class = '' ) {
         return '<i class="ah-ico ' . esc_attr( trim( $map[ $icon ] . ' ' . $class ) ) . '" aria-hidden="true"></i>';
     }
 
-    // Unknown glyph - keep it so layouts never lose their icon.
-    return '<span class="ah-emoji">' . esc_html( $icon ) . '</span>';
+    // Plain-text icon name typed by admin (e.g. "home", "search", "key").
+    static $text_map = null;
+    if ( null === $text_map ) {
+        $text_map = array(
+            'home'       => 'fa-solid fa-house',
+            'house'      => 'fa-solid fa-house',
+            'search'     => 'fa-solid fa-magnifying-glass',
+            'key'        => 'fa-solid fa-key',
+            'star'       => 'fa-solid fa-star',
+            'money'      => 'fa-solid fa-coins',
+            'coins'      => 'fa-solid fa-coins',
+            'phone'      => 'fa-solid fa-phone',
+            'email'      => 'fa-solid fa-envelope',
+            'envelope'   => 'fa-solid fa-envelope',
+            'calendar'   => 'fa-solid fa-calendar-days',
+            'location'   => 'fa-solid fa-location-dot',
+            'pin'        => 'fa-solid fa-location-dot',
+            'building'   => 'fa-solid fa-building-columns',
+            'bank'       => 'fa-solid fa-building-columns',
+            'check'      => 'fa-solid fa-circle-check',
+            'tick'       => 'fa-solid fa-circle-check',
+            'info'       => 'fa-solid fa-circle-info',
+            'user'       => 'fa-solid fa-user',
+            'users'      => 'fa-solid fa-users',
+            'people'     => 'fa-solid fa-users',
+            'document'   => 'fa-solid fa-file-lines',
+            'file'       => 'fa-solid fa-file-lines',
+            'clipboard'  => 'fa-solid fa-clipboard',
+            'shield'     => 'fa-solid fa-shield-halved',
+            'handshake'  => 'fa-solid fa-handshake',
+            'deal'       => 'fa-solid fa-handshake',
+            'chart'      => 'fa-solid fa-chart-line',
+            'graph'      => 'fa-solid fa-chart-line',
+            'lightbulb'  => 'fa-solid fa-lightbulb',
+            'idea'       => 'fa-solid fa-lightbulb',
+            'truck'      => 'fa-solid fa-truck',
+            'move'       => 'fa-solid fa-truck',
+            'pen'        => 'fa-solid fa-pen-to-square',
+            'edit'       => 'fa-solid fa-pen-to-square',
+            'clock'      => 'fa-solid fa-clock',
+            'time'       => 'fa-solid fa-clock',
+            'calculator' => 'fa-solid fa-calculator',
+            'calc'       => 'fa-solid fa-calculator',
+            'fire'       => 'fa-solid fa-fire',
+            'gift'       => 'fa-solid fa-gift',
+            'tag'        => 'fa-solid fa-tag',
+            'map'        => 'fa-solid fa-map',
+            'ruler'      => 'fa-solid fa-ruler-combined',
+            'newspaper'  => 'fa-solid fa-newspaper',
+            'news'       => 'fa-solid fa-newspaper',
+            'box'        => 'fa-solid fa-box',
+            'credit'     => 'fa-solid fa-credit-card',
+            'card'       => 'fa-solid fa-credit-card',
+            'mobile'     => 'fa-solid fa-mobile-screen',
+            'globe'      => 'fa-solid fa-earth-europe',
+            'world'      => 'fa-solid fa-earth-europe',
+            'helmet'     => 'fa-solid fa-helmet-safety',
+            'construct'  => 'fa-solid fa-helmet-safety',
+            'scale'      => 'fa-solid fa-scale-balanced',
+            'law'        => 'fa-solid fa-scale-balanced',
+        );
+    }
+    $icon_lower = strtolower( $icon );
+    if ( isset( $text_map[ $icon_lower ] ) ) {
+        return '<i class="ah-ico ' . esc_attr( trim( $text_map[ $icon_lower ] . ' ' . $class ) ) . '" aria-hidden="true"></i>';
+    }
+
+    // Completely unknown value → neutral outline icon.
+    return '<i class="ah-ico fa-regular fa-circle-dot ' . esc_attr( trim( $class ) ) . '" aria-hidden="true"></i>';
 }
 
 /**
@@ -175,6 +242,18 @@ function adn_icon_emoji_map() {
  * @param array $ctx Page context (must contain 'chrome'; optional 'breadcrumb').
  */
 function adn_page_open( array $ctx ) {
+    if ( ! empty( $_GET['content'] ) && 'true' === (string) $_GET['content'] ) {
+        ?><!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<?php wp_head(); ?>
+</head>
+<body class="adn-content-only">
+        <?php
+        return;
+    }
     get_header();
     adn_component( 'parts/main_header', array( 'chrome' => isset( $ctx['chrome'] ) ? $ctx['chrome'] : array() ) );
     if ( ! empty( $ctx['breadcrumb'] ) ) {
@@ -189,6 +268,14 @@ function adn_page_open( array $ctx ) {
  * @param array $ctx Page context (must contain 'chrome.footer').
  */
 function adn_page_close( array $ctx ) {
+    if ( ! empty( $_GET['content'] ) && 'true' === (string) $_GET['content'] ) {
+        wp_footer();
+        ?>
+</body>
+</html>
+        <?php
+        return;
+    }
     adn_component( 'parts/pre_footer' );
     adn_component( 'parts/main_footer', array( 'footer' => isset( $ctx['chrome']['footer'] ) ? $ctx['chrome']['footer'] : array() ) );
     adn_component( 'parts/post_footer' );

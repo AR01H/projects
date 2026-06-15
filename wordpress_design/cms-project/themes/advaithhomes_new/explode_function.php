@@ -70,6 +70,7 @@ function adn_enqueue_template_specific_assets() {
         ),
         'pages/page-guidance.php' => array(
             'css' => '/assets/css/guidance.css',
+            'js'  => '/assets/js/guidance.js',
         ),
         'pages/page-ask-expert.php' => array(
             'css' => '/assets/css/ask_expert.css',
@@ -89,6 +90,16 @@ function adn_enqueue_template_specific_assets() {
             wp_enqueue_script( $handle . '-script', ADN_THEME_URI . $assets['js'], array( 'jquery' ), ADN_THEME_VERSION, true );
         }
     }
+    // Nonce for enquiry form AJAX (contact + guidance pages)
+    $current_template = get_page_template_slug();
+    if ( in_array( $current_template, array( 'pages/page-contact.php', 'pages/page-guidance.php' ), true ) ) {
+        $enq_handle = 'adn-' . basename( $current_template, '.php' ) . '-script';
+        wp_localize_script( $enq_handle, 'adnEnquiry', array(
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'nonce'   => wp_create_nonce( 'ah_enquiry_nonce' ),
+        ) );
+    }
+
     if ( is_single() ) {
         if ( file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ) {
             wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), ADN_THEME_VERSION );
@@ -114,11 +125,11 @@ function adn_enqueue_template_specific_assets() {
 function adn_get_page_definitions() {
     return array(
         'home' => array(
-            'title'    => 'Home',
+            'title'    => PAGE_TITLE_HOME,
             'template' => 'pages/page-home.php',
         ),
         'contact' => array(
-            'title'    => 'Contact Us',
+            'title'    => PAGE_TITLE_CONTACT,
             'template' => 'pages/page-contact.php',
         ),
         'allinone' => array(
@@ -130,28 +141,27 @@ function adn_get_page_definitions() {
             'template' => 'pages/page-category_guide.php',
         ),
         'news' => array(
-            'title'    => 'News & Insights',
+            'title'    => PAGE_TITLE_NEWS,
             'template' => 'pages/page-newsall.php',
         ),
         'buying-guides' => array(
-            'title'    => 'Buying Guides',
+            'title'    => PAGE_TITLE_GUIDES,
             'template' => 'pages/page-guides_listing.php',
         ),
         'calculators' => array(
-            'title'    => 'Calculators',
+            'title'    => PAGE_TITLE_TOOLS,
             'template' => 'pages/page-calculator.php',
         ),
         'guidance' => array(
-            'title'    => 'Get Expert Guidance',
-            'template' => 'pages/page-contact.php',
-            // 'template' => 'pages/page-guidance.php',
+            'title'    => PAGE_TITLE_GUIDANCE,
+            'template' => 'pages/page-guidance.php',
         ),
         'ask-an-expert' => array(
-            'title'    => 'Ask an Expert',
+            'title'    => PAGE_TITLE_EXPERT,
             'template' => 'pages/page-ask-expert.php',
         ),
         'ask-expert' => array(
-            'title'    => 'Ask an Expert',
+            'title'    => PAGE_TITLE_EXPERT,
             'template' => 'pages/page-ask-expert.php',
         ),
         // Slug must match COMING_SOON_PAGE_SLUG so the coming-soon redirect target exists.

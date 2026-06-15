@@ -69,6 +69,39 @@
     transition: width 0.1s linear;
 }
 
+/* ── Scroll to top button ──────────────────────────────────── */
+.scroll-to-top {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    z-index: 990;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--client-color);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+    pointer-events: none;
+}
+.scroll-to-top.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.scroll-to-top:hover { background: var(--secondary-color); }
+.scroll-to-top:active { background: var(--client-color); transform: translateY(1px); }
+.scroll-to-top:focus-visible { outline: 2px solid var(--secondary-color); outline-offset: 3px; }
+.scroll-to-top:focus:not(:focus-visible) { outline: none; }
+.scroll-to-top svg { width: 20px; height: 20px; }
+
 /* ============================================================
    HEADER / NAVIGATION
    ============================================================ */
@@ -284,6 +317,7 @@
     flex-shrink: 0;
 }
 .search-suggest-item.is-active .search-suggest-type { background: var(--color-white, #fff); }
+.search-suggest-empty { padding: 12px 14px; font-size: 0.875rem; color: var(--color-text-muted, #6b7280); text-align: center; }
 /* Mobile menu variant flows inline instead of overlapping. */
 .mobile-search-box { position: relative; }
 .search-suggest--mobile {
@@ -442,7 +476,8 @@
     padding-bottom: 48px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px;    justify-content: center; }
+.footer-logo .logo img { background: #fff; border-radius: 6px; padding: 6px 10px; box-sizing: border-box; }
 .footer-logo-icon {
     width: 36px; height: 36px;
     background: var(--color-primary, #1d4ed8);
@@ -509,4 +544,5 @@
 @media (max-width: 560px) {
     .footer-top { grid-template-columns: 1fr; }
     .footer-bottom { justify-content: center; text-align: center; }
+    .footer-logo .logo img { max-width: 100%; width:80vw;}
 }

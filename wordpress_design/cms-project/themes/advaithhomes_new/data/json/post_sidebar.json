@@ -1,12 +1,6 @@
 {
     "calculators": {
         "view_all_url": "/calculators/",
-        "items": [
-            { "icon": "🏷",  "label": "Stamp Duty Calculator",              "url": "/stamp-duty/"  },
-            { "icon": "💰",  "label": "Mortgage Affordability Calculator",  "url": "/calculators/" },
-            { "icon": "🏠",  "label": "Buying Cost Calculator",             "url": "/calculators/" },
-            { "icon": "📅",  "label": "Monthly Payment Calculator",         "url": "/calculators/" },
-            { "icon": "🔑",  "label": "Rent vs Buy Calculator",             "url": "/calculators/" }
-        ]
+        "items": []
     }
 }

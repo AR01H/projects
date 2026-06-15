@@ -17,7 +17,7 @@ if ( empty( $_items ) ) {
 }
 ?>
 <div class="sidebar-box">
-	<h3><?php esc_html_e( 'Latest Property News', ADN_TEXT_DOMAIN ); ?></h3>
+	<h3><?php echo esc_html( 'Latest ' . SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN ); ?></h3>
 	<ul class="sidebar-news-list" role="list">
 		<?php foreach ( $_items as $_n ) :
 			$_n_icon = adn_icon( isset( $_n['icon'] )  ? (string) $_n['icon']  : '📰' );

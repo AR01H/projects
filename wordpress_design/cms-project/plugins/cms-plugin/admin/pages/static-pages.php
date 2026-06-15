@@ -43,6 +43,8 @@ if ( $edit_slug ) {
 							<?php if ( $page ) : ?>
 								<span style="display:block;margin-top:4px;"><?php $content_tax_m->render_badges( 'static_page', (int) $page->ID ); ?></span>
 							<?php endif; ?>
+							<span class="ah-sl-sc" data-shortcode="[ah_static_page slug=&quot;<?php echo esc_attr( $s ); ?>&quot;]"
+							      title="Click to copy shortcode">[ah_static_page slug=&quot;<?php echo esc_attr( $s ); ?>&quot;]</span>
 						</span>
 						<div class="ah-sl-actions">
 							<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $s ) ) ); ?>" class="ah-sl-btn">Edit</a>
@@ -99,6 +101,13 @@ if ( $edit_slug ) {
 					<a href="<?php echo esc_url( get_permalink( $page->ID ) ); ?>" target="_blank" class="ah-btn" style="font-size:12px;">View Page ↗</a>
 					<?php endif; ?>
 				</div>
+				<div style="background:#f0f4ff;border:1px solid #c5d0e6;border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+					<div>
+						<span style="font-size:11px;font-weight:600;color:#3b5bdb;text-transform:uppercase;letter-spacing:.04em;">Shortcode</span>
+						<code id="ah-editor-sc" style="display:block;margin-top:3px;font-size:12px;color:#1e3a5f;">[ah_static_page slug="<?php echo esc_attr( $edit_slug ); ?>"]</code>
+					</div>
+					<button id="ah-copy-sc-btn" type="button" class="ah-btn" style="font-size:12px;flex-shrink:0;">Copy</button>
+				</div>
 				<?php endif; ?>
 
 				<label style="font-weight:600;font-size:13px;">HTML Content</label>
@@ -126,6 +135,27 @@ if ( $edit_slug ) {
 </div>
 
 <style>
+.ah-sl-sc {
+	display: inline-block;
+	margin-top: 5px;
+	font-size: 10.5px;
+	font-family: monospace;
+	background: #f0f4ff;
+	color: #3b5bdb;
+	border: 1px solid #c5d0e6;
+	border-radius: 3px;
+	padding: 2px 6px;
+	cursor: pointer;
+	user-select: all;
+	max-width: 180px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: middle;
+	transition: background .15s;
+}
+.ah-sl-sc:hover { background: #dbe4ff; }
+.ah-sl-sc.copied { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
 .ah-sl-item {
 	display: flex;
 	justify-content: space-between;
@@ -184,6 +214,36 @@ jQuery(function ($) {
 		$('.ah-taxonomy-picker input[name="taxonomy_ids[]"]').prop('checked', false);
 		$('#ah-save-msg').text('');
 		$('#ah-save-btn').text('Create Page');
+	});
+
+	// Editor shortcode copy button
+	$('#ah-copy-sc-btn').on('click', function () {
+		var sc = $('#ah-editor-sc').text();
+		if ( navigator.clipboard ) {
+			navigator.clipboard.writeText( sc ).then(function () {
+				$('#ah-copy-sc-btn').text('✓ Copied!');
+				setTimeout(function(){ $('#ah-copy-sc-btn').text('Copy'); }, 1800);
+			});
+		}
+	});
+
+	// Shortcode copy-to-clipboard
+	$(document).on('click', '.ah-sl-sc', function () {
+		var $el = $(this);
+		var sc  = $el.data('shortcode');
+		if ( navigator.clipboard ) {
+			navigator.clipboard.writeText( sc ).then(function () {
+				$el.addClass('copied').text('✓ Copied!');
+				setTimeout(function(){ $el.removeClass('copied').text(sc); }, 1800);
+			});
+		} else {
+			var ta = document.createElement('textarea');
+			ta.value = sc; document.body.appendChild(ta); ta.select();
+			document.execCommand('copy');
+			document.body.removeChild(ta);
+			$el.addClass('copied').text('✓ Copied!');
+			setTimeout(function(){ $el.removeClass('copied').text(sc); }, 1800);
+		}
 	});
 
 	$('#ah-save-btn').on('click', function () {

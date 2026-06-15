@@ -15,22 +15,6 @@
         "trust_items": [
         ]
     },
-    "journey": {
-        "heading": "Your Buying Journey",
-        "steps": [
-            { "icon": "🔍", "num": "1", "label": "Research & Budget", "desc": "Understand costs, set budget and plan.", "active": true },
-            { "icon": "🏦", "num": "2", "label": "Mortgage", "desc": "Check affordability and get an Agreement in Principle.", "active": false },
-            { "icon": "🏠", "num": "3", "label": "Find a Property", "desc": "Search, shortlist and arrange viewings.", "active": false },
-            { "icon": "🤝", "num": "4", "label": "Make an Offer", "desc": "Understand offers, negotiation and estate agents.", "active": false },
-            { "icon": "📋", "num": "5", "label": "Surveys & Checks", "desc": "Get survey done and review the property carefully.", "active": false }
-        ],
-        "tip": {
-            "icon": "💡",
-            "text": "Buying a home in the UK takes on average <strong>3-6 months</strong> from offer to completion. The timeline can be longer if there is a property chain.",
-            "link_label": "View Full Process Timeline →",
-            "link_url": "/guides/buying-step-by-step/"
-        }
-    },
     "guides": {
         "heading": { "title": "Explore Buying Guides", "link_label": "View all guides →", "link_url": "/guides/" },
         "items": [
@@ -83,11 +67,7 @@
     },
     "news": {
         "heading": { "title": "Latest Property News", "link_label": "View all news →", "link_url": "/news/" },
-        "items": [
-            { "title": "UK House Prices Rise 1.4% in April - Latest ONS Data", "date": "May 20, 2024", "tag": "MARKET NEWS", "gradient": "linear-gradient(135deg,#c8d8c4,#8fad87)", "url": "/news/" },
-            { "title": "Bank of England Keeps Base Rate Unchanged at 5.25%", "date": "May 18, 2024", "tag": "MORTGAGE NEWS", "gradient": "linear-gradient(135deg,#d4c8b8,#a89080)", "url": "/news/" },
-            { "title": "Stamp Duty Changes: What Buyers Need to Know", "date": "May 15, 2024", "tag": "GOV.UK NEWS", "gradient": "linear-gradient(135deg,#e4d4c8,#c09080)", "url": "/news/" }
-        ]
+        "items": []
     },
     "regulations": {
         "heading": { "title": "Latest Regulations & Updates", "link_label": "View all →", "link_url": "/regulations/" },

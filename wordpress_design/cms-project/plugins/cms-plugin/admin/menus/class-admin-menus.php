@@ -58,7 +58,10 @@ class AH_Admin_Menus {
 	// ----------------------------------------------------------------
 
 	private static function load( string $file ): void {
-		$path = AH_THEME_DIR . '/admin/pages/' . $file . '.php';
+		// Theme-level admin pages take priority over plugin-level ones.
+		$theme_path  = get_template_directory() . '/admin/pages/' . $file . '.php';
+		$plugin_path = AH_PLUGIN_DIR . '/admin/pages/' . $file . '.php';
+		$path        = file_exists( $theme_path ) ? $theme_path : $plugin_path;
 		if ( file_exists( $path ) ) {
 			include $path;
 		} else {
@@ -86,6 +89,7 @@ class AH_Admin_Menus {
 	public static function page_builder()         { self::load( 'page-builder'    ); }
 	public static function page_form_builder()   { self::load( 'form-builder'   ); }
 	public static function page_newsletter()     { self::load( 'newsletter'     ); }
+	public static function page_guidance()      { self::load( 'guidance'       ); }
 	public static function page_rules_engine()   { self::load( 'rules-engine'   ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }

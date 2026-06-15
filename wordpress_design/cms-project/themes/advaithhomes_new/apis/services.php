@@ -24,41 +24,158 @@ function adn_service_home_data() {
  * Site chrome: logo, navigation, header CTA and footer content.
  * Shared by every page that renders the main header/footer.
  *
- * Data sources, in order of precedence:
- *   1. The CMS plugin (the SAME options it already serves to other client
- *      sites): ah_cms_navigation, ah_cms_nav_cta, ah_cms_footer. The plugin's
- *      Navigation Editor saves these and notes "themes can render this data
- *      with their own markup" - this is that render side.
- *   2. data/json/site_chrome.json - defaults for everything the plugin does
- *      not manage (logo, social icons, copyright, disclaimer, search copy).
+ * Data sources, in order of precedence (highest wins):
+ *   1. Plugin nav/footer editors  — ah_cms_navigation, ah_cms_nav_cta, ah_cms_footer
+ *   2. Plugin site settings DB    — chrome_* rows in ah_site_settings (group: chrome)
+ *      Managed at WP Admin → CMS Admin → Settings → chrome tab.
+ *   3. data/json/site_chrome.json — hard-coded fallback; only used when the DB
+ *      rows are missing (e.g. first install before migration runs).
  *
- * If the plugin is inactive or a section is empty, the JSON default is used,
- * so the header/footer always render.
+ * Statically cached per request so the many callers (one per page) cost
+ * exactly one DB query total.
  */
 function adn_service_site_chrome() {
+	static $cache = null;
+	if ( null !== $cache ) {
+		return $cache;
+	}
+
+	// Layer 1 (lowest priority): JSON fallback.
 	$chrome = ADN_Real_Loader::json( 'site_chrome' );
 	$chrome = is_array( $chrome ) ? $chrome : array();
 
-	// Navigation (with dropdown submenus) from the plugin, if present.
+	// Layer 2: DB settings (chrome group in ah_site_settings).
+	$chrome = adn_chrome_overlay_db_settings( $chrome );
+
+	// Layer 3: nav items from the Navigation Editor.
 	$plugin_nav = adn_chrome_plugin_nav();
 	if ( ! empty( $plugin_nav ) ) {
 		$chrome['nav'] = $plugin_nav;
 	}
 
-	// Header CTA from the plugin, if present.
+	// Layer 3: header CTA from the Navigation Editor.
 	$plugin_cta = adn_chrome_plugin_cta();
 	if ( ! empty( $plugin_cta ) ) {
 		$chrome['header_cta'] = $plugin_cta;
 	}
 
-	// Footer (brand copy, columns, legal links) from the plugin, overlaid on
-	// the JSON footer so logo/social/copyright/disclaimer keep their defaults.
-	$json_footer = isset( $chrome['footer'] ) && is_array( $chrome['footer'] ) ? $chrome['footer'] : array();
+	// Layer 3: footer columns + legal links from the Footer Editor.
+	$json_footer   = isset( $chrome['footer'] ) && is_array( $chrome['footer'] ) ? $chrome['footer'] : array();
 	$plugin_footer = adn_chrome_plugin_footer( $json_footer );
 	if ( ! empty( $plugin_footer ) ) {
 		$chrome['footer'] = $plugin_footer;
 	}
 
+	$cache = $chrome;
+	return $cache;
+}
+
+/**
+ * Load all chrome_* settings from the DB in a single query, return as key → value map.
+ * Queries by setting_key prefix so it works regardless of which admin tab each row lives in
+ * (general, social, etc.) — no dependency on group_name.
+ * Statically cached per request.
+ *
+ * @return array<string,string>
+ */
+function adn_chrome_db_settings(): array {
+	static $settings_cache = null;
+	if ( null !== $settings_cache ) {
+		return $settings_cache;
+	}
+	if ( ! function_exists( 'get_option' ) ) {
+		$settings_cache = array();
+		return $settings_cache;
+	}
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_site_settings';
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	$rows  = $wpdb->get_results( "SELECT setting_key, setting_val FROM `{$table}` WHERE setting_key LIKE 'chrome_%'", ARRAY_A );
+	$settings_cache = array();
+	if ( is_array( $rows ) ) {
+		foreach ( $rows as $row ) {
+			$settings_cache[ (string) $row['setting_key'] ] = (string) $row['setting_val'];
+		}
+	}
+	return $settings_cache;
+}
+
+/**
+ * Apply chrome_* DB settings on top of the JSON base array.
+ * Only overwrites a key when the DB value is non-empty.
+ * Copyright supports %YEAR% which is replaced with the current 4-digit year.
+ *
+ * @param array $chrome  The JSON-loaded base chrome array.
+ * @return array         Chrome array with DB values overlaid.
+ */
+function adn_chrome_overlay_db_settings( array $chrome ): array {
+	$s = adn_chrome_db_settings();
+	if ( empty( $s ) ) {
+		return $chrome;
+	}
+
+	// ── Logo ──────────────────────────────────────────────────────────────────
+	$logo = isset( $chrome['logo'] ) && is_array( $chrome['logo'] ) ? $chrome['logo'] : array();
+	foreach ( array( 'icon' => 'chrome_logo_icon', 'name' => 'chrome_logo_name', 'sub' => 'chrome_logo_sub', 'url' => 'chrome_logo_url' ) as $field => $key ) {
+		if ( isset( $s[ $key ] ) && '' !== $s[ $key ] ) {
+			$logo[ $field ] = $s[ $key ];
+		}
+	}
+	$chrome['logo'] = $logo;
+
+	// ── Search ────────────────────────────────────────────────────────────────
+	if ( isset( $s['chrome_search_ph'] ) && '' !== $s['chrome_search_ph'] ) {
+		$chrome['search'] = isset( $chrome['search'] ) && is_array( $chrome['search'] ) ? $chrome['search'] : array();
+		$chrome['search']['placeholder'] = $s['chrome_search_ph'];
+	}
+
+	// ── Footer brand ──────────────────────────────────────────────────────────
+	$footer = isset( $chrome['footer'] ) && is_array( $chrome['footer'] ) ? $chrome['footer'] : array();
+	$brand  = isset( $footer['brand'] ) && is_array( $footer['brand'] ) ? $footer['brand'] : array();
+	foreach ( array( 'icon' => 'chrome_footer_icon', 'name' => 'chrome_footer_name', 'sub' => 'chrome_footer_sub' ) as $field => $key ) {
+		if ( isset( $s[ $key ] ) && '' !== $s[ $key ] ) {
+			$brand[ $field ] = $s[ $key ];
+		}
+	}
+	$footer['brand'] = $brand;
+
+	// ── Social links — built from individual URL fields in the Social settings tab ──
+	// Each platform is only included when its URL is set to something other than '#'.
+	$_social_map = array(
+		'chrome_social_facebook'  => array( 'label' => 'Facebook',  'icon' => 'fa-brands fa-facebook'  ),
+		'chrome_social_instagram' => array( 'label' => 'Instagram', 'icon' => 'fa-brands fa-instagram' ),
+		'chrome_social_youtube'   => array( 'label' => 'YouTube',   'icon' => 'fa-brands fa-youtube'   ),
+	);
+	$_built_social = array();
+	foreach ( $_social_map as $_sk => $_meta ) {
+		if ( ! empty( $s[ $_sk ] ) && '#' !== trim( $s[ $_sk ] ) ) {
+			$_built_social[] = array(
+				'label' => $_meta['label'],
+				'icon'  => $_meta['icon'],
+				'url'   => $s[ $_sk ],
+			);
+		}
+	}
+	if ( ! empty( $_built_social ) ) {
+		$footer['social'] = $_built_social;
+	}
+
+	// ── Copyright — %YEAR% replaced with current year ─────────────────────────
+	if ( isset( $s['chrome_copyright'] ) && '' !== $s['chrome_copyright'] ) {
+		$footer['copyright'] = str_replace( '%YEAR%', (string) gmdate( 'Y' ), $s['chrome_copyright'] );
+	}
+
+	// ── Made-with line ────────────────────────────────────────────────────────
+	if ( isset( $s['chrome_made_with'] ) && '' !== $s['chrome_made_with'] ) {
+		$footer['made_with'] = $s['chrome_made_with'];
+	}
+
+	// ── Disclaimer ────────────────────────────────────────────────────────────
+	if ( isset( $s['chrome_disclaimer'] ) && '' !== $s['chrome_disclaimer'] ) {
+		$footer['disclaimer'] = $s['chrome_disclaimer'];
+	}
+
+	$chrome['footer'] = $footer;
 	return $chrome;
 }
 
@@ -280,7 +397,7 @@ function adn_service_post_sidebar_data() {
 		$meta_all = array();
 	}
 
-	$view_all_url = home_url( '/calculators/' );
+	$view_all_url = home_url( SITE_CALCULATORS_URL );
 
 	$items = array();
 	foreach ( array_slice( $calcs_raw, 0, 5, true ) as $key => $reg ) {
@@ -308,10 +425,81 @@ function adn_service_post_sidebar_data() {
 }
 
 /**
- * Contact page content - loads data/json/contact.json.
+ * Read a single setting from the contact group in ah_site_settings.
+ * Cached per page load; returns empty string if the key is absent or empty.
  */
-function adn_service_contact_data() {
-	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'contact' ) : array();
+function adn_get_contact_setting( string $key ): string {
+	static $cache = null;
+	if ( null === $cache ) {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_site_settings';
+		$rows  = $wpdb->get_results(
+			"SELECT setting_key, setting_val FROM `{$table}` WHERE group_name = 'contact'",
+			ARRAY_A
+		);
+		$cache = array();
+		if ( is_array( $rows ) ) {
+			foreach ( $rows as $row ) {
+				$cache[ (string) $row['setting_key'] ] = (string) $row['setting_val'];
+			}
+		}
+	}
+	return $cache[ $key ] ?? '';
+}
+
+/**
+ * Contact page content — JSON base overlaid with DB contact-group settings.
+ * whatsapp, email, phone and address are editable in WP Admin → Settings → Contact.
+ */
+function adn_service_contact_data(): array {
+	static $cache = null;
+	if ( null !== $cache ) { return $cache; }
+
+	$data = class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'contact' ) : array();
+	$data = is_array( $data ) ? $data : array();
+
+	$sidebar = isset( $data['contact_sidebar'] ) && is_array( $data['contact_sidebar'] )
+		? $data['contact_sidebar'] : array();
+
+	$db_whatsapp = adn_get_contact_setting( 'whatsapp' );
+	if ( '' !== $db_whatsapp ) {
+		if ( ! isset( $sidebar['whatsapp'] ) || ! is_array( $sidebar['whatsapp'] ) ) {
+			$sidebar['whatsapp'] = array();
+		}
+		$sidebar['whatsapp']['number'] = $db_whatsapp;
+		$wa_digits = preg_replace( '/[^0-9]/', '', $db_whatsapp );
+		$sidebar['whatsapp']['url']    = 'https://wa.me/' . $wa_digits;
+	}
+
+	$db_email = adn_get_contact_setting( 'email' );
+	if ( '' !== $db_email ) {
+		if ( ! isset( $sidebar['email'] ) || ! is_array( $sidebar['email'] ) ) {
+			$sidebar['email'] = array();
+		}
+		$sidebar['email']['address'] = $db_email;
+		$sidebar['email']['url']     = 'mailto:' . $db_email;
+	}
+
+	$db_phone = adn_get_contact_setting( 'phone' );
+	if ( '' !== $db_phone ) {
+		if ( ! isset( $sidebar['phone'] ) || ! is_array( $sidebar['phone'] ) ) {
+			$sidebar['phone'] = array();
+		}
+		$sidebar['phone']['number'] = $db_phone;
+		$sidebar['phone']['url']    = 'tel:' . preg_replace( '/[^0-9+]/', '', $db_phone );
+	}
+
+	$db_address = adn_get_contact_setting( 'address' );
+	if ( '' !== $db_address ) {
+		$sidebar['address'] = array( 'text' => $db_address );
+	}
+
+	if ( ! empty( $sidebar ) ) {
+		$data['contact_sidebar'] = $sidebar;
+	}
+
+	$cache = $data;
+	return $cache;
 }
 
 /**

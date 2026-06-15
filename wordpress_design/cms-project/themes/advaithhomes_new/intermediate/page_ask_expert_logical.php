@@ -17,7 +17,7 @@ function adn_ask_expert_sidebar_data() {
 		'heading'      => __( 'Contact for Help', ADN_TEXT_DOMAIN ),
 		'desc'         => __( "Not sure which expert to choose? Get in touch and we'll guide you.", ADN_TEXT_DOMAIN ),
 		'button_label' => __( 'Get in Touch', ADN_TEXT_DOMAIN ),
-		'button_url'   => '/contact/',
+		'button_url'   => SITE_CONTACT_URL,
 	);
 
 	/* ── Latest news → sidebar_news_mini shape ──────────────────────── */
@@ -60,16 +60,16 @@ function adn_ask_expert_sidebar_data() {
 	}
 	// sidebar_news_mini shape
 	$latest_news = array(
-		'heading'  => __( 'Latest News', ADN_TEXT_DOMAIN ),
+		'heading'  => 'Latest ' . SITE_NEWS_NOUN,
 		'items'    => $news_items,
-		'view_all' => array( 'label' => __( 'All News →', ADN_TEXT_DOMAIN ), 'url' => '/news/' ),
+		'view_all' => array( 'label' => 'All ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
 	);
 
 	/* ── Calculators → sidebar_quick_tools shape ────────────────────── */
 	// Items need: { icon, label, url }
 	$calc_items = array();
 	if ( function_exists( 'adn_calculators' ) ) {
-		$_calcs_page = get_permalink( get_page_by_path( 'calculators' ) ) ?: home_url( '/calculators/' );
+		$_calcs_page = get_permalink( get_page_by_path( 'calculators' ) ) ?: home_url( SITE_CALCULATORS_URL );
 		$_ci = 0;
 		foreach ( adn_calculators() as $_ck => $_calc ) {
 			if ( $_ci >= 4 ) { break; }
@@ -83,11 +83,11 @@ function adn_ask_expert_sidebar_data() {
 	}
 	// sidebar_quick_tools shape
 	$calculators = array(
-		'heading' => __( 'Quick Calculators', ADN_TEXT_DOMAIN ),
+		'heading' => 'Quick ' . SITE_TOOLS_PLURAL,
 		'items'   => $calc_items,
 		'cta'     => array(
-			'label' => __( 'All Calculators →', ADN_TEXT_DOMAIN ),
-			'url'   => '/calculators/',
+			'label' => 'All ' . SITE_TOOLS_PLURAL . ' →',
+			'url'   => SITE_CALCULATORS_URL,
 		),
 	);
 
@@ -138,7 +138,7 @@ function adn_ask_expert_get_context() {
 	$banner      = get_option( 'adn_expert_banner', array() );
 	$hero_title  = ( ! empty( $banner['heading'] ) )
 		? (string) $banner['heading']
-		: ( get_the_title() ?: __( 'Ask an Expert', ADN_TEXT_DOMAIN ) );
+		: ( get_the_title() ?: SITE_EXPERT_LABEL );
 	$hero_desc   = ( ! empty( $banner['info'] ) )
 		? (string) $banner['info']
 		: __( 'Connect with trusted property professionals who can provide the right advice for your situation.', ADN_TEXT_DOMAIN );
@@ -151,13 +151,13 @@ function adn_ask_expert_get_context() {
 
 	/* ── Breadcrumb ─────────────────────────────────────────────────── */
 	$breadcrumb = array(
-		array( 'label' => __( 'Home', ADN_TEXT_DOMAIN ),                                           'url' => home_url( '/' ) ),
-		array( 'label' => get_the_title() ?: __( 'Ask an Expert', ADN_TEXT_DOMAIN ), 'url' => null ),
+		array( 'label' => PAGE_TITLE_HOME, 'url' => home_url( '/' ) ),
+		array( 'label' => get_the_title() ?: SITE_EXPERT_LABEL, 'url' => null ),
 	);
 
 	/* ── Page meta ──────────────────────────────────────────────────── */
 	$meta = array(
-		'page_title'       => get_the_title() ?: __( 'Ask an Expert', ADN_TEXT_DOMAIN ),
+		'page_title'       => get_the_title() ?: SITE_EXPERT_LABEL,
 		'meta_description' => __( 'Connect with vetted UK property professionals - mortgage advisers, solicitors, surveyors, buyer-side agents and more.', ADN_TEXT_DOMAIN ),
 	);
 
@@ -181,7 +181,7 @@ function adn_ask_expert_get_context() {
 				}
 
 				$slug        = isset( $row['expert_slug'] ) ? (string) $row['expert_slug'] : '';
-				$profile_url = $slug ? home_url( '/?ah_expert=' . rawurlencode( $slug ) ) : home_url( '/ask-an-expert/' );
+				$profile_url = $slug ? home_url( '/?ah_expert=' . rawurlencode( $slug ) ) : home_url( SITE_EXPERT_URL );
 
 				$db_experts[] = array(
 					'slug'          => $slug,
@@ -279,7 +279,7 @@ function adn_ask_expert_get_context() {
 		'heading'      => __( "Can't find the right expert?", ADN_TEXT_DOMAIN ),
 		'desc'         => __( "Tell us what you need and we'll recommend the best expert for your situation.", ADN_TEXT_DOMAIN ),
 		'button_label' => __( 'Get Matched Now', ADN_TEXT_DOMAIN ),
-		'button_url'   => '/guidance/',
+		'button_url'   => SITE_GUIDANCE_URL,
 	);
 
 	/* ── Contact nonce for AJAX form ────────────────────────────────── */

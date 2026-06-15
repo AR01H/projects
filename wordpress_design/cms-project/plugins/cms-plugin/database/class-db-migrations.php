@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -26,9 +26,13 @@ class AH_DB_Migrations {
 		self::ensure_content_taxonomies();
 		self::ensure_taxonomy_parent_terms();
 		self::ensure_static_pages();
+		self::ensure_enquiries_table();
 
 		// Data migrations
 		self::required_settings();
+		self::chrome_settings();
+		self::chrome_settings_reorganize();
+		self::contact_settings_seed();
 		self::protected_taxonomy_data();
 		self::review_taxonomy_type();
 		self::review_categories_taxonomy_type();
@@ -105,6 +109,12 @@ class AH_DB_Migrations {
 		}
 	}
 
+	public static function ensure_enquiries_table(): void {
+		if ( class_exists( 'AH_Enquiry_Model' ) ) {
+			AH_Enquiry_Model::install_table();
+		}
+	}
+
 	/** Ensure the static-pages table exists and import any legacy HTML files once. */
 	public static function ensure_static_pages(): void {
 		if ( class_exists( 'AH_Static_Pages_Model' ) ) {
@@ -119,6 +129,7 @@ class AH_DB_Migrations {
 		global $wpdb;
 		$table = $wpdb->prefix . 'ah_site_settings';
 		foreach ( array(
+			array( 'setting_key' => 'company_name',     'setting_val' => '',              'field_type' => 'text',     'group_name' => 'general', 'label' => 'Company Name'      ),
 			array( 'setting_key' => 'phone',            'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'Phone'            ),
 			array( 'setting_key' => 'whatsapp',         'setting_val' => '', 'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'WhatsApp'         ),
 			array( 'setting_key' => 'email',            'setting_val' => '', 'field_type' => 'email',    'group_name' => 'contact', 'label' => 'Email'            ),
@@ -130,6 +141,113 @@ class AH_DB_Migrations {
 				$wpdb->insert( $table, $s );
 			}
 		}
+	}
+
+	/**
+	 * Seed default values for contact settings that were inserted as empty strings.
+	 * Only updates rows that are still empty — never overwrites a user-saved value.
+	 */
+	public static function contact_settings_seed(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_site_settings';
+		$seeds = array(
+			'whatsapp' => '+44 7747 223 762',
+			'email'    => 'contact@advaithhomes.co.uk',
+		);
+		foreach ( $seeds as $key => $default_val ) {
+			$current = $wpdb->get_var( $wpdb->prepare(
+				"SELECT setting_val FROM `{$table}` WHERE setting_key = %s",
+				$key
+			) );
+			if ( null !== $current && '' === (string) $current ) {
+				$wpdb->update( $table, array( 'setting_val' => $default_val ), array( 'setting_key' => $key ) );
+			}
+		}
+	}
+
+	/**
+	 * Seed site-chrome settings (logo, search, footer brand, social URLs, copyright, disclaimer).
+	 * Previously in site_chrome.json — now editable in WP Admin → Settings.
+	 *
+	 * Groups:
+	 *   general — logo, search, footer brand, copyright, made-with, disclaimer
+	 *   social  — individual social profile URLs (chrome_social_*)
+	 *
+	 * Social links are stored as individual URL fields (not a JSON blob) so they
+	 * appear cleanly in the Social tab alongside other social settings.
+	 * The service layer builds the footer social array from these fields at render time.
+	 *
+	 * %YEAR% in chrome_copyright is replaced with the current 4-digit year at render time.
+	 * Idempotent: only inserts rows that do not already exist.
+	 */
+	public static function chrome_settings(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_site_settings';
+
+		$defaults = array(
+			// ── General tab ────────────────────────────────────────────────────
+			// Logo
+			array( 'setting_key' => 'chrome_logo_icon',   'setting_val' => '🏠',           'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Icon'                              ),
+			array( 'setting_key' => 'chrome_logo_name',   'setting_val' => '',              'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Name'                              ),
+			array( 'setting_key' => 'chrome_logo_sub',    'setting_val' => 'HOMES',         'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Subtext'                           ),
+			array( 'setting_key' => 'chrome_logo_url',    'setting_val' => '/',             'field_type' => 'url',      'group_name' => 'general', 'label' => 'Logo Link URL'                          ),
+			// Header search
+			array( 'setting_key' => 'chrome_search_ph',   'setting_val' => 'Search guides, calculators, news…', 'field_type' => 'text', 'group_name' => 'general', 'label' => 'Search Placeholder'  ),
+			// Footer brand
+			array( 'setting_key' => 'chrome_footer_icon', 'setting_val' => '🏠',           'field_type' => 'text',     'group_name' => 'general', 'label' => 'Footer Brand Icon'                      ),
+			array( 'setting_key' => 'chrome_footer_name', 'setting_val' => '',              'field_type' => 'text',    'group_name' => 'general', 'label' => 'Footer Brand Name'                      ),
+			array( 'setting_key' => 'chrome_footer_sub',  'setting_val' => '',              'field_type' => 'text',     'group_name' => 'general', 'label' => 'Footer Brand Tagline'                   ),
+			// Footer copy
+			array( 'setting_key' => 'chrome_copyright',   'setting_val' => '© %YEAR% Your Company. All rights reserved.', 'field_type' => 'text',     'group_name' => 'general', 'label' => 'Copyright Text (%YEAR% = current year)' ),
+			array( 'setting_key' => 'chrome_made_with',   'setting_val' => 'Made with ♥ in the UK', 'field_type' => 'text',     'group_name' => 'general', 'label' => '"Made With" Line'              ),
+			array( 'setting_key' => 'chrome_disclaimer',  'setting_val' => 'Information on this website is general guidance only and does not constitute legal, financial or professional advice. Please seek expert advice for your specific situation.', 'field_type' => 'textarea', 'group_name' => 'general', 'label' => 'Footer Disclaimer' ),
+
+			// ── Social tab ─────────────────────────────────────────────────────
+			// Individual URL fields — service layer builds the footer social icon row from these.
+			array( 'setting_key' => 'chrome_social_facebook',  'setting_val' => '#', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Facebook URL'  ),
+			array( 'setting_key' => 'chrome_social_instagram', 'setting_val' => '#', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Instagram URL' ),
+			array( 'setting_key' => 'chrome_social_youtube',   'setting_val' => '#', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'YouTube URL (footer)'  ),
+		);
+
+		foreach ( $defaults as $row ) {
+			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE setting_key = %s", $row['setting_key'] ) ) ) {
+				$wpdb->insert( $table, $row );
+			}
+		}
+	}
+
+	/**
+	 * Reorganise chrome settings that were seeded with the old group names.
+	 *
+	 * Previous version used group_name = 'chrome' for everything and stored
+	 * social links as a single JSON blob (chrome_footer_social).
+	 * This migration:
+	 *   - Moves non-social chrome_* rows to group_name = 'general'
+	 *   - Moves chrome_social_* rows to group_name = 'social'
+	 *   - Deletes the obsolete chrome_footer_social JSON row
+	 * Idempotent.
+	 */
+	public static function chrome_settings_reorganize(): void {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_site_settings';
+
+		// Non-social chrome settings → general tab.
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"UPDATE `{$table}` SET group_name = 'general'
+			 WHERE group_name = 'chrome'
+			   AND setting_key != 'chrome_footer_social'
+			   AND setting_key NOT LIKE 'chrome_social_%'"
+		);
+
+		// Social URL fields → social tab.
+		$wpdb->query( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"UPDATE `{$table}` SET group_name = 'social'
+			 WHERE group_name = 'chrome'
+			   AND setting_key LIKE 'chrome_social_%'"
+		);
+
+		// Remove the obsolete JSON blob (replaced by individual URL fields).
+		$wpdb->delete( $table, array( 'setting_key' => 'chrome_footer_social' ) );
 	}
 
 	public static function protected_taxonomy_data(): void {
@@ -255,6 +373,7 @@ class AH_DB_Migrations {
 	}
 
 	// ── Helper ────────────────────────────────────────────────────────────────
+
 
 	private static function add_column_if_missing( string $table_suffix, string $column, string $definition ): void {
 		global $wpdb;

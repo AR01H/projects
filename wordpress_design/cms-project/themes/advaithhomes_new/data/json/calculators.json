@@ -22,15 +22,7 @@
         "placeholder": "Search calculators…"
     },
     "sidebar": {
-        "categories": [
-            { "key": "all",           "label": "All Calculators",          "count": 16 },
-            { "key": "buying",        "label": "Buying Calculators",       "count": 7  },
-            { "key": "selling",       "label": "Selling Calculators",      "count": 4  },
-            { "key": "moving",        "label": "Moving Home Calculators",  "count": 3  },
-            { "key": "mortgage",      "label": "Mortgage Calculators",     "count": 6  },
-            { "key": "tax",           "label": "Tax Calculators",          "count": 3  },
-            { "key": "affordability", "label": "Affordability Calculators","count": 2  }
-        ],
+        "categories": [],
         "help": {
             "title": "Need Help Using a Calculator?",
             "text": "Our guides explain how each calculator works and what the results mean.",
@@ -38,39 +30,9 @@
             "button_url": "/buying-guides/"
         }
     },
-    "filter_tabs": [
-        { "key": "all",           "label": "All"           },
-        { "key": "buying",        "label": "Buying"        },
-        { "key": "selling",       "label": "Selling"       },
-        { "key": "moving",        "label": "Moving Home"   },
-        { "key": "mortgage",      "label": "Mortgage"      },
-        { "key": "tax",           "label": "Tax"           },
-        { "key": "affordability", "label": "Affordability" }
-    ],
-    "popular_calcs": [
-        { "icon": "🏷",  "title": "Stamp Duty Calculator",              "desc": "Calculate how much Stamp Duty Land Tax you'll pay.",              "url": "/stamp-duty/"   },
-        { "icon": "💰",  "title": "Mortgage Affordability Calculator",  "desc": "See how much you can borrow and what you can afford.",            "url": "/calculators/"  },
-        { "icon": "🏠",  "title": "Buying Cost Calculator",             "desc": "Estimates all the costs involved in buying a property.",          "url": "/calculators/"  },
-        { "icon": "📅",  "title": "Monthly Payment Calculator",         "desc": "Calculate your monthly mortgage payments.",                       "url": "/calculators/"  }
-    ],
-    "all_calcs": [
-        { "icon": "🏷",  "categories": ["buying", "tax"],                "title": "Stamp Duty Calculator",               "desc": "Calculate how much Stamp Duty Land Tax you'll pay.",                              "url": "/stamp-duty/"  },
-        { "icon": "💰",  "categories": ["buying", "mortgage", "affordability"], "title": "Mortgage Affordability Calculator", "desc": "Check how much you can borrow and what you can afford.",                  "url": "/calculators/" },
-        { "icon": "🏠",  "categories": ["buying"],                       "title": "Buying Cost Calculator",              "desc": "Estimate legal fees, surveys, taxes and other buying costs.",                    "url": "/calculators/" },
-        { "icon": "📅",  "categories": ["mortgage", "buying"],           "title": "Monthly Payment Calculator",          "desc": "Calculate your monthly mortgage payments.",                                      "url": "/calculators/" },
-        { "icon": "📉",  "categories": ["mortgage"],                     "title": "Mortgage Overpayment Calculator",     "desc": "See how overpayments can reduce your loan and save interest.",                    "url": "/calculators/" },
-        { "icon": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "categories": ["tax"],                        "title": "Land Transaction Tax Calculator",      "desc": "Calculate Land Transaction Tax (Scotland) on property purchases.",                "url": "/calculators/" },
-        { "icon": "🔑",  "categories": ["affordability", "buying"],      "title": "Rent vs Buy Calculator",              "desc": "Compare the cost of renting vs buying a home.",                                   "url": "/calculators/" },
-        { "icon": "💵",  "categories": ["buying", "mortgage"],           "title": "How Much Deposit Do I Need?",         "desc": "See how much deposit you need based on property price and mortgage.",             "url": "/calculators/" },
-        { "icon": "📊",  "categories": ["selling"],                      "title": "Selling Cost Calculator",             "desc": "Estimate estate agent fees and other costs of selling.",                          "url": "/calculators/" },
-        { "icon": "📋",  "categories": ["selling", "tax"],               "title": "Capital Gains Tax Calculator",        "desc": "Calculate CGT if you're selling a second property or buy-to-let.",               "url": "/calculators/" },
-        { "icon": "🚚",  "categories": ["moving"],                       "title": "Moving Cost Calculator",              "desc": "Estimate removal company and moving home costs.",                                 "url": "/calculators/" },
-        { "icon": "🔭",  "categories": ["buying"],                       "title": "Survey Cost Estimator",               "desc": "Get an estimate for different types of property surveys.",                        "url": "/calculators/" },
-        { "icon": "🔓",  "categories": ["selling", "mortgage"],          "title": "Equity Release Calculator",           "desc": "See how much equity you could release from your home.",                           "url": "/calculators/" },
-        { "icon": "🏦",  "categories": ["mortgage", "affordability"],    "title": "Offer Strategy Calculator",           "desc": "Work out the best offer price based on market data.",                             "url": "/calculators/" },
-        { "icon": "⚡",  "categories": ["moving"],                       "title": "Energy Cost Estimator",               "desc": "Estimate energy bills for a new property based on size and EPC.",                "url": "/calculators/" },
-        { "icon": "📦",  "categories": ["moving", "selling"],            "title": "Conveyancing Cost Calculator",        "desc": "Estimate your solicitor's conveyancing fees.",                                    "url": "/calculators/" }
-    ],
+    "filter_tabs": [],
+    "popular_calcs": [],
+    "all_calcs": [],
     "find_cta": {
         "title": "Not sure which calculator you need?",
         "description": "Answer a few simple questions and we'll recommend the right calculator for you.",

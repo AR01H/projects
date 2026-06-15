@@ -32,7 +32,7 @@ function adn_guides_news_items( $limit = 3 ) {
 				'date'     => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
 				'tag'      => 'NEWS',
 				'gradient' => adn_cms_gradient( $i ),
-				'url'      => ! empty( $item->link_url ) ? $item->link_url : '/news/',
+				'url'      => ! empty( $item->link_url ) ? $item->link_url : SITE_NEWS_URL,
 			);
 		}
 	}
@@ -147,12 +147,12 @@ function adn_guides_get_context() {
 
 	return array(
 		'meta'       => array(
-			'page_title'       => 'Property Guides - Advaith Homes',
+			'page_title'       => SITE_DOMAIN_NOUN . ' ' . SITE_CONTENT_PLURAL . ' - ' . SITE_BRAND_NAME,
 			'meta_description' => 'Browse our complete library of property guides covering buying, selling and moving home in the UK.',
 		),
 		'breadcrumb' => array(
-			array( 'label' => 'Home',   'url' => '/' ),
-			array( 'label' => 'Guides', 'url' => null ),
+			array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
+			array( 'label' => SITE_CONTENT_PLURAL, 'url' => null ),
 		),
 		'hero'       => array(
 			'title'       => 'Property Guides',
@@ -165,14 +165,14 @@ function adn_guides_get_context() {
 				'items'   => $sidebar_links,
 			),
 			'quick_tools' => array(
-				'heading' => '🧮 Calculators',
+				'heading' => '🧮 ' . SITE_TOOLS_PLURAL,
 				'items'   => $calc_items,
-				'cta'     => array( 'label' => 'All Calculators →', 'url' => '/calculators/' ),
+				'cta'     => array( 'label' => 'All ' . SITE_TOOLS_PLURAL . ' →', 'url' => SITE_CALCULATORS_URL ),
 			),
 			'news_mini' => array(
-				'heading'  => 'Latest News',
+				'heading'  => 'Latest ' . SITE_NEWS_NOUN,
 				'items'    => $news_items,
-				'view_all' => array( 'label' => 'View all news →', 'url' => '/news/' ),
+				'view_all' => array( 'label' => 'View all ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
 			),
 		),
 		'chrome' => $chrome,

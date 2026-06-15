@@ -49,8 +49,8 @@ function adn_calculator_single_get_context( $key ) {
 
 	// ── Breadcrumb ────────────────────────────────────────────────────────
 	$breadcrumb = array(
-		array( 'label' => 'Home',        'url' => '/' ),
-		array( 'label' => 'Calculators', 'url' => home_url( '/calculators/' ) ),
+		array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
+		array( 'label' => SITE_TOOLS_PLURAL, 'url' => home_url( SITE_CALCULATORS_URL ) ),
 		array( 'label' => $title,        'url' => null ),
 	);
 
@@ -106,17 +106,17 @@ function adn_calculator_single_get_context( $key ) {
 	}
 	$sidebar_cats = array( array(
 		'key'   => 'all',
-		'label' => 'All Calculators',
+		'label' => 'All ' . SITE_TOOLS_PLURAL,
 		'count' => $total_enabled,
-		'url'   => home_url( '/calculators/' ),
+		'url'   => home_url( SITE_CALCULATORS_URL ),
 	) );
 	foreach ( $defined_cats as $ckey => $clabel ) {
 		if ( $cat_counts[ $ckey ] > 0 ) {
 			$sidebar_cats[] = array(
 				'key'   => $ckey,
-				'label' => $clabel . ' Calculators',
+				'label' => $clabel . ' ' . SITE_TOOLS_PLURAL,
 				'count' => $cat_counts[ $ckey ],
-				'url'   => home_url( '/calculators/#' . $ckey ),
+				'url'   => home_url( SITE_CALCULATORS_URL . '#' . $ckey ),
 			);
 		}
 	}
@@ -126,8 +126,8 @@ function adn_calculator_single_get_context( $key ) {
 
 	$_eh_title  = ( isset( $pg['sidebar_help_title'] )     && '' !== $pg['sidebar_help_title'] )     ? (string) $pg['sidebar_help_title']     : 'Need Expert Help?';
 	$_eh_text   = ( isset( $pg['sidebar_help_text'] )      && '' !== $pg['sidebar_help_text'] )      ? (string) $pg['sidebar_help_text']      : 'Speak to one of our mortgage or property experts today.';
-	$_eh_btn_l  = ( isset( $pg['sidebar_help_btn_label'] ) && '' !== $pg['sidebar_help_btn_label'] ) ? (string) $pg['sidebar_help_btn_label'] : 'Ask an Expert';
-	$_eh_btn_u  = ( isset( $pg['sidebar_help_btn_url'] )   && '' !== $pg['sidebar_help_btn_url'] )   ? (string) $pg['sidebar_help_btn_url']   : '/ask-an-expert/';
+	$_eh_btn_l  = ( isset( $pg['sidebar_help_btn_label'] ) && '' !== $pg['sidebar_help_btn_label'] ) ? (string) $pg['sidebar_help_btn_label'] : SITE_EXPERT_LABEL;
+	$_eh_btn_u  = ( isset( $pg['sidebar_help_btn_url'] )   && '' !== $pg['sidebar_help_btn_url'] )   ? (string) $pg['sidebar_help_btn_url']   : SITE_EXPERT_URL;
 
 	$expert_help_sidebar = array(
 		'heading'  => $_eh_title,
@@ -196,9 +196,9 @@ function adn_calculator_single_get_context( $key ) {
 			'expert_help' => $expert_help_sidebar,
 			'newsletter'  => $newsletter_sidebar,
 			'news_mini'   => ! empty( $news_mini_items ) ? array(
-				'heading'  => 'Latest News',
+				'heading'  => 'Latest ' . SITE_NEWS_NOUN,
 				'items'    => $news_mini_items,
-				'view_all' => array( 'label' => 'View all news', 'url' => '/news/' ),
+				'view_all' => array( 'label' => 'View all ' . SITE_NEWS_NOUN, 'url' => SITE_NEWS_URL ),
 			) : array(),
 		),
 	);

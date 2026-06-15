@@ -91,7 +91,7 @@ function adn_guides_listing_cms_items( $articles ) {
 		$items[] = array(
 			'img_class' => $img_classes[ $i % count( $img_classes ) ],
 			'icon'      => $icon,
-			'category'  => ! empty( $post->category_name ) ? $post->category_name : 'Guide',
+			'category'  => ! empty( $post->category_name ) ? $post->category_name : PARENT_TERM,
 			'title'     => $title,
 			'desc'      => isset( $post->excerpt ) ? (string) $post->excerpt : '',
 			'date'      => adn_cms_post_date( $post ),

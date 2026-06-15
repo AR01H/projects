@@ -264,7 +264,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 
       <div class="ah-form-row" style="margin-bottom:16px">
         <label>Subject *</label>
-        <input type="text" name="nl_subject" required placeholder="e.g. Your monthly update from Advaith Homes" style="font-size:15px;padding:10px 14px">
+        <input type="text" name="nl_subject" required placeholder="e.g. Your monthly update from <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?>" style="font-size:15px;padding:10px 14px">
       </div>
 
       <div class="nl-body-wrap">
@@ -274,7 +274,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
           <span class="nl-token" title="Replaced with subscriber's first name">{name}</span>
           <span class="nl-token" title="Replaced with the unsubscribe link URL">{unsubscribe_url}</span>
         </div>
-        <textarea name="nl_body" required placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;Best regards,&#10;The Advaith Homes Team"></textarea>
+        <textarea name="nl_body" required placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;Best regards,&#10;The <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?> Team"></textarea>
         <div style="font-size:12px;color:#6b7280;margin-top:6px">Plain text only. An unsubscribe line is automatically appended to every email.</div>
       </div>
 

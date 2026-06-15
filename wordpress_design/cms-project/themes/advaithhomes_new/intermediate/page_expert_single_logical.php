@@ -83,8 +83,8 @@ function adn_expert_single_get_context( $slug ) {
 			'bg_icon'     => '👤',
 		),
 		'breadcrumb'    => array(
-			array( 'label' => __( 'Home', ADN_TEXT_DOMAIN ),           'url' => '/' ),
-			array( 'label' => __( 'Ask an Expert', ADN_TEXT_DOMAIN ),  'url' => home_url( '/ask-an-expert/' ) ),
+			array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
+			array( 'label' => SITE_EXPERT_LABEL,  'url' => home_url( SITE_EXPERT_URL ) ),
 			array( 'label' => $name,                                    'url' => null ),
 		),
 		'chrome'        => $chrome,

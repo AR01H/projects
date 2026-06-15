@@ -44,7 +44,7 @@
         ]
     },
     "regulations": {
-        "heading": { "title": "Latest Regulations & Updates", "link_label": "View all →", "link_url": "/regulations/" },
+        "heading": { "title": "Latest Updates", "link_label": "View all →", "link_url": "/regulations/" },
         "items": [
         ]
     },
@@ -55,12 +55,12 @@
         "cta": { "label": "Explore All Topics →", "url": "/guides/" }
     },
     "calculators": {
-        "heading": { "title": "Popular Calculators", "link_label": "View all calculators →", "link_url": "/calculators/" },
+        "heading": { "title": "Popular Calculators", "link_label": "View all →", "link_url": "/calculators/" },
         "items": [
         ]
     },
     "guides": {
-        "heading": { "title": "Guides & Insights", "link_label": "View all guides →", "link_url": "/guides/" },
+        "heading": { "title": "Guides & Insights", "link_label": "View all →", "link_url": "/guides/" },
         "items": [
         ]
     },

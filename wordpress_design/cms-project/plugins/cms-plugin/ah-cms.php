@@ -47,7 +47,30 @@ AH_Ajax_Handlers::init_public();
 add_action( 'init', static function () {
 	add_shortcode( 'ah_form', array( 'AH_Form_Builder', 'render' ) );
 	add_shortcode( 'ah_related_links', 'ah_render_related_links_shortcode' );
+	add_shortcode( 'ah_static_page', 'ah_render_static_page_shortcode' );
 } );
+
+/**
+ * Shortcode [ah_static_page slug="my-page"].
+ * Outputs the raw HTML stored for that static page slug.
+ * Safe to use in WP post content, widgets, template files, and email templates.
+ */
+function ah_render_static_page_shortcode( $atts ): string {
+	$atts = shortcode_atts( array( 'slug' => '' ), $atts, 'ah_static_page' );
+	$slug = sanitize_file_name( trim( (string) $atts['slug'] ) );
+	if ( '' === $slug ) {
+		return '';
+	}
+	if ( ! class_exists( 'AH_Static_Pages_Model' ) ) {
+		return '';
+	}
+	$html = ( new AH_Static_Pages_Model() )->get_html( $slug );
+	if ( '' === $html ) {
+		return '';
+	}
+	// Wrap in a scoped container so the page's own inline styles don't leak.
+	return '<div class="ah-static-page-embed" data-slug="' . esc_attr( $slug ) . '">' . $html . '</div>';
+}
 
 /**
  * Theme helper: grouped related content for a post (or any object).
@@ -188,6 +211,19 @@ add_action( 'template_redirect', static function () {
 	$page = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE slug = %s AND status = 'active'", $slug ) );
 	if ( ! $page ) return;
 	$GLOBALS['ah_builder_page'] = $page;
-	include AH_PLUGIN_DIR . '/templates/template-builder-page.php';
+	// Enqueue the builder block CSS (section, hero, cards, CTA, FAQ, etc.)
+	add_action( 'wp_enqueue_scripts', static function () {
+		wp_enqueue_style(
+			'ah-builder-page',
+			AH_PLUGIN_URL . '/assets/css/builder-page.css',
+			array( 'ah-variables' ),
+			AH_PLUGIN_VERSION
+		);
+	} );
+	// Block renderer functions must be available to both the plugin template and any theme override.
+	require_once AH_PLUGIN_DIR . '/inc/builder-block-renderer.php';
+	// Theme override: if the active theme ships templates/ah-builder-page.php it takes precedence.
+	$_theme_tpl = locate_template( 'templates/ah-builder-page.php' );
+	include $_theme_tpl ?: AH_PLUGIN_DIR . '/templates/template-builder-page.php';
 	exit;
 } );

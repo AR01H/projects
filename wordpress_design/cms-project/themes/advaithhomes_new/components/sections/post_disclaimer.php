@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$_company = defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Advaith Homes';
+$_company = defined( 'COMPANY_NAME' ) ? COMPANY_NAME : SITE_BRAND_NAME;
 ?>
 <div class="article-disclaimer" role="note">
 	<span class="disclaimer-icon" aria-hidden="true">ℹ️</span>

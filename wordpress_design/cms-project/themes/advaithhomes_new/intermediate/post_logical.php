@@ -29,7 +29,7 @@ function adn_post_get_context() {
 	/* ── Post meta ── */
 	$article_icon = (string) get_post_meta( $post->ID, '_adn_article_icon', true );
 	if ( '' === $article_icon ) {
-		$article_icon = '🏠';
+		$article_icon = SITE_BRAND_ICON;
 	}
 	$read_time = (string) get_post_meta( $post->ID, '_adn_read_time', true );
 
@@ -56,7 +56,7 @@ function adn_post_get_context() {
 	if ( $_cms_bc ) {
 		$breadcrumb = $_cms_bc;
 	} else {
-		$breadcrumb = array( array( 'label' => 'Home', 'url' => '/' ) );
+		$breadcrumb = array( array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ) );
 		if ( ! empty( $cats ) ) {
 			$breadcrumb[] = array(
 				'label' => $cats[0]->name,
@@ -69,7 +69,7 @@ function adn_post_get_context() {
 	/* ── Author ── */
 	$author_name = get_the_author_meta( 'display_name' );
 	if ( empty( $author_name ) ) {
-		$author_name = defined( 'COMPANY_NAME' ) ? COMPANY_NAME . ' Team' : 'Property Experts';
+		$author_name = defined( 'COMPANY_NAME' ) ? COMPANY_NAME . ' Team' : SITE_EXPERT_NOUN . 's';
 	}
 
 	/* ── Related guides - same category, latest 4, excludes current ── */
@@ -89,7 +89,7 @@ function adn_post_get_context() {
 		while ( $rq->have_posts() ) {
 			$rq->the_post();
 			$related_guides[] = array(
-				'icon'      => get_post_meta( get_the_ID(), '_adn_article_icon', true ) ?: '🏠',
+				'icon'      => get_post_meta( get_the_ID(), '_adn_article_icon', true ) ?: SITE_BRAND_ICON,
 				'title'     => get_the_title(),
 				'read_time' => (string) get_post_meta( get_the_ID(), '_adn_read_time', true ),
 				'url'       => get_permalink(),
@@ -139,7 +139,7 @@ function adn_post_get_context() {
 		'key_takeaways'  => $key_takeaways,
 		'author'         => array(
 			'name'         => $author_name,
-			'role'         => 'UK Property Information Experts',
+			'role'         => SITE_INDUSTRY . ' Information Experts',
 			'last_updated' => get_the_modified_date( 'F j, Y' ),
 		),
 		'share'          => array(

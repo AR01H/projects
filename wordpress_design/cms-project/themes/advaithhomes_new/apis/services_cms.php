@@ -317,7 +317,7 @@ function adn_cms_newsbar_items( $limit = 6 ) {
  * @return string
  */
 function adn_newsbar_item_url( $id ) {
-	return add_query_arg( 'ah_news_id', absint( $id ), trailingslashit( home_url( '/news/' ) ) );
+	return add_query_arg( 'ah_news_id', absint( $id ), trailingslashit( home_url( SITE_NEWS_URL ) ) );
 }
 
 /* ── Presentation helpers (shared by any page mapping CMS rows to cards) ───── */
@@ -583,7 +583,7 @@ function adn_cms_post_breadcrumb( $post_id, $post_title ) {
 		return null;
 	}
 
-	$crumbs = array( array( 'label' => 'Home', 'url' => '/' ) );
+	$crumbs = array( array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ) );
 
 	$parent_name = ! empty( $term->parent_name ) ? (string) $term->parent_name : '';
 	$parent_slug = ! empty( $term->parent_slug ) ? (string) $term->parent_slug : '';

@@ -17,17 +17,7 @@
         ]
     },
     "sidebar": {
-        "browse_cats": [
-            { "label": "All Buying Guides",     "count": 32, "active": true  },
-            { "label": "Getting Started",        "count": 6,  "active": false },
-            { "label": "Mortgages",              "count": 8,  "active": false },
-            { "label": "Viewings & Offers",      "count": 5,  "active": false },
-            { "label": "Surveys & Checks",       "count": 5,  "active": false },
-            { "label": "Legal & Conveyancing",   "count": 4,  "active": false },
-            { "label": "Costs & Taxes",          "count": 5,  "active": false },
-            { "label": "Completion",             "count": 3,  "active": false },
-            { "label": "Special Situations",     "count": 3,  "active": false }
-        ],
+        "browse_cats": [],
         "level_filters": [
             { "label": "All Levels",    "checked": true  },
             { "label": "Beginner",      "checked": false },
@@ -52,128 +42,7 @@
     "guides": {
         "search_placeholder": "Search guides…",
         "sort_options": ["Latest", "Most Popular", "A-Z"],
-        "items": [
-            {
-                "img_class": "guide-img-green",
-                "icon": "🔑",
-                "category": "Getting Started",
-                "title": "Buying a House in the UK - Step by Step",
-                "desc": "A complete guide for first-time buyers.",
-                "date": "May 20, 2024",
-                "read_time": "12 min read",
-                "url": "/buying-step-by-step/"
-            },
-            {
-                "img_class": "guide-img-blue",
-                "icon": "🏦",
-                "category": "Mortgages",
-                "title": "Mortgages Explained Simply",
-                "desc": "Understand mortgage types, interest rates, fees and how lenders decide.",
-                "date": "May 18, 2024",
-                "read_time": "10 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-brown",
-                "icon": "🤝",
-                "category": "Offers & Negotiation",
-                "title": "How to Make a Strong Offer",
-                "desc": "Tips to make your offer competitive without overpaying.",
-                "date": "May 15, 2024",
-                "read_time": "8 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-purple",
-                "icon": "🔎",
-                "category": "Surveys & Checks",
-                "title": "Home Surveys Explained",
-                "desc": "Types of surveys, costs and what to look for in a report.",
-                "date": "May 12, 2024",
-                "read_time": "9 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-olive",
-                "icon": "⚖️",
-                "category": "Legal & Conveyancing",
-                "title": "Conveyancing Process Explained",
-                "desc": "Understand what your solicitor does and key legal steps.",
-                "date": "May 10, 2024",
-                "read_time": "11 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-copper",
-                "icon": "🏷️",
-                "category": "Costs & Taxes",
-                "title": "Stamp Duty: What Buyers Need to Know",
-                "desc": "Rates, exemptions and calculations for residential properties.",
-                "date": "May 9, 2024",
-                "read_time": "7 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-teal",
-                "icon": "🏦",
-                "category": "Mortgages",
-                "title": "How Much Deposit Do I Need?",
-                "desc": "How much deposit you need and ways to save faster.",
-                "date": "May 7, 2024",
-                "read_time": "6 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-forest",
-                "icon": "🏛️",
-                "category": "Special Situations",
-                "title": "Buying with a Help to Buy Scheme",
-                "desc": "How Help to Buy schemes work and who is eligible.",
-                "date": "May 5, 2024",
-                "read_time": "8 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-neutral",
-                "icon": "🏢",
-                "category": "Costs & Taxes",
-                "title": "Buying a Leasehold Property",
-                "desc": "Key things to check before buying a leasehold home.",
-                "date": "May 3, 2024",
-                "read_time": "9 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-rose",
-                "icon": "📝",
-                "category": "Legal & Conveyancing",
-                "title": "Exchange of Contracts Explained",
-                "desc": "What exchange means and what you must know.",
-                "date": "Apr 30, 2024",
-                "read_time": "6 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-sky",
-                "icon": "🎉",
-                "category": "Completion",
-                "title": "Completion Day - What Happens?",
-                "desc": "Step-by-step of what happens on completion day.",
-                "date": "Apr 28, 2024",
-                "read_time": "7 min read",
-                "url": "/buying-guides/"
-            },
-            {
-                "img_class": "guide-img-lime",
-                "icon": "✅",
-                "category": "Getting Started",
-                "title": "First-Time Buyer Checklist",
-                "desc": "A practical checklist to help you get ready to buy.",
-                "date": "Apr 25, 2024",
-                "read_time": "PDF",
-                "url": "/buying-guides/"
-            }
-        ],
+        "items": [],
         "pagination": {
             "current": 1,
             "total":   4

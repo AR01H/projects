@@ -28,7 +28,7 @@ function adn_news_get_context() {
 		'meta'              => isset( $data['meta'] )              ? (array) $data['meta']              : array(),
 		'breadcrumb'        => isset( $data['breadcrumb'] )        ? (array) $data['breadcrumb']        : array(),
 		'hero'              => isset( $data['hero'] )              ? (array) $data['hero']              : array(),
-		'categories'        => array( array( 'key' => 'all', 'label' => 'All News', 'count' => '' ) ),
+		'categories'        => array( array( 'key' => 'all', 'label' => 'All ' . SITE_NEWS_NOUN, 'count' => '' ) ),
 		'featured'          => array(),
 		'sections'          => array(),
 		'sidebar'           => isset( $data['sidebar'] )           ? (array) $data['sidebar']           : array(),
@@ -46,7 +46,7 @@ function adn_news_get_context() {
 			if ( ! empty( $nb_rest ) ) {
 				$ctx['sections'][] = array(
 					'type'       => 'grid',
-					'heading'    => 'All News',
+					'heading'    => 'All ' . SITE_NEWS_NOUN,
 					'link_label' => '',
 					'link_url'   => '',
 					'items'      => adn_news_newsbar_grid_items( $nb_rest ),
@@ -67,7 +67,7 @@ function adn_news_get_context() {
 			if ( ! empty( $rest ) ) {
 				$ctx['sections'][] = array(
 					'type'    => 'grid',
-					'heading' => 'Latest News',
+					'heading' => 'Latest ' . SITE_NEWS_NOUN,
 					'link_label' => '',
 					'link_url'   => '',
 					'items'   => adn_news_cms_grid_items( $rest ),
@@ -117,7 +117,7 @@ function adn_news_newsbar_featured( $item ) {
 	return array(
 		'bg_icon'   => 'fa-newspaper',
 		'label'     => 'Featured Story',
-		'tag'       => 'News',
+		'tag'       => SITE_NEWS_NOUN,
 		'title'     => isset( $item->text ) ? (string) $item->text : '',
 		'excerpt'   => $excerpt,
 		'date'      => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
@@ -139,7 +139,7 @@ function adn_news_newsbar_grid_items( $rows ) {
 			'icon'       => 'fa-newspaper',
 			'bg_class'   => '',
 			'pill_class' => 'pill-market',
-			'category'   => 'News',
+			'category'   => SITE_NEWS_NOUN,
 			'title'      => $title,
 			'excerpt'    => $excerpt,
 			'date'       => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
@@ -153,7 +153,7 @@ function adn_news_newsbar_grid_items( $rows ) {
 /* ── CMS DB mappers ─────────────────────────────────────────────────────── */
 
 function adn_news_cms_categories() {
-	$cats        = array( array( 'key' => 'all', 'label' => 'All News', 'count' => '' ) );
+	$cats        = array( array( 'key' => 'all', 'label' => 'All ' . SITE_NEWS_NOUN, 'count' => '' ) );
 	$news_parent = function_exists( 'adn_cms_parent_by_slug' ) ? adn_cms_parent_by_slug( 'news' ) : null;
 	if ( $news_parent ) {
 		foreach ( adn_cms_topics( (int) $news_parent->id, 20 ) as $topic ) {
@@ -171,7 +171,7 @@ function adn_news_cms_featured( $post ) {
 	return array(
 		'bg_icon'   => 'fa-newspaper',
 		'label'     => 'Featured Story',
-		'tag'       => 'News',
+		'tag'       => SITE_NEWS_NOUN,
 		'title'     => isset( $post->title ) ? $post->title : '',
 		'excerpt'   => isset( $post->excerpt ) ? (string) $post->excerpt : '',
 		'date'      => adn_cms_post_date( $post ),
@@ -187,7 +187,7 @@ function adn_news_cms_grid_items( $posts ) {
 		if ( '' === $title ) {
 			continue;
 		}
-		$cat     = ! empty( $post->category_name ) ? $post->category_name : 'News';
+		$cat     = ! empty( $post->category_name ) ? $post->category_name : SITE_NEWS_NOUN;
 		$items[] = array(
 			'cat_key'    => sanitize_key( $cat ),
 			'icon'       => 'fa-newspaper',
@@ -212,7 +212,7 @@ function adn_news_wp_featured( $post ) {
 	return array(
 		'bg_icon'   => 'fa-newspaper',
 		'label'     => 'Featured Story',
-		'tag'       => 'News',
+		'tag'       => SITE_NEWS_NOUN,
 		'title'     => $post->post_title,
 		'excerpt'   => $excerpt,
 		'date'      => get_the_date( 'F j, Y', $post ),
@@ -228,7 +228,7 @@ function adn_news_wp_grid_items( $posts ) {
 			continue;
 		}
 		$cats    = get_the_category( $post->ID );
-		$cat     = ! empty( $cats ) ? $cats[0]->name : 'News';
+		$cat     = ! empty( $cats ) ? $cats[0]->name : SITE_NEWS_NOUN;
 		$excerpt = $post->post_excerpt
 			?: wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '…' );
 		$items[] = array(

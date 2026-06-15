@@ -82,12 +82,12 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 			<main class="news-main">
 				<div class="news-single-article">
 
-					<a href="<?php echo esc_url( trailingslashit( home_url( '/news/' ) ) ); ?>" class="news-single-back">
+					<a href="<?php echo esc_url( trailingslashit( home_url( SITE_NEWS_URL ) ) ); ?>" class="news-single-back">
 						&#8592; <?php esc_html_e( 'Back to News', ADN_TEXT_DOMAIN ); ?>
 					</a>
 
 					<div class="news-single-meta">
-						<span class="news-single-tag"><?php esc_html_e( 'News', ADN_TEXT_DOMAIN ); ?></span>
+						<span class="news-single-tag"><?php echo esc_html( SITE_NEWS_NOUN ); ?></span>
 						<?php if ( $_nb_stamp ) : ?>
 							<span class="news-single-date"><?php echo esc_html( date_i18n( 'F j, Y', strtotime( $_nb_stamp ) ) ); ?></span>
 						<?php endif; ?>
@@ -160,7 +160,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 					<?php adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => array(
 						'heading'  => __( 'More News', ADN_TEXT_DOMAIN ),
 						'items'    => $_nb_related,
-						'view_all' => array( 'label' => __( 'All News →', ADN_TEXT_DOMAIN ), 'url' => '/news/' ),
+						'view_all' => array( 'label' => 'All ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
 					) ) ); ?>
 				<?php endif; ?>
 

@@ -202,9 +202,9 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 
 			<?php /* CTA */ ?>
 			<div class="expert-sb-box expert-need-help">
-				<h3><?php esc_html_e( 'Ask an Expert', ADN_TEXT_DOMAIN ); ?></h3>
+				<h3><?php echo esc_html( SITE_EXPERT_LABEL ); ?></h3>
 				<p><?php esc_html_e( 'Browse all our vetted property professionals and find the right specialist for your situation.', ADN_TEXT_DOMAIN ); ?></p>
-				<a href="<?php echo esc_url( home_url( '/ask-an-expert/' ) ); ?>" class="btn btn-primary expert-nh-btn">
+				<a href="<?php echo esc_url( home_url( SITE_EXPERT_URL ) ); ?>" class="btn btn-primary expert-nh-btn">
 					<?php esc_html_e( 'View All Experts', ADN_TEXT_DOMAIN ); ?>
 				</a>
 			</div>

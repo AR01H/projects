@@ -119,7 +119,7 @@ function adn_category_cms_news( $limit = 3 ) {
 				'date'     => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
 				'tag'      => 'NEWS',
 				'gradient' => adn_cms_gradient( $i ),
-				'url'      => ! empty( $item->link_url ) ? $item->link_url : '/news/',
+				'url'      => ! empty( $item->link_url ) ? $item->link_url : SITE_NEWS_URL,
 			);
 		}
 	}
@@ -290,12 +290,12 @@ function adn_category_get_context( $slug = '' ) {
 	// ── 4. Meta & Breadcrumb ──────────────────────────────────────────
 	$meta = array(
 		'slug'             => $slug,
-		'page_title'       => $name . ' - Advaith Homes',
+		'page_title'       => $name . ' - ' . SITE_BRAND_NAME,
 		'meta_description' => $desc,
 	);
 	$breadcrumb = array(
-		array( 'label' => 'Home', 'url' => '/' ),
-		array( 'label' => $name,  'url' => null ),
+		array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
+		array( 'label' => $name,           'url' => null ),
 	);
 
 	// ── 5. Guides: CMS articles for this parent slug ─────────────────
@@ -303,7 +303,7 @@ function adn_category_get_context( $slug = '' ) {
 		'heading' => array(
 			'title'      => 'Explore ' . $name . ' Guides',
 			'link_label' => 'View all guides →',
-			'link_url'   => '/guides/',
+			'link_url'   => SITE_GUIDES_URL,
 		),
 		'items' => adn_category_cms_guides( $slug ),
 	);
@@ -313,7 +313,7 @@ function adn_category_get_context( $slug = '' ) {
 		'heading' => array(
 			'title'      => 'Latest Updates',
 			'link_label' => 'View all →',
-			'link_url'   => '/news/',
+			'link_url'   => SITE_NEWS_URL,
 		),
 		'items' => adn_category_latest_updates( $slug, 4 ),
 	);
@@ -372,15 +372,15 @@ function adn_category_get_context( $slug = '' ) {
 			$items[] = array(
 				'icon' => ! empty( $reg['icon'] )      ? (string) $reg['icon']        : '🧮',
 				'name' => ! empty( $reg['title'] )     ? (string) $reg['title']       : $key,
-				'url'  => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( '/calculators/?calc=' . rawurlencode( $key ) ),
+				'url'  => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( SITE_CALCULATORS_URL . '?calc=' . rawurlencode( $key ) ),
 			);
 		}
 		if ( ! empty( $items ) ) {
 			$calculators = array(
 				'heading' => array(
-					'title'      => ! empty( $_cs_calc['heading'] ) ? (string) $_cs_calc['heading'] : 'Calculators for ' . $name,
-					'link_label' => 'View all calculators →',
-					'link_url'   => '/calculators/',
+					'title'      => ! empty( $_cs_calc['heading'] ) ? (string) $_cs_calc['heading'] : SITE_TOOLS_PLURAL . ' for ' . $name,
+					'link_label' => 'View all ' . strtolower( SITE_TOOLS_PLURAL ) . ' →',
+					'link_url'   => SITE_CALCULATORS_URL,
 				),
 				'items' => $items,
 			);
@@ -490,9 +490,9 @@ function adn_category_get_context( $slug = '' ) {
 		}
 		if ( empty( $sidebar['quick_tools'] ) ) {
 			$sidebar['quick_tools'] = array(
-				'heading' => ! empty( $calculators['heading']['title'] ) ? (string) $calculators['heading']['title'] : 'Related Calculators',
+				'heading' => ! empty( $calculators['heading']['title'] ) ? (string) $calculators['heading']['title'] : 'Related ' . SITE_TOOLS_PLURAL,
 				'items'   => $_calc_tools,
-				'cta'     => array( 'label' => 'All Calculators →', 'url' => '/calculators/' ),
+				'cta'     => array( 'label' => 'All ' . SITE_TOOLS_PLURAL . ' →', 'url' => SITE_CALCULATORS_URL ),
 			);
 		}
 	}
@@ -505,8 +505,8 @@ function adn_category_get_context( $slug = '' ) {
 			'subtitle' => ! empty( $_cs_sidebar['expert_subtitle'] )  ? (string) $_cs_sidebar['expert_subtitle']  : ( ! empty( $_eh_pg['sidebar_help_text'] )  ? (string) $_eh_pg['sidebar_help_text']  : 'Speak to one of our property experts today.' ),
 			'experts'  => array(),
 			'cta'      => array(
-				'label' => ! empty( $_cs_sidebar['expert_cta_label'] ) ? (string) $_cs_sidebar['expert_cta_label'] : ( ! empty( $_eh_pg['sidebar_help_btn_label'] ) ? (string) $_eh_pg['sidebar_help_btn_label'] : 'Ask an Expert' ),
-				'url'   => ! empty( $_cs_sidebar['expert_cta_url'] )   ? (string) $_cs_sidebar['expert_cta_url']   : ( ! empty( $_eh_pg['sidebar_help_btn_url'] )   ? (string) $_eh_pg['sidebar_help_btn_url']   : '/ask-an-expert/' ),
+				'label' => ! empty( $_cs_sidebar['expert_cta_label'] ) ? (string) $_cs_sidebar['expert_cta_label'] : ( ! empty( $_eh_pg['sidebar_help_btn_label'] ) ? (string) $_eh_pg['sidebar_help_btn_label'] : SITE_EXPERT_LABEL ),
+				'url'   => ! empty( $_cs_sidebar['expert_cta_url'] )   ? (string) $_cs_sidebar['expert_cta_url']   : ( ! empty( $_eh_pg['sidebar_help_btn_url'] )   ? (string) $_eh_pg['sidebar_help_btn_url']   : SITE_EXPERT_URL ),
 			),
 		);
 	}
@@ -596,11 +596,13 @@ function adn_category_get_context( $slug = '' ) {
 			) );
 			$pp_cards = array();
 			foreach ( $_pp_q->posts as $i => $_pp_post ) {
-				$_ex = $_pp_post->post_excerpt ? $_pp_post->post_excerpt : $_pp_post->post_content;
+				$_ex    = $_pp_post->post_excerpt ? $_pp_post->post_excerpt : $_pp_post->post_content;
+				$_thumb = get_the_post_thumbnail_url( $_pp_post->ID, 'medium_large' );
 				$pp_cards[] = array(
-					'icon'        => '📌',
+					'image'       => $_thumb ? $_thumb : '',
+					'icon'        => 'fa-solid fa-book-open',
 					'gradient'    => adn_cms_gradient( $i ),
-					'category'    => 'Guide',
+					'category'    => PARENT_TERM,
 					'title'       => $_pp_post->post_title,
 					'description' => wp_trim_words( $_ex, 18, '…' ),
 					'read_more'   => 'Read More →',
@@ -634,9 +636,9 @@ function adn_category_get_context( $slug = '' ) {
 	}
 	$news = array(
 		'heading' => array(
-			'title'      => 'Latest Property News',
+			'title'      => 'Latest ' . SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN,
 			'link_label' => 'View all news →',
-			'link_url'   => '/news/',
+			'link_url'   => SITE_NEWS_URL,
 		),
 		'items' => $_main_news_items,
 	);

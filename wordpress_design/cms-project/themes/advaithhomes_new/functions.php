@@ -15,6 +15,7 @@ require_once get_template_directory() . '/includes/core_routing.php';
 require_once get_template_directory() . '/includes/class-category-settings.php';
 require_once get_template_directory() . '/includes/class-calculator-db.php';
 require_once get_template_directory() . '/includes/class-expert-db.php';
+require_once get_template_directory() . '/includes/class-adn-enquiry.php';
 require_once get_template_directory() . '/includes/comment-callbacks.php';
 
 // ===========================
@@ -63,6 +64,10 @@ add_action( 'admin_init',         array( 'AH_Calculator_DB', 'maybe_install' ) )
 // Install expert DB table.
 add_action( 'after_switch_theme', array( 'AH_Expert_DB', 'install' ) );
 add_action( 'admin_init',         array( 'AH_Expert_DB', 'maybe_install' ) );
+
+// Install enquiry submissions table.
+add_action( 'after_switch_theme', array( 'AH_Enquiry_Model', 'install_table' ) );
+add_action( 'admin_init',         array( 'AH_Enquiry_Model', 'maybe_install' ) );
 
 // Merge DB-stored (admin-created) calculators into the adn_calculators() registry.
 // File-based calculators already in the array take priority - DB only adds new keys.
@@ -318,7 +323,7 @@ function adn_expert_contact_ajax() {
 	$expert_name = $expert ? $expert['name'] : 'Expert';
 	$to_email    = ( $expert && ! empty( $expert['email'] ) ) ? $expert['email'] : get_option( 'admin_email' );
 
-	$subject = sprintf( '[Advaith Homes] Enquiry for %s from %s', $expert_name, $sender_name );
+	$subject = sprintf( '[' . SITE_BRAND_NAME . '] Enquiry for %s from %s', $expert_name, $sender_name );
 	$body    = "Name: {$sender_name}\nEmail: {$sender_email}\nPhone: {$sender_phone}\n\nMessage:\n{$message}";
 	$headers = array( 'Content-Type: text/plain; charset=UTF-8', "Reply-To: {$sender_name} <{$sender_email}>" );
 

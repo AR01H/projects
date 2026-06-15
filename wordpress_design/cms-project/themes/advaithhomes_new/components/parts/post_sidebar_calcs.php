@@ -40,7 +40,7 @@ if ( empty( $_items ) ) {
 	</ul>
 	<?php if ( '' !== $_view_url ) : ?>
 		<a href="<?php echo esc_url( $_view_url ); ?>" class="sidebar-view-all">
-			<?php esc_html_e( 'View all calculators', ADN_TEXT_DOMAIN ); ?> →
+			<?php echo esc_html( 'View all ' . SITE_TOOLS_PLURAL ); ?> →
 		</a>
 	<?php endif; ?>
 </div>

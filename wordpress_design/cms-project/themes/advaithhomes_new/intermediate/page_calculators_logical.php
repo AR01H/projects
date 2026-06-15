@@ -33,7 +33,7 @@ function adn_calculators_get_context() {
 
 	// ── Hero ─────────────────────────────────────────────────────────────
 	$hero = array(
-		'title'       => $first( $pg_str( 'hero_title' ), isset( $gen['main_heading'] ) ? (string) $gen['main_heading'] : '', 'All Calculators' ),
+		'title'       => $first( $pg_str( 'hero_title' ), isset( $gen['main_heading'] ) ? (string) $gen['main_heading'] : '', 'All ' . SITE_TOOLS_PLURAL ),
 		'description' => $first( $pg_str( 'hero_desc' ),  isset( $gen['intro'] )        ? (string) $gen['intro']        : '' ),
 		'bg_icon'     => $first( $pg_str( 'hero_icon' ),  '🏠🧮' ),
 	);
@@ -67,7 +67,7 @@ function adn_calculators_get_context() {
 
 	// ── Search ────────────────────────────────────────────────────────────
 	$search = array(
-		'placeholder' => $first( $pg_str( 'search_placeholder' ), 'Search calculators…' ),
+		'placeholder' => $first( $pg_str( 'search_placeholder' ), 'Search ' . strtolower( SITE_TOOLS_PLURAL ) . '…' ),
 	);
 
 	// ── All calcs from registry ───────────────────────────────────────────
@@ -126,10 +126,10 @@ function adn_calculators_get_context() {
 	}
 
 	// ── Sidebar categories ────────────────────────────────────────────────
-	$sidebar_cats = array( array( 'key' => 'all', 'label' => 'All Calculators', 'count' => count( $all_calcs ) ) );
+	$sidebar_cats = array( array( 'key' => 'all', 'label' => 'All ' . SITE_TOOLS_PLURAL, 'count' => count( $all_calcs ) ) );
 	foreach ( $defined_cats as $ckey => $clabel ) {
 		if ( $cat_counts[ $ckey ] > 0 ) {
-			$sidebar_cats[] = array( 'key' => $ckey, 'label' => $clabel . ' Calculators', 'count' => $cat_counts[ $ckey ] );
+			$sidebar_cats[] = array( 'key' => $ckey, 'label' => $clabel . ' ' . SITE_TOOLS_PLURAL, 'count' => $cat_counts[ $ckey ] );
 		}
 	}
 
@@ -173,8 +173,8 @@ function adn_calculators_get_context() {
 
 	// ── Breadcrumb ────────────────────────────────────────────────────────
 	$breadcrumb = array(
-		array( 'label' => 'Home',        'url' => '/' ),
-		array( 'label' => 'Calculators', 'url' => null ),
+		array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
+		array( 'label' => SITE_TOOLS_PLURAL, 'url' => null ),
 	);
 
 	return array(

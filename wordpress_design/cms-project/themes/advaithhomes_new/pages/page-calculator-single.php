@@ -103,7 +103,7 @@ adn_page_open( $_open_ctx );
 			<?php if ( ! empty( $ctx['news'] ) ) : ?>
 			<section class="category-section category-news mini_card_container_design">
 				<h3 class="calc-single-section-title">
-					<?php esc_html_e( 'Latest News', ADN_TEXT_DOMAIN ); ?>
+					<?php echo esc_html( 'Latest ' . SITE_NEWS_NOUN ); ?>
 				</h3>
 				<?php foreach ( $ctx['news'] as $item ) :
 					adn_component( 'cards/news_item', array( 'item' => $item ) );

@@ -30,7 +30,9 @@
         initSearchSuggest();
         initStickyHeader();
         initScrollProgress();
+        initScrollToTop();
         initActiveNavLink();
+        initJourneyTimeline();
     });
 
     /* ---------- Mobile menu ---------- */
@@ -206,8 +208,18 @@
         }
 
         function render(results) {
-            if (!results.length) { hide(); return; }
             box.innerHTML = '';
+            if (!results.length) {
+                var empty = document.createElement('div');
+                empty.className = 'search-suggest-empty';
+                empty.textContent = 'No results found';
+                box.appendChild(empty);
+                box.removeAttribute('hidden');
+                input.setAttribute('aria-expanded', 'true');
+                items = [];
+                active = -1;
+                return;
+            }
             items = results.map(function (r) {
                 var a = document.createElement('a');
                 a.className = 'search-suggest-item';
@@ -255,7 +267,7 @@
                             url: it.url || '#',
                             subtype: it.subtype || it.type || ''
                         };
-                    }).filter(function (it) { return it.title; });
+                    }).filter(function (it) { return it.title && it.subtype !== 'page'; });
                     render(list);
                 })
                 .catch(function () { /* aborted or network error - ignore */ });
@@ -264,7 +276,7 @@
         input.addEventListener('input', function () {
             var query = input.value.trim();
             if (timer) { clearTimeout(timer); }
-            if (query.length < 2) { hide(); return; }
+            if (query.length < 1) { hide(); return; }
             timer = setTimeout(function () { fetchSuggest(query); }, 200);
         });
 
@@ -313,6 +325,171 @@
             var pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
             bar.style.width = pct + '%';
         }, { passive: true });
+    }
+
+    /* ---------- Scroll to top ---------- */
+    function initScrollToTop() {
+        var btn = document.getElementById('scrollToTop');
+        if (!btn) { return; }
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 300) {
+                btn.classList.add('is-visible');
+            } else {
+                btn.classList.remove('is-visible');
+            }
+        }, { passive: true });
+        btn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    /* ---------- Journey vertical timeline carousel + step popup ---------- */
+
+    /* Single shared popup element, created once and reused across all timeline instances. */
+    var _jnyPopup = null;
+
+    function getJnyPopup() {
+        if (_jnyPopup) { return _jnyPopup; }
+        _jnyPopup = document.createElement('div');
+        _jnyPopup.className = 'jny-step-popup';
+        _jnyPopup.setAttribute('role', 'dialog');
+        _jnyPopup.setAttribute('aria-modal', 'true');
+        _jnyPopup.innerHTML =
+            '<div class="jny-step-popup-inner">' +
+                '<button type="button" class="jny-step-popup-close" aria-label="Close">&#x2715;</button>' +
+                '<div class="jny-step-popup-step"></div>' +
+                '<div class="jny-step-popup-icon"></div>' +
+                '<h3 class="jny-step-popup-title"></h3>' +
+                '<p class="jny-step-popup-desc"></p>' +
+            '</div>';
+        document.body.appendChild(_jnyPopup);
+
+        /* Close on backdrop click or close button */
+        _jnyPopup.addEventListener('click', function (e) {
+            if (e.target === _jnyPopup) { closeJnyPopup(); }
+        });
+        _jnyPopup.querySelector('.jny-step-popup-close').addEventListener('click', closeJnyPopup);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && _jnyPopup.classList.contains('is-open')) { closeJnyPopup(); }
+        });
+        return _jnyPopup;
+    }
+
+    function openJnyPopup(row) {
+        var popup  = getJnyPopup();
+        var num    = row.getAttribute('data-num') || '';
+        var label  = row.getAttribute('data-label') || '';
+        var desc   = row.getAttribute('data-desc') || '';
+
+        /* Copy icon HTML from the circle into the popup */
+        var circleEl   = row.querySelector('.jny-vtl-circle');
+        var iconPopup  = popup.querySelector('.jny-step-popup-icon');
+        iconPopup.innerHTML = circleEl ? circleEl.innerHTML : '';
+
+        popup.querySelector('.jny-step-popup-step').textContent  = 'Step ' + num;
+        popup.querySelector('.jny-step-popup-title').textContent = label;
+        popup.querySelector('.jny-step-popup-desc').textContent  = desc;
+        popup.classList.add('is-open');
+        popup.querySelector('.jny-step-popup-close').focus();
+    }
+
+    function closeJnyPopup() {
+        if (_jnyPopup) { _jnyPopup.classList.remove('is-open'); }
+    }
+
+    function initJourneyTimeline() {
+        document.querySelectorAll('[data-jny-vtl]').forEach(function (root) {
+            var viewport = root.querySelector('[data-jny-vtl-vp]');
+            var track    = root.querySelector('[data-jny-vtl-track]');
+            var btnPrev  = root.querySelector('[data-jny-vtl-prev]');
+            var btnNext  = root.querySelector('[data-jny-vtl-next]');
+            var rows     = track ? Array.prototype.slice.call(track.querySelectorAll('[data-jny-vtl-row]')) : [];
+            if (!track || rows.length < 2) { return; }
+
+            var current = 0;
+            var VISIBLE = 3;
+
+            /*
+             * Build cumulative offsets so variable-height rows are handled correctly:
+             * offsets[i] = px from top of track to top of row i.
+             */
+            function buildOffsets() {
+                var offs = [0];
+                rows.forEach(function (r) {
+                    var mb = parseFloat(window.getComputedStyle(r).marginBottom) || 0;
+                    offs.push(offs[offs.length - 1] + r.offsetHeight + mb);
+                });
+                return offs;
+            }
+
+            function update(animated) {
+                var offs   = buildOffsets();
+                var endIdx = Math.min(current + VISIBLE, rows.length);
+                var vpH    = offs[endIdx] - offs[current];
+
+                track.style.transition = animated ? 'transform .45s cubic-bezier(.4,0,.2,1)' : 'none';
+                track.style.transform  = 'translateY(-' + offs[current] + 'px)';
+                viewport.style.height  = vpH + 'px';
+
+                if (btnPrev) { btnPrev.disabled = current <= 0; }
+                if (btnNext) { btnNext.disabled = current >= rows.length - VISIBLE; }
+            }
+
+            /* Show "More" button on cards where description is clamped */
+            function checkMoreButtons() {
+                rows.forEach(function (row) {
+                    var desc = row.querySelector('.jny-vtl-desc');
+                    var btn  = row.querySelector('.jny-vtl-more');
+                    if (!desc || !btn) { return; }
+                    btn.classList.toggle('is-visible', desc.scrollHeight > desc.clientHeight + 2);
+                });
+            }
+
+            /* Wire "More" buttons to popup */
+            rows.forEach(function (row) {
+                var btn = row.querySelector('.jny-vtl-more');
+                if (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        openJnyPopup(row);
+                    });
+                }
+            });
+
+            if (btnPrev) {
+                btnPrev.addEventListener('click', function () {
+                    if (current > 0) { current--; update(true); }
+                });
+            }
+            if (btnNext) {
+                btnNext.addEventListener('click', function () {
+                    if (current < rows.length - VISIBLE) { current++; update(true); }
+                });
+            }
+
+            /* Touch swipe */
+            var touchY = 0;
+            track.addEventListener('touchstart', function (e) {
+                touchY = e.touches[0].clientY;
+            }, { passive: true });
+            track.addEventListener('touchend', function (e) {
+                var dy = touchY - e.changedTouches[0].clientY;
+                if (Math.abs(dy) > 40) {
+                    if (dy > 0 && current < rows.length - VISIBLE) { current++; update(true); }
+                    else if (dy < 0 && current > 0) { current--; update(true); }
+                }
+            }, { passive: true });
+
+            /* Resize */
+            var resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () { update(false); checkMoreButtons(); }, 120);
+            }, { passive: true });
+
+            /* Init */
+            setTimeout(function () { update(false); checkMoreButtons(); }, 80);
+        });
     }
 
     /* ---------- Active nav-link highlight ---------- */

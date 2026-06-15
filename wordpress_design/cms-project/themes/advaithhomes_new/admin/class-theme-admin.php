@@ -151,6 +151,14 @@ class ADN_Theme_Admin {
 					),
 				),
 			),
+			'contact-inbox' => array(
+				'label' => __( '📬 Contact Inbox', ADN_TEXT_DOMAIN ),
+				'view'  => 'tab-contact-inbox.php',
+			),
+			'guidance-inbox' => array(
+				'label' => __( '📋 Guidance Inbox', ADN_TEXT_DOMAIN ),
+				'view'  => 'tab-guidance-inbox.php',
+			),
 			'import-export' => array(
 				'label' => __( 'Import / Export', ADN_TEXT_DOMAIN ),
 				'view'  => 'tab-import-export.php',

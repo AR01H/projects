@@ -134,3 +134,89 @@ em { font-family: var(--font-accent); font-style: italic; }
 	scrollbar-width:thin;
 	scrollbar-color:var(--gold-500) var(--slate-100);
 }
+
+
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+ 
+table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  border: 1px solid var(--secondary-color);
+}
+ 
+thead tr {
+  background-color: var(--client-color);
+}
+ 
+thead th {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bg-color-1);
+  text-align: left;
+  padding: 12px 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-right: 1px solid rgba(176,141,87,0.3);
+  white-space: nowrap;
+}
+ 
+thead th:last-child { border-right: none; }
+ 
+tbody tr:nth-child(even) { background: #f5f0e8; }
+tbody tr:nth-child(odd)  { background: #faf8f3; }
+ 
+ 
+tbody td {
+  font-size: 14px;
+  color: var(--slate-800);
+  padding: 10px 16px;
+  border-right: 1px solid rgba(176,141,87,0.2);
+  border-bottom: 1px solid rgba(176,141,87,0.15);
+}
+ 
+tbody td:last-child { border-right: none; }
+tbody tr:last-child td { border-bottom: none; }
+ 
+tbody td.bold { font-weight: 500; color: var(--client-color); }
+ 
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.badge-gold  { background: var(--gold-200); color: var(--gold-800); }
+.badge-slate { background: var(--slate-200); color: var(--slate-700); }
+.badge-teal  { background: #d0eae8; color: #1a4a4c; }
+ 
+@media (max-width: 600px) {
+  thead th, tbody td { padding: 8px 12px; font-size: 13px; }
+}
+
+
+
+/* ── Standard WordPress page content (page.php) ─────────────── */
+.adn-wp-page__content h1,
+.adn-wp-page__content h2,
+.adn-wp-page__content h3,
+.adn-wp-page__content h4 { font-family: var(--font-display); color: var(--text-primary); margin: 2rem 0 0.75rem; }
+.adn-wp-page__content h1 { font-size: 2rem; }
+.adn-wp-page__content h2 { font-size: 1.5rem; border-bottom: 2px solid var(--secondary-color); padding-bottom: 6px; }
+.adn-wp-page__content h3 { font-size: 1.15rem; }
+.adn-wp-page__content p  { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1rem; }
+.adn-wp-page__content ul,
+.adn-wp-page__content ol { color: var(--text-secondary); line-height: 1.8; margin: 0 0 1rem 1.5rem; }
+.adn-wp-page__content li { margin-bottom: 0.4rem; }
+.adn-wp-page__content a  { color: var(--client-color); text-decoration: underline; }
+.adn-wp-page__content a:hover { color: var(--secondary-color); }
+.adn-wp-page__content strong { color: var(--text-primary); }

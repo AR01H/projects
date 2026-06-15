@@ -66,7 +66,7 @@ adn_page_open( $_open_ctx );
 					<span class="ecm-icon" aria-hidden="true">🤝</span>
 					<p class="ecm-heading"><?php esc_html_e( 'More experts here to help', ADN_TEXT_DOMAIN ); ?></p>
 					<p class="ecm-sub"><?php esc_html_e( "Can't find who you need? Our network is growing — contact us and we'll match you with the right professional.", ADN_TEXT_DOMAIN ); ?></p>
-					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary ecm-btn">
+					<a href="<?php echo esc_url( home_url( SITE_CONTACT_URL ) ); ?>" class="btn btn-primary ecm-btn">
 						<?php esc_html_e( 'Get Matched', ADN_TEXT_DOMAIN ); ?>
 					</a>
 				</div>

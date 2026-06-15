@@ -87,12 +87,29 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_builder_nonce'] 
 			$notice  = 'Page created.';
 			$action  = 'builder';
 		}
+
+		// Save layout / CTA opts
+		$_cta_theme = $_POST['cta_theme'] ?? 'dark';
+		update_option( 'ah_bp_' . $edit_id . '_opts', array(
+			'show_header'   => ! empty( $_POST['show_header'] )   ? 1 : 0,
+			'show_footer'   => ! empty( $_POST['show_footer'] )   ? 1 : 0,
+			'cta_enabled'   => ! empty( $_POST['cta_enabled'] )   ? 1 : 0,
+			'cta_heading'   => sanitize_text_field( $_POST['cta_heading']   ?? '' ),
+			'cta_text'      => sanitize_textarea_field( $_POST['cta_text']  ?? '' ),
+			'cta_btn1_text' => sanitize_text_field( $_POST['cta_btn1_text'] ?? '' ),
+			'cta_btn1_url'  => esc_url_raw( $_POST['cta_btn1_url']          ?? '' ),
+			'cta_btn2_text' => sanitize_text_field( $_POST['cta_btn2_text'] ?? '' ),
+			'cta_btn2_url'  => esc_url_raw( $_POST['cta_btn2_url']          ?? '' ),
+			'cta_theme'     => in_array( $_cta_theme, array( 'dark', 'gold', 'light', 'blue' ), true ) ? $_cta_theme : 'dark',
+		), false );
+		$page_opts = (array) get_option( 'ah_bp_' . $edit_id . '_opts', array() );
 	}
 }
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
 $current_page  = $edit_id ? $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE id = %d", $edit_id ) ) : null;
 $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
+$page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts', array() ) : array();
 ?>
 <div class="wrap ah-wrap">
 
@@ -485,6 +502,67 @@ $existing_blocks = $current_page ? ( $current_page->blocks ?: '[]' ) : '[]';
       <div class="ah-form-row">
         <label>Taxonomy Terms</label>
         <?php $content_tax_m->render_picker( 'builder_page', $edit_id ); ?>
+      </div>
+
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0">
+      <h4>Layout</h4>
+
+      <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="checkbox" name="show_header" id="ahb_show_header" value="1"
+               <?php checked( (int) ( $page_opts['show_header'] ?? 1 ), 1 ); ?>
+               style="width:auto;margin:0;">
+        <label for="ahb_show_header" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show site header</label>
+      </div>
+      <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <input type="checkbox" name="show_footer" id="ahb_show_footer" value="1"
+               <?php checked( (int) ( $page_opts['show_footer'] ?? 1 ), 1 ); ?>
+               style="width:auto;margin:0;">
+        <label for="ahb_show_footer" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show site footer</label>
+      </div>
+
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0">
+      <h4>Bottom CTA</h4>
+
+      <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="checkbox" name="cta_enabled" id="ahb_cta_enabled" value="1"
+               <?php checked( (int) ( $page_opts['cta_enabled'] ?? 0 ), 1 ); ?>
+               style="width:auto;margin:0;">
+        <label for="ahb_cta_enabled" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show bottom CTA section</label>
+      </div>
+      <div id="ahb-cta-fields" style="<?php echo empty( $page_opts['cta_enabled'] ) ? 'display:none;' : ''; ?>">
+        <div class="ah-form-row">
+          <label>Heading</label>
+          <input type="text" name="cta_heading" value="<?php echo esc_attr( $page_opts['cta_heading'] ?? '' ); ?>" placeholder="Still have questions?">
+        </div>
+        <div class="ah-form-row">
+          <label>Description</label>
+          <textarea name="cta_text" rows="2" placeholder="Speak to one of our experts."><?php echo esc_textarea( $page_opts['cta_text'] ?? '' ); ?></textarea>
+        </div>
+        <div class="ah-form-row">
+          <label>Button 1 Text</label>
+          <input type="text" name="cta_btn1_text" value="<?php echo esc_attr( $page_opts['cta_btn1_text'] ?? '' ); ?>" placeholder="Get in Touch">
+        </div>
+        <div class="ah-form-row">
+          <label>Button 1 URL</label>
+          <input type="text" name="cta_btn1_url" value="<?php echo esc_attr( $page_opts['cta_btn1_url'] ?? '' ); ?>" placeholder="/contact/">
+        </div>
+        <div class="ah-form-row">
+          <label>Button 2 Text <span style="font-weight:400;color:var(--ah-muted)">(optional)</span></label>
+          <input type="text" name="cta_btn2_text" value="<?php echo esc_attr( $page_opts['cta_btn2_text'] ?? '' ); ?>" placeholder="Learn More">
+        </div>
+        <div class="ah-form-row">
+          <label>Button 2 URL</label>
+          <input type="text" name="cta_btn2_url" value="<?php echo esc_attr( $page_opts['cta_btn2_url'] ?? '' ); ?>" placeholder="/about/">
+        </div>
+        <div class="ah-form-row">
+          <label>Theme</label>
+          <select name="cta_theme">
+            <option value="dark"  <?php selected( $page_opts['cta_theme'] ?? 'dark', 'dark' ); ?>>Dark</option>
+            <option value="gold"  <?php selected( $page_opts['cta_theme'] ?? '',      'gold' ); ?>>Gold</option>
+            <option value="light" <?php selected( $page_opts['cta_theme'] ?? '',      'light' ); ?>>Light</option>
+            <option value="blue"  <?php selected( $page_opts['cta_theme'] ?? '',      'blue' ); ?>>Blue</option>
+          </select>
+        </div>
       </div>
 
       <?php if ( $current_page ) : ?>
@@ -1225,6 +1303,11 @@ function hexToLight(hex) {
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 renderCanvas();
+
+// ── Layout / CTA toggles ──────────────────────────────────────────────────────
+$('#ahb_cta_enabled').on('change', function(){
+  $('#ahb-cta-fields').toggle( this.checked );
+});
 
 })(jQuery);
 </script>

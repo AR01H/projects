@@ -90,10 +90,10 @@ function adn_topic_category_get_context() {
 		'trust_items' => array(),
 	);
 
-	$parent_label = $parent && ! empty( $parent->name ) ? (string) $parent->name : 'Property';
+	$parent_label = $parent && ! empty( $parent->name ) ? (string) $parent->name : SITE_DOMAIN_NOUN;
 
 	// ── Breadcrumb ───────────────────────────────────────────────────────────────
-	$breadcrumb = array( array( 'label' => 'Home', 'url' => home_url( '/' ) ) );
+	$breadcrumb = array( array( 'label' => PAGE_TITLE_HOME, 'url' => home_url( '/' ) ) );
 	if ( $parent && ! empty( $parent->name ) ) {
 		$breadcrumb[] = array(
 			'label' => $parent->name,
@@ -326,9 +326,9 @@ function adn_topic_category_get_context() {
 		}
 		if ( ! empty( $calc_links ) ) {
 			$sidebar['quick_tools'] = array(
-				'heading' => $parent_label . ' Calculators',
+				'heading' => $parent_label . ' ' . SITE_TOOLS_PLURAL,
 				'items'   => $calc_links,
-				'cta'     => array( 'label' => 'All calculators →', 'url' => home_url( '/calculators/' ) ),
+				'cta'     => array( 'label' => 'All ' . strtolower( SITE_TOOLS_PLURAL ) . ' →', 'url' => home_url( SITE_CALCULATORS_URL ) ),
 			);
 		}
 	}
@@ -341,7 +341,7 @@ function adn_topic_category_get_context() {
 		'experts'  => array(),
 		'cta'      => array(
 			'label' => ! empty( $_eh['sidebar_help_btn_label'] ) ? $_eh['sidebar_help_btn_label'] : 'Talk to an Expert',
-			'url'   => ! empty( $_eh['sidebar_help_btn_url'] )   ? $_eh['sidebar_help_btn_url']   : home_url( '/contact/' ),
+			'url'   => ! empty( $_eh['sidebar_help_btn_url'] )   ? $_eh['sidebar_help_btn_url']   : home_url( SITE_CONTACT_URL ),
 		),
 	);
 
@@ -393,7 +393,7 @@ function adn_topic_category_get_context() {
 		'heading' => array(
 			'title'      => 'Latest ' . $parent_label . ' News',
 			'link_label' => 'View all news →',
-			'link_url'   => home_url( '/news/' ),
+			'link_url'   => home_url( SITE_NEWS_URL ),
 		),
 		'items' => $news_items,
 	);
@@ -425,9 +425,9 @@ function adn_topic_category_get_context() {
 	if ( ! empty( $calc_items ) ) {
 		$ctx['calculators'] = array(
 			'heading' => array(
-				'title'      => $parent_label . ' Calculators',
-				'link_label' => 'View all calculators →',
-				'link_url'   => home_url( '/calculators/' ),
+				'title'      => $parent_label . ' ' . SITE_TOOLS_PLURAL,
+				'link_label' => 'View all ' . strtolower( SITE_TOOLS_PLURAL ) . ' →',
+				'link_url'   => home_url( SITE_CALCULATORS_URL ),
 			),
 			'items' => $calc_items,
 		);
@@ -438,7 +438,7 @@ function adn_topic_category_get_context() {
 		'icon'        => '🏡',
 		'title'       => 'Need Help With ' . ( isset( $term->name ) ? $term->name : $parent_label ) . '?',
 		'description' => 'Speak to one of our expert advisors and get personalised guidance tailored to your situation.',
-		'cta'         => array( 'label' => 'Talk to an Expert', 'url' => home_url( '/contact/' ) ),
+		'cta'         => array( 'label' => 'Talk to an Expert', 'url' => home_url( SITE_CONTACT_URL ) ),
 		'trust_items' => array( 'Independent & Unbiased', 'No hidden fees', 'Plain English advice' ),
 	);
 

@@ -21,11 +21,9 @@ $bottom_links = isset( $footer['bottom_links'] ) ? (array) $footer['bottom_links
         <div class="footer-top">
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <div class="footer-logo-icon"><?php echo adn_icon( isset( $brand['icon'] ) ? $brand['icon'] : '' ); ?></div>
-                    <div>
-                        <div class="footer-logo-name"><?php echo esc_html( isset( $brand['name'] ) ? $brand['name'] : '' ); ?></div>
-                        <div class="footer-logo-sub"><?php echo esc_html( isset( $brand['sub'] ) ? $brand['sub'] : '' ); ?></div>
-                    </div>
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
+                        <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ); ?>" alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : '' ); ?>" width="200" />
+                    </a>
                 </div>
                 <p class="footer-desc"><?php echo esc_html( isset( $brand['description'] ) ? $brand['description'] : '' ); ?></p>
                 <div class="footer-social">

@@ -23,7 +23,7 @@ function adn_contact_get_context() {
 		}
 
 		// Append fixed extras: New to UK + General Enquiry.
-		$term_types[] = array( 'key' => 'new-to-uk',   'icon' => '🇬🇧', 'label' => 'New to UK Property System' );
+		$term_types[] = array( 'key' => 'new-to-uk',   'icon' => '🇬🇧', 'label' => 'New to ' . SITE_LOCATION . ' ' . SITE_INDUSTRY . ' System' );
 		$term_types[] = array( 'key' => 'general',      'icon' => '💬', 'label' => 'General Enquiry' );
 
 		if ( ! empty( $term_types ) ) {
@@ -55,8 +55,8 @@ function adn_contact_get_context() {
 		}
 
 		// Calculators and News as fixed extras.
-		$items[] = array( 'icon' => '🧮', 'title' => 'Calculators',   'desc' => 'Useful tools for smart decisions',  'url' => '/calculators/' );
-		$items[] = array( 'icon' => '📰', 'title' => 'Property News', 'desc' => 'Latest updates and market insights', 'url' => '/news/' );
+		$items[] = array( 'icon' => '🧮', 'title' => SITE_TOOLS_PLURAL, 'desc' => 'Useful tools for smart decisions', 'url' => SITE_CALCULATORS_URL );
+		$items[] = array( 'icon' => '📰', 'title' => SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN, 'desc' => 'Latest updates and market insights', 'url' => SITE_NEWS_URL );
 
 		if ( ! empty( $items ) ) {
 			if ( ! isset( $resources['heading'] ) || '' === $resources['heading'] ) {

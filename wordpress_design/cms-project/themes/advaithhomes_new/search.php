@@ -28,7 +28,7 @@ adn_component( 'sections/page_hero', array(
 		'description' => $_hero_desc,
 	),
 	'breadcrumb' => array(
-		array( 'label' => 'Home', 'url' => '/' ),
+		array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
 		array( 'label' => 'Search' ),
 	),
 ) );
@@ -135,7 +135,7 @@ if ( have_posts() ) {
 							<?php endif; ?>
 						</h2>
 						<p class="search-no-desc">Try different keywords, or browse our guides and articles.</p>
-						<a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="btn btn-primary search-no-browse">Browse all guides</a>
+						<a href="<?php echo esc_url( home_url( SITE_GUIDES_URL ) ); ?>" class="btn btn-primary search-no-browse">Browse all <?php echo esc_html( strtolower( SITE_CONTENT_PLURAL ) ); ?></a>
 					</div>
 
 				<?php endif; ?>
