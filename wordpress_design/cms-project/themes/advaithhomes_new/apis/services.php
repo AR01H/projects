@@ -25,10 +25,10 @@ function adn_service_home_data() {
  * Shared by every page that renders the main header/footer.
  *
  * Data sources, in order of precedence (highest wins):
- *   1. Plugin nav/footer editors  — ah_cms_navigation, ah_cms_nav_cta, ah_cms_footer
- *   2. Plugin site settings DB    — chrome_* rows in ah_site_settings (group: chrome)
+ *   1. Plugin nav/footer editors  - ah_cms_navigation, ah_cms_nav_cta, ah_cms_footer
+ *   2. Plugin site settings DB    - chrome_* rows in ah_site_settings (group: chrome)
  *      Managed at WP Admin → CMS Admin → Settings → chrome tab.
- *   3. data/json/site_chrome.json — hard-coded fallback; only used when the DB
+ *   3. data/json/site_chrome.json - hard-coded fallback; only used when the DB
  *      rows are missing (e.g. first install before migration runs).
  *
  * Statically cached per request so the many callers (one per page) cost
@@ -73,7 +73,7 @@ function adn_service_site_chrome() {
 /**
  * Load all chrome_* settings from the DB in a single query, return as key → value map.
  * Queries by setting_key prefix so it works regardless of which admin tab each row lives in
- * (general, social, etc.) — no dependency on group_name.
+ * (general, social, etc.) - no dependency on group_name.
  * Statically cached per request.
  *
  * @return array<string,string>
@@ -139,7 +139,7 @@ function adn_chrome_overlay_db_settings( array $chrome ): array {
 	}
 	$footer['brand'] = $brand;
 
-	// ── Social links — built from individual URL fields in the Social settings tab ──
+	// ── Social links - built from individual URL fields in the Social settings tab ──
 	// Each platform is only included when its URL is set to something other than '#'.
 	$_social_map = array(
 		'chrome_social_facebook'  => array( 'label' => 'Facebook',  'icon' => 'fa-brands fa-facebook'  ),
@@ -160,7 +160,7 @@ function adn_chrome_overlay_db_settings( array $chrome ): array {
 		$footer['social'] = $_built_social;
 	}
 
-	// ── Copyright — %YEAR% replaced with current year ─────────────────────────
+	// ── Copyright - %YEAR% replaced with current year ─────────────────────────
 	if ( isset( $s['chrome_copyright'] ) && '' !== $s['chrome_copyright'] ) {
 		$footer['copyright'] = str_replace( '%YEAR%', (string) gmdate( 'Y' ), $s['chrome_copyright'] );
 	}
@@ -448,7 +448,7 @@ function adn_get_contact_setting( string $key ): string {
 }
 
 /**
- * Contact page content — JSON base overlaid with DB contact-group settings.
+ * Contact page content - JSON base overlaid with DB contact-group settings.
  * whatsapp, email, phone and address are editable in WP Admin → Settings → Contact.
  */
 function adn_service_contact_data(): array {

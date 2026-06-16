@@ -1,9 +1,9 @@
 <?php
 /**
- * page.php — WordPress standard page template.
+ * page.php - WordPress standard page template.
  *
  * Renders any WP page (created via Pages → Add New) with the full site
- * header, hero and footer — identical chrome to every other theme page.
+ * header, hero and footer - identical chrome to every other theme page.
  * Content is whatever is saved in the WordPress editor (classic or Gutenberg).
  */
 

@@ -138,7 +138,7 @@
 }
 
 /* ── Search Row (search-input-wrap CSS lives in calculators.css which is
-      NOT loaded here — replicate the needed styles locally) ────────────── */
+      NOT loaded here - replicate the needed styles locally) ────────────── */
 .expert-search-row {
     padding: 16px 0 0;
 }
@@ -211,7 +211,7 @@
 }
 
 /* ── Grid Loader ─────────────────────────────────────────────── */
-/* Do NOT set display:flex here — it overrides [hidden] attribute.
+/* Do NOT set display:flex here - it overrides [hidden] attribute.
    Use :not([hidden]) so the hidden attr actually works.          */
 .expert-grid-loader:not([hidden]) {
     display: flex;

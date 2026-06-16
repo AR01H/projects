@@ -6,7 +6,7 @@
  *
  * Props (via extract):
  *   $share        = [ 'url' => string, 'title' => string ]
- *   $hide_helpful = bool  — when true, omits the helpful counter (e.g. on newsbar single views)
+ *   $hide_helpful = bool  - when true, omits the helpful counter (e.g. on newsbar single views)
  */
 
 defined( 'ABSPATH' ) || exit;

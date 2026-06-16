@@ -7,11 +7,11 @@
  * to its own generic fallback template.
  *
  * Requires (guaranteed by the plugin routing before this file is included):
- *   $GLOBALS['ah_builder_page']  — DB row from ah_builder_pages
- *   ah_render_builder_block()    — from plugins/cms-plugin/inc/builder-block-renderer.php
- *   adn_page_open()              — from themes/advaithhomes_new/common/common_functions.php
- *   adn_page_close()             — from themes/advaithhomes_new/common/common_functions.php
- *   adn_component()              — from themes/advaithhomes_new/common/common_functions.php
+ *   $GLOBALS['ah_builder_page']  - DB row from ah_builder_pages
+ *   ah_render_builder_block()    - from plugins/cms-plugin/inc/builder-block-renderer.php
+ *   adn_page_open()              - from themes/advaithhomes_new/common/common_functions.php
+ *   adn_page_close()             - from themes/advaithhomes_new/common/common_functions.php
+ *   adn_component()              - from themes/advaithhomes_new/common/common_functions.php
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -21,7 +21,7 @@ $title     = $pg->meta_title ?: $pg->title;
 $desc      = $pg->meta_description ?: '';
 $page_opts = (array) get_option( 'ah_bp_' . (int) $pg->id . '_opts', array() );
 
-// Site chrome — nav, footer data, social links, settings.
+// Site chrome - nav, footer data, social links, settings.
 $chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
 // Header / footer visibility (URL params override DB settings for embed / preview mode).
@@ -56,7 +56,7 @@ if ( $first_is_hero ) {
 		'description' => wp_strip_all_tags( (string) ( $_hd['subheading'] ?? $desc  ) ),
 	);
 
-	// Preserve any CTA buttons the builder hero had — they'll render below the hero.
+	// Preserve any CTA buttons the builder hero had - they'll render below the hero.
 	if ( ! empty( $_hd['cta1_text'] ) ) {
 		$hero_ctas[] = array(
 			'text'  => (string) $_hd['cta1_text'],
@@ -72,7 +72,7 @@ if ( $first_is_hero ) {
 		);
 	}
 
-	// Skip the first block in the content loop — we rendered it as the native hero.
+	// Skip the first block in the content loop - we rendered it as the native hero.
 	$body_blocks = array_slice( $blocks, 1 );
 
 } else {
@@ -97,7 +97,7 @@ if ( ! $no_header ) {
 	// the breadcrumb is rendered *inside* the page_hero component below.
 	adn_page_open( array( 'chrome' => $chrome, 'breadcrumb' => array() ) );
 
-	// Full-bleed theme hero — same component used on every other site page.
+	// Full-bleed theme hero - same component used on every other site page.
 	if ( function_exists( 'adn_component' ) ) {
 		adn_component( 'sections/page_hero', array(
 			'hero'       => $hero_data,

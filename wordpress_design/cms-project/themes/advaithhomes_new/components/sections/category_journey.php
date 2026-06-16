@@ -42,7 +42,7 @@ $_jny_total = count( $steps );
 				$icon  = isset( $step['icon'] )  ? trim( (string) $step['icon'] ) : '';
 				$is_last = ( $i === $_jny_total - 1 );
 
-				// Resolve icon HTML — if adn_icon returns the generic fallback dot, use step number instead.
+				// Resolve icon HTML - if adn_icon returns the generic fallback dot, use step number instead.
 				$_icon_html = ( '' !== $icon ) ? adn_icon( $icon ) : '';
 				if ( $_icon_html && false !== strpos( $_icon_html, 'fa-circle-dot' ) ) {
 					$_icon_html = '';
@@ -58,7 +58,7 @@ $_jny_total = count( $steps );
 					<div class="jny-vtl-ring">
 						<div class="jny-vtl-circle">
 							<?php if ( $_icon_html ) : ?>
-								<?php echo $_icon_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — already escaped by adn_icon() ?>
+								<?php echo $_icon_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped - already escaped by adn_icon() ?>
 							<?php else : ?>
 								<span class="jny-vtl-num"><?php echo esc_html( str_pad( $num, 2, '0', STR_PAD_LEFT ) ); ?></span>
 							<?php endif; ?>

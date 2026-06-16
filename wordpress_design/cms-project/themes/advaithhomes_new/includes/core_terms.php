@@ -28,7 +28,7 @@ define( 'ADN_META_ALT_TITLE', 'adn_alternate_title' );
 define( 'ADN_META_ALT_SLUG',  'adn_alternate_slug' );
 
 // ===========================
-// SITE IDENTITY — change these to re-theme for a new industry/domain.
+// SITE IDENTITY - change these to re-theme for a new industry/domain.
 // Example swap: real estate → organic farming
 // ===========================
 define( 'SITE_BRAND_NAME',      'ADVAITH HOMES' );   // e.g. 'THE ORGANIC FARM'
@@ -40,7 +40,7 @@ define( 'SITE_EXPERT_NOUN',     'Property Expert' ); // e.g. 'Farm Advisor'
 define( 'SITE_COPYRIGHT_YEAR',  '2025' );
 
 // ===========================
-// SITE URLS — used in JSON fallbacks, CTAs, sidebar links.
+// SITE URLS - used in JSON fallbacks, CTAs, sidebar links.
 // ===========================
 define( 'SITE_HOME_URL',        '/' );
 define( 'SITE_GUIDES_URL',      '/guides/' );
@@ -51,7 +51,7 @@ define( 'SITE_GUIDANCE_URL',    '/guidance/' );
 define( 'SITE_CONTACT_URL',     '/contact/' );
 
 // ===========================
-// CTA COPY — default labels used when no DB option is set.
+// CTA COPY - default labels used when no DB option is set.
 // ===========================
 define( 'SITE_NAV_CTA_LABEL',       'Get Guidance' );
 define( 'SITE_NAV_CTA_URL',         SITE_EXPERT_URL );
@@ -60,7 +60,7 @@ define( 'SITE_HERO_CTA_SECONDARY',  'Ask an Expert' );
 define( 'SITE_NEWSLETTER_HEADING',  'Stay informed about ' . SITE_INDUSTRY );
 
 // ===========================
-// CONTENT LABELS — how the CMS taxonomy levels are named in UI copy.
+// CONTENT LABELS - how the CMS taxonomy levels are named in UI copy.
 // ===========================
 // PARENT_TERM  already defined above = 'Guide'   (top-level journey bucket)
 // SECTION_TERM already defined above = 'Category' (child topic)
@@ -69,7 +69,7 @@ define( 'SITE_CONTENT_PLURAL',  'Guides' );  // e.g. 'Recipes', 'Products'
 define( 'SITE_CATEGORY_PLURAL', 'Topics' );  // e.g. 'Categories', 'Sections'
 
 // ===========================
-// FEATURE NAMES — rename per site domain without touching page files.
+// FEATURE NAMES - rename per site domain without touching page files.
 // e.g. Calculators → Tools / Estimators / Remedies
 //      News        → Blog / Updates / Harvest News
 //      Ask Expert  → Ask a Farmer / Consult an Advisor
@@ -83,7 +83,7 @@ define( 'SITE_GUIDANCE_LABEL', 'Get Expert Guidance' ); // e.g. 'Get Farm Guidan
 define( 'SITE_CONTACT_LABEL',  'Contact Us' );
 
 // ===========================
-// PAGE TITLES — used in adn_get_page_definitions() and breadcrumbs.
+// PAGE TITLES - used in adn_get_page_definitions() and breadcrumbs.
 // ===========================
 define( 'PAGE_TITLE_HOME',       'Home' );
 define( 'PAGE_TITLE_CONTACT',    SITE_CONTACT_LABEL );

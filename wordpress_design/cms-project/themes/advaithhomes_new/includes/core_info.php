@@ -23,7 +23,7 @@ if ( $wpdb ) {
 
 /**
  * Return DB value for $key if non-empty, otherwise $fallback.
- * Local helper — only used during constants bootstrap below.
+ * Local helper - only used during constants bootstrap below.
  */
 function _ah_info( string $key, string $fallback ): string {
 	global $_ah_info;

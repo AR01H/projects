@@ -85,8 +85,8 @@ $enq_nonce = wp_create_nonce( 'ah_admin_nonce' );
 			<td><?php echo esc_html( date_i18n( 'd M Y H:i', strtotime( $row->created_at ) ) ); ?></td>
 			<td><?php echo esc_html( $row->name ); ?></td>
 			<td><a href="mailto:<?php echo esc_attr( $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a></td>
-			<td><?php echo esc_html( $row->help_topic ?: '—' ); ?></td>
-			<td><?php echo esc_html( ! empty( $row->region ) ? $row->region : '—' ); ?></td>
+			<td><?php echo esc_html( $row->help_topic ?: '-' ); ?></td>
+			<td><?php echo esc_html( ! empty( $row->region ) ? $row->region : '-' ); ?></td>
 			<td>
 				<span style="display:inline-block;padding:2px 9px;border-radius:12px;font-size:0.78rem;font-weight:600;background:<?php echo esc_attr( $badge_col ); ?>;color:#fff;">
 					<?php echo esc_html( $status_lbl ); ?>
@@ -114,7 +114,7 @@ $enq_nonce = wp_create_nonce( 'ah_admin_nonce' );
 								<dd style="margin:0;color:#111827;"><?php echo nl2br( esc_html( $dv_str ) ); ?></dd>
 							<?php endforeach; ?>
 							<dt style="font-weight:600;color:#374151;">IP Address</dt>
-							<dd style="margin:0;color:#6b7280;"><?php echo esc_html( $row->ip_address ?: '—' ); ?></dd>
+							<dd style="margin:0;color:#6b7280;"><?php echo esc_html( $row->ip_address ?: '-' ); ?></dd>
 							<?php if ( ! empty( $row->region ) ) : ?>
 							<dt style="font-weight:600;color:#374151;">Region</dt>
 							<dd style="margin:0;color:#6b7280;"><?php echo esc_html( $row->region ); ?></dd>

@@ -60,7 +60,7 @@
         var q   = query.toLowerCase();
         var any = false;
         document.querySelectorAll( '.expert-card' ).forEach( function ( card ) {
-            // Permanent placeholder card — always stays visible, never filtered.
+            // Permanent placeholder card - always stays visible, never filtered.
             if ( card.getAttribute( 'data-permanent' ) ) { return; }
             var cardCat   = ( card.getAttribute( 'data-cat' ) || '' );
             var catMatch  = cat === 'all' || cardCat === cat;
