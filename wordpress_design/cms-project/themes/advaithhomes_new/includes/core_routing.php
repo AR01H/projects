@@ -59,11 +59,24 @@ function adn_route_faqs_hub( $template ) {
 
 	$base = realpath( ADN_THEME_DIR . '/pages' );
 	$file = realpath( ADN_THEME_DIR . '/pages/page-faqs.php' );
-	if ( $base && $file && 0 === strpos( $file, $base ) && is_file( $file ) ) {
-		return $file;
+	if ( ! $base || ! $file || 0 !== strpos( $file, $base ) || ! is_file( $file ) ) {
+		return $template;
 	}
 
-	return $template;
+	// De-flag 404 so WordPress renders correct HTTP status and title.
+	global $wp_query;
+	$wp_query->is_404  = false;
+	$wp_query->is_page = true;
+	status_header( 200 );
+	nocache_headers();
+
+	// Set the <title> tag — no real WP post exists so wp_get_document_title() needs a hint.
+	add_filter( 'document_title_parts', static function ( $parts ) {
+		$parts['title'] = PAGE_TITLE_FAQS;
+		return $parts;
+	} );
+
+	return $file;
 }
 
 

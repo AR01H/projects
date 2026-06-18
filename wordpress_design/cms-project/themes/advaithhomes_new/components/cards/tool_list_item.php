@@ -35,9 +35,7 @@ $highlight = isset( $item['highlight'] ) && '' !== $item['highlight'] ? (string)
 			<?php if ( ! empty( $item['title'] ) ) : ?>
 				<h4>
 					<?php echo esc_html( $item['title'] ); ?>
-					<?php if ( $highlight ) : ?>
-						<span class="calc-badge calc-badge--inline"><?php echo esc_html( $highlight ); ?></span>
-					<?php endif; ?>
+
 				</h4>
 			<?php endif; ?>
 			<?php if ( ! empty( $item['desc'] ) ) : ?>

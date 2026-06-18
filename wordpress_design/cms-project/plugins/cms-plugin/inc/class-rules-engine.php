@@ -430,7 +430,7 @@ class AH_Rules_Engine {
 		foreach ( $to_list as $to_addr ) {
 			$filled = self::fill( (string) $to_addr, $ctx );
 			$email = sanitize_email( $filled );
-			if ( $email ) $to_recipients[] = $email;
+			if ( $email && ! self::is_email_blocked( $email ) ) $to_recipients[] = $email;
 		}
 		if ( empty( $to_recipients ) ) return;
 		$to = implode( ', ', $to_recipients );
@@ -738,6 +738,8 @@ class AH_Rules_Engine {
 			'contact_submitted'      => 'Contact Form Submitted',
 			'consultation_submitted' => 'Consultation Form Submitted',
 			'form_submit'            => 'Form Submission (built-in)',
+			'newsletter_subscribe'   => 'Notification - New Subscriber',
+			'notification_send'      => 'Notification - Send (per subscriber)',
 			'user_signup'            => 'User Signup',
 			'order_placed'           => 'Order Placed',
 			'order_paid'             => 'Order Paid',
@@ -845,6 +847,41 @@ class AH_Rules_Engine {
 			);
 		}
 		update_option( 'ah_re_email_channels', $clean );
+	}
+
+	// ── Blocked emails ────────────────────────────────────────────────────────
+
+	public static function get_blocked_emails(): array {
+		$saved = get_option( 'ah_re_blocked_emails', array() );
+		return is_array( $saved ) ? $saved : array();
+	}
+
+	public static function is_email_blocked( string $email ): bool {
+		$email = strtolower( trim( $email ) );
+		if ( '' === $email ) return false;
+		foreach ( self::get_blocked_emails() as $blocked ) {
+			if ( strtolower( trim( $blocked ) ) === $email ) return true;
+		}
+		return false;
+	}
+
+	public static function add_blocked_email( string $email ): void {
+		$email = strtolower( sanitize_email( $email ) );
+		if ( ! is_email( $email ) ) return;
+		$list = self::get_blocked_emails();
+		foreach ( $list as $existing ) {
+			if ( strtolower( trim( $existing ) ) === $email ) return;
+		}
+		$list[] = $email;
+		update_option( 'ah_re_blocked_emails', array_values( $list ) );
+	}
+
+	public static function remove_blocked_email( string $email ): void {
+		$email = strtolower( trim( $email ) );
+		$list  = array_filter( self::get_blocked_emails(), static function ( $e ) use ( $email ) {
+			return strtolower( trim( $e ) ) !== $email;
+		} );
+		update_option( 'ah_re_blocked_emails', array_values( $list ) );
 	}
 
 	/**

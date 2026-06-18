@@ -12,7 +12,7 @@ if ( isset( $_GET['export_csv'] ) && isset( $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_nl_export' ) ) wp_die( 'Security.' );
 	$csv = AH_Newsletter::export_csv();
 	header( 'Content-Type: text/csv; charset=utf-8' );
-	header( 'Content-Disposition: attachment; filename="newsletter-subscribers-' . date( 'Y-m-d' ) . '.csv"' );
+	header( 'Content-Disposition: attachment; filename="notification-subscribers-' . date( 'Y-m-d' ) . '.csv"' );
 	header( 'Pragma: no-cache' );
 	echo $csv;
 	exit;
@@ -28,8 +28,7 @@ if ( isset( $_GET['del_sub'] ) && isset( $_GET['_wpnonce'] ) ) {
 // ── Handle: unsubscribe ──────────────────────────────────────────────────────
 if ( isset( $_GET['unsub'] ) && isset( $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_nl_unsub' ) ) wp_die( 'Security.' );
-	$email = sanitize_email( wp_unslash( $_GET['unsub'] ) );
-	AH_Newsletter::unsubscribe( $email );
+	AH_Newsletter::unsubscribe( sanitize_email( wp_unslash( $_GET['unsub'] ) ) );
 	$notice = 'success:Subscriber marked as unsubscribed.';
 }
 
@@ -48,7 +47,7 @@ if ( isset( $_POST['ah_nl_add_nonce'] ) ) {
 	}
 }
 
-// ── Handle: send broadcast ───────────────────────────────────────────────────
+// ── Handle: send notification ────────────────────────────────────────────────
 if ( isset( $_POST['ah_nl_send_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_nl_send_nonce'], 'ah_nl_send' ) ) wp_die( 'Security.' );
 	$subject    = sanitize_text_field( wp_unslash( isset( $_POST['nl_subject'] )    ? $_POST['nl_subject']    : '' ) );
@@ -56,9 +55,13 @@ if ( isset( $_POST['ah_nl_send_nonce'] ) ) {
 	$from_name  = sanitize_text_field( wp_unslash( isset( $_POST['nl_from_name'] )  ? $_POST['nl_from_name'] : '' ) );
 	$from_email = sanitize_email( wp_unslash( isset( $_POST['nl_from_email'] )      ? $_POST['nl_from_email']: '' ) );
 	if ( $subject && $body ) {
-		$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email );
-		AH_Newsletter::log_broadcast( $subject, $result['sent'], $result['failed'] );
-		$notice = 'success:Sent to ' . $result['sent'] . ' subscriber(s).' . ( $result['failed'] ? ' ' . $result['failed'] . ' failed.' : '' );
+		if ( ! class_exists( 'AH_Rules_Engine' ) ) {
+			$notice = 'warning:Rules Engine is not available — notification could not be sent.';
+		} else {
+			$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email );
+			AH_Newsletter::log_broadcast( $subject, $result['sent'], $result['failed'] );
+			$notice = 'success:Notification queued for ' . $result['sent'] . ' subscriber(s) via Rules Engine.';
+		}
 		$active_tab = 'send';
 	} else {
 		$notice     = 'warning:Subject and message body are required.';
@@ -77,6 +80,8 @@ $count_act   = AH_Newsletter::count( 'active' );
 $count_uns   = AH_Newsletter::count( 'unsubscribed' );
 $total_pages = max( 1, (int) ceil( $total / $per_page ) );
 $bcast_log   = AH_Newsletter::get_broadcast_log();
+$re_url      = admin_url( 'admin.php?page=ah-rules-engine' );
+$page_slug   = 'ah-newsletter';
 ?>
 <style>
 .nl-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
@@ -100,7 +105,6 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 .nl-add-box h3{margin:0 0 12px;font-size:15px}
 .nl-add-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
 .nl-add-row input{padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box}
-/* Send form */
 .nl-send-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .nl-send-grid .ah-form-row{margin:0}
 .nl-body-wrap{margin-bottom:16px}
@@ -109,9 +113,8 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 .nl-token-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .nl-token{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:3px 10px;font-family:monospace;font-size:12px;color:#334155;cursor:pointer;user-select:all}
 .nl-token:hover{background:#dbeafe;border-color:#2563eb}
-.nl-preview-box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:13px}
-.nl-preview-box strong{color:#1f2937}
-/* History */
+.nl-re-info{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#166534}
+.nl-re-info a{color:#166534;font-weight:600}
 .nl-hist-row td{font-size:13px}
 .nl-hist-empty{text-align:center;padding:40px;color:var(--ah-muted)}
 </style>
@@ -123,22 +126,21 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
   <?php endif; ?>
 
   <div class="nl-header">
-    <h1><span class="dashicons dashicons-email-alt"></span> Newsletter</h1>
+    <h1><span class="dashicons dashicons-bell"></span> Notifications</h1>
     <?php if ( 'subscribers' === $active_tab ) : ?>
-    <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'export_csv' => 1 ), admin_url( 'admin.php' ) ), 'ah_nl_export' ) ); ?>" class="ah-btn ah-btn-secondary">Export CSV</a>
+    <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => $page_slug, 'export_csv' => 1 ), admin_url( 'admin.php' ) ), 'ah_nl_export' ) ); ?>" class="ah-btn ah-btn-secondary">Export CSV</a>
     <button class="ah-btn ah-btn-primary" id="nl-add-btn">+ Add Subscriber</button>
     <?php endif; ?>
   </div>
 
-  <!-- Tab nav -->
   <div class="nl-tab-nav">
-    <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'subscribers' === $active_tab ? 'on' : ''; ?>">
+    <a href="<?php echo esc_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'subscribers' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'subscribers' === $active_tab ? 'on' : ''; ?>">
       Subscribers <span style="background:#e5e7eb;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700"><?php echo esc_html( $count_all ); ?></span>
     </a>
-    <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'send' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'send' === $active_tab ? 'on' : ''; ?>">
-      ✉ Send Newsletter
+    <a href="<?php echo esc_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'send' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'send' === $active_tab ? 'on' : ''; ?>">
+      🔔 Send Notification
     </a>
-    <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'history' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'history' === $active_tab ? 'on' : ''; ?>">
+    <a href="<?php echo esc_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'history' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'history' === $active_tab ? 'on' : ''; ?>">
       History <span style="background:#e5e7eb;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700"><?php echo esc_html( count( $bcast_log ) ); ?></span>
     </a>
   </div>
@@ -146,7 +148,6 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
   <?php if ( 'subscribers' === $active_tab ) : ?>
   <!-- ═══════════════════════ SUBSCRIBERS ═══════════════════════ -->
 
-  <!-- Add subscriber panel -->
   <div class="nl-add-box" id="nl-add-box">
     <h3>Add Subscriber Manually</h3>
     <form method="post">
@@ -159,20 +160,18 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
     </form>
   </div>
 
-  <!-- Stats row -->
   <div class="nl-stats">
     <div class="nl-stat-box"><div class="nl-stat-num"><?php echo esc_html( $count_all ); ?></div><div class="nl-stat-lbl">Total</div></div>
     <div class="nl-stat-box"><div class="nl-stat-num" style="color:#16a34a"><?php echo esc_html( $count_act ); ?></div><div class="nl-stat-lbl">Active</div></div>
     <div class="nl-stat-box"><div class="nl-stat-num" style="color:#dc2626"><?php echo esc_html( $count_uns ); ?></div><div class="nl-stat-lbl">Unsubscribed</div></div>
   </div>
 
-  <!-- Filter pills -->
   <div class="nl-filter-bar">
     <span style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px">Show:</span>
     <?php
     $pill_opts = array( '' => 'All (' . $count_all . ')', 'active' => 'Active (' . $count_act . ')', 'unsubscribed' => 'Unsubscribed (' . $count_uns . ')' );
     foreach ( $pill_opts as $pv => $pl ) :
-      $url = add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'filter' => $pv, 'paged' => 1 ), admin_url( 'admin.php' ) );
+      $url = add_query_arg( array( 'page' => $page_slug, 'tab' => 'subscribers', 'filter' => $pv, 'paged' => 1 ), admin_url( 'admin.php' ) );
     ?>
     <a href="<?php echo esc_url( $url ); ?>" class="nl-filter-pill <?php echo $filter === $pv ? 'on' : ''; ?>"><?php echo esc_html( $pl ); ?></a>
     <?php endforeach; ?>
@@ -183,14 +182,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
     <table class="ah-table">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Email</th>
-          <th>Name</th>
-          <th>Source</th>
-          <th>Status</th>
-          <th>Subscribed</th>
-          <th>Unsubscribed</th>
-          <th></th>
+          <th>#</th><th>Email</th><th>Name</th><th>Source</th><th>Status</th><th>Subscribed</th><th>Unsubscribed</th><th></th>
         </tr>
       </thead>
       <tbody>
@@ -207,9 +199,9 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
           <td><small><?php echo $row['unsubscribed_at'] ? esc_html( wp_date( 'M j, Y', strtotime( $row['unsubscribed_at'] ) ) ) : '<span style="color:var(--ah-muted)">—</span>'; ?></small></td>
           <td style="white-space:nowrap">
             <?php if ( $is_active ) : ?>
-            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'unsub' => $row['email'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_unsub' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="return confirm('Mark as unsubscribed?')">Unsubscribe</a>
+            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'subscribers', 'unsub' => $row['email'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_unsub' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="return confirm('Mark as unsubscribed?')">Unsubscribe</a>
             <?php endif; ?>
-            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'del_sub' => $row['id'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_del' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Permanently delete this subscriber?')">Delete</a>
+            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'subscribers', 'del_sub' => $row['id'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_del' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Permanently delete this subscriber?')">Delete</a>
           </td>
         </tr>
         <?php endforeach; ?>
@@ -221,7 +213,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
   <div style="margin-top:16px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
     <span style="font-size:13px;color:#6b7280">Page <?php echo esc_html( $paged ); ?> of <?php echo esc_html( $total_pages ); ?> (<?php echo esc_html( $total ); ?> total)</span>
     <?php for ( $p = 1; $p <= $total_pages; $p++ ) :
-      $pu = add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'filter' => $filter, 'paged' => $p ), admin_url( 'admin.php' ) );
+      $pu = add_query_arg( array( 'page' => $page_slug, 'tab' => 'subscribers', 'filter' => $filter, 'paged' => $p ), admin_url( 'admin.php' ) );
     ?>
     <a href="<?php echo esc_url( $pu ); ?>" class="ah-btn ah-btn-sm <?php echo $p === $paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?>"><?php echo esc_html( $p ); ?></a>
     <?php endfor; ?>
@@ -231,21 +223,25 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
   <?php else : ?>
     <div class="ah-card" style="text-align:center;padding:48px;color:var(--ah-muted)">
       <p style="font-size:1.1rem;margin:0">No subscribers yet<?php echo $filter ? ' with status <strong>' . esc_html( $filter ) . '</strong>' : ''; ?>.</p>
-      <p style="margin:8px 0 0;font-size:13px">Use the newsletter signup widget on your site, or add subscribers manually above.</p>
+      <p style="margin:8px 0 0;font-size:13px">Use the notification signup widget on your site, or add subscribers manually above.</p>
     </div>
   <?php endif; ?>
 
   <?php elseif ( 'send' === $active_tab ) : ?>
-  <!-- ═══════════════════════ SEND NEWSLETTER ═══════════════════════ -->
+  <!-- ═══════════════════════ SEND NOTIFICATION ═══════════════════════ -->
   <div class="ah-card">
-    <div class="ah-card-header"><h2>Compose &amp; Send</h2></div>
+    <div class="ah-card-header"><h2>Compose &amp; Send Notification</h2></div>
 
     <?php if ( $count_act < 1 ) : ?>
       <div class="ah-notice ah-notice-warning" style="margin:0">No active subscribers yet — add some first.</div>
+    <?php elseif ( ! class_exists( 'AH_Rules_Engine' ) ) : ?>
+      <div class="ah-notice ah-notice-warning" style="margin:0">Rules Engine is not available. Notifications require it to send.</div>
     <?php else : ?>
 
-    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:#1e40af">
-      This will send directly to <strong><?php echo esc_html( $count_act ); ?> active subscriber(s)</strong>. Every email includes an automatic unsubscribe link at the bottom.
+    <div class="nl-re-info">
+      🔔 Sending fires the <strong>Notification – Send</strong> trigger in the <a href="<?php echo esc_url( $re_url ); ?>">Rules Engine</a> once per subscriber.
+      Create a rule with that trigger to choose how to deliver it — <strong>Email, WhatsApp, Webhook</strong>, or any combination.
+      Available tokens in your rule actions: <code>{email}</code> <code>{name}</code> <code>{subject}</code> <code>{body}</code> <code>{from_name}</code> <code>{from_email}</code> <code>{unsubscribe_url}</code>
     </div>
 
     <form method="post" id="nl-send-form">
@@ -264,22 +260,22 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 
       <div class="ah-form-row" style="margin-bottom:16px">
         <label>Subject *</label>
-        <input type="text" name="nl_subject" required placeholder="e.g. Your monthly update from <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?>" style="font-size:15px;padding:10px 14px">
+        <input type="text" name="nl_subject" required placeholder="e.g. Your update from <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?>" style="font-size:15px;padding:10px 14px">
       </div>
 
       <div class="nl-body-wrap">
         <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
-        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">You can use these tokens — click to copy:</div>
+        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">Tokens replaced before passing to Rules Engine — click to insert:</div>
         <div class="nl-token-bar">
-          <span class="nl-token" title="Replaced with subscriber's first name">{name}</span>
-          <span class="nl-token" title="Replaced with the unsubscribe link URL">{unsubscribe_url}</span>
+          <span class="nl-token" title="Subscriber name">{name}</span>
+          <span class="nl-token" title="Unsubscribe link URL">{unsubscribe_url}</span>
         </div>
-        <textarea name="nl_body" required placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;Best regards,&#10;The <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?> Team"></textarea>
-        <div style="font-size:12px;color:#6b7280;margin-top:6px">Plain text only. An unsubscribe line is automatically appended to every email.</div>
+        <textarea name="nl_body" required placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;To unsubscribe: {unsubscribe_url}"></textarea>
+        <div style="font-size:12px;color:#6b7280;margin-top:6px">Body is passed as <code>{body}</code> token to the Rules Engine rule. An unsubscribe line is also appended automatically.</div>
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
-        <button type="submit" class="ah-btn ah-btn-primary" style="font-size:15px;padding:10px 28px" onclick="return confirm('Send this newsletter to <?php echo esc_js( $count_act ); ?> subscriber(s) now?')">
+        <button type="submit" class="ah-btn ah-btn-primary" style="font-size:15px;padding:10px 28px" onclick="return confirm('Send notification to <?php echo esc_js( $count_act ); ?> subscriber(s) via Rules Engine now?')">
           Send to <?php echo esc_html( $count_act ); ?> Subscriber<?php echo $count_act !== 1 ? 's' : ''; ?> →
         </button>
         <span style="font-size:12px;color:#6b7280">This action cannot be undone.</span>
@@ -290,17 +286,16 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
   </div>
 
   <?php elseif ( 'history' === $active_tab ) : ?>
-  <!-- ═══════════════════════ SEND HISTORY ═══════════════════════ -->
+  <!-- ═══════════════════════ HISTORY ═══════════════════════ -->
   <div class="ah-card">
-    <div class="ah-card-header"><h2>Broadcast History</h2><span style="font-size:13px;color:var(--ah-muted)">Last 50 sends</span></div>
+    <div class="ah-card-header"><h2>Send History</h2><span style="font-size:13px;color:var(--ah-muted)">Last 50 sends</span></div>
     <?php if ( $bcast_log ) : ?>
     <div class="ah-table-wrap">
       <table class="ah-table">
         <thead>
           <tr>
             <th>Subject</th>
-            <th style="width:100px;text-align:center">Sent</th>
-            <th style="width:100px;text-align:center">Failed</th>
+            <th style="width:120px;text-align:center">Subscribers</th>
             <th style="width:160px">Date &amp; Time</th>
           </tr>
         </thead>
@@ -309,7 +304,6 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
           <tr class="nl-hist-row">
             <td><?php echo esc_html( $entry['subject'] ); ?></td>
             <td style="text-align:center"><span style="color:#16a34a;font-weight:600"><?php echo esc_html( $entry['sent'] ); ?></span></td>
-            <td style="text-align:center"><?php echo $entry['failed'] > 0 ? '<span style="color:#dc2626;font-weight:600">' . esc_html( $entry['failed'] ) . '</span>' : '<span style="color:var(--ah-muted)">0</span>'; ?></td>
             <td><small><?php echo esc_html( wp_date( 'M j, Y g:i a', strtotime( $entry['sent_at'] ) ) ); ?></small></td>
           </tr>
           <?php endforeach; ?>
@@ -317,7 +311,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
       </table>
     </div>
     <?php else : ?>
-      <div class="nl-hist-empty">No newsletters sent yet.</div>
+      <div class="nl-hist-empty">No notifications sent yet.</div>
     <?php endif; ?>
   </div>
 
@@ -330,15 +324,12 @@ jQuery(function ($) {
   $('#nl-add-btn').on('click', function () {
     $('#nl-add-box').slideToggle(180);
   });
-
-  // Click token to insert at cursor in textarea
   $('.nl-token').on('click', function () {
     var token = $(this).text();
     var ta    = document.querySelector('textarea[name="nl_body"]');
     if (!ta) return;
     var s = ta.selectionStart, e = ta.selectionEnd;
-    var v = ta.value;
-    ta.value = v.substring(0, s) + token + v.substring(e);
+    ta.value = ta.value.substring(0, s) + token + ta.value.substring(e);
     ta.selectionStart = ta.selectionEnd = s + token.length;
     ta.focus();
   });

@@ -51,7 +51,7 @@ $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       :
 	<?php endif; ?>
 
 	<?php if ( ! empty( $help ) ) : ?>
-		<div class="tools-sidebar-help mini_card_container_design">
+		<div class="tools-sidebar-help">
 			<?php if ( ! empty( $help['title'] ) ) : ?>
 				<h4><?php echo esc_html( $help['title'] ); ?></h4>
 			<?php endif; ?>

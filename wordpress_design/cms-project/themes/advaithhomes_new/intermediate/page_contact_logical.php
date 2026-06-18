@@ -33,25 +33,8 @@ function adn_contact_get_context() {
 	// ── Resources: build dynamically from parent terms + calculators + news ──
 	$resources = isset( $data['resources'] ) ? (array) $data['resources'] : array();
 
-	// ── FAQs: show active CMS FAQs in the contact sidebar ───────────────────
-	$contact_faqs = array();
-	if ( function_exists( 'adn_cms_available' ) && adn_cms_available()
-		&& class_exists( 'AH_Faqs_Model' ) ) {
-		$faq_model = new AH_Faqs_Model();
-		$page_id = get_queried_object_id();
-		$contact_faqs = $faq_model->get_for_page( $page_id );
-		if ( empty( $contact_faqs ) ) {
-			$contact_faqs = $faq_model->get_global();
-		}
-		if ( ! empty( $contact_faqs ) && is_array( $contact_faqs ) ) {
-			$contact_faqs = array_slice( $contact_faqs, 0, 3 );
-		}
-	}
-
-	if ( ! empty( $contact_faqs ) ) {
-		$data['contact_sidebar'] = isset( $data['contact_sidebar'] ) ? (array) $data['contact_sidebar'] : array();
-		$data['contact_sidebar']['faqs'] = $contact_faqs;
-	}
+	// ── Sidebar: merge in page FAQs via shared helper ────────────────────────
+	$data['contact_sidebar'] = adn_get_page_sidebar_data( get_queried_object_id() );
 
 	if ( function_exists( 'adn_cms_available' ) && adn_cms_available()
 		&& function_exists( 'adn_cms_guide_parents' ) ) {

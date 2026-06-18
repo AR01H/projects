@@ -11,7 +11,9 @@ $edit_id       = (int) ( $_GET['id'] ?? 0 );
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	if ( ! wp_verify_nonce( $_POST['ah_newsbar_nonce'] ?? '', 'ah_save_newsbar' ) ) wp_die( 'Security.' );
 	$data = array(
+		'label'      => sanitize_text_field( $_POST['label'] ?? '' ),
 		'text'       => sanitize_text_field( $_POST['text'] ?? '' ),
+		'excerpt'    => sanitize_text_field( $_POST['excerpt'] ?? '' ),
 		'content'    => wp_kses_post( $_POST['content'] ?? '' ),
 		'image_id'   => (int) ( $_POST['image_id'] ?? 0 ) ?: null,
 		'link_url'   => esc_url_raw( $_POST['link_url'] ?? '' ),
@@ -57,11 +59,12 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
     </div>
     <div class="ah-table-wrap">
       <table class="ah-table ah-sortable-list" data-model="news_bar_items">
-        <thead><tr><th></th><th>Text</th><th>Link</th><th>Dates</th><th>CMS Terms</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead><tr><th></th><th>Label</th><th>Title</th><th>Link</th><th>Dates</th><th>CMS Terms</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <?php foreach ( $items as $item ) : ?>
             <tr data-id="<?php echo esc_attr( $item->id ); ?>">
               <td class="ah-sort-handle">&#9776;</td>
+              <td><small><?php echo esc_html( $item->label ?? '' ); ?></small></td>
               <td><?php echo esc_html( $item->text ); ?></td>
               <td><small><?php echo esc_html( $item->link_url ); ?></small></td>
               <td><small><?php echo esc_html( ( $item->start_date ?: '∞' ) . ' → ' . ( $item->end_date ?: '∞' ) ); ?></small></td>
@@ -86,9 +89,25 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
       <div class="ah-card-header"><h2><?php echo $item ? 'Edit Item' : 'Add Item'; ?></h2></div>
       <form method="post">
         <?php wp_nonce_field( 'ah_save_newsbar', 'ah_newsbar_nonce' ); ?>
-        <div class="ah-form-row"><label>Text *</label><input type="text" name="text" value="<?php echo esc_attr( $item->text ?? '' ); ?>" required></div>
+
+        <div class="ah-form-row" style="display:grid;grid-template-columns:1fr 2fr;gap:12px;">
+          <div>
+            <label>Label <small style="color:var(--ah-muted);">(e.g. "Market Update")</small></label>
+            <input type="text" name="label" value="<?php echo esc_attr( $item->label ?? '' ); ?>" placeholder="Category label">
+          </div>
+          <div>
+            <label>Title *</label>
+            <input type="text" name="text" value="<?php echo esc_attr( $item->text ?? '' ); ?>" required>
+          </div>
+        </div>
+
         <div class="ah-form-row">
-          <label>Full Context</label>
+          <label>Short Description <small style="color:var(--ah-muted);">(excerpt shown on listing cards)</small></label>
+          <textarea name="excerpt" rows="2" style="width:100%;resize:vertical;"><?php echo esc_textarea( $item->excerpt ?? '' ); ?></textarea>
+        </div>
+
+        <div class="ah-form-row">
+          <label>Full Content</label>
           <?php
           wp_editor( $item->content ?? '', 'newsbar_content', array(
 	          'textarea_name' => 'content',
@@ -99,6 +118,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
           ) );
           ?>
         </div>
+
         <div class="ah-form-row">
           <label>Thumbnail Image</label>
           <?php
@@ -116,6 +136,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
             </div>
           </div>
         </div>
+
         <div class="ah-form-row"><label>Link URL</label><input type="text" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>"></div>
         <div class="ah-form-row">
           <label>Open In</label>

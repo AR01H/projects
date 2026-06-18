@@ -24,6 +24,11 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_category_logical.php';
 $ctx = adn_category_get_context();
 
+if ( ! empty( $ctx['faqs']['items'] ) ) {
+	wp_enqueue_style( 'adn-page-faqs-style', get_template_directory_uri() . '/assets/css/faqs.css', array(), ADN_THEME_VERSION );
+	wp_enqueue_script( 'adn-page-faqs-script', get_template_directory_uri() . '/assets/js/faqs.js', array(), ADN_THEME_VERSION, true );
+}
+
 // Breadcrumb renders inside the hero banner - skip it from adn_page_open().
 $_open_ctx                = $ctx;
 $_open_ctx['breadcrumb']  = array();
@@ -249,6 +254,40 @@ adn_page_open( $_open_ctx );
 
 	</div>
 </div>
+
+<?php /* ============================== FAQs ============================== */ ?>
+<?php if ( ! empty( $ctx['faqs']['items'] ) ) : ?>
+<div class="section-faqs">
+	<div class="faqs-main">
+		<?php if ( ! empty( $ctx['faqs']['heading'] ) ) : ?>
+			<h2 class="faqs-section-heading"><?php echo esc_html( $ctx['faqs']['heading'] ); ?></h2>
+		<?php endif; ?>
+		<div class="faqs-list">
+			<?php foreach ( $ctx['faqs']['items'] as $_faq ) :
+				$_fq  = is_array( $_faq ) ? (string) ( $_faq['question']  ?? '' ) : (string) ( $_faq->question  ?? '' );
+				$_fa  = is_array( $_faq ) ? (string) ( $_faq['answer']    ?? '' ) : (string) ( $_faq->answer    ?? '' );
+				$_flu = is_array( $_faq ) ? (string) ( $_faq['link_url']  ?? '' ) : (string) ( $_faq->link_url  ?? '' );
+				$_flt = is_array( $_faq ) ? (string) ( $_faq['link_text'] ?? '' ) : (string) ( $_faq->link_text ?? '' );
+				if ( '' === trim( $_fq ) ) { continue; }
+			?>
+				<details class="faq-item">
+					<summary class="faq-q">
+						<span class="faq-q-text"><?php echo esc_html( $_fq ); ?></span>
+					</summary>
+					<div class="faq-a">
+						<?php if ( '' !== trim( $_fa ) ) : ?>
+							<div class="faq-a-body"><?php echo wp_kses_post( wpautop( wp_trim_words( $_fa, 500, '' ) ) ); ?></div>
+						<?php endif; ?>
+						<?php if ( '' !== trim( $_flu ) ) : ?>
+							<p class="faq-link"><a href="<?php echo esc_url( adn_link( $_flu ) ); ?>"><?php echo esc_html( $_flt ?: $_flu ); ?></a></p>
+						<?php endif; ?>
+					</div>
+				</details>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</div>
+<?php endif; ?>
 
 <?php /* ============================== PERSONALISED GUIDANCE CTA ============================== */ ?>
 <?php if ( ! empty( $ctx['cta_banner'] ) ) : ?>

@@ -1,11 +1,13 @@
 <?php
 /**
  * components/parts/contact_sidebar.php
- * Props: $contact_sidebar { whatsapp{}, email{}, coming_soon[] }
+ * Props: $contact_sidebar or $page_sidebar { whatsapp{}, email{}, faqs[], coming_soon[] }
+ * Either prop name works — use $page_sidebar when including from non-contact pages.
  */
 defined( 'ABSPATH' ) || exit;
 
-$_sb = isset( $contact_sidebar ) ? (array) $contact_sidebar : array();
+$_sb = isset( $page_sidebar )    ? (array) $page_sidebar    :
+       ( isset( $contact_sidebar ) ? (array) $contact_sidebar : array() );
 $_wa = isset( $_sb['whatsapp'] )     ? (array) $_sb['whatsapp']     : array();
 $_em = isset( $_sb['email'] )        ? (array) $_sb['email']        : array();
 $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();

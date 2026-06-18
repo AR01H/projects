@@ -10,6 +10,19 @@
     function init() {
         bindEnquiryTypes();
         bindContactSubmit();
+        bindSidebarFaqs();
+    }
+
+    function bindSidebarFaqs() {
+        var items = Array.prototype.slice.call( document.querySelectorAll( '.contact-faq-item' ) );
+        items.forEach( function ( d ) {
+            d.addEventListener( 'toggle', function () {
+                if ( ! d.open ) { return; }
+                items.forEach( function ( other ) {
+                    if ( other !== d && other.open ) { other.open = false; }
+                } );
+            } );
+        } );
     }
 
     function bindEnquiryTypes() {

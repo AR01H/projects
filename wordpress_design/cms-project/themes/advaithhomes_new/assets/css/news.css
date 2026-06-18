@@ -891,13 +891,25 @@
     color: var(--color-text-muted, #6b7280);
 }
 
+.news-single-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--color-accent-light, #e8f0e8);
+    color: var(--color-primary, #2d6a4f);
+}
+
 .news-single-title {
     font-size: clamp(1.4rem, 3.5vw, 2rem);
     font-weight: 800;
     line-height: 1.2;
     color: var(--color-dark, #0f1923);
-    margin: 0 0 24px;
+    margin: 0 0 12px;
 }
+
 
 /* Share row */
 .news-single-share {

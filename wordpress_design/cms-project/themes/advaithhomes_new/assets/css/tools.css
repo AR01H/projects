@@ -248,7 +248,8 @@
     background: var(--color-white, #fff);
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--card-radius, 8px);
-    margin-top: 0;
+    padding: 16px;
+    margin-top: 16px;
 }
 
 .tools-sidebar-help h4 {
@@ -645,6 +646,143 @@
     .calc-single-thumb {
         width: 80px;
         height: 56px;
+    }
+}
+
+/* ── Tool single page (page-tool-single.php) ────────────────────── */
+
+/* Highlight badge strip between hero and main content */
+.tool-highlight-strip {
+    background: #fffbeb;
+    border-bottom: 1px solid #fde68a;
+    padding: 10px 0;
+}
+
+.tool-highlight-strip .tool-badge {
+    max-width: 360px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Layout inherits .page-with-sidebar from temp.css. Extra top padding. */
+.tool-single-layout {
+    padding-top: 32px;
+}
+
+/* Thumbnail banner + badge strip */
+.tool-single-meta {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.tool-single-thumb {
+    display: block;
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+
+/* Highlight badge */
+.tool-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
+    color: #78350f;
+    border: 1px solid #fcd34d;
+    box-shadow: 0 1px 4px rgba(251, 191, 36, 0.25);
+}
+
+.tool-badge::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #f59e0b;
+    flex-shrink: 0;
+}
+
+.tool-badge--large {
+    font-size: 0.78rem;
+    padding: 7px 18px;
+    gap: 8px;
+}
+
+.tool-badge--large::before {
+    width: 7px;
+    height: 7px;
+}
+
+/* Help text callout */
+.tool-single-help {
+    background: #f0f9ff;
+    border-left: 3px solid var(--color-primary, #1a4a7a);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 24px;
+}
+
+.tool-single-help p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #0c4a6e;
+    line-height: 1.6;
+}
+
+/* Guide link below help text */
+.tool-single-guide-link {
+    margin-bottom: 32px;
+}
+
+/* Section headings (Related Tools, Latest News) */
+.tool-single-section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-heading, #111827);
+    margin: 0 0 16px;
+    letter-spacing: -0.2px;
+}
+
+/* Grid for related tool cards */
+.tool-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.tool-grid--7col {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+
+/* Section spacing */
+.category-section.category-tools,
+.category-section.category-news {
+    margin-top: 32px;
+}
+
+/* News section card wrapper */
+.category-section.category-news.mini_card_container_design {
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 600px) {
+    .tool-single-widget {
+        padding: 20px 16px;
+    }
+
+    .tool-grid--7col {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     }
 }
 

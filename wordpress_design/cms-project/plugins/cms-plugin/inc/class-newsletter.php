@@ -170,43 +170,57 @@ class AH_Newsletter {
 	// ── Broadcast ─────────────────────────────────────────────────────────────
 
 	/**
-	 * Send a newsletter broadcast to all active subscribers.
+	 * Send a notification to all active subscribers via the Rules Engine.
+	 *
+	 * Fires AH_Rules_Engine::evaluate( 'notification_send', $context, true ) for
+	 * each active subscriber (immediate mode). The Rules Engine decides delivery —
+	 * configure a rule with trigger "Notification – Send" and any action:
+	 * send_email, WhatsApp, webhook, or a combination.
+	 *
+	 * Available context tokens in rule actions:
+	 *   {email}  {name}  {subject}  {body}  {from_name}  {from_email}  {unsubscribe_url}
 	 *
 	 * Returns array( 'sent' => int, 'failed' => int ).
 	 *
 	 * @param string $subject
-	 * @param string $body       Plain-text body (may contain {name} and {unsubscribe_url} tokens).
+	 * @param string $body        Supports {name} and {unsubscribe_url} before passing to RE.
 	 * @param string $from_name
 	 * @param string $from_email
 	 */
 	public static function send_broadcast( string $subject, string $body, string $from_name = '', string $from_email = '' ): array {
-		if ( ! self::table_exists() ) { return array( 'sent' => 0, 'failed' => 0 ); }
+		if ( ! self::table_exists() )             { return array( 'sent' => 0, 'failed' => 0 ); }
+		if ( ! class_exists( 'AH_Rules_Engine' ) ) { return array( 'sent' => 0, 'failed' => 0 ); }
 
 		$from_email = $from_email ?: get_option( 'admin_email' );
 		$from_name  = $from_name  ?: get_bloginfo( 'name' );
 
 		$subscribers = self::get_all( 'active', 5000, 0 );
 		$sent        = 0;
-		$failed      = 0;
-
-		add_filter( 'wp_mail_from',      function() use ( $from_email ) { return $from_email; }, 99 );
-		add_filter( 'wp_mail_from_name', function() use ( $from_name  ) { return $from_name;  }, 99 );
 
 		foreach ( $subscribers as $sub ) {
-			$unsub   = self::unsub_url( $sub['email'] );
-			$name    = $sub['name'] ?: 'there';
-			$message = str_replace(
+			$unsub         = self::unsub_url( $sub['email'] );
+			$name          = '' !== $sub['name'] ? $sub['name'] : 'there';
+			$body_rendered = str_replace(
 				array( '{name}', '{unsubscribe_url}' ),
 				array( $name,    $unsub              ),
 				$body
 			);
-			$message .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
+			$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
 
-			$ok = wp_mail( $sub['email'], $subject, $message );
-			$ok ? $sent++ : $failed++;
+			AH_Rules_Engine::evaluate( 'notification_send', array(
+				'email'           => $sub['email'],
+				'name'            => $name,
+				'subject'         => $subject,
+				'body'            => $body_rendered,
+				'from_name'       => $from_name,
+				'from_email'      => $from_email,
+				'unsubscribe_url' => $unsub,
+			), true );
+
+			$sent++;
 		}
 
-		return array( 'sent' => $sent, 'failed' => $failed );
+		return array( 'sent' => $sent, 'failed' => 0 );
 	}
 
 	// ── Broadcast log (wp_option) ─────────────────────────────────────────────

@@ -78,6 +78,11 @@ $ft_d       = isset( $all['featured_topics'] ) && is_array( $all['featured_topic
 $ft_heading = isset( $ft_d['heading'] ) ? $ft_d['heading'] : '';
 $ft_items   = isset( $ft_d['items'] )   && is_array( $ft_d['items'] ) ? $ft_d['items'] : array();
 
+// FAQs.
+$faq_cs_d     = isset( $all['faqs'] ) && is_array( $all['faqs'] ) ? $all['faqs'] : array();
+$faq_heading  = isset( $faq_cs_d['heading'] ) ? $faq_cs_d['heading'] : '';
+$faq_cs_items = isset( $faq_cs_d['items'] )   && is_array( $faq_cs_d['items'] ) ? $faq_cs_d['items'] : array();
+
 // Calculators - registered + selected.
 $calc_heading       = isset( $calc_d['heading'] )       ? $calc_d['heading']       : '';
 $calc_selected_keys = isset( $calc_d['selected_keys'] ) && is_array( $calc_d['selected_keys'] ) ? $calc_d['selected_keys'] : array();
@@ -122,6 +127,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 			<a href="#adn-tab-cta"          class="nav-tab" data-panel="adn-tab-cta">CTA Banner</a>
 			<a href="#adn-tab-marquee"      class="nav-tab" data-panel="adn-tab-marquee">Marquee</a>
 			<a href="#adn-tab-resources"    class="nav-tab" data-panel="adn-tab-resources">Resources</a>
+			<a href="#adn-tab-faqs"         class="nav-tab" data-panel="adn-tab-faqs">FAQs</a>
 		</div>
 
 		<?php /* ══════════════════════ APPEARANCE ══════════════════════ */ ?>
@@ -663,6 +669,47 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 
 		</div><?php /* end #adn-tab-resources */ ?>
 
+		<?php /* ══════════════════════ FAQs ════════════════════════════ */ ?>
+		<div id="adn-tab-faqs" class="adn-inner-panel">
+			<div class="card" style="max-width:none;">
+				<h2><?php esc_html_e( 'FAQs', ADN_TEXT_DOMAIN ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Search and select FAQ items from the plugin. These will appear as an accordion on this category page.', ADN_TEXT_DOMAIN ); ?></p>
+
+				<table class="form-table" role="presentation"><tbody>
+					<tr>
+						<th><?php esc_html_e( 'Section Heading', ADN_TEXT_DOMAIN ); ?></th>
+						<td><input type="text" class="regular-text" name="faqs[heading]" value="<?php echo esc_attr( $faq_heading ); ?>" placeholder="<?php echo esc_attr( $term_name . ' FAQs' ); ?>"></td>
+					</tr>
+				</tbody></table>
+
+				<p style="margin:16px 0 6px;font-weight:600;"><?php esc_html_e( 'Selected FAQs', ADN_TEXT_DOMAIN ); ?></p>
+				<div class="adn-search-wrap" style="max-width:600px;">
+					<input type="text" id="faq-search" class="regular-text" placeholder="<?php esc_attr_e( 'Type to search FAQ questions…', ADN_TEXT_DOMAIN ); ?>" autocomplete="off" style="width:100%;">
+					<div id="faq-search-results" class="adn-search-results"></div>
+				</div>
+				<div id="faqs-selected">
+					<?php foreach ( $faq_cs_items as $i => $item ) :
+						$_faq_id = ! empty( $item['faq_id'] ) ? (int) $item['faq_id'] : 0;
+						if ( ! $_faq_id ) { continue; }
+						// Load question text live from DB.
+						global $wpdb;
+						$_faq_q = $wpdb->get_var( $wpdb->prepare(
+							"SELECT question FROM `{$wpdb->prefix}ah_faqs` WHERE id = %d LIMIT 1",
+							$_faq_id
+						) );
+						if ( ! $_faq_q ) { continue; }
+					?>
+						<div class="adn-post-pill">
+							<span class="pill-title" style="flex:1;"><?php echo esc_html( $_faq_q ); ?></span>
+							<input type="hidden" name="faqs[items][<?php echo (int) $i; ?>][faq_id]" value="<?php echo $_faq_id; ?>">
+							<button type="button" class="button adn-pill-remove" title="Remove">&#x2715;</button>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<p class="description" style="margin-top:6px;"><?php esc_html_e( 'Up to 10 FAQs. Questions are always loaded fresh from the plugin.', ADN_TEXT_DOMAIN ); ?></p>
+			</div>
+		</div><?php /* end #adn-tab-faqs */ ?>
+
 	</div><?php /* end .adn-inner-tabs */ ?>
 
 	<?php submit_button( __( 'Save Settings', ADN_TEXT_DOMAIN ) ); ?>
@@ -833,9 +880,10 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		var searchInput = document.getElementById(opts.searchId);
 		var resultsDiv  = document.getElementById(opts.resultsId);
 		var selectedDiv = document.getElementById(opts.selectedId);
-		var prefix      = opts.prefix;
-		var buildPill   = opts.buildPill;
-		var action      = opts.action || 'adn_cat_post_search';
+		var prefix        = opts.prefix;
+		var buildPill     = opts.buildPill;
+		var action        = opts.action || 'adn_cat_post_search';
+		var isDuplicate   = opts.isDuplicate || null;
 		var _timer;
 
 		if (!searchInput || !resultsDiv || !selectedDiv) { return; }
@@ -885,6 +933,11 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		resultsDiv.addEventListener('click', function (e) {
 			var item = e.target.closest('.sr-item');
 			if (!item) { return; }
+			if (isDuplicate && isDuplicate(item.dataset, selectedDiv)) {
+				resultsDiv.style.display = 'none';
+				searchInput.value = '';
+				return;
+			}
 			var pill = document.createElement('div');
 			pill.className = 'adn-post-pill';
 			pill.innerHTML = buildPill(prefix, pillCount(), item.dataset);
@@ -947,6 +1000,27 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				+ '<input type="text" name="' + prefix + '[' + idx + '][name]" value="' + d.title.replace(/"/g,'&quot;') + '" style="flex:1;">'
 				+ '<input type="hidden" name="' + prefix + '[' + idx + '][url]" value="' + d.url.replace(/"/g,'&quot;') + '">'
 				+ '<input type="hidden" name="' + prefix + '[' + idx + '][term_id]" value="' + d.id + '">'
+				+ '<button type="button" class="button adn-pill-remove" title="Remove">&#x2715;</button>';
+		}
+	});
+
+	// FAQs picker (plugin ah_faqs table).
+	new SearchPicker({
+		searchId:    'faq-search',
+		resultsId:   'faq-search-results',
+		selectedId:  'faqs-selected',
+		prefix:      'faqs[items]',
+		action:      'adn_cat_faq_search',
+		isDuplicate: function (d, selectedDiv) {
+			var existing = selectedDiv.querySelectorAll('input[name*="[faq_id]"]');
+			for (var i = 0; i < existing.length; i++) {
+				if (existing[i].value == d.id) { return true; }
+			}
+			return false;
+		},
+		buildPill: function (prefix, idx, d) {
+			return '<span class="pill-title" style="flex:1;">' + d.title.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>'
+				+ '<input type="hidden" name="' + prefix + '[' + idx + '][faq_id]" value="' + d.id + '">'
 				+ '<button type="button" class="button adn-pill-remove" title="Remove">&#x2715;</button>';
 		}
 	});

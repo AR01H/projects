@@ -14,9 +14,7 @@ $thumbnail = isset( $calc['thumbnail'] ) && '' !== $calc['thumbnail'] ? (string)
 $highlight = isset( $calc['highlight'] ) && '' !== $calc['highlight'] ? (string) $calc['highlight'] : '';
 ?>
 <a href="<?php echo $url; ?>" class="popular-calc-card">
-	<?php if ( $highlight ) : ?>
-		<span class="calc-badge"><?php echo esc_html( $highlight ); ?></span>
-	<?php endif; ?>
+
 
 	<div class="popular-calc-icon" aria-hidden="true">
 		<?php if ( $thumbnail ) : ?>

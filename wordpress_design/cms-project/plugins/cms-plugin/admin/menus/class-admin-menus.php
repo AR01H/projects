@@ -28,7 +28,7 @@ class AH_Admin_Menus {
 			['title' => 'Static Pages',      'menu' => 'Static Pages',      'slug' => 'ah-static-pages',  'callback' => 'page_static_pages' ],
 			['title' => 'Pages Manager',     'menu' => 'Pages Manager',     'slug' => 'ah-pages',         'callback' => 'page_pages'        ],
 			['title' => 'Form Builder',      'menu' => 'Form Builder',      'slug' => 'ah-form-builder',  'callback' => 'page_form_builder' ],
-			['title' => 'Newsletter',        'menu' => '📧 Newsletter',     'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
+			['title' => 'Notifications',      'menu' => '🔔 Notifications',  'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
 			['title' => 'Taxonomies',        'menu' => 'Taxonomies',        'slug' => 'ah-taxonomy',      'callback' => 'page_taxonomy'     ],
 			// ── System ────────────────────────────────────────────────
 			['title' => 'Analytics Reports', 'menu' => 'Analytics Reports', 'slug' => 'ah-analytics',     'callback' => 'page_analytics'    ],
@@ -88,7 +88,7 @@ class AH_Admin_Menus {
 	public static function page_file_links()     { self::load( 'file-links'     ); }
 	public static function page_builder()         { self::load( 'page-builder'    ); }
 	public static function page_form_builder()   { self::load( 'form-builder'   ); }
-	public static function page_newsletter()     { self::load( 'newsletter'     ); }
+	public static function page_newsletter()     { self::load( 'notifications'  ); }
 	public static function page_guidance()      { self::load( 'guidance'       ); }
 	public static function page_rules_engine()   { self::load( 'rules-engine'   ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }

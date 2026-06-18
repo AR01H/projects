@@ -17,6 +17,7 @@ class AH_DB_Migrations {
 		self::reviews_short_desc();
 		self::news_bar_content();
 		self::news_bar_image();
+		self::news_bar_label_excerpt();
 		self::taxonomy_protected();
 		self::taxonomy_media();
 		self::rules_settings();
@@ -63,6 +64,11 @@ class AH_DB_Migrations {
 
 	public static function news_bar_image(): void {
 		self::add_column_if_missing( 'ah_news_bar_items', 'image_id', 'INT UNSIGNED DEFAULT NULL AFTER `content`' );
+	}
+
+	public static function news_bar_label_excerpt(): void {
+		self::add_column_if_missing( 'ah_news_bar_items', 'label',   "VARCHAR(200) NOT NULL DEFAULT '' AFTER `id`" );
+		self::add_column_if_missing( 'ah_news_bar_items', 'excerpt', "VARCHAR(500) NOT NULL DEFAULT '' AFTER `text`" );
 	}
 
 	public static function taxonomy_protected(): void {

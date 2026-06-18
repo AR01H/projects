@@ -70,6 +70,23 @@ if ( isset( $_GET['retry_log'], $_GET['_wpnonce'] ) ) {
 	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=logs&notice=' . ( $ok ? 'retry_ok' : 'retry_fail' ) ) );
 }
 
+// ── Handle: add blocked email ─────────────────────────────────────────────────
+if ( isset( $_POST['ah_re_block_add_nonce'] ) ) {
+	if ( ! wp_verify_nonce( $_POST['ah_re_block_add_nonce'], 'ah_block_add' ) ) wp_die( 'Security.' );
+	$block_email = sanitize_email( wp_unslash( $_POST['block_email'] ?? '' ) );
+	if ( is_email( $block_email ) ) {
+		AH_Rules_Engine::add_blocked_email( $block_email );
+	}
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=blocked&notice=block_added' ) );
+}
+
+// ── Handle: remove blocked email ─────────────────────────────────────────────
+if ( isset( $_GET['unblock'], $_GET['_wpnonce'] ) ) {
+	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_unblock' ) ) wp_die( 'Security.' );
+	AH_Rules_Engine::remove_blocked_email( sanitize_email( wp_unslash( $_GET['unblock'] ) ) );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=blocked&notice=block_removed' ) );
+}
+
 // ── Handle: clear the whole evaluate log ──────────────────────────────────────
 if ( isset( $_POST['ah_re_clear_evallog_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_clear_evallog_nonce'], 'ah_clear_evallog' ) ) wp_die( 'Security.' );
@@ -122,17 +139,19 @@ if ( isset( $_POST['ah_re_nonce'] ) ) {
 // ── Load data ──────────────────────────────────────────────────────────────────
 if ( isset( $_GET['notice'] ) ) {
 	$n_map = array(
-		'saved'       => 'success:Rule saved.',
-		'deleted'     => 'success:Rule deleted.',
-		'cfg_saved'   => 'success:Configuration saved.',
-		'log_deleted' => 'success:Log entry deleted.',
-		'log_unsent'  => 'success:Marked as cancelled.',
-		'retry_ok'    => 'success:Action retried successfully.',
-		'retry_fail'  => 'warning:Retry failed - check the error column.',
-		'run_now_ok'  => 'success:Cron batch processed - check Trigger Logs for updated statuses.',
-		'test_fired'  => 'success:Test trigger fired - check Trigger Logs to confirm a new entry was created.',
+		'saved'           => 'success:Rule saved.',
+		'deleted'         => 'success:Rule deleted.',
+		'cfg_saved'       => 'success:Configuration saved.',
+		'log_deleted'     => 'success:Log entry deleted.',
+		'log_unsent'      => 'success:Marked as cancelled.',
+		'retry_ok'        => 'success:Action retried successfully.',
+		'retry_fail'      => 'warning:Retry failed - check the error column.',
+		'run_now_ok'      => 'success:Cron batch processed - check Trigger Logs for updated statuses.',
+		'test_fired'      => 'success:Test trigger fired - check Trigger Logs to confirm a new entry was created.',
 		'evallog_cleared' => 'success:Evaluate log cleared.',
 		'evallog_deleted' => 'success:Evaluate log entry deleted.',
+		'block_added'     => 'success:Email address blocked — no emails will be sent to it.',
+		'block_removed'   => 'success:Email address unblocked.',
 	);
 	$notice = $n_map[ sanitize_key( $_GET['notice'] ) ] ?? '';
 }
@@ -242,7 +261,7 @@ details.re-adv .re-adv-body{padding:12px}
 <!-- Top-level tab nav -->
 <div style="display:flex;gap:2px;border-bottom:2px solid #e5e7eb;margin-bottom:24px">
 	<?php
-	$tabs = array( 'list' => '⚡ Rules', 'logs' => '📋 Trigger Logs', 'evallog' => '🧪 Evaluate Log', 'config' => '⚙️ Config' );
+	$tabs = array( 'list' => '⚡ Rules', 'logs' => '📋 Trigger Logs', 'evallog' => '🧪 Evaluate Log', 'blocked' => '🚫 Blocked Emails', 'config' => '⚙️ Config' );
 	foreach ( $tabs as $tslug => $tlabel ) :
 		$active = ( $view === $tslug || ( $tslug === 'list' && $view === 'edit' ) );
 	?>
@@ -254,7 +273,7 @@ details.re-adv .re-adv-body{padding:12px}
 </div>
 <?php endif; ?>
 
-<?php if ( ! in_array( $view, array( 'config', 'logs', 'evallog' ), true ) ) : ?>
+<?php if ( ! in_array( $view, array( 'config', 'logs', 'evallog', 'blocked' ), true ) ) : ?>
 <p style="color:#6b7280;font-size:13px;margin:-8px 0 20px">
 	Automate anything. Define a <strong>trigger name</strong>, set optional <strong>conditions</strong>, and run <strong>actions</strong> - send emails, WhatsApp messages, or call any API. Use <code>{field_key}</code> tokens in action text; global defaults are available as <code>{config_email_from_name}</code>, <code>{config_wa_api_url}</code>, etc.
 </p>
@@ -1121,6 +1140,57 @@ if ( 'evallog' === $view ) :
 <?php endif; ?>
 
 <?php endif; // evallog view ?>
+
+<?php
+// ════════════════════════════════════════════════════════════
+// BLOCKED EMAILS VIEW
+// ════════════════════════════════════════════════════════════
+if ( 'blocked' === $view ) :
+	$blocked_list = AH_Rules_Engine::get_blocked_emails();
+?>
+<div class="re-section" style="max-width:680px">
+	<div class="re-section-title"><span>🚫 Blocked Email Addresses</span></div>
+	<p style="font-size:13px;color:#6b7280;margin:0 0 18px">Emails in this list will never receive messages sent through the Rules Engine — regardless of which rule triggers them.</p>
+
+	<!-- Add form -->
+	<form method="post" style="display:flex;gap:8px;align-items:center;margin-bottom:24px;flex-wrap:wrap">
+		<?php wp_nonce_field( 'ah_block_add', 'ah_re_block_add_nonce' ); ?>
+		<input type="email" name="block_email" required placeholder="email@example.com"
+			style="padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;min-width:280px;box-sizing:border-box">
+		<button type="submit" class="ah-btn ah-btn-danger" style="white-space:nowrap">Block this email</button>
+	</form>
+
+	<!-- List -->
+	<?php if ( $blocked_list ) : ?>
+	<table class="re-tbl">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Email Address</th>
+				<th style="width:100px"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ( $blocked_list as $i => $be ) : ?>
+			<tr>
+				<td style="color:#9ca3af;font-size:12px"><?php echo esc_html( $i + 1 ); ?></td>
+				<td><code style="font-size:13px"><?php echo esc_html( $be ); ?></code></td>
+				<td>
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'blocked', 'unblock' => rawurlencode( $be ) ), admin_url( 'admin.php' ) ), 'ah_unblock' ) ); ?>"
+					   class="ah-btn ah-btn-secondary ah-btn-sm"
+					   onclick="return confirm('Unblock <?php echo esc_js( $be ); ?>?')">Unblock</a>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php else : ?>
+	<div style="text-align:center;padding:32px;color:#9ca3af;border:1.5px dashed #e5e7eb;border-radius:8px;font-size:13px">
+		No emails blocked yet. Add an address above to prevent it from ever receiving rule-triggered emails.
+	</div>
+	<?php endif; ?>
+</div>
+<?php endif; // blocked view ?>
 
 </div><!-- .wrap -->
 

@@ -8,12 +8,8 @@ defined( 'ABSPATH' ) || exit;
 
 $card      = isset( $card ) && is_array( $card ) ? $card : array();
 $thumbnail = isset( $card['thumbnail'] ) && '' !== $card['thumbnail'] ? (string) $card['thumbnail'] : '';
-$highlight = isset( $card['highlight'] ) && '' !== $card['highlight'] ? (string) $card['highlight'] : '';
 ?>
 <a href="<?php echo esc_url( adn_link( isset( $card['url'] ) ? $card['url'] : '' ) ); ?>" class="calc-card">
-	<?php if ( $highlight ) : ?>
-		<span class="highlight-textblock"><?php echo esc_html( $highlight ); ?></span>
-	<?php endif; ?>
 	<div class="calc-card-icon" aria-hidden="true">
 		<?php if ( $thumbnail ) : ?>
 			<img src="<?php echo esc_url( $thumbnail ); ?>" alt="" class="calc-card-thumb" loading="lazy">

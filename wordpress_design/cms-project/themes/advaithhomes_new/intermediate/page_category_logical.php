@@ -326,6 +326,7 @@ function adn_category_get_context( $slug = '' ) {
 	$_cs_calc     = isset( $_cs_all['calculators'] )    && is_array( $_cs_all['calculators'] )    ? $_cs_all['calculators']    : array();
 	$_cs_sidebar  = isset( $_cs_all['sidebar'] )        && is_array( $_cs_all['sidebar'] )        ? $_cs_all['sidebar']        : array();
 	$_cs_cta      = isset( $_cs_all['cta_banner'] )     && is_array( $_cs_all['cta_banner'] )     ? $_cs_all['cta_banner']     : array();
+	$_cs_faqs     = isset( $_cs_all['faqs'] )           && is_array( $_cs_all['faqs'] )           ? $_cs_all['faqs']           : array();
 
 	// Journey.
 	$journey = array();
@@ -558,6 +559,55 @@ function adn_category_get_context( $slug = '' ) {
 		);
 	}
 
+	// FAQs: plugin items selected by ID in admin, loaded fresh from DB.
+	$faqs = array();
+	if ( ! empty( $_cs_faqs['items'] ) && is_array( $_cs_faqs['items'] ) ) {
+		$_faq_ids = array();
+		foreach ( (array) $_cs_faqs['items'] as $_fi ) {
+			if ( ! empty( $_fi['faq_id'] ) ) {
+				$_faq_ids[] = (int) $_fi['faq_id'];
+			}
+			if ( count( $_faq_ids ) >= 10 ) { break; }
+		}
+		$_faq_ids = array_filter( $_faq_ids );
+
+		if ( ! empty( $_faq_ids ) ) {
+			global $wpdb;
+			$_faq_table = $wpdb->prefix . 'ah_faqs';
+			if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $_faq_table ) ) === $_faq_table ) {
+				$_placeholders = implode( ',', array_fill( 0, count( $_faq_ids ), '%d' ) );
+				$_faq_rows     = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT id, question, answer, link_url, link_text FROM `{$_faq_table}` WHERE id IN ({$_placeholders}) AND status = 'active'",
+						...$_faq_ids
+					)
+				);
+				// Restore admin-defined pill order.
+				$_id_pos = array_flip( $_faq_ids );
+				usort( $_faq_rows, function ( $a, $b ) use ( $_id_pos ) {
+					return ( isset( $_id_pos[ $a->id ] ) ? $_id_pos[ $a->id ] : 0 )
+					     - ( isset( $_id_pos[ $b->id ] ) ? $_id_pos[ $b->id ] : 0 );
+				} );
+				$_faq_built = array();
+				foreach ( $_faq_rows as $_fr ) {
+					$_faq_built[] = array(
+						'id'        => (int)    $_fr->id,
+						'question'  => (string) $_fr->question,
+						'answer'    => (string) $_fr->answer,
+						'link_url'  => (string) ( $_fr->link_url  ?? '' ),
+						'link_text' => (string) ( $_fr->link_text ?? '' ),
+					);
+				}
+				if ( ! empty( $_faq_built ) ) {
+					$faqs = array(
+						'heading' => ! empty( $_cs_faqs['heading'] ) ? (string) $_cs_faqs['heading'] : sprintf( '%s FAQs', $name ),
+						'items'   => $_faq_built,
+					);
+				}
+			}
+		}
+	}
+
 	// CTA banner.
 	$cta_banner = array();
 	if ( ! empty( $_cs_cta['title'] ) ) {
@@ -655,6 +705,7 @@ function adn_category_get_context( $slug = '' ) {
 		'regulations'   => $regulations,
 		'calculators'   => $calculators,
 		'resources'     => $resources,
+		'faqs'          => $faqs,
 		'sidebar'       => $sidebar,
 		'cta_banner'    => $cta_banner,
 		'chrome'        => $chrome,

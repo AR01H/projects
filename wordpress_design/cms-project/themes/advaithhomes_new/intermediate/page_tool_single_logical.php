@@ -45,6 +45,7 @@ function adn_calculator_single_get_context( $key ) {
 		'title'       => $title,
 		'description' => $desc,
 		'bg_icon'     => $icon,
+		'image_id'    => ! empty( $meta['thumbnail_id'] ) ? (int) $meta['thumbnail_id'] : 0,
 	);
 
 	// ── Breadcrumb ────────────────────────────────────────────────────────
@@ -141,29 +142,24 @@ function adn_calculator_single_get_context( $key ) {
 	// ── Chrome (header/footer data) ──────────────────────────────────────
 	$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
-	// ── Latest news from CMS plugin ───────────────────────────────────────
-	$news_items = array();
-	if ( function_exists( 'adn_cms_latest_news' ) ) {
-		foreach ( (array) adn_cms_latest_news( 5 ) as $n ) {
-			$nid          = isset( $n->ID ) ? (int) $n->ID : 0;
-			$news_items[] = array(
-				'title' => isset( $n->title )    ? (string) $n->title    : '',
-				'url'   => isset( $n->post_url ) ? (string) $n->post_url : ( $nid ? get_permalink( $nid ) : '' ),
-				'date'  => isset( $n->date )     ? (string) $n->date     : '',
-				'icon'  => '📰',
+	// ── News bar items for sidebar ────────────────────────────────────────
+	$news_mini_items = array();
+	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
+		foreach ( (array) adn_cms_newsbar_items( 3 ) as $n ) {
+			$_nb_id    = isset( $n->id )       ? (int)    $n->id       : 0;
+			$_nb_title = isset( $n->text )     ? (string) $n->text     : '';
+			$_nb_href  = isset( $n->link_url ) ? (string) $n->link_url : '';
+			$_nb_url   = '' !== trim( $_nb_href )
+				? $_nb_href
+				: ( $_nb_id > 0 && function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_nb_id ) : home_url( SITE_NEWS_URL ) );
+			if ( '' === trim( $_nb_title ) ) { continue; }
+			$news_mini_items[] = array(
+				'title'    => $_nb_title,
+				'url'      => $_nb_url,
+				'date'     => '',
+				'gradient' => 'linear-gradient(135deg,var(--color-primary,#1a4a7a),var(--color-primary-dark,#0f2d4a))',
 			);
 		}
-	}
-
-	// ── News mini (sidebar) - first 3 newsbar items ─────────────────────
-	$news_mini_items = array();
-	foreach ( array_slice( $news_items, 0, 3 ) as $n ) {
-		$news_mini_items[] = array(
-			'title'    => $n['title'],
-			'url'      => $n['url'],
-			'date'     => $n['date'],
-			'gradient' => 'linear-gradient(135deg,var(--color-primary,#1a4a7a),var(--color-primary-dark,#0f2d4a))',
-		);
 	}
 
 	// ── Share data ────────────────────────────────────────────────────────
@@ -182,7 +178,6 @@ function adn_calculator_single_get_context( $key ) {
 		'guide'         => $guide,
 		'help_text'     => ( isset( $meta['help'] ) && '' !== $meta['help'] ) ? (string) $meta['help'] : '',
 		'related'       => $related,
-		'news'          => $news_items,
 		'share'         => array( 'url' => $share_url, 'title' => $title ),
 		'sidebar'       => array(
 			'categories'  => $sidebar_cats,

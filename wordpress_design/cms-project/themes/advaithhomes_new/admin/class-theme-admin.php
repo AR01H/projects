@@ -64,6 +64,9 @@ class ADN_Theme_Admin {
 		// Category Pages: AJAX taxonomy term search (Featured Topics).
 		add_action( 'wp_ajax_adn_cat_tax_search', array( __CLASS__, 'handle_cat_taxonomy_search' ) );
 
+		// Category Pages: AJAX FAQ search (from plugin ah_faqs table).
+		add_action( 'wp_ajax_adn_cat_faq_search', array( __CLASS__, 'handle_cat_faq_search' ) );
+
 		// Enqueue wp.media on our admin page (required for the thumbnail uploader).
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_assets' ) );
 
@@ -913,6 +916,41 @@ class ADN_Theme_Admin {
 		wp_send_json_success( $results );
 	}
 
+	// ── Category Pages: AJAX FAQ search ─────────────────────────────────────────────
+
+	public static function handle_cat_faq_search() {
+		check_ajax_referer( 'adn_cat_search', 'nonce' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_send_json_error( 'Unauthorised', 403 );
+		}
+
+		$q = sanitize_text_field( wp_unslash( isset( $_GET['q'] ) ? $_GET['q'] : '' ) );
+		if ( mb_strlen( $q ) < 2 ) {
+			wp_send_json_success( array() );
+		}
+
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_faqs';
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
+			wp_send_json_success( array() );
+		}
+
+		$like    = '%' . $wpdb->esc_like( $q ) . '%';
+		$rows    = $wpdb->get_results( $wpdb->prepare(
+			"SELECT id, question FROM `{$table}` WHERE status = 'active' AND question LIKE %s ORDER BY sort_order ASC, id ASC LIMIT 10",
+			$like
+		) );
+
+		$results = array();
+		foreach ( (array) $rows as $row ) {
+			$results[] = array(
+				'id'    => (int)    $row->id,
+				'title' => (string) $row->question,
+			);
+		}
+		wp_send_json_success( $results );
+	}
+
 	// ── Category Pages: dynamic subtabs, one per active parent term ────────────────
 
 	/**
@@ -1221,6 +1259,23 @@ class ADN_Theme_Admin {
 			'pdfs'   => $res_pdfs,
 			'links'  => $res_links,
 			'videos' => $res_videos,
+		) );
+
+		// ── FAQs (plugin FAQ items selected by ID) ───────────────────────────────────
+		$raw_faq   = ( isset( $_POST['faqs'] ) && is_array( $_POST['faqs'] ) ) ? wp_unslash( $_POST['faqs'] ) : array();
+		$faq_items = array();
+		if ( isset( $raw_faq['items'] ) && is_array( $raw_faq['items'] ) ) {
+			foreach ( $raw_faq['items'] as $f ) {
+				if ( ! is_array( $f ) || empty( $f['faq_id'] ) ) { continue; }
+				$fid = (int) $f['faq_id'];
+				if ( $fid <= 0 ) { continue; }
+				$faq_items[] = array( 'faq_id' => $fid );
+				if ( count( $faq_items ) >= 10 ) { break; }
+			}
+		}
+		AH_Category_Settings::save( $slug, 'faqs', array(
+			'heading' => sanitize_text_field( isset( $raw_faq['heading'] ) ? $raw_faq['heading'] : '' ),
+			'items'   => $faq_items,
 		) );
 
 		self::redirect_back( 'category-pages', $slug, __( 'Category settings saved.', ADN_TEXT_DOMAIN ) );

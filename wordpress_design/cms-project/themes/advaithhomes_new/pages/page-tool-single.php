@@ -11,6 +11,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+wp_enqueue_style( 'adn-tools-style', get_template_directory_uri() . '/assets/css/tools.css', array(), ADN_THEME_VERSION );
+wp_enqueue_style( 'adn-single-style', get_template_directory_uri() . '/assets/css/single.css', array(), ADN_THEME_VERSION );
+
 $_calc_key = sanitize_key( wp_unslash( isset( $_GET['ah_calc_page'] ) ? $_GET['ah_calc_page'] : '' ) );
 
 require_once ADN_THEME_DIR . '/intermediate/page_tool_single_logical.php';
@@ -41,39 +44,34 @@ adn_page_open( $_open_ctx );
 	) ); ?>
 <?php endif; ?>
 
+<?php /* ── Highlight badge strip ── */ ?>
+<?php if ( ! empty( $ctx['highlight'] ) ) : ?>
+<div class="tool-highlight-strip">
+	<div class="container">
+		<span class="tool-badge tool-badge--large"><?php echo esc_html( $ctx['highlight'] ); ?></span>
+	</div>
+</div>
+<?php endif; ?>
+
 <?php /* ============================== MAIN LAYOUT: CONTENT + SIDEBAR ============================== */ ?>
 <div class="container">
 	<div class="page-with-sidebar tool-single-layout">
 
 		<main>
 
-			<?php /* ── Highlight badge strip ── */ ?>
-			<?php if ( ! empty( $ctx['highlight'] ) || ! empty( $ctx['thumbnail_url'] ) ) : ?>
-			<div class="tool-single-meta">
-				<?php if ( ! empty( $ctx['thumbnail_url'] ) ) : ?>
-					<img src="<?php echo esc_url( $ctx['thumbnail_url'] ); ?>" alt="<?php echo esc_attr( $ctx['title'] ); ?>" class="tool-single-thumb">
-				<?php endif; ?>
-				<?php if ( ! empty( $ctx['highlight'] ) ) : ?>
-					<span class="tool-badge tool-badge--large"><?php echo esc_html( $ctx['highlight'] ); ?></span>
-				<?php endif; ?>
-			</div>
-			<?php endif; ?>
+			<?php /* ── Tool widget (standalone iframe embed) ── */ ?>
+			<?php echo do_shortcode( '[ah_calculator key="' . esc_attr( $ctx['key'] ) . '"]' ); ?>
 
-			<?php /* ── Tool widget ── */ ?>
-			<section class="tool-single-widget">
-				<?php echo do_shortcode( '[ah_calculator key="' . esc_attr( $ctx['key'] ) . '"]' ); ?>
-			</section>
-
-			<?php /* ── Share bar ── */ ?>
-			<?php if ( ! empty( $ctx['share'] ) ) : ?>
-				<?php adn_component( 'parts/share_bar', array( 'share' => $ctx['share'] ) ); ?>
-			<?php endif; ?>
-
-			<?php /* ── Help text (shown below the calculator) ── */ ?>
+			<?php /* ── Help text (outside iframe) ── */ ?>
 			<?php if ( ! empty( $ctx['help_text'] ) ) : ?>
 			<div class="tool-single-help">
 				<p><?php echo esc_html( $ctx['help_text'] ); ?></p>
 			</div>
+			<?php endif; ?>
+
+			<?php /* ── Share bar (same UI as single.php, no Helpful button) ── */ ?>
+			<?php if ( ! empty( $ctx['share'] ) ) : ?>
+				<?php adn_component( 'sections/post_feedback', array( 'share' => $ctx['share'], 'hide_helpful' => true ) ); ?>
 			<?php endif; ?>
 
 			<?php /* ── Guide link ── */ ?>
@@ -99,33 +97,25 @@ adn_page_open( $_open_ctx );
 			</section>
 			<?php endif; ?>
 
-			<?php /* ── Latest news ── */ ?>
-			<?php if ( ! empty( $ctx['news'] ) ) : ?>
-			<section class="category-section category-news mini_card_container_design">
-				<h3 class="tool-single-section-title">
-					<?php echo esc_html( 'Latest ' . SITE_NEWS_NOUN ); ?>
-				</h3>
-				<?php foreach ( $ctx['news'] as $item ) :
-					adn_component( 'cards/news_item', array( 'item' => $item ) );
-				endforeach; ?>
-			</section>
-			<?php endif; ?>
 
 		</main>
 
 		<aside class="sidebar-col">
 
-			<?php /* ── Browse tool categories ── */ ?>
+			<?php /* ── Browse tool categories + help CTA ── */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['categories'] ) ) : ?>
-				<?php adn_component( 'parts/tools_sidebar', array( 'sidebar' => array(
-					'categories' => $ctx['sidebar']['categories'],
-					'help'       => array(),
-				) ) ); ?>
-			<?php endif; ?>
-
-			<?php /* ── Expert Help / Contact ── */ ?>
-			<?php if ( ! empty( $ctx['sidebar']['expert_help'] ) ) : ?>
-				<?php adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) ); ?>
+				<?php
+				$_eh = isset( $ctx['sidebar']['expert_help'] ) ? $ctx['sidebar']['expert_help'] : array();
+				adn_component( 'parts/tools_sidebar', array( 'sidebar' => array(
+					'categories'   => $ctx['sidebar']['categories'],
+					'help'         => array(
+						'title'        => isset( $_eh['heading'] )          ? $_eh['heading']          : '',
+						'text'         => isset( $_eh['subtitle'] )         ? $_eh['subtitle']         : '',
+						'button_label' => isset( $_eh['cta']['label'] )     ? $_eh['cta']['label']     : '',
+						'button_url'   => isset( $_eh['cta']['url'] )       ? $_eh['cta']['url']       : '',
+					),
+				) ) );
+				?>
 			<?php endif; ?>
 
 			<?php /* ── Latest news mini ── */ ?>

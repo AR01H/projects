@@ -17,6 +17,7 @@ require_once get_template_directory() . '/includes/class-calculator-db.php';
 require_once get_template_directory() . '/includes/class-expert-db.php';
 require_once get_template_directory() . '/includes/class-adn-enquiry.php';
 require_once get_template_directory() . '/includes/class-adn-form-ajax.php';
+require_once get_template_directory() . '/includes/adn-sidebar-helpers.php';
 require_once get_template_directory() . '/includes/comment-callbacks.php';
 
 // ===========================

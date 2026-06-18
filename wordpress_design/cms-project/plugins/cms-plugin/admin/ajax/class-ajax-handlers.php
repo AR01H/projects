@@ -450,6 +450,13 @@ class AH_Ajax_Handlers {
 		if ( 'already_subscribed' === $result ) {
 			wp_send_json_success( array( 'message' => 'You are already subscribed — thank you!' ) );
 		} elseif ( 'subscribed' === $result ) {
+			if ( class_exists( 'AH_Rules_Engine' ) ) {
+				AH_Rules_Engine::evaluate( 'newsletter_subscribe', array(
+					'email'  => $email,
+					'name'   => $name,
+					'source' => $source,
+				) );
+			}
 			wp_send_json_success( array( 'message' => 'Thank you for subscribing! You\'ll hear from us soon.' ) );
 		} else {
 			wp_send_json_error( array( 'message' => 'Could not save your subscription. Please try again.' ) );

@@ -158,7 +158,9 @@ function adn_news_newsbar_grid_items( $rows ) {
 function adn_news_cms_categories() {
 	$cats        = array( array( 'key' => 'all', 'label' => 'All ' . SITE_NEWS_NOUN, 'count' => '' ) );
 	$news_parent = function_exists( 'adn_cms_parent_by_slug' ) ? adn_cms_parent_by_slug( 'news' ) : null;
+
 	if ( $news_parent ) {
+		// Specific 'news' parent exists — show its child topics.
 		foreach ( adn_cms_topics( (int) $news_parent->id, 20 ) as $topic ) {
 			$cats[] = array(
 				'key'   => isset( $topic->slug ) ? $topic->slug : '',
@@ -166,7 +168,20 @@ function adn_news_cms_categories() {
 				'count' => '',
 			);
 		}
+	} elseif ( function_exists( 'adn_cms_guide_parents' ) ) {
+		// Fall back to all parent terms.
+		foreach ( adn_cms_guide_parents( 20 ) as $parent ) {
+			$slug = isset( $parent->slug ) ? (string) $parent->slug : '';
+			$name = isset( $parent->name ) ? (string) $parent->name : ucwords( str_replace( '-', ' ', $slug ) );
+			if ( '' === $slug ) { continue; }
+			$cats[] = array(
+				'key'   => $slug,
+				'label' => $name,
+				'count' => '',
+			);
+		}
 	}
+
 	return $cats;
 }
 

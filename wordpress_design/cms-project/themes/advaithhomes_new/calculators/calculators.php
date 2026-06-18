@@ -167,18 +167,8 @@ function adn_render_calculator_standalone( $key ) {
 	<div class="ah-calc-wrap"><?php adn_load_calculator_view( $key ); ?></div>
 	<?php
 	$meta = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
-	if ( ! empty( $meta['help'] ) || ! empty( $meta['guide_url'] ) ) :
-		?>
-		<div class="ah-calc-extra">
-			<?php if ( ! empty( $meta['help'] ) ) : ?>
-				<p class="ah-calc-help"><?php echo esc_html( $meta['help'] ); ?></p>
-			<?php endif; ?>
-			<?php if ( ! empty( $meta['guide_url'] ) ) : ?>
-				<a class="ah-calc-guide" href="<?php echo esc_url( $meta['guide_url'] ); ?>" target="_top">
-					<?php echo esc_html( ! empty( $meta['guide_label'] ) ? $meta['guide_label'] : 'Read the guide →' ); ?>
-				</a>
-			<?php endif; ?>
-		</div>
+	if ( empty( $_GET['noextra'] ) && ( ! empty( $meta['help'] ) || ! empty( $meta['guide_url'] ) ) ) :
+	?>
 	<?php endif; ?>
 	<?php if ( $has_js ) : ?>
 		<script src="<?php echo esc_url( $js ); ?>"></script>
@@ -295,7 +285,7 @@ function adn_calculator_shortcode( $atts ) {
 	}
 
 	$all = adn_calculators();
-	$src = home_url( '/?ah_calc=' . rawurlencode( $key ) );
+	$src = home_url( '/?ah_calc=' . rawurlencode( $key ) . ( isset( $_GET['ah_calc_page'] ) ? '&noextra=1' : '' ) );
 	$uid = 'ahcalc_' . $key . '_' . wp_rand( 1000, 9999 );
 	$h   = max( 200, (int) $atts['height'] );
 

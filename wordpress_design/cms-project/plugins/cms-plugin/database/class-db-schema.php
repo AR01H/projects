@@ -135,7 +135,9 @@ class AH_DB_Schema {
 			// 11. News Bar Items
 			"CREATE TABLE IF NOT EXISTS {$p}ah_news_bar_items (
 				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				text        VARCHAR(500) NOT NULL,
+				label       VARCHAR(200)  NOT NULL DEFAULT '',
+				text        VARCHAR(500)  NOT NULL,
+				excerpt     VARCHAR(500)  NOT NULL DEFAULT '',
 				content     LONGTEXT NULL,
 				image_id    INT UNSIGNED DEFAULT NULL,
 				link_url    VARCHAR(500),
