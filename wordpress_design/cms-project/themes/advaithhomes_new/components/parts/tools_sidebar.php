@@ -17,7 +17,7 @@ $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       :
 
 	<?php if ( ! empty( $categories ) ) : ?>
 		<div class="tools-sidebar-section mini_card_container_design">
-			<h3><?php echo esc_html__( 'Browse by Category', ADN_TEXT_DOMAIN ); ?></h3>
+			<h3><?php echo esc_html( SITE_SIDEBAR_BROWSE_CAT ); ?></h3>
 			<div class="tools-cat-list">
 				<?php foreach ( $categories as $cat ) :
 					$key      = isset( $cat['key'] )   ? sanitize_key( $cat['key'] )   : '';

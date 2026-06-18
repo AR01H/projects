@@ -124,6 +124,67 @@ define( 'SITE_GUIDANCE_LABEL', adn_term( 'features.guidance_label', 'Get Expert 
 define( 'SITE_CONTACT_LABEL',  adn_term( 'features.contact_label',  'Contact Us' ) );
 
 // ===========================
+// BUTTON LABELS
+// ===========================
+define( 'SITE_BTN_EXPLORE_ALL',   adn_term( 'buttons.explore_all',   'Explore all' ) );
+define( 'SITE_BTN_EXPLORE_ARROW', adn_term( 'buttons.explore_arrow', 'Explore →' ) );
+
+// ===========================
+// UI LABELS
+// ===========================
+define( 'SITE_LABEL_POPULAR',     adn_term( 'labels.popular',      'Popular' ) );
+define( 'SITE_LABEL_LATEST_NEWS', adn_term( 'labels.latest_news',  'Latest News' ) );
+
+// ===========================
+// SIDEBAR LABELS
+// ===========================
+define( 'SITE_SIDEBAR_BROWSE_CAT',   adn_term( 'sidebar.browse_category',       'Browse by Category' ) );
+define( 'SITE_SIDEBAR_RELATED',      adn_term( 'sidebar.related_guides',        'Related Guides' ) );
+define( 'SITE_SIDEBAR_VIEW_FAQS',    adn_term( 'sidebar.view_all_faqs',         'View all FAQs' ) );
+define( 'SITE_SIDEBAR_EXPERT_HELP',  adn_term( 'sidebar.expert_help_heading',   'Need Expert Help?' ) );
+define( 'SITE_SIDEBAR_NEWSLETTER',   adn_term( 'sidebar.newsletter_heading',    'Stay Updated' ) );
+define( 'SITE_SIDEBAR_WHATSAPP_BTN', adn_term( 'sidebar.whatsapp_btn',          'Start WhatsApp Chat' ) );
+define( 'SITE_SIDEBAR_EMAIL_BTN',    adn_term( 'sidebar.email_btn',             'Send an Email' ) );
+define( 'SITE_SIDEBAR_FAQS_HEAD',    adn_term( 'labels.frequently_asked',       'Frequently Asked Questions' ) );
+define( 'SITE_SIDEBAR_CONTACT_BTN',  adn_term( 'sidebar.contact_btn',           'Get in Touch' ) );
+
+// ===========================
+// SECTION COMPONENT LABELS
+// ===========================
+define( 'SITE_SECTION_EXPERT_CANT_FIND',    adn_term( 'sections.expert_cant_find_heading',  "Can't find the right expert?" ) );
+define( 'SITE_BTN_GET_MATCHED',             adn_term( 'sections.expert_cant_find_btn',      'Get Matched Now' ) );
+define( 'SITE_SECTION_CONTACT_FORM',        adn_term( 'sections.contact_form_heading',      'Send us your enquiry' ) );
+define( 'SITE_BTN_CONTACT_SUBMIT',          adn_term( 'sections.contact_form_submit',       'Submit Enquiry' ) );
+define( 'SITE_SECTION_CONTACT_RESOURCES',   adn_term( 'sections.contact_resources_heading', 'While you wait, explore popular resources' ) );
+define( 'SITE_SECTION_GUIDANCE_FORM',       adn_term( 'sections.guidance_form_heading',     'Tell us about your requirement' ) );
+define( 'SITE_SECTION_GUIDANCE_SERVICES',   adn_term( 'sections.guidance_services_heading', 'We can help you with' ) );
+define( 'SITE_BTN_CALCULATE_NOW',           adn_term( 'buttons.calculate_now',              'Calculate Now' ) );
+define( 'SITE_BTN_LOAD_MORE',               adn_term( 'buttons.load_more',                  'Load More Stories' ) );
+define( 'SITE_BTN_SEARCH',                  adn_term( 'buttons.search',                     'Search' ) );
+
+// ===========================
+// FORM LABELS & PLACEHOLDERS
+// ===========================
+define( 'SITE_FORM_HELP_LABEL',        adn_term( 'sections.guidance_form_help_label',  'I am looking for help with' ) );
+define( 'SITE_FORM_IAM_LABEL',         adn_term( 'sections.guidance_form_iam_label',   'I am a' ) );
+define( 'SITE_FORM_TIME_LABEL',        adn_term( 'sections.guidance_form_time_label',  'When do you need help?' ) );
+define( 'SITE_BTN_SUBMIT_REQUEST',     adn_term( 'sections.guidance_form_submit',      'Submit Request' ) );
+define( 'SITE_PLACEHOLDER_SELECT',     adn_term( 'placeholders.select_option',         'Select an option' ) );
+define( 'SITE_PLACEHOLDER_TIME',       adn_term( 'placeholders.time_select',           'Select time frame' ) );
+define( 'SITE_PLACEHOLDER_EMAIL',      adn_term( 'placeholders.email_address',         'Your email address' ) );
+define( 'SITE_PLACEHOLDER_NEWSLETTER', adn_term( 'placeholders.newsletter_email',       'Enter your email address' ) );
+define( 'SITE_PLACEHOLDER_SEARCH_NEWS',adn_term( 'placeholders.search_news',            'Search News' ) );
+
+// ===========================
+// UTILITY LABELS
+// ===========================
+define( 'SITE_LABEL_USEFUL_RESOURCES', adn_term( 'labels.useful_resources',     'Useful Resources' ) );
+define( 'SITE_LABEL_ALL_PREFIX',       adn_term( 'labels.all_prefix',           'All %s' ) );
+define( 'SITE_SECTION_ARTICLE_SHARE',  adn_term( 'sections.article_feedback_label', 'Share this guide' ) );
+define( 'SITE_SECTION_NEWS_READ_BTN',  adn_term( 'sections.news_featured_read_btn',  'Read Full Story' ) );
+define( 'SITE_LABEL_TOOLS_TAB',        adn_term( 'sections.tools_all_overall_tab',   'Overall' ) );
+
+// ===========================
 // PAGE TITLES
 // ===========================
 define( 'PAGE_TITLE_HOME',     adn_term( 'page_titles.home',     'Home' ) );

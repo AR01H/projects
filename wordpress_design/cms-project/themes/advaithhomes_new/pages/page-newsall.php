@@ -230,7 +230,7 @@ adn_page_open( $_open_ctx );
 
 				<div class="load-more-wrap">
 					<button class="load-more-btn" id="loadMoreBtn" type="button">
-						<?php echo esc_html__( 'Load More Stories', ADN_TEXT_DOMAIN ); ?>
+						<?php echo esc_html( SITE_BTN_LOAD_MORE ); ?>
 					</button>
 				</div>
 			<?php else : ?>

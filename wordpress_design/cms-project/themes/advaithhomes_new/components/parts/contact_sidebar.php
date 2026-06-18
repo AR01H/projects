@@ -20,7 +20,7 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 		$_wa_hdg = esc_html( isset( $_wa['heading'] )      ? (string) $_wa['heading']      : '' );
 		$_wa_num = esc_html( isset( $_wa['number'] )       ? (string) $_wa['number']       : '' );
 		$_wa_nte = esc_html( isset( $_wa['note'] )         ? (string) $_wa['note']         : '' );
-		$_wa_btn = esc_html( isset( $_wa['button_label'] ) ? (string) $_wa['button_label'] : 'Start WhatsApp Chat' );
+		$_wa_btn = esc_html( isset( $_wa['button_label'] ) ? (string) $_wa['button_label'] : SITE_SIDEBAR_WHATSAPP_BTN );
 		$_wa_url = esc_url( adn_link( isset( $_wa['url'] ) ? (string) $_wa['url'] : '#' ) );
 		$_wa_raw = preg_replace( '/\D/', '', isset( $_wa['number'] ) ? (string) $_wa['number'] : '' );
 		$_wa_href = ! empty( $_wa_raw ) ? 'https://wa.me/' . $_wa_raw : $_wa_url;
@@ -46,7 +46,7 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 		$_em_hdg = esc_html( isset( $_em['heading'] )      ? (string) $_em['heading']      : '' );
 		$_em_adr = esc_html( isset( $_em['address'] )      ? (string) $_em['address']      : '' );
 		$_em_nte = esc_html( isset( $_em['note'] )         ? (string) $_em['note']         : '' );
-		$_em_btn = esc_html( isset( $_em['button_label'] ) ? (string) $_em['button_label'] : 'Send an Email' );
+		$_em_btn = esc_html( isset( $_em['button_label'] ) ? (string) $_em['button_label'] : SITE_SIDEBAR_EMAIL_BTN );
 		$_em_raw = isset( $_em['address'] ) ? (string) $_em['address'] : '';
 		$_em_href = ( '' !== $_em_raw ) ? 'mailto:' . sanitize_email( $_em_raw ) : '#';
 	?>
@@ -67,7 +67,7 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 
 	<?php /* FAQs box */ ?>
 	<?php if ( ! empty( $_sb['faqs'] ) && is_array( $_sb['faqs'] ) ) :
-		$_faq_heading = esc_html( isset( $_sb['faqs_heading'] ) ? (string) $_sb['faqs_heading'] : 'Frequently Asked Questions' );
+		$_faq_heading = esc_html( isset( $_sb['faqs_heading'] ) ? (string) $_sb['faqs_heading'] : SITE_SIDEBAR_FAQS_HEAD );
 	?>
 	<?php
 		// Configurable view-all URL/label for FAQs
@@ -77,7 +77,7 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 		}
 		$_faq_view_label = isset( $_sb['faqs_button_label'] ) && '' !== (string) $_sb['faqs_button_label']
 			? (string) $_sb['faqs_button_label']
-			: __( 'View all FAQs', ADN_TEXT_DOMAIN );
+			: SITE_SIDEBAR_VIEW_FAQS;
 	?>
 
 	<div class="contact-alt-box contact-alt-faqs">

@@ -92,7 +92,7 @@ function adn_category_cms_guides( $slug ) {
 			'category'    => $cat_name,
 			'title'       => '',
 			'description' => ! empty( $post->_term_desc ) ? $post->_term_desc : '',
-			'read_more'   => 'Explore →',
+			'read_more'   => SITE_BTN_EXPLORE_ARROW,
 			'url'         => $term_url,
 		);
 	}

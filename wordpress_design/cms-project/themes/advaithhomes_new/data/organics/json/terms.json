@@ -72,6 +72,16 @@
         "contact_label":    "Contact Us"
     },
 
+    "buttons": {
+        "explore_all":      "Explore all",
+        "explore_arrow":    "Explore →"
+    },
+
+    "labels": {
+        "popular":          "Popular",
+        "latest_news":      "Latest News"
+    },
+
     "page_titles": {
         "home":             "Home",
         "contact":          "Contact Us",
@@ -91,18 +101,21 @@
     },
 
     "sidebar": {
-        "expert_help_heading":  "Need Expert Help?",
-        "expert_help_subtitle": "Get personalised guidance from our organic and nutrition experts.",
-        "expert_help_cta":      "Talk to an Expert",
+        "browse_category":          "Browse by Category",
+        "related_guides":           "Related Guides",
+        "view_all_faqs":            "View all FAQs",
+        "expert_help_heading":      "Need Expert Help?",
+        "expert_help_subtitle":     "Get personalised guidance from our organic and nutrition experts.",
+        "expert_help_cta":          "Talk to an Expert",
         "contact_for_help_heading": "Contact for Help",
-        "contact_for_help_desc": "Not sure which expert to choose? Get in touch and we'll guide you.",
-        "contact_for_help_btn": "Get in Touch",
-        "browse_guides":        "Browse Guides",
-        "newsletter_heading":   "Stay Updated",
-        "newsletter_desc":      "Get the latest organic guides and tips delivered to your inbox.",
-        "newsletter_placeholder": "Your email address",
-        "newsletter_btn":       "Subscribe",
-        "newsletter_note":      "No spam. Unsubscribe anytime."
+        "contact_for_help_desc":    "Not sure which expert to choose? Get in touch and we'll guide you.",
+        "contact_for_help_btn":     "Get in Touch",
+        "browse_guides":            "Browse Guides",
+        "newsletter_heading":       "Stay Updated",
+        "newsletter_desc":          "Get the latest organic guides and tips delivered to your inbox.",
+        "newsletter_placeholder":   "Your email address",
+        "newsletter_btn":           "Subscribe",
+        "newsletter_note":          "No spam. Unsubscribe anytime."
     },
 
     "content": {
@@ -119,5 +132,46 @@
             "Plain English advice"
         ],
         "author_role":          "Information Experts"
+    },
+
+    "sections": {
+        "expert_cant_find_heading":     "Can't find the right expert?",
+        "expert_cant_find_btn":         "Get Matched Now",
+        "contact_form_heading":         "Send us your enquiry",
+        "contact_form_submit":          "Submit Enquiry",
+        "contact_resources_heading":    "While you wait, explore popular resources",
+        "guidance_form_heading":        "Tell us about your requirement",
+        "guidance_form_help_label":     "I am looking for help with",
+        "guidance_form_iam_label":      "I am a",
+        "guidance_form_time_label":     "When do you need help?",
+        "guidance_form_submit":         "Submit Request",
+        "guidance_services_heading":    "We can help you with",
+        "tools_all_overall_tab":        "Overall",
+        "article_feedback_label":       "Share this guide",
+        "news_featured_read_btn":       "Read Full Story"
+    },
+
+    "buttons": {
+        "explore_all":                  "Explore all",
+        "explore_arrow":                "Explore →",
+        "calculate_now":                "Calculate Now",
+        "load_more":                    "Load More Stories",
+        "search":                       "Search"
+    },
+
+    "placeholders": {
+        "select_option":                "Select an option",
+        "time_select":                  "Select time frame",
+        "email_address":                "Your email address",
+        "newsletter_email":             "Enter your email address",
+        "search_news":                  "Search News"
+    },
+
+    "labels": {
+        "popular":                      "Popular",
+        "latest_news":                  "Latest News",
+        "useful_resources":             "Useful Resources",
+        "frequently_asked":             "Frequently Asked Questions",
+        "all_prefix":                   "All %s"
     }
 }

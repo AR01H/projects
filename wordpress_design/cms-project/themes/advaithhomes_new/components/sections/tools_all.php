@@ -21,7 +21,7 @@ $find_cta    = isset( $find_cta )    && is_array( $find_cta )    ? $find_cta    
 ?>
 <section class="all-tools-section">
 	<div class="container">
-		<h2><?php echo esc_html__( 'Overall', ADN_TEXT_DOMAIN ); ?></h2>
+		<h2><?php echo esc_html( SITE_LABEL_TOOLS_TAB ); ?></h2>
 	
 		<?php /* ── Filter tabs ── */ ?>
 		<?php if ( ! empty( $filter_tabs ) ) : ?>

@@ -126,7 +126,7 @@ adn_page_open( $ctx );
         <?php /* 2. Latest News */ ?>
         <?php if ( ! empty( $sb_news ) ) : ?>
         <div class="mini_card_container_design">
-            <h3 class="faqs-sb-heading"><?php esc_html_e( 'Latest News', ADN_TEXT_DOMAIN ); ?></h3>
+            <h3 class="faqs-sb-heading"><?php echo esc_html( SITE_LABEL_LATEST_NEWS ); ?></h3>
             <div class="faqs-sb-news-list">
                 <?php foreach ( $sb_news as $_n ) :
                     $_n_id      = is_object( $_n ) ? (int)    ( $_n->id          ?? 0  ) : (int)    ( $_n['id']          ?? 0  );

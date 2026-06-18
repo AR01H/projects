@@ -6,7 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $_s     = isset( $services ) ? (array) $services : array();
-$_hdg   = esc_html( isset( $_s['heading'] ) ? (string) $_s['heading'] : 'We can help you with' );
+$_hdg   = esc_html( isset( $_s['heading'] ) ? (string) $_s['heading'] : SITE_SECTION_GUIDANCE_SERVICES );
 $_items = isset( $_s['items'] ) ? (array) $_s['items'] : array();
 if ( empty( $_items ) ) return;
 ?>

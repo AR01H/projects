@@ -9,18 +9,18 @@
 defined( 'ABSPATH' ) || exit;
 
 $_f       = isset( $form ) ? (array) $form : array();
-$_hdg     = esc_html( isset( $_f['heading'] )          ? (string) $_f['heading']          : 'Tell us about your requirement' );
-$_hl      = esc_html( isset( $_f['help_label'] )       ? (string) $_f['help_label']       : 'I am looking for help with' );
-$_hp      = esc_attr( isset( $_f['help_placeholder'] ) ? (string) $_f['help_placeholder'] : 'Select an option' );
+$_hdg     = esc_html( isset( $_f['heading'] )          ? (string) $_f['heading']          : SITE_SECTION_GUIDANCE_FORM );
+$_hl      = esc_html( isset( $_f['help_label'] )       ? (string) $_f['help_label']       : SITE_FORM_HELP_LABEL );
+$_hp      = esc_attr( isset( $_f['help_placeholder'] ) ? (string) $_f['help_placeholder'] : SITE_PLACEHOLDER_SELECT );
 $_hopts   = isset( $_f['help_options'] )                ? (array) $_f['help_options']      : array();
-$_il      = esc_html( isset( $_f['iam_label'] )        ? (string) $_f['iam_label']        : 'I am a' );
-$_ip      = esc_attr( isset( $_f['iam_placeholder'] )  ? (string) $_f['iam_placeholder']  : 'Select an option' );
+$_il      = esc_html( isset( $_f['iam_label'] )        ? (string) $_f['iam_label']        : SITE_FORM_IAM_LABEL );
+$_ip      = esc_attr( isset( $_f['iam_placeholder'] )  ? (string) $_f['iam_placeholder']  : SITE_PLACEHOLDER_SELECT );
 $_iopts   = isset( $_f['iam_options'] )                 ? (array) $_f['iam_options']       : array();
-$_tl      = esc_html( isset( $_f['time_label'] )       ? (string) $_f['time_label']       : 'When do you need help?' );
-$_tp      = esc_attr( isset( $_f['time_placeholder'] ) ? (string) $_f['time_placeholder'] : 'Select time frame' );
+$_tl      = esc_html( isset( $_f['time_label'] )       ? (string) $_f['time_label']       : SITE_FORM_TIME_LABEL );
+$_tp      = esc_attr( isset( $_f['time_placeholder'] ) ? (string) $_f['time_placeholder'] : SITE_PLACEHOLDER_TIME );
 $_topts   = isset( $_f['time_options'] )                ? (array) $_f['time_options']      : array();
 $_methods = isset( $_f['contact_methods'] )             ? (array) $_f['contact_methods']   : array();
-$_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_label']     : 'Submit Request' );
+$_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_label']     : SITE_BTN_SUBMIT_REQUEST );
 ?>
 <div class="guidance-form-card">
 	<h2><?php echo $_hdg; ?></h2>

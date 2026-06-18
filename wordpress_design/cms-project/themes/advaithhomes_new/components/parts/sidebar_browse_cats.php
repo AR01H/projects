@@ -17,7 +17,7 @@ if ( empty( $categories ) ) {
 }
 ?>
 <div class="news-sb-box">
-	<div class="news-sb-title"><?php echo esc_html__( 'Browse by Category', ADN_TEXT_DOMAIN ); ?></div>
+	<div class="news-sb-title"><?php echo esc_html( SITE_SIDEBAR_BROWSE_CAT ); ?></div>
 	<ul class="sb-cat-list">
 		<?php foreach ( $categories as $cat ) :
 			$key   = isset( $cat['key'] )   ? (string) $cat['key']   : '';

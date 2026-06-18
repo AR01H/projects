@@ -16,7 +16,7 @@ if ( empty( $popular_tools ) ) {
 ?>
 <section class="popular-tools-section">
 	<div class="container">
-		<h2><?php echo esc_html__( 'Popular', ADN_TEXT_DOMAIN ); ?></h2>
+		<h2><?php echo esc_html( SITE_LABEL_POPULAR ); ?></h2>
 		<div class="popular-tools-grid">
 			<?php foreach ( $popular_tools as $calc ) :
 				adn_component( 'cards/tool_popular_card', array( 'calc' => $calc ) );

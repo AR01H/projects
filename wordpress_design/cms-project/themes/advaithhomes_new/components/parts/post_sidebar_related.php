@@ -17,7 +17,7 @@ if ( empty( $_items ) ) {
 }
 ?>
 <div class="sidebar-box mini_card_container_design">
-	<h3><?php esc_html_e( 'Related Guides', ADN_TEXT_DOMAIN ); ?></h3>
+	<h3><?php echo esc_html( SITE_SIDEBAR_RELATED ); ?></h3>
 	<ul class="sidebar-related-list" role="list">
 		<?php foreach ( $_items as $_g ) :
 			$_g_icon = adn_icon( isset( $_g['icon'] )      ? (string) $_g['icon']      : '🏠' );

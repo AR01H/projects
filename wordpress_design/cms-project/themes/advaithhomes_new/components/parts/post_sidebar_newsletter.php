@@ -19,10 +19,10 @@ defined( 'ABSPATH' ) || exit;
 
 $_nl  = isset( $newsletter ) ? (array) $newsletter : array();
 $_ico = adn_icon( isset( $_nl['icon'] )         ? (string) $_nl['icon']         : '✉️' );
-$_hdg = esc_html( isset( $_nl['heading'] )      ? (string) $_nl['heading']      : 'Stay Informed' );
+$_hdg = esc_html( isset( $_nl['heading'] )      ? (string) $_nl['heading']      : SITE_SIDEBAR_NEWSLETTER );
 $_dsc = esc_html( isset( $_nl['description'] )  ? (string) $_nl['description']  : '' );
-$_ph  = esc_attr( isset( $_nl['placeholder'] )  ? (string) $_nl['placeholder']  : 'Enter your email address' );
-$_btn = esc_html( isset( $_nl['button_label'] ) ? (string) $_nl['button_label'] : 'Subscribe' );
+$_ph  = esc_attr( isset( $_nl['placeholder'] )  ? (string) $_nl['placeholder']  : SITE_PLACEHOLDER_NEWSLETTER );
+$_btn = esc_html( isset( $_nl['button_label'] ) ? (string) $_nl['button_label'] : adn_term( 'sidebar.newsletter_btn', 'Subscribe' ) );
 $_nte = esc_html( isset( $_nl['note'] )         ? (string) $_nl['note']         : '' );
 ?>
 <div class="sidebar-box sidebar-newsletter">

@@ -6,10 +6,10 @@
 defined( 'ABSPATH' ) || exit;
 
 $_f      = isset( $form ) ? (array) $form : array();
-$_hdg    = esc_html( isset( $_f['heading'] )      ? (string) $_f['heading']      : 'Send us your enquiry' );
+$_hdg    = esc_html( isset( $_f['heading'] )      ? (string) $_f['heading']      : SITE_SECTION_CONTACT_FORM );
 $_desc   = esc_html( isset( $_f['description'] )  ? (string) $_f['description']  : '' );
 $_types  = isset( $_f['enquiry_types'] )           ? (array) $_f['enquiry_types'] : array();
-$_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'] : 'Submit Enquiry' );
+$_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'] : SITE_BTN_CONTACT_SUBMIT );
 ?>
 <div class="contact-form-card">
 	<h2><?php echo $_hdg; ?></h2>

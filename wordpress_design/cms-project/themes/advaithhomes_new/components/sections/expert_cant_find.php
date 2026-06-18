@@ -7,9 +7,9 @@ defined( 'ABSPATH' ) || exit;
 
 $_c     = isset( $cant_find_cta ) ? (array) $cant_find_cta : array();
 $_ico   = adn_icon( isset( $_c['icon'] )         ? (string) $_c['icon']         : '🔍' );
-$_hdg   = esc_html( isset( $_c['heading'] )      ? (string) $_c['heading']      : "Can't find the right expert?" );
+$_hdg   = esc_html( isset( $_c['heading'] )      ? (string) $_c['heading']      : SITE_SECTION_EXPERT_CANT_FIND );
 $_dsc   = esc_html( isset( $_c['desc'] )         ? (string) $_c['desc']         : '' );
-$_btn   = esc_html( isset( $_c['button_label'] ) ? (string) $_c['button_label'] : 'Get Matched Now' );
+$_btn   = esc_html( isset( $_c['button_label'] ) ? (string) $_c['button_label'] : SITE_BTN_GET_MATCHED );
 $_url   = esc_url( adn_link( isset( $_c['button_url'] ) ? (string) $_c['button_url'] : '#' ) );
 ?>
 <div class="expert-cant-find-cta">

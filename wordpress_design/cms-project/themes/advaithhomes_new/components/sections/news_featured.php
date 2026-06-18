@@ -37,7 +37,7 @@ $url = esc_url( adn_link( isset( $featured['url'] ) ? $featured['url'] : '' ) );
 		<?php endif; ?>
 
 		<a href="<?php echo $url; ?>" class="btn btn-primary fa-read-btn">
-			<?php echo esc_html__( 'Read Full Story', ADN_TEXT_DOMAIN ); ?> &rsaquo;
+			<?php echo esc_html( SITE_SECTION_NEWS_READ_BTN ); ?> &rsaquo;
 		</a>
 	</div>
 </div>

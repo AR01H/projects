@@ -33,6 +33,6 @@ $highlight = isset( $calc['highlight'] ) && '' !== $calc['highlight'] ? (string)
 	<?php endif; ?>
 
 	<span class="calc-cta">
-		<?php echo esc_html__( 'Calculate Now', ADN_TEXT_DOMAIN ); ?> →
+		<?php echo esc_html( SITE_BTN_CALCULATE_NOW ); ?> →
 	</span>
 </a>

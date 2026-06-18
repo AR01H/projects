@@ -28,7 +28,7 @@ $_nl    = isset( $_sb['newsletter_cta'] ) ? (array) $_sb['newsletter_cta'] : arr
 	<?php if ( ! empty( $_ch ) ) :
 		$_ch_h   = esc_html( isset( $_ch['heading'] )      ? (string) $_ch['heading']      : '' );
 		$_ch_d   = esc_html( isset( $_ch['desc'] )         ? (string) $_ch['desc']         : '' );
-		$_ch_btn = esc_html( isset( $_ch['button_label'] ) ? (string) $_ch['button_label'] : 'Get in Touch' );
+		$_ch_btn = esc_html( isset( $_ch['button_label'] ) ? (string) $_ch['button_label'] : SITE_SIDEBAR_CONTACT_BTN );
 		$_ch_url = esc_url( adn_link( isset( $_ch['button_url'] ) ? (string) $_ch['button_url'] : SITE_CONTACT_URL ) );
 	?>
 	<div class="sidebar-card expert-need-help">

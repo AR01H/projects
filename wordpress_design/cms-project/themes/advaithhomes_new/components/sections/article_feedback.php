@@ -21,7 +21,7 @@ $feedback = isset( $feedback ) && is_array( $feedback ) ? $feedback : array();
 		<button class="feedback-btn" type="button"><?php echo esc_html( isset( $feedback['no_label'] ) ? $feedback['no_label'] : '👎 No' ); ?></button>
 	</div>
 	<div class="share-row">
-		<span class="share-label"><?php echo esc_html( isset( $feedback['share_label'] ) ? $feedback['share_label'] : 'Share this guide' ); ?></span>
+		<span class="share-label"><?php echo esc_html( isset( $feedback['share_label'] ) ? $feedback['share_label'] : SITE_SECTION_ARTICLE_SHARE ); ?></span>
 		<button class="share-btn share-fb" type="button" aria-label="<?php esc_attr_e( 'Share on Facebook', ADN_TEXT_DOMAIN ); ?>">f</button>
 		<button class="share-btn share-x" type="button" aria-label="<?php esc_attr_e( 'Share on X', ADN_TEXT_DOMAIN ); ?>">&#x1D54F;</button>
 		<button class="share-btn share-li" type="button" aria-label="<?php esc_attr_e( 'Share on LinkedIn', ADN_TEXT_DOMAIN ); ?>">in</button>

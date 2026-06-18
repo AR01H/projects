@@ -6,7 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $_res   = isset( $resources ) ? (array) $resources : array();
-$_hdg   = esc_html( isset( $_res['heading'] ) ? (string) $_res['heading'] : 'While you wait, explore popular resources' );
+$_hdg   = esc_html( isset( $_res['heading'] ) ? (string) $_res['heading'] : SITE_SECTION_CONTACT_RESOURCES );
 $_items = isset( $_res['items'] ) ? (array) $_res['items'] : array();
 if ( empty( $_items ) ) return;
 ?>

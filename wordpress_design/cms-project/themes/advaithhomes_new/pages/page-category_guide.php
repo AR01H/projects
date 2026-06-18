@@ -146,7 +146,7 @@ adn_page_open( $_open_ctx );
 			<div class="category-section category-resources">
 
 				<?php adn_component( 'parts/section_headers/section_header', array(
-					'heading' => array( 'title' => esc_html__( 'Useful Resources', ADN_TEXT_DOMAIN ), 'link_label' => '', 'link_url' => '' ),
+					'heading' => array( 'title' => esc_html( SITE_LABEL_USEFUL_RESOURCES ), 'link_label' => '', 'link_url' => '' ),
 					'tag'     => 'h3',
 				) ); ?>
 
