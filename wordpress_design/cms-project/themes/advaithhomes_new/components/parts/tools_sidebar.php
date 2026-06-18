@@ -16,7 +16,7 @@ $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       :
 <aside class="tools-sidebar">
 
 	<?php if ( ! empty( $categories ) ) : ?>
-		<div class="tools-sidebar-section">
+		<div class="tools-sidebar-section mini_card_container_design">
 			<h3><?php echo esc_html__( 'Browse by Category', ADN_TEXT_DOMAIN ); ?></h3>
 			<div class="tools-cat-list">
 				<?php foreach ( $categories as $cat ) :
@@ -51,7 +51,7 @@ $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       :
 	<?php endif; ?>
 
 	<?php if ( ! empty( $help ) ) : ?>
-		<div class="tools-sidebar-help">
+		<div class="tools-sidebar-help mini_card_container_design">
 			<?php if ( ! empty( $help['title'] ) ) : ?>
 				<h4><?php echo esc_html( $help['title'] ); ?></h4>
 			<?php endif; ?>

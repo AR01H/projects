@@ -26,7 +26,6 @@ class AH_DB_Migrations {
 		self::ensure_content_taxonomies();
 		self::ensure_taxonomy_parent_terms();
 		self::ensure_static_pages();
-		self::ensure_enquiries_table();
 
 		// Data migrations
 		self::required_settings();
@@ -104,12 +103,6 @@ class AH_DB_Migrations {
 	public static function ensure_taxonomy_parent_terms(): void {
 		if ( class_exists( 'AH_Taxonomy_Parent_Model' ) ) {
 			AH_Taxonomy_Parent_Model::ensure_table();
-		}
-	}
-
-	public static function ensure_enquiries_table(): void {
-		if ( class_exists( 'AH_Enquiry_Model' ) ) {
-			AH_Enquiry_Model::install_table();
 		}
 	}
 

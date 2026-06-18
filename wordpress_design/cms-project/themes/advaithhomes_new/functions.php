@@ -16,6 +16,7 @@ require_once get_template_directory() . '/includes/class-category-settings.php';
 require_once get_template_directory() . '/includes/class-calculator-db.php';
 require_once get_template_directory() . '/includes/class-expert-db.php';
 require_once get_template_directory() . '/includes/class-adn-enquiry.php';
+require_once get_template_directory() . '/includes/class-adn-form-ajax.php';
 require_once get_template_directory() . '/includes/comment-callbacks.php';
 
 // ===========================
@@ -89,6 +90,10 @@ function adn_merge_db_calculators( $tools ) {
 
 // Expert profile page routing (?ah_expert=SLUG).
 add_action( 'template_redirect', 'adn_expert_full_page_render', 0 );
+
+// Contact + guidance form AJAX (theme-level: contact/guidance page submissions + inbox status save).
+add_action( 'init', array( 'ADN_Form_Ajax', 'init' ) );
+add_action( 'init', array( 'ADN_Form_Ajax', 'init_public' ) );
 
 // Expert contact form AJAX (listing page and profile page).
 add_action( 'wp_ajax_adn_expert_contact',        'adn_expert_contact_ajax' );
