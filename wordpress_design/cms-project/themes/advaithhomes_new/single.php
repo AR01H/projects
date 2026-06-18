@@ -6,7 +6,7 @@
  * Content (title, body, date, author, excerpt) comes from the WP post system.
  * Extended fields (category tag, read time, key takeaways, article icon)
  * come from post meta written by the plugin or the WP editor.
- * Sidebar data (calculators, newsletter) comes from data/json/post_sidebar.json.
+ * Sidebar data (tools, newsletter) comes from data/json/post_sidebar.json.
  * Related guides and latest news are queried live via WP_Query.
  *
  * Post meta keys (all optional, theme provides sensible defaults):
@@ -53,6 +53,11 @@ get_header();
 <div class="article-outer">
 	<div class="article-layout">
 
+		<?php /* TOC - single.js auto-generates links from .article-body h2 headings */ ?>
+		<div class="article-toc-wrapper">
+			<?php adn_component( 'parts/post_sidebar_toc' ); ?>
+		</div>
+
 		<?php /* ── MAIN ARTICLE COLUMN ── */ ?>
 		<main class="article-main" id="main-content">
 
@@ -82,28 +87,46 @@ get_header();
 
 		<?php /* ── SIDEBAR ── */ ?>
 		<aside class="article-sidebar" aria-label="<?php esc_attr_e( 'Article sidebar', ADN_TEXT_DOMAIN ); ?>">
+			<?php /* Highlight Links */ ?>
+			<?php if ( ! empty( $ctx['highlight_links'] ) ) : ?>
+				<div class="">
+					<?php adn_component( 'parts/post_sidebar_highlights', array( 'highlight_links' => $ctx['highlight_links'] ) ); ?>
+				</div>
+			<?php endif; ?>
 
-			<?php /* TOC - single.js auto-generates links from .article-body h2 headings */ ?>
-			<?php adn_component( 'parts/post_sidebar_toc' ); ?>
+			<?php /* Related Content (Custom Links) */ ?>
+			<?php if ( ! empty( $ctx['related_content'] ) ) : ?>
+				<div class="container_post_sidebar_related_content" >
+					<?php adn_component( 'parts/post_sidebar_related_content', array( 'related_content' => $ctx['related_content'] ) ); ?>
+				</div>
+			<?php endif; ?>
 
-			<?php /* Popular calculators (from post_sidebar.json) */ ?>
+			<?php /* Popular tools (from post_sidebar.json) */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['calculators'] ) ) : ?>
-				<?php adn_component( 'parts/post_sidebar_calcs', array( 'calculators' => $ctx['sidebar']['calculators'] ) ); ?>
+				<div class="">
+					<?php adn_component( 'parts/post_sidebar_tools', array( 'calculators' => $ctx['sidebar']['calculators'] ) ); ?>
+				</div>
 			<?php endif; ?>
 
 			<?php /* Related guides (from WP_Query - same category, latest 4) */ ?>
 			<?php if ( ! empty( $ctx['related_guides'] ) ) : ?>
-				<?php adn_component( 'parts/post_sidebar_related', array( 'related_guides' => $ctx['related_guides'] ) ); ?>
+				<div class="">
+					<?php adn_component( 'parts/post_sidebar_related', array( 'related_guides' => $ctx['related_guides'] ) ); ?>
+				</div>
 			<?php endif; ?>
 
 			<?php /* Latest news (from WP_Query - most recent 3 posts) */ ?>
 			<?php if ( ! empty( $ctx['latest_news'] ) ) : ?>
-				<?php adn_component( 'parts/post_sidebar_news', array( 'latest_news' => $ctx['latest_news'] ) ); ?>
+				<div class="">
+					<?php adn_component( 'parts/post_sidebar_news', array( 'latest_news' => $ctx['latest_news'] ) ); ?>
+				</div>
 			<?php endif; ?>
 
 			<?php /* Newsletter signup */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['newsletter'] ) ) : ?>
-				<?php adn_component( 'parts/post_sidebar_newsletter', array( 'newsletter' => $ctx['sidebar']['newsletter'] ) ); ?>
+				<div class="">
+					<?php adn_component( 'parts/post_sidebar_newsletter', array( 'newsletter' => $ctx['sidebar']['newsletter'] ) ); ?>
+				</div>
 			<?php endif; ?>
 
 		</aside>

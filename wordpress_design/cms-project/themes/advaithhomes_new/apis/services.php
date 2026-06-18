@@ -391,7 +391,7 @@ function adn_service_news_data() {
  */
 function adn_service_post_sidebar_data() {
 	/* ── Calculators from DB/registry ── */
-	$calcs_raw = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+	$tools_raw = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
 	$meta_all  = get_option( 'adn_calculators_meta', array() );
 	if ( ! is_array( $meta_all ) ) {
 		$meta_all = array();
@@ -400,7 +400,7 @@ function adn_service_post_sidebar_data() {
 	$view_all_url = home_url( SITE_CALCULATORS_URL );
 
 	$items = array();
-	foreach ( array_slice( $calcs_raw, 0, 5, true ) as $key => $reg ) {
+	foreach ( array_slice( $tools_raw, 0, 5, true ) as $key => $reg ) {
 		$cmeta   = isset( $meta_all[ $key ] ) && is_array( $meta_all[ $key ] ) ? $meta_all[ $key ] : array();
 		$items[] = array(
 			'icon'  => isset( $reg['icon'] )  && '' !== $reg['icon']  ? (string) $reg['icon']  : '🧮',
@@ -516,6 +516,20 @@ function adn_service_ask_expert_data() {
 	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'ask-expert' ) : array();
 }
 
+function adn_service_faqs_data() {
+	// DB-only: return FAQs from the CMS plugin when available, otherwise empty.
+	if ( class_exists( 'AH_Faqs_Model' ) ) {
+		try {
+			$model = new AH_Faqs_Model();
+			$rows  = $model->get_global();
+			return is_array( $rows ) ? $rows : array();
+		} catch ( Throwable $e ) {
+			return array();
+		}
+	}
+	return array();
+}
+
 /**
  * Parse marquee admin settings into args for point_marque.php.
  *
@@ -568,3 +582,4 @@ function adn_link( $url ) {
 	}
 	return home_url( $url );
 }
+

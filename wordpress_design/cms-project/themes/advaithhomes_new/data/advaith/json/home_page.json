@@ -1,0 +1,75 @@
+{
+    "hero": {
+        "title_lines": [
+            { "text": "Your UK Property Journey,", "accent": false },
+            { "text": "Explained.", "accent": true },
+            { "text": "Simply. Clearly. Confidently.", "accent": false }
+        ],
+        "description": "Independent information hub for buyers, sellers and house movers. Clear guides, smart tools and expert insights to help you make better property decisions.",
+        "actions": [
+            { "label": "Start Your Journey →", "url": "/buying/", "style": "primary" },
+            { "label": "Ask an Expert", "url": "/ask-expert/", "style": "outline" }
+        ],
+        "trust_items": [
+        ],
+        "diagram": {
+            "center_icon": "🏠",
+            "center_lines": [ "Property", "Made Simple" ],
+            "nodes": [
+                { "icon": "💰", "label": "Budget & Mortgage" },
+                { "icon": "🔍", "label": "Find & View" },
+                { "icon": "🤝", "label": "Offer & Negotiate" },
+                { "icon": "⚖️", "label": "Solicitor & Searches" },
+                { "icon": "📋", "label": "Exchange & Completion" },
+                { "icon": "📐", "label": "Survey & Checks" }
+            ]
+        }
+    },
+    "journey": {
+        "heading": { "title": "Where are you in your journey?" },
+        "cards": [
+            {
+                "icon": "👥",
+                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
+                "title": "I need Professional Help",
+                "description": "Connect with the right professionals at the right time.",
+                "link_label": "Find Expert Help →",
+                "url": "/ask-expert/"
+            }
+        ]
+    },
+    "news": {
+        "heading": { "title": "Latest News", "link_label": "View all →", "link_url": "/news/" },
+        "items": [
+        ]
+    },
+    "regulations": {
+        "heading": { "title": "Latest Updates", "link_label": "View all →", "link_url": "/regulations/" },
+        "items": [
+        ]
+    },
+    "hot_topics": {
+        "title": "🔥 Hot Topics",
+        "items": [
+        ],
+        "cta": { "label": "Explore All Topics →", "url": "/guides/" }
+    },
+    "tools": {
+        "heading": { "title": "Popular Calculators", "link_label": "View all →", "link_url": "/calculators/" },
+        "items": [
+        ]
+    },
+    "guides": {
+        "heading": { "title": "Guides & Insights", "link_label": "View all →", "link_url": "/guides/" },
+        "items": [
+        ]
+    },
+    "newsletter": {
+        "icon": "✉️",
+        "title": "Stay Informed, Stay Ahead",
+        "description": "Subscribe to get the latest property news, guides, regulation updates and expert insights.",
+        "placeholder": "Enter your email address",
+        "button_label": "Subscribe Now",
+        "note": "No spam. Unsubscribe anytime."
+    }
+}

@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 $featured_topics = isset( $featured_topics ) && is_array( $featured_topics ) ? $featured_topics : array();
 $items           = isset( $featured_topics['items'] ) ? (array) $featured_topics['items'] : array();
 ?>
-<div class="sidebar-card">
+<div class="mini_card_container_design">
 	<?php if ( ! empty( $featured_topics['heading'] ) ) : ?>
 		<div class="sidebar-card-title"><?php echo esc_html( $featured_topics['heading'] ); ?></div>
 	<?php endif; ?>

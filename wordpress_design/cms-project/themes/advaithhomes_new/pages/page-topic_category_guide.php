@@ -159,9 +159,9 @@ get_header();
 </section>
 <?php endif; ?>
 
-<?php /* ============================== CALCULATORS (full-width) ============================== */ ?>
+<?php /* ============================== TOOLS (full-width) ============================== */ ?>
 <?php if ( ! empty( $ctx['calculators']['items'] ) ) : ?>
-<section class="cat-guide-calcs-section">
+<section class="cat-guide-tools-section">
     <div class="container">
         <?php
         adn_component( 'parts/section_headers/section_header', array(
@@ -169,9 +169,9 @@ get_header();
             'tag'     => 'h2',
         ) );
         ?>
-        <div class="calc-grid calc-grid--7col">
+        <div class="tool-grid tool-grid--7col">
             <?php foreach ( $ctx['calculators']['items'] as $card ) : ?>
-                <?php adn_component( 'cards/calc_card', array( 'card' => $card ) ); ?>
+                <?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
             <?php endforeach; ?>
         </div>
     </div>
@@ -180,7 +180,7 @@ get_header();
 
 <?php /* ============================== HELP CTA ============================== */ ?>
 <?php if ( ! empty( $ctx['cta_help']['title'] ) ) : ?>
-<div class="container">
+<div class="">
     <?php adn_component( 'parts/cta_banner', array( 'cta_banner' => $ctx['cta_help'] ) ); ?>
 </div>
 <?php endif; ?>

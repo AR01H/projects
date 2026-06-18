@@ -62,7 +62,7 @@ $marquee_items = ( isset( $saved['marquee_items'] ) && is_array( $saved['marquee
 					<td>
 						<textarea id="banner_info" name="banner_info"
 							class="large-text" rows="4"
-							placeholder="<?php esc_attr_e( 'e.g. Our team of trusted property specialists are here to guide you - from buying and selling to mortgages and conveyancing.', ADN_TEXT_DOMAIN ); ?>"><?php echo esc_textarea( $info ); ?></textarea>
+							placeholder="<?php esc_attr_e( 'e.g. Our team of trusted specialists are here to guide you - from planning to execution.', ADN_TEXT_DOMAIN ); ?>"><?php echo esc_textarea( $info ); ?></textarea>
 						<p class="description">
 							<?php esc_html_e( 'Supporting text shown below the heading. One or two sentences works best.', ADN_TEXT_DOMAIN ); ?>
 						</p>
@@ -157,3 +157,4 @@ $marquee_items = ( isset( $saved['marquee_items'] ) && is_array( $saved['marquee
 	} );
 }());
 </script>
+

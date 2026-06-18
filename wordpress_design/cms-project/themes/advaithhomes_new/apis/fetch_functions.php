@@ -135,7 +135,17 @@ function adn_api_get_post_by_slug( WP_REST_Request $request ): WP_REST_Response 
  * GET /advaithhomes/v1/faqs - reads data/csv/faqs.csv via the data loader.
  */
 function adn_api_get_faqs( WP_REST_Request $request ): WP_REST_Response {
-	$faqs = class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::csv( 'faqs' ) : array();
+	// Return FAQs from CMS DB when available; otherwise return empty list.
+	$faqs = array();
+	if ( class_exists( 'AH_Faqs_Model' ) ) {
+		try {
+			$m = new AH_Faqs_Model();
+			$faqs = $m->get_global();
+			$faqs = is_array( $faqs ) ? $faqs : array();
+		} catch ( Throwable $e ) {
+			$faqs = array();
+		}
+	}
 
 	return new WP_REST_Response( array(
 		'data'  => $faqs,

@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="sidebar-box sidebar-toc" id="tocBox">
+<div class="sidebar-box sidebar-toc mini_card_container_design" id="tocBox">
 	<h3><?php esc_html_e( 'On this page', ADN_TEXT_DOMAIN ); ?></h3>
 	<nav class="toc-nav" id="tocNav" aria-label="<?php esc_attr_e( 'Article contents', ADN_TEXT_DOMAIN ); ?>">
 		<?php /* single.js builds the links here */ ?>

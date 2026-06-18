@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 $_sb    = isset( $sidebar ) ? (array) $sidebar : array();
 $_ch    = isset( $_sb['contact_help'] )   ? (array) $_sb['contact_help']   : array();
 $_ln    = isset( $_sb['latest_news'] )    ? (array) $_sb['latest_news']    : array();
-$_calcs = isset( $_sb['calculators'] )    ? (array) $_sb['calculators']    : array();
+$_tools = isset( $_sb['tools'] )          ? (array) $_sb['tools']          : array();
 $_gt    = isset( $_sb['guide_topics'] )   ? (array) $_sb['guide_topics']   : array();
 $_nl    = isset( $_sb['newsletter_cta'] ) ? (array) $_sb['newsletter_cta'] : array();
 ?>
@@ -47,19 +47,14 @@ $_nl    = isset( $_sb['newsletter_cta'] ) ? (array) $_sb['newsletter_cta'] : arr
 		<?php adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => $_ln ) ); ?>
 	<?php endif; ?>
 
-	<?php /* ── Quick Calculators (sidebar_quick_tools) ─────────── */ ?>
-	<?php if ( ! empty( $_calcs['items'] ) ) : ?>
-		<?php adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $_calcs ) ); ?>
+	<?php /* ── Quick Tools (sidebar_quick_tools) ─────────── */ ?>
+	<?php if ( ! empty( $_tools['items'] ) ) : ?>
+		<?php adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $_tools ) ); ?>
 	<?php endif; ?>
 
 	<?php /* ── Browse Guides (sidebar_guide_parents) ───────────── */ ?>
 	<?php if ( ! empty( $_gt['items'] ) ) : ?>
 		<?php adn_component( 'parts/sidebar_guide_parents', array( 'guide_parents' => $_gt ) ); ?>
-	<?php endif; ?>
-
-	<?php /* ── Newsletter (sidebar_newsletter_signup) ───────────── */ ?>
-	<?php if ( ! empty( $_nl ) ) : ?>
-		<?php adn_component( 'parts/sidebar_newsletter_signup', array( 'newsletter' => $_nl ) ); ?>
 	<?php endif; ?>
 
 </aside>

@@ -34,13 +34,6 @@ $url  = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 		<?php if ( ! empty( $item['category'] ) ) : ?>
 			<span class="glc-cat"><?php echo esc_html( $item['category'] ); ?></span>
 		<?php endif; ?>
-
-		<?php /* Bookmark button */ ?>
-		<button class="glc-bookmark" type="button" onclick="event.preventDefault();" aria-label="<?php esc_attr_e( 'Bookmark', ADN_TEXT_DOMAIN ); ?>">
-			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-				<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-			</svg>
-		</button>
 	</div>
 
 	<?php /* ── Body ── */ ?>
@@ -54,9 +47,6 @@ $url  = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 		<?php endif; ?>
 
 		<div class="glc-meta">
-			<?php if ( ! empty( $item['date'] ) ) : ?>
-				<span class="glc-date"><?php echo esc_html( $item['date'] ); ?></span>
-			<?php endif; ?>
 			<?php if ( ! empty( $item['read_time'] ) ) : ?>
 				<span class="glc-read"><?php echo esc_html( $item['read_time'] ); ?></span>
 			<?php endif; ?>

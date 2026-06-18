@@ -45,9 +45,9 @@ class AH_DB_Seed {
 	private static function site_settings( string $p ): void {
 		global $wpdb;
 		foreach ( array(
-			array( 'setting_key' => 'site_name',      'setting_val' => 'Advith Homes',              'field_type' => 'text',     'group_name' => 'general', 'label' => 'Site Name'        ),
+			array( 'setting_key' => 'site_name',      'setting_val' => '',              'field_type' => 'text',     'group_name' => 'general', 'label' => 'Site Name'        ),
 			array( 'setting_key' => 'site_logo',       'setting_val' => '',                           'field_type' => 'image',    'group_name' => 'general', 'label' => 'Site Logo'        ),
-			array( 'setting_key' => 'footer_tagline',  'setting_val' => 'Your trusted home partner.', 'field_type' => 'textarea', 'group_name' => 'general', 'label' => 'Footer Tagline'   ),
+			array( 'setting_key' => 'footer_tagline',  'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'general', 'label' => 'Footer Tagline'   ),
 			array( 'setting_key' => 'whatsapp_number', 'setting_val' => '',                           'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'WhatsApp Number'  ),
 			array( 'setting_key' => 'contact_email',   'setting_val' => '',                           'field_type' => 'email',    'group_name' => 'contact', 'label' => 'Contact Email'    ),
 			array( 'setting_key' => 'contact_phone',   'setting_val' => '',                           'field_type' => 'phone',    'group_name' => 'contact', 'label' => 'Contact Phone'    ),

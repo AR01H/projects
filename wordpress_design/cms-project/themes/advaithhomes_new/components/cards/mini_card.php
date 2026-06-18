@@ -63,16 +63,6 @@ $el_attr = $url ? ' href="' . $url . '"' : '';
 		<?php if ( '' !== $title ) : ?>
 			<span class="mini-card-title"><?php echo esc_html( $title ); ?></span>
 		<?php endif; ?>
-		<?php if ( '' !== $meta || '' !== $tag ) : ?>
-			<div class="mini-card-meta">
-				<?php if ( '' !== $meta ) : ?>
-					<span class="mini-card-meta-text"><?php echo esc_html( $meta ); ?></span>
-				<?php endif; ?>
-				<?php if ( '' !== $tag ) : ?>
-					<span class="mini-card-tag"><?php echo esc_html( $tag ); ?></span>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
 	</div>
 
 	<?php if ( $url ) : ?>

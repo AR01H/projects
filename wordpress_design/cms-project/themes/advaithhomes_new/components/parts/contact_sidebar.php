@@ -63,6 +63,61 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 	</div>
 	<?php endif; ?>
 
+	<?php /* FAQs box */ ?>
+	<?php if ( ! empty( $_sb['faqs'] ) && is_array( $_sb['faqs'] ) ) :
+		$_faq_heading = esc_html( isset( $_sb['faqs_heading'] ) ? (string) $_sb['faqs_heading'] : 'Frequently Asked Questions' );
+	?>
+	<?php
+		// Configurable view-all URL/label for FAQs
+		$_faq_view_url = adn_link( SITE_FAQS_URL );
+		if ( isset( $_sb['faqs_url'] ) && '' !== (string) $_sb['faqs_url'] ) {
+			$_faq_view_url = adn_link( (string) $_sb['faqs_url'] );
+		}
+		$_faq_view_label = isset( $_sb['faqs_button_label'] ) && '' !== (string) $_sb['faqs_button_label']
+			? (string) $_sb['faqs_button_label']
+			: __( 'View all FAQs', ADN_TEXT_DOMAIN );
+	?>
+
+	<div class="contact-alt-box contact-alt-faqs">
+		<h3><?php echo $_faq_heading; ?></h3>
+		<div class="contact-faq-list">
+			<?php foreach ( $_sb['faqs'] as $_faq ) :
+					$_faq_question = isset( $_faq->question ) ? (string) $_faq->question : ( isset( $_faq['question'] ) ? (string) $_faq['question'] : '' );
+					$_faq_answer = isset( $_faq->answer ) ? (string) $_faq->answer : ( isset( $_faq['answer'] ) ? (string) $_faq['answer'] : '' );
+					// Optional link fields from DB: link_url, link_text
+					$_faq_link_url  = '';
+					$_faq_link_text = '';
+					if ( is_object( $_faq ) ) {
+						$_faq_link_url  = isset( $_faq->link_url ) ? (string) $_faq->link_url : '';
+						$_faq_link_text = isset( $_faq->link_text ) ? (string) $_faq->link_text : '';
+					} else {
+						$_faq_link_url  = isset( $_faq['link_url'] ) ? (string) $_faq['link_url'] : '';
+						$_faq_link_text = isset( $_faq['link_text'] ) ? (string) $_faq['link_text'] : '';
+					}
+				if ( '' === trim( $_faq_question ) ) {
+					continue;
+				}
+			?>
+				<details class="contact-faq-item">
+					<summary class="contact-faq-question"><?php echo esc_html( $_faq_question ); ?></summary>
+					<div class="contact-faq-a">
+						<?php if ( '' !== trim( $_faq_answer ) ) : ?>
+							<p class="contact-faq-answer"><?php echo esc_html( wp_trim_words( $_faq_answer, 40, '...' ) ); ?></p>
+						<?php endif; ?>
+						<?php if ( '' !== trim( $_faq_link_url ) ) : ?>
+							<p class="contact-faq-small-link"><a href="<?php echo esc_url( adn_link( $_faq_link_url ) ); ?>"><?php echo esc_html( $_faq_link_text ?: $_faq_link_url ); ?></a></p>
+						<?php endif; ?>
+					</div>
+				</details>
+			<?php endforeach; ?>
+		</div>
+		<a href="<?php echo esc_url( $_faq_view_url ); ?>" class="btn btn-secondary contact-alt-btn contact-alt-faq-viewall">
+			<?php echo esc_html( $_faq_view_label ); ?> →
+		</a>
+	</div>
+	<?php endif; ?>
+    
+
 	<?php /* Coming Soon */ ?>
 	<?php if ( ! empty( $_cs ) ) : ?>
 	<div class="contact-alt-box contact-coming-soon-box">
@@ -82,4 +137,5 @@ $_cs = isset( $_sb['coming_soon'] )  ? (array) $_sb['coming_soon']  : array();
 	</div>
 	<?php endif; ?>
 
-</aside>
+	</aside>
+	<!-- Sidebar FAQ interactions moved to /assets/js/faqs.js -->

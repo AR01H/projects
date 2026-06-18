@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ===========================
 // THEME CONSTANTS
 // ===========================
+require_once get_template_directory() . '/includes/core_info.php';
 require_once get_template_directory() . '/includes/core_terms.php';
 require_once get_template_directory() . '/includes/core_settings.php';
-require_once get_template_directory() . '/includes/core_info.php';
 require_once get_template_directory() . '/includes/rules_conditions.php';
 require_once get_template_directory() . '/includes/core_routing.php';
 require_once get_template_directory() . '/includes/class-category-settings.php';
@@ -72,19 +72,19 @@ add_action( 'admin_init',         array( 'AH_Enquiry_Model', 'maybe_install' ) )
 // Merge DB-stored (admin-created) calculators into the adn_calculators() registry.
 // File-based calculators already in the array take priority - DB only adds new keys.
 add_filter( 'adn_calculators', 'adn_merge_db_calculators' );
-function adn_merge_db_calculators( $calcs ) {
-	if ( ! class_exists( 'AH_Calculator_DB' ) ) { return $calcs; }
+function adn_merge_db_calculators( $tools ) {
+	if ( ! class_exists( 'AH_Calculator_DB' ) ) { return $tools; }
 	foreach ( AH_Calculator_DB::get_all( 'active' ) as $row ) {
 		$k = $row['calc_key'];
-		if ( isset( $calcs[ $k ] ) ) { continue; }
-		$calcs[ $k ] = array(
+		if ( isset( $tools[ $k ] ) ) { continue; }
+		$tools[ $k ] = array(
 			'title' => $row['title'],
 			'label' => '' !== $row['label'] ? $row['label'] : $row['title'],
 			'icon'  => $row['icon'],
 			'view'  => '__db__',
 		);
 	}
-	return $calcs;
+	return $tools;
 }
 
 // Expert profile page routing (?ah_expert=SLUG).
@@ -348,13 +348,13 @@ function adn_shortcode_cat_calculators( $atts ) {
 	$calc_d       = AH_Category_Settings::get( $slug, 'calculators' );
 	$selected     = ! empty( $calc_d['selected_keys'] ) && is_array( $calc_d['selected_keys'] ) ? $calc_d['selected_keys'] : array();
 	if ( empty( $selected ) ) { return ''; }
-	$all_calcs    = adn_calculators();
+	$all_tools    = adn_calculators();
 	$calc_meta    = get_option( 'adn_calculators_meta', array() );
 	$items        = array();
 	foreach ( $selected as $key ) {
 		$key = sanitize_key( $key );
-		if ( ! isset( $all_calcs[ $key ] ) ) { continue; }
-		$reg   = $all_calcs[ $key ];
+		if ( ! isset( $all_tools[ $key ] ) ) { continue; }
+		$reg   = $all_tools[ $key ];
 		$cmeta = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
 		$items[] = array(
 			'icon' => ! empty( $reg['icon'] )       ? (string) $reg['icon']        : '🧮',
@@ -368,10 +368,11 @@ function adn_shortcode_cat_calculators( $atts ) {
 	if ( $heading ) {
 		echo '<div class="adn-cat-calc-heading">' . esc_html( $heading ) . '</div>';
 	}
-	echo '<div class="calc-grid calc-grid--7col">';
+	echo '<div class="tool-grid tool-grid--7col">';
 	foreach ( $items as $card ) {
-		adn_component( 'cards/calc_card', array( 'card' => $card ) );
+		adn_component( 'cards/tool_card', array( 'card' => $card ) );
 	}
 	echo '</div>';
 	return ob_get_clean();
 }
+

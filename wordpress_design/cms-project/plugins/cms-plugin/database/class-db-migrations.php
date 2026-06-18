@@ -34,10 +34,8 @@ class AH_DB_Migrations {
 		self::chrome_settings_reorganize();
 		self::contact_settings_seed();
 		self::protected_taxonomy_data();
-		self::review_taxonomy_type();
 		self::review_categories_taxonomy_type();
 		self::faq_tags_taxonomy_type();
-		self::sugarcane_contact_rule();
 		self::contact_form_rule_cc();
 	}
 
@@ -151,8 +149,8 @@ class AH_DB_Migrations {
 		global $wpdb;
 		$table = $wpdb->prefix . 'ah_site_settings';
 		$seeds = array(
-			'whatsapp' => '+44 7747 223 762',
-			'email'    => 'contact@advaithhomes.co.uk',
+			'whatsapp' => '',
+			'email'    => '',
 		);
 		foreach ( $seeds as $key => $default_val ) {
 			$current = $wpdb->get_var( $wpdb->prepare(
@@ -187,26 +185,26 @@ class AH_DB_Migrations {
 		$defaults = array(
 			// ── General tab ────────────────────────────────────────────────────
 			// Logo
-			array( 'setting_key' => 'chrome_logo_icon',   'setting_val' => '🏠',           'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Icon'                              ),
+			array( 'setting_key' => 'chrome_logo_icon',   'setting_val' => '',           'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Icon'                              ),
 			array( 'setting_key' => 'chrome_logo_name',   'setting_val' => '',              'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Name'                              ),
-			array( 'setting_key' => 'chrome_logo_sub',    'setting_val' => 'HOMES',         'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Subtext'                           ),
+			array( 'setting_key' => 'chrome_logo_sub',    'setting_val' => '',         'field_type' => 'text',     'group_name' => 'general', 'label' => 'Logo Subtext'                           ),
 			array( 'setting_key' => 'chrome_logo_url',    'setting_val' => '/',             'field_type' => 'url',      'group_name' => 'general', 'label' => 'Logo Link URL'                          ),
 			// Header search
-			array( 'setting_key' => 'chrome_search_ph',   'setting_val' => 'Search guides, calculators, news…', 'field_type' => 'text', 'group_name' => 'general', 'label' => 'Search Placeholder'  ),
+			array( 'setting_key' => 'chrome_search_ph',   'setting_val' => '', 'field_type' => 'text', 'group_name' => 'general', 'label' => 'Search Placeholder'  ),
 			// Footer brand
-			array( 'setting_key' => 'chrome_footer_icon', 'setting_val' => '🏠',           'field_type' => 'text',     'group_name' => 'general', 'label' => 'Footer Brand Icon'                      ),
+			array( 'setting_key' => 'chrome_footer_icon', 'setting_val' => '',           'field_type' => 'text',     'group_name' => 'general', 'label' => 'Footer Brand Icon'                      ),
 			array( 'setting_key' => 'chrome_footer_name', 'setting_val' => '',              'field_type' => 'text',    'group_name' => 'general', 'label' => 'Footer Brand Name'                      ),
 			array( 'setting_key' => 'chrome_footer_sub',  'setting_val' => '',              'field_type' => 'text',     'group_name' => 'general', 'label' => 'Footer Brand Tagline'                   ),
 			// Footer copy
-			array( 'setting_key' => 'chrome_copyright',   'setting_val' => '© %YEAR% Your Company. All rights reserved.', 'field_type' => 'text',     'group_name' => 'general', 'label' => 'Copyright Text (%YEAR% = current year)' ),
-			array( 'setting_key' => 'chrome_made_with',   'setting_val' => 'Made with ♥ in the UK', 'field_type' => 'text',     'group_name' => 'general', 'label' => '"Made With" Line'              ),
-			array( 'setting_key' => 'chrome_disclaimer',  'setting_val' => 'Information on this website is general guidance only and does not constitute legal, financial or professional advice. Please seek expert advice for your specific situation.', 'field_type' => 'textarea', 'group_name' => 'general', 'label' => 'Footer Disclaimer' ),
+			array( 'setting_key' => 'chrome_copyright',   'setting_val' => '© %YEAR% All rights reserved.', 'field_type' => 'text',     'group_name' => 'general', 'label' => 'Copyright Text (%YEAR% = current year)' ),
+			array( 'setting_key' => 'chrome_made_with',   'setting_val' => '', 'field_type' => 'text',     'group_name' => 'general', 'label' => '"Made With" Line'              ),
+			array( 'setting_key' => 'chrome_disclaimer',  'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'general', 'label' => 'Footer Disclaimer' ),
 
 			// ── Social tab ─────────────────────────────────────────────────────
 			// Individual URL fields — service layer builds the footer social icon row from these.
-			array( 'setting_key' => 'chrome_social_facebook',  'setting_val' => '#', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Facebook URL'  ),
-			array( 'setting_key' => 'chrome_social_instagram', 'setting_val' => '#', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Instagram URL' ),
-			array( 'setting_key' => 'chrome_social_youtube',   'setting_val' => '#', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'YouTube URL (footer)'  ),
+			array( 'setting_key' => 'chrome_social_facebook',  'setting_val' => '', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Facebook URL'  ),
+			array( 'setting_key' => 'chrome_social_instagram', 'setting_val' => '', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Instagram URL' ),
+			array( 'setting_key' => 'chrome_social_youtube',   'setting_val' => '', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'YouTube URL (footer)'  ),
 		);
 
 		foreach ( $defaults as $row ) {
@@ -274,26 +272,6 @@ class AH_DB_Migrations {
 		}
 	}
 
-	public static function review_taxonomy_type(): void {
-		global $wpdb;
-		$p = $wpdb->prefix;
-		$type_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$p}ah_taxonomy_types` WHERE slug = %s", 'review-type' ) );
-		if ( ! $type_id ) {
-			$wpdb->insert( "{$p}ah_taxonomy_types", array( 'name' => 'Review Type', 'slug' => 'review-type', 'description' => 'Categorises reviews by audience.' ) );
-			$type_id = (int) $wpdb->insert_id;
-		}
-		if ( ! $type_id ) return;
-		foreach ( array(
-			array( 'name' => 'Customer', 'slug' => 'customer' ),
-			array( 'name' => 'Partner',  'slug' => 'partner'  ),
-			array( 'name' => 'Event',    'slug' => 'event'    ),
-		) as $term ) {
-			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$p}ah_taxonomies` WHERE type_id = %d AND slug = %s", $type_id, $term['slug'] ) ) ) {
-				$wpdb->insert( "{$p}ah_taxonomies", array( 'type_id' => $type_id, 'name' => $term['name'], 'slug' => $term['slug'], 'status' => 'active' ) );
-			}
-		}
-	}
-
 	public static function review_categories_taxonomy_type(): void {
 		global $wpdb;
 		$p = $wpdb->prefix;
@@ -303,16 +281,6 @@ class AH_DB_Migrations {
 			$type_id = (int) $wpdb->insert_id;
 		}
 		if ( ! $type_id ) return;
-		foreach ( array(
-			array( 'name' => 'Customer Review',   'slug' => 'customer'     ),
-			array( 'name' => 'Franchise Partner', 'slug' => 'partner'      ),
-			array( 'name' => 'Event Review',      'slug' => 'event'        ),
-			array( 'name' => 'Client Story',      'slug' => 'client-story' ),
-		) as $term ) {
-			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$p}ah_taxonomies` WHERE type_id = %d AND slug = %s", $type_id, $term['slug'] ) ) ) {
-				$wpdb->insert( "{$p}ah_taxonomies", array( 'type_id' => $type_id, 'name' => $term['name'], 'slug' => $term['slug'], 'status' => 'active' ) );
-			}
-		}
 	}
 
 	public static function faq_tags_taxonomy_type(): void {
@@ -324,31 +292,6 @@ class AH_DB_Migrations {
 			$type_id = (int) $wpdb->insert_id;
 		}
 		if ( ! $type_id ) return;
-		foreach ( array(
-			array( 'name' => 'General',   'slug' => 'general'   ),
-			array( 'name' => 'Events',    'slug' => 'events'    ),
-			array( 'name' => 'Juice',     'slug' => 'juice'     ),
-			array( 'name' => 'Franchise', 'slug' => 'franchise' ),
-		) as $term ) {
-			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$p}ah_taxonomies` WHERE type_id = %d AND slug = %s", $type_id, $term['slug'] ) ) ) {
-				$wpdb->insert( "{$p}ah_taxonomies", array( 'type_id' => $type_id, 'name' => $term['name'], 'slug' => $term['slug'], 'status' => 'active' ) );
-			}
-		}
-	}
-
-	public static function sugarcane_contact_rule(): void {
-		if ( ! class_exists( 'AH_Rules_Engine' ) ) return;
-		global $wpdb;
-		$t = AH_Rules_Engine::table();
-		if ( $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$t}` WHERE trigger_name = %s LIMIT 1", 'sugarcane_contact_form' ) ) ) return;
-		AH_Rules_Engine::save( 0, array(
-			'name' => 'Sugarcane - Contact Form Emails', 'trigger_name' => 'sugarcane_contact_form',
-			'conditions_match' => 'all', 'conditions' => array(), 'status' => 'active',
-			'actions' => array(
-				array( 'type' => 'send_email', 'to' => '{config_email_from_email}', 'subject' => 'New Contact Enquiry from {name} - {enquiry_label}', 'body' => "You have received a new enquiry via The Cane House website.\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nEnquiry Type: {enquiry_label}\n\nMessage:\n{message}\n\n---\nSent from {site_url}\nTime: {submitted_at}", 'html' => 0, 'cc' => '{config_email_from_email}' ),
-				array( 'type' => 'send_email', 'to' => '{email}', 'subject' => "Thanks for contacting The Cane House - we'll be in touch soon!", 'body' => "Hi {name},\n\nThank you for getting in touch with The Cane House! \xf0\x9f\x8c\xbf\n\nWe've received your message and will get back to you very soon.\n\nIn the meantime, if your enquiry is urgent, please call us directly.\n\nPressed Fresh. Served Cool.\nThe Cane House Team", 'html' => 0, 'cc' => '{config_email_from_email}' ),
-			),
-		) );
 	}
 
 	public static function contact_form_rule_cc(): void {

@@ -844,7 +844,7 @@ class AH_Ajax_Handlers {
 			( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', $post_id, $taxonomy_ids );
 		}
 
-		// Related Content - polymorphic links (articles, calculators, components, external/support)
+		// Related Content - polymorphic links (articles, components, external/support)
 		if ( class_exists( 'AH_Related_Links_Model' ) ) {
 			$rl_raw  = json_decode( wp_unslash( $_POST['related_links'] ?? '[]' ), true );
 			$rl_rows = is_array( $rl_raw ) ? $rl_raw : array();

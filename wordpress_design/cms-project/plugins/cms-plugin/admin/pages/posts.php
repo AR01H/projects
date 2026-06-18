@@ -1123,9 +1123,9 @@ if ( $action === 'edit-custom' ) {
                                 style="margin-top:4px;font-size:.78rem;">+ Add Link</button>
                       </section>
 
-                      <!-- Related Content (calculators, articles, static components, external/support) -->
+                      <!-- Related Content ( articles, static components, external/support) -->
                       <section class="ah-qe-sec" style="margin-top:14px;">
-                        <div class="ah-qe-sec-h">🧩 Related Content <span class="ah-qe-hint">(articles, calculators, static components, external &amp; support links - grouped by section)</span></div>
+                        <div class="ah-qe-sec-h">🧩 Related Content <span class="ah-qe-hint">(articles, static components, external &amp; support links - grouped by section)</span></div>
                         <?php ( new AH_Related_Links_Model() )->render_admin_panel( 'wp_post', (int) $p->ID ); ?>
                       </section>
 

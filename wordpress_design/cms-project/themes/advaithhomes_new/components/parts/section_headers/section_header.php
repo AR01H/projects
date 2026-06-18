@@ -15,7 +15,7 @@
  *
  * Usage:
  *   adn_component( 'parts/section_headers/section_header', array(
- *       'heading' => $ctx['calculators']['heading'],
+ *       'heading' => $ctx['tools']['heading'],
  *   ) );
  */
 

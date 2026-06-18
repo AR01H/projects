@@ -62,7 +62,7 @@ if ( empty( $items ) && '' === $title ) { return; }
 	<?php endif; ?>
 
 	<?php if ( ! empty( $items ) ) : ?>
-	<div class="list-widget-items mini_card_container_design">
+	<div class="list-widget-items">
 		<?php foreach ( $items as $_card ) : ?>
 			<?php adn_component( 'cards/mini_card', array( 'card' => (array) $_card ) ); ?>
 		<?php endforeach; ?>

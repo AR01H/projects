@@ -52,11 +52,11 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 		<div class="form-row">
 			<div class="form-group">
 				<label class="form-label" for="contactWhatsApp"><?php esc_html_e( 'WhatsApp Number', ADN_TEXT_DOMAIN ); ?> <span class="form-optional">(<?php esc_html_e( 'Optional', ADN_TEXT_DOMAIN ); ?>)</span></label>
-				<input type="tel" id="contactWhatsApp" name="whatsapp" placeholder="<?php esc_attr_e( 'e.g. +44 7747 223 762', ADN_TEXT_DOMAIN ); ?>" />
+				<input type="tel" id="contactWhatsApp" name="whatsapp" placeholder="<?php esc_attr_e( '+xx xxxx xxx xxx', ADN_TEXT_DOMAIN ); ?>" />
 			</div>
 			<div class="form-group">
-				<label class="form-label" for="contactPostcode"><?php esc_html_e( 'Property Postcode', ADN_TEXT_DOMAIN ); ?> <span class="form-optional">(<?php esc_html_e( 'Optional', ADN_TEXT_DOMAIN ); ?>)</span></label>
-				<input type="text" id="contactPostcode" name="postcode" placeholder="e.g. SW1A 1AA" maxlength="10" />
+				<label class="form-label" for="contactPostcode"><?php esc_html_e( 'Postal Code', ADN_TEXT_DOMAIN ); ?> <span class="form-optional">(<?php esc_html_e( 'Optional', ADN_TEXT_DOMAIN ); ?>)</span></label>
+				<input type="text" id="contactPostcode" name="postcode" placeholder="" maxlength="10" />
 			</div>
 		</div>
 

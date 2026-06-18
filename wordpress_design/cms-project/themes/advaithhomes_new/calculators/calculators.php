@@ -29,29 +29,19 @@ function adn_calculator_categories() {
 	static $_cats = null;
 	if ( null !== $_cats ) { return $_cats; }
 
-	$_fallback = array(
-		'buying'        => 'Buying',
-		'selling'       => 'Selling',
-		'moving'        => 'Moving Home',
-		'mortgage'      => 'Mortgage',
-		'tax'           => 'Tax',
-		'affordability' => 'Affordability',
-	);
+	$_cats = array();
 
 	if ( function_exists( 'adn_cms_available' ) && adn_cms_available() && function_exists( 'adn_cms_guide_parents' ) ) {
 		$parents = adn_cms_guide_parents( 20 );
 		if ( ! empty( $parents ) ) {
-			$_cats = array();
 			foreach ( (array) $parents as $term ) {
 				$slug = isset( $term->slug ) ? sanitize_key( $term->slug ) : '';
 				$name = isset( $term->name ) ? (string) $term->name : ucwords( str_replace( '-', ' ', $slug ) );
 				if ( '' !== $slug ) { $_cats[ $slug ] = $name; }
 			}
-			if ( ! empty( $_cats ) ) { return $_cats; }
 		}
 	}
 
-	$_cats = $_fallback;
 	return $_cats;
 }
 
@@ -228,7 +218,7 @@ function adn_render_calculator_standalone( $key ) {
 /**
  * Render a calculator directly (inline) in the current page - no iframe.
  * The calculator HTML is output inside a wrapper div. The shared
- * calculators.css is enqueued; any per-calc JS is loaded/inlined.
+ * tools.css is enqueued; any per-calc JS is loaded/inlined.
  * Returns the rendered HTML as a string.
  */
 function adn_render_calculator_inline( $key ) {
@@ -236,7 +226,7 @@ function adn_render_calculator_inline( $key ) {
 	if ( ! isset( $all[ $key ] ) ) { return ''; }
 
 	$ver     = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0';
-	wp_enqueue_style( 'adn-calculators', ADN_THEME_URI . '/assets/css/calculators.css', array(), $ver );
+	wp_enqueue_style( 'adn-calculators', ADN_THEME_URI . '/assets/css/tools.css', array(), $ver );
 
 	$js_file     = ADN_THEME_DIR . '/calculators/assets/calc-' . $key . '.js';
 	$has_js_file = file_exists( $js_file );
@@ -347,11 +337,11 @@ function adn_calculator_full_page_render() {
 		return;
 	}
 	$base     = realpath( ADN_THEME_DIR . '/pages' );
-	$template = realpath( ADN_THEME_DIR . '/pages/page-calculator-single.php' );
+	$template = realpath( ADN_THEME_DIR . '/pages/page-tool-single.php' );
 	if ( $base && $template && 0 === strpos( $template, $base ) && is_file( $template ) ) {
 		nocache_headers();
 		$_ver = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0';
-		wp_enqueue_style( 'adn-calculators', ADN_THEME_URI . '/assets/css/calculators.css', array(), $_ver );
+		wp_enqueue_style( 'adn-calculators', ADN_THEME_URI . '/assets/css/tools.css', array(), $_ver );
 		include $template;
 		exit;
 	}

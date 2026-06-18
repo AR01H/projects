@@ -6,7 +6,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
 }
 
 if ( ! class_exists( 'AH_Enquiry_Model' ) ) {
-	echo '<div class="wrap"><h1>Contact Submissions</h1><p>Enquiry model not loaded. Ensure the Advaith Homes theme is active.</p></div>';
+	echo '<div class="wrap"><h1>Contact Submissions</h1><p>Enquiry model not loaded..</p></div>';
 	return;
 }
 

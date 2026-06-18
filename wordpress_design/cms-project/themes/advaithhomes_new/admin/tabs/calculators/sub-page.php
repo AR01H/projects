@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $pg    = get_option( 'adn_calculators_page', array() );
-$calcs = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+$tools = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
 
 // Helper: read a saved string field.
 function _cp( $pg, $key, $default = '' ) {
@@ -19,8 +19,8 @@ function _cp( $pg, $key, $default = '' ) {
 $popular_keys = isset( $pg['popular_keys'] ) && is_array( $pg['popular_keys'] ) ? $pg['popular_keys'] : array();
 ?>
 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-	<input type="hidden" name="action" value="adn_save_calcs_page">
-	<?php wp_nonce_field( 'adn_save_calcs_page' ); ?>
+	<input type="hidden" name="action" value="adn_save_tools_page">
+	<?php wp_nonce_field( 'adn_save_tools_page' ); ?>
 
 	<?php /* ── Hero ──────────────────────────────────────────────────── */ ?>
 	<div class="card" style="max-width:none;margin-bottom:20px;">
@@ -34,7 +34,7 @@ $popular_keys = isset( $pg['popular_keys'] ) && is_array( $pg['popular_keys'] ) 
 			<tr>
 				<th scope="row"><label for="cp_hero_desc"><?php esc_html_e( 'Description', ADN_TEXT_DOMAIN ); ?></label></th>
 				<td><textarea id="cp_hero_desc" name="hero_desc" class="large-text" rows="2"
-					placeholder="Smart tools and calculators to help you plan, budget and make confident property decisions."><?php echo esc_textarea( _cp( $pg, 'hero_desc' ) ); ?></textarea></td>
+					placeholder="Smart tools and calculators to help you plan, budget and make confident decisions."><?php echo esc_textarea( _cp( $pg, 'hero_desc' ) ); ?></textarea></td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="cp_hero_icon"><?php esc_html_e( 'Background icon', ADN_TEXT_DOMAIN ); ?></label></th>
@@ -172,3 +172,5 @@ $popular_keys = isset( $pg['popular_keys'] ) && is_array( $pg['popular_keys'] ) 
 
 	<?php submit_button( __( 'Save Page Settings', ADN_TEXT_DOMAIN ) ); ?>
 </form>
+
+

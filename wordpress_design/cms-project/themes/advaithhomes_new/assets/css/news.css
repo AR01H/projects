@@ -129,7 +129,6 @@
 
 /* ── Main Layout ────────────────────────────────────────────── */
 .news-layout {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 40px 24px 80px;
     display: grid;
@@ -197,17 +196,6 @@
     flex-direction: column;
     justify-content: center;
     gap: 12px;
-}
-
-.fa-tag {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--color-primary, #1d4ed8);
-    background: var(--color-primary-light, #eff6ff);
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    width: fit-content;
 }
 
 .fa-title {
@@ -278,7 +266,7 @@
 /* ── News Cards Grid ────────────────────────────────────────── */
 .news-cards-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
 
@@ -837,7 +825,7 @@
     }
 
     .news-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .news-sidebar {

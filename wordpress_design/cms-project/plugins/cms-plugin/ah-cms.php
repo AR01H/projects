@@ -90,7 +90,7 @@ function ah_get_related_links( int $object_id = 0, string $object_type = 'wp_pos
 }
 
 /**
- * Shortcode [ah_related_links id="123" object="wp_post" container="Calculators" title="Tools"].
+ * Shortcode [ah_related_links id="123" object="wp_post" container="" title="Tools"].
  * All attrs optional - defaults to the current post and every container.
  */
 function ah_render_related_links_shortcode( $atts ): string {

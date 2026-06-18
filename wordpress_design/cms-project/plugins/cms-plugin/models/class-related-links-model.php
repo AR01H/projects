@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
  * A universal, polymorphic relationship store that associates any source object
  * (a WP post, a service, a static page …) with related content:
  *   • Related Articles          (internal WP posts)
- *   • Related Calculators       (static-page HTML components)
+ *   • Related Tools       (static-page HTML components)
  *   • Related Static Components  (static-page HTML components)
  *   • External Resources / Support Links (any URL)
  *   • Images, and any future type added via the `ah_related_link_types` filter
@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  * Storage  : one row per relation in {prefix}ah_related_links (self-installing).
  * Source   : object_type + object_id   (e.g. 'wp_post' + 123).
  * Target   : target_kind ('url'|'wp_post'|'static_page') + target_id, or a raw url.
- * Grouping : `container` lets the front end render sections (e.g. "Calculators").
+ * Grouping : `container` lets the front end render sections (e.g. "Tools").
  *
  * Mirrors the AH_Content_Taxonomy_Model pattern (ensure_table + sync + render).
  * New content types need NO schema change - register a link type via the filter.
@@ -55,7 +55,8 @@ class AH_Related_Links_Model {
 	 * Add future content types by hooking `ah_related_link_types` - no schema change.
 	 */
 	public static function link_types(): array {
-		$types = array(
+		// Built-in defaults – kept as fallback if terms.json has no entry.
+		$defaults = array(
 			'article'          => array( 'label' => 'Related Article',   'icon' => '📄', 'target' => 'wp_post' ),
 			'calculator'       => array( 'label' => 'Calculator Tool',   'icon' => '🧮', 'target' => 'static_page' ),
 			'static_component' => array( 'label' => 'Static Component',  'icon' => '🧩', 'target' => 'static_page' ),
@@ -63,15 +64,43 @@ class AH_Related_Links_Model {
 			'external'         => array( 'label' => 'External Resource', 'icon' => '🔗', 'target' => 'url' ),
 			'support'          => array( 'label' => 'Support Link',      'icon' => '🛟', 'target' => 'url' ),
 		);
-		return apply_filters( 'ah_related_link_types', $types );
+
+		// Overlay labels (and optional icon/target) from terms.json → related_links.
+		if ( class_exists( 'Term_Manager' ) ) {
+			$theme_types = Term_Manager::get_terms()['related_links'] ?? [];
+			foreach ( $theme_types as $key => $def ) {
+				if ( isset( $defaults[ $key ] ) ) {
+					// Merge: theme can override label, icon, or target individually.
+					$defaults[ $key ] = array_merge(
+						$defaults[ $key ],
+						is_array( $def ) ? $def : array( 'label' => (string) $def )
+					);
+				} else {
+					// Theme registered a brand-new link type.
+					$defaults[ $key ] = is_array( $def ) ? $def : array( 'label' => (string) $def );
+				}
+			}
+		}
+
+		return apply_filters( 'ah_related_link_types', $defaults );
 	}
 
 	/** Suggested container/section names (datalist hints). Filterable. */
 	public static function container_suggestions(): array {
-		return apply_filters( 'ah_related_link_containers', array(
-			'Related Articles', 'Calculators', 'Helpful Resources',
+		$defaults = array(
+			'Related Articles', 'Tools', 'Helpful Resources',
 			'Support', 'Downloads', 'External Links',
-		) );
+		);
+
+		// Override from terms.json → link_containers if defined.
+		if ( class_exists( 'Term_Manager' ) ) {
+			$from_terms = Term_Manager::get_terms()['link_containers'] ?? [];
+			if ( ! empty( $from_terms ) && is_array( $from_terms ) ) {
+				$defaults = array_values( array_filter( array_map( 'strval', $from_terms ) ) );
+			}
+		}
+
+		return apply_filters( 'ah_related_link_containers', $defaults );
 	}
 
 	private static function clean_object_type( string $t ): string {
@@ -148,7 +177,7 @@ class AH_Related_Links_Model {
 
 	/**
 	 * Front-end-ready data, grouped by container, with everything resolved.
-	 * Returns: [ [ 'container' => 'Calculators', 'items' => [ [label,url,link_type,type_label,icon,target] ] ] ]
+	 * Returns: [ [ 'container' => 'Tools', 'items' => [ [label,url,link_type,type_label,icon,target] ] ] ]
 	 */
 	public function get_grouped( string $object_type, int $object_id ): array {
 		$rows   = $this->get_for( $object_type, $object_id, array( 'only_active' => true ) );

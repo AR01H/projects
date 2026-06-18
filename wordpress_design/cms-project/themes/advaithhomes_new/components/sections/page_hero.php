@@ -69,11 +69,11 @@ $_hero_img     = $_hero_img_id
 					<?php endforeach; ?>
 				</nav>
 			<?php endif; ?>
-
+<!-- 
 			<?php /* Eyebrow */ ?>
 			<?php if ( ! empty( $hero['eyebrow'] ) ) : ?>
 				<div class="hero-eyebrow"><?php echo esc_html( $hero['eyebrow'] ); ?></div>
-			<?php endif; ?>
+			<?php endif; ?> -->
 
 			<?php /* Title */ ?>
 			<?php if ( ! empty( $hero['title'] ) ) : ?>
@@ -88,19 +88,18 @@ $_hero_img     = $_hero_img_id
 		</div>
 	</div>
 
-	<?php /* ── Bottom bar: stats take priority; else trust items ── */ ?>
-	<?php if ( ! empty( $_trust ) ) :
-		$_first     = reset( $_trust );
-		$_is_string = is_string( $_first );
-		$_is_icon   = ! $_is_string && is_array( $_first ) && isset( $_first['icon'] );
-
-		get_template_part( 'components/marque_scroll/point_marque', null, [
-			'trust'     => $_trust,
-			'is_string' => $_is_string,
-			'is_icon'   => $_is_icon,
-		] );
-	?>
-       
-<?php endif; ?>
-
+	
 </section>
+<?php if ( ! empty( $_trust ) ) :
+	$_first     = reset( $_trust );
+	$_is_string = is_string( $_first );
+	$_is_icon   = ! $_is_string && is_array( $_first ) && isset( $_first['icon'] );
+
+	get_template_part( 'components/marque_scroll/point_marque', null, [
+		'trust'     => $_trust,
+		'is_string' => $_is_string,
+		'is_icon'   => $_is_icon,
+	] );
+?>
+   
+<?php endif; ?>

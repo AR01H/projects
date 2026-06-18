@@ -1,0 +1,123 @@
+{
+    "_comment": "Organics Terminology – edit ONLY this file to re-theme the site to organics.",
+
+    "brand": {
+        "name":             "ORGANIC HUB",
+        "icon":             "🥗",
+        "industry":         "Organic Food & Wellness",
+        "location":         "Local",
+        "domain_noun":      "Organic Products",
+        "expert_noun":      "Organic Expert",
+        "copyright_year":   "2026",
+        "description":      "Practical guides, tools and expert insights to help you choose organic products and live healthier.",
+        "disclaimer":       "Information on this website is general guidance only and does not constitute medical or professional advice. Please seek expert advice for your specific situation."
+    },
+
+    "taxonomy": {
+        "parent":           "Guide",
+        "parent_plural":    "Guides",
+        "section":          "Category",
+        "section_plural":   "Topics",
+        "content":          "Article",
+        "content_plural":   "Articles",
+        "terms_fallback":   "Terms"
+    },
+
+    "icons": {
+        "tools_hero":       "🥗",
+        "expert_hero":      "👨‍🌾",
+        "guide_fallback":   "🌿",
+        "guide_parent":     "📚",
+        "hot_topics":       "🔥",
+        "expert_avatar":    "👤",
+        "expert_all":       "⭐",
+        "tools":            "🧮",
+        "news":             "📰",
+        "enquiry":          "💬",
+        "search":           "🔍",
+        "email":            "✉️",
+        "phone":            "📞",
+        "location":         "📍",
+        "trust_verified":   "🌱",
+        "trust_specialism": "📋",
+        "trust_time":       "⚡",
+        "trust_free":       "✅"
+    },
+
+    "urls": {
+        "home":             "/",
+        "guides":           "/guides/",
+        "news":             "/news/",
+        "tools":            "/calculators/",
+        "expert":           "/ask-expert/",
+        "guidance":         "/guidance/",
+        "faqs":             "/faqs/",
+        "contact":          "/contact/"
+    },
+
+    "cta": {
+        "nav_label":            "Get Guidance",
+        "hero_primary":         "Start Your Organic Journey →",
+        "hero_secondary":       "Ask an Expert",
+        "newsletter_heading":   "Stay informed about Organic Food & Wellness"
+    },
+
+    "features": {
+        "tools_noun":       "Tool",
+        "tools_plural":     "Tools",
+        "news_noun":        "News",
+        "news_label":       "News & Insights",
+        "expert_label":     "Ask an Expert",
+        "guidance_label":   "Get Expert Guidance",
+        "contact_label":    "Contact Us"
+    },
+
+    "page_titles": {
+        "home":             "Home",
+        "contact":          "Contact Us",
+        "news":             "News & Insights",
+        "guides":           "Guides",
+        "tools":            "Tools",
+        "expert":           "Ask an Expert",
+        "guidance":         "Get Expert Guidance",
+        "faqs":             "FAQs"
+    },
+
+    "guides_page": {
+        "hero_title":       "Organic Guides",
+        "hero_description": "Browse practical guides to buying, storing and using organic products.",
+        "meta_description": "Browse our guides on organic produce, certifications, nutrition and sustainable living.",
+        "sidebar_browse_heading": "Browse by Topic"
+    },
+
+    "sidebar": {
+        "expert_help_heading":  "Need Expert Help?",
+        "expert_help_subtitle": "Get personalised guidance from our organic and nutrition experts.",
+        "expert_help_cta":      "Talk to an Expert",
+        "contact_for_help_heading": "Contact for Help",
+        "contact_for_help_desc": "Not sure which expert to choose? Get in touch and we'll guide you.",
+        "contact_for_help_btn": "Get in Touch",
+        "browse_guides":        "Browse Guides",
+        "newsletter_heading":   "Stay Updated",
+        "newsletter_desc":      "Get the latest organic guides and tips delivered to your inbox.",
+        "newsletter_placeholder": "Your email address",
+        "newsletter_btn":       "Subscribe",
+        "newsletter_note":      "No spam. Unsubscribe anytime."
+    },
+
+    "content": {
+        "read_more":            "Explore →",
+        "explore_guides":       "Explore %s →",
+        "view_all_news":        "View all →",
+        "view_all_guides":      "View all →",
+        "need_help_title":      "Need Help With",
+        "need_help_description":"Speak to one of our organic advisors and get personalised guidance tailored to your situation.",
+        "need_help_cta":        "Talk to an Expert",
+        "trust_items": [
+            "Independent & Unbiased",
+            "No hidden fees",
+            "Plain English advice"
+        ],
+        "author_role":          "Information Experts"
+    }
+}

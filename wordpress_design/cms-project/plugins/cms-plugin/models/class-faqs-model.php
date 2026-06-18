@@ -5,6 +5,14 @@ class AH_Faqs_Model extends AH_Model_Base {
 
 	protected string $table_suffix = 'faqs';
 
+	/**
+	 * Per-request cache for FAQ queries.
+	 * Keys: 'global' or 'page_{id}' => array
+	 *
+	 * @var array<string,array>
+	 */
+	protected static array $faq_cache = array();
+
 	public function get_paginated( int $page = 1, string $search = '', ?int $page_id = null ): array {
 		$where    = array();
 		$where_in = array();
@@ -22,20 +30,47 @@ class AH_Faqs_Model extends AH_Model_Base {
 		return $this->paginate( $page, $args );
 	}
 
-	public function get_for_page( int $page_id ): array {
-		return $this->all( array(
+	/**
+	 * Return FAQs for a specific page. When null is passed, return global FAQs.
+	 * Results are cached for the duration of the request.
+	 *
+	 * @param int|null $page_id
+	 * @return array
+	 */
+	public function get_for_page( ?int $page_id ): array {
+		if ( $page_id === null ) {
+			return $this->get_global();
+		}
+		$key = 'page_' . (int) $page_id;
+		if ( isset( self::$faq_cache[ $key ] ) ) {
+			return self::$faq_cache[ $key ];
+		}
+
+		$page_id = (int) $page_id;
+		$rows = $this->all( array(
 			'where'    => "page_id = {$page_id} AND status = 'active'",
 			'order_by' => 'sort_order',
 			'order'    => 'ASC',
 		) );
+
+		self::$faq_cache[ $key ] = is_array( $rows ) ? $rows : array();
+		return self::$faq_cache[ $key ];
 	}
 
 	public function get_global(): array {
-		return $this->all( array(
+		$key = 'global';
+		if ( isset( self::$faq_cache[ $key ] ) ) {
+			return self::$faq_cache[ $key ];
+		}
+
+		$rows = $this->all( array(
 			'where'    => "page_id IS NULL AND status = 'active'",
 			'order_by' => 'sort_order',
 			'order'    => 'ASC',
 		) );
+
+		self::$faq_cache[ $key ] = is_array( $rows ) ? $rows : array();
+		return self::$faq_cache[ $key ];
 	}
 
 	public function get_faq_header( int $page_id ): ?object {
@@ -47,5 +82,14 @@ class AH_Faqs_Model extends AH_Model_Base {
 		$data = array_merge( $data, array( 'page_id' => $page_id ) );
 		$row = $this->get_faq_header( $page_id );
 		$row ? AH_DB_Helper::update( $t, $data, (int) $row->id ) : AH_DB_Helper::insert( $t, $data );
+
+		// Invalidate per-request cache for this page and global list
+		$pkey = 'page_' . (int) $page_id;
+		if ( isset( self::$faq_cache[ $pkey ] ) ) {
+			unset( self::$faq_cache[ $pkey ] );
+		}
+		if ( isset( self::$faq_cache['global'] ) ) {
+			unset( self::$faq_cache['global'] );
+		}
 	}
 }

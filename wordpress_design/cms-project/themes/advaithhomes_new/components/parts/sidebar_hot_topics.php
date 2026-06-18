@@ -12,7 +12,7 @@ $hot_topics = isset( $hot_topics ) && is_array( $hot_topics ) ? $hot_topics : ar
 $items      = isset( $hot_topics['items'] )    ? (array) $hot_topics['items']    : array();
 $view_all   = isset( $hot_topics['view_all'] ) ? (array) $hot_topics['view_all'] : array();
 ?>
-<div class="sidebar-card">
+<div class="mini_card_container_design">
 	<?php if ( ! empty( $hot_topics['heading'] ) ) : ?>
 		<div class="sidebar-card-title"><?php echo esc_html( $hot_topics['heading'] ); ?></div>
 	<?php endif; ?>

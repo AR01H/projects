@@ -14,14 +14,7 @@ defined( 'ABSPATH' ) || exit;
  * @return array<string,array{title:string,label:string,icon:string,view:string}>
  */
 function adn_calculators() {
-	$calculators = array(
-		'stamp-duty' => array(
-			'title' => 'Stamp Duty Calculator',
-			'label' => 'Stamp Duty (SDLT) Calculator',
-			'icon'  => '🧮',
-			'view'  => 'stamp-duty.php',
-		),
-	);
+	$calculators = array();
 
 	// Lets the theme admin (or plugins) register extra calculators later.
 	return apply_filters( 'adn_calculators', $calculators );

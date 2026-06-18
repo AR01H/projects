@@ -19,13 +19,19 @@ abstract class ADN_Data_Reader {
 	 * @param string $ext    file extension without the dot
 	 * @return string Absolute path, or '' when the name is unsafe / file missing.
 	 */
+
 	protected static function resolve( $subdir, $name, $ext ) {
+		// If a custom data folder is defined, prepend it to the subdirectory path
+		$custom = ( defined( 'DATA_FILES' ) && DATA_FILES ) ? trim( DATA_FILES, '/' ) . '/' : '';
+		$subdir = $custom . ltrim( $subdir, '/' );
+
 		$name = preg_replace( '/[^a-zA-Z0-9_-]/', '', (string) $name );
 		if ( '' === $name ) {
 			return '';
 		}
 
-		$base = realpath( ADN_THEME_DIR . '/data/' . $subdir );
+		$base_dir = ADN_THEME_DIR . '/data/' . $subdir;
+		$base = realpath( $base_dir );
 		if ( ! $base ) {
 			return '';
 		}
@@ -38,12 +44,19 @@ abstract class ADN_Data_Reader {
 		return $path;
 	}
 
-	/** Public URL for a data file (used for PDFs / downloads). '' when missing. */
+	/**
+	 * Public URL for a data file (used for PDFs / downloads). '' when missing.
+	 */
 	protected static function resolve_url( $subdir, $name, $ext ) {
+		$custom = ( defined( 'DATA_FILES' ) && DATA_FILES ) ? trim( DATA_FILES, '/' ) . '/' : '';
+		$subdir = $custom . ltrim( $subdir, '/' );
+
 		$name = preg_replace( '/[^a-zA-Z0-9_-]/', '', (string) $name );
 		if ( '' === $name || ! self::resolve( $subdir, $name, $ext ) ) {
 			return '';
 		}
 		return ADN_THEME_URI . '/data/' . $subdir . '/' . $name . '.' . $ext;
 	}
+
+
 }

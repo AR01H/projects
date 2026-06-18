@@ -26,14 +26,7 @@ $f_status = $is_edit ? $row['status']       : 'active';
 // Meta settings - read from adn_calculators_meta when editing an existing calc.
 $f_meta = ( $is_edit && function_exists( 'adn_calculator_meta' ) ) ? adn_calculator_meta( $f_key ) : array();
 
-$_cat_labels = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array(
-	'buying'        => __( 'Buying',        ADN_TEXT_DOMAIN ),
-	'selling'       => __( 'Selling',       ADN_TEXT_DOMAIN ),
-	'moving'        => __( 'Moving Home',   ADN_TEXT_DOMAIN ),
-	'mortgage'      => __( 'Mortgage',      ADN_TEXT_DOMAIN ),
-	'tax'           => __( 'Tax',           ADN_TEXT_DOMAIN ),
-	'affordability' => __( 'Affordability', ADN_TEXT_DOMAIN ),
-);
+$_cat_labels = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array();
 $f_saved_cats = isset( $f_meta['categories'] ) && is_array( $f_meta['categories'] ) ? $f_meta['categories'] : array();
 
 // Generate example HTML snippet for the blank-form placeholder.
@@ -116,7 +109,7 @@ $example_js = '(function () {
 					</th>
 					<td>
 						<input type="text" id="calc_key" name="calc_key" class="regular-text" required
-							pattern="[a-z0-9\-]+" placeholder="e.g. mortgage-repayment" value="">
+							pattern="[a-z0-9\-]+" placeholder="e.g. roi-calculator" value="">
 						<p class="description">
 							<?php esc_html_e( 'Lowercase letters, numbers and hyphens only. Cannot be changed after saving. Used in the shortcode key="…".', ADN_TEXT_DOMAIN ); ?>
 						</p>
@@ -138,7 +131,7 @@ $example_js = '(function () {
 					</th>
 					<td>
 						<input type="text" id="calc_title" name="title" class="regular-text" required
-							value="<?php echo esc_attr( $f_title ); ?>" placeholder="Mortgage Repayment Calculator">
+							value="<?php echo esc_attr( $f_title ); ?>" placeholder="ROI Calculator Calculator">
 					</td>
 				</tr>
 
@@ -148,7 +141,7 @@ $example_js = '(function () {
 					</th>
 					<td>
 						<input type="text" id="calc_label" name="label" class="regular-text"
-							value="<?php echo esc_attr( $f_label ); ?>" placeholder="Mortgage Repayment">
+							value="<?php echo esc_attr( $f_label ); ?>" placeholder="ROI Calculator">
 						<p class="description"><?php esc_html_e( 'Shown in calculator card grids. Defaults to Title if blank.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
@@ -422,3 +415,4 @@ $example_js = '(function () {
 	});
 })(jQuery);
 </script>
+

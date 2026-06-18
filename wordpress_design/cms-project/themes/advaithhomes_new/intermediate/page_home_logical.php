@@ -40,7 +40,7 @@ function adn_home_get_context() {
 		'news'        => $section( 'news', array( 'heading' => array(), 'items' => array() ) ),
 		'regulations' => $section( 'regulations', array( 'heading' => array(), 'items' => array() ) ),
 		'hot_topics'  => $section( 'hot_topics', array( 'title' => '', 'items' => array(), 'cta' => array() ) ),
-		'calculators' => $section( 'calculators', array( 'heading' => array(), 'items' => array() ) ),
+		'tools' => $section( 'tools', array( 'heading' => array(), 'items' => array() ) ),
 		'guides'      => $section( 'guides', array( 'heading' => array(), 'items' => array() ) ),
 		'newsletter'  => $section( 'newsletter' ),
 	);
@@ -97,7 +97,7 @@ function adn_home_get_context() {
 				$_hpthumb = $_hpt ? (string) $_hpt : '';
 			}
 			$_hp_items[] = array(
-				'icon'      => ! empty( $_hpc['icon'] )      ? (string) $_hpc['icon']      : '🧮',
+				'icon'      => ! empty( $_hpc['icon'] )      ? (string) $_hpc['icon']      : adn_term( 'icons.tools', '🧮' ),
 				'name'      => ! empty( $_hpm['label'] )     ? (string) $_hpm['label']     : ( ! empty( $_hpc['title'] ) ? (string) $_hpc['title'] : $_hpk ),
 				'url'       => ! empty( $_hpm['card_url'] )  ? (string) $_hpm['card_url']  : home_url( '/?ah_calc_page=' . rawurlencode( $_hpk ) ),
 				'thumbnail' => $_hpthumb,
@@ -105,7 +105,7 @@ function adn_home_get_context() {
 			);
 		}
 		if ( ! empty( $_hp_items ) ) {
-			$ctx['calculators']['items'] = $_hp_items;
+			$ctx['tools']['items'] = $_hp_items;
 		}
 	}
 
@@ -176,11 +176,11 @@ function adn_home_cms_journey_cards() {
 
 		$cards[] = array(
 			'image'       => $image_url,
-			'icon'        => ! empty( $term->icon_emoji ) ? $term->icon_emoji : '🏡',
+			'icon'        => ! empty( $term->icon_emoji ) ? $term->icon_emoji : adn_term( 'icons.guide_fallback', '🏡' ),
 			'gradient'    => adn_cms_gradient( $i ),
 			'title'       => $name,
 			'description' => isset( $term->description ) ? (string) $term->description : '',
-			'link_label'  => 'Explore ' . $name . ' →',
+			'link_label'  => sprintf( adn_term( 'content.explore_guides', 'Explore %s →' ), $name ),
 			'url'         => adn_cms_term_url( $term ),
 		);
 	}
@@ -217,14 +217,14 @@ function adn_home_cms_guide_items() {
 			$_term_img_url = $_tiu ? (string) $_tiu : '';
 		}
 		$items[] = array(
-			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : '📚' ),
+			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : adn_term( 'icons.guide_parent', '📚' ) ),
 			'gradient'    => adn_cms_gradient( $i ),
 			'image'       => $_term_img_url,
 			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
 			'category'    => $cat_name,
 			'title'       => '',
 			'description' => ! empty( $post->_term_desc ) ? $post->_term_desc : '',
-			'read_more'   => 'Explore →',
+			'read_more'   => adn_term( 'content.read_more', 'Explore →' ),
 			'url'         => $term_url,
 		);
 	}
@@ -345,7 +345,7 @@ function adn_home_cms_hot_topics_items() {
 			continue;
 		}
 		$items[] = array(
-			'icon' => ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : '🔥',
+			'icon' => ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : adn_term( 'icons.hot_topics', '🔥' ),
 			'text' => $post->post_title,
 			'desc' => $post->post_excerpt,
 			'url'  => get_permalink( $post ),

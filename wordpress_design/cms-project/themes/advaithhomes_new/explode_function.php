@@ -64,9 +64,9 @@ function adn_enqueue_template_specific_assets() {
             'css' => '/assets/css/guides_listing.css',
             'js'  => '/assets/js/guides_listing.js',
         ),
-        'pages/page-calculator.php' => array(
-            'css' => '/assets/css/calculators.css',
-            'js'  => '/assets/js/calculators.js',
+        'pages/page-tools.php' => array(
+            'css' => '/assets/css/tools.css',
+            'js'  => '/assets/js/tools.js',
         ),
         'pages/page-guidance.php' => array(
             'css' => '/assets/css/guidance.css',
@@ -75,6 +75,10 @@ function adn_enqueue_template_specific_assets() {
         'pages/page-ask-expert.php' => array(
             'css' => '/assets/css/ask_expert.css',
             'js'  => '/assets/js/ask_expert.js',
+        ),
+        'pages/page-faqs.php' => array(
+            'css' => '/assets/css/faqs.css',
+            'js'  => '/assets/js/faqs.js',
         ),
     );
     foreach ( $template_assets as $template => $assets ) {
@@ -124,45 +128,37 @@ function adn_enqueue_template_specific_assets() {
 }
 function adn_get_page_definitions() {
     return array(
-        'home' => array(
+        trim( SITE_HOME_URL, '/' ) ?: 'home' => array(
             'title'    => PAGE_TITLE_HOME,
             'template' => 'pages/page-home.php',
         ),
-        'contact' => array(
+        trim( SITE_CONTACT_URL, '/' ) => array(
             'title'    => PAGE_TITLE_CONTACT,
             'template' => 'pages/page-contact.php',
         ),
-        'allinone' => array(
-            'title'    => 'All In One (Demo)',
-            'template' => 'pages/page-allinone.php',
-        ),
-        'buying' => array(
-            'title'    => 'Buying',
-            'template' => 'pages/page-category_guide.php',
-        ),
-        'news' => array(
+        trim( SITE_NEWS_URL, '/' ) => array(
             'title'    => PAGE_TITLE_NEWS,
             'template' => 'pages/page-newsall.php',
         ),
-        'buying-guides' => array(
+        trim( SITE_GUIDES_URL, '/' ) => array(
             'title'    => PAGE_TITLE_GUIDES,
             'template' => 'pages/page-guides_listing.php',
         ),
-        'calculators' => array(
+        trim( SITE_TOOLS_URL, '/' ) => array(
             'title'    => PAGE_TITLE_TOOLS,
-            'template' => 'pages/page-calculator.php',
+            'template' => 'pages/page-tools.php',
         ),
-        'guidance' => array(
+        trim( SITE_GUIDANCE_URL, '/' ) => array(
             'title'    => PAGE_TITLE_GUIDANCE,
             'template' => 'pages/page-guidance.php',
         ),
-        'ask-an-expert' => array(
+        trim( SITE_EXPERT_URL, '/' ) => array(
             'title'    => PAGE_TITLE_EXPERT,
             'template' => 'pages/page-ask-expert.php',
         ),
-        'ask-expert' => array(
-            'title'    => PAGE_TITLE_EXPERT,
-            'template' => 'pages/page-ask-expert.php',
+        trim( SITE_FAQS_URL, '/' ) => array(
+            'title'    => PAGE_TITLE_FAQS,
+            'template' => 'pages/page-faqs.php',
         ),
         // Slug must match COMING_SOON_PAGE_SLUG so the coming-soon redirect target exists.
         COMING_SOON_PAGE_SLUG => array(

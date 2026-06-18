@@ -258,7 +258,7 @@ function adn_topic_category_get_context() {
 				'category'    => (string) $sib->name,
 				'title'       => '',
 				'description' => ! empty( $sib->description ) ? (string) $sib->description : '',
-				'read_more'   => 'Explore →',
+				'read_more'   => adn_term( 'content.read_more', 'Explore →' ),
 				'url'         => home_url( '/' . trim( $sib->slug, '/' ) . '/' ),
 			);
 		}
@@ -299,7 +299,7 @@ function adn_topic_category_get_context() {
 
 	if ( ! empty( $topic_items ) ) {
 		$sidebar['buying_topics'] = array(
-			'heading'  => 'Explore ' . $parent_label,
+			'heading'  => sprintf( adn_term( 'category_page.explore_guides_title', 'Explore %s %s' ), $parent_label, '' ),
 			'items'    => $topic_items,
 			'view_all' => $parent ? array(
 				'label' => 'View all ' . $parent_label . ' guides →',
@@ -310,10 +310,10 @@ function adn_topic_category_get_context() {
 
 	// Quick tools - top 4 calculators as sidebar links.
 	if ( function_exists( 'adn_calculators' ) ) {
-		$all_calcs  = adn_calculators();
+		$all_tools  = adn_calculators();
 		$meta_all   = get_option( 'adn_calculators_meta', array() );
 		$calc_links = array();
-		foreach ( $all_calcs as $ckey => $creg ) {
+		foreach ( $all_tools as $ckey => $creg ) {
 			$cmeta = isset( $meta_all[ $ckey ] ) && is_array( $meta_all[ $ckey ] ) ? $meta_all[ $ckey ] : array();
 			if ( array_key_exists( 'enabled', $cmeta ) && empty( $cmeta['enabled'] ) ) { continue; }
 			if ( ! empty( $cmeta['hidden_from_listing'] ) ) { continue; }
@@ -336,11 +336,11 @@ function adn_topic_category_get_context() {
 	// Expert help - from global calculator page option.
 	$_eh = get_option( 'adn_calculators_page', array() );
 	$sidebar['expert_help'] = array(
-		'heading'  => ! empty( $_eh['sidebar_help_title'] )     ? $_eh['sidebar_help_title']     : 'Need Expert Help?',
-		'subtitle' => ! empty( $_eh['sidebar_help_text'] )      ? $_eh['sidebar_help_text']      : 'Get personalised guidance from our property experts.',
+		'heading'  => ! empty( $_eh['sidebar_help_title'] )     ? $_eh['sidebar_help_title']     : adn_term( 'sidebar.expert_help_heading',  'Need Expert Help?' ),
+		'subtitle' => ! empty( $_eh['sidebar_help_text'] )      ? $_eh['sidebar_help_text']      : adn_term( 'sidebar.expert_help_subtitle', 'Get personalised guidance from our experts.' ),
 		'experts'  => array(),
 		'cta'      => array(
-			'label' => ! empty( $_eh['sidebar_help_btn_label'] ) ? $_eh['sidebar_help_btn_label'] : 'Talk to an Expert',
+			'label' => ! empty( $_eh['sidebar_help_btn_label'] ) ? $_eh['sidebar_help_btn_label'] : adn_term( 'sidebar.expert_help_cta', 'Talk to an Expert' ),
 			'url'   => ! empty( $_eh['sidebar_help_btn_url'] )   ? $_eh['sidebar_help_btn_url']   : home_url( SITE_CONTACT_URL ),
 		),
 	);
@@ -392,7 +392,7 @@ function adn_topic_category_get_context() {
 	$ctx['news'] = array(
 		'heading' => array(
 			'title'      => 'Latest ' . $parent_label . ' News',
-			'link_label' => 'View all news →',
+			'link_label' => 'View all →',
 			'link_url'   => home_url( SITE_NEWS_URL ),
 		),
 		'items' => $news_items,
@@ -401,9 +401,9 @@ function adn_topic_category_get_context() {
 	// ── Popular calculators (full section below fold) ─────────────────────────────
 	$calc_items = array();
 	if ( function_exists( 'adn_calculators' ) ) {
-		$all_calcs = adn_calculators();
+		$all_tools = adn_calculators();
 		$meta_all  = get_option( 'adn_calculators_meta', array() );
-		foreach ( $all_calcs as $ckey => $creg ) {
+		foreach ( $all_tools as $ckey => $creg ) {
 			$cmeta = isset( $meta_all[ $ckey ] ) && is_array( $meta_all[ $ckey ] ) ? $meta_all[ $ckey ] : array();
 			if ( array_key_exists( 'enabled', $cmeta ) && empty( $cmeta['enabled'] ) ) { continue; }
 			if ( ! empty( $cmeta['hidden_from_listing'] ) ) { continue; }
@@ -436,10 +436,21 @@ function adn_topic_category_get_context() {
 	// ── Help / contact CTA ────────────────────────────────────────────────────────
 	$ctx['cta_help'] = array(
 		'icon'        => '🏡',
-		'title'       => 'Need Help With ' . ( isset( $term->name ) ? $term->name : $parent_label ) . '?',
-		'description' => 'Speak to one of our expert advisors and get personalised guidance tailored to your situation.',
-		'cta'         => array( 'label' => 'Talk to an Expert', 'url' => home_url( SITE_CONTACT_URL ) ),
-		'trust_items' => array( 'Independent & Unbiased', 'No hidden fees', 'Plain English advice' ),
+		'title'       => adn_term( 'content.need_help_title', 'Need Help With' ) . ' ' . ( isset( $term->name ) ? $term->name : $parent_label ) . '?',
+		'description' => adn_term( 'content.need_help_description', 'Speak to one of our expert advisors and get personalised guidance tailored to your situation.' ),
+		'cta'         => array( 'label' => adn_term( 'content.need_help_cta', 'Talk to an Expert' ), 'url' => home_url( SITE_CONTACT_URL ) ),
+		'trust_items' => (function(){
+			$items = adn_term( 'content.trust_items', '' );
+			$decoded = $items ? json_decode( $items, true ) : array();
+			if ( empty( $decoded ) ) {
+				$decoded = array(
+					'Independent & Unbiased',
+					'No hidden fees',
+					'Plain English advice'
+				);
+			}
+			return $decoded;
+		})(),
 	);
 
 	return $ctx;

@@ -1,0 +1,65 @@
+{
+    "meta": {
+        "page_title": "Contact Us - Organic Hub",
+        "meta_description": "Get in touch with our team. Contact us for questions, partnerships, or feedback about organic products and healthy living."
+    },
+    "breadcrumb": [
+        { "label": "Home", "url": "/" },
+        { "label": "Contact", "url": null }
+    ],
+    "hero": {
+        "title": "Contact Us",
+        "description": "We'd love to hear from you. Reach out with questions, feedback, or partnership inquiries.",
+        "image_icon": "📧"
+    },
+    "contact_methods": [
+        {
+            "type": "Email",
+            "icon": "📧",
+            "detail": "info@organichub.com",
+            "description": "Send us an email anytime"
+        },
+        {
+            "type": "Phone",
+            "icon": "📞",
+            "detail": "+1 (555) 123-4567",
+            "description": "Call our team during business hours"
+        },
+        {
+            "type": "Address",
+            "icon": "📍",
+            "detail": "Organic Hub HQ, City, Country",
+            "description": "Visit us at our location"
+        },
+        {
+            "type": "Social Media",
+            "icon": "📱",
+            "detail": "@organichub",
+            "description": "Follow us on social platforms"
+        }
+    ],
+    "contact_form": {
+        "title": "Send us a Message",
+        "fields": [
+            { "name": "name", "label": "Full Name", "type": "text", "required": true },
+            { "name": "email", "label": "Email Address", "type": "email", "required": true },
+            { "name": "phone", "label": "Phone Number", "type": "tel", "required": false },
+            { "name": "subject", "label": "Subject", "type": "text", "required": true },
+            { "name": "message", "label": "Message", "type": "textarea", "required": true }
+        ],
+        "button_label": "Send Message"
+    },
+    "contact_reasons": [
+        { "reason": "Product Question", "icon": "🛒" },
+        { "reason": "Feedback", "icon": "💬" },
+        { "reason": "Partnership", "icon": "🤝" },
+        { "reason": "Report an Issue", "icon": "⚠️" },
+        { "reason": "Press Inquiry", "icon": "📰" }
+    ],
+    "business_hours": {
+        "monday_friday": "9 AM - 6 PM",
+        "saturday": "10 AM - 4 PM",
+        "sunday": "Closed",
+        "timezone": "GMT"
+    }
+}

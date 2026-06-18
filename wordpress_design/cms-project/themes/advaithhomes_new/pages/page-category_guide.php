@@ -38,7 +38,7 @@ adn_page_open( $_open_ctx );
 
 <?php /* ============================== JOURNEY STEPS ============================== */ ?>
 <?php if ( ! empty( $ctx['journey'] ) ) : ?>
-<section class="buying-journey">
+<section class="category-journey">
 	<div class="container">
 		<?php adn_component( 'sections/category_journey', array( 'journey' => $ctx['journey'] ) ); ?>
 	</div>
@@ -53,7 +53,7 @@ adn_page_open( $_open_ctx );
 
 			<?php /* ── Guides Carousel ── */ ?>
 			<?php if ( ! empty( $ctx['guides']['items'] ) ) : ?>
-			<section class="category-section category-guides">
+			<div class="category-section category-guides">
 				<?php
 				adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['guides']['heading'] ) ? $ctx['guides']['heading'] : array(),
@@ -61,12 +61,12 @@ adn_page_open( $_open_ctx );
 				) );
 				adn_component( 'sections/guides', array( 'items' => $ctx['guides']['items'] ) );
 				?>
-			</section>
+			</div>
 			<?php endif; ?>
 
 			<?php /* ── Popular Posts (admin-curated) ── */ ?>
 			<?php if ( ! empty( $ctx['popular_posts']['items'] ) ) : ?>
-			<section class="category-section category-popular">
+			<div class="category-section category-popular">
 				<?php
 				adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['popular_posts']['heading'] ) ? $ctx['popular_posts']['heading'] : array(),
@@ -74,13 +74,13 @@ adn_page_open( $_open_ctx );
 				) );
 				adn_component( 'sections/guides', array( 'items' => $ctx['popular_posts']['items'] ) );
 				?>
-			</section>
+			</div>
 			<?php endif; ?>
 
 			<?php /* ── Latest News + Regulations (side by side) ── */ ?>
 			<?php $_has_news = ! empty( $ctx['news']['items'] ); $_has_regs = ! empty( $ctx['regulations']['items'] ); ?>
 			<?php if ( $_has_news || $_has_regs ) : ?>
-			<section class="category-section category-news-regs">
+			<div class="category-section category-news-regs">
 				<div class="cat-news-regs-grid">
 
 					<?php if ( $_has_news ) : ?>
@@ -107,24 +107,24 @@ adn_page_open( $_open_ctx );
 					<?php endif; ?>
 
 				</div>
-			</section>
+			</div>
 			<?php endif; ?>
 
-			<?php /* ── Calculators ── */ ?>
+			<?php /* ── Tools ── */ ?>
 			<?php if ( ! empty( $ctx['calculators']['items'] ) ) : ?>
-			<section class="category-section category-calculators">
+			<div class="category-section category-tools">
 				<?php
 				adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['calculators']['heading'] ) ? $ctx['calculators']['heading'] : array(),
 					'tag'     => 'h3',
 				) );
 				?>
-				<div class="calc-grid calc-grid--7col">
+				<div class="tool-grid tool-grid--7col">
 					<?php foreach ( (array) $ctx['calculators']['items'] as $card ) : ?>
-						<?php adn_component( 'cards/calc_card', array( 'card' => $card ) ); ?>
+						<?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
 					<?php endforeach; ?>
 				</div>
-			</section>
+			</div>
 			<?php endif; ?>
 
 			<?php /* ── Resources (PDFs / Links / Videos) ── */ ?>
@@ -138,7 +138,7 @@ adn_page_open( $_open_ctx );
 
 			if ( $_pdfs || $_links || $_vids ) :
 			?>
-			<section class="category-section category-resources">
+			<div class="category-section category-resources">
 
 				<?php adn_component( 'parts/section_headers/section_header', array(
 					'heading' => array( 'title' => esc_html__( 'Useful Resources', ADN_TEXT_DOMAIN ), 'link_label' => '', 'link_url' => '' ),
@@ -218,7 +218,7 @@ adn_page_open( $_open_ctx );
 				</div>
 				<?php endif; ?>
 
-			</section>
+			</div>
 			<?php endif; ?>
 
 		</main>
@@ -252,7 +252,7 @@ adn_page_open( $_open_ctx );
 
 <?php /* ============================== PERSONALISED GUIDANCE CTA ============================== */ ?>
 <?php if ( ! empty( $ctx['cta_banner'] ) ) : ?>
-<div class="container">
+<div class="">
 	<?php adn_component( 'parts/cta_banner', array( 'cta_banner' => $ctx['cta_banner'] ) ); ?>
 </div>
 <?php endif; ?>

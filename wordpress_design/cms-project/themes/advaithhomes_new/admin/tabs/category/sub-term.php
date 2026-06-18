@@ -81,7 +81,7 @@ $ft_items   = isset( $ft_d['items'] )   && is_array( $ft_d['items'] ) ? $ft_d['i
 // Calculators - registered + selected.
 $calc_heading       = isset( $calc_d['heading'] )       ? $calc_d['heading']       : '';
 $calc_selected_keys = isset( $calc_d['selected_keys'] ) && is_array( $calc_d['selected_keys'] ) ? $calc_d['selected_keys'] : array();
-$all_calcs          = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+$all_tools          = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
 
 $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 ?>
@@ -348,7 +348,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 
 				<p style="margin:16px 0 8px;font-weight:600;"><?php esc_html_e( 'Available Calculators', ADN_TEXT_DOMAIN ); ?></p>
 
-				<?php if ( empty( $all_calcs ) ) : ?>
+				<?php if ( empty( $all_tools ) ) : ?>
 					<p class="description">
 						<?php esc_html_e( 'No calculators registered yet.', ADN_TEXT_DOMAIN ); ?>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=adn-theme-calculators&subtab=list' ) ); ?>">
@@ -356,7 +356,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 						</a>
 					</p>
 				<?php else : ?>
-					<?php foreach ( $all_calcs as $key => $calc ) :
+					<?php foreach ( $all_tools as $key => $calc ) :
 						$_c_meta    = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
 						$_c_label   = ! empty( $_c_meta['label'] ) ? $_c_meta['label'] : ( isset( $calc['label'] ) ? $calc['label'] : $key );
 						$_c_icon    = isset( $calc['icon'] )  ? $calc['icon']  : '🧮';
@@ -437,7 +437,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 					</tr>
 					<tr>
 						<th><?php esc_html_e( 'Subtitle', ADN_TEXT_DOMAIN ); ?></th>
-						<td><input type="text" class="regular-text" name="sidebar[expert_subtitle]" value="<?php echo esc_attr( $expert_subtitle ); ?>" placeholder="Speak to trusted property professionals."></td>
+						<td><input type="text" class="regular-text" name="sidebar[expert_subtitle]" value="<?php echo esc_attr( $expert_subtitle ); ?>" placeholder="Speak to trusted professionals."></td>
 					</tr>
 				</tbody></table>
 				<p style="margin:12px 0 6px;font-weight:600;"><?php esc_html_e( 'Expert Types', ADN_TEXT_DOMAIN ); ?></p>
@@ -998,3 +998,5 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 
 })();
 </script>
+
+

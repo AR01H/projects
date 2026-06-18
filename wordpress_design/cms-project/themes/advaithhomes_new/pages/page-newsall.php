@@ -247,23 +247,29 @@ adn_page_open( $_open_ctx );
 
 	<main class="news-main" id="newsMain">
 
-		<?php /* FEATURED */ ?>
-		<?php if ( ! empty( $ctx['featured'] ) ) : ?>
-			<?php adn_component( 'sections/news_featured', array( 'featured' => $ctx['featured'] ) ); ?>
-		<?php endif; ?>
+			<?php if ( ! empty( $ctx['featured'] ) || ! empty( $ctx['sections'] ) ) : ?>
+				<?php /* FEATURED */ ?>
+				<?php if ( ! empty( $ctx['featured'] ) ) : ?>
+					<?php adn_component( 'sections/news_featured', array( 'featured' => $ctx['featured'] ) ); ?>
+				<?php endif; ?>
 
-		<?php /* SECTIONS (grid / list) */ ?>
-		<?php if ( ! empty( $ctx['sections'] ) ) : ?>
-			<?php foreach ( $ctx['sections'] as $sec ) : ?>
-				<?php adn_component( 'sections/news_section', array( 'section' => $sec ) ); ?>
-			<?php endforeach; ?>
-		<?php endif; ?>
+				<?php /* SECTIONS (grid / list) */ ?>
+				<?php if ( ! empty( $ctx['sections'] ) ) : ?>
+					<?php foreach ( $ctx['sections'] as $sec ) : ?>
+						<?php adn_component( 'sections/news_section', array( 'section' => $sec ) ); ?>
+					<?php endforeach; ?>
+				<?php endif; ?>
 
-		<div class="load-more-wrap">
-			<button class="load-more-btn" id="loadMoreBtn" type="button">
-				<?php echo esc_html__( 'Load More Stories', ADN_TEXT_DOMAIN ); ?>
-			</button>
-		</div>
+				<div class="load-more-wrap">
+					<button class="load-more-btn" id="loadMoreBtn" type="button">
+						<?php echo esc_html__( 'Load More Stories', ADN_TEXT_DOMAIN ); ?>
+					</button>
+				</div>
+			<?php else : ?>
+				<div class="news-empty">
+					<p class="muted"><?php esc_html_e( 'No news available yet. Please check back soon.', ADN_TEXT_DOMAIN ); ?></p>
+				</div>
+			<?php endif; ?>
 
 	</main>
 

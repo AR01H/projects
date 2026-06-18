@@ -110,7 +110,7 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 					</th>
 					<td>
 						<input type="text" id="expert_title" name="title" class="regular-text"
-							value="<?php echo esc_attr( $f_title ); ?>" placeholder="Senior Mortgage Adviser">
+							value="<?php echo esc_attr( $f_title ); ?>" placeholder="Senior Consultant">
 						<p class="description"><?php esc_html_e( 'Shown below the name on cards and profile.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
@@ -121,8 +121,8 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 					</th>
 					<td>
 						<input type="text" id="expert_category" name="category" class="regular-text"
-							value="<?php echo esc_attr( $f_cat ); ?>" placeholder="mortgage">
-						<p class="description"><?php esc_html_e( 'Lowercase slug, e.g. mortgage, solicitor, surveyor. Used by the category filter tabs.', ADN_TEXT_DOMAIN ); ?></p>
+							value="<?php echo esc_attr( $f_cat ); ?>" placeholder="consultant">
+						<p class="description"><?php esc_html_e( 'Lowercase slug, e.g. consultant, advisor, specialist. Used by the category filter tabs.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
 
@@ -453,3 +453,4 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 
 })(jQuery);
 </script>
+

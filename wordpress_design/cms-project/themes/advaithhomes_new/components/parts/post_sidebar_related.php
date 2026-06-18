@@ -16,7 +16,7 @@ if ( empty( $_items ) ) {
 	return;
 }
 ?>
-<div class="sidebar-box">
+<div class="sidebar-box mini_card_container_design">
 	<h3><?php esc_html_e( 'Related Guides', ADN_TEXT_DOMAIN ); ?></h3>
 	<ul class="sidebar-related-list" role="list">
 		<?php foreach ( $_items as $_g ) :

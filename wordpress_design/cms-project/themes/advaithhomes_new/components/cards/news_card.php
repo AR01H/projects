@@ -15,7 +15,11 @@ $url      = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 ?>
 <div class="news-card" data-cat="<?php echo esc_attr( $cat_key ); ?>">
 	<a href="<?php echo $url; ?>" class="news-card-img<?php echo $bg_class; ?>" tabindex="-1" aria-hidden="true">
-		<span class="news-card-icon"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
+		<?php if ( ! empty( $item['thumbnail'] ) ) : ?>
+			<img src="<?php echo esc_url( $item['thumbnail'] ); ?>" alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>" style="width:100%;height:100%;object-fit:cover;display:block;" />
+		<?php else : ?>
+			<span class="news-card-icon"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
+		<?php endif; ?>
 	</a>
 
 	<div class="news-card-body">
@@ -34,14 +38,5 @@ $url      = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 		<?php if ( ! empty( $item['excerpt'] ) ) : ?>
 			<p class="news-card-excerpt"><?php echo esc_html( $item['excerpt'] ); ?></p>
 		<?php endif; ?>
-
-		<div class="news-card-meta">
-			<?php if ( ! empty( $item['date'] ) ) : ?>
-				<span><?php echo esc_html( $item['date'] ); ?></span>
-			<?php endif; ?>
-			<?php if ( ! empty( $item['read_time'] ) ) : ?>
-				<span><?php echo esc_html( $item['read_time'] ); ?></span>
-			<?php endif; ?>
-		</div>
 	</div>
 </div>

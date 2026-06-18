@@ -203,7 +203,7 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 			<?php /* CTA */ ?>
 			<div class="expert-sb-box expert-need-help">
 				<h3><?php echo esc_html( SITE_EXPERT_LABEL ); ?></h3>
-				<p><?php esc_html_e( 'Browse all our vetted property professionals and find the right specialist for your situation.', ADN_TEXT_DOMAIN ); ?></p>
+				<p><?php esc_html_e( 'Browse all our vetted professionals and find the right specialist for your situation.', ADN_TEXT_DOMAIN ); ?></p>
 				<a href="<?php echo esc_url( home_url( SITE_EXPERT_URL ) ); ?>" class="btn btn-primary expert-nh-btn">
 					<?php esc_html_e( 'View All Experts', ADN_TEXT_DOMAIN ); ?>
 				</a>
@@ -225,3 +225,4 @@ if (typeof adnExpert === 'undefined') {
 </script>
 
 <?php adn_page_close( $ctx ); ?>
+

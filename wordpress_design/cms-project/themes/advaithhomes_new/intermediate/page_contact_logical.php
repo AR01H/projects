@@ -18,13 +18,12 @@ function adn_contact_get_context() {
 			if ( '' === $slug || '' === $name ) {
 				continue;
 			}
-			$icon        = ! empty( $term->icon_emoji ) ? (string) $term->icon_emoji : '🏡';
+			$icon        = ! empty( $term->icon_emoji ) ? (string) $term->icon_emoji : adn_term( 'icons.guide_fallback', '🏡' );
 			$term_types[] = array( 'key' => $slug, 'icon' => $icon, 'label' => $name );
 		}
 
 		// Append fixed extras: New to UK + General Enquiry.
-		$term_types[] = array( 'key' => 'new-to-uk',   'icon' => '🇬🇧', 'label' => 'New to ' . SITE_LOCATION . ' ' . SITE_INDUSTRY . ' System' );
-		$term_types[] = array( 'key' => 'general',      'icon' => '💬', 'label' => 'General Enquiry' );
+		$term_types[] = array( 'key' => 'general',      'icon' => adn_term( 'icons.enquiry', '💬' ), 'label' => 'General Enquiry' );
 
 		if ( ! empty( $term_types ) ) {
 			$form['enquiry_types'] = $term_types;
@@ -33,6 +32,26 @@ function adn_contact_get_context() {
 
 	// ── Resources: build dynamically from parent terms + calculators + news ──
 	$resources = isset( $data['resources'] ) ? (array) $data['resources'] : array();
+
+	// ── FAQs: show active CMS FAQs in the contact sidebar ───────────────────
+	$contact_faqs = array();
+	if ( function_exists( 'adn_cms_available' ) && adn_cms_available()
+		&& class_exists( 'AH_Faqs_Model' ) ) {
+		$faq_model = new AH_Faqs_Model();
+		$page_id = get_queried_object_id();
+		$contact_faqs = $faq_model->get_for_page( $page_id );
+		if ( empty( $contact_faqs ) ) {
+			$contact_faqs = $faq_model->get_global();
+		}
+		if ( ! empty( $contact_faqs ) && is_array( $contact_faqs ) ) {
+			$contact_faqs = array_slice( $contact_faqs, 0, 3 );
+		}
+	}
+
+	if ( ! empty( $contact_faqs ) ) {
+		$data['contact_sidebar'] = isset( $data['contact_sidebar'] ) ? (array) $data['contact_sidebar'] : array();
+		$data['contact_sidebar']['faqs'] = $contact_faqs;
+	}
 
 	if ( function_exists( 'adn_cms_available' ) && adn_cms_available()
 		&& function_exists( 'adn_cms_guide_parents' ) ) {
@@ -44,8 +63,8 @@ function adn_contact_get_context() {
 			if ( '' === $slug || '' === $name ) {
 				continue;
 			}
-			$icon = ! empty( $term->icon_emoji ) ? (string) $term->icon_emoji : '🏡';
-			$desc = ! empty( $term->description ) ? (string) $term->description : 'Explore ' . $name . ' guides';
+			$icon = ! empty( $term->icon_emoji ) ? (string) $term->icon_emoji : adn_term( 'icons.guide_fallback', '🏡' );
+			$desc = ! empty( $term->description ) ? (string) $term->description : sprintf( adn_term( 'category_page.explore_guides_title', 'Explore %s %s' ), $name, adn_term( 'taxonomy.parent_plural', 'guides' ) );
 			$items[] = array(
 				'icon'  => $icon,
 				'title' => $name,
@@ -55,8 +74,8 @@ function adn_contact_get_context() {
 		}
 
 		// Calculators and News as fixed extras.
-		$items[] = array( 'icon' => '🧮', 'title' => SITE_TOOLS_PLURAL, 'desc' => 'Useful tools for smart decisions', 'url' => SITE_CALCULATORS_URL );
-		$items[] = array( 'icon' => '📰', 'title' => SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN, 'desc' => 'Latest updates and market insights', 'url' => SITE_NEWS_URL );
+		$items[] = array( 'icon' => adn_term( 'icons.tools', '🧮' ), 'title' => SITE_TOOLS_PLURAL, 'desc' => 'Useful tools for smart decisions', 'url' => SITE_CALCULATORS_URL );
+		$items[] = array( 'icon' => adn_term( 'icons.news', '📰' ), 'title' => SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN, 'desc' => 'Latest updates and market insights', 'url' => SITE_NEWS_URL );
 
 		if ( ! empty( $items ) ) {
 			if ( ! isset( $resources['heading'] ) || '' === $resources['heading'] ) {

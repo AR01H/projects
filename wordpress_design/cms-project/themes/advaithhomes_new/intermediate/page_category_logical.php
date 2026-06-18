@@ -301,8 +301,8 @@ function adn_category_get_context( $slug = '' ) {
 	// ── 5. Guides: CMS articles for this parent slug ─────────────────
 	$guides = array(
 		'heading' => array(
-			'title'      => 'Explore ' . $name . ' Guides',
-			'link_label' => 'View all guides →',
+			'title'      => sprintf( adn_term( 'category_page.explore_guides_title', 'Explore %s %s' ), $name, adn_term( 'taxonomy.parent_plural', 'Guides' ) ),
+			'link_label' => adn_term( 'content.view_all_guides', 'View all →' ),
 			'link_url'   => SITE_GUIDES_URL,
 		),
 		'items' => adn_category_cms_guides( $slug ),
@@ -311,8 +311,8 @@ function adn_category_get_context( $slug = '' ) {
 	// ── 7. Latest Updates - CMS articles for this category (fallback: all posts) ──
 	$regulations = array(
 		'heading' => array(
-			'title'      => 'Latest Updates',
-			'link_label' => 'View all →',
+			'title'      => adn_term( 'category_page.latest_updates_title', 'Latest Updates' ),
+			'link_label' => adn_term( 'category_page.latest_updates_view_all', 'View all →' ),
 			'link_url'   => SITE_NEWS_URL,
 		),
 		'items' => adn_category_latest_updates( $slug, 4 ),
@@ -351,7 +351,7 @@ function adn_category_get_context( $slug = '' ) {
 			);
 		}
 		$journey = array(
-			'heading' => ! empty( $_cs_journey['heading'] ) ? (string) $_cs_journey['heading'] : 'Your ' . $name . ' Journey',
+			'heading' => ! empty( $_cs_journey['heading'] ) ? (string) $_cs_journey['heading'] : sprintf( adn_term( 'category_page.journey_heading', 'Your %s Journey' ), $name ),
 			'steps'   => $steps,
 			'tip'     => $tip,
 		);
@@ -361,13 +361,13 @@ function adn_category_get_context( $slug = '' ) {
 	$calculators = array();
 	if ( ! empty( $_cs_calc['selected_keys'] ) && is_array( $_cs_calc['selected_keys'] )
 		&& function_exists( 'adn_calculators' ) ) {
-		$all_calcs    = adn_calculators();
+		$all_tools    = adn_calculators();
 		$calc_meta    = get_option( 'adn_calculators_meta', array() );
 		$items        = array();
 		foreach ( $_cs_calc['selected_keys'] as $key ) {
 			$key = sanitize_key( $key );
-			if ( ! isset( $all_calcs[ $key ] ) ) { continue; }
-			$reg  = $all_calcs[ $key ];
+			if ( ! isset( $all_tools[ $key ] ) ) { continue; }
+			$reg  = $all_tools[ $key ];
 			$cmeta = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
 			$items[] = array(
 				'icon' => ! empty( $reg['icon'] )      ? (string) $reg['icon']        : '🧮',
@@ -378,8 +378,8 @@ function adn_category_get_context( $slug = '' ) {
 		if ( ! empty( $items ) ) {
 			$calculators = array(
 				'heading' => array(
-					'title'      => ! empty( $_cs_calc['heading'] ) ? (string) $_cs_calc['heading'] : SITE_TOOLS_PLURAL . ' for ' . $name,
-					'link_label' => 'View all ' . strtolower( SITE_TOOLS_PLURAL ) . ' →',
+					'title'      => ! empty( $_cs_calc['heading'] ) ? (string) $_cs_calc['heading'] : sprintf( adn_term( 'category_page.calculators_heading', '%s for %s' ), SITE_TOOLS_PLURAL, $name ),
+					'link_label' => sprintf( adn_term( 'category_page.related_tools_heading', 'View all %s →' ), strtolower( SITE_TOOLS_PLURAL ) ),
 					'link_url'   => SITE_CALCULATORS_URL,
 				),
 				'items' => $items,
@@ -401,7 +401,7 @@ function adn_category_get_context( $slug = '' ) {
 		}
 		if ( ! empty( $tools ) ) {
 			$sidebar['quick_tools'] = array(
-				'heading' => 'Quick Tools',
+				'heading' => adn_term( 'category_page.quick_tools_heading', 'Quick Tools' ),
 				'items'   => $tools,
 				'cta'     => array(
 					'label' => ! empty( $_cs_sidebar['cta_label'] ) ? (string) $_cs_sidebar['cta_label'] : '',
@@ -424,7 +424,7 @@ function adn_category_get_context( $slug = '' ) {
 		}
 		if ( ! empty( $topics ) ) {
 			$sidebar['hot_topics'] = array(
-				'heading'  => ! empty( $_cs_ht['heading'] )        ? (string) $_cs_ht['heading']        : '🔥 Hot Topics',
+				'heading'  => ! empty( $_cs_ht['heading'] )        ? (string) $_cs_ht['heading']        : adn_term( 'category_page.hot_topics_heading', '🔥 Hot Topics' ),
 				'items'    => $topics,
 				'view_all' => array(
 					'label' => ! empty( $_cs_ht['view_all_label'] ) ? (string) $_cs_ht['view_all_label'] : '',
@@ -448,7 +448,7 @@ function adn_category_get_context( $slug = '' ) {
 		}
 		if ( ! empty( $expert_list ) ) {
 			$sidebar['expert_help'] = array(
-				'heading'  => ! empty( $_cs_sidebar['expert_heading'] )   ? (string) $_cs_sidebar['expert_heading']   : 'Need Expert Help?',
+				'heading'  => ! empty( $_cs_sidebar['expert_heading'] )   ? (string) $_cs_sidebar['expert_heading']   : adn_term( 'sidebar.expert_help_heading', 'Need Expert Help?' ),
 				'subtitle' => ! empty( $_cs_sidebar['expert_subtitle'] )  ? (string) $_cs_sidebar['expert_subtitle']  : '',
 				'experts'  => $expert_list,
 				'cta'      => array(
@@ -472,7 +472,7 @@ function adn_category_get_context( $slug = '' ) {
 		}
 		if ( ! empty( $ft_items ) ) {
 			$sidebar['featured_topics'] = array(
-				'heading' => ! empty( $_cs_ft['heading'] ) ? (string) $_cs_ft['heading'] : 'Browse Topics',
+				'heading' => ! empty( $_cs_ft['heading'] ) ? (string) $_cs_ft['heading'] : adn_term( 'category_page.browse_topics_heading', 'Browse Topics' ),
 				'items'   => $ft_items,
 			);
 		}
@@ -490,9 +490,9 @@ function adn_category_get_context( $slug = '' ) {
 		}
 		if ( empty( $sidebar['quick_tools'] ) ) {
 			$sidebar['quick_tools'] = array(
-				'heading' => ! empty( $calculators['heading']['title'] ) ? (string) $calculators['heading']['title'] : 'Related ' . SITE_TOOLS_PLURAL,
+				'heading' => ! empty( $calculators['heading']['title'] ) ? (string) $calculators['heading']['title'] : sprintf( adn_term( 'category_page.related_tools_heading', 'Related %s' ), SITE_TOOLS_PLURAL ),
 				'items'   => $_calc_tools,
-				'cta'     => array( 'label' => 'All ' . SITE_TOOLS_PLURAL . ' →', 'url' => SITE_CALCULATORS_URL ),
+				'cta'     => array( 'label' => sprintf( adn_term( 'category_page.related_tools_heading', 'All %s →' ), SITE_TOOLS_PLURAL ), 'url' => SITE_CALCULATORS_URL ),
 			);
 		}
 	}
@@ -501,8 +501,8 @@ function adn_category_get_context( $slug = '' ) {
 	if ( empty( $sidebar['expert_help'] ) ) {
 		$_eh_pg = get_option( 'adn_calculators_page', array() );
 		$sidebar['expert_help'] = array(
-			'heading'  => ! empty( $_cs_sidebar['expert_heading'] )   ? (string) $_cs_sidebar['expert_heading']   : ( ! empty( $_eh_pg['sidebar_help_title'] ) ? (string) $_eh_pg['sidebar_help_title'] : 'Need Expert Help?' ),
-			'subtitle' => ! empty( $_cs_sidebar['expert_subtitle'] )  ? (string) $_cs_sidebar['expert_subtitle']  : ( ! empty( $_eh_pg['sidebar_help_text'] )  ? (string) $_eh_pg['sidebar_help_text']  : 'Speak to one of our property experts today.' ),
+			'heading'  => ! empty( $_cs_sidebar['expert_heading'] )   ? (string) $_cs_sidebar['expert_heading']   : ( ! empty( $_eh_pg['sidebar_help_title'] ) ? (string) $_eh_pg['sidebar_help_title'] : adn_term( 'sidebar.expert_help_heading', 'Need Expert Help?' ) ),
+			'subtitle' => ! empty( $_cs_sidebar['expert_subtitle'] )  ? (string) $_cs_sidebar['expert_subtitle']  : ( ! empty( $_eh_pg['sidebar_help_text'] )  ? (string) $_eh_pg['sidebar_help_text']  : adn_term( 'sidebar.expert_help_subtitle', 'Get personalised guidance from our property experts.' ) ),
 			'experts'  => array(),
 			'cta'      => array(
 				'label' => ! empty( $_cs_sidebar['expert_cta_label'] ) ? (string) $_cs_sidebar['expert_cta_label'] : ( ! empty( $_eh_pg['sidebar_help_btn_label'] ) ? (string) $_eh_pg['sidebar_help_btn_label'] : SITE_EXPERT_LABEL ),
@@ -605,7 +605,7 @@ function adn_category_get_context( $slug = '' ) {
 					'category'    => PARENT_TERM,
 					'title'       => $_pp_post->post_title,
 					'description' => wp_trim_words( $_ex, 18, '…' ),
-					'read_more'   => 'Read More →',
+					'read_more'   => adn_term( 'content.read_more', 'Explore →' ),
 					'url'         => get_permalink( $_pp_post ),
 				);
 			}
@@ -614,7 +614,7 @@ function adn_category_get_context( $slug = '' ) {
 			if ( ! empty( $pp_cards ) ) {
 				$popular_posts = array(
 					'heading' => array(
-						'title'      => ! empty( $_cs_pp['heading'] ) ? (string) $_cs_pp['heading'] : 'Popular Guides',
+						'title'      => ! empty( $_cs_pp['heading'] ) ? (string) $_cs_pp['heading'] : sprintf( adn_term( 'category_page.popular_guides_heading', 'Popular %s' ), adn_term( 'taxonomy.parent_plural', 'Guides' ) ),
 						'link_label' => '',
 						'link_url'   => '',
 					),
@@ -637,7 +637,7 @@ function adn_category_get_context( $slug = '' ) {
 	$news = array(
 		'heading' => array(
 			'title'      => 'Latest ' . SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN,
-			'link_label' => 'View all news →',
+			'link_label' => adn_term( 'content.view_all_news', 'View all →' ),
 			'link_url'   => SITE_NEWS_URL,
 		),
 		'items' => $_main_news_items,
@@ -660,3 +660,4 @@ function adn_category_get_context( $slug = '' ) {
 		'chrome'        => $chrome,
 	);
 }
+

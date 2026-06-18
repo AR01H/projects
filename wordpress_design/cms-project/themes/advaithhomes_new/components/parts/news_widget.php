@@ -30,7 +30,7 @@ foreach ( $items as $_item ) {
 	);
 }
 ?>
-<div class="news-widget">
+<div class="news-widget mini_card_container_design">
 	<?php adn_component( 'parts/list_widget', array( 'widget' => array(
 		'heading' => isset( $widget['heading'] ) && is_array( $widget['heading'] ) ? $widget['heading'] : array(),
 		'items'   => $cards,

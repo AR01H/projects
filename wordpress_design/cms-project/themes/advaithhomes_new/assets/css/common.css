@@ -145,7 +145,6 @@ em { font-family: var(--font-accent); font-style: italic; }
  
 table {
   width: 100%;
-  min-width: 480px;
   border-collapse: collapse;
   border: 1px solid var(--secondary-color);
 }
@@ -200,7 +199,7 @@ tbody td.bold { font-weight: 500; color: var(--client-color); }
 .badge-teal  { background: #d0eae8; color: #1a4a4c; }
  
 @media (max-width: 600px) {
-  thead th, tbody td { padding: 8px 12px; font-size: 13px; }
+  thead th, tbody td { padding: 4px 6px; font-size: 13px; }
 }
 
 

@@ -77,10 +77,10 @@ function adn_news_get_context() {
 		}
 	}
 
-	// ── Source 2: WP_Query fallback (plain WP posts - no plugin needed) ──────
+	// ── Source 2: WP_Query fallback (only `news` post_type; avoid showing regular posts) ─
 	if ( ! $loaded ) {
 		$q = new WP_Query( array(
-			'post_type'      => 'post',
+			'post_type'      => 'news',
 			'post_status'    => 'publish',
 			'posts_per_page' => 13,
 			'orderby'        => 'date',
@@ -102,6 +102,9 @@ function adn_news_get_context() {
 					'items'      => adn_news_wp_grid_items( $rest ),
 				);
 			}
+
+			// Flag for callers: whether we have any news to show
+			$ctx['has_news'] = ( ! empty( $ctx['featured'] ) || ! empty( $ctx['sections'] ) );
 		}
 	}
 
@@ -177,6 +180,7 @@ function adn_news_cms_featured( $post ) {
 		'date'      => adn_cms_post_date( $post ),
 		'read_time' => adn_cms_read_time( isset( $post->content ) ? $post->content : '' ),
 		'url'       => adn_cms_post_url( $post ),
+		'thumbnail' => ( isset( $post->thumbnail ) && $post->thumbnail ) ? (string) $post->thumbnail : ( isset( $post->image_url ) ? (string) $post->image_url : '' ),
 	);
 }
 
@@ -188,6 +192,11 @@ function adn_news_cms_grid_items( $posts ) {
 			continue;
 		}
 		$cat     = ! empty( $post->category_name ) ? $post->category_name : SITE_NEWS_NOUN;
+		$thumb = '';
+		if ( isset( $post->thumbnail ) && $post->thumbnail ) { $thumb = (string) $post->thumbnail; }
+		elseif ( isset( $post->image_url ) && $post->image_url ) { $thumb = (string) $post->image_url; }
+		elseif ( isset( $post->image ) && $post->image ) { $thumb = (string) $post->image; }
+
 		$items[] = array(
 			'cat_key'    => sanitize_key( $cat ),
 			'icon'       => 'fa-newspaper',
@@ -199,6 +208,7 @@ function adn_news_cms_grid_items( $posts ) {
 			'date'       => adn_cms_post_date( $post ),
 			'read_time'  => adn_cms_read_time( isset( $post->content ) ? $post->content : '' ),
 			'url'        => adn_cms_post_url( $post ),
+			'thumbnail'  => $thumb,
 		);
 	}
 	return $items;
@@ -218,6 +228,7 @@ function adn_news_wp_featured( $post ) {
 		'date'      => get_the_date( 'F j, Y', $post ),
 		'read_time' => adn_cms_read_time( $post->post_content ),
 		'url'       => get_permalink( $post ),
+		'thumbnail' => get_the_post_thumbnail_url( $post->ID, 'medium') ?: '',
 	);
 }
 
@@ -231,6 +242,8 @@ function adn_news_wp_grid_items( $posts ) {
 		$cat     = ! empty( $cats ) ? $cats[0]->name : SITE_NEWS_NOUN;
 		$excerpt = $post->post_excerpt
 			?: wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '…' );
+		$thumb = get_the_post_thumbnail_url( $post->ID, 'medium' ) ?: '';
+
 		$items[] = array(
 			'cat_key'    => sanitize_key( $cat ),
 			'icon'       => 'fa-newspaper',
@@ -242,6 +255,7 @@ function adn_news_wp_grid_items( $posts ) {
 			'date'       => get_the_date( 'M j, Y', $post ),
 			'read_time'  => adn_cms_read_time( $post->post_content ),
 			'url'        => get_permalink( $post ),
+			'thumbnail'  => $thumb,
 		);
 	}
 	return $items;

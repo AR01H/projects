@@ -23,7 +23,7 @@ $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
         <form class="newsletter-form adn-nl-form" onsubmit="return false;" data-nonce="<?php echo esc_attr( $nl_nonce ); ?>" data-ajaxurl="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
             <div class="nl-input-row">
                 <input type="email" name="nl_email" class="adn-nl-email"
-                       placeholder="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Your email address' ); ?>"
+                       placeholder="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : adn_term( 'sidebar.newsletter_placeholder', 'Your email address' ) ); ?>"
                        aria-label="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Email address' ); ?>"
                        required />
                 <button type="submit" class="adn-nl-btn" aria-label="<?php esc_attr_e( 'Subscribe', ADN_TEXT_DOMAIN ); ?>">

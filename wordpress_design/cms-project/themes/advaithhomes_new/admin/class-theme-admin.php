@@ -7,7 +7,7 @@ require_once __DIR__ . '/class-theme-settings.php';
 /**
  * ADN_Theme_Admin
  *
- * One top-level admin page ("Advaith Homes") rendered as a data-driven
+ * One top-level admin page rendered as a data-driven
  * TABS + SUBTABS layout. To add a tab or subtab, edit tabs() only - the
  * navigation, routing and view loading all update automatically.
  *
@@ -43,7 +43,7 @@ class ADN_Theme_Admin {
 		add_action( 'admin_post_adn_save_expert_banner', array( __CLASS__, 'handle_save_expert_banner' ) );
 
 		// Manage Calculator → Page Content settings.
-		add_action( 'admin_post_adn_save_calcs_page', array( __CLASS__, 'handle_save_calcs_page' ) );
+		add_action( 'admin_post_adn_save_tools_page', array( __CLASS__, 'handle_save_tools_page' ) );
 
 		// Admin Actions → Sample Data (seed Guide terms / articles / news).
 		add_action( 'admin_post_adn_seed_content', array( __CLASS__, 'handle_seed_content' ) );
@@ -619,7 +619,7 @@ class ADN_Theme_Admin {
 		// Allowed category slugs - dynamic when the categories function is available.
 		$allowed_cats = function_exists( 'adn_calculator_categories' )
 			? array_keys( adn_calculator_categories() )
-			: array( 'buying', 'selling', 'moving', 'mortgage', 'tax', 'affordability' );
+			: array();
 
 		// Iterate the registered calculators (the source of truth), not POST keys.
 		foreach ( adn_calculators() as $key => $calc ) {
@@ -676,8 +676,8 @@ class ADN_Theme_Admin {
 
 		// When adding a new calc, prevent overwriting an existing one (file or DB).
 		if ( ! $is_edit ) {
-			$file_calcs = function_exists( 'adn_calculators' ) ? array_keys( adn_calculators() ) : array();
-			if ( in_array( $key, $file_calcs, true ) || null !== AH_Calculator_DB::get( $key ) ) {
+			$file_tools = function_exists( 'adn_calculators' ) ? array_keys( adn_calculators() ) : array();
+			if ( in_array( $key, $file_tools, true ) || null !== AH_Calculator_DB::get( $key ) ) {
 				wp_die( esc_html( sprintf(
 					__( 'A calculator with the key "%s" already exists. Choose a different key.', ADN_TEXT_DOMAIN ),
 					$key
@@ -774,8 +774,8 @@ class ADN_Theme_Admin {
 
 	// ── Calculators: page content settings ──────────────────────────────────────────
 
-	public static function handle_save_calcs_page() {
-		check_admin_referer( 'adn_save_calcs_page' );
+	public static function handle_save_tools_page() {
+		check_admin_referer( 'adn_save_tools_page' );
 		if ( ! current_user_can( self::CAPABILITY ) ) {
 			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
 		}
@@ -1375,3 +1375,4 @@ class ADN_Theme_Admin {
 		self::redirect_back( 'experts', 'list', __( 'Expert deleted.', ADN_TEXT_DOMAIN ) );
 	}
 }
+

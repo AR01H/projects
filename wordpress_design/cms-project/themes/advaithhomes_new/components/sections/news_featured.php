@@ -25,9 +25,6 @@ $url = esc_url( adn_link( isset( $featured['url'] ) ? $featured['url'] : '' ) );
 	</a>
 
 	<div class="featured-article-body">
-		<?php if ( ! empty( $featured['tag'] ) ) : ?>
-			<div class="fa-tag"><?php echo esc_html( $featured['tag'] ); ?></div>
-		<?php endif; ?>
 
 		<?php if ( ! empty( $featured['title'] ) ) : ?>
 			<h2 class="fa-title">
@@ -38,15 +35,6 @@ $url = esc_url( adn_link( isset( $featured['url'] ) ? $featured['url'] : '' ) );
 		<?php if ( ! empty( $featured['excerpt'] ) ) : ?>
 			<p class="fa-excerpt"><?php echo esc_html( $featured['excerpt'] ); ?></p>
 		<?php endif; ?>
-
-		<div class="fa-meta">
-			<?php if ( ! empty( $featured['date'] ) ) : ?>
-				<span><?php echo esc_html( $featured['date'] ); ?></span>
-			<?php endif; ?>
-			<?php if ( ! empty( $featured['read_time'] ) ) : ?>
-				<span><?php echo esc_html( $featured['read_time'] ); ?></span>
-			<?php endif; ?>
-		</div>
 
 		<a href="<?php echo $url; ?>" class="btn btn-primary fa-read-btn">
 			<?php echo esc_html__( 'Read Full Story', ADN_TEXT_DOMAIN ); ?> &rsaquo;

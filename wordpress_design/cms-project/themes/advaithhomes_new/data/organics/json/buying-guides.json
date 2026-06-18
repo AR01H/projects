@@ -1,0 +1,148 @@
+{
+    "meta": {
+        "page_title": "Organic Guides - Expert Insights & Tips",
+        "meta_description": "Practical, easy-to-understand guides to help you understand organic products, certifications, and healthy living with confidence."
+    },
+    "breadcrumb": [
+        { "label": "Home",   "url": "/" },
+        { "label": "Buying", "url": "/buying/" },
+        { "label": "Guides", "url": null }
+    ],
+    "hero": {
+        "eyebrow": "GUIDES & INSIGHTS",
+        "title": "Organic Guides",
+        "description": "Practical, easy-to-understand guides to help you understand organic products, certifications, and healthy living with confidence.",
+        "bg_icon": "🌱",
+        "trust_items": []
+    },
+    "sidebar": {
+        "browse_cats": [],
+        "level_filters": [
+            { "label": "All Levels",    "checked": true  },
+            { "label": "Beginner",      "checked": false },
+            { "label": "Intermediate",  "checked": false },
+            { "label": "Advanced",      "checked": false }
+        ],
+        "format_filters": [
+            { "label": "All Formats",       "checked": true  },
+            { "label": "Articles",          "checked": false },
+            { "label": "Checklists",        "checked": false },
+            { "label": "Guides (Long Read)","checked": false },
+            { "label": "Downloads (PDF)",   "checked": false },
+            { "label": "Videos",            "checked": false }
+        ],
+        "help_cta": {
+            "title": "Need Personal Help?",
+            "text": "Talk to an organic expert for personalised advice for your situation.",
+            "button_label": "Ask an Expert →",
+            "button_url": "/ask-expert/"
+        }
+    },
+    "guides": {
+        "search_placeholder": "Search guides…",
+        "sort_options": ["Latest", "Most Popular", "A-Z"],
+        "items": [
+            {
+                "icon": "🌍",
+                "gradient": "linear-gradient(135deg,#c8d8c4,#7a9a74)",
+                "category": "Getting Started",
+                "title": "Organic Certifications Explained",
+                "description": "Understanding USDA, ECOCERT, Demeter, Fair Trade, and other organic certification standards worldwide.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🌱",
+                "gradient": "linear-gradient(135deg,#a8e6c4,#4a9d6f)",
+                "category": "Sustainability",
+                "title": "Organic Farming Methods & Practices",
+                "description": "How organic farmers grow crops without synthetic pesticides, GMOs, and maintain soil health.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "❤️",
+                "gradient": "linear-gradient(135deg,#e8c4c4,#c87070)",
+                "category": "Health & Wellness",
+                "title": "Health Benefits of Organic Products",
+                "description": "Scientific evidence on nutrition, pesticide reduction, and health benefits of choosing organic.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🌍",
+                "gradient": "linear-gradient(135deg,#c4e4e8,#709ac8)",
+                "category": "Sustainability",
+                "title": "Sustainability & Environmental Impact",
+                "description": "How organic farming protects ecosystems, reduces carbon footprint, and supports biodiversity.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🧪",
+                "gradient": "linear-gradient(135deg,#e8d4c4,#c89070)",
+                "category": "Nutrition",
+                "title": "Nutrition Comparison: Organic vs. Conventional",
+                "description": "What science says about nutrient content differences between organic and conventional foods.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🏷️",
+                "gradient": "linear-gradient(135deg,#d8e4c8,#8aa978)",
+                "category": "Certifications",
+                "title": "Reading Organic Labels & Certification Marks",
+                "description": "A complete guide to understanding and trusting certification logos on organic products.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🚫",
+                "gradient": "linear-gradient(135deg,#e4c8c8,#b87070)",
+                "category": "Certifications",
+                "title": "What Organic Certification Prohibits",
+                "description": "Detailed list of banned substances, practices, and GMO restrictions in certified organic products.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🌿",
+                "gradient": "linear-gradient(135deg,#c8d8d8,#7a9a9a)",
+                "category": "Sustainability",
+                "title": "Organic Vs. Biodynamic: Understanding the Difference",
+                "description": "Comparing organic certification with biodynamic farming and other sustainable approaches.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🔬",
+                "gradient": "linear-gradient(135deg,#d8c8e8,#8868a8)",
+                "category": "Sustainability",
+                "title": "Soil Health & Crop Rotation in Organic Farming",
+                "description": "Why soil health matters and how organic farmers maintain fertility without synthetic fertilizers.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            },
+            {
+                "icon": "🌾",
+                "gradient": "linear-gradient(135deg,#e8dcc4,#b89870)",
+                "category": "Certifications",
+                "title": "Local Organic Certifications by Region",
+                "description": "Understanding organic certification standards and bodies in different countries and regions.",
+                "read_more": "Read More →",
+                "url": "/buying-guides/"
+            }
+        ],
+        "pagination": {
+            "current": 1,
+            "total": 4
+        },
+        "download_cta": {
+            "icon": "📚",
+            "title": "Want the complete organic guide?",
+            "description": "Our in-depth guide covers everything from shopping to certifications to health benefits.",
+            "button_label": "Download the Free Guide ↓",
+            "button_url": "#"
+        }
+    }
+}

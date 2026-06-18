@@ -144,27 +144,15 @@ if ( have_posts() ) {
 			<?php /* ── SIDEBAR ── */ ?>
 			<aside class="article-sidebar">
 
-				<?php /* Calculators */ ?>
+				<?php /* Tools */ ?>
 				<?php if ( ! empty( $_sidebar['calculators'] ) ) : ?>
-					<?php adn_component( 'parts/post_sidebar_calcs', array( 'calculators' => $_sidebar['calculators'] ) ); ?>
+					<?php adn_component( 'parts/post_sidebar_tools', array( 'calculators' => $_sidebar['calculators'] ) ); ?>
 				<?php endif; ?>
 
 				<?php /* Latest news */ ?>
 				<?php if ( ! empty( $_sidebar_news ) ) : ?>
 					<?php adn_component( 'parts/post_sidebar_news', array( 'latest_news' => $_sidebar_news ) ); ?>
 				<?php endif; ?>
-
-				<?php /* Newsletter CTA */ ?>
-				<?php adn_component( 'parts/post_sidebar_newsletter', array(
-					'newsletter' => isset( $_sidebar['newsletter'] ) ? $_sidebar['newsletter'] : array(
-						'icon'         => '✉️',
-						'heading'      => 'Stay Informed',
-						'description'  => 'Get the latest property news and guides delivered to your inbox.',
-						'placeholder'  => 'Your email address',
-						'button_label' => 'Subscribe',
-						'note'         => 'No spam. Unsubscribe any time.',
-					),
-				) ); ?>
 
 			</aside>
 
@@ -173,3 +161,4 @@ if ( have_posts() ) {
 </section>
 
 <?php adn_page_close( $_ctx ); ?>
+

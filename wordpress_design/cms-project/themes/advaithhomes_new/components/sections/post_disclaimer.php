@@ -16,8 +16,9 @@ $_company = defined( 'COMPANY_NAME' ) ? COMPANY_NAME : SITE_BRAND_NAME;
 		<strong><?php esc_html_e( 'Disclaimer:', ADN_TEXT_DOMAIN ); ?></strong>
 		<?php printf(
 			/* translators: %s = company name */
-			esc_html__( 'The information provided by %s is for general guidance only and does not constitute financial, legal, or professional advice. Always consult a qualified professional before making property or financial decisions.', ADN_TEXT_DOMAIN ),
+			esc_html__( 'The information provided by %s is for general guidance only and does not constitute financial, legal, or professional advice. Always consult a qualified professional before making business or financial decisions.', ADN_TEXT_DOMAIN ),
 			esc_html( $_company )
 		); ?>
 	</p>
 </div>
+

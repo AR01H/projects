@@ -21,9 +21,9 @@ function adn_guidance_get_context() {
 			if ( '' === $slug || '' === $name ) {
 				continue;
 			}
-			$icon = ! empty( $term->icon_emoji )  ? (string) $term->icon_emoji  : '🏡';
+			$icon = ! empty( $term->icon_emoji )  ? (string) $term->icon_emoji  : adn_term( 'icons.guide_fallback', '🏡' );
 			$desc = ! empty( $term->description ) ? (string) $term->description
-			                                       : 'Explore ' . $name . ' guidance and resources';
+			                                       : sprintf( adn_term( 'guidance_page.explore_guidance', 'Explore %s guidance and resources' ), $name );
 
 			$help_opts[] = $name;
 
@@ -37,7 +37,7 @@ function adn_guidance_get_context() {
 		}
 
 		// Append "Other" option at the end of the form dropdown.
-		$help_opts[] = 'Other';
+		$help_opts[] = adn_term( 'guidance_page.form_other', 'Other' );
 
 		if ( ! empty( $help_opts ) ) {
 			$form['help_options'] = $help_opts;
@@ -45,7 +45,7 @@ function adn_guidance_get_context() {
 
 		if ( ! empty( $svc_items ) ) {
 			if ( empty( $services['heading'] ) ) {
-				$services['heading'] = 'We can help you with';
+				$services['heading'] = adn_term( 'guidance_page.services_heading', 'We can help you with' );
 			}
 			$services['items'] = $svc_items;
 		}

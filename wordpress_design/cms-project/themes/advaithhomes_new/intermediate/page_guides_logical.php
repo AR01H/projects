@@ -127,10 +127,10 @@ function adn_guides_get_context() {
 	}
 
 	// ── Sidebar: calculators (top 5) ─────────────────────────────────────────
-	$calcs_raw  = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+	$tools_raw  = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
 	$meta_all   = get_option( 'adn_calculators_meta', array() );
 	$calc_items = array();
-	foreach ( array_slice( $calcs_raw, 0, 5, true ) as $key => $reg ) {
+	foreach ( array_slice( $tools_raw, 0, 5, true ) as $key => $reg ) {
 		$cmeta = ( isset( $meta_all[ $key ] ) && is_array( $meta_all[ $key ] ) ) ? $meta_all[ $key ] : array();
 		if ( array_key_exists( 'enabled', $cmeta ) && empty( $cmeta['enabled'] ) ) { continue; }
 		$calc_items[] = array(
@@ -148,20 +148,20 @@ function adn_guides_get_context() {
 	return array(
 		'meta'       => array(
 			'page_title'       => SITE_DOMAIN_NOUN . ' ' . SITE_CONTENT_PLURAL . ' - ' . SITE_BRAND_NAME,
-			'meta_description' => 'Browse our complete library of property guides covering buying, selling and moving home in the UK.',
+			'meta_description' => adn_term( 'guides_page.meta_description', 'Browse our complete library of guides.' ),
 		),
 		'breadcrumb' => array(
 			array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
 			array( 'label' => SITE_CONTENT_PLURAL, 'url' => null ),
 		),
 		'hero'       => array(
-			'title'       => 'Property Guides',
-			'description' => 'Browse our complete library of guides covering every step of buying, selling and moving home in the UK.',
+			'title'       => adn_term( 'guides_page.hero_title',       SITE_DOMAIN_NOUN . ' ' . SITE_CONTENT_PLURAL ),
+			'description' => adn_term( 'guides_page.hero_description', '' ),
 		),
 		'groups'  => $groups,
 		'sidebar' => array(
 			'guide_parents' => array(
-				'heading' => 'Browse by Topic',
+				'heading' => adn_term( 'guides_page.sidebar_browse_heading', 'Browse by Topic' ),
 				'items'   => $sidebar_links,
 			),
 			'quick_tools' => array(
@@ -178,3 +178,4 @@ function adn_guides_get_context() {
 		'chrome' => $chrome,
 	);
 }
+

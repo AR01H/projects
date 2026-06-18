@@ -32,7 +32,6 @@
         initScrollProgress();
         initScrollToTop();
         initActiveNavLink();
-        initJourneyTimeline();
     });
 
     /* ---------- Mobile menu ---------- */
@@ -395,101 +394,6 @@
 
     function closeJnyPopup() {
         if (_jnyPopup) { _jnyPopup.classList.remove('is-open'); }
-    }
-
-    function initJourneyTimeline() {
-        document.querySelectorAll('[data-jny-vtl]').forEach(function (root) {
-            var viewport = root.querySelector('[data-jny-vtl-vp]');
-            var track    = root.querySelector('[data-jny-vtl-track]');
-            var btnPrev  = root.querySelector('[data-jny-vtl-prev]');
-            var btnNext  = root.querySelector('[data-jny-vtl-next]');
-            var rows     = track ? Array.prototype.slice.call(track.querySelectorAll('[data-jny-vtl-row]')) : [];
-            if (!track || rows.length < 2) { return; }
-
-            var current = 0;
-            var VISIBLE = 3;
-
-            /*
-             * Build cumulative offsets so variable-height rows are handled correctly:
-             * offsets[i] = px from top of track to top of row i.
-             */
-            function buildOffsets() {
-                var offs = [0];
-                rows.forEach(function (r) {
-                    var mb = parseFloat(window.getComputedStyle(r).marginBottom) || 0;
-                    offs.push(offs[offs.length - 1] + r.offsetHeight + mb);
-                });
-                return offs;
-            }
-
-            function update(animated) {
-                var offs   = buildOffsets();
-                var endIdx = Math.min(current + VISIBLE, rows.length);
-                var vpH    = offs[endIdx] - offs[current];
-
-                track.style.transition = animated ? 'transform .45s cubic-bezier(.4,0,.2,1)' : 'none';
-                track.style.transform  = 'translateY(-' + offs[current] + 'px)';
-                viewport.style.height  = vpH + 'px';
-
-                if (btnPrev) { btnPrev.disabled = current <= 0; }
-                if (btnNext) { btnNext.disabled = current >= rows.length - VISIBLE; }
-            }
-
-            /* Show "More" button on cards where description is clamped */
-            function checkMoreButtons() {
-                rows.forEach(function (row) {
-                    var desc = row.querySelector('.jny-vtl-desc');
-                    var btn  = row.querySelector('.jny-vtl-more');
-                    if (!desc || !btn) { return; }
-                    btn.classList.toggle('is-visible', desc.scrollHeight > desc.clientHeight + 2);
-                });
-            }
-
-            /* Wire "More" buttons to popup */
-            rows.forEach(function (row) {
-                var btn = row.querySelector('.jny-vtl-more');
-                if (btn) {
-                    btn.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        openJnyPopup(row);
-                    });
-                }
-            });
-
-            if (btnPrev) {
-                btnPrev.addEventListener('click', function () {
-                    if (current > 0) { current--; update(true); }
-                });
-            }
-            if (btnNext) {
-                btnNext.addEventListener('click', function () {
-                    if (current < rows.length - VISIBLE) { current++; update(true); }
-                });
-            }
-
-            /* Touch swipe */
-            var touchY = 0;
-            track.addEventListener('touchstart', function (e) {
-                touchY = e.touches[0].clientY;
-            }, { passive: true });
-            track.addEventListener('touchend', function (e) {
-                var dy = touchY - e.changedTouches[0].clientY;
-                if (Math.abs(dy) > 40) {
-                    if (dy > 0 && current < rows.length - VISIBLE) { current++; update(true); }
-                    else if (dy < 0 && current > 0) { current--; update(true); }
-                }
-            }, { passive: true });
-
-            /* Resize */
-            var resizeTimer;
-            window.addEventListener('resize', function () {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function () { update(false); checkMoreButtons(); }, 120);
-            }, { passive: true });
-
-            /* Init */
-            setTimeout(function () { update(false); checkMoreButtons(); }, 80);
-        });
     }
 
     /* ---------- Active nav-link highlight ---------- */

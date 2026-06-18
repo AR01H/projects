@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$calcs    = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+$tools    = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
 $db_rows  = class_exists( 'AH_Calculator_DB' ) ? AH_Calculator_DB::get_all() : array();
 $db_keys  = array();
 foreach ( $db_rows as $r ) { $db_keys[] = $r['calc_key']; }
@@ -89,7 +89,7 @@ $new_url = ADN_Theme_Admin::tab_url( 'calculators', 'new' );
 		<?php esc_html_e( 'Enable / disable each calculator, set its display label, help text, card link and guide link. Applies to both built-in and custom calculators.', ADN_TEXT_DOMAIN ); ?>
 	</p>
 
-	<?php if ( empty( $calcs ) ) : ?>
+	<?php if ( empty( $tools ) ) : ?>
 		<p><?php esc_html_e( 'No calculators are registered yet.', ADN_TEXT_DOMAIN ); ?></p>
 	<?php else : ?>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -97,15 +97,8 @@ $new_url = ADN_Theme_Admin::tab_url( 'calculators', 'new' );
 			<?php wp_nonce_field( 'adn_save_calc_list' ); ?>
 
 			<?php
-			$_cat_labels = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array(
-				'buying'        => __( 'Buying',        ADN_TEXT_DOMAIN ),
-				'selling'       => __( 'Selling',       ADN_TEXT_DOMAIN ),
-				'moving'        => __( 'Moving Home',   ADN_TEXT_DOMAIN ),
-				'mortgage'      => __( 'Mortgage',      ADN_TEXT_DOMAIN ),
-				'tax'           => __( 'Tax',           ADN_TEXT_DOMAIN ),
-				'affordability' => __( 'Affordability', ADN_TEXT_DOMAIN ),
-			);
-			foreach ( $calcs as $key => $calc ) :
+			$_cat_labels = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array();
+			foreach ( $tools as $key => $calc ) :
 				$meta       = adn_calculator_meta( $key );
 				$is_db      = in_array( $key, $db_keys, true );
 				$edit_url   = add_query_arg( 'edit_key', $key, $new_url );
@@ -301,3 +294,4 @@ $new_url = ADN_Theme_Admin::tab_url( 'calculators', 'new' );
 	});
 }(jQuery));
 </script>
+

@@ -77,15 +77,15 @@ adn_page_open( $ctx );
 </section>
 <?php endif; ?>
 
-<?php /* ============================== CALCULATORS ============================== */ ?>
+<?php /* ============================== TOOLS ============================== */ ?>
 <?php if ( adn_home_section_visible( 'calculators' ) ) : ?>
-<section class="calculators-section">
+<section class="tools-section">
 	<div class="container">
 		<?php
 		adn_component( 'parts/section_headers/section_header', array(
-			'heading' => $ctx['calculators']['heading'],
+			'heading' => $ctx['tools']['heading'],
 		) );
-		adn_component( 'sections/calculators', array( 'items' => $ctx['calculators']['items'] ) );
+		adn_component( 'sections/tools', array( 'items' => $ctx['tools']['items'] ) );
 		?>
 	</div>
 </section>

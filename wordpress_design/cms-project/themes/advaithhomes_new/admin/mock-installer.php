@@ -63,7 +63,7 @@ class ADN_Mock_Installer {
 		}
 
 		// News parent (+ a term to attach news posts to).
-		$news_parent  = self::ensure_parent_term( $pt, 'News', 'news', 'Latest property news', '📰', 9 );
+		$news_parent  = self::ensure_parent_term( $pt, 'News', 'news', 'Latest News', '📰', 9 );
 		$summary['parents'] += $news_parent['created'] ? 1 : 0;
 
 		// 3. Terms (topics) under each parent term.
@@ -79,7 +79,7 @@ class ADN_Mock_Installer {
 			}
 		}
 		// A term to hang news posts on.
-		$news_term         = self::ensure_term( $tax, $type_id, (int) $news_parent['id'], 'Property News', 'news-property', 0 );
+		$news_term         = self::ensure_term( $tax, $type_id, (int) $news_parent['id'], 'Industry News', 'news-industry', 0 );
 		$summary['terms'] += $news_term['created'] ? 1 : 0;
 
 		// 4. Articles → WordPress posts linked to a topic term.
@@ -193,3 +193,4 @@ class ADN_Mock_Installer {
 		return $created;
 	}
 }
+
