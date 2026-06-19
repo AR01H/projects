@@ -1,0 +1,25 @@
+{
+    "meta": {
+        "page_title": "Health News & Updates - Health Hub",
+        "meta_description": "The latest health news, NHS updates, NICE guidance changes and expert commentary from Health Hub."
+    },
+    "breadcrumb": [
+        { "label": "Home", "url": "/" },
+        { "label": "Health News", "url": null }
+    ],
+    "hero": {
+        "title": "Health News & Updates",
+        "description": "Stay informed with the latest health news, NHS guidance updates, clinical research summaries and expert health commentary — all in one place."
+    },
+    "categories": [
+        { "key": "all", "label": "All News", "count": 0 },
+        { "key": "nhs", "label": "NHS Updates", "count": 0 },
+        { "key": "nutrition", "label": "Nutrition", "count": 0 },
+        { "key": "mental-health", "label": "Mental Health", "count": 0 },
+        { "key": "fitness", "label": "Fitness", "count": 0 },
+        { "key": "research", "label": "Research", "count": 0 }
+    ],
+    "sections": {},
+    "sidebar": {},
+    "bottom_newsletter": {}
+}

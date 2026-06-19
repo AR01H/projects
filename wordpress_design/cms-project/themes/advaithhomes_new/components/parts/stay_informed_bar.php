@@ -28,10 +28,10 @@ $si = isset( $stay_informed ) && is_array( $stay_informed ) ? $stay_informed : a
 	</div>
 	<form class="stay-informed-form" onsubmit="return false;">
 		<input type="email"
-		       placeholder="<?php echo esc_attr( isset( $si['placeholder'] ) ? $si['placeholder'] : '' ); ?>"
-		       aria-label="<?php echo esc_attr( isset( $si['placeholder'] ) ? $si['placeholder'] : esc_html__( 'Email address', ADN_TEXT_DOMAIN ) ); ?>" />
+		       placeholder="<?php echo esc_attr( isset( $si['placeholder'] ) ? $si['placeholder'] : SITE_PLACEHOLDER_NEWSLETTER ); ?>"
+		       aria-label="<?php echo esc_attr( isset( $si['placeholder'] ) ? $si['placeholder'] : SITE_PLACEHOLDER_NEWSLETTER ); ?>" />
 		<button type="submit" class="btn btn-accent">
-			<?php echo esc_html( isset( $si['button_label'] ) ? $si['button_label'] : '' ); ?>
+			<?php echo esc_html( isset( $si['button_label'] ) ? $si['button_label'] : SITE_BTN_SUBSCRIBE ); ?>
 		</button>
 		<?php if ( ! empty( $si['note'] ) ) : ?>
 			<div class="newsletter-spam"><?php echo esc_html( $si['note'] ); ?></div>

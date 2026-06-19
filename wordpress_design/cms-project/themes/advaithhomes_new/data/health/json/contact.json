@@ -1,0 +1,28 @@
+{
+    "meta": {
+        "page_title": "Contact Us - Health Hub",
+        "meta_description": "Send us your health enquiry and get guidance from our health information team."
+    },
+    "breadcrumb": [
+        { "label": "Home", "url": "/" },
+        { "label": "Contact Us", "url": null }
+    ],
+    "hero": {
+        "title": "How can we help you?",
+        "description": "Whether you have a question about a health topic, need help finding information, or want to speak to an expert, send us your enquiry.",
+        "bg_icon": "❤️",
+        "trust_items": [
+            { "icon": "🤝", "title": "Expert Guidance", "subtitle": "Advice from qualified health information specialists" },
+            { "icon": "⚖️", "title": "Impartial & Independent", "subtitle": "Evidence-based, unbiased health information" },
+            { "icon": "🔒", "title": "Confidential", "subtitle": "Your enquiry is handled with complete privacy" },
+            { "icon": "⚡", "title": "Quick Response", "subtitle": "We aim to respond within 2 working days" }
+        ]
+    },
+    "form": {
+        "heading": "Send us your enquiry",
+        "fields": {}
+    },
+    "contact_sidebar": {},
+    "process_steps": [],
+    "resources": []
+}

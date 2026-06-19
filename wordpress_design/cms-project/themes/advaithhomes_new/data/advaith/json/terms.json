@@ -73,13 +73,58 @@
     },
 
     "buttons": {
-        "explore_all":      "Explore all",
-        "explore_arrow":    "Explore →"
+        "explore_all":                  "Explore all",
+        "explore_arrow":                "Explore →",
+        "calculate_now":                "Calculate Now",
+        "load_more":                    "Load More Stories",
+        "search":                       "Search",
+        "view_all":                     "View all →",
+        "read_more":                    "Read more →",
+        "get_started":                  "Get Started →",
+        "contact_us":                   "Contact Us",
+        "subscribe":                    "Subscribe"
+    },
+
+    "placeholders": {
+        "select_option":                "Select an option",
+        "time_select":                  "Select time frame",
+        "email_address":                "Your email address",
+        "newsletter_email":             "Enter your email address",
+        "search_news":                  "Search News",
+        "enter_full_name":              "Enter your full name",
+        "enter_email":                  "Enter your email address",
+        "whatsapp_number":              "+xx xxxx xxx xxx",
+        "message":                      "Please provide details...",
+        "search_guides":                "Search guides…",
+        "search_calculators":           "Search calculators…"
     },
 
     "labels": {
-        "popular":          "Popular",
-        "latest_news":      "Latest News"
+        "popular":                      "Popular",
+        "latest_news":                  "Latest News",
+        "useful_resources":             "Useful Resources",
+        "frequently_asked":             "Frequently Asked Questions",
+        "all_prefix":                   "All %s",
+        "featured":                     "Featured",
+        "hot_topics":                   "Hot Topics",
+        "trending":                     "Trending",
+        "related_guides":               "Related Guides",
+        "more_prefix":                  "More %s",
+        "similar":                      "Similar"
+    },
+
+    "forms": {
+        "name_label":                   "Your Name",
+        "email_label":                  "Email Address",
+        "message_label":                "Tell us how we can help",
+        "whatsapp_label":               "WhatsApp Number",
+        "postcode_label":               "Postal Code",
+        "optional_suffix":              "(Optional)",
+        "required_suffix":              "*",
+        "name_required":                "Name is required",
+        "email_required":               "Email is required",
+        "message_required":             "Message is required",
+        "consent_text":                 "I agree to the Privacy Policy and Terms of Use"
     },
 
     "page_titles": {
@@ -90,7 +135,8 @@
         "tools":            "Tools",
         "expert":           "Ask an Expert",
         "guidance":         "Get Expert Guidance",
-        "faqs":             "FAQs"
+        "faqs":             "FAQs",
+        "search":           "Search Results"
     },
 
     "guides_page": {
@@ -115,7 +161,10 @@
         "newsletter_desc":          "Get the latest property guides and expert tips delivered to your inbox.",
         "newsletter_placeholder":   "Your email address",
         "newsletter_btn":           "Subscribe",
-        "newsletter_note":          "No spam. Unsubscribe anytime."
+        "newsletter_note":          "No spam. Unsubscribe anytime.",
+        "whatsapp_btn":             "Start WhatsApp Chat",
+        "email_btn":                "Send an Email",
+        "faqs_heading":             "Frequently Asked Questions"
     },
 
     "content": {
@@ -123,6 +172,7 @@
         "explore_guides":       "Explore %s →",
         "view_all_news":        "View all →",
         "view_all_guides":      "View all →",
+        "view_all_tools":       "View all →",
         "need_help_title":      "Need Help With",
         "need_help_description":"Speak to one of our expert advisors and get personalised guidance tailored to your situation.",
         "need_help_cta":        "Talk to an Expert",
@@ -148,119 +198,19 @@
         "guidance_services_heading":    "We can help you with",
         "tools_all_overall_tab":        "Overall",
         "article_feedback_label":       "Share this guide",
-        "news_featured_read_btn":       "Read Full Story"
+        "news_featured_read_btn":       "Read Full Story",
+        "pdf_documents":                "PDF Documents",
+        "external_links":               "External Links",
+        "videos":                       "Videos"
     },
 
-    "buttons": {
-        "explore_all":                  "Explore all",
-        "explore_arrow":                "Explore →",
-        "calculate_now":                "Calculate Now",
-        "load_more":                    "Load More Stories",
-        "search":                       "Search"
-    },
-
-    "placeholders": {
-        "select_option":                "Select an option",
-        "time_select":                  "Select time frame",
-        "email_address":                "Your email address",
-        "newsletter_email":             "Enter your email address",
-        "search_news":                  "Search News"
-    },
-
-    "labels": {
-        "popular":                      "Popular",
-        "latest_news":                  "Latest News",
-        "useful_resources":             "Useful Resources",
-        "frequently_asked":             "Frequently Asked Questions",
-        "all_prefix":                   "All %s"
-    },
-
-    "related_links": {
-        "article":          { "label": "Related Article",   "icon": "📄", "target": "wp_post" },
-        "calculator":       { "label": "Calculator Tool",   "icon": "🧮", "target": "static_page" },
-        "static_component": { "label": "Static Component",  "icon": "🧩", "target": "static_page" },
-        "image":            { "label": "Image",             "icon": "🖼️", "target": "url" },
-        "external":         { "label": "External Resource", "icon": "🔗", "target": "url" },
-        "support":          { "label": "Support Link",      "icon": "🛟", "target": "url" }
-    },
-
-    "link_containers": [
-        "Related Articles",
-        "Tools",
-        "Helpful Resources",
-        "Support",
-        "Downloads",
-        "External Links"
-    ],
-
-    "search": {
-        "placeholder":      "Search guides, calculators, news…",
-        "submit_label":     "Search"
-    },
-
-    "category_page": {
-        "explore_guides_title":     "Explore %s %s",
-        "latest_updates_title":     "Latest Updates",
-        "latest_updates_view_all":  "View all →",
-        "journey_heading":          "Your %s Journey",
-        "calculators_heading":      "%s for %s",
-        "quick_tools_heading":      "Quick Tools",
-        "hot_topics_heading":       "🔥 Hot Topics",
-        "browse_topics_heading":    "Browse Topics",
-        "related_tools_heading":    "Related %s",
-        "popular_guides_heading":   "Popular %s"
-    },
-
-    "calculators_page": {
-        "hero_title":               "All %s",
-        "search_placeholder":       "Search %s…",
-        "filter_all":               "All",
-        "trust_bar": {
-            "item1_title":          "Accurate & Up to Date",
-            "item1_desc":           "Based on latest UK data",
-            "item2_title":          "Free to Use",
-            "item2_desc":           "No sign-up required",
-            "item3_title":          "Easy to Understand",
-            "item3_desc":           "Simple, clear results",
-            "item4_title":          "Independent",
-            "item4_desc":           "Unbiased information"
-        },
-        "sidebar_help_title":       "Need Expert Help?",
-        "sidebar_help_text":        "Speak to one of our property experts today.",
-        "sidebar_nl_heading":       "Stay in the Know",
-        "sidebar_nl_desc":          "Get property news, guides and calculator tips straight to your inbox.",
-        "sidebar_nl_placeholder":   "Your email address",
-        "sidebar_nl_btn":           "Subscribe",
-        "guide_link_label":         "Read the full guide →"
-    },
-
-    "expert_page": {
-        "hero_desc_default":        "Connect with trusted property professionals who can provide the right advice for your situation.",
-        "meta_desc_default":        "Connect with vetted UK property professionals - mortgage advisers, solicitors, surveyors, buyer-side agents and more.",
-        "trust_verified_experts":   "Verified Experts",
-        "trust_specialisms":        "Specialisms",
-        "trust_avg_response":       "Avg Response Time",
-        "trust_free_to_use":        "Free to Use",
-        "filter_all_experts":       "All Experts",
-        "cant_find_heading":        "Can't find the right expert?",
-        "cant_find_desc":           "Tell us what you need and we'll recommend the best expert for your situation.",
-        "cant_find_btn":            "Get Matched Now",
-        "latest_news_heading":      "Latest %s",
-        "view_all_news":            "All %s →",
-        "quick_tools_heading":      "Quick %s",
-        "view_all_tools":           "All %s →"
-    },
-
-    "page_404": {
-        "title":                    "Page Not Found",
-        "text":                     "Oops! The page you are looking for doesn't exist or has been moved. Let's get you back on track.",
-        "search_placeholder":       "Search guides, calculators, news...",
-        "destinations_title":       "Popular Destinations",
-        "cta_text":                 "Still lost? We're here to help.",
-        "cta_label":                "Contact Us",
-        "home_desc":                "Start from the beginning",
-        "guides_desc":              "Read step-by-step advice",
-        "tools_desc":               "Estimate mortgage & costs",
-        "expert_desc":              "Consult a UK professional"
+    "comments": {
+        "latest":                       "Latest",
+        "oldest":                       "Oldest",
+        "pending":                      "Pending",
+        "approved":                     "Approved",
+        "sort_comments":                "Sort comments",
+        "previous":                     "Previous",
+        "next":                         "Next"
     }
 }

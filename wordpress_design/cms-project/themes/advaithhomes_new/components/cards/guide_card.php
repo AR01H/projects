@@ -31,6 +31,6 @@ $_gc_imgurl = isset( $card['image'] ) ? (string) $card['image'] : '';
         <div class="card-title-highlight"><?php echo esc_html( $card['title'] ); ?></div>
         <?php endif; ?>
         <div class="card-desc-text"><?php echo esc_html( isset( $card['description'] ) ? $card['description'] : '' ); ?></div>
-        <div class="read-more"><?php echo esc_html( isset( $card['read_more'] ) ? $card['read_more'] : '' ); ?></div>
+        <div class="read-more"><?php echo esc_html( isset( $card['read_more'] ) ? $card['read_more'] : SITE_BTN_EXPLORE_ARROW ); ?></div>
     </div>
 </a>

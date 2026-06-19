@@ -119,14 +119,14 @@ $_stars = min( 5, max( 0, (int) round( $_rat ) ) );
 	<?php /* Actions */ ?>
 	<div class="expert-card-actions">
 		<a href="<?php echo $_url; ?>" class="btn btn-secondary expert-profile-btn">
-			<?php esc_html_e( 'View Profile', ADN_TEXT_DOMAIN ); ?>
+			<?php echo esc_html( SITE_BTN_VIEW_ALL ); ?>
 		</a>
 		<?php if ( '' !== $_slug ) : ?>
 			<button type="button"
 				class="btn btn-outline expert-contact-btn"
 				data-slug="<?php echo esc_attr( $_slug ); ?>"
 				data-name="<?php echo esc_attr( isset( $_i['name'] ) ? (string) $_i['name'] : '' ); ?>">
-				<?php esc_html_e( 'Contact', ADN_TEXT_DOMAIN ); ?>
+				<?php echo esc_html( SITE_BTN_CONTACT_US ); ?>
 			</button>
 		<?php endif; ?>
 	</div>
@@ -150,28 +150,28 @@ $_stars = min( 5, max( 0, (int) round( $_rat ) ) );
 		<form class="expert-contact-form ecm-form" data-slug="<?php echo esc_attr( $_slug ); ?>" novalidate>
 			<input type="hidden" name="expert_slug" value="<?php echo esc_attr( $_slug ); ?>">
 			<div class="ecf-row">
-				<label><?php esc_html_e( 'Your Name', ADN_TEXT_DOMAIN ); ?> <span class="ecf-req">*</span></label>
+				<label><?php echo esc_html( FORM_NAME_LABEL ); ?> <span class="ecf-req"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
 				<input type="text" name="sender_name" required
-					placeholder="<?php esc_attr_e( 'Jane Smith', ADN_TEXT_DOMAIN ); ?>">
+					placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_NAME ); ?>">
 			</div>
 			<div class="ecf-row">
-				<label><?php esc_html_e( 'Email', ADN_TEXT_DOMAIN ); ?> <span class="ecf-req">*</span></label>
+				<label><?php echo esc_html( FORM_EMAIL_LABEL ); ?> <span class="ecf-req"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
 				<input type="email" name="sender_email" required
-					placeholder="<?php esc_attr_e( 'jane@example.com', ADN_TEXT_DOMAIN ); ?>">
+					placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_EMAIL ); ?>">
 			</div>
 			<div class="ecf-row">
-				<label><?php esc_html_e( 'Phone (optional)', ADN_TEXT_DOMAIN ); ?></label>
+				<label><?php echo esc_html( FORM_WHATSAPP_LABEL ); ?> <span class="ecf-opt"><?php echo esc_html( FORM_OPTIONAL_SUFFIX ); ?></span></label>
 				<input type="tel" name="sender_phone"
-					placeholder="<?php esc_attr_e( '+44 20 1234 5678', ADN_TEXT_DOMAIN ); ?>">
+					placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_WHATSAPP ); ?>">
 			</div>
 			<div class="ecf-row">
-				<label><?php esc_html_e( 'Message', ADN_TEXT_DOMAIN ); ?> <span class="ecf-req">*</span></label>
+				<label><?php echo esc_html( FORM_MESSAGE_LABEL ); ?> <span class="ecf-req"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
 				<textarea name="message" rows="4" required
-					placeholder="<?php esc_attr_e( 'Tell the expert what you need help with...', ADN_TEXT_DOMAIN ); ?>"></textarea>
+					placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_MESSAGE ); ?>"></textarea>
 			</div>
 			<div class="ecf-actions">
 				<button type="submit" class="btn btn-primary ecf-submit">
-					<?php esc_html_e( 'Send Message', ADN_TEXT_DOMAIN ); ?>
+					<?php echo esc_html( SITE_BTN_CONTACT_SUBMIT ); ?>
 				</button>
 			</div>
 			<div class="ecf-feedback" aria-live="polite"></div>

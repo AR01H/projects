@@ -25,7 +25,16 @@ $f_reviews = $is_edit ? $row['reviews_count'] : '';
 $f_loc     = $is_edit ? $row['location']      : '';
 $f_phone   = $is_edit ? $row['phone']         : '';
 $f_email   = $is_edit ? $row['email']         : '';
-$f_mega    = $is_edit ? $row['mega_html']     : '';
+$f_mega           = $is_edit ? $row['mega_html']      : '';
+$f_banner_img_id  = $is_edit ? (int) $row['banner_image_id'] : 0;
+$f_banner_img_url = ( $f_banner_img_id > 0 ) ? wp_get_attachment_image_url( $f_banner_img_id, 'large' ) : false;
+
+// Banner marquee items: decode JSON → array of { icon, value, label }.
+$f_banner_arr = array();
+if ( $is_edit && ! empty( $row['banner_json'] ) ) {
+	$_bd = json_decode( $row['banner_json'], true );
+	if ( is_array( $_bd ) ) { $f_banner_arr = $_bd; }
+}
 
 // Bullets: decode JSON → one per line for textarea.
 $f_bullets_arr = array();
@@ -279,6 +288,108 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 			<?php endif; ?>
 		</div>
 
+		<?php /* ── Cover / Banner Image (LinkedIn-style) ────────────── */ ?>
+		<div class="card" style="max-width:none;background:#fafafa;margin-bottom:24px;">
+			<h3 style="margin-top:0;"><?php esc_html_e( 'Cover Banner Image', ADN_TEXT_DOMAIN ); ?></h3>
+			<p class="description" style="margin-bottom:16px;">
+				<?php esc_html_e( 'A wide background image shown behind the profile hero — like a LinkedIn cover photo. Recommended size: 1200×300 px.', ADN_TEXT_DOMAIN ); ?>
+			</p>
+
+			<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+				<div id="expert_banner_img_prev" style="flex:1;min-width:200px;max-width:480px;">
+					<?php if ( $f_banner_img_url ) : ?>
+						<img src="<?php echo esc_url( $f_banner_img_url ); ?>"
+							style="width:100%;height:140px;object-fit:cover;border-radius:6px;display:block;border:1px solid #e5e7eb;" alt="">
+					<?php else : ?>
+						<div style="width:100%;height:140px;background:linear-gradient(135deg,#1d4ed8,#2d5a44);border-radius:6px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);font-size:13px;">
+							<?php esc_html_e( 'No cover image', ADN_TEXT_DOMAIN ); ?>
+						</div>
+					<?php endif; ?>
+				</div>
+				<div style="display:flex;flex-direction:column;gap:8px;padding-top:4px;">
+					<input type="hidden" id="banner_image_id" name="banner_image_id"
+						value="<?php echo esc_attr( (string) $f_banner_img_id ); ?>">
+					<button type="button" class="button expert-banner-img-select"
+						data-target="banner_image_id" data-preview="expert_banner_img_prev">
+						<?php $f_banner_img_url ? esc_html_e( 'Change Cover Image', ADN_TEXT_DOMAIN ) : esc_html_e( 'Upload Cover Image', ADN_TEXT_DOMAIN ); ?>
+					</button>
+					<?php if ( $f_banner_img_url ) : ?>
+					<button type="button" class="button expert-banner-img-remove"
+						data-target="banner_image_id" data-preview="expert_banner_img_prev"
+						data-empty-label="<?php esc_attr_e( 'No cover image', ADN_TEXT_DOMAIN ); ?>">
+						<?php esc_html_e( 'Remove', ADN_TEXT_DOMAIN ); ?>
+					</button>
+					<?php endif; ?>
+					<p class="description" style="margin:0;"><?php esc_html_e( 'JPEG / PNG, landscape orientation.', ADN_TEXT_DOMAIN ); ?></p>
+				</div>
+			</div>
+		</div>
+
+		<?php /* ── Scrolling Stats Marquee ─────────────────────────────── */ ?>
+		<div class="card" style="max-width:none;background:#fafafa;margin-bottom:24px;">
+			<h3 style="margin-top:0;"><?php esc_html_e( 'Profile Stats Marquee', ADN_TEXT_DOMAIN ); ?></h3>
+			<p class="description" style="margin-bottom:16px;">
+				<?php esc_html_e( 'Items that scroll below the cover image (same marquee component as the home page). Each item: icon · value (bold, e.g. "15+") · label (subtitle, e.g. "Years Experience"). Leave empty to hide.', ADN_TEXT_DOMAIN ); ?>
+			</p>
+
+			<div style="display:flex;gap:6px;margin-bottom:8px;font-size:0.8rem;font-weight:600;color:#6b7280;padding:0 2px;">
+				<span style="width:56px;"><?php esc_html_e( 'Icon', ADN_TEXT_DOMAIN ); ?></span>
+				<span style="width:100px;"><?php esc_html_e( 'Value (bold)', ADN_TEXT_DOMAIN ); ?></span>
+				<span style="flex:1;"><?php esc_html_e( 'Label (subtitle)', ADN_TEXT_DOMAIN ); ?></span>
+				<span style="width:76px;"></span>
+			</div>
+
+			<div id="expert-banner-rows">
+				<?php foreach ( $f_banner_arr as $_bi_idx => $_bi ) :
+					$_bi_icon  = isset( $_bi['icon'] )  ? (string) $_bi['icon']  : '';
+					$_bi_value = isset( $_bi['value'] ) ? (string) $_bi['value'] : '';
+					$_bi_label = isset( $_bi['label'] ) ? (string) $_bi['label'] : '';
+				?>
+				<div class="expert-banner-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+					<input type="text" name="expert_banner_items[<?php echo (int) $_bi_idx; ?>][icon]"
+						placeholder="🏠" maxlength="4" class="small-text"
+						value="<?php echo esc_attr( $_bi_icon ); ?>" style="width:50px;">
+					<input type="text" name="expert_banner_items[<?php echo (int) $_bi_idx; ?>][value]"
+						placeholder="15+" class="small-text"
+						value="<?php echo esc_attr( $_bi_value ); ?>" style="width:90px;">
+					<input type="text" name="expert_banner_items[<?php echo (int) $_bi_idx; ?>][label]"
+						placeholder="<?php esc_attr_e( 'Years Experience', ADN_TEXT_DOMAIN ); ?>" class="regular-text"
+						value="<?php echo esc_attr( $_bi_label ); ?>" style="flex:1;">
+					<button type="button" class="button button-small expert-banner-remove"><?php esc_html_e( 'Remove', ADN_TEXT_DOMAIN ); ?></button>
+				</div>
+				<?php endforeach; ?>
+			</div>
+
+			<button type="button" id="expert-banner-add" class="button" style="margin-top:4px;">
+				+ <?php esc_html_e( 'Add Stat', ADN_TEXT_DOMAIN ); ?>
+			</button>
+
+			<?php if ( ! empty( $f_banner_arr ) ) : ?>
+			<div style="margin-top:14px;background:#1d4ed8;border-radius:6px;padding:10px 16px;display:flex;flex-wrap:wrap;gap:0;overflow:hidden;">
+				<p style="font-size:0.75rem;color:rgba(255,255,255,.6);font-weight:600;width:100%;margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em;">
+					<?php esc_html_e( 'Marquee preview', ADN_TEXT_DOMAIN ); ?>
+				</p>
+				<div style="display:flex;flex-wrap:wrap;gap:0;width:100%;">
+				<?php foreach ( $f_banner_arr as $_bp ) :
+					$_bpv = isset( $_bp['value'] ) ? (string) $_bp['value'] : '';
+					$_bpl = isset( $_bp['label'] ) ? (string) $_bp['label'] : '';
+					if ( '' === $_bpv && '' === $_bpl ) { continue; }
+				?>
+				<div style="display:flex;align-items:center;gap:8px;padding:6px 18px 6px 0;border-right:1px solid rgba(255,255,255,.15);margin-right:18px;">
+					<?php if ( ! empty( $_bp['icon'] ) ) : ?>
+						<span style="font-size:1.2rem;"><?php echo esc_html( $_bp['icon'] ); ?></span>
+					<?php endif; ?>
+					<div>
+						<strong style="font-size:0.95rem;color:#fff;display:block;line-height:1.1;"><?php echo esc_html( $_bpv ); ?></strong>
+						<span style="font-size:0.72rem;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.04em;"><?php echo esc_html( $_bpl ); ?></span>
+					</div>
+				</div>
+				<?php endforeach; ?>
+				</div>
+			</div>
+			<?php endif; ?>
+		</div>
+
 		<?php /* ── Client Work ───────────────────────────────────────────── */ ?>
 		<div class="card" style="max-width:none;background:#fafafa;margin-bottom:24px;">
 			<h3 style="margin-top:0;"><?php esc_html_e( 'Client Work Images', ADN_TEXT_DOMAIN ); ?></h3>
@@ -361,6 +472,40 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 <script>
 (function ($) {
 	'use strict';
+
+	/* ── Cover banner image uploader ── */
+	var bannerImgFrame;
+	$(document).on('click', '.expert-banner-img-select', function (e) {
+		e.preventDefault();
+		var $btn   = $(this);
+		var tgt    = $btn.data('target');
+		var prevId = $btn.data('preview');
+		bannerImgFrame = wp.media({
+			title:    '<?php echo esc_js( __( 'Select Cover Banner Image', ADN_TEXT_DOMAIN ) ); ?>',
+			button:   { text: '<?php echo esc_js( __( 'Use as cover', ADN_TEXT_DOMAIN ) ); ?>' },
+			multiple: false,
+			library:  { type: 'image' }
+		});
+		bannerImgFrame.on('select', function () {
+			var att = bannerImgFrame.state().get('selection').first().toJSON();
+			$('#' + tgt).val(att.id);
+			var src = (att.sizes && att.sizes.large) ? att.sizes.large.url : att.url;
+			$('#' + prevId).html('<img src="' + src + '" style="width:100%;height:140px;object-fit:cover;border-radius:6px;display:block;border:1px solid #e5e7eb;" alt="">');
+			$btn.text('<?php echo esc_js( __( 'Change Cover Image', ADN_TEXT_DOMAIN ) ); ?>');
+			$btn.next('.expert-banner-img-remove').show();
+		});
+		bannerImgFrame.open();
+	});
+	$(document).on('click', '.expert-banner-img-remove', function (e) {
+		e.preventDefault();
+		var tgt       = $(this).data('target');
+		var prevId    = $(this).data('preview');
+		var emptyLbl  = $(this).data('empty-label') || '<?php echo esc_js( __( 'No cover image', ADN_TEXT_DOMAIN ) ); ?>';
+		$('#' + tgt).val('0');
+		$('#' + prevId).html('<div style="width:100%;height:140px;background:linear-gradient(135deg,#1d4ed8,#2d5a44);border-radius:6px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);font-size:13px;">' + emptyLbl + '</div>');
+		$(this).prev('.expert-banner-img-select').text('<?php echo esc_js( __( 'Upload Cover Image', ADN_TEXT_DOMAIN ) ); ?>');
+		$(this).hide();
+	});
 
 	/* ── Profile photo uploader ── */
 	var photoFrame;
@@ -452,5 +597,37 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 	});
 
 })(jQuery);
+</script>
+
+<script>
+(function () {
+	var bannerIdx  = <?php echo (int) count( $f_banner_arr ); ?>;
+	var bannerWrap = document.getElementById( 'expert-banner-rows' );
+
+	function bindBannerRemove( row ) {
+		row.querySelector( '.expert-banner-remove' ).addEventListener( 'click', function () {
+			row.remove();
+		} );
+	}
+
+	document.querySelectorAll( '.expert-banner-row' ).forEach( bindBannerRemove );
+
+	var addBtn = document.getElementById( 'expert-banner-add' );
+	if ( addBtn ) {
+		addBtn.addEventListener( 'click', function () {
+			var row = document.createElement( 'div' );
+			row.className = 'expert-banner-row';
+			row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:8px;';
+			row.innerHTML =
+				'<input type="text" name="expert_banner_items[' + bannerIdx + '][icon]" placeholder="🏠" maxlength="4" class="small-text">' +
+				'<input type="text" name="expert_banner_items[' + bannerIdx + '][value]" placeholder="15+" class="small-text">' +
+				'<input type="text" name="expert_banner_items[' + bannerIdx + '][label]" placeholder="<?php echo esc_js( __( 'Years Experience', ADN_TEXT_DOMAIN ) ); ?>" class="regular-text">' +
+				'<button type="button" class="button button-small expert-banner-remove"><?php echo esc_js( __( 'Remove', ADN_TEXT_DOMAIN ) ); ?></button>';
+			bannerWrap.appendChild( row );
+			bindBannerRemove( row );
+			bannerIdx++;
+		} );
+	}
+}());
 </script>
 

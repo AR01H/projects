@@ -67,7 +67,7 @@ function adn_calculators_get_context() {
 
 	// ── Search ────────────────────────────────────────────────────────────
 	$search = array(
-		'placeholder' => $first( $pg_str( 'search_placeholder' ), sprintf( adn_term( 'calculators_page.search_placeholder', 'Search %s…' ), strtolower( SITE_TOOLS_PLURAL ) ) ),
+		'placeholder' => $first( $pg_str( 'search_placeholder' ), SITE_PLACEHOLDER_SEARCH_CALC ),
 	);
 
 	// ── All calcs from registry ───────────────────────────────────────────

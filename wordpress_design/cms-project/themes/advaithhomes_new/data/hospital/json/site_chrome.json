@@ -1,0 +1,31 @@
+{
+    "logo": { "icon": "🏨", "name": "CITY", "sub": "HOSPITAL", "url": "/" },
+    "search": {
+        "placeholder": "Search patient guides, departments, news…",
+        "submit_label": "Search"
+    },
+    "nav": [],
+    "header_cta": { "label": "Patient Support", "url": "/patient-support/" },
+    "footer": {
+        "brand": {
+            "icon": "🏨",
+            "name": "CITY HOSPITAL",
+            "sub": "",
+            "description": "Comprehensive patient guides, clinical tools and specialist insights for patients and healthcare professionals."
+        },
+        "social": [
+            { "label": "Facebook", "icon": "f", "url": "#" },
+            { "label": "Instagram", "icon": "◎", "url": "#" },
+            { "label": "YouTube", "icon": "▶", "url": "#" }
+        ],
+        "columns": [],
+        "copyright": "© 2026 CITY HOSPITAL. All rights reserved.",
+        "made_with": "Made with ♥ for our patients",
+        "bottom_links": [
+            { "label": "Terms", "url": "/terms/" },
+            { "label": "Privacy", "url": "/privacy/" },
+            { "label": "Accessibility", "url": "/accessibility/" }
+        ],
+        "disclaimer": "Information on this website is for general information purposes only. It is not intended to substitute for professional medical advice, diagnosis or treatment."
+    }
+}

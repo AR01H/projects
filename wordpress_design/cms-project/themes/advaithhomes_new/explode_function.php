@@ -20,13 +20,14 @@ function ahn_include_files() {
 }
 function adn_enqueue_common_css() {
     $styles = array(
-        'adn-varaibles-style' => '/assets/css/variables.css',
-        'adn-chrome-style' => '/assets/css/chrome.css', // design tokens + header/nav/search/footer
-        'adn-main-style' => '/assets/css/main.css',
-        'adn-common-style' => '/assets/css/common.css',
+        'adn-varaibles-style'  => '/assets/css/variables.css',
+        'adn-chrome-style'     => '/assets/css/chrome.css',
+        'adn-main-style'       => '/assets/css/main.css',
+        'adn-common-style'     => '/assets/css/common.css',
         'adn-components-style' => '/assets/css/components.css',
-        'adn-temp-style' => '/assets/css/temp.css',
-        'adn-builded-style' => '/assets/css/builded.css',
+        'adn-temp-style'       => '/assets/css/temp.css',
+        'adn-builded-style'    => '/assets/css/builded.css',
+        'adn-utils-style'      => '/assets/css/common_utils.css',
     );
     foreach ( $styles as $handle => $file ) {
         wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), ADN_THEME_VERSION );
@@ -36,10 +37,11 @@ function adn_enqueue_common_css() {
 }
 function adn_enqueue_common_js() {
     $scripts = array(
-        'adn-main-script' => '/assets/js/main.js',
-        'adn-common-script' => '/assets/js/common.js',
+        'adn-utils-script'         => '/assets/js/common_utils.js',
+        'adn-main-script'          => '/assets/js/main.js',
+        'adn-common-script'        => '/assets/js/common.js',
         'adn-scroll-to-top-script' => '/assets/js/scroll-to-top.js',
-        'adn-form-builder-script' => '/assets/js/form-builder.js',
+        'adn-form-builder-script'  => '/assets/js/form-builder.js',
     );
     foreach ( $scripts as $handle => $file ) {
         wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), ADN_THEME_VERSION, true );

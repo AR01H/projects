@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 class AH_Expert_DB {
 
-	const DB_VERSION = '2';
+	const DB_VERSION = '4';
 	const DB_OPTION  = 'adn_expert_db_v';
 
 	public static function table() {
@@ -87,6 +87,14 @@ class AH_Expert_DB {
 		if ( $rating < 0 ) { $rating = 0.0; }
 		if ( $rating > 5 ) { $rating = 5.0; }
 
+		// banner: array of { icon, value, label } items or already-encoded JSON string.
+		$banner_raw = isset( $data['banner'] ) ? $data['banner'] : array();
+		if ( is_array( $banner_raw ) ) {
+			$banner_json = wp_json_encode( array_values( $banner_raw ) );
+		} else {
+			$banner_json = (string) $banner_raw;
+		}
+
 		$row = array(
 			'expert_slug'   => $slug,
 			'name'          => sanitize_text_field( isset( $data['name'] )          ? $data['name']          : '' ),
@@ -100,8 +108,10 @@ class AH_Expert_DB {
 			'location'      => sanitize_text_field( isset( $data['location'] )      ? $data['location']      : '' ),
 			'phone'         => sanitize_text_field( isset( $data['phone'] )         ? $data['phone']         : '' ),
 			'email'         => sanitize_email( isset( $data['email'] )              ? $data['email']         : '' ),
-			'bullets'       => $bullets,
-			'client_images' => $client_images,
+			'bullets'        => $bullets,
+			'client_images'  => $client_images,
+			'banner_image_id' => absint( isset( $data['banner_image_id'] ) ? $data['banner_image_id'] : 0 ),
+			'banner_json'    => $banner_json,
 			'mega_html'     => isset( $data['mega_html'] ) ? wp_unslash( $data['mega_html'] ) : '',
 			'updated_at'    => $now,
 		);
@@ -144,6 +154,8 @@ class AH_Expert_DB {
 			email          VARCHAR(200)     NOT NULL DEFAULT '',
 			bullets        LONGTEXT         NOT NULL,
 			client_images  LONGTEXT         NOT NULL,
+			banner_image_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			banner_json    LONGTEXT         NOT NULL,
 			mega_html      LONGTEXT         NOT NULL,
 			created_at     DATETIME         NOT NULL,
 			updated_at     DATETIME         NOT NULL,

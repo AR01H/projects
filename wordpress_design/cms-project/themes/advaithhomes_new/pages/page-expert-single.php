@@ -37,9 +37,10 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 ?>
 
 <?php /* ============================== HERO ============================== */ ?>
+<?php $_has_cover = ! empty( $ctx['banner_image_url'] ); ?>
 <section class="expert-profile-hero">
 	<div class="container">
-		<div class="expert-profile-hero-inner">
+		<div class="expert-profile-hero-inner<?php echo $_has_cover ? ' has-cover-bg' : ''; ?>"<?php if ( $_has_cover ) : ?> style="background-image:url('<?php echo esc_url( $ctx['banner_image_url'] ); ?>')"<?php endif; ?>>
 
 			<?php /* Photo */ ?>
 			<div class="expert-profile-photo-wrap">
@@ -115,6 +116,17 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 		</div>
 	</div>
 </section>
+
+<?php /* ============================== STATS MARQUEE ============================== */ ?>
+<?php if ( ! empty( $ctx['banner_items'] ) ) : ?>
+<div class="expert-stats-marquee">
+	<?php get_template_part( 'components/marque_scroll/point_marque', null, array(
+		'trust'     => $ctx['banner_items'],
+		'is_string' => false,
+		'is_icon'   => true,
+	) ); ?>
+</div>
+<?php endif; ?>
 
 <?php /* ============================== MAIN LAYOUT: CONTENT + SIDEBAR ============================== */ ?>
 <div class="container">

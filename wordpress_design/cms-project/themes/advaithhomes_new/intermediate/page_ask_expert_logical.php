@@ -60,9 +60,9 @@ function adn_ask_expert_sidebar_data() {
 	}
 	// sidebar_news_mini shape
 	$latest_news = array(
-		'heading'  => sprintf( adn_term( 'expert_page.latest_news_heading', 'Latest %s' ), SITE_NEWS_NOUN ),
+		'heading'  => SITE_LABEL_LATEST_NEWS,
 		'items'    => $news_items,
-		'view_all' => array( 'label' => sprintf( adn_term( 'expert_page.view_all_news', 'All %s →' ), SITE_NEWS_NOUN ), 'url' => SITE_NEWS_URL ),
+		'view_all' => array( 'label' => CONTENT_VIEW_ALL_NEWS, 'url' => SITE_NEWS_URL ),
 	);
 
 	/* ── Calculators → sidebar_quick_tools shape ────────────────────── */
@@ -83,10 +83,10 @@ function adn_ask_expert_sidebar_data() {
 	}
 	// sidebar_quick_tools shape
 	$tools = array(
-		'heading' => sprintf( adn_term( 'expert_page.quick_tools_heading', 'Quick %s' ), SITE_TOOLS_PLURAL ),
+		'heading' => SITE_TOOLS_PLURAL,
 		'items'   => $calc_items,
 		'cta'     => array(
-			'label' => sprintf( adn_term( 'expert_page.view_all_tools', 'All %s →' ), SITE_TOOLS_PLURAL ),
+			'label' => CONTENT_VIEW_ALL_TOOLS,
 			'url'   => SITE_CALCULATORS_URL,
 		),
 	);

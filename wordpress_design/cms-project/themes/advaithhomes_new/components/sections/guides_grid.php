@@ -30,15 +30,15 @@ $total_pages  = isset( $pagination['total'] )   ? (int) $pagination['total']   :
 				id="guidesSearchInput"
 				class="guides-search-input"
 				placeholder="<?php echo esc_attr( $placeholder ); ?>"
-				aria-label="<?php echo esc_attr__( 'Search guides', ADN_TEXT_DOMAIN ); ?>"
+				aria-label="<?php echo esc_attr( SITE_PLACEHOLDER_SEARCH_GUIDES ); ?>"
 				autocomplete="off"
 			/>
 		</div>
 
 		<?php if ( ! empty( $sort_options ) ) : ?>
 			<div class="sort-select">
-				<span class="sort-label"><?php echo esc_html__( 'Sort by:', ADN_TEXT_DOMAIN ); ?></span>
-				<select id="guidesSortSelect" aria-label="<?php echo esc_attr__( 'Sort by', ADN_TEXT_DOMAIN ); ?>">
+				<span class="sort-label"><?php esc_html_e( 'Sort by:', ADN_TEXT_DOMAIN ); ?></span>
+				<select id="guidesSortSelect" aria-label="<?php esc_attr_e( 'Sort by', ADN_TEXT_DOMAIN ); ?>">
 					<?php foreach ( $sort_options as $opt ) : ?>
 						<option><?php echo esc_html( $opt ); ?></option>
 					<?php endforeach; ?>

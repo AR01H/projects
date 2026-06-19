@@ -1,0 +1,6 @@
+type,title,text,link_url,link_label,start_date,end_date,priority,status,icon
+info,New: Bowel Cancer Screening from 50,The NHS has lowered bowel cancer screening to age 50. Find out what's involved and how to book.,/news/nhs-bowel-cancer-checks-50/,Find out more,2024-03-21,2024-07-01,high,active,🔬
+info,Free Vitamin D Supplements This Winter,Find out if you're eligible for free Vitamin D supplements from the NHS this autumn/winter.,/health-guides/vitamins-supplements/,Check eligibility,2024-10-01,2025-03-31,normal,active,☀️
+warning,Mental Health Support Available,If you're struggling with anxiety or depression there's help available right now.,/health-guides/understanding-anxiety/,Get support,2024-01-01,,high,active,🧠
+info,BMI Calculator Updated,Our BMI calculator now includes waist-to-height ratio - a more accurate measure of health risk.,/health-tools/,Try it now,2024-03-01,,normal,active,⚖️
+info,Live Webinar: Managing Type 2 Diabetes,Join our free live webinar with a diabetes specialist on 20 April at 6pm.,/ask-a-doctor/,Register free,2024-04-05,2024-04-20,normal,active,🩸

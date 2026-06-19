@@ -1,0 +1,25 @@
+{
+    "meta": {
+        "page_title": "Clinical News & Patient Information - City Hospital",
+        "meta_description": "The latest clinical news, NHS policy updates, NICE guidance and patient information from City Hospital."
+    },
+    "breadcrumb": [
+        { "label": "Home", "url": "/" },
+        { "label": "Clinical News", "url": null }
+    ],
+    "hero": {
+        "title": "Clinical News & Updates",
+        "description": "Stay informed with the latest NHS updates, NICE guidance, clinical policy changes and patient safety news from our clinical teams."
+    },
+    "categories": [
+        { "key": "all", "label": "All News", "count": 0 },
+        { "key": "nhs", "label": "NHS Updates", "count": 0 },
+        { "key": "surgery", "label": "Surgery", "count": 0 },
+        { "key": "cardiology", "label": "Cardiology", "count": 0 },
+        { "key": "maternity", "label": "Maternity", "count": 0 },
+        { "key": "research", "label": "Clinical Research", "count": 0 }
+    ],
+    "sections": {},
+    "sidebar": {},
+    "bottom_newsletter": {}
+}

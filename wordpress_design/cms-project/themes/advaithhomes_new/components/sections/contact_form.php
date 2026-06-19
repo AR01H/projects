@@ -40,29 +40,29 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 
 		<div class="form-row">
 			<div class="form-group">
-				<label class="form-label" for="contactName"><?php esc_html_e( 'Your Name', ADN_TEXT_DOMAIN ); ?> <span class="form-required">*</span></label>
-				<input type="text"  id="contactName"  name="name"  placeholder="<?php esc_attr_e( 'Enter your full name', ADN_TEXT_DOMAIN ); ?>" required />
+				<label class="form-label" for="contactName"><?php echo esc_html( FORM_NAME_LABEL ); ?> <span class="form-required"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
+				<input type="text"  id="contactName"  name="name"  placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_NAME ); ?>" required />
 			</div>
 			<div class="form-group">
-				<label class="form-label" for="contactEmail"><?php esc_html_e( 'Your Email', ADN_TEXT_DOMAIN ); ?> <span class="form-required">*</span></label>
-				<input type="email" id="contactEmail" name="email" placeholder="<?php esc_attr_e( 'Enter your email address', ADN_TEXT_DOMAIN ); ?>" required />
+				<label class="form-label" for="contactEmail"><?php echo esc_html( FORM_EMAIL_LABEL ); ?> <span class="form-required"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
+				<input type="email" id="contactEmail" name="email" placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_EMAIL ); ?>" required />
 			</div>
 		</div>
 
 		<div class="form-row">
 			<div class="form-group">
-				<label class="form-label" for="contactWhatsApp"><?php esc_html_e( 'WhatsApp Number', ADN_TEXT_DOMAIN ); ?> <span class="form-optional">(<?php esc_html_e( 'Optional', ADN_TEXT_DOMAIN ); ?>)</span></label>
-				<input type="tel" id="contactWhatsApp" name="whatsapp" placeholder="<?php esc_attr_e( '+xx xxxx xxx xxx', ADN_TEXT_DOMAIN ); ?>" />
+				<label class="form-label" for="contactWhatsApp"><?php echo esc_html( FORM_WHATSAPP_LABEL ); ?> <span class="form-optional"><?php echo esc_html( FORM_OPTIONAL_SUFFIX ); ?></span></label>
+				<input type="tel" id="contactWhatsApp" name="whatsapp" placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_WHATSAPP ); ?>" />
 			</div>
 			<div class="form-group">
-				<label class="form-label" for="contactPostcode"><?php esc_html_e( 'Postal Code', ADN_TEXT_DOMAIN ); ?> <span class="form-optional">(<?php esc_html_e( 'Optional', ADN_TEXT_DOMAIN ); ?>)</span></label>
+				<label class="form-label" for="contactPostcode"><?php echo esc_html( FORM_POSTCODE_LABEL ); ?> <span class="form-optional"><?php echo esc_html( FORM_OPTIONAL_SUFFIX ); ?></span></label>
 				<input type="text" id="contactPostcode" name="postcode" placeholder="" maxlength="10" />
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label class="form-label" for="contactMessage"><?php esc_html_e( 'Tell us how we can help', ADN_TEXT_DOMAIN ); ?> <span class="form-required">*</span></label>
-			<textarea id="contactMessage" name="message" rows="5" placeholder="<?php esc_attr_e( 'Please provide as much detail as possible so we can assist you better…', ADN_TEXT_DOMAIN ); ?>" required></textarea>
+			<label class="form-label" for="contactMessage"><?php echo esc_html( FORM_MESSAGE_LABEL ); ?> <span class="form-required"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
+			<textarea id="contactMessage" name="message" rows="5" placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_MESSAGE ); ?>" required></textarea>
 		</div>
 
 		<label class="consent-row">
@@ -70,7 +70,7 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 			<span>
 				<?php printf(
 					/* translators: %1$s opens link, %2$s closes, %3$s opens link, %4$s closes */
-					esc_html__( 'I agree to the %1$sPrivacy Policy%2$s and %3$sTerms of Use%4$s.', ADN_TEXT_DOMAIN ),
+					esc_html( FORM_CONSENT_TEXT ) . ' %1$s%2$s %3$s%4$s',
 					'<a href="' . esc_url( home_url( '/privacy-policy/' ) ) . '" target="_blank">',
 					'</a>',
 					'<a href="' . esc_url( home_url( '/terms/' ) ) . '" target="_blank">',

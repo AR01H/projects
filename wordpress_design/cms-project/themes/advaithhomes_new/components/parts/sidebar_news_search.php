@@ -10,15 +10,15 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 <div class="news-sb-box">
-	<div class="news-sb-title"><?php echo esc_html__( 'Search News', ADN_TEXT_DOMAIN ); ?></div>
+	<div class="news-sb-title"><?php echo esc_html( SITE_NEWS_NOUN . ' ' . __( 'Search', ADN_TEXT_DOMAIN ) ); ?></div>
 	<div class="news-search-wrap">
 		<input
 			type="search"
 			id="newsSearchInput"
 			class="news-search-input"
-			placeholder="<?php echo esc_attr__( 'Search articles…', ADN_TEXT_DOMAIN ); ?>"
+			placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_SEARCH_NEWS ); ?>"
 			autocomplete="off"
-			aria-label="<?php echo esc_attr__( 'Search news articles', ADN_TEXT_DOMAIN ); ?>"
+			aria-label="<?php echo esc_attr( SITE_PLACEHOLDER_SEARCH_NEWS ); ?>"
 		/>
 		<span class="news-search-icon">🔍</span>
 	</div>

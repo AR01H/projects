@@ -73,13 +73,58 @@
     },
 
     "buttons": {
-        "explore_all":      "Explore all",
-        "explore_arrow":    "Explore →"
+        "explore_all":                  "Explore all",
+        "explore_arrow":                "Explore →",
+        "calculate_now":                "Calculate Now",
+        "load_more":                    "Load More Stories",
+        "search":                       "Search",
+        "view_all":                     "View all →",
+        "read_more":                    "Read more →",
+        "get_started":                  "Get Started →",
+        "contact_us":                   "Contact Us",
+        "subscribe":                    "Subscribe"
+    },
+
+    "placeholders": {
+        "select_option":                "Select an option",
+        "time_select":                  "Select time frame",
+        "email_address":                "Your email address",
+        "newsletter_email":             "Enter your email address",
+        "search_news":                  "Search News",
+        "enter_full_name":              "Enter your full name",
+        "enter_email":                  "Enter your email address",
+        "whatsapp_number":              "+xx xxxx xxx xxx",
+        "message":                      "Please provide details...",
+        "search_guides":                "Search guides…",
+        "search_calculators":           "Search calculators…"
     },
 
     "labels": {
-        "popular":          "Popular",
-        "latest_news":      "Latest News"
+        "popular":                      "Popular",
+        "latest_news":                  "Latest News",
+        "useful_resources":             "Useful Resources",
+        "frequently_asked":             "Frequently Asked Questions",
+        "all_prefix":                   "All %s",
+        "featured":                     "Featured",
+        "hot_topics":                   "Hot Topics",
+        "trending":                     "Trending",
+        "related_guides":               "Related Guides",
+        "more_prefix":                  "More %s",
+        "similar":                      "Similar"
+    },
+
+    "forms": {
+        "name_label":                   "Your Name",
+        "email_label":                  "Email Address",
+        "message_label":                "Tell us how we can help",
+        "whatsapp_label":               "WhatsApp Number",
+        "postcode_label":               "Postal Code",
+        "optional_suffix":              "(Optional)",
+        "required_suffix":              "*",
+        "name_required":                "Name is required",
+        "email_required":               "Email is required",
+        "message_required":             "Message is required",
+        "consent_text":                 "I agree to the Privacy Policy and Terms of Use"
     },
 
     "page_titles": {
@@ -90,7 +135,8 @@
         "tools":            "Tools",
         "expert":           "Ask an Expert",
         "guidance":         "Get Expert Guidance",
-        "faqs":             "FAQs"
+        "faqs":             "FAQs",
+        "search":           "Search Results"
     },
 
     "guides_page": {
@@ -115,7 +161,10 @@
         "newsletter_desc":          "Get the latest organic guides and tips delivered to your inbox.",
         "newsletter_placeholder":   "Your email address",
         "newsletter_btn":           "Subscribe",
-        "newsletter_note":          "No spam. Unsubscribe anytime."
+        "newsletter_note":          "No spam. Unsubscribe anytime.",
+        "whatsapp_btn":             "Start WhatsApp Chat",
+        "email_btn":                "Send an Email",
+        "faqs_heading":             "Frequently Asked Questions"
     },
 
     "content": {
@@ -123,6 +172,7 @@
         "explore_guides":       "Explore %s →",
         "view_all_news":        "View all →",
         "view_all_guides":      "View all →",
+        "view_all_tools":       "View all →",
         "need_help_title":      "Need Help With",
         "need_help_description":"Speak to one of our organic advisors and get personalised guidance tailored to your situation.",
         "need_help_cta":        "Talk to an Expert",
@@ -148,30 +198,19 @@
         "guidance_services_heading":    "We can help you with",
         "tools_all_overall_tab":        "Overall",
         "article_feedback_label":       "Share this guide",
-        "news_featured_read_btn":       "Read Full Story"
+        "news_featured_read_btn":       "Read Full Story",
+        "pdf_documents":                "PDF Documents",
+        "external_links":               "External Links",
+        "videos":                       "Videos"
     },
 
-    "buttons": {
-        "explore_all":                  "Explore all",
-        "explore_arrow":                "Explore →",
-        "calculate_now":                "Calculate Now",
-        "load_more":                    "Load More Stories",
-        "search":                       "Search"
-    },
-
-    "placeholders": {
-        "select_option":                "Select an option",
-        "time_select":                  "Select time frame",
-        "email_address":                "Your email address",
-        "newsletter_email":             "Enter your email address",
-        "search_news":                  "Search News"
-    },
-
-    "labels": {
-        "popular":                      "Popular",
-        "latest_news":                  "Latest News",
-        "useful_resources":             "Useful Resources",
-        "frequently_asked":             "Frequently Asked Questions",
-        "all_prefix":                   "All %s"
+    "comments": {
+        "latest":                       "Latest",
+        "oldest":                       "Oldest",
+        "pending":                      "Pending",
+        "approved":                     "Approved",
+        "sort_comments":                "Sort comments",
+        "previous":                     "Previous",
+        "next":                         "Next"
     }
 }

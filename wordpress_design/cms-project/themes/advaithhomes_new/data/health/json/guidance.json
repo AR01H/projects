@@ -1,0 +1,72 @@
+{
+    "meta": {
+        "page_title": "Get Health Guidance",
+        "meta_description": "Connect with qualified health professionals for personalised guidance on nutrition, fitness, mental health and preventive care."
+    },
+    "breadcrumb": [
+        { "label": "Home", "url": "/" },
+        { "label": "Get Health Guidance", "url": null }
+    ],
+    "hero": {
+        "title": "Get Health Guidance",
+        "description": "Fill in a few details and we'll connect you with the right health professional for personalised advice.",
+        "bg_icon": "❤️",
+        "trust_items": [
+            { "icon": "✅", "label": "100% Free", "note": "No obligation to use any service" },
+            { "icon": "👤", "label": "Qualified Professionals", "note": "Registered and regulated health experts" },
+            { "icon": "🎯", "label": "Personalised Match", "note": "We connect you with the right expert" },
+            { "icon": "⚡", "label": "Quick Response", "note": "Experts usually respond within 24 hrs" }
+        ]
+    },
+    "form": {
+        "heading": "Tell us about your health query",
+        "help_label": "I am looking for help with",
+        "help_placeholder": "Select an option",
+        "help_options": [
+            "Nutrition & Diet",
+            "Weight Management",
+            "Fitness & Exercise",
+            "Mental Health & Wellbeing",
+            "Managing a Long-Term Condition",
+            "Preventive Health Checks",
+            "Medication Advice",
+            "Other"
+        ],
+        "iam_label": "I am a",
+        "iam_placeholder": "Select an option",
+        "iam_options": [
+            "Patient / Service User",
+            "Carer or Family Member",
+            "Healthcare Professional",
+            "Other"
+        ],
+        "time_label": "When do you need guidance?",
+        "time_options": [
+            "As soon as possible",
+            "Within a few days",
+            "Within a week",
+            "No rush"
+        ],
+        "name_label": "Your Name",
+        "email_label": "Email Address",
+        "message_label": "Any additional details",
+        "submit_label": "Submit Request"
+    },
+    "services": {
+        "heading": "We can help you with",
+        "items": [
+            { "icon": "🥗", "title": "Nutrition Advice", "description": "Evidence-based guidance on healthy eating and dietary planning." },
+            { "icon": "🏃", "title": "Fitness Guidance", "description": "Exercise plans and physical activity advice for all fitness levels." },
+            { "icon": "🧠", "title": "Mental Wellbeing", "description": "Support and strategies for managing stress, anxiety and low mood." },
+            { "icon": "🩺", "title": "Preventive Care", "description": "Information on health checks, screenings and vaccinations." }
+        ]
+    },
+    "why_choose": {
+        "heading": "Why choose Health Hub?",
+        "items": [
+            { "icon": "✅", "title": "Evidence-Based", "description": "All information is reviewed against NICE guidelines and peer-reviewed research." },
+            { "icon": "👥", "title": "Qualified Team", "description": "Our network of registered health professionals covers every major speciality." },
+            { "icon": "🔒", "title": "Private & Confidential", "description": "Your health information is handled with the highest standards of confidentiality." }
+        ]
+    }
+}

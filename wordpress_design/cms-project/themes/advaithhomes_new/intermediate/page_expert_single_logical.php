@@ -36,6 +36,35 @@ function adn_expert_single_get_context( $slug ) {
 		if ( is_array( $dec ) ) { $bullets = $dec; }
 	}
 
+	/* ── Cover banner image ─────────────────────────────────────── */
+	$banner_image_id  = isset( $expert['banner_image_id'] ) ? (int) $expert['banner_image_id'] : 0;
+	$banner_image_url = '';
+	if ( $banner_image_id > 0 ) {
+		$_bu = wp_get_attachment_image_url( $banner_image_id, 'full' );
+		if ( $_bu ) { $banner_image_url = (string) $_bu; }
+	}
+
+	/* ── Profile banner stats → remapped for point_marque (is_icon mode) ── */
+	// point_marque is_icon mode uses: icon · label (bold) · note (subtitle)
+	// We store:                        icon · value       · label
+	$banner_items = array();
+	if ( ! empty( $expert['banner_json'] ) ) {
+		$_bd = json_decode( $expert['banner_json'], true );
+		if ( is_array( $_bd ) ) {
+			foreach ( $_bd as $_bi ) {
+				if ( ! is_array( $_bi ) ) { continue; }
+				$_bv = isset( $_bi['value'] ) ? (string) $_bi['value'] : '';
+				$_bl = isset( $_bi['label'] ) ? (string) $_bi['label'] : '';
+				if ( '' === $_bv && '' === $_bl ) { continue; }
+				$banner_items[] = array(
+					'icon'  => isset( $_bi['icon'] ) ? (string) $_bi['icon'] : '',
+					'label' => $_bv,  // bold main text in marquee
+					'note'  => $_bl,  // subtitle in marquee
+				);
+			}
+		}
+	}
+
 	/* ── Client images ──────────────────────────────────────────── */
 	$client_images = array();
 	if ( ! empty( $expert['client_images'] ) ) {
@@ -74,8 +103,10 @@ function adn_expert_single_get_context( $slug ) {
 		'location'      => isset( $expert['location'] )      ? (string) $expert['location']      : '',
 		'phone'         => isset( $expert['phone'] )         ? (string) $expert['phone']         : '',
 		'email'         => isset( $expert['email'] )         ? (string) $expert['email']         : '',
-		'bullets'       => $bullets,
-		'client_images' => $client_images,
+		'bullets'          => $bullets,
+		'banner_image_url' => $banner_image_url,
+		'banner_items'     => $banner_items,
+		'client_images'    => $client_images,
 		'mega_html'     => isset( $expert['mega_html'] )     ? (string) $expert['mega_html']     : '',
 		'hero'          => array(
 			'title'       => $name,

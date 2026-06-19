@@ -1,0 +1,19 @@
+type,id,slug,name,icon_emoji,description,parent_id,status
+parent,1,nutrition,Nutrition & Diet,🥗,Evidence-based guides on healthy eating and nutrition,,active
+parent,2,fitness,Fitness & Exercise,🏃,Guides for all fitness levels to stay active and healthy,,active
+parent,3,mental-health,Mental Health,🧠,Guides for mental wellbeing, stress management and support,,active
+parent,4,preventive-care,Preventive Care,🩺,Guides on screenings, vaccinations and disease prevention,,active
+parent,5,conditions,Health Conditions,💊,Information guides on common health conditions and symptoms,,active
+topic,6,healthy-eating,Healthy Eating,🥦,Practical guides for a balanced, nutritious diet,1,active
+topic,7,weight-management,Weight Management,⚖️,Evidence-based guides for healthy weight goals,1,active
+topic,8,vitamins-supplements,Vitamins & Supplements,💊,What you need to know about supplements and deficiencies,1,active
+topic,9,cardio-workouts,Cardio Workouts,❤️,Heart-healthy exercise guides for all levels,2,active
+topic,10,strength-training,Strength Training,💪,Guides to building strength safely and effectively,2,active
+topic,11,anxiety,Anxiety,😰,Understanding and managing anxiety,3,active
+topic,12,depression,Depression,😔,Information and support for depression,3,active
+topic,13,sleep,Sleep Health,😴,How to improve your sleep quality and quantity,3,active
+topic,14,cancer-screening,Cancer Screening,🔬,NHS cancer screening programmes explained,4,active
+topic,15,vaccinations,Vaccinations,💉,NHS vaccination schedule and why it matters,4,active
+topic,16,diabetes,Diabetes,🩸,Understanding type 1 and type 2 diabetes,5,active
+topic,17,heart-health,Heart Health,❤️,Guides to maintaining a healthy heart,5,active
+topic,18,respiratory,Respiratory Health,🫁,Asthma, COPD and respiratory conditions,5,active

@@ -19,12 +19,12 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 
 	<button class="guides-carousel-btn guides-carousel-btn--prev"
 	        type="button"
-	        aria-label="<?php esc_attr_e( 'Previous guides', ADN_TEXT_DOMAIN ); ?>"
+	        aria-label="<?php echo esc_attr( sprintf( __( 'Previous %s', ADN_TEXT_DOMAIN ), SITE_CONTENT_PLURAL ) ); ?>"
 	        hidden>
 		&#8249;
 	</button>
 
-	<div class="guides-carousel" role="region" aria-label="<?php esc_attr_e( 'Guides & Insights', ADN_TEXT_DOMAIN ); ?>">
+	<div class="guides-carousel" role="region" aria-label="<?php echo esc_attr( SITE_CONTENT_PLURAL . ' &amp; Insights' ); ?>">
 		<?php foreach ( $items as $card ) : ?>
 			<?php adn_component( 'cards/guide_card', array( 'card' => $card ) ); ?>
 		<?php endforeach; ?>
@@ -32,7 +32,7 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 
 	<button class="guides-carousel-btn guides-carousel-btn--next"
 	        type="button"
-	        aria-label="<?php esc_attr_e( 'Next guides', ADN_TEXT_DOMAIN ); ?>">
+	        aria-label="<?php echo esc_attr( sprintf( __( 'Next %s', ADN_TEXT_DOMAIN ), SITE_CONTENT_PLURAL ) ); ?>">
 		&#8250;
 	</button>
 

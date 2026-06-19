@@ -180,9 +180,72 @@ define( 'SITE_PLACEHOLDER_SEARCH_NEWS',adn_term( 'placeholders.search_news',    
 // ===========================
 define( 'SITE_LABEL_USEFUL_RESOURCES', adn_term( 'labels.useful_resources',     'Useful Resources' ) );
 define( 'SITE_LABEL_ALL_PREFIX',       adn_term( 'labels.all_prefix',           'All %s' ) );
+define( 'SITE_LABEL_FEATURED',         adn_term( 'labels.featured',              'Featured' ) );
+define( 'SITE_LABEL_HOT_TOPICS',       adn_term( 'labels.hot_topics',            'Hot Topics' ) );
+define( 'SITE_LABEL_TRENDING',         adn_term( 'labels.trending',              'Trending' ) );
+define( 'SITE_LABEL_MORE_PREFIX',      adn_term( 'labels.more_prefix',           'More %s' ) );
+define( 'SITE_LABEL_SIMILAR',          adn_term( 'labels.similar',               'Similar' ) );
 define( 'SITE_SECTION_ARTICLE_SHARE',  adn_term( 'sections.article_feedback_label', 'Share this guide' ) );
 define( 'SITE_SECTION_NEWS_READ_BTN',  adn_term( 'sections.news_featured_read_btn',  'Read Full Story' ) );
 define( 'SITE_LABEL_TOOLS_TAB',        adn_term( 'sections.tools_all_overall_tab',   'Overall' ) );
+
+// ===========================
+// ADDITIONAL BUTTON LABELS
+// ===========================
+define( 'SITE_BTN_VIEW_ALL',           adn_term( 'buttons.view_all',             'View all →' ) );
+define( 'SITE_BTN_READ_MORE',          adn_term( 'buttons.read_more',            'Read more →' ) );
+define( 'SITE_BTN_GET_STARTED',        adn_term( 'buttons.get_started',          'Get Started →' ) );
+define( 'SITE_BTN_CONTACT_US',         adn_term( 'buttons.contact_us',           'Contact Us' ) );
+define( 'SITE_BTN_SUBSCRIBE',          adn_term( 'buttons.subscribe',            'Subscribe' ) );
+
+// ===========================
+// ADDITIONAL PLACEHOLDERS
+// ===========================
+define( 'SITE_PLACEHOLDER_NAME',       adn_term( 'placeholders.enter_full_name',  'Enter your full name' ) );
+define( 'SITE_PLACEHOLDER_WHATSAPP',   adn_term( 'placeholders.whatsapp_number',  '+xx xxxx xxx xxx' ) );
+define( 'SITE_PLACEHOLDER_MESSAGE',    adn_term( 'placeholders.message',          'Please provide details...' ) );
+define( 'SITE_PLACEHOLDER_SEARCH_GUIDES', adn_term( 'placeholders.search_guides',   'Search guides…' ) );
+define( 'SITE_PLACEHOLDER_SEARCH_CALC',adn_term( 'placeholders.search_calculators','Search calculators…' ) );
+
+// ===========================
+// FORM LABELS & VALIDATION
+// ===========================
+define( 'FORM_NAME_LABEL',             adn_term( 'forms.name_label',             'Your Name' ) );
+define( 'FORM_EMAIL_LABEL',            adn_term( 'forms.email_label',            'Email Address' ) );
+define( 'FORM_MESSAGE_LABEL',          adn_term( 'forms.message_label',          'Tell us how we can help' ) );
+define( 'FORM_WHATSAPP_LABEL',         adn_term( 'forms.whatsapp_label',         'WhatsApp Number' ) );
+define( 'FORM_POSTCODE_LABEL',         adn_term( 'forms.postcode_label',         'Postal Code' ) );
+define( 'FORM_OPTIONAL_SUFFIX',        adn_term( 'forms.optional_suffix',        '(Optional)' ) );
+define( 'FORM_REQUIRED_SUFFIX',        adn_term( 'forms.required_suffix',        '*' ) );
+define( 'FORM_NAME_ERROR',             adn_term( 'forms.name_required',          'Name is required' ) );
+define( 'FORM_EMAIL_ERROR',            adn_term( 'forms.email_required',         'Email is required' ) );
+define( 'FORM_MESSAGE_ERROR',          adn_term( 'forms.message_required',       'Message is required' ) );
+define( 'FORM_CONSENT_TEXT',           adn_term( 'forms.consent_text',           'I agree to the Privacy Policy and Terms of Use' ) );
+
+// ===========================
+// RESOURCE LABELS
+// ===========================
+define( 'RESOURCE_PDF_DOCUMENTS',      adn_term( 'sections.pdf_documents',       'PDF Documents' ) );
+define( 'RESOURCE_EXTERNAL_LINKS',     adn_term( 'sections.external_links',      'External Links' ) );
+define( 'RESOURCE_VIDEOS',             adn_term( 'sections.videos',              'Videos' ) );
+
+// ===========================
+// COMMENT SECTION
+// ===========================
+define( 'COMMENT_SORT_LATEST',         adn_term( 'comments.latest',              'Latest' ) );
+define( 'COMMENT_SORT_OLDEST',         adn_term( 'comments.oldest',              'Oldest' ) );
+define( 'COMMENT_SORT_PENDING',        adn_term( 'comments.pending',             'Pending' ) );
+define( 'COMMENT_SORT_APPROVED',       adn_term( 'comments.approved',            'Approved' ) );
+define( 'COMMENT_SORT_LABEL',          adn_term( 'comments.sort_comments',       'Sort comments' ) );
+define( 'COMMENT_PREV_BTN',            adn_term( 'comments.previous',            'Previous' ) );
+define( 'COMMENT_NEXT_BTN',            adn_term( 'comments.next',                'Next' ) );
+
+// ===========================
+// CONTENT VIEW LABELS
+// ===========================
+define( 'CONTENT_VIEW_ALL_NEWS',       adn_term( 'content.view_all_news',        'View all →' ) );
+define( 'CONTENT_VIEW_ALL_GUIDES',     adn_term( 'content.view_all_guides',      'View all →' ) );
+define( 'CONTENT_VIEW_ALL_TOOLS',      adn_term( 'content.view_all_tools',       'View all →' ) );
 
 // ===========================
 // PAGE TITLES

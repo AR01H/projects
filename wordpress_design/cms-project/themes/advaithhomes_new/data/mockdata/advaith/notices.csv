@@ -1,0 +1,6 @@
+type,title,text,link_url,link_label,start_date,end_date,priority,status,icon
+info,Spring Budget Update,The Spring Budget has confirmed stamp duty thresholds remain unchanged until March 2025.,/news/stamp-duty-extension-dismissed/,Read more,2024-03-06,2024-04-06,high,active,📊
+info,New Mortgage Rate Tracker,We've launched a new live mortgage rate tracker to help you find the best deals.,/calculators/mortgage-rate-tracker/,Try it now,2024-03-01,,normal,active,💷
+warning,Leasehold Reform: Act Now,If you're a leaseholder the new Reform Bill could benefit you - find out what it means.,/news/leasehold-reform-bill-2024/,Find out more,2024-03-01,2024-06-01,high,active,⚖️
+info,First-Time Buyers Guide Updated,Our complete first-time buyers guide has been updated with 2024 rates and thresholds.,/guides/how-to-buy-first-home/,Read guide,2024-02-15,,normal,active,🏠
+info,Expert Q&A: Mortgage Rates,Join our live Q&A with mortgage experts on 15 April at 12pm.,/ask-expert/,Register free,2024-04-01,2024-04-15,normal,active,💬

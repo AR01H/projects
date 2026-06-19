@@ -28,7 +28,7 @@ function adn_news_get_context() {
 		'meta'              => isset( $data['meta'] )              ? (array) $data['meta']              : array(),
 		'breadcrumb'        => isset( $data['breadcrumb'] )        ? (array) $data['breadcrumb']        : array(),
 		'hero'              => isset( $data['hero'] )              ? (array) $data['hero']              : array(),
-		'categories'        => array( array( 'key' => 'all', 'label' => 'All ' . SITE_NEWS_NOUN, 'count' => '' ) ),
+		'categories'        => array( array( 'key' => 'all', 'label' => sprintf( SITE_LABEL_ALL_PREFIX, SITE_NEWS_NOUN ), 'count' => '' ) ),
 		'featured'          => array(),
 		'sections'          => array(),
 		'sidebar'           => isset( $data['sidebar'] )           ? (array) $data['sidebar']           : array(),
@@ -46,7 +46,7 @@ function adn_news_get_context() {
 			if ( ! empty( $nb_rest ) ) {
 				$ctx['sections'][] = array(
 					'type'       => 'grid',
-					'heading'    => 'All ' . SITE_NEWS_NOUN,
+					'heading'    => sprintf( SITE_LABEL_ALL_PREFIX, SITE_NEWS_NOUN ),
 					'link_label' => '',
 					'link_url'   => '',
 					'items'      => adn_news_newsbar_grid_items( $nb_rest ),
@@ -67,7 +67,7 @@ function adn_news_get_context() {
 			if ( ! empty( $rest ) ) {
 				$ctx['sections'][] = array(
 					'type'    => 'grid',
-					'heading' => 'Latest ' . SITE_NEWS_NOUN,
+					'heading' => SITE_LABEL_LATEST_NEWS,
 					'link_label' => '',
 					'link_url'   => '',
 					'items'   => adn_news_cms_grid_items( $rest ),
@@ -96,7 +96,7 @@ function adn_news_get_context() {
 			if ( ! empty( $rest ) ) {
 				$ctx['sections'][] = array(
 					'type'       => 'grid',
-					'heading'    => 'Latest News',
+					'heading'    => SITE_LABEL_LATEST_NEWS,
 					'link_label' => '',
 					'link_url'   => '',
 					'items'      => adn_news_wp_grid_items( $rest ),
@@ -119,7 +119,7 @@ function adn_news_newsbar_featured( $item ) {
 	$stamp   = ! empty( $item->start_date ) ? $item->start_date : ( isset( $item->created_at ) ? $item->created_at : '' );
 	return array(
 		'bg_icon'   => 'fa-newspaper',
-		'label'     => 'Featured Story',
+		'label'     => SITE_LABEL_FEATURED . ' ' . SITE_NEWS_NOUN,
 		'tag'       => SITE_NEWS_NOUN,
 		'title'     => isset( $item->text ) ? (string) $item->text : '',
 		'excerpt'   => $excerpt,
@@ -156,7 +156,7 @@ function adn_news_newsbar_grid_items( $rows ) {
 /* ── CMS DB mappers ─────────────────────────────────────────────────────── */
 
 function adn_news_cms_categories() {
-	$cats        = array( array( 'key' => 'all', 'label' => 'All ' . SITE_NEWS_NOUN, 'count' => '' ) );
+	$cats        = array( array( 'key' => 'all', 'label' => sprintf( SITE_LABEL_ALL_PREFIX, SITE_NEWS_NOUN ), 'count' => '' ) );
 	$news_parent = function_exists( 'adn_cms_parent_by_slug' ) ? adn_cms_parent_by_slug( 'news' ) : null;
 
 	if ( $news_parent ) {
@@ -188,7 +188,7 @@ function adn_news_cms_categories() {
 function adn_news_cms_featured( $post ) {
 	return array(
 		'bg_icon'   => 'fa-newspaper',
-		'label'     => 'Featured Story',
+		'label'     => SITE_LABEL_FEATURED . ' ' . SITE_NEWS_NOUN,
 		'tag'       => SITE_NEWS_NOUN,
 		'title'     => isset( $post->title ) ? $post->title : '',
 		'excerpt'   => isset( $post->excerpt ) ? (string) $post->excerpt : '',
@@ -236,7 +236,7 @@ function adn_news_wp_featured( $post ) {
 		?: wp_trim_words( wp_strip_all_tags( $post->post_content ), 30, '…' );
 	return array(
 		'bg_icon'   => 'fa-newspaper',
-		'label'     => 'Featured Story',
+		'label'     => SITE_LABEL_FEATURED . ' ' . SITE_NEWS_NOUN,
 		'tag'       => SITE_NEWS_NOUN,
 		'title'     => $post->post_title,
 		'excerpt'   => $excerpt,

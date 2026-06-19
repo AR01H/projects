@@ -1,0 +1,69 @@
+{
+    "hero": {
+        "title_lines": [
+            { "text": "Patient Information,", "accent": false },
+            { "text": "Explained.", "accent": true },
+            { "text": "Clearly. Confidently.", "accent": false }
+        ],
+        "description": "Comprehensive patient guides from experienced NHS clinical teams. Understand your procedure, prepare for treatment and recover with confidence.",
+        "actions": [
+            { "label": "Browse Patient Guides →", "url": "/guides/", "style": "primary" },
+            { "label": "Ask a Clinician", "url": "/ask-expert/", "style": "outline" }
+        ],
+        "trust_items": [],
+        "diagram": {
+            "center_icon": "🏥",
+            "center_lines": [ "Patient Care", "Made Simple" ],
+            "nodes": [
+                { "icon": "🔪", "label": "Surgery & Procedures" },
+                { "icon": "❤️", "label": "Cardiology" },
+                { "icon": "🦴", "label": "Orthopaedics" },
+                { "icon": "👶", "label": "Maternity" },
+                { "icon": "📋", "label": "Outpatients" },
+                { "icon": "🔬", "label": "Tests & Diagnostics" }
+            ]
+        }
+    },
+    "journey": {
+        "heading": { "title": "Which department can we help with?" },
+        "cards": [
+            {
+                "icon": "🤝",
+                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
+                "title": "Speak to a Clinician",
+                "description": "Connect with our clinical team for guidance on your procedure or condition.",
+                "link_label": "Ask a Clinician →",
+                "url": "/ask-expert/"
+            }
+        ]
+    },
+    "news": {
+        "heading": { "title": "Latest Clinical News", "link_label": "View all →", "link_url": "/news/" },
+        "items": []
+    },
+    "regulations": {
+        "heading": { "title": "Latest NHS & NICE Guidance", "link_label": "View all →", "link_url": "/regulations/" },
+        "items": []
+    },
+    "hot_topics": {
+        "title": "🔥 Frequently Requested Guides",
+        "items": [],
+        "cta": { "label": "Explore All Patient Guides →", "url": "/guides/" }
+    },
+    "tools": {
+        "heading": { "title": "Clinical Tools & Resources", "link_label": "View all →", "link_url": "/tools/" },
+        "items": []
+    },
+    "guides": {
+        "heading": { "title": "Patient Guides & Information", "link_label": "View all →", "link_url": "/guides/" },
+        "items": []
+    },
+    "newsletter": {
+        "icon": "✉️",
+        "title": "Stay Informed About Your Care",
+        "description": "Subscribe to receive the latest patient information guides, department news and clinical updates.",
+        "placeholder": "Enter your email address",
+        "button_label": "Subscribe Now",
+        "note": "No spam. Unsubscribe anytime."
+    }
+}

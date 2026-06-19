@@ -45,8 +45,9 @@ class ADN_Theme_Admin {
 		// Manage Calculator → Page Content settings.
 		add_action( 'admin_post_adn_save_tools_page', array( __CLASS__, 'handle_save_tools_page' ) );
 
-		// Admin Actions → Sample Data (seed Guide terms / articles / news).
-		add_action( 'admin_post_adn_seed_content', array( __CLASS__, 'handle_seed_content' ) );
+		// Admin Actions → Sample Data (seed / remove demo content).
+		add_action( 'admin_post_adn_seed_content',     array( __CLASS__, 'handle_seed_content' ) );
+		add_action( 'admin_post_adn_remove_mock_data', array( __CLASS__, 'handle_remove_mock_data' ) );
 
 		// Admin Actions handlers (admin-post.php endpoints).
 		add_action( 'admin_post_adn_clear_cache',          array( __CLASS__, 'handle_clear_cache' ) );
@@ -80,6 +81,7 @@ class ADN_Theme_Admin {
 			return;
 		}
 		wp_enqueue_media();
+		wp_enqueue_style( 'adn-fontawesome-admin', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css', array(), '6.5.2' );
 	}
 
 	/**
@@ -89,104 +91,111 @@ class ADN_Theme_Admin {
 	 * array (each subtab has its own 'label' + 'view'). View paths are
 	 * relative to /admin/tabs/.
 	 */
+	/** Return a nav label with an inline Font Awesome icon prefix. */
+	private static function fa( $icon_class, $label ) {
+		return '<i class="fa-solid ' . esc_attr( $icon_class ) . '" style="margin-right:5px;opacity:.75;"></i>' . esc_html( $label );
+	}
+
 	public static function tabs() {
+		$tools_label = defined( 'SITE_TOOLS_PLURAL' ) ? SITE_TOOLS_PLURAL : __( 'Calculator', ADN_TEXT_DOMAIN );
 		return array(
 			'dashboard' => array(
-				'label' => __( 'Dashboard', ADN_TEXT_DOMAIN ),
+				'label' => self::fa( 'fa-gauge-high', __( 'Dashboard', ADN_TEXT_DOMAIN ) ),
 				'view'  => 'tab-dashboard.php',
 			),
 			'home' => array(
-				'label'   => __( 'Home Page', ADN_TEXT_DOMAIN ),
+				'label'   => self::fa( 'fa-house', __( 'Home Page', ADN_TEXT_DOMAIN ) ),
 				'subtabs' => array(
 					'sections' => array(
-						'label' => __( 'Sections', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-table-cells-large', __( 'Sections', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'home/sub-sections.php',
 					),
 					'hero' => array(
-						'label' => __( 'Hero & Intro', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-star', __( 'Hero & Intro', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'home/sub-hero.php',
 					),
 					'featured' => array(
-						'label' => __( 'Featured Guides', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-bookmark', __( 'Featured Guides', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'home/sub-featured.php',
 					),
 					'newsblocks' => array(
-						'label' => __( 'Regulations & Hot Topics', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-newspaper', __( 'Regulations & Hot Topics', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'home/sub-newsblocks.php',
 					),
 				),
 			),
 			'calculators' => array(
-				'label'   => __( 'Manage Calculator', ADN_TEXT_DOMAIN ),
+				/* translators: %s: site-specific tool noun e.g. "Calculators" */
+				'label'   => self::fa( 'fa-calculator', sprintf( __( 'Manage %s', ADN_TEXT_DOMAIN ), $tools_label ) ),
 				'subtabs' => array(
 					'general' => array(
-						'label' => __( 'Heading & Banner', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-sliders', __( 'Heading & Banner', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'calculators/sub-general.php',
 					),
 					'list' => array(
-						'label' => __( 'Calculator List', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-list', __( 'Tool List', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'calculators/sub-list.php',
 					),
 					'page' => array(
-						'label' => __( 'Page Content', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-file-lines', __( 'Page Content', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'calculators/sub-page.php',
 					),
 					'new' => array(
-						'label' => __( '+ Add / Edit', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-plus', __( 'Add / Edit', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'calculators/sub-new.php',
 					),
 				),
 			),
 			'experts' => array(
-				'label'   => __( 'Experts / Team', ADN_TEXT_DOMAIN ),
+				'label'   => self::fa( 'fa-user-tie', __( 'Experts / Team', ADN_TEXT_DOMAIN ) ),
 				'subtabs' => array(
 					'list' => array(
-						'label' => __( 'Expert List', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-users', __( 'Expert List', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'experts/sub-list.php',
 					),
 					'new' => array(
-						'label' => __( '+ Add / Edit', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-user-plus', __( 'Add / Edit', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'experts/sub-new.php',
 					),
 					'banner' => array(
-						'label' => __( 'Expert Banner', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-image', __( 'Expert Banner', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'experts/sub-banner.php',
 					),
 				),
 			),
 			'contact-inbox' => array(
-				'label' => __( '📬 Contact Inbox', ADN_TEXT_DOMAIN ),
+				'label' => self::fa( 'fa-envelope-open-text', __( 'Contact Inbox', ADN_TEXT_DOMAIN ) ),
 				'view'  => 'tab-contact-inbox.php',
 			),
 			'guidance-inbox' => array(
-				'label' => __( '📋 Guidance Inbox', ADN_TEXT_DOMAIN ),
+				'label' => self::fa( 'fa-clipboard-list', __( 'Guidance Inbox', ADN_TEXT_DOMAIN ) ),
 				'view'  => 'tab-guidance-inbox.php',
 			),
 			'import-export' => array(
-				'label' => __( 'Import / Export', ADN_TEXT_DOMAIN ),
+				'label' => self::fa( 'fa-arrow-right-arrow-left', __( 'Import / Export', ADN_TEXT_DOMAIN ) ),
 				'view'  => 'tab-import-export.php',
 			),
 			'category-pages' => array(
-				'label'   => __( 'Category Pages', ADN_TEXT_DOMAIN ),
+				'label'   => self::fa( 'fa-folder-open', __( 'Category Pages', ADN_TEXT_DOMAIN ) ),
 				'subtabs' => self::category_subtabs(),
 			),
 			'admin-actions' => array(
-				'label'   => __( 'Admin Actions', ADN_TEXT_DOMAIN ),
+				'label'   => self::fa( 'fa-screwdriver-wrench', __( 'Admin Actions', ADN_TEXT_DOMAIN ) ),
 				'subtabs' => array(
 					'cache' => array(
-						'label' => __( 'Cache', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-rotate', __( 'Cache', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'admin-actions/sub-cache.php',
 					),
 					'pages' => array(
-						'label' => __( 'Pages & Permalinks', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-sitemap', __( 'Pages & Permalinks', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'admin-actions/sub-pages.php',
 					),
 					'rules' => array(
-						'label' => __( 'Rules Engine', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-bolt', __( 'Rules Engine', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'admin-actions/sub-rules.php',
 					),
 					'sample-data' => array(
-						'label' => __( 'Sample Data', ADN_TEXT_DOMAIN ),
+						'label' => self::fa( 'fa-database', __( 'Sample Data', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'admin-actions/sub-sample-data.php',
 					),
 				),
@@ -348,7 +357,7 @@ class ADN_Theme_Admin {
 		self::render_notice();
 		?>
 		<div class="wrap adn-admin">
-			<h1><?php echo esc_html( $tab['label'] ); ?></h1>
+			<h1><?php echo wp_kses( $tab['label'], array( 'i' => array( 'class' => array(), 'style' => array(), 'aria-hidden' => array() ) ) ); ?></h1>
 
 			<?php /* Sidebar submenus are the top level; a section's own subtabs
 			         render here as its in-page tabs (no duplicate of the sidebar). */ ?>
@@ -357,7 +366,7 @@ class ADN_Theme_Admin {
 					<?php foreach ( $tab['subtabs'] as $skey => $sdef ) : ?>
 						<a href="<?php echo esc_url( self::tab_url( $active, $skey ) ); ?>"
 							class="nav-tab <?php echo $skey === $active_sub ? 'nav-tab-active' : ''; ?>">
-							<?php echo esc_html( $sdef['label'] ); ?>
+							<?php echo wp_kses( $sdef['label'], array( 'i' => array( 'class' => array(), 'style' => array(), 'aria-hidden' => array() ) ) ); ?>
 						</a>
 					<?php endforeach; ?>
 				</h2>
@@ -1281,7 +1290,7 @@ class ADN_Theme_Admin {
 		self::redirect_back( 'category-pages', $slug, __( 'Category settings saved.', ADN_TEXT_DOMAIN ) );
 	}
 
-	// ── Admin Actions: seed sample Guide content into the CMS plugin ─────────────
+	// ── Admin Actions: seed sample content into the CMS plugin ─────────────────
 
 	public static function handle_seed_content() {
 		check_admin_referer( 'adn_seed_content' );
@@ -1291,6 +1300,20 @@ class ADN_Theme_Admin {
 
 		require_once ADN_THEME_DIR . '/admin/mock-installer.php';
 		$result = ADN_Mock_Installer::seed();
+
+		self::redirect_back( 'admin-actions', 'sample-data', $result['message'] );
+	}
+
+	// ── Admin Actions: remove all mock/demo data ──────────────────────────────
+
+	public static function handle_remove_mock_data() {
+		check_admin_referer( 'adn_remove_mock_data' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		require_once ADN_THEME_DIR . '/admin/mock-installer.php';
+		$result = ADN_Mock_Installer::remove_all();
 
 		self::redirect_back( 'admin-actions', 'sample-data', $result['message'] );
 	}
@@ -1342,24 +1365,40 @@ class ADN_Theme_Admin {
 			}
 		}
 
+		// Banner stats: array of { icon, value, label } rows from repeater.
+		$banner_raw = isset( $_POST['expert_banner_items'] ) && is_array( $_POST['expert_banner_items'] )
+			? array_values( wp_unslash( $_POST['expert_banner_items'] ) )
+			: array();
+		$banner = array();
+		foreach ( $banner_raw as $bi ) {
+			if ( ! is_array( $bi ) ) { continue; }
+			$b_icon  = sanitize_text_field( isset( $bi['icon'] )  ? $bi['icon']  : '' );
+			$b_value = sanitize_text_field( isset( $bi['value'] ) ? $bi['value'] : '' );
+			$b_label = sanitize_text_field( isset( $bi['label'] ) ? $bi['label'] : '' );
+			if ( '' === $b_value && '' === $b_label ) { continue; }
+			$banner[] = array( 'icon' => $b_icon, 'value' => $b_value, 'label' => $b_label );
+		}
+
 		AH_Expert_DB::maybe_install();
 
 		AH_Expert_DB::save( array(
-			'expert_slug'   => $slug,
-			'name'          => wp_unslash( isset( $_POST['name'] )          ? $_POST['name']          : '' ),
-			'title'         => wp_unslash( isset( $_POST['title'] )         ? $_POST['title']         : '' ),
-			'category'      => wp_unslash( isset( $_POST['category'] )      ? $_POST['category']      : '' ),
-			'status'        => wp_unslash( isset( $_POST['status'] )        ? $_POST['status']        : 'active' ),
-			'photo_id'      => isset( $_POST['photo_id'] )      ? absint( $_POST['photo_id'] )      : 0,
-			'bio'           => wp_unslash( isset( $_POST['bio'] )           ? $_POST['bio']           : '' ),
-			'rating'        => isset( $_POST['rating'] )        ? floatval( $_POST['rating'] )        : 0,
-			'reviews_count' => isset( $_POST['reviews_count'] ) ? absint( $_POST['reviews_count'] )  : 0,
-			'location'      => wp_unslash( isset( $_POST['location'] )      ? $_POST['location']      : '' ),
-			'phone'         => wp_unslash( isset( $_POST['phone'] )         ? $_POST['phone']         : '' ),
-			'email'         => wp_unslash( isset( $_POST['email'] )         ? $_POST['email']         : '' ),
-			'bullets'       => $bullets,
-			'client_images' => $client_images,
-			'mega_html'     => wp_unslash( isset( $_POST['mega_html'] ) ? $_POST['mega_html'] : '' ),
+			'expert_slug'     => $slug,
+			'name'            => wp_unslash( isset( $_POST['name'] )          ? $_POST['name']          : '' ),
+			'title'           => wp_unslash( isset( $_POST['title'] )         ? $_POST['title']         : '' ),
+			'category'        => wp_unslash( isset( $_POST['category'] )      ? $_POST['category']      : '' ),
+			'status'          => wp_unslash( isset( $_POST['status'] )        ? $_POST['status']        : 'active' ),
+			'photo_id'        => isset( $_POST['photo_id'] )           ? absint( $_POST['photo_id'] )           : 0,
+			'bio'             => wp_unslash( isset( $_POST['bio'] )           ? $_POST['bio']           : '' ),
+			'rating'          => isset( $_POST['rating'] )             ? floatval( $_POST['rating'] )           : 0,
+			'reviews_count'   => isset( $_POST['reviews_count'] )      ? absint( $_POST['reviews_count'] )      : 0,
+			'location'        => wp_unslash( isset( $_POST['location'] )      ? $_POST['location']      : '' ),
+			'phone'           => wp_unslash( isset( $_POST['phone'] )         ? $_POST['phone']         : '' ),
+			'email'           => wp_unslash( isset( $_POST['email'] )         ? $_POST['email']         : '' ),
+			'bullets'         => $bullets,
+			'client_images'   => $client_images,
+			'banner_image_id' => isset( $_POST['banner_image_id'] )    ? absint( $_POST['banner_image_id'] )    : 0,
+			'banner'          => $banner,
+			'mega_html'       => wp_unslash( isset( $_POST['mega_html'] ) ? $_POST['mega_html'] : '' ),
 		) );
 
 		$msg = $is_edit

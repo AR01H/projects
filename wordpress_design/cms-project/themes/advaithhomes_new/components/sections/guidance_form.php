@@ -39,12 +39,12 @@ $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_la
 
 		<div class="form-row">
 			<div class="form-group">
-				<label class="form-label" for="guidanceName"><?php esc_html_e( 'Your Name', ADN_TEXT_DOMAIN ); ?> <span class="form-required">*</span></label>
-				<input type="text"  id="guidanceName"  name="name"  placeholder="<?php esc_attr_e( 'Enter your full name', ADN_TEXT_DOMAIN ); ?>" required />
+				<label class="form-label" for="guidanceName"><?php echo esc_html( FORM_NAME_LABEL ); ?> <span class="form-required"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
+				<input type="text"  id="guidanceName"  name="name"  placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_NAME ); ?>" required />
 			</div>
 			<div class="form-group">
-				<label class="form-label" for="guidanceEmail"><?php esc_html_e( 'Email Address', ADN_TEXT_DOMAIN ); ?> <span class="form-required">*</span></label>
-				<input type="email" id="guidanceEmail" name="email" placeholder="<?php esc_attr_e( 'Enter your email', ADN_TEXT_DOMAIN ); ?>" required />
+				<label class="form-label" for="guidanceEmail"><?php echo esc_html( FORM_EMAIL_LABEL ); ?> <span class="form-required"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
+				<input type="email" id="guidanceEmail" name="email" placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_EMAIL ); ?>" required />
 			</div>
 		</div>
 
@@ -65,8 +65,8 @@ $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_la
 		</div>
 
 		<div class="form-group">
-			<label class="form-label" for="guidanceRequirement"><?php esc_html_e( 'Your Requirement', ADN_TEXT_DOMAIN ); ?> <span class="form-required">*</span></label>
-			<textarea id="guidanceRequirement" name="requirement" rows="4" placeholder="<?php esc_attr_e( 'Tell us more about your situation…', ADN_TEXT_DOMAIN ); ?>" required></textarea>
+			<label class="form-label" for="guidanceRequirement"><?php echo esc_html( FORM_MESSAGE_LABEL ); ?> <span class="form-required"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
+			<textarea id="guidanceRequirement" name="requirement" rows="4" placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_MESSAGE ); ?>" required></textarea>
 		</div>
 
 		<div class="form-row">

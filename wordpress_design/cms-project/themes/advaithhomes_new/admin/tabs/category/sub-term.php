@@ -118,16 +118,17 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 	<div class="adn-inner-tabs">
 
 		<?php /* ── Inner Tab Nav ─────────────────────────────────────── */ ?>
+		<?php $tools_tab_label = defined( 'SITE_TOOLS_PLURAL' ) ? SITE_TOOLS_PLURAL : __( 'Calculators', ADN_TEXT_DOMAIN ); ?>
 		<div class="adn-inner-tab-nav nav-tab-wrapper" style="border-bottom:1px solid #c3c4c7;">
-			<a href="#adn-tab-appearance"   class="nav-tab nav-tab-active" data-panel="adn-tab-appearance">Appearance</a>
-			<a href="#adn-tab-journey"      class="nav-tab" data-panel="adn-tab-journey">Journey</a>
-			<a href="#adn-tab-content"      class="nav-tab" data-panel="adn-tab-content">Content</a>
-			<a href="#adn-tab-calc"         class="nav-tab" data-panel="adn-tab-calc">Calculators</a>
-			<a href="#adn-tab-sidebar"      class="nav-tab" data-panel="adn-tab-sidebar">Sidebar</a>
-			<a href="#adn-tab-cta"          class="nav-tab" data-panel="adn-tab-cta">CTA Banner</a>
-			<a href="#adn-tab-marquee"      class="nav-tab" data-panel="adn-tab-marquee">Marquee</a>
-			<a href="#adn-tab-resources"    class="nav-tab" data-panel="adn-tab-resources">Resources</a>
-			<a href="#adn-tab-faqs"         class="nav-tab" data-panel="adn-tab-faqs">FAQs</a>
+			<a href="#adn-tab-appearance"   class="nav-tab nav-tab-active" data-panel="adn-tab-appearance"><i class="fa-solid fa-palette" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Appearance', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-journey"      class="nav-tab" data-panel="adn-tab-journey"><i class="fa-solid fa-route" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Journey', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-content"      class="nav-tab" data-panel="adn-tab-content"><i class="fa-solid fa-file-lines" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Content', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-calc"         class="nav-tab" data-panel="adn-tab-calc"><i class="fa-solid fa-calculator" style="margin-right:4px;opacity:.7;"></i><?php echo esc_html( $tools_tab_label ); ?></a>
+			<a href="#adn-tab-sidebar"      class="nav-tab" data-panel="adn-tab-sidebar"><i class="fa-solid fa-sidebar" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Sidebar', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-cta"          class="nav-tab" data-panel="adn-tab-cta"><i class="fa-solid fa-rectangle-ad" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'CTA Banner', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-marquee"      class="nav-tab" data-panel="adn-tab-marquee"><i class="fa-solid fa-film" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Marquee', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-resources"    class="nav-tab" data-panel="adn-tab-resources"><i class="fa-solid fa-folder-open" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Resources', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-faqs"         class="nav-tab" data-panel="adn-tab-faqs"><i class="fa-solid fa-circle-question" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'FAQs', ADN_TEXT_DOMAIN ); ?></a>
 		</div>
 
 		<?php /* ══════════════════════ APPEARANCE ══════════════════════ */ ?>
@@ -342,23 +343,36 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		<?php /* ══════════════════════ CALCULATORS ═══════════════════════ */ ?>
 		<div id="adn-tab-calc" class="adn-inner-panel">
 			<div class="card" style="max-width:none;">
-				<h2><?php esc_html_e( 'Calculator Shortcuts', ADN_TEXT_DOMAIN ); ?></h2>
-				<p class="description"><?php esc_html_e( 'Select which registered calculators to feature on this category page.', ADN_TEXT_DOMAIN ); ?></p>
+				<h2>
+					<i class="fa-solid fa-calculator" style="margin-right:6px;opacity:.7;"></i>
+					<?php echo esc_html( $tools_tab_label ); ?> <?php esc_html_e( 'Shortcuts', ADN_TEXT_DOMAIN ); ?>
+				</h2>
+				<p class="description">
+					<?php
+					/* translators: %s: site-specific tool noun e.g. "Calculators" */
+					printf( esc_html__( 'Select which registered %s to feature on this category page.', ADN_TEXT_DOMAIN ), esc_html( strtolower( $tools_tab_label ) ) );
+					?>
+				</p>
 
 				<table class="form-table" role="presentation"><tbody>
 					<tr>
 						<th><?php esc_html_e( 'Section Heading', ADN_TEXT_DOMAIN ); ?></th>
-						<td><input type="text" class="regular-text" name="calc[heading]" value="<?php echo esc_attr( $calc_heading ); ?>" placeholder="Useful Calculators"></td>
+						<td><input type="text" class="regular-text" name="calc[heading]" value="<?php echo esc_attr( $calc_heading ); ?>" placeholder="<?php echo esc_attr( sprintf( __( 'Useful %s', ADN_TEXT_DOMAIN ), $tools_tab_label ) ); ?>"></td>
 					</tr>
 				</tbody></table>
 
-				<p style="margin:16px 0 8px;font-weight:600;"><?php esc_html_e( 'Available Calculators', ADN_TEXT_DOMAIN ); ?></p>
+				<p style="margin:16px 0 8px;font-weight:600;">
+					<?php
+					/* translators: %s: site-specific tool noun e.g. "Calculators" */
+					printf( esc_html__( 'Available %s', ADN_TEXT_DOMAIN ), esc_html( $tools_tab_label ) );
+					?>
+				</p>
 
 				<?php if ( empty( $all_tools ) ) : ?>
 					<p class="description">
-						<?php esc_html_e( 'No calculators registered yet.', ADN_TEXT_DOMAIN ); ?>
+						<?php printf( esc_html__( 'No %s registered yet.', ADN_TEXT_DOMAIN ), esc_html( strtolower( $tools_tab_label ) ) ); ?>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=adn-theme-calculators&subtab=list' ) ); ?>">
-							<?php esc_html_e( 'Go to Manage Calculator → Calculator List', ADN_TEXT_DOMAIN ); ?>
+							<?php printf( esc_html__( 'Go to Manage %s → Tool List', ADN_TEXT_DOMAIN ), esc_html( $tools_tab_label ) ); ?>
 						</a>
 					</p>
 				<?php else : ?>
@@ -375,7 +389,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 							<span style="flex:1;">
 								<strong><?php echo esc_html( $_c_label ); ?></strong>
 								<?php if ( ! $_c_enabled ) : ?>
-									<em style="color:#999;font-size:12px;"> (<?php esc_html_e( 'disabled in Calculator List', ADN_TEXT_DOMAIN ); ?>)</em>
+									<em style="color:#999;font-size:12px;"> (<?php printf( esc_html__( 'disabled in %s List', ADN_TEXT_DOMAIN ), esc_html( $tools_tab_label ) ); ?>)</em>
 								<?php endif; ?>
 								<br><code style="font-size:11px;color:#666;">[ah_calculator key="<?php echo esc_attr( $key ); ?>"]</code>
 							</span>
@@ -423,7 +437,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				<table class="form-table" role="presentation" style="margin-top:16px;"><tbody>
 					<tr>
 						<th><?php esc_html_e( 'CTA Label', ADN_TEXT_DOMAIN ); ?></th>
-						<td><input type="text" class="regular-text" name="sidebar[cta_label]" value="<?php echo esc_attr( $sidebar_cta_label ); ?>" placeholder="View All Calculators →"></td>
+						<td><input type="text" class="regular-text" name="sidebar[cta_label]" value="<?php echo esc_attr( $sidebar_cta_label ); ?>" placeholder="<?php echo esc_attr( sprintf( __( 'View All %s →', ADN_TEXT_DOMAIN ), $tools_tab_label ) ); ?>"></td>
 					</tr>
 					<tr>
 						<th><?php esc_html_e( 'CTA URL', ADN_TEXT_DOMAIN ); ?></th>

@@ -26,7 +26,7 @@ $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
                        placeholder="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : adn_term( 'sidebar.newsletter_placeholder', 'Your email address' ) ); ?>"
                        aria-label="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Email address' ); ?>"
                        required />
-                <button type="submit" class="adn-nl-btn" aria-label="<?php esc_attr_e( 'Subscribe', ADN_TEXT_DOMAIN ); ?>">
+                <button type="submit" class="adn-nl-btn" aria-label="<?php echo esc_attr( SITE_BTN_SUBSCRIBE ); ?>">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

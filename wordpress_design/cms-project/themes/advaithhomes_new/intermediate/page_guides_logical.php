@@ -167,12 +167,12 @@ function adn_guides_get_context() {
 			'quick_tools' => array(
 				'heading' => '🧮 ' . SITE_TOOLS_PLURAL,
 				'items'   => $calc_items,
-				'cta'     => array( 'label' => 'All ' . SITE_TOOLS_PLURAL . ' →', 'url' => SITE_CALCULATORS_URL ),
+				'cta'     => array( 'label' => sprintf( SITE_LABEL_ALL_PREFIX, SITE_TOOLS_PLURAL ) . ' →', 'url' => SITE_CALCULATORS_URL ),
 			),
 			'news_mini' => array(
-				'heading'  => 'Latest ' . SITE_NEWS_NOUN,
+				'heading'  => SITE_LABEL_LATEST_NEWS,
 				'items'    => $news_items,
-				'view_all' => array( 'label' => 'View all ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
+				'view_all' => array( 'label' => CONTENT_VIEW_ALL_NEWS, 'url' => SITE_NEWS_URL ),
 			),
 		),
 		'chrome' => $chrome,

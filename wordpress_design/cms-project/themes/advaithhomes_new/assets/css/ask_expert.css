@@ -898,18 +898,23 @@
     padding: 10px 14px;
 }
 
-/* ── Expert Profile Hero ────────────────────────────────────── */
+/* ── Expert Profile Hero — Naukri-style light card ──────────── */
 .expert-profile-hero {
-    background: linear-gradient(135deg, var(--color-primary, #1d4ed8) 0%, #2d5a44 60%, #1a2332 100%);
-    padding: 48px 0;
-    overflow: hidden;
+    background: #f0f2f5;
+    padding: 28px 0 36px;
 }
 
+/* Card that wraps the photo + info */
 .expert-profile-hero-inner {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 40px;
+    grid-template-columns: 160px 1fr;
+    gap: 32px;
     align-items: center;
+    background: #fff;
+    border: 1px solid #e2e5ea;
+    border-radius: 12px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    padding: 28px 32px;
 }
 
 .expert-profile-photo-wrap {
@@ -919,67 +924,68 @@
 }
 
 .expert-profile-photo {
-    width: 160px;
-    height: 160px;
+    width: 140px;
+    height: 140px;
     object-fit: cover;
     border-radius: 50%;
-    border: 4px solid rgba(255, 255, 255, 0.3);
+    border: 3px solid #e2e5ea;
     display: block;
 }
 
 .expert-profile-initials {
-    width: 160px;
-    height: 160px;
-    background: rgba(255, 255, 255, 0.15);
+    width: 140px;
+    height: 140px;
+    background: linear-gradient(135deg, #e8f5ee, #d4e6d8);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.6rem;
     font-weight: 700;
-    color: #fff;
-    border: 4px solid rgba(255, 255, 255, 0.25);
+    color: var(--color-primary, #1d4ed8);
+    border: 3px solid #e2e5ea;
 }
 
-.expert-profile-hero-info { color: #fff; }
+.expert-profile-hero-info { color: #111827; }
 
 .expert-profile-breadcrumb {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
 }
 
 .epbc-link {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.78rem;
+    color: #6b7280;
     text-decoration: none;
     transition: color 0.12s;
 }
 
-.epbc-link:hover { color: #fff; }
+.epbc-link:hover { color: var(--color-primary, #1d4ed8); }
 
 .epbc-sep {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.72rem;
+    color: #9ca3af;
 }
 
 .epbc-current {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.78rem;
+    color: #374151;
+    font-weight: 500;
 }
 
 .expert-profile-name {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    color: #fff;
-    margin-bottom: 6px;
+    font-size: clamp(1.4rem, 2.8vw, 2rem);
+    color: #111827;
+    margin-bottom: 4px;
     font-weight: 700;
 }
 
 .expert-profile-specialisation {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    color: #374151;
     margin-bottom: 12px;
 }
 
@@ -991,25 +997,145 @@
 }
 
 .expert-profile-rating .rating-stars { font-size: 1rem; }
-.expert-profile-rating .rating-value { color: #fff; font-size: 0.95rem; font-weight: 600; }
-.expert-profile-rating .rating-count { color: rgba(255, 255, 255, 0.7); font-size: 0.82rem; }
+.expert-profile-rating .rating-value { color: #111827; font-size: 0.95rem; font-weight: 600; }
+.expert-profile-rating .rating-count { color: #6b7280; font-size: 0.82rem; }
 
 .expert-profile-location {
     font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: #4b5563;
     margin-bottom: 12px;
 }
 
 .expert-profile-cat-pill {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #fff;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: var(--color-primary, #1d4ed8);
     font-size: 0.78rem;
     font-weight: 500;
     padding: 4px 14px;
     border-radius: 20px;
 }
+
+/* ── Cover image as card background ─────────────────────────── */
+.expert-profile-hero-inner.has-cover-bg {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-color: transparent;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark gradient overlay so text stays readable against any image */
+.expert-profile-hero-inner.has-cover-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        105deg,
+        rgba(0,0,0,0.72) 0%,
+        rgba(0,0,0,0.48) 60%,
+        rgba(0,0,0,0.28) 100%
+    );
+    border-radius: inherit;
+    z-index: 0;
+}
+
+/* All children sit above the overlay */
+.expert-profile-hero-inner.has-cover-bg > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Text goes white when image is in card background */
+.expert-profile-hero-inner.has-cover-bg .expert-profile-hero-info { color: #fff; }
+.expert-profile-hero-inner.has-cover-bg .expert-profile-name         { color: #fff; }
+.expert-profile-hero-inner.has-cover-bg .expert-profile-specialisation { color: rgba(255,255,255,0.85); }
+.expert-profile-hero-inner.has-cover-bg .expert-profile-location     { color: rgba(255,255,255,0.8); }
+.expert-profile-hero-inner.has-cover-bg .rating-value                { color: #fff; }
+.expert-profile-hero-inner.has-cover-bg .rating-count                { color: rgba(255,255,255,0.7); }
+.expert-profile-hero-inner.has-cover-bg .epbc-link                   { color: rgba(255,255,255,0.65); }
+.expert-profile-hero-inner.has-cover-bg .epbc-link:hover             { color: #fff; }
+.expert-profile-hero-inner.has-cover-bg .epbc-sep,
+.expert-profile-hero-inner.has-cover-bg .epbc-current                { color: rgba(255,255,255,0.7); }
+.expert-profile-hero-inner.has-cover-bg .expert-profile-cat-pill {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.3);
+    color: #fff;
+}
+
+/* Photo: white border + shadow to pop against the image */
+.expert-profile-hero-inner.has-cover-bg .expert-profile-photo,
+.expert-profile-hero-inner.has-cover-bg .expert-profile-initials {
+    border: 4px solid rgba(255,255,255,0.85);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+    .expert-profile-hero-inner {
+        grid-template-columns: 110px 1fr;
+        gap: 20px;
+        padding: 20px;
+    }
+    .expert-profile-photo,
+    .expert-profile-initials { width: 100px; height: 100px; }
+}
+
+@media (max-width: 480px) {
+    .expert-profile-hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .expert-profile-breadcrumb { justify-content: center; }
+}
+
+/* ── Expert stats marquee — column tile layout ───────────────── */
+.expert-stats-marquee {
+    background: #fff;
+    border-top: 1px solid #e2e5ea;
+    border-bottom: 1px solid #e2e5ea;
+    overflow: hidden;
+    margin: 0 0 32px;
+}
+
+/* Each item: tall column tile with icon → value → desc stacked */
+.expert-stats-marquee .phb-trust-icon-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 3px;
+    min-width: 150px;
+    padding: 18px 28px;
+    border-right: 1px solid #e2e5ea;
+}
+
+.expert-stats-marquee .phb-trust-icon {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+    color: var(--color-primary, #1d4ed8);
+    display: block;
+}
+
+.expert-stats-marquee .phb-trust-icon-item strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.expert-stats-marquee .phb-trust-icon-item span {
+    display: block;
+    font-size: 0.73rem;
+    color: #6b7280;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
 
 /* ── Profile Page Layout ────────────────────────────────────── */
 .expert-profile-layout {

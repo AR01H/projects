@@ -1,0 +1,20 @@
+type,id,slug,name,icon_emoji,description,parent_id,status
+parent,1,buying,Buying a Home,🏡,Everything you need to know about buying property in the UK,,active
+parent,2,selling,Selling a Home,🏷️,Step-by-step guides to selling your property,,active
+parent,3,moving,Moving Home,📦,Practical guides for a smooth house move,,active
+parent,4,renting,Renting,🔑,Tenant and landlord guides for the UK rental market,,active
+parent,5,mortgages,Mortgages,💷,Understanding mortgages, rates and applications,,active
+topic,6,first-time-buyers,First-Time Buyers,🏠,Guides specifically for first-time property buyers,1,active
+topic,7,property-search,Property Search,🔍,How to find and choose the right property,1,active
+topic,8,making-an-offer,Making an Offer,🤝,How to negotiate and make an offer on a property,1,active
+topic,9,conveyancing,Conveyancing,📜,Legal process of transferring property ownership,1,active
+topic,10,stamp-duty,Stamp Duty,📊,Understanding stamp duty land tax (SDLT),1,active
+topic,11,preparing-to-sell,Preparing to Sell,🖌️,How to prepare your home for sale,2,active
+topic,12,estate-agents,Estate Agents,🏢,Choosing and working with estate agents,2,active
+topic,13,property-valuation,Property Valuation,💰,How to value your property correctly,2,active
+topic,14,removal-companies,Removal Companies,🚚,Choosing and hiring removal services,3,active
+topic,15,change-of-address,Change of Address,📮,Complete guide to updating your address,3,active
+topic,16,buy-to-let,Buy to Let,🏘️,Investment property guides for landlords,4,active
+topic,17,tenant-rights,Tenant Rights,⚖️,Know your rights as a tenant in the UK,4,active
+topic,18,mortgage-types,Mortgage Types,📑,Fixed rate, tracker and other mortgage options,5,active
+topic,19,mortgage-application,Mortgage Application,📝,Step-by-step mortgage application guide,5,active
