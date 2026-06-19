@@ -76,5 +76,14 @@ adn_page_open( $_open_ctx );
 
 </div>
 
+<?php /* ============================== NEWSLETTER ============================== */ ?>
+<?php if ( ! empty( $ctx['newsletter'] ) ) : ?>
+<section class="newsletter-cta">
+	<div class="container">
+		<?php adn_component( 'sections/newsletter_cta', array( 'newsletter' => $ctx['newsletter'] ) ); ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <?php adn_page_close( $ctx ); ?>
 

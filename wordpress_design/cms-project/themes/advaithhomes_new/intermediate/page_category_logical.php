@@ -708,6 +708,14 @@ function adn_category_get_context( $slug = '' ) {
 		'faqs'          => $faqs,
 		'sidebar'       => $sidebar,
 		'cta_banner'    => $cta_banner,
+		'newsletter'    => array(
+			'icon'         => '📬',
+			'title'        => defined( 'SITE_NEWSLETTER_TITLE' ) ? SITE_NEWSLETTER_TITLE : 'Stay Informed',
+			'description'  => defined( 'SITE_NEWSLETTER_DESC' )  ? SITE_NEWSLETTER_DESC  : 'Get the latest guides and updates delivered to your inbox.',
+			'placeholder'  => defined( 'SITE_NEWSLETTER_PH' )    ? SITE_NEWSLETTER_PH    : 'Your email address',
+			'button_label' => defined( 'SITE_BTN_SUBSCRIBE' )    ? SITE_BTN_SUBSCRIBE    : 'Subscribe',
+			'note'         => defined( 'SITE_NEWSLETTER_NOTE' )  ? SITE_NEWSLETTER_NOTE  : 'No spam. Unsubscribe anytime.',
+		),
 		'chrome'        => $chrome,
 	);
 }

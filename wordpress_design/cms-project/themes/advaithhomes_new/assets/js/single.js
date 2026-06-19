@@ -19,27 +19,20 @@
         var box = document.getElementById( 'tocBox' );
         if ( ! nav || ! box ) return;
 
-        var body     = document.querySelector( '.article-body' );
-        if ( ! body ) {
-            box.hidden = true;
-            return;
-        }
+        var body = document.querySelector( '.article-body' );
+        if ( ! body ) { box.hidden = true; return; }
 
-        var headings = body.querySelectorAll( 'h2' );
-        if ( ! headings.length ) {
-            box.hidden = true;
-            return;
-        }
+        var headings = body.querySelectorAll( 'h2, h3' );
+        if ( ! headings.length ) { box.hidden = true; return; }
 
         headings.forEach( function ( h, i ) {
             if ( ! h.id ) {
                 h.id = 'article-section-' + ( i + 1 );
             }
-
-            var a  = document.createElement( 'a' );
-            a.href = '#' + h.id;
+            var a        = document.createElement( 'a' );
+            a.href       = '#' + h.id;
             a.textContent = h.textContent;
-            a.className   = 'toc-link';
+            a.className  = 'toc-link' + ( h.tagName === 'H3' ? ' toc-link--h3' : '' );
             nav.appendChild( a );
         } );
 

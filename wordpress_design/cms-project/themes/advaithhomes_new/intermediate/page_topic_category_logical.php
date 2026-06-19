@@ -33,6 +33,14 @@ function adn_topic_category_get_context() {
 		'news'               => array( 'heading' => array(), 'items' => array() ),
 		'calculators'        => array( 'heading' => array(), 'items' => array() ),
 		'cta_help'           => array(),
+		'newsletter'         => array(
+			'icon'         => '📬',
+			'title'        => defined( 'SITE_NEWSLETTER_TITLE' ) ? SITE_NEWSLETTER_TITLE : 'Stay Informed',
+			'description'  => defined( 'SITE_NEWSLETTER_DESC' )  ? SITE_NEWSLETTER_DESC  : 'Get the latest guides and updates delivered to your inbox.',
+			'placeholder'  => defined( 'SITE_NEWSLETTER_PH' )    ? SITE_NEWSLETTER_PH    : 'Your email address',
+			'button_label' => defined( 'SITE_BTN_SUBSCRIBE' )    ? SITE_BTN_SUBSCRIBE    : 'Subscribe',
+			'note'         => defined( 'SITE_NEWSLETTER_NOTE' )  ? SITE_NEWSLETTER_NOTE  : 'No spam. Unsubscribe anytime.',
+		),
 	);
 
 	if ( '' === $slug ) {
@@ -396,6 +404,13 @@ function adn_topic_category_get_context() {
 			'link_url'   => home_url( SITE_NEWS_URL ),
 		),
 		'items' => $news_items,
+	);
+
+	// Sidebar news shares the same items (capped at 3).
+	$ctx['sidebar']['news'] = array(
+		'heading'  => defined( 'SITE_LABEL_LATEST_NEWS' ) ? SITE_LABEL_LATEST_NEWS : 'Latest News',
+		'items'    => array_slice( $news_items, 0, 3 ),
+		'view_all' => array( 'label' => 'All news →', 'url' => home_url( SITE_NEWS_URL ) ),
 	);
 
 	// ── Popular calculators (full section below fold) ─────────────────────────────

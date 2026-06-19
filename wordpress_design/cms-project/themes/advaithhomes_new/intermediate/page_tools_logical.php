@@ -181,6 +181,14 @@ function adn_calculators_get_context() {
 		'popular_tools' => $popular_tools,
 		'all_tools'     => $all_tools,
 		'find_cta'      => $find_cta,
+		'newsletter'    => array(
+			'icon'         => '🔧',
+			'title'        => defined( 'SITE_NEWSLETTER_TITLE' ) ? SITE_NEWSLETTER_TITLE : 'Stay Informed',
+			'description'  => defined( 'SITE_NEWSLETTER_DESC' )  ? SITE_NEWSLETTER_DESC  : 'Get the latest tools and health updates delivered to your inbox.',
+			'placeholder'  => defined( 'SITE_NEWSLETTER_PH' )    ? SITE_NEWSLETTER_PH    : 'Your email address',
+			'button_label' => defined( 'SITE_BTN_SUBSCRIBE' )    ? SITE_BTN_SUBSCRIBE    : 'Subscribe',
+			'note'         => defined( 'SITE_NEWSLETTER_NOTE' )  ? SITE_NEWSLETTER_NOTE  : 'No spam. Unsubscribe anytime.',
+		),
 		'chrome'        => $chrome,
 	);
 }

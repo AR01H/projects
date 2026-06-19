@@ -87,31 +87,7 @@ adn_page_open( $ctx );
         <?php if ( empty( $faqs ) ) : ?>
             <p class="muted"><?php esc_html_e( 'No FAQs available yet. Please check back soon.', ADN_TEXT_DOMAIN ); ?></p>
         <?php else : ?>
-            <div class="faqs-list">
-                <?php foreach ( $faqs as $faq ) :
-                    $id        = is_object( $faq ) ? (int) ( $faq->id        ?? 0 ) : (int) ( $faq['id']        ?? 0 );
-                    $q         = is_object( $faq ) ? (string) ( $faq->question ?? '' ) : (string) ( $faq['question'] ?? '' );
-                    $a         = is_object( $faq ) ? (string) ( $faq->answer   ?? '' ) : (string) ( $faq['answer']   ?? '' );
-                    $link_url  = is_object( $faq ) ? (string) ( $faq->link_url  ?? '' ) : (string) ( $faq['link_url']  ?? '' );
-                    $link_text = is_object( $faq ) ? (string) ( $faq->link_text ?? '' ) : (string) ( $faq['link_text'] ?? '' );
-                    if ( '' === trim( $q ) ) { continue; }
-
-                ?>
-                    <details class="faq-item">
-                        <summary class="faq-q">
-                            <span class="faq-q-text"><?php echo esc_html( $q ); ?></span>
-                        </summary>
-                        <div class="faq-a">
-                            <?php if ( '' !== trim( $a ) ) : ?>
-                                <div class="faq-a-body"><?php echo wp_kses_post( wpautop( wp_trim_words( $a, 500, '' ) ) ); ?></div>
-                            <?php endif; ?>
-                            <?php if ( '' !== trim( $link_url ) ) : ?>
-                                <p class="faq-link"><a href="<?php echo esc_url( adn_link( $link_url ) ); ?>"><?php echo esc_html( $link_text ?: $link_url ); ?></a></p>
-                            <?php endif; ?>
-                        </div>
-                    </details>
-                <?php endforeach; ?>
-            </div>
+            <?php adn_component( 'parts/faq_list', array( 'faqs' => $faqs ) ); ?>
         <?php endif; ?>
 
 
@@ -120,64 +96,51 @@ adn_page_open( $ctx );
     <?php /* ── Sidebar ── */ ?>
     <div class="faqs-sidebar">
 
-        <?php /* 1. Contact for Help — existing reusable component */ ?>
+        <?php /* 1. Contact for Help */ ?>
         <?php adn_component( 'parts/contact_sidebar', array( 'page_sidebar' => $page_sidebar ) ); ?>
 
-        <?php /* 2. Latest News */ ?>
-        <?php if ( ! empty( $sb_news ) ) : ?>
-        <div class="mini_card_container_design">
-            <h3 class="faqs-sb-heading"><?php echo esc_html( SITE_LABEL_LATEST_NEWS ); ?></h3>
-            <div class="faqs-sb-news-list">
-                <?php foreach ( $sb_news as $_n ) :
-                    $_n_id      = is_object( $_n ) ? (int)    ( $_n->id          ?? 0  ) : (int)    ( $_n['id']          ?? 0  );
-                    $_n_title   = is_object( $_n ) ? (string) ( $_n->text        ?? '' ) : (string) ( $_n['text']        ?? '' );
-                    $_n_desc    = is_object( $_n ) ? (string) ( $_n->content     ?? '' ) : (string) ( $_n['content']     ?? '' );
-                    $_n_href    = is_object( $_n ) ? (string) ( $_n->link_url    ?? '' ) : (string) ( $_n['link_url']    ?? '' );
-                    $_n_target  = is_object( $_n ) ? (string) ( $_n->link_target ?? '' ) : (string) ( $_n['link_target'] ?? '' );
-                    if ( '' === trim( $_n_title ) ) { continue; }
-                    $_n_url     = '' !== trim( $_n_href ) ? $_n_href : ( $_n_id > 0 ? adn_newsbar_item_url( $_n_id ) : home_url( SITE_NEWS_URL ) );
-                    $_n_target  = in_array( $_n_target, array( '_blank', '_self' ), true ) ? $_n_target : '_self';
-                ?>
-                    <a href="<?php echo esc_url( $_n_url ); ?>" target="<?php echo esc_attr( $_n_target ); ?>"
-                       class=" faqs-sb-news-card"
-                       <?php if ( '_blank' === $_n_target ) : ?>rel="noopener noreferrer"<?php endif; ?>>
-                        <span class="card-title-highlight"><?php echo esc_html( $_n_title ); ?></span>
-                        <?php if ( '' !== trim( $_n_desc ) ) : ?>
-                            <span class="card-desc-text"><?php echo esc_html( wp_trim_words( $_n_desc, 12, '…' ) ); ?></span>
-                        <?php endif; ?>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-            <a href="<?php echo esc_url( home_url( SITE_NEWS_URL ) ); ?>" class="read-more faqs-sb-readmore">
-                <?php printf( esc_html__( 'All %s', ADN_TEXT_DOMAIN ), esc_html( SITE_NEWS_NOUN ) ); ?> <span aria-hidden="true">&#8594;</span>
-            </a>
-        </div>
-        <?php endif; ?>
+        <?php /* 2. Latest News — reuse sidebar_news_mini */ ?>
+        <?php if ( ! empty( $sb_news ) ) :
+            $_sb_news_items = array();
+            foreach ( $sb_news as $_i => $_n ) {
+                $_n_id     = is_object( $_n ) ? (int)    ( $_n->id       ?? 0  ) : (int)    ( $_n['id']       ?? 0  );
+                $_n_title  = is_object( $_n ) ? (string) ( $_n->text     ?? '' ) : (string) ( $_n['text']     ?? '' );
+                $_n_href   = is_object( $_n ) ? (string) ( $_n->link_url ?? '' ) : (string) ( $_n['link_url'] ?? '' );
+                if ( '' === trim( $_n_title ) ) { continue; }
+                $_sb_news_items[] = array(
+                    'title'    => $_n_title,
+                    'date'     => '',
+                    'tag'      => 'NEWS',
+                    'gradient' => function_exists( 'adn_cms_gradient' ) ? adn_cms_gradient( $_i ) : '',
+                    'url'      => '' !== trim( $_n_href ) ? $_n_href : ( $_n_id > 0 && function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_n_id ) : SITE_NEWS_URL ),
+                );
+            }
+            if ( ! empty( $_sb_news_items ) ) :
+                adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => array(
+                    'heading'  => SITE_LABEL_LATEST_NEWS,
+                    'items'    => $_sb_news_items,
+                    'view_all' => array( 'label' => defined( 'CONTENT_VIEW_ALL_NEWS' ) ? CONTENT_VIEW_ALL_NEWS : 'All News →', 'url' => SITE_NEWS_URL ),
+                ) ) );
+            endif;
+        endif; ?>
 
-        <?php /* 3. Hot Topics — guide parent terms */ ?>
-        <?php if ( ! empty( $sb_topics ) ) : ?>
-        <div class="mini_card_container_design">
-            <h3 class="faqs-sb-heading"><?php esc_html_e( 'Hot Topics', ADN_TEXT_DOMAIN ); ?></h3>
-            <ul class="faqs-sb-topics-list">
-                <?php foreach ( $sb_topics as $_t ) :
-                    $_t_name = is_object( $_t ) ? (string) ( $_t->name       ?? '' ) : (string) ( $_t['name']       ?? '' );
-                    $_t_slug = is_object( $_t ) ? (string) ( $_t->slug       ?? '' ) : (string) ( $_t['slug']       ?? '' );
-                    $_t_icon = is_object( $_t ) ? (string) ( $_t->icon_emoji ?? '' ) : (string) ( $_t['icon_emoji'] ?? '' );
-                    if ( '' === trim( $_t_name ) || '' === trim( $_t_slug ) ) { continue; }
-                ?>
-                    <li>
-                        <a href="<?php echo esc_url( home_url( '/' . $_t_slug . '/' ) ); ?>" class="faqs-sb-topic-link">
-                            <?php if ( '' !== $_t_icon ) : ?>
-                                <span class="faqs-sb-topic-icon" aria-hidden="true"><?php echo adn_icon( $_t_icon ); ?></span>
-                            <?php endif; ?>
-                            <span class="faqs-sb-topic-name"><?php echo esc_html( $_t_name ); ?></span>
-                            <span class="faqs-sb-topic-arrow" aria-hidden="true">&#8594;</span>
-                        </a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-        <?php endif; ?>
+        <?php /* 3. Hot Topics — reuse sidebar_guide_parents */ ?>
+        <?php if ( ! empty( $sb_topics ) ) :
+            $_sb_topic_items = array();
+            foreach ( $sb_topics as $_t ) {
+                $_t_name = is_object( $_t ) ? (string) ( $_t->name       ?? '' ) : (string) ( $_t['name']       ?? '' );
+                $_t_slug = is_object( $_t ) ? (string) ( $_t->slug       ?? '' ) : (string) ( $_t['slug']       ?? '' );
+                $_t_icon = is_object( $_t ) ? (string) ( $_t->icon_emoji ?? '' ) : (string) ( $_t['icon_emoji'] ?? '' );
+                if ( '' === trim( $_t_name ) ) { continue; }
+                $_sb_topic_items[] = array( 'icon' => $_t_icon, 'label' => $_t_name, 'url' => home_url( '/' . trim( $_t_slug, '/' ) . '/' ), 'count' => 0 );
+            }
+            if ( ! empty( $_sb_topic_items ) ) :
+                adn_component( 'parts/sidebar_guide_parents', array( 'guide_parents' => array(
+                    'heading' => defined( 'ADN_TEXT_DOMAIN' ) ? __( 'Hot Topics', ADN_TEXT_DOMAIN ) : 'Hot Topics',
+                    'items'   => $_sb_topic_items,
+                ) ) );
+            endif;
+        endif; ?>
 
     </div><!-- /.faqs-sidebar -->
 

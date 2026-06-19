@@ -37,7 +37,7 @@ define( 'COMPANY_EMAIL',             _ah_info( 'email',        'test@gmail.com' 
 define( 'COMPANY_WHATSAPP_NO',       _ah_info( 'whatsapp',     ''              ) );
 // Switch which data folder the theme reads from. Set to 'organics' to use the organic dataset.
 // define('DATA_FILES','organics');
-// define('DATA_FILES','advaith');
-define('DATA_FILES','health');
+define('DATA_FILES','advaith');
+// define('DATA_FILES','health');
 
 unset( $_ah_info );

@@ -1,49 +1,43 @@
 <?php
 /**
- * components/parts/post_sidebar_newsletter.php
+ * components/parts/post_sidebar_newsletter.php - Sidebar: Newsletter signup.
  *
- * Sidebar - Stay Informed newsletter signup form.
- *
- * Props (via extract):
- *   $newsletter = [
- *       'icon'         => string,
- *       'heading'      => string,
- *       'description'  => string,
- *       'placeholder'  => string,
- *       'button_label' => string,
- *       'note'         => string,
- *   ]
+ * Props: $newsletter { icon, heading, description, placeholder, button_label, note }
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$_nl  = isset( $newsletter ) ? (array) $newsletter : array();
-$_ico = adn_icon( isset( $_nl['icon'] )         ? (string) $_nl['icon']         : '✉️' );
-$_hdg = esc_html( isset( $_nl['heading'] )      ? (string) $_nl['heading']      : SITE_SIDEBAR_NEWSLETTER );
-$_dsc = esc_html( isset( $_nl['description'] )  ? (string) $_nl['description']  : '' );
-$_ph  = esc_attr( isset( $_nl['placeholder'] )  ? (string) $_nl['placeholder']  : SITE_PLACEHOLDER_NEWSLETTER );
-$_btn = esc_html( isset( $_nl['button_label'] ) ? (string) $_nl['button_label'] : adn_term( 'sidebar.newsletter_btn', 'Subscribe' ) );
-$_nte = esc_html( isset( $_nl['note'] )         ? (string) $_nl['note']         : '' );
+$_nl      = isset( $newsletter ) ? (array) $newsletter : array();
+$_ico     = adn_icon( isset( $_nl['icon'] )         ? (string) $_nl['icon']         : '✉️' );
+$_hdg     = isset( $_nl['heading'] )      ? (string) $_nl['heading']      : SITE_SIDEBAR_NEWSLETTER;
+$_dsc     = isset( $_nl['description'] )  ? (string) $_nl['description']  : '';
+$_ph      = isset( $_nl['placeholder'] )  ? (string) $_nl['placeholder']  : SITE_PLACEHOLDER_NEWSLETTER;
+$_btn     = isset( $_nl['button_label'] ) ? (string) $_nl['button_label'] : adn_term( 'sidebar.newsletter_btn', 'Subscribe' );
+$_note    = isset( $_nl['note'] )         ? (string) $_nl['note']         : '';
+$_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
 ?>
-<div class="sidebar-box sidebar-newsletter">
-	<div class="sidebar-newsletter-icon" aria-hidden="true"><?php echo $_ico; ?></div>
-	<h3><?php echo $_hdg; ?></h3>
+<div class="sw-panel">
+	<div class="sw-header">
+		<h3 class="sw-title"><span aria-hidden="true"><?php echo $_ico; ?></span> <?php echo esc_html( $_hdg ); ?></h3>
+	</div>
+
 	<?php if ( '' !== $_dsc ) : ?>
-		<p><?php echo $_dsc; ?></p>
+		<p class="sw-nl-desc"><?php echo esc_html( $_dsc ); ?></p>
 	<?php endif; ?>
-	<form class="sidebar-newsletter-form" onsubmit="return false;" novalidate>
-		<label for="sidebarNewsletterEmail" class="screen-reader-text"><?php esc_html_e( 'Email address', ADN_TEXT_DOMAIN ); ?></label>
-		<input
-			type="email"
-			id="sidebarNewsletterEmail"
-			name="email"
-			placeholder="<?php echo $_ph; ?>"
-			autocomplete="email"
-			required
-		/>
-		<button type="submit" class="btn btn-primary sidebar-nl-btn"><?php echo $_btn; ?></button>
+
+	<form class="sw-nl-form adn-nl-form" onsubmit="return false;" novalidate
+	      data-nonce="<?php echo esc_attr( $_nonce ); ?>"
+	      data-ajaxurl="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
+		<label for="swNlEmail-<?php echo esc_attr( uniqid( 'nl' ) ); ?>" class="screen-reader-text"><?php esc_html_e( 'Email address', ADN_TEXT_DOMAIN ); ?></label>
+		<input type="email" name="nl_email" class="sw-nl-input adn-nl-email"
+		       placeholder="<?php echo esc_attr( $_ph ); ?>"
+		       autocomplete="email" required>
+		<button type="submit" class="sw-cta-btn adn-nl-btn"><?php echo esc_html( $_btn ); ?></button>
 	</form>
-	<?php if ( '' !== $_nte ) : ?>
-		<p class="sidebar-nl-note"><?php echo $_nte; ?></p>
+
+	<?php if ( '' !== $_note ) : ?>
+		<p class="sw-nl-note"><?php echo esc_html( $_note ); ?></p>
 	<?php endif; ?>
+
+	<div class="adn-nl-msg" style="display:none;margin-top:8px;font-size:13px;font-weight:500"></div>
 </div>

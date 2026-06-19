@@ -277,6 +277,13 @@ add_action( 'wp_enqueue_scripts', 'adn_enqueue_common_js' );
 add_action( 'wp_enqueue_scripts', 'adn_enqueue_template_specific_assets' );
 add_action( 'template_redirect', 'adn_check_coming_soon' );
 
+// Search: show 12 results per page.
+add_action( 'pre_get_posts', function( $q ) {
+	if ( ! is_admin() && $q->is_main_query() && $q->is_search() ) {
+		$q->set( 'posts_per_page', 12 );
+	}
+} );
+
 // ===========================
 // SHORTCODES
 // ===========================

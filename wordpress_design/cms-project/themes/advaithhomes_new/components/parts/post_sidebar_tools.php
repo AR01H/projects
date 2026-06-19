@@ -1,47 +1,35 @@
 <?php
 /**
- * components/parts/post_sidebar_tools.php
+ * components/parts/post_sidebar_tools.php - Sidebar: Popular Tools list.
  *
- * Sidebar - Popular Calculators list.
- *
- * Props (via extract):
- *   $calculators = [
- *       'view_all_url' => string,
- *       'items'        => [ { icon, label, url }, … ]
- *   ]
+ * Props: $calculators { view_all_url, items[] { icon, label, url } }
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $_calcs    = isset( $calculators ) ? (array) $calculators : array();
 $_items    = isset( $_calcs['items'] ) ? (array) $_calcs['items'] : array();
-$_view_url = isset( $_calcs['view_all_url'] ) ? adn_link( (string) $_calcs['view_all_url'] ) : '';
+$_view_url = isset( $_calcs['view_all_url'] ) ? esc_url( adn_link( (string) $_calcs['view_all_url'] ) ) : '';
 
-if ( empty( $_items ) ) {
-	return;
-}
+if ( empty( $_items ) ) { return; }
 ?>
-<div class="sidebar-box mini_card_container_design">
-	<h3><?php esc_html_e( 'Popular Tools', ADN_TEXT_DOMAIN ); ?></h3>
-	<ul class="sidebar-calc-list " role="list">
-		<?php foreach ( $_items as $_c ) :
-			$_c_icon  = adn_icon( isset( $_c['icon'] )  ? (string) $_c['icon']  : '🧮' );
-			$_c_label = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );
-			$_c_url   = isset( $_c['url'] ) ? adn_link( (string) $_c['url'] ) : '#';
-		?>
-			<li>
-				<a href="<?php echo esc_url( $_c_url ); ?>" class="sidebar-calc-item">
-					<span class="sidebar-calc-icon" aria-hidden="true"><?php echo $_c_icon; ?></span>
-					<span class="sidebar-calc-label"><?php echo $_c_label; ?></span>
-					<span class="sidebar-arrow" aria-hidden="true">→</span>
-				</a>
-			</li>
+<div class="sw-panel">
+	<div class="sw-header">
+		<h3 class="sw-title"><?php echo esc_html( adn_term( 'sidebar.popular_tools_heading', 'Popular ' . SITE_TOOLS_PLURAL ) ); ?></h3>
+		<?php if ( '' !== $_view_url ) : ?>
+			<a href="<?php echo $_view_url; ?>" class="sw-view-all"><?php echo esc_html( 'View all ' . SITE_TOOLS_PLURAL . ' →' ); ?></a>
+		<?php endif; ?>
+	</div>
+
+	<ul class="sw-list" role="list">
+		<?php foreach ( $_items as $_c ) : ?>
+		<li class="sw-item">
+			<a href="<?php echo esc_url( adn_link( isset( $_c['url'] ) ? (string) $_c['url'] : '#' ) ); ?>" class="sw-item-link">
+				<span class="sw-item-icon" aria-hidden="true"><?php echo adn_icon( isset( $_c['icon'] ) ? (string) $_c['icon'] : '🧮' ); ?></span>
+				<span class="sw-item-label"><?php echo esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' ); ?></span>
+				<span class="sw-item-arrow" aria-hidden="true">›</span>
+			</a>
+		</li>
 		<?php endforeach; ?>
 	</ul>
-	<?php if ( '' !== $_view_url ) : ?>
-		<a href="<?php echo esc_url( $_view_url ); ?>" class="sidebar-view-all">
-			<?php echo esc_html( 'View all ' . SITE_TOOLS_PLURAL ); ?> →
-		</a>
-	<?php endif; ?>
 </div>
-

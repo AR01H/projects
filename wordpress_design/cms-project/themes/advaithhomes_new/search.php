@@ -33,56 +33,83 @@ adn_component( 'sections/page_hero', array(
 	),
 ) );
 
-/* ── Sidebar data ── */
-$_sidebar = function_exists( 'adn_service_post_sidebar_data' ) ? adn_service_post_sidebar_data() : array();
-
+/* ── Sidebar: latest news (CMS news, not WP posts) ── */
 $_sidebar_news = array();
-$_nq = new WP_Query( array(
-	'post_type'      => 'post',
-	'posts_per_page' => 4,
-	'orderby'        => 'date',
-	'order'          => 'DESC',
-	'no_found_rows'  => true,
-) );
-if ( $_nq->have_posts() ) {
-	while ( $_nq->have_posts() ) {
-		$_nq->the_post();
+if ( function_exists( 'adn_cms_newsbar_items' ) ) {
+	foreach ( adn_cms_newsbar_items( 4 ) as $_ni ) {
+		$_ntitle = isset( $_ni->text ) ? (string) $_ni->text : '';
+		if ( '' === $_ntitle ) { continue; }
 		$_sidebar_news[] = array(
-			'icon'  => get_post_meta( get_the_ID(), '_adn_article_icon', true ) ?: '📰',
-			'title' => get_the_title(),
-			'date'  => get_the_date( 'M j, Y' ),
-			'url'   => get_permalink(),
+			'icon'  => '📰',
+			'title' => $_ntitle,
+			'date'  => ! empty( $_ni->start_date ) ? date_i18n( 'M j, Y', strtotime( $_ni->start_date ) ) : '',
+			'url'   => ! empty( $_ni->link_url ) ? (string) $_ni->link_url : '#',
 		);
 	}
-	wp_reset_postdata();
+}
+if ( empty( $_sidebar_news ) && function_exists( 'adn_cms_latest_news' ) ) {
+	foreach ( adn_cms_latest_news( 4 ) as $_ni ) {
+		$_ntitle = isset( $_ni->title ) ? (string) $_ni->title : ( isset( $_ni->text ) ? (string) $_ni->text : '' );
+		if ( '' === $_ntitle ) { continue; }
+		$_sidebar_news[] = array(
+			'icon'  => '📰',
+			'title' => $_ntitle,
+			'date'  => ! empty( $_ni->published_date ) ? date_i18n( 'M j, Y', strtotime( $_ni->published_date ) ) : '',
+			'url'   => ! empty( $_ni->url ) ? (string) $_ni->url : '#',
+		);
+	}
 }
 
-/* ── Collect posts into card data before template output ── */
+/* ── Sidebar: guide parent categories ── */
+$_guide_parents_items = array();
+if ( function_exists( 'adn_cms_guide_parents' ) ) {
+	foreach ( adn_cms_guide_parents() as $_gp ) {
+		$_guide_parents_items[] = array(
+			'icon'  => ! empty( $_gp->icon_emoji ) ? (string) $_gp->icon_emoji : '📚',
+			'label' => (string) $_gp->name,
+			'url'   => home_url( '/' . trim( (string) $_gp->slug, '/' ) . '/' ),
+			'count' => 0,
+		);
+	}
+}
+
+/* ── Sidebar: expert help ── */
+$_eh_opt = get_option( 'adn_calculators_page', array() );
+$_expert_help = array(
+	'heading'  => ! empty( $_eh_opt['sidebar_help_title'] ) ? $_eh_opt['sidebar_help_title'] : adn_term( 'sidebar.expert_help_heading', 'Need Expert Help?' ),
+	'subtitle' => ! empty( $_eh_opt['sidebar_help_text'] )  ? $_eh_opt['sidebar_help_text']  : adn_term( 'sidebar.expert_help_subtitle', 'Get personalised guidance from our experts.' ),
+	'experts'  => array(),
+	'cta'      => array(
+		'label' => ! empty( $_eh_opt['sidebar_help_btn_label'] ) ? $_eh_opt['sidebar_help_btn_label'] : adn_term( 'sidebar.expert_help_cta', 'Talk to an Expert' ),
+		'url'   => ! empty( $_eh_opt['sidebar_help_btn_url'] )   ? $_eh_opt['sidebar_help_btn_url']   : home_url( SITE_CONTACT_URL ),
+	),
+);
+
+/* ── Sidebar: tools ── */
+$_sidebar = function_exists( 'adn_service_post_sidebar_data' ) ? adn_service_post_sidebar_data() : array();
+
+/* ── Collect posts into card data ── */
 $_cards = array();
 if ( have_posts() ) {
+	$_i = 0;
 	while ( have_posts() ) {
 		the_post();
-		$_type_obj  = get_post_type_object( get_post_type() );
-		$_type_name = $_type_obj ? $_type_obj->labels->singular_name : '';
 		$_thumb_url = get_the_post_thumbnail_url( null, 'medium' );
-
-		if ( $_thumb_url ) {
-			$_gradient = 'url(' . esc_url( $_thumb_url ) . ') center/cover no-repeat';
-			$_icon     = '';
-		} else {
-			$_gradient = 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%)';
-			$_icon     = 'post' === get_post_type() ? '📄' : '📋';
-		}
+		$_word_count = str_word_count( wp_strip_all_tags( get_the_content() ) );
+		$_read_mins  = max( 1, round( $_word_count / 200 ) );
+		$_type_obj   = get_post_type_object( get_post_type() );
 
 		$_cards[] = array(
-			'icon'        => $_icon,
-			'gradient'    => $_gradient,
-			'category'    => $_type_name,
-			'title'       => get_the_title(),
-			'description' => wp_trim_words( get_the_excerpt(), 18 ),
-			'read_more'   => 'Read more →',
-			'url'         => get_permalink(),
+			'icon'      => 'post' === get_post_type() ? '📄' : '📋',
+			'img_class' => function_exists( 'adn_cms_gradient' ) ? adn_cms_gradient( $_i ) : '',
+			'thumbnail' => $_thumb_url ?: '',
+			'category'  => $_type_obj ? strtoupper( (string) $_type_obj->labels->singular_name ) : '',
+			'title'     => get_the_title(),
+			'desc'      => wp_trim_words( get_the_excerpt(), 15 ),
+			'read_time' => $_read_mins . ' min read',
+			'url'       => get_permalink(),
 		);
+		$_i++;
 	}
 }
 ?>
@@ -110,7 +137,7 @@ if ( have_posts() ) {
 
 					<div class="guides-grid search-results-grid">
 						<?php foreach ( $_cards as $_card ) : ?>
-							<?php adn_component( 'cards/guide_card', array( 'card' => $_card ) ); ?>
+							<?php adn_component( 'cards/guide_listing_card', array( 'item' => $_card ) ); ?>
 						<?php endforeach; ?>
 					</div>
 
@@ -122,6 +149,18 @@ if ( have_posts() ) {
 							) ); ?>
 						</nav>
 					<?php endif; ?>
+
+					<?php /* Browse more – fills empty space on later pages */ ?>
+					<?php adn_component( 'parts/browse_more_cta', array( 'browse_cta' => array(
+						'icon'        => '📚',
+						'heading'     => adn_term( 'search.browse_more_heading', 'Looking for something specific?' ),
+						'description' => adn_term( 'search.browse_more_desc', 'Browse our full library of guides and resources.' ),
+						'links'       => array(
+							array( 'label' => SITE_CONTENT_PLURAL, 'url' => home_url( SITE_GUIDES_URL ),      'primary' => true ),
+							array( 'label' => SITE_NEWS_NOUN,      'url' => home_url( SITE_NEWS_URL ),        'primary' => false ),
+							array( 'label' => SITE_TOOLS_PLURAL,   'url' => home_url( SITE_CALCULATORS_URL ), 'primary' => false ),
+						),
+					) ) ); ?>
 
 				<?php else : ?>
 
@@ -142,17 +181,30 @@ if ( have_posts() ) {
 			</main>
 
 			<?php /* ── SIDEBAR ── */ ?>
-			<aside class="article-sidebar">
+			<aside class="article-sidebar search-sidebar">
 
-				<?php /* Tools */ ?>
-				<?php if ( ! empty( $_sidebar['calculators'] ) ) : ?>
-					<?php adn_component( 'parts/post_sidebar_tools', array( 'calculators' => $_sidebar['calculators'] ) ); ?>
+				<?php /* Browse by topic */ ?>
+				<?php if ( ! empty( $_guide_parents_items ) ) : ?>
+					<?php adn_component( 'parts/sidebar_guide_parents', array( 'guide_parents' => array(
+						'heading' => adn_term( 'sidebar.browse_topics', 'Browse by Topic' ),
+						'items'   => $_guide_parents_items,
+					) ) ); ?>
 				<?php endif; ?>
 
 				<?php /* Latest news */ ?>
 				<?php if ( ! empty( $_sidebar_news ) ) : ?>
 					<?php adn_component( 'parts/post_sidebar_news', array( 'latest_news' => $_sidebar_news ) ); ?>
 				<?php endif; ?>
+
+				<?php /* Newsletter */ ?>
+				<?php adn_component( 'parts/post_sidebar_newsletter', array( 'newsletter' => array(
+					'icon'         => '📬',
+					'heading'      => defined( 'SITE_NEWSLETTER_TITLE' ) ? SITE_NEWSLETTER_TITLE : 'Stay Informed',
+					'description'  => defined( 'SITE_NEWSLETTER_DESC' )  ? SITE_NEWSLETTER_DESC  : 'Get the latest guides and updates.',
+					'placeholder'  => defined( 'SITE_NEWSLETTER_PH' )    ? SITE_NEWSLETTER_PH    : 'Your email address',
+					'button_label' => defined( 'SITE_BTN_SUBSCRIBE' )    ? SITE_BTN_SUBSCRIBE    : 'Subscribe',
+					'note'         => defined( 'SITE_NEWSLETTER_NOTE' )  ? SITE_NEWSLETTER_NOTE  : 'No spam. Unsubscribe anytime.',
+				) ) ); ?>
 
 			</aside>
 
@@ -161,4 +213,3 @@ if ( have_posts() ) {
 </section>
 
 <?php adn_page_close( $_ctx ); ?>
-

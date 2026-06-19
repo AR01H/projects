@@ -133,96 +133,9 @@ adn_page_open( $_open_ctx );
 			<?php endif; ?>
 
 			<?php /* ── Resources (PDFs / Links / Videos) ── */ ?>
-			<?php
-			$_res = isset( $ctx['resources'] ) ? $ctx['resources'] : array();
-
-			// Pre-filter: only items with real data.
-			$_pdfs  = array_filter( (array) ( $_res['pdfs']   ?? array() ), function( $p ) { return ! empty( $p['file_url'] ) && ! empty( $p['title'] ); } );
-			$_links = array_filter( (array) ( $_res['links']  ?? array() ), function( $l ) { return ! empty( $l['title'] ); } );
-			$_vids  = array_filter( (array) ( $_res['videos'] ?? array() ), function( $v ) { return ! empty( $v['url'] ); } );
-
-			if ( $_pdfs || $_links || $_vids ) :
-			?>
-			<div class="category-section category-resources">
-
-				<?php adn_component( 'parts/section_headers/section_header', array(
-					'heading' => array( 'title' => esc_html( SITE_LABEL_USEFUL_RESOURCES ), 'link_label' => '', 'link_url' => '' ),
-					'tag'     => 'h3',
-				) ); ?>
-
-				<?php /* ── PDFs ── */ ?>
-				<?php if ( $_pdfs ) : ?>
-				<div class="res-subsection">
-					<p class="res-sub-label"><?php esc_html_e( 'PDF Documents', ADN_TEXT_DOMAIN ); ?></p>
-					<div class="res-grid">
-						<?php foreach ( $_pdfs as $pdf ) : ?>
-						<a href="<?php echo esc_url( $pdf['file_url'] ); ?>" target="_blank" rel="noopener noreferrer" class="res-card">
-							<div class="res-card-icon res-icon--pdf">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-							</div>
-							<div class="res-card-body">
-								<strong class="res-card-title"><?php echo esc_html( $pdf['title'] ); ?></strong>
-								<?php if ( ! empty( $pdf['desc'] ) ) : ?>
-								<p class="res-card-desc"><?php echo esc_html( $pdf['desc'] ); ?></p>
-								<?php endif; ?>
-							</div>
-							<span class="res-card-cta"><?php esc_html_e( 'Download', ADN_TEXT_DOMAIN ); ?> ↓</span>
-						</a>
-						<?php endforeach; ?>
-					</div>
-				</div>
-				<?php endif; ?>
-
-				<?php /* ── External Links ── */ ?>
-				<?php if ( $_links ) : ?>
-				<div class="res-subsection">
-					<p class="res-sub-label"><?php esc_html_e( 'External Links', ADN_TEXT_DOMAIN ); ?></p>
-					<div class="res-grid">
-						<?php foreach ( $_links as $lnk ) :
-							$_raw_icon = isset( $lnk['icon'] ) ? trim( $lnk['icon'] ) : '';
-						?>
-						<a href="<?php echo esc_url( $lnk['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="res-card">
-							<div class="res-card-icon res-icon--link">
-								<?php if ( '' !== $_raw_icon ) : ?>
-									<span class="res-icon-emoji"><?php echo esc_html( $_raw_icon ); ?></span>
-								<?php else : ?>
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-								<?php endif; ?>
-							</div>
-							<div class="res-card-body">
-								<strong class="res-card-title"><?php echo esc_html( $lnk['title'] ); ?></strong>
-								<?php if ( ! empty( $lnk['desc'] ) ) : ?>
-								<p class="res-card-desc"><?php echo esc_html( $lnk['desc'] ); ?></p>
-								<?php endif; ?>
-							</div>
-							<span class="res-card-cta"><?php esc_html_e( 'Visit', ADN_TEXT_DOMAIN ); ?> ↗</span>
-						</a>
-						<?php endforeach; ?>
-					</div>
-				</div>
-				<?php endif; ?>
-
-				<?php /* ── YouTube Videos - embedded player only ── */ ?>
-				<?php if ( $_vids ) : ?>
-				<div class="res-subsection">
-					<p class="res-sub-label"><?php esc_html_e( 'Videos', ADN_TEXT_DOMAIN ); ?></p>
-					<div class="res-grid res-grid-youtube">
-						<?php foreach ( $_vids as $vid ) : ?>
-						<div class="res-video-item">
-							<div class="res-video-embed ">
-								<iframe
-									src="<?php echo esc_url( 'https://www.youtube.com/embed/' . $vid['vid_id'] . '?rel=0&modestbranding=1' ); ?>"
-									title="<?php echo esc_attr( $vid['title'] ); ?>"
-									loading="lazy"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-									allowfullscreen></iframe>
-							</div>
-						</div>
-						<?php endforeach; ?>
-					</div>
-				</div>
-				<?php endif; ?>
-
+			<?php if ( ! empty( $ctx['resources'] ) ) : ?>
+			<div class="category-section">
+				<?php adn_component( 'sections/category_resources', array( 'resources' => $ctx['resources'] ) ); ?>
 			</div>
 			<?php endif; ?>
 
@@ -254,50 +167,9 @@ adn_page_open( $_open_ctx );
 			<?php
 			$_cat_all  = class_exists( 'AH_Category_Settings' ) ? AH_Category_Settings::get_all( $ctx['slug'] ) : array();
 			$_ql_d     = isset( $_cat_all['quick_links'] ) && is_array( $_cat_all['quick_links'] ) ? $_cat_all['quick_links'] : array();
-			$_ql_items = isset( $_ql_d['items'] ) && is_array( $_ql_d['items'] ) ? array_filter( $_ql_d['items'], function( $i ) { return ! empty( $i['label'] ); } ) : array();
-			if ( ! empty( $_ql_items ) ) :
-				$_ql_heading = isset( $_ql_d['heading'] ) && '' !== $_ql_d['heading'] ? (string) $_ql_d['heading'] : __( 'Quick Links', ADN_TEXT_DOMAIN );
-			?>
-			<div class="sp-panel news-widget ql-widget">
-				<div class="news-widget-header">
-					<span class="news-widget-title"><?php echo esc_html( $_ql_heading ); ?></span>
-				</div>
-				<ul class="sp-list">
-				<?php foreach ( $_ql_items as $_ql ) :
-					$_ql_icon    = trim( (string) ( $_ql['icon']  ?? '' ) );
-					$_ql_label   = (string) ( $_ql['label'] ?? '' );
-					$_ql_url     = (string) ( $_ql['url']   ?? '' );
-					$_is_emoji   = '' !== $_ql_icon && preg_match( '/\p{So}|\p{Sm}|\p{Sk}|\p{Sc}/u', $_ql_icon );
-					$_is_fa      = '' !== $_ql_icon && ! $_is_emoji;
-				?>
-				<li class="sp-item<?php echo ( ! $_is_emoji && ! $_is_fa ) ? ' sp-item--no-icon' : ''; ?>">
-					<?php if ( '' !== $_ql_url ) : ?>
-					<a href="<?php echo esc_url( adn_link( $_ql_url ) ); ?>" class="sp-item__link-wrap">
-					<?php endif; ?>
-
-					<?php if ( $_is_emoji || $_is_fa ) : ?>
-					<div class="sp-item__icon" aria-hidden="true">
-						<?php if ( $_is_emoji ) : ?>
-							<span><?php echo esc_html( $_ql_icon ); ?></span>
-						<?php else : ?>
-							<i class="<?php echo esc_attr( $_ql_icon ); ?>"></i>
-						<?php endif; ?>
-					</div>
-					<?php endif; ?>
-
-					<div class="sp-item__body">
-						<span class="sp-item__title"><?php echo esc_html( $_ql_label ); ?></span>
-					</div>
-
-					<?php if ( '' !== $_ql_url ) : ?>
-						<span class="sp-item__arrow" aria-hidden="true">›</span>
-					</a>
-					<?php endif; ?>
-				</li>
-				<?php endforeach; ?>
-				</ul>
-			</div>
-			<?php endif; ?>
+			if ( ! empty( $_ql_d['items'] ) ) :
+				adn_component( 'parts/quick_links_widget', array( 'quick_links' => $_ql_d ) );
+			endif; ?>
 
 			<?php /* ── Spotlights (stacked, sidebar-native) ── */ ?>
 			<?php
@@ -317,43 +189,23 @@ adn_page_open( $_open_ctx );
 
 <?php /* ============================== FAQs ============================== */ ?>
 <?php if ( ! empty( $ctx['faqs']['items'] ) ) : ?>
-<div class="section-faqs">
-	<div class="faqs-main">
-		<?php if ( ! empty( $ctx['faqs']['heading'] ) ) : ?>
-			<h2 class="faqs-section-heading"><?php echo esc_html( $ctx['faqs']['heading'] ); ?></h2>
-		<?php endif; ?>
-		<div class="faqs-list">
-			<?php foreach ( $ctx['faqs']['items'] as $_faq ) :
-				$_fq  = is_array( $_faq ) ? (string) ( $_faq['question']  ?? '' ) : (string) ( $_faq->question  ?? '' );
-				$_fa  = is_array( $_faq ) ? (string) ( $_faq['answer']    ?? '' ) : (string) ( $_faq->answer    ?? '' );
-				$_flu = is_array( $_faq ) ? (string) ( $_faq['link_url']  ?? '' ) : (string) ( $_faq->link_url  ?? '' );
-				$_flt = is_array( $_faq ) ? (string) ( $_faq['link_text'] ?? '' ) : (string) ( $_faq->link_text ?? '' );
-				if ( '' === trim( $_fq ) ) { continue; }
-			?>
-				<details class="faq-item">
-					<summary class="faq-q">
-						<span class="faq-q-text"><?php echo esc_html( $_fq ); ?></span>
-					</summary>
-					<div class="faq-a">
-						<?php if ( '' !== trim( $_fa ) ) : ?>
-							<div class="faq-a-body"><?php echo wp_kses_post( wpautop( wp_trim_words( $_fa, 500, '' ) ) ); ?></div>
-						<?php endif; ?>
-						<?php if ( '' !== trim( $_flu ) ) : ?>
-							<p class="faq-link"><a href="<?php echo esc_url( adn_link( $_flu ) ); ?>"><?php echo esc_html( $_flt ?: $_flu ); ?></a></p>
-						<?php endif; ?>
-					</div>
-				</details>
-			<?php endforeach; ?>
-		</div>
-	</div>
+<div class="section-faqs container">
+	<?php adn_component( 'parts/faq_list', array(
+		'faqs'    => $ctx['faqs']['items'],
+		'heading' => $ctx['faqs']['heading'] ?? '',
+	) ); ?>
 </div>
 <?php endif; ?>
 
-<?php /* ============================== PERSONALISED GUIDANCE CTA ============================== */ ?>
-<?php if ( ! empty( $ctx['cta_banner'] ) ) : ?>
-<div class="">
-	<?php adn_component( 'parts/cta_banner', array( 'cta_banner' => $ctx['cta_banner'] ) ); ?>
-</div>
+<?php /* ============================== CTA BANNER ============================== */ ?>
+
+<?php /* ============================== NEWSLETTER ============================== */ ?>
+<?php if ( ! empty( $ctx['newsletter'] ) ) : ?>
+<section class="newsletter-cta">
+	<div class="container">
+		<?php adn_component( 'sections/newsletter_cta', array( 'newsletter' => $ctx['newsletter'] ) ); ?>
+	</div>
+</section>
 <?php endif; ?>
 
 <?php adn_page_close( $ctx ); ?>

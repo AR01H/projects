@@ -626,6 +626,9 @@
 .article-sidebar {
     position: sticky;
     top: 90px;
+    align-self: start;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -669,6 +672,12 @@
     color: var(--color-primary, #1d4ed8);
     border-left-color: var(--color-primary, #1d4ed8);
     font-weight: 600;
+}
+
+.toc-link--h3 {
+    padding-left: 22px;
+    font-size: 0.78rem;
+    color: var(--color-text-muted, #9ca3af);
 }
 
 /* Calculators list */
