@@ -52,4 +52,45 @@ adn_page_open( $_open_ctx );
 	</div>
 </div>
 
+<?php /* ============================== BOTTOM QUICK LINKS (4 fixed cards) ============================== */ ?>
+<?php
+$_bgl = $ctx['bottom_grid']['links'] ?? array();
+if ( ! empty( $_bgl ) ) :
+?>
+<section class="guides-bottom-grid">
+	<div class="container">
+		<div class="gbg-row">
+			<?php foreach ( $_bgl as $_lnk ) :
+				$_licon  = isset( $_lnk['icon'] )  ? (string) $_lnk['icon']  : '🔗';
+				$_llabel = isset( $_lnk['label'] ) ? (string) $_lnk['label'] : '';
+				$_lurl   = isset( $_lnk['url'] )   ? (string) $_lnk['url']   : '#';
+				if ( '' === $_llabel ) { continue; }
+			?>
+			<a href="<?php echo esc_url( adn_link( $_lurl ) ); ?>" class="gbg-tool-card">
+				<span class="gbg-tool-icon" aria-hidden="true"><?php echo esc_html( $_licon ); ?></span>
+				<span class="gbg-tool-label"><?php echo esc_html( $_llabel ); ?></span>
+				<span class="gbg-tool-arrow" aria-hidden="true">›</span>
+			</a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+<?php endif; ?>
+
+<?php /* ============================== NEWSLETTER ============================== */ ?>
+<?php if ( ! empty( $ctx['newsletter']['title'] ) ) : ?>
+<section class="newsletter-cta">
+	<div class="container">
+		<?php adn_component( 'sections/newsletter_cta', array( 'newsletter' => $ctx['newsletter'] ) ); ?>
+	</div>
+</section>
+<?php endif; ?>
+
+<?php /* ============================== CTA BANNER ============================== */ ?>
+<?php if ( ! empty( $ctx['cta_banner']['title'] ) ) : ?>
+<div class="guides-cta-wrap">
+	<?php adn_component( 'parts/cta_banner', array( 'cta_banner' => $ctx['cta_banner'] ) ); ?>
+</div>
+<?php endif; ?>
+
 <?php adn_page_close( $ctx ); ?>

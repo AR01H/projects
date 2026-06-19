@@ -888,6 +888,37 @@ class AH_DB_Schema {
 				KEY `idx_report` (`report_id`),
 				KEY `idx_run_at` (`report_id`, `run_at`)
 			) ENGINE=InnoDB {$cs}",
+
+			// Spotlight Terms (groups: health, organics, advaith, etc.)
+			"CREATE TABLE IF NOT EXISTS {$p}ah_spotlight_terms (
+				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				name        VARCHAR(150) NOT NULL,
+				slug        VARCHAR(170) NOT NULL UNIQUE,
+				description TEXT,
+				max_display TINYINT UNSIGNED NOT NULL DEFAULT 10,
+				sort_order  INT DEFAULT 0,
+				is_active   TINYINT(1) DEFAULT 1,
+				created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+			) ENGINE=InnoDB {$cs}",
+
+			// Spotlight Items
+			"CREATE TABLE IF NOT EXISTS {$p}ah_spotlights (
+				id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				term_id      INT UNSIGNED NOT NULL,
+				icon         VARCHAR(100) NOT NULL DEFAULT '',
+				title        VARCHAR(200) NOT NULL,
+				description  TEXT,
+				point_value  VARCHAR(60)  NOT NULL DEFAULT '',
+				point_label  VARCHAR(100) NOT NULL DEFAULT '',
+				link_url     VARCHAR(500) DEFAULT NULL,
+				link_label   VARCHAR(100) DEFAULT NULL,
+				show_link    TINYINT(1)   NOT NULL DEFAULT 0,
+				sort_order   INT DEFAULT 0,
+				is_active    TINYINT(1)   DEFAULT 1,
+				created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+				KEY idx_term (term_id),
+				KEY idx_active (is_active)
+			) ENGINE=InnoDB {$cs}",
 		);
 	}
 }

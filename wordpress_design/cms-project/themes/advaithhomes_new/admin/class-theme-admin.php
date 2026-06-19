@@ -1287,6 +1287,34 @@ class ADN_Theme_Admin {
 			'items'   => $faq_items,
 		) );
 
+		// ── Spotlights ───────────────────────────────────────────────────────────
+		$raw_sp    = ( isset( $_POST['spotlights'] ) && is_array( $_POST['spotlights'] ) ) ? wp_unslash( $_POST['spotlights'] ) : array();
+		$sp_terms  = array();
+		if ( isset( $raw_sp['terms'] ) && is_array( $raw_sp['terms'] ) ) {
+			foreach ( $raw_sp['terms'] as $_st ) {
+				$_st = sanitize_key( $_st );
+				if ( '' !== $_st ) { $sp_terms[] = $_st; }
+			}
+		}
+		AH_Category_Settings::save( $slug, 'spotlights', array( 'terms' => array_values( array_unique( $sp_terms ) ) ) );
+
+		// Quick Links.
+		$raw_ql     = ( isset( $_POST['quick_links'] ) && is_array( $_POST['quick_links'] ) ) ? wp_unslash( $_POST['quick_links'] ) : array();
+		$ql_heading = sanitize_text_field( $raw_ql['heading'] ?? '' );
+		$ql_items   = array();
+		if ( isset( $raw_ql['items'] ) && is_array( $raw_ql['items'] ) ) {
+			foreach ( $raw_ql['items'] as $_qi ) {
+				$_label = sanitize_text_field( $_qi['label'] ?? '' );
+				if ( '' === $_label ) { continue; }
+				$ql_items[] = array(
+					'icon'  => sanitize_text_field( $_qi['icon']  ?? '' ),
+					'label' => $_label,
+					'url'   => esc_url_raw( $_qi['url'] ?? '' ),
+				);
+			}
+		}
+		AH_Category_Settings::save( $slug, 'quick_links', array( 'heading' => $ql_heading, 'items' => $ql_items ) );
+
 		self::redirect_back( 'category-pages', $slug, __( 'Category settings saved.', ADN_TEXT_DOMAIN ) );
 	}
 

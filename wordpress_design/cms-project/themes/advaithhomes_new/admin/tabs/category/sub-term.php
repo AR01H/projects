@@ -61,6 +61,15 @@ $cta_description = isset( $cta_d['description'] ) ? $cta_d['description'] : '';
 $cta_btn_label   = isset( $cta_d['btn_label'] )   ? $cta_d['btn_label']   : '';
 $cta_btn_url     = isset( $cta_d['btn_url'] )     ? $cta_d['btn_url']     : '';
 
+// Spotlights.
+$sp_d          = isset( $all['spotlights'] ) && is_array( $all['spotlights'] ) ? $all['spotlights'] : array();
+$sp_term_slugs = isset( $sp_d['terms'] ) && is_array( $sp_d['terms'] ) ? array_values( array_filter( array_map( 'sanitize_key', $sp_d['terms'] ) ) ) : array();
+
+// Quick Links.
+$ql_d     = isset( $all['quick_links'] ) && is_array( $all['quick_links'] ) ? $all['quick_links'] : array();
+$ql_heading = isset( $ql_d['heading'] ) ? (string) $ql_d['heading'] : '';
+$ql_items = isset( $ql_d['items'] ) && is_array( $ql_d['items'] ) ? $ql_d['items'] : array();
+
 // Marquee.
 $mq_d       = isset( $all['marquee'] ) && is_array( $all['marquee'] ) ? $all['marquee'] : array();
 $mq_enabled = ! empty( $mq_d['marquee_enabled'] ) ? 1 : 0;
@@ -129,6 +138,8 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 			<a href="#adn-tab-marquee"      class="nav-tab" data-panel="adn-tab-marquee"><i class="fa-solid fa-film" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Marquee', ADN_TEXT_DOMAIN ); ?></a>
 			<a href="#adn-tab-resources"    class="nav-tab" data-panel="adn-tab-resources"><i class="fa-solid fa-folder-open" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Resources', ADN_TEXT_DOMAIN ); ?></a>
 			<a href="#adn-tab-faqs"         class="nav-tab" data-panel="adn-tab-faqs"><i class="fa-solid fa-circle-question" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'FAQs', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-spotlights"   class="nav-tab" data-panel="adn-tab-spotlights"><i class="fa-solid fa-star-half-stroke" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Spotlights', ADN_TEXT_DOMAIN ); ?></a>
+			<a href="#adn-tab-quicklinks"   class="nav-tab" data-panel="adn-tab-quicklinks"><i class="fa-solid fa-link" style="margin-right:4px;opacity:.7;"></i><?php esc_html_e( 'Quick Links', ADN_TEXT_DOMAIN ); ?></a>
 		</div>
 
 		<?php /* ══════════════════════ APPEARANCE ══════════════════════ */ ?>
@@ -723,6 +734,110 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				<p class="description" style="margin-top:6px;"><?php esc_html_e( 'Up to 10 FAQs. Questions are always loaded fresh from the plugin.', ADN_TEXT_DOMAIN ); ?></p>
 			</div>
 		</div><?php /* end #adn-tab-faqs */ ?>
+
+		<?php /* ══════════════════════ SPOTLIGHTS ══════════════════════════ */ ?>
+		<?php
+		$_sp_all_terms = class_exists( 'AH_Spotlight_Terms_Model' ) ? ( new AH_Spotlight_Terms_Model() )->get_all_active() : array();
+		?>
+		<div id="adn-tab-spotlights" class="adn-inner-panel">
+			<div class="card" style="max-width:none;">
+				<h2><?php esc_html_e( 'Spotlights', ADN_TEXT_DOMAIN ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Add one or more spotlight groups to display on this category page. Each group renders its own card grid. Manage groups in CMS Plugin → Spotlights.', ADN_TEXT_DOMAIN ); ?></p>
+
+				<?php if ( empty( $_sp_all_terms ) ) : ?>
+					<p class="description" style="color:#d63638;"><?php esc_html_e( 'No active spotlight terms found. Create one in CMS Plugin → Spotlights → Terms first.', ADN_TEXT_DOMAIN ); ?></p>
+				<?php else : ?>
+				<div id="sp-terms-wrap" style="margin-top:14px;">
+					<?php foreach ( $sp_term_slugs as $_si => $_sv ) : ?>
+					<div class="adn-rep-row" style="margin-bottom:8px;">
+						<select name="spotlights[terms][]" style="min-width:220px;">
+							<option value=""><?php esc_html_e( '— Select term —', ADN_TEXT_DOMAIN ); ?></option>
+							<?php foreach ( $_sp_all_terms as $_sp_opt ) : ?>
+							<option value="<?php echo esc_attr( $_sp_opt->slug ); ?>" <?php selected( $_sv, $_sp_opt->slug ); ?>>
+								<?php echo esc_html( $_sp_opt->name ); ?>
+							</option>
+							<?php endforeach; ?>
+						</select>
+						<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>
+					</div>
+					<?php endforeach; ?>
+				</div>
+				<button type="button" id="sp-add-term-btn" class="button" style="margin-top:6px;">+ <?php esc_html_e( 'Add Spotlight Group', ADN_TEXT_DOMAIN ); ?></button>
+				<script>
+				(function(){
+					var wrap = document.getElementById('sp-terms-wrap');
+					var opts = <?php echo wp_json_encode( array_map( function( $t ) { return array( 'slug' => $t->slug, 'name' => $t->name ); }, $_sp_all_terms ) ); ?>;
+					document.getElementById('sp-add-term-btn').addEventListener('click', function(){
+						var row = document.createElement('div');
+						row.className = 'adn-rep-row';
+						row.style.marginBottom = '8px';
+						var sel = '<select name="spotlights[terms][]" style="min-width:220px;"><option value="">— Select term —</option>';
+						opts.forEach(function(o){ sel += '<option value="' + o.slug + '">' + o.name + '</option>'; });
+						sel += '</select>';
+						row.innerHTML = sel + '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>';
+						wrap.appendChild(row);
+					});
+				})();
+				</script>
+				<?php endif; ?>
+			</div>
+		</div><?php /* end #adn-tab-spotlights */ ?>
+
+		<?php /* ══════════════════════ QUICK LINKS ══════════════════════ */ ?>
+		<div id="adn-tab-quicklinks" class="adn-inner-panel">
+			<div class="card" style="max-width:none;">
+				<h2><?php esc_html_e( 'Quick Links', ADN_TEXT_DOMAIN ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Sidebar links — each row shows an icon + label as a clickable item. Leave URL empty to show as plain text.', ADN_TEXT_DOMAIN ); ?></p>
+
+				<table class="form-table" role="presentation" style="max-width:500px;"><tbody>
+					<tr>
+						<th><?php esc_html_e( 'Widget Heading', ADN_TEXT_DOMAIN ); ?></th>
+						<td>
+							<input type="text" class="regular-text" name="quick_links[heading]"
+								value="<?php echo esc_attr( $ql_heading ); ?>"
+								placeholder="<?php esc_attr_e( 'e.g. Useful Links', ADN_TEXT_DOMAIN ); ?>">
+						</td>
+					</tr>
+				</tbody></table>
+
+				<div id="ql-rows-wrap" style="margin-top:16px;">
+					<?php foreach ( $ql_items as $_qi ) : ?>
+					<div class="adn-rep-row" style="gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
+						<input type="text" name="quick_links[items][][icon]"
+							value="<?php echo esc_attr( $_qi['icon'] ?? '' ); ?>"
+							placeholder="Icon (emoji or fa-solid fa-leaf)"
+							style="width:200px;">
+						<input type="text" name="quick_links[items][][label]"
+							value="<?php echo esc_attr( $_qi['label'] ?? '' ); ?>"
+							placeholder="Label *"
+							style="width:180px;">
+						<input type="text" name="quick_links[items][][url]"
+							value="<?php echo esc_attr( $_qi['url'] ?? '' ); ?>"
+							placeholder="URL (optional)"
+							style="width:200px;">
+						<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>
+					</div>
+					<?php endforeach; ?>
+				</div>
+				<button type="button" id="ql-add-row-btn" class="button" style="margin-top:6px;">+ <?php esc_html_e( 'Add Link', ADN_TEXT_DOMAIN ); ?></button>
+
+				<script>
+				(function(){
+					document.getElementById('ql-add-row-btn').addEventListener('click', function(){
+						var wrap = document.getElementById('ql-rows-wrap');
+						var row  = document.createElement('div');
+						row.className = 'adn-rep-row';
+						row.style.cssText = 'gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px;';
+						row.innerHTML = '<input type="text" name="quick_links[items][][icon]" placeholder="Icon (emoji or fa-solid fa-leaf)" style="width:200px;">'
+							+ '<input type="text" name="quick_links[items][][label]" placeholder="Label *" style="width:180px;">'
+							+ '<input type="text" name="quick_links[items][][url]" placeholder="URL (optional)" style="width:200px;">'
+							+ '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>';
+						wrap.appendChild(row);
+					});
+				})();
+				</script>
+			</div>
+		</div><?php /* end #adn-tab-quicklinks */ ?>
 
 	</div><?php /* end .adn-inner-tabs */ ?>
 

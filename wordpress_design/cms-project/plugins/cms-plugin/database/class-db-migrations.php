@@ -37,6 +37,8 @@ class AH_DB_Migrations {
 		self::review_categories_taxonomy_type();
 		self::faq_tags_taxonomy_type();
 		self::contact_form_rule_cc();
+		self::spotlight_terms_page_slug();
+		self::parent_terms_spotlight_term_id();
 	}
 
 	// ── Column migrations ─────────────────────────────────────────────────────
@@ -312,6 +314,14 @@ class AH_DB_Migrations {
 		if ( $changed ) {
 			$wpdb->update( $t, array( 'actions' => wp_json_encode( $actions ) ), array( 'id' => (int) $row->id ), array( '%s' ), array( '%d' ) );
 		}
+	}
+
+	public static function spotlight_terms_page_slug(): void {
+		self::add_column_if_missing( 'ah_spotlight_terms', 'page_slug', "VARCHAR(200) NOT NULL DEFAULT '' AFTER `slug`" );
+	}
+
+	public static function parent_terms_spotlight_term_id(): void {
+		// no-op — spotlight term is now selected at theme level, not stored on parent terms
 	}
 
 	// ── Helper ────────────────────────────────────────────────────────────────

@@ -44,6 +44,10 @@ function adn_settings_schemas() {
 				array( 'key' => 'calculators', 'type' => 'toggle', 'label' => __( 'Calculators', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'guides',      'type' => 'toggle', 'label' => __( 'Guides & Insights', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'newsletter',  'type' => 'toggle', 'label' => __( 'Newsletter', ADN_TEXT_DOMAIN ), 'default' => 1 ),
+				array( 'key' => 'spotlights',  'type' => 'toggle', 'label' => __( 'Spotlights widget', ADN_TEXT_DOMAIN ), 'default' => 1 ),
+				array( 'key' => 'spotlight_term', 'type' => 'select', 'label' => __( 'Spotlight term (home)', ADN_TEXT_DOMAIN ),
+					'default' => '', 'options' => 'adn_settings_spotlight_term_options',
+					'desc' => __( 'Which spotlight group to show on the home page. Manage groups in CMS Plugin → Spotlights.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'marquee_enabled', 'type' => 'toggle', 'label' => __( 'Marquee bar', ADN_TEXT_DOMAIN ), 'default' => 0,
 					'desc' => __( 'Show a scrolling trust/highlight bar below the hero.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'marquee_mode', 'type' => 'select', 'label' => __( 'Marquee mode', ADN_TEXT_DOMAIN ),
@@ -83,6 +87,17 @@ function adn_settings_schemas() {
 			),
 		),
 	);
+}
+
+/** Dynamic select options: all active spotlight terms (slug => name). */
+function adn_settings_spotlight_term_options() {
+	$options = array( '' => __( '— None —', ADN_TEXT_DOMAIN ) );
+	if ( class_exists( 'AH_Spotlight_Terms_Model' ) ) {
+		foreach ( ( new AH_Spotlight_Terms_Model() )->get_all_active() as $term ) {
+			$options[ (string) $term->slug ] = (string) $term->name;
+		}
+	}
+	return $options;
 }
 
 /** Dynamic checklist options: every Guide topic, labelled "Parent › Topic". */

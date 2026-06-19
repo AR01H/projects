@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Constants ────────────────────────────────────────────────────────────────
-define( 'AH_PLUGIN_VERSION', '1.0.5' );
+define( 'AH_PLUGIN_VERSION', '1.0.6' );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
 
 // Table name infix - all custom tables are named: {wpdb_prefix}ah{TABLE_MID_FIX}{table_suffix}

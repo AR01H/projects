@@ -21,7 +21,9 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_guides_logical.php';
 $ctx = adn_guides_get_context();
 
-adn_page_open( $ctx );
+$_open_ctx               = $ctx;
+$_open_ctx['breadcrumb'] = array();
+adn_page_open( $_open_ctx );
 ?>
 
 <?php /* ═══════════════════════════ HERO ═══════════════════════════ */ ?>
@@ -63,6 +65,12 @@ adn_page_open( $ctx );
 			<?php if ( ! empty( $ctx['sidebar']['news_mini']['items'] ) ) : ?>
 				<?php adn_component( 'parts/sidebar_news_mini', array(
 					'news_mini' => $ctx['sidebar']['news_mini'],
+				) ); ?>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $ctx['sidebar']['expert_help']['cta']['label'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_expert_help', array(
+					'expert_help' => $ctx['sidebar']['expert_help'],
 				) ); ?>
 			<?php endif; ?>
 

@@ -250,6 +250,66 @@ adn_page_open( $_open_ctx );
 				<?php adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) ); ?>
 			<?php endif; ?>
 
+			<?php /* ── Quick Links ── */ ?>
+			<?php
+			$_cat_all  = class_exists( 'AH_Category_Settings' ) ? AH_Category_Settings::get_all( $ctx['slug'] ) : array();
+			$_ql_d     = isset( $_cat_all['quick_links'] ) && is_array( $_cat_all['quick_links'] ) ? $_cat_all['quick_links'] : array();
+			$_ql_items = isset( $_ql_d['items'] ) && is_array( $_ql_d['items'] ) ? array_filter( $_ql_d['items'], function( $i ) { return ! empty( $i['label'] ); } ) : array();
+			if ( ! empty( $_ql_items ) ) :
+				$_ql_heading = isset( $_ql_d['heading'] ) && '' !== $_ql_d['heading'] ? (string) $_ql_d['heading'] : __( 'Quick Links', ADN_TEXT_DOMAIN );
+			?>
+			<div class="sp-panel news-widget ql-widget">
+				<div class="news-widget-header">
+					<span class="news-widget-title"><?php echo esc_html( $_ql_heading ); ?></span>
+				</div>
+				<ul class="sp-list">
+				<?php foreach ( $_ql_items as $_ql ) :
+					$_ql_icon    = trim( (string) ( $_ql['icon']  ?? '' ) );
+					$_ql_label   = (string) ( $_ql['label'] ?? '' );
+					$_ql_url     = (string) ( $_ql['url']   ?? '' );
+					$_is_emoji   = '' !== $_ql_icon && preg_match( '/\p{So}|\p{Sm}|\p{Sk}|\p{Sc}/u', $_ql_icon );
+					$_is_fa      = '' !== $_ql_icon && ! $_is_emoji;
+				?>
+				<li class="sp-item<?php echo ( ! $_is_emoji && ! $_is_fa ) ? ' sp-item--no-icon' : ''; ?>">
+					<?php if ( '' !== $_ql_url ) : ?>
+					<a href="<?php echo esc_url( adn_link( $_ql_url ) ); ?>" class="sp-item__link-wrap">
+					<?php endif; ?>
+
+					<?php if ( $_is_emoji || $_is_fa ) : ?>
+					<div class="sp-item__icon" aria-hidden="true">
+						<?php if ( $_is_emoji ) : ?>
+							<span><?php echo esc_html( $_ql_icon ); ?></span>
+						<?php else : ?>
+							<i class="<?php echo esc_attr( $_ql_icon ); ?>"></i>
+						<?php endif; ?>
+					</div>
+					<?php endif; ?>
+
+					<div class="sp-item__body">
+						<span class="sp-item__title"><?php echo esc_html( $_ql_label ); ?></span>
+					</div>
+
+					<?php if ( '' !== $_ql_url ) : ?>
+						<span class="sp-item__arrow" aria-hidden="true">›</span>
+					</a>
+					<?php endif; ?>
+				</li>
+				<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
+
+			<?php /* ── Spotlights (stacked, sidebar-native) ── */ ?>
+			<?php
+			$_cat_sp_all   = $_cat_all;
+			$_cat_sp_terms = isset( $_cat_sp_all['spotlights']['terms'] ) && is_array( $_cat_sp_all['spotlights']['terms'] )
+				? array_filter( array_map( 'sanitize_key', $_cat_sp_all['spotlights']['terms'] ) )
+				: array();
+			foreach ( $_cat_sp_terms as $_cat_sp_slug ) :
+				adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_cat_sp_slug ) );
+			endforeach;
+			?>
+
 		</aside>
 
 	</div>

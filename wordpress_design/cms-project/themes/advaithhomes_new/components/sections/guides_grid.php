@@ -21,31 +21,19 @@ $total_pages  = isset( $pagination['total'] )   ? (int) $pagination['total']   :
 ?>
 <main class="guides-main">
 
-	<?php /* ── Toolbar: search + sort ── */ ?>
+	<?php /* ── Toolbar: sort only ── */ ?>
+	<?php if ( ! empty( $sort_options ) ) : ?>
 	<div class="guides-toolbar">
-		<div class="search-box">
-			<span class="search-icon">🔍</span>
-			<input
-				type="search"
-				id="guidesSearchInput"
-				class="guides-search-input"
-				placeholder="<?php echo esc_attr( $placeholder ); ?>"
-				aria-label="<?php echo esc_attr( SITE_PLACEHOLDER_SEARCH_GUIDES ); ?>"
-				autocomplete="off"
-			/>
+		<div class="sort-select">
+			<span class="sort-label"><?php esc_html_e( 'Sort by:', ADN_TEXT_DOMAIN ); ?></span>
+			<select id="guidesSortSelect" aria-label="<?php esc_attr_e( 'Sort by', ADN_TEXT_DOMAIN ); ?>">
+				<?php foreach ( $sort_options as $opt ) : ?>
+					<option><?php echo esc_html( $opt ); ?></option>
+				<?php endforeach; ?>
+			</select>
 		</div>
-
-		<?php if ( ! empty( $sort_options ) ) : ?>
-			<div class="sort-select">
-				<span class="sort-label"><?php esc_html_e( 'Sort by:', ADN_TEXT_DOMAIN ); ?></span>
-				<select id="guidesSortSelect" aria-label="<?php esc_attr_e( 'Sort by', ADN_TEXT_DOMAIN ); ?>">
-					<?php foreach ( $sort_options as $opt ) : ?>
-						<option><?php echo esc_html( $opt ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-		<?php endif; ?>
 	</div>
+	<?php endif; ?>
 
 	<?php /* ── Guide cards grid ── */ ?>
 	<?php if ( ! empty( $items ) ) : ?>

@@ -44,6 +44,14 @@ $link_url   = isset( $heading['link_url'] )   ? (string) $heading['link_url']   
 $cta_label  = isset( $cta['label'] )          ? (string) $cta['label']          : '';
 $cta_url    = isset( $cta['url'] )            ? (string) $cta['url']            : '';
 
+// Promote CTA to header "View all" link when no explicit link_label is set.
+if ( '' === $link_label && '' !== $cta_label && '' !== $cta_url ) {
+	$link_label = $cta_label;
+	$link_url   = $cta_url;
+	$cta_label  = '';
+	$cta_url    = '';
+}
+
 if ( empty( $items ) && '' === $title ) { return; }
 ?>
 <div class="list-widget">
@@ -67,12 +75,6 @@ if ( empty( $items ) && '' === $title ) { return; }
 			<?php adn_component( 'cards/mini_card', array( 'card' => (array) $_card ) ); ?>
 		<?php endforeach; ?>
 	</div>
-	<?php endif; ?>
-
-	<?php if ( '' !== $cta_label && '' !== $cta_url ) : ?>
-		<a href="<?php echo esc_url( adn_link( $cta_url ) ); ?>" class="list-widget-cta btn btn-outline btn-sm">
-			<?php echo esc_html( $cta_label ); ?>
-		</a>
 	<?php endif; ?>
 
 </div>

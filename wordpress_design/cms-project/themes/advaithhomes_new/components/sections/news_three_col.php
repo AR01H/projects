@@ -57,6 +57,7 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 			<?php adn_component( 'parts/list_widget', array( 'widget' => array(
 				'heading' => isset( $news['heading'] ) ? (array) $news['heading'] : array(),
 				'items'   => $news_cards,
+				'tag'     => 'h4',
 			) ) ); ?>
 		</div>
 	</div>
@@ -65,6 +66,7 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 		<?php adn_component( 'parts/list_widget', array( 'widget' => array(
 			'heading' => isset( $regulations['heading'] ) ? (array) $regulations['heading'] : array(),
 			'items'   => $reg_cards,
+			'tag'     => 'h4',
 		) ) ); ?>
 	</div>
 
@@ -73,6 +75,7 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 			'heading' => array( 'title' => isset( $hot_topics['title'] ) ? (string) $hot_topics['title'] : '' ),
 			'items'   => $topic_cards,
 			'cta'     => $hot_cta,
+			'tag'     => 'h4',
 		) ) ); ?>
 	</div>
 

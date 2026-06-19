@@ -56,7 +56,8 @@ class AH_DB_Seed {
 			array( 'setting_key' => 'instagram_url',   'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'Instagram URL'    ),
 			array( 'setting_key' => 'twitter_url',     'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'Twitter URL'      ),
 			array( 'setting_key' => 'linkedin_url',    'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'LinkedIn URL'     ),
-			array( 'setting_key' => 'youtube_url',     'setting_val' => '',                           'field_type' => 'url',      'group_name' => 'social',  'label' => 'YouTube URL'      ),
+			array( 'setting_key' => 'youtube_url',          'setting_val' => '',  'field_type' => 'url',    'group_name' => 'social',     'label' => 'YouTube URL'                 ),
+			array( 'setting_key' => 'ah_spotlights_home_term', 'setting_val' => '',  'field_type' => 'text',   'group_name' => 'spotlights', 'label' => 'Home Spotlights Term Slug'   ),
 		) as $s ) {
 			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$p}ah_site_settings WHERE setting_key = %s", $s['setting_key'] ) ) ) {
 				$wpdb->insert( "{$p}ah_site_settings", $s );

@@ -62,17 +62,33 @@ adn_page_open( $ctx );
 </section>
 <?php endif; ?>
 
-<?php /* ==================== NEWS + REGULATIONS + HOT TOPICS ==================== */ ?>
-<?php if ( adn_home_section_visible( 'news' ) ) : ?>
-<section class="news-three-col">
+<?php
+/* Resolve spotlight term once — used inside news row */
+$_home_secs    = get_option( 'adn_home_sections', array() );
+$_sp_term_slug = sanitize_key( $_home_secs['spotlight_term'] ?? '' );
+$_sp_active    = adn_home_section_visible( 'spotlights' ) && '' !== $_sp_term_slug;
+?>
+
+<?php /* ==================== NEWS + REGULATIONS + HOT TOPICS + SPOTLIGHTS ==================== */ ?>
+<?php if ( adn_home_section_visible( 'news' ) || $_sp_active ) : ?>
+<section class="news-three-col<?php echo $_sp_active ? ' news-three-col--has-sp' : ''; ?>">
 	<div class="container">
-		<?php
-		adn_component( 'sections/news_three_col', array(
-			'news'        => $ctx['news'],
-			'regulations' => $ctx['regulations'],
-			'hot_topics'  => $ctx['hot_topics'],
-		) );
-		?>
+		<div class="news-sp-row">
+			<?php if ( adn_home_section_visible( 'news' ) ) : ?>
+			<div class="news-sp-row__news">
+				<?php adn_component( 'sections/news_three_col', array(
+					'news'        => $ctx['news'],
+					'regulations' => $ctx['regulations'],
+					'hot_topics'  => $ctx['hot_topics'],
+				) ); ?>
+			</div>
+			<?php endif; ?>
+			<?php if ( $_sp_active ) : ?>
+			<div class="news-sp-row__spotlight">
+				<?php adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_sp_term_slug ) ); ?>
+			</div>
+			<?php endif; ?>
+		</div>
 	</div>
 </section>
 <?php endif; ?>

@@ -105,17 +105,32 @@ function adn_guides_get_context() {
 			);
 		}
 
+		// Latest 3 articles for this parent group.
+		$raw_articles = function_exists( 'adn_cms_articles_for_parent' ) ? adn_cms_articles_for_parent( $slug, 3 ) : array();
+		$latest_posts = array();
+		foreach ( $raw_articles as $art ) {
+			$_t = isset( $art->title ) ? (string) $art->title : '';
+			if ( '' === $_t ) { continue; }
+			$latest_posts[] = array(
+				'title' => $_t,
+				'date'  => function_exists( 'adn_cms_post_date' ) ? adn_cms_post_date( $art ) : '',
+				'url'   => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $art )  : '',
+				'tag'   => isset( $art->category_name ) ? (string) $art->category_name : '',
+			);
+		}
+
 		if ( '' === $name ) { continue; }
 
 		$groups[] = array(
-			'name'      => $name,
-			'slug'      => $slug,
-			'icon'      => $icon,
-			'desc'      => mb_strimwidth( $desc, 0, 140, '…' ),
-			'url'       => $pt_url,
-			'gradient'  => function_exists( 'adn_cms_gradient' ) ? adn_cms_gradient( $i ) : '',
-			'image_url' => $img_url,
-			'topics'    => $topic_cards,
+			'name'         => $name,
+			'slug'         => $slug,
+			'icon'         => $icon,
+			'desc'         => mb_strimwidth( $desc, 0, 140, '…' ),
+			'url'          => $pt_url,
+			'gradient'     => function_exists( 'adn_cms_gradient' ) ? adn_cms_gradient( $i ) : '',
+			'image_url'    => $img_url,
+			'topics'       => $topic_cards,
+			'latest_posts' => $latest_posts,
 		);
 
 		$sidebar_links[] = array(
@@ -173,6 +188,15 @@ function adn_guides_get_context() {
 				'heading'  => SITE_LABEL_LATEST_NEWS,
 				'items'    => $news_items,
 				'view_all' => array( 'label' => CONTENT_VIEW_ALL_NEWS, 'url' => SITE_NEWS_URL ),
+			),
+			'expert_help' => array(
+				'heading'  => defined( 'SITE_SIDEBAR_EXPERT_HELP' ) ? SITE_SIDEBAR_EXPERT_HELP : 'Need Expert Help?',
+				'subtitle' => defined( 'SITE_GUIDANCE_LABEL' ) ? SITE_GUIDANCE_LABEL : 'Get personalised guidance',
+				'experts'  => array(),
+				'cta'      => array(
+					'label' => defined( 'SITE_CONTACT_LABEL' ) ? SITE_CONTACT_LABEL : 'Contact Us',
+					'url'   => defined( 'SITE_CONTACT_URL' )   ? SITE_CONTACT_URL   : '/contact/',
+				),
 			),
 		),
 		'chrome' => $chrome,

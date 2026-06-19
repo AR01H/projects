@@ -18,6 +18,7 @@ class AH_Admin_Menus {
 			// ── Site Structure ────────────────────────────────────────
 			['title' => 'Navigation',        'menu' => 'Navigation Editor', 'slug' => 'ah-navigation',    'callback' => 'page_navigation'   ],
 			['title' => 'Home Banners',      'menu' => 'Home Banners',      'slug' => 'ah-banners',       'callback' => 'page_banners'      ],
+			['title' => 'Spotlights',        'menu' => 'Spotlights',        'slug' => 'ah-spotlights',    'callback' => 'page_spotlights'   ],
 			['title' => 'Site Notices',      'menu' => 'Site Notices',      'slug' => 'ah-notices',       'callback' => 'page_notices'      ],
 			['title' => 'News Bar',          'menu' => 'News Bar',          'slug' => 'ah-news-bar',      'callback' => 'page_news_bar'     ],
 			['title' => 'Media Library',     'menu' => 'Media Library',     'slug' => 'ah-media',         'callback' => 'page_media'        ],
@@ -72,6 +73,7 @@ class AH_Admin_Menus {
 	public static function page_dashboard()      { self::load( 'dashboard'      ); }
 	public static function page_notices()        { self::load( 'notices'        ); }
 	public static function page_banners()        { self::load( 'banners'        ); }
+	public static function page_spotlights()     { self::load( 'spotlights'     ); }
 	public static function page_settings()       { self::load( 'settings'       ); }
 	public static function page_pages()          { self::load( 'pages'          ); }
 	public static function page_media()          { self::load( 'media'          ); }

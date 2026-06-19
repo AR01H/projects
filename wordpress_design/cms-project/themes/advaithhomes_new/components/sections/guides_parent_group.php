@@ -7,8 +7,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$group  = isset( $group ) && is_array( $group ) ? $group : array();
-$topics = isset( $group['topics'] ) && is_array( $group['topics'] ) ? $group['topics'] : array();
+$group        = isset( $group ) && is_array( $group ) ? $group : array();
+$topics       = isset( $group['topics'] )       && is_array( $group['topics'] )       ? $group['topics']       : array();
+$latest_posts = isset( $group['latest_posts'] ) && is_array( $group['latest_posts'] ) ? $group['latest_posts'] : array();
 
 if ( '' === ( isset( $group['name'] ) ? $group['name'] : '' ) ) { return; }
 
@@ -45,8 +46,10 @@ $image_url = isset( $group['image_url'] ) ? (string) $group['image_url'] : '';
 		<?php endif; ?>
 	</div>
 
-	<?php /* ── Topics grid ─────────────────────────────────────────── */ ?>
-	<?php if ( ! empty( $topics ) ) : ?>
+	<div class="gpg-body">
+
+		<?php /* ── Topics grid ─────────────────────────────────────────── */ ?>
+		<?php if ( ! empty( $topics ) ) : ?>
 		<div class="gpg-grid">
 			<?php foreach ( $topics as $topic ) :
 				$t_icon  = isset( $topic['icon'] )  ? (string) $topic['icon']  : $icon;
@@ -61,6 +64,32 @@ $image_url = isset( $group['image_url'] ) ? (string) $group['image_url'] : '';
 				</a>
 			<?php endforeach; ?>
 		</div>
-	<?php endif; ?>
+		<?php endif; ?>
+
+		<?php /* ── Latest posts ────────────────────────────────────────── */ ?>
+		<?php if ( ! empty( $latest_posts ) ) : ?>
+		<ul class="gpg-posts">
+			<?php foreach ( $latest_posts as $_lp ) :
+				$_lp_title = isset( $_lp['title'] ) ? (string) $_lp['title'] : '';
+				$_lp_url   = isset( $_lp['url'] )   ? (string) $_lp['url']   : '';
+				$_lp_date  = isset( $_lp['date'] )  ? (string) $_lp['date']  : '';
+				$_lp_tag   = isset( $_lp['tag'] )   ? (string) $_lp['tag']   : '';
+				if ( '' === $_lp_title ) { continue; }
+			?>
+			<li class="gpg-post">
+				<a href="<?php echo esc_url( adn_link( $_lp_url ) ); ?>" class="gpg-post-link">
+					<span class="gpg-post-icon" aria-hidden="true">📄</span>
+					<span class="gpg-post-title"><?php echo esc_html( $_lp_title ); ?></span>
+					<?php if ( '' !== $_lp_date ) : ?>
+					<span class="gpg-post-meta"><?php echo esc_html( $_lp_date ); ?></span>
+					<?php endif; ?>
+					<span class="gpg-post-arrow" aria-hidden="true">›</span>
+				</a>
+			</li>
+			<?php endforeach; ?>
+		</ul>
+		<?php endif; ?>
+
+	</div>
 
 </div>
