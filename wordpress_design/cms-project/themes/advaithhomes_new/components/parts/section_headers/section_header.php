@@ -25,6 +25,8 @@ $heading       = isset( $heading ) && is_array( $heading ) ? $heading : array();
 $tag           = isset( $tag ) && in_array( $tag, array( 'h2', 'h3' ), true ) ? $tag : 'h2';
 $wrapper_class = isset( $wrapper_class ) && '' !== $wrapper_class ? $wrapper_class : 'section-header';
 $underline     = ! empty( $underline );
+$center        = ! empty( $center );
+if ( $center ) { $wrapper_class .= ' section-header--center'; }
 
 $title      = isset( $heading['title'] ) ? $heading['title'] : '';
 $link_label = isset( $heading['link_label'] ) ? $heading['link_label'] : '';

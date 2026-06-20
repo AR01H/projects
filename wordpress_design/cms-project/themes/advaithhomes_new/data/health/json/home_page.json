@@ -34,6 +34,22 @@
                 "description": "Connect with qualified health professionals for personalised guidance.",
                 "link_label": "Find Expert Help →",
                 "url": "/ask-expert/"
+            },
+            {
+                "icon": "🧮",
+                "gradient": "linear-gradient(135deg,#e8f4ee,#7bbfa4)",
+                "title": "Health Tools & Calculators",
+                "description": "BMI, calorie needs, medication trackers and more evidence-based tools.",
+                "link_label": "Open Health Tools →",
+                "url": "/tools/"
+            },
+            {
+                "icon": "📚",
+                "gradient": "linear-gradient(135deg,#fef6e4,#e6c97a)",
+                "title": "Browse Health Guides",
+                "description": "Evidence-based guides covering conditions, treatments and wellbeing.",
+                "link_label": "Browse Guides →",
+                "url": "/guides/"
             }
         ]
     },
@@ -48,7 +64,7 @@
     "hot_topics": {
         "title": "🔥 Trending Health Topics",
         "items": [],
-        "cta": { "label": "Explore All Topics →", "url": "/guides/" }
+        "cta": { "label": "Explore All →", "url": "/guides/" }
     },
     "tools": {
         "heading": { "title": "Popular Health Tools", "link_label": "View all →", "link_url": "/tools/" },

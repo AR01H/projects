@@ -247,14 +247,20 @@ function adn_home_cms_news_items() {
 			if ( '' === $title ) {
 				continue;
 			}
-			$stamp   = ! empty( $item->start_date ) ? $item->start_date : '';
-			$desc    = ! empty( $item->content ) ? wp_strip_all_tags( (string) $item->content ) : '';
+			$stamp     = ! empty( $item->start_date ) ? $item->start_date : '';
+			$desc      = ! empty( $item->content ) ? wp_strip_all_tags( (string) $item->content ) : '';
+			$thumb_url = '';
+			if ( ! empty( $item->image_id ) ) {
+				$_tu = wp_get_attachment_image_url( (int) $item->image_id, 'thumbnail' );
+				$thumb_url = $_tu ? (string) $_tu : '';
+			}
 			$items[] = array(
 				'title'       => $title,
 				'description' => $desc,
 				'date'        => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
-				'tag'         => strtoupper( CONTENT_TERM ),
+				'tag'         => ! empty( $item->label ) ? (string) $item->label : '',
 				'gradient'    => adn_cms_gradient( $i ),
+				'thumbnail'   => $thumb_url,
 				'url'         => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '#',
 			);
 		}
@@ -318,6 +324,7 @@ function adn_home_cms_regulations_items() {
 			'badge_lines' => array_values( $badge_lines ),
 			'title'       => $post->post_title,
 			'date'        => get_the_date( 'M j, Y', $post ),
+			'thumbnail'   => get_the_post_thumbnail_url( $pid, 'thumbnail' ) ?: '',
 			'url'         => get_permalink( $post ),
 		);
 	}
@@ -345,10 +352,11 @@ function adn_home_cms_hot_topics_items() {
 			continue;
 		}
 		$items[] = array(
-			'icon' => ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : adn_term( 'icons.hot_topics', '🔥' ),
-			'text' => $post->post_title,
-			'desc' => $post->post_excerpt,
-			'url'  => get_permalink( $post ),
+			'icon'      => ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : adn_term( 'icons.hot_topics', '🔥' ),
+			'text'      => $post->post_title,
+			'desc'      => $post->post_excerpt,
+			'thumbnail' => get_the_post_thumbnail_url( $pid, 'thumbnail' ) ?: '',
+			'url'       => get_permalink( $post ),
 		);
 	}
 	return $items;

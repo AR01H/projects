@@ -44,7 +44,7 @@ function adn_enqueue_common_js() {
         'adn-form-builder-script'  => '/assets/js/form-builder.js',
     );
     foreach ( $scripts as $handle => $file ) {
-        wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), ADN_THEME_VERSION, true );
+        wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'adn-api' ), ADN_THEME_VERSION, true );
     }
 }
 function adn_enqueue_template_specific_assets() {
@@ -96,13 +96,15 @@ function adn_enqueue_template_specific_assets() {
             wp_enqueue_script( $handle . '-script', ADN_THEME_URI . $assets['js'], array( 'jquery' ), ADN_THEME_VERSION, true );
         }
     }
-    // Nonce for enquiry form AJAX (contact + guidance pages)
+    // Per-page nonce vars for legacy AJAX forms (contact, guidance still use admin-ajax.php).
     $current_template = get_page_template_slug();
     if ( in_array( $current_template, array( 'pages/page-contact.php', 'pages/page-guidance.php' ), true ) ) {
         $enq_handle = 'adn-' . basename( $current_template, '.php' ) . '-script';
         wp_localize_script( $enq_handle, 'adnEnquiry', array(
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'nonce'   => wp_create_nonce( 'ah_enquiry_nonce' ),
+            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+            'nonce'     => wp_create_nonce( 'ah_enquiry_nonce' ),
+            'restBase'  => rest_url( ADN_API_NS ),
+            'restNonce' => wp_create_nonce( 'wp_rest' ),
         ) );
     }
 

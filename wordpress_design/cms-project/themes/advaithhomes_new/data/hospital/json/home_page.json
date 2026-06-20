@@ -34,6 +34,22 @@
                 "description": "Connect with our clinical team for guidance on your procedure or condition.",
                 "link_label": "Ask a Clinician →",
                 "url": "/ask-expert/"
+            },
+            {
+                "icon": "🧮",
+                "gradient": "linear-gradient(135deg,#e8f4ee,#7bbfa4)",
+                "title": "Patient Tools",
+                "description": "Waiting time estimators, recovery trackers and pre-procedure checklists.",
+                "link_label": "Open Patient Tools →",
+                "url": "/tools/"
+            },
+            {
+                "icon": "📚",
+                "gradient": "linear-gradient(135deg,#fef6e4,#e6c97a)",
+                "title": "Patient Guides",
+                "description": "Procedure guides, aftercare instructions and recovery advice from our clinical teams.",
+                "link_label": "Browse Patient Guides →",
+                "url": "/guides/"
             }
         ]
     },

@@ -110,7 +110,8 @@
         "trending":                     "Trending",
         "related_guides":               "Related Guides",
         "more_prefix":                  "More %s",
-        "similar":                      "Similar"
+        "similar":                      "Similar",
+        "news_section":                 "Organic News, Updates & Spotlight"
     },
 
     "forms": {

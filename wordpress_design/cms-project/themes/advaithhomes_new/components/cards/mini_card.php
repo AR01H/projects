@@ -33,47 +33,70 @@ $url   = ! empty( $card['url'] ) && '#' !== (string) $card['url']
 	? esc_url( adn_link( (string) $card['url'] ) )
 	: '';
 
-$badge = isset( $card['badge'] ) && is_array( $card['badge'] ) ? $card['badge'] : array();
-$icon  = isset( $card['icon'] )  ? (string) $card['icon'] : '';
-$img   = isset( $card['img'] )   ? (string) $card['img']  : '';
+$badge   = isset( $card['badge'] )   && is_array( $card['badge'] ) ? $card['badge'] : array();
+$icon    = isset( $card['icon'] )    ? (string) $card['icon']    : '';
+$img     = isset( $card['img'] )     ? (string) $card['img']     : '';
+$img_url = isset( $card['img_url'] ) ? (string) $card['img_url'] : '';
+$overlay     = isset( $card['overlay'] )     ? (string) $card['overlay']     : '';
+$tooltip     = isset( $card['tooltip'] )     ? (string) $card['tooltip']     : '';
+$desc        = isset( $card['desc'] )        ? (string) $card['desc']        : '';
+$thumb_label = isset( $card['thumb_label'] ) ? (string) $card['thumb_label'] : '';
+
+// Determine unified thumb modifier: photo > gradient > badge > icon
+$_thumb_mod = '';
+if ( '' !== $img_url )       { $_thumb_mod = ' mini-card-thumb--photo'; }
+elseif ( '' !== $img )       { $_thumb_mod = ' mini-card-thumb--gradient'; }
+elseif ( ! empty( $badge ) ) { $_thumb_mod = ' mini-card-thumb--badge'; }
+elseif ( '' !== $icon )      { $_thumb_mod = ' mini-card-thumb--icon'; }
+$_has_visual = '' !== $_thumb_mod;
 
 $el      = $url ? 'a' : 'div';
-$el_attr = $url ? ' href="' . $url . '"' : '';
+$el_attr = $url
+	? ' href="' . $url . '"' . ( '' !== $tooltip ? ' title="' . esc_attr( $tooltip ) . '"' : '' )
+	: '';
 ?>
 <<?php echo $el . $el_attr; ?> class="mini-card<?php echo ! $url ? ' mini-card--no-link' : ''; ?>">
 
-	<?php /* ── Left visual: badge wins, then icon, then img ── */ ?>
-	<?php if ( ! empty( $badge ) ) : ?>
-		<div class="mini-card-badge"><?php
-			$_first = true;
-			foreach ( $badge as $_line ) {
-				if ( ! $_first ) { echo '<br>'; }
-				echo esc_html( (string) $_line );
-				$_first = false;
-			}
-		?></div>
-	<?php elseif ( '' !== $icon ) : ?>
-		<span class="mini-card-icon" aria-hidden="true"><?php echo adn_icon( $icon ); ?></span>
-	<?php elseif ( '' !== $img ) : ?>
-		<div class="mini-card-img" style="background:<?php echo esc_attr( $img ); ?>;"></div>
+	<?php /* ── Left visual: unified 16:9 thumb box ── */ ?>
+	<?php if ( $_has_visual ) : ?>
+	<div class="mini-card-thumb<?php echo $_thumb_mod; ?>"<?php echo ( '' !== $img && '' === $img_url ) ? ' style="background:' . esc_attr( $img ) . ';"' : ''; ?>>
+		<?php if ( '' !== $img_url ) : ?>
+			<img src="<?php echo esc_url( $img_url ); ?>" alt="" loading="lazy">
+			<?php if ( '' !== $overlay ) : ?>
+				<span class="mini-card-thumb-overlay"><?php echo esc_html( $overlay ); ?></span>
+			<?php endif; ?>
+		<?php elseif ( ! empty( $badge ) ) : ?>
+			<?php $_first = true; foreach ( $badge as $_line ) { if ( ! $_first ) { echo '<br>'; } echo esc_html( (string) $_line ); $_first = false; } ?>
+		<?php elseif ( '' !== $icon ) : ?>
+			<span class="mini-card-thumb-icon" aria-hidden="true"><?php echo adn_icon( $icon ); ?></span>
+			<?php if ( '' !== $thumb_label ) : ?>
+				<span class="mini-card-thumb-label"><?php echo esc_html( $thumb_label ); ?></span>
+			<?php endif; ?>
+		<?php endif; ?>
+	</div>
 	<?php endif; ?>
 
+	<?php /* ── Info indicator — outside thumb, left of body ── */ ?>
 	<?php /* ── Body ── */ ?>
 	<div class="mini-card-body">
 		<?php if ( '' !== $title ) : ?>
 			<span class="mini-card-title"><?php echo esc_html( $title ); ?></span>
 		<?php endif; ?>
 		<?php if ( '' !== $meta || '' !== $tag ) : ?>
-		<div class="mini-card-meta">
-			<?php if ( '' !== $tag ) : ?>
-				<span class="mini-card-tag"><?php echo esc_html( $tag ); ?></span>
-			<?php endif; ?>
-			<?php if ( '' !== $meta ) : ?>
-				<span class="mini-card-meta-text"><?php echo esc_html( $meta ); ?></span>
-			<?php endif; ?>
-		</div>
+			<div class="mini-card-meta">
+				<?php if ( '' !== $tag ) : ?>
+					<span class="mini-card-tag"><?php echo esc_html( $tag ); ?></span>
+				<?php endif; ?>
+				<?php if ( '' !== $meta ) : ?>
+					<span class="mini-card-date"><?php echo esc_html( $meta ); ?></span>
+				<?php endif; ?>
+			</div>
 		<?php endif; ?>
 	</div>
+
+	<?php if ( '' !== $desc ) : ?>
+		<span class="mini-card-info-dot" title="<?php echo esc_attr( $desc ); ?>"><i class="fas fa-circle-info" aria-hidden="true"></i></span>
+	<?php endif; ?>
 
 	<?php if ( $url ) : ?>
 		<span class="mini-card-arrow" aria-hidden="true">›</span>

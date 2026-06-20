@@ -35,6 +35,22 @@
                 "description": "Connect with the right professionals at the right time.",
                 "link_label": "Find Expert Help →",
                 "url": "/ask-expert/"
+            },
+            {
+                "icon": "🧮",
+                "gradient": "linear-gradient(135deg,#e8f4ee,#7bbfa4)",
+                "title": "Use our Calculators",
+                "description": "Stamp duty, mortgage repayments, affordability and more — all in one place.",
+                "link_label": "Open Calculators →",
+                "url": "/calculators/"
+            },
+            {
+                "icon": "📚",
+                "gradient": "linear-gradient(135deg,#fef6e4,#e6c97a)",
+                "title": "Read Property Guides",
+                "description": "Step-by-step guides covering buying, selling, renting and moving.",
+                "link_label": "Browse Guides →",
+                "url": "/guides/"
             }
         ]
     },
@@ -52,7 +68,7 @@
         "title": "🔥 Hot Topics",
         "items": [
         ],
-        "cta": { "label": "Explore All Topics →", "url": "/guides/" }
+        "cta": { "label": "Explore All →", "url": "/guides/" }
     },
     "tools": {
         "heading": { "title": "Popular Calculators", "link_label": "View all →", "link_url": "/calculators/" },

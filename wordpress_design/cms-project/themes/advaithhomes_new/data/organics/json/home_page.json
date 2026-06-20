@@ -39,6 +39,22 @@
         "description": "Get personalized guidance for your organic lifestyle transition.",
         "link_label": "Ask an Expert →",
         "url": "/ask-expert/"
+      },
+      {
+        "icon": "🧮",
+        "gradient": "linear-gradient(135deg,#e8f4ee,#7bbfa4)",
+        "title": "Organic Budget Tools",
+        "description": "Plan your organic food budget, compare prices and calculate seasonal savings.",
+        "link_label": "Open Calculators →",
+        "url": "/calculators/"
+      },
+      {
+        "icon": "📚",
+        "gradient": "linear-gradient(135deg,#fef6e4,#e6c97a)",
+        "title": "Organic Living Guides",
+        "description": "Guides on certifications, seasonal eating, product choices and healthy living.",
+        "link_label": "Browse Guides →",
+        "url": "/buying/"
       }
     ]
   },
@@ -58,7 +74,7 @@
   "hot_topics": {
     "title": "🔥 Hot Topics",
     "items": [],
-    "cta": { "label": "Explore All Topics →", "url": "/buying/" }
+    "cta": { "label": "Explore All →", "url": "/buying/" }
   },
   "tools": {
         "heading": { "title": "Info Resources", "link_label": "View all →", "link_url": "/calculators/" },

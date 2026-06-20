@@ -39,48 +39,32 @@ $items = $wpdb->get_results( $wpdb->prepare(
 if ( empty( $items ) ) { return; }
 
 $_heading = '' !== $_sp_title ? $_sp_title : (string) $term->name;
+
+$_sp_cards = array();
+foreach ( $items as $_sp ) {
+	$_icon      = trim( (string) ( $_sp->icon ?? '' ) );
+	$_val       = trim( (string) ( $_sp->point_value ?? '' ) );
+	$_lbl       = trim( (string) ( $_sp->point_label ?? '' ) );
+	$_has_link  = ! empty( $_sp->show_link ) && ! empty( $_sp->link_url );
+	$_link_url  = $_has_link ? (string) $_sp->link_url : '';
+	$_tooltip   = $_has_link ? ( ! empty( $_sp->link_label ) ? (string) $_sp->link_label : $_link_url ) : '';
+	$_entry = array(
+		'icon'        => '' !== $_icon ? $_icon : mb_strtoupper( mb_substr( (string) $_sp->title, 0, 1 ) ),
+		'title'       => (string) $_sp->title,
+		'tag'         => $_lbl,
+		'meta'        => $_val,
+		'thumb_label' => ! empty( $_sp->link_label )  ? (string) $_sp->link_label  : '',
+		'desc'        => ! empty( $_sp->description ) ? (string) $_sp->description : '',
+		'url'         => $_link_url,
+		'tooltip'     => $_tooltip,
+	);
+	$_sp_cards[] = $_entry;
+}
 ?>
-<div class="sp-panel news-widget" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
-
-	<div class="news-widget-header">
-		<h4 class="news-widget-title"><?php echo esc_html( $_heading ); ?></h4>
-	</div>
-
-	<ul class="sp-list">
-	<?php foreach ( $items as $_sp ) :
-		$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
-		$_is_emoji = '' !== $_icon && preg_match( '/\p{So}|\p{Sm}|\p{Sk}|\p{Sc}/u', $_icon );
-		$_is_fa    = '' !== $_icon && ! $_is_emoji;
-		$_fallback = mb_strtoupper( mb_substr( (string) $_sp->title, 0, 1 ) );
-		$_stat_val = trim( (string) ( $_sp->point_value ?? '' ) );
-		$_stat_lbl = trim( (string) ( $_sp->point_label ?? '' ) );
-	?>
-	<li class="sp-item<?php echo ( ! $_is_emoji && ! $_is_fa ) ? ' sp-item--no-icon' : ''; ?>">
-
-		<?php if ( $_is_emoji || $_is_fa ) : ?>
-		<div class="sp-item__icon" aria-hidden="true">
-			<?php if ( $_is_emoji ) : ?>
-				<span><?php echo esc_html( $_icon ); ?></span>
-			<?php else : ?>
-				<i class="<?php echo esc_attr( $_icon ); ?>"></i>
-			<?php endif; ?>
-		</div>
-		<?php endif; ?>
-
-		<div class="sp-item__body">
-			<span class="sp-item__title"><?php echo esc_html( $_sp->title ); ?></span>
-			<?php if ( '' !== $_stat_val ) : ?>
-			<span class="sp-item__stat">
-				<?php echo esc_html( $_stat_val ); ?>
-				<?php if ( '' !== $_stat_lbl ) : ?>
-					<span class="sp-item__stat-lbl"><?php echo esc_html( $_stat_lbl ); ?></span>
-				<?php endif; ?>
-			</span>
-			<?php endif; ?>
-		</div>
-
-	</li>
-	<?php endforeach; ?>
-	</ul>
-
+<div class="sp-panel mini_card_container_design" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
+	<?php adn_component( 'parts/list_widget', array( 'widget' => array(
+		'heading' => array( 'title' => $_heading ),
+		'items'   => $_sp_cards,
+		'tag'     => 'h4',
+	) ) ); ?>
 </div>

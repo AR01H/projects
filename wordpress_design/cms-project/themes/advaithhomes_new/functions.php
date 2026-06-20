@@ -52,6 +52,20 @@ function adn_render_site_notice_popup(): void {
 	}
 }
 
+// Change REST API URL prefix from /wp-json/ to /api/ → routes become /api/v1/...
+add_filter( 'rest_url_prefix', function () { return 'api'; } );
+
+// Flush rewrite rules when theme activates.
+add_action( 'after_switch_theme', function () { flush_rewrite_rules(); } );
+
+// One-time flush after URL prefix changed wp-json/adn/v1 → api/v1.
+add_action( 'admin_init', function () {
+    if ( ! get_option( 'adn_api_ns_flushed_v3' ) ) {
+        flush_rewrite_rules();
+        update_option( 'adn_api_ns_flushed_v3', true );
+    }
+} );
+
 // Create default pages only once, when the theme is activated, instead of on every admin load.
 add_action( 'after_switch_theme', 'adn_create_default_pages' );
 

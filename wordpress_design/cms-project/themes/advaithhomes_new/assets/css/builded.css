@@ -2,6 +2,7 @@
     background: var(--card-bg);
     padding:var(--padding-md);
     height:100%;
+    border-radius: var(--radius-sm);
 }
 
 .highlight-textblock {

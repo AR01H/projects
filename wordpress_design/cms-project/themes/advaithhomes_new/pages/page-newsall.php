@@ -92,7 +92,6 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 				<div class="news-single-article">
 
 					<div class="news-single-meta">
-						<span class="news-single-tag"><?php echo esc_html( SITE_NEWS_NOUN ); ?></span>
 						<?php if ( '' !== $_nb_label ) : ?>
 							<span class="news-single-label"><?php echo esc_html( $_nb_label ); ?></span>
 						<?php endif; ?>

@@ -110,7 +110,8 @@
         "trending":                     "Most Viewed",
         "related_guides":               "Related Patient Guides",
         "more_prefix":                  "More %s",
-        "similar":                      "Similar"
+        "similar":                      "Similar",
+        "news_section":                 "Hospital News, Updates & Spotlight"
     },
 
     "forms": {
