@@ -19,7 +19,7 @@ $_gc_imgurl = isset( $card['image'] ) ? (string) $card['image'] : '';
     </div>
     <?php else : ?>
     <div class="guide-card-img" style="background:<?php echo esc_attr( isset( $card['gradient'] ) ? $card['gradient'] : '' ); ?>;">
-        <?php echo adn_icon( isset( $card['icon'] ) ? $card['icon'] : '' ); ?>
+        <span class="guide-card-icon"><?php echo adn_icon( isset( $card['icon'] ) ? $card['icon'] : '' ); ?></span>
         <?php if ( ! empty( $card['parent_name'] ) ) : ?>
             <span class="guide-card-parent-badge"><?php echo esc_html( $card['parent_name'] ); ?></span>
         <?php endif; ?>

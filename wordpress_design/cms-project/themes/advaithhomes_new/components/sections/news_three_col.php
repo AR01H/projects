@@ -30,26 +30,35 @@ foreach ( isset( $news['items'] ) ? (array) $news['items'] : array() as $_it ) {
 	if ( '' !== $_thumb ) {
 		$_card['img_url'] = $_thumb;
 	} else {
-		$_card['icon'] = '📰';
+		$_card['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '📰';
 	}
 	$news_cards[] = $_card;
 }
 
 $reg_cards = array();
 foreach ( isset( $regulations['items'] ) ? (array) $regulations['items'] : array() as $_it ) {
-	$_rthumb  = isset( $_it['thumbnail'] )   ? (string) $_it['thumbnail'] : '';
-	$_rbadges = isset( $_it['badge_lines'] ) ? (array) $_it['badge_lines'] : array();
-	$_rcard   = array(
+	$_rthumb = isset( $_it['thumbnail'] ) ? (string) $_it['thumbnail'] : '';
+	$_rcard  = array(
 		'title' => isset( $_it['title'] ) ? (string) $_it['title'] : '',
+		'meta'  => isset( $_it['date'] )  ? (string) $_it['date']  : '',
 		'url'   => isset( $_it['url'] )   ? (string) $_it['url']   : '',
 	);
 	if ( '' !== $_rthumb ) {
 		$_rcard['img_url'] = $_rthumb;
-		if ( ! empty( $_rbadges ) ) {
-			$_rcard['overlay'] = implode( ' ', $_rbadges );
+		// overlay: 'overlay' field first, then join badge_lines (legacy)
+		$_roverlay = isset( $_it['overlay'] ) ? (string) $_it['overlay'] : '';
+		if ( '' === $_roverlay && ! empty( $_it['badge_lines'] ) ) {
+			$_roverlay = implode( ' ', (array) $_it['badge_lines'] );
 		}
+		if ( '' !== $_roverlay ) { $_rcard['overlay'] = $_roverlay; }
 	} else {
-		$_rcard['icon'] = '📋';
+		$_rcard['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '📋';
+		// show overlay text as tag badge when no thumbnail
+		$_roverlay = isset( $_it['overlay'] ) ? (string) $_it['overlay'] : '';
+		if ( '' === $_roverlay && ! empty( $_it['badge_lines'] ) ) {
+			$_roverlay = implode( ' ', (array) $_it['badge_lines'] );
+		}
+		if ( '' !== $_roverlay ) { $_rcard['tag'] = $_roverlay; }
 	}
 	$reg_cards[] = $_rcard;
 }

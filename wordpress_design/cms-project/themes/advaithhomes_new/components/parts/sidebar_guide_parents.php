@@ -26,15 +26,20 @@ $_all_label = ! empty( $view_all['label'] ) ? esc_html( (string) $view_all['labe
 
 	<ul class="sw-list" role="list">
 		<?php foreach ( $items as $item ) :
-			$icon     = isset( $item['icon'] )      ? (string) $item['icon']  : '📚';
-			$label    = isset( $item['label'] )     ? (string) $item['label'] : '';
-			$url      = isset( $item['url'] )       ? (string) $item['url']   : '#';
-			$count    = isset( $item['count'] )     ? (int)    $item['count'] : 0;
+			$icon      = isset( $item['icon'] )      ? (string) $item['icon']  : '📚';
+			$label     = isset( $item['label'] )     ? (string) $item['label'] : '';
+			$url       = isset( $item['url'] )       ? (string) $item['url']   : '#';
+			$count     = isset( $item['count'] )     ? (int)    $item['count'] : 0;
+			$thumbnail = isset( $item['thumbnail'] ) ? (string) $item['thumbnail'] : '';
 			$is_active = ! empty( $item['is_active'] );
 		?>
 		<li class="sw-item<?php echo $is_active ? ' sw-item--active' : ''; ?>">
 			<a href="<?php echo esc_url( adn_link( $url ) ); ?>" class="sw-item-link<?php echo $is_active ? ' sw-item-link--active' : ''; ?>">
-				<span class="sw-item-icon" aria-hidden="true"><?php echo adn_icon( $icon ); ?></span>
+				<?php if ( '' !== $thumbnail ) : ?>
+					<span class="sw-item-thumb" aria-hidden="true"><img src="<?php echo esc_url( $thumbnail ); ?>" alt="" loading="lazy"></span>
+				<?php else : ?>
+					<span class="sw-item-icon" aria-hidden="true"><?php echo adn_icon( $icon ); ?></span>
+				<?php endif; ?>
 				<span class="sw-item-label"><?php echo esc_html( $label ); ?></span>
 				<?php if ( $count > 0 ) : ?>
 					<span class="sw-item-count"><?php echo esc_html( (string) $count ); ?></span>

@@ -31,25 +31,19 @@ $_nl    = isset( $_sb['newsletter_cta'] ) ? (array) $_sb['newsletter_cta'] : arr
 		$_ch_btn = esc_html( isset( $_ch['button_label'] ) ? (string) $_ch['button_label'] : SITE_SIDEBAR_CONTACT_BTN );
 		$_ch_url = esc_url( adn_link( isset( $_ch['button_url'] ) ? (string) $_ch['button_url'] : SITE_CONTACT_URL ) );
 	?>
-	<div class="sidebar-card expert-need-help">
+	<div class="sw-panel">
 		<?php if ( '' !== $_ch_h ) : ?>
-			<div class="sidebar-card-title"><?php echo $_ch_h; ?></div>
+		<div class="sw-header">
+			<h3 class="sw-title"><?php echo $_ch_h; ?></h3>
+		</div>
 		<?php endif; ?>
 		<?php if ( '' !== $_ch_d ) : ?>
-			<p class="sb-contact-desc"><?php echo $_ch_d; ?></p>
+			<p class="sw-subtitle"><?php echo $_ch_d; ?></p>
 		<?php endif; ?>
-		<a href="<?php echo $_ch_url; ?>" class="btn btn-primary sidebar-cta"><?php echo $_ch_btn; ?></a>
+		<div class="sw-footer">
+			<a href="<?php echo $_ch_url; ?>" class="sw-cta-btn"><?php echo $_ch_btn; ?></a>
+		</div>
 	</div>
-	<?php endif; ?>
-
-	<?php /* ── Latest News (sidebar_news_mini) ──────────────────── */ ?>
-	<?php if ( ! empty( $_ln['items'] ) ) : ?>
-		<?php adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => $_ln ) ); ?>
-	<?php endif; ?>
-
-	<?php /* ── Quick Tools (sidebar_quick_tools) ─────────── */ ?>
-	<?php if ( ! empty( $_tools['items'] ) ) : ?>
-		<?php adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $_tools ) ); ?>
 	<?php endif; ?>
 
 	<?php /* ── Browse Guides (sidebar_guide_parents) ───────────── */ ?>

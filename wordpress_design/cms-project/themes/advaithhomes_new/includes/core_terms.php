@@ -192,7 +192,7 @@ define( 'SITE_LABEL_TOOLS_TAB',        adn_term( 'sections.tools_all_overall_tab
 // ===========================
 // ADDITIONAL BUTTON LABELS
 // ===========================
-define( 'SITE_BTN_VIEW_ALL',           adn_term( 'buttons.view_all',             'View all →' ) );
+define( 'SITE_BTN_VIEW_ALL',           adn_term( 'buttons.view_all',             'View →' ) );
 define( 'SITE_BTN_READ_MORE',          adn_term( 'buttons.read_more',            'Read more →' ) );
 define( 'SITE_BTN_GET_STARTED',        adn_term( 'buttons.get_started',          'Get Started →' ) );
 define( 'SITE_BTN_CONTACT_US',         adn_term( 'buttons.contact_us',           'Contact Us' ) );

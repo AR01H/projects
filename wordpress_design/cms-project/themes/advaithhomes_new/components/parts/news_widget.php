@@ -21,13 +21,33 @@ if ( empty( $items ) ) { return; }
 
 $cards = array();
 foreach ( $items as $_item ) {
-	$cards[] = array(
-		'img'   => isset( $_item['gradient'] ) ? (string) $_item['gradient'] : '',
-		'title' => isset( $_item['title'] )    ? (string) $_item['title']    : '',
-		'meta'  => isset( $_item['date'] )     ? (string) $_item['date']     : '',
-		'tag'   => isset( $_item['tag'] )      ? (string) $_item['tag']      : '',
-		'url'   => isset( $_item['url'] )      ? (string) $_item['url']      : '',
+	$_thumb    = isset( $_item['thumbnail'] ) ? (string) $_item['thumbnail'] : '';
+	$_icon     = isset( $_item['icon'] )      ? (string) $_item['icon']      : '';
+	$_gradient = isset( $_item['gradient'] )  ? (string) $_item['gradient']  : '';
+	$_overlay  = isset( $_item['overlay'] )   ? (string) $_item['overlay']   : '';
+
+	$_card = array(
+		'title' => isset( $_item['title'] ) ? (string) $_item['title'] : '',
+		'meta'  => isset( $_item['date'] )  ? (string) $_item['date']  : '',
+		'tag'   => isset( $_item['tag'] )   ? (string) $_item['tag']   : '',
+		'url'   => isset( $_item['url'] )   ? (string) $_item['url']   : '',
 	);
+
+	// Priority: real photo > icon > gradient > default icon
+	if ( '' !== $_thumb ) {
+		$_card['img_url'] = $_thumb;
+		if ( '' !== $_overlay ) {
+			$_card['overlay'] = $_overlay;
+		}
+	} elseif ( '' !== $_icon ) {
+		$_card['icon'] = $_icon;
+	} elseif ( '' !== $_gradient ) {
+		$_card['img'] = $_gradient;
+	} else {
+		$_card['icon'] = '📰';
+	}
+
+	$cards[] = $_card;
 }
 ?>
 <div class="news-widget mini_card_container_design">

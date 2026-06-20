@@ -294,6 +294,14 @@ function adn_ask_expert_get_context() {
 		'chrome'        => $chrome,
 		'ajax_url'      => $ajax_url,
 		'contact_nonce' => $contact_nonce,
+		'latest_news'   => array(
+			'heading' => array(
+				'title'      => adn_term( 'labels.latest_news', 'Latest News' ),
+				'link_label' => adn_term( 'buttons.view_all', 'View all →' ),
+				'link_url'   => defined( 'SITE_NEWS_URL' ) ? SITE_NEWS_URL : '/',
+			),
+			'items' => adn_shared_latest_news_items( 3 ),
+		),
 	);
 }
 

@@ -147,4 +147,20 @@ adn_page_open( $ctx );
 </div><!-- /.faqs-page-layout -->
 </div><!-- /.section-faqs -->
 
+<?php $_faq_news_items = function_exists( 'adn_shared_latest_news_items' ) ? adn_shared_latest_news_items( 3 ) : array(); ?>
+<?php if ( ! empty( $_faq_news_items ) ) : ?>
+<section class="page-latest-news">
+	<div class="container">
+		<?php adn_component( 'parts/news_widget', array( 'widget' => array(
+			'heading' => array(
+				'title'      => adn_term( 'labels.latest_news', 'Latest News' ),
+				'link_label' => adn_term( 'buttons.view_all', 'View all →' ),
+				'link_url'   => defined( 'SITE_NEWS_URL' ) ? SITE_NEWS_URL : '/',
+			),
+			'items' => $_faq_news_items,
+		) ) ); ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <?php adn_page_close( $ctx );

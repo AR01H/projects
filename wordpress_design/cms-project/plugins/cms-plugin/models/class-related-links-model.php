@@ -199,7 +199,7 @@ class AH_Related_Links_Model {
 				'url'        => $url,
 				'link_type'  => $lt,
 				'type_label' => $types[ $lt ]['label'] ?? ucfirst( str_replace( '_', ' ', $lt ) ),
-				'icon'       => $types[ $lt ]['icon']  ?? '🔗',
+				'icon'       => $types[ $lt ]['icon']  ?? $lt,
 				'target'     => ( $row->target_window === '_blank' ) ? '_blank' : '_self',
 			);
 		}
@@ -220,7 +220,6 @@ class AH_Related_Links_Model {
 
 		$object_type = self::clean_object_type( $object_type );
 		$table       = $this->table();
-		$types       = self::link_types();
 
 		$wpdb->delete( $table, array( 'object_type' => $object_type, 'object_id' => $object_id ), array( '%s', '%d' ) );
 
@@ -228,8 +227,9 @@ class AH_Related_Links_Model {
 		foreach ( $rows as $row ) {
 			$row = (array) $row;
 
-			$link_type = sanitize_key( $row['link_type'] ?? 'external' );
-			if ( ! isset( $types[ $link_type ] ) ) {
+			// link_type: JS pre-maps emoji icons to ASCII type keys (see posts.php rlIconMap).
+			$link_type = sanitize_key( trim( (string) ( $row['link_type'] ?? '' ) ) );
+			if ( $link_type === '' || ! array_key_exists( $link_type, self::link_types() ) ) {
 				$link_type = 'external';
 			}
 
@@ -245,7 +245,7 @@ class AH_Related_Links_Model {
 				$target_id   = (int) ( $row['target_id'] ?? 0 );
 			}
 
-			$url   = esc_url_raw( trim( (string) ( $row['url'] ?? '' ) ) );
+			$url   = sanitize_text_field( trim( (string) ( $row['url'] ?? '' ) ) );
 			$label = sanitize_text_field( $row['label'] ?? '' );
 			$container = sanitize_text_field( $row['container'] ?? '' );
 			$window    = ( ( $row['target_window'] ?? '_self' ) === '_blank' ) ? '_blank' : '_self';
@@ -381,14 +381,14 @@ class AH_Related_Links_Model {
 
 		$inp = 'padding:4px 6px;border:1px solid #d1dae8;border-radius:4px;font-size:.78rem;outline:none;box-sizing:border-box;';
 		?>
+		<?php
+		$types    = self::link_types();
+		$cur_icon = isset( $types[ $cur_type ]['icon'] ) ? $types[ $cur_type ]['icon'] : $cur_type;
+		?>
 		<div class="ah-rl-row" style="border:1px solid #e2ecf9;border-radius:6px;padding:8px;margin-bottom:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#fbfdff;">
-			<select class="ah-rl-type" title="Link Type" style="<?php echo $inp; ?>flex:0 0 132px;">
-				<?php foreach ( self::link_types() as $key => $meta ) : ?>
-					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $cur_type, $key ); ?>>
-						<?php echo esc_html( $meta['icon'] . ' ' . $meta['label'] ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
+			<input type="text" class="ah-rl-type" title="Icon (emoji or FA class)" placeholder="🔗"
+			       value="<?php echo esc_attr( $cur_icon ); ?>"
+			       style="<?php echo $inp; ?>flex:0 0 64px;text-align:center;font-size:1.1rem;">
 
 			<select class="ah-rl-target" title="Pick an internal target (or leave to use the URL field)" style="<?php echo $inp; ?>flex:1 1 170px;">
 				<option value="">- Use URL field -</option>

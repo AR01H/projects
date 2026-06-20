@@ -27,6 +27,8 @@ class AH_DB_Migrations {
 		self::ensure_content_taxonomies();
 		self::ensure_taxonomy_parent_terms();
 		self::ensure_static_pages();
+		self::ensure_related_links();
+		self::related_links_container();
 
 		// Data migrations
 		self::required_settings();
@@ -120,6 +122,16 @@ class AH_DB_Migrations {
 			AH_Static_Pages_Model::ensure_table();
 			AH_Static_Pages_Model::import_files_once();
 		}
+	}
+
+	public static function ensure_related_links(): void {
+		if ( class_exists( 'AH_Related_Links_Model' ) ) {
+			AH_Related_Links_Model::ensure_table();
+		}
+	}
+
+	public static function related_links_container(): void {
+		self::add_column_if_missing( 'ah_related_links', 'container', "VARCHAR(120) NULL AFTER `label`" );
 	}
 
 	// ── Data migrations ───────────────────────────────────────────────────────

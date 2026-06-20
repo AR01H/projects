@@ -1250,8 +1250,9 @@ body.ah-qe-lock { overflow: hidden; }
   /* Related Content: add row (clone the per-panel hidden template) */
   $(document).on('click', '.ah-rl-add', function() {
     var $wrap = $(this).closest('.ah-rl-wrap');
-    var $new  = $wrap.children('.ah-rl-template').children('.ah-rl-row').first().clone();
-    $wrap.children('.ah-rl-rows').append($new);
+    var $tmpl = $wrap.find('.ah-rl-template .ah-rl-row').first();
+    if ( ! $tmpl.length ) { return; }
+    $wrap.find('.ah-rl-rows').first().append( $tmpl.clone() );
   });
   /* Related Content: remove row */
   $(document).on('click', '.ah-rl-remove', function() {
@@ -1270,14 +1271,17 @@ body.ah-qe-lock { overflow: hidden; }
       if (name || url) hlLinks.push({ name: name, url: url });
     });
     /* Collect Related Content rows (real rows only, not the hidden template) */
+    /* Map icon emoji → ASCII type key so the DB column never receives multi-byte emoji */
+    var rlIconMap = {'📄':'article','🧮':'calculator','🧩':'static_component','🖼️':'image','🖼':'image','🔗':'external','🛟':'support'};
     var relatedLinks = [];
     $row.find('.ah-rl-wrap .ah-rl-rows .ah-rl-row').each(function() {
       var $r     = $(this);
       var url    = $.trim($r.find('.ah-rl-url').val());
       var target = $r.find('.ah-rl-target').val();
       if (!url && !target) return; // skip empty rows
+      var rawIcon = $.trim($r.find('.ah-rl-type').val());
       relatedLinks.push({
-        link_type:     $r.find('.ah-rl-type').val(),
+        link_type:     rlIconMap[rawIcon] || rawIcon || 'external',
         target:        target,
         url:           url,
         label:         $.trim($r.find('.ah-rl-label').val()),

@@ -119,7 +119,7 @@ $_stars = min( 5, max( 0, (int) round( $_rat ) ) );
 	<?php /* Actions */ ?>
 	<div class="expert-card-actions">
 		<a href="<?php echo $_url; ?>" class="btn btn-secondary expert-profile-btn">
-			<?php echo esc_html( SITE_BTN_VIEW_ALL ); ?>
+			<?php echo esc_html( 'View' ); ?>
 		</a>
 		<?php if ( '' !== $_slug ) : ?>
 			<button type="button"

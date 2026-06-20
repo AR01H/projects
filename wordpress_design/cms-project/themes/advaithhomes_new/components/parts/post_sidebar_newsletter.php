@@ -34,10 +34,5 @@ $_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
 		       autocomplete="email" required>
 		<button type="submit" class="sw-cta-btn adn-nl-btn"><?php echo esc_html( $_btn ); ?></button>
 	</form>
-
-	<?php if ( '' !== $_note ) : ?>
-		<p class="sw-nl-note"><?php echo esc_html( $_note ); ?></p>
-	<?php endif; ?>
-
 	<div class="adn-nl-msg" style="display:none;margin-top:8px;font-size:13px;font-weight:500"></div>
 </div>

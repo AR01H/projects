@@ -113,13 +113,19 @@ function adn_category_cms_news( $limit = 3 ) {
 			if ( '' === $title ) {
 				continue;
 			}
-			$stamp   = ! empty( $item->start_date ) ? $item->start_date : '';
+			$stamp     = ! empty( $item->start_date ) ? $item->start_date : '';
+			$thumb_url = '';
+			if ( ! empty( $item->image_id ) ) {
+				$_tu = wp_get_attachment_image_url( (int) $item->image_id, 'thumbnail' );
+				$thumb_url = $_tu ? (string) $_tu : '';
+			}
 			$items[] = array(
-				'title'    => $title,
-				'date'     => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
-				'tag'      => 'NEWS',
-				'gradient' => adn_cms_gradient( $i ),
-				'url'      => ! empty( $item->link_url ) ? $item->link_url : SITE_NEWS_URL,
+				'title'     => $title,
+				'date'      => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
+				'tag'       => ! empty( $item->label ) ? (string) $item->label : '',
+				'thumbnail' => $thumb_url,
+				'gradient'  => adn_cms_gradient( $i ),
+				'url'       => ! empty( $item->link_url ) ? $item->link_url : SITE_NEWS_URL,
 			);
 		}
 	}
@@ -131,12 +137,18 @@ function adn_category_cms_news( $limit = 3 ) {
 			if ( '' === $title ) {
 				continue;
 			}
+			$_thumb = '';
+			if ( ! empty( $post->featured_image_id ) ) {
+				$_u = wp_get_attachment_image_url( (int) $post->featured_image_id, 'medium' );
+				if ( $_u ) { $_thumb = (string) $_u; }
+			}
 			$items[] = array(
-				'title'    => $title,
-				'date'     => adn_cms_post_date( $post ),
-				'tag'      => 'NEWS',
-				'gradient' => adn_cms_gradient( $i ),
-				'url'      => adn_cms_post_url( $post ),
+				'title'     => $title,
+				'date'      => adn_cms_post_date( $post ),
+				'tag'       => 'NEWS',
+				'thumbnail' => $_thumb,
+				'gradient'  => adn_cms_gradient( $i ),
+				'url'       => adn_cms_post_url( $post ),
 			);
 		}
 	}
@@ -152,11 +164,13 @@ function adn_category_cms_news( $limit = 3 ) {
 		) );
 		if ( $q->have_posts() ) {
 			foreach ( $q->posts as $i => $wp_post ) {
+				$_thumb = get_the_post_thumbnail_url( $wp_post->ID, 'medium' );
 				$items[] = array(
-					'title'    => $wp_post->post_title,
-					'date'     => get_the_date( 'M j, Y', $wp_post ),
-					'tag'      => 'NEWS',
-					'gradient' => adn_cms_gradient( $i ),
+					'title'     => $wp_post->post_title,
+					'date'      => get_the_date( 'M j, Y', $wp_post ),
+					'tag'       => 'NEWS',
+					'thumbnail' => $_thumb ? (string) $_thumb : '',
+					'gradient'  => adn_cms_gradient( $i ),
 					'url'      => get_permalink( $wp_post ),
 				);
 			}
@@ -180,11 +194,18 @@ function adn_category_latest_updates( $slug, $limit = 4 ) {
 		$rows = adn_cms_articles_for_parent( $slug, $limit );
 		foreach ( (array) $rows as $post ) {
 			if ( empty( $post->title ) ) { continue; }
+			$_thumb = '';
+			if ( ! empty( $post->featured_image_id ) ) {
+				$_u = wp_get_attachment_image_url( (int) $post->featured_image_id, 'medium' );
+				if ( $_u ) { $_thumb = (string) $_u; }
+			}
 			$items[] = array(
-				'badge_lines' => array( 'LATEST', 'UPDATE' ),
-				'title'       => (string) $post->title,
-				'date'        => function_exists( 'adn_cms_post_date' ) ? adn_cms_post_date( $post ) : '',
-				'url'         => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $post )  : '#',
+				'thumbnail' => $_thumb,
+				'overlay'   => 'Latest Update',
+				'icon'      => '📋',
+				'title'     => (string) $post->title,
+				'date'      => function_exists( 'adn_cms_post_date' ) ? adn_cms_post_date( $post ) : '',
+				'url'       => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $post )  : '#',
 			);
 		}
 	}
@@ -200,11 +221,14 @@ function adn_category_latest_updates( $slug, $limit = 4 ) {
 		) );
 		if ( $q->have_posts() ) {
 			foreach ( $q->posts as $wp_post ) {
+				$_thumb = get_the_post_thumbnail_url( $wp_post->ID, 'medium' );
 				$items[] = array(
-					'badge_lines' => array( 'LATEST', 'UPDATE' ),
-					'title'       => $wp_post->post_title,
-					'date'        => get_the_date( 'M j, Y', $wp_post ),
-					'url'         => get_permalink( $wp_post ),
+					'thumbnail' => $_thumb ? (string) $_thumb : '',
+					'overlay'   => 'Latest Update',
+					'icon'      => '📋',
+					'title'     => $wp_post->post_title,
+					'date'      => get_the_date( 'M j, Y', $wp_post ),
+					'url'       => get_permalink( $wp_post ),
 				);
 			}
 			wp_reset_postdata();
@@ -315,7 +339,7 @@ function adn_category_get_context( $slug = '' ) {
 			'link_label' => adn_term( 'category_page.latest_updates_view_all', 'View all →' ),
 			'link_url'   => SITE_NEWS_URL,
 		),
-		'items' => adn_category_latest_updates( $slug, 4 ),
+		'items' => adn_category_latest_updates( $slug, 2 ),
 	);
 
 	// ── 8. Admin-managed sections (AH_Category_Settings DB model) ───────
@@ -674,20 +698,26 @@ function adn_category_get_context( $slug = '' ) {
 		}
 	}
 
-	// News for main content area (4 items).
+	// News for main content area (2 items).
 	$_main_news_items = array();
-	foreach ( array_slice( adn_category_cms_news( 4 ), 0, 4 ) as $n ) {
-		$_main_news_items[] = array(
-			'title'    => $n['title'],
-			'url'      => $n['url'],
-			'date'     => $n['date'],
-			'gradient' => $n['gradient'],
+	foreach ( array_slice( adn_category_cms_news( 2 ), 0, 2 ) as $n ) {
+		$_entry = array(
+			'title' => $n['title'],
+			'url'   => $n['url'],
+			'date'  => $n['date'],
+			'tag'   => isset( $n['tag'] ) ? $n['tag'] : '',
 		);
+		if ( ! empty( $n['thumbnail'] ) ) {
+			$_entry['thumbnail'] = $n['thumbnail'];
+		} else {
+			$_entry['icon'] = '📰';
+		}
+		$_main_news_items[] = $_entry;
 	}
 	$news = array(
 		'heading' => array(
-			'title'      => 'Latest ' . SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN,
-			'link_label' => adn_term( 'content.view_all_news', 'View all →' ),
+			'title'      => adn_term( 'labels.latest_news', 'Latest News' ),
+			'link_label' => adn_term( 'buttons.view_all', 'View all →' ),
 			'link_url'   => SITE_NEWS_URL,
 		),
 		'items' => $_main_news_items,

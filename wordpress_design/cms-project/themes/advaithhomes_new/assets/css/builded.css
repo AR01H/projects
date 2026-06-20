@@ -48,6 +48,7 @@
     display: flex;
     width: max-content;
     animation: phb-scroll 20s linear infinite;
+    gap: 2rem; /* spacing between items */
 }
 
 .phb-marquee-track:hover {

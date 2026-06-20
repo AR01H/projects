@@ -36,6 +36,36 @@ adn_page_open( $_open_ctx );
 	'breadcrumb' => $ctx['breadcrumb'],
 ) ); ?>
 
+<?php /* ============================== CATEGORY SEARCH ============================== */ ?>
+<div class="container">
+	<div class="cat-search-bar">
+		<form class="cat-search-form" method="get" action="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" role="search">
+			<label class="screen-reader-text" for="cat-search-input"><?php echo esc_html( sprintf( __( 'Search %s guides', ADN_TEXT_DOMAIN ), $term_name ) ); ?></label>
+			<div class="cat-search-inner">
+				<span class="cat-search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+				<input
+					id="cat-search-input"
+					type="search"
+					name="search"
+					class="cat-search-input"
+					value="<?php echo esc_attr( $ctx['search']['query'] ); ?>"
+					placeholder="<?php echo esc_attr( sprintf( __( 'Search %s guides…', ADN_TEXT_DOMAIN ), $term_name ) ); ?>"
+					autocomplete="off"
+				>
+				<?php if ( $ctx['search']['query'] !== '' ) : ?>
+					<a href="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" class="cat-search-clear" aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>"><i class="fa-solid fa-xmark"></i></a>
+				<?php endif; ?>
+				<button type="submit" class="cat-search-btn btn btn-primary"><?php esc_html_e( 'Search', ADN_TEXT_DOMAIN ); ?></button>
+			</div>
+		</form>
+		<?php if ( $ctx['search']['query'] !== '' ) : ?>
+			<p class="cat-search-results-note">
+				<?php echo esc_html( sprintf( __( 'Showing results for "%s" in %s', ADN_TEXT_DOMAIN ), $ctx['search']['query'], $term_name ) ); ?>
+			</p>
+		<?php endif; ?>
+	</div>
+</div>
+
 <?php /* ============================== MAIN + SIDEBAR ============================== */ ?>
 <div class="container">
 	<div class="page-with-sidebar topic-listing-layout">
@@ -89,7 +119,17 @@ adn_page_open( $_open_ctx );
 				<?php endif; endif; ?>
 
 			<?php else : ?>
-				<p class="cat-guide-empty"><?php esc_html_e( 'No guides found for this topic yet. Check back soon.', ADN_TEXT_DOMAIN ); ?></p>
+				<div class="cat-no-results">
+					<span class="cat-no-results-icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
+					<?php if ( $ctx['search']['query'] !== '' ) : ?>
+						<h3 class="cat-no-results-title"><?php echo esc_html( sprintf( __( 'No results for "%s"', ADN_TEXT_DOMAIN ), $ctx['search']['query'] ) ); ?></h3>
+						<p class="cat-no-results-sub"><?php esc_html_e( 'Try a different search term or browse all guides below.', ADN_TEXT_DOMAIN ); ?></p>
+						<a href="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" class="btn btn-secondary cat-no-results-btn"><?php esc_html_e( 'Clear search', ADN_TEXT_DOMAIN ); ?></a>
+					<?php else : ?>
+						<h3 class="cat-no-results-title"><?php esc_html_e( 'No guides yet', ADN_TEXT_DOMAIN ); ?></h3>
+						<p class="cat-no-results-sub"><?php esc_html_e( 'We\'re working on guides for this topic. Check back soon.', ADN_TEXT_DOMAIN ); ?></p>
+					<?php endif; ?>
+				</div>
 			<?php endif; ?>
 
 		</main>
@@ -101,6 +141,18 @@ adn_page_open( $_open_ctx );
 				<?php adn_component( 'parts/sidebar_guide_parents', array(
 					'guide_parents' => $ctx['sidebar']['buying_topics'],
 				) ); ?>
+			<?php endif; ?>
+
+			<?php /* Featured / Popular / Suggested */ ?>
+			<?php if ( ! empty( $ctx['highlight_posts'] ) ) : ?>
+				<?php foreach ( $ctx['highlight_posts'] as $_sb_panel ) :
+					if ( empty( $_sb_panel['items'] ) ) { continue; }
+				?>
+				<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+					'heading' => isset( $_sb_panel['heading'] ) ? $_sb_panel['heading'] : '',
+					'items'   => $_sb_panel['items'],
+				) ) ); ?>
+				<?php endforeach; ?>
 			<?php endif; ?>
 
 			<?php /* Quick tools */ ?>
@@ -121,14 +173,42 @@ adn_page_open( $_open_ctx );
 	</div>
 </div>
 
+<?php /* ============================== FEATURED / POPULAR / SUGGESTED ============================== */ ?>
+<?php if ( ! empty( $ctx['highlight_posts'] ) ) :
+	$_hl      = $ctx['highlight_posts'];
+	$_f_items = ! empty( $_hl['featured']['items'] )  ? $_hl['featured']['items']  : array();
+	$_p_items = ! empty( $_hl['popular']['items'] )   ? $_hl['popular']['items']   : array();
+	$_s_items = ! empty( $_hl['suggested']['items'] ) ? $_hl['suggested']['items'] : array();
+?>
+<section class="cat-highlight-section">
+	<div class="container">
+		<?php adn_component( 'sections/news_three_col', array(
+			'news' => array(
+				'heading' => array( 'title' => '⭐ Featured', 'link_label' => '', 'link_url' => '' ),
+				'items'   => $_f_items,
+			),
+			'regulations' => array(
+				'heading' => array( 'title' => '🔥 Popular' ),
+				'items'   => $_p_items,
+			),
+			'hot_topics' => array(
+				'title' => '💡 Suggested',
+				'items' => $_s_items,
+				'cta'   => array(),
+			),
+		) ); ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <?php /* ============================== MORE TOPICS ============================== */ ?>
 <?php if ( ! empty( $ctx['related_categories'] ) ) : ?>
 <section class="cat-guide-related-section">
 	<div class="container">
 		<?php adn_component( 'parts/section_headers/section_header', array(
 			'heading' => array(
-				'title'      => 'More ' . ( $parent ? esc_html( $parent->name ) : '' ) . ' Topics',
-				'link_label' => $parent ? 'View all ' . esc_html( $parent->name ) . ' →' : '',
+				'title'      => 'More ' . ( $parent ? esc_html( $parent->name ) : 'Topic' ) . ' Guides',
+				'link_label' => $parent ? 'View all →' : '',
 				'link_url'   => $parent ? home_url( '/' . trim( $parent->slug, '/' ) . '/' ) : '',
 			),
 			'tag' => 'h2',

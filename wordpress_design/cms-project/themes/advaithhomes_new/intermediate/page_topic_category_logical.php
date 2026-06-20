@@ -26,9 +26,11 @@ function adn_topic_category_get_context() {
 		'parent'             => null,
 		'hero'               => array(),
 		'breadcrumb'         => array(),
+		'search'             => array( 'query' => '', 'base_url' => '' ),
 		'articles'           => array(),
 		'pagination'         => array(),
 		'related_categories' => array(),
+		'highlight_posts'    => array(),
 		'sidebar'            => array(),
 		'news'               => array( 'heading' => array(), 'items' => array() ),
 		'calculators'        => array( 'heading' => array(), 'items' => array() ),
@@ -111,6 +113,13 @@ function adn_topic_category_get_context() {
 	$breadcrumb[] = array( 'label' => isset( $term->name ) ? $term->name : $slug, 'url' => '' );
 	$ctx['breadcrumb'] = $breadcrumb;
 
+	// ── Search (category-scoped) ─────────────────────────────────────────────────
+	$search_q = isset( $_GET['search'] ) ? sanitize_text_field( wp_unslash( $_GET['search'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	$ctx['search'] = array(
+		'query'    => $search_q,
+		'base_url' => home_url( '/' . $slug . '/' ),
+	);
+
 	// ── Articles ─────────────────────────────────────────────────────────────────
 	$gradients = array(
 		'guide-img-green', 'guide-img-blue', 'guide-img-brown', 'guide-img-purple',
@@ -123,6 +132,16 @@ function adn_topic_category_get_context() {
 	// Try CMS posts first.
 	if ( function_exists( 'adn_cms_posts_for_term_slug' ) ) {
 		$cms_posts = adn_cms_posts_for_term_slug( $slug, $per_page * 10 );
+
+		// Apply category-scoped search filter when a query is present.
+		if ( $search_q !== '' && ! empty( $cms_posts ) ) {
+			$sq = strtolower( $search_q );
+			$cms_posts = array_values( array_filter( $cms_posts, function( $p ) use ( $sq ) {
+				$t = strtolower( isset( $p->title )   ? $p->title   : ( isset( $p->post_title )   ? $p->post_title   : '' ) );
+				$e = strtolower( isset( $p->excerpt ) ? $p->excerpt : ( isset( $p->post_excerpt ) ? $p->post_excerpt : '' ) );
+				return ( strpos( $t, $sq ) !== false || strpos( $e, $sq ) !== false );
+			} ) );
+		}
 		if ( ! empty( $cms_posts ) ) {
 			$total_pages    = (int) ceil( count( $cms_posts ) / $per_page );
 			$cms_page_posts = array_slice( $cms_posts, ( $paged - 1 ) * $per_page, $per_page );
@@ -195,6 +214,9 @@ function adn_topic_category_get_context() {
 					'terms'    => $match_terms,
 				) ),
 			);
+			if ( $search_q !== '' ) {
+				$q_args['s'] = $search_q;
+			}
 
 			$q = new WP_Query( $q_args );
 			$total_pages = $q->max_num_pages ?: 1;
@@ -235,36 +257,51 @@ function adn_topic_category_get_context() {
 		'base_url' => home_url( '/' . $slug . '/' ),
 	);
 
-	// ── Related categories (sibling terms) ───────────────────────────────────────
-	$related = array();
-	$tax_t   = $wpdb->prefix . 'ah_taxonomies';
+	// ── Related categories (sibling sub-terms within same parent) ───────────────
+	// Show other topics that belong to the same parent, not other parent areas.
+	$related  = array();
+	$tax_t    = $wpdb->prefix . 'ah_taxonomies';
+	$types_t  = $wpdb->prefix . 'ah_taxonomy_types';
 
-	if ( $parent ) {
+	if ( $parent && (int) $term->id ) {
 		if ( ! empty( $term->parent_term_id ) ) {
 			$sibs = $wpdb->get_results( $wpdb->prepare(
-				"SELECT id, name, slug, description, icon_emoji FROM `{$tax_t}`
-				 WHERE parent_term_id = %d AND id != %d AND status = 'active'
-				 ORDER BY sort_order ASC, name ASC LIMIT 6",
-				(int) $term->parent_term_id,
-				(int) $term->id
+				"SELECT t.id, t.name, t.slug, t.description, t.icon_emoji, t.image_id
+				 FROM `{$tax_t}` t
+				 LEFT JOIN `{$types_t}` tt ON tt.id = t.type_id
+				 WHERE t.parent_term_id = %d AND t.id != %d AND t.status = 'active'
+				   AND (tt.slug IS NULL OR tt.slug != 'glossary')
+				 ORDER BY t.sort_order ASC, t.name ASC LIMIT 6",
+				(int) $term->parent_term_id, (int) $term->id
 			) ) ?: array();
 		} else {
 			$sibs = $wpdb->get_results( $wpdb->prepare(
-				"SELECT id, name, slug, description, icon_emoji FROM `{$tax_t}`
-				 WHERE parent_id = %d AND id != %d AND status = 'active'
-				 ORDER BY sort_order ASC, name ASC LIMIT 6",
-				(int) $parent->id,
-				(int) $term->id
+				"SELECT t.id, t.name, t.slug, t.description, t.icon_emoji, t.image_id
+				 FROM `{$tax_t}` t
+				 LEFT JOIN `{$types_t}` tt ON tt.id = t.type_id
+				 WHERE t.parent_id = %d AND t.id != %d AND t.status = 'active'
+				   AND (tt.slug IS NULL OR tt.slug != 'glossary')
+				 ORDER BY t.sort_order ASC, t.name ASC LIMIT 6",
+				(int) $parent->id, (int) $term->id
 			) ) ?: array();
 		}
 
+		$_seen_rel = array();
 		foreach ( $sibs as $i => $sib ) {
+			if ( isset( $_seen_rel[ $sib->slug ] ) ) { continue; }
+			$_seen_rel[ $sib->slug ] = true;
+			$_rel_img = '';
+			if ( ! empty( $sib->image_id ) ) {
+				$_t = wp_get_attachment_image_url( (int) $sib->image_id, 'medium' );
+				$_rel_img = $_t ? (string) $_t : '';
+			}
 			$related[] = array(
-				'icon'        => ! empty( $sib->icon_emoji )  ? $sib->icon_emoji  : '📚',
+				'icon'        => ! empty( $sib->icon_emoji ) ? $sib->icon_emoji : '📚',
 				'gradient'    => adn_cms_gradient( $i + 1 ),
-				'parent_name' => $parent_label,
-				'category'    => (string) $sib->name,
-				'title'       => '',
+				'image'       => $_rel_img,
+				'parent_name' => '',
+				'category'    => '',
+				'title'       => (string) $sib->name,
 				'description' => ! empty( $sib->description ) ? (string) $sib->description : '',
 				'read_more'   => adn_term( 'content.read_more', 'Explore →' ),
 				'url'         => home_url( '/' . trim( $sib->slug, '/' ) . '/' ),
@@ -273,44 +310,125 @@ function adn_topic_category_get_context() {
 	}
 	$ctx['related_categories'] = $related;
 
+	// ── Featured / Popular / Suggested posts for this category ──────────────────
+	$_hl_panels = array();
+	$ct_table   = $wpdb->prefix . 'ah_content_taxonomies';
+
+	if ( $term ) {
+		$term_post_ids = $wpdb->get_col( $wpdb->prepare(
+			"SELECT object_id FROM `{$ct_table}` WHERE object_type = 'wp_post' AND taxonomy_id = %d",
+			(int) $term->id
+		) );
+
+		if ( ! empty( $term_post_ids ) ) {
+			$_post_ids  = array_map( 'intval', $term_post_ids );
+			$_flag_defs = array(
+				'featured'  => array( 'meta_key' => '_ah_is_featured',  'heading' => '⭐ Featured',  'fa' => 'fa-star' ),
+				'popular'   => array( 'meta_key' => '_ah_is_popular',   'heading' => '🔥 Popular',   'fa' => 'fa-fire' ),
+				'suggested' => array( 'meta_key' => '_ah_is_suggested', 'heading' => '💡 Suggested', 'fa' => 'fa-lightbulb' ),
+			);
+
+			foreach ( $_flag_defs as $_fkey => $_fdef ) {
+				$_fq = new WP_Query( array(
+					'post_type'      => 'post',
+					'post_status'    => 'publish',
+					'post__in'       => $_post_ids,
+					'posts_per_page' => 5,
+					'orderby'        => 'date',
+					'order'          => 'DESC',
+					'meta_query'     => array(
+						array( 'key' => $_fdef['meta_key'], 'value' => '1', 'compare' => '=' ),
+					),
+				) );
+
+				if ( ! $_fq->have_posts() ) {
+					wp_reset_postdata();
+					continue;
+				}
+
+				$_items = array();
+				foreach ( $_fq->posts as $_fp ) {
+					$_fp_id    = (int) $_fp->ID;
+					$_thumb_id = get_post_thumbnail_id( $_fp_id );
+					$_thumb    = $_thumb_id ? ( wp_get_attachment_image_url( $_thumb_id, 'thumbnail' ) ?: '' ) : '';
+					$_items[]  = array(
+						'icon'      => $_fdef['fa'],
+						'title'     => $_fp->post_title,
+						'text'      => $_fp->post_title,
+						'label'     => $_fp->post_title,
+						'date'      => get_the_date( 'M j, Y', $_fp_id ),
+						'meta'      => get_the_date( 'M j, Y', $_fp_id ),
+						'thumbnail' => $_thumb,
+						'url'       => get_permalink( $_fp_id ),
+					);
+				}
+				wp_reset_postdata();
+
+				$_hl_panels[ $_fkey ] = array(
+					'heading'  => $_fdef['heading'],
+					'fa_icon'  => $_fdef['fa'],
+					'items'    => $_items,
+					'view_all' => array(),
+				);
+			}
+		}
+	}
+
 	// ── Sidebar ───────────────────────────────────────────────────────────────────
 	$sidebar = array();
+	$tax_t   = $wpdb->prefix . 'ah_taxonomies';
 
-	// Buying/parent topic types - all sibling terms including current, for navigation.
+	// Sidebar topic navigation — sub-categories of the same parent term only.
 	$topic_items = array();
+
 	if ( $parent ) {
+		// Exclude Glossary-type terms — they are definitions, not navigable topic pages.
 		if ( ! empty( $term->parent_term_id ) ) {
 			$all_sibs = $wpdb->get_results( $wpdb->prepare(
-				"SELECT id, name, slug, icon_emoji FROM `{$tax_t}`
-				 WHERE parent_term_id = %d AND status = 'active'
-				 ORDER BY sort_order ASC, name ASC",
-				(int) $term->parent_term_id
+				"SELECT t.id, t.name, t.slug, t.icon_emoji, t.image_id
+				 FROM `{$tax_t}` t
+				 LEFT JOIN `{$types_t}` tt ON tt.id = t.type_id
+				 WHERE t.parent_term_id = %d AND t.id != %d AND t.status = 'active'
+				   AND (tt.slug IS NULL OR tt.slug != 'glossary')
+				 ORDER BY t.sort_order ASC, t.name ASC",
+				(int) $term->parent_term_id, (int) $term->id
 			) ) ?: array();
 		} else {
 			$all_sibs = $wpdb->get_results( $wpdb->prepare(
-				"SELECT id, name, slug, icon_emoji FROM `{$tax_t}`
-				 WHERE parent_id = %d AND status = 'active'
-				 ORDER BY sort_order ASC, name ASC",
-				(int) $parent->id
+				"SELECT t.id, t.name, t.slug, t.icon_emoji, t.image_id
+				 FROM `{$tax_t}` t
+				 LEFT JOIN `{$types_t}` tt ON tt.id = t.type_id
+				 WHERE t.parent_id = %d AND t.id != %d AND t.status = 'active'
+				   AND (tt.slug IS NULL OR tt.slug != 'glossary')
+				 ORDER BY t.sort_order ASC, t.name ASC",
+				(int) $parent->id, (int) $term->id
 			) ) ?: array();
 		}
 
+		$_seen_slugs = array();
 		foreach ( $all_sibs as $sib ) {
+			if ( isset( $_seen_slugs[ $sib->slug ] ) ) { continue; }
+			$_seen_slugs[ $sib->slug ] = true;
+			$_sb_thumb = '';
+			if ( ! empty( $sib->image_id ) ) {
+				$_t = wp_get_attachment_image_url( (int) $sib->image_id, 'thumbnail' );
+				$_sb_thumb = $_t ? (string) $_t : '';
+			}
 			$topic_items[] = array(
 				'icon'      => ! empty( $sib->icon_emoji ) ? $sib->icon_emoji : '📚',
 				'label'     => $sib->name,
 				'url'       => home_url( '/' . trim( $sib->slug, '/' ) . '/' ),
-				'is_active' => (int) $sib->id === (int) $term->id,
+				'thumbnail' => $_sb_thumb,
 			);
 		}
 	}
 
 	if ( ! empty( $topic_items ) ) {
 		$sidebar['buying_topics'] = array(
-			'heading'  => sprintf( adn_term( 'category_page.explore_guides_title', 'Explore %s %s' ), $parent_label, '' ),
+			'heading'  => 'Explore ' . $parent_label,
 			'items'    => $topic_items,
 			'view_all' => $parent ? array(
-				'label' => 'View all ' . $parent_label . ' guides →',
+				'label' => 'View all →',
 				'url'   => home_url( '/' . trim( $parent->slug, '/' ) . '/' ),
 			) : array(),
 		);
@@ -412,6 +530,10 @@ function adn_topic_category_get_context() {
 		'items'    => array_slice( $news_items, 0, 3 ),
 		'view_all' => array( 'label' => 'All news →', 'url' => home_url( SITE_NEWS_URL ) ),
 	);
+
+	if ( ! empty( $_hl_panels ) ) {
+		$ctx['highlight_posts'] = $_hl_panels;
+	}
 
 	// ── Popular calculators (full section below fold) ─────────────────────────────
 	$calc_items = array();

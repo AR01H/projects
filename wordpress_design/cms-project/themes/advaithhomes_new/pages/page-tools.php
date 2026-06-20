@@ -76,6 +76,14 @@ adn_page_open( $_open_ctx );
 
 </div>
 
+<?php if ( ! empty( $ctx['latest_news']['items'] ) ) : ?>
+<section class="page-latest-news">
+	<div class="container">
+		<?php adn_component( 'parts/news_widget', array( 'widget' => $ctx['latest_news'] ) ); ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <?php /* ============================== NEWSLETTER ============================== */ ?>
 <?php if ( ! empty( $ctx['newsletter'] ) ) : ?>
 <section class="newsletter-cta">

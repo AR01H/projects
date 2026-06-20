@@ -83,35 +83,12 @@ adn_page_open( $_open_ctx );
 			<?php endif; ?>
 
 			<?php /* ── Latest News + Regulations (side by side) ── */ ?>
-			<?php $_has_news = ! empty( $ctx['news']['items'] ); $_has_regs = ! empty( $ctx['regulations']['items'] ); ?>
-			<?php if ( $_has_news || $_has_regs ) : ?>
+			<?php if ( ! empty( $ctx['news']['items'] ) || ! empty( $ctx['regulations']['items'] ) ) : ?>
 			<div class="category-section category-news-regs">
-				<div class="cat-news-regs-grid">
-
-					<?php if ( $_has_news ) : ?>
-					<div class="cat-news-col">
-						<?php adn_component( 'parts/news_widget', array( 'widget' => array(
-							'heading' => $ctx['news']['heading'],
-							'items'   => $ctx['news']['items'],
-						) ) ); ?>
-					</div>
-					<?php endif; ?>
-
-					<?php if ( $_has_regs ) : ?>
-					<div class="cat-regs-col mini_card_container_design">
-						<?php
-						adn_component( 'parts/section_headers/section_header', array(
-							'heading' => isset( $ctx['regulations']['heading'] ) ? $ctx['regulations']['heading'] : array(),
-							'tag'     => 'h3',
-						) );
-						foreach ( (array) $ctx['regulations']['items'] as $item ) :
-							adn_component( 'cards/regulation_item', array( 'item' => $item ) );
-						endforeach;
-						?>
-					</div>
-					<?php endif; ?>
-
-				</div>
+				<?php adn_component( 'sections/news_three_col', array(
+					'news'        => $ctx['news'],
+					'regulations' => $ctx['regulations'],
+				) ); ?>
 			</div>
 			<?php endif; ?>
 
@@ -178,7 +155,7 @@ adn_page_open( $_open_ctx );
 				? array_filter( array_map( 'sanitize_key', $_cat_sp_all['spotlights']['terms'] ) )
 				: array();
 			foreach ( $_cat_sp_terms as $_cat_sp_slug ) :
-				adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_cat_sp_slug ) );
+				adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_cat_sp_slug, 'sidebar' => true ) );
 			endforeach;
 			?>
 

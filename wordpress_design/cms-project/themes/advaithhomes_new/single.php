@@ -53,11 +53,6 @@ get_header();
 <div class="article-outer">
 	<div class="article-layout">
 
-		<?php /* TOC - single.js auto-generates links from .article-body h2 headings */ ?>
-		<div class="article-toc-wrapper">
-			<?php adn_component( 'parts/post_sidebar_toc' ); ?>
-		</div>
-
 		<?php /* ── MAIN ARTICLE COLUMN ── */ ?>
 		<main class="article-main" id="main-content">
 
@@ -85,8 +80,22 @@ get_header();
 
 		</main>
 
-		<?php /* ── SIDEBAR ── */ ?>
+		<?php /* ── RIGHT COLUMN: TOC + Sidebar ── */ ?>
+		<div class="article-right-col">
+
+		<?php /* TOC - single.js auto-generates links from .article-body h2 headings */ ?>
+		<div class="article-toc-wrapper">
+			<?php adn_component( 'parts/post_sidebar_toc' ); ?>
+		</div>
+
 		<aside class="article-sidebar" aria-label="<?php esc_attr_e( 'Article sidebar', ADN_TEXT_DOMAIN ); ?>">
+			<?php /* Related guides (from WP_Query - same category, latest 4) */ ?>
+			<?php if ( ! empty( $ctx['related_guides'] ) ) : ?>
+				<div class="">
+					<?php adn_component( 'parts/post_sidebar_related', array( 'related_guides' => $ctx['related_guides'] ) ); ?>
+				</div>
+			<?php endif; ?>
+
 			<?php /* Highlight Links */ ?>
 			<?php if ( ! empty( $ctx['highlight_links'] ) ) : ?>
 				<div class="">
@@ -101,26 +110,6 @@ get_header();
 				</div>
 			<?php endif; ?>
 
-			<?php /* Popular tools (from post_sidebar.json) */ ?>
-			<?php if ( ! empty( $ctx['sidebar']['calculators'] ) ) : ?>
-				<div class="">
-					<?php adn_component( 'parts/post_sidebar_tools', array( 'calculators' => $ctx['sidebar']['calculators'] ) ); ?>
-				</div>
-			<?php endif; ?>
-
-			<?php /* Related guides (from WP_Query - same category, latest 4) */ ?>
-			<?php if ( ! empty( $ctx['related_guides'] ) ) : ?>
-				<div class="">
-					<?php adn_component( 'parts/post_sidebar_related', array( 'related_guides' => $ctx['related_guides'] ) ); ?>
-				</div>
-			<?php endif; ?>
-
-			<?php /* Latest news (from WP_Query - most recent 3 posts) */ ?>
-			<?php if ( ! empty( $ctx['latest_news'] ) ) : ?>
-				<div class="">
-					<?php adn_component( 'parts/post_sidebar_news', array( 'latest_news' => $ctx['latest_news'] ) ); ?>
-				</div>
-			<?php endif; ?>
 
 			<?php /* Newsletter signup */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['newsletter'] ) ) : ?>
@@ -130,6 +119,8 @@ get_header();
 			<?php endif; ?>
 
 		</aside>
+
+		</div><!-- .article-right-col -->
 
 	</div>
 </div>

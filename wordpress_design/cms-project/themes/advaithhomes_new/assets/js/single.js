@@ -182,7 +182,7 @@
 
         function showStatus( msg, type ) {
             if ( ! status ) { return; }
-            status.textContent = msg;
+            status.innerHTML  = msg;
             status.className   = 'adn-comment-status adn-comment-status--' + type;
             status.hidden      = false;
             status.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );

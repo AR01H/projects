@@ -167,7 +167,10 @@ function adn_ajax_submit_comment() {
 		wp_send_json_error( array( 'message' => __( 'Security check failed. Please refresh and try again.', ADN_TEXT_DOMAIN ) ), 403 );
 	}
 
+	// Email field is optional — bypass WP's require_name_email validation.
+	add_filter( 'pre_option_require_name_email', '__return_zero' );
 	$comment = wp_handle_comment_submission( wp_unslash( $_POST ) );
+	remove_filter( 'pre_option_require_name_email', '__return_zero' );
 
 	if ( is_wp_error( $comment ) ) {
 		wp_send_json_error( array( 'message' => $comment->get_error_message() ) );

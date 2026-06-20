@@ -135,12 +135,8 @@ $_cb_args = array(
 				. '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" placeholder="' . esc_attr__( 'Your name', ADN_TEXT_DOMAIN ) . '" autocomplete="name"' . ( $req ? ' aria-required="true"' : '' ) . '>'
 				. '</div>',
 			'email'  => '<div class="adn-form-row">'
-				. '<label for="email">' . esc_html__( 'Email', ADN_TEXT_DOMAIN ) . $req_mark . '</label>'
-				. '<input id="email" name="email" type="email" value="' . esc_attr( $commenter['comment_author_email'] ) . '" placeholder="' . esc_attr__( 'your@email.com', ADN_TEXT_DOMAIN ) . '" autocomplete="email"' . ( $req ? ' aria-required="true"' : '' ) . '>'
-				. '</div>',
-			'url'    => '<div class="adn-form-row">'
-				. '<label for="url">' . esc_html__( 'Website (optional)', ADN_TEXT_DOMAIN ) . '</label>'
-				. '<input id="url" name="url" type="url" value="' . esc_attr( $commenter['comment_author_url'] ) . '" placeholder="' . esc_attr__( 'https://yoursite.com', ADN_TEXT_DOMAIN ) . '" autocomplete="url">'
+				. '<label for="email">' . esc_html__( 'Email', ADN_TEXT_DOMAIN ).'</label>'
+				. '<input id="email" name="email" type="email" value="' . esc_attr( $commenter['comment_author_email'] ) . '" placeholder="' . esc_attr__( 'your@email.com', ADN_TEXT_DOMAIN ) . '" autocomplete="email">'
 				. '</div>',
 			/* AJAX nonce - verified server-side before wp_handle_comment_submission() */
 			'adn_nonce' => '<input type="hidden" name="adn_nonce" value="' . esc_attr( wp_create_nonce( 'adn_comment_nonce' ) ) . '">',

@@ -11,7 +11,7 @@ if ( empty( $_cats ) ) return;
 <div class="expert-cats-strip">
 
 	<?php /* ── Search row ─────────────────────────────────────────── */ ?>
-	<div class="expert-search-row container">
+	<!-- <div class="expert-search-row container">
 		<div class="search-input-wrap">
 			<span class="search-icon" aria-hidden="true">🔍</span>
 			<input
@@ -23,7 +23,7 @@ if ( empty( $_cats ) ) return;
 			>
 			<button type="button" id="expertSearchClear" class="search-btn expert-search-clear" aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>" hidden>×</button>
 		</div>
-	</div>
+	</div> -->
 
 	<?php /* ── Category tabs row ────────────────────────────────── */ ?>
 	<div class="expert-cats-inner container" role="tablist" aria-label="<?php esc_attr_e( 'Filter experts by category', ADN_TEXT_DOMAIN ); ?>">

@@ -1,41 +1,31 @@
 <?php
 /**
  * components/parts/post_sidebar_related.php
+ * Thin wrapper → parts/sidebar_link_list.
  *
- * Sidebar - Related Guides list (populated from WP_Query in post_logical.php).
- *
- * Props (via extract):
- *   $related_guides = [ { icon, title, read_time, url }, … ]
+ * Props: $related_guides[] { icon, title, read_time, url }
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$_items = ( isset( $related_guides ) && is_array( $related_guides ) ) ? $related_guides : array();
+$_guides = ( isset( $related_guides ) && is_array( $related_guides ) ) ? $related_guides : array();
 
-if ( empty( $_items ) ) {
-	return;
+if ( empty( $_guides ) ) { return; }
+
+$_items = array();
+foreach ( $_guides as $_g ) {
+	if ( empty( $_g['title'] ) ) { continue; }
+	$_items[] = array(
+		'icon'  => ! empty( $_g['icon'] ) ? (string) $_g['icon'] : '📖',
+		'label' => (string) $_g['title'],
+		'meta'  => ! empty( $_g['read_time'] ) ? '⏱ ' . (string) $_g['read_time'] : '',
+		'url'   => isset( $_g['url'] ) ? (string) $_g['url'] : '',
+	);
 }
-?>
-<div class="sidebar-box mini_card_container_design">
-	<h3><?php echo esc_html( SITE_SIDEBAR_RELATED ); ?></h3>
-	<ul class="sidebar-related-list" role="list">
-		<?php foreach ( $_items as $_g ) :
-			$_g_icon = adn_icon( isset( $_g['icon'] )      ? (string) $_g['icon']      : '🏠' );
-			$_g_ttl  = esc_html( isset( $_g['title'] )     ? (string) $_g['title']     : '' );
-			$_g_rt   = esc_html( isset( $_g['read_time'] ) ? (string) $_g['read_time'] : '' );
-			$_g_url  = isset( $_g['url'] ) ? esc_url( (string) $_g['url'] ) : '#';
-		?>
-			<li>
-				<a href="<?php echo $_g_url; ?>" class="sidebar-related-item">
-					<span class="sidebar-related-img" aria-hidden="true"><?php echo $_g_icon; ?></span>
-					<span class="sidebar-related-text">
-						<span class="sidebar-related-title"><?php echo $_g_ttl; ?></span>
-						<?php if ( '' !== $_g_rt ) : ?>
-							<span class="sidebar-related-meta">⏱ <?php echo $_g_rt; ?></span>
-						<?php endif; ?>
-					</span>
-				</a>
-			</li>
-		<?php endforeach; ?>
-	</ul>
-</div>
+
+if ( empty( $_items ) ) { return; }
+
+adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+	'heading' => defined( 'SITE_SIDEBAR_RELATED' ) ? SITE_SIDEBAR_RELATED : adn_term( 'sidebar.related_guides', 'Related Guides' ),
+	'items'   => $_items,
+) ) );

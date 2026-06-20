@@ -59,5 +59,13 @@ function adn_guidance_get_context() {
 		'services'    => $services,
 		'why_choose'  => isset( $data['why_choose'] )  ? (array) $data['why_choose']  : array(),
 		'chrome'      => $chrome,
+		'latest_news' => array(
+			'heading' => array(
+				'title'      => adn_term( 'labels.latest_news', 'Latest News' ),
+				'link_label' => adn_term( 'buttons.view_all', 'View all →' ),
+				'link_url'   => defined( 'SITE_NEWS_URL' ) ? SITE_NEWS_URL : '/',
+			),
+			'items' => adn_shared_latest_news_items( 3 ),
+		),
 	);
 }

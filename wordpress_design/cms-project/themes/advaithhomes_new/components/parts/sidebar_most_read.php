@@ -1,36 +1,37 @@
 <?php
 /**
- * components/parts/sidebar_most_read.php - Sidebar: numbered most-read list.
+ * components/parts/sidebar_most_read.php
+ * Thin wrapper → parts/sidebar_link_list.
+ * Number is passed as icon so it displays in accent colour.
  *
  * Props: $most_read { heading, items[] { num, title, url }, view_all { label, url } }
- * Usage: adn_component( 'parts/sidebar_most_read', array( 'most_read' => $ctx['sidebar']['most_read'] ) );
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $most_read = isset( $most_read ) && is_array( $most_read ) ? $most_read : array();
-$items     = isset( $most_read['items'] )    ? (array) $most_read['items']    : array();
-$view_all  = isset( $most_read['view_all'] ) ? (array) $most_read['view_all'] : array();
-?>
-<div class="sidebar-card">
-	<?php if ( ! empty( $most_read['heading'] ) ) : ?>
-		<div class="sidebar-card-title"><?php echo esc_html( $most_read['heading'] ); ?></div>
-	<?php endif; ?>
 
-	<div class="most-read-list">
-		<?php foreach ( $items as $item ) : ?>
-			<div class="most-read-item">
-				<div class="most-read-num"><?php echo esc_html( isset( $item['num'] ) ? $item['num'] : '' ); ?></div>
-				<a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>" class="most-read-title">
-					<?php echo esc_html( isset( $item['title'] ) ? $item['title'] : '' ); ?>
-				</a>
-			</div>
-		<?php endforeach; ?>
-	</div>
+if ( empty( $most_read['items'] ) ) { return; }
 
-	<?php if ( ! empty( $view_all['label'] ) ) : ?>
-		<a href="<?php echo esc_url( adn_link( isset( $view_all['url'] ) ? $view_all['url'] : '' ) ); ?>" class="view-all-small">
-			<?php echo esc_html( $view_all['label'] ); ?>
-		</a>
-	<?php endif; ?>
-</div>
+$_items = array();
+$_n = 1;
+foreach ( (array) $most_read['items'] as $it ) {
+	if ( empty( $it['title'] ) ) { continue; }
+	$_num = isset( $it['num'] ) && '' !== (string) $it['num'] ? (string) $it['num'] : sprintf( '%02d', $_n );
+	$_items[] = array(
+		'icon'  => $_num,
+		'label' => (string) $it['title'],
+		'url'   => isset( $it['url'] ) ? (string) $it['url'] : '',
+	);
+	$_n++;
+}
+
+if ( empty( $_items ) ) { return; }
+
+$_view_all = isset( $most_read['view_all'] ) ? (array) $most_read['view_all'] : array();
+
+adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+	'heading'  => ! empty( $most_read['heading'] ) ? (string) $most_read['heading'] : '',
+	'items'    => $_items,
+	'view_all' => $_view_all,
+) ) );

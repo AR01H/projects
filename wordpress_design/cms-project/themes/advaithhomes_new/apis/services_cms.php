@@ -599,6 +599,85 @@ function adn_cms_post_breadcrumb( $post_id, $post_title ) {
 }
 
 /**
+ * Shared latest-news items for any page widget.
+ * Priority: newsbar → CMS news posts → WP_Query.
+ * Returns card-ready arrays: { title, date, tag, thumbnail, gradient, url }.
+ *
+ * @param int $limit
+ * @return array[]
+ */
+function adn_shared_latest_news_items( $limit = 3 ) {
+	$items = array();
+
+	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
+		foreach ( adn_cms_newsbar_items( $limit ) as $i => $item ) {
+			$title = isset( $item->text ) ? (string) $item->text : '';
+			if ( '' === $title ) { continue; }
+			$stamp     = ! empty( $item->start_date ) ? $item->start_date : '';
+			$thumb_url = '';
+			if ( ! empty( $item->image_id ) ) {
+				$_tu = wp_get_attachment_image_url( (int) $item->image_id, 'thumbnail' );
+				if ( $_tu ) { $thumb_url = (string) $_tu; }
+			}
+			$items[] = array(
+				'title'     => $title,
+				'date'      => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
+				'tag'       => ! empty( $item->label ) ? (string) $item->label : '',
+				'thumbnail' => $thumb_url,
+				'gradient'  => adn_cms_gradient( $i ),
+				'url'       => ! empty( $item->link_url ) ? (string) $item->link_url : ( defined( 'SITE_NEWS_URL' ) ? SITE_NEWS_URL : '/' ),
+			);
+		}
+	}
+
+	if ( empty( $items ) ) {
+		foreach ( adn_cms_latest_news( $limit ) as $i => $post ) {
+			$title = isset( $post->title ) ? (string) $post->title : '';
+			if ( '' === $title ) { continue; }
+			$thumb_url = '';
+			if ( ! empty( $post->featured_image_id ) ) {
+				$_tu = wp_get_attachment_image_url( (int) $post->featured_image_id, 'thumbnail' );
+				if ( $_tu ) { $thumb_url = (string) $_tu; }
+			}
+			$items[] = array(
+				'title'     => $title,
+				'date'      => adn_cms_post_date( $post ),
+				'tag'       => '',
+				'thumbnail' => $thumb_url,
+				'gradient'  => adn_cms_gradient( $i ),
+				'url'       => adn_cms_post_url( $post ),
+			);
+		}
+	}
+
+	if ( empty( $items ) ) {
+		$q = new WP_Query( array(
+			'post_type'      => 'post',
+			'post_status'    => 'publish',
+			'posts_per_page' => $limit,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		) );
+		if ( $q->have_posts() ) {
+			foreach ( $q->posts as $i => $wp_post ) {
+				$_tu = get_the_post_thumbnail_url( $wp_post->ID, 'thumbnail' );
+				$items[] = array(
+					'title'     => $wp_post->post_title,
+					'date'      => get_the_date( 'M j, Y', $wp_post ),
+					'tag'       => '',
+					'thumbnail' => $_tu ? (string) $_tu : '',
+					'gradient'  => adn_cms_gradient( $i ),
+					'url'       => get_permalink( $wp_post ),
+				);
+			}
+			wp_reset_postdata();
+		}
+	}
+
+	return $items;
+}
+
+/**
  * URL for a post row. These are real WordPress posts, so prefer the actual
  * permalink (which routes to single.php - no 404). Falls back to a slug path.
  */
