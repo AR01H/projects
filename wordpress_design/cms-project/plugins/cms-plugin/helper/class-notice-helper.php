@@ -112,8 +112,8 @@ class AH_Notice_Helper {
 			<div style="position:relative;z-index:1;background:#fff;border-radius:16px;max-width:520px;width:100%;padding:0;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);animation:ahNoticeIn .28s ease both;">
 
 				<?php if ( $image ) : ?>
-				<div style="width:100%;height:180px;overflow:hidden;background:var(--color-primary,#0a192f);">
-					<img src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;opacity:.85;">
+				<div style="width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--color-primary,#0a192f);">
+					<img src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;opacity:.85;display:block;">
 				</div>
 				<?php else : ?>
 				<div style="width:100%;height:6px;background:linear-gradient(90deg,var(--color-primary,#0a192f),var(--color-accent,#3b82f6));"></div>
@@ -122,8 +122,6 @@ class AH_Notice_Helper {
 				<div style="padding:1.75rem 2rem 2rem;">
 
 					<button id="ah-notice-close" aria-label="Close notice" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#444;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:2;">&times;</button>
-
-					<div style="display:inline-block;background:var(--color-primary,#0a192f);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:4px;margin-bottom:.9rem;">📢 Notice</div>
 
 					<h2 id="ah-notice-title" style="margin:0 0 .6rem;font-size:1.35rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.3;"><?php echo $title; ?></h2>
 
@@ -137,7 +135,6 @@ class AH_Notice_Helper {
 							<?php echo $btn_label; ?>
 						</a>
 						<?php endif; ?>
-						<button id="ah-notice-dismiss" style="background:none;border:none;color:#888;font-size:.9rem;cursor:pointer;padding:.6rem 0;text-decoration:underline;">Dismiss</button>
 					</div>
 
 				</div>

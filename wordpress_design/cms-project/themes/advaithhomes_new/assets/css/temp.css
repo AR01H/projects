@@ -800,6 +800,319 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   text-shadow: 0 1px 3px rgba(0,0,0,0.35);
 }
 
+/* Banner-card subtitle (small label above title) */
+.journey-card-subtitle {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 4px;
+}
+
+/* Text-alignment modifiers for banner cards */
+.journey-card--center .journey-card-body { align-items: center; text-align: center; }
+.journey-card--right  .journey-card-body { align-items: flex-end; text-align: right; }
+
+/* ═══════════════════════════════════════════════════════════
+   PROMO BANNER SLIDER  (.bsl)
+   16:9 ratio · crossfade · content animation · dots · progress
+   ═══════════════════════════════════════════════════════════ */
+
+/* Full-bleed: break out of any ancestor padding/max-width */
+.banners-promo-section {
+  line-height: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* ── Container: 16:9 via aspect-ratio, full viewport width ── */
+.bsl {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-dark, #1a2332);
+  line-height: 1;
+}
+
+/* ── Slides ── */
+.bsl__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+.bsl__slide--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Background: image + Ken Burns zoom + overlays ── */
+.bsl__bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.bsl__bg img,
+.bsl__video {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
+.bsl__bg picture { display: block; width: 100%; height: 100%; }
+
+/* Ken Burns: static images zoom out slowly on the active slide */
+.bsl__bg img {
+  transform: scale(1.06);
+  transition: transform 0s;
+}
+.bsl__slide--active .bsl__bg img {
+  transform: scale(1.0);
+  transition: transform 7s ease-out;
+}
+/* Videos and GIFs animate themselves — no Ken Burns needed */
+.bsl__video { transform: none; }
+
+.bsl__overlay { position: absolute; inset: 0; }
+
+/* Bottom-to-top gradient scrim (always on, for text legibility) */
+.bsl__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.78) 0%,
+    rgba(0,0,0,0.35) 35%,
+    rgba(0,0,0,0.08) 65%,
+    transparent      100%
+  );
+}
+
+/* ── Content wrapper ── */
+.bsl__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.bsl__content--left   { align-items: flex-start; text-align: left;   }
+.bsl__content--center { align-items: center;      text-align: center; }
+.bsl__content--right  { align-items: flex-end;    text-align: right;  }
+.bsl__content--top    { justify-content: flex-start; }
+.bsl__content--middle { justify-content: center;     }
+.bsl__content--bottom { justify-content: flex-end;   }
+
+/* ── Inner text block ── */
+.bsl__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 44px 72px 80px;
+  max-width: 700px;
+}
+.bsl__content--center .bsl__inner { max-width: 100%; align-items: center; padding-left: 80px; padding-right: 80px; }
+.bsl__content--right  .bsl__inner { align-items: flex-end; margin-left: auto; }
+
+.bsl__content--top    .bsl__inner { padding-top: 60px; }
+.bsl__content--middle .bsl__inner { padding-bottom: 60px; }
+.bsl__content--bottom .bsl__inner { padding-top: 20px; }
+
+/* ── Staggered entry animations ── */
+
+/* Reset all content to invisible before activation */
+.bsl__subtitle,
+.bsl__title,
+.bsl__desc,
+.bsl__actions {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* Staggered keyframe */
+@keyframes bslIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Each element animates in with increasing delay */
+.bsl__slide--active .bsl__subtitle {
+  animation: bslIn 0.52s cubic-bezier(.22,.68,0,1.2) 0.18s forwards;
+}
+.bsl__slide--active .bsl__title {
+  animation: bslIn 0.52s cubic-bezier(.22,.68,0,1.2) 0.32s forwards;
+}
+.bsl__slide--active .bsl__desc {
+  animation: bslIn 0.48s ease 0.48s forwards;
+}
+.bsl__slide--active .bsl__actions {
+  animation: bslIn 0.44s ease 0.62s forwards;
+}
+
+/* ── Typography ── */
+.bsl__subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--color-accent, #c9a96e);
+}
+.bsl__subtitle::before {
+  content: '';
+  display: block;
+  width: 30px; height: 2px;
+  background: var(--color-accent, #c9a96e);
+  flex-shrink: 0;
+}
+.bsl__content--center .bsl__subtitle::before,
+.bsl__content--right  .bsl__subtitle::before { display: none; }
+
+.bsl__title {
+  font-family: var(--font-display, serif);
+  font-size: clamp(1.65rem, 3.5vw, 3.1rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin: 0;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.45);
+  letter-spacing: -0.01em;
+}
+
+.bsl__desc {
+  font-size: clamp(0.88rem, 1.1vw, 1rem);
+  color: rgba(255,255,255,0.84);
+  line-height: 1.68;
+  margin: 0;
+  max-width: 500px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  /* Clamp to 3 lines — prevents long admin text from flooding the banner */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.bsl__content--center .bsl__desc { max-width: 580px; }
+
+/* ── Button ── */
+.bsl__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+.bsl__content--center .bsl__actions { justify-content: center; }
+.bsl__content--right  .bsl__actions { justify-content: flex-end; }
+
+.bsl__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1.9rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: var(--border-radius-sm, 6px);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.bsl__btn--primary {
+  background: var(--color-accent, #c9a96e);
+  color: var(--color-dark, #1a2332);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.32);
+}
+.bsl__btn--primary:hover {
+  background: #d4ae78;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.38);
+}
+.bsl__btn--primary i { font-size: 0.78em; }
+
+/* ── Controls bar (dots + counter) ── */
+.bsl__bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  z-index: 20;
+}
+.bsl__dots {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.bsl__dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.36);
+  border: none; padding: 0; cursor: pointer;
+  transition: background 0.24s, width 0.3s cubic-bezier(.4,0,.2,1);
+}
+.bsl__dot--active {
+  background: var(--color-accent, #c9a96e);
+  width: 28px; border-radius: 3.5px;
+}
+.bsl__counter {
+  position: absolute;
+  right: 24px; bottom: 17px;
+  display: flex; align-items: baseline; gap: 3px;
+  font-size: 0.7rem; font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  display:none;
+}
+.bsl__counter-cur { color: #fff; font-size: 0.82rem; }
+.bsl__counter-sep { color: rgba(255,255,255,0.28); margin: 0 1px; }
+
+/* ── Progress bar ── */
+.bsl__progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  z-index: 21;
+}
+.bsl__progress-bar { height: 100%; width: 0%; background: var(--color-accent, #c9a96e); }
+
+/* ═══ RESPONSIVE — ratio stays 16:9 always ══════════════════ */
+
+@media (max-width: 900px) {
+  .bsl__inner                       { padding: 32px 44px 76px; gap: 10px; }
+  .bsl__content--center .bsl__inner { padding-left: 44px; padding-right: 44px; }
+}
+
+@media (max-width: 640px) {
+  .bsl__inner {
+    padding: 20px 24px 68px;
+    gap: 8px;
+    max-width: 100%;
+  }
+  .bsl__content--center .bsl__inner,
+  .bsl__content--right  .bsl__inner { padding-left: 24px; padding-right: 24px; }
+
+  .bsl__subtitle { font-size: 0.66rem; letter-spacing: 0.1em; }
+  .bsl__subtitle::before { width: 18px; }
+  .bsl__title  { font-size: clamp(1.05rem, 5.5vw, 1.7rem); }
+  .bsl__desc   { font-size: 0.82rem; line-height: 1.55; max-width: 100%; -webkit-line-clamp: 2; }
+
+  .bsl__btn            { padding: 0.6rem 1.25rem; font-size: 0.82rem; }
+  .bsl__btn--primary i { display: none; }
+
+  .bsl__bar     { height: 46px; }
+  .bsl__counter { right: 16px; bottom: 13px; }
+}
+
 /* ============================================
    THREE COLUMN NEWS SECTION
    ============================================ */
@@ -1837,11 +2150,41 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .cat-guide-main {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 48px;
   min-width: 0;
 }
-.category-section { min-width: 0; }
-.category-section .section-header { margin-bottom: 18px; }
+.category-section {
+  min-width: 0;
+  padding-top: 2px; /* prevents margin collapse at flex edges */
+}
+.category-section .section-header { margin-bottom: 22px; }
+
+/* Visual divider between sections (all except the first) */
+.category-section + .category-section {
+  padding-top: 48px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── FAQ section (section-faqs class on the container div) ───────────── */
+.section-faqs {
+  padding: 48px 0 56px;
+}
+.section-faqs > h2,
+.section-faqs > .faq-heading {
+  margin-bottom: 28px;
+}
+
+/* ── Tool grid on category guide pages ──────────────────────────────── */
+.tool-grid {
+  display: grid;
+  gap: 12px;
+}
+.tool-grid--7col {
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+@media (max-width: 600px) {
+  .tool-grid--7col { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+}
 
 .page-latest-news {
   padding: 40px 0;
@@ -1871,9 +2214,9 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .page-with-sidebar {
   display: grid;
   grid-template-columns: 1fr 264px;
-  gap: 36px;
+  gap: 40px;
   align-items: start;
-  padding: 40px 0 60px;
+  padding: 48px 0 72px;
 }
 .page-with-sidebar > * { min-width: 0; }
 .sidebar-col {

@@ -37,6 +37,10 @@ function adn_home_get_context() {
 		'chrome'      => is_array( $chrome ) ? $chrome : array(),
 		'hero'        => $section( 'hero', array( 'title_lines' => array(), 'actions' => array(), 'trust_items' => array(), 'diagram' => array() ) ),
 		'journey'     => $section( 'journey', array( 'heading' => array(), 'cards' => array() ) ),
+		'banners'     => array(
+			'heading' => $section( 'banners', array( 'heading' => array() ) )['heading'],
+			'items'   => class_exists( 'AH_Banners_Helper' ) ? AH_Banners_Helper::get_all( true ) : array(),
+		),
 		'news'        => $section( 'news', array( 'heading' => array(), 'items' => array() ) ),
 		'regulations' => $section( 'regulations', array( 'heading' => array(), 'items' => array() ) ),
 		'hot_topics'  => $section( 'hot_topics', array( 'title' => '', 'items' => array(), 'cta' => array() ) ),

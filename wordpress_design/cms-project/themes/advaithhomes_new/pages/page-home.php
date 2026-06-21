@@ -62,6 +62,16 @@ adn_page_open( $ctx );
 </section>
 <?php endif; ?>
 
+<?php /* ==================== HOME BANNERS CAROUSEL ==================== */ ?>
+<?php if ( adn_home_section_visible( 'banners' ) && ! empty( $ctx['banners']['items'] ) ) : ?>
+<section class="banners-promo-section">
+	<?php adn_component( 'sections/home_banners_carousel', array(
+		'items'    => $ctx['banners']['items'],
+		'autoplay' => class_exists( 'AH_Banners_Helper' ) ? AH_Banners_Helper::get_autoplay() : 5000,
+	) ); ?>
+</section>
+<?php endif; ?>
+
 <?php
 /* Resolve spotlight term once — used inside news row */
 $_home_secs    = get_option( 'adn_home_sections', array() );
