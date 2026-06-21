@@ -268,7 +268,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
           </div>
           <div class="ah-form-row" style="margin:0">
             <label>URL <small style="font-weight:400">(page to link to or embed)</small></label>
-            <input type="url" name="agr_url" id="agr_url" value="<?php echo esc_attr( $agr['url'] ); ?>" placeholder="https://advaithhomes.co.uk/privacy-policy/">
+            <input type="url" name="agr_url" id="agr_url" value="<?php echo esc_attr( $agr['url'] ); ?>" placeholder="/privacy-policy/">
           </div>
         </div>
         <div class="ah-form-row" style="margin:0 0 16px">
@@ -363,11 +363,26 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
   <?php else : ?>
   <!-- ════════════════════ Submissions ════════════════════ -->
   <?php
-  $subs   = AH_Form_Builder::get_submissions_filtered( $form_id, $sub_status, 200, 0 );
+  $sub_search = sanitize_text_field( isset( $_GET['sub_s'] ) ? $_GET['sub_s'] : '' );
+  $subs       = AH_Form_Builder::get_submissions_filtered( $form_id, $sub_status, 200, 0 );
+  if ( $sub_search ) {
+    $subs = array_values( array_filter( $subs, static function( $s ) use ( $sub_search ) {
+      return false !== stripos( isset( $s->data ) ? ( is_string( $s->data ) ? $s->data : wp_json_encode( $s->data ) ) : '', $sub_search );
+    } ) );
+  }
   $f_keys = array_column( $fields, 'label', 'field_key' );
   ?>
 
-  <!-- Status filter pills -->
+  <!-- Status filter pills + search -->
+  <form method="get" style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <input type="hidden" name="page" value="ah-form-builder">
+    <input type="hidden" name="form_id" value="<?php echo esc_attr( $form_id ); ?>">
+    <input type="hidden" name="tab" value="submissions">
+    <input type="hidden" name="sub_status" value="<?php echo esc_attr( $sub_status ); ?>">
+    <input type="search" name="sub_s" value="<?php echo esc_attr( $sub_search ); ?>" placeholder="Search submissions…" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;min-width:220px">
+    <button class="ah-btn ah-btn-secondary ah-btn-sm">Search</button>
+    <?php if ( $sub_search ) : ?><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'submissions', 'sub_status' => $sub_status ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" style="opacity:.7;">✕ Clear</a><?php endif; ?>
+  </form>
   <div class="sub-status-bar">
     <span style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px">Filter:</span>
     <?php

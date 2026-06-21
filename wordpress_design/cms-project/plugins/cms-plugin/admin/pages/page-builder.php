@@ -119,7 +119,22 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 
 <?php /* ══════════════ LIST VIEW ══════════════ */ ?>
 <?php if ( $action === 'list' ) :
-  $pages = $wpdb->get_results( "SELECT * FROM `{$table}` ORDER BY updated_at DESC" );
+  $pb_search  = sanitize_text_field( $_GET['s'] ?? '' );
+  $pb_status  = sanitize_key( $_GET['pb_status'] ?? '' );
+  $_pb_where  = array();
+  $_pb_in     = array();
+  if ( $pb_search ) {
+    $_pb_where[] = 'title LIKE %s';
+    $_pb_in[]    = '%' . $wpdb->esc_like( $pb_search ) . '%';
+  }
+  if ( in_array( $pb_status, array( 'active', 'draft' ), true ) ) {
+    $_pb_where[] = 'status = %s';
+    $_pb_in[]    = $pb_status;
+  }
+  $_pb_sql = "SELECT * FROM `{$table}`" . ( $_pb_where ? ' WHERE ' . implode( ' AND ', $_pb_where ) : '' ) . ' ORDER BY updated_at DESC';
+  $pages = $_pb_in
+    ? $wpdb->get_results( $wpdb->prepare( $_pb_sql, $_pb_in ) )
+    : $wpdb->get_results( $_pb_sql );
 ?>
   <div class="ah-table-top" style="margin-bottom:0">
     <h1 style="margin:0"><span class="dashicons dashicons-layout"></span> Page Builder</h1>
@@ -130,6 +145,19 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
          class="ah-btn ah-btn-primary">📋 From Template</a>
     </div>
   </div>
+  <form class="ah-search-form" method="get" style="margin:12px 0 0">
+    <input type="hidden" name="page" value="ah-page-builder">
+    <input type="search" name="s" value="<?php echo esc_attr( $pb_search ); ?>" placeholder="Search pages…">
+    <select name="pb_status">
+      <option value="">All Statuses</option>
+      <option value="active" <?php selected( $pb_status, 'active' ); ?>>Active</option>
+      <option value="draft"  <?php selected( $pb_status, 'draft' );  ?>>Draft</option>
+    </select>
+    <button class="ah-btn ah-btn-secondary">Filter</button>
+    <?php if ( $pb_search || $pb_status ) : ?>
+      <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-page-builder' ) ); ?>" class="ah-btn ah-btn-secondary" style="opacity:.7;">✕ Clear</a>
+    <?php endif; ?>
+  </form>
   <p style="color:var(--ah-text-muted);margin:6px 0 20px">Build custom pages with drag-and-drop blocks - hero banners, card grids, CTAs, FAQs and more.</p>
 
   <?php if ( empty( $pages ) ) : ?>

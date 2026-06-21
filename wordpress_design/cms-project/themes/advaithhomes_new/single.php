@@ -49,6 +49,17 @@ get_header();
 	) ); ?>
 <?php endif; ?>
 
+<?php /* ── CMS Taxonomy Terms strip ── */ ?>
+<?php if ( ! empty( $ctx['cms_terms'] ) ) : ?>
+<div class="post-terms-bar">
+	<div class="container">
+		<?php foreach ( $ctx['cms_terms'] as $_pt ) : ?>
+			<span class="post-term-pill"><?php if ( '' !== $_pt['emoji'] ) echo esc_html( $_pt['emoji'] ) . ' '; echo esc_html( $_pt['name'] ); ?></span>
+		<?php endforeach; ?>
+	</div>
+</div>
+<?php endif; ?>
+
 <?php /* ============================== ARTICLE LAYOUT ============================== */ ?>
 <div class="article-outer">
 	<div class="article-layout">

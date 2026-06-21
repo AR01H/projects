@@ -5,11 +5,11 @@ $_is_icon   = $args['is_icon']   ?? false;
 
 if ( empty( $_trust ) ) return;
 ?>
-<div class="page-hero-bar">
+<div class="page-hero-bar page-hero-bar--marquee">
     <div class="">
         <div class="page-hero-bar-inner">
             <div class="phb-marquee-track">
-                <?php for ( $i = 0; $i < 2; $i++ ) : ?>
+                <?php for ( $i = 0; $i < 4; $i++ ) : ?>
                     <?php foreach ( $_trust as $_t ) : ?>
 
                         <?php if ( $_is_string ) : ?>

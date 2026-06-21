@@ -443,6 +443,9 @@ $action      = sanitize_key( $_GET['action'] ?? 'list' );
 $paged       = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
 $search      = sanitize_text_field( $_GET['s'] ?? '' );
 $status_f    = sanitize_key( $_GET['status'] ?? '' );
+$cat_f       = absint( $_GET['cat'] ?? 0 );
+$author_f    = absint( $_GET['author_id'] ?? 0 );
+$flag_f      = sanitize_key( $_GET['flag'] ?? '' );
 $q_args      = array(
 	'post_type'      => 'post',
 	'post_status'    => $status_f ?: array( 'publish', 'draft', 'private', 'pending' ),
@@ -451,7 +454,15 @@ $q_args      = array(
 	'orderby'        => 'modified',
 	'order'          => 'DESC',
 );
-if ( $search ) $q_args['s'] = $search;
+if ( $search )   $q_args['s']      = $search;
+if ( $cat_f )    $q_args['cat']    = $cat_f;
+if ( $author_f ) $q_args['author'] = $author_f;
+if ( in_array( $flag_f, array( 'featured', 'popular', 'suggested' ), true ) ) {
+	$q_args['meta_query'] = array( array(
+		'key'   => '_ah_is_' . $flag_f,
+		'value' => '1',
+	) );
+}
 $q           = new WP_Query( $q_args );
 $posts_list  = $q->posts;
 $total       = $q->found_posts;
@@ -958,16 +969,37 @@ if ( $action === 'edit-custom' ) {
 <?php else : ?>
 
   <div class="ah-table-top">
-    <form class="ah-search-form" method="get">
+    <form class="ah-search-form" method="get" style="flex-wrap:wrap;gap:6px;">
       <input type="hidden" name="page" value="ah-posts">
-      <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search posts…">
+      <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search posts…" style="min-width:160px;">
       <select name="status">
         <option value="">All Statuses</option>
         <?php foreach ( [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ] as $sv => $sl ) : ?>
           <option value="<?php echo $sv; ?>" <?php selected( $status_f, $sv ); ?>><?php echo $sl; ?></option>
         <?php endforeach; ?>
       </select>
+      <select name="cat">
+        <option value="0">All Categories</option>
+        <?php foreach ( get_categories( [ 'hide_empty' => false ] ) as $_fc ) : ?>
+          <option value="<?php echo esc_attr( $_fc->term_id ); ?>" <?php selected( $cat_f, $_fc->term_id ); ?>><?php echo esc_html( $_fc->name ); ?></option>
+        <?php endforeach; ?>
+      </select>
+      <select name="author_id">
+        <option value="0">All Authors</option>
+        <?php foreach ( get_users( [ 'capability' => 'edit_posts', 'orderby' => 'display_name' ] ) as $_fu ) : ?>
+          <option value="<?php echo esc_attr( $_fu->ID ); ?>" <?php selected( $author_f, $_fu->ID ); ?>><?php echo esc_html( $_fu->display_name ); ?></option>
+        <?php endforeach; ?>
+      </select>
+      <select name="flag">
+        <option value="">All Posts</option>
+        <option value="featured"  <?php selected( $flag_f, 'featured' ); ?>>⭐ Featured</option>
+        <option value="popular"   <?php selected( $flag_f, 'popular' ); ?>>🔥 Popular</option>
+        <option value="suggested" <?php selected( $flag_f, 'suggested' ); ?>>💡 Suggested</option>
+      </select>
       <button class="ah-btn ah-btn-secondary">Filter</button>
+      <?php if ( $search || $status_f || $cat_f || $author_f || $flag_f ) : ?>
+        <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-posts' ) ); ?>" class="ah-btn ah-btn-secondary" style="opacity:.7;">✕ Clear</a>
+      <?php endif; ?>
     </form>
     <div style="display:flex;gap:8px;">
       <a href="<?php echo esc_url( admin_url( 'post-new.php' ) ); ?>" class="ah-btn ah-btn-secondary">+ Blank Post</a>

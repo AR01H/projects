@@ -50,6 +50,26 @@ add_action( 'init', static function () {
 	add_shortcode( 'ah_static_page', 'ah_render_static_page_shortcode' );
 } );
 
+// ── Plugin page template: register + route ────────────────────────────────────
+// Tells WordPress the template exists so it can be assigned to pages.
+add_filter( 'theme_page_templates', static function ( $templates ) {
+	$templates['template-static-page.php'] = 'Static HTML Page';
+	return $templates;
+} );
+
+// When WordPress resolves the template for a page, redirect to the plugin file.
+add_filter( 'template_include', static function ( $template ) {
+	if ( ! is_page() ) {
+		return $template;
+	}
+	$slug = get_page_template_slug( get_queried_object_id() );
+	if ( 'template-static-page.php' !== $slug ) {
+		return $template;
+	}
+	$plugin_tpl = AH_PLUGIN_DIR . '/template-static-page.php';
+	return file_exists( $plugin_tpl ) ? $plugin_tpl : $template;
+} );
+
 /**
  * Shortcode [ah_static_page slug="my-page"].
  * Outputs the raw HTML stored for that static page slug.

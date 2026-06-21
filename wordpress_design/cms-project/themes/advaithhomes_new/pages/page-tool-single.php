@@ -59,8 +59,22 @@ adn_page_open( $_open_ctx );
 
 		<main>
 
+			<?php /* ── Before-calculator content ── */ ?>
+			<?php if ( ! empty( $ctx['before_content'] ) ) : ?>
+			<div class="tool-single-page-content tool-single-page-content--before">
+				<?php echo wp_kses_post( $ctx['before_content'] ); ?>
+			</div>
+			<?php endif; ?>
+
 			<?php /* ── Tool widget (standalone iframe embed) ── */ ?>
 			<?php echo do_shortcode( '[ah_calculator key="' . esc_attr( $ctx['key'] ) . '"]' ); ?>
+
+			<?php /* ── After-calculator content ── */ ?>
+			<?php if ( ! empty( $ctx['after_content'] ) ) : ?>
+			<div class="tool-single-page-content tool-single-page-content--after">
+				<?php echo wp_kses_post( $ctx['after_content'] ); ?>
+			</div>
+			<?php endif; ?>
 
 			<?php /* ── Help text (outside iframe) ── */ ?>
 			<?php if ( ! empty( $ctx['help_text'] ) ) : ?>
@@ -107,6 +121,8 @@ adn_page_open( $_open_ctx );
 				<?php
 				$_eh = isset( $ctx['sidebar']['expert_help'] ) ? $ctx['sidebar']['expert_help'] : array();
 				adn_component( 'parts/tools_sidebar', array( 'sidebar' => array(
+					'hl_heading'   => isset( $ctx['sidebar']['hl_heading'] ) ? $ctx['sidebar']['hl_heading'] : '',
+					'hl_links'     => isset( $ctx['sidebar']['hl_links'] )   ? $ctx['sidebar']['hl_links']   : array(),
 					'categories'   => $ctx['sidebar']['categories'],
 					'help'         => array(
 						'title'        => isset( $_eh['heading'] )          ? $_eh['heading']          : '',

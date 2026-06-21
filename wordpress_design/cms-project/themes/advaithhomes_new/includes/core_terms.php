@@ -221,6 +221,10 @@ define( 'FORM_NAME_ERROR',             adn_term( 'forms.name_required',         
 define( 'FORM_EMAIL_ERROR',            adn_term( 'forms.email_required',         'Email is required' ) );
 define( 'FORM_MESSAGE_ERROR',          adn_term( 'forms.message_required',       'Message is required' ) );
 define( 'FORM_CONSENT_TEXT',           adn_term( 'forms.consent_text',           'I agree to the Privacy Policy and Terms of Use' ) );
+define( 'FORM_CONSENT_PRIVACY_LABEL',  adn_term( 'forms.consent_privacy_label',  'Privacy Policy' ) );
+define( 'FORM_CONSENT_TERMS_LABEL',    adn_term( 'forms.consent_terms_label',    'Terms of Use' ) );
+define( 'FORM_CONSENT_PRIVACY_URL',    adn_term( 'forms.consent_privacy_url',    '/privacy-policy/' ) );
+define( 'FORM_CONSENT_TERMS_URL',      adn_term( 'forms.consent_terms_url',      '/terms/' ) );
 
 // ===========================
 // RESOURCE LABELS

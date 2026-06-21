@@ -34,6 +34,21 @@ $_circles = ! isset( $circles ) || (bool) $circles;
 	<img src="<?php echo $_img; ?>" alt="" loading="eager" />
 </div>
 <div class="phb-overlay" aria-hidden="true">
+	<!-- Full-image hero: S-curve shape filled with gradient so white fades into the photo -->
+	<svg class="phb-curve" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+		<defs>
+			<!-- Gradient: solid white on left, fades to transparent at the curve edge -->
+			<linearGradient id="phb-g" x1="0" y1="0" x2="65" y2="0" gradientUnits="userSpaceOnUse">
+				<stop offset="0%"   stop-color="white" stop-opacity="1"/>
+				<stop offset="46%"  stop-color="white" stop-opacity="1"/>
+				<stop offset="100%" stop-color="white" stop-opacity="0"/>
+			</linearGradient>
+		</defs>
+		<!-- Outer soft-fade halo — slightly wider S-curve, lower opacity -->
+		<path d="M 0 0 L 72 0 C 70 18, 54 34, 62 50 C 70 66, 56 82, 60 100 L 0 100 Z" fill="url(#phb-g)" opacity="0.45"/>
+		<!-- Primary S-curve panel — gradient fades white into the image at the curve boundary -->
+		<path d="M 0 0 L 60 0 C 58 18, 42 34, 50 50 C 58 66, 44 82, 48 100 L 0 100 Z" fill="url(#phb-g)"/>
+	</svg>
 	<?php if ( $_circles ) : ?>
 		<span class="phb-circle phb-circle--a"></span>
 		<span class="phb-circle phb-circle--b"></span>

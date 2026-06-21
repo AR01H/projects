@@ -597,26 +597,43 @@ class AH_Ajax_Handlers {
 	public static function handle_save_static_page(): void {
 		self::verify();
 
-		$slug = sanitize_file_name( wp_unslash( $_POST['slug'] ?? '' ) );
+		$slug     = sanitize_file_name( wp_unslash( $_POST['slug'] ?? '' ) );
 		// Enforce safe slug: lowercase letters, numbers, hyphens only.
-		$slug = strtolower( preg_replace( '/[^a-z0-9-]/', '', $slug ) );
-		$html = wp_unslash( $_POST['html'] ?? '' );
+		$slug     = strtolower( preg_replace( '/[^a-z0-9-]/', '', $slug ) );
+		$old_slug = sanitize_file_name( wp_unslash( $_POST['old_slug'] ?? '' ) );
+		$old_slug = strtolower( preg_replace( '/[^a-z0-9-]/', '', $old_slug ) );
+		$title    = sanitize_text_field( wp_unslash( $_POST['title'] ?? '' ) );
+		$html     = wp_unslash( $_POST['html'] ?? '' );
 		$taxonomy_ids = array_map( 'absint', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
 
 		if ( ! $slug ) {
 			wp_send_json_error( array( 'message' => 'Invalid or empty slug.' ) );
 		}
 
-		// Create or update the backing WordPress page (gives a permalink + template route).
-		$existing = get_page_by_path( $slug );
+		// Derive title from slug if not provided.
+		$page_title = $title !== '' ? $title : ucwords( str_replace( '-', ' ', $slug ) );
+
+		$slug_changed = $old_slug !== '' && $old_slug !== $slug;
+		$model        = new AH_Static_Pages_Model();
+
+		// Find the backing WP page — by old slug if renaming, otherwise by new slug.
+		$existing = get_page_by_path( $slug_changed ? $old_slug : $slug );
+
 		if ( $existing ) {
-			$page_id  = (int) $existing->ID;
+			$page_id = (int) $existing->ID;
+			wp_update_post( array( 'ID' => $page_id, 'post_title' => $page_title, 'post_name' => $slug ) );
 			update_post_meta( $page_id, '_wp_page_template', 'template-static-page.php' );
-			$message  = 'HTML saved.';
-			$redirect = null;
+			if ( $slug_changed ) {
+				$model->delete_by_slug( $old_slug );
+				$message  = 'Page renamed and saved.';
+				$redirect = admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $slug ) );
+			} else {
+				$message  = 'HTML saved.';
+				$redirect = null;
+			}
 		} else {
 			$page_id = wp_insert_post( array(
-				'post_title'  => ucwords( str_replace( '-', ' ', $slug ) ),
+				'post_title'  => $page_title,
 				'post_name'   => $slug,
 				'post_status' => 'publish',
 				'post_type'   => 'page',
@@ -627,13 +644,13 @@ class AH_Ajax_Handlers {
 				$redirect = admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $slug ) );
 			} else {
 				$page_id  = 0;
-				$message  = 'HTML saved (could not auto-create WP page - create it manually and set template to "Static HTML Page").';
+				$message  = 'HTML saved (could not auto-create WP page).';
 				$redirect = null;
 			}
 		}
 
 		// Store the HTML in the database (source of truth - no more flat files).
-		( new AH_Static_Pages_Model() )->upsert( $slug, $html, (int) $page_id );
+		$model->upsert( $slug, $html, (int) $page_id, $page_title );
 
 		if ( ! empty( $page_id ) ) {
 			( new AH_Content_Taxonomy_Model() )->sync_terms( 'static_page', (int) $page_id, $taxonomy_ids );

@@ -156,7 +156,14 @@ if ( isset( $_GET['notice'] ) ) {
 	$notice = $n_map[ sanitize_key( $_GET['notice'] ) ] ?? '';
 }
 
-$all_rules       = AH_Rules_Engine::get_all();
+$all_rules_raw   = AH_Rules_Engine::get_all();
+$re_search       = sanitize_text_field( $_GET['re_s']      ?? '' );
+$re_status_f     = sanitize_key(        $_GET['re_status'] ?? '' );
+$all_rules = array_values( array_filter( $all_rules_raw, static function( $r ) use ( $re_search, $re_status_f ) {
+	if ( $re_search && false === stripos( $r->name . ' ' . $r->trigger_name, $re_search ) ) { return false; }
+	if ( $re_status_f && $r->status !== $re_status_f ) { return false; }
+	return true;
+} ) );
 $trigger_presets = AH_Rules_Engine::trigger_presets();
 $operators       = AH_Rules_Engine::operators();
 
@@ -425,6 +432,23 @@ details.re-adv .re-adv-body{padding:12px}
 </form>
 
 <?php else : /* ════════ RULES LIST ════════ */ ?>
+
+<form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
+	<input type="hidden" name="page" value="ah-rules-engine">
+	<input type="hidden" name="view" value="list">
+	<input type="text" name="re_s" value="<?php echo esc_attr( $re_search ); ?>" placeholder="Search rule / trigger…"
+		style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:200px">
+	<select name="re_status" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff">
+		<option value=""         <?php selected( $re_status_f, '' );         ?>>All Statuses</option>
+		<option value="active"   <?php selected( $re_status_f, 'active' );   ?>>✅ Active</option>
+		<option value="inactive" <?php selected( $re_status_f, 'inactive' ); ?>>⏸ Inactive</option>
+	</select>
+	<button type="submit" class="ah-btn ah-btn-primary ah-btn-sm">Filter</button>
+	<?php if ( $re_search || $re_status_f ) : ?>
+	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine&view=list' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
+	<?php endif; ?>
+	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo count( $all_rules ); ?> / <?php echo count( $all_rules_raw ); ?> rules</span>
+</form>
 
 <?php if ( $all_rules ) : ?>
 <div class="ah-card">

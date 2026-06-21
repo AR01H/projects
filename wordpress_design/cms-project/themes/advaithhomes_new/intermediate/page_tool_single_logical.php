@@ -37,7 +37,9 @@ function adn_calculator_single_get_context( $key ) {
 		$thumbnail_url = $t ? (string) $t : '';
 	}
 
-	$highlight  = ( isset( $meta['highlight'] ) && '' !== $meta['highlight'] ) ? (string) $meta['highlight'] : '';
+	$highlight      = ( isset( $meta['highlight'] ) && '' !== $meta['highlight'] ) ? (string) $meta['highlight'] : '';
+	$before_content = ( isset( $meta['before_content'] ) && '' !== $meta['before_content'] ) ? (string) $meta['before_content'] : '';
+	$after_content  = ( isset( $meta['after_content'] )  && '' !== $meta['after_content'] )  ? (string) $meta['after_content']  : '';
 	$categories = ( isset( $meta['categories'] ) && is_array( $meta['categories'] ) ) ? $meta['categories'] : array();
 
 	// ── Hero ─────────────────────────────────────────────────────────────
@@ -79,6 +81,10 @@ function adn_calculator_single_get_context( $key ) {
 			if ( count( $related ) >= 6 ) { break; }
 		}
 	}
+
+	// ── Highlight links (sidebar) ─────────────────────────────────────────
+	$hl_heading = ( isset( $meta['hl_heading'] ) && '' !== $meta['hl_heading'] ) ? (string) $meta['hl_heading'] : '';
+	$hl_links   = ( isset( $meta['hl_links'] ) && is_array( $meta['hl_links'] ) ) ? $meta['hl_links'] : array();
 
 	// ── Guide link ────────────────────────────────────────────────────────
 	$guide = array(
@@ -171,8 +177,10 @@ function adn_calculator_single_get_context( $key ) {
 		'title'         => $title,
 		'desc'          => $desc,
 		'icon'          => $icon,
-		'highlight'     => $highlight,
-		'thumbnail_url' => $thumbnail_url,
+		'highlight'      => $highlight,
+		'before_content' => $before_content,
+		'after_content'  => $after_content,
+		'thumbnail_url'  => $thumbnail_url,
 		'hero'          => $hero,
 		'breadcrumb'    => $breadcrumb,
 		'guide'         => $guide,
@@ -180,6 +188,8 @@ function adn_calculator_single_get_context( $key ) {
 		'related'       => $related,
 		'share'         => array( 'url' => $share_url, 'title' => $title ),
 		'sidebar'       => array(
+			'hl_heading'  => $hl_heading,
+			'hl_links'    => $hl_links,
 			'categories'  => $sidebar_cats,
 			'expert_help' => $expert_help_sidebar,
 			'newsletter'  => $newsletter_sidebar,

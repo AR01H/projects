@@ -8,11 +8,13 @@ $content_tax_m = new AH_Content_Taxonomy_Model();
 
 $edit_slug    = isset( $_GET['edit'] ) ? sanitize_file_name( wp_unslash( $_GET['edit'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $edit_content = '';
+$edit_title   = '';
 $edit_page_id = 0;
 if ( $edit_slug ) {
 	$edit_row = $static_model->get_by_slug( $edit_slug );
 	if ( $edit_row ) {
 		$edit_content = (string) $edit_row->html;
+		$edit_title   = (string) ( $edit_row->title ?? '' );
 		$edit_page    = get_page_by_path( $edit_slug );
 		$edit_page_id = $edit_page ? (int) $edit_page->ID : (int) ( $edit_row->page_id ?? 0 );
 	} else {
@@ -78,7 +80,7 @@ if ( $edit_slug ) {
 		<div>
 			<div class="ah-card" style="padding:20px;">
 
-				<div id="ah-slug-row" style="margin-bottom:16px;<?php echo $edit_slug ? 'display:none;' : ''; ?>">
+				<div id="ah-slug-row" style="margin-bottom:16px;">
 					<label style="font-weight:600;font-size:13px;">Page Slug</label>
 					<input
 						type="text"
@@ -94,12 +96,15 @@ if ( $edit_slug ) {
 				<?php if ( $edit_slug ) : ?>
 				<div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
 					<span style="font-size:13px;color:var(--ah-muted);">Editing: <strong style="color:var(--ah-text);"><?php echo esc_html( $edit_slug ); ?>.html</strong></span>
-					<?php
-					$page = get_page_by_path( $edit_slug );
-					if ( $page ) :
-					?>
-					<a href="<?php echo esc_url( get_permalink( $page->ID ) ); ?>" target="_blank" class="ah-btn" style="font-size:12px;">View Page ↗</a>
-					<?php endif; ?>
+					<div style="display:flex;gap:8px;align-items:center;">
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $edit_slug ) . '&raw=1' ) ); ?>" target="_blank" class="ah-btn" style="font-size:12px;">Raw / Print ↗</a>
+						<?php
+						$page = get_page_by_path( $edit_slug );
+						if ( $page ) :
+						?>
+						<a href="<?php echo esc_url( get_permalink( $page->ID ) ); ?>" target="_blank" class="ah-btn" style="font-size:12px;">View Page ↗</a>
+						<?php endif; ?>
+					</div>
 				</div>
 				<div style="background:#f0f4ff;border:1px solid #c5d0e6;border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
 					<div>
@@ -109,6 +114,16 @@ if ( $edit_slug ) {
 					<button id="ah-copy-sc-btn" type="button" class="ah-btn" style="font-size:12px;flex-shrink:0;">Copy</button>
 				</div>
 				<?php endif; ?>
+
+				<label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;">Page Title</label>
+				<input
+					type="text"
+					id="ah-title-input"
+					value="<?php echo esc_attr( $edit_title ); ?>"
+					placeholder="e.g. Privacy Policy"
+					class="regular-text"
+					style="width:100%;margin-bottom:16px;"
+				>
 
 				<label style="font-weight:600;font-size:13px;">HTML Content</label>
 				<textarea
@@ -210,6 +225,7 @@ jQuery(function ($) {
 		editing = '';
 		$('#ah-slug-row').show();
 		$('#ah-slug-input').val('').focus();
+		$('#ah-title-input').val('');
 		$('#ah-html-editor').val(defaultHtml);
 		$('.ah-taxonomy-picker input[name="taxonomy_ids[]"]').prop('checked', false);
 		$('#ah-save-msg').text('');
@@ -247,9 +263,10 @@ jQuery(function ($) {
 	});
 
 	$('#ah-save-btn').on('click', function () {
-		var $btn  = $(this);
-		var slug  = editing || $('#ah-slug-input').val().trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-		var html  = $('#ah-html-editor').val();
+		var $btn    = $(this);
+		var oldSlug = editing;
+		var slug    = $('#ah-slug-input').val().trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+		var html    = $('#ah-html-editor').val();
 		var taxonomyIds = $('.ah-taxonomy-picker input[name="taxonomy_ids[]"]:checked').map(function () {
 			return this.value;
 		}).get();
@@ -261,10 +278,12 @@ jQuery(function ($) {
 		$('#ah-save-msg').css('color', '#6b7280').text('');
 
 		$.post(ajaxurl, {
-			action : 'ah_save_static_page',
-			nonce  : ahAdmin.nonce,
-			slug   : slug,
-			html   : html,
+			action   : 'ah_save_static_page',
+			nonce    : ahAdmin.nonce,
+			old_slug : oldSlug,
+			slug     : slug,
+			title    : $('#ah-title-input').val().trim(),
+			html     : html,
 			taxonomy_ids: taxonomyIds,
 		}, function (res) {
 			$btn.prop('disabled', false).text(editing ? 'Save Page' : 'Create Page');

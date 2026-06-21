@@ -38,51 +38,34 @@ if ( isset( $_GET['raw'] ) && '1' === $_GET['raw'] ) { // phpcs:ignore WordPress
 	exit;
 }
 
-// ── Normal mode - full theme layout with isolated iframe ──────────────────────
-get_header();
+// ── Normal mode: site nav + raw HTML + site footer (no hero, no breadcrumb) ───
+$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
-$raw_url = add_query_arg( 'raw', '1', get_permalink() );
+if ( function_exists( 'adn_page_open' ) ) {
+	adn_page_open( array( 'chrome' => $chrome ) );
+} else {
+	get_header();
+}
 ?>
 <main class="ah-static-page-outer">
 	<?php if ( $html !== '' ) : ?>
-
-		<iframe
-			id="ah-static-frame"
-			src="<?php echo esc_url( $raw_url ); ?>"
-			sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-			scrolling="no"
-			frameborder="0"
-			style="width:100%;border:none;display:block;min-height:200px;"
-			title="<?php echo esc_attr( get_the_title() ); ?>"
-		></iframe>
-
-		<script>
-		(function () {
-			var frame = document.getElementById( 'ah-static-frame' );
-			function resize() {
-				try {
-					var h = frame.contentDocument.documentElement.scrollHeight;
-					if ( h > 0 ) frame.style.height = h + 'px';
-				} catch ( e ) {}
-			}
-			frame.addEventListener( 'load', resize );
-			window.addEventListener( 'resize', function () {
-				setTimeout( resize, 100 );
-			} );
-		})();
-		</script>
-
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- intentional raw HTML output
+		echo $html;
+		?>
 	<?php else : ?>
-
 		<div style="padding:40px 24px;text-align:center;color:#6b7280;">
-			<p>No HTML file found at <code>static/<?php echo esc_html( $slug ); ?>.html</code>.</p>
+			<p>No content found for <code><?php echo esc_html( $slug ); ?></code>.</p>
 			<?php if ( current_user_can( 'manage_options' ) ) : ?>
 			<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $slug ) ) ); ?>" class="button">Create it in the admin</a></p>
 			<?php endif; ?>
 		</div>
-
 	<?php endif; ?>
 </main>
 
 <?php
-get_footer();
+if ( function_exists( 'adn_page_close' ) ) {
+	adn_page_close( array( 'chrome' => $chrome ) );
+} else {
+	get_footer();
+}

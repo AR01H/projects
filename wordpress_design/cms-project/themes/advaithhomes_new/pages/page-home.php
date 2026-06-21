@@ -30,6 +30,12 @@ adn_page_open( $ctx );
 		<?php adn_component( 'sections/hero_home', array( 'hero' => $ctx['hero'] ) ); ?>
 	</div>
 </section>
+<?php /* Mobile-only: diagram shown below the hero (hidden on desktop via CSS) */ ?>
+<div class="hero-diagram-mobile">
+	<div class="container">
+		<?php adn_component( 'sections/hero_home_diagram', array( 'diagram' => $ctx['hero']['diagram'] ?? array() ) ); ?>
+	</div>
+</div>
 <?php endif; ?>
 
 <?php if ( ! empty( $ctx['hero']['trust_items'] ) ) {

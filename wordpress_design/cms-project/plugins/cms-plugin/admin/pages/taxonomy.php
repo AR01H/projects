@@ -286,9 +286,15 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
     </div>
 
   <?php else : /* Terms tab */
-    $paged   = AH_Pagination::current_page();
-    $search  = sanitize_text_field( $_GET['s'] ?? '' );
-    $result  = $model->get_paginated( $paged, $search, $type_id ?: null );
+    $paged      = AH_Pagination::current_page();
+    $search     = sanitize_text_field( $_GET['s'] ?? '' );
+    $status_f   = sanitize_key( $_GET['term_status'] ?? '' );
+    $result     = $model->get_paginated( $paged, $search, $type_id ?: null );
+    if ( $status_f && in_array( $status_f, array( 'active', 'inactive' ), true ) ) {
+      $result['items'] = array_values( array_filter( $result['items'], static function( $t ) use ( $status_f ) {
+        return isset( $t->status ) && $t->status === $status_f;
+      } ) );
+    }
     $items   = $result['items']; $meta = $result['meta'];
     $item    = $edit_id ? $model->find( $edit_id ) : null;
     $parents    = $pt_model->get_all_active();
@@ -307,7 +313,15 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
               <option value="">All Types</option>
               <?php foreach ( $types as $t ) : ?><option value="<?php echo esc_attr( $t->id ); ?>" <?php selected( $type_id, $t->id ); ?>><?php echo esc_html( $t->name ); ?></option><?php endforeach; ?>
             </select>
+            <select name="term_status">
+              <option value="">All Statuses</option>
+              <option value="active"   <?php selected( $status_f, 'active' ); ?>>Active</option>
+              <option value="inactive" <?php selected( $status_f, 'inactive' ); ?>>Inactive</option>
+            </select>
             <button class="ah-btn ah-btn-secondary">Filter</button>
+            <?php if ( $search || $type_id || $status_f ) : ?>
+              <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'terms' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary" style="opacity:.7;">✕ Clear</a>
+            <?php endif; ?>
           </form>
         </div>
         <div class="ah-table-wrap">

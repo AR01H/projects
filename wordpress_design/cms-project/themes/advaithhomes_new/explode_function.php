@@ -112,6 +112,9 @@ function adn_enqueue_template_specific_assets() {
         if ( file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ) {
             wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), ADN_THEME_VERSION );
         }
+        if ( file_exists( ADN_THEME_DIR . '/assets/css/article.css' ) ) {
+            wp_enqueue_style( 'adn-article-style', ADN_THEME_URI . '/assets/css/article.css', array(), ADN_THEME_VERSION );
+        }
         if ( file_exists( ADN_THEME_DIR . '/assets/js/single.js' ) ) {
             wp_enqueue_script( 'adn-single-script', ADN_THEME_URI . '/assets/js/single.js', array(), ADN_THEME_VERSION, true );
             wp_localize_script( 'adn-single-script', 'adnComments', array(

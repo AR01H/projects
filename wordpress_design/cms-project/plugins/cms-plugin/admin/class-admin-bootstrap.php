@@ -18,6 +18,9 @@ class AH_Admin_Bootstrap {
 		// Ensure newsletter table exists.
 		add_action( 'admin_init', array( 'AH_Newsletter', 'maybe_install' ) );
 
+		// Raw HTML output for static pages (?raw=1 from the admin editor).
+		add_action( 'admin_init', array( self::class, 'maybe_raw_static_page' ) );
+
 		// Public unsubscribe endpoint: /?ah_nl_unsub=1&email=X&token=Y
 		add_action( 'init', array( self::class, 'handle_newsletter_unsub' ) );
 	}
@@ -128,7 +131,10 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-rules-engine"]::before { content:"\f211"; }
 #adminmenu .wp-submenu a[href*="page=ah-analytics"]::before   { content:"\f185"; }
 #adminmenu .wp-submenu a[href*="page=ah-banners"]::before   { content:"\f232"; }
+#adminmenu .wp-submenu a[href*="page=ah-spotlights"]::before   { content:"\f339"; }
 #adminmenu .wp-submenu a[href*="page=ah-notices"]::before   { content:"\f148"; }
+#adminmenu .wp-submenu a[href*="page=ah-newsletter"]::before   { content:"\f534"; }
+#adminmenu .wp-submenu a[href*="page=ah-ref-notes"]::before   { content:"\f123"; }
 
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),
@@ -176,6 +182,7 @@ CSS;
 				'visible'     => ! empty( $item['visible'] ),
 				'icon'        => sanitize_text_field( $item['icon'] ?? '' ),
 				'description' => sanitize_text_field( $item['description'] ?? '' ),
+				'panel_image' => esc_url_raw( $item['panel_image'] ?? '' ),
 				'submenu'     => $submenu,
 			);
 		}
@@ -641,5 +648,36 @@ CSS;
 		}
 
 		return '/' . trim( sanitize_text_field( $url ), '/' ) . '/';
+	}
+
+	/**
+	 * Intercepts admin.php?page=ah-static-pages&edit=SLUG&raw=1
+	 * and outputs the raw HTML content with no WordPress or admin wrapper.
+	 */
+	public static function maybe_raw_static_page(): void {
+		if ( empty( $_GET['page'] ) || 'ah-static-pages' !== $_GET['page'] ) {
+			return;
+		}
+		if ( empty( $_GET['raw'] ) || '1' !== (string) $_GET['raw'] ) {
+			return;
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( 'Access denied.' );
+		}
+
+		$slug = sanitize_file_name( wp_unslash( $_GET['edit'] ?? '' ) );
+		$html = '';
+		if ( $slug !== '' && class_exists( 'AH_Static_Pages_Model' ) ) {
+			$html = ( new AH_Static_Pages_Model() )->get_html( $slug );
+		}
+
+		header( 'Content-Type: text/html; charset=UTF-8' );
+		if ( '' !== $html ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- intentional raw HTML output
+			echo $html;
+		} else {
+			echo '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:sans-serif;padding:40px;color:#374151;"><p>No content found' . ( $slug ? ' for <code>' . esc_html( $slug ) . '</code>' : '' ) . '.</p></body></html>';
+		}
+		exit;
 	}
 }

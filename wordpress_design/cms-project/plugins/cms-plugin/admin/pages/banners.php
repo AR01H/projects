@@ -165,6 +165,30 @@ endif;
 			<span style="color:#888;">(1000 = 1 second · how long each slide stays)</span>
 		</div>
 
+		<!-- Filter bar -->
+		<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+			<span style="font-size:12px;font-weight:600;color:#6b7280">Show:</span>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ahb-filter-btn active" data-filter="all">All</button>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ahb-filter-btn" data-filter="active">● Active only</button>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ahb-filter-btn" data-filter="inactive">○ Hidden only</button>
+		</div>
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			document.querySelectorAll('.ahb-filter-btn').forEach(function(btn) {
+				btn.addEventListener('click', function() {
+					var f = this.dataset.filter;
+					document.querySelectorAll('.ahb-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+					this.classList.add('active');
+					document.querySelectorAll('#ahb-rows .ahb-row').forEach(function(row) {
+						var sel = row.querySelector('select[name$="[status]"]');
+						if (!sel || f === 'all') { row.style.display = ''; return; }
+						row.style.display = (sel.value === f) ? '' : 'none';
+					});
+				});
+			});
+		});
+		</script>
+
 		<!-- Repeater -->
 		<div id="ahb-rows">
 			<?php foreach ( $banners as $i => $b ) : ?>

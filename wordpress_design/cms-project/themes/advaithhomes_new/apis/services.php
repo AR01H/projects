@@ -239,8 +239,11 @@ function adn_chrome_plugin_nav() {
 		}
 
 		$node = array(
-			'label' => $label,
-			'url'   => '' !== $url ? $url : '#',
+			'label'       => $label,
+			'url'         => '' !== $url ? $url : '#',
+			'description' => isset( $item['description'] )  ? (string) $item['description']  : '',
+			'icon'        => isset( $item['icon'] )         ? (string) $item['icon']         : '',
+			'panel_image' => isset( $item['panel_image'] )  ? (string) $item['panel_image']  : '',
 		);
 		if ( 'dropdown' === $type && ! empty( $children ) ) {
 			$node['children'] = $children;

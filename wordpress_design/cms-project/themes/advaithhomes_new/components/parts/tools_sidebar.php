@@ -12,6 +12,8 @@ defined( 'ABSPATH' ) || exit;
 $sidebar    = isset( $sidebar )  && is_array( $sidebar )  ? $sidebar  : array();
 $categories = isset( $sidebar['categories'] ) ? (array) $sidebar['categories'] : array();
 $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       : array();
+$hl_heading = isset( $sidebar['hl_heading'] ) ? (string) $sidebar['hl_heading'] : '';
+$hl_links   = isset( $sidebar['hl_links'] )   ? (array)  $sidebar['hl_links']   : array();
 ?>
 <aside class="tools-sidebar">
 
@@ -44,6 +46,32 @@ $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       :
 							<?php echo esc_html( $label ); ?>
 							<span class="tools-cat-count"><?php echo esc_html( (string) $count ); ?></span>
 						</button>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $hl_heading ) && ! empty( $hl_links ) ) : ?>
+		<div class="tools-sidebar-section mini_card_container_design">
+			<h3><?php echo esc_html( $hl_heading ); ?></h3>
+			<div class="tools-cat-list">
+				<?php foreach ( $hl_links as $hl_item ) :
+					$_hl_icon  = isset( $hl_item['icon'] )  ? (string) $hl_item['icon']  : '';
+					$_hl_label = isset( $hl_item['label'] ) ? (string) $hl_item['label'] : '';
+					$_hl_url   = isset( $hl_item['url'] )   ? (string) $hl_item['url']   : '';
+					if ( '' === $_hl_label ) { continue; }
+				?>
+					<?php if ( '' !== $_hl_url ) : ?>
+						<a href="<?php echo esc_url( adn_link( $_hl_url ) ); ?>" class="tools-cat-item tools-cat-item--hl">
+							<?php if ( '' !== $_hl_icon ) : ?><span class="tools-cat-icon" aria-hidden="true"><?php echo esc_html( $_hl_icon ); ?></span><?php endif; ?>
+							<?php echo esc_html( $_hl_label ); ?>
+						</a>
+					<?php else : ?>
+						<span class="tools-cat-item tools-cat-item--hl">
+							<?php if ( '' !== $_hl_icon ) : ?><span class="tools-cat-icon" aria-hidden="true"><?php echo esc_html( $_hl_icon ); ?></span><?php endif; ?>
+							<?php echo esc_html( $_hl_label ); ?>
+						</span>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			</div>

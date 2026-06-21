@@ -56,17 +56,41 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                     $children = isset( $item['children'] ) ? (array) $item['children'] : array();
                     ?>
                     <?php if ( ! empty( $children ) ) : ?>
+                        <?php
+                        $_nd  = isset( $item['description'] ) ? (string) $item['description'] : '';
+                        $_img = isset( $item['panel_image'] ) ? (string) $item['panel_image'] : '';
+                        $_ni  = isset( $item['icon'] )        ? (string) $item['icon']        : '';
+                        $_has_rich = '' !== $_nd || '' !== $_img || '' !== $_ni;
+                        ?>
                         <div class="nav-item has-dropdown">
                             <a href="<?php echo $url; ?>" class="nav-link" aria-haspopup="true" aria-expanded="false">
                                 <?php echo esc_html( $label ); ?>
                                 <span class="nav-caret" aria-hidden="true">▾</span>
                             </a>
-                            <div class="nav-dropdown" role="menu" aria-label="<?php echo esc_attr( $label ); ?>">
-                                <?php foreach ( $children as $child ) : ?>
-                                    <?php $child = (array) $child; ?>
-                                    <a href="<?php echo esc_url( adn_link( isset( $child['url'] ) ? $child['url'] : '' ) ); ?>"
-                                       class="nav-dropdown-link" role="menuitem"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
-                                <?php endforeach; ?>
+                            <div class="nav-dropdown<?php echo $_has_rich ? ' nav-dropdown--rich' : ''; ?>" role="menu" aria-label="<?php echo esc_attr( $label ); ?>">
+                                <div class="nav-dropdown__links">
+                                    <?php foreach ( $children as $child ) : ?>
+                                        <?php $child = (array) $child; ?>
+                                        <a href="<?php echo esc_url( adn_link( isset( $child['url'] ) ? $child['url'] : '' ) ); ?>"
+                                           class="nav-dropdown-link" role="menuitem"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php if ( '' !== $_img ) : ?>
+                                <div class="nav-dropdown__media">
+                                    <img src="<?php echo esc_url( $_img ); ?>" alt="" class="nav-dropdown__media-img" loading="lazy">
+                                    <a href="<?php echo $url; ?>" class="nav-dropdown__cta">See All <?php echo esc_html( $label ); ?> Content</a>
+                                </div>
+                                <?php endif; ?>
+                                <?php if ( '' !== $_nd || '' !== $_ni ) : ?>
+                                <div class="nav-dropdown__desc-panel">
+                                    <?php if ( '' !== $_ni ) : ?>
+                                    <div class="nav-dropdown__icon" aria-hidden="true"><?php echo esc_html( $_ni ); ?></div>
+                                    <?php endif; ?>
+                                    <?php if ( '' !== $_nd ) : ?>
+                                    <p class="nav-dropdown__desc"><?php echo esc_html( $_nd ); ?></p>
+                                    <?php endif; ?>
+                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php else : ?>

@@ -244,19 +244,25 @@ function adn_ask_expert_get_context() {
 
 	/* ── Categories: derived from DB experts ────────────────────────── */
 	if ( $use_db ) {
-		$db_cat_keys = array();
+		/* Normalize key with sanitize_key() — same function expert_card.php uses on data-cat,
+		 * so filter buttons always match card attributes. Deduplicates "Conveyancing" vs "conveyancing". */
+		$db_cat_keys = array(); // sanitize_key => original_raw (for display label)
 		foreach ( $db_experts as $_de ) {
-			$_ck = isset( $_de['category'] ) ? (string) $_de['category'] : '';
-			if ( '' !== $_ck ) { $db_cat_keys[ $_ck ] = true; }
+			$_raw = isset( $_de['category'] ) ? trim( (string) $_de['category'] ) : '';
+			if ( '' === $_raw ) { continue; }
+			$_nk = sanitize_key( $_raw ); // e.g. "conveyancing"
+			if ( ! isset( $db_cat_keys[ $_nk ] ) ) {
+				$db_cat_keys[ $_nk ] = $_raw; // keep first-seen original for display
+			}
 		}
 		$categories = array(
 			array( 'key' => 'all', 'label' => adn_term( 'expert_page.filter_all_experts', 'All Experts' ), 'icon' => adn_term( 'icons.expert_all', '⭐' ), 'active' => true ),
 		);
-		foreach ( array_keys( $db_cat_keys ) as $_dck ) {
+		foreach ( $db_cat_keys as $_nk => $_orig ) {
 			$categories[] = array(
-				'key'   => $_dck,
-				'label' => ucwords( str_replace( array( '-', '_' ), ' ', $_dck ) ),
-				'icon'  => isset( $_cat_icons[ $_dck ] ) ? $_cat_icons[ $_dck ] : adn_term( 'icons.expert_avatar', '👤' ),
+				'key'   => $_nk,
+				'label' => ucwords( str_replace( array( '-', '_' ), ' ', $_orig ) ),
+				'icon'  => isset( $_cat_icons[ $_nk ] ) ? $_cat_icons[ $_nk ] : ( isset( $_cat_icons[ $_orig ] ) ? $_cat_icons[ $_orig ] : adn_term( 'icons.expert_avatar', '👤' ) ),
 			);
 		}
 	} else {

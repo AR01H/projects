@@ -174,6 +174,20 @@ function adn_post_get_context() {
 	$default_img   = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
 	$hero_image    = $thumbnail_url ?: $default_img;
 
+	/* ── CMS Taxonomy Terms ── */
+	$cms_terms = array();
+	if ( class_exists( 'AH_Content_Taxonomy_Model' ) ) {
+		$_ct_model = new AH_Content_Taxonomy_Model();
+		foreach ( $_ct_model->get_terms( 'wp_post', $post->ID ) as $_t ) {
+			$cms_terms[] = array(
+				'name'  => (string) $_t->name,
+				'type'  => (string) ( $_t->type_name ?? '' ),
+				'emoji' => (string) ( $_t->icon_emoji ?? '' ),
+				'color' => (string) ( $_t->color ?? '' ),
+			);
+		}
+	}
+
 	/* ── Sidebar Meta: Highlight Links and Related Content ── */
 	$hl_raw          = get_post_meta( $post->ID, '_ah_highlight_links', true );
 	$highlight_links = $hl_raw ? json_decode( $hl_raw, true ) : array();
@@ -188,6 +202,7 @@ function adn_post_get_context() {
 		'article'        => array(
 			'category_tag' => $category_tag,
 			'title'        => get_the_title(),
+			'description'  => get_the_excerpt(),
 			'intro'        => get_the_excerpt(),
 			'icon'         => $article_icon,
 			'image_url'    => $hero_image,
@@ -206,6 +221,7 @@ function adn_post_get_context() {
 		),
 		'related_guides' => $related_guides,
 		'latest_news'    => $latest_news,
+		'cms_terms'       => $cms_terms,
 		'highlight_links' => $highlight_links,
 		'related_content' => $related_content,
 		'sidebar'        => $sidebar,

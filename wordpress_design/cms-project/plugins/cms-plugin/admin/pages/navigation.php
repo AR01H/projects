@@ -73,6 +73,10 @@ if ( empty( $footer['legal_links'] ) ) {
 								<span>Short Description</span>
 								<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][description]" value="<?php echo esc_attr( $item['description'] ?? '' ); ?>" class="regular-text" placeholder="Optional helper text">
 							</label>
+							<label class="ah-dropdown-only">
+								<span>Panel Image URL</span>
+								<input type="url" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][panel_image]" value="<?php echo esc_attr( $item['panel_image'] ?? '' ); ?>" class="regular-text" placeholder="https://… (dropdown panel illustration)">
+							</label>
 							<label class="ah-checkbox-field">
 								<input type="checkbox" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][visible]" value="1" <?php checked( ! empty( $item['visible'] ) ); ?>>
 								<span>Show this menu item</span>
@@ -419,6 +423,7 @@ if ( empty( $footer['legal_links'] ) ) {
 					'<label class="ah-link-only"><span>URL</span>' + createInput('nav_items[' + index + '][url]', '', '', '') + '</label>' +
 					'<label><span>Icon / Note</span>' + createInput('nav_items[' + index + '][icon]', '', '', 'Optional') + '</label>' +
 					'<label><span>Short Description</span>' + createInput('nav_items[' + index + '][description]', '', '', 'Optional helper text') + '</label>' +
+					'<label class="ah-dropdown-only"><span>Panel Image URL</span><input type="url" name="nav_items[' + index + '][panel_image]" value="" class="regular-text" placeholder="https://… (dropdown panel illustration)"></label>' +
 					'<label class="ah-checkbox-field"><input type="checkbox" name="nav_items[' + index + '][visible]" value="1" checked><span>Show this menu item</span></label>' +
 				'</div>' +
 				'<div class="ah-submenu-wrap" style="display:none">' +
@@ -565,16 +570,19 @@ if ( empty( $footer['legal_links'] ) ) {
 	function syncTypeCard(card) {
 		var select = card.querySelector('.ah-nav-type-select');
 		var linkOnly = card.querySelector('.ah-link-only');
+		var dropdownOnly = card.querySelector('.ah-dropdown-only');
 		var submenuWrap = card.querySelector('.ah-submenu-wrap');
 		if (!select || !linkOnly || !submenuWrap) {
 			return;
 		}
 		if (select.value === 'dropdown') {
 			linkOnly.style.display = 'none';
+			if (dropdownOnly) dropdownOnly.style.display = '';
 			submenuWrap.style.display = '';
 			setExpanded(card, true);
 		} else {
 			linkOnly.style.display = '';
+			if (dropdownOnly) dropdownOnly.style.display = 'none';
 			submenuWrap.style.display = 'none';
 		}
 	}

@@ -655,6 +655,22 @@ class ADN_Theme_Admin {
 				'card_url'            => esc_url_raw( isset( $row['card_url'] ) ? $row['card_url'] : '' ),
 				'guide_label'         => sanitize_text_field( isset( $row['guide_label'] ) ? $row['guide_label'] : '' ),
 				'guide_url'           => esc_url_raw( isset( $row['guide_url'] ) ? $row['guide_url'] : '' ),
+				'hl_heading'          => sanitize_text_field( isset( $row['hl_heading'] ) ? $row['hl_heading'] : '' ),
+				'hl_links'            => (function() use ( $row ) {
+					$out      = array();
+					$raw_list = ( isset( $row['hl_links'] ) && is_array( $row['hl_links'] ) ) ? $row['hl_links'] : array();
+					foreach ( $raw_list as $item ) {
+						if ( ! is_array( $item ) ) { continue; }
+						$i_label = sanitize_text_field( isset( $item['label'] ) ? $item['label'] : '' );
+						if ( '' === $i_label ) { continue; }
+						$out[] = array(
+							'icon'  => sanitize_text_field( isset( $item['icon'] )  ? $item['icon']  : '' ),
+							'label' => $i_label,
+							'url'   => esc_url_raw( isset( $item['url'] ) ? $item['url'] : '' ),
+						);
+					}
+					return $out;
+				})(),
 			);
 		}
 
@@ -735,8 +751,28 @@ class ADN_Theme_Admin {
 				'hidden_from_listing' => empty( $_POST['meta_hidden_from_listing'] ) ? 0 : 1,
 				'card_url'     => esc_url_raw( wp_unslash( isset( $_POST['meta_card_url'] )    ? $_POST['meta_card_url']    : '' ) ),
 				'help'         => sanitize_textarea_field( wp_unslash( isset( $_POST['meta_help'] )        ? $_POST['meta_help']        : '' ) ),
-				'guide_label'  => sanitize_text_field( wp_unslash( isset( $_POST['meta_guide_label'] ) ? $_POST['meta_guide_label'] : '' ) ),
-				'guide_url'    => esc_url_raw( wp_unslash( isset( $_POST['meta_guide_url'] )   ? $_POST['meta_guide_url']   : '' ) ),
+				'guide_label'     => sanitize_text_field( wp_unslash( isset( $_POST['meta_guide_label'] ) ? $_POST['meta_guide_label'] : '' ) ),
+				'guide_url'       => esc_url_raw( wp_unslash( isset( $_POST['meta_guide_url'] )   ? $_POST['meta_guide_url']   : '' ) ),
+				'before_content'  => wp_kses_post( wp_unslash( isset( $_POST['meta_before_content'] ) ? $_POST['meta_before_content'] : '' ) ),
+				'after_content'   => wp_kses_post( wp_unslash( isset( $_POST['meta_after_content'] )  ? $_POST['meta_after_content']  : '' ) ),
+				'hl_heading'      => sanitize_text_field( wp_unslash( isset( $_POST['meta_hl_heading'] ) ? $_POST['meta_hl_heading'] : '' ) ),
+				'hl_links'     => (function() {
+					$out      = array();
+					$raw_list = ( isset( $_POST['meta_hl_links'] ) && is_array( $_POST['meta_hl_links'] ) )
+						? wp_unslash( $_POST['meta_hl_links'] )
+						: array();
+					foreach ( $raw_list as $item ) {
+						if ( ! is_array( $item ) ) { continue; }
+						$i_label = sanitize_text_field( isset( $item['label'] ) ? $item['label'] : '' );
+						if ( '' === $i_label ) { continue; }
+						$out[] = array(
+							'icon'  => sanitize_text_field( isset( $item['icon'] )  ? $item['icon']  : '' ),
+							'label' => $i_label,
+							'url'   => esc_url_raw( isset( $item['url'] ) ? $item['url'] : '' ),
+						);
+					}
+					return $out;
+				})(),
 			)
 		);
 

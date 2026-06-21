@@ -315,6 +315,85 @@ $example_js = '(function () {
 					</td>
 				</tr>
 
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Highlight Links Heading', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<input type="text" class="regular-text" name="meta_hl_heading"
+							value="<?php echo esc_attr( isset( $f_meta['hl_heading'] ) ? $f_meta['hl_heading'] : '' ); ?>"
+							placeholder="<?php esc_attr_e( 'Useful Guides', ADN_TEXT_DOMAIN ); ?>">
+						<p class="description"><?php esc_html_e( 'Heading shown above the sidebar link list on this tool\'s page. Leave blank to hide the section.', ADN_TEXT_DOMAIN ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Highlight Links', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<p class="description" style="margin-bottom:10px;"><?php esc_html_e( 'Up to 6 links shown in the sidebar. Each link needs at least a label to appear.', ADN_TEXT_DOMAIN ); ?></p>
+						<?php
+						$_sn_hl_links = isset( $f_meta['hl_links'] ) && is_array( $f_meta['hl_links'] ) ? $f_meta['hl_links'] : array();
+						for ( $li = 0; $li < 6; $li++ ) :
+							$_sn_icon  = isset( $_sn_hl_links[ $li ]['icon'] )  ? $_sn_hl_links[ $li ]['icon']  : '';
+							$_sn_label = isset( $_sn_hl_links[ $li ]['label'] ) ? $_sn_hl_links[ $li ]['label'] : '';
+							$_sn_url   = isset( $_sn_hl_links[ $li ]['url'] )   ? $_sn_hl_links[ $li ]['url']   : '';
+						?>
+						<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+							<span style="font-size:12px;color:#6b7280;min-width:44px;">
+								<?php
+								/* translators: %d: link row number */
+								echo esc_html( sprintf( __( 'Link %d', ADN_TEXT_DOMAIN ), $li + 1 ) );
+								?>
+							</span>
+							<input type="text"
+								style="width:56px;font-size:18px;text-align:center;"
+								name="meta_hl_links[<?php echo $li; ?>][icon]"
+								value="<?php echo esc_attr( $_sn_icon ); ?>"
+								placeholder="🔗">
+							<input type="text" class="regular-text"
+								name="meta_hl_links[<?php echo $li; ?>][label]"
+								value="<?php echo esc_attr( $_sn_label ); ?>"
+								placeholder="<?php esc_attr_e( 'Guide title', ADN_TEXT_DOMAIN ); ?>">
+							<input type="text" class="regular-text"
+								name="meta_hl_links[<?php echo $li; ?>][url]"
+								value="<?php echo esc_attr( $_sn_url ); ?>"
+								placeholder="/guides/...">
+						</div>
+						<?php endfor; ?>
+					</td>
+				</tr>
+
+			</tbody></table>
+		</div>
+
+		<?php /* ── Page Content ──────────────────────────────────────────── */ ?>
+		<div class="card" style="max-width:none;background:#fafafa;margin-bottom:24px;">
+			<h3 style="margin-top:0;"><?php esc_html_e( 'Page Content', ADN_TEXT_DOMAIN ); ?></h3>
+			<p class="description" style="margin-bottom:12px;">
+				<?php esc_html_e( 'HTML content shown on this calculator\'s page, above and below the widget. Tags like <p>, <ul>, <strong>, <a>, <h2>–<h4> are supported.', ADN_TEXT_DOMAIN ); ?>
+			</p>
+			<table class="form-table" role="presentation"><tbody>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Before Calculator', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<textarea class="large-text" rows="5" name="meta_before_content"
+							style="font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-size:12px;"
+							placeholder="<?php esc_attr_e( '<p>Introductory text shown above the calculator widget.</p>', ADN_TEXT_DOMAIN ); ?>"
+						><?php echo esc_textarea( isset( $f_meta['before_content'] ) ? $f_meta['before_content'] : '' ); ?></textarea>
+						<p class="description"><?php esc_html_e( 'Rendered directly above the calculator widget on the tool\'s page.', ADN_TEXT_DOMAIN ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'After Calculator', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<textarea class="large-text" rows="5" name="meta_after_content"
+							style="font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-size:12px;"
+							placeholder="<?php esc_attr_e( '<p>Explanatory notes, disclaimers or extra detail shown below the calculator.</p>', ADN_TEXT_DOMAIN ); ?>"
+						><?php echo esc_textarea( isset( $f_meta['after_content'] ) ? $f_meta['after_content'] : '' ); ?></textarea>
+						<p class="description"><?php esc_html_e( 'Rendered directly below the calculator widget on the tool\'s page.', ADN_TEXT_DOMAIN ); ?></p>
+					</td>
+				</tr>
+
 			</tbody></table>
 		</div>
 
@@ -365,6 +444,9 @@ $example_js = '(function () {
 			<?php if ( $is_edit ) : ?>
 				<a href="<?php echo esc_url( ADN_Theme_Admin::tab_url( 'calculators', 'new' ) ); ?>" class="button">
 					<?php esc_html_e( '+ Add Another', ADN_TEXT_DOMAIN ); ?>
+				</a>
+				<a href="<?php echo esc_url( home_url( '/?ah_calc_page=' . rawurlencode( $f_key ) ) ); ?>" class="button" target="_blank" rel="noopener">
+					<?php esc_html_e( 'View Calculator →', ADN_TEXT_DOMAIN ); ?>
 				</a>
 			<?php endif; ?>
 			<a href="<?php echo esc_url( ADN_Theme_Admin::tab_url( 'calculators', 'list' ) ); ?>" class="button">

@@ -68,14 +68,20 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 		<label class="consent-row">
 			<input type="checkbox" name="consent" required id="contactConsent" />
 			<span>
-				<?php printf(
-					/* translators: %1$s opens link, %2$s closes, %3$s opens link, %4$s closes */
-					esc_html( FORM_CONSENT_TEXT ) . ' %1$s%2$s %3$s%4$s',
-					'<a href="' . esc_url( home_url( '/privacy-policy/' ) ) . '" target="_blank">',
+				<?php
+				$_pp_url = esc_url( home_url( FORM_CONSENT_PRIVACY_URL ) );
+				$_tc_url = esc_url( home_url( FORM_CONSENT_TERMS_URL ) );
+				printf(
+					/* translators: 1: opening <a> for Privacy Policy, 2: Privacy Policy label, 3: closing </a>, 4: opening <a> for Terms of Use, 5: Terms of Use label, 6: closing </a> */
+					esc_html__( 'I agree to the %1$s%2$s%3$s and %4$s%5$s%6$s', ADN_TEXT_DOMAIN ),
+					'<a href="' . $_pp_url . '" target="_blank" rel="noopener">',
+					esc_html( FORM_CONSENT_PRIVACY_LABEL ),
 					'</a>',
-					'<a href="' . esc_url( home_url( '/terms/' ) ) . '" target="_blank">',
+					'<a href="' . $_tc_url . '" target="_blank" rel="noopener">',
+					esc_html( FORM_CONSENT_TERMS_LABEL ),
 					'</a>'
-				); ?>
+				);
+				?>
 			</span>
 		</label>
 
