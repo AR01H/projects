@@ -82,3 +82,49 @@ $_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default
         </div>
     </div>
 </div>
+<script>
+(function () {
+	var MAX_NODES = 8; /* hard cap matching PHP limit */
+
+	function positionNodes() {
+		var diagram = document.querySelector('.hero-process-diagram');
+		if (!diagram) { return; }
+
+		var nodes = Array.prototype.slice.call(
+			diagram.querySelectorAll('.process-node')
+		).slice(0, MAX_NODES);
+
+		var n = nodes.length;
+		if (!n) { return; }
+
+		/* Stamp count on container so CSS can target size variants */
+		diagram.setAttribute('data-nodes', n);
+
+		/*
+		 * Place N nodes evenly in a circle on ALL screen sizes.
+		 * rx = horizontal radius %, ry = vertical radius % (ellipse so
+		 * top/bottom nodes leave room for their labels).
+		 * Mobile uses slightly tighter values because the container is smaller.
+		 */
+		var mobile = window.innerWidth <= 1024;
+		var rx, ry;
+		if ( n <= 5 ) { rx = mobile ? 40 : 42; ry = mobile ? 35 : 38; }
+		else if ( n === 6 ) { rx = mobile ? 38 : 40; ry = mobile ? 33 : 36; }
+		else if ( n === 7 ) { rx = mobile ? 35 : 37; ry = mobile ? 30 : 33; }
+		else                { rx = mobile ? 32 : 34; ry = mobile ? 27 : 30; }
+
+		var startDeg = -90; /* first node at top */
+
+		nodes.forEach(function (node, i) {
+			var deg = startDeg + (360 / n) * i;
+			var rad = deg * Math.PI / 180;
+			node.style.left      = (50 + rx * Math.cos(rad)) + '%';
+			node.style.top       = (50 + ry * Math.sin(rad)) + '%';
+			node.style.transform = 'translate(-50%, -50%)';
+		});
+	}
+
+	positionNodes();
+	window.addEventListener('resize', positionNodes);
+}());
+</script>

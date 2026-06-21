@@ -205,8 +205,8 @@ class ADN_Theme_Admin {
 
 	public static function register_menu() {
 		add_menu_page(
-			COMPANY_NAME,
-			COMPANY_NAME,
+			__( 'CMS THEME', ADN_TEXT_DOMAIN ),
+			__( 'CMS THEME', ADN_TEXT_DOMAIN ),
 			self::CAPABILITY,
 			self::MENU_SLUG,
 			array( __CLASS__, 'render_page' ),

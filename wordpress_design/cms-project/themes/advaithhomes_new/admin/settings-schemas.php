@@ -22,14 +22,31 @@ function adn_settings_schemas() {
 			'title'  => __( 'Hero & Intro', ADN_TEXT_DOMAIN ),
 			'intro'  => __( 'Overrides the home hero. Leave a field blank to keep the theme default.', ADN_TEXT_DOMAIN ),
 			'fields' => array(
-				array( 'key' => 'heading_1', 'type' => 'text', 'label' => __( 'Heading line 1', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'heading_accent', 'type' => 'text', 'label' => __( 'Heading line 2 (accent)', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'heading_3', 'type' => 'text', 'label' => __( 'Heading line 3', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'description', 'type' => 'textarea', 'label' => __( 'Description', ADN_TEXT_DOMAIN ) ),
+				/* ── Heading & copy ── */
+				array( 'key' => 'heading_1',      'type' => 'text',     'label' => __( 'Heading line 1', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'heading_accent',  'type' => 'text',     'label' => __( 'Heading line 2 (accent colour)', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'heading_3',       'type' => 'text',     'label' => __( 'Heading line 3', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'description',     'type' => 'textarea', 'label' => __( 'Description', ADN_TEXT_DOMAIN ) ),
+				/* ── Call-to-action buttons ── */
 				array( 'key' => 'cta1_label', 'type' => 'text', 'label' => __( 'Primary button label', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'cta1_url', 'type' => 'text', 'label' => __( 'Primary button URL', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'cta1_url',   'type' => 'text', 'label' => __( 'Primary button URL', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'cta2_label', 'type' => 'text', 'label' => __( 'Secondary button label', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'cta2_url', 'type' => 'text', 'label' => __( 'Secondary button URL', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'cta2_url',   'type' => 'text', 'label' => __( 'Secondary button URL', ADN_TEXT_DOMAIN ) ),
+				/* ── Circle diagram ── */
+				array(
+					'key'   => 'diagram_center_icon',
+					'type'  => 'text',
+					'label' => __( 'Diagram — centre icon', ADN_TEXT_DOMAIN ),
+					'desc'  => __( 'Emoji or Font Awesome class (e.g. 🏡 or fa-house). Leave blank to keep default.', ADN_TEXT_DOMAIN ),
+				),
+				array( 'key' => 'diagram_center_line1', 'type' => 'text', 'label' => __( 'Diagram — centre text line 1', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'diagram_center_line2', 'type' => 'text', 'label' => __( 'Diagram — centre text line 2', ADN_TEXT_DOMAIN ) ),
+				array(
+					'key'   => 'diagram_nodes',
+					'type'  => 'textarea',
+					'label' => __( 'Diagram — nodes (steps around the circle)', ADN_TEXT_DOMAIN ),
+					'desc'  => __( 'One node per line — maximum 8. Format: icon|Label  e.g. 🏡|Find & View  — nodes appear in order around the circle. Extra lines beyond 8 are ignored.', ADN_TEXT_DOMAIN ),
+				),
 			),
 		),
 

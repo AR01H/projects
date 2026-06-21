@@ -160,6 +160,53 @@ function adn_home_apply_hero_overrides( $hero, $opt ) {
 		$hero['actions'] = $actions;
 	}
 
+	// ── Diagram overrides ──────────────────────────────────────────────────
+	$diagram      = isset( $hero['diagram'] ) && is_array( $hero['diagram'] ) ? $hero['diagram'] : array();
+	$diag_changed = false;
+
+	if ( ! empty( $opt['diagram_center_icon'] ) ) {
+		$diagram['center_icon'] = sanitize_text_field( wp_unslash( $opt['diagram_center_icon'] ) );
+		$diag_changed = true;
+	}
+
+	$center_lines = array();
+	if ( ! empty( $opt['diagram_center_line1'] ) ) {
+		$center_lines[] = sanitize_text_field( wp_unslash( $opt['diagram_center_line1'] ) );
+	}
+	if ( ! empty( $opt['diagram_center_line2'] ) ) {
+		$center_lines[] = sanitize_text_field( wp_unslash( $opt['diagram_center_line2'] ) );
+	}
+	if ( ! empty( $center_lines ) ) {
+		$diagram['center_lines'] = $center_lines;
+		$diag_changed = true;
+	}
+
+	if ( ! empty( $opt['diagram_nodes'] ) ) {
+		$nodes = array();
+		foreach ( explode( "\n", wp_unslash( $opt['diagram_nodes'] ) ) as $line ) {
+			if ( count( $nodes ) >= 8 ) {
+				break; /* hard cap: circle layout supports max 8 nodes */
+			}
+			$line = trim( $line );
+			if ( '' === $line ) {
+				continue;
+			}
+			$parts   = explode( '|', $line, 2 );
+			$nodes[] = array(
+				'icon'  => sanitize_text_field( isset( $parts[0] ) ? trim( $parts[0] ) : '' ),
+				'label' => sanitize_text_field( isset( $parts[1] ) ? trim( $parts[1] ) : '' ),
+			);
+		}
+		if ( ! empty( $nodes ) ) {
+			$diagram['nodes'] = $nodes;
+			$diag_changed = true;
+		}
+	}
+
+	if ( $diag_changed ) {
+		$hero['diagram'] = $diagram;
+	}
+
 	return $hero;
 }
 

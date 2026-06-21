@@ -18,7 +18,7 @@
 }
 
 .guidance-hero-text h1 {
-    color: #fff;
+    color: var(--color-white);
     font-size: clamp(1.9rem, 3.5vw, 2.8rem);
     margin-bottom: 14px;
 }
@@ -59,7 +59,7 @@
 
 .guidance-trust-inner {
     display: flex;
-    gap: 24px;
+    gap: var(--space-6);
     flex-wrap: wrap;
     justify-content: space-between;
 }
@@ -75,7 +75,7 @@
 .guidance-trust-item strong {
     display: block;
     font-size: 0.85rem;
-    color: #fff;
+    color: var(--color-white);
 }
 
 .guidance-trust-item span {
@@ -91,7 +91,7 @@
     padding: 48px 24px 72px;
     display: grid;
     grid-template-columns: 1fr 420px;
-    gap: 48px;
+    gap: var(--space-12);
     align-items: start;
 }
 
@@ -105,7 +105,7 @@
 
 .guidance-form-card h2 {
     font-size: 1.25rem;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-6);
     color: var(--color-heading, #111827);
 }
 
@@ -118,7 +118,7 @@
 .guidance-services-panel h2 {
     font-size: 1.15rem;
     color: var(--color-heading, #111827);
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
 }
 
 .guidance-services-grid {
@@ -131,7 +131,7 @@
     background: var(--color-white, #fff);
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--radius-md, 12px);
-    padding: 20px;
+    padding: var(--space-5);
     transition: border-color 0.12s, box-shadow 0.12s;
 }
 
@@ -156,7 +156,7 @@
     font-size: 0.8rem;
     color: var(--color-text-muted, #6b7280);
     line-height: 1.5;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-3);
 }
 
 .gs-cta {
@@ -166,7 +166,7 @@
     font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-1);
 }
 
 .gs-cta:hover { text-decoration: underline; }
@@ -181,7 +181,7 @@
 .guidance-why-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+    gap: var(--space-6);
 }
 
 .guidance-why-item {
@@ -211,7 +211,7 @@
 @media (max-width: 1024px) {
     .guidance-main-layout {
         grid-template-columns: 1fr 360px;
-        gap: 32px;
+        gap: var(--space-8);
     }
 
     .guidance-why-grid {
@@ -226,7 +226,7 @@
 
     .guidance-main-layout {
         grid-template-columns: 1fr;
-        padding-top: 28px;
+        padding-top: var(--space-7);
     }
 
     .guidance-services-panel { position: static; }
@@ -260,7 +260,7 @@
 }
 
 .guidance-request-form .form-required {
-    color: #dc2626;
+    color: var(--color-danger);
     margin-left: 2px;
 }
 
@@ -271,11 +271,11 @@
 .guidance-request-form textarea {
     width: 100%;
     padding: 10px 14px;
-    border: 1.5px solid #d1d5db;
-    border-radius: 8px;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
     font-size: 0.9rem;
-    color: #111827;
-    background: #fff;
+    color: var(--color-heading);
+    background: var(--color-white);
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
     box-sizing: border-box;
@@ -307,9 +307,9 @@
 
 .contact-method-checks {
     display: flex;
-    gap: 16px;
+    gap: var(--space-4);
     flex-wrap: wrap;
-    padding-top: 4px;
+    padding-top: var(--space-1);
 }
 
 .method-check-label {
@@ -318,7 +318,7 @@
     gap: 6px;
     font-size: 0.875rem;
     cursor: pointer;
-    color: #374151;
+    color: var(--color-text);
 }
 
 .method-check-label input[type="checkbox"] {
@@ -335,9 +335,9 @@
     font-size: 1rem;
     font-weight: 600;
     background: var(--color-primary, #1d4ed8);
-    color: #fff;
+    color: var(--color-white);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: background 0.15s, opacity 0.15s;
     margin-top: 6px;
@@ -345,7 +345,7 @@
 }
 
 .guidance-submit-btn:hover:not(:disabled) {
-    background: #1e40af;
+    background: var(--color-info-dark);
 }
 
 .guidance-submit-btn:disabled {
@@ -355,45 +355,45 @@
 
 .guidance-form-msg {
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 0.875rem;
     font-weight: 500;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-4);
     line-height: 1.5;
 }
 
 .guidance-form-msg.is-success {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+    border: 1px solid var(--color-success-border);
 }
 
 .guidance-form-msg.is-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background: var(--color-error-bg);
+    color: var(--color-error-text);
+    border: 1px solid var(--color-error-border);
 }
 
 /* Contact form message styles (shared pattern) */
 .contact-form-msg {
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 0.875rem;
     font-weight: 500;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-4);
     line-height: 1.5;
 }
 
 .contact-form-msg.is-success {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+    border: 1px solid var(--color-success-border);
 }
 
 .contact-form-msg.is-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background: var(--color-error-bg);
+    color: var(--color-error-text);
+    border: 1px solid var(--color-error-border);
 }
 
 @media (max-width: 640px) {

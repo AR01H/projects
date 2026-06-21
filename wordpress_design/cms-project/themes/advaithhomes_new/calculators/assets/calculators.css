@@ -271,7 +271,6 @@ body.ah-calc-body {
 
 /* ── Outer wrap ────────────────────────────────────────────── */
 .ah-calc-wrap {
-	max-width: 860px;
 	margin: 0 auto;
 }
 

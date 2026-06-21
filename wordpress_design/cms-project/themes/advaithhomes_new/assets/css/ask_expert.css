@@ -22,9 +22,9 @@
 }
 
 .expert-hero-text h1 {
-    color: #fff;
+    color: var(--color-white);
     font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-    margin-bottom: 12px;
+    margin-bottom: var(--space-3);
 }
 
 .expert-hero-text p {
@@ -77,7 +77,7 @@
 .expert-stat-value {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--color-white);
     display: block;
 }
 
@@ -109,7 +109,7 @@
 .expert-cats-inner::-webkit-scrollbar { display: none; }
 
 .expert-cat-tab {
-    padding: 4px;
+    padding: var(--space-1);
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     background: var(--color-white, #fff);
@@ -121,13 +121,13 @@
 .expert-cat-tab:hover {
     border-color: var(--color-primary, #1d5c8e);
     color: var(--color-primary, #1d5c8e);
-    background: #fff;
+    background: var(--color-white);
 }
 
 .expert-cat-tab.active {
     background: var(--color-primary, #1d5c8e);
     border-color: var(--color-primary, #1d5c8e);
-    color: #fff;
+    color: var(--color-white);
     font-weight: 700;
     box-shadow: 0 2px 8px rgba(29, 92, 142, 0.22);
 }
@@ -263,9 +263,9 @@
     display: inline-block;
     padding: 9px 22px;
     background: var(--color-primary, #1d5c8e);
-    color: #fff;
+    color: var(--color-white);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
@@ -295,7 +295,7 @@
 .ecm-icon {
     font-size: 2rem;
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-3);
 }
 
 .ecm-heading {
@@ -323,7 +323,7 @@
     padding: 40px 24px 80px;
     display: grid;
     grid-template-columns: 1fr 280px;
-    gap: 40px;
+    gap: var(--space-10);
     align-items: start;
 }
 
@@ -331,18 +331,18 @@
 .expert-cards-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
+    gap: var(--space-4);
 }
 
 .expert-card {
     background: var(--color-white, #fff);
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--radius-md, 12px);
-    padding: 24px;
+    padding: var(--space-6);
     transition: border-color 0.12s, box-shadow 0.12s;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3);
     width:100%;
 }
 
@@ -410,7 +410,7 @@
 }
 
 .rating-stars { font-size: 0.9rem; }
-.star-filled  { color: #f59e0b; }
+.star-filled  { color: var(--color-warning); }
 .star-empty   { color: var(--color-border, #d1d5db); }
 
 .rating-value {
@@ -459,7 +459,7 @@
     background: var(--color-surface, #f3f4f6);
     color: var(--color-text, #374151);
     padding: 3px 10px;
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     border: 1px solid var(--color-border, #e5e7eb);
 }
 
@@ -467,7 +467,7 @@
 .expert-card-actions {
     margin-top: auto;
     display: flex;
-    gap: 8px;
+    gap: var(--space-2);
     flex-wrap: wrap;
 }
 
@@ -499,31 +499,31 @@
     top: 90px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-4);
 }
 
 .expert-sb-box {
     background: var(--color-white, #fff);
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--radius-md, 12px);
-    padding: 20px;
+    padding: var(--space-5);
 }
 
 .expert-sb-box h3 {
     font-size: 0.92rem;
     color: var(--color-heading, #111827);
-    margin-bottom: 12px;
+    margin-bottom: var(--space-3);
     padding-bottom: 10px;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
 }
 
 /* Need help box */
 .expert-need-help {
-    background: linear-gradient(135deg, #f0f9f4 0%, #e8f5ee 100%);
-    border-color: #c6e8d2;
+    background: linear-gradient(135deg, var(--color-success-bg) 0%, var(--color-tag-bg) 100%);
+    border-color: var(--color-success-border);
 }
 
-.expert-need-help h3 { border-bottom-color: #c6e8d2; }
+.expert-need-help h3 { border-bottom-color: var(--color-success-border); }
 
 .expert-need-help p {
     font-size: 0.82rem;
@@ -553,7 +553,7 @@
     align-items: flex-start;
     gap: 10px;
     padding: 9px 8px;
-    border-radius: 6px;
+    border-radius: var(--radius-tag);
     text-decoration: none;
     transition: background 0.12s;
 }
@@ -594,7 +594,7 @@
 
 .expert-hiw-step {
     display: flex;
-    gap: 12px;
+    gap: var(--space-3);
     align-items: flex-start;
 }
 
@@ -602,7 +602,7 @@
     width: 24px;
     height: 24px;
     background: var(--color-primary, #1d4ed8);
-    color: #fff;
+    color: var(--color-white);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -647,7 +647,7 @@
     padding: 9px 4px;
     text-decoration: none;
     transition: background 0.12s;
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
 }
 
 .expert-news-link:hover { background: var(--color-surface, #f9fafb); }
@@ -682,8 +682,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px;
-    border-radius: 6px;
+    padding: var(--space-2);
+    border-radius: var(--radius-tag);
     text-decoration: none;
     font-size: 0.83rem;
     color: var(--color-text, #374151);
@@ -707,7 +707,7 @@
     font-size: 0.82rem;
     font-weight: 700;
     padding: 7px 16px;
-    border-radius: 6px;
+    border-radius: var(--radius-tag);
     color: var(--color-primary, #1d4ed8);
     border: 1.5px solid var(--color-primary, #1d4ed8);
     text-decoration: none;
@@ -716,7 +716,7 @@
 
 .expert-nl-btn:hover {
     background: var(--color-primary, #1d4ed8);
-    color: #fff;
+    color: var(--color-white);
 }
 
 /* ── Can't Find CTA ─────────────────────────────────────────── */
@@ -728,13 +728,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: var(--space-5);
 }
 
 .ecf-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: var(--space-4);
 }
 
 .ecf-icon {
@@ -745,7 +745,7 @@
 .ecf-left h3 {
     font-size: 0.97rem;
     color: var(--color-heading, #111827);
-    margin-bottom: 4px;
+    margin-bottom: var(--space-1);
 }
 
 .ecf-left p {
@@ -764,7 +764,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: var(--space-4);
 }
 
 .expert-contact-modal[hidden] { display: none; }
@@ -780,7 +780,7 @@
     position: relative;
     background: var(--color-white, #fff);
     border-radius: var(--radius-lg, 16px);
-    padding: 32px;
+    padding: var(--space-8);
     width: 100%;
     max-width: 480px;
     max-height: 90vh;
@@ -798,7 +798,7 @@
     cursor: pointer;
     color: var(--color-text-muted, #6b7280);
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
     line-height: 1;
     transition: color 0.12s, background 0.12s;
 }
@@ -810,8 +810,8 @@
 
 .ecm-title {
     font-size: 1.1rem;
-    margin-bottom: 20px;
-    padding-right: 32px;
+    margin-bottom: var(--space-5);
+    padding-right: var(--space-8);
 }
 
 /* ── Contact Form (modal + single page) ─────────────────────── */
@@ -828,7 +828,7 @@
     color: var(--color-heading, #111827);
 }
 
-.ecf-req { color: #b91c1c; }
+.ecf-req { color: var(--color-danger-dark); }
 
 .expert-contact-form input,
 .expert-contact-form textarea {
@@ -853,7 +853,7 @@
 
 .expert-contact-form textarea { resize: vertical; }
 
-.ecf-actions { margin-top: 4px; }
+.ecf-actions { margin-top: var(--space-1); }
 
 .ecf-submit {
     width: 100%;
@@ -869,29 +869,29 @@
 .ecf-feedback {
     margin-top: 10px;
     font-size: 0.85rem;
-    border-radius: 6px;
+    border-radius: var(--radius-tag);
     padding: 0;
     min-height: 0;
     transition: padding 0.12s;
 }
 
 .ecf-feedback.ecf-success {
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    color: #166534;
+    background: var(--color-success-bg);
+    border: 1px solid var(--color-success-border);
+    color: var(--color-success-text);
     padding: 10px 14px;
 }
 
 .ecf-feedback.ecf-error {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    color: #b91c1c;
+    background: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
+    color: var(--color-danger-dark);
     padding: 10px 14px;
 }
 
 /* ── Expert Profile Hero — Naukri-style light card ──────────── */
 .expert-profile-hero {
-    background: #f0f2f5;
+    background: var(--color-surface);
     padding: 28px 0 36px;
 }
 
@@ -899,11 +899,11 @@
 .expert-profile-hero-inner {
     display: grid;
     grid-template-columns: 160px 1fr;
-    gap: 32px;
+    gap: var(--space-8);
     align-items: center;
-    background: #fff;
-    border: 1px solid #e2e5ea;
-    border-radius: 12px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 8px rgba(0,0,0,0.07);
     padding: 28px 32px;
 }
@@ -919,14 +919,14 @@
     height: 140px;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid #e2e5ea;
+    border: 3px solid var(--color-border);
     display: block;
 }
 
 .expert-profile-initials {
     width: 140px;
     height: 140px;
-    background: linear-gradient(135deg, #e8f5ee, #d4e6d8);
+    background: linear-gradient(135deg, var(--color-success-bg), var(--color-tag-bg));
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -934,10 +934,10 @@
     font-size: 2.6rem;
     font-weight: 700;
     color: var(--color-primary, #1d4ed8);
-    border: 3px solid #e2e5ea;
+    border: 3px solid var(--color-border);
 }
 
-.expert-profile-hero-info { color: #111827; }
+.expert-profile-hero-info { color: var(--color-heading); }
 
 .expert-profile-breadcrumb {
     display: flex;
@@ -949,7 +949,7 @@
 
 .epbc-link {
     font-size: 0.78rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
     text-decoration: none;
     transition: color 0.12s;
 }
@@ -958,54 +958,54 @@
 
 .epbc-sep {
     font-size: 0.72rem;
-    color: #9ca3af;
+    color: var(--color-text-light);
 }
 
 .epbc-current {
     font-size: 0.78rem;
-    color: #374151;
+    color: var(--color-text);
     font-weight: 500;
 }
 
 .expert-profile-name {
     font-size: clamp(1.4rem, 2.8vw, 2rem);
-    color: #111827;
-    margin-bottom: 4px;
+    color: var(--color-heading);
+    margin-bottom: var(--space-1);
     font-weight: 700;
 }
 
 .expert-profile-specialisation {
     font-size: 0.95rem;
-    color: #374151;
-    margin-bottom: 12px;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
 }
 
 .expert-profile-rating {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-2);
     margin-bottom: 10px;
 }
 
 .expert-profile-rating .rating-stars { font-size: 1rem; }
-.expert-profile-rating .rating-value { color: #111827; font-size: 0.95rem; font-weight: 600; }
-.expert-profile-rating .rating-count { color: #6b7280; font-size: 0.82rem; }
+.expert-profile-rating .rating-value { color: var(--color-heading); font-size: 0.95rem; font-weight: 600; }
+.expert-profile-rating .rating-count { color: var(--color-text-muted); font-size: 0.82rem; }
 
 .expert-profile-location {
     font-size: 0.88rem;
-    color: #4b5563;
-    margin-bottom: 12px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
 }
 
 .expert-profile-cat-pill {
     display: inline-block;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
+    background: var(--color-info-bg);
+    border: 1px solid var(--color-info-border);
     color: var(--color-primary, #1d4ed8);
     font-size: 0.78rem;
     font-weight: 500;
     padding: 4px 14px;
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
 }
 
 /* ── Cover image as card background ─────────────────────────── */
@@ -1041,20 +1041,20 @@
 }
 
 /* Text goes white when image is in card background */
-.expert-profile-hero-inner.has-cover-bg .expert-profile-hero-info { color: #fff; }
-.expert-profile-hero-inner.has-cover-bg .expert-profile-name         { color: #fff; }
+.expert-profile-hero-inner.has-cover-bg .expert-profile-hero-info { color: var(--color-white); }
+.expert-profile-hero-inner.has-cover-bg .expert-profile-name         { color: var(--color-white); }
 .expert-profile-hero-inner.has-cover-bg .expert-profile-specialisation { color: rgba(255,255,255,0.85); }
 .expert-profile-hero-inner.has-cover-bg .expert-profile-location     { color: rgba(255,255,255,0.8); }
-.expert-profile-hero-inner.has-cover-bg .rating-value                { color: #fff; }
+.expert-profile-hero-inner.has-cover-bg .rating-value                { color: var(--color-white); }
 .expert-profile-hero-inner.has-cover-bg .rating-count                { color: rgba(255,255,255,0.7); }
 .expert-profile-hero-inner.has-cover-bg .epbc-link                   { color: rgba(255,255,255,0.65); }
-.expert-profile-hero-inner.has-cover-bg .epbc-link:hover             { color: #fff; }
+.expert-profile-hero-inner.has-cover-bg .epbc-link:hover             { color: var(--color-white); }
 .expert-profile-hero-inner.has-cover-bg .epbc-sep,
 .expert-profile-hero-inner.has-cover-bg .epbc-current                { color: rgba(255,255,255,0.7); }
 .expert-profile-hero-inner.has-cover-bg .expert-profile-cat-pill {
     background: rgba(255,255,255,0.18);
     border-color: rgba(255,255,255,0.3);
-    color: #fff;
+    color: var(--color-white);
 }
 
 /* Photo: white border + shadow to pop against the image */
@@ -1067,8 +1067,8 @@
 @media (max-width: 768px) {
     .expert-profile-hero-inner {
         grid-template-columns: 110px 1fr;
-        gap: 20px;
-        padding: 20px;
+        gap: var(--space-5);
+        padding: var(--space-5);
     }
     .expert-profile-photo,
     .expert-profile-initials { width: 100px; height: 100px; }
@@ -1084,9 +1084,9 @@
 
 /* ── Expert stats marquee — column tile layout ───────────────── */
 .expert-stats-marquee {
-    background: #fff;
-    border-top: 1px solid #e2e5ea;
-    border-bottom: 1px solid #e2e5ea;
+    background: var(--color-white);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     overflow: hidden;
     margin: 0 0 32px;
 }
@@ -1100,7 +1100,7 @@
     gap: 3px;
     min-width: 150px;
     padding: 18px 28px;
-    border-right: 1px solid #e2e5ea;
+    border-right: 1px solid var(--color-border);
 }
 
 .expert-stats-marquee .phb-trust-icon {
@@ -1114,7 +1114,7 @@
     display: block;
     font-size: 1rem;
     font-weight: 700;
-    color: #111827;
+    color: var(--color-heading);
     line-height: 1.25;
     white-space: nowrap;
 }
@@ -1122,7 +1122,7 @@
 .expert-stats-marquee .phb-trust-icon-item span {
     display: block;
     font-size: 0.73rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
     line-height: 1.3;
     white-space: nowrap;
 }
@@ -1132,7 +1132,7 @@
 .expert-profile-layout {
     display: grid;
     grid-template-columns: 1fr 300px;
-    gap: 40px;
+    gap: var(--space-10);
     align-items: start;
     padding: 48px 0 80px;
 }
@@ -1153,7 +1153,7 @@
 .expert-profile-section h2 {
     font-size: 1.1rem;
     color: var(--color-heading, #111827);
-    margin-bottom: 16px;
+    margin-bottom: var(--space-4);
 }
 
 .expert-bio-section p {
@@ -1192,7 +1192,7 @@
 .expert-clients-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    gap: var(--space-3);
 }
 
 .client-img-wrap {
@@ -1218,7 +1218,7 @@
     left: 0;
     right: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-    color: #fff;
+    color: var(--color-white);
     font-size: 0.78rem;
     padding: 20px 10px 8px;
     display: block;
@@ -1230,7 +1230,7 @@
     top: 90px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-4);
 }
 
 /* Profile sidebar inherits .expert-sb-box, .expert-need-help */
@@ -1241,7 +1241,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
 }
 
 .expert-sb-contact-list li {
@@ -1267,15 +1267,15 @@
 .expert-contact-form-section .expert-contact-intro {
     font-size: 0.88rem;
     color: var(--color-text-muted, #6b7280);
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
     line-height: 1.6;
 }
 
 /* ── Form Builder (ch-form-*) on Expert pages ───────────────── */
 .expert-mega-section .ch-form-wrap {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     padding: 28px 28px 24px;
     box-shadow: 0 2px 12px rgba(26,60,94,0.06);
 }
@@ -1283,13 +1283,13 @@
 .expert-mega-section .ch-form-title {
     font-size: 1.15rem;
     font-weight: 700;
-    color: #1a3c5e;
+    color: var(--color-navy-mid);
     margin: 0 0 6px;
 }
 
 .expert-mega-section .ch-form-desc {
     font-size: 0.88rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
     margin: 0 0 20px;
     line-height: 1.6;
 }
@@ -1302,12 +1302,12 @@
     display: block;
     font-size: 0.85rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--color-heading);
     margin-bottom: 6px;
 }
 
 .expert-mega-section .ch-form-req {
-    color: #b91c1c;
+    color: var(--color-danger-dark);
     margin-left: 2px;
 }
 
@@ -1316,12 +1316,12 @@
 .expert-mega-section .ch-form-select {
     width: 100%;
     padding: 10px 14px;
-    border: 1.5px solid #d1d5db;
-    border-radius: 8px;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
     font-size: 0.9rem;
     font-family: inherit;
-    color: #374151;
-    background: #fff;
+    color: var(--color-text);
+    background: var(--color-white);
     transition: border-color 0.15s, box-shadow 0.15s;
     box-sizing: border-box;
 }
@@ -1330,7 +1330,7 @@
 .expert-mega-section .ch-form-textarea:focus,
 .expert-mega-section .ch-form-select:focus {
     outline: none;
-    border-color: #1a3c5e;
+    border-color: var(--color-navy-mid);
     box-shadow: 0 0 0 3px rgba(26,60,94,0.12);
 }
 
@@ -1342,11 +1342,11 @@
 .expert-mega-section .ch-form-submit {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #1a3c5e;
-    color: #fff;
+    gap: var(--space-2);
+    background: var(--color-navy-mid);
+    color: var(--color-white);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     padding: 12px 28px;
     font-size: 0.95rem;
     font-weight: 600;
@@ -1358,7 +1358,7 @@
 }
 
 .expert-mega-section .ch-form-submit:hover {
-    background: #244f7a;
+    background: var(--color-navy-mid-hover);
 }
 
 .expert-mega-section .ch-form-submit:active {
@@ -1371,25 +1371,25 @@
 }
 
 .expert-mega-section .ch-form-feedback {
-    margin-top: 12px;
+    margin-top: var(--space-3);
     font-size: 0.87rem;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     padding: 0;
     min-height: 0;
     transition: padding 0.12s;
 }
 
 .expert-mega-section .ch-form-feedback.success {
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    color: #166534;
+    background: var(--color-success-bg);
+    border: 1px solid var(--color-success-border);
+    color: var(--color-success-text);
     padding: 10px 14px;
 }
 
 .expert-mega-section .ch-form-feedback.error {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    color: #991b1b;
+    background: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
+    color: var(--color-error-text);
     padding: 10px 14px;
 }
 
@@ -1397,17 +1397,17 @@
 .expert-mega-section .ch-agr-intro {
     font-size: 0.87rem;
     line-height: 1.7;
-    color: #4b5563;
+    color: var(--color-text-muted);
     margin-bottom: 14px;
     padding: 12px 16px;
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    background: var(--slate-50);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
 }
 
 .expert-mega-section .ch-agr-iframe-wrap {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
     overflow: hidden;
     margin-bottom: 14px;
 }
@@ -1425,7 +1425,7 @@
     gap: 10px;
     cursor: pointer;
     font-size: 0.88rem;
-    color: #374151;
+    color: var(--color-text);
     line-height: 1.5;
 }
 
@@ -1434,29 +1434,29 @@
     flex-shrink: 0;
     width: 16px;
     height: 16px;
-    accent-color: #1a3c5e;
+    accent-color: var(--color-navy-mid);
     cursor: pointer;
 }
 
 .expert-mega-section .ch-terms-link {
-    color: #1a3c5e;
+    color: var(--color-navy-mid);
     text-decoration: underline;
     font-weight: 600;
     transition: color 0.15s;
 }
 
 .expert-mega-section .ch-terms-link:hover {
-    color: #244f7a;
+    color: var(--color-navy-mid-hover);
 }
 
 /* ── Responsive: 1200px ─────────────────────────────────────── */
 @media (max-width: 1200px) {
-    .expert-profile-layout { grid-template-columns: 1fr 280px; gap: 28px; }
+    .expert-profile-layout { grid-template-columns: 1fr 280px; gap: var(--space-7); }
 }
 
 /* ── Responsive: 1024px ─────────────────────────────────────── */
 @media (max-width: 1024px) {
-    .expert-main-layout { grid-template-columns: 1fr 260px; gap: 28px; }
+    .expert-main-layout { grid-template-columns: 1fr 260px; gap: var(--space-7); }
 }
 
 /* ── Responsive: 900px ──────────────────────────────────────── */
@@ -1467,7 +1467,7 @@
     .expert-cant-find-cta   { flex-direction: column; align-items: flex-start; }
     .expert-profile-layout  { grid-template-columns: 1fr; }
     .expert-profile-sidebar { position: static; }
-    .expert-profile-hero-inner { grid-template-columns: 140px 1fr; gap: 24px; }
+    .expert-profile-hero-inner { grid-template-columns: 140px 1fr; gap: var(--space-6); }
     .expert-profile-photo,
     .expert-profile-initials { width: 120px; height: 120px; }
     .expert-profile-initials { font-size: 2.2rem; }
@@ -1480,7 +1480,7 @@
     .expert-hero-img img        { min-height: 200px; }
     .expert-stats-inner         { flex-wrap: wrap; }
     .expert-stat-item           { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 16px; flex: none; width: 50%; }
-    .expert-profile-hero-inner  { grid-template-columns: 1fr; text-align: center; gap: 20px; }
+    .expert-profile-hero-inner  { grid-template-columns: 1fr; text-align: center; gap: var(--space-5); }
     .expert-profile-photo-wrap  { justify-content: center; }
     .expert-profile-breadcrumb  { justify-content: center; }
     .expert-profile-rating      { justify-content: center; }
