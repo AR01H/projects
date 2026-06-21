@@ -143,9 +143,11 @@ function adn_calculator_maybe_render() {
 function adn_render_calculator_standalone( $key ) {
 	$all  = adn_calculators();
 	$calc = $all[ $key ];
-	$ver  = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0';
-	$css  = ADN_THEME_URI . '/calculators/assets/calculators.css?v=' . $ver;
-	$js   = ADN_THEME_URI . '/calculators/assets/calc-' . $key . '.js?v=' . $ver;
+	$ver      = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0';
+	$css_vars  = ADN_THEME_URI . '/assets/css/variables.css?v=' . $ver;
+	$css       = ADN_THEME_URI . '/calculators/assets/calculators.css?v=' . $ver;
+	$js_shared = ADN_THEME_URI . '/calculators/assets/calculators.js?v=' . $ver;
+	$js        = ADN_THEME_URI . '/calculators/assets/calc-' . $key . '.js?v=' . $ver;
 	$has_js = file_exists( ADN_THEME_DIR . '/calculators/assets/calc-' . $key . '.js' );
 	$db_js  = '';
 	if ( ! $has_js && class_exists( 'AH_Calculator_DB' ) ) {
@@ -161,6 +163,7 @@ function adn_render_calculator_standalone( $key ) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="noindex,nofollow">
 	<title><?php echo esc_html( $calc['title'] ); ?></title>
+	<link rel="stylesheet" href="<?php echo esc_url( $css_vars ); ?>">
 	<link rel="stylesheet" href="<?php echo esc_url( $css ); ?>">
 </head>
 <body class="ah-calc-body ah-calc-<?php echo esc_attr( $key ); ?>">
@@ -170,6 +173,7 @@ function adn_render_calculator_standalone( $key ) {
 	if ( empty( $_GET['noextra'] ) && ( ! empty( $meta['help'] ) || ! empty( $meta['guide_url'] ) ) ) :
 	?>
 	<?php endif; ?>
+	<script src="<?php echo esc_url( $js_shared ); ?>"></script>
 	<?php if ( $has_js ) : ?>
 		<script src="<?php echo esc_url( $js ); ?>"></script>
 	<?php endif; ?>

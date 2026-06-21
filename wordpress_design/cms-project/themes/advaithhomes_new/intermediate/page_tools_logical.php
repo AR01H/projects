@@ -14,6 +14,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Pull in home page CMS helpers (adn_home_cms_news_items, _regulations_items, _hot_topics_items).
+require_once ADN_THEME_DIR . '/intermediate/page_home_logical.php';
+
 function adn_calculators_get_context() {
 	$pg     = get_option( 'adn_calculators_page', array() );
 	$gen    = get_option( 'adn_calculators_general', array() );
@@ -170,6 +173,12 @@ function adn_calculators_get_context() {
 		array( 'label' => SITE_TOOLS_PLURAL, 'url' => null ),
 	);
 
+	// ── Home JSON section defaults (headings only) ────────────────────────
+	$_hd   = function_exists( 'adn_service_home_data' ) ? (array) adn_service_home_data() : array();
+	$_hnews = ( isset( $_hd['news'] ) && is_array( $_hd['news'] ) )       ? $_hd['news']       : array();
+	$_hreg  = ( isset( $_hd['regulations'] ) && is_array( $_hd['regulations'] ) ) ? $_hd['regulations'] : array();
+	$_hht   = ( isset( $_hd['hot_topics'] ) && is_array( $_hd['hot_topics'] ) )   ? $_hd['hot_topics']  : array();
+
 	return array(
 		'meta'          => array(),
 		'breadcrumb'    => $breadcrumb,
@@ -198,6 +207,10 @@ function adn_calculators_get_context() {
 			),
 			'items' => adn_shared_latest_news_items( 3 ),
 		),
+		// ── news_three_col — headings from home page JSON, items from CMS ──
+		'news'        => array_merge( $_hnews, array( 'items' => adn_home_cms_news_items() ) ),
+		'regulations' => array_merge( $_hreg,  array( 'items' => adn_home_cms_regulations_items() ) ),
+		'hot_topics'  => array_merge( $_hht,   array( 'items' => adn_home_cms_hot_topics_items() ) ),
 	);
 }
 

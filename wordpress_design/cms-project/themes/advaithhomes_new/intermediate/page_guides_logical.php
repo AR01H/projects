@@ -3,12 +3,7 @@
  * intermediate/page_guides_logical.php
  *
  * Builds the full render context for the /guides/ hub page.
- * Shows every Guide parent term with its child topic taxonomy terms.
- *
- * Data sources:
- *   groups / sidebar.guide_parents → adn_cms_guide_parents + adn_cms_topics (CMS plugin)
- *   sidebar.quick_tools            → adn_calculators registry + adn_calculators_meta option
- *   sidebar.news_mini              → News Bar → WP_Query fallback
+ * Groups by parent term; topics inside each group = category-type terms only.
  *
  * RULE: No markup here - only data shaping.
  */
@@ -71,19 +66,19 @@ function adn_guides_get_context() {
 	$chrome  = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 	$parents = function_exists( 'adn_cms_guide_parents' )   ? adn_cms_guide_parents( 20 ) : array();
 
-	// ── Groups: one per parent term with its child topics ────────────────────
+	// ── Groups: one per parent term, topics = category-type child terms only ──
 	$groups        = array();
 	$sidebar_links = array();
 
 	foreach ( $parents as $i => $pt ) {
-		$pid     = (int) $pt->id;
-		$name    = isset( $pt->name )        ? (string) $pt->name        : '';
-		$slug    = isset( $pt->slug )        ? (string) $pt->slug        : '';
-		$desc    = isset( $pt->description ) ? (string) $pt->description : '';
-		$icon    = ! empty( $pt->icon_emoji ) ? (string) $pt->icon_emoji : '📚';
-		$pt_url  = home_url( '/' . trim( $slug, '/' ) . '/' );
+		$pid    = (int) $pt->id;
+		$name   = isset( $pt->name )         ? (string) $pt->name         : '';
+		$slug   = isset( $pt->slug )         ? (string) $pt->slug         : '';
+		$desc   = isset( $pt->description )  ? (string) $pt->description  : '';
+		$icon   = ! empty( $pt->icon_emoji ) ? (string) $pt->icon_emoji   : '📚';
+		$pt_url = home_url( '/' . trim( $slug, '/' ) . '/' );
+		if ( '' === $name ) { continue; }
 
-		// Parent thumbnail: image_id stored on the parent term row.
 		$img_id  = ! empty( $pt->image_id ) ? (int) $pt->image_id : 0;
 		$img_url = '';
 		if ( $img_id ) {
@@ -91,12 +86,13 @@ function adn_guides_get_context() {
 			$img_url = $_iu ? (string) $_iu : '';
 		}
 
-		$topics      = function_exists( 'adn_cms_topics' ) ? adn_cms_topics( $pid, 50 ) : array();
+		// Fetch child terms for this parent, excluding non-category types (e.g. glossary).
+		$raw_topics  = function_exists( 'adn_cms_category_topics' ) ? adn_cms_category_topics( $pid, 50 ) : array();
 		$topic_cards = array();
-		foreach ( $topics as $topic ) {
-			$t_name  = isset( $topic->name )        ? (string) $topic->name        : '';
-			$t_slug  = isset( $topic->slug )        ? (string) $topic->slug        : '';
-			$t_icon  = ! empty( $topic->icon_emoji ) ? (string) $topic->icon_emoji : $icon;
+		foreach ( $raw_topics as $topic ) {
+			$t_name = isset( $topic->name )         ? (string) $topic->name         : '';
+			$t_slug = isset( $topic->slug )         ? (string) $topic->slug         : '';
+			$t_icon = ! empty( $topic->icon_emoji ) ? (string) $topic->icon_emoji   : $icon;
 			if ( '' === $t_name ) { continue; }
 			$topic_cards[] = array(
 				'icon'  => $t_icon,
@@ -119,7 +115,8 @@ function adn_guides_get_context() {
 			);
 		}
 
-		if ( '' === $name ) { continue; }
+		// Skip parent terms with no categories and no articles — nothing to show.
+		if ( empty( $topic_cards ) && empty( $latest_posts ) ) { continue; }
 
 		$groups[] = array(
 			'name'         => $name,
@@ -202,4 +199,3 @@ function adn_guides_get_context() {
 		'chrome' => $chrome,
 	);
 }
-

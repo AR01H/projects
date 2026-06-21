@@ -28,9 +28,11 @@ $image_url = isset( $group['image_url'] ) ? (string) $group['image_url'] : '';
 		<div class="gpg-header-overlay"></div>
 		<div class="gpg-header-content">
 			<?php if ( '' !== $image_url ) : ?>
-				<img src="<?php echo esc_url( $image_url ); ?>" alt="" class="gpg-logo" aria-hidden="true">
+				<img src="<?php echo esc_url( $image_url ); ?>" alt="" class="gpg-logo" aria-hidden="true"
+					onerror="this.style.display='none';this.nextElementSibling.removeAttribute('hidden');">
+				<span class="gpg-icon" aria-hidden="true" hidden><?php echo adn_icon( $icon, 'gpg-ico' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 			<?php else : ?>
-				<span class="gpg-icon" aria-hidden="true"><?php echo esc_html( $icon ); ?></span>
+				<span class="gpg-icon" aria-hidden="true"><?php echo adn_icon( $icon, 'gpg-ico' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 			<?php endif; ?>
 			<div class="gpg-header-text">
 				<h2 class="gpg-name"><?php echo esc_html( $name ); ?></h2>
@@ -58,7 +60,7 @@ $image_url = isset( $group['image_url'] ) ? (string) $group['image_url'] : '';
 				if ( '' === $t_title ) { continue; }
 			?>
 				<a href="<?php echo esc_url( adn_link( $t_url ) ); ?>" class="gpg-topic">
-					<span class="gpg-topic-icon" aria-hidden="true"><?php echo esc_html( $t_icon ); ?></span>
+					<span class="gpg-topic-icon" aria-hidden="true"><i class="fa-solid fa-tag" aria-hidden="true"></i></span>
 					<span class="gpg-topic-title"><?php echo esc_html( $t_title ); ?></span>
 					<span class="gpg-topic-arrow" aria-hidden="true">›</span>
 				</a>
@@ -78,11 +80,8 @@ $image_url = isset( $group['image_url'] ) ? (string) $group['image_url'] : '';
 			?>
 			<li class="gpg-post">
 				<a href="<?php echo esc_url( adn_link( $_lp_url ) ); ?>" class="gpg-post-link">
-					<span class="gpg-post-icon" aria-hidden="true">📄</span>
+					<i class="fa-regular fa-file-lines gpg-post-icon" aria-hidden="true"></i>
 					<span class="gpg-post-title"><?php echo esc_html( $_lp_title ); ?></span>
-					<?php if ( '' !== $_lp_date ) : ?>
-					<span class="gpg-post-meta"><?php echo esc_html( $_lp_date ); ?></span>
-					<?php endif; ?>
 					<span class="gpg-post-arrow" aria-hidden="true">›</span>
 				</a>
 			</li>

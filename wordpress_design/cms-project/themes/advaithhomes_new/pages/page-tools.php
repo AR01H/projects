@@ -76,10 +76,14 @@ adn_page_open( $_open_ctx );
 
 </div>
 
-<?php if ( ! empty( $ctx['latest_news']['items'] ) ) : ?>
-<section class="page-latest-news">
+<?php if ( ! empty( $ctx['news']['items'] ) || ! empty( $ctx['regulations']['items'] ) || ! empty( $ctx['hot_topics']['items'] ) ) : ?>
+<section class="cat-highlight-section">
 	<div class="container">
-		<?php adn_component( 'parts/news_widget', array( 'widget' => $ctx['latest_news'] ) ); ?>
+		<?php adn_component( 'sections/news_three_col', array(
+			'news'        => $ctx['news'],
+			'regulations' => $ctx['regulations'],
+			'hot_topics'  => $ctx['hot_topics'],
+		) ); ?>
 	</div>
 </section>
 <?php endif; ?>

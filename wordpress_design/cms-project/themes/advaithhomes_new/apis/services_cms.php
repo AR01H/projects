@@ -130,6 +130,60 @@ function adn_cms_topics( $parent_term_id, $limit = 100 ) {
 }
 
 /**
+ * Child terms under one parent — category type only (excludes glossary etc.).
+ *
+ * @return object[] taxonomy rows.
+ */
+function adn_cms_category_topics( $parent_term_id, $limit = 100 ) {
+	$parent_term_id = (int) $parent_term_id;
+	if ( ! adn_cms_available() || ! $parent_term_id ) {
+		return array();
+	}
+	global $wpdb;
+	$pt    = adn_cms_table( 'taxonomy_parent_terms' );
+	$tax   = adn_cms_table( 'taxonomies' );
+	$types = adn_cms_table( 'taxonomy_types' );
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+		return array();
+	}
+	return $wpdb->get_results( $wpdb->prepare(
+		"SELECT t.* FROM `{$tax}` t
+		 LEFT JOIN `{$types}` tt ON tt.id = t.type_id
+		 WHERE t.parent_term_id = %d AND t.status = 'active'
+		   AND ( tt.slug IS NULL OR tt.slug NOT IN ('glossary','news') )
+		 ORDER BY t.sort_order ASC, t.name ASC LIMIT %d",
+		$parent_term_id,
+		max( 1, (int) $limit )
+	) ) ?: array();
+}
+
+/**
+ * All active child taxonomy terms (categories) across every parent term.
+ * Returns rows from ah_taxonomies joined with ah_taxonomy_parent_terms so
+ * callers get parent_name / parent_slug without a second query.
+ *
+ * @return object[]
+ */
+function adn_cms_all_categories( $limit = 300 ) {
+	if ( ! adn_cms_available() ) { return array(); }
+	global $wpdb;
+	$pt  = adn_cms_table( 'taxonomy_parent_terms' );
+	$tax = adn_cms_table( 'taxonomies' );
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+		return array();
+	}
+	return $wpdb->get_results( $wpdb->prepare(
+		"SELECT t.*, pt.name AS parent_name, pt.slug AS parent_slug
+		 FROM `{$tax}` t
+		 INNER JOIN `{$pt}` pt ON pt.id = t.parent_term_id
+		 WHERE t.parent_term_id IS NOT NULL AND t.status = 'active'
+		 ORDER BY pt.sort_order ASC, t.sort_order ASC, t.name ASC
+		 LIMIT %d",
+		max( 1, (int) $limit )
+	) ) ?: array();
+}
+
+/**
  * Published WordPress posts, optionally restricted to a set of taxonomy term ids
  * (the plugin links posts ↔ terms in ah_content_taxonomies with
  * object_type = 'wp_post'). Rows are aliased to a stable shape so the card

@@ -61,7 +61,9 @@ $el_attr = $url
 	<?php if ( $_has_visual ) : ?>
 	<div class="mini-card-thumb<?php echo $_thumb_mod; ?>"<?php echo ( '' !== $img && '' === $img_url ) ? ' style="background:' . esc_attr( $img ) . ';"' : ''; ?>>
 		<?php if ( '' !== $img_url ) : ?>
-			<img src="<?php echo esc_url( $img_url ); ?>" alt="" loading="lazy">
+			<img src="<?php echo esc_url( $img_url ); ?>" alt="" loading="lazy"
+				onerror="this.style.display='none';this.nextElementSibling.removeAttribute('hidden');">
+			<span class="mini-card-thumb-icon" aria-hidden="true" hidden><i class="fa-regular fa-image"></i></span>
 			<?php if ( '' !== $overlay ) : ?>
 				<span class="mini-card-thumb-overlay"><?php echo esc_html( $overlay ); ?></span>
 			<?php endif; ?>

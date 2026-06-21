@@ -54,12 +54,11 @@ $_total = count( $steps );
 			</div>
 
 			<div class="jny2-step__body">
+				<div class="jny2-step__num-chip" aria-label="<?php echo esc_attr( sprintf( __( 'Step %s', 'adn' ), $num ) ); ?>"><?php echo esc_html( $_num_pad ); ?></div>
 				<?php if ( $_icon_html ) : ?>
-				<div class="jny2-step__badge" aria-label="<?php echo esc_attr( sprintf( __( 'Step %s', 'adn' ), $num ) ); ?>"><?php echo esc_html( $_num_pad ); ?></div>
+				<div class="jny2-step__icon" aria-hidden="true"><?php echo $_icon_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 				<?php elseif ( '' !== $icon ) : ?>
-				<div class="jny2-step__icon" aria-hidden="true">
-					<?php echo adn_icon( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</div>
+				<div class="jny2-step__icon" aria-hidden="true"><?php echo adn_icon( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 				<?php endif; ?>
 				<?php if ( $label ) : ?>
 				<strong class="jny2-step__label"><?php echo esc_html( $label ); ?></strong>

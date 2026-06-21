@@ -81,39 +81,122 @@ foreach ( isset( $hot_topics['items'] ) ? (array) $hot_topics['items'] : array()
 
 $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_topics['cta'] : array();
 ?>
-<div class="news-three-inner">
+<div class="ntc-carousel-wrap">
 
-	<?php if ( ! empty( $news_cards ) ) : ?>
-	<div class="news-col news-col--news mini_card_container_design">
-		<div class="news-widget">
+	<div class="news-three-inner">
+
+		<?php if ( ! empty( $news_cards ) ) : ?>
+		<div class="news-col news-col--news mini_card_container_design">
+			<div class="news-widget">
+				<?php adn_component( 'parts/list_widget', array( 'widget' => array(
+					'heading' => isset( $news['heading'] ) ? (array) $news['heading'] : array(),
+					'items'   => $news_cards,
+					'tag'     => 'h4',
+				) ) ); ?>
+			</div>
+		</div>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $reg_cards ) ) : ?>
+		<div class="news-col news-col--regulations mini_card_container_design">
 			<?php adn_component( 'parts/list_widget', array( 'widget' => array(
-				'heading' => isset( $news['heading'] ) ? (array) $news['heading'] : array(),
-				'items'   => $news_cards,
+				'heading' => array( 'title' => isset( $regulations['heading']['title'] ) ? (string) $regulations['heading']['title'] : '' ),
+				'items'   => $reg_cards,
 				'tag'     => 'h4',
 			) ) ); ?>
 		</div>
-	</div>
-	<?php endif; ?>
+		<?php endif; ?>
 
-	<?php if ( ! empty( $reg_cards ) ) : ?>
-	<div class="news-col news-col--regulations mini_card_container_design">
-		<?php adn_component( 'parts/list_widget', array( 'widget' => array(
-			'heading' => array( 'title' => isset( $regulations['heading']['title'] ) ? (string) $regulations['heading']['title'] : '' ),
-			'items'   => $reg_cards,
-			'tag'     => 'h4',
-		) ) ); ?>
-	</div>
-	<?php endif; ?>
+		<?php if ( ! empty( $topic_cards ) ) : ?>
+		<div class="hot-topics-col mini_card_container_design">
+			<?php adn_component( 'parts/list_widget', array( 'widget' => array(
+				'heading' => array( 'title' => isset( $hot_topics['title'] ) ? (string) $hot_topics['title'] : '' ),
+				'items'   => $topic_cards,
+				'cta'     => $hot_cta,
+				'tag'     => 'h4',
+			) ) ); ?>
+		</div>
+		<?php endif; ?>
 
-	<?php if ( ! empty( $topic_cards ) ) : ?>
-	<div class="hot-topics-col mini_card_container_design">
-		<?php adn_component( 'parts/list_widget', array( 'widget' => array(
-			'heading' => array( 'title' => isset( $hot_topics['title'] ) ? (string) $hot_topics['title'] : '' ),
-			'items'   => $topic_cards,
-			'cta'     => $hot_cta,
-			'tag'     => 'h4',
-		) ) ); ?>
 	</div>
-	<?php endif; ?>
+
+	<div class="ntc-nav">
+		<button class="ntc-arrow ntc-arrow--prev" aria-label="<?php esc_attr_e( 'Previous', ADN_TEXT_DOMAIN ); ?>">
+			<i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+		</button>
+		<div class="ntc-dots"></div>
+		<button class="ntc-arrow ntc-arrow--next" aria-label="<?php esc_attr_e( 'Next', ADN_TEXT_DOMAIN ); ?>">
+			<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+		</button>
+	</div>
 
 </div>
+
+<script>
+(function(){
+	var wrap      = document.currentScript.previousElementSibling;
+	var track     = wrap.querySelector('.news-three-inner');
+	var prev      = wrap.querySelector('.ntc-arrow--prev');
+	var next      = wrap.querySelector('.ntc-arrow--next');
+	var dotsEl    = wrap.querySelector('.ntc-dots');
+	var panels    = Array.prototype.slice.call( track.children );
+	var panelH    = [];
+	var scrollTmr;
+
+	function isMobile(){ return window.innerWidth <= 680; }
+
+	var dots = panels.map(function(_, i){
+		var d = document.createElement('span');
+		d.className = 'ntc-dot' + (i === 0 ? ' active' : '');
+		d.addEventListener('click', function(){
+			track.scrollTo({ left: panels[i].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+		});
+		dotsEl.appendChild(d);
+		return d;
+	});
+
+	function activeIndex(){
+		var mid = track.scrollLeft + track.clientWidth / 2;
+		var best = 0, bestD = Infinity;
+		panels.forEach(function(p, i){
+			var d = Math.abs((p.offsetLeft - track.offsetLeft + p.offsetWidth / 2) - mid);
+			if(d < bestD){ bestD = d; best = i; }
+		});
+		return best;
+	}
+
+	function measureHeights(){
+		panelH = panels.map(function(p){ return p.offsetHeight; });
+	}
+
+	function syncHeight(){
+		if( !isMobile() ){ track.style.height = ''; return; }
+		var h = panelH[ activeIndex() ];
+		if( h ) track.style.height = h + 'px';
+	}
+
+	function update(){
+		var idx = activeIndex();
+		dots.forEach(function(d,i){ d.classList.toggle('active', i === idx); });
+		prev.classList.toggle('ntc-arrow--hidden', track.scrollLeft <= 2);
+		next.classList.toggle('ntc-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
+	}
+
+	function onScroll(){
+		update();
+		clearTimeout(scrollTmr);
+		scrollTmr = setTimeout(syncHeight, 120);
+	}
+
+	prev.addEventListener('click', function(){ track.scrollBy({ left: -(track.clientWidth + 16), behavior: 'smooth' }); });
+	next.addEventListener('click', function(){ track.scrollBy({ left:  (track.clientWidth + 16), behavior: 'smooth' }); });
+	track.addEventListener('scroll', onScroll, { passive: true });
+	window.addEventListener('resize', function(){ measureHeights(); syncHeight(); update(); });
+
+	if( document.readyState === 'complete' ){
+		measureHeights(); syncHeight(); update();
+	} else {
+		window.addEventListener('load', function(){ measureHeights(); syncHeight(); update(); });
+	}
+}());
+</script>

@@ -628,6 +628,61 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   margin: 0 auto;
 }
 
+/* ── Carousel wrapper + arrows ── */
+.journey-carousel-wrap {
+  position: relative;
+}
+
+.jny-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.16);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-dark, #1a2533);
+  font-size: 0.72rem;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, opacity 0.2s, transform 0.18s;
+}
+.jny-arrow:hover {
+  background: var(--color-primary, #1e3a2f);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+.jny-arrow--prev { left: -15px; }
+.jny-arrow--next { right: -15px; }
+.jny-arrow--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Fade edges to hint more cards exist */
+.journey-carousel-wrap::before,
+.journey-carousel-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 8px;
+  width: 48px;
+  z-index: 10;
+  pointer-events: none;
+}
+.journey-carousel-wrap::before {
+  left: 0;
+}
+.journey-carousel-wrap::after {
+  right: 0;
+}
+
 .journey-cards {
   display: flex;
   flex-wrap: nowrap;
@@ -774,6 +829,54 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   color: var(--color-dark);
   margin: 0;
 }
+/* ── ntc carousel wrapper ── */
+.ntc-carousel-wrap { position: relative; }
+
+/* Bottom nav row — hidden on desktop */
+.ntc-nav {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.ntc-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--color-border, #e2e4e7);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-dark, #1a2533);
+  font-size: 0.72rem;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  flex-shrink: 0;
+}
+.ntc-arrow:hover {
+  background: var(--color-primary, #1e3a2f);
+  color: #fff;
+  border-color: var(--color-primary, #1e3a2f);
+}
+.ntc-arrow--hidden { opacity: 0.3; pointer-events: none; }
+
+/* Dots */
+.ntc-dots { display: flex; gap: 6px; align-items: center; }
+.ntc-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-border, #d1d5db);
+  transition: background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.ntc-dot.active {
+  background: var(--color-primary, #1e3a2f);
+  transform: scale(1.3);
+}
+
 .news-three-inner {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
@@ -832,7 +935,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 /* Left visuals — unified 16:9 thumb box */
 .mini-card-thumb {
-  width: 64px;
+  width: 88px;
   aspect-ratio: 16 / 9;
   flex-shrink: 0;
   border-radius: 6px;
@@ -874,8 +977,8 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 }
 .mini-card-thumb-icon {
   line-height: 1;
-  display: inline-block;
 }
+.mini-card-thumb-icon[hidden] { display: none !important; }
 .mini-card-thumb--badge {
   background: #00703c;
   color: #fff;
@@ -1562,12 +1665,13 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   border-bottom: 1px solid var(--color-border);
 }
 
-/* ── Wrapper ── */
+/* ══ Journey Steps — clean card grid ══════════════════════════════════════ */
+.jny2-wrap { padding: 48px 0; }
 
 /* ── Header ── */
 .jny2-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
 .jny2-eyebrow {
   display: inline-block;
@@ -1598,121 +1702,67 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   line-height: 1.65;
 }
 
-/* ── Steps row ── */
+/* ── Cards row — fills width when few, scrolls when many ── */
 .jny2-steps {
   display: flex;
-  align-items: flex-start;
-  gap: 0;
+  flex-wrap: nowrap;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 .jny2-step {
-  flex: 1;
+  flex: 1 0 180px;
+  scroll-snap-align: start;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  min-width: 0;
 }
 
-/* Connector rail — left half */
-.jny2-step::before {
-  content: '';
-  position: absolute;
-  top: 27px;
-  left: 0;
-  right: 50%;
-  height: 2px;
-  background: var(--color-border);
-  z-index: 0;
-}
-/* Connector rail — right half */
-.jny2-step::after {
-  content: '';
-  position: absolute;
-  top: 27px;
-  left: 50%;
-  right: 0;
-  height: 2px;
-  background: var(--color-border);
-  z-index: 0;
-}
-.jny2-step:first-child::before { display: none; }
-.jny2-step--last::after         { display: none; }
+/* No circles, no rail */
+.jny2-step::before,
+.jny2-step::after { display: none; }
+.jny2-step__top   { display: none; }
 
-/* ── Circle ── */
-.jny2-step__top {
-  position: relative;
-  z-index: 1;
-  margin-bottom: 20px;
-}
-.jny2-step__circle {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(30,58,47,0.22);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.jny2-step:hover .jny2-step__circle {
-  transform: scale(1.08);
-  box-shadow: 0 8px 24px rgba(30,58,47,0.3);
-}
-.jny2-step__num {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 700;
-  line-height: 1;
-  color: inherit;
-}
-.jny2-step__circle .ah-ico,
-.jny2-step__circle .ah-emoji,
-.jny2-step__circle i {
-  font-size: 1.25rem;
-  color: #fff;
-}
-
-/* ── Body card ── */
+/* ── Card ── */
 .jny2-step__body {
   background: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg, 10px);
-  padding: 18px 14px 20px;
-  width: calc(100% - 16px);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 26px 22px 24px;
+  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  align-items: flex-start;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
 }
 .jny2-step:hover .jny2-step__body {
-  box-shadow: 0 6px 22px rgba(0,0,0,0.09);
-  border-color: rgba(30,58,47,0.18);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+  border-color: var(--color-primary, #1e3a2f);
+  transform: translateY(-3px);
 }
 
-/* Small step number badge (shown when icon fills the circle) */
-.jny2-step__badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: #fff;
-  font-size: 0.62rem;
+/* Step number chip */
+.jny2-step__num-chip {
+  font-size: 0.68rem;
   font-weight: 700;
-  margin-bottom: 10px;
-  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--color-primary, #1e3a2f);
+  background: rgba(30,58,47,0.08);
+  border-radius: 20px;
+  padding: 3px 11px;
+  margin-bottom: 18px;
+  display: inline-block;
+  line-height: 1.6;
 }
 
-/* Icon (shown when number fills the circle) */
+/* Optional icon */
 .jny2-step__icon {
-  font-size: 1.5rem;
-  color: var(--color-primary);
-  margin-bottom: 8px;
+  font-size: 1.6rem;
+  color: var(--color-primary, #1e3a2f);
+  margin-bottom: 12px;
   line-height: 1;
 }
 .jny2-step__icon .ah-ico,
@@ -1720,22 +1770,22 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 .jny2-step__label {
   display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-dark);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-dark, #1a2533);
   line-height: 1.35;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .jny2-step__desc {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  line-height: 1.6;
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #64748b);
+  line-height: 1.65;
   margin: 0;
 }
 
 /* ── Tip bar ── */
 .jny2-tip {
-  margin-top: 32px;
+  margin-top: 28px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1758,33 +1808,10 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .jny2-tip__cta:hover { color: var(--color-accent); }
 
 /* ── Responsive ── */
-@media (max-width: 860px) {
-  .jny2-steps {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .jny2-step::before,
-  .jny2-step::after { display: none; }
-  .jny2-step__body { width: 100%; }
-}
-@media (max-width: 540px) {
-  .jny2-steps {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .jny2-wrap { padding: 36px 0 32px; }
-  .jny2-header { margin-bottom: 32px; }
-  .jny2-step__body {
-    flex-direction: row;
-    text-align: left;
-    gap: 12px;
-    padding: 14px;
-  }
-  .jny2-step__top { margin-bottom: 0; flex-shrink: 0; }
-  .jny2-step__circle { width: 44px; height: 44px; }
-  .jny2-step__badge { margin-bottom: 0; align-self: flex-start; }
-  .jny2-step__label { margin-bottom: 4px; }
+@media (max-width: 500px) {
+  .jny2-wrap { padding: 36px 0; }
+  .jny2-steps { gap: 12px; }
+  .jny2-step__body { padding: 20px 16px 18px; }
 }
 
 
@@ -2899,7 +2926,6 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   .calcs-popular-grid { grid-template-columns: repeat(2, 1fr); }
   .calc-page-layout { grid-template-columns: 1fr 1fr; }
   .journey-cards { gap: 12px; }
-  .news-three-inner { grid-template-columns: 1fr 1fr; }
   .costs-grid { grid-template-columns: repeat(3, 1fr); }
   .article-layout { grid-template-columns: 1fr; }
   .article-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -2921,7 +2947,26 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   .guides-carousel .guide-card { flex: 0 0 200px; width: 200px; }
   .guides-carousel-btn { display: none; }
   .journey-card { flex: 0 0 280px; }
-  .news-three-inner { grid-template-columns: 1fr; }
+  /* mobile carousel — panels side-scroll, each fills the viewport */
+  .ntc-nav { display: flex; }
+  .news-three-inner {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 12px;
+    padding-bottom: 4px;
+    transition: height 0.25s ease;
+  }
+  .news-three-inner::-webkit-scrollbar { display: none; }
+  .news-three-inner > * {
+    flex: 0 0 calc(100% - 24px);
+    scroll-snap-align: start;
+  }
   .category-hero { min-height: 320px; }
   .category-hero-content { padding: 48px 0; max-width: 100%; }
   .phb-circle--c { display: none; }
@@ -3095,7 +3140,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 }
 .gpg-header-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   position: relative;
   z-index: 1;
@@ -3109,13 +3154,12 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
 }
 .gpg-logo {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  border-radius: 8px;
+  width: 50px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
   flex-shrink: 0;
   background: rgba(255,255,255,0.15);
-  padding: 4px;
 }
 .gpg-header-text { flex: 1; min-width: 0; }
 .gpg-name {
@@ -3208,10 +3252,10 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   gap: 0;
   align-items: start;
 }
-.gpg-body .gpg-grid { border-right: 1px solid var(--color-border); }
+.gpg-body .gpg-grid { border-right: 1px solid #d1d5db; }
 @media (max-width: 700px) {
   .gpg-body { grid-template-columns: 1fr; }
-  .gpg-body .gpg-grid { border-right: none; border-bottom: 1px solid var(--color-border); }
+  .gpg-body .gpg-grid { border-right: none; border-bottom: 1px solid #d1d5db; }
 }
 
 /* ── Latest posts list inside parent group ── */
@@ -3860,12 +3904,10 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 @media (max-width: 1100px) {
   .news-sp-row { grid-template-columns: 1fr 1fr; }
   .news-sp-row__news { grid-column: span 2; }
-  .news-three-inner { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 680px) {
   .news-sp-row { grid-template-columns: 1fr; }
   .news-sp-row__news { grid-column: auto; }
-  .news-three-inner { grid-template-columns: 1fr; }
 }
 
 /* ═══════════════════════════════════════════
