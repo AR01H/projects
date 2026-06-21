@@ -38,6 +38,7 @@ class AH_Admin_Menus {
 			['title' => 'Site Settings',     'menu' => 'Site Settings',     'slug' => 'ah-settings',      'callback' => 'page_settings'     ],
 			['title' => 'Audit Log',         'menu' => 'Audit Log',         'slug' => 'ah-audit',         'callback' => 'page_audit'        ],
 			['title' => 'Admin Actions',     'menu' => 'Admin Actions',     'slug' => 'ah-admin-actions', 'callback' => 'page_admin_actions'],
+			['title' => 'Reference Notes',   'menu' => '📋 Reference Notes', 'slug' => 'ah-ref-notes',     'callback' => 'page_ref_notes'    ],
 			['title' => 'Help & Guide',      'menu' => 'Help & Guide',      'slug' => 'ah-help',          'callback' => 'page_help'         ],
 		];
 
@@ -96,5 +97,6 @@ class AH_Admin_Menus {
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }
 	public static function page_analytics()      { self::load( 'analytics'      ); }
+	public static function page_ref_notes()      { self::load( 'reference-notes' ); }
 	public static function page_help()           { self::load( 'help'           ); }
 }
