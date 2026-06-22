@@ -436,6 +436,7 @@ function adn_get_contact_setting( string $key ): string {
 	if ( null === $cache ) {
 		global $wpdb;
 		$table = $wpdb->prefix . 'ah_site_settings';
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- table from $wpdb->prefix, WHERE is a static literal
 		$rows  = $wpdb->get_results(
 			"SELECT setting_key, setting_val FROM `{$table}` WHERE group_name = 'contact'",
 			ARRAY_A

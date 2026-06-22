@@ -20,8 +20,12 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ah_dele
 	$del_id = (int) $_GET['delete_id'];
 	$row    = $model->find( $del_id );
 	if ( $row ) {
-		$upload_dir = wp_upload_dir();
-		@unlink( $upload_dir['basedir'] . $row->file_path );
+		$upload_dir    = wp_upload_dir();
+		$allowed_base  = realpath( $upload_dir['basedir'] );
+		$resolved_path = realpath( $upload_dir['basedir'] . $row->file_path );
+		if ( $allowed_base && $resolved_path && str_starts_with( $resolved_path, $allowed_base ) ) {
+			@unlink( $resolved_path );
+		}
 		$model->delete( $del_id );
 		$notice = 'File deleted.';
 	}

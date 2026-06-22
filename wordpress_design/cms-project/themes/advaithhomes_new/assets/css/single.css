@@ -15,7 +15,7 @@
 /* ── Outer Wrapper ──────────────────────────────────────────── */
 .article-outer {
     margin: 0 auto;
-    padding: 48px 24px 80px;
+    padding: 16px 24px 80px;
 }
 
 /* ── Two-Column Layout (main + sidebar) ─────────────────────── */
@@ -1022,14 +1022,19 @@
     }
 
     .article-right-col {
+        display: contents;
+    }
+
+    .article-toc-wrapper {
         order: 1;
-        position: static;
-        max-height: none;
-        overflow-y: visible;
     }
 
     .article-main {
         order: 2;
+    }
+
+    .article-sidebar {
+        order: 3;
     }
 
     .takeaways-grid {

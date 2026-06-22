@@ -1,5 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
 $saved       = isset( $_GET['saved'] );
 $nav_items   = AH_Admin_Bootstrap::get_navigation_data();

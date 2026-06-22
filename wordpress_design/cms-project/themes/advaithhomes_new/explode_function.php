@@ -9,7 +9,6 @@ function ahn_include_files() {
         '/calculators/calculators.php',// [ah_calculator] shortcode + isolated (iframe) calculator renderer
         '/apis/models/post.php',       // API models must load before the routes that use them
         '/apis/fetch_functions.php',   // REST route registration + callbacks
-        '/apis/callbacks.php',
     );
     foreach ( $files as $file ) {
         $path = ADN_THEME_DIR . $file;

@@ -113,7 +113,7 @@ function adn_load_calculator_view( $key ) {
 	if ( class_exists( 'AH_Calculator_DB' ) ) {
 		$row = AH_Calculator_DB::get( $key );
 		if ( $row && '' !== $row['html_content'] ) {
-			echo $row['html_content'];
+			echo wp_kses_post( $row['html_content'] );
 		}
 	}
 }

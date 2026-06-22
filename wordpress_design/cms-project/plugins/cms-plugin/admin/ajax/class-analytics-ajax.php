@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 class AH_Analytics_Ajax {
 
 	/* Max rows returned to browser to keep responses fast */
-	const PREVIEW_LIMIT = 5000000000000000000;
+	const PREVIEW_LIMIT = 500;
 
 	public static function init(): void {
 		$actions = [

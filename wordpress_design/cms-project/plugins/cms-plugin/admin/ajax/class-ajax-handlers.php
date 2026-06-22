@@ -12,7 +12,6 @@ class AH_Ajax_Handlers {
 			'ah_get_media',
 			'ah_upload_media',
 			'ah_delete_media',
-			'ah_mark_submission',
 			'ah_save_nav_item',
 			'ah_delete_nav_item',
 			// Static pages
@@ -69,7 +68,7 @@ class AH_Ajax_Handlers {
 		$updated = $wpdb->update( $full_table, array( 'status' => $new_status ), array( 'id' => $id ), array( '%s' ), array( '%d' ) );
 
 		if ( false === $updated ) {
-			wp_send_json_error( array( 'message' => 'DB error: ' . $wpdb->last_error ) );
+			wp_send_json_error( array( 'message' => 'Database error. Please try again.' ) );
 		}
 
 		AH_DB_Helper::log_action( 'update', $table, $id, array( 'status' => $new_status ) );
@@ -105,7 +104,7 @@ class AH_Ajax_Handlers {
 		$deleted    = $wpdb->delete( $full_table, array( 'id' => $id ), array( '%d' ) );
 
 		if ( false === $deleted ) {
-			wp_send_json_error( array( 'message' => 'DB error: ' . $wpdb->last_error ) );
+			wp_send_json_error( array( 'message' => 'Database error. Please try again.' ) );
 		}
 
 		AH_DB_Helper::log_action( 'delete', $model, $id );
@@ -209,35 +208,18 @@ class AH_Ajax_Handlers {
 
 		if ( ! $row ) wp_send_json_error( array( 'message' => 'Media not found.' ) );
 
-		// Remove file from disk
-		$upload_dir = wp_upload_dir();
-		$file_path  = trailingslashit( $upload_dir['basedir'] ) . 'ah-media/' . ltrim( $row->file_path ?? '', '/' );
-		if ( file_exists( $file_path ) ) {
-			@unlink( $file_path );
+		// Remove file from disk — realpath() ensures the path can't escape the upload directory.
+		$upload_dir    = wp_upload_dir();
+		$allowed_base  = realpath( $upload_dir['basedir'] . '/ah-media' );
+		$file_path     = trailingslashit( $upload_dir['basedir'] ) . 'ah-media/' . ltrim( $row->file_path ?? '', '/' );
+		$resolved_path = realpath( $file_path );
+		if ( $allowed_base && $resolved_path && str_starts_with( $resolved_path, $allowed_base ) ) {
+			@unlink( $resolved_path );
 		}
 
 		$wpdb->delete( $table, array( 'id' => $id ), array( '%d' ) );
 		AH_DB_Helper::log_action( 'delete', 'media', $id );
 		wp_send_json_success( array( 'deleted' => $id ) );
-	}
-
-	// -------------------------------------------------------------------------
-	// ah_mark_submission
-	// -------------------------------------------------------------------------
-	public static function handle_mark_submission() {
-		self::verify();
-
-		$id     = (int) ( $_POST['id'] ?? 0 );
-		$status = sanitize_key( $_POST['status'] ?? '' );
-		$allowed = array( 'new', 'read', 'replied', 'spam', 'archived' );
-
-		if ( ! $id || ! in_array( $status, $allowed, true ) ) {
-			wp_send_json_error( array( 'message' => 'Invalid parameters.' ) );
-		}
-
-		$model = new AH_Contact_Model();
-		$model->mark_status( $id, $status );
-		wp_send_json_success( array( 'status' => $status ) );
 	}
 
 	// -------------------------------------------------------------------------
@@ -469,7 +451,7 @@ class AH_Ajax_Handlers {
 	public static function handle_flush_rewrites(): void {
 		self::verify();
 		flush_rewrite_rules( true );
-		AH_DB_Helper::log_action( 'admin_action', 'system', null, array( 'action' => 'flush_rewrites' ) );
+		AH_DB_Helper::log_action( 'admin_action', 'system', 0, array( 'action' => 'flush_rewrites' ) );
 		wp_send_json_success( array( 'message' => 'Rewrite rules flushed successfully.' ) );
 	}
 
@@ -482,7 +464,7 @@ class AH_Ajax_Handlers {
 		$deleted = $wpdb->query(
 			"DELETE FROM `{$wpdb->options}` WHERE `option_name` LIKE '_transient_%' OR `option_name` LIKE '_site_transient_%'"
 		);
-		AH_DB_Helper::log_action( 'admin_action', 'system', null, array( 'action' => 'clear_transients', 'deleted' => $deleted ) );
+		AH_DB_Helper::log_action( 'admin_action', 'system', 0, array( 'action' => 'clear_transients', 'deleted' => $deleted ) );
 		wp_send_json_success( array( 'message' => "Cleared {$deleted} transient entries." ) );
 	}
 
@@ -542,7 +524,7 @@ class AH_Ajax_Handlers {
 		global $wpdb;
 		$table   = AH_DB_Helper::table( 'form_submissions' );
 		$deleted = $wpdb->query( "DELETE FROM `{$table}`" );
-		AH_DB_Helper::log_action( 'admin_action', 'system', null, array( 'action' => 'clear_form_submissions', 'deleted' => $deleted ) );
+		AH_DB_Helper::log_action( 'admin_action', 'system', 0, array( 'action' => 'clear_form_submissions', 'deleted' => $deleted ) );
 		wp_send_json_success( array( 'message' => "Cleared {$deleted} form submission(s)." ) );
 	}
 

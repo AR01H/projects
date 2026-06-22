@@ -31,13 +31,19 @@ class ADN_Rules {
 	// ── Front-end form triggers ───────────────────────────────────────────────
 
 	/** General contact form submission (pages/page-contact.php). */
-	const CONTACT_FORM     = 'advaith_contact_form';
+	const CONTACT_FORM      = 'advaith_contact_form';
 
 	/** Property / buying enquiry submission. */
-	const PROPERTY_ENQUIRY = 'advaith_property_enquiry';
+	const PROPERTY_ENQUIRY  = 'advaith_property_enquiry';
 
 	/** "Request a callback" submission. */
-	const CALLBACK_REQUEST = 'advaith_callback_request';
+	const CALLBACK_REQUEST  = 'advaith_callback_request';
+
+	/** Newsletter signup (POST /api/v1/subscribe). */
+	const NEWSLETTER_SIGNUP = 'advaith_newsletter_signup';
+
+	/** Guidance form submission (POST /api/v1/guidance). */
+	const GUIDANCE_FORM     = 'advaith_guidance_form';
 
 	/**
 	 * Convenience list of all triggers this theme owns.
@@ -47,9 +53,11 @@ class ADN_Rules {
 	 */
 	public static function all() {
 		return array(
-			self::CONTACT_FORM     => 'Contact Form Submitted',
-			self::PROPERTY_ENQUIRY => 'Property Enquiry Submitted',
-			self::CALLBACK_REQUEST => 'Callback Requested',
+			self::CONTACT_FORM      => 'Contact Form Submitted',
+			self::PROPERTY_ENQUIRY  => 'Property Enquiry Submitted',
+			self::CALLBACK_REQUEST  => 'Callback Requested',
+			self::NEWSLETTER_SIGNUP => 'Newsletter Signup',
+			self::GUIDANCE_FORM     => 'Guidance Form Submitted',
 		);
 	}
 }

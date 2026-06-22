@@ -24,12 +24,17 @@ class AH_Settings_Model extends AH_Model_Base {
 
 	public function set_value( string $key, string $value ): bool {
 		global $wpdb;
-		$table = $this->table();
+		$table  = $this->table();
 		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE setting_key = %s", $key ) );
 		if ( $exists ) {
-			return (bool) $wpdb->update( $table, array( 'setting_val' => $value ), array( 'setting_key' => $key ) );
+			$result = (bool) $wpdb->update( $table, array( 'setting_val' => $value ), array( 'setting_key' => $key ) );
+		} else {
+			$result = (bool) $wpdb->insert( $table, array( 'setting_key' => $key, 'setting_val' => $value ) );
 		}
-		return (bool) $wpdb->insert( $table, array( 'setting_key' => $key, 'setting_val' => $value ) );
+		if ( $result ) {
+			AH_DB_Helper::log_action( 'update', 'settings', 0, array( 'key' => $key ) );
+		}
+		return $result;
 	}
 
 	public function save_group( string $group, array $key_values ): void {

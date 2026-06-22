@@ -29,12 +29,6 @@ class AH_Posts_Model extends AH_Model_Base {
 
 	public function sync_taxonomies( int $post_id, array $taxonomy_ids ): void {
 		( new AH_Content_Taxonomy_Model() )->sync_terms( 'ah_post', $post_id, $taxonomy_ids );
-
-		$t = AH_DB_Helper::table( 'post_taxonomies' );
-		AH_DB_Helper::delete_where( $t, array( 'post_id' => $post_id ) );
-		foreach ( array_unique( $taxonomy_ids ) as $tid ) {
-			AH_DB_Helper::insert( $t, array( 'post_id' => $post_id, 'taxonomy_id' => (int) $tid ) );
-		}
 	}
 
 	public function get_links( int $post_id ): array {

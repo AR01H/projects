@@ -100,10 +100,6 @@ function adn_route_parent_term_template( $template ) {
 		return $template;
 	}
 
-	// Use sanitize_title so hyphenated slugs (e.g. "fruits-parent-term")
-	// are preserved and match values stored in the CMS tables.
-	// Use sanitize_title so hyphenated slugs (e.g. "fruits-parent-term")
-	// are preserved and match values stored in the CMS tables.
 	$slug = sanitize_title( $path );
 
 	// Debug helper: when WP_DEBUG is enabled, log the incoming path and

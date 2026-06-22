@@ -168,16 +168,6 @@ function ah_render_related_links_shortcode( $atts ): string {
 	return ob_get_clean();
 }
 
-// ── ahTheme JS object (needed by form-builder shortcode frontend JS) ─────────
-// The active theme's functions.php should enqueue its own scripts; this only
-// localizes the object so fetch() in the shortcode can reach admin-ajax.php.
-add_action( 'wp_enqueue_scripts', static function () {
-	wp_localize_script( 'jquery', 'ahTheme', array(
-		'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-		'nonce'   => wp_create_nonce( 'ah_frontend_nonce' ),
-	) );
-} );
-
 // ── Database ─────────────────────────────────────────────────────────────────
 register_activation_hook( __FILE__, array( 'AH_DB_Installer', 'install' ) );
 add_action( 'wp_loaded', array( 'AH_DB_Installer', 'maybe_upgrade' ) );

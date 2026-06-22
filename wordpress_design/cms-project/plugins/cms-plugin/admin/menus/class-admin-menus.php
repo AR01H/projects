@@ -10,36 +10,39 @@ class AH_Admin_Menus {
 		add_menu_page(__( 'CMS ADMIN', 'ah-theme' ),__( 'CMS ADMIN', 'ah-theme' ),self::$cap,'ah-dashboard',[self::class,'page_dashboard'],'dashicons-admin-home',3);
 
 		$submenus = [
-			// ── Core ──────────────────────────────────────────────────
-			['title' => 'Dashboard',         'menu' => 'Dashboard',         'slug' => 'ah-dashboard',     'callback' => 'page_dashboard'    ],
-			['title' => 'Reviews',           'menu' => 'Reviews',           'slug' => 'ah-reviews',       'callback' => 'page_reviews'      ],
-			['title' => 'Client Stories',    'menu' => 'Client Stories',    'slug' => 'ah-client-stories','callback' => 'page_client_stories'],
-			['title' => 'FAQs',              'menu' => 'FAQs',              'slug' => 'ah-faqs',          'callback' => 'page_faqs'         ],
-			// ── Site Structure ────────────────────────────────────────
-			['title' => 'Navigation',        'menu' => 'Navigation Editor', 'slug' => 'ah-navigation',    'callback' => 'page_navigation'   ],
-			['title' => 'Home Banners',      'menu' => 'Home Banners',      'slug' => 'ah-banners',       'callback' => 'page_banners'      ],
-			['title' => 'Spotlights',        'menu' => 'Spotlights',        'slug' => 'ah-spotlights',    'callback' => 'page_spotlights'   ],
-			['title' => 'Site Notices',      'menu' => 'Site Notices',      'slug' => 'ah-notices',       'callback' => 'page_notices'      ],
-			['title' => 'News Bar',          'menu' => 'News Bar',          'slug' => 'ah-news-bar',      'callback' => 'page_news_bar'     ],
-			['title' => 'Media Library',     'menu' => 'Media Library',     'slug' => 'ah-media',         'callback' => 'page_media'        ],
-			['title' => 'File Links',        'menu' => 'File Links',        'slug' => 'ah-file-links',    'callback' => 'page_file_links'   ],
-			// ── Builder Tools ─────────────────────────────────────────
-			['title' => 'Posts / Blog',      'menu' => 'Posts / Blog',      'slug' => 'ah-posts',         'callback' => 'page_posts'        ],
-			['title' => 'Page Builder',      'menu' => 'Page Builder',      'slug' => 'ah-page-builder',  'callback' => 'page_builder'      ],
-			['title' => 'Static Pages',      'menu' => 'Static Pages',      'slug' => 'ah-static-pages',  'callback' => 'page_static_pages' ],
-			['title' => 'Pages Manager',     'menu' => 'Pages Manager',     'slug' => 'ah-pages',         'callback' => 'page_pages'        ],
-			['title' => 'Form Builder',      'menu' => 'Form Builder',      'slug' => 'ah-form-builder',  'callback' => 'page_form_builder' ],
-			['title' => 'Notifications',      'menu' => 'Notifications',  'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
-			['title' => 'Taxonomies',        'menu' => 'Taxonomies',        'slug' => 'ah-taxonomy',      'callback' => 'page_taxonomy'     ],
+			// ── Dashboard ─────────────────────────────────────────────
+			['title' => 'Dashboard',            'menu' => 'Dashboard',            'slug' => 'ah-dashboard',     'callback' => 'page_dashboard'    ],
+			// ── Content ───────────────────────────────────────────────
+			['title' => 'Blog Posts',           'menu' => 'Blog Posts',           'slug' => 'ah-posts',         'callback' => 'page_posts'        ],
+			['title' => 'Reviews',              'menu' => 'Reviews',              'slug' => 'ah-reviews',       'callback' => 'page_reviews'      ],
+			['title' => 'Client Stories',       'menu' => 'Client Stories',       'slug' => 'ah-client-stories','callback' => 'page_client_stories'],
+			['title' => 'FAQs',                 'menu' => 'FAQs',                 'slug' => 'ah-faqs',          'callback' => 'page_faqs'         ],
+			['title' => 'Taxonomy Manager',     'menu' => 'Taxonomy Manager',     'slug' => 'ah-taxonomy',      'callback' => 'page_taxonomy'     ],
+			// ── Site Layout ───────────────────────────────────────────
+			['title' => 'Navigation Editor',    'menu' => 'Navigation Editor',    'slug' => 'ah-navigation',    'callback' => 'page_navigation'   ],
+			['title' => 'Home Banners',         'menu' => 'Home Banners',         'slug' => 'ah-banners',       'callback' => 'page_banners'      ],
+			['title' => 'Spotlights',           'menu' => 'Spotlights',           'slug' => 'ah-spotlights',    'callback' => 'page_spotlights'   ],
+			['title' => 'Site Notices',         'menu' => 'Site Notices',         'slug' => 'ah-notices',       'callback' => 'page_notices'      ],
+			['title' => 'News Bar',             'menu' => 'News Bar',             'slug' => 'ah-news-bar',      'callback' => 'page_news_bar'     ],
+			// ── Pages & Builders ──────────────────────────────────────
+			['title' => 'Page Builder',         'menu' => 'Page Builder',         'slug' => 'ah-page-builder',  'callback' => 'page_builder'      ],
+			['title' => 'Static Pages',         'menu' => 'Static Pages',         'slug' => 'ah-static-pages',  'callback' => 'page_static_pages' ],
+			['title' => 'Pages Manager',        'menu' => 'Pages Manager',        'slug' => 'ah-pages',         'callback' => 'page_pages'        ],
+			// ── Forms & Communication ─────────────────────────────────
+			['title' => 'Form Builder',         'menu' => 'Form Builder',         'slug' => 'ah-form-builder',  'callback' => 'page_form_builder' ],
+			['title' => 'Notifications',        'menu' => 'Notifications',        'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
+			// ── Assets ────────────────────────────────────────────────
+			['title' => 'Media Library',        'menu' => 'Media Library',        'slug' => 'ah-media',         'callback' => 'page_media'        ],
+			['title' => 'File Links',           'menu' => 'File Links',           'slug' => 'ah-file-links',    'callback' => 'page_file_links'   ],
 			// ── System ────────────────────────────────────────────────
-			['title' => 'Analytics Reports', 'menu' => 'Analytics Reports', 'slug' => 'ah-analytics',     'callback' => 'page_analytics'    ],
-			['title' => 'Triggers Maker',    'menu' => 'Triggers Maker',    'slug' => 'ah-rules-engine',  'callback' => 'page_rules_engine' ],
-			['title' => 'Data Import',       'menu' => 'Data Import',       'slug' => 'ah-import',        'callback' => 'page_import'       ],
-			['title' => 'Site Settings',     'menu' => 'Site Settings',     'slug' => 'ah-settings',      'callback' => 'page_settings'     ],
-			['title' => 'Audit Log',         'menu' => 'Audit Log',         'slug' => 'ah-audit',         'callback' => 'page_audit'        ],
-			['title' => 'Admin Actions',     'menu' => 'Admin Actions',     'slug' => 'ah-admin-actions', 'callback' => 'page_admin_actions'],
-			['title' => 'Reference Notes',   'menu' => 'Reference Notes', 'slug' => 'ah-ref-notes',     'callback' => 'page_ref_notes'    ],
-			['title' => 'Help & Guide',      'menu' => 'Help & Guide',      'slug' => 'ah-help',          'callback' => 'page_help'         ],
+			['title' => 'Analytics Reports',    'menu' => 'Analytics Reports',    'slug' => 'ah-analytics',     'callback' => 'page_analytics'    ],
+			['title' => 'Rules Engine',         'menu' => 'Rules Engine',         'slug' => 'ah-rules-engine',  'callback' => 'page_rules_engine' ],
+			['title' => 'Data Import',          'menu' => 'Data Import',          'slug' => 'ah-import',        'callback' => 'page_import'       ],
+			['title' => 'Site Settings',        'menu' => 'Site Settings',        'slug' => 'ah-settings',      'callback' => 'page_settings'     ],
+			['title' => 'Audit Log',            'menu' => 'Audit Log',            'slug' => 'ah-audit',         'callback' => 'page_audit'        ],
+			['title' => 'Admin Tools',          'menu' => 'Admin Tools',          'slug' => 'ah-admin-actions', 'callback' => 'page_admin_actions'],
+			['title' => 'Reference Notes',      'menu' => 'Reference Notes',      'slug' => 'ah-ref-notes',     'callback' => 'page_ref_notes'    ],
+			['title' => 'Help & Guide',         'menu' => 'Help & Guide',         'slug' => 'ah-help',          'callback' => 'page_help'         ],
 		];
 
 		// Let theme define which menus to exclude
@@ -84,7 +87,6 @@ class AH_Admin_Menus {
     public static function page_faqs()           { self::load( 'faqs'           ); }
 	public static function page_posts()          { self::load( 'posts'          ); }
 	public static function page_client_stories() { self::load( 'client-stories' ); }
-	public static function page_contact()        { self::load( 'contact'        ); }
 	public static function page_taxonomy()       { self::load( 'taxonomy'       ); }
 	public static function page_audit()          { self::load( 'audit-log'      ); }
 	public static function page_import()         { self::load( 'import'         ); }
@@ -92,7 +94,6 @@ class AH_Admin_Menus {
 	public static function page_builder()         { self::load( 'page-builder'    ); }
 	public static function page_form_builder()   { self::load( 'form-builder'   ); }
 	public static function page_newsletter()     { self::load( 'notifications'  ); }
-	public static function page_guidance()      { self::load( 'guidance'       ); }
 	public static function page_rules_engine()   { self::load( 'rules-engine'   ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }

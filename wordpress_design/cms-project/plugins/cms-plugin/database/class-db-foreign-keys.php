@@ -109,20 +109,6 @@ class AH_DB_Foreign_Keys {
 			"ALTER TABLE {$p}ah_section_faq_header
 				ADD CONSTRAINT fk_sfh_page FOREIGN KEY (page_id) REFERENCES {$p}ah_pages(id) ON DELETE CASCADE",
 
-			"ALTER TABLE {$p}ah_services
-				ADD CONSTRAINT fk_svc_img  FOREIGN KEY (image_id)   REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,
-				ADD CONSTRAINT fk_svc_user FOREIGN KEY (created_by) REFERENCES {$p}ah_admin_users(id) ON DELETE SET NULL",
-
-			"ALTER TABLE {$p}ah_service_bullet_points
-				ADD CONSTRAINT fk_sbp_svc FOREIGN KEY (service_id) REFERENCES {$p}ah_services(id) ON DELETE CASCADE",
-
-			"ALTER TABLE {$p}ah_services_page_header
-				ADD CONSTRAINT fk_sph_page FOREIGN KEY (page_id)    REFERENCES {$p}ah_pages(id)       ON DELETE CASCADE,
-				ADD CONSTRAINT fk_sph_user FOREIGN KEY (updated_by) REFERENCES {$p}ah_admin_users(id) ON DELETE SET NULL",
-
-			"ALTER TABLE {$p}ah_service_taxonomies
-				ADD CONSTRAINT fk_stax_svc FOREIGN KEY (service_id)  REFERENCES {$p}ah_services(id)  ON DELETE CASCADE,
-				ADD CONSTRAINT fk_stax_tax FOREIGN KEY (taxonomy_id) REFERENCES {$p}ah_taxonomies(id) ON DELETE CASCADE",
 			"ALTER TABLE {$p}ah_posts
 				ADD CONSTRAINT fk_pt_feat   FOREIGN KEY (featured_image_id) REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,
 				ADD CONSTRAINT fk_pt_banner FOREIGN KEY (banner_image_id)   REFERENCES {$p}ah_media(id)       ON DELETE SET NULL,

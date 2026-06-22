@@ -10,7 +10,7 @@
   grid-template-columns: 1fr 280px;
   gap: 40px;
   align-items: start;
-  padding: 40px 0 64px;
+  padding: 0 0 64px;
 }
 .article-main {}
 
@@ -386,7 +386,7 @@
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .article-layout { grid-template-columns: 1fr; }
+  .article-layout { display:flex;flex-wrap:wrap; }
   .article-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .article-toc { position: static; }
   .costs-grid { grid-template-columns: repeat(3, 1fr); }

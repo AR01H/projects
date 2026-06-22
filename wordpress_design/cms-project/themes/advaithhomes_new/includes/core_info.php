@@ -7,12 +7,12 @@ $_ah_info = array();
 global $wpdb;
 if ( $wpdb ) {
 	$_t = $wpdb->prefix . 'ah_site_settings';
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '{$_t}'" ) ) {
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $_t ) ) ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- table from $wpdb->prefix, WHERE values are static literals
 		$_rows = $wpdb->get_results(
 			"SELECT setting_key, setting_val FROM `{$_t}` WHERE group_name IN ('general','contact')",
 			ARRAY_A
-		); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		);
 		if ( is_array( $_rows ) ) {
 			foreach ( $_rows as $_r ) {
 				$_ah_info[ (string) $_r['setting_key'] ] = (string) $_r['setting_val'];

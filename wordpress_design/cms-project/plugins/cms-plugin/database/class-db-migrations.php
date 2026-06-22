@@ -40,7 +40,6 @@ class AH_DB_Migrations {
 		self::faq_tags_taxonomy_type();
 		self::contact_form_rule_cc();
 		self::spotlight_terms_page_slug();
-		self::parent_terms_spotlight_term_id();
 	}
 
 	// ── Column migrations ─────────────────────────────────────────────────────
@@ -330,10 +329,6 @@ class AH_DB_Migrations {
 
 	public static function spotlight_terms_page_slug(): void {
 		self::add_column_if_missing( 'ah_spotlight_terms', 'page_slug', "VARCHAR(200) NOT NULL DEFAULT '' AFTER `slug`" );
-	}
-
-	public static function parent_terms_spotlight_term_id(): void {
-		// no-op — spotlight term is now selected at theme level, not stored on parent terms
 	}
 
 	// ── Helper ────────────────────────────────────────────────────────────────

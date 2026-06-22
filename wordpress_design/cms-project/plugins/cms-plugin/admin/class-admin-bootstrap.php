@@ -365,7 +365,7 @@ CSS;
 	private static function normalize_navigation( array $items ): array {
 		$normalized = array();
 		foreach ( $items as $index => $item ) {
-			$item  = is_object( $item ) ? (array) $item : (array) $item;
+			$item  = (array) $item;
 			$label = sanitize_text_field( $item['label'] ?? '' );
 			if ( $label === '' ) {
 				continue;
@@ -374,7 +374,7 @@ CSS;
 			$type    = ( $item['type'] ?? 'link' ) === 'dropdown' ? 'dropdown' : 'link';
 			$submenu = array();
 			foreach ( (array) ( $item['submenu'] ?? array() ) as $sub_item ) {
-				$sub_item  = is_object( $sub_item ) ? (array) $sub_item : (array) $sub_item;
+				$sub_item  = (array) $sub_item;
 				$sub_label = sanitize_text_field( $sub_item['label'] ?? '' );
 				$sub_url   = self::clean_nav_url( (string) ( $sub_item['url'] ?? '' ) );
 				if ( $sub_label === '' || $sub_url === '' ) {
@@ -408,11 +408,11 @@ CSS;
 	private static function normalize_footer( array $footer ): array {
 		$columns = array();
 		foreach ( (array) ( $footer['columns'] ?? array() ) as $column ) {
-			$column = is_object( $column ) ? (array) $column : (array) $column;
+			$column = (array) $column;
 			$title  = sanitize_text_field( $column['title'] ?? '' );
 			$items  = array();
 			foreach ( (array) ( $column['items'] ?? array() ) as $item ) {
-				$item  = is_object( $item ) ? (array) $item : (array) $item;
+				$item  = (array) $item;
 				$label = sanitize_text_field( $item['label'] ?? '' );
 				$url   = self::clean_nav_url( (string) ( $item['url'] ?? '' ) );
 				if ( $label === '' || $url === '' ) {
@@ -436,7 +436,7 @@ CSS;
 
 		$legal_links = array();
 		foreach ( (array) ( $footer['legal_links'] ?? array() ) as $item ) {
-			$item  = is_object( $item ) ? (array) $item : (array) $item;
+			$item  = (array) $item;
 			$label = sanitize_text_field( $item['label'] ?? '' );
 			$url   = self::clean_nav_url( (string) ( $item['url'] ?? '' ) );
 			if ( $label === '' || $url === '' ) {

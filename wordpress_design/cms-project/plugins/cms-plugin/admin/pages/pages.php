@@ -109,14 +109,7 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
         </tbody>
       </table>
     </div>
-    <?php if ( $pages_count > 1 ) : ?>
-      <div style="margin-top:16px;display:flex;gap:6px;">
-        <?php for ( $p = 1; $p <= $pages_count; $p++ ) : ?>
-          <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-pages', 'paged' => $p ), admin_url( 'admin.php' ) ) ); ?>"
-             class="ah-btn ah-btn-sm <?php echo $p === $paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?>"><?php echo $p; ?></a>
-        <?php endfor; ?>
-      </div>
-    <?php endif; ?>
+    <?php echo AH_Pagination::render( array( 'total' => $total, 'total_pages' => $pages_count, 'current_page' => $paged ) ); ?>
 
   <?php else :
     $wp_page   = $edit_id ? get_post( $edit_id ) : null;

@@ -94,12 +94,11 @@ get_header();
 		<?php /* ── RIGHT COLUMN: TOC + Sidebar ── */ ?>
 		<div class="article-right-col">
 
-		<?php /* TOC - single.js auto-generates links from .article-body h2 headings */ ?>
-		<div class="article-toc-wrapper">
-			<?php adn_component( 'parts/post_sidebar_toc' ); ?>
-		</div>
+			<div class="article-toc-wrapper">
+				<?php adn_component( 'parts/post_sidebar_toc' ); ?>
+			</div>
 
-		<aside class="article-sidebar" aria-label="<?php esc_attr_e( 'Article sidebar', ADN_TEXT_DOMAIN ); ?>">
+			<aside class="article-sidebar" aria-label="<?php esc_attr_e( 'Article sidebar', ADN_TEXT_DOMAIN ); ?>">
 			<?php /* Related guides (from WP_Query - same category, latest 4) */ ?>
 			<?php if ( ! empty( $ctx['related_guides'] ) ) : ?>
 				<div class="">

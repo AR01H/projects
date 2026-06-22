@@ -94,7 +94,7 @@ class AH_DB_Helper {
 	public static function insert( string $table, array $data ): int {
 		global $wpdb;
 		$result = $wpdb->insert( $table, $data );
-		return $result !== false ? $wpdb->insert_id : false;
+		return $result !== false ? (int) $wpdb->insert_id : 0;
 	}
 
 	public static function update( string $table, array $data, int $id ): bool {

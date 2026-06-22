@@ -465,7 +465,6 @@ class AH_CSV_Importer {
 	// -------------------------------------------------------------------------
 	private static function import_events( array $rows ): array {
 		global $wpdb;
-		AH_DB_Installer::ensure_events_table();
 		$table        = AH_DB_Helper::table( 'events' );
 		$valid_colors = array( 'green', 'amber', 'teal', 'purple', 'coral', 'indigo' );
 		$result       = array( 'imported' => 0, 'skipped' => 0, 'errors' => array() );
