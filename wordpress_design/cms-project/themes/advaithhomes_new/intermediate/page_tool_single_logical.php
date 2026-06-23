@@ -24,9 +24,7 @@ function adn_calculator_single_get_context( $key ) {
 	$meta     = ( isset( $meta_all[ $key ] ) && is_array( $meta_all[ $key ] ) ) ? $meta_all[ $key ] : array();
 
 	// ── Core fields ───────────────────────────────────────────────────────
-	$title = ( isset( $meta['label'] ) && '' !== $meta['label'] )
-		? (string) $meta['label']
-		: ( ! empty( $calc['title'] ) ? (string) $calc['title'] : $key );
+	$title = $calc['title'] ;
 
 	$desc  = ( isset( $meta['desc'] ) && '' !== $meta['desc'] ) ? (string) $meta['desc'] : '';
 	$icon  = ! empty( $calc['icon'] ) ? (string) $calc['icon'] : '🧮';

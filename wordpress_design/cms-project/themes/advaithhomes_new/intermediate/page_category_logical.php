@@ -201,10 +201,8 @@ function adn_category_latest_updates( $slug, $limit = 4 ) {
 			}
 			$items[] = array(
 				'thumbnail' => $_thumb,
-				'overlay'   => 'Latest Update',
 				'icon'      => '📋',
 				'title'     => (string) $post->title,
-				'date'      => function_exists( 'adn_cms_post_date' ) ? adn_cms_post_date( $post ) : '',
 				'url'       => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $post )  : '#',
 			);
 		}

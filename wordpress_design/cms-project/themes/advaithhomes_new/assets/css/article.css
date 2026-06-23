@@ -10,7 +10,6 @@
   grid-template-columns: 1fr 280px;
   gap: 40px;
   align-items: start;
-  padding: 0 0 64px;
 }
 .article-main {}
 

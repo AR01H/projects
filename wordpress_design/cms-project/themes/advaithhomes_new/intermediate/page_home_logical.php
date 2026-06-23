@@ -102,7 +102,7 @@ function adn_home_get_context() {
 			}
 			$_hp_items[] = array(
 				'icon'      => ! empty( $_hpc['icon'] )      ? (string) $_hpc['icon']      : adn_term( 'icons.tools', '🧮' ),
-				'name'      => ! empty( $_hpm['label'] )     ? (string) $_hpm['label']     : ( ! empty( $_hpc['title'] ) ? (string) $_hpc['title'] : $_hpk ),
+				'name'      =>  $_hpc['title']?? '',
 				'url'       => ! empty( $_hpm['card_url'] )  ? (string) $_hpm['card_url']  : home_url( '/?ah_calc_page=' . rawurlencode( $_hpk ) ),
 				'thumbnail' => $_hpthumb,
 				'highlight' => ! empty( $_hpm['highlight'] ) ? (string) $_hpm['highlight'] : '',

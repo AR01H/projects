@@ -105,7 +105,7 @@ function adn_calculators_get_context() {
 		$all_tools[] = array(
 			'icon'       => ! empty( $calc['icon'] )      ? (string) $calc['icon']      : '🧮',
 			'categories' => $cats,
-			'title'      => ! empty( $meta['label'] )     ? (string) $meta['label']     : ( ! empty( $calc['title'] ) ? (string) $calc['title'] : $key ),
+			'title'      => $calc['title']??'',
 			'desc'       => ! empty( $meta['desc'] )      ? (string) $meta['desc']      : '',
 			'url'        => $url,
 			'thumbnail'  => $thumb,
@@ -151,7 +151,7 @@ function adn_calculators_get_context() {
 		}
 		$popular_tools[] = array(
 			'icon'      => ! empty( $pcalc['icon'] )       ? (string) $pcalc['icon']       : adn_term( 'icons.tools', '🧮' ),
-			'title'     => ! empty( $pmeta['label'] )      ? (string) $pmeta['label']      : ( ! empty( $pcalc['title'] ) ? (string) $pcalc['title'] : $pk ),
+			'title'     => $pcalc['title'] ?? '',
 			'desc'      => ! empty( $pmeta['desc'] )       ? (string) $pmeta['desc']       : '',
 			'url'       => ! empty( $pmeta['card_url'] )   ? (string) $pmeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $pk ) ),
 			'thumbnail' => $pthumb,
