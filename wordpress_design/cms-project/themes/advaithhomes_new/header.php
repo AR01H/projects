@@ -19,4 +19,38 @@ defined( 'ABSPATH' ) || exit;
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<?php
+// ── Pre-header bar (home page only) ─────────────────────────────────────────
+if ( is_front_page() ) {
+	global $wpdb;
+	$_pht   = $wpdb->prefix . 'ah_site_settings';
+	$_phtxt = '';
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $_pht ) ) ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- table from $wpdb->prefix
+		$_phtxt = (string) $wpdb->get_var( $wpdb->prepare(
+			"SELECT setting_val FROM `{$_pht}` WHERE setting_key = %s LIMIT 1",
+			'preheader_text'
+		) );
+	}
+	if ( '' !== trim( $_phtxt ) ) :
+?>
+<div class="adn-preheader" id="adn-preheader">
+	<span class="adn-preheader-text" id="adn-preheader-text"><?php echo esc_html( $_phtxt ); ?></span>
+</div>
+<?php
+	endif;
+}
+?>
+<?php if ( is_front_page() ) : ?>
+<div id="adn-page-loader" class="adn-page-loader" aria-hidden="true">
+	<div class="adn-loader-inner">
+		<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ); ?>"
+			alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Advaith Homes' ); ?>"
+			class="adn-loader-logo">
+		<div class="adn-loader-bar-track">
+			<div class="adn-loader-bar"></div>
+		</div>
+	</div>
+</div>
+<?php endif; ?>
 <div class="scroll-progress"></div>

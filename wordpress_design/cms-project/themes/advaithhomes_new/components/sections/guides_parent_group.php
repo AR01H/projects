@@ -41,9 +41,15 @@ $image_url = isset( $group['image_url'] ) ? (string) $group['image_url'] : '';
 				<?php endif; ?>
 			</div>
 		</div>
-		<?php if ( '' !== $url ) : ?>
-			<a href="<?php echo esc_url( adn_link( $url ) ); ?>" class="gpg-view-all">
-				<?php esc_html_e( 'Explore all', ADN_TEXT_DOMAIN ); ?> &rsaquo;
+		<?php
+		// If only 1 topic exists, "Explore all" links directly to that topic.
+		$_gpg_nav_url = $url;
+		if ( 1 === count( $topics ) && ! empty( $topics[0]['url'] ) ) {
+			$_gpg_nav_url = (string) $topics[0]['url'];
+		}
+		if ( '' !== $_gpg_nav_url ) : ?>
+			<a href="<?php echo esc_url( adn_link( $_gpg_nav_url ) ); ?>" class="gpg-view-all">
+				<?php echo ( 1 === count( $topics ) ) ? esc_html__( 'Read guide', ADN_TEXT_DOMAIN ) : esc_html__( 'Explore all', ADN_TEXT_DOMAIN ); ?> &rsaquo;
 			</a>
 		<?php endif; ?>
 	</div>

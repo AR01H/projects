@@ -392,10 +392,16 @@ function adn_category_get_context( $slug = '' ) {
 			if ( ! isset( $all_tools[ $key ] ) ) { continue; }
 			$reg  = $all_tools[ $key ];
 			$cmeta = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
+			$_pclg_thumb = '';
+			if ( ! empty( $cmeta['thumbnail_id'] ) ) {
+				$_pclg_t = wp_get_attachment_image_url( (int) $cmeta['thumbnail_id'], 'medium' );
+				$_pclg_thumb = $_pclg_t ? (string) $_pclg_t : '';
+			}
 			$items[] = array(
-				'icon' => ! empty( $reg['icon'] )      ? (string) $reg['icon']        : '🧮',
-				'name' => ! empty( $reg['title'] )     ? (string) $reg['title']       : $key,
-				'url'  => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( SITE_CALCULATORS_URL . '?calc=' . rawurlencode( $key ) ),
+				'icon'      => ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $reg['icon'] ) ? (string) $reg['icon'] : '🧮' ),
+				'name'      => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $reg['title'] ) ? (string) $reg['title'] : $key ),
+				'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( SITE_CALCULATORS_URL . '?calc=' . rawurlencode( $key ) ),
+				'thumbnail' => $_pclg_thumb,
 			);
 		}
 		if ( ! empty( $items ) ) {

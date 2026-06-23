@@ -72,12 +72,11 @@
 
 /* ── Main Layout ────────────────────────────────────────────── */
 .contact-main-layout {
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 48px 24px 0;
+    padding: 28px 24px 0;
     display: grid;
-    grid-template-columns: 1fr minmax(260px, 320px);
-    gap: var(--space-8);
+    grid-template-columns: 1fr minmax(260px, 300px);
+    gap: var(--space-6);
     align-items: start;
 }
 
@@ -326,31 +325,99 @@
     background: var(--color-white, #fff);
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--radius-md, 12px);
-    padding: var(--space-6);
+    padding: 14px 16px;
+}
+
+/* Icon + heading inline row at top of every box */
+.contact-alt-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.contact-alt-icon {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+.contact-alt-box h3 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
 }
 
 .contact-alt-wa {
-    background: linear-gradient(135deg, #f0fdf4 0%, var(--color-success-bg) 100%);
-    border-color: var(--color-success-border);
+    background: linear-gradient(135deg, #f0fdf4 0%, var(--color-success-bg, #ecfdf5) 100%);
+    border-color: var(--color-success-border, #bbf7d0);
 }
-
-.contact-alt-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.contact-alt-box h3 {
-    font-size: 1rem;
-    color: var(--color-heading, #111827);
-    margin-bottom: var(--space-2);
-}
-
 
 .contact-alt-faqs {
     background: var(--color-surface, #f6f7f9);
     padding: 14px;
     border-radius: var(--radius-md);
+}
+
+/* Channel list: one row per channel (WhatsApp / Phone) */
+.contact-channel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+.contact-channel-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm, 8px);
+    background: rgba(0,0,0,0.04);
+    text-decoration: none;
+    transition: background 0.12s;
+}
+.contact-channel-item:hover {
+    background: rgba(0,0,0,0.08);
+}
+.contact-channel-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+.contact-channel-icon {
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #6b7280);
+    width: 16px;
+    text-align: center;
+}
+.contact-channel-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--color-text-muted, #6b7280);
+}
+.contact-channel-num {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--color-heading, #111827);
+    white-space: nowrap;
+}
+.contact-channel-email {
+    white-space: normal;
+    word-break: break-all;
+    text-align: right;
+}
+
+/* Address box: map full-width */
+.contact-address-box .contact-map-wrap,
+.contact-address-box .contact-alt-btn {
+    margin-top: 10px;
 }
 
 .contact-alt-faqs h3 {
@@ -456,10 +523,12 @@
 .contact-faq-small-link a:hover { text-decoration: underline; }
 
 .contact-alt-number {
-    font-size: 1.15rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--color-heading, #111827);
-    margin-bottom: var(--space-2);
+    margin-bottom: 4px;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .contact-alt-number a {
@@ -470,16 +539,17 @@
 .contact-alt-number a:hover { text-decoration: underline; }
 
 .contact-alt-note {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--color-text-muted, #6b7280);
-    line-height: 1.55;
-    margin-bottom: 14px;
+    line-height: 1.4;
+    margin-bottom: 8px;
 }
 
 .contact-alt-btn {
     width: 100%;
     justify-content: center;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
+    margin-top: 4px;
 }
 
 .contact-alt-faq-viewall {
@@ -786,4 +856,23 @@
     background: var(--color-error-bg);
     color: var(--color-error-text);
     border: 1px solid var(--color-error-border);
+}
+
+/* ── Address + Map block ───────────────────────────────────────── */
+.contact-address-text {
+    font-size: 0.875rem;
+    color: var(--color-text, #374151);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    white-space: pre-line;
+}
+.contact-map-wrap {
+    border-radius: var(--radius-md, 12px);
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 1px solid var(--color-border, #e5e7eb);
+}
+.contact-map-wrap iframe {
+    display: block;
+    width: 100%;
 }

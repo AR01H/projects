@@ -211,6 +211,34 @@ $example_js = '(function () {
 				</tr>
 
 				<tr>
+					<th scope="row"><?php esc_html_e( 'Guide / Topic Pages', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<?php
+						$_sn_saved_pt   = isset( $f_meta['parent_terms'] ) && is_array( $f_meta['parent_terms'] ) ? $f_meta['parent_terms'] : array();
+						$_sn_guide_cats = function_exists( 'adn_cms_guide_parents' ) ? adn_cms_guide_parents() : array();
+						?>
+						<?php if ( ! empty( $_sn_guide_cats ) ) : ?>
+							<div style="display:flex;flex-wrap:wrap;gap:8px 20px;">
+								<?php foreach ( $_sn_guide_cats as $_sn_gc ) : ?>
+									<?php $_sn_gc_slug = isset( $_sn_gc->slug ) ? (string) $_sn_gc->slug : ''; ?>
+									<?php if ( '' === $_sn_gc_slug ) { continue; } ?>
+									<label style="white-space:nowrap;">
+										<input type="checkbox"
+											name="meta_parent_terms[]"
+											value="<?php echo esc_attr( $_sn_gc_slug ); ?>"
+											<?php checked( in_array( $_sn_gc_slug, $_sn_saved_pt, true ) ); ?>>
+										<?php echo esc_html( isset( $_sn_gc->name ) ? (string) $_sn_gc->name : $_sn_gc_slug ); ?>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						<?php else : ?>
+							<p class="description"><?php esc_html_e( 'No guide parent terms found. Ensure the CMS plugin is active.', ADN_TEXT_DOMAIN ); ?></p>
+						<?php endif; ?>
+						<p class="description"><?php esc_html_e( 'Which guide/topic parent pages this calculator appears on. Leave all unchecked to hide from all term pages.', ADN_TEXT_DOMAIN ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
 					<th scope="row"><?php esc_html_e( 'Thumbnail Image', ADN_TEXT_DOMAIN ); ?></th>
 					<td>
 						<?php

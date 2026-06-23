@@ -908,3 +908,54 @@ body.ah-calc-body {
 	.result-important { margin: 0 18px 18px; }
 	.result-main-amount { font-size: 2.2rem; }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   MOBILE OVERFLOW FIXES
+   ────────────────────────────────────────────────────────────── */
+.calc-widget,
+.calc-card,
+.calc-body,
+.calc-result,
+.calc-section,
+.adn-calc-embed {
+	max-width: 100%;
+	overflow-x: hidden;
+	box-sizing: border-box;
+}
+
+/* Tables inside calculators: horizontal scroll */
+.calc-table-wrap,
+.result-table-wrap,
+.calc-comparison-table {
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.calc-table-wrap table,
+.result-table-wrap table {
+	min-width: 480px;
+}
+
+@media (max-width: 600px) {
+	.calc-widget { padding: 0; border-radius: 0; }
+	.calc-body,
+	.calc-inputs,
+	.calc-result { padding: 14px; }
+	.calc-result-grid,
+	.result-breakdown-grid {
+		grid-template-columns: 1fr !important;
+	}
+	.calc-two-col,
+	.calc-row { flex-direction: column; }
+	.calc-input-group { width: 100%; }
+}
+
+/* Calculator embedded inside an article post */
+.article-body .calc-widget,
+.post-content .calc-widget,
+.entry-content .calc-widget,
+.adn-article-body .calc-widget {
+	max-width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}

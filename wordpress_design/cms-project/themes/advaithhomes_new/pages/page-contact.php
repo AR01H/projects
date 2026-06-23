@@ -43,11 +43,6 @@ adn_page_open( $_open_ctx );
 
 </div>
 
-<?php /* ============================== PROCESS STEPS ============================== */ ?>
-<?php if ( ! empty( $ctx['process_steps'] ) ) : ?>
-	<?php adn_component( 'sections/contact_process', array( 'process_steps' => $ctx['process_steps'] ) ); ?>
-<?php endif; ?>
-
 <?php /* ============================== RESOURCE CARDS ============================== */ ?>
 <?php if ( ! empty( $ctx['resources'] ) ) : ?>
 	<?php adn_component( 'sections/contact_resources', array( 'resources' => $ctx['resources'] ) ); ?>

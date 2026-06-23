@@ -434,15 +434,21 @@ function adn_topic_category_get_context() {
 		);
 	}
 
-	// Quick tools - top 4 calculators as sidebar links.
+	// Quick tools - top calculators as sidebar links, filtered by parent term.
 	if ( function_exists( 'adn_calculators' ) ) {
-		$all_tools  = adn_calculators();
-		$meta_all   = get_option( 'adn_calculators_meta', array() );
-		$calc_links = array();
+		$all_tools        = adn_calculators();
+		$meta_all         = get_option( 'adn_calculators_meta', array() );
+		$calc_links       = array();
+		$_qs_parent_lc    = strtolower( $parent ? ( isset( $parent->slug ) ? $parent->slug : '' ) : $slug );
 		foreach ( $all_tools as $ckey => $creg ) {
 			$cmeta = isset( $meta_all[ $ckey ] ) && is_array( $meta_all[ $ckey ] ) ? $meta_all[ $ckey ] : array();
 			if ( array_key_exists( 'enabled', $cmeta ) && empty( $cmeta['enabled'] ) ) { continue; }
 			if ( ! empty( $cmeta['hidden_from_listing'] ) ) { continue; }
+			// Only show calculators explicitly assigned to this parent term.
+			$_qt_list = ( ! empty( $cmeta['parent_terms'] ) && is_array( $cmeta['parent_terms'] ) ) ? $cmeta['parent_terms'] : array();
+			if ( empty( $_qt_list ) ) { continue; }
+			$_qt_lc = array_map( 'strtolower', array_map( 'trim', $_qt_list ) );
+			if ( ! in_array( $_qs_parent_lc, $_qt_lc, true ) ) { continue; }
 			$calc_links[] = array(
 				'icon'  => ! empty( $creg['icon'] ) ? (string) $creg['icon'] : '🧮',
 				'label' => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $creg['title'] ) ? (string) $creg['title'] : $ckey ),
@@ -538,20 +544,30 @@ function adn_topic_category_get_context() {
 	// ── Popular calculators (full section below fold) ─────────────────────────────
 	$calc_items = array();
 	if ( function_exists( 'adn_calculators' ) ) {
-		$all_tools = adn_calculators();
-		$meta_all  = get_option( 'adn_calculators_meta', array() );
+		$all_tools        = adn_calculators();
+		$meta_all         = get_option( 'adn_calculators_meta', array() );
+		$_parent_slug_lc  = strtolower( $parent ? ( isset( $parent->slug ) ? $parent->slug : '' ) : $slug );
+
 		foreach ( $all_tools as $ckey => $creg ) {
 			$cmeta = isset( $meta_all[ $ckey ] ) && is_array( $meta_all[ $ckey ] ) ? $meta_all[ $ckey ] : array();
 			if ( array_key_exists( 'enabled', $cmeta ) && empty( $cmeta['enabled'] ) ) { continue; }
 			if ( ! empty( $cmeta['hidden_from_listing'] ) ) { continue; }
+
+			// Only show calculators explicitly assigned to this parent term.
+			$_pt_list = ( ! empty( $cmeta['parent_terms'] ) && is_array( $cmeta['parent_terms'] ) ) ? $cmeta['parent_terms'] : array();
+			if ( empty( $_pt_list ) ) { continue; }
+			$_pt_lc = array_map( 'strtolower', array_map( 'trim', $_pt_list ) );
+			if ( ! in_array( $_parent_slug_lc, $_pt_lc, true ) ) { continue; }
+
 			$thumb = '';
 			if ( ! empty( $cmeta['thumbnail_id'] ) ) {
 				$t = wp_get_attachment_image_url( (int) $cmeta['thumbnail_id'], 'thumbnail' );
 				$thumb = $t ? (string) $t : '';
 			}
+			$_calc_icon  = ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $creg['icon'] ) ? (string) $creg['icon'] : '🧮' );
 			$calc_items[] = array(
-				'icon'      => ! empty( $creg['icon'] )      ? (string) $creg['icon']      : '🧮',
-				'name'      => ! empty( $cmeta['label'] )    ? (string) $cmeta['label']    : ( ! empty( $creg['title'] ) ? (string) $creg['title'] : $ckey ),
+				'icon'      => $_calc_icon,
+				'title'     => ! empty( $cmeta['label'] )    ? (string) $cmeta['label']    : ( ! empty( $creg['title'] ) ? (string) $creg['title'] : $ckey ),
 				'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( '/?ah_calc_page=' . rawurlencode( $ckey ) ),
 				'thumbnail' => $thumb,
 				'highlight' => ! empty( $cmeta['highlight'] ) ? (string) $cmeta['highlight'] : '',

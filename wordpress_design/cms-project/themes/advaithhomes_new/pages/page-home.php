@@ -114,7 +114,7 @@ $_sp_active    = adn_home_section_visible( 'spotlights' ) && '' !== $_sp_term_sl
 <?php endif; ?>
 
 <?php /* ============================== TOOLS ============================== */ ?>
-<?php if ( adn_home_section_visible( 'calculators' ) ) : ?>
+<?php if ( adn_home_section_visible( 'calculators' ) && ! empty( $ctx['tools']['items'] ) ) : ?>
 <section class="tools-section">
 	<div class="container">
 		<?php

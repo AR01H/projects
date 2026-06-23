@@ -66,6 +66,29 @@ function adn_service_site_chrome() {
 		$chrome['footer'] = $plugin_footer;
 	}
 
+	// Layer 4: social links from DB social group — only show platforms with a URL set.
+	$_social_map = array(
+		'facebook_url'  => array( 'label' => 'Facebook',  'icon' => 'fab fa-facebook-f' ),
+		'instagram_url' => array( 'label' => 'Instagram', 'icon' => 'fab fa-instagram' ),
+		'twitter_url'   => array( 'label' => 'X / Twitter', 'icon' => 'fab fa-x-twitter' ),
+		'linkedin_url'  => array( 'label' => 'LinkedIn',  'icon' => 'fab fa-linkedin-in' ),
+		'youtube_url'   => array( 'label' => 'YouTube',   'icon' => 'fab fa-youtube' ),
+		'tiktok_url'    => array( 'label' => 'TikTok',    'icon' => 'fab fa-tiktok' ),
+	);
+	$_db_socials = array();
+	foreach ( $_social_map as $_sk => $_sm ) {
+		$_sv = adn_get_social_setting( $_sk );
+		if ( '' !== $_sv ) {
+			$_db_socials[] = array( 'url' => $_sv, 'label' => $_sm['label'], 'icon' => $_sm['icon'] );
+		}
+	}
+	// Always replace footer social with DB data.
+	// Empty array = no social links shown (prevents JSON '#' placeholders from appearing).
+	if ( ! isset( $chrome['footer'] ) || ! is_array( $chrome['footer'] ) ) {
+		$chrome['footer'] = array();
+	}
+	$chrome['footer']['social'] = $_db_socials;
+
 	$cache = $chrome;
 	return $cache;
 }
@@ -452,6 +475,30 @@ function adn_get_contact_setting( string $key ): string {
 }
 
 /**
+ * Read a single setting from the social group in ah_site_settings.
+ * Cached per page load; returns empty string if the key is absent or empty.
+ */
+function adn_get_social_setting( string $key ): string {
+	static $cache = null;
+	if ( null === $cache ) {
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_site_settings';
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- table from $wpdb->prefix, WHERE is a static literal
+		$rows  = $wpdb->get_results(
+			"SELECT setting_key, setting_val FROM `{$table}` WHERE group_name = 'social'",
+			ARRAY_A
+		);
+		$cache = array();
+		if ( is_array( $rows ) ) {
+			foreach ( $rows as $row ) {
+				$cache[ (string) $row['setting_key'] ] = (string) $row['setting_val'];
+			}
+		}
+	}
+	return $cache[ $key ] ?? '';
+}
+
+/**
  * Contact page content - JSON base overlaid with DB contact-group settings.
  * whatsapp, email, phone and address are editable in WP Admin → Settings → Contact.
  */
@@ -465,7 +512,7 @@ function adn_service_contact_data(): array {
 	$sidebar = isset( $data['contact_sidebar'] ) && is_array( $data['contact_sidebar'] )
 		? $data['contact_sidebar'] : array();
 
-	$db_whatsapp = adn_get_contact_setting( 'whatsapp' );
+	$db_whatsapp = adn_get_contact_setting( 'whatsapp_number' );
 	if ( '' !== $db_whatsapp ) {
 		if ( ! isset( $sidebar['whatsapp'] ) || ! is_array( $sidebar['whatsapp'] ) ) {
 			$sidebar['whatsapp'] = array();
@@ -475,7 +522,7 @@ function adn_service_contact_data(): array {
 		$sidebar['whatsapp']['url']    = 'https://wa.me/' . $wa_digits;
 	}
 
-	$db_email = adn_get_contact_setting( 'email' );
+	$db_email = adn_get_contact_setting( 'contact_email' );
 	if ( '' !== $db_email ) {
 		if ( ! isset( $sidebar['email'] ) || ! is_array( $sidebar['email'] ) ) {
 			$sidebar['email'] = array();
@@ -484,7 +531,7 @@ function adn_service_contact_data(): array {
 		$sidebar['email']['url']     = 'mailto:' . $db_email;
 	}
 
-	$db_phone = adn_get_contact_setting( 'phone' );
+	$db_phone = adn_get_contact_setting( 'contact_phone' );
 	if ( '' !== $db_phone ) {
 		if ( ! isset( $sidebar['phone'] ) || ! is_array( $sidebar['phone'] ) ) {
 			$sidebar['phone'] = array();
@@ -493,9 +540,13 @@ function adn_service_contact_data(): array {
 		$sidebar['phone']['url']    = 'tel:' . preg_replace( '/[^0-9+]/', '', $db_phone );
 	}
 
-	$db_address = adn_get_contact_setting( 'address' );
-	if ( '' !== $db_address ) {
-		$sidebar['address'] = array( 'text' => $db_address );
+	$db_address  = adn_get_contact_setting( 'address' );
+	$db_maps_url = adn_get_contact_setting( 'google_maps_url' );
+	if ( '' !== $db_address || '' !== $db_maps_url ) {
+		$sidebar['address'] = array(
+			'text'     => $db_address,
+			'maps_url' => $db_maps_url,
+		);
 	}
 
 	if ( ! empty( $sidebar ) ) {

@@ -118,9 +118,18 @@ function adn_guides_listing_get_context( $slug = '' ) {
 	}
 
 	// ── Sidebar: categories only ─────────────────────────────────────────────
+	$_gl_eh_opt = get_option( 'adn_calculators_page', array() );
 	$ctx['sidebar'] = array(
 		'browse_cats' => $browse_cats,
 		'cat_groups'  => $cat_groups,
+		'expert_help' => array(
+			'heading'  => ! empty( $_gl_eh_opt['sidebar_help_title'] ) ? $_gl_eh_opt['sidebar_help_title'] : adn_term( 'sidebar.expert_help_heading', 'Need Expert Help?' ),
+			'subtitle' => ! empty( $_gl_eh_opt['sidebar_help_text'] )  ? $_gl_eh_opt['sidebar_help_text']  : adn_term( 'sidebar.expert_help_subtitle', 'Get personalised guidance from our experts.' ),
+			'cta'      => array(
+				'label' => ! empty( $_gl_eh_opt['sidebar_help_btn_label'] ) ? $_gl_eh_opt['sidebar_help_btn_label'] : adn_term( 'sidebar.expert_help_cta', 'Talk to an Expert' ),
+				'url'   => ! empty( $_gl_eh_opt['sidebar_help_btn_url'] )   ? $_gl_eh_opt['sidebar_help_btn_url']   : home_url( SITE_CONTACT_URL ),
+			),
+		),
 	);
 
 	// ── Bottom quick links: 4 fixed cards ─────────────────────────────────────

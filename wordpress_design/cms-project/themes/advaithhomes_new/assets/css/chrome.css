@@ -616,4 +616,11 @@
     .footer-top { grid-template-columns: 1fr; }
     .footer-bottom { justify-content: center; text-align: center; }
     .footer-logo .logo img { max-width: 100%; width:50vw;}
+    .footer-social { margin-bottom: 16px; }
+}
+
+@media (max-width: 768px) {
+    .site-footer { padding-top: 28px; }
+    .footer-top { padding-bottom: var(--space-6, 24px); }
+    .footer-bottom { padding: 12px 0; font-size: 0.78rem; }
 }

@@ -745,6 +745,9 @@ class ADN_Theme_Admin {
 			array(
 				'desc'         => sanitize_textarea_field( wp_unslash( isset( $_POST['meta_desc'] )        ? $_POST['meta_desc']        : '' ) ),
 				'categories'   => $raw_cats,
+				'parent_terms' => ( isset( $_POST['meta_parent_terms'] ) && is_array( $_POST['meta_parent_terms'] ) )
+					? array_values( array_filter( array_map( 'sanitize_key', wp_unslash( $_POST['meta_parent_terms'] ) ) ) )
+					: array(),
 				'thumbnail_id' => absint( isset( $_POST['meta_thumbnail_id'] ) ? $_POST['meta_thumbnail_id'] : 0 ),
 				'highlight'    => sanitize_text_field( wp_unslash( isset( $_POST['meta_highlight'] )  ? $_POST['meta_highlight']  : '' ) ),
 				'is_popular'          => empty( $_POST['meta_is_popular'] ) ? 0 : 1,

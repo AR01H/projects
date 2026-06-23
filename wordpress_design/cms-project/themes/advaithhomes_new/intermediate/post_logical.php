@@ -117,35 +117,7 @@ function adn_post_get_context() {
 		}
 	}
 
-	// If manual guides were added in the admin, use ONLY those. Otherwise, fall back to dynamic guides.
-	if ( ! empty( $manual_guides ) ) {
-		$related_guides = $manual_guides;
-	} else {
-		$related_guides = array();
-		$rq_args        = array(
-			'post_type'      => 'post',
-			'posts_per_page' => 4,
-			'post__not_in'   => array( $post->ID ),
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		);
-		if ( ! empty( $cats ) ) {
-			$rq_args['category__in'] = array( $cats[0]->term_id );
-		}
-		$rq = new WP_Query( $rq_args );
-		if ( $rq->have_posts() ) {
-			while ( $rq->have_posts() ) {
-				$rq->the_post();
-				$related_guides[] = array(
-					'icon'      => get_post_meta( get_the_ID(), '_adn_article_icon', true ) ?: SITE_BRAND_ICON,
-					'title'     => get_the_title(),
-					'read_time' => (string) get_post_meta( get_the_ID(), '_adn_read_time', true ),
-					'url'       => get_permalink(),
-				);
-			}
-			wp_reset_postdata();
-		}
-	}
+
 	/* ── Latest news - most recent 3 posts ── */
 	$latest_news = array();
 	$nq          = new WP_Query( array(
@@ -219,7 +191,6 @@ function adn_post_get_context() {
 			'url'   => get_permalink(),
 			'title' => get_the_title(),
 		),
-		'related_guides' => $related_guides,
 		'latest_news'    => $latest_news,
 		'cms_terms'       => $cms_terms,
 		'highlight_links' => $highlight_links,
