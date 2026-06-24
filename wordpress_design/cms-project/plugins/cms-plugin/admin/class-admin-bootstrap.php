@@ -8,6 +8,8 @@ class AH_Admin_Bootstrap {
 		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
 		add_action( 'admin_bar_menu', array( self::class, 'clean_admin_bar' ), 999 );
 		add_action( 'admin_post_ah_cms_nav', array( self::class, 'handle_navigation' ) );
+		add_action( 'admin_post_ah_delete_spotlight_item', array( self::class, 'handle_delete_spotlight_item' ) );
+		add_action( 'admin_post_ah_delete_spotlight_term', array( self::class, 'handle_delete_spotlight_term' ) );
 		add_action( 'admin_post_ah_save_notice', array( self::class, 'handle_notice_save' ) );
 		add_action( 'admin_post_ah_save_banners', array( self::class, 'handle_banners_save' ) );
 		add_action( 'add_meta_boxes', array( self::class, 'register_post_metaboxes' ) );
@@ -263,6 +265,52 @@ CSS;
 		);
 
 		self::redirect( add_query_arg( array( 'page' => 'ah-navigation', 'saved' => '1' ), admin_url( 'admin.php' ) ) );
+	}
+
+	public static function handle_delete_spotlight_item(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( 'Unauthorised' );
+		}
+		check_admin_referer( 'ah_del_sp_item' );
+
+		$del_id = (int) ( $_POST['delete_item'] ?? 0 );
+		$term_id = (int) ( $_POST['term_id'] ?? 0 );
+
+		$items_model = new AH_Spotlights_Model();
+		if ( $del_id ) {
+			$items_model->delete( $del_id );
+		}
+
+		$redirect = add_query_arg( array( 'page' => 'ah-spotlights', 'tab' => 'items', 'term_id' => $term_id, 'deleted' => 1, 'deleted_id' => $del_id ), admin_url( 'admin.php' ) );
+		if ( ! headers_sent() ) {
+			wp_safe_redirect( $redirect );
+			exit;
+		}
+		// fallback JS redirect if headers already sent
+		echo '<script>window.location.href = ' . wp_json_encode( $redirect ) . ';</script>';
+		exit;
+	}
+
+	public static function handle_delete_spotlight_term(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( 'Unauthorised' );
+		}
+		check_admin_referer( 'ah_del_sp_term' );
+
+		$del_id = (int) ( $_POST['delete_term'] ?? 0 );
+
+		$terms_model = new AH_Spotlight_Terms_Model();
+		if ( $del_id ) {
+			$terms_model->delete_with_items( $del_id );
+		}
+
+		$redirect = add_query_arg( array( 'page' => 'ah-spotlights', 'tab' => 'terms', 'deleted' => 1, 'deleted_id' => $del_id ), admin_url( 'admin.php' ) );
+		if ( ! headers_sent() ) {
+			wp_safe_redirect( $redirect );
+			exit;
+		}
+		echo '<script>window.location.href = ' . wp_json_encode( $redirect ) . ';</script>';
+		exit;
 	}
 
 	public static function get_navigation_data(): array {

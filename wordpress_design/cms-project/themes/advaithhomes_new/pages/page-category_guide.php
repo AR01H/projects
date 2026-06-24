@@ -24,6 +24,11 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_category_logical.php';
 $ctx = adn_category_get_context();
 
+// Enqueue the buying page design CSS when viewing the 'buying' parent-term.
+if ( isset( $ctx['slug'] ) && 'buying' === $ctx['slug'] ) {
+	wp_enqueue_style( 'adn-buying-design', get_template_directory_uri() . '/assets/css/buying-design.css', array(), ADN_THEME_VERSION );
+}
+
 if ( ! empty( $ctx['faqs']['items'] ) ) {
 	wp_enqueue_style( 'adn-page-faqs-style', get_template_directory_uri() . '/assets/css/faqs.css', array(), ADN_THEME_VERSION );
 	wp_enqueue_script( 'adn-page-faqs-script', get_template_directory_uri() . '/assets/js/faqs.js', array(), ADN_THEME_VERSION, true );
@@ -41,13 +46,12 @@ adn_page_open( $_open_ctx );
 	'breadcrumb' => $ctx['breadcrumb'],
 ) ); ?>
 
-<?php /* ============================== JOURNEY STEPS ============================== */ ?>
-<?php if ( ! empty( $ctx['journey'] ) ) : ?>
-<section class="category-journey">
-	<div class="container">
-		<?php adn_component( 'sections/category_journey', array( 'journey' => $ctx['journey'] ) ); ?>
-	</div>
-</section>
+<?php /* ============================== CONTROL CENTRE ============================== */ ?>
+<?php if ( ! empty( $ctx['journey'] ) || ! empty( $ctx['spotlights']['terms'] ) ) : ?>
+	<?php adn_component( 'sections/category_control_center', array(
+		'journey'    => $ctx['journey'],
+		'spotlights' => isset( $ctx['spotlights'] ) ? $ctx['spotlights'] : array(),
+	) ); ?>
 <?php endif; ?>
 
 <?php /* ============================== MAIN + SIDEBAR ============================== */ ?>
@@ -147,17 +151,6 @@ adn_page_open( $_open_ctx );
 			if ( ! empty( $_ql_d['items'] ) ) :
 				adn_component( 'parts/quick_links_widget', array( 'quick_links' => $_ql_d ) );
 			endif; ?>
-
-			<?php /* ── Spotlights (stacked, sidebar-native) ── */ ?>
-			<?php
-			$_cat_sp_all   = $_cat_all;
-			$_cat_sp_terms = isset( $_cat_sp_all['spotlights']['terms'] ) && is_array( $_cat_sp_all['spotlights']['terms'] )
-				? array_filter( array_map( 'sanitize_key', $_cat_sp_all['spotlights']['terms'] ) )
-				: array();
-			foreach ( $_cat_sp_terms as $_cat_sp_slug ) :
-				adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_cat_sp_slug, 'sidebar' => true ) );
-			endforeach;
-			?>
 
 		</aside>
 

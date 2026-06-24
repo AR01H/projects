@@ -349,6 +349,7 @@ function adn_category_get_context( $slug = '' ) {
 	$_cs_sidebar  = isset( $_cs_all['sidebar'] )        && is_array( $_cs_all['sidebar'] )        ? $_cs_all['sidebar']        : array();
 	$_cs_cta      = isset( $_cs_all['cta_banner'] )     && is_array( $_cs_all['cta_banner'] )     ? $_cs_all['cta_banner']     : array();
 	$_cs_faqs     = isset( $_cs_all['faqs'] )           && is_array( $_cs_all['faqs'] )           ? $_cs_all['faqs']           : array();
+	$_cs_sp       = isset( $_cs_all['spotlights'] )     && is_array( $_cs_all['spotlights'] )     ? $_cs_all['spotlights']     : array();
 
 	// Journey.
 	$journey = array();
@@ -733,6 +734,11 @@ function adn_category_get_context( $slug = '' ) {
 		'breadcrumb'    => $breadcrumb,
 		'hero'          => $hero,
 		'journey'       => $journey,
+		'spotlights'    => array(
+			'terms' => isset( $_cs_sp['terms'] ) && is_array( $_cs_sp['terms'] )
+				? array_values( array_filter( array_map( 'sanitize_key', $_cs_sp['terms'] ) ) )
+				: array(),
+		),
 		'guides'        => $guides,
 		'popular_posts' => $popular_posts,
 		'news'          => $news,
@@ -753,4 +759,3 @@ function adn_category_get_context( $slug = '' ) {
 		'chrome'        => $chrome,
 	);
 }
-

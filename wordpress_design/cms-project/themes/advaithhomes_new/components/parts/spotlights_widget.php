@@ -9,6 +9,7 @@
  *   widget_title string  optional — override heading
  *   sidebar      bool    optional — true = sw-panel via sidebar_link_list
  *                                   false (default) = sp-panel via list_widget
+ *   compact      bool    optional — true = metric cards for category top band
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,6 +18,7 @@ $_sp_slug    = isset( $term_slug )    ? sanitize_key( (string) $term_slug )  : '
 $_sp_max     = isset( $max_items )    ? (int) $max_items                      : 0;
 $_sp_title   = isset( $widget_title ) ? (string) $widget_title               : '';
 $_is_sidebar = ! empty( $sidebar );
+$_is_compact  = ! empty( $compact );
 
 if ( '' === $_sp_slug ) { return; }
 
@@ -43,7 +45,56 @@ if ( empty( $rows ) ) { return; }
 
 $_heading = '' !== $_sp_title ? $_sp_title : (string) $term->name;
 
-if ( $_is_sidebar ) {
+if ( $_is_compact ) {
+
+	?>
+	<div class="sp-metrics-panel" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
+		<div class="sp-metrics-panel__header">
+			<h3><?php echo esc_html( $_heading ); ?></h3>
+			<?php if ( count( $rows ) > 4 ) : ?>
+				<span class="sp-metrics-panel__hint"><?php esc_html_e( 'Scroll for more', ADN_TEXT_DOMAIN ); ?></span>
+			<?php endif; ?>
+		</div>
+		<div class="sp-metrics-grid">
+			<?php foreach ( $rows as $_sp ) :
+				$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
+				$_val      = trim( (string) ( $_sp->point_value ?? '' ) );
+				$_lbl      = trim( (string) ( $_sp->point_label ?? '' ) );
+				$_has_link = ! empty( $_sp->show_link ) && ! empty( $_sp->link_url );
+				$_url      = $_has_link ? adn_link( (string) $_sp->link_url ) : '';
+				$_tag      = ! empty( $_sp->description ) ? (string) $_sp->description : '';
+			?>
+				<?php if ( $_url ) : ?>
+				<a href="<?php echo esc_url( $_url ); ?>" class="sp-metric-card">
+				<?php else : ?>
+				<div class="sp-metric-card">
+				<?php endif; ?>
+					<div class="sp-metric-card__body">
+						<span class="sp-metric-card__label"><?php echo esc_html( (string) $_sp->title ); ?></span>
+						<?php if ( '' !== $_val ) : ?>
+							<strong class="sp-metric-card__value"><?php echo esc_html( $_val ); ?></strong>
+						<?php endif; ?>
+						<?php if ( '' !== $_lbl ) : ?>
+							<span class="sp-metric-card__meta"><?php echo esc_html( $_lbl ); ?></span>
+						<?php endif; ?>
+						<?php if ( '' !== $_tag ) : ?>
+							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
+						<?php endif; ?>
+					</div>
+					<?php if ( '' !== $_icon ) : ?>
+						<span class="sp-metric-card__icon" aria-hidden="true"><?php echo adn_icon( $_icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					<?php endif; ?>
+				<?php if ( $_url ) : ?>
+				</a>
+				<?php else : ?>
+				</div>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<?php
+
+} elseif ( $_is_sidebar ) {
 
 	/* ── Sidebar mode: compact sw-panel list ── */
 	$_items = array();
@@ -57,7 +108,7 @@ if ( $_is_sidebar ) {
 			'icon'  => '' !== $_icon ? $_icon : mb_strtoupper( mb_substr( (string) $_sp->title, 0, 1 ) ),
 			'label' => (string) $_sp->title,
 			'meta'  => $_meta,
-			'url'   => ! empty( $_sp->show_link ) && ! empty( $_sp->link_url ) ? (string) $_sp->link_url : '',
+			'url'   => $_has_link ? adn_link( (string) $_sp->link_url ) : '',
 		);
 	}
 
@@ -69,31 +120,26 @@ if ( $_is_sidebar ) {
 } else {
 
 	/* ── Section mode: sp-panel via list_widget ── */
-	$_sp_cards = array();
-	foreach ( $rows as $_sp ) {
-		$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
-		$_val      = trim( (string) ( $_sp->point_value ?? '' ) );
-		$_lbl      = trim( (string) ( $_sp->point_label ?? '' ) );
-		$_has_link = ! empty( $_sp->show_link ) && ! empty( $_sp->link_url );
-
-		$_sp_cards[] = array(
-			'icon'        => '' !== $_icon ? $_icon : mb_strtoupper( mb_substr( (string) $_sp->title, 0, 1 ) ),
-			'title'       => (string) $_sp->title,
-			'tag'         => $_lbl,
-			'meta'        => $_val,
-			'thumb_label' => ! empty( $_sp->link_label )  ? (string) $_sp->link_label  : '',
-			'desc'        => ! empty( $_sp->description ) ? (string) $_sp->description : '',
-			'url'         => $_has_link ? (string) $_sp->link_url : '',
-		);
-	}
-
 	?>
-	<div class="sp-panel mini_card_container_design" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
-		<?php adn_component( 'parts/list_widget', array( 'widget' => array(
-			'heading' => array( 'title' => $_heading ),
-			'items'   => $_sp_cards,
-			'tag'     => 'h4',
-		) ) ); ?>
+	<div class="sp-panel mini_card_container_design spotlight-panel" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
+		<div class="spotlight-grid">
+			<?php foreach ( $rows as $_sp ) :
+				$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
+				$_val      = trim( (string) ( $_sp->point_value ?? '' ) );
+				$_lbl      = trim( (string) ( $_sp->point_label ?? '' ) );
+				$_has_link = ! empty( $_sp->show_link ) && ! empty( $_sp->link_url );
+				$card = array(
+					'icon' => '' !== $_icon ? $_icon : mb_strtoupper( mb_substr( (string) $_sp->title, 0, 1 ) ),
+					'title' => (string) $_sp->title,
+					'tag' => $_lbl,
+					'meta' => $_val,
+					'thumb_label' => ! empty( $_sp->link_label ) ? (string) $_sp->link_label : '',
+					'desc' => ! empty( $_sp->description ) ? (string) $_sp->description : '',
+					'url' => $_has_link ? adn_link( (string) $_sp->link_url ) : '',
+				);
+				adn_component( 'cards/spotlight_card', array( 'card' => $card ) );
+			endforeach; ?>
+		</div>
 	</div>
 	<?php
 
