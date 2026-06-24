@@ -153,7 +153,7 @@ $example_js = '(function () {
 					<td>
 						<input type="text" id="calc_icon" name="icon"
 							style="width:60px;font-size:22px;text-align:center;padding:4px;"
-							value="<?php echo esc_attr( $f_icon ); ?>" placeholder="🏠">
+							value="<?php echo esc_attr( $f_icon ); ?>" placeholder="icon">
 						<p class="description"><?php esc_html_e( 'Paste an emoji. Shown on the calculator card.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
@@ -375,7 +375,7 @@ $example_js = '(function () {
 								style="width:56px;font-size:18px;text-align:center;"
 								name="meta_hl_links[<?php echo $li; ?>][icon]"
 								value="<?php echo esc_attr( $_sn_icon ); ?>"
-								placeholder="🔗">
+								placeholder="icon">
 							<input type="text" class="regular-text"
 								name="meta_hl_links[<?php echo $li; ?>][label]"
 								value="<?php echo esc_attr( $_sn_label ); ?>"

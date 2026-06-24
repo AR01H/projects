@@ -124,11 +124,6 @@ adn_page_open( $_open_ctx );
 
 		<aside class="sidebar-col">
 
-			<?php /* ── Quick Tools / Related Calculators (dark card) ── */ ?>
-			<?php if ( ! empty( $ctx['sidebar']['quick_tools'] ) ) : ?>
-				<?php adn_component( 'parts/sidebar_quick_tools', array( 'quick_tools' => $ctx['sidebar']['quick_tools'] ) ); ?>
-			<?php endif; ?>
-
 			<?php /* ── Hot Topics ── */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['hot_topics'] ) ) : ?>
 				<?php adn_component( 'parts/sidebar_hot_topics', array( 'hot_topics' => $ctx['sidebar']['hot_topics'] ) ); ?>
@@ -159,7 +154,7 @@ adn_page_open( $_open_ctx );
 
 <?php /* ============================== FAQs ============================== */ ?>
 <?php if ( ! empty( $ctx['faqs']['items'] ) ) : ?>
-<div class="section-faqs container">
+<div class="section-faqs">
 	<?php adn_component( 'parts/faq_list', array(
 		'faqs'    => $ctx['faqs']['items'],
 		'heading' => $ctx['faqs']['heading'] ?? '',

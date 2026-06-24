@@ -36,16 +36,18 @@ if ( ! $_pdfs && ! $_links && ! $_vids ) { return; }
 		<div class="res-grid">
 			<?php foreach ( $_pdfs as $pdf ) : ?>
 			<a href="<?php echo esc_url( $pdf['file_url'] ); ?>" target="_blank" rel="noopener noreferrer" class="res-card">
-				<div class="res-card-icon res-icon--pdf">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+				<div class="display-flex-wrap">
+					<div class="res-card-icon">
+						<?= adn_icon('📥');?>
+					</div>
+				<strong class="res-card-title"><?php echo esc_html( $pdf['title'] ); ?></strong>
 				</div>
 				<div class="res-card-body">
-					<strong class="res-card-title"><?php echo esc_html( $pdf['title'] ); ?></strong>
 					<?php if ( ! empty( $pdf['desc'] ) ) : ?>
 					<p class="res-card-desc"><?php echo esc_html( $pdf['desc'] ); ?></p>
 					<?php endif; ?>
 				</div>
-				<span class="res-card-cta"><?php esc_html_e( 'Download', ADN_TEXT_DOMAIN ); ?> ↓</span>
+				<span class="btn btn-primary btn-sm"><?php esc_html_e( 'Download', ADN_TEXT_DOMAIN ); ?></span>
 			</a>
 			<?php endforeach; ?>
 		</div>
@@ -61,11 +63,7 @@ if ( ! $_pdfs && ! $_links && ! $_vids ) { return; }
 			?>
 			<a href="<?php echo esc_url( $lnk['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="res-card">
 				<div class="res-card-icon res-icon--link">
-					<?php if ( '' !== $_raw_icon ) : ?>
-						<span class="res-icon-emoji"><?php echo esc_html( $_raw_icon ); ?></span>
-					<?php else : ?>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-					<?php endif; ?>
+					<span class="res-icon-emoji"><?php echo adn_icon( $_raw_icon ); ?></span>
 				</div>
 				<div class="res-card-body">
 					<strong class="res-card-title"><?php echo esc_html( $lnk['title'] ); ?></strong>
@@ -73,7 +71,7 @@ if ( ! $_pdfs && ! $_links && ! $_vids ) { return; }
 					<p class="res-card-desc"><?php echo esc_html( $lnk['desc'] ); ?></p>
 					<?php endif; ?>
 				</div>
-				<span class="res-card-cta"><?php esc_html_e( 'Visit', ADN_TEXT_DOMAIN ); ?> ↗</span>
+				<span class="btn btn-primary btn-sm"><?php esc_html_e( 'Visit', ADN_TEXT_DOMAIN ); ?> </span>
 			</a>
 			<?php endforeach; ?>
 		</div>

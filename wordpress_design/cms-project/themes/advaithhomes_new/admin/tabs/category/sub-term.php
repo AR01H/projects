@@ -213,7 +213,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				<table class="form-table" role="presentation"><tbody>
 					<tr>
 						<th><?php esc_html_e( 'Icon', ADN_TEXT_DOMAIN ); ?></th>
-						<td><input type="text" name="journey[tip_icon]" value="<?php echo esc_attr( $journey_tip_icon ); ?>" placeholder="💡" style="width:52px;text-align:center;"></td>
+						<td><input type="text" name="journey[tip_icon]" value="<?php echo esc_attr( $journey_tip_icon ); ?>" placeholder="icon" style="width:52px;text-align:center;"></td>
 					</tr>
 					<tr>
 						<th><?php esc_html_e( 'Text', ADN_TEXT_DOMAIN ); ?></th>
@@ -256,7 +256,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 						<div class="adn-post-pill">
 							<input type="text" name="hot_topics[items][<?php echo (int) $i; ?>][icon]"
 								value="<?php echo esc_attr( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>"
-								placeholder="💡" style="width:52px;text-align:center;" title="Icon emoji">
+								placeholder="icon" style="width:52px;text-align:center;" title="Icon emoji">
 							<input type="text" name="hot_topics[items][<?php echo (int) $i; ?>][label]"
 								value="<?php echo esc_attr( isset( $item['label'] ) ? $item['label'] : '' ); ?>"
 								style="flex:1;" placeholder="<?php esc_attr_e( 'Topic label', ADN_TEXT_DOMAIN ); ?>">
@@ -650,7 +650,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 					<?php foreach ( $res_links as $i => $lnk ) : ?>
 					<div class="adn-rep-row" style="flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px;background:#f6f7f7;border-radius:4px;margin-bottom:8px;">
 						<div style="display:flex;gap:6px;align-items:center;width:100%;">
-							<input type="text" name="resources[links][<?php echo (int) $i; ?>][icon]"  placeholder="🔗" style="width:52px;text-align:center;" value="<?php echo esc_attr( $lnk['icon'] ?? '' ); ?>">
+							<input type="text" name="resources[links][<?php echo (int) $i; ?>][icon]"  placeholder="icon" style="width:52px;text-align:center;" value="<?php echo esc_attr( $lnk['icon'] ?? '' ); ?>">
 							<input type="text" name="resources[links][<?php echo (int) $i; ?>][title]" placeholder="<?php esc_attr_e( 'Link title', ADN_TEXT_DOMAIN ); ?>" style="flex:1;" value="<?php echo esc_attr( $lnk['title'] ?? '' ); ?>">
 							<input type="url"  name="resources[links][<?php echo (int) $i; ?>][url]"   placeholder="https://" style="width:220px;" value="<?php echo esc_attr( $lnk['url'] ?? '' ); ?>">
 							<button type="button" class="button adn-rep-remove" title="<?php esc_attr_e( 'Remove', ADN_TEXT_DOMAIN ); ?>">&#x2715;</button>
@@ -868,7 +868,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 				+ '<input type="text" name="' + p + '[' + i + '][desc]" placeholder="Short description" style="flex:1;">';
 		},
 		link: function (p, i) {
-			return '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="💡" style="width:52px;text-align:center;">'
+			return '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="icon" style="width:52px;text-align:center;">'
 				+ '<input type="text" name="' + p + '[' + i + '][label]" placeholder="Label" style="flex:1;">'
 				+ '<input type="text" name="' + p + '[' + i + '][url]" placeholder="/guides/" style="width:200px;">';
 		},
@@ -880,7 +880,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		},
 		extlink: function (p, i) {
 			return '<div style="display:flex;gap:6px;align-items:center;width:100%;">'
-				+ '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="🔗" style="width:52px;text-align:center;">'
+				+ '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="icon" style="width:52px;text-align:center;">'
 				+ '<input type="text" name="' + p + '[' + i + '][title]" placeholder="Link title" style="flex:1;">'
 				+ '<input type="url" name="' + p + '[' + i + '][url]" placeholder="https://" style="width:240px;">'
 				+ '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>'
@@ -903,7 +903,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		},
 		reslink: function (p, i) {
 			return '<div style="display:flex;gap:6px;align-items:center;width:100%;">'
-				+ '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="🔗" style="width:52px;text-align:center;">'
+				+ '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="icon" style="width:52px;text-align:center;">'
 				+ '<input type="text" name="' + p + '[' + i + '][title]" placeholder="Link title" style="flex:1;">'
 				+ '<input type="url" name="' + p + '[' + i + '][url]" placeholder="https://" style="width:220px;">'
 				+ '<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>'
@@ -1097,7 +1097,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		selectedId: 'hot-topics-selected',
 		prefix:     'hot_topics[items]',
 		buildPill: function (prefix, idx, d) {
-			return '<input type="text" name="' + prefix + '[' + idx + '][icon]" placeholder="💡" style="width:52px;text-align:center;" title="Icon">'
+			return '<input type="text" name="' + prefix + '[' + idx + '][icon]" placeholder="icon" style="width:52px;text-align:center;" title="Icon">'
 				+ '<input type="text" name="' + prefix + '[' + idx + '][label]" value="' + d.title.replace(/"/g,'&quot;') + '" style="flex:1;" placeholder="Label">'
 				+ '<input type="hidden" name="' + prefix + '[' + idx + '][url]" value="' + d.url.replace(/"/g,'&quot;') + '">'
 				+ '<button type="button" class="button adn-pill-remove" title="Remove">&#x2715;</button>';

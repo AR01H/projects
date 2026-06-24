@@ -49,12 +49,6 @@ if ( $_is_compact ) {
 
 	?>
 	<div class="sp-metrics-panel" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
-		<div class="sp-metrics-panel__header">
-			<h3><?php echo esc_html( $_heading ); ?></h3>
-			<?php if ( count( $rows ) > 4 ) : ?>
-				<span class="sp-metrics-panel__hint"><?php esc_html_e( 'Scroll for more', ADN_TEXT_DOMAIN ); ?></span>
-			<?php endif; ?>
-		</div>
 		<div class="sp-metrics-grid">
 			<?php foreach ( $rows as $_sp ) :
 				$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
@@ -70,13 +64,23 @@ if ( $_is_compact ) {
 				<div class="sp-metric-card">
 				<?php endif; ?>
 					<div class="sp-metric-card__body">
-						<span class="sp-metric-card__label"><?php echo esc_html( (string) $_sp->title ); ?></span>
-						<?php if ( '' !== $_val ) : ?>
-							<strong class="sp-metric-card__value"><?php echo esc_html( $_val ); ?></strong>
-						<?php endif; ?>
-						<?php if ( '' !== $_lbl ) : ?>
-							<span class="sp-metric-card__meta"><?php echo esc_html( $_lbl ); ?></span>
-						<?php endif; ?>
+						<span class="sp-metric-card__label">
+							<?php echo esc_html((string) $_sp->title); ?>
+
+						</span>
+						<div class="sp-metric-detail_label">
+							<?php if ( '' !== $_val ) : ?>
+								<strong class="sp-metric-card__value"><?php echo esc_html( $_val ); ?></strong>
+								<?php endif; ?>
+								<?php if ( '' !== $_lbl ) : ?>
+									<span class="sp-metric-card__meta"><?php echo esc_html( $_lbl ); ?></span>
+									<?php endif; ?>
+									<?php if (!empty($_sp->link_label)) : ?>
+										<span class="spotlight-card__count">
+											<?php echo ' ' . esc_html((string) $_sp->link_label); ?>
+										</span>
+									<?php endif; ?>
+						</div>
 						<?php if ( '' !== $_tag ) : ?>
 							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
 						<?php endif; ?>
@@ -123,6 +127,10 @@ if ( $_is_compact ) {
 	?>
 	<div class="sp-panel mini_card_container_design spotlight-panel" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
 		<div class="spotlight-grid">
+			<div class="list-widget-header">
+				<h3><?= $_heading ?></h3>
+			</div>
+
 			<?php foreach ( $rows as $_sp ) :
 				$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
 				$_val      = trim( (string) ( $_sp->point_value ?? '' ) );

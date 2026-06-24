@@ -107,7 +107,7 @@ $marquee_items = ( isset( $saved['marquee_items'] ) && is_array( $saved['marquee
 				?>
 				<div class="marquee-item-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
 					<input type="text" name="marquee_items[<?php echo (int) $_mi; ?>][icon]"
-						placeholder="🏠" maxlength="4" class="small-text"
+						placeholder="icon" maxlength="4" class="small-text"
 						value="<?php echo $_m_icon; ?>">
 					<input type="text" name="marquee_items[<?php echo (int) $_mi; ?>][label]"
 						placeholder="500+" class="regular-text"
@@ -147,7 +147,7 @@ $marquee_items = ( isset( $saved['marquee_items'] ) && is_array( $saved['marquee
 		row.className = 'marquee-item-row';
 		row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:8px;';
 		row.innerHTML =
-			'<input type="text" name="marquee_items[' + marqIdx + '][icon]" placeholder="🏠" maxlength="4" class="small-text">' +
+			'<input type="text" name="marquee_items[' + marqIdx + '][icon]" placeholder="icon" maxlength="4" class="small-text">' +
 			'<input type="text" name="marquee_items[' + marqIdx + '][label]" placeholder="500+" class="regular-text">' +
 			'<input type="text" name="marquee_items[' + marqIdx + '][note]" placeholder="Verified Experts" class="regular-text">' +
 			'<button type="button" class="button button-small remove-marq-item">Remove</button>';

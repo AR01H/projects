@@ -139,24 +139,6 @@ img{max-width:100%;height:auto;display:block}a{text-decoration:none;color:inheri
   .mini_card_container_design .mini-card-title { font-size:1.6rem; }
 }
 
-/* Spotlight card specific styles */
-.spotlight-panel .spotlight-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:16px; }
-.spotlight-card { display:flex; gap:18px; align-items:stretch; background:var(--color-white); border:1px solid var(--color-border); border-radius:12px; padding:18px; }
-.spotlight-card__left { flex:1; display:flex; flex-direction:column; justify-content:center; }
-.spotlight-card__icon { width:48px; height:48px; border-radius:50%; background:var(--color-tag-bg); display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
-.spotlight-card__title { font-family:var(--font-display); font-size:2.25rem; color:var(--color-dark); font-weight:700; }
-.spotlight-card__desc { margin-top:8px; color:var(--color-text-muted); }
-.spotlight-card__right { width:260px; display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:12px; }
-.spotlight-card__meta { background:var(--color-tag-bg); border-radius:10px; padding:16px 18px; width:100%; display:flex; align-items:center; justify-content:space-between; }
-.spotlight-card__value { font-size:2rem; font-weight:800; color:var(--color-primary); }
-.spotlight-card__label { color:var(--color-primary-light); font-weight:600; margin-left:12px; }
-.spotlight-card__count { background:#eaf6ef; color:var(--color-primary); border-radius:10px; padding:8px 12px; font-weight:700; }
-
-@media (max-width:700px) {
-  .spotlight-card { flex-direction:column; align-items:flex-start; }
-  .spotlight-card__right { width:100%; align-items:flex-start; }
-}
-
 /* =========================
    Enhanced Journey Stepper
    ========================= */

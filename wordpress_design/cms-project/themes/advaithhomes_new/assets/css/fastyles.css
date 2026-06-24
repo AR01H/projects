@@ -1,0 +1,419 @@
+.fa-arrow-trend-down:before{
+  color:red
+}
+.fa-arrow-trend-up:before{
+  color:green
+}
+
+/* ── Analytics & Trends ──────────────────────────────────────────────────── */
+.fa-arrow-trend-down::before { color: red; }
+.fa-arrow-trend-up::before   { color: green; }
+
+/* ── Finance & Commerce ──────────────────────────────────────────────────── */
+.fa-coins::before             { color: #f5a623; }
+.fa-money-bill-wave::before   { color: #27ae60; }
+.fa-money-bill-transfer::before { color: #27ae60; }
+.fa-sterling-sign::before     { color: var(--color-navy-mid-hover); }
+.fa-euro-sign::before         { color: #0984e3; }
+.fa-yen-sign::before          { color: #e17055; }
+.fa-money-check-dollar::before { color: #00b894; }
+.fa-credit-card::before       { color: #2d3436; }
+.fa-cart-shopping::before     { color: #e17055; }
+.fa-bag-shopping::before      { color: #fd79a8; }
+.fa-tag::before               { color: #fdcb6e; }
+.fa-gift::before              { color: #e84393; }
+.fa-box::before               { color: #b8860b; }
+.fa-truck::before             { color: #636e72; }
+.fa-scale-balanced::before    {  }
+.fa-calculator::before        { color: #2d3436; }
+.fa-piggy-bank::before        { color: #fd79a8; }
+.fa-chart-line::before        { color: #0984e3; }
+
+/* ── Housing & Property ──────────────────────────────────────────────────── */
+.fa-house::before             { color: #e17055; }
+.fa-house-chimney::before     { color: #d35400; }
+.fa-house-chimney-window::before { color: #c0392b; }
+.fa-building::before          { color: #636e72; }
+.fa-store::before             { color: #00b894; }
+.fa-shop::before              { color: #00cec9; }
+.fa-hospital::before          { color: #d63031; }
+.fa-building-columns::before  {  }
+.fa-school::before            { color: #fdcb6e; }
+.fa-church::before            { color: #b2bec3; }
+.fa-landmark::before          { color: #a29bfe; }
+.fa-map::before               { color: #55efc4; }
+.fa-location-dot::before      { color: #d63031; }
+.fa-thumbtack::before         { color: #e17055; }
+.fa-map-pin::before           { color: #d63031; }
+.fa-helmet-safety::before     { color: #fdcb6e; }
+
+/* ── People & Users ──────────────────────────────────────────────────────── */
+.fa-user::before              {  }
+.fa-users::before             { color: #0984e3; }
+.fa-user-tie::before          { color: #2d3436; }
+.fa-baby::before              { color: #fd79a8; }
+.fa-child::before             { color: #fdcb6e; }
+.fa-child-dress::before       { color: #fd79a8; }
+.fa-person::before            {  }
+.fa-person-dress::before      { color: #fd79a8; }
+.fa-person-cane::before       { color: #b2bec3; }
+.fa-handshake::before         { color: #00b894; }
+.fa-hand::before              { color: #fdcb6e; }
+.fa-user-doctor::before       { color: #d63031; }
+.fa-chalkboard-user::before   { color: var(--color-navy-mid-hover); }
+.fa-user-secret::before       { color: #2d3436; }
+.fa-wheelchair::before        { color: #0984e3; }
+.fa-wheelchair-move::before   { color: #0984e3; }
+.fa-shield::before            {  }
+
+/* ── Documents & Office ──────────────────────────────────────────────────── */
+.fa-clipboard::before         { color: #fdcb6e; }
+.fa-pen-to-square::before     { color: #0984e3; }
+.fa-file-lines::before        {  }
+.fa-file::before              { color: #b2bec3; }
+.fa-scroll::before            { color: #b8860b; }
+.fa-newspaper::before         { color: #2d3436; }
+.fa-ruler-combined::before    { color: #636e72; }
+.fa-ruler-horizontal::before  { color: #636e72; }
+.fa-folder-open::before       { color: #fdcb6e; }
+.fa-folder::before            { color: #fdcb6e; }
+.fa-cabinet-filing::before    {  }
+.fa-server::before            { color: #636e72; }
+.fa-print::before             { color: #2d3436; }
+.fa-pencil::before            { color: #fdcb6e; }
+.fa-pen-nib::before           { color: #2d3436; }
+.fa-pen::before               { color: #0984e3; }
+.fa-pen-fancy::before         { color: var(--color-navy-mid-hover); }
+.fa-notepad::before           { color: #fdcb6e; }
+.fa-address-card::before      {  }
+.fa-mailbox::before           { color: #e17055; }
+.fa-paperclip::before         { color: #636e72; }
+.fa-book-bookmark::before     { color: var(--color-navy-mid-hover); }
+
+/* ── Communication ───────────────────────────────────────────────────────── */
+.fa-envelope::before          { color: #0984e3; }
+.fa-envelope-open::before     {  }
+.fa-envelope-open-text::before { color: #0984e3; }
+.fa-phone::before             { color: #00b894; }
+.fa-pager::before             { color: #636e72; }
+.fa-fax::before               { color: #636e72; }
+.fa-comment-dots::before      { color: #0984e3; }
+.fa-comment::before           {  }
+.fa-bullhorn::before          { color: #e17055; }
+.fa-tower-broadcast::before   { color: var(--color-navy-mid-hover); }
+.fa-bell::before              { color: #fdcb6e; }
+.fa-bell-slash::before        { color: #b2bec3; }
+
+/* ── Technology & Devices ────────────────────────────────────────────────── */
+.fa-mobile-screen::before     { color: #2d3436; }
+.fa-laptop::before            { color: #636e72; }
+.fa-desktop::before           { color: #2d3436; }
+.fa-keyboard::before          { color: #2d3436; }
+.fa-computer-mouse::before    { color: #636e72; }
+.fa-floppy-disk::before       { color: var(--color-navy-mid-hover); }
+.fa-compact-disc::before      { color: #a29bfe; }
+.fa-camera::before            { color: #2d3436; }
+.fa-image::before             {  }
+.fa-video::before             { color: #e17055; }
+.fa-satellite-dish::before    { color: #636e72; }
+.fa-battery-full::before      { color: #00b894; }
+.fa-plug::before              { color: #fdcb6e; }
+.fa-lightbulb::before         { color: #f9ca24; }
+
+/* ── Navigation & Transport ──────────────────────────────────────────────── */
+.fa-car::before               { color: #0984e3; }
+.fa-taxi::before              { color: #fdcb6e; }
+.fa-car-side::before          { color: #636e72; }
+.fa-bus::before               { color: #e17055; }
+.fa-plane::before             {  }
+.fa-ship::before              { color: #0984e3; }
+.fa-bicycle::before           { color: #00b894; }
+.fa-motorcycle::before        { color: #2d3436; }
+.fa-helicopter::before        { color: #636e72; }
+.fa-gas-pump::before          { color: #e17055; }
+.fa-compass::before           { color: #e17055; }
+.fa-traffic-light::before     { color: #00b894; }
+.fa-square-parking::before    { color: #0984e3; }
+.fa-anchor::before            { color: #2d3436; }
+.fa-truck-medical::before     { color: #d63031; }
+.fa-train::before             { color: #636e72; }
+.fa-train-subway::before      { color: #0984e3; }
+.fa-ferry::before             {  }
+.fa-rocket::before            { color: var(--color-navy-mid-hover); }
+.fa-plane-arrival::before     { color: #00b894; }
+.fa-plane-departure::before   { color: #e17055; }
+
+/* ── Health & Medical ────────────────────────────────────────────────────── */
+.fa-pills::before             { color: #e17055; }
+.fa-syringe::before           {  }
+.fa-stethoscope::before       { color: #d63031; }
+.fa-bandage::before           { color: #fdcb6e; }
+.fa-dna::before               { color: var(--color-navy-mid-hover); }
+.fa-tooth::before             { color: #dfe6e9; }
+.fa-eye::before               { color: #0984e3; }
+.fa-heart::before             { color: #d63031; }
+.fa-dumbbell::before          { color: #636e72; }
+.fa-spa::before               { color: #00b894; }
+.fa-x-ray::before             { color: #b2bec3; }
+.fa-heart-pulse::before       { color: #d63031; }
+.fa-lungs::before             {  }
+.fa-pump-soap::before         {  }
+.fa-soap::before              {  }
+.fa-toothbrush::before        { color: #dfe6e9; }
+.fa-brain::before             { color: #fd79a8; }
+.fa-bone::before              { color: #dfe6e9; }
+.fa-skull::before             { color: #636e72; }
+.fa-eyes::before              { color: #0984e3; }
+
+/* ── Food & Drink ────────────────────────────────────────────────────────── */
+.fa-utensils::before          { color: #636e72; }
+.fa-mug-hot::before           { color: #b8860b; }
+.fa-beer-mug-empty::before    { color: #fdcb6e; }
+.fa-wine-glass::before        { color: #d63031; }
+.fa-champagne-glasses::before { color: #f9ca24; }
+.fa-pizza-slice::before       { color: #e17055; }
+.fa-bowl-food::before         { color: #fdcb6e; }
+.fa-jar::before               { color: #b8860b; }
+.fa-glass-water::before       {  }
+.fa-bottle-droplet::before    { color: #0984e3; }
+.fa-glass-water-droplet::before {  }
+.fa-apple-whole::before       { color: #d63031; }
+.fa-lemon::before             { color: #f9ca24; }
+.fa-seedling::before          { color: #00b894; }
+.fa-burger::before            { color: #b8860b; }
+.fa-bread-slice::before       { color: #b8860b; }
+.fa-cake-candles::before      { color: #fd79a8; }
+.fa-egg::before               { color: #fdcb6e; }
+.fa-bowl-rice::before         { color: #dfe6e9; }
+.fa-mug-saucer::before        { color: #b8860b; }
+.fa-cube::before              {  }
+
+/* ── Nature & Environment ────────────────────────────────────────────────── */
+.fa-earth-europe::before      { color: #00b894; }
+.fa-earth-americas::before    { color: #00b894; }
+.fa-earth-asia::before        { color: #00b894; }
+.fa-tree::before              { color: #00b894; }
+.fa-cactus::before            { color: #00b894; }
+.fa-leaf::before              { color: #00b894; }
+.fa-droplet::before           {  }
+.fa-water::before             { color: #0984e3; }
+.fa-snowflake::before         {  }
+.fa-sun::before               { color: #f9ca24; }
+.fa-moon::before              { color: #fdcb6e; }
+.fa-cloud-sun::before         { color: #fdcb6e; }
+.fa-cloud-rain::before        {  }
+.fa-cloud-bolt::before        { color: #f9ca24; }
+.fa-tornado::before           { color: #636e72; }
+.fa-fire::before              { color: #e17055; }
+.fa-wind::before              { color: #b2bec3; }
+.fa-smog::before              { color: #b2bec3; }
+.fa-umbrella::before          { color: var(--color-navy-mid-hover); }
+.fa-snowman::before           { color: #dfe6e9; }
+.fa-cloud::before             { color: #b2bec3; }
+.fa-cloud-sun-rain::before    {  }
+.fa-rainbow::before           { color: #a29bfe; }
+.fa-hurricane::before         { color: #636e72; }
+.fa-meteor::before            { color: #e17055; }
+.fa-burst::before             { color: #f9ca24; }
+.fa-wheat-awn::before         { color: #f9ca24; }
+.fa-rose::before              { color: #d63031; }
+
+/* ── Tools & Settings ────────────────────────────────────────────────────── */
+.fa-wrench::before            { color: #636e72; }
+.fa-hammer::before            { color: #636e72; }
+.fa-gear::before              { color: #636e72; }
+.fa-screwdriver-wrench::before { color: #636e72; }
+.fa-screwdriver::before       { color: #636e72; }
+.fa-lock::before              { color: #2d3436; }
+.fa-lock-open::before         { color: #00b894; }
+.fa-key::before               { color: #fdcb6e; }
+.fa-shield-halved::before     {  }
+.fa-life-ring::before         { color: #e17055; }
+.fa-triangle-exclamation::before { color: #fdcb6e; }
+.fa-ban::before               { color: #d63031; }
+.fa-xmark::before             { color: #d63031; }
+.fa-circle-question::before   {  }
+.fa-circle-exclamation::before { color: #e17055; }
+.fa-fire-extinguisher::before { color: #d63031; }
+.fa-file-shield::before       {  }
+.fa-id-card::before           { color: #0984e3; }
+.fa-id-badge::before          { color: #0984e3; }
+.fa-toolbox::before           { color: #636e72; }
+.fa-saw::before               { color: #636e72; }
+.fa-stairs::before            { color: #636e72; }
+.fa-barber-pole::before       { color: #d63031; }
+.fa-elevator::before          { color: #636e72; }
+.fa-magnet::before            { color: #d63031; }
+.fa-flashlight::before        { color: #f9ca24; }
+.fa-candle-holder::before     { color: #fdcb6e; }
+.fa-oil-can::before           { color: #b8860b; }
+.fa-bucket::before            {  }
+
+/* ── Time & Calendar ─────────────────────────────────────────────────────── */
+.fa-calendar-days::before     { color: #0984e3; }
+.fa-calendar-check::before    { color: #00b894; }
+.fa-calendar::before          {  }
+.fa-clock::before             { color: #636e72; }
+.fa-stopwatch::before         { color: #e17055; }
+.fa-alarm-clock::before       { color: #d63031; }
+.fa-hourglass-end::before     { color: #636e72; }
+.fa-hourglass-half::before    { color: #fdcb6e; }
+
+/* ── Analytics & Data ────────────────────────────────────────────────────── */
+.fa-chart-column::before      { color: #0984e3; }
+.fa-chart-pie::before         { color: var(--color-navy-mid-hover); }
+.fa-magnifying-glass::before  { color: #636e72; }
+.fa-magnifying-glass-plus::before { color: #0984e3; }
+.fa-flask::before             { color: var(--color-navy-mid-hover); }
+.fa-vial::before              { color: #00b894; }
+.fa-radio::before             { color: #636e72; }
+.fa-telescope::before         { color: var(--color-navy-mid-hover); }
+.fa-temperature-half::before  { color: #e17055; }
+.fa-flask-vial::before        { color: var(--color-navy-mid-hover); }
+
+/* ── Symbols & Misc ──────────────────────────────────────────────────────── */
+.fa-circle-info::before       {  }
+.fa-check::before             { color: #00b894; }
+.fa-circle-check::before      { color: #00b894; }
+.fa-star::before              { color: #f9ca24; }
+.fa-wand-magic-sparkles::before { color: #a29bfe; }
+.fa-bullseye::before          { color: #d63031; }
+.fa-trophy::before            { color: #f9ca24; }
+.fa-medal::before             { color: #f9ca24; }
+.fa-graduation-cap::before    { color: #2d3436; }
+.fa-book::before              { color: var(--color-navy-mid-hover); }
+.fa-book-open::before         { color: var(--color-navy-mid-hover); }
+.fa-bookmark::before          { color: #e17055; }
+.fa-recycle::before           { color: #00b894; }
+.fa-puzzle-piece::before      { color: #a29bfe; }
+.fa-link::before              { color: #0984e3; }
+.fa-paperclip::before         { color: #636e72; }
+.fa-trash-can::before         { color: #d63031; }
+.fa-trash::before             { color: #d63031; }
+.fa-upload::before            { color: #00b894; }
+.fa-download::before          { color: #0984e3; }
+.fa-arrows-rotate::before     { color: #0984e3; }
+.fa-arrow-turn-down::before   { color: #636e72; }
+.fa-arrow-right::before       { color: #0984e3; }
+.fa-arrow-up::before          { color: #00b894; }
+.fa-arrow-down::before        { color: #d63031; }
+.fa-plus::before              { color: #00b894; }
+.fa-minus::before             { color: #d63031; }
+.fa-arrows-left-right::before { color: #636e72; }
+.fa-arrows-up-down::before    { color: #636e72; }
+.fa-repeat::before            { color: #0984e3; }
+.fa-shuffle::before           { color: var(--color-navy-mid-hover); }
+.fa-ribbon::before            { color: #fd79a8; }
+.fa-mirror::before            {  }
+.fa-copyright::before         { color: #636e72; }
+.fa-registered::before        { color: #636e72; }
+.fa-trademark::before         { color: #636e72; }
+.fa-wave-square::before       { color: var(--color-navy-mid-hover); }
+.fa-forward-fast::before      { color: #636e72; }
+.fa-backward-fast::before     { color: #636e72; }
+.fa-forward::before           { color: #636e72; }
+.fa-backward::before          { color: #636e72; }
+.fa-pause::before             { color: #636e72; }
+.fa-circle::before            { color: #d63031; }
+.fa-stop::before              { color: #d63031; }
+.fa-play::before              { color: #00b894; }
+.fa-volume-high::before       { color: #0984e3; }
+.fa-volume-low::before        {  }
+.fa-volume-off::before        { color: #b2bec3; }
+.fa-volume-xmark::before      { color: #d63031; }
+
+/* ── Music & Entertainment ───────────────────────────────────────────────── */
+.fa-music::before             { color: var(--color-navy-mid-hover); }
+.fa-guitar::before            { color: #b8860b; }
+.fa-piano-keys::before        { color: #2d3436; }
+.fa-microphone::before        { color: #e17055; }
+.fa-headphones::before        { color: #2d3436; }
+.fa-microphone-lines::before  { color: #636e72; }
+.fa-tv::before                { color: #2d3436; }
+.fa-film::before              { color: #2d3436; }
+.fa-clapperboard::before      { color: #2d3436; }
+.fa-masks-theater::before     { color: var(--color-navy-mid-hover); }
+.fa-palette::before           { color: #fd79a8; }
+.fa-paintbrush::before        { color: #e17055; }
+
+/* ── Sports & Activities ─────────────────────────────────────────────────── */
+.fa-futbol::before            { color: #2d3436; }
+.fa-basketball::before        { color: #e17055; }
+.fa-football::before          { color: #b8860b; }
+.fa-baseball::before          { color: #dfe6e9; }
+.fa-table-tennis-paddle-ball::before { color: #d63031; }
+.fa-volleyball::before        { color: #fdcb6e; }
+.fa-person-biking::before     { color: #00b894; }
+.fa-person-swimming::before   { color: #0984e3; }
+.fa-person-running::before    { color: #e17055; }
+.fa-person-hiking::before     { color: #00b894; }
+.fa-person-skiing::before     {  }
+.fa-bowling-ball::before      { color: #2d3436; }
+.fa-boxing-glove::before      { color: #d63031; }
+.fa-golf-ball-tee::before     { color: #dfe6e9; }
+.fa-chess::before             { color: #2d3436; }
+
+/* ── Gaming ──────────────────────────────────────────────────────────────── */
+.fa-gamepad::before           { color: var(--color-navy-mid-hover); }
+.fa-dice::before              { color: #d63031; }
+.fa-cards::before             { color: #2d3436; }
+.fa-spade::before             { color: #2d3436; }
+.fa-diamond::before           { color: #d63031; }
+.fa-club::before              { color: #2d3436; }
+
+/* ── Animals ─────────────────────────────────────────────────────────────── */
+.fa-dog::before               { color: #b8860b; }
+.fa-cat::before               { color: #636e72; }
+.fa-fish::before              {  }
+.fa-paw::before               { color: #b8860b; }
+.fa-bugs::before              { color: #00b894; }
+
+/* ── Travel & Places ─────────────────────────────────────────────────────── */
+.fa-umbrella-beach::before    { color: #fdcb6e; }
+.fa-mountain::before          { color: #636e72; }
+.fa-campground::before        { color: #00b894; }
+.fa-tower-observation::before { color: #636e72; }
+.fa-bridge::before            { color: #636e72; }
+.fa-globe::before             { color: #0984e3; }
+.fa-passport::before          { color: #2d3436; }
+.fa-suitcase::before          { color: #636e72; }
+
+/* ── Clothing & Accessories ──────────────────────────────────────────────── */
+.fa-shirt::before             { color: #0984e3; }
+.fa-shoe-prints::before       { color: #2d3436; }
+.fa-hat-wizard::before        { color: var(--color-navy-mid-hover); }
+.fa-ring::before              { color: #f9ca24; }
+.fa-gem::before               {  }
+.fa-glasses::before           { color: #2d3436; }
+.fa-scarf::before             { color: #e17055; }
+.fa-mitten::before            { color: #e17055; }
+.fa-basket-shopping::before   { color: #fdcb6e; }
+
+/* ── Home & Household ────────────────────────────────────────────────────── */
+.fa-bath::before              {  }
+.fa-shower::before            {  }
+.fa-bed::before               { color: var(--color-navy-mid-hover); }
+.fa-chair::before             { color: #b8860b; }
+.fa-window-maximize::before   {  }
+.fa-door-open::before         { color: #b8860b; }
+.fa-broom::before             { color: #b8860b; }
+.fa-toilet-paper::before      { color: #dfe6e9; }
+.fa-kitchen-set::before       { color: #636e72; }
+.fa-tractor::before           { color: #00b894; }
+
+/* ── Flags ───────────────────────────────────────────────────────────────── */
+.fa-flag-checkered::before    { color: #2d3436; }
+.fa-flag::before              { color: #d63031; }
+
+/* ── Hands & Gestures ────────────────────────────────────────────────────── */
+.fa-hand-wave::before         { color: #fdcb6e; }
+.fa-thumbs-up::before         { color: #00b894; }
+.fa-thumbs-down::before       { color: #d63031; }
+.fa-hands-clapping::before    { color: #fdcb6e; }
+.fa-hands-praying::before     { color: #fdcb6e; }
+
+/* ── Bolt & Power ────────────────────────────────────────────────────────── */
+.fa-bolt::before              { color: #f9ca24; }
+
+/* ── Tractor / Agriculture ───────────────────────────────────────────────── */
+.fa-person-walking-with-cane::before { color: #b2bec3; }

@@ -20,7 +20,7 @@ if ( empty( $journey ) && empty( $terms ) ) { return; }
 ?>
 
 <section class="category-control-centre">
-	<div class="container">
+	<div class="">
 		<div class="category-control-centre__panel">
 			<?php if ( ! empty( $terms ) ) : ?>
 			<div class="category-control-centre__spotlights">

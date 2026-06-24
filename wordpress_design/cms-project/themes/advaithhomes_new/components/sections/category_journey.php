@@ -35,9 +35,6 @@ $_total = count( $steps );
 			$icon  = isset( $step['icon'] )  ? trim( (string) $step['icon'] ) : '';
 
 			$_icon_html = ( '' !== $icon ) ? adn_icon( $icon ) : '';
-			if ( $_icon_html && false !== strpos( $_icon_html, 'fa-circle-dot' ) ) {
-				$_icon_html = '';
-			}
 			$_num_pad = str_pad( $num, 2, '0', STR_PAD_LEFT );
 			$_is_last = ( $i === $_total - 1 );
 		?>
@@ -54,11 +51,11 @@ $_total = count( $steps );
 			</div>
 
 			<div class="jny2-step__body">
-				<div class="jny2-step__num-chip" aria-label="<?php echo esc_attr( sprintf( __( 'Step %s', 'adn' ), $num ) ); ?>"><?php echo esc_html( $_num_pad ); ?></div>
-				<?php if ( $_icon_html ) : ?>
-				<div class="jny2-step__icon" aria-hidden="true"><?php echo $_icon_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-				<?php elseif ( '' !== $icon ) : ?>
-				<div class="jny2-step__icon" aria-hidden="true"><?php echo adn_icon( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+				<?php if ( $icon ) : ?>
+					
+					<div class="jny2-step__num-chip" aria-label="<?php echo esc_attr( sprintf( __( 'Step %s', 'adn' ), $num ) ); ?>"><?php print adn_icon( $icon ); ?></div>
+				<?php else : ?>
+					<div class="jny2-step__num-chip" aria-label="<?php echo esc_attr( sprintf( __( 'Step %s', 'adn' ), $num ) ); ?>"><?php echo adn_icon( $_num_pad ); ?></div>
 				<?php endif; ?>
 				<?php if ( $label ) : ?>
 				<strong class="jny2-step__label"><?php echo esc_html( $label ); ?></strong>

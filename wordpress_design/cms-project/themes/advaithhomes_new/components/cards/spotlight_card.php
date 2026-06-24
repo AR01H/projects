@@ -19,20 +19,24 @@ $el = $url ? 'a' : 'div';
 $el_attr = $url ? ' href="' . $url . '"' : '';
 ?>
 <<?php echo $el . $el_attr; ?> class="spotlight-card">
-  <div class="spotlight-card__left">
+<div class="spotlight-card__left">
     <?php if ( '' !== $icon ) : ?>
       <div class="spotlight-card__icon" aria-hidden="true"><?php echo adn_icon( $icon ); ?></div>
     <?php endif; ?>
-    <div class="spotlight-card__title"><?php echo esc_html( $title ); ?></div>
-    <?php if ( '' !== $desc ) : ?><div class="spotlight-card__desc"><?php echo esc_html( $desc ); ?></div><?php endif; ?>
-  </div>
+    <div class="spotlight-card__text">
+      <div class="spotlight-card__title"><?php echo esc_html( $title ); ?></div>
+      <?php if ( '' !== $desc ) : ?>
+        <div class="spotlight-card__desc"><?php echo esc_html( $desc ); ?></div>
+      <?php endif; ?>
+    </div>
+</div>
   <div class="spotlight-card__right">
     <div class="spotlight-card__meta">
       <div class="spotlight-card__value"><?php echo esc_html( $meta ); ?></div>
       <div class="spotlight-card__label"><?php echo esc_html( $tag ); ?></div>
     </div>
     <?php if ( '' !== $thumb_label ) : ?>
-      <div class="spotlight-card__count"><?php echo esc_html( $thumb_label ); ?></div>
+      <div class="spotlight-card__count"><?php echo esc_html( $thumb_label ); ?> <?php print adn_icon('info'); ?></div>
     <?php endif; ?>
   </div>
 </<?php echo $el; ?>>

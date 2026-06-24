@@ -87,7 +87,7 @@ $notice = isset( $_GET['adn_saved'] ) ? (string) $_GET['adn_saved'] : '';
                     <input type="text"
                         name="hot_topics[items][<?php echo (int) $i; ?>][icon]"
                         value="<?php echo esc_attr( isset( $row['icon'] ) ? $row['icon'] : '🔥' ); ?>"
-                        placeholder="🔥" style="width:52px;text-align:center;" title="Icon emoji">
+                        placeholder="icon" style="width:52px;text-align:center;" title="Icon emoji">
                     <span class="pill-title"><?php echo esc_html( $post->post_title ); ?></span>
                     <input type="hidden" name="hot_topics[items][<?php echo (int) $i; ?>][post_id]" value="<?php echo $pid; ?>">
                     <button type="button" class="button adn-pill-remove" title="Remove">&#x2715;</button>
@@ -181,7 +181,7 @@ $notice = isset( $_GET['adn_saved'] ) ? (string) $_GET['adn_saved'] : '';
     });
 
     SearchPicker('ht-search', 'ht-search-results', 'ht-selected', 5, function (idx, d) {
-        return '<input type="text" name="hot_topics[items][' + idx + '][icon]" value="🔥" placeholder="🔥" style="width:52px;text-align:center;" title="Icon">'
+        return '<input type="text" name="hot_topics[items][' + idx + '][icon]" value="🔥" placeholder="icon" style="width:52px;text-align:center;" title="Icon">'
             + '<span class="pill-title">' + d.title.replace(/</g, '&lt;') + '</span>'
             + '<input type="hidden" name="hot_topics[items][' + idx + '][post_id]" value="' + d.id + '">'
             + '<button type="button" class="button adn-pill-remove" title="Remove">&#x2715;</button>';

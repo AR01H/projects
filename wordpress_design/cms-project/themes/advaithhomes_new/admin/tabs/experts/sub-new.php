@@ -347,7 +347,7 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 				?>
 				<div class="expert-banner-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
 					<input type="text" name="expert_banner_items[<?php echo (int) $_bi_idx; ?>][icon]"
-						placeholder="🏠" maxlength="4" class="small-text"
+						placeholder="icon" maxlength="4" class="small-text"
 						value="<?php echo esc_attr( $_bi_icon ); ?>" style="width:50px;">
 					<input type="text" name="expert_banner_items[<?php echo (int) $_bi_idx; ?>][value]"
 						placeholder="15+" class="small-text"
@@ -619,7 +619,7 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 			row.className = 'expert-banner-row';
 			row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:8px;';
 			row.innerHTML =
-				'<input type="text" name="expert_banner_items[' + bannerIdx + '][icon]" placeholder="🏠" maxlength="4" class="small-text">' +
+				'<input type="text" name="expert_banner_items[' + bannerIdx + '][icon]" placeholder="icon" maxlength="4" class="small-text">' +
 				'<input type="text" name="expert_banner_items[' + bannerIdx + '][value]" placeholder="15+" class="small-text">' +
 				'<input type="text" name="expert_banner_items[' + bannerIdx + '][label]" placeholder="<?php echo esc_js( __( 'Years Experience', ADN_TEXT_DOMAIN ) ); ?>" class="regular-text">' +
 				'<button type="button" class="button button-small expert-banner-remove"><?php echo esc_js( __( 'Remove', ADN_TEXT_DOMAIN ) ); ?></button>';

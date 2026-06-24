@@ -17,7 +17,7 @@ if ( empty( $faqs ) ) { return; }
 ?>
 <div class="faq-list-wrap">
 	<?php if ( '' !== $heading ) : ?>
-	<h2 class="faq-section-heading"><?php echo esc_html( $heading ); ?></h2>
+	<h2 class="faq-section-heading"> <?php echo esc_html( $heading ); ?> <?= adn_icon('❓')?></h2>
 	<?php endif; ?>
 
 	<div class="faqs-list">
