@@ -14,20 +14,20 @@
 .fa-money-bill-wave::before   { color: #27ae60; }
 .fa-money-bill-transfer::before { color: #27ae60; }
 .fa-sterling-sign::before     { color: var(--color-navy-mid-hover); }
-.fa-euro-sign::before         { color: #0984e3; }
+.fa-euro-sign::before         {  }
 .fa-yen-sign::before          { color: #e17055; }
 .fa-money-check-dollar::before { color: #00b894; }
 .fa-credit-card::before       { color: #2d3436; }
 .fa-cart-shopping::before     { color: #e17055; }
-.fa-bag-shopping::before      { color: #fd79a8; }
+.fa-bag-shopping::before      {  }
 .fa-tag::before               { color: #fdcb6e; }
 .fa-gift::before              { color: #e84393; }
 .fa-box::before               { color: #b8860b; }
 .fa-truck::before             { color: #636e72; }
 .fa-scale-balanced::before    {  }
 .fa-calculator::before        { color: #2d3436; }
-.fa-piggy-bank::before        { color: #fd79a8; }
-.fa-chart-line::before        { color: #0984e3; }
+.fa-piggy-bank::before        {  }
+.fa-chart-line::before        {  }
 
 /* ── Housing & Property ──────────────────────────────────────────────────── */
 .fa-house::before             { color: #e17055; }
@@ -49,26 +49,26 @@
 
 /* ── People & Users ──────────────────────────────────────────────────────── */
 .fa-user::before              {  }
-.fa-users::before             { color: #0984e3; }
+.fa-users::before             {  }
 .fa-user-tie::before          { color: #2d3436; }
-.fa-baby::before              { color: #fd79a8; }
+.fa-baby::before              {  }
 .fa-child::before             { color: #fdcb6e; }
-.fa-child-dress::before       { color: #fd79a8; }
+.fa-child-dress::before       {  }
 .fa-person::before            {  }
-.fa-person-dress::before      { color: #fd79a8; }
+.fa-person-dress::before      {  }
 .fa-person-cane::before       { color: #b2bec3; }
 .fa-handshake::before         { color: #00b894; }
 .fa-hand::before              { color: #fdcb6e; }
 .fa-user-doctor::before       { color: #d63031; }
 .fa-chalkboard-user::before   { color: var(--color-navy-mid-hover); }
 .fa-user-secret::before       { color: #2d3436; }
-.fa-wheelchair::before        { color: #0984e3; }
-.fa-wheelchair-move::before   { color: #0984e3; }
+.fa-wheelchair::before        {  }
+.fa-wheelchair-move::before   {  }
 .fa-shield::before            {  }
 
 /* ── Documents & Office ──────────────────────────────────────────────────── */
 .fa-clipboard::before         { color: #fdcb6e; }
-.fa-pen-to-square::before     { color: #0984e3; }
+.fa-pen-to-square::before     {  }
 .fa-file-lines::before        {  }
 .fa-file::before              { color: #b2bec3; }
 .fa-scroll::before            { color: #b8860b; }
@@ -82,7 +82,7 @@
 .fa-print::before             { color: #2d3436; }
 .fa-pencil::before            { color: #fdcb6e; }
 .fa-pen-nib::before           { color: #2d3436; }
-.fa-pen::before               { color: #0984e3; }
+.fa-pen::before               {  }
 .fa-pen-fancy::before         { color: var(--color-navy-mid-hover); }
 .fa-notepad::before           { color: #fdcb6e; }
 .fa-address-card::before      {  }
@@ -91,13 +91,13 @@
 .fa-book-bookmark::before     { color: var(--color-navy-mid-hover); }
 
 /* ── Communication ───────────────────────────────────────────────────────── */
-.fa-envelope::before          { color: #0984e3; }
+.fa-envelope::before          {  }
 .fa-envelope-open::before     {  }
-.fa-envelope-open-text::before { color: #0984e3; }
+.fa-envelope-open-text::before {  }
 .fa-phone::before             { color: #00b894; }
 .fa-pager::before             { color: #636e72; }
 .fa-fax::before               { color: #636e72; }
-.fa-comment-dots::before      { color: #0984e3; }
+.fa-comment-dots::before      {  }
 .fa-comment::before           {  }
 .fa-bullhorn::before          { color: #e17055; }
 .fa-tower-broadcast::before   { color: var(--color-navy-mid-hover); }
@@ -121,23 +121,23 @@
 .fa-lightbulb::before         { color: #f9ca24; }
 
 /* ── Navigation & Transport ──────────────────────────────────────────────── */
-.fa-car::before               { color: #0984e3; }
+.fa-car::before               {  }
 .fa-taxi::before              { color: #fdcb6e; }
 .fa-car-side::before          { color: #636e72; }
 .fa-bus::before               { color: #e17055; }
 .fa-plane::before             {  }
-.fa-ship::before              { color: #0984e3; }
+.fa-ship::before              {  }
 .fa-bicycle::before           { color: #00b894; }
 .fa-motorcycle::before        { color: #2d3436; }
 .fa-helicopter::before        { color: #636e72; }
 .fa-gas-pump::before          { color: #e17055; }
 .fa-compass::before           { color: #e17055; }
 .fa-traffic-light::before     { color: #00b894; }
-.fa-square-parking::before    { color: #0984e3; }
+.fa-square-parking::before    {  }
 .fa-anchor::before            { color: #2d3436; }
 .fa-truck-medical::before     { color: #d63031; }
 .fa-train::before             { color: #636e72; }
-.fa-train-subway::before      { color: #0984e3; }
+.fa-train-subway::before      {  }
 .fa-ferry::before             {  }
 .fa-rocket::before            { color: var(--color-navy-mid-hover); }
 .fa-plane-arrival::before     { color: #00b894; }
@@ -150,7 +150,7 @@
 .fa-bandage::before           { color: #fdcb6e; }
 .fa-dna::before               { color: var(--color-navy-mid-hover); }
 .fa-tooth::before             { color: #dfe6e9; }
-.fa-eye::before               { color: #0984e3; }
+.fa-eye::before               {  }
 .fa-heart::before             { color: #d63031; }
 .fa-dumbbell::before          { color: #636e72; }
 .fa-spa::before               { color: #00b894; }
@@ -160,10 +160,10 @@
 .fa-pump-soap::before         {  }
 .fa-soap::before              {  }
 .fa-toothbrush::before        { color: #dfe6e9; }
-.fa-brain::before             { color: #fd79a8; }
+.fa-brain::before             {  }
 .fa-bone::before              { color: #dfe6e9; }
 .fa-skull::before             { color: #636e72; }
-.fa-eyes::before              { color: #0984e3; }
+.fa-eyes::before              {  }
 
 /* ── Food & Drink ────────────────────────────────────────────────────────── */
 .fa-utensils::before          { color: #636e72; }
@@ -175,14 +175,14 @@
 .fa-bowl-food::before         { color: #fdcb6e; }
 .fa-jar::before               { color: #b8860b; }
 .fa-glass-water::before       {  }
-.fa-bottle-droplet::before    { color: #0984e3; }
+.fa-bottle-droplet::before    {  }
 .fa-glass-water-droplet::before {  }
 .fa-apple-whole::before       { color: #d63031; }
 .fa-lemon::before             { color: #f9ca24; }
 .fa-seedling::before          { color: #00b894; }
 .fa-burger::before            { color: #b8860b; }
 .fa-bread-slice::before       { color: #b8860b; }
-.fa-cake-candles::before      { color: #fd79a8; }
+.fa-cake-candles::before      {  }
 .fa-egg::before               { color: #fdcb6e; }
 .fa-bowl-rice::before         { color: #dfe6e9; }
 .fa-mug-saucer::before        { color: #b8860b; }
@@ -196,7 +196,7 @@
 .fa-cactus::before            { color: #00b894; }
 .fa-leaf::before              { color: #00b894; }
 .fa-droplet::before           {  }
-.fa-water::before             { color: #0984e3; }
+.fa-water::before             {  }
 .fa-snowflake::before         {  }
 .fa-sun::before               { color: #f9ca24; }
 .fa-moon::before              { color: #fdcb6e; }
@@ -236,8 +236,8 @@
 .fa-circle-exclamation::before { color: #e17055; }
 .fa-fire-extinguisher::before { color: #d63031; }
 .fa-file-shield::before       {  }
-.fa-id-card::before           { color: #0984e3; }
-.fa-id-badge::before          { color: #0984e3; }
+.fa-id-card::before           {  }
+.fa-id-badge::before          {  }
 .fa-toolbox::before           { color: #636e72; }
 .fa-saw::before               { color: #636e72; }
 .fa-stairs::before            { color: #636e72; }
@@ -250,7 +250,7 @@
 .fa-bucket::before            {  }
 
 /* ── Time & Calendar ─────────────────────────────────────────────────────── */
-.fa-calendar-days::before     { color: #0984e3; }
+.fa-calendar-days::before     {  }
 .fa-calendar-check::before    { color: #00b894; }
 .fa-calendar::before          {  }
 .fa-clock::before             { color: #636e72; }
@@ -260,10 +260,10 @@
 .fa-hourglass-half::before    { color: #fdcb6e; }
 
 /* ── Analytics & Data ────────────────────────────────────────────────────── */
-.fa-chart-column::before      { color: #0984e3; }
+.fa-chart-column::before      {  }
 .fa-chart-pie::before         { color: var(--color-navy-mid-hover); }
 .fa-magnifying-glass::before  { color: #636e72; }
-.fa-magnifying-glass-plus::before { color: #0984e3; }
+.fa-magnifying-glass-plus::before {  }
 .fa-flask::before             { color: var(--color-navy-mid-hover); }
 .fa-vial::before              { color: #00b894; }
 .fa-radio::before             { color: #636e72; }
@@ -286,24 +286,24 @@
 .fa-bookmark::before          { color: #e17055; }
 .fa-recycle::before           { color: #00b894; }
 .fa-puzzle-piece::before      { color: #a29bfe; }
-.fa-link::before              { color: #0984e3; }
+.fa-link::before              {  }
 .fa-paperclip::before         { color: #636e72; }
 .fa-trash-can::before         { color: #d63031; }
 .fa-trash::before             { color: #d63031; }
 .fa-upload::before            { color: #00b894; }
-.fa-download::before          { color: #0984e3; }
-.fa-arrows-rotate::before     { color: #0984e3; }
+.fa-download::before          {  }
+.fa-arrows-rotate::before     {  }
 .fa-arrow-turn-down::before   { color: #636e72; }
-.fa-arrow-right::before       { color: #0984e3; }
+.fa-arrow-right::before       {  }
 .fa-arrow-up::before          { color: #00b894; }
 .fa-arrow-down::before        { color: #d63031; }
 .fa-plus::before              { color: #00b894; }
 .fa-minus::before             { color: #d63031; }
 .fa-arrows-left-right::before { color: #636e72; }
 .fa-arrows-up-down::before    { color: #636e72; }
-.fa-repeat::before            { color: #0984e3; }
+.fa-repeat::before            {  }
 .fa-shuffle::before           { color: var(--color-navy-mid-hover); }
-.fa-ribbon::before            { color: #fd79a8; }
+.fa-ribbon::before            {  }
 .fa-mirror::before            {  }
 .fa-copyright::before         { color: #636e72; }
 .fa-registered::before        { color: #636e72; }
@@ -317,7 +317,7 @@
 .fa-circle::before            { color: #d63031; }
 .fa-stop::before              { color: #d63031; }
 .fa-play::before              { color: #00b894; }
-.fa-volume-high::before       { color: #0984e3; }
+.fa-volume-high::before       {  }
 .fa-volume-low::before        {  }
 .fa-volume-off::before        { color: #b2bec3; }
 .fa-volume-xmark::before      { color: #d63031; }
@@ -333,7 +333,7 @@
 .fa-film::before              { color: #2d3436; }
 .fa-clapperboard::before      { color: #2d3436; }
 .fa-masks-theater::before     { color: var(--color-navy-mid-hover); }
-.fa-palette::before           { color: #fd79a8; }
+.fa-palette::before           {  }
 .fa-paintbrush::before        { color: #e17055; }
 
 /* ── Sports & Activities ─────────────────────────────────────────────────── */
@@ -344,7 +344,7 @@
 .fa-table-tennis-paddle-ball::before { color: #d63031; }
 .fa-volleyball::before        { color: #fdcb6e; }
 .fa-person-biking::before     { color: #00b894; }
-.fa-person-swimming::before   { color: #0984e3; }
+.fa-person-swimming::before   {  }
 .fa-person-running::before    { color: #e17055; }
 .fa-person-hiking::before     { color: #00b894; }
 .fa-person-skiing::before     {  }
@@ -374,12 +374,12 @@
 .fa-campground::before        { color: #00b894; }
 .fa-tower-observation::before { color: #636e72; }
 .fa-bridge::before            { color: #636e72; }
-.fa-globe::before             { color: #0984e3; }
+.fa-globe::before             {  }
 .fa-passport::before          { color: #2d3436; }
 .fa-suitcase::before          { color: #636e72; }
 
 /* ── Clothing & Accessories ──────────────────────────────────────────────── */
-.fa-shirt::before             { color: #0984e3; }
+.fa-shirt::before             {  }
 .fa-shoe-prints::before       { color: #2d3436; }
 .fa-hat-wizard::before        { color: var(--color-navy-mid-hover); }
 .fa-ring::before              { color: #f9ca24; }

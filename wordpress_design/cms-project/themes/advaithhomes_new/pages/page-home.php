@@ -86,7 +86,12 @@ $_sp_active    = adn_home_section_visible( 'spotlights' ) && '' !== $_sp_term_sl
 ?>
 
 <?php /* ==================== NEWS + REGULATIONS + HOT TOPICS + SPOTLIGHTS ==================== */ ?>
-<?php if ( adn_home_section_visible( 'news' ) || $_sp_active ) : ?>
+<?php
+$_has_news_data = ! empty( $ctx['news']['items'] )
+	|| ! empty( $ctx['regulations']['items'] )
+	|| ! empty( $ctx['hot_topics']['items'] );
+?>
+<?php if ( ( adn_home_section_visible( 'news' ) && $_has_news_data ) || $_sp_active ) : ?>
 <section class="news-three-col<?php echo $_sp_active ? ' news-three-col--has-sp' : ''; ?>">
 	<div class="container">
 		<?php adn_component( 'parts/section_headers/section_header', array(
@@ -94,7 +99,7 @@ $_sp_active    = adn_home_section_visible( 'spotlights' ) && '' !== $_sp_term_sl
 			'center'  => true,
 		) ); ?>
 		<div class="news-sp-row">
-			<?php if ( adn_home_section_visible( 'news' ) ) : ?>
+			<?php if ( adn_home_section_visible( 'news' ) && $_has_news_data ) : ?>
 			<div class="news-sp-row__news">
 				<?php adn_component( 'sections/news_three_col', array(
 					'news'        => $ctx['news'],

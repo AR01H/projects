@@ -38,26 +38,6 @@ function adn_ask_expert_sidebar_data() {
 			$_ni++;
 		}
 	}
-	if ( empty( $news_items ) ) {
-		$_q = new WP_Query( array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => 3,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-			'no_found_rows'  => true,
-		) );
-		foreach ( $_q->posts as $_ni => $_wp_p ) {
-			$news_items[] = array(
-				'gradient' => function_exists( 'adn_cms_gradient' ) ? adn_cms_gradient( $_ni ) : '',
-				'title'    => $_wp_p->post_title,
-				'date'     => get_the_date( 'M j, Y', $_wp_p ),
-				'tag'      => '',
-				'url'      => get_permalink( $_wp_p ),
-			);
-		}
-		wp_reset_postdata();
-	}
 	// sidebar_news_mini shape
 	$latest_news = array(
 		'heading'  => SITE_LABEL_LATEST_NEWS,

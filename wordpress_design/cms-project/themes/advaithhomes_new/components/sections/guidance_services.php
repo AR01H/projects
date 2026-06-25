@@ -16,7 +16,7 @@ if ( empty( $_items ) ) return;
 		<?php foreach ( $_items as $_item ) :
 			$_si  = adn_icon( isset( $_item['icon'] )  ? (string) $_item['icon']  : '' );
 			$_st  = esc_html( isset( $_item['title'] ) ? (string) $_item['title'] : '' );
-			$_sd  = esc_html( isset( $_item['desc'] )  ? (string) $_item['desc']  : '' );
+			$_sd  = esc_html( wp_trim_words( isset( $_item['desc'] ) ? (string) $_item['desc'] : '', 18, '…' ) );
 			$_sc  = esc_html( isset( $_item['cta'] )   ? (string) $_item['cta']   : SITE_NAV_CTA_LABEL );
 			$_url = esc_url( adn_link( isset( $_item['url'] ) ? (string) $_item['url'] : '#' ) );
 		?>

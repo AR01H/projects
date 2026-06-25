@@ -657,3 +657,12 @@
     0%   { transform: translateX(100vw); }
     100% { transform: translateX(-100%); }
 }
+
+/* Mobile: always scroll, regardless of overflow */
+@media (max-width: 768px) {
+    .adn-preheader { justify-content: flex-start; }
+    .adn-preheader-text {
+        animation: adn-preheader-scroll 16s linear infinite;
+        padding: 0 48px;
+    }
+}

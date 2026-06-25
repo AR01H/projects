@@ -152,16 +152,26 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 
 				<?php /* Related news in sidebar */ ?>
 				<?php if ( ! empty( $_nb_related ) ) : ?>
-					<?php adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => array(
+					<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
 						'heading'  => __( 'More News', ADN_TEXT_DOMAIN ),
-						'items'    => $_nb_related,
+						'items'    => array_map( static function( $r ) {
+							return array(
+								'label'     => isset( $r['title'] )         ? $r['title']         : '',
+								'url'       => isset( $r['url'] )           ? $r['url']           : '',
+								'meta'      => isset( $r['date'] )          ? $r['date']          : '',
+								'thumbnail' => isset( $r['thumbnail_url'] ) ? $r['thumbnail_url'] : '',
+							);
+						}, $_nb_related ),
 						'view_all' => array( 'label' => 'All ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
 					) ) ); ?>
 				<?php endif; ?>
 
-				<?php /* Browse categories */ ?>
-				<?php if ( ! empty( $_nb_ctx['categories'] ) ) : ?>
-					<?php adn_component( 'parts/sidebar_browse_cats', array( 'categories' => $_nb_ctx['categories'] ) ); ?>
+				<?php /* Browse topics */ ?>
+				<?php if ( ! empty( $_nb_ctx['sidebar']['topics'] ) ) : ?>
+					<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+						'heading' => __( 'Browse Topics', ADN_TEXT_DOMAIN ),
+						'items'   => $_nb_ctx['sidebar']['topics'],
+					) ) ); ?>
 				<?php endif; ?>
 
 				<?php /* Newsletter */ ?>
@@ -241,13 +251,28 @@ adn_page_open( $_open_ctx );
 	</main>
 
 	<aside class="news-sidebar">
-		<?php if ( ! empty( $ctx['categories'] ) ) : ?>
-			<?php adn_component( 'parts/sidebar_browse_cats', array( 'categories' => $ctx['categories'] ) ); ?>
+
+		<?php /* Browse topics */ ?>
+		<?php if ( ! empty( $ctx['sidebar']['topics'] ) ) : ?>
+			<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+				'heading' => __( 'Browse Topics', ADN_TEXT_DOMAIN ),
+				'items'   => $ctx['sidebar']['topics'],
+			) ) ); ?>
+		<?php endif; ?>
+
+		<?php /* Recent news with thumbnails */ ?>
+		<?php if ( ! empty( $ctx['sidebar']['recent_news'] ) ) : ?>
+			<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+				'heading'  => __( 'Latest News', ADN_TEXT_DOMAIN ),
+				'items'    => $ctx['sidebar']['recent_news'],
+				'view_all' => array( 'label' => 'All ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
+			) ) ); ?>
 		<?php endif; ?>
 
 		<?php if ( ! empty( $ctx['sidebar']['newsletter'] ) ) : ?>
 			<?php adn_component( 'parts/sidebar_newsletter_signup', array( 'newsletter' => $ctx['sidebar']['newsletter'] ) ); ?>
 		<?php endif; ?>
+
 	</aside>
 
 </div>

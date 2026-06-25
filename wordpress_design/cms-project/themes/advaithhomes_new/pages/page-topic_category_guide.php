@@ -36,41 +36,49 @@ adn_page_open( $_open_ctx );
 	'breadcrumb' => $ctx['breadcrumb'],
 ) ); ?>
 
-<?php /* ============================== CATEGORY SEARCH ============================== */ ?>
-<div class="container">
-	<div class="cat-search-bar">
-		<form class="cat-search-form" method="get" action="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" role="search">
-			<label class="screen-reader-text" for="cat-search-input"><?php echo esc_html( sprintf( __( 'Search %s guides', ADN_TEXT_DOMAIN ), $term_name ) ); ?></label>
-			<div class="cat-search-inner">
-				<span class="cat-search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
-				<input
-					id="cat-search-input"
-					type="search"
-					name="search"
-					class="cat-search-input"
-					value="<?php echo esc_attr( $ctx['search']['query'] ); ?>"
-					placeholder="<?php echo esc_attr( sprintf( __( 'Search %s guides…', ADN_TEXT_DOMAIN ), $term_name ) ); ?>"
-					autocomplete="off"
-				>
-				<?php if ( $ctx['search']['query'] !== '' ) : ?>
-					<a href="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" class="cat-search-clear" aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>"><i class="fa-solid fa-xmark"></i></a>
-				<?php endif; ?>
-				<button type="submit" class="cat-search-btn btn btn-primary"><?php esc_html_e( 'Search', ADN_TEXT_DOMAIN ); ?></button>
-			</div>
-		</form>
-		<?php if ( $ctx['search']['query'] !== '' ) : ?>
-			<p class="cat-search-results-note">
-				<?php echo esc_html( sprintf( __( 'Showing results for "%s" in %s', ADN_TEXT_DOMAIN ), $ctx['search']['query'], $term_name ) ); ?>
-			</p>
-		<?php endif; ?>
-	</div>
-</div>
-
 <?php /* ============================== MAIN + SIDEBAR ============================== */ ?>
 <div class="container">
 	<div class="page-with-sidebar topic-listing-layout">
 
 		<main class="topic-listing-main">
+
+			<?php /* ── Category Search ── */ ?>
+			<div class="cat-search-bar">
+				<div class="cat-search-wrap">
+					<form class="cat-search-form"
+						method="get"
+						action="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>"
+						role="search"
+						data-suggest="<?php echo esc_url( rest_url( 'wp/v2/search' ) ); ?>"
+					>
+						<label class="screen-reader-text" for="cat-search-input"><?php echo esc_html( sprintf( __( 'Search %s guides', ADN_TEXT_DOMAIN ), $term_name ) ); ?></label>
+						<div class="cat-search-inner">
+							<span class="cat-search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+							<input
+								id="cat-search-input"
+								type="search"
+								name="search"
+								class="cat-search-input"
+								value="<?php echo esc_attr( $ctx['search']['query'] ); ?>"
+								placeholder="<?php echo esc_attr( sprintf( __( 'Search %s guides…', ADN_TEXT_DOMAIN ), $term_name ) ); ?>"
+								autocomplete="off"
+								aria-autocomplete="list"
+								aria-expanded="false"
+							>
+							<?php if ( $ctx['search']['query'] !== '' ) : ?>
+								<a href="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" class="cat-search-clear" aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>"><i class="fa-solid fa-xmark"></i></a>
+							<?php endif; ?>
+							<button type="submit" class="cat-search-btn btn btn-primary"><?php esc_html_e( 'Search', ADN_TEXT_DOMAIN ); ?></button>
+						</div>
+					</form>
+					<div class="js-suggest search-suggest" hidden role="listbox"></div>
+				</div>
+				<?php if ( $ctx['search']['query'] !== '' ) : ?>
+					<p class="cat-search-results-note">
+						<?php echo esc_html( sprintf( __( 'Showing results for "%s" in %s', ADN_TEXT_DOMAIN ), $ctx['search']['query'], $term_name ) ); ?>
+					</p>
+				<?php endif; ?>
+			</div>
 
 			<?php if ( ! empty( $ctx['articles'] ) ) : ?>
 				<?php adn_component( 'parts/section_headers/section_header', array(
@@ -143,18 +151,6 @@ adn_page_open( $_open_ctx );
 				) ); ?>
 			<?php endif; ?>
 
-			<?php /* Featured / Popular / Suggested */ ?>
-			<?php if ( ! empty( $ctx['highlight_posts'] ) ) : ?>
-				<?php foreach ( $ctx['highlight_posts'] as $_sb_panel ) :
-					if ( empty( $_sb_panel['items'] ) ) { continue; }
-				?>
-				<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
-					'heading' => isset( $_sb_panel['heading'] ) ? $_sb_panel['heading'] : '',
-					'items'   => $_sb_panel['items'],
-				) ) ); ?>
-				<?php endforeach; ?>
-			<?php endif; ?>
-
 			<?php /* Quick tools */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['quick_tools']['items'] ) ) : ?>
 				<?php adn_component( 'parts/sidebar_quick_tools', array(
@@ -162,10 +158,19 @@ adn_page_open( $_open_ctx );
 				) ); ?>
 			<?php endif; ?>
 
-			<?php /* Latest news */ ?>
-			<?php if ( ! empty( $ctx['sidebar']['news']['items'] ) ) : ?>
-				<?php adn_component( 'parts/sidebar_news_mini', array(
-					'news_mini' => $ctx['sidebar']['news'],
+			<?php /* Latest updates for this category */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['latest_updates'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+					'heading'  => 'Latest Updates',
+					'items'    => $ctx['sidebar']['latest_updates'],
+					'view_all' => array( 'label' => 'All updates →', 'url' => home_url( '/' . $ctx['slug'] . '/' ) ),
+				) ) ); ?>
+			<?php endif; ?>
+
+			<?php /* Contact / expert help CTA */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['expert_help'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_expert_help', array(
+					'expert_help' => $ctx['sidebar']['expert_help'],
 				) ); ?>
 			<?php endif; ?>
 		</aside>
@@ -226,10 +231,12 @@ adn_page_open( $_open_ctx );
 			'heading' => $ctx['calculators']['heading'],
 			'tag'     => 'h2',
 		) ); ?>
-		<div class="tool-grid tool-grid--7col">
-			<?php foreach ( $ctx['calculators']['items'] as $card ) : ?>
-				<?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
-			<?php endforeach; ?>
+		<div class="topic-calc-carousel-wrap">
+			<div class="topic-calc-carousel">
+				<?php foreach ( $ctx['calculators']['items'] as $card ) : ?>
+					<?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
+				<?php endforeach; ?>
+			</div>
 		</div>
 	</div>
 </section>

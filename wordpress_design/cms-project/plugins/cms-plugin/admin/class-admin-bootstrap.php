@@ -137,6 +137,9 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-notices"]::before   { content:"\f148"; }
 #adminmenu .wp-submenu a[href*="page=ah-newsletter"]::before   { content:"\f534"; }
 #adminmenu .wp-submenu a[href*="page=ah-ref-notes"]::before   { content:"\f123"; }
+#adminmenu .wp-submenu a[href*="page=ah-redirects"]::before   { content:"\f237"; }
+#adminmenu .wp-submenu a[href*="page=ah-custom-code"]::before { content:"\f475"; }
+#adminmenu .wp-submenu a[href*="page=ah-visitors"]::before    { content:"\f307"; }
 
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),
@@ -706,7 +709,9 @@ CSS;
 		if ( empty( $_GET['page'] ) || 'ah-static-pages' !== $_GET['page'] ) {
 			return;
 		}
-		if ( empty( $_GET['raw'] ) || '1' !== (string) $_GET['raw'] ) {
+		$is_raw    = isset( $_GET['raw'] )    && '1'    === (string) $_GET['raw'];
+		$is_themed = isset( $_GET['themed'] ) && '1'    === (string) $_GET['themed'];
+		if ( ! $is_raw && ! $is_themed ) {
 			return;
 		}
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -720,12 +725,50 @@ CSS;
 		}
 
 		header( 'Content-Type: text/html; charset=UTF-8' );
-		if ( '' !== $html ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- intentional raw HTML output
-			echo $html;
-		} else {
+
+		if ( '' === $html ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:sans-serif;padding:40px;color:#374151;"><p>No content found' . ( $slug ? ' for <code>' . esc_html( $slug ) . '</code>' : '' ) . '.</p></body></html>';
+			exit;
 		}
+
+		if ( $is_raw ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $html;
+			exit;
+		}
+
+		// ── Themed preview: inject the site's CSS into the page <head> ──────
+		$theme_uri = get_template_directory_uri();
+		$ver       = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1';
+		$css_files = array(
+			$theme_uri . '/assets/css/variables.css?ver=' . $ver,
+			$theme_uri . '/assets/css/chrome.css?ver='    . $ver,
+			$theme_uri . '/assets/css/main.css?ver='      . $ver,
+			$theme_uri . '/assets/css/common.css?ver='    . $ver,
+			$theme_uri . '/assets/css/components.css?ver='. $ver,
+			$theme_uri . '/assets/css/fastyles.css?ver='  . $ver,
+		);
+
+		$inject = "\n<!-- Advaith Homes Theme CSS (Match Theme preview) -->\n";
+		$inject .= '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+		$inject .= '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+		foreach ( $css_files as $url ) {
+			$inject .= '<link rel="stylesheet" href="' . esc_url( $url ) . '">' . "\n";
+		}
+		$inject .= "<!-- /Theme CSS -->\n";
+
+		// Insert before </head> if tag exists, otherwise prepend after <head> or at the top.
+		if ( stripos( $html, '</head>' ) !== false ) {
+			$html = str_ireplace( '</head>', $inject . '</head>', $html );
+		} elseif ( stripos( $html, '<head>' ) !== false ) {
+			$html = str_ireplace( '<head>', '<head>' . $inject, $html );
+		} else {
+			$html = $inject . $html;
+		}
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $html;
 		exit;
 	}
 }

@@ -26,7 +26,7 @@
         }
     },
     "journey": {
-        "heading": { "title": "Where are you in your journey?" },
+        "heading": { "title": "Choose Your Property Journey" },
         "cards": [
             {
                 "icon": "👥",

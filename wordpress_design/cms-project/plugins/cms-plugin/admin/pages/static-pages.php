@@ -98,6 +98,7 @@ if ( $edit_slug ) {
 					<span style="font-size:13px;color:var(--ah-muted);">Editing: <strong style="color:var(--ah-text);"><?php echo esc_html( $edit_slug ); ?>.html</strong></span>
 					<div style="display:flex;gap:8px;align-items:center;">
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $edit_slug ) . '&raw=1' ) ); ?>" target="_blank" class="ah-btn" style="font-size:12px;">Raw / Print ↗</a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-static-pages&edit=' . rawurlencode( $edit_slug ) . '&themed=1' ) ); ?>" target="_blank" class="ah-btn" style="font-size:12px;background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;">Match Theme ↗</a>
 						<?php
 						$page = get_page_by_path( $edit_slug );
 						if ( $page ) :

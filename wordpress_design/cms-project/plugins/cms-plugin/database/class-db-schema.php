@@ -919,6 +919,47 @@ class AH_DB_Schema {
 				KEY idx_term (term_id),
 				KEY idx_active (is_active)
 			) ENGINE=InnoDB {$cs}",
+
+			// Redirect Rules — slug → URL mapping managed from admin
+			"CREATE TABLE IF NOT EXISTS {$p}ah_redirect_rules (
+				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				source_slug VARCHAR(500) NOT NULL,
+				target_url  VARCHAR(700) NOT NULL DEFAULT '',
+				type        VARCHAR(10)  NOT NULL DEFAULT '301',
+				notes       VARCHAR(300) NOT NULL DEFAULT '',
+				is_active   TINYINT(1)   NOT NULL DEFAULT 1,
+				hit_count   INT UNSIGNED NOT NULL DEFAULT 0,
+				created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				UNIQUE KEY idx_source (source_slug(191))
+			) ENGINE=InnoDB {$cs}",
+
+			// Custom Code — per-slug CSS/JS injected on the frontend
+			"CREATE TABLE IF NOT EXISTS {$p}ah_custom_code (
+				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				slug       VARCHAR(200) NOT NULL,
+				css        LONGTEXT     NOT NULL DEFAULT '',
+				js         LONGTEXT     NOT NULL DEFAULT '',
+				is_active  TINYINT(1)   NOT NULL DEFAULT 1,
+				created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				UNIQUE KEY idx_slug (slug(191))
+			) ENGINE=InnoDB {$cs}",
+
+			// Visitor Logs — one row per page visit
+			"CREATE TABLE IF NOT EXISTS {$p}ah_visitor_logs (
+				id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				ip_address   VARCHAR(45)  NOT NULL DEFAULT '',
+				page_url     VARCHAR(700) NOT NULL DEFAULT '',
+				page_slug    VARCHAR(300) NOT NULL DEFAULT '',
+				referrer     VARCHAR(700) NOT NULL DEFAULT '',
+				user_agent   VARCHAR(500) NOT NULL DEFAULT '',
+				session_id   VARCHAR(64)  NOT NULL DEFAULT '',
+				visited_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				KEY idx_ip       (ip_address),
+				KEY idx_slug     (page_slug(191)),
+				KEY idx_date     (visited_at),
+				KEY idx_session  (session_id)
+			) ENGINE=InnoDB {$cs}",
 		);
 	}
 }

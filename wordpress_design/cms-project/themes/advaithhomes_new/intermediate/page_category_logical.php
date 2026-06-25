@@ -130,54 +130,6 @@ function adn_category_cms_news( $limit = 3 ) {
 		}
 	}
 
-	// 2. CMS latest news taxonomy posts.
-	if ( empty( $items ) && function_exists( 'adn_cms_latest_news' ) ) {
-		foreach ( adn_cms_latest_news( $limit ) as $i => $post ) {
-			$title = isset( $post->title ) ? (string) $post->title : '';
-			if ( '' === $title ) {
-				continue;
-			}
-			$_thumb = '';
-			if ( ! empty( $post->featured_image_id ) ) {
-				$_u = wp_get_attachment_image_url( (int) $post->featured_image_id, 'medium' );
-				if ( $_u ) { $_thumb = (string) $_u; }
-			}
-			$items[] = array(
-				'title'     => $title,
-				'date'      => adn_cms_post_date( $post ),
-				'tag'       => 'NEWS',
-				'thumbnail' => $_thumb,
-				'gradient'  => adn_cms_gradient( $i ),
-				'url'       => adn_cms_post_url( $post ),
-			);
-		}
-	}
-
-	// 3. WP_Query fallback.
-	if ( empty( $items ) ) {
-		$q = new WP_Query( array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => $limit,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		) );
-		if ( $q->have_posts() ) {
-			foreach ( $q->posts as $i => $wp_post ) {
-				$_thumb = get_the_post_thumbnail_url( $wp_post->ID, 'medium' );
-				$items[] = array(
-					'title'     => $wp_post->post_title,
-					'date'      => get_the_date( 'M j, Y', $wp_post ),
-					'tag'       => 'NEWS',
-					'thumbnail' => $_thumb ? (string) $_thumb : '',
-					'gradient'  => adn_cms_gradient( $i ),
-					'url'      => get_permalink( $wp_post ),
-				);
-			}
-			wp_reset_postdata();
-		}
-	}
-
 	return $items;
 }
 
@@ -205,31 +157,6 @@ function adn_category_latest_updates( $slug, $limit = 4 ) {
 				'title'     => (string) $post->title,
 				'url'       => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $post )  : '#',
 			);
-		}
-	}
-
-	// 2. WP_Query fallback when no CMS articles exist for this category.
-	if ( empty( $items ) ) {
-		$q = new WP_Query( array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => $limit,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		) );
-		if ( $q->have_posts() ) {
-			foreach ( $q->posts as $wp_post ) {
-				$_thumb = get_the_post_thumbnail_url( $wp_post->ID, 'medium' );
-				$items[] = array(
-					'thumbnail' => $_thumb ? (string) $_thumb : '',
-					'overlay'   => 'Latest Update',
-					'icon'      => '📋',
-					'title'     => $wp_post->post_title,
-					'date'      => get_the_date( 'M j, Y', $wp_post ),
-					'url'       => get_permalink( $wp_post ),
-				);
-			}
-			wp_reset_postdata();
 		}
 	}
 

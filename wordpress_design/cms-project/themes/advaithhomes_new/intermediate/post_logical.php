@@ -118,27 +118,25 @@ function adn_post_get_context() {
 	}
 
 
-	/* ── Latest news - most recent 3 posts ── */
+	/* ── Latest news - news bar items only ── */
 	$latest_news = array();
-	$nq          = new WP_Query( array(
-		'post_type'      => 'post',
-		'posts_per_page' => 3,
-		'post__not_in'   => array( $post->ID ),
-		'orderby'        => 'date',
-		'order'          => 'DESC',
-	) );
-	if ( $nq->have_posts() ) {
-		while ( $nq->have_posts() ) {
-			$nq->the_post();
+	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
+		foreach ( adn_cms_newsbar_items( 3 ) as $nb ) {
+			if ( empty( $nb->text ) ) { continue; }
+			$_stamp      = ! empty( $nb->start_date ) ? $nb->start_date : ( isset( $nb->created_at ) ? $nb->created_at : '' );
+			$_thumb      = '';
+			if ( ! empty( $nb->image_id ) ) {
+				$_tu = wp_get_attachment_image_url( (int) $nb->image_id, 'thumbnail' );
+				if ( $_tu ) { $_thumb = (string) $_tu; }
+			}
 			$latest_news[] = array(
-				'icon'          => get_post_meta( get_the_ID(), '_adn_article_icon', true ) ?: '📰',
-				'title'         => get_the_title(),
-				'date'          => get_the_date( 'M j, Y' ),
-				'url'           => get_permalink(),
-				'thumbnail_url' => get_the_post_thumbnail_url( get_the_ID(), 'thumbnail' ) ?: '',
+				'icon'          => '📰',
+				'title'         => (string) $nb->text,
+				'date'          => $_stamp ? date_i18n( 'M j, Y', strtotime( $_stamp ) ) : '',
+				'url'           => ! empty( $nb->link_url ) ? (string) $nb->link_url : home_url( SITE_NEWS_URL ),
+				'thumbnail_url' => $_thumb,
 			);
 		}
-		wp_reset_postdata();
 	}
 
 	/* ── Hero image - featured image or theme default ── */

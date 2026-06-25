@@ -848,6 +848,24 @@ class ADN_Theme_Admin {
 		// Search.
 		$pg['search_placeholder'] = sanitize_text_field( wp_unslash( isset( $_POST['search_placeholder'] ) ? $_POST['search_placeholder'] : '' ) );
 
+		// Sidebar highlight sections (1 and 2).
+		foreach ( array( 1, 2 ) as $_sn ) {
+			$_hkey = 'sidebar_hl' . $_sn . '_heading';
+			$_ikey = 'sidebar_hl' . $_sn . '_items';
+			$pg[ $_hkey ] = sanitize_text_field( wp_unslash( isset( $_POST[ $_hkey ] ) ? $_POST[ $_hkey ] : '' ) );
+			$_raw_items   = isset( $_POST[ $_ikey ] ) && is_array( $_POST[ $_ikey ] ) ? $_POST[ $_ikey ] : array();
+			$pg[ $_ikey ] = array();
+			foreach ( array_slice( $_raw_items, 0, 6 ) as $_row ) {
+				$_lbl = sanitize_text_field( wp_unslash( isset( $_row['label'] ) ? $_row['label'] : '' ) );
+				if ( '' === $_lbl ) { continue; }
+				$pg[ $_ikey ][] = array(
+					'icon'  => sanitize_text_field( wp_unslash( isset( $_row['icon'] ) ? $_row['icon'] : '' ) ),
+					'label' => $_lbl,
+					'url'   => esc_url_raw( wp_unslash( isset( $_row['url'] ) ? $_row['url'] : '' ) ),
+				);
+			}
+		}
+
 		// Sidebar help CTA.
 		$pg['sidebar_help_title']     = sanitize_text_field( wp_unslash( isset( $_POST['sidebar_help_title'] ) ? $_POST['sidebar_help_title'] : '' ) );
 		$pg['sidebar_help_text']      = sanitize_textarea_field( wp_unslash( isset( $_POST['sidebar_help_text'] ) ? $_POST['sidebar_help_text'] : '' ) );

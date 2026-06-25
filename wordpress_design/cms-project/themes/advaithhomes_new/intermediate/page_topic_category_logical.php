@@ -16,7 +16,7 @@ function adn_topic_category_get_context() {
 	$slug   = sanitize_key( (string) get_query_var( 'adn_guide_term_slug', '' ) );
 	$chrome = adn_service_site_chrome();
 
-	$per_page = 12;
+	$per_page = defined( 'ADN_TOPIC_ARTICLES_PER_PAGE' ) ? (int) ADN_TOPIC_ARTICLES_PER_PAGE : 12;
 	$paged    = max( 1, isset( $_GET['paged'] ) ? (int) $_GET['paged'] : 1 ); // phpcs:ignore WordPress.Security.NonceVerification
 
 	$ctx = array(
@@ -251,6 +251,21 @@ function adn_topic_category_get_context() {
 	} // end if ( empty( $articles ) )
 
 	$ctx['articles']   = $articles;
+
+	// Sidebar: latest updates for this category (first 4 articles, used instead of global news).
+	$_sb_updates = array();
+	foreach ( array_slice( $articles, 0, 4 ) as $_ua ) {
+		$_ub_label = isset( $_ua['title'] ) ? (string) $_ua['title'] : '';
+		if ( '' === $_ub_label ) { continue; }
+		$_sb_updates[] = array(
+			'label'     => $_ub_label,
+			'url'       => isset( $_ua['url'] )       ? (string) $_ua['url']       : '',
+			'thumbnail' => isset( $_ua['thumbnail'] ) ? (string) $_ua['thumbnail'] : '',
+			'meta'      => isset( $_ua['date'] )      ? (string) $_ua['date']      : '',
+		);
+	}
+	$ctx['sidebar']['latest_updates'] = $_sb_updates;
+
 	$ctx['pagination'] = array(
 		'current'  => $paged,
 		'total'    => $total_pages,
@@ -333,7 +348,7 @@ function adn_topic_category_get_context() {
 					'post_type'      => 'post',
 					'post_status'    => 'publish',
 					'post__in'       => $_post_ids,
-					'posts_per_page' => 5,
+					'posts_per_page' => -1,
 					'orderby'        => 'date',
 					'order'          => 'DESC',
 					'meta_query'     => array(
@@ -495,29 +510,6 @@ function adn_topic_category_get_context() {
 				'gradient'    => adn_cms_gradient( $i ),
 				'url'         => ! empty( $nitem->link_url ) ? $nitem->link_url : '#',
 			);
-		}
-	}
-
-	if ( empty( $news_items ) ) {
-		$q = new WP_Query( array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => 3,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		) );
-		if ( $q->have_posts() ) {
-			foreach ( $q->posts as $i => $wp_post ) {
-				$news_items[] = array(
-					'title'       => $wp_post->post_title,
-					'description' => $wp_post->post_excerpt,
-					'date'        => get_the_date( 'M j, Y', $wp_post ),
-					'tag'         => 'NEWS',
-					'gradient'    => adn_cms_gradient( $i ),
-					'url'         => get_permalink( $wp_post ),
-				);
-			}
-			wp_reset_postdata();
 		}
 	}
 

@@ -22,7 +22,6 @@ defined( 'ABSPATH' ) || exit;
 $sidebar      = isset( $sidebar ) && is_array( $sidebar ) ? $sidebar : array();
 $cat_groups   = isset( $sidebar['cat_groups'] )  && is_array( $sidebar['cat_groups'] )  ? $sidebar['cat_groups']  : array();
 $browse_cats  = isset( $sidebar['browse_cats'] ) && is_array( $sidebar['browse_cats'] ) ? $sidebar['browse_cats'] : array();
-$expert_help  = isset( $sidebar['expert_help'] ) && is_array( $sidebar['expert_help'] ) ? $sidebar['expert_help'] : array();
 ?>
 <aside class="guides-sidebar">
 
@@ -106,9 +105,5 @@ $expert_help  = isset( $sidebar['expert_help'] ) && is_array( $sidebar['expert_h
 		<?php adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => $news_mini ) ); ?>
 	<?php endif; ?>
 
-	<?php /* ── Expert help CTA ── */ ?>
-	<?php if ( ! empty( $expert_help['cta']['label'] ) ) : ?>
-		<?php adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $expert_help ) ); ?>
-	<?php endif; ?>
 
 </aside>

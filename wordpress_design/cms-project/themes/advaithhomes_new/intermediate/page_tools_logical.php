@@ -185,7 +185,20 @@ function adn_calculators_get_context() {
 		'hero'          => $hero,
 		'trust_items'   => $trust_items,
 		'search'        => $search,
-		'sidebar'       => array( 'categories' => $sidebar_cats, 'help' => $help ),
+		'sidebar'       => array(
+			'categories' => $sidebar_cats,
+			'help'       => $help,
+			'sections'   => array(
+				array(
+					'heading' => $pg_str( 'sidebar_hl1_heading' ),
+					'links'   => isset( $pg['sidebar_hl1_items'] ) && is_array( $pg['sidebar_hl1_items'] ) ? $pg['sidebar_hl1_items'] : array(),
+				),
+				array(
+					'heading' => $pg_str( 'sidebar_hl2_heading' ),
+					'links'   => isset( $pg['sidebar_hl2_items'] ) && is_array( $pg['sidebar_hl2_items'] ) ? $pg['sidebar_hl2_items'] : array(),
+				),
+			),
+		),
 		'filter_tabs'   => $filter_tabs,
 		'popular_tools' => $popular_tools,
 		'all_tools'     => $all_tools,

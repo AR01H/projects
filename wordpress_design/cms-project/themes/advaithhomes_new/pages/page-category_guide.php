@@ -86,16 +86,6 @@ adn_page_open( $_open_ctx );
 			</div>
 			<?php endif; ?>
 
-			<?php /* ── Latest News + Regulations (side by side) ── */ ?>
-			<?php if ( ! empty( $ctx['news']['items'] ) || ! empty( $ctx['regulations']['items'] ) ) : ?>
-			<div class="category-section category-news-regs">
-				<?php adn_component( 'sections/news_three_col', array(
-					'news'        => $ctx['news'],
-					'regulations' => $ctx['regulations'],
-				) ); ?>
-			</div>
-			<?php endif; ?>
-
 			<?php /* ── Tools ── */ ?>
 			<?php if ( ! empty( $ctx['calculators']['items'] ) ) : ?>
 			<div class="category-section category-tools">
@@ -105,7 +95,7 @@ adn_page_open( $_open_ctx );
 					'tag'     => 'h3',
 				) );
 				?>
-				<div class="tool-grid tool-grid--7col">
+				<div class="tool-grid">
 					<?php foreach ( (array) $ctx['calculators']['items'] as $card ) : ?>
 						<?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
 					<?php endforeach; ?>
@@ -151,6 +141,22 @@ adn_page_open( $_open_ctx );
 
 	</div>
 </div>
+
+<?php /* ============================== LATEST NEWS + UPDATES (full-width, like home page) ============================== */ ?>
+<?php if ( ! empty( $ctx['news']['items'] ) || ! empty( $ctx['regulations']['items'] ) ) : ?>
+<section class="news-three-col">
+	<div class="container">
+		<div class="news-sp-row">
+			<div class="news-sp-row__news">
+				<?php adn_component( 'sections/news_three_col', array(
+					'news'        => $ctx['news'],
+					'regulations' => $ctx['regulations'],
+				) ); ?>
+			</div>
+		</div>
+	</div>
+</section>
+<?php endif; ?>
 
 <?php /* ============================== FAQs ============================== */ ?>
 <?php if ( ! empty( $ctx['faqs']['items'] ) ) : ?>

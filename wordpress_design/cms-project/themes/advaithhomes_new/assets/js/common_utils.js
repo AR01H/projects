@@ -851,6 +851,78 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
+	   VISITORS — ping REST API once per session, update display
+	   ══════════════════════════════════════════════════════════════ */
+	var Visitors = {
+		/* Generate or reuse a per-browser session ID (not across tabs but good enough for dedup). */
+		_sessionId: function () {
+			try {
+				var id = sessionStorage.getItem( 'adn_sid' );
+				if ( ! id ) {
+					id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+					sessionStorage.setItem( 'adn_sid', id );
+				}
+				return id;
+			} catch ( _ ) { return ''; }
+		},
+
+		init: function () {
+			var el = document.getElementById( 'adn-visitor-count' );
+			var site = window.adnSite || {};
+			var pingUrl = site.pingUrl || '';
+			var getUrl  = site.visitorsUrl || '';
+			if ( ! pingUrl && ! getUrl ) { return; }
+
+			function fmt( n ) {
+				n = parseInt( n, 10 ) || 0;
+				if ( n >= 1000000 ) { return ( n / 1000000 ).toFixed( 1 ) + 'M'; }
+				if ( n >= 1000 )    { return ( n / 1000 ).toFixed( 1 ) + 'k'; }
+				return String( n );
+			}
+
+			function display( data ) {
+				if ( el && data && data.total !== undefined ) {
+					el.textContent = fmt( data.total ) + ' visitors';
+				}
+			}
+
+			/* Ping once per page per session (sessionStorage key = slug so multi-tab is fine) */
+			var slug = window.location.pathname.replace( /^\/|\/$/g, '' ) || 'home';
+			var pingedKey = 'adn_vis_' + slug;
+			var alreadyPinged = false;
+			try { alreadyPinged = !!sessionStorage.getItem( pingedKey ); } catch ( _ ) {}
+
+			if ( ! alreadyPinged && pingUrl ) {
+				var payload = JSON.stringify( {
+					url:        window.location.href,
+					slug:       slug,
+					referrer:   document.referrer || '',
+					session_id: Visitors._sessionId()
+				} );
+				fetch( pingUrl, {
+					method:  'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body:    payload
+				} )
+					.then( function ( r ) { return r.ok ? r.json() : null; } )
+					.then( function ( d ) {
+						if ( d ) { display( d ); }
+						try { sessionStorage.setItem( pingedKey, '1' ); } catch ( _ ) {}
+					} )
+					.catch( function () {} );
+			} else if ( el && getUrl ) {
+				fetch( getUrl )
+					.then( function ( r ) { return r.ok ? r.json() : null; } )
+					.then( function ( d ) { if ( d ) { display( d ); } } )
+					.catch( function () {} );
+			}
+		}
+	};
+
+	Utils.ready( function () { Visitors.init(); } );
+
+
+	/* ══════════════════════════════════════════════════════════════
 	   EXPORT
 	   ══════════════════════════════════════════════════════════════ */
 	window.ADN = {
@@ -868,7 +940,8 @@
 		Scroll:           Scroll,
 		Param:            Param,
 		Utils:            Utils,
-		FullScreenDialog: FullScreenDialog
+		FullScreenDialog: FullScreenDialog,
+		Visitors:         Visitors
 	};
 
 } )( window );

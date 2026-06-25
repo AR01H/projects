@@ -1,6 +1,0 @@
-type,title,text,link_url,link_label,start_date,end_date,priority,status,icon
-info,New Day Surgery Unit Now Open,Our new 12-theatre day surgery unit is now open. Shorter waiting times for many procedures.,/news/new-day-surgery-unit-open/,Find out more,2024-03-11,,high,active,🌅
-warning,Car Park Changes from 1 April,Car park charges are changing from 1 April 2024. Blue Badge holders remain free of charge.,/contact-us/,See parking info,2024-03-15,2024-04-15,high,active,🚗
-info,Hospital App: Manage Your Appointment,Download the hospital app to view your appointments and receive test results.,/contact-us/,Download now,2024-01-01,,normal,active,📱
-info,Free Patient Wi-Fi Now Available,Free unlimited Wi-Fi is now available throughout the hospital for patients and visitors.,/contact-us/,Find out more,2024-02-01,,normal,active,📶
-warning,Important: What to Bring to Your Appointment,Please remember to bring a list of all your current medications to every appointment.,/patient-guides/what-to-pack-for-hospital/,Read checklist,2024-01-01,,normal,active,📋

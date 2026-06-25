@@ -41,11 +41,31 @@
         if (!btn || !menu) { return; }
 
         function setOpen(open) {
-            menu.classList.toggle('open', open);
+            /* position overlay flush below the sticky header (accounts for pre-header bar) */
+            var hdr = document.getElementById('siteHeader') || document.querySelector('.site-header');
+            if (hdr) {
+                var hdrBottom = hdr.getBoundingClientRect().bottom;
+                menu.style.top = hdrBottom + 'px';
+                menu.style.maxHeight = (window.innerHeight - hdrBottom) + 'px';
+            }
+
+            if (open) {
+                /* make visible first, then trigger transition on next frame */
+                menu.style.display = 'block';
+                requestAnimationFrame(function () {
+                    menu.classList.add('open');
+                });
+            } else {
+                menu.classList.remove('open');
+                /* hide after transition ends */
+                menu.addEventListener('transitionend', function hide() {
+                    if (!menu.classList.contains('open')) { menu.style.display = ''; }
+                    menu.removeEventListener('transitionend', hide);
+                });
+            }
             btn.setAttribute('aria-expanded', open ? 'true' : 'false');
             btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             btn.innerHTML = open ? '✕' : '☰';
-            /* overlay is position:fixed so background scroll is already blocked */
         }
 
         btn.addEventListener('click', function () {

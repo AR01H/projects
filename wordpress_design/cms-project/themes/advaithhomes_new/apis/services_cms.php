@@ -684,50 +684,6 @@ function adn_shared_latest_news_items( $limit = 3 ) {
 		}
 	}
 
-	if ( empty( $items ) ) {
-		foreach ( adn_cms_latest_news( $limit ) as $i => $post ) {
-			$title = isset( $post->title ) ? (string) $post->title : '';
-			if ( '' === $title ) { continue; }
-			$thumb_url = '';
-			if ( ! empty( $post->featured_image_id ) ) {
-				$_tu = wp_get_attachment_image_url( (int) $post->featured_image_id, 'thumbnail' );
-				if ( $_tu ) { $thumb_url = (string) $_tu; }
-			}
-			$items[] = array(
-				'title'     => $title,
-				'date'      => adn_cms_post_date( $post ),
-				'tag'       => '',
-				'thumbnail' => $thumb_url,
-				'gradient'  => adn_cms_gradient( $i ),
-				'url'       => adn_cms_post_url( $post ),
-			);
-		}
-	}
-
-	if ( empty( $items ) ) {
-		$q = new WP_Query( array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => $limit,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		) );
-		if ( $q->have_posts() ) {
-			foreach ( $q->posts as $i => $wp_post ) {
-				$_tu = get_the_post_thumbnail_url( $wp_post->ID, 'thumbnail' );
-				$items[] = array(
-					'title'     => $wp_post->post_title,
-					'date'      => get_the_date( 'M j, Y', $wp_post ),
-					'tag'       => '',
-					'thumbnail' => $_tu ? (string) $_tu : '',
-					'gradient'  => adn_cms_gradient( $i ),
-					'url'       => get_permalink( $wp_post ),
-				);
-			}
-			wp_reset_postdata();
-		}
-	}
-
 	return $items;
 }
 

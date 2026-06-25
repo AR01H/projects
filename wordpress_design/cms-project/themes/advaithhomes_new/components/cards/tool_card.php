@@ -23,6 +23,6 @@ $thumbnail = isset( $card['thumbnail'] ) && '' !== $card['thumbnail'] ? (string)
 		<?php if ( ! empty( $card['highlight'] ) ) : ?>
 			<span class="calc-card-badge"><?php echo esc_html( $card['highlight'] ); ?></span>
 		<?php endif; ?>
-		<div class="calc-card-name"><?php echo esc_html( isset( $card['name'] ) ? $card['name'] : '' ); ?></div>
+		<div class="calc-card-name"><?php echo esc_html( ! empty( $card['name'] ) ? $card['name'] : ( ! empty( $card['title'] ) ? $card['title'] : '' ) ); ?></div>
 	</div>
 </a>

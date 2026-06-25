@@ -52,7 +52,7 @@ img{max-width:100%;height:auto;display:block}a{text-decoration:none;color:inheri
 .guides-carousel-btn--prev{left:-18px}
 .guides-carousel-btn--next{right:-18px}
 .guides-carousel-btn[hidden]{display:none}
-.guides-carousel-dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.guides-carousel-dots{display:none}
 .guides-carousel-dot{width:10px;height:10px;border-radius:50%;background:var(--color-border);cursor:pointer}
 .guides-carousel-dot.active{background:var(--color-primary)}
 

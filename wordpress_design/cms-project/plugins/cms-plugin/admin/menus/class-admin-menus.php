@@ -28,6 +28,8 @@ class AH_Admin_Menus {
 			['title' => 'Page Builder',         'menu' => 'Page Builder',         'slug' => 'ah-page-builder',  'callback' => 'page_builder'      ],
 			['title' => 'Static Pages',         'menu' => 'Static Pages',         'slug' => 'ah-static-pages',  'callback' => 'page_static_pages' ],
 			['title' => 'Pages Manager',        'menu' => 'Pages Manager',        'slug' => 'ah-pages',         'callback' => 'page_pages'        ],
+			['title' => 'Redirect Rules',       'menu' => 'Redirect Rules',       'slug' => 'ah-redirects',     'callback' => 'page_redirects'    ],
+			['title' => 'Custom Code',          'menu' => 'Custom Code',          'slug' => 'ah-custom-code',   'callback' => 'page_custom_code'  ],
 			// ── Forms & Communication ─────────────────────────────────
 			['title' => 'Form Builder',         'menu' => 'Form Builder',         'slug' => 'ah-form-builder',  'callback' => 'page_form_builder' ],
 			['title' => 'Notifications',        'menu' => 'Notifications',        'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
@@ -35,6 +37,7 @@ class AH_Admin_Menus {
 			['title' => 'Media Library',        'menu' => 'Media Library',        'slug' => 'ah-media',         'callback' => 'page_media'        ],
 			['title' => 'File Links',           'menu' => 'File Links',           'slug' => 'ah-file-links',    'callback' => 'page_file_links'   ],
 			// ── System ────────────────────────────────────────────────
+			['title' => 'Visitor Stats',         'menu' => 'Visitor Stats',         'slug' => 'ah-visitors',      'callback' => 'page_visitors'     ],
 			['title' => 'Analytics Reports',    'menu' => 'Analytics Reports',    'slug' => 'ah-analytics',     'callback' => 'page_analytics'    ],
 			['title' => 'Rules Engine',         'menu' => 'Rules Engine',         'slug' => 'ah-rules-engine',  'callback' => 'page_rules_engine' ],
 			['title' => 'Data Import',          'menu' => 'Data Import',          'slug' => 'ah-import',        'callback' => 'page_import'       ],
@@ -97,6 +100,9 @@ class AH_Admin_Menus {
 	public static function page_rules_engine()   { self::load( 'rules-engine'   ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }
+	public static function page_redirects()      { self::load( 'redirect-rules'  ); }
+	public static function page_custom_code()    { self::load( 'custom-code'     ); }
+	public static function page_visitors()        { self::load( 'visitors'       ); }
 	public static function page_analytics()      { self::load( 'analytics'      ); }
 	public static function page_ref_notes()      { self::load( 'reference-notes' ); }
 	public static function page_help()           { self::load( 'help'           ); }

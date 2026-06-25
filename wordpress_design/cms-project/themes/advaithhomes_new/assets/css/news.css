@@ -852,9 +852,6 @@
     min-width: 0;
 }
 
-.news-single-article {
-    padding: 32px 0 48px;
-}
 
 .news-single-back {
     display: inline-flex;
@@ -969,7 +966,6 @@
     font-size: 1rem;
     line-height: 1.85;
     color: var(--color-text, #374151);
-    margin-bottom: var(--space-8);
 }
 
 .news-single-content h1,

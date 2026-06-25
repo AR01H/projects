@@ -35,6 +35,8 @@ class AH_Autoloader {
 		'AH_Spotlights_Model'      => 'models/class-spotlights-model.php',
 		'AH_Footer_Model'     => 'models/class-footer-model.php',
 		'AH_Audit_Model'      => 'models/class-audit-model.php',
+		'AH_Visitor_Model'    => 'models/class-visitor-model.php',
+		'AH_Rest_Routes'      => 'api/class-rest-routes.php',
 
 		// Helpers
 		'AH_Slug_Helper'      => 'helper/class-slug-helper.php',

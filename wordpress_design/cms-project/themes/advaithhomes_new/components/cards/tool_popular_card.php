@@ -15,7 +15,6 @@ $highlight = isset( $calc['highlight'] ) && '' !== $calc['highlight'] ? (string)
 ?>
 <a href="<?php echo $url; ?>" class="popular-calc-card">
 
-
 	<div class="popular-calc-icon" aria-hidden="true">
 		<?php if ( $thumbnail ) : ?>
 			<img src="<?php echo esc_url( $thumbnail ); ?>" alt="" class="calc-popular-thumb" loading="lazy">
@@ -24,15 +23,17 @@ $highlight = isset( $calc['highlight'] ) && '' !== $calc['highlight'] ? (string)
 		<?php endif; ?>
 	</div>
 
-	<?php if ( ! empty( $calc['title'] ) ) : ?>
-		<h4><?php echo esc_html( $calc['title'] ); ?></h4>
-	<?php endif; ?>
+	<div class="popular-calc-card-body">
+		<?php if ( $highlight ) : ?>
+			<span class="calc-card-badge" style="display:block;margin-bottom:6px;"><?php echo esc_html( $highlight ); ?></span>
+		<?php endif; ?>
+		<?php if ( ! empty( $calc['title'] ) ) : ?>
+			<h4><?php echo esc_html( $calc['title'] ); ?></h4>
+		<?php endif; ?>
+		<?php if ( ! empty( $calc['desc'] ) ) : ?>
+			<p><?php echo esc_html( wp_trim_words( $calc['desc'], 15, '…' ) ); ?></p>
+		<?php endif; ?>
+		<span class="calc-cta"><?php echo esc_html( SITE_BTN_CALCULATE_NOW ); ?> →</span>
+	</div>
 
-	<?php if ( ! empty( $calc['desc'] ) ) : ?>
-		<p><?php echo esc_html( $calc['desc'] ); ?></p>
-	<?php endif; ?>
-
-	<span class="calc-cta">
-		<?php echo esc_html( SITE_BTN_CALCULATE_NOW ); ?> →
-	</span>
 </a>

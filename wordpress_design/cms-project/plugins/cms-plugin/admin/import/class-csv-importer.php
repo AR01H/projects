@@ -81,7 +81,7 @@ class AH_CSV_Importer {
 					'status'      => 'active | inactive (default active)',
 				),
 			),
-			'news_bar'   => array(
+			'news_bar'         => array(
 				'label'    => 'News Bar',
 				'required' => array( 'text' ),
 				'columns'  => array(
@@ -91,6 +91,35 @@ class AH_CSV_Importer {
 					'end_date'   => 'YYYY-MM-DD  (leave blank = no expiry)',
 					'sort_order' => 'Integer display order (default 0)',
 					'status'     => 'active | inactive (default active)',
+				),
+			),
+			'spotlight_terms'  => array(
+				'label'    => 'Spotlight Terms',
+				'required' => array( 'name', 'slug' ),
+				'columns'  => array(
+					'name'        => 'Term name, e.g. "Buying a Home" (required)',
+					'slug'        => 'URL-safe slug, e.g. buying-a-home (required, must be unique)',
+					'description' => 'Optional description',
+					'max_display' => 'Max spotlight items to show for this term (default 10)',
+					'sort_order'  => 'Integer display order (default 0)',
+					'is_active'   => '1 = active, 0 = inactive (default 1)',
+				),
+			),
+			'spotlights'       => array(
+				'label'    => 'Spotlight Items',
+				'required' => array( 'term_slug', 'title' ),
+				'columns'  => array(
+					'term_slug'   => 'Slug of the parent Spotlight Term (required)',
+					'title'       => 'Spotlight item title (required)',
+					'icon'        => 'Emoji or icon class, e.g. 🏠 (optional)',
+					'description' => 'Short description shown on the card',
+					'point_value' => 'Stat or highlight value, e.g. "£250k"',
+					'point_label' => 'Label for the value, e.g. "Average sale price"',
+					'link_url'    => 'Optional click-through URL',
+					'link_label'  => 'Link button label (default "Learn more")',
+					'show_link'   => '1 = show link button, 0 = hide (default 0)',
+					'sort_order'  => 'Integer display order (default 0)',
+					'is_active'   => '1 = active, 0 = inactive (default 1)',
 				),
 			),
 			'events'     => array(
@@ -166,8 +195,10 @@ class AH_CSV_Importer {
 			case 'faqs':       return self::import_faqs( $rows );
 			case 'posts':      return self::import_posts( $rows );
 			case 'taxonomies': return self::import_taxonomies( $rows );
-			case 'news_bar':   return self::import_news_bar( $rows );
-			case 'events':     return self::import_events( $rows );
+			case 'news_bar':        return self::import_news_bar( $rows );
+			case 'events':          return self::import_events( $rows );
+			case 'spotlight_terms': return self::import_spotlight_terms( $rows );
+			case 'spotlights':      return self::import_spotlights( $rows );
 		}
 		return array( 'imported' => 0, 'skipped' => 0, 'errors' => array( 'Unknown type.' ) );
 	}
@@ -499,6 +530,95 @@ class AH_CSV_Importer {
 				'sort_order'  => (int) ( $row['sort_order'] ?? 0 ),
 				'status'      => self::status( $row['status'] ?? '', array( 'active', 'inactive' ) ),
 			) );
+			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
+		}
+
+		return $result;
+	}
+
+	// -------------------------------------------------------------------------
+	// Spotlight Terms
+	// -------------------------------------------------------------------------
+	private static function import_spotlight_terms( array $rows ): array {
+		global $wpdb;
+		$table  = AH_DB_Helper::table( 'spotlight_terms' );
+		$result = array( 'imported' => 0, 'skipped' => 0, 'errors' => array() );
+
+		foreach ( $rows as $i => $row ) {
+			$line = $i + 2;
+			$name = sanitize_text_field( $row['name'] ?? '' );
+			$slug = sanitize_title( $row['slug'] ?? '' );
+
+			if ( ! $name ) { self::result_add( $result, false, "Row {$line}: 'name' is required." ); continue; }
+			if ( ! $slug ) { self::result_add( $result, false, "Row {$line}: 'slug' is required." ); continue; }
+
+			// Skip if slug already exists (terms are identified by slug).
+			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE slug = %s", $slug ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $exists ) {
+				self::result_add( $result, false, "Row {$line}: term slug '{$slug}' already exists — skipped." );
+				continue;
+			}
+
+			$max_display = (int) ( $row['max_display'] ?? 10 );
+			$is_active   = isset( $row['is_active'] ) && '' !== $row['is_active'] ? ( (int) $row['is_active'] ? 1 : 0 ) : 1;
+
+			$wpdb->insert( $table, array(
+				'name'        => $name,
+				'slug'        => $slug,
+				'description' => sanitize_textarea_field( $row['description'] ?? '' ),
+				'max_display' => $max_display > 0 ? $max_display : 10,
+				'sort_order'  => (int) ( $row['sort_order'] ?? 0 ),
+				'is_active'   => $is_active,
+			), array( '%s', '%s', '%s', '%d', '%d', '%d' ) );
+			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
+		}
+
+		return $result;
+	}
+
+	// -------------------------------------------------------------------------
+	// Spotlight Items
+	// -------------------------------------------------------------------------
+	private static function import_spotlights( array $rows ): array {
+		global $wpdb;
+		$table      = AH_DB_Helper::table( 'spotlights' );
+		$terms_t    = AH_DB_Helper::table( 'spotlight_terms' );
+		$result     = array( 'imported' => 0, 'skipped' => 0, 'errors' => array() );
+		$term_cache = array();
+
+		foreach ( $rows as $i => $row ) {
+			$line      = $i + 2;
+			$term_slug = sanitize_title( $row['term_slug'] ?? '' );
+			$title     = sanitize_text_field( $row['title'] ?? '' );
+
+			if ( ! $term_slug ) { self::result_add( $result, false, "Row {$line}: 'term_slug' is required." ); continue; }
+			if ( ! $title )     { self::result_add( $result, false, "Row {$line}: 'title' is required." ); continue; }
+
+			// Resolve term_id (cached per slug).
+			if ( ! isset( $term_cache[ $term_slug ] ) ) {
+				$term_cache[ $term_slug ] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$terms_t}` WHERE slug = %s", $term_slug ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+			$term_id = $term_cache[ $term_slug ];
+			if ( ! $term_id ) {
+				self::result_add( $result, false, "Row {$line}: spotlight term '{$term_slug}' not found — import that term first." );
+				continue;
+			}
+
+			$is_active = isset( $row['is_active'] ) && '' !== $row['is_active'] ? ( (int) $row['is_active'] ? 1 : 0 ) : 1;
+
+			$wpdb->insert( $table, array(
+				'term_id'     => $term_id,
+				'icon'        => sanitize_text_field( $row['icon']        ?? '' ),
+				'title'       => $title,
+				'description' => sanitize_textarea_field( $row['description'] ?? '' ),
+				'point_value' => sanitize_text_field( $row['point_value']  ?? '' ),
+				'point_label' => sanitize_text_field( $row['point_label']  ?? '' ),
+				'link_url'    => esc_url_raw( $row['link_url'] ?? '' ),
+				'link_label'  => sanitize_text_field( $row['link_label'] ?? '' ),
+				'show_link'   => (int) ( $row['show_link'] ?? 0 ) ? 1 : 0,
+				'sort_order'  => (int) ( $row['sort_order'] ?? 0 ),
+				'is_active'   => $is_active,
+			), array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d' ) );
 			self::result_add( $result, ! $wpdb->last_error, $wpdb->last_error ? "Row {$line}: " . $wpdb->last_error : '' );
 		}
 

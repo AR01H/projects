@@ -12,8 +12,7 @@ defined( 'ABSPATH' ) || exit;
 $sidebar    = isset( $sidebar )  && is_array( $sidebar )  ? $sidebar  : array();
 $categories = isset( $sidebar['categories'] ) ? (array) $sidebar['categories'] : array();
 $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       : array();
-$hl_heading = isset( $sidebar['hl_heading'] ) ? (string) $sidebar['hl_heading'] : '';
-$hl_links   = isset( $sidebar['hl_links'] )   ? (array)  $sidebar['hl_links']   : array();
+$sections   = isset( $sidebar['sections'] )   ? (array) $sidebar['sections']   : array();
 ?>
 <aside class="tools-sidebar">
 
@@ -52,33 +51,29 @@ $hl_links   = isset( $sidebar['hl_links'] )   ? (array)  $sidebar['hl_links']   
 		</div>
 	<?php endif; ?>
 
-	<?php if ( ! empty( $hl_heading ) && ! empty( $hl_links ) ) : ?>
-		<div class="tools-sidebar-section mini_card_container_design">
-			<h3><?php echo esc_html( $hl_heading ); ?></h3>
-			<div class="tools-cat-list">
-				<?php foreach ( $hl_links as $hl_item ) :
-					$_hl_icon  = isset( $hl_item['icon'] )  ? (string) $hl_item['icon']  : '';
-					$_hl_label = isset( $hl_item['label'] ) ? (string) $hl_item['label'] : '';
-					$_hl_url   = isset( $hl_item['url'] )   ? (string) $hl_item['url']   : '';
-					if ( '' === $_hl_label ) { continue; }
-				?>
-					<?php if ( '' !== $_hl_url ) : ?>
-						<a href="<?php echo esc_url( adn_link( $_hl_url ) ); ?>" class="tools-cat-item tools-cat-item--hl">
-							<?php if ( '' !== $_hl_icon ) : ?><span class="tools-cat-icon" aria-hidden="true"><?php echo esc_html( $_hl_icon ); ?></span><?php endif; ?>
-							<?php echo esc_html( $_hl_label ); ?>
-						</a>
-					<?php else : ?>
-						<span class="tools-cat-item tools-cat-item--hl">
-							<?php if ( '' !== $_hl_icon ) : ?><span class="tools-cat-icon" aria-hidden="true"><?php echo esc_html( $_hl_icon ); ?></span><?php endif; ?>
-							<?php echo esc_html( $_hl_label ); ?>
-						</span>
-					<?php endif; ?>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	<?php endif; ?>
+	<?php foreach ( $sections as $_sec ) :
+		$_sec_heading = isset( $_sec['heading'] ) ? (string) $_sec['heading'] : '';
+		$_sec_links   = isset( $_sec['links'] )   ? (array)  $_sec['links']   : array();
+		if ( '' === $_sec_heading || empty( $_sec_links ) ) { continue; }
+		// Map links → sidebar_link_list item shape.
+		$_sec_items = array();
+		foreach ( $_sec_links as $_sl ) {
+			$_lbl = isset( $_sl['label'] ) ? (string) $_sl['label'] : '';
+			if ( '' === $_lbl ) { continue; }
+			$_sec_items[] = array(
+				'icon'  => isset( $_sl['icon'] ) ? (string) $_sl['icon'] : '',
+				'label' => $_lbl,
+				'url'   => isset( $_sl['url'] )  ? (string) $_sl['url']  : '',
+			);
+		}
+		if ( empty( $_sec_items ) ) { continue; }
+		adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+			'heading' => $_sec_heading,
+			'items'   => $_sec_items,
+		) ) );
+	endforeach; ?>
 
-	<?php if ( ! empty( $help ) ) : ?>
+	<?php if ( ! empty( $help['title'] ) || ! empty( $help['text'] ) || ! empty( $help['button_label'] ) ) : ?>
 		<div class="tools-sidebar-help">
 			<?php if ( ! empty( $help['title'] ) ) : ?>
 				<h4><?php echo esc_html( $help['title'] ); ?></h4>

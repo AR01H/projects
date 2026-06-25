@@ -46,6 +46,14 @@ function adn_enqueue_common_js() {
     foreach ( $scripts as $handle => $file ) {
         wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), ADN_THEME_VERSION, true );
     }
+    wp_add_inline_script(
+        'adn-utils-script',
+        'window.adnSite=' . wp_json_encode( array(
+            'visitorsUrl' => rest_url( 'adn/v1/visitors' ),
+            'pingUrl'     => rest_url( 'adn/v1/visitors/ping' ),
+        ) ) . ';',
+        'before'
+    );
 }
 function adn_enqueue_template_specific_assets() {
     // Keys must match the real page-template paths (the same ones used in adn_get_page_definitions()).
@@ -83,11 +91,15 @@ function adn_enqueue_template_specific_assets() {
             'js'  => '/assets/js/faqs.js',
         ),
     );
+    $virtual_tpl = (string) get_query_var( 'adn_virtual_template', '' );
+
     foreach ( $template_assets as $template => $assets ) {
-        if ( ! is_page_template( $template ) ) {
+        $base_name = basename( $template, '.php' );
+        $is_active = is_page_template( $template ) || ( '' !== $virtual_tpl && $base_name === $virtual_tpl );
+        if ( ! $is_active ) {
             continue;
         }
-        $handle = 'adn-' . basename( $template, '.php' );
+        $handle = 'adn-' . $base_name;
         // Only enqueue files that actually exist, so missing assets never 404.
         if ( ! empty( $assets['css'] ) && file_exists( ADN_THEME_DIR . $assets['css'] ) ) {
             wp_enqueue_style( $handle . '-style', ADN_THEME_URI . $assets['css'], array(), ADN_THEME_VERSION );
@@ -162,6 +174,7 @@ function adn_get_page_definitions() {
         trim( SITE_EXPERT_URL, '/' ) => array(
             'title'    => PAGE_TITLE_EXPERT,
             'template' => 'pages/page-ask-expert.php',
+            'aliases'  => array( 'ask-an-expert' ),
         ),
         trim( SITE_FAQS_URL, '/' ) => array(
             'title'    => PAGE_TITLE_FAQS,

@@ -36,7 +36,6 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 		&#8250;
 	</button>
 
-	<div class="guides-carousel-dots" aria-hidden="true"></div>
 
 </div>
 <script>
@@ -47,7 +46,6 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 	var track = wrap.querySelector('.guides-carousel');
 	var prev  = wrap.querySelector('.guides-carousel-btn--prev');
 	var next  = wrap.querySelector('.guides-carousel-btn--next');
-	var dotsContainer = wrap.querySelector('.guides-carousel-dots');
 
 	var cards = Array.prototype.slice.call(track.querySelectorAll('.guide-card'));
 	var current = 0;
@@ -63,8 +61,6 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 
 	function setActive(i){
 		current = i;
-		var dots = dotsContainer.querySelectorAll('.guides-carousel-dot');
-		dots.forEach(function(d, idx){ d.classList.toggle('active', idx === i); });
 		updateBtns();
 	}
 
@@ -74,16 +70,6 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 		if (prev) { sl > 4 ? prev.removeAttribute('hidden') : prev.setAttribute('hidden', ''); }
 		if (next) { sl < maxScroll - 4 ? next.removeAttribute('hidden') : next.setAttribute('hidden', ''); }
 	}
-
-	// build dots
-	cards.forEach(function(c, idx){
-		var dot = document.createElement('button');
-		dot.type = 'button';
-		dot.className = 'guides-carousel-dot' + (idx===0? ' active':'');
-		dot.setAttribute('aria-label', 'Go to slide ' + (idx+1));
-		dot.addEventListener('click', function(){ stopAutoplay(); scrollToIndex(idx); });
-		dotsContainer.appendChild(dot);
-	});
 
 	if (prev) prev.addEventListener('click', function(){ stopAutoplay(); scrollToIndex(Math.max(0, current-1)); });
 	if (next) next.addEventListener('click', function(){ stopAutoplay(); scrollToIndex(Math.min(cards.length-1, current+1)); });

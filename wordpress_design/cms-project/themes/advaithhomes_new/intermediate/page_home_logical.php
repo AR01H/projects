@@ -317,32 +317,6 @@ function adn_home_cms_news_items() {
 		}
 	}
 
-	// Source 2: WP_Query fallback - plain WP posts, no taxonomy required
-	if ( empty( $items ) ) {
-		$q = new WP_Query( array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => 4,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		) );
-		if ( $q->have_posts() ) {
-			foreach ( $q->posts as $i => $post ) {
-				$excerpt = $post->post_excerpt
-					?: wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '…' );
-				$items[] = array(
-					'title'       => $post->post_title,
-					'description' => $excerpt,
-					'date'        => get_the_date( 'M j, Y', $post ),
-					'tag'         => strtoupper( CONTENT_TERM ),
-					'gradient'    => adn_cms_gradient( $i ),
-					'url'         => get_permalink( $post ),
-				);
-			}
-			wp_reset_postdata();
-		}
-	}
-
 	return $items;
 }
 

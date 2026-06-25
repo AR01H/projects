@@ -107,6 +107,68 @@ $popular_keys = isset( $pg['popular_keys'] ) && is_array( $pg['popular_keys'] ) 
 		</div>
 	</div>
 
+	<?php
+	/* ── Sidebar Highlight Links: helper to render one section ─────── */
+	$_render_hl_section = function( $num, $pg ) {
+		$key_head  = 'sidebar_hl' . $num . '_heading';
+		$key_items = 'sidebar_hl' . $num . '_items';
+		$saved_items = isset( $pg[ $key_items ] ) && is_array( $pg[ $key_items ] ) ? $pg[ $key_items ] : array();
+		$heading_val = isset( $pg[ $key_head ] ) ? $pg[ $key_head ] : '';
+		?>
+		<div class="card" style="max-width:none;margin-bottom:20px;">
+			<h2 style="margin-top:0;">
+				<?php echo esc_html( sprintf( __( 'Sidebar Section %d', ADN_TEXT_DOMAIN ), $num ) ); ?>
+			</h2>
+			<p class="description" style="margin-bottom:14px;">
+				<?php esc_html_e( 'Leave heading blank to hide this section.', ADN_TEXT_DOMAIN ); ?>
+			</p>
+			<table class="form-table" role="presentation"><tbody>
+				<tr>
+					<th scope="row">
+						<label for="cp_hl<?php echo esc_attr( $num ); ?>_heading">
+							<?php esc_html_e( 'Heading', ADN_TEXT_DOMAIN ); ?>
+						</label>
+					</th>
+					<td>
+						<input type="text"
+							id="cp_hl<?php echo esc_attr( $num ); ?>_heading"
+							name="<?php echo esc_attr( $key_head ); ?>"
+							class="regular-text"
+							value="<?php echo esc_attr( $heading_val ); ?>"
+							placeholder="<?php esc_attr_e( 'e.g. Popular Guides', ADN_TEXT_DOMAIN ); ?>">
+					</td>
+				</tr>
+			</tbody></table>
+			<?php for ( $i = 0; $i < 6; $i++ ) :
+				$_icon  = isset( $saved_items[ $i ]['icon'] )  ? $saved_items[ $i ]['icon']  : '';
+				$_label = isset( $saved_items[ $i ]['label'] ) ? $saved_items[ $i ]['label'] : '';
+				$_url   = isset( $saved_items[ $i ]['url'] )   ? $saved_items[ $i ]['url']   : '';
+			?>
+			<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;padding:10px;background:#f9f9f9;border:1px solid #eee;border-radius:4px;">
+				<span style="font-size:12px;font-weight:600;color:#555;min-width:40px;">
+					<?php echo esc_html( sprintf( __( 'Link %d', ADN_TEXT_DOMAIN ), $i + 1 ) ); ?>
+				</span>
+				<input type="text"
+					name="<?php echo esc_attr( $key_items ); ?>[<?php echo $i; ?>][icon]"
+					style="width:54px;font-size:18px;text-align:center;"
+					value="<?php echo esc_attr( $_icon ); ?>" placeholder="🏠">
+				<input type="text" class="regular-text"
+					name="<?php echo esc_attr( $key_items ); ?>[<?php echo $i; ?>][label]"
+					value="<?php echo esc_attr( $_label ); ?>"
+					placeholder="<?php esc_attr_e( 'Link label', ADN_TEXT_DOMAIN ); ?>">
+				<input type="text" class="regular-text"
+					name="<?php echo esc_attr( $key_items ); ?>[<?php echo $i; ?>][url]"
+					value="<?php echo esc_attr( $_url ); ?>"
+					placeholder="/buying-a-home/">
+			</div>
+			<?php endfor; ?>
+		</div>
+		<?php
+	};
+	?>
+	<?php $_ = $_render_hl_section( 1, $pg ); ?>
+	<?php $_ = $_render_hl_section( 2, $pg ); ?>
+
 	<?php /* ── Sidebar help CTA ─────────────────────────────────────── */ ?>
 	<div class="card" style="max-width:none;margin-bottom:20px;">
 		<h2 style="margin-top:0;"><?php esc_html_e( 'Sidebar Help CTA', ADN_TEXT_DOMAIN ); ?></h2>

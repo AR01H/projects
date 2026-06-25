@@ -29,12 +29,12 @@ function adn_guides_listing_get_context( $slug = '' ) {
 			array( 'label' => defined( 'SITE_CONTENT_PLURAL' ) ? SITE_CONTENT_PLURAL : 'Guides', 'url' => null ),
 		);
 
-	// Hero: fallback using the WP page title when JSON has none.
+	// Hero: from JSON first, then terms.json, then constant fallback.
 	$_hero = isset( $data['hero'] ) && ! empty( $data['hero'] )
 		? (array) $data['hero']
 		: array(
-			'title'       => get_the_title() ?: ( defined( 'SITE_CONTENT_PLURAL' ) ? SITE_CONTENT_PLURAL : 'Guides' ),
-			'description' => get_the_excerpt() ?: '',
+			'title'       => adn_term( 'guides_page.hero_title',       defined( 'SITE_CONTENT_PLURAL' ) ? SITE_CONTENT_PLURAL : 'Guides' ),
+			'description' => adn_term( 'guides_page.hero_description', '' ),
 		);
 
 	$ctx = array(

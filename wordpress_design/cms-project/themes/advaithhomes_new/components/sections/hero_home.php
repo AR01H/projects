@@ -35,7 +35,9 @@ $_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default
                 $text = isset( $line['text'] ) ? $line['text'] : '';
                 if ( ! empty( $line['accent'] ) ) {
                     echo '<span class="accent">' . esc_html( $text ) . '</span>';
-                } else {
+                } else if($i==2) {
+                    echo '<h2>'.esc_html( $text ).'</h2>';
+                }else{
                     echo esc_html( $text );
                 }
                 if ( $i < $line_count - 1 ) {

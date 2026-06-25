@@ -108,7 +108,53 @@ function adn_news_get_context() {
 		}
 	}
 
+	// ── Sidebar: browse topics ───────────────────────────────────────────────
+	$sidebar_topics = array();
+	if ( function_exists( 'adn_cms_guide_parents' ) ) {
+		foreach ( adn_cms_guide_parents( 12 ) as $parent ) {
+			$pslug = isset( $parent->slug ) ? (string) $parent->slug : '';
+			$pname = isset( $parent->name ) ? (string) $parent->name : ucwords( str_replace( '-', ' ', $pslug ) );
+			if ( '' === $pslug ) { continue; }
+			$sidebar_topics[] = array(
+				'label' => $pname,
+				'url'   => home_url( '/' . $pslug . '/' ),
+			);
+		}
+	}
+
+	// ── Sidebar: recent news with thumbnails ─────────────────────────────────
+	$sidebar_news = array();
+	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
+		foreach ( adn_cms_newsbar_items( 5 ) as $sni ) {
+			$sn_label = isset( $sni->text ) ? (string) $sni->text : '';
+			if ( '' === $sn_label ) { continue; }
+			$sn_thumb = '';
+			if ( ! empty( $sni->image_id ) ) {
+				$t = wp_get_attachment_image_url( (int) $sni->image_id, 'thumbnail' );
+				$sn_thumb = $t ? (string) $t : '';
+			}
+			$sn_stamp = ! empty( $sni->start_date ) ? $sni->start_date : ( isset( $sni->created_at ) ? $sni->created_at : '' );
+			$sidebar_news[] = array(
+				'label'     => $sn_label,
+				'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $sni->id ) : '',
+				'thumbnail' => $sn_thumb,
+				'meta'      => $sn_stamp ? date_i18n( 'M j, Y', strtotime( $sn_stamp ) ) : '',
+			);
+		}
+	}
+
+	$ctx['sidebar']['topics']      = $sidebar_topics;
+	$ctx['sidebar']['recent_news'] = $sidebar_news;
+
 	return $ctx;
+}
+
+/* ── Attachment thumbnail helper ────────────────────────────────────────── */
+
+function adn_newsbar_item_thumb( $image_id, $size = 'medium' ) {
+	if ( empty( $image_id ) ) { return ''; }
+	$t = wp_get_attachment_image_url( (int) $image_id, $size );
+	return $t ? (string) $t : '';
 }
 
 /* ── News Bar mappers ───────────────────────────────────────────────────── */
@@ -126,6 +172,7 @@ function adn_news_newsbar_featured( $item ) {
 		'date'      => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
 		'read_time' => function_exists( 'adn_cms_read_time' ) ? adn_cms_read_time( $content ) : '',
 		'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '',
+		'thumbnail' => adn_newsbar_item_thumb( isset( $item->image_id ) ? $item->image_id : 0 ),
 	);
 }
 
@@ -148,6 +195,7 @@ function adn_news_newsbar_grid_items( $rows ) {
 			'date'       => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
 			'read_time'  => function_exists( 'adn_cms_read_time' ) ? adn_cms_read_time( $content ) : '',
 			'url'        => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '',
+			'thumbnail'  => adn_newsbar_item_thumb( isset( $item->image_id ) ? $item->image_id : 0 ),
 		);
 	}
 	return $items;

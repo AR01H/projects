@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Constants ────────────────────────────────────────────────────────────────
-define( 'AH_PLUGIN_VERSION', '1.0.6' );
+define( 'AH_PLUGIN_VERSION', '1.3.0' );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
 
 // Table name infix - all custom tables are named: {wpdb_prefix}ah{TABLE_MID_FIX}{table_suffix}
@@ -172,6 +172,10 @@ function ah_render_related_links_shortcode( $atts ): string {
 register_activation_hook( __FILE__, array( 'AH_DB_Installer', 'install' ) );
 add_action( 'wp_loaded', array( 'AH_DB_Installer', 'maybe_upgrade' ) );
 
+// ── REST API — all routes defined in api/class-rest-routes.php ───────────────
+// To add/remove endpoints: edit the $routes array in AH_Rest_Routes::register().
+add_action( 'rest_api_init', array( 'AH_Rest_Routes', 'register' ) );
+
 // ── Rules Engine: async cron processor ───────────────────────────────────────
 // evaluate() queues actions as 'pending' in ah_trigger_logs; this cron fires
 // them in the background every minute (pending + failed retries).
@@ -205,6 +209,59 @@ register_deactivation_hook( __FILE__, static function (): void {
 	if ( $ts ) wp_unschedule_event( $ts, 'ah_rules_cron_process' );
 } );
 
+// ── Redirect Rules — front-end enforcement ────────────────────────────────────
+// Priority 1 = fires before WordPress's own redirect_canonical (priority 10).
+add_action( 'template_redirect', static function (): void {
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_redirect_rules';
+	// Bail if table doesn't exist yet (pre-upgrade).
+	if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$table}'" ) ) return; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+	$path = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ) ?? '', '/' );
+	if ( '' === $path ) return;
+
+	$rule = $wpdb->get_row( $wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		"SELECT * FROM `{$table}` WHERE source_slug = %s AND is_active = 1 LIMIT 1",
+		$path
+	) );
+	if ( ! $rule ) return;
+
+	// Increment hit counter (non-blocking; ignore errors).
+	$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET hit_count = hit_count + 1 WHERE id = %d", (int) $rule->id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+	$type   = (string) $rule->type;
+	$target = esc_url_raw( (string) $rule->target_url );
+	$label  = sanitize_text_field( (string) $rule->notes );
+
+	if ( '410' === $type ) {
+		status_header( 410 );
+		nocache_headers();
+		$site = esc_html( get_bloginfo( 'name' ) );
+		echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Page Gone — {$site}</title>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			. "<style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#f8fafc;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:48px 40px;max-width:440px;text-align:center}.icon{font-size:48px;margin-bottom:16px}.title{font-size:22px;font-weight:700;color:#111827;margin:0 0 10px}.msg{color:#6b7280;font-size:15px;margin:0 0 24px}.back{display:inline-block;padding:10px 24px;background:#1d4ed8;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;font-size:14px}</style>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			. "</head><body><div class='card'><div class='icon'>🗑️</div><h1 class='title'>Page Removed</h1><p class='msg'>This page no longer exists and has been permanently removed.</p><a href='" . esc_url( home_url( '/' ) ) . "' class='back'>← Back to Home</a></div></body></html>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		exit;
+	}
+
+	if ( 'exit' === $type && $target ) {
+		nocache_headers();
+		$site     = esc_html( get_bloginfo( 'name' ) );
+		$t_esc    = esc_url( $target );
+		$t_label  = esc_html( $label ?: $target );
+		$home_url = esc_url( home_url( '/' ) );
+		echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Leaving {$site}</title>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			. "<meta http-equiv='refresh' content='4;url={$t_esc}'>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			. "<style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#f8fafc;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:48px 40px;max-width:480px;text-align:center}.icon{font-size:48px;margin-bottom:16px}.title{font-size:20px;font-weight:700;color:#111827;margin:0 0 8px}.site{font-size:13px;color:#6b7280;margin:0 0 16px}.dest{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;font-size:13px;color:#0369a1;word-break:break-all;margin-bottom:20px}.bar-wrap{height:4px;background:#e5e7eb;border-radius:2px;overflow:hidden;margin-bottom:20px}.bar{height:100%;background:#1d4ed8;border-radius:2px;animation:fill 4s linear forwards}@keyframes fill{from{width:0}to{width:100%}}.links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.btn{display:inline-block;padding:9px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:500}.btn-primary{background:#1d4ed8;color:#fff}.btn-secondary{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}</style>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			. "</head><body><div class='card'><div class='icon'>🔗</div><h1 class='title'>You are leaving {$site}</h1><p class='site'>You will be redirected to an external site in a moment.</p><div class='dest'>{$t_label}</div><div class='bar-wrap'><div class='bar'></div></div><div class='links'><a href='{$t_esc}' class='btn btn-primary'>Continue →</a><a href='{$home_url}' class='btn btn-secondary'>Stay on {$site}</a></div></div></body></html>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		exit;
+	}
+
+	if ( $target && in_array( $type, array( '301', '302' ), true ) ) {
+		wp_redirect( $target, (int) $type );
+		exit;
+	}
+} );
+
 // ── Builder page frontend routing ─────────────────────────────────────────────
 add_action( 'template_redirect', static function () {
 	if ( ! is_404() ) return;
@@ -236,4 +293,121 @@ add_action( 'template_redirect', static function () {
 	$_theme_tpl = locate_template( 'templates/ah-builder-page.php' );
 	include $_theme_tpl ?: AH_PLUGIN_DIR . '/templates/template-builder-page.php';
 	exit;
+} );
+
+// ── Per-slug Custom CSS / JS ─────────────────────────────────────────────────
+
+function ah_custom_code_current_slug(): string {
+	$qv = (string) get_query_var( 'adn_cat_slug', '' );
+	if ( '' !== $qv ) { return sanitize_key( $qv ); }
+	$obj = get_queried_object();
+	if ( $obj instanceof WP_Post ) { return sanitize_key( $obj->post_name ); }
+	$path = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ) ?? '', '/' );
+	$seg  = explode( '/', $path );
+	return sanitize_key( $seg[0] ?? '' );
+}
+
+function ah_custom_code_get( string $slug ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_custom_code';
+	return $wpdb->get_row( $wpdb->prepare(
+		"SELECT * FROM `{$table}` WHERE slug = %s AND is_active = 1 LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$slug
+	) );
+}
+
+add_action( 'wp_head', static function (): void {
+	if ( is_admin() ) return;
+	$slug = ah_custom_code_current_slug();
+	if ( '' === $slug ) return;
+	$row = ah_custom_code_get( $slug );
+	if ( ! $row ) return;
+	$css = trim( (string) ( $row->css ?? '' ) );
+	if ( '' !== $css ) {
+		echo "\n<style id=\"ah-custom-css-" . esc_attr( $slug ) . "\">\n" . $css . "\n</style>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+}, 99 );
+
+add_action( 'wp_footer', static function (): void {
+	if ( is_admin() ) return;
+	$slug = ah_custom_code_current_slug();
+	if ( '' === $slug ) return;
+	$row = ah_custom_code_get( $slug );
+	if ( ! $row ) return;
+	$js = trim( (string) ( $row->js ?? '' ) );
+	if ( '' !== $js ) {
+		echo "\n<script id=\"ah-custom-js-" . esc_attr( $slug ) . "\">\n(function(){\n" . $js . "\n})();\n</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+}, 99 );
+
+// ── Custom Code AJAX handlers (must be in main file — admin-ajax.php doesn't load admin pages) ──
+add_action( 'wp_ajax_ah_save_custom_code', static function (): void {
+	if ( ! check_ajax_referer( 'ah_custom_code', 'nonce', false ) ) {
+		wp_send_json_error( array( 'message' => 'Security check failed.' ) );
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+
+	global $wpdb;
+	$table  = $wpdb->prefix . 'ah_custom_code';
+	$id     = (int) ( $_POST['entry_id'] ?? 0 );
+	$slug   = sanitize_key( wp_unslash( $_POST['slug'] ?? '' ) );
+	$css    = wp_unslash( $_POST['css'] ?? '' );
+	$js     = wp_unslash( $_POST['js']  ?? '' );
+
+	if ( '' === $slug ) {
+		wp_send_json_error( array( 'message' => 'Page slug is required.' ) );
+	}
+
+	if ( 0 === $id ) {
+		// Check uniqueness
+		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE slug = %s LIMIT 1", $slug ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $exists ) {
+			wp_send_json_error( array( 'message' => 'A rule for "' . $slug . '" already exists — edit it instead.' ) );
+		}
+		$wpdb->insert( $table, array( 'slug' => $slug, 'css' => $css, 'js' => $js, 'is_active' => 1 ),
+			array( '%s', '%s', '%s', '%d' ) );
+		$id = (int) $wpdb->insert_id;
+	} else {
+		$wpdb->update( $table, array( 'slug' => $slug, 'css' => $css, 'js' => $js ),
+			array( 'id' => $id ), array( '%s', '%s', '%s' ), array( '%d' ) );
+	}
+
+	wp_send_json_success( array(
+		'message'  => 'Saved.',
+		'id'       => $id,
+		'redirect' => admin_url( 'admin.php?page=ah-custom-code&edit=' . $id ),
+	) );
+} );
+
+add_action( 'wp_ajax_ah_delete_custom_code', static function (): void {
+	if ( ! check_ajax_referer( 'ah_custom_code', 'nonce', false ) ) {
+		wp_send_json_error( array( 'message' => 'Security check failed.' ) );
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_custom_code';
+	$id    = (int) ( $_POST['entry_id'] ?? 0 );
+	$wpdb->delete( $table, array( 'id' => $id ), array( '%d' ) );
+	wp_send_json_success( array( 'message' => 'Deleted.' ) );
+} );
+
+add_action( 'wp_ajax_ah_toggle_custom_code', static function (): void {
+	if ( ! check_ajax_referer( 'ah_custom_code', 'nonce', false ) ) {
+		wp_send_json_error( array( 'message' => 'Security check failed.' ) );
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_custom_code';
+	$id    = (int) ( $_POST['entry_id'] ?? 0 );
+	$row   = $wpdb->get_row( $wpdb->prepare( "SELECT is_active FROM `{$table}` WHERE id = %d LIMIT 1", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	if ( ! $row ) { wp_send_json_error( array( 'message' => 'Not found.' ) ); }
+	$new = $row->is_active ? 0 : 1;
+	$wpdb->update( $table, array( 'is_active' => $new ), array( 'id' => $id ), array( '%d' ), array( '%d' ) );
+	wp_send_json_success( array( 'active' => $new ) );
 } );
