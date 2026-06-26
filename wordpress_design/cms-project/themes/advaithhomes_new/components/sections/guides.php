@@ -32,7 +32,8 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 
 	<button class="guides-carousel-btn guides-carousel-btn--next"
 			type="button"
-			aria-label="<?php echo esc_attr( sprintf( __( 'Next %s', ADN_TEXT_DOMAIN ), SITE_CONTENT_PLURAL ) ); ?>">
+			aria-label="<?php echo esc_attr( sprintf( __( 'Next %s', ADN_TEXT_DOMAIN ), SITE_CONTENT_PLURAL ) ); ?>"
+			hidden>
 		&#8250;
 	</button>
 
@@ -113,8 +114,13 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 	wrap.addEventListener('focusin', stopAutoplay);
 	wrap.addEventListener('focusout', startAutoplay);
 
-	// init
-	window.addEventListener('resize', function(){ /* ensure dots align */ });
+	// init — re-check after layout is painted so scrollWidth is accurate
+	window.addEventListener('resize', updateBtns);
+	if ( document.readyState === 'complete' ) {
+		updateBtns();
+	} else {
+		window.addEventListener('load', updateBtns);
+	}
 	updateBtns();
 	startAutoplay();
 }());

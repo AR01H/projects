@@ -142,18 +142,21 @@ adn_page_open( $_open_ctx );
 	</div>
 </div>
 
-<?php /* ============================== LATEST NEWS + UPDATES (full-width, like home page) ============================== */ ?>
+<?php /* ============================== CTA BANNER (interruption after guides) ============================== */ ?>
+<?php if ( ! empty( $ctx['cta_banner']['title'] ) ) : ?>
+<div class="cat-cta-wrap cat-cta-wrap--inline">
+	<?php adn_component( 'parts/cta_banner', array( 'cta_banner' => $ctx['cta_banner'] ) ); ?>
+</div>
+<?php endif; ?>
+
+<?php /* ============================== LATEST NEWS + UPDATES (full-width) ============================== */ ?>
 <?php if ( ! empty( $ctx['news']['items'] ) || ! empty( $ctx['regulations']['items'] ) ) : ?>
 <section class="news-three-col">
 	<div class="container">
-		<div class="news-sp-row">
-			<div class="news-sp-row__news">
-				<?php adn_component( 'sections/news_three_col', array(
-					'news'        => $ctx['news'],
-					'regulations' => $ctx['regulations'],
-				) ); ?>
-			</div>
-		</div>
+		<?php adn_component( 'sections/news_three_col', array(
+			'news'        => $ctx['news'],
+			'regulations' => $ctx['regulations'],
+		) ); ?>
 	</div>
 </section>
 <?php endif; ?>
@@ -167,8 +170,6 @@ adn_page_open( $_open_ctx );
 	) ); ?>
 </div>
 <?php endif; ?>
-
-<?php /* ============================== CTA BANNER ============================== */ ?>
 
 <?php /* ============================== NEWSLETTER ============================== */ ?>
 <?php if ( ! empty( $ctx['newsletter'] ) ) : ?>

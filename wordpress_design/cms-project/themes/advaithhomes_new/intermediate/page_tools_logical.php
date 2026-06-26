@@ -125,7 +125,7 @@ function adn_calculators_get_context() {
 	$sidebar_cats = array( array( 'key' => 'all', 'label' => adn_term( 'calculators_page.filter_all', 'All' ) . ' ' . SITE_TOOLS_PLURAL, 'count' => count( $all_tools ) ) );
 	foreach ( $defined_cats as $ckey => $clabel ) {
 		if ( $cat_counts[ $ckey ] > 0 ) {
-			$sidebar_cats[] = array( 'key' => $ckey, 'label' => $clabel . ' ' . SITE_TOOLS_PLURAL, 'count' => $cat_counts[ $ckey ] );
+			$sidebar_cats[] = array( 'key' => $ckey, 'label' => $clabel , 'count' => $cat_counts[ $ckey ] );
 		}
 	}
 
