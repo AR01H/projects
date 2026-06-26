@@ -10,7 +10,9 @@ class AH_Admin_Bootstrap {
 		add_action( 'admin_post_ah_cms_nav', array( self::class, 'handle_navigation' ) );
 		add_action( 'admin_post_ah_delete_spotlight_item', array( self::class, 'handle_delete_spotlight_item' ) );
 		add_action( 'admin_post_ah_delete_spotlight_term', array( self::class, 'handle_delete_spotlight_term' ) );
-		add_action( 'admin_post_ah_save_notice', array( self::class, 'handle_notice_save' ) );
+		add_action( 'admin_post_ah_save_notice',   array( self::class, 'handle_notice_save' ) );
+		add_action( 'admin_post_ah_delete_notice', array( self::class, 'handle_notice_delete' ) );
+		add_action( 'admin_post_ah_toggle_notice', array( self::class, 'handle_notice_toggle' ) );
 		add_action( 'admin_post_ah_save_banners', array( self::class, 'handle_banners_save' ) );
 		add_action( 'add_meta_boxes', array( self::class, 'register_post_metaboxes' ) );
 		add_action( 'save_post', array( self::class, 'save_post_metabox' ), 10, 1 );
@@ -253,11 +255,6 @@ CSS;
 					'brand_description' => wp_kses_post( $_POST['footer_brand_description'] ?? '' ),
 					'badge_text'        => sanitize_text_field( $_POST['footer_badge_text'] ?? '' ),
 					'columns'           => $footer_columns,
-					'contact'           => array(
-						'phone_note'   => sanitize_text_field( $_POST['footer_contact']['phone_note'] ?? '' ),
-						'email_note'   => sanitize_text_field( $_POST['footer_contact']['email_note'] ?? '' ),
-						'address_note' => sanitize_text_field( $_POST['footer_contact']['address_note'] ?? '' ),
-					),
 					'cta'               => array(
 						'label' => sanitize_text_field( $_POST['footer_cta']['label'] ?? '' ),
 						'url'   => self::clean_nav_url( (string) ( $_POST['footer_cta']['url'] ?? '/contact/' ) ),
@@ -504,11 +501,6 @@ CSS;
 			'brand_description' => wp_kses_post( $footer['brand_description'] ?? '' ),
 			'badge_text'        => sanitize_text_field( $footer['badge_text'] ?? '' ),
 			'columns'           => $columns,
-			'contact'           => array(
-				'phone_note'   => sanitize_text_field( $footer['contact']['phone_note'] ?? '' ),
-				'email_note'   => sanitize_text_field( $footer['contact']['email_note'] ?? '' ),
-				'address_note' => sanitize_text_field( $footer['contact']['address_note'] ?? '' ),
-			),
 			'cta'               => array(
 				'label' => sanitize_text_field( $footer['cta']['label'] ?? '' ),
 				'url'   => self::clean_nav_url( (string) ( $footer['cta']['url'] ?? '' ), '/contact/' ),
@@ -635,22 +627,54 @@ CSS;
 	}
 
 	public static function handle_notice_save(): void {
-		check_admin_referer( 'ah_notices_save' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+		check_admin_referer( 'ah_save_site_notice', 'ah_sn_nonce' );
 
-		require_once AH_THEME_DIR . '/helper/class-notice-helper.php';
+		$edit_id = (int) ( $_POST['edit_id'] ?? 0 );
+		$errors  = array();
 
-		AH_Notice_Helper::save_notice( [
-			'enabled'        => ! empty( $_POST['notice_enabled'] ),
-			'id'             => sanitize_key( $_POST['notice_id'] ?? 'default' ),
-			'title'          => sanitize_text_field( wp_unslash( $_POST['notice_title'] ?? 'Important Update' ) ),
-			'message'        => sanitize_text_field( wp_unslash( $_POST['notice_message'] ?? '' ) ),
-			'image'          => esc_url_raw( wp_unslash( $_POST['notice_image'] ?? '' ) ),
-			'button_label'   => sanitize_text_field( wp_unslash( $_POST['notice_button_label'] ?? '' ) ),
-			'button_url'     => esc_url_raw( wp_unslash( $_POST['notice_button_url'] ?? '' ) ),
-		] );
+		$v_title = trim( sanitize_text_field( $_POST['title'] ?? '' ) );
+		if ( $v_title === '' ) $errors[] = 'Title is required.';
+		if ( ( $_POST['trigger_type'] ?? '' ) === '' ) $errors[] = 'Display Trigger must be selected.';
+		if ( ( $_POST['scope'] ?? '' ) === 'slugs' && trim( $_POST['slugs'] ?? '' ) === '' ) $errors[] = 'Enter at least one page slug.';
+		if ( ( $_POST['trigger_type'] ?? '' ) === 'delay' && (int) ( $_POST['trigger_delay'] ?? 0 ) < 1 ) $errors[] = 'Delay must be at least 1 second.';
 
-		wp_redirect( add_query_arg( [ 'page' => 'ah-notices', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
+		if ( ! empty( $errors ) ) {
+			$back = add_query_arg( array(
+				'page'   => 'ah-notices',
+				'action' => $edit_id > 0 ? 'edit' : 'add',
+				'id'     => $edit_id ?: null,
+				'err'    => implode( '|', array_map( 'urlencode', $errors ) ),
+			), admin_url( 'admin.php' ) );
+			wp_safe_redirect( $back );
+			exit;
+		}
+
+		$model = new AH_Site_Notices_Model();
+		$model->save_notice( $edit_id, wp_unslash( $_POST ) );
+
+		wp_safe_redirect( add_query_arg( array( 'page' => 'ah-notices', 'flash' => 'saved' ), admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	public static function handle_notice_delete(): void {
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+		check_admin_referer( 'ah_del_sn' );
+		$model = new AH_Site_Notices_Model();
+		$model->delete( (int) ( $_GET['delete_id'] ?? 0 ) );
+		wp_safe_redirect( add_query_arg( array( 'page' => 'ah-notices', 'flash' => 'deleted' ), admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	public static function handle_notice_toggle(): void {
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
+		check_admin_referer( 'ah_toggle_sn' );
+		$model = new AH_Site_Notices_Model();
+		$row   = $model->find( (int) ( $_GET['toggle_id'] ?? 0 ) );
+		if ( $row ) {
+			$model->set_status( (int) $row->id, $row->status === 'active' ? 'inactive' : 'active' );
+		}
+		wp_safe_redirect( add_query_arg( array( 'page' => 'ah-notices', 'flash' => 'updated' ), admin_url( 'admin.php' ) ) );
 		exit;
 	}
 

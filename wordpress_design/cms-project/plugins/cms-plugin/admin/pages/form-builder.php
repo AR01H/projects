@@ -16,7 +16,6 @@ if ( isset( $_POST['ah_new_form_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_new_form_nonce'], 'ah_new_form' ) ) wp_die( 'Security.' );
 	$new_id = AH_Form_Builder::upsert( 0, array(
 		'name'            => sanitize_text_field( isset( $_POST['new_form_name'] ) ? $_POST['new_form_name'] : 'New Form' ),
-		'notify_email'    => sanitize_email( get_option( 'admin_email' ) ),
 		'success_message' => 'Thank you! We will get back to you shortly.',
 		'disable_rules'   => 0,
 	) );
@@ -45,7 +44,6 @@ if ( isset( $_POST['ah_save_form_nonce'] ) ) {
 
 	$form_id = AH_Form_Builder::upsert( $form_id, array(
 		'name'            => sanitize_text_field( isset( $_POST['form_name'] ) ? $_POST['form_name'] : '' ),
-		'notify_email'    => sanitize_email( isset( $_POST['notify_email'] ) ? $_POST['notify_email'] : '' ),
 		'success_message' => sanitize_text_field( isset( $_POST['success_message'] ) ? $_POST['success_message'] : '' ),
 		'status'          => sanitize_key( isset( $_POST['form_status'] ) ? $_POST['form_status'] : 'active' ),
 		'disable_rules'   => isset( $_POST['disable_rules'] ) ? 1 : 0,
@@ -60,12 +58,13 @@ if ( isset( $_POST['ah_save_form_nonce'] ) ) {
 
 	// Save agreement config.
 	AH_Form_Builder::save_agreement( $form_id, array(
-		'enabled'   => isset( $_POST['agr_enabled'] ) ? 1 : 0,
-		'before'    => isset( $_POST['agr_before'] )    ? wp_unslash( $_POST['agr_before'] )    : '',
-		'link_text' => isset( $_POST['agr_link_text'] ) ? wp_unslash( $_POST['agr_link_text'] ) : '',
-		'type'      => isset( $_POST['agr_type'] )      ? wp_unslash( $_POST['agr_type'] )      : 'link',
-		'url'       => isset( $_POST['agr_url'] )       ? wp_unslash( $_POST['agr_url'] )       : '',
-		'after'     => isset( $_POST['agr_after'] )     ? wp_unslash( $_POST['agr_after'] )     : '',
+		'enabled'    => isset( $_POST['agr_enabled'] ) ? 1 : 0,
+		'before'     => isset( $_POST['agr_before'] )     ? wp_unslash( $_POST['agr_before'] )     : '',
+		'link_text'  => isset( $_POST['agr_link_text'] )  ? wp_unslash( $_POST['agr_link_text'] )  : '',
+		'type'       => isset( $_POST['agr_type'] )       ? wp_unslash( $_POST['agr_type'] )       : 'link',
+		'url'        => isset( $_POST['agr_url'] )        ? wp_unslash( $_POST['agr_url'] )        : '',
+		'after'      => isset( $_POST['agr_after'] )      ? wp_unslash( $_POST['agr_after'] )      : '',
+		'popup_html' => isset( $_POST['agr_popup_html'] ) ? wp_unslash( $_POST['agr_popup_html'] ) : '',
 	) );
 
 	AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-form-builder', 'form_id' => $form_id, 'tab' => 'build', 'saved' => 1 ), admin_url( 'admin.php' ) ) );
@@ -211,12 +210,8 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
     <!-- Form settings card -->
     <div class="ah-card" style="margin-bottom:20px">
       <div class="ah-card-header"><h2>Form Settings</h2></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:16px;align-items:end">
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end">
         <div class="ah-form-row" style="margin:0"><label>Form Name</label><input type="text" name="form_name" value="<?php echo esc_attr( $current->name ); ?>" required></div>
-        <div class="ah-form-row" style="margin:0">
-          <label>Notify Email <small>(receives submissions)</small></label>
-          <input type="email" name="notify_email" value="<?php echo esc_attr( isset( $current->notify_email ) ? $current->notify_email : get_option( 'admin_email' ) ); ?>">
-        </div>
         <div class="ah-form-row" style="margin:0"><label>Success Message</label><input type="text" name="success_message" value="<?php echo esc_attr( $current->success_message ); ?>"></div>
         <div class="ah-form-row" style="margin:0"><label>Status</label>
           <select name="form_status">
@@ -227,7 +222,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
       </div>
       <div class="fb-flag-row">
         <input type="checkbox" name="disable_rules" id="fb-disable-rules" class="fb-chk" value="1" <?php checked( ! empty( $current->disable_rules ) ); ?>>
-        <label for="fb-disable-rules"><strong>Disable Rules Engine</strong> — submissions from this form will NOT trigger any automation rules (useful for contact-only forms where email is handled by Notify Email above)</label>
+        <label for="fb-disable-rules"><strong>Disable Rules Engine</strong> — submissions from this form will NOT trigger any automation rules</label>
       </div>
     </div>
 
@@ -262,13 +257,20 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
             <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;margin-bottom:8px">
               <input type="radio" name="agr_type" id="agr_type_link" value="link" <?php checked( $agr['type'], 'link' ); ?>> Link (opens in new tab)
             </label>
-            <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px">
+            <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;margin-bottom:8px">
               <input type="radio" name="agr_type" id="agr_type_iframe" value="iframe" <?php checked( $agr['type'], 'iframe' ); ?>> Inline iframe (embed page)
             </label>
+            <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px">
+              <input type="radio" name="agr_type" id="agr_type_popup" value="popup" <?php checked( $agr['type'], 'popup' ); ?>> Popup (custom HTML)
+            </label>
           </div>
-          <div class="ah-form-row" style="margin:0">
+          <div id="agr-url-wrap" class="ah-form-row" style="margin:0;<?php echo ( 'popup' === $agr['type'] ) ? 'display:none' : ''; ?>">
             <label>URL <small style="font-weight:400">(page to link to or embed)</small></label>
-            <input type="url" name="agr_url" id="agr_url" value="<?php echo esc_attr( $agr['url'] ); ?>" placeholder="/privacy-policy/">
+            <input type="text" name="agr_url" id="agr_url" value="<?php echo esc_attr( $agr['url'] ); ?>" placeholder="https://… or /privacy-policy/ or #section">
+          </div>
+          <div id="agr-popup-wrap" class="ah-form-row" style="margin:0;<?php echo ( 'popup' !== $agr['type'] ) ? 'display:none' : ''; ?>">
+            <label>Popup HTML content <small style="font-weight:400">(shown in a modal when the link is clicked — HTML allowed)</small></label>
+            <textarea name="agr_popup_html" id="agr_popup_html" style="min-height:140px;font-family:monospace;font-size:12px;width:100%;padding:8px 10px;border:1.5px solid #d1d5db;border-radius:6px;box-sizing:border-box;resize:vertical"><?php echo esc_textarea( isset( $agr['popup_html'] ) ? $agr['popup_html'] : '' ); ?></textarea>
           </div>
         </div>
         <div class="ah-form-row" style="margin:0 0 16px">
@@ -546,8 +548,18 @@ jQuery(function ($) {
       $('#agr-prev-link').attr('href', '#').on('click', function(){ return false; });
     }
   }
+  function updateAgrTypeUI() {
+    var t = $('input[name="agr_type"]:checked').val();
+    if (t === 'popup') {
+      $('#agr-url-wrap').hide();
+      $('#agr-popup-wrap').show();
+    } else {
+      $('#agr-url-wrap').show();
+      $('#agr-popup-wrap').hide();
+    }
+  }
+  $('input[name="agr_type"]').on('change', function() { updateAgrTypeUI(); updateAgrPreview(); });
   $('#agr_before, #agr_link_text, #agr_after, #agr_url').on('input', updateAgrPreview);
-  $('input[name="agr_type"]').on('change', updateAgrPreview);
 
   // ── Serialize fields to JSON before submit ──
   $('#fb-form').on('submit', function () {

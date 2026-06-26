@@ -40,6 +40,10 @@ class AH_DB_Migrations {
 		self::faq_tags_taxonomy_type();
 		self::contact_form_rule_cc();
 		self::spotlight_terms_page_slug();
+		self::faq_section_column();
+		self::site_notices_badge_position();
+		self::site_notices_extra_features();
+		self::site_notices_custom_freq();
 	}
 
 	// ── Column migrations ─────────────────────────────────────────────────────
@@ -333,6 +337,28 @@ class AH_DB_Migrations {
 
 	// ── Helper ────────────────────────────────────────────────────────────────
 
+
+	public static function faq_section_column(): void {
+		self::add_column_if_missing( 'ah_faqs', 'section', "VARCHAR(150) DEFAULT NULL AFTER `page_id`" );
+	}
+
+	public static function site_notices_badge_position(): void {
+		self::add_column_if_missing( 'ah_site_notices', 'badge_text',  "VARCHAR(80) DEFAULT NULL AFTER `button_url`" );
+		self::add_column_if_missing( 'ah_site_notices', 'badge_color', "VARCHAR(20) NOT NULL DEFAULT 'green' AFTER `badge_text`" );
+		self::add_column_if_missing( 'ah_site_notices', 'position',    "ENUM('modal','corner') NOT NULL DEFAULT 'modal' AFTER `badge_color`" );
+	}
+
+	public static function site_notices_extra_features(): void {
+		self::add_column_if_missing( 'ah_site_notices', 'trigger_scroll', "TINYINT UNSIGNED NOT NULL DEFAULT 0 AFTER `trigger_delay`" );
+		self::add_column_if_missing( 'ah_site_notices', 'device',         "ENUM('all','mobile','desktop') NOT NULL DEFAULT 'all' AFTER `slugs`" );
+		self::add_column_if_missing( 'ah_site_notices', 'show_from',      "DATE DEFAULT NULL AFTER `device`" );
+		self::add_column_if_missing( 'ah_site_notices', 'show_until',     "DATE DEFAULT NULL AFTER `show_from`" );
+		self::add_column_if_missing( 'ah_site_notices', 'auto_close',     "SMALLINT UNSIGNED NOT NULL DEFAULT 0 AFTER `show_until`" );
+	}
+
+	public static function site_notices_custom_freq(): void {
+		self::add_column_if_missing( 'ah_site_notices', 'frequency_custom_mins', "SMALLINT UNSIGNED NOT NULL DEFAULT 60 AFTER `frequency`" );
+	}
 
 	private static function add_column_if_missing( string $table_suffix, string $column, string $definition ): void {
 		global $wpdb;

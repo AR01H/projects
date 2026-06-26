@@ -391,6 +391,7 @@ class AH_DB_Schema {
 				link_text  VARCHAR(150),
 				link_url   VARCHAR(500),
 				page_id    INT UNSIGNED,
+				section    VARCHAR(150) DEFAULT NULL,
 				sort_order INT DEFAULT 0,
 				status     ENUM('active','inactive') DEFAULT 'active',
 				created_by INT UNSIGNED,
@@ -783,6 +784,34 @@ class AH_DB_Schema {
 			) ENGINE=InnoDB {$cs}",
 
 			// 64. Home hero banners
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_site_notices` (
+				`id`             INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`title`          VARCHAR(255) NOT NULL DEFAULT '',
+				`message`        TEXT         DEFAULT NULL,
+				`image`          VARCHAR(500) DEFAULT NULL,
+				`button_label`   VARCHAR(150) DEFAULT NULL,
+				`button_url`     VARCHAR(500) DEFAULT NULL,
+				`badge_text`     VARCHAR(80)  DEFAULT NULL,
+				`badge_color`    VARCHAR(20)  NOT NULL DEFAULT 'green',
+				`position`       ENUM('modal','corner') NOT NULL DEFAULT 'modal',
+				`trigger_type`   VARCHAR(30)  NOT NULL DEFAULT 'immediate',
+				`trigger_delay`  SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+				`trigger_scroll` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+				`scope`          ENUM('all','slugs') NOT NULL DEFAULT 'all',
+				`slugs`          VARCHAR(1000) DEFAULT NULL,
+				`frequency`             VARCHAR(20)  NOT NULL DEFAULT 'daily',
+				`frequency_custom_mins` SMALLINT UNSIGNED NOT NULL DEFAULT 60,
+				`device`         ENUM('all','mobile','desktop') NOT NULL DEFAULT 'all',
+				`show_from`      DATE         DEFAULT NULL,
+				`show_until`     DATE         DEFAULT NULL,
+				`auto_close`     SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+				`status`         ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				`sort_order`     INT NOT NULL DEFAULT 0,
+				`created_at`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_status` (`status`)
+			) ENGINE=InnoDB {$cs}",
+
 			"CREATE TABLE IF NOT EXISTS `{$p}ah_home_banners` (
 				`id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
 				`image`        VARCHAR(500) NOT NULL DEFAULT '',

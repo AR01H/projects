@@ -158,6 +158,9 @@ class AH_Rules_Engine {
 	public static function evaluate( string $trigger_name, array $context, bool $immediate = false ): void {
 		global $wpdb;
 
+		// Global freeze: skip everything when the kill-switch is on.
+		if ( '1' === ( self::get_config()['global_freeze'] ?? '0' ) ) return;
+
 		// ── Log every evaluate() call before rule check ───────────────────────
 		$el = self::evaluate_table();
 		$wpdb->insert( $el, array(
@@ -755,6 +758,7 @@ class AH_Rules_Engine {
 		$saved = get_option( 'ah_re_config', array() );
 		if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: array();
 		return array_merge( array(
+			'global_freeze'      => '0',
 			'email_from_name'    => get_bloginfo( 'name' ),
 			'email_from_email'   => get_option( 'admin_email' ),
 			'email_bcc'          => '',
@@ -767,6 +771,7 @@ class AH_Rules_Engine {
 
 	public static function save_config( array $data ): void {
 		$clean = array(
+			'global_freeze'      => ! empty( $data['global_freeze'] ) ? '1' : '0',
 			'email_from_name'    => sanitize_text_field( $data['email_from_name']    ?? '' ),
 			'email_from_email'   => sanitize_email(      $data['email_from_email']   ?? '' ),
 			'email_bcc'          => sanitize_email(      $data['email_bcc']          ?? '' ),

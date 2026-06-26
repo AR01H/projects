@@ -7,11 +7,6 @@
  *   rating, reviews_count|reviews, description, location,
  *   phone?, email?, tags[], bullets[], url
  * }
- *
- * When photo_url is set → shows <img> circular photo.
- * Otherwise → shows initials circle (falls back to emoji avatar).
- * "View Profile" links to ?ah_expert=SLUG when slug is present.
- * "Contact" button opens the contact modal for this expert.
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -21,42 +16,44 @@ $_photo    = isset( $_i['photo_url'] ) ? (string) $_i['photo_url']              
 $_av       = esc_html( isset( $_i['avatar'] ) ? (string) $_i['avatar'] : '👤' );
 $_name     = esc_html( isset( $_i['name'] )   ? (string) $_i['name']   : '' );
 $_ttl      = esc_html( isset( $_i['title'] )  ? (string) $_i['title']  : '' );
-$_cat      = esc_attr( sanitize_key( isset( $_i['category'] ) ? (string) $_i['category'] : 'all' ) );
-$_rat      = isset( $_i['rating'] )        ? floatval( $_i['rating'] )        : 0;
-$_rev      = isset( $_i['reviews_count'] ) ? intval( $_i['reviews_count'] )   : ( isset( $_i['reviews'] ) ? intval( $_i['reviews'] ) : 0 );
-$_dsc      = esc_html( isset( $_i['description'] ) ? (string) $_i['description'] : '' );
-$_loc      = esc_html( isset( $_i['location'] )    ? (string) $_i['location']    : '' );
-$_phone    = isset( $_i['phone'] ) ? (string) $_i['phone'] : '';
-$_email    = isset( $_i['email'] ) ? (string) $_i['email'] : '';
+$_cat_key  = sanitize_key( isset( $_i['category'] ) ? (string) $_i['category'] : '' );
+$_cat_attr = esc_attr( $_cat_key ?: 'all' );
+$_cat_disp = ( $_cat_key && 'all' !== $_cat_key )
+	? esc_html( ucwords( str_replace( array( '-', '_' ), ' ', $_cat_key ) ) )
+	: '';
+$_rat      = isset( $_i['rating'] )        ? floatval( $_i['rating'] )      : 0;
+$_rev      = isset( $_i['reviews_count'] ) ? intval( $_i['reviews_count'] ) : ( isset( $_i['reviews'] ) ? intval( $_i['reviews'] ) : 0 );
+$_dsc      = wp_trim_words( isset( $_i['description'] ) ? (string) $_i['description'] : '', 25, '…' );
+$_loc      = isset( $_i['location'] ) ? (string) $_i['location'] : '';
+$_phone    = isset( $_i['phone'] )    ? (string) $_i['phone']    : '';
+$_email    = isset( $_i['email'] )    ? (string) $_i['email']    : '';
 $_tags     = isset( $_i['tags'] )    ? (array) $_i['tags']    : array();
 $_bullets  = isset( $_i['bullets'] ) ? (array) $_i['bullets'] : array();
-// Use top 2 bullets as pills (falling back to tags if bullets empty).
-$_pill_src = ! empty( $_bullets ) ? $_bullets : $_tags;
-$_pills    = array_slice( $_pill_src, 0, 2 );
 
-// URL: profile page if slug present, otherwise fallback.
-if ( '' !== $_slug ) {
-	$_url = esc_url( home_url( '/?ah_expert=' . rawurlencode( $_slug ) ) );
-} else {
-	$_url = esc_url( adn_link( isset( $_i['url'] ) ? (string) $_i['url'] : '#' ) );
-}
+// Badge: category display name (admin sets it to credential like "RICS Qualified").
+// Pills: first 2 bullets (fallback to tags).
+$_pill_src = ! empty( $_bullets ) ? array_slice( $_bullets, 0, 2 ) : array_slice( $_tags, 0, 2 );
 
-// Initials for avatar fallback.
+$_stars = min( 5, max( 0, (int) round( $_rat ) ) );
+
+// Profile URL.
+$_url = '' !== $_slug
+	? esc_url( home_url( '/?ah_expert=' . rawurlencode( $_slug ) ) )
+	: esc_url( adn_link( isset( $_i['url'] ) ? (string) $_i['url'] : '#' ) );
+
+// Initials fallback for avatar.
 $_initials = '';
 if ( '' === $_photo ) {
-	$_np = explode( ' ', isset( $_i['name'] ) ? (string) $_i['name'] : '' );
-	foreach ( $_np as $_np_part ) {
+	foreach ( explode( ' ', isset( $_i['name'] ) ? (string) $_i['name'] : '' ) as $_np_part ) {
 		if ( '' !== $_np_part ) { $_initials .= strtoupper( $_np_part[0] ); }
 		if ( strlen( $_initials ) >= 2 ) { break; }
 	}
 }
-
-$_stars = min( 5, max( 0, (int) round( $_rat ) ) );
 ?>
-<div class="expert-card" data-cat="<?php echo $_cat; ?>">
-	<div class="expert-card-header">
+<div class="expert-card" data-cat="<?php echo $_cat_attr; ?>">
 
-		<?php /* Avatar: photo or initials circle */ ?>
+	<?php /* ── Top row: avatar (left) + credential badge (right) ── */ ?>
+	<div class="expert-card-top">
 		<div class="expert-avatar" aria-hidden="true">
 			<?php if ( '' !== $_photo ) : ?>
 				<img class="expert-avatar-img"
@@ -69,10 +66,21 @@ $_stars = min( 5, max( 0, (int) round( $_rat ) ) );
 				<?php echo $_av; ?>
 			<?php endif; ?>
 		</div>
+		<?php if ( '' !== $_cat_disp ) : ?>
+			<span class="expert-card-badge">
+				<?php echo adn_icon( 'shield' ); ?>
+				<?php echo $_cat_disp; ?>
+			</span>
+		<?php endif; ?>
+	</div>
 
-		<div class="expert-card-meta">
-			<h3 class="expert-name"><?php echo $_name; ?></h3>
+	<?php /* ── Identity: name, title, rating ── */ ?>
+	<div class="expert-card-identity">
+		<h3 class="expert-name"><?php echo $_name; ?></h3>
+		<?php if ( '' !== $_ttl ) : ?>
 			<p class="expert-title"><?php echo $_ttl; ?></p>
+		<?php endif; ?>
+		<?php if ( $_rat > 0 ) : ?>
 			<div class="expert-rating">
 				<span class="rating-stars" aria-hidden="true">
 					<?php for ( $s = 1; $s <= 5; $s++ ) : ?>
@@ -84,52 +92,70 @@ $_stars = min( 5, max( 0, (int) round( $_rat ) ) );
 					<span class="rating-count">(<?php echo esc_html( (string) $_rev ); ?> <?php esc_html_e( 'reviews', ADN_TEXT_DOMAIN ); ?>)</span>
 				<?php endif; ?>
 			</div>
-		</div>
-	</div>
-
-	<?php if ( '' !== $_dsc ) : ?>
-		<p class="expert-desc"><?php echo $_dsc; ?></p>
-	<?php endif; ?>
-
-	<?php if ( '' !== $_loc ) : ?>
-		<p class="expert-location">📍 <?php echo $_loc; ?></p>
-	<?php endif; ?>
-
-	<?php /* Contact info mini-icons */ ?>
-	<?php if ( '' !== $_phone || '' !== $_email ) : ?>
-		<div class="expert-contact-info">
-			<?php if ( '' !== $_phone ) : ?>
-				<span class="expert-contact-detail">📞 <?php echo esc_html( $_phone ); ?></span>
-			<?php endif; ?>
-			<?php if ( '' !== $_email ) : ?>
-				<span class="expert-contact-detail">✉️ <?php echo esc_html( $_email ); ?></span>
-			<?php endif; ?>
-		</div>
-	<?php endif; ?>
-
-	<?php /* Bullet pills (top 2) */ ?>
-	<?php if ( ! empty( $_pills ) ) : ?>
-		<div class="expert-tags">
-			<?php foreach ( $_pills as $_t ) : ?>
-				<span class="expert-tag"><?php echo esc_html( (string) $_t ); ?></span>
-			<?php endforeach; ?>
-		</div>
-	<?php endif; ?>
-
-	<?php /* Actions */ ?>
-	<div class="expert-card-actions">
-		<a href="<?php echo $_url; ?>" class="btn btn-secondary expert-profile-btn">
-			<?php echo esc_html( 'View' ); ?>
-		</a>
-		<?php if ( '' !== $_slug ) : ?>
-			<button type="button"
-				class="btn btn-outline expert-contact-btn"
-				data-slug="<?php echo esc_attr( $_slug ); ?>"
-				data-name="<?php echo esc_attr( isset( $_i['name'] ) ? (string) $_i['name'] : '' ); ?>">
-				<?php echo esc_html( SITE_BTN_CONTACT_US ); ?>
-			</button>
 		<?php endif; ?>
 	</div>
+
+	<?php /* ── Bio with Read more link ── */ ?>
+	<?php if ( '' !== $_dsc ) : ?>
+		<div class="expert-bio-wrap">
+			<p class="expert-desc"><?php echo esc_html( $_dsc ); ?></p>
+			<?php if ( '' !== $_slug ) : ?>
+				<a href="<?php echo $_url; ?>" class="expert-read-more">
+					<?php esc_html_e( 'Read more', ADN_TEXT_DOMAIN ); ?>
+					<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+				</a>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+
+	<?php /* ── Contact box ── */ ?>
+	<?php if ( '' !== $_loc || '' !== $_phone || '' !== $_email ) : ?>
+		<div class="expert-contact-box">
+			<?php if ( '' !== $_loc ) : ?>
+				<div class="ecb-row"><?php echo adn_icon( 'location' ); ?><span><?php echo esc_html( $_loc ); ?></span></div>
+			<?php endif; ?>
+			<?php if ( '' !== $_phone ) : ?>
+				<div class="ecb-row"><?php echo adn_icon( 'phone' ); ?><span><?php echo esc_html( $_phone ); ?></span></div>
+			<?php endif; ?>
+			<?php if ( '' !== $_email ) : ?>
+				<div class="ecb-row"><?php echo adn_icon( 'email' ); ?><span><?php echo esc_html( $_email ); ?></span></div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+
+	<?php /* ── Footer: bullet pills + action buttons ── */ ?>
+	<div class="expert-card-footer">
+
+		<?php if ( ! empty( $_pill_src ) ) : ?>
+			<div class="expert-tags">
+				<?php foreach ( $_pill_src as $_idx => $_t ) : ?>
+					<span class="expert-tag">
+						<?php if ( 0 === (int) $_idx ) : ?>
+							<i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+						<?php else : ?>
+							<i class="fa-solid fa-award" aria-hidden="true"></i>
+						<?php endif; ?>
+						<?php echo esc_html( (string) $_t ); ?>
+					</span>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
+
+		<div class="expert-card-actions">
+			<a href="<?php echo $_url; ?>" class="btn btn-primary expert-profile-btn">
+				<?php esc_html_e( 'View Profile', ADN_TEXT_DOMAIN ); ?>
+				<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+			</a>
+			<?php if ( '' !== $_phone ) : ?>
+				<a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $_phone ) ); ?>"
+					class="expert-call-btn">
+					<i class="fa-solid fa-phone" aria-hidden="true"></i>
+					<?php esc_html_e( 'Call', ADN_TEXT_DOMAIN ); ?>
+				</a>
+			<?php endif; ?>
+		</div>
+
+	</div><!-- .expert-card-footer -->
 </div>
 
 <?php /* ── Inline contact modal (one per card, hidden until triggered) ── */ ?>

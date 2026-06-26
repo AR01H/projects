@@ -64,11 +64,12 @@ function adn_guides_listing_get_context( $slug = '' ) {
 	// ── Guide cards ───────────────────────────────────────────────────────────
 	$parent_slug = preg_replace( '/-guides?$/', '', $slug );
 	$articles    = ( '' !== $parent_slug && $parent_slug !== $slug )
-		? adn_cms_articles_for_parent( $parent_slug, 12 )
+		? adn_cms_articles_for_parent( $parent_slug, 50 )
 		: array();
 
 	if ( empty( $articles ) ) {
-		$articles = adn_cms_one_article_per_parent();
+		// Root /guides/ page or no parent match — fetch all guides across all parents.
+		$articles = adn_cms_articles( 100 );
 	}
 
 	if ( ! empty( $articles ) ) {

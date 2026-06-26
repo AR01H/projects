@@ -30,6 +30,7 @@ class AH_Autoloader {
 		'AH_Content_Taxonomy_Model' => 'models/class-content-taxonomy-model.php',
 		'AH_Related_Links_Model'    => 'models/class-related-links-model.php',
 		'AH_Static_Pages_Model'     => 'models/class-static-pages-model.php',
+		'AH_Site_Notices_Model'    => 'models/class-site-notices-model.php',
 		'AH_Newsbar_Model'         => 'models/class-newsbar-model.php',
 		'AH_Spotlight_Terms_Model' => 'models/class-spotlights-model.php',
 		'AH_Spotlights_Model'      => 'models/class-spotlights-model.php',

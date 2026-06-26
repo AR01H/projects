@@ -13,21 +13,32 @@ class AH_Faqs_Model extends AH_Model_Base {
 	 */
 	protected static array $faq_cache = array();
 
-	public function get_paginated( int $page = 1, string $search = '', ?int $page_id = null ): array {
+	public function get_paginated( int $page = 1, string $search = '', ?int $page_id = null, ?int $_unused = null, string $section = '' ): array {
 		$where    = array();
 		$where_in = array();
 		if ( $search ) {
-			$s       = AH_DB_Helper::search_where( array( 'question', 'answer' ), $search );
-			$where[] = $s['where'];
+			$s        = AH_DB_Helper::search_where( array( 'question', 'answer' ), $search );
+			$where[]  = $s['where'];
 			$where_in = array_merge( $where_in, $s['where_in'] );
 		}
 		if ( $page_id !== null ) {
 			$where[]    = 'page_id = %d';
 			$where_in[] = $page_id;
 		}
+		if ( $section !== '' ) {
+			$where[]    = 'section = %s';
+			$where_in[] = $section;
+		}
 		$args = array( 'order_by' => 'sort_order', 'order' => 'ASC' );
 		if ( $where ) { $args['where'] = implode( ' AND ', $where ); $args['where_in'] = $where_in; }
 		return $this->paginate( $page, $args );
+	}
+
+	public function get_distinct_sections(): array {
+		global $wpdb;
+		$table = $this->table();
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $wpdb->get_col( "SELECT DISTINCT section FROM `{$table}` WHERE section IS NOT NULL AND section != '' ORDER BY section ASC" ) ?: array();
 	}
 
 	/**

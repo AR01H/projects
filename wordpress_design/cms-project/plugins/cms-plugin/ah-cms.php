@@ -295,6 +295,27 @@ add_action( 'template_redirect', static function () {
 	exit;
 } );
 
+// ── Global Styles injection ──────────────────────────────────────────────────
+
+add_action( 'wp_head', static function (): void {
+	if ( is_admin() ) return;
+	$css = trim( (string) get_option( 'ah_global_styles_css', '' ) );
+	if ( '' === $css || ! get_option( 'ah_global_styles_active', 0 ) ) return;
+	echo "\n<style id=\"ah-global-styles\">\n" . $css . "\n</style>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}, 98 );
+
+add_action( 'wp_ajax_ah_save_global_styles', static function (): void {
+	if ( ! check_ajax_referer( 'ah_custom_code', 'nonce', false ) ) {
+		wp_send_json_error( array( 'message' => 'Security check failed.' ) );
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+	update_option( 'ah_global_styles_css',    wp_unslash( $_POST['css']    ?? '' ) );
+	update_option( 'ah_global_styles_active', (int) ( $_POST['active'] ?? 0 ) );
+	wp_send_json_success( array( 'message' => 'Global styles saved.' ) );
+} );
+
 // ── Per-slug Custom CSS / JS ─────────────────────────────────────────────────
 
 function ah_custom_code_current_slug(): string {

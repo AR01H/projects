@@ -18,6 +18,7 @@ $f_name    = $is_edit ? $row['name']          : '';
 $f_title   = $is_edit ? $row['title']         : '';
 $f_cat     = $is_edit ? $row['category']      : '';
 $f_status  = $is_edit ? $row['status']        : 'active';
+$f_sort    = $is_edit ? (int) $row['sort_order'] : 100;
 $f_photo   = $is_edit ? (int) $row['photo_id'] : 0;
 $f_bio     = $is_edit ? $row['bio']           : '';
 $f_rating  = $is_edit ? $row['rating']        : '';
@@ -147,6 +148,20 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 							<input type="radio" name="status" value="inactive" <?php checked( $f_status, 'inactive' ); ?>>
 							<?php esc_html_e( 'Inactive - hidden everywhere', ADN_TEXT_DOMAIN ); ?>
 						</label>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="expert_sort_order"><?php esc_html_e( 'Sort Order', ADN_TEXT_DOMAIN ); ?></label>
+					</th>
+					<td>
+						<input type="number" id="expert_sort_order" name="sort_order"
+							style="width:80px;" min="0" step="1"
+							value="<?php echo esc_attr( (string) $f_sort ); ?>">
+						<p class="description">
+							<?php esc_html_e( 'Lower number = higher position on the listing page. Use 0 for top, 1, 2, 3… for the rest. Experts with the same number are sorted by name.', ADN_TEXT_DOMAIN ); ?>
+						</p>
 					</td>
 				</tr>
 

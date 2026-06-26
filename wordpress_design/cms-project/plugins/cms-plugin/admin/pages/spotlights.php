@@ -237,7 +237,7 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 			<tr><th><label>Point Label</label></th>
 				<td><input type="text" name="point_label" value="<?php echo esc_attr( $item->point_label ?? '' ); ?>" class="regular-text" placeholder="Properties Listed"></td></tr>
 			<tr><th><label>Link URL</label></th>
-				<td><input type="url" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>" class="large-text"></td></tr>
+				<td><input type="text" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>" class="large-text" placeholder="https://… or /slug/ or #section"></td></tr>
 			<tr><th><label>Link Label</label></th>
 				<td><input type="text" name="link_label" value="<?php echo esc_attr( $item->link_label ?? '' ); ?>" class="regular-text" placeholder="Learn more"></td></tr>
 			<tr><th>Show Link</th>

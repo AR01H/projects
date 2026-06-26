@@ -12,6 +12,7 @@ $view    = sanitize_key( $_GET['view'] ?? 'list' );
 if ( isset( $_POST['ah_re_cfg_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_cfg_nonce'], 'ah_save_re_config' ) ) wp_die( 'Security.' );
 	AH_Rules_Engine::save_config( array(
+		'global_freeze'      => $_POST['cfg_global_freeze']      ?? '0',
 		'email_from_name'    => $_POST['cfg_email_from_name']    ?? '',
 		'email_from_email'   => $_POST['cfg_email_from_email']   ?? '',
 		'email_bcc'          => $_POST['cfg_email_bcc']          ?? '',
@@ -534,6 +535,23 @@ if ( 'config' === $view ) :
 <?php wp_nonce_field( 'ah_save_re_config', 'ah_re_cfg_nonce' ); ?>
 <input type="hidden" name="cfg_custom_vars_json" id="cfg-vars-json" value="<?php echo esc_attr( wp_json_encode( $custom_vars ) ); ?>">
 <input type="hidden" name="cfg_channels_json"    id="cfg-channels-json" value="<?php echo esc_attr( wp_json_encode( $ch_list ) ); ?>">
+
+<!-- ── Global Freeze ── -->
+<div class="re-section" style="background:<?php echo '1' === $cfg['global_freeze'] ? '#fef2f2' : '#f9fafb'; ?>;border-color:<?php echo '1' === $cfg['global_freeze'] ? '#fca5a5' : '#e5e7eb'; ?>">
+	<div class="re-section-title" style="color:<?php echo '1' === $cfg['global_freeze'] ? '#b91c1c' : '#111827'; ?>"><span>🔒 Global Freeze</span></div>
+	<p style="font-size:12px;color:#6b7280;margin:-4px 0 14px">
+		When enabled, <strong>no rules will fire at all</strong> — evaluate() exits immediately. Use this as an emergency kill-switch without deactivating individual rules.
+	</p>
+	<label class="re-html-row" style="font-weight:600;color:<?php echo '1' === $cfg['global_freeze'] ? '#b91c1c' : '#374151'; ?>">
+		<input type="checkbox" name="cfg_global_freeze" value="1"<?php checked( $cfg['global_freeze'], '1' ); ?>>
+		Freeze all Rules Engine activity
+	</label>
+	<?php if ( '1' === $cfg['global_freeze'] ) : ?>
+	<p style="margin:10px 0 0;padding:8px 12px;background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;font-size:12px;color:#b91c1c;font-weight:600">
+		⚠️ Rules Engine is currently FROZEN — no rules are firing.
+	</p>
+	<?php endif; ?>
+</div>
 
 <div class="re-section">
 	<div class="re-section-title"><span>📧 Email Defaults</span></div>

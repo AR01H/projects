@@ -388,6 +388,14 @@ class ADN_Theme_Admin {
 	// ── Post-action notice (after redirect) ─────────────────────────────────────
 
 	private static function render_notice() {
+		if ( ! empty( $_GET['adn_err'] ) ) {
+			$msg = isset( $_GET['adn_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['adn_msg'] ) ) : __( 'An error occurred.', ADN_TEXT_DOMAIN );
+			printf(
+				'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
+				esc_html( $msg )
+			);
+			return;
+		}
 		if ( empty( $_GET['adn_done'] ) ) {
 			return;
 		}
@@ -396,6 +404,17 @@ class ADN_Theme_Admin {
 			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
 			esc_html( $msg )
 		);
+	}
+
+	private static function redirect_back_error( $tab, $subtab, $msg ) {
+		wp_safe_redirect( add_query_arg(
+			array(
+				'adn_err' => 1,
+				'adn_msg' => rawurlencode( $msg ),
+			),
+			self::tab_url( $tab, $subtab )
+		) );
+		exit;
 	}
 
 	private static function redirect_back( $tab, $subtab, $msg ) {
@@ -1420,13 +1439,14 @@ class ADN_Theme_Admin {
 		$slug = $is_edit ? $edit_slug : sanitize_key( wp_unslash( isset( $_POST['expert_slug'] ) ? $_POST['expert_slug'] : '' ) );
 
 		if ( '' === $slug ) {
-			wp_die( esc_html__( 'Expert slug is required.', ADN_TEXT_DOMAIN ) );
+			self::redirect_back_error( 'experts', 'new', __( 'Expert slug is required.', ADN_TEXT_DOMAIN ) );
 		}
 		if ( ! $is_edit && null !== AH_Expert_DB::get( $slug ) ) {
-			wp_die( esc_html( sprintf(
-				__( 'An expert with the slug "%s" already exists. Choose a different slug.', ADN_TEXT_DOMAIN ),
+			self::redirect_back_error( 'experts', 'new', sprintf(
+				/* translators: %s: expert slug */
+				__( 'The slug "%s" is already taken — choose a different one.', ADN_TEXT_DOMAIN ),
 				$slug
-			) ) );
+			) );
 		}
 
 		// Bullets: one per line in a textarea → sanitised array.
@@ -1472,6 +1492,7 @@ class ADN_Theme_Admin {
 			'title'           => wp_unslash( isset( $_POST['title'] )         ? $_POST['title']         : '' ),
 			'category'        => wp_unslash( isset( $_POST['category'] )      ? $_POST['category']      : '' ),
 			'status'          => wp_unslash( isset( $_POST['status'] )        ? $_POST['status']        : 'active' ),
+			'sort_order'      => isset( $_POST['sort_order'] )         ? absint( $_POST['sort_order'] )         : 100,
 			'photo_id'        => isset( $_POST['photo_id'] )           ? absint( $_POST['photo_id'] )           : 0,
 			'bio'             => wp_unslash( isset( $_POST['bio'] )           ? $_POST['bio']           : '' ),
 			'rating'          => isset( $_POST['rating'] )             ? floatval( $_POST['rating'] )           : 0,

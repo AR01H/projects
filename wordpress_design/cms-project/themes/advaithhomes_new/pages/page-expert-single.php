@@ -104,7 +104,7 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 
 				<?php /* Location */ ?>
 				<?php if ( ! empty( $ctx['location'] ) ) : ?>
-					<p class="expert-profile-location">📍 <?php echo esc_html( $ctx['location'] ); ?></p>
+					<p class="expert-profile-location"><?php echo adn_icon( 'location' ); ?> <?php echo esc_html( $ctx['location'] ); ?></p>
 				<?php endif; ?>
 
 				<?php /* Category pill */ ?>
@@ -200,13 +200,13 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 					<h3><?php esc_html_e( 'Contact', ADN_TEXT_DOMAIN ); ?></h3>
 					<ul class="expert-sb-contact-list">
 						<?php if ( ! empty( $ctx['location'] ) ) : ?>
-							<li>📍 <?php echo esc_html( $ctx['location'] ); ?></li>
+							<li class="esb-loc"><?php echo adn_icon( 'location' ); ?> <span><?php echo esc_html( $ctx['location'] ); ?></span></li>
 						<?php endif; ?>
 						<?php if ( ! empty( $ctx['phone'] ) ) : ?>
-							<li>📞 <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $ctx['phone'] ) ); ?>"><?php echo esc_html( $ctx['phone'] ); ?></a></li>
+							<li class="esb-phone"><?php echo adn_icon( 'phone' ); ?> <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $ctx['phone'] ) ); ?>"><?php echo esc_html( $ctx['phone'] ); ?></a></li>
 						<?php endif; ?>
 						<?php if ( ! empty( $ctx['email'] ) ) : ?>
-							<li>✉️ <a href="mailto:<?php echo esc_attr( $ctx['email'] ); ?>"><?php echo esc_html( $ctx['email'] ); ?></a></li>
+							<li class="esb-email"><?php echo adn_icon( 'email' ); ?> <a class="esb-email-link" href="mailto:<?php echo esc_attr( $ctx['email'] ); ?>"><?php echo esc_html( $ctx['email'] ); ?></a></li>
 						<?php endif; ?>
 					</ul>
 				</div>

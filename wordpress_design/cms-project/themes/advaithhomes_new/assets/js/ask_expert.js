@@ -73,10 +73,17 @@
                 card.setAttribute( 'hidden', '' );
             }
         } );
-        var noRes = document.getElementById( 'expertNoResults' );
-        if ( noRes ) {
-            if ( any ) { noRes.setAttribute( 'hidden', '' ); }
-            else        { noRes.removeAttribute( 'hidden' ); }
+        var noRes     = document.getElementById( 'expertNoResults' );
+        var gridEl    = document.getElementById( 'expertGrid' );
+        var permCard  = gridEl ? gridEl.querySelector( '[data-permanent]' ) : null;
+        if ( any ) {
+            if ( noRes )    { noRes.setAttribute( 'hidden', '' ); }
+            if ( gridEl )   { gridEl.style.display = ''; }
+            if ( permCard ) { permCard.style.display = ''; }
+        } else {
+            if ( noRes )    { noRes.removeAttribute( 'hidden' ); }
+            if ( gridEl )   { gridEl.style.display = 'none'; }
+            if ( permCard ) { permCard.style.display = 'none'; }
         }
     }
 

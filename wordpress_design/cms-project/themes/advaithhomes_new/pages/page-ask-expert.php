@@ -49,10 +49,35 @@ adn_page_open( $_open_ctx );
 	<?php /* MAIN - expert cards */ ?>
 	<main>
 
+		<?php /* Search bar */ ?>
+		<div class="expert-search-row">
+			<div class="search-input-wrap">
+				<i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+				<input type="search" id="expertSearch" autocomplete="off"
+					placeholder="<?php esc_attr_e( 'Search by name or specialism…', ADN_TEXT_DOMAIN ); ?>"
+					aria-label="<?php esc_attr_e( 'Search experts', ADN_TEXT_DOMAIN ); ?>">
+				<button type="button" id="expertSearchClear" class="search-btn expert-search-clear"
+					hidden aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>">
+					<i class="fa-solid fa-xmark" aria-hidden="true"></i>
+				</button>
+			</div>
+		</div>
+
 		<?php /* Loader - shown during search debounce */ ?>
 		<div class="expert-grid-loader" id="expertGridLoader" hidden aria-hidden="true">
 			<div class="egl-spinner"></div>
 			<p><?php esc_html_e( 'Finding experts…', ADN_TEXT_DOMAIN ); ?></p>
+		</div>
+
+		<?php /* Empty state - shown when search/filter returns no results */ ?>
+		<div class="expert-no-results" id="expertNoResults" hidden aria-live="polite">
+			<i class="fa-solid fa-magnifying-glass enr-icon" aria-hidden="true"></i>
+			<p class="enr-heading"><?php esc_html_e( 'No experts found', ADN_TEXT_DOMAIN ); ?></p>
+			<p class="enr-sub"><?php esc_html_e( 'Try a different name or specialism, or clear your search to see all experts.', ADN_TEXT_DOMAIN ); ?></p>
+			<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+				<button type="button" class="enr-reset" id="expertSearchReset"><?php esc_html_e( 'Clear Search', ADN_TEXT_DOMAIN ); ?></button>
+				<a href="<?php echo esc_url( home_url( SITE_CONTACT_URL ) ); ?>" class="btn btn-primary" style="font-size:0.88rem;padding:9px 22px"><?php esc_html_e( 'Get Matched', ADN_TEXT_DOMAIN ); ?></a>
+			</div>
 		</div>
 
 		<div class="expert-cards-grid" id="expertGrid">
@@ -71,13 +96,6 @@ adn_page_open( $_open_ctx );
 					</a>
 				</div>
 			</div>
-		</div>
-
-		<?php /* Empty state - shown when search/filter returns no results (placeholder card always stays visible) */ ?>
-		<div class="expert-no-results" id="expertNoResults" hidden aria-live="polite">
-			<span class="enr-icon" aria-hidden="true">🔍</span>
-			<p class="enr-heading"><?php esc_html_e( 'No experts found', ADN_TEXT_DOMAIN ); ?></p>
-			<p class="enr-sub"><?php esc_html_e( 'Try a different name or specialism.', ADN_TEXT_DOMAIN ); ?></p>
 		</div>
 
 		<?php /* "Can't find the right expert?" banner */ ?>

@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 class AH_Expert_DB {
 
-	const DB_VERSION = '4';
+	const DB_VERSION = '6';
 	const DB_OPTION  = 'adn_expert_db_v';
 
 	public static function table() {
@@ -44,11 +44,11 @@ class AH_Expert_DB {
 		if ( ! self::table_exists() ) { return array(); }
 		if ( '' !== $status ) {
 			return $wpdb->get_results(
-				$wpdb->prepare( 'SELECT * FROM ' . self::table() . ' WHERE status = %s ORDER BY name ASC', $status ),
+				$wpdb->prepare( 'SELECT * FROM ' . self::table() . ' WHERE status = %s ORDER BY sort_order ASC, name ASC', $status ),
 				ARRAY_A
 			);
 		}
-		return $wpdb->get_results( 'SELECT * FROM ' . self::table() . ' ORDER BY name ASC', ARRAY_A );
+		return $wpdb->get_results( 'SELECT * FROM ' . self::table() . ' ORDER BY sort_order ASC, name ASC', ARRAY_A );
 	}
 
 	/**
@@ -101,6 +101,7 @@ class AH_Expert_DB {
 			'title'         => sanitize_text_field( isset( $data['title'] )         ? $data['title']         : '' ),
 			'category'      => sanitize_text_field( isset( $data['category'] )      ? $data['category']      : '' ),
 			'status'        => ( isset( $data['status'] ) && 'inactive' === $data['status'] ) ? 'inactive' : 'active',
+			'sort_order'    => absint( isset( $data['sort_order'] ) ? $data['sort_order'] : 100 ),
 			'photo_id'      => absint( isset( $data['photo_id'] )       ? $data['photo_id']       : 0 ),
 			'bio'           => sanitize_textarea_field( isset( $data['bio'] ) ? $data['bio'] : '' ),
 			'rating'        => $rating,
@@ -138,6 +139,7 @@ class AH_Expert_DB {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$charset = $wpdb->get_charset_collate();
 		$t       = self::table();
+		$wpdb->query( "UPDATE {$t} SET sort_order = 100 WHERE sort_order = 0" );
 		dbDelta( "CREATE TABLE {$t} (
 			id             BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
 			expert_slug    VARCHAR(100)     NOT NULL,
@@ -145,6 +147,7 @@ class AH_Expert_DB {
 			title          VARCHAR(200)     NOT NULL DEFAULT '',
 			category       VARCHAR(100)     NOT NULL DEFAULT '',
 			status         VARCHAR(10)      NOT NULL DEFAULT 'active',
+			sort_order     SMALLINT UNSIGNED NOT NULL DEFAULT 100,
 			photo_id       BIGINT UNSIGNED  NOT NULL DEFAULT 0,
 			bio            TEXT             NOT NULL,
 			rating         DECIMAL(3,2)     NOT NULL DEFAULT 0.00,

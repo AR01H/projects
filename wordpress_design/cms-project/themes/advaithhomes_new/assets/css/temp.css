@@ -1458,16 +1458,16 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 /* Body */
 .mini-card-body { flex: 1; min-width: 0; }
 .mini-card-title {
-  display: block;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.35;
   color: var(--color-text);
   transition: color 0.1s;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
 }
 .mini-card-meta {
   display: flex;
@@ -1837,7 +1837,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   pointer-events: none;
 }
 .guide-card-category {
-  display: inline-block;
+  display: block;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.09em;
@@ -1846,13 +1846,21 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   background: rgba(45, 90, 68, 0.08);
   padding: 2px 8px;
   border-radius: 99px;
-  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .guide-card .card-title-highlight {
   font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.3;
   color: var(--color-dark);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .guide-card .read-more {
   font-size: 0.76rem;
@@ -1870,7 +1878,6 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  flex: 1;
 }
 .read-more {
   font-size: 0.78rem;
@@ -2123,7 +2130,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .site-footer {
   background: var(--color-dark);
   color: rgba(255,255,255,0.8);
-  padding-top: var(--space-14);
+  padding-top: var(--space-4);
 }
 .footer-top {
   display: grid;
@@ -5052,7 +5059,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
     .guides-section { padding: 28px 0; }
     .guides-grid-section { padding: 28px 0; }
     .page-latest-news { padding: 24px 0; }
-    .newsletter-cta { padding: 20px 24px; }
+    .newsletter-cta { padding: 20px 24px; border-radius: 0px;  margin: unset;}
     .need-help-section { padding: 32px 0; }
     .jny2-wrap { padding: 24px 0; }
     .banners-promo-section { padding: unset; }
@@ -5216,20 +5223,19 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 .spotlight-card__value {
     font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
     color: var(--client-color);
     line-height: 1.1;
 }
 
 .spotlight-card__label {
     font-family: var(--font-body);
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
     color: var(--text-muted);
-    text-transform: uppercase;
-    margin-top: 1px;
+    margin-top: 2px;
     text-align: right;
 }
 

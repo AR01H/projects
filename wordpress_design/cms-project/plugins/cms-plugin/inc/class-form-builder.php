@@ -342,6 +342,8 @@ class AH_Form_Builder {
             <?php if ( $agr['before'] ) echo esc_html( $agr['before'] ); ?>
             <?php if ( $agr_url && $agr_type === 'link' ) : ?>
               <a class="ch-terms-link" href="<?php echo esc_url( $agr_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $agr['link_text'] ); ?></a>
+            <?php elseif ( $agr_type === 'popup' ) : ?>
+              <button type="button" class="ch-terms-popup-btn" data-popup="ch-tpop-<?php echo esc_attr( $uid ); ?>"><?php echo esc_html( $agr['link_text'] ); ?></button>
             <?php elseif ( $agr['link_text'] ) : ?>
               <strong class="ch-terms-link" style="text-decoration:none"><?php echo esc_html( $agr['link_text'] ); ?></strong>
             <?php endif; ?>
@@ -349,6 +351,28 @@ class AH_Form_Builder {
           </span>
         </label>
       </div>
+      <?php if ( $agr_type === 'popup' && ! empty( $agr['popup_html'] ) ) : ?>
+        <div id="ch-tpop-<?php echo esc_attr( $uid ); ?>" role="dialog" aria-modal="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
+          <div style="background:#fff;border-radius:12px;max-width:640px;width:100%;max-height:80vh;overflow-y:auto;padding:32px 36px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+            <button type="button" aria-label="Close" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:24px;line-height:1;cursor:pointer;color:#6b7280;padding:4px">&times;</button>
+            <div class="ch-terms-popup-content"><?php echo wp_kses_post( $agr['popup_html'] ); ?></div>
+          </div>
+        </div>
+        <style>.ch-terms-popup-btn{background:none;border:none;padding:0;color:#1a3c5e;text-decoration:underline;font-weight:600;cursor:pointer;font-family:inherit;font-size:inherit;margin:0 3px}</style>
+        <script>
+        (function(){
+          var ov=document.getElementById('ch-tpop-<?php echo esc_js( $uid ); ?>');
+          if(!ov)return;
+          document.querySelectorAll('[data-popup="ch-tpop-<?php echo esc_js( $uid ); ?>"]').forEach(function(b){
+            b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();ov.style.display='flex';});
+          });
+          var close=ov.querySelector('[aria-label="Close"]');
+          if(close)close.addEventListener('click',function(){ov.style.display='none';});
+          ov.addEventListener('click',function(e){if(e.target===ov)ov.style.display='none';});
+          document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.style.display==='flex')ov.style.display='none';});
+        })();
+        </script>
+      <?php endif; ?>
     </div>
     <?php endif; ?>
 
@@ -416,12 +440,13 @@ class AH_Form_Builder {
 
 	public static function get_agreement( int $form_id ): array {
 		$defaults = array(
-			'enabled'   => 0,
-			'before'    => 'I have read and agree to the',
-			'link_text' => 'Terms & Conditions',
-			'type'      => 'link',
-			'url'       => '',
-			'after'     => '',
+			'enabled'    => 0,
+			'before'     => 'I have read and agree to the',
+			'link_text'  => 'Terms & Conditions',
+			'type'       => 'link',
+			'url'        => '',
+			'after'      => '',
+			'popup_html' => '',
 		);
 		$saved = get_option( 'ah_form_agr_' . $form_id, array() );
 		return array_merge( $defaults, is_array( $saved ) ? $saved : array() );
@@ -429,12 +454,13 @@ class AH_Form_Builder {
 
 	public static function save_agreement( int $form_id, array $data ): void {
 		$clean = array(
-			'enabled'   => ! empty( $data['enabled'] ) ? 1 : 0,
-			'before'    => sanitize_text_field( isset( $data['before'] )    ? $data['before']    : 'I have read and agree to the' ),
-			'link_text' => sanitize_text_field( isset( $data['link_text'] ) ? $data['link_text'] : 'Terms & Conditions' ),
-			'type'      => in_array( isset( $data['type'] ) ? $data['type'] : '', array( 'link', 'iframe' ), true ) ? $data['type'] : 'link',
-			'url'       => esc_url_raw( isset( $data['url'] )   ? $data['url']   : '' ),
-			'after'     => sanitize_text_field( isset( $data['after'] )  ? $data['after']  : '' ),
+			'enabled'    => ! empty( $data['enabled'] ) ? 1 : 0,
+			'before'     => sanitize_text_field( isset( $data['before'] )    ? $data['before']    : 'I have read and agree to the' ),
+			'link_text'  => sanitize_text_field( isset( $data['link_text'] ) ? $data['link_text'] : 'Terms & Conditions' ),
+			'type'       => in_array( isset( $data['type'] ) ? $data['type'] : '', array( 'link', 'iframe', 'popup' ), true ) ? $data['type'] : 'link',
+			'url'        => esc_url_raw( isset( $data['url'] )        ? $data['url']        : '' ),
+			'after'      => sanitize_text_field( isset( $data['after'] )     ? $data['after']     : '' ),
+			'popup_html' => wp_kses_post( isset( $data['popup_html'] ) ? $data['popup_html'] : '' ),
 		);
 		update_option( 'ah_form_agr_' . $form_id, $clean );
 	}

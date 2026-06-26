@@ -331,8 +331,9 @@ function adn_cms_articles_for_parent( $parent_slug, $limit = 12 ) {
 	foreach ( adn_cms_topics( (int) $parent->id, 200 ) as $topic ) {
 		$term_ids[] = (int) $topic->id;
 	}
+	// If parent has no child terms yet, still return articles — fall back to all guides.
 	if ( empty( $term_ids ) ) {
-		return array();
+		return adn_cms_articles( $limit );
 	}
 	return adn_cms_articles( $limit, $term_ids );
 }

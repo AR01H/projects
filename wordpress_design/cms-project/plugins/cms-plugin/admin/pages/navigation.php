@@ -74,9 +74,17 @@ if ( empty( $footer['legal_links'] ) ) {
 								<span>Short Description</span>
 								<input type="text" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][description]" value="<?php echo esc_attr( $item['description'] ?? '' ); ?>" class="regular-text" placeholder="Optional helper text">
 							</label>
-							<label class="ah-dropdown-only">
-								<span>Panel Image URL</span>
-								<input type="url" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][panel_image]" value="<?php echo esc_attr( $item['panel_image'] ?? '' ); ?>" class="regular-text" placeholder="https://… (dropdown panel illustration)">
+							<label class="ah-dropdown-only ah-media-field">
+								<span>Panel Image</span>
+								<div class="ah-media-picker">
+									<input type="url" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][panel_image]" value="<?php echo esc_attr( $item['panel_image'] ?? '' ); ?>" class="regular-text ah-media-url" placeholder="https://… or use Select Image">
+									<button type="button" class="button ah-media-select-btn">Select Image</button>
+									<?php if ( ! empty( $item['panel_image'] ) ) : ?>
+									<img src="<?php echo esc_url( $item['panel_image'] ); ?>" class="ah-media-preview" style="max-width:120px;max-height:70px;display:block;margin-top:6px;border-radius:4px;">
+									<?php else : ?>
+									<img class="ah-media-preview" style="max-width:120px;max-height:70px;display:none;margin-top:6px;border-radius:4px;">
+									<?php endif; ?>
+								</div>
 							</label>
 							<label class="ah-checkbox-field">
 								<input type="checkbox" name="nav_items[<?php echo esc_attr( $nav_index ); ?>][visible]" value="1" <?php checked( ! empty( $item['visible'] ) ); ?>>
@@ -162,18 +170,6 @@ if ( empty( $footer['legal_links'] ) ) {
 				<label>
 					<span>Badge Text</span>
 					<input type="text" name="footer_badge_text" value="<?php echo esc_attr( $footer['badge_text'] ?? '' ); ?>" class="regular-text">
-				</label>
-				<label>
-					<span>Phone Note</span>
-					<input type="text" name="footer_contact[phone_note]" value="<?php echo esc_attr( $footer['contact']['phone_note'] ?? '' ); ?>" class="regular-text">
-				</label>
-				<label>
-					<span>Email Note</span>
-					<input type="text" name="footer_contact[email_note]" value="<?php echo esc_attr( $footer['contact']['email_note'] ?? '' ); ?>" class="regular-text">
-				</label>
-				<label>
-					<span>Address Note</span>
-					<input type="text" name="footer_contact[address_note]" value="<?php echo esc_attr( $footer['contact']['address_note'] ?? '' ); ?>" class="regular-text">
 				</label>
 				<label>
 					<span>Footer CTA Label</span>
@@ -424,7 +420,7 @@ if ( empty( $footer['legal_links'] ) ) {
 					'<label class="ah-link-only"><span>URL</span>' + createInput('nav_items[' + index + '][url]', '', '', '') + '</label>' +
 					'<label><span>Icon / Note</span>' + createInput('nav_items[' + index + '][icon]', '', '', 'Optional') + '</label>' +
 					'<label><span>Short Description</span>' + createInput('nav_items[' + index + '][description]', '', '', 'Optional helper text') + '</label>' +
-					'<label class="ah-dropdown-only"><span>Panel Image URL</span><input type="url" name="nav_items[' + index + '][panel_image]" value="" class="regular-text" placeholder="https://… (dropdown panel illustration)"></label>' +
+					'<label class="ah-dropdown-only ah-media-field"><span>Panel Image</span><div class="ah-media-picker"><input type="url" name="nav_items[' + index + '][panel_image]" value="" class="regular-text ah-media-url" placeholder="https://… or use Select Image"><button type="button" class="button ah-media-select-btn">Select Image</button><img class="ah-media-preview" style="max-width:120px;max-height:70px;display:none;margin-top:6px;border-radius:4px;"></div></label>' +
 					'<label class="ah-checkbox-field"><input type="checkbox" name="nav_items[' + index + '][visible]" value="1" checked><span>Show this menu item</span></label>' +
 				'</div>' +
 				'<div class="ah-submenu-wrap" style="display:none">' +
@@ -703,5 +699,44 @@ if ( empty( $footer['legal_links'] ) ) {
 		setSubExpanded(card, card.classList.contains('is-open'));
 	});
 	renumberAll();
+
+	// Media picker: open WP media library on "Select Image" click
+	document.addEventListener('click', function(e) {
+		if (!e.target.matches('.ah-media-select-btn')) { return; }
+		e.preventDefault();
+		var picker = e.target.closest('.ah-media-picker');
+		var urlInput = picker ? picker.querySelector('.ah-media-url') : null;
+		var preview  = picker ? picker.querySelector('.ah-media-preview') : null;
+		if (!urlInput) { return; }
+		var frame = wp.media({
+			title: 'Select Panel Image',
+			button: { text: 'Use this image' },
+			multiple: false,
+			library: { type: 'image' }
+		});
+		frame.on('select', function() {
+			var attachment = frame.state().get('selection').first().toJSON();
+			urlInput.value = attachment.url;
+			if (preview) {
+				preview.src = attachment.url;
+				preview.style.display = 'block';
+			}
+		});
+		frame.open();
+	});
+
+	// Show/hide preview as URL is typed manually
+	document.addEventListener('input', function(e) {
+		if (!e.target.matches('.ah-media-url')) { return; }
+		var picker = e.target.closest('.ah-media-picker');
+		var preview = picker ? picker.querySelector('.ah-media-preview') : null;
+		if (!preview) { return; }
+		if (e.target.value) {
+			preview.src = e.target.value;
+			preview.style.display = 'block';
+		} else {
+			preview.style.display = 'none';
+		}
+	});
 })();
 </script>

@@ -26,6 +26,23 @@ $bottom_links = isset( $footer['bottom_links'] ) ? (array) $footer['bottom_links
                     </a>
                 </div>
                 <p class="footer-desc"><?php echo esc_html( isset( $brand['description'] ) ? $brand['description'] : '' ); ?></p>
+                <?php
+                $_ft_phone   = defined( 'COMPANY_PHONE_NO' ) ? COMPANY_PHONE_NO : '';
+                $_ft_email   = defined( 'COMPANY_EMAIL' ) ? COMPANY_EMAIL : '';
+                $_ft_address = function_exists( 'adn_get_contact_setting' ) ? adn_get_contact_setting( 'address' ) : '';
+                if ( $_ft_phone || $_ft_email || $_ft_address ) : ?>
+                <ul class="footer-contact-list">
+                    <?php if ( $_ft_phone ) : ?>
+                    <li><a href="tel:<?php echo esc_attr( preg_replace( '/[^+\d]/', '', $_ft_phone ) ); ?>" class="footer-contact-item"><i class="fa-solid fa-phone" aria-hidden="true"></i> <?php echo esc_html( $_ft_phone ); ?></a></li>
+                    <?php endif; ?>
+                    <?php if ( $_ft_email ) : ?>
+                    <li><a href="mailto:<?php echo esc_attr( $_ft_email ); ?>" class="footer-contact-item"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <?php echo esc_html( $_ft_email ); ?></a></li>
+                    <?php endif; ?>
+                    <?php if ( $_ft_address ) : ?>
+                    <li><span class="footer-contact-item"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <?php echo esc_html( $_ft_address ); ?></span></li>
+                    <?php endif; ?>
+                </ul>
+                <?php endif; ?>
                 <div class="footer-social">
                     <?php foreach ( $social as $item ) : ?>
                         <a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>"

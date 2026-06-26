@@ -78,6 +78,7 @@ function adn_expert_single_get_context( $slug ) {
 					$u = wp_get_attachment_image_url( $ci_id, 'medium_large' );
 					if ( $u ) { $ci_url = $u; }
 				}
+				if ( '' === $ci_url ) { continue; }
 				$client_images[] = array(
 					'url'     => $ci_url,
 					'caption' => isset( $ci['caption'] ) ? (string) $ci['caption'] : '',
@@ -95,14 +96,14 @@ function adn_expert_single_get_context( $slug ) {
 		'slug'          => $slug,
 		'name'          => $name,
 		'title'         => $title,
-		'category'      => isset( $expert['category'] )      ? (string) $expert['category']      : '',
+		'category'      => trim( isset( $expert['category'] )      ? (string) $expert['category']      : '' ),
 		'photo_url'     => $photo_url,
-		'bio'           => isset( $expert['bio'] )           ? (string) $expert['bio']           : '',
+		'bio'           => trim( isset( $expert['bio'] )           ? (string) $expert['bio']           : '' ),
 		'rating'        => isset( $expert['rating'] )        ? (float)  $expert['rating']        : 0.0,
 		'reviews_count' => isset( $expert['reviews_count'] ) ? (int)    $expert['reviews_count'] : 0,
-		'location'      => isset( $expert['location'] )      ? (string) $expert['location']      : '',
-		'phone'         => isset( $expert['phone'] )         ? (string) $expert['phone']         : '',
-		'email'         => isset( $expert['email'] )         ? (string) $expert['email']         : '',
+		'location'      => trim( isset( $expert['location'] )      ? (string) $expert['location']      : '' ),
+		'phone'         => trim( isset( $expert['phone'] )         ? (string) $expert['phone']         : '' ),
+		'email'         => trim( isset( $expert['email'] )         ? (string) $expert['email']         : '' ),
 		'bullets'          => $bullets,
 		'banner_image_url' => $banner_image_url,
 		'banner_items'     => $banner_items,

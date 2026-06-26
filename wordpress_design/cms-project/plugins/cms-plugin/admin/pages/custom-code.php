@@ -14,11 +14,79 @@ if ( $edit_id ) {
 	}
 }
 ?>
+<?php
+$active_tab = sanitize_key( $_GET['tab'] ?? 'per-page' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$gs_css     = (string) get_option( 'ah_global_styles_css', '' );
+$gs_active  = (int) get_option( 'ah_global_styles_active', 0 );
+?>
 <div class="wrap ah-wrap">
-	<h1><span class="dashicons dashicons-editor-code"></span> Custom CSS / JS per Page</h1>
-	<p style="color:var(--ah-muted);margin-top:4px;">Write custom CSS or JS that only loads on a specific page slug — useful for per-page typography fixes, dynamic content tweaks, and layout overrides.</p>
+	<h1><span class="dashicons dashicons-editor-code"></span> Custom Code</h1>
 
-	<div style="display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:24px;align-items:start;">
+	<!-- ── Top tabs ── -->
+	<div style="display:flex;gap:0;border-bottom:2px solid #e5e7eb;margin:16px 0 24px;">
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-custom-code&tab=per-page' ) ); ?>"
+		   style="padding:9px 20px;font-size:13px;font-weight:600;text-decoration:none;border-bottom:<?php echo $active_tab !== 'global-styles' ? '2px solid var(--ah-primary,#1d4ed8);color:var(--ah-primary,#1d4ed8)' : '2px solid transparent;color:var(--ah-muted)'; ?>;margin-bottom:-2px;">
+			Per-Page Rules
+		</a>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-custom-code&tab=global-styles' ) ); ?>"
+		   style="padding:9px 20px;font-size:13px;font-weight:600;text-decoration:none;border-bottom:<?php echo $active_tab === 'global-styles' ? '2px solid var(--ah-primary,#1d4ed8);color:var(--ah-primary,#1d4ed8)' : '2px solid transparent;color:var(--ah-muted)'; ?>;margin-bottom:-2px;">
+			🎨 Global Styles
+		</a>
+	</div>
+
+<?php if ( $active_tab === 'global-styles' ) : ?>
+	<!-- ══════════════════ GLOBAL STYLES TAB ══════════════════ -->
+	<p style="color:var(--ah-muted);margin:0 0 20px;">Global CSS that loads on every page sitewide — perfect for celebration themes, seasonal tweaks, or campaign overrides.</p>
+
+	<div style="display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;">
+		<div class="ah-card" style="padding:20px;">
+			<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+				<label style="font-weight:600;font-size:13px;">Global CSS</label>
+				<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+					<span style="color:var(--ah-muted);">Inject on site</span>
+					<input type="checkbox" id="ah-gs-active" <?php checked( $gs_active, 1 ); ?>>
+				</label>
+			</div>
+			<p style="color:var(--ah-muted);font-size:12px;margin:0 0 8px;">No <code>&lt;style&gt;</code> tags needed. Loads in <code>&lt;head&gt;</code> on every page when enabled.</p>
+			<textarea id="ah-gs-css" rows="30"
+				style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#cdd6f4;padding:14px;border-radius:6px;border:1px solid #313244;"
+				placeholder="/* Example: Christmas theme */
+body { --color-primary: #c0392b; }
+.site-header { background: linear-gradient(135deg,#1a472a,#2d6a4f); }
+.confetti { display: block; }"
+			><?php echo esc_textarea( $gs_css ); ?></textarea>
+
+			<div style="margin-top:14px;display:flex;gap:12px;align-items:center;">
+				<button id="ah-gs-save-btn" class="ah-btn ah-btn-primary">Save Global Styles</button>
+				<span id="ah-gs-msg" style="font-size:13px;"></span>
+			</div>
+		</div>
+
+		<div>
+			<div class="ah-card" style="padding:16px;font-size:13px;line-height:1.7;">
+				<strong>Status</strong><br>
+				<span id="ah-gs-status-label" style="color:<?php echo $gs_active ? '#15803d' : '#b91c1c'; ?>;font-weight:600;">
+					<?php echo $gs_active ? '● Active — injecting on all pages' : '○ Disabled — not injecting'; ?>
+				</span>
+			</div>
+			<div class="ah-card" style="padding:16px;margin-top:12px;font-size:12px;color:var(--ah-muted);line-height:1.7;">
+				<strong style="color:var(--ah-text);">Use cases</strong><br>
+				• Christmas / seasonal theme<br>
+				• Sitewide font override<br>
+				• Campaign accent colour<br>
+				• Celebratory banner CSS<br>
+				• A/B test styles<br><br>
+				<strong style="color:var(--ah-text);">Tip</strong><br>
+				Uncheck "Inject on site" to draft styles without them going live.
+			</div>
+		</div>
+	</div>
+
+<?php else : ?>
+	<!-- ══════════════════ PER-PAGE RULES TAB ══════════════════ -->
+	<p style="color:var(--ah-muted);margin:0 0 20px;">Write custom CSS or JS that only loads on a specific page slug — useful for per-page typography fixes, dynamic content tweaks, and layout overrides.</p>
+
+	<div style="display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;">
 
 		<!-- ── Sidebar list ── -->
 		<div>
@@ -244,6 +312,42 @@ jQuery(function ($) {
 			if ( res.success ) {
 				$btn.text( res.data.active ? '⏸' : '▶' ).attr('title', res.data.active ? 'Pause' : 'Enable');
 			}
+		});
+	});
+});
+</script>
+
+	</div><!-- /per-page grid -->
+<?php endif; ?>
+</div><!-- /wrap -->
+
+<script>
+jQuery(function ($) {
+	var gsNonce = <?php echo wp_json_encode( wp_create_nonce( 'ah_custom_code' ) ); ?>;
+
+	$('#ah-gs-save-btn').on('click', function () {
+		var $btn = $(this);
+		$btn.prop('disabled', true).text('Saving…');
+		$('#ah-gs-msg').text('');
+		$.post(ajaxurl, {
+			action  : 'ah_save_global_styles',
+			nonce   : gsNonce,
+			css     : $('#ah-gs-css').val(),
+			active  : $('#ah-gs-active').is(':checked') ? 1 : 0,
+		}, function (res) {
+			$btn.prop('disabled', false).text('Save Global Styles');
+			if ( res.success ) {
+				$('#ah-gs-msg').css('color','#15803d').text('✓ ' + res.data.message);
+				var on = $('#ah-gs-active').is(':checked');
+				$('#ah-gs-status-label')
+					.css('color', on ? '#15803d' : '#b91c1c')
+					.text( on ? '● Active — injecting on all pages' : '○ Disabled — not injecting' );
+			} else {
+				$('#ah-gs-msg').css('color','#b91c1c').text('✗ ' + (res.data ? res.data.message : 'Error.'));
+			}
+		}).fail(function () {
+			$btn.prop('disabled', false).text('Save Global Styles');
+			$('#ah-gs-msg').css('color','#b91c1c').text('✗ Request failed.');
 		});
 	});
 });

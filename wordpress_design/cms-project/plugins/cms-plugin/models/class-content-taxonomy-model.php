@@ -184,6 +184,21 @@ class AH_Content_Taxonomy_Model {
 		<?php
 	}
 
+	public function get_terms_used_by( string $object_type ): array {
+		global $wpdb;
+		self::ensure_table();
+		$table = $this->table();
+		$tax   = AH_DB_Helper::table( 'taxonomies' );
+		return $wpdb->get_results( $wpdb->prepare(
+			"SELECT DISTINCT t.id, t.name
+			 FROM `{$tax}` t
+			 INNER JOIN `{$table}` ct ON ct.taxonomy_id = t.id AND ct.object_type = %s
+			 WHERE t.status = 'active'
+			 ORDER BY t.name ASC",
+			$this->sanitize_object_type( $object_type )
+		) ) ?: array();
+	}
+
 	public function render_badges( string $object_type, int $object_id ): void {
 		$terms = $this->get_terms( $object_type, $object_id );
 		if ( empty( $terms ) ) {

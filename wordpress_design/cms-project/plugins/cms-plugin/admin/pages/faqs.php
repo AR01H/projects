@@ -2,10 +2,9 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-$model    = new AH_Faqs_Model();
-$pages_m  = new AH_Pages_Model();
-$ct_model = new AH_Content_Taxonomy_Model();
-$notice   = '';
+$model   = new AH_Faqs_Model();
+$pages_m = new AH_Pages_Model();
+$notice  = '';
 $action  = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = (int) ( $_GET['id'] ?? 0 );
 
@@ -17,20 +16,16 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		'link_text'  => sanitize_text_field( $_POST['link_text'] ?? '' ),
 		'link_url'   => esc_url_raw( $_POST['link_url'] ?? '' ),
 		'page_id'    => (int) ( $_POST['page_id'] ?? 0 ) ?: null,
+		'section'    => sanitize_text_field( $_POST['section'] ?? '' ) ?: null,
 		'sort_order' => (int) ( $_POST['sort_order'] ?? 0 ),
 		'status'     => sanitize_key( $_POST['status'] ?? 'active' ),
 		'created_by' => get_current_user_id() ?: null,
 	);
 	if ( $edit_id ) {
 		$model->update( $edit_id, $data );
-		$saved_id = $edit_id;
 	} else {
-		$saved_id = (int) $model->create( $data );
+		$model->create( $data );
 	}
-
-	// Save taxonomy terms (FAQ tags) attached to this FAQ.
-	$taxonomy_ids = array_map( 'absint', (array) ( $_POST['taxonomy_ids'] ?? array() ) );
-	$ct_model->sync_terms( 'faq', (int) $saved_id, $taxonomy_ids );
 
 	$notice = 'FAQ saved.';
 	$action = 'list';
@@ -48,11 +43,13 @@ $all_pages = $pages_m->get_active();
   <?php if ( $notice ) : ?><div class="ah-notice ah-notice-success"><?php echo esc_html( $notice ); ?></div><?php endif; ?>
 
   <?php if ( $action === 'list' ) :
-    $search  = sanitize_text_field( $_GET['s'] ?? '' );
-    $page_id = (int) ( $_GET['page_id'] ?? 0 ) ?: null;
-    $paged   = AH_Pagination::current_page();
-    $result  = $model->get_paginated( $paged, $search, $page_id );
-    $items   = $result['items']; $meta = $result['meta'];
+    $search   = sanitize_text_field( $_GET['s'] ?? '' );
+    $page_id  = (int) ( $_GET['page_id'] ?? 0 ) ?: null;
+    $section  = sanitize_text_field( $_GET['section'] ?? '' );
+    $paged    = AH_Pagination::current_page();
+    $result   = $model->get_paginated( $paged, $search, $page_id, null, $section );
+    $items    = $result['items']; $meta = $result['meta'];
+    $sections = $model->get_distinct_sections();
   ?>
     <div class="ah-table-top">
       <form class="ah-search-form" method="get">
@@ -63,13 +60,21 @@ $all_pages = $pages_m->get_active();
           <option value="0" <?php selected( $_GET['page_id'] ?? '', '0' ); ?>>Global</option>
           <?php foreach ( $all_pages as $pg ) : ?><option value="<?php echo esc_attr( $pg->id ); ?>" <?php selected( $page_id, $pg->id ); ?>><?php echo esc_html( $pg->title ); ?></option><?php endforeach; ?>
         </select>
+        <?php if ( ! empty( $sections ) ) : ?>
+        <select name="section">
+          <option value="">All Sections</option>
+          <?php foreach ( $sections as $s ) : ?>
+            <option value="<?php echo esc_attr( $s ); ?>" <?php selected( $section, $s ); ?>><?php echo esc_html( $s ); ?></option>
+          <?php endforeach; ?>
+        </select>
+        <?php endif; ?>
         <button class="ah-btn ah-btn-secondary">Filter</button>
       </form>
       <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-faqs', 'action' => 'add' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ Add FAQ</a>
     </div>
     <div class="ah-table-wrap">
       <table class="ah-table ah-sortable-list" data-model="faqs">
-        <thead><tr><th></th><th>Question</th><th>Page</th><th>Tags</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead><tr><th></th><th>Question</th><th>Page</th><th>Section</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <?php foreach ( $items as $faq ) : ?>
             <tr data-id="<?php echo esc_attr( $faq->id ); ?>">
@@ -81,7 +86,7 @@ $all_pages = $pages_m->get_active();
                   echo $pg ? esc_html( $pg->title ) : '-';
                 } else { echo '<em>Global</em>'; }
               ?></td>
-              <td><?php $ct_model->render_badges( 'faq', (int) $faq->id ); ?></td>
+              <td><?php echo $faq->section ? '<span class="ah-badge">' . esc_html( $faq->section ) . '</span>' : '<span style="color:var(--ah-muted);font-size:12px;">-</span>'; ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $faq->status ); ?>"><?php echo esc_html( $faq->status ); ?></span></td>
               <td class="row-actions">
                 <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-faqs', 'action' => 'edit', 'id' => $faq->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
@@ -106,9 +111,13 @@ $all_pages = $pages_m->get_active();
         <div class="ah-form-row"><label>Answer *</label><?php wp_editor( $item->answer ?? '', 'answer', array( 'textarea_name' => 'answer', 'media_buttons' => false, 'teeny' => true, 'editor_height' => 200 ) ); ?></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="ah-form-row"><label>Link Text</label><input type="text" name="link_text" value="<?php echo esc_attr( $item->link_text ?? '' ); ?>"></div>
-          <div class="ah-form-row"><label>Link URL</label><input type="url" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>"></div>
+          <div class="ah-form-row"><label>Link URL</label><input type="text" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>" placeholder="https://… or /slug/ or #section"></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="ah-form-row">
+            <label>Section <small>(e.g. Common Questions, Buying Questions)</small></label>
+            <input type="text" name="section" value="<?php echo esc_attr( $item->section ?? '' ); ?>" placeholder="Leave empty for no section">
+          </div>
           <div class="ah-form-row">
             <label>Attached Page <small>(leave empty = global)</small></label>
             <select name="page_id">
@@ -116,12 +125,10 @@ $all_pages = $pages_m->get_active();
               <?php foreach ( $all_pages as $pg ) : ?><option value="<?php echo esc_attr( $pg->id ); ?>" <?php selected( $item->page_id ?? 0, $pg->id ); ?>><?php echo esc_html( $pg->title ); ?></option><?php endforeach; ?>
             </select>
           </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="ah-form-row"><label>Sort Order</label><input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>"></div>
           <div class="ah-form-row"><label>Status</label><select name="status"><option value="active" <?php selected( $item->status ?? 'active', 'active' ); ?>>Active</option><option value="inactive" <?php selected( $item->status ?? '', 'inactive' ); ?>>Inactive</option></select></div>
-        </div>
-        <div class="ah-form-row">
-          <label>Tags</label>
-          <?php $ct_model->render_picker( 'faq', $edit_id ); ?>
         </div>
         <button type="submit" class="ah-btn ah-btn-primary">Save FAQ</button>
       </form>

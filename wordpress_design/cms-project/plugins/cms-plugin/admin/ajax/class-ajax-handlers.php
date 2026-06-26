@@ -369,18 +369,6 @@ class AH_Ajax_Handlers {
 			wp_send_json_error( array( 'message' => 'Could not save your submission. Please try again.' ) );
 		}
 
-		// Send email notification
-		$notify = ! empty( $form->notify_email ) ? $form->notify_email : get_option( 'admin_email' );
-		if ( $notify ) {
-			$subject = 'New submission: ' . $form->name;
-			$body    = "You have a new form submission from your website.\n\n";
-			foreach ( $email_rows as $row ) {
-				$body .= $row['label'] . ":\n" . $row['value'] . "\n\n";
-			}
-			$body .= "---\nSubmitted: " . current_time( 'mysql' ) . "\nForm: " . $form->name . " (ID #{$form_id})";
-			wp_mail( $notify, $subject, $body );
-		}
-
 		// Conditionally fire rules engine (per-form setting).
 		if ( empty( $form->disable_rules ) ) {
 			AH_Rules_Engine::evaluate( 'form_submit', array_merge( array( 'form_id' => $form_id ), $data ) );

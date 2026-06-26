@@ -75,19 +75,18 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                                            class="nav-dropdown-link" role="menuitem"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
                                     <?php endforeach; ?>
                                 </div>
-                                <?php if ( '' !== $_img ) : ?>
+                                <?php if ( '' !== $_img || '' !== $_nd ) : ?>
                                 <div class="nav-dropdown__media">
+                                    <?php if ( '' !== $_img ) : ?>
                                     <img src="<?php echo esc_url( $_img ); ?>" alt="" class="nav-dropdown__media-img" loading="lazy">
-                                    <a href="<?php echo $url; ?>" class="nav-dropdown__cta">See All <?php echo esc_html( $label ); ?> Content</a>
-                                </div>
-                                <?php endif; ?>
-                                <?php if ( '' !== $_nd || '' !== $_ni ) : ?>
-                                <div class="nav-dropdown__desc-panel">
-                                    <?php if ( '' !== $_ni ) : ?>
-                                    <div class="nav-dropdown__icon" aria-hidden="true"><?php echo esc_html( $_ni ); ?></div>
                                     <?php endif; ?>
                                     <?php if ( '' !== $_nd ) : ?>
-                                    <p class="nav-dropdown__desc"><?php echo esc_html( $_nd ); ?></p>
+                                    <div class="nav-dropdown__media-body">
+                                        <?php if ( '' !== $_ni ) : ?>
+                                        <span class="nav-dropdown__media-icon"><?php echo esc_html( $_ni ); ?></span>
+                                        <?php endif; ?>
+                                        <p class="nav-dropdown__media-desc"><?php echo esc_html( $_nd ); ?></p>
+                                    </div>
                                     <?php endif; ?>
                                 </div>
                                 <?php endif; ?>
