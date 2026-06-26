@@ -3859,19 +3859,23 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   .guides-carousel .guide-card { flex: 0 0 180px; width: 180px; }
   .journey-card { flex: 0 0 260px; }
   .calcs-popular-grid { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; gap: 0; padding-bottom: var(--space-6); }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 0; padding-bottom: var(--space-6); }
+
+  /* Brand spans both columns */
+  .footer-brand { grid-column: 1 / -1; }
 
   /* Footer brand centred on mobile */
   .footer-logo { justify-content: center; }
   .footer-desc  { text-align: center; }
   .footer-social { justify-content: center; }
 
-  /* Footer link columns: centred, with a subtle divider between them */
+  /* Footer link columns: centred, 2-per-row, with divider */
   .footer-col {
     text-align: center;
-    padding: 20px 0;
+    padding: 16px 8px;
     border-top: 1px solid rgba(255,255,255,0.08);
   }
+  .footer-col h4 { white-space: normal; word-break: break-word; }
   .footer-col .footer-links { align-items: center; }
 
   /* Footer bottom: stack copyright / links / made-with vertically */
