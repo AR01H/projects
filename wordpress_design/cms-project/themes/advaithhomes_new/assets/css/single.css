@@ -118,10 +118,10 @@
     bottom: 0;
     height: 52px;
     margin-top: -52px;
-    background: linear-gradient(to bottom, transparent, var(--bg, #f5f4f0));
+    /* background: linear-gradient(to bottom, transparent, var(--bg, #f5f4f0));
     pointer-events: none;
     display: block;
-    flex-shrink: 0;
+    flex-shrink: 0; */
 }
 
 /* ── Article Header - 1fr / 1fr split ──────────────────────── */
@@ -330,6 +330,10 @@
     font-size: 1rem;
     line-height: 1.8;
     color: var(--color-text, #374151);
+    padding: 0px 10px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    margin: 0px 0px 10px 0px;
 }
 .article-body section {
     padding: 0px;
@@ -1316,7 +1320,7 @@
     margin-top: 28px;
     padding: 20px 20px 24px;
     background: var(--color-white);
-    border: 1px solid var(--color-border, #e5e7eb);
+    border: 1px solid var(--client-color);
     border-radius: var(--radius-md);
 }
 .adn-comment-note {

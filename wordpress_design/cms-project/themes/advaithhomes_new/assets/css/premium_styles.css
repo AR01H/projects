@@ -168,8 +168,8 @@ h1, h2, h3, h4 {
 }
 .guide-card .card-title-highlight {
     font-size: 0.78rem !important;
-    font-weight: 400 !important;
-    color: var(--text-muted) !important;
+    font-weight: 900 !important;
+    color: var(--client-color) !important;
 }
 .guide-card .card-desc-text { color: var(--text-secondary); }
 .guide-card .read-more { color: var(--secondary-color) !important; font-weight: 700 !important; }
