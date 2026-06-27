@@ -27,6 +27,66 @@ class AH_Admin_Bootstrap {
 
 		// Public unsubscribe endpoint: /?ah_nl_unsub=1&email=X&token=Y
 		add_action( 'init', array( self::class, 'handle_newsletter_unsub' ) );
+
+		// Show PHP/DB errors to logged-in admins instead of blank 500 pages.
+		add_action( 'init', array( self::class, 'enable_admin_error_display' ), 1 );
+		add_action( 'admin_notices', array( self::class, 'show_admin_db_error_notice' ) );
+	}
+
+	public static function enable_admin_error_display(): void {
+		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		if ( empty( $_GET['showerror'] ) || $_GET['showerror'] !== 'true' ) {
+			return;
+		}
+
+		// Show PHP errors inline.
+		ini_set( 'display_errors', '1' );
+		error_reporting( E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT );
+
+		// Make wpdb print DB errors inline immediately.
+		global $wpdb;
+		$wpdb->show_errors();
+
+		// Catch PHP fatal errors and render them in a visible banner.
+		register_shutdown_function( static function () {
+			$e = error_get_last();
+			if ( ! $e || ! in_array( $e['type'], array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR ), true ) ) {
+				return;
+			}
+			echo '<div style="position:fixed;bottom:0;left:0;right:0;z-index:999999;'
+				. 'background:#fff0f0;border-top:4px solid #dc2626;padding:16px 20px;'
+				. 'font-family:monospace;font-size:13px;line-height:1.6;">';
+			echo '<strong style="color:#dc2626;">&#9888; Fatal Error (admin-only)</strong><br>';
+			echo esc_html( $e['message'] ) . '<br>';
+			echo '<small style="color:#6b7280;">'
+				. esc_html( str_replace( ABSPATH, '', $e['file'] ) )
+				. ' &nbsp;line&nbsp;' . (int) $e['line'] . '</small>';
+			echo '</div>';
+		} );
+	}
+
+	public static function show_admin_db_error_notice(): void {
+		if ( ! current_user_can( 'manage_options' ) ) return;
+
+		// DB error passed back via redirect URL param (from save handlers).
+		if ( ! empty( $_GET['dberr'] ) ) {
+			$msg = sanitize_text_field( wp_unslash( $_GET['dberr'] ) );
+			echo '<div class="notice notice-error"><p>'
+				. '<strong>Database Error (admin-only):</strong> '
+				. esc_html( $msg )
+				. '</p></div>';
+		}
+
+		// Also show any live wpdb error from the current page render.
+		global $wpdb;
+		if ( $wpdb->last_error ) {
+			echo '<div class="notice notice-error"><p>'
+				. '<strong>Database Error (admin-only):</strong> '
+				. esc_html( $wpdb->last_error )
+				. '</p></div>';
+		}
 	}
 
 	public static function handle_newsletter_unsub(): void {
@@ -651,8 +711,19 @@ CSS;
 			exit;
 		}
 
+		global $wpdb;
 		$model = new AH_Site_Notices_Model();
 		$model->save_notice( $edit_id, wp_unslash( $_POST ) );
+
+		if ( $wpdb->last_error ) {
+			wp_safe_redirect( add_query_arg( array(
+				'page'   => 'ah-notices',
+				'action' => $edit_id > 0 ? 'edit' : 'add',
+				'id'     => $edit_id ?: null,
+				'dberr'  => rawurlencode( $wpdb->last_error ),
+			), admin_url( 'admin.php' ) ) );
+			exit;
+		}
 
 		wp_safe_redirect( add_query_arg( array( 'page' => 'ah-notices', 'flash' => 'saved' ), admin_url( 'admin.php' ) ) );
 		exit;

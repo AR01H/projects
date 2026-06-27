@@ -2352,8 +2352,9 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 }
 .category-control-centre__panel {
   border: 1px solid var(--client-color);
-  padding: 16px;
+  padding: 40px 16px;
   margin:10px;
+  border-radius: var(--radius-xs);
 }
 .category-control-centre__spotlights + .category-control-centre__journey {
   margin-top: 16px;

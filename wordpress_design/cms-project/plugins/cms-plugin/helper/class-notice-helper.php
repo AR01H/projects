@@ -66,6 +66,16 @@ class AH_Notice_Helper {
 			'orange' => array( 'bg' => '#ffedd5', 'color' => '#c2410c' ),
 			'purple' => array( 'bg' => '#ede9fe', 'color' => '#7c3aed' ),
 		);
+		$resolve_badge = static function( string $color ) use ( $badge_palette ): array {
+			if ( isset( $badge_palette[ $color ] ) ) return $badge_palette[ $color ];
+			if ( preg_match( '/^#[0-9a-fA-F]{6}$/', $color ) ) {
+				$r = hexdec( substr( $color, 1, 2 ) );
+				$g = hexdec( substr( $color, 3, 2 ) );
+				$b = hexdec( substr( $color, 5, 2 ) );
+				return array( 'bg' => "rgba($r,$g,$b,0.13)", 'color' => $color );
+			}
+			return $badge_palette['green'];
+		};
 		foreach ( $to_render as $n ) :
 			$id         = (int) $n->id;
 			$title      = esc_html( $n->title );
@@ -74,7 +84,7 @@ class AH_Notice_Helper {
 			$btn_label  = esc_html( $n->button_label ?? '' );
 			$btn_url    = esc_url( $n->button_url ?? '' );
 			$badge      = esc_html( $n->badge_text ?? '' );
-			$bpal       = $badge_palette[ $n->badge_color ?? 'green' ] ?? $badge_palette['green'];
+			$bpal       = $resolve_badge( $n->badge_color ?? 'green' );
 			$is_corner  = ( $n->position ?? 'modal' ) === 'corner';
 		?>
 		<?php if ( $is_corner ) : ?>
@@ -213,6 +223,11 @@ class AH_Notice_Helper {
 
 			if (!queue.length) return;
 
+			// When multiple notices are eligible, pick one at random so all get exposure over time.
+			if (queue.length > 1) {
+				queue = [queue[Math.floor(Math.random() * queue.length)]];
+			}
+
 			function dismiss(n) {
 				var el = document.getElementById('ah-sn-' + n.id);
 				if (el) el.classList.remove('ah-sn-show');
@@ -220,7 +235,7 @@ class AH_Notice_Helper {
 				if (n.freq !== 'always') {
 					var key   = storageKey(n);
 					var store = n.freq === 'session' ? sessionStorage : localStorage;
-					var record = { date: today, hash: n.hash, shown: true, ts: nowMs, done: true };
+					var record = { date: today, hash: n.hash, shown: true, ts: Date.now(), done: true };
 					try { store.setItem(key, JSON.stringify(record)); } catch (e) {}
 				}
 

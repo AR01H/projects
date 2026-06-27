@@ -31,7 +31,7 @@ class AH_Site_Notices_Model extends AH_Model_Base {
 			'button_label'   => sanitize_text_field( $data['button_label'] ?? '' ) ?: null,
 			'button_url'     => sanitize_text_field( $data['button_url']   ?? '' ) ?: null,
 			'badge_text'     => sanitize_text_field( $data['badge_text']   ?? '' ) ?: null,
-			'badge_color'    => in_array( $data['badge_color'] ?? '', array( 'green', 'red', 'blue', 'orange', 'purple' ), true ) ? $data['badge_color'] : 'green',
+			'badge_color'    => sanitize_hex_color( $data['badge_color'] ?? '' ) ?: '#15803d',
 			'position'       => ( $data['position'] ?? 'modal' ) === 'corner' ? 'corner' : 'modal',
 			'trigger_type'   => in_array( $data['trigger_type'] ?? '', $valid_triggers, true ) ? $data['trigger_type'] : 'immediate',
 			'trigger_delay'  => max( 0, (int) ( $data['trigger_delay']  ?? 0 ) ),

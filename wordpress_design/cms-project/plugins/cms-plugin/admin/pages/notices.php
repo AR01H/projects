@@ -158,13 +158,15 @@ if ( ! empty( $_GET['err'] ) ) {
 					</div>
 					<div class="ah-form-row">
 						<label>Badge Colour</label>
-						<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;" id="pv-badge-color-wrap">
-							<?php foreach ( array( 'green' => '#15803d', 'red' => '#b91c1c', 'blue' => '#1d4ed8', 'orange' => '#c2410c', 'purple' => '#7c3aed' ) as $bval => $bclr ) : ?>
-							<label style="cursor:pointer;" title="<?php echo esc_attr( ucfirst( $bval ) ); ?>">
-								<input type="radio" name="badge_color" value="<?php echo esc_attr( $bval ); ?>" <?php checked( $item->badge_color ?? 'green', $bval ); ?> style="display:none;" class="pv-badge-color-radio">
-								<span class="pv-color-swatch" data-val="<?php echo esc_attr( $bval ); ?>" style="display:inline-block;width:28px;height:28px;border-radius:50%;background:<?php echo esc_attr( $bclr ); ?>;border:3px solid transparent;transition:border-color .15s;"></span>
-							</label>
-							<?php endforeach; ?>
+						<?php
+						$_badge_name_hex = array( 'green'=>'#15803d','red'=>'#b91c1c','blue'=>'#1d4ed8','orange'=>'#c2410c','purple'=>'#7c3aed' );
+						$_badge_raw      = $item->badge_color ?? 'green';
+						$_badge_hex      = $_badge_name_hex[ $_badge_raw ] ?? ( preg_match( '/^#[0-9a-fA-F]{6}$/', $_badge_raw ) ? $_badge_raw : '#15803d' );
+						?>
+						<div style="display:flex;gap:10px;align-items:center;margin-top:6px;">
+							<input type="color" name="badge_color" id="pv-badge-color" value="<?php echo esc_attr( $_badge_hex ); ?>"
+							       style="width:48px;height:36px;padding:2px 3px;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;background:#fff;">
+							<span id="pv-badge-color-sample" style="padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Badge</span>
 						</div>
 					</div>
 				</div>
@@ -418,43 +420,66 @@ if ( ! empty( $_GET['err'] ) ) {
 	.ah-scope-card:has(input:checked),
 	.ah-freq-opt:has(input:checked),
 	.ah-device-card:has(input:checked) { border-color:var(--color-primary,#0a192f) !important; background:#f8faff; }
-	.pv-color-swatch { cursor:pointer; }
-	input[type="radio"].pv-badge-color-radio:checked + .pv-color-swatch { border-color:#fff !important; outline:3px solid #0a192f; }
-	</style>
+</style>
 <?php endif; ?>
 </div>
 
 <script>
 jQuery(function ($) {
 
+	// ── Generic card highlight helper ─────────────────────────────────────
+	function highlightCards(cardClass, radioName) {
+		$(cardClass).removeClass('ah-sn-card-sel');
+		$('input[name="' + radioName + '"]:checked').closest(cardClass).addClass('ah-sn-card-sel');
+	}
+
 	// ── Show/hide conditional rows ────────────────────────────────────────
 	function syncTriggerRows() {
 		var v = $('input[name="trigger_type"]:checked').val();
 		$('#sn-delay-row').toggle( v === 'delay' );
 		$('#sn-scroll-row').toggle( v === 'scroll' );
+		highlightCards('.ah-trig-card', 'trigger_type');
 	}
-	// Radios inside .ah-trig-card are display:none - listen on the card click too.
 	$('input[name="trigger_type"]').on('change', syncTriggerRows);
 	$('.ah-trig-card').on('click', function () {
-		$(this).find('input[type="radio"]').prop('checked', true);
+		$(this).find('input[type="radio"]').prop('checked', true).trigger('change');
 		syncTriggerRows();
 	});
-	syncTriggerRows(); // run on load to show row if editing existing notice
+	syncTriggerRows(); // run on load to show row + highlight if editing existing notice
+
 	$('input[name="scope"]').on('change', function () {
 		$('#sn-slugs-row').toggle( $(this).val() === 'slugs' );
+		highlightCards('.ah-scope-card', 'scope');
 	});
+	$('.ah-scope-card').on('click', function () {
+		$(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+	});
+	highlightCards('.ah-scope-card', 'scope');
 
-	// ── Custom frequency row ──────────────────────────
+	$('input[name="position"]').on('change', function () { highlightCards('.ah-style-card', 'position'); });
+	$('.ah-style-card').on('click', function () {
+		$(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+	});
+	highlightCards('.ah-style-card', 'position');
+
+	$('input[name="device"]').on('change', function () { highlightCards('.ah-device-card', 'device'); });
+	$('.ah-device-card').on('click', function () {
+		$(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+	});
+	highlightCards('.ah-device-card', 'device');
+
+	// ── Custom frequency row + card highlight ─────────
 	function syncFreqCustomRow() {
 		var v = $('input[name="frequency"]:checked').val();
 		$('#sn-freq-custom-row').toggle( v === 'custom' );
+		highlightCards('.ah-freq-opt', 'frequency');
 	}
 	$('input[name="frequency"]').on('change', syncFreqCustomRow);
 	$('.ah-freq-opt').on('click', function () {
-		$(this).find('input[type="radio"]').prop('checked', true);
+		$(this).find('input[type="radio"]').prop('checked', true).trigger('change');
 		syncFreqCustomRow();
 	});
-	syncFreqCustomRow();
+	syncFreqCustomRow(); // run on load — highlights saved selection + shows custom row if needed
 
 	function syncCustomMins() {
 		var h = parseInt($('#sn-freq-hours').val(), 10) || 0;
@@ -487,21 +512,6 @@ jQuery(function ($) {
 		$('.ah-date-hidden').val('');
 	});
 
-	// ── Badge colour swatch highlight ────────────────────────────────────
-	function syncSwatches() {
-		$('.pv-color-swatch').each(function () {
-			var $r = $(this).prev('input[type=radio]');
-			$(this).css('outline', $r.is(':checked') ? '3px solid #0a192f' : 'none');
-			$(this).css('border', $r.is(':checked') ? '3px solid #fff' : '3px solid transparent');
-		});
-	}
-	$('.pv-badge-color-radio').on('change', syncSwatches);
-	$('.pv-color-swatch').on('click', function () {
-		$(this).prev('input[type=radio]').prop('checked', true).trigger('change');
-		updatePreview();
-	});
-	syncSwatches();
-
 	// ── Media picker ─────────────────────────────────────────────────────
 	var mediaFrame;
 	$('#ah-sn-media-btn').on('click', function (e) {
@@ -520,20 +530,26 @@ jQuery(function ($) {
 	});
 
 	// ── Live preview ──────────────────────────────────────────────────────
-	var badgePalette = {
-		green:  { bg: '#dcfce7', color: '#15803d' },
-		red:    { bg: '#fee2e2', color: '#b91c1c' },
-		blue:   { bg: '#dbeafe', color: '#1d4ed8' },
-		orange: { bg: '#ffedd5', color: '#c2410c' },
-		purple: { bg: '#ede9fe', color: '#7c3aed' },
-	};
+	function hexToRgba(hex, alpha) {
+		var r = parseInt(hex.slice(1,3), 16) || 0;
+		var g = parseInt(hex.slice(3,5), 16) || 0;
+		var b = parseInt(hex.slice(5,7), 16) || 0;
+		return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+	}
+
+	function syncBadgeColorSample() {
+		var hex = $('#pv-badge-color').val() || '#15803d';
+		$('#pv-badge-color-sample').css({ background: hexToRgba(hex, 0.13), color: hex });
+	}
+	$('#pv-badge-color').on('input change', syncBadgeColorSample);
+	syncBadgeColorSample();
 
 	function updatePreview() {
 		var title      = $.trim( $('#pv-title').val() )   || 'Notice Title';
 		var message    = $.trim( $('#pv-message').val() );
 		var badgeText  = $.trim( $('#pv-badge-text').val() );
-		var badgeColor = $('input[name="badge_color"]:checked').val() || 'green';
-		var pal        = badgePalette[badgeColor] || badgePalette.green;
+		var badgeColor = $('#pv-badge-color').val() || '#15803d';
+		var pal        = { bg: hexToRgba(badgeColor, 0.13), color: badgeColor };
 		var btnLabel   = $.trim( $('#pv-btn-label').val() );
 		var imgUrl     = $.trim( $('#pv-image').val() );
 		var isCorner   = $('#pv-pos-corner').is(':checked');
@@ -591,6 +607,7 @@ jQuery(function ($) {
 
 	// ── Form validation ───────────────────────────────────────────────────
 	$('#ah-sn-submit').closest('form').on('submit', function (e) {
+		syncCustomMins(); // ensure hidden field reflects current hours/mins before POST
 		var errs = [];
 		if (!$.trim($('#pv-title').val())) errs.push('Title is required.');
 		if ($('input[name="trigger_type"]:checked').val() === 'delay') {
@@ -612,5 +629,5 @@ jQuery(function ($) {
 .ah-field-error { border-color:#dc2626 !important; background:#fff5f5 !important; box-shadow:0 0 0 2px rgba(220,38,38,.15) !important; }
 .ah-trig-card { text-align:center; }
 .ah-trig-card input { display:none; }
-.ah-trig-card:has(input:checked) { border-color:var(--color-primary,#0a192f) !important; background:#f8faff; }
+.ah-sn-card-sel { border-color:#0a192f !important; background:#f8faff !important; }
 </style>
