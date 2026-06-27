@@ -59,7 +59,7 @@ function ch_handle_contact_submit(): void {
 	);
 
 	// ── Rules Engine - queued to run after browser receives the response ──────
-	if ( class_exists( 'AH_Rules_Engine' ) ) {
+	if ( class_exists( 'AH_Workflow_Manager' ) ) {
 		ch_run_after_response( static function () use ( $name, $email, $phone, $enquiry, $message ) {
 			$enquiry_labels = [
 				'general'   => 'General Enquiry',
@@ -68,7 +68,7 @@ function ch_handle_contact_submit(): void {
 				'franchise' => 'Franchise Opportunity',
 				'other'     => 'Something Else',
 			];
-			AH_Rules_Engine::evaluate( CH_Rules::CONTACT_FORM, [
+			AH_Workflow_Manager::evaluate( CH_Rules::CONTACT_FORM, [
 				'name'          => $name,
 				'email'         => $email,
 				'phone'         => $phone,
@@ -172,7 +172,7 @@ function ch_handle_order_submit(): void {
 	] );
 
 	// ── Rules Engine - queued to run after browser receives the response ─────
-	if ( class_exists( 'AH_Rules_Engine' ) ) {
+	if ( class_exists( 'AH_Workflow_Manager' ) ) {
 		ch_run_after_response( static function () use (
 			$order_id, $name, $email, $phone,
 			$address, $area, $preferred_date, $time, $items_data, $notes
@@ -180,7 +180,7 @@ function ch_handle_order_submit(): void {
 			$items_label = implode( ', ', array_map( static function ( $i ) {
 				return $i['name'] . ' ×' . $i['qty'];
 			}, $items_data ) );
-			AH_Rules_Engine::evaluate( CH_Rules::ORDER_TO_DELIVER, [
+			AH_Workflow_Manager::evaluate( CH_Rules::ORDER_TO_DELIVER, [
 				'order_id'       => $order_id,
 				'name'           => $name,
 				'email'          => $email,
@@ -277,13 +277,13 @@ function ch_handle_booking_submit(): void {
 	}
 
 	// ── Rules Engine - queued to run after browser receives the response ─────
-	if ( class_exists( 'AH_Rules_Engine' ) ) {
+	if ( class_exists( 'AH_Workflow_Manager' ) ) {
 		ch_run_after_response( static function () use (
 			$booking_id, $name, $email, $phone,
 			$cane_types, $textures, $flavours,
 			$occasion, $event_date, $guests_raw, $location, $notes
 		) {
-			AH_Rules_Engine::evaluate( CH_Rules::BOOKING_REQUEST, [
+			AH_Workflow_Manager::evaluate( CH_Rules::BOOKING_REQUEST, [
 				'booking_id'   => $booking_id,
 				'name'         => $name,
 				'email'        => $email,
@@ -368,12 +368,12 @@ function ch_handle_franchise_submit(): void {
 	}
 
 	// ── Rules Engine - queued to run after browser receives the response ─────
-	if ( class_exists( 'AH_Rules_Engine' ) ) {
+	if ( class_exists( 'AH_Workflow_Manager' ) ) {
 		ch_run_after_response( static function () use (
 			$enquiry_id, $name, $email, $phone,
 			$city, $frn_type, $timeline, $investment, $experience, $message
 		) {
-			AH_Rules_Engine::evaluate( CH_Rules::FRANCHISE_ENQUIRY, [
+			AH_Workflow_Manager::evaluate( CH_Rules::FRANCHISE_ENQUIRY, [
 				'enquiry_id'       => $enquiry_id,
 				'name'             => $name,
 				'email'            => $email,

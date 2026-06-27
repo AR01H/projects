@@ -67,8 +67,8 @@ class ADN_Form_Ajax {
 			wp_send_json_error( array( 'message' => 'Could not save your enquiry. Please try again.' ) );
 		}
 
-		if ( class_exists( 'AH_Rules_Engine' ) ) {
-			AH_Rules_Engine::evaluate( 'contact_submit', array_merge( array(
+		if ( class_exists( 'AH_Workflow_Manager' ) ) {
+			AH_Workflow_Manager::evaluate( 'contact_submit', array_merge( array(
 				'full_name'    => $name,
 				'email'        => $email,
 				'phone'        => $whatsapp,
@@ -131,8 +131,8 @@ class ADN_Form_Ajax {
 			wp_send_json_error( array( 'message' => 'Could not save your request. Please try again.' ) );
 		}
 
-		if ( class_exists( 'AH_Rules_Engine' ) ) {
-			AH_Rules_Engine::evaluate( 'guidance_submit', array(
+		if ( class_exists( 'AH_Workflow_Manager' ) ) {
+			AH_Workflow_Manager::evaluate( 'guidance_submit', array(
 				'full_name' => $name,
 				'email'     => $email,
 				'phone'     => $phone,

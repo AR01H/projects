@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$engine_active = class_exists( 'AH_Rules_Engine' );
+$engine_active = class_exists( 'AH_Workflow_Manager' );
 ?>
 <div class="card" style="max-width:none;">
 	<h2><?php esc_html_e( 'Workflow Manager', ADN_TEXT_DOMAIN ); ?></h2>
@@ -11,7 +11,7 @@ $engine_active = class_exists( 'AH_Rules_Engine' );
 
 	<?php if ( ! $engine_active ) : ?>
 		<div class="notice notice-warning inline">
-			<p><?php esc_html_e( 'The CMS plugin (AH_Rules_Engine) is not active. Triggers still fire harmlessly, but no actions run until the plugin is activated.', ADN_TEXT_DOMAIN ); ?></p>
+			<p><?php esc_html_e( 'The CMS plugin (AH_Workflow_Manager) is not active. Triggers still fire harmlessly, but no actions run until the plugin is activated.', ADN_TEXT_DOMAIN ); ?></p>
 		</div>
 	<?php endif; ?>
 

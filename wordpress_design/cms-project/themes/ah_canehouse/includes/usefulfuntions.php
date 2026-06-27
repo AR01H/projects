@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 //
 // Usage:
 //   ch_run_after_response( function() use ( $data ) {
-//       AH_Rules_Engine::evaluate( CH_Rules::BOOKING_REQUEST, $data, true );
+//       AH_Workflow_Manager::evaluate( CH_Rules::BOOKING_REQUEST, $data, true );
 //   } );
 //   wp_send_json_success( [...] );   ← response goes to browser first
 //

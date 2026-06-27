@@ -371,7 +371,7 @@ class AH_Ajax_Handlers {
 
 		// Conditionally fire rules engine (per-form setting).
 		if ( empty( $form->disable_rules ) ) {
-			AH_Rules_Engine::evaluate( 'form_submit', array_merge( array( 'form_id' => $form_id ), $data ) );
+			AH_Workflow_Manager::evaluate( 'form_submit', array_merge( array( 'form_id' => $form_id ), $data ) );
 		}
 
 		wp_send_json_success( array( 'message' => $form->success_message ?: 'Thank you! We will get back to you shortly.' ) );
@@ -420,8 +420,8 @@ class AH_Ajax_Handlers {
 		if ( 'already_subscribed' === $result ) {
 			wp_send_json_success( array( 'message' => 'You are already subscribed - thank you!' ) );
 		} elseif ( 'subscribed' === $result ) {
-			if ( class_exists( 'AH_Rules_Engine' ) ) {
-				AH_Rules_Engine::evaluate( 'newsletter_subscribe', array(
+			if ( class_exists( 'AH_Workflow_Manager' ) ) {
+				AH_Workflow_Manager::evaluate( 'newsletter_subscribe', array(
 					'email'  => $email,
 					'name'   => $name,
 					'source' => $source,

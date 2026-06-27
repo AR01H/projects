@@ -4,12 +4,12 @@ defined( 'ABSPATH' ) || exit;
 /**
  * CH_Rules
  *
- * Single source of truth for every AH_Rules_Engine trigger name used in this theme.
+ * Single source of truth for every AH_Workflow_Manager trigger name used in this theme.
  * Use these constants everywhere instead of raw strings so a renamed trigger is
  * caught at the point of definition, not buried in a submit handler.
  *
  * Usage:
- *   AH_Rules_Engine::evaluate( CH_Rules::CONTACT_FORM, $context, true );
+ *   AH_Workflow_Manager::evaluate( CH_Rules::CONTACT_FORM, $context, true );
  */
 class CH_Rules {
 

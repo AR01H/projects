@@ -528,11 +528,11 @@ class ADN_Theme_Admin {
 
 	/** Count active rules in the engine for one trigger. -1 = plugin inactive. */
 	public static function count_rules_for_trigger( $trigger ) {
-		if ( ! class_exists( 'AH_Rules_Engine' ) ) {
+		if ( ! class_exists( 'AH_Workflow_Manager' ) ) {
 			return -1;
 		}
 		$count = 0;
-		foreach ( AH_Rules_Engine::get_all() as $rule ) {
+		foreach ( AH_Workflow_Manager::get_all() as $rule ) {
 			if ( $rule->trigger_name === $trigger && 'active' === $rule->status ) {
 				$count++;
 			}
@@ -546,20 +546,20 @@ class ADN_Theme_Admin {
 			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
 		}
 
-		if ( ! class_exists( 'AH_Rules_Engine' ) || ! class_exists( 'ADN_Rules' ) ) {
-			self::redirect_back( 'admin-actions', 'rules', __( 'The CMS plugin (AH_Rules_Engine) is not active - activate it first.', ADN_TEXT_DOMAIN ) );
+		if ( ! class_exists( 'AH_Workflow_Manager' ) || ! class_exists( 'ADN_Rules' ) ) {
+			self::redirect_back( 'admin-actions', 'rules', __( 'The CMS plugin (AH_Workflow_Manager) is not active - activate it first.', ADN_TEXT_DOMAIN ) );
 		}
 
 		// Already installed? Don't create a duplicate.
-		foreach ( AH_Rules_Engine::get_all() as $rule ) {
+		foreach ( AH_Workflow_Manager::get_all() as $rule ) {
 			if ( self::sample_rule_name() === $rule->name ) {
 				self::redirect_back( 'admin-actions', 'rules', __( 'Sample contact rule already exists - edit it in the CMS plugin.', ADN_TEXT_DOMAIN ) );
 			}
 		}
 
-		AH_Rules_Engine::install_tables();
+		AH_Workflow_Manager::install_tables();
 
-		$rule_id = AH_Rules_Engine::save( 0, array(
+		$rule_id = AH_Workflow_Manager::save( 0, array(
 			'name'             => self::sample_rule_name(),
 			'trigger_name'     => ADN_Rules::CONTACT_FORM,
 			'conditions_match' => 'all',

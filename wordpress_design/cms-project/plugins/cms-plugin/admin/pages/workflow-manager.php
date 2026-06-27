@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-AH_Rules_Engine::install_tables();
+AH_Workflow_Manager::install_tables();
 
 $notice  = '';
 $rule_id = (int) ( $_GET['rule_id'] ?? 0 );
@@ -11,7 +11,7 @@ $view    = sanitize_key( $_GET['view'] ?? 'list' );
 // ── Handle: save config ───────────────────────────────────────────────────────
 if ( isset( $_POST['ah_re_cfg_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_cfg_nonce'], 'ah_save_re_config' ) ) wp_die( 'Security.' );
-	AH_Rules_Engine::save_config( array(
+	AH_Workflow_Manager::save_config( array(
 		'global_freeze'      => $_POST['cfg_global_freeze']      ?? '0',
 		'email_from_name'    => $_POST['cfg_email_from_name']    ?? '',
 		'email_from_email'   => $_POST['cfg_email_from_email']   ?? '',
@@ -23,9 +23,9 @@ if ( isset( $_POST['ah_re_cfg_nonce'] ) ) {
 	) );
 	$raw_vars     = json_decode( wp_unslash( $_POST['cfg_custom_vars_json'] ?? '[]' ), true ) ?: array();
 	$raw_channels = json_decode( wp_unslash( $_POST['cfg_channels_json']    ?? '[]' ), true ) ?: array();
-	AH_Rules_Engine::save_custom_vars( $raw_vars );
-	AH_Rules_Engine::save_email_channels( $raw_channels );
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=config&notice=cfg_saved' ) );
+	AH_Workflow_Manager::save_custom_vars( $raw_vars );
+	AH_Workflow_Manager::save_email_channels( $raw_channels );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=config&notice=cfg_saved' ) );
 }
 
 // ── Handle: test fire trigger ─────────────────────────────────────────────────
@@ -33,42 +33,42 @@ if ( isset( $_POST['ah_re_test_fire_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_test_fire_nonce'], 'ah_test_fire' ) ) wp_die( 'Security.' );
 	$test_trigger = sanitize_text_field( $_POST['test_trigger_name'] ?? '' );
 	if ( $test_trigger ) {
-		AH_Rules_Engine::evaluate( $test_trigger, array(
+		AH_Workflow_Manager::evaluate( $test_trigger, array(
 			'full_name' => 'Test User',
 			'email'     => get_option( 'admin_email' ),
 			'phone'     => '0000000000',
 			'message'   => 'This is a test fire from the Rules Engine Config page.',
 		) );
 	}
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=config&notice=test_fired&tf=' . urlencode( $test_trigger ) ) );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=config&notice=test_fired&tf=' . urlencode( $test_trigger ) ) );
 }
 
 // ── Handle: manual run now ────────────────────────────────────────────────────
 if ( isset( $_POST['ah_re_run_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_run_nonce'], 'ah_run_now' ) ) wp_die( 'Security.' );
-	AH_Rules_Engine::cron_process();
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=config&notice=run_now_ok' ) );
+	AH_Workflow_Manager::cron_process();
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=config&notice=run_now_ok' ) );
 }
 
 // ── Handle: delete log entry ──────────────────────────────────────────────────
 if ( isset( $_GET['del_log'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_log' ) ) wp_die( 'Security.' );
-	AH_Rules_Engine::delete_log( (int) $_GET['del_log'] );
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=logs&notice=log_deleted' ) );
+	AH_Workflow_Manager::delete_log( (int) $_GET['del_log'] );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=logs&notice=log_deleted' ) );
 }
 
 // ── Handle: mark log unsent ───────────────────────────────────────────────────
 if ( isset( $_GET['unsent_log'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_unsent_log' ) ) wp_die( 'Security.' );
-	AH_Rules_Engine::mark_log_unsent( (int) $_GET['unsent_log'] );
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=logs&notice=log_unsent' ) );
+	AH_Workflow_Manager::mark_log_unsent( (int) $_GET['unsent_log'] );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=logs&notice=log_unsent' ) );
 }
 
 // ── Handle: retry log entry ───────────────────────────────────────────────────
 if ( isset( $_GET['retry_log'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_retry_log' ) ) wp_die( 'Security.' );
-	$ok = AH_Rules_Engine::retry_log( (int) $_GET['retry_log'] );
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=logs&notice=' . ( $ok ? 'retry_ok' : 'retry_fail' ) ) );
+	$ok = AH_Workflow_Manager::retry_log( (int) $_GET['retry_log'] );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=logs&notice=' . ( $ok ? 'retry_ok' : 'retry_fail' ) ) );
 }
 
 // ── Handle: add blocked email ─────────────────────────────────────────────────
@@ -76,39 +76,39 @@ if ( isset( $_POST['ah_re_block_add_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_block_add_nonce'], 'ah_block_add' ) ) wp_die( 'Security.' );
 	$block_email = sanitize_email( wp_unslash( $_POST['block_email'] ?? '' ) );
 	if ( is_email( $block_email ) ) {
-		AH_Rules_Engine::add_blocked_email( $block_email );
+		AH_Workflow_Manager::add_blocked_email( $block_email );
 	}
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=blocked&notice=block_added' ) );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=blocked&notice=block_added' ) );
 }
 
 // ── Handle: remove blocked email ─────────────────────────────────────────────
 if ( isset( $_GET['unblock'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_unblock' ) ) wp_die( 'Security.' );
-	AH_Rules_Engine::remove_blocked_email( sanitize_email( wp_unslash( $_GET['unblock'] ) ) );
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=blocked&notice=block_removed' ) );
+	AH_Workflow_Manager::remove_blocked_email( sanitize_email( wp_unslash( $_GET['unblock'] ) ) );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=blocked&notice=block_removed' ) );
 }
 
 // ── Handle: clear the whole evaluate log ──────────────────────────────────────
 if ( isset( $_POST['ah_re_clear_evallog_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_clear_evallog_nonce'], 'ah_clear_evallog' ) ) wp_die( 'Security.' );
 	global $wpdb;
-	$wpdb->query( 'TRUNCATE TABLE `' . AH_Rules_Engine::evaluate_table() . '`' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=evallog&notice=evallog_cleared' ) );
+	$wpdb->query( 'TRUNCATE TABLE `' . AH_Workflow_Manager::evaluate_table() . '`' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=evallog&notice=evallog_cleared' ) );
 }
 
 // ── Handle: delete one evaluate-log entry ─────────────────────────────────────
 if ( isset( $_GET['del_evallog'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_evallog' ) ) wp_die( 'Security.' );
 	global $wpdb;
-	$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . AH_Rules_Engine::evaluate_table() . '` WHERE id = %d', (int) $_GET['del_evallog'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&view=evallog&notice=evallog_deleted' ) );
+	$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . AH_Workflow_Manager::evaluate_table() . '` WHERE id = %d', (int) $_GET['del_evallog'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=evallog&notice=evallog_deleted' ) );
 }
 
 // ── Handle delete ──────────────────────────────────────────────────────────────
 if ( isset( $_GET['delete'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_rule' ) ) wp_die( 'Security.' );
-	AH_Rules_Engine::delete( (int) $_GET['delete'] );
-	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-rules-engine&notice=deleted' ) );
+	AH_Workflow_Manager::delete( (int) $_GET['delete'] );
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&notice=deleted' ) );
 }
 
 // ── Handle save ────────────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ if ( isset( $_POST['ah_re_nonce'] ) ) {
 	$raw_actions    = json_decode( wp_unslash( $_POST['re_actions_json']    ?? '[]' ), true ) ?: array();
 	$raw_settings   = json_decode( wp_unslash( $_POST['re_settings_json']   ?? '{}' ), true ) ?: array();
 
-	$saved_id = AH_Rules_Engine::save( $rule_id, array(
+	$saved_id = AH_Workflow_Manager::save( $rule_id, array(
 		'name'             => sanitize_text_field( $_POST['re_name']             ?? '' ),
 		'trigger_name'     => sanitize_text_field( $_POST['re_trigger_name']     ?? 'form_submit' ),
 		'conditions_match' => sanitize_key(        $_POST['re_conditions_match'] ?? 'all' ),
@@ -130,7 +130,7 @@ if ( isset( $_POST['ah_re_nonce'] ) ) {
 	) );
 
 	AH_Admin_Bootstrap::redirect( add_query_arg( array(
-		'page'    => 'ah-rules-engine',
+		'page'    => 'ah-workflow-manager',
 		'view'    => 'edit',
 		'rule_id' => $saved_id,
 		'notice'  => 'saved',
@@ -157,7 +157,7 @@ if ( isset( $_GET['notice'] ) ) {
 	$notice = $n_map[ sanitize_key( $_GET['notice'] ) ] ?? '';
 }
 
-$all_rules_raw   = AH_Rules_Engine::get_all();
+$all_rules_raw   = AH_Workflow_Manager::get_all();
 $re_search       = sanitize_text_field( $_GET['re_s']      ?? '' );
 $re_status_f     = sanitize_key(        $_GET['re_status'] ?? '' );
 $all_rules = array_values( array_filter( $all_rules_raw, static function( $r ) use ( $re_search, $re_status_f ) {
@@ -165,8 +165,8 @@ $all_rules = array_values( array_filter( $all_rules_raw, static function( $r ) u
 	if ( $re_status_f && $r->status !== $re_status_f ) { return false; }
 	return true;
 } ) );
-$trigger_presets = AH_Rules_Engine::trigger_presets();
-$operators       = AH_Rules_Engine::operators();
+$trigger_presets = AH_Workflow_Manager::trigger_presets();
+$operators       = AH_Workflow_Manager::operators();
 
 $blank_rule = (object) array(
 	'id' => 0, 'name' => '', 'trigger_name' => 'form_submit',
@@ -175,7 +175,7 @@ $blank_rule = (object) array(
 
 $editing = null;
 if ( 'edit' === $view ) {
-	$editing = $rule_id ? AH_Rules_Engine::get( $rule_id ) : $blank_rule;
+	$editing = $rule_id ? AH_Workflow_Manager::get( $rule_id ) : $blank_rule;
 	if ( ! $editing ) $editing = $blank_rule;
 }
 ?>
@@ -256,12 +256,12 @@ details.re-adv .re-adv-body{padding:12px}
 <?php endif; ?>
 
 <div class="re-header">
-	<h1><span class="dashicons dashicons-randomize" style="font-size:1.4rem;vertical-align:middle;margin-right:4px"></span>Triggers Maker</h1>
+	<h1><span class="dashicons dashicons-randomize" style="font-size:1.4rem;vertical-align:middle;margin-right:4px"></span>Workflow Manager</h1>
 	<?php if ( ! $editing ) : ?>
-	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ New Rule</a>
+	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ New Rule</a>
 	<?php endif; ?>
 	<?php if ( $editing ) : ?>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine' ) ); ?>" class="ah-btn ah-btn-secondary">← All Rules</a>
+	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager' ) ); ?>" class="ah-btn ah-btn-secondary">← All Rules</a>
 	<?php endif; ?>
 </div>
 
@@ -273,7 +273,7 @@ details.re-adv .re-adv-body{padding:12px}
 	foreach ( $tabs as $tslug => $tlabel ) :
 		$active = ( $view === $tslug || ( $tslug === 'list' && $view === 'edit' ) );
 	?>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine&view=' . $tslug ) ); ?>"
+	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager&view=' . $tslug ) ); ?>"
 	   style="padding:10px 20px;text-decoration:none;font-weight:600;font-size:13px;color:<?php echo $active ? '#1d4ed8' : '#6b7280'; ?>;border-bottom:<?php echo $active ? '2px solid #1d4ed8' : '2px solid transparent'; ?>;margin-bottom:-2px;transition:color .15s">
 		<?php echo $tlabel; ?>
 	</a>
@@ -333,7 +333,7 @@ details.re-adv .re-adv-body{padding:12px}
 
 	<div style="margin-top:14px">
 		<div style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">PHP - fire this trigger from anywhere in your code:</div>
-		<pre class="re-code-box">AH_Rules_Engine::evaluate( '<span class="re-code-hl" id="re-code-trigger"><?php echo esc_html( $editing->trigger_name ); ?></span>', [
+		<pre class="re-code-box">AH_Workflow_Manager::evaluate( '<span class="re-code-hl" id="re-code-trigger"><?php echo esc_html( $editing->trigger_name ); ?></span>', [
     'field_key' =&gt; $value,
     'email'     =&gt; $email,
     <span style="color:#64748b">// ... any key =&gt; value pairs become {tokens} in actions</span>
@@ -425,7 +425,7 @@ details.re-adv .re-adv-body{padding:12px}
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
 	<button type="submit" class="ah-btn ah-btn-primary">Save Rule</button>
 	<?php if ( $editing->id ) : ?>
-	<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'delete' => $editing->id ), admin_url( 'admin.php' ) ), 'ah_del_rule' ) ); ?>"
+	<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'delete' => $editing->id ), admin_url( 'admin.php' ) ), 'ah_del_rule' ) ); ?>"
 	   class="ah-btn ah-btn-danger"
 	   onclick="return confirm('Delete this rule permanently?')">Delete Rule</a>
 	<?php endif; ?>
@@ -435,7 +435,7 @@ details.re-adv .re-adv-body{padding:12px}
 <?php else : /* ════════ RULES LIST ════════ */ ?>
 
 <form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
-	<input type="hidden" name="page" value="ah-rules-engine">
+	<input type="hidden" name="page" value="ah-workflow-manager">
 	<input type="hidden" name="view" value="list">
 	<input type="text" name="re_s" value="<?php echo esc_attr( $re_search ); ?>" placeholder="Search rule / trigger…"
 		style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:200px">
@@ -446,7 +446,7 @@ details.re-adv .re-adv-body{padding:12px}
 	</select>
 	<button type="submit" class="ah-btn ah-btn-primary ah-btn-sm">Filter</button>
 	<?php if ( $re_search || $re_status_f ) : ?>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine&view=list' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
+	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager&view=list' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
 	<?php endif; ?>
 	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo count( $all_rules ); ?> / <?php echo count( $all_rules_raw ); ?> rules</span>
 </form>
@@ -501,7 +501,7 @@ details.re-adv .re-adv-body{padding:12px}
 					<span class="re-st-<?php echo esc_attr( $r->status ); ?>"><?php echo 'active' === $r->status ? 'Active' : 'Inactive'; ?></span>
 				</td>
 				<td>
-					<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'edit', 'rule_id' => $r->id ), admin_url( 'admin.php' ) ) ); ?>"
+					<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'edit', 'rule_id' => $r->id ), admin_url( 'admin.php' ) ) ); ?>"
 					   class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
 				</td>
 			</tr>
@@ -514,7 +514,7 @@ details.re-adv .re-adv-body{padding:12px}
 <div class="ah-card re-empty">
 	<div style="font-size:3rem;margin-bottom:12px">⚙️</div>
 	<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:#374151">No rules yet</h2>
-	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>"
+	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn ah-btn-primary">+ Create First Rule</a>
 </div>
 <?php endif; ?>
@@ -526,9 +526,9 @@ details.re-adv .re-adv-body{padding:12px}
 // CONFIG VIEW
 // ════════════════════════════════════════════════════════════
 if ( 'config' === $view ) :
-	$cfg          = AH_Rules_Engine::get_config();
-	$custom_vars  = AH_Rules_Engine::get_custom_vars();
-	$ch_list      = AH_Rules_Engine::get_email_channels();
+	$cfg          = AH_Workflow_Manager::get_config();
+	$custom_vars  = AH_Workflow_Manager::get_custom_vars();
+	$ch_list      = AH_Workflow_Manager::get_email_channels();
 	$next_cron    = wp_next_scheduled( 'ah_rules_cron_process' );
 ?>
 <form method="post" id="re-cfg-form">
@@ -544,11 +544,11 @@ if ( 'config' === $view ) :
 	</p>
 	<label class="re-html-row" style="font-weight:600;color:<?php echo '1' === $cfg['global_freeze'] ? '#b91c1c' : '#374151'; ?>">
 		<input type="checkbox" name="cfg_global_freeze" value="1"<?php checked( $cfg['global_freeze'], '1' ); ?>>
-		Freeze all Rules Engine activity
+		Freeze all Workflow Manager activity
 	</label>
 	<?php if ( '1' === $cfg['global_freeze'] ) : ?>
 	<p style="margin:10px 0 0;padding:8px 12px;background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;font-size:12px;color:#b91c1c;font-weight:600">
-		⚠️ Rules Engine is currently FROZEN - no rules are firing.
+		⚠️ Workflow Manager is currently FROZEN - no rules are firing.
 	</p>
 	<?php endif; ?>
 </div>
@@ -713,7 +713,7 @@ function updateEmailList(type) {
 	<div class="re-section-title" style="color:#15803d"><span>📌 Available {config_xxx} tokens</span></div>
 	<p style="font-size:12px;color:#166534;margin:0 0 10px">Use any of these in action templates (To, Subject, Body, URL, etc.)</p>
 	<div style="display:flex;flex-wrap:wrap;gap:6px">
-		<?php foreach ( AH_Rules_Engine::get_config() as $k => $v ) : ?>
+		<?php foreach ( AH_Workflow_Manager::get_config() as $k => $v ) : ?>
 		<code style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:3px 8px;font-size:12px;color:#166534">{config_<?php echo esc_html( $k ); ?>}</code>
 		<?php endforeach; ?>
 		<?php foreach ( $custom_vars as $cv ) : if ( empty( $cv['key'] ) ) continue; ?>
@@ -729,7 +729,7 @@ function updateEmailList(type) {
 <!-- Manual Trigger ─────────────────────────────────────────────────────────── -->
 <?php
 global $wpdb;
-$_lg   = AH_Rules_Engine::logs_table();
+$_lg   = AH_Workflow_Manager::logs_table();
 $_max  = max( 1, (int) ( $cfg['retry_max_attempts'] ?? 3 ) );
 $_pend = (int) $wpdb->get_var( $wpdb->prepare(
 	"SELECT COUNT(*) FROM `{$_lg}` WHERE is_done = 0 AND is_unsent = 0
@@ -760,8 +760,8 @@ $_pend = (int) $wpdb->get_var( $wpdb->prepare(
 <!-- Diagnostics ──────────────────────────────────────────────────────────── -->
 <?php
 global $wpdb;
-$_diag_rules_tbl = AH_Rules_Engine::table();
-$_diag_logs_tbl  = AH_Rules_Engine::logs_table();
+$_diag_rules_tbl = AH_Workflow_Manager::table();
+$_diag_logs_tbl  = AH_Workflow_Manager::logs_table();
 $_logs_exists    = ( $wpdb->get_var( "SHOW TABLES LIKE '{$_diag_logs_tbl}'" ) === $_diag_logs_tbl );
 $_rules_exists   = ( $wpdb->get_var( "SHOW TABLES LIKE '{$_diag_rules_tbl}'" ) === $_diag_rules_tbl );
 $_active_rules   = $_rules_exists
@@ -799,7 +799,7 @@ $_last_tf        = sanitize_text_field( $_GET['tf'] ?? '' );
 		</div>
 		<div style="background:#fff;border:1px solid #e0e7ff;border-radius:8px;padding:10px 16px;font-size:13px;min-width:220px">
 			<div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">PHP Error Log</div>
-			<span style="font-size:12px;color:#6b7280">Check <code>wp-content/debug.log</code> for<br><code>AH_Rules_Engine::evaluate()</code> errors<br>after submitting a form.</span>
+			<span style="font-size:12px;color:#6b7280">Check <code>wp-content/debug.log</code> for<br><code>AH_Workflow_Manager::evaluate()</code> errors<br>after submitting a form.</span>
 		</div>
 	</div>
 
@@ -807,7 +807,7 @@ $_last_tf        = sanitize_text_field( $_GET['tf'] ?? '' );
 	<div style="border-top:1px solid #c7d2fe;padding-top:14px;margin-top:4px">
 		<div style="font-size:12px;font-weight:700;color:#4338ca;margin-bottom:8px">▶ Test Fire a Trigger</div>
 		<p style="font-size:12px;color:#4f46e5;margin:0 0 10px">
-			Manually call <code>AH_Rules_Engine::evaluate()</code> with a dummy context. If the trigger matches an active rule, a new <strong>Pending</strong> entry should appear in Trigger Logs immediately.
+			Manually call <code>AH_Workflow_Manager::evaluate()</code> with a dummy context. If the trigger matches an active rule, a new <strong>Pending</strong> entry should appear in Trigger Logs immediately.
 		</p>
 		<form method="post" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
 			<?php wp_nonce_field( 'ah_test_fire', 'ah_re_test_fire_nonce' ); ?>
@@ -822,7 +822,7 @@ $_last_tf        = sanitize_text_field( $_GET['tf'] ?? '' );
 		<?php if ( $_last_tf && ( sanitize_key( $_GET['notice'] ?? '' ) === 'test_fired' ) ) : ?>
 		<p style="font-size:12px;color:#16a34a;margin:8px 0 0">
 			✅ Fired <code><?php echo esc_html( $_last_tf ); ?></code> - now check the
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine&view=logs' ) ); ?>">Trigger Logs</a> tab for a new Pending entry.
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager&view=logs' ) ); ?>">Trigger Logs</a> tab for a new Pending entry.
 			If nothing appeared, the trigger name doesn't match any active rule, or the table is missing.
 		</p>
 		<?php endif; ?>
@@ -844,10 +844,10 @@ if ( 'logs' === $view ) :
 		'action_type' => sanitize_key( $_GET['log_action'] ?? 'all' ),
 		'search'      => sanitize_text_field( $_GET['log_search'] ?? '' ),
 	);
-	$logs        = AH_Rules_Engine::get_logs_filtered( $log_filters, $log_limit, $log_offset );
-	$total_logs  = AH_Rules_Engine::count_logs_filtered( $log_filters );
+	$logs        = AH_Workflow_Manager::get_logs_filtered( $log_filters, $log_limit, $log_offset );
+	$total_logs  = AH_Workflow_Manager::count_logs_filtered( $log_filters );
 	$total_pages = (int) ceil( $total_logs / $log_limit );
-	$base_url    = admin_url( 'admin.php?page=ah-rules-engine&view=logs' );
+	$base_url    = admin_url( 'admin.php?page=ah-workflow-manager&view=logs' );
 	$filter_qs   = array_filter( array(
 		'log_status' => ( 'all' !== $log_filters['status']      ) ? $log_filters['status']      : '',
 		'log_action' => ( 'all' !== $log_filters['action_type'] ) ? $log_filters['action_type'] : '',
@@ -857,7 +857,7 @@ if ( 'logs' === $view ) :
 
 <!-- Filters bar -->
 <form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
-	<input type="hidden" name="page"  value="ah-rules-engine">
+	<input type="hidden" name="page"  value="ah-workflow-manager">
 	<input type="hidden" name="view"  value="logs">
 
 	<select name="log_status" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff">
@@ -888,7 +888,7 @@ if ( 'logs' === $view ) :
 </form>
 
 <p style="color:#6b7280;font-size:12px;margin:0 0 10px">
-	Failed entries with fewer than <strong><?php echo esc_html( AH_Rules_Engine::get_config()['retry_max_attempts'] ); ?> attempts</strong> are automatically retried by the cron.
+	Failed entries with fewer than <strong><?php echo esc_html( AH_Workflow_Manager::get_config()['retry_max_attempts'] ); ?> attempts</strong> are automatically retried by the cron.
 </p>
 
 <?php if ( $logs ) : ?>
@@ -937,13 +937,13 @@ if ( 'logs' === $view ) :
 				<td style="white-space:nowrap">
 					<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="document.getElementById('<?php echo esc_js( $det_id ); ?>').style.display = document.getElementById('<?php echo esc_js( $det_id ); ?>').style.display === 'none' ? 'table-row' : 'none'">Details</button>
 					<?php if ( 'failed' === $lg->status && ! $lg->is_unsent ) : ?>
-					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'logs', 'retry_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_retry_log' ) ); ?>"
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'retry_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_retry_log' ) ); ?>"
 					   class="ah-btn ah-btn-secondary ah-btn-sm">Retry</a>
-					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'logs', 'unsent_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_unsent_log' ) ); ?>"
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'unsent_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_unsent_log' ) ); ?>"
 					   class="ah-btn ah-btn-secondary ah-btn-sm" title="Stop retrying this entry" style="color:#dc2626"
 					   onclick="return confirm('Stop retrying this action?')">Cancel</a>
 					<?php endif; ?>
-					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'logs', 'del_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_del_log' ) ); ?>"
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'del_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_del_log' ) ); ?>"
 					   class="ah-btn ah-btn-danger ah-btn-sm"
 					   onclick="return confirm('Delete this log entry?')">×</a>
 				</td>
@@ -1032,7 +1032,7 @@ if ( 'logs' === $view ) :
 <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;align-items:center">
 	<span style="font-size:12px;color:#6b7280">Page <?php echo $log_paged; ?> of <?php echo $total_pages; ?></span>
 	<?php for ( $p = 1; $p <= $total_pages; $p++ ) : ?>
-	<a href="<?php echo esc_url( add_query_arg( array_merge( $filter_qs, array( 'page' => 'ah-rules-engine', 'view' => 'logs', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
+	<a href="<?php echo esc_url( add_query_arg( array_merge( $filter_qs, array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn <?php echo $p === $log_paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?> ah-btn-sm"><?php echo $p; ?></a>
 	<?php endfor; ?>
 </div>
@@ -1050,11 +1050,11 @@ if ( 'logs' === $view ) :
 
 <?php
 // ════════════════════════════════════════════════════════════
-// EVALUATE LOG VIEW  (one row per AH_Rules_Engine::evaluate() call)
+// EVALUATE LOG VIEW  (one row per AH_Workflow_Manager::evaluate() call)
 // ════════════════════════════════════════════════════════════
 if ( 'evallog' === $view ) :
 	global $wpdb;
-	$ev_tbl    = AH_Rules_Engine::evaluate_table();
+	$ev_tbl    = AH_Workflow_Manager::evaluate_table();
 	$ev_exists = ( $wpdb->get_var( "SHOW TABLES LIKE '{$ev_tbl}'" ) === $ev_tbl ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 	$ev_paged  = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
@@ -1075,20 +1075,20 @@ if ( 'evallog' === $view ) :
 ?>
 
 <p style="color:#6b7280;font-size:13px;margin:-8px 0 16px">
-	One row is recorded for <strong>every</strong> <code>AH_Rules_Engine::evaluate()</code> call - even when no rule matched.
+	One row is recorded for <strong>every</strong> <code>AH_Workflow_Manager::evaluate()</code> call - even when no rule matched.
 	Use it to confirm a trigger actually fired, and see how many rules it found vs. ran.
 </p>
 
 <!-- Toolbar: search + clear all -->
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
 	<form method="get" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0">
-		<input type="hidden" name="page" value="ah-rules-engine">
+		<input type="hidden" name="page" value="ah-workflow-manager">
 		<input type="hidden" name="view" value="evallog">
 		<input type="text" name="ev_search" value="<?php echo esc_attr( $ev_search ); ?>" placeholder="Search trigger…"
 			style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:200px">
 		<button type="submit" class="ah-btn ah-btn-primary ah-btn-sm">Filter</button>
 		<?php if ( $ev_filter_qs ) : ?>
-		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine&view=evallog' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager&view=evallog' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
 		<?php endif; ?>
 	</form>
 	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo number_format( $ev_total ); ?> entries</span>
@@ -1136,7 +1136,7 @@ if ( 'evallog' === $view ) :
 					<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm"
 						onclick="var r=document.getElementById('<?php echo esc_js( $ev_det_id ); ?>');r.style.display=r.style.display==='none'?'table-row':'none'">Details</button>
 					<?php endif; ?>
-					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'evallog', 'del_evallog' => $ev->id ), admin_url( 'admin.php' ) ), 'ah_del_evallog' ) ); ?>"
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'evallog', 'del_evallog' => $ev->id ), admin_url( 'admin.php' ) ), 'ah_del_evallog' ) ); ?>"
 					   class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete this entry?')">×</a>
 				</td>
 			</tr>
@@ -1167,7 +1167,7 @@ if ( 'evallog' === $view ) :
 <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;align-items:center">
 	<span style="font-size:12px;color:#6b7280">Page <?php echo $ev_paged; ?> of <?php echo $ev_pages; ?></span>
 	<?php for ( $p = 1; $p <= $ev_pages; $p++ ) : ?>
-	<a href="<?php echo esc_url( add_query_arg( array_merge( $ev_filter_qs, array( 'page' => 'ah-rules-engine', 'view' => 'evallog', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
+	<a href="<?php echo esc_url( add_query_arg( array_merge( $ev_filter_qs, array( 'page' => 'ah-workflow-manager', 'view' => 'evallog', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn <?php echo $p === $ev_paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?> ah-btn-sm"><?php echo $p; ?></a>
 	<?php endfor; ?>
 </div>
@@ -1177,7 +1177,7 @@ if ( 'evallog' === $view ) :
 <div class="ah-card re-empty">
 	<div style="font-size:2.5rem;margin-bottom:12px">🧪</div>
 	<h2 style="font-family:inherit;font-size:1rem;margin:0 0 6px;color:#374151"><?php echo $ev_search ? 'No matching entries' : 'No evaluate calls logged yet'; ?></h2>
-	<p style="color:#9ca3af;font-size:13px;margin:0">A row is added here every time <code>AH_Rules_Engine::evaluate()</code> runs.</p>
+	<p style="color:#9ca3af;font-size:13px;margin:0">A row is added here every time <code>AH_Workflow_Manager::evaluate()</code> runs.</p>
 </div>
 <?php endif; ?>
 
@@ -1188,7 +1188,7 @@ if ( 'evallog' === $view ) :
 // BLOCKED EMAILS VIEW
 // ════════════════════════════════════════════════════════════
 if ( 'blocked' === $view ) :
-	$blocked_list = AH_Rules_Engine::get_blocked_emails();
+	$blocked_list = AH_Workflow_Manager::get_blocked_emails();
 ?>
 <div class="re-section" style="max-width:680px">
 	<div class="re-section-title"><span>🚫 Blocked Email Addresses</span></div>
@@ -1218,7 +1218,7 @@ if ( 'blocked' === $view ) :
 				<td style="color:#9ca3af;font-size:12px"><?php echo esc_html( $i + 1 ); ?></td>
 				<td><code style="font-size:13px"><?php echo esc_html( $be ); ?></code></td>
 				<td>
-					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-rules-engine', 'view' => 'blocked', 'unblock' => rawurlencode( $be ) ), admin_url( 'admin.php' ) ), 'ah_unblock' ) ); ?>"
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'blocked', 'unblock' => rawurlencode( $be ) ), admin_url( 'admin.php' ) ), 'ah_unblock' ) ); ?>"
 					   class="ah-btn ah-btn-secondary ah-btn-sm"
 					   onclick="return confirm('Unblock <?php echo esc_js( $be ); ?>?')">Unblock</a>
 				</td>
@@ -1611,7 +1611,7 @@ jQuery(function ($) {
   $('[data-add-action="update_option"]').on('click',  function () { addUpdateOptionCard(); });
 
   /* ── Channel list for email action dropdown ── */
-  var ahReChannels = <?php echo wp_json_encode( AH_Rules_Engine::get_email_channels_list() ); ?>;
+  var ahReChannels = <?php echo wp_json_encode( AH_Workflow_Manager::get_email_channels_list() ); ?>;
 
   /* ── Populate existing data ── */
   var existingCondGroups = <?php echo wp_json_encode( $editing ? (array) $editing->conditions : array() ); ?>;

@@ -59,7 +59,7 @@ class AH_Autoloader {
 		'AH_CSV_Importer'     => 'admin/import/class-csv-importer.php',
 		'AH_Form_Builder'     => 'inc/class-form-builder.php',
 		'AH_Newsletter'       => 'inc/class-newsletter.php',
-		'AH_Rules_Engine'     => 'inc/class-rules-engine.php',
+		'AH_Workflow_Manager' => 'inc/class-workflow-manager.php',
 	);
 
 	public static function register(): void {

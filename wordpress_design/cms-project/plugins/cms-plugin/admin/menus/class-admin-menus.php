@@ -41,7 +41,7 @@ class AH_Admin_Menus {
 			['title' => 'Visitor Stats',         'menu' => 'Visitor Stats',         'slug' => 'ah-visitors',      'callback' => 'page_visitors'     ],
 			['title' => 'Custom Code',          'menu' => 'Custom Code',          'slug' => 'ah-custom-code',   'callback' => 'page_custom_code'  ],
 			['title' => 'Analytics Reports',    'menu' => 'Analytics Reports',    'slug' => 'ah-analytics',     'callback' => 'page_analytics'    ],
-			['title' => 'Workflow Manager',      'menu' => 'Workflow Manager',      'slug' => 'ah-rules-engine',  'callback' => 'page_rules_engine' ],
+			['title' => 'Workflow Manager',      'menu' => 'Workflow Manager',      'slug' => 'ah-workflow-manager','callback' => 'page_workflow_manager'],
 			['title' => 'Data Import',          'menu' => 'Data Import',          'slug' => 'ah-import',        'callback' => 'page_import'       ],
 			['title' => 'Redirect Rules',       'menu' => 'Redirect Rules',       'slug' => 'ah-redirects',     'callback' => 'page_redirects'    ],
 			['title' => 'Audit Log',            'menu' => 'Audit Log',            'slug' => 'ah-audit',         'callback' => 'page_audit'        ],
@@ -101,7 +101,7 @@ class AH_Admin_Menus {
 	public static function page_builder()         { self::load( 'page-builder'    ); }
 	public static function page_form_builder()   { self::load( 'form-builder'   ); }
 	public static function page_newsletter()     { self::load( 'notifications'  ); }
-	public static function page_rules_engine()   { self::load( 'rules-engine'   ); }
+	public static function page_workflow_manager() { self::load( 'workflow-manager' ); }
 	public static function page_admin_actions()  { self::load( 'admin-actions'  ); }
 	public static function page_static_pages()   { self::load( 'static-pages'   ); }
 	public static function page_redirects()      { self::load( 'redirect-rules'  ); }

@@ -308,9 +308,9 @@ class AH_DB_Migrations {
 	}
 
 	public static function contact_form_rule_cc(): void {
-		if ( ! class_exists( 'AH_Rules_Engine' ) ) return;
+		if ( ! class_exists( 'AH_Workflow_Manager' ) ) return;
 		global $wpdb;
-		$t   = AH_Rules_Engine::table();
+		$t   = AH_Workflow_Manager::table();
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT id, actions FROM `{$t}` WHERE trigger_name = %s AND name = %s LIMIT 1", 'sugarcane_contact_form', 'Sugarcane - Contact Form Emails' ) );
 		if ( ! $row ) return;
 		$actions = json_decode( $row->actions, true );

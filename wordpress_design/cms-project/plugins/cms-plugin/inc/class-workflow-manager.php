@@ -2,17 +2,17 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Triggers Maker - General-purpose automation platform.
+ * Workflow Manager - General-purpose automation platform.
  *
  * Call from anywhere:
- *   AH_Rules_Engine::evaluate( 'your_trigger_name', [ 'field_key' => 'value', ... ] );
+ *   AH_Workflow_Manager::evaluate( 'your_trigger_name', [ 'field_key' => 'value', ... ] );
  *
  * Built-in triggers: form_submit (auto-fired on AH Form Builder submissions).
  * Custom triggers:   any string you define, e.g. 'order_placed', 'user_signup'.
  *
  * Actions: send_email · whatsapp · http_request
  */
-class AH_Rules_Engine {
+class AH_Workflow_Manager {
 
 	// ── Schema ───────────────────────────────────────────────────────────────
 
@@ -150,7 +150,7 @@ class AH_Rules_Engine {
 	 *                              false → queue into ah_trigger_logs for cron (default).
 	 *
 	 * Call from anywhere:
-	 *   AH_Rules_Engine::evaluate( 'sugarcane_contact_form', [
+	 *   AH_Workflow_Manager::evaluate( 'sugarcane_contact_form', [
 	 *       'name'  => 'Jane',
 	 *       'email' => 'jane@example.com',
 	 *   ], true );
@@ -181,7 +181,7 @@ class AH_Rules_Engine {
 		) ) ?: array();
 
 		if ( $wpdb->last_error ) {
-			error_log( 'AH_Rules_Engine::evaluate() DB error: ' . $wpdb->last_error );
+			error_log( 'AH_Workflow_Manager::evaluate() DB error: ' . $wpdb->last_error );
 		}
 
 		$now         = current_time( 'mysql' );
@@ -247,7 +247,7 @@ class AH_Rules_Engine {
 				}
 
 				if ( false === $wpdb->insert( $lg, $log ) ) {
-					error_log( 'AH_Rules_Engine::evaluate() log insert error (rule #' . $rule->id . '): ' . $wpdb->last_error );
+					error_log( 'AH_Workflow_Manager::evaluate() log insert error (rule #' . $rule->id . '): ' . $wpdb->last_error );
 				}
 			}
 

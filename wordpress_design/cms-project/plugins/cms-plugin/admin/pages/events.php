@@ -280,7 +280,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
                      placeholder="e.g. booking_wedding, booking_corporate"
                      style="font-family:monospace;font-size:12px;">
               <p class="description" style="font-size:11px;margin-top:4px;color:#666;">
-                In the <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-rules-engine' ) ); ?>" target="_blank" style="color:#1e40af;">Triggers Maker</a>,
+                In the <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager' ) ); ?>" target="_blank" style="color:#1e40af;">Workflow Manager</a>,
                 create a rule with this trigger name to send emails. If left blank, will use: <code style="background:#fff;border:1px solid #ddd;padding:2px 5px;border-radius:3px;">booking_event_<?php echo esc_html( $edit_id ?: '{id}' ); ?></code>
               </p>
             </div>

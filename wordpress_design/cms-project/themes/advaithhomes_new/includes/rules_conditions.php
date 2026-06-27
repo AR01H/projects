@@ -4,16 +4,16 @@ defined( 'ABSPATH' ) || exit;
 /**
  * ADN_Rules
  *
- * Single source of truth for every AH_Rules_Engine trigger name used in this
+ * Single source of truth for every AH_Workflow_Manager trigger name used in this
  * theme. Use these constants everywhere instead of raw strings, so a renamed
  * trigger is caught at the point of definition, not buried in a submit handler.
  *
- * The engine itself lives in the CMS plugin (class AH_Rules_Engine); this file
+ * The engine itself lives in the CMS plugin (class AH_Workflow_Manager); this file
  * only declares which triggers this theme fires. Always guard calls with
  * class_exists() so the theme keeps working when the plugin is inactive:
  *
- *   if ( class_exists( 'AH_Rules_Engine' ) ) {
- *       AH_Rules_Engine::evaluate( ADN_Rules::CONTACT_FORM, array(
+ *   if ( class_exists( 'AH_Workflow_Manager' ) ) {
+ *       AH_Workflow_Manager::evaluate( ADN_Rules::CONTACT_FORM, array(
  *           'name'         => $name,
  *           'email'        => $email,
  *           'phone'        => $phone,

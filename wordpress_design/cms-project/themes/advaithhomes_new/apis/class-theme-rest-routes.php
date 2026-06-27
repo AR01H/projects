@@ -478,8 +478,8 @@ class ADN_Theme_Rest_Routes {
 		}
 
 		// Fire rules engine (admins attach email/WhatsApp actions here).
-		if ( class_exists( 'AH_Rules_Engine' ) && class_exists( 'ADN_Rules' ) ) {
-			AH_Rules_Engine::evaluate( ADN_Rules::CONTACT_FORM, array(
+		if ( class_exists( 'AH_Workflow_Manager' ) && class_exists( 'ADN_Rules' ) ) {
+			AH_Workflow_Manager::evaluate( ADN_Rules::CONTACT_FORM, array(
 				'submission_id' => (int) $wpdb->insert_id,
 				'name'          => $name,
 				'email'         => $email,
@@ -510,8 +510,8 @@ class ADN_Theme_Rest_Routes {
 			return new WP_REST_Response( array( 'success' => false, 'error' => 'Please provide a valid email address.' ), 422 );
 		}
 
-		if ( class_exists( 'AH_Rules_Engine' ) && class_exists( 'ADN_Rules' ) ) {
-			AH_Rules_Engine::evaluate( ADN_Rules::NEWSLETTER_SIGNUP, array(
+		if ( class_exists( 'AH_Workflow_Manager' ) && class_exists( 'ADN_Rules' ) ) {
+			AH_Workflow_Manager::evaluate( ADN_Rules::NEWSLETTER_SIGNUP, array(
 				'email'        => $email,
 				'name'         => $name,
 				'site_url'     => home_url(),
@@ -542,8 +542,8 @@ class ADN_Theme_Rest_Routes {
 			return new WP_REST_Response( array( 'success' => false, 'error' => 'Please provide a valid name and email address.' ), 422 );
 		}
 
-		if ( class_exists( 'AH_Rules_Engine' ) && class_exists( 'ADN_Rules' ) ) {
-			AH_Rules_Engine::evaluate( ADN_Rules::GUIDANCE_FORM, array(
+		if ( class_exists( 'AH_Workflow_Manager' ) && class_exists( 'ADN_Rules' ) ) {
+			AH_Workflow_Manager::evaluate( ADN_Rules::GUIDANCE_FORM, array(
 				'name'         => $name,
 				'email'        => $email,
 				'phone'        => $phone,

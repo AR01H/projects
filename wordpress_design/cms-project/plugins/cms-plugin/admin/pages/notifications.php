@@ -55,7 +55,7 @@ if ( isset( $_POST['ah_nl_send_nonce'] ) ) {
 	$from_name  = sanitize_text_field( wp_unslash( isset( $_POST['nl_from_name'] )  ? $_POST['nl_from_name'] : '' ) );
 	$from_email = sanitize_email( wp_unslash( isset( $_POST['nl_from_email'] )      ? $_POST['nl_from_email']: '' ) );
 	if ( $subject && $body ) {
-		if ( ! class_exists( 'AH_Rules_Engine' ) ) {
+		if ( ! class_exists( 'AH_Workflow_Manager' ) ) {
 			$notice = 'warning:Rules Engine is not available - notification could not be sent.';
 		} else {
 			$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email );
@@ -80,7 +80,7 @@ $count_act   = AH_Newsletter::count( 'active' );
 $count_uns   = AH_Newsletter::count( 'unsubscribed' );
 $total_pages = max( 1, (int) ceil( $total / $per_page ) );
 $bcast_log   = AH_Newsletter::get_broadcast_log();
-$re_url      = admin_url( 'admin.php?page=ah-rules-engine' );
+$re_url      = admin_url( 'admin.php?page=ah-workflow-manager' );
 $page_slug   = 'ah-newsletter';
 ?>
 <style>
@@ -234,7 +234,7 @@ $page_slug   = 'ah-newsletter';
 
     <?php if ( $count_act < 1 ) : ?>
       <div class="ah-notice ah-notice-warning" style="margin:0">No active subscribers yet - add some first.</div>
-    <?php elseif ( ! class_exists( 'AH_Rules_Engine' ) ) : ?>
+    <?php elseif ( ! class_exists( 'AH_Workflow_Manager' ) ) : ?>
       <div class="ah-notice ah-notice-warning" style="margin:0">Rules Engine is not available. Notifications require it to send.</div>
     <?php else : ?>
 

@@ -281,13 +281,13 @@ add_filter( 'cron_schedules', static function ( array $s ): array {
 	if ( ! isset( $s['ah_every_minute'] ) ) {
 		$s['ah_every_minute'] = array(
 			'interval' => 60,
-			'display'  => 'Every Minute (AH Rules Engine)',
+			'display'  => 'Every Minute (AH Workflow Manager)',
 		);
 	}
 	return $s;
 } );
 
-add_action( 'ah_rules_cron_process', array( 'AH_Rules_Engine', 'cron_process' ) );
+add_action( 'ah_rules_cron_process', array( 'AH_Workflow_Manager', 'cron_process' ) );
 
 // Schedule on first load; clear any old retry-only hook.
 add_action( 'init', static function (): void {

@@ -172,7 +172,7 @@ class AH_Newsletter {
 	/**
 	 * Send a notification to all active subscribers via the Rules Engine.
 	 *
-	 * Fires AH_Rules_Engine::evaluate( 'notification_send', $context, true ) for
+	 * Fires AH_Workflow_Manager::evaluate( 'notification_send', $context, true ) for
 	 * each active subscriber (immediate mode). The Rules Engine decides delivery -
 	 * configure a rule with trigger "Notification – Send" and any action:
 	 * send_email, WhatsApp, webhook, or a combination.
@@ -189,7 +189,7 @@ class AH_Newsletter {
 	 */
 	public static function send_broadcast( string $subject, string $body, string $from_name = '', string $from_email = '' ): array {
 		if ( ! self::table_exists() )             { return array( 'sent' => 0, 'failed' => 0 ); }
-		if ( ! class_exists( 'AH_Rules_Engine' ) ) { return array( 'sent' => 0, 'failed' => 0 ); }
+		if ( ! class_exists( 'AH_Workflow_Manager' ) ) { return array( 'sent' => 0, 'failed' => 0 ); }
 
 		$from_email = $from_email ?: get_option( 'admin_email' );
 		$from_name  = $from_name  ?: get_bloginfo( 'name' );
@@ -207,7 +207,7 @@ class AH_Newsletter {
 			);
 			$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
 
-			AH_Rules_Engine::evaluate( 'notification_send', array(
+			AH_Workflow_Manager::evaluate( 'notification_send', array(
 				'email'           => $sub['email'],
 				'name'            => $name,
 				'subject'         => $subject,
