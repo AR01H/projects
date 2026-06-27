@@ -14,11 +14,17 @@ if ( empty( $featured ) ) {
 	return;
 }
 
-$url = esc_url( adn_link( isset( $featured['url'] ) ? $featured['url'] : '' ) );
+$url   = esc_url( adn_link( isset( $featured['url'] ) ? $featured['url'] : '' ) );
+$thumb = isset( $featured['thumbnail'] ) ? (string) $featured['thumbnail'] : '';
 ?>
 <div class="featured-article">
-	<a href="<?php echo $url; ?>" class="featured-article-img" aria-label="<?php echo esc_attr( isset( $featured['title'] ) ? $featured['title'] : '' ); ?>">
-		<div class="fa-bg-icon"><?php echo adn_icon( isset( $featured['bg_icon'] ) ? $featured['bg_icon'] : '' ); ?></div>
+	<a href="<?php echo $url; ?>" class="featured-article-img<?php echo $thumb ? ' featured-article-img--has-thumb' : ''; ?>" aria-label="<?php echo esc_attr( isset( $featured['title'] ) ? $featured['title'] : '' ); ?>">
+		<?php if ( $thumb ) : ?>
+			<img src="<?php echo esc_url( $thumb ); ?>" alt="" loading="lazy" class="fa-thumbnail">
+			<div class="fa-bg-icon"><?php echo adn_icon( isset( $featured['bg_icon'] ) ? $featured['bg_icon'] : '' ); ?></div>
+		<?php else : ?>
+			<div class="fa-center-icon"><?php echo adn_icon( isset( $featured['bg_icon'] ) ? $featured['bg_icon'] : 'fa-newspaper' ); ?></div>
+		<?php endif; ?>
 		<?php if ( ! empty( $featured['label'] ) ) : ?>
 			<div class="fa-label"><?php echo esc_html( $featured['label'] ); ?></div>
 		<?php endif; ?>

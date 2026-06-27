@@ -72,7 +72,7 @@
 .fa-file-lines::before        {  }
 .fa-file::before              { color: #b2bec3; }
 .fa-scroll::before            { color: #b8860b; }
-.fa-newspaper::before         { color: #2d3436; }
+.fa-newspaper::before         {}
 .fa-ruler-combined::before    { color: #636e72; }
 .fa-ruler-horizontal::before  { color: #636e72; }
 .fa-folder-open::before       { color: #fdcb6e; }

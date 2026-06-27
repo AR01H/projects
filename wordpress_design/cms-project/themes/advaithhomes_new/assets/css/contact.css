@@ -297,13 +297,6 @@
     padding: 14px 24px;
 }
 
-.contact-form-note {
-    font-size: 0.78rem;
-    color: var(--color-text-muted, #9ca3af);
-    margin-top: var(--space-3);
-    text-align: center;
-}
-
 /* ── Contact Method Checkboxes (guidance form) ──────────────── */
 .contact-method-checks {
     display: flex;

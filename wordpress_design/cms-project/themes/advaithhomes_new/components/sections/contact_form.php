@@ -89,10 +89,6 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 			<?php echo $_submit; ?> <span aria-hidden="true">→</span>
 		</button>
 
-		<p class="contact-form-note">
-			🔒 <?php esc_html_e( 'Your information is secure and will only be used to respond to your enquiry.', ADN_TEXT_DOMAIN ); ?>
-		</p>
-
 	</form>
 </div>
 <script>

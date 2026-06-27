@@ -41,6 +41,9 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 		if ( isset( $_nb_ctx['meta'] ) ) {
 			$_nb_ctx['meta']['title'] = isset( $_nb_item->text ) ? (string) $_nb_item->text : '';
 		}
+		if ( ! empty( $_nb_item->image_id ) ) {
+			$_nb_ctx['hero']['image_id'] = (int) $_nb_item->image_id;
+		}
 
 		$_nb_stamp   = ! empty( $_nb_item->start_date ) ? $_nb_item->start_date : ( isset( $_nb_item->created_at ) ? $_nb_item->created_at : '' );
 		$_nb_label   = isset( $_nb_item->label )   ? (string) $_nb_item->label   : '';
@@ -86,7 +89,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 		<?php endif; ?>
 
 		<?php /* TWO-COLUMN LAYOUT */ ?>
-		<div class="news-layout news-layout--single">
+		<section class="news-layout news-layout--single">
 
 			<main class="news-main">
 				<div class="news-single-article">
@@ -134,7 +137,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 					<?php endif; ?>
 
 					<?php /* More from us */ ?>
-					<?php if ( ! empty( $_nb_related ) ) : ?>
+					<!-- <?php if ( ! empty( $_nb_related ) ) : ?>
 					<div class="news-single-related">
 						<h2 class="nsr-heading"><?php esc_html_e( 'More News', ADN_TEXT_DOMAIN ); ?></h2>
 						<div class="nsr-grid">
@@ -143,28 +146,12 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 							<?php endforeach; ?>
 						</div>
 					</div>
-					<?php endif; ?>
+					<?php endif; ?> -->
 
 				</div>
 			</main>
 
 			<aside class="news-sidebar">
-
-				<?php /* Related news in sidebar */ ?>
-				<?php if ( ! empty( $_nb_related ) ) : ?>
-					<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
-						'heading'  => __( 'More News', ADN_TEXT_DOMAIN ),
-						'items'    => array_map( static function( $r ) {
-							return array(
-								'label'     => isset( $r['title'] )         ? $r['title']         : '',
-								'url'       => isset( $r['url'] )           ? $r['url']           : '',
-								'meta'      => isset( $r['date'] )          ? $r['date']          : '',
-								'thumbnail' => isset( $r['thumbnail_url'] ) ? $r['thumbnail_url'] : '',
-							);
-						}, $_nb_related ),
-						'view_all' => array( 'label' => 'All ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
-					) ) ); ?>
-				<?php endif; ?>
 
 				<?php /* Browse topics */ ?>
 				<?php if ( ! empty( $_nb_ctx['sidebar']['topics'] ) ) : ?>
@@ -181,7 +168,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 
 			</aside>
 
-		</div>
+		</section>
 
 		<?php /* Bottom newsletter banner */ ?>
 		<?php if ( ! empty( $_nb_ctx['bottom_newsletter'] ) ) : ?>
@@ -257,15 +244,6 @@ adn_page_open( $_open_ctx );
 			<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
 				'heading' => __( 'Browse Topics', ADN_TEXT_DOMAIN ),
 				'items'   => $ctx['sidebar']['topics'],
-			) ) ); ?>
-		<?php endif; ?>
-
-		<?php /* Recent news with thumbnails */ ?>
-		<?php if ( ! empty( $ctx['sidebar']['recent_news'] ) ) : ?>
-			<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
-				'heading'  => __( 'Latest News', ADN_TEXT_DOMAIN ),
-				'items'    => $ctx['sidebar']['recent_news'],
-				'view_all' => array( 'label' => 'All ' . SITE_NEWS_NOUN . ' →', 'url' => SITE_NEWS_URL ),
 			) ) ); ?>
 		<?php endif; ?>
 

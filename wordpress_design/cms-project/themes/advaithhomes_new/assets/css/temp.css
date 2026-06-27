@@ -5544,7 +5544,6 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
     flex-direction: column;
     align-items: center;
     gap: 16px;
-    max-width: 1320px;
     margin: 0 auto;
     padding: 0 24px;
 }
@@ -5608,9 +5607,8 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 }
 
 .fi-logo img {
-    height: 32px;
     width: auto;
-    max-width: 140px;
+    max-width: 200px;
     object-fit: contain;
     opacity: 0.68;
     filter: grayscale(0.15);
@@ -5630,7 +5628,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 @media (max-width: 600px) {
     .fi-inner  { padding: 0 16px; gap: 12px; }
-    .fi-logo img { height: 26px; }
+    .fi-logo img { height: 38px; }
     .fi-track  { gap: 40px; }
     .fi-label::before,
     .fi-label::after { width: 28px; }

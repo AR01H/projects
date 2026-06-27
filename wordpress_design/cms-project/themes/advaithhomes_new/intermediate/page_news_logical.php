@@ -138,6 +138,7 @@ function adn_news_get_context() {
 				'label'     => $sn_label,
 				'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $sni->id ) : '',
 				'thumbnail' => $sn_thumb,
+				'icon'      => $sn_thumb ? '' : 'fa-newspaper',
 				'meta'      => $sn_stamp ? date_i18n( 'M j, Y', strtotime( $sn_stamp ) ) : '',
 			);
 		}
