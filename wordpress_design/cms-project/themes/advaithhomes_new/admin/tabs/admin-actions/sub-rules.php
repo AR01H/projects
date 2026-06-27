@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 $engine_active = class_exists( 'AH_Rules_Engine' );
 ?>
 <div class="card" style="max-width:none;">
-	<h2><?php esc_html_e( 'Rules Engine', ADN_TEXT_DOMAIN ); ?></h2>
+	<h2><?php esc_html_e( 'Workflow Manager', ADN_TEXT_DOMAIN ); ?></h2>
 	<p class="description">
 		<?php esc_html_e( 'The theme fires these automation triggers (see includes/rules_conditions.php). Attach email / WhatsApp / webhook actions to them in the CMS plugin - or install the ready-made sample rule below.', ADN_TEXT_DOMAIN ); ?>
 	</p>

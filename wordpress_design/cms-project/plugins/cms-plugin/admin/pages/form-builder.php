@@ -224,7 +224,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
       </div>
       <div class="fb-flag-row">
         <input type="checkbox" name="disable_rules" id="fb-disable-rules" class="fb-chk" value="1" <?php checked( ! empty( $current->disable_rules ) ); ?>>
-        <label for="fb-disable-rules"><strong>Disable Rules Engine</strong> - submissions from this form will NOT trigger any automation rules</label>
+        <label for="fb-disable-rules"><strong>Disable Workflow Manager</strong> - submissions from this form will NOT trigger any automation rules</label>
       </div>
     </div>
 

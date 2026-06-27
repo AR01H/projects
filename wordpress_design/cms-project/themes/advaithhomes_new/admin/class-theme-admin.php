@@ -22,6 +22,7 @@ class ADN_Theme_Admin {
 
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ) );
+		add_action( 'admin_menu', array( __CLASS__, 'hide_plugin_menus' ), 999 );
 
 		// Reusable settings engine (shared admin-post save handler for all tabs).
 		ADN_Theme_Settings::init();
@@ -201,7 +202,7 @@ class ADN_Theme_Admin {
 						'view'  => 'admin-actions/sub-pages.php',
 					),
 					'rules' => array(
-						'label' => self::fa( 'fa-bolt', __( 'Rules Engine', ADN_TEXT_DOMAIN ) ),
+						'label' => self::fa( 'fa-bolt', __( 'Workflow Manager', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'admin-actions/sub-rules.php',
 					),
 					'sample-data' => array(
@@ -211,6 +212,11 @@ class ADN_Theme_Admin {
 				),
 			),
 		);
+	}
+
+	public static function hide_plugin_menus() {
+		remove_submenu_page( 'ah-dashboard', 'ah-reviews' );
+		remove_submenu_page( 'ah-dashboard', 'ah-client-stories' );
 	}
 
 	public static function register_menu() {

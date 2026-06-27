@@ -93,11 +93,10 @@ class AH_Admin_Bootstrap {
 			exit;
 		}
 
-		$url = esc_url( $url );
 		printf(
 			'<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;url=%s"></noscript>',
 			wp_json_encode( $url ),
-			esc_attr( $url )
+			esc_url( $url )
 		);
 		exit;
 	}
@@ -140,8 +139,10 @@ class AH_Admin_Bootstrap {
 #adminmenu .wp-submenu a[href*="page=ah-newsletter"]::before   { content:"\f534"; }
 #adminmenu .wp-submenu a[href*="page=ah-ref-notes"]::before   { content:"\f123"; }
 #adminmenu .wp-submenu a[href*="page=ah-redirects"]::before   { content:"\f237"; }
-#adminmenu .wp-submenu a[href*="page=ah-custom-code"]::before { content:"\f475"; }
-#adminmenu .wp-submenu a[href*="page=ah-visitors"]::before    { content:"\f307"; }
+#adminmenu .wp-submenu a[href*="page=ah-custom-code"]::before  { content:"\f475"; }
+#adminmenu .wp-submenu a[href*="page=ah-visitors"]::before     { content:"\f307"; }
+#adminmenu .wp-submenu a[href*="page=ah-featured-in"]::before  { content:"\f529"; }
+#adminmenu .wp-submenu a[href*="page=ah-resources"]::before    { content:"\f233"; }
 
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-posts"]),
 #adminmenu .wp-submenu li:has(> a[href*="page=ah-contact"]),

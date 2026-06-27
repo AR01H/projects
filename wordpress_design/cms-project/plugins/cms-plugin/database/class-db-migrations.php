@@ -40,7 +40,6 @@ class AH_DB_Migrations {
 		self::contact_settings_seed();
 		self::protected_taxonomy_data();
 		self::review_categories_taxonomy_type();
-		self::faq_tags_taxonomy_type();
 		self::contact_form_rule_cc();
 		self::spotlight_terms_page_slug();
 		self::faq_section_column();
@@ -303,17 +302,6 @@ class AH_DB_Migrations {
 		$type_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$p}ah_taxonomy_types` WHERE slug = %s", 'review-categories' ) );
 		if ( ! $type_id ) {
 			$wpdb->insert( "{$p}ah_taxonomy_types", array( 'name' => 'Review Categories', 'slug' => 'review-categories', 'description' => 'Routes each review to the correct section.' ) );
-			$type_id = (int) $wpdb->insert_id;
-		}
-		if ( ! $type_id ) return;
-	}
-
-	public static function faq_tags_taxonomy_type(): void {
-		global $wpdb;
-		$p = $wpdb->prefix;
-		$type_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$p}ah_taxonomy_types` WHERE slug = %s", 'faq-tags' ) );
-		if ( ! $type_id ) {
-			$wpdb->insert( "{$p}ah_taxonomy_types", array( 'name' => 'FAQ Tags', 'slug' => 'faq-tags', 'description' => 'Tags used to group and filter FAQs.' ) );
 			$type_id = (int) $wpdb->insert_id;
 		}
 		if ( ! $type_id ) return;

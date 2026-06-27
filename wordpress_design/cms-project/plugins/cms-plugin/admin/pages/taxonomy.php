@@ -35,6 +35,18 @@ if ( isset( $_GET['delete_pt_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '',
 if ( isset( $_GET['saved'] )   && sanitize_key( $_GET['tab'] ?? '' ) === 'parent-terms' ) $notice = 'Parent term saved.';
 if ( isset( $_GET['deleted'] ) && sanitize_key( $_GET['tab'] ?? '' ) === 'parent-terms' ) $notice = 'Parent term deleted.';
 
+// GET: delete taxonomy type
+if ( isset( $_GET['delete_type_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_type' ) ) {
+	$del_type = $model->get_type( (int) $_GET['delete_type_id'] );
+	if ( $del_type && $del_type->slug === 'data-protected' ) {
+		$notice = 'This taxonomy type is protected and cannot be deleted.';
+	} else {
+		$model->delete_type( (int) $_GET['delete_type_id'] );
+		AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'types', 'type_deleted' => 1 ), admin_url( 'admin.php' ) ) );
+	}
+}
+if ( isset( $_GET['type_deleted'] ) ) $notice = 'Taxonomy type deleted.';
+
 // POST: save taxonomy type
 if ( isset( $_POST['save_type'] ) && wp_verify_nonce( $_POST['ah_tax_nonce'] ?? '', 'ah_save_taxonomy' ) ) {
 	$type_edit_id   = (int) ( $_POST['type_edit_id'] ?? 0 );
@@ -48,9 +60,10 @@ if ( isset( $_POST['save_type'] ) && wp_verify_nonce( $_POST['ah_tax_nonce'] ?? 
 			'description' => sanitize_textarea_field( $_POST['type_description'] ?? '' ),
 		);
 		$type_edit_id ? $model->update_type( $type_edit_id, $type_data ) : $model->create_type( $type_data );
-		$notice = 'Taxonomy type saved.';
+		AH_Admin_Bootstrap::redirect( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'types', 'type_saved' => 1 ), admin_url( 'admin.php' ) ) );
 	}
 }
+if ( isset( $_GET['type_saved'] ) ) $notice = 'Taxonomy type saved.';
 
 // POST: save taxonomy term
 if ( isset( $_POST['save_term'] ) && wp_verify_nonce( $_POST['ah_tax_nonce'] ?? '', 'ah_save_taxonomy' ) ) {
@@ -257,9 +270,12 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
               <tr>
                 <td><?php echo esc_html( $t->name ); ?><?php if ( $t->slug === 'data-protected' ) echo ' <span title="System protected" style="cursor:default;">&#128274;</span>'; ?></td>
                 <td><code><?php echo esc_html( $t->slug ); ?></code></td>
-                <td>
+                <td style="display:flex;gap:6px;">
                   <?php if ( $t->slug !== 'data-protected' ) : ?>
                     <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'types', 'edit_type' => $t->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
+                    <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'types', 'delete_type_id' => $t->id ), admin_url( 'admin.php' ) ), 'ah_del_type' ) ); ?>"
+                       class="ah-btn ah-btn-danger ah-btn-sm ah-del-type"
+                       data-name="<?php echo esc_attr( $t->name ); ?>">Delete</a>
                   <?php endif; ?>
                 </td>
               </tr>
@@ -284,6 +300,19 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
         </form>
       </div>
     </div>
+
+<script>
+document.querySelectorAll('.ah-del-type').forEach(function(btn){
+	btn.addEventListener('click', function(e){
+		e.preventDefault();
+		var name = this.dataset.name || 'this type';
+		var ans  = window.prompt('Type YES to delete "' + name + '". This cannot be undone.');
+		if ( ans !== null && ans.trim().toUpperCase() === 'YES' ) {
+			window.location.href = this.href;
+		}
+	});
+});
+</script>
 
   <?php else : /* Terms tab */
     $paged      = AH_Pagination::current_page();
