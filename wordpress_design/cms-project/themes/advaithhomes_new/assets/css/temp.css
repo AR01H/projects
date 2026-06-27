@@ -287,7 +287,7 @@ section{
 }
 .hero-title { margin-bottom: var(--space-1); }
 .hero-title .accent { color: var(--color-accent); font-style: italic; }
-.hero-desc { font-size: 1rem; color: var(--color-black); margin-bottom: var(--space-5); max-width: clamp(300px, 70%, 500px);    margin-top: var(--space-3); }
+.hero-desc { font-size: 1rem; color: var(--color-black); margin-bottom: var(--space-5); max-width: 70vw;    margin-top: var(--space-3); }
 .hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .hero-trust {
   display: flex;
