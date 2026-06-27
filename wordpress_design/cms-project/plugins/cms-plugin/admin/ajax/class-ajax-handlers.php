@@ -208,7 +208,7 @@ class AH_Ajax_Handlers {
 
 		if ( ! $row ) wp_send_json_error( array( 'message' => 'Media not found.' ) );
 
-		// Remove file from disk — realpath() ensures the path can't escape the upload directory.
+		// Remove file from disk - realpath() ensures the path can't escape the upload directory.
 		$upload_dir    = wp_upload_dir();
 		$allowed_base  = realpath( $upload_dir['basedir'] . '/ah-media' );
 		$file_path     = trailingslashit( $upload_dir['basedir'] ) . 'ah-media/' . ltrim( $row->file_path ?? '', '/' );
@@ -418,7 +418,7 @@ class AH_Ajax_Handlers {
 		$result = AH_Newsletter::subscribe( $email, $name, $source );
 
 		if ( 'already_subscribed' === $result ) {
-			wp_send_json_success( array( 'message' => 'You are already subscribed — thank you!' ) );
+			wp_send_json_success( array( 'message' => 'You are already subscribed - thank you!' ) );
 		} elseif ( 'subscribed' === $result ) {
 			if ( class_exists( 'AH_Rules_Engine' ) ) {
 				AH_Rules_Engine::evaluate( 'newsletter_subscribe', array(
@@ -586,7 +586,7 @@ class AH_Ajax_Handlers {
 		$slug_changed = $old_slug !== '' && $old_slug !== $slug;
 		$model        = new AH_Static_Pages_Model();
 
-		// Find the backing WP page — by old slug if renaming, otherwise by new slug.
+		// Find the backing WP page - by old slug if renaming, otherwise by new slug.
 		$existing = get_page_by_path( $slug_changed ? $old_slug : $slug );
 
 		if ( $existing ) {

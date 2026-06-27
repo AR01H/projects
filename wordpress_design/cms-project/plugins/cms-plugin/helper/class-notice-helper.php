@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 class AH_Notice_Helper {
 
-	// Legacy option key — kept so old data isn't lost but no longer read by the frontend.
+	// Legacy option key - kept so old data isn't lost but no longer read by the frontend.
 	const OPTION_KEY = 'ah_important_notice';
 
 	private static function current_slug(): string {
@@ -17,7 +17,7 @@ class AH_Notice_Helper {
 
 	/**
 	 * Render all active notices that match the current page.
-	 * Notices are queued client-side — one popup shows at a time.
+	 * Notices are queued client-side - one popup shows at a time.
 	 */
 	public static function render_frontend_popup(): void {
 		if ( ! class_exists( 'AH_Site_Notices_Model' ) ) return;
@@ -38,7 +38,7 @@ class AH_Notice_Helper {
 
 		if ( empty( $to_render ) ) return;
 
-		// Build JS payload — one entry per notice.
+		// Build JS payload - one entry per notice.
 		$js_notices = array();
 		foreach ( $to_render as $n ) {
 			$dismiss_slug = ( $n->scope === 'slugs' ) ? $current : '';
@@ -261,7 +261,7 @@ class AH_Notice_Helper {
 			function scheduleNotice(n, cb) {
 				if (n.trigger === 'exit-intent') {
 					var fired = false;
-					// Track cursor via mousemove — fires when cursor reaches top 20px.
+					// Track cursor via mousemove - fires when cursor reaches top 20px.
 					// This is more reliable than mouseleave which can miss fast movements.
 					var moveHandler = function (e) {
 						if (fired || e.clientY > 20) return;

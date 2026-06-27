@@ -3,14 +3,14 @@
  * components/parts/guides_sidebar_filter.php - Left sidebar for guides listing.
  *
  * Renders:
- *   1. Hierarchical category groups (parent + subtopics) — drives JS filter via data-cat
+ *   1. Hierarchical category groups (parent + subtopics) - drives JS filter via data-cat
  *   2. Quick tools widget
  *   3. News mini widget
  *   4. Expert help CTA
  *
  * Props: $sidebar {
  *   cat_groups[]  { label, slug, icon, url, topics[]{ label, url } }
- *   browse_cats[] { label, slug, active }   — kept for JS filter compatibility
+ *   browse_cats[] { label, slug, active }   - kept for JS filter compatibility
  *   quick_tools   { heading, items[]{ icon, label, url }, cta{ label, url } }
  *   news_mini     { heading, items[]{ title, date, tag, gradient, url }, view_all{ label, url } }
  *   expert_help   { heading, subtitle, cta{ label, url } }

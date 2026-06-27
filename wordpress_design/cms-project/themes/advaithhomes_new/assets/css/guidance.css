@@ -175,38 +175,96 @@
 
 /* ── Why Choose Section ─────────────────────────────────────── */
 .guidance-why-section {
-    background: var(--color-bg, #f9fafb);
+    background: var(--color-white, #fff);
     border-top: 1px solid var(--color-border, #e5e7eb);
     padding: 52px 0 60px;
+}
+
+.guidance-why-section .contact-section-heading {
+    text-align: center;
+    margin-bottom: 36px;
+    font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+    color: var(--color-heading, #1a2332);
 }
 
 .guidance-why-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-6);
+    gap: 20px;
 }
 
 .guidance-why-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 0 8px;
+    padding: 28px 20px 24px;
+    background: var(--color-surface, #f8f5f0);
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: 14px;
+    transition: box-shadow 0.18s, transform 0.15s, border-color 0.18s;
+}
+
+.guidance-why-item:hover {
+    box-shadow: 0 6px 20px rgba(45, 90, 68, 0.1);
+    transform: translateY(-3px);
+    border-color: rgba(45, 90, 68, 0.25);
 }
 
 .gw-icon {
     font-size: 1.6rem;
-    display: block;
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    background: rgba(45, 90, 68, 0.09);
+    border-radius: 50%;
+    margin-bottom: 14px;
+    flex-shrink: 0;
 }
 
 .guidance-why-item h3 {
-    font-size: 0.92rem;
-    color: var(--color-heading, #111827);
-    margin-bottom: 6px;
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--color-heading, #1a2332);
+    margin-bottom: 8px;
+    line-height: 1.3;
 }
 
 .guidance-why-item p {
-    font-size: 0.82rem;
+    font-size: 0.81rem;
     color: var(--color-text-muted, #6b7280);
-    line-height: 1.5;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* ── Latest News + Updates (guidance page) ──────────────────── */
+.page-latest-news {
+    background: var(--color-surface, #f8f5f0);
+    border-top: 1px solid var(--color-border, #e5e7eb);
+    padding: 48px 0 60px;
+}
+
+.guidance-news-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.guidance-news-col .news-widget {
+    background: var(--color-white, #fff);
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: 14px;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .guidance-news-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */
@@ -218,6 +276,7 @@
 
     .guidance-why-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
     }
 }
 
@@ -238,7 +297,8 @@
 
 @media (max-width: 480px) {
     .guidance-services-grid { grid-template-columns: 1fr; }
-    .guidance-why-grid      { grid-template-columns: 1fr 1fr; }
+    .guidance-why-grid      { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .guidance-why-item      { padding: 20px 14px 18px; }
 }
 
 /* ── Form field styles ──────────────────────────────────────── */
@@ -331,12 +391,37 @@
     flex-shrink: 0;
 }
 
+/* Consent checkbox row */
+.guidance-request-form .consent-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: var(--space-5);
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--color-text-muted, #6b7280);
+    line-height: 1.5;
+}
+
+.guidance-request-form .consent-row input[type="checkbox"] {
+    margin-top: 2px;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary, #2d5a44);
+}
+
+.guidance-request-form .consent-row a {
+    color: var(--color-primary, #2d5a44);
+    text-decoration: underline;
+}
+
 .guidance-submit-btn {
     width: 100%;
     padding: 12px 24px;
     font-size: 1rem;
     font-weight: 600;
-    background: var(--color-primary, #1d4ed8);
+    background: var(--color-primary, #2d5a44);
     color: var(--color-white);
     border: none;
     border-radius: var(--radius-sm);

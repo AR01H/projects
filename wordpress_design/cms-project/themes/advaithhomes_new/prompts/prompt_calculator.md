@@ -1,12 +1,12 @@
 You are an expert front-end developer.
 
 Build a HTML calculator body code only for:
-**[TOPIC] — e.g. UK First-Time Buyer Mortgage Calculator**
+**[TOPIC] - e.g. UK First-Time Buyer Mortgage Calculator**
 
 ---
 
 ## Design System
-Use these CSS variables exactly as given — no hardcoded colours:
+Use these CSS variables exactly as given - no hardcoded colours:
 
 :root {
     --client-color: #203c3e;
@@ -32,14 +32,14 @@ Use these CSS variables exactly as given — no hardcoded colours:
 ---
 
 ## Requirements
-- Output: <body> content only — no <!DOCTYPE>, no <html>, no <head>
-- No headings, titles, or descriptive text — calculation fields and results only
+- Output: <body> content only - no <!DOCTYPE>, no <html>, no <head>
+- No headings, titles, or descriptive text - calculation fields and results only
 - All inputs have a paired range slider that syncs both ways in real time
 - Show min/max labels on each slider end
-- All results update instantly on every input change — no submit button
+- All results update instantly on every input change - no submit button
 - Fully responsive (single column mobile, two column desktop)
 - Inputs left, results panel right (--section-bg-color background)
 - End every content section with <br/>
 - Include all CSS in a <style> block and JS in a <script> block inside the body
-- Vanilla JS only — no frameworks or libraries
-- No explanation, no markdown — raw code only
+- Vanilla JS only - no frameworks or libraries
+- No explanation, no markdown - raw code only

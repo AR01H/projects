@@ -1,23 +1,23 @@
 /**
  * assets/js/common_utils.js
  *
- * All shared JS utilities — vanilla JS, no dependencies.
+ * All shared JS utilities - vanilla JS, no dependencies.
  * Loaded site-wide. Exposes window.ADN with the modules below.
  *
- * ADN.Alert    — toast notifications
- * ADN.Dialog   — modal dialogs + confirm
- * ADN.Loader   — loading spinners
- * ADN.ViewAll  — load-more via fetch
- * ADN.Form     — serialize, setErrors
- * ADN.Validate — email / phone / URL / required / full-form check + field markup
- * ADN.Dom      — query, show/hide, aria, delegation, btnLoading
- * ADN.Ajax     — fetch wrapper for admin-ajax.php
- * ADN.Tabs     — data-tab / data-panel strip
- * ADN.Storage  — localStorage / sessionStorage with JSON + safe fallback
- * ADN.Clip     — copy-to-clipboard with visual feedback
- * ADN.Scroll   — smooth scroll-to, body scroll-lock/unlock
- * ADN.Param    — URL query-string read/write without page reload
- * ADN.Utils    — debounce, throttle, ready
+ * ADN.Alert    - toast notifications
+ * ADN.Dialog   - modal dialogs + confirm
+ * ADN.Loader   - loading spinners
+ * ADN.ViewAll  - load-more via fetch
+ * ADN.Form     - serialize, setErrors
+ * ADN.Validate - email / phone / URL / required / full-form check + field markup
+ * ADN.Dom      - query, show/hide, aria, delegation, btnLoading
+ * ADN.Ajax     - fetch wrapper for admin-ajax.php
+ * ADN.Tabs     - data-tab / data-panel strip
+ * ADN.Storage  - localStorage / sessionStorage with JSON + safe fallback
+ * ADN.Clip     - copy-to-clipboard with visual feedback
+ * ADN.Scroll   - smooth scroll-to, body scroll-lock/unlock
+ * ADN.Param    - URL query-string read/write without page reload
+ * ADN.Utils    - debounce, throttle, ready
  */
 
 ( function ( window ) {
@@ -25,7 +25,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   ALERT — toast notifications
+	   ALERT - toast notifications
 	   ══════════════════════════════════════════════════════════════ */
 	var Alert = {
 		show: function ( message, type, duration ) {
@@ -63,7 +63,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   DIALOG — modal dialogs + confirm shortcut
+	   DIALOG - modal dialogs + confirm shortcut
 	   ══════════════════════════════════════════════════════════════ */
 	var Dialog = {
 		create: function ( config ) {
@@ -145,7 +145,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   LOADER — in-container loading spinners
+	   LOADER - in-container loading spinners
 	   ══════════════════════════════════════════════════════════════ */
 	var Loader = {
 		show: function ( container, message ) {
@@ -167,7 +167,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   VIEW ALL — load-more via fetch
+	   VIEW ALL - load-more via fetch
 	   ══════════════════════════════════════════════════════════════ */
 	var ViewAll = {
 		init: function ( config ) {
@@ -207,7 +207,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   FORM — serialize + setErrors (simple helpers)
+	   FORM - serialize + setErrors (simple helpers)
 	   ══════════════════════════════════════════════════════════════ */
 	var Form = {
 		serialize: function ( form ) {
@@ -226,7 +226,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   VALIDATE — email / phone / URL / required + full-form check
+	   VALIDATE - email / phone / URL / required + full-form check
 	   ══════════════════════════════════════════════════════════════ */
 	var Validate = {
 		email: function ( v ) {
@@ -297,7 +297,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   DOM — query, show/hide, aria, delegation, helpers
+	   DOM - query, show/hide, aria, delegation, helpers
 	   ══════════════════════════════════════════════════════════════ */
 	var Dom = {
 
@@ -323,7 +323,7 @@
 		},
 
 		/**
-		 * Delegated listener — fires when a child matching `selector` triggers the event.
+		 * Delegated listener - fires when a child matching `selector` triggers the event.
 		 *   ADN.Dom.delegate(list, 'click', '.item-btn', handler);
 		 */
 		delegate: function ( parent, event, selector, handler ) {
@@ -335,14 +335,14 @@
 			} );
 		},
 
-		/** Show — removes hidden attr + sets aria-hidden="false". */
+		/** Show - removes hidden attr + sets aria-hidden="false". */
 		show: function ( el ) {
 			if ( ! el ) { return; }
 			el.removeAttribute( 'hidden' );
 			el.setAttribute( 'aria-hidden', 'false' );
 		},
 
-		/** Hide — sets hidden attr + aria-hidden="true". */
+		/** Hide - sets hidden attr + aria-hidden="true". */
 		hide: function ( el ) {
 			if ( ! el ) { return; }
 			el.setAttribute( 'hidden', '' );
@@ -380,7 +380,7 @@
 			return function () { btn.disabled = origDisabled; btn.innerHTML = origHTML; };
 		},
 
-		/** Add/remove a class after `delay` ms — handy for CSS transitions. */
+		/** Add/remove a class after `delay` ms - handy for CSS transitions. */
 		classAfter: function ( el, cls, delay, remove ) {
 			if ( ! el ) { return; }
 			setTimeout( function () {
@@ -391,7 +391,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   AJAX — fetch wrapper for WP admin-ajax.php
+	   AJAX - fetch wrapper for WP admin-ajax.php
 	   ══════════════════════════════════════════════════════════════ */
 	var Ajax = {
 
@@ -437,7 +437,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   TABS — data-tab / data-panel strip
+	   TABS - data-tab / data-panel strip
 	   ══════════════════════════════════════════════════════════════ */
 	var Tabs = {
 
@@ -485,7 +485,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   STORAGE — localStorage / sessionStorage with JSON + safe fallback
+	   STORAGE - localStorage / sessionStorage with JSON + safe fallback
 	   ══════════════════════════════════════════════════════════════ */
 	var Storage = {
 		_store: function ( type ) {
@@ -519,7 +519,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   CLIP — copy-to-clipboard with visual feedback
+	   CLIP - copy-to-clipboard with visual feedback
 	   ══════════════════════════════════════════════════════════════ */
 	var Clip = {
 
@@ -567,7 +567,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   SCROLL — smooth scroll-to, body lock/unlock, in-view check
+	   SCROLL - smooth scroll-to, body lock/unlock, in-view check
 	   ══════════════════════════════════════════════════════════════ */
 	var Scroll = {
 
@@ -610,7 +610,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   PARAM — URL query-string read/write without page reload
+	   PARAM - URL query-string read/write without page reload
 	   ══════════════════════════════════════════════════════════════ */
 	var Param = {
 
@@ -654,7 +654,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   UTILS — debounce, throttle, ready
+	   UTILS - debounce, throttle, ready
 	   ══════════════════════════════════════════════════════════════ */
 	var Utils = {
 		debounce: function ( func, wait ) {
@@ -686,7 +686,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   FULL SCREEN DIALOG — iframe overlay that covers the whole screen
+	   FULL SCREEN DIALOG - iframe overlay that covers the whole screen
 	   ══════════════════════════════════════════════════════════════ */
 	var FullScreenDialog = {
 
@@ -696,11 +696,11 @@
 		 * Open a full-screen iframe dialog.
 		 *
 		 * opts {
-		 *   url      : string  — URL to load in the iframe (required)
-		 *   title    : string  — text shown in the top bar (optional)
-		 *   onClose  : fn      — called when the dialog is closed
-		 *   onLoad   : fn      — called when the iframe finishes loading
-		 *   closable : bool    — show close button / allow ESC (default true)
+		 *   url      : string  - URL to load in the iframe (required)
+		 *   title    : string  - text shown in the top bar (optional)
+		 *   onClose  : fn      - called when the dialog is closed
+		 *   onLoad   : fn      - called when the iframe finishes loading
+		 *   closable : bool    - show close button / allow ESC (default true)
 		 * }
 		 *
 		 * Returns the dialog element.
@@ -851,7 +851,7 @@
 
 
 	/* ══════════════════════════════════════════════════════════════
-	   VISITORS — ping REST API once per session, update display
+	   VISITORS - ping REST API once per session, update display
 	   ══════════════════════════════════════════════════════════════ */
 	var Visitors = {
 		/* Generate or reuse a per-browser session ID (not across tabs but good enough for dedup). */

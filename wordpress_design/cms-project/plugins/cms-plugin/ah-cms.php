@@ -45,9 +45,11 @@ AH_Ajax_Handlers::init_public();
 
 // ── Shortcodes ───────────────────────────────────────────────────────────────
 add_action( 'init', static function () {
-	add_shortcode( 'ah_form', array( 'AH_Form_Builder', 'render' ) );
+	add_shortcode( 'ah_form',          array( 'AH_Form_Builder', 'render' ) );
 	add_shortcode( 'ah_related_links', 'ah_render_related_links_shortcode' );
-	add_shortcode( 'ah_static_page', 'ah_render_static_page_shortcode' );
+	add_shortcode( 'ah_static_page',   'ah_render_static_page_shortcode' );
+	add_shortcode( 'ah_resource',      'ah_render_resource_shortcode' );
+	add_shortcode( 'ah_resources',     'ah_render_resources_shortcode' );
 } );
 
 // ── Plugin page template: register + route ────────────────────────────────────
@@ -168,11 +170,106 @@ function ah_render_related_links_shortcode( $atts ): string {
 	return ob_get_clean();
 }
 
+// ── Resources helpers & shortcodes ───────────────────────────────────────────
+
+/**
+ * Public helper: fetch active resources.
+ * Usage: ah_get_resources( 'category', 'youtube', 3 )
+ *
+ * @param string $context  category | home | tools | global | '' (all)
+ * @param string $type     youtube | shorts | instagram | … | '' (all)
+ * @param int    $limit    0 = no limit
+ */
+function ah_get_resources( string $context = '', string $type = '', int $limit = 0 ): array {
+	if ( ! class_exists( 'AH_Resources_Model' ) ) {
+		return array();
+	}
+	return ( new AH_Resources_Model() )->get_active( $context, $type, $limit );
+}
+
+/**
+ * Shortcode [ah_resource id="1" show_title="0" show_desc="0"]
+ * Embeds a single resource by its ID.
+ */
+function ah_render_resource_shortcode( $atts ): string {
+	$atts = shortcode_atts( array(
+		'id'         => 0,
+		'show_title' => '0',
+		'show_desc'  => '0',
+		'class'      => '',
+	), $atts, 'ah_resource' );
+
+	$id = (int) $atts['id'];
+	if ( ! $id || ! class_exists( 'AH_Resources_Model' ) ) {
+		return '';
+	}
+
+	$item = ( new AH_Resources_Model() )->find( $id );
+	if ( ! $item || $item->status !== 'active' ) {
+		return '';
+	}
+
+	return AH_Resources_Model::render_resource( $item, array(
+		'show_title' => ! empty( $atts['show_title'] ) && $atts['show_title'] !== '0',
+		'show_desc'  => ! empty( $atts['show_desc'] )  && $atts['show_desc']  !== '0',
+		'class'      => sanitize_html_class( $atts['class'] ),
+	) );
+}
+
+/**
+ * Shortcode [ah_resources context="category" type="youtube" limit="3" show_title="1" show_desc="0" class=""]
+ * Renders a grid of matching resources.
+ */
+function ah_render_resources_shortcode( $atts ): string {
+	$atts = shortcode_atts( array(
+		'context'    => '',
+		'type'       => '',
+		'limit'      => '0',
+		'show_title' => '0',
+		'show_desc'  => '0',
+		'class'      => '',
+		'columns'    => '2',
+	), $atts, 'ah_resources' );
+
+	if ( ! class_exists( 'AH_Resources_Model' ) ) {
+		return '';
+	}
+
+	$items = ah_get_resources(
+		sanitize_key( $atts['context'] ),
+		sanitize_key( $atts['type'] ),
+		(int) $atts['limit']
+	);
+
+	if ( empty( $items ) ) {
+		return '';
+	}
+
+	$opts = array(
+		'show_title' => ! empty( $atts['show_title'] ) && $atts['show_title'] !== '0',
+		'show_desc'  => ! empty( $atts['show_desc'] )  && $atts['show_desc']  !== '0',
+	);
+
+	$cols      = max( 1, min( 4, (int) $atts['columns'] ) );
+	$wrap_cls  = 'ah-resources-grid ah-resources-grid--cols-' . $cols;
+	if ( $atts['class'] ) {
+		$wrap_cls .= ' ' . sanitize_html_class( $atts['class'] );
+	}
+
+	ob_start();
+	echo '<div class="' . esc_attr( $wrap_cls ) . '" style="display:grid;grid-template-columns:repeat(' . esc_attr( (string) $cols ) . ',1fr);gap:20px;">';
+	foreach ( $items as $item ) {
+		echo AH_Resources_Model::render_resource( $item, $opts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+	echo '</div>';
+	return ob_get_clean();
+}
+
 // ── Database ─────────────────────────────────────────────────────────────────
 register_activation_hook( __FILE__, array( 'AH_DB_Installer', 'install' ) );
 add_action( 'wp_loaded', array( 'AH_DB_Installer', 'maybe_upgrade' ) );
 
-// ── REST API — all routes defined in api/class-rest-routes.php ───────────────
+// ── REST API - all routes defined in api/class-rest-routes.php ───────────────
 // To add/remove endpoints: edit the $routes array in AH_Rest_Routes::register().
 add_action( 'rest_api_init', array( 'AH_Rest_Routes', 'register' ) );
 
@@ -209,7 +306,7 @@ register_deactivation_hook( __FILE__, static function (): void {
 	if ( $ts ) wp_unschedule_event( $ts, 'ah_rules_cron_process' );
 } );
 
-// ── Redirect Rules — front-end enforcement ────────────────────────────────────
+// ── Redirect Rules - front-end enforcement ────────────────────────────────────
 // Priority 1 = fires before WordPress's own redirect_canonical (priority 10).
 add_action( 'template_redirect', static function (): void {
 	global $wpdb;
@@ -237,7 +334,7 @@ add_action( 'template_redirect', static function (): void {
 		status_header( 410 );
 		nocache_headers();
 		$site = esc_html( get_bloginfo( 'name' ) );
-		echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Page Gone — {$site}</title>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Page Gone - {$site}</title>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			. "<style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#f8fafc;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:48px 40px;max-width:440px;text-align:center}.icon{font-size:48px;margin-bottom:16px}.title{font-size:22px;font-weight:700;color:#111827;margin:0 0 10px}.msg{color:#6b7280;font-size:15px;margin:0 0 24px}.back{display:inline-block;padding:10px 24px;background:#1d4ed8;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;font-size:14px}</style>" // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			. "</head><body><div class='card'><div class='icon'>🗑️</div><h1 class='title'>Page Removed</h1><p class='msg'>This page no longer exists and has been permanently removed.</p><a href='" . esc_url( home_url( '/' ) ) . "' class='back'>← Back to Home</a></div></body></html>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit;
@@ -361,7 +458,7 @@ add_action( 'wp_footer', static function (): void {
 	}
 }, 99 );
 
-// ── Custom Code AJAX handlers (must be in main file — admin-ajax.php doesn't load admin pages) ──
+// ── Custom Code AJAX handlers (must be in main file - admin-ajax.php doesn't load admin pages) ──
 add_action( 'wp_ajax_ah_save_custom_code', static function (): void {
 	if ( ! check_ajax_referer( 'ah_custom_code', 'nonce', false ) ) {
 		wp_send_json_error( array( 'message' => 'Security check failed.' ) );
@@ -385,7 +482,7 @@ add_action( 'wp_ajax_ah_save_custom_code', static function (): void {
 		// Check uniqueness
 		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE slug = %s LIMIT 1", $slug ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( $exists ) {
-			wp_send_json_error( array( 'message' => 'A rule for "' . $slug . '" already exists — edit it instead.' ) );
+			wp_send_json_error( array( 'message' => 'A rule for "' . $slug . '" already exists - edit it instead.' ) );
 		}
 		$wpdb->insert( $table, array( 'slug' => $slug, 'css' => $css, 'js' => $js, 'is_active' => 1 ),
 			array( '%s', '%s', '%s', '%d' ) );

@@ -41,7 +41,7 @@ $nodes   = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
 	 * This component may be included twice (once inside the hero grid for desktop,
 	 * once in the mobile strip below the hero). The guard ensures setup runs only
 	 * once. We defer to DOMContentLoaded so BOTH diagram elements are in the DOM
-	 * before we try to position nodes — the first inclusion's script runs while
+	 * before we try to position nodes - the first inclusion's script runs while
 	 * the second diagram hasn't been parsed yet.
 	 */
 	if ( window._adnDiagramInit ) { return; }
@@ -50,7 +50,7 @@ $nodes   = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
 	var MAX_NODES = 8;
 
 	function positionDiagram( diagram ) {
-		/* Skip elements hidden with display:none — offsetParent is null for those. */
+		/* Skip elements hidden with display:none - offsetParent is null for those. */
 		if ( ! diagram || ! diagram.offsetParent ) { return; }
 
 		var nodes = Array.prototype.slice.call(

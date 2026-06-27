@@ -21,7 +21,7 @@ $si = isset( $stay_informed ) && is_array( $stay_informed ) ? $stay_informed : a
 		<ul class="sib-perks">
 			<li><span class="sib-check">✓</span> Weekly property market insights</li>
 			<li><span class="sib-check">✓</span> First-time buyer guides &amp; checklists</li>
-			<li><span class="sib-check">✓</span> No spam — unsubscribe anytime</li>
+			<li><span class="sib-check">✓</span> No spam - unsubscribe anytime</li>
 		</ul>
 	</div>
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * components/cards/spotlight_card.php
- * Spotlight card — left typographic area + right metric panel.
+ * Spotlight card - left typographic area + right metric panel.
  * Props via $card array: icon, title, tag, meta (value), thumb_label, desc, url
  */
 defined( 'ABSPATH' ) || exit;

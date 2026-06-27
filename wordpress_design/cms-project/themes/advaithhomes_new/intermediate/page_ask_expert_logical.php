@@ -175,8 +175,8 @@ function adn_ask_expert_get_context() {
 					'reviews'       => isset( $row['reviews_count'] ) ? (int)    $row['reviews_count'] : 0,
 					'description'   => isset( $row['bio'] )           ? (string) $row['bio']           : '',
 					'location'      => isset( $row['location'] )      ? (string) $row['location']      : '',
-					'phone'         => isset( $row['phone'] )         ? (string) $row['phone']         : '',
-					'email'         => isset( $row['email'] )         ? (string) $row['email']         : '',
+					'phone'         => '',
+					'email'         => '',
 					'tags'          => array_slice( $bullets, 0, 3 ),
 					'bullets'       => $bullets,
 					'url'           => $profile_url,
@@ -224,7 +224,7 @@ function adn_ask_expert_get_context() {
 
 	/* ── Categories: derived from DB experts ────────────────────────── */
 	if ( $use_db ) {
-		/* Normalize key with sanitize_key() — same function expert_card.php uses on data-cat,
+		/* Normalize key with sanitize_key() - same function expert_card.php uses on data-cat,
 		 * so filter buttons always match card attributes. Deduplicates "Conveyancing" vs "conveyancing". */
 		$db_cat_keys = array(); // sanitize_key => original_raw (for display label)
 		foreach ( $db_experts as $_de ) {

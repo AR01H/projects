@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * AH_Rest_Routes — single place for every plugin REST API endpoint.
+ * AH_Rest_Routes - single place for every plugin REST API endpoint.
  *
  * HOW TO ADD A NEW ROUTE
  * ──────────────────────
@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  *   ),
  *
  * Then add the static callback method below (prefix with _cb_).
- * That is ALL you need to do — the loop registers it automatically.
+ * That is ALL you need to do - the loop registers it automatically.
  *
  * Namespace : adn/v1
  * URL prefix : /api/  (set by rest_url_prefix filter in theme/functions.php)
@@ -75,7 +75,7 @@ class AH_Rest_Routes {
 	   VISITOR CALLBACKS
 	   ══════════════════════════════════════════════════════════════════ */
 
-	/** GET /visitors — return aggregated stats. */
+	/** GET /visitors - return aggregated stats. */
 	public static function _cb_visitors_get(): WP_REST_Response {
 		$m = new AH_Visitor_Model();
 		return new WP_REST_Response( array(
@@ -87,7 +87,7 @@ class AH_Rest_Routes {
 		), 200 );
 	}
 
-	/** POST /visitors/ping — record a visit, return updated stats. */
+	/** POST /visitors/ping - record a visit, return updated stats. */
 	public static function _cb_visitors_ping( WP_REST_Request $req ): WP_REST_Response {
 		// Resolve real client IP (handles Cloudflare / reverse proxies).
 		$ip = '';

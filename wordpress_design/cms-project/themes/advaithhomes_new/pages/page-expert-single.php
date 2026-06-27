@@ -102,11 +102,6 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 					</div>
 				<?php endif; ?>
 
-				<?php /* Location */ ?>
-				<?php if ( ! empty( $ctx['location'] ) ) : ?>
-					<p class="expert-profile-location"><?php echo adn_icon( 'location' ); ?> <?php echo esc_html( $ctx['location'] ); ?></p>
-				<?php endif; ?>
-
 				<?php /* Category pill */ ?>
 				<?php if ( ! empty( $ctx['category'] ) ) : ?>
 					<span class="expert-profile-cat-pill"><?php echo esc_html( ucwords( str_replace( array( '-', '_' ), ' ', $ctx['category'] ) ) ); ?></span>
@@ -191,24 +186,6 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 				<div class="expert-sb-box">
 					<h3><?php esc_html_e( 'Specialisation', ADN_TEXT_DOMAIN ); ?></h3>
 					<span class="expert-profile-cat-pill"><?php echo esc_html( $ctx['title'] ); ?></span>
-				</div>
-			<?php endif; ?>
-
-			<?php /* Contact details */ ?>
-			<?php if ( ! empty( $ctx['location'] ) || ! empty( $ctx['phone'] ) || ! empty( $ctx['email'] ) ) : ?>
-				<div class="expert-sb-box">
-					<h3><?php esc_html_e( 'Contact', ADN_TEXT_DOMAIN ); ?></h3>
-					<ul class="expert-sb-contact-list">
-						<?php if ( ! empty( $ctx['location'] ) ) : ?>
-							<li class="esb-loc"><?php echo adn_icon( 'location' ); ?> <span><?php echo esc_html( $ctx['location'] ); ?></span></li>
-						<?php endif; ?>
-						<?php if ( ! empty( $ctx['phone'] ) ) : ?>
-							<li class="esb-phone"><?php echo adn_icon( 'phone' ); ?> <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $ctx['phone'] ) ); ?>"><?php echo esc_html( $ctx['phone'] ); ?></a></li>
-						<?php endif; ?>
-						<?php if ( ! empty( $ctx['email'] ) ) : ?>
-							<li class="esb-email"><?php echo adn_icon( 'email' ); ?> <a class="esb-email-link" href="mailto:<?php echo esc_attr( $ctx['email'] ); ?>"><?php echo esc_html( $ctx['email'] ); ?></a></li>
-						<?php endif; ?>
-					</ul>
 				</div>
 			<?php endif; ?>
 

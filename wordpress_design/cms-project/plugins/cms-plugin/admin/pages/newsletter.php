@@ -44,7 +44,7 @@ if ( isset( $_POST['ah_nl_add_nonce'] ) ) {
 	} elseif ( 'already_subscribed' === $result ) {
 		$notice = 'warning:That email is already subscribed.';
 	} else {
-		$notice = 'warning:Could not add — check the email address.';
+		$notice = 'warning:Could not add - check the email address.';
 	}
 }
 
@@ -204,7 +204,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
           <td><span style="background:#f3f4f6;border-radius:4px;padding:2px 8px;font-size:12px"><?php echo esc_html( $row['source'] ); ?></span></td>
           <td><span class="nl-status-badge nlsb-<?php echo esc_attr( $row['status'] ); ?>"><?php echo esc_html( ucfirst( $row['status'] ) ); ?></span></td>
           <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $row['created_at'] ) ) ); ?></small></td>
-          <td><small><?php echo $row['unsubscribed_at'] ? esc_html( wp_date( 'M j, Y', strtotime( $row['unsubscribed_at'] ) ) ) : '<span style="color:var(--ah-muted)">—</span>'; ?></small></td>
+          <td><small><?php echo $row['unsubscribed_at'] ? esc_html( wp_date( 'M j, Y', strtotime( $row['unsubscribed_at'] ) ) ) : '<span style="color:var(--ah-muted)">-</span>'; ?></small></td>
           <td style="white-space:nowrap">
             <?php if ( $is_active ) : ?>
             <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'unsub' => $row['email'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_unsub' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="return confirm('Mark as unsubscribed?')">Unsubscribe</a>
@@ -241,7 +241,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
     <div class="ah-card-header"><h2>Compose &amp; Send</h2></div>
 
     <?php if ( $count_act < 1 ) : ?>
-      <div class="ah-notice ah-notice-warning" style="margin:0">No active subscribers yet — add some first.</div>
+      <div class="ah-notice ah-notice-warning" style="margin:0">No active subscribers yet - add some first.</div>
     <?php else : ?>
 
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:#1e40af">
@@ -269,7 +269,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 
       <div class="nl-body-wrap">
         <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
-        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">You can use these tokens — click to copy:</div>
+        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">You can use these tokens - click to copy:</div>
         <div class="nl-token-bar">
           <span class="nl-token" title="Replaced with subscriber's first name">{name}</span>
           <span class="nl-token" title="Replaced with the unsubscribe link URL">{unsubscribe_url}</span>

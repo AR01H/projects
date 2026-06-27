@@ -36,7 +36,7 @@ $gs_active  = (int) get_option( 'ah_global_styles_active', 0 );
 
 <?php if ( $active_tab === 'global-styles' ) : ?>
 	<!-- ══════════════════ GLOBAL STYLES TAB ══════════════════ -->
-	<p style="color:var(--ah-muted);margin:0 0 20px;">Global CSS that loads on every page sitewide — perfect for celebration themes, seasonal tweaks, or campaign overrides.</p>
+	<p style="color:var(--ah-muted);margin:0 0 20px;">Global CSS that loads on every page sitewide - perfect for celebration themes, seasonal tweaks, or campaign overrides.</p>
 
 	<div style="display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;">
 		<div class="ah-card" style="padding:20px;">
@@ -66,7 +66,7 @@ body { --color-primary: #c0392b; }
 			<div class="ah-card" style="padding:16px;font-size:13px;line-height:1.7;">
 				<strong>Status</strong><br>
 				<span id="ah-gs-status-label" style="color:<?php echo $gs_active ? '#15803d' : '#b91c1c'; ?>;font-weight:600;">
-					<?php echo $gs_active ? '● Active — injecting on all pages' : '○ Disabled — not injecting'; ?>
+					<?php echo $gs_active ? '● Active - injecting on all pages' : '○ Disabled - not injecting'; ?>
 				</span>
 			</div>
 			<div class="ah-card" style="padding:16px;margin-top:12px;font-size:12px;color:var(--ah-muted);line-height:1.7;">
@@ -84,7 +84,7 @@ body { --color-primary: #c0392b; }
 
 <?php else : ?>
 	<!-- ══════════════════ PER-PAGE RULES TAB ══════════════════ -->
-	<p style="color:var(--ah-muted);margin:0 0 20px;">Write custom CSS or JS that only loads on a specific page slug — useful for per-page typography fixes, dynamic content tweaks, and layout overrides.</p>
+	<p style="color:var(--ah-muted);margin:0 0 20px;">Write custom CSS or JS that only loads on a specific page slug - useful for per-page typography fixes, dynamic content tweaks, and layout overrides.</p>
 
 	<div style="display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;">
 
@@ -126,7 +126,7 @@ body { --color-primary: #c0392b; }
 				<strong style="color:var(--ah-text);">How it works</strong><br>
 				1. Enter the page slug (e.g. <code>buying</code>).<br>
 				2. Write CSS and/or JS in the editor tabs.<br>
-				3. Save — code injects into <code>&lt;head&gt;</code> (CSS) and <code>&lt;footer&gt;</code> (JS) only on that slug.<br><br>
+				3. Save - code injects into <code>&lt;head&gt;</code> (CSS) and <code>&lt;footer&gt;</code> (JS) only on that slug.<br><br>
 				<strong style="color:var(--ah-text);">Scope</strong><br>
 				Works on WP pages, virtual routes (<code>/buying/</code>), and static pages.
 			</div>
@@ -167,7 +167,7 @@ body { --color-primary: #c0392b; }
 					</div>
 
 					<div id="ah-cc-panel-css" class="ah-cc-panel" style="padding-top:12px;">
-						<p style="color:var(--ah-muted);font-size:12px;margin:0 0 6px;">Plain CSS rules — no <code>&lt;style&gt;</code> tags needed.</p>
+						<p style="color:var(--ah-muted);font-size:12px;margin:0 0 6px;">Plain CSS rules - no <code>&lt;style&gt;</code> tags needed.</p>
 						<textarea id="ah-cc-css" rows="24"
 							style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#cdd6f4;padding:14px;border-radius:6px;border:1px solid #313244;"
 							placeholder="/* Example */
@@ -179,7 +179,7 @@ body { --color-primary: #c0392b; }
 					</div>
 
 					<div id="ah-cc-panel-js" class="ah-cc-panel" style="padding-top:12px;display:none;">
-						<p style="color:var(--ah-muted);font-size:12px;margin:0 0 6px;">Plain JavaScript — no <code>&lt;script&gt;</code> tags needed. Runs at footer (after DOM ready).</p>
+						<p style="color:var(--ah-muted);font-size:12px;margin:0 0 6px;">Plain JavaScript - no <code>&lt;script&gt;</code> tags needed. Runs at footer (after DOM ready).</p>
 						<textarea id="ah-cc-js" rows="24"
 							style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#a6e3a1;padding:14px;border-radius:6px;border:1px solid #313244;"
 							placeholder="// Example
@@ -204,7 +204,7 @@ document.querySelectorAll('.dynamic-text').forEach(function(el) {
 			<?php if ( $edit_row ) : ?>
 			<div style="margin-top:12px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:12px 16px;font-size:13px;color:#15803d;">
 				✓ Rule is <strong><?php echo empty( $edit_row->is_active ) ? 'paused' : 'active'; ?></strong>
-				— code <?php echo empty( $edit_row->is_active ) ? 'will <em>not</em> inject' : 'injects'; ?> on
+				- code <?php echo empty( $edit_row->is_active ) ? 'will <em>not</em> inject' : 'injects'; ?> on
 				<a href="<?php echo esc_url( home_url( '/' . $edit_row->slug . '/' ) ); ?>" target="_blank" style="color:#15803d;">
 					/<?php echo esc_html( $edit_row->slug ); ?>/
 				</a>
@@ -341,7 +341,7 @@ jQuery(function ($) {
 				var on = $('#ah-gs-active').is(':checked');
 				$('#ah-gs-status-label')
 					.css('color', on ? '#15803d' : '#b91c1c')
-					.text( on ? '● Active — injecting on all pages' : '○ Disabled — not injecting' );
+					.text( on ? '● Active - injecting on all pages' : '○ Disabled - not injecting' );
 			} else {
 				$('#ah-gs-msg').css('color','#b91c1c').text('✗ ' + (res.data ? res.data.message : 'Error.'));
 			}

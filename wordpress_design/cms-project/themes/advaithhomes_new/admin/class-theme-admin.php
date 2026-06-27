@@ -58,6 +58,8 @@ class ADN_Theme_Admin {
 		// Category Pages: per-term journey / calculators / sidebar / CTA settings.
 		add_action( 'admin_post_adn_save_category_term',  array( __CLASS__, 'handle_save_category_term' ) );
 		add_action( 'admin_post_adn_save_home_newsblocks', array( __CLASS__, 'handle_save_home_newsblocks' ) );
+		add_action( 'admin_post_adn_save_home_resources',  array( __CLASS__, 'handle_save_home_resources'  ) );
+		add_action( 'admin_post_adn_save_home_journey',    array( __CLASS__, 'handle_save_home_journey'    ) );
 
 		// Category Pages: AJAX post search (Hot Topics + Popular Posts).
 		add_action( 'wp_ajax_adn_cat_post_search', array( __CLASS__, 'handle_cat_post_search' ) );
@@ -121,6 +123,14 @@ class ADN_Theme_Admin {
 					'newsblocks' => array(
 						'label' => self::fa( 'fa-newspaper', __( 'Regulations & Hot Topics', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'home/sub-newsblocks.php',
+					),
+					'resources' => array(
+						'label' => self::fa( 'fa-folder-open', __( 'Resources', ADN_TEXT_DOMAIN ) ),
+						'view'  => 'home/sub-resources.php',
+					),
+					'journey' => array(
+						'label' => self::fa( 'fa-images', __( 'Journey Cards', ADN_TEXT_DOMAIN ) ),
+						'view'  => 'home/sub-journey.php',
 					),
 				),
 			),
@@ -1125,6 +1135,72 @@ class ADN_Theme_Admin {
 		exit;
 	}
 
+	// ── Home: Journey Card Images save handler ────────────────────────────────
+
+	public static function handle_save_home_journey() {
+		check_admin_referer( 'adn_save_home_journey' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Permission denied.', ADN_TEXT_DOMAIN ) );
+		}
+
+		/* taxonomy-term overrides (keyed by term ID) */
+		$raw_term  = ( isset( $_POST['journey_images'] ) && is_array( $_POST['journey_images'] ) ) ? $_POST['journey_images'] : array();
+		$clean_term = array();
+		foreach ( $raw_term as $tid => $aid ) {
+			$tid = absint( $tid );
+			$aid = absint( $aid );
+			if ( $tid > 0 && $aid > 0 ) {
+				$clean_term[ $tid ] = $aid;
+			}
+		}
+		update_option( 'adn_journey_card_images', $clean_term );
+
+		/* JSON-card overrides (keyed by URL slug) */
+		$raw_json  = ( isset( $_POST['journey_json_images'] ) && is_array( $_POST['journey_json_images'] ) ) ? $_POST['journey_json_images'] : array();
+		$clean_json = array();
+		foreach ( $raw_json as $slug => $aid ) {
+			$slug = sanitize_key( (string) $slug );
+			$aid  = absint( $aid );
+			if ( '' !== $slug && $aid > 0 ) {
+				$clean_json[ $slug ] = $aid;
+			}
+		}
+		update_option( 'adn_journey_json_images', $clean_json );
+
+		wp_safe_redirect( add_query_arg(
+			array( 'page' => self::tab_page_slug( 'home' ), 'subtab' => 'journey', 'adn_saved' => 'journey' ),
+			admin_url( 'admin.php' )
+		) );
+		exit;
+	}
+
+	// ── Home: Resources save handler ─────────────────────────────────────────
+
+	public static function handle_save_home_resources() {
+		check_admin_referer( 'adn_save_home_resources' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Permission denied.', ADN_TEXT_DOMAIN ) );
+		}
+
+		$raw_ids     = ( isset( $_POST['resource_ids'] ) && is_array( $_POST['resource_ids'] ) ) ? $_POST['resource_ids'] : array();
+		$library_ids = array();
+		foreach ( $raw_ids as $rid ) {
+			$rid = absint( $rid );
+			if ( $rid > 0 ) { $library_ids[] = $rid; }
+		}
+
+		update_option( 'adn_home_resources', array(
+			'library_ids' => $library_ids,
+			'heading'     => sanitize_text_field( wp_unslash( isset( $_POST['heading'] ) ? $_POST['heading'] : '' ) ),
+		) );
+
+		wp_safe_redirect( add_query_arg(
+			array( 'page' => self::tab_page_slug( 'home' ), 'subtab' => 'resources', 'adn_saved' => 'resources' ),
+			admin_url( 'admin.php' )
+		) );
+		exit;
+	}
+
 	// ── Category Pages: save handler ────────────────────────────────────────────
 
 	public static function handle_save_category_term() {
@@ -1299,51 +1375,19 @@ class ADN_Theme_Admin {
 			'marquee_items'   => sanitize_textarea_field( isset( $raw_mq['items'] ) ? (string) $raw_mq['items'] : '' ),
 		) );
 
-		// ── Resources (PDFs, external links, YouTube videos) ─────────────────────
-		$raw_res = ( isset( $_POST['resources'] ) && is_array( $_POST['resources'] ) ) ? wp_unslash( $_POST['resources'] ) : array();
-
-		$res_pdfs = array();
-		if ( isset( $raw_res['pdfs'] ) && is_array( $raw_res['pdfs'] ) ) {
-			foreach ( $raw_res['pdfs'] as $p ) {
-				if ( ! is_array( $p ) || empty( $p['title'] ) ) { continue; }
-				$res_pdfs[] = array(
-					'file_id'  => absint( isset( $p['file_id'] ) ? $p['file_id'] : 0 ),
-					'file_url' => esc_url_raw( isset( $p['file_url'] ) ? $p['file_url'] : '' ),
-					'title'    => sanitize_text_field( $p['title'] ),
-					'desc'     => sanitize_textarea_field( isset( $p['desc'] ) ? $p['desc'] : '' ),
-				);
-			}
-		}
-
-		$res_links = array();
-		if ( isset( $raw_res['links'] ) && is_array( $raw_res['links'] ) ) {
-			foreach ( $raw_res['links'] as $l ) {
-				if ( ! is_array( $l ) || empty( $l['title'] ) ) { continue; }
-				$res_links[] = array(
-					'icon'  => sanitize_text_field( isset( $l['icon'] )  ? $l['icon']  : '' ),
-					'title' => sanitize_text_field( $l['title'] ),
-					'desc'  => sanitize_textarea_field( isset( $l['desc'] ) ? $l['desc'] : '' ),
-					'url'   => esc_url_raw( isset( $l['url'] ) ? $l['url'] : '' ),
-				);
-			}
-		}
-
-		$res_videos = array();
-		if ( isset( $raw_res['videos'] ) && is_array( $raw_res['videos'] ) ) {
-			foreach ( $raw_res['videos'] as $v ) {
-				if ( ! is_array( $v ) || empty( $v['title'] ) ) { continue; }
-				$res_videos[] = array(
-					'title' => sanitize_text_field( $v['title'] ),
-					'desc'  => sanitize_textarea_field( isset( $v['desc'] ) ? $v['desc'] : '' ),
-					'url'   => esc_url_raw( isset( $v['url'] ) ? $v['url'] : '' ),
-				);
+		// ── Resources - library IDs + section heading ────────────────────────────
+		$raw_res         = ( isset( $_POST['resources'] ) && is_array( $_POST['resources'] ) ) ? wp_unslash( $_POST['resources'] ) : array();
+		$res_library_ids = array();
+		if ( isset( $raw_res['library_ids'] ) && is_array( $raw_res['library_ids'] ) ) {
+			foreach ( $raw_res['library_ids'] as $rid ) {
+				$rid = absint( $rid );
+				if ( $rid > 0 ) { $res_library_ids[] = $rid; }
 			}
 		}
 
 		AH_Category_Settings::save( $slug, 'resources', array(
-			'pdfs'   => $res_pdfs,
-			'links'  => $res_links,
-			'videos' => $res_videos,
+			'library_ids' => $res_library_ids,
+			'heading'     => sanitize_text_field( isset( $raw_res['heading'] ) ? $raw_res['heading'] : '' ),
 		) );
 
 		// ── FAQs (plugin FAQ items selected by ID) ───────────────────────────────────
@@ -1390,6 +1434,10 @@ class ADN_Theme_Admin {
 			}
 		}
 		AH_Category_Settings::save( $slug, 'quick_links', array( 'heading' => $ql_heading, 'items' => $ql_items ) );
+
+		// ── Featured In strip ────────────────────────────────────────────────────
+		$fi_section = sanitize_key( isset( $_POST['featured_in']['section'] ) ? wp_unslash( $_POST['featured_in']['section'] ) : '' );
+		AH_Category_Settings::save( $slug, 'featured_in', array( 'section' => $fi_section ) );
 
 		self::redirect_back( 'category-pages', $slug, __( 'Category settings saved.', ADN_TEXT_DOMAIN ) );
 	}
@@ -1444,7 +1492,7 @@ class ADN_Theme_Admin {
 		if ( ! $is_edit && null !== AH_Expert_DB::get( $slug ) ) {
 			self::redirect_back_error( 'experts', 'new', sprintf(
 				/* translators: %s: expert slug */
-				__( 'The slug "%s" is already taken — choose a different one.', ADN_TEXT_DOMAIN ),
+				__( 'The slug "%s" is already taken - choose a different one.', ADN_TEXT_DOMAIN ),
 				$slug
 			) );
 		}
@@ -1545,10 +1593,11 @@ class ADN_Theme_Admin {
 		}
 
 		$banner = array(
-			'heading'       => sanitize_text_field( wp_unslash( isset( $_POST['banner_heading'] ) ? $_POST['banner_heading'] : '' ) ),
-			'info'          => sanitize_textarea_field( wp_unslash( isset( $_POST['banner_info'] ) ? $_POST['banner_info'] : '' ) ),
-			'enabled'       => ! empty( $_POST['banner_enabled'] ) ? 1 : 0,
-			'marquee_items' => $marquee_items,
+			'heading'             => sanitize_text_field( wp_unslash( isset( $_POST['banner_heading'] ) ? $_POST['banner_heading'] : '' ) ),
+			'info'                => sanitize_textarea_field( wp_unslash( isset( $_POST['banner_info'] ) ? $_POST['banner_info'] : '' ) ),
+			'enabled'             => ! empty( $_POST['banner_enabled'] ) ? 1 : 0,
+			'marquee_items'       => $marquee_items,
+			'featured_in_section' => sanitize_key( isset( $_POST['featured_in_section'] ) ? wp_unslash( $_POST['featured_in_section'] ) : '' ),
 		);
 
 		update_option( 'adn_expert_banner', $banner );

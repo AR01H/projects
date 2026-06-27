@@ -1,7 +1,7 @@
 <?php
 /**
  * components/parts/post_sidebar_related_content.php
- * Related content links — each group renders as a sidebar_link_list panel.
+ * Related content links - each group renders as a sidebar_link_list panel.
  *
  * Props: $related_content { group_key => links[] { icon, title, url } }
  */

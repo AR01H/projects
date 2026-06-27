@@ -1,4 +1,4 @@
-# CMS Admin Plugin — Architecture Guide
+# CMS Admin Plugin - Architecture Guide
 
 > **Purpose of this file:** Understand the plugin end-to-end so you can enhance it confidently.
 > For deep reference see `FULL.md`. For code recipes see `learn.md`.
@@ -108,12 +108,12 @@ WordPress boots
 
 ---
 
-## Layer 1 — Database
+## Layer 1 - Database
 
 | File | Job |
 |---|---|
 | `class-db-schema.php` | All `CREATE TABLE` statements live here |
-| `class-db-migrations.php` | `ALTER TABLE` / add columns — runs on version bump |
+| `class-db-migrations.php` | `ALTER TABLE` / add columns - runs on version bump |
 | `class-db-seed.php` | Inserts default rows on fresh install |
 | `class-db-installer.php` | Runs schema → FK → seed → migrations in order |
 | `class-db-helper.php` | `insert()` `update()` `delete()` `paginate()` etc. |
@@ -125,7 +125,7 @@ WordPress boots
 
 ---
 
-## Layer 2 — Models
+## Layer 2 - Models
 
 Every content type has its own model class that extends `AH_Model_Base`.
 
@@ -158,7 +158,7 @@ class AH_Reviews_Model extends AH_Model_Base {
 
 ---
 
-## Layer 3 — Admin UI
+## Layer 3 - Admin UI
 
 ### How a page works (full flow)
 
@@ -210,9 +210,9 @@ Add the action name to the `$actions` array in `init()` and the handler auto-wir
 
 ---
 
-## Layer 4 — Helpers
+## Layer 4 - Helpers
 
-Stateless utilities — no database, no hooks. Use from anywhere.
+Stateless utilities - no database, no hooks. Use from anywhere.
 
 | Class | Use it for |
 |---|---|
@@ -224,7 +224,7 @@ Stateless utilities — no database, no hooks. Use from anywhere.
 
 ---
 
-## Layer 5 — Special Systems
+## Layer 5 - Special Systems
 
 ### Form Builder
 - Admin creates a form with fields
@@ -257,7 +257,7 @@ Pending actions executed (email sent, webhook called)
 
 ---
 
-## Layer 6 — Frontend (Theme Reads Plugin Data)
+## Layer 6 - Frontend (Theme Reads Plugin Data)
 
 The front-end theme calls model methods to get data:
 
@@ -268,9 +268,9 @@ $settings = (new AH_Settings_Model())->get_value('site_name');
 ```
 
 Shortcodes usable anywhere in WordPress:
-- `[ah_form id="1"]` — renders a form
-- `[ah_static_page slug="terms"]` — renders saved HTML
-- `[ah_related_links]` — renders related content links
+- `[ah_form id="1"]` - renders a form
+- `[ah_static_page slug="terms"]` - renders saved HTML
+- `[ah_related_links]` - renders related content links
 
 ---
 

@@ -114,7 +114,7 @@ $_wrap_id = 'guides-carousel-wrap-' . $adn_guides_instance;
 	wrap.addEventListener('focusin', stopAutoplay);
 	wrap.addEventListener('focusout', startAutoplay);
 
-	// init — re-check after layout is painted so scrollWidth is accurate
+	// init - re-check after layout is painted so scrollWidth is accurate
 	window.addEventListener('resize', updateBtns);
 	if ( document.readyState === 'complete' ) {
 		updateBtns();

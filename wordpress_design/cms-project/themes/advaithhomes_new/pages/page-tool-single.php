@@ -79,7 +79,7 @@ adn_page_open( $_open_ctx );
 			<?php /* ── Help text (outside iframe) ── */ ?>
 			<?php if ( ! empty( $ctx['help_text'] ) ) : ?>
 			<div class="tool-single-help">
-				<p><?php echo esc_html( $ctx['help_text'] ); ?></p>
+				<?php echo wpautop( wp_kses_post( $ctx['help_text'] ) ); ?>
 			</div>
 			<?php endif; ?>
 

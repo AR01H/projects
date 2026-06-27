@@ -66,13 +66,32 @@ function adn_home_get_context() {
 	if ( function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
 		$journey_cards = adn_home_cms_journey_cards();
 		if ( ! empty( $journey_cards ) ) {
-			$ctx['journey']['cards'] = array_merge($journey_cards,$ctx['journey']['cards']);
+			$ctx['journey']['cards'] = array_merge( $journey_cards, $ctx['journey']['cards'] );
 		}
 
 		$guide_items = adn_home_cms_guide_items();
 		$ctx['guides']['items'] = $guide_items; // DB only; empty array when no data - no JSON fallback
 
 		$ctx['news']['items'] = adn_home_cms_news_items(); // DB only; empty array when no news data
+	}
+
+	// Apply theme-level image overrides to JSON/static journey cards (keyed by URL slug).
+	$_jni = get_option( 'adn_journey_json_images', array() );
+	if ( ! empty( $_jni ) && is_array( $_jni ) ) {
+		foreach ( $ctx['journey']['cards'] as &$_jcard ) {
+			$_jcard_url = isset( $_jcard['url'] ) ? (string) $_jcard['url'] : '';
+			if ( '' === $_jcard_url ) {
+				continue;
+			}
+			$_jkey = sanitize_key( sanitize_title( trim( $_jcard_url, '/' ) ) );
+			if ( ! empty( $_jni[ $_jkey ] ) ) {
+				$_jimg = wp_get_attachment_image_url( (int) $_jni[ $_jkey ], 'large' );
+				if ( $_jimg ) {
+					$_jcard['image'] = $_jimg;
+				}
+			}
+		}
+		unset( $_jcard );
 	}
 
 	// Overlay admin-selected posts for regulations and hot_topics (no CMS plugin required).
@@ -215,15 +234,21 @@ function adn_home_apply_hero_overrides( $hero, $opt ) {
  * { image, icon, gradient, title, description, link_label, url }.
  */
 function adn_home_cms_journey_cards() {
-	$cards = array();
-	foreach ( adn_cms_guide_parents( ) as $i => $term ) {
+	$cards     = array();
+	$overrides = get_option( 'adn_journey_card_images', array() );
+	if ( ! is_array( $overrides ) ) {
+		$overrides = array();
+	}
+	foreach ( adn_cms_guide_parents() as $i => $term ) {
 		$name = isset( $term->name ) ? $term->name : '';
 		if ( '' === $name ) {
 			continue;
 		}
-		// Use the term's uploaded image when available; else card falls back to gradient+icon.
-		$image_id  = ! empty( $term->image_id ) ? (int) $term->image_id : 0;
-		$image_url = $image_id ? ( wp_get_attachment_image_url( $image_id, 'medium' ) ?: '' ) : '';
+		// Theme-level override takes priority; falls back to term's own image_id.
+		$tid         = (int) $term->id;
+		$override_id = isset( $overrides[ $tid ] ) ? (int) $overrides[ $tid ] : 0;
+		$image_id    = $override_id ?: ( ! empty( $term->image_id ) ? (int) $term->image_id : 0 );
+		$image_url   = $image_id ? ( wp_get_attachment_image_url( $image_id, 'large' ) ?: '' ) : '';
 
 		$cards[] = array(
 			'image'       => $image_url,

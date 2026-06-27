@@ -311,7 +311,7 @@
     border-color: var(--color-primary, #1d4ed8);
 }
 
-/* Image/icon area — same 16:7 ratio as tool-grid cards */
+/* Image/icon area - same 16:7 ratio as tool-grid cards */
 .popular-calc-icon {
     width: 100%;
     aspect-ratio: 16 / 7;
@@ -822,7 +822,8 @@
     }
 
     .tool-grid--7col {
-        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(90px, 120px));
+        justify-content: start;
     }
 }
 

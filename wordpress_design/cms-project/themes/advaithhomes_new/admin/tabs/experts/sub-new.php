@@ -307,7 +307,7 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 		<div class="card" style="max-width:none;background:#fafafa;margin-bottom:24px;">
 			<h3 style="margin-top:0;"><?php esc_html_e( 'Cover Banner Image', ADN_TEXT_DOMAIN ); ?></h3>
 			<p class="description" style="margin-bottom:16px;">
-				<?php esc_html_e( 'A wide background image shown behind the profile hero — like a LinkedIn cover photo. Recommended size: 1200×300 px.', ADN_TEXT_DOMAIN ); ?>
+				<?php esc_html_e( 'A wide background image shown behind the profile hero - like a LinkedIn cover photo. Recommended size: 1200×300 px.', ADN_TEXT_DOMAIN ); ?>
 			</p>
 
 			<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">

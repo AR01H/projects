@@ -271,7 +271,7 @@ $fa_i = function( $cls, $extra_style = '' ) {
                 <span class="adn-sd-type-icon" style="background:<?php echo esc_attr( $type_def['color'] ); ?>;width:18px;height:18px;font-size:9px;border-radius:4px;">
                     <i class="fa-solid <?php echo esc_attr( $type_def['icon'] ); ?>"></i>
                 </span>
-                <span><strong style="color:#374151;"><?php echo esc_html( $type_def['label'] ); ?></strong> — <?php echo wp_kses_data( $type_def['desc'] ); ?></span>
+                <span><strong style="color:#374151;"><?php echo esc_html( $type_def['label'] ); ?></strong> - <?php echo wp_kses_data( $type_def['desc'] ); ?></span>
             </div>
             <?php endforeach; ?>
         </div>
@@ -297,7 +297,7 @@ $fa_i = function( $cls, $extra_style = '' ) {
         <?php esc_html_e( 'Remove All Mock Data', ADN_TEXT_DOMAIN ); ?>
     </h3>
     <p class="description" style="font-size:13px;margin-bottom:12px;">
-        <?php esc_html_e( 'Removes all posts, FAQs, reviews, experts and glossary terms that were installed by this tool. This is safe to run before going live — it only removes tagged demo content, never your real content.', ADN_TEXT_DOMAIN ); ?>
+        <?php esc_html_e( 'Removes all posts, FAQs, reviews, experts and glossary terms that were installed by this tool. This is safe to run before going live - it only removes tagged demo content, never your real content.', ADN_TEXT_DOMAIN ); ?>
     </p>
 
     <?php if ( $has_installed ) : ?>

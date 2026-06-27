@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Spotlight Terms — manages the ah_spotlight_terms table.
+ * Spotlight Terms - manages the ah_spotlight_terms table.
  * Each term is a named group (e.g. advaith, health, organics).
  */
 class AH_Spotlight_Terms_Model extends AH_Model_Base {
@@ -55,7 +55,7 @@ class AH_Spotlight_Terms_Model extends AH_Model_Base {
 }
 
 /**
- * Spotlights — manages the ah_spotlights table (items).
+ * Spotlights - manages the ah_spotlights table (items).
  */
 class AH_Spotlights_Model extends AH_Model_Base {
 

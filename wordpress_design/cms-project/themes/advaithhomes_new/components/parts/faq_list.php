@@ -3,9 +3,9 @@
  * components/parts/faq_list.php - Reusable accordion FAQ list.
  *
  * Props:
- *   $faqs   array  — each item: { question, answer, link_url, link_text }
+ *   $faqs   array  - each item: { question, answer, link_url, link_text }
  *                    items can be objects or associative arrays.
- *   $heading string — optional section heading (h2)
+ *   $heading string - optional section heading (h2)
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -47,14 +47,14 @@
 		}, 400);
 	}
 
-	// Hide as soon as DOM is ready — covers all cases.
+	// Hide as soon as DOM is ready - covers all cases.
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', hideLoader);
 	} else {
 		// DOMContentLoaded already fired (script is in footer).
 		hideLoader();
 	}
-	// Hard fallback — should never reach this.
+	// Hard fallback - should never reach this.
 	setTimeout(hideLoader, 3000);
 }());
 

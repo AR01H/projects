@@ -18,8 +18,8 @@ $_jny_id = 'journey-track-' . ( ++$_jny_uid );
     </button>
 
     <div class="journey-cards" id="<?php echo esc_attr( $_jny_id ); ?>">
-        <?php foreach ( $cards as $card ) : ?>
-            <?php adn_component( 'cards/journey_card', array( 'card' => $card ) ); ?>
+        <?php foreach ( $cards as $_jny_i => $card ) : ?>
+            <?php adn_component( 'cards/journey_card', array( 'card' => $card, 'num' => $_jny_i + 1 ) ); ?>
         <?php endforeach; ?>
     </div>
 
@@ -37,7 +37,7 @@ $_jny_id = 'journey-track-' . ( ++$_jny_uid );
     var cardW = 0;
 
     function getCardW() {
-        var c = track.querySelector('.journey-card');
+        var c = track.querySelector('.jny-card');
         return c ? c.offsetWidth + 16 : 280;
     }
     function update() {

@@ -21,6 +21,7 @@ class AH_Admin_Menus {
 			// ── Site Layout ───────────────────────────────────────────
 			['title' => 'Navigation Editor',    'menu' => 'Navigation Editor',    'slug' => 'ah-navigation',    'callback' => 'page_navigation'   ],
 			['title' => 'Home Banners',         'menu' => 'Home Banners',         'slug' => 'ah-banners',       'callback' => 'page_banners'      ],
+			['title' => 'Featured In',          'menu' => 'Featured In',          'slug' => 'ah-featured-in',   'callback' => 'page_featured_in'  ],
 			['title' => 'Spotlights',           'menu' => 'Spotlights',           'slug' => 'ah-spotlights',    'callback' => 'page_spotlights'   ],
 			['title' => 'Site Notices',         'menu' => 'Site Notices',         'slug' => 'ah-notices',       'callback' => 'page_notices'      ],
 			['title' => 'News Bar',             'menu' => 'News Bar',             'slug' => 'ah-news-bar',      'callback' => 'page_news_bar'     ],
@@ -36,6 +37,7 @@ class AH_Admin_Menus {
 			// ── Assets ────────────────────────────────────────────────
 			['title' => 'Media Library',        'menu' => 'Media Library',        'slug' => 'ah-media',         'callback' => 'page_media'        ],
 			['title' => 'File Links',           'menu' => 'File Links',           'slug' => 'ah-file-links',    'callback' => 'page_file_links'   ],
+			['title' => 'Resources',            'menu' => 'Resources',            'slug' => 'ah-resources',     'callback' => 'page_resources'    ],
 			// ── System ────────────────────────────────────────────────
 			['title' => 'Visitor Stats',         'menu' => 'Visitor Stats',         'slug' => 'ah-visitors',      'callback' => 'page_visitors'     ],
 			['title' => 'Analytics Reports',    'menu' => 'Analytics Reports',    'slug' => 'ah-analytics',     'callback' => 'page_analytics'    ],
@@ -80,10 +82,12 @@ class AH_Admin_Menus {
 	public static function page_dashboard()      { self::load( 'dashboard'      ); }
 	public static function page_notices()        { self::load( 'notices'        ); }
 	public static function page_banners()        { self::load( 'banners'        ); }
+	public static function page_featured_in()    { self::load( 'featured-in'    ); }
 	public static function page_spotlights()     { self::load( 'spotlights'     ); }
 	public static function page_settings()       { self::load( 'settings'       ); }
 	public static function page_pages()          { self::load( 'pages'          ); }
 	public static function page_media()          { self::load( 'media'          ); }
+	public static function page_resources()      { self::load( 'resources'      ); }
 	public static function page_news_bar()       { self::load( 'news-bar'       ); }
 	public static function page_navigation()     { self::load( 'navigation'     ); }
 	public static function page_reviews()        { self::load( 'reviews'        ); }

@@ -85,7 +85,7 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 			</span>
 		</label>
 
-		<button type="submit" class="btn btn-primary contact-submit-btn">
+		<button type="submit" class="btn btn-primary contact-submit-btn" id="contactSubmitBtn" disabled>
 			<?php echo $_submit; ?> <span aria-hidden="true">→</span>
 		</button>
 
@@ -95,3 +95,12 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 
 	</form>
 </div>
+<script>
+(function(){
+	var cb  = document.getElementById('contactConsent');
+	var btn = document.getElementById('contactSubmitBtn');
+	if ( cb && btn ) {
+		cb.addEventListener('change', function(){ btn.disabled = !cb.checked; });
+	}
+}());
+</script>

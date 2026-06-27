@@ -393,11 +393,11 @@ function adn_topic_category_get_context() {
 	$sidebar = array();
 	$tax_t   = $wpdb->prefix . 'ah_taxonomies';
 
-	// Sidebar topic navigation — sub-categories of the same parent term only.
+	// Sidebar topic navigation - sub-categories of the same parent term only.
 	$topic_items = array();
 
 	if ( $parent ) {
-		// Exclude Glossary-type terms — they are definitions, not navigable topic pages.
+		// Exclude Glossary-type terms - they are definitions, not navigable topic pages.
 		if ( ! empty( $term->parent_term_id ) ) {
 			$all_sibs = $wpdb->get_results( $wpdb->prepare(
 				"SELECT t.id, t.name, t.slug, t.icon_emoji, t.image_id

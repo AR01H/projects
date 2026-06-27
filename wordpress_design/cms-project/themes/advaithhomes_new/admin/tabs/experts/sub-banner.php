@@ -9,13 +9,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$saved         = get_option( 'adn_expert_banner', array() );
-$enabled       = ! empty( $saved['enabled'] );
-$heading       = isset( $saved['heading'] ) ? (string) $saved['heading'] : '';
-$info          = isset( $saved['info'] )    ? (string) $saved['info']    : '';
-$marquee_items = ( isset( $saved['marquee_items'] ) && is_array( $saved['marquee_items'] ) )
+$saved               = get_option( 'adn_expert_banner', array() );
+$enabled             = ! empty( $saved['enabled'] );
+$heading             = isset( $saved['heading'] ) ? (string) $saved['heading'] : '';
+$info                = isset( $saved['info'] )    ? (string) $saved['info']    : '';
+$marquee_items       = ( isset( $saved['marquee_items'] ) && is_array( $saved['marquee_items'] ) )
     ? $saved['marquee_items']
     : array();
+$fi_section          = isset( $saved['featured_in_section'] ) ? (string) $saved['featured_in_section'] : '';
+$_fi_raw             = get_option( 'ah_featured_in_sections', '' );
+$_fi_all             = ( $_fi_raw ? json_decode( $_fi_raw, true ) : array() );
+$_fi_all             = is_array( $_fi_all ) ? $_fi_all : array();
 ?>
 <div class="card" style="max-width:none;">
 	<h2 style="margin-top:0;"><?php esc_html_e( 'Expert Banner', ADN_TEXT_DOMAIN ); ?></h2>
@@ -123,6 +127,30 @@ $marquee_items = ( isset( $saved['marquee_items'] ) && is_array( $saved['marquee
 			<div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
 				<button type="button" id="add-marquee-item" class="button">+ <?php esc_html_e( 'Add Item', ADN_TEXT_DOMAIN ); ?></button>
 			</div>
+		</div>
+
+		<div class="card" style="max-width:none;background:#fafafa;margin-top:8px;">
+			<h3 style="margin-top:0;margin-bottom:4px;"><?php esc_html_e( 'Featured In Strip', ADN_TEXT_DOMAIN ); ?></h3>
+			<p class="description" style="margin-bottom:16px;">
+				<?php esc_html_e( 'Logo strip to display below the expert listing. Manage strips in CMS Plugin → Featured In.', ADN_TEXT_DOMAIN ); ?>
+			</p>
+			<?php if ( empty( $_fi_all ) ) : ?>
+				<p style="color:#d63638;font-size:13px;"><?php esc_html_e( 'No strips yet - create one in CMS Plugin → Featured In.', ADN_TEXT_DOMAIN ); ?></p>
+			<?php else : ?>
+				<select name="featured_in_section" style="min-width:280px;">
+					<option value=""><?php esc_html_e( '- None (hide strip) -', ADN_TEXT_DOMAIN ); ?></option>
+					<?php foreach ( $_fi_all as $_fs ) :
+						$_fid    = isset( $_fs['id'] ) ? (string) $_fs['id'] : '';
+						$_flabel = ( isset( $_fs['heading'] ) && '' !== $_fs['heading'] ) ? $_fs['heading'] : $_fid;
+						$_fcnt   = count( isset( $_fs['logos'] ) && is_array( $_fs['logos'] ) ? $_fs['logos'] : array() );
+						if ( '' === $_fid ) { continue; }
+					?>
+						<option value="<?php echo esc_attr( $_fid ); ?>" <?php selected( $fi_section, $_fid ); ?>>
+							<?php echo esc_html( $_flabel . '  [' . $_fid . ']  ·  ' . $_fcnt . ' logo' . ( 1 !== $_fcnt ? 's' : '' ) ); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			<?php endif; ?>
 		</div>
 
 		<?php submit_button( __( 'Save Banner', ADN_TEXT_DOMAIN ), 'primary', 'submit', false ); ?>

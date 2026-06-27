@@ -68,7 +68,7 @@ function adn_guides_listing_get_context( $slug = '' ) {
 		: array();
 
 	if ( empty( $articles ) ) {
-		// Root /guides/ page or no parent match — fetch all guides across all parents.
+		// Root /guides/ page or no parent match - fetch all guides across all parents.
 		$articles = adn_cms_articles( 100 );
 	}
 

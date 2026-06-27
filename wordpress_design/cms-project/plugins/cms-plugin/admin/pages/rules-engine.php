@@ -151,7 +151,7 @@ if ( isset( $_GET['notice'] ) ) {
 		'test_fired'      => 'success:Test trigger fired - check Trigger Logs to confirm a new entry was created.',
 		'evallog_cleared' => 'success:Evaluate log cleared.',
 		'evallog_deleted' => 'success:Evaluate log entry deleted.',
-		'block_added'     => 'success:Email address blocked — no emails will be sent to it.',
+		'block_added'     => 'success:Email address blocked - no emails will be sent to it.',
 		'block_removed'   => 'success:Email address unblocked.',
 	);
 	$notice = $n_map[ sanitize_key( $_GET['notice'] ) ] ?? '';
@@ -540,7 +540,7 @@ if ( 'config' === $view ) :
 <div class="re-section" style="background:<?php echo '1' === $cfg['global_freeze'] ? '#fef2f2' : '#f9fafb'; ?>;border-color:<?php echo '1' === $cfg['global_freeze'] ? '#fca5a5' : '#e5e7eb'; ?>">
 	<div class="re-section-title" style="color:<?php echo '1' === $cfg['global_freeze'] ? '#b91c1c' : '#111827'; ?>"><span>🔒 Global Freeze</span></div>
 	<p style="font-size:12px;color:#6b7280;margin:-4px 0 14px">
-		When enabled, <strong>no rules will fire at all</strong> — evaluate() exits immediately. Use this as an emergency kill-switch without deactivating individual rules.
+		When enabled, <strong>no rules will fire at all</strong> - evaluate() exits immediately. Use this as an emergency kill-switch without deactivating individual rules.
 	</p>
 	<label class="re-html-row" style="font-weight:600;color:<?php echo '1' === $cfg['global_freeze'] ? '#b91c1c' : '#374151'; ?>">
 		<input type="checkbox" name="cfg_global_freeze" value="1"<?php checked( $cfg['global_freeze'], '1' ); ?>>
@@ -548,7 +548,7 @@ if ( 'config' === $view ) :
 	</label>
 	<?php if ( '1' === $cfg['global_freeze'] ) : ?>
 	<p style="margin:10px 0 0;padding:8px 12px;background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;font-size:12px;color:#b91c1c;font-weight:600">
-		⚠️ Rules Engine is currently FROZEN — no rules are firing.
+		⚠️ Rules Engine is currently FROZEN - no rules are firing.
 	</p>
 	<?php endif; ?>
 </div>
@@ -1192,7 +1192,7 @@ if ( 'blocked' === $view ) :
 ?>
 <div class="re-section" style="max-width:680px">
 	<div class="re-section-title"><span>🚫 Blocked Email Addresses</span></div>
-	<p style="font-size:13px;color:#6b7280;margin:0 0 18px">Emails in this list will never receive messages sent through the Rules Engine — regardless of which rule triggers them.</p>
+	<p style="font-size:13px;color:#6b7280;margin:0 0 18px">Emails in this list will never receive messages sent through the Rules Engine - regardless of which rule triggers them.</p>
 
 	<!-- Add form -->
 	<form method="post" style="display:flex;gap:8px;align-items:center;margin-bottom:24px;flex-wrap:wrap">

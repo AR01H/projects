@@ -2,7 +2,7 @@
 /**
  * components/sections/home_banners_carousel.php
  *
- * Full-width promo banner slider — 16:9 ratio, crossfade transitions,
+ * Full-width promo banner slider - 16:9 ratio, crossfade transitions,
  * animated content, slide counter, prev/next, dots, progress bar, swipe.
  *
  * Props:

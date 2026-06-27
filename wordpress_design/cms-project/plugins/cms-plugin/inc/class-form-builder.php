@@ -5,7 +5,7 @@ class AH_Form_Builder {
 
 	// ── Tables ───────────────────────────────────────────────────────────────
 
-	const SUB_DB_VERSION = '2';
+	const SUB_DB_VERSION = '3';
 	const SUB_DB_OPTION  = 'ah_form_sub_db_v';
 
 	public static function install_tables(): void {
@@ -18,6 +18,7 @@ class AH_Form_Builder {
 			`name`            VARCHAR(200) NOT NULL DEFAULT '',
 			`notify_email`    VARCHAR(200) DEFAULT NULL,
 			`success_message` VARCHAR(500) NOT NULL DEFAULT 'Thank you! We will get back to you shortly.',
+			`submit_label`    VARCHAR(200) NOT NULL DEFAULT '',
 			`status`          ENUM('active','inactive') NOT NULL DEFAULT 'active',
 			`disable_rules`   TINYINT(1) NOT NULL DEFAULT 0,
 			`created_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -29,9 +30,10 @@ class AH_Form_Builder {
 			`form_id`     INT UNSIGNED NOT NULL,
 			`label`       VARCHAR(200) NOT NULL DEFAULT '',
 			`field_key`   VARCHAR(100) NOT NULL DEFAULT '',
-			`field_type`  ENUM('text','email','tel','textarea','select','number','date','url') NOT NULL DEFAULT 'text',
+			`field_type`  ENUM('text','email','tel','textarea','select','number','date','url','hidden') NOT NULL DEFAULT 'text',
 			`placeholder` VARCHAR(300) DEFAULT '',
 			`options`     JSON DEFAULT NULL,
+			`description` TEXT DEFAULT NULL,
 			`is_required` TINYINT(1) NOT NULL DEFAULT 0,
 			`sort_order`  INT NOT NULL DEFAULT 0,
 			PRIMARY KEY (`id`),
@@ -77,7 +79,25 @@ class AH_Form_Builder {
 			if ( ! in_array( 'disable_rules', $fexisting, true ) ) {
 				$wpdb->query( "ALTER TABLE `{$ft}` ADD COLUMN `disable_rules` TINYINT(1) NOT NULL DEFAULT 0 AFTER `status`" );
 			}
+			if ( ! in_array( 'submit_label', $fexisting, true ) ) {
+				$wpdb->query( "ALTER TABLE `{$ft}` ADD COLUMN `submit_label` VARCHAR(200) NOT NULL DEFAULT '' AFTER `success_message`" );
+			}
 		}
+
+		// ── ah_form_fields: add description column + hidden ENUM value ──
+		$ff = $wpdb->prefix . 'ah_form_fields';
+		$ff_cols = $wpdb->get_results( "SHOW COLUMNS FROM `{$ff}`", ARRAY_A );
+		if ( $ff_cols ) {
+			$ff_existing = array_column( $ff_cols, 'Field' );
+			if ( ! in_array( 'description', $ff_existing, true ) ) {
+				$wpdb->query( "ALTER TABLE `{$ff}` ADD COLUMN `description` TEXT DEFAULT NULL AFTER `options`" );
+			}
+			$ff_type_map = array_column( $ff_cols, 'Type', 'Field' );
+			if ( isset( $ff_type_map['field_type'] ) && false === strpos( $ff_type_map['field_type'], 'hidden' ) ) {
+				$wpdb->query( "ALTER TABLE `{$ff}` MODIFY COLUMN `field_type` ENUM('text','email','tel','textarea','select','number','date','url','hidden') NOT NULL DEFAULT 'text'" );
+			}
+		}
+
 		update_option( self::SUB_DB_OPTION, self::SUB_DB_VERSION );
 	}
 
@@ -142,7 +162,8 @@ class AH_Form_Builder {
 				'field_type'  => $type,
 				'placeholder' => sanitize_text_field( $f['placeholder'] ?? '' ),
 				'options'     => ! empty( $opts ) ? wp_json_encode( $opts ) : null,
-				'is_required' => empty( $f['is_required'] ) ? 0 : 1,
+				'description' => sanitize_textarea_field( $f['description'] ?? '' ),
+				'is_required' => ( 'hidden' === $type ) ? 0 : ( empty( $f['is_required'] ) ? 0 : 1 ),
 				'sort_order'  => $i,
 			) );
 		}
@@ -273,6 +294,7 @@ class AH_Form_Builder {
 .ch-form-textarea::placeholder{color:#9ca3af}
 .ch-form-textarea{min-height:130px;resize:vertical;line-height:1.6}
 .ch-form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:40px;cursor:pointer}
+.ch-form-desc{font-size:11.5px;color:#9ca3af;margin:4px 0 0;line-height:1.4}
 .ch-form-submit{display:inline-flex;align-items:center;gap:8px;background:#1a3c5e;color:#fff;border:none;border-radius:8px;padding:13px 32px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:.01em;transition:background .15s,transform .1s}
 .ch-form-submit:hover{background:#15304d}
 .ch-form-submit:active{transform:scale(.98)}
@@ -301,11 +323,17 @@ class AH_Form_Builder {
     <div style="display:none;visibility:hidden" aria-hidden="true"><input type="text" name="ah_hp" tabindex="-1" autocomplete="off"></div>
 
     <?php foreach ( $fields as $f ) :
+      if ( 'hidden' === $f->field_type ) : ?>
+        <input type="hidden" name="<?php echo esc_attr( $f->field_key ); ?>" value="<?php echo esc_attr( $f->placeholder ); ?>">
+        <?php continue; ?>
+      <?php endif; ?>
+      <?php
       $fid   = esc_attr( $uid . '_' . $f->field_key );
       $fname = esc_attr( $f->field_key );
       $fph   = esc_attr( $f->placeholder );
       $freq  = $f->is_required;
-    ?>
+      $fdesc = isset( $f->description ) ? trim( (string) $f->description ) : '';
+      ?>
     <div class="ch-form-group">
       <label class="ch-form-label" for="<?php echo $fid; ?>"><?php echo esc_html( $f->label ); ?><?php if ( $freq ) : ?><span class="ah-req">*</span><?php endif; ?></label>
       <?php if ( 'textarea' === $f->field_type ) : ?>
@@ -318,6 +346,7 @@ class AH_Form_Builder {
       <?php else : ?>
         <input class="ch-form-input" type="<?php echo esc_attr( $f->field_type ); ?>" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>>
       <?php endif; ?>
+      <?php if ( $fdesc ) : ?><p class="ch-form-desc"><?php echo esc_html( $fdesc ); ?></p><?php endif; ?>
     </div>
     <?php endforeach; ?>
 
@@ -352,13 +381,29 @@ class AH_Form_Builder {
         </label>
       </div>
       <?php if ( $agr_type === 'popup' && ! empty( $agr['popup_html'] ) ) : ?>
-        <div id="ch-tpop-<?php echo esc_attr( $uid ); ?>" role="dialog" aria-modal="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
-          <div style="background:#fff;border-radius:12px;max-width:640px;width:100%;max-height:80vh;overflow-y:auto;padding:32px 36px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-            <button type="button" aria-label="Close" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:24px;line-height:1;cursor:pointer;color:#6b7280;padding:4px">&times;</button>
-            <div class="ch-terms-popup-content"><?php echo wp_kses_post( $agr['popup_html'] ); ?></div>
+        <div id="ch-tpop-<?php echo esc_attr( $uid ); ?>" role="dialog" aria-modal="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;backdrop-filter:blur(2px)">
+          <div style="background:#fff;border-radius:16px;max-width:600px;width:100%;max-height:82vh;display:flex;flex-direction:column;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.28);outline:1px solid rgba(255,255,255,0.12);ring:1px solid rgba(0,0,0,0.06)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid #f0f0f0;flex-shrink:0">
+              <span style="font-size:1rem;font-weight:700;color:#111827;letter-spacing:-0.01em">Terms &amp; Conditions</span>
+              <button type="button" aria-label="Close" style="background:none;border:1px solid #e5e7eb;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;cursor:pointer;color:#6b7280;padding:0;flex-shrink:0;transition:border-color .15s,color .15s">&times;</button>
+            </div>
+            <div class="ch-terms-popup-content" style="overflow-y:auto;padding:20px 24px 24px;flex:1;min-height:0"><?php echo wp_kses_post( $agr['popup_html'] ); ?></div>
           </div>
         </div>
-        <style>.ch-terms-popup-btn{background:none;border:none;padding:0;color:#1a3c5e;text-decoration:underline;font-weight:600;cursor:pointer;font-family:inherit;font-size:inherit;margin:0 3px}</style>
+        <style>
+.ch-terms-popup-btn{background:none;border:none;padding:0;color:#1a3c5e;text-decoration:underline;font-weight:600;cursor:pointer;font-family:inherit;font-size:inherit;margin:0 3px}
+.ch-terms-popup-content{color:#4b5563;font-size:0.875rem;line-height:1.75}
+.ch-terms-popup-content h1,.ch-terms-popup-content h2,.ch-terms-popup-content h3{color:#111827;font-weight:700;margin:0 0 10px;line-height:1.3}
+.ch-terms-popup-content h1{font-size:1.1rem}
+.ch-terms-popup-content h2{font-size:1rem;margin-top:18px}
+.ch-terms-popup-content h3{font-size:0.95rem;margin-top:14px}
+.ch-terms-popup-content p{margin:0 0 10px}
+.ch-terms-popup-content p:last-child{margin-bottom:0}
+.ch-terms-popup-content ul,.ch-terms-popup-content ol{margin:0 0 12px;padding-left:18px}
+.ch-terms-popup-content li{margin-bottom:5px}
+.ch-terms-popup-content strong{color:#111827;font-weight:600}
+.ch-terms-popup-content a{color:#1a3c5e;text-decoration:underline}
+</style>
         <script>
         (function(){
           var ov=document.getElementById('ch-tpop-<?php echo esc_js( $uid ); ?>');
@@ -376,10 +421,11 @@ class AH_Form_Builder {
     </div>
     <?php endif; ?>
 
+    <?php $submit_label = ! empty( $form->submit_label ) ? $form->submit_label : 'Send Message'; ?>
     <div>
       <button type="submit" class="ch-form-submit ah-sb">
         <svg class="ah-sp" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10" stroke-dasharray="31 62"/></svg>
-        <span class="ah-bt">Send Message</span>
+        <span class="ah-bt"><?php echo esc_html( $submit_label ); ?></span>
       </button>
     </div>
   </form>
@@ -422,7 +468,7 @@ class AH_Form_Builder {
         btn.disabled = true; btt.textContent = 'Sent'; sp.style.display = 'none'; btn.style.opacity = '0.55'; btn.style.cursor = 'not-allowed';
       } else {
         msg(ec, 'error', r.data && r.data.message ? r.data.message : 'Something went wrong.');
-        btn.disabled = false; btt.textContent = 'Send Message'; sp.style.display = 'none';
+        btn.disabled = false; btt.textContent = '<?php echo esc_js( $submit_label ); ?>'; sp.style.display = 'none';
       }
     })
     .catch(function(){
@@ -472,7 +518,7 @@ class AH_Form_Builder {
 	}
 
 	public static function allowed_type( string $type ): string {
-		$allowed = array( 'text', 'email', 'tel', 'textarea', 'select', 'number', 'date', 'url' );
+		$allowed = array( 'text', 'email', 'tel', 'textarea', 'select', 'number', 'date', 'url', 'hidden' );
 		return in_array( $type, $allowed, true ) ? $type : 'text';
 	}
 
@@ -486,6 +532,7 @@ class AH_Form_Builder {
 			'number'   => 'Number',
 			'date'     => 'Date',
 			'url'      => 'URL',
+			'hidden'   => 'Hidden Field',
 		);
 		return $map[ $type ] ?? $type;
 	}

@@ -173,7 +173,7 @@ class AH_Newsletter {
 	 * Send a notification to all active subscribers via the Rules Engine.
 	 *
 	 * Fires AH_Rules_Engine::evaluate( 'notification_send', $context, true ) for
-	 * each active subscriber (immediate mode). The Rules Engine decides delivery —
+	 * each active subscriber (immediate mode). The Rules Engine decides delivery -
 	 * configure a rule with trigger "Notification – Send" and any action:
 	 * send_email, WhatsApp, webhook, or a combination.
 	 *

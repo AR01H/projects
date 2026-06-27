@@ -2,7 +2,7 @@
 /**
  * includes/adn-sidebar-helpers.php
  *
- * adn_get_page_sidebar_data( $page_id ) — reusable sidebar data builder.
+ * adn_get_page_sidebar_data( $page_id ) - reusable sidebar data builder.
  * Returns an array compatible with components/parts/contact_sidebar.php.
  * Usage on any page template:
  *   adn_component( 'parts/contact_sidebar', array(

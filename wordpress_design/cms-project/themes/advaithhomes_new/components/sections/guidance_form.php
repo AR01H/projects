@@ -97,7 +97,26 @@ $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_la
 			<?php endif; ?>
 		</div>
 
-		<button type="submit" class="btn btn-primary guidance-submit-btn">
+		<label class="consent-row">
+			<input type="checkbox" name="consent" id="guidanceConsent" required />
+			<span>
+				<?php
+				$_pp_url = esc_url( home_url( FORM_CONSENT_PRIVACY_URL ) );
+				$_tc_url = esc_url( home_url( FORM_CONSENT_TERMS_URL ) );
+				printf(
+					esc_html__( 'I agree to the %1$s%2$s%3$s and %4$s%5$s%6$s', ADN_TEXT_DOMAIN ),
+					'<a href="' . $_pp_url . '" target="_blank" rel="noopener">',
+					esc_html( FORM_CONSENT_PRIVACY_LABEL ),
+					'</a>',
+					'<a href="' . $_tc_url . '" target="_blank" rel="noopener">',
+					esc_html( FORM_CONSENT_TERMS_LABEL ),
+					'</a>'
+				);
+				?>
+			</span>
+		</label>
+
+		<button type="submit" class="btn btn-primary guidance-submit-btn" id="guidanceSubmitBtn" disabled>
 			<?php echo $_submit; ?> <span aria-hidden="true">→</span>
 		</button>
 
@@ -107,3 +126,12 @@ $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_la
 
 	</form>
 </div>
+<script>
+(function(){
+	var cb  = document.getElementById('guidanceConsent');
+	var btn = document.getElementById('guidanceSubmitBtn');
+	if ( cb && btn ) {
+		cb.addEventListener('change', function(){ btn.disabled = !cb.checked; });
+	}
+}());
+</script>

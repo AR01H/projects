@@ -9,69 +9,95 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$footer = isset( $footer ) && is_array( $footer ) ? $footer : array();
-
+$footer       = isset( $footer ) && is_array( $footer ) ? $footer : array();
 $brand        = isset( $footer['brand'] ) ? (array) $footer['brand'] : array();
 $social       = isset( $footer['social'] ) ? (array) $footer['social'] : array();
 $columns      = isset( $footer['columns'] ) ? (array) $footer['columns'] : array();
 $bottom_links = isset( $footer['bottom_links'] ) ? (array) $footer['bottom_links'] : array();
+$nl_nonce     = wp_create_nonce( 'ah_newsletter_nonce' );
 ?>
 <footer class="site-footer">
-    <div class="container">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="footer-logo">
+
+    <?php /* ── Top bar: logo + newsletter ── */ ?>
+    <div class="footer-topbar">
+        <div class="container">
+            <div class="footer-topbar-inner">
+
+                <div class="footer-topbar-logo">
                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
-                        <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ); ?>" alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : '' ); ?>" width="200" />
+                        <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ); ?>"
+                             alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : '' ); ?>"
+                             width="160" />
                     </a>
                 </div>
-                <p class="footer-desc"><?php echo esc_html( isset( $brand['description'] ) ? $brand['description'] : '' ); ?></p>
-                <?php
-                $_ft_phone   = defined( 'COMPANY_PHONE_NO' ) ? COMPANY_PHONE_NO : '';
-                $_ft_email   = defined( 'COMPANY_EMAIL' ) ? COMPANY_EMAIL : '';
-                $_ft_address = function_exists( 'adn_get_contact_setting' ) ? adn_get_contact_setting( 'address' ) : '';
-                if ( $_ft_phone || $_ft_email || $_ft_address ) : ?>
-                <ul class="footer-contact-list">
-                    <?php if ( $_ft_phone ) : ?>
-                    <li><a href="tel:<?php echo esc_attr( preg_replace( '/[^+\d]/', '', $_ft_phone ) ); ?>" class="footer-contact-item"><i class="fa-solid fa-phone" aria-hidden="true"></i> <?php echo esc_html( $_ft_phone ); ?></a></li>
-                    <?php endif; ?>
-                    <?php if ( $_ft_email ) : ?>
-                    <li><a href="mailto:<?php echo esc_attr( $_ft_email ); ?>" class="footer-contact-item"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <?php echo esc_html( $_ft_email ); ?></a></li>
-                    <?php endif; ?>
-                    <?php if ( $_ft_address ) : ?>
-                    <li><span class="footer-contact-item"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <?php echo esc_html( $_ft_address ); ?></span></li>
-                    <?php endif; ?>
-                </ul>
-                <?php endif; ?>
-                <div class="footer-social">
-                    <?php foreach ( $social as $item ) : ?>
-                        <a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>"
-                           class="social-btn"
-                           aria-label="<?php echo esc_attr( isset( $item['label'] ) ? $item['label'] : '' ); ?>"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></a>
+
+                <div class="footer-topbar-nl">
+                    <div class="footer-topbar-nl-text">
+                        <strong><?php echo esc_html( defined( 'SITE_NEWSLETTER_TITLE' ) ? SITE_NEWSLETTER_TITLE : 'Stay Informed, Stay Ahead' ); ?></strong>
+                        <span><?php echo esc_html( defined( 'SITE_NEWSLETTER_DESC' ) ? SITE_NEWSLETTER_DESC : 'The latest property news, guides and expert insights' ); ?></span>
+                    </div>
+                    <form class="footer-nl-form adn-nl-form" onsubmit="return false;"
+                          data-nonce="<?php echo esc_attr( $nl_nonce ); ?>"
+                          data-ajaxurl="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
+                        <div class="footer-nl-row">
+                            <input type="email" name="nl_email" class="adn-nl-email"
+                                   placeholder="<?php echo esc_attr( defined( 'SITE_NEWSLETTER_PH' ) ? SITE_NEWSLETTER_PH : 'Add your email here' ); ?>"
+                                   aria-label="Email address" required />
+                            <button type="submit" class="adn-nl-btn footer-nl-btn">
+                                <?php echo esc_html( defined( 'SITE_BTN_SUBSCRIBE' ) ? SITE_BTN_SUBSCRIBE : 'Subscribe' ); ?>
+                            </button>
+                        </div>
+                        <div class="adn-nl-msg" style="display:none;margin-top:8px;font-size:13px;font-weight:500"></div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <?php /* ── Nav columns ── */ ?>
+    <div class="footer-main">
+        <div class="container">
+            <div class="footer-cols-grid">
+                <?php foreach ( $columns as $column ) : ?>
+                    <div class="footer-col">
+                        <h4><?php echo esc_html( isset( $column['title'] ) ? $column['title'] : '' ); ?></h4>
+                        <div class="footer-links">
+                            <?php foreach ( (array) ( isset( $column['links'] ) ? $column['links'] : array() ) as $link ) : ?>
+                                <a href="<?php echo esc_url( adn_link( isset( $link['url'] ) ? $link['url'] : '' ) ); ?>"
+                                   class="footer-link<?php echo ! empty( $link['highlight'] ) ? ' nav-link--highlight' : ''; ?>"><?php echo esc_html( isset( $link['label'] ) ? $link['label'] : '' ); ?></a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <?php /* ── Bottom bar ── */ ?>
+    <div class="footer-bottom-bar">
+        <div class="container">
+            <div class="footer-bottom">
+                <span><?php echo esc_html( isset( $footer['copyright'] ) ? $footer['copyright'] : '' ); ?></span>
+                <div class="footer-bottom-links">
+                    <?php foreach ( $bottom_links as $link ) : ?>
+                        <a href="<?php echo esc_url( adn_link( isset( $link['url'] ) ? $link['url'] : '' ) ); ?>"
+                           class="footer-link"><?php echo esc_html( isset( $link['label'] ) ? $link['label'] : '' ); ?></a>
                     <?php endforeach; ?>
                 </div>
-            </div>
-
-            <?php foreach ( $columns as $column ) : ?>
-                <div class="footer-col">
-                    <h4><?php echo esc_html( isset( $column['title'] ) ? $column['title'] : '' ); ?></h4>
-                    <div class="footer-links">
-                        <?php foreach ( (array) ( isset( $column['links'] ) ? $column['links'] : array() ) as $link ) : ?>
-                            <a href="<?php echo esc_url( adn_link( isset( $link['url'] ) ? $link['url'] : '' ) ); ?>" class="footer-link"><?php echo esc_html( isset( $link['label'] ) ? $link['label'] : '' ); ?></a>
+                <div class="footer-bottom-right">
+                    <?php if ( ! empty( $footer['made_with'] ) ) : ?>
+                        <span class="footer-made-with"><?php echo esc_html( $footer['made_with'] ); ?></span>
+                    <?php endif; ?>
+                    <div class="footer-social">
+                        <?php foreach ( $social as $item ) : ?>
+                            <a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>"
+                               class="social-btn"
+                               aria-label="<?php echo esc_attr( isset( $item['label'] ) ? $item['label'] : '' ); ?>"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></a>
                         <?php endforeach; ?>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="footer-bottom">
-            <span><?php echo esc_html( isset( $footer['copyright'] ) ? $footer['copyright'] : '' ); ?></span>
-            <div class="footer-bottom-links">
-                <?php foreach ( $bottom_links as $link ) : ?>
-                    <a href="<?php echo esc_url( adn_link( isset( $link['url'] ) ? $link['url'] : '' ) ); ?>" class="footer-link"><?php echo esc_html( isset( $link['label'] ) ? $link['label'] : '' ); ?></a>
-                <?php endforeach; ?>
             </div>
-            <span><?php echo esc_html( isset( $footer['made_with'] ) ? $footer['made_with'] : '' ); ?></span>
         </div>
     </div>
 
@@ -80,4 +106,45 @@ $bottom_links = isset( $footer['bottom_links'] ) ? (array) $footer['bottom_links
             <div class="container"><?php echo esc_html( $footer['disclaimer'] ); ?></div>
         </div>
     <?php endif; ?>
+
+<script>
+(function () {
+    var form = document.querySelector('.footer-nl-form');
+    if ( ! form ) return;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = form.querySelector('.adn-nl-email').value.trim();
+        var btn   = form.querySelector('.footer-nl-btn');
+        var msg   = form.querySelector('.adn-nl-msg');
+        if ( ! email ) return;
+        btn.disabled = true;
+        var orig = btn.textContent;
+        btn.textContent = '...';
+        var fd = new FormData();
+        fd.append('action', 'ah_newsletter_subscribe');
+        fd.append('nonce',  form.dataset.nonce);
+        fd.append('email',  email);
+        fd.append('source', 'footer');
+        fetch(form.dataset.ajaxurl, { method: 'POST', body: fd })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                btn.disabled = false;
+                btn.textContent = orig;
+                if (msg) {
+                    msg.style.display  = 'block';
+                    msg.textContent    = res.data && res.data.message ? res.data.message : (res.success ? 'Thank you!' : 'Something went wrong.');
+                    msg.style.color    = res.success ? '#4ade80' : '#f87171';
+                }
+                if (res.success) { form.reset(); }
+            })
+            .catch(function () {
+                btn.disabled = false;
+                btn.textContent = orig;
+                if (msg) { msg.style.display = 'block'; msg.textContent = 'Request failed. Please try again.'; msg.style.color = '#f87171'; }
+            });
+    });
+})();
+</script>
+
 </footer>
+

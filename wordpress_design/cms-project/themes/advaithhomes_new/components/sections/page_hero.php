@@ -77,7 +77,7 @@ $_hero_img     = $_hero_img_id
 
 			<?php /* Title */ ?>
 			<?php if ( ! empty( $hero['title'] ) ) : ?>
-				<h1><?php echo esc_html( $hero['title'] ); ?></h1>
+				<h1><?php echo wp_kses_post( $hero['title'] ); ?></h1>
 			<?php endif; ?>
 
 			<?php /* Description */ ?>

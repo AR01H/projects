@@ -1,15 +1,15 @@
 <?php
 /**
  * components/parts/spotlights_widget.php
- * Spotlight panel — two rendering modes.
+ * Spotlight panel - two rendering modes.
  *
  * Props:
  *   term_slug    string  required
- *   max_items    int     optional — override term's max_display
- *   widget_title string  optional — override heading
- *   sidebar      bool    optional — true = sw-panel via sidebar_link_list
+ *   max_items    int     optional - override term's max_display
+ *   widget_title string  optional - override heading
+ *   sidebar      bool    optional - true = sw-panel via sidebar_link_list
  *                                   false (default) = sp-panel via list_widget
- *   compact      bool    optional — true = metric cards for category top band
+ *   compact      bool    optional - true = metric cards for category top band
  */
 
 defined( 'ABSPATH' ) || exit;

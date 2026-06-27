@@ -144,7 +144,7 @@ adn_page_open( $_open_ctx );
 
 		<aside class="sidebar-col topic-listing-sidebar">
 
-			<?php /* Sibling topics — reuse sidebar_guide_parents */ ?>
+			<?php /* Sibling topics - reuse sidebar_guide_parents */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['buying_topics']['items'] ) ) : ?>
 				<?php adn_component( 'parts/sidebar_guide_parents', array(
 					'guide_parents' => $ctx['sidebar']['buying_topics'],

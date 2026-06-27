@@ -13,25 +13,27 @@ $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
 ?>
 <div class="newsletter-inner">
     <div class="newsletter-text">
-        <h3 class="newsletter-inner-header">
-            <div class="newsletter-icon"><?php echo adn_icon( isset( $newsletter['icon'] ) ? $newsletter['icon'] : '' ); ?></div>
-            <?php echo esc_html( isset( $newsletter['title'] ) ? $newsletter['title'] : '' ); ?>
-        </h3>
-        <p><?php echo esc_html( isset( $newsletter['description'] ) ? $newsletter['description'] : '' ); ?></p>
+        <div class="newsletter-inner-header">
+            <div class="newsletter-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <polyline points="2,4 12,13 22,4"/>
+                </svg>
+            </div>
+            <div class="newsletter-text-group">
+                <h3><?php echo esc_html( isset( $newsletter['title'] ) ? $newsletter['title'] : '' ); ?></h3>
+                <p><?php echo esc_html( isset( $newsletter['description'] ) ? $newsletter['description'] : '' ); ?></p>
+            </div>
+        </div>
     </div>
     <div class="newsletter-form-wrap">
         <form class="newsletter-form adn-nl-form" onsubmit="return false;" data-nonce="<?php echo esc_attr( $nl_nonce ); ?>" data-ajaxurl="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
             <div class="nl-input-row">
                 <input type="email" name="nl_email" class="adn-nl-email"
-                       placeholder="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : adn_term( 'sidebar.newsletter_placeholder', 'Your email address' ) ); ?>"
+                       placeholder="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : adn_term( 'sidebar.newsletter_placeholder', 'Enter your email address' ) ); ?>"
                        aria-label="<?php echo esc_attr( isset( $newsletter['placeholder'] ) ? $newsletter['placeholder'] : 'Email address' ); ?>"
                        required />
-                <button type="submit" class="adn-nl-btn" aria-label="<?php echo esc_attr( SITE_BTN_SUBSCRIBE ); ?>">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+                <button type="submit" class="adn-nl-btn"><?php echo esc_html( isset( $newsletter['button_label'] ) && $newsletter['button_label'] ? $newsletter['button_label'] : SITE_BTN_SUBSCRIBE ); ?></button>
             </div>
         </form>
         <div class="newsletter-spam"><?php echo esc_html( isset( $newsletter['note'] ) ? $newsletter['note'] : '' ); ?></div>

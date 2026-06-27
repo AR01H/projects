@@ -44,7 +44,7 @@ class ADN_Mock_Installer {
             ? wp_unslash( $_POST['seed'] ) : array();
 
         if ( empty( $raw ) ) {
-            return array( 'ok' => false, 'message' => __( 'Nothing selected — tick at least one checkbox and try again.', ADN_TEXT_DOMAIN ) );
+            return array( 'ok' => false, 'message' => __( 'Nothing selected - tick at least one checkbox and try again.', ADN_TEXT_DOMAIN ) );
         }
 
         $allowed_types = array( 'taxonomy', 'guides', 'news', 'faqs', 'reviews', 'members', 'terms', 'banners', 'notices' );
@@ -152,7 +152,7 @@ class ADN_Mock_Installer {
         }
 
         $created_str = empty( $parts )
-            ? __( 'Nothing new to create — all items already existed.', ADN_TEXT_DOMAIN )
+            ? __( 'Nothing new to create - all items already existed.', ADN_TEXT_DOMAIN )
             : implode( ', ', $parts ) . ' ' . __( 'created.', ADN_TEXT_DOMAIN );
 
         return array( 'ok' => true, 'message' => $created_str . ' ' . __( 'Existing items were left untouched.', ADN_TEXT_DOMAIN ) );

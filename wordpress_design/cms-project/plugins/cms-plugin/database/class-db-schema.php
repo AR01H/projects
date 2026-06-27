@@ -949,7 +949,7 @@ class AH_DB_Schema {
 				KEY idx_active (is_active)
 			) ENGINE=InnoDB {$cs}",
 
-			// Redirect Rules — slug → URL mapping managed from admin
+			// Redirect Rules - slug → URL mapping managed from admin
 			"CREATE TABLE IF NOT EXISTS {$p}ah_redirect_rules (
 				id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				source_slug VARCHAR(500) NOT NULL,
@@ -962,7 +962,7 @@ class AH_DB_Schema {
 				UNIQUE KEY idx_source (source_slug(191))
 			) ENGINE=InnoDB {$cs}",
 
-			// Custom Code — per-slug CSS/JS injected on the frontend
+			// Custom Code - per-slug CSS/JS injected on the frontend
 			"CREATE TABLE IF NOT EXISTS {$p}ah_custom_code (
 				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				slug       VARCHAR(200) NOT NULL,
@@ -974,7 +974,7 @@ class AH_DB_Schema {
 				UNIQUE KEY idx_slug (slug(191))
 			) ENGINE=InnoDB {$cs}",
 
-			// Visitor Logs — one row per page visit
+			// Visitor Logs - one row per page visit
 			"CREATE TABLE IF NOT EXISTS {$p}ah_visitor_logs (
 				id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				ip_address   VARCHAR(45)  NOT NULL DEFAULT '',
@@ -988,6 +988,25 @@ class AH_DB_Schema {
 				KEY idx_slug     (page_slug(191)),
 				KEY idx_date     (visited_at),
 				KEY idx_session  (session_id)
+			) ENGINE=InnoDB {$cs}",
+
+			// Resources (embeddable media: YouTube, Instagram, Facebook, Twitter, TikTok, image, audio, PDF, custom embed)
+			"CREATE TABLE IF NOT EXISTS {$p}ah_resources (
+				id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				type          ENUM('youtube','shorts','instagram','facebook','twitter','tiktok','image','audio','pdf','embed') NOT NULL DEFAULT 'youtube',
+				title         VARCHAR(255) NOT NULL DEFAULT '',
+				url           VARCHAR(1000) NOT NULL DEFAULT '',
+				embed_code    TEXT DEFAULT NULL,
+				thumbnail_url VARCHAR(1000) DEFAULT NULL,
+				description   TEXT DEFAULT NULL,
+				context       VARCHAR(200) NOT NULL DEFAULT '',
+				tags          VARCHAR(500) DEFAULT NULL,
+				sort_order    INT DEFAULT 0,
+				status        ENUM('active','inactive') DEFAULT 'active',
+				created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				KEY idx_type   (type),
+				KEY idx_status (status)
 			) ENGINE=InnoDB {$cs}",
 		);
 	}

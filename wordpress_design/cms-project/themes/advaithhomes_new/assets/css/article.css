@@ -8,7 +8,7 @@
 .article-layout {
   display: grid;
   grid-template-columns: 1fr 280px;
-  gap: 40px;
+  gap: 20px;
   align-items: start;
 }
 .article-main {}
@@ -392,6 +392,7 @@
 }
 
 @media (max-width: 768px) {
+  .article-layout { display:flex;flex-wrap:wrap;gap:20px; }
   .article-header-split { grid-template-columns: 1fr; }
   .key-takeaways-grid { grid-template-columns: 1fr; }
   .article-sidebar { grid-template-columns: 1fr; }

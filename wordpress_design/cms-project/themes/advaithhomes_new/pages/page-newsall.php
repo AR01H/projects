@@ -106,7 +106,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 						</div>
 					<?php endif; ?>
 
-					<?php /* Source link — excerpt used as the description text */ ?>
+					<?php /* Source link - excerpt used as the description text */ ?>
 					<?php if ( ! empty( $_nb_item->link_url ) ) : ?>
 						<div class="news-single-source">
 							<span class="news-single-source-label">
@@ -125,7 +125,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 						</div>
 					<?php endif; ?>
 
-					<?php /* Share bar — after content */ ?>
+					<?php /* Share bar - after content */ ?>
 					<?php if ( $_nb_url ) : ?>
 						<?php adn_component( 'sections/post_feedback', array(
 							'share'        => array( 'url' => $_nb_url, 'title' => $_nb_title ),

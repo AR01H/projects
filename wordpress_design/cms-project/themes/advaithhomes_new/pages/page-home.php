@@ -20,6 +20,8 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_home_logical.php';
 $ctx = adn_home_get_context();
 
+wp_enqueue_style( 'adn-resources', get_template_directory_uri() . '/assets/css/resources.css', array(), ADN_THEME_VERSION );
+
 adn_page_open( $ctx );
 ?>
 
@@ -68,6 +70,14 @@ adn_page_open( $ctx );
 </section>
 <?php endif; ?>
 
+<?php /* ============================== FEATURED IN (below journey cards) ============================== */ ?>
+<?php
+$_fi_home     = get_option( 'adn_home_sections', array() );
+$_fi_home_sec = ( is_array( $_fi_home ) && ! empty( $_fi_home['featured_in_section'] ) )
+	? sanitize_key( $_fi_home['featured_in_section'] ) : '';
+adn_component( 'parts/featured_in', array( 'section' => $_fi_home_sec ) );
+?>
+
 <?php /* ==================== HOME BANNERS CAROUSEL ==================== */ ?>
 <?php if ( adn_home_section_visible( 'banners' ) && ! empty( $ctx['banners']['items'] ) ) : ?>
 <section class="banners-promo-section">
@@ -79,7 +89,7 @@ adn_page_open( $ctx );
 <?php endif; ?>
 
 <?php
-/* Resolve spotlight term once — used inside news row */
+/* Resolve spotlight term once - used inside news row */
 $_home_secs    = get_option( 'adn_home_sections', array() );
 $_sp_term_slug = sanitize_key( $_home_secs['spotlight_term'] ?? '' );
 $_sp_active    = adn_home_section_visible( 'spotlights' ) && '' !== $_sp_term_slug;
@@ -142,6 +152,34 @@ $_has_news_data = ! empty( $ctx['news']['items'] )
 		) );
 		adn_component( 'sections/guides', array( 'items' => $ctx['guides']['items'] ) );
 		?>
+	</div>
+</section>
+<?php endif; ?>
+
+<?php /* ============================== RESOURCES ============================== */ ?>
+<?php
+$_home_res_opt     = get_option( 'adn_home_resources', array() );
+$_home_res_ids     = ( isset( $_home_res_opt['library_ids'] ) && is_array( $_home_res_opt['library_ids'] ) )
+	? array_filter( array_map( 'absint', $_home_res_opt['library_ids'] ) )
+	: array();
+$_home_res_heading = isset( $_home_res_opt['heading'] ) && '' !== $_home_res_opt['heading']
+	? (string) $_home_res_opt['heading'] : '';
+$_home_res_items   = array();
+if ( ! empty( $_home_res_ids ) && class_exists( 'AH_Resources_Model' ) ) {
+	global $wpdb;
+	$_hr_table       = $wpdb->prefix . 'ah_resources';
+	$_hr_id_in       = implode( ',', array_map( 'intval', $_home_res_ids ) );
+	$_home_res_items = $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		"SELECT * FROM `{$_hr_table}` WHERE id IN ({$_hr_id_in}) AND status = 'active' ORDER BY FIELD(id, {$_hr_id_in})"
+	) ?: array();
+}
+?>
+<?php if ( ! empty( $_home_res_items ) ) : ?>
+<section class="home-resources-section">
+	<div class="container">
+		<?php adn_component( 'sections/category_resources', array(
+			'resources' => array( 'items' => $_home_res_items, 'heading' => $_home_res_heading ),
+		) ); ?>
 	</div>
 </section>
 <?php endif; ?>

@@ -89,7 +89,7 @@ $type_meta = array(
 <h1 style="display:flex;align-items:center;gap:10px;">
 	<span class="dashicons dashicons-randomize" style="font-size:24px;width:24px;height:24px;color:#7c3aed;"></span>
 	Redirect Rules
-	<span style="font-size:13px;font-weight:400;color:var(--ah-muted);margin-left:4px;">— short links &amp; redirects</span>
+	<span style="font-size:13px;font-weight:400;color:var(--ah-muted);margin-left:4px;">- short links &amp; redirects</span>
 </h1>
 
 <?php if ( $nm ) : ?>
@@ -177,7 +177,7 @@ $type_meta = array(
 					<div style="display:flex;align-items:center;gap:5px;">
 						<span style="color:var(--ah-muted);font-size:11px;"><?php echo esc_html( $tm['icon'] ); ?></span>
 						<?php if ( '410' === $r->type ) : ?>
-							<em style="font-size:11px;color:#b91c1c;">— page permanently removed</em>
+							<em style="font-size:11px;color:#b91c1c;">- page permanently removed</em>
 						<?php elseif ( $r->target_url ) : ?>
 							<span style="font-size:11px;color:var(--ah-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;"
 							      title="<?php echo esc_attr( $r->target_url ); ?>">
@@ -254,7 +254,7 @@ $type_meta = array(
 			<input type="hidden" name="rule_id" value="<?php echo (int) $edit_rule->id; ?>">
 		<?php endif; ?>
 
-		<!-- ① Destination URL — primary, most important -->
+		<!-- ① Destination URL - primary, most important -->
 		<div class="ah-form-row" style="margin-bottom:16px;">
 			<label style="font-weight:700;font-size:13px;display:block;margin-bottom:6px;">
 				Destination URL
@@ -270,7 +270,7 @@ $type_meta = array(
 			       <?php echo $edit_rule ? '' : 'autofocus'; ?>>
 		</div>
 
-		<!-- ② Short code — secondary -->
+		<!-- ② Short code - secondary -->
 		<div class="ah-form-row" style="margin-bottom:16px;">
 			<label style="font-weight:700;font-size:13px;display:block;margin-bottom:6px;">
 				Short Code
@@ -311,16 +311,16 @@ $type_meta = array(
 				<?php endforeach; ?>
 			</div>
 			<div id="ah-gone-tip" style="display:none;margin-top:8px;padding:8px 12px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;font-size:12px;color:#b91c1c;">
-				410 Gone — no destination needed. Tells Google this page is permanently removed.
+				410 Gone - no destination needed. Tells Google this page is permanently removed.
 			</div>
 			<div id="ah-exit-tip" style="display:none;margin-top:8px;padding:8px 12px;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:6px;font-size:12px;color:#7c3aed;">
-				Exit Link — shows a "leaving site" page before sending the visitor to the destination.
+				Exit Link - shows a "leaving site" page before sending the visitor to the destination.
 			</div>
 		</div>
 
 		<!-- ④ Notes -->
 		<div class="ah-form-row" style="margin-bottom:16px;">
-			<label style="font-weight:700;font-size:13px;display:block;margin-bottom:6px;">Label <small style="font-weight:400;color:var(--ah-muted);">(optional — shown in this list)</small></label>
+			<label style="font-weight:700;font-size:13px;display:block;margin-bottom:6px;">Label <small style="font-weight:400;color:var(--ah-muted);">(optional - shown in this list)</small></label>
 			<input type="text" name="notes"
 			       value="<?php echo esc_attr( $edit_rule ? $edit_rule->notes : '' ); ?>"
 			       placeholder="e.g. Brochure download, July email campaign…"
@@ -332,7 +332,7 @@ $type_meta = array(
 			<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;">
 				<input type="checkbox" name="is_active" value="1"
 				       <?php checked( $edit_rule ? (int) $edit_rule->is_active : 1, 1 ); ?>>
-				<span><strong>Active</strong> — link works immediately after saving</span>
+				<span><strong>Active</strong> - link works immediately after saving</span>
 			</label>
 		</div>
 

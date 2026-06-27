@@ -93,7 +93,7 @@ function adn_guides_get_context() {
 			);
 		}
 
-		// Skip parent terms with no categories and no articles — nothing to show.
+		// Skip parent terms with no categories and no articles - nothing to show.
 		if ( empty( $topic_cards ) && empty( $latest_posts ) ) { continue; }
 
 		$groups[] = array(

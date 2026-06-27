@@ -555,7 +555,7 @@ class AH_CSV_Importer {
 			// Skip if slug already exists (terms are identified by slug).
 			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE slug = %s", $slug ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			if ( $exists ) {
-				self::result_add( $result, false, "Row {$line}: term slug '{$slug}' already exists — skipped." );
+				self::result_add( $result, false, "Row {$line}: term slug '{$slug}' already exists - skipped." );
 				continue;
 			}
 
@@ -600,7 +600,7 @@ class AH_CSV_Importer {
 			}
 			$term_id = $term_cache[ $term_slug ];
 			if ( ! $term_id ) {
-				self::result_add( $result, false, "Row {$line}: spotlight term '{$term_slug}' not found — import that term first." );
+				self::result_add( $result, false, "Row {$line}: spotlight term '{$term_slug}' not found - import that term first." );
 				continue;
 			}
 

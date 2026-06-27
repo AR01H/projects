@@ -33,6 +33,7 @@ if ( ! empty( $ctx['faqs']['items'] ) ) {
 	wp_enqueue_style( 'adn-page-faqs-style', get_template_directory_uri() . '/assets/css/faqs.css', array(), ADN_THEME_VERSION );
 	wp_enqueue_script( 'adn-page-faqs-script', get_template_directory_uri() . '/assets/js/faqs.js', array(), ADN_THEME_VERSION, true );
 }
+wp_enqueue_style( 'adn-resources', get_template_directory_uri() . '/assets/css/resources.css', array(), ADN_THEME_VERSION );
 
 // Breadcrumb renders inside the hero banner - skip it from adn_page_open().
 $_open_ctx                = $ctx;
@@ -103,8 +104,8 @@ adn_page_open( $_open_ctx );
 			</div>
 			<?php endif; ?>
 
-			<?php /* ── Resources (PDFs / Links / Videos) ── */ ?>
-			<?php if ( ! empty( $ctx['resources'] ) ) : ?>
+			<?php /* ── Resources (library items) ── */ ?>
+			<?php if ( ! empty( $ctx['resources']['items'] ) ) : ?>
 			<div class="category-section">
 				<?php adn_component( 'sections/category_resources', array( 'resources' => $ctx['resources'] ) ); ?>
 			</div>
@@ -179,5 +180,12 @@ adn_page_open( $_open_ctx );
 	</div>
 </section>
 <?php endif; ?>
+
+<?php
+$_fi_cat_d   = isset( $ctx['slug'] ) ? AH_Category_Settings::get_all( sanitize_key( $ctx['slug'] ) ) : array();
+$_fi_cat_sec = ( isset( $_fi_cat_d['featured_in']['section'] ) && '' !== $_fi_cat_d['featured_in']['section'] )
+	? sanitize_key( $_fi_cat_d['featured_in']['section'] ) : '';
+adn_component( 'parts/featured_in', array( 'section' => $_fi_cat_sec ) );
+?>
 
 <?php adn_page_close( $ctx ); ?>

@@ -42,7 +42,7 @@ if ( ! empty( $_GET['err'] ) ) {
 	$items  = $result['items']; $meta = $result['meta'];
 ?>
 	<div class="ah-table-top">
-		<p style="color:var(--ah-muted);margin:0;">Multiple popups, each with its own trigger, slug scope, and frequency. They queue — one shows at a time.</p>
+		<p style="color:var(--ah-muted);margin:0;">Multiple popups, each with its own trigger, slug scope, and frequency. They queue - one shows at a time.</p>
 		<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-notices', 'action' => 'add' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ Add Notice</a>
 	</div>
 
@@ -213,7 +213,7 @@ if ( ! empty( $_GET['err'] ) ) {
 							<input type="radio" name="position" value="corner" id="pv-pos-corner" <?php checked( $item->position ?? '', 'corner' ); ?> style="margin-top:3px;flex-shrink:0;">
 							<div>
 								<strong style="font-size:.9rem;">Corner card</strong><br>
-								<small style="color:var(--ah-muted);">Slides up from bottom-right. No backdrop — less intrusive.</small>
+								<small style="color:var(--ah-muted);">Slides up from bottom-right. No backdrop - less intrusive.</small>
 								<div style="margin-top:8px;background:#f3f4f6;border-radius:6px;padding:8px;text-align:right;font-size:10px;color:#6b7280;height:32px;position:relative;">
 									<div style="background:#fff;border-radius:4px;padding:3px 7px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);position:absolute;bottom:6px;right:6px;">📌 card</div>
 								</div>
@@ -272,7 +272,7 @@ if ( ! empty( $_GET['err'] ) ) {
 					</div>
 					<div id="sn-slugs-row" style="margin-top:8px;display:<?php echo ( ( $item->scope ?? 'all' ) === 'slugs' ) ? 'block' : 'none'; ?>;">
 						<input type="text" name="slugs" value="<?php echo esc_attr( $item->slugs ?? '' ); ?>" placeholder="buying, selling, guides" style="width:100%;">
-						<small style="color:var(--ah-muted);">Enter slugs without slashes. Each page tracks its own dismiss — closing on /buying won't hide it on /selling.</small>
+						<small style="color:var(--ah-muted);">Enter slugs without slashes. Each page tracks its own dismiss - closing on /buying won't hide it on /selling.</small>
 					</div>
 				</div>
 
@@ -284,7 +284,7 @@ if ( ! empty( $_GET['err'] ) ) {
 							'daily'     => array( '📅', 'Once per day',     'Resets at midnight. Resets if content changes.' ),
 							'weekly'    => array( '🗓', 'Once per week',    'Resets 7 days after last dismiss.' ),
 							'session'   => array( '🔄', 'Per session',      'Resets when visitor closes their tab.' ),
-							'once_ever' => array( '🔒', 'Only once — ever', 'Permanently dismissed. Never shows again.' ),
+							'once_ever' => array( '🔒', 'Only once - ever', 'Permanently dismissed. Never shows again.' ),
 							'always'    => array( '♾', 'Every page load',  'No dismiss memory. Use sparingly.' ),
 							'custom'    => array( '⏰', 'Custom interval',  'Show again after your own time (e.g. every 2 hrs).' ),
 						);
@@ -364,7 +364,7 @@ if ( ! empty( $_GET['err'] ) ) {
 					<label>Auto-close <small>(0 = visitor must dismiss manually)</small></label>
 					<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
 						<input type="number" name="auto_close" value="<?php echo (int) ( $item->auto_close ?? 0 ); ?>" min="0" max="120" style="width:80px;">
-						<span style="color:var(--ah-muted);font-size:.88rem;">seconds — notice closes itself (0 = off)</span>
+						<span style="color:var(--ah-muted);font-size:.88rem;">seconds - notice closes itself (0 = off)</span>
 					</div>
 				</div>
 
@@ -433,7 +433,7 @@ jQuery(function ($) {
 		$('#sn-delay-row').toggle( v === 'delay' );
 		$('#sn-scroll-row').toggle( v === 'scroll' );
 	}
-	// Radios inside .ah-trig-card are display:none — listen on the card click too.
+	// Radios inside .ah-trig-card are display:none - listen on the card click too.
 	$('input[name="trigger_type"]').on('change', syncTriggerRows);
 	$('.ah-trig-card').on('click', function () {
 		$(this).find('input[type="radio"]').prop('checked', true);

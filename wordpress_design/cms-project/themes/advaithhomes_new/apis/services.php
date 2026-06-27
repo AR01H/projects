@@ -66,7 +66,7 @@ function adn_service_site_chrome() {
 		$chrome['footer'] = $plugin_footer;
 	}
 
-	// Layer 4: social links from DB social group — only show platforms with a URL set.
+	// Layer 4: social links from DB social group - only show platforms with a URL set.
 	$_social_map = array(
 		'facebook_url'  => array( 'label' => 'Facebook',  'icon' => 'fab fa-facebook-f' ),
 		'instagram_url' => array( 'label' => 'Instagram', 'icon' => 'fab fa-instagram' ),
@@ -258,7 +258,11 @@ function adn_chrome_plugin_nav() {
 			if ( '' === $sub_label || '' === $sub_url ) {
 				continue;
 			}
-			$children[] = array( 'label' => $sub_label, 'url' => $sub_url );
+			$children[] = array(
+					'label'     => $sub_label,
+					'url'       => $sub_url,
+					'highlight' => ! empty( $sub['highlight'] ),
+				);
 		}
 
 		$node = array(
@@ -324,8 +328,9 @@ function adn_chrome_plugin_footer( $json_footer ) {
 				continue;
 			}
 			$links[] = array(
-				'label' => $label,
-				'url'   => isset( $link['url'] ) ? (string) $link['url'] : '#',
+				'label'     => $label,
+				'url'       => isset( $link['url'] ) ? (string) $link['url'] : '#',
+				'highlight' => ! empty( $link['highlight'] ),
 			);
 		}
 		if ( ! empty( $links ) ) {

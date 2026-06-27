@@ -188,7 +188,7 @@ $max_v = ! empty( $top_pages ) ? (int) $top_pages[0]['visits'] : 1;
 			<td style="white-space:nowrap;"><?php echo esc_html( $row['visited_at'] ); ?></td>
 			<td><code><?php echo esc_html( $row['ip_address'] ); ?></code></td>
 			<td><a href="<?php echo esc_url( $row['page_url'] ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $row['page_slug'] ?: $row['page_url'] ); ?></a></td>
-			<td style="font-size:0.8rem;color:#9ca3af;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="<?php echo esc_attr( $row['referrer'] ); ?>"><?php echo esc_html( $row['referrer'] ?: '—' ); ?></td>
+			<td style="font-size:0.8rem;color:#9ca3af;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="<?php echo esc_attr( $row['referrer'] ); ?>"><?php echo esc_html( $row['referrer'] ?: '-' ); ?></td>
 		</tr>
 	<?php endforeach; ?>
 	<?php if ( empty( $recent ) ) : ?><tr><td colspan="4" style="color:#9ca3af;text-align:center;padding:24px;">No data yet.</td></tr><?php endif; ?>

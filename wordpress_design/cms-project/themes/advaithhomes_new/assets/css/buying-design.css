@@ -60,7 +60,7 @@ img{max-width:100%;height:auto;display:block}a{text-decoration:none;color:inheri
 
 /* Override journey stepper in control centre to fix marker alignment */
 .category-control-centre .jny2-step__body::after {
-  /* align rail with the numeric chip center — tuned to theme defaults */
+  /* align rail with the numeric chip center - tuned to theme defaults */
   top: 50%;
   transform: translateY(-50%);
   left: calc(50% + 17px); /* half of chip width (34px) approximated */

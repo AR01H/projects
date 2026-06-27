@@ -72,7 +72,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                                     <?php foreach ( $children as $child ) : ?>
                                         <?php $child = (array) $child; ?>
                                         <a href="<?php echo esc_url( adn_link( isset( $child['url'] ) ? $child['url'] : '' ) ); ?>"
-                                           class="nav-dropdown-link" role="menuitem"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
+                                           class="nav-dropdown-link<?php echo ! empty( $child['highlight'] ) ? ' nav-link--highlight' : ''; ?>" role="menuitem"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
                                     <?php endforeach; ?>
                                 </div>
                                 <?php if ( '' !== $_img || '' !== $_nd ) : ?>
@@ -167,7 +167,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                     <?php foreach ( $children as $child ) : ?>
                         <?php $child = (array) $child; ?>
                         <a href="<?php echo esc_url( adn_link( isset( $child['url'] ) ? $child['url'] : '' ) ); ?>"
-                           class="mobile-subnav-link"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
+                           class="mobile-subnav-link<?php echo ! empty( $child['highlight'] ) ? ' nav-link--highlight' : ''; ?>"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
                     <?php endforeach; ?>
                 </div>
             </div>

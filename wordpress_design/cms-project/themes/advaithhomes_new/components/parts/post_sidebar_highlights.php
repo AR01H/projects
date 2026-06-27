@@ -1,7 +1,7 @@
 <?php
 /**
  * components/parts/post_sidebar_highlights.php
- * Sidebar highlight links — action buttons inside sw-panel.
+ * Sidebar highlight links - action buttons inside sw-panel.
  *
  * Props: $highlight_links[] { name, url }
  */

@@ -44,6 +44,7 @@ if ( empty( $footer['legal_links'] ) ) {
 						<div class="ah-builder-item__bar">
 							<span class="ah-builder-handle" title="Drag to reorder">::</span>
 							<strong><?php echo esc_html( $item['label'] ?: 'Menu Item' ); ?></strong>
+							<span class="ah-placement-badge ah-badge-header<?php echo ! empty( $item['visible'] ) ? ' is-active' : ''; ?>" title="Visible in header">Header</span>
 							<button type="button" class="ah-toggle-item" aria-expanded="true" aria-label="Toggle menu item">▾</button>
 							<button type="button" class="button-link-delete ah-remove-item">Remove</button>
 						</div>
@@ -208,6 +209,7 @@ if ( empty( $footer['legal_links'] ) ) {
 									<div class="ah-builder-inline-head">
 										<span class="ah-builder-handle">::</span>
 										<strong><?php echo esc_html( $link['label'] ?? 'Footer Link' ); ?></strong>
+										<span class="ah-placement-badge ah-badge-footer is-active" title="Visible in footer">Footer</span>
 										<button type="button" class="button-link-delete ah-remove-item">Remove</button>
 									</div>
 									<div class="ah-builder-grid ah-builder-grid--submenu">
@@ -278,6 +280,21 @@ if ( empty( $footer['legal_links'] ) ) {
 </div>
 
 <style>
+/* Placement badges */
+.ah-placement-badge {
+	display: inline-flex; align-items: center;
+	font-size: 10px; font-weight: 700; letter-spacing: .04em;
+	padding: 2px 8px; border-radius: 20px;
+	text-transform: uppercase;
+	opacity: 0.3;
+	border: 1.5px solid currentColor;
+	transition: opacity 0.2s;
+	user-select: none;
+	flex-shrink: 0;
+}
+.ah-placement-badge.is-active { opacity: 1; }
+.ah-badge-header { color: #166534; background: #dcfce7; border-color: #86efac; }
+.ah-badge-footer { color: #1e40af; background: #dbeafe; border-color: #93c5fd; }
 .ah-nav-builder-wrap { max-width: 1080px; }
 .ah-builder-note { color: #64748b; margin: 0 0 16px; font-size: 13px; }
 .ah-builder-actions { display:flex; gap:10px; margin:0 0 16px; }
@@ -688,6 +705,15 @@ if ( empty( $footer['legal_links'] ) ) {
 			setSortable('.ah-builder-stack, .ah-submenu-list, .ah-footer-links');
 			renumberAll();
 		}
+	});
+
+	// Live-update Header badge when visible checkbox changes
+	document.addEventListener('change', function(event) {
+		if (!event.target.matches('input[name*="[visible]"]')) { return; }
+		var card = event.target.closest('.ah-builder-item');
+		if (!card) { return; }
+		var badge = card.querySelector('.ah-badge-header');
+		if (badge) { badge.classList.toggle('is-active', event.target.checked); }
 	});
 
 	attachSuggest(document);

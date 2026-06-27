@@ -67,5 +67,13 @@ function adn_guidance_get_context() {
 			),
 			'items' => adn_shared_latest_news_items( 3 ),
 		),
+		'latest_updates' => array(
+			'heading' => array(
+				'title'      => adn_term( 'labels.latest_updates', 'Latest Updates' ),
+				'link_label' => adn_term( 'buttons.view_all', 'View all →' ),
+				'link_url'   => defined( 'SITE_REGULATIONS_URL' ) ? SITE_REGULATIONS_URL : '/',
+			),
+			'items' => function_exists( 'adn_shared_latest_updates_items' ) ? adn_shared_latest_updates_items( 3 ) : array(),
+		),
 	);
 }

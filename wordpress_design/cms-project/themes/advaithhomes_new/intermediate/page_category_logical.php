@@ -468,51 +468,27 @@ function adn_category_get_context( $slug = '' ) {
 		);
 	}
 
-	// Resources (PDFs, external links, YouTube videos) from admin Resources tab.
-	$resources  = array( 'pdfs' => array(), 'links' => array(), 'videos' => array() );
-	$_cs_res    = isset( $_cs_all['resources'] ) && is_array( $_cs_all['resources'] ) ? $_cs_all['resources'] : array();
+	// Resources - load from global library by IDs connected in admin Resources tab.
+	$_cs_res  = isset( $_cs_all['resources'] ) && is_array( $_cs_all['resources'] ) ? $_cs_all['resources'] : array();
+	$_res_ids = ( isset( $_cs_res['library_ids'] ) && is_array( $_cs_res['library_ids'] ) )
+		? array_filter( array_map( 'absint', $_cs_res['library_ids'] ) )
+		: array();
 
-	foreach ( (array) ( isset( $_cs_res['pdfs'] ) ? $_cs_res['pdfs'] : array() ) as $p ) {
-		if ( empty( $p['title'] ) ) { continue; }
-		$fid      = ! empty( $p['file_id'] )  ? (int)    $p['file_id']  : 0;
-		$furl     = ! empty( $p['file_url'] ) ? (string) $p['file_url'] : '';
-		// Prefer WP attachment URL (always fresh) over stored URL.
-		if ( $fid ) {
-			$_att = wp_get_attachment_url( $fid );
-			if ( $_att ) { $furl = $_att; }
+	$resources = array(
+		'items'   => array(),
+		'heading' => isset( $_cs_res['heading'] ) && '' !== $_cs_res['heading'] ? (string) $_cs_res['heading'] : '',
+	);
+
+	if ( ! empty( $_res_ids ) && class_exists( 'AH_Resources_Model' ) ) {
+		global $wpdb;
+		$_res_table = $wpdb->prefix . 'ah_resources';
+		$_id_in     = implode( ',', array_map( 'intval', $_res_ids ) );
+		$_res_rows  = $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"SELECT * FROM `{$_res_table}` WHERE id IN ({$_id_in}) AND status = 'active' ORDER BY FIELD(id, {$_id_in})"
+		);
+		if ( is_array( $_res_rows ) ) {
+			$resources['items'] = $_res_rows;
 		}
-		if ( ! $furl ) { continue; }
-		$resources['pdfs'][] = array(
-			'title'    => (string) $p['title'],
-			'desc'     => ! empty( $p['desc'] ) ? (string) $p['desc'] : '',
-			'file_url' => $furl,
-		);
-	}
-
-	foreach ( (array) ( isset( $_cs_res['links'] ) ? $_cs_res['links'] : array() ) as $l ) {
-		if ( empty( $l['title'] ) ) { continue; }
-		$resources['links'][] = array(
-			'icon'  => ! empty( $l['icon'] )  ? (string) $l['icon']  : '🔗',
-			'title' => (string) $l['title'],
-			'desc'  => ! empty( $l['desc'] )  ? (string) $l['desc']  : '',
-			'url'   => ! empty( $l['url'] )   ? (string) $l['url']   : '#',
-		);
-	}
-
-	foreach ( (array) ( isset( $_cs_res['videos'] ) ? $_cs_res['videos'] : array() ) as $v ) {
-		if ( empty( $v['title'] ) ) { continue; }
-		$vid_url = ! empty( $v['url'] ) ? (string) $v['url'] : '';
-		$vid_id  = '';
-		if ( preg_match( '#(?:youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})#', $vid_url, $_m ) ) {
-			$vid_id = $_m[1];
-		}
-		$resources['videos'][] = array(
-			'title'  => (string) $v['title'],
-			'desc'   => ! empty( $v['desc'] ) ? (string) $v['desc'] : '',
-			'url'    => $vid_url,
-			'vid_id' => $vid_id,
-			'thumb'  => $vid_id ? 'https://img.youtube.com/vi/' . $vid_id . '/mqdefault.jpg' : '',
-		);
 	}
 
 	// FAQs: plugin items selected by ID in admin, loaded fresh from DB.

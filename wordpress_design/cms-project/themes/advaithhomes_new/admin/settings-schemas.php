@@ -36,16 +36,16 @@ function adn_settings_schemas() {
 				array(
 					'key'   => 'diagram_center_icon',
 					'type'  => 'text',
-					'label' => __( 'Diagram — centre icon', ADN_TEXT_DOMAIN ),
+					'label' => __( 'Diagram - centre icon', ADN_TEXT_DOMAIN ),
 					'desc'  => __( 'Emoji or Font Awesome class (e.g. 🏡 or fa-house). Leave blank to keep default.', ADN_TEXT_DOMAIN ),
 				),
-				array( 'key' => 'diagram_center_line1', 'type' => 'text', 'label' => __( 'Diagram — centre text line 1', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'diagram_center_line2', 'type' => 'text', 'label' => __( 'Diagram — centre text line 2', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'diagram_center_line1', 'type' => 'text', 'label' => __( 'Diagram - centre text line 1', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'diagram_center_line2', 'type' => 'text', 'label' => __( 'Diagram - centre text line 2', ADN_TEXT_DOMAIN ) ),
 				array(
 					'key'   => 'diagram_nodes',
 					'type'  => 'textarea',
-					'label' => __( 'Diagram — nodes (steps around the circle)', ADN_TEXT_DOMAIN ),
-					'desc'  => __( 'One node per line — maximum 8. Format: icon|Label  e.g. 🏡|Find & View  — nodes appear in order around the circle. Extra lines beyond 8 are ignored.', ADN_TEXT_DOMAIN ),
+					'label' => __( 'Diagram - nodes (steps around the circle)', ADN_TEXT_DOMAIN ),
+					'desc'  => __( 'One node per line - maximum 8. Format: icon|Label  e.g. 🏡|Find & View  - nodes appear in order around the circle. Extra lines beyond 8 are ignored.', ADN_TEXT_DOMAIN ),
 				),
 			),
 		),
@@ -65,6 +65,9 @@ function adn_settings_schemas() {
 				array( 'key' => 'spotlight_term', 'type' => 'select', 'label' => __( 'Spotlight term (home)', ADN_TEXT_DOMAIN ),
 					'default' => '', 'options' => 'adn_settings_spotlight_term_options',
 					'desc' => __( 'Which spotlight group to show on the home page. Manage groups in CMS Plugin → Spotlights.', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'featured_in_section', 'type' => 'select', 'label' => __( 'Featured In strip', ADN_TEXT_DOMAIN ),
+					'default' => '', 'options' => 'adn_settings_fi_section_options',
+					'desc' => __( 'Which logo strip to show on the home page. Manage strips in CMS Plugin → Featured In.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'marquee_enabled', 'type' => 'toggle', 'label' => __( 'Marquee bar', ADN_TEXT_DOMAIN ), 'default' => 0,
 					'desc' => __( 'Show a scrolling trust/highlight bar below the hero.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'marquee_mode', 'type' => 'select', 'label' => __( 'Marquee mode', ADN_TEXT_DOMAIN ),
@@ -101,14 +104,33 @@ function adn_settings_schemas() {
 					'options' => array( 'string' => __( 'Plain text (✓ prefix)', ADN_TEXT_DOMAIN ), 'icon' => __( 'Icon + label + note', ADN_TEXT_DOMAIN ) ) ),
 				array( 'key' => 'marquee_items', 'type' => 'textarea', 'label' => __( 'Marquee items', ADN_TEXT_DOMAIN ),
 					'desc' => __( 'One item per line. Plain text mode: write text only. Icon mode: emoji|Label text|Subtitle note', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'featured_in_section', 'type' => 'select', 'label' => __( 'Featured In strip', ADN_TEXT_DOMAIN ),
+					'default' => '', 'options' => 'adn_settings_fi_section_options',
+					'desc' => __( 'Which logo strip to show on this page. Manage strips in CMS Plugin → Featured In.', ADN_TEXT_DOMAIN ) ),
 			),
 		),
 	);
 }
 
+/** Dynamic select options: all Featured In sections (id => heading [id]). */
+function adn_settings_fi_section_options() {
+	$options = array( '' => __( '- None (hide strip) -', ADN_TEXT_DOMAIN ) );
+	$raw     = get_option( 'ah_featured_in_sections', '' );
+	$all     = $raw ? json_decode( $raw, true ) : array();
+	if ( is_array( $all ) ) {
+		foreach ( $all as $s ) {
+			$sid = isset( $s['id'] ) ? (string) $s['id'] : '';
+			if ( '' === $sid ) { continue; }
+			$label           = ( isset( $s['heading'] ) && '' !== $s['heading'] ) ? $s['heading'] : $sid;
+			$options[ $sid ] = $label . '  [' . $sid . ']';
+		}
+	}
+	return $options;
+}
+
 /** Dynamic select options: all active spotlight terms (slug => name). */
 function adn_settings_spotlight_term_options() {
-	$options = array( '' => __( '— None —', ADN_TEXT_DOMAIN ) );
+	$options = array( '' => __( '- None -', ADN_TEXT_DOMAIN ) );
 	if ( class_exists( 'AH_Spotlight_Terms_Model' ) ) {
 		foreach ( ( new AH_Spotlight_Terms_Model() )->get_all_active() as $term ) {
 			$options[ (string) $term->slug ] = (string) $term->name;

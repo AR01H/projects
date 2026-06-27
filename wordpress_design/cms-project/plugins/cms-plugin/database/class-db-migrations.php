@@ -29,6 +29,9 @@ class AH_DB_Migrations {
 		self::ensure_static_pages();
 		self::ensure_related_links();
 		self::related_links_container();
+		self::ensure_resources_table();
+		self::resources_link_url();
+		self::resources_highlight_label();
 
 		// Data migrations
 		self::required_settings();
@@ -137,6 +140,12 @@ class AH_DB_Migrations {
 		self::add_column_if_missing( 'ah_related_links', 'container', "VARCHAR(120) NULL AFTER `label`" );
 	}
 
+	public static function ensure_resources_table(): void {
+		if ( class_exists( 'AH_Resources_Model' ) ) {
+			AH_Resources_Model::ensure_table();
+		}
+	}
+
 	// ── Data migrations ───────────────────────────────────────────────────────
 
 	public static function required_settings(): void {
@@ -159,7 +168,7 @@ class AH_DB_Migrations {
 
 	/**
 	 * Seed default values for contact settings that were inserted as empty strings.
-	 * Only updates rows that are still empty — never overwrites a user-saved value.
+	 * Only updates rows that are still empty - never overwrites a user-saved value.
 	 */
 	public static function contact_settings_seed(): void {
 		global $wpdb;
@@ -181,11 +190,11 @@ class AH_DB_Migrations {
 
 	/**
 	 * Seed site-chrome settings (logo, search, footer brand, social URLs, copyright, disclaimer).
-	 * Previously in site_chrome.json — now editable in WP Admin → Settings.
+	 * Previously in site_chrome.json - now editable in WP Admin → Settings.
 	 *
 	 * Groups:
-	 *   general — logo, search, footer brand, copyright, made-with, disclaimer
-	 *   social  — individual social profile URLs (chrome_social_*)
+	 *   general - logo, search, footer brand, copyright, made-with, disclaimer
+	 *   social  - individual social profile URLs (chrome_social_*)
 	 *
 	 * Social links are stored as individual URL fields (not a JSON blob) so they
 	 * appear cleanly in the Social tab alongside other social settings.
@@ -217,7 +226,7 @@ class AH_DB_Migrations {
 			array( 'setting_key' => 'chrome_disclaimer',  'setting_val' => '', 'field_type' => 'textarea', 'group_name' => 'general', 'label' => 'Footer Disclaimer' ),
 
 			// ── Social tab ─────────────────────────────────────────────────────
-			// Individual URL fields — service layer builds the footer social icon row from these.
+			// Individual URL fields - service layer builds the footer social icon row from these.
 			array( 'setting_key' => 'chrome_social_facebook',  'setting_val' => '', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Facebook URL'  ),
 			array( 'setting_key' => 'chrome_social_instagram', 'setting_val' => '', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'Instagram URL' ),
 			array( 'setting_key' => 'chrome_social_youtube',   'setting_val' => '', 'field_type' => 'url', 'group_name' => 'social', 'label' => 'YouTube URL (footer)'  ),
@@ -358,6 +367,14 @@ class AH_DB_Migrations {
 
 	public static function site_notices_custom_freq(): void {
 		self::add_column_if_missing( 'ah_site_notices', 'frequency_custom_mins', "SMALLINT UNSIGNED NOT NULL DEFAULT 60 AFTER `frequency`" );
+	}
+
+	public static function resources_link_url(): void {
+		self::add_column_if_missing( 'ah_resources', 'link_url', "VARCHAR(1000) DEFAULT NULL AFTER `description`" );
+	}
+
+	public static function resources_highlight_label(): void {
+		self::add_column_if_missing( 'ah_resources', 'highlight_label', "VARCHAR(80) DEFAULT NULL AFTER `link_url`" );
 	}
 
 	private static function add_column_if_missing( string $table_suffix, string $column, string $definition ): void {

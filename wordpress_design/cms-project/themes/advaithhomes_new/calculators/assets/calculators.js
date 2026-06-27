@@ -1,5 +1,5 @@
 /**
- * calculators.js — Shared utility library for all iframe calculators.
+ * calculators.js - Shared utility library for all iframe calculators.
  * Loaded before every per-calc JS file (see calculators.php).
  *
  * Exposes a single global:  window.AHCalc
@@ -341,7 +341,7 @@
 	}
 
 	/**
-	 * Stamp Duty Land Tax (England & NI) — 2024/25 rates.
+	 * Stamp Duty Land Tax (England & NI) - 2024/25 rates.
 	 * @param {number} price       Property price
 	 * @param {boolean} [firstBuy] First-time buyer?
 	 * @param {boolean} [addl]     Additional property (3% surcharge)?
@@ -389,7 +389,7 @@
 	}
 
 	/**
-	 * Affordability — maximum borrowing (income multiple).
+	 * Affordability - maximum borrowing (income multiple).
 	 * @param {number} income1   Primary income
 	 * @param {number} [income2] Secondary income (0 if single)
 	 * @param {number} [multiple=4.5]
@@ -452,7 +452,7 @@
 	   ═══════════════════════════════════════════════════════ */
 
 	/**
-	 * Debounce — delays fn until after wait ms have elapsed since last call.
+	 * Debounce - delays fn until after wait ms have elapsed since last call.
 	 * @param {Function} fn
 	 * @param {number} wait  ms
 	 * @returns {Function}
@@ -468,7 +468,7 @@
 	}
 
 	/**
-	 * Throttle — calls fn at most once per wait ms.
+	 * Throttle - calls fn at most once per wait ms.
 	 * @param {Function} fn
 	 * @param {number} wait  ms
 	 * @returns {Function}

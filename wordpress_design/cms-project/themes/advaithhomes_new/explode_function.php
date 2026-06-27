@@ -90,6 +90,7 @@ function adn_enqueue_template_specific_assets() {
             'css' => '/assets/css/faqs.css',
             'js'  => '/assets/js/faqs.js',
         ),
+        'pages/page-terms.php' => array(),
     );
     $virtual_tpl = (string) get_query_var( 'adn_virtual_template', '' );
 
@@ -180,6 +181,11 @@ function adn_get_page_definitions() {
             'title'    => PAGE_TITLE_FAQS,
             'template' => 'pages/page-faqs.php',
         ),
+        trim( FORM_CONSENT_TERMS_URL, '/' ) => array(
+            'title'    => 'Terms of Use',
+            'template' => 'pages/page-terms.php',
+            'aliases'  => array( 'terms-and-conditions' ),
+        ),
         // Slug must match COMING_SOON_PAGE_SLUG so the coming-soon redirect target exists.
         COMING_SOON_PAGE_SLUG => array(
             'title'    => 'Coming Soon',
@@ -199,13 +205,20 @@ function adn_create_default_pages() {
 
     foreach ( $pages as $slug => $page ) {
 
-        $existing_page = get_page_by_path( $slug );
+        // Build the full list: primary slug + any aliases.
+        $all_slugs = array_merge(
+            array( $slug ),
+            isset( $page['aliases'] ) && is_array( $page['aliases'] ) ? $page['aliases'] : array()
+        );
 
-        if ( ! $existing_page ) {
+        foreach ( $all_slugs as $_slug ) {
+            if ( get_page_by_path( $_slug ) ) {
+                continue; // already exists
+            }
 
             $page_id = wp_insert_post( array(
                 'post_title'   => $page['title'],
-                'post_name'    => $slug,
+                'post_name'    => $_slug,
                 'post_status'  => 'publish',
                 'post_type'    => 'page',
                 'post_content' => '',

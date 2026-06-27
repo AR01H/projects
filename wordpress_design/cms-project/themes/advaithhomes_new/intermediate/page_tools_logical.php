@@ -220,7 +220,7 @@ function adn_calculators_get_context() {
 			),
 			'items' => adn_shared_latest_news_items( 3 ),
 		),
-		// ── news_three_col — headings from home page JSON, items from CMS ──
+		// ── news_three_col - headings from home page JSON, items from CMS ──
 		'news'        => array_merge( $_hnews, array( 'items' => adn_home_cms_news_items() ) ),
 		'regulations' => array_merge( $_hreg,  array( 'items' => adn_home_cms_regulations_items() ) ),
 		'hot_topics'  => array_merge( $_hht,   array( 'items' => adn_home_cms_hot_topics_items() ) ),

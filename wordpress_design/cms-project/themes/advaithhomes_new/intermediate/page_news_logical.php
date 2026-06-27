@@ -208,7 +208,7 @@ function adn_news_cms_categories() {
 	$news_parent = function_exists( 'adn_cms_parent_by_slug' ) ? adn_cms_parent_by_slug( 'news' ) : null;
 
 	if ( $news_parent ) {
-		// Specific 'news' parent exists — show its child topics.
+		// Specific 'news' parent exists - show its child topics.
 		foreach ( adn_cms_topics( (int) $news_parent->id, 20 ) as $topic ) {
 			$cats[] = array(
 				'key'   => isset( $topic->slug ) ? $topic->slug : '',

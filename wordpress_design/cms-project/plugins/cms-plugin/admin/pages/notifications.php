@@ -43,7 +43,7 @@ if ( isset( $_POST['ah_nl_add_nonce'] ) ) {
 	} elseif ( 'already_subscribed' === $result ) {
 		$notice = 'warning:That email is already subscribed.';
 	} else {
-		$notice = 'warning:Could not add — check the email address.';
+		$notice = 'warning:Could not add - check the email address.';
 	}
 }
 
@@ -56,7 +56,7 @@ if ( isset( $_POST['ah_nl_send_nonce'] ) ) {
 	$from_email = sanitize_email( wp_unslash( isset( $_POST['nl_from_email'] )      ? $_POST['nl_from_email']: '' ) );
 	if ( $subject && $body ) {
 		if ( ! class_exists( 'AH_Rules_Engine' ) ) {
-			$notice = 'warning:Rules Engine is not available — notification could not be sent.';
+			$notice = 'warning:Rules Engine is not available - notification could not be sent.';
 		} else {
 			$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email );
 			AH_Newsletter::log_broadcast( $subject, $result['sent'], $result['failed'] );
@@ -196,7 +196,7 @@ $page_slug   = 'ah-newsletter';
           <td><span style="background:#f3f4f6;border-radius:4px;padding:2px 8px;font-size:12px"><?php echo esc_html( $row['source'] ); ?></span></td>
           <td><span class="nl-status-badge nlsb-<?php echo esc_attr( $row['status'] ); ?>"><?php echo esc_html( ucfirst( $row['status'] ) ); ?></span></td>
           <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $row['created_at'] ) ) ); ?></small></td>
-          <td><small><?php echo $row['unsubscribed_at'] ? esc_html( wp_date( 'M j, Y', strtotime( $row['unsubscribed_at'] ) ) ) : '<span style="color:var(--ah-muted)">—</span>'; ?></small></td>
+          <td><small><?php echo $row['unsubscribed_at'] ? esc_html( wp_date( 'M j, Y', strtotime( $row['unsubscribed_at'] ) ) ) : '<span style="color:var(--ah-muted)">-</span>'; ?></small></td>
           <td style="white-space:nowrap">
             <?php if ( $is_active ) : ?>
             <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'subscribers', 'unsub' => $row['email'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_unsub' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="return confirm('Mark as unsubscribed?')">Unsubscribe</a>
@@ -233,14 +233,14 @@ $page_slug   = 'ah-newsletter';
     <div class="ah-card-header"><h2>Compose &amp; Send Notification</h2></div>
 
     <?php if ( $count_act < 1 ) : ?>
-      <div class="ah-notice ah-notice-warning" style="margin:0">No active subscribers yet — add some first.</div>
+      <div class="ah-notice ah-notice-warning" style="margin:0">No active subscribers yet - add some first.</div>
     <?php elseif ( ! class_exists( 'AH_Rules_Engine' ) ) : ?>
       <div class="ah-notice ah-notice-warning" style="margin:0">Rules Engine is not available. Notifications require it to send.</div>
     <?php else : ?>
 
     <div class="nl-re-info">
       🔔 Sending fires the <strong>Notification – Send</strong> trigger in the <a href="<?php echo esc_url( $re_url ); ?>">Rules Engine</a> once per subscriber.
-      Create a rule with that trigger to choose how to deliver it — <strong>Email, WhatsApp, Webhook</strong>, or any combination.
+      Create a rule with that trigger to choose how to deliver it - <strong>Email, WhatsApp, Webhook</strong>, or any combination.
       Available tokens in your rule actions: <code>{email}</code> <code>{name}</code> <code>{subject}</code> <code>{body}</code> <code>{from_name}</code> <code>{from_email}</code> <code>{unsubscribe_url}</code>
     </div>
 
@@ -265,7 +265,7 @@ $page_slug   = 'ah-newsletter';
 
       <div class="nl-body-wrap">
         <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
-        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">Tokens replaced before passing to Rules Engine — click to insert:</div>
+        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">Tokens replaced before passing to Rules Engine - click to insert:</div>
         <div class="nl-token-bar">
           <span class="nl-token" title="Subscriber name">{name}</span>
           <span class="nl-token" title="Unsubscribe link URL">{unsubscribe_url}</span>

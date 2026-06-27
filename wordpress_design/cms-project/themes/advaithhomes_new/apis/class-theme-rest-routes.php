@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * ADN_Theme_Rest_Routes — single source of truth for ALL theme REST endpoints.
+ * ADN_Theme_Rest_Routes - single source of truth for ALL theme REST endpoints.
  *
  * HOW TO ADD A NEW ROUTE
  * ──────────────────────
@@ -90,7 +90,7 @@ class ADN_Theme_Rest_Routes {
 	   POSTS
 	   ══════════════════════════════════════════════════════════════════ */
 
-	/** GET /posts — paginated WP blog posts. ?page=&per_page= */
+	/** GET /posts - paginated WP blog posts. ?page=&per_page= */
 	public static function _cb_posts( WP_REST_Request $req ): WP_REST_Response {
 		$page     = max( 1, (int) $req->get_param( 'page' ) );
 		$per_page = (int) $req->get_param( 'per_page' );
@@ -111,7 +111,7 @@ class ADN_Theme_Rest_Routes {
 		), 200 );
 	}
 
-	/** GET /posts/{id} — single post by ID. */
+	/** GET /posts/{id} - single post by ID. */
 	public static function _cb_post_by_id( WP_REST_Request $req ): WP_REST_Response {
 		$post = get_post( (int) $req->get_param( 'id' ) );
 		if ( ! $post || 'post' !== $post->post_type || 'publish' !== $post->post_status ) {
@@ -122,7 +122,7 @@ class ADN_Theme_Rest_Routes {
 		return $redirect instanceof WP_REST_Response ? $redirect : new WP_REST_Response( $model, 200 );
 	}
 
-	/** GET /posts/slug/{slug} — single post by slug. */
+	/** GET /posts/slug/{slug} - single post by slug. */
 	public static function _cb_post_by_slug( WP_REST_Request $req ): WP_REST_Response {
 		$slug = sanitize_title( (string) $req->get_param( 'slug' ) );
 		$post = get_page_by_path( $slug, OBJECT, 'post' );
@@ -138,7 +138,7 @@ class ADN_Theme_Rest_Routes {
 	   CMS CONTENT
 	   ══════════════════════════════════════════════════════════════════ */
 
-	/** GET /news — CMS newsbar + articles, WP posts as fallback. ?page=&per_page=&source= */
+	/** GET /news - CMS newsbar + articles, WP posts as fallback. ?page=&per_page=&source= */
 	public static function _cb_news( WP_REST_Request $req ): WP_REST_Response {
 		$page     = max( 1, (int) $req->get_param( 'page' ) );
 		$per_page = (int) $req->get_param( 'per_page' );
@@ -204,7 +204,7 @@ class ADN_Theme_Rest_Routes {
 		), 200 );
 	}
 
-	/** GET /topics — all active guide parent terms. */
+	/** GET /topics - all active guide parent terms. */
 	public static function _cb_topics( WP_REST_Request $req ): WP_REST_Response {
 		$items = array();
 		if ( function_exists( 'adn_cms_guide_parents' ) ) {
@@ -225,7 +225,7 @@ class ADN_Theme_Rest_Routes {
 		return new WP_REST_Response( array( 'success' => true, 'data' => $items, 'meta' => array( 'total' => count( $items ) ) ), 200 );
 	}
 
-	/** GET /topics/{slug} — single topic + sub-topics + articles. ?page=&per_page= */
+	/** GET /topics/{slug} - single topic + sub-topics + articles. ?page=&per_page= */
 	public static function _cb_topic_single( WP_REST_Request $req ): WP_REST_Response {
 		$slug     = sanitize_title( (string) $req->get_param( 'slug' ) );
 		$page     = max( 1, (int) $req->get_param( 'page' ) );
@@ -288,7 +288,7 @@ class ADN_Theme_Rest_Routes {
 		), 200 );
 	}
 
-	/** GET /guides — paginated article listing. ?page=&per_page=&topic= */
+	/** GET /guides - paginated article listing. ?page=&per_page=&topic= */
 	public static function _cb_guides( WP_REST_Request $req ): WP_REST_Response {
 		$page       = max( 1, (int) $req->get_param( 'page' ) );
 		$per_page   = (int) $req->get_param( 'per_page' );
@@ -333,7 +333,7 @@ class ADN_Theme_Rest_Routes {
 		), 200 );
 	}
 
-	/** GET /tools — active calculators list. */
+	/** GET /tools - active calculators list. */
 	public static function _cb_tools( WP_REST_Request $req ): WP_REST_Response {
 		$items = array();
 		if ( function_exists( 'adn_calculators' ) ) {
@@ -355,7 +355,7 @@ class ADN_Theme_Rest_Routes {
 		return new WP_REST_Response( array( 'success' => true, 'data' => $items, 'meta' => array( 'total' => count( $items ) ) ), 200 );
 	}
 
-	/** GET /search — full-text WP search. ?q=&type=&page=&per_page= */
+	/** GET /search - full-text WP search. ?q=&type=&page=&per_page= */
 	public static function _cb_search( WP_REST_Request $req ): WP_REST_Response {
 		$q        = sanitize_text_field( (string) $req->get_param( 'q' ) );
 		$type     = sanitize_key( (string) $req->get_param( 'type' ) ) ?: 'post';
@@ -396,7 +396,7 @@ class ADN_Theme_Rest_Routes {
 		), 200 );
 	}
 
-	/** GET /faqs — global FAQ list from CMS DB. */
+	/** GET /faqs - global FAQ list from CMS DB. */
 	public static function _cb_faqs( WP_REST_Request $req ): WP_REST_Response {
 		$faqs = array();
 		if ( class_exists( 'AH_Faqs_Model' ) ) {
@@ -410,7 +410,7 @@ class ADN_Theme_Rest_Routes {
 		return new WP_REST_Response( array( 'data' => $faqs, 'total' => count( $faqs ) ), 200 );
 	}
 
-	/** GET /home — full home page data (same payload as the rendered page). */
+	/** GET /home - full home page data (same payload as the rendered page). */
 	public static function _cb_home( WP_REST_Request $req ): WP_REST_Response {
 		$logical = ADN_THEME_DIR . '/intermediate/page_home_logical.php';
 		if ( file_exists( $logical ) && ! function_exists( 'adn_home_get_context' ) ) {
@@ -432,7 +432,7 @@ class ADN_Theme_Rest_Routes {
 	   ══════════════════════════════════════════════════════════════════ */
 
 	/**
-	 * POST /contact — contact form.
+	 * POST /contact - contact form.
 	 * Validates name + email + message, stores in DB, fires rules engine.
 	 * Body: { name, email, phone?, topic?, message, adn_hp? }
 	 */
@@ -495,7 +495,7 @@ class ADN_Theme_Rest_Routes {
 	}
 
 	/**
-	 * POST /subscribe — newsletter signup.
+	 * POST /subscribe - newsletter signup.
 	 * Body: { email, name?, adn_hp? }
 	 */
 	public static function _cb_subscribe( WP_REST_Request $req ): WP_REST_Response {
@@ -523,7 +523,7 @@ class ADN_Theme_Rest_Routes {
 	}
 
 	/**
-	 * POST /guidance — guidance enquiry form.
+	 * POST /guidance - guidance enquiry form.
 	 * Body: { name, email, phone?, help_with?, requirement?, time_frame?, adn_hp? }
 	 */
 	public static function _cb_guidance( WP_REST_Request $req ): WP_REST_Response {

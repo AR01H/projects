@@ -5,7 +5,7 @@
  * Used below search/listing results to fill empty space and surface quick nav.
  *
  * Props: $browse_cta {
- *   icon        string  — emoji (default 📚)
+ *   icon        string  - emoji (default 📚)
  *   heading     string
  *   description string
  *   links[]     { label, url, primary bool }

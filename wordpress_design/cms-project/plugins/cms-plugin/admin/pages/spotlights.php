@@ -73,10 +73,10 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['delete_item'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'ah_del_sp_item' ) ) {
 		$notice = 'Security check failed. Item not deleted (id: ' . $post_del . ').';
 		$n_type = 'error';
-		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item POST nonce failed — user=%d, delete_item=%d, referer=%s', get_current_user_id(), $post_del, $_SERVER['HTTP_REFERER'] ?? '' ) );
+		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item POST nonce failed - user=%d, delete_item=%d, referer=%s', get_current_user_id(), $post_del, $_SERVER['HTTP_REFERER'] ?? '' ) );
 	} else {
 		$items_model->delete( $post_del );
-		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item POST succeeded — user=%d, delete_item=%d', get_current_user_id(), $post_del ) );
+		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item POST succeeded - user=%d, delete_item=%d', get_current_user_id(), $post_del ) );
 		wp_safe_redirect( ah_sp_url( array( 'tab' => 'items', 'term_id' => $term_id, 'deleted' => 1, 'deleted_id' => $post_del ) ) ); exit;
 	}
 }
@@ -98,12 +98,12 @@ if ( isset( $_GET['delete_item'] ) ) {
 		$notice = 'Security check failed. Item not deleted (id: ' . $del_id . ').';
 		$n_type = 'error';
 		// Log for debugging (do not expose nonce in UI)
-		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item nonce failed — user=%d, delete_item=%d, _wpnonce=%s, referer=%s', get_current_user_id(), $del_id, $_GET['_wpnonce'] ?? '', $_SERVER['HTTP_REFERER'] ?? '' ) );
+		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item nonce failed - user=%d, delete_item=%d, _wpnonce=%s, referer=%s', get_current_user_id(), $del_id, $_GET['_wpnonce'] ?? '', $_SERVER['HTTP_REFERER'] ?? '' ) );
 	} else {
 		$del_id = (int) $_GET['delete_item'];
 		$items_model->delete( $del_id );
 		// Log successful delete for traceability
-		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item succeeded — user=%d, delete_item=%d', get_current_user_id(), $del_id ) );
+		error_log( sprintf( 'AH_SPOTLIGHTS: delete_item succeeded - user=%d, delete_item=%d', get_current_user_id(), $del_id ) );
 		wp_safe_redirect( ah_sp_url( array( 'tab' => 'items', 'term_id' => $term_id, 'deleted' => 1, 'deleted_id' => $del_id ) ) ); exit;
 	}
 }
@@ -217,7 +217,7 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 			<tr><th><label>Term</label></th>
 				<td>
 					<select name="term_id" required>
-						<option value="">— select —</option>
+						<option value="">- select -</option>
 						<?php foreach ( $active_terms as $t ) : ?>
 						<option value="<?php echo (int) $t->id; ?>" <?php selected( isset( $item->term_id ) ? (int) $item->term_id : $term_id, (int) $t->id ); ?>>
 							<?php echo esc_html( $t->name ); ?> (<?php echo esc_html( $t->slug ); ?>)
@@ -288,8 +288,8 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 			<?php if ( $item->description ) : ?><br><small style="color:#6b7280"><?php echo esc_html( wp_trim_words( $item->description, 8 ) ); ?></small><?php endif; ?>
 		</td>
 		<td><?php if ( $item->point_value ) : ?><strong><?php echo esc_html( $item->point_value ); ?></strong><br><small><?php echo esc_html( $item->point_label ); ?></small><?php endif; ?></td>
-		<td><?php $t_row = $terms_model->find( (int) $item->term_id ); echo $t_row ? '<code>' . esc_html( $t_row->slug ) . '</code>' : '—'; ?></td>
-		<td><?php echo $item->show_link && $item->link_url ? '<span style="color:#16a34a">✓</span>' : '—'; ?></td>
+		<td><?php $t_row = $terms_model->find( (int) $item->term_id ); echo $t_row ? '<code>' . esc_html( $t_row->slug ) . '</code>' : '-'; ?></td>
+		<td><?php echo $item->show_link && $item->link_url ? '<span style="color:#16a34a">✓</span>' : '-'; ?></td>
 		<td>
 			<a href="<?php echo esc_url( wp_nonce_url( ah_sp_url( array( 'tab' => 'items', 'toggle_item' => $item->id, 'term_id' => $term_id ) ), 'ah_tog_sp_item' ) ); ?>">
 				<?php echo $item->is_active ? '<span style="color:#16a34a">●</span>' : '<span style="color:#9ca3af">●</span>'; ?>

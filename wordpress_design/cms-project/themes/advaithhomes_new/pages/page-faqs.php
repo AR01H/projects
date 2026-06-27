@@ -32,7 +32,7 @@ if ( class_exists( 'AH_Faqs_Model' ) ) {
 }
 
 // ── Sidebar data ──────────────────────────────────────────────────────────
-// Contact for Help — FAQs excluded (whole page is already FAQs)
+// Contact for Help - FAQs excluded (whole page is already FAQs)
 $page_sidebar = function_exists( 'adn_get_page_sidebar_data' ) ? adn_get_page_sidebar_data( 0 ) : array();
 unset( $page_sidebar['faqs'] );
 
@@ -99,7 +99,7 @@ adn_page_open( $ctx );
         <?php /* 1. Contact for Help */ ?>
         <?php adn_component( 'parts/contact_sidebar', array( 'page_sidebar' => $page_sidebar ) ); ?>
 
-        <?php /* 2. Latest News — reuse sidebar_news_mini */ ?>
+        <?php /* 2. Latest News - reuse sidebar_news_mini */ ?>
         <?php if ( ! empty( $sb_news ) ) :
             $_sb_news_items = array();
             foreach ( $sb_news as $_i => $_n ) {
@@ -124,7 +124,7 @@ adn_page_open( $ctx );
             endif;
         endif; ?>
 
-        <?php /* 3. Hot Topics — reuse sidebar_guide_parents */ ?>
+        <?php /* 3. Hot Topics - reuse sidebar_guide_parents */ ?>
         <?php if ( ! empty( $sb_topics ) ) :
             $_sb_topic_items = array();
             foreach ( $sb_topics as $_t ) {

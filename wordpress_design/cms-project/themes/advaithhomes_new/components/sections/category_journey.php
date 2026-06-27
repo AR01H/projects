@@ -1,7 +1,7 @@
 <?php
 /**
  * components/sections/category_journey.php
- * Numbered-steps timeline — horizontal stepper with connecting rail.
+ * Numbered-steps timeline - horizontal stepper with connecting rail.
  *
  * Props: $journey { heading, steps[], tip { icon, text, link_label, link_url } }
  */
@@ -69,6 +69,24 @@ $_total = count( $steps );
 		<?php endforeach; ?>
 
 	</div>
+
+	<?php if ( ! empty( $steps ) ) : ?>
+	<script>
+	(function(){
+		var wrap = document.currentScript.parentElement.closest('.jny2-wrap');
+		if (!wrap) { return; }
+		if (!('IntersectionObserver' in window)) { wrap.classList.add('jny2--animate'); return; }
+		var io = new IntersectionObserver(function(entries){
+			entries.forEach(function(e){
+				if (!e.isIntersecting) { return; }
+				e.target.classList.add('jny2--animate');
+				io.unobserve(e.target);
+			});
+		}, { threshold: 0.12 });
+		io.observe(wrap);
+	}());
+	</script>
+	<?php endif; ?>
 
 	<?php if ( $tip ) : ?>
 	<div class="jny2-tip">

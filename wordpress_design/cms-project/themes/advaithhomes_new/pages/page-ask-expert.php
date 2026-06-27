@@ -121,4 +121,11 @@ adn_page_open( $_open_ctx );
 </section>
 <?php endif; ?> -->
 
+<?php
+$_fi_exp     = get_option( 'adn_expert_banner', array() );
+$_fi_exp_sec = ( is_array( $_fi_exp ) && ! empty( $_fi_exp['featured_in_section'] ) )
+	? sanitize_key( $_fi_exp['featured_in_section'] ) : '';
+adn_component( 'parts/featured_in', array( 'section' => $_fi_exp_sec ) );
+?>
+
 <?php adn_page_close( $ctx ); ?>

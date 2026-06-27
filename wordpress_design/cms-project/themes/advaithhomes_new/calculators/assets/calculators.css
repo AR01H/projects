@@ -7,7 +7,7 @@
    ============================================================ */
 
 /* ── Bridge: map variables.css tokens to calc-local names ──
-   No fallbacks needed — variables.css is loaded before this file.
+   No fallbacks needed - variables.css is loaded before this file.
    Only values with no equivalent in variables.css are hardcoded here.   */
 :root {
 	--color-primary:       var(--client-color);
@@ -168,7 +168,7 @@ body.ah-calc-body {
 	background: var(--color-bg);
 }
 
-/* Form elements — bare tags, no class needed */
+/* Form elements - bare tags, no class needed */
 .ah-calc-body label {
 	display: inline-block;
 	font-size: 0.85rem; font-weight: 500;
@@ -214,7 +214,7 @@ body.ah-calc-body {
 	vertical-align: middle;
 }
 
-/* Native button — styled as primary by default */
+/* Native button - styled as primary by default */
 .ah-calc-body button:not([class]) {
 	font-family: var(--font-body);
 	font-size: 0.9rem; font-weight: 600;
@@ -674,7 +674,7 @@ body.ah-calc-body {
 	transition: all var(--transition);
 }
 
-/* Primary — teal fill */
+/* Primary - teal fill */
 .ah-calc-body .btn-primary {
 	background: var(--color-primary);
 	color: var(--color-white);
@@ -687,7 +687,7 @@ body.ah-calc-body {
 	text-decoration: none;
 }
 
-/* Secondary — gold fill */
+/* Secondary - gold fill */
 .ah-calc-body .btn-secondary {
 	background: var(--color-accent);
 	color: var(--color-white);
@@ -700,7 +700,7 @@ body.ah-calc-body {
 	text-decoration: none;
 }
 
-/* Outline — teal border, transparent fill */
+/* Outline - teal border, transparent fill */
 .ah-calc-body .btn-outline {
 	background: transparent;
 	color: var(--color-primary);
@@ -712,7 +712,7 @@ body.ah-calc-body {
 	text-decoration: none;
 }
 
-/* Outline accent — gold border */
+/* Outline accent - gold border */
 .ah-calc-body .btn-outline-accent {
 	background: transparent;
 	color: var(--color-accent);
@@ -724,7 +724,7 @@ body.ah-calc-body {
 	text-decoration: none;
 }
 
-/* Ghost — no border, subtle hover */
+/* Ghost - no border, subtle hover */
 .ah-calc-body .btn-ghost {
 	background: transparent;
 	color: var(--color-text-muted);
@@ -751,7 +751,7 @@ body.ah-calc-body {
 
 /* ── Lists ─────────────────────────────────────────────────── */
 
-/* Check list — green ticks */
+/* Check list - green ticks */
 .ah-calc-body .list-check {
 	list-style: none;
 	margin-left: 0;
@@ -770,7 +770,7 @@ body.ah-calc-body {
 	font-weight: 700;
 }
 
-/* Cross list — red crosses */
+/* Cross list - red crosses */
 .ah-calc-body .list-cross {
 	list-style: none;
 	margin-left: 0;
@@ -789,7 +789,7 @@ body.ah-calc-body {
 	font-weight: 700;
 }
 
-/* Dot list — gold accent dots */
+/* Dot list - gold accent dots */
 .ah-calc-body .list-dot {
 	list-style: none;
 	margin-left: 0;
@@ -809,7 +809,7 @@ body.ah-calc-body {
 	background: var(--color-accent);
 }
 
-/* Inline list — horizontal */
+/* Inline list - horizontal */
 .ah-calc-body .list-inline {
 	list-style: none;
 	margin: 0; padding: 0;
@@ -837,11 +837,11 @@ body.ah-calc-body {
 
 /* ── Tables ────────────────────────────────────────────────── */
 
-/* Compact — tighter padding */
+/* Compact - tighter padding */
 .ah-calc-body .table-compact td,
 .ah-calc-body .table-compact th { padding: 6px 10px; }
 
-/* Bordered — all cell borders */
+/* Bordered - all cell borders */
 .ah-calc-body .table-bordered,
 .ah-calc-body .table-bordered td,
 .ah-calc-body .table-bordered th {
@@ -849,7 +849,7 @@ body.ah-calc-body {
 }
 .ah-calc-body .table-bordered thead th { border-color: var(--color-primary-light); }
 
-/* Simple — no header fill, just underline */
+/* Simple - no header fill, just underline */
 .ah-calc-body .table-simple thead th {
 	background: none;
 	color: var(--color-text-muted);

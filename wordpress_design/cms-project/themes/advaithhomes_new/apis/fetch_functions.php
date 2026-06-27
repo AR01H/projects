@@ -1,6 +1,6 @@
 <?php
 /**
- * apis/fetch_functions.php — Theme REST API entry point.
+ * apis/fetch_functions.php - Theme REST API entry point.
  *
  * All routes and callbacks live in class-theme-rest-routes.php.
  *

@@ -78,7 +78,7 @@ $el_attr = $url
 	</div>
 	<?php endif; ?>
 
-	<?php /* ── Info indicator — outside thumb, left of body ── */ ?>
+	<?php /* ── Info indicator - outside thumb, left of body ── */ ?>
 	<?php /* ── Body ── */ ?>
 	<div class="mini-card-body">
 		<?php if ( '' !== $title ) : ?>

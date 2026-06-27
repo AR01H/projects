@@ -1,6 +1,6 @@
 <?php
 /**
- * admin/pages/reference-notes.php — Reference Notes / Cheat Sheet.
+ * admin/pages/reference-notes.php - Reference Notes / Cheat Sheet.
  *
  * Folders → Notes (passage / HTML content).
  * Stored in wp_options 'adn_help_notes'.
@@ -86,7 +86,7 @@ if ( ! is_array( $folders ) || empty( $folders ) ) {
 ?>
 <div class="wrap ah-wrap">
 <h1 style="margin-bottom:16px;">📋 Reference Notes</h1>
-<p class="description" style="margin-bottom:20px;">Your personal cheat-sheet. Add folders and notes for steps, instructions, proper names — anything you need at hand.</p>
+<p class="description" style="margin-bottom:20px;">Your personal cheat-sheet. Add folders and notes for steps, instructions, proper names - anything you need at hand.</p>
 
 <style>
 .hn-wrap{display:flex;gap:0;max-width:1200px;min-height:600px;border:1px solid #dcdcde;border-radius:4px;overflow:hidden;background:#fff;}

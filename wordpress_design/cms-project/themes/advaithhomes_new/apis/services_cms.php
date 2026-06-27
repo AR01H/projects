@@ -130,7 +130,7 @@ function adn_cms_topics( $parent_term_id, $limit = 100 ) {
 }
 
 /**
- * Child terms under one parent — category type only (excludes glossary etc.).
+ * Child terms under one parent - category type only (excludes glossary etc.).
  *
  * @return object[] taxonomy rows.
  */
@@ -331,7 +331,7 @@ function adn_cms_articles_for_parent( $parent_slug, $limit = 12 ) {
 	foreach ( adn_cms_topics( (int) $parent->id, 200 ) as $topic ) {
 		$term_ids[] = (int) $topic->id;
 	}
-	// If parent has no child terms yet, still return articles — fall back to all guides.
+	// If parent has no child terms yet, still return articles - fall back to all guides.
 	if ( empty( $term_ids ) ) {
 		return adn_cms_articles( $limit );
 	}
@@ -685,6 +685,50 @@ function adn_shared_latest_news_items( $limit = 3 ) {
 		}
 	}
 
+	return $items;
+}
+
+/**
+ * Shared latest-updates (regulations) items for any page widget.
+ * Reads the admin-selected posts from adn_home_newsblocks → regulations.
+ * Returns news_widget-compatible arrays: { title, date, tag, thumbnail, url }.
+ *
+ * @param int $limit
+ * @return array[]
+ */
+function adn_shared_latest_updates_items( $limit = 3 ) {
+	$opt = get_option( 'adn_home_newsblocks', array() );
+	$raw = ( isset( $opt['regulations']['items'] ) && is_array( $opt['regulations']['items'] ) )
+	       ? $opt['regulations']['items'] : array();
+	$items = array();
+	foreach ( $raw as $i => $row ) {
+		if ( count( $items ) >= $limit ) { break; }
+		$pid = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
+		if ( ! $pid ) { continue; }
+		$post = get_post( $pid );
+		if ( ! $post || 'publish' !== $post->post_status ) { continue; }
+		$badge_raw  = isset( $row['badge'] ) ? sanitize_text_field( $row['badge'] ) : 'GOV UK';
+		$badge_text = trim( str_replace( "\n", ' ', $badge_raw ) );
+		$thumb      = get_the_post_thumbnail_url( $pid, 'thumbnail' ) ?: '';
+		$item       = array(
+			'title'    => $post->post_title,
+			'date'     => get_the_date( 'M j, Y', $post ),
+			'url'      => get_permalink( $post ),
+			'gradient' => adn_cms_gradient( $i ),
+		);
+		if ( '' !== $thumb ) {
+			$item['thumbnail'] = $thumb;
+			if ( '' !== $badge_text ) {
+				$item['overlay'] = $badge_text; // badge shown on top of thumbnail
+			}
+		} else {
+			$item['icon'] = '📋';
+			if ( '' !== $badge_text ) {
+				$item['tag'] = $badge_text; // badge shown as tag chip when no image
+			}
+		}
+		$items[] = $item;
+	}
 	return $items;
 }
 

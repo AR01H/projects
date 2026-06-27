@@ -45,6 +45,7 @@ if ( isset( $_POST['ah_save_form_nonce'] ) ) {
 	$form_id = AH_Form_Builder::upsert( $form_id, array(
 		'name'            => sanitize_text_field( isset( $_POST['form_name'] ) ? $_POST['form_name'] : '' ),
 		'success_message' => sanitize_text_field( isset( $_POST['success_message'] ) ? $_POST['success_message'] : '' ),
+		'submit_label'    => sanitize_text_field( isset( $_POST['submit_label'] ) ? $_POST['submit_label'] : '' ),
 		'status'          => sanitize_key( isset( $_POST['form_status'] ) ? $_POST['form_status'] : 'active' ),
 		'disable_rules'   => isset( $_POST['disable_rules'] ) ? 1 : 0,
 	) );
@@ -76,7 +77,7 @@ $all_forms   = AH_Form_Builder::get_all();
 $current     = $form_id ? AH_Form_Builder::get( $form_id ) : null;
 $fields      = $form_id ? AH_Form_Builder::get_fields( $form_id ) : array();
 $status_counts = $form_id ? AH_Form_Builder::count_by_status( $form_id ) : array( 'all' => 0, 'new' => 0, 'read' => 0, 'replied' => 0, 'closed' => 0 );
-$field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Tel', 'textarea' => 'Textarea', 'select' => 'Dropdown', 'number' => 'Number', 'date' => 'Date', 'url' => 'URL' );
+$field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Tel', 'textarea' => 'Textarea', 'select' => 'Dropdown', 'number' => 'Number', 'date' => 'Date', 'url' => 'URL', 'hidden' => 'Hidden Field' );
 $agr         = $form_id ? AH_Form_Builder::get_agreement( $form_id ) : array( 'enabled' => 0, 'before' => 'I have read and agree to the', 'link_text' => 'Terms & Conditions', 'type' => 'link', 'url' => '', 'after' => '' );
 $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 ?>
@@ -210,9 +211,10 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
     <!-- Form settings card -->
     <div class="ah-card" style="margin-bottom:20px">
       <div class="ah-card-header"><h2>Form Settings</h2></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:16px;align-items:end">
         <div class="ah-form-row" style="margin:0"><label>Form Name</label><input type="text" name="form_name" value="<?php echo esc_attr( $current->name ); ?>" required></div>
         <div class="ah-form-row" style="margin:0"><label>Success Message</label><input type="text" name="success_message" value="<?php echo esc_attr( $current->success_message ); ?>"></div>
+        <div class="ah-form-row" style="margin:0"><label>Submit Button Label</label><input type="text" name="submit_label" value="<?php echo esc_attr( isset( $current->submit_label ) ? $current->submit_label : '' ); ?>" placeholder="Send Message"></div>
         <div class="ah-form-row" style="margin:0"><label>Status</label>
           <select name="form_status">
             <option value="active" <?php selected( $current->status, 'active' ); ?>>Active</option>
@@ -222,7 +224,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
       </div>
       <div class="fb-flag-row">
         <input type="checkbox" name="disable_rules" id="fb-disable-rules" class="fb-chk" value="1" <?php checked( ! empty( $current->disable_rules ) ); ?>>
-        <label for="fb-disable-rules"><strong>Disable Rules Engine</strong> — submissions from this form will NOT trigger any automation rules</label>
+        <label for="fb-disable-rules"><strong>Disable Rules Engine</strong> - submissions from this form will NOT trigger any automation rules</label>
       </div>
     </div>
 
@@ -269,7 +271,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
             <input type="text" name="agr_url" id="agr_url" value="<?php echo esc_attr( $agr['url'] ); ?>" placeholder="https://… or /privacy-policy/ or #section">
           </div>
           <div id="agr-popup-wrap" class="ah-form-row" style="margin:0;<?php echo ( 'popup' !== $agr['type'] ) ? 'display:none' : ''; ?>">
-            <label>Popup HTML content <small style="font-weight:400">(shown in a modal when the link is clicked — HTML allowed)</small></label>
+            <label>Popup HTML content <small style="font-weight:400">(shown in a modal when the link is clicked - HTML allowed)</small></label>
             <textarea name="agr_popup_html" id="agr_popup_html" style="min-height:140px;font-family:monospace;font-size:12px;width:100%;padding:8px 10px;border:1.5px solid #d1d5db;border-radius:6px;box-sizing:border-box;resize:vertical"><?php echo esc_textarea( isset( $agr['popup_html'] ) ? $agr['popup_html'] : '' ); ?></textarea>
           </div>
         </div>
@@ -307,8 +309,9 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
               <th style="width:34px"></th>
               <th style="min-width:160px">Field Label</th>
               <th style="width:148px">Type</th>
-              <th>Placeholder</th>
+              <th>Placeholder / Value</th>
               <th style="width:180px">Dropdown Options <small style="font-weight:400;text-transform:none">(one per line)</small></th>
+              <th style="min-width:160px">Description <small style="font-weight:400;text-transform:none">(help text)</small></th>
               <th style="width:70px;text-align:center">Required</th>
               <th style="width:46px"></th>
             </tr>
@@ -325,7 +328,8 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
               </td>
               <td><input type="text" class="fb-ph<?php echo 'select' === $f->field_type ? ' fb-hidden' : ''; ?>" value="<?php echo esc_attr( isset( $f->placeholder ) ? $f->placeholder : '' ); ?>" placeholder="Placeholder text"></td>
               <td><textarea class="fb-opts<?php echo 'select' !== $f->field_type ? ' fb-hidden' : ''; ?>" rows="3" placeholder="Option A&#10;Option B&#10;Option C"><?php echo esc_textarea( implode( "\n", isset( $f->options ) ? $f->options : array() ) ); ?></textarea></td>
-              <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"<?php checked( $f->is_required ); ?>></td>
+              <td class="<?php echo 'hidden' === $f->field_type ? 'fb-hidden' : ''; ?>"><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"><?php echo esc_textarea( isset( $f->description ) ? $f->description : '' ); ?></textarea></td>
+              <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"<?php checked( $f->is_required && 'hidden' !== $f->field_type ); ?><?php echo 'hidden' === $f->field_type ? ' disabled style="opacity:.3"' : ''; ?>></td>
               <td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">✕</button></td>
             </tr>
             <?php endforeach; ?>
@@ -336,6 +340,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
               <td><select class="fb-type"><?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>"><?php echo esc_html( $tl ); ?></option><?php endforeach; ?></select></td>
               <td><input type="text" class="fb-ph" value="" placeholder="Placeholder text"></td>
               <td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;Option B&#10;Option C"></textarea></td>
+              <td><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"></textarea></td>
               <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
               <td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">✕</button></td>
             </tr>
@@ -357,6 +362,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
       <td><select class="fb-type"><?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>"><?php echo esc_html( $tl ); ?></option><?php endforeach; ?></select></td>
       <td><input type="text" class="fb-ph" value="" placeholder="Placeholder text"></td>
       <td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;Option B&#10;Option C"></textarea></td>
+      <td><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"></textarea></td>
       <td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
       <td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">✕</button></td>
     </tr>
@@ -514,12 +520,23 @@ jQuery(function ($) {
   function applyTypeUI($r, type) {
     var $ph   = $r.find('.fb-ph');
     var $opts = $r.find('.fb-opts');
+    var $desc = $r.find('.fb-desc').closest('td');
+    var $req  = $r.find('.fb-req');
     if (type === 'select') {
       $ph.addClass('fb-hidden');
-      $opts.removeClass('fb-hidden').attr('placeholder', 'Option A\nOption B\nOption C').css('min-height', '');
+      $opts.removeClass('fb-hidden').attr('placeholder', 'Option A\nOption B\nOption C');
+      $desc.removeClass('fb-hidden');
+      $req.prop('disabled', false).css('opacity', '');
+    } else if (type === 'hidden') {
+      $ph.removeClass('fb-hidden').attr('placeholder', 'Value sent with form');
+      $opts.addClass('fb-hidden');
+      $desc.addClass('fb-hidden');
+      $req.prop('checked', false).prop('disabled', true).css('opacity', '0.3');
     } else {
       $ph.removeClass('fb-hidden').attr('placeholder', 'Placeholder text');
       $opts.addClass('fb-hidden');
+      $desc.removeClass('fb-hidden');
+      $req.prop('disabled', false).css('opacity', '');
     }
   }
   // Apply on page load for existing rows
@@ -579,6 +596,7 @@ jQuery(function ($) {
         placeholder: $r.find('.fb-ph').val().trim(),
         is_required: $r.find('.fb-req').is(':checked'),
         options:     opts,
+        description: $r.find('.fb-desc').val().trim(),
       });
     });
     $('#fb-fields-json').val(JSON.stringify(fields));

@@ -3,7 +3,7 @@
  * includes/core_routing.php  -  Static page routing + dynamic parent-term URL routing.
  *
  * adn_route_page_definitions() (priority 98): handles all slugs defined in
- * adn_get_page_definitions() — works whether a real WP page exists or not,
+ * adn_get_page_definitions() - works whether a real WP page exists or not,
  * so pretty permalinks don't need to be configured for every page.
  *
  * adn_route_parent_term_template() (priority 99): intercepts 404s for slugs
@@ -37,7 +37,7 @@ function adn_route_page_definitions( $template ) {
 
 	foreach ( adn_get_page_definitions() as $slug => $def ) {
 		if ( '' === $slug ) {
-			continue; // skip home — served by WordPress normally
+			continue; // skip home - served by WordPress normally
 		}
 
 		$template_rel = isset( $def['template'] ) ? (string) $def['template'] : '';
