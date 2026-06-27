@@ -83,10 +83,12 @@
 .article-body h2 { font-size: 1.3rem; margin: 32px 0 14px; padding-top: 16px; border-top: 1px solid var(--color-border); }
 .article-body h2:first-child { border-top: none; margin-top: 0; }
 .article-body p { font-size: 0.925rem; color: var(--color-text-muted); margin-bottom: 16px; line-height: 1.75; }
-.article-body ul { margin: 0 0 16px 16px; }
+.article-body ol,.article-body ul { margin: 0 0 16px 32px; }
 .article-body ul li { font-size: 0.925rem; color: var(--color-text-muted); margin-bottom: 6px; list-style: disc; line-height: 1.6; }
 .article-body strong { color: var(--color-dark, #1a2332); }
-
+.article-body table{
+    margin-left: 16px;
+}
 /* ── Callout Boxes ──────────────────────────────────────────── */
 .tip-box {
   background: #eff6ff;

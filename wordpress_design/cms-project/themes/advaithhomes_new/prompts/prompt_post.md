@@ -33,3 +33,4 @@ Write raw HTML body content only for the topic:
 - No frameworks, no Bootstrap, no Tailwind
 - End every section with <br/>
 - No explanation, no markdown - raw HTML code only
+- Don't Provide Heavy Infomation and Information must be feel like Human Readable

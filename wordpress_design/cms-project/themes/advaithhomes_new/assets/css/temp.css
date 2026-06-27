@@ -4008,7 +4008,7 @@ a.mini-card, div.mini-card {
 .cat-search-input::placeholder { color: var(--color-text-muted); }
 .cat-search-clear { color: var(--color-text-muted); font-size: .8rem; text-decoration: none; flex-shrink: 0; padding: 4px 8px; border-radius: 50px; margin-right: 4px; }
 .cat-search-clear:hover { color: var(--color-dark); background: var(--color-bg-section); }
-.cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; border-radius: 50px; }
+body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; border-radius: 50px !important; }
 .cat-search-results-note { font-size: .82rem; color: var(--color-text-muted); margin: 8px 0 0 18px; }
 
 /* Featured / Popular / Suggested full-width section */

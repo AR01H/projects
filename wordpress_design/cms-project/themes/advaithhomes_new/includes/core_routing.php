@@ -89,17 +89,46 @@ function adn_route_page_definitions( $template ) {
 }
 
 /**
+ * Suppress WordPress canonical redirects for URLs that are managed CMS term pages.
+ * Without this, WP posts whose slug matches a term slug cause a redirect before
+ * adn_route_parent_term_template (template_include, priority 99) can intercept.
+ */
+add_filter( 'redirect_canonical', 'adn_suppress_canonical_for_term_slugs', 1, 2 );
+function adn_suppress_canonical_for_term_slugs( $redirect_url, $requested_url ) {
+	if ( ! function_exists( 'adn_cms_available' ) || ! adn_cms_available() ) {
+		return $redirect_url;
+	}
+	$path = trim( (string) parse_url( $requested_url, PHP_URL_PATH ), '/' );
+	if ( '' === $path || false !== strpos( $path, '/' ) ) {
+		return $redirect_url;
+	}
+	$slug = sanitize_title( $path );
+	if ( '' === $slug ) {
+		return $redirect_url;
+	}
+	global $wpdb;
+	$is_term = (bool) $wpdb->get_var( $wpdb->prepare(
+		"SELECT 1 FROM `{$wpdb->prefix}ah_taxonomy_parent_terms` WHERE slug = %s AND status = 'active'
+		 UNION ALL
+		 SELECT 1 FROM `{$wpdb->prefix}ah_taxonomies` WHERE slug = %s AND status = 'active'
+		 LIMIT 1",
+		$slug,
+		$slug
+	) );
+	return $is_term ? false : $redirect_url;
+}
+
+/**
  * Dynamic CMS term router (priority 99).
  *
- * Intercepts 404s for single-segment slugs that match active rows in
+ * Intercepts single-segment slugs that match active rows in
  * ah_taxonomy_parent_terms (→ page-category_guide.php) or
  * ah_taxonomies (→ page-topic_category_guide.php).
+ *
+ * Runs for both 404s and non-404s so that WP posts whose slug matches a
+ * CMS term slug are correctly overridden rather than served as single posts.
  */
 function adn_route_parent_term_template( $template ) {
-	if ( ! is_404() ) {
-		return $template;
-	}
-
 	$raw_uri = isset( $_SERVER['REQUEST_URI'] )
 		? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) )
 		: '';
@@ -137,10 +166,15 @@ function adn_route_parent_term_template( $template ) {
 
 	if ( $row ) {
 		global $wp_query;
-		$wp_query->is_404  = false;
-		$wp_query->is_page = true;
-		status_header( 200 );
-		nocache_headers();
+		if ( $wp_query->is_404 ) {
+			status_header( 200 );
+			nocache_headers();
+		}
+		$wp_query->is_404     = false;
+		$wp_query->is_page    = true;
+		$wp_query->is_single  = false;
+		$wp_query->is_singular = false;
+		$wp_query->is_archive = false;
 		set_query_var( 'adn_cat_slug', $slug );
 		return get_template_directory() . '/pages/page-category_guide.php';
 	}
@@ -170,10 +204,15 @@ function adn_route_parent_term_template( $template ) {
 	}
 
 	global $wp_query;
-	$wp_query->is_404  = false;
-	$wp_query->is_page = true;
-	status_header( 200 );
-	nocache_headers();
+	if ( $wp_query->is_404 ) {
+		status_header( 200 );
+		nocache_headers();
+	}
+	$wp_query->is_404      = false;
+	$wp_query->is_page     = true;
+	$wp_query->is_single   = false;
+	$wp_query->is_singular = false;
+	$wp_query->is_archive  = false;
 	set_query_var( 'adn_guide_term_slug', $slug );
 
 	return get_template_directory() . '/pages/page-topic_category_guide.php';
