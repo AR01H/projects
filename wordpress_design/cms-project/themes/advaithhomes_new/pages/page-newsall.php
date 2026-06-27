@@ -77,6 +77,31 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 			}
 		}
 
+		// ── SEO for single news item ───────────────────────────────────────────
+		$_nb_img_url = '';
+		if ( ! empty( $_nb_item->image_id ) ) {
+			$_t = wp_get_attachment_image_url( (int) $_nb_item->image_id, 'large' );
+			if ( $_t ) { $_nb_img_url = (string) $_t; }
+		}
+		adn_seo_register( array(
+			'title'          => $_nb_title,
+			'description'    => wp_strip_all_tags( $_nb_excerpt ),
+			'canonical'      => '' !== $_nb_url ? $_nb_url : '',
+			'image'          => $_nb_img_url,
+			'breadcrumb'     => $_nb_breadcrumb,
+			'type'           => 'article',
+			'article_section'=> '' !== $_nb_label ? $_nb_label : 'News',
+			'published'      => '' !== $_nb_stamp ? date( 'c', strtotime( $_nb_stamp ) ) : '',
+			'schema_news'    => array(
+				'title'   => $_nb_title,
+				'excerpt' => wp_strip_all_tags( $_nb_excerpt ),
+				'url'     => $_nb_url,
+				'date'    => '' !== $_nb_stamp ? date( 'c', strtotime( $_nb_stamp ) ) : '',
+				'image'   => $_nb_img_url,
+				'label'   => $_nb_label,
+			),
+		) );
+
 		adn_page_open( $_nb_ctx );
 		?>
 
@@ -187,6 +212,14 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 
 /* ── Default: news listing view ─────────────────────────────────────────── */
 $ctx = adn_news_get_context();
+
+adn_seo_register( array(
+	'title'       => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
+	'description' => isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '',
+	'canonical'   => defined( 'SITE_NEWS_URL' ) ? home_url( SITE_NEWS_URL ) : '',
+	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
+	'noindex'     => isset( $_GET['paged'] ) && (int) $_GET['paged'] > 1,
+) );
 
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();

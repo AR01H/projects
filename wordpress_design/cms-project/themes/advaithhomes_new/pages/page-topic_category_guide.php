@@ -25,6 +25,19 @@ $term      = $ctx['term'];
 $parent    = $ctx['parent'];
 $term_name = $term ? (string) $term->name : '';
 
+$_seo_desc = '';
+if ( ! empty( $ctx['hero']['description'] ) ) {
+	$_seo_desc = wp_strip_all_tags( (string) $ctx['hero']['description'] );
+}
+
+$_seo_slug = isset( $ctx['slug'] ) ? sanitize_key( (string) $ctx['slug'] ) : '';
+adn_seo_register( array(
+	'title'       => $term_name,
+	'description' => $_seo_desc,
+	'canonical'   => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
+	'breadcrumb'  => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+) );
+
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );
@@ -42,53 +55,57 @@ adn_page_open( $_open_ctx );
 
 		<main class="topic-listing-main">
 
-			<?php /* ── Category Search ── */ ?>
-			<div class="cat-search-bar">
-				<div class="cat-search-wrap">
-					<form class="cat-search-form"
-						method="get"
-						action="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>"
-						role="search"
-						data-suggest="<?php echo esc_url( rest_url( 'wp/v2/search' ) ); ?>"
-					>
-						<label class="screen-reader-text" for="cat-search-input"><?php echo esc_html( sprintf( __( 'Search %s guides', ADN_TEXT_DOMAIN ), $term_name ) ); ?></label>
-						<div class="cat-search-inner">
-							<span class="cat-search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
-							<input
-								id="cat-search-input"
-								type="search"
-								name="search"
-								class="cat-search-input"
-								value="<?php echo esc_attr( $ctx['search']['query'] ); ?>"
-								placeholder="<?php echo esc_attr( sprintf( __( 'Search %s guides…', ADN_TEXT_DOMAIN ), $term_name ) ); ?>"
-								autocomplete="off"
-								aria-autocomplete="list"
-								aria-expanded="false"
-							>
-							<?php if ( $ctx['search']['query'] !== '' ) : ?>
-								<a href="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" class="cat-search-clear" aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>"><i class="fa-solid fa-xmark"></i></a>
-							<?php endif; ?>
-							<button type="submit" class="cat-search-btn btn btn-primary"><?php esc_html_e( 'Search', ADN_TEXT_DOMAIN ); ?></button>
-						</div>
-					</form>
-					<div class="js-suggest search-suggest" hidden role="listbox"></div>
-				</div>
-				<?php if ( $ctx['search']['query'] !== '' ) : ?>
-					<p class="cat-search-results-note">
-						<?php echo esc_html( sprintf( __( 'Showing results for "%s" in %s', ADN_TEXT_DOMAIN ), $ctx['search']['query'], $term_name ) ); ?>
-					</p>
+			<?php /* ── Category Search + Title row ── */ ?>
+			<div class="cat-listing-header">
+				<?php if ( ! empty( $ctx['articles'] ) ) : ?>
+					<?php adn_component( 'parts/section_headers/section_header', array(
+						'heading' => array(
+							'title'      => $term_name . ' Guides',
+							'link_label' => '',
+							'link_url'   => '',
+						),
+						'tag' => 'h2',
+					) ); ?>
 				<?php endif; ?>
+				<div class="cat-search-bar">
+					<div class="cat-search-wrap">
+						<form class="cat-search-form"
+							method="get"
+							action="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>"
+							role="search"
+							data-suggest="<?php echo esc_url( rest_url( 'wp/v2/search' ) ); ?>"
+						>
+							<label class="screen-reader-text" for="cat-search-input"><?php echo esc_html( sprintf( __( 'Search %s guides', ADN_TEXT_DOMAIN ), $term_name ) ); ?></label>
+							<div class="cat-search-inner">
+								<span class="cat-search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+								<input
+									id="cat-search-input"
+									type="search"
+									name="search"
+									class="cat-search-input"
+									value="<?php echo esc_attr( $ctx['search']['query'] ); ?>"
+									placeholder="<?php echo esc_attr( sprintf( __( 'Search %s guides…', ADN_TEXT_DOMAIN ), $term_name ) ); ?>"
+									autocomplete="off"
+									aria-autocomplete="list"
+									aria-expanded="false"
+								>
+								<?php if ( $ctx['search']['query'] !== '' ) : ?>
+									<a href="<?php echo esc_url( trailingslashit( $ctx['search']['base_url'] ) ); ?>" class="cat-search-clear" aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>"><i class="fa-solid fa-xmark"></i></a>
+								<?php endif; ?>
+								<button type="submit" class="cat-search-btn btn btn-primary"><?php esc_html_e( 'Search', ADN_TEXT_DOMAIN ); ?></button>
+							</div>
+						</form>
+						<div class="js-suggest search-suggest" hidden role="listbox"></div>
+					</div>
+					<?php if ( $ctx['search']['query'] !== '' ) : ?>
+						<p class="cat-search-results-note">
+							<?php echo esc_html( sprintf( __( 'Showing results for "%s" in %s', ADN_TEXT_DOMAIN ), $ctx['search']['query'], $term_name ) ); ?>
+						</p>
+					<?php endif; ?>
+				</div>
 			</div>
 
 			<?php if ( ! empty( $ctx['articles'] ) ) : ?>
-				<?php adn_component( 'parts/section_headers/section_header', array(
-					'heading' => array(
-						'title'      => $term_name . ' Guides',
-						'link_label' => '',
-						'link_url'   => '',
-					),
-					'tag' => 'h2',
-				) ); ?>
 
 				<div class="topic-articles-grid">
 					<?php foreach ( $ctx['articles'] as $article ) : ?>

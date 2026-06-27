@@ -127,7 +127,7 @@ define( 'SITE_CONTACT_LABEL',  adn_term( 'features.contact_label',  'Contact Us'
 // BUTTON LABELS
 // ===========================
 define( 'SITE_BTN_EXPLORE_ALL',   adn_term( 'buttons.explore_all',   'Explore all' ) );
-define( 'SITE_BTN_EXPLORE_ARROW', adn_term( 'buttons.explore_arrow', 'Explore →' ) );
+define( 'SITE_BTN_EXPLORE_ARROW', adn_term( 'buttons.explore_arrow', 'Explore' ) );
 
 // ===========================
 // UI LABELS

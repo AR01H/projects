@@ -21,6 +21,13 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_guides_logical.php';
 $ctx = adn_guides_get_context();
 
+adn_seo_register( array(
+	'title'       => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
+	'description' => isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '',
+	'canonical'   => defined( 'SITE_GUIDES_URL' ) ? home_url( SITE_GUIDES_URL ) : '',
+	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
+) );
+
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );

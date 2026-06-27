@@ -27,6 +27,13 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_tools_logical.php';
 $ctx = adn_calculators_get_context();
 
+adn_seo_register( array(
+	'title'       => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
+	'description' => isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '',
+	'canonical'   => defined( 'SITE_CALCULATORS_URL' ) ? home_url( SITE_CALCULATORS_URL ) : '',
+	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
+) );
+
 // Breadcrumb renders inside the hero banner - suppress from adn_page_open.
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();

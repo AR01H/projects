@@ -3,6 +3,7 @@
     padding:var(--padding-md);
     height:100%;
     border-radius: var(--radius-sm);
+    border: 1px solid #bcbcbc;
 }
 
 .highlight-textblock {

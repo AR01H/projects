@@ -19,6 +19,7 @@ require_once get_template_directory() . '/includes/class-adn-enquiry.php';
 require_once get_template_directory() . '/includes/class-adn-form-ajax.php';
 require_once get_template_directory() . '/includes/adn-sidebar-helpers.php';
 require_once get_template_directory() . '/includes/comment-callbacks.php';
+require_once get_template_directory() . '/includes/seo.php';
 
 // ===========================
 // LOAD HELPER FUNCTIONS

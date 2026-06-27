@@ -587,7 +587,7 @@ function adn_category_get_context( $slug = '' ) {
 					'category'    => PARENT_TERM,
 					'title'       => $_pp_post->post_title,
 					'description' => wp_trim_words( $_ex, 18, '…' ),
-					'read_more'   => adn_term( 'content.read_more', 'Explore →' ),
+					'read_more'   => adn_term( 'content.read_more', 'Explore' ),
 					'url'         => get_permalink( $_pp_post ),
 				);
 			}

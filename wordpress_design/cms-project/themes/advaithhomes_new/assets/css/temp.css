@@ -424,8 +424,8 @@ section{
 .phb-bg img {
   width: 100%;
   height: 100%;
-  object-fit: fill;
-  object-position: center right;
+  object-fit: cover;
+  object-position: 65% center;
   display: block;
 }
 
@@ -436,12 +436,12 @@ section{
   position: absolute;
   inset: 0;
   z-index: 1;
-  /* bottom-edge fade - SVG handles the left curved panel */
+  /* lighter bottom fade so the image shows more vividly */
   background: linear-gradient(
     to top,
-    rgba(255,255,255,0.88) 0%,
-    rgba(255,255,255,0.55) 14%,
-    rgba(255,255,255,0)    32%
+    rgba(255,255,255,0.70) 0%,
+    rgba(255,255,255,0.30) 12%,
+    rgba(255,255,255,0)    26%
   );
   border-bottom: 1px solid #d2d2d2;
 }
@@ -507,8 +507,12 @@ section{
 
 /* Text content - left column only */
 .category-hero-content {
-  max-width: 500px;
+  width: 60%;
+  max-width: 60%;
   padding: 72px 0;
+}
+@media (max-width: 768px) {
+  .category-hero-content { width: 100%; max-width: 100%; }
 }
 
 /* Breadcrumb rendered inside the hero banner */
@@ -551,8 +555,8 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 .page-hero-content {
   position: relative;
   z-index: 2;
-  max-width: 70vw;
-  padding-right: 40px;
+  max-width: 60vw;
+  padding-right: 20px;
 }
 
 .page-hero h1 {
@@ -843,10 +847,10 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   position: relative;
   display: block;
   text-decoration: none;
-  flex: 0 0 340px;
-  width: 340px;
-  aspect-ratio: 4 / 5;
-  border-radius: 6px;
+  flex: 0 0 290px;
+  width: 290px;
+  height: 310px;
+  border-radius: 10px;
   overflow: hidden;
   scroll-snap-align: start;
 }
@@ -923,12 +927,12 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 
 /* No-image: icon centred, larger, with a soft gold ring glow */
 .jny-card--no-img .jny-card__icon {
-  top: 38%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 88px;
-  height: 88px;
-  font-size: 2.6rem;
+  width: 72px;
+  height: 72px;
+  font-size: 2.1rem;
   border: 2px solid rgba(176,141,87,.65);
   background: rgb(255, 240, 240);
   box-shadow: 0 0 0 10px rgba(176,141,87,.06), 0 0 0 22px rgba(176,141,87,.03);
@@ -945,7 +949,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 .jny-card__body {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: 24px 24px 28px;
+  padding: 16px 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -953,34 +957,34 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 
 .jny-card__title {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #fff;
-  margin: 0 0 10px;
-  line-height: 1.15;
+  margin: 0 0 7px;
+  line-height: 1.2;
   letter-spacing: -.01em;
 }
 
 /* Gold short line under title */
 .jny-card__divider {
-  width: 30px;
+  width: 24px;
   height: 2px;
   border-radius: 2px;
   background: var(--secondary-color, #B08D57);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   transition: width .3s ease;
 }
 .jny-card:hover .jny-card__divider { width: 48px; }
 
 .jny-card__desc {
   font-family: var(--font-body);
-  font-size: .80rem;
-  color: rgba(255,255,255,.75);
-  line-height: 1.58;
-  margin: 0 0 18px;
+  font-size: .78rem;
+  color: rgba(255,255,255,.72);
+  line-height: 1.5;
+  margin: 0 0 12px;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1012,7 +1016,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 .journey-card, .jny-pro-card { display: none; }
 
 @media (max-width: 600px) {
-  .jny-card { flex: 0 0 280px; width: 280px; }
+  .jny-card { flex: 0 0 250px; width: 250px; height: 280px; }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1461,8 +1465,6 @@ a.mini-card, div.mini-card {
   min-height: 60px;
 }
 
-a.mini-card:hover { background: var(--slate-100, #f8fafc); }
-a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 /* Left visuals - unified 16:9 thumb box */
 .mini-card-thumb {
@@ -1811,6 +1813,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   flex: 0 0 260px;
   width: 260px;
   scroll-snap-align: start;
+  border: 1px solid var(--slate-500) !important;
 }
 
 
@@ -1842,7 +1845,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .guides-carousel-btn[hidden] { display: none; }
 .guide-card {
   background: var(--color-white);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xs);
   overflow: hidden;
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
@@ -1854,8 +1857,11 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   color: inherit;
 }
 .guide-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-xs);
   border-color: var(--color-primary);
+}
+.guide-card .card-desc-text{
+  margin-bottom: 0px;
 }
 .guide-card-img {
   width: 100%;
@@ -1880,7 +1886,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 }
 .guide-card:hover .guide-card-icon { transform: scale(1.18); }
 .guide-card-body {
-  padding: 12px 14px 16px;
+  padding: 12px 10px 16px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -1904,7 +1910,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 }
 .guide-card-category {
   display: block;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -2266,7 +2272,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .newsletter-cta { display: none !important; }
 
 /* ── Navigation columns ── */
-.footer-main { padding: 20px 0 16px; }
+.footer-main { padding: 22px 0 22px; }
 .footer-cols-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -2352,7 +2358,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 }
 .category-control-centre__panel {
   border: 1px solid var(--client-color);
-  padding: 40px 16px;
+  padding: 20px 16px;
   margin:10px;
   border-radius: var(--radius-xs);
 }
@@ -2396,7 +2402,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .category-control-centre .jny2-step:not(.jny2-step--last) .jny2-step__body::after {
   content: '';
   position: absolute;
-  top: 19px;
+  top: 25px;
   left: calc(50% + 18px);
   width: calc(100% - 36px);
   height: 2px;
@@ -2407,7 +2413,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   z-index: 10;
   width: 34px;
   height: 34px;
-  margin: 0 auto 8px;
+  margin: 8px auto;
   border-radius: 50%;
   background: #f6faf8;
   border: 1px solid #a5a5a5;
@@ -2420,6 +2426,12 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .category-control-centre .jny2-step:first-child .jny2-step__num-chip {
   background: var(--color-primary);
   border-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 0 0 5px rgba(30,58,47,0.10);
+}
+.category-control-centre .jny2-step:last-child .jny2-step__num-chip{
+  background: var(--gold-800);
+  border-color: var(--gold-800);
   color: var(--color-white);
   box-shadow: 0 0 0 5px rgba(30,58,47,0.10);
 }
@@ -2682,6 +2694,11 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   .jny2-wrap { padding: 36px 0; }
   .jny2-steps { gap: var(--space-3); }
   .jny2-step__body { padding: 20px 16px 18px; }
+  .category-control-centre .jny2-tip{
+    display:grid;
+    grid-template-columns: 10px 1fr;
+    align-content: start;
+  }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -2767,7 +2784,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   box-shadow: 0 0 0 5px rgba(176,141,87,.20), 0 6px 16px rgba(22,33,28,.15);
 }
 .jny2-step__label { transition: color .2s ease; }
-.jny2-step:hover .jny2-step__label { color: var(--color-primary, #1e3a2f); }
+.jny2-step:hover .jny2-step__label { color: var(--color-accent, #1e3a2f); }
 
 /* ── Always-on: wave pulse left→right (all share 4s cycle, 300ms apart) ── */
 .jny2--animate .jny2-step .jny2-step__circle {
@@ -4580,6 +4597,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   flex-shrink: 0;
   width: 100%;
   min-width: 0;
+  border: 1px solid var(--color-accent);
 }
 
 /* ── Header ── */
@@ -5697,4 +5715,239 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .legal-section a {
     color: var(--color-primary, #2d5a44);
     text-decoration: underline;
+}
+
+/* ============================================================
+   DESIGN UPDATES
+   ============================================================ */
+
+/* ── 0. Journey section – tighter vertical spacing ──────── */
+.journey-section { padding: var(--space-8) 0 var(--space-7); }
+.journey-title { margin-bottom: var(--space-5) !important; }
+
+/* ── 1. Footer link padding ───────────────────────────────── */
+.footer-links { gap: 8px; }
+.footer-link { padding: 3px 0; }
+
+/* ── 2. Guide cards - new clean design ───────────────────── */
+.guide-card {
+    background: var(--color-white, #fff);
+    border-radius: 14px !important;
+    border: 1px solid rgba(0,0,0,0.06) !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ── Photo cards: top image band ── */
+.guide-card .guide-card-img--photo {
+    aspect-ratio: 16 / 9;
+    background: var(--color-bg-section);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.guide-card .guide-card-img--photo img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.38s ease;
+}
+.guide-card:hover .guide-card-img--photo img { transform: scale(1.05); }
+
+/* Icon overlaps the bottom edge of the image */
+.guide-card--has-img .guide-card-body { padding-top: 6px; }
+.guide-card--has-img .guide-card-icon-sm {
+    margin-top: -35px;
+    position: relative;
+    z-index: 3;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    border: 2px solid rgba(201,168,76,0.20);
+}
+
+/* No-image cards: no cream section, just body with larger icon */
+.guide-card:not(.guide-card--has-img) .guide-card-body { padding-top: 22px; }
+.guide-card:not(.guide-card--has-img) .guide-card-icon-sm {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    font-size: 1.35rem;
+}
+
+/* ── Body ── */
+.guide-card-body {
+    padding: 14px 16px 18px;
+    gap: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Head row: icon circle (left) + title/category text (right) */
+.guide-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.guide-card-icon-sm {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: rgba(201,168,76,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--color-accent, #c9a84c);
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.2s;
+}
+.guide-card:hover .guide-card-icon-sm {
+    background: rgba(201,168,76,0.22);
+    transform: scale(1.06);
+}
+.guide-card-head-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+/* Category: tiny uppercase label above title */
+.guide-card-category {
+    display: block;
+    font-size: 0.60rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-dark, #1a2332);
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.guide-card .card-title-highlight {
+    font-size: 0.87rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-text-muted, #6b7280);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.guide-card .card-desc-text {
+    font-size: 0.79rem;
+    color: var(--color-text-muted, #6b7280);
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+.guide-card .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-accent, #c9a84c);
+    margin-top: 2px;
+    text-decoration: none;
+    transition: gap 0.18s;
+}
+.guide-card .read-more::after { content: none; }
+.guide-card:hover .read-more { gap: 7px; }
+
+/* ── 3. Mini cards (news, updates) - cleaner design ─────── */
+a.mini-card, div.mini-card {
+    padding: 8px 4px;
+    gap: var(--space-3);
+    transition: background 0.15s;
+    border-radius: var(--radius-sm);
+    border-bottom-color: var(--color-border);
+}
+a.mini-card:hover { border:1px solid var(--color-dark); border-radius: var(--radius-sm); }
+.mini-card-thumb {
+    width: 80px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+.mini-card-title {
+    font-size: 0.84rem;
+    font-weight: 600;
+    line-height: 1.38;
+    -webkit-line-clamp: 2;
+    color: var(--color-dark);
+}
+a.mini-card:hover .mini-card-title { color: var(--color-primary); }
+.mini-card-meta { margin-top: 4px; }
+.mini-card-tag {
+    font-size: 0.63rem;
+    background: rgba(30,58,47,0.07);
+    color: var(--color-primary);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+.mini-card-date { font-size: 0.63rem; }
+
+/* ── 4. Journey card chain connector - accent highlight ───── */
+.category-control-centre .jny2-step:not(.jny2-step--last) .jny2-step__body::after {
+    background: linear-gradient(to right, var(--color-primary, #1e3a2f), rgba(201,168,76,0.5));
+    height: 2px;
+}
+/* jny2 cards on regular pages - highlight chain */
+.jny2-step:not(:last-child)::before {
+    display: none; /* no pseudo rail - use card border instead */
+}
+.jny2-step__body {
+    border-left: 3px solid transparent;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+.jny2-step__num-chip {
+    background: rgba(30,58,47,0.08);
+    color: var(--color-primary);
+}
+
+/* ── 5. Journey chain mobile - hide connector line ────────── */
+@media (max-width: 600px) {
+    .category-control-centre .jny2-step__body::after { display: none !important; }
+    .category-control-centre .jny2-steps { overflow-x: auto; padding-bottom: 8px; }
+    .category-control-centre .jny2-step { flex: 0 0 140px; }
+}
+
+/* ── 6. Banner carousel - accent progress/border ─────────── */
+.bsl__progress { height: 4px; background: rgba(255,255,255,0.08); }
+.bsl__progress-bar {
+    background: linear-gradient(to right, var(--color-accent, #c9a84c), #e6c97a);
+    border-radius: 2px;
+}
+.banners-promo-section {
+    border-bottom: 3px solid var(--color-accent, #c9a84c);
+}
+
+/* ── 7. Category search - title + search on same line ───── */
+.cat-listing-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-5);
+    padding: 4px 0 18px;
+}
+.cat-listing-header .section-header {
+  margin-bottom: 0;
+}
+.cat-listing-header .section-header-wrap { margin: 0; }
+.cat-listing-header .section-header-wrap h2 { font-size: 1.15rem; margin: 0; }
+.cat-listing-header .cat-search-bar { padding: 0; }
+.cat-listing-header .cat-search-wrap { max-width: 100%; }
+
+@media (max-width: 640px) {
+    .cat-listing-header { grid-template-columns: 1fr; }
+    .cat-search-bar{width:90vw;}
 }

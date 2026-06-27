@@ -1,0 +1,257 @@
+/* ============================================================
+   premium_styles.css  —  Premium variable overrides + accents
+   Loaded last. Warms up cold slate colors. Fills missing vars.
+   ============================================================ */
+
+
+/* ══════════════════════════════════════════════════════════
+   1. ROOT OVERRIDES — fix cold/dull variables site-wide
+   ══════════════════════════════════════════════════════════ */
+
+:root {
+    /* ── Gold scale (was mostly missing) */
+    --gold-300: #d4aa6a;
+    --gold-400: #c09a58;
+    --gold-500: #B08D57;          /* = --secondary-color */
+    --gold-600: #9a7a48;
+    --gold-700: #7d6038;
+
+    /* ── Client-color tints (all were undefined) */
+    --client-color-900: #0f1a14;
+    --client-color-800: #162620;
+    --client-color-700: #1a2e29;
+    --client-color-600: #203c3e;  /* = --client-color */
+    --client-color-500: #2d5550;
+    --client-color-400: #3d706a;
+
+    /* ── Warm text — replace cold slate */
+    --text-primary:   #111816;    /* rich near-black, warm undertone */
+    --text-secondary: #4a4540;    /* warm dark taupe, NOT cold #475569 */
+    --text-muted:     #7a6f65;    /* warm muted, NOT cold #64748b */
+
+    /* ── Page background — warm ivory, NOT cold white */
+    --bg:             #f8f5f0;
+    --color-bg:       #f8f5f0;
+    --card-bg:        #ffffff;
+
+    /* ── Section alternate background */
+    --color-bg-section: #f1ece4;
+
+    /* ── Accent pointer (used for focus rings etc) */
+    --accent: var(--client-color);
+
+    /* ── Missing colour tokens used in components.css / common.css */
+    --color-primary:        var(--client-color);
+    --color-info-dark:      var(--client-color-700);
+    --color-border:         rgba(17,24,22,0.10);
+    --color-white:          #ffffff;
+    --color-danger:         #b91c1c;
+    --color-text-muted:     var(--text-muted);
+    --color-success:        #15803d;
+    --color-success-bg:     #f0fdf4;
+    --color-success-text:   #166534;
+    --color-error-bg:       #fef2f2;
+    --color-error-text:     #991b1b;
+    --color-pill-market-bg: rgba(32,60,62,0.08);
+    --color-tag-suggested:  var(--client-color);
+
+    /* ── Slate warm-shift (used in tables, misc) */
+    --slate-100: #f5f2ed;
+    --slate-200: #e8e2d8;
+    --slate-300: #d4ccc0;
+    --slate-500: #7a6f65;
+    --slate-600: #4a4540;
+    --slate-700: #332e28;
+    --slate-800: #1e1a15;
+    --slate-900: #111816;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   2. BODY & PAGE BACKGROUND — warm, not clinical white
+   ══════════════════════════════════════════════════════════ */
+
+body {
+    background: var(--bg);
+    color: var(--text-primary);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   3. HEADINGS — tighter, richer
+   ══════════════════════════════════════════════════════════ */
+
+h1, h2, h3, h4 {
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+}
+
+/* Section h2 gold underline */
+.section-header-wrap h2::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: var(--secondary-color);
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   4. HEADER
+   ══════════════════════════════════════════════════════════ */
+
+.site-header,
+.site-header.is-stuck {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(17,24,22,0.09) !important;
+    box-shadow: none !important;
+}
+.nav-link:hover,
+.nav-link.active {
+    color: var(--client-color) !important;
+    background: rgba(32,60,62,0.06) !important;
+}
+.nav-link.active::after { background: var(--secondary-color) !important; }
+.nav-dropdown { box-shadow: none !important; border: 1px solid rgba(17,24,22,0.09) !important; }
+
+
+/* ══════════════════════════════════════════════════════════
+   5. BUTTONS — rich, no shadow, no transform
+   ══════════════════════════════════════════════════════════ */
+
+.btn {
+    box-shadow: none !important;
+    font-weight: 600;
+    border-radius: var(--radius-sm) !important;
+}
+.btn:hover { transform: none !important; box-shadow: none !important; filter: none !important; }
+
+.btn-primary {
+    background: var(--client-color) !important;
+    border-color: var(--client-color) !important;
+    color: #fff !important;
+}
+.btn-primary:hover { background: var(--client-color-700) !important; }
+
+
+/* ══════════════════════════════════════════════════════════
+   6. JOURNEY CARDS — no shadow, gold CTA
+   ══════════════════════════════════════════════════════════ */
+
+.jny-card { box-shadow: none !important; }
+.jny-card:hover { box-shadow: none !important; }
+.jny-card__title { font-family: var(--font-display); letter-spacing: -0.02em; }
+.jny-card__cta   { background: var(--secondary-color) !important; box-shadow: none !important; }
+.jny-card:hover .jny-card__cta { background: var(--gold-600) !important; }
+
+
+/* ══════════════════════════════════════════════════════════
+   7. GUIDE CARDS
+   ══════════════════════════════════════════════════════════ */
+
+.guide-card {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(17,24,22,0.08) !important;
+    border-radius: var(--radius-md) !important;
+}
+.guide-card:hover { box-shadow: none !important; transform: none !important; }
+
+.guide-card-category {
+    font-size: 0.60rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.10em !important;
+    color: var(--text-primary) !important;
+    background: none !important;
+}
+.guide-card .card-title-highlight {
+    font-size: 0.78rem !important;
+    font-weight: 400 !important;
+    color: var(--text-muted) !important;
+}
+.guide-card .card-desc-text { color: var(--text-secondary); }
+.guide-card .read-more { color: var(--secondary-color) !important; font-weight: 700 !important; }
+.guide-card-icon-sm {
+    background: rgba(176,141,87,0.10) !important;
+    border: 1.5px solid rgba(176,141,87,0.22) !important;
+    color: var(--secondary-color) !important;
+    box-shadow: none !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   8. EXPERT CARDS
+   ══════════════════════════════════════════════════════════ */
+
+.expert-card {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(17,24,22,0.08) !important;
+    border-radius: var(--radius-md) !important;
+}
+.expert-card:hover { box-shadow: none !important; transform: none !important; }
+.expert-card::before { display: none !important; }
+
+.expert-name { font-family: var(--font-display); color: var(--text-primary); letter-spacing: -0.01em; }
+.expert-title { color: var(--secondary-color) !important; font-weight: 600; }
+.expert-profile-btn {
+    background: var(--client-color) !important;
+    border-color: var(--client-color) !important;
+    box-shadow: none !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   9. MINI / NEWS CARDS
+   ══════════════════════════════════════════════════════════ */
+
+.mini-card-title { color: var(--text-primary) !important; font-weight: 600; }
+.mini-card-tag {
+    color: var(--client-color) !important;
+    background: rgba(32,60,62,0.08) !important;
+    font-weight: 700;
+}
+a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
+
+
+/* ══════════════════════════════════════════════════════════
+   10. CATEGORY HERO
+   ══════════════════════════════════════════════════════════ */
+
+.category-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    letter-spacing: -0.03em;
+}
+.category-hero { border-bottom: 1px solid rgba(17,24,22,0.07); }
+.phb-overlay   { border-bottom: none !important; }
+
+
+/* ══════════════════════════════════════════════════════════
+   11. FOOTER
+   ══════════════════════════════════════════════════════════ */
+
+.site-footer {
+    box-shadow: none !important;
+    border-top: 2px solid var(--secondary-color) !important;
+}
+.footer-col h4 { font-family: var(--font-display); }
+.footer-link:hover { color: var(--secondary-color); }
+
+
+/* ══════════════════════════════════════════════════════════
+   12. MISC
+   ══════════════════════════════════════════════════════════ */
+
+.bsl__progress-bar          { background: var(--secondary-color) !important; }
+.banners-promo-section      { border-bottom: 2px solid var(--secondary-color) !important; }
+
+.scroll-to-top {
+    background: var(--secondary-color) !important;
+    box-shadow: none !important;
+    border-radius: var(--radius-xs) !important;
+    border: none;
+}
+.scroll-to-top:hover { background: var(--gold-600) !important; }

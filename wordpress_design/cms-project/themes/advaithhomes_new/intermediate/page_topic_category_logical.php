@@ -318,7 +318,7 @@ function adn_topic_category_get_context() {
 				'category'    => '',
 				'title'       => (string) $sib->name,
 				'description' => ! empty( $sib->description ) ? (string) $sib->description : '',
-				'read_more'   => adn_term( 'content.read_more', 'Explore →' ),
+				'read_more'   => adn_term( 'content.read_more', 'Explore' ),
 				'url'         => home_url( '/' . trim( $sib->slug, '/' ) . '/' ),
 			);
 		}

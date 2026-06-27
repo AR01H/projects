@@ -30,6 +30,22 @@ if ( ! $ctx ) {
 	return;
 }
 
+// ── SEO for calculator detail page ────────────────────────────────────────
+$_calc_title = isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '';
+$_calc_desc  = isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '';
+$_calc_url   = home_url( '/?ah_calc_page=' . rawurlencode( $_calc_key ) );
+adn_seo_register( array(
+	'title'       => $_calc_title,
+	'description' => $_calc_desc,
+	'canonical'   => $_calc_url,
+	'breadcrumb'  => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+	'schema_app'  => array(
+		'name'        => $_calc_title,
+		'description' => $_calc_desc,
+		'url'         => $_calc_url,
+	),
+) );
+
 // Breadcrumb renders inside the hero - suppress from adn_page_open.
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();

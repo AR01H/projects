@@ -61,6 +61,23 @@ $ctx = array(
     'chrome' => $chrome,
 );
 
+// ── SEO ─────────────────────────────────────────────────────────────────────
+$_faq_seo_items = array();
+foreach ( (array) $faqs as $_faq ) {
+	$_fq = trim( (string) ( isset( $_faq->question ) ? $_faq->question : ( isset( $_faq['question'] ) ? $_faq['question'] : '' ) ) );
+	$_fa = trim( (string) ( isset( $_faq->answer )   ? $_faq->answer   : ( isset( $_faq['answer'] )   ? $_faq['answer']   : '' ) ) );
+	if ( '' !== $_fq && '' !== $_fa ) {
+		$_faq_seo_items[] = array( 'question' => $_fq, 'answer' => $_fa );
+	}
+}
+adn_seo_register( array(
+	'title'       => isset( $ctx['meta']['title'] )       ? (string) $ctx['meta']['title']       : PAGE_TITLE_FAQS,
+	'description' => isset( $ctx['meta']['description'] ) ? wp_strip_all_tags( (string) $ctx['meta']['description'] ) : '',
+	'canonical'   => defined( 'SITE_FAQS_URL' ) ? home_url( SITE_FAQS_URL ) : '',
+	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
+	'schema_faqs' => $_faq_seo_items,
+) );
+
 adn_page_open( $ctx );
 ?>
 

@@ -22,6 +22,11 @@ $ctx = adn_home_get_context();
 
 wp_enqueue_style( 'adn-resources', get_template_directory_uri() . '/assets/css/resources.css', array(), ADN_THEME_VERSION );
 
+adn_seo_register( array(
+	'description' => isset( $ctx['hero']['description'] ) ? (string) $ctx['hero']['description'] : get_bloginfo( 'description' ),
+	'image'       => isset( $ctx['hero']['image'] )       ? (string) $ctx['hero']['image']       : '',
+) );
+
 adn_page_open( $ctx );
 ?>
 

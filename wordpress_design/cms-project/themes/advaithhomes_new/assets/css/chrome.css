@@ -118,10 +118,11 @@
 .header-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     height: 68px;
     gap: var(--space-6);
 }
+.main-nav { margin-left: auto; }
 
 .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .logo-icon {
@@ -412,6 +413,7 @@
     border-radius: var(--radius-pill);
     padding: 2px 8px;
     flex-shrink: 0;
+    display:none;
 }
 .search-suggest-item.is-active .search-suggest-type { background: var(--color-white, #fff); }
 .search-suggest-empty { padding: 12px 14px; font-size: 0.875rem; color: var(--color-text-muted, #6b7280); text-align: center; }

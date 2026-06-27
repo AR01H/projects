@@ -26,6 +26,29 @@ if ( ! $ctx ) {
 	return;
 }
 
+// ── SEO ─────────────────────────────────────────────────────────────────────
+$_exp_img = '';
+if ( ! empty( $ctx['avatar_url'] ) ) {
+	$_exp_img = (string) $ctx['avatar_url'];
+} elseif ( ! empty( $ctx['banner_image_url'] ) ) {
+	$_exp_img = (string) $ctx['banner_image_url'];
+}
+$_exp_url = isset( $_GET['ah_expert'] ) ? home_url( add_query_arg( 'ah_expert', sanitize_key( $_GET['ah_expert'] ), defined( 'SITE_EXPERT_URL' ) ? SITE_EXPERT_URL : '/' ) ) : '';
+adn_seo_register( array(
+	'title'         => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
+	'description'   => ! empty( $ctx['bio'] )               ? wp_strip_all_tags( (string) $ctx['bio'] ) : '',
+	'canonical'     => $_exp_url,
+	'image'         => $_exp_img,
+	'breadcrumb'    => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
+	'schema_person' => array(
+		'name'      => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
+		'job_title' => isset( $ctx['hero']['description'] ) ? (string) $ctx['hero']['description'] : '',
+		'bio'       => isset( $ctx['bio'] )                 ? (string) $ctx['bio']                 : '',
+		'image'     => $_exp_img,
+		'url'       => $_exp_url,
+	),
+) );
+
 // Breadcrumb renders inside the hero - suppress from adn_page_open.
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();

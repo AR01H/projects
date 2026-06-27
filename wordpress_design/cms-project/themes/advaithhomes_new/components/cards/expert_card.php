@@ -50,7 +50,7 @@ if ( '' === $_photo ) {
 	}
 }
 ?>
-<div class="expert-card" data-cat="<?php echo $_cat_attr; ?>">
+<div class="expert-card" data-cat="<?php echo $_cat_attr; ?>"<?php if ( '' !== $_url && '#' !== $_url ) : ?> data-profile-url="<?php echo $_url; ?>" role="link" tabindex="0"<?php endif; ?>>
 
 	<?php /* ── Top row: avatar (left) + credential badge (right) ── */ ?>
 	<div class="expert-card-top">

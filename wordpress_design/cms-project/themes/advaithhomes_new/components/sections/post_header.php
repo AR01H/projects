@@ -69,7 +69,7 @@ $_img     = isset( $_article['image_url'] )    ? esc_url( $_article['image_url']
 	<?php /* Right column - image grows with 1fr to fill the right half of viewport */ ?>
 	<?php if ( '' !== $_img ) : ?>
 		<div class="article-header-img">
-			<img src="<?php echo $_img; ?>" alt="" loading="eager" />
+			<img src="<?php echo $_img; ?>" alt="" loading="eager" fetchpriority="high" />
 		</div>
 	<?php endif; ?>
 

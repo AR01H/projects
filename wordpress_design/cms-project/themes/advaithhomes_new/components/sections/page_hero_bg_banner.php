@@ -31,23 +31,23 @@ $_img     = ( isset( $hero_img ) && '' !== (string) $hero_img )
 $_circles = ! isset( $circles ) || (bool) $circles;
 ?>
 <div class="phb-bg">
-	<img src="<?php echo $_img; ?>" alt="" loading="eager" />
+	<img src="<?php echo $_img; ?>" alt="" loading="eager" fetchpriority="high" />
 </div>
 <div class="phb-overlay" aria-hidden="true">
 	<!-- Full-image hero: S-curve shape filled with gradient so white fades into the photo -->
 	<svg class="phb-curve" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
 		<defs>
-			<!-- Gradient: solid white 0→65%, fades to transparent at 70% curve edge -->
-			<linearGradient id="phb-g" x1="0" y1="0" x2="80" y2="0" gradientUnits="userSpaceOnUse">
+			<!-- Gradient: solid white 0→40%, fades to transparent by 68% -->
+			<linearGradient id="phb-g" x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
 				<stop offset="0%"   stop-color="white" stop-opacity="1"/>
-				<stop offset="60%"  stop-color="white" stop-opacity="1"/>
-				<stop offset="100%" stop-color="white" stop-opacity="0"/>
+				<stop offset="40%"  stop-color="white" stop-opacity="1"/>
+				<stop offset="68%"  stop-color="white" stop-opacity="0"/>
 			</linearGradient>
 		</defs>
-		<!-- Outer soft-fade halo -->
-		<path d="M 0 0 L 82 0 C 80 18, 66 34, 74 50 C 82 66, 68 82, 72 100 L 0 100 Z" fill="url(#phb-g)" opacity="0.45"/>
-		<!-- Primary panel - covers ~70vw, S-curve edge fades into image -->
-		<path d="M 0 0 L 72 0 C 70 18, 56 34, 64 50 C 72 66, 58 82, 62 100 L 0 100 Z" fill="url(#phb-g)"/>
+		<!-- Outer soft-fade halo - shifted left to reveal more image -->
+		<path d="M 0 0 L 68 0 C 66 18, 52 34, 60 50 C 68 66, 54 82, 58 100 L 0 100 Z" fill="url(#phb-g)" opacity="0.45"/>
+		<!-- Primary panel - shifted left, S-curve edge fades into image -->
+		<path d="M 0 0 L 58 0 C 56 18, 42 34, 50 50 C 58 66, 44 82, 48 100 L 0 100 Z" fill="url(#phb-g)"/>
 	</svg>
 	<?php if ( $_circles ) : ?>
 		<span class="phb-circle phb-circle--a"></span>

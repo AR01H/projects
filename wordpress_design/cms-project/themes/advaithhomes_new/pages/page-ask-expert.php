@@ -26,6 +26,10 @@ wp_localize_script( 'adn-page-ask-expert-script', 'adnExpert', array(
 	'nonce'   => isset( $ctx['contact_nonce'] ) ? $ctx['contact_nonce'] : '',
 ) );
 
+adn_seo_register( array(
+	'description' => isset( $ctx['meta_description'] ) ? (string) $ctx['meta_description'] : '',
+) );
+
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );

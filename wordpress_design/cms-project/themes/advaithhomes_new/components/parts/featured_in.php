@@ -38,7 +38,7 @@ if ( empty( $_data['logos'] ) ) {
 
 $_heading = ( isset( $_data['heading'] ) && '' !== $_data['heading'] )
 	? esc_html( $_data['heading'] )
-	: 'As featured in:';
+	: 'As featured in';
 
 $_logos = (array) $_data['logos'];
 ?>

@@ -22,6 +22,11 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_guides_listing_logical.php';
 $ctx = adn_guides_listing_get_context();
 
+adn_seo_register( array(
+	'description' => isset( $ctx['meta_description'] ) ? (string) $ctx['meta_description'] : '',
+	'title'       => isset( $ctx['hero']['title'] )    ? (string) $ctx['hero']['title']    : '',
+) );
+
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
 adn_page_open( $_open_ctx );

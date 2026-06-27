@@ -281,6 +281,26 @@
         xhr.send( data );
     }
 
+    /* ── Card click → profile URL ─────────────────────────────── */
+
+    function initCardClick() {
+        document.addEventListener( 'click', function ( e ) {
+            var card = e.target.closest( '.expert-card[data-profile-url]' );
+            if ( ! card ) return;
+            // Don't intercept clicks on buttons, links, or the contact modal trigger.
+            if ( e.target.closest( 'a, button, input, textarea' ) ) return;
+            window.location.href = card.dataset.profileUrl;
+        } );
+        document.addEventListener( 'keydown', function ( e ) {
+            if ( e.key !== 'Enter' && e.key !== ' ' ) return;
+            var card = document.activeElement;
+            if ( card && card.classList.contains( 'expert-card' ) && card.dataset.profileUrl ) {
+                e.preventDefault();
+                window.location.href = card.dataset.profileUrl;
+            }
+        } );
+    }
+
     /* ── Init ───────────────────────────────────────────────────── */
 
     function init() {
@@ -288,6 +308,7 @@
         initCategoryTabs();
         initContactModals();
         initContactForms();
+        initCardClick();
     }
 
     if ( document.readyState === 'loading' ) {

@@ -300,7 +300,7 @@ function adn_home_cms_guide_items() {
 			'category'    => $cat_name,
 			'title'       => '',
 			'description' => ! empty( $post->_term_desc ) ? $post->_term_desc : '',
-			'read_more'   => adn_term( 'content.read_more', 'Explore →' ),
+			'read_more'   => adn_term( 'content.read_more', 'Explore' ),
 			'url'         => $term_url,
 		);
 	}

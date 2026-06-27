@@ -35,6 +35,22 @@ if ( ! empty( $ctx['faqs']['items'] ) ) {
 }
 wp_enqueue_style( 'adn-resources', get_template_directory_uri() . '/assets/css/resources.css', array(), ADN_THEME_VERSION );
 
+// ── SEO: register title, description, canonical, breadcrumb for this category page ──
+$_seo_title = isset( $ctx['hero']['title'] ) ? (string) $ctx['hero']['title'] : '';
+$_seo_desc  = '';
+if ( ! empty( $ctx['meta']['meta_description'] ) ) {
+	$_seo_desc = wp_strip_all_tags( (string) $ctx['meta']['meta_description'] );
+} elseif ( ! empty( $ctx['hero']['description'] ) ) {
+	$_seo_desc = wp_strip_all_tags( (string) $ctx['hero']['description'] );
+}
+$_seo_slug  = isset( $ctx['slug'] ) ? sanitize_key( (string) $ctx['slug'] ) : '';
+adn_seo_register( array(
+	'title'      => $_seo_title,
+	'description'=> $_seo_desc,
+	'canonical'  => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
+	'breadcrumb' => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+) );
+
 // Breadcrumb renders inside the hero banner - skip it from adn_page_open().
 $_open_ctx                = $ctx;
 $_open_ctx['breadcrumb']  = array();

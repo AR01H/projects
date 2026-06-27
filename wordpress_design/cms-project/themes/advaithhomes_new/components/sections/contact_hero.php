@@ -22,7 +22,7 @@ $_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default
 			<?php endif; ?>
 		</div>
 		<div class="contact-hero-img">
-			<img src="<?php echo esc_url( $_hero_img ); ?>" alt="" loading="eager" />
+			<img src="<?php echo esc_url( $_hero_img ); ?>" alt="" loading="eager" fetchpriority="high" />
 		</div>
 	</div>
 
