@@ -28,7 +28,7 @@
 .tools-hero p {
     font-size: 1.05rem;
     max-width: 480px;
-    color: var(--color-text-muted, #374151);
+    color: var(--color-black, #374151);
     line-height: 1.65;
     margin-bottom: 0;
 }
@@ -77,7 +77,7 @@
 }
 
 .tools-trust-item span {
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     font-size: 0.78rem;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .search-input-wrap input::placeholder {
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
 }
 
 .search-input-wrap .search-icon {
@@ -125,7 +125,7 @@
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     font-size: 1rem;
     pointer-events: none;
 }
@@ -137,7 +137,7 @@
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     font-size: 1.4rem;
     cursor: pointer;
     line-height: 1;
@@ -180,7 +180,7 @@
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
 }
 
 .tools-cat-list {
@@ -229,7 +229,7 @@
 .tools-cat-count {
     font-size: 0.73rem;
     background: var(--color-border, #e5e7eb);
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     padding: 1px 7px;
     border-radius: var(--radius-xl);
     font-weight: 600;
@@ -270,7 +270,7 @@
     font-size: 0.82rem;
     line-height: 1.55;
     margin-bottom: var(--space-4);
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
 }
 
 .tools-help-btn {
@@ -352,7 +352,7 @@
     font-size: 0.8rem;
     line-height: 1.45;
     margin-bottom: 12px;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     flex: 1;
     text-align: left;
 }
@@ -467,7 +467,7 @@
 .calc-list-text p {
     font-size: 0.78rem;
     line-height: 1.35;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -485,7 +485,7 @@
 }
 
 .calc-list-arrow {
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     font-size: 1.2rem;
     flex-shrink: 0;
     margin-left: var(--space-2);
@@ -512,7 +512,7 @@
 
 .find-calc-cta-text p {
     font-size: 0.85rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin: 0;
 }
 

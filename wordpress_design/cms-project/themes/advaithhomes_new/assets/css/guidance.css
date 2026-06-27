@@ -156,7 +156,7 @@
 
 .guidance-service-card p {
     font-size: 0.8rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.5;
     margin-bottom: var(--space-3);
 }
@@ -234,7 +234,7 @@
 
 .guidance-why-item p {
     font-size: 0.81rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.55;
     margin: 0;
 }
@@ -399,7 +399,7 @@
     margin-bottom: var(--space-5);
     cursor: pointer;
     font-size: 0.82rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.5;
 }
 

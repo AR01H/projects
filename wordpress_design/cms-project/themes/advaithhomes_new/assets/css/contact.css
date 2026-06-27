@@ -95,7 +95,7 @@
 
 .contact-form-desc {
     font-size: 0.9rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin-bottom: var(--space-7);
 }
 
@@ -182,7 +182,7 @@
 }
 
 .form-required { color: var(--color-danger, #e53e3e); margin-left: 2px; }
-.form-optional  { color: var(--color-text-muted, #9ca3af); font-weight: 400; font-size: 0.78rem; }
+.form-optional  { color: var(--color-black, #9ca3af); font-weight: 400; font-size: 0.78rem; }
 
 .form-group input[type="text"],
 .form-group input[type="email"],
@@ -230,7 +230,7 @@
 .guidance-request-form textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
 
 .form-group input::placeholder,
-.form-group textarea::placeholder { color: var(--color-text-muted, #9ca3af); font-size: 0.87rem; }
+.form-group textarea::placeholder { color: var(--color-black, #9ca3af); font-size: 0.87rem; }
 
 /* Phone prefix wrap */
 .phone-input-wrap {
@@ -272,7 +272,7 @@
     margin-bottom: var(--space-5);
     cursor: pointer;
     font-size: 0.82rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.5;
 }
 
@@ -353,7 +353,7 @@
 .contact-alt-box h3 {
     font-size: 0.82rem;
     font-weight: 600;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin: 0;
@@ -399,14 +399,14 @@
 }
 .contact-channel-icon {
     font-size: 0.9rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     width: 16px;
     text-align: center;
 }
 .contact-channel-label {
     font-size: 0.78rem;
     font-weight: 500;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
 }
 .contact-channel-num {
     font-size: 0.88rem;
@@ -510,7 +510,7 @@
 .contact-faq-answer {
     font-size: 0.87rem;
     line-height: 1.65;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin: 0;
     padding: 10px 14px 12px;
 }
@@ -546,7 +546,7 @@
 
 .contact-alt-note {
     font-size: 0.78rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.4;
     margin-bottom: 8px;
 }
@@ -590,7 +590,7 @@
 .cs-tag {
     font-size: 0.68rem;
     background: var(--color-border, #e5e7eb);
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     padding: 2px 8px;
     border-radius: var(--radius-xl);
     font-weight: 500;
@@ -623,7 +623,7 @@
     margin-left: auto;
     font-size: 0.7rem;
     background: var(--color-border, #e5e7eb);
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     padding: 2px 8px;
     border-radius: var(--radius-xl);
 }
@@ -687,14 +687,14 @@
 
 .contact-process-step p {
     font-size: 0.82rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.55;
 }
 
 .cps-arrow {
     flex-shrink: 0;
     font-size: 1.4rem;
-    color: var(--color-text-muted, #d1d5db);
+    color: var(--color-black, #d1d5db);
     padding-top: 26px;
 }
 
@@ -742,7 +742,7 @@
 
 .contact-resource-card p {
     font-size: 0.75rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.35;
     display: -webkit-box;
     -webkit-line-clamp: 3;

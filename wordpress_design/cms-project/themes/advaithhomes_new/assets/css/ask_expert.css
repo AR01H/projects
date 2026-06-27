@@ -113,7 +113,7 @@
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     background: var(--color-white, #fff);
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     white-space: nowrap;
     font-size: small;
 }
@@ -162,7 +162,7 @@
 }
 
 .expert-search-row .search-input-wrap input::placeholder {
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
 }
 
 .expert-search-row .search-input-wrap input[type="search"]::-webkit-search-cancel-button,
@@ -176,7 +176,7 @@
     left: 13px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     font-size: 0.9rem;
     pointer-events: none;
 }
@@ -189,7 +189,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     font-size: 1.2rem;
     line-height: 1;
     padding: 2px 4px;
@@ -221,7 +221,7 @@
     justify-content: center;
     padding: 72px 20px;
     gap: 14px;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     font-size: 0.9rem;
 }
 
@@ -252,7 +252,7 @@
 
 .enr-icon {
     font-size: 2rem;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     display: block;
     margin-bottom: 16px;
 }
@@ -266,7 +266,7 @@
 
 .enr-sub {
     font-size: 0.86rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin: 0 0 24px;
     max-width: 360px;
     margin-left: auto;
@@ -325,7 +325,7 @@
 
 .ecm-sub {
     font-size: 0.82rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin: 0 0 18px;
     line-height: 1.55;
 }
@@ -477,7 +477,7 @@
 
 .expert-title {
     font-size: 0.78rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin: 0;
 }
 
@@ -500,7 +500,7 @@
 
 .rating-count {
     font-size: 0.75rem;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
 }
 
 /* ── Bio + Read more ────────────────────────────────────────── */
@@ -532,7 +532,7 @@
     align-items: center;
     gap: 5px;
     font-size: 0.78rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     background: none;
     border: none;
     padding: 0;
@@ -541,7 +541,7 @@
 
 .ecb-row .ah-ico {
     font-size: 0.72rem;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     flex-shrink: 0;
 }
 
@@ -678,7 +678,7 @@
 
 .expert-need-help p {
     font-size: 0.82rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.55;
     margin-bottom: 14px;
 }
@@ -729,7 +729,7 @@
 
 .ecl-text span {
     font-size: 0.75rem;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     display: block;
 }
 
@@ -773,7 +773,7 @@
 
 .expert-hiw-step p {
     font-size: 0.78rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.5;
     margin: 0;
 }
@@ -806,7 +806,7 @@
 .enl-date {
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -901,7 +901,7 @@
 
 .ecf-left p {
     font-size: 0.82rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin: 0;
 }
 
@@ -947,7 +947,7 @@
     border: none;
     font-size: 1.1rem;
     cursor: pointer;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     padding: 4px 8px;
     border-radius: var(--radius-xs);
     line-height: 1;
@@ -1100,7 +1100,7 @@
 
 .epbc-link {
     font-size: 0.78rem;
-    color: var(--color-text-muted);
+    color: var(--color-black);
     text-decoration: none;
     transition: color 0.12s;
 }
@@ -1140,11 +1140,11 @@
 
 .expert-profile-rating .rating-stars { font-size: 1rem; }
 .expert-profile-rating .rating-value { color: var(--color-heading); font-size: 0.95rem; font-weight: 600; }
-.expert-profile-rating .rating-count { color: var(--color-text-muted); font-size: 0.82rem; }
+.expert-profile-rating .rating-count { color: var(--color-black); font-size: 0.82rem; }
 
 .expert-profile-location {
     font-size: 0.88rem;
-    color: var(--color-text-muted);
+    color: var(--color-black);
     margin-bottom: var(--space-3);
 }
 
@@ -1273,7 +1273,7 @@
 .expert-stats-marquee .phb-trust-icon-item span {
     display: block;
     font-size: 0.73rem;
-    color: var(--color-text-muted);
+    color: var(--color-black);
     line-height: 1.3;
     white-space: nowrap;
 }
@@ -1420,7 +1420,7 @@
 /* ── Contact form on single page ────────────────────────────── */
 .expert-contact-form-section .expert-contact-intro {
     font-size: 0.88rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin-bottom: var(--space-5);
     line-height: 1.6;
 }
@@ -1443,7 +1443,7 @@
 
 .expert-mega-section .ch-form-desc {
     font-size: 0.58rem;
-    color: var(--color-text-muted);
+    color: var(--color-black);
     margin: 0 0 20px;
     line-height: 1.6;
 }
@@ -1551,7 +1551,7 @@
 .expert-mega-section .ch-agr-intro {
     font-size: 0.87rem;
     line-height: 1.7;
-    color: var(--color-text-muted);
+    color: var(--color-black);
     margin-bottom: 14px;
     padding: 12px 16px;
     background: var(--slate-50);

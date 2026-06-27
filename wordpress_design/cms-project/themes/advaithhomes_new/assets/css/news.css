@@ -93,7 +93,7 @@
     padding: 14px 16px;
     font-size: 0.88rem;
     font-weight: 500;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     border-bottom: 3px solid transparent;
     margin-bottom: -1px;
     display: flex;
@@ -115,7 +115,7 @@
 
 .news-cat-count {
     background: var(--color-surface, #f3f4f6);
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     font-size: 0.72rem;
     font-weight: 600;
     padding: 1px 6px;
@@ -244,7 +244,7 @@
 }
 
 .fa-excerpt {
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     font-size: 0.9rem;
     line-height: 1.6;
     margin: 0;
@@ -254,7 +254,7 @@
     display: flex;
     gap: var(--space-3);
     font-size: 0.78rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
 }
 
 .fa-read-btn {
@@ -387,7 +387,7 @@
 
 .news-card-excerpt {
     font-size: 0.8rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.55;
     margin: 0;
     display: -webkit-box;
@@ -400,7 +400,7 @@
     display: flex;
     gap: 10px;
     font-size: 0.72rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin-top: auto;
 }
 
@@ -491,7 +491,7 @@
 
 .nli-excerpt {
     font-size: 0.83rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.55;
     margin: 0;
 }
@@ -500,7 +500,7 @@
     display: flex;
     gap: 10px;
     font-size: 0.72rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
 }
 
 /* ── Load More ──────────────────────────────────────────────── */
@@ -553,7 +553,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin-bottom: 14px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
@@ -650,7 +650,7 @@
 .trending-meta {
     display: block;
     font-size: 0.72rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin-top: 3px;
 }
 
@@ -679,7 +679,7 @@
 }
 
 .msi-label {
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     flex: 1;
     min-width: 0;
 }
@@ -706,11 +706,11 @@
 
 .msi-up   { background: var(--color-pill-market-bg); color: var(--color-pill-market-text); }
 .msi-down { background: var(--color-error-bg); color: var(--color-error-text); }
-.msi-flat { background: var(--color-surface, #f3f4f6); color: var(--color-text-muted, #6b7280); }
+.msi-flat { background: var(--color-surface, #f3f4f6); color: var(--color-black, #6b7280); }
 
 .msi-updated {
     font-size: 0.7rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin: 10px 0 0;
     line-height: 1.4;
 }
@@ -764,7 +764,7 @@
 .sb-cat-count {
     font-size: 0.72rem;
     font-weight: 600;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     background: var(--color-surface, #f3f4f6);
     padding: 1px 7px;
     border-radius: var(--radius-xl);
@@ -784,7 +784,7 @@
 
 .sb-nl-desc {
     font-size: 0.82rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     line-height: 1.55;
     margin: 0;
 }
@@ -818,7 +818,7 @@
 
 .sb-nl-note {
     font-size: 0.7rem;
-    color: var(--color-text-muted, #9ca3af);
+    color: var(--color-black, #9ca3af);
     margin: 0;
     line-height: 1.4;
 }
@@ -916,7 +916,7 @@
 
 .news-single-date {
     font-size: 0.85rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
 }
 
 .news-single-label {
@@ -954,7 +954,7 @@
 .nss-label {
     font-size: 0.82rem;
     font-weight: 600;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     margin-right: var(--space-1);
 }
 
@@ -1039,7 +1039,7 @@
     background: var(--color-surface, #f9fafb);
     border-radius: 0 var(--radius-sm, 8px) var(--radius-sm, 8px) 0;
     font-style: italic;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
 }
 
 /* Source link */
@@ -1057,7 +1057,7 @@
 
 .news-single-source-label {
     font-size: 0.85rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--color-black, #6b7280);
     flex: 1;
 }
 

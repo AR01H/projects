@@ -55,7 +55,7 @@
 	cursor: pointer;
 }
 .adn-form__help {
-	color: var(--color-text-muted);
+	color: var(--color-black);
 	font-size: .8rem;
 }
 .adn-form__submit {

@@ -180,7 +180,7 @@
 	border: none;
 	font-size: 28px;
 	cursor: pointer;
-	color: var(--color-text-muted);
+	color: var(--color-black);
 	padding: 0;
 	width: 32px;
 	height: 32px;
@@ -272,7 +272,7 @@
 
 .adn-loader__text {
 	margin: 0;
-	color: var(--color-text-muted);
+	color: var(--color-black);
 	font-size: 14px;
 	font-weight: 500;
 }
@@ -405,7 +405,7 @@
 
 .adn-fsd__spin-label {
 	font-size: 0.85rem;
-	color: var(--color-text-muted);
+	color: var(--color-black);
 }
 
 /* iframe */
