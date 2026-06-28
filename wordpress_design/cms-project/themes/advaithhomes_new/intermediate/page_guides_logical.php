@@ -44,6 +44,16 @@ function adn_guides_get_context() {
 	$chrome  = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 	$parents = function_exists( 'adn_cms_guide_parents' )   ? adn_cms_guide_parents( 20 ) : array();
 
+	// Dark premium gradients for the phg left panel (cycle per parent).
+	$_phg_grads = array(
+		'linear-gradient(150deg,#1a3d2b 0%,#2d6147 100%)',
+		'linear-gradient(150deg,#2a1f40 0%,#4a3880 100%)',
+		'linear-gradient(150deg,#1d3050 0%,#2d5496 100%)',
+		'linear-gradient(150deg,#2d3b1a 0%,#4a6128 100%)',
+		'linear-gradient(150deg,#3b1a1a 0%,#7a2e28 100%)',
+		'linear-gradient(150deg,#1a2d3b 0%,#2d5068 100%)',
+	);
+
 	// ── Groups: one per parent term, topics = category-type child terms only ──
 	$groups        = array();
 	$sidebar_links = array();
@@ -102,7 +112,7 @@ function adn_guides_get_context() {
 			'icon'         => $icon,
 			'desc'         => mb_strimwidth( $desc, 0, 140, '…' ),
 			'url'          => $pt_url,
-			'gradient'     => function_exists( 'adn_cms_gradient' ) ? adn_cms_gradient( $i ) : '',
+			'gradient'     => $_phg_grads[ $i % count( $_phg_grads ) ],
 			'image_url'    => $img_url,
 			'topics'       => $topic_cards,
 			'latest_posts' => $latest_posts,

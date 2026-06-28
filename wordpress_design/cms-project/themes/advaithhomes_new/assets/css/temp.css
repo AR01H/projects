@@ -455,8 +455,9 @@ section{
   height: 100%;
 }
 @media (max-width: 767px) {
+  .hero-desc{max-width: unset;}
   .phb-curve { display: none; }
-  .phb-bg { left: 50%; }
+  .phb-bg { left: 0%; }
   .phb-overlay {
     background: linear-gradient(
       to right,
@@ -702,7 +703,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   .page-hero { min-height: 260px; }
   .page-hero-content {  max-width: 100%; }
   .page-hero-bar-inner { gap: 10px 20px; }
-  .page-hero p{
+  .hero-home-inner .hero-desc,.page-hero p{
     max-width: 100vw;
     font-size: 0.7rem;
   }
@@ -4583,6 +4584,256 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   align-self: center;
 }
 
+/* ── Premium Parent Hub Group Card  (.phg) ────────────────────────── */
+.phg {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+  border: 1px solid var(--color-border);
+  min-height: 230px;
+  transition: box-shadow 0.2s;
+}
+.phg:last-child { margin-bottom: 0; }
+.phg:hover { box-shadow: var(--shadow-lg); }
+
+/* Left dark panel */
+.phg-left {
+  position: relative;
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.phg-left-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.22) 100%);
+  pointer-events: none;
+}
+.phg-left-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+.phg-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  backdrop-filter: blur(6px);
+}
+.phg-topic-count {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent, #c9a84c);
+  margin-top: 2px;
+}
+.phg-name {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+}
+.phg-desc {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.78);
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.phg-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.14);
+  border: 1.5px solid rgba(255,255,255,0.45);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+  transition: background 0.18s, gap 0.18s, border-color 0.18s;
+  align-self: flex-start;
+  margin-top: auto;
+}
+.phg-cta:hover {
+  background: rgba(255,255,255,0.28);
+  border-color: rgba(255,255,255,0.75);
+  gap: 10px;
+  color: #fff;
+}
+
+/* Right light panel */
+/* Right panel: topics + posts side by side */
+.phg-right {
+  background: var(--color-white);
+  display: flex;
+  flex-direction: row;
+  border-left: 1px solid var(--color-border);
+  min-width: 0;
+}
+.phg-row-label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-text-muted, #8a9aac);
+  margin-bottom: 10px;
+}
+
+/* Topic pills — left half of right panel */
+.phg-topics-wrap {
+  flex: 1;
+  padding: 18px 20px 18px;
+  border-right: 1px solid var(--color-border);
+  min-width: 0;
+}
+.phg-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.phg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  background: var(--color-bg-section, #f4f6f5);
+  border: 1px solid var(--color-border);
+  border-radius: 50px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--color-dark, #1a2e20);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.14s, border-color 0.14s, color 0.14s;
+}
+.phg-pill:hover {
+  background: rgba(30,58,47,0.09);
+  border-color: var(--color-primary, #1e3a2f);
+  color: var(--color-primary, #1e3a2f);
+}
+.phg-pill .fa-tag { font-size: 0.65rem; color: var(--color-text-muted, #8a9aac); }
+
+/* Latest posts — right half of right panel */
+.phg-posts-wrap {
+  width: 300px;
+  flex-shrink: 0;
+  padding: 18px 20px 18px;
+}
+.phg-posts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.phg-post-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-border);
+  text-decoration: none;
+  color: inherit;
+}
+.phg-posts li:last-child .phg-post-row { border-bottom: none; }
+.phg-post-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent, #c9a84c);
+}
+.phg-post-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.phg-post-title {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--color-dark, #1a2e20);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.14s;
+}
+.phg-post-row:hover .phg-post-title { color: var(--color-primary, #1e3a2f); }
+.phg-post-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: var(--color-text-muted, #8a9aac);
+}
+.phg-post-tag {
+  background: rgba(30,58,47,0.08);
+  color: var(--color-primary, #1e3a2f);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+}
+.phg-post-arrow {
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: var(--color-text-light, #aab4ba);
+  transition: transform 0.14s, color 0.14s;
+}
+.phg-post-row:hover .phg-post-arrow {
+  transform: translateX(3px);
+  color: var(--color-primary, #1e3a2f);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  /* Right panel goes column (topics above, posts below) on smaller screens */
+  .phg-right { flex-direction: column; }
+  .phg-topics-wrap { border-right: none; border-bottom: 1px solid var(--color-border); }
+  .phg-posts-wrap  { width: auto; }
+}
+@media (max-width: 900px) {
+  /* Card goes single column: left panel full width above, right panel below */
+  .phg { grid-template-columns: 1fr; }
+  .phg-left { min-height: 170px; padding: 22px 18px 20px; }
+  .phg-right { border-left: none; border-top: 1px solid var(--color-border); }
+}
+@media (max-width: 600px) {
+  .phg-left { padding: 18px 16px 16px; }
+  .phg-topics-wrap { padding: 14px 14px 12px; }
+  .phg-posts-wrap  { padding: 12px 14px 14px; }
+  .phg-post-title  { white-space: normal; }
+}
+
 /* ── Sidebar: Browse by Topic (sidebar_guide_parents) ── */
 /* ═══════════════════════════════════════════
    UNIFIED SIDEBAR WIDGET SYSTEM  (.sw-*)
@@ -5574,7 +5825,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
 
 .fi-label {
     font-family: var(--font-heading, 'Playfair Display', serif);
-    font-size: 1.52rem;
+    font-size: 1.22rem;
     font-weight: 700;
     color: var(--client-color);
     text-transform: uppercase;

@@ -1,8 +1,13 @@
 <?php
 /**
- * components/sections/guides_parent_group.php - One Guide parent with its subtopics.
+ * components/sections/guides_parent_group.php
  *
- * Props: $group { name, slug, icon, desc, url, gradient, image_url, topics[] { icon, title, url } }
+ * Premium split-panel parent group card.
+ * Left: dark gradient — icon, name, desc, topic count, "Explore All" CTA.
+ * Right: light — topic pills + 3 latest guide rows.
+ *
+ * Props: $group { name, slug, icon, desc, url, gradient, image_url,
+ *                 topics[]{ icon, title, url }, latest_posts[]{ title, url, date, tag } }
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -11,90 +16,107 @@ $group        = isset( $group ) && is_array( $group ) ? $group : array();
 $topics       = isset( $group['topics'] )       && is_array( $group['topics'] )       ? $group['topics']       : array();
 $latest_posts = isset( $group['latest_posts'] ) && is_array( $group['latest_posts'] ) ? $group['latest_posts'] : array();
 
-if ( '' === ( isset( $group['name'] ) ? $group['name'] : '' ) ) { return; }
+$name     = isset( $group['name'] )     ? (string) $group['name']     : '';
+if ( '' === $name ) { return; }
 
-$name      = isset( $group['name'] )      ? (string) $group['name']      : '';
 $icon      = isset( $group['icon'] )      ? (string) $group['icon']      : '📚';
 $desc      = isset( $group['desc'] )      ? (string) $group['desc']      : '';
 $url       = isset( $group['url'] )       ? (string) $group['url']       : '';
 $slug      = isset( $group['slug'] )      ? (string) $group['slug']      : '';
-$gradient  = isset( $group['gradient'] )  ? (string) $group['gradient']  : 'linear-gradient(135deg,#1d5c8e,#2d7dd2)';
+$gradient  = isset( $group['gradient'] )  ? (string) $group['gradient']  : 'linear-gradient(150deg,#1a3d2b 0%,#2d5a44 100%)';
 $image_url = isset( $group['image_url'] ) ? (string) $group['image_url'] : '';
-?>
-<div class="gpg" id="guides-group-<?php echo esc_attr( $slug ); ?>">
 
-	<?php /* ── Header ─────────────────────────────────────────────── */ ?>
-	<div class="gpg-header" style="background:<?php echo esc_attr( $gradient ); ?>;">
-		<div class="gpg-header-overlay"></div>
-		<div class="gpg-header-content">
-			<?php if ( '' !== $image_url ) : ?>
-				<img src="<?php echo esc_url( $image_url ); ?>" alt="" class="gpg-logo" aria-hidden="true"
-					onerror="this.style.display='none';this.nextElementSibling.removeAttribute('hidden');">
-				<span class="gpg-icon" aria-hidden="true" hidden><?php echo adn_icon( $icon, 'gpg-ico' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-			<?php else : ?>
-				<span class="gpg-icon" aria-hidden="true"><?php echo adn_icon( $icon, 'gpg-ico' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-			<?php endif; ?>
-			<div class="gpg-header-text">
-				<h2 class="gpg-name"><?php echo esc_html( $name ); ?></h2>
+$topic_count = count( $topics );
+?>
+<article class="phg" id="phg-<?php echo esc_attr( $slug ); ?>">
+
+	<?php /* ── Left dark panel ─────────────────────────────────────── */ ?>
+	<div class="phg-left" style="<?php if ( '' !== $image_url ) : ?>background-image:linear-gradient(150deg,rgba(0,0,0,0.60),rgba(0,0,0,0.52)),url(<?php echo esc_url( $image_url ); ?>);background-size:cover;background-position:center<?php else : ?>background:<?php echo esc_attr( $gradient ); ?><?php endif; ?>">
+		<div class="phg-left-overlay"></div>
+		<div class="phg-left-body">
+
+			<div class="phg-icon-wrap" aria-hidden="true">
+				<?php echo adn_icon( $icon, 'phg-ico' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</div>
+
+			<div class="phg-left-text">
+				<?php if ( $topic_count > 0 ) : ?>
+					<span class="phg-topic-count">
+						<?php echo esc_html( $topic_count ); ?> <?php echo esc_html( $topic_count === 1 ? __( 'Topic', ADN_TEXT_DOMAIN ) : __( 'Topics', ADN_TEXT_DOMAIN ) ); ?>
+					</span>
+				<?php endif; ?>
+				<h2 class="phg-name"><?php echo esc_html( $name ); ?></h2>
 				<?php if ( '' !== $desc ) : ?>
-					<p class="gpg-desc"><?php echo esc_html( $desc ); ?></p>
+					<p class="phg-desc"><?php echo esc_html( $desc ); ?></p>
 				<?php endif; ?>
 			</div>
+
+			<?php if ( '' !== $url ) : ?>
+				<a href="<?php echo esc_url( adn_link( $url ) ); ?>" class="phg-cta">
+					<?php esc_html_e( 'Explore All', ADN_TEXT_DOMAIN ); ?>
+					<span aria-hidden="true">›</span>
+				</a>
+			<?php endif; ?>
+
 		</div>
-		<?php
-		// If only 1 topic exists, "Explore all" links directly to that topic.
-		$_gpg_nav_url = $url;
-		if ( 1 === count( $topics ) && ! empty( $topics[0]['url'] ) ) {
-			$_gpg_nav_url = (string) $topics[0]['url'];
-		}
-		if ( '' !== $_gpg_nav_url ) : ?>
-			<a href="<?php echo esc_url( adn_link( $_gpg_nav_url ) ); ?>" class="gpg-view-all">
-				<?php echo ( 1 === count( $topics ) ) ? esc_html__( 'Read guide', ADN_TEXT_DOMAIN ) : esc_html__( 'Explore all', ADN_TEXT_DOMAIN ); ?> &rsaquo;
-			</a>
-		<?php endif; ?>
 	</div>
 
-	<div class="gpg-body">
+	<?php /* ── Right light panel ──────────────────────────────────────── */ ?>
+	<div class="phg-right">
 
-		<?php /* ── Topics grid ─────────────────────────────────────────── */ ?>
+		<?php /* Topics pills */ ?>
 		<?php if ( ! empty( $topics ) ) : ?>
-		<div class="gpg-grid">
-			<?php foreach ( $topics as $topic ) :
-				$t_icon  = isset( $topic['icon'] )  ? (string) $topic['icon']  : $icon;
-				$t_title = isset( $topic['title'] ) ? (string) $topic['title'] : '';
-				$t_url   = isset( $topic['url'] )   ? (string) $topic['url']   : '';
-				if ( '' === $t_title ) { continue; }
-			?>
-				<a href="<?php echo esc_url( adn_link( $t_url ) ); ?>" class="gpg-topic">
-					<span class="gpg-topic-icon" aria-hidden="true"><i class="fa-solid fa-tag" aria-hidden="true"></i></span>
-					<span class="gpg-topic-title"><?php echo esc_html( $t_title ); ?></span>
-					<span class="gpg-topic-arrow" aria-hidden="true">›</span>
-				</a>
-			<?php endforeach; ?>
+		<div class="phg-topics-wrap">
+			<span class="phg-row-label"><?php esc_html_e( 'Browse Topics', ADN_TEXT_DOMAIN ); ?></span>
+			<div class="phg-topics">
+				<?php foreach ( $topics as $topic ) :
+					$t_title = isset( $topic['title'] ) ? (string) $topic['title'] : '';
+					$t_url   = isset( $topic['url'] )   ? (string) $topic['url']   : '';
+					if ( '' === $t_title ) { continue; }
+				?>
+					<a href="<?php echo esc_url( adn_link( $t_url ) ); ?>" class="phg-pill">
+						<i class="fa-solid fa-tag" aria-hidden="true"></i>
+						<?php echo esc_html( $t_title ); ?>
+					</a>
+				<?php endforeach; ?>
+			</div>
 		</div>
 		<?php endif; ?>
 
-		<?php /* ── Latest posts ────────────────────────────────────────── */ ?>
+		<?php /* Latest 3 guides */ ?>
 		<?php if ( ! empty( $latest_posts ) ) : ?>
-		<ul class="gpg-posts">
-			<?php foreach ( $latest_posts as $_lp ) :
-				$_lp_title = isset( $_lp['title'] ) ? (string) $_lp['title'] : '';
-				$_lp_url   = isset( $_lp['url'] )   ? (string) $_lp['url']   : '';
-				$_lp_date  = isset( $_lp['date'] )  ? (string) $_lp['date']  : '';
-				$_lp_tag   = isset( $_lp['tag'] )   ? (string) $_lp['tag']   : '';
-				if ( '' === $_lp_title ) { continue; }
-			?>
-			<li class="gpg-post">
-				<a href="<?php echo esc_url( adn_link( $_lp_url ) ); ?>" class="gpg-post-link">
-					<i class="fa-regular fa-file-lines gpg-post-icon" aria-hidden="true"></i>
-					<span class="gpg-post-title"><?php echo esc_html( $_lp_title ); ?></span>
-					<span class="gpg-post-arrow" aria-hidden="true">›</span>
-				</a>
-			</li>
-			<?php endforeach; ?>
-		</ul>
+		<div class="phg-posts-wrap">
+			<span class="phg-row-label"><?php esc_html_e( 'Latest Guides', ADN_TEXT_DOMAIN ); ?></span>
+			<ul class="phg-posts">
+				<?php foreach ( $latest_posts as $_lp ) :
+					$_t = isset( $_lp['title'] ) ? (string) $_lp['title'] : '';
+					$_u = isset( $_lp['url'] )   ? (string) $_lp['url']   : '';
+					$_d = isset( $_lp['date'] )  ? (string) $_lp['date']  : '';
+					$_g = isset( $_lp['tag'] )   ? (string) $_lp['tag']   : '';
+					if ( '' === $_t ) { continue; }
+				?>
+				<li>
+					<a href="<?php echo esc_url( adn_link( $_u ) ); ?>" class="phg-post-row">
+						<span class="phg-post-dot" aria-hidden="true"></span>
+						<span class="phg-post-body">
+							<span class="phg-post-title"><?php echo esc_html( $_t ); ?></span>
+							<?php if ( '' !== $_g || '' !== $_d ) : ?>
+							<span class="phg-post-meta">
+								<?php if ( '' !== $_g ) : ?>
+									<span class="phg-post-tag"><?php echo esc_html( $_g ); ?></span>
+								<?php endif; ?>
+								<?php if ( '' !== $_d ) : echo esc_html( $_d ); endif; ?>
+							</span>
+							<?php endif; ?>
+						</span>
+						<span class="phg-post-arrow" aria-hidden="true">›</span>
+					</a>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 		<?php endif; ?>
 
 	</div>
 
-</div>
+</article>

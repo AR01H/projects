@@ -21,11 +21,52 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_guides_logical.php';
 $ctx = adn_guides_get_context();
 
+$_seo_title = isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']                       : '';
+$_seo_desc  = isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '';
+
+/* Keywords + og:article:tag — one entry per parent term name */
+$_seo_kw = array();
+foreach ( isset( $ctx['groups'] ) ? $ctx['groups'] : array() as $_g ) {
+	$_gn = isset( $_g['name'] ) ? trim( (string) $_g['name'] ) : '';
+	if ( '' !== $_gn ) {
+		$_seo_kw[] = $_gn;
+	}
+}
+
+/* og:image — first parent term that has a photo */
+$_seo_image = '';
+foreach ( isset( $ctx['groups'] ) ? $ctx['groups'] : array() as $_g ) {
+	if ( ! empty( $_g['image_url'] ) ) {
+		$_seo_image = (string) $_g['image_url'];
+		break;
+	}
+}
+
+/* CollectionPage + ItemList schema — each parent term is one list item */
+$_seo_col_items = array();
+foreach ( isset( $ctx['groups'] ) ? $ctx['groups'] : array() as $_g ) {
+	$_gi_title = isset( $_g['name'] ) ? (string) $_g['name'] : '';
+	$_gi_url   = isset( $_g['url'] )  ? (string) $_g['url']  : '';
+	if ( '' !== $_gi_title && '' !== $_gi_url ) {
+		$_seo_col_items[] = array( 'title' => $_gi_title, 'url' => $_gi_url );
+	}
+}
+
 adn_seo_register( array(
-	'title'       => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
-	'description' => isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '',
-	'canonical'   => defined( 'SITE_GUIDES_URL' ) ? home_url( SITE_GUIDES_URL ) : '',
-	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
+	'title'             => $_seo_title,
+	'description'       => $_seo_desc,
+	'canonical'         => defined( 'SITE_GUIDES_URL' ) ? home_url( SITE_GUIDES_URL ) : '',
+	'breadcrumb'        => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+	'image'             => $_seo_image,
+	'keywords'          => $_seo_kw,
+	'tags'              => $_seo_kw,
+	'article_section'   => defined( 'SITE_CONTENT_PLURAL' ) ? SITE_CONTENT_PLURAL : 'Guides',
+	'schema_collection' => ! empty( $_seo_col_items ) ? array(
+		'name'        => $_seo_title,
+		'description' => $_seo_desc,
+		'url'         => defined( 'SITE_GUIDES_URL' ) ? home_url( SITE_GUIDES_URL ) : '',
+		'items'       => $_seo_col_items,
+	) : array(),
 ) );
 
 $_open_ctx               = $ctx;
@@ -56,12 +97,6 @@ adn_page_open( $_open_ctx );
 
 		<?php /* ── RIGHT: sidebar ──────────────────────────────────────── */ ?>
 		<aside class="guides-hub-sidebar">
-
-			<?php if ( ! empty( $ctx['sidebar']['guide_parents']['items'] ) ) : ?>
-				<?php adn_component( 'parts/sidebar_guide_parents', array(
-					'guide_parents' => $ctx['sidebar']['guide_parents'],
-				) ); ?>
-			<?php endif; ?>
 
 			<?php if ( ! empty( $ctx['sidebar']['quick_tools']['items'] ) ) : ?>
 				<?php adn_component( 'parts/sidebar_quick_tools', array(

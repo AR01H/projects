@@ -71,7 +71,7 @@ function adn_enqueue_template_specific_assets() {
             'css' => '/assets/css/news.css',
             'js'  => '/assets/js/news.js',
         ),
-        'pages/page-guides_listing.php' => array(
+        'pages/page-guides.php' => array(
             'css' => '/assets/css/guides_listing.css',
             'js'  => '/assets/js/guides_listing.js',
         ),
@@ -162,7 +162,7 @@ function adn_get_page_definitions() {
         ),
         trim( SITE_GUIDES_URL, '/' ) => array(
             'title'    => PAGE_TITLE_GUIDES,
-            'template' => 'pages/page-guides_listing.php',
+            'template' => 'pages/page-guides.php',
         ),
         trim( SITE_TOOLS_URL, '/' ) => array(
             'title'    => PAGE_TITLE_TOOLS,

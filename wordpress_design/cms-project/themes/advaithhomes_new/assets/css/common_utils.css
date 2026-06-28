@@ -533,9 +533,9 @@
 		font-size: 0.95rem;
 		line-height: 1.6;
 		display: -webkit-box;
-		-webkit-line-clamp: 4;
+		/* -webkit-line-clamp: 4;
 		-webkit-box-orient: vertical;
-		overflow: hidden;
+		overflow: hidden; */
 	}
 	.phb-bg img{
 filter: brightness(0.92);
