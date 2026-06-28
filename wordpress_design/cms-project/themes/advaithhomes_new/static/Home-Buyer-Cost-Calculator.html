@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK Home Buying Cost Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --client-color: #203c3e;
+    --secondary-color: #B08D57;
+    --bg-color-1: #ded5c1;
+    --section-bg-color: #3c4748;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-900: #0f172a;
+    --text-primary: var(--slate-900);
+    --text-secondary: var(--slate-600);
+    --text-muted: var(--slate-500);
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --card-bg: white;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    height: auto;
+    width: 100%;
+    font-family: var(--font-body);
+    background: var(--bg-color-1);
+    color: var(--text-primary);
+}
+
+/* ============================
+   FULL VIEWPORT GRID
+   ============================ */
+.calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: 580px;
+}
+
+/* ============================
+   LEFT — INPUTS
+   ============================ */
+.input-panel {
+    background: var(--card-bg);
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.inp-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-secondary);
+}
+
+.num-wrap {
+    display: flex;
+    align-items: stretch;
+    border: 1.5px solid #e2e8f0;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.num-wrap:focus-within {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(176,141,87,0.15);
+}
+.inp-prefix {
+    display: flex;
+    align-items: center;
+    background: var(--bg-color-1);
+    padding: 0 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--client-color);
+    border-right: 1.5px solid #e2e8f0;
+    user-select: none;
+}
+.num-wrap input[type="number"] {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 13px 14px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background: transparent;
+    width: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.slider-wrap { padding-top: 6px; }
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, var(--secondary-color) var(--fp,0%), #e2e8f0 var(--fp,0%));
+    outline: none;
+    cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    border: 2.5px solid white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.22);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    border: 2.5px solid white;
+    cursor: pointer;
+}
+.slider-minmax {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.67rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.seg-group {
+    display: flex;
+    border: 1.5px solid #e2e8f0;
+}
+.seg-group input[type="radio"] { display: none; }
+.seg-group label {
+    flex: 1;
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-right: 1.5px solid #e2e8f0;
+    transition: background 0.2s, color 0.2s;
+    user-select: none;
+}
+.seg-group label:last-child { border-right: none; }
+.seg-group input[type="radio"]:checked + label {
+    background: var(--client-color);
+    color: white;
+    font-weight: 600;
+}
+
+/* ============================
+   RIGHT — RESULTS
+   ============================ */
+.results-panel {
+    background: var(--section-bg-color);
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+}
+
+.primary-card {
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(176,141,87,0.32);
+    padding: 26px 22px;
+    text-align: center;
+}
+.primary-label {
+    font-size: 0.67rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+}
+.primary-amt {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 3vw, 3.4rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+.primary-sub {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.35);
+    margin-top: 6px;
+}
+
+.metrics-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+.metric-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 10px;
+    text-align: center;
+}
+.metric-lbl {
+    font-size: 0.64rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(255,255,255,0.36);
+    margin-bottom: 5px;
+}
+.metric-val {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+
+.result-group {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+}
+.result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    gap: 10px;
+}
+.result-row:last-child { border-bottom: none; }
+.rr-left { display: flex; align-items: center; gap: 9px; }
+.rr-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.rr-name { font-size: 0.78rem; color: rgba(255,255,255,0.55); }
+.rr-val {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    text-align: right;
+    flex-shrink: 0;
+}
+.rr-val.muted { color: rgba(255,255,255,0.22); font-size: 0.82rem; font-family: var(--font-body); font-weight: 400; }
+
+/* SDLT card */
+.sdlt-card {
+    border: 1px solid rgba(134,239,172,0.25);
+    background: rgba(34,197,94,0.07);
+    display: none;
+}
+.sdlt-card.visible { display: block; }
+.sdlt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(134,239,172,0.12);
+}
+.sdlt-title { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #86efac; }
+.sdlt-total { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #86efac; }
+.sdlt-bands { padding: 8px 16px; display: flex; flex-direction: column; }
+.sdlt-band-row {
+    display: grid;
+    grid-template-columns: 1fr 32px 52px 72px;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(134,239,172,0.06);
+    font-size: 0.71rem;
+}
+.sdlt-band-row:last-child { border-bottom: none; }
+.sdlt-range { color: rgba(255,255,255,0.4); }
+.sdlt-rate { color: #86efac; font-weight: 700; text-align: center; }
+.sdlt-bar-bg { height: 3px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.sdlt-bar-fill { height: 100%; background: #86efac; transition: width 0.4s ease; }
+.sdlt-amt { text-align: right; font-weight: 600; color: rgba(255,255,255,0.65); }
+.sdlt-amt.zero { color: rgba(255,255,255,0.2); }
+.sdlt-note { padding: 6px 16px 10px; font-size: 0.68rem; color: rgba(134,239,172,0.58); font-style: italic; }
+
+/* Leasehold info */
+.leasehold-info {
+    display: none;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 13px 16px;
+    background: rgba(217,119,6,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+}
+.leasehold-info.visible { display: flex; }
+.li-icon { font-size: 1.05rem; padding-top: 1px; flex-shrink: 0; }
+.li-text { font-size: 0.75rem; color: #fde68a; line-height: 1.5; }
+.li-text strong { color: white; }
+
+/* ============================
+   MOBILE STICKY BAR
+   ============================ */
+.sticky-bar {
+    display: none;
+    position: fixed;
+    bottom: 14px; left: 14px; right: 14px;
+    z-index: 100;
+    background: var(--section-bg-color);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+    padding: 12px 16px 10px;
+}
+.sticky-lbl { font-size: 0.64rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--secondary-color); margin-bottom: 2px; }
+.sticky-amt { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; color: white; line-height: 1; }
+.sticky-pills { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+.s-pill { background: rgba(255,255,255,0.1); padding: 3px 10px; font-size: 0.67rem; color: rgba(255,255,255,0.58); font-weight: 500; }
+.s-pill strong { color: white; font-weight: 700; }
+.s-pill.g { background: rgba(34,197,94,0.15); color: #86efac; font-weight: 600; }
+.s-pill.a { background: rgba(176,141,87,0.18); color: #e2b96f; font-weight: 600; }
+
+/* ============================
+   ANIMATIONS
+   ============================ */
+@keyframes flipUp {
+    from { opacity: 0.3; transform: translateY(6px); }
+    to   { opacity: 1;   transform: translateY(0); }
+}
+@keyframes goldPulse {
+    0%   { box-shadow: 0 10px 40px rgba(0,0,0,0.45); }
+    40%  { box-shadow: 0 10px 40px rgba(0,0,0,0.45), 0 0 0 4px rgba(176,141,87,0.4), 0 0 26px rgba(176,141,87,0.22); }
+    100% { box-shadow: 0 10px 40px rgba(0,0,0,0.45); }
+}
+@keyframes fadeIn { from { opacity: 0.5; } to { opacity: 1; } }
+
+.sticky-bar.do-flip .sticky-amt { animation: flipUp 220ms ease forwards; }
+.sticky-bar.do-flash { animation: goldPulse 600ms ease forwards; }
+.res-fade { animation: fadeIn 260ms ease forwards; }
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+@media (max-width: 720px) {
+    .sticky-bar { display: block; }
+    body { padding-bottom: 100px; }
+    .calc-grid { grid-template-columns: 1fr; min-height: 0; }
+    .input-panel  { padding: 28px 20px; justify-content: flex-start; gap: 24px; }
+    .results-panel { padding: 28px 20px; justify-content: flex-start; gap: 12px; }
+    .primary-amt { font-size: 2rem; }
+    .metrics-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .metrics-row .metric-card:last-child { grid-column: span 2; }
+    .seg-group label { font-size: 0.73rem; padding: 10px 4px; }
+    .sdlt-band-row { grid-template-columns: 1fr 28px 44px 62px; font-size: 0.67rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="calc-grid">
+
+    <!-- LEFT: INPUTS -->
+    <div class="input-panel">
+
+        <div class="input-group">
+            <label class="inp-label" for="inp-price">Property Purchase Price</label>
+            <div class="num-wrap">
+                <span class="inp-prefix">£</span>
+                <input type="number" id="inp-price" min="0" max="10000000" step="1000" value="350000">
+            </div>
+            <div class="slider-wrap">
+                <input type="range" id="sl-price" min="50000" max="2000000" step="5000" value="350000">
+                <div class="slider-minmax"><span>£50,000</span><span>£2,000,000</span></div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="inp-label" for="inp-deposit">Deposit</label>
+            <div class="num-wrap">
+                <span class="inp-prefix">%</span>
+                <input type="number" id="inp-deposit" min="0" max="100" step="1" value="10">
+            </div>
+            <div class="slider-wrap">
+                <input type="range" id="sl-deposit" min="0" max="100" step="1" value="10">
+                <div class="slider-minmax"><span>0%</span><span>100%</span></div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="inp-label">Buyer Type</label>
+            <div class="seg-group" role="radiogroup">
+                <input type="radio" name="buyerType" id="bt-ftb" value="ftb" checked>
+                <label for="bt-ftb">First-Time Buyer</label>
+                <input type="radio" name="buyerType" id="bt-hm" value="homemover">
+                <label for="bt-hm">Home Mover</label>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="inp-label">House Type</label>
+            <div class="seg-group" role="radiogroup">
+                <input type="radio" name="propType" id="pt-house" value="house" checked>
+                <label for="pt-house">House</label>
+                <input type="radio" name="propType" id="pt-flat" value="flat">
+                <label for="pt-flat">Flat / Apartment</label>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="results-panel">
+
+        <div class="primary-card">
+            <div class="primary-label">Total Purchase Cost</div>
+            <div class="primary-amt" id="totalCost">£350,000</div>
+            <div class="primary-sub" id="primarySub">property price + stamp duty</div>
+        </div>
+
+        <div class="metrics-row">
+            <div class="metric-card">
+                <div class="metric-lbl">Deposit</div>
+                <div class="metric-val" id="res-deposit-amt">£35,000</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-lbl">Loan Amount</div>
+                <div class="metric-val" id="res-loan">£315,000</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-lbl">LTV Ratio</div>
+                <div class="metric-val" id="res-ltv">90%</div>
+            </div>
+        </div>
+
+        <!-- SDLT — FTB only -->
+        <div class="sdlt-card" id="sdltCard">
+            <div class="sdlt-header">
+                <span class="sdlt-title">Stamp Duty — First-Time Buyer Relief</span>
+                <span class="sdlt-total" id="sdltTotal">£0</span>
+            </div>
+            <div class="sdlt-bands" id="sdltBands"></div>
+            <div class="sdlt-note" id="sdltNote">0% on first £300,000 · 5% on £300,001–£500,000</div>
+        </div>
+
+        <!-- Cost breakdown -->
+        <div class="result-group">
+            <div class="result-row">
+                <div class="rr-left">
+                    <div class="rr-dot" style="background:#7c9ea1"></div>
+                    <span class="rr-name">Property Price</span>
+                </div>
+                <div class="rr-val" id="res-price">£350,000</div>
+            </div>
+            <div class="result-row">
+                <div class="rr-left">
+                    <div class="rr-dot" style="background:#8a9e7c"></div>
+                    <span class="rr-name">Deposit Paid</span>
+                </div>
+                <div class="rr-val" id="res-deposit-row">£35,000</div>
+            </div>
+            <div class="result-row">
+                <div class="rr-left">
+                    <div class="rr-dot" id="sdltDot" style="background:rgba(255,255,255,0.15)"></div>
+                    <span class="rr-name" id="sdltRowName" style="color:rgba(255,255,255,0.22)">Stamp Duty (SDLT)</span>
+                </div>
+                <div class="rr-val muted" id="res-sdlt-row">Not applicable</div>
+            </div>
+        </div>
+
+        <!-- Leasehold — Flat only -->
+        <div class="leasehold-info" id="leaseholdInfo">
+            <span class="li-icon">&#x1F3E2;</span>
+            <span class="li-text">This is a <strong>leasehold property.</strong> Budget for additional annual costs: <strong>Ground Rent</strong> and <strong>Service Charge</strong> — confirm exact figures with your solicitor before exchange.</span>
+        </div>
+
+    </div>
+</div>
+
+<!-- MOBILE STICKY BAR -->
+<div class="sticky-bar" id="stickyBar">
+    <div class="sticky-lbl">Total Purchase Cost</div>
+    <div class="sticky-amt" id="stickyAmt">£350,000</div>
+    <div class="sticky-pills">
+        <div class="s-pill">LTV: <strong id="stickyLTV">90%</strong></div>
+        <div class="s-pill">Loan: <strong id="stickyLoan">£315,000</strong></div>
+        <div class="s-pill g" id="stickySDLTPill" style="display:none">SDLT: <strong id="stickySDLT">£0</strong></div>
+        <div class="s-pill a" id="stickyFlatPill" style="display:none">Leasehold</div>
+    </div>
+</div>
+
+<script>
+const FTB_BANDS = [
+    { min: 0,      max: 300000,  rate: 0.00 },
+    { min: 300000, max: 500000,  rate: 0.05 },
+];
+const STD_BANDS = [
+    { min: 0,       max: 125000,  rate: 0.00 },
+    { min: 125000,  max: 250000,  rate: 0.02 },
+    { min: 250000,  max: 925000,  rate: 0.05 },
+    { min: 925000,  max: 1500000, rate: 0.10 },
+    { min: 1500000, max: Infinity, rate: 0.12 },
+];
+
+const state = { price: 350000, deposit: 10, buyerType: 'ftb', propType: 'house' };
+const $ = id => document.getElementById(id);
+const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
+const setFill = sl => {
+    const pct = ((+sl.value - +sl.min) / (+sl.max - +sl.min)) * 100;
+    sl.style.setProperty('--fp', pct + '%');
+};
+
+function calcSDLT(price, buyerType) {
+    if (buyerType !== 'ftb') return { total: 0, breakdown: [], note: '' };
+    let bands = FTB_BANDS;
+    let note  = '0% on first £300,000 · 5% on £300,001–£500,000';
+    if (price > 500000) {
+        bands = STD_BANDS;
+        note  = 'Over £500,000 — standard SDLT rates apply (no FTB relief)';
+    }
+    let total = 0;
+    const breakdown = [];
+    for (const b of bands) {
+        if (price <= b.min) break;
+        const taxable = Math.min(price, b.max) - b.min;
+        const tax = taxable * b.rate;
+        total += tax;
+        breakdown.push({ ...b, taxable, tax });
+    }
+    return { total, breakdown, note };
+}
+
+function renderSDLTBands(sdlt) {
+    const c = $('sdltBands');
+    c.innerHTML = '';
+    const maxTax = Math.max(...sdlt.breakdown.map(b => b.tax), 0.01);
+    sdlt.breakdown.forEach(b => {
+        const w    = b.tax === 0 ? 0 : (b.tax / maxTax) * 100;
+        const rStr = (b.rate * 100 % 1 === 0)
+            ? (b.rate * 100).toFixed(0) + '%'
+            : (b.rate * 100) + '%';
+        const row = document.createElement('div');
+        row.className = 'sdlt-band-row';
+        row.innerHTML =
+            '<div class="sdlt-range">' + gbp(b.min) + (b.max !== Infinity ? '&ndash;' + gbp(b.max) : '+') + '</div>' +
+            '<div class="sdlt-rate">' + rStr + '</div>' +
+            '<div class="sdlt-bar-bg"><div class="sdlt-bar-fill" style="width:' + w + '%"></div></div>' +
+            '<div class="sdlt-amt' + (b.tax === 0 ? ' zero' : '') + '">' + gbp(b.tax) + '</div>';
+        c.appendChild(row);
+    });
+}
+
+function animSticky(str) {
+    $('stickyAmt').textContent = str;
+    const bar = $('stickyBar');
+    bar.classList.remove('do-flip', 'do-flash');
+    void bar.offsetWidth;
+    bar.classList.add('do-flip', 'do-flash');
+}
+
+function render() {
+    const { price, deposit, buyerType, propType } = state;
+    const isFTB  = buyerType === 'ftb';
+    const isFlat = propType  === 'flat';
+
+    const depositAmt = price * (deposit / 100);
+    const loanAmt    = Math.max(0, price - depositAmt);
+    const ltvPct     = deposit < 100 ? (100 - deposit) + '%' : '0%';
+    const sdlt       = calcSDLT(price, buyerType);
+    const totalCost  = price + sdlt.total;
+
+    const tcEl = $('totalCost');
+    tcEl.classList.remove('res-fade'); void tcEl.offsetWidth; tcEl.classList.add('res-fade');
+    tcEl.textContent = gbp(totalCost);
+    $('primarySub').textContent = isFTB
+        ? 'property price + stamp duty (FTB rates)'
+        : 'property price only';
+
+    $('res-deposit-amt').textContent = gbp(depositAmt);
+    $('res-loan').textContent        = gbp(loanAmt);
+    $('res-ltv').textContent         = ltvPct;
+    $('res-price').textContent       = gbp(price);
+    $('res-deposit-row').textContent = gbp(depositAmt);
+
+    if (isFTB) {
+        $('res-sdlt-row').textContent = gbp(sdlt.total);
+        $('res-sdlt-row').className   = 'rr-val';
+        $('sdltRowName').textContent  = 'Stamp Duty (SDLT — FTB)';
+        $('sdltRowName').style.color  = 'rgba(255,255,255,0.65)';
+        $('sdltDot').style.background = '#86efac';
+    } else {
+        $('res-sdlt-row').textContent = 'Not applicable';
+        $('res-sdlt-row').className   = 'rr-val muted';
+        $('sdltRowName').textContent  = 'Stamp Duty (SDLT)';
+        $('sdltRowName').style.color  = 'rgba(255,255,255,0.22)';
+        $('sdltDot').style.background = 'rgba(255,255,255,0.15)';
+    }
+
+    $('sdltCard').classList.toggle('visible', isFTB);
+    if (isFTB) renderSDLTBands(sdlt);
+    $('sdltNote').textContent  = sdlt.note;
+    $('sdltTotal').textContent = gbp(sdlt.total);
+
+    $('leaseholdInfo').classList.toggle('visible', isFlat);
+
+    $('stickyLTV').textContent            = ltvPct;
+    $('stickyLoan').textContent           = gbp(loanAmt);
+    $('stickySDLT').textContent           = gbp(sdlt.total);
+    $('stickySDLTPill').style.display     = isFTB  ? '' : 'none';
+    $('stickyFlatPill').style.display     = isFlat ? '' : 'none';
+    animSticky(gbp(totalCost));
+}
+
+function syncNumSlider(numId, slId, key) {
+    const num = $(numId), sl = $(slId);
+    num.addEventListener('input', () => {
+        let v = parseInt(num.value) || 0;
+        v = Math.max(+num.min || 0, Math.min(+num.max || 9999999, v));
+        state[key] = v;
+        sl.value = Math.min(v, +sl.max);
+        setFill(sl); render();
+    });
+    sl.addEventListener('input', () => {
+        state[key] = +sl.value;
+        num.value  = sl.value;
+        setFill(sl); render();
+    });
+}
+
+document.querySelectorAll('input[name="buyerType"]').forEach(r =>
+    r.addEventListener('change', () => { state.buyerType = r.value; render(); }));
+document.querySelectorAll('input[name="propType"]').forEach(r =>
+    r.addEventListener('change', () => { state.propType = r.value; render(); }));
+
+syncNumSlider('inp-price',   'sl-price',   'price');
+syncNumSlider('inp-deposit', 'sl-deposit', 'deposit');
+
+setFill($('sl-price'));
+setFill($('sl-deposit'));
+render();
+</script>
+</body>
+</html>

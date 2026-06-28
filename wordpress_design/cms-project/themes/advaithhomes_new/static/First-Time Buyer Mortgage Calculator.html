@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK First-Time Buyer Mortgage Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --client-color: #203c3e;
+    --secondary-color: #B08D57;
+    --bg-color-1: #ded5c1;
+    --section-bg-color: #3c4748;
+    --gold-700: #b45309;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-900: #0f172a;
+    --text-primary: var(--slate-900);
+    --text-secondary: var(--slate-600);
+    --text-muted: var(--slate-500);
+    --important: rgb(168, 3, 3);
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-accent: 'Instrument Serif', Georgia, serif;
+    --card-bg: white;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --space-2: 8px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-color-1);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  .calc-header {
+    background: var(--client-color);
+    padding: 20px var(--space-8);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .calc-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 500;
+    color: var(--bg-color-1);
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+  }
+
+  .calc-header .sub {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+  }
+
+  /* ── Layout ── */
+  .calc-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+  }
+
+  /* ── Left Panel (Inputs) ── */
+  .panel-left {
+    padding: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    overflow-y: auto;
+  }
+
+  .panel-section-title {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(176,141,87,0.25);
+    margin-bottom: 2px;
+  }
+
+  /* ── Input Groups ── */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .input-label label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .input-label .unit-badge {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .input-prefix {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--client-color);
+    min-width: 14px;
+  }
+
+  .number-input {
+    flex: 1;
+    height: 40px;
+    border: 1.5px solid rgba(32,60,62,0.18);
+    border-radius: var(--radius-sm);
+    padding: 0 12px;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--client-color);
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+
+  .number-input::-webkit-outer-spin-button,
+  .number-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  .number-input:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(176,141,87,0.12);
+  }
+
+  /* Slider wrapper */
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .slider-min, .slider-max {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    min-width: 28px;
+    white-space: nowrap;
+  }
+
+  .slider-max { text-align: right; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--secondary-color) var(--pct, 0%), rgba(32,60,62,0.15) var(--pct, 0%));
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--client-color);
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    transition: transform 0.15s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--client-color);
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+
+  /* Toggle */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid rgba(32,60,62,0.12);
+    padding: 10px 14px;
+  }
+
+  .toggle-label {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .toggle-label span:first-child {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .toggle-label span:last-child {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+  }
+
+  .toggle {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .toggle input { opacity: 0; width: 0; height: 0; }
+
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: rgba(32,60,62,0.18);
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    left: 3px; top: 3px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.25s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .toggle input:checked + .toggle-slider { background: var(--secondary-color); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+  /* ── Right Panel (Results) ── */
+  .panel-right {
+    background: var(--section-bg-color);
+    padding: var(--space-6) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    overflow-y: auto;
+  }
+
+  .results-section-title {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(222,213,193,0.5);
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(222,213,193,0.12);
+    margin-bottom: 2px;
+  }
+
+  /* Primary result hero */
+  .primary-result {
+    background: var(--client-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-6) var(--space-6);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .primary-result::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: rgba(176,141,87,0.12);
+  }
+
+  .primary-result .label {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(222,213,193,0.6);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+
+  .primary-result .amount {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 500;
+    color: var(--bg-color-1);
+    line-height: 1;
+    transition: all 0.3s ease;
+  }
+
+  .primary-result .per {
+    font-size: 0.75rem;
+    color: var(--secondary-color);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  /* Result cards grid */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .result-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(222,213,193,0.1);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    transition: all 0.3s ease;
+  }
+
+  .result-card .card-label {
+    font-size: 0.67rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(222,213,193,0.5);
+    margin-bottom: 5px;
+  }
+
+  .result-card .card-value {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--bg-color-1);
+    line-height: 1.1;
+    transition: all 0.3s ease;
+  }
+
+  .result-card .card-sub {
+    font-size: 0.68rem;
+    color: rgba(222,213,193,0.45);
+    margin-top: 2px;
+  }
+
+  /* LTV bar */
+  .ltv-section {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(222,213,193,0.1);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+
+  .ltv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+
+  .ltv-header .ltv-label {
+    font-size: 0.67rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(222,213,193,0.5);
+  }
+
+  .ltv-header .ltv-value {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--bg-color-1);
+    transition: all 0.3s ease;
+  }
+
+  .ltv-bar-bg {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .ltv-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease, background 0.3s ease;
+  }
+
+  .ltv-thresholds {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: rgba(222,213,193,0.35);
+  }
+
+  /* Stamp duty section */
+  .stamp-section {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(222,213,193,0.1);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+
+  .stamp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .stamp-header .stamp-title {
+    font-size: 0.67rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(222,213,193,0.5);
+  }
+
+  .stamp-badge {
+    font-size: 0.62rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .stamp-badge.exempt {
+    background: rgba(22,163,74,0.2);
+    color: #86efac;
+  }
+
+  .stamp-badge.partial {
+    background: rgba(176,141,87,0.2);
+    color: var(--secondary-color);
+  }
+
+  .stamp-badge.full {
+    background: rgba(168,3,3,0.2);
+    color: #fca5a5;
+  }
+
+  .stamp-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stamp-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+  }
+
+  .stamp-row .sr-label { color: rgba(222,213,193,0.5); }
+  .stamp-row .sr-value { color: var(--bg-color-1); font-weight: 500; transition: all 0.3s; }
+  .stamp-row.stamp-total { border-top: 1px solid rgba(222,213,193,0.1); padding-top: 6px; margin-top: 2px; }
+  .stamp-row.stamp-total .sr-label { color: rgba(222,213,193,0.7); font-weight: 500; }
+  .stamp-row.stamp-total .sr-value { color: var(--secondary-color); font-family: var(--font-display); font-size: 1rem; }
+
+  /* Affordability indicator */
+  .affordability-bar {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-top: 4px;
+  }
+
+  .aff-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.3s;
+  }
+
+  .aff-dot.active-green { background: #4ade80; }
+  .aff-dot.active-amber { background: #fbbf24; }
+  .aff-dot.active-red { background: #f87171; }
+
+  .aff-label { font-size: 0.68rem; color: rgba(222,213,193,0.5); margin-left: 4px; }
+
+  /* Validation */
+  .validation-msg {
+    font-size: 0.68rem;
+    color: var(--important);
+    padding: 4px 0 0;
+    display: none;
+  }
+  .validation-msg.visible { display: block; }
+
+  /* Number animate */
+  @keyframes numPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+  .animating { animation: numPop 0.25s ease; }
+
+  /* ── Mobile sticky bar ── */
+  .mobile-bar {
+    display: none;
+  }
+
+  @keyframes flipUp {
+    0%   { transform: translateY(6px); opacity: 0.3; }
+    100% { transform: translateY(0);   opacity: 1; }
+  }
+
+  @keyframes flashGold {
+    0%   { box-shadow: 0 0 0 0 rgba(176,141,87,0); }
+    40%  { box-shadow: 0 0 0 6px rgba(176,141,87,0.35); }
+    100% { box-shadow: 0 8px 32px rgba(0,0,0,0.45); }
+  }
+
+  .mobile-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .mb-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .mb-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(222,213,193,0.55);
+  }
+
+  .mb-amount {
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 500;
+    color: var(--bg-color-1);
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .mb-amount.flip {
+    animation: flipUp 0.22s ease forwards;
+  }
+
+  .mb-pills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .mb-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 3px 9px;
+  }
+
+  .mb-pill-label {
+    font-size: 0.62rem;
+    color: rgba(222,213,193,0.5);
+    letter-spacing: 0.06em;
+  }
+
+  .mb-pill-val {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--bg-color-1);
+    min-width: 44px;
+    text-align: right;
+    transition: all 0.2s;
+  }
+
+  .mb-pill-val.flip {
+    animation: flipUp 0.22s ease forwards;
+  }
+
+  .mb-divider {
+    width: 1px;
+    height: 36px;
+    background: rgba(222,213,193,0.15);
+    flex-shrink: 0;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 720px) {
+    .mobile-bar {
+      display: block;
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 100;
+      background: var(--section-bg-color);
+      border-radius: 18px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      border: 1px solid rgba(222,213,193,0.12);
+    }
+
+    body { padding-bottom: 90px; }
+
+    .calc-header {
+      padding: 14px 16px;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .calc-header h1 { font-size: 1.25rem; }
+    .calc-header .sub { font-size: 0.65rem; }
+
+    .calc-body {
+      grid-template-columns: 1fr;
+    }
+
+    .panel-left {
+      padding: 14px 16px;
+      gap: 12px;
+    }
+
+    .panel-right {
+      padding: 14px 16px;
+      gap: 12px;
+    }
+
+    .primary-result { padding: 16px; }
+    .primary-result .amount { font-size: 2.4rem; }
+
+    .result-grid { gap: 8px; }
+    .result-card { padding: 10px 12px; }
+    .result-card .card-value { font-size: 1.1rem; }
+
+    .number-input { height: 38px; font-size: 0.88rem; }
+  }
+</style>
+
+<!-- HEADER -->
+<header class="calc-header">
+  <h1>First-Time Buyer Mortgage Calculator</h1>
+  <span class="sub">United Kingdom · 2024</span>
+</header>
+
+<!-- TWO-COLUMN BODY -->
+<main class="calc-body">
+
+  <!-- ════ LEFT PANEL ════ -->
+  <section class="panel-left" aria-label="Mortgage inputs">
+
+    <div class="panel-section-title">Property Details</div>
+
+    <!-- Property Price -->
+    <div class="input-group">
+      <div class="input-label">
+        <label for="price">Property Price</label>
+        <span class="unit-badge">GBP</span>
+      </div>
+      <div class="input-row">
+        <span class="input-prefix">£</span>
+        <input class="number-input" id="price" type="number" min="50000" max="2000000" step="1000" value="350000">
+      </div>
+      <div class="slider-row">
+        <span class="slider-min">£50k</span>
+        <input type="range" id="price-range" min="50000" max="2000000" step="1000" value="350000">
+        <span class="slider-max">£2m</span>
+      </div>
+    </div>
+
+    <!-- Deposit -->
+    <div class="input-group">
+      <div class="input-label">
+        <label for="deposit">Deposit Amount</label>
+        <span class="unit-badge" id="deposit-pct-label">10.0%</span>
+      </div>
+      <div class="input-row">
+        <span class="input-prefix">£</span>
+        <input class="number-input" id="deposit" type="number" min="0" max="1990000" step="500" value="35000">
+      </div>
+      <div class="slider-row">
+        <span class="slider-min">£0</span>
+        <input type="range" id="deposit-range" min="0" max="1990000" step="500" value="35000">
+        <span class="slider-max" id="deposit-max-label">£1.97m</span>
+      </div>
+      <span class="validation-msg" id="deposit-error">Deposit cannot exceed property price.</span>
+    </div>
+
+    <div class="panel-section-title" style="margin-top: 4px;">Mortgage Terms</div>
+
+    <!-- Interest Rate -->
+    <div class="input-group">
+      <div class="input-label">
+        <label for="rate">Interest Rate</label>
+        <span class="unit-badge">% per annum</span>
+      </div>
+      <div class="input-row">
+        <input class="number-input" id="rate" type="number" min="0.1" max="15" step="0.05" value="4.75" style="flex: 1;">
+        <span style="font-size:0.85rem; color: var(--text-muted); flex-shrink:0;">%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-min">0.1%</span>
+        <input type="range" id="rate-range" min="0.1" max="15" step="0.05" value="4.75">
+        <span class="slider-max">15%</span>
+      </div>
+    </div>
+
+    <!-- Mortgage Term -->
+    <div class="input-group">
+      <div class="input-label">
+        <label for="term">Mortgage Term</label>
+        <span class="unit-badge">years</span>
+      </div>
+      <div class="input-row">
+        <input class="number-input" id="term" type="number" min="5" max="40" step="1" value="25" style="flex:1;">
+        <span style="font-size:0.85rem; color: var(--text-muted); flex-shrink:0;">yrs</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-min">5 yrs</span>
+        <input type="range" id="term-range" min="5" max="40" step="1" value="25">
+        <span class="slider-max">40 yrs</span>
+      </div>
+    </div>
+
+    <div class="panel-section-title" style="margin-top: 4px;">Options</div>
+
+    <!-- FTB Stamp Duty Relief toggle -->
+    <div class="toggle-row">
+      <div class="toggle-label">
+        <span>First-Time Buyer Stamp Duty Relief</span>
+        <span>No SDLT on first £425k if price ≤ £625k</span>
+      </div>
+      <label class="toggle" aria-label="Enable first-time buyer stamp duty relief">
+        <input type="checkbox" id="ftb-relief" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <!-- Annual household income for affordability check -->
+    <div class="input-group">
+      <div class="input-label">
+        <label for="income">Annual Household Income</label>
+        <span class="unit-badge">GBP</span>
+      </div>
+      <div class="input-row">
+        <span class="input-prefix">£</span>
+        <input class="number-input" id="income" type="number" min="10000" max="500000" step="1000" value="75000">
+      </div>
+      <div class="slider-row">
+        <span class="slider-min">£10k</span>
+        <input type="range" id="income-range" min="10000" max="500000" step="1000" value="75000">
+        <span class="slider-max">£500k</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════ RIGHT PANEL ════ -->
+  <section class="panel-right" aria-label="Mortgage results">
+
+    <div class="results-section-title">Monthly Repayment</div>
+
+    <!-- Primary result -->
+    <div class="primary-result">
+      <div class="label">Estimated Monthly Payment</div>
+      <div class="amount" id="monthly-payment">£1,829</div>
+      <div class="per">Capital & Interest · Repayment Mortgage</div>
+    </div>
+
+    <!-- Key metrics grid -->
+    <div class="results-section-title">Key Figures</div>
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="card-label">Loan Amount</div>
+        <div class="card-value" id="loan-amount">£315,000</div>
+        <div class="card-sub">Amount borrowed</div>
+      </div>
+      <div class="result-card">
+        <div class="card-label">Total Repaid</div>
+        <div class="card-value" id="total-repaid">£548,700</div>
+        <div class="card-sub">Over full term</div>
+      </div>
+      <div class="result-card">
+        <div class="card-label">Total Interest</div>
+        <div class="card-value" id="total-interest">£233,700</div>
+        <div class="card-sub">Cost of borrowing</div>
+      </div>
+      <div class="result-card">
+        <div class="card-label">Annual Payment</div>
+        <div class="card-value" id="annual-payment">£21,948</div>
+        <div class="card-sub">Per year</div>
+      </div>
+    </div>
+
+    <!-- LTV Bar -->
+    <div class="results-section-title">Loan-to-Value Ratio</div>
+    <div class="ltv-section">
+      <div class="ltv-header">
+        <span class="ltv-label">LTV</span>
+        <span class="ltv-value" id="ltv-value">90.0%</span>
+      </div>
+      <div class="ltv-bar-bg">
+        <div class="ltv-bar-fill" id="ltv-bar" style="width:90%"></div>
+      </div>
+      <div class="ltv-thresholds">
+        <span>60%</span>
+        <span>75%</span>
+        <span>85%</span>
+        <span>90%</span>
+        <span>95%</span>
+      </div>
+    </div>
+
+    <!-- Stamp Duty -->
+    <div class="results-section-title">Stamp Duty Land Tax</div>
+    <div class="stamp-section">
+      <div class="stamp-header">
+        <span class="stamp-title">SDLT Calculation</span>
+        <span class="stamp-badge exempt" id="stamp-badge">Exempt</span>
+      </div>
+      <div class="stamp-breakdown">
+        <div class="stamp-row">
+          <span class="sr-label">Up to £250,000</span>
+          <span class="sr-value" id="sd-band1">£0</span>
+        </div>
+        <div class="stamp-row">
+          <span class="sr-label">£250k–£425k (FTB exempt)</span>
+          <span class="sr-value" id="sd-band2">£0</span>
+        </div>
+        <div class="stamp-row">
+          <span class="sr-label">£425k–£625k (5%)</span>
+          <span class="sr-value" id="sd-band3">£0</span>
+        </div>
+        <div class="stamp-row">
+          <span class="sr-label">Above £625k (10%)</span>
+          <span class="sr-value" id="sd-band4">£0</span>
+        </div>
+        <div class="stamp-row stamp-total">
+          <span class="sr-label">Total Stamp Duty</span>
+          <span class="sr-value" id="sd-total">£0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Affordability -->
+    <div class="results-section-title">Affordability</div>
+    <div class="result-card" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(222,213,193,0.1);">
+      <div class="card-label">Income Multiple</div>
+      <div style="display:flex; align-items:baseline; gap:10px; margin:4px 0;">
+        <div class="card-value" id="income-multiple" style="color:var(--bg-color-1);">4.2×</div>
+        <span style="font-size:0.7rem; color: rgba(222,213,193,0.45);">of annual income · lenders typically allow up to 4.5×</span>
+      </div>
+      <div class="affordability-bar">
+        <div class="aff-dot" id="aff-1"></div>
+        <div class="aff-dot" id="aff-2"></div>
+        <div class="aff-dot" id="aff-3"></div>
+        <div class="aff-dot" id="aff-4"></div>
+        <div class="aff-dot" id="aff-5"></div>
+        <span class="aff-label" id="aff-label">Likely affordable</span>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<!-- Mobile sticky bar -->
+<div class="mobile-bar" id="mobile-bar" aria-live="polite">
+  <div class="mobile-bar-inner">
+    <div class="mb-main">
+      <div class="mb-label">Monthly payment</div>
+      <div class="mb-amount" id="mb-monthly">£1,829</div>
+    </div>
+    <div class="mb-divider"></div>
+    <div class="mb-pills">
+      <div class="mb-pill"><span class="mb-pill-label">LTV</span><span class="mb-pill-val" id="mb-ltv">90.0%</span></div>
+      <div class="mb-pill"><span class="mb-pill-label">Interest</span><span class="mb-pill-val" id="mb-interest">£234k</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Element references ──
+  const els = {
+    price:          document.getElementById('price'),
+    priceRange:     document.getElementById('price-range'),
+    deposit:        document.getElementById('deposit'),
+    depositRange:   document.getElementById('deposit-range'),
+    depositPct:     document.getElementById('deposit-pct-label'),
+    depositMax:     document.getElementById('deposit-max-label'),
+    depositError:   document.getElementById('deposit-error'),
+    rate:           document.getElementById('rate'),
+    rateRange:      document.getElementById('rate-range'),
+    term:           document.getElementById('term'),
+    termRange:      document.getElementById('term-range'),
+    ftbRelief:      document.getElementById('ftb-relief'),
+    income:         document.getElementById('income'),
+    incomeRange:    document.getElementById('income-range'),
+
+    monthlyPayment: document.getElementById('monthly-payment'),
+    loanAmount:     document.getElementById('loan-amount'),
+    totalRepaid:    document.getElementById('total-repaid'),
+    totalInterest:  document.getElementById('total-interest'),
+    annualPayment:  document.getElementById('annual-payment'),
+    ltvValue:       document.getElementById('ltv-value'),
+    ltvBar:         document.getElementById('ltv-bar'),
+    stampBadge:     document.getElementById('stamp-badge'),
+    sdBand1:        document.getElementById('sd-band1'),
+    sdBand2:        document.getElementById('sd-band2'),
+    sdBand3:        document.getElementById('sd-band3'),
+    sdBand4:        document.getElementById('sd-band4'),
+    sdTotal:        document.getElementById('sd-total'),
+    incomeMultiple: document.getElementById('income-multiple'),
+    aff1: document.getElementById('aff-1'),
+    aff2: document.getElementById('aff-2'),
+    aff3: document.getElementById('aff-3'),
+    aff4: document.getElementById('aff-4'),
+    aff5: document.getElementById('aff-5'),
+    affLabel:       document.getElementById('aff-label'),
+    mobileBar:      document.getElementById('mobile-bar'),
+    mbMonthly:      document.getElementById('mb-monthly'),
+    mbLtv:          document.getElementById('mb-ltv'),
+    mbInterest:     document.getElementById('mb-interest'),
+  };
+
+  // ── Formatting helpers ──
+  const fmt = (n) => '£' + Math.round(n).toLocaleString('en-GB');
+  const fmtShort = (n) => {
+    if (n >= 1000000) return '£' + (n / 1000000).toFixed(2).replace(/\.?0+$/, '') + 'm';
+    if (n >= 1000) return '£' + Math.round(n / 1000) + 'k';
+    return '£' + Math.round(n);
+  };
+
+  // ── Slider percentage fill ──
+  function updateSliderFill(slider) {
+    const min = parseFloat(slider.min);
+    const max = parseFloat(slider.max);
+    const val = parseFloat(slider.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    slider.style.setProperty('--pct', pct.toFixed(1) + '%');
+  }
+
+  // ── Sync number ↔ range ──
+  function syncPair(numId, rangeId, onChange) {
+    const num = document.getElementById(numId);
+    const range = document.getElementById(rangeId);
+
+    num.addEventListener('input', () => {
+      let v = parseFloat(num.value);
+      if (isNaN(v)) return;
+      v = Math.min(Math.max(v, parseFloat(range.min)), parseFloat(range.max));
+      range.value = v;
+      updateSliderFill(range);
+      onChange();
+    });
+
+    range.addEventListener('input', () => {
+      num.value = range.value;
+      updateSliderFill(range);
+      onChange();
+    });
+
+    updateSliderFill(range);
+  }
+
+  // ── Animate a value element ──
+  function animateVal(el) {
+    el.classList.remove('animating');
+    void el.offsetWidth;
+    el.classList.add('animating');
+  }
+
+  // ── Flip animation for mobile bar ──
+  function flipEl(el, newText) {
+    if (el.textContent === newText) return;
+    el.classList.remove('flip');
+    void el.offsetWidth;
+    el.textContent = newText;
+    el.classList.add('flip');
+  }
+
+  // ── Flash the mobile bar to signal an update ──
+  function flashBar() {
+    const bar = els.mobileBar;
+    bar.style.animation = 'none';
+    void bar.offsetWidth;
+    bar.style.animation = 'flashGold 0.45s ease forwards';
+  }
+
+  // ── Mortgage calculation (repayment) ──
+  function calcMonthlyPayment(principal, annualRate, termYears) {
+    const r = annualRate / 100 / 12;
+    const n = termYears * 12;
+    if (r === 0) return principal / n;
+    return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  }
+
+  // ── Stamp Duty (England, 2024 rates) ──
+  function calcStampDuty(price, ftbRelief) {
+    let tax = 0;
+    const bands = { b1: 0, b2: 0, b3: 0, b4: 0 };
+    let status = 'full';
+
+    if (ftbRelief && price <= 625000) {
+      // FTB relief: 0% up to £425k, 5% on £425k–£625k
+      if (price <= 425000) {
+        status = 'exempt';
+      } else {
+        bands.b3 = (price - 425000) * 0.05;
+        tax = bands.b3;
+        status = 'partial';
+      }
+    } else {
+      // Standard rates
+      if (price > 250000) bands.b1 = Math.min(price, 250000) * 0;
+      if (price > 250000) {
+        const slice2 = Math.min(price, 925000) - 250000;
+        if (slice2 > 0) {
+          if (price <= 425000 && ftbRelief) {
+            // Handled above
+          } else {
+            tax += slice2 * 0.05;
+            bands.b2 = slice2 * 0.05;
+          }
+        }
+      }
+      if (price > 925000) {
+        const slice3 = Math.min(price, 1500000) - 925000;
+        tax += slice3 * 0.10;
+        bands.b3 = slice3 * 0.10;
+      }
+      if (price > 1500000) {
+        const slice4 = price - 1500000;
+        tax += slice4 * 0.12;
+        bands.b4 = slice4 * 0.12;
+      }
+      status = tax === 0 ? 'exempt' : 'full';
+    }
+
+    return { tax, bands, status };
+  }
+
+  // ── LTV color ──
+  function ltvColor(ltv) {
+    if (ltv <= 60) return '#4ade80';
+    if (ltv <= 75) return '#a3e635';
+    if (ltv <= 85) return '#fbbf24';
+    if (ltv <= 90) return '#fb923c';
+    return '#f87171';
+  }
+
+  // ── Affordability ──
+  function updateAffordability(loan, income) {
+    const multiple = income > 0 ? loan / income : 0;
+    els.incomeMultiple.textContent = multiple.toFixed(1) + '×';
+
+    const dots = [els.aff1, els.aff2, els.aff3, els.aff4, els.aff5];
+    dots.forEach(d => { d.className = 'aff-dot'; });
+
+    let filled, colorClass, label;
+    if (multiple <= 3) { filled = 1; colorClass = 'active-green'; label = 'Very affordable'; }
+    else if (multiple <= 3.5) { filled = 2; colorClass = 'active-green'; label = 'Comfortably affordable'; }
+    else if (multiple <= 4) { filled = 3; colorClass = 'active-green'; label = 'Likely affordable'; }
+    else if (multiple <= 4.5) { filled = 4; colorClass = 'active-amber'; label = 'At lender limits'; }
+    else { filled = 5; colorClass = 'active-red'; label = 'May struggle to borrow'; }
+
+    for (let i = 0; i < filled; i++) dots[i].classList.add(colorClass);
+    els.affLabel.textContent = label;
+  }
+
+  // ── Main calculate ──
+  function calculate() {
+    const price   = Math.max(50000, parseFloat(els.price.value)   || 0);
+    const deposit = Math.max(0,     parseFloat(els.deposit.value) || 0);
+    const rate    = Math.max(0.1,   parseFloat(els.rate.value)    || 0);
+    const term    = Math.max(5,     parseInt(els.term.value)      || 25);
+    const income  = Math.max(1,     parseFloat(els.income.value)  || 0);
+    const ftb     = els.ftbRelief.checked;
+
+    // Validation
+    const depositValid = deposit < price;
+    els.depositError.classList.toggle('visible', !depositValid);
+    const safeDeposit = Math.min(deposit, price - 1);
+    const loan = price - safeDeposit;
+
+    // Update deposit max
+    const depositMax = price - 1;
+    els.depositRange.max = depositMax;
+    els.depositMax.textContent = fmtShort(depositMax);
+    els.depositRange.value = Math.min(parseFloat(els.depositRange.value), depositMax);
+
+    // Deposit percentage label
+    const depositPct = price > 0 ? (safeDeposit / price) * 100 : 0;
+    els.depositPct.textContent = depositPct.toFixed(1) + '%';
+
+    // Monthly payment
+    const monthly = calcMonthlyPayment(loan, rate, term);
+    const total = monthly * term * 12;
+    const interest = total - loan;
+    const annual = monthly * 12;
+    const ltv = price > 0 ? (loan / price) * 100 : 0;
+
+    // Stamp duty
+    const { tax, bands, status } = calcStampDuty(price, ftb);
+
+    // ── Update DOM ──
+    const setAndAnimate = (el, text) => {
+      if (el.textContent !== text) { el.textContent = text; animateVal(el); }
+    };
+
+    setAndAnimate(els.monthlyPayment, fmt(monthly));
+    setAndAnimate(els.loanAmount, fmt(loan));
+    setAndAnimate(els.totalRepaid, fmt(total));
+    setAndAnimate(els.totalInterest, fmt(interest));
+    setAndAnimate(els.annualPayment, fmt(annual));
+
+    // LTV
+    const ltvClamped = Math.min(ltv, 100);
+    els.ltvValue.textContent = ltv.toFixed(1) + '%';
+    els.ltvBar.style.width = ltvClamped.toFixed(1) + '%';
+    els.ltvBar.style.background = ltvColor(ltvClamped);
+
+    // Stamp duty
+    // Recalculate bands display based on mode
+    if (ftb && price <= 625000) {
+      els.sdBand1.textContent = '£0';
+      els.sdBand2.textContent = '£0 (FTB exempt)';
+      els.sdBand3.textContent = fmt(bands.b3);
+      els.sdBand4.textContent = '£0';
+    } else {
+      els.sdBand1.textContent = '£0';
+      els.sdBand2.textContent = fmt(bands.b2);
+      els.sdBand3.textContent = fmt(bands.b3);
+      els.sdBand4.textContent = fmt(bands.b4);
+    }
+    setAndAnimate(els.sdTotal, fmt(tax));
+
+    els.stampBadge.className = 'stamp-badge ' + status;
+    els.stampBadge.textContent = status === 'exempt' ? 'Exempt' : status === 'partial' ? 'Partial Relief' : 'Standard Rate';
+
+    updateAffordability(loan, income);
+
+    // ── Mobile bar update ──
+    const prevMonthly = els.mbMonthly.textContent;
+    const newMonthly = fmt(monthly);
+    if (prevMonthly !== newMonthly) {
+      flipEl(els.mbMonthly, newMonthly);
+      flipEl(els.mbLtv, ltv.toFixed(1) + '%');
+      flipEl(els.mbInterest, fmtShort(interest));
+      flashBar();
+    }
+  }
+
+  // ── Wire up all controls ──
+  syncPair('price', 'price-range', calculate);
+  syncPair('deposit', 'deposit-range', calculate);
+  syncPair('rate', 'rate-range', calculate);
+  syncPair('term', 'term-range', calculate);
+  syncPair('income', 'income-range', calculate);
+  els.ftbRelief.addEventListener('change', calculate);
+
+  // ── Init ──
+  calculate();
+</script>
+</html>

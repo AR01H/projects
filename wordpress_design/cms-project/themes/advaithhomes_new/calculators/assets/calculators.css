@@ -41,7 +41,7 @@ body.ah-calc-body {
 	background: var(--color-bg);
 	line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
-	padding: 24px 20px 32px;
+	/* padding: 24px 20px 32px; */
 }
 
 /* ── Standard HTML tags ────────────────────────────────────── */
@@ -898,7 +898,7 @@ body.ah-calc-body {
 
 /* Mobile tweaks */
 @media (max-width: 480px) {
-	body.ah-calc-body { padding: 16px 12px 24px; }
+	/* body.ah-calc-body { padding: 16px 12px 24px; } */
 	.sdlt-widget > h2:first-child,
 	.sdlt-widget-header { padding: 14px 18px; }
 	.sdlt-widget-body,

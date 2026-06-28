@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK Stamp Duty Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+/* ==============================
+   DESIGN TOKENS
+   ============================== */
+:root {
+    --client-color: #203c3e;
+    --secondary-color: #B08D57;
+    --bg-color-1: #ded5c1;
+    --section-bg-color: #3c4748;
+    --gold-700: #b45309;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-900: #0f172a;
+    --text-primary: var(--slate-900);
+    --text-secondary: var(--slate-600);
+    --text-muted: var(--slate-500);
+    --important: rgb(168, 3, 3);
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-accent: 'Instrument Serif', Georgia, serif;
+    --card-bg: white;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --space-2: 8px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+}
+
+/* ==============================
+   RESET & BASE
+   ============================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg-color-1);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+/* ==============================
+   WRAPPER & HEADER
+   ============================== */
+.calc-wrapper {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-6);
+}
+
+.calc-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.calc-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--client-color);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+}
+
+.calc-header .subtitle {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: var(--space-2);
+    font-weight: 400;
+}
+
+.calc-header .tax-badge {
+    display: inline-block;
+    margin-top: 10px;
+    background: var(--client-color);
+    color: rgba(255,255,255,0.85);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 100px;
+}
+
+/* ==============================
+   GRID
+   ============================== */
+.calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 12px 50px rgba(0,0,0,0.14);
+    align-items: stretch;
+}
+
+/* ==============================
+   LEFT — INPUT PANEL
+   ============================== */
+.input-panel {
+    background: var(--card-bg);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.panel-heading {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--client-color);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--bg-color-1);
+    letter-spacing: 0.01em;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-secondary);
+}
+
+/* Number Input with prefix */
+.num-input-wrap {
+    display: flex;
+    align-items: stretch;
+    border: 1.5px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.num-input-wrap:focus-within {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(176,141,87,0.15);
+}
+.input-prefix {
+    display: flex;
+    align-items: center;
+    background: var(--bg-color-1);
+    padding: 0 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--client-color);
+    border-right: 1.5px solid #e2e8f0;
+    user-select: none;
+}
+.num-input-wrap input[type="number"] {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background: transparent;
+    width: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+/* Slider */
+.slider-track-wrap {
+    padding-top: 4px;
+}
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(
+        to right,
+        var(--secondary-color) var(--fill-pct, 0%),
+        #e2e8f0 var(--fill-pct, 0%)
+    );
+    outline: none;
+    cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    border: 2.5px solid white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.22);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.18);
+    box-shadow: 0 2px 8px rgba(176,141,87,0.4);
+}
+input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    border: 2.5px solid white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.22);
+    cursor: pointer;
+}
+.slider-min-max {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+/* Segmented control */
+.seg-group {
+    display: flex;
+    border: 1.5px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+.seg-group input[type="radio"] { display: none; }
+.seg-group label {
+    flex: 1;
+    text-align: center;
+    padding: 9px 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-right: 1.5px solid #e2e8f0;
+    transition: background 0.2s, color 0.2s;
+    line-height: 1.3;
+}
+.seg-group label:last-child { border-right: none; }
+.seg-group input[type="radio"]:checked + label {
+    background: var(--client-color);
+    color: white;
+    font-weight: 600;
+}
+
+/* Info note */
+.info-note {
+    background: rgba(176,141,87,0.08);
+    border-left: 3px solid var(--secondary-color);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 10px var(--space-4);
+    font-size: 0.77rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+/* ==============================
+   RIGHT — RESULTS PANEL
+   ============================== */
+.results-panel {
+    background: var(--section-bg-color);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.results-panel .panel-heading {
+    color: rgba(255,255,255,0.85);
+    border-bottom-color: rgba(255,255,255,0.1);
+}
+
+/* Primary Result */
+.primary-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(176,141,87,0.3);
+    border-radius: var(--radius-md);
+    padding: var(--space-6) var(--space-4);
+    text-align: center;
+}
+.primary-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--secondary-color);
+    margin-bottom: var(--space-2);
+}
+.primary-amount {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 3.2rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    transition: color 0.2s;
+}
+.primary-sub {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 6px;
+}
+
+/* Badges */
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 0;
+}
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+.badge.relief {
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: #86efac;
+}
+.badge.surcharge {
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5;
+}
+.badge.warning {
+    background: rgba(251,191,36,0.12);
+    border: 1px solid rgba(251,191,36,0.3);
+    color: #fde68a;
+}
+.badge.hidden { display: none; }
+
+/* Metric row */
+.metrics-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+.metric-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    text-align: center;
+}
+.metric-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 4px;
+}
+.metric-value {
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.1;
+}
+
+/* Band breakdown */
+.breakdown-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    flex: 1;
+}
+.breakdown-heading {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 10px;
+}
+.band-list { display: flex; flex-direction: column; gap: 0; }
+
+.band-row {
+    display: grid;
+    grid-template-columns: 1fr 38px 56px 76px;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.band-row:last-child { border-bottom: none; }
+
+.band-range {
+    font-size: 0.74rem;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.band-rate {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-align: center;
+}
+.band-bar-bg {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.band-bar-fill {
+    height: 100%;
+    background: var(--secondary-color);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+}
+.band-amount {
+    text-align: right;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+}
+.band-amount.zero { color: rgba(255,255,255,0.35); }
+
+/* Zero tax message */
+.zero-tax-msg {
+    text-align: center;
+    padding: var(--space-4);
+    color: #86efac;
+    font-size: 0.88rem;
+    font-weight: 500;
+    display: none;
+}
+
+/* ==============================
+   MOBILE STICKY BAR
+   ============================== */
+.sticky-bar {
+    display: none;
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    z-index: 100;
+    background: var(--section-bg-color);
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    padding: 14px 18px 12px;
+}
+
+.sticky-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--secondary-color);
+    margin-bottom: 2px;
+}
+.sticky-amount {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+.sticky-pills {
+    display: flex;
+    gap: 7px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+.sticky-pill {
+    background: rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 3px 11px;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.65);
+    font-weight: 500;
+}
+.sticky-pill strong {
+    color: white;
+    font-weight: 700;
+}
+.sticky-pill.relief-pill {
+    background: rgba(34,197,94,0.15);
+    color: #86efac;
+    font-weight: 600;
+}
+
+/* ==============================
+   ANIMATIONS
+   ============================== */
+@keyframes flipUp {
+    from { opacity: 0.3; transform: translateY(6px); }
+    to   { opacity: 1;   transform: translateY(0); }
+}
+@keyframes goldFlash {
+    0%   { box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+    40%  { box-shadow: 0 10px 40px rgba(0,0,0,0.4),
+                       0 0 0 4px rgba(176,141,87,0.4),
+                       0 0 24px rgba(176,141,87,0.25); }
+    100% { box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+}
+@keyframes resultPulse {
+    0%   { opacity: 1; }
+    30%  { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+.sticky-bar.anim-flip .sticky-amount {
+    animation: flipUp 220ms ease forwards;
+}
+.sticky-bar.anim-flash {
+    animation: goldFlash 620ms ease forwards;
+}
+.result-updating {
+    animation: resultPulse 300ms ease forwards;
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+@media (max-width: 720px) {
+    body { padding-bottom: 100px; }
+
+    .sticky-bar { display: block; }
+
+    .calc-wrapper {
+        padding: 14px 10px;
+    }
+    .calc-header {
+        margin-bottom: 14px;
+    }
+    .calc-header h1 { font-size: 1.65rem; }
+    .calc-header .subtitle { font-size: 0.8rem; }
+
+    .calc-grid {
+        grid-template-columns: 1fr;
+        border-radius: var(--radius-md);
+    }
+
+    .input-panel {
+        padding: 16px;
+        gap: 14px;
+    }
+    .results-panel {
+        padding: 16px;
+        gap: 10px;
+    }
+
+    .primary-card { padding: 14px 12px; }
+    .primary-amount { font-size: 2rem; }
+
+    .metrics-row { gap: 10px; }
+    .metric-card { padding: 10px; }
+    .metric-value { font-size: 1.2rem; }
+
+    .seg-group label {
+        font-size: 0.7rem;
+        padding: 8px 3px;
+    }
+
+    .band-row {
+        grid-template-columns: 1fr 34px 44px 68px;
+        gap: 6px;
+    }
+    .band-range { font-size: 0.68rem; }
+    .band-amount { font-size: 0.75rem; }
+}
+
+@media (max-width: 400px) {
+    .seg-group label { font-size: 0.63rem; padding: 8px 2px; }
+    .sticky-amount { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="calc-wrapper">
+    <div class="calc-header">
+        <h1>Stamp Duty Calculator</h1>
+        <p class="subtitle">Calculate your property transaction tax for purchases in England, Northern Ireland, Scotland &amp; Wales</p>
+        <span class="tax-badge" id="taxBadgeName">SDLT — England &amp; N. Ireland</span>
+    </div>
+
+    <div class="calc-grid">
+
+        <!-- ===== LEFT: INPUTS ===== -->
+        <div class="input-panel">
+            <div class="panel-heading">Property Details</div>
+
+            <!-- Property Price -->
+            <div class="input-group">
+                <label class="input-label" for="inp-price">Property Price</label>
+                <div class="num-input-wrap">
+                    <span class="input-prefix">£</span>
+                    <input type="number" id="inp-price" min="0" max="10000000" step="1000" value="350000" aria-label="Property price in pounds">
+                </div>
+                <div class="slider-track-wrap">
+                    <input type="range" id="sl-price" min="0" max="2000000" step="5000" value="350000" aria-label="Property price slider">
+                    <div class="slider-min-max"><span>£0</span><span>£2,000,000</span></div>
+                </div>
+            </div>
+
+            <!-- Buyer Type -->
+            <div class="input-group">
+                <label class="input-label">Buyer Type</label>
+                <div class="seg-group" role="radiogroup" aria-label="Buyer type">
+                    <input type="radio" name="buyerType" id="bt-ftb" value="ftb">
+                    <label for="bt-ftb">First&#8209;Time Buyer</label>
+                    <input type="radio" name="buyerType" id="bt-std" value="standard" checked>
+                    <label for="bt-std">Home Mover</label>
+                    <input type="radio" name="buyerType" id="bt-add" value="additional">
+                    <label for="bt-add">Additional Property</label>
+                </div>
+            </div>
+
+            <!-- Country -->
+            <div class="input-group">
+                <label class="input-label">Country</label>
+                <div class="seg-group" role="radiogroup" aria-label="Country">
+                    <input type="radio" name="country" id="cn-eng" value="engNi" checked>
+                    <label for="cn-eng">England / N.I.</label>
+                    <input type="radio" name="country" id="cn-sco" value="scotland">
+                    <label for="cn-sco">Scotland</label>
+                    <input type="radio" name="country" id="cn-wal" value="wales">
+                    <label for="cn-wal">Wales</label>
+                </div>
+            </div>
+
+            <div class="info-note" id="infoNote">
+                Standard SDLT rates apply from April 2025. First-time buyers receive relief on properties up to £500,000. An additional 3% surcharge applies to second homes and buy-to-let.
+            </div>
+        </div>
+
+        <!-- ===== RIGHT: RESULTS ===== -->
+        <div class="results-panel">
+            <div class="panel-heading">Your Tax Breakdown</div>
+
+            <!-- Primary -->
+            <div class="primary-card">
+                <div class="primary-label" id="totalLabel">Total Stamp Duty (SDLT)</div>
+                <div class="primary-amount" id="totalAmount">£0</div>
+                <div class="primary-sub" id="primarySub">0.00% of purchase price</div>
+            </div>
+
+            <!-- Badges -->
+            <div class="badge-row" id="badgeRow">
+                <span class="badge relief hidden" id="badge-relief">✓ First-Time Buyer Relief Applied</span>
+                <span class="badge surcharge hidden" id="badge-surcharge">⚠ Additional Property Surcharge (+3%)</span>
+                <span class="badge warning hidden" id="badge-ftb-over">⚠ Over limit — Standard rates apply</span>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-label">Effective Rate</div>
+                    <div class="metric-value" id="effectiveRate">0.00%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Total Cost</div>
+                    <div class="metric-value" id="totalCost">£350,000</div>
+                </div>
+            </div>
+
+            <!-- Band Breakdown -->
+            <div class="breakdown-card">
+                <div class="breakdown-heading">Tax Band Breakdown</div>
+                <div class="zero-tax-msg" id="zeroMsg">🎉 No tax due on this purchase.</div>
+                <div class="band-list" id="bandList"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MOBILE STICKY BAR -->
+<div class="sticky-bar" id="stickyBar" aria-live="polite" aria-label="Stamp duty summary">
+    <div class="sticky-label" id="stickyLabel">Stamp Duty Due</div>
+    <div class="sticky-amount" id="stickyAmount">£0</div>
+    <div class="sticky-pills">
+        <div class="sticky-pill">Rate: <strong id="stickyRate">0.00%</strong></div>
+        <div class="sticky-pill">Total Cost: <strong id="stickyCost">£350,000</strong></div>
+        <div class="sticky-pill relief-pill hidden" id="stickyReliefPill">✓ FTB Relief</div>
+    </div>
+</div>
+
+<script>
+/* ==============================
+   TAX BAND DATA
+   ============================== */
+
+const BANDS = {
+    engNi: {
+        standard: [
+            { min: 0,       max: 125000,   rate: 0.00 },
+            { min: 125000,  max: 250000,   rate: 0.02 },
+            { min: 250000,  max: 925000,   rate: 0.05 },
+            { min: 925000,  max: 1500000,  rate: 0.10 },
+            { min: 1500000, max: Infinity,  rate: 0.12 },
+        ],
+        ftb: [
+            { min: 0,      max: 300000,  rate: 0.00 },
+            { min: 300000, max: 500000,  rate: 0.05 },
+        ],
+        // FTB over £500k → falls back to standard
+        additional: [
+            { min: 0,       max: 125000,   rate: 0.03 },
+            { min: 125000,  max: 250000,   rate: 0.05 },
+            { min: 250000,  max: 925000,   rate: 0.08 },
+            { min: 925000,  max: 1500000,  rate: 0.13 },
+            { min: 1500000, max: Infinity,  rate: 0.15 },
+        ],
+    },
+    scotland: {
+        standard: [
+            { min: 0,      max: 145000,  rate: 0.00 },
+            { min: 145000, max: 250000,  rate: 0.02 },
+            { min: 250000, max: 325000,  rate: 0.05 },
+            { min: 325000, max: 750000,  rate: 0.10 },
+            { min: 750000, max: Infinity, rate: 0.12 },
+        ],
+        ftb: [
+            { min: 0,      max: 175000,  rate: 0.00 },
+            { min: 175000, max: 250000,  rate: 0.02 },
+            { min: 250000, max: 325000,  rate: 0.05 },
+            { min: 325000, max: 750000,  rate: 0.10 },
+            { min: 750000, max: Infinity, rate: 0.12 },
+        ],
+        additional: [
+            { min: 0,      max: 145000,  rate: 0.06 },
+            { min: 145000, max: 250000,  rate: 0.08 },
+            { min: 250000, max: 325000,  rate: 0.11 },
+            { min: 325000, max: 750000,  rate: 0.16 },
+            { min: 750000, max: Infinity, rate: 0.18 },
+        ],
+    },
+    wales: {
+        standard: [
+            { min: 0,       max: 225000,   rate: 0.00 },
+            { min: 225000,  max: 400000,   rate: 0.06 },
+            { min: 400000,  max: 750000,   rate: 0.075 },
+            { min: 750000,  max: 1500000,  rate: 0.10 },
+            { min: 1500000, max: Infinity,  rate: 0.12 },
+        ],
+        ftb: [
+            // Wales has no separate FTB relief — same as standard
+            { min: 0,       max: 225000,   rate: 0.00 },
+            { min: 225000,  max: 400000,   rate: 0.06 },
+            { min: 400000,  max: 750000,   rate: 0.075 },
+            { min: 750000,  max: 1500000,  rate: 0.10 },
+            { min: 1500000, max: Infinity,  rate: 0.12 },
+        ],
+        additional: [
+            { min: 0,       max: 225000,   rate: 0.04 },
+            { min: 225000,  max: 400000,   rate: 0.10 },
+            { min: 400000,  max: 750000,   rate: 0.115 },
+            { min: 750000,  max: 1500000,  rate: 0.14 },
+            { min: 1500000, max: Infinity,  rate: 0.16 },
+        ],
+    },
+};
+
+const TAX_NAMES = {
+    engNi:    'SDLT',
+    scotland: 'LBTT',
+    wales:    'LTT',
+};
+
+const BADGE_NAMES = {
+    engNi:    'SDLT — England & N. Ireland',
+    scotland: 'LBTT — Scotland',
+    wales:    'LTT — Wales',
+};
+
+const INFO_NOTES = {
+    engNi: {
+        standard:   'Standard SDLT rates apply from April 2025. First-time buyers receive relief on properties up to £500,000. An additional 3% surcharge applies to second homes and buy-to-let.',
+        ftb:        'First-time buyer relief: 0% on the first £300,000, 5% on £300,001–£500,000. If the property exceeds £500,000, standard SDLT rates apply with no relief.',
+        additional: 'Additional 3% surcharge applies on top of standard rates for second homes, buy-to-let, and other additional residential properties.',
+    },
+    scotland: {
+        standard:   'Land & Buildings Transaction Tax (LBTT). First-time buyer relief raises the 0% threshold from £145,000 to £175,000. Additional Dwelling Supplement (ADS) is 6%.',
+        ftb:        'First-time buyer LBTT relief: 0% up to £175,000 instead of £145,000. All other bands remain the same.',
+        additional: 'Additional Dwelling Supplement (ADS) of 6% applies on top of standard LBTT rates for second homes and buy-to-let properties.',
+    },
+    wales: {
+        standard:   'Land Transaction Tax (LTT) applies in Wales. Unlike England, Wales does not offer a separate first-time buyer relief — the same rates apply. Higher residential rates add 4% for additional dwellings.',
+        ftb:        'Wales does not offer separate first-time buyer relief for LTT. Standard rates apply regardless of buyer status.',
+        additional: 'Higher Residential Rates (HRR) apply a 4% supplement on top of standard LTT rates for additional properties.',
+    },
+};
+
+/* ==============================
+   STATE
+   ============================== */
+const state = {
+    price: 350000,
+    buyerType: 'standard',
+    country: 'engNi',
+};
+
+/* ==============================
+   DOM REFS
+   ============================== */
+const $ = id => document.getElementById(id);
+
+const inpPrice    = $('inp-price');
+const slPrice     = $('sl-price');
+const totalAmountEl   = $('totalAmount');
+const totalLabelEl    = $('totalLabel');
+const primarySubEl    = $('primarySub');
+const effectiveRateEl = $('effectiveRate');
+const totalCostEl     = $('totalCost');
+const bandListEl      = $('bandList');
+const zeroMsgEl       = $('zeroMsg');
+const infoNoteEl      = $('infoNote');
+const taxBadgeName    = $('taxBadgeName');
+
+const badgeRelief   = $('badge-relief');
+const badgeSurcharge = $('badge-surcharge');
+const badgeFtbOver  = $('badge-ftb-over');
+
+const stickyBar     = $('stickyBar');
+const stickyLabel   = $('stickyLabel');
+const stickyAmount  = $('stickyAmount');
+const stickyRate    = $('stickyRate');
+const stickyCost    = $('stickyCost');
+const stickyReliefPill = $('stickyReliefPill');
+
+/* ==============================
+   HELPERS
+   ============================== */
+function fmtGBP(n) {
+    return '£' + Math.round(n).toLocaleString('en-GB');
+}
+function fmtPct(n, dp = 2) {
+    return (n * 100).toFixed(dp) + '%';
+}
+function fmtRate(r) {
+    const p = (r * 100);
+    return (Number.isInteger(p) ? p.toFixed(0) : p) + '%';
+}
+
+/* ==============================
+   CALCULATION
+   ============================== */
+function calcTax(price, buyerType, country) {
+    // England/NI FTB rule: if price > 500k, use standard rates
+    let ftbOverride = false;
+    let effectiveBuyerType = buyerType;
+    if (country === 'engNi' && buyerType === 'ftb' && price > 500000) {
+        effectiveBuyerType = 'standard';
+        ftbOverride = true;
+    }
+
+    const bands = BANDS[country][effectiveBuyerType];
+    let total = 0;
+    const breakdown = [];
+
+    for (const band of bands) {
+        if (price <= band.min) break;
+        const taxable = Math.min(price, band.max) - band.min;
+        const tax = taxable * band.rate;
+        total += tax;
+        breakdown.push({ ...band, taxable, tax });
+    }
+
+    return { total, breakdown, ftbOverride, effectiveBuyerType };
+}
+
+/* ==============================
+   RENDER
+   ============================== */
+function render() {
+    const { price, buyerType, country } = state;
+    const { total, breakdown, ftbOverride } = calcTax(price, buyerType, country);
+    const effRate = price > 0 ? total / price : 0;
+    const taxName = TAX_NAMES[country];
+
+    // Header badge & label
+    taxBadgeName.textContent = BADGE_NAMES[country];
+    totalLabelEl.textContent = `Total ${taxName} Due`;
+
+    // Primary card
+    animateEl(totalAmountEl);
+    totalAmountEl.textContent = fmtGBP(total);
+    primarySubEl.textContent = fmtPct(effRate) + ' of purchase price';
+
+    // Metrics
+    effectiveRateEl.textContent = fmtPct(effRate);
+    totalCostEl.textContent = fmtGBP(price + total);
+
+    // Badges
+    const isFTBRelief = buyerType === 'ftb' && !ftbOverride;
+    const isAdditional = buyerType === 'additional';
+    badgeRelief.classList.toggle('hidden', !isFTBRelief);
+    badgeSurcharge.classList.toggle('hidden', !isAdditional);
+    badgeFtbOver.classList.toggle('hidden', !ftbOverride);
+
+    // Info note
+    const noteKey = ftbOverride ? 'ftb' : buyerType;
+    infoNoteEl.textContent = INFO_NOTES[country][noteKey] || INFO_NOTES[country].standard;
+
+    // Band breakdown
+    bandListEl.innerHTML = '';
+    const maxTax = Math.max(...breakdown.map(b => b.tax), 0.01);
+
+    breakdown.forEach(band => {
+        const isZeroBand = band.tax === 0;
+        const barWidth = isZeroBand ? 0 : (band.tax / maxTax) * 100;
+        const maxLabel = band.max === Infinity ? 'above' : fmtGBP(band.max);
+        const rateLabel = fmtRate(band.rate);
+
+        const row = document.createElement('div');
+        row.className = 'band-row';
+        row.innerHTML = `
+            <div class="band-range">${fmtGBP(band.min)}${band.max !== Infinity ? ' – ' + fmtGBP(band.max) : '+'}</div>
+            <div class="band-rate">${rateLabel}</div>
+            <div class="band-bar-bg"><div class="band-bar-fill" style="width:${barWidth}%"></div></div>
+            <div class="band-amount${isZeroBand ? ' zero' : ''}">${fmtGBP(band.tax)}</div>
+        `;
+        bandListEl.appendChild(row);
+    });
+
+    // Zero message
+    zeroMsgEl.style.display = (total === 0 && price > 0) ? 'block' : 'none';
+
+    // Sticky bar
+    stickyLabel.textContent = `${taxName} Due`;
+    triggerStickyUpdate(fmtGBP(total), fmtPct(effRate), fmtGBP(price + total), isFTBRelief);
+}
+
+function animateEl(el) {
+    el.classList.remove('result-updating');
+    void el.offsetWidth;
+    el.classList.add('result-updating');
+}
+
+function triggerStickyUpdate(amtStr, rateStr, costStr, showRelief) {
+    stickyAmount.textContent = amtStr;
+    stickyRate.textContent   = rateStr;
+    stickyCost.textContent   = costStr;
+    stickyReliefPill.classList.toggle('hidden', !showRelief);
+
+    // Remove then re-add both animation classes to re-trigger every time
+    stickyBar.classList.remove('anim-flip', 'anim-flash');
+    void stickyBar.offsetWidth; // force reflow
+    stickyBar.classList.add('anim-flip', 'anim-flash');
+}
+
+/* ==============================
+   SLIDER FILL
+   ============================== */
+function updateSliderFill(slider) {
+    const min = parseFloat(slider.min);
+    const max = parseFloat(slider.max);
+    const val = parseFloat(slider.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    slider.style.setProperty('--fill-pct', pct + '%');
+}
+
+/* ==============================
+   EVENT LISTENERS
+   ============================== */
+
+// Price number input
+inpPrice.addEventListener('input', () => {
+    const val = Math.max(0, parseInt(inpPrice.value) || 0);
+    state.price = val;
+    const sliderVal = Math.min(val, parseInt(slPrice.max));
+    slPrice.value = sliderVal;
+    updateSliderFill(slPrice);
+    render();
+});
+
+// Price slider
+slPrice.addEventListener('input', () => {
+    const val = parseInt(slPrice.value);
+    state.price = val;
+    inpPrice.value = val;
+    updateSliderFill(slPrice);
+    render();
+});
+
+// Buyer type radios
+document.querySelectorAll('input[name="buyerType"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        state.buyerType = radio.value;
+        render();
+    });
+});
+
+// Country radios
+document.querySelectorAll('input[name="country"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        state.country = radio.value;
+        render();
+    });
+});
+
+/* ==============================
+   INIT
+   ============================== */
+updateSliderFill(slPrice);
+render();
+</script>
+</body>
+</html>

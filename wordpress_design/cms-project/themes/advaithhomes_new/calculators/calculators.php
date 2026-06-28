@@ -181,12 +181,14 @@ function adn_render_calculator_standalone( $key ) {
 		<script><?php echo $db_js; ?></script>
 	<?php endif; ?>
 	<script>
-	/* Report CONTENT height (not document scrollHeight) to avoid iframe growth loop. */
+	/* Report CONTENT height to parent so the iframe auto-sizes.
+	   Uses events only — no setInterval — to avoid a grow loop where
+	   the iframe resizing changes scrollHeight which triggers another resize. */
 	(function () {
-		var key = <?php echo wp_json_encode( $key ); ?>;
+		var key   = <?php echo wp_json_encode( $key ); ?>;
 		var _lastH = 0;
+		var _timer = 0;
 		function report() {
-			/* Measure the calc wrapper + extras, not the full document (which expands with iframe). */
 			var wrap  = document.querySelector('.ah-calc-wrap');
 			var extra = document.querySelector('.ah-calc-extra');
 			var h = wrap ? wrap.scrollHeight : document.body.scrollHeight;
@@ -196,12 +198,15 @@ function adn_render_calculator_standalone( $key ) {
 			_lastH = h;
 			parent.postMessage({ ahCalc: true, key: key, height: h }, '*');
 		}
-		window.addEventListener('load', report);
-		window.addEventListener('resize', report);
-		document.addEventListener('input', report);
-		document.addEventListener('change', report);
-		document.addEventListener('click', report);
-		setInterval(report, 800);
+		function debounced() {
+			clearTimeout(_timer);
+			_timer = setTimeout(report, 60);
+		}
+		window.addEventListener('load',   report);
+		window.addEventListener('resize', debounced);
+		document.addEventListener('input',  debounced);
+		document.addEventListener('change', debounced);
+		document.addEventListener('click',  debounced);
 	})();
 	</script>
 </body>
@@ -298,8 +303,8 @@ function adn_calculator_shortcode( $atts ) {
 	<iframe id="<?php echo esc_attr( $uid ); ?>" class="ah-calc-frame"
 		src="<?php echo esc_url( $src ); ?>"
 		title="<?php echo esc_attr( $all[ $key ]['title'] ); ?>"
-		loading="lazy" scrolling="no"
-		style="width:100%;border:0;height:<?php echo (int) $h; ?>px;overflow:hidden;display:block"></iframe>
+		scrolling="no"
+		style="width:100%;border:0;height:<?php echo (int) $h; ?>px;max-height:90vh;overflow:hidden;display:block"></iframe>
 	<script>
 	(function () {
 		var frame = document.getElementById(<?php echo wp_json_encode( $uid ); ?>);
@@ -308,7 +313,7 @@ function adn_calculator_shortcode( $atts ) {
 		window.addEventListener('message', function (e) {
 			var d = e.data;
 			if (d && d.ahCalc && d.key === <?php echo wp_json_encode( $key ); ?> && d.height) {
-				var want = parseInt(d.height, 10) + 2;
+				var want = Math.min(parseInt(d.height, 10) + 2, window.innerHeight);
 				if (want !== _applied) { _applied = want; frame.style.height = want + 'px'; }
 			}
 		});
