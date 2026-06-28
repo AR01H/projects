@@ -416,10 +416,11 @@ section{
    Content after this needs: position:relative; z-index:2.
    ──────────────────────────────────────────────────────────── */
 
-/* Full-bleed background image */
+/* Background image — physically constrained to right portion so left content area is truly empty */
 .phb-bg {
   position: absolute;
   inset: 0;
+  left: 32%;
   z-index: 0;
 }
 .phb-bg img {
@@ -455,12 +456,14 @@ section{
 }
 @media (max-width: 767px) {
   .phb-curve { display: none; }
+  .phb-bg { left: 50%; }
   .phb-overlay {
     background: linear-gradient(
       to right,
-      rgba(255,255,255,0.92) 0%,
-      rgba(255,255,255,0.7)  55%,
-      rgba(255,255,255,0)    100%
+      rgba(255,255,255,1)    0%,
+      rgba(255,255,255,1)    44%,
+      rgba(255,255,255,0.55) 58%,
+      rgba(255,255,255,0)    78%
     ),
     linear-gradient(
       to top,
@@ -570,7 +573,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 .page-hero p {
   font-size: 1rem;
   color: var(--color-text);
-  max-width: 60vw;
+  max-width: 47vw;
   line-height: 1.65;
   margin-bottom: 0;
 }
@@ -5967,4 +5970,8 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 .cat-guide-related-section{
   background: var(--color-white);
+}
+
+.parent-term-category-list {
+  margin-top:15px;
 }

@@ -72,7 +72,7 @@ adn_page_open( $_open_ctx );
 <?php endif; ?>
 
 <?php /* ============================== MAIN + SIDEBAR ============================== */ ?>
-<div class="container">
+<div class="container parent-term-category-list">
 	<div class="page-with-sidebar">
 
 		<main class="cat-guide-main">

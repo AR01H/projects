@@ -36,12 +36,11 @@ function adn_news_get_context() {
 		'chrome'            => $chrome,
 	);
 
-	// ── Source 0: Plugin News Bar (ah_news_bar_items) ───────────────────────
-	$loaded = false;
-	if ( ! $loaded && function_exists( 'adn_cms_newsbar_items' ) ) {
+	// ── Source: Plugin News Bar (WP Admin → ah-news-bar) ───────────────────
+	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
 		$nb_rows = adn_cms_newsbar_items( 100 );
 		if ( ! empty( $nb_rows ) ) {
-			$ctx['featured']    = adn_news_newsbar_featured( $nb_rows[0] );
+			$ctx['featured'] = adn_news_newsbar_featured( $nb_rows[0] );
 			$nb_rest = array_slice( $nb_rows, 1 );
 			if ( ! empty( $nb_rest ) ) {
 				$ctx['sections'][] = array(
@@ -52,59 +51,6 @@ function adn_news_get_context() {
 					'items'      => adn_news_newsbar_grid_items( $nb_rest ),
 				);
 			}
-			$loaded = true;
-		}
-	}
-
-	// ── Source 1: CMS plugin DB ──────────────────────────────────────────────
-	if ( ! $loaded && function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
-		$ctx['categories'] = adn_news_cms_categories();
-		$news_posts        = adn_cms_latest_news( 13 );
-
-		if ( ! empty( $news_posts ) ) {
-			$ctx['featured']    = adn_news_cms_featured( $news_posts[0] );
-			$rest = array_slice( $news_posts, 1 );
-			if ( ! empty( $rest ) ) {
-				$ctx['sections'][] = array(
-					'type'    => 'grid',
-					'heading' => SITE_LABEL_LATEST_NEWS,
-					'link_label' => '',
-					'link_url'   => '',
-					'items'   => adn_news_cms_grid_items( $rest ),
-				);
-			}
-			$loaded = true;
-		}
-	}
-
-	// ── Source 2: WP_Query fallback (only `news` post_type; avoid showing regular posts) ─
-	if ( ! $loaded ) {
-		$q = new WP_Query( array(
-			'post_type'      => 'news',
-			'post_status'    => 'publish',
-			'posts_per_page' => 13,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		) );
-
-		if ( $q->have_posts() ) {
-			$wp_posts = $q->posts;
-			wp_reset_postdata();
-
-			$ctx['featured'] = adn_news_wp_featured( $wp_posts[0] );
-			$rest = array_slice( $wp_posts, 1 );
-			if ( ! empty( $rest ) ) {
-				$ctx['sections'][] = array(
-					'type'       => 'grid',
-					'heading'    => SITE_LABEL_LATEST_NEWS,
-					'link_label' => '',
-					'link_url'   => '',
-					'items'      => adn_news_wp_grid_items( $rest ),
-				);
-			}
-
-			// Flag for callers: whether we have any news to show
-			$ctx['has_news'] = ( ! empty( $ctx['featured'] ) || ! empty( $ctx['sections'] ) );
 		}
 	}
 
@@ -202,125 +148,4 @@ function adn_news_newsbar_grid_items( $rows ) {
 	return $items;
 }
 
-/* ── CMS DB mappers ─────────────────────────────────────────────────────── */
 
-function adn_news_cms_categories() {
-	$cats        = array( array( 'key' => 'all', 'label' => sprintf( SITE_LABEL_ALL_PREFIX, SITE_NEWS_NOUN ), 'count' => '' ) );
-	$news_parent = function_exists( 'adn_cms_parent_by_slug' ) ? adn_cms_parent_by_slug( 'news' ) : null;
-
-	if ( $news_parent ) {
-		// Specific 'news' parent exists - show its child topics.
-		foreach ( adn_cms_topics( (int) $news_parent->id, 20 ) as $topic ) {
-			$cats[] = array(
-				'key'   => isset( $topic->slug ) ? $topic->slug : '',
-				'label' => isset( $topic->name ) ? $topic->name : '',
-				'count' => '',
-			);
-		}
-	} elseif ( function_exists( 'adn_cms_guide_parents' ) ) {
-		// Fall back to all parent terms.
-		foreach ( adn_cms_guide_parents( 20 ) as $parent ) {
-			$slug = isset( $parent->slug ) ? (string) $parent->slug : '';
-			$name = isset( $parent->name ) ? (string) $parent->name : ucwords( str_replace( '-', ' ', $slug ) );
-			if ( '' === $slug ) { continue; }
-			$cats[] = array(
-				'key'   => $slug,
-				'label' => $name,
-				'count' => '',
-			);
-		}
-	}
-
-	return $cats;
-}
-
-function adn_news_cms_featured( $post ) {
-	return array(
-		'bg_icon'   => 'fa-newspaper',
-		'label'     => SITE_LABEL_FEATURED . ' ' . SITE_NEWS_NOUN,
-		'tag'       => SITE_NEWS_NOUN,
-		'title'     => isset( $post->title ) ? $post->title : '',
-		'excerpt'   => isset( $post->excerpt ) ? (string) $post->excerpt : '',
-		'date'      => adn_cms_post_date( $post ),
-		'read_time' => adn_cms_read_time( isset( $post->content ) ? $post->content : '' ),
-		'url'       => adn_cms_post_url( $post ),
-		'thumbnail' => ( isset( $post->thumbnail ) && $post->thumbnail ) ? (string) $post->thumbnail : ( isset( $post->image_url ) ? (string) $post->image_url : '' ),
-	);
-}
-
-function adn_news_cms_grid_items( $posts ) {
-	$items = array();
-	foreach ( $posts as $post ) {
-		$title = isset( $post->title ) ? $post->title : '';
-		if ( '' === $title ) {
-			continue;
-		}
-		$cat     = ! empty( $post->category_name ) ? $post->category_name : SITE_NEWS_NOUN;
-		$thumb = '';
-		if ( isset( $post->thumbnail ) && $post->thumbnail ) { $thumb = (string) $post->thumbnail; }
-		elseif ( isset( $post->image_url ) && $post->image_url ) { $thumb = (string) $post->image_url; }
-		elseif ( isset( $post->image ) && $post->image ) { $thumb = (string) $post->image; }
-
-		$items[] = array(
-			'cat_key'    => sanitize_key( $cat ),
-			'icon'       => 'fa-newspaper',
-			'bg_class'   => '',
-			'pill_class' => 'pill-market',
-			'category'   => $cat,
-			'title'      => $title,
-			'excerpt'    => isset( $post->excerpt ) ? (string) $post->excerpt : '',
-			'date'       => adn_cms_post_date( $post ),
-			'read_time'  => adn_cms_read_time( isset( $post->content ) ? $post->content : '' ),
-			'url'        => adn_cms_post_url( $post ),
-			'thumbnail'  => $thumb,
-		);
-	}
-	return $items;
-}
-
-/* ── WP_Query fallback mappers ──────────────────────────────────────────── */
-
-function adn_news_wp_featured( $post ) {
-	$excerpt = $post->post_excerpt
-		?: wp_trim_words( wp_strip_all_tags( $post->post_content ), 30, '…' );
-	return array(
-		'bg_icon'   => 'fa-newspaper',
-		'label'     => SITE_LABEL_FEATURED . ' ' . SITE_NEWS_NOUN,
-		'tag'       => SITE_NEWS_NOUN,
-		'title'     => $post->post_title,
-		'excerpt'   => $excerpt,
-		'date'      => get_the_date( 'F j, Y', $post ),
-		'read_time' => adn_cms_read_time( $post->post_content ),
-		'url'       => get_permalink( $post ),
-		'thumbnail' => get_the_post_thumbnail_url( $post->ID, 'medium') ?: '',
-	);
-}
-
-function adn_news_wp_grid_items( $posts ) {
-	$items = array();
-	foreach ( $posts as $post ) {
-		if ( '' === $post->post_title ) {
-			continue;
-		}
-		$cats    = get_the_category( $post->ID );
-		$cat     = ! empty( $cats ) ? $cats[0]->name : SITE_NEWS_NOUN;
-		$excerpt = $post->post_excerpt
-			?: wp_trim_words( wp_strip_all_tags( $post->post_content ), 25, '…' );
-		$thumb = get_the_post_thumbnail_url( $post->ID, 'medium' ) ?: '';
-
-		$items[] = array(
-			'cat_key'    => sanitize_key( $cat ),
-			'icon'       => 'fa-newspaper',
-			'bg_class'   => '',
-			'pill_class' => 'pill-market',
-			'category'   => $cat,
-			'title'      => $post->post_title,
-			'excerpt'    => $excerpt,
-			'date'       => get_the_date( 'M j, Y', $post ),
-			'read_time'  => adn_cms_read_time( $post->post_content ),
-			'url'        => get_permalink( $post ),
-			'thumbnail'  => $thumb,
-		);
-	}
-	return $items;
-}
