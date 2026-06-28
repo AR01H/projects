@@ -91,7 +91,6 @@ function adn_enqueue_template_specific_assets() {
             'css' => '/assets/css/faqs.css',
             'js'  => '/assets/js/faqs.js',
         ),
-        'pages/page-terms.php' => array(),
     );
     $virtual_tpl = (string) get_query_var( 'adn_virtual_template', '' );
 
@@ -181,11 +180,6 @@ function adn_get_page_definitions() {
         trim( SITE_FAQS_URL, '/' ) => array(
             'title'    => PAGE_TITLE_FAQS,
             'template' => 'pages/page-faqs.php',
-        ),
-        trim( FORM_CONSENT_TERMS_URL, '/' ) => array(
-            'title'    => 'Terms of Use',
-            'template' => 'pages/page-terms.php',
-            'aliases'  => array( 'terms-and-conditions' ),
         ),
         // Slug must match COMING_SOON_PAGE_SLUG so the coming-soon redirect target exists.
         COMING_SOON_PAGE_SLUG => array(
