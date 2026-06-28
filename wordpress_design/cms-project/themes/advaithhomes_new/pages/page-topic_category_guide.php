@@ -31,11 +31,47 @@ if ( ! empty( $ctx['hero']['description'] ) ) {
 }
 
 $_seo_slug = isset( $ctx['slug'] ) ? sanitize_key( (string) $ctx['slug'] ) : '';
+
+/* Resolve hero image URL for og:image / twitter:image */
+$_seo_image     = '';
+$_hero_img_id   = ! empty( $ctx['hero']['image_id'] ) ? (int) $ctx['hero']['image_id'] : 0;
+if ( $_hero_img_id > 0 ) {
+	$_img_url   = wp_get_attachment_image_url( $_hero_img_id, 'large' );
+	$_seo_image = $_img_url ? (string) $_img_url : '';
+}
+
+/* Keywords + tags: term name + parent term name as content signals */
+$_parent_name = $parent && ! empty( $parent->name ) ? (string) $parent->name : '';
+$_seo_keywords = array_values( array_filter( array( $term_name, $_parent_name ) ) );
+
+/* CollectionPage items from the articles already loaded in context */
+$_col_items = array();
+foreach ( $ctx['articles'] as $_ca ) {
+	if ( ! empty( $_ca['title'] ) && ! empty( $_ca['url'] ) ) {
+		$_col_items[] = array( 'title' => (string) $_ca['title'], 'url' => (string) $_ca['url'] );
+	}
+}
+
+/* noindex paginated pages > 1 (same rule as news listing) */
+$_seo_paged = isset( $_GET['paged'] ) ? (int) $_GET['paged'] : 1; // phpcs:ignore WordPress.Security.NonceVerification
+
 adn_seo_register( array(
-	'title'       => $term_name,
-	'description' => $_seo_desc,
-	'canonical'   => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
-	'breadcrumb'  => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+	'title'            => $term_name,
+	'description'      => $_seo_desc,
+	'canonical'        => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
+	'breadcrumb'       => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+	'image'            => $_seo_image,
+	'keywords'         => $_seo_keywords,
+	'tags'             => $_seo_keywords,
+	'article_section'  => $_parent_name,
+	'noindex'          => $_seo_paged > 1,
+	'total_pages'      => isset( $ctx['pagination']['total'] ) ? (int) $ctx['pagination']['total'] : 0,
+	'schema_collection' => array(
+		'name'        => $term_name,
+		'description' => $_seo_desc,
+		'url'         => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
+		'items'       => $_col_items,
+	),
 ) );
 
 $_open_ctx               = $ctx;

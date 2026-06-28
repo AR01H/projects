@@ -43,12 +43,59 @@ if ( ! empty( $ctx['meta']['meta_description'] ) ) {
 } elseif ( ! empty( $ctx['hero']['description'] ) ) {
 	$_seo_desc = wp_strip_all_tags( (string) $ctx['hero']['description'] );
 }
-$_seo_slug  = isset( $ctx['slug'] ) ? sanitize_key( (string) $ctx['slug'] ) : '';
+$_seo_slug = isset( $ctx['slug'] ) ? sanitize_key( (string) $ctx['slug'] ) : '';
+
+/* Resolve hero image URL for og:image / twitter:image */
+$_seo_image_cat   = '';
+$_cat_hero_img_id = ! empty( $ctx['hero']['image_id'] ) ? (int) $ctx['hero']['image_id'] : 0;
+if ( $_cat_hero_img_id > 0 ) {
+	$_cat_img_url   = wp_get_attachment_image_url( $_cat_hero_img_id, 'large' );
+	$_seo_image_cat = $_cat_img_url ? (string) $_cat_img_url : '';
+}
+
+/* Keywords/tags: category title drives both the keyword meta and og:article:tag */
+$_cat_keywords = array_values( array_filter( array( $_seo_title ) ) );
+
+/* FAQPage schema — pass FAQ items registered via AH_Category_Settings → faqs */
+$_cat_schema_faqs = array();
+if ( ! empty( $ctx['faqs']['items'] ) && is_array( $ctx['faqs']['items'] ) ) {
+	foreach ( $ctx['faqs']['items'] as $_faq ) {
+		$_fq = trim( (string) ( $_faq['question'] ?? '' ) );
+		$_fa = trim( wp_strip_all_tags( (string) ( $_faq['answer'] ?? '' ) ) );
+		if ( '' !== $_fq && '' !== $_fa ) {
+			$_cat_schema_faqs[] = array( 'question' => $_fq, 'answer' => $_fa );
+		}
+	}
+}
+
+/* CollectionPage items: child topic guide cards */
+$_cat_col_items = array();
+if ( ! empty( $ctx['guides']['items'] ) && is_array( $ctx['guides']['items'] ) ) {
+	foreach ( $ctx['guides']['items'] as $_gi ) {
+		$_gtitle = (string) ( $_gi['title'] ?? $_gi['name'] ?? '' );
+		$_gurl   = (string) ( $_gi['url']   ?? '' );
+		if ( '' !== $_gtitle && '' !== $_gurl ) {
+			$_cat_col_items[] = array( 'title' => $_gtitle, 'url' => $_gurl );
+		}
+	}
+}
+
 adn_seo_register( array(
-	'title'      => $_seo_title,
-	'description'=> $_seo_desc,
-	'canonical'  => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
-	'breadcrumb' => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+	'title'             => $_seo_title,
+	'description'       => $_seo_desc,
+	'canonical'         => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
+	'breadcrumb'        => isset( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+	'image'             => $_seo_image_cat,
+	'keywords'          => $_cat_keywords,
+	'tags'              => $_cat_keywords,
+	'article_section'   => $_seo_title,
+	'schema_faqs'       => $_cat_schema_faqs,
+	'schema_collection' => ! empty( $_cat_col_items ) ? array(
+		'name'        => $_seo_title,
+		'description' => $_seo_desc,
+		'url'         => '' !== $_seo_slug ? home_url( '/' . $_seo_slug . '/' ) : '',
+		'items'       => $_cat_col_items,
+	) : array(),
 ) );
 
 // Breadcrumb renders inside the hero banner - skip it from adn_page_open().

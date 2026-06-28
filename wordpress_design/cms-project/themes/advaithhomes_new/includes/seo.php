@@ -183,6 +183,17 @@ function adn_seo_head_output(): void {
 		echo '<link rel="canonical" href="' . esc_url( $_canonical ) . '">' . "\n";
 	}
 
+	/* ── Keywords meta (from registered keywords array) ── */
+	$_kw = ! empty( $reg['keywords'] ) ? $reg['keywords'] : array();
+	if ( ! empty( $_kw ) ) {
+		$_kw_str = is_array( $_kw )
+			? implode( ', ', array_map( 'sanitize_text_field', (array) $_kw ) )
+			: sanitize_text_field( (string) $_kw );
+		if ( '' !== $_kw_str ) {
+			echo '<meta name="keywords" content="' . esc_attr( $_kw_str ) . '">' . "\n";
+		}
+	}
+
 	/* ── Open Graph ── */
 	echo '<meta property="og:locale"      content="en_GB">' . "\n";
 	echo '<meta property="og:type"        content="' . esc_attr( $s['type'] ) . '">' . "\n";
@@ -217,8 +228,18 @@ function adn_seo_head_output(): void {
 		if ( '' !== $_mod ) {
 			echo '<meta property="og:article:modified_time"  content="' . esc_attr( $_mod ) . '">' . "\n";
 		}
-		if ( ! empty( $reg['article_section'] ) ) {
-			echo '<meta property="og:article:section"        content="' . esc_attr( $reg['article_section'] ) . '">' . "\n";
+	}
+	/* article:section — output for all types when registered (used by category/topic pages too) */
+	if ( ! empty( $reg['article_section'] ) ) {
+		echo '<meta property="og:article:section" content="' . esc_attr( $reg['article_section'] ) . '">' . "\n";
+	}
+	/* og:article:tag — content tags from registered keywords/tags array */
+	if ( ! empty( $reg['tags'] ) && is_array( $reg['tags'] ) ) {
+		foreach ( $reg['tags'] as $_atag ) {
+			$_atag = trim( (string) $_atag );
+			if ( '' !== $_atag ) {
+				echo '<meta property="og:article:tag" content="' . esc_attr( $_atag ) . '">' . "\n";
+			}
 		}
 	}
 
@@ -421,6 +442,49 @@ function adn_seo_head_output(): void {
 		if ( ! empty( $app['description'] ) ) { $app_schema['description'] = wp_strip_all_tags( (string) $app['description'] ); }
 		echo '<script type="application/ld+json">' . "\n";
 		echo wp_json_encode( $app_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
+		echo "\n</script>\n";
+	}
+
+	/* ── JSON-LD: CollectionPage + ItemList (topic/category listing pages) ── */
+	$_col = ! empty( $reg['schema_collection'] ) && is_array( $reg['schema_collection'] ) ? $reg['schema_collection'] : array();
+	if ( ! empty( $_col ) ) {
+		$_col_schema = array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'CollectionPage',
+			'name'        => (string) ( $_col['name']        ?? $s['title'] ),
+			'url'         => (string) ( $_col['url']         ?? $_canonical ),
+			'description' => (string) ( $_col['description'] ?? $s['desc'] ),
+			'publisher'   => array(
+				'@type' => 'Organization',
+				'name'  => $co_name,
+				'logo'  => array(
+					'@type' => 'ImageObject',
+					'url'   => get_template_directory_uri() . '/assets/images/logos/logo_with_text.png',
+				),
+			),
+		);
+		if ( ! empty( $_col['items'] ) && is_array( $_col['items'] ) ) {
+			$_col_list = array();
+			foreach ( array_values( $_col['items'] ) as $_ci => $_citem ) {
+				$_cname = trim( (string) ( $_citem['title'] ?? '' ) );
+				$_curl  = trim( (string) ( $_citem['url']   ?? '' ) );
+				if ( '' === $_cname && '' === $_curl ) { continue; }
+				$_col_list[] = array(
+					'@type'    => 'ListItem',
+					'position' => $_ci + 1,
+					'name'     => $_cname,
+					'url'      => $_curl,
+				);
+			}
+			if ( ! empty( $_col_list ) ) {
+				$_col_schema['mainEntity'] = array(
+					'@type'           => 'ItemList',
+					'itemListElement' => $_col_list,
+				);
+			}
+		}
+		echo '<script type="application/ld+json">' . "\n";
+		echo wp_json_encode( $_col_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
 		echo "\n</script>\n";
 	}
 
