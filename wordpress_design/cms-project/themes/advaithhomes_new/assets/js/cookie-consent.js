@@ -42,10 +42,31 @@
             + '; path=/; expires=' + exp + '; SameSite=Lax';
     }
 
+    function ckErase( name ) {
+        document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+    }
+
     /* ── Status ───────────────────────────────────────────────── */
 
     function getStatus() {
-        return ckRead( CK_KEY ); /* 'accepted' | 'rejected' | '' */
+        var raw = ckRead( CK_KEY ); /* 'accepted' | 'rejected:<timestamp>' | '' */
+
+        if ( raw === 'accepted' ) { return 'accepted'; }
+
+        /* Rejection value is stored as "rejected:<unix-ms>" so we can verify the
+           10-day window in JS — independent of whether the browser respects cookie expiry. */
+        if ( raw.indexOf( 'rejected:' ) === 0 ) {
+            var ts      = parseInt( raw.slice( 9 ), 10 );
+            var elapsed = Date.now() - ts;
+            if ( ! isNaN( ts ) && elapsed < REJECT_MS ) {
+                return 'rejected';
+            }
+            /* Timestamp missing, corrupt, or 10 days have passed — erase and start fresh. */
+            ckErase( CK_KEY );
+            return '';
+        }
+
+        return '';
     }
 
     /* ── Banner DOM ───────────────────────────────────────────── */
@@ -112,7 +133,8 @@
     }
 
     function doReject() {
-        ckWrite( CK_KEY, 'rejected', REJECT_DAYS );
+        /* Store rejection timestamp inside the value so JS can verify the 10-day window. */
+        ckWrite( CK_KEY, 'rejected:' + Date.now(), REJECT_DAYS );
         hide();
         var cbs = _onReject.splice( 0 );
         cbs.forEach( function ( fn ) { try { fn(); } catch ( e ) {} } );
@@ -122,15 +144,22 @@
     /* ── Auto-show on page load ───────────────────────────────── */
 
     function init() {
-        var s                = getStatus();
-        var isCookiePolicyPg = window.adnConsentCfg && !! window.adnConsentCfg.isCookiePolicyPage;
+        var s = getStatus();
 
-        /*
-         * Cookie policy page: show unless accepted (lets rejected users change mind).
-         * All other pages: show only when undecided (no cookie set yet).
-         */
-        var shouldShow = isCookiePolicyPg ? ( s !== 'accepted' ) : ( s === '' );
-        if ( shouldShow ) { show(); }
+        /* Already accepted — never show on any page. */
+        if ( s === 'accepted' ) { return; }
+
+        /* Already rejected — only re-show on the cookie-policy page itself
+           (detected from both the URL and the PHP flag, so neither alone can break it). */
+        if ( s === 'rejected' ) {
+            var phpFlag     = window.adnConsentCfg && !! window.adnConsentCfg.isCookiePolicyPage;
+            var urlMatch    = window.location.pathname.indexOf( 'cookie-policy' ) !== -1;
+            var onPolicyPg  = phpFlag || urlMatch;
+            if ( ! onPolicyPg ) { return; }
+        }
+
+        /* Undecided (s === ''), or rejected user on cookie-policy page → show banner. */
+        show();
     }
 
     if ( document.readyState === 'loading' ) {
