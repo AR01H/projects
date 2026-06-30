@@ -1,0 +1,106 @@
+/* ============================================================
+   cookie-consent.css — Site-wide cookie consent banner
+   ============================================================ */
+
+.adn-cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    background: var(--color-primary, #1e3a2f);
+    color: #fff;
+    padding: 18px 0;
+    box-shadow: 0 -4px 28px rgba(0, 0, 0, 0.22);
+    transform: translateY(100%);
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.adn-cookie-banner.is-visible {
+    transform: translateY(0);
+}
+
+/* ── Inner layout ─────────────────────────────────────── */
+.acb-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+
+/* ── Text ─────────────────────────────────────────────── */
+.acb-text {
+    flex: 1;
+    min-width: 240px;
+}
+
+.acb-msg {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.86);
+}
+
+.acb-link {
+    color: var(--color-accent, #c9a84c);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+}
+
+.acb-link:hover {
+    color: #e4cf82;
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
+.acb-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.acb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 24px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    line-height: 1;
+    transition: opacity 0.2s, background 0.2s;
+    white-space: nowrap;
+}
+
+.acb-btn--accept {
+    background: var(--color-accent, #c9a84c);
+    color: #1e3a2f;
+}
+
+.acb-btn--accept:hover {
+    background: #ddbf60;
+}
+
+.acb-btn--reject {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.acb-btn--reject:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 600px) {
+    .acb-inner   { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .acb-actions { width: 100%; }
+    .acb-btn     { flex: 1; }
+}

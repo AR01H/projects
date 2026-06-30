@@ -325,12 +325,16 @@
 
         function doUnlock() {
             var pw      = input.value;
-            var ajaxUrl = ( typeof adnExpert !== 'undefined' && adnExpert.ajaxUrl ) ? adnExpert.ajaxUrl : '';
+            var ajaxUrl = ( typeof adnExpert !== 'undefined' && adnExpert.ajaxUrl )
+                ? adnExpert.ajaxUrl
+                : ( typeof adnSite !== 'undefined' && adnSite.ajaxUrl )
+                    ? adnSite.ajaxUrl
+                    : '/wp-admin/admin-ajax.php';
             var nonce   = ( typeof adnExpert !== 'undefined' && adnExpert.unlockNonce ) ? adnExpert.unlockNonce : '';
-            if ( ! pw || ! ajaxUrl ) { return; }
+            if ( ! pw ) { return; }
 
-            btn.disabled    = true;
-            btn.textContent = 'Checking…';
+            btn.disabled   = true;
+            btn.innerHTML  = '<span class="eub-spinner" aria-hidden="true"></span> Unlocking…';
             if ( errEl ) { errEl.hidden = true; errEl.textContent = ''; }
 
             var data = 'action=adn_expert_unlock'
@@ -349,29 +353,35 @@
                 try { res = JSON.parse( xhr.responseText ); } catch ( err ) { res = null; }
 
                 if ( res && res.success && res.data && res.data.token ) {
-                    // Set cookie for 7 days.
-                    var expires = new Date( Date.now() + 7 * 24 * 60 * 60 * 1000 ).toUTCString();
-                    document.cookie = 'adn_experts_unlocked=' + encodeURIComponent( res.data.token )
-                        + '; path=/; expires=' + expires + '; SameSite=Lax';
+                    var token = res.data.token;
 
-                    // On the profile page (locked screen), reload to show full profile.
-                    if ( document.getElementById( 'expertProfileLockedScreen' ) ) {
+                    /* var expression avoids strict-mode block-scoped function issues */
+                    var storeAndReveal = function () {
+                        var expires = new Date( Date.now() + 7 * 24 * 60 * 60 * 1000 ).toUTCString();
+                        document.cookie = 'adn_experts_unlocked=' + encodeURIComponent( token )
+                            + '; path=/; expires=' + expires + '; SameSite=Lax';
                         window.location.reload();
-                        return;
-                    }
+                    };
 
-                    // On the listing page, reveal all locked cards in-place.
-                    document.querySelectorAll( '.expert-card--locked' ).forEach( function ( card ) {
-                        card.classList.remove( 'expert-card--locked' );
-                        var url = card.getAttribute( 'data-profile-url' );
-                        if ( url ) {
-                            card.setAttribute( 'role', 'link' );
-                            card.setAttribute( 'tabindex', '0' );
+                    var consent = window.adnCookieConsent ? window.adnCookieConsent.getStatus() : 'accepted';
+
+                    if ( consent === 'accepted' ) {
+                        storeAndReveal();
+                    } else {
+                        if ( window.adnCookieConsent ) {
+                            window.adnCookieConsent.show(
+                                storeAndReveal,
+                                function () {
+                                    if ( errEl ) {
+                                        errEl.textContent = 'Cookie consent is required to save your unlock. Please accept cookies.';
+                                        errEl.hidden = false;
+                                    }
+                                }
+                            );
+                        } else {
+                            storeAndReveal();
                         }
-                    } );
-
-                    // Hide the unlock bar.
-                    if ( bar ) { bar.classList.add( 'is-unlocked' ); }
+                    }
                 } else {
                     var msg = ( res && res.data && res.data.message ) ? res.data.message : 'Incorrect password. Please try again.';
                     if ( errEl ) {

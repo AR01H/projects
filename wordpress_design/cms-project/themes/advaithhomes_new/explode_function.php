@@ -28,7 +28,8 @@ function adn_enqueue_common_css() {
         'adn-builded-style'    => '/assets/css/builded.css',
         'adn-utils-style'      => '/assets/css/common_utils.css',
         'adn-fa-style'         => '/assets/css/fastyles.css',
-        'adn-premium-style'    => '/assets/css/premium_styles.css',
+        'adn-premium-style'       => '/assets/css/premium_styles.css',
+        'adn-cookie-consent-style' => '/assets/css/cookie-consent.css',
     );
     foreach ( $styles as $handle => $file ) {
         wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), ADN_THEME_VERSION );
@@ -42,16 +43,23 @@ function adn_enqueue_common_js() {
         'adn-main-script'          => '/assets/js/main.js',
         'adn-common-script'        => '/assets/js/common.js',
         'adn-scroll-to-top-script' => '/assets/js/scroll-to-top.js',
-        'adn-form-builder-script'  => '/assets/js/form-builder.js',
+        'adn-form-builder-script'   => '/assets/js/form-builder.js',
+        'adn-cookie-consent-script' => '/assets/js/cookie-consent.js',
     );
     foreach ( $scripts as $handle => $file ) {
         wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), ADN_THEME_VERSION, true );
     }
+    /* Pass cookie policy page URL + page context to the consent banner. */
+    wp_localize_script( 'adn-cookie-consent-script', 'adnConsentCfg', array(
+        'policyUrl'          => home_url( '/cookie-policy/' ),
+        'isCookiePolicyPage' => is_page( 'cookie-policy' ) ? 1 : 0,
+    ) );
     wp_add_inline_script(
         'adn-utils-script',
         'window.adnSite=' . wp_json_encode( array(
             'visitorsUrl' => rest_url( 'adn/v1/visitors' ),
             'pingUrl'     => rest_url( 'adn/v1/visitors/ping' ),
+            'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
         ) ) . ';',
         'before'
     );

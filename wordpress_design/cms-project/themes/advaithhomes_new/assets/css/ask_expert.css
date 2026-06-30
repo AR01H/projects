@@ -1818,6 +1818,22 @@
     border-color: var(--color-accent, #c9a84c);
     box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
 }
+/* Spinner inside the Unlock button while the AJAX call is in flight */
+.eub-spinner {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: eub-spin 0.55s linear infinite;
+    vertical-align: -2px;
+    flex-shrink: 0;
+}
+@keyframes eub-spin {
+    to { transform: rotate(360deg); }
+}
+
 .eub-btn {
     height: 38px;
     padding: 0 18px;
