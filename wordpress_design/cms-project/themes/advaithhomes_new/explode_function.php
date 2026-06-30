@@ -129,6 +129,17 @@ function adn_enqueue_template_specific_assets() {
         ) );
     }
 
+    // Ask an Expert page: nonces must be localized here (inside wp_enqueue_scripts) because
+    // the template calls wp_localize_script before this hook fires, so the handle isn't
+    // registered yet and the call silently fails, leaving adnExpert undefined.
+    if ( 'pages/page-ask-expert.php' === $current_template ) {
+        wp_localize_script( 'adn-page-ask-expert-script', 'adnExpert', array(
+            'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+            'nonce'       => wp_create_nonce( 'adn_expert_contact' ),
+            'unlockNonce' => wp_create_nonce( 'adn_expert_unlock' ),
+        ) );
+    }
+
     if ( is_single() ) {
         if ( file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ) {
             wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), ADN_THEME_VERSION );

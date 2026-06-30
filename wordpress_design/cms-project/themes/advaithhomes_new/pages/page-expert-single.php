@@ -80,7 +80,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 			<div class="epls-form">
 				<input type="password" id="expertUnlockPw" class="eub-input epls-input"
 					placeholder="<?php esc_attr_e( 'Enter password…', ADN_TEXT_DOMAIN ); ?>"
-					autocomplete="current-password"
+					autocomplete="off"
 					aria-label="<?php esc_attr_e( 'Unlock password', ADN_TEXT_DOMAIN ); ?>">
 				<button type="button" id="expertUnlockBtn" class="btn btn-primary eub-btn">
 					<i class="fa-solid fa-unlock" aria-hidden="true"></i>

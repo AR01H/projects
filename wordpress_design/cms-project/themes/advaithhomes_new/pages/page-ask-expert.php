@@ -19,14 +19,6 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_ask_expert_logical.php';
 $ctx = adn_ask_expert_get_context();
 
-// Pass AJAX url and contact nonce to ask_expert.js on the listing page.
-// The script handle auto-registered in explode_function.php is 'adn-page-ask-expert-script'.
-wp_localize_script( 'adn-page-ask-expert-script', 'adnExpert', array(
-	'ajaxUrl'     => isset( $ctx['ajax_url'] )      ? $ctx['ajax_url']      : admin_url( 'admin-ajax.php' ),
-	'nonce'       => isset( $ctx['contact_nonce'] ) ? $ctx['contact_nonce'] : '',
-	'unlockNonce' => isset( $ctx['unlock_nonce'] )  ? $ctx['unlock_nonce']  : '',
-	'hasLocked'   => ! empty( $ctx['has_locked'] )  ? 1 : 0,
-) );
 
 adn_seo_register( array(
 	'description' => isset( $ctx['meta_description'] ) ? (string) $ctx['meta_description'] : '',
@@ -77,7 +69,7 @@ adn_page_open( $_open_ctx );
 			<div class="eub-form-row">
 				<input type="password" id="expertUnlockPw" class="eub-input"
 					placeholder="<?php esc_attr_e( 'Enter password…', ADN_TEXT_DOMAIN ); ?>"
-					autocomplete="current-password"
+					autocomplete="off"
 					aria-label="<?php esc_attr_e( 'Unlock password', ADN_TEXT_DOMAIN ); ?>">
 				<button type="button" id="expertUnlockBtn" class="btn btn-primary eub-btn">
 					<i class="fa-solid fa-unlock" aria-hidden="true"></i>
@@ -109,26 +101,54 @@ adn_page_open( $_open_ctx );
 			<?php
 			$_locked_placeholder_shown = false;
 			foreach ( $ctx['experts'] as $_expert ) :
-				/* All locked experts collapse into a single non-clickable placeholder. */
 				if ( ! empty( $_expert['is_locked'] ) ) {
-					if ( $_locked_placeholder_shown ) { continue; }
-					$_locked_placeholder_shown = true;
-					?>
-					<div class="expert-card expert-card--locked-placeholder">
-						<div class="elp-body">
-							<div class="elp-icon-wrap" aria-hidden="true">
-								<i class="fa-solid fa-lock elp-icon"></i>
+					/* One placeholder shown so users know locked profiles exist. */
+					if ( ! $_locked_placeholder_shown ) {
+						$_locked_placeholder_shown = true;
+						?>
+						<div class="expert-card expert-card--locked-placeholder">
+							<div class="elp-body">
+								<div class="elp-icon-wrap" aria-hidden="true">
+									<i class="fa-solid fa-lock elp-icon"></i>
+								</div>
+								<p class="elp-heading"><?php esc_html_e( 'Profiles are locked', ADN_TEXT_DOMAIN ); ?></p>
+								<p class="elp-sub"><?php esc_html_e( 'Enter the password above to reveal restricted profiles.', ADN_TEXT_DOMAIN ); ?></p>
 							</div>
-							<p class="elp-heading"><?php esc_html_e( 'Profiles are locked', ADN_TEXT_DOMAIN ); ?></p>
-							<p class="elp-sub"><?php esc_html_e( 'Enter the password above to reveal restricted profiles.', ADN_TEXT_DOMAIN ); ?></p>
 						</div>
-					</div>
-					<?php
+						<?php
+					}
+					/* Full card pre-rendered but hidden; JS reveals on unlock — no reload needed. */
+					$_unlocked_expert               = (array) $_expert;
+					$_unlocked_expert['is_locked']  = 0;
+					$_unlocked_expert['unlockable'] = 1;
+					adn_component( 'cards/expert_card', array( 'item' => $_unlocked_expert ) );
+					?><?php
 					continue;
 				}
 				adn_component( 'cards/expert_card', array( 'item' => (array) $_expert ) );
 			endforeach;
 			?>
+
+			<?php /* Virtual category cards — one per admin-defined teaser tab; shown only when that tab is active */ ?>
+			<?php foreach ( $ctx['virtual_cats'] as $_vi => $_vc ) :
+				if ( empty( $_vc['label'] ) ) { continue; }
+				$_vm = isset( $_vc['message'] ) ? (string) $_vc['message'] : '';
+			?>
+			<div class="expert-card expert-card--virtual" data-cat="vcat-<?php echo (int) $_vi; ?>" hidden>
+				<div class="evc-inner">
+					<div class="evc-icon-wrap" aria-hidden="true">
+						<i class="fa-solid fa-clock evc-icon"></i>
+					</div>
+					<h3 class="evc-title"><?php echo esc_html( $_vc['label'] ); ?></h3>
+					<?php if ( '' !== $_vm ) : ?>
+					<p class="evc-msg"><?php echo esc_html( $_vm ); ?></p>
+					<?php endif; ?>
+					<a href="<?php echo esc_url( home_url( SITE_CONTACT_URL ) ); ?>" class="btn btn-primary evc-btn">
+						<?php esc_html_e( 'Get in Touch', ADN_TEXT_DOMAIN ); ?>
+					</a>
+				</div>
+			</div>
+			<?php endforeach; ?>
 
 			<?php /* Permanent placeholder - always visible, never filtered */ ?>
 			<div class="expert-card expert-card-more" data-permanent="1">

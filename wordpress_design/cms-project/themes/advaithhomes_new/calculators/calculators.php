@@ -303,17 +303,19 @@ function adn_calculator_shortcode( $atts ) {
 	<iframe id="<?php echo esc_attr( $uid ); ?>" class="ah-calc-frame"
 		src="<?php echo esc_url( $src ); ?>"
 		title="<?php echo esc_attr( $all[ $key ]['title'] ); ?>"
-		scrolling="no"
-		style="width:100%;border:0;height:<?php echo (int) $h; ?>px;max-height:90vh;overflow:hidden;display:block"></iframe>
+		scrolling="auto"
+		style="width:100%;border:0;height:90vh;min-height:90vh;display:block"></iframe>
 	<script>
 	(function () {
 		var frame = document.getElementById(<?php echo wp_json_encode( $uid ); ?>);
 		if (!frame) { return; }
-		var _applied = <?php echo (int) $h; ?>;
+		var _applied = -1;
 		window.addEventListener('message', function (e) {
 			var d = e.data;
 			if (d && d.ahCalc && d.key === <?php echo wp_json_encode( $key ); ?> && d.height) {
-				var want = Math.min(parseInt(d.height, 10) + 2, window.innerHeight);
+				/* Cap at 90 vh: content taller than that scrolls inside the iframe. */
+				var max90 = Math.round(window.innerHeight * 0.9);
+				var want  = Math.min(parseInt(d.height, 10) + 2, max90);
 				if (want !== _applied) { _applied = want; frame.style.height = want + 'px'; }
 			}
 		});

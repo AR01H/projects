@@ -1599,6 +1599,18 @@ class ADN_Theme_Admin {
 			);
 		}
 
+		$raw_vcats    = isset( $_POST['virtual_cats'] ) ? (array) wp_unslash( $_POST['virtual_cats'] ) : array();
+		$virtual_cats = array();
+		foreach ( $raw_vcats as $_vc ) {
+			if ( ! is_array( $_vc ) ) { continue; }
+			$_label = sanitize_text_field( isset( $_vc['label'] ) ? (string) $_vc['label'] : '' );
+			if ( '' === $_label ) { continue; }
+			$virtual_cats[] = array(
+				'label'   => $_label,
+				'message' => sanitize_textarea_field( isset( $_vc['message'] ) ? (string) $_vc['message'] : '' ),
+			);
+		}
+
 		$banner = array(
 			'heading'             => sanitize_text_field( wp_unslash( isset( $_POST['banner_heading'] ) ? $_POST['banner_heading'] : '' ) ),
 			'info'                => sanitize_textarea_field( wp_unslash( isset( $_POST['banner_info'] ) ? $_POST['banner_info'] : '' ) ),
@@ -1606,6 +1618,7 @@ class ADN_Theme_Admin {
 			'marquee_items'       => $marquee_items,
 			'featured_in_section' => sanitize_key( isset( $_POST['featured_in_section'] ) ? wp_unslash( $_POST['featured_in_section'] ) : '' ),
 			'unlock_password'     => sanitize_text_field( wp_unslash( isset( $_POST['unlock_password'] ) ? $_POST['unlock_password'] : '' ) ),
+			'virtual_cats'        => $virtual_cats,
 		);
 
 		update_option( 'adn_expert_banner', $banner );

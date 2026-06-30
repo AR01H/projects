@@ -10,8 +10,9 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$_i        = isset( $item ) ? (array) $item : array();
-$_locked   = ! empty( $_i['is_locked'] );
+$_i           = isset( $item ) ? (array) $item : array();
+$_locked      = ! empty( $_i['is_locked'] );
+$_unlockable  = ! empty( $_i['unlockable'] ); // pre-rendered but hidden until JS unlock
 $_slug     = isset( $_i['slug'] )      ? sanitize_key( (string) $_i['slug'] )     : '';
 $_photo    = isset( $_i['photo_url'] ) ? (string) $_i['photo_url']                : '';
 $_av       = esc_html( isset( $_i['avatar'] ) ? (string) $_i['avatar'] : '👤' );
@@ -51,7 +52,7 @@ if ( '' === $_photo ) {
 	}
 }
 ?>
-<div class="expert-card<?php echo $_locked ? ' expert-card--locked' : ''; ?>" data-cat="<?php echo $_cat_attr; ?>"<?php if ( '' !== $_url && '#' !== $_url ) : ?> data-profile-url="<?php echo $_url; ?>"<?php if ( ! $_locked ) : ?> role="link" tabindex="0"<?php endif; ?><?php endif; ?>>
+<div class="expert-card<?php echo $_locked ? ' expert-card--locked' : ''; ?>" data-cat="<?php echo $_cat_attr; ?>"<?php if ( $_unlockable ) : ?> data-unlockable="1" hidden<?php endif; ?><?php if ( '' !== $_url && '#' !== $_url ) : ?> data-profile-url="<?php echo $_url; ?>"<?php if ( ! $_locked ) : ?> role="link" tabindex="0"<?php endif; ?><?php endif; ?>>
 
 	<?php if ( $_locked ) : ?>
 	<?php /* ── LOCKED: show only the role/category + lock indicator ── */ ?>

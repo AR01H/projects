@@ -17,6 +17,7 @@
     var CK_KEY       = 'adn_cookie_consent';
     var ACCEPT_DAYS  = 365;
     var REJECT_DAYS  = 10;
+    var REJECT_MS    = REJECT_DAYS * 86400000;
 
     var _onAccept = [];
     var _onReject = [];

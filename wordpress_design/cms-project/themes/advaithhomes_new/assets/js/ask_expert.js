@@ -62,10 +62,24 @@
         var gridEl        = document.getElementById( 'expertGrid' );
         var lockedCard    = gridEl ? gridEl.querySelector( '.expert-card--locked-placeholder' ) : null;
 
+        var isVirtualTab = cat.indexOf( 'vcat-' ) === 0;
+
         document.querySelectorAll( '.expert-card' ).forEach( function ( card ) {
-            // Permanent card and locked placeholder are always visible — never filtered.
+            // Virtual cards are handled separately below.
+            if ( card.classList.contains( 'expert-card--virtual' ) ) { return; }
+            // Unlockable cards are hidden until JS unlock flow reveals them; skip until then.
+            if ( card.hasAttribute( 'data-unlockable' ) ) { return; }
+
+            // When a virtual tab is active: hide everything else (permanent, locked, real cards).
+            if ( isVirtualTab ) {
+                card.setAttribute( 'hidden', '' );
+                return;
+            }
+
+            // Permanent card and locked placeholder: always visible on real tabs.
             if ( card.getAttribute( 'data-permanent' ) ) { return; }
             if ( card.classList.contains( 'expert-card--locked-placeholder' ) ) { return; }
+
             var cardCat   = ( card.getAttribute( 'data-cat' ) || '' );
             var catMatch  = cat === 'all' || cardCat === cat;
             var textMatch = q === '' || ( card.textContent || '' ).toLowerCase().indexOf( q ) !== -1;
@@ -78,21 +92,42 @@
             }
         } );
 
-        var noRes    = document.getElementById( 'expertNoResults' );
-        var permCard = gridEl ? gridEl.querySelector( '[data-permanent]' ) : null;
+        // Virtual cards: show only the one whose tab is active, hide the rest.
+        // Use style.display directly — the CSS has display:flex !important which beats [hidden].
+        document.querySelectorAll( '.expert-card--virtual' ).forEach( function ( vc ) {
+            if ( vc.getAttribute( 'data-cat' ) === cat ) {
+                vc.style.display = 'flex';
+                vc.removeAttribute( 'hidden' );
+            } else {
+                vc.style.display = 'none';
+                vc.setAttribute( 'hidden', '' );
+            }
+        } );
 
-        if ( any ) {
-            if ( noRes )     { noRes.setAttribute( 'hidden', '' ); }
-            if ( gridEl )    { gridEl.style.display = ''; }
-            if ( permCard )  { permCard.style.display = ''; }
+        var noRes      = document.getElementById( 'expertNoResults' );
+        var permCard   = gridEl ? gridEl.querySelector( '[data-permanent]' ) : null;
+        var unlockBar  = document.getElementById( 'expertUnlockBar' );
+
+        if ( isVirtualTab ) {
+            /* Virtual tab: show only the virtual card — hide everything else around it. */
+            if ( noRes )      { noRes.setAttribute( 'hidden', '' ); }
+            if ( gridEl )     { gridEl.style.display = ''; }
+            if ( permCard )   { permCard.style.display = 'none'; }
+            if ( unlockBar )  { unlockBar.setAttribute( 'hidden', '' ); }
+            if ( lockedCard ) { lockedCard.setAttribute( 'hidden', '' ); }
+        } else if ( any ) {
+            if ( noRes )      { noRes.setAttribute( 'hidden', '' ); }
+            if ( gridEl )     { gridEl.style.display = ''; }
+            if ( permCard )   { permCard.style.display = ''; }
+            if ( unlockBar )  { unlockBar.removeAttribute( 'hidden' ); }
+            if ( lockedCard ) { lockedCard.style.display = ''; lockedCard.removeAttribute( 'hidden' ); }
         } else {
-            if ( noRes )     { noRes.removeAttribute( 'hidden' ); }
-            // Keep the grid visible if the locked placeholder is present.
-            if ( gridEl )    { gridEl.style.display = lockedCard ? '' : 'none'; }
-            if ( permCard )  { permCard.style.display = 'none'; }
+            if ( noRes )      { noRes.removeAttribute( 'hidden' ); }
+            if ( gridEl )     { gridEl.style.display = lockedCard ? '' : 'none'; }
+            if ( permCard )   { permCard.style.display = 'none'; }
+            if ( unlockBar )  { unlockBar.removeAttribute( 'hidden' ); }
+            if ( lockedCard ) { lockedCard.style.display = ''; lockedCard.removeAttribute( 'hidden' ); }
         }
-        // Locked placeholder is always visible regardless of filter state.
-        if ( lockedCard ) { lockedCard.style.display = ''; lockedCard.removeAttribute( 'hidden' ); }
     }
 
     function showLoader( on ) {
@@ -357,10 +392,24 @@
 
                     /* var expression avoids strict-mode block-scoped function issues */
                     var storeAndReveal = function () {
-                        var expires = new Date( Date.now() + 7 * 24 * 60 * 60 * 1000 ).toUTCString();
+                        // Store unlock token for 1 day — no page reload needed.
+                        var expires = new Date( Date.now() + 1 * 24 * 60 * 60 * 1000 ).toUTCString();
                         document.cookie = 'adn_experts_unlocked=' + encodeURIComponent( token )
                             + '; path=/; expires=' + expires + '; SameSite=Lax';
-                        window.location.reload();
+
+                        // Reveal pre-rendered locked cards and remove gate so applyFilter can reach them.
+                        document.querySelectorAll( '.expert-card[data-unlockable]' ).forEach( function ( card ) {
+                            card.removeAttribute( 'data-unlockable' );
+                            card.removeAttribute( 'hidden' );
+                        } );
+                        // Hide the locked placeholder and the unlock bar.
+                        var placeholder = document.querySelector( '.expert-card--locked-placeholder' );
+                        if ( placeholder ) { placeholder.setAttribute( 'hidden', '' ); }
+                        var bar = document.getElementById( 'expertUnlockBar' );
+                        if ( bar ) { bar.setAttribute( 'hidden', '' ); }
+                        // Re-apply current filter so newly revealed cards honour category/search.
+                        var searchVal = document.getElementById( 'expertSearch' ) ? document.getElementById( 'expertSearch' ).value : '';
+                        applyFilter( activeCategory, searchVal );
                     };
 
                     var consent = window.adnCookieConsent ? window.adnCookieConsent.getStatus() : 'accepted';
@@ -405,6 +454,9 @@
         initContactForms();
         initCardClick();
         initUnlock();
+        /* Run filter on load so the "More experts" card is hidden when there are no
+           real experts, and the "No experts found" message shows correctly. */
+        applyFilter( activeCategory, '' );
     }
 
     if ( document.readyState === 'loading' ) {
