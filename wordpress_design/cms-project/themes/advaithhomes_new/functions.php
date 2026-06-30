@@ -119,6 +119,10 @@ add_action( 'wp_ajax_nopriv_adn_expert_contact', 'adn_expert_contact_ajax' );
 add_action( 'wp_ajax_adn_expert_unlock',        'adn_expert_unlock_ajax' );
 add_action( 'wp_ajax_nopriv_adn_expert_unlock', 'adn_expert_unlock_ajax' );
 
+// Post related articles AJAX — returns articles sharing the same CMS taxonomy terms.
+add_action( 'wp_ajax_adn_post_related_articles',        'adn_post_related_articles_ajax' );
+add_action( 'wp_ajax_nopriv_adn_post_related_articles', 'adn_post_related_articles_ajax' );
+
 // Inline comment moderation (admin only).
 add_action( 'wp_ajax_adn_moderate_comment', 'adn_moderate_comment_ajax' );
 
@@ -368,6 +372,57 @@ function adn_expert_contact_ajax() {
 	} else {
 		wp_send_json_error( array( 'message' => __( 'Message could not be sent. Please try again.', ADN_TEXT_DOMAIN ) ) );
 	}
+}
+
+/**
+ * Post related articles AJAX.
+ *
+ * Accepts a post_id. Looks up the CMS taxonomy term IDs linked to that post,
+ * then returns up to 4 randomly picked published articles from those same terms
+ * (excluding the source post itself). Each article includes its WP thumbnail.
+ */
+function adn_post_related_articles_ajax() {
+	$post_id = absint( isset( $_POST['post_id'] ) ? $_POST['post_id'] : 0 );
+	if ( ! $post_id || ! function_exists( 'adn_cms_available' ) || ! adn_cms_available() ) {
+		wp_send_json_success( array( 'articles' => array() ) );
+		return;
+	}
+
+	// Find CMS taxonomy term IDs linked to this post.
+	global $wpdb;
+	$ct       = adn_cms_table( 'content_taxonomies' );
+	$term_ids = $wpdb->get_col( $wpdb->prepare(
+		"SELECT taxonomy_id FROM `{$ct}` WHERE object_type = 'wp_post' AND object_id = %d",
+		$post_id
+	) );
+	$term_ids = array_map( 'absint', (array) $term_ids );
+
+	$articles = array();
+
+	if ( ! empty( $term_ids ) && function_exists( 'adn_cms_articles' ) && function_exists( 'adn_cms_post_url' ) ) {
+		$pool = (array) adn_cms_articles( 40, $term_ids );
+
+		// Exclude the current post, shuffle, take 4.
+		$pool = array_values( array_filter( $pool, function ( $p ) use ( $post_id ) {
+			return (int) $p->ID !== $post_id;
+		} ) );
+		shuffle( $pool );
+		$pool = array_slice( $pool, 0, 6 );
+
+		foreach ( $pool as $p ) {
+			$thumb   = get_the_post_thumbnail_url( $p->ID, 'medium' );
+			$excerpt = isset( $p->excerpt ) && '' !== $p->excerpt ? (string) $p->excerpt : (string) ( $p->content ?? '' );
+			$articles[] = array(
+				'title'     => isset( $p->title ) ? (string) $p->title : '',
+				'url'       => adn_cms_post_url( $p ),
+				'excerpt'   => wp_trim_words( wp_strip_all_tags( $excerpt ), 16, '…' ),
+				'date'      => function_exists( 'adn_cms_post_date' ) ? adn_cms_post_date( $p ) : '',
+				'thumbnail' => $thumb ? (string) $thumb : '',
+			);
+		}
+	}
+
+	wp_send_json_success( array( 'articles' => $articles ) );
 }
 
 /**

@@ -876,9 +876,21 @@
 
 /* ── Single news item view (?ah_news_id=N) ──────────────────── */
 
+.news-layout--single {
+    background: var(--color-bg, #fff);
+}
+
 /* The single view reuses .news-layout but constrains the main column width */
 .news-layout--single .news-main {
     min-width: 0;
+}
+
+.news-single-article {
+    background: var(--card-bg, #fff);
+    border: 1.5px solid var(--color-border, #e5e7eb);
+    border-radius: var(--card-radius, 14px);
+    padding: 32px 36px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
 }
 
 
@@ -990,6 +1002,14 @@
     color: var(--color-black);
 }
 
+/* Strip site-level section styles from any <section> tags inside content */
+.news-single-content section {
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
 /* Content */
 .news-single-content {
     font-size: 1rem;
@@ -1086,4 +1106,5 @@
 @media (max-width: 640px) {
     .nsr-grid { grid-template-columns: 1fr; }
     .news-single-share { gap: 6px; }
+    .news-single-article { padding: 20px 18px 18px; }
 }

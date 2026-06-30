@@ -41,16 +41,19 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 		if ( isset( $_nb_ctx['meta'] ) ) {
 			$_nb_ctx['meta']['title'] = isset( $_nb_item->text ) ? (string) $_nb_item->text : '';
 		}
-		if ( ! empty( $_nb_item->image_id ) ) {
-			$_nb_ctx['hero']['image_id'] = (int) $_nb_item->image_id;
-		}
-
 		$_nb_stamp   = ! empty( $_nb_item->start_date ) ? $_nb_item->start_date : ( isset( $_nb_item->created_at ) ? $_nb_item->created_at : '' );
 		$_nb_label   = isset( $_nb_item->label )   ? (string) $_nb_item->label   : '';
 		$_nb_title   = isset( $_nb_item->text )    ? (string) $_nb_item->text    : '';
 		$_nb_excerpt = isset( $_nb_item->excerpt ) ? (string) $_nb_item->excerpt : '';
 		$_nb_content = isset( $_nb_item->content ) ? (string) $_nb_item->content : '';
 		$_nb_url     = function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_nb_item->id ) : '';
+
+		// Override hero with real news item data.
+		$_nb_ctx['hero']['title']       = $_nb_title;
+		$_nb_ctx['hero']['description'] = $_nb_excerpt;
+		if ( ! empty( $_nb_item->image_id ) ) {
+			$_nb_ctx['hero']['image_id'] = (int) $_nb_item->image_id;
+		}
 
 		$_nb_breadcrumb = array(
 			array( 'label' => PAGE_TITLE_HOME, 'url' => home_url( '/' ) ),
@@ -118,14 +121,6 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 
 			<main class="news-main">
 				<div class="news-single-article">
-
-					<div class="news-single-meta">
-						<?php if ( '' !== $_nb_label ) : ?>
-							<span class="news-single-label"><?php echo esc_html( $_nb_label ); ?></span>
-						<?php endif; ?>
-					</div>
-
-					<h1 class="news-single-title"><?php echo esc_html( $_nb_title ); ?></h1>
 
 					<?php /* Content */ ?>
 					<?php if ( '' !== $_nb_content ) : ?>
