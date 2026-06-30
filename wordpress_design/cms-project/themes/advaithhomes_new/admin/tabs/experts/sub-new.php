@@ -19,6 +19,7 @@ $f_title   = $is_edit ? $row['title']         : '';
 $f_cat     = $is_edit ? $row['category']      : '';
 $f_status  = $is_edit ? $row['status']        : 'active';
 $f_sort    = $is_edit ? (int) $row['sort_order'] : 100;
+$f_locked  = $is_edit ? (int) ( isset( $row['is_locked'] ) ? $row['is_locked'] : 0 ) : 0;
 $f_photo   = $is_edit ? (int) $row['photo_id'] : 0;
 $f_bio     = $is_edit ? $row['bio']           : '';
 $f_rating  = $is_edit ? $row['rating']        : '';
@@ -161,6 +162,19 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 							value="<?php echo esc_attr( (string) $f_sort ); ?>">
 						<p class="description">
 							<?php esc_html_e( 'Lower number = higher position on the listing page. Use 0 for top, 1, 2, 3… for the rest. Experts with the same number are sorted by name.', ADN_TEXT_DOMAIN ); ?>
+						</p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Lock Profile', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="is_locked" value="1" <?php checked( $f_locked, 1 ); ?>>
+							<?php esc_html_e( 'Restrict this profile — shown blurred/locked on the public listing until the visitor enters the unlock password.', ADN_TEXT_DOMAIN ); ?>
+						</label>
+						<p class="description">
+							<?php esc_html_e( 'The unlock password is set in Expert Banner settings. Useful for team-only or premium profiles.', ADN_TEXT_DOMAIN ); ?>
 						</p>
 					</td>
 				</tr>

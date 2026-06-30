@@ -57,11 +57,15 @@
 
     function applyFilter( cat, query ) {
         showLoader( false );
-        var q   = query.toLowerCase();
-        var any = false;
+        var q             = query.toLowerCase();
+        var any           = false;
+        var gridEl        = document.getElementById( 'expertGrid' );
+        var lockedCard    = gridEl ? gridEl.querySelector( '.expert-card--locked-placeholder' ) : null;
+
         document.querySelectorAll( '.expert-card' ).forEach( function ( card ) {
-            // Permanent placeholder card - always stays visible, never filtered.
+            // Permanent card and locked placeholder are always visible — never filtered.
             if ( card.getAttribute( 'data-permanent' ) ) { return; }
+            if ( card.classList.contains( 'expert-card--locked-placeholder' ) ) { return; }
             var cardCat   = ( card.getAttribute( 'data-cat' ) || '' );
             var catMatch  = cat === 'all' || cardCat === cat;
             var textMatch = q === '' || ( card.textContent || '' ).toLowerCase().indexOf( q ) !== -1;
@@ -73,18 +77,22 @@
                 card.setAttribute( 'hidden', '' );
             }
         } );
-        var noRes     = document.getElementById( 'expertNoResults' );
-        var gridEl    = document.getElementById( 'expertGrid' );
-        var permCard  = gridEl ? gridEl.querySelector( '[data-permanent]' ) : null;
+
+        var noRes    = document.getElementById( 'expertNoResults' );
+        var permCard = gridEl ? gridEl.querySelector( '[data-permanent]' ) : null;
+
         if ( any ) {
-            if ( noRes )    { noRes.setAttribute( 'hidden', '' ); }
-            if ( gridEl )   { gridEl.style.display = ''; }
-            if ( permCard ) { permCard.style.display = ''; }
+            if ( noRes )     { noRes.setAttribute( 'hidden', '' ); }
+            if ( gridEl )    { gridEl.style.display = ''; }
+            if ( permCard )  { permCard.style.display = ''; }
         } else {
-            if ( noRes )    { noRes.removeAttribute( 'hidden' ); }
-            if ( gridEl )   { gridEl.style.display = 'none'; }
-            if ( permCard ) { permCard.style.display = 'none'; }
+            if ( noRes )     { noRes.removeAttribute( 'hidden' ); }
+            // Keep the grid visible if the locked placeholder is present.
+            if ( gridEl )    { gridEl.style.display = lockedCard ? '' : 'none'; }
+            if ( permCard )  { permCard.style.display = 'none'; }
         }
+        // Locked placeholder is always visible regardless of filter state.
+        if ( lockedCard ) { lockedCard.style.display = ''; lockedCard.removeAttribute( 'hidden' ); }
     }
 
     function showLoader( on ) {
@@ -301,6 +309,83 @@
         } );
     }
 
+    /* ── 4. Expert Profile Unlock ───────────────────────────────── */
+
+    function initUnlock() {
+        var bar   = document.getElementById( 'expertUnlockBar' );          // listing page
+        var input = document.getElementById( 'expertUnlockPw' );           // both pages
+        var btn   = document.getElementById( 'expertUnlockBtn' );          // both pages
+        var errEl = document.getElementById( 'expertUnlockError' );        // both pages
+        if ( ! input || ! btn ) { return; }
+
+        btn.addEventListener( 'click', function () { doUnlock(); } );
+        input.addEventListener( 'keydown', function ( e ) {
+            if ( e.key === 'Enter' ) { doUnlock(); }
+        } );
+
+        function doUnlock() {
+            var pw      = input.value;
+            var ajaxUrl = ( typeof adnExpert !== 'undefined' && adnExpert.ajaxUrl ) ? adnExpert.ajaxUrl : '';
+            var nonce   = ( typeof adnExpert !== 'undefined' && adnExpert.unlockNonce ) ? adnExpert.unlockNonce : '';
+            if ( ! pw || ! ajaxUrl ) { return; }
+
+            btn.disabled    = true;
+            btn.textContent = 'Checking…';
+            if ( errEl ) { errEl.hidden = true; errEl.textContent = ''; }
+
+            var data = 'action=adn_expert_unlock'
+                + '&nonce='           + encodeURIComponent( nonce )
+                + '&unlock_password=' + encodeURIComponent( pw );
+
+            var xhr = new XMLHttpRequest();
+            xhr.open( 'POST', ajaxUrl, true );
+            xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' );
+            xhr.onreadystatechange = function () {
+                if ( xhr.readyState !== 4 ) { return; }
+                btn.disabled    = false;
+                btn.innerHTML   = '<i class="fa-solid fa-unlock" aria-hidden="true"></i> Unlock';
+
+                var res;
+                try { res = JSON.parse( xhr.responseText ); } catch ( err ) { res = null; }
+
+                if ( res && res.success && res.data && res.data.token ) {
+                    // Set cookie for 7 days.
+                    var expires = new Date( Date.now() + 7 * 24 * 60 * 60 * 1000 ).toUTCString();
+                    document.cookie = 'adn_experts_unlocked=' + encodeURIComponent( res.data.token )
+                        + '; path=/; expires=' + expires + '; SameSite=Lax';
+
+                    // On the profile page (locked screen), reload to show full profile.
+                    if ( document.getElementById( 'expertProfileLockedScreen' ) ) {
+                        window.location.reload();
+                        return;
+                    }
+
+                    // On the listing page, reveal all locked cards in-place.
+                    document.querySelectorAll( '.expert-card--locked' ).forEach( function ( card ) {
+                        card.classList.remove( 'expert-card--locked' );
+                        var url = card.getAttribute( 'data-profile-url' );
+                        if ( url ) {
+                            card.setAttribute( 'role', 'link' );
+                            card.setAttribute( 'tabindex', '0' );
+                        }
+                    } );
+
+                    // Hide the unlock bar.
+                    if ( bar ) { bar.classList.add( 'is-unlocked' ); }
+                } else {
+                    var msg = ( res && res.data && res.data.message ) ? res.data.message : 'Incorrect password. Please try again.';
+                    if ( errEl ) {
+                        errEl.textContent = msg;
+                        errEl.hidden      = false;
+                    }
+                    input.value = '';
+                    input.focus();
+                }
+            };
+            xhr.send( data );
+        }
+    }
+
     /* ── Init ───────────────────────────────────────────────────── */
 
     function init() {
@@ -309,6 +394,7 @@
         initContactModals();
         initContactForms();
         initCardClick();
+        initUnlock();
     }
 
     if ( document.readyState === 'loading' ) {

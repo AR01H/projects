@@ -11,6 +11,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $_i        = isset( $item ) ? (array) $item : array();
+$_locked   = ! empty( $_i['is_locked'] );
 $_slug     = isset( $_i['slug'] )      ? sanitize_key( (string) $_i['slug'] )     : '';
 $_photo    = isset( $_i['photo_url'] ) ? (string) $_i['photo_url']                : '';
 $_av       = esc_html( isset( $_i['avatar'] ) ? (string) $_i['avatar'] : '👤' );
@@ -50,7 +51,20 @@ if ( '' === $_photo ) {
 	}
 }
 ?>
-<div class="expert-card" data-cat="<?php echo $_cat_attr; ?>"<?php if ( '' !== $_url && '#' !== $_url ) : ?> data-profile-url="<?php echo $_url; ?>" role="link" tabindex="0"<?php endif; ?>>
+<div class="expert-card<?php echo $_locked ? ' expert-card--locked' : ''; ?>" data-cat="<?php echo $_cat_attr; ?>"<?php if ( '' !== $_url && '#' !== $_url ) : ?> data-profile-url="<?php echo $_url; ?>"<?php if ( ! $_locked ) : ?> role="link" tabindex="0"<?php endif; ?><?php endif; ?>>
+
+	<?php if ( $_locked ) : ?>
+	<?php /* ── LOCKED: show only the role/category + lock indicator ── */ ?>
+	<div class="expert-lock-body">
+		<div class="expert-lock-icon-wrap" aria-hidden="true">
+			<i class="fa-solid fa-lock expert-lock-icon"></i>
+		</div>
+		<?php if ( '' !== $_cat_disp ) : ?>
+			<span class="expert-lock-role"><?php echo $_cat_disp; ?></span>
+		<?php endif; ?>
+		<span class="expert-lock-label"><?php esc_html_e( 'Profile Locked', ADN_TEXT_DOMAIN ); ?></span>
+	</div>
+	<?php else : ?>
 
 	<?php /* ── Top row: avatar (left) + credential badge (right) ── */ ?>
 	<div class="expert-card-top">
@@ -156,10 +170,13 @@ if ( '' === $_photo ) {
 		</div>
 
 	</div><!-- .expert-card-footer -->
+
+	<?php endif; /* end else (not locked) */ ?>
+
 </div>
 
 <?php /* ── Inline contact modal (one per card, hidden until triggered) ── */ ?>
-<?php if ( '' !== $_slug ) : ?>
+<?php if ( '' !== $_slug && ! $_locked ) : ?>
 <div class="expert-contact-modal" data-slug="<?php echo esc_attr( $_slug ); ?>" role="dialog"
 	aria-label="<?php printf( esc_attr__( 'Contact %s', ADN_TEXT_DOMAIN ), esc_attr( isset( $_i['name'] ) ? (string) $_i['name'] : '' ) ); ?>"
 	aria-hidden="true" hidden>

@@ -21,6 +21,14 @@ function adn_expert_single_get_context( $slug ) {
 	$expert = AH_Expert_DB::get( $slug );
 	if ( ! $expert || 'active' !== $expert['status'] ) { return null; }
 
+	/* ── Unlock state: same cookie check as the listing page ───────── */
+	$_banner_data    = get_option( 'adn_expert_banner', array() );
+	$_stored_pw      = isset( $_banner_data['unlock_password'] ) ? (string) $_banner_data['unlock_password'] : '';
+	$_expected_token = ( '' !== $_stored_pw ) ? hash_hmac( 'sha256', $_stored_pw, wp_salt( 'secure_auth' ) ) : '';
+	$_cookie_val     = isset( $_COOKIE['adn_experts_unlocked'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['adn_experts_unlocked'] ) ) : '';
+	$_is_unlocked    = ( '' !== $_expected_token && '' !== $_cookie_val && hash_equals( $_expected_token, $_cookie_val ) );
+	$_profile_locked = ( ! empty( $expert['is_locked'] ) ) && ! $_is_unlocked;
+
 	/* ── Photo ─────────────────────────────────────────────────── */
 	$photo_id  = isset( $expert['photo_id'] ) ? (int) $expert['photo_id'] : 0;
 	$photo_url = '';
@@ -122,5 +130,7 @@ function adn_expert_single_get_context( $slug ) {
 		'chrome'        => $chrome,
 		'contact_nonce' => wp_create_nonce( 'adn_expert_contact' ),
 		'ajax_url'      => admin_url( 'admin-ajax.php' ),
+		'is_locked'     => $_profile_locked,
+		'unlock_nonce'  => wp_create_nonce( 'adn_expert_unlock' ),
 	);
 }

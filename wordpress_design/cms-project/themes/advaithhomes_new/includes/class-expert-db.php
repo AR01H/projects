@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 class AH_Expert_DB {
 
-	const DB_VERSION = '6';
+	const DB_VERSION = '7';
 	const DB_OPTION  = 'adn_expert_db_v';
 
 	public static function table() {
@@ -102,6 +102,7 @@ class AH_Expert_DB {
 			'category'      => sanitize_text_field( isset( $data['category'] )      ? $data['category']      : '' ),
 			'status'        => ( isset( $data['status'] ) && 'inactive' === $data['status'] ) ? 'inactive' : 'active',
 			'sort_order'    => absint( isset( $data['sort_order'] ) ? $data['sort_order'] : 100 ),
+			'is_locked'     => ( ! empty( $data['is_locked'] ) ) ? 1 : 0,
 			'photo_id'      => absint( isset( $data['photo_id'] )       ? $data['photo_id']       : 0 ),
 			'bio'           => sanitize_textarea_field( isset( $data['bio'] ) ? $data['bio'] : '' ),
 			'rating'        => $rating,
@@ -148,6 +149,7 @@ class AH_Expert_DB {
 			category       VARCHAR(100)     NOT NULL DEFAULT '',
 			status         VARCHAR(10)      NOT NULL DEFAULT 'active',
 			sort_order     SMALLINT UNSIGNED NOT NULL DEFAULT 100,
+			is_locked      TINYINT UNSIGNED NOT NULL DEFAULT 0,
 			photo_id       BIGINT UNSIGNED  NOT NULL DEFAULT 0,
 			bio            TEXT             NOT NULL,
 			rating         DECIMAL(3,2)     NOT NULL DEFAULT 0.00,

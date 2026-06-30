@@ -17,6 +17,7 @@ $marquee_items       = ( isset( $saved['marquee_items'] ) && is_array( $saved['m
     ? $saved['marquee_items']
     : array();
 $fi_section          = isset( $saved['featured_in_section'] ) ? (string) $saved['featured_in_section'] : '';
+$unlock_password     = isset( $saved['unlock_password'] )     ? (string) $saved['unlock_password']     : '';
 $_fi_raw             = get_option( 'ah_featured_in_sections', '' );
 $_fi_all             = ( $_fi_raw ? json_decode( $_fi_raw, true ) : array() );
 $_fi_all             = is_array( $_fi_all ) ? $_fi_all : array();
@@ -151,6 +152,30 @@ $_fi_all             = is_array( $_fi_all ) ? $_fi_all : array();
 					<?php endforeach; ?>
 				</select>
 			<?php endif; ?>
+		</div>
+
+		<div class="card" style="max-width:none;background:#fafafa;margin-top:8px;">
+			<h3 style="margin-top:0;margin-bottom:4px;"><?php esc_html_e( 'Profile Unlock Password', ADN_TEXT_DOMAIN ); ?></h3>
+			<p class="description" style="margin-bottom:16px;">
+				<?php esc_html_e( 'Visitors must enter this password to view locked expert profiles on the Ask an Expert page. Leave empty to disable locking for everyone.', ADN_TEXT_DOMAIN ); ?>
+			</p>
+			<table class="form-table" role="presentation"><tbody>
+				<tr>
+					<th scope="row">
+						<label for="unlock_password"><?php esc_html_e( 'Unlock Password', ADN_TEXT_DOMAIN ); ?></label>
+					</th>
+					<td>
+						<input type="text" id="unlock_password" name="unlock_password"
+							class="regular-text"
+							value="<?php echo esc_attr( $unlock_password ); ?>"
+							placeholder="<?php esc_attr_e( 'e.g. team2024', ADN_TEXT_DOMAIN ); ?>"
+							autocomplete="off">
+						<p class="description">
+							<?php esc_html_e( 'Case-sensitive. Visitors who enter this on the Ask an Expert page unlock all locked profiles. Unlock state persists in their browser for 7 days.', ADN_TEXT_DOMAIN ); ?>
+						</p>
+					</td>
+				</tr>
+			</tbody></table>
 		</div>
 
 		<?php submit_button( __( 'Save Banner', ADN_TEXT_DOMAIN ), 'primary', 'submit', false ); ?>

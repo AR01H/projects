@@ -115,6 +115,10 @@ add_action( 'init', array( 'ADN_Form_Ajax', 'init_public' ) );
 add_action( 'wp_ajax_adn_expert_contact',        'adn_expert_contact_ajax' );
 add_action( 'wp_ajax_nopriv_adn_expert_contact', 'adn_expert_contact_ajax' );
 
+// Expert profile unlock AJAX.
+add_action( 'wp_ajax_adn_expert_unlock',        'adn_expert_unlock_ajax' );
+add_action( 'wp_ajax_nopriv_adn_expert_unlock', 'adn_expert_unlock_ajax' );
+
 // Inline comment moderation (admin only).
 add_action( 'wp_ajax_adn_moderate_comment', 'adn_moderate_comment_ajax' );
 
@@ -364,6 +368,24 @@ function adn_expert_contact_ajax() {
 	} else {
 		wp_send_json_error( array( 'message' => __( 'Message could not be sent. Please try again.', ADN_TEXT_DOMAIN ) ) );
 	}
+}
+
+/**
+ * Expert profile unlock AJAX - verifies password and returns a cookie token.
+ */
+function adn_expert_unlock_ajax() {
+	check_ajax_referer( 'adn_expert_unlock', 'nonce' );
+	$submitted = sanitize_text_field( wp_unslash( isset( $_POST['unlock_password'] ) ? $_POST['unlock_password'] : '' ) );
+	$banner    = get_option( 'adn_expert_banner', array() );
+	$stored    = isset( $banner['unlock_password'] ) ? (string) $banner['unlock_password'] : '';
+	if ( '' === $stored ) {
+		wp_send_json_error( array( 'message' => __( 'No unlock password is set.', ADN_TEXT_DOMAIN ) ) );
+	}
+	if ( '' === $submitted || ! hash_equals( $stored, $submitted ) ) {
+		wp_send_json_error( array( 'message' => __( 'Incorrect password. Please try again.', ADN_TEXT_DOMAIN ) ) );
+	}
+	$token = hash_hmac( 'sha256', $stored, wp_salt( 'secure_auth' ) );
+	wp_send_json_success( array( 'token' => $token ) );
 }
 
 /**

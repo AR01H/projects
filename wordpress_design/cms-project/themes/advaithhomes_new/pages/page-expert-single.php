@@ -57,7 +57,48 @@ adn_page_open( $_open_ctx );
 $_rating  = isset( $ctx['rating'] )        ? (float) $ctx['rating']        : 0.0;
 $_reviews = isset( $ctx['reviews_count'] ) ? (int)   $ctx['reviews_count'] : 0;
 $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
+
+// Pass unlockNonce to JS before any early return so it's available for both
+// the locked-screen unlock form and the unlocked profile's contact form.
+wp_localize_script( 'adn-ask-expert-script', 'adnExpert', array(
+	'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+	'nonce'       => isset( $ctx['contact_nonce'] ) ? $ctx['contact_nonce'] : '',
+	'unlockNonce' => isset( $ctx['unlock_nonce'] )  ? $ctx['unlock_nonce']  : '',
+	'hasLocked'   => ! empty( $ctx['is_locked'] ) ? 1 : 0,
+) );
+
+/* When the profile is locked, skip hero + stats entirely — show nothing identifying. */
+if ( ! empty( $ctx['is_locked'] ) ) :
 ?>
+<div class="container" style="padding-top:48px;padding-bottom:64px;">
+	<div class="expert-profile-layout">
+
+		<div class="expert-profile-locked-screen" id="expertProfileLockedScreen">
+			<div class="epls-icon" aria-hidden="true"><i class="fa-solid fa-lock"></i></div>
+			<h2 class="epls-heading"><?php esc_html_e( 'This profile is restricted', ADN_TEXT_DOMAIN ); ?></h2>
+			<p class="epls-desc"><?php esc_html_e( 'Enter the unlock password to view this expert\'s full profile.', ADN_TEXT_DOMAIN ); ?></p>
+			<div class="epls-form">
+				<input type="password" id="expertUnlockPw" class="eub-input epls-input"
+					placeholder="<?php esc_attr_e( 'Enter password…', ADN_TEXT_DOMAIN ); ?>"
+					autocomplete="current-password"
+					aria-label="<?php esc_attr_e( 'Unlock password', ADN_TEXT_DOMAIN ); ?>">
+				<button type="button" id="expertUnlockBtn" class="btn btn-primary eub-btn">
+					<i class="fa-solid fa-unlock" aria-hidden="true"></i>
+					<?php esc_html_e( 'Unlock Profile', ADN_TEXT_DOMAIN ); ?>
+				</button>
+			</div>
+			<p class="eub-error" id="expertUnlockError" hidden></p>
+			<a href="<?php echo esc_url( home_url( SITE_EXPERT_URL ) ); ?>" class="epls-back">
+				<i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+				<?php esc_html_e( 'Back to all experts', ADN_TEXT_DOMAIN ); ?>
+			</a>
+		</div>
+
+	</div>
+</div>
+<?php adn_page_close( $ctx ); ?>
+<?php return; ?>
+<?php endif; ?>
 
 <?php /* ============================== HERO ============================== */ ?>
 <?php $_has_cover = ! empty( $ctx['banner_image_url'] ); ?>
@@ -225,16 +266,6 @@ $_stars   = min( 5, max( 0, (int) round( $_rating ) ) );
 
 	</div>
 </div>
-
-<?php /* Inline JS: pass nonce to ask_expert.js */ ?>
-<script>
-if (typeof adnExpert === 'undefined') {
-	var adnExpert = {
-		ajaxUrl: '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>',
-		nonce:   '<?php echo esc_js( $ctx['contact_nonce'] ); ?>'
-	};
-}
-</script>
 
 <?php adn_page_close( $ctx ); ?>
 

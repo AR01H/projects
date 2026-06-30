@@ -1547,6 +1547,7 @@ class ADN_Theme_Admin {
 			'category'        => wp_unslash( isset( $_POST['category'] )      ? $_POST['category']      : '' ),
 			'status'          => wp_unslash( isset( $_POST['status'] )        ? $_POST['status']        : 'active' ),
 			'sort_order'      => isset( $_POST['sort_order'] )         ? absint( $_POST['sort_order'] )         : 100,
+			'is_locked'       => ! empty( $_POST['is_locked'] ) ? 1 : 0,
 			'photo_id'        => isset( $_POST['photo_id'] )           ? absint( $_POST['photo_id'] )           : 0,
 			'bio'             => wp_unslash( isset( $_POST['bio'] )           ? $_POST['bio']           : '' ),
 			'rating'          => isset( $_POST['rating'] )             ? floatval( $_POST['rating'] )           : 0,
@@ -1604,6 +1605,7 @@ class ADN_Theme_Admin {
 			'enabled'             => ! empty( $_POST['banner_enabled'] ) ? 1 : 0,
 			'marquee_items'       => $marquee_items,
 			'featured_in_section' => sanitize_key( isset( $_POST['featured_in_section'] ) ? wp_unslash( $_POST['featured_in_section'] ) : '' ),
+			'unlock_password'     => sanitize_text_field( wp_unslash( isset( $_POST['unlock_password'] ) ? $_POST['unlock_password'] : '' ) ),
 		);
 
 		update_option( 'adn_expert_banner', $banner );

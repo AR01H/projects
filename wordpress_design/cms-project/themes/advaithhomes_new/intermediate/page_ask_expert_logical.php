@@ -116,6 +116,13 @@ function adn_ask_expert_get_context() {
 
 	/* ── Hero from admin banner option + WP page title ─────────────── */
 	$banner      = get_option( 'adn_expert_banner', array() );
+
+	/* ── Unlock state: check cookie against HMAC of stored password ─── */
+	$_stored_pw      = isset( $banner['unlock_password'] ) ? (string) $banner['unlock_password'] : '';
+	$_expected_token = ( '' !== $_stored_pw ) ? hash_hmac( 'sha256', $_stored_pw, wp_salt( 'secure_auth' ) ) : '';
+	$_cookie_val     = isset( $_COOKIE['adn_experts_unlocked'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['adn_experts_unlocked'] ) ) : '';
+	$_is_unlocked    = ( '' !== $_expected_token && '' !== $_cookie_val && hash_equals( $_expected_token, $_cookie_val ) );
+
 	$hero_title  = ( ! empty( $banner['heading'] ) )
 		? (string) $banner['heading']
 		: ( get_the_title() ?: SITE_EXPERT_LABEL );
@@ -163,6 +170,8 @@ function adn_ask_expert_get_context() {
 				$slug        = isset( $row['expert_slug'] ) ? (string) $row['expert_slug'] : '';
 				$profile_url = $slug ? home_url( '/?ah_expert=' . rawurlencode( $slug ) ) : home_url( SITE_EXPERT_URL );
 
+				$_row_locked  = ( isset( $row['is_locked'] ) && $row['is_locked'] ) && ! $_is_unlocked;
+
 				$db_experts[] = array(
 					'slug'          => $slug,
 					'photo_url'     => $photo_url,
@@ -180,6 +189,7 @@ function adn_ask_expert_get_context() {
 					'tags'          => array_slice( $bullets, 0, 3 ),
 					'bullets'       => $bullets,
 					'url'           => $profile_url,
+					'is_locked'     => $_row_locked ? 1 : 0,
 				);
 			}
 		}
@@ -268,6 +278,13 @@ function adn_ask_expert_get_context() {
 	$ajax_url      = admin_url( 'admin-ajax.php' );
 	$contact_nonce = wp_create_nonce( 'adn_expert_contact' );
 
+	/* ── Lock/unlock state ──────────────────────────────────────────── */
+	$_has_locked   = false;
+	foreach ( $experts as $_ex ) {
+		if ( ! empty( $_ex['is_locked'] ) ) { $_has_locked = true; break; }
+	}
+	$unlock_nonce  = wp_create_nonce( 'adn_expert_unlock' );
+
 	return array(
 		'meta'          => $meta,
 		'breadcrumb'    => $breadcrumb,
@@ -280,6 +297,9 @@ function adn_ask_expert_get_context() {
 		'chrome'        => $chrome,
 		'ajax_url'      => $ajax_url,
 		'contact_nonce' => $contact_nonce,
+		'has_locked'    => $_has_locked,
+		'is_unlocked'   => $_is_unlocked,
+		'unlock_nonce'  => $unlock_nonce,
 		'latest_news'   => array(
 			'heading' => array(
 				'title'      => adn_term( 'labels.latest_news', 'Latest News' ),

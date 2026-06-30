@@ -1666,3 +1666,248 @@
     .expert-hero-text { padding: 32px 20px 32px 0; }
     .expert-stat-item { padding: 10px 12px; }
 }
+
+/* ============================================================
+   Expert Lock / Unlock
+   ============================================================ */
+
+/* ── Locked card ─────────────────────────────────────────────── */
+.expert-card--locked {
+    position: relative;
+    cursor: default;
+    opacity: 0.82;
+}
+
+/* Single "profiles are locked" placeholder replacing all locked cards */
+.expert-card--locked-placeholder {
+    cursor: default;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    border: 2px dashed rgba(30,58,47,0.18);
+    background: rgba(30,58,47,0.03);
+}
+.elp-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 32px 24px;
+    text-align: center;
+}
+.elp-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(30,58,47,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+.elp-icon {
+    font-size: 1.5rem;
+    color: var(--color-primary, #1e3a2f);
+    opacity: 0.5;
+}
+.elp-heading {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-dark, #1a2332);
+    margin: 0;
+}
+.elp-sub {
+    font-size: 0.82rem;
+    color: var(--color-primary, #1e3a2f);
+    opacity: 0.6;
+    margin: 0;
+    max-width: 200px;
+    line-height: 1.45;
+}
+
+/* Locked card minimal body */
+.expert-lock-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 20px 32px;
+    text-align: center;
+    flex: 1;
+}
+.expert-lock-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(30,58,47,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.expert-lock-icon {
+    font-size: 1.4rem;
+    color: var(--color-primary, #1e3a2f);
+    opacity: 0.55;
+}
+.expert-lock-role {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-dark, #1a2332);
+    letter-spacing: 0.01em;
+}
+.expert-lock-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary, #1e3a2f);
+    opacity: 0.5;
+}
+
+
+/* ── Unlock bar (above expert grid) ─────────────────────────── */
+.expert-unlock-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    background: linear-gradient(90deg, #f5f2ec 0%, #fff 100%);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-left: 4px solid var(--color-accent, #c9a84c);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+}
+.eub-icon {
+    color: var(--color-primary, #1e3a2f);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+.eub-text {
+    flex: 1;
+    min-width: 180px;
+    font-size: 0.875rem;
+    color: var(--color-dark, #1a2332);
+    font-weight: 500;
+}
+.eub-form-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+.eub-input {
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid rgba(30,58,47,0.25);
+    border-radius: 7px;
+    font-size: 0.875rem;
+    width: 190px;
+    background: #fff;
+    color: var(--color-dark, #1a2332);
+    outline: none;
+    transition: border-color 0.2s;
+}
+.eub-input:focus {
+    border-color: var(--color-accent, #c9a84c);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+}
+.eub-btn {
+    height: 38px;
+    padding: 0 18px;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+.eub-error {
+    width: 100%;
+    font-size: 0.82rem;
+    color: #b91c1c;
+    margin: 0;
+    padding: 0;
+}
+.expert-unlock-bar.is-unlocked {
+    display: none;
+}
+
+@media (max-width: 560px) {
+    .expert-unlock-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .eub-input { width: 100%; }
+    .eub-form-row { width: 100%; }
+    .eub-btn { width: 100%; justify-content: center; }
+}
+
+/* ── Expert profile lock screen ──────────────────────────────── */
+.expert-profile-locked-screen {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 56px 24px 64px;
+    gap: 16px;
+}
+.epls-icon {
+    font-size: 3rem;
+    color: var(--color-primary, #1e3a2f);
+    opacity: 0.55;
+    line-height: 1;
+}
+.epls-heading {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: 1.5rem;
+    color: var(--color-dark, #1a2332);
+    margin: 0;
+}
+.epls-desc {
+    font-size: 0.95rem;
+    color: #6b7280;
+    max-width: 400px;
+    margin: 0;
+}
+.epls-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 4px;
+}
+.epls-input {
+    width: 220px;
+    height: 44px;
+    font-size: 0.95rem;
+    padding: 0 14px;
+}
+.epls-form .eub-btn {
+    height: 44px;
+    padding: 0 24px;
+    font-size: 0.95rem;
+}
+.epls-back {
+    font-size: 0.85rem;
+    color: var(--color-primary, #1e3a2f);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.7;
+    margin-top: 4px;
+    transition: opacity 0.18s;
+}
+.epls-back:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+    .epls-input { width: 100%; }
+    .epls-form { width: 100%; flex-direction: column; }
+    .epls-form .eub-btn { width: 100%; justify-content: center; }
+}
