@@ -36,17 +36,38 @@ function adn_seo_register( array $meta ): void {
 /**
  * Override the <title> tag when a custom title is registered.
  * Format: "Page Title | Site Name"
+ * Runs at priority 99 so it beats both Yoast (10) and Rank Math (10).
  */
 function adn_seo_document_title( string $title ): string {
-	$reg        = (array) $GLOBALS['adn_seo'];
-	$custom     = trim( (string) ( $reg['title'] ?? '' ) );
+	$reg    = (array) $GLOBALS['adn_seo'];
+	$custom = trim( (string) ( $reg['title'] ?? '' ) );
 	if ( '' === $custom ) {
 		return $title;
 	}
 	$site_name = (string) get_bloginfo( 'name' );
 	return $custom . ' | ' . $site_name;
 }
-add_filter( 'pre_get_document_title', 'adn_seo_document_title', 10 );
+add_filter( 'pre_get_document_title', 'adn_seo_document_title', 99 );
+
+/* ── Rank Math: override its title and robots when we have custom data ── */
+add_filter( 'rank_math/frontend/title', 'adn_seo_document_title', 99 );
+
+add_filter( 'rank_math/frontend/robots', function( array $robots ): array {
+	$reg    = (array) $GLOBALS['adn_seo'];
+	$custom = trim( (string) ( $reg['title'] ?? '' ) );
+	if ( '' === $custom ) {
+		return $robots;
+	}
+	/* Theme registered a real title — page is not a 404, force indexable. */
+	$noindex_key = array_search( 'noindex', $robots, true );
+	if ( false !== $noindex_key ) {
+		unset( $robots[ $noindex_key ] );
+	}
+	if ( ! in_array( 'index', $robots, true ) ) {
+		array_unshift( $robots, 'index' );
+	}
+	return $robots;
+}, 99 );
 
 /**
  * Build the full SEO data set for the current request,
@@ -127,7 +148,8 @@ function adn_seo_resolve(): array {
 function adn_seo_head_output(): void {
 	$s        = adn_seo_resolve();
 	$reg      = (array) $GLOBALS['adn_seo'];
-	$yoast_on = defined( 'WPSEO_VERSION' );
+	$yoast_on    = defined( 'WPSEO_VERSION' );
+	$rankmath_on = defined( 'RANK_MATH_VERSION' );
 
 	/* ── Preconnect for external font/icon CDNs (always output) ── */
 	echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
@@ -168,8 +190,8 @@ function adn_seo_head_output(): void {
 		$_canonical = trailingslashit( $_canonical );
 	}
 
-	/* Skip everything below if Yoast is handling it */
-	if ( $yoast_on ) {
+	/* Skip duplicate meta/OG/Twitter when Yoast or Rank Math is handling it */
+	if ( $yoast_on || $rankmath_on ) {
 		return;
 	}
 
