@@ -48,8 +48,12 @@ $url  = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 
 		<div class="glc-meta">
 			<?php if ( ! empty( $item['read_time'] ) ) : ?>
-				<span class="glc-read"><?php echo esc_html( $item['read_time'] ); ?></span>
+				<span class="glc-read">
+					<svg class="glc-read-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3.2l2 1.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+					<?php echo esc_html( $item['read_time'] ); ?>
+				</span>
 			<?php endif; ?>
+			<span class="glc-arrow">Read &rarr;</span>
 		</div>
 	</div>
 

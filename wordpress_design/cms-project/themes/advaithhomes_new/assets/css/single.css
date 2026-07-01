@@ -619,6 +619,63 @@
     pointer-events: auto;
 }
 
+/* ── Details / Summary (FAQ accordion in article body) ──────── */
+.article-body details {
+    border: 1.5px solid var(--color-border, #e5e7eb);
+    border-radius: 10px;
+    margin: 16px 0;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+.article-body details[open] {
+    border-color: var(--client-color, #1e3a2f);
+}
+.article-body summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 0.97rem;
+    color: var(--color-heading, #111827);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    background: var(--color-surface, #f9fafb);
+    border-radius: 10px;
+    transition: background 0.18s, color 0.18s;
+}
+.article-body summary::-webkit-details-marker { display: none; }
+.article-body details[open] > summary {
+    background: rgba(30,58,47,.06);
+    color: var(--client-color, #1e3a2f);
+    border-radius: 10px 10px 0 0;
+}
+/* chevron icon */
+.article-body summary::after {
+    content: '';
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 6l5 5 5-5' stroke='%231e3a2f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform 0.22s ease;
+}
+.article-body details[open] > summary::after {
+    transform: rotate(180deg);
+}
+/* answer body */
+.article-body details > *:not(summary) {
+    padding: 14px 18px 16px;
+    border-top: 1.5px solid var(--color-border, #e5e7eb);
+    font-size: 0.96rem;
+    line-height: 1.75;
+    color: var(--color-text, #374151);
+}
+.article-body details > p:not(summary) { margin: 0; }
+
 /* Callout: Tip */
 .article-tip-box {
     background: var(--color-info-bg, #eff6ff);

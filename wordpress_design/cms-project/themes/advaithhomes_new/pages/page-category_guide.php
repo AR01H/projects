@@ -124,48 +124,36 @@ adn_page_open( $_open_ctx );
 
 		<main class="cat-guide-main">
 
-			<?php /* ── Guides Carousel ── */ ?>
+			<?php /* ── Guides Grid ── */ ?>
 			<?php if ( ! empty( $ctx['guides']['items'] ) ) : ?>
 			<div class="category-section category-guides">
-				<?php
-				adn_component( 'parts/section_headers/section_header', array(
+				<?php adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['guides']['heading'] ) ? $ctx['guides']['heading'] : array(),
 					'tag'     => 'h2',
-				) );
-				adn_component( 'sections/guides', array( 'items' => $ctx['guides']['items'] ) );
-				?>
+				) ); ?>
+				<div class="cat-guides-grid">
+					<?php foreach ( (array) $ctx['guides']['items'] as $_cg_card ) : ?>
+						<?php adn_component( 'cards/guide_card', array( 'card' => $_cg_card ) ); ?>
+					<?php endforeach; ?>
+				</div>
 			</div>
 			<?php endif; ?>
 
 			<?php /* ── Popular Posts (admin-curated) ── */ ?>
 			<?php if ( ! empty( $ctx['popular_posts']['items'] ) ) : ?>
 			<div class="category-section category-popular">
-				<?php
-				adn_component( 'parts/section_headers/section_header', array(
+				<?php adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['popular_posts']['heading'] ) ? $ctx['popular_posts']['heading'] : array(),
 					'tag'     => 'h2',
-				) );
-				adn_component( 'sections/guides', array( 'items' => $ctx['popular_posts']['items'] ) );
-				?>
-			</div>
-			<?php endif; ?>
-
-			<?php /* ── Tools ── */ ?>
-			<?php if ( ! empty( $ctx['calculators']['items'] ) ) : ?>
-			<div class="category-section category-tools">
-				<?php
-				adn_component( 'parts/section_headers/section_header', array(
-					'heading' => isset( $ctx['calculators']['heading'] ) ? $ctx['calculators']['heading'] : array(),
-					'tag'     => 'h3',
-				) );
-				?>
-				<div class="tool-grid">
-					<?php foreach ( (array) $ctx['calculators']['items'] as $card ) : ?>
-						<?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
+				) ); ?>
+				<div class="cat-guides-grid">
+					<?php foreach ( (array) $ctx['popular_posts']['items'] as $_cg_card ) : ?>
+						<?php adn_component( 'cards/guide_card', array( 'card' => $_cg_card ) ); ?>
 					<?php endforeach; ?>
 				</div>
 			</div>
 			<?php endif; ?>
+
 
 			<?php /* ── Resources (library items) ── */ ?>
 			<?php if ( ! empty( $ctx['resources']['items'] ) ) : ?>
@@ -205,6 +193,49 @@ adn_page_open( $_open_ctx );
 
 	</div>
 </div>
+
+<?php /* ============================== TOOLS CAROUSEL (full-width) ============================== */ ?>
+<?php if ( ! empty( $ctx['calculators']['items'] ) ) : ?>
+<section class="cat-guide-tools-section">
+	<div class="container">
+		<?php adn_component( 'parts/section_headers/section_header', array(
+			'heading' => isset( $ctx['calculators']['heading'] ) ? $ctx['calculators']['heading'] : array(),
+			'tag'     => 'h2',
+		) ); ?>
+		<div class="cgt-carousel-wrap">
+			<div class="cgt-track">
+				<?php foreach ( (array) $ctx['calculators']['items'] as $_tc ) : ?>
+					<?php adn_component( 'cards/tool_card', array( 'card' => $_tc ) ); ?>
+				<?php endforeach; ?>
+			</div>
+			<button class="cgt-arrow cgt-arrow--prev" aria-label="<?php esc_attr_e( 'Previous', ADN_TEXT_DOMAIN ); ?>">
+				<i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+			</button>
+			<button class="cgt-arrow cgt-arrow--next" aria-label="<?php esc_attr_e( 'Next', ADN_TEXT_DOMAIN ); ?>">
+				<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+			</button>
+		</div>
+	</div>
+</section>
+<script>
+(function(){
+	var wrap  = document.currentScript.previousElementSibling;
+	var track = wrap.querySelector('.cgt-track');
+	var prev  = wrap.querySelector('.cgt-arrow--prev');
+	var next  = wrap.querySelector('.cgt-arrow--next');
+	if(!track||!prev||!next){ return; }
+	function cardW(){ var c=track.children[0]; return c ? c.offsetWidth + parseInt(getComputedStyle(track).gap||0) : 320; }
+	function upd(){
+		prev.classList.toggle('cgt-arrow--hidden', track.scrollLeft <= 2);
+		next.classList.toggle('cgt-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
+	}
+	prev.addEventListener('click', function(){ track.scrollBy({left:-cardW()*2, behavior:'smooth'}); });
+	next.addEventListener('click', function(){ track.scrollBy({left: cardW()*2, behavior:'smooth'}); });
+	track.addEventListener('scroll', upd, {passive:true});
+	upd();
+}());
+</script>
+<?php endif; ?>
 
 <?php /* ============================== CTA BANNER (interruption after guides) ============================== */ ?>
 <?php if ( ! empty( $ctx['cta_banner']['title'] ) ) : ?>

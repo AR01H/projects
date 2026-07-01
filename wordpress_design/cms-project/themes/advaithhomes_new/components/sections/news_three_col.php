@@ -168,15 +168,11 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 	}
 	window.addEventListener( 'resize', function () { applyFourItemHeight( wrap ); } );
 
-	var track     = wrap.querySelector('.news-three-inner');
-	var prev      = wrap.querySelector('.ntc-arrow--prev');
-	var next      = wrap.querySelector('.ntc-arrow--next');
-	var dotsEl    = wrap.querySelector('.ntc-dots');
-	var panels    = Array.prototype.slice.call( track.children );
-	var panelH    = [];
-	var scrollTmr;
-
-	function isMobile(){ return window.innerWidth <= 680; }
+	var track  = wrap.querySelector('.news-three-inner');
+	var prev   = wrap.querySelector('.ntc-arrow--prev');
+	var next   = wrap.querySelector('.ntc-arrow--next');
+	var dotsEl = wrap.querySelector('.ntc-dots');
+	var panels = Array.prototype.slice.call( track.children );
 
 	var dots = panels.map(function(_, i){
 		var d = document.createElement('span');
@@ -198,14 +194,13 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 		return best;
 	}
 
-	function measureHeights(){
-		panelH = panels.map(function(p){ return p.offsetHeight; });
-	}
-
-	function syncHeight(){
-		if( !isMobile() ){ track.style.height = ''; return; }
-		var h = panelH[ activeIndex() ];
-		if( h ) track.style.height = h + 'px';
+	function equalizeHeights(){
+		/* Reset so we measure natural heights */
+		panels.forEach(function(p){ p.style.height = ''; });
+		if( window.innerWidth > 680 ){ return; } /* desktop: natural heights */
+		var maxH = 0;
+		panels.forEach(function(p){ if( p.offsetHeight > maxH ) maxH = p.offsetHeight; });
+		panels.forEach(function(p){ p.style.height = maxH + 'px'; });
 	}
 
 	function update(){
@@ -215,21 +210,15 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 		next.classList.toggle('ntc-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
 	}
 
-	function onScroll(){
-		update();
-		clearTimeout(scrollTmr);
-		scrollTmr = setTimeout(syncHeight, 120);
-	}
-
 	prev.addEventListener('click', function(){ track.scrollBy({ left: -(track.clientWidth + 16), behavior: 'smooth' }); });
 	next.addEventListener('click', function(){ track.scrollBy({ left:  (track.clientWidth + 16), behavior: 'smooth' }); });
-	track.addEventListener('scroll', onScroll, { passive: true });
-	window.addEventListener('resize', function(){ measureHeights(); syncHeight(); update(); });
+	track.addEventListener('scroll', update, { passive: true });
+	window.addEventListener('resize', function(){ equalizeHeights(); update(); });
 
 	if( document.readyState === 'complete' ){
-		measureHeights(); syncHeight(); update();
+		equalizeHeights(); update();
 	} else {
-		window.addEventListener('load', function(){ measureHeights(); syncHeight(); update(); });
+		window.addEventListener('load', function(){ equalizeHeights(); update(); });
 	}
 }());
 </script>
