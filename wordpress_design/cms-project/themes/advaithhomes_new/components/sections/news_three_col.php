@@ -134,7 +134,40 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 
 <script>
 (function(){
+	/* ── Clamp a scrollable list to exactly 5 items height ── */
+	function clampList( list ) {
+		list.style.maxHeight = '';
+		var items = list.children;
+		if ( items.length <= 4 ) { return; }
+		var cs  = getComputedStyle( list );
+		var gap = parseFloat( cs.gap || cs.rowGap ) || 0;
+		var h   = 0;
+		for ( var i = 0; i < 4; i++ ) {
+			h += items[ i ].getBoundingClientRect().height;
+			if ( i < 3 ) { h += gap; }
+		}
+		list.style.maxHeight = Math.ceil( h ) + 'px';
+	}
+
+	function applyFourItemHeight( wrap ) {
+		/* News / regulation / topics panels */
+		wrap.querySelectorAll( '.list-widget-items' ).forEach( clampList );
+		/* Spotlight panel — find sibling .news-sp-row__spotlight in same section */
+		var section = wrap.closest( '.news-three-col, section' );
+		if ( section ) {
+			section.querySelectorAll( '.spotlight-items' ).forEach( clampList );
+		}
+	}
+
 	var wrap      = document.currentScript.previousElementSibling;
+	/* Run after full layout (fonts + images settled) */
+	if ( document.readyState === 'complete' ) {
+		applyFourItemHeight( wrap );
+	} else {
+		window.addEventListener( 'load', function () { applyFourItemHeight( wrap ); } );
+	}
+	window.addEventListener( 'resize', function () { applyFourItemHeight( wrap ); } );
+
 	var track     = wrap.querySelector('.news-three-inner');
 	var prev      = wrap.querySelector('.ntc-arrow--prev');
 	var next      = wrap.querySelector('.ntc-arrow--next');

@@ -295,6 +295,67 @@
         }
     }
 
+    /* ── Scroll-reveal for article elements ─────────────────── */
+
+    function initScrollReveal() {
+        var body = document.querySelector( '.article-body' );
+        if ( ! body || ! window.IntersectionObserver ) { return; }
+
+        /* prefers-reduced-motion: skip animations */
+        if ( window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) { return; }
+
+        var sel = [
+            'h2', 'h3', 'h4', 'p', 'ul', 'ol', 'table',
+            'blockquote', 'figure', 'img',
+            '.article-tip-box', '.article-note-box'
+        ].map( function ( s ) { return ':is(.article-body, .article-body section) > ' + s; } ).join( ', ' );
+
+        var els;
+        try {
+            els = body.querySelectorAll( sel );
+        } catch ( _e ) {
+            /* Fallback for browsers without :is() */
+            els = body.querySelectorAll(
+                'h2,h3,h4,p,ul,ol,table,blockquote,figure,img,.article-tip-box,.article-note-box'
+            );
+        }
+        if ( ! els.length ) { return; }
+
+        /* Mark body so CSS hides children (no flash without JS) */
+        body.classList.add( 'adn-reveal-ready' );
+
+        var io = new IntersectionObserver( function ( entries ) {
+            entries.forEach( function ( entry ) {
+                if ( ! entry.isIntersecting ) { return; }
+                entry.target.classList.add( 'adn-visible' );
+                io.unobserve( entry.target );
+            } );
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' } );
+
+        els.forEach( function ( el ) { io.observe( el ); } );
+    }
+
+    /* ── Reading progress bar + back-to-top ─────────────────── */
+
+    function initScrollUI() {
+        var bar = document.getElementById( 'readingProgress' );
+        var btn = document.getElementById( 'backToTop' );
+        if ( ! bar && ! btn ) { return; }
+
+        window.addEventListener( 'scroll', function () {
+            var doc = document.documentElement;
+            var pct = doc.scrollTop / ( doc.scrollHeight - doc.clientHeight ) * 100;
+            if ( bar ) { bar.style.width = Math.min( pct, 100 ) + '%'; }
+            if ( btn ) { btn.classList.toggle( 'is-visible', doc.scrollTop > 300 ); }
+        }, { passive: true } );
+
+        if ( btn ) {
+            btn.addEventListener( 'click', function () {
+                window.scrollTo( { top: 0, behavior: 'smooth' } );
+            } );
+        }
+    }
+
     /* ── Bootstrap ───────────────────────────────────────────── */
 
     function init() {
@@ -303,6 +364,8 @@
         bindSaveGuide();
         initCommentForm();
         initCommentsFilter();
+        initScrollReveal();
+        initScrollUI();
     }
 
     if ( document.readyState === 'loading' ) {

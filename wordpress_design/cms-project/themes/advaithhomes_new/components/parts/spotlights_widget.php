@@ -131,6 +131,7 @@ if ( $_is_compact ) {
 				<h3><?= $_heading ?></h3>
 			</div>
 
+			<div class="spotlight-items">
 			<?php foreach ( $rows as $_sp ) :
 				$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
 				$_val      = trim( (string) ( $_sp->point_value ?? '' ) );
@@ -147,6 +148,7 @@ if ( $_is_compact ) {
 				);
 				adn_component( 'cards/spotlight_card', array( 'card' => $card ) );
 			endforeach; ?>
+			</div>
 		</div>
 	</div>
 	<?php
