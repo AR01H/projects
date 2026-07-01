@@ -160,7 +160,7 @@ function adn_route_parent_term_template( $template ) {
 	}
 
 	$row = $wpdb->get_row( $wpdb->prepare(
-		"SELECT id FROM {$table} WHERE slug = %s AND status = 'active' LIMIT 1",
+		"SELECT id, name FROM {$table} WHERE slug = %s AND status = 'active' LIMIT 1",
 		$slug
 	) );
 
@@ -175,6 +175,11 @@ function adn_route_parent_term_template( $template ) {
 		$wp_query->is_single  = false;
 		$wp_query->is_singular = false;
 		$wp_query->is_archive = false;
+		$_pt_title = isset( $row->name ) && '' !== (string) $row->name ? (string) $row->name : get_bloginfo( 'name' );
+		add_filter( 'document_title_parts', static function ( $parts ) use ( $_pt_title ) {
+			$parts['title'] = $_pt_title;
+			return $parts;
+		} );
 		set_query_var( 'adn_cat_slug', $slug );
 		return get_template_directory() . '/pages/page-category_guide.php';
 	}
@@ -192,7 +197,7 @@ function adn_route_parent_term_template( $template ) {
 	}
 
 	$tax_row = $wpdb->get_row( $wpdb->prepare(
-		"SELECT id FROM {$tax_table} WHERE slug = %s AND status = 'active' LIMIT 1",
+		"SELECT id, name FROM {$tax_table} WHERE slug = %s AND status = 'active' LIMIT 1",
 		$slug
 	) );
 
@@ -213,6 +218,11 @@ function adn_route_parent_term_template( $template ) {
 	$wp_query->is_single   = false;
 	$wp_query->is_singular = false;
 	$wp_query->is_archive  = false;
+	$_tx_title = isset( $tax_row->name ) && '' !== (string) $tax_row->name ? (string) $tax_row->name : get_bloginfo( 'name' );
+	add_filter( 'document_title_parts', static function ( $parts ) use ( $_tx_title ) {
+		$parts['title'] = $_tx_title;
+		return $parts;
+	} );
 	set_query_var( 'adn_guide_term_slug', $slug );
 
 	return get_template_directory() . '/pages/page-topic_category_guide.php';
