@@ -42,11 +42,6 @@ get_header();
 <?php adn_component( 'parts/main_header', array( 'chrome' => $ctx['chrome'] ) ); ?>
 
 <div class="reading-progress-bar" id="readingProgress" aria-hidden="true"></div>
-<button class="back-to-top" id="backToTop" aria-label="<?php esc_attr_e( 'Back to top', ADN_TEXT_DOMAIN ); ?>">
-	<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-		<path d="M9 14V4M4 9l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-	</svg>
-</button>
 
 <?php /* ============================== BREADCRUMB ============================== */ ?>
 <?php if ( ! empty( $ctx['breadcrumb'] ) ) : ?>

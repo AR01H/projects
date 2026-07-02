@@ -335,25 +335,17 @@
         els.forEach( function ( el ) { io.observe( el ); } );
     }
 
-    /* ── Reading progress bar + back-to-top ─────────────────── */
+    /* ── Reading progress bar ───────────────────────────────── */
 
     function initScrollUI() {
         var bar = document.getElementById( 'readingProgress' );
-        var btn = document.getElementById( 'backToTop' );
-        if ( ! bar && ! btn ) { return; }
+        if ( ! bar ) { return; }
 
         window.addEventListener( 'scroll', function () {
             var doc = document.documentElement;
             var pct = doc.scrollTop / ( doc.scrollHeight - doc.clientHeight ) * 100;
-            if ( bar ) { bar.style.width = Math.min( pct, 100 ) + '%'; }
-            if ( btn ) { btn.classList.toggle( 'is-visible', doc.scrollTop > 300 ); }
+            bar.style.width = Math.min( pct, 100 ) + '%';
         }, { passive: true } );
-
-        if ( btn ) {
-            btn.addEventListener( 'click', function () {
-                window.scrollTo( { top: 0, behavior: 'smooth' } );
-            } );
-        }
     }
 
     /* ── Bootstrap ───────────────────────────────────────────── */

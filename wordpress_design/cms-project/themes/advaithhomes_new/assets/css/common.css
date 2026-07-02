@@ -219,3 +219,7 @@ tbody td.bold { font-weight: 500; color: var(--client-color); }
 .adn-wp-page__content a  { color: var(--client-color); text-decoration: underline; }
 .adn-wp-page__content a:hover { color: var(--secondary-color); }
 .adn-wp-page__content strong { color: var(--text-primary); }
+
+.back-to-top{
+  display: none;
+}

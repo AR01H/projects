@@ -52,7 +52,7 @@ function adn_term( $key, $default = '' ) {
 define( 'ADN_THEME_NAME',    'advaithhomes_new' );
 define( 'ADN_THEME_DIR',     get_template_directory() );
 define( 'ADN_THEME_URI',     get_template_directory_uri() );
-define( 'ADN_THEME_VERSION', '1.0.3' );
+define( 'ADN_THEME_VERSION', '1.0.4' );
 
 // Translation text domain. Must match the "Text Domain:" header in style.css.
 define( 'ADN_TEXT_DOMAIN', 'advaithhomes' );

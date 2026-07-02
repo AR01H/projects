@@ -272,7 +272,9 @@
 .fa-flask-vial::before        { color: var(--color-navy-mid-hover); }
 
 /* ── Symbols & Misc ──────────────────────────────────────────────────────── */
-.fa-circle-info::before       {  }
+.fa-circle-info::before       { color:white; }
+.fa-calculator:before          { color: wheat; }
+.fa-users:before             { color: whitesmoke; }
 .fa-check::before             { color: #00b894; }
 .fa-circle-check::before      { color: #00b894; }
 .fa-star::before              { color: #f9ca24; }

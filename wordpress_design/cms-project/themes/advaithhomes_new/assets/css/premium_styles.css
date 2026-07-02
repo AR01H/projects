@@ -248,10 +248,3 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .bsl__progress-bar          { background: var(--secondary-color) !important; }
 .banners-promo-section      { border-bottom: 2px solid var(--secondary-color) !important; }
 
-.scroll-to-top {
-    background: var(--secondary-color) !important;
-    box-shadow: none !important;
-    border-radius: var(--radius-xs) !important;
-    border: none;
-}
-.scroll-to-top:hover { background: var(--gold-600) !important; }
