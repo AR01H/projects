@@ -18,6 +18,7 @@ function ahn_include_files() {
     }
 }
 function adn_enqueue_common_css() {
+    $asset_ver = get_option( 'adn_asset_ver', ADN_THEME_VERSION );
     $styles = array(
         'adn-varaibles-style'  => '/assets/css/variables.css',
         'adn-chrome-style'     => '/assets/css/chrome.css',
@@ -32,7 +33,7 @@ function adn_enqueue_common_css() {
         'adn-cookie-consent-style' => '/assets/css/cookie-consent.css',
     );
     foreach ( $styles as $handle => $file ) {
-        wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), ADN_THEME_VERSION );
+        wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), $asset_ver );
     }
     // Font Awesome 6 (free) - powers adn_icon() across the theme.
     wp_enqueue_style( 'adn-fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css', array(), '6.5.2' );
@@ -141,14 +142,15 @@ function adn_enqueue_template_specific_assets() {
     }
 
     if ( is_single() ) {
+        $asset_ver = get_option( 'adn_asset_ver', ADN_THEME_VERSION );
         if ( file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ) {
-            wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), ADN_THEME_VERSION );
+            wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), $asset_ver );
         }
         if ( file_exists( ADN_THEME_DIR . '/assets/css/article.css' ) ) {
-            wp_enqueue_style( 'adn-article-style', ADN_THEME_URI . '/assets/css/article.css', array(), ADN_THEME_VERSION );
+            wp_enqueue_style( 'adn-article-style', ADN_THEME_URI . '/assets/css/article.css', array(), $asset_ver );
         }
         if ( file_exists( ADN_THEME_DIR . '/assets/js/single.js' ) ) {
-            wp_enqueue_script( 'adn-single-script', ADN_THEME_URI . '/assets/js/single.js', array(), ADN_THEME_VERSION, true );
+            wp_enqueue_script( 'adn-single-script', ADN_THEME_URI . '/assets/js/single.js', array(), $asset_ver, true );
             wp_localize_script( 'adn-single-script', 'adnComments', array(
                 'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
                 'submitNonce'   => wp_create_nonce( 'adn_comment_nonce' ),

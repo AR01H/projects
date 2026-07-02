@@ -7,6 +7,7 @@ class AH_Admin_Bootstrap {
 		add_action( 'admin_menu', array( 'AH_Admin_Menus', 'register' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
 		add_action( 'admin_bar_menu', array( self::class, 'clean_admin_bar' ), 999 );
+		add_action( 'admin_post_adn_purge_cache', array( self::class, 'handle_purge_cache' ) );
 		add_action( 'admin_post_ah_cms_nav', array( self::class, 'handle_navigation' ) );
 		add_action( 'admin_post_ah_delete_spotlight_item', array( self::class, 'handle_delete_spotlight_item' ) );
 		add_action( 'admin_post_ah_delete_spotlight_term', array( self::class, 'handle_delete_spotlight_term' ) );
@@ -145,6 +146,31 @@ class AH_Admin_Bootstrap {
 
 	public static function clean_admin_bar( \WP_Admin_Bar $bar ): void {
 		$bar->remove_node( 'new-post' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=adn_purge_cache&_wp_http_referer=' . rawurlencode( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ) ) ),
+			'adn_purge_cache'
+		);
+		$bar->add_node( array(
+			'id'    => 'adn-purge-cache',
+			'title' => '🗑 Purge Cache',
+			'href'  => esc_url( $url ),
+			'meta'  => array( 'title' => 'Force all browsers to reload CSS/JS' ),
+		) );
+	}
+
+	public static function handle_purge_cache(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( 'Not allowed.', 403 );
+		}
+		check_admin_referer( 'adn_purge_cache' );
+		update_option( 'adn_asset_ver', (string) time(), false );
+		$back = isset( $_GET['_wp_http_referer'] ) ? wp_unslash( $_GET['_wp_http_referer'] ) : admin_url();
+		wp_safe_redirect( sanitize_url( $back ) );
+		exit;
 	}
 
 	public static function redirect( string $url ): void {
