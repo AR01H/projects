@@ -167,6 +167,11 @@ function adn_post_get_context() {
 
 	$read_time = (string) get_post_meta( $post->ID, '_adn_read_time', true );
 
+	$expert_contact = array(
+		'experts' => function_exists( 'adn_service_ask_expert_data' ) ? adn_service_ask_expert_data() : array(),
+		'contact' => function_exists( 'adn_service_contact_data' )    ? adn_service_contact_data()    : array(),
+	);
+
 	return array(
 		'breadcrumb'     => $breadcrumb,
 		'article'        => array(
@@ -195,5 +200,6 @@ function adn_post_get_context() {
 		'related_content' => $related_content,
 		'sidebar'        => $sidebar,
 		'chrome'         => $chrome,
+		'expert_contact' => $expert_contact,
 	);
 }

@@ -147,4 +147,3 @@ $nl_nonce     = wp_create_nonce( 'ah_newsletter_nonce' );
 </script>
 
 </footer>
-

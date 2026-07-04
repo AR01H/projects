@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    article.css - Article / guide single page styles
    Extracted from some_styles/new_advaithhomes_design/assets/css/style.css
    Loaded only on is_single() pages via explode_function.php.
@@ -80,15 +80,13 @@
 
 /* ── Article Body ───────────────────────────────────────────── */
 .article-body {}
-.article-body h2 { font-size: 1.3rem; margin: 32px 0 14px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.article-body h2 { font-size: 1.3rem; margin: 16px 0 10px; padding-top: 10px; border-top: 1px solid var(--color-border); }
 .article-body h2:first-child { border-top: none; margin-top: 0; }
-.article-body p { font-size: 0.925rem; color: var(--text-primary); line-height: 1.75; }
-.article-body ol,.article-body ul { margin: 0 0 16px 16px; }
-.article-body ul li { font-size: 0.925rem; color: var(--text-primary); margin-bottom: 6px; list-style: disc; line-height: 1.6; }
+.article-body p { font-size: 0.925rem; color: var(--text-primary); line-height: 1.75; margin: 0 0 10px; }
+.article-body ol,.article-body ul { margin: 0 0 10px 12px; }
+.article-body ul li { font-size: 0.925rem; color: var(--text-primary); margin-bottom: 3px; list-style: disc; line-height: 1.6; }
 .article-body strong { color: var(--color-dark, #1a2332); }
-.article-body table{
-    margin-left: 6px;
-}
+.article-body table { margin-left: 0; margin-bottom: 10px; }
 /* ── Callout Boxes ──────────────────────────────────────────── */
 .tip-box {
   background: #eff6ff;
@@ -423,53 +421,62 @@
 
 /* ── Details / FAQ Accordion ────────────────────────────────── */
 .article-body details {
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--secondary-color, #B08D57);
-  border-radius: var(--radius-sm);
-  margin: 6px 0;
   background: var(--color-white, #fff);
+  border: 1.5px solid rgba(30,58,47,.1);
+  border-radius: 10px;
+  margin: 0;
   overflow: hidden;
+  transition: border-color 0.18s, box-shadow 0.18s;
 }
-.article-body details + details { margin-top: 4px; }
+.article-body details + details { margin-top: 5px; }
 .article-body details[open] {
-  border-left-color: var(--client-color, #203c3e);
+  border-color: var(--client-color, #1e3a2f);
+  box-shadow: 0 3px 14px rgba(30,58,47,.07);
 }
 .article-body summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 4px 18px;
-  font-size: 0.9rem;
+  padding: 9px 14px;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--color-dark, #1a2332);
   cursor: pointer;
   list-style: none;
   user-select: none;
+  transition: background 0.15s, color 0.15s;
+}
+.article-body summary:hover { background: rgba(30,58,47,.03); }
+.article-body details[open] > summary {
+  color: var(--client-color, #1e3a2f);
+  background: rgba(30,58,47,.04);
+  border-bottom: 1px solid rgba(30,58,47,.08);
 }
 .article-body summary::-webkit-details-marker { display: none; }
 .article-body summary::after {
   content: '';
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid var(--secondary-color, #B08D57);
-  border-bottom: 2px solid var(--secondary-color, #B08D57);
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
   flex-shrink: 0;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-  margin-bottom: 3px;
+  transition: transform 0.2s ease;
+  margin-bottom: 2px;
+  opacity: 0.55;
 }
 .article-body details[open] > summary::after {
   transform: rotate(-135deg);
-  border-color: var(--client-color, #203c3e);
-  margin-bottom: -3px;
+  margin-bottom: -2px;
+  opacity: 1;
 }
 .article-body details > p,
 .article-body details > div {
-  padding: 0 14px 12px;
+  padding: 10px 14px;
   font-size: 0.875rem;
   color: var(--color-black);
-  line-height: 1.7;
+  line-height: 1.65;
   margin: 0;
 }
 

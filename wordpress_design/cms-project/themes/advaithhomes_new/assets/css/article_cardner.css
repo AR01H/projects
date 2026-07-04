@@ -1,0 +1,523 @@
+﻿/* ================================================================
+   article_cardner.css — Card-first layout system for article pages
+   Scoped by class naming (acard-*); safe to load on all singles.
+   Companion to single.css + article.css — does not duplicate them.
+   ================================================================ */
+
+/* ── Grid containers ──────────────────────────────────────────── */
+
+.acard-grid {
+    display: grid;
+    gap: 10px;
+    margin: 10px 0;
+}
+.acard-2    { grid-template-columns: repeat(2, 1fr); }
+.acard-3    { grid-template-columns: repeat(3, 1fr); }
+.acard-4    { grid-template-columns: repeat(4, 1fr); }
+.acard-auto { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+/* Bento — declare spans on children */
+.acard-bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 10px;
+    margin: 10px 0;
+}
+.acard-s4  { grid-column: span 4; }
+.acard-s6  { grid-column: span 6; }
+.acard-s8  { grid-column: span 8; }
+.acard-s12 { grid-column: span 12; }
+
+/* Horizontal scroll row */
+.acard-row {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+.acard-row > .acard { flex: 0 0 210px; scroll-snap-align: start; }
+.acard-row::-webkit-scrollbar { height: 4px; }
+.acard-row::-webkit-scrollbar-track { background: rgba(30,58,47,.06); border-radius: 2px; }
+.acard-row::-webkit-scrollbar-thumb { background: rgba(30,58,47,.28); border-radius: 2px; }
+
+/* ── Carousel — 3-up peek scroll with snap ────────────────────── */
+.acard-carousel {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+    cursor: grab;
+}
+.acard-carousel:active { cursor: grabbing; }
+.acard-carousel > .acard {
+    flex: 0 0 calc(33.333% - 7px);
+    min-width: 200px;
+    scroll-snap-align: start;
+}
+.acard-carousel::-webkit-scrollbar { height: 4px; }
+.acard-carousel::-webkit-scrollbar-track { background: rgba(30,58,47,.06); border-radius: 3px; }
+.acard-carousel::-webkit-scrollbar-thumb { background: var(--client-color, #1e3a2f); border-radius: 3px; }
+@media (max-width: 768px) {
+    .acard-carousel > .acard { flex: 0 0 calc(50% - 5px); }
+}
+@media (max-width: 480px) {
+    .acard-carousel > .acard { flex: 0 0 82%; }
+}
+
+/* ── Base card ────────────────────────────────────────────────── */
+
+.acard {
+    border-radius: 10px;
+    padding: 11px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.acard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(30,58,47,.1);
+}
+
+/* ── OUTLINE variants ─────────────────────────────────────────── */
+
+.acard-ol {
+    background: transparent;
+    border: 1.5px solid #ddd8cc;
+}
+.acard-ol:hover { border-color: rgba(30,58,47,.32); }
+
+.acard-ol-green {
+    background: transparent;
+    border: 2px solid var(--client-color, #1e3a2f);
+}
+
+.acard-ol-gold {
+    background: transparent;
+    border: 2px solid var(--color-accent, #c9a84c);
+}
+
+.acard-ol-dash {
+    background: rgba(30,58,47,.02);
+    border: 1.5px dashed rgba(30,58,47,.22);
+}
+
+/* ── FILLED variants ──────────────────────────────────────────── */
+
+.acard-green {
+    background: var(--client-color, #1e3a2f);
+    color: rgba(255,255,255,.92);
+}
+.acard-green .acard-title    { color: var(--color-accent, #c9a84c); }
+.acard-green .acard-body     { color: rgba(255,255,255,.82); }
+.acard-green .acard-tag      { background: rgba(255,255,255,.12); color: rgba(255,255,255,.88); }
+.acard-green .acard-num      { color: var(--color-accent, #c9a84c); }
+.acard-green .acard-foot     { border-top-color: rgba(255,255,255,.1); color: rgba(255,255,255,.55); }
+.acard-green .acard-badge    { background: rgba(255,255,255,.12); }
+.acard-green .acard-divider  { background: rgba(255,255,255,.1); }
+.acard-green .acard-cta      { color: var(--color-accent, #c9a84c); }
+.acard-green::after {
+    content: '';
+    position: absolute;
+    bottom: -22px; right: -22px;
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: rgba(201,168,76,.09);
+    pointer-events: none;
+}
+
+.acard-parchment {
+    background: #f5f1ea;
+    border: 1px solid #e4dcce;
+    color: var(--color-heading, #111827);
+}
+.acard-parchment .acard-title { color: var(--client-color, #1e3a2f); }
+.acard-parchment .acard-num   { color: var(--client-color, #1e3a2f); }
+.acard-parchment .acard-body  { color: #4b5563; }
+
+.acard-soft {
+    background: rgba(30,58,47,.04);
+    border: 1.5px solid rgba(30,58,47,.09);
+}
+.acard-soft .acard-title { color: var(--client-color, #1e3a2f); }
+
+.acard-gold-tint {
+    background: rgba(201,168,76,.07);
+    border: 1.5px solid rgba(201,168,76,.26);
+}
+.acard-gold-tint .acard-title { color: #5a3e08; }
+.acard-gold-tint .acard-num   { color: var(--color-accent, #c9a84c); }
+
+.acard-ice {
+    background: #f0f7ff;
+    border: 1.5px solid rgba(59,130,246,.18);
+}
+.acard-ice .acard-title { color: #1e40af; }
+
+/* ── FLAT / magazine ──────────────────────────────────────────── */
+
+.acard-flat {
+    border-radius: 0;
+    border-top: 4px solid var(--client-color, #1e3a2f);
+    border-left: 1px solid rgba(30,58,47,.1);
+    border-right: 1px solid rgba(30,58,47,.1);
+    border-bottom: 1px solid rgba(30,58,47,.1);
+    background: #fff;
+    box-shadow: none;
+}
+.acard-flat:hover {
+    transform: none;
+    box-shadow: inset 0 0 0 1px rgba(30,58,47,.16);
+}
+.acard-flat-gold { border-top-color: var(--color-accent, #c9a84c); }
+
+/* ── Card elements ────────────────────────────────────────────── */
+
+.acard-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    display: block;
+}
+
+.acard-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(30,58,47,.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+.acard-parchment .acard-badge { background: rgba(30,58,47,.07); }
+.acard-gold-tint .acard-badge { background: rgba(201,168,76,.15); }
+
+.acard-num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--client-color, #1e3a2f);
+    font-family: var(--font-display, Georgia, serif);
+    letter-spacing: -0.02em;
+}
+.acard-unit {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #c9a84c);
+    display: block;
+    margin-top: -2px;
+}
+
+.acard-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(30,58,47,.07);
+    color: var(--client-color, #1e3a2f);
+    width: fit-content;
+    line-height: 1.4;
+}
+
+.acard-title {
+    font-size: 0.93rem;
+    font-weight: 700;
+    color: var(--color-heading, #111827);
+    line-height: 1.28;
+    margin: 0;
+    text-wrap: balance;
+}
+
+.acard-subtitle {
+    font-size: 0.74rem;
+    color: var(--color-text, #6b7280);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.acard-body {
+    font-size: 0.855rem;
+    color: var(--color-text, #6b7280);
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+}
+.acard-green .acard-body p,
+.acard-green p,
+.acard-green .acard-body { color: rgba(255,255,255,.82); }
+
+.acard-foot {
+    margin-top: auto;
+    padding-top: 7px;
+    border-top: 1px solid rgba(30,58,47,.08);
+    font-size: 0.73rem;
+    color: var(--color-text, #6b7280);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.acard-divider {
+    height: 1px;
+    background: rgba(30,58,47,.09);
+}
+
+.acard-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--client-color, #1e3a2f);
+    text-decoration: none;
+    cursor: default;
+    transition: gap 0.14s;
+}
+.acard-cta::after { content: '→'; }
+.acard-cta:hover { gap: 7px; }
+
+/* List inside a card */
+.acard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.acard-list li,
+.article-body .acard-list li {
+    font-size: 0.855rem;
+    line-height: 1.5;
+    padding-left: 18px;
+    position: relative;
+    color: var(--color-text, #6b7280);
+    list-style: none;
+}
+.acard-green .acard-list li { color: rgba(255,255,255,.82); }
+.acard-list li::before { position: absolute; left: 0; font-weight: 700; }
+
+.acard-list-check li::before  { content: '✓'; color: #16a34a; }
+.acard-list-cross li::before  { content: '✗'; color: #dc2626; }
+.acard-list-arrow li::before  { content: '→'; color: var(--color-accent, #c9a84c); }
+.acard-list-dot   li::before  { content: '·'; color: var(--client-color, #1e3a2f); font-size: 1.2rem; line-height: 1; }
+
+.acard-green .acard-list-check li::before { color: var(--color-accent, #c9a84c); }
+
+/* ── Stat spotlight card ──────────────────────────────────────── */
+
+.acard-stat {
+    background: #f5f1ea;
+    border: 1px solid #e4dcce;
+    border-radius: 10px;
+    padding: 12px 13px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    position: relative;
+    overflow: hidden;
+}
+.acard-stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--client-color, #1e3a2f);
+    border-radius: 10px 0 0 10px;
+}
+.acard-stat .acard-num { font-size: 2.6rem; }
+.acard-stat-label {
+    font-size: 0.8rem;
+    color: var(--client-color, #1e3a2f);
+    font-weight: 600;
+    line-height: 1.35;
+}
+.acard-stat-sub {
+    font-size: 0.7rem;
+    color: var(--color-text, #6b7280);
+    line-height: 1.4;
+}
+
+/* ── Pro / Con layout ─────────────────────────────────────────── */
+
+.acard-procon {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 10px 0;
+}
+.acard-pro, .acard-con {
+    border-radius: 10px;
+    padding: 11px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.acard-pro {
+    background: rgba(34,197,94,.04);
+    border: 1.5px solid rgba(34,197,94,.22);
+    border-top: 3px solid #16a34a;
+}
+.acard-con {
+    background: rgba(239,68,68,.03);
+    border: 1.5px solid rgba(239,68,68,.18);
+    border-top: 3px solid #dc2626;
+}
+.acard-pro-label, .acard-con-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+.acard-pro-label { color: #16a34a; }
+.acard-con-label { color: #dc2626; }
+.acard-pro .acard-list li::before { content: '✓'; color: #16a34a; }
+.acard-con .acard-list li::before { content: '✗'; color: #dc2626; }
+
+/* ── Timeline / process ───────────────────────────────────────── */
+
+.acard-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 10px 0;
+    padding-left: 16px;
+    border-left: 2px solid rgba(30,58,47,.14);
+}
+.acard-titem {
+    position: relative;
+    padding: 8px 0 8px 20px;
+}
+.acard-titem::before {
+    content: '';
+    position: absolute;
+    left: -21px;
+    top: 14px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--client-color, #1e3a2f);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1.5px var(--client-color, #1e3a2f);
+}
+.acard-titem:first-child::before {
+    background: var(--color-accent, #c9a84c);
+    box-shadow: 0 0 0 1.5px var(--color-accent, #c9a84c);
+}
+.acard-titem-step {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--color-accent, #c9a84c);
+    display: block;
+    margin-bottom: 2px;
+}
+.acard-titem-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-heading, #111827);
+    margin-bottom: 2px;
+}
+.acard-titem-body {
+    font-size: 0.83rem;
+    color: var(--color-text, #6b7280);
+    line-height: 1.55;
+}
+
+/* ── Full-width insight card ─────────────────────────────────── */
+
+.acard-insight {
+    background: var(--client-color, #1e3a2f);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}
+/* Left gold accent bar */
+.acard-insight::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--color-accent, #c9a84c);
+    border-radius: 12px 0 0 12px;
+    pointer-events: none;
+}
+/* Decorative quotemark — far right corner, never overlaps text */
+.acard-insight::after {
+    content: '\201D';
+    position: absolute;
+    bottom: -14px; right: 14px;
+    font-size: 5rem;
+    line-height: 1;
+    font-family: var(--font-display, Georgia, serif);
+    color: rgba(201,168,76,.12);
+    pointer-events: none;
+}
+.acard-insight-inner { flex: 1; position: relative; padding-left: 10px; }
+.acard-insight-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent, #c9a84c);
+    display: block;
+    margin-bottom: 6px;
+}
+/* Double selector beats article.css .article-body p { color: var(--text-primary) } (0,1,1) */
+.acard-insight .acard-insight-text,
+.acard-insight p {
+    font-size: 0.95rem;
+    font-style: italic;
+    font-family: var(--font-display, Georgia, serif);
+    line-height: 1.6;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.acard-insight .acard-insight-source {
+    font-size: 0.71rem;
+    color: rgba(255,255,255,.6);
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .acard-3 { grid-template-columns: repeat(2, 1fr); }
+    .acard-4 { grid-template-columns: repeat(2, 1fr); }
+    .acard-bento { grid-template-columns: repeat(6, 1fr); }
+    .acard-s4  { grid-column: span 6; }
+    .acard-s8  { grid-column: span 6; }
+    .acard-procon { grid-template-columns: 1fr; }
+    .acard-insight { padding: 13px 16px; }
+    .acard-insight-text { font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+    .acard-2,
+    .acard-3,
+    .acard-4,
+    .acard-auto { grid-template-columns: 1fr; }
+    .acard-bento { display: flex; flex-direction: column; }
+    .acard-row > .acard { flex: 0 0 190px; }
+    .acard-stat .acard-num { font-size: 2.2rem; }
+}

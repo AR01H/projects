@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    single.css - WordPress single post / article styles
    Loaded only on is_single() pages via explode_function.php.
    Global utilities (btn, container, breadcrumb, etc.) stay in
@@ -143,7 +143,7 @@
 
 /* Definition List */
 .article-body dl {
-    margin: 1.5rem 0;
+    margin: 0.75rem 0;
 }
 
 .article-body dt {
@@ -154,8 +154,8 @@
 }
 
 .article-body dd {
-    margin: 0 0 1.25rem 1.5rem;
-    padding-left: 1rem;
+    margin: 0 0 0.75rem 1rem;
+    padding-left: 0.75rem;
     border-left: 3px solid var(--secondary-color);
     color: var(--color-black);
 }
@@ -391,9 +391,9 @@
 /* ── Article Body ───────────────────────────────────────────── */
 .article-body {
     font-size: 1.02rem;
-    line-height: 1.85;
+    line-height: 1.75;
     color: var(--color-text, #374151);
-    padding: 12px;
+    /* padding: 12px; */
     margin: 0 0 10px;
     border: 2px solid var(--client-color, #1e3a2f);
     border-radius: 4px;
@@ -431,6 +431,7 @@
 .adn-reveal-ready > figure,
 .adn-reveal-ready > img,
 .adn-reveal-ready > blockquote,
+.adn-reveal-ready > details,
 .adn-reveal-ready > .article-tip-box,
 .adn-reveal-ready > .article-note-box,
 .adn-reveal-ready section > p,
@@ -442,30 +443,71 @@
 .adn-reveal-ready section > table,
 .adn-reveal-ready section > figure,
 .adn-reveal-ready section > img,
-.adn-reveal-ready section > blockquote {
+.adn-reveal-ready section > blockquote,
+.adn-reveal-ready section > details,
+.adn-reveal-ready section > .article-tip-box,
+.adn-reveal-ready section > .article-note-box,
+.adn-reveal-ready section > .article-stat-row,
+.adn-reveal-ready section > .article-steps,
+.adn-reveal-ready section > .article-checklist,
+.adn-reveal-ready section > .article-key-point,
+.adn-reveal-ready section > .article-quick-facts,
+.adn-reveal-ready section > .article-warning,
+.adn-reveal-ready section > .article-example-box,
+.adn-reveal-ready section > .article-promo,
+.adn-reveal-ready section > .article-card-grid,
+.adn-reveal-ready section > .compare-table-wrap,
+.adn-reveal-ready section > .acard-grid,
+.adn-reveal-ready section > .acard-bento,
+.adn-reveal-ready section > .acard-row,
+.adn-reveal-ready section > .acard-procon,
+.adn-reveal-ready section > .acard-timeline,
+.adn-reveal-ready section > .acard-insight,
+.adn-reveal-ready section > .acard-stat {
     opacity: 0;
 }
 
-/* Fade UP — h2, p, figure/img */
+/* Fade UP — headings, paragraphs, images */
 .article-body h2.adn-visible,
 .article-body p.adn-visible,
 .article-body figure.adn-visible,
-.article-body img.adn-visible {
+.article-body img.adn-visible,
+.article-body details.adn-visible,
+.article-body .article-example-box.adn-visible,
+.article-body .compare-table-wrap.adn-visible {
     animation: adn-fade-up 0.7s cubic-bezier(.16,1,.3,1) both;
 }
 
-/* Fade LEFT — h3, ul, ol */
+/* Fade LEFT — h3/h4, lists, checklists, steps, timeline */
 .article-body h3.adn-visible,
 .article-body h4.adn-visible,
 .article-body ul.adn-visible,
-.article-body ol.adn-visible {
+.article-body ol.adn-visible,
+.article-body .article-steps.adn-visible,
+.article-body .article-checklist.adn-visible,
+.article-body .acard-timeline.adn-visible {
     animation: adn-fade-left 0.65s cubic-bezier(.16,1,.3,1) both;
 }
 
-/* Fade RIGHT — callout boxes */
+/* Fade RIGHT — callout boxes, key-point, warning */
 .article-body .article-tip-box.adn-visible,
-.article-body .article-note-box.adn-visible {
+.article-body .article-note-box.adn-visible,
+.article-body .article-key-point.adn-visible,
+.article-body .article-warning.adn-visible,
+.article-body .article-promo.adn-visible,
+.article-body .acard-procon.adn-visible {
     animation: adn-fade-right 0.65s cubic-bezier(.16,1,.3,1) both;
+}
+
+/* Scale in — grids, stat rows, card layouts, tables */
+.article-body table.adn-visible,
+.article-body .article-stat-row.adn-visible,
+.article-body .article-card-grid.adn-visible,
+.article-body .acard-grid.adn-visible,
+.article-body .acard-bento.adn-visible,
+.article-body .acard-row.adn-visible,
+.article-body .acard-stat.adn-visible {
+    animation: adn-scale-in 0.65s cubic-bezier(.16,1,.3,1) both;
 }
 
 /* Blockquote — entrance + gentle living border */
@@ -475,9 +517,10 @@
         adn-quote-border 4s ease-in-out 0.7s infinite;
 }
 
-/* Scale in — tables */
-.article-body table.adn-visible {
-    animation: adn-scale-in 0.7s cubic-bezier(.16,1,.3,1) both;
+/* Quick facts — scale in with slight upward lift */
+.article-body .article-quick-facts.adn-visible,
+.article-body .acard-insight.adn-visible {
+    animation: adn-scale-in 0.75s cubic-bezier(.16,1,.3,1) both;
 }
 
 /* Drop cap on first paragraph */
@@ -630,10 +673,10 @@
 }
 /* answer body */
 .article-body details > *:not(summary) {
-    padding: 14px 18px 16px;
+    padding: 10px 14px 12px;
     border-top: 1.5px solid var(--color-border, #e5e7eb);
-    font-size: 0.96rem;
-    line-height: 1.75;
+    font-size: 0.92rem;
+    line-height: 1.65;
     color: var(--color-text, #374151);
 }
 .article-body details > p:not(summary) { margin: 0; }
@@ -643,10 +686,10 @@
     background: var(--color-info-bg, #eff6ff);
     border-left: 4px solid var(--color-primary, #1d4ed8);
     border-radius: 0 var(--radius-sm, 8px) var(--radius-sm, 8px) 0;
-    padding: 16px 18px;
-    margin: 20px 0;
+    padding: 9px 14px;
+    margin: 8px 0;
     display: flex;
-    gap: 10px;
+    gap: 9px;
     align-items: flex-start;
 }
 
@@ -674,10 +717,10 @@
     background: var(--color-warning-bg, #fffbeb);
     border-left: 4px solid var(--color-warning, #f59e0b);
     border-radius: 0 var(--radius-sm, 8px) var(--radius-sm, 8px) 0;
-    padding: 16px 18px;
-    margin: 20px 0;
+    padding: 9px 14px;
+    margin: 8px 0;
     display: flex;
-    gap: 14px;
+    gap: 9px;
     align-items: flex-start;
 }
 
@@ -706,7 +749,7 @@
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--radius-sm, 8px);
     padding: 18px 20px;
-    margin: 24px 0;
+    margin: 14px 0;
 }
 
 .example-icon {
@@ -753,8 +796,8 @@
 .article-body .article-section {
     background: rgba(255,255,255,0.92);
     border: 1px solid rgba(30,58,47,.09);
-    border-radius: 14px;
-    padding: 20px 18px;
+    /* border-radius: 14px; */
+    padding: 12px 16px;
     box-shadow: 0 2px 12px rgba(30,58,47,.05);
     position: relative;
 }
@@ -766,9 +809,9 @@
 /* ── Stat Row — key numbers in a grid ───────────────────── */
 .article-stat-row {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 14px;
-    margin: 28px 0;
+    margin: 16px 0;
 }
 .article-stat {
     background: linear-gradient(145deg, rgba(30,58,47,.04) 0%, rgba(201,168,76,.05) 100%);
@@ -799,18 +842,19 @@
 .article-steps {
     list-style: none;
     padding: 0;
-    margin: 20px 0;
+    margin: 12px 0;
     counter-reset: step;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-.article-steps > li {
+.article-body .article-steps > li {
     counter-increment: step;
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    padding: 13px 16px;
+    padding: 13px 16px;      /* overrides .article-body ol li padding-left: 2.75rem */
+    margin-bottom: 0;        /* overrides .article-body ol li margin-bottom: 1rem */
     background: #fff;
     border: 1.5px solid rgba(30,58,47,.09);
     border-radius: 12px;
@@ -819,14 +863,18 @@
     color: var(--color-text, #374151);
     transition: border-color 0.18s, box-shadow 0.18s;
 }
-.article-steps > li:hover {
+.article-body .article-steps > li:hover {
     border-color: var(--client-color, #1e3a2f);
     box-shadow: 0 3px 12px rgba(30,58,47,.07);
 }
-.article-steps > li::before {
+.article-body .article-steps > li::before {
     content: counter(step);
+    position: static;        /* overrides .article-body ol li::before position: absolute */
     min-width: 28px;
+    width: 28px;
     height: 28px;
+    line-height: normal;
+    text-align: center;
     background: var(--client-color, #1e3a2f);
     color: #fff;
     border-radius: 50%;
@@ -843,38 +891,40 @@
 .article-checklist {
     list-style: none;
     padding: 0;
-    margin: 20px 0;
+    margin: 10px 0;
     background: #fff;
     border: 1.5px solid rgba(30,58,47,.1);
     border-radius: 12px;
     overflow: hidden;
 }
+/* Override article.css ul li { list-style: disc } — needs higher specificity */
+.article-body .article-checklist > li { list-style: none; }
 .article-checklist > li {
-    padding: 12px 18px 12px 46px;
+    padding: 10px 14px 10px 40px;
     position: relative;
     border-bottom: 1px solid rgba(30,58,47,.06);
-    font-size: 0.95rem;
-    line-height: 1.55;
+    font-size: 0.92rem;
+    line-height: 1.5;
     color: var(--color-text, #374151);
 }
 .article-checklist > li:last-child { border-bottom: none; }
 .article-checklist > li::before {
     content: '✓';
     position: absolute;
-    left: 16px;
-    top: 12px;
-    width: 20px;
-    height: 20px;
+    left: 12px;
+    top: 10px;
+    width: 18px;
+    height: 18px;
     background: rgba(30,58,47,.08);
     color: var(--client-color, #1e3a2f);
     font-weight: 700;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    line-height: 20px;
+    line-height: 18px;
 }
 
 /* ── Key Point — highlighted takeaway ───────────────────── */
@@ -883,7 +933,7 @@
     border-left: 4px solid var(--client-color, #1e3a2f);
     border-radius: 0 14px 14px 0;
     padding: 18px 20px 18px 22px;
-    margin: 24px 0;
+    margin: 14px 0;
     font-size: 1.02rem;
     color: var(--color-heading, #111827);
     line-height: 1.65;
@@ -901,7 +951,7 @@
     background: var(--client-color, #1e3a2f);
     border-radius: 14px;
     padding: 20px 22px;
-    margin: 24px 0;
+    margin: 14px 0;
     color: #fff;
     position: relative;
     overflow: hidden;
@@ -924,26 +974,30 @@
     margin-bottom: 16px;
     display: block;
 }
-.article-quick-facts ul {
+.article-body .article-quick-facts ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.article-quick-facts ul li {
+.article-body .article-quick-facts ul li {
     border-bottom: 1px solid rgba(255,255,255,.1);
     font-size: 0.92rem;
     line-height: 1.55;
     display: flex;
     gap: 10px;
     align-items: flex-start;
+    color: rgba(255,255,255,.92);  /* overrides article.css .article-body ul li color */
+    list-style: none;              /* overrides article.css list-style: disc */
+    padding: 10px 0;               /* breathing room between items */
+    margin-bottom: 0;              /* overrides article.css margin-bottom: 6px */
 }
-.article-quick-facts ul li:last-child { border-bottom: none; }
-.article-quick-facts ul li::before {
+.article-body .article-quick-facts ul li:last-child { border-bottom: none; padding-bottom: 0; }
+.article-body .article-quick-facts ul li::before {
     content: '→';
     color: var(--color-accent, #c9a84c);
     font-weight: 700;
     flex-shrink: 0;
-    margin-top: 1px;
+    margin-top: 2px;
 }
 
 /* ── Warning Box ─────────────────────────────────────────── */
@@ -952,7 +1006,7 @@
     border: 1.5px solid rgba(239,68,68,.25);
     border-radius: 10px;
     padding: 14px 16px;
-    margin: 20px 0;
+    margin: 12px 0;
     display: flex;
     gap: 14px;
     align-items: flex-start;
@@ -971,7 +1025,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 14px;
-    margin: 28px 0;
+    margin: 16px 0;
 }
 .article-card-item {
     background: #fff;
@@ -1011,7 +1065,7 @@
     border: 1px solid rgba(184,152,64,.2);
     border-radius: 14px;
     padding: 22px 22px 22px 24px;
-    margin: 24px 0;
+    margin: 14px 0;
     overflow: hidden;
     display: flex;
     gap: 16px;
@@ -1098,7 +1152,7 @@
     .article-card-item { padding: 14px 12px; }
 
     /* Steps */
-    .article-steps > li { padding: 11px 13px; gap: 11px; }
+    .article-body .article-steps > li { padding: 11px 13px; gap: 11px; }
 
     /* Callout boxes */
     .article-tip-box,
@@ -2251,6 +2305,158 @@
     font-size: 0.82rem;
     color: var(--color-black, #6b7280);
     white-space: nowrap;
+}
+
+/* ── Post Expert + Contact section (below comments) ──────────── */
+.pec-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 32px 0 0;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(30,58,47,.12);
+    box-shadow: 0 4px 24px rgba(30,58,47,.07);
+}
+.pec-experts {
+    background: var(--color-white, #fff);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.pec-eyebrow {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-accent, #c9a84c);
+}
+.pec-heading {
+    font-family: var(--font-display, Georgia, serif);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--client-color, #1e3a2f);
+    margin: 0;
+    line-height: 1.2;
+}
+.pec-sub {
+    font-size: 0.82rem;
+    color: var(--color-text, #6b7280);
+    margin: 0;
+    line-height: 1.55;
+}
+.pec-types {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+.pec-type-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 6px;
+    background: #f5f1ea;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 1px solid rgba(30,58,47,.08);
+    transition: background 0.15s, transform 0.15s;
+}
+.pec-type-item:hover {
+    background: rgba(30,58,47,.08);
+    transform: translateY(-2px);
+}
+.pec-type-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+.pec-type-label {
+    font-size: 0.63rem;
+    font-weight: 600;
+    color: var(--client-color, #1e3a2f);
+    text-align: center;
+    line-height: 1.3;
+}
+.pec-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--color-accent, #c9a84c);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    align-self: flex-start;
+    letter-spacing: 0.02em;
+    transition: background 0.15s, transform 0.15s;
+}
+.pec-cta-btn:hover {
+    background: var(--client-color, #1e3a2f);
+    transform: translateY(-1px);
+}
+.pec-contact {
+    background: var(--client-color, #1e3a2f);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+}
+.pec-contact-eyebrow {
+    font-size: 0.57rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-accent, #c9a84c);
+    margin-bottom: 2px;
+}
+.pec-contact-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.pec-contact-item:hover { background: rgba(255,255,255,.10); }
+.pec-contact-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.pec-contact-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.pec-contact-heading {
+    font-size: 0.87rem;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+}
+.pec-contact-meta {
+    font-size: 0.74rem;
+    color: rgba(255,255,255,.5);
+    display: block;
+}
+.pec-contact-link {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-accent, #c9a84c);
+    display: block;
+    margin-top: 3px;
+}
+@media (max-width: 640px) {
+    .pec-wrap { grid-template-columns: 1fr; }
+    .pec-types { grid-template-columns: repeat(2, 1fr); }
+    .pec-experts, .pec-contact { padding: 22px 18px; }
 }
 
 /* ── Related Articles carousel (below article layout) ──────────────── */

@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    ADVAITH HOMES - Main Stylesheet
    ============================================ */
 
@@ -700,26 +700,54 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 
 /* ── Post CMS taxonomy terms bar ───────────────────── */
 .post-terms-bar {
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 12px 0 14px;
+  border-bottom: 1px solid rgba(30,58,47,.08);
+  background: linear-gradient(180deg, rgba(30,58,47,.025) 0%, transparent 100%);
 }
 .post-terms-bar .container {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
+}
+.post-terms-bar .container::before {
+  content: 'Topics:';
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(30,58,47,.4);
+  margin-right: 2px;
+  flex-shrink: 0;
 }
 .post-term-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background: var(--color-tag-bg, #f0f4f8);
-  color: var(--color-black, #374151);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 20px;
-  padding: 3px 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
+  gap: 6px;
+  background: rgba(30,58,47,.05);
+  color: var(--client-color, #1e3a2f);
+  border: 1px solid rgba(30,58,47,.13);
+  border-radius: 6px;
+  padding: 4px 11px 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
   white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+  letter-spacing: 0.01em;
+}
+.post-term-pill::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent, #c9a84c);
+  flex-shrink: 0;
+}
+.post-term-pill:hover {
+  background: rgba(30,58,47,.09);
+  border-color: rgba(30,58,47,.22);
 }
 
 .category-tag {

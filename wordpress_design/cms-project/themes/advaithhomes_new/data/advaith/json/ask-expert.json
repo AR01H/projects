@@ -1,4 +1,4 @@
-{
+﻿{
     "meta": {
         "page_title": "Ask an Expert",
         "meta_description": "Connect with vetted UK property professionals - mortgage advisers, solicitors, surveyors, buyer-side agents and more."
@@ -34,7 +34,10 @@
         "popular_categories": {
             "heading": "Popular Categories",
             "items": [
-                { "icon": "💰", "label": "Mortgage Advisers", "desc": "Get mortgage advice",         "url": "#" }
+                { "icon": "💰", "label": "Mortgage Advisers", "desc": "Get mortgage advice",    "url": "/ask-an-expert/" },
+                { "icon": "⚖️", "label": "Solicitors",         "desc": "Legal conveyancing help","url": "/ask-an-expert/" },
+                { "icon": "🔍", "label": "Surveyors",          "desc": "Property survey experts","url": "/ask-an-expert/" },
+                { "icon": "🏘️", "label": "Buying Agents",      "desc": "Expert buying support",  "url": "/ask-an-expert/" }
             ],
             "view_all_label": "View all categories →"
         },

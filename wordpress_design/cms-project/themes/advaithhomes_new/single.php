@@ -180,6 +180,19 @@ get_header();
 				<?php comments_template(); ?>
 			<?php endif; ?>
 
+			<?php /* Expert + Contact block (closure scope mirrors adn_component without realpath check) */ ?>
+			<?php
+			( function ( $experts, $contact ) {
+				$file = ADN_THEME_DIR . '/components/sections/post_expert_contact.php';
+				if ( file_exists( $file ) ) {
+					require $file;
+				}
+			} )(
+				isset( $ctx['expert_contact']['experts'] ) ? $ctx['expert_contact']['experts'] : array(),
+				isset( $ctx['expert_contact']['contact'] ) ? $ctx['expert_contact']['contact'] : array()
+			);
+			?>
+
 		</main>
 
 		<?php /* ── RIGHT COLUMN: TOC + Sidebar ── */ ?>
