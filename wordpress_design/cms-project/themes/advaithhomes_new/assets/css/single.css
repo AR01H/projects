@@ -393,10 +393,10 @@
     font-size: 1.02rem;
     line-height: 1.85;
     color: var(--color-text, #374151);
-    padding: 2px 2px 2px;
+    padding: 12px;
     margin: 0 0 10px;
     border: 2px solid var(--client-color, #1e3a2f);
-    border-radius: 14px;
+    border-radius: 4px;
     background: rgba(255,255,255,0.84);
     box-shadow: 0 4px 24px rgba(30,58,47,.09);
 }
@@ -969,7 +969,7 @@
 /* ── Card Grid — comparison/feature cards ───────────────── */
 .article-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 14px;
     margin: 28px 0;
 }

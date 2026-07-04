@@ -390,7 +390,8 @@
   position: relative;
   margin: 14px 0;
   padding: 0px 16px 0px 20px;
-  background: var(--color-bg-section, #f2efe9);
+  background: white;
+  border: 1px solid var(--secondary-color);
   border-left: 3px solid var(--secondary-color, #B08D57);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
@@ -398,9 +399,9 @@
   content: '\201C';
   position: absolute;
   top: -4px;
-  left: 10px;
+  left: -2px;
   font-family: var(--font-display, Georgia, serif);
-  font-size: 2.2rem;
+  font-size: 3.2rem;
   line-height: 1;
   color: var(--secondary-color, #B08D57);
   opacity: 0.35;
