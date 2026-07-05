@@ -37,7 +37,7 @@ abstract class ADN_Data_Reader {
 		}
 
 		$path = realpath( $base . '/' . $name . '.' . $ext );
-		if ( ! $path || 0 !== strpos( $path, $base ) || ! is_file( $path ) ) {
+		if ( ! $path || 0 !== stripos( $path, $base ) || ! is_file( $path ) ) {
 			return '';
 		}
 

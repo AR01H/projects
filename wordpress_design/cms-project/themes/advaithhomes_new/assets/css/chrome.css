@@ -1,3 +1,6 @@
+/* Google Fonts — Playfair Display (display headings) + Inter (body) */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* ============================================================
    chrome.css - Site chrome: layout primitives, buttons, and the
    header / navigation / search / footer that wrap every page.

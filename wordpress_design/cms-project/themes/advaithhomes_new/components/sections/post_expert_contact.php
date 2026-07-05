@@ -19,10 +19,10 @@ $hero      = isset( $expert_data['hero'] ) && is_array( $expert_data['hero'] ) ?
 $cant_find = isset( $expert_data['cant_find_cta'] ) && is_array( $expert_data['cant_find_cta'] ) ? $expert_data['cant_find_cta'] : array();
 
 $nav_tiles = array(
-	array( 'icon' => '🤝', 'label' => 'Ask an Expert', 'url' => '/ask-an-expert/' ),
-	array( 'icon' => '📰', 'label' => 'News',        'url' => '/news/' ),
-	array( 'icon' => '📞', 'label' => 'Contact',           'url' => '/contact' ),
-	array( 'icon' => '📚', 'label' => 'Guides',         'url' => '/guides/' ),
+	array( 'icon' => adn_icon('🤝'), 'label' => 'Ask an Expert', 'url' => '/ask-an-expert/' ),
+	array( 'icon' => adn_icon('📰'), 'label' => 'News',        'url' => '/news/' ),
+	array( 'icon' => adn_icon('📞'), 'label' => 'Contact',           'url' => '/contact' ),
+	array( 'icon' => adn_icon('📚'), 'label' => 'Guides',         'url' => '/guides/' ),
 );
 
 /* ── Right panel: contact from DB/JSON only ── */
@@ -46,7 +46,7 @@ $email           = isset( $contact_sidebar['email'] )    && is_array( $contact_s
 		<div class="pec-types">
 			<?php foreach ( $nav_tiles as $tile ) : ?>
 			<a href="<?php echo esc_url( function_exists( 'adn_link' ) ? adn_link( $tile['url'] ) : $tile['url'] ); ?>" class="pec-type-item">
-				<span class="pec-type-icon" aria-hidden="true"><?php echo esc_html( $tile['icon'] ); ?></span>
+				<span class="pec-type-icon" aria-hidden="true"><?php echo ( $tile['icon'] ); ?></span>
 				<span class="pec-type-label"><?php echo esc_html( $tile['label'] ); ?></span>
 			</a>
 			<?php endforeach; ?>
@@ -62,7 +62,7 @@ $email           = isset( $contact_sidebar['email'] )    && is_array( $contact_s
 		<?php endif; ?>
 	</div>
 
-	<?php if ( ! empty( $phone ) || ! empty( $email ) ) : ?>
+	<!-- <?php if ( ! empty( $phone ) || ! empty( $email ) ) : ?>
 	<?php /* ── RIGHT: Contact options from DB/JSON ── */ ?>
 	<div class="pec-contact">
 
@@ -105,6 +105,6 @@ $email           = isset( $contact_sidebar['email'] )    && is_array( $contact_s
 		</a>
 		<?php endif; ?>
 	</div>
-	<?php endif; ?>
+	<?php endif; ?> -->
 
 </div>

@@ -24,7 +24,7 @@ function adn_enqueue_common_css() {
         'adn-main-style'       => '/assets/css/main.css',
         'adn-common-style'     => '/assets/css/common.css',
         'adn-components-style' => '/assets/css/components.css',
-        'adn-temp-style'       => '/assets/css/temp.css',
+        'adn-shared-style'     => '/assets/css/shared.css',
         'adn-builded-style'    => '/assets/css/builded.css',
         'adn-utils-style'      => '/assets/css/common_utils.css',
         'adn-fa-style'         => '/assets/css/fastyles.css',
