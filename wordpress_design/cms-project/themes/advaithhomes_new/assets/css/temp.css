@@ -1351,7 +1351,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   border-bottom: 1px solid var(--color-border);
   position: relative;
 }
-.section-header--center::after {
+/* .section-header--center::after {
   content: '';
   position: absolute;
   bottom: -1px;
@@ -1361,7 +1361,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   height: 2px;
   background: linear-gradient(to right, transparent, var(--color-accent), transparent);
   border-radius: 1px;
-}
+} */
 .section-header--center h2,
 .section-header--center h3 {
   font-size: 1.1rem;

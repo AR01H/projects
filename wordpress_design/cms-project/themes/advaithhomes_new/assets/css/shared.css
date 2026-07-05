@@ -1212,7 +1212,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   border-bottom: 1px solid var(--color-border);
   position: relative;
 }
-.section-header--center::after {
+/* .section-header--center::after {
   content: '';
   position: absolute;
   bottom: -1px;
@@ -1222,7 +1222,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   height: 2px;
   background: linear-gradient(to right, transparent, var(--color-accent), transparent);
   border-radius: 1px;
-}
+} */
 .section-header--center h2,
 .section-header--center h3 {
   font-size: 1.1rem;
@@ -3918,19 +3918,19 @@ a.mini-card, div.mini-card {
 .cat-guide-empty { color: var(--color-black); font-size: 0.9rem; padding: 32px 0; }
 
 /* Main + sidebar layout */
-.topic-listing-layout { padding-top: var(--space-10); padding-bottom: var(--space-12); }
+.topic-listing-layout { padding-top: var(--space-6); padding-bottom: var(--space-8); }
 .topic-listing-main { min-width: 0; }
 
 /* ── Topic page: calculators grid (premium) ── */
 .topic-calc-carousel-wrap {
   position: relative;
   overflow: visible;
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
 }
 .topic-calc-carousel {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
   overflow-x: visible;
   padding-bottom: 0;
   scrollbar-width: none;
@@ -3943,8 +3943,7 @@ a.mini-card, div.mini-card {
 .topic-calc-carousel .calc-card-media { aspect-ratio: 3 / 2; border-radius: 0; }
 .topic-calc-carousel .calc-card-body  { padding: 12px 14px 14px; }
 
-/* Article grid - 3 columns in sidebar context */
-/* Article grid - 4 cols × 3 rows = 12 cards; featured spans on desktop */
+/* Article grid — 4 cols; first 2 cards hero-featured, rest regular */
 .topic-articles-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -3954,18 +3953,19 @@ a.mini-card, div.mini-card {
 .topic-articles-grid .glc { grid-column: span 1; }
 .topic-articles-grid .glc .glc-img { aspect-ratio: 16 / 9; }
 
-/* ── Desktop: every 4th card is wide (spans 2 cols, taller image) ── */
-@media (min-width: 769px) {
-  .topic-articles-grid .glc:nth-child(4n+1) { grid-column: span 2; }
-  .topic-articles-grid .glc:nth-child(4n+1) .glc-img { aspect-ratio: 21 / 9; }
+/* ── Wide desktop: first 2 cards span 2 cols with cinematic image ── */
+@media (min-width: 1101px) {
+  .topic-articles-grid .glc:nth-child(1),
+  .topic-articles-grid .glc:nth-child(2) { grid-column: span 2; }
+  .topic-articles-grid .glc:nth-child(1) .glc-img,
+  .topic-articles-grid .glc:nth-child(2) .glc-img { aspect-ratio: 21 / 9; }
 }
 
+/* ── Medium (769-1100px): 3-col equal → 12 cards = 4 clean rows ── */
 @media (min-width: 769px) and (max-width: 1100px) {
   .topic-articles-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .topic-articles-grid .glc:nth-child(4n+1) { grid-column: span 1; }
-  .topic-articles-grid .glc:nth-child(4n+1) .glc-img { aspect-ratio: 16 / 9; }
-  .topic-articles-grid .glc:nth-child(3n+1) { grid-column: span 2; }
-  .topic-articles-grid .glc:nth-child(3n+1) .glc-img { aspect-ratio: 21 / 9; }
+  .topic-articles-grid .glc { grid-column: span 1; }
+  .topic-articles-grid .glc .glc-img { aspect-ratio: 16 / 9; }
 }
 
 /* Active topic link in sidebar */

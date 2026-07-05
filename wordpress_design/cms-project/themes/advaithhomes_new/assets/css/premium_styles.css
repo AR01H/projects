@@ -1,22 +1,22 @@
 /* ============================================================
-   premium_styles.css  —  Premium variable overrides + accents
+   premium_styles.css  â€”  Premium variable overrides + accents
    Loaded last. Warms up cold slate colors. Fills missing vars.
    ============================================================ */
 
 
-/* ══════════════════════════════════════════════════════════
-   1. ROOT OVERRIDES — fix cold/dull variables site-wide
-   ══════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   1. ROOT OVERRIDES â€” fix cold/dull variables site-wide
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 :root {
-    /* ── Gold scale (was mostly missing) */
+    /* â”€â”€ Gold scale (was mostly missing) */
     --gold-300: #d4aa6a;
     --gold-400: #c09a58;
     --gold-500: #B08D57;          /* = --secondary-color */
     --gold-600: #9a7a48;
     --gold-700: #7d6038;
 
-    /* ── Client-color tints (all were undefined) */
+    /* â”€â”€ Client-color tints (all were undefined) */
     --client-color-900: #0f1a14;
     --client-color-800: #162620;
     --client-color-700: #1a2e29;
@@ -24,23 +24,23 @@
     --client-color-500: #2d5550;
     --client-color-400: #3d706a;
 
-    /* ── Warm text — replace cold slate */
+    /* â”€â”€ Warm text â€” replace cold slate */
     --text-primary:   #111816;    /* rich near-black, warm undertone */
     --text-secondary: #4a4540;    /* warm dark taupe, NOT cold #475569 */
     --text-muted:     #7a6f65;    /* warm muted, NOT cold #64748b */
 
-    /* ── Page background — warm ivory, NOT cold white */
+    /* â”€â”€ Page background â€” warm ivory, NOT cold white */
     --bg:             #f8f5f0;
     --color-bg:       #f8f5f0;
     --card-bg:        #ffffff;
 
-    /* ── Section alternate background */
+    /* â”€â”€ Section alternate background */
     --color-bg-section: #f1ece4;
 
-    /* ── Accent pointer (used for focus rings etc) */
+    /* â”€â”€ Accent pointer (used for focus rings etc) */
     --accent: var(--client-color);
 
-    /* ── Missing colour tokens used in components.css / common.css */
+    /* â”€â”€ Missing colour tokens used in components.css / common.css */
     --color-primary:        var(--client-color);
     --color-info-dark:      var(--client-color-700);
     --color-border:         rgba(17,24,22,0.10);
@@ -55,7 +55,7 @@
     --color-pill-market-bg: rgba(32,60,62,0.08);
     --color-tag-suggested:  var(--client-color);
 
-    /* ── Slate warm-shift (used in tables, misc) */
+    /* â”€â”€ Slate warm-shift (used in tables, misc) */
     --slate-100: #f5f2ed;
     --slate-200: #e8e2d8;
     --slate-300: #d4ccc0;
@@ -67,9 +67,9 @@
 }
 
 
-/* ══════════════════════════════════════════════════════════
-   2. BODY & PAGE BACKGROUND — warm, not clinical white
-   ══════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   2. BODY & PAGE BACKGROUND â€” warm, not clinical white
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 body {
     background: var(--bg);
@@ -77,9 +77,9 @@ body {
 }
 
 
-/* ══════════════════════════════════════════════════════════
-   3. HEADINGS — tighter, richer
-   ══════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   3. HEADINGS â€” tighter, richer
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 h1, h2, h3, h4 {
     color: var(--text-primary);
@@ -98,9 +98,9 @@ h1, h2, h3, h4 {
 }
 
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    4. HEADER
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .site-header,
 .site-header.is-stuck {
@@ -117,9 +117,9 @@ h1, h2, h3, h4 {
 .nav-dropdown { box-shadow: none !important; border: 1px solid rgba(17,24,22,0.09) !important; }
 
 
-/* ══════════════════════════════════════════════════════════
-   5. BUTTONS — rich, no shadow, no transform
-   ══════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   5. BUTTONS â€” rich, no shadow, no transform
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .btn {
     box-shadow: none !important;
@@ -136,9 +136,9 @@ h1, h2, h3, h4 {
 .btn-primary:hover { background: var(--client-color-700) !important; }
 
 
-/* ══════════════════════════════════════════════════════════
-   6. JOURNEY CARDS — no shadow, gold CTA
-   ══════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   6. JOURNEY CARDS â€” no shadow, gold CTA
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .jny-card { box-shadow: none !important; }
 .jny-card:hover { box-shadow: none !important; }
@@ -147,17 +147,16 @@ h1, h2, h3, h4 {
 .jny-card:hover .jny-card__cta { background: var(--gold-600) !important; }
 
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    7. GUIDE CARDS
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .guide-card {
     background: #ffffff !important;
-    box-shadow: none !important;
-    border: 1px solid rgba(17,24,22,0.08) !important;
-    border-radius: var(--radius-md) !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.07) !important;
+    border: 2px solid rgba(32,60,62,.40) !important;
+    border-radius: 12px !important;
 }
-.guide-card:hover { box-shadow: none !important; transform: none !important; }
 
 .guide-card-category {
     font-size: 0.60rem !important;
@@ -181,9 +180,9 @@ h1, h2, h3, h4 {
 }
 
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    8. EXPERT CARDS
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .expert-card {
     background: #ffffff !important;
@@ -203,9 +202,9 @@ h1, h2, h3, h4 {
 }
 
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    9. MINI / NEWS CARDS
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .mini-card-title { color: var(--text-primary) !important; font-weight: 600; }
 .mini-card-tag {
@@ -216,9 +215,9 @@ h1, h2, h3, h4 {
 a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    10. CATEGORY HERO
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .category-hero h1 {
     font-family: var(--font-display);
@@ -229,9 +228,9 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .phb-overlay   { border-bottom: none !important; }
 
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    11. FOOTER
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .site-footer {
     box-shadow: none !important;
@@ -241,10 +240,724 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .footer-link:hover { color: var(--secondary-color); }
 
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    12. MISC
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .bsl__progress-bar          { background: var(--secondary-color) !important; }
 .banners-promo-section      { border-bottom: 2px solid var(--secondary-color) !important; }
 
+
+
+
+/* ══════════════════════════════════════════════════════════
+   13. LUXURY REFINEMENTS — Tight rhythm, editorial polish
+   Surgical overrides only. No global tag overrides.
+   ══════════════════════════════════════════════════════════ */
+
+/* ─── 13a. Section padding — eliminate the bloat ──────────── */
+.section-pad                  { padding: 40px 0 !important; }
+.section-pad-sm               { padding: 24px 0 !important; }
+
+.journey-section              { padding: 28px 0 24px !important; }
+.tools-section                { padding: 32px 0    !important; }
+.guides-section               { padding: 32px 0    !important; }
+.news-three-col               { padding: 32px 0    !important; }
+.home-resources-section       { padding: 28px 0    !important; }
+.banners-promo-section        { padding: 0         !important; }
+.calculators-section          { padding: 28px 0    !important; }
+.guides-listing               { padding: 28px 0    !important; }
+.guides-grid-section          { padding: 28px 0    !important; }
+.tools-listing-page           { padding: 28px 0    !important; }
+.need-help-section            { padding: 22px 0    !important; }
+.jny2-wrap                    { padding: 28px 0    !important; }
+.search-page-body             { padding: 20px 0 32px !important; }
+
+.cat-guide-hero-section       { padding: 24px 0 18px !important; }
+.cat-guide-articles-section   { padding: 24px 0 32px !important; }
+.cat-guide-news-section       { padding: 24px 0    !important; }
+.cat-guide-calcs-section      { padding: 20px 0    !important; }
+.cat-highlight-section        { padding: 24px 0    !important; }
+
+.newsletter-cta { padding: 26px 36px !important; margin: 16px auto !important; border-radius: 10px !important; }
+.newsletter-cta .newsletter-inner { gap: 40px !important; }
+
+
+/* ─── 13b. Section headers — refined, not oversized ───────── */
+.section-header,
+.section-header-wrap { margin-bottom: 18px !important; }
+
+/* Tighter heading size inside section headers only */
+.section-header     > h2,
+.section-header-wrap > h2 {
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.022em !important;
+}
+
+/* Gold hairline on ALL section-header h2 (section 3 only does -wrap variant) */
+/* .section-header > h2::after {
+    content: '';
+    display: block;
+    width: 28px; height: 2px;
+    background: var(--secondary-color);
+    margin-top: 6px; border-radius: 2px;
+} */
+/* .section-header--center > h2::after { margin: 6px auto 0; } */
+
+/* "View all" link */
+.section-header .read-more,
+.section-header-wrap .read-more {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--secondary-color) !important;
+}
+.section-header .read-more:hover,
+.section-header-wrap .read-more:hover { text-decoration: underline; }
+
+/* Journey heading */
+.journey-title              { margin-bottom: 16px !important; }
+.journey-title > h2         { font-size: clamp(1.1rem, 2.2vw, 1.5rem) !important; font-weight: 700 !important; letter-spacing: -0.022em !important; }
+.journey-title .underline-accent { background: var(--secondary-color) !important; width: 28px !important; height: 2px !important; }
+
+/* News column headers */
+.news-col-header            { margin-bottom: 14px !important; }
+.news-col-header h3         { font-size: clamp(0.95rem, 1.8vw, 1.15rem) !important; }
+
+
+/* ─── 13c. Eyebrow labels — gold, uppercase ────────────────── */
+.pec-eyebrow,
+.cat-guide-journey-label {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.13em !important;
+    font-weight: 800 !important;
+    color: var(--secondary-color) !important;
+    opacity: 1 !important;
+}
+.guide-card-category {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.10em !important;
+    font-weight: 800 !important;
+    color: var(--secondary-color) !important;
+    background: none !important;
+}
+
+
+/* ─── 13d. Guide cards — tighter body, 16:9 image area ─────── */
+.guide-card-img--photo { aspect-ratio: 16 / 9 !important; height: auto !important; }
+.guide-card-body       { padding: 11px 13px 14px !important; }
+
+
+/* ─── 13e. Journey cards — slightly closer together ─────────── */
+.journey-cards { gap: 12px !important; }
+
+
+/* ─── 13f. Article / post page ─────────────────────────────── */
+.article-body      { font-size: 1rem !important; line-height: 1.8 !important; }
+.article-body p    { margin-bottom: 14px; }
+.post-terms-bar    { padding: 9px 0 10px !important; }
+.share-bar         { padding: 10px 0 !important; margin: 12px 0 18px !important; }
+
+
+/* ─── 13g. Category / topic pages ──────────────────────────── */
+.category-hero h1  { font-size: clamp(1.65rem, 3.2vw, 2.6rem) !important; }
+.cat-guide-title   { font-size: 1.55rem !important; }
+
+
+/* ─── 13h. Mobile ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .section-pad    { padding: 26px 0 !important; }
+    .section-pad-sm { padding: 16px 0 !important; }
+    .journey-section,
+    .tools-section,
+    .guides-section,
+    .news-three-col { padding: 22px 0 !important; }
+    .newsletter-cta { padding: 20px 16px !important; margin: 10px !important; }
+    .cat-guide-hero-section { padding: 14px 0 10px !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   13b. HERO HOME — title padding + staggered fade-in
+   ══════════════════════════════════════════════════════════════ */
+.hero-home { padding: 44px 0 52px !important; }
+.hero-home-inner { align-items: center !important; }
+.hero-content { padding-top: 8px !important; }
+.hero-title {
+    letter-spacing: -0.02em !important;
+    line-height: 1.12 !important;
+    margin-bottom: var(--space-2) !important;
+}
+.hero-desc { margin-top: var(--space-2) !important; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   14. CATEGORY ARTICLES GRID — featured + regular card styling
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── 14a. All listing cards: client-color border + shadow ─── */
+.topic-articles-grid .glc {
+    border: 2px solid rgba(32,60,62,.42) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(32,60,62,.09) !important;
+}
+.topic-articles-grid .glc:hover {
+    border-color: var(--secondary-color, #B08D57) !important;
+    box-shadow: 0 10px 36px rgba(32,60,62,.16) !important;
+    transform: translateY(-3px) !important;
+}
+.topic-articles-grid .glc-title {
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+    font-weight: 700 !important;
+}
+.topic-articles-grid .glc-body { padding: 12px 13px 14px !important; }
+
+/* ─── 14b. Featured cards (first 2): premium treatment ──────── */
+@media (min-width: 1101px) {
+    .topic-articles-grid .glc:nth-child(1),
+    .topic-articles-grid .glc:nth-child(2) {
+        border-color: rgba(176,141,87,.25) !important;
+        box-shadow: 0 4px 20px rgba(32,60,62,.08) !important;
+    }
+    .topic-articles-grid .glc:nth-child(1):hover,
+    .topic-articles-grid .glc:nth-child(2):hover {
+        box-shadow: 0 12px 40px rgba(32,60,62,.16) !important;
+        border-color: var(--secondary-color, #B08D57) !important;
+    }
+    /* Gold shimmer bar at the bottom of the featured image */
+    .topic-articles-grid .glc:nth-child(1) .glc-img::after,
+    .topic-articles-grid .glc:nth-child(2) .glc-img::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent 0%, var(--secondary-color, #B08D57) 50%, transparent 100%);
+        z-index: 2;
+    }
+    /* Larger title for featured cards */
+    .topic-articles-grid .glc:nth-child(1) .glc-title,
+    .topic-articles-grid .glc:nth-child(2) .glc-title {
+        font-size: 1.05rem !important;
+        line-height: 1.4 !important;
+        font-weight: 800 !important;
+        font-family: var(--font-display, 'Playfair Display', serif) !important;
+        letter-spacing: -0.01em !important;
+    }
+    /* Larger desc visible on featured cards */
+    .topic-articles-grid .glc:nth-child(1) .glc-desc,
+    .topic-articles-grid .glc:nth-child(2) .glc-desc {
+        font-size: 0.84rem !important;
+        -webkit-line-clamp: 3 !important;
+    }
+    /* Roomier body on featured cards */
+    .topic-articles-grid .glc:nth-child(1) .glc-body,
+    .topic-articles-grid .glc:nth-child(2) .glc-body {
+        padding: 16px 18px 18px !important;
+        gap: 8px !important;
+    }
+}
+
+/* ─── 14c. Mobile: single column, equal styling ─────────────── */
+@media (max-width: 480px) {
+    .topic-articles-grid { gap: 12px !important; }
+    .topic-articles-grid .glc-title { font-size: 0.9rem !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   15. BRIGHT ACCENTS — strategic pops of vibrancy
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── 15a. Section header underline — shimmer gold + glow ────── */
+.section-header > h2::after,
+.section-header-wrap > h2::after {
+    width: 40px !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, #c9a84c 0%, #f0d080 50%, #c9a84c 100%) !important;
+    box-shadow: 0 0 10px rgba(201,168,76,.55) !important;
+    border-radius: 3px !important;
+}
+.section-header--center > h2::after { margin: 6px auto 0 !important; }
+
+/* Journey title accent line */
+.journey-title .underline-accent {
+    width: 40px !important; height: 3px !important;
+    background: linear-gradient(90deg, #c9a84c 0%, #f0d080 50%, #c9a84c 100%) !important;
+    box-shadow: 0 0 10px rgba(201,168,76,.5) !important;
+    border-radius: 3px !important;
+}
+
+
+/* ─── 15b. Category badge on cards — dark teal + bright gold ─── */
+.glc-cat {
+    background: rgba(18,44,36,.82) !important;
+    color: #e6c86a !important;
+    border: 1px solid rgba(201,168,76,.3) !important;
+    backdrop-filter: blur(6px) !important;
+    letter-spacing: 0.09em !important;
+}
+
+
+/* ─── 15c. Card image — dark inset border frame on all glc cards ── */
+.glc .glc-img {
+    position: relative !important;
+}
+.glc .glc-img::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border: 2px solid rgba(32,60,62,.45) !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
+    z-index: 3 !important;
+}
+.glc:hover .glc-img::before {
+    border-color: rgba(176,141,87,.6) !important;
+}
+
+/* ─── 15c2. Gradient fallback — layered bg + medallion icon ──── */
+.glc-img-gradient {
+    /* corner gold accent + radial glow + dot grid + dark forest base */
+    background:
+        linear-gradient(220deg, rgba(201,168,76,.2) 0%, transparent 30%),
+        radial-gradient(ellipse 55% 52% at 50% 48%, rgba(201,168,76,.12) 0%, transparent 68%),
+        radial-gradient(rgba(255,255,255,.042) 1px, transparent 1px),
+        linear-gradient(150deg, #0f2b1c 0%, #1a4530 52%, #2d6647 100%) !important;
+    background-size: auto, auto, 22px 22px, auto !important;
+}
+/* subtle gradient variety so consecutive gradient cards don't look cloned */
+.glc:nth-child(2n) .glc-img-gradient {
+    background:
+        linear-gradient(205deg, rgba(201,168,76,.18) 0%, transparent 30%),
+        radial-gradient(ellipse 55% 52% at 50% 48%, rgba(201,168,76,.1) 0%, transparent 68%),
+        radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(162deg, #0e2519 0%, #1c4a31 52%, #305f48 100%) !important;
+    background-size: auto, auto, 22px 22px, auto !important;
+}
+.glc:nth-child(3n) .glc-img-gradient {
+    background:
+        linear-gradient(235deg, rgba(201,168,76,.22) 0%, transparent 30%),
+        radial-gradient(ellipse 55% 52% at 50% 48%, rgba(201,168,76,.13) 0%, transparent 68%),
+        radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(138deg, #12201a 0%, #1e3c2c 52%, #2c5540 100%) !important;
+    background-size: auto, auto, 22px 22px, auto !important;
+}
+
+/* Icon as gold-ring medallion — sits in a glowing circle */
+.glc-img-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 66px !important;
+    height: 66px !important;
+    border-radius: 50% !important;
+    background: rgba(0,0,0,.25) !important;
+    border: 1.5px solid rgba(201,168,76,.4) !important;
+    box-shadow:
+        0 0 0 9px rgba(201,168,76,.07),
+        0 0 26px rgba(201,168,76,.22) !important;
+    color: rgba(220,182,92,.96) !important;
+    font-size: 2rem !important;
+    opacity: 1 !important;
+    filter: none !important;
+    position: relative !important;
+    z-index: 1 !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+}
+
+
+/* ─── 15d. "Read →" arrow — slides in gold on hover ────────── */
+.glc:hover .glc-arrow {
+    color: var(--secondary-color, #B08D57) !important;
+}
+/* Read time clock — slightly warmer, more visible */
+.glc-read { color: var(--color-text-muted, #6b7280) !important; }
+
+
+/* ─── 15e. Featured card hover — gold ring glow ─────────────── */
+@media (min-width: 1101px) {
+    .topic-articles-grid .glc:nth-child(1):hover,
+    .topic-articles-grid .glc:nth-child(2):hover {
+        box-shadow: 0 14px 46px rgba(32,60,62,.16),
+                    0 0 0 2px var(--secondary-color, #B08D57),
+                    0 0 22px rgba(176,141,87,.22) !important;
+    }
+    /* Featured "Read →" always gold (not just on hover) */
+    .topic-articles-grid .glc:nth-child(1) .glc-arrow,
+    .topic-articles-grid .glc:nth-child(2) .glc-arrow {
+        color: var(--secondary-color, #B08D57) !important;
+        opacity: 0 !important;
+    }
+    .topic-articles-grid .glc:nth-child(1):hover .glc-arrow,
+    .topic-articles-grid .glc:nth-child(2):hover .glc-arrow {
+        opacity: 1 !important;
+    }
+}
+
+
+/* ─── 15f. Primary button — rich gradient, not flat ─────────── */
+.btn-primary {
+    background: linear-gradient(135deg, #163728 0%, var(--color-primary, #1e3a2f) 60%, #2d5c42 100%) !important;
+    border-color: transparent !important;
+    letter-spacing: 0.02em !important;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1e4a35 0%, #2d6645 100%) !important;
+    box-shadow: 0 6px 24px rgba(30,58,47,.30) !important;
+    transform: translateY(-1px) !important;
+    filter: none !important;
+}
+
+
+/* ─── 15g. Eyebrow labels — bright gold, stronger ───────────── */
+.pec-eyebrow,
+.cat-guide-journey-label {
+    color: #d4aa50 !important;
+    text-shadow: 0 0 12px rgba(212,170,80,.3) !important;
+}
+
+
+/* ─── 15h. Guide card category label — bright gold ──────────── */
+.guide-card-category {
+    color: #c9a84c !important;
+}
+
+
+/* ─── 15i. Journey card icon area — gold icon glow ──────────── */
+.jny-card-icon {
+    color: rgba(201,168,76,.9) !important;
+    text-shadow: 0 0 12px rgba(201,168,76,.4) !important;
+}
+
+
+/* ─── 15j. Category guide-tools section — larger icon ───────── */
+.cat-guide-tools-section .calc-card-icon-wrap {
+    font-size: 3rem !important;
+}
+
+
+/* ─── 15k. Mobile: keep bright accents, simplify ─────────────── */
+@media (max-width: 768px) {
+    .glc-img-icon { font-size: 1.7rem !important; width: 54px !important; height: 54px !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   16. 3D DEPTH EFFECTS + CALC CARD PREMIUM + SPACING CLAMPDOWN
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── 16a. Global spacing clampdown ─────────────────────────── */
+.topic-listing-layout     { padding-top: 16px !important; padding-bottom: 24px !important; }
+.cat-listing-header       { margin-bottom: 10px !important; }
+.topic-calc-carousel-wrap { margin-top: 8px !important; }
+.popular-tools-section    { padding-bottom: var(--space-4) !important; }
+.all-tools-section        { padding-top: 0 !important; }
+.find-calc-cta            { margin-top: var(--space-4) !important; padding: 14px 20px !important; }
+.tools-trust-bar          { padding: 10px 0 !important; }
+
+/* Section gaps on category page — tight, symmetric */
+.cat-guide-related-section { padding: 10px 0 14px !important; }
+.cat-guide-calcs-section   { padding: 10px 0 14px !important; }
+.cat-highlight-section     { padding: 12px 0 !important; }
+.newsletter-cta            { padding: 18px 24px !important; margin: 10px auto !important; }
+
+/* Home page sections */
+.tools-section    { padding: 24px 0 !important; }
+.guides-section   { padding: 24px 0 !important; }
+.journey-section  { padding: 20px 0 18px !important; }
+.news-three-col   { padding: 24px 0 !important; }
+.banners-promo-section { padding: 0 !important; }
+
+
+/* ─── 16b. Calc card — UNIFIED premium design (all pages) ───── */
+
+/* Shell — same border/radius/shadow everywhere */
+.calc-card {
+    border: 2px solid rgba(32,60,62,.38) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.08) !important;
+    overflow: hidden !important;
+}
+
+/* Media area — single dark teal gradient for every context */
+.calc-card-media {
+    background: linear-gradient(150deg, #152a1c 0%, #1e4530 52%, #2a5d40 100%) !important;
+    position: relative;
+}
+
+/* Gold shimmer line at base of every media panel */
+.calc-card-media::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c9a84c 50%, transparent);
+    pointer-events: none;
+}
+
+/* Icon — gold glow, consistent size */
+.calc-card-icon-wrap {
+    color: rgba(212,170,80,.92) !important;
+    filter: drop-shadow(0 0 12px rgba(201,168,76,.5)) !important;
+    font-size: 2rem !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+}
+
+/* Body — gold top accent */
+.calc-card-body {
+    border-top: 2px solid rgba(176,141,87,.45) !important;
+}
+
+/* Card name — Playfair Display */
+.calc-card-name {
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: var(--text-primary, #111816) !important;
+}
+
+/* Carousel grid — layout only (appearance inherits above) */
+.topic-calc-carousel {
+    justify-content: center !important;
+    gap: 12px !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 200px)) !important;
+}
+.topic-calc-carousel .calc-card-media {
+    aspect-ratio: 16 / 6 !important;
+}
+.topic-calc-carousel .calc-card-icon-wrap {
+    font-size: 1.6rem !important;
+}
+
+/* Popular listing grid — slightly larger icon */
+.calcs-popular-grid .calc-card-icon-wrap {
+    font-size: 2.4rem !important;
+}
+
+
+/* ─── 16c. 3D hover effect — all calc cards ──────────────────── */
+.popular-calc-card,
+.calcs-popular-grid .calc-card,
+.topic-calc-carousel .calc-card,
+.tool-grid .calc-card {
+    transition: transform 0.32s cubic-bezier(.22,.68,0,1.2),
+                box-shadow 0.32s ease,
+                border-color 0.2s ease !important;
+    transform-origin: center 90% !important;
+    will-change: transform;
+}
+
+.calcs-popular-grid .calc-card:hover,
+.topic-calc-carousel .calc-card:hover {
+    transform: perspective(900px) translateY(-8px) rotateX(3deg) !important;
+    box-shadow: 0 28px 56px rgba(32,60,62,.18),
+                0 8px 20px rgba(32,60,62,.1),
+                0 0 0 1.5px var(--secondary-color, #B08D57) !important;
+    border-color: var(--secondary-color, #B08D57) !important;
+}
+
+/* Horizontal tool-grid cards: 3D tilt sideways instead */
+.tool-grid .calc-card:hover {
+    transform: perspective(900px) translateY(-4px) rotateX(2deg) !important;
+    box-shadow: 0 16px 36px rgba(32,60,62,.14),
+                0 0 0 1.5px var(--secondary-color, #B08D57) !important;
+    border-color: var(--secondary-color, #B08D57) !important;
+}
+
+/* Home tool-grid card: slightly lighter media on hover */
+.tool-grid .calc-card:hover .calc-card-media {
+    background: linear-gradient(150deg, #1e4a35 0%, #2d6147 100%) !important;
+}
+
+
+/* ─── 16d. Calc list items (tools page — all tools) ────────────── */
+.calc-list-item {
+    border-color: rgba(32,60,62,.18) !important;
+    border-radius: 10px !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.18s !important;
+}
+.calc-list-item:hover {
+    transform: translateX(3px) !important;
+    box-shadow: 0 4px 18px rgba(32,60,62,.1) !important;
+    border-color: var(--secondary-color, #B08D57) !important;
+}
+.calc-list-icon {
+    background: linear-gradient(135deg, rgba(30,58,47,.08) 0%, rgba(30,58,47,.04) 100%) !important;
+    border: 1px solid rgba(32,60,62,.12) !important;
+    color: var(--color-primary, #1e3a2f) !important;
+}
+.calc-list-text h4 {
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    font-weight: 700 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+}
+.calc-list-arrow { color: var(--secondary-color, #B08D57) !important; }
+
+
+/* ─── 16e. Mobile ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .topic-listing-layout { padding-top: 14px !important; padding-bottom: 24px !important; }
+    .popular-tools-grid   { gap: 10px !important; }
+    .calcs-popular-grid   { gap: 10px !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   17. UNIFIED CARD BORDER SYSTEM — client-color dark teal edge
+       Same border language on every card across the whole site.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── Token ──────────────────────────────────────────────────
+   All cards use this one border value.
+   Hover → gold (--secondary-color) to signal interactivity.  */
+
+/* ─── 17a. Guide cards (home, listing, category related) ──── */
+.guide-card {
+    border: 2px solid rgba(32,60,62,.40) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.07) !important;
+}
+.guide-card:hover {
+    border-color: var(--secondary-color, #B08D57) !important;
+    box-shadow: 0 8px 28px rgba(32,60,62,.13) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ─── 17b. Sidebar widgets (.sw-panel) ───────────────────── */
+.sw-panel {
+    border: 1.5px solid rgba(32,60,62,.22) !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
+}
+.sw-header {
+    border-bottom: 2px solid rgba(32,60,62,.18) !important;
+    background: rgba(32,60,62,.03) !important;
+}
+
+/* ─── 17c. News widget container ─────────────────────────── */
+.news-widget {
+    border: 1.5px solid rgba(32,60,62,.2) !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.05) !important;
+}
+
+/* ─── 17d. News three-col panels (.news-col) ─────────────── */
+.news-col {
+    border: 1.5px solid rgba(32,60,62,.18) !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
+    background: var(--color-white) !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.05) !important;
+}
+/* .news-widget nested inside .news-col — strip the inner border */
+.news-col .news-widget {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+}
+
+/* ─── 17e. Share bar (post page) — darker, client-color ──── */
+.share-bar {
+    border-top: 1.5px solid rgba(32,60,62,.2) !important;
+    border-bottom: 1.5px solid rgba(32,60,62,.2) !important;
+}
+
+/* ─── 17f. Post terms bar ────────────────────────────────── */
+.post-terms-bar {
+    border-bottom: 1.5px solid rgba(32,60,62,.12) !important;
+}
+
+/* ─── 17g. Highlight section panels ─────────────────────── */
+.cat-hl-panel,
+.cat-highlight-section .news-col {
+    border-color: rgba(32,60,62,.2) !important;
+}
+
+/* ─── 17h. Tools/calc sidebar panels ────────────────────── */
+.tools-sidebar-section {
+    border: 1.5px solid rgba(32,60,62,.2) !important;
+    border-radius: 10px !important;
+}
+.tools-sidebar-help {
+    border: 1.5px solid rgba(32,60,62,.18) !important;
+    border-radius: 10px !important;
+}
+
+/* ─── 17i. Find-calc CTA strip ───────────────────────────── */
+.find-calc-cta {
+    border: 1.5px solid rgba(32,60,62,.2) !important;
+    background: rgba(32,60,62,.025) !important;
+}
+
+/* ─── 17j. Article sidebar widgets ──────────────────────── */
+.article-toc,
+.article-sidebar > * {
+    border: 1.5px solid rgba(32,60,62,.18) !important;
+    border-radius: 10px !important;
+}
+
+/* ─── 17k. Mini-card thumb — rounded dark border ─────────── */
+.mini-card-thumb {
+    border: 1px solid rgba(32,60,62,.14) !important;
+}
+
+/* ─── 17l. Mobile ────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .news-col { padding: 10px 12px !important; }
+    .news-widget { padding: 10px 12px !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   18. HEADER SEARCH — bigger submit button, visible icon
+   ══════════════════════════════════════════════════════════════ */
+.header-search-form .btn-primary {
+    min-width: 46px !important;
+    height: 46px !important;
+    padding: 0 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    font-size: 1rem !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+    background: var(--client-color, #203c3e) !important;
+    border-color: var(--client-color, #203c3e) !important;
+}
+.header-search-form .btn-primary .ah-ico {
+    font-size: 1rem !important;
+    color: #fff !important;
+}
+.header-search-form .btn-primary:hover {
+    background: var(--secondary-color, #B08D57) !important;
+    border-color: var(--secondary-color, #B08D57) !important;
+}
+/* Search input — match height with button */
+.header-search-input {
+    height: 46px !important;
+    font-size: 0.95rem !important;
+    border-color: rgba(32,60,62,.25) !important;
+    border-radius: 10px !important;
+}
+.header-search-input:focus {
+    border-color: var(--client-color, #203c3e) !important;
+    box-shadow: 0 0 0 3px rgba(32,60,62,.1) !important;
+}
+/* Close button — larger, clearer */
+.header-search-close {
+    font-size: 1.2rem !important;
+    color: rgba(32,60,62,.55) !important;
+    padding: 10px 12px !important;
+    transition: color 0.15s ease !important;
+}
+.header-search-close:hover {
+    color: var(--client-color, #203c3e) !important;
+    background: rgba(32,60,62,.06) !important;
+}

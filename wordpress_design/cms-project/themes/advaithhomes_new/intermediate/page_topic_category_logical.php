@@ -158,7 +158,7 @@ function adn_topic_category_get_context() {
 				$read_mins  = max( 1, round( $word_count / 200 ) );
 
 				$articles[] = array(
-					'icon'      => ! empty( $term->icon_emoji ) ? $term->icon_emoji : '📄',
+					'icon'      => ! empty( $term->icon_emoji ) ? $term->icon_emoji : '🏡',
 					'img_class' => $gradients[ ( (int) $i ) % count( $gradients ) ],
 					'thumbnail' => $thumb_url,
 					'category'  => strtoupper( isset( $term->name ) ? $term->name : '' ),
@@ -234,7 +234,7 @@ function adn_topic_category_get_context() {
 					$read_mins  = max( 1, round( $word_count / 200 ) );
 
 					$articles[] = array(
-						'icon'      => ! empty( $term->icon_emoji ) ? $term->icon_emoji : '📄',
+						'icon'      => ! empty( $term->icon_emoji ) ? $term->icon_emoji : '🏡',
 						'img_class' => $gradients[ (int) $i % count( $gradients ) ],
 						'thumbnail' => $thumb_url,
 						'category'  => strtoupper( $cat_name ),

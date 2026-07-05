@@ -37,17 +37,31 @@ $_circles = ! isset( $circles ) || (bool) $circles;
 	<!-- Full-image hero: S-curve shape filled with gradient so white fades into the photo -->
 	<svg class="phb-curve" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
 		<defs>
-			<!-- Gradient: solid white 0→40%, fades to transparent by 68% -->
+			<!-- Warm cream: solid 0→38%, smooth fade by 64% -->
 			<linearGradient id="phb-g" x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
-				<stop offset="0%"   stop-color="white" stop-opacity="1"/>
-				<stop offset="40%"  stop-color="white" stop-opacity="1"/>
-				<stop offset="68%"  stop-color="white" stop-opacity="0"/>
+				<stop offset="0%"   stop-color="#faf8f5" stop-opacity="1"/>
+				<stop offset="38%"  stop-color="#faf8f5" stop-opacity="1"/>
+				<stop offset="64%"  stop-color="#faf8f5" stop-opacity="0"/>
 			</linearGradient>
 		</defs>
-		<!-- Outer soft-fade halo - shifted left to reveal more image -->
-		<path d="M 0 0 L 68 0 C 66 18, 52 34, 60 50 C 68 66, 54 82, 58 100 L 0 100 Z" fill="url(#phb-g)" opacity="0.45"/>
-		<!-- Primary panel - shifted left, S-curve edge fades into image -->
-		<path d="M 0 0 L 58 0 C 56 18, 42 34, 50 50 C 58 66, 44 82, 48 100 L 0 100 Z" fill="url(#phb-g)"/>
+		<!-- Wide halo — same 3-peak wave, shifted right, very soft -->
+		<path d="M 0 0 L 63 0
+		         C 66 8, 66 15, 62 22
+		         C 58 29, 52 33, 52 42
+		         C 52 51, 62 57, 64 65
+		         C 66 73, 56 82, 56 91
+		         C 56 96, 58 99, 58 100
+		         L 0 100 Z"
+		      fill="url(#phb-g)" opacity="0.3"/>
+		<!-- Primary wave — no stroke, pure smooth fade -->
+		<path d="M 0 0 L 55 0
+		         C 58 8, 58 15, 54 22
+		         C 50 29, 44 33, 44 42
+		         C 44 51, 54 57, 56 65
+		         C 58 73, 48 82, 48 91
+		         C 48 96, 50 99, 50 100
+		         L 0 100 Z"
+		      fill="url(#phb-g)"/>
 	</svg>
 	<?php if ( $_circles ) : ?>
 		<span class="phb-circle phb-circle--a"></span>
