@@ -72,17 +72,60 @@
 }
 
 .news-cats-inner {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+/* Scrollable tab row */
+.news-cats-tabs {
     display: flex;
     gap: var(--space-1);
     overflow-x: auto;
     scrollbar-width: none;
+    flex: 1;
+    min-width: 0;
 }
 
-.news-cats-inner::-webkit-scrollbar {
+.news-cats-tabs::-webkit-scrollbar {
     display: none;
+}
+
+/* Inline search on the right of the strip */
+.news-cats-search-wrap {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.news-cats-search-input {
+    height: 34px;
+    width: 200px;
+    padding: 0 10px 0 34px;
+    border: 1.5px solid rgba(32,60,62,.22);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: var(--text-primary, #111816);
+    background: var(--color-bg, #f8f5f0);
+    transition: border-color 0.15s, box-shadow 0.15s, width 0.25s;
+}
+
+.news-cats-search-input:focus {
+    outline: none;
+    border-color: var(--client-color, #203c3e);
+    box-shadow: 0 0 0 3px rgba(32,60,62,.10);
+    width: 260px;
+}
+
+.news-cats-search-icon {
+    position: absolute;
+    left: 10px;
+    font-size: 0.78rem;
+    color: var(--text-muted, #7a6f65);
+    pointer-events: none;
 }
 
 .news-cat-tab {
@@ -297,6 +340,56 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-5);
+}
+
+/* API-driven grid (page-newsall) — responsive auto-fill */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: var(--space-5);
+    align-items: stretch;
+}
+
+/* ── Async states (loading / empty / error) ─────────────────── */
+.news-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 48px 20px;
+    text-align: center;
+    color: var(--text-muted, #7a6f65);
+    font-size: 0.9rem;
+}
+
+.news-state--loading {
+    flex-direction: row;
+    padding: 32px 20px;
+}
+
+.news-state--empty i {
+    font-size: 2.4rem;
+    color: rgba(32,60,62,.35);
+}
+
+.news-state[hidden] { display: none; }
+
+.news-spinner {
+    width: 22px;
+    height: 22px;
+    border: 2.5px solid rgba(32,60,62,.18);
+    border-top-color: var(--client-color, #203c3e);
+    border-radius: 50%;
+    animation: news-spin 0.7s linear infinite;
+}
+
+@keyframes news-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .news-spinner { animation-duration: 1.6s; }
 }
 
 .news-card {

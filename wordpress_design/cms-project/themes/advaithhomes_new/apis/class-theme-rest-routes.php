@@ -138,61 +138,91 @@ class ADN_Theme_Rest_Routes {
 	   CMS CONTENT
 	   ══════════════════════════════════════════════════════════════════ */
 
-	/** GET /news - CMS newsbar + articles, WP posts as fallback. ?page=&per_page=&source= */
+	/** GET /news - CMS newsbar items (newest first), WP posts as fallback. ?page=&per_page=&source=&label=&q= */
 	public static function _cb_news( WP_REST_Request $req ): WP_REST_Response {
 		$page     = max( 1, (int) $req->get_param( 'page' ) );
 		$per_page = (int) $req->get_param( 'per_page' );
 		$per_page = $per_page > 0 ? min( $per_page, 50 ) : ADN_API_PER_PAGE;
 		$source   = sanitize_key( (string) $req->get_param( 'source' ) );
 
-		$items = array();
+		// Filters (applied to every source).
+		$label_raw = trim( (string) $req->get_param( 'label' ) );
+		$label_key = ( '' !== $label_raw && 'all' !== strtolower( $label_raw ) ) ? sanitize_key( $label_raw ) : '';
+		$q_raw     = trim( (string) $req->get_param( 'q' ) );
+		$q_lc      = '' !== $q_raw ? strtolower( $q_raw ) : '';
+
+		$items    = array();
+		$labels   = array();
 
 		if ( 'wp' !== $source && function_exists( 'adn_cms_newsbar_items' ) ) {
-			foreach ( adn_cms_newsbar_items( $per_page * 5 ) as $ni ) {
+			foreach ( adn_cms_newsbar_items( 300 ) as $ni ) {
+				$title = isset( $ni->text ) ? (string) $ni->text : '';
+				if ( '' === $title ) { continue; }
+
+				$lbl  = isset( $ni->label ) && '' !== trim( (string) $ni->label ) ? trim( (string) $ni->label ) : 'News';
+				$lkey = sanitize_key( $lbl );
+
+				// Track distinct labels (before filtering) for the filter tabs.
+				if ( isset( $labels[ $lkey ] ) ) {
+					$labels[ $lkey ]['count']++;
+				} else {
+					$labels[ $lkey ] = array( 'key' => $lkey, 'label' => $lbl, 'count' => 1 );
+				}
+
+				// Apply label + search filters.
+				if ( '' !== $label_key && $lkey !== $label_key ) { continue; }
+				if ( '' !== $q_lc && false === strpos( strtolower( $title ), $q_lc ) ) { continue; }
+
+				$content = isset( $ni->content ) ? (string) $ni->content : '';
+				$stamp   = ! empty( $ni->start_date ) ? $ni->start_date : ( isset( $ni->created_at ) ? $ni->created_at : '' );
+				$img     = '';
+				if ( ! empty( $ni->image_id ) ) {
+					$t   = wp_get_attachment_image_url( (int) $ni->image_id, 'medium' );
+					$img = $t ? (string) $t : '';
+				}
+
 				$items[] = array(
-					'id'      => isset( $ni->id ) ? (int) $ni->id : 0,
-					'title'   => isset( $ni->text )       ? (string) $ni->text       : '',
-					'excerpt' => isset( $ni->content )    ? wp_strip_all_tags( (string) $ni->content ) : '',
-					'date'    => isset( $ni->start_date ) ? (string) $ni->start_date : '',
-					'url'     => isset( $ni->link_url )   ? (string) $ni->link_url   : '#',
-					'image'   => '',
-					'tag'     => 'news',
-					'source'  => 'cms',
+					'id'        => isset( $ni->id ) ? (int) $ni->id : 0,
+					'title'     => $title,
+					'excerpt'   => wp_trim_words( wp_strip_all_tags( $content ), 24, '…' ),
+					'date'      => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
+					'date_raw'  => $stamp ? (string) $stamp : '',
+					'label'     => $lbl,
+					'cat_key'   => $lkey,
+					'read_time' => function_exists( 'adn_cms_read_time' ) ? adn_cms_read_time( $content ) : '',
+					'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( (int) $ni->id ) : '#',
+					'image'     => $img,
+					'source'    => 'cms',
 				);
 			}
 		}
 
-		if ( empty( $items ) && function_exists( 'adn_cms_latest_news' ) ) {
-			foreach ( adn_cms_latest_news( $per_page * 3 ) as $ni ) {
-				$items[] = array(
-					'id'      => isset( $ni->ID ) ? (int) $ni->ID : 0,
-					'title'   => isset( $ni->title )       ? (string) $ni->title       : '',
-					'excerpt' => isset( $ni->excerpt )     ? (string) $ni->excerpt     : '',
-					'date'    => isset( $ni->published_at ) ? (string) $ni->published_at : '',
-					'url'     => isset( $ni->ID ) && $ni->ID ? get_permalink( (int) $ni->ID ) : '#',
-					'image'   => '',
-					'tag'     => 'news',
-					'source'  => 'cms',
-				);
-			}
-		}
-
-		if ( empty( $items ) ) {
-			$q = new WP_Query( array( 'post_type' => 'post', 'post_status' => 'publish', 'posts_per_page' => $per_page, 'paged' => $page ) );
+		// Fallback: published WP posts (only when no CMS newsbar items exist).
+		if ( empty( $items ) && empty( $labels ) ) {
+			$q = new WP_Query( array( 'post_type' => 'post', 'post_status' => 'publish', 'posts_per_page' => 200, 'orderby' => 'date', 'order' => 'DESC' ) );
 			foreach ( $q->posts as $p ) {
+				$title = (string) $p->post_title;
+				if ( '' !== $q_lc && false === strpos( strtolower( $title ), $q_lc ) ) { continue; }
 				$items[] = array(
-					'id'      => (int) $p->ID,
-					'title'   => $p->post_title,
-					'excerpt' => $p->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $p->post_content ), 20 ),
-					'date'    => $p->post_date,
-					'url'     => get_permalink( $p->ID ),
-					'image'   => get_the_post_thumbnail_url( $p->ID, 'medium' ) ?: '',
-					'tag'     => 'news',
-					'source'  => 'wp',
+					'id'        => (int) $p->ID,
+					'title'     => $title,
+					'excerpt'   => $p->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $p->post_content ), 24, '…' ),
+					'date'      => date_i18n( 'M j, Y', strtotime( $p->post_date ) ),
+					'date_raw'  => (string) $p->post_date,
+					'label'     => 'News',
+					'cat_key'   => 'news',
+					'read_time' => function_exists( 'adn_cms_read_time' ) ? adn_cms_read_time( $p->post_content ) : '',
+					'url'       => get_permalink( $p->ID ),
+					'image'     => get_the_post_thumbnail_url( $p->ID, 'medium' ) ?: '',
+					'source'    => 'wp',
 				);
 			}
 			wp_reset_postdata();
 		}
+
+		// Sort label list by frequency (desc) for the tab strip.
+		$labels = array_values( $labels );
+		usort( $labels, static function ( $a, $b ) { return $b['count'] - $a['count']; } );
 
 		$total = count( $items );
 		$items = array_slice( $items, ( $page - 1 ) * $per_page, $per_page );
@@ -200,7 +230,13 @@ class ADN_Theme_Rest_Routes {
 		return new WP_REST_Response( array(
 			'success' => true,
 			'data'    => $items,
-			'meta'    => array( 'total' => $total, 'page' => $page, 'per_page' => $per_page, 'total_pages' => (int) ceil( $total / $per_page ) ),
+			'labels'  => $labels,
+			'meta'    => array(
+				'total'       => $total,
+				'page'        => $page,
+				'per_page'    => $per_page,
+				'total_pages' => (int) ceil( max( 1, $total ) / $per_page ),
+			),
 		), 200 );
 	}
 

@@ -104,7 +104,7 @@ function adn_calculator_single_get_context( $key ) {
 	}
 	$sidebar_cats = array( array(
 		'key'   => 'all',
-		'label' => adn_term( 'calculators_page.filter_all', 'All' ) . ' ' . SITE_TOOLS_PLURAL,
+		'label' => adn_term( 'calculators_page.filter_all', 'All' ),
 		'count' => $total_enabled,
 		'url'   => home_url( SITE_CALCULATORS_URL ),
 	) );
@@ -112,7 +112,7 @@ function adn_calculator_single_get_context( $key ) {
 		if ( $cat_counts[ $ckey ] > 0 ) {
 			$sidebar_cats[] = array(
 				'key'   => $ckey,
-				'label' => $clabel . ' ' . SITE_TOOLS_PLURAL,
+				'label' => $clabel, // term name straight from adn_calculator_categories() — no hardcoded suffix
 				'count' => $cat_counts[ $ckey ],
 				'url'   => home_url( SITE_CALCULATORS_URL . '#' . $ckey ),
 			);

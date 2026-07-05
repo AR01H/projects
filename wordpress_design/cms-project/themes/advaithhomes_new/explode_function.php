@@ -131,6 +131,24 @@ function adn_enqueue_template_specific_assets() {
         ) );
     }
 
+    // News listing: REST config for AJAX-driven cards. Handles the virtual
+    // template case (SITE_NEWS_URL) as well as a real page template assignment.
+    $is_news_tpl = is_page_template( 'pages/page-newsall.php' ) || ( '' !== $virtual_tpl && 'page-newsall' === $virtual_tpl );
+    if ( $is_news_tpl && wp_script_is( 'adn-page-newsall-script', 'enqueued' ) ) {
+        wp_localize_script( 'adn-page-newsall-script', 'adnNews', array(
+            'apiBase'   => rest_url( ADN_API_NS . '/news' ),
+            'restNonce' => wp_create_nonce( 'wp_rest' ),
+            'perPage'   => 8,
+            'i18n'      => array(
+                'empty'    => __( 'No news found. Try a different filter or search.', ADN_TEXT_DOMAIN ),
+                'error'    => __( 'Could not load news right now. Please try again.', ADN_TEXT_DOMAIN ),
+                'loading'  => __( 'Loading…', ADN_TEXT_DOMAIN ),
+                'loadMore' => defined( 'SITE_BTN_LOAD_MORE' ) ? SITE_BTN_LOAD_MORE : __( 'Load More', ADN_TEXT_DOMAIN ),
+                'readMore' => __( 'Read', ADN_TEXT_DOMAIN ),
+            ),
+        ) );
+    }
+
     // Ask an Expert page: nonces must be localized here (inside wp_enqueue_scripts) because
     // the template calls wp_localize_script before this hook fires, so the handle isn't
     // registered yet and the call silently fails, leaving adnExpert undefined.

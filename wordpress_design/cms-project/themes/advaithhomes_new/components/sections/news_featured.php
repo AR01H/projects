@@ -43,7 +43,8 @@ $thumb = isset( $featured['thumbnail'] ) ? (string) $featured['thumbnail'] : '';
 		<?php endif; ?>
 
 		<a href="<?php echo $url; ?>" class="btn btn-primary fa-read-btn">
-			<?php echo esc_html( SITE_SECTION_NEWS_READ_BTN ); ?> &rsaquo;
+			<?php echo esc_html( SITE_SECTION_NEWS_READ_BTN ); ?>
+			<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
 		</a>
 	</div>
 </div>

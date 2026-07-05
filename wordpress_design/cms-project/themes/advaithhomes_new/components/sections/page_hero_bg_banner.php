@@ -37,29 +37,27 @@ $_circles = ! isset( $circles ) || (bool) $circles;
 	<!-- Full-image hero: S-curve shape filled with gradient so white fades into the photo -->
 	<svg class="phb-curve" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
 		<defs>
-			<!-- Warm cream: solid 0→38%, smooth fade by 64% -->
+			<!-- Warm cream: solid 0→50% so the title always has a readable backing, fade by 82% -->
 			<linearGradient id="phb-g" x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
 				<stop offset="0%"   stop-color="#faf8f5" stop-opacity="1"/>
-				<stop offset="38%"  stop-color="#faf8f5" stop-opacity="1"/>
-				<stop offset="64%"  stop-color="#faf8f5" stop-opacity="0"/>
+				<stop offset="50%"  stop-color="#faf8f5" stop-opacity="1"/>
+				<stop offset="82%"  stop-color="#faf8f5" stop-opacity="0"/>
 			</linearGradient>
 		</defs>
-		<!-- Wide halo — same 3-peak wave, shifted right, very soft -->
-		<path d="M 0 0 L 63 0
-		         C 66 8, 66 15, 62 22
-		         C 58 29, 52 33, 52 42
-		         C 52 51, 62 57, 64 65
-		         C 66 73, 56 82, 56 91
-		         C 56 96, 58 99, 58 100
+		<!-- Wide halo — gentle wave, never pinches below ~58%, very soft -->
+		<path d="M 0 0 L 62 0
+		         C 65 10, 65 20, 60 30
+		         C 56 38, 56 46, 58 54
+		         C 60 62, 64 70, 62 80
+		         C 60 88, 59 94, 60 100
 		         L 0 100 Z"
 		      fill="url(#phb-g)" opacity="0.3"/>
-		<!-- Primary wave — no stroke, pure smooth fade -->
-		<path d="M 0 0 L 55 0
-		         C 58 8, 58 15, 54 22
-		         C 50 29, 44 33, 44 42
-		         C 44 51, 54 57, 56 65
-		         C 58 73, 48 82, 48 91
-		         C 48 96, 50 99, 50 100
+		<!-- Primary wave — never pinches below ~52% so text stays on cream -->
+		<path d="M 0 0 L 58 0
+		         C 61 10, 61 20, 56 30
+		         C 52 38, 52 46, 54 54
+		         C 56 62, 60 70, 58 80
+		         C 56 88, 55 94, 56 100
 		         L 0 100 Z"
 		      fill="url(#phb-g)"/>
 	</svg>

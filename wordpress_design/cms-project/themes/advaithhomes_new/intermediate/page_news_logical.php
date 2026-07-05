@@ -51,6 +51,27 @@ function adn_news_get_context() {
 					'items'      => adn_news_newsbar_grid_items( $nb_rest ),
 				);
 			}
+
+			// Extract distinct labels for filter tabs
+			$_seen_labels = array();
+			foreach ( $nb_rows as $_li ) {
+				$_lbl = isset( $_li->label ) ? trim( (string) $_li->label ) : '';
+				if ( '' === $_lbl ) { continue; }
+				$_lkey = sanitize_key( $_lbl );
+				if ( isset( $_seen_labels[ $_lkey ] ) ) {
+					$_seen_labels[ $_lkey ]['count']++;
+				} else {
+					$_seen_labels[ $_lkey ] = array( 'label' => $_lbl, 'count' => 1 );
+				}
+			}
+			arsort( $_seen_labels );
+			foreach ( $_seen_labels as $_lkey => $_ldata ) {
+				$ctx['categories'][] = array(
+					'key'   => $_lkey,
+					'label' => $_ldata['label'],
+					'count' => $_ldata['count'],
+				);
+			}
 		}
 	}
 
@@ -131,12 +152,14 @@ function adn_news_newsbar_grid_items( $rows ) {
 		$content = isset( $item->content ) ? (string) $item->content : '';
 		$excerpt = wp_trim_words( wp_strip_all_tags( $content ), 25, '…' );
 		$stamp   = ! empty( $item->start_date ) ? $item->start_date : ( isset( $item->created_at ) ? $item->created_at : '' );
+		$item_label = isset( $item->label ) && '' !== trim( (string) $item->label ) ? trim( (string) $item->label ) : SITE_NEWS_NOUN;
+		$item_key   = sanitize_key( $item_label );
 		$items[] = array(
-			'cat_key'    => 'news',
+			'cat_key'    => $item_key,
 			'icon'       => 'fa-newspaper',
 			'bg_class'   => '',
-			'pill_class' => 'pill-market',
-			'category'   => SITE_NEWS_NOUN,
+			'pill_class' => 'pill-news-label',
+			'category'   => $item_label,
 			'title'      => $title,
 			'excerpt'    => $excerpt,
 			'date'       => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',

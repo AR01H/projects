@@ -340,8 +340,8 @@ function adn_cms_articles_for_parent( $parent_slug, $limit = 12 ) {
 
 /**
  * Active News Bar items from the plugin's ah_news_bar_items table.
- * Mirrors AH_Newsbar_Model::get_active(): status=active, within start/end dates,
- * ordered by sort_order. No dependency on plugin PHP classes.
+ * status=active, within start/end dates, newest-first (by start_date, then
+ * created_at). No dependency on plugin PHP classes.
  *
  * @param int $limit
  * @return object[]  { id, text, content, image_id, link_url, link_target, start_date, end_date, sort_order }
@@ -358,7 +358,7 @@ function adn_cms_newsbar_items( $limit = 6 ) {
 		 WHERE status = 'active'
 		   AND ( start_date IS NULL OR start_date <= %s )
 		   AND ( end_date   IS NULL OR end_date   >= %s )
-		 ORDER BY sort_order ASC
+		 ORDER BY COALESCE( start_date, created_at ) DESC, id DESC
 		 LIMIT %d",
 		$today, $today, max( 1, (int) $limit )
 	) ) ?: array();

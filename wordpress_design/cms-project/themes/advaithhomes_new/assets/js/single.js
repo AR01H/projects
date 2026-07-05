@@ -46,17 +46,21 @@
 
         var links = nav.querySelectorAll( '.toc-link' );
 
+        function setActive( id ) {
+            var activeLink = null;
+            links.forEach( function ( l ) {
+                var on = l.getAttribute( 'href' ) === '#' + id;
+                l.classList.toggle( 'toc-active', on );
+                if ( on ) { activeLink = l; }
+            } );
+            if ( activeLink ) { scrollTocIntoView( nav, activeLink ); }
+        }
+
         var observer = new IntersectionObserver(
             function ( entries ) {
                 entries.forEach( function ( entry ) {
                     if ( ! entry.isIntersecting ) return;
-                    var id = entry.target.id;
-                    links.forEach( function ( l ) {
-                        l.classList.toggle(
-                            'toc-active',
-                            l.getAttribute( 'href' ) === '#' + id
-                        );
-                    } );
+                    setActive( entry.target.id );
                 } );
             },
             {
@@ -70,6 +74,30 @@
         /* Activate first link immediately */
         if ( links.length ) {
             links[0].classList.add( 'toc-active' );
+        }
+    }
+
+    /**
+     * Keep the active TOC link visible inside the scrollable TOC list.
+     * Only scrolls the TOC container itself (never the page), and only when
+     * the active link has drifted near/past an edge — so it feels natural.
+     */
+    function scrollTocIntoView( nav, link ) {
+        if ( ! nav || nav.scrollHeight <= nav.clientHeight + 4 ) return; // not scrollable
+        var navRect  = nav.getBoundingClientRect();
+        var linkRect = link.getBoundingClientRect();
+        var pad      = 28; // keep a little breathing room above/below
+
+        if ( linkRect.top < navRect.top + pad ) {
+            nav.scrollTo( {
+                top: nav.scrollTop + ( linkRect.top - navRect.top ) - pad,
+                behavior: 'smooth'
+            } );
+        } else if ( linkRect.bottom > navRect.bottom - pad ) {
+            nav.scrollTo( {
+                top: nav.scrollTop + ( linkRect.bottom - navRect.bottom ) + pad,
+                behavior: 'smooth'
+            } );
         }
     }
 

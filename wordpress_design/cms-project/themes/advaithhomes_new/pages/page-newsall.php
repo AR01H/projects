@@ -69,11 +69,12 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 				if ( (int) $_rn->id === $_ah_news_id ) { continue; }
 				if ( $_rni >= 4 ) { break; }
 				$_rn_stamp     = ! empty( $_rn->start_date ) ? $_rn->start_date : ( isset( $_rn->created_at ) ? $_rn->created_at : '' );
+				$_rn_label     = isset( $_rn->label ) && '' !== trim( (string) $_rn->label ) ? trim( (string) $_rn->label ) : SITE_NEWS_NOUN;
 				$_nb_related[] = array(
 					'gradient' => adn_cms_gradient( $_rni ),
 					'title'    => isset( $_rn->text ) ? (string) $_rn->text : '',
 					'date'     => $_rn_stamp ? date_i18n( 'M j, Y', strtotime( $_rn_stamp ) ) : '',
-					'tag'      => 'NEWS',
+					'tag'      => $_rn_label,
 					'url'      => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_rn->id ) : '',
 				);
 				$_rni++;
@@ -122,6 +123,19 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 			<main class="news-main">
 				<div class="news-single-article">
 
+					<?php /* Meta bar: label + date */ ?>
+					<div class="news-single-meta">
+						<?php if ( '' !== $_nb_label ) : ?>
+							<span class="news-single-tag"><?php echo esc_html( $_nb_label ); ?></span>
+						<?php endif; ?>
+						<?php if ( $_nb_stamp ) : ?>
+							<span class="news-single-date">
+								<i class="fa-regular fa-calendar" aria-hidden="true"></i>
+								<?php echo esc_html( date_i18n( 'F j, Y', strtotime( $_nb_stamp ) ) ); ?>
+							</span>
+						<?php endif; ?>
+					</div>
+
 					<?php /* Content */ ?>
 					<?php if ( '' !== $_nb_content ) : ?>
 						<div class="news-single-content">
@@ -148,27 +162,32 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 						</div>
 					<?php endif; ?>
 
-					<?php /* Share bar - after content */ ?>
-					<?php if ( $_nb_url ) : ?>
+				</div><?php /* .news-single-article ends here */ ?>
+
+				<?php /* Share bar - OUTSIDE the article box */ ?>
+				<?php if ( $_nb_url ) : ?>
+					<div class="news-single-share-out">
 						<?php adn_component( 'sections/post_feedback', array(
 							'share'        => array( 'url' => $_nb_url, 'title' => $_nb_title ),
 							'hide_helpful' => true,
 						) ); ?>
-					<?php endif; ?>
-
-					<?php /* More from us */ ?>
-					<!-- <?php if ( ! empty( $_nb_related ) ) : ?>
-					<div class="news-single-related">
-						<h2 class="nsr-heading"><?php esc_html_e( 'More News', ADN_TEXT_DOMAIN ); ?></h2>
-						<div class="nsr-grid">
-							<?php foreach ( $_nb_related as $_ritem ) : ?>
-								<?php adn_component( 'cards/news_item', array( 'item' => $_ritem ) ); ?>
-							<?php endforeach; ?>
-						</div>
 					</div>
-					<?php endif; ?> -->
+				<?php endif; ?>
 
+				<?php /* Related news - reusable news_widget bar, OUTSIDE the article box */ ?>
+				<?php if ( ! empty( $_nb_related ) ) : ?>
+				<div class="news-single-more">
+					<?php adn_component( 'parts/news_widget', array( 'widget' => array(
+						'heading' => array(
+							'title'      => __( 'More News', ADN_TEXT_DOMAIN ),
+							'link_label' => __( 'View all', ADN_TEXT_DOMAIN ) . ' →',
+							'link_url'   => SITE_NEWS_URL,
+						),
+						'items'   => $_nb_related,
+					) ) ); ?>
 				</div>
+				<?php endif; ?>
+
 			</main>
 
 			<aside class="news-sidebar">
@@ -239,29 +258,33 @@ adn_page_open( $_open_ctx );
 
 	<main class="news-main" id="newsMain">
 
-			<?php if ( ! empty( $ctx['featured'] ) || ! empty( $ctx['sections'] ) ) : ?>
-				<?php /* FEATURED */ ?>
-				<?php if ( ! empty( $ctx['featured'] ) ) : ?>
-					<?php adn_component( 'sections/news_featured', array( 'featured' => $ctx['featured'] ) ); ?>
-				<?php endif; ?>
+		<?php /* API-driven grid: news.js fetches /api/v1/news and renders normal cards here. */ ?>
+		<div class="news-grid" id="newsGrid" aria-live="polite" aria-busy="true"></div>
 
-				<?php /* SECTIONS (grid / list) */ ?>
-				<?php if ( ! empty( $ctx['sections'] ) ) : ?>
-					<?php foreach ( $ctx['sections'] as $sec ) : ?>
-						<?php adn_component( 'sections/news_section', array( 'section' => $sec ) ); ?>
-					<?php endforeach; ?>
-				<?php endif; ?>
+		<?php /* Loading skeleton / spinner */ ?>
+		<div class="news-state news-state--loading" id="newsLoading">
+			<span class="news-spinner" aria-hidden="true"></span>
+			<span><?php esc_html_e( 'Loading…', ADN_TEXT_DOMAIN ); ?></span>
+		</div>
 
-				<div class="load-more-wrap">
-					<button class="load-more-btn" id="loadMoreBtn" type="button">
-						<?php echo esc_html( SITE_BTN_LOAD_MORE ); ?>
-					</button>
-				</div>
-			<?php else : ?>
-				<div class="news-empty">
-					<p class="muted"><?php esc_html_e( 'No news available yet. Please check back soon.', ADN_TEXT_DOMAIN ); ?></p>
-				</div>
-			<?php endif; ?>
+		<?php /* Empty result */ ?>
+		<div class="news-state news-state--empty" id="newsEmpty" hidden>
+			<i class="fa-regular fa-newspaper" aria-hidden="true"></i>
+			<p><?php esc_html_e( 'No news found. Try a different filter or search.', ADN_TEXT_DOMAIN ); ?></p>
+		</div>
+
+		<?php /* Load more */ ?>
+		<div class="load-more-wrap" id="loadMoreWrap" hidden>
+			<button class="load-more-btn" id="loadMoreBtn" type="button">
+				<?php echo esc_html( SITE_BTN_LOAD_MORE ); ?>
+			</button>
+		</div>
+
+		<noscript>
+			<div class="news-state news-state--empty">
+				<p><?php esc_html_e( 'Please enable JavaScript to view the latest news.', ADN_TEXT_DOMAIN ); ?></p>
+			</div>
+		</noscript>
 
 	</main>
 

@@ -1,191 +1,265 @@
 /**
- * news.js - News & Insights page interactions.
+ * news.js - News & Insights page (API-driven).
+ *
+ * Cards are NOT server-rendered. This script fetches them from the theme REST
+ * endpoint (/api/v1/news) and renders normal news cards, newest-first.
  *
  * Features:
- *  - Category filtering: top strip tabs + sidebar category buttons
- *  - Live search: sidebar search box filters visible items by title text
- *  - Load More: reveal additional hidden items on each click
+ *  - Category filter: top strip tabs (data-cat="<label-key>") re-query the API
+ *  - Live search: #newsSearchInput (debounced) passes ?q= to the API
+ *  - Load More: fetches the next page and appends cards
+ *  - Graceful loading / empty / error states
  *
- * All filtering is client-side on the server-rendered DOM.
- * Each news-card and news-list-item carries data-cat="<key>".
+ * Config comes from the localized `adnNews` object:
+ *   { apiBase, restNonce, perPage, i18n:{ empty, error, loading, loadMore, readMore } }
  */
 
 ( function () {
     'use strict';
 
-    const BATCH_SIZE = 6;
+    var CFG = window.adnNews || {};
+    var API = CFG.apiBase || '';
+    var PER_PAGE = parseInt( CFG.perPage, 10 ) || 9;
+    var I18N = CFG.i18n || {};
 
+    // DOM
+    var grid, loadingEl, emptyEl, loadMoreWrap, loadMoreBtn, searchInput;
+
+    // State
     var activeCategory = 'all';
     var searchQuery    = '';
-
-    /** All filterable items across sections */
-    var allItems = [];
+    var currentPage    = 0;
+    var totalPages     = 1;
+    var isLoading      = false;
+    var searchTimer    = null;
 
     function init() {
-        cacheItems();
+        grid         = document.getElementById( 'newsGrid' );
+        loadingEl    = document.getElementById( 'newsLoading' );
+        emptyEl      = document.getElementById( 'newsEmpty' );
+        loadMoreWrap = document.getElementById( 'loadMoreWrap' );
+        loadMoreBtn  = document.getElementById( 'loadMoreBtn' );
+        searchInput  = document.getElementById( 'newsSearchInput' );
+
+        if ( ! grid || ! API ) { return; }
+
         bindCategoryTabs();
-        bindSidebarCats();
         bindSearch();
         bindLoadMore();
-        applyFilter();
+
+        loadPage( 1, true );
     }
 
-    function cacheItems() {
-        allItems = Array.prototype.slice.call(
-            document.querySelectorAll( '.news-card, .news-list-item' )
-        );
-    }
-
-    /* ── Category Tabs ─────────────────────────────────────── */
+    /* ── Category tabs ──────────────────────────────────────── */
 
     function bindCategoryTabs() {
-        var tabs = document.querySelectorAll( '.news-cat-tab' );
-        tabs.forEach( function ( tab ) {
+        document.querySelectorAll( '.news-cat-tab' ).forEach( function ( tab ) {
             tab.addEventListener( 'click', function () {
                 var cat = tab.getAttribute( 'data-cat' ) || 'all';
-                setCategory( cat );
+                if ( cat === activeCategory ) { return; }
+                activeCategory = cat;
+                syncTabUI( cat );
+                loadPage( 1, true );
             } );
         } );
-    }
-
-    function bindSidebarCats() {
-        var btns = document.querySelectorAll( '.sb-cat-btn' );
-        btns.forEach( function ( btn ) {
-            btn.addEventListener( 'click', function () {
-                var cat = btn.getAttribute( 'data-cat' ) || 'all';
-                setCategory( cat );
-            } );
-        } );
-    }
-
-    function setCategory( cat ) {
-        activeCategory = cat;
-        syncTabUI( cat );
-        syncSidebarUI( cat );
-        resetLoadMore();
-        applyFilter();
     }
 
     function syncTabUI( cat ) {
         document.querySelectorAll( '.news-cat-tab' ).forEach( function ( tab ) {
-            var isCurrent = tab.getAttribute( 'data-cat' ) === cat;
-            tab.classList.toggle( 'active', isCurrent );
-            tab.setAttribute( 'aria-pressed', isCurrent ? 'true' : 'false' );
+            var on = tab.getAttribute( 'data-cat' ) === cat;
+            tab.classList.toggle( 'active', on );
+            tab.setAttribute( 'aria-pressed', on ? 'true' : 'false' );
         } );
     }
 
-    function syncSidebarUI( cat ) {
-        document.querySelectorAll( '.sb-cat-item' ).forEach( function ( item ) {
-            var btn = item.querySelector( '.sb-cat-btn' );
-            if ( btn ) {
-                item.classList.toggle( 'active', btn.getAttribute( 'data-cat' ) === cat );
-            }
-        } );
-    }
-
-    /* ── Search ─────────────────────────────────────────────── */
+    /* ── Search (debounced) ─────────────────────────────────── */
 
     function bindSearch() {
-        var input = document.getElementById( 'newsSearchInput' );
-        if ( ! input ) return;
-
-        input.addEventListener( 'input', function () {
-            searchQuery = input.value.trim().toLowerCase();
-            resetLoadMore();
-            applyFilter();
+        if ( ! searchInput ) { return; }
+        searchInput.addEventListener( 'input', function () {
+            clearTimeout( searchTimer );
+            searchTimer = setTimeout( function () {
+                var q = searchInput.value.trim();
+                if ( q === searchQuery ) { return; }
+                searchQuery = q;
+                loadPage( 1, true );
+            }, 280 );
         } );
     }
 
-    /* ── Load More ──────────────────────────────────────────── */
-
-    var visibleCount = 0;
-    var matchedItems = [];
+    /* ── Load more ──────────────────────────────────────────── */
 
     function bindLoadMore() {
-        var btn = document.getElementById( 'loadMoreBtn' );
-        if ( ! btn ) return;
-
-        btn.addEventListener( 'click', function () {
-            revealNextBatch();
+        if ( ! loadMoreBtn ) { return; }
+        loadMoreBtn.addEventListener( 'click', function () {
+            if ( isLoading || currentPage >= totalPages ) { return; }
+            loadPage( currentPage + 1, false );
         } );
     }
 
-    function resetLoadMore() {
-        visibleCount = 0;
+    /* ── Fetch + render ─────────────────────────────────────── */
+
+    function loadPage( page, replace ) {
+        if ( isLoading ) { return; }
+        isLoading = true;
+
+        if ( replace ) {
+            grid.innerHTML = '';
+            grid.setAttribute( 'aria-busy', 'true' );
+            hide( emptyEl );
+            hide( loadMoreWrap );
+        }
+        show( loadingEl );
+        if ( loadMoreBtn ) { loadMoreBtn.disabled = true; }
+
+        var url = API
+            + '?page=' + encodeURIComponent( page )
+            + '&per_page=' + encodeURIComponent( PER_PAGE );
+        if ( activeCategory && activeCategory !== 'all' ) {
+            url += '&label=' + encodeURIComponent( activeCategory );
+        }
+        if ( searchQuery ) {
+            url += '&q=' + encodeURIComponent( searchQuery );
+        }
+
+        var headers = {};
+        if ( CFG.restNonce ) { headers['X-WP-Nonce'] = CFG.restNonce; }
+
+        fetch( url, { headers: headers, credentials: 'same-origin' } )
+            .then( function ( res ) {
+                if ( ! res.ok ) { throw new Error( 'HTTP ' + res.status ); }
+                return res.json();
+            } )
+            .then( function ( json ) {
+                var items = ( json && json.data ) || [];
+                var meta  = ( json && json.meta ) || {};
+
+                currentPage = parseInt( meta.page, 10 ) || page;
+                totalPages  = parseInt( meta.total_pages, 10 ) || 1;
+
+                items.forEach( function ( item ) {
+                    grid.appendChild( buildCard( item ) );
+                } );
+
+                hide( loadingEl );
+                grid.setAttribute( 'aria-busy', 'false' );
+
+                if ( grid.children.length === 0 ) {
+                    show( emptyEl );
+                    hide( loadMoreWrap );
+                } else {
+                    hide( emptyEl );
+                    if ( currentPage < totalPages ) {
+                        show( loadMoreWrap );
+                        if ( loadMoreBtn ) { loadMoreBtn.disabled = false; }
+                    } else {
+                        hide( loadMoreWrap );
+                    }
+                }
+                isLoading = false;
+            } )
+            .catch( function () {
+                hide( loadingEl );
+                grid.setAttribute( 'aria-busy', 'false' );
+                if ( replace ) {
+                    grid.innerHTML = '';
+                    showError();
+                } else if ( loadMoreBtn ) {
+                    loadMoreBtn.disabled = false;
+                }
+                isLoading = false;
+            } );
     }
 
-    function updateLoadMoreBtn( total ) {
-        var btn = document.getElementById( 'loadMoreBtn' );
-        if ( ! btn ) return;
-        var wrap = btn.parentElement;
+    /* ── Card builder (safe DOM, no innerHTML for user data) ── */
 
-        if ( visibleCount >= total ) {
-            if ( wrap ) wrap.style.display = 'none';
-            btn.disabled = true;
+    function buildCard( item ) {
+        var url     = item.url || '#';
+        var title   = item.title || '';
+        var excerpt = item.excerpt || '';
+        var label   = item.label || 'News';
+        var catKey  = item.cat_key || 'news';
+        var date    = item.date || '';
+        var read    = item.read_time || '';
+        var image   = item.image || '';
+
+        var card = el( 'div', 'news-card' );
+        card.setAttribute( 'data-cat', catKey );
+
+        // Image / icon
+        var imgLink = el( 'a', 'news-card-img' );
+        imgLink.setAttribute( 'href', url );
+        imgLink.setAttribute( 'tabindex', '-1' );
+        imgLink.setAttribute( 'aria-hidden', 'true' );
+        if ( image ) {
+            var img = document.createElement( 'img' );
+            img.src = image;
+            img.alt = title;
+            img.loading = 'lazy';
+            img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+            imgLink.appendChild( img );
         } else {
-            if ( wrap ) wrap.style.display = '';
-            btn.disabled = false;
+            var icon = el( 'span', 'news-card-icon' );
+            icon.innerHTML = '<i class="fa-solid fa-newspaper" aria-hidden="true"></i>';
+            imgLink.appendChild( icon );
         }
-    }
+        card.appendChild( imgLink );
 
-    function revealNextBatch() {
-        var end = Math.min( visibleCount + BATCH_SIZE, matchedItems.length );
-        for ( var i = visibleCount; i < end; i++ ) {
-            matchedItems[ i ].removeAttribute( 'hidden' );
+        // Body
+        var body = el( 'div', 'news-card-body' );
+
+        var pill = el( 'span', 'news-card-cat-pill pill-news-label' );
+        pill.textContent = label;
+        body.appendChild( pill );
+
+        var h3 = el( 'h3', 'news-card-title' );
+        var tLink = el( 'a' );
+        tLink.setAttribute( 'href', url );
+        tLink.textContent = title;
+        h3.appendChild( tLink );
+        body.appendChild( h3 );
+
+        if ( excerpt ) {
+            var p = el( 'p', 'news-card-excerpt' );
+            p.textContent = excerpt;
+            body.appendChild( p );
         }
-        visibleCount = end;
-        updateLoadMoreBtn( matchedItems.length );
-        toggleEmptySections();
-    }
 
-    /* ── Core Filter Logic ──────────────────────────────────── */
-
-    function applyFilter() {
-        /* Hide everything first */
-        allItems.forEach( function ( item ) {
-            item.setAttribute( 'hidden', '' );
-        } );
-
-        /* Build matched set */
-        matchedItems = allItems.filter( function ( item ) {
-            return matchesCat( item ) && matchesSearch( item );
-        } );
-
-        /* Show initial batch */
-        var end = Math.min( BATCH_SIZE, matchedItems.length );
-        for ( var i = 0; i < end; i++ ) {
-            matchedItems[ i ].removeAttribute( 'hidden' );
+        if ( date || read ) {
+            var meta = el( 'div', 'news-card-meta' );
+            if ( date ) {
+                var d = document.createElement( 'span' );
+                d.textContent = date;
+                meta.appendChild( d );
+            }
+            if ( read ) {
+                var r = document.createElement( 'span' );
+                r.textContent = read;
+                meta.appendChild( r );
+            }
+            body.appendChild( meta );
         }
-        visibleCount = end;
 
-        updateLoadMoreBtn( matchedItems.length );
-        toggleEmptySections();
-
-        /* Show/hide whole sections based on whether they have visible items */
-        toggleSectionVisibility();
+        card.appendChild( body );
+        return card;
     }
 
-    function matchesCat( item ) {
-        if ( activeCategory === 'all' ) return true;
-        return item.getAttribute( 'data-cat' ) === activeCategory;
+    /* ── Helpers ────────────────────────────────────────────── */
+
+    function el( tag, cls ) {
+        var n = document.createElement( tag );
+        if ( cls ) { n.className = cls; }
+        return n;
     }
 
-    function matchesSearch( item ) {
-        if ( ! searchQuery ) return true;
-        var titleEl = item.querySelector( 'h3, .fa-title' );
-        var text = titleEl ? titleEl.textContent.toLowerCase() : '';
-        return text.indexOf( searchQuery ) !== -1;
-    }
+    function show( node ) { if ( node ) { node.hidden = false; } }
+    function hide( node ) { if ( node ) { node.hidden = true; } }
 
-    function toggleEmptySections() {
-        document.querySelectorAll( '.news-section' ).forEach( function ( section ) {
-            var hasVisible = section.querySelector( '.news-card:not([hidden]), .news-list-item:not([hidden])' );
-            section.toggleAttribute( 'data-hidden', ! hasVisible );
-        } );
-    }
-
-    function toggleSectionVisibility() {
-        toggleEmptySections();
+    function showError() {
+        if ( ! emptyEl ) { return; }
+        var msg = emptyEl.querySelector( 'p' );
+        if ( msg ) { msg.textContent = I18N.error || 'Could not load news.'; }
+        show( emptyEl );
     }
 
     /* ── Bootstrap ──────────────────────────────────────────── */

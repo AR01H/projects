@@ -53,6 +53,18 @@ function adn_render_site_notice_popup(): void {
 	}
 }
 
+// Floating WhatsApp + Call buttons (numbers from ah_site_settings DB).
+add_action( 'wp_footer', 'adn_render_floating_contact' );
+function adn_render_floating_contact(): void {
+	// Skip in content-only / embed mode.
+	if ( ! empty( $_GET['content'] ) && 'true' === (string) $_GET['content'] ) {
+		return;
+	}
+	if ( function_exists( 'adn_component' ) ) {
+		adn_component( 'parts/floating_contact' );
+	}
+}
+
 // Change REST API URL prefix from /wp-json/ to /api/ → routes become /api/v1/...
 add_filter( 'rest_url_prefix', function () { return 'api'; } );
 

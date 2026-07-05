@@ -382,7 +382,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 /* ══════════════════════════════════════════════════════════════
    13b. HERO HOME — title padding + staggered fade-in
    ══════════════════════════════════════════════════════════════ */
-.hero-home { padding: 44px 0 52px !important; }
 .hero-home-inner { align-items: center !important; }
 .hero-content { padding-top: 8px !important; }
 .hero-title {
@@ -708,11 +707,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     opacity: 1 !important;
 }
 
-/* Body — gold top accent */
-.calc-card-body {
-    border-top: 2px solid rgba(176,141,87,.45) !important;
-}
-
 /* Card name — Playfair Display */
 .calc-card-name {
     font-family: var(--font-display, 'Playfair Display', serif) !important;
@@ -728,7 +722,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     grid-template-columns: repeat(auto-fill, minmax(200px, 200px)) !important;
 }
 .topic-calc-carousel .calc-card-media {
-    aspect-ratio: 16 / 6 !important;
+    aspect-ratio: 16 / 9 !important;
 }
 .topic-calc-carousel .calc-card-icon-wrap {
     font-size: 1.6rem !important;
@@ -761,16 +755,65 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     border-color: var(--secondary-color, #B08D57) !important;
 }
 
-/* Horizontal tool-grid cards: 3D tilt sideways instead */
-.tool-grid .calc-card:hover {
-    transform: perspective(900px) translateY(-4px) rotateX(2deg) !important;
-    box-shadow: 0 16px 36px rgba(32,60,62,.14),
+/* ─── 16c-2. UNIFIED calc card — ONE vertical 16/9 design everywhere
+   Applies to every .calc-card (home tool-grid, related tools, category
+   tools, carousels): media on top 16/9, name below. Container-specific
+   grid/track widths are handled separately below.                     */
+.calc-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+}
+/* Media: full-width 16/9 dark teal panel with the shared gradient */
+.calc-card-media {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    border-radius: 0 !important;
+}
+.calc-card-icon-wrap {
+    position: absolute !important;
+    inset: 0 !important;
+}
+.calc-card-thumb {
+    width: 100% !important;
+    height: 100% !important;
+}
+/* Body: name below, gold top accent instead of any left accent */
+.calc-card-body {
+    flex: 1 !important;
+    padding: 12px 14px !important;
+    border-left: none !important;
+    border-top: 2px solid rgba(176,141,87,.45) !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+.calc-card-name {
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    text-align: left !important;
+    color: var(--text-primary, #111816) !important;
+}
+
+/* Container grids — consistent column sizing */
+.tool-grid,
+.category-section.category-tools .tool-grid--7col {
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)) !important;
+    gap: 16px !important;
+}
+
+/* Clean vertical lift on hover for the grid contexts */
+.tool-grid .calc-card:hover,
+.category-section.category-tools .calc-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 16px 36px rgba(32,60,62,.15),
                 0 0 0 1.5px var(--secondary-color, #B08D57) !important;
     border-color: var(--secondary-color, #B08D57) !important;
 }
-
-/* Home tool-grid card: slightly lighter media on hover */
-.tool-grid .calc-card:hover .calc-card-media {
+.tool-grid .calc-card:hover .calc-card-media,
+.category-section.category-tools .calc-card:hover .calc-card-media {
     background: linear-gradient(150deg, #1e4a35 0%, #2d6147 100%) !important;
 }
 
@@ -960,4 +1003,712 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .header-search-close:hover {
     color: var(--client-color, #203c3e) !important;
     background: rgba(32,60,62,.06) !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   19. NEWS PAGE — color overrides + label pills + single article
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── 19a. Filter tabs — teal active, gold underline ─────── */
+.news-cat-tab:hover {
+    color: var(--client-color, #203c3e) !important;
+    background: rgba(32,60,62,.05) !important;
+}
+.news-cat-tab.active {
+    color: var(--client-color, #203c3e) !important;
+    border-bottom-color: var(--secondary-color, #B08D57) !important;
+    font-weight: 700 !important;
+}
+.news-cat-tab.active .news-cat-count {
+    background: rgba(32,60,62,.1) !important;
+    color: var(--client-color, #203c3e) !important;
+}
+
+/* ─── 19b. News card — consistent border + hover ─────────── */
+.news-card {
+    border: 2px solid rgba(32,60,62,.30) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.07) !important;
+}
+.news-card:hover {
+    border-color: var(--secondary-color, #B08D57) !important;
+    box-shadow: 0 8px 28px rgba(32,60,62,.13) !important;
+    transform: translateY(-3px) !important;
+}
+.news-card-title a:hover {
+    color: var(--client-color, #203c3e) !important;
+}
+
+/* ─── 19c. Label pill — actual label, not hardcoded NEWS ─── */
+.pill-news-label {
+    background: rgba(32,60,62,.10) !important;
+    color: var(--client-color, #203c3e) !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    border-radius: 4px !important;
+    padding: 2px 8px !important;
+}
+
+/* ─── 19d. Featured article — teal body links ───────────── */
+.fa-title a:hover { color: var(--client-color, #203c3e) !important; }
+.fa-read-btn { gap: 8px !important; }
+
+/* ─── 19e. Load more — teal border ──────────────────────── */
+.load-more-btn {
+    border-color: var(--client-color, #203c3e) !important;
+    color: var(--client-color, #203c3e) !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+}
+.load-more-btn:hover {
+    background: var(--client-color, #203c3e) !important;
+    color: #fff !important;
+}
+
+/* ─── 19e2. News card image area — rotating jewel-tone palette ─
+   Every card was the same dark teal; cycle 6 refined brand tones
+   so the grid feels varied but still premium. Real thumbnails sit
+   on top of these, so the gradient only shows on icon fallbacks.  */
+.news-grid .news-card:nth-child(6n+1) .news-card-img {
+    background: linear-gradient(150deg, #16362a 0%, #2a5d47 100%) !important;  /* deep green-teal */
+}
+.news-grid .news-card:nth-child(6n+2) .news-card-img {
+    background: linear-gradient(150deg, #1a2e3a 0%, #2d5f6b 100%) !important;  /* slate blue */
+}
+.news-grid .news-card:nth-child(6n+3) .news-card-img {
+    background: linear-gradient(150deg, #3a2c17 0%, #7d6038 100%) !important;  /* bronze / gold */
+}
+.news-grid .news-card:nth-child(6n+4) .news-card-img {
+    background: linear-gradient(150deg, #2c1f2c 0%, #593a51 100%) !important;  /* plum */
+}
+.news-grid .news-card:nth-child(6n+5) .news-card-img {
+    background: linear-gradient(150deg, #203320 0%, #4a6b3a 100%) !important;  /* olive */
+}
+.news-grid .news-card:nth-child(6n+6) .news-card-img {
+    background: linear-gradient(150deg, #1a2e30 0%, #2d5550 100%) !important;  /* teal */
+}
+/* Fallback newspaper icon — warm brand gold on every tone */
+.news-grid .news-card-icon {
+    color: rgba(230,201,122,.9) !important;
+    opacity: 1 !important;
+    text-shadow: 0 1px 10px rgba(201,168,76,.25) !important;
+}
+/* Gold shimmer line under the image, like the calc cards */
+.news-grid .news-card-img {
+    position: relative !important;
+}
+.news-grid .news-card-img::after {
+    content: '' !important;
+    position: absolute !important;
+    left: 0; right: 0; bottom: 0 !important;
+    height: 2px !important;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,.7) 50%, transparent) !important;
+    pointer-events: none !important;
+}
+
+/* ─── 19f. Single news — meta bar + content colors ──────── */
+.news-single-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 20px !important;
+    flex-wrap: wrap !important;
+}
+.news-single-tag {
+    background: var(--client-color, #203c3e) !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    padding: 3px 10px !important;
+}
+.news-single-date {
+    color: var(--text-muted, #7a6f65) !important;
+    font-size: 0.83rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+}
+/* Content typography — article-style colors */
+.news-single-content h2,
+.news-single-content h3,
+.news-single-content h4 {
+    color: var(--client-color, #203c3e) !important;
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+}
+.news-single-content a {
+    color: var(--client-color, #203c3e) !important;
+}
+.news-single-content a:hover {
+    color: var(--secondary-color, #B08D57) !important;
+}
+.news-single-content blockquote {
+    border-left-color: var(--secondary-color, #B08D57) !important;
+    background: rgba(176,141,87,.07) !important;
+    color: var(--text-secondary, #4a4540) !important;
+    font-style: normal !important;
+}
+.news-single-article {
+    border: 2px solid rgba(32,60,62,.22) !important;
+    border-radius: 14px !important;
+}
+
+/* ─── 19g. Related news section heading ──────────────────── */
+.nsr-heading {
+    color: var(--client-color, #203c3e) !important;
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 1.1rem !important;
+    padding-bottom: 12px !important;
+    border-bottom: 2px solid rgba(176,141,87,.45) !important;
+    margin-bottom: 20px !important;
+}
+.nsr-heading i { color: var(--secondary-color, #B08D57) !important; }
+
+/* ─── 19h. Sidebar in news listing — same border language ── */
+.news-sidebar .sw-panel,
+.news-sidebar .news-sb-box {
+    border: 1.5px solid rgba(32,60,62,.20) !important;
+    border-radius: 12px !important;
+}
+
+/* ─── 19i. Source link box ───────────────────────────────── */
+.news-single-source {
+    border-color: rgba(32,60,62,.18) !important;
+    background: rgba(32,60,62,.03) !important;
+    border-radius: 10px !important;
+}
+
+/* ─── 19j. Single view — tighten padding everywhere ──────────
+   Short news items were swimming in whitespace; pull it all in.  */
+.news-layout--single {
+    padding-top: 22px !important;
+    padding-bottom: 24px !important;
+    gap: var(--space-8) !important;
+}
+.news-layout--single .news-main {
+    gap: 14px !important;
+}
+.news-single-article {
+    padding: 20px 24px !important;
+    border: 2px solid rgba(32,60,62,.20) !important;
+    border-radius: 12px !important;
+}
+.news-single-meta { margin-bottom: 14px !important; }
+.news-single-content { line-height: 1.7 !important; }
+.news-single-content p:last-child { margin-bottom: 0 !important; }
+/* Share bar — tighter, own tidy card */
+.news-single-share-out .post-feedback-bar {
+    padding: 12px 18px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
+    border-color: rgba(32,60,62,.16) !important;
+    border-radius: 12px !important;
+}
+
+/* ─── 19k. "More News" — reusable news_widget bar (one card) ──
+   Scoped to .news-single-more so home-page news widgets are safe. */
+.news-single-more .news-widget {
+    padding: 16px 18px !important;
+    border: 2px solid rgba(32,60,62,.20) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
+    background: #fff !important;
+}
+.news-single-more .list-widget-header {
+    margin-bottom: 8px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 2px solid rgba(176,141,87,.4) !important;
+}
+.news-single-more .list-widget-header h2,
+.news-single-more .list-widget-header h3 {
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    color: var(--client-color, #203c3e) !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+}
+.news-single-more .list-widget-view-all {
+    color: var(--secondary-color, #B08D57) !important;
+    font-weight: 700 !important;
+    font-size: 0.8rem !important;
+}
+/* Compact list rows inside the bar */
+.news-single-more .mini-card {
+    padding: 9px 10px !important;
+    min-height: 0 !important;
+    border: 1px solid transparent !important;
+    border-bottom: 1px solid rgba(32,60,62,.1) !important;
+    border-radius: 8px !important;
+    transition: background .18s ease, box-shadow .18s ease !important;
+}
+.news-single-more .mini-card:last-child { border-bottom: none !important; }
+/* Premium hover: soft teal wash + gold left accent (no hard box) */
+.news-single-more .mini-card:hover {
+    background: rgba(32,60,62,.05) !important;
+    border-color: transparent !important;
+    box-shadow: inset 3px 0 0 0 var(--secondary-color, #B08D57),
+                0 4px 14px rgba(32,60,62,.08) !important;
+}
+.news-single-more .mini-card:hover .mini-card-thumb {
+    box-shadow: 0 3px 10px rgba(32,60,62,.2) !important;
+}
+.news-single-more .mini-card-thumb {
+    width: 64px !important;
+    height: 46px !important;
+    aspect-ratio: auto !important;
+    border-radius: 8px !important;
+    position: relative !important;
+}
+.news-single-more .mini-card-thumb--gradient::after {
+    content: "\f1ea"; /* fa-newspaper */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: rgba(255,255,255,.6);
+    text-shadow: 0 1px 3px rgba(15,30,20,.25);
+}
+.news-single-more .mini-card-title {
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
+    color: var(--text-primary, #111816) !important;
+}
+.news-single-more .mini-card:hover .mini-card-title {
+    color: var(--client-color, #203c3e) !important;
+}
+.news-single-more .mini-card-tag {
+    background: rgba(32,60,62,.1) !important;
+    color: var(--client-color, #203c3e) !important;
+    font-size: 0.6rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    border-radius: 4px !important;
+    padding: 2px 7px !important;
+}
+.news-single-more .mini-card-date {
+    font-size: 0.7rem !important;
+    color: var(--text-muted, #7a6f65) !important;
+}
+.news-single-more .mini-card-arrow {
+    color: var(--secondary-color, #B08D57) !important;
+    font-size: 1.2rem !important;
+    transition: transform .2s ease !important;
+}
+.news-single-more .mini-card:hover .mini-card-arrow {
+    transform: translateX(3px) !important;
+}
+
+/* ─── 19l. Mobile ────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .news-cats-search-input { width: 140px !important; }
+    .news-cats-search-input:focus { width: 180px !important; }
+    .news-single-article { padding: 16px 16px !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   20. PAGE HERO — keep title/description on the cream, off the photo
+   ══════════════════════════════════════════════════════════════ */
+.page-hero-content {
+    max-width: 50% !important;
+    padding-right: 26px !important;
+}
+.page-hero h1 {
+    font-size: clamp(1.6rem, 2.9vw, 2.5rem) !important;
+    line-height: 1.16 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+}
+/* Tablet: give the text a bit more room before the wave */
+@media (max-width: 1024px) {
+    .page-hero-content { max-width: 58% !important; }
+    .page-hero p { max-width: 54% !important; }
+}
+/* Mobile: photo drops back, text spans full width */
+@media (max-width: 860px) {
+    .page-hero-content {
+        max-width: 100% !important;
+        padding-right: 0 !important;
+    }
+    .page-hero p { max-width: 100% !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   21. CALCULATOR SINGLE PAGE — spacing + Browse-by-Category widget
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── 21a. Breathing room between stacked blocks in main ────── */
+.tool-single-layout main > * {
+    margin-bottom: 20px !important;
+}
+.tool-single-layout main > *:last-child {
+    margin-bottom: 0 !important;
+}
+/* Share bar on the calc page — own tidy card, clear separation */
+.tool-single-layout .post-feedback-bar {
+    border-radius: 12px !important;
+    border-color: rgba(32,60,62,.16) !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
+}
+
+/* ─── 21b. "Browse by Category" sidebar widget ─────────────── */
+.tools-sidebar-section {
+    background: #fff !important;
+    border: 2px solid rgba(32,60,62,.2) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
+    padding: 16px !important;
+    margin-bottom: 18px !important;
+}
+.tools-sidebar-section h3,
+.tools-sidebar h3 {
+    color: var(--client-color, #203c3e) !important;
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    font-size: 0.98rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: none !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 10px !important;
+    border-bottom: 2px solid rgba(176,141,87,.4) !important;
+}
+.tools-cat-list { gap: 3px !important; }
+.tools-cat-item {
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+    border-left: 3px solid transparent !important;
+    font-size: 0.86rem !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary, #4a4540) !important;
+    transition: background .18s ease, color .18s ease, border-color .18s ease !important;
+}
+.tools-cat-item:hover {
+    background: rgba(32,60,62,.05) !important;
+    color: var(--client-color, #203c3e) !important;
+    border-left-color: rgba(176,141,87,.55) !important;
+    transform: none !important;
+}
+.tools-cat-item.active {
+    background: rgba(32,60,62,.06) !important;
+    color: var(--client-color, #203c3e) !important;
+    border-left: 3px solid var(--secondary-color, #B08D57) !important;
+    font-weight: 700 !important;
+}
+.tools-cat-count {
+    background: rgba(32,60,62,.1) !important;
+    color: var(--client-color, #203c3e) !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    min-width: 22px !important;
+    text-align: center !important;
+    border-radius: 20px !important;
+    padding: 2px 8px !important;
+}
+.tools-cat-item.active .tools-cat-count {
+    background: var(--client-color, #203c3e) !important;
+    color: #fff !important;
+}
+/* Help CTA card — matching border language */
+.tools-sidebar-help {
+    border: 2px solid rgba(32,60,62,.18) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
+}
+.tools-sidebar-help h4 {
+    color: var(--client-color, #203c3e) !important;
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   22. AMBIENT ANIMATED BACKGROUND — site-wide, subtle, on-brand
+       Two fixed layers behind ALL content:
+         • soft drifting teal / gold / green glows (random-feel motion)
+         • a faint slowly-drifting dot texture (refined nod to halftone)
+       Sits at z-index:-1 so it never touches layout, sticky, or clicks.
+   ══════════════════════════════════════════════════════════════ */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Layer 1 — drifting brand-colour glows */
+body::before {
+    inset: -12%;
+    background:
+        radial-gradient(38% 40% at 16% 22%, rgba(32,60,62,.07),  transparent 70%),
+        radial-gradient(32% 34% at 84% 26%, rgba(176,141,87,.07), transparent 70%),
+        radial-gradient(44% 44% at 70% 82%, rgba(45,97,71,.055),  transparent 70%),
+        radial-gradient(30% 30% at 40% 60%, rgba(176,141,87,.045), transparent 70%);
+    animation: adn-amb-glow 40s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+/* Layer 2 — faint drifting dot field */
+body::after {
+    inset: -25%;
+    background-image: radial-gradient(rgba(32,60,62,.06) 1.4px, transparent 1.6px);
+    background-size: 42px 42px;
+    opacity: .5;
+    animation: adn-amb-dots 55s linear infinite alternate;
+    will-change: transform;
+}
+
+@keyframes adn-amb-glow {
+    0%   { transform: translate3d(0, 0, 0)        scale(1);    }
+    50%  { transform: translate3d(1.8%, -2.2%, 0) scale(1.07); }
+    100% { transform: translate3d(-1.6%, 2%, 0)   scale(1.03); }
+}
+@keyframes adn-amb-dots {
+    0%   { transform: translate3d(0, 0, 0)     rotate(0deg);   }
+    100% { transform: translate3d(3.5%, 4%, 0) rotate(0.5deg); }
+}
+
+/* Accessibility — hold still for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+    body::before,
+    body::after { animation: none !important; }
+}
+
+/* Dark footer already covers the ambient; keep it crisp there. */
+.site-footer { position: relative; z-index: 0; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   23. FLOATING CONTACT — WhatsApp + Call (bottom-left, site-wide)
+   ══════════════════════════════════════════════════════════════ */
+.adn-fab {
+    position: fixed;
+    left: 20px;
+    bottom: 22px;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none; /* container ignores clicks; buttons re-enable */
+}
+.adn-fab-btn {
+    pointer-events: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.adn-fab-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 9px 22px rgba(0,0,0,.26);
+    color: #fff;
+}
+.adn-fab-btn svg { width: 21px; height: 21px; }
+.adn-fab-btn i   { font-size: 1.05rem; }
+
+.adn-fab-wa   { background: #25d366; }
+.adn-fab-call { background: var(--client-color, #203c3e); }
+
+/* Hover tooltip label (desktop) */
+.adn-fab-label {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-6px);
+    background: var(--client-color, #203c3e);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,.18);
+    transition: opacity .18s ease, transform .18s ease;
+}
+.adn-fab-label::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-right-color: var(--client-color, #203c3e);
+}
+.adn-fab-btn:hover .adn-fab-label,
+.adn-fab-btn:focus-visible .adn-fab-label {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* Gentle attention pulse on the WhatsApp button */
+.adn-fab-wa::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(37,211,102,.5);
+    animation: adn-fab-pulse 2.6s ease-out infinite;
+}
+@keyframes adn-fab-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(37,211,102,.45); }
+    70%  { box-shadow: 0 0 0 16px rgba(37,211,102,0); }
+    100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .adn-fab-wa::after { animation: none; }
+}
+
+/* Mobile: icons only, slightly smaller, hugging the corner */
+@media (max-width: 768px) {
+    .adn-fab { left: 14px; bottom: 16px; gap: 10px; }
+    .adn-fab-btn { width: 42px; height: 42px; }
+    .adn-fab-btn svg { width: 20px; height: 20px; }
+    .adn-fab-label { display: none; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   24. CONTACT "explore resources" cards — premium redesign
+   ══════════════════════════════════════════════════════════════ */
+.contact-section-heading {
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    color: var(--client-color, #203c3e) !important;
+    font-size: 1.6rem !important;
+}
+.contact-resources-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    gap: 16px !important;
+}
+.contact-resource-card {
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 10px !important;
+    padding: 22px 20px !important;
+    background: #fff !important;
+    border: 2px solid rgba(32,60,62,.22) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 12px rgba(32,60,62,.06) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease !important;
+}
+/* Gold top-accent that sweeps in on hover */
+.contact-resource-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0; left: 0; right: 0 !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, var(--secondary-color, #B08D57), transparent) !important;
+    transform: scaleX(0) !important;
+    transform-origin: left !important;
+    transition: transform .3s ease !important;
+}
+.contact-resource-card:hover {
+    border-color: var(--secondary-color, #B08D57) !important;
+    box-shadow: 0 14px 34px rgba(32,60,62,.14) !important;
+    transform: translateY(-4px) !important;
+}
+.contact-resource-card:hover::before { transform: scaleX(1) !important; }
+
+/* Icon → rounded medallion, flips to teal on hover */
+.cr-icon {
+    width: 52px !important;
+    height: 52px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+    background: linear-gradient(150deg, rgba(32,60,62,.08), rgba(176,141,87,.14)) !important;
+    border: 1px solid rgba(176,141,87,.3) !important;
+    color: var(--client-color, #203c3e) !important;
+    font-size: 1.45rem !important;
+    margin-bottom: 4px !important;
+    transition: background .25s ease, color .25s ease, transform .25s ease !important;
+}
+.cr-icon i { color: inherit !important; }
+.contact-resource-card:hover .cr-icon {
+    background: var(--client-color, #203c3e) !important;
+    color: var(--secondary-color, #B08D57) !important;
+    transform: scale(1.06) rotate(-3deg) !important;
+}
+
+.contact-resource-card h3 {
+    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: var(--client-color, #203c3e) !important;
+    line-height: 1.3 !important;
+}
+.contact-resource-card p {
+    font-size: 0.82rem !important;
+    color: var(--text-secondary, #4a4540) !important;
+    line-height: 1.5 !important;
+}
+.cr-arrow {
+    margin-top: auto !important;
+    color: var(--secondary-color, #B08D57) !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    transition: transform .2s ease !important;
+}
+.contact-resource-card:hover .cr-arrow { transform: translateX(5px) !important; }
+
+/* Mobile */
+@media (max-width: 560px) {
+    .contact-resources-grid { grid-template-columns: 1fr 1fr !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   25. FEATURED-IN LOGO MARQUEE — soft edges + uniform sizing
+   ══════════════════════════════════════════════════════════════ */
+/* Fade the marquee edges so logos ease in/out instead of hard-clipping */
+.fi-track-wrap {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+/* Uniform logo height so mixed logos line up cleanly */
+.fi-logo img {
+    height: 40px !important;
+    width: auto !important;
+    max-width: 150px !important;
+    object-fit: contain !important;
+}
+.fi-label {
+    text-align: center !important;
+    line-height: 1.25 !important;
+}
+
+@media (max-width: 600px) {
+    .fi-section { padding: 20px 0 18px !important; }
+    .fi-inner   { gap: 14px !important; }
+    .fi-label {
+        font-size: 0.98rem !important;
+        letter-spacing: 0.10em !important;
+    }
+    .fi-label::before,
+    .fi-label::after { width: 18px !important; }
+    .fi-logo img { height: 30px !important; max-width: 118px !important; }
+    .fi-track    { gap: 34px !important; }
 }
