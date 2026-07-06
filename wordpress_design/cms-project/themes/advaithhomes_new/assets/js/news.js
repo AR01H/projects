@@ -97,6 +97,27 @@
         } );
     }
 
+    /* ── Skeleton shimmer placeholders ──────────────────────── */
+
+    function addSkeletons( count ) {
+        for ( var i = 0; i < count; i++ ) {
+            var sk = el( 'div', 'news-skel' );
+            sk.innerHTML = '<div class="news-skel-img"></div>'
+                + '<div class="news-skel-body">'
+                + '<span class="news-skel-line news-skel-line--pill"></span>'
+                + '<span class="news-skel-line"></span>'
+                + '<span class="news-skel-line news-skel-line--short"></span>'
+                + '</div>';
+            grid.appendChild( sk );
+        }
+    }
+
+    function removeSkeletons() {
+        grid.querySelectorAll( '.news-skel' ).forEach( function ( sk ) {
+            sk.parentNode.removeChild( sk );
+        } );
+    }
+
     /* ── Fetch + render ─────────────────────────────────────── */
 
     function loadPage( page, replace ) {
@@ -108,8 +129,11 @@
             grid.setAttribute( 'aria-busy', 'true' );
             hide( emptyEl );
             hide( loadMoreWrap );
+            hide( loadingEl );
+            addSkeletons( Math.min( PER_PAGE, 8 ) );
+        } else {
+            show( loadingEl );
         }
-        show( loadingEl );
         if ( loadMoreBtn ) { loadMoreBtn.disabled = true; }
 
         var url = API
@@ -137,6 +161,7 @@
                 currentPage = parseInt( meta.page, 10 ) || page;
                 totalPages  = parseInt( meta.total_pages, 10 ) || 1;
 
+                removeSkeletons();
                 items.forEach( function ( item ) {
                     grid.appendChild( buildCard( item ) );
                 } );
@@ -160,6 +185,7 @@
             } )
             .catch( function () {
                 hide( loadingEl );
+                removeSkeletons();
                 grid.setAttribute( 'aria-busy', 'false' );
                 if ( replace ) {
                     grid.innerHTML = '';

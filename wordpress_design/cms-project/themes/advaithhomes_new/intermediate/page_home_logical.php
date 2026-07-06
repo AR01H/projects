@@ -22,9 +22,17 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Build the full render context for the home page.
  *
+ * @param array $skip  Section keys whose EXPENSIVE data fetches should be
+ *                     skipped (banners|news|guides|tools). Used by the
+ *                     deferred-fragment flow: the first paint skips these,
+ *                     then /api/v1/fragment/home/{section} builds them on
+ *                     demand. Default array() = full build (REST /home and
+ *                     any existing callers are unchanged).
+ *
  * @return array  See keys assembled below.
  */
-function adn_home_get_context() {
+function adn_home_get_context( $skip = array() ) {
+	$skip   = is_array( $skip ) ? $skip : array();
 	$data   = adn_service_home_data();
 	$chrome = adn_service_site_chrome();
 
@@ -39,7 +47,9 @@ function adn_home_get_context() {
 		'journey'     => $section( 'journey', array( 'heading' => array(), 'cards' => array() ) ),
 		'banners'     => array(
 			'heading' => $section( 'banners', array( 'heading' => array() ) )['heading'],
-			'items'   => class_exists( 'AH_Banners_Helper' ) ? AH_Banners_Helper::get_all( true ) : array(),
+			'items'   => ( ! in_array( 'banners', $skip, true ) && class_exists( 'AH_Banners_Helper' ) )
+				? AH_Banners_Helper::get_all( true )
+				: array(),
 		),
 		'news'        => $section( 'news', array( 'heading' => array(), 'items' => array() ) ),
 		'regulations' => $section( 'regulations', array( 'heading' => array(), 'items' => array() ) ),
@@ -69,10 +79,14 @@ function adn_home_get_context() {
 			$ctx['journey']['cards'] = array_merge( $journey_cards, $ctx['journey']['cards'] );
 		}
 
-		$guide_items = adn_home_cms_guide_items();
-		$ctx['guides']['items'] = $guide_items; // DB only; empty array when no data - no JSON fallback
+		if ( ! in_array( 'guides', $skip, true ) ) {
+			$guide_items = adn_home_cms_guide_items();
+			$ctx['guides']['items'] = $guide_items; // DB only; empty array when no data - no JSON fallback
+		}
 
-		$ctx['news']['items'] = adn_home_cms_news_items(); // DB only; empty array when no news data
+		if ( ! in_array( 'news', $skip, true ) ) {
+			$ctx['news']['items'] = adn_home_cms_news_items(); // DB only; empty array when no news data
+		}
 	}
 
 	// Apply theme-level image overrides to JSON/static journey cards (keyed by URL slug).
@@ -95,17 +109,20 @@ function adn_home_get_context() {
 	}
 
 	// Overlay admin-selected posts for regulations and hot_topics (no CMS plugin required).
-	$reg_items = adn_home_cms_regulations_items();
-	if ( ! empty( $reg_items ) ) {
-		$ctx['regulations']['items'] = $reg_items;
-	}
-	$ht_items = adn_home_cms_hot_topics_items();
-	if ( ! empty( $ht_items ) ) {
-		$ctx['hot_topics']['items'] = $ht_items;
+	// Both belong to the news row, so they follow the 'news' skip flag.
+	if ( ! in_array( 'news', $skip, true ) ) {
+		$reg_items = adn_home_cms_regulations_items();
+		if ( ! empty( $reg_items ) ) {
+			$ctx['regulations']['items'] = $reg_items;
+		}
+		$ht_items = adn_home_cms_hot_topics_items();
+		if ( ! empty( $ht_items ) ) {
+			$ctx['hot_topics']['items'] = $ht_items;
+		}
 	}
 
 	// Overlay popular calculators from registry (is_popular flag) - always replaces JSON if any exist.
-	if ( function_exists( 'adn_calculators' ) ) {
+	if ( ! in_array( 'tools', $skip, true ) && function_exists( 'adn_calculators' ) ) {
 		$_hp_registry = adn_calculators();
 		$_hp_meta_all = get_option( 'adn_calculators_meta', array() );
 		$_hp_items    = array();

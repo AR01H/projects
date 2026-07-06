@@ -18,7 +18,15 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once ADN_THEME_DIR . '/intermediate/page_home_logical.php';
-$ctx = adn_home_get_context();
+
+/*
+ * Speed: the heavy below-fold sections (banners, news row, tools, guides,
+ * resources) are NOT built or rendered here. Their data fetches are skipped
+ * (fast first paint) and premium.js lazy-loads each one from
+ * /api/v1/fragment/home/{section} as it approaches the viewport. Markup
+ * source for those sections: components/sections/home_deferred_section.php.
+ */
+$ctx = adn_home_get_context( array( 'banners', 'news', 'guides', 'tools' ) );
 
 wp_enqueue_style( 'adn-resources', get_template_directory_uri() . '/assets/css/resources.css', array(), ADN_THEME_VERSION );
 
@@ -83,111 +91,40 @@ $_fi_home_sec = ( is_array( $_fi_home ) && ! empty( $_fi_home['featured_in_secti
 adn_component( 'parts/featured_in', array( 'section' => $_fi_home_sec ) );
 ?>
 
-<?php /* ==================== HOME BANNERS CAROUSEL ==================== */ ?>
-<?php if ( adn_home_section_visible( 'banners' ) && ! empty( $ctx['banners']['items'] ) ) : ?>
-<section class="banners-promo-section">
-	<?php adn_component( 'sections/home_banners_carousel', array(
-		'items'    => $ctx['banners']['items'],
-		'autoplay' => class_exists( 'AH_Banners_Helper' ) ? AH_Banners_Helper::get_autoplay() : 5000,
-	) ); ?>
-</section>
-<?php endif; ?>
-
 <?php
-/* Resolve spotlight term once - used inside news row */
+/* ==================== DEFERRED SECTIONS (AJAX fragments) ====================
+ * Each placeholder below is swapped for server-rendered HTML from
+ * /api/v1/fragment/home/{section} by premium.js as it nears the viewport.
+ * Placeholders are only emitted when the section is enabled (cheap options
+ * check); the fragment endpoint re-checks data and returns '' when empty,
+ * in which case the placeholder is removed. Markup lives in
+ * components/sections/home_deferred_section.php. */
+
 $_home_secs    = get_option( 'adn_home_sections', array() );
 $_sp_term_slug = sanitize_key( $_home_secs['spotlight_term'] ?? '' );
 $_sp_active    = adn_home_section_visible( 'spotlights' ) && '' !== $_sp_term_slug;
-?>
 
-<?php /* ==================== NEWS + REGULATIONS + HOT TOPICS + SPOTLIGHTS ==================== */ ?>
-<?php
-$_has_news_data = ! empty( $ctx['news']['items'] )
-	|| ! empty( $ctx['regulations']['items'] )
-	|| ! empty( $ctx['hot_topics']['items'] );
+$_deferred = array();
+if ( adn_home_section_visible( 'banners' ) )                 { $_deferred[] = 'banners'; }
+if ( adn_home_section_visible( 'news' ) || $_sp_active )     { $_deferred[] = 'news_row'; }
+if ( adn_home_section_visible( 'calculators' ) )             { $_deferred[] = 'tools'; }
+if ( adn_home_section_visible( 'guides' ) )                  { $_deferred[] = 'guides'; }
+$_deferred[] = 'resources'; // data check happens in the fragment
 ?>
-<?php if ( ( adn_home_section_visible( 'news' ) && $_has_news_data ) || $_sp_active ) : ?>
-<section class="news-three-col<?php echo $_sp_active ? ' news-three-col--has-sp' : ''; ?>">
+<?php foreach ( $_deferred as $_df ) : ?>
+<div class="adn-defer"
+     data-fragment="<?php echo esc_attr( $_df ); ?>"
+     data-endpoint="<?php echo esc_url( rest_url( ADN_API_NS . '/fragment/home/' . $_df ) ); ?>"
+     aria-busy="true">
 	<div class="container">
-		<?php adn_component( 'parts/section_headers/section_header', array(
-			'heading' => array( 'title' => adn_term( 'labels.news_section', '' ) ),
-			'center'  => true,
-		) ); ?>
-		<div class="news-sp-row">
-			<?php if ( adn_home_section_visible( 'news' ) && $_has_news_data ) : ?>
-			<div class="news-sp-row__news">
-				<?php adn_component( 'sections/news_three_col', array(
-					'news'        => $ctx['news'],
-					'regulations' => $ctx['regulations'],
-					'hot_topics'  => $ctx['hot_topics'],
-				) ); ?>
-			</div>
-			<?php endif; ?>
-			<?php if ( $_sp_active ) : ?>
-			<div class="news-sp-row__spotlight">
-				<?php adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_sp_term_slug ) ); ?>
-			</div>
-			<?php endif; ?>
+		<div class="adn-defer-skel" aria-hidden="true">
+			<span class="adn-defer-line adn-defer-line--head"></span>
+			<span class="adn-defer-line"></span>
+			<span class="adn-defer-line adn-defer-line--short"></span>
 		</div>
 	</div>
-</section>
-<?php endif; ?>
-
-<?php /* ============================== TOOLS ============================== */ ?>
-<?php if ( adn_home_section_visible( 'calculators' ) && ! empty( $ctx['tools']['items'] ) ) : ?>
-<section class="tools-section">
-	<div class="container">
-		<?php
-		adn_component( 'parts/section_headers/section_header', array(
-			'heading' => $ctx['tools']['heading'],
-		) );
-		adn_component( 'sections/tools', array( 'items' => $ctx['tools']['items'] ) );
-		?>
-	</div>
-</section>
-<?php endif; ?>
-
-<?php /* ============================== GUIDES & INSIGHTS ============================== */ ?>
-<?php if ( adn_home_section_visible( 'guides' ) ) : ?>
-<section class="guides-section">
-	<div class="container">
-		<?php
-		adn_component( 'parts/section_headers/section_header', array(
-			'heading' => $ctx['guides']['heading'],
-		) );
-		adn_component( 'sections/guides', array( 'items' => $ctx['guides']['items'] ) );
-		?>
-	</div>
-</section>
-<?php endif; ?>
-
-<?php /* ============================== RESOURCES ============================== */ ?>
-<?php
-$_home_res_opt     = get_option( 'adn_home_resources', array() );
-$_home_res_ids     = ( isset( $_home_res_opt['library_ids'] ) && is_array( $_home_res_opt['library_ids'] ) )
-	? array_filter( array_map( 'absint', $_home_res_opt['library_ids'] ) )
-	: array();
-$_home_res_heading = isset( $_home_res_opt['heading'] ) && '' !== $_home_res_opt['heading']
-	? (string) $_home_res_opt['heading'] : '';
-$_home_res_items   = array();
-if ( ! empty( $_home_res_ids ) && class_exists( 'AH_Resources_Model' ) ) {
-	global $wpdb;
-	$_hr_table       = $wpdb->prefix . 'ah_resources';
-	$_hr_id_in       = implode( ',', array_map( 'intval', $_home_res_ids ) );
-	$_home_res_items = $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		"SELECT * FROM `{$_hr_table}` WHERE id IN ({$_hr_id_in}) AND status = 'active' ORDER BY FIELD(id, {$_hr_id_in})"
-	) ?: array();
-}
-?>
-<?php if ( ! empty( $_home_res_items ) ) : ?>
-<section class="home-resources-section">
-	<div class="container">
-		<?php adn_component( 'sections/category_resources', array(
-			'resources' => array( 'items' => $_home_res_items, 'heading' => $_home_res_heading ),
-		) ); ?>
-	</div>
-</section>
-<?php endif; ?>
+</div>
+<?php endforeach; ?>
 
 <?php /* ============================== NEWSLETTER ============================== */ ?>
 <?php if ( adn_home_section_visible( 'newsletter' ) ) : ?>

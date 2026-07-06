@@ -720,6 +720,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   padding-bottom: var(--space-2);
   /* hide scrollbar but keep scroll */
   scrollbar-width: none;
+  overflow-y: hidden;
 }
 .journey-cards::-webkit-scrollbar { display: none; }
 
@@ -1669,6 +1670,7 @@ a.mini-card, div.mini-card {
   -ms-overflow-style: none;
   padding-bottom: var(--space-2);
   scroll-padding-left: 0;
+  overflow-y: hidden;
 }
 .guides-carousel::-webkit-scrollbar { display: none; }
 
@@ -6260,6 +6262,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding: 8px 4px 12px;
+    overflow-y: hidden;
 }
 .cgt-track::-webkit-scrollbar { display: none; }
 .cgt-track > * {

@@ -47,9 +47,12 @@ function adn_enqueue_common_js() {
         'adn-scroll-to-top-script' => '/assets/js/scroll-to-top.js',
         'adn-form-builder-script'   => '/assets/js/form-builder.js',
         'adn-cookie-consent-script' => '/assets/js/cookie-consent.js',
+        'adn-premium-script'        => '/assets/js/premium.js',
     );
     foreach ( $scripts as $handle => $file ) {
-        wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), ADN_THEME_VERSION, true );
+        $path = ADN_THEME_DIR . $file;
+        $ver  = file_exists( $path ) ? filemtime( $path ) : ADN_THEME_VERSION;
+        wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), $ver, true );
     }
     /* Pass cookie policy page URL + page context to the consent banner. */
     wp_localize_script( 'adn-cookie-consent-script', 'adnConsentCfg', array(

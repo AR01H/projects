@@ -31,21 +31,30 @@ if ( empty( $items ) ) {
 	</button>
 </div>
 <script>
+/* Injection-safe: no document.currentScript, so this also works when the
+   section arrives via the AJAX fragment loader. Re-runnable + idempotent. */
 (function(){
-	var wrap  = document.currentScript.previousElementSibling;
-	var track = wrap.querySelector('.cgt-track');
-	var prev  = wrap.querySelector('.cgt-arrow--prev');
-	var next  = wrap.querySelector('.cgt-arrow--next');
-	if(!track||!prev||!next){ return; }
-	function cardW(){ var c=track.children[0]; return c ? c.offsetWidth + parseInt(getComputedStyle(track).gap||0) : 320; }
-	function upd(){
-		prev.classList.toggle('cgt-arrow--hidden', track.scrollLeft <= 2);
-		next.classList.toggle('cgt-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
+	function initOne(wrap){
+		if(wrap.dataset.cgtInit){ return; }
+		wrap.dataset.cgtInit = '1';
+		var track = wrap.querySelector('.cgt-track');
+		var prev  = wrap.querySelector('.cgt-arrow--prev');
+		var next  = wrap.querySelector('.cgt-arrow--next');
+		if(!track||!prev||!next){ return; }
+		function cardW(){ var c=track.children[0]; return c ? c.offsetWidth + parseInt(getComputedStyle(track).gap||0) : 320; }
+		function upd(){
+			prev.classList.toggle('cgt-arrow--hidden', track.scrollLeft <= 2);
+			next.classList.toggle('cgt-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
+		}
+		prev.addEventListener('click', function(){ track.scrollBy({left:-cardW()*2, behavior:'smooth'}); });
+		next.addEventListener('click', function(){ track.scrollBy({left: cardW()*2, behavior:'smooth'}); });
+		track.addEventListener('scroll', upd, {passive:true});
+		window.addEventListener('resize', upd, {passive:true});
+		upd();
 	}
-	prev.addEventListener('click', function(){ track.scrollBy({left:-cardW()*2, behavior:'smooth'}); });
-	next.addEventListener('click', function(){ track.scrollBy({left: cardW()*2, behavior:'smooth'}); });
-	track.addEventListener('scroll', upd, {passive:true});
-	window.addEventListener('resize', upd, {passive:true});
-	upd();
+	window.adnCgtInitAll = function(root){
+		[].forEach.call((root||document).querySelectorAll('.cgt-carousel-wrap'), initOne);
+	};
+	window.adnCgtInitAll();
 }());
 </script>

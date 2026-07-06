@@ -304,6 +304,7 @@ function adn_calculator_shortcode( $atts ) {
 		src="<?php echo esc_url( $src ); ?>"
 		title="<?php echo esc_attr( $all[ $key ]['title'] ); ?>"
 		scrolling="auto"
+		loading="lazy"
 		style="width:100%;border:0;height:90vh;min-height:90vh;display:block"></iframe>
 	<script>
 	(function () {
