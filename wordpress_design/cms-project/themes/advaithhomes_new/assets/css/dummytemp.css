@@ -6420,7 +6420,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 /* ── Tools carousel section (parent category page) ── */
 .cat-guide-tools-section {
     background: linear-gradient(160deg, rgba(30,58,47,.05) 0%, #fafaf8 50%, rgba(201,168,76,.05) 100%);
-    margin: 40px 0px;
+    /* margin: 40px 0px; */
     border-top: 1px solid rgba(30,58,47,.08);
 }
 /* Carousel track wrapper */
@@ -6573,4 +6573,5 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 .parent-term-category-list {
   margin-top:15px;
+  margin-bottom:15px;
 }

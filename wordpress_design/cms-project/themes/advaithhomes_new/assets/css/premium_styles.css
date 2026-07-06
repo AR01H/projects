@@ -271,7 +271,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .guides-grid-section          { padding: 28px 0    !important; }
 .tools-listing-page           { padding: 28px 0    !important; }
 .need-help-section            { padding: 22px 0    !important; }
-.jny2-wrap                    { padding: 28px 0    !important; }
+/* .jny2-wrap                    { padding: 28px 0    !important; } */
 .search-page-body             { padding: 20px 0 32px !important; }
 
 .cat-guide-hero-section       { padding: 24px 0 18px !important; }

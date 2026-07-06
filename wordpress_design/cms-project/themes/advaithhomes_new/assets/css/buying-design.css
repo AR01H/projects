@@ -146,7 +146,7 @@ img{max-width:100%;height:auto;display:block}a{text-decoration:none;color:inheri
   --jny-circle-small:44px;
   --jny-rail-h:4px;
 }
-.jny2-wrap { padding: 42px 0; }
+/* .jny2-wrap { padding: 42px 0; } */
 .jny2-steps { display:flex; gap:20px; align-items:flex-start; overflow-x:auto; padding:28px 8px 6px; justify-content:center; }
 .jny2-step { position:relative; flex:1 0 160px; min-width:140px; scroll-snap-align:center; }
 
