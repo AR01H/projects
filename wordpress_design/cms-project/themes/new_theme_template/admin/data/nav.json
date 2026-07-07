@@ -1,0 +1,14 @@
+{
+  "_comment": "Fallback header/footer navigation, read via nt_data('nav'). Used when no WP menu is assigned to the location yet - so the chrome renders complete on a fresh install.",
+  "header": [
+    { "label": "Home", "url": "/" },
+    { "label": "News", "url": "/news/" },
+    { "label": "Contact", "url": "/contact/" }
+  ],
+  "footer": [
+    { "label": "Home", "url": "/" },
+    { "label": "News", "url": "/news/" },
+    { "label": "Contact", "url": "/contact/" },
+    { "label": "Privacy Policy", "url": "/privacy-policy/" }
+  ]
+}

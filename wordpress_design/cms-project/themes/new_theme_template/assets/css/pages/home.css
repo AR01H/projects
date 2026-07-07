@@ -1,0 +1,42 @@
+/* Home page styles - loaded only on 'home' (config/pages.php). */
+
+.nt-hero {
+	background: linear-gradient(135deg, var(--nt-primary) 0%, var(--nt-primary-dark) 100%);
+	color: #fff;
+	padding: 88px 0;
+	text-align: center;
+}
+
+.nt-hero-kicker {
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	font-size: var(--nt-fs-sm);
+	font-weight: 700;
+	opacity: 0.85;
+	margin: 0 0 10px;
+}
+
+.nt-hero-title { margin: 0 auto 14px; max-width: 720px; }
+
+.nt-hero-subtitle {
+	max-width: 620px;
+	margin: 0 auto 26px;
+	font-size: var(--nt-fs-lg);
+	opacity: 0.9;
+}
+
+.nt-hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+.nt-hero .nt-btn {
+	background: #fff;
+	color: var(--nt-primary);
+	border-color: #fff;
+}
+.nt-hero .nt-btn:hover { background: var(--nt-bg-soft); }
+
+.nt-hero .nt-btn-ghost {
+	background: transparent;
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0.6);
+}
+.nt-hero .nt-btn-ghost:hover { background: rgba(255, 255, 255, 0.12); }

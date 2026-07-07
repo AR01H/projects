@@ -1,0 +1,142 @@
+/* Reusable component styles: buttons, cards, forms, entry content.
+   One block per component in /components/. */
+
+/* ---------- Buttons ---------- */
+
+.nt-btn {
+	display: inline-block;
+	background: var(--nt-primary);
+	color: #fff;
+	border: 1px solid var(--nt-primary);
+	border-radius: 999px;
+	padding: 10px 24px;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background var(--nt-transition);
+}
+.nt-btn:hover { background: var(--nt-primary-dark); color: #fff; text-decoration: none; }
+.nt-btn:disabled { opacity: 0.6; cursor: default; }
+
+.nt-btn-ghost {
+	background: transparent;
+	color: var(--nt-primary);
+}
+.nt-btn-ghost:hover { background: var(--nt-bg-soft); color: var(--nt-primary-dark); }
+
+/* ---------- Post card (components/cards/post_card.php + news.js) ---------- */
+
+.nt-card {
+	background: var(--nt-bg);
+	border: 1px solid var(--nt-line);
+	border-radius: var(--nt-radius);
+	overflow: hidden;
+	transition: box-shadow var(--nt-transition), transform var(--nt-transition);
+}
+.nt-card:hover { box-shadow: var(--nt-shadow); transform: translateY(-2px); }
+
+.nt-card-link { display: block; color: inherit; }
+.nt-card-link:hover { text-decoration: none; }
+
+.nt-card-media { aspect-ratio: 4 / 3; background: var(--nt-bg-soft); }
+.nt-card-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nt-card-media-empty { display: block; width: 100%; height: 100%; }
+
+.nt-card-body { padding: 16px; }
+.nt-card-title { margin: 0 0 8px; }
+.nt-card-excerpt { margin: 0 0 10px; color: var(--nt-ink-soft); font-size: var(--nt-fs-sm); }
+.nt-card-meta { font-size: 12px; color: var(--nt-ink-soft); }
+
+/* ---------- Term card (home) ---------- */
+
+.nt-term-card {
+	display: block;
+	background: var(--nt-bg);
+	border: 1px solid var(--nt-line);
+	border-radius: var(--nt-radius);
+	padding: 22px;
+	color: inherit;
+	transition: box-shadow var(--nt-transition), transform var(--nt-transition);
+}
+.nt-term-card:hover { box-shadow: var(--nt-shadow); transform: translateY(-2px); text-decoration: none; }
+.nt-term-card p { color: var(--nt-ink-soft); font-size: var(--nt-fs-sm); margin: 0 0 10px; }
+.nt-term-count { font-size: 12px; font-weight: 600; color: var(--nt-primary); }
+
+/* ---------- Feature block (home) ---------- */
+
+.nt-feature {
+	text-align: center;
+	padding: 22px;
+}
+.nt-feature p { color: var(--nt-ink-soft); margin: 0; }
+
+/* ---------- Forms ---------- */
+
+.nt-form-row { margin-bottom: 16px; }
+.nt-form-row label { display: block; font-weight: 600; margin-bottom: 6px; }
+
+.nt-form input,
+.nt-form textarea,
+.nt-search-form input {
+	width: 100%;
+	padding: 10px 14px;
+	border: 1px solid var(--nt-line);
+	border-radius: 8px;
+	font: inherit;
+}
+.nt-form input:focus,
+.nt-form textarea:focus { outline: 2px solid var(--nt-primary); outline-offset: 1px; }
+
+.nt-form-status { min-height: 1.4em; font-weight: 600; color: var(--nt-success); }
+.nt-form-status.is-error { color: var(--nt-danger); }
+
+.nt-search-form {
+	display: flex;
+	gap: 10px;
+	max-width: 480px;
+	margin: 0 auto 32px;
+}
+.nt-search-form .nt-btn { flex-shrink: 0; }
+
+/* ---------- Entry content (page.php / single.php) ---------- */
+
+.nt-entry { max-width: 780px; margin: 0 auto; }
+.nt-entry-meta { color: var(--nt-ink-soft); font-size: var(--nt-fs-sm); }
+.nt-entry-meta .nt-entry-author { margin-left: 10px; }
+.nt-entry-thumb { margin: 0 0 24px; }
+.nt-entry-thumb img { border-radius: var(--nt-radius); }
+.nt-entry-content > * + * { margin-top: 1em; }
+
+/* ---------- 404 ---------- */
+
+.nt-404 { text-align: center; }
+.nt-404-code { font-size: 6rem; margin: 0; color: var(--nt-line); }
+
+/* ---------- Scroll to top (assets/js/scroll-to-top.js) ---------- */
+
+.nt-scroll-top {
+	position: fixed;
+	right: 22px;
+	bottom: 22px;
+	z-index: 90;
+	width: 44px;
+	height: 44px;
+	border: none;
+	border-radius: 50%;
+	background: var(--nt-primary);
+	color: #fff;
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+	box-shadow: var(--nt-shadow);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(8px);
+	transition: opacity var(--nt-transition), transform var(--nt-transition), visibility var(--nt-transition);
+}
+.nt-scroll-top.is-visible {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+.nt-scroll-top:hover { background: var(--nt-primary-dark); }

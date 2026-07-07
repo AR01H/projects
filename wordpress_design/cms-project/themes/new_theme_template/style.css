@@ -1,0 +1,18 @@
+/*
+Theme Name: New Theme Template
+Theme URI: https://example.com
+Author: Akhilesh Ravuri
+Description: Registry-driven WordPress starter theme. Routing, assets, AJAX, REST, redirects and the admin panel are all defined as plain arrays in /config and executed by generic loop engines in /core. See ARCHITECTURE.md.
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: new-theme
+Tags: custom-logo, custom-menu, featured-images, translation-ready
+*/
+
+/*
+This file is the required theme header only.
+Real styles live in /assets/css/ and load via config/assets.php.
+*/
