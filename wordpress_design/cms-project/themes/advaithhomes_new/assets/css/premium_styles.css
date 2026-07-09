@@ -415,50 +415,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 }
 .topic-articles-grid .glc-body { padding: 12px 13px 14px !important; }
 
-/* ─── 14b. Featured cards (first 2): premium treatment ──────── */
-@media (min-width: 1101px) {
-    .topic-articles-grid .glc:nth-child(1),
-    .topic-articles-grid .glc:nth-child(2) {
-        border-color: rgba(176,141,87,.25) !important;
-        box-shadow: 0 4px 20px rgba(32,60,62,.08) !important;
-    }
-    .topic-articles-grid .glc:nth-child(1):hover,
-    .topic-articles-grid .glc:nth-child(2):hover {
-        box-shadow: 0 12px 40px rgba(32,60,62,.16) !important;
-        border-color: var(--secondary-color, #B08D57) !important;
-    }
-    /* Gold shimmer bar at the bottom of the featured image */
-    .topic-articles-grid .glc:nth-child(1) .glc-img::after,
-    .topic-articles-grid .glc:nth-child(2) .glc-img::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0; right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, transparent 0%, var(--secondary-color, #B08D57) 50%, transparent 100%);
-        z-index: 2;
-    }
-    /* Larger title for featured cards */
-    .topic-articles-grid .glc:nth-child(1) .glc-title,
-    .topic-articles-grid .glc:nth-child(2) .glc-title {
-        font-size: 1.05rem !important;
-        line-height: 1.4 !important;
-        font-weight: 800 !important;
-        font-family: var(--font-display, 'Playfair Display', serif) !important;
-        letter-spacing: -0.01em !important;
-    }
-    /* Larger desc visible on featured cards */
-    .topic-articles-grid .glc:nth-child(1) .glc-desc,
-    .topic-articles-grid .glc:nth-child(2) .glc-desc {
-        font-size: 0.84rem !important;
-        -webkit-line-clamp: 3 !important;
-    }
-    /* Roomier body on featured cards */
-    .topic-articles-grid .glc:nth-child(1) .glc-body,
-    .topic-articles-grid .glc:nth-child(2) .glc-body {
-        padding: 16px 18px 18px !important;
-        gap: 8px !important;
-    }
-}
 
 /* ─── 14c. Mobile: single column, equal styling ─────────────── */
 @media (max-width: 480px) {
@@ -576,27 +532,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 }
 /* Read time clock — slightly warmer, more visible */
 .glc-read { color: var(--color-text-muted, #6b7280) !important; }
-
-
-/* ─── 15e. Featured card hover — gold ring glow ─────────────── */
-@media (min-width: 1101px) {
-    .topic-articles-grid .glc:nth-child(1):hover,
-    .topic-articles-grid .glc:nth-child(2):hover {
-        box-shadow: 0 14px 46px rgba(32,60,62,.16),
-                    0 0 0 2px var(--secondary-color, #B08D57),
-                    0 0 22px rgba(176,141,87,.22) !important;
-    }
-    /* Featured "Read →" always gold (not just on hover) */
-    .topic-articles-grid .glc:nth-child(1) .glc-arrow,
-    .topic-articles-grid .glc:nth-child(2) .glc-arrow {
-        color: var(--secondary-color, #B08D57) !important;
-        opacity: 0 !important;
-    }
-    .topic-articles-grid .glc:nth-child(1):hover .glc-arrow,
-    .topic-articles-grid .glc:nth-child(2):hover .glc-arrow {
-        opacity: 1 !important;
-    }
-}
 
 
 /* ─── 15f. Primary button — rich gradient, not flat ─────────── */
@@ -749,11 +684,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 .calcs-popular-grid .calc-card:hover,
 .topic-calc-carousel .calc-card:hover {
-    transform: perspective(900px) translateY(-8px) rotateX(3deg) !important;
-    box-shadow: 0 28px 56px rgba(32,60,62,.18),
-                0 8px 20px rgba(32,60,62,.1),
-                0 0 0 1.5px var(--secondary-color, #B08D57) !important;
-    border-color: var(--secondary-color, #B08D57) !important;
+    transform: perspective(900px) translateY(-2px) rotateX(3deg) !important;
 }
 
 /* ─── 16c-2. UNIFIED calc card — ONE vertical 16/9 design everywhere

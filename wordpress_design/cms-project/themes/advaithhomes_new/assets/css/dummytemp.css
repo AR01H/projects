@@ -4290,7 +4290,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   .topic-articles-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .topic-articles-grid .glc,
   .topic-articles-grid .glc:nth-child(n) { grid-column: span 1; }
-  .topic-articles-grid .glc .glc-img { aspect-ratio: 3 / 2; }
+  .topic-articles-grid .glc .glc-img { aspect-ratio: 16 / 9; }
   .guides-listing-inner { grid-template-columns: 1fr; }
   .guides-sidebar { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
 }
