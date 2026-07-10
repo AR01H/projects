@@ -652,11 +652,11 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 }
 
 /* Carousel grid — layout only (appearance inherits above) */
-.topic-calc-carousel {
+/* .topic-calc-carousel {
     justify-content: center !important;
     gap: 12px !important;
     grid-template-columns: repeat(auto-fill, minmax(200px, 200px)) !important;
-}
+} */
 .topic-calc-carousel .calc-card-media {
     aspect-ratio: 16 / 9 !important;
 }
@@ -684,7 +684,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 .calcs-popular-grid .calc-card:hover,
 .topic-calc-carousel .calc-card:hover {
-    transform: perspective(900px) translateY(-2px) rotateX(3deg) !important;
+    transform: translateY(-2px) rotateX(3deg) !important;
 }
 
 /* ─── 16c-2. UNIFIED calc card — ONE vertical 16/9 design everywhere

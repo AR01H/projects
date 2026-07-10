@@ -44,8 +44,8 @@ if ( is_front_page() ) {
 <?php if ( is_front_page() ) : ?>
 <div id="adn-page-loader" class="adn-page-loader" aria-hidden="true">
 	<div class="adn-loader-inner">
-		<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ); ?>"
-			alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Advaith Homes' ); ?>"
+		<img src="<?php echo esc_url( adn_versioned_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ) ); ?>"
+			alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : '' ); ?>"
 			class="adn-loader-logo">
 		<div class="adn-loader-bar-track">
 			<div class="adn-loader-bar"></div>

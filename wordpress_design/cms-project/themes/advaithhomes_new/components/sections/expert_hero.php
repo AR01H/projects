@@ -11,7 +11,7 @@ $_title = esc_html( isset( $_h['title'] )       ? (string) $_h['title']       : 
 $_desc  = esc_html( isset( $_h['description'] ) ? (string) $_h['description'] : '' );
 
 $_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
-$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
+$_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
 ?>
 <section class="expert-hero">
 	<div class="expert-hero-inner container">

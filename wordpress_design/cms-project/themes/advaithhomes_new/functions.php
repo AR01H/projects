@@ -375,6 +375,77 @@ add_action( 'init', 'adn_set_language_cookie' );
 add_action( 'wp_enqueue_scripts', 'adn_enqueue_common_css' );
 add_action( 'wp_enqueue_scripts', 'adn_enqueue_common_js' );
 add_action( 'wp_enqueue_scripts', 'adn_enqueue_template_specific_assets' );
+
+// ---------------------------------------------------
+// Cache busting for images – append ?v=LOCAL_CACHE_VERSION
+// ---------------------------------------------------
+if ( defined( 'LOCAL_CACHE_VERSION' ) ) {
+    /**
+     * Append version to attachment URLs.
+     */
+    add_filter( 'wp_get_attachment_url', function ( $url ) {
+        if ( false !== strpos( $url, 'v=' ) ) {
+            return $url;
+        }
+        $sep = ( strpos( $url, '?' ) === false ) ? '?v=' : '&v=';
+        return $url . $sep . LOCAL_CACHE_VERSION;
+    } );
+
+    /**
+     * Append version to attachment image src arrays.
+     */
+    add_filter( 'wp_get_attachment_image_src', function ( $src ) {
+        if ( empty( $src ) || ! is_array( $src ) ) {
+            return $src;
+        }
+        $url = $src[0];
+        if ( false !== strpos( $url, 'v=' ) ) {
+            return $src;
+        }
+        $sep = ( strpos( $url, '?' ) === false ) ? '?v=' : '&v=';
+        $src[0] = $url . $sep . LOCAL_CACHE_VERSION;
+        return $src;
+    } );
+
+    /**
+     * Append version to images embedded directly in post content.
+     */
+    add_filter( 'the_content', function ( $content ) {
+        $pattern = '#(<img[^>]+src=["\"])([^"\"]+)(["\"])#i';
+        return preg_replace_callback( $pattern, function ( $m ) {
+            $url = $m[2];
+            // Skip external URLs not belonging to this site.
+            if ( preg_match( '#^https?://#i', $url ) && false === strpos( $url, home_url() ) ) {
+                return $m[0];
+            }
+            if ( false !== strpos( $url, 'v=' ) ) {
+                return $m[0];
+            }
+            $sep = ( strpos( $url, '?' ) === false ) ? '?v=' : '&v=';
+            $url = $url . $sep . LOCAL_CACHE_VERSION;
+            return $m[1] . $url . $m[3];
+        }, $content );
+    } );
+    
+    // Append version to background-image URLs in inline styles.
+    add_filter( 'the_content', function ( $content ) {
+        $pattern = '#(background(?:-image)?\s*:\s*url\(["\']?)([^"\')]+)(["\']?\))#i';
+        return preg_replace_callback( $pattern, function ( $m ) {
+            $url = $m[2];
+            // Skip external URLs not belonging to this site.
+            if ( preg_match( '#^https?://#i', $url ) && false === strpos( $url, home_url() ) ) {
+                return $m[0];
+            }
+            if ( false !== strpos( $url, 'v=' ) ) {
+                return $m[0];
+            }
+            $sep = ( strpos( $url, '?' ) === false ) ? '?v=' : '&v=';
+            $url = $url . $sep . LOCAL_CACHE_VERSION;
+            return $m[1] . $url . $m[3];
+        }, $content );
+    } );
+}
+
 add_action( 'template_redirect', 'adn_check_coming_soon' );
 
 // Search: show 12 results per page.
@@ -402,7 +473,7 @@ function adn_expert_full_page_render() {
 	$template = realpath( ADN_THEME_DIR . '/pages/page-expert-single.php' );
 	if ( $base && $template && 0 === strpos( $template, $base ) && is_file( $template ) ) {
 		nocache_headers();
-		$_ver = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0';
+		$_ver = defined( 'LOCAL_CACHE_VERSION' ) ? LOCAL_CACHE_VERSION : (defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0');
 		wp_enqueue_style( 'adn-ask-expert-style', ADN_THEME_URI . '/assets/css/ask_expert.css', array(), $_ver );
 		wp_enqueue_script( 'adn-ask-expert-script', ADN_THEME_URI . '/assets/js/ask_expert.js', array(), $_ver, true );
 		wp_localize_script( 'adn-ask-expert-script', 'adnExpert', array(

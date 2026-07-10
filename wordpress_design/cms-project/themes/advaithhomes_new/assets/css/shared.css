@@ -1286,6 +1286,10 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   align-items: start;
 }
 
+.news-three-inner:has(.news-col--news-2fr){
+    grid-template-columns: 2fr 1fr 1fr;
+}
+
 .news-three-inner > * {
   display: flex;
   flex-direction: column;
@@ -1519,6 +1523,19 @@ a.mini-card, div.mini-card {
   align-items: flex-start;
   gap: 6px;
 }
+.list-widget-header__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.list-widget-header__icon {
+  border-radius: var(--radius-sm);
+  color: #c9a84c; /* Gold icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
 .list-widget-header h2,
 .list-widget-header h3,
 .list-widget-header h4 {
@@ -1548,6 +1565,129 @@ a.mini-card, div.mini-card {
   gap:2px;
 }
 .list-widget-items::-webkit-scrollbar { width: 3px; }
+
+/* ── News Hero Card (for Latest News widget) ── */
+.list-widget-items--news {
+  max-height: none; /* Let it grow */
+  overflow: visible;
+  gap: 8px;
+}
+.news-hero-and-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+@media (min-width: 992px) {
+  /* On desktop, the Latest News column is wider (2fr), so we split it */
+  .news-col--news-2fr .news-hero-and-list {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .news-col--news-2fr .news-hero-card {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  .news-col--news-2fr .news-list-remaining {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+.news-hero-card {
+  border: 1px solid var(--color-accent);
+  background: var(--bg);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-base); /* Assuming white/card bg */
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.news-hero-card:hover {
+  border-color: var(--color-border-dark);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+}
+.news-hero-card__link {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.news-hero-card__img-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+}
+.news-hero-card__img,
+.news-hero-card__img-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.news-hero-card__tags {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+.news-hero-card__tag {
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.news-hero-card__tag--breaking {
+  background: #c9a84c; /* Gold/yellow */
+  color: #1e3a2f; /* Dark green */
+}
+.news-hero-card__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  margin-bottom: 4px;
+}
+.news-hero-card__title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  line-height: 1.3;
+  margin: 0 0 6px 0;
+}
+.news-hero-card__link:hover .news-hero-card__title {
+  transition: transform 1s ease;
+  transform: scale(1.01);
+}
+.news-hero-card__excerpt {
+  font-size: 0.85rem;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.news-hero-card__read-more {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #c9a84c;
+}
+
+/* (Removed old no-img specific styles since it now uses standard vertical layout) */
+
 .list-widget-items::-webkit-scrollbar-track { background: transparent; }
 .list-widget-items::-webkit-scrollbar-thumb {
   background: var(--color-border-dark);
@@ -2415,7 +2555,7 @@ a.mini-card, div.mini-card {
   justify-content: space-between;
   gap: 10px;
   flex: 0 0 calc((100% - 30px) / 4);
-  min-width: 180px;
+  min-width: 280px;
   min-height: 78px;
   padding: 10px 12px;
   background: #fff;
@@ -2553,6 +2693,8 @@ a.mini-card, div.mini-card {
   align-items: flex-start;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  position: relative;
+  overflow: visible;
 }
 
 /* Step number chip */
@@ -2631,6 +2773,51 @@ a.mini-card, div.mini-card {
     align-content: start;
   }
 }
+
+/* ── .jny2-arrow — real HTML arrow between steps (mobile/tablet) ──
+   Hidden on desktop; shown on ≤768px as a plain › character sitting
+   vertically centred between the flex cards. */
+.jny2-arrow {
+  display: none; /* hidden on desktop — CSS rail handles the connector */
+}
+
+
+@media (max-width: 768px) {
+  .jny2-step:not(.jny2-step--last) .jny2-step__body::after {
+    content: '›' !important;
+    position: absolute !important;
+    /* rail-level: vertically centred */
+    top: 25% !important;
+    bottom: auto !important;
+    right: 4px !important;
+    left: auto !important;
+    /* just text – auto dimensions */
+    width: auto !important;
+    height: auto !important;
+    /* kill all animation/transform from higher-specificity animation rules */
+    transform: translateY(-50%) !important;
+    transform-origin: center !important;
+    animation: none !important;
+    /* no border / background / shadow */
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-size: unset !important;
+    box-shadow: none !important;
+    /* arrow text */
+    font-size: 1.3rem !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    text-align: right !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    opacity: 0.55 !important;
+    z-index: 5 !important;
+  }
+}
+
+
+
+
 
 /* ══════════════════════════════════════════════════════
    JNY2 ANIMATIONS — scroll-reveal · rail shimmer · hover · pulse
@@ -3930,7 +4117,7 @@ a.mini-card, div.mini-card {
 }
 .topic-calc-carousel {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
   gap: 16px;
   overflow-x: visible;
   padding-bottom: 0;
@@ -5473,7 +5660,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
    ═══════════════════════════════════════════ */
 .news-sp-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-7);
   align-items: stretch;
 }
@@ -6062,12 +6249,12 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
 
 /* No-image cards: no cream section, just body with larger icon */
 .guide-card:not(.guide-card--has-img) .guide-card-body { padding-top: 22px; }
-.guide-card:not(.guide-card--has-img) .guide-card-icon-sm {
+/* .guide-card:not(.guide-card--has-img) .guide-card-icon-sm {
     width: 52px;
     height: 52px;
     min-width: 52px;
     font-size: 1.35rem;
-}
+} */
 
 /* ── Body ── */
 .guide-card-body {

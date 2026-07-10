@@ -21,7 +21,7 @@ $diagram     = isset( $hero['diagram'] ) ? (array) $hero['diagram'] : array();
 $nodes       = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
 $_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
 
-$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
+$_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
 
 ?>
 <?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img ) ); ?>

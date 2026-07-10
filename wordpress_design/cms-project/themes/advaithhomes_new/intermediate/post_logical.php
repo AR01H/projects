@@ -142,7 +142,7 @@ function adn_post_get_context() {
 	/* ── Hero image - featured image or theme default ── */
 	$thumbnail_url = get_the_post_thumbnail_url( null, 'large' );
 	$default_img   = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
-	$hero_image    = $thumbnail_url ?: $default_img;
+	$hero_image    = adn_versioned_url( $thumbnail_url ?: $default_img );
 
 	/* ── CMS Taxonomy Terms ── */
 	$cms_terms = array();

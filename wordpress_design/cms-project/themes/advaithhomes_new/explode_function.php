@@ -17,7 +17,27 @@ function ahn_include_files() {
         }
     }
 }
+/**
+ * Append the daily cache-busting version to any local URL.
+ *
+ * Usage: adn_versioned_url( get_template_directory_uri() . '/assets/images/logo.png' )
+ *
+ * @param  string $url  The raw URL.
+ * @return string       URL with ?v=LOCAL_CACHE_VERSION (or unchanged if already versioned).
+ */
+function adn_versioned_url( string $url ): string {
+    if ( false !== strpos( $url, 'v=' ) ) {
+        return $url;
+    }
+    $ver = defined( 'LOCAL_CACHE_VERSION' ) ? LOCAL_CACHE_VERSION : '';
+    if ( '' === $ver ) {
+        return $url;
+    }
+    $sep = ( false === strpos( $url, '?' ) ) ? '?v=' : '&v=';
+    return $url . $sep . $ver;
+}
 function adn_enqueue_common_css() {
+
     $styles = array(
         'adn-varaibles-style'  => '/assets/css/variables.css',
         'adn-chrome-style'     => '/assets/css/chrome.css',
@@ -33,7 +53,7 @@ function adn_enqueue_common_css() {
     );
     foreach ( $styles as $handle => $file ) {
         $path = ADN_THEME_DIR . $file;
-        $ver  = file_exists( $path ) ? filemtime( $path ) : ADN_THEME_VERSION;
+        $ver  = defined( 'LOCAL_CACHE_VERSION' ) ? LOCAL_CACHE_VERSION : (file_exists( $path ) ? filemtime( $path ) : ADN_THEME_VERSION);
         wp_enqueue_style( $handle, ADN_THEME_URI . $file, array(), $ver );
     }
     // Font Awesome 6 (free) - powers adn_icon() across the theme.
@@ -51,7 +71,7 @@ function adn_enqueue_common_js() {
     );
     foreach ( $scripts as $handle => $file ) {
         $path = ADN_THEME_DIR . $file;
-        $ver  = file_exists( $path ) ? filemtime( $path ) : ADN_THEME_VERSION;
+        $ver  = defined( 'LOCAL_CACHE_VERSION' ) ? LOCAL_CACHE_VERSION : (file_exists( $path ) ? filemtime( $path ) : ADN_THEME_VERSION);
         wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), $ver, true );
     }
     /* Pass cookie policy page URL + page context to the consent banner. */
@@ -116,10 +136,12 @@ function adn_enqueue_template_specific_assets() {
         $handle = 'adn-' . $base_name;
         // Only enqueue files that actually exist, so missing assets never 404.
         if ( ! empty( $assets['css'] ) && file_exists( ADN_THEME_DIR . $assets['css'] ) ) {
-            wp_enqueue_style( $handle . '-style', ADN_THEME_URI . $assets['css'], array(), filemtime( ADN_THEME_DIR . $assets['css'] ) );
+            $css_ver = defined('LOCAL_CACHE_VERSION') ? LOCAL_CACHE_VERSION : filemtime( ADN_THEME_DIR . $assets['css'] );
+            wp_enqueue_style( $handle . '-style', ADN_THEME_URI . $assets['css'], array(), $css_ver );
         }
         if ( ! empty( $assets['js'] ) && file_exists( ADN_THEME_DIR . $assets['js'] ) ) {
-            wp_enqueue_script( $handle . '-script', ADN_THEME_URI . $assets['js'], array( 'jquery' ), filemtime( ADN_THEME_DIR . $assets['js'] ), true );
+            $js_ver = defined('LOCAL_CACHE_VERSION') ? LOCAL_CACHE_VERSION : filemtime( ADN_THEME_DIR . $assets['js'] );
+            wp_enqueue_script( $handle . '-script', ADN_THEME_URI . $assets['js'], array( 'jquery' ), $js_ver, true );
         }
     }
     // Per-page nonce vars for legacy AJAX forms (contact, guidance still use admin-ajax.php).
@@ -164,17 +186,21 @@ function adn_enqueue_template_specific_assets() {
     }
 
     if ( is_single() ) {
+        $v_single = defined('LOCAL_CACHE_VERSION') ? LOCAL_CACHE_VERSION : (file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ? filemtime( ADN_THEME_DIR . '/assets/css/single.css' ) : 1);
         if ( file_exists( ADN_THEME_DIR . '/assets/css/single.css' ) ) {
-            wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), filemtime( ADN_THEME_DIR . '/assets/css/single.css' ) );
+            wp_enqueue_style( 'adn-single-style', ADN_THEME_URI . '/assets/css/single.css', array(), $v_single );
         }
+        $v_article = defined('LOCAL_CACHE_VERSION') ? LOCAL_CACHE_VERSION : (file_exists( ADN_THEME_DIR . '/assets/css/article.css' ) ? filemtime( ADN_THEME_DIR . '/assets/css/article.css' ) : 1);
         if ( file_exists( ADN_THEME_DIR . '/assets/css/article.css' ) ) {
-            wp_enqueue_style( 'adn-article-style', ADN_THEME_URI . '/assets/css/article.css', array(), filemtime( ADN_THEME_DIR . '/assets/css/article.css' ) );
+            wp_enqueue_style( 'adn-article-style', ADN_THEME_URI . '/assets/css/article.css', array(), $v_article );
         }
+        $v_cardner = defined('LOCAL_CACHE_VERSION') ? LOCAL_CACHE_VERSION : (file_exists( ADN_THEME_DIR . '/assets/css/article_cardner.css' ) ? filemtime( ADN_THEME_DIR . '/assets/css/article_cardner.css' ) : 1);
         if ( file_exists( ADN_THEME_DIR . '/assets/css/article_cardner.css' ) ) {
-            wp_enqueue_style( 'adn-cardner-style', ADN_THEME_URI . '/assets/css/article_cardner.css', array(), filemtime( ADN_THEME_DIR . '/assets/css/article_cardner.css' ) );
+            wp_enqueue_style( 'adn-cardner-style', ADN_THEME_URI . '/assets/css/article_cardner.css', array(), $v_cardner );
         }
+        $v_single_js = defined('LOCAL_CACHE_VERSION') ? LOCAL_CACHE_VERSION : (file_exists( ADN_THEME_DIR . '/assets/js/single.js' ) ? filemtime( ADN_THEME_DIR . '/assets/js/single.js' ) : 1);
         if ( file_exists( ADN_THEME_DIR . '/assets/js/single.js' ) ) {
-            wp_enqueue_script( 'adn-single-script', ADN_THEME_URI . '/assets/js/single.js', array(), filemtime( ADN_THEME_DIR . '/assets/js/single.js' ), true );
+            wp_enqueue_script( 'adn-single-script', ADN_THEME_URI . '/assets/js/single.js', array(), $v_single_js, true );
             wp_localize_script( 'adn-single-script', 'adnComments', array(
                 'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
                 'submitNonce'   => wp_create_nonce( 'adn_comment_nonce' ),

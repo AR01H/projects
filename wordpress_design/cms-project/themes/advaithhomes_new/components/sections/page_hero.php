@@ -41,9 +41,9 @@ $_trust = isset( $hero['trust_items'] ) && is_array( $hero['trust_items'] )
 $_default_img  = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
 // hero['image_id'] wins (dynamic parent-term pages); else WP featured image; else default.
 $_hero_img_id  = ! empty( $hero['image_id'] ) ? (int) $hero['image_id'] : 0;
-$_hero_img     = $_hero_img_id
+$_hero_img     = adn_versioned_url( $_hero_img_id
 	? ( wp_get_attachment_image_url( $_hero_img_id, 'large' ) ?: $_default_img )
-	: ( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
+	: ( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img ) );
 ?>
 <section class="page-hero">
 

@@ -66,7 +66,13 @@ $_total = count( $steps );
 			</div>
 
 		</div>
+
+		<?php if ( ! $_is_last ) : ?>
+		<span class="jny2-arrow" aria-hidden="true">&#8250;</span>
+		<?php endif; ?>
+
 		<?php endforeach; ?>
+
 
 	</div>
 

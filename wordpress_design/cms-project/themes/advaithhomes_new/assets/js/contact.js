@@ -121,7 +121,7 @@
         var el       = document.createElement( 'div' );
         el.className = 'contact-form-msg ' + ( isError ? 'is-error' : 'is-success' );
         el.textContent = text;
-        form.insertBefore( el, form.firstChild );
+        form.appendChild( el );
         el.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );
     }
 

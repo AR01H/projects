@@ -16,7 +16,7 @@ $hero       = isset( $hero )       && is_array( $hero )       ? $hero       : ar
 $breadcrumb = isset( $breadcrumb ) && is_array( $breadcrumb ) ? $breadcrumb : array();
 
 $_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
-$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
+$_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
 ?>
 <section class="tools-hero">
 

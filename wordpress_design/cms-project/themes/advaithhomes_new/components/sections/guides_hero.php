@@ -12,7 +12,7 @@ $hero        = isset( $hero )  && is_array( $hero )  ? $hero  : array();
 $trust_items = isset( $hero['trust_items'] ) ? (array) $hero['trust_items'] : array();
 
 $_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
-$_hero_img    = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
+$_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
 ?>
 <section class="guides-hero">
 	<div class="guides-hero-deco" aria-hidden="true">

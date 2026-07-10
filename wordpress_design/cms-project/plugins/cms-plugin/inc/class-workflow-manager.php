@@ -144,13 +144,13 @@ class AH_Workflow_Manager {
 	/**
 	 * Evaluate all matching rules for a trigger event.
 	 *
-	 * @param string $trigger_name  Event slug, e.g. 'sugarcane_contact_form'.
+	 * @param string $trigger_name  Event slug, e.g. 'form'.
 	 * @param array  $context       Key/value pairs - become {tokens} in action templates.
 	 * @param bool   $immediate     true  → run matching actions right now (synchronous).
 	 *                              false → queue into ah_trigger_logs for cron (default).
 	 *
 	 * Call from anywhere:
-	 *   AH_Workflow_Manager::evaluate( 'sugarcane_contact_form', [
+	 *   AH_Workflow_Manager::evaluate( 'form', [
 	 *       'name'  => 'Jane',
 	 *       'email' => 'jane@example.com',
 	 *   ], true );
@@ -499,7 +499,7 @@ class AH_Workflow_Manager {
 		$smtp_hook = null;
 		if ( $channel && ! empty( $channel['host'] ) ) {
 			$ch        = $channel;
-			$smtp_hook = static function ( $mailer ) use ( $ch ) {
+			$smtp_hook = static function ( $mailer ) use ( $ch, $is_html ) {
 				$mailer->isSMTP();
 				$mailer->Host       = $ch['host'];
 				$mailer->Port       = (int) $ch['port'];
@@ -508,6 +508,20 @@ class AH_Workflow_Manager {
 				$mailer->Password   = $ch['password'];
 				$enc = $ch['encryption'] ?? 'tls';
 				$mailer->SMTPSecure = ( 'ssl' === $enc ) ? 'ssl' : ( 'none' === $enc ? '' : 'tls' );
+				if ( 'none' === $enc ) {
+					$mailer->SMTPAutoTLS = false;
+				}
+				
+				// Bypass SSL verification for local dev environments
+				$mailer->SMTPOptions = array(
+					'ssl' => array(
+						'verify_peer'       => false,
+						'verify_peer_name'  => false,
+						'allow_self_signed' => true
+					)
+				);
+				
+				$mailer->isHTML( $is_html );
 			};
 			add_action( 'phpmailer_init', $smtp_hook );
 		}

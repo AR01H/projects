@@ -22,10 +22,11 @@ $news_cards = array();
 foreach ( isset( $news['items'] ) ? (array) $news['items'] : array() as $_it ) {
 	$_thumb = isset( $_it['thumbnail'] ) ? (string) $_it['thumbnail'] : '';
 	$_card  = array(
-		'title' => isset( $_it['title'] ) ? (string) $_it['title'] : '',
-		'meta'  => isset( $_it['date'] )  ? (string) $_it['date']  : '',
-		'tag'   => isset( $_it['tag'] )   ? (string) $_it['tag']   : '',
-		'url'   => isset( $_it['url'] )   ? (string) $_it['url']   : '',
+		'title'       => isset( $_it['title'] ) ? (string) $_it['title'] : '',
+		'meta'        => isset( $_it['date'] )  ? (string) $_it['date']  : '',
+		'tag'         => isset( $_it['tag'] )   ? (string) $_it['tag']   : '',
+		'url'         => isset( $_it['url'] )   ? (string) $_it['url']   : '',
+		'description' => isset( $_it['description'] ) ? (string) $_it['description'] : '',
 	);
 	if ( '' !== $_thumb ) {
 		$_card['img_url'] = $_thumb;
@@ -83,16 +84,19 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 ?>
 <div class="ntc-carousel-wrap">
 
-	<div class="news-three-inner">
+	<div class="news-three-inner <?php echo ( isset( $is_home_news ) && $is_home_news ) ? 'news-three-col--has-2fr' : ''; ?>">
 
 		<?php if ( ! empty( $news_cards ) ) : ?>
-		<div class="news-col news-col--news mini_card_container_design">
+		<div class="news-col news-col--news <?php echo ( isset( $is_home_news ) && $is_home_news ) ? 'news-col--news-2fr' : ''; ?> mini_card_container_design">
 			<div class="news-widget">
-				<?php adn_component( 'parts/list_widget', array( 'widget' => array(
+				<?php 
+				$widget_type = ( isset( $is_home_news ) && $is_home_news ) ? 'parts/news_list_widget' : 'parts/list_widget';
+				adn_component( $widget_type, array( 'widget' => array(
 					'heading' => isset( $news['heading'] ) ? (array) $news['heading'] : array(),
 					'items'   => $news_cards,
 					'tag'     => 'h4',
-				) ) ); ?>
+				) ) ); 
+				?>
 			</div>
 		</div>
 		<?php endif; ?>
@@ -159,66 +163,74 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 		}
 	}
 
-	var wrap      = document.currentScript.previousElementSibling;
-	/* Run after full layout (fonts + images settled) */
-	if ( document.readyState === 'complete' ) {
-		applyFourItemHeight( wrap );
-	} else {
-		window.addEventListener( 'load', function () { applyFourItemHeight( wrap ); } );
-	}
-	window.addEventListener( 'resize', function () { applyFourItemHeight( wrap ); } );
+	function initCarousel(wrap) {
+		if (wrap.classList.contains('ntc-initialized')) return;
+		wrap.classList.add('ntc-initialized');
 
-	var track  = wrap.querySelector('.news-three-inner');
-	var prev   = wrap.querySelector('.ntc-arrow--prev');
-	var next   = wrap.querySelector('.ntc-arrow--next');
-	var dotsEl = wrap.querySelector('.ntc-dots');
-	var panels = Array.prototype.slice.call( track.children );
+		/* Run after full layout (fonts + images settled) */
+		if ( document.readyState === 'complete' ) {
+			applyFourItemHeight( wrap );
+		} else {
+			window.addEventListener( 'load', function () { applyFourItemHeight( wrap ); } );
+		}
+		window.addEventListener( 'resize', function () { applyFourItemHeight( wrap ); } );
 
-	var dots = panels.map(function(_, i){
-		var d = document.createElement('span');
-		d.className = 'ntc-dot' + (i === 0 ? ' active' : '');
-		d.addEventListener('click', function(){
-			track.scrollTo({ left: panels[i].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+		var track  = wrap.querySelector('.news-three-inner');
+		if (!track) return;
+		
+		var prev   = wrap.querySelector('.ntc-arrow--prev');
+		var next   = wrap.querySelector('.ntc-arrow--next');
+		var dotsEl = wrap.querySelector('.ntc-dots');
+		var panels = Array.prototype.slice.call( track.children );
+
+		var dots = panels.map(function(_, i){
+			var d = document.createElement('span');
+			d.className = 'ntc-dot' + (i === 0 ? ' active' : '');
+			d.addEventListener('click', function(){
+				track.scrollTo({ left: panels[i].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+			});
+			dotsEl.appendChild(d);
+			return d;
 		});
-		dotsEl.appendChild(d);
-		return d;
-	});
 
-	function activeIndex(){
-		var mid = track.scrollLeft + track.clientWidth / 2;
-		var best = 0, bestD = Infinity;
-		panels.forEach(function(p, i){
-			var d = Math.abs((p.offsetLeft - track.offsetLeft + p.offsetWidth / 2) - mid);
-			if(d < bestD){ bestD = d; best = i; }
-		});
-		return best;
+		function activeIndex(){
+			var mid = track.scrollLeft + track.clientWidth / 2;
+			var best = 0, bestD = Infinity;
+			panels.forEach(function(p, i){
+				var d = Math.abs((p.offsetLeft - track.offsetLeft + p.offsetWidth / 2) - mid);
+				if(d < bestD){ bestD = d; best = i; }
+			});
+			return best;
+		}
+
+		function equalizeHeights(){
+			/* Reset so we measure natural heights */
+			panels.forEach(function(p){ p.style.height = ''; });
+			if( window.innerWidth > 680 ){ return; } /* desktop: natural heights */
+			var maxH = 0;
+			panels.forEach(function(p){ if( p.offsetHeight > maxH ) maxH = p.offsetHeight; });
+			panels.forEach(function(p){ p.style.height = maxH + 'px'; });
+		}
+
+		function update(){
+			var idx = activeIndex();
+			dots.forEach(function(d,i){ d.classList.toggle('active', i === idx); });
+			prev.classList.toggle('ntc-arrow--hidden', track.scrollLeft <= 2);
+			next.classList.toggle('ntc-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
+		}
+
+		prev.addEventListener('click', function(){ track.scrollBy({ left: -(track.clientWidth + 16), behavior: 'smooth' }); });
+		next.addEventListener('click', function(){ track.scrollBy({ left:  (track.clientWidth + 16), behavior: 'smooth' }); });
+		track.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', function(){ equalizeHeights(); update(); });
+
+		if( document.readyState === 'complete' ){
+			equalizeHeights(); update();
+		} else {
+			window.addEventListener('load', function(){ equalizeHeights(); update(); });
+		}
 	}
 
-	function equalizeHeights(){
-		/* Reset so we measure natural heights */
-		panels.forEach(function(p){ p.style.height = ''; });
-		if( window.innerWidth > 680 ){ return; } /* desktop: natural heights */
-		var maxH = 0;
-		panels.forEach(function(p){ if( p.offsetHeight > maxH ) maxH = p.offsetHeight; });
-		panels.forEach(function(p){ p.style.height = maxH + 'px'; });
-	}
-
-	function update(){
-		var idx = activeIndex();
-		dots.forEach(function(d,i){ d.classList.toggle('active', i === idx); });
-		prev.classList.toggle('ntc-arrow--hidden', track.scrollLeft <= 2);
-		next.classList.toggle('ntc-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
-	}
-
-	prev.addEventListener('click', function(){ track.scrollBy({ left: -(track.clientWidth + 16), behavior: 'smooth' }); });
-	next.addEventListener('click', function(){ track.scrollBy({ left:  (track.clientWidth + 16), behavior: 'smooth' }); });
-	track.addEventListener('scroll', update, { passive: true });
-	window.addEventListener('resize', function(){ equalizeHeights(); update(); });
-
-	if( document.readyState === 'complete' ){
-		equalizeHeights(); update();
-	} else {
-		window.addEventListener('load', function(){ equalizeHeights(); update(); });
-	}
+	document.querySelectorAll('.ntc-carousel-wrap').forEach(initCarousel);
 }());
 </script>

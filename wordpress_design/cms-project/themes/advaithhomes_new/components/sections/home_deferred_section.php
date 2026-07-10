@@ -51,19 +51,21 @@ switch ( $section ) {
 						'heading' => array( 'title' => adn_term( 'labels.news_section', '' ) ),
 						'center'  => true,
 					) ); ?>
-					<div class="news-sp-row">
+					<?php if ( $_sp_active ) : ?>
+					<div class="news-spotlight-upside" style="margin-bottom: 24px;">
+						<?php adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_sp_term_slug, 'compact' => true ) ); ?>
+					</div>
+					<?php endif; ?>
+					
+					<div class="news-sp-row <?php echo ( adn_home_section_visible( 'news' ) && $_has_news_data ) ? 'news-sp-row--4col' : ''; ?>">
 						<?php if ( adn_home_section_visible( 'news' ) && $_has_news_data ) : ?>
-						<div class="news-sp-row__news">
+						<div class="news-sp-row__news" style="flex: 1; min-width: 100%;">
 							<?php adn_component( 'sections/news_three_col', array(
-								'news'        => $ctx['news'],
-								'regulations' => $ctx['regulations'],
-								'hot_topics'  => $ctx['hot_topics'],
+								'news'         => $ctx['news'],
+								'regulations'  => $ctx['regulations'],
+								'hot_topics'   => $ctx['hot_topics'],
+								'is_home_news' => true,
 							) ); ?>
-						</div>
-						<?php endif; ?>
-						<?php if ( $_sp_active ) : ?>
-						<div class="news-sp-row__spotlight">
-							<?php adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_sp_term_slug ) ); ?>
 						</div>
 						<?php endif; ?>
 					</div>

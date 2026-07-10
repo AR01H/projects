@@ -44,7 +44,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         <div class="header-inner">
 
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ); ?>" alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : '' ); ?>" width="200" />
+                <img src="<?php echo esc_url( adn_versioned_url( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ) ); ?>" alt="<?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : '' ); ?>" width="200" />
             </a>
 
             <nav class="main-nav" aria-label="Main navigation">
