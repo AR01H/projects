@@ -211,34 +211,6 @@ $example_js = '(function () {
 				</tr>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Guide / Topic Pages', ADN_TEXT_DOMAIN ); ?></th>
-					<td>
-						<?php
-						$_sn_saved_pt   = isset( $f_meta['parent_terms'] ) && is_array( $f_meta['parent_terms'] ) ? $f_meta['parent_terms'] : array();
-						$_sn_guide_cats = function_exists( 'adn_cms_guide_parents' ) ? adn_cms_guide_parents() : array();
-						?>
-						<?php if ( ! empty( $_sn_guide_cats ) ) : ?>
-							<div style="display:flex;flex-wrap:wrap;gap:8px 20px;">
-								<?php foreach ( $_sn_guide_cats as $_sn_gc ) : ?>
-									<?php $_sn_gc_slug = isset( $_sn_gc->slug ) ? (string) $_sn_gc->slug : ''; ?>
-									<?php if ( '' === $_sn_gc_slug ) { continue; } ?>
-									<label style="white-space:nowrap;">
-										<input type="checkbox"
-											name="meta_parent_terms[]"
-											value="<?php echo esc_attr( $_sn_gc_slug ); ?>"
-											<?php checked( in_array( $_sn_gc_slug, $_sn_saved_pt, true ) ); ?>>
-										<?php echo esc_html( isset( $_sn_gc->name ) ? (string) $_sn_gc->name : $_sn_gc_slug ); ?>
-									</label>
-								<?php endforeach; ?>
-							</div>
-						<?php else : ?>
-							<p class="description"><?php esc_html_e( 'No guide parent terms found. Ensure the CMS plugin is active.', ADN_TEXT_DOMAIN ); ?></p>
-						<?php endif; ?>
-						<p class="description"><?php esc_html_e( 'Which guide/topic parent pages this calculator appears on. Leave all unchecked to hide from all term pages.', ADN_TEXT_DOMAIN ); ?></p>
-					</td>
-				</tr>
-
-				<tr>
 					<th scope="row"><?php esc_html_e( 'Thumbnail Image', ADN_TEXT_DOMAIN ); ?></th>
 					<td>
 						<?php
@@ -293,6 +265,66 @@ $example_js = '(function () {
 								<?php checked( ! empty( $f_meta['is_popular'] ) ); ?>>
 							<?php esc_html_e( 'Feature in the "Popular Calculators" section on the /calculators/ page and home page', ADN_TEXT_DOMAIN ); ?>
 						</label>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Featured Calculator', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="meta_is_featured" value="1"
+								<?php checked( ! empty( $f_meta['is_featured'] ) ); ?>>
+							<?php esc_html_e( 'Feature this calculator on specific highlighted pages', ADN_TEXT_DOMAIN ); ?>
+						</label>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Suggestion Calculator', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="meta_is_suggestion" value="1"
+								<?php checked( ! empty( $f_meta['is_suggestion'] ) ); ?>>
+							<?php esc_html_e( 'Include this calculator as a suggested tool on related posts or resources', ADN_TEXT_DOMAIN ); ?>
+						</label>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Featured Title Override', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<input type="text" class="regular-text" name="meta_featured_title"
+							value="<?php echo esc_attr( isset( $f_meta['featured_title'] ) ? $f_meta['featured_title'] : '' ); ?>"
+							placeholder="e.g. Mortgage Calculator">
+						<p class="description"><?php esc_html_e( 'Leave blank to use the default calculator title.', ADN_TEXT_DOMAIN ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Featured Description Override', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<textarea class="large-text" rows="2" name="meta_featured_desc"
+							placeholder="e.g. Estimate your monthly mortgage repayments..."><?php echo esc_textarea( isset( $f_meta['featured_desc'] ) ? $f_meta['featured_desc'] : '' ); ?></textarea>
+						<p class="description"><?php esc_html_e( 'Leave blank to use the default description.', ADN_TEXT_DOMAIN ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Featured Benefit Bullets', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<input type="text" class="regular-text" style="margin-bottom:6px;display:block;" name="meta_benefit_1"
+							value="<?php echo esc_attr( isset( $f_meta['benefit_1'] ) ? $f_meta['benefit_1'] : '' ); ?>"
+							placeholder="Benefit 1 (e.g. Repayment & interest only)"><br>
+						<input type="text" class="regular-text" style="margin-bottom:6px;display:block;" name="meta_benefit_2"
+							value="<?php echo esc_attr( isset( $f_meta['benefit_2'] ) ? $f_meta['benefit_2'] : '' ); ?>"
+							placeholder="Benefit 2 (e.g. Variable or fixed rates)"><br>
+						<input type="text" class="regular-text" style="margin-bottom:6px;display:block;" name="meta_benefit_3"
+							value="<?php echo esc_attr( isset( $f_meta['benefit_3'] ) ? $f_meta['benefit_3'] : '' ); ?>"
+							placeholder="Benefit 3 (e.g. Overpayment options)"><br>
+						<input type="text" class="regular-text" style="margin-bottom:6px;display:block;" name="meta_benefit_4"
+							value="<?php echo esc_attr( isset( $f_meta['benefit_4'] ) ? $f_meta['benefit_4'] : '' ); ?>"
+							placeholder="Benefit 4 (e.g. Amortization schedule)">
+						<p class="description"><?php esc_html_e( 'Bullet points with checkmarks displayed inside the Featured Calculator box.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
 

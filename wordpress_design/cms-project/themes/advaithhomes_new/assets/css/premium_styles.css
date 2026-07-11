@@ -399,21 +399,31 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* ─── 14a. All listing cards: client-color border + shadow ─── */
 .topic-articles-grid .glc {
-    border: 2px solid rgba(32,60,62,.42) !important;
+    background: var(--color-white, #ffffff) !important;
+    border: 1px solid var(--color-border, #e2e8f0) !important;
     border-radius: 12px !important;
-    box-shadow: 0 2px 12px rgba(32,60,62,.09) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
 .topic-articles-grid .glc:hover {
-    border-color: var(--secondary-color, #B08D57) !important;
-    box-shadow: 0 10px 36px rgba(32,60,62,.16) !important;
-    transform: translateY(-3px) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 30px rgba(45, 90, 68, 0.08) !important;
+    border-color: var(--color-primary, #2d5a44) !important;
 }
 .topic-articles-grid .glc-title {
-    font-size: 0.88rem !important;
-    line-height: 1.45 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
     font-weight: 700 !important;
+    color: var(--color-heading, #0f172a) !important;
+    margin: 0 0 4px 0 !important;
 }
-.topic-articles-grid .glc-body { padding: 12px 13px 14px !important; }
+.topic-articles-grid .glc-body { 
+    padding: 14px 16px 16px !important; 
+    gap: 6px !important;
+}
 
 
 /* ─── 14c. Mobile: single column, equal styling ─────────────── */
@@ -447,82 +457,71 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 }
 
 
-/* ─── 15b. Category badge on cards — dark teal + bright gold ─── */
+/* ─── 15b. Category badge on cards ─── */
 .glc-cat {
-    background: rgba(18,44,36,.82) !important;
-    color: #e6c86a !important;
-    border: 1px solid rgba(201,168,76,.3) !important;
-    backdrop-filter: blur(6px) !important;
-    letter-spacing: 0.09em !important;
+    position: absolute !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    color: var(--color-primary, #2d5a44) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    padding: 4px 10px !important;
+    border-radius: 4px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    backdrop-filter: blur(4px) !important;
+    margin: 0 !important;
 }
 
 
-/* ─── 15c. Card image — dark inset border frame on all glc cards ── */
+/* ─── 15c. Card image ── */
 .glc .glc-img {
     position: relative !important;
 }
 .glc .glc-img::before {
-    content: '' !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border: 2px solid rgba(32,60,62,.45) !important;
-    border-radius: inherit !important;
-    pointer-events: none !important;
-    z-index: 3 !important;
-}
-.glc:hover .glc-img::before {
-    border-color: rgba(176,141,87,.6) !important;
+    display: none !important;
 }
 
-/* ─── 15c2. Gradient fallback — layered bg + medallion icon ──── */
+/* ─── 15c2. Gradient fallback ──── */
 .glc-img-gradient {
-    /* corner gold accent + radial glow + dot grid + dark forest base */
-    background:
-        linear-gradient(220deg, rgba(201,168,76,.2) 0%, transparent 30%),
-        radial-gradient(ellipse 55% 52% at 50% 48%, rgba(201,168,76,.12) 0%, transparent 68%),
-        radial-gradient(rgba(255,255,255,.042) 1px, transparent 1px),
-        linear-gradient(150deg, #0f2b1c 0%, #1a4530 52%, #2d6647 100%) !important;
-    background-size: auto, auto, 22px 22px, auto !important;
+    /* Rich primary green theme gradient fallback */
+    background: linear-gradient(135deg, #1f4232 0%, #2d5a44 100%) !important;
+    border-bottom: none !important;
 }
-/* subtle gradient variety so consecutive gradient cards don't look cloned */
 .glc:nth-child(2n) .glc-img-gradient {
-    background:
-        linear-gradient(205deg, rgba(201,168,76,.18) 0%, transparent 30%),
-        radial-gradient(ellipse 55% 52% at 50% 48%, rgba(201,168,76,.1) 0%, transparent 68%),
-        radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(162deg, #0e2519 0%, #1c4a31 52%, #305f48 100%) !important;
-    background-size: auto, auto, 22px 22px, auto !important;
+    background: linear-gradient(135deg, #193629 0%, #254a37 100%) !important;
+    border-bottom: none !important;
 }
 .glc:nth-child(3n) .glc-img-gradient {
-    background:
-        linear-gradient(235deg, rgba(201,168,76,.22) 0%, transparent 30%),
-        radial-gradient(ellipse 55% 52% at 50% 48%, rgba(201,168,76,.13) 0%, transparent 68%),
-        radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(138deg, #12201a 0%, #1e3c2c 52%, #2c5540 100%) !important;
-    background-size: auto, auto, 22px 22px, auto !important;
+    background: linear-gradient(135deg, #254737 0%, #305f49 100%) !important;
+    border-bottom: none !important;
 }
 
-/* Icon as gold-ring medallion — sits in a glowing circle */
+/* Icon - clean white medallion, centered */
 .glc-img-icon {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 66px !important;
-    height: 66px !important;
+    width: 52px !important;
+    height: 52px !important;
     border-radius: 50% !important;
-    background: rgba(0,0,0,.25) !important;
-    border: 1.5px solid rgba(201,168,76,.4) !important;
-    box-shadow:
-        0 0 0 9px rgba(201,168,76,.07),
-        0 0 26px rgba(201,168,76,.22) !important;
-    color: rgba(220,182,92,.96) !important;
-    font-size: 2rem !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+    color: #e6c86a !important; /* Gold/yellow icon */
+    font-size: 1.5rem !important;
     opacity: 1 !important;
     filter: none !important;
     position: relative !important;
     z-index: 1 !important;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
+}
+
+.glc-img-icon i::before,
+.glc-img-icon .ah-ico::before {
+    color: #e6c86a !important;
 }
 
 
@@ -612,43 +611,55 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* Shell — same border/radius/shadow everywhere */
 .calc-card {
-    border: 2px solid rgba(32,60,62,.38) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 10px rgba(32,60,62,.08) !important;
+    border: 1px solid var(--client-color-400) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.02) !important;
     overflow: hidden !important;
+    background: var(--color-white, #ffffff) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Media area — single dark teal gradient for every context */
+/* Media area — single light soft green tint */
 .calc-card-media {
-    background: linear-gradient(150deg, #152a1c 0%, #1e4530 52%, #2a5d40 100%) !important;
-    position: relative;
+    background: radial-gradient(circle, rgba(45,90,68,0.08) 0%, rgba(45,90,68,0.02) 100%) !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
-/* Gold shimmer line at base of every media panel */
+/* Remove gold shimmer line */
 .calc-card-media::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #c9a84c 50%, transparent);
-    pointer-events: none;
+    display: none !important;
 }
 
-/* Icon — gold glow, consistent size */
+/* Icon — gold glow replaced with modern circular badge */
 .calc-card-icon-wrap {
-    color: rgba(212,170,80,.92) !important;
-    filter: drop-shadow(0 0 12px rgba(201,168,76,.5)) !important;
-    font-size: 2rem !important;
-    text-shadow: none !important;
-    opacity: 1 !important;
+    background: var(--color-white, #ffffff) !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(45, 90, 68, 0.08) !important;
+    border: 1px solid rgba(45, 90, 68, 0.08) !important;
+    position: relative !important;
+    inset: unset !important;
+    filter: none !important;
 }
 
-/* Card name — Playfair Display */
+.calc-card-icon-wrap i::before,
+.calc-card-icon-wrap .ah-ico::before {
+    color: var(--color-primary, #2d5a44) !important;
+}
+
+/* Card name — clean sans-serif */
 .calc-card-name {
-    font-family: var(--font-display, 'Playfair Display', serif) !important;
-    font-size: 0.88rem !important;
-    font-weight: 700 !important;
-    color: var(--text-primary, #111816) !important;
+    font-family: var(--font-body, system-ui, -apple-system, sans-serif) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: var(--color-heading, #0f172a) !important;
 }
 
 /* Carousel grid — layout only (appearance inherits above) */
@@ -700,33 +711,25 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     padding: 0 !important;
     text-align: left !important;
 }
-/* Media: full-width 16/9 dark teal panel with the shared gradient */
+/* Media: full-width 16/9 light panel */
 .calc-card-media {
     width: 100% !important;
     aspect-ratio: 16 / 9 !important;
     border-radius: 0 !important;
 }
-.calc-card-icon-wrap {
-    position: absolute !important;
-    inset: 0 !important;
-}
-.calc-card-thumb {
-    width: 100% !important;
-    height: 100% !important;
-}
-/* Body: name below, gold top accent instead of any left accent */
+/* Body: name below, clean separator */
 .calc-card-body {
     flex: 1 !important;
     padding: 12px 14px !important;
     border-left: none !important;
-    border-top: 2px solid rgba(176,141,87,.45) !important;
+    border-top: 1px solid var(--color-border, #f1f5f9) !important;
     justify-content: flex-start !important;
     text-align: left !important;
 }
 .calc-card-name {
-    font-family: var(--font-display, 'Playfair Display', serif) !important;
+    font-family: var(--font-body, system-ui, -apple-system, sans-serif) !important;
     text-align: left !important;
-    color: var(--text-primary, #111816) !important;
+    color: var(--color-heading, #0f172a) !important;
 }
 
 /* Container grids — consistent column sizing */
@@ -740,45 +743,249 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .tool-grid .calc-card:hover,
 .category-section.category-tools .calc-card:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 16px 36px rgba(32,60,62,.15),
-                0 0 0 1.5px var(--secondary-color, #B08D57) !important;
-    border-color: var(--secondary-color, #B08D57) !important;
+    box-shadow: 0 12px 28px rgba(45, 90, 68, 0.08) !important;
+    border-color: var(--color-primary, #2d5a44) !important;
 }
 .tool-grid .calc-card:hover .calc-card-media,
 .category-section.category-tools .calc-card:hover .calc-card-media {
-    background: linear-gradient(150deg, #1e4a35 0%, #2d6147 100%) !important;
+    background: #e6fbf0 !important;
+}
+
+
+/* ─── 16c-3. Popular Calculator Cards Redesign ────────────────── */
+.popular-calc-card {
+    background: var(--color-white, #ffffff) !important;
+    border: 1px solid var(--color-border, #e2e8f0) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+.popular-calc-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 30px rgba(45, 90, 68, 0.08) !important;
+    border-color: var(--color-primary, #2d5a44) !important;
+}
+.popular-calc-icon {
+    background: radial-gradient(circle, rgba(45,90,68,0.08) 0%, rgba(45,90,68,0.02) 100%) !important;
+    aspect-ratio: 16 / 9 !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.popular-calc-icon::after {
+    display: none !important;
+}
+.popular-calc-icon i,
+.popular-calc-icon .ah-ico {
+    background: var(--color-white, #ffffff) !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(45, 90, 68, 0.08) !important;
+    border: 1px solid rgba(45, 90, 68, 0.08) !important;
+    filter: none !important;
+    text-shadow: none !important;
+    font-size: 1.5rem !important;
+    color: var(--color-primary, #2d5a44) !important;
+}
+.popular-calc-icon i::before,
+.popular-calc-icon .ah-ico::before {
+    color: var(--color-primary, #2d5a44) !important;
+}
+.popular-calc-card-body {
+    padding: 14px 16px 16px !important;
+    gap: 6px !important;
+    border-top: 1px solid var(--color-border, #f1f5f9) !important;
+    text-align: left !important;
+}
+.popular-calc-card h4 {
+    font-family: var(--font-body, system-ui, -apple-system, sans-serif) !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+    color: var(--color-heading, #0f172a) !important;
+    margin: 0 0 4px 0 !important;
+    text-align: left !important;
+}
+.popular-calc-card p {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+    color: var(--color-text, #475569) !important;
+    margin-bottom: 8px !important;
+    text-align: left !important;
+}
+.popular-calc-card .calc-cta {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: var(--color-primary, #2d5a44) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    text-align: left !important;
 }
 
 
 /* ─── 16d. Calc list items (tools page — all tools) ────────────── */
 .calc-list-item {
-    border-color: rgba(32,60,62,.18) !important;
-    border-radius: 10px !important;
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.18s !important;
+    padding: 12px 16px !important;
+    background: var(--color-white, #ffffff) !important;
+    border: 1px solid var(--color-border, #e2e8f0) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
 .calc-list-item:hover {
-    transform: translateX(3px) !important;
-    box-shadow: 0 4px 18px rgba(32,60,62,.1) !important;
-    border-color: var(--secondary-color, #B08D57) !important;
+    box-shadow: 0 8px 20px rgba(45, 90, 68, 0.06) !important;
+    border-color: var(--color-primary, #2d5a44) !important;
 }
 .calc-list-icon {
-    background: linear-gradient(135deg, rgba(30,58,47,.08) 0%, rgba(30,58,47,.04) 100%) !important;
-    border: 1px solid rgba(32,60,62,.12) !important;
-    color: var(--color-primary, #1e3a2f) !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(45, 90, 68, 0.05) !important;
+    border: 1px solid rgba(45, 90, 68, 0.08) !important;
+    border-radius: 6px !important;
+    color: var(--color-primary, #2d5a44) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.calc-list-icon i::before,
+.calc-list-icon .ah-ico::before {
+    color: var(--color-primary, #2d5a44) !important;
 }
 .calc-list-text h4 {
-    font-family: var(--font-display, 'Playfair Display', serif) !important;
-    font-weight: 700 !important;
-    color: var(--color-primary, #1e3a2f) !important;
+    font-family: var(--font-body, system-ui, -apple-system, sans-serif) !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+    color: var(--color-heading, #0f172a) !important;
+    margin-bottom: 2px !important;
 }
-.calc-list-arrow { color: var(--secondary-color, #B08D57) !important; }
+.calc-list-text p {
+    font-size: 0.78rem !important;
+    line-height: 1.35 !important;
+    color: var(--color-text, #475569) !important;
+}
+.calc-list-arrow { 
+    color: #94a3b8 !important; 
+    transition: color 0.2s ease !important;
+}
+.calc-list-item:hover .calc-list-arrow {
+    color: var(--color-primary, #2d5a44) !important;
+}
 
 
-/* ─── 16e. Mobile ────────────────────────────────────────────── */
+/* ─── 16e. Mobile & Responsive Overhaul (tools page) ─────────── */
+.calc-tab {
+    padding: 6px 14px !important;
+    border: 1px solid var(--color-border, #e2e8f0) !important;
+    background: var(--color-white, #ffffff) !important;
+    color: var(--color-text, #475569) !important;
+    border-radius: 99px !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+.calc-tab:hover {
+    border-color: var(--color-primary, #2d5a44) !important;
+    color: var(--color-primary, #2d5a44) !important;
+}
+.calc-tab.active {
+    background: rgba(45, 90, 68, 0.06) !important;
+    border-color: var(--color-primary, #2d5a44) !important;
+    color: var(--color-primary, #2d5a44) !important;
+    font-weight: 600 !important;
+}
+
+/* Hide duplicate filter tabs on desktop since the sidebar handles it */
+@media (min-width: 769px) {
+    .tools-filter-tabs {
+        display: none !important;
+    }
+}
+
 @media (max-width: 768px) {
     .topic-listing-layout { padding-top: 14px !important; padding-bottom: 24px !important; }
-    .popular-tools-grid   { gap: 10px !important; }
-    .calcs-popular-grid   { gap: 10px !important; }
+
+    /* Make popular cards scroll horizontally like a carousel on mobile */
+    .popular-tools-grid,
+    .calcs-popular-grid {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        gap: 12px !important;
+        padding-bottom: 8px !important;
+    }
+    .popular-tools-grid::-webkit-scrollbar,
+    .calcs-popular-grid::-webkit-scrollbar {
+        display: none !important;
+    }
+    .popular-tools-grid .popular-calc-card,
+    .calcs-popular-grid .calc-card {
+        flex-shrink: 0 !important;
+        width: 250px !important;
+    }
+
+    /* Restrict description to exactly 2 lines on mobile */
+    .popular-calc-card p,
+    .calc-list-text p {
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+        white-space: normal !important;
+        font-size: 0.76rem !important;
+        line-height: 1.35 !important;
+    }
+
+    /* Prevent vertical wrapping, enable smooth horizontal swipe on mobile */
+    .tools-filter-tabs {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        gap: 8px !important;
+        padding-bottom: 6px !important;
+        margin-bottom: 16px !important;
+    }
+    .tools-filter-tabs::-webkit-scrollbar {
+        display: none !important;
+    }
+    .calc-tab {
+        flex-shrink: 0 !important;
+        font-size: 0.78rem !important;
+        padding: 5px 12px !important;
+    }
+
+    /* Force horizontal items - PREVENT layout wrapping icons below text */
+    .calc-list-item-left {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+    .calc-list-text h4 {
+        white-space: normal !important;
+    }
+
+    /* Tidy container paddings to eliminate bloated margins */
+    .tools-main-layout,
+    .calcs-main-layout {
+        padding: 16px 12px 24px !important;
+        gap: 16px !important;
+    }
+    .find-calc-cta {
+        padding: 16px 20px !important;
+        margin-top: 24px !important;
+    }
 }
 
 
@@ -805,12 +1012,88 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* ─── 17b. Sidebar widgets (.sw-panel) ───────────────────── */
 .sw-panel {
-    border: 1.5px solid rgba(32,60,62,.22) !important;
-    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
+    border: 1px solid var(--color-border, #e2e8f0) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03) !important;
+    background: var(--color-white, #ffffff) !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 .sw-header {
-    border-bottom: 2px solid rgba(32,60,62,.18) !important;
-    background: rgba(32,60,62,.03) !important;
+    border-bottom: 1px solid var(--color-border, #f1f5f9) !important;
+    background: transparent !important;
+    padding: 12px 16px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.sw-title {
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    color: var(--color-heading, #0f172a) !important;
+    font-family: var(--font-heading) !important;
+    margin: 0 !important;
+}
+.sw-subtitle {
+    font-size: 0.82rem !important;
+    line-height: 1.5 !important;
+    color: var(--color-text, #475569) !important;
+    padding: 12px 16px !important;
+    margin: 0 !important;
+}
+.sw-footer {
+    padding: 0 16px 16px !important;
+    border-top: none !important;
+    margin-top: 0 !important;
+}
+.sw-cta-btn {
+    background: var(--color-primary, #2d5a44) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 10px 16px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(45, 90, 68, 0.12) !important;
+    transition: all 0.2s ease !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    border: none !important;
+}
+.sw-cta-btn:hover {
+    background: var(--color-primary-dark, #1c3d2e) !important;
+    box-shadow: 0 4px 12px rgba(45, 90, 68, 0.2) !important;
+}
+.sw-list {
+    padding: 6px 12px 12px !important;
+}
+.sw-item {
+    border-bottom: none !important;
+}
+.sw-item-link {
+    padding: 8px 10px !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease !important;
+    margin: 1px 0 !important;
+}
+.sw-item-link:hover {
+    background: var(--color-surface, #f8fafc) !important;
+    color: var(--color-primary, #2d5a44) !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    margin: 1px 0 !important;
+}
+.sw-item-link--active,
+.sw-item-link--active:hover {
+    background: rgba(45, 90, 68, 0.06) !important;
+    color: var(--color-primary, #2d5a44) !important;
+    font-weight: 600 !important;
+}
+.sw-item-link--active .sw-item-arrow,
+.sw-item-link--active .sw-item-label {
+    color: var(--color-primary, #2d5a44) !important;
 }
 
 /* ─── 17c. News widget container ─────────────────────────── */
@@ -856,12 +1139,90 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* ─── 17h. Tools/calc sidebar panels ────────────────────── */
 .tools-sidebar-section {
-    border: 1.5px solid rgba(32,60,62,.2) !important;
-    border-radius: 10px !important;
+    background: var(--color-white, #ffffff) !important;
+    border: 1px solid var(--color-border, #e2e8f0) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03) !important;
+    overflow: hidden !important;
+    margin-bottom: 20px !important;
+    padding: 0 !important; /* Override mini_card_container_design padding bloat */
+}
+.tools-sidebar-section h3 {
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: var(--color-heading, #0f172a) !important;
+    font-family: var(--font-heading) !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    border-bottom: 1px solid var(--color-border, #f1f5f9) !important;
+}
+.tools-cat-list {
+    padding: 6px 8px 8px !important;
+}
+.tools-cat-item {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 6px 8px !important;
+    border-radius: 6px !important;
+    border: none !important;
+    margin: 1px 0 !important;
+    transition: all 0.2s ease !important;
+    background: transparent !important;
+}
+.tools-cat-item:hover {
+    background: var(--color-surface, #f8fafc) !important;
+    color: var(--color-primary, #2d5a44) !important;
+}
+.tools-cat-item.active {
+    background: rgba(45, 90, 68, 0.06) !important;
+    color: var(--color-primary, #2d5a44) !important;
+    font-weight: 600 !important;
+    border-left: none !important;
+}
+.tools-cat-item.active .tools-cat-count {
+    background: rgba(45, 90, 68, 0.1) !important;
+    color: var(--color-primary, #2d5a44) !important;
 }
 .tools-sidebar-help {
-    border: 1.5px solid rgba(32,60,62,.18) !important;
-    border-radius: 10px !important;
+    background: var(--color-white, #ffffff) !important;
+    border: 1px solid var(--color-border, #e2e8f0) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03) !important;
+    padding: 16px !important;
+    margin-top: 20px !important;
+}
+.tools-sidebar-help h4 {
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    color: var(--color-heading, #0f172a) !important;
+    margin-bottom: 8px !important;
+}
+.tools-sidebar-help p {
+    font-size: 0.82rem !important;
+    line-height: 1.5 !important;
+    color: var(--color-text, #475569) !important;
+    margin-bottom: 12px !important;
+}
+.tools-help-btn {
+    background: var(--color-primary, #2d5a44) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 10px 16px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(45, 90, 68, 0.12) !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+.tools-help-btn:hover {
+    background: var(--color-primary-dark, #1c3d2e) !important;
+    box-shadow: 0 4px 12px rgba(45, 90, 68, 0.2) !important;
 }
 
 /* ─── 17i. Find-calc CTA strip ───────────────────────────── */
@@ -1909,3 +2270,1253 @@ html.adn-reveal .acard-stat::before {
         to   { opacity: 1; transform: none; }
     }
 }
+
+/* ─── 19. FEATURED & SIDEBAR SECTION (tools page) ─────────────── */
+.tools-featured-section {
+    padding: 24px 0 40px !important;
+}
+
+.tools-featured-inner {
+    display: flex !important;
+    gap: 32px !important;
+    align-items: stretch !important;
+}
+
+.tools-featured-left {
+    width: 320px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+}
+
+.tools-featured-right {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+/* Suggested Calculators Widget */
+.tools-suggestions-widget .tools-suggested-item {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-decoration: none !important;
+}
+.tools-suggestions-widget .tools-suggested-title {
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    color: var(--color-text, #374151) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+.tools-suggestions-widget .tools-cat-arrow {
+    color: var(--color-text-muted, #94a3b8) !important;
+    transition: transform 0.2s ease, color 0.2s ease !important;
+}
+.tools-suggestions-widget .tools-suggested-item:hover .tools-cat-arrow {
+    color: var(--color-primary, #2d5a44) !important;
+    transform: translateX(3px) !important;
+}
+
+/* Featured Calculator Container (Dark Green Block) */
+.featured-calc-card {
+    background: linear-gradient(135deg, #122920 0%, #1e3a2f 100%) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    display: flex !important;
+    flex-direction: row !important;
+    overflow: hidden !important;
+    height: 100% !important;
+    box-shadow: 0 10px 30px rgba(30, 58, 47, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-sizing: border-box !important;
+}
+
+.featured-calc-content {
+    padding: 36px !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+}
+
+.featured-calc-badge {
+    display: inline-block !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #e6c86a !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    padding: 4px 10px !important;
+    border-radius: 4px !important;
+    margin-bottom: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.featured-calc-content h3 {
+    font-family: var(--font-body, system-ui, -apple-system, sans-serif) !important;
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin: 0 0 10px 0 !important;
+    line-height: 1.25 !important;
+}
+
+.featured-calc-content p {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+    margin: 0 0 20px 0 !important;
+}
+
+.featured-calc-benefits {
+    list-style: none !important;
+    margin: 0 0 24px 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+.featured-calc-benefits li {
+    display: flex !important;
+    align-items: center !important;
+    font-size: 0.82rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.benefit-check {
+    width: 14px !important;
+    height: 14px !important;
+    color: #e6c86a !important;
+    margin-right: 8px !important;
+    flex-shrink: 0 !important;
+}
+
+.btn-featured-calc {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: var(--secondary-color, #B08D57) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 12px 24px !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    border: none !important;
+    transition: all 0.25s ease !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(176, 141, 87, 0.2) !important;
+}
+
+.btn-featured-calc:hover {
+    background: #9d7d4c !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(176, 141, 87, 0.3) !important;
+}
+
+.featured-calc-illustration {
+    width: 260px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%) !important;
+    padding-right: 36px !important;
+    box-sizing: border-box !important;
+}
+
+/* Mock Calculator Illustration */
+.mock-calculator {
+    width: 150px !important;
+    height: 210px !important;
+    background: #1e1e1e !important;
+    border: 3px solid #2d2d2d !important;
+    border-radius: 12px !important;
+    padding: 10px !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    transform: rotate(-4deg) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-sizing: border-box !important;
+}
+
+.mock-calculator:hover {
+    transform: rotate(-1deg) scale(1.03) !important;
+}
+
+.mock-calc-screen {
+    background: #9cad8f !important;
+    border: 2px solid #7c8b74 !important;
+    border-radius: 4px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    padding: 0 8px !important;
+    font-family: monospace !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #162416 !important;
+    letter-spacing: 0.05em !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+    box-sizing: border-box !important;
+}
+
+.mock-calc-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 5px !important;
+    flex: 1 !important;
+}
+
+.mock-btn {
+    background: #444444 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.3) !important;
+    user-select: none !important;
+}
+
+.mock-btn-fn {
+    background: #5a5a5a !important;
+}
+
+.mock-btn-op {
+    background: #e6c86a !important;
+    color: #122920 !important;
+    font-weight: 700 !important;
+}
+
+.mock-btn-eq {
+    background: var(--secondary-color, #B08D57) !important;
+    color: #ffffff !important;
+}
+
+.mock-btn-double {
+    grid-column: span 2 !important;
+    justify-content: flex-start !important;
+    padding-left: 10px !important;
+}
+
+/* Responsive Overrides */
+@media (max-width: 991px) {
+    .tools-featured-inner {
+        flex-direction: column !important;
+        gap: 24px !important;
+    }
+    .tools-featured-left {
+        width: 100% !important;
+    }
+    .featured-calc-card {
+        height: auto !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .tools-featured-section {
+        padding: 16px 0 24px !important;
+    }
+    .featured-calc-card {
+        flex-direction: column !important;
+    }
+    .featured-calc-illustration {
+        width: 100% !important;
+        padding: 0 24px 32px !important;
+    }
+    .mock-calculator {
+        transform: none !important;
+        margin: 0 auto !important;
+    }
+    .featured-calc-content {
+        padding: 24px !important;
+    }
+    .featured-calc-content h3 {
+        font-size: 1.4rem !important;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TC DESIGN SYSTEM — Tools Calculator Page Widget Components
+   Matches site's existing "Latest News" widget design language.
+   Prefix: tc-* to avoid collision with global styles.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Section wrapper ────────────────────────────────────────── */
+.tc-section {
+    padding: 24px 0 20px !important;
+}
+
+/* ── Widget card — white rounded container with border ──────── */
+.tc-widget {
+    background: #ffffff !important;
+    border: 1px solid var(--color-border, #e8eaed) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03) !important;
+}
+
+.tc-widget-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid var(--color-border, #e8eaed) !important;
+}
+
+.tc-widget-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.tc-widget-icon {
+    font-size: 1.05rem !important;
+    line-height: 1 !important;
+}
+
+.tc-widget-title h2 {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: var(--color-dark, #111827) !important;
+    margin: 0 !important;
+}
+
+/* ── Popular calculators ────────────────────────────────────── */
+.tc-popular-section .tc-widget-header {
+    border-bottom: 1px solid var(--color-border, #e8eaed) !important;
+}
+
+.tc-popular-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 10px !important;
+    padding: 14px 16px !important;
+}
+
+.tc-pop-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    border: 1px solid rgba(30, 58, 47, 0.06) !important; /* Soft adaptive border overlay */
+    border-radius: 8px !important; /* Consistently rounded */
+    text-decoration: none !important;
+    background: #ffffff !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.015) !important;
+}
+
+.tc-pop-card:hover {
+    border-color: var(--color-accent, #d4af37) !important;
+    box-shadow: 0 3px 10px rgba(30, 58, 47, 0.02) !important; /* Flattened shadow to prevent optical lift */
+}
+
+.tc-pop-card-icon {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 6px !important;
+    background: #f8faf9 !important;
+    border: 1px solid #eef2f0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.25rem !important;
+    flex-shrink: 0 !important;
+    transition: background 0.2s ease !important;
+    overflow: hidden !important;
+}
+
+.tc-pop-card-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: inherit !important;
+}
+
+.tc-pop-card:hover .tc-pop-card-icon {
+    background: #eef2f0 !important;
+}
+
+.tc-pop-card-body {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.tc-pop-badge {
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    background: #eef8f3 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    margin-bottom: 6px !important;
+    display: inline-block !important;
+}
+
+.tc-pop-card-body h3 {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: var(--color-dark, #111827) !important;
+    margin: 0 0 4px 0 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+.tc-pop-card-body p {
+    font-size: 0.8rem !important;
+    color: var(--color-text-muted, #6b7280) !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+}
+
+.tc-pop-arrow {
+    font-size: 1.1rem !important;
+    color: var(--color-text-muted, #9ca3af) !important;
+    flex-shrink: 0 !important;
+    transition: color 0.2s ease, transform 0.2s ease !important;
+}
+
+.tc-pop-card:hover .tc-pop-arrow {
+    color: var(--color-primary, #1e3a2f) !important;
+    transform: translateX(4px) !important;
+}
+
+/* ── Two-column layout (Suggested + Featured) ───────────────── */
+.tc-two-col {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+}
+
+/* ── Suggested calculators widget ───────────────────────────── */
+.tc-suggested-widget {
+    grid-column: span 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    height: auto !important;
+}
+
+.tc-suggested-widget .tc-widget-header {
+    background: transparent !important;
+    border-bottom: 2px solid #eef2f0 !important; /* Added a sleek bottom anchor line */
+    padding: 0 0 10px 0 !important;
+    margin-bottom: 14px !important;
+}
+
+.tc-suggested-widget .tc-widget-title h2 {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    color: var(--color-dark, #111827) !important;
+    text-transform: none !important;
+    margin: 0 !important;
+}
+
+.tc-suggested-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 0 !important;
+}
+
+.tc-suggested-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    border: 1px solid rgba(30, 58, 47, 0.08) !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.75) !important; /* Glassmorphism background */
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    text-decoration: none !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 2px 6px rgba(0, 0, 0, 0.015) !important;
+}
+
+.tc-suggested-item:hover {
+    border-color: var(--color-accent, #d4af37) !important;
+    background: #ffffff !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 3px 10px rgba(30, 58, 47, 0.02) !important; /* Flattened shadow to prevent optical lift */
+}
+
+.tc-suggested-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    background: #ffffff !important; /* White icon box to contrast base grey-green card */
+    border: 1px solid #eef2f0 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.05rem !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+    transition: all 0.2s ease !important;
+}
+
+.tc-suggested-item:hover .tc-suggested-icon {
+    background: #f1f7f4 !important; /* Green branded icon box on hover */
+    border-color: #e2ece7 !important;
+}
+
+.tc-suggested-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: inherit !important;
+}
+
+.tc-suggested-label {
+    flex: 1 !important;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--color-dark, #111827) !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+.tc-suggested-arrow {
+    font-size: 1.1rem !important;
+    color: var(--color-text-muted, #9ca3af) !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.2s ease !important;
+}
+
+.tc-suggested-item:hover .tc-suggested-arrow {
+    color: var(--color-primary, #1e3a2f) !important;
+    transform: translateX(3px) !important;
+}
+
+/* ── Featured Calculator card (dark green) ──────────────────── */
+.tc-featured-card {
+    grid-column: span 2 !important;
+    background: 
+        radial-gradient(circle at 100% 0%, rgba(245, 200, 66, 0.08) 0%, transparent 60%), /* Golden corner light leak */
+        linear-gradient(135deg, #102d23 0%, #17362a 50%, #0c2018 100%) !important; /* Triple stop rich green gradient */
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 8px !important;
+    padding: 20px 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 24px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    height: 100% !important;
+    box-shadow: 0 8px 32px rgba(12, 32, 24, 0.2) !important;
+}
+
+.tc-featured-content {
+    flex: 1 !important;
+    min-width: 0 !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.tc-featured-badge {
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    color: #f5c842 !important;
+    background: rgba(245, 200, 66, 0.15) !important;
+    border: 1px solid rgba(245, 200, 66, 0.3) !important;
+    padding: 4px 12px !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+    margin-bottom: 16px !important;
+}
+
+.tc-featured-card h2 {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 1.5rem !important; /* Reduced title size from 1.75rem */
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 10px 0 !important;
+    line-height: 1.25 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+.tc-featured-desc {
+    font-size: 1rem !important;
+    color: rgba(255,255,255,0.85) !important;
+    margin: 0 0 24px 0 !important;
+    line-height: 1.5 !important;
+}
+
+.tc-featured-benefits {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 0 28px 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+    gap: 10px 20px !important;
+}
+
+.tc-featured-benefits li {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    font-size: 0.92rem !important;
+    color: rgba(255,255,255,0.95) !important;
+    font-weight: 500 !important;
+}
+
+.tc-featured-benefits svg {
+    width: 22px !important;
+    height: 22px !important;
+    padding: 4px !important;
+    background: rgba(111, 207, 138, 0.15) !important; /* Soft green background badge */
+    border-radius: 50% !important;
+    color: #6fcf8a !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.tc-featured-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: #f5c842 !important;
+    color: #1e3a2f !important;
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    padding: 12px 28px !important;
+    border-radius: 50px !important; /* Pill style button */
+    text-decoration: none !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px rgba(245, 200, 66, 0.25) !important;
+}
+
+.tc-featured-btn:hover {
+    background: #ffffff !important; /* Elegant white background on hover */
+    color: #1e3a2f !important;
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.15) !important;
+}
+
+.tc-featured-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.tc-featured-illustration {
+    flex-shrink: 0 !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .tc-two-col {
+        grid-template-columns: 1fr !important;
+    }
+    .tc-featured-illustration {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .tc-featured-card {
+        padding: 20px !important;
+        min-height: auto !important;
+    }
+}
+
+/* ── All calculators section (inside tc-widget) ─────────────── */
+.tc-all-section {
+    padding: 0 0 20px !important;
+}
+
+.tc-all-header {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+/* Header row: title + count badge on left, pills on right */
+.calc-section-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    margin-bottom: 20px !important;
+}
+
+.calc-section-title-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.calc-section-title-wrap h2 {
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    color: var(--color-dark, #0f172a) !important;
+    margin: 0 !important;
+}
+
+.calc-total-badge {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    background: var(--color-primary, #1e3a2f) !important;
+    color: #ffffff !important;
+    border-radius: 50px !important;
+    padding: 2px 8px !important;
+    line-height: 1.6 !important;
+}
+
+/* Filter pills strip */
+.calc-filter-pills {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+}
+
+.calc-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 6px 14px !important;
+    border-radius: 50px !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    color: var(--color-text-muted, #4b5563) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(30, 58, 47, 0.12) !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.015) !important;
+}
+
+.calc-pill:hover {
+    background: #fdfdfd !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    border-color: var(--color-primary, #1e3a2f) !important;
+    box-shadow: 0 4px 8px rgba(30, 58, 47, 0.04) !important;
+}
+
+.calc-pill.active {
+    background: var(--color-primary, #1e3a2f) !important;
+    color: #ffffff !important;
+    border-color: var(--color-primary, #1e3a2f) !important;
+    box-shadow: 0 4px 14px rgba(30, 58, 47, 0.18) !important;
+}
+
+.calc-pill-count {
+    font-size: 0.68rem !important;
+    opacity: 0.8 !important;
+    background: rgba(30, 58, 47, 0.08) !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    padding: 1px 5px !important;
+    border-radius: 50px !important;
+    line-height: 1.6 !important;
+}
+
+.calc-pill.active .calc-pill-count {
+    background: #f5c842 !important; /* Gold badge accent when filter tab is active */
+    color: #1e3a2f !important;
+    opacity: 1 !important;
+}
+/* ── Hero Row (1st calc + next 3) ───────────────────────────── */
+.tc-all-hero-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    border-bottom: none !important; /* Removed border since they are separated into different widgets */
+}
+
+@media (max-width: 900px) {
+    .tc-all-hero-row {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Big Hero Calculator Card (Left) */
+.tc-hero-calc-card {
+    grid-column: span 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 20px !important; /* Reduced padding from 24px */
+    text-decoration: none !important;
+    border: 1px solid var(--color-accent, #d4af37) !important;
+    border-radius: 12px !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fbfb 100%) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+}
+
+@media (max-width: 900px) {
+    .tc-hero-calc-card {
+        grid-column: span 1 !important;
+    }
+}
+
+.tc-hero-calc-card:hover {
+    background: #fdfcf9 !important;
+    border-color: var(--color-accent-dark, #b8962e) !important;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.06) !important;
+}
+
+.tc-hero-calc-icon {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 8px !important;
+    background: #f1f7f4 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 16px !important;
+    transition: background 0.15s ease !important;
+    overflow: hidden !important;
+}
+
+.tc-hero-calc-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: inherit !important;
+}
+
+.tc-hero-calc-card:hover .tc-hero-calc-icon {
+    background: #e0f2e9 !important;
+}
+
+.tc-hero-calc-body h3 {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 1.25rem !important; /* Reduced font size from 1.4rem */
+    font-weight: 700 !important;
+    color: var(--color-dark, #111827) !important;
+    margin: 0 0 10px 0 !important;
+    line-height: 1.25 !important;
+    text-transform: none !important;
+    letter-spacing: -0.01em !important;
+}
+
+.tc-hero-calc-body p {
+    font-size: 0.95rem !important;
+    color: var(--color-text-muted, #4b5563) !important;
+    margin: 0 0 24px 0 !important;
+    line-height: 1.5 !important;
+}
+
+.tc-hero-calc-cta {
+    display: inline-flex !important;
+    align-items: center !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    margin-top: auto !important;
+}
+
+/* Side List (Right) */
+.tc-all-side-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+.tc-all-side-list .mini-card {
+    border: 1px solid var(--color-border, #e8eaed) !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+    transition: all 0.2s ease !important;
+}
+
+.tc-all-side-list .mini-card:hover {
+    border-color: var(--color-accent, #d4af37) !important;
+    background: #fdfcf9 !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important; /* Flattened shadow to prevent optical lift */
+}
+
+.tc-all-side-list .mini-card-title {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--color-dark, #111827) !important;
+    text-transform: none !important;
+    margin: 0 !important;
+}
+
+.tc-all-side-list .mini-card:last-child {
+    border-bottom: 1px solid var(--color-border, #e8eaed) !important;
+}
+
+/* ── Filter Pills Bar ───────────────────────────────────────── */
+.tc-all-pills-bar {
+    padding: 12px 16px !important;
+    border-bottom: 1px solid var(--color-border, #e8eaed) !important;
+    background: #fdfdfd !important;
+}
+
+/* Calculator grid */
+.calc-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+}
+
+/* Grid body area with padding inside widget */
+.tc-all-body {
+    padding: 16px !important;
+}
+
+/* Empty state */
+.calc-empty-state {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 32px !important;
+    color: var(--color-text-muted, #6b7280) !important;
+    font-size: 0.95rem !important;
+    font-style: italic !important;
+}
+
+/* Find My Calculator CTA bar at bottom of widget */
+.tc-all-cta {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    padding: 12px 16px !important;
+    border-top: 1px solid var(--color-border, #e8eaed) !important;
+    background: #f8faf9 !important;
+}
+
+.tc-all-cta-text {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+
+.tc-all-cta-text strong {
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: var(--color-dark, #111827) !important;
+}
+
+.tc-all-cta-text span {
+    font-size: 0.78rem !important;
+    color: var(--color-text-muted, #6b7280) !important;
+}
+
+.tc-all-cta-btn {
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    background: #eaf6ef !important;
+    border: 1px solid #c6e8d4 !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    text-decoration: none !important;
+    transition: background 0.15s ease !important;
+}
+
+.tc-all-cta-btn:hover {
+    background: #d4eedd !important;
+}
+
+.tools-cat-filter-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 14px !important;
+}
+
+.tools-cat-filter-row .section-title {
+    margin: 0 !important;
+}
+
+.tools-cat-reset {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    background: #eaf6ef !important;
+    border: 1px solid #c6e8d4 !important;
+    border-radius: 6px !important;
+    padding: 5px 12px !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    transition: background 0.15s ease !important;
+}
+
+.tools-cat-reset:hover {
+    background: #d4eedd !important;
+}
+
+.tools-cat-cards-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 14px !important;
+}
+
+.tools-cat-card {
+    background: #ffffff !important;
+    border: 1.5px solid var(--color-border, #e2e8f0) !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    width: 220px !important; /* Fixed width — won't stretch when few cats */
+    flex-shrink: 0 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+.tools-cat-card:hover,
+.tools-cat-card.active {
+    border-color: var(--color-primary, #1e3a2f) !important;
+    background: #f5faf7 !important;
+    box-shadow: 0 6px 18px rgba(30, 58, 47, 0.07) !important;
+}
+
+.tools-cat-card.active .tools-cat-card-link {
+    color: var(--color-primary, #1e3a2f) !important;
+    font-weight: 700 !important;
+}
+
+.tools-cat-card-header {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+}
+
+.tools-cat-card-icon-wrap {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    background: #eaf6ef !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.05rem !important;
+    flex-shrink: 0 !important;
+}
+
+.tools-cat-card-text h3 {
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: var(--color-dark, #0f172a) !important;
+    margin: 0 0 3px 0 !important;
+    line-height: 1.2 !important;
+}
+
+.tools-cat-card-text p {
+    font-size: 0.72rem !important;
+    color: var(--color-text-muted, #64748b) !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+}
+
+.tools-cat-card-footer {
+    margin-top: 8px !important;
+}
+
+.tools-cat-card-link {
+    font-size: 0.74rem !important;
+    font-weight: 600 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+/* ─── 21. ALL CALCULATORS GRID ────────────────────────────────── */
+.all-tools-section h2 {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 16px !important;
+}
+
+.tools-list {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 14px !important;
+    margin-bottom: 24px !important;
+    align-items: stretch !important; /* Equal height cards per row */
+}
+
+/* Calculator card styles (Grid items) */
+.calc-grid .calc-list-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    background: #ffffff !important; /* Reverted back to white but utilizing soft borders */
+    border: 1px solid var(--client-color-400) !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    text-decoration: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.015) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.calc-grid .calc-list-item:hover {
+    border-color: var(--color-accent, #d4af37) !important;
+    box-shadow: 0 3px 10px rgba(30, 58, 47, 0.02) !important; /* Flattened shadow to prevent optical lift */
+}
+
+/* Category filter — CSS class, not hidden attr */
+.calc-grid .calc-list-item.calc-filtered-out {
+    display: none !important;
+}
+
+.calc-grid .calc-list-item-left {
+    display: flex !important;
+    flex: 1 !important;
+    gap: 16px !important;
+    align-items: center !important;
+    min-width: 0 !important;
+}
+
+.calc-grid .calc-list-icon {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 8px !important;
+    background: #f8faf9 !important;
+    border: 1px solid #eef2f0 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.2rem !important;
+    flex-shrink: 0 !important;
+    transition: background 0.2s ease !important;
+    overflow: hidden !important;
+}
+
+.calc-grid .calc-list-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: inherit !important;
+}
+
+.calc-grid .calc-list-item:hover .calc-list-icon {
+    background: #eef2f0 !important;
+}
+
+.calc-grid .calc-list-text {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.calc-grid .calc-list-text h4 {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--color-dark, #111827) !important;
+    margin: 0 !important;
+    line-height: 1.25 !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.calc-grid .calc-list-desc {
+    display: none !important; /* Hide description for horizontal cards to keep them clean */
+}
+
+.calc-grid .calc-list-item-bottom {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+
+.calc-grid .calc-list-arrow {
+    color: var(--color-text-muted, #9ca3af) !important;
+    font-size: 1.1rem !important;
+    transition: color 0.2s ease, transform 0.2s ease !important;
+}
+
+.calc-grid .calc-list-item:hover .calc-list-arrow {
+    color: var(--color-primary, #1e3a2f) !important;
+    transform: translateX(4px) !important;
+}
+
+/* Responsive: pill filter and grid */
+@media (max-width: 991px) {
+    .calc-filter-pills {
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        padding-bottom: 4px !important;
+    }
+    .calc-filter-pills::-webkit-scrollbar { display: none !important; }
+    .calc-section-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .tc-two-col {
+        grid-template-columns: 1fr !important;
+    }
+    .tc-suggested-widget,
+    .tc-featured-card {
+        grid-column: span 1 !important;
+    }
+}
+
+/* ─── 22. TOP SECTION SPACING & HERO COMPRESSION ──────────────── */
+.tools-hero-section,
+.page-hero {
+    padding: 24px 0 12px !important;
+}
+
+.tools-featured-section {
+    padding: 8px 0 16px !important;
+}
+
+.tools-categories-section {
+    padding: 0 !important;
+    display: none !important; /* No-op section hidden */
+}
+
+.all-tools-section {
+    padding: 16px 0 32px !important;
+}
+

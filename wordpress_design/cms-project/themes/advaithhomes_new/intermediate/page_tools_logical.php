@@ -116,17 +116,13 @@ function adn_calculators_get_context() {
 	// ── Filter tabs ───────────────────────────────────────────────────────
 	$filter_tabs = array( array( 'key' => 'all', 'label' => adn_term( 'calculators_page.filter_all', 'All' ) ) );
 	foreach ( $defined_cats as $ckey => $clabel ) {
-		if ( $cat_counts[ $ckey ] > 0 ) {
-			$filter_tabs[] = array( 'key' => $ckey, 'label' => $clabel );
-		}
+		$filter_tabs[] = array( 'key' => $ckey, 'label' => $clabel );
 	}
 
 	// ── Sidebar categories ────────────────────────────────────────────────
 	$sidebar_cats = array( array( 'key' => 'all', 'label' => adn_term( 'calculators_page.filter_all', 'All' ), 'count' => count( $all_tools ) ) );
 	foreach ( $defined_cats as $ckey => $clabel ) {
-		if ( $cat_counts[ $ckey ] > 0 ) {
-			$sidebar_cats[] = array( 'key' => $ckey, 'label' => $clabel , 'count' => $cat_counts[ $ckey ] );
-		}
+		$sidebar_cats[] = array( 'key' => $ckey, 'label' => $clabel , 'count' => isset( $cat_counts[ $ckey ] ) ? $cat_counts[ $ckey ] : 0 );
 	}
 
 	// ── Sidebar help CTA ─────────────────────────────────────────────────
@@ -156,6 +152,51 @@ function adn_calculators_get_context() {
 			'url'       => ! empty( $pmeta['card_url'] )   ? (string) $pmeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $pk ) ),
 			'thumbnail' => $pthumb,
 			'highlight' => ! empty( $pmeta['highlight'] )  ? (string) $pmeta['highlight']  : '',
+		);
+	}
+
+	// ── Featured calcs - driven by is_featured toggle ─────────────
+	$featured_tools = array();
+	foreach ( $registry as $fk => $fcalc ) {
+		$fmeta = ( isset( $meta_all[ $fk ] ) && is_array( $meta_all[ $fk ] ) ) ? $meta_all[ $fk ] : array();
+		if ( array_key_exists( 'enabled', $fmeta ) && empty( $fmeta['enabled'] ) ) { continue; }
+		if ( ! empty( $fmeta['hidden_from_listing'] ) ) { continue; }
+		if ( empty( $fmeta['is_featured'] ) ) { continue; }
+		$fthumb = '';
+		if ( ! empty( $fmeta['thumbnail_id'] ) ) {
+			$t = wp_get_attachment_image_url( (int) $fmeta['thumbnail_id'], 'large' );
+			$fthumb = $t ? (string) $t : '';
+		}
+		$featured_tools[] = array(
+			'key'            => $fk,
+			'icon'           => ! empty( $fcalc['icon'] )       ? (string) $fcalc['icon']       : '🧮',
+			'title'          => $fcalc['title'] ?? '',
+			'desc'           => ! empty( $fmeta['desc'] )       ? (string) $fmeta['desc']       : '',
+			'url'            => ! empty( $fmeta['card_url'] )   ? (string) $fmeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $fk ) ),
+			'thumbnail'      => $fthumb,
+			'highlight'      => ! empty( $fmeta['highlight'] )  ? (string) $fmeta['highlight']  : '',
+			'featured_title' => ! empty( $fmeta['featured_title'] ) ? (string) $fmeta['featured_title'] : '',
+			'featured_desc'  => ! empty( $fmeta['featured_desc'] )  ? (string) $fmeta['featured_desc']  : '',
+			'benefit_1'      => ! empty( $fmeta['benefit_1'] )      ? (string) $fmeta['benefit_1']      : '',
+			'benefit_2'      => ! empty( $fmeta['benefit_2'] )      ? (string) $fmeta['benefit_2']      : '',
+			'benefit_3'      => ! empty( $fmeta['benefit_3'] )      ? (string) $fmeta['benefit_3']      : '',
+			'benefit_4'      => ! empty( $fmeta['benefit_4'] )      ? (string) $fmeta['benefit_4']      : '',
+		);
+	}
+
+	// ── Suggestion calcs - driven by is_suggestion toggle ─────────────
+	$suggested_tools = array();
+	foreach ( $registry as $sk => $scalc ) {
+		$smeta = ( isset( $meta_all[ $sk ] ) && is_array( $meta_all[ $sk ] ) ) ? $meta_all[ $sk ] : array();
+		if ( array_key_exists( 'enabled', $smeta ) && empty( $smeta['enabled'] ) ) { continue; }
+		if ( ! empty( $smeta['hidden_from_listing'] ) ) { continue; }
+		if ( empty( $smeta['is_suggestion'] ) ) { continue; }
+		$suggested_tools[] = array(
+			'key'       => $sk,
+			'icon'      => ! empty( $scalc['icon'] )       ? (string) $scalc['icon']       : '🧮',
+			'title'     => $scalc['title'] ?? '',
+			'desc'      => ! empty( $smeta['desc'] )       ? (string) $smeta['desc']       : '',
+			'url'       => ! empty( $smeta['card_url'] )   ? (string) $smeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $sk ) ),
 		);
 	}
 
@@ -201,6 +242,8 @@ function adn_calculators_get_context() {
 		),
 		'filter_tabs'   => $filter_tabs,
 		'popular_tools' => $popular_tools,
+		'featured_tools' => $featured_tools,
+		'suggested_tools' => $suggested_tools,
 		'all_tools'     => $all_tools,
 		'find_cta'      => $find_cta,
 		'newsletter'    => array(

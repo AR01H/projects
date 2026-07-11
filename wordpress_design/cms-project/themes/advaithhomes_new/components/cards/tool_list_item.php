@@ -1,12 +1,6 @@
 <?php
 /**
- * components/cards/calc_list_item.php - Calculator list row (icon, title, desc, arrow).
- *
- * Props: $item { icon, categories[], title, desc, url, thumbnail?, highlight? }
- * categories[] values are joined into a space-separated data-category attribute
- * used by calculators.js for client-side filtering.
- *
- * Usage: adn_component( 'cards/calc_list_item', array( 'item' => $item ) );
+ * components/cards/tool_list_item.php - Calculator grid card (icon + title + desc + arrow).
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,8 +9,9 @@ $item      = isset( $item ) && is_array( $item ) ? $item : array();
 $cats_raw  = isset( $item['categories'] ) ? (array) $item['categories'] : array();
 $cats_safe = implode( ' ', array_map( 'sanitize_key', $cats_raw ) );
 $url       = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
-$thumbnail = isset( $item['thumbnail'] ) && '' !== $item['thumbnail'] ? (string) $item['thumbnail'] : '';
-$highlight = isset( $item['highlight'] ) && '' !== $item['highlight'] ? (string) $item['highlight'] : '';
+$title     = isset( $item['title'] ) ? (string) $item['title'] : '';
+$desc      = isset( $item['desc'] )  ? (string) $item['desc']  : '';
+$icon      = isset( $item['icon'] )  ? $item['icon']           : '';
 ?>
 <a
 	href="<?php echo $url; ?>"
@@ -25,23 +20,21 @@ $highlight = isset( $item['highlight'] ) && '' !== $item['highlight'] ? (string)
 >
 	<div class="calc-list-item-left">
 		<div class="calc-list-icon" aria-hidden="true">
-			<?php if ( $thumbnail ) : ?>
-				<img src="<?php echo esc_url( $thumbnail ); ?>" alt="" class="calc-list-thumb" loading="lazy">
-			<?php else : ?>
-				<?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?>
-			<?php endif; ?>
+			<?php echo adn_icon( $icon ); ?>
 		</div>
 		<div class="calc-list-text">
-			<?php if ( ! empty( $item['title'] ) ) : ?>
-				<h4>
-					<?php echo esc_html( $item['title'] ); ?>
-
-				</h4>
-			<?php endif; ?>
-			<?php if ( ! empty( $item['desc'] ) ) : ?>
-				<p><?php echo esc_html( $item['desc'] ); ?></p>
+			<?php if ( $title ) : ?>
+				<h4><?php echo esc_html( $title ); ?></h4>
 			<?php endif; ?>
 		</div>
 	</div>
-	<span class="calc-list-arrow" aria-hidden="true">›</span>
+	<?php if ( $desc ) : ?>
+		<div class="calc-list-desc">
+			<p><?php echo esc_html( $desc ); ?></p>
+		</div>
+	<?php endif; ?>
+	<div class="calc-list-item-bottom">
+		<span class="calc-list-arrow" aria-hidden="true">&rarr;</span>
+	</div>
 </a>
+
