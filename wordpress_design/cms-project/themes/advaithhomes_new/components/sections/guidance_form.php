@@ -25,7 +25,7 @@ $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_la
 <div class="guidance-form-card">
 	<h2><?php echo $_hdg; ?></h2>
 
-	<form class="guidance-request-form" id="guidanceRequestForm" onsubmit="return false;" novalidate>
+	<form class="guidance-request-form" id="guidanceRequestForm" onsubmit="return false;">
 
 		<div class="form-group">
 			<label class="form-label" for="guidanceHelpWith"><?php echo $_hl; ?> <span class="form-required">*</span></label>

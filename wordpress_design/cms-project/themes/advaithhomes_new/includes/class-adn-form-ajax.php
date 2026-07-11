@@ -67,15 +67,20 @@ class ADN_Form_Ajax {
 			wp_send_json_error( array( 'message' => 'Could not save your enquiry. Please try again.' ) );
 		}
 
+		$client_timestamp = sanitize_text_field( isset( $_POST['client_timestamp'] ) ? $_POST['client_timestamp'] : '' );
+		$server_timestamp = current_time( 'mysql' );
+
 		if ( class_exists( 'AH_Workflow_Manager' ) ) {
 			AH_Workflow_Manager::evaluate( 'contact_submit', array_merge( array(
-				'full_name'    => $name,
-				'email'        => $email,
-				'phone'        => $whatsapp,
-				'message'      => $message,
-				'enquiry_type' => $enquiry_type,
-				'postcode'     => $postcode,
-			), $all_data ) );
+				'full_name'        => $name,
+				'email'            => $email,
+				'phone'            => $whatsapp,
+				'message'          => $message,
+				'enquiry_type'     => $enquiry_type,
+				'postcode'         => $postcode,
+				'client_timestamp' => $client_timestamp,
+				'server_timestamp' => $server_timestamp,
+			), $all_data ), true );
 		}
 
 		wp_send_json_success( array( 'message' => "Thank you {$name}! We've received your enquiry and will be in touch soon." ) );
@@ -131,15 +136,20 @@ class ADN_Form_Ajax {
 			wp_send_json_error( array( 'message' => 'Could not save your request. Please try again.' ) );
 		}
 
+		$client_timestamp = sanitize_text_field( isset( $_POST['client_timestamp'] ) ? $_POST['client_timestamp'] : '' );
+		$server_timestamp = current_time( 'mysql' );
+
 		if ( class_exists( 'AH_Workflow_Manager' ) ) {
 			AH_Workflow_Manager::evaluate( 'guidance_submit', array(
-				'full_name' => $name,
-				'email'     => $email,
-				'phone'     => $phone,
-				'message'   => $requirement,
-				'help_with' => $help_with,
-				'i_am'      => $i_am,
-			) );
+				'full_name'        => $name,
+				'email'            => $email,
+				'phone'            => $phone,
+				'message'          => $requirement,
+				'help_with'        => $help_with,
+				'i_am'             => $i_am,
+				'client_timestamp' => $client_timestamp,
+				'server_timestamp' => $server_timestamp,
+			), true );
 		}
 
 		wp_send_json_success( array( 'message' => "Thank you {$name}! We'll connect you with the right expert shortly." ) );

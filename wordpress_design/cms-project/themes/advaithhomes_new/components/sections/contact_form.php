@@ -17,7 +17,7 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 		<p class="contact-form-desc"><?php echo $_desc; ?></p>
 	<?php endif; ?>
 
-	<form class="contact-enquiry-form" id="contactEnquiryForm" onsubmit="return false;" novalidate>
+	<form class="contact-enquiry-form" id="contactEnquiryForm" onsubmit="return false;">
 
 		<?php if ( ! empty( $_types ) ) : ?>
 		<div class="form-group">

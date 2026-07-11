@@ -109,6 +109,7 @@
         var fd = new FormData( form );
         fd.append( 'action', 'ah_contact_submit' );
         fd.append( 'nonce',  adnEnquiry.nonce );
+        fd.append( 'client_timestamp', new Date().toISOString() );
 
         fetch( adnEnquiry.ajaxUrl, { method: 'POST', body: fd } )
             .then( function ( r ) { return r.json(); } )

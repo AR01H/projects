@@ -203,7 +203,7 @@ if ( '' === $_photo ) {
 				esc_html( isset( $_i['name'] ) ? (string) $_i['name'] : '' )
 			); ?>
 		</h2>
-		<form class="expert-contact-form ecm-form" data-slug="<?php echo esc_attr( $_slug ); ?>" novalidate>
+		<form class="expert-contact-form ecm-form" data-slug="<?php echo esc_attr( $_slug ); ?>">
 			<input type="hidden" name="expert_slug" value="<?php echo esc_attr( $_slug ); ?>">
 			<div class="ecf-row">
 				<label><?php echo esc_html( FORM_NAME_LABEL ); ?> <span class="ecf-req"><?php echo esc_html( FORM_REQUIRED_SUFFIX ); ?></span></label>
