@@ -9,6 +9,7 @@ define( 'THEME_DEFAULT_HERO_IMG', '/assets/images/default/hero.jpg' );
 define( 'THEME_DEFAULT_CATEGORY_IMG', '/assets/images/default/category.jpg' );
 define( 'THEME_DEFAULT_CALC_IMG', '/assets/images/default/calculator.jpg' );
 define( 'THEME_DEFAULT_NEWS_IMG', '/assets/images/default/news.jpg' );
+define( 'THEME_DEFAULT_GENERIC_IMG', '/assets/images/default/generic.png' );
 define( 'THEME_DEFAULT_TOPIC_IMG', '/assets/images/default/topic.jpg' );
 
 // ── Pagination limits ────────────────────────────────────────────────────────

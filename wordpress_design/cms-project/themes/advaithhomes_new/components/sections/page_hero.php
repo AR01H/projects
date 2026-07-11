@@ -82,7 +82,7 @@ $_hero_img     = adn_versioned_url( $_hero_img_id
 
 			<?php /* Description */ ?>
 			<?php if ( ! empty( $hero['description'] ) ) : ?>
-				<p><?php echo esc_html( $hero['description'] ); ?></p>
+				<p><?php echo ( $hero['description'] ); ?></p>
 			<?php endif; ?>
 
 		</div>

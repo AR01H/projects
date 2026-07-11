@@ -29,11 +29,10 @@ foreach ( isset( $news['items'] ) ? (array) $news['items'] : array() as $_it ) {
 		'url'         => isset( $_it['url'] )   ? (string) $_it['url']   : '',
 		'description' => isset( $_it['description'] ) ? (string) $_it['description'] : '',
 	);
-	if ( '' !== $_thumb ) {
-		$_card['img_url'] = $_thumb;
-	} else {
-		$_card['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '📰';
+	if ( '' === $_thumb ) {
+		$_thumb = get_template_directory_uri() . THEME_DEFAULT_GENERIC_IMG . '?v=' . LOCAL_CACHE_VERSION;
 	}
+	$_card['img_url'] = $_thumb;
 	$news_cards[] = $_card;
 }
 
@@ -47,11 +46,10 @@ foreach ( isset( $news2['items'] ) ? (array) $news2['items'] : array() as $_it )
 		'url'         => isset( $_it['url'] )   ? (string) $_it['url']   : '',
 		'description' => isset( $_it['description'] ) ? (string) $_it['description'] : '',
 	);
-	if ( '' !== $_thumb ) {
-		$_card['img_url'] = $_thumb;
-	} else {
-		$_card['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '📰';
+	if ( '' === $_thumb ) {
+		$_thumb = get_template_directory_uri() . THEME_DEFAULT_GENERIC_IMG . '?v=' . LOCAL_CACHE_VERSION;
 	}
+	$_card['img_url'] = $_thumb;
 	$news2_cards[] = $_card;
 }
 
@@ -64,9 +62,6 @@ foreach ( isset( $regulations['items'] ) ? (array) $regulations['items'] : array
 		'url'   => isset( $_it['url'] )   ? (string) $_it['url']   : '',
 	);
 	
-	// ALWAYS set an icon for the left box
-	$_rcard['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '🔥';
-	
 	// Determine overlay tag
 	$_roverlay = isset( $_it['overlay'] ) ? (string) $_it['overlay'] : '';
 	if ( '' === $_roverlay && ! empty( $_it['badge_lines'] ) ) {
@@ -74,10 +69,10 @@ foreach ( isset( $regulations['items'] ) ? (array) $regulations['items'] : array
 	}
 	if ( '' !== $_roverlay ) { $_rcard['tag'] = $_roverlay; }
 	
-	if ( '' !== $_rthumb ) {
-		// Pass thumbnail as a faded background image instead of replacing the left icon!
-		$_rcard['bg_image'] = $_rthumb; 
+	if ( '' === $_rthumb ) {
+		$_rthumb = get_template_directory_uri() . THEME_DEFAULT_GENERIC_IMG . '?v=' . LOCAL_CACHE_VERSION;
 	}
+	$_rcard['img_url'] = $_rthumb;
 	
 	$reg_cards[] = $_rcard;
 }
@@ -90,14 +85,10 @@ foreach ( isset( $hot_topics['items'] ) ? (array) $hot_topics['items'] : array()
 		'url'   => isset( $_it['url'] )  ? (string) $_it['url']  : '',
 	);
 	
-	// ALWAYS set an icon for the left box
-	$_raw_icon      = isset( $_it['icon'] ) ? trim( (string) $_it['icon'] ) : '';
-	$_tcard['icon'] = '' !== $_raw_icon ? $_raw_icon : '💡';
-	
-	if ( '' !== $_tthumb ) {
-		// Pass thumbnail as a faded background image instead of replacing the left icon!
-		$_tcard['bg_image'] = $_tthumb;
+	if ( '' === $_tthumb ) {
+		$_tthumb = get_template_directory_uri() . THEME_DEFAULT_TOPIC_IMG . '?v=' . LOCAL_CACHE_VERSION;
 	}
+	$_tcard['img_url'] = $_tthumb;
 	
 	$topic_cards[] = $_tcard;
 }

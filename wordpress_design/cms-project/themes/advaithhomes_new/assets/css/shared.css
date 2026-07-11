@@ -1413,6 +1413,10 @@ a.mini-card, div.mini-card {
   display: block;
   transition: transform 0.22s ease;
 }
+.mini-card-thumb img[src*="default/"] {
+  object-fit: contain;
+  background-color: #101c2e;
+}
 .mini-card:hover .mini-card-thumb img { transform: scale(1.08); }
 .mini-card-thumb--icon {
   background: var(--color-bg-section, #f3f4f6);
