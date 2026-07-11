@@ -13,6 +13,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $news        = isset( $news )        && is_array( $news )        ? $news        : array();
+$news2       = isset( $news2 )       && is_array( $news2 )       ? $news2       : array();
 $regulations = isset( $regulations ) && is_array( $regulations ) ? $regulations : array();
 $hot_topics  = isset( $hot_topics )  && is_array( $hot_topics )  ? $hot_topics  : array();
 
@@ -34,6 +35,24 @@ foreach ( isset( $news['items'] ) ? (array) $news['items'] : array() as $_it ) {
 		$_card['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '📰';
 	}
 	$news_cards[] = $_card;
+}
+
+$news2_cards = array();
+foreach ( isset( $news2['items'] ) ? (array) $news2['items'] : array() as $_it ) {
+	$_thumb = isset( $_it['thumbnail'] ) ? (string) $_it['thumbnail'] : '';
+	$_card  = array(
+		'title'       => isset( $_it['title'] ) ? (string) $_it['title'] : '',
+		'meta'        => isset( $_it['date'] )  ? (string) $_it['date']  : '',
+		'tag'         => isset( $_it['tag'] )   ? (string) $_it['tag']   : '',
+		'url'         => isset( $_it['url'] )   ? (string) $_it['url']   : '',
+		'description' => isset( $_it['description'] ) ? (string) $_it['description'] : '',
+	);
+	if ( '' !== $_thumb ) {
+		$_card['img_url'] = $_thumb;
+	} else {
+		$_card['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '📰';
+	}
+	$news2_cards[] = $_card;
 }
 
 $reg_cards = array();
@@ -81,21 +100,47 @@ foreach ( isset( $hot_topics['items'] ) ? (array) $hot_topics['items'] : array()
 }
 
 $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_topics['cta'] : array();
+
+$num_cols = ( ! empty( $news_cards ) ? 1 : 0 ) + ( ! empty( $news2_cards ) ? 1 : 0 ) + ( ! empty( $reg_cards ) ? 1 : 0 ) + ( ! empty( $topic_cards ) ? 1 : 0 );
+$has_2fr_class = '';
+if ( $num_cols > 1 && ( ( isset( $is_home_news ) && $is_home_news ) || ! empty( $topic_cards ) || ! empty( $news2_cards ) ) ) {
+	$has_2fr_class = 'news-three-col--has-2fr';
+}
 ?>
 <div class="ntc-carousel-wrap">
 
-	<div class="news-three-inner <?php echo ( isset( $is_home_news ) && $is_home_news ) ? 'news-three-col--has-2fr' : ''; ?>">
+	<div class="news-three-inner <?php echo $has_2fr_class; ?>">
 
-		<?php if ( ! empty( $news_cards ) ) : ?>
-		<div class="news-col news-col--news <?php echo ( isset( $is_home_news ) && $is_home_news ) ? 'news-col--news-2fr' : ''; ?> mini_card_container_design">
+		<?php if ( ! empty( $news_cards ) ) :
+		// Use hero card layout when: explicitly flagged home news, OR when hot_topics column is present.
+		$_use_hero = ( isset( $is_home_news ) && $is_home_news ) || ! empty( $topic_cards );
+		?>
+		<div class="news-col news-col--news <?php echo $_use_hero ? 'news-col--news-2fr' : ''; ?> mini_card_container_design">
 			<div class="news-widget">
-				<?php 
-				$widget_type = ( isset( $is_home_news ) && $is_home_news ) ? 'parts/news_list_widget' : 'parts/list_widget';
+				<?php
+				$widget_type = $_use_hero ? 'parts/news_list_widget' : 'parts/list_widget';
 				adn_component( $widget_type, array( 'widget' => array(
 					'heading' => isset( $news['heading'] ) ? (array) $news['heading'] : array(),
 					'items'   => $news_cards,
 					'tag'     => 'h4',
-				) ) ); 
+				) ) );
+				?>
+			</div>
+		</div>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $news2_cards ) ) :
+		$_use_hero = ( isset( $is_home_news ) && $is_home_news ) || ! empty( $topic_cards );
+		?>
+		<div class="news-col news-col--news <?php echo $_use_hero ? 'news-col--news-2fr' : ''; ?> mini_card_container_design">
+			<div class="news-widget">
+				<?php
+				$widget_type = $_use_hero ? 'parts/news_list_widget' : 'parts/list_widget';
+				adn_component( $widget_type, array( 'widget' => array(
+					'heading' => isset( $news2['heading'] ) ? (array) $news2['heading'] : array(),
+					'items'   => $news2_cards,
+					'tag'     => 'h4',
+				) ) );
 				?>
 			</div>
 		</div>
@@ -112,9 +157,9 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 		<?php endif; ?>
 
 		<?php if ( ! empty( $topic_cards ) ) : ?>
-		<div class="hot-topics-col mini_card_container_design">
-			<?php adn_component( 'parts/list_widget', array( 'widget' => array(
-				'heading' => array( 'title' => isset( $hot_topics['title'] ) ? (string) $hot_topics['title'] : '' ),
+		<div class="news-col hot-topics-col mini_card_container_design">
+			<?php adn_component( 'parts/hot_topics_widget', array( 'widget' => array(
+				'heading' => isset( $hot_topics['title'] ) ? (string) $hot_topics['title'] : '',
 				'items'   => $topic_cards,
 				'cta'     => $hot_cta,
 				'tag'     => 'h4',
@@ -142,13 +187,13 @@ $hot_cta = isset( $hot_topics['cta'] ) && is_array( $hot_topics['cta'] ) ? $hot_
 	function clampList( list ) {
 		list.style.maxHeight = '';
 		var items = list.children;
-		if ( items.length <= 4 ) { return; }
+		if ( items.length <= 5 ) { return; }
 		var cs  = getComputedStyle( list );
 		var gap = parseFloat( cs.gap || cs.rowGap ) || 0;
 		var h   = 0;
-		for ( var i = 0; i < 4; i++ ) {
+		for ( var i = 0; i < 5; i++ ) {
 			h += items[ i ].getBoundingClientRect().height;
-			if ( i < 3 ) { h += gap; }
+			if ( i < 4 ) { h += gap; }
 		}
 		list.style.maxHeight = Math.ceil( h ) + 'px';
 	}

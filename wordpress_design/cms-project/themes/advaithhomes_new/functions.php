@@ -130,7 +130,53 @@ function adn_reveal_runtime(): void {
 // Change REST API URL prefix from /wp-json/ to /api/ → routes become /api/v1/...
 add_filter( 'rest_url_prefix', function () { return 'api'; } );
 
-// Flush rewrite rules when theme activates.
+// ── Lazy loading for theme images ──────────────────────────────────────────
+// WordPress 5.5+ has native lazy loading for wp_get_attachment_image(). Enable it.
+add_filter( 'wp_lazy_loading_enabled', '__return_true' );
+
+// For inline <img> tags in post content, add loading="lazy" + decoding="async".
+add_filter( 'the_content', 'adn_add_img_lazy_attr', 10 );
+function adn_add_img_lazy_attr( string $content ): string {
+	if ( false === strpos( $content, '<img' ) ) {
+		return $content;
+	}
+	return preg_replace_callback(
+		'/<img(?![^>]*\bloading=)[^>]*>/i',
+		function ( $m ) {
+			$tag = $m[0];
+			// Skip images that already have loading or are marked eager
+			if ( false !== strpos( $tag, 'loading=' ) ) {
+				return $tag;
+			}
+			// Insert loading="lazy" and decoding="async" before the closing >
+			$tag = rtrim( $tag, '/' . '>' );
+			$tag = rtrim( $tag );
+			return $tag . ' loading="lazy" decoding="async">';
+		},
+		$content
+	);
+}
+
+// ── Image optimisation on upload ───────────────────────────────────────────
+// WordPress 5.3+: automatically downscale any uploaded image wider than 1920px.
+// The original is preserved as a "scaled" copy; WP serves the smaller version.
+add_filter( 'big_image_size_threshold', function () { return 1920; } );
+
+// Lower JPEG quality to 82% (WordPress default is 82, but make it explicit).
+// Reduces file size ~30–50% vs 100% quality with no visible difference on screen.
+add_filter( 'jpeg_quality',        function () { return 82; } );
+add_filter( 'wp_editor_set_quality', function () { return 82; } );
+
+// WordPress 5.8+: generate WebP versions of uploaded JPEG/PNG images automatically.
+// Browsers that support WebP will download the smaller WebP; others get the original.
+add_filter( 'wp_upload_image_mime_transforms', function ( $transforms ) {
+	foreach ( array( 'image/jpeg', 'image/png' ) as $mime ) {
+		if ( isset( $transforms[ $mime ] ) && ! in_array( 'image/webp', $transforms[ $mime ], true ) ) {
+			$transforms[ $mime ][] = 'image/webp';
+		}
+	}
+	return $transforms;
+} );
 add_action( 'after_switch_theme', function () { flush_rewrite_rules(); } );
 
 // One-time flush after URL prefix changed wp-json/adn/v1 → api/v1.

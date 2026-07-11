@@ -32,24 +32,21 @@
 
         grid.querySelectorAll( '.enquiry-type-btn' ).forEach( function ( btn ) {
             btn.addEventListener( 'click', function () {
-                var wasActive = btn.classList.contains( 'active' );
-
                 /* Deselect all */
                 grid.querySelectorAll( '.enquiry-type-btn' ).forEach( function ( b ) {
                     b.classList.remove( 'active' );
                     b.setAttribute( 'aria-pressed', 'false' );
                 } );
 
-                /* Toggle selected */
-                if ( ! wasActive ) {
-                    btn.classList.add( 'active' );
-                    btn.setAttribute( 'aria-pressed', 'true' );
-                    if ( hidden ) {
-                        hidden.value = btn.getAttribute( 'data-type' ) || '';
-                    }
-                } else if ( hidden ) {
-                    hidden.value = '';
+                /* Always select clicked button - mandatory selection */
+                btn.classList.add( 'active' );
+                btn.setAttribute( 'aria-pressed', 'true' );
+                if ( hidden ) {
+                    hidden.value = btn.getAttribute( 'data-type' ) || '';
                 }
+                /* Clear any validation error on the grid */
+                var errEl = grid.parentElement.querySelector( '.enquiry-type-error' );
+                if ( errEl ) { errEl.remove(); }
             } );
         } );
     }
@@ -74,6 +71,21 @@
         var submitBtn    = form.querySelector( '.contact-submit-btn' );
 
         clearContactMsg( form );
+
+        /* Mandatory: enquiry type must be selected */
+        var hiddenType = form.querySelector( '[name="enquiry_type"]' );
+        var typeGrid   = document.getElementById( 'enquiryTypeGrid' );
+        if ( typeGrid && ( ! hiddenType || ! hiddenType.value.trim() ) ) {
+            var existingErr = typeGrid.parentElement.querySelector( '.enquiry-type-error' );
+            if ( ! existingErr ) {
+                var typeErr = document.createElement( 'p' );
+                typeErr.className = 'enquiry-type-error';
+                typeErr.textContent = 'Please select what best describes you.';
+                typeGrid.parentElement.appendChild( typeErr );
+            }
+            typeGrid.scrollIntoView( { behavior: 'smooth', block: 'center' } );
+            return;
+        }
 
         if ( ! nameInput || ! nameInput.value.trim() ) {
             return showContactMsg( form, 'Your name is required.', true );

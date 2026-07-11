@@ -884,8 +884,9 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* ─── 17l. Mobile ────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .news-col { padding: 10px 12px !important; }
-    .news-widget { padding: 10px 12px !important; }
+    .news-three-inner > .news-col,
+    .news-three-inner > .hot-topics-col { padding: 14px 16px !important; }
+    .news-widget { padding: 0 !important; }
 }
 
 

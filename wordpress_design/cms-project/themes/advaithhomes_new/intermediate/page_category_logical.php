@@ -147,15 +147,43 @@ function adn_category_latest_updates( $slug, $limit = 4 ) {
 		foreach ( (array) $rows as $post ) {
 			if ( empty( $post->title ) ) { continue; }
 			$_thumb = '';
-			if ( ! empty( $post->featured_image_id ) ) {
+			if ( ! empty( $post->ID ) ) {
+				$_u = get_the_post_thumbnail_url( $post->ID, 'medium' );
+				if ( ! $_u ) { $_u = get_the_post_thumbnail_url( $post->ID, 'full' ); }
+				if ( $_u ) { $_thumb = (string) $_u; }
+			}
+			if ( empty( $_thumb ) && ! empty( $post->featured_image_id ) ) {
 				$_u = wp_get_attachment_image_url( (int) $post->featured_image_id, 'medium' );
 				if ( $_u ) { $_thumb = (string) $_u; }
 			}
+			$_desc = ! empty( $post->excerpt ) ? wp_trim_words( wp_strip_all_tags( $post->excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( isset( $post->content ) ? $post->content : '' ), 15 );
 			$items[] = array(
-				'thumbnail' => $_thumb,
-				'icon'      => '📋',
-				'title'     => (string) $post->title,
-				'url'       => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $post )  : '#',
+				'thumbnail'   => $_thumb,
+				'icon'        => '📋',
+				'title'       => (string) $post->title,
+				'url'         => function_exists( 'adn_cms_post_url' )  ? adn_cms_post_url( $post )  : '#',
+				'description' => $_desc,
+			);
+		}
+	}
+
+	// 2. Fallback to standard WP posts if not enough items
+	if ( count( $items ) < $limit ) {
+		$fallback_limit = $limit - count( $items );
+		$wp_posts = get_posts( array(
+			'numberposts' => $fallback_limit,
+			'post_status' => 'publish',
+		) );
+		foreach ( $wp_posts as $p ) {
+			$_thumb = get_the_post_thumbnail_url( $p->ID, 'medium' );
+			if ( ! $_thumb ) { $_thumb = get_the_post_thumbnail_url( $p->ID, 'full' ); }
+			$_desc = ! empty( $p->post_excerpt ) ? wp_trim_words( wp_strip_all_tags( $p->post_excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( $p->post_content ), 15 );
+			$items[] = array(
+				'thumbnail'   => $_thumb ? (string) $_thumb : '',
+				'icon'        => '📋',
+				'title'       => get_the_title( $p->ID ),
+				'url'         => get_permalink( $p->ID ),
+				'description' => $_desc,
 			);
 		}
 	}
@@ -264,7 +292,7 @@ function adn_category_get_context( $slug = '' ) {
 			'link_label' => adn_term( 'category_page.latest_updates_view_all', 'View all →' ),
 			'link_url'   => SITE_NEWS_URL,
 		),
-		'items' => adn_category_latest_updates( $slug, 2 ),
+		'items' => adn_category_latest_updates( $slug, 5 ),
 	);
 
 	// ── 8. Admin-managed sections (AH_Category_Settings DB model) ───────

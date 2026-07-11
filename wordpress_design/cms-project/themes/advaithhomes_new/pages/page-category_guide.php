@@ -125,7 +125,7 @@ adn_page_open( $_open_ctx );
 		<main class="cat-guide-main">
 
 			<?php /* ── Guides Grid ── */ ?>
-			<?php if ( ! empty( $ctx['guides']['items'] ) ) : ?>
+			<?php if ( ! empty( $ctx['guides']['items'] ) ) { ?>
 			<div class="category-section category-guides">
 				<?php adn_component( 'parts/section_headers/section_header', array(
 					'heading' => isset( $ctx['guides']['heading'] ) ? $ctx['guides']['heading'] : array(),
@@ -137,23 +137,15 @@ adn_page_open( $_open_ctx );
 					<?php endforeach; ?>
 				</div>
 			</div>
-			<?php endif; ?>
-
-			<?php /* ── Popular Posts (admin-curated) ── */ ?>
-			<?php if ( ! empty( $ctx['popular_posts']['items'] ) ) : ?>
-			<div class="category-section category-popular">
-				<?php adn_component( 'parts/section_headers/section_header', array(
-					'heading' => isset( $ctx['popular_posts']['heading'] ) ? $ctx['popular_posts']['heading'] : array(),
-					'tag'     => 'h2',
-				) ); ?>
-				<div class="cat-guides-grid">
-					<?php foreach ( (array) $ctx['popular_posts']['items'] as $_cg_card ) : ?>
-						<?php adn_component( 'cards/guide_card', array( 'card' => $_cg_card ) ); ?>
-					<?php endforeach; ?>
+			<?php } else{ ?>
+				<div class="cat-no-results">
+					<span class="cat-no-results-icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
+					<h3 class="cat-no-results-title"><?php esc_html_e( 'No guides yet', ADN_TEXT_DOMAIN ); ?></h3>
+					<p class="cat-no-results-sub"><?php esc_html_e( 'We\'re working on guides for this topic. Check back soon.', ADN_TEXT_DOMAIN ); ?></p>
 				</div>
-			</div>
-			<?php endif; ?>
+			<?php } ?>
 
+			<?php /* ── Popular Posts (admin-curated) - Removed standalone section as it's now in the side column ── */ ?>
 
 			<?php /* ── Resources (library items) ── */ ?>
 			<?php if ( ! empty( $ctx['resources']['items'] ) ) : ?>
@@ -244,13 +236,47 @@ adn_page_open( $_open_ctx );
 </div>
 <?php endif; ?>
 
-<?php /* ============================== LATEST NEWS + UPDATES (full-width) ============================== */ ?>
-<?php if ( ! empty( $ctx['news']['items'] ) || ! empty( $ctx['regulations']['items'] ) ) : ?>
-<section class="news-three-col">
+<?php /* ============================== LATEST UPDATES + POPULAR GUIDES (full-width, home-page hero style) ============================== */ ?>
+<?php if ( ! empty( $ctx['regulations']['items'] ) ) : 
+
+	// ── Remap popular_posts OR guides to hot_topics item format ──
+	$_cat_ht_items  = array();
+	$_cat_ht_source = ! empty( $ctx['popular_posts']['items'] )
+		? array_slice( (array) $ctx['popular_posts']['items'], 0, 5 )
+		: array_slice( (array) ( isset( $ctx['guides']['items'] ) ? $ctx['guides']['items'] : array() ), 0, 5 );
+
+	foreach ( $_cat_ht_source as $_phi ) {
+		$_ht_label = ! empty( $_phi['title'] )    ? (string) $_phi['title']
+		           : ( ! empty( $_phi['category'] ) ? (string) $_phi['category'] : '' );
+		if ( '' === $_ht_label ) { continue; }
+		$_cat_ht_items[] = array(
+			'text'      => $_ht_label,
+			'url'       => ! empty( $_phi['url'] )   ? (string) $_phi['url']   : '#',
+			'icon'      => '📚',
+			'thumbnail' => ! empty( $_phi['image'] ) ? (string) $_phi['image'] : '',
+		);
+	}
+
+	// ── Hot topics heading ──
+	$_cat_ht_heading = ! empty( $ctx['popular_posts']['heading']['title'] )
+		? (string) $ctx['popular_posts']['heading']['title']
+		: 'Popular Guides';
+?>
+<section class="news-three-col cat-latest-updates-section">
 	<div class="container">
 		<?php adn_component( 'sections/news_three_col', array(
-			'news'        => $ctx['news'],
-			'regulations' => $ctx['regulations'],
+			'is_home_news' => true,
+			'news' => array(
+				'heading' => isset( $ctx['regulations']['heading'] )
+					? $ctx['regulations']['heading']
+					: array( 'title' => 'Latest Updates', 'link_label' => 'View all →', 'link_url' => SITE_NEWS_URL ),
+				'items'   => $ctx['regulations']['items'],
+			),
+			'hot_topics' => ! empty( $_cat_ht_items ) ? array(
+				'title' => $_cat_ht_heading,
+				'items' => $_cat_ht_items,
+				'cta'   => array(),
+			) : array(),
 		) ); ?>
 	</div>
 </section>

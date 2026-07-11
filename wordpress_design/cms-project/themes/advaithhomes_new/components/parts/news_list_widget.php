@@ -82,18 +82,11 @@ if ( empty( $items ) && '' === $title ) { return; }
 		$tag = ! empty( $first_item['tag'] ) ? (string) $first_item['tag'] : '';
 		?>
 		<div class="news-hero-and-list">
-			<article class="news-hero-card">
+			<article class="news-hero-card <?php echo empty( $first_item['img_url'] ) ? 'news-hero-card--no-image' : ''; ?>">
 				<a href="<?php echo esc_url( adn_link( isset( $first_item['url'] ) ? $first_item['url'] : '' ) ); ?>" class="news-hero-card__link">
+					<?php if ( ! empty( $first_item['img_url'] ) ) : ?>
 					<div class="news-hero-card__img-wrap">
-						<?php if ( ! empty( $first_item['img_url'] ) ) : ?>
-							<img src="<?php echo esc_url( $first_item['img_url'] ); ?>" alt="" class="news-hero-card__img" />
-						<?php else : ?>
-							<div class="news-hero-card__img-placeholder" style="background: var(--color-bg-alt); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-								<span aria-hidden="true" style="font-size: 3rem; color: var(--color-text-light); opacity: 0.5;">
-									<?php echo adn_icon( ! empty( $first_item['icon'] ) ? $first_item['icon'] : 'news' ); ?>
-								</span>
-							</div>
-						<?php endif; ?>
+						<img src="<?php echo esc_url( $first_item['img_url'] ); ?>" alt="" class="news-hero-card__img" />
 						<div class="news-hero-card__read-time-top" style="position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.95); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; color: var(--color-text); font-weight: 600; display: flex; align-items: center; gap: 4px; z-index: 2; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
 							<?php echo adn_icon( 'clock' ); ?> <span>5 min read</span>
 						</div>
@@ -103,6 +96,22 @@ if ( empty( $items ) && '' === $title ) { return; }
 							<?php endif; ?>
 						</div>
 					</div>
+					<?php else : ?>
+					<div class="news-hero-card__no-image-header">
+						<?php if ( '' !== $tag ) : ?>
+							<span class="news-hero-card__tag"><?php echo esc_html( $tag ); ?></span>
+						<?php else: ?>
+							<div class="news-hero-card__icon-wrap">
+								<span aria-hidden="true" style="font-size: 1.8rem;">
+									<?php echo adn_icon( ! empty( $first_item['icon'] ) ? $first_item['icon'] : 'news' ); ?>
+								</span>
+							</div>
+						<?php endif; ?>
+						<div class="news-hero-card__read-time-top">
+							<?php echo adn_icon( 'clock' ); ?> <span>5 min read</span>
+						</div>
+					</div>
+					<?php endif; ?>
 					<div class="news-hero-card__content">
 						<div class="news-hero-card__meta">
 							<span class="news-hero-card__date"><?php echo esc_html( isset( $first_item['meta'] ) ? $first_item['meta'] : '' ); ?></span>

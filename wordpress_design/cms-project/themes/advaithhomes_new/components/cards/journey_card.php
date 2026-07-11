@@ -59,14 +59,18 @@ $_bg = ( isset( $card['gradient'] ) && $card['gradient'] )
 		<h3 class="jny-card__title"><?php echo esc_html( $_title ); ?></h3>
 		<div class="jny-card__divider"></div>
 		<?php if ( $_desc ) : ?>
-		<p class="jny-card__desc"><?php echo esc_html( $_desc ); ?></p>
+		<p class="jny-card__desc" title="<?= esc_attr($_desc)?>"><?php echo esc_html( $_desc ); ?></p>
 		<?php endif; ?>
-		<span class="jny-card__cta">
-			<?php echo esc_html( $_cta_label ); ?>
-			<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13" aria-hidden="true">
-				<path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		</span>
+		<?php if ( isset($card['restrict']) && $card['restrict'] ) {
+			echo '<span class="jny-card__cta" style="border: none;cursor: not-allowed;"> '.adn_icon('⚡').'Coming Soon</span>';
+		}else{
+			echo "<span class='jny-card__cta'>
+				{$_cta_label}
+				<svg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg' width='13' height='13' aria-hidden='true'>
+					<path d='M2 8h12M9 3l5 5-5 5' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/>
+				</svg>
+			</span>";		
+		} ?>		
 	</div>
 
 </a>

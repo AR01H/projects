@@ -274,7 +274,7 @@ function adn_home_cms_journey_cards() {
 			'title'       => $name,
 			'description' => isset( $term->description ) ? (string) $term->description : '',
 			'link_label'  => sprintf( adn_term( 'content.explore_guides', 'Explore %s →' ), $name ),
-			'url'         => adn_cms_term_url( $term ),
+			'url'         => adn_cms_term_url( $term )
 		);
 	}
 	return $cards;
@@ -335,7 +335,7 @@ function adn_home_cms_news_items() {
 
 	// Source 1: News Bar
 	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
-		foreach ( adn_cms_newsbar_items( 4 ) as $i => $item ) {
+		foreach ( adn_cms_newsbar_items( 5 ) as $i => $item ) {
 			$title = isset( $item->text ) ? $item->text : '';
 			if ( '' === $title ) {
 				continue;
@@ -405,10 +405,18 @@ function adn_home_cms_regulations_items() {
  * @return array[]  hot_topic_item shape: { icon, text, desc, url }
  */
 function adn_home_cms_hot_topics_items() {
+	global $wpdb;
 	$opt = get_option( 'adn_home_newsblocks', array() );
 	$raw = ( isset( $opt['hot_topics']['items'] ) && is_array( $opt['hot_topics']['items'] ) )
 	       ? $opt['hot_topics']['items'] : array();
 	$items = array();
+
+	/* CMS table references */
+	$tax = adn_cms_table( 'taxonomies' );
+	$ct  = adn_cms_table( 'content_taxonomies' );
+	$pt  = adn_cms_table( 'taxonomy_parent_terms' );
+	$cms_ok = adn_cms_available();
+
 	foreach ( $raw as $row ) {
 		$pid  = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
 		if ( ! $pid ) {
@@ -418,11 +426,56 @@ function adn_home_cms_hot_topics_items() {
 		if ( ! $post || 'publish' !== $post->post_status ) {
 			continue;
 		}
+
+		/* ── Icon from CMS term (child term first, then parent term) ── */
+		$icon = ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : '';
+		if ( $cms_ok ) {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$term_row = $wpdb->get_row( $wpdb->prepare(
+				"SELECT t.icon_emoji AS term_icon,
+				        pt.icon_emoji AS parent_icon
+				 FROM `{$ct}` ct
+				 JOIN `{$tax}` t ON t.id = ct.taxonomy_id
+				 LEFT JOIN `{$tax}` pt ON pt.id = t.parent_id
+				 WHERE ct.post_id = %d
+				 ORDER BY t.sort_order ASC
+				 LIMIT 1",
+				$pid
+			) );
+			if ( ! $term_row ) {
+				/* Fallback: try ah_taxonomy_parent_terms join */
+				$term_row = $wpdb->get_row( $wpdb->prepare(
+					"SELECT t.icon_emoji AS term_icon,
+					        ppt.icon_emoji AS parent_icon
+					 FROM `{$ct}` ct
+					 JOIN `{$tax}` t ON t.id = ct.taxonomy_id
+					 LEFT JOIN `{$pt}` ppt ON ppt.id = t.parent_term_id
+					 WHERE ct.post_id = %d
+					 ORDER BY t.sort_order ASC
+					 LIMIT 1",
+					$pid
+				) );
+			}
+			if ( $term_row ) {
+				/* Prefer child-term icon; fall back to parent icon */
+				$term_icon = ! empty( $term_row->term_icon ) ? (string) $term_row->term_icon : '';
+				if ( '' === $term_icon && ! empty( $term_row->parent_icon ) ) {
+					$term_icon = (string) $term_row->parent_icon;
+				}
+				if ( '' !== $term_icon ) {
+					$icon = $term_icon;
+				}
+			}
+		}
+		if ( '' === $icon ) {
+			$icon = adn_term( 'icons.hot_topics', '🔥' );
+		}
+
 		$items[] = array(
-			'icon'      => ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : adn_term( 'icons.hot_topics', '🔥' ),
+			'icon'      => $icon,
 			'text'      => $post->post_title,
 			'desc'      => $post->post_excerpt,
-			'thumbnail' => get_the_post_thumbnail_url( $pid, 'thumbnail' ) ?: '',
+			'thumbnail' => get_the_post_thumbnail_url( $pid, 'medium' ) ?: '',
 			'url'       => get_permalink( $post ),
 		);
 	}

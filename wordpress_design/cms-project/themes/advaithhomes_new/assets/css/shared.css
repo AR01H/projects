@@ -1286,7 +1286,10 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   align-items: start;
 }
 
-.news-three-inner:has(.news-col--news-2fr){
+.news-three-inner:has(.news-col--news-2fr) {
+    grid-template-columns: 2fr 2fr;
+}
+.news-three-inner:has(.news-col--news-2fr):has(> :nth-child(3)) {
     grid-template-columns: 2fr 1fr 1fr;
 }
 
@@ -1558,13 +1561,10 @@ a.mini-card, div.mini-card {
 .list-widget-items {
   display: flex;
   flex-direction: column;
-  max-height: 260px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border-dark) transparent;
-  gap:2px;
+  flex: 1;
+  justify-content: space-between;
+  gap: 6px;
 }
-.list-widget-items::-webkit-scrollbar { width: 3px; }
 
 /* ── News Hero Card (for Latest News widget) ── */
 .list-widget-items--news {
@@ -1602,11 +1602,11 @@ a.mini-card, div.mini-card {
   background-color: var(--color-bg-base); /* Assuming white/card bg */
   margin-bottom: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 .news-hero-card:hover {
   border-color: var(--color-border-dark);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
 }
 .news-hero-card__link {
   text-decoration: none;
@@ -1631,6 +1631,11 @@ a.mini-card, div.mini-card {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.news-hero-card:hover .news-hero-card__img,
+.news-hero-card__link:hover .news-hero-card__img {
+  transform: scale(1.1);
 }
 .news-hero-card__tags {
   position: absolute;
@@ -1652,6 +1657,56 @@ a.mini-card, div.mini-card {
   background: #c9a84c; /* Gold/yellow */
   color: #1e3a2f; /* Dark green */
 }
+
+/* ── Hero Card (No Image state) ── */
+.news-hero-card--no-image {
+  background: linear-gradient(135deg, var(--color-primary-dark, #1a2f4a), #2a4161);
+  display: flex;
+  flex-direction: column;
+}
+.news-hero-card--no-image .news-hero-card__link {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+.news-hero-card__no-image-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: auto; /* Pushes content down */
+}
+.news-hero-card--no-image .news-hero-card__read-time-top {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.news-hero-card--no-image .news-hero-card__title,
+.news-hero-card--no-image .news-hero-card__meta,
+.news-hero-card--no-image .news-hero-card__excerpt,
+.news-hero-card--no-image .news-hero-card__date {
+  color: rgba(255, 255, 255, 0.95);
+}
+.news-hero-card--no-image .news-hero-card__title {
+  color: #fff;
+}
+.news-hero-card__icon-wrap {
+  width: 48px;
+  height: 48px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary, #c8a96e);
+}
 .news-hero-card__meta {
   display: flex;
   justify-content: space-between;
@@ -1667,8 +1722,12 @@ a.mini-card, div.mini-card {
   margin: 0 0 6px 0;
 }
 .news-hero-card__link:hover .news-hero-card__title {
-  transition: transform 1s ease;
-  transform: scale(1.01);
+  /* No scale zoom on hover */
+  transform: none;
+}
+.news-hero-card:hover .news-hero-card__img,
+.news-hero-card:hover .news-hero-card__img-placeholder {
+  transform: none !important;
 }
 .news-hero-card__excerpt {
   font-size: 0.85rem;
@@ -1697,9 +1756,294 @@ a.mini-card, div.mini-card {
 
 
 
+/* ── Hot Topics Column (wrapper) ─────────────────────────────────────────── */
 .hot-topics-col {}
 .hot-topics-title { font-size: 0.95rem; font-weight: 600; margin-bottom: var(--space-4); display: flex; align-items: center; gap: 6px; }
 /* hot-topic-item → now rendered via cards/mini_card (icon variant) */
+
+/* ── Hot Topics Widget ───────────────────────────────────────────────────────
+   Component: components/parts/hot_topics_widget.php
+   Design: dark icon box (left) · title · arrow · photo thumbnail (right)
+   ─────────────────────────────────────────────────────────────────────────── */
+.ht-widget {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ── Header: same style as .list-widget-header ── */
+.ht-widget__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: var(--space-2);
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+  gap: var(--space-3);
+}
+/* Accent gradient underline - same as other sections */
+.ht-widget__header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-accent), transparent);
+  border-radius: 1px;
+}
+.ht-widget__header h2,
+.ht-widget__header h3,
+.ht-widget__header h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── List ── */
+.ht-widget__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  justify-content: space-between; /* stretch to fill container height */
+}
+
+/* ── Each card row ── */
+.ht-widget__item {}
+.ht-widget__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border, #e8e4dc);
+  background: var(--color-bg-base, #fff);
+  text-decoration: none;
+  color: var(--color-text);
+  overflow: hidden;
+  height: 58px;              /* fixed normal height */
+  position: relative;        /* for absolute photo */
+  transition: box-shadow 0.22s ease, border-color 0.22s ease, transform 0.18s ease;
+}
+.ht-widget__link:hover {
+  border-color: var(--color-primary, #c8a96e);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+  transform: translateY(-1px);
+}
+
+/* ── Left: inset rounded icon box ── */
+.ht-widget__icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  margin: 5px 0 5px 5px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+/* Alternating colors to match design exactly */
+.ht-widget__item:nth-child(odd) .ht-widget__icon-box {
+  background: var(--color-primary-dark, #1a2f4a);
+}
+.ht-widget__item:nth-child(even) .ht-widget__icon-box {
+  background: var(--color-primary, #c8a96e);
+}
+.ht-widget__icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  filter: brightness(0) invert(1);
+}
+
+/* ── Middle: title ── */
+.ht-widget__label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-text-dark, #111);
+  line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  padding: 5px 15px 5px 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Right: edge-bleed photo with gradient fade (absolute to let text overlap) ── */
+.ht-widget__photo {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40%;               /* 40% of card width */
+  overflow: hidden;
+  z-index: 0;
+  /* Gradient mask: more prominent transparent region */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 45%, #000 95%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 45%, #000 95%);
+}
+.ht-widget__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.ht-widget__link:hover .ht-widget__photo img {
+  transform: scale(1.08);
+}
+
+/* ── Mobile ── */
+@media (max-width: 700px) {
+  .ht-widget__list { gap: 8px; justify-content: flex-start; }
+  .list-widget-items { justify-content: flex-start; }
+  .ht-widget__link { height: 52px; gap: 8px; }
+  .ht-widget__icon-box { width: 42px; min-width: 42px; height: 42px; }
+  .ht-widget__label { font-size: 0.82rem; }
+
+  /* Ensure ht-widget fills the carousel panel width correctly */
+  .hot-topics-col .ht-widget { width: 100%; box-sizing: border-box; }
+  .hot-topics-col .ht-widget__link {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  /* Prevent the edge-bleed photo from overflowing on mobile */
+  .hot-topics-col .ht-widget__photo { width: 35%; }
+
+  /* Mobile overrides for Advaith Updates only */
+  .news-col--regulations .mini-card { height: 52px !important; gap: 8px !important; padding-right: 8px !important; }
+  .news-col--regulations .mini-card-thumb { width: 40px !important; min-width: 40px !important; height: 40px !important; margin: 6px 0 6px 6px !important; }
+  .news-col--regulations .mini-card-title { font-size: 0.82rem !important; }
+
+  /* Keep mobile height compact by hiding 3rd & 4th small news cards on mobile */
+  .news-col--news .news-list-remaining > *:nth-child(n+3) {
+    display: none !important;
+  }
+}
+
+/* ── Align ONLY Advaith Updates mini-cards to Hot Topics style ── */
+.news-col--regulations .mini-card {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--color-border, #e8e4dc) !important;
+  background: var(--color-bg-base, #fff) !important;
+  text-decoration: none !important;
+  color: var(--color-text) !important;
+  overflow: hidden !important;
+  height: 58px !important;
+  padding: 0 12px 0 0 !important;
+  box-sizing: border-box !important;
+  transition: box-shadow 0.22s ease, border-color 0.22s ease, transform 0.18s ease !important;
+  position: relative !important;
+  box-shadow: none !important;
+}
+
+.news-col--regulations a.mini-card:hover {
+  border-color: var(--color-primary, #c8a96e) !important;
+  box-shadow: inset 0px -20px 20px 20px var(--bg-color-1) !important;
+}
+
+/* Style the thumbnail/icon/badge area as a floating rounded box */
+.news-col--regulations .mini-card-thumb {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  aspect-ratio: 1 / 1 !important;
+  margin: 7px 0 7px 7px !important;
+  border-radius: 8px !important;
+  background: var(--color-primary-dark, #1a2f4a) !important; /* Professional Navy */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  overflow: hidden !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+/* Alternating colors for list items in Advaith Updates */
+.news-col--regulations .list-widget-items > *:nth-child(odd) .mini-card-thumb {
+  background: var(--color-primary-dark, #1a2f4a) !important;
+}
+.news-col--regulations .list-widget-items > *:nth-child(even) .mini-card-thumb {
+  background: var(--color-primary, #c8a96e) !important; /* Premium Gold */
+}
+
+/* Make sure inner icons are styled nicely and white */
+.news-col--regulations .mini-card-thumb-icon {
+  font-size: 1.15rem !important;
+  color: #fff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Align text and remove clamp/line-breaks */
+.news-col--regulations .mini-card-body {
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  flex: 1 !important;
+}
+
+.news-col--regulations .mini-card-title {
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  color: var(--color-text-dark, #111) !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+.news-col--regulations .mini-card-meta {
+  margin-top: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.news-col--regulations .mini-card-tag {
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  background: #f0ece6 !important;
+  color: var(--color-primary-dark, #1a2f4a) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1 !important;
+}
+
+.news-col--regulations .mini-card-date {
+  font-size: 0.72rem !important;
+  color: var(--color-text-muted, #7c7468) !important;
+}
+
+/* Hide arrow to align with Hot Topics styling */
+.news-col--regulations .mini-card-arrow {
+  display: none !important;
+}
+
 
 /* ============================================
    CALCULATORS SECTION
@@ -4242,7 +4586,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
 .cat-highlight-section { padding: 48px 0; background: var(--color-bg-section, #f5f7fa); }
 /* Show max 4 items, scroll inside if more */
 .cat-highlight-section .list-widget-items {
-  max-height: 256px !important; /* ~4 mini-cards - overrides news-three-inner max-height:none */
+  max-height: 356px !important; /* ~4 mini-cards - overrides news-three-inner max-height:none */
   overflow-y: auto !important;
   flex: none !important;
   scrollbar-width: thin;
@@ -4327,13 +4671,16 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    gap: var(--space-3);
-    padding-bottom: var(--space-1);
+    gap: 0;
+    padding: 0;
   }
   .news-three-inner::-webkit-scrollbar { display: none; }
   .news-three-inner > * {
-    flex: 0 0 calc(100% - 32px);
+    flex: 0 0 100%;
+    width: 100%;
     scroll-snap-align: start;
+    padding: 14px 16px;
+    box-sizing: border-box;
   }
   .category-hero { min-height: 320px; }
   .category-hero-content { padding: 48px 0; max-width: 100%; }

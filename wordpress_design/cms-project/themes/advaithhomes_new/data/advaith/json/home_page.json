@@ -29,6 +29,24 @@
         "heading": { "title": "Choose Your Property Journey" },
         "cards": [
             {
+                "icon": "🏠",
+                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
+                "title": "Selling a Home",
+                "description": "Sell your property with confidence by understanding valuations, estate agents, legal requirements, conveyancing, offers, hidden selling costs, and practical tips to achieve a smoother sale and the best possible outcome.",
+                "link_label": "Coming Soon",
+                "url": "",
+                "restrict": "true"
+            },
+            {
+                "icon": "🏠",
+                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
+                "title": "Moving Home",
+                "description": "Plan your move with practical guidance on removals, packing, address updates, utility transfers, moving checklists, timelines, costs, and essential tips to make relocating to your new home simple and stress-free.",
+                "link_label": "Coming Soon",
+                "url": "",
+                "restrict": "true"
+            },
+            {
                 "icon": "👥",
                 "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
                 "title": "I need Professional Help",
