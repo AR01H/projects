@@ -9,38 +9,52 @@ $_cats = ( isset( $categories ) && is_array( $categories ) ) ? $categories : arr
 if ( empty( $_cats ) ) return;
 ?>
 <div class="expert-cats-strip">
+	<div class="container">
+		<div class="expert-cats-inner" id="expertCatsContainer" role="tablist" aria-label="<?php esc_attr_e( 'Filter experts by category', ADN_TEXT_DOMAIN ); ?>">
+			<?php 
+			$_index = 0;
+			$_limit = 7; // Show 7 categories + "All Experts" by default on desktop
+			foreach ( $_cats as $_c ) :
+				$_ck     = esc_attr( ( isset( $_c['key'] )   ? (string) $_c['key']   : 'all' ) );
+				$_cl     = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );
+				$_active = ! empty( $_c['active'] );
+				$_hide   = ($_index > $_limit) ? ' expert-cat-tab--collapsed' : '';
+			?>
+				<button
+					type="button"
+					class="expert-cat-tab<?php echo $_active ? ' active' : ''; ?><?php echo $_hide; ?>"
+					data-cat="<?php echo $_ck; ?>"
+					role="tab"
+					aria-selected="<?php echo $_active ? 'true' : 'false'; ?>"
+				>
+					<span class="ect-label"><?php echo $_cl; ?></span>
+				</button>
+			<?php 
+				$_index++;
+			endforeach; 
+			?>
 
-	<?php /* ── Search row ─────────────────────────────────────────── */ ?>
-	<!-- <div class="expert-search-row container">
-		<div class="search-input-wrap">
-			<span class="search-icon" aria-hidden="true">🔍</span>
-			<input
-				type="search"
-				id="expertSearch"
-				placeholder="<?php esc_attr_e( 'Search experts by name or specialism…', ADN_TEXT_DOMAIN ); ?>"
-				autocomplete="off"
-				aria-label="<?php esc_attr_e( 'Search experts', ADN_TEXT_DOMAIN ); ?>"
-			>
-			<button type="button" id="expertSearchClear" class="search-btn expert-search-clear" aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>" hidden>×</button>
+			<?php if ( count( $_cats ) > ($_limit + 1) ) : ?>
+				<button type="button" class="expert-cat-tab-toggle" id="expertCatsToggle" aria-expanded="false">
+					<span>+ More</span>
+				</button>
+			<?php endif; ?>
 		</div>
-	</div> -->
-
-	<?php /* ── Category tabs row ────────────────────────────────── */ ?>
-	<div class="expert-cats-inner container" role="tablist" aria-label="<?php esc_attr_e( 'Filter experts by category', ADN_TEXT_DOMAIN ); ?>">
-		<?php foreach ( $_cats as $_c ) :
-			$_ck     = esc_attr( sanitize_key( isset( $_c['key'] )   ? (string) $_c['key']   : 'all' ) );
-			$_cl     = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );
-			$_ci     = isset( $_c['icon'] ) ? (string) $_c['icon'] : '';
-			$_active = ! empty( $_c['active'] );
-		?>
-			<button
-				type="button"
-				class="expert-cat-tab<?php echo $_active ? ' active' : ''; ?>"
-				data-cat="<?php echo $_ck; ?>"
-				role="tab"
-				aria-selected="<?php echo $_active ? 'true' : 'false'; ?>"
-			><?php echo $_cl; ?></button>
-		<?php endforeach; ?>
 	</div>
-
 </div>
+
+<script>
+(function(){
+	document.addEventListener('DOMContentLoaded', function() {
+		var toggle = document.getElementById('expertCatsToggle');
+		var container = document.getElementById('expertCatsContainer');
+		if (!toggle || !container) return;
+		
+		toggle.addEventListener('click', function() {
+			var isExpanded = container.classList.toggle('is-expanded');
+			toggle.setAttribute('aria-expanded', isExpanded);
+			toggle.querySelector('span').textContent = isExpanded ? '- Show Less' : '+ More';
+		});
+	});
+})();
+</script>

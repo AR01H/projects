@@ -147,9 +147,14 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 				<?php endif; ?>
 
 				<h1 class="expert-profile-name"><?php echo esc_html( $ctx['name'] ); ?></h1>
-				<?php if ( ! empty( $ctx['title'] ) ) : ?>
-					<p class="expert-profile-specialisation"><?php echo esc_html( $ctx['title'] ); ?></p>
-				<?php endif; ?>
+					<?php if ( ! empty( $ctx['title'] ) ) : ?>
+						<p class="expert-profile-specialisation">
+						<?php 
+							$_specs = array_filter( array_map( 'trim', explode( ',', $ctx['title'] ) ) );
+							echo esc_html( implode( ' • ', $_specs ) );
+						?>
+						</p>
+					<?php endif; ?>
 
 				<?php /* Rating */ ?>
 				<?php if ( $_rating > 0 ) : ?>
@@ -249,7 +254,14 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 			<?php if ( ! empty( $ctx['title'] ) ) : ?>
 				<div class="expert-sb-box">
 					<h3><?php esc_html_e( 'Specialisation', ADN_TEXT_DOMAIN ); ?></h3>
-					<span class="expert-profile-cat-pill"><?php echo esc_html( $ctx['title'] ); ?></span>
+					<div class="expert-profile-cat-pills">
+						<?php 
+						$_specs = array_filter( array_map( 'trim', explode( ',', $ctx['title'] ) ) );
+						foreach ( $_specs as $_spec ) : 
+						?>
+							<span class="expert-profile-cat-pill"><?php echo esc_html( $_spec ); ?></span>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			<?php endif; ?>
 

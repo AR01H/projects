@@ -141,8 +141,11 @@ $render_picker = function(
 				$jname    = isset( $jcard['title'] )  ? (string) $jcard['title']  : '';
 				$jicon    = isset( $jcard['icon'] )   ? (string) $jcard['icon']   : '';
 				if ( '' === $jname ) { continue; }
-				$key      = $url_key( $jurl );
-				$saved_id = isset( $saved_json_imgs[ $key ] ) ? (int) $saved_json_imgs[ $key ] : 0;
+				$key      = sanitize_key( sanitize_title( $jname ) );
+				$old_key  = sanitize_key( sanitize_title( trim( $jurl, '/' ) ) );
+				$saved_id = isset( $saved_json_imgs[ $key ] ) 
+					? (int) $saved_json_imgs[ $key ] 
+					: ( ( '' !== $old_key && isset( $saved_json_imgs[ $old_key ] ) ) ? (int) $saved_json_imgs[ $old_key ] : 0 );
 				$render_picker( 'j-' . $key, $jname, $jicon, 'journey_json_images[' . $key . ']', $saved_id, 0 );
 			endforeach; ?>
 		</div>

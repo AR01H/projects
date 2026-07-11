@@ -17,12 +17,20 @@ $_slug     = isset( $_i['slug'] )      ? sanitize_key( (string) $_i['slug'] )   
 $_photo    = isset( $_i['photo_url'] ) ? (string) $_i['photo_url']                : '';
 $_av       = esc_html( isset( $_i['avatar'] ) ? (string) $_i['avatar'] : '👤' );
 $_name     = esc_html( isset( $_i['name'] )   ? (string) $_i['name']   : '' );
-$_ttl      = esc_html( isset( $_i['title'] )  ? (string) $_i['title']  : '' );
-$_cat_key  = sanitize_key( isset( $_i['category'] ) ? (string) $_i['category'] : '' );
-$_cat_attr = esc_attr( $_cat_key ?: 'all' );
-$_cat_disp = ( $_cat_key && 'all' !== $_cat_key )
-	? esc_html( ucwords( str_replace( array( '-', '_' ), ' ', $_cat_key ) ) )
-	: '';
+$_ttl_raw  = isset( $_i['title'] )  ? (string) $_i['title']  : '';
+$_ttl_array = array_filter( array_map( 'trim', explode( ',', $_ttl_raw ) ) );
+$_ttl      = esc_html( implode( ' • ', $_ttl_array ) );
+$_cat_raw = ( isset( $_i['category'] ) ? (string) $_i['category'] : '' );
+$_cat_array = array_filter( array_map( 'trim', explode( ',', $_cat_raw ) ) );
+$_cat_attr_array = array();
+$_cat_disp_array = array();
+foreach ( $_cat_array as $c ) {
+	if ( strtolower($c) !== 'all' ) {
+		$_cat_attr_array[] = sanitize_key( $c );
+		$_cat_disp_array[] = esc_html( ucwords( $c ) );
+	}
+}
+$_cat_attr = empty( $_cat_attr_array ) ? 'all' : esc_attr( implode( ',', $_cat_attr_array ) );
 $_rat      = isset( $_i['rating'] )        ? floatval( $_i['rating'] )      : 0;
 $_rev      = isset( $_i['reviews_count'] ) ? intval( $_i['reviews_count'] ) : ( isset( $_i['reviews'] ) ? intval( $_i['reviews'] ) : 0 );
 $_dsc      = wp_trim_words( isset( $_i['description'] ) ? (string) $_i['description'] : '', 25, '…' );
@@ -60,8 +68,8 @@ if ( '' === $_photo ) {
 		<div class="expert-lock-icon-wrap" aria-hidden="true">
 			<i class="fa-solid fa-lock expert-lock-icon"></i>
 		</div>
-		<?php if ( '' !== $_cat_disp ) : ?>
-			<span class="expert-lock-role"><?php echo $_cat_disp; ?></span>
+		<?php if ( ! empty( $_cat_disp_array ) ) : ?>
+			<span class="expert-lock-role"><?php echo implode( ', ', $_cat_disp_array ); ?></span>
 		<?php endif; ?>
 		<span class="expert-lock-label"><?php esc_html_e( 'Profile Locked', ADN_TEXT_DOMAIN ); ?></span>
 	</div>
@@ -81,11 +89,15 @@ if ( '' === $_photo ) {
 				<?php echo $_av; ?>
 			<?php endif; ?>
 		</div>
-		<?php if ( '' !== $_cat_disp ) : ?>
-			<span class="expert-card-badge">
-				<?php echo adn_icon( 'shield' ); ?>
-				<?php echo $_cat_disp; ?>
-			</span>
+		<?php if ( ! empty( $_cat_disp_array ) ) : ?>
+			<div class="expert-card-badges">
+				<?php foreach ( $_cat_disp_array as $disp ) : ?>
+					<span class="expert-card-badge">
+						<?php echo adn_icon( 'shield' ); ?>
+						<?php echo $disp; ?>
+					</span>
+				<?php endforeach; ?>
+			</div>
 		<?php endif; ?>
 	</div>
 

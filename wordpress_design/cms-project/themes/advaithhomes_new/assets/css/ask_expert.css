@@ -87,49 +87,106 @@
     margin-top: 2px;
 }
 
-/* ── Category Tabs Strip ────────────────────────────────────── */
+/* ── Category Tabs Strip (Wrapping Pill Style) ── */
 .expert-cats-strip {
-    background: var(--color-surface, #f3f4f6);
-    border-bottom: 1px solid var(--color-border, #e5e7eb);
-    position: sticky;
-    top: 60px;
-    z-index: 30;
+    background: var(--color-surface, #f8fafc);
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+    padding: 12px 0; /* Reduced padding on container */
 }
 
 .expert-cats-inner {
     display: flex;
-    gap: 10px;
-    padding: 10px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    gap: 8px;
     align-items: center;
     justify-content: center;
 }
 
-.expert-cats-inner::-webkit-scrollbar { display: none; }
+/* On mobile, wrapping 50 tabs is too messy, so we use a smooth swipeable row */
+@media (max-width: 767px) {
+    .expert-cats-inner {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+    .expert-cats-inner::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+}
 
 .expert-cat-tab {
-    padding: var(--space-1);
-    border-radius: var(--border-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px; /* Reduced padding inside the buttons */
+    border-radius: 9999px;
+    border: 1px solid var(--color-border, #e2e8f0);
     cursor: pointer;
-    background: var(--color-white, #fff);
-    color: var(--color-black, #6b7280);
+    background: var(--color-white, #ffffff);
+    color: var(--color-text, #475569);
     white-space: nowrap;
-    font-size: small;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .expert-cat-tab:hover {
-    border-color: var(--color-primary, #1d5c8e);
-    color: var(--color-primary, #1d5c8e);
-    background: var(--color-white);
+    color: var(--color-primary, #2d5a44);
+    border-color: var(--color-primary, #2d5a44);
+    background: var(--color-surface, #f8fafc);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 .expert-cat-tab.active {
-    background: var(--color-primary, #1d5c8e);
-    border-color: var(--color-primary, #1d5c8e);
-    color: var(--color-white);
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(29, 92, 142, 0.22);
+    background: var(--color-primary, #2d5a44);
+    border-color: var(--color-primary, #2d5a44);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(45, 90, 68, 0.25);
+}
+
+/* ── Collapse/Expand Filter Toggle ── */
+.expert-cat-tab-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    border: 1px dashed var(--color-primary, #2d5a44);
+    cursor: pointer;
+    background: transparent;
+    color: var(--color-primary, #2d5a44);
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.expert-cat-tab-toggle:hover {
+    background: rgba(45, 90, 68, 0.05);
+    border-style: solid;
+}
+
+/* On Desktop: Hide items beyond limit unless expanded */
+@media (min-width: 768px) {
+    .expert-cat-tab--collapsed {
+        display: none !important;
+    }
+    .expert-cats-inner.is-expanded .expert-cat-tab--collapsed {
+        display: inline-flex !important;
+    }
+}
+
+/* On Mobile: Always show all tabs and hide the expand toggle (mobile is swiped instead) */
+@media (max-width: 767px) {
+    .expert-cat-tab--collapsed {
+        display: inline-flex !important;
+    }
+    .expert-cat-tab-toggle {
+        display: none !important;
+    }
 }
 
 /* ── Search Row (search-input-wrap CSS lives in calculators.css which is
@@ -463,8 +520,8 @@
 
 .expert-card:hover {
     border-color: var(--color-primary, #2d5a44);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.11);
-    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
 }
 .expert-card:hover::before { opacity: 1; }
 
@@ -476,27 +533,27 @@
 .expert-contact-box   { grid-area: loc; }
 .expert-card-footer   { grid-area: foot; }
 
-/* ── Avatar - square with rounded corners ────────────────────── */
+/* ── Avatar - circular ────────────────────────────────────────── */
 .expert-avatar {
     width: 76px;
     height: 76px;
     flex-shrink: 0;
     background: linear-gradient(135deg, #e8f0ec, #d4e6d8);
-    border-radius: 12px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     overflow: hidden;
     border: 2px solid var(--color-border, #e5e7eb);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .expert-avatar-img {
     width: 76px;
     height: 76px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 50%;
     display: block;
 }
 
@@ -1224,6 +1281,13 @@
     font-size: 0.88rem;
     color: var(--color-black);
     margin-bottom: var(--space-3);
+}
+
+.expert-profile-cat-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
 }
 
 .expert-profile-cat-pill {

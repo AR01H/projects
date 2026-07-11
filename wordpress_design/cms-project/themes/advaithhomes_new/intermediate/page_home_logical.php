@@ -93,13 +93,23 @@ function adn_home_get_context( $skip = array() ) {
 	$_jni = get_option( 'adn_journey_json_images', array() );
 	if ( ! empty( $_jni ) && is_array( $_jni ) ) {
 		foreach ( $ctx['journey']['cards'] as &$_jcard ) {
-			$_jcard_url = isset( $_jcard['url'] ) ? (string) $_jcard['url'] : '';
-			if ( '' === $_jcard_url ) {
+			$_jcard_title = isset( $_jcard['title'] ) ? (string) $_jcard['title'] : '';
+			$_jcard_url   = isset( $_jcard['url'] ) ? (string) $_jcard['url'] : '';
+			if ( '' === $_jcard_title ) {
 				continue;
 			}
-			$_jkey = sanitize_key( sanitize_title( trim( $_jcard_url, '/' ) ) );
+			$_jkey = sanitize_key( sanitize_title( $_jcard_title ) );
+			$_old_jkey = sanitize_key( sanitize_title( trim( $_jcard_url, '/' ) ) );
+
+			$_img_id = 0;
 			if ( ! empty( $_jni[ $_jkey ] ) ) {
-				$_jimg = wp_get_attachment_image_url( (int) $_jni[ $_jkey ], 'large' );
+				$_img_id = (int) $_jni[ $_jkey ];
+			} elseif ( '' !== $_old_jkey && ! empty( $_jni[ $_old_jkey ] ) ) {
+				$_img_id = (int) $_jni[ $_old_jkey ];
+			}
+
+			if ( $_img_id > 0 ) {
+				$_jimg = wp_get_attachment_image_url( $_img_id, 'large' );
 				if ( $_jimg ) {
 					$_jcard['image'] = $_jimg;
 				}

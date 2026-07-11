@@ -81,7 +81,12 @@
             if ( card.classList.contains( 'expert-card--locked-placeholder' ) ) { return; }
 
             var cardCat   = ( card.getAttribute( 'data-cat' ) || '' );
-            var catMatch  = cat === 'all' || cardCat === cat;
+            var cardCats  = cardCat.split(',');
+            var hasCat    = false;
+            for (var i = 0; i < cardCats.length; i++) {
+                if (cardCats[i].trim() === cat) hasCat = true;
+            }
+            var catMatch  = cat === 'all' || hasCat;
             var textMatch = q === '' || ( card.textContent || '' ).toLowerCase().indexOf( q ) !== -1;
             var show      = catMatch && textMatch;
             if ( show ) {
@@ -95,6 +100,7 @@
         // Virtual cards: show only the one whose tab is active, hide the rest.
         // Use style.display directly — the CSS has display:flex !important which beats [hidden].
         document.querySelectorAll( '.expert-card--virtual' ).forEach( function ( vc ) {
+            debugger
             if ( vc.getAttribute( 'data-cat' ) === cat ) {
                 vc.style.display = 'flex';
                 vc.removeAttribute( 'hidden' );

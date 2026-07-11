@@ -32,7 +32,7 @@ $_bg = ( isset( $card['gradient'] ) && $card['gradient'] )
 	? $card['gradient']
 	: $_fallbacks[ ( $_num - 1 ) % count( $_fallbacks ) ];
 ?>
-<a href="<?php echo esc_url( adn_link( $_url ) ); ?>" class="jny-card<?php echo ! $_image ? ' jny-card--no-img' : ''; ?>">
+<a <?php if (isset($card['restrict']) && $card['restrict']) { echo 'href="javascript:void(0);"'; }else{ ?> href="<?php echo esc_url( adn_link( $_url ) ); ?>" <?php } ?> class="jny-card<?php echo ! $_image ? ' jny-card--no-img' : ''; ?>">
 
 	<?php /* Full-bleed background */ ?>
 	<div class="jny-card__bg"<?php if ( ! $_image ) : ?> style="background:<?php echo esc_attr( $_bg ); ?>;"<?php endif; ?>>
