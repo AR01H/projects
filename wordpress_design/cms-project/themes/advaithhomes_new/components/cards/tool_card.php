@@ -8,6 +8,11 @@ defined( 'ABSPATH' ) || exit;
 
 $card      = isset( $card ) && is_array( $card ) ? $card : array();
 $thumbnail = isset( $card['thumbnail'] ) && '' !== $card['thumbnail'] ? (string) $card['thumbnail'] : '';
+
+// Fallback to default calculator image if none is provided
+if ( empty( $thumbnail ) ) {
+    $thumbnail = get_template_directory_uri() . THEME_DEFAULT_CALC_IMG . '?v=' . LOCAL_CACHE_VERSION;
+}
 ?>
 <a href="<?php echo esc_url( adn_link( isset( $card['url'] ) ? $card['url'] : '' ) ); ?>" class="calc-card">
 	<div class="calc-card-media">

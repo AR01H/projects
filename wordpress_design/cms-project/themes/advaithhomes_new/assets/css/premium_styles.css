@@ -1007,7 +1007,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .guide-card:hover {
     border-color: var(--secondary-color, #B08D57) !important;
     box-shadow: 0 8px 28px rgba(32,60,62,.13) !important;
-    transform: translateY(-2px) !important;
 }
 
 /* ─── 17b. Sidebar widgets (.sw-panel) ───────────────────── */
@@ -3063,7 +3062,8 @@ html.adn-reveal .acard-stat::before {
     grid-column: span 2 !important;
     display: flex !important;
     flex-direction: column !important;
-    padding: 20px !important; /* Reduced padding from 24px */
+    padding: 0 !important;
+    overflow: hidden !important;
     text-decoration: none !important;
     border: 1px solid var(--color-accent, #d4af37) !important;
     border-radius: 12px !important;
@@ -3085,16 +3085,12 @@ html.adn-reveal .acard-stat::before {
 }
 
 .tc-hero-calc-icon {
-    width: 48px !important;
-    height: 48px !important;
-    border-radius: 8px !important;
-    background: #f1f7f4 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 1.5rem !important;
-    margin-bottom: 16px !important;
-    transition: background 0.15s ease !important;
+    width: 100% !important;
+    height: 180px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    display: block !important;
+    margin-bottom: 0 !important;
     overflow: hidden !important;
 }
 
@@ -3106,7 +3102,14 @@ html.adn-reveal .acard-stat::before {
 }
 
 .tc-hero-calc-card:hover .tc-hero-calc-icon {
-    background: #e0f2e9 !important;
+    /* No bg change needed for large image */
+}
+
+.tc-hero-calc-body {
+    padding: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
 }
 
 .tc-hero-calc-body h3 {
@@ -3518,5 +3521,262 @@ html.adn-reveal .acard-stat::before {
 
 .all-tools-section {
     padding: 16px 0 32px !important;
+}
+
+/* ─── 23. MINI CARD FADED BANNER EFFECT ──────────────── */
+.mini-card {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.mini-card-body,
+.mini-card-thumb,
+.mini-card-arrow,
+.mini-card-info-dot {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.mini-card-bg-fade {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 65% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 25%, black 75%) !important;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 25%, black 75%) !important;
+    z-index: 0 !important;
+    opacity: 0.9 !important;
+    pointer-events: none !important;
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0 !important;
+    transition: transform 0.4s ease, opacity 0.4s ease !important;
+}
+
+.mini-card:hover .mini-card-bg-fade {
+    opacity: 1 !important;
+    transform: scale(1.03) !important;
+}
+
+
+
+/* -- Coming Soon Journey Card -------------------------------------- */
+.jny-card--coming-soon {
+    cursor: not-allowed !important;
+}
+
+.jny-card--coming-soon::after {
+    display: none !important;
+}
+
+.jny-card--coming-soon:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.jny-card--coming-soon .jny-card__cta {
+    background: rgba(0, 0, 0, 0.6) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+
+
+
+/* -- Premium Guide Card Redesign -------------------------------------- */
+.guide-card {
+    display: flex !important;
+    flex-direction: column !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--color-border, #e5e7eb) !important;
+    overflow: hidden !important;
+    text-decoration: none !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    height: 100% !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02) !important;
+    padding: 0 !important;
+}
+
+.guide-card:hover {
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+}
+
+.guide-card-img {
+    width: 100% !important;
+    height: 180px !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.guide-card-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.5s ease !important;
+    border-radius: 0 !important;
+}
+
+.guide-card:hover .guide-card-img img {
+    transform: scale(1.05) !important;
+}
+
+.guide-card-body {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+    padding: 14px !important;
+}
+
+.guide-card-kicker-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 12px !important;
+}
+
+.guide-card-category {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: var(--color-accent, #c89d53) !important;
+    margin: 0 !important;
+}
+
+.guide-card-icon-sm {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: #fdfbf7 !important;
+    border: 1px solid #f0e6d2 !important;
+    font-size: 0.9rem !important;
+    color: var(--color-accent, #c89d53) !important;
+    position: static !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.guide-card .card-title-highlight {
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    color: var(--color-dark, #111827) !important;
+    font-family: var(--font-heading), sans-serif !important;
+}
+
+.guide-card .card-desc-text {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+    min-height: 1.4em !important;
+    color: #4b5563 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+.guide-card-footer {
+    margin-top: auto !important;
+    border-top: 1px solid #f3f4f6 !important;
+    padding-top: 10px !important;
+}
+
+.guide-card .read-more {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    transition: color 0.2s ease !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.guide-card:hover .read-more {
+    color: var(--color-accent, #c89d53) !important;
+}
+
+
+/* -- Guide Card Thumbnail Overlay ---------------------------------- */
+.guide-card-badge {
+    position: absolute !important;
+    bottom: 6px !important;
+    left: 6px !important;
+    background: var(--color-accent, #c89d53) !important;
+    color: #ffffff !important;
+    padding: 4px 6px !important;
+    border-radius: 4px !important;
+    font-size: 0.55rem !important;
+    font-weight: 500 !important;
+    text-transform: capitalize !important;
+    letter-spacing: 0.05em !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    z-index: 2 !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+}
+
+.guide-card-icon-circle {
+    position: absolute !important;
+    top: 16px !important;
+    right: 16px !important;
+    width: 44px !important;
+    height: 44px !important;
+    background: #ffffff !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.25rem !important;
+    color: var(--color-accent, #c89d53) !important;
+    z-index: 2 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
+    border: 2px solid var(--color-accent, #c89d53) !important;
+}
+
+.guide-card-no-img-header {
+    position: relative !important;
+    height: 180px !important;
+    background: #fdfbf7 !important;
+    border-bottom: 1px solid #f0e6d2 !important;
+}
+
+
+
+/* -- Mobile Adjustments for Guide Cards -- */
+@media (max-width: 767px) {
+    .guide-card-img,
+    .guide-card-no-img-header {
+        height: 100px !important;
+    }
+    .guide-card-badge {
+        top: 8px !important;
+        left: 8px !important;
+        font-size: 0.45rem !important;
+        padding: 4px 6px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: calc(100% - 16px) !important;
+    }
+    .guide-card-icon-circle {
+        top: auto !important;
+        bottom: 6px !important;
+        right: 6px !important;
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.85rem !important;
+    }
 }
 

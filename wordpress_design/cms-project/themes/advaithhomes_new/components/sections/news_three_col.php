@@ -63,23 +63,22 @@ foreach ( isset( $regulations['items'] ) ? (array) $regulations['items'] : array
 		'meta'  => isset( $_it['date'] )  ? (string) $_it['date']  : '',
 		'url'   => isset( $_it['url'] )   ? (string) $_it['url']   : '',
 	);
-	if ( '' !== $_rthumb ) {
-		$_rcard['img_url'] = $_rthumb;
-		// overlay: 'overlay' field first, then join badge_lines (legacy)
-		$_roverlay = isset( $_it['overlay'] ) ? (string) $_it['overlay'] : '';
-		if ( '' === $_roverlay && ! empty( $_it['badge_lines'] ) ) {
-			$_roverlay = implode( ' ', (array) $_it['badge_lines'] );
-		}
-		if ( '' !== $_roverlay ) { $_rcard['overlay'] = $_roverlay; }
-	} else {
-		$_rcard['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '📋';
-		// show overlay text as tag badge when no thumbnail
-		$_roverlay = isset( $_it['overlay'] ) ? (string) $_it['overlay'] : '';
-		if ( '' === $_roverlay && ! empty( $_it['badge_lines'] ) ) {
-			$_roverlay = implode( ' ', (array) $_it['badge_lines'] );
-		}
-		if ( '' !== $_roverlay ) { $_rcard['tag'] = $_roverlay; }
+	
+	// ALWAYS set an icon for the left box
+	$_rcard['icon'] = ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '🔥';
+	
+	// Determine overlay tag
+	$_roverlay = isset( $_it['overlay'] ) ? (string) $_it['overlay'] : '';
+	if ( '' === $_roverlay && ! empty( $_it['badge_lines'] ) ) {
+		$_roverlay = implode( ' ', (array) $_it['badge_lines'] );
 	}
+	if ( '' !== $_roverlay ) { $_rcard['tag'] = $_roverlay; }
+	
+	if ( '' !== $_rthumb ) {
+		// Pass thumbnail as a faded background image instead of replacing the left icon!
+		$_rcard['bg_image'] = $_rthumb; 
+	}
+	
 	$reg_cards[] = $_rcard;
 }
 
@@ -90,12 +89,16 @@ foreach ( isset( $hot_topics['items'] ) ? (array) $hot_topics['items'] : array()
 		'title' => isset( $_it['text'] ) ? (string) $_it['text'] : '',
 		'url'   => isset( $_it['url'] )  ? (string) $_it['url']  : '',
 	);
+	
+	// ALWAYS set an icon for the left box
+	$_raw_icon      = isset( $_it['icon'] ) ? trim( (string) $_it['icon'] ) : '';
+	$_tcard['icon'] = '' !== $_raw_icon ? $_raw_icon : '💡';
+	
 	if ( '' !== $_tthumb ) {
-		$_tcard['img_url'] = $_tthumb;
-	} else {
-		$_raw_icon      = isset( $_it['icon'] ) ? trim( (string) $_it['icon'] ) : '';
-		$_tcard['icon'] = '' !== $_raw_icon ? $_raw_icon : '🔥';
+		// Pass thumbnail as a faded background image instead of replacing the left icon!
+		$_tcard['bg_image'] = $_tthumb;
 	}
+	
 	$topic_cards[] = $_tcard;
 }
 

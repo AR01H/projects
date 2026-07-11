@@ -19,7 +19,7 @@ $actions     = isset( $hero['actions'] ) ? (array) $hero['actions'] : array();
 $trust_items = isset( $hero['trust_items'] ) ? (array) $hero['trust_items'] : array();
 $diagram     = isset( $hero['diagram'] ) ? (array) $hero['diagram'] : array();
 $nodes       = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
-$_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+$_default_img = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
 
 $_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
 

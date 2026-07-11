@@ -85,12 +85,12 @@ function adn_category_cms_guides( $slug ) {
 			$_cg_img = $_cgu ? (string) $_cgu : '';
 		}
 		$items[] = array(
-			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : '📚' ),
 			'gradient'    => adn_cms_gradient( $i ),
 			'image'       => $_cg_img,
 			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
-			'category'    => $cat_name,
-			'title'       => '',
+			'category'    => '',
+			'icon'        => ! empty( $post->term_icon ) ? $post->term_icon : ( ! empty( $post->parent_icon ) ? $post->parent_icon : '📚' ),
+			'title'       => $cat_name,
 			'description' => ! empty( $post->_term_desc ) ? $post->_term_desc : '',
 			'read_more'   => SITE_BTN_EXPLORE_ARROW,
 			'url'         => $term_url,
@@ -356,7 +356,7 @@ function adn_category_get_context( $slug = '' ) {
 			$items[] = array(
 				'icon'      => ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $reg['icon'] ) ? (string) $reg['icon'] : '🧮' ),
 				'name'      => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $reg['title'] ) ? (string) $reg['title'] : $key ),
-				'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( SITE_CALCULATORS_URL . '?calc=' . rawurlencode( $key ) ),
+				'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( '/?ah_calc_page=' . rawurlencode( $key ) ),
 				'thumbnail' => $_pclg_thumb,
 			);
 		}

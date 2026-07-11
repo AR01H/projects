@@ -327,6 +327,20 @@ function adn_calculator_shortcode( $atts ) {
 }
 
 /**
+ * Redirect legacy ?calc=KEY links to the proper full page render endpoint.
+ */
+function adn_calculator_legacy_redirect() {
+	if ( isset( $_GET['calc'] ) && '' !== $_GET['calc'] ) {
+		$key = sanitize_key( wp_unslash( $_GET['calc'] ) );
+		if ( adn_calculator_exists( $key ) ) {
+			wp_safe_redirect( home_url( '/?ah_calc_page=' . rawurlencode( $key ) ), 301 );
+			exit;
+		}
+	}
+}
+add_action( 'template_redirect', 'adn_calculator_legacy_redirect', 0 );
+
+/**
  * Intercept ?ah_calc_page=KEY and serve the full calculator detail page
  * (with theme header / footer / sidebar).  Runs before the main renderer.
  */

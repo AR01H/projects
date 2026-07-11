@@ -84,7 +84,8 @@ if ( $has_featured || $has_suggested ) :
 					<?php foreach ( $ctx['suggested_tools'] as $sc ) :
 						$sc_url   = esc_url( isset( $sc['url'] )   ? $sc['url']   : '' );
 						$sc_title = isset( $sc['title'] ) ? $sc['title'] : '';
-						$sc_icon  = isset( $sc['icon'] )  ? $sc['icon']  : '🧮';
+						$sc_raw   = isset( $sc['icon'] ) ? trim( (string) $sc['icon'] ) : '';
+						$sc_icon  = '' !== $sc_raw ? $sc_raw : '💡';
 					?>
 						<a href="<?php echo $sc_url; ?>" class="tc-suggested-item">
 							<span class="tc-suggested-icon"><?php echo adn_icon( $sc_icon ); ?></span>

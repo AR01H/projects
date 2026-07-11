@@ -32,7 +32,13 @@ $_bg = ( isset( $card['gradient'] ) && $card['gradient'] )
 	? $card['gradient']
 	: $_fallbacks[ ( $_num - 1 ) % count( $_fallbacks ) ];
 ?>
-<a <?php if (isset($card['restrict']) && $card['restrict']) { echo 'href="javascript:void(0);"'; }else{ ?> href="<?php echo esc_url( adn_link( $_url ) ); ?>" <?php } ?> class="jny-card<?php echo ! $_image ? ' jny-card--no-img' : ''; ?>">
+<?php
+	$is_restricted = (isset($card['restrict']) && $card['restrict']);
+	$card_classes = 'jny-card';
+	if ( ! $_image ) { $card_classes .= ' jny-card--no-img'; }
+	if ( $is_restricted ) { $card_classes .= ' jny-card--coming-soon'; }
+?>
+<a <?php if ( ! $is_restricted ) { ?> href="<?php echo esc_url( adn_link( $_url ) ); ?>" <?php } ?> class="<?php echo esc_attr( $card_classes ); ?>">
 
 	<?php /* Full-bleed background */ ?>
 	<div class="jny-card__bg"<?php if ( ! $_image ) : ?> style="background:<?php echo esc_attr( $_bg ); ?>;"<?php endif; ?>>
@@ -61,8 +67,8 @@ $_bg = ( isset( $card['gradient'] ) && $card['gradient'] )
 		<?php if ( $_desc ) : ?>
 		<p class="jny-card__desc" title="<?= esc_attr($_desc)?>"><?php echo esc_html( $_desc ); ?></p>
 		<?php endif; ?>
-		<?php if ( isset($card['restrict']) && $card['restrict'] ) {
-			echo '<span class="jny-card__cta" style="border: none;cursor: not-allowed;"> '.adn_icon('⚡').'Coming Soon</span>';
+		<?php if ( $is_restricted ) {
+			echo '<span class="jny-card__cta"> '.adn_icon('⚡').'Coming Soon</span>';
 		}else{
 			echo "<span class='jny-card__cta'>
 				{$_cta_label}

@@ -4657,7 +4657,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   .footer-topbar-inner { flex-wrap: wrap; gap: var(--space-4); }
   .footer-topbar-nl { flex-wrap: wrap; }
   .guides-grid, .guides-grid-listing { grid-template-columns: repeat(2, 1fr); }
-  .guides-carousel .guide-card { flex: 0 0 200px; width: 200px; }
+  .guides-carousel .guide-card { flex: 0 0 280px; width: 280px; }
   .guides-carousel-btn { display: none; }
   .journey-card { flex: 0 0 280px; }
   /* mobile: 3 panels as carousel, one at a time */
@@ -4711,7 +4711,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   .container { padding: 0 16px; }
   .topic-articles-grid { grid-template-columns: 1fr; }
   .guides-grid, .guides-grid-listing { grid-template-columns: 1fr; }
-  .guides-carousel .guide-card { flex: 0 0 180px; width: 180px; }
+  .guides-carousel .guide-card { flex: 0 0 280px; width: 280px; }
   .journey-card { flex: 0 0 260px; }
   .calcs-popular-grid { grid-template-columns: 1fr; }
   /* Footer topbar: stack on mobile */

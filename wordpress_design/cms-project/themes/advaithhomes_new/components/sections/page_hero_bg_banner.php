@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 
 $_img     = ( isset( $hero_img ) && '' !== (string) $hero_img )
     ? esc_url( adn_versioned_url( (string) $hero_img ) )
-    : esc_url( adn_versioned_url( get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg' ) );
+    : esc_url( adn_versioned_url( get_template_directory_uri() . THEME_DEFAULT_HERO_IMG ) );
 
 $_circles = ! isset( $circles ) || (bool) $circles;
 ?>

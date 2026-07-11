@@ -282,11 +282,9 @@ get_header();
 		var html = '';
 		articles.forEach( function ( a ) {
 			html += '<a href="' + x( a.url ) + '" class="pra-card">';
-			if ( a.thumbnail ) {
-				html += '<div class="pra-thumb"><img src="' + x( a.thumbnail ) + '" alt="" loading="lazy"></div>';
-			} else {
-				html += '<div class="pra-thumb pra-thumb--placeholder"><svg aria-hidden="true" width="40" height="48" viewBox="0 0 40 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 2h20l12 12v32a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z" fill="var(--slate-200,#e5e7eb)" stroke="var(--slate-300,#d1d5db)" stroke-width="1.5"/><path d="M26 2v12h12" fill="none" stroke="var(--slate-300,#d1d5db)" stroke-width="1.5"/><rect x="10" y="22" width="20" height="2" rx="1" fill="var(--slate-400,#9ca3af)"/><rect x="10" y="28" width="16" height="2" rx="1" fill="var(--slate-400,#9ca3af)"/><rect x="10" y="34" width="12" height="2" rx="1" fill="var(--slate-400,#9ca3af)"/></svg></div>';
-			}
+			var defaultThumb = "<?php echo esc_js( esc_url( get_template_directory_uri() . THEME_DEFAULT_TOPIC_IMG . '?v=' . LOCAL_CACHE_VERSION ) ); ?>";
+			var thumb = a.thumbnail || defaultThumb;
+			html += '<div class="pra-thumb"><img src="' + x( thumb ) + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + defaultThumb + '\';"></div>';
 			html += '<div class="pra-body">';
 			html += '<p class="pra-title">' + x( a.title ) + '</p>';
 			if ( a.excerpt ) {

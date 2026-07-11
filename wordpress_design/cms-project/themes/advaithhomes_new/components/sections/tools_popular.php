@@ -27,8 +27,14 @@ if ( empty( $popular_tools ) ) { return; }
 					$badge = isset( $calc['highlight'] ) && $calc['highlight'] ? $calc['highlight'] : '';
 				?>
 					<a href="<?php echo $url; ?>" class="tc-pop-card">
-						<div class="tc-pop-card-icon">
-							<?php echo adn_icon( $icon ); ?>
+						<?php
+						$thumb = isset( $calc['thumbnail'] ) && '' !== $calc['thumbnail'] ? (string) $calc['thumbnail'] : '';
+						if ( empty( $thumb ) ) {
+							$thumb = get_template_directory_uri() . THEME_DEFAULT_CALC_IMG . '?v=' . LOCAL_CACHE_VERSION;
+						}
+						?>
+						<div class="tc-pop-card-icon" style="padding:0; background:transparent;">
+							<img src="<?php echo esc_url( $thumb ); ?>" alt="" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
 						</div>
 						<div class="tc-pop-card-body">
 							<?php if ( $badge ) : ?>

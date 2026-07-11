@@ -145,7 +145,10 @@ adn_page_open( $_open_ctx );
 
 				<div class="topic-articles-grid">
 					<?php foreach ( $ctx['articles'] as $article ) : ?>
-						<?php adn_component( 'cards/guide_listing_card', array( 'item' => $article ) ); ?>
+						<?php 
+						unset( $article['category'] );
+						adn_component( 'cards/guide_listing_card', array( 'item' => $article ) ); 
+						?>
 					<?php endforeach; ?>
 				</div>
 

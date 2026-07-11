@@ -46,7 +46,6 @@ $grid_items  = array_slice( $all_tools, 4 );
 				<div class="tc-widget-title">
 					<span class="tc-widget-icon">🧮</span>
 					<h2><?php esc_html_e( 'Featured Calculators', ADN_TEXT_DOMAIN ); ?></h2>
-					<span class="calc-total-badge"><?php echo esc_html( $total ); ?></span>
 				</div>
 			</div>
 
@@ -59,8 +58,14 @@ $grid_items  = array_slice( $all_tools, 4 );
 					class="tc-hero-calc-card"
 					data-category="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_key', (array)($hero_item['categories']??[]) ) ) ); ?>"
 				>
-					<div class="tc-hero-calc-icon">
-						<?php echo adn_icon( $hero_item['icon'] ?? '🧮' ); ?>
+					<?php
+					$hero_thumb = isset( $hero_item['thumbnail'] ) && '' !== $hero_item['thumbnail'] ? (string) $hero_item['thumbnail'] : '';
+					if ( empty( $hero_thumb ) ) {
+						$hero_thumb = get_template_directory_uri() . THEME_DEFAULT_CALC_IMG . '?v=' . LOCAL_CACHE_VERSION;
+					}
+					?>
+					<div class="tc-hero-calc-icon" style="padding:0; background:transparent;">
+						<img src="<?php echo esc_url( $hero_thumb ); ?>" alt="" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
 					</div>
 					<div class="tc-hero-calc-body">
 						<h3><?php echo esc_html( $hero_item['title'] ?? '' ); ?></h3>
@@ -74,11 +79,15 @@ $grid_items  = array_slice( $all_tools, 4 );
 				<?php /* Side list — next 3 calculators as mini_card rows */ ?>
 				<div class="tc-all-side-list">
 					<?php foreach ( $side_items as $side ) :
+						$side_thumb = isset( $side['thumbnail'] ) && '' !== $side['thumbnail'] ? (string) $side['thumbnail'] : '';
+						if ( empty( $side_thumb ) ) {
+							$side_thumb = get_template_directory_uri() . THEME_DEFAULT_CALC_IMG . '?v=' . LOCAL_CACHE_VERSION;
+						}
 						adn_component( 'cards/mini_card', array( 'card' => array(
-							'icon'  => $side['icon']  ?? '🧮',
-							'title' => $side['title'] ?? '',
-							'tag'   => ! empty( $side['highlight'] ) ? $side['highlight'] : '',
-							'url'   => $side['url']   ?? '',
+							'img_url' => $side_thumb,
+							'title'   => $side['title'] ?? '',
+							'tag'     => ! empty( $side['highlight'] ) ? $side['highlight'] : '',
+							'url'     => $side['url']   ?? '',
 						) ) );
 					endforeach; ?>
 				</div>

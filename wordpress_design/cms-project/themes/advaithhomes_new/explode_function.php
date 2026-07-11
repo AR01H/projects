@@ -163,6 +163,7 @@ function adn_enqueue_template_specific_assets() {
         wp_localize_script( 'adn-page-newsall-script', 'adnNews', array(
             'apiBase'   => rest_url( ADN_API_NS . '/news' ),
             'restNonce' => wp_create_nonce( 'wp_rest' ),
+            'defaultImg'=> get_template_directory_uri() . THEME_DEFAULT_NEWS_IMG . '?v=' . LOCAL_CACHE_VERSION,
             'perPage'   => 8,
             'i18n'      => array(
                 'empty'    => __( 'No news found. Try a different filter or search.', ADN_TEXT_DOMAIN ),

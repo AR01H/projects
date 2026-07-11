@@ -283,7 +283,7 @@ function adn_home_cms_journey_cards() {
 			'gradient'    => adn_cms_gradient( $i ),
 			'title'       => $name,
 			'description' => isset( $term->description ) ? (string) $term->description : '',
-			'link_label'  => sprintf( adn_term( 'content.explore_guides', 'Explore %s →' ), $name ),
+			'link_label'  => adn_term( 'buttons.explore', 'Explore' ),
 			'url'         => adn_cms_term_url( $term )
 		);
 	}
@@ -324,8 +324,8 @@ function adn_home_cms_guide_items() {
 			'gradient'    => adn_cms_gradient( $i ),
 			'image'       => $_term_img_url,
 			'parent_name' => ! empty( $post->parent_name ) ? $post->parent_name : '',
-			'category'    => $cat_name,
-			'title'       => '',
+			'category'    => ! empty( $post->parent_name ) ? $post->parent_name : '',
+			'title'       => $cat_name,
 			'description' => ! empty( $post->_term_desc ) ? $post->_term_desc : '',
 			'read_more'   => adn_term( 'content.read_more', 'Explore' ),
 			'url'         => $term_url,

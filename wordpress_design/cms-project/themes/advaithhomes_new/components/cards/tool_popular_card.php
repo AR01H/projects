@@ -12,6 +12,11 @@ $calc      = isset( $calc ) && is_array( $calc ) ? $calc : array();
 $url       = esc_url( adn_link( isset( $calc['url'] ) ? $calc['url'] : '' ) );
 $thumbnail = isset( $calc['thumbnail'] ) && '' !== $calc['thumbnail'] ? (string) $calc['thumbnail'] : '';
 $highlight = isset( $calc['highlight'] ) && '' !== $calc['highlight'] ? (string) $calc['highlight'] : '';
+
+// Fallback to default calculator image if none is provided
+if ( empty( $thumbnail ) ) {
+    $thumbnail = get_template_directory_uri() . THEME_DEFAULT_CALC_IMG . '?v=' . LOCAL_CACHE_VERSION;
+}
 ?>
 <a href="<?php echo $url; ?>" class="popular-calc-card">
 

@@ -14,21 +14,16 @@ $url  = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 
 	<?php /* ── Image / gradient area ── */ ?>
 	<div class="glc-img">
-		<?php if ( ! empty( $item['thumbnail'] ) ) : ?>
-			<img src="<?php echo esc_url( $item['thumbnail'] ); ?>"
-			     alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>"
-			     loading="lazy" class="glc-img-photo">
-		<?php else : ?>
-			<?php
-			$_img_class = isset( $item['img_class'] ) ? ' ' . sanitize_html_class( $item['img_class'] ) : '';
-			$_icon      = isset( $item['icon'] ) ? (string) $item['icon'] : '';
-			?>
-			<div class="glc-img-gradient<?php echo $_img_class; ?>">
-				<?php if ( '' !== $_icon ) : ?>
-					<span class="glc-img-icon" aria-hidden="true"><?php echo adn_icon( $_icon ); ?></span>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
+		<?php
+		$thumbnail = ! empty( $item['thumbnail'] ) ? (string) $item['thumbnail'] : '';
+		if ( empty( $thumbnail ) ) {
+			$thumbnail = get_template_directory_uri() . THEME_DEFAULT_TOPIC_IMG . '?v=' . LOCAL_CACHE_VERSION;
+		}
+		?>
+		<img src="<?php echo esc_url( $thumbnail ); ?>"
+		     alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>"
+		     loading="lazy" class="glc-img-photo"
+		     onerror="this.onerror=null;this.src='<?php echo esc_url( get_template_directory_uri() . THEME_DEFAULT_TOPIC_IMG . '?v=' . LOCAL_CACHE_VERSION ); ?>';" />
 
 		<?php /* Category tag overlaid on image */ ?>
 		<?php if ( ! empty( $item['category'] ) ) : ?>

@@ -15,11 +15,13 @@ $url      = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 ?>
 <div class="news-card" data-cat="<?php echo esc_attr( $cat_key ); ?>">
 	<a href="<?php echo $url; ?>" class="news-card-img<?php echo $bg_class; ?>" tabindex="-1" aria-hidden="true">
-		<?php if ( ! empty( $item['thumbnail'] ) ) : ?>
-			<img src="<?php echo esc_url( $item['thumbnail'] ); ?>" alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>" style="width:100%;height:100%;object-fit:cover;display:block;" />
-		<?php else : ?>
-			<span class="news-card-icon"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></span>
-		<?php endif; ?>
+		<?php
+		$thumbnail = ! empty( $item['thumbnail'] ) ? (string) $item['thumbnail'] : '';
+		if ( empty( $thumbnail ) ) {
+			$thumbnail = get_template_directory_uri() . THEME_DEFAULT_NEWS_IMG . '?v=' . LOCAL_CACHE_VERSION;
+		}
+		?>
+		<img src="<?php echo esc_url( $thumbnail ); ?>" alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.onerror=null;this.src='<?php echo esc_url( get_template_directory_uri() . THEME_DEFAULT_NEWS_IMG . '?v=' . LOCAL_CACHE_VERSION ); ?>';" />
 	</a>
 
 	<div class="news-card-body">

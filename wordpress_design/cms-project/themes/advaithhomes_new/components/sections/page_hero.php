@@ -38,7 +38,7 @@ $_trust = isset( $hero['trust_items'] ) && is_array( $hero['trust_items'] )
 	? (array) $hero['trust_items']
 	: array();
 
-$_default_img  = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+$_default_img  = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
 // hero['image_id'] wins (dynamic parent-term pages); else WP featured image; else default.
 $_hero_img_id  = ! empty( $hero['image_id'] ) ? (int) $hero['image_id'] : 0;
 $_hero_img     = adn_versioned_url( $_hero_img_id

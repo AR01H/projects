@@ -10,7 +10,7 @@ $_title = esc_html( isset( $_h['title'] )       ? (string) $_h['title']       : 
 $_desc  = esc_html( isset( $_h['description'] ) ? (string) $_h['description'] : '' );
 $_trust = isset( $_h['trust_items'] ) ? (array) $_h['trust_items'] : array();
 
-$_default_img = get_template_directory_uri() . '/assets/images/backgrounds/home_hero.jpg';
+$_default_img = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
 $_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
 ?>
 <section class="guidance-hero">

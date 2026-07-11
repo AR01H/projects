@@ -41,6 +41,7 @@ $overlay     = isset( $card['overlay'] )     ? (string) $card['overlay']     : '
 $tooltip     = isset( $card['tooltip'] )     ? (string) $card['tooltip']     : '';
 $desc        = isset( $card['desc'] )        ? (string) $card['desc']        : '';
 $thumb_label = isset( $card['thumb_label'] ) ? (string) $card['thumb_label'] : '';
+$bg_image    = isset( $card['bg_image'] )    ? (string) $card['bg_image']    : '';
 
 // Determine unified thumb modifier: photo > gradient > badge > icon
 $_thumb_mod = '';
@@ -102,6 +103,10 @@ $el_attr = $url
 
 	<?php if ( $url ) : ?>
 		<span class="mini-card-arrow" aria-hidden="true">›</span>
+	<?php endif; ?>
+
+	<?php if ( '' !== $bg_image ) : ?>
+		<div class="mini-card-bg-fade" style="background-image: url('<?php echo esc_url( $bg_image ); ?>');"></div>
 	<?php endif; ?>
 
 </<?php echo $el; ?>>

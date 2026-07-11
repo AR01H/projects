@@ -20,6 +20,7 @@
     var CFG = window.adnNews || {};
     var API = CFG.apiBase || '';
     var PER_PAGE = parseInt( CFG.perPage, 10 ) || 9;
+    var DEFAULT_IMG = CFG.defaultImg || '';
     var I18N = CFG.i18n || {};
 
     // DOM
@@ -207,7 +208,7 @@
         var catKey  = item.cat_key || 'news';
         var date    = item.date || '';
         var read    = item.read_time || '';
-        var image   = item.image || '';
+        var image   = item.image || DEFAULT_IMG;
 
         var card = el( 'div', 'news-card' );
         card.setAttribute( 'data-cat', catKey );
@@ -223,6 +224,10 @@
             img.alt = title;
             img.loading = 'lazy';
             img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+            img.onerror = function() {
+                this.onerror = null;
+                this.src = DEFAULT_IMG;
+            };
             imgLink.appendChild( img );
         } else {
             var icon = el( 'span', 'news-card-icon' );
