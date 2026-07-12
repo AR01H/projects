@@ -305,7 +305,9 @@ adn_page_open( $_open_ctx );
 $_fi_cat_d   = isset( $ctx['slug'] ) ? AH_Category_Settings::get_all( sanitize_key( $ctx['slug'] ) ) : array();
 $_fi_cat_sec = ( isset( $_fi_cat_d['featured_in']['section'] ) && '' !== $_fi_cat_d['featured_in']['section'] )
 	? sanitize_key( $_fi_cat_d['featured_in']['section'] ) : '';
-adn_component( 'parts/featured_in', array( 'section' => $_fi_cat_sec ) );
+if ( ! empty( $_fi_cat_sec ) ) {
+	adn_component( 'parts/featured_in', array( 'section' => $_fi_cat_sec ) );
+}
 ?>
 
 <?php adn_page_close( $ctx ); ?>

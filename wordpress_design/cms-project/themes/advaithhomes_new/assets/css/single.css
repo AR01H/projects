@@ -608,6 +608,10 @@
     animation:
         adn-quote-in     0.7s cubic-bezier(.16,1,.3,1) both,
         adn-quote-border 4s ease-in-out 0.7s infinite;
+    font-weight: bold;
+    background: var(--gold-50);
+    color: var(--secondary-color-dark);
+    border: unset;
 }
 
 /* Quick facts — scale in with slight upward lift */
@@ -671,6 +675,9 @@
     text-decoration-color: rgba(30,58,47,0.35);
     text-underline-offset: 3px;
     transition: text-decoration-color 0.15s;
+    color: var(--color-accent);
+    font-weight: bold;
+    border: 0px;
 }
 .article-body a:hover {
     text-decoration-color: var(--color-accent, #c9a84c);
@@ -689,12 +696,14 @@
     color: var(--color-heading, #111827);
     line-height: 1.75;
     position: relative;
+    font-style: normal;
+    font-family: cursive;
 }
 .article-body blockquote::before {
-    content: '\201C';
+    content: '🏡';
     position: absolute;
-    top: 4px;
-    left: 12px;
+    /* top: 4px;
+    left: 12px; */
     font-size: 3rem;
     color: var(--color-accent, #c9a84c);
     opacity: 0.25;
@@ -744,6 +753,31 @@
     border-radius: 10px;
     transition: background 0.18s, color 0.18s;
 }
+.article-body section > details:nth-of-type(3n) summary{
+    background-color: var(--client-color-light);
+}
+.article-body section > details:nth-of-type(2n) summary{
+    background-color: var(--gold-50);
+}
+
+.article-body ul,
+.article-body ol {
+    padding: 10px;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.article-body ul:nth-child(2n),
+.article-body ol:nth-child(2n) {
+    background: var(--secondary-color-light);
+}
+
+.article-body ul:nth-child(1n+3),
+.article-body ul:nth-child(2n) {
+    background: var(--client-color-light);
+}
+
+
 .article-body summary::-webkit-details-marker { display: none; }
 .article-body details[open] > summary {
     background: rgba(30,58,47,.06);

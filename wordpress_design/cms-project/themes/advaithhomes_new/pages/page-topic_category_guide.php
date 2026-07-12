@@ -287,13 +287,37 @@ adn_page_open( $_open_ctx );
 			'heading' => $ctx['calculators']['heading'],
 			'tag'     => 'h2',
 		) ); ?>
-		<div class="topic-calc-carousel-wrap">
-			<div class="topic-calc-carousel">
+		<div class="topic-calc-carousel-wrap cgt-carousel-wrap">
+			<div class="topic-calc-carousel cgt-track">
 				<?php foreach ( $ctx['calculators']['items'] as $card ) : ?>
 					<?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
 				<?php endforeach; ?>
 			</div>
+			<button class="cgt-arrow cgt-arrow--prev" aria-label="<?php esc_attr_e( 'Previous', ADN_TEXT_DOMAIN ); ?>">
+				<i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+			</button>
+			<button class="cgt-arrow cgt-arrow--next" aria-label="<?php esc_attr_e( 'Next', ADN_TEXT_DOMAIN ); ?>">
+				<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+			</button>
 		</div>
+		<script>
+		(function(){
+			var wrap  = document.currentScript.previousElementSibling;
+			var track = wrap.querySelector('.cgt-track');
+			var prev  = wrap.querySelector('.cgt-arrow--prev');
+			var next  = wrap.querySelector('.cgt-arrow--next');
+			if(!track||!prev||!next){ return; }
+			function cardW(){ var c=track.children[0]; return c ? c.offsetWidth + parseInt(getComputedStyle(track).gap||0) : 320; }
+			function upd(){
+				prev.classList.toggle('cgt-arrow--hidden', track.scrollLeft <= 2);
+				next.classList.toggle('cgt-arrow--hidden', track.scrollLeft >= track.scrollWidth - track.clientWidth - 2);
+			}
+			prev.addEventListener('click', function(){ track.scrollBy({left:-cardW()*2, behavior:'smooth'}); });
+			next.addEventListener('click', function(){ track.scrollBy({left: cardW()*2, behavior:'smooth'}); });
+			track.addEventListener('scroll', upd, {passive:true});
+			upd();
+		}());
+		</script>
 	</div>
 </section>
 <?php endif; ?>

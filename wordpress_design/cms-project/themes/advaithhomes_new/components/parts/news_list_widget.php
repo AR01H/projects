@@ -86,7 +86,11 @@ if ( empty( $items ) && '' === $title ) { return; }
 				<a href="<?php echo esc_url( adn_link( isset( $first_item['url'] ) ? $first_item['url'] : '' ) ); ?>" class="news-hero-card__link">
 					<?php if ( ! empty( $first_item['img_url'] ) ) : ?>
 					<div class="news-hero-card__img-wrap">
-						<img src="<?php echo esc_url( $first_item['img_url'] ); ?>" alt="" class="news-hero-card__img" />
+						<?php 
+							$fallback = esc_url( get_template_directory_uri() . THEME_DEFAULT_NEWS_IMG . '?v=' . LOCAL_CACHE_VERSION );
+							$alt_text = esc_attr( isset( $first_item['title'] ) ? $first_item['title'] : '' );
+						?>
+						<img src="<?php echo esc_url( $first_item['img_url'] ); ?>" alt="<?php echo $alt_text; ?>" onerror="this.onerror=null;this.src='<?php echo $fallback; ?>';" class="news-hero-card__img" />
 						<div class="news-hero-card__read-time-top" style="position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.95); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; color: var(--color-text); font-weight: 600; display: flex; align-items: center; gap: 4px; z-index: 2; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
 							<?php echo adn_icon( 'clock' ); ?> <span>5 min read</span>
 						</div>

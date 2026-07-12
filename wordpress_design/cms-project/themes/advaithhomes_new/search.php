@@ -124,7 +124,7 @@ if ( have_posts() ) {
 				<?php /* Search refinement bar */ ?>
 				<div class="search-refine-bar">
 					<form class="search-refine-form" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-						<span class="search-refine-icon" aria-hidden="true">🔍</span>
+						<span class="search-refine-icon" aria-hidden="true"><i class="fa-solid fa-search"></i></span>
 						<input type="search" name="s" class="search-refine-input"
 						       placeholder="Search guides, articles&hellip;"
 						       value="<?php echo esc_attr( $_query ); ?>"
@@ -180,33 +180,6 @@ if ( have_posts() ) {
 				<?php endif; ?>
 			</main>
 
-			<?php /* ── SIDEBAR ── */ ?>
-			<aside class="article-sidebar search-sidebar">
-
-				<?php /* Browse by topic */ ?>
-				<?php if ( ! empty( $_guide_parents_items ) ) : ?>
-					<?php adn_component( 'parts/sidebar_guide_parents', array( 'guide_parents' => array(
-						'heading' => adn_term( 'sidebar.browse_topics', 'Browse by Topic' ),
-						'items'   => $_guide_parents_items,
-					) ) ); ?>
-				<?php endif; ?>
-
-				<?php /* Latest news */ ?>
-				<?php if ( ! empty( $_sidebar_news ) ) : ?>
-					<?php adn_component( 'parts/post_sidebar_news', array( 'latest_news' => $_sidebar_news ) ); ?>
-				<?php endif; ?>
-
-				<?php /* Newsletter */ ?>
-				<?php adn_component( 'parts/post_sidebar_newsletter', array( 'newsletter' => array(
-					'icon'         => '📬',
-					'heading'      => defined( 'SITE_NEWSLETTER_TITLE' ) ? SITE_NEWSLETTER_TITLE : 'Stay Informed',
-					'description'  => defined( 'SITE_NEWSLETTER_DESC' )  ? SITE_NEWSLETTER_DESC  : 'Get the latest guides and updates.',
-					'placeholder'  => defined( 'SITE_NEWSLETTER_PH' )    ? SITE_NEWSLETTER_PH    : 'Your email address',
-					'button_label' => defined( 'SITE_BTN_SUBSCRIBE' )    ? SITE_BTN_SUBSCRIBE    : 'Subscribe',
-					'note'         => defined( 'SITE_NEWSLETTER_NOTE' )  ? SITE_NEWSLETTER_NOTE  : 'No spam. Unsubscribe anytime.',
-				) ) ); ?>
-
-			</aside>
 
 		</div>
 	</div>

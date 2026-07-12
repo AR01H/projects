@@ -278,7 +278,7 @@ function adn_category_get_context( $slug = '' ) {
 	// ── 5. Guides: CMS articles for this parent slug ─────────────────
 	$guides = array(
 		'heading' => array(
-			'title'      => sprintf( adn_term( 'category_page.explore_guides_title', 'Explore %s %s' ), $name, adn_term( 'taxonomy.parent_plural', 'Guides' ) ),
+			'title'      => sprintf( adn_term( 'category_page.explore_guides_title', 'Explore %s' ), adn_term( 'taxonomy.parent_plural', 'Guides' ) ),
 			'link_label' => adn_term( 'content.view_all_guides', 'View all →' ),
 			'link_url'   => SITE_GUIDES_URL,
 		),
@@ -364,7 +364,7 @@ function adn_category_get_context( $slug = '' ) {
 			$calculators = array(
 				'heading' => array(
 					'title'      => ! empty( $_cs_calc['heading'] ) ? (string) $_cs_calc['heading'] : sprintf( adn_term( 'category_page.calculators_heading', '%s for %s' ), SITE_TOOLS_PLURAL, $name ),
-					'link_label' => sprintf( adn_term( 'category_page.related_tools_heading', 'View all %s →' ), strtolower( SITE_TOOLS_PLURAL ) ),
+					'link_label' => adn_term( 'category_page.related_tools_heading', 'View all →' ),
 					'link_url'   => SITE_CALCULATORS_URL,
 				),
 				'items' => $items,

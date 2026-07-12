@@ -522,6 +522,12 @@ class AH_Workflow_Manager {
 				);
 				
 				$mailer->isHTML( $is_html );
+
+				$mailer->SMTPDebug   = 2; // 0 = off once fixed
+				$mailer->Debugoutput = function ( $str, $level ) {
+					error_log( "PHPMailer debug: $str" );
+				};
+
 			};
 			add_action( 'phpmailer_init', $smtp_hook );
 		}

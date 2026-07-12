@@ -59,10 +59,10 @@ $_logos = (array) $_data['logos'];
 						<div class="fi-logo">
 							<?php if ( '' !== $_href ) : ?>
 								<a href="<?php echo $_href; ?>" target="_blank" rel="noopener noreferrer" tabindex="-1">
-									<img src="<?php echo $_img; ?>" alt="<?php echo $_alt; ?>" loading="lazy">
+									<img src="<?php echo $_img; ?>" alt="<?php echo $_alt; ?>" loading="eager">
 								</a>
 							<?php else : ?>
-								<img src="<?php echo $_img; ?>" alt="<?php echo $_alt; ?>" loading="lazy">
+								<img src="<?php echo $_img; ?>" alt="<?php echo $_alt; ?>" loading="eager">
 							<?php endif; ?>
 						</div>
 					<?php endforeach; ?>
@@ -71,3 +71,53 @@ $_logos = (array) $_data['logos'];
 		</div>
 	</div>
 </section>
+<script>
+(function(){
+	var section = document.currentScript.previousElementSibling;
+	var track   = section ? section.querySelector('.fi-track') : null;
+	if (!track) return;
+
+	/* Start paused so the animation does not begin until we've measured */
+	track.style.animationPlayState = 'paused';
+
+	function measureAndStart() {
+		var logos   = track.querySelectorAll('.fi-logo');
+		var total   = logos.length;
+		if (!total) { track.style.animationPlayState = 'running'; return; }
+
+		/* 4 PHP passes rendered — measure first N logos = one pass */
+		var passLen = Math.round(total / 4);
+		var w = 0;
+		for (var i = 0; i < passLen; i++) {
+			var st = window.getComputedStyle(logos[i]);
+			w += logos[i].getBoundingClientRect().width
+			   + parseFloat(st.marginRight || 0)
+			   + parseFloat(st.marginLeft  || 0);
+		}
+
+		if (w > 0) {
+			track.style.setProperty('--fi-scroll-x', '-' + Math.round(w) + 'px');
+		}
+
+		/* Unpause only after the property is set — animation starts seamlessly */
+		track.style.animationPlayState = '';
+	}
+
+	/* Use requestAnimationFrame so the browser has finished layout/paint */
+	requestAnimationFrame(function() {
+		requestAnimationFrame(measureAndStart);
+	});
+
+	/* Re-measure on resize (debounced) */
+	var _rt;
+	window.addEventListener('resize', function() {
+		clearTimeout(_rt);
+		_rt = setTimeout(function() {
+			track.style.animationPlayState = 'paused';
+			requestAnimationFrame(function() {
+				requestAnimationFrame(measureAndStart);
+			});
+		}, 120);
+	});
+}());
+</script>

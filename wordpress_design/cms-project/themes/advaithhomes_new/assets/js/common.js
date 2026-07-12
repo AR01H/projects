@@ -44,10 +44,9 @@
             /* position overlay flush below the sticky header (accounts for pre-header bar) */
             var hdr = document.getElementById('siteHeader') || document.querySelector('.site-header');
             if (hdr) {
-                var hdrBottom = hdr.getBoundingClientRect().bottom;
-                menu.style.top = hdrBottom + 'px';
-                menu.style.maxHeight = (window.innerHeight - hdrBottom) + 'px';
+                // height is completely handled by CSS (height: calc(100dvh - 60px))
             }
+            document.body.classList.toggle('nav-open', open);
 
             if (open) {
                 /* make visible first, then trigger transition on next frame */

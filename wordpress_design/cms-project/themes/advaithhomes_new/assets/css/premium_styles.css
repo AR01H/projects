@@ -285,8 +285,8 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 
 /* ─── 13b. Section headers — refined, not oversized ───────── */
-.section-header,
-.section-header-wrap { margin-bottom: 18px !important; }
+/* .section-header, */
+/* .section-header-wrap { margin-bottom: 18px !important; } */
 
 /* Tighter heading size inside section headers only */
 .section-header     > h2,
@@ -2003,7 +2003,8 @@ body::after {
     .fi-label::before,
     .fi-label::after { width: 18px !important; }
     .fi-logo img { height: 30px !important; max-width: 118px !important; }
-    .fi-track    { gap: 34px !important; }
+    .fi-track    { gap: 0 !important; }
+    .fi-logo     { margin-right: 34px !important; }
 }
 
 
@@ -3604,7 +3605,7 @@ html.adn-reveal .acard-stat::before {
 }
 
 .guide-card:hover {
-    box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.01) !important;
 }
 
 .guide-card-img {
@@ -3687,7 +3688,6 @@ html.adn-reveal .acard-stat::before {
 .guide-card-footer {
     margin-top: auto !important;
     border-top: 1px solid #f3f4f6 !important;
-    padding-top: 10px !important;
 }
 
 .guide-card .read-more {
@@ -3769,6 +3769,7 @@ html.adn-reveal .acard-stat::before {
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         max-width: calc(100% - 16px) !important;
+        height: min-content;
     }
     .guide-card-icon-circle {
         top: auto !important;

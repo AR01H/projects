@@ -571,7 +571,7 @@ function adn_topic_category_get_context() {
 		$ctx['calculators'] = array(
 			'heading' => array(
 				'title'      => $parent_label . ' ' . SITE_TOOLS_PLURAL,
-				'link_label' => 'View all ' . strtolower( SITE_TOOLS_PLURAL ) . ' →',
+				'link_label' => 'View all →',
 				'link_url'   => home_url( SITE_CALCULATORS_URL ),
 			),
 			'items' => $calc_items,

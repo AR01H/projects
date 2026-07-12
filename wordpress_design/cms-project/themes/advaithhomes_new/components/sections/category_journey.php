@@ -76,20 +76,52 @@ $_total = count( $steps );
 
 	</div>
 
+	<?php if ( count( $steps ) > 2 ) : ?>
+	<div class="jny2-nav">
+		<button class="jny2-nav__btn jny2-nav__btn--prev" aria-label="<?php esc_attr_e( 'Previous', 'adn' ); ?>" disabled>&#8592;</button>
+		<button class="jny2-nav__btn jny2-nav__btn--next" aria-label="<?php esc_attr_e( 'Next', 'adn' ); ?>">&#8594;</button>
+	</div>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $steps ) ) : ?>
 	<script>
 	(function(){
-		var wrap = document.currentScript.parentElement.closest('.jny2-wrap');
+		var wrap  = document.currentScript.parentElement.closest('.jny2-wrap');
 		if (!wrap) { return; }
-		if (!('IntersectionObserver' in window)) { wrap.classList.add('jny2--animate'); return; }
-		var io = new IntersectionObserver(function(entries){
-			entries.forEach(function(e){
-				if (!e.isIntersecting) { return; }
-				e.target.classList.add('jny2--animate');
-				io.unobserve(e.target);
-			});
-		}, { threshold: 0.12 });
-		io.observe(wrap);
+
+		/* Scroll-reveal */
+		if (!('IntersectionObserver' in window)) { wrap.classList.add('jny2--animate'); }
+		else {
+			var io = new IntersectionObserver(function(entries){
+				entries.forEach(function(e){
+					if (!e.isIntersecting) { return; }
+					e.target.classList.add('jny2--animate');
+					io.unobserve(e.target);
+				});
+			}, { threshold: 0.12 });
+			io.observe(wrap);
+		}
+
+		/* Arrow navigation */
+		var track = wrap.querySelector('.jny2-steps');
+		var prev  = wrap.querySelector('.jny2-nav__btn--prev');
+		var next  = wrap.querySelector('.jny2-nav__btn--next');
+		if (!track || !prev || !next) { return; }
+
+		function cardWidth() {
+			var c = track.querySelector('.jny2-step');
+			var g = parseInt(getComputedStyle(track).gap) || 16;
+			return c ? c.offsetWidth + g : 220;
+		}
+		function sync() {
+			prev.disabled = track.scrollLeft <= 2;
+			next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+		}
+		prev.addEventListener('click', function(){ track.scrollBy({ left: -cardWidth(), behavior: 'smooth' }); });
+		next.addEventListener('click', function(){ track.scrollBy({ left:  cardWidth(), behavior: 'smooth' }); });
+		track.addEventListener('scroll', sync, { passive: true });
+		window.addEventListener('resize', sync);
+		sync();
 	}());
 	</script>
 	<?php endif; ?>

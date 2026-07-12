@@ -262,7 +262,7 @@
 /* ── Analytics & Data ────────────────────────────────────────────────────── */
 .fa-chart-column::before      {  }
 .fa-chart-pie::before         { color: var(--color-navy-mid-hover); }
-.fa-magnifying-glass::before  { color: #636e72; }
+
 .fa-magnifying-glass-plus::before {  }
 .fa-flask::before             { color: var(--color-navy-mid-hover); }
 .fa-vial::before              { color: #00b894; }

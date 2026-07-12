@@ -155,17 +155,18 @@ img{max-width:100%;height:auto;display:block}a{text-decoration:none;color:inheri
 .jny2-step__circle { width:var(--jny-circle); height:var(--jny-circle); border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--color-white); border:2px solid rgba(30,58,47,0.08); box-shadow:0 6px 12px rgba(22,33,28,0.06); color:var(--color-primary); font-weight:700; font-size:0.95rem; transition:background 0.22s ease, color 0.22s ease; transform:none; }
 .jny2-step__circle .ah-ico, .jny2-step__circle i { font-size:1.1rem; }
 
-/* Rail between steps */
+/* Rail between steps — extends into the gap to meet the arrow circle */
 .jny2-step:not(.jny2-step--last) .jny2-step__body::after {
   content: '';
   position: absolute;
   top: calc(var(--jny-circle) / 2 - var(--jny-rail-h) / 2 + 6px);
   left: calc(50% + var(--jny-circle) / 2 + 6px);
-  width: calc(100% - var(--jny-circle));
+  /* extend past card edge into the gap where the arrow sits: gap(20px) + arrow(28px)/2 = 34px */
+  width: calc(100% - var(--jny-circle) + 34px);
   height: var(--jny-rail-h);
   background: linear-gradient(90deg, rgba(30,58,47,0.06), rgba(30,58,47,0.12));
   border-radius: 6px;
-  z-index:2;
+  z-index: 2;
 }
 
 /* Body content sits below bubble */

@@ -643,6 +643,9 @@ filter: brightness(0.92);
     position: relative;
     z-index: 1000;
 }
+body.nav-open .adn-preheader {
+    display: none !important;
+}
 
 .adn-preheader-text {
     display: inline-block;

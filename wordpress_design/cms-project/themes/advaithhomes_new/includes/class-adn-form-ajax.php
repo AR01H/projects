@@ -80,7 +80,7 @@ class ADN_Form_Ajax {
 				'postcode'         => $postcode,
 				'client_timestamp' => $client_timestamp,
 				'server_timestamp' => $server_timestamp,
-			), $all_data ), true );
+			), $all_data ) );
 		}
 
 		wp_send_json_success( array( 'message' => "Thank you {$name}! We've received your enquiry and will be in touch soon." ) );
@@ -149,7 +149,7 @@ class ADN_Form_Ajax {
 				'i_am'             => $i_am,
 				'client_timestamp' => $client_timestamp,
 				'server_timestamp' => $server_timestamp,
-			), true );
+			) );
 		}
 
 		wp_send_json_success( array( 'message' => "Thank you {$name}! We'll connect you with the right expert shortly." ) );

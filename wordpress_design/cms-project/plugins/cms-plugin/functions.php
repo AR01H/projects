@@ -54,3 +54,10 @@ AH_Ajax_Handlers::init_public();
 
 add_action( 'after_switch_theme', array( 'AH_DB_Installer', 'install' ) );
 add_action( 'wp_loaded',          array( 'AH_DB_Installer', 'maybe_upgrade' ) );
+
+// In your main plugin file (e.g. your-plugin.php), outside any class method:
+
+add_action( 'wp_mail_failed', function ( $wp_error ) {
+    error_log( 'wp_mail failed: ' . $wp_error->get_error_message() );
+    error_log( print_r( $wp_error->get_error_data(), true ) );
+} );

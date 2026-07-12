@@ -127,7 +127,7 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
             </div>
         </div>
     </div>
-</header>
+
 
 <?php /* ============================== MOBILE MENU ============================== */ ?>
 <div class="mobile-menu-overlay" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
@@ -182,3 +182,4 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         </div>
     <?php endif; ?>
 </div>
+</header>

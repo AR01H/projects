@@ -1,6 +1,9 @@
 :root {
     --client-color: #203c3e;
+    --client-color-light: #dfeced;
     --secondary-color: #B08D57;
+    --secondary-color-dark: #7f4f07;
+    --secondary-color-light: #fffaf3;
     --bg-color-1:#ded5c1;
 
 	--section-color:#ded5c1;
