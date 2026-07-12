@@ -102,9 +102,9 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 
 <?php /* ============================== HERO ============================== */ ?>
 <?php $_has_cover = ! empty( $ctx['banner_image_url'] ); ?>
-<section class="expert-profile-hero">
+<section class="expert-profile-hero<?php echo $_has_cover ? ' has-cover-bg' : ''; ?>"<?php if ( $_has_cover ) : ?> style="background-image:url('<?php echo esc_url( $ctx['banner_image_url'] ); ?>')"<?php endif; ?>>
 	<div class="container">
-		<div class="expert-profile-hero-inner<?php echo $_has_cover ? ' has-cover-bg' : ''; ?>"<?php if ( $_has_cover ) : ?> style="background-image:url('<?php echo esc_url( $ctx['banner_image_url'] ); ?>')"<?php endif; ?>>
+		<div class="expert-profile-hero-inner">
 
 			<?php /* Photo */ ?>
 			<div class="expert-profile-photo-wrap">
@@ -177,11 +177,13 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 				<?php endif; ?>
 
 			</div>
+
 		</div>
 	</div>
+
 </section>
 
-<?php /* ============================== STATS MARQUEE ============================== */ ?>
+<?php /* Stats marquee — standalone strip below the hero */ ?>
 <?php if ( ! empty( $ctx['banner_items'] ) ) : ?>
 <div class="expert-stats-marquee">
 	<?php get_template_part( 'components/marque_scroll/point_marque', null, array(
@@ -193,7 +195,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 <?php endif; ?>
 
 <?php /* ============================== MAIN LAYOUT: CONTENT + SIDEBAR ============================== */ ?>
-<div class="container">
+<div class="expert-profile-layout-container">
 	<div class="expert-profile-layout">
 
 		<main class="expert-profile-main">
@@ -201,7 +203,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 			<?php /* ── Bio ── */ ?>
 			<?php if ( ! empty( $ctx['bio'] ) ) : ?>
 				<section class="expert-profile-section expert-bio-section">
-					<h2><?php esc_html_e( 'About', ADN_TEXT_DOMAIN ); ?></h2>
+					<h2><i class="fa-solid fa-user-tie" aria-hidden="true"></i> <?php esc_html_e( 'About', ADN_TEXT_DOMAIN ); ?></h2>
 					<p><?php echo esc_html( $ctx['bio'] ); ?></p>
 				</section>
 			<?php endif; ?>
@@ -209,7 +211,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 			<?php /* ── Bullets ── */ ?>
 			<?php if ( ! empty( $ctx['bullets'] ) ) : ?>
 				<section class="expert-profile-section">
-					<h2><?php esc_html_e( 'Specialises in', ADN_TEXT_DOMAIN ); ?></h2>
+					<h2><i class="fa-solid fa-list-check" aria-hidden="true"></i> <?php esc_html_e( 'Specialises in', ADN_TEXT_DOMAIN ); ?></h2>
 					<ul class="expert-bullets-list">
 						<?php foreach ( $ctx['bullets'] as $_bullet ) : ?>
 							<li><?php echo esc_html( (string) $_bullet ); ?></li>
@@ -221,7 +223,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 			<?php /* ── Client work images ── */ ?>
 			<?php if ( ! empty( $ctx['client_images'] ) ) : ?>
 				<section class="expert-profile-section">
-					<h2><?php esc_html_e( 'Client Work', ADN_TEXT_DOMAIN ); ?></h2>
+					<h2><i class="fa-solid fa-camera-retro" aria-hidden="true"></i> <?php esc_html_e( 'Client Work', ADN_TEXT_DOMAIN ); ?></h2>
 					<div class="expert-clients-grid">
 						<?php foreach ( $ctx['client_images'] as $_ci ) :
 							$_ci = (array) $_ci;
@@ -250,10 +252,36 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 		<?php /* ── Sidebar ── */ ?>
 		<aside class="expert-profile-sidebar">
 
+			<?php /* Quick Info */ ?>
+			<div class="expert-sb-box expert-quick-info">
+				<h3><i class="fa-solid fa-address-card" aria-hidden="true"></i> <?php esc_html_e( 'Quick Details', ADN_TEXT_DOMAIN ); ?></h3>
+				<ul class="expert-sb-contact-list">
+					<?php if ( ! empty( $ctx['location'] ) ) : ?>
+						<li>
+							<i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+							<div class="esb-contact-detail">
+								<strong><?php esc_html_e( 'Location', ADN_TEXT_DOMAIN ); ?></strong>
+								<span><?php echo esc_html( $ctx['location'] ); ?></span>
+							</div>
+						</li>
+					<?php endif; ?>
+					<?php if ( $ctx['rating'] > 0 ) : ?>
+						<li>
+							<i class="fa-solid fa-star" aria-hidden="true"></i>
+							<div class="esb-contact-detail">
+								<strong><?php esc_html_e( 'Client Rating', ADN_TEXT_DOMAIN ); ?></strong>
+								<span><?php echo esc_html( number_format( $ctx['rating'], 1 ) ); ?> / 5.0 (<?php echo esc_html( (string) $ctx['reviews_count'] ); ?> reviews)</span>
+							</div>
+						</li>
+					<?php endif; ?>
+				</ul>
+			</div>
+
+
 			<?php /* Specialisation pill */ ?>
 			<?php if ( ! empty( $ctx['title'] ) ) : ?>
 				<div class="expert-sb-box">
-					<h3><?php esc_html_e( 'Specialisation', ADN_TEXT_DOMAIN ); ?></h3>
+					<h3><i class="fa-solid fa-briefcase" aria-hidden="true"></i> <?php esc_html_e( 'Specialisation', ADN_TEXT_DOMAIN ); ?></h3>
 					<div class="expert-profile-cat-pills">
 						<?php 
 						$_specs = array_filter( array_map( 'trim', explode( ',', $ctx['title'] ) ) );
@@ -267,7 +295,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 
 			<?php /* CTA */ ?>
 			<div class="expert-sb-box expert-need-help">
-				<h3><?php echo esc_html( SITE_EXPERT_LABEL ); ?></h3>
+				<h3><i class="fa-solid fa-users" aria-hidden="true"></i> <?php echo esc_html( SITE_EXPERT_LABEL ); ?></h3>
 				<p><?php esc_html_e( 'Browse all our vetted professionals and find the right specialist for your situation.', ADN_TEXT_DOMAIN ); ?></p>
 				<a href="<?php echo esc_url( home_url( SITE_EXPERT_URL ) ); ?>" class="btn btn-primary expert-nh-btn">
 					<?php esc_html_e( 'View All Experts', ADN_TEXT_DOMAIN ); ?>

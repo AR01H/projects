@@ -451,6 +451,71 @@
         }
     }
 
+    function initClientWorkLightbox() {
+        var wraps = document.querySelectorAll( '.client-img-wrap' );
+        if ( ! wraps.length ) { return; }
+        
+        wraps.forEach( function ( wrap ) {
+            wrap.style.cursor = 'pointer';
+            wrap.addEventListener( 'click', function ( e ) {
+                var img = wrap.querySelector( 'img' );
+                var caption = wrap.querySelector( '.client-img-caption' );
+                if ( ! img ) { return; }
+                
+                var src = img.getAttribute( 'src' );
+                var alt = img.getAttribute( 'alt' ) || '';
+                var captionText = caption ? caption.textContent : '';
+                
+                // Create a temporary full-screen lightbox modal
+                var lightbox = document.createElement( 'div' );
+                lightbox.className = 'adn-modal adn-modal--large expert-lightbox-modal';
+                lightbox.setAttribute( 'role', 'dialog' );
+                lightbox.setAttribute( 'aria-modal', 'true' );
+                
+                lightbox.innerHTML = 
+                    '<div class="adn-modal__overlay"></div>' +
+                    '<div class="adn-modal__content" style="max-width:90vw; padding:10px; background:rgba(0,0,0,0.9); border:none; box-shadow:none;">' +
+                        '<div class="adn-modal__header" style="border:none; padding:0; justify-content:flex-end;">' +
+                            '<button class="adn-modal__close" aria-label="Close dialog" style="color:#fff; font-size:2.2rem; background:none; border:none; cursor:pointer;">&times;</button>' +
+                        '</div>' +
+                        '<div class="adn-modal__body" style="padding:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">' +
+                            '<img src="' + src + '" alt="' + alt + '" style="max-height:80vh; max-width:100%; object-fit:contain; border-radius:4px; display:block;">' +
+                            ( captionText ? '<p style="color:#fff; margin-top:12px; font-size:0.95rem; text-align:center; font-weight:500;">' + captionText + '</p>' : '' ) +
+                        '</div>' +
+                    '</div>';
+                
+                document.body.appendChild( lightbox );
+                
+                // Animate visibility
+                window.setTimeout( function () {
+                    lightbox.classList.add( 'adn-modal--visible' );
+                }, 10 );
+                
+                // Close handlers
+                var closeBtn = lightbox.querySelector( '.adn-modal__close' );
+                var overlay = lightbox.querySelector( '.adn-modal__overlay' );
+                
+                function closeLightbox() {
+                    lightbox.classList.remove( 'adn-modal--visible' );
+                    window.setTimeout( function () {
+                        lightbox.remove();
+                    }, 300 );
+                }
+                
+                if ( closeBtn ) { closeBtn.addEventListener( 'click', closeLightbox ); }
+                if ( overlay ) { overlay.addEventListener( 'click', closeLightbox ); }
+                
+                var escHandler = function ( e ) {
+                    if ( e.key === 'Escape' ) {
+                        closeLightbox();
+                        document.removeEventListener( 'keydown', escHandler );
+                    }
+                };
+                document.addEventListener( 'keydown', escHandler );
+            } );
+        });
+    }
+
     /* ── Init ───────────────────────────────────────────────────── */
 
     function init() {
@@ -460,6 +525,7 @@
         initContactForms();
         initCardClick();
         initUnlock();
+        initClientWorkLightbox();
         /* Run filter on load so the "More experts" card is hidden when there are no
            real experts, and the "No experts found" message shows correctly. */
         applyFilter( activeCategory, '' );
