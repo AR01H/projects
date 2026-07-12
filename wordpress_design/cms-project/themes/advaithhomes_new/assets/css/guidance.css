@@ -86,12 +86,11 @@
 
 /* ── Main Layout ────────────────────────────────────────────── */
 .guidance-main-layout {
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 48px 24px 72px;
+    padding: 24px 24px 60px;
     display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: var(--space-12);
+    grid-template-columns: 1fr 340px;
+    gap: var(--space-8);
     align-items: start;
 }
 
@@ -100,7 +99,7 @@
     background: var(--color-white, #fff);
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--radius-lg, 16px);
-    padding: 36px 40px;
+    padding: 28px 32px;
 }
 
 .guidance-form-card h2 {
@@ -270,7 +269,7 @@
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
     .guidance-main-layout {
-        grid-template-columns: 1fr 360px;
+        grid-template-columns: 1fr 340px;
         gap: var(--space-8);
     }
 

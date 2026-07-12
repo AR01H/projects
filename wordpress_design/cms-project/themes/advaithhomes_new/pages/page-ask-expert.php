@@ -16,6 +16,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+wp_enqueue_style( 'adn-page-contact-style', get_template_directory_uri() . '/assets/css/contact.css', array(), ADN_THEME_VERSION );
+
 require_once ADN_THEME_DIR . '/intermediate/page_ask_expert_logical.php';
 $ctx = adn_ask_expert_get_context();
 

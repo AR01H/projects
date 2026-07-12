@@ -16,6 +16,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+wp_enqueue_style( 'adn-page-contact-style', get_template_directory_uri() . '/assets/css/contact.css', array(), ADN_THEME_VERSION );
+
 require_once ADN_THEME_DIR . '/intermediate/page_guidance_logical.php';
 $ctx = adn_guidance_get_context();
 
@@ -45,9 +47,9 @@ adn_page_open( $_open_ctx );
 	<?php /* Request form */ ?>
 	<?php adn_component( 'sections/guidance_form', array( 'form' => $ctx['form'] ) ); ?>
 
-	<?php /* "We can help you with" service categories */ ?>
-	<?php if ( ! empty( $ctx['services'] ) ) : ?>
-		<?php adn_component( 'sections/guidance_services', array( 'services' => $ctx['services'] ) ); ?>
+	<?php /* SIDEBAR */ ?>
+	<?php if ( ! empty( $ctx['contact_sidebar'] ) ) : ?>
+		<?php adn_component( 'parts/contact_sidebar', array( 'contact_sidebar' => $ctx['contact_sidebar'] ) ); ?>
 	<?php endif; ?>
 
 </div>

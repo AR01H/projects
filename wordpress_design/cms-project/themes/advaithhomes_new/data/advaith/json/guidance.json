@@ -76,5 +76,8 @@
             { "icon": "⏱",  "title": "Save Time & Money",  "desc": "Get the right advice and avoid costly mistakes." },
             { "icon": "🏠", "title": "Peace of Mind",       "desc": "Make confident property decisions." }
         ]
+    },
+    "contact_sidebar": {
+        "cards": ["guides", "experts", "contact"]
     }
 }

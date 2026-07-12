@@ -50,15 +50,29 @@ function adn_guidance_get_context() {
 			$services['items'] = $svc_items;
 		}
 	}
+	// ── Sidebar: merge in page FAQs/cards via shared helper ───────────────
+	$contact_sidebar = isset( $data['contact_sidebar'] ) ? (array) $data['contact_sidebar'] : array();
+	if ( function_exists( 'adn_get_page_sidebar_data' ) ) {
+		$global_sidebar = adn_get_page_sidebar_data( get_queried_object_id() );
+		foreach ( array( 'whatsapp', 'email', 'phone', 'address', 'faqs' ) as $key ) {
+			if ( ! isset( $contact_sidebar[$key] ) && isset( $global_sidebar[$key] ) ) {
+				$contact_sidebar[$key] = $global_sidebar[$key];
+			}
+		}
+		if ( ! isset( $contact_sidebar['cards'] ) && isset( $global_sidebar['cards'] ) ) {
+			$contact_sidebar['cards'] = $global_sidebar['cards'];
+		}
+	}
 
 	return array(
-		'meta'        => isset( $data['meta'] )        ? (array) $data['meta']        : array(),
-		'breadcrumb'  => isset( $data['breadcrumb'] )  ? (array) $data['breadcrumb']  : array(),
-		'hero'        => isset( $data['hero'] )        ? (array) $data['hero']        : array(),
-		'form'        => $form,
-		'services'    => $services,
-		'why_choose'  => isset( $data['why_choose'] )  ? (array) $data['why_choose']  : array(),
-		'chrome'      => $chrome,
+		'meta'            => isset( $data['meta'] )        ? (array) $data['meta']        : array(),
+		'breadcrumb'      => isset( $data['breadcrumb'] )  ? (array) $data['breadcrumb']  : array(),
+		'hero'            => isset( $data['hero'] )        ? (array) $data['hero']        : array(),
+		'form'            => $form,
+		'services'        => $services,
+		'contact_sidebar' => $contact_sidebar,
+		'why_choose'      => isset( $data['why_choose'] )  ? (array) $data['why_choose']  : array(),
+		'chrome'          => $chrome,
 		'latest_news' => array(
 			'heading' => array(
 				'title'      => adn_term( 'labels.latest_news', 'Latest News' ),

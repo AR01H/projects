@@ -143,7 +143,7 @@ p { line-height: 1.7; color: var(--color-black); }
     color: #fff !important;
   }
   .site-header .btn-primary:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: var(--client-color) !important;
     border-color: #fff !important;
   }
 
@@ -227,7 +227,7 @@ p { line-height: 1.7; color: var(--color-black); }
   }
   .site-header.scrolled .btn-primary:hover,
   .site-header:has(.header-search:not([hidden])) .btn-primary:hover {
-    background: var(--color-primary-dark) !important;
+    background: var(--secondary-color) !important;
     border-color: transparent !important;
   }
 
@@ -1012,6 +1012,11 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   font-weight: 600;
   font-size: 1.05rem;
   transition: text-shadow 0.3s ease, color 0.3s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

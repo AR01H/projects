@@ -1,0 +1,50 @@
+{
+    "guides": {
+        "icon": "fa-solid fa-book-open",
+        "heading": "Read Help Guides",
+        "description": "Explore our comprehensive library of property guides, checklists, and smart tools to make confident decisions.",
+        "button_label": "Browse Guides",
+        "url": "/guides/",
+        "class": "contact-guidance-card"
+    },
+    "experts": {
+        "icon": "fa-solid fa-user-tie",
+        "heading": "Ask our Experts",
+        "description": "Get professional assistance from our vetted independent experts tailored to your specific situation.",
+        "button_label": "Find an Expert",
+        "url": "/ask-expert/",
+        "class": "contact-experts-card"
+    },
+    "guidance": {
+        "icon": "fa-solid fa-handshake",
+        "heading": "Get Expert Guidance",
+        "description": "Tell us about your requirement and we'll connect you with the right property expert for personalised advice.",
+        "button_label": "Get Guidance",
+        "url": "/guidance/",
+        "class": "contact-guidance-card"
+    },
+    "contact": {
+        "icon": "fa-solid fa-envelope",
+        "heading": "Contact for Help",
+        "description": "Have a general enquiry or need assistance? Send us your message and our team will get back to you shortly.",
+        "button_label": "Contact Us",
+        "url": "/contact/",
+        "class": "contact-experts-card"
+    },
+    "news": {
+        "icon": "fa-solid fa-newspaper",
+        "heading": "News & Insights",
+        "description": "Stay updated with the latest market reports, news, regulations, and insights in the UK property market.",
+        "button_label": "Read News",
+        "url": "/news/",
+        "class": "contact-guidance-card"
+    },
+    "calculators": {
+        "icon": "fa-solid fa-calculator",
+        "heading": "Property Calculators",
+        "description": "Estimate your costs, mortgage options, tax rates, and budget with our smart property calculators.",
+        "button_label": "Use Calculators",
+        "url": "/calculators/",
+        "class": "contact-experts-card"
+    }
+}

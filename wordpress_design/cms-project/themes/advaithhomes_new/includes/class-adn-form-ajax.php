@@ -20,14 +20,40 @@ class ADN_Form_Ajax {
 	}
 
 	// ── Contact form ──────────────────────────────────────────────────────────
-
 	public static function handle_contact_submit(): void {
-		if ( ! check_ajax_referer( 'ah_enquiry_nonce', 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => 'Security check failed. Please refresh the page.' ), 403 );
+		$_nonce   = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		$_is_vld  = false;
+		if ( wp_verify_nonce( $_nonce, 'ah_enquiry_nonce' ) ) {
+			$_is_vld = true;
+		} else {
+			$_tick = wp_nonce_tick();
+			$_uid  = apply_filters( 'nonce_user_logged_out', 0, 'ah_enquiry_nonce' );
+			$_expected_curr = substr( wp_hash( $_tick . '|ah_enquiry_nonce|' . $_uid . '|', 'nonce' ), -12, 10 );
+			$_expected_prev = substr( wp_hash( ( $_tick - 1 ) . '|ah_enquiry_nonce|' . $_uid . '|', 'nonce' ), -12, 10 );
+			if ( hash_equals( $_expected_curr, $_nonce ) || hash_equals( $_expected_prev, $_nonce ) ) {
+				$_is_vld = true;
+			}
+		}
+		if ( ! $_is_vld ) {
+			$_user = wp_get_current_user();
+			$_token = wp_get_session_token();
+			$_tick = wp_nonce_tick();
+			$_expected_user_curr = substr( wp_hash( $_tick . '|ah_enquiry_nonce|' . (int)$_user->ID . '|' . $_token, 'nonce' ), -12, 10 );
+			$_expected_guest_curr = substr( wp_hash( $_tick . '|ah_enquiry_nonce|0|', 'nonce' ), -12, 10 );
+			wp_send_json_error( array( 
+				'message' => 'Security check failed. Please refresh the page.',
+				'debug' => array(
+					'received' => $_nonce,
+					'uid' => $_user->ID,
+					'token' => $_token,
+					'expected_user' => $_expected_user_curr,
+					'expected_guest' => $_expected_guest_curr,
+				)
+			), 403 );
 		}
 
 		if ( ! empty( $_POST['ah_hp'] ) ) {
-			wp_send_json_success( array( 'message' => 'Thank you! We\'ll be in touch shortly.' ) );
+			wp_send_json_success( array( 'message' => 'Thank you! We will be in touch shortly.' ) );
 		}
 
 		$name         = sanitize_text_field(     wp_unslash( isset( $_POST['name'] )         ? $_POST['name']         : '' ) );
@@ -80,7 +106,7 @@ class ADN_Form_Ajax {
 				'postcode'         => $postcode,
 				'client_timestamp' => $client_timestamp,
 				'server_timestamp' => $server_timestamp,
-			), $all_data ) );
+			), $all_data ),true );
 		}
 
 		wp_send_json_success( array( 'message' => "Thank you {$name}! We've received your enquiry and will be in touch soon." ) );
@@ -89,7 +115,20 @@ class ADN_Form_Ajax {
 	// ── Guidance form ─────────────────────────────────────────────────────────
 
 	public static function handle_guidance_submit(): void {
-		if ( ! check_ajax_referer( 'ah_enquiry_nonce', 'nonce', false ) ) {
+		$_nonce   = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		$_is_vld  = false;
+		if ( wp_verify_nonce( $_nonce, 'ah_enquiry_nonce' ) ) {
+			$_is_vld = true;
+		} else {
+			$_tick = wp_nonce_tick();
+			$_uid  = apply_filters( 'nonce_user_logged_out', 0, 'ah_enquiry_nonce' );
+			$_expected_curr = substr( wp_hash( $_tick . '|ah_enquiry_nonce|' . $_uid . '|', 'nonce' ), -12, 10 );
+			$_expected_prev = substr( wp_hash( ( $_tick - 1 ) . '|ah_enquiry_nonce|' . $_uid . '|', 'nonce' ), -12, 10 );
+			if ( hash_equals( $_expected_curr, $_nonce ) || hash_equals( $_expected_prev, $_nonce ) ) {
+				$_is_vld = true;
+			}
+		}
+		if ( ! $_is_vld ) {
 			wp_send_json_error( array( 'message' => 'Security check failed. Please refresh the page.' ), 403 );
 		}
 

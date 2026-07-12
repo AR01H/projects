@@ -313,6 +313,13 @@
 
 /* ── Header actions ────────────────────────────────────────── */
 .header-actions { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+.header-cta.btn-primary {
+    background: var(--color-primary) !important;
+    color: var(--color-white) !important;
+}
+.header-cta.btn-primary:hover {
+    background: var(--color-primary-light) !important;
+}
 .btn-search {
     background: none;
     border: none;

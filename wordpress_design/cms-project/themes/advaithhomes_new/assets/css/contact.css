@@ -889,3 +889,12 @@
     display: block;
     width: 100%;
 }
+
+/* ── Guidance & Support Sidebar Block ───────────────────────── */
+.contact-guidance-text {
+    font-size: 0.88rem;
+    color: var(--color-text, #4b5563);
+    line-height: 1.55;
+    margin: 8px 0 16px;
+}
+

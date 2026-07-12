@@ -54,7 +54,8 @@
             { "icon": "📞", "label": "Phone Support" },
             { "icon": "💬", "label": "Live Chat" },
             { "icon": "📍", "label": "Office Address" }
-        ]
+        ],
+        "cards": ["guides", "experts"]
     },
     "process_steps": [
         { "number": "1", "icon": "📝", "title": "Send your enquiry",      "description": "Fill out a short form or choose an expert." },

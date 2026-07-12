@@ -24,6 +24,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+wp_enqueue_style( 'adn-page-contact-style', get_template_directory_uri() . '/assets/css/contact.css', array(), ADN_THEME_VERSION );
+
 require_once ADN_THEME_DIR . '/intermediate/post_logical.php';
 
 /*
@@ -230,6 +232,39 @@ get_header();
 				</div>
 			<?php endif; ?>
 
+
+			<?php /* Reusable Cards from Catalog */ ?>
+			<?php 
+			$_catalog = array();
+			if ( class_exists( 'ADN_Real_Loader' ) ) {
+				$_catalog = ADN_Real_Loader::json( 'sidebar_cards' );
+			}
+			$_cards_to_show = array( 'guides', 'contact' );
+			if ( ! empty( $_catalog ) ) :
+				foreach ( $_cards_to_show as $_key ) :
+					if ( ! isset( $_catalog[$_key] ) ) { continue; }
+					$_card   = (array) $_catalog[$_key];
+					$_c_icon = isset( $_card['icon'] ) ? (string) $_card['icon'] : 'fa-solid fa-circle-info';
+					$_c_head = isset( $_card['heading'] ) ? (string) $_card['heading'] : '';
+					$_c_desc = isset( $_card['description'] ) ? (string) $_card['description'] : '';
+					$_c_btn  = isset( $_card['button_label'] ) ? (string) $_card['button_label'] : '';
+					$_c_url  = isset( $_card['url'] ) ? (string) $_card['url'] : '';
+					$_c_cls  = isset( $_card['class'] ) ? (string) $_card['class'] : '';
+			?>
+				<div class="contact-alt-box<?php echo $_c_cls ? ' ' . esc_attr( $_c_cls ) : ''; ?>" style="margin-bottom: 24px;">
+					<div class="contact-alt-head">
+						<div class="contact-alt-icon" aria-hidden="true"><i class="<?php echo esc_attr( $_c_icon ); ?>"></i></div>
+						<h3><?php echo esc_html( $_c_head ); ?></h3>
+					</div>
+					<p class="contact-guidance-text" style="font-size: 0.88rem; color: var(--color-text, #4b5563); line-height: 1.55; margin: 8px 0 16px;"><?php echo esc_html( $_c_desc ); ?></p>
+					<a href="<?php echo esc_url( home_url( $_c_url ) ); ?>" class="btn btn-primary contact-alt-btn" style="width: 100%; display: block; text-align: center; box-sizing: border-box;">
+						<?php echo esc_html( $_c_btn ); ?> →
+					</a>
+				</div>
+			<?php 
+				endforeach;
+			endif; 
+			?>
 
 			<?php /* Newsletter signup */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['newsletter'] ) ) : ?>

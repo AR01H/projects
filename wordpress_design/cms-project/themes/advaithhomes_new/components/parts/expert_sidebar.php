@@ -24,27 +24,38 @@ $_nl    = isset( $_sb['newsletter_cta'] ) ? (array) $_sb['newsletter_cta'] : arr
 ?>
 <aside class="expert-sidebar">
 
-	<?php /* ── Contact for Help ─────────────────────────────────── */ ?>
-	<?php if ( ! empty( $_ch ) ) :
-		$_ch_h   = esc_html( isset( $_ch['heading'] )      ? (string) $_ch['heading']      : '' );
-		$_ch_d   = esc_html( isset( $_ch['desc'] )         ? (string) $_ch['desc']         : '' );
-		$_ch_btn = esc_html( isset( $_ch['button_label'] ) ? (string) $_ch['button_label'] : SITE_SIDEBAR_CONTACT_BTN );
-		$_ch_url = esc_url( adn_link( isset( $_ch['button_url'] ) ? (string) $_ch['button_url'] : SITE_CONTACT_URL ) );
+	<?php /* Dynamic Guidance & Support Cards from JSON catalog */ ?>
+	<?php 
+	$_catalog = array();
+	if ( class_exists( 'ADN_Real_Loader' ) ) {
+		$_catalog = ADN_Real_Loader::json( 'sidebar_cards' );
+	}
+	$_cards_to_show = array( 'guidance', 'contact' );
+	if ( ! empty( $_catalog ) ) :
+		foreach ( $_cards_to_show as $_key ) :
+			if ( ! isset( $_catalog[$_key] ) ) { continue; }
+			$_card   = (array) $_catalog[$_key];
+			$_c_icon = isset( $_card['icon'] ) ? (string) $_card['icon'] : 'fa-solid fa-circle-info';
+			$_c_head = isset( $_card['heading'] ) ? (string) $_card['heading'] : '';
+			$_c_desc = isset( $_card['description'] ) ? (string) $_card['description'] : '';
+			$_c_btn  = isset( $_card['button_label'] ) ? (string) $_card['button_label'] : '';
+			$_c_url  = isset( $_card['url'] ) ? (string) $_card['url'] : '';
+			$_c_cls  = isset( $_card['class'] ) ? (string) $_card['class'] : '';
 	?>
-	<div class="sw-panel">
-		<?php if ( '' !== $_ch_h ) : ?>
-		<div class="sw-header">
-			<h3 class="sw-title"><?php echo $_ch_h; ?></h3>
+		<div class="contact-alt-box<?php echo $_c_cls ? ' ' . esc_attr( $_c_cls ) : ''; ?>" style="margin-bottom: 24px;">
+			<div class="contact-alt-head">
+				<div class="contact-alt-icon" aria-hidden="true"><i class="<?php echo esc_attr( $_c_icon ); ?>"></i></div>
+				<h3><?php echo esc_html( $_c_head ); ?></h3>
+			</div>
+			<p class="contact-guidance-text"><?php echo esc_html( $_c_desc ); ?></p>
+			<a href="<?php echo esc_url( home_url( $_c_url ) ); ?>" class="btn btn-primary contact-alt-btn">
+				<?php echo esc_html( $_c_btn ); ?> →
+			</a>
 		</div>
-		<?php endif; ?>
-		<?php if ( '' !== $_ch_d ) : ?>
-			<p class="sw-subtitle"><?php echo $_ch_d; ?></p>
-		<?php endif; ?>
-		<div class="sw-footer">
-			<a href="<?php echo $_ch_url; ?>" class="sw-cta-btn"><?php echo $_ch_btn; ?></a>
-		</div>
-	</div>
-	<?php endif; ?>
+	<?php 
+		endforeach;
+	endif; 
+	?>
 
 	<?php /* ── Browse Guides (sidebar_guide_parents) ───────────── */ ?>
 	<?php if ( ! empty( $_gt['items'] ) ) : ?>

@@ -507,7 +507,7 @@ class AH_Workflow_Manager {
 				$mailer->Username   = $ch['username'];
 				$mailer->Password   = $ch['password'];
 				$enc = $ch['encryption'] ?? 'tls';
-				$mailer->SMTPSecure = ( 'ssl' === $enc ) ? 'ssl' : ( 'none' === $enc ? '' : 'tls' );
+				$mailer->SMTPSecure = ( 'ssl' === $enc ) ? 'ssl' : ( 'none' === $enc ? false : 'tls' );
 				if ( 'none' === $enc ) {
 					$mailer->SMTPAutoTLS = false;
 				}
@@ -532,36 +532,26 @@ class AH_Workflow_Manager {
 			add_action( 'phpmailer_init', $smtp_hook );
 		}
 
-		// Debug: Dump email details directly to screen/response
-		if(FALSE){
-			echo "<pre>--- EMAIL DEBUG DUMP ---\n";
-			echo "TO: " . print_r( $to, true ) . "\n";
-			echo "SUBJECT: " . print_r( $subject, true ) . "\n";
-			echo "HEADERS: " . print_r( $headers, true ) . "\n";
-			if ( $channel ) {
-				echo "SMTP HOST: " . $channel['host'] . "\n";
-				echo "SMTP PORT: " . $channel['port'] . "\n";
-				echo "SMTP USERNAME: " . $channel['username'] . "\n";
-				echo "SMTP ENCRYPTION: " . ( $channel['encryption'] ?? 'tls' ) . "\n";
-				echo "SMTP AUTH: " . ( ( '' !== (string) $channel['username'] ) ? 'true' : 'false' ) . "\n";
-				echo "SMTP OPTIONS: \n" . print_r( array(
-					'ssl' => array(
-						'verify_peer'       => false,
-						'verify_peer_name'  => false,
-						'allow_self_signed' => true
-					)
-				), true ) . "\n";
-			} else {
-				echo "SMTP: Using default WordPress/server mail settings (no custom channel)\n";
-			}
-			echo "BODY: \n" . print_r( $body, true ) . "\n";
-			echo "------------------------</pre>";
-		}
 
-		wp_mail( $to, $subject, $body, $headers );
+		$_mail_error = '';
+		$error_catcher = function ( $wp_error ) use ( &$_mail_error ) {
+			if ( is_wp_error( $wp_error ) ) {
+				$_mail_error = $wp_error->get_error_message();
+			}
+		};
+		add_action( 'wp_mail_failed', $error_catcher );
+
+		$status = wp_mail( $to, $subject, $body, $headers );
+
+		remove_action( 'wp_mail_failed', $error_catcher );
 
 		if ( $smtp_hook ) {
 			remove_action( 'phpmailer_init', $smtp_hook );
+		}
+
+		if ( ! $status ) {
+			$err_msg = ! empty( $_mail_error ) ? $_mail_error : 'wp_mail returned false (unknown error).';
+			throw new \Exception( $err_msg );
 		}
 	}
 
@@ -596,11 +586,21 @@ class AH_Workflow_Manager {
 			$headers['Authorization'] = 'Bearer ' . $token;
 		}
 
-		wp_remote_post( $url, array(
+		$response = wp_remote_post( $url, array(
 			'headers' => $headers,
 			'body'    => wp_json_encode( $body ),
 			'timeout' => 15,
 		) );
+
+		if ( is_wp_error( $response ) ) {
+			throw new \Exception( 'WhatsApp API connection failed: ' . $response->get_error_message() );
+		}
+
+		$code = wp_remote_retrieve_response_code( $response );
+		if ( $code < 200 || $code >= 300 ) {
+			$body_resp = wp_remote_retrieve_body( $response );
+			throw new \Exception( sprintf( 'WhatsApp API returned HTTP %d: %s', $code, mb_strimwidth( $body_resp, 0, 150, '...' ) ) );
+		}
 	}
 
 	// ── http_request ──────────────────────────────────────────────────────────
@@ -660,7 +660,17 @@ class AH_Workflow_Manager {
 		);
 		if ( 'GET' !== $method ) $args['body'] = $body;
 
-		wp_remote_request( $url, $args );
+		$response = wp_remote_request( $url, $args );
+
+		if ( is_wp_error( $response ) ) {
+			throw new \Exception( 'HTTP request connection failed: ' . $response->get_error_message() );
+		}
+
+		$code = wp_remote_retrieve_response_code( $response );
+		if ( $code < 200 || $code >= 300 ) {
+			$body_resp = wp_remote_retrieve_body( $response );
+			throw new \Exception( sprintf( 'HTTP request returned HTTP %d: %s', $code, mb_strimwidth( $body_resp, 0, 150, '...' ) ) );
+		}
 	}
 
 	// ── update_option ─────────────────────────────────────────────────────────
