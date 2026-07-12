@@ -149,8 +149,10 @@ function adn_post_get_context() {
 	if ( class_exists( 'AH_Content_Taxonomy_Model' ) ) {
 		$_ct_model = new AH_Content_Taxonomy_Model();
 		foreach ( $_ct_model->get_terms( 'wp_post', $post->ID ) as $_t ) {
+			$slug = isset( $_t->slug ) && ! empty( $_t->slug ) ? $_t->slug : sanitize_title( $_t->name );
 			$cms_terms[] = array(
 				'name'  => (string) $_t->name,
+				'url'   => home_url( '/' . $slug . '/' ),
 				'type'  => (string) ( $_t->type_name ?? '' ),
 				'emoji' => (string) ( $_t->icon_emoji ?? '' ),
 				'color' => (string) ( $_t->color ?? '' ),

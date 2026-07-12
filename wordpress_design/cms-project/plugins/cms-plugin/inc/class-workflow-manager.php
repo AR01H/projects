@@ -532,6 +532,32 @@ class AH_Workflow_Manager {
 			add_action( 'phpmailer_init', $smtp_hook );
 		}
 
+		// Debug: Dump email details directly to screen/response
+		if(FALSE){
+			echo "<pre>--- EMAIL DEBUG DUMP ---\n";
+			echo "TO: " . print_r( $to, true ) . "\n";
+			echo "SUBJECT: " . print_r( $subject, true ) . "\n";
+			echo "HEADERS: " . print_r( $headers, true ) . "\n";
+			if ( $channel ) {
+				echo "SMTP HOST: " . $channel['host'] . "\n";
+				echo "SMTP PORT: " . $channel['port'] . "\n";
+				echo "SMTP USERNAME: " . $channel['username'] . "\n";
+				echo "SMTP ENCRYPTION: " . ( $channel['encryption'] ?? 'tls' ) . "\n";
+				echo "SMTP AUTH: " . ( ( '' !== (string) $channel['username'] ) ? 'true' : 'false' ) . "\n";
+				echo "SMTP OPTIONS: \n" . print_r( array(
+					'ssl' => array(
+						'verify_peer'       => false,
+						'verify_peer_name'  => false,
+						'allow_self_signed' => true
+					)
+				), true ) . "\n";
+			} else {
+				echo "SMTP: Using default WordPress/server mail settings (no custom channel)\n";
+			}
+			echo "BODY: \n" . print_r( $body, true ) . "\n";
+			echo "------------------------</pre>";
+		}
+
 		wp_mail( $to, $subject, $body, $headers );
 
 		if ( $smtp_hook ) {

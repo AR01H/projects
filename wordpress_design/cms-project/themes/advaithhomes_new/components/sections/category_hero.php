@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 $hero        = isset( $hero ) && is_array( $hero ) ? $hero : array();
 $trust_items = isset( $hero['trust_items'] ) ? (array) $hero['trust_items'] : array();
+$actions     = isset( $hero['actions'] ) ? (array) $hero['actions'] : array();
 $breadcrumb  = isset( $breadcrumb ) && is_array( $breadcrumb ) ? $breadcrumb : array();
 
 $_default_img = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
@@ -48,6 +49,21 @@ $_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'la
 
 		<?php if ( ! empty( $hero['description'] ) ) : ?>
 			<p><?php echo esc_html( $hero['description'] ); ?></p>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $actions ) ) : ?>
+		<div class="hero-actions">
+			<?php foreach ( $actions as $action ) :
+				$style = isset( $action['style'] ) && 'outline' === $action['style'] ? 'btn-outline premium-btn-outline' : 'btn-primary premium-btn-dark';
+				$label = isset( $action['label'] ) ? $action['label'] : '';
+			?>
+				<a href="<?php echo esc_url( adn_link( isset( $action['url'] ) ? $action['url'] : '' ) ); ?>"
+				   class="btn <?php echo esc_attr( $style ); ?> btn-md">
+				   <?php echo esc_html( $label ); ?>
+				   <?php if ( 'outline' === ( $action['style'] ?? '' ) ) echo ' &rarr;'; ?>
+				</a>
+			<?php endforeach; ?>
+		</div>
 		<?php endif; ?>
 
 		<?php if ( $trust_items ) : ?>

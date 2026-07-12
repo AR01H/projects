@@ -24,7 +24,7 @@ $_default_img = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
 $_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
 
 ?>
-<?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img ) ); ?>
+<?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img, 'is_home' => false ) ); ?>
 
 <div class="hero-home-inner">
     <div class="hero-content">
@@ -36,7 +36,7 @@ $_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'la
                 if ( ! empty( $line['accent'] ) ) {
                     echo '<span class="accent">' . esc_html( $text ) . '</span>';
                 } else if($i==2) {
-                    echo '<h2 class="hero-sub-line">'.esc_html( $text ).'</h2>';
+                    echo '<span class="hero-sub-line">'.esc_html( $text ).'</span>';
                 }else{
                     echo esc_html( $text );
                 }
@@ -49,7 +49,7 @@ $_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'la
         <p class="hero-desc"><?php echo esc_html( isset( $hero['description'] ) ? $hero['description'] : '' ); ?></p>
         <div class="hero-actions">
             <?php foreach ( $actions as $action ) :
-                $style = isset( $action['style'] ) && 'outline' === $action['style'] ? 'btn-outline' : 'btn-primary';
+                $style = isset( $action['style'] ) && 'outline' === $action['style'] ? 'btn-outline premium-btn-outline' : 'btn-primary premium-btn-dark';
                 ?>
                 <a href="<?php echo esc_url( adn_link( isset( $action['url'] ) ? $action['url'] : '' ) ); ?>"
                    class="btn <?php echo esc_attr( $style ); ?> btn-md"><?php echo esc_html( isset( $action['label'] ) ? $action['label'] : '' ); ?></a>

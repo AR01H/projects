@@ -105,7 +105,26 @@ adn_page_open( $_open_ctx );
 ?>
 
 <?php /* ============================== HERO ============================== */ ?>
-<?php adn_component( 'sections/page_hero', array(
+<?php 
+if ( ! empty( $ctx['guides']['items'] ) ) {
+	$services = array_slice( $ctx['guides']['items'], 0, 4 );
+	
+	// Default icons related to buying/property if the category data doesn't specify one
+	$default_icons = array(
+		'fa-solid fa-house-chimney',
+		'fa-solid fa-magnifying-glass-location',
+		'fa-solid fa-key',
+		'fa-solid fa-file-signature'
+	);
+	
+	foreach ( $services as $i => &$svc ) {
+		if ( empty( $svc['icon'] ) ) {
+			$svc['icon'] = $default_icons[ $i % count($default_icons) ];
+		}
+	}
+	$ctx['hero']['services'] = $services;
+}
+adn_component( 'sections/page_hero', array(
 	'hero'       => $ctx['hero'],
 	'breadcrumb' => $ctx['breadcrumb'],
 ) ); ?>

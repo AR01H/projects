@@ -37,7 +37,7 @@ if ( isset( $_POST['ah_re_test_fire_nonce'] ) ) {
 			'full_name' => 'Test User',
 			'email'     => get_option( 'admin_email' ),
 			'phone'     => '0000000000',
-			'message'   => 'This is a test fire from the Rules Engine Config page.',
+			'message'   => 'This is a test fire from the Workflow Config page.',
 		) );
 	}
 	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=config&notice=test_fired&tf=' . urlencode( $test_trigger ) ) );

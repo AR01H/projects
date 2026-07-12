@@ -104,6 +104,8 @@ function adn_settings_schemas() {
 					'options' => array( 'string' => __( 'Plain text (✓ prefix)', ADN_TEXT_DOMAIN ), 'icon' => __( 'Icon + label + note', ADN_TEXT_DOMAIN ) ) ),
 				array( 'key' => 'marquee_items', 'type' => 'textarea', 'label' => __( 'Marquee items', ADN_TEXT_DOMAIN ),
 					'desc' => __( 'One item per line. Plain text mode: write text only. Icon mode: emoji|Label text|Subtitle note', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'glass_cards', 'type' => 'textarea', 'label' => __( 'Hero Glass Cards', ADN_TEXT_DOMAIN ),
+					'desc' => __( 'One card per line. Format: icon|Title|Description (e.g. fa-handshake-angle|Expert Assistance|Connect with vetted professionals). If empty, falls back to defaults.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'featured_in_section', 'type' => 'select', 'label' => __( 'Featured In strip', ADN_TEXT_DOMAIN ),
 					'default' => '', 'options' => 'adn_settings_fi_section_options',
 					'desc' => __( 'Which logo strip to show on this page. Manage strips in CMS Plugin → Featured In.', ADN_TEXT_DOMAIN ) ),

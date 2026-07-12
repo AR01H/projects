@@ -521,9 +521,9 @@
 /* ==========================================
    HERO BANNER: DIM BACKGROUND IMAGE
    ========================================== */
-.phb-bg img {
+/* .phb-bg img {
 	filter: brightness(0.62);
-}
+} */
 
 /* ==========================================
    HOME HERO: RESTRICT DESC SIZE ON MOBILE

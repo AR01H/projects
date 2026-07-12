@@ -48,6 +48,9 @@ get_header();
 	<?php adn_component( 'sections/page_hero', array(
 		'hero'       => $ctx['article'],
 		'breadcrumb' => $ctx['breadcrumb'],
+		'share'      => isset($ctx['share']) ? $ctx['share'] : null,
+		'cms_terms'  => isset($ctx['cms_terms']) ? $ctx['cms_terms'] : null,
+		'sidebar'    => isset($ctx['sidebar']) ? $ctx['sidebar'] : null,
 	) ); ?>
 <?php endif; ?>
 
@@ -56,7 +59,9 @@ get_header();
 <div class="post-terms-bar">
 	<div class="container">
 		<?php foreach ( $ctx['cms_terms'] as $_pt ) : ?>
-			<span class="post-term-pill"><?php if ( '' !== $_pt['emoji'] ) echo esc_html( $_pt['emoji'] ) . ' '; echo esc_html( $_pt['name'] ); ?></span>
+			<a href="<?php echo esc_url( $_pt['url'] ); ?>" class="post-term-pill">
+				<?php if ( '' !== $_pt['emoji'] ) echo esc_html( $_pt['emoji'] ) . ' '; echo esc_html( $_pt['name'] ); ?>
+			</a>
 		<?php endforeach; ?>
 	</div>
 </div>
@@ -203,6 +208,7 @@ get_header();
 			</div>
 
 			<aside class="article-sidebar" aria-label="<?php esc_attr_e( 'Article sidebar', ADN_TEXT_DOMAIN ); ?>">
+
 			<?php /* Related guides (from WP_Query - same category, latest 4) */ ?>
 			<?php if ( ! empty( $ctx['related_guides'] ) ) : ?>
 				<div class="">

@@ -80,7 +80,19 @@ adn_page_open( $_open_ctx );
 ?>
 
 <?php /* ============================== HERO ============================== */ ?>
-<?php adn_component( 'sections/page_hero', array(
+<?php 
+if ( ! empty( $ctx['articles'] ) ) {
+	$latest_two = array_slice( $ctx['articles'], 0, 4);
+	$ctx['hero']['services'] = array();
+	foreach ( $latest_two as $art ) {
+		$ctx['hero']['services'][] = array(
+			'title' => $art['title'],
+			'url'   => $art['url'],
+			'icon'  => '<i class="fa-regular fa-file-lines"></i>'
+		);
+	}
+}
+adn_component( 'sections/page_hero', array(
 	'hero'       => $ctx['hero'],
 	'breadcrumb' => $ctx['breadcrumb'],
 ) ); ?>

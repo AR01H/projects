@@ -36,16 +36,18 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 
 	if ( $_nb_item ) {
 		wp_enqueue_style( 'adn-single-style', get_template_directory_uri() . '/assets/css/single.css', array(), ADN_THEME_VERSION );
+		wp_enqueue_style( 'adn-article-style', get_template_directory_uri() . '/assets/css/article.css', array(), ADN_THEME_VERSION );
+		wp_enqueue_style( 'adn-cardner-style', get_template_directory_uri() . '/assets/css/article_cardner.css', array(), ADN_THEME_VERSION );
 		$_nb_ctx               = adn_news_get_context();
 		$_nb_ctx['breadcrumb'] = array(); // suppressed from adn_page_open; passed to hero directly below
 		if ( isset( $_nb_ctx['meta'] ) ) {
 			$_nb_ctx['meta']['title'] = isset( $_nb_item->text ) ? (string) $_nb_item->text : '';
 		}
 		$_nb_stamp   = ! empty( $_nb_item->start_date ) ? $_nb_item->start_date : ( isset( $_nb_item->created_at ) ? $_nb_item->created_at : '' );
-		$_nb_label   = isset( $_nb_item->label )   ? (string) $_nb_item->label   : '';
-		$_nb_title   = isset( $_nb_item->text )    ? (string) $_nb_item->text    : '';
-		$_nb_excerpt = isset( $_nb_item->excerpt ) ? (string) $_nb_item->excerpt : '';
-		$_nb_content = isset( $_nb_item->content ) ? (string) $_nb_item->content : '';
+		$_nb_label   = isset( $_nb_item->label )   ? wp_unslash( (string) $_nb_item->label )   : '';
+		$_nb_title   = isset( $_nb_item->text )    ? wp_unslash( (string) $_nb_item->text )    : '';
+		$_nb_excerpt = isset( $_nb_item->excerpt ) ? wp_unslash( (string) $_nb_item->excerpt ) : '';
+		$_nb_content = isset( $_nb_item->content ) ? wp_unslash( (string) $_nb_item->content ) : '';
 		$_nb_url     = function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_nb_item->id ) : '';
 
 		// Override hero with real news item data.
@@ -69,10 +71,10 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 				if ( (int) $_rn->id === $_ah_news_id ) { continue; }
 				if ( $_rni >= 4 ) { break; }
 				$_rn_stamp     = ! empty( $_rn->start_date ) ? $_rn->start_date : ( isset( $_rn->created_at ) ? $_rn->created_at : '' );
-				$_rn_label     = isset( $_rn->label ) && '' !== trim( (string) $_rn->label ) ? trim( (string) $_rn->label ) : SITE_NEWS_NOUN;
+				$_rn_label     = isset( $_rn->label ) && '' !== trim( (string) $_rn->label ) ? wp_unslash( trim( (string) $_rn->label ) ) : SITE_NEWS_NOUN;
 				$_nb_related[] = array(
 					'gradient' => adn_cms_gradient( $_rni ),
-					'title'    => isset( $_rn->text ) ? (string) $_rn->text : '',
+					'title'    => isset( $_rn->text ) ? wp_unslash( (string) $_rn->text ) : '',
 					'date'     => $_rn_stamp ? date_i18n( 'M j, Y', strtotime( $_rn_stamp ) ) : '',
 					'tag'      => $_rn_label,
 					'url'      => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_rn->id ) : '',
@@ -118,13 +120,14 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 		<?php endif; ?>
 
 		<?php /* TWO-COLUMN LAYOUT */ ?>
-		<section class="news-layout news-layout--single">
+		<div class="article-outer">
+			<div class="article-layout">
 
-			<main class="news-main">
+				<main class="article-main" id="main-content">
 				<div class="news-single-article">
 
 					<?php /* Meta bar: label + date */ ?>
-					<div class="news-single-meta">
+					<div class="news-single-meta article-body">
 						<?php if ( '' !== $_nb_label ) : ?>
 							<span class="news-single-tag"><?php echo esc_html( $_nb_label ); ?></span>
 						<?php endif; ?>
@@ -138,7 +141,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 
 					<?php /* Content */ ?>
 					<?php if ( '' !== $_nb_content ) : ?>
-						<div class="news-single-content">
+						<div class="news-single-content article-body">
 							<?php echo wp_kses_post( $_nb_content ); ?>
 						</div>
 					<?php endif; ?>
@@ -174,7 +177,12 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 					</div>
 				<?php endif; ?>
 
-				<?php /* Related news - reusable news_widget bar, OUTSIDE the article box */ ?>
+			</main>
+
+			<div class="article-right-col">
+				<aside class="article-sidebar">
+
+					<?php /* Related news */ ?>
 				<?php if ( ! empty( $_nb_related ) ) : ?>
 				<div class="news-single-more">
 					<?php adn_component( 'parts/news_widget', array( 'widget' => array(
@@ -187,10 +195,6 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 					) ) ); ?>
 				</div>
 				<?php endif; ?>
-
-			</main>
-
-			<aside class="news-sidebar">
 
 				<?php /* Browse topics */ ?>
 				<?php if ( ! empty( $_nb_ctx['sidebar']['topics'] ) ) : ?>
@@ -205,10 +209,11 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 					<?php adn_component( 'parts/sidebar_newsletter_signup', array( 'newsletter' => $_nb_ctx['sidebar']['newsletter'] ) ); ?>
 				<?php endif; ?>
 
-			</aside>
+				</aside>
+			</div>
 
-		</section>
-
+			</div><!-- .article-layout -->
+		</div><!-- .article-outer -->
 		<?php /* Bottom newsletter banner */ ?>
 		<?php if ( ! empty( $_nb_ctx['bottom_newsletter'] ) ) : ?>
 		<section class="newsletter-cta">

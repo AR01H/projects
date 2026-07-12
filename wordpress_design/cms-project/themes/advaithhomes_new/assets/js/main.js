@@ -70,3 +70,20 @@
         bar.classList.add('is-marquee');
     }
 }());
+
+/* ── Header Scroll State ─────────────────────────────────────── */
+(function () {
+	var header = document.getElementById('siteHeader');
+	if (!header) return;
+	
+	function onScroll() {
+		if (window.scrollY > 20) {
+			header.classList.add('scrolled');
+		} else {
+			header.classList.remove('scrolled');
+		}
+	}
+	
+	window.addEventListener('scroll', onScroll);
+	onScroll();
+}());

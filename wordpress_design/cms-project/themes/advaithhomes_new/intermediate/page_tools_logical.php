@@ -35,10 +35,30 @@ function adn_calculators_get_context() {
 	};
 
 	// ── Hero ─────────────────────────────────────────────────────────────
+	$_glass_cards_raw = isset( $gen['glass_cards'] ) ? trim( (string) $gen['glass_cards'] ) : '';
+	$_glass_cards     = array();
+	if ( '' !== $_glass_cards_raw ) {
+		foreach ( explode( "\n", $_glass_cards_raw ) as $_line ) {
+			$_line = trim( $_line );
+			if ( '' === $_line ) { continue; }
+			$_parts = explode( '|', $_line );
+			if ( count( $_parts ) >= 3 ) {
+				$_glass_cards[] = array(
+					'icon'  => trim( $_parts[0] ),
+					'title' => trim( $_parts[1] ),
+					'desc'  => trim( $_parts[2] ),
+				);
+			}
+		}
+	}
+
 	$hero = array(
+		'eyebrow'     => isset( $gen['subheading'] ) ? (string) $gen['subheading'] : '',
 		'title'       => $first( $pg_str( 'hero_title' ), isset( $gen['main_heading'] ) ? (string) $gen['main_heading'] : '', sprintf( adn_term( 'calculators_page.hero_title', 'All %s' ), SITE_TOOLS_PLURAL ) ),
 		'description' => $first( $pg_str( 'hero_desc' ),  isset( $gen['intro'] )        ? (string) $gen['intro']        : '' ),
 		'bg_icon'     => $first( $pg_str( 'hero_icon' ),  adn_term( 'icons.tools_hero', '🏠🧮' ) ),
+		'bg_url'      => isset( $gen['thumbnail'] ) ? (string) $gen['thumbnail'] : '',
+		'glass_cards' => $_glass_cards,
 	);
 
 	// ── Trust bar ─────────────────────────────────────────────────────────

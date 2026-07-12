@@ -979,11 +979,10 @@
 }
 
 .news-single-article {
-    background: var(--card-bg, #fff);
-    border: 1.5px solid var(--color-border, #e5e7eb);
-    border-radius: var(--card-radius, 14px);
-    padding: 32px 36px 28px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    border: none;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
 }
 
 
@@ -1199,5 +1198,5 @@
 @media (max-width: 640px) {
     .nsr-grid { grid-template-columns: 1fr; }
     .news-single-share { gap: 6px; }
-    .news-single-article { padding: 20px 18px 18px; }
+    .news-single-article { padding: 0 !important; }
 }

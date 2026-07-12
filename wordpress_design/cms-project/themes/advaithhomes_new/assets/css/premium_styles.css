@@ -103,19 +103,7 @@ h1, h2, h3, h4 {
    4. HEADER
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-.site-header,
-.site-header.is-stuck {
-    background: #ffffff !important;
-    border-bottom: 1px solid rgba(17,24,22,0.09) !important;
-    box-shadow: none !important;
-}
-.nav-link:hover,
-.nav-link.active {
-    color: var(--client-color) !important;
-    background: rgba(32,60,62,0.06) !important;
-}
-.nav-link.active::after { background: var(--secondary-color) !important; }
-.nav-dropdown { box-shadow: none !important; border: 1px solid rgba(17,24,22,0.09) !important; }
+
 
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -1447,8 +1435,9 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     font-style: normal !important;
 }
 .news-single-article {
-    border: 2px solid rgba(32,60,62,.22) !important;
-    border-radius: 14px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
 }
 
 /* ─── 19g. Related news section heading ──────────────────── */
@@ -1490,9 +1479,9 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     gap: 14px !important;
 }
 .news-single-article {
-    padding: 20px 24px !important;
-    border: 2px solid rgba(32,60,62,.20) !important;
-    border-radius: 12px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
 }
 .news-single-meta { margin-bottom: 14px !important; }
 .news-single-content { line-height: 1.7 !important; }
@@ -1507,13 +1496,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* ─── 19k. "More News" — reusable news_widget bar (one card) ──
    Scoped to .news-single-more so home-page news widgets are safe. */
-.news-single-more .news-widget {
-    padding: 16px 18px !important;
-    border: 2px solid rgba(32,60,62,.20) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 10px rgba(32,60,62,.06) !important;
-    background: #fff !important;
-}
+
 .news-single-more .list-widget-header {
     margin-bottom: 8px !important;
     padding-bottom: 10px !important;

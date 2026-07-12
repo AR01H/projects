@@ -38,7 +38,7 @@ $_ph = isset( $_sb['phone'] )    ? (array) $_sb['phone']    : array();
 			<a href="<?php echo $_wa_href; ?>" class="contact-channel-item" target="_blank" rel="noopener noreferrer">
 				<span class="contact-channel-meta">
 					<span class="contact-channel-icon"><i class="fa-brands fa-whatsapp"></i></span>
-					<span class="contact-channel-label">WhatsApp</span>
+					<!-- <span class="contact-channel-label">WhatsApp</span> -->
 				</span>
 				<span class="contact-channel-num"><?php echo $_wa_num; ?></span>
 			</a>
@@ -47,7 +47,7 @@ $_ph = isset( $_sb['phone'] )    ? (array) $_sb['phone']    : array();
 			<a href="<?php echo $_ph_href; ?>" class="contact-channel-item">
 				<span class="contact-channel-meta">
 					<span class="contact-channel-icon"><i class="fa-solid fa-phone"></i></span>
-					<span class="contact-channel-label">Phone</span>
+					<!-- <span class="contact-channel-label">Phone</span> -->
 				</span>
 				<span class="contact-channel-num"><?php echo $_ph_num; ?></span>
 			</a>
@@ -56,7 +56,7 @@ $_ph = isset( $_sb['phone'] )    ? (array) $_sb['phone']    : array();
 			<a href="<?php echo esc_url( $_em_href ); ?>" class="contact-channel-item">
 				<span class="contact-channel-meta">
 					<span class="contact-channel-icon"><i class="fa-solid fa-envelope"></i></span>
-					<span class="contact-channel-label">Email</span>
+					<!-- <span class="contact-channel-label">Email</span> -->
 				</span>
 				<span class="contact-channel-num contact-channel-email"><?php echo $_em_adr; ?></span>
 			</a>
