@@ -85,7 +85,7 @@ function adn_settings_schemas() {
 			'intro'  => __( 'Pick which Guide topics feed the home "Guides & Insights" cards and how many to show. Leave all unticked to use the latest from every topic.', ADN_TEXT_DOMAIN ),
 			'fields' => array(
 				array( 'key' => 'topics', 'type' => 'checklist', 'label' => __( 'Topics', ADN_TEXT_DOMAIN ), 'options' => 'adn_settings_topic_options' ),
-				array( 'key' => 'count', 'type' => 'number', 'label' => __( 'Articles to show', ADN_TEXT_DOMAIN ), 'default' => 5, 'min' => 1, 'max' => 12 ),
+				array( 'key' => 'count', 'type' => 'number', 'label' => __( 'Articles to show', ADN_TEXT_DOMAIN ), 'default' => 5, 'min' => 1, 'max' => 90 ),
 			),
 		),
 

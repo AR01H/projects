@@ -92,7 +92,7 @@ function adn_topic_category_get_context() {
 
 	$ctx['hero'] = array(
 		'eyebrow'     => $parent
-			? ( ! empty( $parent->icon_emoji ) ? $parent->icon_emoji . ' ' : '' ) . $parent->name
+			? ( ! empty( $parent->icon_emoji ) ? adn_icon( $parent->icon_emoji ) . ' ' : '' ) . esc_html( $parent->name )
 			: '',
 		'title'       => isset( $term->name )        ? wp_unslash( (string) $term->name )        : '',
 		'description' => isset( $term->description ) ? wp_unslash( (string) $term->description ) : '',

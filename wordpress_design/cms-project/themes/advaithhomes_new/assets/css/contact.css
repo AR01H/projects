@@ -72,7 +72,7 @@
 
 /* ── Main Layout ────────────────────────────────────────────── */
 .contact-main-layout {
-    margin: 0 auto;
+    margin: 0 auto 60px;
     padding: 28px 24px 0;
     display: grid;
     grid-template-columns: 1fr minmax(260px, 300px);

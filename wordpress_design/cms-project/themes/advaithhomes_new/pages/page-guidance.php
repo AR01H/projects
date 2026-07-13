@@ -54,32 +54,6 @@ adn_page_open( $_open_ctx );
 
 </div>
 
-<?php /* ============================== WHY CHOOSE ============================== */ ?>
-<?php if ( ! empty( $ctx['why_choose'] ) ) : ?>
-	<?php adn_component( 'sections/guidance_why_choose', array( 'why_choose' => $ctx['why_choose'] ) ); ?>
-<?php endif; ?>
 
-<?php
-$_has_news    = ! empty( $ctx['latest_news']['items'] );
-$_has_updates = ! empty( $ctx['latest_updates']['items'] );
-?>
-<?php if ( $_has_news || $_has_updates ) : ?>
-<section class="page-latest-news">
-	<div class="container">
-		<div class="guidance-news-row">
-			<?php if ( $_has_news ) : ?>
-			<div class="guidance-news-col">
-				<?php adn_component( 'parts/news_widget', array( 'widget' => $ctx['latest_news'] ) ); ?>
-			</div>
-			<?php endif; ?>
-			<?php if ( $_has_updates ) : ?>
-			<div class="guidance-news-col">
-				<?php adn_component( 'parts/news_widget', array( 'widget' => $ctx['latest_updates'] ) ); ?>
-			</div>
-			<?php endif; ?>
-		</div>
-	</div>
-</section>
-<?php endif; ?>
 
 <?php adn_page_close( $ctx ); ?>

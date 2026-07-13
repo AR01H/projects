@@ -27,8 +27,6 @@ if ( is_array( $_all ) && ! empty( $_all ) ) {
 				break;
 			}
 		}
-	} else {
-		$_data = $_all[0];
 	}
 }
 

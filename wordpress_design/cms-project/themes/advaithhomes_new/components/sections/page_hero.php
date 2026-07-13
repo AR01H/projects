@@ -44,8 +44,8 @@ $_hero_img_id  = ! empty( $hero['image_id'] ) ? (int) $hero['image_id'] : 0;
 $_hero_img     = ! empty( $hero['bg_url'] ) 
 	? (string) $hero['bg_url']
 	: adn_versioned_url( $_hero_img_id
-		? ( wp_get_attachment_image_url( $_hero_img_id, 'large' ) ?: $_default_img )
-		: ( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img ) );
+		? ( wp_get_attachment_image_url( $_hero_img_id, 'full' ) ?: $_default_img )
+		: ( get_the_post_thumbnail_url( get_the_ID(), 'full' ) ?: $_default_img ) );
 
 ?>
 <section class="page-hero">
@@ -77,7 +77,7 @@ $_hero_img     = ! empty( $hero['bg_url'] )
 			<?php
 			$_eyebrow = isset( $hero['eyebrow'] ) && '' !== $hero['eyebrow'] ? $hero['eyebrow'] : ( isset( $hero['subheading'] ) ? $hero['subheading'] : '' );
 			if ( '' !== $_eyebrow ) : ?>
-				<div class="hero-eyebrow"><?php echo esc_html( $_eyebrow ); ?></div>
+				<div class="hero-eyebrow"><?php echo wp_kses_post( $_eyebrow ); ?></div>
 			<?php endif; ?>
 
 			<?php if ( ! empty( $hero['title'] ) ) : ?>

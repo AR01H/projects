@@ -36,37 +36,7 @@ function adn_contact_get_context() {
 	// ── Sidebar: merge in page FAQs via shared helper ────────────────────────
 	$data['contact_sidebar'] = adn_get_page_sidebar_data( get_queried_object_id() );
 
-	if ( function_exists( 'adn_cms_available' ) && adn_cms_available()
-		&& function_exists( 'adn_cms_guide_parents' ) ) {
 
-		$items = array();
-		foreach ( adn_cms_guide_parents( 20 ) as $term ) {
-			$slug = isset( $term->slug ) ? sanitize_key( $term->slug ) : '';
-			$name = isset( $term->name ) ? (string) $term->name        : '';
-			if ( '' === $slug || '' === $name ) {
-				continue;
-			}
-			$icon = ! empty( $term->icon_emoji ) ? (string) $term->icon_emoji : adn_term( 'icons.guide_fallback', '🏡' );
-			$desc = ! empty( $term->description ) ? (string) $term->description : sprintf( adn_term( 'category_page.explore_guides_title', 'Explore %s %s' ), $name, adn_term( 'taxonomy.parent_plural', 'guides' ) );
-			$items[] = array(
-				'icon'  => $icon,
-				'title' => $name,
-				'desc'  => $desc,
-				'url'   => '/' . $slug . '/',
-			);
-		}
-
-		// Calculators and News as fixed extras.
-		$items[] = array( 'icon' => adn_term( 'icons.tools', '🧮' ), 'title' => SITE_TOOLS_PLURAL, 'desc' => 'Useful tools for smart decisions', 'url' => SITE_CALCULATORS_URL );
-		$items[] = array( 'icon' => adn_term( 'icons.news', '📰' ), 'title' => SITE_DOMAIN_NOUN . ' ' . SITE_NEWS_NOUN, 'desc' => 'Latest updates and market insights', 'url' => SITE_NEWS_URL );
-
-		if ( ! empty( $items ) ) {
-			if ( ! isset( $resources['heading'] ) || '' === $resources['heading'] ) {
-				$resources['heading'] = 'While you wait, explore popular resources';
-			}
-			$resources['items'] = $items;
-		}
-	}
 
 	return array(
 		'meta'            => isset( $data['meta'] )            ? (array) $data['meta']            : array(),

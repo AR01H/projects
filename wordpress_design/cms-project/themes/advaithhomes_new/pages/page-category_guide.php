@@ -49,7 +49,7 @@ $_seo_slug = isset( $ctx['slug'] ) ? sanitize_key( (string) $ctx['slug'] ) : '';
 $_seo_image_cat   = '';
 $_cat_hero_img_id = ! empty( $ctx['hero']['image_id'] ) ? (int) $ctx['hero']['image_id'] : 0;
 if ( $_cat_hero_img_id > 0 ) {
-	$_cat_img_url   = wp_get_attachment_image_url( $_cat_hero_img_id, 'large' );
+	$_cat_img_url   = wp_get_attachment_image_url( $_cat_hero_img_id, 'full' );
 	$_seo_image_cat = $_cat_img_url ? (string) $_cat_img_url : '';
 }
 

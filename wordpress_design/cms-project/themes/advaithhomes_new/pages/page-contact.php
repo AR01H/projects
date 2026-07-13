@@ -50,9 +50,4 @@ adn_page_open( $_open_ctx );
 
 </div>
 
-<?php /* ============================== RESOURCE CARDS ============================== */ ?>
-<?php if ( ! empty( $ctx['resources'] ) ) : ?>
-	<?php adn_component( 'sections/contact_resources', array( 'resources' => $ctx['resources'] ) ); ?>
-<?php endif; ?>
-
 <?php adn_page_close( $ctx ); ?>

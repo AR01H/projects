@@ -59,9 +59,7 @@ function adn_guidance_get_context() {
 				$contact_sidebar[$key] = $global_sidebar[$key];
 			}
 		}
-		if ( ! isset( $contact_sidebar['cards'] ) && isset( $global_sidebar['cards'] ) ) {
-			$contact_sidebar['cards'] = $global_sidebar['cards'];
-		}
+
 	}
 
 	return array(

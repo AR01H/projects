@@ -108,10 +108,12 @@
     color: var(--color-heading, #111827);
 }
 
-/* ── Services Panel ─────────────────────────────────────────── */
-.guidance-services-panel {
-    position: sticky;
-    top: 90px;
+/* ── Services Panel (or Contact Sidebar) ─────────────────────────── */
+.guidance-services-panel,
+.guidance-main-layout .contact-sidebar {
+    position: sticky !important;
+    top: 120px !important;
+    align-self: start;
 }
 
 .guidance-services-panel h2 {
