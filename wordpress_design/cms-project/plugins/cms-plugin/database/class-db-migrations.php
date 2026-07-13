@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -22,6 +22,7 @@ class AH_DB_Migrations {
 		self::taxonomy_media();
 		self::rules_settings();
 		self::trigger_logs_scheduled_at();
+		self::analytics_reports_columns();
 
 		// Table creations via migration (tables added after initial schema)
 		self::ensure_content_taxonomies();
@@ -105,6 +106,12 @@ class AH_DB_Migrations {
 			! $wpdb->get_var( "SHOW COLUMNS FROM `{$t}` LIKE 'scheduled_at'" ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `scheduled_at` DATETIME DEFAULT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
+	}
+
+	public static function analytics_reports_columns(): void {
+		self::add_column_if_missing( 'ah_analytics_reports', 'report_type', "ENUM('sql', 'php') NOT NULL DEFAULT 'sql' AFTER `description`" );
+		self::add_column_if_missing( 'ah_analytics_reports', 'query_php', "LONGTEXT DEFAULT NULL AFTER `query_sql`" );
+		self::add_column_if_missing( 'ah_analytics_reports', 'api_visibility', "ENUM('private', 'public') NOT NULL DEFAULT 'private' AFTER `query_php`" );
 	}
 
 	// ── Table-level migrations ────────────────────────────────────────────────

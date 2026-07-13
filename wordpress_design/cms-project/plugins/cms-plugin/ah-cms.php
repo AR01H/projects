@@ -30,6 +30,7 @@ define( 'AH_THEME_VERSION', AH_PLUGIN_VERSION );
 
 // ── Autoloader ───────────────────────────────────────────────────────────────
 require_once AH_PLUGIN_DIR . '/inc/class-autoloader.php';
+require_once AH_PLUGIN_DIR . '/inc/class-ah-cache.php';
 AH_Autoloader::register();
 
 // ── Components ───────────────────────────────────────────────────────────────
@@ -401,6 +402,13 @@ add_action( 'wp_head', static function (): void {
 	echo "\n<style id=\"ah-global-styles\">\n" . $css . "\n</style>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }, 98 );
 
+add_action( 'wp_footer', static function (): void {
+	if ( is_admin() ) return;
+	$js = trim( (string) get_option( 'ah_global_styles_js', '' ) );
+	if ( '' === $js || ! get_option( 'ah_global_styles_active', 0 ) ) return;
+	echo "\n<script id=\"ah-global-scripts\">\n" . $js . "\n</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}, 98 );
+
 add_action( 'wp_ajax_ah_save_global_styles', static function (): void {
 	if ( ! check_ajax_referer( 'ah_custom_code', 'nonce', false ) ) {
 		wp_send_json_error( array( 'message' => 'Security check failed.' ) );
@@ -409,6 +417,7 @@ add_action( 'wp_ajax_ah_save_global_styles', static function (): void {
 		wp_send_json_error( array( 'message' => 'Access denied.' ) );
 	}
 	update_option( 'ah_global_styles_css',    wp_unslash( $_POST['css']    ?? '' ) );
+	update_option( 'ah_global_styles_js',     wp_unslash( $_POST['js']     ?? '' ) );
 	update_option( 'ah_global_styles_active', (int) ( $_POST['active'] ?? 0 ) );
 	wp_send_json_success( array( 'message' => 'Global styles saved.' ) );
 } );
@@ -529,3 +538,81 @@ add_action( 'wp_ajax_ah_toggle_custom_code', static function (): void {
 	$wpdb->update( $table, array( 'is_active' => $new ), array( 'id' => $id ), array( '%d' ), array( '%d' ) );
 	wp_send_json_success( array( 'active' => $new ) );
 } );
+
+// ── REST API Endpoint for Analytics Reports ────────────────────────────────────
+add_action( 'rest_api_init', function () {
+	register_rest_route( 'ah-analytics/v1', '/report/(?P<id>\d+)', array(
+		'methods'             => 'GET',
+		'callback'            => function ( WP_REST_Request $request ) {
+			$id = (int) $request->get_param( 'id' );
+			$report = ( new AH_Analytics_Report_Model() )->find( $id );
+
+			if ( ! $report ) {
+				return new WP_Error( 'not_found', 'Report not found.', array( 'status' => 404 ) );
+			}
+
+			if ( ( $report->api_visibility ?? 'private' ) === 'private' ) {
+				if ( ! current_user_can( 'manage_options' ) ) {
+					return new WP_Error( 'forbidden', 'You do not have permission to view this report.', array( 'status' => 403 ) );
+				}
+			}
+
+			global $wpdb;
+			$results = [];
+
+			if ( ( $report->report_type ?? 'sql' ) === 'sql' ) {
+				$sql = trim( $report->query_sql ?? '' );
+				if ( ! $sql ) {
+					return new WP_Error( 'empty_query', 'SQL query is empty.', array( 'status' => 500 ) );
+				}
+				
+				// Apply same validation as the AJAX runner for safety
+				$err = AH_Analytics_Ajax::validate_query( $sql );
+				if ( $err ) {
+					return new WP_Error( 'invalid_query', $err, array( 'status' => 400 ) );
+				}
+
+				$results = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				if ( $wpdb->last_error ) {
+					return new WP_Error( 'db_error', $wpdb->last_error, array( 'status' => 500 ) );
+				}
+			} else {
+				$php = trim( $report->query_php ?? '' );
+				if ( ! $php ) {
+					return new WP_Error( 'empty_query', 'PHP code is empty.', array( 'status' => 500 ) );
+				}
+				try {
+					ob_start();
+					$php_res = eval( $php );
+					ob_end_clean();
+					if ( is_array( $php_res ) ) {
+						$results = $php_res;
+					} else {
+						return new WP_Error( 'invalid_return', 'PHP code must return an array.', array( 'status' => 500 ) );
+					}
+				} catch ( \Throwable $e ) {
+					if ( ob_get_level() ) ob_end_clean();
+					return new WP_Error( 'php_error', 'PHP Error: ' . $e->getMessage(), array( 'status' => 500 ) );
+				}
+			}
+
+			// Do not log REST API runs in analytics_results to prevent bloating DB from frequent API hits
+			( new AH_Analytics_Report_Model() )->bump_run_count( $id );
+
+			return rest_ensure_response( array(
+				'report_name' => $report->name,
+				'row_count'   => count( $results ?: [] ),
+				'data'        => $results ?: [],
+			) );
+		},
+		'permission_callback' => '__return_true', // We handle permissions in the callback based on report visibility
+	) );
+} );
+
+// ── Global Settings: Disable Optimized Images ────────────────────────────────
+add_filter( 'big_image_size_threshold', function ( $threshold, $imagesize, $file, $attachment_id ) {
+	if ( get_option( 'ah_disable_optimized_images', '0' ) === '1' ) {
+		return false; // Return false to disable scaling down large images
+	}
+	return $threshold;
+}, 10, 4 );

@@ -54,13 +54,55 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 			</div>
 		</div>
 
-		<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
-			SQL Query * <span style="font-weight:400;text-transform:none;letter-spacing:0">(SELECT only)</span>
-		</label>
-		<textarea id="ar-sql" rows="12"
-		          style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6"
-		          placeholder="SELECT * FROM wp_posts WHERE post_status = 'publish' LIMIT 20"
-		><?php echo esc_textarea( $report->query_sql ?? '' ); ?></textarea>
+		<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+			<div>
+				<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
+					Report Type
+				</label>
+				<select id="ar-type" style="width:100%;max-width:none">
+					<option value="sql" <?php selected( $report->report_type ?? 'sql', 'sql' ); ?>>SQL Query</option>
+					<option value="php" <?php selected( $report->report_type ?? 'sql', 'php' ); ?>>PHP Code</option>
+				</select>
+			</div>
+			<div>
+				<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
+					API Visibility
+				</label>
+				<select id="ar-api-vis" style="width:100%;max-width:none">
+					<option value="private" <?php selected( $report->api_visibility ?? 'private', 'private' ); ?>>Private (Admin Only)</option>
+					<option value="public" <?php selected( $report->api_visibility ?? 'private', 'public' ); ?>>Public (Anyone)</option>
+				</select>
+			</div>
+		</div>
+
+		<?php if ( $report && $report->id ) : ?>
+		<div style="margin-bottom:14px;background:#f8fafc;padding:10px;border-radius:4px;font-size:12px;display:flex;align-items:center;gap:10px">
+			<strong style="color:var(--ah-muted)">API Endpoint:</strong> 
+			<code style="background:transparent;padding:0;color:#0369a1"><?php echo esc_url( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ); ?></code>
+			<button type="button" class="ah-btn ah-btn-secondary" style="padding:2px 6px;font-size:10px" onclick="navigator.clipboard.writeText('<?php echo esc_js( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ); ?>');alert('Copied!')">Copy</button>
+		</div>
+		<?php endif; ?>
+
+		<div id="ar-sql-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'php' ? 'display:none' : ''; ?>">
+			<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
+				SQL Query * <span style="font-weight:400;text-transform:none;letter-spacing:0">(SELECT, DESC, SHOW CREATE)</span>
+			</label>
+			<textarea id="ar-sql" rows="12"
+					style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6"
+					placeholder="SELECT * FROM wp_posts WHERE post_status = 'publish' LIMIT 20"
+			><?php echo esc_textarea( $report->query_sql ?? '' ); ?></textarea>
+		</div>
+
+		<div id="ar-php-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'sql' ? 'display:none' : ''; ?>">
+			<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
+				PHP Code * <span style="font-weight:400;text-transform:none;letter-spacing:0">(Must return an array of arrays)</span>
+			</label>
+			<textarea id="ar-php" rows="12"
+					style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6"
+					placeholder="$data = [];&#10;foreach ( get_users() as $u ) {&#10;    $data[] = [ 'ID' => $u->ID, 'Login' => $u->user_login ];&#10;}&#10;return $data;"
+			><?php echo esc_textarea( $report->query_php ?? '' ); ?></textarea>
+			<p style="font-size:11px;color:var(--ah-muted);margin:6px 0 0">Security warning: This code is executed via `eval()`. Do not use untrusted input.</p>
+		</div>
 
 		<div style="display:flex;gap:10px;margin-top:12px;align-items:center">
 			<button id="ar-run-btn" class="ah-btn ah-btn-primary">
@@ -387,21 +429,38 @@ jQuery(function($){
 		}
 	}
 
+	/* ── Toggle Report Type ──────────────────────────────────── */
+	$('#ar-type').on('change', function(){
+		var t = $(this).val();
+		if ( t === 'php' ) {
+			$('#ar-sql-wrap').hide();
+			$('#ar-php-wrap').show();
+		} else {
+			$('#ar-sql-wrap').show();
+			$('#ar-php-wrap').hide();
+		}
+	});
+
 	/* ── Run query ───────────────────────────────────────────── */
 	$('#ar-run-btn').on('click', function(){
 		var sql      = $('#ar-sql').val().trim();
+		var php      = $('#ar-php').val().trim();
+		var type     = $('#ar-type').val();
 		var reportId = $('#ar-report-id').val();
-		if ( ! sql ) { alert('Enter a query first.'); return; }
+		if ( type === 'sql' && ! sql ) { alert('Enter a query first.'); return; }
+		if ( type === 'php' && ! php ) { alert('Enter PHP code first.'); return; }
 
 		var $btn = $(this);
 		$btn.text('Running…').prop('disabled', true);
 		arShowLoading();
 
 		$.post( ajaxUrl, {
-			action    : 'ah_analytics_run',
-			nonce     : nonce,
-			query_sql : sql,
-			report_id : reportId,
+			action      : 'ah_analytics_run',
+			nonce       : nonce,
+			report_type : type,
+			query_sql   : sql,
+			query_php   : php,
+			report_id   : reportId,
 		}, function(res){
 			$btn.text('▶ Run Query').prop('disabled', false);
 			if ( ! res.success ) {
@@ -433,15 +492,19 @@ jQuery(function($){
 				return;
 			}
 
-			/* Re-run to populate the results panel with the actual rows */
-			var sql = $('#ar-sql').val().trim();
-			if ( ! sql ) { arShowPlaceholder(); return; }
+			var type = $('#ar-type').val();
+			var sql  = $('#ar-sql').val().trim();
+			var php  = $('#ar-php').val().trim();
+			if ( type === 'sql' && ! sql ) { arShowPlaceholder(); return; }
+			if ( type === 'php' && ! php ) { arShowPlaceholder(); return; }
 
 			$.post( ajaxUrl, {
-				action    : 'ah_analytics_run',
-				nonce     : nonce,
-				query_sql : sql,
-				report_id : reportId,
+				action      : 'ah_analytics_run',
+				nonce       : nonce,
+				report_type : type,
+				query_sql   : sql,
+				query_php   : php,
+				report_id   : reportId,
 			}, function(r){
 				if ( r.success ) {
 					arShowResults( r.data, reportId );
@@ -457,24 +520,31 @@ jQuery(function($){
 
 	/* ── Save report ─────────────────────────────────────────── */
 	$('#ar-save-btn').on('click', function(){
+		var type = $('#ar-type').val();
+		var vis  = $('#ar-api-vis').val();
 		var sql  = $('#ar-sql').val().trim();
+		var php  = $('#ar-php').val().trim();
 		var name = $('#ar-name').val().trim();
 		var desc = $('#ar-desc').val().trim();
 		var id   = $('#ar-report-id').val();
 		if ( ! name ) { alert('Report name is required.'); return; }
-		if ( ! sql )  { alert('Query is required.'); return; }
+		if ( type === 'sql' && ! sql )  { alert('Query is required.'); return; }
+		if ( type === 'php' && ! php )  { alert('PHP Code is required.'); return; }
 
 		var $btn = $(this);
 		$btn.text('Saving…').prop('disabled', true);
 		$('#ar-save-status').text('');
 
 		$.post( ajaxUrl, {
-			action    : 'ah_analytics_save',
-			nonce     : nonce,
-			id        : id,
-			name      : name,
-			description: desc,
-			query_sql : sql,
+			action         : 'ah_analytics_save',
+			nonce          : nonce,
+			id             : id,
+			name           : name,
+			description    : desc,
+			report_type    : type,
+			api_visibility : vis,
+			query_sql      : sql,
+			query_php      : php,
 		}, function(res){
 			$btn.text('✓ Save Report').prop('disabled', false);
 			if ( res.success ) {
@@ -543,7 +613,7 @@ jQuery(function($){
 	});
 
 	/* Ctrl+Enter to run */
-	$('#ar-sql').on('keydown', function(e){
+	$('#ar-sql, #ar-php').on('keydown', function(e){
 		if ( e.ctrlKey && e.key === 'Enter' ) $('#ar-run-btn').trigger('click');
 	});
 

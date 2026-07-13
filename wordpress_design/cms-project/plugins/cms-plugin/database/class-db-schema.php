@@ -890,12 +890,15 @@ class AH_DB_Schema {
 
 			// 69. Analytics Reports
 			"CREATE TABLE IF NOT EXISTS `{$p}ah_analytics_reports` (
-				`id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				`name`        VARCHAR(200) NOT NULL DEFAULT '',
-				`description` TEXT         DEFAULT NULL,
-				`query_sql`   LONGTEXT     NOT NULL,
-				`run_count`   INT UNSIGNED NOT NULL DEFAULT 0,
-				`last_run_at` DATETIME     DEFAULT NULL,
+				`id`             INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`name`           VARCHAR(200) NOT NULL DEFAULT '',
+				`description`    TEXT         DEFAULT NULL,
+				`report_type`    ENUM('sql', 'php') NOT NULL DEFAULT 'sql',
+				`query_sql`      LONGTEXT     NOT NULL,
+				`query_php`      LONGTEXT     DEFAULT NULL,
+				`api_visibility` ENUM('private', 'public') NOT NULL DEFAULT 'private',
+				`run_count`      INT UNSIGNED NOT NULL DEFAULT 0,
+				`last_run_at`    DATETIME     DEFAULT NULL,
 				`created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				`updated_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`),

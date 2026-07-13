@@ -60,6 +60,7 @@ class AH_Autoloader {
 		'AH_Form_Builder'     => 'inc/class-form-builder.php',
 		'AH_Newsletter'       => 'inc/class-newsletter.php',
 		'AH_Workflow_Manager' => 'inc/class-workflow-manager.php',
+		'AH_Cache'            => 'inc/class-ah-cache.php',
 	);
 
 	public static function register(): void {

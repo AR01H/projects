@@ -72,17 +72,25 @@ function adn_cms_guide_parents( $limit = 12 ) {
 	if ( ! adn_cms_available() ) {
 		return array();
 	}
+	$limit = max( 1, (int) $limit );
+	if ( function_exists( 'cache_get' ) ) {
+		$cid = cache_key_gen( 'adn_cms_guide_parents', $limit );
+		$cache = cache_get( $cid, 'cms' );
+		if ( false !== $cache ) return $cache;
+	}
 	global $wpdb;
 	$pt = adn_cms_table( 'taxonomy_parent_terms' );
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
 		return array();
 	}
-	return $wpdb->get_results( $wpdb->prepare(
+	$results = $wpdb->get_results( $wpdb->prepare(
 		"SELECT * FROM `{$pt}`
 		 WHERE status = 'active' AND slug <> 'news'
 		 ORDER BY sort_order ASC, name ASC LIMIT %d",
-		max( 1, (int) $limit )
+		$limit
 	) ) ?: array();
+	if ( function_exists( 'cache_set' ) ) cache_set( $cid, $results, 'cms', CACHE_PERMANENT );
+	return $results;
 }
 
 /** A single active Parent Term by slug (from ah_taxonomy_parent_terms), or null. */
@@ -91,15 +99,22 @@ function adn_cms_parent_by_slug( $slug ) {
 	if ( ! adn_cms_available() || '' === $slug ) {
 		return null;
 	}
+	if ( function_exists( 'cache_get' ) ) {
+		$cid = cache_key_gen( 'adn_cms_parent_by_slug', $slug );
+		$cache = cache_get( $cid, 'cms' );
+		if ( false !== $cache ) return $cache;
+	}
 	global $wpdb;
 	$pt = adn_cms_table( 'taxonomy_parent_terms' );
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
 		return null;
 	}
-	return $wpdb->get_row( $wpdb->prepare(
+	$result = $wpdb->get_row( $wpdb->prepare(
 		"SELECT * FROM `{$pt}` WHERE slug = %s AND status = 'active' LIMIT 1",
 		$slug
 	) );
+	if ( function_exists( 'cache_set' ) ) cache_set( $cid, $result, 'cms', CACHE_PERMANENT );
+	return $result;
 }
 
 /**
@@ -109,24 +124,30 @@ function adn_cms_parent_by_slug( $slug ) {
  */
 function adn_cms_topics( $parent_term_id, $limit = 100 ) {
 	$parent_term_id = (int) $parent_term_id;
+	$limit = max( 1, (int) $limit );
 	if ( ! adn_cms_available() || ! $parent_term_id ) {
 		return array();
 	}
+	if ( function_exists( 'cache_get' ) ) {
+		$cid = cache_key_gen( 'adn_cms_topics', $parent_term_id, $limit );
+		$cache = cache_get( $cid, 'cms' );
+		if ( false !== $cache ) return $cache;
+	}
 	global $wpdb;
 	$pt = adn_cms_table( 'taxonomy_parent_terms' );
-	// The parent_term_id column is created alongside this table; if the table is
-	// absent the parent-term feature isn't set up, so there are no topics.
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
 		return array();
 	}
 	$tax = adn_cms_table( 'taxonomies' );
-	return $wpdb->get_results( $wpdb->prepare(
+	$results = $wpdb->get_results( $wpdb->prepare(
 		"SELECT * FROM `{$tax}`
 		 WHERE parent_term_id = %d AND status = 'active'
 		 ORDER BY sort_order ASC, name ASC LIMIT %d",
 		$parent_term_id,
-		max( 1, (int) $limit )
+		$limit
 	) ) ?: array();
+	if ( function_exists( 'cache_set' ) ) cache_set( $cid, $results, 'cms', CACHE_PERMANENT );
+	return $results;
 }
 
 /**
@@ -136,8 +157,14 @@ function adn_cms_topics( $parent_term_id, $limit = 100 ) {
  */
 function adn_cms_category_topics( $parent_term_id, $limit = 100 ) {
 	$parent_term_id = (int) $parent_term_id;
+	$limit = max( 1, (int) $limit );
 	if ( ! adn_cms_available() || ! $parent_term_id ) {
 		return array();
+	}
+	if ( function_exists( 'cache_get' ) ) {
+		$cid = cache_key_gen( 'adn_cms_category_topics', $parent_term_id, $limit );
+		$cache = cache_get( $cid, 'cms' );
+		if ( false !== $cache ) return $cache;
 	}
 	global $wpdb;
 	$pt    = adn_cms_table( 'taxonomy_parent_terms' );
@@ -146,15 +173,17 @@ function adn_cms_category_topics( $parent_term_id, $limit = 100 ) {
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
 		return array();
 	}
-	return $wpdb->get_results( $wpdb->prepare(
+	$results = $wpdb->get_results( $wpdb->prepare(
 		"SELECT t.* FROM `{$tax}` t
 		 LEFT JOIN `{$types}` tt ON tt.id = t.type_id
 		 WHERE t.parent_term_id = %d AND t.status = 'active'
 		   AND ( tt.slug IS NULL OR tt.slug NOT IN ('glossary','news') )
 		 ORDER BY t.sort_order ASC, t.name ASC LIMIT %d",
 		$parent_term_id,
-		max( 1, (int) $limit )
+		$limit
 	) ) ?: array();
+	if ( function_exists( 'cache_set' ) ) cache_set( $cid, $results, 'cms', CACHE_PERMANENT );
+	return $results;
 }
 
 /**
@@ -166,21 +195,29 @@ function adn_cms_category_topics( $parent_term_id, $limit = 100 ) {
  */
 function adn_cms_all_categories( $limit = 300 ) {
 	if ( ! adn_cms_available() ) { return array(); }
+	$limit = max( 1, (int) $limit );
+	if ( function_exists( 'cache_get' ) ) {
+		$cid = cache_key_gen( 'adn_cms_all_categories', $limit );
+		$cache = cache_get( $cid, 'cms' );
+		if ( false !== $cache ) return $cache;
+	}
 	global $wpdb;
 	$pt  = adn_cms_table( 'taxonomy_parent_terms' );
 	$tax = adn_cms_table( 'taxonomies' );
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
 		return array();
 	}
-	return $wpdb->get_results( $wpdb->prepare(
+	$results = $wpdb->get_results( $wpdb->prepare(
 		"SELECT t.*, pt.name AS parent_name, pt.slug AS parent_slug
 		 FROM `{$tax}` t
 		 INNER JOIN `{$pt}` pt ON pt.id = t.parent_term_id
 		 WHERE t.parent_term_id IS NOT NULL AND t.status = 'active'
 		 ORDER BY pt.sort_order ASC, t.sort_order ASC, t.name ASC
 		 LIMIT %d",
-		max( 1, (int) $limit )
+		$limit
 	) ) ?: array();
+	if ( function_exists( 'cache_set' ) ) cache_set( $cid, $results, 'cms', CACHE_PERMANENT );
+	return $results;
 }
 
 /**
@@ -198,10 +235,15 @@ function adn_cms_articles( $limit = 6, $taxonomy_ids = array() ) {
 	if ( ! adn_cms_available() ) {
 		return array();
 	}
+	$limit = max( 1, (int) $limit );
+	if ( function_exists( 'cache_get' ) ) {
+		$cid = cache_key_gen( 'adn_cms_articles', $limit, $taxonomy_ids );
+		$cache = cache_get( $cid, 'cms' );
+		if ( false !== $cache ) return $cache;
+	}
 	global $wpdb;
 	$ct    = adn_cms_table( 'content_taxonomies' );
 	$tax   = adn_cms_table( 'taxonomies' );
-	$limit = max( 1, (int) $limit );
 
 	// Primary category label for the card (prefer a child topic term).
 	$category = "(
@@ -220,7 +262,7 @@ function adn_cms_articles( $limit = 6, $taxonomy_ids = array() ) {
 		if ( '' === $ids ) {
 			$ids = '0';
 		}
-		return $wpdb->get_results( $wpdb->prepare(
+		$results = $wpdb->get_results( $wpdb->prepare(
 			"SELECT DISTINCT {$select}
 			 FROM `{$wpdb->posts}` p
 			 INNER JOIN `{$ct}` ct ON ct.object_type = 'wp_post' AND ct.object_id = p.ID
@@ -230,16 +272,18 @@ function adn_cms_articles( $limit = 6, $taxonomy_ids = array() ) {
 			 LIMIT %d",
 			$limit
 		) ) ?: array();
+	} else {
+		$results = $wpdb->get_results( $wpdb->prepare(
+			"SELECT {$select}
+			 FROM `{$wpdb->posts}` p
+			 WHERE p.post_type = 'post' AND p.post_status = 'publish'
+			 ORDER BY p.post_date DESC
+			 LIMIT %d",
+			$limit
+		) ) ?: array();
 	}
-
-	return $wpdb->get_results( $wpdb->prepare(
-		"SELECT {$select}
-		 FROM `{$wpdb->posts}` p
-		 WHERE p.post_type = 'post' AND p.post_status = 'publish'
-		 ORDER BY p.post_date DESC
-		 LIMIT %d",
-		$limit
-	) ) ?: array();
+	if ( function_exists( 'cache_set' ) ) cache_set( $cid, $results, 'cms', CACHE_PERMANENT );
+	return $results;
 }
 
 /**
@@ -252,23 +296,31 @@ function adn_cms_latest_news( $limit = 4 ) {
 	if ( ! adn_cms_available() ) {
 		return array();
 	}
+	$limit = max( 1, (int) $limit );
+	if ( function_exists( 'cache_get' ) ) {
+		$cid = cache_key_gen( 'adn_cms_latest_news', $limit );
+		$cache = cache_get( $cid, 'cms' );
+		if ( false !== $cache ) return $cache;
+	}
 	// Prefer a "News" Parent Term and the posts under its terms…
 	$news_parent = adn_cms_parent_by_slug( 'news' );
 	if ( $news_parent ) {
-		$term_ids = array();
-		foreach ( adn_cms_topics( (int) $news_parent->id, 200 ) as $topic ) {
-			$term_ids[] = (int) $topic->id;
+		$news_topics = adn_cms_topics( $news_parent->id, 50 );
+		$topic_ids   = array();
+		foreach ( $news_topics as $nt ) {
+			$topic_ids[] = (int) $nt->id;
 		}
-		if ( ! empty( $term_ids ) ) {
-			return adn_cms_articles( $limit, $term_ids );
+		if ( ! empty( $topic_ids ) ) {
+			$results = adn_cms_articles( $limit, $topic_ids );
+			if ( function_exists( 'cache_set' ) ) cache_set( $cid, $results, 'cms', CACHE_PERMANENT );
+			return $results;
 		}
 	}
-	// …else a single "news" Term, …else just the most recent posts.
-	$news_term = adn_cms_term_by_slug( 'news' );
-	if ( $news_term ) {
-		return adn_cms_articles( $limit, array( (int) $news_term->id ) );
-	}
-	return adn_cms_articles( $limit );
+	
+	// Fallback: just return the latest posts globally if no specific news term exists.
+	$results = adn_cms_articles( $limit );
+	if ( function_exists( 'cache_set' ) ) cache_set( $cid, $results, 'cms', CACHE_PERMANENT );
+	return $results;
 }
 
 /**
@@ -565,6 +617,8 @@ function adn_cms_posts_for_term_slug( $term_slug, $limit = 20 ) {
 	}
 	return adn_cms_articles( max( 1, (int) $limit ), array( (int) $term->id ) );
 }
+
+
 
 /**
  * Full taxonomy term row from wp_ah_taxonomies by slug, or null.

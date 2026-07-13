@@ -77,7 +77,7 @@ $all_forms   = AH_Form_Builder::get_all();
 $current     = $form_id ? AH_Form_Builder::get( $form_id ) : null;
 $fields      = $form_id ? AH_Form_Builder::get_fields( $form_id ) : array();
 $status_counts = $form_id ? AH_Form_Builder::count_by_status( $form_id ) : array( 'all' => 0, 'new' => 0, 'read' => 0, 'replied' => 0, 'closed' => 0 );
-$field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Tel', 'textarea' => 'Textarea', 'select' => 'Dropdown', 'number' => 'Number', 'date' => 'Date', 'url' => 'URL', 'hidden' => 'Hidden Field' );
+$field_types = array( 'text' => 'Text', 'email' => 'Email', 'tel' => 'Phone / Tel', 'textarea' => 'Textarea', 'select' => 'Dropdown', 'radio' => 'Radio Buttons', 'checkbox' => 'Checkboxes', 'number' => 'Number', 'date' => 'Date', 'daterange' => 'Date Range', 'color' => 'Color Picker', 'url' => 'URL', 'hidden' => 'Hidden Field', 'markup' => 'Markup / Instructions' );
 $agr         = $form_id ? AH_Form_Builder::get_agreement( $form_id ) : array( 'enabled' => 0, 'before' => 'I have read and agree to the', 'link_text' => 'Terms & Conditions', 'type' => 'link', 'url' => '', 'after' => '' );
 $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 ?>
@@ -522,7 +522,7 @@ jQuery(function ($) {
     var $opts = $r.find('.fb-opts');
     var $desc = $r.find('.fb-desc').closest('td');
     var $req  = $r.find('.fb-req');
-    if (type === 'select') {
+    if (type === 'select' || type === 'radio' || type === 'checkbox') {
       $ph.addClass('fb-hidden');
       $opts.removeClass('fb-hidden').attr('placeholder', 'Option A\nOption B\nOption C');
       $desc.removeClass('fb-hidden');
@@ -531,6 +531,11 @@ jQuery(function ($) {
       $ph.removeClass('fb-hidden').attr('placeholder', 'Value sent with form');
       $opts.addClass('fb-hidden');
       $desc.addClass('fb-hidden');
+      $req.prop('checked', false).prop('disabled', true).css('opacity', '0.3');
+    } else if (type === 'markup') {
+      $ph.addClass('fb-hidden');
+      $opts.addClass('fb-hidden');
+      $desc.removeClass('fb-hidden');
       $req.prop('checked', false).prop('disabled', true).css('opacity', '0.3');
     } else {
       $ph.removeClass('fb-hidden').attr('placeholder', 'Placeholder text');
@@ -585,7 +590,7 @@ jQuery(function ($) {
       var $r   = $(this);
       var type = $r.find('.fb-type').val();
       var opts = [];
-      if (type === 'select') {
+      if (type === 'select' || type === 'radio' || type === 'checkbox') {
         var raw = $r.find('.fb-opts').val().trim();
         if (raw) opts = raw.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
       }

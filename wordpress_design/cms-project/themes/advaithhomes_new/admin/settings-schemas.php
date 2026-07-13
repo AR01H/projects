@@ -55,6 +55,7 @@ function adn_settings_schemas() {
 			'title'  => __( 'Home Sections', ADN_TEXT_DOMAIN ),
 			'intro'  => __( 'Show or hide each section of the home page.', ADN_TEXT_DOMAIN ),
 			'fields' => array(
+				array( 'key' => 'home_banner', 'type' => 'image', 'label' => __( 'Home banner image', ADN_TEXT_DOMAIN ), 'desc' => __( 'Upload or select the main banner image for the home page.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'hero',        'type' => 'toggle', 'label' => __( 'Hero', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'journey',     'type' => 'toggle', 'label' => __( 'Journey cards', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'news',        'type' => 'toggle', 'label' => __( 'News / Regulations / Hot topics', ADN_TEXT_DOMAIN ), 'default' => 1 ),

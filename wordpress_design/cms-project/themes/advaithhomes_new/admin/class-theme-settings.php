@@ -168,6 +168,59 @@ class ADN_Theme_Settings {
 				echo '</fieldset>';
 				break;
 
+			case 'image':
+				wp_enqueue_media();
+				$img_url = '';
+				if ( $value ) {
+					$img_url = function_exists( 'ah_settings_image_url' ) 
+						? ah_settings_image_url( (string) $value ) 
+						: ( filter_var( $value, FILTER_VALIDATE_URL ) ? $value : wp_get_attachment_image_url( $value, 'medium' ) );
+				}
+				?>
+				<div class="adn-image-picker" style="display:flex;align-items:flex-start;gap:15px;margin-bottom:5px;">
+					<div style="width:120px;height:120px;border:1px solid #ddd;background:#f0f0f1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+						<img src="<?php echo esc_url( $img_url ); ?>" class="adn-image-preview" style="max-width:100%;max-height:100%;display:<?php echo $img_url ? 'block' : 'none'; ?>;" alt="">
+					</div>
+					<div>
+						<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( (string) $value ); ?>" class="adn-image-id">
+						<button type="button" class="button adn-pick-image"><?php esc_html_e( 'Choose Image', ADN_TEXT_DOMAIN ); ?></button>
+						<button type="button" class="button adn-remove-image" style="color:#b32d2e;display:<?php echo $img_url ? 'inline-block' : 'none'; ?>;"><?php esc_html_e( 'Remove', ADN_TEXT_DOMAIN ); ?></button>
+					</div>
+				</div>
+				<script>
+				jQuery(document).ready(function($){
+					if(typeof wp==='undefined' || !wp.media) return;
+					$('.adn-image-picker').each(function(){
+						var $wrap = $(this);
+						var $input = $wrap.find('.adn-image-id');
+						var $preview = $wrap.find('.adn-image-preview');
+						var $remove = $wrap.find('.adn-remove-image');
+						var frame;
+						$wrap.find('.adn-pick-image').on('click', function(e){
+							e.preventDefault();
+							if(frame){ frame.open(); return; }
+							frame = wp.media({ title: 'Select Image', button: { text: 'Use this image' }, multiple: false });
+							frame.on('select', function(){
+								var attachment = frame.state().get('selection').first().toJSON();
+								$input.val(attachment.id);
+								var url = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
+								$preview.attr('src', url).show();
+								$remove.show();
+							});
+							frame.open();
+						});
+						$remove.on('click', function(e){
+							e.preventDefault();
+							$input.val('');
+							$preview.attr('src', '').hide();
+							$(this).hide();
+						});
+					});
+				});
+				</script>
+				<?php
+				break;
+
 			case 'text':
 			default:
 				printf(

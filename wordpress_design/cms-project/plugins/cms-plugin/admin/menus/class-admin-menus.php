@@ -46,6 +46,7 @@ class AH_Admin_Menus {
 			['title' => 'Redirect Rules',       'menu' => 'Redirect Rules',       'slug' => 'ah-redirects',     'callback' => 'page_redirects'    ],
 			['title' => 'Audit Log',            'menu' => 'Audit Log',            'slug' => 'ah-audit',         'callback' => 'page_audit'        ],
 			['title' => 'Admin Tools',          'menu' => 'Admin Tools',          'slug' => 'ah-admin-actions', 'callback' => 'page_admin_actions'],
+			['title' => 'Global Settings',      'menu' => 'Global Settings',      'slug' => 'ah-global-settings', 'callback' => 'page_global_settings'],
 			['title' => 'Reference Notes',      'menu' => 'Reference Notes',      'slug' => 'ah-ref-notes',     'callback' => 'page_ref_notes'    ],
 			['title' => 'Help & Guide',         'menu' => 'Help & Guide',         'slug' => 'ah-help',          'callback' => 'page_help'         ],
 		];
@@ -85,6 +86,7 @@ class AH_Admin_Menus {
 	public static function page_featured_in()    { self::load( 'featured-in'    ); }
 	public static function page_spotlights()     { self::load( 'spotlights'     ); }
 	public static function page_settings()       { self::load( 'settings'       ); }
+	public static function page_global_settings(){ self::load( 'global-settings'); }
 	public static function page_pages()          { self::load( 'pages'          ); }
 	public static function page_media()          { self::load( 'media'          ); }
 	public static function page_resources()      { self::load( 'resources'      ); }

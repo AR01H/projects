@@ -17,6 +17,7 @@ if ( $edit_id ) {
 <?php
 $active_tab = sanitize_key( $_GET['tab'] ?? 'per-page' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $gs_css     = (string) get_option( 'ah_global_styles_css', '' );
+$gs_js      = (string) get_option( 'ah_global_styles_js', '' );
 $gs_active  = (int) get_option( 'ah_global_styles_active', 0 );
 ?>
 <div class="wrap ah-wrap">
@@ -30,34 +31,50 @@ $gs_active  = (int) get_option( 'ah_global_styles_active', 0 );
 		</a>
 		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-custom-code&tab=global-styles' ) ); ?>"
 		   style="padding:9px 20px;font-size:13px;font-weight:600;text-decoration:none;border-bottom:<?php echo $active_tab === 'global-styles' ? '2px solid var(--ah-primary,#1d4ed8);color:var(--ah-primary,#1d4ed8)' : '2px solid transparent;color:var(--ah-muted)'; ?>;margin-bottom:-2px;">
-			🎨 Global Styles
+			🎨 Global CSS / JS
 		</a>
 	</div>
 
 <?php if ( $active_tab === 'global-styles' ) : ?>
 	<!-- ══════════════════ GLOBAL STYLES TAB ══════════════════ -->
-	<p style="color:var(--ah-muted);margin:0 0 20px;">Global CSS that loads on every page sitewide - perfect for celebration themes, seasonal tweaks, or campaign overrides.</p>
+	<p style="color:var(--ah-muted);margin:0 0 20px;">Global CSS and JavaScript that loads on every page sitewide - perfect for celebration themes, seasonal tweaks, analytics scripts, or campaign overrides.</p>
 
 	<div style="display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;">
 		<div class="ah-card" style="padding:20px;">
 			<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-				<label style="font-weight:600;font-size:13px;">Global CSS</label>
+				<label style="font-weight:600;font-size:13px;">Global CSS &amp; JS</label>
 				<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
 					<span style="color:var(--ah-muted);">Inject on site</span>
 					<input type="checkbox" id="ah-gs-active" <?php checked( $gs_active, 1 ); ?>>
 				</label>
 			</div>
-			<p style="color:var(--ah-muted);font-size:12px;margin:0 0 8px;">No <code>&lt;style&gt;</code> tags needed. Loads in <code>&lt;head&gt;</code> on every page when enabled.</p>
-			<textarea id="ah-gs-css" rows="30"
-				style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#cdd6f4;padding:14px;border-radius:6px;border:1px solid #313244;"
-				placeholder="/* Example: Christmas theme */
+
+			<!-- CSS Section -->
+			<div style="margin-bottom:20px;">
+				<p style="color:var(--ah-text);font-size:13px;font-weight:600;margin:0 0 4px;">CSS</p>
+				<p style="color:var(--ah-muted);font-size:12px;margin:0 0 8px;">No <code>&lt;style&gt;</code> tags needed. Loads in <code>&lt;head&gt;</code>.</p>
+				<textarea id="ah-gs-css" rows="15"
+					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#cdd6f4;padding:14px;border-radius:6px;border:1px solid #313244;"
+					placeholder="/* Example: Christmas theme */
 body { --color-primary: #c0392b; }
 .site-header { background: linear-gradient(135deg,#1a472a,#2d6a4f); }
 .confetti { display: block; }"
-			><?php echo esc_textarea( $gs_css ); ?></textarea>
+				><?php echo esc_textarea( $gs_css ); ?></textarea>
+			</div>
 
-			<div style="margin-top:14px;display:flex;gap:12px;align-items:center;">
-				<button id="ah-gs-save-btn" class="ah-btn ah-btn-primary">Save Global Styles</button>
+			<!-- JS Section -->
+			<div>
+				<p style="color:var(--ah-text);font-size:13px;font-weight:600;margin:0 0 4px;">JavaScript</p>
+				<p style="color:var(--ah-muted);font-size:12px;margin:0 0 8px;">No <code>&lt;script&gt;</code> tags needed. Loads in <code>&lt;footer&gt;</code>.</p>
+				<textarea id="ah-gs-js" rows="15"
+					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#a6e3a1;padding:14px;border-radius:6px;border:1px solid #313244;"
+					placeholder="// Example: Sitewide tracking or UI script
+console.log('Global JS loaded!');"
+				><?php echo esc_textarea( $gs_js ); ?></textarea>
+			</div>
+
+			<div style="margin-top:16px;display:flex;gap:12px;align-items:center;">
+				<button id="ah-gs-save-btn" class="ah-btn ah-btn-primary">Save Global Code</button>
 				<span id="ah-gs-msg" style="font-size:13px;"></span>
 			</div>
 		</div>
@@ -73,11 +90,12 @@ body { --color-primary: #c0392b; }
 				<strong style="color:var(--ah-text);">Use cases</strong><br>
 				• Christmas / seasonal theme<br>
 				• Sitewide font override<br>
+				• Sitewide tracking scripts<br>
 				• Campaign accent colour<br>
 				• Celebratory banner CSS<br>
-				• A/B test styles<br><br>
+				• A/B test styles & scripts<br><br>
 				<strong style="color:var(--ah-text);">Tip</strong><br>
-				Uncheck "Inject on site" to draft styles without them going live.
+				Uncheck "Inject on site" to draft code without it going live.
 			</div>
 		</div>
 	</div>
@@ -333,9 +351,10 @@ jQuery(function ($) {
 			action  : 'ah_save_global_styles',
 			nonce   : gsNonce,
 			css     : $('#ah-gs-css').val(),
+			js      : $('#ah-gs-js').val(),
 			active  : $('#ah-gs-active').is(':checked') ? 1 : 0,
 		}, function (res) {
-			$btn.prop('disabled', false).text('Save Global Styles');
+			$btn.prop('disabled', false).text('Save Global Code');
 			if ( res.success ) {
 				$('#ah-gs-msg').css('color','#15803d').text('✓ ' + res.data.message);
 				var on = $('#ah-gs-active').is(':checked');
@@ -346,7 +365,7 @@ jQuery(function ($) {
 				$('#ah-gs-msg').css('color','#b91c1c').text('✗ ' + (res.data ? res.data.message : 'Error.'));
 			}
 		}).fail(function () {
-			$btn.prop('disabled', false).text('Save Global Styles');
+			$btn.prop('disabled', false).text('Save Global Code');
 			$('#ah-gs-msg').css('color','#b91c1c').text('✗ Request failed.');
 		});
 	});

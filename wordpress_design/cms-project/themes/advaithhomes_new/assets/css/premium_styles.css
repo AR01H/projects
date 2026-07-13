@@ -1516,61 +1516,45 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 }
 /* Compact list rows inside the bar */
 .news-single-more .mini-card {
-    padding: 9px 10px !important;
+    padding: 14px 12px !important;
     min-height: 0 !important;
-    border: 1px solid transparent !important;
-    border-bottom: 1px solid rgba(32,60,62,.1) !important;
-    border-radius: 8px !important;
-    transition: background .18s ease, box-shadow .18s ease !important;
+    border: none !important;
+    border-left: 3px solid transparent !important;
+    border-bottom: 1px solid rgba(32,60,62,.08) !important;
+    border-radius: 0 !important;
+    transition: all .2s ease !important;
+    background: transparent !important;
 }
 .news-single-more .mini-card:last-child { border-bottom: none !important; }
-/* Premium hover: soft teal wash + gold left accent (no hard box) */
+/* Premium hover: simple left border accent */
 .news-single-more .mini-card:hover {
-    background: rgba(32,60,62,.05) !important;
+    background: rgba(32,60,62,.02) !important;
     border-color: transparent !important;
-    box-shadow: inset 3px 0 0 0 var(--secondary-color, #B08D57),
-                0 4px 14px rgba(32,60,62,.08) !important;
+    border-left-color: var(--secondary-color, #B08D57) !important;
+    box-shadow: none !important;
 }
-.news-single-more .mini-card:hover .mini-card-thumb {
-    box-shadow: 0 3px 10px rgba(32,60,62,.2) !important;
-}
+/* Hide the bulky thumbnail entirely for a sleek look */
 .news-single-more .mini-card-thumb {
-    width: 64px !important;
-    height: 46px !important;
-    aspect-ratio: auto !important;
-    border-radius: 8px !important;
-    position: relative !important;
-}
-.news-single-more .mini-card-thumb--gradient::after {
-    content: "\f1ea"; /* fa-newspaper */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    color: rgba(255,255,255,.6);
-    text-shadow: 0 1px 3px rgba(15,30,20,.25);
+    display: none !important;
 }
 .news-single-more .mini-card-title {
-    font-size: 0.86rem !important;
+    font-size: 0.95rem !important;
     font-weight: 700 !important;
     color: var(--text-primary, #111816) !important;
+    line-height: 1.35 !important;
+    margin-bottom: 6px !important;
 }
 .news-single-more .mini-card:hover .mini-card-title {
-    color: var(--client-color, #203c3e) !important;
+    color: var(--secondary-color, #B08D57) !important;
 }
 .news-single-more .mini-card-tag {
-    background: rgba(32,60,62,.1) !important;
-    color: var(--client-color, #203c3e) !important;
-    font-size: 0.6rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.05em !important;
+    background: transparent !important;
+    color: var(--secondary-color, #B08D57) !important;
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    border-radius: 4px !important;
-    padding: 2px 7px !important;
+    padding: 0 !important;
 }
 .news-single-more .mini-card-date {
     font-size: 0.7rem !important;

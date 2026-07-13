@@ -101,12 +101,24 @@ class AH_Workflow_Manager {
 			if ( $sanitized ) $actions[] = $sanitized;
 		}
 
-		// Dedup / cooldown settings
 		$raw_s    = (array) ( $data['settings'] ?? array() );
+		$custom_vars = array();
+		foreach ( (array) ( $raw_s['custom_vars'] ?? array() ) as $cv ) {
+			$k = sanitize_key( $cv['key'] ?? '' );
+			if ( $k ) {
+				$custom_vars[] = array(
+					'key'   => $k,
+					'value' => sanitize_text_field( $cv['value'] ?? '' ),
+				);
+			}
+		}
+
 		$settings = array(
 			'dedup_key'          => sanitize_text_field( $raw_s['dedup_key']          ?? '' ),
 			'dedup_window_hours' => max( 0, (int) ( $raw_s['dedup_window_hours'] ?? 0 ) ),
 			'cooldown_minutes'   => max( 0, (int) ( $raw_s['cooldown_minutes']   ?? 0 ) ),
+			'custom_vars'        => $custom_vars,
+			'var_profile_id'     => sanitize_key( $raw_s['var_profile_id'] ?? '' ),
 		);
 
 		$row = array(
@@ -191,8 +203,30 @@ class AH_Workflow_Manager {
 
 		foreach ( $rows as $rule ) {
 			$rule = self::decode( $rule );
-			if ( ! self::conditions_pass( $rule, $context ) ) continue;
-			if ( ! self::passes_dedup( $rule, $context, $lg ) ) continue;
+			$rule_ctx = $context;
+			
+			// 1. Inject Variable Profile variables first
+			$prof_id = $rule->settings['var_profile_id'] ?? '';
+			if ( $prof_id ) {
+				$profile = self::get_var_profile( $prof_id );
+				if ( $profile && ! empty( $profile['vars'] ) ) {
+					foreach ( $profile['vars'] as $v ) {
+						if ( ! empty( $v['key'] ) ) {
+							$rule_ctx[ $v['key'] ] = self::fill( $v['value'] ?? '', $rule_ctx );
+						}
+					}
+				}
+			}
+
+			// 2. Inject Rule-specific Custom Variables (these override profile vars)
+			foreach ( $rule->settings['custom_vars'] ?? array() as $cv ) {
+				if ( ! empty( $cv['key'] ) ) {
+					$rule_ctx[ $cv['key'] ] = self::fill( $cv['value'] ?? '', $rule_ctx );
+				}
+			}
+
+			if ( ! self::conditions_pass( $rule, $rule_ctx ) ) continue;
+			if ( ! self::passes_dedup( $rule, $rule_ctx, $lg ) ) continue;
 			$rules_fired++;
 
 			$delay_seconds = 0;
@@ -215,7 +249,7 @@ class AH_Workflow_Manager {
 				$log_base = array(
 					'rule_id'       => (int) $rule->id,
 					'trigger_name'  => $trigger_name,
-					'context_data'  => wp_json_encode( $context ),
+					'context_data'  => wp_json_encode( $rule_ctx ),
 					'action_index'  => $idx,
 					'action_type'   => $type,
 					'action_config' => wp_json_encode( $action ),
@@ -225,7 +259,7 @@ class AH_Workflow_Manager {
 				if ( $immediate && null === $scheduled_at ) {
 					$error = null;
 					try {
-						self::run_actions( array( $action ), $context );
+						self::run_actions( array( $action ), $rule_ctx );
 					} catch ( \Throwable $e ) {
 						$error = $e->getMessage();
 					}
@@ -410,11 +444,13 @@ class AH_Workflow_Manager {
 	// ── Action runner ─────────────────────────────────────────────────────────
 
 	private static function run_actions( array $actions, array $context ): void {
+		$cfg = self::get_config();
 		foreach ( $actions as $a ) {
 			match ( $a['type'] ?? '' ) {
-				'send_email'    => self::action_email( $a, $context ),
+				'send_email'    => ( 'smtp' === ( $cfg['email_send_method'] ?? 'api' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context ),
 				'whatsapp'      => self::action_whatsapp( $a, $context ),
 				'http_request'  => self::action_http( $a, $context ),
+				'curl_command'  => self::action_curl_command( $a, $context ),
 				'update_option' => self::action_update_option( $a, $context ),
 				default         => null,
 			};
@@ -423,7 +459,7 @@ class AH_Workflow_Manager {
 
 	// ── send_email ────────────────────────────────────────────────────────────
 
-	private static function action_email( array $a, array $context ): void {
+	private static function action_email_smtp( array $a, array $context ): void {
 		$ctx = array_merge( self::config_tokens(), $context );
 		$cfg = self::get_config();
 
@@ -555,6 +591,93 @@ class AH_Workflow_Manager {
 		}
 	}
 
+	private static function action_email( array $a, array $context ): void {
+		$ctx = array_merge( self::config_tokens(), $context );
+		$cfg = self::get_config();
+
+		// Handle TO as array
+		$to_list = is_array( $a['to'] ?? null ) ? $a['to'] : array( $a['to'] ?? '' );
+		$to_recipients = array();
+		foreach ( $to_list as $to_addr ) {
+			$filled = self::fill( (string) $to_addr, $ctx );
+			$email = sanitize_email( $filled );
+			if ( $email && ! self::is_email_blocked( $email ) ) $to_recipients[] = array( 'email' => $email );
+		}
+		if ( empty( $to_recipients ) ) return;
+
+		$subject  = self::fill( $a['subject'] ?? 'Notification', $ctx );
+		$body_tpl = $a['body'] ?? '';
+		$is_html  = ! empty( $a['html'] );
+		$body     = $is_html ? self::fill_html( $body_tpl, $ctx ) : self::fill( $body_tpl, $ctx );
+
+		// Resolve channel → global config fallback chain
+		$channel = ! empty( $a['channel_id'] ) ? self::get_email_channel( $a['channel_id'] ) : null;
+
+		$api_key = $channel['password'] ??  '';
+		if ( ! $api_key ) {
+			throw new \Exception( 'No Brevo API key configured for this channel.' );
+		}
+
+		$sender_name  = sanitize_text_field( $channel['from_name'] ?? ( $cfg['email_from_name'] ?? '' ) );
+		$sender_email = sanitize_email( $channel['from_email'] ?? ( $cfg['email_from_email'] ?? '' ) );
+
+		// Handle CC as array
+		$cc_list = is_array( $a['cc'] ?? null ) ? $a['cc'] : ( ! empty( $a['cc'] ) ? array( $a['cc'] ) : array() );
+		$cc_recipients = array();
+		foreach ( $cc_list as $cc_addr ) {
+			$email = sanitize_email( self::fill( (string) $cc_addr, $ctx ) );
+			if ( $email ) $cc_recipients[] = array( 'email' => $email );
+		}
+
+		// Handle BCC - from rule action AND global config
+		$bcc_list = is_array( $a['bcc'] ?? null ) ? $a['bcc'] : ( ! empty( $a['bcc'] ) ? array( $a['bcc'] ) : array() );
+		$bcc_recipients = array();
+		foreach ( $bcc_list as $bcc_addr ) {
+			$email = sanitize_email( self::fill( (string) $bcc_addr, $ctx ) );
+			if ( $email ) $bcc_recipients[] = array( 'email' => $email );
+		}
+		if ( ! empty( $cfg['email_bcc'] ) ) {
+			$global_bcc = is_array( $cfg['email_bcc'] ) ? $cfg['email_bcc'] : array_filter( array_map( 'trim', explode( ',', $cfg['email_bcc'] ) ) );
+			$existing = array_column( $bcc_recipients, 'email' );
+			foreach ( $global_bcc as $bcc_addr ) {
+				$email = sanitize_email( $bcc_addr );
+				if ( $email && ! in_array( $email, $existing, true ) ) {
+					$bcc_recipients[] = array( 'email' => $email );
+					$existing[] = $email;
+				}
+			}
+		}
+
+		$payload = array(
+			'sender'  => array( 'name' => $sender_name, 'email' => $sender_email ),
+			'to'      => $to_recipients,
+			'subject' => $subject,
+		);
+		$is_html ? $payload['htmlContent'] = $body : $payload['textContent'] = $body;
+		if ( ! empty( $cc_recipients ) )  $payload['cc']  = $cc_recipients;
+		if ( ! empty( $bcc_recipients ) ) $payload['bcc'] = $bcc_recipients;
+
+		$response = wp_remote_post( 'https://api.brevo.com/v3/smtp/email', array(
+			'timeout' => 15,
+			'headers' => array(
+				'api-key'      => $api_key,
+				'Content-Type' => 'application/json',
+				'accept'       => 'application/json',
+			),
+			'body' => wp_json_encode( $payload ),
+		) );
+
+		if ( is_wp_error( $response ) ) {
+			throw new \Exception( $response->get_error_message() );
+		}
+
+		$code = wp_remote_retrieve_response_code( $response );
+		if ( $code < 200 || $code >= 300 ) {
+			$err = json_decode( wp_remote_retrieve_body( $response ), true );
+			throw new \Exception( $err['message'] ?? "Brevo API returned HTTP {$code}." );
+		}
+	}
+
 	// ── whatsapp ──────────────────────────────────────────────────────────────
 
 	private static function action_whatsapp( array $a, array $context ): void {
@@ -673,6 +796,27 @@ class AH_Workflow_Manager {
 		}
 	}
 
+	// ── curl_command ──────────────────────────────────────────────────────────
+
+	private static function action_curl_command( array $a, array $context ): void {
+		$ctx = array_merge( self::config_tokens(), $context );
+		$curl_str = self::fill( $a['curl_string'] ?? '', $ctx );
+		if ( ! $curl_str ) return;
+		
+		// Only run if it actually starts with curl
+		if ( ! str_starts_with( trim( $curl_str ), 'curl ' ) ) {
+			throw new \Exception( 'Invalid cURL command: must start with "curl "' );
+		}
+
+		$output = array();
+		$result = -1;
+		exec( $curl_str, $output, $result );
+
+		if ( $result !== 0 ) {
+			throw new \Exception( 'cURL command failed with exit code ' . $result . ': ' . implode( "\n", $output ) );
+		}
+	}
+
 	// ── update_option ─────────────────────────────────────────────────────────
 
 	private static function action_update_option( array $a, array $context ): void {
@@ -691,18 +835,51 @@ class AH_Workflow_Manager {
 	 */
 	public static function fill( string $tpl, array $ctx ): string {
 		foreach ( $ctx as $k => $v ) {
-			$tpl = str_replace( '{' . $k . '}', (string) $v, $tpl );
+			$val = (string) $v;
+			$tpl = str_replace( '{{' . $k . '}}', $val, $tpl );
+			$tpl = str_replace( '((' . $k . '))', $val, $tpl );
 		}
+		// Basic support for evaluating math/logic expressions inside {{eval: ...}}
+		$tpl = preg_replace_callback('/\{\{eval:(.*?)\}\}/is', function( $m ) {
+			$expr = trim( $m[1] );
+			// Only allow safe characters: digits, math operators, parentheses, space, and comparison ops
+			if ( preg_match( '/^[0-9\+\-\*\/\.\(\)\s\>\<\=\!]+$/', $expr ) ) {
+				try {
+					$result = eval( 'return ' . $expr . ';' );
+					if ( is_bool( $result ) ) {
+						return $result ? '1' : '0';
+					}
+					return (string) $result;
+				} catch ( \Throwable $e ) { }
+			}
+			return $m[0]; // If eval fails or is unsafe, return as-is
+		}, $tpl);
 		return $tpl;
 	}
 
 	/**
-	 * Replace {key} tokens - values are HTML-escaped (safe for HTML email).
+	 * Replace token - values are HTML-escaped (safe for HTML email).
 	 */
 	public static function fill_html( string $tpl, array $ctx ): string {
 		foreach ( $ctx as $k => $v ) {
-			$tpl = str_replace( '{' . $k . '}', esc_html( (string) $v ), $tpl );
+			$val = esc_html( (string) $v );
+			$tpl = str_replace( '{{' . $k . '}}', $val, $tpl );
+			$tpl = str_replace( '((' . $k . '))', $val, $tpl );
 		}
+		// Evaluate safe expressions inside {{eval: ...}} for HTML context too
+		$tpl = preg_replace_callback('/\{\{eval:(.*?)\}\}/is', function( $m ) {
+			$expr = trim( $m[1] );
+			if ( preg_match( '/^[0-9\+\-\*\/\.\(\)\s\>\<\=\!]+$/', $expr ) ) {
+				try {
+					$result = eval( 'return ' . $expr . ';' );
+					if ( is_bool( $result ) ) {
+						return $result ? '1' : '0';
+					}
+					return esc_html( (string) $result );
+				} catch ( \Throwable $e ) { }
+			}
+			return $m[0];
+		}, $tpl);
 		return $tpl;
 	}
 
@@ -745,6 +922,10 @@ class AH_Workflow_Manager {
 				'type'         => 'update_option',
 				'option_key'   => sanitize_key( $a['option_key']   ?? '' ),
 				'option_value' => sanitize_text_field( $a['option_value'] ?? '' ),
+			),
+			'curl_command' => array(
+				'type'        => 'curl_command',
+				'curl_string' => trim( $a['curl_string'] ?? '' ), // Do not sanitize heavily since cURL needs special chars
 			),
 			'whatsapp' => array(
 				'type'       => 'whatsapp',
@@ -793,18 +974,9 @@ class AH_Workflow_Manager {
 
 	public static function trigger_presets(): array {
 		return array(
-			'sugarcane_contact_form' => 'Sugarcane - Contact Form Submitted',
-			'contact_submitted'      => 'Contact Form Submitted',
-			'consultation_submitted' => 'Consultation Form Submitted',
-			'form_submit'            => 'Form Submission (built-in)',
-			'newsletter_subscribe'   => 'Notification - New Subscriber',
-			'notification_send'      => 'Notification - Send (per subscriber)',
-			'user_signup'            => 'User Signup',
-			'order_placed'           => 'Order Placed',
-			'order_paid'             => 'Order Paid',
-			'appointment'            => 'Appointment Booked',
-			'lead_created'           => 'Lead Created',
-			'custom'                 => 'Custom (define your own)',
+			'sample1' => 'Sample 1',
+			'sample2' => 'Sample 2',
+			'custom'  => 'Custom (define your own)',
 		);
 	}
 
@@ -815,11 +987,6 @@ class AH_Workflow_Manager {
 		if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: array();
 		return array_merge( array(
 			'global_freeze'      => '0',
-			'email_from_name'    => get_bloginfo( 'name' ),
-			'email_from_email'   => get_option( 'admin_email' ),
-			'email_bcc'          => '',
-			'wa_api_url'         => '',
-			'wa_auth_token'      => '',
 			'retry_max_attempts' => '3',
 			'cron_enabled'       => '1',
 		), (array) $saved );
@@ -828,11 +995,6 @@ class AH_Workflow_Manager {
 	public static function save_config( array $data ): void {
 		$clean = array(
 			'global_freeze'      => ! empty( $data['global_freeze'] ) ? '1' : '0',
-			'email_from_name'    => sanitize_text_field( $data['email_from_name']    ?? '' ),
-			'email_from_email'   => sanitize_email(      $data['email_from_email']   ?? '' ),
-			'email_bcc'          => sanitize_email(      $data['email_bcc']          ?? '' ),
-			'wa_api_url'         => esc_url_raw(         $data['wa_api_url']         ?? '' ),
-			'wa_auth_token'      => sanitize_text_field( $data['wa_auth_token']      ?? '' ),
 			'retry_max_attempts' => (string) max( 1, min( 10, (int) ( $data['retry_max_attempts'] ?? 3 ) ) ),
 			'cron_enabled'       => ! empty( $data['cron_enabled'] ) ? '1' : '0',
 		);
@@ -859,6 +1021,44 @@ class AH_Workflow_Manager {
 			);
 		}
 		update_option( 'ah_re_custom_vars', $clean );
+	}
+
+	// ── Variable Profiles ─────────────────────────────────────────────────────
+
+	public static function get_var_profiles(): array {
+		$saved = get_option( 'ah_re_var_profiles', array() );
+		if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: array();
+		return is_array( $saved ) ? $saved : array();
+	}
+
+	public static function get_var_profile( string $id ): ?array {
+		foreach ( self::get_var_profiles() as $prof ) {
+			if ( ( $prof['id'] ?? '' ) === $id ) return $prof;
+		}
+		return null;
+	}
+
+	public static function save_var_profiles( array $profiles ): void {
+		$clean = array();
+		foreach ( $profiles as $prof ) {
+			$id = sanitize_key( $prof['id'] ?? '' );
+			if ( ! $id ) continue;
+			$vars_clean = array();
+			foreach ( $prof['vars'] ?? array() as $v ) {
+				$key = sanitize_key( $v['key'] ?? '' );
+				if ( ! $key ) continue;
+				$vars_clean[] = array(
+					'key'   => $key,
+					'value' => sanitize_text_field( $v['value'] ?? '' ),
+				);
+			}
+			$clean[] = array(
+				'id'   => $id,
+				'name' => sanitize_text_field( $prof['name'] ?? '' ),
+				'vars' => $vars_clean,
+			);
+		}
+		update_option( 'ah_re_var_profiles', $clean );
 	}
 
 	// ── Email channels / SMTP profiles ────────────────────────────────────────
@@ -1114,6 +1314,11 @@ class AH_Workflow_Manager {
 	public static function delete_log( int $id ): void {
 		global $wpdb;
 		$wpdb->delete( self::logs_table(), array( 'id' => $id ), array( '%d' ) );
+	}
+
+	public static function clear_logs(): void {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE TABLE `" . self::logs_table() . "`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	public static function mark_log_unsent( int $id ): void {

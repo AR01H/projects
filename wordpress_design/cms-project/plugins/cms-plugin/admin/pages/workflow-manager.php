@@ -13,18 +13,15 @@ if ( isset( $_POST['ah_re_cfg_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_re_cfg_nonce'], 'ah_save_re_config' ) ) wp_die( 'Security.' );
 	AH_Workflow_Manager::save_config( array(
 		'global_freeze'      => $_POST['cfg_global_freeze']      ?? '0',
-		'email_from_name'    => $_POST['cfg_email_from_name']    ?? '',
-		'email_from_email'   => $_POST['cfg_email_from_email']   ?? '',
-		'email_bcc'          => $_POST['cfg_email_bcc']          ?? '',
-		'wa_api_url'         => $_POST['cfg_wa_api_url']         ?? '',
-		'wa_auth_token'      => $_POST['cfg_wa_auth_token']      ?? '',
 		'retry_max_attempts' => $_POST['cfg_retry_max_attempts'] ?? '3',
 		'cron_enabled'       => $_POST['cfg_cron_enabled']       ?? '0',
 	) );
 	$raw_vars     = json_decode( wp_unslash( $_POST['cfg_custom_vars_json'] ?? '[]' ), true ) ?: array();
 	$raw_channels = json_decode( wp_unslash( $_POST['cfg_channels_json']    ?? '[]' ), true ) ?: array();
+	$raw_profiles = json_decode( wp_unslash( $_POST['cfg_var_profiles_json'] ?? '[]' ), true ) ?: array();
 	AH_Workflow_Manager::save_custom_vars( $raw_vars );
 	AH_Workflow_Manager::save_email_channels( $raw_channels );
+	AH_Workflow_Manager::save_var_profiles( $raw_profiles );
 	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=config&notice=cfg_saved' ) );
 }
 
@@ -55,6 +52,13 @@ if ( isset( $_GET['del_log'], $_GET['_wpnonce'] ) ) {
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'ah_del_log' ) ) wp_die( 'Security.' );
 	AH_Workflow_Manager::delete_log( (int) $_GET['del_log'] );
 	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=logs&notice=log_deleted' ) );
+}
+
+// ── Handle: clear trigger logs ────────────────────────────────────────────────
+if ( isset( $_POST['ah_re_clear_logs_nonce'] ) ) {
+	if ( ! wp_verify_nonce( $_POST['ah_re_clear_logs_nonce'], 'ah_clear_logs' ) ) wp_die( 'Security.' );
+	AH_Workflow_Manager::clear_logs();
+	AH_Admin_Bootstrap::redirect( admin_url( 'admin.php?page=ah-workflow-manager&view=logs&notice=logs_cleared' ) );
 }
 
 // ── Handle: mark log unsent ───────────────────────────────────────────────────
@@ -144,6 +148,7 @@ if ( isset( $_GET['notice'] ) ) {
 		'deleted'         => 'success:Rule deleted.',
 		'cfg_saved'       => 'success:Configuration saved.',
 		'log_deleted'     => 'success:Log entry deleted.',
+		'logs_cleared'    => 'success:Trigger logs cleared.',
 		'log_unsent'      => 'success:Marked as cancelled.',
 		'retry_ok'        => 'success:Action retried successfully.',
 		'retry_fail'      => 'warning:Retry failed - check the error column.',
@@ -178,6 +183,8 @@ if ( 'edit' === $view ) {
 	$editing = $rule_id ? AH_Workflow_Manager::get( $rule_id ) : $blank_rule;
 	if ( ! $editing ) $editing = $blank_rule;
 }
+
+$var_profiles = AH_Workflow_Manager::get_var_profiles();
 ?>
 <style>
 .re-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
@@ -265,7 +272,6 @@ details.re-adv .re-adv-body{padding:12px}
 	<?php endif; ?>
 </div>
 
-<?php if ( ! $editing ) : ?>
 <!-- Top-level tab nav -->
 <div style="display:flex;gap:2px;border-bottom:2px solid #e5e7eb;margin-bottom:24px">
 	<?php
@@ -279,11 +285,10 @@ details.re-adv .re-adv-body{padding:12px}
 	</a>
 	<?php endforeach; ?>
 </div>
-<?php endif; ?>
 
 <?php if ( ! in_array( $view, array( 'config', 'logs', 'evallog', 'blocked' ), true ) ) : ?>
 <p style="color:#6b7280;font-size:13px;margin:-8px 0 20px">
-	Automate anything. Define a <strong>trigger name</strong>, set optional <strong>conditions</strong>, and run <strong>actions</strong> - send emails, WhatsApp messages, or call any API. Use <code>{field_key}</code> tokens in action text; global defaults are available as <code>{config_email_from_name}</code>, <code>{config_wa_api_url}</code>, etc.
+	Automate anything. Define a <strong>trigger name</strong>, set optional <strong>conditions</strong>, and run <strong>actions</strong> - send emails, WhatsApp messages, or call any API. Use <code>{{field_key}}</code> tokens in action text.
 </p>
 <?php endif; ?>
 
@@ -403,6 +408,38 @@ details.re-adv .re-adv-body{padding:12px}
 				<input type="number" id="re-s-cooldown" min="0" max="10080" placeholder="0" value="<?php echo esc_attr( $editing->settings['cooldown_minutes'] ?? '0' ); ?>">
 			</div>
 		</div>
+		
+		<div style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb">
+			<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+				<h3 style="margin:0;font-size:12px;font-weight:600;color:#374151">Custom Variables</h3>
+			</div>
+			
+			<div class="re-field-group" style="margin-bottom:16px;max-width:300px">
+				<label>Variable Profile / Group</label>
+				<select id="re-s-var-profile">
+					<option value="">-- None --</option>
+					<?php foreach ( $var_profiles as $vp ) : ?>
+					<option value="<?php echo esc_attr( $vp['id'] ); ?>" <?php selected( $editing->settings['var_profile_id'] ?? '', $vp['id'] ); ?>>
+						<?php echo esc_html( $vp['name'] ?: $vp['id'] ); ?>
+					</option>
+					<?php endforeach; ?>
+				</select>
+				<p style="font-size:11px;color:#6b7280;margin:4px 0 0">Select a predefined group of variables to inject.</p>
+			</div>
+
+			<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+				<h3 style="margin:0;font-size:12px;font-weight:600;color:#374151">Rule-specific Variables</h3>
+				<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" id="re-add-rule-var">+ Add Variable</button>
+			</div>
+			<p style="font-size:11px;color:#6b7280;margin:-4px 0 10px">Define custom variables to use in your actions. The <strong>Key</strong> becomes a placeholder (e.g. <code>{{my_key}}</code>) which gets replaced by the <strong>Value</strong>. These override profile variables.</p>
+			
+			<div style="display:grid;grid-template-columns:160px 1fr auto;gap:6px;margin-bottom:8px">
+				<div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Key</div>
+				<div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Value</div>
+				<div></div>
+			</div>
+			<div id="re-rule-vars"></div>
+		</div>
 	</div>
 </details>
 
@@ -414,6 +451,7 @@ details.re-adv .re-adv-body{padding:12px}
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="send_email">📧 Email</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="whatsapp">💬 WhatsApp</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="http_request">🌐 HTTP Request</button>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="curl_command">💻 Raw cURL</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="wait">⏱ Wait / Delay</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="update_option">🔧 Update WP Option</button>
 		</div>
@@ -432,7 +470,7 @@ details.re-adv .re-adv-body{padding:12px}
 </div>
 </form>
 
-<?php else : /* ════════ RULES LIST ════════ */ ?>
+<?php elseif ( 'list' === $view || ! in_array( $view, array( 'config', 'logs', 'evallog', 'blocked' ), true ) ) : /* ════════ RULES LIST ════════ */ ?>
 
 <form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
 	<input type="hidden" name="page" value="ah-workflow-manager">
@@ -529,12 +567,14 @@ if ( 'config' === $view ) :
 	$cfg          = AH_Workflow_Manager::get_config();
 	$custom_vars  = AH_Workflow_Manager::get_custom_vars();
 	$ch_list      = AH_Workflow_Manager::get_email_channels();
+	$var_profiles = AH_Workflow_Manager::get_var_profiles();
 	$next_cron    = wp_next_scheduled( 'ah_rules_cron_process' );
 ?>
 <form method="post" id="re-cfg-form">
 <?php wp_nonce_field( 'ah_save_re_config', 'ah_re_cfg_nonce' ); ?>
 <input type="hidden" name="cfg_custom_vars_json" id="cfg-vars-json" value="<?php echo esc_attr( wp_json_encode( $custom_vars ) ); ?>">
 <input type="hidden" name="cfg_channels_json"    id="cfg-channels-json" value="<?php echo esc_attr( wp_json_encode( $ch_list ) ); ?>">
+<input type="hidden" name="cfg_var_profiles_json" id="cfg-profiles-json" value="<?php echo esc_attr( wp_json_encode( $var_profiles ) ); ?>">
 
 <!-- ── Global Freeze ── -->
 <div class="re-section" style="background:<?php echo '1' === $cfg['global_freeze'] ? '#fef2f2' : '#f9fafb'; ?>;border-color:<?php echo '1' === $cfg['global_freeze'] ? '#fca5a5' : '#e5e7eb'; ?>">
@@ -553,83 +593,6 @@ if ( 'config' === $view ) :
 	<?php endif; ?>
 </div>
 
-<div class="re-section">
-	<div class="re-section-title"><span>📧 Email Defaults</span></div>
-	<p style="font-size:12px;color:#6b7280;margin:-4px 0 14px">
-		Global email sender defaults. Use as tokens in any action: <code>{config_email_from_name}</code>, <code>{config_email_from_email}</code>, <code>{config_email_cc}</code>, <code>{config_email_bcc}</code>.
-	</p>
-
-	<!-- Sender Info -->
-	<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #e5e7eb">
-		<h3 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">Sender Information</h3>
-		<div class="re-act-grid-2">
-			<div class="re-field-group">
-				<label>From Name</label>
-				<input type="text" name="cfg_email_from_name" value="<?php echo esc_attr( $cfg['email_from_name'] ); ?>" placeholder="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-			</div>
-			<div class="re-field-group">
-				<label>From Email</label>
-				<input type="email" name="cfg_email_from_email" value="<?php echo esc_attr( $cfg['email_from_email'] ); ?>" placeholder="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>">
-			</div>
-		</div>
-	</div>
-
-	<!-- CC Recipients -->
-	<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #e5e7eb">
-		<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-			<h3 style="margin:0;font-size:13px;font-weight:600;color:#374151">CC Recipients</h3>
-			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="document.getElementById('re-email-cc-list').innerHTML += '<div style=display:flex;gap:6px;margin-bottom:6px><input type=email placeholder=cc@example.com style=flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff><button type=button class=ah-btn ah-btn-danger ah-btn-sm onclick=this.parentElement.remove()>Remove</button></div>'; return false">+ Add CC</button>
-		</div>
-		<div id="re-email-cc-list">
-			<?php
-			$cc_list = array_filter( array_map( 'trim', explode( ',', $cfg['email_cc'] ?? '' ) ) );
-			foreach ( $cc_list as $cc ) :
-			?>
-			<div style="display:flex;gap:6px;margin-bottom:6px">
-				<input type="email" value="<?php echo esc_attr( $cc ); ?>" placeholder="cc@example.com" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff" onchange="updateEmailList('cc')">
-				<button type="button" class="ah-btn ah-btn-danger ah-btn-sm" onclick="this.parentElement.remove(); updateEmailList('cc')">Remove</button>
-			</div>
-			<?php endforeach; ?>
-		</div>
-		<p style="font-size:11px;color:#9ca3af;margin:6px 0 0">Automatically CC all outgoing emails to these addresses (comma-separated in storage)</p>
-	</div>
-
-	<!-- BCC Recipients -->
-	<div>
-		<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-			<h3 style="margin:0;font-size:13px;font-weight:600;color:#374151">BCC Recipients</h3>
-			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="document.getElementById('re-email-bcc-list').innerHTML += '<div style=display:flex;gap:6px;margin-bottom:6px><input type=email placeholder=bcc@example.com style=flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff><button type=button class=ah-btn ah-btn-danger ah-btn-sm onclick=this.parentElement.remove()>Remove</button></div>'; return false">+ Add BCC</button>
-		</div>
-		<div id="re-email-bcc-list">
-			<?php
-			$bcc_list = array_filter( array_map( 'trim', explode( ',', $cfg['email_bcc'] ?? '' ) ) );
-			foreach ( $bcc_list as $bcc ) :
-			?>
-			<div style="display:flex;gap:6px;margin-bottom:6px">
-				<input type="email" value="<?php echo esc_attr( $bcc ); ?>" placeholder="bcc@example.com" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff" onchange="updateEmailList('bcc')">
-				<button type="button" class="ah-btn ah-btn-danger ah-btn-sm" onclick="this.parentElement.remove(); updateEmailList('bcc')">Remove</button>
-			</div>
-			<?php endforeach; ?>
-		</div>
-		<p style="font-size:11px;color:#9ca3af;margin:6px 0 0">Automatically BCC all outgoing emails to these addresses (comma-separated in storage)</p>
-	</div>
-
-	<input type="hidden" name="cfg_email_cc" id="cfg-email-cc" value="<?php echo esc_attr( $cfg['email_cc'] ?? '' ); ?>">
-	<input type="hidden" name="cfg_email_bcc" id="cfg-email-bcc" value="<?php echo esc_attr( $cfg['email_bcc'] ?? '' ); ?>">
-</div>
-
-<script>
-function updateEmailList(type) {
-	const listId = type === 'cc' ? 're-email-cc-list' : 're-email-bcc-list';
-	const inputId = type === 'cc' ? 'cfg-email-cc' : 'cfg-email-bcc';
-	const list = document.getElementById(listId);
-	const emails = Array.from(list.querySelectorAll('input[type="email"]'))
-		.map(el => el.value.trim())
-		.filter(v => v);
-	document.getElementById(inputId).value = emails.join(', ');
-}
-</script>
-
 <!-- Email Channels ─────────────────────────────────────────────────────────── -->
 <div class="re-section">
 	<div class="re-section-title">
@@ -644,24 +607,6 @@ function updateEmailList(type) {
 	<p id="re-channels-empty" style="color:#9ca3af;font-size:13px;margin:0">No channels yet - click <strong>+ Add Channel</strong> to add one.</p>
 </div>
 
-<!-- WhatsApp Defaults ────────────────────────────────────────────────────── -->
-<div class="re-section">
-	<div class="re-section-title"><span>💬 WhatsApp Defaults</span></div>
-	<p style="font-size:12px;color:#6b7280;margin:-4px 0 14px">
-		Global WhatsApp API credentials. Leave the API URL / token blank in a rule action to use these.
-		Reference as <code>{config_wa_api_url}</code> and <code>{config_wa_auth_token}</code>.
-	</p>
-	<div class="re-act-grid-2">
-		<div class="re-field-group">
-			<label>Default API URL</label>
-			<input type="url" name="cfg_wa_api_url" value="<?php echo esc_attr( $cfg['wa_api_url'] ); ?>" placeholder="https://api.wati.io/api/v1/sendMessage">
-		</div>
-		<div class="re-field-group">
-			<label>Default Auth Token <small>(Bearer prefix auto-added)</small></label>
-			<input type="text" name="cfg_wa_auth_token" value="<?php echo esc_attr( $cfg['wa_auth_token'] ); ?>" placeholder="eyJhbGci…">
-		</div>
-	</div>
-</div>
 
 <!-- Custom Variables ────────────────────────────────────────────────────── -->
 <div class="re-section">
@@ -670,7 +615,7 @@ function updateEmailList(type) {
 		<button type="button" id="re-add-var" class="ah-btn ah-btn-secondary ah-btn-sm">+ Add Variable</button>
 	</div>
 	<p style="font-size:12px;color:#6b7280;margin:-4px 0 10px">
-		Define reusable key-value pairs available as <code>{config_key}</code> tokens in all rule actions.
+		Define reusable key-value pairs available as <code>{{config_key}}</code> tokens in all rule actions.
 		Use for: email addresses, phone numbers, API endpoints, names - anything you want to configure once and reuse everywhere.
 	</p>
 	<div style="display:grid;grid-template-columns:160px 1fr 1fr auto;gap:6px;margin-bottom:8px">
@@ -681,6 +626,19 @@ function updateEmailList(type) {
 	</div>
 	<div id="re-custom-vars"></div>
 	<p id="re-vars-empty" style="color:#9ca3af;font-size:13px;margin:0">No variables yet - click <strong>+ Add Variable</strong> to add one.</p>
+</div>
+
+<!-- Variable Profiles ────────────────────────────────────────────────────── -->
+<div class="re-section">
+	<div class="re-section-title">
+		<span>📂 Variable Profiles (Groups)</span>
+		<button type="button" id="re-add-profile" class="ah-btn ah-btn-secondary ah-btn-sm">+ Add Profile</button>
+	</div>
+	<p style="font-size:12px;color:#6b7280;margin:-4px 0 10px">
+		Create named profiles containing sets of variables. In a rule's settings, you can select one of these profiles and all its variables will be injected into that rule's context automatically (e.g. <code>{{my_var}}</code>).
+	</p>
+	<div id="re-profiles"></div>
+	<p id="re-profiles-empty" style="color:#9ca3af;font-size:13px;margin:0">No profiles yet - click <strong>+ Add Profile</strong> to add one.</p>
 </div>
 
 <!-- Cron / Retry ────────────────────────────────────────────────────────── -->
@@ -710,15 +668,15 @@ function updateEmailList(type) {
 
 <!-- Token reference ────────────────────────────────────────────────────── -->
 <div class="re-section" style="background:#f0fdf4;border-color:#86efac">
-	<div class="re-section-title" style="color:#15803d"><span>📌 Available {config_xxx} tokens</span></div>
+	<div class="re-section-title" style="color:#15803d"><span>📌 Available {{config_xxx}} tokens</span></div>
 	<p style="font-size:12px;color:#166534;margin:0 0 10px">Use any of these in action templates (To, Subject, Body, URL, etc.)</p>
 	<div style="display:flex;flex-wrap:wrap;gap:6px">
 		<?php foreach ( AH_Workflow_Manager::get_config() as $k => $v ) : ?>
-		<code style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:3px 8px;font-size:12px;color:#166534">{config_<?php echo esc_html( $k ); ?>}</code>
+		<code style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:3px 8px;font-size:12px;color:#166534">{{config_<?php echo esc_html( $k ); ?>}}</code>
 		<?php endforeach; ?>
 		<?php foreach ( $custom_vars as $cv ) : if ( empty( $cv['key'] ) ) continue; ?>
 		<code style="background:#dbeafe;border:1px solid #93c5fd;border-radius:4px;padding:3px 8px;font-size:12px;color:#1d4ed8"
-		      title="<?php echo esc_attr( $cv['label'] ?? $cv['key'] ); ?>">{config_<?php echo esc_html( $cv['key'] ); ?>}</code>
+		      title="<?php echo esc_attr( $cv['label'] ?? $cv['key'] ); ?>">{{config_<?php echo esc_html( $cv['key'] ); ?>}}</code>
 		<?php endforeach; ?>
 	</div>
 </div>
@@ -887,9 +845,17 @@ if ( 'logs' === $view ) :
 	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo number_format( $total_logs ); ?> entries</span>
 </form>
 
-<p style="color:#6b7280;font-size:12px;margin:0 0 10px">
-	Failed entries with fewer than <strong><?php echo esc_html( AH_Workflow_Manager::get_config()['retry_max_attempts'] ); ?> attempts</strong> are automatically retried by the cron.
-</p>
+<div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 10px">
+	<p style="color:#6b7280;font-size:12px;margin:0">
+		Failed entries with fewer than <strong><?php echo esc_html( AH_Workflow_Manager::get_config()['retry_max_attempts'] ); ?> attempts</strong> are automatically retried by the cron.
+	</p>
+	<?php if ( $total_logs > 0 ) : ?>
+	<form method="post" style="margin:0;" onsubmit="return confirm('Delete ALL trigger log entries? This cannot be undone.')">
+		<?php wp_nonce_field( 'ah_clear_logs', 'ah_re_clear_logs_nonce' ); ?>
+		<button type="submit" class="ah-btn ah-btn-danger ah-btn-sm">Clear All</button>
+	</form>
+	<?php endif; ?>
+</div>
 
 <?php if ( $logs ) : ?>
 <div class="ah-card">
@@ -1015,8 +981,8 @@ if ( 'logs' === $view ) :
 
 					<?php if ( $lg->error_message ) : ?>
 					<div style="margin-top:16px;padding:12px;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px">
-						<h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:#991b1b">❌ Error Message</h4>
-						<p style="margin:0;font-size:12px;color:#7f1d1d;word-break:break-word;font-family:monospace"><?php echo esc_html( $lg->error_message ); ?></p>
+						<h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:#991b1b">❌ Error Message / Debug Log</h4>
+						<pre style="margin:0;font-size:12px;color:#7f1d1d;word-break:break-all;font-family:monospace;white-space:pre-wrap;background:transparent;border:none;padding:0"><?php echo esc_html( $lg->error_message ); ?></pre>
 					</div>
 					<?php endif; ?>
 				</td>
@@ -1190,22 +1156,25 @@ if ( 'evallog' === $view ) :
 if ( 'blocked' === $view ) :
 	$blocked_list = AH_Workflow_Manager::get_blocked_emails();
 ?>
-<div class="re-section" style="max-width:680px">
-	<div class="re-section-title"><span>🚫 Blocked Email Addresses</span></div>
-	<p style="font-size:13px;color:#6b7280;margin:0 0 18px">Emails in this list will never receive messages sent through the Rules Engine - regardless of which rule triggers them.</p>
-
-	<!-- Add form -->
-	<form method="post" style="display:flex;gap:8px;align-items:center;margin-bottom:24px;flex-wrap:wrap">
-		<?php wp_nonce_field( 'ah_block_add', 'ah_re_block_add_nonce' ); ?>
-		<input type="email" name="block_email" required placeholder="email@example.com"
-			style="padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;min-width:280px;box-sizing:border-box">
-		<button type="submit" class="ah-btn ah-btn-danger" style="white-space:nowrap">Block this email</button>
-	</form>
+<div class="ah-card">
+	<div style="padding:20px 22px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+		<div>
+			<h2 style="font-size:1.2rem;margin:0 0 6px;display:flex;align-items:center;gap:8px">🚫 Blocked Email Addresses</h2>
+			<p style="font-size:13px;color:#6b7280;margin:0">Emails in this list will never receive messages sent through the Rules Engine - regardless of which rule triggers them.</p>
+		</div>
+		<form method="post" style="display:flex;gap:8px;align-items:center;margin:0">
+			<?php wp_nonce_field( 'ah_block_add', 'ah_re_block_add_nonce' ); ?>
+			<input type="email" name="block_email" required placeholder="email@example.com"
+				style="padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;min-width:260px;box-sizing:border-box">
+			<button type="submit" class="ah-btn ah-btn-danger" style="white-space:nowrap">Block Email</button>
+		</form>
+	</div>
 
 	<!-- List -->
 	<?php if ( $blocked_list ) : ?>
-	<table class="re-tbl">
-		<thead>
+	<div class="ah-table-wrap" style="overflow-x:auto">
+		<table class="re-tbl" style="min-width:600px">
+			<thead>
 			<tr>
 				<th>#</th>
 				<th>Email Address</th>
@@ -1226,9 +1195,12 @@ if ( 'blocked' === $view ) :
 			<?php endforeach; ?>
 		</tbody>
 	</table>
+	</div>
 	<?php else : ?>
-	<div style="text-align:center;padding:32px;color:#9ca3af;border:1.5px dashed #e5e7eb;border-radius:8px;font-size:13px">
-		No emails blocked yet. Add an address above to prevent it from ever receiving rule-triggered emails.
+	<div style="text-align:center;padding:48px 24px;color:#9ca3af">
+		<div style="font-size:2.5rem;margin-bottom:12px">✅</div>
+		<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:#374151">No emails blocked yet</h2>
+		<p style="color:#9ca3af;font-size:13px;margin:0">Add an address above to prevent it from ever receiving rule-triggered emails.</p>
 	</div>
 	<?php endif; ?>
 </div>
@@ -1393,14 +1365,19 @@ jQuery(function ($) {
 
   function addEmailCard(d) {
     d = d || {};
+    var isNew = !d.type;
     var $c = $([
       '<div class="re-act-card" data-type="send_email">',
-        '<div class="re-act-card-head">📧 Send Email</div>',
+        '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
+          '<strong style="flex:1;">📧 Send Email</strong>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
+        '</div>',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
         '<div class="re-field-group"><label>Send via Channel <small>(SMTP profile - leave default for site mail)</small></label>',
           buildChannelSel(d.channel_id || ''), '</div>',
         '<div class="re-field-group" style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#f9fafb;margin:12px 0">',
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">',
-            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">To Recipients <small>(email or {field_key})</small></label>',
+            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">To Recipients <small>(email or {{field_key}})</small></label>',
             '<button type="button" class="re-add-to-btn ah-btn ah-btn-secondary ah-btn-sm" data-add="to">+ Add</button>',
           '</div>',
           '<div class="re-to-list"></div>',
@@ -1421,20 +1398,31 @@ jQuery(function ($) {
         '</div>',
         '<div class="re-act-grid-2">',
           '<div class="re-field-group"><label>Subject</label>',
-            '<input type="text" class="re-a-subj" placeholder="New submission: {name}"></div>',
+            '<input type="text" class="re-a-subj" placeholder="New submission: {{name}}"></div>',
         '</div>',
         '<div class="re-field-group"><label>Format</label>',
           '<label class="re-html-row"><input type="checkbox" class="re-a-html"> Send as HTML email (supports tags &amp; styles)</label></div>',
-        '<div class="re-field-group"><label>Body <small>(use {field_key} tokens)</small></label>',
-          '<textarea class="re-a-body" rows="4" placeholder="Hello {name},&#10;&#10;Message: {message}"></textarea></div>',
+        '<div class="re-field-group"><label>Body <small>(use {{field_key}} tokens)</small></label>',
+          '<textarea class="re-a-body" rows="4" placeholder="Hello {{name}},&#10;&#10;Message: {{message}}"></textarea></div>',
+        '</div>',
       '</div>',
     ].join(''));
     $c.find('.re-act-card-head').append(rmBtn());
+    
+    // Toggle expand/collapse
+    $c.find('.re-act-card-head').on('click', function(e) {
+      if ($(e.target).closest('.re-rm').length) return;
+      var $body = $c.find('.re-a-body-container');
+      var $btn = $c.find('.re-a-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
 
     // Helper to add recipient rows
     function addRecipientRow(type, value) {
       var $row = $('<div style="display:flex;gap:6px;margin-bottom:6px">'+
-        '<input type="text" class="re-a-'+type+'-val" placeholder="email@example.com or {field}" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px" value="'+(value||'')+'">'+
+        '<input type="text" class="re-a-'+type+'-val" placeholder="email@example.com or {{field}}" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px" value="'+(value||'')+'">'+
         '<button type="button" class="ah-btn ah-btn-danger ah-btn-sm" style="padding:6px 10px">Remove</button>'+
         '</div>');
       $row.find('button').on('click', function(){
@@ -1474,29 +1462,45 @@ jQuery(function ($) {
 
   function addWhatsappCard(d) {
     d = d || {};
+    var isNew = !d.type;
     var $c = $([
       '<div class="re-act-card" data-type="whatsapp">',
-        '<div class="re-act-card-head">💬 WhatsApp</div>',
+        '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
+          '<strong style="flex:1;">💬 WhatsApp</strong>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
+        '</div>',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
         '<div class="re-act-grid-2">',
           '<div class="re-field-group"><label>API URL</label>',
             '<input type="url" class="re-a-wa-url" placeholder="https://api.wati.io/api/v1/sendMessage"></div>',
           '<div class="re-field-group"><label>Auth Token</label>',
             '<input type="text" class="re-a-wa-token" placeholder="Bearer token or API key"></div>',
         '</div>',
-        '<div class="re-field-group"><label>To Phone <small>(use {field_key})</small></label>',
-          '<input type="text" class="re-a-wa-phone" placeholder="+91{phone} or {mobile}"></div>',
-        '<div class="re-field-group"><label>Message <small>(use {field_key} tokens)</small></label>',
-          '<textarea class="re-a-wa-msg" rows="3" placeholder="Hello {name}, thanks for reaching out!"></textarea></div>',
+        '<div class="re-field-group"><label>To Phone <small>(use {{field_key}})</small></label>',
+          '<input type="text" class="re-a-wa-phone" placeholder="+91{{phone}} or {{mobile}}"></div>',
+        '<div class="re-field-group"><label>Message <small>(use {{field_key}} tokens)</small></label>',
+          '<textarea class="re-a-wa-msg" rows="3" placeholder="Hello {{name}}, thanks for reaching out!"></textarea></div>',
         '<details class="re-adv">',
           '<summary>▸ Custom Body JSON <span style="font-weight:400">(optional - overrides default payload)</span></summary>',
           '<div class="re-adv-body">',
-            '<div class="re-field-group" style="margin:0"><label>JSON Body <small>(use {field_key} tokens inside strings)</small></label>',
-            '<textarea class="re-a-wa-json" rows="3" placeholder=\'{"to":"{phone}","type":"text","text":{"body":"{message}"}}\' ></textarea></div>',
+            '<div class="re-field-group" style="margin:0"><label>JSON Body <small>(use {{field_key}} tokens inside strings)</small></label>',
+            '<textarea class="re-a-wa-json" rows="3" placeholder=\'{"to":"{{phone}}","type":"text","text":{"body":"{{message}}"}}\' ></textarea></div>',
           '</div>',
         '</details>',
+        '</div>',
       '</div>',
     ].join(''));
     $c.find('.re-act-card-head').append(rmBtn());
+    
+    // Toggle expand/collapse
+    $c.find('.re-act-card-head').on('click', function(e) {
+      if ($(e.target).closest('.re-rm').length) return;
+      var $body = $c.find('.re-a-body-container');
+      var $btn = $c.find('.re-a-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
     $c.find('.re-a-wa-url').val(d.api_url || '');
     $c.find('.re-a-wa-token').val(d.auth_token || '');
     $c.find('.re-a-wa-phone').val(d.to_phone || '');
@@ -1508,11 +1512,16 @@ jQuery(function ($) {
 
   function addHttpCard(d) {
     d = d || {};
+    var isNew = !d.type;
     var $c = $([
       '<div class="re-act-card" data-type="http_request">',
-        '<div class="re-act-card-head">🌐 HTTP Request</div>',
+        '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
+          '<strong style="flex:1;">🌐 HTTP Request</strong>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
+        '</div>',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
         '<div class="re-act-grid-7030">',
-          '<div class="re-field-group"><label>URL <small>(use {field_key})</small></label>',
+          '<div class="re-field-group"><label>URL <small>(use {{field_key}})</small></label>',
             '<input type="url" class="re-a-http-url" placeholder="https://api.example.com/webhook"></div>',
           '<div class="re-field-group"><label>Method</label>',
             '<select class="re-a-http-method"><option>POST</option><option>GET</option><option>PUT</option><option>PATCH</option><option>DELETE</option></select></div>',
@@ -1528,16 +1537,27 @@ jQuery(function ($) {
             '<input type="text" class="re-a-http-authval" placeholder="your-token-here"></div>',
         '</div>',
         '<div class="re-field-group"><label>Headers <small>(JSON object or Key: Value lines - optional)</small></label>',
-          '<textarea class="re-a-http-headers" rows="2" placeholder="Authorization: Bearer {token}&#10;X-Custom: value"></textarea></div>',
+          '<textarea class="re-a-http-headers" rows="2" placeholder="Authorization: Bearer {{token}}&#10;X-Custom: value"></textarea></div>',
         '<div class="re-act-grid-7030">',
-          '<div class="re-field-group"><label>Body <small>(use {field_key} tokens)</small></label>',
-            '<textarea class="re-a-http-body" rows="3" placeholder=\'{"name":"{name}","email":"{email}"}\'></textarea></div>',
+          '<div class="re-field-group"><label>Body <small>(use {{field_key}} tokens)</small></label>',
+            '<textarea class="re-a-http-body" rows="3" placeholder=\'{"name":"{{name}}","email":"{{email}}"}\'></textarea></div>',
           '<div class="re-field-group"><label>Content Type</label>',
             '<select class="re-a-http-ct"><option value="json">JSON</option><option value="form">Form-encoded</option></select></div>',
+        '</div>',
         '</div>',
       '</div>',
     ].join(''));
     $c.find('.re-act-card-head').append(rmBtn());
+    
+    // Toggle expand/collapse
+    $c.find('.re-act-card-head').on('click', function(e) {
+      if ($(e.target).closest('.re-rm').length) return;
+      var $body = $c.find('.re-a-body-container');
+      var $btn = $c.find('.re-a-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
     $c.find('.re-a-http-url').val(d.url || '');
     $c.find('.re-a-http-method').val(d.method || 'POST');
     var authType = d.auth_type || 'none';
@@ -1555,6 +1575,7 @@ jQuery(function ($) {
 
   function addWaitCard(d) {
     d = d || {};
+    var isNew = !d.type;
     var unitSel = '<select class="re-a-wait-unit" style="width:auto">'
       + '<option value="minutes"' + ('minutes' === (d.unit||'minutes') ? ' selected' : '') + '>Minutes</option>'
       + '<option value="hours"'   + ('hours'   === d.unit ? ' selected' : '') + '>Hours</option>'
@@ -1562,7 +1583,11 @@ jQuery(function ($) {
       + '</select>';
     var $c = $([
       '<div class="re-act-card" data-type="wait">',
-        '<div class="re-act-card-head">⏱ Wait / Delay</div>',
+        '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
+          '<strong style="flex:1;">⏱ Wait / Delay</strong>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
+        '</div>',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
         '<div class="re-row" style="align-items:center;gap:12px;flex-wrap:nowrap">',
           '<div class="re-field-group" style="margin:0;flex:0 0 140px">',
             '<label>Duration</label>',
@@ -1576,9 +1601,20 @@ jQuery(function ($) {
             'Actions below this card will be queued and run after the delay.',
           '</p>',
         '</div>',
+        '</div>',
       '</div>',
     ].join(''));
     $c.find('.re-act-card-head').append(rmBtn());
+    
+    // Toggle expand/collapse
+    $c.find('.re-act-card-head').on('click', function(e) {
+      if ($(e.target).closest('.re-rm').length) return;
+      var $body = $c.find('.re-a-body-container');
+      var $btn = $c.find('.re-a-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
     $c.find('.re-a-wait-dur').val(d.duration || 1);
     $('#re-actions').append($c);
     syncEmpty('re-actions', 're-actions-empty');
@@ -1586,20 +1622,66 @@ jQuery(function ($) {
 
   function addUpdateOptionCard(d) {
     d = d || {};
+    var isNew = !d.type;
     var $c = $([
       '<div class="re-act-card" data-type="update_option">',
-        '<div class="re-act-card-head">🔧 Update WP Option</div>',
+        '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
+          '<strong style="flex:1;">🔧 Update WP Option</strong>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
+        '</div>',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
         '<div class="re-act-grid-2">',
           '<div class="re-field-group"><label>Option Key <small>(wp_options name)</small></label>',
             '<input type="text" class="re-a-opt-key" placeholder="my_plugin_setting"></div>',
-          '<div class="re-field-group"><label>Value <small>(use {field_key} tokens)</small></label>',
-            '<input type="text" class="re-a-opt-val" placeholder="{email} or static value"></div>',
+          '<div class="re-field-group"><label>Value <small>(use {{field_key}} tokens)</small></label>',
+            '<input type="text" class="re-a-opt-val" placeholder="{{email}} or static value"></div>',
+        '</div>',
         '</div>',
       '</div>',
     ].join(''));
     $c.find('.re-act-card-head').append(rmBtn());
+    
+    // Toggle expand/collapse
+    $c.find('.re-act-card-head').on('click', function(e) {
+      if ($(e.target).closest('.re-rm').length) return;
+      var $body = $c.find('.re-a-body-container');
+      var $btn = $c.find('.re-a-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
     $c.find('.re-a-opt-key').val(d.option_key   || '');
     $c.find('.re-a-opt-val').val(d.option_value || '');
+    $('#re-actions').append($c);
+    syncEmpty('re-actions', 're-actions-empty');
+  }
+
+  function addCurlCommandCard(d) {
+    d = d || {};
+    var isNew = !d.type;
+    var $c = $([
+      '<div class="re-act-card" data-type="curl_command">',
+        '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
+          '<strong style="flex:1;">💻 Raw cURL Command</strong>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
+        '</div>',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-field-group"><label>cURL String <small>(e.g. curl -X POST ... - use {{field_key}} tokens)</small></label>',
+          '<textarea class="re-a-curl-str" rows="5" placeholder="curl -X POST https://api.example.com/webhook \\&#10;-H \'Content-Type: application/json\' \\&#10;-d \'{\&quot;name\&quot;: \&quot;{{name}}\&quot;}\'"></textarea></div>',
+        '</div>',
+      '</div>',
+    ].join(''));
+    $c.find('.re-act-card-head').append(rmBtn());
+    
+    $c.find('.re-act-card-head').on('click', function(e) {
+      if ($(e.target).closest('.re-rm').length) return;
+      var $body = $c.find('.re-a-body-container');
+      var $btn = $c.find('.re-a-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
+    $c.find('.re-a-curl-str').val(d.curl_string || '');
     $('#re-actions').append($c);
     syncEmpty('re-actions', 're-actions-empty');
   }
@@ -1607,6 +1689,7 @@ jQuery(function ($) {
   $('[data-add-action="send_email"]').on('click',     function () { addEmailCard(); });
   $('[data-add-action="whatsapp"]').on('click',       function () { addWhatsappCard(); });
   $('[data-add-action="http_request"]').on('click',   function () { addHttpCard(); });
+  $('[data-add-action="curl_command"]').on('click',   function () { addCurlCommandCard(); });
   $('[data-add-action="wait"]').on('click',           function () { addWaitCard(); });
   $('[data-add-action="update_option"]').on('click',  function () { addUpdateOptionCard(); });
 
@@ -1632,6 +1715,7 @@ jQuery(function ($) {
     if      (a.type === 'send_email')    addEmailCard(a);
     else if (a.type === 'whatsapp')      addWhatsappCard(a);
     else if (a.type === 'http_request')  addHttpCard(a);
+    else if (a.type === 'curl_command')  addCurlCommandCard(a);
     else if (a.type === 'wait')          addWaitCard(a);
     else if (a.type === 'update_option') addUpdateOptionCard(a);
   });
@@ -1640,6 +1724,21 @@ jQuery(function ($) {
   if (existingSettings.dedup_key)          $('#re-s-dedup-key').val(existingSettings.dedup_key);
   if (existingSettings.dedup_window_hours) $('#re-s-dedup-win').val(existingSettings.dedup_window_hours);
   if (existingSettings.cooldown_minutes)   $('#re-s-cooldown').val(existingSettings.cooldown_minutes);
+
+  function addRuleVarRow(d) {
+    d = d || {};
+    var $r = $('<div class="re-row" style="margin-bottom:6px">').append(
+      $('<input type="text" class="re-rv-key" placeholder="key_name" style="width:160px">').val(d.key||''),
+      $('<input type="text" class="re-rv-val" placeholder="Value (e.g. {{type}} - General Question)" style="flex:1">').val(d.value||''),
+      $('<button type="button" class="re-rm" title="Remove">✕</button>').on('click', function(){ $r.remove(); })
+    );
+    $('#re-rule-vars').append($r);
+  }
+  $('#re-add-rule-var').on('click', function(){ addRuleVarRow(); });
+  
+  if (existingSettings.custom_vars && existingSettings.custom_vars.length) {
+    existingSettings.custom_vars.forEach(function(cv) { addRuleVarRow(cv); });
+  }
 
   /* ── Serialize on submit ── */
   $('#re-form').on('submit', function () {
@@ -1698,6 +1797,11 @@ jQuery(function ($) {
           content_type: $(this).find('.re-a-http-ct').val(),
           body:         $(this).find('.re-a-http-body').val().trim(),
         });
+      } else if (type === 'curl_command') {
+        acts.push({
+          type: 'curl_command',
+          curl_string: $(this).find('.re-a-curl-str').val().trim(),
+        });
       } else if (type === 'wait') {
         acts.push({
           type:     'wait',
@@ -1715,11 +1819,21 @@ jQuery(function ($) {
     });
     $('#re-act-json').val(JSON.stringify(acts));
 
+    // Serialize rule variables
+    var ruleVars = [];
+    $('#re-rule-vars .re-row').each(function() {
+      var k = $(this).find('.re-rv-key').val().trim();
+      var v = $(this).find('.re-rv-val').val().trim();
+      if (k) ruleVars.push({ key: k, value: v });
+    });
+
     // Serialize settings
     $('#re-settings-json').val(JSON.stringify({
       dedup_key:          $('#re-s-dedup-key').val().trim(),
       dedup_window_hours: parseInt($('#re-s-dedup-win').val(), 10) || 0,
       cooldown_minutes:   parseInt($('#re-s-cooldown').val(), 10)  || 0,
+      var_profile_id:     $('#re-s-var-profile').val(),
+      custom_vars:        ruleVars,
     }));
   });
 
@@ -1757,13 +1871,16 @@ jQuery(function ($) {
       + '<option value="none"'+(d.encryption==='none'?' selected':'')+'>None</option>'
       + '</select>';
 
+    var isNew = !d.id;
     var $c = $([
       '<div class="re-ch-card">',
-        '<div class="re-ch-card-head">',
+        '<div class="re-ch-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong class="re-ch-display-name">',d.name||'New Channel','</strong>',
           '<span class="re-ch-id-badge">',d.id||'…','</span>',
-          '<button type="button" class="re-rm re-ch-rm" title="Remove channel">✕</button>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-ch-toggle" style="margin-left:8px;">', (isNew ? 'Collapse' : 'Expand'), '</button>',
+          '<button type="button" class="re-rm re-ch-rm" title="Remove channel" style="margin-left:8px;">✕</button>',
         '</div>',
+        '<div class="re-ch-body" style="display:', isNew ? 'block' : 'none', '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
         '<div class="re-act-grid-3">',
           '<div class="re-field-group"><label>Channel ID <small>(unique slug)</small></label><input type="text" class="re-ch-id" placeholder="gmail_support"></div>',
           '<div class="re-field-group"><label>Channel Name</label><input type="text" class="re-ch-cname" placeholder="Support Gmail"></div>',
@@ -1782,8 +1899,19 @@ jQuery(function ($) {
           '<div class="re-field-group"><label>SMTP Username</label><input type="text" class="re-ch-user" placeholder="user@gmail.com"></div>',
           '<div class="re-field-group"><label>Password / App Password</label><input type="password" class="re-ch-pass" placeholder="••••••••" autocomplete="new-password"></div>',
         '</div>',
+        '</div>',
       '</div>',
     ].join(''));
+
+    // Toggle expand/collapse
+    $c.find('.re-ch-card-head').on('click', function(e) {
+      if ($(e.target).hasClass('re-ch-rm')) return;
+      var $body = $c.find('.re-ch-body');
+      var $btn = $c.find('.re-ch-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
 
     // Fill values
     $c.find('.re-ch-id').val(d.id||'');
@@ -1882,8 +2010,143 @@ jQuery(function ($) {
   existingVars.forEach(function(v){ addVarRow(v); });
   syncVarsEmpty();
 
+  /* ── Variable Profiles ── */
+  function syncProfilesEmpty() {
+    $('#re-profiles-empty').toggle($('#re-profiles').children().length === 0);
+  }
+
+  function buildProfileCard(d) {
+    d = d || { id: '', name: '', vars: [] };
+    var isNew = !d.id;
+    var $c = $(`
+      <div class="re-ch-card re-prof-card">
+        <div class="re-ch-card-head" style="cursor:pointer; margin-bottom:0;">
+          <strong class="re-prof-display-name">New Profile</strong>
+          <span class="re-ch-id-badge">...</span>
+          <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-prof-toggle" style="margin-left:8px;">${isNew ? 'Collapse' : 'Expand'}</button>
+          <button type="button" class="re-rm re-prof-rm" title="Remove Profile" style="margin-left:8px;">✕</button>
+        </div>
+        <div class="re-prof-body" style="display:${isNew ? 'block' : 'none'}; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">
+          <div class="re-act-grid-2" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e5e7eb">
+            <div class="re-field-group">
+              <label>Profile ID <small>(a-z, 0-9, underscores)</small></label>
+              <input type="text" class="re-prof-id" placeholder="e.g. sales_team">
+            </div>
+            <div class="re-field-group">
+              <label>Display Name</label>
+              <input type="text" class="re-prof-name" placeholder="e.g. Sales Team">
+            </div>
+          </div>
+          
+          <div class="re-prof-vars-container">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <label style="font-size:11.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin:0">Profile Variables</label>
+              <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-prof-add-var">+ Add Var</button>
+            </div>
+            <div class="re-prof-vars-list"></div>
+          </div>
+        </div>
+      </div>
+    `);
+
+    // Fill values
+    $c.find('.re-prof-id').val(d.id||'');
+    $c.find('.re-prof-name').val(d.name||'');
+
+    // Live update badge
+    $c.find('.re-prof-id').on('input', function(){ $c.find('.re-ch-id-badge').text($(this).val()||'…'); });
+    $c.find('.re-prof-name').on('input', function(){ $c.find('.re-prof-display-name').text($(this).val()||'New Profile'); });
+    $c.find('.re-prof-id').trigger('input');
+    $c.find('.re-prof-name').trigger('input');
+
+    // Toggle collapse/expand
+    var toggleBody = function() {
+      var $body = $c.find('.re-prof-body');
+      var $btn = $c.find('.re-prof-toggle');
+      if ($body.is(':visible')) {
+        $body.slideUp(150);
+        $btn.text('Expand');
+      } else {
+        $body.slideDown(150);
+        $btn.text('Collapse');
+      }
+    };
+    $c.find('.re-ch-card-head').on('click', function(e){
+      if (!$(e.target).closest('.re-prof-rm, .re-prof-toggle, input, select, button').length) {
+        toggleBody();
+      }
+    });
+    $c.find('.re-prof-toggle').on('click', function(){
+      toggleBody();
+    });
+
+    // Remove Profile
+    $c.find('.re-prof-rm').on('click', function(){ $c.remove(); syncProfilesEmpty(); serializeProfiles(); });
+
+    // Profile Vars Manager
+    var $varsList = $c.find('.re-prof-vars-list');
+    function addProfVarRow(v) {
+      v = v || {key: '', value: ''};
+      var $r = $('<div class="re-var-row">').append(
+        $('<input type="text" class="re-pv-key" placeholder="key_name" style="width:160px">').val(v.key),
+        $('<input type="text" class="re-pv-val" placeholder="Value" style="flex:1;min-width:130px">').val(v.value),
+        $('<button type="button" class="re-rm" title="Remove">✕</button>').on('click', function(){
+          $r.remove(); serializeProfiles();
+        })
+      );
+      $r.find('input').on('input', serializeProfiles);
+      $varsList.append($r);
+    }
+
+    $c.find('.re-prof-add-var').on('click', function(){ addProfVarRow(); });
+    
+    // Load existing vars for this profile
+    if (d.vars && Array.isArray(d.vars)) {
+      d.vars.forEach(function(v){ addProfVarRow(v); });
+    } else {
+      addProfVarRow(); // Add one blank row by default
+    }
+
+    $c.find('input').on('input', serializeProfiles);
+
+    return $c;
+  }
+
+  function serializeProfiles() {
+    var list = [];
+    $('#re-profiles .re-prof-card').each(function(){
+      var id = $(this).find('.re-prof-id').val().trim().replace(/[^a-z0-9_]/gi,'_').toLowerCase();
+      if (!id) return;
+      
+      var vars = [];
+      $(this).find('.re-prof-vars-list .re-var-row').each(function(){
+        var k = $(this).find('.re-pv-key').val().trim().replace(/[^a-z0-9_]/gi,'_').toLowerCase();
+        if (!k) return;
+        vars.push({ key: k, value: $(this).find('.re-pv-val').val().trim() });
+      });
+      
+      list.push({
+        id: id,
+        name: $(this).find('.re-prof-name').val().trim(),
+        vars: vars
+      });
+    });
+    $('#cfg-profiles-json').val(JSON.stringify(list));
+  }
+
+  $('#re-add-profile').on('click', function(){
+    $('#re-profiles').append(buildProfileCard());
+    syncProfilesEmpty();
+  });
+
+  // Load existing profiles
+  var existingProfiles = <?php echo wp_json_encode( isset( $var_profiles ) ? $var_profiles : array() ); ?>;
+  existingProfiles.forEach(function(p){ $('#re-profiles').append(buildProfileCard(p)); });
+  syncProfilesEmpty();
+
+
   // Serialize on config form submit
-  $('#re-cfg-form').on('submit', function(){ serializeChannels(); serializeVars(); });
+  $('#re-cfg-form').on('submit', function(){ serializeChannels(); serializeVars(); serializeProfiles(); });
 
 });
 </script>

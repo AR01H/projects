@@ -154,7 +154,7 @@ class AH_Form_Builder {
 			$label = sanitize_text_field( $f['label'] ?? '' );
 			if ( ! $label ) continue;
 			$type = self::allowed_type( $f['field_type'] ?? 'text' );
-			$opts = ( 'select' === $type && ! empty( $f['options'] ) ) ? array_values( array_filter( array_map( 'sanitize_text_field', (array) $f['options'] ) ) ) : array();
+			$opts = ( in_array( $type, array( 'select', 'radio', 'checkbox' ), true ) && ! empty( $f['options'] ) ) ? array_values( array_filter( array_map( 'sanitize_text_field', (array) $f['options'] ) ) ) : array();
 			$wpdb->insert( $t, array(
 				'form_id'     => $form_id,
 				'label'       => $label,
@@ -335,18 +335,56 @@ class AH_Form_Builder {
       $fdesc = isset( $f->description ) ? trim( (string) $f->description ) : '';
       ?>
     <div class="ch-form-group">
-      <label class="ch-form-label" for="<?php echo $fid; ?>"><?php echo esc_html( $f->label ); ?><?php if ( $freq ) : ?><span class="ah-req">*</span><?php endif; ?></label>
-      <?php if ( 'textarea' === $f->field_type ) : ?>
-        <textarea class="ch-form-textarea" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>></textarea>
-      <?php elseif ( 'select' === $f->field_type && ! empty( $f->options ) ) : ?>
-        <select class="ch-form-select" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
-          <option value=""><?php echo esc_html( $f->placeholder ?: '- Select an option -' ); ?></option>
-          <?php foreach ( $f->options as $opt ) : ?><option value="<?php echo esc_attr( $opt ); ?>"><?php echo esc_html( $opt ); ?></option><?php endforeach; ?>
-        </select>
+      <?php if ( 'markup' === $f->field_type ) : ?>
+        <?php if ( $fdesc ) : ?><div class="ch-form-markup" style="font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:5px;"><?php echo wp_kses_post( $fdesc ); ?></div><?php endif; ?>
       <?php else : ?>
-        <input class="ch-form-input" type="<?php echo esc_attr( $f->field_type ); ?>" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>>
+        <label class="ch-form-label" for="<?php echo $fid; ?>"><?php echo esc_html( $f->label ); ?><?php if ( $freq ) : ?><span class="ah-req">*</span><?php endif; ?></label>
+        <?php if ( 'textarea' === $f->field_type ) : ?>
+          <textarea class="ch-form-textarea" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>></textarea>
+        <?php elseif ( 'select' === $f->field_type && ! empty( $f->options ) ) : ?>
+          <select class="ch-form-select" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
+            <option value=""><?php echo esc_html( $f->placeholder ?: '- Select an option -' ); ?></option>
+            <?php foreach ( $f->options as $opt ) : ?><option value="<?php echo esc_attr( $opt ); ?>"><?php echo esc_html( $opt ); ?></option><?php endforeach; ?>
+          </select>
+        <?php elseif ( 'radio' === $f->field_type && ! empty( $f->options ) ) : ?>
+          <div class="ch-form-radio-group" style="display:flex;flex-direction:column;gap:8px;">
+            <?php foreach ( $f->options as $opt ) : ?>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+                <input type="radio" name="<?php echo $fname; ?>" value="<?php echo esc_attr( $opt ); ?>" <?php echo $freq ? ' required' : ''; ?> style="accent-color:#1a3c5e;">
+                <?php echo esc_html( $opt ); ?>
+              </label>
+            <?php endforeach; ?>
+          </div>
+        <?php elseif ( 'checkbox' === $f->field_type && ! empty( $f->options ) ) : ?>
+          <div class="ch-form-checkbox-group" style="display:flex;flex-direction:column;gap:8px;">
+            <?php foreach ( $f->options as $idx => $opt ) : ?>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+                <input type="checkbox" name="<?php echo $fname; ?>[]" value="<?php echo esc_attr( $opt ); ?>" style="accent-color:#1a3c5e;" <?php echo ( $freq && $idx === 0 ) ? ' data-required-group="true"' : ''; ?>>
+                <?php echo esc_html( $opt ); ?>
+              </label>
+            <?php endforeach; ?>
+          </div>
+        <?php elseif ( 'daterange' === $f->field_type ) : ?>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:140px;">
+              <span style="display:block;font-size:12px;color:#6b7280;margin-bottom:4px;">Start Date</span>
+              <input class="ch-form-input" type="date" id="<?php echo $fid; ?>_start" name="<?php echo $fname; ?>_start" <?php echo $freq ? ' required' : ''; ?>>
+            </div>
+            <div style="flex:1;min-width:140px;">
+              <span style="display:block;font-size:12px;color:#6b7280;margin-bottom:4px;">End Date</span>
+              <input class="ch-form-input" type="date" id="<?php echo $fid; ?>_end" name="<?php echo $fname; ?>_end" <?php echo $freq ? ' required' : ''; ?>>
+            </div>
+          </div>
+        <?php elseif ( 'color' === $f->field_type ) : ?>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <input type="color" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" <?php echo $freq ? ' required' : ''; ?> style="width:44px;height:44px;padding:2px;border:1px solid #d1d5db;border-radius:4px;cursor:pointer;">
+            <span style="font-size:13px;color:#6b7280;"><?php echo esc_html( $f->placeholder ?: 'Select a color' ); ?></span>
+          </div>
+        <?php else : ?>
+          <input class="ch-form-input" type="<?php echo esc_attr( $f->field_type ); ?>" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>>
+        <?php endif; ?>
+        <?php if ( $fdesc ) : ?><p class="ch-form-desc"><?php echo esc_html( $fdesc ); ?></p><?php endif; ?>
       <?php endif; ?>
-      <?php if ( $fdesc ) : ?><p class="ch-form-desc"><?php echo esc_html( $fdesc ); ?></p><?php endif; ?>
     </div>
     <?php endforeach; ?>
 
@@ -517,22 +555,26 @@ class AH_Form_Builder {
 		return str_replace( '-', '_', sanitize_title( $label ) );
 	}
 
-	public static function allowed_type( string $type ): string {
-		$allowed = array( 'text', 'email', 'tel', 'textarea', 'select', 'number', 'date', 'url', 'hidden' );
-		return in_array( $type, $allowed, true ) ? $type : 'text';
+	public static function allowed_type( string $t ): string {
+		return in_array( $t, array( 'text', 'email', 'tel', 'textarea', 'select', 'radio', 'checkbox', 'number', 'date', 'daterange', 'color', 'url', 'hidden', 'markup' ), true ) ? $t : 'text';
 	}
 
 	public static function field_type_label( string $type ): string {
 		$map = array(
-			'text'     => 'Text',
-			'email'    => 'Email',
-			'tel'      => 'Phone / Tel',
-			'textarea' => 'Textarea',
-			'select'   => 'Dropdown',
-			'number'   => 'Number',
-			'date'     => 'Date',
-			'url'      => 'URL',
-			'hidden'   => 'Hidden Field',
+			'text'      => 'Text',
+			'email'     => 'Email',
+			'tel'       => 'Phone / Tel',
+			'textarea'  => 'Textarea',
+			'select'    => 'Dropdown',
+			'radio'     => 'Radio Buttons',
+			'checkbox'  => 'Checkboxes',
+			'number'    => 'Number',
+			'date'      => 'Date',
+			'daterange' => 'Date Range',
+			'color'     => 'Color Picker',
+			'url'       => 'URL',
+			'hidden'    => 'Hidden Field',
+			'markup'    => 'Markup / Instructions',
 		);
 		return $map[ $type ] ?? $type;
 	}

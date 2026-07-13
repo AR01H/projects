@@ -52,23 +52,53 @@ class AH_Analytics_Ajax {
 	/* ── Run query ──────────────────────────────────────────────── */
 
 	private static function handle_run(): void {
-		$report_id = (int) ( $_POST['report_id'] ?? 0 );
-		$sql       = trim( wp_unslash( $_POST['query_sql'] ?? '' ) );
+		$report_id   = (int) ( $_POST['report_id'] ?? 0 );
+		$report_type = sanitize_key( wp_unslash( $_POST['report_type'] ?? 'sql' ) );
+		$sql         = trim( wp_unslash( $_POST['query_sql'] ?? '' ) );
+		$php         = trim( wp_unslash( $_POST['query_php'] ?? '' ) );
 
-		if ( ! $sql ) {
-			wp_send_json_error( [ 'message' => 'No query provided.' ] );
-		}
-
-		$err = self::validate_query( $sql );
-		if ( $err ) {
-			wp_send_json_error( [ 'message' => $err ] );
+		if ( $report_type === 'sql' ) {
+			if ( ! $sql ) {
+				wp_send_json_error( [ 'message' => 'No SQL query provided.' ] );
+			}
+			$err = self::validate_query( $sql );
+			if ( $err ) {
+				wp_send_json_error( [ 'message' => $err ] );
+			}
+		} else {
+			if ( ! $php ) {
+				wp_send_json_error( [ 'message' => 'No PHP code provided.' ] );
+			}
 		}
 
 		global $wpdb;
 		$start   = microtime( true );
-		$results = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$db_err  = null;
+		$results = [];
+
+		if ( $report_type === 'sql' ) {
+			$results = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$db_err  = $wpdb->last_error;
+		} else {
+			try {
+				// Capture output just in case they echo something, but we expect a return value.
+				ob_start();
+				$php_res = eval( $php );
+				$output  = ob_get_clean();
+
+				if ( is_array( $php_res ) ) {
+					// We expect an array of associative arrays
+					$results = $php_res;
+				} else {
+					$db_err = 'PHP code did not return an array. Make sure you use `return $data;`';
+				}
+			} catch ( \Throwable $e ) {
+				if ( ob_get_level() ) ob_end_clean();
+				$db_err = 'PHP Error: ' . $e->getMessage();
+			}
+		}
+
 		$exec_ms = (int) round( ( microtime( true ) - $start ) * 1000 );
-		$db_err  = $wpdb->last_error;
 
 		if ( $db_err ) {
 			$payload = [
@@ -120,25 +150,34 @@ class AH_Analytics_Ajax {
 	/* ── Save report ────────────────────────────────────────────── */
 
 	private static function handle_save(): void {
-		$id          = (int) ( $_POST['id'] ?? 0 );
-		$name        = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
-		$description = sanitize_textarea_field( wp_unslash( $_POST['description'] ?? '' ) );
-		$sql         = trim( wp_unslash( $_POST['query_sql'] ?? '' ) );
+		$id             = (int) ( $_POST['id'] ?? 0 );
+		$name           = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
+		$description    = sanitize_textarea_field( wp_unslash( $_POST['description'] ?? '' ) );
+		$report_type    = sanitize_key( wp_unslash( $_POST['report_type'] ?? 'sql' ) );
+		$sql            = trim( wp_unslash( $_POST['query_sql'] ?? '' ) );
+		$php            = trim( wp_unslash( $_POST['query_php'] ?? '' ) );
+		$api_visibility = sanitize_key( wp_unslash( $_POST['api_visibility'] ?? 'private' ) );
 
-		if ( ! $name || ! $sql ) {
-			wp_send_json_error( [ 'message' => 'Name and query are required.' ] );
+		if ( ! $name ) {
+			wp_send_json_error( [ 'message' => 'Report Name is required.' ] );
 		}
 
-		$err = self::validate_query( $sql );
-		if ( $err ) {
-			wp_send_json_error( [ 'message' => $err ] );
+		if ( $report_type === 'sql' ) {
+			if ( ! $sql ) wp_send_json_error( [ 'message' => 'SQL Query is required.' ] );
+			$err = self::validate_query( $sql );
+			if ( $err ) wp_send_json_error( [ 'message' => $err ] );
+		} else {
+			if ( ! $php ) wp_send_json_error( [ 'message' => 'PHP Code is required.' ] );
 		}
 
 		$saved_id = ( new AH_Analytics_Report_Model() )->save_report( [
-			'id'          => $id,
-			'name'        => $name,
-			'description' => $description,
-			'query_sql'   => $sql,
+			'id'             => $id,
+			'name'           => $name,
+			'description'    => $description,
+			'report_type'    => $report_type,
+			'query_sql'      => $sql,
+			'query_php'      => $php,
+			'api_visibility' => in_array( $api_visibility, [ 'public', 'private' ] ) ? $api_visibility : 'private',
 		] );
 
 		wp_send_json_success( [ 'id' => $saved_id, 'message' => 'Report saved.' ] );
@@ -226,14 +265,14 @@ class AH_Analytics_Ajax {
 	/* ── Validation ─────────────────────────────────────────────── */
 
 	/**
-	 * Validate that $sql is a safe read-only SELECT query.
+	 * Validate that $sql is a safe read-only SELECT, DESC, or SHOW CREATE query.
 	 * Returns an error string or empty string if valid.
 	 */
 	public static function validate_query( string $sql ): string {
 		$clean = trim( preg_replace( '/\s+/', ' ', $sql ) );
 
-		if ( ! preg_match( '/^SELECT\s/i', $clean ) ) {
-			return 'Only SELECT queries are allowed.';
+		if ( ! preg_match( '/^(?:SELECT|DESC|DESCRIBE|SHOW\s+CREATE)\s/i', $clean ) ) {
+			return 'Only SELECT, DESC, and SHOW CREATE queries are allowed.';
 		}
 
 		/* Blocklist: destructive / permission-changing / file-reading keywords */
@@ -243,6 +282,11 @@ class AH_Analytics_Ajax {
 			'CALL', 'EXEC', 'EXECUTE', 'PROCEDURE', 'FUNCTION', 'TRIGGER',
 			'INTO\s+OUTFILE', 'INTO\s+DUMPFILE',
 		];
+
+		// If it is specifically SHOW CREATE, we don't block the word CREATE.
+		if ( preg_match( '/^SHOW\s+CREATE\s/i', $clean ) ) {
+			$blocked = array_diff( $blocked, [ 'CREATE' ] );
+		}
 
 		foreach ( $blocked as $kw ) {
 			if ( preg_match( '/\b' . $kw . '\b/i', $clean ) ) {

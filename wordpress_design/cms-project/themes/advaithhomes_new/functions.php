@@ -160,23 +160,23 @@ function adn_add_img_lazy_attr( string $content ): string {
 // ── Image optimisation on upload ───────────────────────────────────────────
 // WordPress 5.3+: automatically downscale any uploaded image wider than 1920px.
 // The original is preserved as a "scaled" copy; WP serves the smaller version.
-add_filter( 'big_image_size_threshold', function () { return 1920; } );
+// add_filter( 'big_image_size_threshold', function () { return 1920; } );
 
-// Lower JPEG quality to 82% (WordPress default is 82, but make it explicit).
-// Reduces file size ~30–50% vs 100% quality with no visible difference on screen.
-add_filter( 'jpeg_quality',        function () { return 82; } );
-add_filter( 'wp_editor_set_quality', function () { return 82; } );
+// // Lower JPEG quality to 82% (WordPress default is 82, but make it explicit).
+// // Reduces file size ~30–50% vs 100% quality with no visible difference on screen.
+// add_filter( 'jpeg_quality',        function () { return 82; } );
+// add_filter( 'wp_editor_set_quality', function () { return 82; } );
 
-// WordPress 5.8+: generate WebP versions of uploaded JPEG/PNG images automatically.
-// Browsers that support WebP will download the smaller WebP; others get the original.
-add_filter( 'wp_upload_image_mime_transforms', function ( $transforms ) {
-	foreach ( array( 'image/jpeg', 'image/png' ) as $mime ) {
-		if ( isset( $transforms[ $mime ] ) && ! in_array( 'image/webp', $transforms[ $mime ], true ) ) {
-			$transforms[ $mime ][] = 'image/webp';
-		}
-	}
-	return $transforms;
-} );
+// // WordPress 5.8+: generate WebP versions of uploaded JPEG/PNG images automatically.
+// // Browsers that support WebP will download the smaller WebP; others get the original.
+// add_filter( 'wp_upload_image_mime_transforms', function ( $transforms ) {
+// 	foreach ( array( 'image/jpeg', 'image/png' ) as $mime ) {
+// 		if ( isset( $transforms[ $mime ] ) && ! in_array( 'image/webp', $transforms[ $mime ], true ) ) {
+// 			$transforms[ $mime ][] = 'image/webp';
+// 		}
+// 	}
+// 	return $transforms;
+// } );
 add_action( 'after_switch_theme', function () { flush_rewrite_rules(); } );
 
 // One-time flush after URL prefix changed wp-json/adn/v1 → api/v1.

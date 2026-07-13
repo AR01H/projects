@@ -72,6 +72,14 @@ function adn_home_get_context( $skip = array() ) {
 		$ctx['hero']['trust_items'] = $_mq['trust'];
 	}
 
+	// Home banner: admin-configured image overrides the default.
+	if ( ! empty( $_hs['home_banner'] ) ) {
+		// Use ah_settings_image_url if available to resolve IDs or direct URLs
+		$ctx['hero']['image'] = function_exists( 'ah_settings_image_url' ) 
+			? ah_settings_image_url( $_hs['home_banner'] ) 
+			: ( filter_var( $_hs['home_banner'], FILTER_VALIDATE_URL ) ? $_hs['home_banner'] : wp_get_attachment_image_url( $_hs['home_banner'], 'full' ) );
+	}
+
 	// Overlay live CMS content where it exists; JSON stays as the fallback.
 	if ( function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
 		$journey_cards = adn_home_cms_journey_cards();
