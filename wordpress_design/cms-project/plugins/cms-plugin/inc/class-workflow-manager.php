@@ -830,49 +830,235 @@ class AH_Workflow_Manager {
 private static function action_curl_command( array $a, array $context ): void {
     $ctx = array_merge( self::config_tokens(), $context );
     $curl_str = self::fill( $a['curl_string'] ?? '', $ctx );
-    if ( ! $curl_str ) return;
+    if ( ! $curl_str ) {
+        return;
+    }
 
-    // Only run if it actually starts with curl
+    $status_file = self::fill( $a['status_file'] ?? '', $ctx );
+    if ( ! $status_file ) {
+        $status_file = self::get_action_status_file_path( 'curl' );
+    }
+
     if ( ! str_starts_with( trim( $curl_str ), 'curl ' ) ) {
+        self::write_action_status_file( $status_file, 'failure', array( 'message' => 'Invalid cURL command: must start with "curl "' ) );
         throw new \Exception( 'Invalid cURL command: must start with "curl "' );
     }
 
-    if ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) {
-        $curl_str = self::prepare_windows_curl_command( $curl_str );
+    $curl_request = self::parse_curl_command_to_request_options( $curl_str );
+    if ( $curl_request === null ) {
+        self::write_action_status_file( $status_file, 'failure', array( 'message' => 'Unable to parse cURL command into HTTP request options' ) );
+        throw new \Exception( 'Unable to parse cURL command into HTTP request options' );
     }
 
-    error_log( 'AH_Workflow_Manager::action_curl_command execute: ' . $curl_str );
-    $output = array();
-    $result = -1;
-    self::run_command_with_output( $curl_str, $output, $result );
+    try {
+        $shell_available = self::is_shell_command_available() && strtoupper( substr( PHP_OS, 0, 3 ) ) !== 'WIN';
+        if ( $shell_available ) {
+            $curl_str = self::prepare_windows_curl_command( $curl_str );
 
-    if ( $result !== 0 ) {
-        error_log( 'AH_Workflow_Manager::action_curl_command failed: ' . $curl_str . ' | output: ' . implode( " \n", $output ) );
-        throw new \Exception( 'cURL command failed with exit code ' . $result . ': ' . implode( "\n", $output ) );
+            error_log( 'AH_Workflow_Manager::action_curl_command execute shell: ' . $curl_str );
+            $output = array();
+            $result = -1;
+            self::run_command_with_output( $curl_str, $output, $result );
+
+            if ( $result === 0 ) {
+                self::write_action_status_file( $status_file, 'success', array( 'path' => $status_file, 'method' => 'shell' ) );
+                return;
+            }
+
+            error_log( 'AH_Workflow_Manager::action_curl_command shell failed: ' . $curl_str . ' | output: ' . implode( " \n", $output ) );
+        } else {
+            error_log( 'AH_Workflow_Manager::action_curl_command skipping shell execution on Windows or disabled shell functions' );
+        }
+
+        error_log( 'AH_Workflow_Manager::action_curl_command fallback to WP_HTTP' );
+        self::run_wp_remote_for_curl_request( $curl_request );
+        self::write_action_status_file( $status_file, 'success', array( 'path' => $status_file, 'method' => 'wp_remote_request' ) );
+    } catch ( \Throwable $e ) {
+        self::write_action_status_file( $status_file, 'failure', array( 'message' => $e->getMessage() ) );
+        throw $e;
     }
 }
 
 private static function run_command_with_output( string $cmd, array &$output, int &$exitCode ): void {
+    $output = array();
+    $exitCode = -1;
+    $disabled = strtolower( ini_get( 'disable_functions' ) );
+
     if ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) {
-        $args = self::parse_command_string( $cmd );
-        $descriptors = array(
-            1 => array( 'pipe', 'w' ),
-            2 => array( 'pipe', 'w' ),
-        );
-        $process = proc_open( $args, $descriptors, $pipes );
-        if ( is_resource( $process ) ) {
-            $output = array();
-            $stdout = stream_get_contents( $pipes[1] );
-            $stderr = stream_get_contents( $pipes[2] );
-            fclose( $pipes[1] );
-            fclose( $pipes[2] );
-            $exitCode = proc_close( $process );
-            $output = array_filter( array_merge( explode( "\n", $stdout ), explode( "\n", $stderr ) ) );
+        if ( function_exists( 'proc_open' ) && strpos( $disabled, 'proc_open' ) === false ) {
+            $args = self::parse_command_string( $cmd );
+            $descriptors = array(
+                1 => array( 'pipe', 'w' ),
+                2 => array( 'pipe', 'w' ),
+            );
+            $process = proc_open( $args, $descriptors, $pipes );
+            if ( is_resource( $process ) ) {
+                $stdout = stream_get_contents( $pipes[1] );
+                $stderr = stream_get_contents( $pipes[2] );
+                fclose( $pipes[1] );
+                fclose( $pipes[2] );
+                $exitCode = proc_close( $process );
+                $output = array_filter( array_merge( explode( "\n", $stdout ), explode( "\n", $stderr ) ) );
+                return;
+            }
+        }
+
+        if ( function_exists( 'exec' ) && strpos( $disabled, 'exec' ) === false ) {
+            exec( $cmd . ' 2>&1', $output, $exitCode );
             return;
         }
+
+        return;
     }
 
     exec( $cmd . ' 2>&1', $output, $exitCode );
+}
+
+private static function is_shell_command_available(): bool {
+    $disabled = strtolower( ini_get( 'disable_functions' ) );
+    return ( function_exists( 'proc_open' ) && strpos( $disabled, 'proc_open' ) === false ) || ( function_exists( 'exec' ) && strpos( $disabled, 'exec' ) === false );
+}
+
+private static function run_wp_remote_for_curl_request( array $request ): void {
+    $url = $request['url'] ?? '';
+    $args = $request['args'] ?? array();
+
+    $response = wp_remote_request( $url, $args );
+    if ( is_wp_error( $response ) ) {
+        throw new \Exception( 'WP HTTP request failed: ' . $response->get_error_message() );
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    if ( $code < 200 || $code >= 300 ) {
+        $body = wp_remote_retrieve_body( $response );
+        throw new \Exception( sprintf( 'WP HTTP request returned HTTP %d: %s', $code, mb_strimwidth( $body, 0, 150, '...' ) ) );
+    }
+}
+
+private static function write_action_status_file( string $path, string $status, array $data = array() ): void {
+    if ( ! $path ) {
+        return;
+    }
+
+    $payload = array_merge(
+        array(
+            'status'    => $status,
+            'timestamp' => current_time( 'mysql' ),
+        ),
+        $data
+    );
+
+    $dir = dirname( $path );
+    if ( ! is_dir( $dir ) ) {
+        @mkdir( $dir, 0755, true );
+    }
+
+    @file_put_contents( $path, wp_json_encode( $payload, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT ) );
+}
+
+private static function get_action_status_file_path( string $prefix ): string {
+    $path = wp_tempnam( "ah-{$prefix}-status-" );
+    if ( ! $path ) {
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "ah-{$prefix}-status-" . uniqid() . '.json';
+    }
+    return $path;
+}
+
+private static function parse_curl_command_to_request_options( string $curl_str ): ?array {
+    $opts = array(
+        'url'     => '',
+        'headers' => array(),
+        'method'  => 'GET',
+        'body'    => null,
+    );
+
+    $tokens = self::parse_command_string( $curl_str );
+    $current = null;
+    $use_body = false;
+
+    foreach ( $tokens as $token ) {
+        if ( $current ) {
+            switch ( $current ) {
+                case '-X':
+                case '--request':
+                    $opts['method'] = strtoupper( $token );
+                    break;
+                case '-H':
+                case '--header':
+                    if ( str_contains( $token, ':' ) ) {
+                        [ $name, $value ] = explode( ':', $token, 2 );
+                        $opts['headers'][ trim( $name ) ] = trim( $value );
+                    }
+                    break;
+                case '-d':
+                case '--data':
+                case '--data-raw':
+                case '--data-binary':
+                    $opts['body'] = $token;
+                    $use_body = true;
+                    break;
+            }
+            $current = null;
+            continue;
+        }
+
+        if ( str_starts_with( $token, 'curl' ) ) {
+            continue;
+        }
+
+        if ( str_starts_with( $token, 'http://' ) || str_starts_with( $token, 'https://' ) ) {
+            $opts['url'] = $token;
+            continue;
+        }
+
+        if ( in_array( $token, array( '-X', '--request', '-H', '--header', '-d', '--data', '--data-raw', '--data-binary' ), true ) ) {
+            $current = $token;
+            if ( in_array( $token, array( '-d', '--data', '--data-raw', '--data-binary' ), true ) ) {
+                $opts['method'] = 'POST';
+            }
+            continue;
+        }
+
+        if ( str_starts_with( $token, '--url=' ) ) {
+            $opts['url'] = substr( $token, 6 );
+            continue;
+        }
+
+        if ( str_starts_with( $token, '-H' ) && strlen( $token ) > 2 ) {
+            $hdr = substr( $token, 2 );
+            if ( str_contains( $hdr, ':' ) ) {
+                [ $name, $value ] = explode( ':', $hdr, 2 );
+                $opts['headers'][ trim( $name ) ] = trim( $value );
+            }
+            continue;
+        }
+
+        if ( str_starts_with( $token, '-d' ) && strlen( $token ) > 2 ) {
+            $opts['body'] = substr( $token, 2 );
+            $use_body = true;
+            $opts['method'] = 'POST';
+            continue;
+        }
+    }
+
+    if ( ! $opts['url'] ) {
+        return null;
+    }
+
+    $args = array(
+        'method'  => $opts['method'],
+        'headers' => $opts['headers'],
+        'timeout' => 15,
+    );
+
+    if ( $use_body ) {
+        $args['body'] = $opts['body'];
+    }
+
+    return array(
+        'url'  => $opts['url'],
+        'args' => $args,
+    );
 }
 
 private static function parse_command_string( string $cmd ): array {
