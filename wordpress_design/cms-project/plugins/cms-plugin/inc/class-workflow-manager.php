@@ -844,7 +844,7 @@ private static function action_curl_command( array $a, array $context ): void {
     error_log( 'AH_Workflow_Manager::action_curl_command execute: ' . $curl_str );
     $output = array();
     $result = -1;
-    exec( $curl_str . ' 2>&1', $output, $result );
+    self::run_command_with_output( $curl_str, $output, $result );
 
     if ( $result !== 0 ) {
         error_log( 'AH_Workflow_Manager::action_curl_command failed: ' . $curl_str . ' | output: ' . implode( " \n", $output ) );
@@ -852,19 +852,116 @@ private static function action_curl_command( array $a, array $context ): void {
     }
 }
 
+private static function run_command_with_output( string $cmd, array &$output, int &$exitCode ): void {
+    if ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) {
+        $args = self::parse_command_string( $cmd );
+        $descriptors = array(
+            1 => array( 'pipe', 'w' ),
+            2 => array( 'pipe', 'w' ),
+        );
+        $process = proc_open( $args, $descriptors, $pipes );
+        if ( is_resource( $process ) ) {
+            $output = array();
+            $stdout = stream_get_contents( $pipes[1] );
+            $stderr = stream_get_contents( $pipes[2] );
+            fclose( $pipes[1] );
+            fclose( $pipes[2] );
+            $exitCode = proc_close( $process );
+            $output = array_filter( array_merge( explode( "\n", $stdout ), explode( "\n", $stderr ) ) );
+            return;
+        }
+    }
+
+    exec( $cmd . ' 2>&1', $output, $exitCode );
+}
+
+private static function parse_command_string( string $cmd ): array {
+    $args = array();
+    $length = strlen( $cmd );
+    $index = 0;
+
+    while ( $index < $length ) {
+        while ( $index < $length && ctype_space( $cmd[ $index ] ) ) {
+            $index++;
+        }
+
+        if ( $index >= $length ) {
+            break;
+        }
+
+        $char = $cmd[ $index ];
+        $token = '';
+
+        if ( $char === '"' || $char === "'" ) {
+            $quote = $char;
+            $index++;
+            while ( $index < $length ) {
+                $c = $cmd[ $index++ ];
+                if ( $c === $quote ) {
+                    break;
+                }
+                if ( $c === '\\' && $index < $length ) {
+                    $token .= $cmd[ $index++ ];
+                    continue;
+                }
+                $token .= $c;
+            }
+        } else {
+            while ( $index < $length && ! ctype_space( $cmd[ $index ] ) ) {
+                $c = $cmd[ $index++ ];
+                if ( $c === '\\' && $index < $length ) {
+                    $token .= $cmd[ $index++ ];
+                    continue;
+                }
+                $token .= $c;
+            }
+        }
+
+        if ( $token !== '' ) {
+            $args[] = $token;
+        }
+    }
+
+    return $args;
+}
+
 private static function prepare_windows_curl_command( string $curl_str ): string {
     $curl_str = str_replace( array( "\r", "\n" ), ' ', $curl_str );
+
+    // Remove escaped quote sequences produced by pasted PHP-style strings.
+    $curl_str = str_replace( array( '\\"', "\\'" ), array( '"', "'" ), $curl_str );
+
+    // Normalize header quoting for cmd.exe.
     $curl_str = preg_replace_callback(
-        '/\b(-H|--header|-d|--data|--data-raw|--data-binary)\s+\'([^\']*)\'/i',
+        '/\b(-H|--header)\s+(?:\'([^\']*)\'|"([^"]*)")/i',
         function ( $matches ) {
-            $value = str_replace( '"', '\\"', $matches[2] );
+            $value = isset( $matches[2] ) && $matches[2] !== '' ? $matches[2] : $matches[3];
+            $value = str_replace( '"', '\\"', $value );
             return $matches[1] . ' "' . $value . '"';
         },
         $curl_str
     );
 
-    // Wrap in cmd /C so Windows executes the curl command directly, avoiding a BAT file that can launch associated applications.
-    return 'cmd /C "' . str_replace( '"', '\\"', $curl_str ) . '"';
+    // Convert raw POST data to a temporary file to avoid Windows shell JSON quoting issues.
+    $curl_str = preg_replace_callback(
+        '/\b(-d|--data|--data-raw|--data-binary)\s+(?:\'([^\']*)\'|"([^"]*)")/i',
+        function ( $matches ) {
+            $data = isset( $matches[2] ) && $matches[2] !== '' ? $matches[2] : $matches[3];
+            $data = str_replace( '\\"', '"', $data );
+            $tmp_file = wp_tempnam( 'ah-curl-body-' );
+            if ( ! $tmp_file ) {
+                $tmp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ah-curl-body-' . uniqid() . '.txt';
+            }
+            file_put_contents( $tmp_file, $data );
+            if ( str_contains( $tmp_file, ' ' ) ) {
+                return $matches[1] . ' @"' . str_replace( '"', '\\"', $tmp_file ) . '"';
+            }
+            return $matches[1] . ' @' . $tmp_file;
+        },
+        $curl_str
+    );
+
+    return $curl_str;
 }
 
 private static function action_code( array $a, array $context ): void {
