@@ -204,6 +204,11 @@ class AH_Workflow_Manager {
 		foreach ( $rows as $rule ) {
 			$rule = self::decode( $rule );
 			$rule_ctx = $context;
+
+			// Rule-specific freeze: skip saved rules that are currently disabled
+			if ( filter_var( $rule->settings['frozen'] ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+				continue;
+			}
 			
 			// 1. Inject Variable Profile variables first
 			$prof_id = $rule->settings['var_profile_id'] ?? '';
@@ -233,6 +238,10 @@ class AH_Workflow_Manager {
 
 			foreach ( $rule->actions as $idx => $action ) {
 				$type = $action['type'] ?? '';
+
+				if ( array_key_exists( 'enabled', $action ) && ! filter_var( $action['enabled'], FILTER_VALIDATE_BOOLEAN ) ) {
+					continue;
+				}
 
 				// wait: accumulate delay, no log entry for the wait itself
 				if ( 'wait' === $type ) {
@@ -451,6 +460,7 @@ class AH_Workflow_Manager {
 				'whatsapp'      => self::action_whatsapp( $a, $context ),
 				'http_request'  => self::action_http( $a, $context ),
 				'curl_command'  => self::action_curl_command( $a, $context ),
+				'code'          => self::action_code( $a, $context ),
 				'update_option' => self::action_update_option( $a, $context ),
 				default         => null,
 			};
@@ -587,6 +597,14 @@ class AH_Workflow_Manager {
 
 		if ( ! $status ) {
 			$err_msg = ! empty( $_mail_error ) ? $_mail_error : 'wp_mail returned false (unknown error).';
+			if ( $channel ) {
+				$err_msg .= "\n\n--- Channel Config Dump ---\n";
+				$err_msg .= "Host: " . ( $channel['host'] ?? 'N/A' ) . "\n";
+				$err_msg .= "Port: " . ( $channel['port'] ?? 'N/A' ) . "\n";
+				$err_msg .= "Encryption: " . ( $channel['encryption'] ?? 'N/A' ) . "\n";
+				$err_msg .= "Username: " . ( $channel['username'] ?? 'N/A' ) . "\n";
+				$err_msg .= "From: $from_name <$from_email>\n";
+			}
 			throw new \Exception( $err_msg );
 		}
 	}
@@ -667,14 +685,25 @@ class AH_Workflow_Manager {
 			'body' => wp_json_encode( $payload ),
 		) );
 
+		$curl_str = "curl -X POST https://api.brevo.com/v3/smtp/email \\\n";
+		$curl_str .= "-H \"api-key: " . ( $api_key ? substr($api_key, 0, 8) . '...' : 'MISSING' ) . "\" \\\n";
+		$curl_str .= "-H \"Content-Type: application/json\" \\\n";
+		$curl_str .= "-d '" . wp_json_encode( $payload, JSON_UNESCAPED_SLASHES ) . "'";
+		
+		$dump = "\n\n--- API Config Dump ---\n";
+		$dump .= "Endpoint: https://api.brevo.com/v3/smtp/email\n";
+		$dump .= "cURL Equivalent:\n" . $curl_str;
+
 		if ( is_wp_error( $response ) ) {
-			throw new \Exception( $response->get_error_message() );
+			throw new \Exception( $response->get_error_message() . $dump );
 		}
 
 		$code = wp_remote_retrieve_response_code( $response );
 		if ( $code < 200 || $code >= 300 ) {
-			$err = json_decode( wp_remote_retrieve_body( $response ), true );
-			throw new \Exception( $err['message'] ?? "Brevo API returned HTTP {$code}." );
+			$body = wp_remote_retrieve_body( $response );
+			$err = json_decode( $body, true );
+			$msg = $err['message'] ?? ( $body ?: "Brevo API returned HTTP {$code}." );
+			throw new \Exception( $msg . $dump );
 		}
 	}
 
@@ -798,24 +827,86 @@ class AH_Workflow_Manager {
 
 	// ── curl_command ──────────────────────────────────────────────────────────
 
-	private static function action_curl_command( array $a, array $context ): void {
-		$ctx = array_merge( self::config_tokens(), $context );
-		$curl_str = self::fill( $a['curl_string'] ?? '', $ctx );
-		if ( ! $curl_str ) return;
-		
-		// Only run if it actually starts with curl
-		if ( ! str_starts_with( trim( $curl_str ), 'curl ' ) ) {
-			throw new \Exception( 'Invalid cURL command: must start with "curl "' );
-		}
+private static function action_curl_command( array $a, array $context ): void {
+    $ctx = array_merge( self::config_tokens(), $context );
+    $curl_str = self::fill( $a['curl_string'] ?? '', $ctx );
+    if ( ! $curl_str ) return;
 
-		$output = array();
-		$result = -1;
-		exec( $curl_str, $output, $result );
+    // Only run if it actually starts with curl
+    if ( ! str_starts_with( trim( $curl_str ), 'curl ' ) ) {
+        throw new \Exception( 'Invalid cURL command: must start with "curl "' );
+    }
 
-		if ( $result !== 0 ) {
-			throw new \Exception( 'cURL command failed with exit code ' . $result . ': ' . implode( "\n", $output ) );
-		}
-	}
+    if ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) {
+        $curl_str = self::prepare_windows_curl_command( $curl_str );
+    }
+
+    error_log( 'AH_Workflow_Manager::action_curl_command execute: ' . $curl_str );
+    $output = array();
+    $result = -1;
+    exec( $curl_str . ' 2>&1', $output, $result );
+
+    if ( $result !== 0 ) {
+        error_log( 'AH_Workflow_Manager::action_curl_command failed: ' . $curl_str . ' | output: ' . implode( " \n", $output ) );
+        throw new \Exception( 'cURL command failed with exit code ' . $result . ': ' . implode( "\n", $output ) );
+    }
+}
+
+private static function prepare_windows_curl_command( string $curl_str ): string {
+    $curl_str = str_replace( array( "\r", "\n" ), ' ', $curl_str );
+    $curl_str = preg_replace_callback(
+        '/\b(-H|--header|-d|--data|--data-raw|--data-binary)\s+\'([^\']*)\'/i',
+        function ( $matches ) {
+            $value = str_replace( '"', '\\"', $matches[2] );
+            return $matches[1] . ' "' . $value . '"';
+        },
+        $curl_str
+    );
+
+    // Wrap in cmd /C so Windows executes the curl command directly, avoiding a BAT file that can launch associated applications.
+    return 'cmd /C "' . str_replace( '"', '\\"', $curl_str ) . '"';
+}
+
+private static function action_code( array $a, array $context ): void {
+    $ctx = array_merge( self::config_tokens(), $context );
+    $code = trim( self::fill( $a['code'] ?? '', $ctx ) );
+    if ( ! $code ) {
+        return;
+    }
+
+    // $disallowed = '/\b(?:assert|shell_exec|system|passthru|popen|proc_open|pcntl_exec|new(?!\s+\\?Exception\b)|fopen|fwrite|fread|file_put_contents|file_get_contents|unlink|mkdir|rmdir|rename|copy|chmod|chown|opendir|readdir|glob|scandir|putenv|getenv|parse_ini_file|parse_ini_string|extract|include|require|include_once|require_once|->|::|\$GLOBALS|\$_(?:GET|POST|REQUEST|SERVER|SESSION|COOKIE|ENV)|wpdb|mysql|mysqli|pdo|sqlite|update_option|add_option|delete_option)(?![a-zA-Z0-9_])/i';
+    // if ( preg_match( $disallowed, $code ) ) {
+    //     throw new \Exception( 'CODE contains disallowed operations or functions' );
+    // }
+
+    try {
+        eval( $code );
+    } catch ( \Throwable $e ) {
+        throw new \Exception( 'CODE execution failed: ' . $e->getMessage() );
+    }
+}
+
+/**
+ * Makes a raw token value safe to drop into a JSON string that is
+ * itself wrapped in single quotes as a shell argument (-d '...').
+ */
+private static function escape_for_curl_template( $value ): string {
+    if ( is_array( $value ) ) {
+        // Don't attempt to stringify structured values here — leave as-is
+        // and let the caller build them explicitly if ever needed.
+        return $value;
+    }
+
+    $value = (string) $value;
+
+    // 1) JSON-escape: turns " \ and control chars into \" \\ \n etc.
+    $jsonEscaped = substr( json_encode( $value ), 1, -1 );
+
+    // 2) Shell-escape for the enclosing single-quoted '...' argument.
+    //    Inside single quotes the only special char is the quote itself.
+    //    Standard trick: close quote, insert escaped literal quote, reopen.
+    return str_replace( "'", "'\\''", $jsonEscaped );
+}
 
 	// ── update_option ─────────────────────────────────────────────────────────
 
@@ -904,6 +995,7 @@ class AH_Workflow_Manager {
 		return match ( $type ) {
 			'send_email' => array(
 				'type'       => 'send_email',
+				'enabled'    => filter_var( $a['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN ) ? 1 : 0,
 				'to'         => self::sanitize_email_list( $a['to']         ?? array() ),
 				'subject'    => sanitize_text_field( $a['subject']    ?? '' ),
 				'body'       => wp_kses_post(        $a['body']       ?? '' ),
@@ -920,15 +1012,23 @@ class AH_Workflow_Manager {
 			),
 			'update_option' => array(
 				'type'         => 'update_option',
+				'enabled'      => filter_var( $a['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN ) ? 1 : 0,
 				'option_key'   => sanitize_key( $a['option_key']   ?? '' ),
 				'option_value' => sanitize_text_field( $a['option_value'] ?? '' ),
 			),
 			'curl_command' => array(
 				'type'        => 'curl_command',
+				'enabled'     => filter_var( $a['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN ) ? 1 : 0,
 				'curl_string' => trim( $a['curl_string'] ?? '' ), // Do not sanitize heavily since cURL needs special chars
+			),
+			'code' => array(
+				'type'    => 'code',
+				'enabled' => filter_var( $a['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN ) ? 1 : 0,
+				'code'    => trim( $a['code'] ?? '' ),
 			),
 			'whatsapp' => array(
 				'type'       => 'whatsapp',
+				'enabled'    => filter_var( $a['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN ) ? 1 : 0,
 				'api_url'    => esc_url_raw(         $a['api_url']    ?? '' ),
 				'auth_token' => sanitize_text_field( $a['auth_token'] ?? '' ),
 				'to_phone'   => sanitize_text_field( $a['to_phone']   ?? '' ),
@@ -937,6 +1037,7 @@ class AH_Workflow_Manager {
 			),
 			'http_request' => array(
 				'type'         => 'http_request',
+				'enabled'      => filter_var( $a['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN ) ? 1 : 0,
 				'url'          => esc_url_raw(            $a['url']          ?? '' ),
 				'method'       => strtoupper( sanitize_key( $a['method']     ?? 'POST' ) ),
 				'auth_type'    => sanitize_key(           $a['auth_type']    ?? 'none' ),
@@ -1358,4 +1459,181 @@ class AH_Workflow_Manager {
 		), array( 'id' => $id ) );
 		return true;
 	}
+	public static function register_rest_routes() {
+		register_rest_route( 'ah-workflow/v1', '/trigger', array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => array( self::class, 'handle_external_trigger' ),
+			'permission_callback' => array( self::class, 'verify_external_trigger' ),
+		) );
+
+		register_rest_route( 'ah-workflow/v1', '/test-channel', array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => array( self::class, 'handle_test_channel' ),
+			'permission_callback' => function() { return current_user_can( 'manage_options' ); },
+		) );
+
+		register_rest_route( 'ah-workflow/v1', '/test-rule', array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => array( self::class, 'handle_test_rule' ),
+			'permission_callback' => function() { return current_user_can( 'manage_options' ); },
+		) );
+	}
+
+	public static function verify_external_trigger( WP_REST_Request $request ) {
+		if ( defined( 'AH_WORKFLOW_API_KEY' ) && AH_WORKFLOW_API_KEY ) {
+			$header = $request->get_header( 'x_ah_workflow_key' );
+			if ( $header !== AH_WORKFLOW_API_KEY ) {
+				return new WP_Error( 'unauthorized', 'Invalid API Key', array( 'status' => 401 ) );
+			}
+		}
+		return true;
+	}
+
+	public static function handle_external_trigger( WP_REST_Request $request ) {
+		$trigger_name = sanitize_text_field( $request->get_param( 'trigger_name' ) ?? '' );
+		$context      = (array) ( $request->get_param( 'context' ) ?? array() );
+
+		if ( ! $trigger_name ) {
+			return new WP_Error( 'missing_trigger', 'Missing trigger_name parameter', array( 'status' => 400 ) );
+		}
+
+		self::evaluate( $trigger_name, $context, true ); // Run immediately for webhooks
+		return new WP_REST_Response( array( 'success' => true, 'message' => "Evaluated trigger: {$trigger_name}" ), 200 );
+	}
+
+	public static function handle_test_channel( WP_REST_Request $request ) {
+		$channel_id = sanitize_key( $request->get_param( 'channel_id' ) ?? '' );
+		$test_email = sanitize_email( $request->get_param( 'test_email' ) ?? '' );
+
+		if ( ! $channel_id || ! $test_email ) {
+			return new WP_Error( 'missing_params', 'Missing channel_id or test_email', array( 'status' => 400 ) );
+		}
+
+		$channel = self::get_email_channel( $channel_id );
+		if ( ! $channel ) {
+			return new WP_Error( 'not_found', 'Channel not found', array( 'status' => 404 ) );
+		}
+
+		$dummy_action = array(
+			'type'       => 'send_email',
+			'channel_id' => $channel_id,
+			'to'         => $test_email,
+			'subject'    => 'AH Workflow: Test Connection',
+			'body'       => 'If you are receiving this, your AH Workflow Email Channel configuration is working perfectly!',
+			'html'       => 0,
+		);
+
+		try {
+			$method = $channel['email_send_method'] ?? 'api';
+			if ( 'smtp' === $method ) {
+				self::action_email_smtp( $dummy_action, array() );
+			} else {
+				self::action_email( $dummy_action, array() );
+			}
+			return new WP_REST_Response( array( 'success' => true, 'message' => 'Test email sent successfully!' ), 200 );
+		} catch ( \Throwable $e ) {
+			return new WP_Error( 'send_failed', 'Test failed: ' . $e->getMessage(), array( 'status' => 500 ) );
+		}
+	}
+
+	public static function handle_test_rule( WP_REST_Request $request ) {
+		global $wpdb;
+		$rule_id = (int) $request->get_param( 'rule_id' );
+		$context = $request->get_param( 'context' );
+		
+		if ( is_string( $context ) ) {
+			$context = json_decode( $context, true ) ?: array();
+		}
+		$context = (array) $context;
+
+		if ( ! $rule_id ) {
+			return new WP_Error( 'missing_params', 'Missing rule_id parameter', array( 'status' => 400 ) );
+		}
+
+		$rule = self::get( $rule_id );
+		if ( ! $rule ) {
+			return new WP_Error( 'not_found', 'Rule not found', array( 'status' => 404 ) );
+		}
+
+		// 1. Setup Variables
+		$rule_ctx = $context;
+		$prof_id = $rule->settings['var_profile_id'] ?? '';
+		if ( $prof_id ) {
+			$profile = self::get_var_profile( $prof_id );
+			if ( $profile && ! empty( $profile['vars'] ) ) {
+				foreach ( $profile['vars'] as $v ) {
+					if ( ! empty( $v['key'] ) ) $rule_ctx[ $v['key'] ] = self::fill( $v['value'] ?? '', $rule_ctx );
+				}
+			}
+		}
+		foreach ( $rule->settings['custom_vars'] ?? array() as $cv ) {
+			if ( ! empty( $cv['key'] ) ) $rule_ctx[ $cv['key'] ] = self::fill( $cv['value'] ?? '', $rule_ctx );
+		}
+
+		$lg = self::logs_table();
+		$now = current_time( 'mysql' );
+		$now_ts = current_time( 'timestamp' );
+		$delay_seconds = 0;
+		$overall_error = null;
+
+		foreach ( $rule->actions as $idx => $action ) {
+			$type = $action['type'] ?? '';
+
+			if ( 'wait' === $type ) {
+				$mults = array( 'minutes' => 60, 'hours' => 3600, 'days' => 86400 );
+				$delay_seconds += max( 0, (int) ( $action['duration'] ?? 0 ) ) * ( $mults[ $action['unit'] ?? 'minutes' ] ?? 60 );
+				continue;
+			}
+
+			$scheduled_at = $delay_seconds > 0 ? gmdate( 'Y-m-d H:i:s', $now_ts + $delay_seconds ) : null;
+
+			$log_base = array(
+				'rule_id'       => (int) $rule->id,
+				'trigger_name'  => $rule->trigger_name . ' (Manual Test)',
+				'context_data'  => wp_json_encode( $rule_ctx ),
+				'action_index'  => $idx,
+				'action_type'   => $type,
+				'action_config' => wp_json_encode( $action ),
+			);
+
+			if ( null === $scheduled_at ) {
+				$error = null;
+				try {
+					self::run_actions( array( $action ), $rule_ctx );
+				} catch ( \Throwable $e ) {
+					$error = $e->getMessage();
+					$overall_error = $overall_error ?: $error;
+				}
+				$log = array_merge( $log_base, array(
+					'status'        => $error ? 'failed' : 'sent',
+					'is_done'       => $error ? 0 : 1,
+					'attempts'      => 1,
+					'error_message' => $error,
+				) );
+				$log[ $error ? 'failed_at' : 'sent_at' ] = current_time( 'mysql' );
+			} else {
+				$log = array_merge( $log_base, array(
+					'status'       => 'pending',
+					'is_done'      => 0,
+					'attempts'     => 0,
+					'scheduled_at' => $scheduled_at,
+				) );
+			}
+
+			$wpdb->insert( $lg, $log );
+		}
+
+		$wpdb->query( $wpdb->prepare(
+			"UPDATE `" . self::table() . "` SET run_count = run_count + 1, last_run = %s WHERE id = %d",
+			$now, (int) $rule->id
+		) );
+
+		if ( $overall_error ) {
+			return new WP_Error( 'send_failed', 'Rule test completed with errors: ' . $overall_error, array( 'status' => 500 ) );
+		}
+
+		return new WP_REST_Response( array( 'success' => true, 'message' => 'Rule actions executed and logged successfully!' ), 200 );
+	}
 }
+
+add_action( 'rest_api_init', array( 'AH_Workflow_Manager', 'register_rest_routes' ) );

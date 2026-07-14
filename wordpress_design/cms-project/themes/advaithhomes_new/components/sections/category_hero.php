@@ -18,7 +18,11 @@ $actions     = isset( $hero['actions'] ) ? (array) $hero['actions'] : array();
 $breadcrumb  = isset( $breadcrumb ) && is_array( $breadcrumb ) ? $breadcrumb : array();
 
 $_default_img = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
-$_hero_img    = adn_versioned_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img );
+$_hero_img_id = isset( $hero['image_id'] ) && ! empty( $hero['image_id'] ) ? (int) $hero['image_id'] : 0;
+$_hero_img    = $_hero_img_id
+	? wp_get_attachment_image_url( $_hero_img_id, 'large' )
+	: $_default_img;
+$_hero_img    = adn_versioned_url( $_hero_img );
 ?>
 
 <?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img ) ); ?>

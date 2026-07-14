@@ -315,6 +315,13 @@ details.re-adv .re-adv-body{padding:12px}
 				<option value="inactive" <?php selected( $editing->status, 'inactive' ); ?>>⏸ Inactive</option>
 			</select>
 		</div>
+		<div class="re-field-group" style="margin:0;display:flex;align-items:center;gap:8px;">
+			<label style="display:flex;align-items:center;gap:8px;">
+				<input type="checkbox" id="re-s-frozen" style="margin:0;" <?php echo ! empty( $editing->settings['frozen'] ) ? 'checked' : ''; ?>>
+				<span style="font-weight:600;">Freeze rule</span>
+			</label>
+			<p style="margin:0;font-size:12px;color:#6b7280;">Prevent this rule from firing while keeping it saved.</p>
+		</div>
 	</div>
 </div>
 
@@ -452,8 +459,7 @@ details.re-adv .re-adv-body{padding:12px}
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="whatsapp">💬 WhatsApp</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="http_request">🌐 HTTP Request</button>
 			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="curl_command">💻 Raw cURL</button>
-			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="wait">⏱ Wait / Delay</button>
-			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="update_option">🔧 Update WP Option</button>
+			<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" data-add-action="code">🧩 CODE</button>
 		</div>
 	</div>
 	<div id="re-actions"></div>
@@ -539,6 +545,7 @@ details.re-adv .re-adv-body{padding:12px}
 					<span class="re-st-<?php echo esc_attr( $r->status ); ?>"><?php echo 'active' === $r->status ? 'Active' : 'Inactive'; ?></span>
 				</td>
 				<td>
+					<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-test-rule" data-id="<?php echo esc_attr( $r->id ); ?>" style="margin-right:4px;" title="Manually trigger this rule's actions">Test Rule</button>
 					<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'edit', 'rule_id' => $r->id ), admin_url( 'admin.php' ) ) ); ?>"
 					   class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
 				</td>
@@ -920,7 +927,7 @@ if ( 'logs' === $view ) :
 				<td colspan="9" style="padding:16px;border-bottom:2px solid #e5e7eb">
 					<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
 						<!-- Input Context Data -->
-						<div>
+						<div style="min-width:0;">
 							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">📥 Input Data (Context)</h4>
 							<?php if ( $ctx_data ) : ?>
 							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:12px">
@@ -937,7 +944,7 @@ if ( 'logs' === $view ) :
 						</div>
 
 						<!-- Action Details -->
-						<div>
+						<div style="min-width:0;">
 							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">
 								<?php
 								$action_icons = array( 'send_email' => '📧', 'whatsapp' => '💬', 'http_request' => '🌐' );
@@ -971,7 +978,7 @@ if ( 'logs' === $view ) :
 							</div>
 							<?php elseif ( $act_cfg ) : ?>
 							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:11px;font-family:monospace">
-								<pre style="margin:0;padding:8px 12px;overflow-x:auto;color:#374151"><?php echo esc_html( wp_json_encode( $act_cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
+								<pre style="margin:0;padding:8px 12px;overflow-x:auto;color:#374151;white-space:pre-wrap;word-break:break-all;"><?php echo esc_html( wp_json_encode( $act_cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
 							</div>
 							<?php else : ?>
 							<p style="color:#9ca3af;font-size:12px;margin:0">No action config</p>
@@ -1223,6 +1230,7 @@ jQuery(function ($) {
 
   /* ── Form Field Reference ── */
   var ahReNonce = '<?php echo esc_js( wp_create_nonce( "ah_admin_nonce" ) ); ?>';
+  var ahWpRestNonce = '<?php echo esc_js( wp_create_nonce( "wp_rest" ) ); ?>';
   window._lastCondField = null;
 
   $(document).on('focus', '.re-c-field', function () {
@@ -1366,10 +1374,12 @@ jQuery(function ($) {
   function addEmailCard(d) {
     d = d || {};
     var isNew = !d.type;
+    var enabled = d.enabled !== false && d.enabled !== '0' && d.enabled !== 0;
     var $c = $([
       '<div class="re-act-card" data-type="send_email">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">📧 Send Email</strong>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
         '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
@@ -1412,6 +1422,7 @@ jQuery(function ($) {
     // Toggle expand/collapse
     $c.find('.re-act-card-head').on('click', function(e) {
       if ($(e.target).closest('.re-rm').length) return;
+      if ($(e.target).closest('.re-a-enabled').length) return;
       var $body = $c.find('.re-a-body-container');
       var $btn = $c.find('.re-a-toggle');
       $body.slideToggle(200, function() {
@@ -1463,10 +1474,12 @@ jQuery(function ($) {
   function addWhatsappCard(d) {
     d = d || {};
     var isNew = !d.type;
+    var enabled = d.enabled !== false && d.enabled !== '0' && d.enabled !== 0;
     var $c = $([
       '<div class="re-act-card" data-type="whatsapp">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">💬 WhatsApp</strong>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
         '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
@@ -1495,6 +1508,7 @@ jQuery(function ($) {
     // Toggle expand/collapse
     $c.find('.re-act-card-head').on('click', function(e) {
       if ($(e.target).closest('.re-rm').length) return;
+      if ($(e.target).closest('.re-a-enabled').length) return;
       var $body = $c.find('.re-a-body-container');
       var $btn = $c.find('.re-a-toggle');
       $body.slideToggle(200, function() {
@@ -1513,10 +1527,12 @@ jQuery(function ($) {
   function addHttpCard(d) {
     d = d || {};
     var isNew = !d.type;
+    var enabled = d.enabled !== false && d.enabled !== '0' && d.enabled !== 0;
     var $c = $([
       '<div class="re-act-card" data-type="http_request">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">🌐 HTTP Request</strong>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
         '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
@@ -1552,6 +1568,7 @@ jQuery(function ($) {
     // Toggle expand/collapse
     $c.find('.re-act-card-head').on('click', function(e) {
       if ($(e.target).closest('.re-rm').length) return;
+      if ($(e.target).closest('.re-a-enabled').length) return;
       var $body = $c.find('.re-a-body-container');
       var $btn = $c.find('.re-a-toggle');
       $body.slideToggle(200, function() {
@@ -1576,6 +1593,7 @@ jQuery(function ($) {
   function addWaitCard(d) {
     d = d || {};
     var isNew = !d.type;
+    var enabled = d.enabled !== false && d.enabled !== '0' && d.enabled !== 0;
     var unitSel = '<select class="re-a-wait-unit" style="width:auto">'
       + '<option value="minutes"' + ('minutes' === (d.unit||'minutes') ? ' selected' : '') + '>Minutes</option>'
       + '<option value="hours"'   + ('hours'   === d.unit ? ' selected' : '') + '>Hours</option>'
@@ -1585,6 +1603,7 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="wait">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">⏱ Wait / Delay</strong>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
         '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
@@ -1609,6 +1628,7 @@ jQuery(function ($) {
     // Toggle expand/collapse
     $c.find('.re-act-card-head').on('click', function(e) {
       if ($(e.target).closest('.re-rm').length) return;
+      if ($(e.target).closest('.re-a-enabled').length) return;
       var $body = $c.find('.re-a-body-container');
       var $btn = $c.find('.re-a-toggle');
       $body.slideToggle(200, function() {
@@ -1623,10 +1643,12 @@ jQuery(function ($) {
   function addUpdateOptionCard(d) {
     d = d || {};
     var isNew = !d.type;
+    var enabled = d.enabled !== false && d.enabled !== '0' && d.enabled !== 0;
     var $c = $([
       '<div class="re-act-card" data-type="update_option">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">🔧 Update WP Option</strong>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
         '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
@@ -1644,6 +1666,7 @@ jQuery(function ($) {
     // Toggle expand/collapse
     $c.find('.re-act-card-head').on('click', function(e) {
       if ($(e.target).closest('.re-rm').length) return;
+      if ($(e.target).closest('.re-a-enabled').length) return;
       var $body = $c.find('.re-a-body-container');
       var $btn = $c.find('.re-a-toggle');
       $body.slideToggle(200, function() {
@@ -1659,10 +1682,12 @@ jQuery(function ($) {
   function addCurlCommandCard(d) {
     d = d || {};
     var isNew = !d.type;
+    var enabled = d.enabled !== false && d.enabled !== '0' && d.enabled !== 0;
     var $c = $([
       '<div class="re-act-card" data-type="curl_command">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">💻 Raw cURL Command</strong>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
         '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
@@ -1675,6 +1700,7 @@ jQuery(function ($) {
     
     $c.find('.re-act-card-head').on('click', function(e) {
       if ($(e.target).closest('.re-rm').length) return;
+      if ($(e.target).closest('.re-a-enabled').length) return;
       var $body = $c.find('.re-a-body-container');
       var $btn = $c.find('.re-a-toggle');
       $body.slideToggle(200, function() {
@@ -1686,12 +1712,44 @@ jQuery(function ($) {
     syncEmpty('re-actions', 're-actions-empty');
   }
 
+  function addCodeCard(d) {
+    d = d || {};
+    var isNew = !d.type;
+    var enabled = d.enabled !== false && d.enabled !== '0' && d.enabled !== 0;
+    var $c = $([
+      '<div class="re-act-card" data-type="code">',
+        '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
+          '<strong style="flex:1;">🧩 CODE</strong>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
+        '</div>',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+          '<div class="re-field-group"><label>PHP Code <small>(allowed expressions only; unsafe DB/filesystem calls are blocked)</small></label>',
+            '<textarea class="re-a-code" rows="6" placeholder="date(\'Y-m-d\')"></textarea></div>',
+          '<p style="font-size:12px;color:#6b7280;margin:0">Use {{field_key}} tokens. Dangerous functions like exec/system/file/db updates are blocked.</p>',
+        '</div>',
+      '</div>'
+    ].join(''));
+    $c.find('.re-act-card-head').append(rmBtn());
+    $c.find('.re-act-card-head').on('click', function(e) {
+      if ($(e.target).closest('.re-rm').length) return;
+      if ($(e.target).closest('.re-a-enabled').length) return;
+      var $body = $c.find('.re-a-body-container');
+      var $btn = $c.find('.re-a-toggle');
+      $body.slideToggle(200, function() {
+        $btn.text($body.is(':visible') ? 'Collapse' : 'Expand');
+      });
+    });
+    $c.find('.re-a-code').val(d.code || '');
+    $('#re-actions').append($c);
+    syncEmpty('re-actions', 're-actions-empty');
+  }
+
   $('[data-add-action="send_email"]').on('click',     function () { addEmailCard(); });
   $('[data-add-action="whatsapp"]').on('click',       function () { addWhatsappCard(); });
   $('[data-add-action="http_request"]').on('click',   function () { addHttpCard(); });
   $('[data-add-action="curl_command"]').on('click',   function () { addCurlCommandCard(); });
-  $('[data-add-action="wait"]').on('click',           function () { addWaitCard(); });
-  $('[data-add-action="update_option"]').on('click',  function () { addUpdateOptionCard(); });
+  $('[data-add-action="code"]').on('click',           function () { addCodeCard(); });
 
   /* ── Channel list for email action dropdown ── */
   var ahReChannels = <?php echo wp_json_encode( AH_Workflow_Manager::get_email_channels_list() ); ?>;
@@ -1716,6 +1774,7 @@ jQuery(function ($) {
     else if (a.type === 'whatsapp')      addWhatsappCard(a);
     else if (a.type === 'http_request')  addHttpCard(a);
     else if (a.type === 'curl_command')  addCurlCommandCard(a);
+    else if (a.type === 'code')          addCodeCard(a);
     else if (a.type === 'wait')          addWaitCard(a);
     else if (a.type === 'update_option') addUpdateOptionCard(a);
   });
@@ -1724,6 +1783,9 @@ jQuery(function ($) {
   if (existingSettings.dedup_key)          $('#re-s-dedup-key').val(existingSettings.dedup_key);
   if (existingSettings.dedup_window_hours) $('#re-s-dedup-win').val(existingSettings.dedup_window_hours);
   if (existingSettings.cooldown_minutes)   $('#re-s-cooldown').val(existingSettings.cooldown_minutes);
+  if (existingSettings.frozen && (existingSettings.frozen === '1' || existingSettings.frozen === 1 || existingSettings.frozen === true)) {
+    $('#re-s-frozen').prop('checked', true);
+  }
 
   function addRuleVarRow(d) {
     d = d || {};
@@ -1772,6 +1834,7 @@ jQuery(function ($) {
         $(this).find('.re-bcc-list .re-a-bcc-val').each(function(){ var v=$(this).val().trim(); if(v) bccList.push(v); });
         acts.push({
           type: 'send_email', channel_id: $(this).find('.re-a-channel-id').val(),
+          enabled: $(this).find('.re-a-enabled').is(':checked') ? 1 : 0,
           to: toList, cc: ccList, bcc: bccList,
           subject: $(this).find('.re-a-subj').val().trim(),
           body:    $(this).find('.re-a-body').val(),
@@ -1780,6 +1843,7 @@ jQuery(function ($) {
       } else if (type === 'whatsapp') {
         acts.push({
           type: 'whatsapp',
+          enabled: $(this).find('.re-a-enabled').is(':checked') ? 1 : 0,
           api_url:    $(this).find('.re-a-wa-url').val().trim(),
           auth_token: $(this).find('.re-a-wa-token').val().trim(),
           to_phone:   $(this).find('.re-a-wa-phone').val().trim(),
@@ -1789,6 +1853,7 @@ jQuery(function ($) {
       } else if (type === 'http_request') {
         acts.push({
           type: 'http_request',
+          enabled: $(this).find('.re-a-enabled').is(':checked') ? 1 : 0,
           url:          $(this).find('.re-a-http-url').val().trim(),
           method:       $(this).find('.re-a-http-method').val(),
           auth_type:    $(this).find('.re-a-http-authtype').val(),
@@ -1800,11 +1865,19 @@ jQuery(function ($) {
       } else if (type === 'curl_command') {
         acts.push({
           type: 'curl_command',
+          enabled: $(this).find('.re-a-enabled').is(':checked') ? 1 : 0,
           curl_string: $(this).find('.re-a-curl-str').val().trim(),
+        });
+      } else if (type === 'code') {
+        acts.push({
+          type: 'code',
+          enabled: $(this).find('.re-a-enabled').is(':checked') ? 1 : 0,
+          code: $(this).find('.re-a-code').val().trim(),
         });
       } else if (type === 'wait') {
         acts.push({
           type:     'wait',
+          enabled:  $(this).find('.re-a-enabled').is(':checked') ? 1 : 0,
           duration: parseInt($(this).find('.re-a-wait-dur').val(), 10) || 1,
           unit:     $(this).find('.re-a-wait-unit').val(),
         });
@@ -1812,6 +1885,7 @@ jQuery(function ($) {
         var k = $(this).find('.re-a-opt-key').val().trim();
         if (k) acts.push({
           type:         'update_option',
+          enabled:      $(this).find('.re-a-enabled').is(':checked') ? 1 : 0,
           option_key:   k,
           option_value: $(this).find('.re-a-opt-val').val().trim(),
         });
@@ -1832,6 +1906,7 @@ jQuery(function ($) {
       dedup_key:          $('#re-s-dedup-key').val().trim(),
       dedup_window_hours: parseInt($('#re-s-dedup-win').val(), 10) || 0,
       cooldown_minutes:   parseInt($('#re-s-cooldown').val(), 10)  || 0,
+      frozen:             $('#re-s-frozen').is(':checked') ? '1' : '0',
       var_profile_id:     $('#re-s-var-profile').val(),
       custom_vars:        ruleVars,
     }));
@@ -1859,8 +1934,8 @@ jQuery(function ($) {
 
   function buildChannelCard(d) {
     d = d || {};
-    var provOpts = ['custom','gmail','office365','mailgun','sendgrid','zoho'];
-    var provLabels = {custom:'Custom SMTP',gmail:'Gmail',office365:'Microsoft 365',mailgun:'Mailgun',sendgrid:'SendGrid',zoho:'Zoho Mail'};
+    var provOpts = ['custom','gmail','office365','mailgun','sendgrid','zoho','brevo_api'];
+    var provLabels = {custom:'Custom SMTP',gmail:'Gmail',office365:'Microsoft 365',mailgun:'Mailgun',sendgrid:'SendGrid',zoho:'Zoho Mail',brevo_api:'Brevo API'};
     var pSel = '<select class="re-ch-provider">';
     provOpts.forEach(function(p){ pSel += '<option value="'+p+'"'+(p===(d.provider||'custom')?' selected':'')+'>'+(provLabels[p]||p)+'</option>'; });
     pSel += '</select>';
@@ -1886,19 +1961,31 @@ jQuery(function ($) {
           '<div class="re-field-group"><label>Channel Name</label><input type="text" class="re-ch-cname" placeholder="Support Gmail"></div>',
           '<div class="re-field-group"><label>Provider</label>',pSel,'</div>',
         '</div>',
-        '<div class="re-act-grid-2">',
+        '<div class="re-act-grid-3">',
           '<div class="re-field-group"><label>From Name</label><input type="text" class="re-ch-from-name" placeholder="Name"></div>',
           '<div class="re-field-group"><label>From Email</label><input type="email" class="re-ch-from-email" placeholder="test@yopmail.com"></div>',
+          '<div class="re-field-group"><label>Send Method</label><select class="re-ch-method"><option value="api"'+(d.email_send_method==='api'||!d.email_send_method?' selected':'')+'>Send via API</option><option value="smtp"'+(d.email_send_method==='smtp'?' selected':'')+'>Send via SMTP</option></select></div>',
         '</div>',
-        '<div class="re-act-grid-3">',
-          '<div class="re-field-group"><label>SMTP Host</label><input type="text" class="re-ch-host" placeholder="smtp.gmail.com"></div>',
-          '<div class="re-field-group"><label>Port</label><input type="number" class="re-ch-port" placeholder="587" min="1" max="65535"></div>',
-          '<div class="re-field-group"><label>Encryption</label>',encSel,'</div>',
+        
+        '<div class="re-ch-api-fields" style="display:', (d.email_send_method==='api'||!d.email_send_method?'block':'none'), ';">',
+          '<div class="re-act-grid-2">',
+            '<div class="re-field-group"><label>API Endpoint URL</label><input type="text" class="re-ch-api-endpoint" placeholder="https://api.brevo.com/v3/smtp/email"></div>',
+            '<div class="re-field-group"><label>API Key (Auth Header)</label><input type="password" class="re-ch-api-key" placeholder="••••••••" autocomplete="new-password"></div>',
+          '</div>',
         '</div>',
-        '<div class="re-act-grid-2">',
-          '<div class="re-field-group"><label>SMTP Username</label><input type="text" class="re-ch-user" placeholder="user@gmail.com"></div>',
-          '<div class="re-field-group"><label>Password / App Password</label><input type="password" class="re-ch-pass" placeholder="••••••••" autocomplete="new-password"></div>',
+
+        '<div class="re-ch-smtp-fields" style="display:', (d.email_send_method==='smtp'?'block':'none'), ';">',
+          '<div class="re-act-grid-3">',
+            '<div class="re-field-group"><label>SMTP Host</label><input type="text" class="re-ch-host" placeholder="smtp.gmail.com"></div>',
+            '<div class="re-field-group"><label>Port</label><input type="number" class="re-ch-port" placeholder="587" min="1" max="65535"></div>',
+            '<div class="re-field-group"><label>Encryption</label>',encSel,'</div>',
+          '</div>',
+          '<div class="re-act-grid-2">',
+            '<div class="re-field-group"><label>SMTP Username</label><input type="text" class="re-ch-user" placeholder="user@gmail.com"></div>',
+            '<div class="re-field-group"><label>Password / App Password</label><input type="password" class="re-ch-pass" placeholder="••••••••" autocomplete="new-password"></div>',
+          '</div>',
         '</div>',
+
         '</div>',
       '</div>',
     ].join(''));
@@ -1913,11 +2000,51 @@ jQuery(function ($) {
       });
     });
 
+    // Test Connection
+    $c.find('.re-ch-test').on('click', function(e) {
+      e.stopPropagation();
+      var id = $c.find('.re-ch-id').val().trim();
+      if (!id) return alert('Please enter a Channel ID and save the page first before testing.');
+      var testEmail = prompt('Enter an email address to send a test message to:');
+      if (!testEmail) return;
+
+      var $btn = $(this);
+      $btn.text('Testing...').prop('disabled', true);
+      
+      $.ajax({
+        url: '/wp-json/ah-workflow/v1/test-channel',
+        method: 'POST',
+        data: { channel_id: id, test_email: testEmail },
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', ahWpRestNonce);
+        },
+        success: function(res) {
+          alert('Success: ' + res.message);
+        },
+        error: function(err) {
+          var msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : 'Unknown error';
+          alert('Test Failed:\n' + msg);
+        },
+        complete: function() {
+          $btn.text('Test Connection').prop('disabled', false);
+        }
+      });
+    });
+
+    // Toggle API vs SMTP fields
+    $c.find('.re-ch-method').on('change', function(){
+      var method = $(this).val();
+      $c.find('.re-ch-api-fields').toggle(method === 'api');
+      $c.find('.re-ch-smtp-fields').toggle(method === 'smtp');
+    });
+
     // Fill values
     $c.find('.re-ch-id').val(d.id||'');
     $c.find('.re-ch-cname').val(d.name||'');
     $c.find('.re-ch-from-name').val(d.from_name||'');
     $c.find('.re-ch-from-email').val(d.from_email||'');
+    $c.find('.re-ch-api-endpoint').val(d.api_endpoint||'');
+    $c.find('.re-ch-api-key').val(d.api_key||'');
     $c.find('.re-ch-host').val(d.host||'');
     $c.find('.re-ch-port').val(d.port||587);
     $c.find('.re-ch-user').val(d.username||'');
@@ -1948,16 +2075,19 @@ jQuery(function ($) {
       var id = $(this).find('.re-ch-id').val().trim().replace(/[^a-z0-9_]/gi,'_').toLowerCase();
       if (!id) return;
       list.push({
-        id:         id,
-        name:       $(this).find('.re-ch-cname').val().trim(),
-        from_name:  $(this).find('.re-ch-from-name').val().trim(),
-        from_email: $(this).find('.re-ch-from-email').val().trim(),
-        provider:   $(this).find('.re-ch-provider').val(),
-        host:       $(this).find('.re-ch-host').val().trim(),
-        port:       parseInt($(this).find('.re-ch-port').val(),10)||587,
-        username:   $(this).find('.re-ch-user').val().trim(),
-        password:   $(this).find('.re-ch-pass').val(),
-        encryption: $(this).find('.re-ch-enc').val(),
+        id:                id,
+        name:              $(this).find('.re-ch-cname').val().trim(),
+        from_name:         $(this).find('.re-ch-from-name').val().trim(),
+        from_email:        $(this).find('.re-ch-from-email').val().trim(),
+        provider:          $(this).find('.re-ch-provider').val(),
+        email_send_method: $(this).find('.re-ch-method').val() || 'api',
+        api_endpoint:      $(this).find('.re-ch-api-endpoint').val().trim(),
+        api_key:           $(this).find('.re-ch-api-key').val(),
+        host:              $(this).find('.re-ch-host').val().trim(),
+        port:              parseInt($(this).find('.re-ch-port').val(),10)||587,
+        username:          $(this).find('.re-ch-user').val().trim(),
+        password:          $(this).find('.re-ch-pass').val(),
+        encryption:        $(this).find('.re-ch-enc').val(),
       });
     });
     $('#cfg-channels-json').val(JSON.stringify(list));
@@ -2144,6 +2274,36 @@ jQuery(function ($) {
   existingProfiles.forEach(function(p){ $('#re-profiles').append(buildProfileCard(p)); });
   syncProfilesEmpty();
 
+  /* ── Test Rule Logic ── */
+  $(document).on('click', '.re-test-rule', function(e) {
+    e.preventDefault();
+    var ruleId = $(this).data('id');
+    var rawContext = prompt('Enter a JSON context to test this rule (e.g. {"name": "Test", "email": "test@example.com"}):', '{}');
+    if (rawContext === null) return;
+    
+    var $btn = $(this);
+    var oldText = $btn.text();
+    $btn.text('Testing...').prop('disabled', true);
+
+    $.ajax({
+      url: '/wp-json/ah-workflow/v1/test-rule',
+      method: 'POST',
+      data: { rule_id: ruleId, context: rawContext },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', ahWpRestNonce);
+      },
+      success: function(res) {
+        alert('Success: ' + res.message);
+      },
+      error: function(err) {
+        var msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : 'Unknown error';
+        alert('Test Failed:\n' + msg);
+      },
+      complete: function() {
+        $btn.text(oldText).prop('disabled', false);
+      }
+    });
+  });
 
   // Serialize on config form submit
   $('#re-cfg-form').on('submit', function(){ serializeChannels(); serializeVars(); serializeProfiles(); });

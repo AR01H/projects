@@ -13,7 +13,12 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$_section_id = isset( $props['section'] ) ? sanitize_key( $props['section'] ) : '';
+$_section_id = '';
+if ( isset( $props ) && is_array( $props ) && isset( $props['section'] ) ) {
+	$_section_id = sanitize_key( (string) $props['section'] );
+} elseif ( isset( $section ) ) {
+	$_section_id = sanitize_key( (string) $section );
+}
 
 $_raw  = get_option( 'ah_featured_in_sections', '' );
 $_all  = $_raw ? json_decode( $_raw, true ) : array();
@@ -22,11 +27,13 @@ $_data = null;
 if ( is_array( $_all ) && ! empty( $_all ) ) {
 	if ( '' !== $_section_id ) {
 		foreach ( $_all as $_s ) {
-			if ( isset( $_s['id'] ) && $_s['id'] === $_section_id ) {
+			if ( isset( $_s['id'] ) && (string) $_s['id'] === $_section_id ) {
 				$_data = $_s;
 				break;
 			}
 		}
+	} else {
+		$_data = reset( $_all );
 	}
 }
 

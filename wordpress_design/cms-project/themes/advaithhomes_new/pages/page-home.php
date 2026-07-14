@@ -88,7 +88,9 @@ adn_page_open( $ctx );
 $_fi_home     = get_option( 'adn_home_sections', array() );
 $_fi_home_sec = ( is_array( $_fi_home ) && ! empty( $_fi_home['featured_in_section'] ) )
 	? sanitize_key( $_fi_home['featured_in_section'] ) : '';
-adn_component( 'parts/featured_in', array( 'section' => $_fi_home_sec ) );
+if ( '' !== $_fi_home_sec ) {
+	adn_component( 'parts/featured_in', array( 'section' => $_fi_home_sec ) );
+}
 ?>
 
 <?php
