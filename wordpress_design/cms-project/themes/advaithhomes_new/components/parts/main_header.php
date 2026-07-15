@@ -176,10 +176,10 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         <?php endif; ?>
     <?php endforeach; ?>
 
-    <?php if ( ! empty( $cta['label'] ) ) : ?>
+    <!-- <?php if ( ! empty( $cta['label'] ) ) : ?>
         <div class="mobile-menu-cta">
             <a href="<?php echo esc_url( adn_link( isset( $cta['url'] ) ? $cta['url'] : '' ) ); ?>" class="btn btn-primary btn-lg"><?php echo esc_html( $cta['label'] ); ?></a>
         </div>
-    <?php endif; ?>
+    <?php endif; ?> -->
 </div>
 </header>

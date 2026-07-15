@@ -586,7 +586,7 @@
 .mobile-subnav-all::before { color: var(--color-primary, #1d4ed8); }
 
 /* Bottom CTA - hidden (top CTA is sufficient) */
-.mobile-menu-cta { display: none; }
+/* .mobile-menu-cta { display: none; } */
 
 /* ============================================================
    FOOTER

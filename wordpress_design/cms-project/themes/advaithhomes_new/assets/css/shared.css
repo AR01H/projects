@@ -694,7 +694,7 @@ section{
 
 .phb-premium ~ .container h1 {
   font-family: var(--font-display, Georgia, serif) !important;
-  font-size: clamp(2rem, 5vw, 4rem) !important;
+  font-size: clamp(2rem, 5vw, 3rem) !important;
   font-weight: 500;
   letter-spacing: -0.02em;
   display: inline-block;
@@ -875,7 +875,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 /* Text content above the overlay */
 .page-hero .container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 80px;
   width: 100%;
@@ -892,7 +892,8 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 .page-hero-static-info {
   position: relative;
   z-index: 2;
-  width: 340px;
+  width: 40%;
+  padding:10%;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -3510,7 +3511,7 @@ a.mini-card, div.mini-card {
   gap: 2px;
 }
 .sp-metric-card__label {
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--color-black);
 }

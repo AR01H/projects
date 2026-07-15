@@ -160,6 +160,7 @@ function adn_home_get_context( $skip = array() ) {
 				'url'       => ! empty( $_hpm['card_url'] )  ? (string) $_hpm['card_url']  : home_url( '/?ah_calc_page=' . rawurlencode( $_hpk ) ),
 				'thumbnail' => $_hpthumb,
 				'highlight' => ! empty( $_hpm['highlight'] ) ? (string) $_hpm['highlight'] : '',
+				'desc' =>  $_hpm['desc']?? ''
 			);
 		}
 		if ( ! empty( $_hp_items ) ) {

@@ -47,6 +47,15 @@
                 "restrict": "true"
             },
             {
+                "icon": "🏠",
+                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
+                "title": "Property Investment",
+                "description": "Make informed property investment decisions with practical guidance on buy-to-let, rental yields, market trends, financing, taxes, investment strategies, risks, and long-term wealth building to maximize returns with confidence.",
+                "link_label": "Coming Soon",
+                "url": "",
+                "restrict": "true"
+            },
+            {
                 "icon": "👥",
                 "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
                 "title": "I need Professional Help",

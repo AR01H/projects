@@ -3723,10 +3723,10 @@ html.adn-reveal .acard-stat::before {
 
 /* -- Mobile Adjustments for Guide Cards -- */
 @media (max-width: 767px) {
-    .guide-card-img,
+    /* .guide-card-img,
     .guide-card-no-img-header {
         height: 100px !important;
-    }
+    } */
     .guide-card-badge {
         top: 8px !important;
         left: 8px !important;
