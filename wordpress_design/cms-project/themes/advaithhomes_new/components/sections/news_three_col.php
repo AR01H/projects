@@ -83,6 +83,7 @@ foreach ( isset( $hot_topics['items'] ) ? (array) $hot_topics['items'] : array()
 	$_tcard  = array(
 		'title' => isset( $_it['text'] ) ? (string) $_it['text'] : '',
 		'url'   => isset( $_it['url'] )  ? (string) $_it['url']  : '',
+		'icon'  => isset( $_it['icon'] ) ? (string) $_it['icon'] : '',
 	);
 	
 	if ( '' === $_tthumb ) {
