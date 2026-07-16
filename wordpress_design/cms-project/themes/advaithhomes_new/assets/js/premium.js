@@ -230,19 +230,7 @@
                 } );
         }
 
-        if ( ! ( 'IntersectionObserver' in window ) ) {
-            [].forEach.call( els, load );
-            return;
-        }
-        var io = new IntersectionObserver( function ( entries ) {
-            entries.forEach( function ( en ) {
-                if ( en.isIntersecting ) {
-                    io.unobserve( en.target );
-                    load( en.target );
-                }
-            } );
-        }, { rootMargin: '600px 0px' } ); // start well before it's visible
-        [].forEach.call( els, function ( el ) { io.observe( el ); } );
+        [].forEach.call( els, load );
     }
 
     /* ── Bootstrap ───────────────────────────────────────────── */

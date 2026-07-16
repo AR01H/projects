@@ -19,14 +19,13 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_global_settings_
 			$n_type = 'error';
 		}
 	} else {
-		$timezone = sanitize_text_field( wp_unslash( $_POST['timezone_string'] ?? '' ) );
+		$timezone_offset = sanitize_text_field( wp_unslash( $_POST['gmt_offset'] ?? '0' ) );
 		$disable_opt = isset( $_POST['ah_disable_optimized_images'] ) ? '1' : '0';
 		$cache_enabled = isset( $_POST['ah_cache_enabled'] ) ? '1' : '0';
 		$cache_expiry = absint( $_POST['ah_cache_expiry'] ?? 3600 );
 
-		if ( $timezone ) {
-			update_option( 'timezone_string', $timezone );
-		}
+		update_option( 'gmt_offset', (float) $timezone_offset );
+		update_option( 'timezone_string', '' );
 		update_option( 'ah_disable_optimized_images', $disable_opt );
 		update_option( 'ah_cache_enabled', $cache_enabled );
 		update_option( 'ah_cache_expiry', $cache_expiry );
@@ -35,10 +34,37 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_global_settings_
 	}
 }
 
-$current_timezone = get_option( 'timezone_string' );
+$current_timezone = (float) get_option( 'gmt_offset', 0 );
 $disable_opt      = get_option( 'ah_disable_optimized_images', '0' );
 $cache_enabled    = get_option( 'ah_cache_enabled', '0' );
 $cache_expiry     = get_option( 'ah_cache_expiry', 3600 );
+$timezone_choices = array();
+
+$format_timezone_offset_label = static function ( float $offset ) : string {
+	$sign     = $offset >= 0 ? '+' : '-';
+	$absolute = abs( $offset );
+	$hours    = (int) floor( $absolute );
+	$minutes  = (int) round( ( $absolute - $hours ) * 60 );
+
+	if ( 0 === $hours && 0 === $minutes ) {
+		return 'UTC+00';
+	}
+
+	$label = sprintf( 'UTC%s%02d', $sign, $hours );
+
+	if ( 0 !== $minutes ) {
+		$label .= sprintf( ':%02d', $minutes );
+	}
+
+	return $label;
+};
+
+for ( $offset = -12; $offset <= 14; $offset += 0.5 ) {
+	$timezone_choices[] = array(
+		'value' => (string) $offset,
+		'label' => $format_timezone_offset_label( (float) $offset ),
+	);
+}
 ?>
 <div class="wrap ah-wrap">
 	<h1><span class="dashicons dashicons-admin-generic"></span> <?php esc_html_e( 'Global Settings', 'ah-theme' ); ?></h1>
@@ -58,13 +84,17 @@ $cache_expiry     = get_option( 'ah_cache_expiry', 3600 );
 					<!-- Timezone -->
 					<tr>
 						<th scope="row">
-							<label for="timezone_string">Timezone</label>
+							<label for="gmt_offset">Timezone Offset</label>
 						</th>
 						<td>
-							<select id="timezone_string" name="timezone_string" style="width:100%; max-width:400px;">
-								<?php echo wp_timezone_choice( $current_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<select id="gmt_offset" name="gmt_offset" style="width:100%; max-width:400px;">
+								<?php foreach ( $timezone_choices as $timezone_choice ) : ?>
+									<option value="<?php echo esc_attr( $timezone_choice['value'] ); ?>" <?php selected( (string) $current_timezone, (string) $timezone_choice['value'] ); ?>>
+										<?php echo esc_html( $timezone_choice['label'] ); ?>
+									</option>
+								<?php endforeach; ?>
 							</select>
-							<p class="description">Choose a city in the same timezone as you.</p>
+							<p class="description">Choose an offset like UTC+00, UTC+01, or UTC+05:30. City/country timezones are not used here.</p>
 						</td>
 					</tr>
 

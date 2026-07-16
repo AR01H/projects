@@ -80,6 +80,7 @@ class AH_Cache {
 				}
 			}
 			delete_option( 'ah_cache_registry' );
+			self::clear_temp_all();
 			return true;
 		}
 
@@ -93,6 +94,7 @@ class AH_Cache {
 				unset( $registry[ $table ] );
 				update_option( 'ah_cache_registry', $registry );
 			}
+			self::clear_temp_all( null, $table, true );
 			return true;
 		}
 
@@ -108,10 +110,117 @@ class AH_Cache {
 				$registry[ $t_table ] = array_diff( $registry[ $t_table ], array( $transient_name ) );
 				update_option( 'ah_cache_registry', $registry );
 			}
+			self::clear_temp_all( $cid, $t_table );
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get an item from the temp-file cache.
+	 */
+	public static function temp_get( $cid, $table = 'cache' ) {
+		if ( ! self::is_enabled() ) {
+			return false;
+		}
+		$path = self::build_temp_path( $cid, $table );
+		if ( ! is_file( $path ) ) {
+			return false;
+		}
+		$raw = @file_get_contents( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		if ( false === $raw || '' === $raw ) {
+			return false;
+		}
+		$data = json_decode( $raw, true );
+		if ( ! is_array( $data ) || empty( $data['expires_at'] ) ) {
+			return false;
+		}
+		if ( (int) $data['expires_at'] < time() ) {
+			@unlink( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			return false;
+		}
+		return $data['data'] ?? false;
+	}
+
+	/**
+	 * Set an item in the temp-file cache.
+	 */
+	public static function temp_set( $cid, $data, $table = 'cache', $expire = CACHE_PERMANENT ) {
+		if ( ! self::is_enabled() ) {
+			return false;
+		}
+
+		if ( $expire === CACHE_PERMANENT || $expire === 0 ) {
+			$expire_seconds = self::get_default_expire();
+		} else if ( $expire > 315360000 ) {
+			$expire_seconds = max( 1, $expire - time() );
+		} else {
+			$expire_seconds = $expire;
+		}
+
+		$path = self::build_temp_path( $cid, $table );
+		$dir  = dirname( $path );
+		if ( ! is_dir( $dir ) ) {
+			wp_mkdir_p( $dir );
+		}
+		$payload = array(
+			'created_at' => time(),
+			'expires_at' => time() + max( 1, $expire_seconds ),
+			'data'       => $data,
+		);
+		return false !== @file_put_contents( $path, wp_json_encode( $payload ), LOCK_EX ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+	}
+
+	/**
+	 * Clear the temp-file cache.
+	 */
+	public static function clear_temp_all( $cid = null, $table = null, $wildcard = false ) {
+		$base = self::temp_base_dir();
+		if ( '' === $base || ! is_dir( $base ) ) {
+			return false;
+		}
+
+		if ( null === $cid && null === $table ) {
+			self::delete_temp_files( $base . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR . '*.json' );
+			return true;
+		}
+
+		if ( null !== $table && null === $cid && $wildcard ) {
+			self::delete_temp_files( $base . DIRECTORY_SEPARATOR . $table . DIRECTORY_SEPARATOR . '*.json' );
+			return true;
+		}
+
+		if ( null !== $cid ) {
+			$path = self::build_temp_path( $cid, $table ?: 'cache' );
+			if ( is_file( $path ) ) {
+				@unlink( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			}
+			return true;
+		}
+
+		return false;
+	}
+
+	private static function delete_temp_files( string $pattern ): void {
+		$files = glob( $pattern );
+		if ( is_array( $files ) ) {
+			foreach ( $files as $file ) {
+				@unlink( $file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			}
+		}
+	}
+
+	private static function temp_base_dir(): string {
+		$site_key = function_exists( 'home_url' ) ? (string) home_url( '/' ) : 'site';
+		$site_key = function_exists( 'wp_parse_url' ) ? (string) ( wp_parse_url( $site_key, PHP_URL_HOST ) ?: $site_key ) : $site_key;
+		$site_key = sanitize_key( $site_key );
+		return rtrim( sys_get_temp_dir(), DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR . 'adn-home-fragments' . DIRECTORY_SEPARATOR . $site_key;
+	}
+
+	private static function build_temp_path( $cid, $table ): string {
+		$dir = self::temp_base_dir() . DIRECTORY_SEPARATOR . sanitize_key( (string) $table );
+		return $dir . DIRECTORY_SEPARATOR . substr( md5( (string) $table . '_' . (string) $cid ), 0, 40 ) . '.json';
 	}
 
 	/**

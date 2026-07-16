@@ -61,6 +61,7 @@ class ADN_Theme_Rest_Routes {
 			array( 'route' => '/search',                             'methods' => 'GET',  'callback' => array( self::class, '_cb_search' ),           'permission' => '__return_true' ),
 			array( 'route' => '/faqs',                               'methods' => 'GET',  'callback' => array( self::class, '_cb_faqs' ),             'permission' => '__return_true' ),
 			array( 'route' => '/home',                               'methods' => 'GET',  'callback' => array( self::class, '_cb_home' ),             'permission' => '__return_true' ),
+			array( 'route' => '/home/section/(?P<section>[a-z_]+)',  'methods' => 'GET',  'callback' => array( self::class, '_cb_home_fragment' ),    'permission' => '__return_true' ),
 			array( 'route' => '/fragment/home/(?P<section>[a-z_]+)', 'methods' => 'GET',  'callback' => array( self::class, '_cb_home_fragment' ),    'permission' => '__return_true' ),
 
 			// ── Forms / write ────────────────────────────────────────────
@@ -465,7 +466,7 @@ class ADN_Theme_Rest_Routes {
 	}
 
 	/**
-	 * GET /fragment/home/{section} - server-rendered HTML for one deferred
+	 * GET /home/section/{section} - server-rendered HTML for one deferred
 	 * home-page section (banners | news_row | tools | guides | resources).
 	 * Markup source: components/sections/home_deferred_section.php — identical
 	 * output to the old inline rendering. Returns html:'' when the section is
@@ -474,30 +475,36 @@ class ADN_Theme_Rest_Routes {
 	public static function _cb_home_fragment( WP_REST_Request $req ): WP_REST_Response {
 		$section = sanitize_key( (string) $req->get_param( 'section' ) );
 
-		// Whitelist + the context key each fragment actually needs built.
-		$needs = array(
-			'banners'   => 'banners',
-			'news_row'  => 'news',
-			'tools'     => 'tools',
-			'guides'    => 'guides',
-			'resources' => '', // queries its own data inside the component
-		);
-		if ( ! array_key_exists( $section, $needs ) ) {
+		$allowed = array( 'banners', 'news_row', 'tools', 'guides', 'resources' );
+		if ( ! in_array( $section, $allowed, true ) ) {
 			return new WP_REST_Response( array( 'success' => false, 'error' => 'Unknown section.' ), 404 );
 		}
 
+		$locale   = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		$cache_id = function_exists( 'cache_key_gen' )
+			? cache_key_gen( 'adn_home_fragment', $section, $locale )
+			: md5( 'adn_home_fragment_' . $section . '_' . $locale );
+
+		$cache_enabled = class_exists( 'AH_Cache' ) && AH_Cache::is_enabled();
+
+		if ( $cache_enabled && method_exists( 'AH_Cache', 'temp_get' ) ) {
+			$cached = AH_Cache::temp_get( $cache_id, 'home_frag' );
+			if ( is_array( $cached ) && isset( $cached['html'] ) ) {
+				$res = new WP_REST_Response( array( 'success' => true, 'html' => (string) $cached['html'] ), 200 );
+				$res->header( 'Cache-Control', 'public, max-age=300, stale-while-revalidate=600' );
+				return $res;
+			}
+		}
+
 		$logical = ADN_THEME_DIR . '/intermediate/page_home_logical.php';
-		if ( ! function_exists( 'adn_home_get_context' ) && file_exists( $logical ) ) {
+		if ( ! function_exists( 'adn_home_get_fragment_context' ) && file_exists( $logical ) ) {
 			require_once $logical;
 		}
-		if ( ! function_exists( 'adn_home_get_context' ) || ! function_exists( 'adn_component' ) ) {
+		if ( ! function_exists( 'adn_home_get_fragment_context' ) || ! function_exists( 'adn_component' ) ) {
 			return new WP_REST_Response( array( 'success' => false, 'error' => 'Renderer unavailable.' ), 503 );
 		}
 
-		// Build only what this fragment needs: skip every other deferrable key.
-		$deferrable = array( 'banners', 'news', 'guides', 'tools' );
-		$skip       = array_values( array_diff( $deferrable, array_filter( array( $needs[ $section ] ) ) ) );
-		$ctx        = adn_home_get_context( $skip );
+		$ctx = adn_home_get_fragment_context( $section );
 
 		ob_start();
 		adn_component( 'sections/home_deferred_section', array(
@@ -506,8 +513,12 @@ class ADN_Theme_Rest_Routes {
 		) );
 		$html = trim( (string) ob_get_clean() );
 
+		if ( $cache_enabled && method_exists( 'AH_Cache', 'temp_set' ) ) {
+			AH_Cache::temp_set( $cache_id, array( 'html' => $html ), 'home_frag', CACHE_PERMANENT );
+		}
+
 		$res = new WP_REST_Response( array( 'success' => true, 'html' => $html ), 200 );
-		$res->header( 'Cache-Control', 'public, max-age=120' );
+		$res->header( 'Cache-Control', 'public, max-age=300, stale-while-revalidate=600' );
 		return $res;
 	}
 

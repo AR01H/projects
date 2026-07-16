@@ -44,7 +44,8 @@ if ( is_admin() ) {
 // ── Public AJAX (form builder frontend - works for logged-in and guests) ─────
 AH_Ajax_Handlers::init_public();
 
-// ── Shortcodes ───────────────────────────────────────────────────────────────
+ 
+
 add_action( 'init', static function () {
 	add_shortcode( 'ah_form',          array( 'AH_Form_Builder', 'render' ) );
 	add_shortcode( 'ah_related_links', 'ah_render_related_links_shortcode' );
@@ -616,3 +617,5 @@ add_filter( 'big_image_size_threshold', function ( $threshold, $imagesize, $file
 	}
 	return $threshold;
 }, 10, 4 );
+
+

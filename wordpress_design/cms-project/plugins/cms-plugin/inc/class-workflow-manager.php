@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -267,8 +267,10 @@ class AH_Workflow_Manager {
 				// Run synchronously only when immediate mode AND no delay has accumulated
 				if ( $immediate && null === $scheduled_at ) {
 					$error = null;
+					$result = array();
 					try {
-						self::run_actions( array( $action ), $rule_ctx );
+						$run_results = self::run_actions( array( $action ), $rule_ctx );
+						$result = $run_results[0] ?? array();
 					} catch ( \Throwable $e ) {
 						$error = $e->getMessage();
 					}
@@ -277,6 +279,7 @@ class AH_Workflow_Manager {
 						'is_done'       => $error ? 0 : 1,
 						'attempts'      => 1,
 						'error_message' => $error,
+						'response_summary' => $error ? null : ( $result['response_summary'] ?? null ),
 					) );
 					$log[ $error ? 'failed_at' : 'sent_at' ] = $now;
 				} else {
@@ -376,8 +379,10 @@ class AH_Workflow_Manager {
 			$context = json_decode( $row->context_data  ?? '{}', true ) ?: array();
 
 			$error = null;
+			$result = array();
 			try {
-				self::run_actions( array( $action ), $context );
+				$run_results = self::run_actions( array( $action ), $context );
+				$result = $run_results[0] ?? array();
 			} catch ( \Throwable $e ) {
 				$error = $e->getMessage();
 			}
@@ -391,9 +396,10 @@ class AH_Workflow_Manager {
 				), array( 'id' => (int) $row->id ) );
 			} else {
 				$wpdb->update( $lg, array(
-					'status'  => 'sent',
-					'is_done' => 1,
-					'sent_at' => current_time( 'mysql' ),
+					'status'           => 'sent',
+					'is_done'          => 1,
+					'sent_at'          => current_time( 'mysql' ),
+					'response_summary' => $result['response_summary'] ?? null,
 				), array( 'id' => (int) $row->id ) );
 			}
 		}
@@ -452,24 +458,63 @@ class AH_Workflow_Manager {
 
 	// ── Action runner ─────────────────────────────────────────────────────────
 
-	private static function run_actions( array $actions, array $context ): void {
-		$cfg = self::get_config();
+	private static function run_actions( array $actions, array $context ): array {
+		$cfg     = self::get_config();
+		$results = array();
 		foreach ( $actions as $a ) {
-			match ( $a['type'] ?? '' ) {
-				'send_email'    => ( 'smtp' === ( $cfg['email_send_method'] ?? 'api' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context ),
-				'whatsapp'      => self::action_whatsapp( $a, $context ),
-				'http_request'  => self::action_http( $a, $context ),
-				'curl_command'  => self::action_curl_command( $a, $context ),
-				'code'          => self::action_code( $a, $context ),
-				'update_option' => self::action_update_option( $a, $context ),
-				default         => null,
-			};
+			$type = $a['type'] ?? '';
+			if ( 'send_email' === $type ) {
+				// Prefer channel-specific transport: channel host -> SMTP, channel password -> API
+				$channel = ! empty( $a['channel_id'] ) ? self::get_email_channel( $a['channel_id'] ) : null;
+				if ( $channel ) {
+					if ( ! empty( $channel['host'] ) ) {
+						$result = self::action_email_smtp( $a, $context );
+					} elseif ( ! empty( $channel['password'] ) ) {
+						$result = self::action_email( $a, $context );
+					} else {
+						// Fallback to global config when channel has no explicit creds
+						$result = ( 'smtp' === ( $cfg['email_send_method'] ?? 'smtp' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context );
+					}
+				} else {
+					$result = ( 'smtp' === ( $cfg['email_send_method'] ?? 'smtp' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context );
+				}
+			} else {
+				$result = match ( $type ) {
+					'whatsapp'      => self::action_whatsapp( $a, $context ),
+					'http_request'  => self::action_http( $a, $context ),
+					'curl_command'  => self::action_curl_command( $a, $context ),
+					'code'          => self::action_code( $a, $context ),
+					'update_option' => self::action_update_option( $a, $context ),
+					default         => array(),
+				};
+			}
+			$results[] = is_array( $result ) ? $result : array();
 		}
+		return $results;
+	}
+
+	private static function action_result_summary( string $channel_name, int $response_code, ?string $body = null, ?string $message_id = null ): string {
+		$parts = array( trim( $channel_name ) );
+		if ( $response_code > 0 ) {
+			$parts[] = 'HTTP ' . $response_code;
+		}
+		if ( $message_id ) {
+			$parts[] = 'messageId=' . $message_id;
+		}
+		if ( $body ) {
+			$parts[] = self::trim_log_text( $body, 220 );
+		}
+		return trim( implode( ' | ', array_filter( $parts ) ) );
+	}
+
+	private static function trim_log_text( string $text, int $limit = 320 ): string {
+		$text = trim( preg_replace( '/\s+/', ' ', $text ) ?? $text );
+		return mb_strimwidth( $text, 0, $limit, '…' );
 	}
 
 	// ── send_email ────────────────────────────────────────────────────────────
 
-	private static function action_email_smtp( array $a, array $context ): void {
+	private static function action_email_smtp( array $a, array $context ): array {
 		$ctx = array_merge( self::config_tokens(), $context );
 		$cfg = self::get_config();
 
@@ -481,7 +526,9 @@ class AH_Workflow_Manager {
 			$email = sanitize_email( $filled );
 			if ( $email && ! self::is_email_blocked( $email ) ) $to_recipients[] = $email;
 		}
-		if ( empty( $to_recipients ) ) return;
+		if ( empty( $to_recipients ) ) {
+			throw new \Exception( 'No valid recipient email addresses were provided for this email action.' );
+		}
 		$to = implode( ', ', $to_recipients );
 
 		$subject  = self::fill( $a['subject'] ?? 'Notification', $ctx );
@@ -607,9 +654,19 @@ class AH_Workflow_Manager {
 			}
 			throw new \Exception( $err_msg );
 		}
+
+		return array(
+			'status'          => 'sent',
+			'response_summary' => self::action_result_summary(
+				'SMPP/SMTP',
+				200,
+				$to,
+				null
+			),
+		);
 	}
 
-	private static function action_email( array $a, array $context ): void {
+	private static function action_email( array $a, array $context ): array {
 		$ctx = array_merge( self::config_tokens(), $context );
 		$cfg = self::get_config();
 
@@ -621,7 +678,9 @@ class AH_Workflow_Manager {
 			$email = sanitize_email( $filled );
 			if ( $email && ! self::is_email_blocked( $email ) ) $to_recipients[] = array( 'email' => $email );
 		}
-		if ( empty( $to_recipients ) ) return;
+		if ( empty( $to_recipients ) ) {
+			throw new \Exception( 'No valid recipient email addresses were provided for this email action.' );
+		}
 
 		$subject  = self::fill( $a['subject'] ?? 'Notification', $ctx );
 		$body_tpl = $a['body'] ?? '';
@@ -638,6 +697,9 @@ class AH_Workflow_Manager {
 
 		$sender_name  = sanitize_text_field( $channel['from_name'] ?? ( $cfg['email_from_name'] ?? '' ) );
 		$sender_email = sanitize_email( $channel['from_email'] ?? ( $cfg['email_from_email'] ?? '' ) );
+		if ( ! $sender_email ) {
+			throw new \Exception( 'No sender email configured for this Brevo channel.' );
+		}
 
 		// Handle CC as array
 		$cc_list = is_array( $a['cc'] ?? null ) ? $a['cc'] : ( ! empty( $a['cc'] ) ? array( $a['cc'] ) : array() );
@@ -699,12 +761,32 @@ class AH_Workflow_Manager {
 		}
 
 		$code = wp_remote_retrieve_response_code( $response );
+		$resp_body = wp_remote_retrieve_body( $response );
 		if ( $code < 200 || $code >= 300 ) {
-			$body = wp_remote_retrieve_body( $response );
-			$err = json_decode( $body, true );
-			$msg = $err['message'] ?? ( $body ?: "Brevo API returned HTTP {$code}." );
+			$err = json_decode( $resp_body, true );
+			$msg = $err['message'] ?? $err['error'] ?? ( $resp_body ?: "Brevo API returned HTTP {$code}." );
 			throw new \Exception( $msg . $dump );
 		}
+
+		$decoded = json_decode( $resp_body, true );
+		$message_id = '';
+		if ( is_array( $decoded ) ) {
+			$message_id = (string) ( $decoded['messageId'] ?? $decoded['message_id'] ?? $decoded['id'] ?? '' );
+		}
+
+		$response_summary = self::action_result_summary(
+			'Brevo API',
+			$code,
+			is_array( $decoded ) ? wp_json_encode( $decoded, JSON_UNESCAPED_SLASHES ) : $resp_body,
+			$message_id ?: null
+		);
+
+		error_log( 'AH_Workflow_Manager email success: ' . $response_summary );
+
+		return array(
+			'status'           => 'sent',
+			'response_summary' => $response_summary,
+		);
 	}
 
 	// ── whatsapp ──────────────────────────────────────────────────────────────
@@ -1367,7 +1449,7 @@ private static function escape_for_curl_template( $value ): string {
 	// ── Global config ─────────────────────────────────────────────────────────
 
 	public static function get_config(): array {
-		$saved = get_option( 'ah_re_config', array() );
+  		$saved = get_option( 'ah_re_config', array() );
 		if ( is_string( $saved ) ) $saved = json_decode( $saved, true ) ?: array();
 		return array_merge( array(
 			'global_freeze'      => '0',
@@ -1478,12 +1560,15 @@ private static function escape_for_curl_template( $value ): string {
 			if ( ! $id ) continue;
 			$enc = in_array( $ch['encryption'] ?? '', array( 'tls', 'ssl', 'none' ), true )
 				? $ch['encryption'] : 'tls';
+			$method = in_array( $ch['email_send_method'] ?? 'api', array( 'api', 'smtp' ), true )
+				? $ch['email_send_method'] : 'api';
 			$clean[] = array(
 				'id'         => $id,
 				'name'       => sanitize_text_field( $ch['name']       ?? '' ),
 				'from_name'  => sanitize_text_field( $ch['from_name']  ?? '' ),
 				'from_email' => sanitize_email(      $ch['from_email'] ?? '' ),
 				'provider'   => sanitize_key(        $ch['provider']   ?? 'custom' ),
+				'email_send_method' => $method,
 				'host'       => sanitize_text_field( $ch['host']       ?? '' ),
 				'port'       => (int) ( $ch['port'] ?? 587 ),
 				'username'   => sanitize_text_field( $ch['username']   ?? '' ),
@@ -1670,8 +1755,10 @@ private static function escape_for_curl_template( $value ): string {
 			$action  = json_decode( $row->action_config ?? '{}', true ) ?: array();
 			$context = json_decode( $row->context_data  ?? '{}', true ) ?: array();
 			$error   = null;
+			$result  = array();
 			try {
-				self::run_actions( array( $action ), $context );
+				$run_results = self::run_actions( array( $action ), $context );
+				$result = $run_results[0] ?? array();
 			} catch ( \Throwable $e ) {
 				$error = $e->getMessage();
 			}
@@ -1685,9 +1772,10 @@ private static function escape_for_curl_template( $value ): string {
 				$fail++;
 			} else {
 				$wpdb->update( $lg, array(
-					'status'  => 'sent',
-					'is_done' => 1,
-					'sent_at' => current_time( 'mysql' ),
+					'status'           => 'sent',
+					'is_done'          => 1,
+					'sent_at'          => current_time( 'mysql' ),
+					'response_summary' => $result['response_summary'] ?? null,
 				), array( 'id' => (int) $row->id ) );
 				$ok++;
 			}
@@ -1720,8 +1808,10 @@ private static function escape_for_curl_template( $value ): string {
 		$context = json_decode( $row->context_data  ?? '{}', true ) ?: array();
 
 		$error = null;
+		$result = array();
 		try {
-			self::run_actions( array( $action ), $context );
+			$run_results = self::run_actions( array( $action ), $context );
+			$result = $run_results[0] ?? array();
 		} catch ( \Throwable $e ) {
 			$error = $e->getMessage();
 		}
@@ -1736,9 +1826,10 @@ private static function escape_for_curl_template( $value ): string {
 		}
 
 		$wpdb->update( $lg, array(
-			'status'  => 'sent',
-			'is_done' => 1,
-			'sent_at' => current_time( 'mysql' ),
+			'status'           => 'sent',
+			'is_done'          => 1,
+			'sent_at'          => current_time( 'mysql' ),
+			'response_summary' => $result['response_summary'] ?? null,
 		), array( 'id' => $id ) );
 		return true;
 	}
@@ -1881,8 +1972,10 @@ private static function escape_for_curl_template( $value ): string {
 
 			if ( null === $scheduled_at ) {
 				$error = null;
+				$result = array();
 				try {
-					self::run_actions( array( $action ), $rule_ctx );
+					$run_results = self::run_actions( array( $action ), $rule_ctx );
+					$result = $run_results[0] ?? array();
 				} catch ( \Throwable $e ) {
 					$error = $e->getMessage();
 					$overall_error = $overall_error ?: $error;
@@ -1892,6 +1985,7 @@ private static function escape_for_curl_template( $value ): string {
 					'is_done'       => $error ? 0 : 1,
 					'attempts'      => 1,
 					'error_message' => $error,
+					'response_summary' => $error ? null : ( $result['response_summary'] ?? null ),
 				) );
 				$log[ $error ? 'failed_at' : 'sent_at' ] = current_time( 'mysql' );
 			} else {
@@ -1920,3 +2014,4 @@ private static function escape_for_curl_template( $value ): string {
 }
 
 add_action( 'rest_api_init', array( 'AH_Workflow_Manager', 'register_rest_routes' ) );
+

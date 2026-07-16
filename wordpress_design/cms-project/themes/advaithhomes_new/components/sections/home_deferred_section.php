@@ -3,7 +3,7 @@
  * components/sections/home_deferred_section.php
  *
  * Single markup source for the home page sections that load lazily via the
- * /api/v1/fragment/home/{section} endpoint (see ADN_Theme_Rest_Routes).
+ * /api/v1/home/section/{section} endpoint (see ADN_Theme_Rest_Routes).
  * The markup here is exactly what page-home.php used to render inline; the
  * page now emits skeleton placeholders and premium.js swaps in this HTML.
  *

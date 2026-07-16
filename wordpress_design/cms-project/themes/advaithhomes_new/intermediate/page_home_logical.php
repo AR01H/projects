@@ -172,6 +172,102 @@ function adn_home_get_context( $skip = array() ) {
 }
 
 /**
+ * Build only the data needed for one deferred home fragment.
+ * Keeps REST fragment requests narrow so they do not pay for unrelated queries.
+ */
+function adn_home_get_fragment_context( $section ) {
+	static $cache = array();
+
+	$section = sanitize_key( (string) $section );
+	if ( isset( $cache[ $section ] ) ) {
+		return $cache[ $section ];
+	}
+
+	$data = adn_service_home_data();
+	$home = static function ( $key, $defaults = array() ) use ( $data ) {
+		$value = isset( $data[ $key ] ) && is_array( $data[ $key ] ) ? $data[ $key ] : array();
+		return array_merge( $defaults, $value );
+	};
+
+	$ctx = array();
+
+	switch ( $section ) {
+		case 'banners':
+			$ctx['banners'] = $home( 'banners', array( 'heading' => array(), 'items' => array() ) );
+			$ctx['banners']['items'] = ( class_exists( 'AH_Banners_Helper' ) )
+				? AH_Banners_Helper::get_all( true )
+				: array();
+			break;
+
+		case 'news_row':
+			$ctx['news']        = $home( 'news', array( 'heading' => array(), 'items' => array() ) );
+			$ctx['regulations'] = $home( 'regulations', array( 'heading' => array(), 'items' => array() ) );
+			$ctx['hot_topics']  = $home( 'hot_topics', array( 'title' => '', 'items' => array(), 'cta' => array() ) );
+
+			if ( function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
+				$ctx['news']['items'] = adn_home_cms_news_items();
+
+				$reg_items = adn_home_cms_regulations_items();
+				if ( ! empty( $reg_items ) ) {
+					$ctx['regulations']['items'] = $reg_items;
+				}
+
+				$ht_items = adn_home_cms_hot_topics_items();
+				if ( ! empty( $ht_items ) ) {
+					$ctx['hot_topics']['items'] = $ht_items;
+				}
+			}
+
+			break;
+
+		case 'tools':
+			$ctx['tools'] = $home( 'tools', array( 'heading' => array(), 'items' => array() ) );
+			if ( ! empty( $ctx['tools'] ) && function_exists( 'adn_calculators' ) ) {
+				$_hp_registry  = adn_calculators();
+				$_hp_meta_all  = get_option( 'adn_calculators_meta', array() );
+				$_hp_items     = array();
+				foreach ( $_hp_registry as $_hpk => $_hpc ) {
+					$_hpm = ( isset( $_hp_meta_all[ $_hpk ] ) && is_array( $_hp_meta_all[ $_hpk ] ) ) ? $_hp_meta_all[ $_hpk ] : array();
+					if ( array_key_exists( 'enabled', $_hpm ) && empty( $_hpm['enabled'] ) ) { continue; }
+					if ( ! empty( $_hpm['hidden_from_listing'] ) ) { continue; }
+					if ( empty( $_hpm['is_popular'] ) ) { continue; }
+					$_hpthumb = '';
+					if ( ! empty( $_hpm['thumbnail_id'] ) ) {
+						$_hpt = wp_get_attachment_image_url( (int) $_hpm['thumbnail_id'], 'thumbnail' );
+						$_hpthumb = $_hpt ? (string) $_hpt : '';
+					}
+					$_hp_items[] = array(
+						'icon'      => ! empty( $_hpc['icon'] ) ? (string) $_hpc['icon'] : adn_term( 'icons.tools', '🧮' ),
+						'name'      => $_hpc['title'] ?? '',
+						'url'       => ! empty( $_hpm['card_url'] ) ? (string) $_hpm['card_url'] : home_url( '/?ah_calc_page=' . rawurlencode( $_hpk ) ),
+						'thumbnail' => $_hpthumb,
+						'highlight' => ! empty( $_hpm['highlight'] ) ? (string) $_hpm['highlight'] : '',
+						'desc'      => $_hpm['desc'] ?? '',
+					);
+				}
+				if ( ! empty( $_hp_items ) ) {
+					$ctx['tools']['items'] = $_hp_items;
+				}
+			}
+			break;
+
+		case 'guides':
+			$ctx['guides'] = $home( 'guides', array( 'heading' => array(), 'items' => array() ) );
+			if ( function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
+				$ctx['guides']['items'] = adn_home_cms_guide_items();
+			}
+			break;
+
+		case 'resources':
+			$ctx = array();
+			break;
+	}
+
+	$cache[ $section ] = $ctx;
+	return $ctx;
+}
+
+/**
  * Whether a home-page section should render.
  * Controlled by Theme → Home Page → Sections; defaults to visible.
  */

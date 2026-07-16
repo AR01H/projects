@@ -751,6 +751,7 @@ class AH_DB_Schema {
 				is_unsent     TINYINT(1)          NOT NULL DEFAULT 0,
 				attempts      TINYINT UNSIGNED    NOT NULL DEFAULT 0,
 				error_message TEXT                DEFAULT NULL,
+				response_summary TEXT             DEFAULT NULL,
 				sent_at       DATETIME            DEFAULT NULL,
 				failed_at     DATETIME            DEFAULT NULL,
 				created_at    DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,

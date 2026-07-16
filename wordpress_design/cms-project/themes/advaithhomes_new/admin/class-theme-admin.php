@@ -475,6 +475,11 @@ class ADN_Theme_Admin {
 			$cleared[] = sprintf( _n( '%d transient', '%d transients', count( $names ), ADN_TEXT_DOMAIN ), count( $names ) );
 		}
 
+		if ( function_exists( 'cache_clear_all' ) ) {
+			cache_clear_all( null, 'home_frag', true );
+			$cleared[] = __( 'home fragment cache', ADN_TEXT_DOMAIN );
+		}
+
 		// 3) OPcache (if available).
 		if ( function_exists( 'opcache_reset' ) ) {
 			@opcache_reset(); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged

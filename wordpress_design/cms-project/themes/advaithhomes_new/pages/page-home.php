@@ -23,7 +23,7 @@ require_once ADN_THEME_DIR . '/intermediate/page_home_logical.php';
  * Speed: the heavy below-fold sections (banners, news row, tools, guides,
  * resources) are NOT built or rendered here. Their data fetches are skipped
  * (fast first paint) and premium.js lazy-loads each one from
- * /api/v1/fragment/home/{section} as it approaches the viewport. Markup
+ * /api/v1/home/section/{section} as it approaches the viewport. Markup
  * source for those sections: components/sections/home_deferred_section.php.
  */
 $ctx = adn_home_get_context( array( 'banners', 'news', 'guides', 'tools' ) );
@@ -96,7 +96,7 @@ if ( '' !== $_fi_home_sec ) {
 <?php
 /* ==================== DEFERRED SECTIONS (AJAX fragments) ====================
  * Each placeholder below is swapped for server-rendered HTML from
- * /api/v1/fragment/home/{section} by premium.js as it nears the viewport.
+ * /api/v1/home/section/{section} by premium.js as it nears the viewport.
  * Placeholders are only emitted when the section is enabled (cheap options
  * check); the fragment endpoint re-checks data and returns '' when empty,
  * in which case the placeholder is removed. Markup lives in
@@ -116,7 +116,7 @@ $_deferred[] = 'resources'; // data check happens in the fragment
 <?php foreach ( $_deferred as $_df ) : ?>
 <div class="adn-defer"
      data-fragment="<?php echo esc_attr( $_df ); ?>"
-     data-endpoint="<?php echo esc_url( rest_url( ADN_API_NS . '/fragment/home/' . $_df ) ); ?>"
+     data-endpoint="<?php echo esc_url( rest_url( ADN_API_NS . '/home/section/' . $_df ) ); ?>"
      aria-busy="true">
 	<div class="container">
 		<div class="adn-defer-skel" aria-hidden="true">
