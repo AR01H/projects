@@ -708,11 +708,14 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 /* Body: name below, clean separator */
 .calc-card-body {
     flex: 1 !important;
-    padding: 12px 14px !important;
     border-left: none !important;
     border-top: 1px solid var(--color-border, #f1f5f9) !important;
     justify-content: flex-start !important;
     text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+    gap:5px;
 }
 .calc-card-name {
     font-family: var(--font-body, system-ui, -apple-system, sans-serif) !important;

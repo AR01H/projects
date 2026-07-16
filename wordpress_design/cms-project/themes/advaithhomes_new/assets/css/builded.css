@@ -32,12 +32,14 @@
 }
 
 .card-desc-text { 
-  font-size: 0.78rem; color: var(--color-black); margin-bottom: 12px; line-height: 1.5; 
+    line-height: 1.5; 
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     display: -webkit-box;
+    color: #8a8a8a !important;
+    font-size: 0.8rem !important;
 }
 
 .read-more { 

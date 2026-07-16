@@ -31,6 +31,15 @@
             {
                 "icon": "🏠",
                 "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
+                "title": "Property Investment",
+                "description": "Make informed property investment decisions with practical guidance on buy-to-let, rental yields, market trends, financing, taxes, investment strategies, risks, and long-term wealth building to maximize returns with confidence.",
+                "link_label": "Coming Soon",
+                "url": "",
+                "restrict": "true"
+            },
+            {
+                "icon": "🏠",
+                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
                 "title": "Selling a Home",
                 "description": "Sell your property with confidence by understanding valuations, estate agents, legal requirements, conveyancing, offers, hidden selling costs, and practical tips to achieve a smoother sale and the best possible outcome.",
                 "link_label": "Coming Soon",
@@ -42,15 +51,6 @@
                 "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
                 "title": "Moving Home",
                 "description": "Plan your move with practical guidance on removals, packing, address updates, utility transfers, moving checklists, timelines, costs, and essential tips to make relocating to your new home simple and stress-free.",
-                "link_label": "Coming Soon",
-                "url": "",
-                "restrict": "true"
-            },
-            {
-                "icon": "🏠",
-                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
-                "title": "Property Investment",
-                "description": "Make informed property investment decisions with practical guidance on buy-to-let, rental yields, market trends, financing, taxes, investment strategies, risks, and long-term wealth building to maximize returns with confidence.",
                 "link_label": "Coming Soon",
                 "url": "",
                 "restrict": "true"
