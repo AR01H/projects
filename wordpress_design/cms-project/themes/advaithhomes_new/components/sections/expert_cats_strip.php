@@ -13,7 +13,7 @@ if ( empty( $_cats ) ) return;
 		<div class="expert-cats-inner" id="expertCatsContainer" role="tablist" aria-label="<?php esc_attr_e( 'Filter experts by category', ADN_TEXT_DOMAIN ); ?>">
 			<?php 
 			$_index = 0;
-			$_limit = 7; // Show 7 categories + "All Experts" by default on desktop
+			$_limit = 17; // Show 7 categories + "All Experts" by default on desktop
 			foreach ( $_cats as $_c ) :
 				$_ck     = esc_attr( ( isset( $_c['key'] )   ? (string) $_c['key']   : 'all' ) );
 				$_cl     = esc_html( isset( $_c['label'] ) ? (string) $_c['label'] : '' );

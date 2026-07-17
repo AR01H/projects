@@ -88,12 +88,12 @@ class AH_Notice_Helper {
 			$is_corner  = ( $n->position ?? 'modal' ) === 'corner';
 		?>
 		<?php if ( $is_corner ) : ?>
-		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-corner" role="dialog" aria-label="<?php echo $title; ?>"
+		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-corner ah-sn-popup--corner" role="dialog" aria-label="<?php echo $title; ?>"
 		     style="display:none;position:fixed;bottom:24px;right:24px;z-index:99999;width:320px;max-width:calc(100vw - 32px);">
-			<div style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(10,25,47,.22);border:1px solid rgba(0,0,0,.06);">
+			<div class="ah-sn-card ah-sn-card--corner" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(10,25,47,.22);border:1px solid rgba(0,0,0,.06);">
 				<?php if ( $image ) : ?>
-				<div style="width:100%;height:160px;overflow:hidden;background:#f3f4f6;position:relative;">
-					<img src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+				<div class="ah-sn-media ah-sn-media--corner" style="width:100%;height:160px;overflow:hidden;background:#f3f4f6;position:relative;">
+					<img class="ah-sn-image ah-sn-image--corner" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
 					<?php if ( $badge ) : ?>
 					<span style="position:absolute;top:10px;left:12px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;"><?php echo $badge; ?></span>
 					<?php endif; ?>
@@ -116,14 +116,14 @@ class AH_Notice_Helper {
 			</div>
 		</div>
 		<?php else : ?>
-		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-modal" role="dialog" aria-modal="true"
+		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-modal ah-sn-popup--modal" role="dialog" aria-modal="true"
 		     style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:1rem;">
-			<div class="ah-sn-backdrop" data-id="<?php echo $id; ?>"
+			<div class="ah-sn-backdrop ah-sn-backdrop--modal" data-id="<?php echo $id; ?>"
 			     style="position:absolute;inset:0;background:rgba(10,25,47,.55);backdrop-filter:blur(3px);"></div>
-			<div style="position:relative;z-index:1;background:#fff;border-radius:18px;max-width:520px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
+			<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:18px;max-width:520px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
 				<?php if ( $image ) : ?>
-				<div style="width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
-					<img src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+				<div class="ah-sn-media ah-sn-media--modal" style="width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
+					<img class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
 					<?php if ( $badge ) : ?>
 					<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;"><?php echo $badge; ?></span>
 					<?php endif; ?>
