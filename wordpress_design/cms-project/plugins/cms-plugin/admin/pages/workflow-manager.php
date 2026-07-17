@@ -934,7 +934,7 @@ if ( 'logs' === $view ) :
 								<?php foreach ( $ctx_data as $key => $val ) : ?>
 								<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6;display:flex;gap:12px">
 									<strong style="color:#6b7280;min-width:100px;word-break:break-word"><?php echo esc_html( $key ); ?>:</strong>
-									<span style="color:#374151;word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $val, 0, 100, '…' ) ); ?></span>
+                                    <span title="<?php echo esc_attr( (string) $val ); ?>" style="color:#374151;word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $val, 0, 100, '…' ) ); ?></span>
 								</div>
 								<?php endforeach; ?>
 							</div>
@@ -970,9 +970,9 @@ if ( 'logs' === $view ) :
 								?>
 								<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6">
 									<strong style="color:#6b7280;display:block;margin-bottom:4px"><?php echo esc_html( $field_label ); ?>:</strong>
-									<span style="color:#374151;display:block;word-break:break-word;font-family:monospace;font-size:11px;background:#f9fafb;padding:6px;border-radius:4px">
-										<?php echo esc_html( mb_strimwidth( (string) $val, 0, 150, '…' ) ); ?>
-									</span>
+                  <span title="<?php echo esc_attr( (string) $val ); ?>" style="color:#374151;display:block;word-break:break-word;font-family:monospace;font-size:11px;background:#f9fafb;padding:6px;border-radius:4px">
+                    <?php echo esc_html( mb_strimwidth( (string) $val, 0, 150, '…' ) ); ?>
+                  </span>
 								</div>
 								<?php endforeach; ?>
 							</div>
@@ -992,6 +992,13 @@ if ( 'logs' === $view ) :
 						<pre style="margin:0;font-size:12px;color:#7f1d1d;word-break:break-all;font-family:monospace;white-space:pre-wrap;background:transparent;border:none;padding:0"><?php echo esc_html( $lg->error_message ); ?></pre>
 					</div>
 					<?php endif; ?>
+
+          <?php if ( $lg->response_summary ) : ?>
+          <div style="margin-top:16px;padding:12px;background:#f0fdf4;border:1px solid #86efac;border-radius:6px">
+            <h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:#166534">✅ Response Summary</h4>
+            <pre style="margin:0;font-size:12px;color:#064e3b;word-break:break-all;font-family:monospace;white-space:pre-wrap;background:transparent;border:none;padding:0"><?php echo esc_html( $lg->response_summary ); ?></pre>
+          </div>
+          <?php endif; ?>
 				</td>
 			</tr>
 

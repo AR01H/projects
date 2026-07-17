@@ -464,19 +464,29 @@ class AH_Workflow_Manager {
 		foreach ( $actions as $a ) {
 			$type = $a['type'] ?? '';
 			if ( 'send_email' === $type ) {
-				// Prefer channel-specific transport: channel host -> SMTP, channel password -> API
+				// Prefer channel-specific transport: respect channel.email_send_method first,
+				// then fall back to inspecting creds (host -> SMTP, api_key/password -> API),
+				// finally fall back to global config (default 'api').
 				$channel = ! empty( $a['channel_id'] ) ? self::get_email_channel( $a['channel_id'] ) : null;
 				if ( $channel ) {
-					if ( ! empty( $channel['host'] ) ) {
+					$method = $channel['email_send_method'] ?? null;
+					if ( $method === 'smtp' ) {
 						$result = self::action_email_smtp( $a, $context );
-					} elseif ( ! empty( $channel['password'] ) ) {
+					} elseif ( $method === 'api' ) {
 						$result = self::action_email( $a, $context );
 					} else {
-						// Fallback to global config when channel has no explicit creds
-						$result = ( 'smtp' === ( $cfg['email_send_method'] ?? 'smtp' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context );
+						// Inspect channel fields for a sensible default
+						if ( ! empty( $channel['host'] ) ) {
+							$result = self::action_email_smtp( $a, $context );
+						} elseif ( ! empty( $channel['api_key'] ) || ! empty( $channel['password'] ) ) {
+							$result = self::action_email( $a, $context );
+						} else {
+							// Fallback to global config when channel has no explicit creds
+							$result = ( 'smtp' === ( $cfg['email_send_method'] ?? 'api' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context );
+						}
 					}
 				} else {
-					$result = ( 'smtp' === ( $cfg['email_send_method'] ?? 'smtp' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context );
+					$result = ( 'smtp' === ( $cfg['email_send_method'] ?? 'api' ) ) ? self::action_email_smtp( $a, $context ) : self::action_email( $a, $context );
 				}
 			} else {
 				$result = match ( $type ) {
@@ -662,7 +672,13 @@ class AH_Workflow_Manager {
 				200,
 				$to,
 				null
-			),
+			) . ' | ' . self::trim_log_text( sprintf(
+				"Channel: host=%s port=%s enc=%s from=%s",
+					$channel['host'] ?? 'N/A',
+					$channel['port'] ?? 'N/A',
+					$channel['encryption'] ?? 'N/A',
+					( isset( $from_name ) && isset( $from_email ) ) ? ( $from_name . ' <' . $from_email . '>' ) : ''
+				), 220 ),
 		);
 	}
 
@@ -690,7 +706,7 @@ class AH_Workflow_Manager {
 		// Resolve channel → global config fallback chain
 		$channel = ! empty( $a['channel_id'] ) ? self::get_email_channel( $a['channel_id'] ) : null;
 
-		$api_key = $channel['password'] ??  '';
+		$api_key = $channel['api_key'] ?? $channel['password'] ?? '';
 		if ( ! $api_key ) {
 			throw new \Exception( 'No Brevo API key configured for this channel.' );
 		}
@@ -737,7 +753,8 @@ class AH_Workflow_Manager {
 		if ( ! empty( $cc_recipients ) )  $payload['cc']  = $cc_recipients;
 		if ( ! empty( $bcc_recipients ) ) $payload['bcc'] = $bcc_recipients;
 
-		$response = wp_remote_post( 'https://api.brevo.com/v3/smtp/email', array(
+		$endpoint = $channel['api_endpoint'] ?? 'https://api.brevo.com/v3/smtp/email';
+		$response = wp_remote_post( $endpoint, array(
 			'timeout' => 15,
 			'headers' => array(
 				'api-key'      => $api_key,
@@ -747,13 +764,13 @@ class AH_Workflow_Manager {
 			'body' => wp_json_encode( $payload ),
 		) );
 
-		$curl_str = "curl -X POST https://api.brevo.com/v3/smtp/email \\\n";
+		$curl_str = "curl -X POST " . $endpoint . " \\\n+";
 		$curl_str .= "-H \"api-key: " . ( $api_key ? substr($api_key, 0, 8) . '...' : 'MISSING' ) . "\" \\\n";
 		$curl_str .= "-H \"Content-Type: application/json\" \\\n";
 		$curl_str .= "-d '" . wp_json_encode( $payload, JSON_UNESCAPED_SLASHES ) . "'";
 		
 		$dump = "\n\n--- API Config Dump ---\n";
-		$dump .= "Endpoint: https://api.brevo.com/v3/smtp/email\n";
+		$dump .= "Endpoint: " . $endpoint . "\n";
 		$dump .= "cURL Equivalent:\n" . $curl_str;
 
 		if ( is_wp_error( $response ) ) {
@@ -780,6 +797,9 @@ class AH_Workflow_Manager {
 			is_array( $decoded ) ? wp_json_encode( $decoded, JSON_UNESCAPED_SLASHES ) : $resp_body,
 			$message_id ?: null
 		);
+
+		// Append a trimmed cURL-equivalent / endpoint dump so successful sends also include diagnostics
+		$response_summary .= ' | ' . self::trim_log_text( $curl_str, 220 );
 
 		error_log( 'AH_Workflow_Manager email success: ' . $response_summary );
 
@@ -909,11 +929,14 @@ class AH_Workflow_Manager {
 
 	// ── curl_command ──────────────────────────────────────────────────────────
 
-private static function action_curl_command( array $a, array $context ): void {
+private static function action_curl_command( array $a, array $context ): array {
     $ctx = array_merge( self::config_tokens(), $context );
     $curl_str = self::fill( $a['curl_string'] ?? '', $ctx );
     if ( ! $curl_str ) {
-        return;
+        return array(
+            'status' => 'skipped',
+            'response_summary' => 'No cURL command provided.',
+        );
     }
 
     $status_file = self::fill( $a['status_file'] ?? '', $ctx );
@@ -922,14 +945,16 @@ private static function action_curl_command( array $a, array $context ): void {
     }
 
     if ( ! str_starts_with( trim( $curl_str ), 'curl ' ) ) {
-        self::write_action_status_file( $status_file, 'failure', array( 'message' => 'Invalid cURL command: must start with "curl "' ) );
-        throw new \Exception( 'Invalid cURL command: must start with "curl "' );
+        $message = 'Invalid cURL command: must start with "curl ".';
+        self::write_action_status_file( $status_file, 'failure', array( 'message' => $message ) );
+        throw new \Exception( $message );
     }
 
     $curl_request = self::parse_curl_command_to_request_options( $curl_str );
     if ( $curl_request === null ) {
-        self::write_action_status_file( $status_file, 'failure', array( 'message' => 'Unable to parse cURL command into HTTP request options' ) );
-        throw new \Exception( 'Unable to parse cURL command into HTTP request options' );
+        $message = 'Unable to parse cURL command into HTTP request options.';
+        self::write_action_status_file( $status_file, 'failure', array( 'message' => $message ) );
+        throw new \Exception( $message );
     }
 
     try {
@@ -943,8 +968,15 @@ private static function action_curl_command( array $a, array $context ): void {
             self::run_command_with_output( $curl_str, $output, $result );
 
             if ( $result === 0 ) {
+                $output_text = implode( ' ', array_filter( $output ) );
                 self::write_action_status_file( $status_file, 'success', array( 'path' => $status_file, 'method' => 'shell' ) );
-                return;
+                return array(
+                    'status' => 'sent',
+                    'response_summary' => self::trim_log_text(
+                        'cURL command executed successfully via shell.' . ( $output_text ? ' | ' . $output_text : '' ),
+                        220
+                    ),
+                );
             }
 
             error_log( 'AH_Workflow_Manager::action_curl_command shell failed: ' . $curl_str . ' | output: ' . implode( " \n", $output ) );
@@ -953,8 +985,25 @@ private static function action_curl_command( array $a, array $context ): void {
         }
 
         error_log( 'AH_Workflow_Manager::action_curl_command fallback to WP_HTTP' );
-        self::run_wp_remote_for_curl_request( $curl_request );
+        $http_result = self::run_wp_remote_for_curl_request( $curl_request );
         self::write_action_status_file( $status_file, 'success', array( 'path' => $status_file, 'method' => 'wp_remote_request' ) );
+
+        return array(
+            'status' => 'sent',
+            'response_summary' => self::trim_log_text(
+                self::action_result_summary(
+                    'cURL',
+                    $http_result['code'] ?? 0,
+                    $http_result['body'] ?? null,
+                    null
+                ) . ' | ' . sprintf(
+                    '%s %s',
+                    $curl_request['args']['method'] ?? 'GET',
+                    $curl_request['url'] ?? ''
+                ),
+                240
+            ),
+        );
     } catch ( \Throwable $e ) {
         self::write_action_status_file( $status_file, 'failure', array( 'message' => $e->getMessage() ) );
         throw $e;
@@ -1001,7 +1050,7 @@ private static function is_shell_command_available(): bool {
     return ( function_exists( 'proc_open' ) && strpos( $disabled, 'proc_open' ) === false ) || ( function_exists( 'exec' ) && strpos( $disabled, 'exec' ) === false );
 }
 
-private static function run_wp_remote_for_curl_request( array $request ): void {
+private static function run_wp_remote_for_curl_request( array $request ): array {
     $url = $request['url'] ?? '';
     $args = $request['args'] ?? array();
 
@@ -1011,10 +1060,15 @@ private static function run_wp_remote_for_curl_request( array $request ): void {
     }
 
     $code = wp_remote_retrieve_response_code( $response );
+    $body = wp_remote_retrieve_body( $response );
     if ( $code < 200 || $code >= 300 ) {
-        $body = wp_remote_retrieve_body( $response );
         throw new \Exception( sprintf( 'WP HTTP request returned HTTP %d: %s', $code, mb_strimwidth( $body, 0, 150, '...' ) ) );
     }
+
+    return array(
+        'code' => $code,
+        'body' => $body,
+    );
 }
 
 private static function write_action_status_file( string $path, string $status, array $data = array() ): void {
@@ -1065,6 +1119,9 @@ private static function parse_curl_command_to_request_options( string $curl_str 
                 case '--request':
                     $opts['method'] = strtoupper( $token );
                     break;
+                case '--url':
+                    $opts['url'] = $token;
+                    break;
                 case '-H':
                 case '--header':
                     if ( str_contains( $token, ':' ) ) {
@@ -1093,7 +1150,7 @@ private static function parse_curl_command_to_request_options( string $curl_str 
             continue;
         }
 
-        if ( in_array( $token, array( '-X', '--request', '-H', '--header', '-d', '--data', '--data-raw', '--data-binary' ), true ) ) {
+        if ( in_array( $token, array( '-X', '--request', '--url', '-H', '--header', '-d', '--data', '--data-raw', '--data-binary' ), true ) ) {
             $current = $token;
             if ( in_array( $token, array( '-d', '--data', '--data-raw', '--data-binary' ), true ) ) {
                 $opts['method'] = 'POST';
@@ -1169,7 +1226,14 @@ private static function parse_command_string( string $cmd ): array {
                     break;
                 }
                 if ( $c === '\\' && $index < $length ) {
-                    $token .= $cmd[ $index++ ];
+                    $next = $cmd[ $index++ ];
+                    if ( $next === "\r" || $next === "\n" ) {
+                        while ( $index < $length && ctype_space( $cmd[ $index ] ) ) {
+                            $index++;
+                        }
+                        continue;
+                    }
+                    $token .= $next;
                     continue;
                 }
                 $token .= $c;
@@ -1178,7 +1242,14 @@ private static function parse_command_string( string $cmd ): array {
             while ( $index < $length && ! ctype_space( $cmd[ $index ] ) ) {
                 $c = $cmd[ $index++ ];
                 if ( $c === '\\' && $index < $length ) {
-                    $token .= $cmd[ $index++ ];
+                    $next = $cmd[ $index++ ];
+                    if ( $next === "\r" || $next === "\n" ) {
+                        while ( $index < $length && ctype_space( $cmd[ $index ] ) ) {
+                            $index++;
+                        }
+                        continue;
+                    }
+                    $token .= $next;
                     continue;
                 }
                 $token .= $c;
@@ -1573,6 +1644,9 @@ private static function escape_for_curl_template( $value ): string {
 				'port'       => (int) ( $ch['port'] ?? 587 ),
 				'username'   => sanitize_text_field( $ch['username']   ?? '' ),
 				'password'   => (string) ( $ch['password'] ?? '' ),
+				// API-specific fields (optional)
+				'api_endpoint' => sanitize_text_field( $ch['api_endpoint'] ?? '' ),
+				'api_key'      => (string) ( $ch['api_key'] ?? $ch['password'] ?? '' ),
 				'encryption' => $enc,
 			);
 		}
