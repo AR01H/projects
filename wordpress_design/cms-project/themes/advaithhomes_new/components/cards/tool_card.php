@@ -32,6 +32,6 @@ if ( empty( $thumbnail ) ) {
 	</div>
 	<div class="calc-card-body">
 		<div class="calc-card-name"><?php echo esc_html( ! empty( $card['name'] ) ? $card['name'] : ( ! empty( $card['title'] ) ? $card['title'] : '' ) ); ?></div>
-		<p class="card-desc-text"><?php echo $card['desc']; ?></p>
+		<p class="card-desc-text"><?php echo $card['desc'] ?? ''; ?></p>
 	</div>
 </a>

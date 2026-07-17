@@ -557,20 +557,20 @@ function adn_home_cms_hot_topics_items() {
 				 LIMIT 1",
 				$pid
 			) );
-			if ( ! $term_row ) {
-				/* Fallback: try ah_taxonomy_parent_terms join */
-				$term_row = $wpdb->get_row( $wpdb->prepare(
-					"SELECT t.icon_emoji AS term_icon,
-					        ppt.icon_emoji AS parent_icon
-					 FROM `{$ct}` ct
-					 JOIN `{$tax}` t ON t.id = ct.taxonomy_id
-					 LEFT JOIN `{$pt}` ppt ON ppt.id = t.parent_term_id
-					 WHERE ct.post_id = %d
-					 ORDER BY t.sort_order ASC
-					 LIMIT 1",
-					$pid
-				) );
-			}
+			// if ( ! $term_row ) {
+			// 	/* Fallback: try ah_taxonomy_parent_terms join */
+			// 	$term_row = $wpdb->get_row( $wpdb->prepare(
+			// 		"SELECT t.icon_emoji AS term_icon,
+			// 		        ppt.icon_emoji AS parent_icon
+			// 		 FROM `{$ct}` ct
+			// 		 JOIN `{$tax}` t ON t.id = ct.taxonomy_id
+			// 		 LEFT JOIN `{$pt}` ppt ON ppt.id = t.parent_term_id
+			// 		 WHERE ct.post_id = %d
+			// 		 ORDER BY t.sort_order ASC
+			// 		 LIMIT 1",
+			// 		$pid
+			// 	) );
+			// }
 			if ( $term_row ) {
 				/* Prefer child-term icon; fall back to parent icon */
 				$term_icon = ! empty( $term_row->term_icon ) ? (string) $term_row->term_icon : '';
