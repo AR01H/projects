@@ -317,6 +317,17 @@ function adn_chrome_plugin_footer( $json_footer ) {
 		$footer['brand']['description'] = (string) $raw['brand_description'];
 	}
 
+	if ( ! empty( $raw['badge_text'] ) ) {
+		$footer['badge_text'] = (string) $raw['badge_text'];
+	}
+
+	if ( ! empty( $raw['cta'] ) && ! empty( $raw['cta']['label'] ) ) {
+		$footer['cta'] = array(
+			'label' => (string) $raw['cta']['label'],
+			'url'   => isset( $raw['cta']['url'] ) ? (string) $raw['cta']['url'] : '#',
+		);
+	}
+
 	$columns = array();
 	foreach ( (array) ( isset( $raw['columns'] ) ? $raw['columns'] : array() ) as $column ) {
 		$column = (array) $column;

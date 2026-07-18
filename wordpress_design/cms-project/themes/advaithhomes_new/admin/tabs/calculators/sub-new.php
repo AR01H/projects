@@ -193,20 +193,16 @@ $example_js = '(function () {
 				</tr>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Categories', ADN_TEXT_DOMAIN ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Categories / Parent Terms', ADN_TEXT_DOMAIN ); ?></th>
 					<td>
-						<div style="display:flex;flex-wrap:wrap;gap:8px 20px;">
-							<?php foreach ( $_cat_labels as $_ck => $_cl ) : ?>
-								<label style="white-space:nowrap;">
-									<input type="checkbox"
-										name="meta_categories[]"
-										value="<?php echo esc_attr( $_ck ); ?>"
-										<?php checked( in_array( $_ck, $f_saved_cats, true ) ); ?>>
-									<?php echo esc_html( $_cl ); ?>
-								</label>
-							<?php endforeach; ?>
-						</div>
-						<p class="description"><?php esc_html_e( 'Which filter tab(s) this calculator appears under on the /calculators/ page.', ADN_TEXT_DOMAIN ); ?></p>
+						<?php
+						$f_parent_terms = isset( $f_meta['parent_terms'] ) && is_array( $f_meta['parent_terms'] ) ? $f_meta['parent_terms'] : array();
+						$all_cats = array_unique( array_merge( $f_saved_cats, $f_parent_terms ) );
+						?>
+						<input type="text" class="large-text" name="meta_categories"
+							value="<?php echo esc_attr( implode( ', ', $all_cats ) ); ?>"
+							placeholder="<?php esc_attr_e( 'e.g. buying-a-home, property-knowledge', ADN_TEXT_DOMAIN ); ?>">
+						<p class="description"><?php esc_html_e( 'Enter category slugs separated by commas (e.g. buying-a-home, tax-saving). Any custom slugs you write here will dynamically generate filter tabs on the calculators listing page.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
 

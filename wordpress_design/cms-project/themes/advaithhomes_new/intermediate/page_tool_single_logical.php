@@ -92,6 +92,19 @@ function adn_calculator_single_get_context( $key ) {
 
 	// ── Sidebar categories (all calcs - links back to listing page) ───────
 	$defined_cats = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array();
+
+	// Dynamically collect custom categories from active calculators
+	foreach ( $registry as $rk => $rc ) {
+		$rm = ( isset( $meta_all[ $rk ] ) && is_array( $meta_all[ $rk ] ) ) ? $meta_all[ $rk ] : array();
+		if ( array_key_exists( 'enabled', $rm ) && empty( $rm['enabled'] ) ) { continue; }
+		foreach ( ( isset( $rm['categories'] ) && is_array( $rm['categories'] ) ) ? $rm['categories'] : array() as $c ) {
+			$c = sanitize_key( $c );
+			if ( '' !== $c && ! isset( $defined_cats[ $c ] ) ) {
+				$defined_cats[ $c ] = ucwords( str_replace( '-', ' ', $c ) );
+			}
+		}
+	}
+
 	$cat_counts     = array_fill_keys( array_keys( $defined_cats ), 0 );
 	$total_enabled  = 0;
 	foreach ( $registry as $rk => $rc ) {
@@ -99,6 +112,7 @@ function adn_calculator_single_get_context( $key ) {
 		if ( array_key_exists( 'enabled', $rm ) && empty( $rm['enabled'] ) ) { continue; }
 		$total_enabled++;
 		foreach ( ( isset( $rm['categories'] ) && is_array( $rm['categories'] ) ) ? $rm['categories'] : array() as $c ) {
+			$c = sanitize_key( $c );
 			if ( isset( $cat_counts[ $c ] ) ) { $cat_counts[ $c ]++; }
 		}
 	}

@@ -100,6 +100,22 @@ function adn_calculators_get_context() {
 	$meta_all = get_option( 'adn_calculators_meta', array() );
 
 	$defined_cats = function_exists( 'adn_calculator_categories' ) ? adn_calculator_categories() : array();
+
+	// Dynamically collect custom categories from active calculators
+	foreach ( $registry as $key => $calc ) {
+		$meta = ( isset( $meta_all[ $key ] ) && is_array( $meta_all[ $key ] ) ) ? $meta_all[ $key ] : array();
+		if ( array_key_exists( 'enabled', $meta ) && empty( $meta['enabled'] ) ) { continue; }
+		if ( ! empty( $meta['hidden_from_listing'] ) ) { continue; }
+
+		$cats = isset( $meta['categories'] ) && is_array( $meta['categories'] ) ? $meta['categories'] : array();
+		foreach ( $cats as $c ) {
+			$c = sanitize_key( $c );
+			if ( '' !== $c && ! isset( $defined_cats[ $c ] ) ) {
+				$defined_cats[ $c ] = ucwords( str_replace( '-', ' ', $c ) );
+			}
+		}
+	}
+
 	$cat_counts = array_fill_keys( array_keys( $defined_cats ), 0 );
 
 	$all_tools = array();

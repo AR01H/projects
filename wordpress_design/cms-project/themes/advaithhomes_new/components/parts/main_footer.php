@@ -16,6 +16,82 @@ $columns      = isset( $footer['columns'] ) ? (array) $footer['columns'] : array
 $bottom_links = isset( $footer['bottom_links'] ) ? (array) $footer['bottom_links'] : array();
 $nl_nonce     = wp_create_nonce( 'ah_newsletter_nonce' );
 ?>
+<?php 
+$raw_settings = function_exists( 'adn_chrome_option' ) ? adn_chrome_option( 'ah_cms_footer' ) : array();
+$show_desc    = ! empty( $raw_settings['brand_description'] );
+$show_badge   = ! empty( $raw_settings['badge_text'] );
+$show_cta     = ! empty( $raw_settings['cta'] ) && ! empty( $raw_settings['cta']['label'] );
+
+if ( $show_desc || $show_badge || $show_cta ) : 
+?>
+<div class="footer-pre-banner" style="background: var(--client-color, #203c3e); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 2px; color: #ffffff;">
+    <div class="">
+        <style>
+            .footer-pre-inner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 24px;
+                width: 100%;
+            }
+            .footer-pre-content-inline {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                flex: 1;
+            }
+            .footer-pre-desc {
+                font-family: var(--font-accent, var(--font-display, serif));
+                font-size: 16px;
+                font-weight: 400;
+                font-style: italic;
+                color: rgba(255, 255, 255, 0.95);
+                margin: 0;
+                line-height: 1.5;
+            }
+            .footer-pre-badge-wrapper, .footer-pre-btn-wrapper {
+                flex-shrink: 0;
+            }
+            @media (max-width: 768px) {
+                .footer-pre-inner {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                    gap: 16px;
+                    padding: 8px 0;
+                }
+                .footer-pre-content-inline {
+                    flex-direction: column;
+                    gap: 12px;
+                    flex: none;
+                    width: 100%;
+                }
+            }
+        </style>
+        <div class="footer-pre-inner">
+            <div class="footer-pre-content-inline">
+                <?php if ( $show_badge ) : ?>
+                    <div class="footer-pre-badge-wrapper">
+                        <span class="badge badge-gold" style="text-transform: uppercase; font-weight: 600; padding: 4px 10px; border-radius: 4px;"><?php echo esc_html( $footer['badge_text'] ); ?></span>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if ( $show_desc ) : ?>
+                    <p class="footer-pre-desc"><?php echo esc_html( $brand['description'] ); ?></p>
+                <?php endif; ?>
+            </div>
+            
+            <?php if ( $show_cta ) : ?>
+                <div class="footer-pre-btn-wrapper">
+                    <a href="<?php echo esc_url( adn_link( $footer['cta']['url'] ) ); ?>" class="btn btn-accent btn-sm" style="padding: 10px 20px; font-size: 13px;"><?php echo esc_html( $footer['cta']['label'] ); ?></a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
 <footer class="site-footer">
 
     <?php /* ── Top bar: logo + newsletter ── */ ?>

@@ -776,18 +776,15 @@ class ADN_Theme_Admin {
 		$all_meta = get_option( 'adn_calculators_meta', array() );
 		if ( ! is_array( $all_meta ) ) { $all_meta = array(); }
 
-		$raw_cats = ( isset( $_POST['meta_categories'] ) && is_array( $_POST['meta_categories'] ) )
-			? array_map( 'sanitize_key', wp_unslash( $_POST['meta_categories'] ) )
-			: array();
+		$meta_categories_input = isset( $_POST['meta_categories'] ) ? sanitize_text_field( wp_unslash( $_POST['meta_categories'] ) ) : '';
+		$raw_cats = array_filter( array_map( 'sanitize_key', array_map( 'trim', explode( ',', $meta_categories_input ) ) ) );
 
 		$all_meta[ $key ] = array_merge(
 			isset( $all_meta[ $key ] ) && is_array( $all_meta[ $key ] ) ? $all_meta[ $key ] : array(),
 			array(
 				'desc'         => sanitize_textarea_field( wp_unslash( isset( $_POST['meta_desc'] )        ? $_POST['meta_desc']        : '' ) ),
 				'categories'   => $raw_cats,
-				'parent_terms' => ( isset( $_POST['meta_parent_terms'] ) && is_array( $_POST['meta_parent_terms'] ) )
-					? array_values( array_filter( array_map( 'sanitize_key', wp_unslash( $_POST['meta_parent_terms'] ) ) ) )
-					: array(),
+				'parent_terms' => $raw_cats,
 				'thumbnail_id' => absint( isset( $_POST['meta_thumbnail_id'] ) ? $_POST['meta_thumbnail_id'] : 0 ),
 				'highlight'    => sanitize_text_field( wp_unslash( isset( $_POST['meta_highlight'] )  ? $_POST['meta_highlight']  : '' ) ),
 				'is_popular'          => empty( $_POST['meta_is_popular'] ) ? 0 : 1,

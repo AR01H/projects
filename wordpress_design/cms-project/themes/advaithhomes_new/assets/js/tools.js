@@ -19,6 +19,23 @@
     var emptyMsg;
     var items;
 
+    function checkHash() {
+        var hash = window.location.hash;
+        if ( hash ) {
+            var cat = decodeURIComponent( hash.substring( 1 ) ).trim().toLowerCase();
+            if ( cat ) {
+                var pill = document.querySelector( '.calc-pill[data-filter="' + cat + '"]' );
+                if ( pill ) {
+                    setCategory( cat );
+                    var target = document.getElementById( 'calcFilterPills' ) || pill;
+                    if ( target ) {
+                        target.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+                    }
+                }
+            }
+        }
+    }
+
     function init() {
         heroRow = document.querySelector( '.tc-all-hero-row' );
         emptyMsg = document.getElementById( 'calcEmptyState' );
@@ -28,6 +45,10 @@
         bindFilterTabs();
         bindCalcPills();
         bindSearch();
+
+        /* Delay slightly to let the page settle and render before scrolling */
+        setTimeout( checkHash, 100 );
+        window.addEventListener( 'hashchange', checkHash );
     }
 
     /* ── Sidebar category buttons ───────────────────────────── */
