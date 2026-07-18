@@ -498,16 +498,42 @@ function adn_home_cms_regulations_items() {
 	$opt = get_option( 'adn_home_newsblocks', array() );
 	$raw = ( isset( $opt['regulations']['items'] ) && is_array( $opt['regulations']['items'] ) )
 	       ? $opt['regulations']['items'] : array();
-	$items = array();
+	if ( empty( $raw ) ) {
+		return array();
+	}
+
+	// Collect all post IDs first, then bulk-fetch in ONE query.
+	$pids = array();
+	$meta = array(); // keyed by pid
 	foreach ( $raw as $row ) {
-		$pid  = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
-		if ( ! $pid ) {
+		$pid = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
+		if ( $pid ) {
+			$pids[]        = $pid;
+			$meta[ $pid ]  = $row;
+		}
+	}
+	if ( empty( $pids ) ) {
+		return array();
+	}
+
+	// Single WP query for all posts.
+	$posts_by_id = array();
+	foreach ( get_posts( array(
+		'post__in'       => $pids,
+		'post_status'    => 'publish',
+		'posts_per_page' => count( $pids ),
+		'orderby'        => 'post__in',
+	) ) as $p ) {
+		$posts_by_id[ $p->ID ] = $p;
+	}
+
+	$items = array();
+	foreach ( $pids as $pid ) {
+		if ( ! isset( $posts_by_id[ $pid ] ) ) {
 			continue;
 		}
-		$post = get_post( $pid );
-		if ( ! $post || 'publish' !== $post->post_status ) {
-			continue;
-		}
+		$post        = $posts_by_id[ $pid ];
+		$row         = $meta[ $pid ];
 		$badge_raw   = isset( $row['badge'] ) ? sanitize_text_field( $row['badge'] ) : 'GOV UK';
 		$badge_lines = array_filter( array_map( 'trim', explode( "\n", $badge_raw ) ) );
 		if ( empty( $badge_lines ) ) {
@@ -535,63 +561,76 @@ function adn_home_cms_hot_topics_items() {
 	$opt = get_option( 'adn_home_newsblocks', array() );
 	$raw = ( isset( $opt['hot_topics']['items'] ) && is_array( $opt['hot_topics']['items'] ) )
 	       ? $opt['hot_topics']['items'] : array();
-	$items = array();
+	if ( empty( $raw ) ) {
+		return array();
+	}
 
-	/* CMS table references */
-	$tax = adn_cms_table( 'taxonomies' );
-	$ct  = adn_cms_table( 'content_taxonomies' );
-	$pt  = adn_cms_table( 'taxonomy_parent_terms' );
-	$cms_ok = adn_cms_available();
-
+	// Collect all post IDs + per-row meta first.
+	$pids      = array();
+	$row_meta  = array(); // keyed by pid
 	foreach ( $raw as $row ) {
-		$pid  = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
-		if ( ! $pid ) {
-			continue;
+		$pid = (int) ( isset( $row['post_id'] ) ? $row['post_id'] : 0 );
+		if ( $pid ) {
+			$pids[]       = $pid;
+			$row_meta[ $pid ] = $row;
 		}
-		$post = get_post( $pid );
-		if ( ! $post || 'publish' !== $post->post_status ) {
-			continue;
-		}
+	}
+	if ( empty( $pids ) ) {
+		return array();
+	}
 
-		/* ── Icon from CMS term (child term first, then parent term) ── */
-		$icon = ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : '';
-		if ( $cms_ok ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$term_row = $wpdb->get_row( $wpdb->prepare(
-				"SELECT t.icon_emoji AS term_icon,
-				        pt.icon_emoji AS parent_icon
-				 FROM `{$ct}` ct
-				 JOIN `{$tax}` t ON t.id = ct.taxonomy_id
-				 LEFT JOIN `{$tax}` pt ON pt.id = t.parent_id
-				 WHERE ct.post_id = %d
-				 ORDER BY t.sort_order ASC
-				 LIMIT 1",
-				$pid
-			) );
-			// if ( ! $term_row ) {
-			// 	/* Fallback: try ah_taxonomy_parent_terms join */
-			// 	$term_row = $wpdb->get_row( $wpdb->prepare(
-			// 		"SELECT t.icon_emoji AS term_icon,
-			// 		        ppt.icon_emoji AS parent_icon
-			// 		 FROM `{$ct}` ct
-			// 		 JOIN `{$tax}` t ON t.id = ct.taxonomy_id
-			// 		 LEFT JOIN `{$pt}` ppt ON ppt.id = t.parent_term_id
-			// 		 WHERE ct.post_id = %d
-			// 		 ORDER BY t.sort_order ASC
-			// 		 LIMIT 1",
-			// 		$pid
-			// 	) );
-			// }
-			if ( $term_row ) {
-				/* Prefer child-term icon; fall back to parent icon */
-				$term_icon = ! empty( $term_row->term_icon ) ? (string) $term_row->term_icon : '';
-				if ( '' === $term_icon && ! empty( $term_row->parent_icon ) ) {
-					$term_icon = (string) $term_row->parent_icon;
-				}
-				if ( '' !== $term_icon ) {
-					$icon = $term_icon;
-				}
+	// 1 WP query for all posts at once.
+	$posts_by_id = array();
+	foreach ( get_posts( array(
+		'post__in'       => $pids,
+		'post_status'    => 'publish',
+		'posts_per_page' => count( $pids ),
+		'orderby'        => 'post__in',
+	) ) as $p ) {
+		$posts_by_id[ $p->ID ] = $p;
+	}
+
+	// 1 CMS query for all term icons at once (if CMS tables exist).
+	$icon_by_pid = array();
+	$cms_ok      = adn_cms_available();
+	if ( $cms_ok ) {
+		$tax = adn_cms_table( 'taxonomies' );
+		$ct  = adn_cms_table( 'content_taxonomies' );
+		$id_in = implode( ',', array_map( 'intval', $pids ) );
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$term_rows = $wpdb->get_results(
+			"SELECT ct.post_id,
+			        t.icon_emoji  AS term_icon,
+			        pt.icon_emoji AS parent_icon
+			 FROM `{$ct}` ct
+			 JOIN `{$tax}` t  ON t.id = ct.taxonomy_id
+			 LEFT JOIN `{$tax}` pt ON pt.id = t.parent_id
+			 WHERE ct.post_id IN ({$id_in})
+			 ORDER BY ct.post_id ASC, t.sort_order ASC"
+		) ?: array();
+		// Keep only first row per post_id (lowest sort_order = primary term).
+		foreach ( $term_rows as $tr ) {
+			$pid2 = (int) $tr->post_id;
+			if ( ! isset( $icon_by_pid[ $pid2 ] ) ) {
+				$icon_by_pid[ $pid2 ] = ! empty( $tr->term_icon )
+					? (string) $tr->term_icon
+					: ( ! empty( $tr->parent_icon ) ? (string) $tr->parent_icon : '' );
 			}
+		}
+	}
+
+	$items = array();
+	foreach ( $pids as $pid ) {
+		if ( ! isset( $posts_by_id[ $pid ] ) ) {
+			continue;
+		}
+		$post = $posts_by_id[ $pid ];
+		$row  = $row_meta[ $pid ];
+
+		// Icon: row override → CMS term → fallback emoji.
+		$icon = ! empty( $row['icon'] ) ? sanitize_text_field( $row['icon'] ) : '';
+		if ( '' === $icon && isset( $icon_by_pid[ $pid ] ) && '' !== $icon_by_pid[ $pid ] ) {
+			$icon = $icon_by_pid[ $pid ];
 		}
 		if ( '' === $icon ) {
 			$icon = adn_term( 'icons.hot_topics', '🔥' );

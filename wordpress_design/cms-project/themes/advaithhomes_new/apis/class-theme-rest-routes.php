@@ -468,34 +468,51 @@ class ADN_Theme_Rest_Routes {
 	/**
 	 * GET /home/section/{section} - server-rendered HTML for one deferred
 	 * home-page section (banners | news_row | tools | guides | resources).
-	 * Markup source: components/sections/home_deferred_section.php — identical
-	 * output to the old inline rendering. Returns html:'' when the section is
-	 * disabled/empty so the client can drop its placeholder.
 	 */
 	public static function _cb_home_fragment( WP_REST_Request $req ): WP_REST_Response {
-		$section = sanitize_key( (string) $req->get_param( 'section' ) );
+		// Timing: each phase reported as X-ADN-Timing-* response header.
+		$t_req   = isset( $_SERVER['REQUEST_TIME_FLOAT'] ) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime( true );
+		$t0      = microtime( true );
+		$timings = array();
+		$t       = static function ( string $k ) use ( &$timings, $t_req ) {
+			$timings[ $k ] = round( ( microtime( true ) - $t_req ) * 1000, 1 );
+		};
 
-		$allowed = array( 'banners', 'news_row', 'tools', 'guides', 'resources' );
-		if ( ! in_array( $section, $allowed, true ) ) {
+		$section = sanitize_key( (string) $req->get_param( 'section' ) );
+		if ( ! in_array( $section, array( 'banners', 'news_row', 'tools', 'guides', 'resources' ), true ) ) {
 			return new WP_REST_Response( array( 'success' => false, 'error' => 'Unknown section.' ), 404 );
 		}
+		$t( '01_wp_boot_ms' );
 
-		$locale   = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
-		$cache_id = function_exists( 'cache_key_gen' )
-			? cache_key_gen( 'adn_home_fragment', $section, $locale )
-			: md5( 'adn_home_fragment_' . $section . '_' . $locale );
-
-		$cache_enabled = class_exists( 'AH_Cache' ) && AH_Cache::is_enabled();
-
-		if ( $cache_enabled && method_exists( 'AH_Cache', 'temp_get' ) ) {
-			$cached = AH_Cache::temp_get( $cache_id, 'home_frag' );
-			if ( is_array( $cached ) && isset( $cached['html'] ) ) {
-				$res = new WP_REST_Response( array( 'success' => true, 'html' => (string) $cached['html'] ), 200 );
+		// ── Check WordPress transient cache (always works, zero config needed) ──
+		if ( function_exists( 'adn_home_frag_get' ) ) {
+			$cached = adn_home_frag_get( $section );
+			if ( false !== $cached && is_string( $cached ) ) {
+				$t( '02_cache_hit_ms' );
+				$res = new WP_REST_Response( array( 'success' => true, 'html' => $cached ), 200 );
 				$res->header( 'Cache-Control', 'public, max-age=300, stale-while-revalidate=600' );
+				$res->header( 'X-ADN-Cache', 'HIT' );
+				foreach ( $timings as $k => $v ) { $res->header( 'X-ADN-Timing-' . $k, $v . 'ms' ); }
 				return $res;
 			}
 		}
+		$t( '02_cache_miss_ms' );
 
+		// ── Cache miss: render HTML and store in transient ────────────────────
+		$html = function_exists( 'adn_home_frag_render' )
+			? adn_home_frag_render( $section, true )
+			: self::_render_section_html( $section );
+		$t( '03_render_ms' );
+
+		$res = new WP_REST_Response( array( 'success' => true, 'html' => $html ), 200 );
+		$res->header( 'Cache-Control', 'public, max-age=300, stale-while-revalidate=600' );
+		$res->header( 'X-ADN-Cache', 'MISS' );
+		foreach ( $timings as $k => $v ) { $res->header( 'X-ADN-Timing-' . $k, $v . 'ms' ); }
+		return $res;
+	}
+
+	/** Fallback render used when home-fragment-cache.php is unavailable. */
+	private static function _render_section_html( string $section ): string {
 		$logical = ADN_THEME_DIR . '/intermediate/page_home_logical.php';
 		if ( ! function_exists( 'adn_home_get_fragment_context' ) && file_exists( $logical ) ) {
 			require_once $logical;

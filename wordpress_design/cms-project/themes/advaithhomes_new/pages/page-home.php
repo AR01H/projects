@@ -113,11 +113,35 @@ if ( adn_home_section_visible( 'calculators' ) )             { $_deferred[] = 't
 if ( adn_home_section_visible( 'guides' ) )                  { $_deferred[] = 'guides'; }
 $_deferred[] = 'resources'; // data check happens in the fragment
 ?>
-<?php foreach ( $_deferred as $_df ) : ?>
+<?php
+/*
+ * DEFERRED SECTIONS - now inline PHP, no REST calls, no extra WP boots.
+ * Transient cache flow:
+ *   Warm cache -> read transient (~20ms each)
+ *   Cold cache -> render now + store for next request
+ */
+if ( ! function_exists( 'adn_home_frag_get' ) ) {
+	$_cf = ADN_THEME_DIR . '/apis/home-fragment-cache.php';
+	if ( file_exists( $_cf ) ) { require_once $_cf; }
+}
+foreach ( $_deferred as $_df ) :
+	if ( function_exists( 'adn_home_frag_get' ) ) {
+		$_fh = adn_home_frag_get( $_df );
+		if ( false === $_fh && function_exists( 'adn_home_frag_render' ) ) {
+			$_fh = adn_home_frag_render( $_df, true );
+		}
+	} else {
+		$_fh = false;
+	}
+?>
 <div class="adn-defer"
      data-fragment="<?php echo esc_attr( $_df ); ?>"
      data-endpoint="<?php echo esc_url( rest_url( ADN_API_NS . '/home/section/' . $_df ) ); ?>"
-     aria-busy="true">
+     <?php if ( false !== $_fh && '' !== $_fh ) { echo 'data-prerendered="1"'; } ?>
+     aria-busy="<?php echo ( false !== $_fh && '' !== $_fh ) ? 'false' : 'true'; ?>">
+<?php if ( false !== $_fh && '' !== $_fh ) : ?>
+	<?php echo $_fh; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+<?php else : ?>
 	<div class="container">
 		<div class="adn-defer-skel" aria-hidden="true">
 			<span class="adn-defer-line adn-defer-line--head"></span>
@@ -125,6 +149,7 @@ $_deferred[] = 'resources'; // data check happens in the fragment
 			<span class="adn-defer-line adn-defer-line--short"></span>
 		</div>
 	</div>
+<?php endif; ?>
 </div>
 <?php endforeach; ?>
 

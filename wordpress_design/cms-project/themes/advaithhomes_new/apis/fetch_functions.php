@@ -17,5 +17,7 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once get_template_directory() . '/apis/class-theme-rest-routes.php';
+// Transient-based fragment cache, invalidation hooks, and WP-Cron pre-warmer.
+require_once get_template_directory() . '/apis/home-fragment-cache.php';
 
 add_action( 'rest_api_init', array( 'ADN_Theme_Rest_Routes', 'register' ) );

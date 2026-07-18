@@ -35,10 +35,9 @@ class AH_DB_Installer {
 	public static function maybe_upgrade(): void {
 		if ( get_option( AH_DB_VERSION_KEY ) !== AH_THEME_VERSION ) {
 			self::install();
+			AH_DB_Foreign_Keys::drop_broken();
+			AH_DB_Migrations::run();
 		}
-
-		AH_DB_Foreign_Keys::drop_broken();
-		AH_DB_Migrations::run();
 	}
 
 	public static function table( string $name ): string {

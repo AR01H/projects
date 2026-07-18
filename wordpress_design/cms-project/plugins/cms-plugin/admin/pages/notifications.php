@@ -178,6 +178,9 @@ $page_slug   = 'ah-newsletter';
     <a href="<?php echo esc_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'history' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'history' === $active_tab ? 'on' : ''; ?>">
       History <span style="background:#e5e7eb;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700"><?php echo esc_html( count( $bcast_log ) ); ?></span>
     </a>
+    <a href="<?php echo esc_url( add_query_arg( array( 'page' => $page_slug, 'tab' => 'variables' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'variables' === $active_tab ? 'on' : ''; ?>">
+      📋 Variables Reference
+    </a>
   </div>
 
   <?php if ( 'subscribers' === $active_tab ) : ?>
@@ -388,6 +391,65 @@ $page_slug   = 'ah-newsletter';
     <?php endif; ?>
   </div>
 
+  <?php endif; ?>
+
+  <?php if ( 'variables' === $active_tab ) : ?>
+  <!-- ═══════════════════════ VARIABLES REFERENCE ═══════════════════════ -->
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:28px 30px;">
+    <h2 style="margin:0 0 6px;font-size:17px;">📋 Variables Reference</h2>
+    <p style="color:#6b7280;font-size:13px;margin:0 0 24px;">These variables are available inside your <strong>Workflow Manager</strong> rule actions when triggered by the News Letter sender. Use the <code>{{variable}}</code> syntax in any action field.</p>
+
+    <!-- INDIVIDUAL MODE -->
+    <h3 style="font-size:14px;font-weight:700;color:#1f2937;border-bottom:2px solid #e5e7eb;padding-bottom:8px;margin-bottom:14px;">📩 Individual Mode — Available per subscriber</h3>
+    <table class="ah-table" style="margin-bottom:28px;">
+      <thead>
+        <tr><th style="width:220px">Variable</th><th>Description</th><th>Example Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>{{email}}</code></td><td>The subscriber's email address</td><td><code>alice@example.com</code></td></tr>
+        <tr><td><code>{{name}}</code></td><td>The subscriber's name</td><td><code>Alice</code></td></tr>
+        <tr><td><code>{{unsubscribe_url}}</code></td><td>Personalized unsubscribe link for this subscriber</td><td><code>https://site.com/?unsub=abc123</code></td></tr>
+        <tr><td><code>{{newsletter_subject}}</code></td><td>Subject you typed in the Compose form</td><td><code>July Newsletter</code></td></tr>
+        <tr><td><code>{{newsletter_body}}</code></td><td>Message body you typed in the Compose form (tokens already replaced)</td><td><code>Hi Alice, here's your update...</code></td></tr>
+        <tr><td><code>{{subject}}</code></td><td>Shorthand for <code>newsletter_subject</code></td><td><code>July Newsletter</code></td></tr>
+        <tr><td><code>{{body}}</code></td><td>Shorthand for <code>newsletter_body</code></td><td><code>Hi Alice, here's your update...</code></td></tr>
+        <tr><td><code>{{from_name}}</code></td><td>Sender name override (if set in compose form)</td><td><code><?php echo esc_html( get_bloginfo( 'name' ) ); ?></code></td></tr>
+        <tr><td><code>{{from_email}}</code></td><td>Sender email override (if set in compose form)</td><td><code><?php echo esc_html( get_option( 'admin_email' ) ); ?></code></td></tr>
+        <tr><td><code>{{your_custom_key}}</code></td><td>Any key you added in "Extra Custom Variables" box</td><td><code>20% Off</code></td></tr>
+      </tbody>
+    </table>
+
+    <!-- BCC / GROUP MODE -->
+    <h3 style="font-size:14px;font-weight:700;color:#1f2937;border-bottom:2px solid #e5e7eb;padding-bottom:8px;margin-bottom:14px;">✉️ BCC Group Mode — Available in the single group trigger</h3>
+    <table class="ah-table" style="margin-bottom:28px;">
+      <thead>
+        <tr><th style="width:220px">Variable</th><th>Description</th><th>Example Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>{{subscriber_emails}}</code></td><td>All active subscriber emails, comma-separated</td><td><code>alice@.., bob@.., carol@..</code></td></tr>
+        <tr><td><code>{{subscriber_count}}</code></td><td>Total number of active subscribers being sent to</td><td><code>142</code></td></tr>
+        <tr><td><code>{{subscriber_names}}</code></td><td>All subscriber names, comma-separated</td><td><code>Alice, Bob, Carol</code></td></tr>
+        <tr><td><code>{{newsletter_subject}}</code></td><td>Subject you typed in the Compose form</td><td><code>July Newsletter</code></td></tr>
+        <tr><td><code>{{newsletter_body}}</code></td><td>Message body you typed in the Compose form</td><td><code>Here's your update...</code></td></tr>
+        <tr><td><code>{{subject}}</code></td><td>Shorthand for <code>newsletter_subject</code></td><td><code>July Newsletter</code></td></tr>
+        <tr><td><code>{{body}}</code></td><td>Shorthand for <code>newsletter_body</code></td><td><code>Here's your update...</code></td></tr>
+        <tr><td><code>{{email}}</code></td><td>The "TO" address (sender/admin email) used as the visible recipient</td><td><code>admin@site.com</code></td></tr>
+        <tr><td><code>{{your_custom_key}}</code></td><td>Any key you added in "Extra Custom Variables" box</td><td><code>20% Off</code></td></tr>
+      </tbody>
+    </table>
+
+    <!-- TIPS -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;font-size:13px;color:#166534;">
+      <strong>💡 Tips:</strong>
+      <ul style="margin:8px 0 0 18px;padding:0;line-height:1.9;">
+        <li>Use <code>{{email}}</code> in the <strong>TO</strong> field of your Email Action for Individual Mode.</li>
+        <li>Leave the <strong>BCC</strong> field empty in BCC Group Mode — it is filled automatically.</li>
+        <li>Use <code>{{newsletter_subject}}</code> and <code>{{newsletter_body}}</code> in your Email Action to pass through what you typed in the Compose form.</li>
+        <li>For <strong>HTTP Request / cURL / CODE</strong> actions, use <code>{{subscriber_emails}}</code> to get the full comma-separated list.</li>
+        <li>Custom Variables typed in the form (e.g. <code>discount|20% Off</code>) become <code>{{discount}}</code> automatically.</li>
+      </ul>
+    </div>
+  </div>
   <?php endif; ?>
 
 </div>

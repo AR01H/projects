@@ -28,6 +28,21 @@ function adn_cms_table( $suffix ) {
 }
 
 /**
+ * True if the given table exists in the DB — result is statically cached per
+ * table name so SHOW TABLES LIKE only fires once per request, not once per caller.
+ */
+function adn_cms_table_exists( $table ) {
+	static $cache = array();
+	if ( isset( $cache[ $table ] ) ) {
+		return $cache[ $table ];
+	}
+	global $wpdb;
+	$cache[ $table ] = ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table );
+	return $cache[ $table ];
+}
+
+
+/**
  * True only when the plugin's taxonomy tree + the post↔term link table exist.
  * (Content itself lives in WordPress posts, which always exist.) Cached.
  */
@@ -36,12 +51,9 @@ function adn_cms_available() {
 	if ( null !== $ready ) {
 		return $ready;
 	}
-	global $wpdb;
-	$tax = adn_cms_table( 'taxonomies' );
-	$ct  = adn_cms_table( 'content_taxonomies' );
-	$found = $wpdb->get_col( $wpdb->prepare( 'SHOW TABLES LIKE %s', $tax ) );
-	$found = array_merge( $found, $wpdb->get_col( $wpdb->prepare( 'SHOW TABLES LIKE %s', $ct ) ) );
-	$ready = ( in_array( $tax, $found, true ) && in_array( $ct, $found, true ) );
+	$tax   = adn_cms_table( 'taxonomies' );
+	$ct    = adn_cms_table( 'content_taxonomies' );
+	$ready = adn_cms_table_exists( $tax ) && adn_cms_table_exists( $ct );
 	return $ready;
 }
 
@@ -80,7 +92,7 @@ function adn_cms_guide_parents( $limit = 12 ) {
 	}
 	global $wpdb;
 	$pt = adn_cms_table( 'taxonomy_parent_terms' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+	if ( ! adn_cms_table_exists( $pt ) ) {
 		return array();
 	}
 	$results = $wpdb->get_results( $wpdb->prepare(
@@ -106,7 +118,7 @@ function adn_cms_parent_by_slug( $slug ) {
 	}
 	global $wpdb;
 	$pt = adn_cms_table( 'taxonomy_parent_terms' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+	if ( ! adn_cms_table_exists( $pt ) ) {
 		return null;
 	}
 	$result = $wpdb->get_row( $wpdb->prepare(
@@ -135,7 +147,7 @@ function adn_cms_topics( $parent_term_id, $limit = 100 ) {
 	}
 	global $wpdb;
 	$pt = adn_cms_table( 'taxonomy_parent_terms' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+	if ( ! adn_cms_table_exists( $pt ) ) {
 		return array();
 	}
 	$tax = adn_cms_table( 'taxonomies' );
@@ -170,7 +182,7 @@ function adn_cms_category_topics( $parent_term_id, $limit = 100 ) {
 	$pt    = adn_cms_table( 'taxonomy_parent_terms' );
 	$tax   = adn_cms_table( 'taxonomies' );
 	$types = adn_cms_table( 'taxonomy_types' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+	if ( ! adn_cms_table_exists( $pt ) ) {
 		return array();
 	}
 	$results = $wpdb->get_results( $wpdb->prepare(
@@ -204,7 +216,7 @@ function adn_cms_all_categories( $limit = 300 ) {
 	global $wpdb;
 	$pt  = adn_cms_table( 'taxonomy_parent_terms' );
 	$tax = adn_cms_table( 'taxonomies' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) !== $pt ) {
+	if ( ! adn_cms_table_exists( $pt ) ) {
 		return array();
 	}
 	$results = $wpdb->get_results( $wpdb->prepare(
@@ -400,8 +412,8 @@ function adn_cms_articles_for_parent( $parent_slug, $limit = 12 ) {
  */
 function adn_cms_newsbar_items( $limit = 6 ) {
 	global $wpdb;
-	$t     = adn_cms_table( 'news_bar_items' );
-	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $t ) ) !== $t ) {
+	$t = adn_cms_table( 'news_bar_items' );
+	if ( ! adn_cms_table_exists( $t ) ) {
 		return array();
 	}
 	$today = current_time( 'Y-m-d' );
@@ -507,6 +519,7 @@ function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
 	$tax   = adn_cms_table( 'taxonomies' );
 	$pt    = adn_cms_table( 'taxonomy_parent_terms' );
 	$limit = max( 1, (int) $limit );
+	$has_pt = adn_cms_table_exists( $pt );
 
 	// Filter by topic IDs when provided (used for parent-term category page).
 	$id_filter = '';
@@ -516,25 +529,37 @@ function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
 	}
 
 	// Restrict to the "Category" taxonomy type so review-types, FAQ tags etc. are excluded.
-	// When topic_ids is given we trust those IDs directly; type filter is still applied for safety.
 	$type_id   = adn_cms_guide_type_id();
 	$type_cond = '';
 	if ( $type_id ) {
 		$type_cond = "AND t.type_id = {$type_id}";
 	} elseif ( empty( $topic_ids ) ) {
-		// No recognised type and no ID filter - require a parent_term_id so we
-		// don't accidentally show flat utility terms.
 		$type_cond = 'AND t.parent_term_id IS NOT NULL';
 	}
+
+	/*
+	 * Single query: get all term data + parent names in one pass.
+	 *
+	 * Priority for parent name/icon:
+	 *   1. Self-join on t.parent_id  (child→parent within ah_taxonomies)
+	 *   2. JOIN ah_taxonomy_parent_terms on t.parent_term_id  (if table exists)
+	 */
+	$pt_join    = $has_pt ? "LEFT JOIN `{$pt}` ptt ON ptt.id = t.parent_term_id" : '';
+	$pt_selects = $has_pt
+		? 'COALESCE( pt_self.name,     ptt.name )        AS parent_name,
+		   COALESCE( pt_self.icon_emoji, ptt.icon_emoji ) AS parent_icon'
+		: 'pt_self.name        AS parent_name,
+		   pt_self.icon_emoji  AS parent_icon';
 
 	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$rows = $wpdb->get_results(
 		"SELECT t.id AS term_id, t.name AS category_name, t.slug AS term_slug,
 		        t.description AS term_desc, t.icon_emoji AS term_icon,
 		        t.image_id AS term_image_id,
-		        pt_self.name AS parent_name, pt_self.icon_emoji AS parent_icon
+		        {$pt_selects}
 		 FROM `{$tax}` t
 		 LEFT JOIN `{$tax}` pt_self ON pt_self.id = t.parent_id
+		 {$pt_join}
 		 WHERE t.status = 'active'
 		   {$type_cond}
 		   {$id_filter}
@@ -546,45 +571,20 @@ function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
 		return array();
 	}
 
-	// Enrich parent_name from ah_taxonomy_parent_terms when the self-join gave nothing.
-	$has_pt = ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pt ) ) === $pt );
-
 	$result = array();
-
 	foreach ( $rows as $row ) {
 		if ( count( $result ) >= $limit ) {
 			break;
 		}
-
-		$parent_name = ! empty( $row->parent_name ) ? (string) $row->parent_name : '';
-		$parent_icon = ! empty( $row->parent_icon ) ? (string) $row->parent_icon : '';
-
-		if ( '' === $parent_name && $has_pt ) {
-			$ptid = (int) $wpdb->get_var( $wpdb->prepare(
-				"SELECT parent_term_id FROM `{$tax}` WHERE id = %d LIMIT 1",
-				(int) $row->term_id
-			) );
-			if ( $ptid ) {
-				$pt_row = $wpdb->get_row( $wpdb->prepare(
-					"SELECT name, icon_emoji FROM `{$pt}` WHERE id = %d LIMIT 1",
-					$ptid
-				) );
-				if ( $pt_row ) {
-					$parent_name = (string) $pt_row->name;
-					$parent_icon = ! empty( $pt_row->icon_emoji ) ? (string) $pt_row->icon_emoji : '';
-				}
-			}
-		}
-
-		$post               = new stdClass();
-		$post->category_name   = (string) $row->category_name;
-		$post->_term_slug      = (string) $row->term_slug;
-		$post->_term_desc      = ! empty( $row->term_desc ) ? (string) $row->term_desc : '';
-		$post->term_icon       = ! empty( $row->term_icon ) ? (string) $row->term_icon : '';
-		$post->term_image_id   = ! empty( $row->term_image_id ) ? (int) $row->term_image_id : 0;
-		$post->parent_name     = $parent_name;
-		$post->parent_icon     = $parent_icon ?: $post->term_icon;
-
+		$post                = new stdClass();
+		$post->category_name = (string) $row->category_name;
+		$post->_term_slug    = (string) $row->term_slug;
+		$post->_term_desc    = ! empty( $row->term_desc )   ? (string) $row->term_desc   : '';
+		$post->term_icon     = ! empty( $row->term_icon )   ? (string) $row->term_icon   : '';
+		$post->term_image_id = ! empty( $row->term_image_id ) ? (int) $row->term_image_id : 0;
+		$post->parent_name   = ! empty( $row->parent_name ) ? (string) $row->parent_name : '';
+		$post->parent_icon   = ! empty( $row->parent_icon ) ? (string) $row->parent_icon
+		                       : $post->term_icon;
 		$result[] = $post;
 	}
 

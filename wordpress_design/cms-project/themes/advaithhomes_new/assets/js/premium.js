@@ -183,6 +183,34 @@
         function load( el ) {
             if ( el.dataset.adnLoading ) { return; }
             el.dataset.adnLoading = '1';
+
+            if ( el.getAttribute( 'data-prerendered' ) === '1' ) {
+                var nodes = [].slice.call( el.childNodes );
+                var parent = el.parentNode;
+                nodes.forEach( function ( n ) {
+                    parent.insertBefore( n, el );
+                } );
+                el.remove();
+
+                nodes.forEach( function ( n ) {
+                    if ( 1 === n.nodeType ) { n.classList.add( 'adn-frag-in' ); }
+                } );
+
+                if ( window.adnRevealScan ) {
+                    window.adnRevealScan();
+                } else {
+                    nodes.forEach( function ( n ) {
+                        if ( n.querySelectorAll ) {
+                            [].forEach.call(
+                                n.querySelectorAll( '.guide-card,.jny-card,.calc-card,.contact-resource-card,.glc,.spotlight-card,.expert-card,.featured-article,.section-header-wrap' ),
+                                function ( x ) { x.classList.add( 'adn-in' ); }
+                            );
+                        }
+                    } );
+                }
+                return;
+            }
+
             var url = el.getAttribute( 'data-endpoint' );
             if ( ! url ) { el.remove(); return; }
 

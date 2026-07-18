@@ -248,6 +248,12 @@ class AH_Newsletter {
 				$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
 			}
 
+			// Build aggregated subscriber variables
+			$bcc_names = array();
+			foreach ( $subscribers as $sub ) {
+				$bcc_names[] = $sub['name'] ?: $sub['email'];
+			}
+
 			$context = array(
 				'email'              => $to_email,
 				'name'               => 'Subscriber',
@@ -255,6 +261,10 @@ class AH_Newsletter {
 				'newsletter_subject' => $subject,
 				'newsletter_body'    => $body_rendered,
 				'_direct_bcc'        => $bcc_emails,
+				// Group-level variables for HTTP Request / CODE / cURL actions
+				'subscriber_emails'  => implode( ', ', $bcc_emails ),
+				'subscriber_names'   => implode( ', ', $bcc_names ),
+				'subscriber_count'   => count( $bcc_emails ),
 			);
 
 			if ( '' !== $subject ) {
