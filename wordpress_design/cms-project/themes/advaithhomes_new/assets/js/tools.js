@@ -15,10 +15,18 @@
     'use strict';
 
     var activeCategory = 'all';
+    var heroRow;
+    var emptyMsg;
+    var items;
 
     function init() {
+        heroRow = document.querySelector( '.tc-all-hero-row' );
+        emptyMsg = document.getElementById( 'calcEmptyState' );
+        items = document.querySelectorAll( '.calc-grid .calc-list-item, .calc-grid .calc-card' );
+
         bindSidebarCats();
         bindFilterTabs();
+        bindCalcPills();
         bindSearch();
     }
 
@@ -44,12 +52,22 @@
         } );
     }
 
+    function bindCalcPills() {
+        document.querySelectorAll( '.calc-pill' ).forEach( function ( pill ) {
+            pill.addEventListener( 'click', function () {
+                var cat = pill.getAttribute( 'data-filter' ) || 'all';
+                setCategory( cat );
+            } );
+        } );
+    }
+
     /* ── Shared filter state ────────────────────────────────── */
 
     function setCategory( cat ) {
         activeCategory = cat;
         syncSidebarUI( cat );
         syncTabUI( cat );
+        syncPillUI( cat );
         filterList( cat );
     }
 
@@ -67,17 +85,41 @@
         } );
     }
 
-    function filterList( cat ) {
-        document.querySelectorAll( '.calc-list-item' ).forEach( function ( item ) {
-            var cats = item.getAttribute( 'data-category' ) || '';
-            var show = cat === 'all' || cats.split( ' ' ).indexOf( cat ) !== -1;
+    function syncPillUI( cat ) {
+        document.querySelectorAll( '.calc-pill' ).forEach( function ( pill ) {
+            var isCurrent = pill.getAttribute( 'data-filter' ) === cat;
+            pill.classList.toggle( 'active', isCurrent );
+            pill.setAttribute( 'aria-selected', isCurrent ? 'true' : 'false' );
+        } );
+    }
 
-            if ( show ) {
+    function filterList( cat ) {
+        if ( heroRow ) {
+            heroRow.style.display = cat === 'all' ? '' : 'none';
+        }
+
+        var visible = 0;
+        items.forEach( function ( item ) {
+            var cats = ( item.getAttribute( 'data-category' ) || '' ).split( ' ' ).map( function ( s ) { return s.trim(); } );
+            var idx = parseInt( item.getAttribute( 'data-index' ) || '0', 10 );
+
+            var matchesCat = cat === 'all' || cats.indexOf( cat ) !== -1;
+            var isDuplicateInHero = cat === 'all' && idx < 4;
+
+            if ( matchesCat && ! isDuplicateInHero ) {
+                item.classList.remove( 'calc-filtered-out' );
                 item.removeAttribute( 'hidden' );
+                visible++;
             } else {
+                item.classList.add( 'calc-filtered-out' );
                 item.setAttribute( 'hidden', '' );
             }
         } );
+
+        if ( emptyMsg ) {
+            var heroVisible = cat === 'all' && heroRow && heroRow.style.display !== 'none';
+            emptyMsg.style.display = ( visible === 0 && ! heroVisible ) ? 'flex' : 'none';
+        }
     }
 
     /* ── Search ─────────────────────────────────────────────── */
@@ -96,7 +138,7 @@
             }
 
             /* Search overrides category filter */
-            document.querySelectorAll( '.calc-list-item' ).forEach( function ( item ) {
+            document.querySelectorAll( '.calc-list-item, .calc-card' ).forEach( function ( item ) {
                 var text = item.textContent.toLowerCase();
                 if ( text.indexOf( q ) !== -1 ) {
                     item.removeAttribute( 'hidden' );

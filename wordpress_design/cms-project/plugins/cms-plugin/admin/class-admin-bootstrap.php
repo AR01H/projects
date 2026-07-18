@@ -815,8 +815,10 @@ CSS;
 
 	private static function clean_nav_url( string $url, string $fallback = '' ): string {
 		$url = trim( wp_unslash( $url ) );
-		if ( $url === '' ) return $fallback;
-		if ( preg_match( '#^(https?:)?//#i', $url ) || strpos( $url, '#' ) === 0 || strpos( $url, 'mailto:' ) === 0 || strpos( $url, 'tel:' ) === 0 ) {
+		if ( $url === '' ) {
+			return $fallback;
+		}
+		if ( preg_match( '#^(https?:)?//#i', $url ) || strpos( $url, '#' ) === 0 || preg_match( '#^[a-z][a-z0-9+.-]*:#i', $url ) ) {
 			return esc_url_raw( $url );
 		}
 

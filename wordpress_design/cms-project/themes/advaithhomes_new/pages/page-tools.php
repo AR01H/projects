@@ -48,11 +48,6 @@ adn_page_open( $_open_ctx );
 	) ); ?>
 <?php endif; ?>
 
-<?php /* ============================== TRUST BAR ============================== */ ?>
-<?php if ( ! empty( $ctx['trust_items'] ) ) : ?>
-	<?php adn_component( 'sections/tools_trust_bar', array( 'trust_items' => $ctx['trust_items'] ) ); ?>
-<?php endif; ?>
-
 <?php /* ============================== SEARCH BAR ============================== */ ?>
 <!-- <?php adn_component( 'sections/tools_search_bar', array( 'search' => $ctx['search'] ) ); ?> -->
 
@@ -64,38 +59,10 @@ adn_page_open( $_open_ctx );
 <?php /* ============================== FEATURED & SUGGESTION SECTION ============================== */ ?>
 <?php
 $has_featured  = ! empty( $ctx['featured_tools'] );
-$has_suggested = ! empty( $ctx['suggested_tools'] );
-if ( $has_featured || $has_suggested ) :
+if ( $has_featured ) :
 ?>
 <section class="tc-section tc-featured-section">
 	<div class="container">
-		<div class="tc-two-col">
-
-			<?php /* ── Suggested Calculators widget ── */ ?>
-			<?php if ( $has_suggested ) : ?>
-			<div class="tc-widget tc-suggested-widget">
-				<div class="tc-widget-header">
-					<div class="tc-widget-title">
-						<span class="tc-widget-icon">✨</span>
-						<h2><?php esc_html_e( 'Suggested Calculators', ADN_TEXT_DOMAIN ); ?></h2>
-					</div>
-				</div>
-				<div class="tc-suggested-list">
-					<?php foreach ( $ctx['suggested_tools'] as $sc ) :
-						$sc_url   = esc_url( isset( $sc['url'] )   ? $sc['url']   : '' );
-						$sc_title = isset( $sc['title'] ) ? $sc['title'] : '';
-						$sc_raw   = isset( $sc['icon'] ) ? trim( (string) $sc['icon'] ) : '';
-						$sc_icon  = '' !== $sc_raw ? $sc_raw : '💡';
-					?>
-						<a href="<?php echo $sc_url; ?>" class="tc-suggested-item">
-							<span class="tc-suggested-icon"><?php echo adn_icon( $sc_icon ); ?></span>
-							<span class="tc-suggested-label"><?php echo esc_html( $sc_title ); ?></span>
-							<span class="tc-suggested-arrow">&rarr;</span>
-						</a>
-					<?php endforeach; ?>
-				</div>
-			</div>
-			<?php endif; ?>
 
 			<?php /* ── Featured Calculator widget ── */ ?>
 			<?php if ( $has_featured ) :
@@ -128,7 +95,7 @@ if ( $has_featured || $has_suggested ) :
 					</ul>
 					<?php endif; ?>
 					<a href="<?php echo esc_url( $fc['url'] ); ?>" class="tc-featured-btn">
-						<?php echo esc_html( 'Open ' . $fc_title ); ?>
+						<?php echo esc_html( 'Calculate' ); ?>
 						<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 					</a>
 				</div>
@@ -147,7 +114,7 @@ if ( $has_featured || $has_suggested ) :
 			</div>
 			<?php endif; ?>
 
-		</div>
+</div>
 	</div>
 </section>
 <?php endif; ?>

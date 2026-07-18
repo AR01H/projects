@@ -627,19 +627,28 @@ function adn_parse_marquee_settings( $settings ) {
 
 /**
  * Resolve a JSON-stored link for output:
- *  - ""        → "#"
- *  - "#..."    → unchanged (placeholder anchors)
- *  - "http(s)" → unchanged (external)
- *  - "/path/"  → home_url( "/path/" )
+ *  - ""            → "#"
+ *  - "#..."        → unchanged (placeholder anchors)
+ *  - "http(s)"     → unchanged (external)
+ *  - "mailto:"     → unchanged (email)
+ *  - "tel:"        → unchanged (phone)
+ *  - "callto:"     → unchanged (phone)
+ *  - "/path/"      → home_url( "/path/" )
  */
 function adn_link( $url ) {
-	$url = (string) $url;
+	$url = trim( (string) $url );
 	if ( '' === $url ) {
 		return '#';
 	}
-	if ( '#' === $url[0] || preg_match( '#^https?://#i', $url ) ) {
+	if ( '#' === $url[0] || preg_match( '#^(https?:)?//#i', $url ) ) {
 		return $url;
 	}
-	return home_url( $url );
+	if ( preg_match( '#^(mailto|tel|sms|callto):#i', $url ) ) {
+		return $url;
+	}
+	if ( '/' === $url[0] ) {
+		return home_url( $url );
+	}
+	return home_url( '/' . ltrim( $url, '/' ) );
 }
 

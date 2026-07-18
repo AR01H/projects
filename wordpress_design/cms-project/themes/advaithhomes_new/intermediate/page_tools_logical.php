@@ -84,8 +84,10 @@ function adn_calculators_get_context() {
 	// Marquee: admin override replaces default trust icons in the hero bottom bar.
 	$_mq = function_exists( 'adn_parse_marquee_settings' ) ? adn_parse_marquee_settings( $gen ) : null;
 	if ( $_mq ) {
-		$trust_items      = array();   // hide the static tools_trust_bar
+		$trust_items      = array();   // keep tools_trust_bar empty if marquee is active
 		$hero['trust_items'] = $_mq['trust'];
+	} else {
+		$hero['trust_items'] = $trust_items;
 	}
 
 	// ── Search ────────────────────────────────────────────────────────────
@@ -218,6 +220,11 @@ function adn_calculators_get_context() {
 			'desc'      => ! empty( $smeta['desc'] )       ? (string) $smeta['desc']       : '',
 			'url'       => ! empty( $smeta['card_url'] )   ? (string) $smeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $sk ) ),
 		);
+	}
+
+	if ( count( $suggested_tools ) > 1 ) {
+		shuffle( $suggested_tools );
+		$suggested_tools = array_slice( $suggested_tools, 0, 1 );
 	}
 
 	// ── Find CTA ─────────────────────────────────────────────────────────

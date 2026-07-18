@@ -336,30 +336,10 @@ function adn_category_get_context( $slug = '' ) {
 		);
 	}
 
-	// Calculators - built from selected_keys checked against the registry.
+	// Calculators - only from the parent term assignment metadata.
 	$calculators = array();
-	if ( ! empty( $_cs_calc['selected_keys'] ) && is_array( $_cs_calc['selected_keys'] )
-		&& function_exists( 'adn_calculators' ) ) {
-		$all_tools    = adn_calculators();
-		$calc_meta    = get_option( 'adn_calculators_meta', array() );
-		$items        = array();
-		foreach ( $_cs_calc['selected_keys'] as $key ) {
-			$key = sanitize_key( $key );
-			if ( ! isset( $all_tools[ $key ] ) ) { continue; }
-			$reg  = $all_tools[ $key ];
-			$cmeta = function_exists( 'adn_calculator_meta' ) ? adn_calculator_meta( $key ) : array();
-			$_pclg_thumb = '';
-			if ( ! empty( $cmeta['thumbnail_id'] ) ) {
-				$_pclg_t = wp_get_attachment_image_url( (int) $cmeta['thumbnail_id'], 'medium' );
-				$_pclg_thumb = $_pclg_t ? (string) $_pclg_t : '';
-			}
-			$items[] = array(
-				'icon'      => ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $reg['icon'] ) ? (string) $reg['icon'] : '🧮' ),
-				'name'      => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $reg['title'] ) ? (string) $reg['title'] : $key ),
-				'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( '/?ah_calc_page=' . rawurlencode( $key ) ),
-				'thumbnail' => $_pclg_thumb,
-			);
-		}
+	if ( function_exists( 'adn_get_parent_term_calculator_cards' ) ) {
+		$items = adn_get_parent_term_calculator_cards( $slug );
 		if ( ! empty( $items ) ) {
 			$calculators = array(
 				'heading' => array(
@@ -367,7 +347,16 @@ function adn_category_get_context( $slug = '' ) {
 					'link_label' => adn_term( 'category_page.related_tools_heading', 'View all →' ),
 					'link_url'   => SITE_CALCULATORS_URL,
 				),
-				'items' => $items,
+				'items' => array_map( static function( $item ) {
+					return array(
+						'icon'      => $item['icon'],
+						'name'      => $item['label'],
+						'desc'      => $item['desc'] ?? '',
+						'url'       => $item['url'],
+						'thumbnail' => $item['thumbnail'],
+						'highlight' => $item['highlight'] ?? '',
+					);
+				}, $items ),
 			);
 		}
 	}

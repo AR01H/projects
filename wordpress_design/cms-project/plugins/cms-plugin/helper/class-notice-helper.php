@@ -60,21 +60,18 @@ class AH_Notice_Helper {
 		?>
 		<?php
 		$badge_palette = array(
-			'green'  => array( 'bg' => '#dcfce7', 'color' => '#15803d' ),
-			'red'    => array( 'bg' => '#fee2e2', 'color' => '#b91c1c' ),
-			'blue'   => array( 'bg' => '#dbeafe', 'color' => '#1d4ed8' ),
-			'orange' => array( 'bg' => '#ffedd5', 'color' => '#c2410c' ),
-			'purple' => array( 'bg' => '#ede9fe', 'color' => '#7c3aed' ),
+			'green'  => array( 'bg' => 'grey', 'color' => '#15803d' ),
+			'red'    => array( 'bg' => 'grey', 'color' => '#b91c1c' ),
+			'blue'   => array( 'bg' => 'grey', 'color' => '#1d4ed8' ),
+			'orange' => array( 'bg' => 'grey', 'color' => '#c2410c' ),
+			'purple' => array( 'bg' => 'grey', 'color' => '#7c3aed' ),
 		);
 		$resolve_badge = static function( string $color ) use ( $badge_palette ): array {
 			if ( isset( $badge_palette[ $color ] ) ) return $badge_palette[ $color ];
 			if ( preg_match( '/^#[0-9a-fA-F]{6}$/', $color ) ) {
-				$r = hexdec( substr( $color, 1, 2 ) );
-				$g = hexdec( substr( $color, 3, 2 ) );
-				$b = hexdec( substr( $color, 5, 2 ) );
-				return array( 'bg' => "rgba($r,$g,$b,0.13)", 'color' => $color );
+				return array( 'bg' => $badge_palette[$color]['bg']??'grey', 'color' => $color );
 			}
-			return $badge_palette['green'];
+			return ['bg'=>'grey','color'=>$badge_palette['green']];
 		};
 		foreach ( $to_render as $n ) :
 			$id         = (int) $n->id;
@@ -120,18 +117,18 @@ class AH_Notice_Helper {
 		     style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:1rem;">
 			<div class="ah-sn-backdrop ah-sn-backdrop--modal" data-id="<?php echo $id; ?>"
 			     style="position:absolute;inset:0;background:rgba(10,25,47,.55);backdrop-filter:blur(3px);"></div>
-			<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:18px;max-width:520px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
+			<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:4px;max-width:520px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
 				<?php if ( $image ) : ?>
 				<div class="ah-sn-media ah-sn-media--modal" style="width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
 					<img class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
 					<?php if ( $badge ) : ?>
-					<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;"><?php echo $badge; ?></span>
+					<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;letter-spacing:.05em;text-transform:uppercase;"><?php echo $badge; ?></span>
 					<?php endif; ?>
 				</div>
 				<?php else : ?>
 				<div style="width:100%;height:5px;background:linear-gradient(90deg,var(--color-primary,#2d5a44),<?php echo esc_attr( $bpal['bg'] ); ?>);"></div>
 				<?php endif; ?>
-				<div style="padding:1.75rem 2rem 2rem;position:relative;">
+				<div style="padding:10px;position:relative;">
 					<?php if ( $badge && ! $image ) : ?>
 					<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;"><?php echo $badge; ?></span>
 					<?php endif; ?>
@@ -142,7 +139,7 @@ class AH_Notice_Helper {
 					<p style="margin:0 0 1.4rem;color:#555;font-size:.95rem;line-height:1.6;"><?php echo $message; ?></p>
 					<?php endif; ?>
 					<?php if ( $btn_label && $btn_url ) : ?>
-					<a href="<?php echo $btn_url; ?>" style="display:inline-block;background:var(--color-primary,#0a192f);color:#fff;padding:.6rem 1.4rem;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;"><?php echo $btn_label; ?></a>
+					<a href="<?php echo $btn_url; ?>" class="btn btn-primary button"><?php echo $btn_label; ?></a>
 					<?php endif; ?>
 				</div>
 			</div>

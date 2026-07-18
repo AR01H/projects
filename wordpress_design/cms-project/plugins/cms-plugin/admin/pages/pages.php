@@ -23,7 +23,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 		$template = sanitize_text_field( $_POST['page_template'] ?? '' );
 		$thumb_id = (int) ( $_POST['featured_image_id'] ?? 0 );
 		$excerpt  = sanitize_textarea_field( $_POST['page_excerpt'] ?? '' );
-		$page_data = array( 'post_type' => 'page', 'post_title' => $title, 'post_content' => wp_kses_post( $_POST['page_content'] ?? '' ), 'post_name' => $slug, 'post_status' => $status, 'post_parent' => $parent, 'post_excerpt' => $excerpt, 'page_template' => $template );
+		$page_content_raw = isset( $_POST['page_content'] ) ? wp_unslash( $_POST['page_content'] ) : '';
+		$page_content = ( current_user_can( 'unfiltered_html' ) || current_user_can( 'manage_options' ) ) ? $page_content_raw : wp_kses_post( $page_content_raw );
+		$page_data = array( 'post_type' => 'page', 'post_title' => $title, 'post_content' => $page_content, 'post_name' => $slug, 'post_status' => $status, 'post_parent' => $parent, 'post_excerpt' => $excerpt, 'page_template' => $template );
 		if ( $edit_id ) { $page_data['ID'] = $edit_id; $result = wp_update_post( $page_data, true ); }
 		else { $result = wp_insert_post( $page_data, true ); }
 		if ( is_wp_error( $result ) ) { $notice = 'Error: ' . $result->get_error_message(); $n_type = 'error'; }
@@ -147,7 +149,8 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
           </div>
           <div class="ah-card">
             <div class="ah-card-header"><h2>Page Content</h2></div>
-            <?php wp_editor( $wp_page->post_content ?? '', 'page_content', array( 'textarea_name' => 'page_content', 'editor_height' => 450, 'media_buttons' => true ) ); ?>
+            <p style="margin:0 0 10px;color:var(--ah-muted);font-size:13px;">Paste raw HTML, inline styles, scripts, and custom markup here.</p>
+            <textarea name="page_content" id="page_content" rows="28" style="width:100%;min-height:420px;font-family:Consolas,Monaco,monospace;font-size:13px;line-height:1.6;resize:vertical;"><?php echo esc_textarea( $wp_page->post_content ?? '' ); ?></textarea>
           </div>
         </div>
 

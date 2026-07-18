@@ -8,13 +8,23 @@ defined( 'ABSPATH' ) || exit;
 
 $card      = isset( $card ) && is_array( $card ) ? $card : array();
 $thumbnail = isset( $card['thumbnail'] ) && '' !== $card['thumbnail'] ? (string) $card['thumbnail'] : '';
+$data_category = isset( $card['data_category'] ) ? (string) $card['data_category'] : '';
+$data_index    = isset( $card['data_index'] ) ? (int) $card['data_index'] : 0;
 
 // Fallback to default calculator image if none is provided
 if ( empty( $thumbnail ) ) {
     $thumbnail = get_template_directory_uri() . THEME_DEFAULT_CALC_IMG . '?v=' . LOCAL_CACHE_VERSION;
 }
+
+$extra_attrs = '';
+if ( $data_category ) {
+    $extra_attrs .= ' data-category="' . esc_attr( $data_category ) . '"';
+}
+if ( isset( $card['data_index'] ) ) {
+    $extra_attrs .= ' data-index="' . esc_attr( (string) $data_index ) . '"';
+}
 ?>
-<a href="<?php echo esc_url( adn_link( isset( $card['url'] ) ? $card['url'] : '' ) ); ?>" class="calc-card">
+<a href="<?php echo esc_url( adn_link( isset( $card['url'] ) ? $card['url'] : '' ) ); ?>" class="calc-card"<?php echo $extra_attrs; ?>>
 	<div class="calc-card-media">
 		<?php if ( $thumbnail ) : 
 			$fallback = esc_url( get_template_directory_uri() . THEME_DEFAULT_CALC_IMG . '?v=' . LOCAL_CACHE_VERSION );
@@ -32,6 +42,8 @@ if ( empty( $thumbnail ) ) {
 	</div>
 	<div class="calc-card-body">
 		<div class="calc-card-name"><?php echo esc_html( ! empty( $card['name'] ) ? $card['name'] : ( ! empty( $card['title'] ) ? $card['title'] : '' ) ); ?></div>
-		<p class="card-desc-text"><?php echo $card['desc'] ?? ''; ?></p>
+		<?php if ( ! empty( $card['desc'] ) ) : ?>
+			<p class="card-desc-text"><?php echo esc_html( (string) $card['desc'] ); ?></p>
+		<?php endif; ?>
 	</div>
 </a>

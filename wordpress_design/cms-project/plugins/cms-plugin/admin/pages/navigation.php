@@ -224,7 +224,7 @@ if ( empty( $footer['legal_links'] ) ) {
 										</label>
 										<label>
 											<span>URL</span>
-											<input type="text" name="footer_columns[<?php echo esc_attr( $column_index ); ?>][items][<?php echo esc_attr( $link_index ); ?>][url]" value="<?php echo esc_attr( $link['url'] ?? '' ); ?>" class="regular-text ah-link-url-field">
+											<input type="text" name="footer_columns[<?php echo esc_attr( $column_index ); ?>][items][<?php echo esc_attr( $link_index ); ?>][url]" value="<?php echo esc_attr( $link['url'] ?? '' ); ?>" class="regular-text ah-link-url-field" placeholder="Page slug, mailto:hello@example.com, tel:+44..., or https://...">
 										</label>
 										<label class="ah-checkbox-field">
 											<input type="checkbox" name="footer_columns[<?php echo esc_attr( $column_index ); ?>][items][<?php echo esc_attr( $link_index ); ?>][highlight]" value="1" <?php checked( ! empty( $link['highlight'] ) ); ?>>
