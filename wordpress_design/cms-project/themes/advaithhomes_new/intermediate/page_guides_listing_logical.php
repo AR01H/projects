@@ -18,6 +18,14 @@ function adn_guides_listing_get_context( $slug = '' ) {
 		$slug = ( $page instanceof WP_Post ) ? (string) $page->post_name : '';
 	}
 	$slug   = sanitize_key( (string) $slug );
+	$cache_key = 'page_guides_listing_context_' . $slug;
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$data   = function_exists( 'adn_service_guides_listing_data' ) ? adn_service_guides_listing_data( $slug ) : array();
 	$chrome = function_exists( 'adn_service_site_chrome' )          ? adn_service_site_chrome()               : array();
 
@@ -169,6 +177,9 @@ function adn_guides_listing_get_context( $slug = '' ) {
 		),
 	);
 
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
 	return $ctx;
 }
 

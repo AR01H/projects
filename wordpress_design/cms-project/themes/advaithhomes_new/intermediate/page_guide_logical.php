@@ -25,13 +25,20 @@ function adn_guide_get_context( $slug = '' ) {
 		$slug = ( $page instanceof WP_Post ) ? (string) $page->post_name : '';
 	}
 	$slug = sanitize_key( $slug );
+	$cache_key = 'page_guide_context_' . $slug;
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
 
 	// ── 2. Load data via service layer ───────────────────────────────
 	$data   = function_exists( 'adn_service_guide_data' ) ? adn_service_guide_data( $slug ) : array();
 	$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome()      : array();
 
 	// ── 3. Shape context with safe defaults ──────────────────────────
-	return array(
+	$ctx = array(
 		'slug'          => $slug,
 		'meta'          => isset( $data['meta'] )          ? (array) $data['meta']          : array(),
 		'breadcrumb'    => isset( $data['breadcrumb'] )    ? (array) $data['breadcrumb']    : array(),
@@ -45,4 +52,9 @@ function adn_guide_get_context( $slug = '' ) {
 		'stay_informed' => isset( $data['stay_informed'] ) ? (array) $data['stay_informed'] : array(),
 		'chrome'        => $chrome,
 	);
+
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
+	return $ctx;
 }

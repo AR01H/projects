@@ -71,6 +71,10 @@ class AH_Cache {
 	 * Clear cache items.
 	 */
 	public static function clear_all( $cid = null, $table = null, $wildcard = false ) {
+		if ( class_exists( 'ADN_Cache' ) ) {
+			ADN_Cache::clear_all();
+		}
+
 		if ( null === $cid && null === $table ) {
 			// Clear EVERYTHING we track
 			$registry = get_option( 'ah_cache_registry', array() );
@@ -202,6 +206,10 @@ class AH_Cache {
 		return false;
 	}
 
+	public static function get_temp_dir(): string {
+		return self::temp_base_dir();
+	}
+
 	private static function delete_temp_files( string $pattern ): void {
 		$files = glob( $pattern );
 		if ( is_array( $files ) ) {
@@ -212,10 +220,11 @@ class AH_Cache {
 	}
 
 	private static function temp_base_dir(): string {
-		$site_key = function_exists( 'home_url' ) ? (string) home_url( '/' ) : 'site';
-		$site_key = function_exists( 'wp_parse_url' ) ? (string) ( wp_parse_url( $site_key, PHP_URL_HOST ) ?: $site_key ) : $site_key;
-		$site_key = sanitize_key( $site_key );
-		return rtrim( sys_get_temp_dir(), DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR . 'adn-home-fragments' . DIRECTORY_SEPARATOR . $site_key;
+		$dir = defined( 'WP_CONTENT_DIR' ) ? WP_CONTENT_DIR . '/cache/ah-cache' : __DIR__ . '/../cache';
+		if ( ! is_dir( $dir ) ) {
+			wp_mkdir_p( $dir );
+		}
+		return $dir;
 	}
 
 	private static function build_temp_path( $cid, $table ): string {

@@ -13,6 +13,14 @@ defined( 'ABSPATH' ) || exit;
 
 function adn_calculator_single_get_context( $key ) {
 	$key      = sanitize_key( $key );
+	$cache_key = 'page_tool_single_context_' . $key;
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$registry = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
 
 	if ( '' === $key || ! isset( $registry[ $key ] ) ) {
@@ -183,7 +191,7 @@ function adn_calculator_single_get_context( $key ) {
 	// ── Share data ────────────────────────────────────────────────────────
 	$share_url = home_url( add_query_arg( array( 'ah_calc_page' => $key ), '/' ) );
 
-	return array(
+	$ctx = array(
 		'chrome'        => $chrome,
 		'key'           => $key,
 		'title'         => $title,
@@ -212,5 +220,10 @@ function adn_calculator_single_get_context( $key ) {
 			) : array(),
 		),
 	);
+
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
+	return $ctx;
 }
 

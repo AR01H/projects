@@ -33,6 +33,14 @@ defined( 'ABSPATH' ) || exit;
  */
 function adn_home_get_context( $skip = array() ) {
 	$skip   = is_array( $skip ) ? $skip : array();
+	$cache_key = 'home_context_' . md5( wp_json_encode( $skip ) );
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$data   = adn_service_home_data();
 	$chrome = adn_service_site_chrome();
 
@@ -168,6 +176,9 @@ function adn_home_get_context( $skip = array() ) {
 		}
 	}
 
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
 	return $ctx;
 }
 

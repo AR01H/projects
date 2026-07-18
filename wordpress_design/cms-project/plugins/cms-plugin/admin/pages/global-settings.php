@@ -139,6 +139,21 @@ for ( $offset = -12; $offset <= 14; $offset += 0.5 ) {
 						</td>
 					</tr>
 
+					<!-- Cache Storage Info -->
+					<tr>
+						<th scope="row">
+							Cache Storage Paths
+						</th>
+						<td>
+							<?php if ( class_exists( 'AH_Cache' ) ) : ?>
+								<p style="margin: 0 0 8px 0;"><strong>CMS Plugin Temp Cache:</strong> <code><?php echo esc_html( AH_Cache::get_temp_dir() ); ?></code></p>
+							<?php endif; ?>
+							<?php if ( class_exists( 'ADN_Cache' ) ) : ?>
+								<p style="margin: 0;"><strong>Theme Filesystem Cache:</strong> <code><?php echo esc_html( ADN_Cache::get_cache_dir() ); ?></code></p>
+							<?php endif; ?>
+						</td>
+					</tr>
+
 				</tbody>
 			</table>
 

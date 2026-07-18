@@ -20,6 +20,7 @@ require_once get_template_directory() . '/includes/class-adn-form-ajax.php';
 require_once get_template_directory() . '/includes/adn-sidebar-helpers.php';
 require_once get_template_directory() . '/includes/comment-callbacks.php';
 require_once get_template_directory() . '/includes/seo.php';
+require_once get_template_directory() . '/includes/class-adn-cache.php';
 
 // ===========================
 // LOAD HELPER FUNCTIONS
@@ -44,6 +45,48 @@ if ( is_admin() ) {
 // ===========================
 add_action( 'after_setup_theme', 'ahn_include_files' );
 add_action( 'after_setup_theme', 'adn_theme_register' );
+
+// Clear or bypass cache intercepts
+add_action( 'init', function() {
+	if ( class_exists( 'ADN_Cache' ) ) {
+		// Flush filesystem cache if admin clears CMS cache
+		if ( is_admin() && isset( $_POST['clear_cache'] ) && current_user_can( 'manage_options' ) ) {
+			ADN_Cache::clear_all();
+		}
+		// Also support query param cache clearing for admins/developers
+		if ( isset( $_GET['clear_cache'] ) || isset( $_GET['cache_clear'] ) ) {
+			if ( current_user_can( 'manage_options' ) || ! is_user_logged_in() ) {
+				ADN_Cache::clear_all();
+
+				// Clean redirect back to the page without clear_cache query parameter
+				if ( isset( $_GET['clear_cache'] ) ) {
+					$redirect_url = remove_query_arg( 'clear_cache' );
+					wp_safe_redirect( $redirect_url );
+					exit;
+				}
+			}
+		}
+	}
+} );
+
+// Add "Clear Cache" button to the WP Admin Bar (only in the WordPress Admin Panel/Dashboard)
+add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
+	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$current_url = admin_url();
+	$clear_url = add_query_arg( 'clear_cache', '1', $current_url );
+
+	$wp_admin_bar->add_node( array(
+		'id'    => 'adn-clear-cache',
+		'title' => '⚡ Clear Cache',
+		'href'  => $clear_url,
+		'meta'  => array(
+			'title' => 'Clear all theme filesystem and CMS caches',
+		),
+	) );
+}, 100 );
 
 // Site-wide notice popup - once per day, resets if content changes.
 add_action( 'wp_footer', 'adn_render_site_notice_popup' );

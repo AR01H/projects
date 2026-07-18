@@ -14,10 +14,20 @@ defined( 'ABSPATH' ) || exit;
 
 function adn_topic_category_get_context() {
 	$slug   = sanitize_key( (string) get_query_var( 'adn_guide_term_slug', '' ) );
+	$paged    = max( 1, isset( $_GET['paged'] ) ? (int) $_GET['paged'] : 1 ); // phpcs:ignore WordPress.Security.NonceVerification
+	$search_q = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '';
+
+	$cache_key = 'page_topic_category_context_' . $slug . '_p' . $paged . '_' . md5( $search_q );
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$chrome = adn_service_site_chrome();
 
 	$per_page = defined( 'ADN_TOPIC_ARTICLES_PER_PAGE' ) ? (int) ADN_TOPIC_ARTICLES_PER_PAGE : 12;
-	$paged    = max( 1, isset( $_GET['paged'] ) ? (int) $_GET['paged'] : 1 ); // phpcs:ignore WordPress.Security.NonceVerification
 
 	$ctx = array(
 		'chrome'             => is_array( $chrome ) ? $chrome : array(),
@@ -568,5 +578,8 @@ function adn_topic_category_get_context() {
 		})(),
 	);
 
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
 	return $ctx;
 }

@@ -21,8 +21,8 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_topic_category_logical.php';
 $ctx = adn_topic_category_get_context();
 
-$term      = $ctx['term'];
-$parent    = $ctx['parent'];
+$term      = $ctx['term'] ? (object) $ctx['term'] : null;
+$parent    = $ctx['parent'] ? (object) $ctx['parent'] : null;
 $term_name = $term ? (string) $term->name : '';
 
 $_seo_desc = '';

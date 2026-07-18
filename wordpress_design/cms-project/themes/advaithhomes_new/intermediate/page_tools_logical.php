@@ -18,6 +18,14 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_home_logical.php';
 
 function adn_calculators_get_context() {
+	$cache_key = 'page_tools_context';
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$pg     = get_option( 'adn_calculators_page', array() );
 	$gen    = get_option( 'adn_calculators_general', array() );
 	$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
@@ -263,7 +271,7 @@ function adn_calculators_get_context() {
 	$_hreg  = ( isset( $_hd['regulations'] ) && is_array( $_hd['regulations'] ) ) ? $_hd['regulations'] : array();
 	$_hht   = ( isset( $_hd['hot_topics'] ) && is_array( $_hd['hot_topics'] ) )   ? $_hd['hot_topics']  : array();
 
-	return array(
+	$ctx = array(
 		'meta'          => array(),
 		'breadcrumb'    => $breadcrumb,
 		'hero'          => $hero,
@@ -311,6 +319,11 @@ function adn_calculators_get_context() {
 		'regulations' => array_merge( $_hreg,  array( 'items' => adn_home_cms_regulations_items() ) ),
 		'hot_topics'  => array_merge( $_hht,   array( 'items' => adn_home_cms_hot_topics_items() ) ),
 	);
+
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
+	return $ctx;
 }
 
 

@@ -41,6 +41,14 @@ function adn_guides_news_items( $limit = 3 ) {
  * @return array
  */
 function adn_guides_get_context() {
+	$cache_key = 'page_guides_context';
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$chrome  = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 	$parents = function_exists( 'adn_cms_guide_parents' )   ? adn_cms_guide_parents( 20 ) : array();
 
@@ -145,7 +153,7 @@ function adn_guides_get_context() {
 	// ── Sidebar: news (3 items) ───────────────────────────────────────────────
 	$news_items = adn_guides_news_items( 3 );
 
-	return array(
+	$ctx = array(
 		'meta'       => array(
 			'page_title'       => SITE_DOMAIN_NOUN . ' ' . SITE_CONTENT_PLURAL . ' - ' . SITE_BRAND_NAME,
 			'meta_description' => adn_term( 'guides_page.meta_description', 'Browse our complete library of guides.' ),
@@ -186,4 +194,9 @@ function adn_guides_get_context() {
 		),
 		'chrome' => $chrome,
 	);
+
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
+	return $ctx;
 }

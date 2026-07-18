@@ -23,6 +23,15 @@ defined( 'ABSPATH' ) || exit;
 function adn_post_get_context() {
 	global $post;
 
+	$post_id   = isset( $post->ID ) ? (int) $post->ID : 0;
+	$cache_key = 'post_context_' . $post_id;
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'posts' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$sidebar = function_exists( 'adn_service_post_sidebar_data' ) ? adn_service_post_sidebar_data() : array();
 	$chrome  = function_exists( 'adn_service_site_chrome' )       ? adn_service_site_chrome()       : array();
 
@@ -174,7 +183,7 @@ function adn_post_get_context() {
 		'contact' => function_exists( 'adn_service_contact_data' )    ? adn_service_contact_data()    : array(),
 	);
 
-	return array(
+	$ctx = array(
 		'breadcrumb'     => $breadcrumb,
 		'article'        => array(
 			'category_tag' => $category_tag,
@@ -204,4 +213,9 @@ function adn_post_get_context() {
 		'chrome'         => $chrome,
 		'expert_contact' => $expert_contact,
 	);
+
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'posts', get_option( 'ah_cache_expiry', 3600 ) );
+	}
+	return $ctx;
 }

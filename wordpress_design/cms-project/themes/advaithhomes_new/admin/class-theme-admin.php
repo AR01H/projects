@@ -452,6 +452,12 @@ class ADN_Theme_Admin {
 			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
 		}
 
+		// Save cache enabled checkbox state if form was submitted
+		if ( isset( $_POST['_wp_http_referer'] ) ) {
+			$cache_enabled = isset( $_POST['ah_cache_enabled'] ) ? '1' : '0';
+			update_option( 'ah_cache_enabled', $cache_enabled );
+		}
+
 		$cleared = array();
 
 		// 1) Object cache.
@@ -478,6 +484,11 @@ class ADN_Theme_Admin {
 		if ( function_exists( 'cache_clear_all' ) ) {
 			cache_clear_all( null, 'home_frag', true );
 			$cleared[] = __( 'home fragment cache', ADN_TEXT_DOMAIN );
+		}
+
+		if ( class_exists( 'ADN_Cache' ) ) {
+			ADN_Cache::clear_all();
+			$cleared[] = __( 'theme filesystem cache', ADN_TEXT_DOMAIN );
 		}
 
 		// 3) OPcache (if available).

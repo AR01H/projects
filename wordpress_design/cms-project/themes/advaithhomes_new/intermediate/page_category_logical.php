@@ -227,6 +227,13 @@ function adn_category_get_context( $slug = '' ) {
 		}
 	}
 	$slug = sanitize_key( $slug );
+	$cache_key = 'page_category_context_' . $slug;
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
 
 	$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
@@ -648,7 +655,7 @@ function adn_category_get_context( $slug = '' ) {
 		'items' => $_main_news_items,
 	);
 
-	return array(
+	$ctx = array(
 		'slug'          => $slug,
 		'meta'          => $meta,
 		'breadcrumb'    => $breadcrumb,
@@ -678,4 +685,9 @@ function adn_category_get_context( $slug = '' ) {
 		),
 		'chrome'        => $chrome,
 	);
+
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
+	return $ctx;
 }

@@ -21,6 +21,14 @@
 defined( 'ABSPATH' ) || exit;
 
 function adn_news_get_context() {
+	$cache_key = 'page_news_context';
+	if ( class_exists( 'ADN_Cache' ) ) {
+		$cached = ADN_Cache::get( $cache_key, 'pages' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+	}
+
 	$data   = function_exists( 'adn_service_news_data' )   ? adn_service_news_data()   : array();
 	$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
@@ -114,6 +122,9 @@ function adn_news_get_context() {
 	$ctx['sidebar']['topics']      = $sidebar_topics;
 	$ctx['sidebar']['recent_news'] = $sidebar_news;
 
+	if ( class_exists( 'ADN_Cache' ) ) {
+		ADN_Cache::set( $cache_key, $ctx, 'pages', get_option( 'ah_cache_expiry', 3600 ) );
+	}
 	return $ctx;
 }
 
