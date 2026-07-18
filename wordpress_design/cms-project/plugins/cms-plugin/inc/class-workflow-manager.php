@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -187,10 +187,17 @@ class AH_Workflow_Manager {
 		$t  = self::table();
 		$lg = self::logs_table();
 
-		$rows = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM `{$t}` WHERE status = 'active' AND trigger_name = %s",
-			$trigger_name
-		) ) ?: array();
+		if ( isset( $context['_target_rule_id'] ) ) {
+			$rows = $wpdb->get_results( $wpdb->prepare(
+				"SELECT * FROM `{$t}` WHERE status = 'active' AND id = %d",
+				(int) $context['_target_rule_id']
+			) ) ?: array();
+		} else {
+			$rows = $wpdb->get_results( $wpdb->prepare(
+				"SELECT * FROM `{$t}` WHERE status = 'active' AND trigger_name = %s",
+				$trigger_name
+			) ) ?: array();
+		}
 
 		if ( $wpdb->last_error ) {
 			error_log( 'AH_Workflow_Manager::evaluate() DB error: ' . $wpdb->last_error );
@@ -584,6 +591,15 @@ class AH_Workflow_Manager {
 			$email = sanitize_email( $filled );
 			if ( $email ) $bcc_recipients[] = $email;
 		}
+		// Direct BCC injection from trigger context
+		if ( ! empty( $context['_direct_bcc'] ) ) {
+			foreach ( (array) $context['_direct_bcc'] as $bcc_addr ) {
+				$email = sanitize_email( $bcc_addr );
+				if ( $email && ! in_array( $email, $bcc_recipients, true ) ) {
+					$bcc_recipients[] = $email;
+				}
+			}
+		}
 		// Add global BCC
 		if ( ! empty( $cfg['email_bcc'] ) ) {
 			$global_bcc = is_array( $cfg['email_bcc'] ) ? $cfg['email_bcc'] : array_filter( array_map( 'trim', explode( ',', $cfg['email_bcc'] ) ) );
@@ -731,6 +747,17 @@ class AH_Workflow_Manager {
 		foreach ( $bcc_list as $bcc_addr ) {
 			$email = sanitize_email( self::fill( (string) $bcc_addr, $ctx ) );
 			if ( $email ) $bcc_recipients[] = array( 'email' => $email );
+		}
+		// Direct BCC injection from trigger context
+		if ( ! empty( $context['_direct_bcc'] ) ) {
+			$existing_bcc = array_column( $bcc_recipients, 'email' );
+			foreach ( (array) $context['_direct_bcc'] as $bcc_addr ) {
+				$email = sanitize_email( $bcc_addr );
+				if ( $email && ! in_array( $email, $existing_bcc, true ) ) {
+					$bcc_recipients[] = array( 'email' => $email );
+					$existing_bcc[] = $email;
+				}
+			}
 		}
 		if ( ! empty( $cfg['email_bcc'] ) ) {
 			$global_bcc = is_array( $cfg['email_bcc'] ) ? $cfg['email_bcc'] : array_filter( array_map( 'trim', explode( ',', $cfg['email_bcc'] ) ) );

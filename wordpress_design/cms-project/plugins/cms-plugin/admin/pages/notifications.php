@@ -51,20 +51,55 @@ if ( isset( $_POST['ah_nl_add_nonce'] ) ) {
 if ( isset( $_POST['ah_nl_send_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_nl_send_nonce'], 'ah_nl_send' ) ) wp_die( 'Security.' );
 	$subject    = sanitize_text_field( wp_unslash( isset( $_POST['nl_subject'] )    ? $_POST['nl_subject']    : '' ) );
-	$body       = sanitize_textarea_field( wp_unslash( isset( $_POST['nl_body'] )   ? $_POST['nl_body']      : '' ) );
+	$body       = wp_unslash( isset( $_POST['nl_body'] ) ? $_POST['nl_body'] : '' );
 	$from_name  = sanitize_text_field( wp_unslash( isset( $_POST['nl_from_name'] )  ? $_POST['nl_from_name'] : '' ) );
 	$from_email = sanitize_email( wp_unslash( isset( $_POST['nl_from_email'] )      ? $_POST['nl_from_email']: '' ) );
-	if ( $subject && $body ) {
+	if ( $subject || $body || ! empty( $_POST['nl_workflow_rule'] ) ) {
 		if ( ! class_exists( 'AH_Workflow_Manager' ) ) {
 			$notice = 'warning:Rules Engine is not available - notification could not be sent.';
 		} else {
-			$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email );
-			AH_Newsletter::log_broadcast( $subject, $result['sent'], $result['failed'] );
-			$notice = 'success:Notification queued for ' . $result['sent'] . ' subscriber(s) via Rules Engine.';
+			// Parse custom variables
+			$custom_vars_arr = array();
+			$custom_vars_raw = isset( $_POST['nl_custom_vars'] ) ? wp_unslash( $_POST['nl_custom_vars'] ) : '';
+			if ( ! empty( $custom_vars_raw ) ) {
+				$lines = explode( "\n", str_replace( "\r", "", $custom_vars_raw ) );
+				foreach ( $lines as $line ) {
+					$parts = explode( '|', $line, 2 );
+					if ( count( $parts ) === 2 ) {
+						$c_key = sanitize_key( trim( $parts[0] ) );
+						if ( ! empty( $c_key ) ) {
+							$custom_vars_arr[ $c_key ] = sanitize_text_field( trim( $parts[1] ) );
+						}
+					}
+				}
+			}
+
+			$extra_args = array(
+				'rule_id'       => isset( $_POST['nl_workflow_rule'] ) ? (int) $_POST['nl_workflow_rule'] : 0,
+				'custom_vars'   => $custom_vars_arr,
+				'delivery_mode' => isset( $_POST['nl_delivery_mode'] ) ? sanitize_key( $_POST['nl_delivery_mode'] ) : 'individual',
+			);
+
+			$target_type = isset( $_POST['nl_target_type'] ) ? sanitize_key( $_POST['nl_target_type'] ) : 'all';
+			if ( 'test' === $target_type ) {
+				$extra_args['test_email'] = sanitize_email( wp_unslash( $_POST['nl_test_email'] ?? '' ) );
+				if ( ! is_email( $extra_args['test_email'] ) ) {
+					$notice = 'warning:Please enter a valid test recipient email address.';
+					$subject = ''; // prevent sending below
+				}
+			}
+
+			if ( empty( $notice ) ) {
+				$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email, $extra_args );
+				// Log the broadcast using the subject, falling back to rule name if subject is empty
+				$log_subject = $subject ?: 'Workflow Rule ID #' . $extra_args['rule_id'];
+				AH_Newsletter::log_broadcast( $log_subject, $result['sent'], $result['failed'] );
+				$notice = 'success:Notification queued for ' . $result['sent'] . ' subscriber(s) via Rules Engine.';
+			}
 		}
 		$active_tab = 'send';
 	} else {
-		$notice     = 'warning:Subject and message body are required.';
+		$notice     = 'warning:Subject, Message Body, or Workflow Rule is required.';
 		$active_tab = 'send';
 	}
 }
@@ -247,36 +282,74 @@ $page_slug   = 'ah-newsletter';
     <form method="post" id="nl-send-form">
       <?php wp_nonce_field( 'ah_nl_send', 'ah_nl_send_nonce' ); ?>
 
-      <div class="nl-send-grid">
+      <div class="nl-send-grid" style="margin-bottom:16px; border-bottom: 1px solid #e5e7eb; padding-bottom:16px;">
         <div class="ah-form-row">
-          <label>From Name</label>
-          <input type="text" name="nl_from_name" value="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" placeholder="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+          <label>Target Recipients</label>
+          <div style="display:flex;gap:20px;margin-top:8px;">
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="nl_target_type" value="all" checked id="target-all"> 👥 All Active Subscribers (<?php echo esc_html( $count_act ); ?>)</label>
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="nl_target_type" value="test" id="target-test"> 📧 Test Email Only</label>
+          </div>
         </div>
+        <div class="ah-form-row" id="delivery-mode-wrapper">
+          <label>Delivery Mode</label>
+          <div style="display:flex;gap:20px;margin-top:8px;">
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="nl_delivery_mode" value="individual" checked> 📩 Individual Emails (Personalized per subscriber)</label>
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="nl_delivery_mode" value="bcc"> ✉️ Single Group Email (All subscribers in BCC)</label>
+          </div>
+        </div>
+        <div class="ah-form-row" id="test-email-wrapper" style="display:none;">
+          <label>Test Recipient Email *</label>
+          <input type="email" name="nl_test_email" placeholder="e.g. you@example.com" style="width:100%;">
+        </div>
+      </div>
+
+      <div class="nl-send-grid" style="margin-bottom:16px;">
         <div class="ah-form-row">
-          <label>From Email</label>
-          <input type="email" name="nl_from_email" value="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>">
+          <label>Trigger Target Rule (Rules Engine)</label>
+          <?php
+          $all_rules = class_exists( 'AH_Workflow_Manager' ) ? AH_Workflow_Manager::get_all() : array();
+          $active_rules = array();
+          foreach ( $all_rules as $rule ) {
+            if ( 'active' === $rule->status ) {
+              $active_rules[] = $rule;
+            }
+          }
+          ?>
+          <select name="nl_workflow_rule" style="width:100%;">
+            <option value="0">Default (Run all active rules matching trigger 'notification_send')</option>
+            <?php foreach ( $active_rules as $ar ) : ?>
+              <option value="<?php echo (int) $ar->id; ?>"><?php echo esc_html( $ar->name . ' (ID: ' . $ar->id . ' - Trigger: ' . $ar->trigger_name . ')' ); ?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
       </div>
 
       <div class="ah-form-row" style="margin-bottom:16px">
-        <label>Subject *</label>
-        <input type="text" name="nl_subject" required placeholder="e.g. Your update from <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?>" style="font-size:15px;padding:10px 14px">
+        <label>Subject</label>
+        <input type="text" name="nl_subject" placeholder="e.g. Your update from <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?>" style="font-size:15px;padding:10px 14px">
+      </div>
+
+      <div class="ah-form-row" style="margin-bottom:16px;">
+        <label>Extra Custom Variables (One per line: <code>key|value</code>)</label>
+        <textarea name="nl_custom_vars" style="font-family:monospace;height:80px;" placeholder="discount|20% Off&#10;date|July 31st"></textarea>
+        <p class="description" style="margin-top:5px;font-size:12px;color:#6b7280;">Use tokens like <code>{discount}</code> or <code>{date}</code> inside the email subject or body. They will be replaced dynamically before sending.</p>
       </div>
 
       <div class="nl-body-wrap">
-        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
+        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body</label>
         <div style="margin-bottom:8px;font-size:12px;color:#6b7280">Tokens replaced before passing to Rules Engine - click to insert:</div>
         <div class="nl-token-bar">
           <span class="nl-token" title="Subscriber name">{name}</span>
           <span class="nl-token" title="Unsubscribe link URL">{unsubscribe_url}</span>
+          <span class="nl-token" title="Subscriber email">{email}</span>
         </div>
-        <textarea name="nl_body" required placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;To unsubscribe: {unsubscribe_url}"></textarea>
+        <textarea name="nl_body" placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;To unsubscribe: {unsubscribe_url}"></textarea>
         <div style="font-size:12px;color:#6b7280;margin-top:6px">Body is passed as <code>{body}</code> token to the Rules Engine rule. An unsubscribe line is also appended automatically.</div>
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
-        <button type="submit" class="ah-btn ah-btn-primary" style="font-size:15px;padding:10px 28px" onclick="return confirm('Send notification to <?php echo esc_js( $count_act ); ?> subscriber(s) via Rules Engine now?')">
-          Send to <?php echo esc_html( $count_act ); ?> Subscriber<?php echo $count_act !== 1 ? 's' : ''; ?> →
+        <button type="submit" class="ah-btn ah-btn-primary" style="font-size:15px;padding:10px 28px" onclick="return confirm('Confirm sending this notification via Rules Engine now?')">
+          Send Notification →
         </button>
         <span style="font-size:12px;color:#6b7280">This action cannot be undone.</span>
       </div>
@@ -332,6 +405,17 @@ jQuery(function ($) {
     ta.value = ta.value.substring(0, s) + token + ta.value.substring(e);
     ta.selectionStart = ta.selectionEnd = s + token.length;
     ta.focus();
+  });
+  $('input[name="nl_target_type"]').on('change', function () {
+    if ($('#target-test').is(':checked')) {
+      $('#test-email-wrapper').show();
+      $('#delivery-mode-wrapper').hide();
+      $('input[name="nl_test_email"]').attr('required', true);
+    } else {
+      $('#test-email-wrapper').hide();
+      $('#delivery-mode-wrapper').show();
+      $('input[name="nl_test_email"]').removeAttr('required');
+    }
   });
 });
 </script>

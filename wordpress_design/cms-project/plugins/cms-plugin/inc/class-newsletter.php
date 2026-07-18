@@ -187,36 +187,157 @@ class AH_Newsletter {
 	 * @param string $from_name
 	 * @param string $from_email
 	 */
-	public static function send_broadcast( string $subject, string $body, string $from_name = '', string $from_email = '' ): array {
+	public static function send_broadcast( string $subject, string $body, string $from_name = '', string $from_email = '', array $extra_args = array() ): array {
 		if ( ! self::table_exists() )             { return array( 'sent' => 0, 'failed' => 0 ); }
 		if ( ! class_exists( 'AH_Workflow_Manager' ) ) { return array( 'sent' => 0, 'failed' => 0 ); }
 
-		$from_email = $from_email ?: get_option( 'admin_email' );
-		$from_name  = $from_name  ?: get_bloginfo( 'name' );
+		$target_rule_id = isset( $extra_args['rule_id'] ) ? (int) $extra_args['rule_id'] : 0;
+		$custom_vars    = isset( $extra_args['custom_vars'] ) && is_array( $extra_args['custom_vars'] ) ? $extra_args['custom_vars'] : array();
+		$test_email     = isset( $extra_args['test_email'] ) ? sanitize_email( $extra_args['test_email'] ) : '';
 
-		$subscribers = self::get_all( 'active', 5000, 0 );
-		$sent        = 0;
+		// Only set defaults if not targeted to a specific rule
+		if ( 0 === $target_rule_id ) {
+			$from_email = $from_email ?: get_option( 'admin_email' );
+			$from_name  = $from_name  ?: get_bloginfo( 'name' );
+		} else {
+			$from_email = $from_email ?: '';
+			$from_name  = $from_name  ?: '';
+		}
+
+		// Route targeting: specific test email OR all active subscribers
+		if ( '' !== $test_email ) {
+			$subscribers = array(
+				array(
+					'email'  => $test_email,
+					'name'   => 'Test Recipient',
+					'status' => 'active',
+				)
+			);
+		} else {
+			$subscribers = self::get_all( 'active', 5000, 0 );
+		}
+
+		$delivery_mode = isset( $extra_args['delivery_mode'] ) ? sanitize_key( $extra_args['delivery_mode'] ) : 'individual';
+
+		// Option A: Single Group Email (BCC Mode)
+		if ( 'bcc' === $delivery_mode ) {
+			$bcc_emails = array();
+			foreach ( $subscribers as $sub ) {
+				$bcc_emails[] = $sub['email'];
+			}
+
+			if ( empty( $bcc_emails ) ) {
+				return array( 'sent' => 0, 'failed' => 0 );
+			}
+
+			$to_email = $from_email ?: get_option( 'admin_email' );
+			$unsub    = self::unsub_url( $to_email );
+
+			// Replace tokens in body
+			$replace_keys = array( '{name}', '{unsubscribe_url}', '{email}' );
+			$replace_vals = array( 'Subscriber', $unsub,          $to_email );
+
+			foreach ( $custom_vars as $c_key => $c_val ) {
+				$replace_keys[] = '{' . $c_key . '}';
+				$replace_vals[] = $c_val;
+			}
+
+			$body_rendered = '';
+			if ( '' !== $body ) {
+				$body_rendered = str_replace( $replace_keys, $replace_vals, $body );
+				$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
+			}
+
+			$context = array(
+				'email'              => $to_email,
+				'name'               => 'Subscriber',
+				'unsubscribe_url'    => $unsub,
+				'newsletter_subject' => $subject,
+				'newsletter_body'    => $body_rendered,
+				'_direct_bcc'        => $bcc_emails,
+			);
+
+			if ( '' !== $subject ) {
+				$context['subject'] = $subject;
+			}
+			if ( '' !== $body_rendered ) {
+				$context['body'] = $body_rendered;
+			}
+			if ( '' !== $from_name ) {
+				$context['from_name'] = $from_name;
+			}
+			if ( '' !== $from_email ) {
+				$context['from_email'] = $from_email;
+			}
+
+			// Custom variables
+			foreach ( $custom_vars as $c_key => $c_val ) {
+				$context[ $c_key ] = $c_val;
+			}
+
+			if ( $target_rule_id > 0 ) {
+				$context['_target_rule_id'] = $target_rule_id;
+			}
+
+			AH_Workflow_Manager::evaluate( 'notification_send', $context, true );
+
+			return array( 'sent' => count( $bcc_emails ), 'failed' => 0 );
+		}
+
+		// Option B: Individual/Personalized Emails
+		$sent = 0;
 
 		foreach ( $subscribers as $sub ) {
-			$unsub         = self::unsub_url( $sub['email'] );
-			$name          = '' !== $sub['name'] ? $sub['name'] : 'there';
-			$body_rendered = str_replace(
-				array( '{name}', '{unsubscribe_url}' ),
-				array( $name,    $unsub              ),
-				$body
+			$unsub = self::unsub_url( $sub['email'] );
+			$name  = '' !== $sub['name'] ? $sub['name'] : 'there';
+
+			// Build target tokens list
+			$replace_keys = array( '{name}', '{unsubscribe_url}', '{email}' );
+			$replace_vals = array( $name,    $unsub,              $sub['email'] );
+
+			// Incorporate custom tags if defined
+			foreach ( $custom_vars as $c_key => $c_val ) {
+				$replace_keys[] = '{' . $c_key . '}';
+				$replace_vals[] = $c_val;
+			}
+
+			$body_rendered = '';
+			if ( '' !== $body ) {
+				$body_rendered = str_replace( $replace_keys, $replace_vals, $body );
+				$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
+			}
+
+			$context = array(
+				'email'              => $sub['email'],
+				'name'               => $name,
+				'unsubscribe_url'    => $unsub,
+				'newsletter_subject' => $subject,
+				'newsletter_body'    => $body_rendered,
 			);
-			$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
 
-			AH_Workflow_Manager::evaluate( 'notification_send', array(
-				'email'           => $sub['email'],
-				'name'            => $name,
-				'subject'         => $subject,
-				'body'            => $body_rendered,
-				'from_name'       => $from_name,
-				'from_email'      => $from_email,
-				'unsubscribe_url' => $unsub,
-			), true );
+			if ( '' !== $subject ) {
+				$context['subject'] = $subject;
+			}
+			if ( '' !== $body_rendered ) {
+				$context['body'] = $body_rendered;
+			}
+			if ( '' !== $from_name ) {
+				$context['from_name'] = $from_name;
+			}
+			if ( '' !== $from_email ) {
+				$context['from_email'] = $from_email;
+			}
 
+			// Inject custom vars directly into rule context so actions can use them via {{var}}
+			foreach ( $custom_vars as $c_key => $c_val ) {
+				$context[ $c_key ] = $c_val;
+			}
+
+			if ( $target_rule_id > 0 ) {
+				$context['_target_rule_id'] = $target_rule_id;
+			}
+
+			AH_Workflow_Manager::evaluate( 'notification_send', $context, true );
 			$sent++;
 		}
 

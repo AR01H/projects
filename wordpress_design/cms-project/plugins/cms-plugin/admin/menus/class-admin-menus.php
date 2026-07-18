@@ -33,7 +33,7 @@ class AH_Admin_Menus {
 			['title' => 'Pages Manager',        'menu' => 'Pages Manager',        'slug' => 'ah-pages',         'callback' => 'page_pages'        ],
 			// ── Forms & Communication ─────────────────────────────────
 			['title' => 'Form Builder',         'menu' => 'Form Builder',         'slug' => 'ah-form-builder',  'callback' => 'page_form_builder' ],
-			['title' => 'Notifications',        'menu' => 'Notifications',        'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
+			['title' => 'News Letter',        'menu' => 'News Letter',        'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
 			// ── Assets ────────────────────────────────────────────────
 			['title' => 'Media Library',        'menu' => 'Media Library',        'slug' => 'ah-media',         'callback' => 'page_media'        ],
 			['title' => 'File Links',           'menu' => 'File Links',           'slug' => 'ah-file-links',    'callback' => 'page_file_links'   ],
