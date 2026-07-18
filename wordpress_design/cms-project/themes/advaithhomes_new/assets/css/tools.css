@@ -317,9 +317,8 @@
 }
 
 .popular-tools-grid .calc-card:hover {
-    transform: translateY(-6px) !important;
     box-shadow: 0 20px 48px rgba(45, 90, 68, 0.12) !important;
-    border-color: var(--color-primary, #2d5a44) !important;
+    border-color: var(--color-primary) !important;
 }
 
 .popular-tools-grid .calc-card-media {

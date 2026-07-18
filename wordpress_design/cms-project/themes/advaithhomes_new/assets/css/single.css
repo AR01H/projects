@@ -2601,7 +2601,6 @@
 .post-related-articles {
     background: var(--section-color, #f8f9fa);
     border-top: 1px solid var(--slate-200, #e5e7eb);
-    padding: 48px 0 52px;
 }
 
 .pra-heading {

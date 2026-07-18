@@ -2833,17 +2833,16 @@ html.adn-reveal .acard-stat::before {
 .tc-featured-desc {
     font-size: 1rem !important;
     color: rgba(255,255,255,0.85) !important;
-    margin: 0 0 24px 0 !important;
+    margin: 0 0 14px 0 !important;
     line-height: 1.5 !important;
 }
 
 .tc-featured-benefits {
     list-style: none !important;
     padding: 0 !important;
-    margin: 0 0 28px 0 !important;
+    margin: 0 0 16px 0 !important;
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
-    gap: 10px 20px !important;
+    gap: 6px 20px !important;
 }
 
 .tc-featured-benefits li {
@@ -2874,8 +2873,8 @@ html.adn-reveal .acard-stat::before {
     color: #1e3a2f !important;
     font-size: 0.92rem !important;
     font-weight: 700 !important;
-    padding: 12px 28px !important;
-    border-radius: 50px !important; /* Pill style button */
+    padding: 6px 12px !important;
+    border-radius: 8px !important; /* Pill style button */
     text-decoration: none !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-shadow: 0 4px 12px rgba(245, 200, 66, 0.25) !important;
@@ -3136,10 +3135,6 @@ html.adn-reveal .acard-stat::before {
     color: var(--color-dark, #111827) !important;
     text-transform: none !important;
     margin: 0 !important;
-}
-
-.tc-all-side-list .mini-card:last-child {
-    border-bottom: 1px solid var(--color-border, #e8eaed) !important;
 }
 
 /* ── Filter Pills Bar ───────────────────────────────────────── */
