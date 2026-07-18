@@ -110,10 +110,17 @@
         fd.append( 'action', 'ah_contact_submit' );
         fd.append( 'nonce',  adnEnquiry.nonce );
         fd.append( 'client_timestamp', new Date().toISOString() );
+        debugger;
 
         fetch( adnEnquiry.ajaxUrl, { method: 'POST', body: fd } )
-            .then( function ( r ) { return r.json(); } )
-            .then( function ( res ) {
+            .then( function ( r ) { return r.text(); } )
+            .then( function ( text ) {
+                var jsonStr = text.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+                if ( jsonStr.endsWith('0') ) {
+                    jsonStr = jsonStr.slice(0, -1).trim();
+                }
+                var res = JSON.parse( jsonStr );
+
                 if ( submitBtn ) { submitBtn.disabled = false; submitBtn.innerHTML = origHTML; }
                 if ( res.success ) {
                     form.reset();
