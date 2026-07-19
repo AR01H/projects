@@ -118,25 +118,11 @@ adn_page_open( $_open_ctx );
 			<?php
 			$_catalog = class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'sidebar_cards' ) : array();
 			if ( isset( $_catalog['experts'] ) ) :
-				$_card   = (array) $_catalog['experts'];
-				$_c_icon = isset( $_card['icon'] ) ? (string) $_card['icon'] : 'fa-solid fa-user-tie';
-				$_c_head = isset( $_card['heading'] ) ? (string) $_card['heading'] : '';
-				$_c_desc = isset( $_card['description'] ) ? (string) $_card['description'] : '';
-				$_c_btn  = isset( $_card['button_label'] ) ? (string) $_card['button_label'] : '';
-				$_c_url  = isset( $_card['url'] ) ? (string) $_card['url'] : '';
-				$_c_cls  = isset( $_card['class'] ) ? (string) $_card['class'] : '';
+				adn_component( 'cards/sidebar_contact_card', array(
+					'card' => (array) $_catalog['experts']
+				) );
+			endif; 
 			?>
-			<div class="contact-alt-box<?php echo $_c_cls ? ' ' . esc_attr( $_c_cls ) : ''; ?>">
-				<div class="contact-alt-head">
-					<div class="contact-alt-icon" aria-hidden="true"><i class="<?php echo esc_attr( $_c_icon ); ?>"></i></div>
-					<h3><?php echo esc_html( $_c_head ); ?></h3>
-				</div>
-				<p class="contact-guidance-text"><?php echo esc_html( $_c_desc ); ?></p>
-				<a href="<?php echo esc_url( home_url( $_c_url ) ); ?>" class="btn btn-primary contact-alt-btn">
-					<?php echo esc_html( $_c_btn ); ?> &rarr;
-				</a>
-			</div>
-			<?php endif; ?>
 
 		</aside>
 

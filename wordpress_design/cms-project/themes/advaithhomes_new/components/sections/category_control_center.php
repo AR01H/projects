@@ -19,7 +19,7 @@ $terms      = isset( $spotlights['terms'] ) && is_array( $spotlights['terms'] )
 if ( empty( $journey ) && empty( $terms ) ) { return; }
 ?>
 <?php if ( ! empty( $terms ) ) : ?>
-<div class="category-control-centre__spotlights mini_card_container_design">
+<div class="category-control-centre__spotlights ">
 	<?php foreach ( $terms as $_term_slug ) : ?>
 		<?php adn_component( 'parts/spotlights_widget', array(
 			'term_slug' => $_term_slug,

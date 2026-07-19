@@ -1254,7 +1254,7 @@
     grid-template-columns: 180px 1fr;
     gap: var(--space-8);
     align-items: center;
-    padding: 60px 0 50px;
+    padding: 120px 0 50px;
     position: relative;
     z-index: 1;
     background: transparent;
@@ -1281,6 +1281,7 @@
     height: 140px;
     object-fit: cover;
     border: 2px solid rgba(176,141,87,0.7);
+    border-radius: 8px;
     display: block;
     box-shadow: 0 0 0 6px rgba(176,141,87,0.18), 0 8px 28px rgba(0,0,0,0.32);
 }
@@ -1289,7 +1290,7 @@
     width: 140px;
     height: 140px;
     background: linear-gradient(135deg, rgba(176,141,87,0.3), rgba(30,58,47,0.6));
-    border-radius: 50%;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;

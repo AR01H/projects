@@ -142,13 +142,6 @@ foreach ( $_deferred as $_df ) :
 	     data-fragment="<?php echo esc_attr( $_df ); ?>"
 	     data-endpoint="<?php echo esc_url( rest_url( ADN_API_NS . '/home/section/' . $_df ) ); ?>"
 	     aria-busy="true">
-		<div class="container">
-			<div class="adn-defer-skel" aria-hidden="true">
-				<span class="adn-defer-line adn-defer-line--head"></span>
-				<span class="adn-defer-line"></span>
-				<span class="adn-defer-line adn-defer-line--short"></span>
-			</div>
-		</div>
 	</div>
 <?php
 	}

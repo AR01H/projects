@@ -255,6 +255,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 		<aside class="expert-profile-sidebar">
 
 			<?php /* Quick Info */ ?>
+			<?php if ( ! empty( $ctx['location'] ) || $ctx['rating'] > 0 ) : ?>
 			<div class="expert-sb-box expert-quick-info">
 				<h3><i class="fa-solid fa-address-card" aria-hidden="true"></i> <?php esc_html_e( 'Quick Details', ADN_TEXT_DOMAIN ); ?></h3>
 				<ul class="expert-sb-contact-list">
@@ -278,6 +279,7 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 					<?php endif; ?>
 				</ul>
 			</div>
+			<?php endif; ?>
 
 
 			<?php /* Specialisation pill */ ?>
@@ -295,41 +297,22 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 				</div>
 			<?php endif; ?>
 
-			<?php /* CTA */ ?>
-			<div class="expert-sb-box expert-need-help">
-				<h3><i class="fa-solid fa-users" aria-hidden="true"></i> <?php echo esc_html( SITE_EXPERT_LABEL ); ?></h3>
-				<p><?php esc_html_e( 'Browse all our vetted professionals and find the right specialist for your situation.', ADN_TEXT_DOMAIN ); ?></p>
-				<a href="<?php echo esc_url( home_url( SITE_EXPERT_URL ) ); ?>" class="btn btn-primary expert-nh-btn">
-					<?php esc_html_e( 'View All Experts', ADN_TEXT_DOMAIN ); ?>
-				</a>
-			</div>
-
-			<?php /* Reusable Contact Card from Catalog */ ?>
+			<?php /* Reusable Sidebar Cards from Catalog */ ?>
 			<?php 
 			$_catalog = array();
 			if ( class_exists( 'ADN_Real_Loader' ) ) {
 				$_catalog = ADN_Real_Loader::json( 'sidebar_cards' );
 			}
-			if ( ! empty( $_catalog ) && isset( $_catalog['contact'] ) ) :
-				$_card   = (array) $_catalog['contact'];
-				$_c_icon = isset( $_card['icon'] ) ? (string) $_card['icon'] : 'fa-solid fa-circle-info';
-				$_c_head = isset( $_card['heading'] ) ? (string) $_card['heading'] : '';
-				$_c_desc = isset( $_card['description'] ) ? (string) $_card['description'] : '';
-				$_c_btn  = isset( $_card['button_label'] ) ? (string) $_card['button_label'] : '';
-				$_c_url  = isset( $_card['url'] ) ? (string) $_card['url'] : '';
-				$_c_cls  = isset( $_card['class'] ) ? (string) $_card['class'] : '';
+			$_cards_to_show = array( 'experts', 'contact' );
+			if ( ! empty( $_catalog ) ) :
+				foreach ( $_cards_to_show as $_key ) :
+					if ( ! isset( $_catalog[$_key] ) ) { continue; }
+					adn_component( 'cards/sidebar_contact_card', array(
+						'card'         => (array) $_catalog[$_key]
+					) );
+				endforeach;
+			endif; 
 			?>
-				<div class="contact-alt-box<?php echo $_c_cls ? ' ' . esc_attr( $_c_cls ) : ''; ?>" style="margin-top: 24px;">
-					<div class="contact-alt-head">
-						<div class="contact-alt-icon" aria-hidden="true"><i class="<?php echo esc_attr( $_c_icon ); ?>"></i></div>
-						<h3><?php echo esc_html( $_c_head ); ?></h3>
-					</div>
-					<p class="contact-guidance-text" style="font-size: 0.88rem; color: var(--color-text, #4b5563); line-height: 1.55; margin: 8px 0 16px;"><?php echo esc_html( $_c_desc ); ?></p>
-					<a href="<?php echo esc_url( home_url( $_c_url ) ); ?>" class="btn btn-primary contact-alt-btn" style="width: 100%; display: block; text-align: center; box-sizing: border-box;">
-						<?php echo esc_html( $_c_btn ); ?> →
-					</a>
-				</div>
-			<?php endif; ?>
 
 		</aside>
 

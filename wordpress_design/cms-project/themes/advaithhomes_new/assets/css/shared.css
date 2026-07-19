@@ -3368,6 +3368,9 @@ a.mini-card, div.mini-card {
   margin:10px;
   border-radius: var(--radius-xs);
 }
+.category-control-centre__spotlights {
+  margin: 10px;
+}
 .category-control-centre__spotlights + .category-control-centre__journey {
   margin-top: 16px;
   padding-top: 14px;
@@ -3413,6 +3416,22 @@ a.mini-card, div.mini-card {
   width: calc(100% );
   height: 2px;
   background: #e5e7eb;
+}
+.category-control-centre a.jny2-step {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.category-control-centre a.jny2-step:hover .jny2-step__num-chip {
+  transform: translateY(-2px);
+  background: #eef7f3;
+  border-color: rgba(176,141,87,0.6);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.category-control-centre a.jny2-step:hover .jny2-step__body {
+  box-shadow: none; /* override the global hover */
+  transform: none;
+  border-color: transparent;
 }
 .category-control-centre .jny2-step__num-chip {
   position: relative;
@@ -3478,7 +3497,7 @@ a.mini-card, div.mini-card {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding: 2px 2px 8px;
+  /* padding: 2px 2px 8px; */
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -3650,6 +3669,18 @@ a.mini-card, div.mini-card {
   overflow: visible;
 }
 
+a.jny2-step {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+a.jny2-step:hover .jny2-step__body {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  border-color: rgba(176,141,87,0.4);
+}
+
 /* Step number chip */
 .jny2-step__num-chip {
   font-size: 0.68rem;
@@ -3681,7 +3712,35 @@ a.mini-card, div.mini-card {
   color: var(--color-dark, #1a2533);
   line-height: 1.35;
   margin-bottom: var(--space-2);
-    width:100%;
+  width:100%;
+}
+a.jny2-step .jny2-step__label {
+  background: linear-gradient(135deg, var(--color-primary, #1e3a2f), #2a4a3a);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(30,58,47,0.2);
+  margin-top: 4px;
+  transition: all 0.2s ease;
+}
+a.jny2-step .jny2-step__label::after {
+  content: ' \2192'; /* right arrow */
+  display: inline-block;
+  margin-left: 6px;
+  opacity: 0.9;
+  font-size: 1.1em;
+  transition: transform 0.2s;
+}
+a.jny2-step:hover .jny2-step__label {
+  box-shadow: 0 6px 14px rgba(30,58,47,0.3);
+  background: linear-gradient(135deg, #2a4a3a, var(--color-primary, #1e3a2f));
+}
+a.jny2-step:hover .jny2-step__label::after {
+  transform: translateX(4px);
 }
 .jny2-step__desc {
   font-size: 0.875rem;
