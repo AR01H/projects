@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "title": "Welcome to our new site!",
+    "message": "We have just launched our brand new experience.",
+    "button_label": "Learn More",
+    "button_url": "/about/",
+    "badge_text": "New",
+    "badge_color": "green",
+    "position": "corner",
+    "status": "active"
+  }
+]

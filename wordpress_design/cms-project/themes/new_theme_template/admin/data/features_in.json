@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "TechCrunch", "image_id": 0, "link_url": "#", "status": "active", "sort_order": 1 },
+  { "id": 2, "name": "Forbes", "image_id": 0, "link_url": "#", "status": "active", "sort_order": 2 },
+  { "id": 3, "name": "Wired", "image_id": 0, "link_url": "#", "status": "active", "sort_order": 3 }
+]

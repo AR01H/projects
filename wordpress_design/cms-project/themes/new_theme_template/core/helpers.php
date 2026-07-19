@@ -95,6 +95,7 @@ function nt_data( $name, $default = array() ) {
 	return $cache[ $name ];
 }
 
+
 /**
  * Normalize a link: '#', full http(s) URLs pass through; anything else is
  * treated as a site-relative path.

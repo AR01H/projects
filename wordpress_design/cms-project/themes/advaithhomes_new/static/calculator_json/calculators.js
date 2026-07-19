@@ -136,783 +136,339 @@ function monthlyPayment(loan, annualRatePct, termYears) {
    ============================================================ */
 
 const CALCULATORS = [
-
-  /* ══════════════════════════════════════════════════════════
-     CALCULATOR 1 — TOTAL COST TO BUY
-     ══════════════════════════════════════════════════════════ */
-  {
-    id  : 'total-cost',
-    nav : { label: 'Total Cost to Buy', icon: '🏠' },
+{
+    id  : 'survey-repair-renegotiation',
+    nav : { label: 'Survey Repair & Renegotiation', icon: '🛠️' },
 
     header: {
-      eyebrow : 'Complete Purchase',
-      title   : 'Total Cost to Buy',
-      desc    : 'Every cost from deposit to moving day — edit any figure to match your situation.',
+      eyebrow : 'After the Survey Report',
+      title   : 'Survey Repair & Renegotiation Calculator',
+      desc    : 'Organises the repair findings from your survey and shows how different renegotiation outcomes \u2014 seller repairs vs. price reduction \u2014 would flow through to your deposit, mortgage and tax.',
     },
 
     /* ── INPUTS ── */
     inputs: [
-      /* Purchase */
-      { type:'number',  id:'tc_price',     label:'Property Purchase Price',       prefix:'£', min:0, max:10000000, step:1000, default:500000 },
-      { type:'slider',  sliderFor:'tc_price',   min:50000,  max:2000000, step:5000 },
-      { type:'number',  id:'tc_dep',       label:'Deposit',                       suffix:'%', min:0, max:100, step:1, default:20 },
-      { type:'slider',  sliderFor:'tc_dep',     min:0,      max:100,     step:1   },
-      { type:'segment', id:'tc_buyer',     label:'Buyer Type',
-        options:[{val:'ftb',lbl:'First-Time Buyer'},{val:'homemover',lbl:'Home Mover'}],
-        default:'ftb' },
-      { type:'segment', id:'tc_prop',      label:'House Type',
-        options:[{val:'house',lbl:'House'},{val:'flat',lbl:'Flat / Apartment'}],
-        default:'house' },
+      /* Offer & valuation */
+      { type:'number',  id:'sr_offer',      label:'Original Accepted Offer',  prefix:'£', min:0, max:5000000, step:1000, default:300000 },
+      { type:'slider',  sliderFor:'sr_offer', min:20000, max:1000000, step:5000 },
+      { type:'number',  id:'sr_valuation',  label:'Lender\u2019s Valuation', prefix:'£', min:0, max:5000000, step:1000, default:295000 },
 
-      /* Professional Fees */
-      { type:'section', label:'Professional Fees' },
-      { type:'number',  id:'tc_solicitor', label:'Solicitor / Conveyancer',       prefix:'£', min:0, max:20000,  step:50,  default:1500 },
-      { type:'number',  id:'tc_rics',      label:'RICS Surveyor',                 prefix:'£', min:0, max:5000,   step:50,  default:750  },
-      { type:'number',  id:'tc_surveys',   label:'Other Surveys',                 prefix:'£', min:0, max:5000,   step:50,  default:1000 },
-      { type:'number',  id:'tc_agent',     label:'Buying Agent Fee',              prefix:'£', min:0, max:10000,  step:50,  default:1000 },
-      { type:'number',  id:'tc_broker',    label:'Mortgage Broker Fee',           prefix:'£', min:0, max:5000,   step:50,  default:500  },
-      { type:'number',  id:'tc_lender',    label:'Lender Valuation Fee',          prefix:'£', min:0, max:2000,   step:10,  default:100  },
+      /* Mortgage */
+      { type:'section', label:'Mortgage' },
+      { type:'segment', id:'sr_mortgagemode', label:'Mortgage Input Method',
+        options:[{val:'amount',lbl:'Mortgage Amount'},{val:'ltv',lbl:'Loan-to-Value'}], default:'ltv' },
+      { type:'number',  id:'sr_mortgageamt', label:'Mortgage Amount',    prefix:'£', min:0, max:5000000, step:1000, default:255000, showWhen:{ id:'sr_mortgagemode', val:'amount' } },
+      { type:'number',  id:'sr_mortgageltv', label:'Mortgage LTV',       suffix:'%', min:0, max:100,     step:1,    default:85,     showWhen:{ id:'sr_mortgagemode', val:'ltv'    } },
+      { type:'number',  id:'sr_rate',        label:'Mortgage Rate',      suffix:'%', min:0, max:15,      step:0.05, default:4.5  },
+      { type:'number',  id:'sr_term',        label:'Mortgage Term',      suffix:'yrs', min:1, max:40,    step:1,    default:25   },
 
-      /* Moving & Setup */
-      { type:'section', label:'Moving & Setup' },
-      { type:'number',  id:'tc_removals',  label:'Removals',                      prefix:'£', min:0, max:20000,  step:50,  default:1000  },
-      { type:'number',  id:'tc_furniture', label:'Furniture',                     prefix:'£', min:0, max:50000,  step:100, default:5000  },
-      { type:'number',  id:'tc_repairs',   label:'Immediate Repairs',             prefix:'£', min:0, max:20000,  step:100, default:1000  },
-      { type:'number',  id:'tc_emergency', label:'Emergency Fund',                prefix:'£', min:0, max:50000,  step:500, default:10000 },
+      /* Repair items */
+      { type:'section', label:'Repair Findings' },
+      { type:'segment', id:'sr_quotetype', label:'Contractor Quote Type',
+        options:[{val:'fixed',lbl:'Fixed Quotes'},{val:'range',lbl:'Quote Ranges'}], default:'fixed' },
 
-      /* Insurance */
-      { type:'section', label:'Insurance' },
-      { type:'number',  id:'tc_buyins',    label:'Buying Protection Insurance',   prefix:'£', min:0, max:5000,   step:10,  default:0 },
-      { type:'number',  id:'tc_propins',   label:'Property Insurance',            prefix:'£', min:0, max:5000,   step:10,  default:0 },
+      { type:'number', id:'sr_immediate_fixed', label:'Immediate / Safety-Related Repairs (Fixed Quote)', prefix:'£', min:0, max:200000, step:100, default:4500, showWhen:{ id:'sr_quotetype', val:'fixed' } },
+      { type:'number', id:'sr_immediate_low',   label:'Immediate / Safety-Related Repairs (Low Estimate)', prefix:'£', min:0, max:200000, step:100, default:3500, showWhen:{ id:'sr_quotetype', val:'range' } },
+      { type:'number', id:'sr_immediate_high',  label:'Immediate / Safety-Related Repairs (High Estimate)',prefix:'£', min:0, max:200000, step:100, default:5500, showWhen:{ id:'sr_quotetype', val:'range' } },
 
-      /* Leasehold — flat only */
-      { type:'section', label:'Leasehold (Flat Only)', showWhen:{ id:'tc_prop', val:'flat' } },
-      { type:'number',  id:'tc_ground',    label:'Ground Rent (Annual)',          prefix:'£', min:0, max:5000,   step:10,  default:200,  showWhen:{ id:'tc_prop', val:'flat' } },
-      { type:'number',  id:'tc_service',   label:'Service Charge (Annual)',       prefix:'£', min:0, max:20000,  step:100, default:3000, showWhen:{ id:'tc_prop', val:'flat' } },
+      { type:'number', id:'sr_shortterm_fixed', label:'Work Needed Within 1\u20132 Years (Fixed Quote)', prefix:'£', min:0, max:200000, step:100, default:3000, showWhen:{ id:'sr_quotetype', val:'fixed' } },
+      { type:'number', id:'sr_shortterm_low',   label:'Work Needed Within 1\u20132 Years (Low Estimate)', prefix:'£', min:0, max:200000, step:100, default:2200, showWhen:{ id:'sr_quotetype', val:'range' } },
+      { type:'number', id:'sr_shortterm_high',  label:'Work Needed Within 1\u20132 Years (High Estimate)',prefix:'£', min:0, max:200000, step:100, default:3800, showWhen:{ id:'sr_quotetype', val:'range' } },
+
+      { type:'number', id:'sr_maintenance_fixed', label:'Normal Future Maintenance (Fixed Quote)', prefix:'£', min:0, max:200000, step:100, default:1500, showWhen:{ id:'sr_quotetype', val:'fixed' } },
+      { type:'number', id:'sr_maintenance_low',   label:'Normal Future Maintenance (Low Estimate)', prefix:'£', min:0, max:200000, step:100, default:1000, showWhen:{ id:'sr_quotetype', val:'range' } },
+      { type:'number', id:'sr_maintenance_high',  label:'Normal Future Maintenance (High Estimate)',prefix:'£', min:0, max:200000, step:100, default:2000, showWhen:{ id:'sr_quotetype', val:'range' } },
+
+      { type:'number', id:'sr_optional_fixed', label:'Optional Improvements (Fixed Quote)', prefix:'£', min:0, max:200000, step:100, default:2000, showWhen:{ id:'sr_quotetype', val:'fixed' } },
+      { type:'number', id:'sr_optional_low',   label:'Optional Improvements (Low Estimate)', prefix:'£', min:0, max:200000, step:100, default:1200, showWhen:{ id:'sr_quotetype', val:'range' } },
+      { type:'number', id:'sr_optional_high',  label:'Optional Improvements (High Estimate)',prefix:'£', min:0, max:200000, step:100, default:2800, showWhen:{ id:'sr_quotetype', val:'range' } },
+
+      { type:'number', id:'sr_investigation', label:'Further Investigation Costs (e.g. specialist reports)', prefix:'£', min:0, max:20000, step:50, default:350 },
+      { type:'number', id:'sr_contingency',   label:'Repair Contingency', suffix:'%', min:0, max:50, step:1, default:15 },
+
+      /* Seller response */
+      { type:'section', label:'Seller Response' },
+      { type:'segment', id:'sr_seller_immediate',   label:'Seller Agrees to Complete: Immediate/Safety Repairs?',   options:[{val:'no',lbl:'No'},{val:'yes',lbl:'Yes'}], default:'no' },
+      { type:'segment', id:'sr_seller_shortterm',   label:'Seller Agrees to Complete: 1\u20132 Year Repairs?',       options:[{val:'no',lbl:'No'},{val:'yes',lbl:'Yes'}], default:'no' },
+      { type:'segment', id:'sr_seller_maintenance', label:'Seller Agrees to Complete: Routine Maintenance?',        options:[{val:'no',lbl:'No'},{val:'yes',lbl:'Yes'}], default:'no' },
+      { type:'segment', id:'sr_seller_optional',    label:'Seller Agrees to Complete: Optional Improvements?',      options:[{val:'no',lbl:'No'},{val:'yes',lbl:'Yes'}], default:'no' },
+
+      /* Negotiation */
+      { type:'section', label:'Price Negotiation' },
+      { type:'number', id:'sr_requested_reduction', label:'Requested Price Reduction', prefix:'£', min:0, max:500000, step:500, default:8000 },
+      { type:'number', id:'sr_agreed_reduction',    label:'Agreed Price Reduction',    prefix:'£', min:0, max:500000, step:500, default:5000 },
+
+      /* Tax */
+      { type:'section', label:'Property Tax' },
+      { type:'segment', id:'sr_taxregion', label:'Tax Regime',
+        options:[{val:'sdlt',lbl:'England / NI (SDLT)'},{val:'ltt',lbl:'Wales (LTT)'},{val:'lbtt',lbl:'Scotland (LBTT)'}], default:'sdlt' },
+      { type:'segment', id:'sr_buyerstatus', label:'Buyer Tax Status',
+        options:[{val:'standard',lbl:'Standard'},{val:'additional',lbl:'Additional Property'},{val:'first-time',lbl:'First-Time Buyer'}], default:'standard' },
+      { type:'segment', id:'sr_nonresident', label:'Non-UK Resident Surcharge Applies?',
+        options:[{val:'no',lbl:'No'},{val:'yes',lbl:'Yes'}], default:'no' },
     ],
 
     /* ── CALCULATION ── */
     compute(v) {
-      /* ─ Variables ─ */
-      const price    = v.tc_price     || 0;
-      const depPct   = v.tc_dep       || 0;
-      const buyer    = v.tc_buyer     || 'ftb';
-      const isFlat   = v.tc_prop      === 'flat';
-
-      const depAmt   = price * depPct / 100;
-      const mortgage = Math.max(0, price - depAmt);
-      const ltv      = 100 - depPct;
-
-      /* ─ SDLT ─ */
-      const sdlt     = calcSDLT(price, buyer);
-      let sdltTag    = 'Standard'; let sdltTagCls = 'auto';
-      if (sdlt.isFTBRelief) { sdltTag = 'FTB Relief'; sdltTagCls = 'good'; }
-      if (sdlt.ftbOver)     { sdltTag = 'Std Rates';  sdltTagCls = 'warn'; }
-
-      /* ─ Fee subtotals ─ */
-      const profFees = (v.tc_solicitor||0) + (v.tc_rics||0) + (v.tc_surveys||0)
-                     + (v.tc_agent||0)    + (v.tc_broker||0) + (v.tc_lender||0);
-      const moveFees = (v.tc_removals||0) + (v.tc_furniture||0)
-                     + (v.tc_repairs||0)  + (v.tc_emergency||0);
-      const insFees  = (v.tc_buyins||0)   + (v.tc_propins||0);
-      const lhFees   = isFlat ? ((v.tc_ground||0) + (v.tc_service||0)) : 0;
-      const totalFees= sdlt.total + profFees + moveFees + insFees + lhFees;
-
-      /* ─ Grand total ─ */
-      const total    = depAmt + totalFees;
-
-      /* ─ Output ─ */
-      return {
-        primaryLbl : 'Total Cash Required to Buy',
-        primary    : gbp(total),
-        primarySub : 'deposit + stamp duty + all fees',
-
-        chips: [
-          { lbl:'Deposit',   val: gbp(depAmt)    },
-          { lbl:'Mortgage',  val: gbp(mortgage)  },
-          { lbl:'LTV',       val: pct(ltv)       },
-          { lbl:'All Fees',  val: gbp(totalFees) },
-        ],
-
-        alerts: sdlt.isFTBRelief && sdlt.total === 0
-          ? [{ id:'al-ftb', cls:'good', msg:'No stamp duty — first-time buyer relief covers this purchase.' }]
-          : [],
-
-        sections: [
-          {
-            title: 'Purchase Details',
-            rows: [
-              { id:'r-dep',  label:'Deposit Amount',    dot:'#9bbbc0', tag:'Auto', tagCls:'auto', val: gbp(depAmt)    },
-              { id:'r-mtg',  label:'Mortgage Required', dot:'#7c9ea1', tag:'Auto', tagCls:'auto', val: gbp(mortgage)  },
-              { id:'r-sdlt', label:'Stamp Duty (SDLT)', dot: sdlt.isFTBRelief ? '#86efac' : '#9bbbc0',
-                tag: sdltTag, tagCls: sdltTagCls,
-                val: gbp(sdlt.total), valCls: sdlt.isFTBRelief && sdlt.total === 0 ? 'good' : '' },
-            ],
-          },
-          {
-            title: 'Professional Fees',
-            rows: [
-              { id:'r-sol',  label:'Solicitor / Conveyancer', dot:'#a78fa8', val: gbp(v.tc_solicitor||0) },
-              { id:'r-ric',  label:'RICS Surveyor',           dot:'#9b8ea0', val: gbp(v.tc_rics||0)      },
-              { id:'r-srv',  label:'Other Surveys',           dot:'#8f87a0', val: gbp(v.tc_surveys||0)   },
-              { id:'r-agt',  label:'Buying Agent Fee',        dot:'#8094a5', val: gbp(v.tc_agent||0)     },
-              { id:'r-brk',  label:'Mortgage Broker Fee',     dot:'#758ea0', val: gbp(v.tc_broker||0)    },
-              { id:'r-lnd',  label:'Lender Valuation Fee',    dot:'#6a859a', val: gbp(v.tc_lender||0)    },
-              { id:'r-psub', label:'Subtotal',                dot:'#B08D57', val: gbp(profFees), valCls:'warn' },
-            ],
-          },
-          {
-            title: 'Moving & Setup',
-            rows: [
-              { id:'r-rem', label:'Removals',          dot:'#8aa07c', val: gbp(v.tc_removals||0)  },
-              { id:'r-fur', label:'Furniture',         dot:'#96a87a', val: gbp(v.tc_furniture||0) },
-              { id:'r-rep', label:'Immediate Repairs', dot:'#a09670', val: gbp(v.tc_repairs||0)   },
-              { id:'r-eme', label:'Emergency Fund',    dot:'#b0a068', val: gbp(v.tc_emergency||0) },
-            ],
-          },
-          {
-            title: 'Insurance',
-            rows: [
-              { id:'r-bi', label:'Buying Protection', dot:'#7a90b0', val: gbp(v.tc_buyins||0)  },
-              { id:'r-pi', label:'Property Insurance',dot:'#6a80a8', val: gbp(v.tc_propins||0) },
-            ],
-          },
-          ...(isFlat ? [{
-            title: 'Leasehold Costs (Annual)',
-            rows: [
-              { id:'r-gr', label:'Ground Rent',    dot:'#c8a85a', tag:'Annual', tagCls:'warn', val: gbp(v.tc_ground||0)  },
-              { id:'r-sc', label:'Service Charge', dot:'#b89840', tag:'Annual', tagCls:'warn', val: gbp(v.tc_service||0) },
-            ],
-          }] : []),
-        ],
-
-        totalLbl : 'Total Cash Required to Buy',
-        totalSub : isFlat
-          ? 'deposit + stamp duty + all fees + annual leasehold'
-          : 'deposit + stamp duty + all purchase fees',
-        total    : gbp(total),
-      };
-    },
-  },
-
-
-  /* ══════════════════════════════════════════════════════════
-     CALCULATOR 2 — MORTGAGE
-     ══════════════════════════════════════════════════════════ */
-  {
-    id  : 'mortgage',
-    nav : { label: 'Mortgage', icon: '📊' },
-
-    header: {
-      eyebrow : 'Borrowing',
-      title   : 'Mortgage Calculator',
-      desc    : 'Monthly repayments, total interest, and stress-test at +3%.',
-    },
-
-    /* ── INPUTS ── */
-    inputs: [
-      { type:'number',  id:'mg_price', label:'Property Value',    prefix:'£', min:0, max:10000000, step:1000, default:500000 },
-      { type:'slider',  sliderFor:'mg_price', min:50000, max:2000000, step:5000 },
-      { type:'number',  id:'mg_dep',   label:'Deposit',           suffix:'%', min:0, max:100, step:1, default:20 },
-      { type:'slider',  sliderFor:'mg_dep',   min:0,    max:100,   step:1 },
-      { type:'number',  id:'mg_rate',  label:'Interest Rate',     suffix:'%', min:0.1, max:15, step:0.05, default:4.5,
-        hint:'Annual rate — try 4–6% for current market' },
-      { type:'slider',  sliderFor:'mg_rate',  min:0.5,  max:10,    step:0.05 },
-      { type:'number',  id:'mg_term',  label:'Mortgage Term',     suffix:'yrs', min:5, max:40, step:1, default:25 },
-      { type:'slider',  sliderFor:'mg_term',  min:5,    max:40,    step:1 },
-      { type:'segment', id:'mg_type',  label:'Repayment Type',
-        options:[{val:'repay',lbl:'Repayment'},{val:'io',lbl:'Interest Only'}],
-        default:'repay' },
-    ],
-
-    /* ── CALCULATION ── */
-    compute(v) {
-      /* ─ Variables ─ */
-      const price     = v.mg_price || 0;
-      const depPct    = v.mg_dep   || 0;
-      const dep       = price * depPct / 100;
-      const loan      = Math.max(0, price - dep);
-      const rate      = v.mg_rate  || 0;
-      const term      = v.mg_term  || 25;
-      const isIO      = v.mg_type  === 'io';
-      const monR      = (rate / 100) / 12;
-      const n         = term * 12;
-      const ltv       = 100 - depPct;
-
-      /* ─ Monthly payment ─ */
-      let monthly = 0;
-      if (loan > 0) {
-        monthly = isIO
-          ? loan * monR
-          : monthlyPayment(loan, rate, term);
+      /* ─ Local helper: marginal (sliced) banded tax ─ */
+      function bandedTax(price, bands) {
+        let tax = 0, lower = 0;
+        for (const b of bands) {
+          if (price <= lower) break;
+          const upper = Math.min(price, b.upTo);
+          tax += (upper - lower) * b.rate;
+          lower = upper;
+        }
+        return tax;
       }
 
-      /* ─ Totals ─ */
-      const totalPaid = monthly * n;
-      const totalInt  = isIO ? totalPaid : Math.max(0, totalPaid - loan);
+      const SDLT_STD   = [ {upTo:125000,  rate:0   }, {upTo:250000,  rate:0.02 }, {upTo:925000,  rate:0.05 }, {upTo:1500000, rate:0.10}, {upTo:Infinity, rate:0.12} ];
+      const SDLT_FTB   = [ {upTo:300000,  rate:0   }, {upTo:500000,  rate:0.05 } ];
+      const LBTT_STD   = [ {upTo:145000,  rate:0   }, {upTo:250000,  rate:0.02 }, {upTo:325000,  rate:0.05 }, {upTo:750000,  rate:0.10}, {upTo:Infinity, rate:0.12} ];
+      const LBTT_FTB   = [ {upTo:175000,  rate:0   }, {upTo:250000,  rate:0.02 }, {upTo:325000,  rate:0.05 }, {upTo:750000,  rate:0.10}, {upTo:Infinity, rate:0.12} ];
+      const LTT_MAIN   = [ {upTo:225000,  rate:0   }, {upTo:400000,  rate:0.06 }, {upTo:750000,  rate:0.075}, {upTo:1500000, rate:0.10}, {upTo:Infinity, rate:0.12} ];
+      const LTT_HIGHER = [ {upTo:180000,  rate:0.05}, {upTo:250000,  rate:0.085}, {upTo:400000,  rate:0.10 }, {upTo:750000,  rate:0.125}, {upTo:1500000, rate:0.15}, {upTo:Infinity, rate:0.17} ];
 
-      /* ─ Stress test (+3%) ─ */
-      const stressMonthly = loan > 0
-        ? monthlyPayment(loan, rate + 3, term)
-        : 0;
+      function propertyTax(price, region, status, nonResident) {
+        let tax = 0;
+        if (region === 'sdlt') {
+          tax = (status === 'first-time' && price <= 500000) ? bandedTax(price, SDLT_FTB) : bandedTax(price, SDLT_STD);
+          if (status === 'additional' && price >= 40000) tax += price * 0.05;
+          if (nonResident) tax += price * 0.02;
+        } else if (region === 'lbtt') {
+          tax = bandedTax(price, status === 'first-time' ? LBTT_FTB : LBTT_STD);
+          if (status === 'additional' && price >= 40000) tax += price * 0.08;
+        } else {
+          tax = (status === 'additional' && price >= 40000) ? bandedTax(price, LTT_HIGHER) : bandedTax(price, LTT_MAIN);
+        }
+        return tax;
+      }
 
-      /* ─ LTV class ─ */
-      let ltvCls = 'good';
-      if (ltv > 90) ltvCls = 'bad';
-      else if (ltv > 75) ltvCls = 'warn';
+      function mortgagePayment(principal, annualRatePct, years) {
+        const r = (annualRatePct / 100) / 12;
+        const n = years * 12;
+        if (principal <= 0) return 0;
+        if (r === 0) return principal / n;
+        return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+      }
 
-      /* ─ Output ─ */
-      return {
-        primaryLbl : 'Monthly Payment',
-        primary    : gbp(monthly),
-        primarySub : isIO
-          ? 'interest only — capital not reducing'
-          : `over ${term} year term at ${rate}%`,
+      /* ─ Read inputs ─ */
+      const offer      = v.sr_offer     || 0;
+      const valuation  = v.sr_valuation || 0;
 
-        chips: [
-          { lbl:'Loan Amount',    val: gbp(loan) },
-          { lbl:'LTV',            val: pct(ltv),       cls: ltvCls },
-          { lbl:'Total Paid',     val: gbp(totalPaid) },
-          { lbl:'Total Interest', val: gbp(totalInt),  cls:'warn'  },
-        ],
+      const mortgageMode = v.sr_mortgagemode || 'ltv';
+      const rate         = v.sr_rate ?? 4.5;
+      const term         = v.sr_term ?? 25;
 
-        alerts: isIO
-          ? [{ id:'al-io', cls:'warn',
-               msg: `Interest Only: you are not reducing the loan. You will still owe ${gbp(loan)} at the end of the term.` }]
-          : [],
+      const quoteType = v.sr_quotetype || 'fixed';
+      const contingencyPct = v.sr_contingency ?? 15;
+      const investigation  = v.sr_investigation || 0;
 
-        sections: [
-          {
-            title: 'Monthly Breakdown',
-            rows: [
-              { id:'r-mon',    label:'Monthly Repayment',    dot:'#9bbbc0', tag:'Auto', tagCls:'auto', val: gbp(monthly)       },
-              { id:'r-ann',    label:'Annual Repayments',    dot:'#7c9ea1', tag:'Auto', tagCls:'auto', val: gbp(monthly * 12)  },
-              { id:'r-stress', label:'Stress Test (+3%)',    dot:'#c8a85a', tag:'Auto', tagCls:'warn', val: gbp(stressMonthly) },
-            ],
-          },
-          {
-            title: 'Full Term Summary',
-            rows: [
-              { id:'r-loan',  label:'Loan Amount',       dot:'#8094a5', val: gbp(loan)      },
-              { id:'r-tpaid', label:'Total Amount Paid', dot:'#7a90b0', val: gbp(totalPaid) },
-              { id:'r-tint',  label:'Total Interest',    dot:'#e87060', val: gbp(totalInt),  valCls:'bad' },
-              { id:'r-ltv',   label:'Loan-to-Value',     dot:'#86efac', val: pct(ltv),       valCls: ltvCls },
-            ],
-          },
-        ],
+      const taxRegion   = v.sr_taxregion   || 'sdlt';
+      const buyerStatus = v.sr_buyerstatus || 'standard';
+      const nonResident = (v.sr_nonresident || 'no') === 'yes';
 
-        totalLbl : 'Total Cost of Mortgage',
-        totalSub : `${term} year term`,
-        total    : gbp(totalPaid),
-      };
-    },
-  },
-
-
-  /* ══════════════════════════════════════════════════════════
-     CALCULATOR 3 — STAMP DUTY
-     ══════════════════════════════════════════════════════════ */
-  {
-    id  : 'stamp-duty',
-    nav : { label: 'Stamp Duty', icon: '🏛️' },
-
-    header: {
-      eyebrow : 'SDLT',
-      title   : 'Stamp Duty Calculator',
-      desc    : 'Band-by-band breakdown with first-time buyer relief and additional dwelling surcharge.',
-    },
-
-    /* ── INPUTS ── */
-    inputs: [
-      { type:'number',  id:'sd_price', label:'Property Purchase Price', prefix:'£', min:0, max:10000000, step:1000, default:500000 },
-      { type:'slider',  sliderFor:'sd_price', min:50000, max:2000000, step:5000 },
-      { type:'segment', id:'sd_buyer', label:'Buyer Type',
-        options:[
-          {val:'ftb',        lbl:'First-Time Buyer'},
-          {val:'homemover',  lbl:'Home Mover'},
-          {val:'additional', lbl:'Additional Property'},
-        ],
-        default:'ftb' },
-    ],
-
-    /* ── CALCULATION ── */
-    compute(v) {
-      /* ─ Variables ─ */
-      const price   = v.sd_price || 0;
-      const buyer   = v.sd_buyer || 'ftb';
-
-      /* ─ SDLT ─ */
-      const sdlt    = calcSDLT(price, buyer === 'additional' ? 'homemover' : buyer);
-      const addlSurcharge = buyer === 'additional' ? price * 0.03 : 0;
-      const totalSDLT     = sdlt.total + addlSurcharge;
-      const effRate       = price > 0 ? totalSDLT / price * 100 : 0;
-
-      /* ─ Band rows ─ */
-      const activeBands = sdlt.isFTBRelief ? SDLT_FTB : SDLT_STD;
-      const bandRows = activeBands.map((b, i) => {
-        const taxable = Math.max(0, Math.min(price, b.max) - b.min);
-        const tax     = taxable * b.rate;
-        const maxLbl  = b.max === Infinity ? '∞' : '£' + (b.max / 1000).toFixed(0) + 'k';
-        const label   = `£${(b.min/1000).toFixed(0)}k – ${maxLbl} @ ${(b.rate*100).toFixed(0)}%`;
-        return {
-          id     : 'band-' + i,
-          label,
-          dot    : tax === 0 ? '#86efac' : '#b0a068',
-          val    : tax === 0 ? '£0 — nil' : gbp(tax),
-          valCls : tax === 0 ? 'good' : '',
-        };
+      /* ─ Repair categories ─ */
+      const categories = [
+        { key:'immediate',   label:'Immediate / Safety-Related Repairs', sellerFlag: v.sr_seller_immediate },
+        { key:'shortterm',   label:'Work Needed Within 1\u20132 Years',   sellerFlag: v.sr_seller_shortterm },
+        { key:'maintenance', label:'Normal Future Maintenance',           sellerFlag: v.sr_seller_maintenance },
+        { key:'optional',    label:'Optional Improvements',               sellerFlag: v.sr_seller_optional },
+      ].map(cat => {
+        let low, high;
+        if (quoteType === 'fixed') {
+          const amt = v[`sr_${cat.key}_fixed`] || 0;
+          low = amt; high = amt;
+        } else {
+          low  = v[`sr_${cat.key}_low`]  || 0;
+          high = v[`sr_${cat.key}_high`] || 0;
+        }
+        const sellerAgreed = (cat.sellerFlag || 'no') === 'yes';
+        return { ...cat, low, high, sellerAgreed };
       });
 
-      /* ─ Colour class ─ */
-      let sdltCls = 'good';
-      if (totalSDLT > price * 0.08) sdltCls = 'bad';
-      else if (totalSDLT > 0)       sdltCls = 'warn';
+      const lowRepairEstimate  = categories.reduce((s, c) => s + c.low,  0) + investigation;
+      const highRepairEstimate = categories.reduce((s, c) => s + c.high, 0) + investigation;
 
-      /* ─ Output ─ */
-      return {
-        primaryLbl : 'Total Stamp Duty (SDLT)',
-        primary    : gbp(totalSDLT),
-        primarySub : buyer === 'ftb'
-          ? 'First-Time Buyer rates'
-          : buyer === 'additional'
-          ? 'Including +3% additional dwelling surcharge'
-          : 'Standard rates',
+      const lowContingencyAdjusted  = lowRepairEstimate  * (1 + contingencyPct / 100);
+      const highContingencyAdjusted = highRepairEstimate * (1 + contingencyPct / 100);
 
-        chips: [
-          { lbl:'Base SDLT',     val: gbp(sdlt.total) },
-          { lbl:'Surcharge',     val: buyer === 'additional' ? gbp(addlSurcharge) : '£0',
-                                 cls: buyer === 'additional' ? 'bad' : '' },
-          { lbl:'Effective Rate',val: pct(effRate), cls: sdltCls },
-        ],
+      const immediateLow  = categories.find(c => c.key === 'immediate').low;
+      const immediateHigh = categories.find(c => c.key === 'immediate').high;
+      const shortTermLow  = categories.find(c => c.key === 'shortterm').low;
+      const shortTermHigh = categories.find(c => c.key === 'shortterm').high;
+      const laterLow  = categories.filter(c => c.key === 'maintenance' || c.key === 'optional').reduce((s,c)=>s+c.low, 0);
+      const laterHigh = categories.filter(c => c.key === 'maintenance' || c.key === 'optional').reduce((s,c)=>s+c.high, 0);
 
-        alerts: sdlt.isFTBRelief && sdlt.total === 0
-          ? [{ id:'al-ftb',    cls:'good', msg:'First-time buyer relief: no SDLT due on purchases up to £300,000. Relief tapers on the next £200,000.' }]
-          : sdlt.ftbOver
-          ? [{ id:'al-ftbovr', cls:'warn', msg:'Purchase exceeds £500,000 — first-time buyer relief does not apply. Standard rates used.' }]
-          : [],
+      /* ─ Repairs the seller will handle (removes cost from buyer's remaining budget, using midpoint) ─ */
+      const sellerHandledLow  = categories.filter(c => c.sellerAgreed).reduce((s, c) => s + c.low,  0);
+      const sellerHandledHigh = categories.filter(c => c.sellerAgreed).reduce((s, c) => s + c.high, 0);
+      const buyerRemainingLow  = Math.max(lowContingencyAdjusted  - sellerHandledLow  * (1 + contingencyPct / 100), 0);
+      const buyerRemainingHigh = Math.max(highContingencyAdjusted - sellerHandledHigh * (1 + contingencyPct / 100), 0);
 
-        sections: [
-          {
-            title: 'Band-by-Band Breakdown',
-            rows : bandRows,
-          },
-          ...(buyer === 'additional' ? [{
-            title: 'Additional Property Surcharge',
-            rows: [
-              { id:'r-base', label:'Base SDLT',              dot:'#9bbbc0', val: gbp(sdlt.total) },
-              { id:'r-add',  label:'3% Additional Surcharge',dot:'#e87060', tag:'+3%', tagCls:'bad', val: gbp(addlSurcharge), valCls:'bad' },
-            ],
-          }] : []),
-        ],
+      /* ─ Negotiation ─ */
+      const requestedReduction = v.sr_requested_reduction || 0;
+      const agreedReduction    = v.sr_agreed_reduction    || 0;
 
-        totalLbl : 'Total SDLT Payable',
-        totalSub : `effective rate: ${pct(effRate)}`,
-        total    : gbp(totalSDLT),
-      };
-    },
-  },
+      const proposedRevisedOffer = offer - requestedReduction;
+      const agreedRevisedPrice   = offer - agreedReduction;
 
+      const originalTax = propertyTax(offer, taxRegion, buyerStatus, nonResident);
+      const revisedTax  = propertyTax(agreedRevisedPrice, taxRegion, buyerStatus, nonResident);
+      const taxSaving   = originalTax - revisedTax;
 
-  /* ══════════════════════════════════════════════════════════
-     CALCULATOR 4 — AFFORDABILITY
-     ══════════════════════════════════════════════════════════ */
-  {
-    id  : 'affordability',
-    nav : { label: 'Affordability', icon: '✅' },
-
-    header: {
-      eyebrow : 'Can You Afford It?',
-      title   : 'Affordability Calculator',
-      desc    : 'Maximum borrowing based on income multiple and debt service ratio.',
-    },
-
-    /* ── INPUTS ── */
-    inputs: [
-      { type:'number',  id:'af_inc1',   label:'Applicant 1 — Annual Income',             prefix:'£', min:0, max:500000, step:1000, default:60000 },
-      { type:'number',  id:'af_inc2',   label:'Applicant 2 — Annual Income (optional)',   prefix:'£', min:0, max:500000, step:1000, default:0,
-        hint:'Leave at 0 for single applicant' },
-      { type:'number',  id:'af_commit', label:'Monthly Committed Outgoings',              prefix:'£', min:0, max:10000,  step:50,   default:500,
-        hint:'Loans, car finance, credit cards etc.' },
-      { type:'slider',  sliderFor:'af_commit', min:0, max:5000, step:50 },
-      { type:'number',  id:'af_rate',   label:'Expected Interest Rate',                  suffix:'%', min:0.1, max:15, step:0.05, default:4.5 },
-      { type:'number',  id:'af_term',   label:'Mortgage Term',                           suffix:'yrs', min:5, max:40, step:1, default:25 },
-      { type:'segment', id:'af_mult',   label:'Income Multiple',
-        options:[
-          {val:'4',   lbl:'4× Cautious'},
-          {val:'4.5', lbl:'4.5× Typical'},
-          {val:'5',   lbl:'5× Maximum'},
-        ],
-        default:'4.5' },
-    ],
-
-    /* ── CALCULATION ── */
-    compute(v) {
-      /* ─ Variables ─ */
-      const inc1       = v.af_inc1   || 0;
-      const inc2       = v.af_inc2   || 0;
-      const totalInc   = inc1 + inc2;
-      const mult       = parseFloat(v.af_mult || '4.5');
-      const commit     = v.af_commit || 0;
-      const rate       = v.af_rate   || 4.5;
-      const term       = v.af_term   || 25;
-      const monthlyInc = totalInc / 12;
-
-      /* ─ Max by income multiple ─ */
-      const maxByMult = totalInc * mult;
-
-      /* ─ Max by Debt Service Ratio (40% of gross monthly) ─ */
-      const maxPayment = (monthlyInc * 0.40) - commit;
-      const monR       = (rate / 100) / 12;
-      const n          = term * 12;
-      const maxByDSR   = maxPayment > 0 && monR > 0
-        ? maxPayment * (Math.pow(1+monR,n) - 1) / (monR * Math.pow(1+monR,n))
-        : 0;
-
-      /* ─ Result: lower of the two ─ */
-      const maxLoan = Math.max(0, Math.min(maxByMult, Math.max(0, maxByDSR)));
-      const monthlyOnMax = maxLoan > 0 ? monthlyPayment(maxLoan, rate, term) : 0;
-      const dsr = monthlyInc > 0 ? (monthlyOnMax + commit) / monthlyInc * 100 : 0;
-
-      /* ─ Colour classes ─ */
-      let dsrCls = 'good';
-      if (dsr > 50) dsrCls = 'bad';
-      else if (dsr > 38) dsrCls = 'warn';
-
-      /* ─ Output ─ */
-      return {
-        primaryLbl : 'Maximum Borrowing',
-        primary    : gbp(maxLoan),
-        primarySub : `${mult}× income, adjusted for commitments`,
-
-        chips: [
-          { lbl:'Joint Income', val: gbp(totalInc)              },
-          { lbl:`${mult}× Multi`, val: gbp(maxByMult)           },
-          { lbl:'DSR 40%',      val: gbp(Math.max(0,maxByDSR)) },
-          { lbl:'Debt Ratio',   val: pct(dsr), cls: dsrCls      },
-        ],
-
-        alerts: dsr > 50
-          ? [{ id:'al-dsr',    cls:'bad',  msg:`Debt service ratio ${pct(dsr)} exceeds 50% — lenders typically want below 40–45%. Reduce commitments or lower the loan.` }]
-          : maxByDSR < maxByMult
-          ? [{ id:'al-capped', cls:'warn', msg:`Borrowing capped by monthly affordability, not the income multiple. Monthly commitments of ${gbp(commit)} are limiting capacity.` }]
-          : [],
-
-        sections: [
-          {
-            title: 'Income Assessment',
-            rows: [
-              { id:'r-i1',  label:'Applicant 1 Income',       dot:'#9bbbc0', val: gbp(inc1) },
-              { id:'r-i2',  label:'Applicant 2 Income',       dot:'#7c9ea1', val: inc2 > 0 ? gbp(inc2) : '—', valCls: inc2 === 0 ? 'zero' : '' },
-              { id:'r-tot', label:'Total Income',             dot:'#B08D57', val: gbp(totalInc) },
-              { id:'r-mm',  label:`Max at ${mult}× Multiple`, dot:'#b0a068', tag:'Lender', tagCls:'auto', val: gbp(maxByMult) },
-            ],
-          },
-          {
-            title: 'Affordability Test (40% DSR)',
-            rows: [
-              { id:'r-mi',  label:'Monthly Income',           dot:'#8094a5', val: gbp(monthlyInc) },
-              { id:'r-com', label:'Monthly Commitments',      dot:'#e87060', val: gbp(commit), valCls: commit > 0 ? 'warn' : '' },
-              { id:'r-avl', label:'Available for Mortgage',   dot:'#86efac', val: gbp(Math.max(0,maxPayment)), valCls: maxPayment > 0 ? 'good' : 'bad' },
-              { id:'r-dsr', label:'Debt Service Ratio',       dot:'#c8a85a', val: pct(dsr), valCls: dsrCls },
-            ],
-          },
-          {
-            title: 'Result',
-            rows: [
-              { id:'r-max', label:'Maximum Loan',             dot:'#86efac', tag:'Result', tagCls:'good', val: gbp(maxLoan), valCls: maxLoan > 0 ? 'good' : 'bad' },
-              { id:'r-mpm', label:'Monthly Payment at Max',   dot:'#9bbbc0', val: gbp(monthlyOnMax) },
-            ],
-          },
-        ],
-
-        totalLbl : 'Maximum Mortgage',
-        totalSub : 'lower of income multiple and DSR tests',
-        total    : gbp(maxLoan),
-      };
-    },
-  },
-
-
-  /* ══════════════════════════════════════════════════════════
-     CALCULATOR 5 — RENT VS BUY
-     ══════════════════════════════════════════════════════════ */
-  {
-    id  : 'rent-vs-buy',
-    nav : { label: 'Rent vs Buy', icon: '⚖️' },
-
-    header: {
-      eyebrow : 'Decision Tool',
-      title   : 'Rent vs Buy',
-      desc    : 'Net cost comparison over your chosen period — equity growth vs invested deposit.',
-    },
-
-    /* ── INPUTS ── */
-    inputs: [
-      { type:'number',  id:'rv_price', label:'Purchase Price',             prefix:'£', min:0, max:5000000, step:1000, default:400000 },
-      { type:'slider',  sliderFor:'rv_price', min:50000, max:1500000, step:5000 },
-      { type:'number',  id:'rv_dep',   label:'Deposit',                   suffix:'%', min:5, max:50, step:1, default:20 },
-      { type:'number',  id:'rv_rate',  label:'Mortgage Rate',             suffix:'%', min:0.5, max:12, step:0.05, default:4.5 },
-      { type:'number',  id:'rv_term',  label:'Mortgage Term',             suffix:'yrs', min:5, max:40, step:1, default:25 },
-      { type:'section', label:'Rental Alternative' },
-      { type:'number',  id:'rv_rent',  label:'Monthly Rent',              prefix:'£', min:0, max:10000, step:50, default:1800 },
-      { type:'number',  id:'rv_rinc',  label:'Annual Rent Increase',      suffix:'%', min:0, max:10, step:0.5, default:3.5 },
-      { type:'section', label:'Assumptions' },
-      { type:'number',  id:'rv_hpa',   label:'House Price Growth p.a.',   suffix:'%', min:-5, max:15, step:0.5, default:3.5 },
-      { type:'number',  id:'rv_inv',   label:'Investment Return on Deposit', suffix:'%', min:0, max:12, step:0.5, default:5,
-        hint:'If you rented and invested the deposit elsewhere' },
-      { type:'number',  id:'rv_years', label:'Comparison Period',         suffix:'yrs', min:1, max:30, step:1, default:5 },
-    ],
-
-    /* ── CALCULATION ── */
-    compute(v) {
-      /* ─ Variables ─ */
-      const price   = v.rv_price || 0;
-      const depPct  = (v.rv_dep  || 20) / 100;
-      const dep     = price * depPct;
-      const loan    = price - dep;
-      const rate    = v.rv_rate  || 4.5;
-      const term    = v.rv_term  || 25;
-      const years   = v.rv_years || 5;
-      const months  = years * 12;
-      const hpa     = (v.rv_hpa  || 3.5) / 100;
-      const invRate = (v.rv_inv  || 5)   / 100;
-      const rinc    = (v.rv_rinc || 3.5) / 100;
-      const monR    = (rate / 100) / 12;
-      const n       = term * 12;
-
-      /* ─ Monthly mortgage ─ */
-      const monthly = monthlyPayment(loan, rate, term);
-
-      /* ─ Buying costs ─ */
-      const sdlt      = calcSDLT(price, 'homemover');
-      const buyCosts  = sdlt.total + 3000;          // SDLT + est. fees
-      const maintPa   = price * 0.01;               // 1% maintenance/yr
-      const mortPaid  = monthly * months;
-      const maintCost = maintPa * years;
-
-      /* ─ Future property value & remaining loan ─ */
-      const futureVal = price * Math.pow(1 + hpa, years);
-      let remLoan = loan;
-      for (let m = 0; m < months; m++) {
-        const interest = remLoan * monR;
-        remLoan = Math.max(0, remLoan - (monthly - interest));
-      }
-      const equity = futureVal - remLoan;
-
-      /* ─ Net buy cost (what you "spend" net of gained equity) ─ */
-      const netBuyCost = mortPaid + buyCosts + maintCost - (futureVal - loan);
-
-      /* ─ Rental costs ─ */
-      let totalRentPaid = 0;
-      let rentNow = v.rv_rent || 0;
-      for (let y = 0; y < years; y++) {
-        totalRentPaid += rentNow * 12;
-        rentNow *= (1 + rinc);
+      /* ─ Mortgage: lender lends against the lower of price and valuation ─ */
+      function mortgageFor(price) {
+        const lendingBasis = Math.min(price, valuation || price);
+        if (mortgageMode === 'amount') {
+          const requested = v.sr_mortgageamt || 0;
+          return Math.min(requested, lendingBasis); // can't lend more than basis allows in most cases
+        } else {
+          const ltv = v.sr_mortgageltv ?? 85;
+          return (ltv / 100) * lendingBasis;
+        }
       }
 
-      /* ─ Opportunity cost: what deposit+costs grows to if invested ─ */
-      const depInvested = (dep + buyCosts) * Math.pow(1 + invRate, years);
-      const depGrowth   = depInvested - dep - buyCosts;
+      const originalMortgage = mortgageFor(offer);
+      const revisedMortgage  = mortgageFor(agreedRevisedPrice);
 
-      /* ─ Net rent cost ─ */
-      const netRentCost = totalRentPaid - depGrowth;
+      const originalDeposit = offer - originalMortgage;
+      const revisedDeposit  = agreedRevisedPrice - revisedMortgage;
 
-      /* ─ Winner ─ */
-      const diff     = netRentCost - netBuyCost;
-      const buyWins  = diff > 0;
-      const saving   = Math.abs(diff);
+      const originalPayment = mortgagePayment(originalMortgage, rate, term);
+      const revisedPayment  = mortgagePayment(revisedMortgage, rate, term);
+      const paymentChange   = revisedPayment - originalPayment;
 
-      /* ─ Output ─ */
+      const originalLTV = offer > 0 ? (originalMortgage / offer) * 100 : 0;
+      const revisedLTV  = agreedRevisedPrice > 0 ? (revisedMortgage / agreedRevisedPrice) * 100 : 0;
+
+      /* ─ How the reduction splits between mortgage and deposit ─ */
+      const mortgageReductionShare = originalMortgage - revisedMortgage;
+      const depositReductionShare  = originalDeposit  - revisedDeposit;
+
+      /* ─ Comparison: seller-repair route vs price-reduction route ─
+             Both routes are priced at the SAME purchase price (original offer) so the only
+             difference is who pays for repairs \u2014 the price-reduction figures elsewhere in
+             this calculator already show what happens if the price itself is renegotiated.
+             Seller-repair route: seller fixes the agreed items, buyer pays original deposit,
+             and only funds their own remaining (non-seller-agreed) repairs.
+             Price-reduction route: seller fixes nothing, buyer pays original deposit,
+             and funds the full repair estimate themself. */
+      const midRepairAdjusted        = (lowContingencyAdjusted + highContingencyAdjusted) / 2;
+      const buyerRemainingMid        = (buyerRemainingLow + buyerRemainingHigh) / 2;
+      const sellerRouteBuyerCash     = originalDeposit + buyerRemainingMid;
+      const noRepairRouteBuyerCash   = originalDeposit + midRepairAdjusted;
+
+      /* ─ Alerts ─ */
+      const alerts = [];
+      if (valuation < offer) {
+        alerts.push({ id:'al-valuation', cls:'warn', msg:'The lender\u2019s valuation is below the original offer \u2014 your mortgage will be capped by the lower valuation figure, not the offer price.' });
+      }
+      if (agreedReduction > requestedReduction) {
+        alerts.push({ id:'al-reduction', cls:'warn', msg:'The agreed reduction is larger than the amount you requested \u2014 double check these figures.' });
+      }
+      alerts.push({ id:'al-cash', cls:'auto', msg:'A price reduction does not convert pound-for-pound into cash in your pocket \u2014 with a mortgage in place, part of any reduction lowers the loan amount and only part reduces the cash deposit.' });
+      alerts.push({ id:'al-scope', cls:'auto', msg:'This calculator presents negotiation scenarios only \u2014 there is no fixed rule requiring a seller to reduce the price by the full repair cost.' });
+      alerts.push({ id:'al-rics', cls:'auto', msg:'RICS recommends obtaining written quotations from experienced contractors for any significant defects before making a legal commitment.' });
+      if (quoteType === 'range') {
+        alerts.push({ id:'al-range', cls:'auto', msg:'You\u2019re using quote ranges \u2014 figures below are shown as low/high scenarios, with the buyer-remaining-budget comparison using the range midpoint.' });
+      }
+
       return {
-        primaryLbl : buyWins ? 'Buying is Better' : 'Renting is Better',
-        primary    : gbp(saving) + ' cheaper',
-        primarySub : `over ${years} years — accounting for equity and opportunity cost`,
+        primaryLbl : 'Agreed Revised Purchase Price',
+        primary    : gbp(agreedRevisedPrice),
+        primarySub : `${gbp(agreedReduction)} reduction from the original ${gbp(offer)} offer \u00b7 revised deposit ${gbp(revisedDeposit)}`,
 
         chips: [
-          { lbl:'Net Buy Cost',   val: gbp(netBuyCost),  cls: buyWins ? 'good' : 'bad' },
-          { lbl:'Net Rent Cost',  val: gbp(netRentCost), cls: buyWins ? 'bad'  : 'good' },
-          { lbl:'Future Equity',  val: gbp(equity) },
-          { lbl:'Deposit Grows to', val: gbp(depInvested) },
+          { lbl:'Total Reported Repairs (mid)', val: gbp(midRepairAdjusted) },
+          { lbl:'Agreed Revised Price',          val: gbp(agreedRevisedPrice) },
+          { lbl:'Revised Deposit',               val: gbp(revisedDeposit) },
+          { lbl:'Monthly Payment Change',        val: (paymentChange >= 0 ? '+' : '\u2212') + gbp(Math.abs(paymentChange)) },
         ],
 
-        alerts: [
-          buyWins
-            ? { id:'al-buy',  cls:'good', msg:`Buying wins by ${gbp(saving)} — your equity of ${gbp(equity)} outweighs higher upfront costs over ${years} years.` }
-            : { id:'al-rent', cls:'warn', msg:`Renting wins by ${gbp(saving)} — opportunity cost of ${gbp(dep+buyCosts)} tied up in the purchase outweighs equity growth over ${years} years.` }
-        ],
+        alerts,
 
         sections: [
           {
-            title: 'Buying Scenario',
+            title: 'Repair Cost Summary',
             rows: [
-              { id:'r-dep',    label:'Deposit',                    dot:'#7c9ea1', val: gbp(dep) },
-              { id:'r-bsdlt',  label:'Stamp Duty + Est. Fees',     dot:'#e87060', val: gbp(buyCosts), valCls:'bad' },
-              { id:'r-bmtg',   label:`${years}yr Mortgage Payments`,dot:'#9bbbc0', val: gbp(mortPaid) },
-              { id:'r-maint',  label:`${years}yr Maintenance (1%)`, dot:'#b0a068', val: gbp(maintCost) },
-              { id:'r-fval',   label:`Home Value in ${years} Years`, dot:'#86efac', val: gbp(futureVal), valCls:'good' },
-              { id:'r-equity', label:'Equity (Value − Loan)',       dot:'#86efac', tag:'Asset', tagCls:'good', val: gbp(equity), valCls:'good' },
+              { id:'r-immediate',   label:'Immediate / Safety-Related Repairs', dot:'#e07a7a', val: quoteType==='fixed' ? gbp(immediateLow) : `${gbp(immediateLow)} \u2013 ${gbp(immediateHigh)}` },
+              { id:'r-shortterm',   label:'Work Needed Within 1\u20132 Years',    dot:'#e0b06a', val: quoteType==='fixed' ? gbp(shortTermLow) : `${gbp(shortTermLow)} \u2013 ${gbp(shortTermHigh)}` },
+              { id:'r-later',       label:'Maintenance & Optional Improvements', dot:'#9bbbc0', val: quoteType==='fixed' ? gbp(laterLow) : `${gbp(laterLow)} \u2013 ${gbp(laterHigh)}` },
+              { id:'r-investigate', label:'Further Investigation Costs',         dot:'#a78fa8', val: gbp(investigation) },
+              { id:'r-total-low',   label:'Repair Estimate (before contingency)',dot:'#8f87a0', val: quoteType==='fixed' ? gbp(lowRepairEstimate) : `${gbp(lowRepairEstimate)} \u2013 ${gbp(highRepairEstimate)}` },
+              { id:'r-total-cont',  label:`With ${contingencyPct}% Contingency`, dot:'#B08D57', tag:'Total', tagCls:'warn', val: quoteType==='fixed' ? gbp(lowContingencyAdjusted) : `${gbp(lowContingencyAdjusted)} \u2013 ${gbp(highContingencyAdjusted)}` },
             ],
           },
           {
-            title: 'Renting Scenario',
+            title: 'Seller-Agreed Repairs',
+            rows: categories.map(c => ({
+              id: `r-seller-${c.key}`,
+              label: c.label,
+              dot: c.sellerAgreed ? '#86efac' : '#9bbbc0',
+              tag: c.sellerAgreed ? 'Seller Will Fix' : 'Buyer\u2019s Responsibility',
+              tagCls: c.sellerAgreed ? 'good' : 'auto',
+              val: quoteType==='fixed' ? gbp(c.low) : `${gbp(c.low)} \u2013 ${gbp(c.high)}`,
+            })).concat([{
+              id:'r-buyer-remaining', label:'Buyer\u2019s Remaining Repair Budget (with contingency)', dot:'#B08D57', tag:'Total', tagCls:'warn',
+              val: quoteType==='fixed' ? gbp(buyerRemainingLow) : `${gbp(buyerRemainingLow)} \u2013 ${gbp(buyerRemainingHigh)}`,
+            }]),
+          },
+          {
+            title: 'Price Negotiation',
             rows: [
-              { id:'r-rnt',    label:`${years}yr Total Rent Paid`,  dot:'#e87060', val: gbp(totalRentPaid), valCls:'bad' },
-              { id:'r-dep-i',  label:'Deposit + Costs Invested',    dot:'#9bbbc0', val: gbp(dep + buyCosts) },
-              { id:'r-grwth',  label:`Investment Growth (${(v.rv_inv||5)}% pa)`, dot:'#86efac', val: gbp(depGrowth), valCls:'good' },
-              { id:'r-inv-f',  label:'Investment Fund Value',       dot:'#86efac', tag:'Asset', tagCls:'good', val: gbp(depInvested), valCls:'good' },
+              { id:'r-original-offer', label:'Original Accepted Offer',       dot:'#9bbbc0', val: gbp(offer) },
+              { id:'r-requested',      label:'Requested Price Reduction',     dot:'#e0b06a', val: gbp(requestedReduction) },
+              { id:'r-proposed',       label:'Proposed Revised Offer',        dot:'#a78fa8', val: gbp(proposedRevisedOffer) },
+              { id:'r-agreed-red',     label:'Agreed Price Reduction',        dot:'#e07a7a', val: gbp(agreedReduction) },
+              { id:'r-agreed-price',   label:'Agreed Revised Purchase Price', dot:'#86efac', tag:'Result', tagCls:'good', val: gbp(agreedRevisedPrice) },
+            ],
+          },
+          {
+            title: 'Revised Tax, Deposit & Mortgage',
+            rows: [
+              { id:'r-tax-orig',    label:`Property Tax at Original Offer (${taxRegion.toUpperCase()})`, dot:'#9bbbc0', val: gbp(originalTax) },
+              { id:'r-tax-rev',     label:'Property Tax at Revised Price',                                dot:'#a78fa8', val: gbp(revisedTax) },
+              { id:'r-tax-saving',  label:'Tax Saving from Price Reduction',                               dot:'#86efac', tag:'Saving', tagCls:'good', val: gbp(taxSaving) },
+              { id:'r-mortgage-orig', label:'Mortgage at Original Offer',      dot:'#8094a5', val: gbp(originalMortgage) },
+              { id:'r-mortgage-rev',  label:'Mortgage at Revised Price',       dot:'#8f87a0', val: gbp(revisedMortgage) },
+              { id:'r-ltv-rev',       label:'Revised Loan-to-Value',            dot:'#B08D57', val: `${revisedLTV.toFixed(1)}%` },
+              { id:'r-deposit-orig',  label:'Deposit at Original Offer',        dot:'#9bbbc0', val: gbp(originalDeposit) },
+              { id:'r-deposit-rev',   label:'Revised Deposit',                  dot:'#B08D57', tag:'Total', tagCls:'warn', val: gbp(revisedDeposit) },
+            ],
+          },
+          {
+            title: 'How the Reduction Splits (Mortgage vs Cash)',
+            rows: [
+              { id:'r-split-mortgage', label:'Reduction Applied to Mortgage (Reduced Borrowing)', dot:'#8094a5', val: gbp(mortgageReductionShare) },
+              { id:'r-split-deposit',  label:'Reduction Applied to Cash Deposit',                  dot:'#86efac', tag:'Cash Benefit', tagCls:'good', val: gbp(depositReductionShare) },
+            ],
+          },
+          {
+            title: 'Monthly Mortgage Payment',
+            rows: [
+              { id:'r-payment-orig', label:'Monthly Payment at Original Offer', dot:'#9bbbc0', val: gbp(originalPayment) },
+              { id:'r-payment-rev',  label:'Monthly Payment at Revised Price',  dot:'#a78fa8', val: gbp(revisedPayment) },
+              { id:'r-payment-diff', label:'Monthly Payment Change',            dot: paymentChange <= 0 ? '#86efac' : '#e07a7a', tag: paymentChange <= 0 ? 'Lower' : 'Higher', tagCls: paymentChange <= 0 ? 'good' : 'warn', val: (paymentChange >= 0 ? '+' : '\u2212') + gbp(Math.abs(paymentChange)) },
+            ],
+          },
+          {
+            title: 'Seller-Repair Route vs Price-Reduction Route (both at original price)',
+            rows: [
+              { id:'r-route-repair',   label:'Seller Completes Agreed Repairs \u2014 Buyer Funds the Rest', dot:'#86efac', tag:'With Seller Repairs', tagCls:'good', val: gbp(sellerRouteBuyerCash) },
+              { id:'r-route-none',     label:'Seller Completes No Repairs \u2014 Buyer Funds Everything',    dot:'#e07a7a', tag:'No Seller Repairs',    tagCls:'warn', val: gbp(noRepairRouteBuyerCash) },
+              { id:'r-route-saving',   label:'Cash Saved by Seller-Agreed Repairs',                          dot:'#B08D57', tag:'Saving', tagCls:'good', val: gbp(noRepairRouteBuyerCash - sellerRouteBuyerCash) },
+              { id:'r-route-reduction',label:'Alternative: Price Reduced Instead (deposit + full repairs)', dot:'#a78fa8', val: gbp(revisedDeposit + midRepairAdjusted) },
             ],
           },
         ],
 
-        totalLbl : buyWins ? 'Buying Saves You' : 'Renting Saves You',
-        totalSub : `net of equity and opportunity cost over ${years} years`,
-        total    : gbp(saving),
+        totalLbl : 'Buyer\u2019s Remaining Repair Budget (mid-estimate, with contingency)',
+        totalSub : `after crediting seller-agreed repairs \u00b7 at revised price ${gbp(agreedRevisedPrice)}`,
+        total    : quoteType==='fixed' ? gbp(buyerRemainingLow) : `${gbp(buyerRemainingLow)} \u2013 ${gbp(buyerRemainingHigh)}`,
       };
     },
-  },
-
-
-  /* ══════════════════════════════════════════════════════════
-     CALCULATOR 6 — MONTHLY COSTS
-     ══════════════════════════════════════════════════════════ */
-  {
-    id  : 'monthly-cost',
-    nav : { label: 'Monthly Costs', icon: '📅' },
-
-    header: {
-      eyebrow : 'Ongoing Outgoings',
-      title   : 'Monthly Cost Calculator',
-      desc    : 'Total monthly ownership cost — mortgage, bills, insurance, maintenance, and lifestyle.',
-    },
-
-    /* ── INPUTS ── */
-    inputs: [
-      { type:'number',  id:'mc_mtg',     label:'Monthly Mortgage Payment', prefix:'£', min:0, max:20000, step:10, default:1800,
-        hint:'From the Mortgage Calculator above' },
-      { type:'section', label:'Bills & Utilities' },
-      { type:'number',  id:'mc_council', label:'Council Tax',        prefix:'£', min:0, max:500,  step:5,  default:180 },
-      { type:'number',  id:'mc_elec',    label:'Electricity',        prefix:'£', min:0, max:500,  step:5,  default:80  },
-      { type:'number',  id:'mc_gas',     label:'Gas',                prefix:'£', min:0, max:500,  step:5,  default:60  },
-      { type:'number',  id:'mc_water',   label:'Water',              prefix:'£', min:0, max:200,  step:5,  default:35  },
-      { type:'number',  id:'mc_broad',   label:'Broadband',          prefix:'£', min:0, max:100,  step:1,  default:35  },
-      { type:'section', label:'Insurance & Protection' },
-      { type:'number',  id:'mc_bldg',    label:'Buildings Insurance',prefix:'£', min:0, max:200,  step:5,  default:40  },
-      { type:'number',  id:'mc_cont',    label:'Contents Insurance', prefix:'£', min:0, max:100,  step:5,  default:20  },
-      { type:'number',  id:'mc_life',    label:'Life / Protection',  prefix:'£', min:0, max:300,  step:5,  default:60  },
-      { type:'section', label:'Property Costs' },
-      { type:'number',  id:'mc_maint',   label:'Maintenance / Repairs', prefix:'£', min:0, max:1000, step:10, default:100,
-        hint:'~1% of property value ÷ 12 months' },
-      { type:'number',  id:'mc_grnd',    label:'Ground Rent (monthly)',  prefix:'£', min:0, max:500,  step:5,  default:0,
-        hint:'Flats only' },
-      { type:'number',  id:'mc_svc',     label:'Service Charge (monthly)',prefix:'£', min:0, max:1000, step:10, default:0,
-        hint:'Flats only' },
-      { type:'section', label:'Lifestyle' },
-      { type:'number',  id:'mc_groc',    label:'Groceries',          prefix:'£', min:0, max:1500, step:10, default:400 },
-      { type:'number',  id:'mc_trans',   label:'Transport / Commute',prefix:'£', min:0, max:1000, step:10, default:150 },
-      { type:'number',  id:'mc_other',   label:'Other Monthly Costs',prefix:'£', min:0, max:5000, step:10, default:200 },
-      { type:'section', label:'Income' },
-      { type:'number',  id:'mc_net',     label:'Net Monthly Income', prefix:'£', min:0, max:30000, step:100, default:4000 },
-    ],
-
-    /* ── CALCULATION ── */
-    compute(v) {
-      /* ─ Variables ─ */
-      const mtg   = v.mc_mtg     || 0;
-      const bills = (v.mc_council||0) + (v.mc_elec||0) + (v.mc_gas||0)
-                  + (v.mc_water||0)   + (v.mc_broad||0);
-      const ins   = (v.mc_bldg||0) + (v.mc_cont||0) + (v.mc_life||0);
-      const prop  = (v.mc_maint||0) + (v.mc_grnd||0) + (v.mc_svc||0);
-      const life  = (v.mc_groc||0)  + (v.mc_trans||0) + (v.mc_other||0);
-      const total = mtg + bills + ins + prop + life;
-      const net   = v.mc_net || 0;
-      const left  = net - total;
-      const pctInc= net > 0 ? total / net * 100 : 100;
-
-      /* ─ Colour classes ─ */
-      const leftCls = left < 0 ? 'bad' : left < 200 ? 'warn' : 'good';
-      const pctCls  = pctInc > 85 ? 'bad' : pctInc > 70 ? 'warn' : 'good';
-
-      /* ─ Output ─ */
-      return {
-        primaryLbl : 'Total Monthly Outgoings',
-        primary    : gbp(total),
-        primarySub : net > 0
-          ? `${pct(pctInc)} of income — ${gbp(left)} remaining`
-          : 'enter your income to see surplus',
-
-        chips: [
-          { lbl:'Mortgage',  val: gbp(mtg)   },
-          { lbl:'Bills',     val: gbp(bills) },
-          { lbl:'Insurance', val: gbp(ins)   },
-          { lbl:'Left Over', val: gbp(left),  cls: leftCls },
-        ],
-
-        alerts: left < 0
-          ? [{ id:'al-neg',   cls:'bad',  msg:`Outgoings exceed income by ${gbp(Math.abs(left))}/month. Review fixed costs or consider a lower mortgage.` }]
-          : pctInc > 70
-          ? [{ id:'al-tight', cls:'warn', msg:`${pct(pctInc)} of income committed. Aim for under 70% for financial comfort and emergency headroom.` }]
-          : [],
-
-        sections: [
-          {
-            title: 'Mortgage',
-            rows: [{ id:'r-m', label:'Monthly Repayment', dot:'#7c9ea1', val: gbp(mtg) }],
-          },
-          {
-            title: 'Bills & Utilities',
-            rows: [
-              { id:'r-ct',   label:'Council Tax', dot:'#8094a5', val: gbp(v.mc_council||0) },
-              { id:'r-el',   label:'Electricity', dot:'#758ea0', val: gbp(v.mc_elec||0)    },
-              { id:'r-ga',   label:'Gas',         dot:'#6a859a', val: gbp(v.mc_gas||0)     },
-              { id:'r-wa',   label:'Water',       dot:'#607a93', val: gbp(v.mc_water||0)   },
-              { id:'r-bb',   label:'Broadband',   dot:'#56718c', val: gbp(v.mc_broad||0)   },
-              { id:'r-bsub', label:'Subtotal',    dot:'#B08D57', val: gbp(bills), valCls:'warn' },
-            ],
-          },
-          {
-            title: 'Insurance & Protection',
-            rows: [
-              { id:'r-bi', label:'Buildings',         dot:'#9b8ea0', val: gbp(v.mc_bldg||0) },
-              { id:'r-ci', label:'Contents',          dot:'#8f87a0', val: gbp(v.mc_cont||0) },
-              { id:'r-li', label:'Life / Protection', dot:'#7c7e9c', val: gbp(v.mc_life||0) },
-            ],
-          },
-          {
-            title: 'Property Costs',
-            rows: [
-              { id:'r-ma',  label:'Maintenance',  dot:'#a09670', val: gbp(v.mc_maint||0) },
-              { id:'r-gr2', label:'Ground Rent',  dot:'#c8a85a', val: v.mc_grnd > 0 ? gbp(v.mc_grnd) : '—', valCls: !v.mc_grnd ? 'zero' : '' },
-              { id:'r-sc2', label:'Service Charge',dot:'#b89840', val: v.mc_svc  > 0 ? gbp(v.mc_svc)  : '—', valCls: !v.mc_svc  ? 'zero' : '' },
-            ],
-          },
-          {
-            title: 'Lifestyle',
-            rows: [
-              { id:'r-gr', label:'Groceries', dot:'#8aa07c', val: gbp(v.mc_groc||0)  },
-              { id:'r-tr', label:'Transport', dot:'#96a87a', val: gbp(v.mc_trans||0) },
-              { id:'r-ot', label:'Other',     dot:'#a09670', val: gbp(v.mc_other||0) },
-            ],
-          },
-          {
-            title: 'Income vs Outgoings',
-            rows: [
-              { id:'r-inc',  label:'Net Monthly Income', dot:'#86efac', val: net > 0 ? gbp(net) : '—' },
-              { id:'r-tot2', label:'Total Outgoings',    dot:'#e87060', val: gbp(total), valCls:'bad' },
-              { id:'r-left', label:'Monthly Surplus',    dot: left >= 0 ? '#86efac' : '#e87060',
-                             tag: left >= 0 ? 'Surplus' : 'Deficit', tagCls: leftCls,
-                             val: gbp(left), valCls: leftCls },
-              { id:'r-pct',  label:'% of Income Spent', dot:'#c8a85a', val: net > 0 ? pct(pctInc) : '—', valCls: pctCls },
-            ],
-          },
-        ],
-
-        totalLbl : 'Monthly Surplus / Deficit',
-        totalSub : net > 0 ? `${pct(pctInc)} of income committed` : '',
-        total    : gbp(left),
-      };
-    },
-  },
-
+  }
 ];
 
 

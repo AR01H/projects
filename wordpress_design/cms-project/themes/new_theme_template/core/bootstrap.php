@@ -32,6 +32,7 @@ function nt_config( $name ) {
 // 2. Engines (always loaded, order matters only for helpers).
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/class-data-provider.php';
 require_once __DIR__ . '/router.php';
 require_once __DIR__ . '/assets.php';
 require_once __DIR__ . '/ajax.php';

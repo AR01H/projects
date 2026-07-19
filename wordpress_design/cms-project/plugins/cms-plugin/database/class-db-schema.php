@@ -1012,6 +1012,29 @@ class AH_DB_Schema {
 				KEY idx_type   (type),
 				KEY idx_status (status)
 			) ENGINE=InnoDB {$cs}",
+
+			// 71. Newsletters
+			"CREATE TABLE IF NOT EXISTS {$p}ah_newsletters (
+				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				email      VARCHAR(255) NOT NULL UNIQUE,
+				source     VARCHAR(100) DEFAULT 'website',
+				status     ENUM('active','unsubscribed') DEFAULT 'active',
+				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				KEY idx_status (status)
+			) ENGINE=InnoDB {$cs}",
+
+			// 72. Features In (As seen in logos)
+			"CREATE TABLE IF NOT EXISTS {$p}ah_features_in (
+				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				name       VARCHAR(255) NOT NULL,
+				image_id   INT UNSIGNED,
+				link_url   VARCHAR(500),
+				sort_order INT DEFAULT 0,
+				status     ENUM('active','inactive') DEFAULT 'active',
+				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				KEY idx_status (status)
+			) ENGINE=InnoDB {$cs}",
 		);
 	}
 }

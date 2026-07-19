@@ -1,0 +1,5 @@
+[
+  { "id": 1, "icon": "🚀", "title": "Lightning Fast", "description": "Optimized for performance.", "is_active": 1, "sort_order": 1 },
+  { "id": 2, "icon": "🛡️", "title": "Secure by Default", "description": "Built with security in mind.", "is_active": 1, "sort_order": 2 },
+  { "id": 3, "icon": "🎨", "title": "Beautiful Design", "description": "Crafted with attention to detail.", "is_active": 1, "sort_order": 3 }
+]

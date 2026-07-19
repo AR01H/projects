@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "image": "",
+    "image_mobile": "",
+    "subtitle": "Welcome to",
+    "title": "The Next Generation Template",
+    "description": "Build beautiful, fast, and robust websites with ease.",
+    "btn_text": "Get Started",
+    "btn_url": "/contact/",
+    "text_align": "center",
+    "status": "active",
+    "sort_order": 1
+  }
+]
