@@ -209,6 +209,19 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 					<?php adn_component( 'parts/sidebar_newsletter_signup', array( 'newsletter' => $_nb_ctx['sidebar']['newsletter'] ) ); ?>
 				<?php endif; ?>
 
+				<?php /* Contact / Guides Cards */ ?>
+				<?php
+				$_catalog = class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'sidebar_cards' ) : array();
+				$_cards_to_show = array( 'guides', 'contact' );
+				foreach ( $_cards_to_show as $_c ) {
+					if ( ! empty( $_catalog[$_c] ) ) {
+						adn_component( 'cards/sidebar_contact_card', array(
+							'card' => (array) $_catalog[$_c]
+						) );
+					}
+				}
+				?>
+
 				</aside>
 			</div>
 
@@ -306,6 +319,19 @@ adn_page_open( $_open_ctx );
 		<?php if ( ! empty( $ctx['sidebar']['newsletter'] ) ) : ?>
 			<?php adn_component( 'parts/sidebar_newsletter_signup', array( 'newsletter' => $ctx['sidebar']['newsletter'] ) ); ?>
 		<?php endif; ?>
+
+		<?php /* Contact / Guides Cards */ ?>
+		<?php
+		$_catalog = class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'sidebar_cards' ) : array();
+		$_cards_to_show = array( 'guides', 'contact' );
+		foreach ( $_cards_to_show as $_c ) {
+			if ( ! empty( $_catalog[$_c] ) ) {
+				adn_component( 'cards/sidebar_contact_card', array(
+					'card' => (array) $_catalog[$_c]
+				) );
+			}
+		}
+		?>
 
 	</aside>
 

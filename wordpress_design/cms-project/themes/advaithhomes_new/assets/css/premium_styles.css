@@ -1362,14 +1362,23 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* ─── 19c. Label pill — actual label, not hardcoded NEWS ─── */
 .pill-news-label {
-    background: rgba(32,60,62,.10) !important;
+    background: #ffffff !important;
     color: var(--client-color, #203c3e) !important;
     font-size: 0.68rem !important;
     font-weight: 700 !important;
     letter-spacing: 0.05em !important;
     text-transform: uppercase !important;
-    border-radius: 4px !important;
-    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    padding: 4px 10px !important;
+    position: absolute !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    z-index: 10 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+.news-card-img {
+    position: relative !important;
+    display: block;
 }
 
 /* ─── 19d. Featured article — teal body links ───────────── */

@@ -236,12 +236,12 @@
         }
         card.appendChild( imgLink );
 
-        // Body
-        var body = el( 'div', 'news-card-body' );
-
         var pill = el( 'span', 'news-card-cat-pill pill-news-label' );
         pill.textContent = label;
-        body.appendChild( pill );
+        imgLink.appendChild( pill );
+
+        // Body
+        var body = el( 'div', 'news-card-body' );
 
         var h3 = el( 'h3', 'news-card-title' );
         var tLink = el( 'a' );

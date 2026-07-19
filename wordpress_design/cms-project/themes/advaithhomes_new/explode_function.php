@@ -48,7 +48,8 @@ function adn_enqueue_common_css() {
         'adn-builded-style'    => '/assets/css/builded.css',
         'adn-utils-style'      => '/assets/css/common_utils.css',
         'adn-fa-style'         => '/assets/css/fastyles.css',
-        'adn-premium-style'       => '/assets/css/premium_styles.css',
+        'adn-premium-style'    => '/assets/css/premium_styles.css',
+        'adn-contact-style'    => '/assets/css/contact.css',
         'adn-cookie-consent-style' => '/assets/css/cookie-consent.css',
     );
     foreach ( $styles as $handle => $file ) {
