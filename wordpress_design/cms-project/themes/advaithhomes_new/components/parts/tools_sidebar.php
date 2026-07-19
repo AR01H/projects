@@ -14,10 +14,10 @@ $categories = isset( $sidebar['categories'] ) ? (array) $sidebar['categories'] :
 $help       = isset( $sidebar['help'] )       ? (array) $sidebar['help']       : array();
 $sections   = isset( $sidebar['sections'] )   ? (array) $sidebar['sections']   : array();
 ?>
-<aside class="tools-sidebar">
+<div class="">
 
 	<?php if ( ! empty( $categories ) ) : ?>
-		<div class="tools-sidebar-section mini_card_container_design">
+		<div class="tools-sidebar-section">
 			<h3><?php echo esc_html( SITE_SIDEBAR_BROWSE_CAT ); ?></h3>
 			<div class="tools-cat-list">
 				<?php foreach ( $categories as $cat ) :
@@ -92,5 +92,5 @@ $sections   = isset( $sidebar['sections'] )   ? (array) $sidebar['sections']   :
 		</div>
 	<?php endif; ?>
 
-</aside>
+</div>
 

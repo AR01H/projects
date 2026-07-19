@@ -45,7 +45,7 @@ class AH_Ecommerce {
 		self::$container->register( new \AHEcommerce\Modules\Admin_Tools\Admin_Tools_Service_Provider() );
 		self::$container->register( new \AHEcommerce\Modules\Products\Product_Service_Provider() );
 		self::$container->register( new \AHEcommerce\Modules\Checkout\Checkout_Module() );
-		self::$container->register( new \AHEcommerce\Modules\Cart\Cart_Module() );
+		self::$container->register( new \AHEcommerce\Modules\Cart\Cart_Service_Provider() );
 
 		// Boot all services
 		self::$container->boot();

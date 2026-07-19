@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * apis/home-fragment-cache.php
  *

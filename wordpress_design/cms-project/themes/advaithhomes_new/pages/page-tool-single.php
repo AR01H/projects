@@ -113,47 +113,49 @@ adn_page_open( $_open_ctx );
 			</div>
 			<?php endif; ?>
 
-			<?php /* ── Related tools ── */ ?>
-			<?php if ( ! empty( $ctx['related'] ) ) : ?>
-			<section class="category-section category-tools">
-				<h3 class="tool-single-section-title">
-					<?php esc_html_e( 'Related Tools', ADN_TEXT_DOMAIN ); ?>
-				</h3>
-				<div class="tool-grid tool-grid--7col">
-					<?php foreach ( $ctx['related'] as $card ) : ?>
-						<?php adn_component( 'cards/tool_card', array( 'card' => $card ) ); ?>
-					<?php endforeach; ?>
-				</div>
-			</section>
-			<?php endif; ?>
+
 
 
 		</main>
 
 		<aside class="sidebar-col">
 
-			<?php /* ── Browse tool categories + help CTA ── */ ?>
+			<?php /* ── Browse tool categories ── */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['categories'] ) ) : ?>
 				<?php
-				$_eh = isset( $ctx['sidebar']['expert_help'] ) ? $ctx['sidebar']['expert_help'] : array();
 				adn_component( 'parts/tools_sidebar', array( 'sidebar' => array(
 					'hl_heading'   => isset( $ctx['sidebar']['hl_heading'] ) ? $ctx['sidebar']['hl_heading'] : '',
 					'hl_links'     => isset( $ctx['sidebar']['hl_links'] )   ? $ctx['sidebar']['hl_links']   : array(),
 					'categories'   => $ctx['sidebar']['categories'],
-					'help'         => array(
-						'title'        => isset( $_eh['heading'] )          ? $_eh['heading']          : '',
-						'text'         => isset( $_eh['subtitle'] )         ? $_eh['subtitle']         : '',
-						'button_label' => isset( $_eh['cta']['label'] )     ? $_eh['cta']['label']     : '',
-						'button_url'   => isset( $_eh['cta']['url'] )       ? $_eh['cta']['url']       : '',
-					),
+					'help'         => array(),
 				) ) );
 				?>
 			<?php endif; ?>
 
-			<?php /* ── Latest news mini ── */ ?>
-			<?php if ( ! empty( $ctx['sidebar']['news_mini']['items'] ) ) : ?>
-				<?php adn_component( 'parts/sidebar_news_mini', array( 'news_mini' => $ctx['sidebar']['news_mini'] ) ); ?>
-			<?php endif; ?>
+			<?php /* ── Contact for Help (from sidebar_cards.json) ── */ ?>
+			<?php
+			if ( class_exists( 'ADN_Real_Loader' ) ) {
+				$_catalog = ADN_Real_Loader::json( 'sidebar_cards' );
+				if ( isset( $_catalog['contact'] ) ) {
+					$_card = $_catalog['contact'];
+					$_c_icon = isset( $_card['icon'] ) ? (string) $_card['icon'] : 'fa-solid fa-envelope';
+					$_c_head = isset( $_card['heading'] ) ? (string) $_card['heading'] : '';
+					$_c_desc = isset( $_card['description'] ) ? (string) $_card['description'] : '';
+					$_c_btn  = isset( $_card['button_label'] ) ? (string) $_card['button_label'] : '';
+					$_c_url  = isset( $_card['url'] ) ? (string) $_card['url'] : '';
+					$_c_cls  = isset( $_card['class'] ) ? (string) $_card['class'] : '';
+					?>
+					<div class="tools-sidebar-help<?php echo $_c_cls ? ' ' . esc_attr( $_c_cls ) : ''; ?>">
+						<h4><i class="<?php echo esc_attr( $_c_icon ); ?>" style="margin-right:8px;"></i><?php echo esc_html( $_c_head ); ?></h4>
+						<p><?php echo esc_html( $_c_desc ); ?></p>
+						<a href="<?php echo esc_url( home_url( $_c_url ) ); ?>" class="tools-help-btn">
+							<?php echo esc_html( $_c_btn ); ?> &rarr;
+						</a>
+					</div>
+					<?php
+				}
+			}
+			?>
 
 		</aside>
 

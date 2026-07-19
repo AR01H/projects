@@ -3,9 +3,8 @@ namespace AHEcommerce\Modules\Cart;
 
 use AHEcommerce\Core\Abstract_Module;
 use AHEcommerce\Core\Container;
-use AHEcommerce\Core\Service_Provider;
 
-class Cart_Module extends Abstract_Module implements Service_Provider {
+class Cart_Module extends Abstract_Module {
 
 	public function get_id() {
 		return 'cart';
@@ -15,11 +14,7 @@ class Cart_Module extends Abstract_Module implements Service_Provider {
 		return 'Cart System';
 	}
 
-	public function register( Container $container ) {
-		// Register any cart dependencies here if needed
-	}
-
-	public function boot( Container $container ) {
+	public function boot() {
 		add_action( 'init', array( $this, 'init_session' ), 1 );
 		add_shortcode( 'ah_ecommerce_cart', array( $this, 'render_cart_shortcode' ) );
 		

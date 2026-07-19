@@ -1131,50 +1131,86 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .tools-sidebar-section {
     background: var(--color-white, #ffffff) !important;
     border: 1px solid var(--color-border, #e2e8f0) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
     overflow: hidden !important;
     margin-bottom: 20px !important;
-    padding: 0 !important; /* Override mini_card_container_design padding bloat */
+    padding: 20px 20px !important; 
 }
 .tools-sidebar-section h3 {
-    font-size: 0.88rem !important;
+    font-size: 1rem !important;
     font-weight: 700 !important;
     color: var(--color-heading, #0f172a) !important;
     font-family: var(--font-heading) !important;
     text-transform: none !important;
     letter-spacing: normal !important;
-    margin: 0 !important;
-    padding: 8px 12px !important;
-    border-bottom: 1px solid var(--color-border, #f1f5f9) !important;
+    margin: 0 0 16px 0 !important;
+    padding: 0 0 12px 0 !important;
+    border-bottom: 2px solid #f1f5f9 !important; 
+    position: relative !important;
+}
+.tools-sidebar-section h3::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -2px !important;
+    left: 0 !important;
+    width: 40px !important;
+    height: 2px !important;
+    background: var(--color-accent, #d4af37) !important;
+    border-radius: 2px !important;
 }
 .tools-cat-list {
-    padding: 6px 8px 8px !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
 }
 .tools-cat-item {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 6px 8px !important;
-    border-radius: 6px !important;
-    border: none !important;
-    margin: 1px 0 !important;
-    transition: all 0.2s ease !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    border: 1px solid transparent !important;
+    margin: 0 !important;
+    transition: all 0.25s ease !important;
     background: transparent !important;
+    font-weight: 500 !important;
+    color: var(--color-text, #475569) !important;
+    font-size: 0.9rem !important;
 }
 .tools-cat-item:hover {
-    background: var(--color-surface, #f8fafc) !important;
-    color: var(--color-primary, #2d5a44) !important;
+    background: #f8fafc !important;
+    color: var(--color-primary, #1e3a2f) !important;
+    border-color: #e2e8f0 !important;
+    transform: translateX(2px) !important;
 }
 .tools-cat-item.active {
-    background: rgba(45, 90, 68, 0.06) !important;
-    color: var(--color-primary, #2d5a44) !important;
+    background: var(--color-primary, #1e3a2f) !important;
+    color: #ffffff !important;
     font-weight: 600 !important;
     border-left: none !important;
+    box-shadow: 0 4px 12px rgba(30, 58, 47, 0.15) !important;
+}
+.tools-cat-item.active::before {
+    display: none !important;
+}
+.tools-cat-item .tools-cat-count {
+    background: #f1f5f9 !important;
+    color: #64748b !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    padding: 2px 8px !important;
+    border-radius: 12px !important;
+    transition: all 0.25s ease !important;
+}
+.tools-cat-item:hover .tools-cat-count {
+    background: #e2e8f0 !important;
+    color: var(--color-primary, #1e3a2f) !important;
 }
 .tools-cat-item.active .tools-cat-count {
-    background: rgba(45, 90, 68, 0.1) !important;
-    color: var(--color-primary, #2d5a44) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
 }
 .tools-sidebar-help {
     background: var(--color-white, #ffffff) !important;
@@ -3147,7 +3183,7 @@ html.adn-reveal .acard-stat::before {
 /* Calculator grid */
 .calc-grid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)) !important;
     gap: 16px !important;
     align-items: stretch !important;
 }

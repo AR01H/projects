@@ -5385,7 +5385,11 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   .footer-topbar-nl-text { text-align: left; }
   .footer-nl-row input[type="email"] { width: 100%; }
   .footer-nl-row { width: 100%; }
-  .footer-cols-grid { grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  .footer-cols-grid { grid-template-columns: 1fr; gap: var(--space-6); text-align: center; }
+  .footer-links { align-items: center; }
+  .footer-links {
+    gap: 1px !important;
+}
 
   /* Footer bottom: stack on mobile */
   .footer-bottom {
