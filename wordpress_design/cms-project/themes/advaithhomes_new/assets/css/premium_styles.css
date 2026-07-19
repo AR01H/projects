@@ -2020,9 +2020,7 @@ body::after {
        reduced-motion is off). Targets are server-rendered, so AJAX
        content is never hidden. .adn-in is added by the observer.
    ══════════════════════════════════════════════════════════════ */
-html.adn-reveal .guide-card,
 html.adn-reveal .jny-card,
-html.adn-reveal .calc-card,
 html.adn-reveal .contact-resource-card,
 html.adn-reveal .glc,
 html.adn-reveal .spotlight-card,
@@ -2033,9 +2031,7 @@ html.adn-reveal .section-header-wrap {
                 transform .6s cubic-bezier(.22,.68,0,1);
     will-change: opacity, transform;
 }
-html.adn-reveal .guide-card:not(.adn-in),
 html.adn-reveal .jny-card:not(.adn-in),
-html.adn-reveal .calc-card:not(.adn-in),
 html.adn-reveal .contact-resource-card:not(.adn-in),
 html.adn-reveal .glc:not(.adn-in),
 html.adn-reveal .spotlight-card:not(.adn-in),

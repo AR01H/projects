@@ -206,6 +206,9 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 							<input type="text" name="journey[steps][<?php echo (int) $i; ?>][desc]"
 								value="<?php echo esc_attr( isset( $step['desc'] ) ? $step['desc'] : '' ); ?>"
 								placeholder="<?php esc_attr_e( 'Short description', ADN_TEXT_DOMAIN ); ?>" style="flex:1;">
+							<input type="text" name="journey[steps][<?php echo (int) $i; ?>][url]"
+								value="<?php echo esc_attr( isset( $step['url'] ) ? $step['url'] : '' ); ?>"
+								placeholder="<?php esc_attr_e( 'URL (optional)', ADN_TEXT_DOMAIN ); ?>" style="width:160px;">
 							<button type="button" class="button adn-rep-remove" title="Remove">&#x2715;</button>
 						</div>
 					<?php endforeach; ?>
@@ -864,7 +867,8 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 		journey: function (p, i) {
 			return '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="🔍" style="width:52px;text-align:center;">'
 				+ '<input type="text" name="' + p + '[' + i + '][label]" placeholder="Step label" style="width:180px;">'
-				+ '<input type="text" name="' + p + '[' + i + '][desc]" placeholder="Short description" style="flex:1;">';
+				+ '<input type="text" name="' + p + '[' + i + '][desc]" placeholder="Short description" style="flex:1;">'
+				+ '<input type="text" name="' + p + '[' + i + '][url]" placeholder="URL (optional)" style="width:160px;">';
 		},
 		link: function (p, i) {
 			return '<input type="text" name="' + p + '[' + i + '][icon]" placeholder="icon" style="width:52px;text-align:center;">'

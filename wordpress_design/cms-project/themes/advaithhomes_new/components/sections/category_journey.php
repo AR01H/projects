@@ -33,12 +33,15 @@ $_total = count( $steps );
 			$label = isset( $step['label'] ) ? (string) $step['label'] : '';
 			$desc  = isset( $step['desc'] )  ? (string) $step['desc']  : '';
 			$icon  = isset( $step['icon'] )  ? trim( (string) $step['icon'] ) : '';
+			$url   = isset( $step['url'] )   ? trim( (string) $step['url'] ) : '';
 
 			$_icon_html = ( '' !== $icon ) ? adn_icon( $icon ) : '';
 			$_num_pad = str_pad( $num, 2, '0', STR_PAD_LEFT );
 			$_is_last = ( $i === $_total - 1 );
+			$_tag     = $url ? 'a' : 'div';
+			$_href    = $url ? ' href="' . esc_url( adn_link( $url ) ) . '" style="text-decoration: none; color: inherit; display: block;"' : '';
 		?>
-		<div class="jny2-step<?php echo $_is_last ? ' jny2-step--last' : ''; ?>">
+		<<?php echo $_tag; ?> class="jny2-step<?php echo $_is_last ? ' jny2-step--last' : ''; ?>"<?php echo $_href; ?>>
 
 			<div class="jny2-step__top">
 				<div class="jny2-step__circle" aria-hidden="true">
@@ -65,7 +68,7 @@ $_total = count( $steps );
 				<?php endif; ?>
 			</div>
 
-		</div>
+		</<?php echo $_tag; ?>>
 
 		<?php if ( ! $_is_last ) : ?>
 		<span class="jny2-arrow" aria-hidden="true">&#8250;</span>

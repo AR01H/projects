@@ -1257,6 +1257,7 @@ class ADN_Theme_Admin {
 					'icon'  => sanitize_text_field( isset( $s['icon'] )  ? $s['icon']  : '' ),
 					'label' => sanitize_text_field( $s['label'] ),
 					'desc'  => sanitize_text_field( isset( $s['desc'] )  ? $s['desc']  : '' ),
+					'url'   => esc_url_raw( isset( $s['url'] ) ? $s['url'] : '' ),
 				);
 			}
 		}

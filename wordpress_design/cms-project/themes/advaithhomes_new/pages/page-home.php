@@ -133,25 +133,27 @@ foreach ( $_deferred as $_df ) :
 	} else {
 		$_fh = false;
 	}
+
+	if ( false !== $_fh && '' !== $_fh ) {
+		echo $_fh; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	} else {
 ?>
-<div class="adn-defer"
-     data-fragment="<?php echo esc_attr( $_df ); ?>"
-     data-endpoint="<?php echo esc_url( rest_url( ADN_API_NS . '/home/section/' . $_df ) ); ?>"
-     <?php if ( false !== $_fh && '' !== $_fh ) { echo 'data-prerendered="1"'; } ?>
-     aria-busy="<?php echo ( false !== $_fh && '' !== $_fh ) ? 'false' : 'true'; ?>">
-<?php if ( false !== $_fh && '' !== $_fh ) : ?>
-	<?php echo $_fh; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-<?php else : ?>
-	<div class="container">
-		<div class="adn-defer-skel" aria-hidden="true">
-			<span class="adn-defer-line adn-defer-line--head"></span>
-			<span class="adn-defer-line"></span>
-			<span class="adn-defer-line adn-defer-line--short"></span>
+	<div class="adn-defer"
+	     data-fragment="<?php echo esc_attr( $_df ); ?>"
+	     data-endpoint="<?php echo esc_url( rest_url( ADN_API_NS . '/home/section/' . $_df ) ); ?>"
+	     aria-busy="true">
+		<div class="container">
+			<div class="adn-defer-skel" aria-hidden="true">
+				<span class="adn-defer-line adn-defer-line--head"></span>
+				<span class="adn-defer-line"></span>
+				<span class="adn-defer-line adn-defer-line--short"></span>
+			</div>
 		</div>
 	</div>
-<?php endif; ?>
-</div>
-<?php endforeach; ?>
+<?php
+	}
+endforeach;
+?>
 
 <?php /* ============================== NEWSLETTER ============================== */ ?>
 <?php if ( adn_home_section_visible( 'newsletter' ) ) : ?>

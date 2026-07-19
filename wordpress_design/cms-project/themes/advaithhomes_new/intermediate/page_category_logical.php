@@ -324,6 +324,7 @@ function adn_category_get_context( $slug = '' ) {
 				'num'    => (string) ( count( $steps ) + 1 ),
 				'label'  => (string) $s['label'],
 				'desc'   => ! empty( $s['desc'] ) ? (string) $s['desc'] : '',
+				'url'    => ! empty( $s['url'] )  ? (string) $s['url']  : '',
 				'active' => ( 0 === count( $steps ) ),
 			);
 		}

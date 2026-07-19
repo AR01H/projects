@@ -146,8 +146,11 @@ adn_component( 'sections/page_hero', array(
 			<?php /* ── Guides Grid ── */ ?>
 			<?php if ( ! empty( $ctx['guides']['items'] ) ) { ?>
 			<div class="category-section category-guides">
-				<?php adn_component( 'parts/section_headers/section_header', array(
-					'heading' => isset( $ctx['guides']['heading'] ) ? $ctx['guides']['heading'] : array(),
+				<?php 
+					$_guides_heading = isset( $ctx['guides']['heading'] ) ? $ctx['guides']['heading'] : array();
+					unset( $_guides_heading['link_label'], $_guides_heading['link_url'] );
+					adn_component( 'parts/section_headers/section_header', array(
+					'heading' => $_guides_heading,
 					'tag'     => 'h2',
 				) ); ?>
 				<div class="cat-guides-grid">
