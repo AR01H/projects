@@ -1,0 +1,13 @@
+{
+  "categories": ["All", "Farms", "Our Stall", "Events", "Community"],
+  "images": [
+    { "src": "images/gallery/farm-1.svg", "category": "Farms", "caption": "Sugarcane fields at sunrise" },
+    { "src": "images/gallery/stall-1.svg", "category": "Our Stall", "caption": "Live pressing at our stall" },
+    { "src": "images/gallery/event-1.svg", "category": "Events", "caption": "Serving at a summer wedding" },
+    { "src": "images/gallery/community-1.svg", "category": "Community", "caption": "A young customer enjoying a glass" },
+    { "src": "images/gallery/farm-2.svg", "category": "Farms", "caption": "Hand harvesting cane" },
+    { "src": "images/gallery/stall-2.svg", "category": "Our Stall", "caption": "The Cane House cart" },
+    { "src": "images/gallery/event-2.svg", "category": "Events", "caption": "Festival crowd enjoying fresh juice" },
+    { "src": "images/gallery/team-1.svg", "category": "Community", "caption": "Our team" }
+  ]
+}

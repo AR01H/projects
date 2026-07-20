@@ -1,0 +1,60 @@
+{
+  "events_preview": {
+    "tag": "Events & Hire",
+    "heading": "Bring Us to <span class=\"accent\">Your Event</span>",
+    "body": "Available for weddings, corporate events, and parties.",
+    "more_label": "View all packages"
+  },
+  "events_quote": {
+    "tag": "Book Us",
+    "heading": "Ready to <span class=\"accent\">Book?</span>",
+    "body": "Fill in the form below and we'll get back to you with a custom quote.",
+    "image": "https://placehold.co/600x800",
+    "image_alt": "Booking"
+  },
+  "faqs": {
+    "tag": "FAQs",
+    "heading": "Got <span class=\"accent\">Questions?</span>",
+    "body": "Here are some of the most common questions we get."
+  },
+  "features_in": {
+    "heading": "As Featured In"
+  },
+  "franchise_section": {
+    "tag": "Join Us",
+    "heading": "Start Your <span class=\"accent\">Own Branch</span>",
+    "body": "Become a partner and bring our brand to your city."
+  },
+  "order_to_deliver": {
+    "tag": "Order Now",
+    "heading": "Fresh <span class=\"accent\">Delivery</span>",
+    "body": "Order directly to your door.",
+    "image": "https://placehold.co/600x800",
+    "image_alt": "Delivery"
+  },
+  "product_benefits": {
+    "tag": "Benefits",
+    "heading": "Why <span class=\"accent\">Choose Us?</span>",
+    "body": "Our products are made with the highest quality ingredients."
+  },
+  "product_experience": {
+    "tag": "The Experience",
+    "heading": "See It <span class=\"accent\">Live</span>",
+    "body": "Watch as we craft your order right in front of you."
+  },
+  "spotlights": {
+    "tag": "Spotlight",
+    "heading": "Featured <span class=\"accent\">Items</span>",
+    "body": "Discover what's popular this season."
+  },
+  "certifications": {
+    "tag": "Quality",
+    "heading": "Our <span class=\"accent\">Certifications</span>",
+    "body": "We meet the highest standards of safety and quality."
+  },
+  "photo_carousel": {
+    "tag": "Gallery",
+    "heading": "Follow Our <span class=\"accent\">Journey</span>",
+    "body": "Tag us to be featured!"
+  }
+}

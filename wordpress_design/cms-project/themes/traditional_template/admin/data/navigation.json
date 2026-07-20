@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Home", "slug": "home", "url": "/", "is_active": 1, "sort_order": 1, "parent_id": null },
+  { "id": 2, "name": "About", "slug": "about", "url": "/about/", "is_active": 1, "sort_order": 2, "parent_id": null },
+  { "id": 3, "name": "Services", "slug": "services", "url": "/services/", "is_active": 1, "sort_order": 3, "parent_id": null },
+  { "id": 4, "name": "Contact", "slug": "contact", "url": "/contact/", "is_active": 1, "sort_order": 4, "parent_id": null }
+]

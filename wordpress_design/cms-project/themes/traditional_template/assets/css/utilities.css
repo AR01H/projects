@@ -1,0 +1,12 @@
+/* Small single-purpose utility classes. Keep this file tiny. */
+
+.nt-center { text-align: center; }
+.nt-right { text-align: right; }
+
+.nt-mt-0 { margin-top: 0; }
+.nt-mb-0 { margin-bottom: 0; }
+
+.nt-hidden { display: none !important; }
+
+.nt-muted { color: var(--nt-ink-soft); }
+.nt-small { font-size: var(--nt-fs-sm); }

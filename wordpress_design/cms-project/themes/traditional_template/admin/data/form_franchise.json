@@ -1,0 +1,122 @@
+{
+  "id": "nt-frn-form",
+  "action": "nt_contact_submit",
+  "nonce_action": "nt_contact_nonce",
+  "nonce_name": "nt_frn_nonce_field",
+  "submit": "Submit My Enquiry 💼",
+  "steps": [
+    {
+      "title": "Where do you want to open?",
+      "desc": "Tell us your preferred city or area and what type of unit interests you.",
+      "fields": [
+        {
+          "type": "text",
+          "id": "frn_city",
+          "name": "frn_city",
+          "label": "City / Area",
+          "placeholder": "e.g. Manchester, Leeds, Birmingham…",
+          "required": true
+        },
+        {
+          "type": "select",
+          "id": "frn_type",
+          "name": "frn_type",
+          "label": "Franchise Type",
+          "required": true,
+          "options": {
+            "": "Select a type…",
+            "Kiosk (Shopping Centre)": "Kiosk (Shopping Centre)",
+            "High Street Cafe": "High Street Cafe",
+            "Drive Thru": "Drive Thru"
+          }
+        },
+        {
+          "type": "select",
+          "id": "frn_timeline",
+          "name": "frn_timeline",
+          "label": "When are you looking to start?",
+          "required": true,
+          "options": {
+            "": "Select a timeline…",
+            "ASAP (1-3 months)": "ASAP (1-3 months)",
+            "Within 6 months": "Within 6 months",
+            "Within 1 year": "Within 1 year",
+            "Just exploring options": "Just exploring options"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Tell us about yourself",
+      "desc": "Helps us match you to the right franchise package.",
+      "fields": [
+        {
+          "type": "select",
+          "id": "frn_investment",
+          "name": "frn_investment",
+          "label": "Investment Range",
+          "required": true,
+          "options": {
+            "": "Select a range…",
+            "£30k - £50k": "£30k - £50k",
+            "£50k - £100k": "£50k - £100k",
+            "£100k+": "£100k+"
+          }
+        },
+        {
+          "type": "select",
+          "id": "frn_experience",
+          "name": "frn_experience",
+          "label": "Business / Food Experience",
+          "required": false,
+          "options": {
+            "": "Select…",
+            "No prior business experience": "No prior business experience",
+            "I've run a small business before": "I've run a small business before",
+            "Food & hospitality background": "Food & hospitality background",
+            "Multi-unit / franchise experience": "Multi-unit / franchise experience"
+          }
+        },
+        {
+          "type": "textarea",
+          "id": "frn_message",
+          "name": "frn_message",
+          "label": "Any questions or comments? (optional)",
+          "placeholder": "Anything you'd like us to know…",
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Almost there! 🌿",
+      "desc": "We'll reply personally within 24 hours. All enquiries are fully confidential.",
+      "summary_id": "nt-frn-summary",
+      "fields": [
+        {
+          "type": "text",
+          "id": "frn_name",
+          "name": "frn_name",
+          "label": "Your Name",
+          "placeholder": "Full name",
+          "required": true
+        },
+        {
+          "type": "email",
+          "id": "frn_email",
+          "name": "frn_email",
+          "label": "Email",
+          "placeholder": "you@email.com",
+          "required": true
+        },
+        {
+          "type": "tel",
+          "id": "frn_phone",
+          "name": "frn_phone",
+          "label": "Phone / WhatsApp (optional)",
+          "placeholder": "+44 …",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

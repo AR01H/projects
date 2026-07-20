@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cane House</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Caveat:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Site CSS -->
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="load-error" style="display:none;color:#900;text-align:center;padding:10px;"></div>
+
+<!-- ================= HEADER / NAV ================= -->
+<header class="site-header">
+  <div class="nav-wrap">
+    <div class="logo-lockup">
+      <img id="logo-image" src="" alt="">
+      <div class="logo-text" id="logo-text"></div>
+    </div>
+    <nav class="main-nav">
+      <ul id="main-nav-list"></ul>
+    </nav>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="nav-cta-btn" id="nav-cta-btn" data-open-booking></button>
+      <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-inner" id="hero-inner">
+      <div class="hero-badge-wrap"><span class="badge" id="hero-badge"></span></div>
+      <div class="hero-text">
+        <div id="hero-title-lines"></div>
+        <div id="hero-subtitle-lines"></div>
+        <div class="hero-buttons" id="hero-buttons"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OUR STORY ================= -->
+<section class="section story-section" id="story">
+  <div class="container story-grid">
+    <div class="story-photo-wrap">
+      <img id="story-photo" src="" alt="">
+      <div class="story-photo-badge" id="story-photo-badge"></div>
+    </div>
+
+    <div class="story-text">
+      <h2 id="story-heading"></h2>
+      <p class="script" id="story-subheading" style="margin:10px 0 20px;"></p>
+      <div id="story-paragraphs"></div>
+    </div>
+
+    <div class="story-sketch">
+      <img id="story-sketch" src="" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- ================= OUR DRINKS ================= -->
+<section class="section" id="drinks">
+  <div class="container">
+    <div class="section-header"><h2 id="drinks-heading"></h2></div>
+    <div class="drinks-grid" id="drinks-grid"></div>
+    <div class="drinks-cta">
+      <button class="btn btn-primary" id="drinks-view-all-btn"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVENTS & CATERING ================= -->
+<section class="section events-section" id="events">
+  <div class="container events-grid">
+    <div class="events-text">
+      <h2 id="events-heading"></h2>
+      <span class="script" id="events-subheading"></span>
+
+      <div class="events-features" id="events-features"></div>
+
+      <button class="btn btn-primary" id="events-cta-btn" data-open-booking></button>
+    </div>
+
+    <div class="events-image-wrap">
+      <img id="events-image" src="" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section class="section" id="gallery">
+  <div class="container">
+    <div class="section-header"><h2>Gallery</h2></div>
+    <div class="gallery-filters" id="gallery-filters"></div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="section-header"><h2 id="contact-heading"></h2></div>
+
+    <div class="contact-grid">
+      <!-- Info -->
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <span class="icon">📍</span>
+          <div><strong id="contact-cafe-name"></strong><p id="contact-address"></p></div>
+        </div>
+        <div class="contact-info-item">
+          <span class="icon">📞</span>
+          <div><p id="contact-phone"></p></div>
+        </div>
+        <div class="contact-info-item">
+          <span class="icon">✉️</span>
+          <div><p id="contact-email"></p></div>
+        </div>
+        <div class="contact-info-item">
+          <span class="icon">🕒</span>
+          <div><p id="contact-hours"></p></div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="contact-form">
+        <div class="form-row" id="contact-form-fields"></div>
+        <div class="form-group full">
+          <textarea id="contact-message-input" rows="4" placeholder="Your Message"></textarea>
+        </div>
+        <button class="btn btn-primary" id="contact-submit-btn"></button>
+      </div>
+
+      <!-- Map -->
+      <div class="contact-map">
+        <img id="contact-map-img" src="" alt="">
+        <div class="map-pin-label" id="contact-map-label"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img id="footer-logo-img" src="" alt="">
+        <div>
+          <div class="text" id="footer-logo-text"></div>
+          <div class="sub" id="footer-logo-sub"></div>
+        </div>
+      </div>
+      <div class="footer-tagline" id="footer-tagline"></div>
+      <div class="footer-quote" id="footer-quote"></div>
+    </div>
+    <div class="footer-socials" id="footer-socials"></div>
+    <p class="footer-copyright" id="footer-copyright"></p>
+  </div>
+</footer>
+
+<!-- ================= BOOKING MODAL ================= -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close-btn">&times;</button>
+
+    <div class="step-indicator">
+      <div class="dot-wrap"><div class="num" data-num="1">1</div>Cane</div>
+      <div class="dot-wrap"><div class="num" data-num="2">2</div>Flavour</div>
+      <div class="dot-wrap"><div class="num" data-num="3">3</div>Details</div>
+      <div class="dot-wrap"><div class="num" data-num="4">4</div>Confirm</div>
+    </div>
+
+    <!-- STEP 1: Cane + Texture -->
+    <div class="booking-step" data-step="1">
+      <h3>Choose Your Cane</h3>
+      <p class="step-sub">Pick your preferred sugarcane type.</p>
+      <div class="option-grid" id="cane-type-grid"></div>
+
+      <h3 style="margin-top:24px;">Choose Your Texture</h3>
+      <div class="option-grid" id="texture-grid"></div>
+
+      <div class="step-nav">
+        <span></span>
+        <button class="btn btn-primary" data-next>Next: Flavours →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Flavours -->
+    <div class="booking-step" data-step="2">
+      <h3>Choose Your Flavours</h3>
+      <p class="step-sub">Pick as many as you like — mix and match for your event.</p>
+      <div class="option-grid flavours-grid" id="flavour-grid"></div>
+
+      <div class="step-nav">
+        <button class="btn btn-outline" data-back>← Back</button>
+        <button class="btn btn-primary" data-next>Next: Details →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Event Details -->
+    <div class="booking-step" data-step="3">
+      <h3>Event Details</h3>
+      <p class="step-sub">Tell us about your event.</p>
+
+      <div class="form-group">
+        <label>Event Type</label>
+        <select id="event-type-select"></select>
+      </div>
+      <div class="form-group">
+        <label>Event Date</label>
+        <input type="date" id="event-date-input">
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="event-location-input" placeholder="Enter location">
+      </div>
+      <div class="form-group">
+        <label>Guest Count</label>
+        <input type="number" id="event-guests-input" placeholder="Approx. number of guests">
+      </div>
+      <div class="form-group">
+        <label>Special Requests</label>
+        <textarea id="event-requests-input" rows="3" placeholder="Any additional requests..."></textarea>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-outline" data-back>← Back</button>
+        <button class="btn btn-primary" data-next>Next: Confirm →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Confirm -->
+    <div class="booking-step" data-step="4">
+      <h3>Confirm Booking</h3>
+      <p class="step-sub">Review your details and confirm.</p>
+
+      <div class="summary-box">
+        <dl>
+          <dt>Cane Type</dt><dd id="summary-cane"></dd>
+          <dt>Flavours</dt><dd id="summary-flavours"></dd>
+          <dt>Event Type</dt><dd id="summary-event-type"></dd>
+          <dt>Date</dt><dd id="summary-event-date"></dd>
+          <dt>Location</dt><dd id="summary-location"></dd>
+          <dt>Guests</dt><dd id="summary-guests"></dd>
+        </dl>
+      </div>
+
+      <div id="form-status"></div>
+
+      <div class="step-nav">
+        <button class="btn btn-outline" data-back>← Back</button>
+        <button class="btn btn-primary" id="confirm-booking-btn">Confirm Booking ✓</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- jQuery (CDN) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Site JS: fetches all JSON and renders everything -->
+<script src="js/main.js"></script>
+</body>
+</html>

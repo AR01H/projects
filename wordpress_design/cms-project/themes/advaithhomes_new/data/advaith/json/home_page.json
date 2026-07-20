@@ -47,15 +47,6 @@
                 "restrict": "true"
             },
             {
-                "icon": "🏠",
-                "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
-                "title": "Moving Home",
-                "description": "Plan your move with practical guidance on removals, packing, address updates, utility transfers, moving checklists, timelines, costs, and essential tips to make relocating to your new home simple and stress-free.",
-                "link_label": "Coming Soon",
-                "url": "",
-                "restrict": "true"
-            },
-            {
                 "icon": "👥",
                 "gradient": "linear-gradient(135deg,#ede8f8,#a890d8)",
                 "title": "I need Professional Help",

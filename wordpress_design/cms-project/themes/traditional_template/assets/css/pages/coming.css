@@ -1,0 +1,19 @@
+/* Coming-soon page - standalone chrome (no header/footer). */
+
+body.nt-coming {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, var(--nt-ink) 0%, #1f2937 100%);
+	color: #e5e7eb;
+	text-align: center;
+	margin: 0;
+	font-family: var(--nt-font);
+}
+
+.nt-coming-wrap { padding: 40px 20px; max-width: 560px; }
+.nt-coming-wrap h1 { color: #fff; }
+
+.nt-coming-big { font-size: var(--nt-fs-lg); font-weight: 600; }
+.nt-coming-contact { margin-top: 28px; opacity: 0.75; font-size: var(--nt-fs-sm); }

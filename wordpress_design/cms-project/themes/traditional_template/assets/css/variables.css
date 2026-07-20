@@ -1,0 +1,65 @@
+/* ===============================================================
+   TRADITIONAL TEMPLATE – VARIABLES
+   The single source of truth for the vintage parchment design.
+   =============================================================== */
+:root {
+	/* ─── Navigation ─── */
+	--nt-nav-height: 72px;
+
+	/* ─── Parchment Colour Palette ─── */
+	--client-main-color:       #1e3a0e;   /* deep forest green */
+	--client-main-color-dark:  #14280a;
+	--client-secondary-color:  #c9a84c;   /* aged gold */
+	--client-dark-color:       #2c1a0e;   /* dark brown ink */
+	--client-text-soft:        #6b5740;
+	--client-light-color:      #ece0b6;   /* parchment alt */
+	--client-line-color:       #c8b58a;   /* warm border */
+	--client-bg-color:         #f5e8c4;   /* main parchment */
+	--client-danger-color:     #8b1a1a;
+	--client-success-color:    #2d5016;
+
+	/* ─── Semantic tokens ─── */
+	--nt-primary:        var(--client-main-color);
+	--nt-primary-dark:   var(--client-main-color-dark);
+	--nt-accent:         var(--client-secondary-color);
+	--nt-ink:            var(--client-dark-color);
+	--nt-ink-soft:       var(--client-text-soft);
+	--nt-line:           var(--client-line-color);
+	--nt-bg:             var(--client-bg-color);
+	--nt-bg-soft:        var(--client-light-color);
+	--nt-danger:         var(--client-danger-color);
+	--nt-success:        var(--client-success-color);
+
+	/* ─── Traditional colour tokens (used in legacy.css) ─── */
+	--trad-bg:      #f5e8c4;
+	--trad-bg-alt:  #ece0b6;
+	--trad-ink:     #24300f;
+	--trad-green:   #1e3a0e;
+	--trad-green-2: #2d5016;
+	--trad-gold:    #c9a84c;
+	--trad-red:     #8b1a1a;
+	--trad-cream:   #faf0d8;
+	--trad-border:  rgba(201,168,76,0.30);
+
+	/* ─── Typography ─── */
+	--nt-font:          'EB Garamond', 'Georgia', serif;
+	--nt-font-body:     'Lato', 'Helvetica Neue', sans-serif;
+	--nt-font-display:  'Playfair Display', 'Georgia', serif;
+	--nt-font-accent:   'Dancing Script', cursive;
+
+	--nt-fs-base:   17px;
+	--nt-fs-sm:     0.875rem;
+	--nt-fs-lg:     1.125rem;
+	--nt-fs-h1:     clamp(2.4rem, 5.5vw, 3.8rem);
+	--nt-fs-h2:     clamp(1.8rem, 3.5vw, 2.6rem);
+	--nt-fs-h3:     clamp(1.2rem, 2.2vw, 1.5rem);
+
+	/* ─── Layout ─── */
+	--nt-container:    1200px;
+	--nt-radius:       4px;
+	--nt-radius-lg:    8px;
+	--nt-gap:          24px;
+	--nt-section-pad:  80px;
+	--nt-shadow:       0 4px 24px rgba(44,26,14,0.10);
+	--nt-transition:   0.25s ease;
+}

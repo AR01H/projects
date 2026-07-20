@@ -9,7 +9,7 @@
     ],
     "hero": {
         "title": "How can we help you?",
-        "description": "Whether you're buying, selling, moving home or simply looking for information, send us your enquiry and we'll point you in the right direction.",
+        "description": "Have a question or can't find the information you're looking for? Whether you're buying, selling, moving or simply exploring your options, we're here to help. Tell us about your situation, suggest a topic you'd like us to cover, or request a guide, calculator or FAQ you'd find useful. We're continually improving ADVAITH HOMES based on real questions from people like you, so your suggestions can help others on their property journey too.",
         "bg_icon": "🏠",
         "trust_items": [
             { "icon": "🤝", "title": "Expert Guidance",          "subtitle": "Advice from property information experts" },

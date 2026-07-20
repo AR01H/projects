@@ -1,0 +1,131 @@
+{
+  "brand": {
+    "name": "The Cane House",
+    "tagline": "Fresh Sugarcane Juice",
+    "logoImage": "images/logo-mascot.svg",
+    "logoLine1": "THE",
+    "logoLine2": "CANE",
+    "logoLine3": "HOUSE"
+  },
+  "nav": [
+    { "label": "Home", "href": "#home" },
+    { "label": "Our Story", "href": "#story" },
+    { "label": "Our Drinks", "href": "#drinks" },
+    { "label": "Events & Catering", "href": "#events" },
+    { "label": "Gallery", "href": "#gallery" },
+    { "label": "Contact Us", "href": "#contact" }
+  ],
+  "cta": { "line1": "Book Us", "line2": "For Your Event" },
+
+  "hero": {
+    "title": ["Watch It.", "Taste It.", "Love It."],
+    "subtitle": ["More Than A Drink.", "It's A Memory."],
+    "image": "images/hero-press.svg",
+    "badge": "Freshly Pressed — 100% Natural",
+    "buttons": [
+      { "label": "Visit Our Cafe", "icon": "📍", "href": "#contact" },
+      { "label": "Book Us For Events", "icon": "📅", "href": "#events" }
+    ]
+  },
+
+  "story": {
+    "heading": "Our Story",
+    "subheading": "Bringing Back Memories For Some. Creating New Memories For Others.",
+    "photo": "images/story/boy-drinking.svg",
+    "photoBadge": "Made Fresh Every Day",
+    "sketch": "images/story/press-sketch.svg",
+    "paragraphs": [
+      "The Cane House was born from simple memories of childhood summers, the sound of a sugarcane machine, the joy of watching fresh juice being made, and the taste that stayed with us forever.",
+      "Today, we carry that tradition forward, serving fresh, natural sugarcane juice while you watch.",
+      "A taste of home. A tradition shared across generations."
+    ]
+  },
+
+  "drinks": {
+    "heading": "Our Drinks",
+    "viewAllLabel": "View All Drinks",
+    "items": [
+      {
+        "name": "Classic Sugarcane",
+        "desc": "Pure. Natural. The original taste.",
+        "image": "images/drinks/classic.svg"
+      },
+      {
+        "name": "Pineapple Sugarcane",
+        "desc": "Tropical sweetness blended with fresh sugarcane.",
+        "image": "images/drinks/pineapple.svg"
+      },
+      {
+        "name": "Watermelon Sugarcane",
+        "desc": "A fruity summer favourite loved by all ages.",
+        "image": "images/drinks/watermelon.svg"
+      },
+      {
+        "name": "Lemon & Ginger Sugarcane",
+        "desc": "A refreshing twist that gives you an extra kick.",
+        "image": "images/drinks/lemon-ginger.svg"
+      },
+      {
+        "name": "Mint Sugarcane",
+        "desc": "Cool. Refreshing. Perfect for hot summer days.",
+        "image": "images/drinks/mint.svg"
+      },
+      {
+        "name": "Ginger Sugarcane",
+        "desc": "Spicy and refreshing. Great for immunity and energy.",
+        "image": "images/drinks/ginger.svg"
+      }
+    ]
+  },
+
+  "events": {
+    "heading": "Events & Catering",
+    "subheading": "Make Your Event Memorable With Our Live Sugarcane Juice Stall.",
+    "image": "images/events/stall-night.svg",
+    "signText": ["Watch it.", "Taste it.", "Love it."],
+    "features": [
+      { "icon": "images/icons/live-press.svg", "label": "Live Pressing" },
+      { "icon": "images/icons/hygienic.svg", "label": "Fresh & Hygienic" },
+      { "icon": "images/icons/staff.svg", "label": "Trained Staff" },
+      { "icon": "images/icons/packages.svg", "label": "Custom Packages" },
+      { "icon": "images/icons/occasion.svg", "label": "Perfect For Any Occasion" }
+    ],
+    "cta": { "label": "Book Us For Your Event", "icon": "📅" }
+  },
+
+  "contact": {
+    "heading": "Contact Us",
+    "cafeName": "Sutton Green Cafe",
+    "address": ["80 Rose Hill, Sutton Green,", "Ely, CB6 2SH, United Kingdom"],
+    "phone": "+44 7770 461939",
+    "email": "thecanehouseuk@gmail.com",
+    "hours": ["Monday – Sunday", "9:00 AM – 9:00 PM"],
+    "formFields": [
+      { "label": "Your Name", "type": "text", "id": "cf-name" },
+      { "label": "Your Email", "type": "email", "id": "cf-email" },
+      { "label": "Phone Number", "type": "tel", "id": "cf-phone" },
+      { "label": "Subject", "type": "text", "id": "cf-subject" }
+    ],
+    "messageLabel": "Your Message",
+    "submitLabel": "Send Message",
+    "mapImage": "images/map-placeholder.svg",
+    "mapPinLabel": "Sutton Green Cafe"
+  },
+
+  "footer": {
+    "logoLine1": "THE",
+    "logoLine2": "CANE",
+    "logoLine3": "HOUSE",
+    "logoSub": "FRESH SUGARCANE JUICE",
+    "tagline1": "Freshly Pressed. Naturally Refreshing.",
+    "tagline2": "Always Made With Care. ♥",
+    "quote": ["Watch it.", "Taste it.", "Love it."],
+    "socials": [
+      { "name": "Facebook", "icon": "images/icons/facebook.svg", "url": "https://facebook.com" },
+      { "name": "Instagram", "icon": "images/icons/instagram.svg", "url": "https://instagram.com" },
+      { "name": "WhatsApp", "icon": "images/icons/whatsapp.svg", "url": "https://wa.me/447770461939" }
+    ],
+    "copyright": "© 2026 The Cane House. All Rights Reserved."
+  }
+}
+

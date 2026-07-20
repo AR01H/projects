@@ -1,0 +1,27 @@
+/* Contact page styles - loaded only on 'contact' (config/pages.php). */
+
+.nt-contact-layout {
+	display: grid;
+	grid-template-columns: 1fr 1.6fr;
+	gap: calc(var(--nt-gap) * 2);
+	max-width: 980px;
+	margin: 0 auto;
+}
+
+.nt-contact-info {
+	background: var(--nt-bg-soft);
+	border-radius: var(--nt-radius);
+	padding: 24px;
+	align-self: start;
+}
+
+.nt-contact-info ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.nt-contact-info li { margin-bottom: 10px; }
+
+@media (max-width: 800px) {
+	.nt-contact-layout { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,36 @@
+{
+  "_comment": "Demo term tree read by nt_terms_tree(). Replace with real content or wire a DB source (see admin/includes/terms.php).",
+  "tree": [
+    {
+      "slug": "buying",
+      "name": "Buying",
+      "icon": "fa-house",
+      "description": "Everything about buying a home.",
+      "children": [
+        { "slug": "first-time-buyers", "name": "First Time Buyers" },
+        { "slug": "mortgages", "name": "Mortgages" },
+        { "slug": "legal-process", "name": "Legal Process" }
+      ]
+    },
+    {
+      "slug": "selling",
+      "name": "Selling",
+      "icon": "fa-tag",
+      "description": "Guides for selling your property.",
+      "children": [
+        { "slug": "valuation", "name": "Valuation" },
+        { "slug": "marketing-your-home", "name": "Marketing Your Home" }
+      ]
+    },
+    {
+      "slug": "renting",
+      "name": "Renting",
+      "icon": "fa-key",
+      "description": "Tenant and landlord essentials.",
+      "children": [
+        { "slug": "tenancy-agreements", "name": "Tenancy Agreements" },
+        { "slug": "deposits", "name": "Deposits" }
+      ]
+    }
+  ]
+}

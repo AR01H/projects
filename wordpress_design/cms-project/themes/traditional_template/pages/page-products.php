@@ -1,0 +1,1 @@
+<?php defined( 'ABSPATH' ) || exit; get_header(); ?><main class='site-main'><?php get_template_part('components/products-list'); get_template_part('components/product-benefits'); ?></main><?php get_footer(); ?>

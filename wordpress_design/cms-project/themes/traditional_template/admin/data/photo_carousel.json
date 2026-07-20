@@ -1,0 +1,27 @@
+[
+  {
+    "src": "https://placehold.co/600x600/png?text=Gallery+1",
+    "label": "@our_brand",
+    "desc": "Featured community post"
+  },
+  {
+    "src": "https://placehold.co/600x600/png?text=Gallery+2",
+    "label": "@happy_customer",
+    "desc": "Delicious moments"
+  },
+  {
+    "src": "https://placehold.co/600x600/png?text=Gallery+3",
+    "label": "@event_planner",
+    "desc": "Catering showcase"
+  },
+  {
+    "src": "https://placehold.co/600x600/png?text=Gallery+4",
+    "label": "@local_foodie",
+    "desc": "Top picks"
+  },
+  {
+    "src": "https://placehold.co/600x600/png?text=Gallery+5",
+    "label": "@our_brand",
+    "desc": "Behind the scenes"
+  }
+]

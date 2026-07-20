@@ -1,0 +1,132 @@
+{
+  "brand": {
+    "name": "Our Brand",
+    "tagline": "Fresh Produce",
+    "logoImage": "https://placehold.co/600x400",
+    "logoLine1": "THE",
+    "logoLine2": "CANE",
+    "logoLine3": "HOUSE"
+  },
+  "nav": [
+    { "label": "Home", "href": "#home" },
+    { "label": "Our Story", "href": "#story" },
+    { "label": "Our Drinks", "href": "#drinks" },
+    { "label": "Events & Catering", "href": "#events" },
+    { "label": "Gallery", "href": "#gallery" },
+    { "label": "Contact Us", "href": "#contact" }
+  ],
+  "cta": { "line1": "Book Us", "line2": "For Your Event" },
+
+  "hero": {
+    "title": ["Watch It.", "Taste It.", "Love It."],
+    "subtitle": ["More Than A Drink.", "It's A Memory."],
+    "image": "https://placehold.co/600x400",
+    "badge": "Freshly Pressed — 100% Natural",
+    "buttons": [
+      { "label": "Visit Our Cafe", "icon": "📍", "href": "#contact" },
+      { "label": "Book Us For Events", "icon": "📅", "href": "#events" }
+    ]
+  },
+
+  "story": {
+    "heading": "Our Story",
+    "subheading": "Bringing Back Memories For Some. Creating New Memories For Others.",
+    "photo": "https://placehold.co/600x400",
+    "photoBadge": "Made Fresh Every Day",
+    "sketch": "https://placehold.co/600x400",
+    "paragraphs": [
+      "Our Brand was born from simple memories of childhood summers, the sound of a produce machine, the joy of watching fresh juice being made, and the taste that stayed with us forever.",
+      "Today, we carry that tradition forward, serving fresh, natural Produce while you watch.",
+      "A taste of home. A tradition shared across generations."
+    ]
+  },
+
+  "drinks": {
+    "heading": "Our Drinks",
+    "viewAllLabel": "View All Drinks",
+    "items": [
+      {
+        "name": "Classic produce",
+        "desc": "Pure. Natural. The original taste.",
+        "image": "https://placehold.co/600x400"
+      },
+      {
+        "name": "Pineapple produce",
+        "desc": "Tropical sweetness blended with fresh produce.",
+        "image": "https://placehold.co/600x400"
+      },
+      {
+        "name": "Watermelon produce",
+        "desc": "A fruity summer favourite loved by all ages.",
+        "image": "https://placehold.co/600x400"
+      },
+      {
+        "name": "Lemon & Ginger produce",
+        "desc": "A refreshing twist that gives you an extra kick.",
+        "image": "https://placehold.co/600x400"
+      },
+      {
+        "name": "Mint produce",
+        "desc": "Cool. Refreshing. Perfect for hot summer days.",
+        "image": "https://placehold.co/600x400"
+      },
+      {
+        "name": "Ginger produce",
+        "desc": "Spicy and refreshing. Great for immunity and energy.",
+        "image": "https://placehold.co/600x400"
+      }
+    ]
+  },
+
+  "events": {
+    "heading": "Events & Catering",
+    "subheading": "Make Your Event Memorable With Our Live Produce Stall.",
+    "image": "https://placehold.co/600x400",
+    "signText": ["Watch it.", "Taste it.", "Love it."],
+    "features": [
+      { "icon": "https://placehold.co/600x400", "label": "Live Pressing" },
+      { "icon": "https://placehold.co/600x400", "label": "Fresh & Hygienic" },
+      { "icon": "https://placehold.co/600x400", "label": "Trained Staff" },
+      { "icon": "https://placehold.co/600x400", "label": "Custom Packages" },
+      { "icon": "https://placehold.co/600x400", "label": "Perfect For Any Occasion" }
+    ],
+    "cta": { "label": "Book Us For Your Event", "icon": "📅" }
+  },
+
+  "contact": {
+    "heading": "Contact Us",
+    "cafeName": "Sutton Green Cafe",
+    "address": ["80 Rose Hill, Sutton Green,", "Ely, CB6 2SH, United Kingdom"],
+    "phone": "+44 7770 461939",
+    "email": "hello@example.com",
+    "hours": ["Monday – Sunday", "9:00 AM – 9:00 PM"],
+    "formFields": [
+      { "label": "Your Name", "type": "text", "id": "cf-name" },
+      { "label": "Your Email", "type": "email", "id": "cf-email" },
+      { "label": "Phone Number", "type": "tel", "id": "cf-phone" },
+      { "label": "Subject", "type": "text", "id": "cf-subject" }
+    ],
+    "messageLabel": "Your Message",
+    "submitLabel": "Send Message",
+    "mapImage": "https://placehold.co/600x400",
+    "mapPinLabel": "Sutton Green Cafe"
+  },
+
+  "footer": {
+    "logoLine1": "THE",
+    "logoLine2": "CANE",
+    "logoLine3": "HOUSE",
+    "logoSub": "FRESH Produce",
+    "tagline1": "Freshly Pressed. Naturally Refreshing.",
+    "tagline2": "Always Made With Care. ♥",
+    "quote": ["Watch it.", "Taste it.", "Love it."],
+    "socials": [
+      { "name": "Facebook", "icon": "https://placehold.co/600x400", "url": "https://facebook.com" },
+      { "name": "Instagram", "icon": "https://placehold.co/600x400", "url": "https://instagram.com" },
+      { "name": "WhatsApp", "icon": "https://placehold.co/600x400", "url": "https://wa.me/447770461939" }
+    ],
+    "copyright": "© 2026 Our Brand. All Rights Reserved."
+  }
+}
+
+

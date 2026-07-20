@@ -1,0 +1,20 @@
+{
+  "_comment": "Fallback header/footer navigation, read via nt_data('nav'). Used when no WP menu is assigned to the location yet - so the chrome renders complete on a fresh install.",
+  "header": [
+    { "label": "Home", "url": "/" },
+    { "label": "Our Story", "url": "/about/" },
+    { "label": "Our Drinks", "url": "/products/" },
+    { "label": "Events & Catering", "url": "/events/" },
+    { "label": "Gallery", "url": "/gallery/" },
+    { "label": "Franchise", "url": "/franchise/" },
+    { "label": "Contact", "url": "/contact/" }
+  ],
+  "footer": [
+    { "label": "Home", "url": "/" },
+    { "label": "Our Story", "url": "/about/" },
+    { "label": "Our Drinks", "url": "/products/" },
+    { "label": "Events & Catering", "url": "/events/" },
+    { "label": "Contact", "url": "/contact/" },
+    { "label": "Privacy Policy", "url": "/privacy-policy/" }
+  ]
+}

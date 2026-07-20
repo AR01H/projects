@@ -1,0 +1,92 @@
+{
+  "id": "nt-otd-form",
+  "action": "nt_order_submit",
+  "nonce_action": "nt_contact_nonce",
+  "nonce_name": "nt_otd_nonce_field",
+  "submit": "Submit Order Request 🌿",
+  "steps": [
+    {
+      "title": "Delivery details 📦",
+      "desc": "Where and when should we deliver?",
+      "fields": [
+        {
+          "type": "textarea",
+          "id": "otd_address",
+          "name": "otd_address",
+          "label": "Delivery Address",
+          "placeholder": "Full delivery address including flat/house number, street, postcode…",
+          "required": true
+        },
+        {
+          "type": "text",
+          "id": "otd_area",
+          "name": "otd_area",
+          "label": "Area / City",
+          "placeholder": "e.g. Bengaluru, Koramangala",
+          "required": true
+        },
+        {
+          "type": "date",
+          "id": "otd_date",
+          "name": "otd_date",
+          "label": "Preferred Date (optional)",
+          "required": false
+        },
+        {
+          "type": "select",
+          "id": "otd_time",
+          "name": "otd_time",
+          "label": "Preferred Time (optional)",
+          "required": false,
+          "options": {
+            "": "Any time",
+            "Morning (8am-12pm)": "Morning (8am-12pm)",
+            "Afternoon (12pm-5pm)": "Afternoon (12pm-5pm)",
+            "Evening (5pm-8pm)": "Evening (5pm-8pm)",
+            "Flexible": "Flexible",
+            "Now": "Now"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Almost done! 🌿",
+      "desc": "Review your order and leave your contact details.",
+      "summary_id": "nt-otd-summary",
+      "fields": [
+        {
+          "type": "text",
+          "id": "otd_name",
+          "name": "otd_name",
+          "label": "Your Name",
+          "placeholder": "Full name",
+          "required": true
+        },
+        {
+          "type": "email",
+          "id": "otd_email",
+          "name": "otd_email",
+          "label": "Email",
+          "placeholder": "you@email.com",
+          "required": true
+        },
+        {
+          "type": "tel",
+          "id": "otd_phone",
+          "name": "otd_phone",
+          "label": "Phone / WhatsApp (optional)",
+          "placeholder": "+91 …",
+          "required": false
+        },
+        {
+          "type": "textarea",
+          "id": "otd_notes",
+          "name": "otd_notes",
+          "label": "Special Requirements (optional)",
+          "placeholder": "Allergies, packaging preferences, gate code, anything helpful…",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

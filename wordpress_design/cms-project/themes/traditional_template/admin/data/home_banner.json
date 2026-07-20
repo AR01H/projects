@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "image": "https://placehold.co/1920x800/4e342e/ffffff?text=Fresh+Harvest",
+    "image_mobile": "https://placehold.co/800x1200/4e342e/ffffff?text=Fresh+Harvest",
+    "subtitle": "Welcome to our tradition",
+    "title": "A Taste of the Olden Days",
+    "description": "Pure, honest sweetness that touches the soul. Freshly pressed and served with a smile.",
+    "btn_text": "Our Menu",
+    "btn_url": "#build",
+    "text_align": "center",
+    "status": "active",
+    "sort_order": 1
+  }
+]

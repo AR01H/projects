@@ -1,0 +1,16 @@
+{
+  "tag": "Gallery",
+  "title": "A Look Back in Time",
+  "body": "Explore our cherished moments and see how we keep tradition alive.",
+  "categories": ["All", "Farms", "Our Stall", "Events", "Community"],
+  "images": [
+    { "src": "https://placehold.co/600x400/3e2723/ffffff?text=Farms", "category": "Farms", "label": "Morning Harvest", "desc": "Product fields at sunrise" },
+    { "src": "https://placehold.co/600x400/4e342e/ffffff?text=Our+Stall", "category": "Our Stall", "label": "The Old Cart", "desc": "Live pressing at our stall" },
+    { "src": "https://placehold.co/600x400/5d4037/ffffff?text=Events", "category": "Events", "label": "Summer Wedding", "desc": "Serving at a summer wedding" },
+    { "src": "https://placehold.co/600x400/6d4c41/ffffff?text=Community", "category": "Community", "label": "Smiles", "desc": "A young customer enjoying a glass" },
+    { "src": "https://placehold.co/600x400/3e2723/ffffff?text=Farms", "category": "Farms", "label": "Hand Harvesting", "desc": "Hand harvesting cane" },
+    { "src": "https://placehold.co/600x400/4e342e/ffffff?text=Our+Stall", "category": "Our Stall", "label": "Our Setup", "desc": "The vintage cart" },
+    { "src": "https://placehold.co/600x400/5d4037/ffffff?text=Events", "category": "Events", "label": "Festival Day", "desc": "Festival crowd enjoying fresh juice" },
+    { "src": "https://placehold.co/600x400/6d4c41/ffffff?text=Community", "category": "Community", "label": "Our Team", "desc": "The family behind it all" }
+  ]
+}

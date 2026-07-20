@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#c9b98f"/>
+  <!-- background trees -->
+  <g opacity="0.35">
+    <circle cx="120" cy="120" r="90" fill="#5a7a4a"/>
+    <circle cx="780" cy="100" r="110" fill="#5a7a4a"/>
+    <circle cx="650" cy="150" r="70" fill="#6a8a5a"/>
+  </g>
+  <!-- ground -->
+  <rect x="0" y="380" width="900" height="120" fill="#8a7355"/>
+  <!-- press machine base -->
+  <rect x="380" y="230" width="220" height="150" rx="10" fill="#3a2f28"/>
+  <circle cx="420" cy="240" r="55" fill="#4a3d33" stroke="#2a231d" stroke-width="6"/>
+  <circle cx="420" cy="240" r="18" fill="#2a231d"/>
+  <circle cx="560" cy="240" r="55" fill="#4a3d33" stroke="#2a231d" stroke-width="6"/>
+  <circle cx="560" cy="240" r="18" fill="#2a231d"/>
+  <rect x="460" y="220" width="80" height="40" fill="#5a4a3d"/>
+  <!-- juice stream -->
+  <path d="M480 300 Q470 340 460 370" stroke="#e6c85a" stroke-width="8" fill="none" opacity="0.85"/>
+  <!-- bucket -->
+  <ellipse cx="450" cy="392" rx="45" ry="14" fill="#9a9a9a"/>
+  <rect x="405" y="360" width="90" height="35" fill="#b0b0b0"/>
+  <ellipse cx="450" cy="360" rx="45" ry="12" fill="#c8c8c8"/>
+  <!-- sugarcane stalks pile -->
+  <g stroke="#7a8a3a" stroke-width="14" stroke-linecap="round">
+    <line x1="600" y1="420" x2="740" y2="360"/>
+    <line x1="620" y1="430" x2="770" y2="365"/>
+    <line x1="640" y1="440" x2="800" y2="375"/>
+    <line x1="660" y1="445" x2="820" y2="390"/>
+  </g>
+  <g stroke="#94a34f" stroke-width="10" stroke-linecap="round" opacity="0.7">
+    <line x1="600" y1="415" x2="735" y2="358"/>
+    <line x1="640" y1="435" x2="795" y2="373"/>
+  </g>
+  <!-- glass of juice -->
+  <path d="M700 300 L710 400 Q710 410 720 410 L750 410 Q760 410 760 400 L770 300 Z" fill="#f6e9c9" opacity="0.85"/>
+  <path d="M703 310 L767 310 L762 395 Q762 402 755 402 L715 402 Q708 402 708 395 Z" fill="#e6c14a"/>
+  <rect x="732" y="270" width="6" height="60" fill="#e8763a"/>
+  <!-- leaves near glass -->
+  <path d="M735 275 Q725 250 740 235 Q745 255 735 275" fill="#5a7a4a"/>
+</svg>

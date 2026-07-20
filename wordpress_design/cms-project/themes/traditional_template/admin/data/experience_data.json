@@ -1,0 +1,41 @@
+{
+  "steps": [
+    {
+      "emoji": "🚜",
+      "title": "Sunlit Harvest",
+      "desc": "Hand-picked from fields where time moves slowly, just as our ancestors taught us.",
+      "feeling": "Rooted"
+    },
+    {
+      "emoji": "🧊",
+      "title": "Chilled to Perfection",
+      "desc": "Cooled with care, reminding you of that first sip from a cold clay pitcher on a hot summer porch.",
+      "feeling": "Nostalgic"
+    },
+    {
+      "emoji": "🥤",
+      "title": "A Taste of Home",
+      "desc": "A comforting, deeply satisfying flavor that feels like a warm embrace from the past.",
+      "feeling": "Heartwarming"
+    }
+  ],
+  "quote": "It tastes exactly like the summers I remember as a child. A truly precious memory in a cup.",
+  "author": "A Grateful Soul",
+  "sensory": [
+    {
+      "icon": "👀",
+      "label": "Sight",
+      "desc": "The golden hue of endless summer days."
+    },
+    {
+      "icon": "👃",
+      "label": "Smell",
+      "desc": "A sweet, earthy aroma of rain on dry soil."
+    },
+    {
+      "icon": "👅",
+      "label": "Taste",
+      "desc": "A pure, honest sweetness that touches the soul."
+    }
+  ]
+}

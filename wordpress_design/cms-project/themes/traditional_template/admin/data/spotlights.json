@@ -1,0 +1,5 @@
+[
+  { "id": 1, "icon": "🌿", "title": "Fresh & Natural", "description": "Harvested daily from our local farms.", "is_active": 1, "sort_order": 1 },
+  { "id": 2, "icon": "🍯", "title": "Pure Sweetness", "description": "No added sugars, just nature's gift.", "is_active": 1, "sort_order": 2 },
+  { "id": 3, "icon": "🕰️", "title": "Time Honored", "description": "Pressed using traditional methods.", "is_active": 1, "sort_order": 3 }
+]

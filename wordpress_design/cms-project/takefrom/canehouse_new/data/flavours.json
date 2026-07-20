@@ -1,0 +1,38 @@
+{
+  "caneTypes": [
+    {
+      "id": "yellow",
+      "name": "Yellow Cane",
+      "desc": "Light golden, fresh & refreshing",
+      "image": "images/cane/yellow.svg"
+    },
+    {
+      "id": "red",
+      "name": "Red Cane",
+      "desc": "Naturally sweeter, rich golden-amber tone",
+      "image": "images/cane/red.svg"
+    }
+  ],
+  "textures": [
+    { "id": "smooth", "name": "Smooth & Strained" },
+    { "id": "pulpy", "name": "Naturally Pulpy" }
+  ],
+  "flavours": [
+    { "id": "pure", "name": "Pure Cane", "image": "images/flavours/pure.svg" },
+    { "id": "lemon", "name": "Lemon", "image": "images/flavours/lemon.svg" },
+    { "id": "ginger", "name": "Ginger", "image": "images/flavours/ginger.svg" },
+    { "id": "mint", "name": "Mint", "image": "images/flavours/mint.svg" },
+    { "id": "pineapple", "name": "Pineapple", "image": "images/flavours/pineapple.svg" },
+    { "id": "watermelon", "name": "Watermelon", "image": "images/flavours/watermelon.svg" },
+    { "id": "mango", "name": "Mango", "image": "images/flavours/mango.svg" },
+    { "id": "passionfruit", "name": "Passion Fruit", "image": "images/flavours/passionfruit.svg" }
+  ],
+  "eventTypes": [
+    "Wedding",
+    "Private Party",
+    "Festival",
+    "Corporate Event",
+    "Graduation",
+    "Other"
+  ]
+}

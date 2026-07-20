@@ -1,0 +1,36 @@
+{
+  "caneTypes": [
+    {
+      "id": "yellow",
+      "name": "Yellow Cane",
+      "desc": "Light golden, fresh & refreshing",
+      "image": "https://placehold.co/600x400"
+    },
+    {
+      "id": "red",
+      "name": "Red Cane",
+      "desc": "Naturally sweeter, rich golden-amber tone",
+      "image": "https://placehold.co/600x400"
+    }
+  ],
+  "textures": [
+    { "id": "smooth", "name": "Smooth & Strained" },
+    { "id": "pulpy", "name": "Naturally Pulpy" }
+  ],
+  "flavours": [
+    { "id": "pure", "name": "Classic Sugarcane", "desc": "Pure. Natural. The original taste.", "image": "https://images.unsplash.com/photo-1541123437800-1bb1317bc20f?auto=format&fit=crop&w=600&q=80" },
+    { "id": "pineapple", "name": "Pineapple Sugarcane", "desc": "Tropical sweetness blended with fresh sugarcane.", "image": "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80" },
+    { "id": "watermelon", "name": "Watermelon Sugarcane", "desc": "A fruity summer favourite loved by all ages.", "image": "https://images.unsplash.com/photo-1563114773-84221bd62baa?auto=format&fit=crop&w=600&q=80" },
+    { "id": "lemon-ginger", "name": "Lemon & Ginger", "desc": "A refreshing twist that gives you an extra kick.", "image": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80" },
+    { "id": "mint", "name": "Mint Sugarcane", "desc": "Cool. Refreshing. Perfect for hot summer days.", "image": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80" },
+    { "id": "ginger", "name": "Ginger Sugarcane", "desc": "Spicy and refreshing. Great for immunity and energy.", "image": "https://images.unsplash.com/photo-1541123437800-1bb1317bc20f?auto=format&fit=crop&w=600&q=80" }
+  ],
+  "eventTypes": [
+    "Wedding",
+    "Private Party",
+    "Festival",
+    "Corporate Event",
+    "Graduation",
+    "Other"
+  ]
+}

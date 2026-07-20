@@ -1,0 +1,4 @@
+[
+  { "id": 1, "question": "How do I install the theme?", "answer": "Upload the zip file via Appearance > Themes.", "status": "active" },
+  { "id": 2, "question": "Do I need the CMS Plugin?", "answer": "Yes, it provides the backend functionality.", "status": "active" }
+]

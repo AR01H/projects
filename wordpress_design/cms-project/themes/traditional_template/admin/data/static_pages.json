@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "slug": "privacy-policy",
+    "title": "Privacy Policy",
+    "html": "<h1>Privacy Policy</h1><p>This is a static page generated from default data.</p>",
+    "status": "active"
+  }
+]
