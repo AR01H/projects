@@ -618,7 +618,7 @@
 	window.chStepModal = function (opts) {
 		opts = opts || {};
 		var prefix = opts.prefix;
-		if (!prefix || typeof chTheme === 'undefined') return;
+		if (!prefix || typeof window.ntSite === 'undefined') return;
 
 		var form   = document.getElementById(opts.formId || ('nt-' + prefix + '-form'));
 		var modal  = document.getElementById('nt-' + prefix + '-modal');
@@ -728,11 +728,12 @@
 			var originalText = submitBtn ? submitBtn.textContent : '';
 			if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = opts.sendingLabel || 'Sending… 🌿'; }
 
+			var site = window.ntSite || {};
 			var data = (typeof opts.collectData === 'function') ? opts.collectData(ctx) : new FormData(form);
-			data.append('action', opts.action);
-			data.append('nonce', chTheme.nonce);
+			data.append('action', 'nt_' + opts.action);
+			data.append('nonce', (site.nonces || {})[opts.action] || '');
 
-			fetch(chTheme.ajaxUrl, { method: 'POST', body: data })
+			fetch(site.ajaxUrl, { method: 'POST', body: data })
 				.then(function (r) { return r.json(); })
 				.catch(function () { return null; })
 				.then(function (res) {
@@ -927,7 +928,7 @@
         chStepModal({
             prefix:         'bk',
             formId:         'nt-booking-form',
-            action:         'NT_booking_submit',
+            action:         'booking_submit',
             successTitle:   'Order Request Sent!',
             successMessage: "Thanks! We'll be in touch very soon to confirm your order. 🌿",
 
@@ -994,7 +995,7 @@
         chStepModal({
             prefix:         'frn',
             formId:         'nt-frn-form',
-            action:         'NT_franchise_submit',
+            action:         'franchise_submit',
             successTitle:   'Enquiry Sent!',
             successMessage: "Thank you! We'll be in touch within 24 hours. 🌿",
 
@@ -1054,7 +1055,7 @@
         chStepModal({
             prefix:         'otd',
             formId:         'nt-otd-form',
-            action:         'NT_order_submit',
+            action:         'order_submit',
             successTitle:   'Order Request Sent!',
             successMessage: "Thanks! We'll review your order and contact you shortly. 🌿",
             // payload = all named fields (default new FormData(form))

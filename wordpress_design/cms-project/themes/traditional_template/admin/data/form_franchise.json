@@ -1,8 +1,7 @@
 {
   "id": "nt-frn-form",
-  "action": "nt_contact_submit",
-  "nonce_action": "nt_contact_nonce",
-  "nonce_name": "nt_frn_nonce_field",
+  "action": "lead_submit",
+  "form_label": "Franchise Enquiry",
   "submit": "Submit My Enquiry 💼",
   "steps": [
     {

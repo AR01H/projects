@@ -2,77 +2,32 @@
 /**
  * Template Name: Contact
  *
- * Registered as 'contact' in config/pages.php. The form posts through
- * NT.ajax('contact_submit') -> config/ajax.php -> handlers/ajax/contact.php.
- * No nonce code here - the dispatcher and the JS helper handle it.
+ * Registered as 'contact' in config/pages.php. Reuses the same vintage-styled
+ * contact-section.php component shown on the home page (polaroid photo, stamp
+ * badge, contact details, form) instead of a separate plain/unstyled layout -
+ * one styled, JSON-driven component, no duplicate CSS to maintain.
+ * The form posts through NT.ajax('contact_submit') -> config/ajax.php ->
+ * handlers/ajax/contact.php. No nonce code here - the dispatcher and the
+ * data-nt-ajax-form handler in common.js take care of it.
  */
 
 defined( 'ABSPATH' ) || exit;
 
 get_header();
-?>
-<div class="nt-container nt-section">
 
+$nt_hdr = nt_data( 'page_headers' )['contact'] ?? array();
+?>
+<div class="nt-contact-page">
 	<?php
 	nt_component( 'parts/page_header', array(
-		'title'    => __( 'Contact Us', NT_TEXT_DOMAIN ),
-		'subtitle' => __( 'Send us a message - we usually reply within one business day.', NT_TEXT_DOMAIN ),
+		'tag'      => $nt_hdr['tag']      ?? '',
+		'icon'     => $nt_hdr['icon']     ?? '',
+		'title'    => $nt_hdr['title']    ?? __( 'Contact Us', NT_TEXT_DOMAIN ),
+		'subtitle' => $nt_hdr['subtitle'] ?? '',
+		'image'    => $nt_hdr['image']    ?? '',
 	) );
+	get_template_part( 'components/contact-section' );
 	?>
-
-	<div class="nt-contact-layout">
-
-		<div class="nt-contact-info">
-			<h3><?php esc_html_e( 'Reach us', NT_TEXT_DOMAIN ); ?></h3>
-			<ul>
-				<li><?php echo esc_html( nt_option( 'general', 'phone', NT_BRAND_PHONE ) ); ?></li>
-				<li><?php echo esc_html( nt_option( 'general', 'email', NT_BRAND_EMAIL ) ); ?></li>
-				<?php if ( '' !== (string) nt_option( 'general', 'address' ) ) : ?>
-					<li><?php echo esc_html( nt_option( 'general', 'address' ) ); ?></li>
-				<?php endif; ?>
-			</ul>
-		</div>
-
-		<?php
-		get_template_part( 'components/parts/generic-form', null, [
-			'id'     => 'nt-contact-form',
-			'action' => 'contact_submit',
-			'submit' => __( 'Send Message', NT_TEXT_DOMAIN ),
-			'fields' => [
-				[
-					'type'     => 'text',
-					'id'       => 'nt-cf-name',
-					'name'     => 'name',
-					'label'    => __( 'Name', NT_TEXT_DOMAIN ),
-					'required' => true,
-				],
-				[
-					'type'     => 'email',
-					'id'       => 'nt-cf-email',
-					'name'     => 'email',
-					'label'    => __( 'Email', NT_TEXT_DOMAIN ),
-					'required' => true,
-				],
-				[
-					'type'     => 'tel',
-					'id'       => 'nt-cf-phone',
-					'name'     => 'phone',
-					'label'    => __( 'Phone', NT_TEXT_DOMAIN ),
-					'required' => false,
-				],
-				[
-					'type'     => 'textarea',
-					'id'       => 'nt-cf-message',
-					'name'     => 'message',
-					'label'    => __( 'Message', NT_TEXT_DOMAIN ),
-					'required' => true,
-				]
-			]
-		] );
-		?>
-
-	</div>
-
 </div>
 <?php
 get_footer();

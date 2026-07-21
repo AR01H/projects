@@ -1,0 +1,31 @@
+{
+  "tag": "Happy Customers",
+  "title": "What Our <em>Customers Say</em>",
+  "sub": "Loved by thousands across weddings, events and everyday cravings.",
+  "items": [
+    {
+      "name": "Ramesh P.",
+      "location": "Bengaluru",
+      "rating": 5,
+      "text": "The most refreshing juice I've ever had. Totally natural and full of flavour - you can taste the freshness in every sip."
+    },
+    {
+      "name": "Anjali S.",
+      "location": "Mumbai",
+      "rating": 5,
+      "text": "The Cane House is my go-to for a healthy lifestyle. Clean, hygienic and pressed right in front of you."
+    },
+    {
+      "name": "Vikram K.",
+      "location": "Pune",
+      "rating": 5,
+      "text": "Loved the freshness and the variety of flavours. We booked them for our event and guests couldn't stop raving."
+    },
+    {
+      "name": "Sarah M.",
+      "location": "Ely, UK",
+      "rating": 5,
+      "text": "Booked the live counter for our wedding - it was the highlight of the day. Fresh, fun and absolutely delicious."
+    }
+  ]
+}

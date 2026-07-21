@@ -1,0 +1,8 @@
+[
+  { "icon": "💍", "title": "Weddings & Asian Celebrations", "desc": "Add a traditional and healthy touch to your special day, served fresh for every guest.", "color": "green" },
+  { "icon": "🏢", "title": "Corporate Events", "desc": "Impress clients and teams with a live, on-site juice counter that's a refreshing conversation starter.", "color": "amber" },
+  { "icon": "🎓", "title": "College & School Festivals", "desc": "High-energy, budget-friendly refreshments that keep the crowd cool through the whole event.", "color": "teal" },
+  { "icon": "🎂", "title": "Birthday Parties", "desc": "A fun, memorable treat for guests of all ages - naturally sweet with zero added sugar.", "color": "purple" },
+  { "icon": "🎪", "title": "Private Parties & Festivals", "desc": "From house parties to street festivals, we bring the stall, the ingredients and the show.", "color": "coral" },
+  { "icon": "🏆", "title": "Graduations & Milestone Parties", "desc": "Celebrate achievements with a refreshing juice everyone will remember.", "color": "indigo" }
+]

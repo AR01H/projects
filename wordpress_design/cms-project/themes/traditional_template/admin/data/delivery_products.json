@@ -1,0 +1,8 @@
+[
+  { "name": "Classic Sugarcane", "desc": "Pure. Natural. The original taste.", "icon": "🌾", "size": "250ml" },
+  { "name": "Pineapple Sugarcane", "desc": "Tropical sweetness blended with fresh sugarcane.", "icon": "🍍", "size": "250ml" },
+  { "name": "Watermelon Sugarcane", "desc": "A fruity summer favourite loved by all ages.", "icon": "🍉", "size": "250ml" },
+  { "name": "Lemon & Ginger", "desc": "A refreshing twist that gives you an extra kick.", "icon": "🍋", "size": "250ml" },
+  { "name": "Mint Sugarcane", "desc": "Cool. Refreshing. Perfect for hot summer days.", "icon": "🌿", "size": "250ml" },
+  { "name": "Ginger Sugarcane", "desc": "Spicy and refreshing. Great for immunity and energy.", "icon": "🫚", "size": "250ml" }
+]

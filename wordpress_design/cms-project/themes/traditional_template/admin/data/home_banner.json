@@ -1,13 +1,13 @@
 [
   {
     "id": 1,
-    "image": "https://placehold.co/1920x800/4e342e/ffffff?text=Fresh+Harvest",
-    "image_mobile": "https://placehold.co/800x1200/4e342e/ffffff?text=Fresh+Harvest",
+    "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1920&q=80",
+    "image_mobile": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=900&q=80",
     "subtitle": "Welcome to our tradition",
-    "title": "A Taste of the Olden Days",
-    "description": "Pure, honest sweetness that touches the soul. Freshly pressed and served with a smile.",
-    "btn_text": "Our Menu",
-    "btn_url": "#build",
+    "title": "Pressed Fresh.<br>Served Cool.",
+    "description": "Fresh sugarcane juice pressed live and blended with authentic cold-pressed fruit extracts & natural botanicals. Build your perfect juice — your way.",
+    "btn_text": "Build Your Juice",
+    "btn_url": "#our-drinks",
     "text_align": "center",
     "status": "active",
     "sort_order": 1

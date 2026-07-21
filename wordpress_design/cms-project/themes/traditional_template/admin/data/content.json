@@ -9,8 +9,8 @@
     "tag": "Book Us",
     "heading": "Ready to <span class=\"accent\">Book?</span>",
     "body": "Fill in the form below and we'll get back to you with a custom quote.",
-    "image": "https://placehold.co/600x800",
-    "image_alt": "Booking"
+    "image": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
+    "image_alt": "Live juice stall at a wedding celebration"
   },
   "faqs": {
     "tag": "FAQs",
@@ -26,11 +26,21 @@
     "body": "Become a partner and bring our brand to your city."
   },
   "order_to_deliver": {
-    "tag": "Order Now",
-    "heading": "Fresh <span class=\"accent\">Delivery</span>",
-    "body": "Order directly to your door.",
-    "image": "https://placehold.co/600x800",
-    "image_alt": "Delivery"
+    "tag": "Order & Deliver",
+    "heading": "Fresh Juice, <span class=\"accent\">Delivered To Your Door</span>",
+    "body": "Skip the queue. Pick your favourite blends, choose a delivery slot, and we will bring the freshly pressed goodness straight to you - chilled and ready to enjoy.",
+    "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80",
+    "image_alt": "Freshly pressed juice ready for delivery",
+    "features": [
+      { "icon": "🥤", "text": "Pressed fresh on the day of delivery" },
+      { "icon": "❄️", "text": "Delivered chilled in eco-friendly packaging" },
+      { "icon": "🕐", "text": "Choose a morning, afternoon or evening slot" },
+      { "icon": "📍", "text": "Free local delivery on orders over £15" }
+    ]
+  },
+  "products_page": {
+    "title": "Our Drinks & Flavours",
+    "subtitle": "Cold-pressed, naturally sweet, bottled fresh - explore the full range."
   },
   "product_benefits": {
     "tag": "Benefits",

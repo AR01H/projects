@@ -1,8 +1,7 @@
 {
   "id": "nt-otd-form",
-  "action": "nt_order_submit",
-  "nonce_action": "nt_contact_nonce",
-  "nonce_name": "nt_otd_nonce_field",
+  "action": "lead_submit",
+  "form_label": "Online Order",
   "submit": "Submit Order Request 🌿",
   "steps": [
     {

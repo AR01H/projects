@@ -1,4 +1,7 @@
 [
-  { "id": 1, "question": "How do I install the theme?", "answer": "Upload the zip file via Appearance > Themes.", "status": "active" },
-  { "id": 2, "question": "Do I need the CMS Plugin?", "answer": "Yes, it provides the backend functionality.", "status": "active" }
+  { "id": 1, "question": "Is the juice really pressed fresh?", "answer": "Yes - every glass is cold-pressed to order, right in front of you. Nothing is pre-made or stored.", "status": "active" },
+  { "id": 2, "question": "Do you add sugar or preservatives?", "answer": "Never. Our juice is 100% natural sugarcane with no added sugar, colours or preservatives.", "status": "active" },
+  { "id": 3, "question": "Can I book you for a private event?", "answer": "Absolutely. We bring a live sugarcane counter to weddings, corporate events, festivals and parties. Use the Book an Event button to get a quote.", "status": "active" },
+  { "id": 4, "question": "Do you deliver?", "answer": "Yes, we offer local delivery. Place an order online and choose a delivery slot - it arrives chilled and ready to enjoy.", "status": "active" },
+  { "id": 5, "question": "How do I open a franchise?", "answer": "Tell us your city and a little about you via the Franchise Enquiry form. Our team replies within 24 hours with the next steps.", "status": "active" }
 ]

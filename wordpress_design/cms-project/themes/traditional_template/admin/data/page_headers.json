@@ -1,0 +1,21 @@
+{
+  "contact": {
+    "tag": "Get In Touch",
+    "icon": "✉️",
+    "title": "Contact Us",
+    "subtitle": "Send us a message - we usually reply within one business day.",
+    "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80"
+  },
+  "news": {
+    "tag": "Our Blog",
+    "icon": "📰",
+    "title": "News & Updates",
+    "subtitle": "The latest from our team.",
+    "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1600&q=80"
+  },
+  "blog_post": {
+    "tag": "Our Blog",
+    "icon": "📰",
+    "fallback_image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80"
+  }
+}

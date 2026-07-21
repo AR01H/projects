@@ -1,1 +1,1 @@
-<?php defined( 'ABSPATH' ) || exit; get_header(); ?><main class='site-main'><?php get_template_part('components/franchise-section'); ?></main><?php get_footer(); ?>
+<?php defined( 'ABSPATH' ) || exit; get_header(); ?><main class='site-main'><?php if ( nt_section_visible( 'franchise' ) ) get_template_part('components/franchise-section'); ?></main><?php get_footer(); ?>

@@ -6,9 +6,11 @@ defined( 'ABSPATH' ) || exit;
 ?>
 </main>
 
-<?php get_template_part( 'components/photo-carousel' ); ?>
-
 <?php nt_component( 'parts/main_footer' ); ?>
+
+<?php get_template_part( 'components/floating-popup' ); ?>
+
+<?php if ( nt_section_visible( 'site_decor' ) ) nt_component( 'parts/site-decor' ); ?>
 
 <?php wp_footer(); ?>
 </body>

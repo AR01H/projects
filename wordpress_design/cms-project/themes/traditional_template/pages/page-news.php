@@ -18,13 +18,17 @@ $nt_news     = new WP_Query( array(
 	'posts_per_page'      => $nt_per_page,
 	'ignore_sticky_posts' => true,
 ) );
+$nt_hdr = nt_data( 'page_headers' )['news'] ?? array();
 ?>
 <div class="nt-container nt-section">
 
 	<?php
 	nt_component( 'parts/page_header', array(
-		'title'    => __( 'News & Updates', NT_TEXT_DOMAIN ),
-		'subtitle' => __( 'The latest from our team.', NT_TEXT_DOMAIN ),
+		'tag'      => $nt_hdr['tag']      ?? '',
+		'icon'     => $nt_hdr['icon']     ?? '',
+		'title'    => $nt_hdr['title']    ?? __( 'News & Updates', NT_TEXT_DOMAIN ),
+		'subtitle' => $nt_hdr['subtitle'] ?? '',
+		'image'    => $nt_hdr['image']    ?? '',
 	) );
 	?>
 

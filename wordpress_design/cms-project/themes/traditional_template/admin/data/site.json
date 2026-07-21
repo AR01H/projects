@@ -1,8 +1,8 @@
 {
   "brand": {
-    "name": "Our Brand",
+    "name": "The Cane House",
     "tagline": "Fresh Produce",
-    "logoImage": "https://placehold.co/600x400",
+    "logoImage": "assets/images/logo.png",
     "logoLine1": "THE",
     "logoLine2": "CANE",
     "logoLine3": "HOUSE"

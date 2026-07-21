@@ -1,0 +1,36 @@
+{
+  "brand": {
+    "logo_image": "assets/images/logotext.png",
+    "tagline": "Bringing you the authentic, traditional taste of freshly pressed sugarcane. We serve nature's finest extracts, crafted with love, hygiene, and a passion for health. Pure Sugarcane. Pure Love."
+  },
+  "background": {
+    "image": "assets/images/backgrounds/minibackground.png"
+  },
+  "products": [
+    { "label": "Sugarcane Juice", "url": "/menu/" },
+    { "label": "Lemon Cane", "url": "/menu/" },
+    { "label": "Ginger Cane", "url": "/menu/" },
+    { "label": "Mint Cane", "url": "/menu/" },
+    { "label": "Masala Cane", "url": "/menu/" },
+    { "label": "All Flavours", "url": "/menu/" }
+  ],
+  "quick_links": [
+    { "label": "Home", "url": "/" },
+    { "label": "About Us", "url": "/about/" },
+    { "label": "Flavours", "url": "/menu/" },
+    { "label": "Our Journey", "url": "/our-journey/" },
+    { "label": "Franchise", "url": "/franchise/" },
+    { "label": "Gallery", "url": "/gallery/" },
+    { "label": "Contact", "url": "/contact/" }
+  ],
+  "bottom_links": [
+    { "label": "Privacy Policy", "url": "/privacy-policy/" },
+    { "label": "Cookie Policy", "url": "/cookie-policy/" }
+  ],
+  "socials": {
+    "instagram": "https://instagram.com/",
+    "youtube": "https://youtube.com/",
+    "facebook": "https://facebook.com/",
+    "whatsapp": "https://wa.me/447770461939"
+  }
+}

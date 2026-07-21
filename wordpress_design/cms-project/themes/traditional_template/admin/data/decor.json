@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "left": {
+    "image": "assets/images/backgrounds/sideedge1.png",
+    "alt": ""
+  },
+  "right": {
+    "image": "assets/images/backgrounds/sideedge2.png",
+    "alt": ""
+  },
+  "opacity": 0.18
+}

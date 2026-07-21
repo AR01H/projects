@@ -1,84 +1,58 @@
 <?php
 /**
- * Horizontal image gallery strip.
- * Desktop: all cards in one row (horizontal scroll if overflow).
- * Mobile (≤767px): single-card carousel with dots + arrows + swipe.
- *
- * Args:
- *  tag       (string)  Eyebrow tag.                    Default: 'Gallery'
- *  title     (string)  Heading HTML.                   Default: ''
- *  body      (string)  Intro text.                     Default: ''
- *  modifier  (string)  Extra CSS class on section.     Default: ''
- *  id        (string)  Unique ID for JS hooks.         Default: 'ch-gstrip'
- *  bg        (string)  CSS background value.           Default: 'var(--client-color-11)'
- *  images    (array)   Array of [ 'src', 'label', 'desc' ]
+ * Vintage Hanging Photo Gallery
+ * Replaces the generic carousel with a clothesline polaroid layout.
  */
 defined( 'ABSPATH' ) || exit;
 
-$content  = nt_data( 'content' )['photo_carousel'] ?? [];
-$tag      = $args['tag']      ?? $content['tag']      ?? 'Gallery';
-$title    = $args['title']    ?? $content['heading']  ?? '';
-$body     = $args['body']     ?? $content['body']     ?? '';
-$modifier = $args['modifier'] ?? '';
-$id       = $args['id']       ?? 'nt-gstrip';
-$bg       = $args['bg']       ?? 'var(--client-color-11)';
-$images   = $args['images']   ?? nt_data( 'photo_carousel' ) ?? [];
-
+$images  = nt_data( 'photo_carousel' ) ?? [];
 if ( empty( $images ) ) return;
 
-$allowed      = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
-$section_cls  = trim( 'nt-gallery-strip-section ' . esc_attr( $modifier ) );
-$track_id     = esc_attr( $id ) . '-track';
-$dots_id      = esc_attr( $id ) . '-dots';
-$prev_id      = esc_attr( $id ) . '-prev';
-$next_id      = esc_attr( $id ) . '-next';
+$content = nt_data( 'content' )['photo_carousel'] ?? [];
+
+// We'll use a fixed set of rotations so they look organic but don't jump around on page load.
+$rotations = [ '-3deg', '4deg', '-2deg', '5deg', '-4deg', '2deg' ];
 ?>
 
-<section class="<?php echo $section_cls; ?>">
+<section class="nt-gallery-hanging" id="gallery">
 	<div class="container">
+		<?php
+		get_template_part( 'components/parts/section-header-dark', null, [
+			'tag'   => $content['tag']     ?? 'Gallery',
+			'title' => 'Photo <em>Gallery</em>',
+			'body'  => $content['body']    ?? '',
+		] );
+		?>
 
-		<?php get_template_part( 'components/parts/section-header', null, [
-			'tag'   => $tag,
-			'title' => $title,
-			'body'  => $body,
-		] ); ?>
+		<div class="nt-gallery-hanging__clothesline">
+			<!-- The rope spanning across -->
+			<div class="nt-gallery-hanging__rope"></div>
 
-		<div class="nt-gstrip fade-up" data-id="<?php echo esc_attr( $id ); ?>">
-			<div class="nt-gstrip__track" id="<?php echo $track_id; ?>">
-				<?php foreach ( $images as $i => $img ) : ?>
-					<div class="nt-gstrip__card<?php echo $i === 0 ? ' active' : ''; ?>">
-						<img src="<?php echo esc_url( $img['src'] ?? '' ); ?>"
-							alt="<?php echo esc_attr( $img['label'] ?? '' ); ?>"
-							loading="lazy"
-							class="nt-gstrip__img">
-						<?php if ( ! empty( $img['label'] ) ) : ?>
-							<div class="nt-gstrip__caption">
-								<strong><?php echo esc_html( $img['label'] ); ?></strong>
-								<?php if ( ! empty( $img['desc'] ) ) : ?>
-									<span><?php echo esc_html( $img['desc'] ); ?></span>
-								<?php endif; ?>
+			<!-- The hanging polaroids -->
+			<div class="nt-gallery-hanging__items">
+				<?php foreach ( $images as $i => $img ) : 
+					$rot = $rotations[ $i % count($rotations) ];
+				?>
+					<div class="nt-gallery-polaroid" style="--rot: <?php echo $rot; ?>;">
+						<!-- The wooden clothespin -->
+						<div class="nt-gallery-polaroid__pin"></div>
+						
+						<div class="nt-gallery-polaroid__inner">
+							<div class="nt-gallery-polaroid__photo">
+								<img src="<?php echo esc_url( $img['src'] ?? '' ); ?>"
+									 alt="<?php echo esc_attr( $img['label'] ?? 'Gallery image' ); ?>"
+									 loading="lazy">
 							</div>
-						<?php endif; ?>
+							
+							<?php if ( ! empty( $img['label'] ) ) : ?>
+								<div class="nt-gallery-polaroid__caption">
+									<?php echo esc_html( $img['label'] ); ?>
+								</div>
+							<?php endif; ?>
+						</div>
 					</div>
 				<?php endforeach; ?>
 			</div>
-
-			<!-- Mobile carousel nav -->
-			<div class="nt-gstrip__nav">
-				<div class="nt-gstrip__dots" id="<?php echo $dots_id; ?>" role="tablist" aria-label="Gallery navigation">
-					<?php foreach ( $images as $i => $_ ) : ?>
-						<button class="nt-dot<?php echo $i === 0 ? ' active' : ''; ?>"
-							role="tab"
-							aria-selected="<?php echo $i === 0 ? 'true' : 'false'; ?>"
-							aria-label="Image <?php echo $i + 1; ?>"></button>
-					<?php endforeach; ?>
-				</div>
-				<div class="nt-gstrip__arrows">
-					<button class="nt-v-btn button" id="<?php echo $prev_id; ?>" aria-label="Previous image">←</button>
-					<button class="nt-v-btn button" id="<?php echo $next_id; ?>" aria-label="Next image">→</button>
-				</div>
-			</div>
 		</div>
-
 	</div>
 </section>

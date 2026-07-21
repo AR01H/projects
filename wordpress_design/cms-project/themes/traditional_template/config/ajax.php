@@ -44,6 +44,20 @@ return array(
 		'public'   => true,
 	),
 
+	// Order-to-deliver wizard submission (public, nonce-checked).
+	'order_submit' => array(
+		'callback' => 'nt_ajax_order_submit',
+		'file'     => 'handlers/ajax/order.php',
+		'public'   => true,
+	),
+
+	// Generic multi-step lead form (order / franchise / events / any wizard).
+	'lead_submit' => array(
+		'callback' => 'nt_ajax_lead_submit',
+		'file'     => 'handlers/ajax/lead.php',
+		'public'   => true,
+	),
+
 	// Example of an admin-only action:
 	// 'clear_cache' => array(
 	//     'callback'   => 'nt_ajax_clear_cache',

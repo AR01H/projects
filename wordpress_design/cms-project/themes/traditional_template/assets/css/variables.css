@@ -1,65 +1,44 @@
-/* ===============================================================
-   TRADITIONAL TEMPLATE – VARIABLES
-   The single source of truth for the vintage parchment design.
-   =============================================================== */
+/* ─── Authentic Vintage Core Variables ─── */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&display=swap');
+
 :root {
-	/* ─── Navigation ─── */
-	--nt-nav-height: 72px;
-
-	/* ─── Parchment Colour Palette ─── */
-	--client-main-color:       #1e3a0e;   /* deep forest green */
-	--client-main-color-dark:  #14280a;
-	--client-secondary-color:  #c9a84c;   /* aged gold */
-	--client-dark-color:       #2c1a0e;   /* dark brown ink */
-	--client-text-soft:        #6b5740;
-	--client-light-color:      #ece0b6;   /* parchment alt */
-	--client-line-color:       #c8b58a;   /* warm border */
-	--client-bg-color:         #f5e8c4;   /* main parchment */
-	--client-danger-color:     #8b1a1a;
-	--client-success-color:    #2d5016;
-
-	/* ─── Semantic tokens ─── */
-	--nt-primary:        var(--client-main-color);
-	--nt-primary-dark:   var(--client-main-color-dark);
-	--nt-accent:         var(--client-secondary-color);
-	--nt-ink:            var(--client-dark-color);
-	--nt-ink-soft:       var(--client-text-soft);
-	--nt-line:           var(--client-line-color);
-	--nt-bg:             var(--client-bg-color);
-	--nt-bg-soft:        var(--client-light-color);
-	--nt-danger:         var(--client-danger-color);
-	--nt-success:        var(--client-success-color);
-
-	/* ─── Traditional colour tokens (used in legacy.css) ─── */
-	--trad-bg:      #f5e8c4;
-	--trad-bg-alt:  #ece0b6;
-	--trad-ink:     #24300f;
-	--trad-green:   #1e3a0e;
-	--trad-green-2: #2d5016;
-	--trad-gold:    #c9a84c;
-	--trad-red:     #8b1a1a;
-	--trad-cream:   #faf0d8;
-	--trad-border:  rgba(201,168,76,0.30);
-
 	/* ─── Typography ─── */
-	--nt-font:          'EB Garamond', 'Georgia', serif;
-	--nt-font-body:     'Lato', 'Helvetica Neue', sans-serif;
-	--nt-font-display:  'Playfair Display', 'Georgia', serif;
-	--nt-font-accent:   'Dancing Script', cursive;
+	--nt-font-body: 'Lora', Georgia, serif;
+	--nt-font-display: 'Playfair Display', Georgia, serif;
+	--nt-font-accent: 'Dancing Script', cursive;
+	--nt-font-chunky: 'Luckiest Guy', sans-serif;
 
-	--nt-fs-base:   17px;
-	--nt-fs-sm:     0.875rem;
-	--nt-fs-lg:     1.125rem;
-	--nt-fs-h1:     clamp(2.4rem, 5.5vw, 3.8rem);
-	--nt-fs-h2:     clamp(1.8rem, 3.5vw, 2.6rem);
-	--nt-fs-h3:     clamp(1.2rem, 2.2vw, 1.5rem);
+	/* ─── Navigation ─── */
+	--nt-nav-height: 82px;
 
-	/* ─── Layout ─── */
-	--nt-container:    1200px;
-	--nt-radius:       4px;
-	--nt-radius-lg:    8px;
-	--nt-gap:          24px;
-	--nt-section-pad:  80px;
-	--nt-shadow:       0 4px 24px rgba(44,26,14,0.10);
-	--nt-transition:   0.25s ease;
+	/* ─── Tactile Vintage Palette ─── */
+	--trad-bg: #ecd7aa; /* Deeper parchment paper */
+	--trad-bg-alt: #e3cc9e;
+	--trad-green: #183e16; /* Deep vintage ink green matching screenshot */
+	--trad-green-dark: #0f1c0b;
+	--trad-gold: #c3a135; /* Brighter yellow-gold matching screenshot */
+	--trad-cream: #fdfbf7;
+	--trad-ink: #2b2b2b;
+	--trad-border: #bda26f;
+	
+	/* ─── Textures & Shadows ─── */
+	/* Parchment texture overlay - stronger fiber noise */
+	--texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.12"/></svg>');
+	
+	
+	--shadow-soft: 0 4px 15px rgba(26,54,20,0.15);
+}
+
+body.design-traditional {
+	font-family: var(--nt-font-body);
+	background-color: var(--trad-bg);
+	background-image: var(--texture-paper);
+	color: var(--trad-ink);
+	-webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .nt-font-display {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	letter-spacing: 0.02em;
 }

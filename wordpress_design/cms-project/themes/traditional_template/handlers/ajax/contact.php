@@ -16,6 +16,7 @@ function nt_ajax_contact_submit() {
 	$name    = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
 	$email   = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
 	$phone   = sanitize_text_field( wp_unslash( $_POST['phone'] ?? '' ) );
+	$subject = sanitize_text_field( wp_unslash( $_POST['subject'] ?? '' ) );
 	$message = sanitize_textarea_field( wp_unslash( $_POST['message'] ?? '' ) );
 
 	if ( '' === $name || '' === $email || '' === $message ) {
@@ -23,6 +24,10 @@ function nt_ajax_contact_submit() {
 	}
 	if ( ! is_email( $email ) ) {
 		wp_send_json_error( array( 'message' => __( 'Please enter a valid email address.', NT_TEXT_DOMAIN ) ) );
+	}
+
+	if ( '' !== $subject ) {
+		$message = "Subject: {$subject}\n\n{$message}";
 	}
 
 	// 1. Save to the inbox table (Theme -> Contact Submissions). The table

@@ -1,0 +1,33 @@
+{
+  "tag": "Straight From The Press",
+  "title": "Our Signature <em>Bottled Blends</em>",
+  "sub": "Cold-pressed, naturally sweet, bottled fresh - a flavour for every mood.",
+  "bottles": [
+    {
+      "name": "Classic Cane",
+      "tagline": "Pure & Refreshing",
+      "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      "name": "Mango Cane",
+      "tagline": "Tropical & Sweet",
+      "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      "name": "Lemon & Mint Cane",
+      "tagline": "Zesty & Cooling",
+      "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      "name": "Berry Cane",
+      "tagline": "Rich & Fruity",
+      "image": "https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      "name": "Festive Blend",
+      "tagline": "Our Seasonal Special",
+      "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=500&q=80"
+    }
+  ],
+  "button": { "label": "View All Flavours", "url": "/products/" }
+}

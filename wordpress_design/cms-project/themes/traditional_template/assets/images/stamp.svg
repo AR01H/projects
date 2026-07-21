@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <!-- Top curve: Left to Right -->
+    <path id="topCurve" d="M 25 80 A 55 55 0 0 1 135 80" />
+    <!-- Bottom curve: Right to Left (upright text) -->
+    <path id="bottomCurve" d="M 135 80 A 55 55 0 0 1 25 80" />
+    
+    <!-- Rough/gritty filter for stamp effect -->
+    <filter id="gritty" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="3" result="noise" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 6 -2" in="noise" result="coloredNoise" />
+      <feComposite operator="in" in="SourceGraphic" in2="coloredNoise" result="composite" />
+    </filter>
+  </defs>
+  
+  <g filter="url(#gritty)">
+    <!-- Outer Circles -->
+    <circle cx="80" cy="80" r="76" fill="none" stroke="#183e16" stroke-width="2.5" />
+    <circle cx="80" cy="80" r="69" fill="none" stroke="#183e16" stroke-width="1.5" stroke-dasharray="5 4" />
+    
+    <!-- Text along curves -->
+    <text font-family="Playfair Display, Georgia, serif" font-size="14" font-weight="900" fill="#183e16" letter-spacing="2">
+      <textPath href="#topCurve" startOffset="50%" text-anchor="middle">FAMILY BUSINESS</textPath>
+    </text>
+    <text font-family="Playfair Display, Georgia, serif" font-size="14" font-weight="900" fill="#183e16" letter-spacing="2">
+      <textPath href="#bottomCurve" startOffset="50%" text-anchor="middle">FULL SUPPORT</textPath>
+    </text>
+    
+    <!-- Center text -->
+    <text x="80" y="86" font-family="Playfair Display, Georgia, serif" font-size="16" font-weight="900" fill="#183e16" text-anchor="middle" letter-spacing="2">PROVEN MODEL</text>
+    
+    <!-- Horizontal lines -->
+    <line x1="20" y1="60" x2="140" y2="60" stroke="#183e16" stroke-width="1.5" />
+    <line x1="20" y1="100" x2="140" y2="100" stroke="#183e16" stroke-width="1.5" />
+  </g>
+</svg>

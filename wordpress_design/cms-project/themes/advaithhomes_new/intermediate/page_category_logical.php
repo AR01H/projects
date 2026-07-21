@@ -71,7 +71,7 @@ function adn_category_cms_guides( $slug ) {
 	}
 
 	// Fetch category rows (pass topic_ids filter; empty = all active terms).
-	$rows  = adn_cms_guides_by_category( 12, $topic_ids );
+	$rows  = adn_cms_guides_by_category( 1200, $topic_ids );
 	$items = array();
 	foreach ( $rows as $i => $post ) {
 		$cat_name = isset( $post->category_name ) ? (string) $post->category_name : '';

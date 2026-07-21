@@ -31,7 +31,8 @@ return array(
 		'common'        => 'assets/js/common.js',
 		'legacy'        => 'assets/js/legacy.js',
 		'main'          => 'assets/js/main.js',
-		'scroll-to-top' => 'assets/js/scroll-to-top.js',
+		// scroll-to-top.js removed: the footer's #nt-scroll-to-top button
+		// (driven by initScrollToTop() in legacy.js) is the single back-to-top.
 	),
 
 	// External assets (CDN). handle => array( 'src' => url, 'ver' => string ).

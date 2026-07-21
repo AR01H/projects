@@ -19,6 +19,12 @@ $nonce_name   = $args['nonce_name'] ?? '';
 $submit       = $args['submit'] ?? __( 'Submit', NT_TEXT_DOMAIN );
 $steps        = $args['steps'] ?? [];
 $total_steps  = count( $steps );
+$form_label   = $args['form_label'] ?? '';
+
+// The JS wizard controller (assets/js/common.js) posts through NT.ajax(), which
+// adds the nt_ prefix + per-action nonce itself. Strip any nt_ prefix so the
+// data-nt-action carries the bare action key registered in config/ajax.php.
+$bare_action  = preg_replace( '/^nt_/', '', (string) $action );
 ?>
 <div class="nt-bk-modal-scroll">
 	<!-- Progress bar -->
@@ -32,12 +38,9 @@ $total_steps  = count( $steps );
 		<div class="nt-bk-prog-line"><span class="nt-bk-prog-fill"></span></div>
 	</div>
 
-	<form id="<?php echo esc_attr( $form_id ); ?>-body" novalidate>
-		<?php if ( $nonce_action && $nonce_name ) : ?>
-			<?php wp_nonce_field( $nonce_action, $nonce_name ); ?>
-		<?php endif; ?>
-		<?php if ( $action ) : ?>
-			<input type="hidden" name="action" value="<?php echo esc_attr( $action ); ?>">
+	<form id="<?php echo esc_attr( $form_id ); ?>-body" data-nt-wizard data-nt-action="<?php echo esc_attr( $bare_action ); ?>" novalidate>
+		<?php if ( $form_label ) : ?>
+			<input type="hidden" name="nt_form_label" value="<?php echo esc_attr( $form_label ); ?>">
 		<?php endif; ?>
 		
 		<div id="<?php echo esc_attr( $form_id ); ?>-msg" class="nt-form-feedback" style="display:none;" role="alert"></div>

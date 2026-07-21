@@ -17,6 +17,7 @@ return array(
 
 	'always' => array(
 		'admin/includes/terms.php', // Term-level labels + JSON-backed term tree helpers.
+		'includes/site-helpers.php', // nt_section_visible() - JSON-driven section show/hide.
 		// 'includes/data-services.php',
 		// 'includes/shortcodes.php',
 	),

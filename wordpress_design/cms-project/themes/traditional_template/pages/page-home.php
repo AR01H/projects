@@ -12,9 +12,13 @@ get_header();
 
 <main class="site-main nt-trad-home" id="main-content">
 
-	<?php get_template_part( 'components/home-banner' ); ?>
+	<?php if ( nt_section_visible( 'media_banner' ) ) get_template_part( 'components/media-carousel' ); ?>
 
-<?php
+	<?php if ( nt_section_visible( 'home_banner' ) ) : ?>
+		<?php get_template_part( 'components/home-banner' ); ?>
+	<?php endif; ?>
+
+<?php if ( nt_section_visible( 'stats' ) ) :
 // Stats Bar – dynamic data from stats.json
 $stats = NT_Data_Provider::get('stats') ?: [];
 $icons = [
@@ -47,12 +51,16 @@ $icons = [
         <?php endforeach; ?>
     </div>
 </div>
+<?php endif; ?>
 
-	<?php get_template_part( 'components/our-story-home' ); ?>
-	<?php get_template_part( 'components/our-drinks' ); ?>
-	<?php get_template_part( 'components/events-catering' ); ?>
-	<?php get_template_part( 'components/photo-carousel' ); ?>
-	<?php get_template_part( 'components/contact-section' ); ?>
+	<?php if ( nt_section_visible( 'our_story' ) )         get_template_part( 'components/our-story-home' ); ?>
+	<?php if ( nt_section_visible( 'our_drinks' ) )        get_template_part( 'components/our-drinks' ); ?>
+	<?php if ( nt_section_visible( 'signature_bottles' ) ) get_template_part( 'components/signature-flavours' ); ?>
+	<?php if ( nt_section_visible( 'events_catering' ) )   get_template_part( 'components/events-catering' ); ?>
+	<?php if ( nt_section_visible( 'reviews' ) )           get_template_part( 'components/reviews' ); ?>
+	<?php if ( nt_section_visible( 'photo_carousel' ) )    get_template_part( 'components/photo-carousel' ); ?>
+	<?php if ( nt_section_visible( 'faqs' ) )              get_template_part( 'components/faqs' ); ?>
+	<?php if ( nt_section_visible( 'contact' ) )           get_template_part( 'components/contact-section' ); ?>
 
 </main>
 

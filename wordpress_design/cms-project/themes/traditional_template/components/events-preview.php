@@ -63,9 +63,19 @@ $more_label    = $args['more_label'] ?? $content['more_label'] ?? 'View All Even
 			</div>
 		</div>
 
-		<div class="nt-more-wrap">
+		<div class="nt-more-wrap" style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+			<button type="button" class="btn" data-nt-open="nt-events-modal">📅 Book an Event</button>
 			<a href="<?php echo esc_url( $more_url ); ?>" class="btn-outline"><?php echo esc_html( $more_label ); ?></a>
 		</div>
 
 	</div>
 </section>
+
+<?php
+get_template_part( 'components/parts/form-modal', null, array(
+	'id'     => 'nt-events-modal',
+	'title'  => __( 'Book Your Event 🎉', NT_TEXT_DOMAIN ),
+	'sub'    => __( 'Live juice counter for weddings, parties & corporate events.', NT_TEXT_DOMAIN ),
+	'config' => nt_data( 'form_events' ),
+) );
+?>

@@ -4,45 +4,41 @@
    Parchment paper texture, forest green nav, aged gold accents.
    ================================================================ */
 
+/* ─── VINTAGE THEME OVERRIDES ──────────────────────────────────── */
+
 /* ─── HERO – VINTAGE ─────────────────────────────────────────── */
 .nt-hero-vintage {
 	position: relative;
-	min-height: 520px;
-	display: flex;
-	align-items: center;
+	padding: 30px 0 60px; /* Greatly reduced top padding to remove wasted space */
 	overflow: hidden;
-	background: #3a2612;   /* dark sepia fallback */
+	background: var(--trad-bg);
 }
-
+.nt-hero-vintage::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: var(--texture-paper);
+	pointer-events: none;
+}
 .nt-hero-vintage__bg {
-	position: absolute;
-	inset: 0;
-	background-size: cover;
-	background-position: center top;
-	background-repeat: no-repeat;
-	filter: sepia(0.3) brightness(0.55);
+	display: none;
 }
-
 .nt-hero-vintage__overlay {
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(105deg, rgba(30,18,8,0.88) 0%, rgba(30,18,8,0.50) 55%, rgba(30,18,8,0.15) 100%);
+	display: none;
 }
 
 .nt-hero-vintage__inner {
 	position: relative;
 	z-index: 2;
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: space-between;
 	gap: 40px;
-	padding-top: 60px;
-	padding-bottom: 60px;
+	padding-top: 40px;
 }
 
 .nt-hero-vintage__content {
 	flex: 1;
-	max-width: 580px;
 }
 
 .nt-hero-vintage__badges {
@@ -54,9 +50,9 @@
 .nt-hero-vintage__badge {
 	display: inline-block;
 	padding: 8px 16px;
-	background: rgba(201,168,76,0.15);
-	border: 1px solid var(--trad-gold);
-	color: var(--trad-gold);
+	background: rgba(30,58,14,0.05);
+	border: 1px solid var(--trad-green);
+	color: var(--trad-green);
 	font-family: var(--nt-font-display);
 	font-size: 0.68rem;
 	font-weight: 700;
@@ -68,27 +64,29 @@
 }
 
 .nt-hero-vintage__badge--green {
-	background: rgba(30,58,14,0.5);
-	border-color: rgba(201,168,76,0.40);
+	background: var(--trad-green);
 	color: var(--trad-cream);
 }
 
 .nt-hero-vintage__title {
-	font-family: var(--nt-font-display);
-	font-size: clamp(2.4rem, 5.5vw, 3.8rem);
-	font-weight: 900;
-	color: var(--trad-cream);
-	line-height: 1.1;
-	margin-bottom: 18px;
-	text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+	font-family: var(--nt-font-chunky, 'Luckiest Guy', sans-serif) !important;
+	font-size: clamp(3rem, 7vw, 6.5rem);
+	font-weight: 400; /* Chunky fonts are pre-weighted */
+	color: var(--trad-green);
+	line-height: 0.95;
+	margin-top: 10px;
+	margin-bottom: 24px;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	text-shadow: none;
 }
 
 .nt-hero-vintage__desc {
-	font-size: 1rem;
-	color: rgba(250,240,216,0.80);
-	line-height: 1.65;
-	margin-bottom: 28px;
-	max-width: 440px;
+	font-family: var(--nt-font-accent, 'Dancing Script', cursive);
+	font-style: italic;
+	font-size: 1.4rem;
+	color: var(--trad-ink);
+	margin-bottom: 32px;
 }
 
 .nt-hero-vintage__cta {
@@ -96,9 +94,9 @@
 	align-items: center;
 	gap: 8px;
 	padding: 14px 32px;
-	background: transparent;
-	border: 2px solid var(--trad-gold);
-	color: var(--trad-gold);
+	background: var(--trad-green);
+	border: 2px solid var(--trad-green);
+	color: var(--trad-cream);
 	font-family: var(--nt-font-display);
 	font-size: 0.85rem;
 	font-weight: 700;
@@ -109,7 +107,7 @@
 	text-decoration: none;
 }
 .nt-hero-vintage__cta:hover {
-	background: var(--trad-gold);
+	background: transparent;
 	color: var(--trad-green);
 }
 
@@ -125,6 +123,78 @@
 	border: 2px solid rgba(201,168,76,0.25);
 }
 
+.nt-hero-vintage__mascot-img {
+	width: 100%;
+	height: auto;
+	max-width: 500px;
+	margin-left: auto;
+	display: block;
+	filter: drop-shadow(0 15px 25px rgba(30,58,14,0.15));
+}
+
+/* ─── FLOATING SVG ANIMATIONS ────────────────────────────────── */
+.nt-vintage-floating {
+	position: absolute;
+	z-index: 0;
+	pointer-events: none;
+	animation: vintageFloat 8s ease-in-out infinite alternate;
+}
+@keyframes vintageFloat {
+	0% { transform: translateY(0) rotate(0deg); }
+	100% { transform: translateY(-20px) rotate(15deg); }
+}
+
+.nt-vintage-animated-line {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 100px;
+	z-index: 0;
+	pointer-events: none;
+	transform: translateY(-50%);
+}
+.nt-vintage-line-path {
+	stroke-dasharray: 20 15;
+	animation: dashScroll 40s linear infinite;
+}
+@keyframes dashScroll {
+	to { stroke-dashoffset: -1000; }
+}
+
+/* ─── BUBBLE ANIMATIONS ────────────────────────────────── */
+.nt-vintage-bubbles {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	z-index: 0;
+	pointer-events: none;
+}
+.nt-v-bubble {
+	position: absolute;
+	bottom: -50px;
+	width: 15px;
+	height: 15px;
+	background: rgba(201, 168, 76, 0.3);
+	border-radius: 50%;
+	animation: vintageBubble 12s linear infinite;
+}
+.nt-v-bubble:nth-child(even) {
+	width: 25px;
+	height: 25px;
+	animation-duration: 16s;
+	background: rgba(26, 54, 20, 0.1);
+}
+@keyframes vintageBubble {
+	0% { transform: translateY(0) scale(1); opacity: 0; }
+	10% { opacity: 1; }
+	90% { opacity: 1; }
+	100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+}
+
 /* Background decorative text */
 .nt-hero-vintage__bgtext {
 	position: absolute;
@@ -134,12 +204,27 @@
 	font-family: var(--nt-font-display);
 	font-size: clamp(5rem, 14vw, 11rem);
 	font-weight: 900;
-	color: rgba(255,255,255,0.06);
+	color: rgba(30,58,14,0.03);
 	text-align: center;
 	pointer-events: none;
 	white-space: nowrap;
 	letter-spacing: -0.02em;
 	line-height: 1;
+}
+
+/* ─── REUSABLE STAMP ─────────────────────────────────────────── */
+.nt-vintage-stamp {
+	width: 130px;
+	height: 130px;
+	position: absolute;
+	left: -60px;
+	top: 15%;
+	z-index: 10;
+	transform: rotate(-12deg);
+	background: url('../images/stamp.svg') no-repeat center center;
+	background-size: contain;
+	mix-blend-mode: multiply; /* Blends dark ink with the paper background */
+	opacity: 0.85; /* Slight fade for a realistic stamp look */
 }
 
 /* ─── STATS BAR ──────────────────────────────────────────────── */
@@ -174,7 +259,7 @@
 }
 .nt-stats-bar__label {
 	font-size: 0.78rem;
-	color: rgba(250,240,216,0.65);
+	color:var(--trad-green);
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
 }
@@ -462,29 +547,62 @@
 
 /* ─── FOOTER ─────────────────────────────────────────────────── */
 .nt-footer {
+	position: relative;
 	background: var(--trad-green);
 	color: var(--trad-cream);
-	padding: 60px 0 0;
+	padding: 80px 0 0;
+	margin-top: 0;
 }
 .nt-footer__inner {
 	display: grid;
 	grid-template-columns: 1.6fr 1fr 1fr 1fr;
-	gap: 40px;
-	padding-bottom: 40px;
-	border-bottom: 1px solid rgba(201,168,76,0.25);
+	gap: 30px;
+	padding-bottom: 15px;
+}
+.nt-footer__col {
+	position: relative;
+}
+.nt-footer__col:not(:first-child)::before {
+	content: '';
+	position: absolute;
+	left: -15px;
+	top: 10px;
+	bottom: 10px;
+	width: 1px;
+	background: rgba(201,168,76,0.15);
+}
+.nt-footer__brand-fallback {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.nt-footer__brand-icon {
+	width: 42px;
+	height: 42px;
+	color: var(--trad-gold);
+	margin-bottom: 8px;
 }
 .nt-footer__brand-name {
 	font-family: var(--nt-font-display);
-	font-size: 1.4rem;
+	font-size: 2rem;
 	font-weight: 800;
+	color: var(--trad-cream);
+	margin-bottom: 2px;
+	line-height: 1.1;
+	text-transform: uppercase;
+}
+.nt-footer__brand-est {
+	font-family: var(--nt-font-handwriting, cursive);
+	font-size: 1.1rem;
 	color: var(--trad-gold);
-	margin-bottom: 6px;
+	margin-bottom: 12px;
 }
 .nt-footer__tagline {
 	font-style: italic;
-	color: rgba(250,240,216,0.65);
-	font-size: 0.9rem;
+	color: rgba(250,240,216,0.85);
+	font-size: 1.05rem;
 	margin-bottom: 16px;
+	margin-top: 4px;
 }
 .nt-footer__heading {
 	font-family: var(--nt-font-display);
@@ -499,7 +617,6 @@
 	list-style: none;
 	padding: 0; margin: 0;
 }
-.nt-footer__links li { margin-bottom: 8px; }
 .nt-footer__links a {
 	color: rgba(250,240,216,0.74);
 	font-size: 0.9rem;
@@ -509,13 +626,65 @@
 
 .nt-footer__bottom {
 	padding: 18px 0;
-	text-align: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 16px;
 	font-size: 0.8rem;
 	color: rgba(250,240,216,0.45);
+	position: relative;
+	z-index: 2;
 }
-.nt-footer__bottom strong {
+
+/* ─── TORN EDGES ─────────────────────────────────────────────── */
+.nt-footer__torn-edge-top {
+	position: absolute;
+	top: -1px;
+	left: 0;
+	width: 100%;
+	height: 10px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='10'%3E%3Cpath d='M0,0 C 12,6 28,1 40,4 C 55,7 65,0 80,5 C 100,9 110,2 120,4 C 135,7 150,1 160,3 C 175,6 190,8 200,4 C 215,0 230,7 240,5 C 255,2 270,8 280,4 C 290,1 295,4 300,5 L300,0 L0,0 Z' fill='%23faf0d8' /%3E%3C/svg%3E");
+	background-repeat: repeat-x;
+	z-index: 10;
+}
+.nt-footer__torn-edge-bottom {
+	width: 100%;
+	height: 6px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='6'%3E%3Cpath d='M0,3 C 20,7 40,-1 60,3 C 80,7 100,-1 120,3 C 140,7 160,-1 180,3 C 200,7 220,-1 240,3' fill='none' stroke='rgba(201,168,76,0.3)' stroke-width='1.5' /%3E%3C/svg%3E");
+	background-repeat: repeat-x;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+.nt-footer__policies {
+	display: flex;
+	gap: 20px;
+}
+.nt-footer__policies a {
+	color: rgba(250,240,216,0.6);
+	transition: color 0.2s;
+}
+.nt-footer__policies a:hover {
 	color: var(--trad-gold);
-	font-weight: 400;
+}
+
+/* ─── CORNER ORNAMENTS ───────────────────────────────────────── */
+.nt-footer__corner {
+	position: absolute;
+	bottom: 0;
+	width: 120px;
+	height: 120px;
+	color: var(--trad-gold);
+	opacity: 0.3;
+	pointer-events: none;
+	z-index: 1;
+}
+.nt-footer__corner--left {
+	left: 0;
+}
+.nt-footer__corner--right {
+	right: 0;
+	transform: scaleX(-1); /* Flips horizontally */
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────────── */
@@ -549,3 +718,1861 @@
 	.nt-gallery-trad__grid { grid-template-columns: 1fr; }
 	.nt-footer__inner { grid-template-columns: 1fr; }
 }
+
+/* ─── MAIN HEADER (AUTHENTIC VINTAGE) ────────────────────────── */
+.nt-nav {
+	background: linear-gradient(180deg, var(--trad-bg) 0%, var(--trad-bg-alt) 100%) !important;
+	border-bottom: 3px solid var(--trad-gold) !important;
+	box-shadow: 0 4px 18px rgba(15,28,11,0.15);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 500;
+	min-height: var(--nt-nav-height);
+	padding-top: 8px;
+	padding-bottom: 8px;
+	transition: background 0.35s ease, box-shadow 0.35s ease;
+}
+.nt-nav::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: var(--texture-paper);
+	pointer-events: none;
+}
+/* Site content: push everything below the now-fixed header, except the home
+   page where the header intentionally blends over the hero (body.nt-hero-top).
+   The extra offset clears the logo artwork, which intentionally hangs below
+   the nav bar itself (see .nt-nav__logo-img height + negative margin below). */
+body:not(.nt-hero-top) .nt-main {
+	padding-top: calc(var(--nt-nav-height) + 70px);
+}
+@media (max-width: 900px) {
+	body:not(.nt-hero-top) .nt-main {
+		padding-top: calc(var(--nt-nav-height) + 30px);
+	}
+}
+/* Soft organic wave edge at the bottom */
+.nt-nav::after {
+	content: '';
+	position: absolute;
+	left: 0; right: 0; bottom: -8px;
+	height: 10px;
+	background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 10" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 L200,0 L200,5 Q175,10 150,5 T100,5 T50,5 T0,5 Z" fill="%23ecd7aa"/></svg>');
+	background-size: 200px 10px;
+	background-repeat: repeat-x;
+	z-index: 10;
+}
+.nt-nav__logo-box {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.nt-nav__logo {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	background: var(--trad-bg) !important;
+	padding: 6px 5px 14px 10px !important;
+	border-radius: 0 0 25px 25px !important;
+	margin-bottom: -80px !important;
+	margin-top: -15px !important;
+	position: relative;
+	z-index: 100;
+	box-shadow: none !important;
+	transition: all 0.3s ease;
+}
+.nt-nav__logo-img, .custom-logo {
+	height: 120px !important;
+	width: auto !important;
+	object-fit: contain;
+	transition: transform 0.3s ease;
+}
+.nt-nav__logo-img:hover, .custom-logo:hover {
+	transform: scale(1.05);
+}
+@media (max-width: 900px) {
+	.nt-nav__logo {
+		padding: 5px 10px 15px 10px !important;
+		border-radius: 0 0 25px 25px !important;
+		margin-bottom: -30px !important;
+		margin-top: -5px !important;
+	}
+	.nt-nav__logo-img, .custom-logo {
+		height: 90px !important;
+	}
+}
+.nt-nav__logo-icon {
+	width: 32px;
+	height: auto;
+}
+.nt-nav__logo-text {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	font-size: 1.2rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	line-height: 1;
+}
+.nt-nav__links {
+	display: flex;
+	gap: 28px;
+}
+.nt-nav__link {
+	color: var(--trad-green) !important;
+	font-family: var(--nt-font-body);
+	font-size: 0.8rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	text-decoration: none;
+	transition: color 0.25s;
+}
+.nt-nav__link:hover {
+	color: var(--trad-gold) !important;
+}
+.nt-nav__link.is-active {
+	border-bottom: 2px solid var(--trad-green);
+	padding-bottom: 2px;
+}
+body.design-traditional .nt-nav__cta-btn {
+	background: #183e16 !important;
+	color: #c3a135 !important;
+	border: none !important;
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.2) !important;
+	padding: 6px 12px !important;
+	border-radius: 6px !important;
+	font-family: var(--nt-font-body) !important;
+	display: flex !important;
+	align-items: center !important;
+	gap: 8px !important;
+	transition: opacity 0.25s, transform 0.2s;
+	text-decoration: none;
+	position: relative;
+}
+/* Inner Golden Border */
+body.design-traditional .nt-nav__cta-btn::before {
+	content: '';
+	position: absolute;
+	inset: 3px;
+	border: 2px solid #c3a135 !important;
+	border-radius: 4px;
+	pointer-events: none;
+}
+/* 4 Corner Screws on the Button */
+body.design-traditional .nt-nav__cta-btn::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: 
+		radial-gradient(circle at 6px 6px, #c3a135 1.5px, transparent 2px),
+		radial-gradient(circle at calc(100% - 6px) 6px, #c3a135 1.5px, transparent 2px),
+		radial-gradient(circle at 6px calc(100% - 6px), #c3a135 1.5px, transparent 2px),
+		radial-gradient(circle at calc(100% - 6px) calc(100% - 6px), #c3a135 1.5px, transparent 2px) !important;
+	pointer-events: none;
+}
+body.design-traditional .nt-nav__cta-btn:hover {
+	transform: translateY(-2px);
+	background: #183e16 !important;
+	color: #c3a135 !important;
+}
+.nt-nav__cta-text {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	line-height: 1;
+	letter-spacing: 0.05em;
+}
+.nt-nav__cta-line1 {
+	font-size: 1rem;
+	font-weight: 700;
+}
+.nt-nav__cta-line2 {
+	font-size: 0.85rem;
+	font-weight: 700;
+}
+.nt-nav__cta-icon {
+	color: var(--trad-gold);
+	display: flex;
+	align-items: center;
+}
+.nt-nav__hamburger span {
+	background: var(--trad-green) !important;
+}
+
+/* ─── FRANCHISE PAGE ─────────────────────────────────────────── */
+.nt-franchise-hero {
+	background: var(--trad-bg);
+	padding: 80px 0;
+	position: relative;
+	overflow: hidden;
+}
+.nt-franchise-hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: var(--texture-paper);
+	pointer-events: none;
+}
+.nt-franchise-hero__inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 60px;
+	align-items: center;
+}
+.nt-franchise-hero__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(2.5rem, 4.5vw, 4rem);
+	font-weight: 900;
+	color: var(--trad-green);
+	line-height: 1.1;
+	margin-bottom: 24px;
+	text-transform: uppercase;
+}
+.nt-franchise-hero__sub {
+	font-family: var(--nt-font-accent, var(--nt-font-display));
+	font-style: italic;
+	font-size: 1.2rem;
+	color: var(--trad-ink);
+	margin-bottom: 32px;
+}
+.nt-franchise-hero__stamp {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	border: 2px dashed var(--trad-border);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-family: var(--nt-font-display);
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--trad-ink);
+	transform: rotate(-10deg);
+}
+.nt-franchise-hero__img {
+	width: 100%;
+	border-radius: 8px;
+	mix-blend-mode: multiply;
+}
+
+.nt-franchise-why {
+	background: var(--trad-bg-alt);
+	padding: 80px 0;
+	text-align: center;
+}
+.nt-franchise-why__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.8rem;
+	color: var(--trad-green);
+	text-transform: uppercase;
+	margin-bottom: 48px;
+	font-weight: 800;
+}
+.nt-franchise-why__grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 32px;
+}
+.nt-franchise-card {
+	background: var(--trad-bg-alt);
+	position: relative;
+	border: 1px solid var(--trad-border);
+	padding: 40px 24px;
+	box-shadow: var(--shadow-soft);
+	transition: transform 0.3s ease;
+}
+.nt-franchise-card::before {
+	content: '';
+	position: absolute;
+	top: 6px; left: 6px; right: 6px; bottom: 6px;
+	border: 1px dashed var(--trad-border);
+	pointer-events: none;
+}
+.nt-franchise-card:hover {
+	transform: translateY(-4px);
+}
+.nt-franchise-card__icon {
+	font-size: 3rem;
+	margin-bottom: 20px;
+	color: var(--trad-gold);
+}
+.nt-franchise-card__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.2rem;
+	font-weight: 900;
+	color: var(--trad-green);
+	text-transform: uppercase;
+	margin-bottom: 16px;
+}
+.nt-franchise-card__desc {
+	font-size: 0.95rem;
+	color: var(--trad-ink);
+}
+
+.nt-franchise-how {
+	background: var(--trad-bg);
+	padding: 80px 0;
+	text-align: center;
+}
+.nt-franchise-how__grid {
+	display: flex;
+	align-items: stretch;
+	justify-content: space-between;
+	gap: 16px;
+	margin-top: 48px;
+}
+.nt-franchise-step {
+	flex: 1;
+	background: var(--trad-bg-alt);
+	border: 1px solid var(--trad-border);
+	padding: 30px 20px;
+	position: relative;
+	box-shadow: var(--shadow-soft);
+	transition: transform 0.3s ease;
+}
+.nt-franchise-step::after {
+	content: '';
+	position: absolute;
+	top: 4px; left: 4px; right: 4px; bottom: 4px;
+	border: 1px solid rgba(212,196,168,0.5);
+	pointer-events: none;
+}
+.nt-franchise-step:hover {
+	transform: translateY(-4px);
+}
+.nt-franchise-step__num {
+	font-family: var(--nt-font-display);
+	font-size: 2.8rem;
+	font-weight: 900;
+	color: var(--trad-green);
+	margin-bottom: 12px;
+	opacity: 0.8;
+}
+.nt-franchise-step__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.1rem;
+	font-weight: 800;
+	color: var(--trad-green);
+	text-transform: uppercase;
+	margin-bottom: 12px;
+}
+.nt-franchise-step__desc {
+	font-size: 0.85rem;
+	color: rgba(30,58,14,0.7);
+}
+
+.nt-franchise-cta {
+	background: var(--trad-green);
+	position: relative;
+	padding: 80px 0;
+	overflow: hidden;
+	color: var(--trad-cream);
+}
+.nt-franchise-cta__bg {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: right center;
+	mix-blend-mode: luminosity;
+	opacity: 0.3;
+}
+.nt-franchise-cta__inner {
+	position: relative;
+	z-index: 2;
+	max-width: 500px;
+}
+.nt-franchise-cta__title {
+	font-family: var(--nt-font-display);
+	font-size: 2.4rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	margin-bottom: 16px;
+	color: var(--trad-gold);
+}
+.nt-franchise-cta__sub {
+	font-family: var(--nt-font-accent, var(--nt-font-display));
+	font-style: italic;
+	font-size: 1.4rem;
+	margin-bottom: 32px;
+}
+
+@media (max-width: 1024px) {
+	.nt-franchise-hero__inner { grid-template-columns: 1fr; }
+	.nt-franchise-why__grid { grid-template-columns: 1fr; }
+	.nt-franchise-how__grid { flex-direction: column; }
+}
+
+/* ─── HANGING PHOTO GALLERY ──────────────────────────────────── */
+.nt-gallery-hanging {
+	background: url('https://images.unsplash.com/photo-1517231425712-4ee8bc92d113?auto=format&fit=crop&w=1200&q=80') center/cover;
+	position: relative;
+	padding: 100px 0 120px;
+	overflow: hidden;
+}
+/* Dark overlay over the wood to match the vintage feel */
+.nt-gallery-hanging::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: rgba(45, 25, 10, 0.7);
+}
+.nt-gallery-hanging .container {
+	position: relative;
+	z-index: 2;
+}
+.nt-gallery-hanging__title {
+	text-align: center;
+	font-family: var(--nt-font-display);
+	font-size: clamp(2rem, 4vw, 3rem);
+	font-weight: 900;
+	color: var(--trad-cream);
+	letter-spacing: 0.1em;
+	margin-bottom: 80px;
+	text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.nt-gallery-hanging__clothesline {
+	position: relative;
+	width: 100%;
+}
+.nt-gallery-hanging__rope {
+	position: absolute;
+	top: 15px; /* Adjust based on pin */
+	left: -10vw;
+	right: -10vw;
+	height: 3px;
+	background: #8b6b4a; /* rope color */
+	box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+	/* Create a slight dip using border-radius if desired, but flat string is easier */
+	z-index: 1;
+}
+
+.nt-gallery-hanging__items {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	flex-wrap: nowrap;
+	position: relative;
+	z-index: 2;
+	/* Allow horizontal scroll on mobile */
+	overflow-x: auto;
+	padding: 20px 20px 60px;
+	scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+.nt-gallery-hanging__items::-webkit-scrollbar {
+	display: none;
+}
+
+.nt-gallery-polaroid {
+	flex: 0 0 auto;
+	width: 220px;
+	position: relative;
+	transform: rotate(var(--rot, 0deg));
+	transition: transform 0.3s ease, z-index 0.3s ease;
+	cursor: default; /* Decorative only - not a clickable element. */
+}
+.nt-gallery-polaroid:hover {
+	transform: rotate(0deg) scale(1.1);
+	z-index: 10;
+}
+
+/* The Clothespin */
+.nt-gallery-polaroid__pin {
+	position: absolute;
+	top: -25px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 12px;
+	height: 40px;
+	background: linear-gradient(to right, #d4a373, #faedcd, #d4a373);
+	border-radius: 2px;
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+	z-index: 5;
+}
+/* The metal spring on the clothespin */
+.nt-gallery-polaroid__pin::after {
+	content: '';
+	position: absolute;
+	top: 18px;
+	left: -2px;
+	right: -2px;
+	height: 4px;
+	background: #777;
+	border-radius: 2px;
+}
+
+.nt-gallery-polaroid__inner {
+	background: #fdfbf7; /* Polaroid paper color */
+	padding: 12px 12px 35px 12px;
+	box-shadow: 4px 8px 15px rgba(0,0,0,0.5);
+	border: 1px solid rgba(0,0,0,0.05);
+	border-radius: 8px;
+}
+.nt-gallery-polaroid__photo img {
+	width: 100%;
+	height: 196px;
+	object-fit: cover;
+	filter: sepia(0.2) contrast(1.1);
+	border: 1px solid rgba(0,0,0,0.1);
+	border-radius: 6px;
+}
+
+.nt-gallery-polaroid__caption {
+	position: absolute;
+	bottom: 12px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	font-family: var(--nt-font-accent, var(--nt-font-display));
+	font-size: 0.95rem;
+	color: #333;
+	font-weight: 700;
+}
+
+@media (max-width: 768px) {
+	.nt-gallery-hanging__items {
+		justify-content: flex-start;
+		gap: 20px;
+	}
+	.nt-gallery-polaroid {
+		width: 180px;
+	}
+	.nt-gallery-polaroid__photo img {
+		height: 160px;
+	}
+}
+
+/* ─── FLOATING TOOLBAR ───────────────────────────────────────── */
+.nt-floating-toolbar {
+	position: fixed;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 900;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+.nt-ftoolbar-btn {
+	background: var(--trad-green);
+	color: var(--trad-cream);
+	border: none;
+	border-left: 2px solid var(--trad-gold);
+	padding: 12px 8px;
+	width: 70px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	cursor: pointer;
+	text-decoration: none;
+	transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+	box-shadow: -2px 2px 10px rgba(0,0,0,0.15);
+	/* Fixed width on hover (not resized) so it can never overlap its neighbour. */
+}
+.nt-ftoolbar-btn:hover {
+	background: var(--trad-gold);
+	color: var(--trad-green);
+	transform: translateX(-6px);
+}
+.nt-ftoolbar-icon {
+	font-size: 1.4rem;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.nt-ftoolbar-icon svg { display: block; }
+.nt-ftoolbar-label {
+	font-family: var(--nt-font-display);
+	font-size: 0.55rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	text-align: center;
+	line-height: 1.1;
+	letter-spacing: 0.05em;
+}
+
+/* ─── QUICK BOOKING MODAL ────────────────────────────────────── */
+.nt-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(30, 58, 20, 0.6);
+	backdrop-filter: blur(4px);
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.nt-modal-overlay.is-open {
+	opacity: 1;
+	visibility: visible;
+}
+.nt-quick-popup {
+	background: var(--trad-bg);
+	border: 2px solid var(--trad-border);
+	padding: 40px;
+	width: 90%;
+	max-width: 400px;
+	box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+	position: relative;
+	transform: translateY(20px);
+	transition: transform 0.3s ease;
+}
+.nt-quick-popup::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: var(--texture-paper);
+	pointer-events: none;
+}
+.nt-quick-popup::after {
+	content: '';
+	position: absolute;
+	top: 8px; left: 8px; right: 8px; bottom: 8px;
+	border: 1px double var(--trad-gold);
+	opacity: 0.5;
+	pointer-events: none;
+}
+.nt-modal-overlay.is-open .nt-quick-popup {
+	transform: translateY(0);
+}
+.nt-quick-popup__close {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	background: var(--trad-bg-alt);
+	border: 1px solid var(--trad-border);
+	color: var(--trad-green);
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s;
+	z-index: 10;
+}
+.nt-quick-popup__close:hover {
+	background: var(--trad-gold);
+	color: var(--trad-cream);
+}
+.nt-quick-popup__header {
+	text-align: center;
+	margin-bottom: 24px;
+}
+.nt-quick-popup__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.8rem;
+	font-weight: 900;
+	color: var(--trad-green);
+	margin-bottom: 6px;
+}
+.nt-quick-popup__sub {
+	font-size: 0.9rem;
+	color: var(--trad-ink);
+	font-style: italic;
+}
+.nt-form-group {
+	margin-bottom: 16px;
+	position: relative;
+	z-index: 2;
+}
+.nt-input-vintage {
+	width: 100%;
+	padding: 12px 14px;
+	background: rgba(255,255,255,0.6);
+	border: 1px solid var(--trad-border);
+	border-radius: 2px;
+	font-family: var(--nt-font-body);
+	font-size: 0.9rem;
+	color: var(--trad-ink);
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+.nt-input-vintage:focus {
+	outline: none;
+	border-color: var(--trad-green);
+	box-shadow: 0 0 10px rgba(26,54,20,0.1);
+	background: #fff;
+}
+.nt-input-vintage::placeholder {
+	color: rgba(43,43,43,0.5);
+}
+.nt-input-vintage option {
+	background: var(--trad-bg);
+	color: var(--trad-ink);
+}
+
+/* ─── DROPDOWN NAVIGATION ────────────────────────────────────── */
+.nt-nav__links > li.nt-nav__has-sub > a {
+	display: inline-flex !important;
+	align-items: center !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+	color: var(--trad-green) !important;
+}
+.nt-nav__links > li {
+	position: relative;
+	list-style: none;
+}
+.nt-nav__submenu {
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%) translateY(10px);
+	background: var(--trad-cream);
+	box-shadow: var(--shadow-soft);
+	border: 1px solid var(--trad-border);
+	padding: 10px 0;
+	min-width: 180px;
+	border-radius: 6px;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.25s, transform 0.25s;
+	z-index: 100;
+	display: flex;
+	flex-direction: column;
+}
+.nt-nav__links > li:hover .nt-nav__submenu {
+	opacity: 1;
+	visibility: visible;
+	transform: translateX(-50%) translateY(0);
+}
+.nt-nav__submenu li {
+	list-style: none;
+}
+.nt-nav__submenu a {
+	display: block;
+	padding: 8px 20px;
+	color: var(--trad-ink);
+	font-family: var(--nt-font-body);
+	font-size: 0.85rem;
+	text-decoration: none;
+	transition: background 0.2s, color 0.2s;
+	text-align: center;
+}
+.nt-nav__submenu a:hover {
+	background: var(--trad-bg);
+	color: var(--trad-green);
+}
+
+/* Mobile Dropdown */
+.nt-mobile-nav__item.nt-nav__has-sub {
+	display: flex;
+	flex-direction: column;
+}
+.nt-mobile-nav__submenu {
+	display: flex;
+	flex-direction: column;
+	padding-left: 20px;
+	margin-top: 10px;
+	border-left: 2px solid var(--trad-border);
+}
+.nt-mobile-nav__submenu a {
+	color: var(--trad-green);
+	text-decoration: none;
+	padding: 8px 0;
+	font-family: var(--nt-font-body);
+	font-size: 0.9rem;
+}
+
+/* --- VINTAGE PLAQUE BUTTONS ---------------------------------- */
+.btn, .btn-primary {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: 14px 28px;
+	background-color: var(--trad-green);
+	background-image: var(--texture-paper); /* Adds subtle paper texture to the button */
+	color: var(--trad-gold) !important;
+	font-family: var(--nt-font-display, 'Playfair Display', serif); /* Use elegant serif */
+	font-weight: 700;
+	font-size: 1.15rem;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	border: 1px solid var(--trad-green-dark);
+	border-radius: 2px;
+	box-shadow: none; /* Removed all shadows for completely flat look */
+	text-decoration: none;
+	overflow: hidden;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+.btn::before, .btn-primary::before {
+	content: "";
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	right: 4px;
+	bottom: 4px;
+	border: 1px solid var(--trad-gold);
+	border-radius: 4px;
+	pointer-events: none;
+}
+.btn::after, .btn-primary::after {
+	content: "";
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	right: 4px;
+	bottom: 4px;
+	background: 
+		radial-gradient(circle at 0 0, var(--trad-gold) 2px, transparent 2.5px),
+		radial-gradient(circle at 100% 0, var(--trad-gold) 2px, transparent 2.5px),
+		radial-gradient(circle at 0 100%, var(--trad-gold) 2px, transparent 2.5px),
+		radial-gradient(circle at 100% 100%, var(--trad-gold) 2px, transparent 2.5px);
+	pointer-events: none;
+}
+.btn:hover, .btn-primary:hover {
+	background-color: var(--trad-green-dark); /* Simple color darken on hover */
+}
+.btn:active, .btn-primary:active {
+	opacity: 0.9;
+}
+.nt-vintage-btn-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	border: 1px solid var(--trad-gold);
+	border-radius: 2px;
+	color: var(--trad-gold);
+}
+
+/* Secondary Button - Traditional Inverted Style */
+.btn-secondary {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: 14px 28px;
+	background-color: transparent;
+	color: var(--trad-green) !important;
+	font-family: var(--nt-font-display, 'Playfair Display', serif);
+	font-weight: 700;
+	font-size: 1.15rem;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	border: 1px solid var(--trad-green);
+	border-radius: 2px;
+	box-shadow: none;
+	text-decoration: none;
+	overflow: hidden;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+.btn-secondary::before {
+	content: "";
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	right: 4px;
+	bottom: 4px;
+	border: 1px solid var(--trad-green);
+	border-radius: 4px;
+	pointer-events: none;
+}
+.btn-secondary::after {
+	content: "";
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	right: 4px;
+	bottom: 4px;
+	background: 
+		radial-gradient(circle at 0 0, var(--trad-green) 2px, transparent 2.5px),
+		radial-gradient(circle at 100% 0, var(--trad-green) 2px, transparent 2.5px),
+		radial-gradient(circle at 0 100%, var(--trad-green) 2px, transparent 2.5px),
+		radial-gradient(circle at 100% 100%, var(--trad-green) 2px, transparent 2.5px);
+	pointer-events: none;
+}
+.btn-secondary:hover {
+	background-color: rgba(24, 62, 22, 0.05); /* Slight green tint */
+}
+.btn-secondary:active {
+	opacity: 0.9;
+}
+
+/* ─── Site Decor: fixed vintage sugarcane illustrations flanking the page ─── */
+/* Rendered by components/parts/site-decor.php, driven by admin/data/decor.json */
+.nt-site-decor {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	overflow: hidden;
+}
+.nt-site-decor__edge {
+	position: absolute;
+	bottom: 0;
+	width: 220px;
+	height: 78vh;
+	max-height: 900px;
+	background-repeat: no-repeat;
+	background-size: contain;
+	opacity: var(--nt-decor-opacity, 0.18);
+	mix-blend-mode: multiply;
+}
+.nt-site-decor__edge--left {
+	left: 0;
+	background-position: left bottom;
+}
+.nt-site-decor__edge--right {
+	right: 0;
+	background-position: right bottom;
+}
+/* Keep real content above the decor layer (nav/toolbar already sit higher). */
+.nt-main,
+.nt-footer {
+	position: relative;
+	z-index: 1;
+}
+/* Too narrow to frame nicely - hide so text never overlaps the artwork. */
+@media (max-width: 1200px) {
+	.nt-site-decor { display: none; }
+}
+
+/* ─── Signature Bottled Blends (components/signature-flavours.php) ─── */
+.nt-bottles {
+	padding: 72px 0;
+	position: relative;
+}
+.nt-bottles__header {
+	text-align: center;
+	max-width: 640px;
+	margin: 0 auto 48px;
+}
+.nt-bottles__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.9rem, 4vw, 2.8rem);
+	color: var(--trad-green);
+	margin: 10px 0 8px;
+}
+.nt-bottles__title em {
+	font-family: var(--nt-font-accent);
+	font-style: normal;
+	color: var(--trad-gold);
+}
+.nt-bottles__sub {
+	font-family: var(--nt-font-body);
+	color: var(--trad-ink);
+	opacity: 0.85;
+	font-size: 1.02rem;
+}
+/* The shelf: a horizontal, scroll-friendly row of bottles on a wood ledge. */
+.nt-bottles__shelf {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-end;
+	gap: 12px 10px;
+	padding-bottom: 26px;
+	border-bottom: 3px solid var(--trad-border);
+	box-shadow: 0 3px 0 rgba(107, 79, 43, 0.25);
+}
+.nt-bottle {
+	margin: 0;
+	width: 180px;
+	text-align: center;
+	transition: transform 0.3s ease;
+}
+.nt-bottle:hover { transform: translateY(-8px); }
+.nt-bottle__frame {
+	height: 210px;
+	border-radius: 14px 14px 8px 8px;
+	overflow: hidden;
+	background: var(--trad-bg-alt);
+	border: 2px solid var(--trad-border);
+	box-shadow: inset 0 0 24px rgba(107, 79, 43, 0.28), var(--shadow-soft);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.nt-bottle__img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* Sepia unifies any photo into the vintage palette. */
+	filter: sepia(0.55) saturate(1.1) contrast(0.96) brightness(1.02);
+	transition: filter 0.3s ease;
+}
+.nt-bottle:hover .nt-bottle__img { filter: sepia(0.15) saturate(1.15); }
+.nt-bottle__placeholder { font-size: 3.4rem; }
+.nt-bottle__cap {
+	margin-top: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+.nt-bottle__name {
+	font-family: var(--nt-font-display);
+	font-weight: 700;
+	font-size: 1.02rem;
+	color: var(--trad-green);
+	letter-spacing: 0.01em;
+}
+.nt-bottle__tagline {
+	font-family: var(--nt-font-body);
+	font-style: italic;
+	font-size: 0.82rem;
+	color: var(--trad-ink);
+	opacity: 0.75;
+}
+.nt-bottles__cta {
+	text-align: center;
+	margin-top: 40px;
+}
+@media (max-width: 560px) {
+	.nt-bottle { width: 40%; min-width: 120px; }
+	.nt-bottle__frame { height: 170px; }
+}
+
+/* ─── Vintage back-to-top button (overrides components.css .nt-scroll-top) ─── */
+body.design-traditional .nt-scroll-top {
+	background: var(--trad-green);
+	color: var(--trad-gold);
+	border: 2px solid var(--trad-gold);
+	border-radius: 10px;
+	font-family: var(--nt-font-display);
+	box-shadow: 0 6px 18px rgba(15, 28, 11, 0.35);
+}
+body.design-traditional .nt-scroll-top:hover {
+	background: var(--trad-green-dark);
+	color: var(--trad-cream);
+	transform: translateY(-3px);
+}
+
+/* ─── Lightweight modal (assets/js/common.js data-nt-open / .nt-modal) ─── */
+.nt-modal {
+	display: none;
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	background: rgba(15, 28, 11, 0.55);
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+}
+.nt-modal.is-open { display: flex; }
+.nt-modal__box {
+	position: relative;
+	width: 100%;
+	max-width: 480px;
+	max-height: 90vh;
+	overflow-y: auto;
+	background: var(--trad-cream);
+	background-image: var(--texture-paper);
+	border: 2px solid var(--trad-border);
+	border-radius: 14px;
+	padding: 32px 28px 28px;
+	box-shadow: 0 24px 60px rgba(15, 28, 11, 0.45);
+}
+.nt-modal__close {
+	position: absolute;
+	top: 12px;
+	right: 14px;
+	width: 34px;
+	height: 34px;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	color: var(--trad-green);
+	font-size: 26px;
+	line-height: 1;
+	cursor: pointer;
+	transition: color 0.2s, transform 0.2s;
+}
+.nt-modal__close:hover { color: var(--trad-gold); transform: rotate(90deg); }
+.nt-modal__title {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	font-size: 1.7rem;
+	margin: 0 0 6px;
+}
+.nt-modal__sub {
+	font-family: var(--nt-font-body);
+	color: var(--trad-ink);
+	opacity: 0.85;
+	margin: 0 0 18px;
+	font-size: 0.95rem;
+}
+
+/* ─── Mobile: trim the big vintage section padding so stacked sections don't
+      leave huge double gaps, and give the modal breathing room ─── */
+@media (max-width: 640px) {
+	.nt-flavours,
+	.nt-events-trad,
+	.nt-bottles {
+		padding: 44px 0;
+	}
+	.nt-bottles__header,
+	.nt-flavours__header {
+		margin-bottom: 28px;
+	}
+	.nt-modal { padding: 12px; }
+	.nt-modal__box { padding: 26px 18px 20px; }
+}
+
+/* Wider modal for the multi-step wizards. */
+.nt-modal__box--wide { max-width: 560px; }
+
+/* Invalid field highlight (set by the wizard controller). */
+.nt-invalid,
+.nt-form-input.nt-invalid,
+.nt-form-select.nt-invalid,
+.nt-form-textarea.nt-invalid {
+	border-color: #a3341f !important;
+	box-shadow: 0 0 0 3px rgba(163, 52, 31, 0.12) !important;
+}
+
+/* Wizard success panel. */
+.nt-wiz-success {
+	text-align: center;
+	padding: 24px 8px 8px;
+}
+.nt-wiz-success__icon {
+	font-size: 3rem;
+	line-height: 1;
+	margin-bottom: 10px;
+}
+.nt-wiz-success h3 {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	margin: 0 0 6px;
+}
+.nt-wiz-success p {
+	font-family: var(--nt-font-body);
+	color: var(--trad-ink);
+	opacity: 0.9;
+	margin: 0 0 18px;
+}
+
+/* ─── Home media banner: fading image/video carousel ─── */
+.nt-media-carousel {
+	position: relative;
+	width: 100%;
+	height: clamp(360px, 62vh, 620px);
+	overflow: hidden;
+	background: var(--trad-green-dark);
+}
+.nt-media-carousel__track { position: absolute; inset: 0; }
+.nt-media-slide {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	transition: opacity 0.9s ease;
+	pointer-events: none;
+}
+.nt-media-slide.is-active { opacity: 1; pointer-events: auto; }
+.nt-media-slide__media {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* Sepia keeps every photo/video in the vintage palette. */
+	filter: sepia(0.35) saturate(1.05) contrast(0.98);
+}
+.nt-media-slide__overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, rgba(15,28,11,0.78) 0%, rgba(15,28,11,0.45) 42%, rgba(15,28,11,0.15) 100%);
+}
+.nt-media-slide__content {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 12px;
+	color: var(--trad-cream);
+	max-width: var(--nt-container);
+	margin: 0 auto;
+}
+.nt-media-slide__tag {
+	font-family: var(--nt-font-accent);
+	color: var(--trad-gold);
+	font-size: 1.5rem;
+}
+.nt-media-slide__heading {
+	font-family: var(--nt-font-display);
+	color: var(--trad-cream);
+	font-size: clamp(1.9rem, 5vw, 3.4rem);
+	line-height: 1.05;
+	margin: 0;
+	max-width: 16ch;
+	text-shadow: 0 2px 18px rgba(0,0,0,0.4);
+}
+.nt-media-slide__text {
+	font-family: var(--nt-font-body);
+	font-size: clamp(1rem, 2vw, 1.2rem);
+	max-width: 44ch;
+	margin: 0 0 6px;
+	text-shadow: 0 1px 10px rgba(0,0,0,0.4);
+}
+.nt-media-carousel__arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 3;
+	width: 46px;
+	height: 46px;
+	border: 2px solid rgba(201,168,76,0.7);
+	border-radius: 50%;
+	background: rgba(15,28,11,0.35);
+	color: var(--trad-gold);
+	font-size: 20px;
+	cursor: pointer;
+	transition: background 0.2s, transform 0.2s;
+}
+.nt-media-carousel__arrow:hover { background: rgba(15,28,11,0.6); }
+.nt-media-carousel__arrow--prev { left: 18px; }
+.nt-media-carousel__arrow--next { right: 18px; }
+.nt-media-carousel__dots {
+	position: absolute;
+	bottom: 20px;
+	left: 0;
+	right: 0;
+	z-index: 3;
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+.nt-media-carousel__dot {
+	width: 12px;
+	height: 7px;
+	border-radius: 10%;
+	border: 2px solid var(--trad-gold);
+	background: transparent;
+	cursor: pointer;
+	padding: 0;
+	transition: background 0.2s;
+}
+.nt-media-carousel__dot.is-active { background: var(--trad-gold);border-radius: 2px;width:30px; }
+@media (max-width: 640px) {
+	.nt-media-carousel__arrow { display: none; }
+	.nt-media-slide__content { padding-inline: 18px; }
+}
+
+/* ─── Authoritative mobile-nav toggle (fixes hidden hamburger on parchment nav).
+      vintage.css loads before legacy.css, so these use !important to win, and
+      are scoped to the theme so they only apply here. ─── */
+@media (max-width: 992px) {
+	body.design-traditional .nt-nav__links,
+	body.design-traditional .nt-nav__cta-btn,
+	body.design-traditional .nt-nav__searnt-btn {
+		display: none !important;
+	}
+	body.design-traditional .nt-nav__hamburger {
+		display: flex !important;
+	}
+	/* Hamburger lines must contrast the parchment bar. */
+	body.design-traditional .nt-nav__hamburger span {
+		background: var(--trad-green) !important;
+	}
+}
+@media (min-width: 993px) {
+	body.design-traditional .nt-nav__hamburger {
+		display: none !important;
+	}
+}
+
+/* ─── Customer Reviews (components/reviews.php) ─── */
+.nt-reviews { padding: 80px 0; background: var(--trad-bg-alt); }
+.nt-reviews__header { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+.nt-reviews__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.9rem, 4vw, 2.8rem);
+	color: var(--trad-green);
+	margin: 10px 0 8px;
+}
+.nt-reviews__title em { font-family: var(--nt-font-accent); font-style: normal; color: var(--trad-gold); }
+.nt-reviews__sub { font-family: var(--nt-font-body); color: var(--trad-ink); opacity: 0.85; }
+.nt-reviews__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 24px;
+}
+.nt-review-card {
+	margin: 0;
+	background: var(--trad-cream);
+	background-image: var(--texture-paper);
+	border: 1px solid var(--trad-border);
+	border-radius: 10px;
+	padding: 26px 24px;
+	box-shadow: var(--shadow-soft);
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.nt-review-card__stars { color: var(--trad-gold); font-size: 1.05rem; letter-spacing: 2px; }
+.nt-review-card__text {
+	margin: 0;
+	font-family: var(--nt-font-body);
+	font-style: italic;
+	color: var(--trad-ink);
+	line-height: 1.6;
+	flex: 1;
+}
+.nt-review-card__by { display: flex; flex-direction: column; gap: 2px; }
+.nt-review-card__name { font-family: var(--nt-font-display); font-weight: 700; color: var(--trad-green); }
+.nt-review-card__loc { font-size: 0.82rem; color: var(--trad-ink); opacity: 0.7; }
+
+/* ─── FAQ (components/faqs.php) vintage styling ─── */
+.nt-faqs { padding: 80px 0; background: var(--trad-bg); }
+.nt-faqs .nt-section-title {
+	text-align: center;
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	font-size: clamp(1.9rem, 4vw, 2.6rem);
+	margin-bottom: 36px;
+}
+.nt-faq-list { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.nt-faq-item {
+	background: var(--trad-cream);
+	border: 1px solid var(--trad-border);
+	border-radius: 8px;
+	padding: 4px 18px;
+	box-shadow: var(--shadow-soft);
+}
+.nt-faq-q {
+	font-family: var(--nt-font-display);
+	font-weight: 700;
+	color: var(--trad-green);
+	cursor: pointer;
+	padding: 14px 0;
+	list-style: none;
+	position: relative;
+	padding-right: 28px;
+}
+.nt-faq-q::-webkit-details-marker { display: none; }
+.nt-faq-q::after {
+	content: '+';
+	position: absolute;
+	right: 4px;
+	top: 12px;
+	font-size: 1.3rem;
+	color: var(--trad-gold);
+	transition: transform 0.2s;
+}
+.nt-faq-item[open] .nt-faq-q::after { content: '−'; }
+.nt-faq-a {
+	font-family: var(--nt-font-body);
+	color: var(--trad-ink);
+	line-height: 1.6;
+	padding: 0 0 16px;
+}
+
+/* ─── Product menu cards (components/product-menu.php) ─── */
+.nt-menu-card { display: flex; flex-direction: column; }
+.nt-menu-card .nt-flavour-card__body {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+.nt-menu-card__row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 10px;
+}
+.nt-menu-card__price {
+	font-family: var(--nt-font-display);
+	font-weight: 800;
+	color: var(--trad-gold);
+	font-size: 1.1rem;
+	white-space: nowrap;
+}
+.nt-menu-card__btn {
+	margin-top: auto;
+	align-self: flex-start;
+	padding: 8px 18px;
+	font-size: 0.85rem;
+}
+
+/* ─── Blended transparent header over the hero (home only, until scrolled) ───
+   header.php adds body.nt-hero-top on the front page. The nav floats over the
+   hero as a dark→transparent scrim with light text; once scrolled past the top
+   (.scrolled, added by initNavScroll) it becomes the solid parchment bar.
+   Selectors are anchored on #nt-nav (the header's element id) so this always
+   outranks any class-only rule elsewhere (incl. legacy.css, which loads after
+   this file and also targets body.design-traditional .nt-nav). */
+body.nt-hero-top #nt-nav {
+	position: fixed !important;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 500;
+	background: linear-gradient(to bottom, rgba(15,28,11,0.62) 0%, rgba(15,28,11,0.18) 70%, rgba(15,28,11,0) 100%) !important;
+	border-bottom-color: transparent !important;
+	box-shadow: none !important;
+	transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+/* Hide the paper texture + wave edge while transparent. */
+body.nt-hero-top #nt-nav:not(.scrolled)::before,
+body.nt-hero-top #nt-nav:not(.scrolled)::after {
+	display: none !important;
+}
+/* Light nav content over the hero. */
+body.nt-hero-top #nt-nav:not(.scrolled) .nt-nav__logo { background: transparent !important; box-shadow: none !important; }
+body.nt-hero-top #nt-nav:not(.scrolled) .nt-nav__link { color: var(--trad-cream) !important; }
+body.nt-hero-top #nt-nav:not(.scrolled) .nt-nav__link:hover { color: var(--trad-gold) !important; }
+body.nt-hero-top #nt-nav:not(.scrolled) .nt-nav__has-sub .nt-nav__link { color: var(--trad-cream) !important; }
+body.nt-hero-top #nt-nav:not(.scrolled) .nt-nav__hamburger span { background: var(--trad-cream) !important; }
+
+/* Scrolled → back to the solid parchment bar. */
+body.nt-hero-top #nt-nav.scrolled {
+	background: linear-gradient(180deg, var(--trad-bg) 0%, var(--trad-bg-alt) 100%) !important;
+	border-bottom-color: var(--trad-gold) !important;
+	box-shadow: 0 4px 20px rgba(15,28,11,0.22) !important;
+}
+
+/* ─── Themed page scrollbar (replaces the plain default OS scrollbar) ─── */
+body.design-traditional {
+	scrollbar-width: thin; /* Firefox */
+	scrollbar-color: var(--trad-gold) var(--trad-bg-alt);
+}
+body.design-traditional::-webkit-scrollbar {
+	width: 12px;
+}
+body.design-traditional::-webkit-scrollbar-track {
+	background: var(--trad-bg-alt);
+}
+body.design-traditional::-webkit-scrollbar-thumb {
+	background: var(--trad-gold);
+	border-radius: 8px;
+	border: 3px solid var(--trad-bg-alt);
+}
+body.design-traditional::-webkit-scrollbar-thumb:hover {
+	background: var(--trad-green);
+}
+
+/* ─── Themed checkboxes & radio buttons (replaces the plain default OS
+      controls). Applies to any current/future form field - generic-form.php
+      and generic-multistep-form.php don't render any yet, but this makes
+      the whole design consistent the moment one is added anywhere. ─── */
+body.design-traditional input[type="checkbox"],
+body.design-traditional input[type="radio"] {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	margin: 0;
+	border: 2px solid var(--trad-green);
+	background: var(--trad-cream);
+	cursor: pointer;
+	position: relative;
+	vertical-align: middle;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+body.design-traditional input[type="checkbox"] {
+	border-radius: 4px;
+}
+body.design-traditional input[type="radio"] {
+	border-radius: 50%;
+}
+body.design-traditional input[type="checkbox"]:checked,
+body.design-traditional input[type="radio"]:checked {
+	background: var(--trad-green);
+	border-color: var(--trad-green);
+}
+body.design-traditional input[type="checkbox"]:checked::after {
+	content: '';
+	position: absolute;
+	left: 5px;
+	top: 1px;
+	width: 6px;
+	height: 11px;
+	border: solid var(--trad-gold);
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+body.design-traditional input[type="radio"]:checked::after {
+	content: '';
+	position: absolute;
+	inset: 4px;
+	border-radius: 50%;
+	background: var(--trad-gold);
+}
+body.design-traditional input[type="checkbox"]:hover,
+body.design-traditional input[type="radio"]:hover {
+	border-color: var(--trad-gold);
+}
+body.design-traditional input[type="checkbox"]:focus-visible,
+body.design-traditional input[type="radio"]:focus-visible {
+	outline: 2px solid var(--trad-gold);
+	outline-offset: 2px;
+}
+
+/* ─── Dark-background section header (components/parts/section-header-dark.php)
+      Same eyebrow+accent-title pattern as the light headers, in gold/cream so
+      it reads over a photo or wood background instead of the parchment. ─── */
+.nt-section-header-dark {
+	text-align: center;
+	max-width: 640px;
+	margin: 0 auto 48px;
+}
+.nt-section-header-dark__tag {
+	display: inline-block;
+	font-family: var(--nt-font-display);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--trad-gold);
+	margin-bottom: 10px;
+}
+.nt-section-header-dark__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.9rem, 4vw, 2.8rem);
+	font-weight: 900;
+	color: var(--trad-cream);
+	letter-spacing: 0.04em;
+	text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+	margin: 0 0 10px;
+}
+.nt-section-header-dark__title em {
+	font-family: var(--nt-font-accent);
+	font-style: normal;
+	font-weight: 400;
+	color: var(--trad-gold);
+	text-shadow: none;
+}
+.nt-section-header-dark__body {
+	font-family: var(--nt-font-body);
+	color: var(--trad-cream);
+	opacity: 0.85;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* ─── Page header banner (components/parts/page_header.php) - the ONE
+      reusable heading for inner pages (Contact, News, FAQ, single posts). ─── */
+.nt-page-header {
+	background: var(--trad-bg-alt);
+	border-bottom: 1px solid var(--trad-border);
+	padding: 56px 0 48px;
+	position: relative;
+	overflow: hidden;
+}
+.nt-page-header::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: var(--texture-paper);
+	pointer-events: none;
+}
+.nt-page-header__inner {
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	max-width: 680px;
+}
+.nt-page-header__eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 12px;
+	padding: 6px 16px;
+	border: 1px solid var(--trad-gold);
+	border-radius: 20px;
+	background: rgba(201,168,76,0.08);
+}
+.nt-page-header__icon { font-size: 1rem; line-height: 1; }
+.nt-page-header__tag {
+	font-family: var(--nt-font-display);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--trad-green);
+}
+.nt-page-header .nt-page-title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(2.2rem, 5vw, 3.4rem);
+	font-weight: 900;
+	color: var(--trad-green);
+	margin: 0;
+	line-height: 1.1;
+}
+.nt-page-header__rule {
+	display: block;
+	width: 70px;
+	height: 3px;
+	margin: 16px auto;
+	background: var(--trad-gold);
+	border-radius: 2px;
+}
+.nt-page-header .nt-page-subtitle {
+	font-family: var(--nt-font-body);
+	font-style: italic;
+	font-size: 1.05rem;
+	color: var(--trad-ink);
+	opacity: 0.8;
+	margin: 0;
+}
+
+/* ─── Poster mode (page_header.php with an 'image' arg) - a cinematic,
+      movie-poster-style banner instead of the flat parchment band: full-bleed
+      sepia photo, dark gradient scrim, big dramatic cream/gold title. ─── */
+.nt-page-header--poster {
+	background-color: var(--trad-green-dark);
+	background-size: cover;
+	background-position: center;
+	min-height: clamp(320px, 42vh, 460px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 60px 0;
+	border-bottom: 3px solid var(--trad-gold);
+}
+.nt-page-header--poster::before {
+	/* Sepia the photo so it sits in the vintage palette. */
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: inherit;
+	background-size: cover;
+	background-position: center;
+	filter: sepia(0.5) saturate(1.1) contrast(1.05) brightness(0.85);
+}
+.nt-page-header__scrim {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(15,28,11,0.55) 0%, rgba(15,28,11,0.75) 100%);
+	z-index: 0;
+}
+.nt-page-header--poster .nt-page-header__inner {
+	z-index: 2;
+	max-width: 760px;
+}
+.nt-page-header--poster .nt-page-header__eyebrow {
+	background: rgba(236,215,170,0.12);
+	border-color: var(--trad-gold);
+}
+.nt-page-header--poster .nt-page-header__tag { color: var(--trad-gold); }
+.nt-page-header--poster .nt-page-title {
+	color: var(--trad-cream);
+	font-size: clamp(2.6rem, 6vw, 4.4rem);
+	letter-spacing: 0.01em;
+	text-shadow: 0 6px 24px rgba(0,0,0,0.55);
+}
+.nt-page-header--poster .nt-page-subtitle {
+	color: var(--trad-cream);
+	opacity: 0.9;
+	text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+.nt-page-header__meta {
+	margin: 14px 0 0;
+	font-family: var(--nt-font-display);
+	font-size: 0.85rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--trad-gold);
+}
+.nt-page-header--poster .nt-page-header__rule { background: var(--trad-gold); }
+
+/* Framed corner ornaments on the poster banner (reuses the same asset/effect
+   already used on the footer) - gives the full-bleed photo a finished, "cut"
+   vintage edge instead of a plain rectangle. */
+.nt-page-header__corner {
+	position: absolute;
+	width: 90px;
+	height: 90px;
+	color: var(--trad-gold);
+	opacity: 0.55;
+	pointer-events: none;
+	z-index: 1;
+}
+.nt-page-header__corner--tl { top: 0; left: 0; transform: scaleY(-1); }
+.nt-page-header__corner--tr { top: 0; right: 0; transform: scale(-1, -1); }
+.nt-page-header__corner--bl { bottom: 0; left: 0; }
+.nt-page-header__corner--br { bottom: 0; right: 0; transform: scaleX(-1); }
+@media (max-width: 640px) {
+	.nt-page-header__corner { width: 56px; height: 56px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   VINTAGE CORNERS - a deliberately last, high-priority pass that softens
+   every sharp/near-square corner (buttons, cards, form fields, modals) into
+   a warm, slightly uneven "hand-cut paper" shape instead of crisp digital
+   rectangles. This is intentionally the LAST block in the file so it always
+   wins the cascade, and !important guards against any older declaration
+   elsewhere (this file or legacy.css) re-asserting a sharp corner.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Buttons: soft, slightly rounded - no longer near-square. */
+body.design-traditional .btn,
+body.design-traditional .btn-primary,
+body.design-traditional .btn-secondary,
+body.design-traditional .nt-menu-card__btn,
+body.design-traditional .nt-nav__cta-btn {
+	border-radius: 8px !important;
+}
+
+/* Cards: a gentle, uneven radius per corner - authentic hand-cut/aged-paper
+   look rather than a uniform digital rounded-rect. */
+body.design-traditional .nt-flavour-card,
+body.design-traditional .nt-menu-card,
+body.design-traditional .nt-review-card,
+body.design-traditional .nt-franchise-card,
+body.design-traditional .nt-otd-card,
+body.design-traditional .nt-epc,
+body.design-traditional .nt-faq-item,
+body.design-traditional .nt-gallery-polaroid__inner,
+body.design-traditional .nt-tstory__photo img {
+	border-radius: 12px 16px 10px 18px !important;
+}
+body.design-traditional .nt-flavour-card__img,
+body.design-traditional .nt-bottle__frame {
+	border-radius: 14px 18px 10px 16px !important;
+}
+
+/* Modals + dialogs: soft rounded box, not sharp. */
+body.design-traditional .nt-modal__box,
+body.design-traditional .nt-dialog-content {
+	border-radius: 16px !important;
+}
+
+/* Form fields: soft corners so they feel hand-written, not database-entry sharp. */
+body.design-traditional .nt-form-input,
+body.design-traditional .nt-form-select,
+body.design-traditional .nt-form-textarea,
+body.design-traditional input[type="text"],
+body.design-traditional input[type="email"],
+body.design-traditional input[type="tel"],
+body.design-traditional input[type="date"],
+body.design-traditional input[type="number"],
+body.design-traditional input[type="search"],
+body.design-traditional textarea,
+body.design-traditional select {
+	border-radius: 8px !important;
+}
+
+/* Floating toolbar + eyebrow pill keep their intentional shapes (circular
+   pill / flush edge) - explicitly excluded above, nothing to change there. */
+
+/* ─── Single post article (single.php) ─── */
+.nt-entry__wrap {
+	max-width: 760px;
+	padding-top: 56px;
+	padding-bottom: 64px;
+}
+.nt-entry-content {
+	font-family: var(--nt-font-body);
+	font-size: 1.08rem;
+	line-height: 1.8;
+	color: var(--trad-ink);
+}
+.nt-entry-content p { margin: 0 0 1.3em; }
+.nt-entry-content h2,
+.nt-entry-content h3,
+.nt-entry-content h4 {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	margin: 1.6em 0 0.6em;
+}
+.nt-entry-content a { color: var(--trad-green); text-decoration: underline; text-decoration-color: var(--trad-gold); }
+.nt-entry-content blockquote {
+	margin: 1.5em 0;
+	padding: 0.5em 1.5em;
+	border-left: 3px solid var(--trad-gold);
+	font-style: italic;
+	color: var(--trad-green);
+	background: var(--trad-bg-alt);
+	border-radius: 0 10px 10px 0;
+}
+.nt-entry-content img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 12px 16px 10px 18px;
+	margin: 1em 0;
+}
+.nt-entry-content ul,
+.nt-entry-content ol { padding-left: 1.4em; margin: 0 0 1.3em; }
+
+/* ─── Post card (components/cards/post_card.php) - mini poster card ─── */
+.nt-card {
+	background: var(--trad-cream);
+	border: 1px solid var(--trad-border);
+	border-radius: 12px 16px 10px 18px;
+	overflow: hidden;
+	box-shadow: var(--shadow-soft);
+	transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.nt-card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 14px 30px rgba(15,28,11,0.18);
+}
+.nt-card-link { display: block; color: inherit; text-decoration: none; }
+.nt-card-media {
+	position: relative;
+	height: 190px;
+	background: var(--trad-bg-alt) center/cover;
+	display: flex;
+	align-items: flex-end;
+}
+.nt-card-media-empty {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2.6rem;
+	background: var(--trad-bg-alt);
+}
+.nt-card-media__scrim {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(15,28,11,0) 40%, rgba(15,28,11,0.75) 100%);
+}
+.nt-card-media__overlay {
+	position: relative;
+	z-index: 1;
+	padding: 14px 16px;
+	width: 100%;
+}
+.nt-card-media__overlay .nt-card-meta {
+	display: block;
+	font-family: var(--nt-font-display);
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--trad-gold);
+	margin-bottom: 4px;
+}
+.nt-card-media__overlay .nt-card-title {
+	margin: 0;
+	font-family: var(--nt-font-display);
+	font-size: 1.15rem;
+	color: var(--trad-cream);
+	line-height: 1.25;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.nt-card-body { padding: 14px 16px 18px; }
+.nt-card-excerpt {
+	margin: 0;
+	font-family: var(--nt-font-body);
+	font-size: 0.92rem;
+	color: var(--trad-ink);
+	opacity: 0.85;
+	line-height: 1.6;
+}
+
+

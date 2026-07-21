@@ -1,0 +1,59 @@
+{
+  "tag": "Our Heritage",
+  "title": "The Journey",
+  "body": "From a hand-cranked press to a name people trust - here's how our story unfolded.",
+  "pages": [
+    {
+      "era": "1985",
+      "tag": "The Beginning",
+      "title": "Where It All Started",
+      "accent": "Started",
+      "image": "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=800&q=80",
+      "image_alt": "A traditional sugarcane field at sunrise",
+      "body": "It began with a small hand-cranked press and a simple belief: nothing beats the taste of sugarcane pressed fresh in front of you. No shortcuts, no additives - just the fruit of the field.",
+      "facts": [
+        { "icon": "🌾", "text": "First press was entirely hand-cranked" },
+        { "icon": "📍", "text": "One small cart, one busy corner" }
+      ]
+    },
+    {
+      "era": "1995",
+      "tag": "First Outlet",
+      "title": "Growing Roots",
+      "accent": "Roots",
+      "image": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=800&q=80",
+      "image_alt": "Fields that supplied the first outlet",
+      "body": "Word spread, and the cart became a proper outlet. We built direct relationships with local farmers to make sure every glass stayed true to the original recipe - fresh, natural, and honest.",
+      "facts": [
+        { "icon": "🤝", "text": "Partnered with local sugarcane farmers" },
+        { "icon": "🏪", "text": "Opened our very first storefront" }
+      ]
+    },
+    {
+      "era": "2010",
+      "tag": "Expanding Across The City",
+      "title": "A Growing Family",
+      "accent": "Family",
+      "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80",
+      "image_alt": "Fresh ingredients used across our outlets",
+      "body": "New outlets opened across the city, each one trained on the same simple process. New flavours joined the menu, but the core promise never changed: pressed fresh, served with care.",
+      "facts": [
+        { "icon": "🍋", "text": "Introduced our first flavoured blends" },
+        { "icon": "👨‍👩‍👧‍👦", "text": "Became a family tradition for our regulars" }
+      ]
+    },
+    {
+      "era": "Today",
+      "tag": "A Tradition Continues",
+      "title": "Bringing It To You",
+      "accent": "You",
+      "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80",
+      "image_alt": "Friends enjoying fresh sugarcane juice together",
+      "body": "Today we serve everyday customers, weddings, festivals and franchise partners - all with the same glass we started with. Thank you for being part of the story.",
+      "facts": [
+        { "icon": "🎉", "text": "Now available for events across the country" },
+        { "icon": "🌍", "text": "Growing through our franchise partners" }
+      ]
+    }
+  ]
+}

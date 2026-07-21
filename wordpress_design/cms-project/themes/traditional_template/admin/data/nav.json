@@ -3,7 +3,15 @@
   "header": [
     { "label": "Home", "url": "/" },
     { "label": "Our Story", "url": "/about/" },
-    { "label": "Our Drinks", "url": "/products/" },
+    { 
+      "label": "Our Drinks", 
+      "url": "/products/",
+      "children": [
+        { "label": "Classic Cane", "url": "/products/classic/" },
+        { "label": "Flavoured Cane", "url": "/products/flavoured/" },
+        { "label": "Seasonal Specials", "url": "/products/seasonal/" }
+      ]
+    },
     { "label": "Events & Catering", "url": "/events/" },
     { "label": "Gallery", "url": "/gallery/" },
     { "label": "Franchise", "url": "/franchise/" },

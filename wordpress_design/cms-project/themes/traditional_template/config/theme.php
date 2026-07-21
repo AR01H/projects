@@ -25,9 +25,9 @@ define( 'NT_TEXT_DOMAIN',   'new-theme' );
 // ---------------------------------------------------------------------------
 // Brand / company info (the old core_info.php - edit per site).
 // ---------------------------------------------------------------------------
-define( 'NT_BRAND_NAME',  'New Theme' );
-define( 'NT_BRAND_PHONE', '+91 00000 00000' );
-define( 'NT_BRAND_EMAIL', 'hello@example.com' );
+define( 'NT_BRAND_NAME',  'The Cane House' );
+define( 'NT_BRAND_PHONE', '+44 7770 461939' );
+define( 'NT_BRAND_EMAIL', 'hello@thecanehouseuk.com' );
 
 // ---------------------------------------------------------------------------
 // Global content term levels (the old core_terms.php).
