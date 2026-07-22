@@ -100,6 +100,33 @@ function adn_enqueue_common_js() {
         ) ) . ';',
         'before'
     );
+
+    /* Google Tag Manager / GA4 / Ads / AdSense - only enqueued when an ID is set
+     * (Theme → Admin Actions → Tracking & Analytics). Each stays inert until the
+     * visitor grants the matching cookie category (see analytics-consent.js). */
+    $tracking   = get_option( 'adn_tracking_settings', array() );
+    $gtm_id     = is_array( $tracking ) && ! empty( $tracking['gtm_id'] ) ? $tracking['gtm_id'] : '';
+    $ga4_id     = is_array( $tracking ) && ! empty( $tracking['ga4_id'] ) ? $tracking['ga4_id'] : '';
+    $ads_id     = is_array( $tracking ) && ! empty( $tracking['ads_id'] ) ? $tracking['ads_id'] : '';
+    $adsense_id = is_array( $tracking ) && ! empty( $tracking['adsense_id'] ) ? $tracking['adsense_id'] : '';
+
+    if ( $gtm_id || $ga4_id || $ads_id || $adsense_id ) {
+        $path = ADN_THEME_DIR . '/assets/js/analytics-consent.js';
+        $ver  = defined( 'LOCAL_CACHE_VERSION' ) ? LOCAL_CACHE_VERSION : ( file_exists( $path ) ? filemtime( $path ) : ADN_THEME_VERSION );
+        wp_enqueue_script(
+            'adn-analytics-consent-script',
+            ADN_THEME_URI . '/assets/js/analytics-consent.js',
+            array( 'adn-cookie-consent-script' ),
+            $ver,
+            true
+        );
+        wp_localize_script( 'adn-analytics-consent-script', 'adnTrackingCfg', array(
+            'gtmId'     => $gtm_id,
+            'ga4Id'     => $ga4_id,
+            'adsId'     => $ads_id,
+            'adsenseId' => $adsense_id,
+        ) );
+    }
 }
 function adn_enqueue_template_specific_assets() {
     // Keys must match the real page-template paths (the same ones used in adn_get_page_definitions()).

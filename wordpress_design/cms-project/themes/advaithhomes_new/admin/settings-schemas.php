@@ -113,6 +113,22 @@ function adn_settings_schemas() {
 					'desc' => __( 'Which logo strip to show on this page. Manage strips in CMS Plugin → Featured In.', ADN_TEXT_DOMAIN ) ),
 			),
 		),
+
+		'tracking' => array(
+			'option' => 'adn_tracking_settings',
+			'title'  => __( 'Tracking & Analytics', ADN_TEXT_DOMAIN ),
+			'intro'  => __( 'Connect Google Tag Manager, Google Analytics (GA4), Google Ads and/or AdSense. Every tag stays inert until the visitor grants the matching cookie category (Manage Preferences on the banner or Cookie Policy page) - GA4 needs "Analytics", Ads/AdSense need "Advertising". Rejecting (or not deciding yet) keeps them blocked, and a change is applied instantly without a page reload. Prefer the Tag Manager field alone if you plan to add more tags later - manage those inside the GTM dashboard instead of editing the site again.', ADN_TEXT_DOMAIN ),
+			'fields' => array(
+				array( 'key' => 'gtm_id', 'type' => 'text', 'label' => __( 'Google Tag Manager Container ID', ADN_TEXT_DOMAIN ),
+					'desc' => __( 'Format: GTM-XXXXXXX. When set, this takes priority over the GA4/Ads fields below (add those as tags inside GTM instead, to avoid loading Google\'s tracking twice).', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'ga4_id', 'type' => 'text', 'label' => __( 'Google Analytics 4 Measurement ID', ADN_TEXT_DOMAIN ),
+					'desc' => __( 'Format: G-XXXXXXXXXX. Ignored while a GTM Container ID is set above. Gated on the "Analytics" preference.', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'ads_id', 'type' => 'text', 'label' => __( 'Google Ads Conversion ID', ADN_TEXT_DOMAIN ),
+					'desc' => __( 'Format: AW-XXXXXXXXX. Ignored while a GTM Container ID is set above. Gated on the "Advertising" preference.', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'adsense_id', 'type' => 'text', 'label' => __( 'Google AdSense Publisher ID', ADN_TEXT_DOMAIN ),
+					'desc' => __( 'Format: ca-pub-XXXXXXXXXXXXXXXX. Loads the AdSense library once the visitor grants "Advertising" - place your own <ins class="adsbygoogle"> ad units in templates separately.', ADN_TEXT_DOMAIN ) ),
+			),
+		),
 	);
 }
 

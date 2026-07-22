@@ -548,6 +548,7 @@ add_action( 'pre_get_posts', function( $q ) {
 // SHORTCODES
 // ===========================
 add_shortcode( 'adn_cat_calculators', 'adn_shortcode_cat_calculators' );
+add_shortcode( 'adn_cookie_preferences', 'adn_shortcode_cookie_preferences' );
 
 /**
  * Expert profile page: serve pages/page-expert-single.php for ?ah_expert=SLUG.
@@ -775,6 +776,26 @@ function adn_shortcode_cat_calculators( $atts ) {
 		) ) );
 	}
 	echo '</div>';
+	return ob_get_clean();
+}
+
+/**
+ * [adn_cookie_preferences]
+ * Embeds the same "Manage Preferences" toggle form the cookie banner opens as
+ * a modal, but inline in page content - meant for the Cookie Policy page, so a
+ * returning visitor can change their mind without hunting for the banner.
+ * cookie-consent.js finds this container on every page load (mountEmbeds())
+ * and fills it in; the markup below is only the placeholder + no-JS fallback.
+ */
+function adn_shortcode_cookie_preferences( $atts ) {
+	ob_start();
+	?>
+	<div class="adn-cookie-prefs-embed">
+		<div data-adn-cookie-prefs="embed">
+			<noscript><?php esc_html_e( 'Enable JavaScript to manage your cookie preferences.', ADN_TEXT_DOMAIN ); ?></noscript>
+		</div>
+	</div>
+	<?php
 	return ob_get_clean();
 }
 

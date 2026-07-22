@@ -211,6 +211,10 @@ class ADN_Theme_Admin {
 						'label' => self::fa( 'fa-database', __( 'Sample Data', ADN_TEXT_DOMAIN ) ),
 						'view'  => 'admin-actions/sub-sample-data.php',
 					),
+					'tracking' => array(
+						'label' => self::fa( 'fa-chart-line', __( 'Tracking & Analytics', ADN_TEXT_DOMAIN ) ),
+						'view'  => 'admin-actions/sub-tracking.php',
+					),
 				),
 			),
 		);

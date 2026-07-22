@@ -24,7 +24,8 @@
         "made_with": "Made with ♥ in the UK",
         "bottom_links": [
             { "label": "Terms", "url": "/terms/" },
-            { "label": "Privacy", "url": "/privacy/" }
+            { "label": "Privacy", "url": "/privacy/" },
+            { "label": "Cookie Policy", "url": "/cookie-policy/" }
         ],
         "disclaimer": "Information on this website is general guidance only and does not constitute legal, financial or professional advice. Please seek expert advice for your specific situation."
     }
