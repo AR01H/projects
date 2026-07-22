@@ -2,9 +2,9 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
-use AHEcommerce\Database\Product_Repository;
+use AHEcommerce\Modules\Products\Product_Repository;
 
-$repo   = new Product_Repository();
+$repo   = \AH_Ecommerce::container()->get( Product_Repository::class );
 $notice = '';
 $action = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = (int) ( $_GET['id'] ?? 0 );

@@ -50,15 +50,23 @@ class Container {
 
 		return new $concrete();
 	}
-	
+
 	public function get( $id ) {
 		return $this->make( $id );
 	}
 
 	/**
 	 * Register a service provider.
+	 *
+	 * Accepts any object with register() and boot() methods.
+	 * Type hint removed to avoid autoloading issues on some setups.
 	 */
-	public function register( Service_Provider $provider ) {
+	public function register( $provider ) {
+		if ( ! is_object( $provider ) || ! method_exists( $provider, 'register' ) ) {
+			throw new \InvalidArgumentException(
+				'Service provider must implement register() method.'
+			);
+		}
 		$provider->register( $this );
 		$this->providers[] = $provider;
 	}
@@ -68,7 +76,9 @@ class Container {
 	 */
 	public function boot() {
 		foreach ( $this->providers as $provider ) {
-			$provider->boot( $this );
+			if ( method_exists( $provider, 'boot' ) ) {
+				$provider->boot( $this );
+			}
 		}
 	}
 }

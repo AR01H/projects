@@ -7,9 +7,9 @@ use AHEcommerce\Core\Container;
 class Product_Service_Provider implements Service_Provider {
 
 	public function register( Container $container ) {
-		$container->singleton( Product_Module::class, function( $c ) {
+		$container->singleton( Product_Module::class, function ( $c ) {
 			return new Product_Module();
-		});
+		} );
 	}
 
 	public function boot( Container $container ) {

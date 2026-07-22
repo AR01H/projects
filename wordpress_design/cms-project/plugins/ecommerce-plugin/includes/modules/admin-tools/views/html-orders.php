@@ -3,8 +3,8 @@ defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 $action = sanitize_key( $_GET['action'] ?? 'list' );
 
-use AHEcommerce\Database\Order_Repository;
-$repo = new Order_Repository();
+use AHEcommerce\Modules\Orders\Order_Repository;
+$repo = \AH_Ecommerce::container()->get( Order_Repository::class );
 ?>
 <div class="wrap ah-wrap">
 	<h1><span class="dashicons dashicons-cart"></span> <?php esc_html_e( 'Orders', 'ah-ecommerce' ); ?></h1>

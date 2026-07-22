@@ -18,8 +18,11 @@ abstract class Abstract_REST_Controller extends WP_REST_Controller {
 
 	/**
 	 * Register the routes for the objects of the controller.
+	 * Child classes should override this method.
 	 */
-	abstract public function register_routes();
+	public function register_routes() {
+		// Override in child classes.
+	}
 
 	/**
 	 * Check if a given request has access to read items.

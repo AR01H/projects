@@ -5,11 +5,11 @@
 defined( 'ABSPATH' ) || exit;
 
 use AHEcommerce\Modules\Cart\Cart_Module;
-use AHEcommerce\Database\Product_Repository;
+use AHEcommerce\Modules\Products\Product_Repository;
 
 $cart_module = \AH_Ecommerce::container()->get( Cart_Module::class );
 $cart_items = $cart_module->get_cart();
-$product_repo = new Product_Repository();
+$product_repo = \AH_Ecommerce::container()->get( Product_Repository::class );
 
 wp_enqueue_script( 'jquery' );
 ?>
