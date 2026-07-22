@@ -118,7 +118,7 @@ if ( empty( $items ) && '' === $title ) { return; }
 					<?php endif; ?>
 					<div class="news-hero-card__content">
 						<div class="news-hero-card__meta">
-							<span class="news-hero-card__date"><?php echo esc_html( isset( $first_item['meta'] ) ? $first_item['meta'] : '' ); ?></span>
+							<span class="news-hero-card__date"><?php echo esc_html( ! empty( $first_item['meta_full'] ) ? $first_item['meta_full'] : ( isset( $first_item['meta'] ) ? $first_item['meta'] : '' ) ); ?></span>
 						</div>
 						<h3 class="news-hero-card__title"><?php echo esc_html( isset( $first_item['title'] ) ? $first_item['title'] : '' ); ?></h3>
 						<?php if ( ! empty( $first_item['description'] ) ) : ?>

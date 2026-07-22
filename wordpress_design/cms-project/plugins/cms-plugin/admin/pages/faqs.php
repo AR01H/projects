@@ -10,16 +10,30 @@ $edit_id = (int) ( $_GET['id'] ?? 0 );
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	if ( ! wp_verify_nonce( $_POST['ah_faqs_nonce'] ?? '', 'ah_save_faq' ) ) wp_die( 'Security.' );
+
+	// One combined dropdown ("page_attach") drives both columns: "pid:{id}" =
+	// a registered AH_Pages_Model page, "slug" = the free-text slug field below,
+	// empty = Global. Only one of page_id/attached_slug is ever set.
+	$attach     = sanitize_text_field( wp_unslash( $_POST['page_attach'] ?? '' ) );
+	$attach_pid = null;
+	$attach_slug = null;
+	if ( 0 === strpos( $attach, 'pid:' ) ) {
+		$attach_pid = (int) substr( $attach, 4 ) ?: null;
+	} elseif ( 'slug' === $attach ) {
+		$attach_slug = sanitize_title( wp_unslash( $_POST['attached_slug_value'] ?? '' ) ) ?: null;
+	}
+
 	$data = array(
-		'question'   => sanitize_textarea_field( $_POST['question'] ?? '' ),
-		'answer'     => wp_kses_post( $_POST['answer'] ?? '' ),
-		'link_text'  => sanitize_text_field( $_POST['link_text'] ?? '' ),
-		'link_url'   => esc_url_raw( $_POST['link_url'] ?? '' ),
-		'page_id'    => (int) ( $_POST['page_id'] ?? 0 ) ?: null,
-		'section'    => sanitize_text_field( $_POST['section'] ?? '' ) ?: null,
-		'sort_order' => (int) ( $_POST['sort_order'] ?? 0 ),
-		'status'     => sanitize_key( $_POST['status'] ?? 'active' ),
-		'created_by' => get_current_user_id() ?: null,
+		'question'      => sanitize_textarea_field( $_POST['question'] ?? '' ),
+		'answer'        => wp_kses_post( $_POST['answer'] ?? '' ),
+		'link_text'     => sanitize_text_field( $_POST['link_text'] ?? '' ),
+		'link_url'      => esc_url_raw( $_POST['link_url'] ?? '' ),
+		'page_id'       => $attach_pid,
+		'attached_slug' => $attach_slug,
+		'section'       => sanitize_text_field( $_POST['section'] ?? '' ) ?: null,
+		'sort_order'    => (int) ( $_POST['sort_order'] ?? 0 ),
+		'status'        => sanitize_key( $_POST['status'] ?? 'active' ),
+		'created_by'    => get_current_user_id() ?: null,
 	);
 	if ( $edit_id ) {
 		$model->update( $edit_id, $data );
@@ -121,12 +135,27 @@ $all_pages = $pages_m->get_active();
             <input type="text" name="section" value="<?php echo esc_attr( $item->section ?? '' ); ?>" placeholder="Leave empty for no section">
           </div>
           <div class="ah-form-row">
-            <label>Attached Page <small>(leave empty = global)</small></label>
-            <select name="page_id">
+            <label>Attached To <small>(leave empty = global)</small></label>
+            <?php
+            $current_attach = '';
+            if ( ! empty( $item->page_id ) ) {
+              $current_attach = 'pid:' . (int) $item->page_id;
+            } elseif ( ! empty( $item->attached_slug ) ) {
+              $current_attach = 'slug';
+            }
+            ?>
+            <select name="page_attach" id="ah-faq-attach">
               <option value="">- Global -</option>
-              <?php foreach ( $all_pages as $pg ) : ?><option value="<?php echo esc_attr( $pg->id ); ?>" <?php selected( $item->page_id ?? 0, $pg->id ); ?>><?php echo esc_html( $pg->title ); ?></option><?php endforeach; ?>
+              <optgroup label="Registered Pages">
+                <?php foreach ( $all_pages as $pg ) : ?><option value="pid:<?php echo esc_attr( $pg->id ); ?>" <?php selected( $current_attach, 'pid:' . $pg->id ); ?>><?php echo esc_html( $pg->title ); ?></option><?php endforeach; ?>
+              </optgroup>
+              <option value="slug" <?php selected( $current_attach, 'slug' ); ?>>Slug Based (enter below)</option>
             </select>
           </div>
+        </div>
+        <div class="ah-form-row" id="ah-faq-slug-row">
+          <label>Slug <small>(any page/category/topic URL slug, e.g. "ask-an-expert" or "buying")</small></label>
+          <input type="text" name="attached_slug_value" value="<?php echo esc_attr( $item->attached_slug ?? '' ); ?>" placeholder="e.g. ask-an-expert">
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="ah-form-row"><label>Sort Order</label><input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>"></div>
@@ -135,5 +164,14 @@ $all_pages = $pages_m->get_active();
         <button type="submit" class="ah-btn ah-btn-primary">Save FAQ</button>
       </form>
     </div>
+    <script>
+    jQuery(function ($) {
+      function syncFaqSlugRow() {
+        $('#ah-faq-slug-row').toggle( $('#ah-faq-attach').val() === 'slug' );
+      }
+      $('#ah-faq-attach').on('change', syncFaqSlugRow);
+      syncFaqSlugRow();
+    });
+    </script>
   <?php endif; ?>
 </div>

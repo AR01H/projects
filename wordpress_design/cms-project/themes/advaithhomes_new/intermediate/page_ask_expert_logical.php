@@ -232,10 +232,6 @@ function adn_ask_expert_get_context() {
 		'planning'     => '📐',
 	);
 
-	/* ── Virtual category tabs (admin-defined teasers) ─────────────── */
-	$virtual_cats = ( isset( $banner['virtual_cats'] ) && is_array( $banner['virtual_cats'] ) )
-		? $banner['virtual_cats'] : array();
-
 	/* ── Categories: derived from DB experts ────────────────────────── */
 	if ( $use_db ) {
 		/* Normalize key with sanitize_key() - same function expert_card.php uses on data-cat,
@@ -263,16 +259,6 @@ function adn_ask_expert_get_context() {
 		// Default categories when no DB experts exist yet.
 		$categories = array(
 			array( 'key' => 'all', 'label' => adn_term( 'expert_page.filter_all_experts', 'All Experts' ), 'icon' => adn_term( 'icons.expert_all', '⭐' ), 'active' => true ),
-		);
-	}
-
-	/* Append admin-defined virtual tabs after real categories. */
-	foreach ( $virtual_cats as $_vi => $_vc ) {
-		if ( empty( $_vc['label'] ) ) { continue; }
-		$categories[] = array(
-			'key'     => 'vcat-' . $_vi,
-			'label'   => (string) $_vc['label'],
-			'virtual' => true,
 		);
 	}
 
@@ -314,7 +300,6 @@ function adn_ask_expert_get_context() {
 		'has_locked'    => $_has_locked,
 		'is_unlocked'   => $_is_unlocked,
 		'unlock_nonce'  => $unlock_nonce,
-		'virtual_cats'  => $virtual_cats,
 		'latest_news'   => array(
 			'heading' => array(
 				'title'      => adn_term( 'labels.latest_news', 'Latest News' ),

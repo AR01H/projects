@@ -37,8 +37,6 @@ if ( empty( $newsletter ) ) {
 			</button>
 		</form>
 
-		<?php if ( ! empty( $newsletter['note'] ) ) : ?>
-			<p class="sb-nl-note"><?php echo esc_html( $newsletter['note'] ); ?></p>
-		<?php endif; ?>
+		<p class="sb-nl-note"><?php echo esc_html( ! empty( $newsletter['note'] ) ? $newsletter['note'] : SITE_NEWSLETTER_CONSENT_NOTE ); ?></p>
 	</div>
 </div>

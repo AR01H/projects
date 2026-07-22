@@ -692,7 +692,7 @@ $term_name = ucwords( str_replace( '-', ' ', $slug ) );
 						</div>
 					<?php endforeach; ?>
 				</div>
-				<p class="description" style="margin-top:6px;"><?php esc_html_e( 'Up to 10 FAQs. Questions are always loaded fresh from the plugin.', ADN_TEXT_DOMAIN ); ?></p>
+				<p class="description" style="margin-top:6px;"><?php esc_html_e( 'Up to 100 FAQs. Questions are always loaded fresh from the plugin.', ADN_TEXT_DOMAIN ); ?></p>
 			</div>
 		</div><?php /* end #adn-tab-faqs */ ?>
 

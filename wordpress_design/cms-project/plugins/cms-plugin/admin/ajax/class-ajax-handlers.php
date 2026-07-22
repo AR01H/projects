@@ -452,8 +452,27 @@ class AH_Ajax_Handlers {
 		$deleted = $wpdb->query(
 			"DELETE FROM `{$wpdb->options}` WHERE `option_name` LIKE '_transient_%' OR `option_name` LIKE '_site_transient_%'"
 		);
+
+		$cleared = array( "{$deleted} transient entries" );
+
+		// This button is the plugin-side "Clear Cache" - make it a full clear,
+		// same as the theme's Admin Actions -> Cache -> Save Settings & Clear
+		// Cache, so either one fully clears everything (not just DB transients).
+		if ( function_exists( 'wp_cache_flush' ) ) {
+			wp_cache_flush();
+			$cleared[] = 'object cache';
+		}
+		if ( class_exists( 'ADN_Cache' ) ) {
+			ADN_Cache::clear_all();
+			$cleared[] = 'theme filesystem cache';
+		}
+		if ( function_exists( 'opcache_reset' ) ) {
+			@opcache_reset(); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			$cleared[] = 'OPcache';
+		}
+
 		AH_DB_Helper::log_action( 'admin_action', 'system', 0, array( 'action' => 'clear_transients', 'deleted' => $deleted ) );
-		wp_send_json_success( array( 'message' => "Cleared {$deleted} transient entries." ) );
+		wp_send_json_success( array( 'message' => 'Cleared: ' . implode( ', ', $cleared ) . '.' ) );
 	}
 
 	// -------------------------------------------------------------------------

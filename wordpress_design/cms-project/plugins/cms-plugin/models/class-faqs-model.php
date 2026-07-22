@@ -84,6 +84,35 @@ class AH_Faqs_Model extends AH_Model_Base {
 		return self::$faq_cache[ $key ];
 	}
 
+	/**
+	 * Return active FAQs attached directly to a URL slug (independent of the
+	 * page_id/AH_Pages_Model registry) - lets a FAQ target any page by slug.
+	 * Results are cached for the duration of the request.
+	 *
+	 * @param string $slug
+	 * @return array
+	 */
+	public function get_by_slug( string $slug ): array {
+		$slug = sanitize_title( $slug );
+		if ( '' === $slug ) {
+			return array();
+		}
+		$key = 'slug_' . $slug;
+		if ( isset( self::$faq_cache[ $key ] ) ) {
+			return self::$faq_cache[ $key ];
+		}
+
+		$rows = $this->all( array(
+			'where'    => "attached_slug = %s AND status = 'active'",
+			'where_in' => array( $slug ),
+			'order_by' => 'sort_order',
+			'order'    => 'ASC',
+		) );
+
+		self::$faq_cache[ $key ] = is_array( $rows ) ? $rows : array();
+		return self::$faq_cache[ $key ];
+	}
+
 	public function get_faq_header( int $page_id ): ?object {
 		return AH_DB_Helper::get_by( AH_DB_Helper::table( 'section_faq_header' ), 'page_id', $page_id );
 	}

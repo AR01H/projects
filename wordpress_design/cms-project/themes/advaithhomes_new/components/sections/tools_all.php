@@ -32,14 +32,14 @@ foreach ( $all_tools as $tool ) {
 }
 $total = count( $all_tools );
 
-// Split: hero (1st), side list (next 3), grid (rest)
-$hero_item   = $all_tools[0];
-$side_items  = array_slice( $all_tools, 1, 3 );
-$grid_items  = array_slice( $all_tools, 4 );
+// Featured (first 4, same grid design as "Popular Calculators" on the main
+// Calculators page - see components/sections/tools_popular.php), rest → grid.
+$featured_items = array_slice( $all_tools, 0, 4 );
+$grid_items     = array_slice( $all_tools, 4 );
 ?>
 <section class="tc-section tc-all-section" id="allToolsSection">
 	<div class="container">
-		<?php /* ── Widget 1: Hero Featured Row ── */ ?>
+		<?php /* ── Widget 1: Featured Calculators ── */ ?>
 		<div class="tc-widget">
 			<?php /* ── Widget header: icon + title + count ── */ ?>
 			<div class="tc-widget-header">
@@ -49,35 +49,19 @@ $grid_items  = array_slice( $all_tools, 4 );
 				</div>
 			</div>
 
-			<?php /* ── Hero + Side list row (matches news_list_widget layout) ── */ ?>
-			<div class="tc-all-hero-row">
-
-				<?php /* BIG hero card — 1st calculator */ ?>
+			<div class="popular-tools-grid">
+			<?php foreach ( $featured_items as $tool ) : ?>
 				<?php
-				$hero_card = array(
-					'icon'      => $hero_item['icon'] ?? '🧮',
-					'name'      => $hero_item['title'] ?? '',
-					'url'       => $hero_item['url'] ?? '',
-					'thumbnail' => isset( $hero_item['thumbnail'] ) && '' !== $hero_item['thumbnail'] ? (string) $hero_item['thumbnail'] : '',
-					'highlight' => ! empty( $hero_item['highlight'] ) ? (string) $hero_item['highlight'] : '',
+				$tool_card = array(
+					'icon'      => $tool['icon'] ?? '🧮',
+					'name'      => $tool['title'] ?? '',
+					'url'       => $tool['url'] ?? '',
+					'thumbnail' => isset( $tool['thumbnail'] ) && '' !== $tool['thumbnail'] ? (string) $tool['thumbnail'] : '',
+					'highlight' => ! empty( $tool['highlight'] ) ? (string) $tool['highlight'] : '',
 				);
-				adn_component( 'cards/tool_card', array( 'card' => $hero_card ) );
+				adn_component( 'cards/tool_card', array( 'card' => $tool_card ) );
 				?>
-
-				<?php /* Side list — next 3 calculators as mini_card rows */ ?>
-				<div class="tc-all-side-list">
-				<?php foreach ( $side_items as $side ) : ?>
-					<?php
-					$side_card = array(
-						'icon'   => $side['icon'] ?? '🧮',
-						'title'  => $side['title'] ?? '',
-						'url'    => $side['url'] ?? '',
-						'tag'    => ! empty( $side['highlight'] ) ? (string) $side['highlight'] : '',
-						'img_url'=> isset( $side['thumbnail'] ) && '' !== $side['thumbnail'] ? (string) $side['thumbnail'] : '',
-					);
-					adn_component( 'cards/mini_card', array( 'card' => $side_card ) );
-					?>
-				<?php endforeach; ?>
+			<?php endforeach; ?>
 			</div>
 		</div><!-- /.tc-widget (Hero Widget) -->
 	</div>

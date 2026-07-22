@@ -55,7 +55,7 @@ adn_page_open( $_open_ctx );
 				<i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
 				<input type="search" id="expertSearch" autocomplete="off"
 					placeholder="<?php esc_attr_e( 'Search by name or specialism…', ADN_TEXT_DOMAIN ); ?>"
-					aria-label="<?php esc_attr_e( 'Search experts', ADN_TEXT_DOMAIN ); ?>">
+					aria-label="<?php esc_attr_e( 'Search experts', ADN_TEXT_DOMAIN ); ?>" autocomplete="off">
 				<button type="button" id="expertSearchClear" class="search-btn expert-search-clear"
 					hidden aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>">
 					<i class="fa-solid fa-xmark" aria-hidden="true"></i>
@@ -131,27 +131,6 @@ adn_page_open( $_open_ctx );
 			endforeach;
 			?>
 
-			<?php /* Virtual category cards — one per admin-defined teaser tab; shown only when that tab is active */ ?>
-			<?php foreach ( $ctx['virtual_cats'] as $_vi => $_vc ) :
-				if ( empty( $_vc['label'] ) ) { continue; }
-				$_vm = isset( $_vc['message'] ) ? (string) $_vc['message'] : '';
-			?>
-			<div class="expert-card expert-card--virtual" data-cat="vcat-<?php echo (int) $_vi; ?>" hidden>
-				<div class="evc-inner">
-					<div class="evc-icon-wrap" aria-hidden="true">
-						<i class="fa-solid fa-clock evc-icon"></i>
-					</div>
-					<h3 class="evc-title"><?php echo esc_html( $_vc['label'] ); ?></h3>
-					<?php if ( '' !== $_vm ) : ?>
-					<p class="evc-msg"><?php echo esc_html( $_vm ); ?></p>
-					<?php endif; ?>
-					<a href="<?php echo esc_url( home_url( SITE_CONTACT_URL ) ); ?>" class="btn btn-primary evc-btn">
-						<?php esc_html_e( 'Get in Touch', ADN_TEXT_DOMAIN ); ?>
-					</a>
-				</div>
-			</div>
-			<?php endforeach; ?>
-
 			<?php /* Permanent placeholder - always visible, never filtered */ ?>
 			<div class="expert-card expert-card-more" data-permanent="1">
 				<div class="ecm-inner">
@@ -192,7 +171,9 @@ adn_page_open( $_open_ctx );
 $_fi_exp     = get_option( 'adn_expert_banner', array() );
 $_fi_exp_sec = ( is_array( $_fi_exp ) && ! empty( $_fi_exp['featured_in_section'] ) )
 	? sanitize_key( $_fi_exp['featured_in_section'] ) : '';
-adn_component( 'parts/featured_in', array( 'section' => $_fi_exp_sec ) );
+if ( '' !== $_fi_exp_sec ) {
+	adn_component( 'parts/featured_in', array( 'section' => $_fi_exp_sec ) );
+}
 ?>
 
 <?php adn_page_close( $ctx ); ?>

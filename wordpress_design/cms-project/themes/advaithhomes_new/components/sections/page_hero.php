@@ -84,9 +84,20 @@ $_hero_img     = ! empty( $hero['bg_url'] )
 				<h1><?php echo wp_kses_post( $hero['title'] ); ?></h1>
 			<?php endif; ?>
 
-			<?php /* Description */ ?>
-			<?php if ( ! empty( $hero['description'] ) ) : ?>
-				<p><?php echo ( $hero['description'] ); ?></p>
+			<?php /* Description - the page's Excerpt (wp-admin -> Pages) wins whenever
+			   it's set, overriding whatever description the template itself passed in.
+			   Falls back to the template's own description only when no Excerpt exists. */
+			$_hero_desc = isset( $hero['description'] ) ? (string) $hero['description'] : '';
+			if ( is_singular() ) {
+				$_hero_post    = get_post();
+				$_hero_excerpt = $_hero_post ? trim( (string) $_hero_post->post_excerpt ) : '';
+				if ( '' !== $_hero_excerpt ) {
+					$_hero_desc = esc_html( $_hero_excerpt );
+				}
+			}
+			?>
+			<?php if ( '' !== trim( wp_strip_all_tags( $_hero_desc ) ) ) : ?>
+				<p><?php echo $_hero_desc; ?></p>
 			<?php endif; ?>
 
 			<?php adn_component( 'parts/hero_share', array( 'share' => $share ?? null ) ); ?>

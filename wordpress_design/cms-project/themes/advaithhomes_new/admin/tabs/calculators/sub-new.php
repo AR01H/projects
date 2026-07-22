@@ -287,26 +287,26 @@ $example_js = '(function () {
 				</tr>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Featured Title Override', ADN_TEXT_DOMAIN ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Suggested Featured Title', ADN_TEXT_DOMAIN ); ?></th>
 					<td>
 						<input type="text" class="regular-text" name="meta_featured_title"
 							value="<?php echo esc_attr( isset( $f_meta['featured_title'] ) ? $f_meta['featured_title'] : '' ); ?>"
 							placeholder="e.g. Mortgage Calculator">
-						<p class="description"><?php esc_html_e( 'Leave blank to use the default calculator title.', ADN_TEXT_DOMAIN ); ?></p>
+						<p class="description"><?php esc_html_e( 'Optional - only used when this calculator is Featured. Leave blank to use the default calculator title.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Featured Description Override', ADN_TEXT_DOMAIN ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Suggested Featured Description', ADN_TEXT_DOMAIN ); ?></th>
 					<td>
 						<textarea class="large-text" rows="2" name="meta_featured_desc"
 							placeholder="e.g. Estimate your monthly mortgage repayments..."><?php echo esc_textarea( isset( $f_meta['featured_desc'] ) ? $f_meta['featured_desc'] : '' ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'Leave blank to use the default description.', ADN_TEXT_DOMAIN ); ?></p>
+						<p class="description"><?php esc_html_e( 'Optional - only used when this calculator is Featured. Leave blank to use the default description.', ADN_TEXT_DOMAIN ); ?></p>
 					</td>
 				</tr>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Featured Benefit Bullets', ADN_TEXT_DOMAIN ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Suggested Featured Benefit Bullets', ADN_TEXT_DOMAIN ); ?></th>
 					<td>
 						<input type="text" class="regular-text" style="margin-bottom:6px;display:block;" name="meta_benefit_1"
 							value="<?php echo esc_attr( isset( $f_meta['benefit_1'] ) ? $f_meta['benefit_1'] : '' ); ?>"

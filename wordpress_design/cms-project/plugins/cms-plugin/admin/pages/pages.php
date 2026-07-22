@@ -6,26 +6,23 @@ $notice   = '';
 $n_type   = 'success';
 $action   = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id  = (int) ( $_GET['id'] ?? 0 );
-$content_tax_m = new AH_Content_Taxonomy_Model();
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_pages_nonce'], 'ah_wp_page_save' ) ) wp_die( 'Security check failed.' );
 
 	if ( isset( $_POST['trash_page'] ) && $edit_id ) {
 		wp_trash_post( $edit_id );
-		$content_tax_m->sync_terms( 'wp_page', $edit_id, array() );
 		$notice = 'Page moved to trash.'; $action = 'list'; $edit_id = 0;
 	} else {
 		$title    = sanitize_text_field( $_POST['page_title'] ?? '' );
 		$slug     = sanitize_title( $_POST['page_slug'] ?: $title );
 		$status   = in_array( $_POST['page_status'] ?? 'draft', array( 'publish','draft','private','pending' ), true ) ? $_POST['page_status'] : 'draft';
-		$parent   = (int) ( $_POST['page_parent'] ?? 0 );
 		$template = sanitize_text_field( $_POST['page_template'] ?? '' );
 		$thumb_id = (int) ( $_POST['featured_image_id'] ?? 0 );
 		$excerpt  = sanitize_textarea_field( $_POST['page_excerpt'] ?? '' );
 		$page_content_raw = isset( $_POST['page_content'] ) ? wp_unslash( $_POST['page_content'] ) : '';
 		$page_content = ( current_user_can( 'unfiltered_html' ) || current_user_can( 'manage_options' ) ) ? $page_content_raw : wp_kses_post( $page_content_raw );
-		$page_data = array( 'post_type' => 'page', 'post_title' => $title, 'post_content' => $page_content, 'post_name' => $slug, 'post_status' => $status, 'post_parent' => $parent, 'post_excerpt' => $excerpt, 'page_template' => $template );
+		$page_data = array( 'post_type' => 'page', 'post_title' => $title, 'post_content' => $page_content, 'post_name' => $slug, 'post_status' => $status, 'post_excerpt' => $excerpt, 'page_template' => $template );
 		if ( $edit_id ) { $page_data['ID'] = $edit_id; $result = wp_update_post( $page_data, true ); }
 		else { $result = wp_insert_post( $page_data, true ); }
 		if ( is_wp_error( $result ) ) { $notice = 'Error: ' . $result->get_error_message(); $n_type = 'error'; }
@@ -33,7 +30,6 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 			$saved_id = (int) $result;
 			if ( $thumb_id ) set_post_thumbnail( $saved_id, $thumb_id );
 			else delete_post_thumbnail( $saved_id );
-			$content_tax_m->sync_terms( 'wp_page', $saved_id, $_POST['taxonomy_ids'] ?? array() );
 			if ( ! $edit_id ) {
 				flush_rewrite_rules( false ); // refresh routing so new slug is immediately accessible
 			}
@@ -46,12 +42,10 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 if ( isset( $_GET['trash_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_trash_page' ) ) {
 	$trash_id = (int) $_GET['trash_id'];
 	wp_trash_post( $trash_id );
-	$content_tax_m->sync_terms( 'wp_page', $trash_id, array() );
 	$notice = 'Page moved to trash.';
 }
 
 $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
-$parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status' => array( 'publish','draft','private' ) ) );
 ?>
 <div class="wrap ah-wrap">
   <h1><span class="dashicons dashicons-admin-page"></span> Pages Manager</h1>
@@ -83,9 +77,9 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
 
     <div class="ah-table-wrap">
       <table class="ah-table">
-        <thead><tr><th>Title</th><th>Slug</th><th>Taxonomies</th><th>Status</th><th>Template</th><th>Modified</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Title</th><th>Slug</th><th>Status</th><th>Template</th><th>Modified</th><th>Actions</th></tr></thead>
         <tbody>
-          <?php if ( empty( $pages ) ) : ?><tr><td colspan="7" style="text-align:center;color:var(--ah-muted);padding:32px;">No pages found.</td></tr><?php endif; ?>
+          <?php if ( empty( $pages ) ) : ?><tr><td colspan="6" style="text-align:center;color:var(--ah-muted);padding:32px;">No pages found.</td></tr><?php endif; ?>
           <?php foreach ( $pages as $pg ) :
             $tpl      = get_page_template_slug( $pg->ID );
             $tpl_name = $tpl ? ( $all_templates[ $tpl ] ?? basename( $tpl ) ) : 'Default';
@@ -97,7 +91,6 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
                 <?php if ( $pg->post_parent ) : ?><small style="color:var(--ah-muted);display:block;">Child of: <?php echo esc_html( get_the_title( $pg->post_parent ) ); ?></small><?php endif; ?>
               </td>
               <td><code><?php echo esc_html( $pg->post_name ); ?></code></td>
-              <td><?php $content_tax_m->render_badges( 'wp_page', (int) $pg->ID ); ?></td>
               <td><span class="ah-badge ah-badge-<?php echo esc_attr( $badge[ $pg->post_status ] ?? 'draft' ); ?>"><?php echo esc_html( $label[ $pg->post_status ] ?? $pg->post_status ); ?></span></td>
               <td><small><?php echo esc_html( $tpl_name ); ?></small></td>
               <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $pg->post_modified ) ) ); ?></small></td>
@@ -118,7 +111,6 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
     $thumb_id  = $wp_page ? (int) get_post_thumbnail_id( $wp_page->ID ) : 0;
     $thumb_url = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'medium' ) : '';
     $cur_tpl   = $wp_page ? get_page_template_slug( $wp_page->ID ) : '';
-    $cur_par   = $wp_page ? (int) $wp_page->post_parent : 0;
   ?>
     <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-pages' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-bottom:16px;display:inline-flex;">&larr; Back to Pages</a>
 
@@ -155,6 +147,17 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
         </div>
 
         <div>
+                    <div class="ah-card">
+            <div class="ah-card-header"><h2>Featured Image</h2></div>
+            <div class="ah-image-picker">
+              <img src="<?php echo esc_url( $thumb_url ); ?>" class="ah-image-preview <?php echo $thumb_url ? 'visible' : ''; ?>" alt="" style="width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;border-radius:6px;">
+              <div class="ah-image-picker-btns" style="margin-top:8px;">
+                <input type="hidden" class="ah-image-id" name="featured_image_id" value="<?php echo esc_attr( $thumb_id ); ?>">
+                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Set Image</button>
+                <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
+              </div>
+            </div>
+          </div>
           <div class="ah-card">
             <div class="ah-card-header"><h2>Publish</h2></div>
             <div class="ah-form-row"><label>Status</label>
@@ -173,16 +176,8 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
             </button>
           </div>
 
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Page Attributes</h2></div>
-            <div class="ah-form-row"><label>Parent Page</label>
-              <select name="page_parent">
-                <option value="0">(No Parent)</option>
-                <?php foreach ( $parent_pages as $pp ) : if ( $pp->ID === $edit_id ) continue; ?>
-                  <option value="<?php echo esc_attr( $pp->ID ); ?>" <?php selected( $cur_par, $pp->ID ); ?>><?php echo esc_html( $pp->post_title ); ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
+          <div class="ah-card ah-hidden">
+            <div class="ah-card-header"><h2>Template</h2></div>
             <div class="ah-form-row"><label>Template</label>
               <select name="page_template">
                 <?php foreach ( $all_templates as $tf => $tl ) : ?>
@@ -191,23 +186,7 @@ $parent_pages   = get_pages( array( 'sort_column' => 'post_title', 'post_status'
               </select>
             </div>
           </div>
-
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Featured Image</h2></div>
-            <div class="ah-image-picker">
-              <img src="<?php echo esc_url( $thumb_url ); ?>" class="ah-image-preview <?php echo $thumb_url ? 'visible' : ''; ?>" alt="" style="width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;border-radius:6px;">
-              <div class="ah-image-picker-btns" style="margin-top:8px;">
-                <input type="hidden" class="ah-image-id" name="featured_image_id" value="<?php echo esc_attr( $thumb_id ); ?>">
-                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Set Image</button>
-                <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Taxonomies</h2></div>
-            <?php $content_tax_m->render_picker( 'wp_page', $edit_id ); ?>
-          </div>
+          <style>.ah-hidden{display:none;}</style>
 
           <?php if ( $wp_page ) : ?>
             <div class="ah-card" style="border-color:var(--ah-danger);">

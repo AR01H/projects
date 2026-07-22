@@ -896,6 +896,35 @@ function adn_page_close( array $ctx ) {
         <?php
         return;
     }
+    // Pages built from custom coded templates (Contact, FAQs, Guidance, etc.)
+    // don't call the_content() themselves - if the admin has typed raw "Page
+    // Content" for one via wp-admin -> Pages, print it appended at the end
+    // rather than silently discarding it. The generic template (page.php)
+    // already renders this itself via the_content(), so it opts out via
+    // $ctx['skip_page_content'] to avoid showing it twice.
+    if ( empty( $ctx['skip_page_content'] ) && is_singular() ) {
+        $_close_post    = get_post();
+        $_close_content = $_close_post ? trim( (string) $_close_post->post_content ) : '';
+        if ( '' !== $_close_content ) {
+            ?>
+            <section class="adn-page-extra-content">
+                <div class="container">
+                    <div class="adn-wp-page__content">
+                        <?php echo apply_filters( 'the_content', $_close_content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    </div>
+                </div>
+            </section>
+            <?php
+        }
+    }
+
+    // FAQs attached directly to this page's URL slug (wp-admin -> FAQs ->
+    // "Attached Slug") - works on every template automatically, and skips
+    // any FAQ already shown on this page via Attached Page/Global.
+    if ( function_exists( 'adn_render_slug_attached_faqs' ) ) {
+        adn_render_slug_attached_faqs();
+    }
+
     adn_component( 'parts/pre_footer' );
     adn_component( 'parts/main_footer', array( 'footer' => isset( $ctx['chrome']['footer'] ) ? $ctx['chrome']['footer'] : array() ) );
     adn_component( 'parts/post_footer' );

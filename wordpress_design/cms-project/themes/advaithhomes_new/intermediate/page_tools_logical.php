@@ -243,6 +243,12 @@ function adn_calculators_get_context() {
 			'title'     => $scalc['title'] ?? '',
 			'desc'      => ! empty( $smeta['desc'] )       ? (string) $smeta['desc']       : '',
 			'url'       => ! empty( $smeta['card_url'] )   ? (string) $smeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $sk ) ),
+			'benefits'  => array_values( array_filter( array(
+				! empty( $smeta['benefit_1'] ) ? (string) $smeta['benefit_1'] : '',
+				! empty( $smeta['benefit_2'] ) ? (string) $smeta['benefit_2'] : '',
+				! empty( $smeta['benefit_3'] ) ? (string) $smeta['benefit_3'] : '',
+				! empty( $smeta['benefit_4'] ) ? (string) $smeta['benefit_4'] : '',
+			) ) ),
 		);
 	}
 

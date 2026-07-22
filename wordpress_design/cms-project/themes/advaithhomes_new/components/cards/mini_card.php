@@ -42,6 +42,9 @@ $tooltip     = isset( $card['tooltip'] )     ? (string) $card['tooltip']     : '
 $desc        = isset( $card['desc'] )        ? (string) $card['desc']        : '';
 $thumb_label = isset( $card['thumb_label'] ) ? (string) $card['thumb_label'] : '';
 $bg_image    = isset( $card['bg_image'] )    ? (string) $card['bg_image']    : '';
+// Opt-in only (Latest News list) - other sections reusing this component keep
+// the date in the body as before.
+$date_on_image = ! empty( $card['date_on_image'] ) && '' !== $img_url;
 
 // Determine unified thumb modifier: photo > gradient > badge > icon
 $_thumb_mod = '';
@@ -65,6 +68,8 @@ $el_attr = $url
 			<img src="<?php echo esc_url( $img_url ); ?>" alt="" loading="lazy" onerror="this.onerror=null;this.src='<?php echo esc_js( get_template_directory_uri() . THEME_DEFAULT_GENERIC_IMG . '?v=' . LOCAL_CACHE_VERSION ); ?>';">
 			<?php if ( '' !== $overlay ) : ?>
 				<span class="mini-card-thumb-overlay"><?php echo esc_html( $overlay ); ?></span>
+			<?php elseif ( $date_on_image && '' !== $meta ) : ?>
+				<span class="mini-card-thumb-overlay mini-card-thumb-date"><?php echo esc_html( $meta ); ?></span>
 			<?php endif; ?>
 		<?php elseif ( ! empty( $badge ) ) : ?>
 			<?php $_first = true; foreach ( $badge as $_line ) { if ( ! $_first ) { echo '<br>'; } echo esc_html( (string) $_line ); $_first = false; } ?>
@@ -83,13 +88,18 @@ $el_attr = $url
 		<?php if ( '' !== $title ) : ?>
 			<span class="mini-card-title"><?php echo esc_html( $title ); ?></span>
 		<?php endif; ?>
-		<?php if ( '' !== $meta || '' !== $tag ) : ?>
+		<?php
+		// Only omit the date here when it's actually shown on the thumbnail instead
+		// (date_on_image opt-in) - don't repeat it in the body in that case.
+		$_meta_in_body = $date_on_image ? '' : $meta;
+		?>
+		<?php if ( '' !== $_meta_in_body || '' !== $tag ) : ?>
 			<div class="mini-card-meta">
 				<?php if ( '' !== $tag ) : ?>
 					<span class="mini-card-tag"><?php echo esc_html( $tag ); ?></span>
 				<?php endif; ?>
-				<?php if ( '' !== $meta ) : ?>
-					<span class="mini-card-date"><?php echo esc_html( $meta ); ?></span>
+				<?php if ( '' !== $_meta_in_body ) : ?>
+					<span class="mini-card-date"><?php echo esc_html( $_meta_in_body ); ?></span>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>

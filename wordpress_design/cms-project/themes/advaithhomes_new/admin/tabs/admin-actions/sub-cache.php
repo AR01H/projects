@@ -36,3 +36,39 @@ defined( 'ABSPATH' ) || exit;
 		</p>
 	</form>
 </div>
+
+<div class="card" style="max-width:none;">
+	<h2><?php esc_html_e( 'Cookie Consent', ADN_TEXT_DOMAIN ); ?></h2>
+	<p class="description">
+		<?php esc_html_e( 'The consent banner is stored client-side in each visitor\'s browser - there\'s no per-visitor record on the server. These actions bump a version number so the banner shows again on a visitor\'s next page load, without affecting anyone still mid-session.', ADN_TEXT_DOMAIN ); ?>
+	</p>
+
+	<p style="display:flex; gap:10px; flex-wrap:wrap;">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<input type="hidden" name="action" value="adn_reask_cookie_rejected" />
+			<?php wp_nonce_field( 'adn_reask_cookie_rejected' ); ?>
+			<button type="submit" class="button" onclick="return confirm('<?php echo esc_js( __( 'Re-ask cookie consent for everyone who previously rejected it?', ADN_TEXT_DOMAIN ) ); ?>');">
+				<?php esc_html_e( 'Re-ask Cookie Consent for Rejected', ADN_TEXT_DOMAIN ); ?>
+			</button>
+		</form>
+
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<input type="hidden" name="action" value="adn_reask_cookie_all" />
+			<?php wp_nonce_field( 'adn_reask_cookie_all' ); ?>
+			<button type="submit" class="button button-secondary" onclick="return confirm('<?php echo esc_js( __( 'Re-ask cookie consent for EVERY visitor, including those who already accepted?', ADN_TEXT_DOMAIN ) ); ?>');">
+				<?php esc_html_e( 'Re-ask Cookie Consent for All', ADN_TEXT_DOMAIN ); ?>
+			</button>
+		</form>
+	</p>
+
+	<p class="description" style="margin-top:10px;">
+		<?php
+		printf(
+			/* translators: 1: accept version number, 2: reject version number */
+			esc_html__( 'Current versions - accepted: %1$d, rejected: %2$d', ADN_TEXT_DOMAIN ),
+			(int) get_option( 'adn_cookie_consent_accept_version', 1 ),
+			(int) get_option( 'adn_cookie_consent_reject_version', 1 )
+		);
+		?>
+	</p>
+</div>

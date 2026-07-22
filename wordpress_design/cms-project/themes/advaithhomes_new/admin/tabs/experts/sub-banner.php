@@ -18,9 +18,6 @@ $marquee_items       = ( isset( $saved['marquee_items'] ) && is_array( $saved['m
     : array();
 $fi_section          = isset( $saved['featured_in_section'] ) ? (string) $saved['featured_in_section'] : '';
 $unlock_password     = isset( $saved['unlock_password'] )     ? (string) $saved['unlock_password']     : '';
-$virtual_cats        = ( isset( $saved['virtual_cats'] ) && is_array( $saved['virtual_cats'] ) )
-    ? $saved['virtual_cats']
-    : array();
 $_fi_raw             = get_option( 'ah_featured_in_sections', '' );
 $_fi_all             = ( $_fi_raw ? json_decode( $_fi_raw, true ) : array() );
 $_fi_all             = is_array( $_fi_all ) ? $_fi_all : array();
@@ -181,42 +178,6 @@ $_fi_all             = is_array( $_fi_all ) ? $_fi_all : array();
 			</tbody></table>
 		</div>
 
-		<div class="card" style="max-width:none;background:#fafafa;margin-top:8px;">
-			<h3 style="margin-top:0;margin-bottom:4px;"><?php esc_html_e( 'Virtual Category Tabs', ADN_TEXT_DOMAIN ); ?></h3>
-			<p class="description" style="margin-bottom:16px;">
-				<?php esc_html_e( 'Add teaser tabs to the Ask an Expert page for services you offer but haven\'t listed experts for yet. Each tab shows a custom message and a Contact button.', ADN_TEXT_DOMAIN ); ?>
-			</p>
-
-			<div style="display:flex;gap:8px;margin-bottom:8px;font-size:0.8rem;font-weight:600;color:#6b7280;padding:0 2px;">
-				<span style="width:180px;"><?php esc_html_e( 'Tab Label', ADN_TEXT_DOMAIN ); ?></span>
-				<span style="flex:1;"><?php esc_html_e( 'Message shown when tab is clicked', ADN_TEXT_DOMAIN ); ?></span>
-				<span style="width:80px;"></span>
-			</div>
-
-			<div id="virtual-cats-wrap">
-				<?php foreach ( $virtual_cats as $_vi => $_vc ) :
-					$_vc_label = esc_attr( isset( $_vc['label'] )   ? (string) $_vc['label']   : '' );
-					$_vc_msg   = esc_attr( isset( $_vc['message'] ) ? (string) $_vc['message'] : '' );
-				?>
-				<div class="virtual-cat-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-					<input type="text" name="virtual_cats[<?php echo (int) $_vi; ?>][label]"
-						placeholder="<?php esc_attr_e( 'e.g. Electrician', ADN_TEXT_DOMAIN ); ?>"
-						style="width:180px;"
-						value="<?php echo $_vc_label; ?>">
-					<input type="text" name="virtual_cats[<?php echo (int) $_vi; ?>][message]"
-						placeholder="<?php esc_attr_e( 'e.g. Coming soon — we\'re building our electrician network. Get in touch and we\'ll match you.', ADN_TEXT_DOMAIN ); ?>"
-						class="large-text"
-						value="<?php echo $_vc_msg; ?>">
-					<button type="button" class="button button-small remove-vcat-row"><?php esc_html_e( 'Remove', ADN_TEXT_DOMAIN ); ?></button>
-				</div>
-				<?php endforeach; ?>
-			</div>
-
-			<div style="margin-top:4px;">
-				<button type="button" id="add-virtual-cat" class="button">+ <?php esc_html_e( 'Add Tab', ADN_TEXT_DOMAIN ); ?></button>
-			</div>
-		</div>
-
 		<?php submit_button( __( 'Save Banner', ADN_TEXT_DOMAIN ), 'primary', 'submit', false ); ?>
 	</form>
 </div>
@@ -224,7 +185,6 @@ $_fi_all             = is_array( $_fi_all ) ? $_fi_all : array();
 <script>
 (function () {
 	var marqIdx = <?php echo absint( count( $marquee_items ) ); ?>;
-	var vcatIdx = <?php echo absint( count( $virtual_cats ) ); ?>;
 	var wrap    = document.getElementById( 'marquee-items-wrap' );
 
 	function bindRemove( row ) {
@@ -247,30 +207,6 @@ $_fi_all             = is_array( $_fi_all ) ? $_fi_all : array();
 		wrap.appendChild( row );
 		bindRemove( row );
 		marqIdx++;
-	} );
-
-	/* ── Virtual Category Tabs ─────────────────────────── */
-	var vcatWrap = document.getElementById( 'virtual-cats-wrap' );
-
-	function bindVcatRemove( row ) {
-		row.querySelector( '.remove-vcat-row' ).addEventListener( 'click', function () {
-			row.remove();
-		} );
-	}
-
-	document.querySelectorAll( '.virtual-cat-row' ).forEach( bindVcatRemove );
-
-	document.getElementById( 'add-virtual-cat' ).addEventListener( 'click', function () {
-		var row = document.createElement( 'div' );
-		row.className = 'virtual-cat-row';
-		row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:8px;';
-		row.innerHTML =
-			'<input type="text" name="virtual_cats[' + vcatIdx + '][label]" placeholder="e.g. Electrician" style="width:180px;">' +
-			'<input type="text" name="virtual_cats[' + vcatIdx + '][message]" placeholder="e.g. Coming soon — we\'re building our network." class="large-text">' +
-			'<button type="button" class="button button-small remove-vcat-row">Remove</button>';
-		vcatWrap.appendChild( row );
-		bindVcatRemove( row );
-		vcatIdx++;
 	} );
 }());
 </script>

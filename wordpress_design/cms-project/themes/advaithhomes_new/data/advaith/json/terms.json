@@ -126,7 +126,10 @@
         "name_required":                "Name is required",
         "email_required":               "Email is required",
         "message_required":             "Message is required",
-        "consent_text_template":        "By submitting this form, you agree to our %1$s%2$s%3$s and %4$s%5$s%6$s."
+        "consent_terms_label":          "Terms & Conditions",
+        "newsletter_consent_note":      "I agree to receive property guides, updates, and useful information from ADVAITH HOMES, and understand I can unsubscribe at any time by sending an email.",
+        "guidance_consent_text_template": "I agree to the %1$s%2$s%3$s and %4$s%5$s%6$s, and consent to my details being shared only with relevant trusted partners for my quote request.",
+        "contact_consent_text_template":  "I agree to the %1$s%2$s%3$s and %4$s%5$s%6$s, and consent to %7$s contacting me about my enquiry."
     },
 
     "page_titles": {

@@ -144,7 +144,7 @@ $uid = 'res-car-' . ( ++$_res_carousel_uid );
 
 		<?php /* ── Body — only render if there is content to show ── */ ?>
 		<?php $ext_href = $link_url ?: ( $is_social ? $url : '' ); ?>
-		<?php if ( $title || $ext_href ) : ?>
+		<?php if ( $title || $ext_href || $link_url ) : ?>
 		<div class="res-card-lib__body">
 			<div class="res-card-lib__row">
 				<?php if ( $title ) : ?><p class="res-card-lib__title"><?php echo $title; ?></p><?php endif; ?>
@@ -242,15 +242,17 @@ $uid = 'res-car-' . ( ++$_res_carousel_uid );
 	window.addEventListener('resize', updateState);
 	updateState();
 
-	/* play button click → swap thumbnail for iframe */
+	/* play button click → swap thumbnail for iframe, hide the title overlay while it plays */
 	car.querySelectorAll('.res-card-lib__play').forEach(function(btn){
 		btn.addEventListener('click', function(){
 			var vid  = this.dataset.vid;
 			var type = this.dataset.type;
 			var media = this.closest('.res-card-lib__media');
+			var card  = this.closest('.res-card-lib');
 			var src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0&modestbranding=1';
 			if (type === 'shorts') src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1';
 			media.innerHTML = '<iframe src="' + src + '" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+			if (card) { card.classList.add('is-playing'); }
 		});
 	});
 })();

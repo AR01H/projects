@@ -284,16 +284,11 @@
 .popular-tools-section {
     padding: var(--space-8, 64px) 0 var(--space-6, 48px);
     background: rgba(243, 242, 236, 0.95);
-    border-bottom: 1px solid var(--color-border, #e5e7eb);
-}
-
-.popular-tools-header {
-    margin-bottom: var(--space-8);
 }
 
 .popular-tools-section h2 {
     font-family: var(--font-display, 'Playfair Display', serif);
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: -0.018em;
     margin-bottom: var(--space-4);
@@ -327,25 +322,10 @@
     background: radial-gradient(circle, rgba(45,90,68,0.06) 0%, rgba(45,90,68,0.00) 100%) !important;
 }
 
-.popular-tools-grid .calc-card-body {
-    padding: 18px 18px 20px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-}
-
 .popular-tools-grid .calc-card-name {
     font-size: 1rem !important;
     font-weight: 700 !important;
     color: var(--color-heading, #0f172a) !important;
-}
-
-.popular-tools-grid .calc-card-body p,
-.popular-tools-grid .calc-card-body .card-desc-text {
-    color: var(--color-text-muted, #4b5563) !important;
-    font-size: 0.94rem !important;
-    line-height: 1.6 !important;
-    margin: 0 !important;
 }
 
 .popular-tools-grid .calc-card-badge {

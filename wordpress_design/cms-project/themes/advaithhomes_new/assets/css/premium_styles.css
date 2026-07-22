@@ -1372,9 +1372,9 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     padding: 4px 10px !important;
     position: absolute !important;
     bottom: 12px !important;
-    left: 12px !important;
     z-index: 10 !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    text-align: center;
 }
 .news-card-img {
     position: relative !important;
@@ -2443,7 +2443,7 @@ html.adn-reveal .acard-stat::before {
 .mock-calculator {
     width: 150px !important;
     height: 210px !important;
-    background: #1e1e1e !important;
+    background: var(--client-color, #1e1e1e) !important;
     border: 3px solid #2d2d2d !important;
     border-radius: 12px !important;
     padding: 10px !important;
@@ -2451,7 +2451,7 @@ html.adn-reveal .acard-stat::before {
     display: flex !important;
     flex-direction: column !important;
     gap: 6px !important;
-    transform: rotate(-4deg) !important;
+    transform: rotate(4deg) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-sizing: border-box !important;
 }
@@ -2569,20 +2569,12 @@ html.adn-reveal .acard-stat::before {
 }
 
 /* ── Widget card — white rounded container with border ──────── */
-.tc-widget {
-    background: #ffffff !important;
-    border: 1px solid var(--color-border, #e8eaed) !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.03) !important;
-}
 
 .tc-widget-header {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     padding: 12px 16px !important;
-    border-bottom: 1px solid var(--color-border, #e8eaed) !important;
 }
 
 .tc-widget-title {
@@ -2706,13 +2698,7 @@ html.adn-reveal .acard-stat::before {
     transform: translateX(4px) !important;
 }
 
-/* ── Two-column layout (Suggested + Featured) ───────────────── */
-.tc-two-col {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 16px !important;
-    align-items: stretch !important;
-}
+
 
 /* ── Suggested calculators widget ───────────────────────────── */
 .tc-suggested-widget {
@@ -2818,6 +2804,151 @@ html.adn-reveal .acard-stat::before {
 .tc-suggested-item:hover .tc-suggested-arrow {
     color: var(--color-primary, #1e3a2f) !important;
     transform: translateX(3px) !important;
+}
+
+/* ── Suggested Calculator card (content + side illustration, like Featured) ── */
+.tc-suggested-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    width: 100% !important;
+    padding: 20px 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 8px !important;
+    background:
+        radial-gradient(circle at 100% 0%, rgba(245, 200, 66, 0.08) 0%, transparent 60%),
+        linear-gradient(135deg, #102d23 0%, #17362a 50%, #0c2018 100%) !important;
+    box-shadow:
+        0 10px 32px rgba(30, 58, 47, 0.22),
+        0 0 0 1px rgba(201, 168, 76, 0.14),
+        0 0 26px rgba(201, 168, 76, 0.14) !important;
+    transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+    box-sizing: border-box !important;
+}
+
+.tc-suggested-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow:
+        0 16px 40px rgba(30, 58, 47, 0.28),
+        0 0 0 1px rgba(201, 168, 76, 0.22),
+        0 0 34px rgba(201, 168, 76, 0.20) !important;
+}
+
+.tc-suggested-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.tc-suggested-illustration {
+    flex-shrink: 0 !important;
+}
+
+.mock-calculator--sm {
+    width: 108px !important;
+    height: 150px !important;
+    padding: 7px !important;
+    gap: 4px !important;
+    transform: rotate(4deg) !important;
+}
+
+.mock-calculator--sm .mock-calc-screen {
+    height: 22px !important;
+    font-size: 0.72rem !important;
+}
+
+.mock-calculator--sm .mock-calc-grid {
+    gap: 3px !important;
+}
+
+.mock-calculator--sm .mock-btn {
+    font-size: 0.62rem !important;
+}
+
+@media (max-width: 480px) {
+    .tc-suggested-card {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    .tc-suggested-illustration {
+        align-self: center !important;
+    }
+}
+
+.tc-suggested-title {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+}
+
+.tc-suggested-desc {
+    font-size: 0.85rem !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+}
+
+.tc-suggested-points {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 4px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    width: 100% !important;
+}
+
+.tc-suggested-points li {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-size: 0.82rem !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500 !important;
+}
+
+.tc-suggested-points svg {
+    width: 18px !important;
+    height: 18px !important;
+    padding: 3px !important;
+    background: rgba(111, 207, 138, 0.15) !important;
+    border-radius: 50% !important;
+    color: #6fcf8a !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.tc-suggested-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    align-self: flex-start !important;
+    gap: 8px !important;
+    background: #f5c842 !important;
+    color: #1e3a2f !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    margin-top: auto !important;
+    transition: background 0.2s ease !important;
+}
+
+.tc-suggested-btn:hover {
+    background: #ffffff !important;
+    color: #1e3a2f !important;
+}
+
+.tc-suggested-btn svg {
+    width: 12px !important;
+    height: 12px !important;
 }
 
 /* ── Featured Calculator card (dark green) ──────────────────── */
@@ -2940,9 +3071,6 @@ html.adn-reveal .acard-stat::before {
 
 /* Responsive */
 @media (max-width: 900px) {
-    .tc-two-col {
-        grid-template-columns: 1fr !important;
-    }
     .tc-featured-illustration {
         display: none !important;
     }
@@ -2952,6 +3080,15 @@ html.adn-reveal .acard-stat::before {
     .tc-featured-card {
         padding: 20px !important;
         min-height: auto !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 20px !important;
+    }
+    .tc-featured-illustration {
+        align-self: center !important;
+    }
+    .tc-suggested-card {
+        padding: 16px !important;
     }
 }
 
@@ -3528,9 +3665,6 @@ html.adn-reveal .acard-stat::before {
 }
 
 @media (max-width: 768px) {
-    .tc-two-col {
-        grid-template-columns: 1fr !important;
-    }
     .tc-suggested-widget,
     .tc-featured-card {
         grid-column: span 1 !important;

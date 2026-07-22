@@ -2,7 +2,7 @@
 
 define("COMING_SOON",FALSE);
 define("COMING_SOON_PAGE_SLUG",'coming-soon');
-define('LOCAL_CACHE_VERSION',date('d'));
+define('LOCAL_CACHE_VERSION',date('d')+12);
 
 // ── Images ───────────────────────────────────────────────────────────────────
 define( 'THEME_DEFAULT_HERO_IMG', '/assets/images/default/hero.jpg' );

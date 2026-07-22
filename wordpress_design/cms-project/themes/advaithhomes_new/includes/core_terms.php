@@ -220,11 +220,13 @@ define( 'FORM_REQUIRED_SUFFIX',        adn_term( 'forms.required_suffix',       
 define( 'FORM_NAME_ERROR',             adn_term( 'forms.name_required',          'Name is required' ) );
 define( 'FORM_EMAIL_ERROR',            adn_term( 'forms.email_required',         'Email is required' ) );
 define( 'FORM_MESSAGE_ERROR',          adn_term( 'forms.message_required',       'Message is required' ) );
-define( 'FORM_CONSENT_TEXT_TEMPLATE',  adn_term( 'forms.consent_text_template',  'By submitting this form, you agree to our %1$s%2$s%3$s and %4$s%5$s%6$s.' ) );
+define( 'FORM_GUIDANCE_CONSENT_TEXT_TEMPLATE', adn_term( 'forms.guidance_consent_text_template', 'I agree to the %1$s%2$s%3$s and %4$s%5$s%6$s, and consent to my details being shared only with relevant trusted partners for my quote request.' ) );
+define( 'FORM_CONTACT_CONSENT_TEXT_TEMPLATE',  adn_term( 'forms.contact_consent_text_template',  'I agree to the %1$s%2$s%3$s and %4$s%5$s%6$s, and consent to %7$s contacting me about my enquiry.' ) );
 define( 'FORM_CONSENT_PRIVACY_LABEL',  adn_term( 'forms.consent_privacy_label',  'Privacy Policy' ) );
-define( 'FORM_CONSENT_TERMS_LABEL',    adn_term( 'forms.consent_terms_label',    'Terms of Use' ) );
+define( 'FORM_CONSENT_TERMS_LABEL',    adn_term( 'forms.consent_terms_label',    'Terms & Conditions' ) );
 define( 'FORM_CONSENT_PRIVACY_URL',    adn_term( 'forms.consent_privacy_url',    '/privacy-policy/' ) );
 define( 'FORM_CONSENT_TERMS_URL',      adn_term( 'forms.consent_terms_url',      '/terms/' ) );
+define( 'SITE_NEWSLETTER_CONSENT_NOTE', adn_term( 'forms.newsletter_consent_note', 'I agree to receive property guides, updates, and useful information from ' . SITE_BRAND_NAME . ', and understand I can unsubscribe at any time by sending an email.' ) );
 
 // ===========================
 // RESOURCE LABELS

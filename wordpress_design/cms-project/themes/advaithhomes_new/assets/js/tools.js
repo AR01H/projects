@@ -15,7 +15,6 @@
     'use strict';
 
     var activeCategory = 'all';
-    var heroRow;
     var emptyMsg;
     var items;
 
@@ -37,7 +36,6 @@
     }
 
     function init() {
-        heroRow = document.querySelector( '.tc-all-hero-row' );
         emptyMsg = document.getElementById( 'calcEmptyState' );
         items = document.querySelectorAll( '.calc-grid .calc-list-item, .calc-grid .calc-card' );
 
@@ -115,19 +113,12 @@
     }
 
     function filterList( cat ) {
-        if ( heroRow ) {
-            heroRow.style.display = cat === 'all' ? '' : 'none';
-        }
-
         var visible = 0;
         items.forEach( function ( item ) {
             var cats = ( item.getAttribute( 'data-category' ) || '' ).split( ' ' ).map( function ( s ) { return s.trim(); } );
-            var idx = parseInt( item.getAttribute( 'data-index' ) || '0', 10 );
-
             var matchesCat = cat === 'all' || cats.indexOf( cat ) !== -1;
-            var isDuplicateInHero = cat === 'all' && idx < 4;
 
-            if ( matchesCat && ! isDuplicateInHero ) {
+            if ( matchesCat ) {
                 item.classList.remove( 'calc-filtered-out' );
                 item.removeAttribute( 'hidden' );
                 visible++;
@@ -138,8 +129,7 @@
         } );
 
         if ( emptyMsg ) {
-            var heroVisible = cat === 'all' && heroRow && heroRow.style.display !== 'none';
-            emptyMsg.style.display = ( visible === 0 && ! heroVisible ) ? 'flex' : 'none';
+            emptyMsg.style.display = ( visible === 0 ) ? 'flex' : 'none';
         }
     }
 

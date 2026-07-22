@@ -59,10 +59,61 @@ adn_page_open( $_open_ctx );
 <?php /* ============================== FEATURED & SUGGESTION SECTION ============================== */ ?>
 <?php
 $has_featured  = ! empty( $ctx['featured_tools'] );
-if ( $has_featured ) :
+$has_suggested = ! empty( $ctx['suggested_tools'] );
+if ( $has_featured || $has_suggested ) :
 ?>
 <section class="tc-section tc-featured-section">
 	<div class="container">
+		<div class="">
+
+			<?php /* ── Suggested Calculator widget ── */ ?>
+			<?php if ( $has_suggested ) : ?>
+			<div class="tc-suggested-widget">
+				<div class="tc-suggested-list">
+					<?php foreach ( $ctx['suggested_tools'] as $sug ) :
+						$sug_desc     = isset( $sug['desc'] ) ? (string) $sug['desc'] : '';
+						$sug_benefits = isset( $sug['benefits'] ) && is_array( $sug['benefits'] ) ? $sug['benefits'] : array();
+					?>
+						<div class="tc-suggested-card">
+							<div class="tc-suggested-content">
+								<span class="tc-featured-badge"><?php esc_html_e( 'Suggested', ADN_TEXT_DOMAIN ); ?></span>
+								<span class="tc-suggested-icon" aria-hidden="true"><?php echo adn_icon( isset( $sug['icon'] ) ? $sug['icon'] : '🧮' ); ?></span>
+								<h3 class="tc-suggested-title"><?php echo esc_html( isset( $sug['title'] ) ? $sug['title'] : '' ); ?></h3>
+								<?php if ( '' !== $sug_desc ) : ?>
+									<p class="tc-suggested-desc"><?php echo esc_html( $sug_desc ); ?></p>
+								<?php endif; ?>
+								<?php if ( ! empty( $sug_benefits ) ) : ?>
+									<ul class="tc-suggested-points">
+										<?php foreach ( $sug_benefits as $sb ) : ?>
+											<li>
+												<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+												<?php echo esc_html( $sb ); ?>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								<?php endif; ?>
+								<a href="<?php echo esc_url( adn_link( isset( $sug['url'] ) ? $sug['url'] : '' ) ); ?>" class="tc-suggested-btn">
+									<?php echo esc_html( 'Calculate' ); ?>
+									<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								</a>
+							</div>
+							<div class="tc-suggested-illustration" aria-hidden="true">
+								<div class="mock-calculator mock-calculator--sm">
+									<div class="mock-calc-screen">100%</div>
+									<div class="mock-calc-grid">
+										<span class="mock-btn mock-btn-fn">C</span><span class="mock-btn mock-btn-fn">&plusmn;</span><span class="mock-btn mock-btn-fn">%</span><span class="mock-btn mock-btn-op">&divide;</span>
+										<span class="mock-btn">7</span><span class="mock-btn">8</span><span class="mock-btn">9</span><span class="mock-btn mock-btn-op">&times;</span>
+										<span class="mock-btn">4</span><span class="mock-btn">5</span><span class="mock-btn">6</span><span class="mock-btn mock-btn-op">&minus;</span>
+										<span class="mock-btn">1</span><span class="mock-btn">2</span><span class="mock-btn">3</span><span class="mock-btn mock-btn-op">&plus;</span>
+										<span class="mock-btn mock-btn-double">0</span><span class="mock-btn">.</span><span class="mock-btn mock-btn-eq">&equals;</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+			<?php endif; ?>
 
 			<?php /* ── Featured Calculator widget ── */ ?>
 			<?php if ( $has_featured ) :
@@ -101,7 +152,7 @@ if ( $has_featured ) :
 				</div>
 				<div class="tc-featured-illustration" aria-hidden="true">
 					<div class="mock-calculator">
-						<div class="mock-calc-screen">123,456</div>
+						<div class="mock-calc-screen">100%</div>
 						<div class="mock-calc-grid">
 							<span class="mock-btn mock-btn-fn">C</span><span class="mock-btn mock-btn-fn">&plusmn;</span><span class="mock-btn mock-btn-fn">%</span><span class="mock-btn mock-btn-op">&divide;</span>
 							<span class="mock-btn">7</span><span class="mock-btn">8</span><span class="mock-btn">9</span><span class="mock-btn mock-btn-op">&times;</span>
@@ -114,7 +165,7 @@ if ( $has_featured ) :
 			</div>
 			<?php endif; ?>
 
-</div>
+		</div>
 	</div>
 </section>
 <?php endif; ?>

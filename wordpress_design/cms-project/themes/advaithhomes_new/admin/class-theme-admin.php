@@ -52,6 +52,8 @@ class ADN_Theme_Admin {
 
 		// Admin Actions handlers (admin-post.php endpoints).
 		add_action( 'admin_post_adn_clear_cache',          array( __CLASS__, 'handle_clear_cache' ) );
+		add_action( 'admin_post_adn_reask_cookie_all',      array( __CLASS__, 'handle_reask_cookie_all' ) );
+		add_action( 'admin_post_adn_reask_cookie_rejected', array( __CLASS__, 'handle_reask_cookie_rejected' ) );
 		add_action( 'admin_post_adn_sync_pages',           array( __CLASS__, 'handle_sync_pages' ) );
 		add_action( 'admin_post_adn_flush_rewrites',       array( __CLASS__, 'handle_flush_rewrites' ) );
 		add_action( 'admin_post_adn_install_contact_rule', array( __CLASS__, 'handle_install_contact_rule' ) );
@@ -505,6 +507,48 @@ class ADN_Theme_Admin {
 		self::redirect_back( 'admin-actions', 'cache', $msg );
 	}
 
+	// ── Action: Re-ask cookie consent ───────────────────────────────────────────
+	// The consent cookie is purely client-side (no per-visitor record on the
+	// server), so there's no way to reach into past visitors' browsers directly.
+	// Bumping these version options makes cookie-consent.js treat any cookie
+	// stamped with an older version as undecided on the visitor's next page
+	// load, which shows the banner again.
+
+	public static function handle_reask_cookie_all() {
+		check_admin_referer( 'adn_reask_cookie_all' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		update_option( 'adn_cookie_consent_accept_version', (int) get_option( 'adn_cookie_consent_accept_version', 1 ) + 1 );
+		update_option( 'adn_cookie_consent_reject_version', (int) get_option( 'adn_cookie_consent_reject_version', 1 ) + 1 );
+
+		// The new version number needs to reach every page immediately, not just
+		// pages that happen to be cache-misses - otherwise a visitor can bounce
+		// between a stale-cached page (old version) and a fresh one (new version)
+		// and the mismatch keeps re-triggering the banner even after they answer it.
+		if ( class_exists( 'ADN_Cache' ) ) {
+			ADN_Cache::clear_all();
+		}
+
+		self::redirect_back( 'admin-actions', 'cache', __( 'Cookie consent will be re-asked for every visitor (accepted and rejected) on their next page load.', ADN_TEXT_DOMAIN ) );
+	}
+
+	public static function handle_reask_cookie_rejected() {
+		check_admin_referer( 'adn_reask_cookie_rejected' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'Unauthorised', ADN_TEXT_DOMAIN ) );
+		}
+
+		update_option( 'adn_cookie_consent_reject_version', (int) get_option( 'adn_cookie_consent_reject_version', 1 ) + 1 );
+
+		if ( class_exists( 'ADN_Cache' ) ) {
+			ADN_Cache::clear_all();
+		}
+
+		self::redirect_back( 'admin-actions', 'cache', __( 'Cookie consent will be re-asked only for visitors who previously rejected, on their next page load.', ADN_TEXT_DOMAIN ) );
+	}
+
 	// ── Action: Sync default pages + flush permalinks ───────────────────────────
 
 	public static function handle_sync_pages() {
@@ -834,6 +878,18 @@ class ADN_Theme_Admin {
 				})(),
 			)
 		);
+
+		// Only one calculator can be "Featured" at a time (the front-end hero
+		// widget only ever shows the first one it finds) - un-feature every
+		// other calculator so there's never ambiguity about which is shown.
+		if ( ! empty( $all_meta[ $key ]['is_featured'] ) ) {
+			foreach ( $all_meta as $_k => &$_m ) {
+				if ( $_k !== $key && is_array( $_m ) ) {
+					$_m['is_featured'] = 0;
+				}
+			}
+			unset( $_m );
+		}
 
 		update_option( 'adn_calculators_meta', $all_meta );
 
@@ -1427,7 +1483,7 @@ class ADN_Theme_Admin {
 				$fid = (int) $f['faq_id'];
 				if ( $fid <= 0 ) { continue; }
 				$faq_items[] = array( 'faq_id' => $fid );
-				if ( count( $faq_items ) >= 10 ) { break; }
+				if ( count( $faq_items ) >= 100 ) { break; }
 			}
 		}
 		AH_Category_Settings::save( $slug, 'faqs', array(
@@ -1621,18 +1677,6 @@ class ADN_Theme_Admin {
 			);
 		}
 
-		$raw_vcats    = isset( $_POST['virtual_cats'] ) ? (array) wp_unslash( $_POST['virtual_cats'] ) : array();
-		$virtual_cats = array();
-		foreach ( $raw_vcats as $_vc ) {
-			if ( ! is_array( $_vc ) ) { continue; }
-			$_label = sanitize_text_field( isset( $_vc['label'] ) ? (string) $_vc['label'] : '' );
-			if ( '' === $_label ) { continue; }
-			$virtual_cats[] = array(
-				'label'   => $_label,
-				'message' => sanitize_textarea_field( isset( $_vc['message'] ) ? (string) $_vc['message'] : '' ),
-			);
-		}
-
 		$banner = array(
 			'heading'             => sanitize_text_field( wp_unslash( isset( $_POST['banner_heading'] ) ? $_POST['banner_heading'] : '' ) ),
 			'info'                => sanitize_textarea_field( wp_unslash( isset( $_POST['banner_info'] ) ? $_POST['banner_info'] : '' ) ),
@@ -1640,7 +1684,6 @@ class ADN_Theme_Admin {
 			'marquee_items'       => $marquee_items,
 			'featured_in_section' => sanitize_key( isset( $_POST['featured_in_section'] ) ? wp_unslash( $_POST['featured_in_section'] ) : '' ),
 			'unlock_password'     => sanitize_text_field( wp_unslash( isset( $_POST['unlock_password'] ) ? $_POST['unlock_password'] : '' ) ),
-			'virtual_cats'        => $virtual_cats,
 		);
 
 		update_option( 'adn_expert_banner', $banner );

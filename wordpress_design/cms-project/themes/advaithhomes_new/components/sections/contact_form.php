@@ -72,13 +72,14 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 				$_pp_url = esc_url( home_url( FORM_CONSENT_PRIVACY_URL ) );
 				$_tc_url = esc_url( home_url( FORM_CONSENT_TERMS_URL ) );
 				printf(
-					esc_html( FORM_CONSENT_TEXT_TEMPLATE ),
+					esc_html( FORM_CONTACT_CONSENT_TEXT_TEMPLATE ),
+					'<a href="' . $_tc_url . '" target="_blank" rel="noopener">',
+					esc_html( FORM_CONSENT_TERMS_LABEL ),
+					'</a>',
 					'<a href="' . $_pp_url . '" target="_blank" rel="noopener">',
 					esc_html( FORM_CONSENT_PRIVACY_LABEL ),
 					'</a>',
-					'<a href="' . $_tc_url . '" target="_blank" rel="noopener">',
-					esc_html( FORM_CONSENT_TERMS_LABEL ),
-					'</a>'
+					esc_html( SITE_BRAND_NAME )
 				);
 				?>
 			</span>

@@ -192,7 +192,7 @@
 /* ── Search Row (search-input-wrap CSS lives in calculators.css which is
       NOT loaded here - replicate the needed styles locally) ────────────── */
 .expert-search-row {
-    padding: 16px 0 20px;
+    padding: 2px 0 12px;
 }
 
 .expert-search-row .search-input-wrap {
@@ -347,84 +347,6 @@
 
 .enr-reset:hover { background: #e9ebee; border-color: #d1d5db; }
 
-/* ── Virtual category teaser cards ──────────────────────────── */
-.expert-card--virtual {
-    grid-column: 1 / -1;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-height: 320px;
-    background: #fff;
-    border: 2px dashed rgba(30, 58, 47, 0.18) !important;
-    border-radius: var(--radius-md, 12px);
-    padding: 56px 40px;
-    text-align: center;
-    box-shadow: none !important;
-    cursor: default;
-}
-
-.expert-card--virtual[hidden] {
-    display: none !important;
-}
-
-.expert-card--virtual:hover {
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-.evc-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    max-width: 520px;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.evc-icon-wrap {
-    width: 68px;
-    height: 68px;
-    background: rgba(201, 168, 76, 0.12);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin: 0 auto;
-}
-
-.evc-icon {
-    font-size: 1.5rem;
-    color: var(--color-accent, #c9a84c);
-}
-
-.evc-title {
-    margin: 0;
-    font-size: 1.55rem;
-    font-family: var(--font-display, 'Playfair Display', serif);
-    color: var(--color-primary, #1e3a2f);
-    font-weight: 600;
-    text-align: center;
-}
-
-.evc-msg {
-    margin: 0;
-    font-size: 0.93rem;
-    line-height: 1.7;
-    color: #6b7280;
-    text-align: center;
-}
-
-.evc-btn {
-    margin-top: 6px;
-    font-size: 0.875rem;
-    padding: 11px 36px;
-    align-self: center;
-}
-
 /* ── Permanent "More Experts" placeholder card ───────────────── */
 .expert-card-more {
     border: 1.5px dashed var(--color-border, #e5e7eb);
@@ -473,7 +395,7 @@
 /* ── Main Layout (listing page) ─────────────────────────────── */
 .expert-main-layout {
     margin: 0 auto;
-    padding: 40px 24px 80px;
+    padding: 40px 24px 30px;
     display: grid;
     grid-template-columns: 1fr 280px;
     gap: var(--space-10);

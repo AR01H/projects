@@ -186,7 +186,7 @@
 	transform: translate(-50%, -50%);
 }
 
-/* ── Body — hidden below card, slides up on hover ── */
+/* ── Body — always visible; hidden once a video starts playing ── */
 .res-card-lib__body {
 	position: absolute;
 	bottom: 0;
@@ -199,15 +199,24 @@
 		rgba(8,16,14,.60) 60%,
 		transparent       100%
 	);
-	opacity: 0;
+	opacity: 1;
 	transition: opacity .35s ease;
 	display: flex;
 	flex-direction: column;
-	gap: 0;
+	gap: 6px;
 	border-top: none;
 }
-.res-card-lib:hover .res-card-lib__body { opacity: 1; }
+.res-card-lib.is-playing .res-card-lib__body { opacity: 0; pointer-events: none; }
 .res-card-lib__body::before { display: none; }
+
+.res-card-lib__learnmore {
+	align-self: flex-start;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: #fff;
+	text-decoration: none;
+}
+.res-card-lib__learnmore:hover { text-decoration: underline; }
 
 /* ── Highlight label — top-right badge, always visible ── */
 .res-card-lib__hl {
@@ -219,8 +228,8 @@
 	font-weight: 700;
 	letter-spacing: .09em;
 	text-transform: uppercase;
-	color: var(--secondary-color, #B08D57);
-	background: rgba(10,20,18,.72);
+	color: var(--secondary-color);
+	background: #fff;
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 	border: 1px solid rgba(176,141,87,.42);
@@ -244,6 +253,7 @@
 	line-height: 1.3;
 	margin: 0;
 }
+
 
 /* ── Circle link button at right edge ── */
 .res-card-lib__extbtn {

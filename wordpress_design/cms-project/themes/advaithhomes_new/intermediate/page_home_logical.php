@@ -476,7 +476,7 @@ function adn_home_cms_news_items() {
 			if ( '' === $title ) {
 				continue;
 			}
-			$stamp     = ! empty( $item->start_date ) ? $item->start_date : '';
+			$stamp     = ! empty( $item->created_at ) ? $item->created_at : '';
 			$desc      = ! empty( $item->content ) ? wp_strip_all_tags( (string) $item->content ) : '';
 			$thumb_url = '';
 			if ( ! empty( $item->image_id ) ) {
@@ -486,7 +486,8 @@ function adn_home_cms_news_items() {
 			$items[] = array(
 				'title'       => $title,
 				'description' => $desc,
-				'date'        => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
+				'date'        => $stamp ? date_i18n( 'M jS', strtotime( $stamp ) ) : '', // compact - mini cards
+				'date_full'   => $stamp ? date_i18n( 'M jS, Y', strtotime( $stamp ) ) : '', // with year - hero card only
 				'tag'         => ! empty( $item->label ) ? (string) $item->label : '',
 				'gradient'    => adn_cms_gradient( $i ),
 				'thumbnail'   => $thumb_url,

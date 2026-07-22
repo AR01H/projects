@@ -13,7 +13,7 @@ $_hdg     = isset( $_nl['heading'] )      ? (string) $_nl['heading']      : SITE
 $_dsc     = isset( $_nl['description'] )  ? (string) $_nl['description']  : '';
 $_ph      = isset( $_nl['placeholder'] )  ? (string) $_nl['placeholder']  : SITE_PLACEHOLDER_NEWSLETTER;
 $_btn     = isset( $_nl['button_label'] ) ? (string) $_nl['button_label'] : adn_term( 'sidebar.newsletter_btn', 'Subscribe' );
-$_note    = isset( $_nl['note'] )         ? (string) $_nl['note']         : '';
+$_note    = isset( $_nl['note'] ) && '' !== (string) $_nl['note'] ? (string) $_nl['note'] : SITE_NEWSLETTER_CONSENT_NOTE;
 $_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
 ?>
 <div class="sw-panel">
@@ -34,5 +34,8 @@ $_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
 		       autocomplete="email" required>
 		<button type="submit" class="sw-cta-btn adn-nl-btn"><?php echo esc_html( $_btn ); ?></button>
 	</form>
+	<?php if ( '' !== $_note ) : ?>
+		<p class="sw-nl-note"><?php echo esc_html( $_note ); ?></p>
+	<?php endif; ?>
 	<div class="adn-nl-msg" style="display:none;margin-top:8px;font-size:13px;font-weight:500"></div>
 </div>

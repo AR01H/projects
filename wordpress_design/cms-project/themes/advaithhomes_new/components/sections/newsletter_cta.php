@@ -36,7 +36,7 @@ $nl_nonce   = wp_create_nonce( 'ah_newsletter_nonce' );
                 <button type="submit" class="adn-nl-btn"><?php echo esc_html( isset( $newsletter['button_label'] ) && $newsletter['button_label'] ? $newsletter['button_label'] : SITE_BTN_SUBSCRIBE ); ?></button>
             </div>
         </form>
-        <div class="newsletter-spam"><?php echo esc_html( isset( $newsletter['note'] ) ? $newsletter['note'] : '' ); ?></div>
+        <div class="newsletter-spam"><?php echo esc_html( ! empty( $newsletter['note'] ) ? $newsletter['note'] : SITE_NEWSLETTER_CONSENT_NOTE ); ?></div>
         <div class="adn-nl-msg" style="display:none;margin-top:10px;font-size:13.5px;font-weight:500"></div>
     </div>
 </div>

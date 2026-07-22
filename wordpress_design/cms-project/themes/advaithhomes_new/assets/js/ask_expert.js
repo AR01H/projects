@@ -55,84 +55,60 @@
         applyFilter( cat, q );
     }
 
+    function cardMatches( card, cat, q ) {
+        var cardCat  = ( card.getAttribute( 'data-cat' ) || '' );
+        var cardCats = cardCat.split( ',' );
+        var hasCat   = false;
+        for ( var i = 0; i < cardCats.length; i++ ) {
+            if ( cardCats[ i ].trim() === cat ) { hasCat = true; }
+        }
+        var catMatch  = cat === 'all' || hasCat;
+        var textMatch = q === '' || ( card.textContent || '' ).toLowerCase().indexOf( q ) !== -1;
+        return catMatch && textMatch;
+    }
+
+    // One rule drives every state on the page: real matching experts show as
+    // cards; locked experts never show individually — if any of them match,
+    // the single "profiles are locked" card stands in for them instead; "no
+    // results" only appears when neither real nor locked matches exist. The
+    // permanent "more experts" contact card is never toggled — always visible.
     function applyFilter( cat, query ) {
         showLoader( false );
         var q             = query.toLowerCase();
-        var any           = false;
         var gridEl        = document.getElementById( 'expertGrid' );
         var lockedCard    = gridEl ? gridEl.querySelector( '.expert-card--locked-placeholder' ) : null;
-
-        var isVirtualTab = cat.indexOf( 'vcat-' ) === 0;
+        var realMatches   = 0;
+        var lockedMatches = 0;
 
         document.querySelectorAll( '.expert-card' ).forEach( function ( card ) {
-            // Virtual cards are handled separately below.
-            if ( card.classList.contains( 'expert-card--virtual' ) ) { return; }
-            // Unlockable cards are hidden until JS unlock flow reveals them; skip until then.
-            if ( card.hasAttribute( 'data-unlockable' ) ) { return; }
-
-            // When a virtual tab is active: hide everything else (permanent, locked, real cards).
-            if ( isVirtualTab ) {
-                card.setAttribute( 'hidden', '' );
-                return;
-            }
-
-            // Permanent card and locked placeholder: always visible on real tabs.
             if ( card.getAttribute( 'data-permanent' ) ) { return; }
             if ( card.classList.contains( 'expert-card--locked-placeholder' ) ) { return; }
 
-            var cardCat   = ( card.getAttribute( 'data-cat' ) || '' );
-            var cardCats  = cardCat.split(',');
-            var hasCat    = false;
-            for (var i = 0; i < cardCats.length; i++) {
-                if (cardCats[i].trim() === cat) hasCat = true;
+            if ( card.hasAttribute( 'data-unlockable' ) ) {
+                // Locked card: content already exists in the DOM, but stays hidden
+                // individually — it only counts toward showing the locked-profiles card.
+                if ( cardMatches( card, cat, q ) ) { lockedMatches++; }
+                return;
             }
-            var catMatch  = cat === 'all' || hasCat;
-            var textMatch = q === '' || ( card.textContent || '' ).toLowerCase().indexOf( q ) !== -1;
-            var show      = catMatch && textMatch;
-            if ( show ) {
+
+            if ( cardMatches( card, cat, q ) ) {
                 card.removeAttribute( 'hidden' );
-                any = true;
+                realMatches++;
             } else {
                 card.setAttribute( 'hidden', '' );
             }
         } );
 
-        // Virtual cards: show only the one whose tab is active, hide the rest.
-        // Use style.display directly — the CSS has display:flex !important which beats [hidden].
-        document.querySelectorAll( '.expert-card--virtual' ).forEach( function ( vc ) {
-            debugger
-            if ( vc.getAttribute( 'data-cat' ) === cat ) {
-                vc.style.display = 'flex';
-                vc.removeAttribute( 'hidden' );
-            } else {
-                vc.style.display = 'none';
-                vc.setAttribute( 'hidden', '' );
-            }
-        } );
+        var noRes     = document.getElementById( 'expertNoResults' );
+        var unlockBar = document.getElementById( 'expertUnlockBar' );
+        var hasAnyLocked = !! document.querySelector( '.expert-card[data-unlockable]' );
 
-        var noRes      = document.getElementById( 'expertNoResults' );
-        var permCard   = gridEl ? gridEl.querySelector( '[data-permanent]' ) : null;
-        var unlockBar  = document.getElementById( 'expertUnlockBar' );
-
-        if ( isVirtualTab ) {
-            /* Virtual tab: show only the virtual card — hide everything else around it. */
-            if ( noRes )      { noRes.setAttribute( 'hidden', '' ); }
-            if ( gridEl )     { gridEl.style.display = ''; }
-            if ( permCard )   { permCard.style.display = 'none'; }
-            if ( unlockBar )  { unlockBar.setAttribute( 'hidden', '' ); }
-            if ( lockedCard ) { lockedCard.setAttribute( 'hidden', '' ); }
-        } else if ( any ) {
-            if ( noRes )      { noRes.setAttribute( 'hidden', '' ); }
-            if ( gridEl )     { gridEl.style.display = ''; }
-            if ( permCard )   { permCard.style.display = ''; }
-            if ( unlockBar )  { unlockBar.removeAttribute( 'hidden' ); }
-            if ( lockedCard ) { lockedCard.style.display = ''; lockedCard.removeAttribute( 'hidden' ); }
-        } else {
-            if ( noRes )      { noRes.removeAttribute( 'hidden' ); }
-            if ( gridEl )     { gridEl.style.display = lockedCard ? '' : 'none'; }
-            if ( permCard )   { permCard.style.display = 'none'; }
-            if ( unlockBar )  { unlockBar.removeAttribute( 'hidden' ); }
-            if ( lockedCard ) { lockedCard.style.display = ''; lockedCard.removeAttribute( 'hidden' ); }
+        if ( gridEl )     { gridEl.style.display = ( realMatches > 0 || lockedMatches > 0 ) ? '' : 'none'; }
+        if ( noRes )      { noRes.toggleAttribute( 'hidden', realMatches > 0 || lockedMatches > 0 ); }
+        if ( unlockBar )  { unlockBar.toggleAttribute( 'hidden', ! hasAnyLocked ); }
+        if ( lockedCard ) {
+            lockedCard.toggleAttribute( 'hidden', lockedMatches === 0 );
+            lockedCard.style.display = lockedMatches > 0 ? '' : 'none';
         }
     }
 

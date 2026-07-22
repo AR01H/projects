@@ -524,7 +524,7 @@ function adn_category_get_context( $slug = '' ) {
 			if ( ! empty( $_fi['faq_id'] ) ) {
 				$_faq_ids[] = (int) $_fi['faq_id'];
 			}
-			if ( count( $_faq_ids ) >= 10 ) { break; }
+			if ( count( $_faq_ids ) >= 100 ) { break; }
 		}
 		$_faq_ids = array_filter( $_faq_ids );
 

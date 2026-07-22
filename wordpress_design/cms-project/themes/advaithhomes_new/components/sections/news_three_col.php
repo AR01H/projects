@@ -23,11 +23,13 @@ $news_cards = array();
 foreach ( isset( $news['items'] ) ? (array) $news['items'] : array() as $_it ) {
 	$_thumb = isset( $_it['thumbnail'] ) ? (string) $_it['thumbnail'] : '';
 	$_card  = array(
-		'title'       => isset( $_it['title'] ) ? (string) $_it['title'] : '',
-		'meta'        => isset( $_it['date'] )  ? (string) $_it['date']  : '',
-		'tag'         => isset( $_it['tag'] )   ? (string) $_it['tag']   : '',
-		'url'         => isset( $_it['url'] )   ? (string) $_it['url']   : '',
-		'description' => isset( $_it['description'] ) ? (string) $_it['description'] : '',
+		'title'         => isset( $_it['title'] ) ? (string) $_it['title'] : '',
+		'meta'          => isset( $_it['date'] )  ? (string) $_it['date']  : '',
+		'meta_full'     => isset( $_it['date_full'] ) ? (string) $_it['date_full'] : '',
+		'tag'           => isset( $_it['tag'] )   ? (string) $_it['tag']   : '',
+		'url'           => isset( $_it['url'] )   ? (string) $_it['url']   : '',
+		'description'   => isset( $_it['description'] ) ? (string) $_it['description'] : '',
+		'date_on_image' => true, // Latest News only - other columns keep the date in the card body.
 	);
 	if ( '' === $_thumb ) {
 		$_thumb = get_template_directory_uri() . THEME_DEFAULT_GENERIC_IMG . '?v=' . LOCAL_CACHE_VERSION;

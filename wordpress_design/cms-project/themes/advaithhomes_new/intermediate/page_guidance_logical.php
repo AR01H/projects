@@ -50,11 +50,11 @@ function adn_guidance_get_context() {
 			$services['items'] = $svc_items;
 		}
 	}
-	// ── Sidebar: merge in page FAQs/cards via shared helper ───────────────
+	// ── Sidebar: merge in page cards via shared helper (no FAQs on this page) ──
 	$contact_sidebar = isset( $data['contact_sidebar'] ) ? (array) $data['contact_sidebar'] : array();
 	if ( function_exists( 'adn_get_page_sidebar_data' ) ) {
 		$global_sidebar = adn_get_page_sidebar_data( get_queried_object_id() );
-		foreach ( array( 'whatsapp', 'email', 'phone', 'address', 'faqs' ) as $key ) {
+		foreach ( array( 'whatsapp', 'email', 'phone', 'address' ) as $key ) {
 			if ( ! isset( $contact_sidebar[$key] ) && isset( $global_sidebar[$key] ) ) {
 				$contact_sidebar[$key] = $global_sidebar[$key];
 			}

@@ -47,6 +47,7 @@ class AH_DB_Migrations {
 		self::site_notices_badge_position();
 		self::site_notices_extra_features();
 		self::site_notices_custom_freq();
+		self::faq_attached_slug();
 	}
 
 	// ── Column migrations ─────────────────────────────────────────────────────
@@ -344,6 +345,14 @@ class AH_DB_Migrations {
 
 	public static function faq_section_column(): void {
 		self::add_column_if_missing( 'ah_faqs', 'section', "VARCHAR(150) DEFAULT NULL AFTER `page_id`" );
+	}
+
+	/**
+	 * Lets a FAQ attach to any page by URL slug, not just the fixed AH_Pages_Model
+	 * registry (Home/Services/Contact/etc.) that page_id points at.
+	 */
+	public static function faq_attached_slug(): void {
+		self::add_column_if_missing( 'ah_faqs', 'attached_slug', "VARCHAR(255) DEFAULT NULL AFTER `page_id`" );
 	}
 
 	public static function site_notices_badge_position(): void {

@@ -328,6 +328,9 @@ get_header();
 
 <?php /* ============================== FOOTER ============================== */ ?>
 <?php
+if ( function_exists( 'adn_render_slug_attached_faqs' ) ) {
+	adn_render_slug_attached_faqs();
+}
 adn_component( 'parts/pre_footer' );
 adn_component( 'parts/main_footer', array( 'footer' => isset( $ctx['chrome']['footer'] ) ? $ctx['chrome']['footer'] : array() ) );
 adn_component( 'parts/post_footer' );

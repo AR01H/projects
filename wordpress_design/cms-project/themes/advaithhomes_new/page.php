@@ -13,7 +13,7 @@ $chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome
 
 if ( ! have_posts() ) {
 	adn_page_open( array( 'chrome' => $chrome ) );
-	adn_page_close( array( 'chrome' => $chrome ) );
+	adn_page_close( array( 'chrome' => $chrome, 'skip_page_content' => true ) );
 	return;
 }
 
@@ -44,18 +44,10 @@ if ( function_exists( 'adn_component' ) ) {
 		<div class="container">
 			<div class="adn-wp-page__content">
 				<?php the_content(); ?>
-				<?php
-				$_page_description = trim( (string) get_post()->post_excerpt );
-				if ( '' !== $_page_description ) :
-				?>
-				<div class="adn-wp-page__description">
-					<?php echo wpautop( esc_html( $_page_description ) ); ?>
-				</div>
-				<?php endif; ?>
 			</div>
 		</div>
 	</div>
 </main>
 
 <?php
-adn_page_close( array( 'chrome' => $chrome ) );
+adn_page_close( array( 'chrome' => $chrome, 'skip_page_content' => true ) );

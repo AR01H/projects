@@ -51,6 +51,10 @@ function adn_enqueue_common_css() {
         'adn-premium-style'    => '/assets/css/premium_styles.css',
         'adn-contact-style'    => '/assets/css/contact.css',
         'adn-cookie-consent-style' => '/assets/css/cookie-consent.css',
+        // FAQ styling is loaded globally, not per-page: adn_render_slug_attached_faqs()
+        // (adn_page_close) can print an Attached-Slug FAQ on any template, so the
+        // component it reuses (parts/faq_list) needs its CSS available everywhere.
+        'adn-faqs-style'       => '/assets/css/faqs.css',
     );
     foreach ( $styles as $handle => $file ) {
         $path = ADN_THEME_DIR . $file;
@@ -69,16 +73,23 @@ function adn_enqueue_common_js() {
         'adn-form-builder-script'   => '/assets/js/form-builder.js',
         'adn-cookie-consent-script' => '/assets/js/cookie-consent.js',
         'adn-premium-script'        => '/assets/js/premium.js',
+        // Same reasoning as adn-faqs-style above - needed on every page now.
+        'adn-faqs-script'           => '/assets/js/faqs.js',
     );
     foreach ( $scripts as $handle => $file ) {
         $path = ADN_THEME_DIR . $file;
         $ver  = defined( 'LOCAL_CACHE_VERSION' ) ? LOCAL_CACHE_VERSION : (file_exists( $path ) ? filemtime( $path ) : ADN_THEME_VERSION);
         wp_enqueue_script( $handle, ADN_THEME_URI . $file, array( 'jquery' ), $ver, true );
     }
-    /* Pass cookie policy page URL + page context to the consent banner. */
+    /* Pass cookie policy page URL + page context to the consent banner.
+     * acceptVersion/rejectVersion bump when an admin re-asks consent (Theme →
+     * Admin Actions → Cache) - a mismatch vs. the visitor's stored cookie
+     * makes cookie-consent.js treat it as undecided and show the banner again. */
     wp_localize_script( 'adn-cookie-consent-script', 'adnConsentCfg', array(
         'policyUrl'          => home_url( '/cookie-policy/' ),
         'isCookiePolicyPage' => is_page( 'cookie-policy' ) ? 1 : 0,
+        'acceptVersion'      => (string) get_option( 'adn_cookie_consent_accept_version', 1 ),
+        'rejectVersion'      => (string) get_option( 'adn_cookie_consent_reject_version', 1 ),
     ) );
     wp_add_inline_script(
         'adn-utils-script',

@@ -385,19 +385,21 @@ class AH_DB_Schema {
 
 			// 29. FAQs
 			"CREATE TABLE IF NOT EXISTS {$p}ah_faqs (
-				id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				question   TEXT NOT NULL,
-				answer     TEXT NOT NULL,
-				link_text  VARCHAR(150),
-				link_url   VARCHAR(500),
-				page_id    INT UNSIGNED,
-				section    VARCHAR(150) DEFAULT NULL,
-				sort_order INT DEFAULT 0,
-				status     ENUM('active','inactive') DEFAULT 'active',
-				created_by INT UNSIGNED,
-				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-				updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				question      TEXT NOT NULL,
+				answer        TEXT NOT NULL,
+				link_text     VARCHAR(150),
+				link_url      VARCHAR(500),
+				page_id       INT UNSIGNED,
+				attached_slug VARCHAR(255) DEFAULT NULL,
+				section       VARCHAR(150) DEFAULT NULL,
+				sort_order    INT DEFAULT 0,
+				status        ENUM('active','inactive') DEFAULT 'active',
+				created_by    INT UNSIGNED,
+				created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				KEY idx_page (page_id),
+				KEY idx_slug (attached_slug),
 				KEY idx_status (status)
 			) ENGINE=InnoDB {$cs}",
 

@@ -698,7 +698,7 @@ section{
 
 .phb-premium ~ .container h1 {
   font-family: var(--font-display, Georgia, serif) !important;
-  font-size: clamp(2rem, 4.5vw, 3rem) !important;
+  font-size: clamp(2rem, 4.5vw, 2.5rem) !important;
   font-weight: 500;
   letter-spacing: -0.02em;
   display: inline-block;
@@ -1066,7 +1066,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 }
 
 .page-hero p {
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: var(--color-text);
   max-width: 45vw;
   line-height: 1.65;
@@ -1884,7 +1884,7 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 .news-three-inner {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: var(--space-5);
+  gap: var(--space-3);
   align-items: start;
 }
 
@@ -3295,7 +3295,7 @@ a.mini-card, div.mini-card {
 .footer-main { padding: 22px 0 22px; }
 .footer-cols-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: var(--space-10);
 }
 .footer-col h4 {

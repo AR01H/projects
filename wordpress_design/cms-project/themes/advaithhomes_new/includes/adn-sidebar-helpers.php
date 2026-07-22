@@ -115,7 +115,107 @@ function adn_get_page_faqs_grouped( int $page_id = 0, bool $fallback_global = tr
 	}
 
 	set_transient( $cache_key, $groups, ADN_FAQS_CACHE_TTL );
+	adn_mark_faqs_shown( $groups );
 	return $groups;
+}
+
+/**
+ * Tracks which FAQ IDs have already been printed on the current request (via
+ * adn_get_page_faqs_grouped) so adn_render_slug_attached_faqs() never shows
+ * the same FAQ twice on a page that already has it via Attached Page/Global.
+ *
+ * @param array<string,array> $groups
+ */
+function adn_mark_faqs_shown( array $groups ): void {
+	static $shown = array();
+	if ( empty( $groups ) ) {
+		return;
+	}
+	foreach ( $groups as $items ) {
+		foreach ( (array) $items as $faq ) {
+			$id = is_object( $faq ) ? (int) ( $faq->id ?? 0 ) : (int) ( $faq['id'] ?? 0 );
+			if ( $id > 0 ) {
+				$shown[ $id ] = true;
+			}
+		}
+	}
+	// Stash on the static via a getter call so both functions share state
+	// without needing a class - see adn_faqs_already_shown() below.
+	adn_faqs_already_shown( $shown );
+}
+
+/**
+ * Getter/setter for the shown-FAQ-ID registry (see adn_mark_faqs_shown()).
+ * Call with no args to read; pass $merge to add more IDs to the set.
+ *
+ * @param array<int,bool> $merge
+ * @return array<int,bool>
+ */
+function adn_faqs_already_shown( array $merge = array() ): array {
+	static $ids = array();
+	if ( ! empty( $merge ) ) {
+		$ids = $merge + $ids;
+	}
+	return $ids;
+}
+
+/**
+ * Print any FAQs attached directly to the current page's URL slug (see the
+ * "Attached Slug" field on wp-admin -> FAQs), grouped by section, above the
+ * footer. Skips any FAQ already shown on this page via Attached Page/Global
+ * (adn_get_page_faqs_grouped) so nothing repeats. Called from adn_page_close()
+ * so it works on every page template with no per-template wiring needed.
+ */
+function adn_render_slug_attached_faqs(): void {
+	if ( ! function_exists( 'adn_cms_available' ) || ! adn_cms_available() || ! class_exists( 'AH_Faqs_Model' ) ) {
+		return;
+	}
+
+	// Category/topic guide pages are virtual routes (see includes/core_routing.php) -
+	// they never set get_queried_object() to a real WP_Post/WP_Term, so the slug has
+	// to be read from the query vars those routers set instead. Priority: parent-term
+	// (category) slug, then child-topic slug, then a regular post/page's own slug.
+	$slug = (string) get_query_var( 'adn_cat_slug', '' );
+	if ( '' === $slug ) {
+		$slug = (string) get_query_var( 'adn_guide_term_slug', '' );
+	}
+	if ( '' === $slug ) {
+		$queried = get_queried_object();
+		$slug    = ( $queried instanceof WP_Post ) ? (string) $queried->post_name : '';
+	}
+	if ( '' === $slug ) {
+		return;
+	}
+
+	$cache_key = 'adn_faqs_slug_' . sanitize_key( $slug );
+	$rows      = get_transient( $cache_key );
+	if ( ! is_array( $rows ) ) {
+		try {
+			$rows = ( new AH_Faqs_Model() )->get_by_slug( $slug );
+		} catch ( Throwable $e ) {
+			$rows = array();
+		}
+		set_transient( $cache_key, $rows, ADN_FAQS_CACHE_TTL );
+	}
+	if ( empty( $rows ) ) {
+		return;
+	}
+
+	$already_shown = adn_faqs_already_shown();
+	$groups        = array();
+	foreach ( $rows as $faq ) {
+		$id = is_object( $faq ) ? (int) ( $faq->id ?? 0 ) : (int) ( $faq['id'] ?? 0 );
+		if ( $id > 0 && isset( $already_shown[ $id ] ) ) {
+			continue; // Already printed via Attached Page/Global on this page.
+		}
+		$section              = is_object( $faq ) ? (string) ( $faq->section ?? '' ) : (string) ( $faq['section'] ?? '' );
+		$groups[ $section ][] = $faq;
+	}
+	if ( empty( $groups ) ) {
+		return;
+	}
+
+	adn_component( 'sections/faqs_footer', array( 'groups' => $groups ) );
 }
 
 /**
@@ -134,5 +234,14 @@ function adn_purge_faqs_cache(): void {
 			// Nothing to purge.
 		}
 	}
+
+	// Slug-attached FAQ cache is keyed per-slug (adn_faqs_slug_{slug}) - there's
+	// no fixed list of slugs to loop like the page registry above, so clear by
+	// LIKE match directly.
+	global $wpdb;
+	$like = $wpdb->esc_like( '_transient_adn_faqs_slug_' ) . '%';
+	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	$like_timeout = $wpdb->esc_like( '_transient_timeout_adn_faqs_slug_' ) . '%';
+	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like_timeout ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 }
 add_action( 'ah_faqs_changed', 'adn_purge_faqs_cache' );

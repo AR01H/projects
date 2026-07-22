@@ -44,7 +44,7 @@ $si = isset( $stay_informed ) && is_array( $stay_informed ) ? $stay_informed : a
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
 				</button>
 				<p class="sib-privacy">
-					<?php echo esc_html( ! empty( $si['note'] ) ? $si['note'] : 'No spam. Unsubscribe anytime. We respect your privacy.' ); ?>
+					<?php echo esc_html( ! empty( $si['note'] ) ? $si['note'] : SITE_NEWSLETTER_CONSENT_NOTE ); ?>
 				</p>
 			</form>
 		</div>
