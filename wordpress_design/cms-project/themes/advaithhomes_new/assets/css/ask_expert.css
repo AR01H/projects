@@ -347,51 +347,6 @@
 
 .enr-reset:hover { background: #e9ebee; border-color: #d1d5db; }
 
-/* ── Permanent "More Experts" placeholder card ───────────────── */
-.expert-card-more {
-    border: 1.5px dashed var(--color-border, #e5e7eb);
-    border-radius: var(--radius-md, 12px);
-    background: transparent;
-    /* Reset the expert-card grid - this card has its own centred layout */
-    display: flex !important;
-    grid-template-columns: unset !important;
-    grid-template-areas: unset !important;
-    align-items: center;
-    justify-content: center;
-    min-height: 220px;
-    padding: 0;
-}
-
-.ecm-inner {
-    text-align: center;
-    padding: 28px 20px;
-}
-
-.ecm-icon {
-    font-size: 2rem;
-    display: block;
-    margin-bottom: var(--space-3);
-}
-
-.ecm-heading {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text, #1a2332);
-    margin: 0 0 8px;
-}
-
-.ecm-sub {
-    font-size: 0.82rem;
-    color: var(--color-black, #6b7280);
-    margin: 0 0 18px;
-    line-height: 1.55;
-}
-
-.ecm-btn {
-    font-size: 0.84rem;
-    padding: 8px 20px;
-}
-
 /* ── Main Layout (listing page) ─────────────────────────────── */
 .expert-main-layout {
     margin: 0 auto;
@@ -407,6 +362,18 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: var(--space-4);
+}
+
+/* Toggled by ask_expert.js when search/category filtering leaves exactly one
+   visible card - otherwise it sits stranded in the grid's first column. */
+.expert-cards-grid--single {
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+
+.expert-cards-grid--single .expert-card {
+    width: 100%;
+    max-width: 360px;
 }
 
 /* ── Card shell ─────────────────────────────────────────────── */
@@ -2099,6 +2066,14 @@
     color: var(--color-dark, #1a2332);
     outline: none;
     transition: border-color 0.2s;
+    /* This is a plain type="text" input (see markup) so Chrome/Edge/Safari never
+       treat it as a real login field - autocomplete="off" alone doesn't stop
+       the browser's own password-manager UI on an actual type="password" field.
+       Mask the characters visually instead; unsupported only in Firefox, which
+       falls back to plain text - acceptable since this gates a shared unlock
+       code, not real account credentials. */
+    -webkit-text-security: disc;
+    text-security: disc;
 }
 .eub-input:focus {
     border-color: var(--color-accent, #c9a84c);

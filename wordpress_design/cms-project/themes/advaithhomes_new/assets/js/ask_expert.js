@@ -81,7 +81,6 @@
         var lockedMatches = 0;
 
         document.querySelectorAll( '.expert-card' ).forEach( function ( card ) {
-            if ( card.getAttribute( 'data-permanent' ) ) { return; }
             if ( card.classList.contains( 'expert-card--locked-placeholder' ) ) { return; }
 
             if ( card.hasAttribute( 'data-unlockable' ) ) {
@@ -109,6 +108,14 @@
         if ( lockedCard ) {
             lockedCard.toggleAttribute( 'hidden', lockedMatches === 0 );
             lockedCard.style.display = lockedMatches > 0 ? '' : 'none';
+        }
+
+        // Exactly one visible card (a real match, or just the locked-profiles
+        // placeholder standing in for one-or-more locked matches) - centre it
+        // instead of leaving it stranded in the grid's first column.
+        if ( gridEl ) {
+            var visibleCount = realMatches + ( lockedMatches > 0 ? 1 : 0 );
+            gridEl.classList.toggle( 'expert-cards-grid--single', visibleCount === 1 );
         }
     }
 

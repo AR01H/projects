@@ -94,16 +94,17 @@ final class AnswerResolver {
 
 		// Links-only mode: return only post/page links without verbose answers.
 		if ( $this->settings->get( 'behaviour', 'links_only_mode', false ) ) {
-			return $this->linksOnlyResponse( $question, $post_id );
+			return $this->linksOnlyResponse( $question );
 		}
 
-		// If we're on a specific post/page, ONLY search that post's content.
+		// If we're on a specific post/page, try that post's content first.
 		if ( $post_id ) {
 			if ( $result = $this->searchPostContext( $question, $post_id ) ) {
 				return $result;
 			}
-			// On a post page but no match - return fallback (don't search elsewhere)
-			return $this->fallback();
+			// No match in this post's content — fall through to search
+			// the full knowledge base + cache so the visitor still gets
+			// suggestions from other content on the site.
 		}
 
 		// Not on a post page - search everywhere
@@ -229,8 +230,10 @@ final class AnswerResolver {
 		$question_words = array_filter( explode( ' ', $question_lower ) );
 		$overlap = array_intersect( $title_words, $question_words );
 
-		// If there's title overlap OR the question is short (likely about this post), return the content
-		if ( ! empty( $overlap ) || count( $question_words ) <= 5 ) {
+		// Only match when the question actually relates to this post's title
+		// (has word overlap). Short unrelated questions should fall through
+		// to the full cache search so the visitor still gets suggestions.
+		if ( ! empty( $overlap ) ) {
 			// Try to find a relevant section based on the question
 			$answer = $this->findRelevantSection( $content, $question );
 

@@ -100,6 +100,8 @@ $all_pages = $pages_m->get_active();
                 if ( $faq->page_id ) {
                   $pg = $pages_m->find( (int) $faq->page_id );
                   echo $pg ? esc_html( $pg->title ) : '-';
+                } elseif ( ! empty( $faq->attached_slug ) ) {
+                  echo '<em>Slug: ' . esc_html( $faq->attached_slug ) . '</em>';
                 } else { echo '<em>Global</em>'; }
               ?></td>
               <td><?php echo $faq->section ? '<span class="ah-badge">' . esc_html( $faq->section ) . '</span>' : '<span style="color:var(--ah-muted);font-size:12px;">-</span>'; ?></td>

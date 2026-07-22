@@ -75,7 +75,12 @@ class AH_Faqs_Model extends AH_Model_Base {
 		}
 
 		$rows = $this->all( array(
-			'where'    => "page_id IS NULL AND status = 'active'",
+			// Must also exclude slug-attached rows (attached_slug IS NOT NULL) -
+			// both "true global" and "slug-attached" FAQs share page_id IS NULL,
+			// so without this they were indistinguishable and slug-attached FAQs
+			// leaked into every "Global" surface (the /faqs/ listing, sidebar
+			// fallback, REST /faqs endpoint).
+			'where'    => "page_id IS NULL AND attached_slug IS NULL AND status = 'active'",
 			'order_by' => 'sort_order',
 			'order'    => 'ASC',
 		) );

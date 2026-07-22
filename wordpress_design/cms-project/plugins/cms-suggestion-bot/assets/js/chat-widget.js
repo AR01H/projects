@@ -6,10 +6,6 @@
 ( function () {
 	'use strict';
 
-	if ( typeof window.csbChat === 'undefined' ) {
-		return;
-	}
-
 	var cfg = window.csbChat;
 	var SESSION_STORAGE_KEY = 'csb_session_id';
 	var hasChatted = false;
@@ -45,15 +41,21 @@
 			return;
 		}
 
-		widget.style.setProperty( '--csb-theme', cfg.themeColor );
-		widget.style.setProperty( '--csb-bg', cfg.backgroundColor );
-		widget.style.setProperty( '--csb-text', cfg.textColor );
+		// Guard: if cfg is somehow incomplete, bail out with a visible error.
+		if ( ! cfg || typeof cfg !== 'object' ) {
+			return;
+		}
 
-		document.getElementById( 'csb-toggle-icon' ).textContent = cfg.botIcon;
-		document.getElementById( 'csb-header-icon' ).textContent = cfg.botIcon;
-		document.getElementById( 'csb-header-name' ).textContent = cfg.botName;
-		document.getElementById( 'csb-identity-badge' ).textContent = cfg.identityLabel;
-		document.getElementById( 'csb-thinking' ).textContent = cfg.thinkingMessage;
+		widget.style.setProperty( '--csb-theme', cfg.themeColor || '#2271b1' );
+		widget.style.setProperty( '--csb-bg', cfg.backgroundColor || '#ffffff' );
+		widget.style.setProperty( '--csb-text', cfg.textColor || '#1d2327' );
+
+		var botIcon = cfg.botIcon || '\uD83D\uDCAC';
+		document.getElementById( 'csb-toggle-icon' ).textContent = botIcon;
+		document.getElementById( 'csb-header-icon' ).textContent = botIcon;
+		document.getElementById( 'csb-header-name' ).textContent = cfg.botName || 'Chat';
+		document.getElementById( 'csb-identity-badge' ).textContent = cfg.identityLabel || '';
+		document.getElementById( 'csb-thinking' ).textContent = cfg.thinkingMessage || 'Thinking...';
 
 		// Handle description visibility based on setting
 		var descEl = document.getElementById( 'csb-description' );
@@ -115,7 +117,7 @@
 
 			toggle.setAttribute( 'aria-expanded', 'false' );
 			toggle.setAttribute( 'aria-label', 'Open chat' );
-			toggleIcon.textContent = cfg.botIcon;
+			toggleIcon.textContent = botIcon;
 
 			// Restore body scroll
 			document.body.style.overflow = '';
@@ -125,7 +127,9 @@
 			}
 		}
 
-		toggle.addEventListener( 'click', function () {
+		toggle.addEventListener( 'click', function ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
 			if ( panel.classList.contains( 'csb-panel--open' ) ) {
 				closePanel();
 			} else {
@@ -342,9 +346,20 @@
 	}
 
 	// Initialize when DOM is ready
+	function safeInit() {
+		try {
+			init();
+		} catch ( e ) {
+			// Silently fail — don't break the host page.
+			if ( window.console && console.error ) {
+				console.error( 'CSB Chat Widget init error:', e );
+			}
+		}
+	}
+
 	if ( 'loading' === document.readyState ) {
-		document.addEventListener( 'DOMContentLoaded', init );
+		document.addEventListener( 'DOMContentLoaded', safeInit );
 	} else {
-		init();
+		safeInit();
 	}
 } )();

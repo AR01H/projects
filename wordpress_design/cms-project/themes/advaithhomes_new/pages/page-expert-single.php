@@ -80,9 +80,10 @@ if ( ! empty( $ctx['is_locked'] ) ) :
 			<h2 class="epls-heading"><?php esc_html_e( 'This profile is restricted', ADN_TEXT_DOMAIN ); ?></h2>
 			<p class="epls-desc"><?php esc_html_e( 'Enter the unlock password to view this expert\'s full profile.', ADN_TEXT_DOMAIN ); ?></p>
 			<div class="epls-form">
-				<input type="password" id="expertUnlockPw" class="eub-input epls-input"
+				<input type="text" id="expertUnlockPw" class="eub-input epls-input"
 					placeholder="<?php esc_attr_e( 'Enter password…', ADN_TEXT_DOMAIN ); ?>"
-					autocomplete="off"
+					autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+					data-lpignore="true" data-1p-ignore
 					aria-label="<?php esc_attr_e( 'Unlock password', ADN_TEXT_DOMAIN ); ?>">
 				<button type="button" id="expertUnlockBtn" class="btn btn-primary eub-btn">
 					<i class="fa-solid fa-unlock" aria-hidden="true"></i>

@@ -55,7 +55,7 @@ adn_page_open( $_open_ctx );
 				<i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
 				<input type="search" id="expertSearch" autocomplete="off"
 					placeholder="<?php esc_attr_e( 'Search by name or specialism…', ADN_TEXT_DOMAIN ); ?>"
-					aria-label="<?php esc_attr_e( 'Search experts', ADN_TEXT_DOMAIN ); ?>" autocomplete="off">
+					aria-label="<?php esc_attr_e( 'Search experts', ADN_TEXT_DOMAIN ); ?>">
 				<button type="button" id="expertSearchClear" class="search-btn expert-search-clear"
 					hidden aria-label="<?php esc_attr_e( 'Clear search', ADN_TEXT_DOMAIN ); ?>">
 					<i class="fa-solid fa-xmark" aria-hidden="true"></i>
@@ -69,9 +69,10 @@ adn_page_open( $_open_ctx );
 			<i class="fa-solid fa-lock eub-icon" aria-hidden="true"></i>
 			<span class="eub-text"><?php esc_html_e( 'Some profiles are restricted. Enter the password to view all experts.', ADN_TEXT_DOMAIN ); ?></span>
 			<div class="eub-form-row">
-				<input type="password" id="expertUnlockPw" class="eub-input"
+				<input type="text" id="expertUnlockPw" class="eub-input"
 					placeholder="<?php esc_attr_e( 'Enter password…', ADN_TEXT_DOMAIN ); ?>"
-					autocomplete="off"
+					autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+					data-lpignore="true" data-1p-ignore
 					aria-label="<?php esc_attr_e( 'Unlock password', ADN_TEXT_DOMAIN ); ?>">
 				<button type="button" id="expertUnlockBtn" class="btn btn-primary eub-btn">
 					<i class="fa-solid fa-unlock" aria-hidden="true"></i>
@@ -130,18 +131,6 @@ adn_page_open( $_open_ctx );
 				adn_component( 'cards/expert_card', array( 'item' => (array) $_expert ) );
 			endforeach;
 			?>
-
-			<?php /* Permanent placeholder - always visible, never filtered */ ?>
-			<div class="expert-card expert-card-more" data-permanent="1">
-				<div class="ecm-inner">
-					<span class="ecm-icon" aria-hidden="true">🤝</span>
-					<p class="ecm-heading"><?php esc_html_e( 'More experts here to help', ADN_TEXT_DOMAIN ); ?></p>
-					<p class="ecm-sub"><?php esc_html_e( "Can't find who you need? Our network is growing - contact us and we'll match you with the right professional.", ADN_TEXT_DOMAIN ); ?></p>
-					<a href="<?php echo esc_url( home_url( SITE_CONTACT_URL ) ); ?>" class="btn btn-primary ecm-btn">
-						<?php esc_html_e( 'Get Matched', ADN_TEXT_DOMAIN ); ?>
-					</a>
-				</div>
-			</div>
 		</div>
 
 		<?php /* "Can't find the right expert?" banner */ ?>

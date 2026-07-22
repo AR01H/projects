@@ -63,7 +63,7 @@
 
 /* Section heading (per-group heading printed by parts/faq_list.php) */
 .faq-section-heading {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--color-heading, #111827);
     letter-spacing: -0.3px;
