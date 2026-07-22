@@ -278,7 +278,7 @@
     gap: 10px;
     margin-bottom: var(--space-5);
     cursor: pointer;
-    font-size: 0.82rem;
+    font-size: 0.9rem;
     color: var(--color-black, #6b7280);
     line-height: 1.5;
 }

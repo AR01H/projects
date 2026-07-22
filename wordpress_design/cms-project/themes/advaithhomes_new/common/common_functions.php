@@ -52,6 +52,35 @@ function adn_component( $name, $context = array() ) {
 }
 
 /**
+ * Resolve a settings "media" field value (attachment ID or direct URL) into
+ * a frontend-ready URL + type. Used for banner fields that accept an image,
+ * GIF, or video through one wp.media picker (see ADN_Theme_Settings 'media'
+ * field type). GIFs resolve as type=image - <img> animates them natively.
+ *
+ * @param string|int $value
+ * @return array{url:string,type:string} type is 'image' or 'video'.
+ */
+function adn_settings_media_url_type( $value ): array {
+    $value = trim( (string) $value );
+    if ( '' === $value ) {
+        return array( 'url' => '', 'type' => 'image' );
+    }
+
+    if ( ctype_digit( $value ) ) {
+        $id   = (int) $value;
+        $mime = get_post_mime_type( $id );
+        $type = ( is_string( $mime ) && 0 === strpos( $mime, 'video/' ) ) ? 'video' : 'image';
+        $url  = 'video' === $type ? (string) wp_get_attachment_url( $id ) : (string) wp_get_attachment_image_url( $id, 'full' );
+        return array( 'url' => $url ?: '', 'type' => $type );
+    }
+
+    $path = (string) ( wp_parse_url( $value, PHP_URL_PATH ) ?: $value );
+    $ext  = strtolower( (string) pathinfo( $path, PATHINFO_EXTENSION ) );
+    $type = in_array( $ext, array( 'mp4', 'webm', 'ogv', 'mov' ), true ) ? 'video' : 'image';
+    return array( 'url' => $value, 'type' => $type );
+}
+
+/**
  * Convenience wrapper for the form builder component.
  *
  * Usage: adn_render_form( array( 'id' => 'contact', 'fields' => array( ... ) ) );

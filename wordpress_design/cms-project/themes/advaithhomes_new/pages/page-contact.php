@@ -16,6 +16,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+wp_enqueue_style( 'adn-page-faqs-style', get_template_directory_uri() . '/assets/css/faqs.css', array(), ADN_THEME_VERSION );
+wp_enqueue_script( 'adn-page-faqs-script', get_template_directory_uri() . '/assets/js/faqs.js', array(), ADN_THEME_VERSION, true );
+
 require_once ADN_THEME_DIR . '/intermediate/page_contact_logical.php';
 $ctx = adn_contact_get_context();
 
@@ -49,5 +52,10 @@ adn_page_open( $_open_ctx );
 	<?php adn_component( 'parts/contact_sidebar', array( 'contact_sidebar' => $ctx['contact_sidebar'] ) ); ?>
 
 </div>
+
+<?php /* ============================== FAQs (only ones attached to Contact) ============================== */ ?>
+<?php adn_component( 'sections/faqs_footer', array(
+	'groups' => adn_get_page_faqs_grouped( adn_get_cms_page_id( 'contact' ), false ),
+) ); ?>
 
 <?php adn_page_close( $ctx ); ?>

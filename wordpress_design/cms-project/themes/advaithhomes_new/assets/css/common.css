@@ -220,6 +220,21 @@ tbody td.bold { font-weight: 500; color: var(--client-color); }
 .adn-wp-page__content a:hover { color: var(--secondary-color); }
 .adn-wp-page__content strong { color: var(--text-primary); }
 
+.adn-wp-page__description {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
 .back-to-top{
   display: none;
+}
+
+.faq-section-heading {
+    font-size: larger;
+    border-left: 5px solid var(--accent-light);
+    padding-left: 10px;
+    margin-left: 10px;
+    margin-bottom: 6px;
+    color: var(--accent-light);
 }

@@ -126,7 +126,7 @@
         "name_required":                "Name is required",
         "email_required":               "Email is required",
         "message_required":             "Message is required",
-        "consent_text":                 "I agree to the Privacy Policy and Terms of Use"
+        "consent_text_template":        "By submitting this form, you agree to our %1$s%2$s%3$s and %4$s%5$s%6$s."
     },
 
     "page_titles": {

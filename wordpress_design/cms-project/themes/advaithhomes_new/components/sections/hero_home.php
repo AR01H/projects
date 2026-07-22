@@ -21,15 +21,29 @@ $diagram     = isset( $hero['diagram'] ) ? (array) $hero['diagram'] : array();
 $nodes       = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
 $_default_img = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
 
-if ( ! empty( $hero['image'] ) ) {
-	$_hero_img = $hero['image'];
+if ( ! empty( $hero['media']['url'] ) ) {
+	$_hero_img  = $hero['media']['url'];
+	$_hero_type = isset( $hero['media']['type'] ) ? $hero['media']['type'] : 'image';
 } else {
-	$_hero_img = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
+	$_hero_img  = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: $_default_img;
+	$_hero_type = 'image';
 }
 $_hero_img = adn_versioned_url( $_hero_img );
 
+$_mobile_img  = '';
+$_mobile_type = 'image';
+if ( ! empty( $hero['media_mobile']['url'] ) ) {
+	$_mobile_img  = adn_versioned_url( $hero['media_mobile']['url'] );
+	$_mobile_type = isset( $hero['media_mobile']['type'] ) ? $hero['media_mobile']['type'] : 'image';
+}
 ?>
-<?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img, 'is_home' => false ) ); ?>
+<?php adn_component( 'sections/page_hero_bg_banner', array(
+	'hero_img'    => $_hero_img,
+	'media_type'  => $_hero_type,
+	'mobile_img'  => $_mobile_img,
+	'mobile_type' => $_mobile_type,
+	'is_home'     => false,
+) ); ?>
 
 <div class="hero-home-inner">
     <div class="hero-content">

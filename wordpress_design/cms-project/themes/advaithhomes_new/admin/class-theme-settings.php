@@ -221,6 +221,66 @@ class ADN_Theme_Settings {
 				<?php
 				break;
 
+			case 'media':
+				wp_enqueue_media();
+				$resolved   = adn_settings_media_url_type( (string) $value );
+				$media_url  = $resolved['url'];
+				$media_type = $resolved['type'];
+				?>
+				<div class="adn-media-picker" style="display:flex;align-items:flex-start;gap:15px;margin-bottom:5px;">
+					<div style="width:120px;height:120px;border:1px solid #ddd;background:#f0f0f1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+						<img src="<?php echo esc_url( $media_url ); ?>" class="adn-media-preview-img" style="max-width:100%;max-height:100%;display:<?php echo ( $media_url && 'image' === $media_type ) ? 'block' : 'none'; ?>;" alt="">
+						<video src="<?php echo esc_url( $media_url ); ?>" class="adn-media-preview-video" muted loop autoplay playsinline style="max-width:100%;max-height:100%;display:<?php echo ( $media_url && 'video' === $media_type ) ? 'block' : 'none'; ?>;"></video>
+					</div>
+					<div>
+						<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( (string) $value ); ?>" class="adn-media-id">
+						<button type="button" class="button adn-pick-media"><?php esc_html_e( 'Choose Image / GIF / Video', ADN_TEXT_DOMAIN ); ?></button>
+						<button type="button" class="button adn-remove-media" style="color:#b32d2e;display:<?php echo $media_url ? 'inline-block' : 'none'; ?>;"><?php esc_html_e( 'Remove', ADN_TEXT_DOMAIN ); ?></button>
+					</div>
+				</div>
+				<script>
+				jQuery(document).ready(function($){
+					if(typeof wp==='undefined' || !wp.media) return;
+					$('.adn-media-picker').each(function(){
+						var $wrap = $(this);
+						var $input = $wrap.find('.adn-media-id');
+						var $previewImg = $wrap.find('.adn-media-preview-img');
+						var $previewVideo = $wrap.find('.adn-media-preview-video');
+						var $remove = $wrap.find('.adn-remove-media');
+						var frame;
+						$wrap.find('.adn-pick-media').on('click', function(e){
+							e.preventDefault();
+							if(frame){ frame.open(); return; }
+							frame = wp.media({ title: 'Select Image, GIF or Video', button: { text: 'Use this media' }, multiple: false, library: { type: ['image','video'] } });
+							frame.on('select', function(){
+								var attachment = frame.state().get('selection').first().toJSON();
+								$input.val(attachment.id);
+								if (attachment.type === 'video') {
+									$previewVideo.attr('src', attachment.url)[0].load();
+									$previewVideo.show();
+									$previewImg.hide();
+								} else {
+									var url = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
+									$previewImg.attr('src', url).show();
+									$previewVideo.hide();
+								}
+								$remove.show();
+							});
+							frame.open();
+						});
+						$remove.on('click', function(e){
+							e.preventDefault();
+							$input.val('');
+							$previewImg.attr('src','').hide();
+							$previewVideo.attr('src','').hide();
+							$(this).hide();
+						});
+					});
+				});
+				</script>
+				<?php
+				break;
+
 			case 'text':
 			default:
 				printf(
@@ -281,6 +341,12 @@ class ADN_Theme_Settings {
 				case 'select':
 					$allowed       = array_map( 'strval', array_keys( self::options( $field ) ) );
 					$clean[ $key ] = in_array( (string) $input, $allowed, true ) ? (string) $input : '';
+					break;
+
+				case 'image':
+				case 'media':
+					// Value is a wp.media attachment ID or a direct URL - plain text either way.
+					$clean[ $key ] = sanitize_text_field( (string) $input );
 					break;
 
 				case 'text':

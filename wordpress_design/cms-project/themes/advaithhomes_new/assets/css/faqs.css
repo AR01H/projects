@@ -1,16 +1,15 @@
 /* ── FAQs page ──────────────────────────────────────────────────── */
 
 .section-faqs {
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 18px 0 ;
+    padding: 18px 24px;
 }
 
 /* ── Two-column layout ──────────────────────────────────────────── */
 
 .faqs-page-layout {
     display: grid;
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 1fr 300px;
     gap: var(--space-10);
     align-items: start;
 }
@@ -22,8 +21,23 @@
 .faqs-sidebar {
     position: sticky;
     top: 90px;
-    gap: 10px;
+    gap: 8px;
     display: grid;
+    align-content: start;
+}
+
+/* Tighter card density, scoped to this page only (doesn't touch the
+   shared .sw-panel styling used by other pages). */
+.faqs-sidebar .sw-header {
+    padding: 10px 14px 8px;
+}
+
+.faqs-sidebar .sw-list {
+    padding: 0 14px;
+}
+
+.faqs-sidebar .sw-item-link {
+    padding: 8px 0;
 }
 
 /* ── Page header (fallback when no hero) ────────────────────────── */
@@ -47,13 +61,16 @@
     margin: 0;
 }
 
-/* Section heading (used on category pages where there's no hero header) */
-.faqs-section-heading {
+/* Section heading (per-group heading printed by parts/faq_list.php) */
+.faq-section-heading {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-heading, #111827);
-    margin: 0 0 20px;
     letter-spacing: -0.3px;
+}
+
+.faq-list-wrap + .faq-list-wrap {
+    margin-top: var(--space-6);
 }
 
 /* ── FAQ list ─────────────────────────────────────────────────────── */
@@ -62,6 +79,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+}
+.faq-list-wrap{
     margin-top: var(--space-4);
 }
 
@@ -281,7 +300,7 @@
 
 @media (max-width: 960px) {
     .faqs-page-layout {
-        grid-template-columns: 1fr 240px;
+        grid-template-columns: 1fr 260px;
         gap: var(--space-7);
     }
 }
@@ -305,6 +324,14 @@
 
     .faq-q-text {
         font-size: 0.88rem;
+    }
+
+    .faq-section-heading {
+        font-size: 1.15rem;
+    }
+
+    .faq-list-wrap + .faq-list-wrap {
+        margin-top: var(--space-4);
     }
 
     .faq-a-body p {

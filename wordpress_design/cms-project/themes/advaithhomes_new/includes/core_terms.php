@@ -220,7 +220,7 @@ define( 'FORM_REQUIRED_SUFFIX',        adn_term( 'forms.required_suffix',       
 define( 'FORM_NAME_ERROR',             adn_term( 'forms.name_required',          'Name is required' ) );
 define( 'FORM_EMAIL_ERROR',            adn_term( 'forms.email_required',         'Email is required' ) );
 define( 'FORM_MESSAGE_ERROR',          adn_term( 'forms.message_required',       'Message is required' ) );
-define( 'FORM_CONSENT_TEXT',           adn_term( 'forms.consent_text',           'I agree to the Privacy Policy and Terms of Use' ) );
+define( 'FORM_CONSENT_TEXT_TEMPLATE',  adn_term( 'forms.consent_text_template',  'By submitting this form, you agree to our %1$s%2$s%3$s and %4$s%5$s%6$s.' ) );
 define( 'FORM_CONSENT_PRIVACY_LABEL',  adn_term( 'forms.consent_privacy_label',  'Privacy Policy' ) );
 define( 'FORM_CONSENT_TERMS_LABEL',    adn_term( 'forms.consent_terms_label',    'Terms of Use' ) );
 define( 'FORM_CONSENT_PRIVACY_URL',    adn_term( 'forms.consent_privacy_url',    '/privacy-policy/' ) );

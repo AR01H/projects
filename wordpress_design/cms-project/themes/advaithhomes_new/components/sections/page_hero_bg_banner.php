@@ -12,8 +12,11 @@
  * to appear above the overlay (which sits at z-index 1).
  *
  * Props:
- *   $hero_img  string  Full URL of the hero image. Falls back to home_hero.jpg.
- *   $circles   bool    Render decorative circle blobs? Default: true.
+ *   $hero_img    string  Full URL of the hero image/video. Falls back to home_hero.jpg.
+ *   $media_type  string  'image' or 'video' for $hero_img. Default: 'image'.
+ *   $mobile_img  string  Optional separate asset URL shown only on mobile screens.
+ *   $mobile_type string  'image' or 'video' for $mobile_img. Default: 'image'.
+ *   $circles     bool    Render decorative circle blobs? Default: true.
  *
  * Usage:
  *   adn_component( 'sections/page_hero_bg_banner', array(
@@ -27,6 +30,10 @@ defined( 'ABSPATH' ) || exit;
 $_img     = ( isset( $hero_img ) && '' !== (string) $hero_img )
     ? esc_url( adn_versioned_url( (string) $hero_img ) )
     : esc_url( adn_versioned_url( get_template_directory_uri() . THEME_DEFAULT_HERO_IMG ) );
+$_type = isset( $media_type ) && 'video' === $media_type ? 'video' : 'image';
+
+$_mobile_img  = isset( $mobile_img ) && '' !== (string) $mobile_img ? esc_url( (string) $mobile_img ) : '';
+$_mobile_type = isset( $mobile_type ) && 'video' === $mobile_type ? 'video' : 'image';
 
 $is_home  = isset( $is_home ) ? (bool) $is_home : false;
 $_circles = ! isset( $circles ) || (bool) $circles;
@@ -34,7 +41,26 @@ $wrapper_class = $is_home ? 'phb-wrapper phb-standard' : 'phb-wrapper phb-premiu
 ?>
 <div class="<?php echo esc_attr( $wrapper_class ); ?>">
 	<div class="phb-bg">
-		<img src="<?php echo $_img; ?>" alt="" loading="eager" fetchpriority="high" />
+		<?php if ( '' !== $_mobile_img ) : ?>
+			<div class="phb-bg-asset phb-bg-asset--desktop">
+				<?php if ( 'video' === $_type ) : ?>
+					<video src="<?php echo $_img; ?>" autoplay muted loop playsinline></video>
+				<?php else : ?>
+					<img src="<?php echo $_img; ?>" alt="" loading="eager" fetchpriority="high" />
+				<?php endif; ?>
+			</div>
+			<div class="phb-bg-asset phb-bg-asset--mobile">
+				<?php if ( 'video' === $_mobile_type ) : ?>
+					<video src="<?php echo $_mobile_img; ?>" autoplay muted loop playsinline></video>
+				<?php else : ?>
+					<img src="<?php echo $_mobile_img; ?>" alt="" loading="eager" fetchpriority="high" />
+				<?php endif; ?>
+			</div>
+		<?php elseif ( 'video' === $_type ) : ?>
+			<video src="<?php echo $_img; ?>" autoplay muted loop playsinline></video>
+		<?php else : ?>
+			<img src="<?php echo $_img; ?>" alt="" loading="eager" fetchpriority="high" />
+		<?php endif; ?>
 	</div>
 	<div class="phb-overlay" aria-hidden="true">
 		<?php if ( $is_home ) : ?>

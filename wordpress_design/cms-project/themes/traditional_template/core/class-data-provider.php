@@ -96,10 +96,32 @@ class NT_Data_Provider {
 	// ----------------------------------------------------------------------
 
 	/**
-	 * Example: Custom logic for fetching FAQs.
+	 * FAQs come from the CMS plugin's ah_faqs table (managed at
+	 * wp-admin -> FAQs). Page-specific FAQs (attached to the seeded "Home"
+	 * page) win; if none are set, fall back to Global FAQs; if the plugin
+	 * isn't active, fall back to the JSON file.
 	 */
 	private static function get_faqs( $args ) {
-		return self::fetch_generic( 'faqs', $args );
+		if ( class_exists( 'AH_Faqs_Model' ) ) {
+			try {
+				$model   = new AH_Faqs_Model();
+				$page_id = 0;
+				if ( class_exists( 'AH_Pages_Model' ) ) {
+					$home    = ( new AH_Pages_Model() )->get_by_type( 'home' );
+					$page_id = $home->id ?? 0;
+				}
+				$faqs = $page_id ? $model->get_for_page( $page_id ) : array();
+				if ( empty( $faqs ) ) {
+					$faqs = $model->get_global();
+				}
+				if ( ! empty( $faqs ) ) {
+					return $faqs;
+				}
+			} catch ( Throwable $e ) {
+				// Fall through to JSON.
+			}
+		}
+		return self::fetch_json( 'faqs' );
 	}
 
 	/**

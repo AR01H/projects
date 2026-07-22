@@ -80,12 +80,22 @@ function adn_home_get_context( $skip = array() ) {
 		$ctx['hero']['trust_items'] = $_mq['trust'];
 	}
 
-	// Home banner: admin-configured image overrides the default.
-	if ( ! empty( $_hs['home_banner'] ) ) {
-		// Use ah_settings_image_url if available to resolve IDs or direct URLs
-		$ctx['hero']['image'] = function_exists( 'ah_settings_image_url' ) 
-			? ah_settings_image_url( $_hs['home_banner'] ) 
-			: ( filter_var( $_hs['home_banner'], FILTER_VALIDATE_URL ) ? $_hs['home_banner'] : wp_get_attachment_image_url( $_hs['home_banner'], 'full' ) );
+	// Home banner: admin-configured image/GIF/video overrides the default,
+	// with an optional separate asset for mobile screens.
+	if ( ! empty( $_hs['home_banner'] ) && function_exists( 'adn_settings_media_url_type' ) ) {
+		$_desktop_media = adn_settings_media_url_type( $_hs['home_banner'] );
+		if ( '' !== $_desktop_media['url'] ) {
+			$ctx['hero']['image'] = $_desktop_media['url']; // back-compat for anything still reading ['image']
+			$ctx['hero']['media'] = $_desktop_media;
+
+			$ctx['hero']['media_mobile'] = null;
+			if ( ! empty( $_hs['home_banner_mobile'] ) ) {
+				$_mobile_media = adn_settings_media_url_type( $_hs['home_banner_mobile'] );
+				if ( '' !== $_mobile_media['url'] ) {
+					$ctx['hero']['media_mobile'] = $_mobile_media;
+				}
+			}
+		}
 	}
 
 	// Overlay live CMS content where it exists; JSON stays as the fallback.

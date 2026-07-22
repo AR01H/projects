@@ -29,11 +29,13 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 	$notice = 'FAQ saved.';
 	$action = 'list';
+	do_action( 'ah_faqs_changed' );
 }
 
 if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_faq' ) ) {
 	$model->delete( (int) $_GET['delete_id'] );
 	$notice = 'FAQ deleted.';
+	do_action( 'ah_faqs_changed' );
 }
 
 $all_pages = $pages_m->get_active();

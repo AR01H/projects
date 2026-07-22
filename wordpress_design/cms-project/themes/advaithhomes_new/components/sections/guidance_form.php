@@ -104,7 +104,7 @@ $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_la
 				$_pp_url = esc_url( home_url( FORM_CONSENT_PRIVACY_URL ) );
 				$_tc_url = esc_url( home_url( FORM_CONSENT_TERMS_URL ) );
 				printf(
-					esc_html__( 'I agree to the %1$s%2$s%3$s and %4$s%5$s%6$s', ADN_TEXT_DOMAIN ),
+					esc_html( FORM_CONSENT_TEXT_TEMPLATE ),
 					'<a href="' . $_pp_url . '" target="_blank" rel="noopener">',
 					esc_html( FORM_CONSENT_PRIVACY_LABEL ),
 					'</a>',

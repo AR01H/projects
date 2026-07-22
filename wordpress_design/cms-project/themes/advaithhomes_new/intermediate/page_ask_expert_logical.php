@@ -128,7 +128,7 @@ function adn_ask_expert_get_context() {
 		: ( get_the_title() ?: SITE_EXPERT_LABEL );
 	$hero_desc   = ( ! empty( $banner['info'] ) )
 		? (string) $banner['info']
-		: adn_term( 'expert_page.hero_desc_default', 'Connect with trusted professionals who can provide the right advice for your situation.' );
+		: adn_term( 'expert_page.hero_desc_default', 'Not sure what to do next? Every property journey is different, and the right advice can make all the difference. Connect with our trusted professionals who can help you understand your options, answer your questions and guide you towards making confident, informed decisions based on your individual circumstances.' );
 
 	$hero = array(
 		'title'       => $hero_title,

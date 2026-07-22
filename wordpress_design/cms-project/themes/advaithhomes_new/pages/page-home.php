@@ -29,6 +29,8 @@ require_once ADN_THEME_DIR . '/intermediate/page_home_logical.php';
 $ctx = adn_home_get_context( array( 'banners', 'news', 'guides', 'tools' ) );
 
 wp_enqueue_style( 'adn-resources', get_template_directory_uri() . '/assets/css/resources.css', array(), ADN_THEME_VERSION );
+wp_enqueue_style( 'adn-page-faqs-style', get_template_directory_uri() . '/assets/css/faqs.css', array(), ADN_THEME_VERSION );
+wp_enqueue_script( 'adn-page-faqs-script', get_template_directory_uri() . '/assets/js/faqs.js', array(), ADN_THEME_VERSION, true );
 
 adn_seo_register( array(
 	'description' => isset( $ctx['hero']['description'] ) ? (string) $ctx['hero']['description'] : get_bloginfo( 'description' ),
@@ -156,5 +158,10 @@ endforeach;
 	</div>
 </section>
 <?php endif; ?>
+
+<?php /* ============================== FAQs (only ones attached to Home) ============================== */ ?>
+<?php adn_component( 'sections/faqs_footer', array(
+	'groups' => adn_get_page_faqs_grouped( adn_get_cms_page_id( 'home' ), false ),
+) ); ?>
 
 <?php adn_page_close( $ctx ); ?>

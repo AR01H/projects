@@ -44,6 +44,14 @@ if ( function_exists( 'adn_component' ) ) {
 		<div class="container">
 			<div class="adn-wp-page__content">
 				<?php the_content(); ?>
+				<?php
+				$_page_description = trim( (string) get_post()->post_excerpt );
+				if ( '' !== $_page_description ) :
+				?>
+				<div class="adn-wp-page__description">
+					<?php echo wpautop( esc_html( $_page_description ) ); ?>
+				</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>

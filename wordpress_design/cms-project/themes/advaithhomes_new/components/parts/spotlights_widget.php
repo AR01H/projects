@@ -64,23 +64,20 @@ if ( $_is_compact ) {
 				<div class="sp-metric-card">
 				<?php endif; ?>
 					<div class="sp-metric-card__body">
-						<span class="sp-metric-card__label">
-							<?php echo esc_html((string) $_sp->title); ?>
-
-						</span>
-						<div class="sp-metric-detail_label">
-							<?php if ( '' !== $_val ) : ?>
-								<strong class="sp-metric-card__value"><?php echo esc_html( $_val ); ?></strong>
+						<span class="sp-metric-card__label"><?php echo esc_html( (string) $_sp->title ); ?></span>
+						<?php if ( '' !== $_val || '' !== $_lbl ) : ?>
+							<div class="sp-metric-detail_label">
+								<?php if ( '' !== $_val ) : ?>
+									<strong class="sp-metric-card__value"><?php echo esc_html( $_val ); ?></strong>
 								<?php endif; ?>
 								<?php if ( '' !== $_lbl ) : ?>
 									<span class="sp-metric-card__meta"><?php echo esc_html( $_lbl ); ?></span>
-									<?php endif; ?>
-									<?php if (!empty($_sp->link_label)) : ?>
-										<span class="spotlight-card__count">
-											<?php echo ' ' . esc_html((string) $_sp->link_label); ?>
-										</span>
-									<?php endif; ?>
-						</div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+						<?php if ( ! empty( $_sp->link_label ) ) : ?>
+							<span class="spotlight-card__count"><?php echo esc_html( (string) $_sp->link_label ); ?></span>
+						<?php endif; ?>
 						<?php if ( '' !== $_tag ) : ?>
 							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
 						<?php endif; ?>
