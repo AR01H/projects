@@ -22,10 +22,12 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_news_logical.php';
 
 /* ── Single news item view ──────────────────────────────────────────────── */
-/* Slug (?ah_news=<slug>) is the canonical, readable URL - the numeric
- * ?ah_news_id=<id> form still works too, for any links already shared/indexed
- * before slugs existed. */
-$_ah_news_slug = isset( $_GET['ah_news'] ) ? sanitize_title( wp_unslash( $_GET['ah_news'] ) ) : '';
+/* /news/<slug>/ (set as the ah_news query var by adn_route_news_single_slug()
+ * in includes/core_routing.php) is the canonical, readable URL. ?ah_news=<slug>
+ * and the numeric ?ah_news_id=<id> form both still work too, for any links
+ * already shared/indexed before pretty permalinks existed. */
+$_ah_news_slug = get_query_var( 'ah_news' ) ? sanitize_title( get_query_var( 'ah_news' ) )
+	: ( isset( $_GET['ah_news'] ) ? sanitize_title( wp_unslash( $_GET['ah_news'] ) ) : '' );
 $_ah_news_id   = isset( $_GET['ah_news_id'] ) ? absint( $_GET['ah_news_id'] ) : 0;
 if ( ( '' !== $_ah_news_slug || $_ah_news_id > 0 ) && function_exists( 'adn_cms_newsbar_items' ) ) {
 	global $wpdb;

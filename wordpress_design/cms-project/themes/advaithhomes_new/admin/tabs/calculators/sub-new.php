@@ -501,7 +501,7 @@ $example_js = '(function () {
 				<a href="<?php echo esc_url( ADN_Theme_Admin::tab_url( 'calculators', 'new' ) ); ?>" class="button">
 					<?php esc_html_e( '+ Add Another', ADN_TEXT_DOMAIN ); ?>
 				</a>
-				<a href="<?php echo esc_url( home_url( '/?ah_calc_page=' . rawurlencode( $f_key ) ) ); ?>" class="button" target="_blank" rel="noopener">
+				<a href="<?php echo esc_url( adn_calc_page_url( $f_key ) ); ?>" class="button" target="_blank" rel="noopener">
 					<?php esc_html_e( 'View Calculator →', ADN_TEXT_DOMAIN ); ?>
 				</a>
 			<?php endif; ?>

@@ -2,7 +2,9 @@
 /**
  * pages/page-tool-single.php - Individual tool detail page.
  *
- * Served by template_redirect when ?ah_calc_page=KEY is present.
+ * Served by template_redirect for /calculators/{key}/ (or the legacy
+ * ?ah_calc_page=KEY query string - adn_calculator_full_page_render() in
+ * calculators.php normalises either form into $_GET before including this file).
  * Renders the full WP page (header + footer) with the tool widget,
  * guide link, help text, related tools, and the tools sidebar.
  *
@@ -33,7 +35,7 @@ if ( ! $ctx ) {
 // ── SEO for calculator detail page ────────────────────────────────────────
 $_calc_title = isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '';
 $_calc_desc  = isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '';
-$_calc_url   = home_url( '/?ah_calc_page=' . rawurlencode( $_calc_key ) );
+$_calc_url   = adn_calc_page_url( $_calc_key );
 adn_seo_register( array(
 	'title'       => $_calc_title,
 	'description' => $_calc_desc,

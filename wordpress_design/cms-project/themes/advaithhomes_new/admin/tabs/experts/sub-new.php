@@ -85,7 +85,7 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 						<input type="text" id="expert_slug" name="expert_slug" class="regular-text" required
 							pattern="[a-z0-9\-]+" placeholder="e.g. john-smith" value="">
 						<p class="description">
-							<?php esc_html_e( 'Lowercase letters, numbers and hyphens only. Cannot be changed after saving. Used in the profile URL: ?ah_expert=slug.', ADN_TEXT_DOMAIN ); ?>
+							<?php esc_html_e( 'Lowercase letters, numbers and hyphens only. Cannot be changed after saving. Used in the profile URL: /ask-expert/slug/.', ADN_TEXT_DOMAIN ); ?>
 						</p>
 					</td>
 				</tr>
@@ -97,7 +97,7 @@ $f_photo_url = ( $f_photo > 0 ) ? wp_get_attachment_image_url( $f_photo, 'thumbn
 						<span class="description">&nbsp;
 							<?php esc_html_e( 'Slug cannot be changed after creation.', ADN_TEXT_DOMAIN ); ?>
 							&nbsp;|&nbsp;
-							<a href="<?php echo esc_url( home_url( '/?ah_expert=' . rawurlencode( $f_slug ) ) ); ?>" target="_blank">
+							<a href="<?php echo esc_url( adn_expert_profile_url( $f_slug ) ); ?>" target="_blank">
 								<?php esc_html_e( 'View profile ↗', ADN_TEXT_DOMAIN ); ?>
 							</a>
 						</span>

@@ -333,7 +333,7 @@ function adn_calculator_legacy_redirect() {
 	if ( isset( $_GET['calc'] ) && '' !== $_GET['calc'] ) {
 		$key = sanitize_key( wp_unslash( $_GET['calc'] ) );
 		if ( adn_calculator_exists( $key ) ) {
-			wp_safe_redirect( home_url( '/?ah_calc_page=' . rawurlencode( $key ) ), 301 );
+			wp_safe_redirect( adn_calc_page_url( $key ), 301 );
 			exit;
 		}
 	}
@@ -341,20 +341,32 @@ function adn_calculator_legacy_redirect() {
 add_action( 'template_redirect', 'adn_calculator_legacy_redirect', 0 );
 
 /**
- * Intercept ?ah_calc_page=KEY and serve the full calculator detail page
- * (with theme header / footer / sidebar).  Runs before the main renderer.
+ * Serve the full calculator detail page (with theme header/footer/sidebar) for
+ * /calculators/{key}/ (pretty, canonical form) - the legacy ?ah_calc_page=KEY
+ * query string still works too. Runs before the main renderer.
  */
 function adn_calculator_full_page_render() {
-	if ( ! isset( $_GET['ah_calc_page'] ) || '' === $_GET['ah_calc_page'] ) {
+	$key = isset( $_GET['ah_calc_page'] ) ? sanitize_key( wp_unslash( $_GET['ah_calc_page'] ) ) : '';
+	if ( '' === $key && function_exists( 'adn_pretty_path_slug' ) && defined( 'SITE_TOOLS_URL' ) ) {
+		$key = adn_pretty_path_slug( SITE_TOOLS_URL );
+	}
+	if ( '' === $key || ! adn_calculator_exists( $key ) ) {
 		return;
 	}
-	$key = sanitize_key( wp_unslash( $_GET['ah_calc_page'] ) );
-	if ( ! adn_calculator_exists( $key ) ) {
-		return;
-	}
+	// Normalise so page-tool-single.php (which re-reads $_GET directly) sees
+	// the key regardless of whether it arrived via the pretty path or the query string.
+	$_GET['ah_calc_page'] = $key;
 	$base     = realpath( ADN_THEME_DIR . '/pages' );
 	$template = realpath( ADN_THEME_DIR . '/pages/page-tool-single.php' );
 	if ( $base && $template && 0 === strpos( $template, $base ) && is_file( $template ) ) {
+		// The pretty path (/calculators/{key}/) has no matching WP child page, so
+		// WordPress already flagged this request as a 404 before template_redirect
+		// fired - clear that or the browser/search engines see a 404 status despite
+		// real content rendering (harmless no-op for the legacy ?ah_calc_page= form,
+		// which was never a 404 to begin with).
+		global $wp_query;
+		$wp_query->is_404 = false;
+		status_header( 200 );
 		nocache_headers();
 		$_ver = defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0';
 		wp_enqueue_style( 'adn-calculators', ADN_THEME_URI . '/assets/css/tools.css', array(), $_ver );

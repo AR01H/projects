@@ -20,7 +20,7 @@ $new_url = ADN_Theme_Admin::tab_url( 'experts', 'new' );
 		</a>
 	</div>
 	<p class="description" style="margin-bottom:16px;">
-		<?php esc_html_e( 'Manage expert profiles shown on the Ask an Expert page. Each expert gets a public profile page at ?ah_expert=SLUG.', ADN_TEXT_DOMAIN ); ?>
+		<?php esc_html_e( 'Manage expert profiles shown on the Ask an Expert page. Each expert gets a public profile page at /ask-expert/SLUG/.', ADN_TEXT_DOMAIN ); ?>
 	</p>
 
 	<?php if ( empty( $rows ) ) : ?>

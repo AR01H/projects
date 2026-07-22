@@ -136,7 +136,7 @@ function adn_calculators_get_context() {
 		$cats = isset( $meta['categories'] ) && is_array( $meta['categories'] ) ? $meta['categories'] : array();
 		$url  = ! empty( $meta['card_url'] )
 			? (string) $meta['card_url']
-			: home_url( '/?ah_calc_page=' . rawurlencode( $key ) );
+			: adn_calc_page_url( $key );
 
 		$thumb = '';
 		if ( ! empty( $meta['thumbnail_id'] ) ) {
@@ -195,7 +195,7 @@ function adn_calculators_get_context() {
 			'icon'      => ! empty( $pcalc['icon'] )       ? (string) $pcalc['icon']       : adn_term( 'icons.tools', '🧮' ),
 			'title'     => $pcalc['title'] ?? '',
 			'desc'      => ! empty( $pmeta['desc'] )       ? (string) $pmeta['desc']       : '',
-			'url'       => ! empty( $pmeta['card_url'] )   ? (string) $pmeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $pk ) ),
+			'url'       => ! empty( $pmeta['card_url'] )   ? (string) $pmeta['card_url']   : adn_calc_page_url( $pk ),
 			'thumbnail' => $pthumb,
 			'highlight' => ! empty( $pmeta['highlight'] )  ? (string) $pmeta['highlight']  : '',
 		);
@@ -218,7 +218,7 @@ function adn_calculators_get_context() {
 			'icon'           => ! empty( $fcalc['icon'] )       ? (string) $fcalc['icon']       : '🧮',
 			'title'          => $fcalc['title'] ?? '',
 			'desc'           => ! empty( $fmeta['desc'] )       ? (string) $fmeta['desc']       : '',
-			'url'            => ! empty( $fmeta['card_url'] )   ? (string) $fmeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $fk ) ),
+			'url'            => ! empty( $fmeta['card_url'] )   ? (string) $fmeta['card_url']   : adn_calc_page_url( $fk ),
 			'thumbnail'      => $fthumb,
 			'highlight'      => ! empty( $fmeta['highlight'] )  ? (string) $fmeta['highlight']  : '',
 			'featured_title' => ! empty( $fmeta['featured_title'] ) ? (string) $fmeta['featured_title'] : '',
@@ -242,7 +242,7 @@ function adn_calculators_get_context() {
 			'icon'      => ! empty( $scalc['icon'] )       ? (string) $scalc['icon']       : '🧮',
 			'title'     => $scalc['title'] ?? '',
 			'desc'      => ! empty( $smeta['desc'] )       ? (string) $smeta['desc']       : '',
-			'url'       => ! empty( $smeta['card_url'] )   ? (string) $smeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $sk ) ),
+			'url'       => ! empty( $smeta['card_url'] )   ? (string) $smeta['card_url']   : adn_calc_page_url( $sk ),
 			'benefits'  => array_values( array_filter( array(
 				! empty( $smeta['benefit_1'] ) ? (string) $smeta['benefit_1'] : '',
 				! empty( $smeta['benefit_2'] ) ? (string) $smeta['benefit_2'] : '',

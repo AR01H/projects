@@ -48,7 +48,7 @@ $_stars = min( 5, max( 0, (int) round( $_rat ) ) );
 
 // Profile URL.
 $_url = '' !== $_slug
-	? esc_url( home_url( '/?ah_expert=' . rawurlencode( $_slug ) ) )
+	? esc_url( adn_expert_profile_url( $_slug ) )
 	: esc_url( adn_link( isset( $_i['url'] ) ? (string) $_i['url'] : '#' ) );
 
 // Initials fallback for avatar.

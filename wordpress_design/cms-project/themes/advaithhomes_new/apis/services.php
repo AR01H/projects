@@ -449,7 +449,7 @@ function adn_service_post_sidebar_data() {
 			'label' => isset( $reg['title'] ) && '' !== $reg['title'] ? (string) $reg['title'] : (string) $key,
 			'url'   => ! empty( $cmeta['card_url'] )
 				? (string) $cmeta['card_url']
-				: home_url( '/?ah_calc_page=' . rawurlencode( $key ) ),
+				: adn_calc_page_url( $key ),
 		);
 	}
 

@@ -146,7 +146,7 @@ function adn_guides_get_context() {
 			'label' => ! empty( $reg['title'] ) ? (string) $reg['title'] : (string) $key,
 			'url'   => ! empty( $cmeta['card_url'] )
 				? (string) $cmeta['card_url']
-				: home_url( '/?ah_calc_page=' . rawurlencode( $key ) ),
+				: adn_calc_page_url( $key ),
 		);
 	}
 

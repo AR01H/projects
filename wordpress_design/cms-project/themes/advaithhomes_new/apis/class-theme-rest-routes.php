@@ -384,7 +384,7 @@ class ADN_Theme_Rest_Routes {
 					'key'         => (string) $key,
 					'name'        => ! empty( $meta['label'] )       ? (string) $meta['label']       : ( ! empty( $reg['title'] )       ? (string) $reg['title']       : $key ),
 					'icon'        => ! empty( $reg['icon'] )         ? (string) $reg['icon']         : '🧮',
-					'url'         => ! empty( $meta['card_url'] )    ? (string) $meta['card_url']    : home_url( '/?ah_calc_page=' . rawurlencode( $key ) ),
+					'url'         => ! empty( $meta['card_url'] )    ? (string) $meta['card_url']    : adn_calc_page_url( $key ),
 					'description' => ! empty( $meta['description'] ) ? (string) $meta['description'] : ( ! empty( $reg['description'] ) ? (string) $reg['description'] : '' ),
 					'highlight'   => ! empty( $meta['highlight'] )   ? (string) $meta['highlight']   : '',
 				);

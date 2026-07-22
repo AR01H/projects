@@ -430,8 +430,9 @@ function adn_cms_newsbar_items( $limit = 6 ) {
 
 /**
  * Internal URL for a single news-bar item single view.
- * Format: /news/?ah_news={slug} - falls back to /news/?ah_news_id={id} when
- * no slug is available (defensive only; every row gets one via migration).
+ * Format: /news/{slug}/ - a real path, resolved by adn_route_news_single_slug()
+ * in includes/core_routing.php. Falls back to /news/?ah_news_id={id} only when
+ * no slug is available (defensive; every row gets one via migration).
  *
  * @param int    $id    news_bar_items.id
  * @param string $slug  news_bar_items.slug, if the caller already has the row
@@ -441,7 +442,7 @@ function adn_newsbar_item_url( $id, $slug = '' ) {
 	$slug = sanitize_title( (string) $slug );
 	$base = trailingslashit( home_url( SITE_NEWS_URL ) );
 	if ( '' !== $slug ) {
-		return add_query_arg( 'ah_news', $slug, $base );
+		return trailingslashit( $base . $slug );
 	}
 	return add_query_arg( 'ah_news_id', absint( $id ), $base );
 }

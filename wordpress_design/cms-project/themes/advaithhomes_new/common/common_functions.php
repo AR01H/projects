@@ -1029,3 +1029,56 @@ function adn_visitor_has_cookie_category( $category ) {
     }
     return (bool) $parsed[ $category ];
 }
+
+/**
+ * If the current request path is "<base>/<slug>" (exactly one extra segment
+ * under a known base like "ask-expert" or "calculators"), return the
+ * sanitized slug; otherwise ''.
+ *
+ * Used to support pretty-permalink single-item pages (experts, calculators)
+ * that are rendered via a template_redirect handler + direct include/exit
+ * rather than a real WP page hierarchy - those handlers already read the
+ * slug from $_GET, this just gives them a second source to check so
+ * /ask-expert/<slug>/ and /calculators/<slug>/ work without a rewrite-rule
+ * flush (same approach as adn_route_news_single_slug() in core_routing.php,
+ * which intercepts a 404 instead since news pages route via template_include).
+ *
+ * @param string $base_url e.g. SITE_EXPERT_URL ('/ask-expert/') or SITE_TOOLS_URL ('/calculators/')
+ * @return string
+ */
+function adn_pretty_path_slug( $base_url ) {
+    $raw    = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+    $path   = trim( (string) parse_url( $raw, PHP_URL_PATH ), '/' );
+    $prefix = trim( (string) $base_url, '/' ) . '/';
+    if ( '' === $path || 0 !== strpos( $path, $prefix ) ) {
+        return '';
+    }
+    return sanitize_title( substr( $path, strlen( $prefix ) ) );
+}
+
+/**
+ * Public URL for a single expert profile: /ask-expert/{slug}/
+ * Resolved by adn_expert_full_page_render() (functions.php), which checks
+ * this same pretty path in addition to the legacy ?ah_expert={slug} form.
+ */
+function adn_expert_profile_url( $slug ) {
+    $slug = sanitize_title( (string) $slug );
+    if ( '' === $slug ) {
+        return home_url( SITE_EXPERT_URL );
+    }
+    return trailingslashit( trailingslashit( home_url( SITE_EXPERT_URL ) ) . $slug );
+}
+
+/**
+ * Public URL for a single calculator's full page: /calculators/{key}/
+ * Resolved by adn_calculator_full_page_render() (calculators/calculators.php),
+ * which checks this same pretty path in addition to the legacy
+ * ?ah_calc_page={key} form.
+ */
+function adn_calc_page_url( $key ) {
+    $key = sanitize_title( (string) $key );
+    if ( '' === $key ) {
+        return home_url( SITE_TOOLS_URL );
+    }
+    return trailingslashit( trailingslashit( home_url( SITE_TOOLS_URL ) ) . $key );
+}

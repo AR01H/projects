@@ -2,7 +2,7 @@
 /**
  * intermediate/page_tool_single_logical.php
  *
- * Builds context for /calculators/?ah_calc_page=KEY - the full single-tool
+ * Builds context for /calculators/{KEY}/ - the full single-tool
  * detail page (header + footer + sidebar).
  *
  * Returns null when $key does not match any active tool.
@@ -80,7 +80,7 @@ function adn_calculator_single_get_context( $key ) {
 			$related[] = array(
 				'icon'      => ! empty( $rcalc['icon'] )       ? (string) $rcalc['icon']       : '🧮',
 				'name'      => ! empty( $rmeta['label'] )      ? (string) $rmeta['label']      : ( ! empty( $rcalc['title'] ) ? (string) $rcalc['title'] : $rkey ),
-				'url'       => ! empty( $rmeta['card_url'] )   ? (string) $rmeta['card_url']   : home_url( '/?ah_calc_page=' . rawurlencode( $rkey ) ),
+				'url'       => ! empty( $rmeta['card_url'] )   ? (string) $rmeta['card_url']   : adn_calc_page_url( $rkey ),
 				'thumbnail' => $rthumb,
 				'highlight' => ! empty( $rmeta['highlight'] )  ? (string) $rmeta['highlight']  : '',
 			);

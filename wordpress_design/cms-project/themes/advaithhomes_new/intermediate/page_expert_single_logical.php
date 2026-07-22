@@ -3,7 +3,7 @@
  * intermediate/page_expert_single_logical.php
  *
  * Builds the context array for pages/page-expert-single.php.
- * Served via the template_redirect hook for ?ah_expert=SLUG.
+ * Served via the template_redirect hook for /ask-expert/SLUG/.
  */
 
 defined( 'ABSPATH' ) || exit;

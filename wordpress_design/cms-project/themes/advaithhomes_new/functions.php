@@ -267,7 +267,7 @@ function adn_merge_db_calculators( $tools ) {
 	return $tools;
 }
 
-// Expert profile page routing (?ah_expert=SLUG).
+// Expert profile page routing (/ask-expert/SLUG/, legacy ?ah_expert=SLUG too).
 add_action( 'template_redirect', 'adn_expert_full_page_render', 0 );
 
 // Contact + guidance form AJAX (theme-level: contact/guidance page submissions + inbox status save).
@@ -551,17 +551,32 @@ add_shortcode( 'adn_cat_calculators', 'adn_shortcode_cat_calculators' );
 add_shortcode( 'adn_cookie_preferences', 'adn_shortcode_cookie_preferences' );
 
 /**
- * Expert profile page: serve pages/page-expert-single.php for ?ah_expert=SLUG.
+ * Expert profile page: serve pages/page-expert-single.php for /ask-expert/{slug}/
+ * (pretty, canonical form) - the legacy ?ah_expert=SLUG query string still works too.
  */
 function adn_expert_full_page_render() {
-	if ( ! isset( $_GET['ah_expert'] ) || '' === $_GET['ah_expert'] ) { return; }
-	$slug = sanitize_key( wp_unslash( $_GET['ah_expert'] ) );
+	$slug = isset( $_GET['ah_expert'] ) ? sanitize_key( wp_unslash( $_GET['ah_expert'] ) ) : '';
+	if ( '' === $slug && function_exists( 'adn_pretty_path_slug' ) && defined( 'SITE_EXPERT_URL' ) ) {
+		$slug = adn_pretty_path_slug( SITE_EXPERT_URL );
+	}
+	if ( '' === $slug ) { return; }
 	if ( ! class_exists( 'AH_Expert_DB' ) ) { return; }
 	$expert = AH_Expert_DB::get( $slug );
 	if ( ! $expert || 'active' !== $expert['status'] ) { return; }
+	// Normalise so page-expert-single.php (which re-reads $_GET directly) sees
+	// the slug regardless of whether it arrived via the pretty path or the query string.
+	$_GET['ah_expert'] = $slug;
 	$base     = realpath( ADN_THEME_DIR . '/pages' );
 	$template = realpath( ADN_THEME_DIR . '/pages/page-expert-single.php' );
 	if ( $base && $template && 0 === strpos( $template, $base ) && is_file( $template ) ) {
+		// The pretty path (/ask-expert/{slug}/) has no matching WP child page, so
+		// WordPress already flagged this request as a 404 before template_redirect
+		// fired - clear that or the browser/search engines see a 404 status despite
+		// real content rendering (harmless no-op for the legacy ?ah_expert= form,
+		// which was never a 404 to begin with).
+		global $wp_query;
+		$wp_query->is_404 = false;
+		status_header( 200 );
 		nocache_headers();
 		$_ver = defined( 'LOCAL_CACHE_VERSION' ) ? LOCAL_CACHE_VERSION : (defined( 'ADN_THEME_VERSION' ) ? ADN_THEME_VERSION : '1.0');
 		wp_enqueue_style( 'adn-ask-expert-style', ADN_THEME_URI . '/assets/css/ask_expert.css', array(), $_ver );
@@ -735,7 +750,7 @@ function adn_get_parent_term_calculator_cards( $parent_slug, $limit = 0 ) {
 			'icon'      => ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $creg['icon'] ) ? (string) $creg['icon'] : '🧮' ),
 			'label'     => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $creg['title'] ) ? (string) $creg['title'] : $ckey ),
 			'desc'      => $desc,
-			'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : home_url( '/?ah_calc_page=' . rawurlencode( $ckey ) ),
+			'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : adn_calc_page_url( $ckey ),
 			'thumbnail' => $thumb,
 			'highlight' => ! empty( $cmeta['highlight'] ) ? (string) $cmeta['highlight'] : '',
 		);

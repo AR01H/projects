@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 add_filter( 'template_include', 'adn_route_page_definitions', 98 );
 add_filter( 'template_include', 'adn_route_parent_term_template', 99 );
+add_filter( 'template_include', 'adn_route_news_single_slug', 97 );
 
 /**
  * Single generic router for all entries in adn_get_page_definitions().
@@ -86,6 +87,57 @@ function adn_route_page_definitions( $template ) {
 	}
 
 	return $template;
+}
+
+/**
+ * Pretty permalink for a single news item: /news/<slug>/ instead of the query
+ * string form. WordPress 404s this on its own (the "news" WP Page has no real
+ * child page named <slug>) - this intercepts that 404 the same way
+ * adn_route_page_definitions() does: de-flag it, force a 200, and hand off to
+ * page-newsall.php with the slug already resolved via a query var.
+ */
+function adn_route_news_single_slug( $template ) {
+	if ( ! is_404() || ! defined( 'SITE_NEWS_URL' ) ) {
+		return $template;
+	}
+
+	$raw    = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	$path   = trim( (string) parse_url( $raw, PHP_URL_PATH ), '/' );
+	$prefix = trim( SITE_NEWS_URL, '/' ) . '/';
+
+	if ( '' === $path || 0 !== strpos( $path, $prefix ) ) {
+		return $template;
+	}
+
+	$item_slug = sanitize_title( substr( $path, strlen( $prefix ) ) );
+	if ( '' === $item_slug ) {
+		return $template;
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . 'ah_news_bar_items';
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
+		return $template;
+	}
+	$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$table}` WHERE slug = %s LIMIT 1", $item_slug ) );
+	if ( ! $exists ) {
+		return $template; // real 404 - no news item has this slug
+	}
+
+	$base = realpath( ADN_THEME_DIR . '/pages' );
+	$file = realpath( ADN_THEME_DIR . '/pages/page-newsall.php' );
+	if ( ! $base || ! $file || 0 !== strpos( $file, $base ) || ! is_file( $file ) ) {
+		return $template;
+	}
+
+	global $wp_query;
+	$wp_query->is_404  = false;
+	$wp_query->is_page = true;
+	status_header( 200 );
+	nocache_headers();
+	set_query_var( 'ah_news', $item_slug );
+
+	return $file;
 }
 
 /**

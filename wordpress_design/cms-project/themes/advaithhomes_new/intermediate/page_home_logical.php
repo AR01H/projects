@@ -175,7 +175,7 @@ function adn_home_get_context( $skip = array() ) {
 			$_hp_items[] = array(
 				'icon'      => ! empty( $_hpc['icon'] )      ? (string) $_hpc['icon']      : adn_term( 'icons.tools', '🧮' ),
 				'name'      =>  $_hpc['title']?? '',
-				'url'       => ! empty( $_hpm['card_url'] )  ? (string) $_hpm['card_url']  : home_url( '/?ah_calc_page=' . rawurlencode( $_hpk ) ),
+				'url'       => ! empty( $_hpm['card_url'] )  ? (string) $_hpm['card_url']  : adn_calc_page_url( $_hpk ),
 				'thumbnail' => $_hpthumb,
 				'highlight' => ! empty( $_hpm['highlight'] ) ? (string) $_hpm['highlight'] : '',
 				'desc' =>  $_hpm['desc']?? ''
@@ -260,7 +260,7 @@ function adn_home_get_fragment_context( $section ) {
 					$_hp_items[] = array(
 						'icon'      => ! empty( $_hpc['icon'] ) ? (string) $_hpc['icon'] : adn_term( 'icons.tools', '🧮' ),
 						'name'      => $_hpc['title'] ?? '',
-						'url'       => ! empty( $_hpm['card_url'] ) ? (string) $_hpm['card_url'] : home_url( '/?ah_calc_page=' . rawurlencode( $_hpk ) ),
+						'url'       => ! empty( $_hpm['card_url'] ) ? (string) $_hpm['card_url'] : adn_calc_page_url( $_hpk ),
 						'thumbnail' => $_hpthumb,
 						'highlight' => ! empty( $_hpm['highlight'] ) ? (string) $_hpm['highlight'] : '',
 						'desc'      => $_hpm['desc'] ?? '',

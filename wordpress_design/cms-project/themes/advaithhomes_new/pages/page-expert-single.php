@@ -2,7 +2,9 @@
 /**
  * pages/page-expert-single.php - Individual expert profile page.
  *
- * Served by template_redirect when ?ah_expert=SLUG is present.
+ * Served by template_redirect for /ask-expert/{slug}/ (or the legacy
+ * ?ah_expert=SLUG query string - adn_expert_full_page_render() in
+ * functions.php normalises either form into $_GET before including this file).
  * Renders the full WP page (header + footer) with the expert profile.
  *
  * RULE: No hardcoded content - only structure.
@@ -35,7 +37,7 @@ if ( ! empty( $ctx['avatar_url'] ) ) {
 } elseif ( ! empty( $ctx['banner_image_url'] ) ) {
 	$_exp_img = (string) $ctx['banner_image_url'];
 }
-$_exp_url = isset( $_GET['ah_expert'] ) ? home_url( add_query_arg( 'ah_expert', sanitize_key( $_GET['ah_expert'] ), defined( 'SITE_EXPERT_URL' ) ? SITE_EXPERT_URL : '/' ) ) : '';
+$_exp_url = '' !== $_expert_slug ? adn_expert_profile_url( $_expert_slug ) : '';
 adn_seo_register( array(
 	'title'         => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
 	'description'   => ! empty( $ctx['bio'] )               ? wp_strip_all_tags( (string) $ctx['bio'] ) : '',

@@ -168,7 +168,7 @@ function adn_ask_expert_get_context() {
 				}
 
 				$slug        = isset( $row['expert_slug'] ) ? (string) $row['expert_slug'] : '';
-				$profile_url = $slug ? home_url( '/?ah_expert=' . rawurlencode( $slug ) ) : home_url( SITE_EXPERT_URL );
+				$profile_url = $slug ? adn_expert_profile_url( $slug ) : home_url( SITE_EXPERT_URL );
 
 				$_row_locked  = ( isset( $row['is_locked'] ) && $row['is_locked'] ) && ! $_is_unlocked;
 
