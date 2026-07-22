@@ -1,0 +1,8 @@
+# Source files dropped here are read server-side by Readers\FileReader only -
+# block direct web access so raw .txt/.md content can't be downloaded by URL.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Deny from all
+</IfModule>

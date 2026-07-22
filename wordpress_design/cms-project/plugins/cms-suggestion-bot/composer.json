@@ -1,0 +1,17 @@
+{
+    "name": "akileshr/cms-suggestion-bot",
+    "description": "Independent CMS knowledge engine and suggestion bot for WordPress - reads, caches, and indexes site content into a queryable knowledge base with an extensible bot layer.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "CmsSuggestionBot\\": "app/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

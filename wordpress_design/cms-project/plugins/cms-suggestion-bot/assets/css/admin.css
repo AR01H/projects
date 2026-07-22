@@ -1,0 +1,75 @@
+/**
+ * assets/css/admin.css - Admin page styles for CMS Suggestion Bot.
+ */
+
+/* Icon input - narrow width for emoji/icon fields */
+.csb-icon-input {
+	width: 80px;
+}
+
+/* Help page cards */
+.csb-card {
+	max-width: 800px;
+}
+
+/* Section headings with top margin */
+.csb-section-heading {
+	margin-top: 28px;
+}
+
+.csb-section-heading--sm {
+	margin-top: 24px;
+}
+
+/* Inline forms (actions in table rows) */
+.csb-form-inline {
+	display: inline;
+}
+
+/* Block-level labels with spacing */
+.csb-label-block {
+	display: block;
+	margin-bottom: 6px;
+}
+
+.csb-label-block--sm {
+	margin-bottom: 4px;
+}
+
+/* Grid layouts */
+.csb-grid-2col {
+	display: grid;
+	grid-template-columns: 1fr 380px;
+	gap: 24px;
+	align-items: start;
+	margin-top: 16px;
+}
+
+.csb-grid-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 16px;
+	margin-top: 20px;
+}
+
+/* Flex layouts */
+.csb-flex-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 16px 0;
+}
+
+/* Spacing utilities */
+.csb-mb-12 {
+	margin-bottom: 12px;
+}
+
+.csb-mt-16 {
+	margin-top: 16px;
+}
+
+/* Narrow inputs (number fields, etc.) */
+.csb-input-narrow {
+	width: 60px;
+}
