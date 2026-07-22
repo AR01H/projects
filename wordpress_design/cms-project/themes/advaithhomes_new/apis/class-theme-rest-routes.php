@@ -192,7 +192,7 @@ class ADN_Theme_Rest_Routes {
 					'label'     => $lbl,
 					'cat_key'   => $lkey,
 					'read_time' => function_exists( 'adn_cms_read_time' ) ? adn_cms_read_time( $content ) : '',
-					'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( (int) $ni->id ) : '#',
+					'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( (int) $ni->id, isset( $ni->slug ) ? (string) $ni->slug : '' ) : '#',
 					'image'     => $img,
 					'source'    => 'cms',
 				);

@@ -10,9 +10,12 @@ $edit_id       = (int) ( $_GET['id'] ?? 0 );
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	if ( ! wp_verify_nonce( $_POST['ah_newsbar_nonce'] ?? '', 'ah_save_newsbar' ) ) wp_die( 'Security.' );
+	$_title       = sanitize_text_field( $_POST['text'] ?? '' );
+	$_slug_input  = sanitize_title( wp_unslash( $_POST['slug'] ?? '' ) );
 	$data = array(
 		'label'      => sanitize_text_field( $_POST['label'] ?? '' ),
-		'text'       => sanitize_text_field( $_POST['text'] ?? '' ),
+		'text'       => $_title,
+		'slug'       => $model->unique_slug_from_title( $_slug_input ?: $_title, $edit_id ),
 		'excerpt'    => sanitize_text_field( $_POST['excerpt'] ?? '' ),
 		'content'    => wp_kses_post( $_POST['content'] ?? '' ),
 		'image_id'   => (int) ( $_POST['image_id'] ?? 0 ) ?: null,
@@ -99,6 +102,17 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
             <label>Title *</label>
             <input type="text" name="text" value="<?php echo esc_attr( $item->text ?? '' ); ?>" required>
           </div>
+        </div>
+
+        <div class="ah-form-row">
+          <label>Slug <small style="color:var(--ah-muted);">(leave blank to auto-generate from the title)</small></label>
+          <input type="text" name="slug" class="regular-text" pattern="[a-z0-9\-]*"
+            value="<?php echo esc_attr( $item->slug ?? '' ); ?>" placeholder="e.g. stamp-duty-changes-2026">
+          <?php if ( ! empty( $item->slug ) ) : ?>
+            <p class="description">
+              <a href="<?php echo esc_url( home_url( SITE_NEWS_URL . '?ah_news=' . rawurlencode( $item->slug ) ) ); ?>" target="_blank">View item &#8599;</a>
+            </p>
+          <?php endif; ?>
         </div>
 
         <div class="ah-form-row">

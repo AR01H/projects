@@ -25,4 +25,42 @@ class AH_Newsbar_Model extends AH_Model_Base {
 		}
 		return $this->paginate( $page, array( 'order_by' => 'sort_order', 'order' => 'ASC' ) );
 	}
+
+	/** Look up a single item by its URL slug (?ah_news=<slug>). */
+	public function get_by_slug( string $slug ): ?object {
+		global $wpdb;
+		$slug = sanitize_title( $slug );
+		if ( '' === $slug ) {
+			return null;
+		}
+		return $wpdb->get_row( $wpdb->prepare(
+			"SELECT * FROM `{$this->table()}` WHERE slug = %s LIMIT 1",
+			$slug
+		) ) ?: null;
+	}
+
+	/**
+	 * Turn a title into a unique slug, appending -2/-3/... on collision.
+	 * $exclude_id lets an edit keep its own existing slug out of the clash check.
+	 */
+	public function unique_slug_from_title( string $title, int $exclude_id = 0 ): string {
+		global $wpdb;
+		$base = sanitize_title( $title );
+		if ( '' === $base ) {
+			$base = 'news';
+		}
+		$slug = $base;
+		$i    = 2;
+		while ( true ) {
+			$clash = $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM `{$this->table()}` WHERE slug = %s AND id != %d LIMIT 1",
+				$slug, $exclude_id
+			) );
+			if ( ! $clash ) {
+				return $slug;
+			}
+			$slug = $base . '-' . $i;
+			$i++;
+		}
+	}
 }

@@ -173,11 +173,12 @@ function adn_calculator_single_get_context( $key ) {
 	if ( function_exists( 'adn_cms_newsbar_items' ) ) {
 		foreach ( (array) adn_cms_newsbar_items( 3 ) as $n ) {
 			$_nb_id    = isset( $n->id )       ? (int)    $n->id       : 0;
+			$_nb_slug  = isset( $n->slug )     ? (string) $n->slug     : '';
 			$_nb_title = isset( $n->text )     ? (string) $n->text     : '';
 			$_nb_href  = isset( $n->link_url ) ? (string) $n->link_url : '';
 			$_nb_url   = '' !== trim( $_nb_href )
 				? $_nb_href
-				: ( $_nb_id > 0 && function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_nb_id ) : home_url( SITE_NEWS_URL ) );
+				: ( $_nb_id > 0 && function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_nb_id, $_nb_slug ) : home_url( SITE_NEWS_URL ) );
 			if ( '' === trim( $_nb_title ) ) { continue; }
 			$news_mini_items[] = array(
 				'title'    => $_nb_title,

@@ -48,6 +48,7 @@ class AH_DB_Migrations {
 		self::site_notices_extra_features();
 		self::site_notices_custom_freq();
 		self::faq_attached_slug();
+		self::news_bar_slug();
 	}
 
 	// ── Column migrations ─────────────────────────────────────────────────────
@@ -353,6 +354,42 @@ class AH_DB_Migrations {
 	 */
 	public static function faq_attached_slug(): void {
 		self::add_column_if_missing( 'ah_faqs', 'attached_slug', "VARCHAR(255) DEFAULT NULL AFTER `page_id`" );
+	}
+
+	/**
+	 * Lets a news item be reached by a readable slug (?ah_news=<slug>) instead
+	 * of only the numeric ?ah_news_id=<id> - mirrors ?ah_expert=<slug> and
+	 * ?ah_calc_page=<slug>. Existing rows have no slug yet, so this backfills
+	 * one from each row's title (unique, falling back to "news-<id>" if the
+	 * title sanitizes to nothing) the first time it runs; already-slugged
+	 * rows are left untouched on every later run.
+	 */
+	public static function news_bar_slug(): void {
+		self::add_column_if_missing( 'ah_news_bar_items', 'slug', "VARCHAR(255) DEFAULT NULL AFTER `text`" );
+
+		global $wpdb;
+		$table = $wpdb->prefix . 'ah_news_bar_items';
+		$rows  = $wpdb->get_results( "SELECT id, text FROM `{$table}` WHERE slug IS NULL OR slug = ''" );
+		if ( empty( $rows ) ) {
+			return;
+		}
+
+		$taken = array_flip( $wpdb->get_col( "SELECT slug FROM `{$table}` WHERE slug IS NOT NULL AND slug != ''" ) );
+
+		foreach ( $rows as $row ) {
+			$base = sanitize_title( (string) $row->text );
+			if ( '' === $base ) {
+				$base = 'news-' . $row->id;
+			}
+			$slug = $base;
+			$i    = 2;
+			while ( isset( $taken[ $slug ] ) ) {
+				$slug = $base . '-' . $i;
+				$i++;
+			}
+			$taken[ $slug ] = true;
+			$wpdb->update( $table, array( 'slug' => $slug ), array( 'id' => $row->id ) );
+		}
 	}
 
 	public static function site_notices_badge_position(): void {

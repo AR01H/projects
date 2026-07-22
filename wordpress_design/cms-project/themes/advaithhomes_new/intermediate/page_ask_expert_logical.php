@@ -33,7 +33,7 @@ function adn_ask_expert_sidebar_data() {
 				'title'    => (string) $np->text,
 				'date'     => $_stamp ? date_i18n( 'M j, Y', strtotime( $_stamp ) ) : '',
 				'tag'      => 'NEWS',
-				'url'      => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $np->id ) : '',
+				'url'      => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $np->id, isset( $np->slug ) ? (string) $np->slug : '' ) : '',
 			);
 			$_ni++;
 		}

@@ -22,16 +22,22 @@ defined( 'ABSPATH' ) || exit;
 require_once ADN_THEME_DIR . '/intermediate/page_news_logical.php';
 
 /* ── Single news item view ──────────────────────────────────────────────── */
-$_ah_news_id = isset( $_GET['ah_news_id'] ) ? absint( $_GET['ah_news_id'] ) : 0;
-if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
+/* Slug (?ah_news=<slug>) is the canonical, readable URL - the numeric
+ * ?ah_news_id=<id> form still works too, for any links already shared/indexed
+ * before slugs existed. */
+$_ah_news_slug = isset( $_GET['ah_news'] ) ? sanitize_title( wp_unslash( $_GET['ah_news'] ) ) : '';
+$_ah_news_id   = isset( $_GET['ah_news_id'] ) ? absint( $_GET['ah_news_id'] ) : 0;
+if ( ( '' !== $_ah_news_slug || $_ah_news_id > 0 ) && function_exists( 'adn_cms_newsbar_items' ) ) {
 	global $wpdb;
 	$_nb_table = $wpdb->prefix . 'ah_news_bar_items';
 	$_nb_item  = null;
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $_nb_table ) ) === $_nb_table ) {
-		$_nb_item = $wpdb->get_row( $wpdb->prepare(
-			"SELECT * FROM `{$_nb_table}` WHERE id = %d LIMIT 1",
-			$_ah_news_id
-		) );
+		$_nb_item = '' !== $_ah_news_slug
+			? $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$_nb_table}` WHERE slug = %s LIMIT 1", $_ah_news_slug ) )
+			: $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$_nb_table}` WHERE id = %d LIMIT 1", $_ah_news_id ) );
+	}
+	if ( $_nb_item ) {
+		$_ah_news_id = (int) $_nb_item->id; // normalise for the rest of this block (related-items exclusion, etc.)
 	}
 
 	if ( $_nb_item ) {
@@ -48,7 +54,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 		$_nb_title   = isset( $_nb_item->text )    ? wp_unslash( (string) $_nb_item->text )    : '';
 		$_nb_excerpt = isset( $_nb_item->excerpt ) ? wp_unslash( (string) $_nb_item->excerpt ) : '';
 		$_nb_content = isset( $_nb_item->content ) ? wp_unslash( (string) $_nb_item->content ) : '';
-		$_nb_url     = function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_nb_item->id ) : '';
+		$_nb_url     = function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_nb_item->id, isset( $_nb_item->slug ) ? (string) $_nb_item->slug : '' ) : '';
 
 		// Override hero with real news item data.
 		$_nb_ctx['hero']['title']       = $_nb_title;
@@ -77,7 +83,7 @@ if ( $_ah_news_id > 0 && function_exists( 'adn_cms_newsbar_items' ) ) {
 					'title'    => isset( $_rn->text ) ? wp_unslash( (string) $_rn->text ) : '',
 					'date'     => $_rn_stamp ? date_i18n( 'M j, Y', strtotime( $_rn_stamp ) ) : '',
 					'tag'      => $_rn_label,
-					'url'      => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_rn->id ) : '',
+					'url'      => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $_rn->id, isset( $_rn->slug ) ? (string) $_rn->slug : '' ) : '',
 				);
 				$_rni++;
 			}

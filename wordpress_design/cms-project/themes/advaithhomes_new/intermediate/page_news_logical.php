@@ -111,7 +111,7 @@ function adn_news_get_context() {
 			$sn_stamp = ! empty( $sni->start_date ) ? $sni->start_date : ( isset( $sni->created_at ) ? $sni->created_at : '' );
 			$sidebar_news[] = array(
 				'label'     => $sn_label,
-				'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $sni->id ) : '',
+				'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $sni->id, isset( $sni->slug ) ? (string) $sni->slug : '' ) : '',
 				'thumbnail' => $sn_thumb,
 				'icon'      => $sn_thumb ? '' : 'fa-newspaper',
 				'meta'      => $sn_stamp ? date_i18n( 'M j, Y', strtotime( $sn_stamp ) ) : '',
@@ -150,7 +150,7 @@ function adn_news_newsbar_featured( $item ) {
 		'excerpt'   => $excerpt,
 		'date'      => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
 		'read_time' => function_exists( 'adn_cms_read_time' ) ? adn_cms_read_time( $content ) : '',
-		'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '',
+		'url'       => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id, isset( $item->slug ) ? (string) $item->slug : '' ) : '',
 		'thumbnail' => adn_newsbar_item_thumb( isset( $item->image_id ) ? $item->image_id : 0 ),
 	);
 }
@@ -175,7 +175,7 @@ function adn_news_newsbar_grid_items( $rows ) {
 			'excerpt'    => $excerpt,
 			'date'       => $stamp ? date_i18n( 'M j, Y', strtotime( $stamp ) ) : '',
 			'read_time'  => function_exists( 'adn_cms_read_time' ) ? adn_cms_read_time( $content ) : '',
-			'url'        => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '',
+			'url'        => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id, isset( $item->slug ) ? (string) $item->slug : '' ) : '',
 			'thumbnail'  => adn_newsbar_item_thumb( isset( $item->image_id ) ? $item->image_id : 0 ),
 		);
 	}

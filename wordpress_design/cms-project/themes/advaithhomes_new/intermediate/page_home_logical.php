@@ -491,7 +491,7 @@ function adn_home_cms_news_items() {
 				'tag'         => ! empty( $item->label ) ? (string) $item->label : '',
 				'gradient'    => adn_cms_gradient( $i ),
 				'thumbnail'   => $thumb_url,
-				'url'         => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id ) : '#',
+				'url'         => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id, isset( $item->slug ) ? (string) $item->slug : '' ) : '#',
 			);
 		}
 	}
