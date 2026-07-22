@@ -22,7 +22,6 @@
 
 /* ── Inner layout ─────────────────────────────────────── */
 .acb-inner {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 28px;
     display: flex;
@@ -105,15 +104,16 @@
     background: #ddbf60;
 }
 
+/* Solid fill, same size/weight as .acb-btn--accept - UK ICO / EU regulator
+   guidance treats a visually-dominant Accept next to a washed-out Reject as a
+   non-compliant "nudge", so Reject must never look like the lesser option. */
 .acb-btn--reject {
-    background: transparent;
-    color: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: #fff;
+    color: var(--color-primary, #1e3a2f);
 }
 
 .acb-btn--reject:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.88);
 }
 
 /* ── Responsive ───────────────────────────────────────── */
@@ -364,15 +364,16 @@
     background: var(--color-primary-light, #2d5a44);
 }
 
+/* Solid fill, same visual weight as .acp-btn--accept/--save - see the note on
+   .acb-btn--reject above; the same "equal prominence" rule applies here. */
 .acp-btn--reject {
-    background: transparent;
-    color: var(--color-text-muted, #6b7280);
+    background: var(--color-surface, #f3f4f6);
+    color: var(--color-text, #2c3e50);
     border-color: var(--color-border-dark, #d1c9bc);
 }
 
 .acp-btn--reject:hover {
-    background: var(--color-surface, #f3f4f6);
-    color: var(--color-text, #2c3e50);
+    background: var(--color-border, #e5e0d8);
 }
 
 .acp-saved-msg {

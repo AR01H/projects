@@ -39,6 +39,7 @@ function adn_versioned_url( string $url ): string {
 function adn_enqueue_common_css() {
 
     $styles = array(
+        'adn-fonts-style'      => '/assets/css/fonts.css',
         'adn-varaibles-style'  => '/assets/css/variables.css',
         'adn-chrome-style'     => '/assets/css/chrome.css',
         'adn-main-style'       => '/assets/css/main.css',

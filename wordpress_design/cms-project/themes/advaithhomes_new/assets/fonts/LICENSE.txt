@@ -1,0 +1,9 @@
+Fonts in this folder:
+  - inter-latin.woff2, inter-latin-ext.woff2               (Inter)
+  - playfair-display-latin.woff2, playfair-display-latin-ext.woff2  (Playfair Display)
+
+Both families are licensed under the SIL Open Font License, Version 1.1.
+Full license text: https://openfontlicense.org
+
+Unmodified redistributions downloaded from Google Fonts (fonts.google.com),
+self-hosted here so the site does not contact Google's font CDN on page load.

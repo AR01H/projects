@@ -385,7 +385,7 @@ section{
 }
 .hero-title .hero-sub-line {
   display: block;
-  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-size: clamp(1.4rem, 2.8vw, 2.0rem);
   font-weight: 500;
   color: #1a2332;
   margin-top: 24px;

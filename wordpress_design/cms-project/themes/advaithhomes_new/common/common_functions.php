@@ -993,3 +993,39 @@ function adn_set_language_cookie() {
         setcookie( 'site_lang', $lang, time() + ( 86400 * 30 ), COOKIEPATH, COOKIE_DOMAIN );
     }
 }
+
+/**
+ * Server-side read of the visitor's cookie-consent preference for one category
+ * ('analytics' | 'advertising'). For plugins that need to gate a non-essential
+ * cookie write server-side (e.g. the ecommerce plugin's "recently viewed"
+ * cookie) - mirrors the parsing rules in assets/js/cookie-consent.js closely
+ * enough for that purpose, without the full legacy-format/version-mismatch
+ * handling that only matters client-side (the cookie's own 1/365-day expiry
+ * is the real enforcement boundary either way).
+ *
+ * Fails closed: any missing cookie or parse failure returns false (not granted).
+ *
+ * @param string $category 'analytics' or 'advertising'.
+ * @return bool
+ */
+function adn_visitor_has_cookie_category( $category ) {
+    if ( ! isset( $_COOKIE['adn_cookie_consent'] ) ) {
+        return false;
+    }
+    $raw = wp_unslash( $_COOKIE['adn_cookie_consent'] );
+
+    // Legacy "accepted" / "accepted:<v>" - every category was granted.
+    if ( 0 === strpos( $raw, 'accepted' ) ) {
+        return true;
+    }
+    // Legacy "rejected:<v>:<ts>" - nothing granted.
+    if ( 0 === strpos( $raw, 'rejected:' ) ) {
+        return false;
+    }
+
+    $parsed = json_decode( $raw, true );
+    if ( ! is_array( $parsed ) || ! isset( $parsed[ $category ] ) ) {
+        return false;
+    }
+    return (bool) $parsed[ $category ];
+}

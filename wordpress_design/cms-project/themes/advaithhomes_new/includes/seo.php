@@ -151,9 +151,10 @@ function adn_seo_head_output(): void {
 	$yoast_on    = defined( 'WPSEO_VERSION' );
 	$rankmath_on = defined( 'RANK_MATH_VERSION' );
 
-	/* ── Preconnect for external font/icon CDNs (always output) ── */
-	echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-	echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+	/* ── Preconnect for external icon CDN (always output) ──
+	 * Google Fonts preconnect intentionally removed - Inter/Playfair Display
+	 * are self-hosted (assets/css/fonts.css) so nothing contacts Google's
+	 * font CDN before cookie consent. */
 	echo '<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">' . "\n";
 
 	/* ── RSS feed discovery (always output) ── */
