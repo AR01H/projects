@@ -1,14 +1,11 @@
 <?php
 /**
- * About / History Page
+ * About / Our Story page. Sections: admin/data/page_sections.json ("about").
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
-<main id="main-content" class="site-main">
-    <?php if ( nt_section_visible( 'about_history' ) )        get_template_part('components/company-history'); ?>
-    <?php if ( nt_section_visible( 'about_experience' ) )     get_template_part('components/product-experience'); ?>
-    <?php if ( nt_section_visible( 'about_certifications' ) ) get_template_part('components/features-certifications'); ?>
-</main>
-<?php
-get_footer();
+<div id="main-content" class="site-main">
+	<?php nt_render_sections( 'about' ); ?>
+</div>
+<?php get_footer(); ?>

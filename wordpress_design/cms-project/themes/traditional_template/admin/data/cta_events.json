@@ -1,0 +1,16 @@
+{
+  "tag": "Book The Counter",
+  "title": "Make Your Event <em>Unforgettable</em>",
+  "sub": "A live pressing counter your guests will still be talking about next year.",
+  "buttons": [
+    {
+      "label": "Book An Event",
+      "url": "/contact/"
+    },
+    {
+      "label": "See Packages",
+      "url": "/events/",
+      "style": "ghost"
+    }
+  ]
+}

@@ -16,12 +16,16 @@ defined( 'ABSPATH' ) || exit;
 return array(
 
 	// Front-end CSS - loaded in this exact order.
+	// legacy.css is a low-priority base from the previous theme; it loads BEFORE
+	// the vintage design system so vintage/components win on shared selectors
+	// (otherwise the old theme clobbers the reskin - e.g. it was resetting
+	// .nt-stats-bar back to a pale background).
 	'css' => array(
 		'variables'  => 'assets/css/variables.css',
+		'legacy'     => 'assets/css/legacy.css',
 		'main'       => 'assets/css/main.css',
 		'vintage'    => 'assets/css/vintage.css',
 		'components' => 'assets/css/components.css',
-		'legacy'     => 'assets/css/legacy.css',
 		'utilities'  => 'assets/css/utilities.css',
 	),
 

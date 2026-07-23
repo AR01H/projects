@@ -20,7 +20,11 @@ $contact_details = [
     'business_hours'      => [ 'icon' => '🕐', 'label' => 'Business Hours', 'value' => 'Mon - Sun: 9am - 8pm' ],
 ];
 
-$trad_photo  = 'https://images.unsplash.com/photo-1541123437800-1bb1317bc20f?auto=format&fit=crop&w=600&q=80';
+// Polaroid photo is JSON-driven (content.json -> contact_section.photo /
+// photo_caption) so it can be re-skinned per business; the default is a
+// verified-loading image, not a placeholder.
+$trad_photo   = $content['photo'] ?? 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=600&q=80';
+$trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 ?>
 
 <section id="contact" class="nt-contact-section">
@@ -72,7 +76,7 @@ $trad_photo  = 'https://images.unsplash.com/photo-1541123437800-1bb1317bc20f?aut
 			<div class="nt-contact-polaroid__mount">
 				<img src="<?php echo esc_url( $trad_photo ); ?>" alt="" loading="lazy">
 			</div>
-			<figcaption class="nt-contact-polaroid__cap">Good Times. Sweet Memories. ♥</figcaption>
+			<figcaption class="nt-contact-polaroid__cap"><?php echo esc_html( $trad_caption ); ?></figcaption>
 		</figure>
 	</div>
 

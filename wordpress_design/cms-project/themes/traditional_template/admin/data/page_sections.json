@@ -1,0 +1,241 @@
+{
+  "_doc": "Page section registry. Each key is a page; its value is the ordered list of sections rendered by NT_Section_Renderer (src/Sections/). Section keys: component (required, components/<component>.php), key (optional show/hide via sections.json), header (optional, merges page_headers.json[<name>] as args - use with parts/page_header), args (optional extra context). Add/re-order/remove a section here - no PHP change. The '_doc' key is ignored.",
+  "home": [
+    {
+      "component": "media-carousel",
+      "key": "media_banner"
+    },
+    {
+      "component": "home-banner",
+      "key": "home_banner"
+    },
+    {
+      "component": "stats-bar",
+      "key": "stats"
+    },
+    {
+      "component": "our-story-home",
+      "key": "our_story"
+    },
+    {
+      "component": "process-steps",
+      "key": "home_process"
+    },
+    {
+      "component": "our-drinks",
+      "key": "our_drinks"
+    },
+    {
+      "component": "signature-flavours",
+      "key": "signature_bottles"
+    },
+    {
+      "component": "events-catering",
+      "key": "events_catering"
+    },
+    {
+      "component": "reviews",
+      "key": "reviews"
+    },
+    {
+      "component": "photo-carousel",
+      "key": "photo_carousel"
+    },
+    {
+      "component": "faqs",
+      "key": "faqs"
+    },
+    {
+      "component": "cta-banner",
+      "key": "home_cta",
+      "args": {
+        "source": "cta_default"
+      }
+    },
+    {
+      "component": "contact-section",
+      "key": "contact"
+    }
+  ],
+  "about": [
+    {
+      "component": "company-history",
+      "key": "about_history"
+    },
+    {
+      "component": "process-steps",
+      "key": "about_process"
+    },
+    {
+      "component": "product-experience",
+      "key": "about_experience"
+    },
+    {
+      "component": "features-certifications",
+      "key": "about_certifications"
+    },
+    {
+      "component": "cta-banner",
+      "key": "about_cta",
+      "args": {
+        "source": "cta_default"
+      }
+    }
+  ],
+  "products": [
+    {
+      "component": "parts/page_header",
+      "key": "products_hero",
+      "header": "products"
+    },
+    {
+      "component": "signature-flavours",
+      "key": "products_bottles"
+    },
+    {
+      "component": "product-menu",
+      "key": "product_menu"
+    },
+    {
+      "component": "products-list",
+      "key": "products_list"
+    },
+    {
+      "component": "product-benefits",
+      "key": "product_benefits"
+    },
+    {
+      "component": "cta-banner",
+      "key": "products_cta",
+      "args": {
+        "source": "cta_products"
+      }
+    }
+  ],
+  "gallery": [
+    {
+      "component": "gallery-grid",
+      "key": "gallery"
+    },
+    {
+      "component": "reviews",
+      "key": "gallery_reviews"
+    },
+    {
+      "component": "cta-banner",
+      "key": "gallery_cta",
+      "args": {
+        "source": "cta_default"
+      }
+    }
+  ],
+  "franchise": [
+    {
+      "component": "franchise-section",
+      "key": "franchise"
+    },
+    {
+      "component": "pricing-tiers",
+      "key": "franchise_tiers"
+    },
+    {
+      "component": "features-certifications",
+      "key": "franchise_certs"
+    },
+    {
+      "component": "reviews",
+      "key": "franchise_reviews",
+      "args": {
+        "source": "reviews_franchise"
+      }
+    },
+    {
+      "component": "faqs",
+      "key": "franchise_faqs",
+      "args": {
+        "source": "faqs_franchise"
+      }
+    },
+    {
+      "component": "cta-banner",
+      "key": "franchise_cta",
+      "args": {
+        "source": "cta_franchise"
+      }
+    }
+  ],
+  "events": [
+    {
+      "component": "parts/page_header",
+      "key": "events_hero",
+      "header": "events"
+    },
+    {
+      "component": "events-preview",
+      "key": "events"
+    },
+    {
+      "component": "reviews",
+      "key": "events_reviews",
+      "args": {
+        "source": "reviews_events"
+      }
+    },
+    {
+      "component": "faqs",
+      "key": "faqs",
+      "args": {
+        "source": "faqs_events"
+      }
+    },
+    {
+      "component": "cta-banner",
+      "key": "events_cta",
+      "args": {
+        "source": "cta_events"
+      }
+    }
+  ],
+  "order": [
+    {
+      "component": "order-to-deliver",
+      "key": "order"
+    },
+    {
+      "component": "product-benefits",
+      "key": "order_benefits"
+    },
+    {
+      "component": "reviews",
+      "key": "order_reviews",
+      "args": {
+        "source": "reviews_order"
+      }
+    },
+    {
+      "component": "faqs",
+      "key": "faqs",
+      "args": {
+        "source": "faqs_order"
+      }
+    },
+    {
+      "component": "cta-banner",
+      "key": "order_cta",
+      "args": {
+        "source": "cta_default"
+      }
+    }
+  ],
+  "contact": [
+    {
+      "component": "parts/page_header",
+      "key": "contact_hero",
+      "header": "contact"
+    },
+    {
+      "component": "contact-section",
+      "key": "contact_section"
+    }
+  ]
+}

@@ -27,9 +27,14 @@ $next_id      = esc_attr( $id ) . '-next';
 	<div class="container wrapper">
 
 		<?php get_template_part( 'components/parts/section-header', null, [
-			'tag'   => $tag,
-			'title' => $title,
-			'body'  => $body,
+			'tag'          => $tag,
+			'title'        => $title,
+			'body'         => $body,
+			// The vintage gallery-strip layout styles a green header TILE beside the
+			// photo strip via `.nt-gallery-strip-section .nt-section-header`; the
+			// default wrapper (`nt-section-center`) doesn't match that selector, so
+			// the tile never rendered and the cream title fell onto the parchment.
+			'wrapper_base' => 'nt-section-header fade-up',
 		] ); ?>
 
 		<div class="nt-gstrip fade-up" data-id="<?php echo esc_attr( $id ); ?>">

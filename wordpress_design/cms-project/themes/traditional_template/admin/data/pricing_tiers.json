@@ -1,0 +1,47 @@
+{
+  "tag": "Partner With Us",
+  "title": "Investment <em>Plans</em>",
+  "sub": "Three formats to suit your location, footfall and budget - every one fully supported from day one.",
+  "tiers": [
+    {
+      "name": "Kiosk Outlet",
+      "note": "Investment",
+      "price": "£15k – £25k",
+      "features": [
+        "Compact footprint",
+        "Ideal for malls, stations & campuses",
+        "Fastest route to opening"
+      ]
+    },
+    {
+      "name": "Premium Outlet",
+      "note": "Investment",
+      "price": "£30k – £55k",
+      "badge": "Most Popular",
+      "features": [
+        "Full seating counter",
+        "Extended flavour menu",
+        "High-street or retail park"
+      ]
+    },
+    {
+      "name": "Flagship Outlet",
+      "note": "Investment",
+      "price": "£70k – £120k",
+      "features": [
+        "Largest format with full kitchen",
+        "Events & catering hub",
+        "Prime city-centre locations"
+      ]
+    }
+  ],
+  "offer_title": "What We Offer",
+  "offers": [
+    "Site selection assistance",
+    "Training & onboarding",
+    "Marketing & launch support",
+    "Ongoing operational support",
+    "Supply chain & equipment setup",
+    "Proven, profitable business model"
+  ]
+}

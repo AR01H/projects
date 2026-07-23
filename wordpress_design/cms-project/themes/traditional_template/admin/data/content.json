@@ -32,10 +32,22 @@
     "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80",
     "image_alt": "Freshly pressed juice ready for delivery",
     "features": [
-      { "icon": "🥤", "text": "Pressed fresh on the day of delivery" },
-      { "icon": "❄️", "text": "Delivered chilled in eco-friendly packaging" },
-      { "icon": "🕐", "text": "Choose a morning, afternoon or evening slot" },
-      { "icon": "📍", "text": "Free local delivery on orders over £15" }
+      {
+        "icon": "🥤",
+        "text": "Pressed fresh on the day of delivery"
+      },
+      {
+        "icon": "❄️",
+        "text": "Delivered chilled in eco-friendly packaging"
+      },
+      {
+        "icon": "🕐",
+        "text": "Choose a morning, afternoon or evening slot"
+      },
+      {
+        "icon": "📍",
+        "text": "Free local delivery on orders over £15"
+      }
     ]
   },
   "products_page": {
@@ -60,11 +72,18 @@
   "certifications": {
     "tag": "Quality",
     "heading": "Our <span class=\"accent\">Certifications</span>",
-    "body": "We meet the highest standards of safety and quality."
+    "body": "We meet the highest standards of safety and quality.",
+    "visual_image": "https://images.unsplash.com/photo-1524350876685-274059332603?w=700&q=72&auto=format&fit=crop",
+    "visual_alt": "Quality and freshness",
+    "visual_label": "Top Rated"
   },
   "photo_carousel": {
     "tag": "Gallery",
     "heading": "Follow Our <span class=\"accent\">Journey</span>",
     "body": "Tag us to be featured!"
+  },
+  "contact_section": {
+    "photo": "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=600&q=80",
+    "photo_caption": "Good Times. Sweet Memories. ♥"
   }
 }

@@ -16,7 +16,13 @@ $nt_is_home = is_front_page() || 'home' === (string) get_query_var( 'nt_active_p
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class( $nt_is_home ? 'design-traditional nt-hero-top' : 'design-traditional' ); ?>>
+<?php
+// Inner pages (everything except home) get `nt-inner`, which switches on the
+// richer decorative layer: ornate curved headings, stronger sugarcane edge
+// artwork and flourish dividers. See "INNER PAGE DECORATIVE LAYER" in
+// assets/css/vintage.css. Home stays deliberately cleaner.
+?>
+<body <?php body_class( $nt_is_home ? 'design-traditional nt-hero-top' : 'design-traditional nt-inner' ); ?>>
 <?php wp_body_open(); ?>
 
 <a class="skip-link screen-reader-text" href="#nt-main"><?php esc_html_e( 'Skip to content', NT_TEXT_DOMAIN ); ?></a>

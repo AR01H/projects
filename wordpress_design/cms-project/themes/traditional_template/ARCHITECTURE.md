@@ -84,9 +84,35 @@ JS side never builds security fields by hand.
        'js'       => array( 'assets/js/pages/about.js' ),
    ),
    ```
-2. Create `pages/page-about.php` (copy `page-contact.php` as a base).
+2. Create `pages/page-about.php` (copy `page-contact.php` as a base) - every page
+   template is the SAME 4 lines: `get_header()` → `<main>` → `nt_render_sections('about')`
+   → `get_footer()`. It lists no components; the sections live in JSON (next recipe).
 3. Done. `/about/` works immediately (virtual routing). Run **Theme →
    Admin Tools → Pages → Sync Now** to also create the real WP page row.
+
+### Compose a page's sections (JSON-driven — the standard way)
+Pages are built from an ordered list of section components declared in
+`admin/data/page_sections.json` and rendered by `NT_Section_Renderer`
+(`src/Sections/`). **Adding, removing, re-ordering or toggling a section is a
+one-line JSON edit — no PHP.**
+
+```jsonc
+"gallery": [
+  { "component": "gallery-grid", "key": "gallery" },        // components/gallery-grid.php
+  { "component": "reviews",      "key": "gallery_reviews" }, // hide via sections.json
+  { "component": "faqs",         "key": "gallery_faqs" }
+]
+```
+Section keys: `component` (required, `components/<component>.php`), `key`
+(optional show/hide via `sections.json`), `header` (optional — merges
+`page_headers.json[<name>]`, used with `"component":"parts/page_header"`),
+`args` (optional extra context). Rendering goes through `nt_component()` which
+realpath-guards the path and extracts context, so `parts/page_header` receives
+`$title`/`$subtitle` while a plain section component just reads its own JSON.
+
+A section **component** (`components/*.php`) is self-contained: it reads its own
+`admin/data/*.json`, escapes output, and `return`s early when it has no data.
+That's the whole contract — see `components/reviews.php` as the reference.
 
 ### Add an AJAX call
 1. `config/ajax.php`:

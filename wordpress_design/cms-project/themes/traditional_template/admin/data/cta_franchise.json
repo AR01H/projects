@@ -1,0 +1,16 @@
+{
+  "tag": "Let's Grow Together",
+  "title": "Bring The Tradition <em>To Your City</em>",
+  "sub": "Low entry cost, a proven model and support from first site visit to opening day.",
+  "buttons": [
+    {
+      "label": "Start Your Enquiry",
+      "url": "/contact/"
+    },
+    {
+      "label": "See Investment Plans",
+      "url": "/franchise/#pricing-tiers",
+      "style": "ghost"
+    }
+  ]
+}

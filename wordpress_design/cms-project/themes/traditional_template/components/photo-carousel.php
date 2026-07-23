@@ -17,7 +17,9 @@ $rotations = [ '-3deg', '4deg', '-2deg', '5deg', '-4deg', '2deg' ];
 <section class="nt-gallery-hanging" id="gallery">
 	<div class="container">
 		<?php
-		get_template_part( 'components/parts/section-header-dark', null, [
+		// Light header: this section sits on parchment, so the dark-background
+		// variant rendered cream-on-cream and was unreadable.
+		get_template_part( 'components/parts/section-header', null, [
 			'tag'   => $content['tag']     ?? 'Gallery',
 			'title' => 'Photo <em>Gallery</em>',
 			'body'  => $content['body']    ?? '',

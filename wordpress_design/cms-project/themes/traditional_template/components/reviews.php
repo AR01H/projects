@@ -1,14 +1,19 @@
 <?php
 /**
- * Customer Reviews - vintage testimonial cards.
+ * Testimonial cards - reusable across pages with DIFFERENT content per page.
  *
- * All content from admin/data/reviews.json (tag, title, sub, items[] with
- * name, location, rating, text). Renders nothing if there are no items.
+ * Data source is switchable so each page shows its own testimonials:
+ *   page_sections.json -> { "component": "reviews", "args": { "source": "reviews_events" } }
+ * Defaults to admin/data/reviews.json.
+ *
+ * Source shape: { tag, title, sub, items[] { name, location, rating, text } }.
+ * Renders nothing if there are no items.
  */
 defined( 'ABSPATH' ) || exit;
 
-$data  = nt_data( 'reviews' );
-$items = $data['items'] ?? array();
+$review_source = ( isset( $source ) && $source ) ? (string) $source : 'reviews';
+$data          = nt_data( $review_source );
+$items         = $data['items'] ?? array();
 if ( empty( $items ) ) {
 	return;
 }

@@ -1,0 +1,25 @@
+{
+  "heading": "Delivery <em>Questions</em>",
+  "items": [
+    {
+      "question": "When is my order pressed?",
+      "answer": "On the morning of delivery - never in advance, so it reaches you at its freshest."
+    },
+    {
+      "question": "How long does it stay fresh?",
+      "answer": "Best within 3 days refrigerated. There are no preservatives, so keep it chilled and enjoy it quickly."
+    },
+    {
+      "question": "What are the delivery slots?",
+      "answer": "Morning, afternoon or evening - you pick your slot when you order."
+    },
+    {
+      "question": "Is delivery free?",
+      "answer": "Free on local orders over £15. Outside the local zone a small distance-based fee applies at checkout."
+    },
+    {
+      "question": "Can I set up a repeat order?",
+      "answer": "Yes - tell us the flavours and cadence and we will keep it running. Pause or change any time."
+    }
+  ]
+}

@@ -3,7 +3,7 @@
  * Plugin Name:  CMS ADMIN
  * Description:  CMS engine - admin portal, database, models, helpers, and form builder.
  *               Install as a plugin and pair with any frontend theme that reads wp_ah_* tables.
- * Version:      1.0.2
+ * Version:      1.3.1
  * Author:       Akhilesh Ravuri
  * Text Domain:  ah-theme
  */

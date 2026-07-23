@@ -4,26 +4,68 @@
       "id": "yellow",
       "name": "Yellow Cane",
       "desc": "Light golden, fresh & refreshing",
-      "image": "https://placehold.co/600x400"
+      "image": "https://images.unsplash.com/photo-1546171753-97d7676e4602?w=700&q=72&auto=format&fit=crop"
     },
     {
       "id": "red",
       "name": "Red Cane",
       "desc": "Naturally sweeter, rich golden-amber tone",
-      "image": "https://placehold.co/600x400"
+      "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=700&q=72&auto=format&fit=crop"
     }
   ],
   "textures": [
-    { "id": "smooth", "name": "Smooth & Strained" },
-    { "id": "pulpy", "name": "Naturally Pulpy" }
+    {
+      "id": "smooth",
+      "name": "Smooth & Strained"
+    },
+    {
+      "id": "pulpy",
+      "name": "Naturally Pulpy"
+    }
   ],
   "flavours": [
-    { "id": "pure", "name": "Classic Sugarcane", "desc": "Pure. Natural. The original taste.", "price": "£3.00", "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80" },
-    { "id": "pineapple", "name": "Pineapple Sugarcane", "desc": "Tropical sweetness blended with fresh sugarcane.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80" },
-    { "id": "watermelon", "name": "Watermelon Sugarcane", "desc": "A fruity summer favourite loved by all ages.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?auto=format&fit=crop&w=600&q=80" },
-    { "id": "lemon-ginger", "name": "Lemon & Ginger", "desc": "A refreshing twist that gives you an extra kick.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80" },
-    { "id": "mint", "name": "Mint Sugarcane", "desc": "Cool. Refreshing. Perfect for hot summer days.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=600&q=80" },
-    { "id": "ginger", "name": "Ginger Sugarcane", "desc": "Spicy and refreshing. Great for immunity and energy.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80" }
+    {
+      "id": "pure",
+      "name": "Classic Sugarcane",
+      "desc": "Pure. Natural. The original taste.",
+      "price": "£3.00",
+      "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": "pineapple",
+      "name": "Pineapple Sugarcane",
+      "desc": "Tropical sweetness blended with fresh sugarcane.",
+      "price": "£3.50",
+      "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": "watermelon",
+      "name": "Watermelon Sugarcane",
+      "desc": "A fruity summer favourite loved by all ages.",
+      "price": "£3.50",
+      "image": "https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": "lemon-ginger",
+      "name": "Lemon & Ginger",
+      "desc": "A refreshing twist that gives you an extra kick.",
+      "price": "£3.50",
+      "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": "mint",
+      "name": "Mint Sugarcane",
+      "desc": "Cool. Refreshing. Perfect for hot summer days.",
+      "price": "£3.50",
+      "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": "ginger",
+      "name": "Ginger Sugarcane",
+      "desc": "Spicy and refreshing. Great for immunity and energy.",
+      "price": "£3.50",
+      "image": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80"
+    }
   ],
   "eventTypes": [
     "Wedding",

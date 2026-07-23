@@ -16,8 +16,12 @@ defined( 'ABSPATH' ) || exit;
 return array(
 
 	'always' => array(
-		'admin/includes/terms.php', // Term-level labels + JSON-backed term tree helpers.
-		'includes/site-helpers.php', // nt_section_visible() - JSON-driven section show/hide.
+		'admin/includes/terms.php',   // Term-level labels + JSON-backed term tree helpers.
+		// ── Feature: Page Sections (OOP) ──
+		// Each feature lives in its own src/<Feature>/ folder as a class; the
+		// class is the "intermediate" layer between templates (UI) and JSON data.
+		'src/Sections/class-section-renderer.php', // NT_Section_Renderer - renders page_sections.json.
+		'includes/site-helpers.php',  // nt_section_visible() + nt_render_sections() thin wrappers.
 		// 'includes/data-services.php',
 		// 'includes/shortcodes.php',
 	),

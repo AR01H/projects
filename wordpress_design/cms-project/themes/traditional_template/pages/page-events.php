@@ -1,4 +1,11 @@
-<?php defined( 'ABSPATH' ) || exit; get_header(); ?><main class='site-main'><?php
-if ( nt_section_visible( 'events' ) ) get_template_part('components/events-preview');
-if ( nt_section_visible( 'faqs' ) )   get_template_part('components/faqs');
-?></main><?php get_footer(); ?>
+<?php
+/**
+ * Events & Catering page. Sections: admin/data/page_sections.json ("events").
+ */
+defined( 'ABSPATH' ) || exit;
+get_header();
+?>
+<div class="site-main">
+	<?php nt_render_sections( 'events' ); ?>
+</div>
+<?php get_footer(); ?>

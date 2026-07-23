@@ -17,5 +17,17 @@
     "tag": "Our Blog",
     "icon": "📰",
     "fallback_image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80"
+  },
+  "events": {
+    "tag": "Events & Catering",
+    "icon": "🎪",
+    "title": "Events & Catering",
+    "subtitle": "A live sugarcane counter that turns any occasion into an experience.",
+    "image": "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1600&q=80"
+  },
+  "products": {
+    "tag": "Our Range",
+    "title": "Our Drinks & Flavours",
+    "subtitle": "Cold-pressed, naturally sweet, bottled fresh - explore the full range."
   }
 }
