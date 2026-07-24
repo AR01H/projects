@@ -1,0 +1,41 @@
+{
+    "_comment": "All form labels, placeholders, validation messages in one place.",
+    "common": {
+        "name_label": "Your Name",
+        "email_label": "Email Address",
+        "phone_label": "Phone Number",
+        "message_label": "Your Message",
+        "submit_label": "Submit",
+        "required_suffix": "*",
+        "optional_suffix": "(Optional)",
+        "loading_text": "Sending...",
+        "success_text": "Thank you! We'll get back to you soon.",
+        "error_text": "Something went wrong. Please try again."
+    },
+    "validation": {
+        "name_required": "Name is required",
+        "email_required": "Email is required",
+        "email_invalid": "Please enter a valid email address",
+        "phone_invalid": "Please enter a valid phone number",
+        "message_required": "Message is required",
+        "message_min": "Message must be at least 10 characters"
+    },
+    "contact_form": {
+        "heading": "Send us your enquiry",
+        "description": "Tell us about your situation and we'll get back to you with the right guidance.",
+        "submit_label": "Submit Enquiry",
+        "enquiry_types": [
+            { "key": "general", "icon": "💬", "label": "General Question" },
+            { "key": "support", "icon": "🛠", "label": "Support Request" },
+            { "key": "feedback", "icon": "⭐", "label": "Feedback" }
+        ]
+    },
+    "newsletter": {
+        "heading": "Stay Informed, Stay Ahead",
+        "description": "Subscribe to get the latest news, guides and expert insights.",
+        "placeholder": "Enter your email address",
+        "button_label": "Subscribe Now",
+        "note": "No spam. Unsubscribe anytime.",
+        "consent_text": "I agree to receive updates and understand I can unsubscribe at any time."
+    }
+}

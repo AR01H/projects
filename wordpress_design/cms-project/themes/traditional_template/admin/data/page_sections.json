@@ -10,6 +10,14 @@
       "key": "home_banner"
     },
     {
+      "component": "ticker",
+      "key": "home_ticker"
+    },
+    {
+      "component": "feature-badges",
+      "key": "home_badges"
+    },
+    {
       "component": "stats-bar",
       "key": "stats"
     },
@@ -19,7 +27,13 @@
     },
     {
       "component": "process-steps",
-      "key": "home_process"
+      "key": "home_process",
+      "variant": "soft"
+    },
+    {
+      "component": "video-feature",
+      "key": "home_video",
+      "variant": "dark"
     },
     {
       "component": "our-drinks",
@@ -46,11 +60,25 @@
       "key": "faqs"
     },
     {
+      "component": "posts-preview",
+      "key": "home_posts",
+      "variant": "soft"
+    },
+    {
       "component": "cta-banner",
       "key": "home_cta",
       "args": {
         "source": "cta_default"
       }
+    },
+    {
+      "component": "locations",
+      "key": "home_locations",
+      "variant": "split"
+    },
+    {
+      "component": "newsletter",
+      "key": "home_newsletter"
     },
     {
       "component": "contact-section",
@@ -63,8 +91,18 @@
       "key": "about_history"
     },
     {
+      "component": "milestones",
+      "key": "about_milestones",
+      "variant": "soft"
+    },
+    {
       "component": "process-steps",
-      "key": "about_process"
+      "key": "about_process",
+      "variant": "dark"
+    },
+    {
+      "component": "values",
+      "key": "about_values"
     },
     {
       "component": "product-experience",
@@ -80,6 +118,15 @@
       "args": {
         "source": "cta_default"
       }
+    },
+    {
+      "component": "team",
+      "key": "about_team",
+      "variant": "soft"
+    },
+    {
+      "component": "newsletter",
+      "key": "about_newsletter"
     }
   ],
   "products": [
@@ -87,6 +134,11 @@
       "component": "parts/page_header",
       "key": "products_hero",
       "header": "products"
+    },
+    {
+      "component": "feature-badges",
+      "key": "products_badges",
+      "variant": "compact"
     },
     {
       "component": "signature-flavours",
@@ -105,11 +157,24 @@
       "key": "product_benefits"
     },
     {
+      "component": "values",
+      "key": "products_values",
+      "variant": "compact"
+    },
+    {
+      "component": "filter-cards",
+      "key": "products_filter"
+    },
+    {
       "component": "cta-banner",
       "key": "products_cta",
       "args": {
         "source": "cta_products"
       }
+    },
+    {
+      "component": "newsletter",
+      "key": "products_newsletter"
     }
   ],
   "gallery": [
@@ -119,7 +184,13 @@
     },
     {
       "component": "reviews",
-      "key": "gallery_reviews"
+      "key": "gallery_reviews",
+      "variant": "flat"
+    },
+    {
+      "component": "posts-preview",
+      "key": "gallery_posts",
+      "variant": "soft"
     },
     {
       "component": "cta-banner",
@@ -127,6 +198,11 @@
       "args": {
         "source": "cta_default"
       }
+    },
+    {
+      "component": "newsletter",
+      "key": "gallery_newsletter",
+      "variant": "compact"
     }
   ],
   "franchise": [
@@ -135,8 +211,22 @@
       "key": "franchise"
     },
     {
+      "component": "video-feature",
+      "key": "franchise_video",
+      "variant": "dark"
+    },
+    {
       "component": "pricing-tiers",
-      "key": "franchise_tiers"
+      "key": "franchise_tiers",
+      "variant": "roomy"
+    },
+    {
+      "component": "compare-table",
+      "key": "franchise_compare",
+      "args": {
+        "source": "compare_franchise"
+      },
+      "variant": "soft"
     },
     {
       "component": "features-certifications",
@@ -147,14 +237,16 @@
       "key": "franchise_reviews",
       "args": {
         "source": "reviews_franchise"
-      }
+      },
+      "variant": "dark"
     },
     {
       "component": "faqs",
       "key": "franchise_faqs",
       "args": {
         "source": "faqs_franchise"
-      }
+      },
+      "variant": "soft"
     },
     {
       "component": "cta-banner",
@@ -179,14 +271,21 @@
       "key": "events_reviews",
       "args": {
         "source": "reviews_events"
-      }
+      },
+      "variant": "soft"
     },
     {
       "component": "faqs",
       "key": "faqs",
       "args": {
         "source": "faqs_events"
-      }
+      },
+      "variant": "dark"
+    },
+    {
+      "component": "team",
+      "key": "events_team",
+      "variant": "soft"
     },
     {
       "component": "cta-banner",
@@ -194,6 +293,10 @@
       "args": {
         "source": "cta_events"
       }
+    },
+    {
+      "component": "newsletter",
+      "key": "events_newsletter"
     }
   ],
   "order": [
@@ -210,14 +313,21 @@
       "key": "order_reviews",
       "args": {
         "source": "reviews_order"
-      }
+      },
+      "variant": "dark"
     },
     {
       "component": "faqs",
       "key": "faqs",
       "args": {
         "source": "faqs_order"
-      }
+      },
+      "variant": "soft"
+    },
+    {
+      "component": "locations",
+      "key": "order_locations",
+      "variant": "split"
     },
     {
       "component": "cta-banner",
@@ -236,6 +346,31 @@
     {
       "component": "contact-section",
       "key": "contact_section"
+    },
+    {
+      "component": "opening-hours",
+      "key": "contact_hours"
+    },
+    {
+      "component": "locations",
+      "key": "contact_locations",
+      "variant": "split"
+    },
+    {
+      "component": "ticker",
+      "key": "contact_ticker"
+    },
+    {
+      "component": "faqs",
+      "key": "contact_faqs",
+      "variant": "soft"
+    },
+    {
+      "component": "cta-banner",
+      "key": "contact_cta",
+      "args": {
+        "source": "cta_default"
+      }
     }
   ]
 }

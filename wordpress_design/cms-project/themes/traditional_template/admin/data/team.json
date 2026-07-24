@@ -1,0 +1,25 @@
+{
+  "tag": "The Makers",
+  "title": "Hands Behind The <em>Press</em>",
+  "sub": "A small team who still taste every batch before it leaves.",
+  "items": [
+    {
+      "name": "Ravi Sharma",
+      "role": "Founder & Head Presser",
+      "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=72&auto=format&fit=crop",
+      "bio": "Started with one cart in 1985 and still opens the Cambridge counter most mornings."
+    },
+    {
+      "name": "Amina Yusuf",
+      "role": "Head of Sourcing",
+      "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=72&auto=format&fit=crop",
+      "bio": "Works directly with partner farms on soil health, fair pay and harvest timing."
+    },
+    {
+      "name": "Tom Whitfield",
+      "role": "Events Lead",
+      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=72&auto=format&fit=crop",
+      "bio": "Runs the live counters - weddings, festivals and everything in between."
+    }
+  ]
+}

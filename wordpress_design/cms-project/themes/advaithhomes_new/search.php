@@ -5,6 +5,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+get_header();
+
 $_chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 $_ctx    = array( 'chrome' => $_chrome );
 $_query  = get_search_query();
@@ -186,3 +188,5 @@ if ( have_posts() ) {
 </section>
 
 <?php adn_page_close( $_ctx ); ?>
+
+<?php get_footer(); ?>

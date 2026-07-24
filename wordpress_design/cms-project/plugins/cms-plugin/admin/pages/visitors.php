@@ -1,7 +1,11 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
+
+use Ah\Cms\Admin\Components\AdminComponents;
 
 $m = new AH_Visitor_Model();
+$notice = '';
 
 // Handle prune action
 if ( isset( $_POST['adn_prune_visitors'], $_POST['_wpnonce'] )
@@ -9,10 +13,10 @@ if ( isset( $_POST['adn_prune_visitors'], $_POST['_wpnonce'] )
 	$days = (int) ( $_POST['prune_days'] ?? 90 );
 	if ( 0 === $days ) {
 		$pruned = $m->truncate();
-		echo '<div class="notice notice-success is-dismissible"><p>All visitor records deleted (' . intval( $pruned ) . ' rows removed).</p></div>';
+		$notice = 'All visitor records deleted (' . intval( $pruned ) . ' rows removed).';
 	} else {
 		$pruned = $m->prune( $days );
-		echo '<div class="notice notice-success is-dismissible"><p>Deleted ' . intval( $pruned ) . ' records older than ' . intval( $days ) . ' days.</p></div>';
+		$notice = 'Deleted ' . intval( $pruned ) . ' records older than ' . intval( $days ) . ' days.';
 	}
 }
 
@@ -30,74 +34,41 @@ $recent        = $m->recent( 30 );
 // Active tab
 $tab = sanitize_key( $_GET['vtab'] ?? 'overview' );
 ?>
-<div class="wrap">
-<h1 style="display:flex;align-items:center;gap:10px;">
-	<span dashicons dashicons-chart-bar style="font-size:28px;"></span>
-	Visitor Stats
-</h1>
+<div class="wrap ah-wrap">
+<?php AdminComponents::pageHeader( 'chart-bar', 'Visitor Stats', 'Track site visitors, page views, and referral sources in real time.' ); ?>
+<?php if ( $notice ) : ?><?php AdminComponents::notice( $notice, 'success' ); ?><?php endif; ?>
 
-<style>
-.vs-stat-row { display:flex; gap:16px; flex-wrap:wrap; margin:18px 0; }
-.vs-stat-card { background:#fff; border:1px solid #ddd; border-radius:8px; padding:16px 22px; min-width:130px; flex:1; }
-.vs-stat-card .vs-num { font-size:2rem; font-weight:700; color:#1e3a2f; line-height:1.1; }
-.vs-stat-card .vs-label { font-size:0.78rem; color:#6b7280; margin-top:4px; }
-.vs-tabs { display:flex; gap:0; border-bottom:2px solid #ddd; margin-bottom:20px; }
-.vs-tab { padding:9px 18px; font-size:0.88rem; font-weight:500; color:#555; text-decoration:none; border-bottom:2px solid transparent; margin-bottom:-2px; }
-.vs-tab.active { color:#1e3a2f; border-bottom-color:#1e3a2f; font-weight:600; }
-.vs-tab:hover { color:#1e3a2f; }
-.vs-table { width:100%; border-collapse:collapse; font-size:0.87rem; }
-.vs-table th { background:#f3f4f6; padding:8px 12px; text-align:left; font-weight:600; color:#374151; border-bottom:2px solid #e5e7eb; }
-.vs-table td { padding:7px 12px; border-bottom:1px solid #f0f0f0; color:#374151; }
-.vs-table tr:hover td { background:#fafafa; }
-.vs-bar-wrap { display:flex; align-items:center; gap:8px; }
-.vs-bar { height:8px; border-radius:4px; background:#1e3a2f; min-width:2px; }
-.vs-monthly-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap:10px; margin-top:10px; }
-.vs-month-card { background:#fff; border:1px solid #e5e7eb; border-radius:6px; padding:12px; }
-.vs-month-card .vs-mn { font-weight:600; font-size:0.85rem; color:#374151; }
-.vs-month-card .vs-mc { font-size:1.4rem; font-weight:700; color:#1e3a2f; }
-.vs-month-card .vs-mu { font-size:0.76rem; color:#9ca3af; }
-</style>
-
-<?php
-$base_url = admin_url( 'admin.php?page=ah-visitors' );
-$tabs = array(
+<?php AdminComponents::tabBarUrl( array(
 	'overview' => 'Overview',
 	'pages'    => 'Top Pages',
 	'monthly'  => 'Monthly',
 	'ips'      => 'IP Addresses',
 	'recent'   => 'Recent Visits',
 	'manage'   => 'Manage',
-);
-echo '<div class="vs-tabs">';
-foreach ( $tabs as $key => $label ) {
-	$active = $tab === $key ? ' active' : '';
-	echo '<a href="' . esc_url( $base_url . '&vtab=' . $key ) . '" class="vs-tab' . $active . '">' . esc_html( $label ) . '</a>';
-}
-echo '</div>';
-?>
+), $tab, 'ah-visitors', 'vtab' ); ?>
 
 <?php /* ── OVERVIEW ── */ ?>
 <?php if ( 'overview' === $tab ) : ?>
 
-<div class="vs-stat-row">
-	<div class="vs-stat-card"><div class="vs-num"><?php echo number_format( $total ); ?></div><div class="vs-label">Total Visits</div></div>
-	<div class="vs-stat-card"><div class="vs-num"><?php echo number_format( $total_unique ); ?></div><div class="vs-label">Unique IPs (all time)</div></div>
-	<div class="vs-stat-card"><div class="vs-num"><?php echo number_format( $today ); ?></div><div class="vs-label">Visits Today</div></div>
-	<div class="vs-stat-card"><div class="vs-num"><?php echo number_format( $today_unique ); ?></div><div class="vs-label">Unique IPs Today</div></div>
-	<div class="vs-stat-card"><div class="vs-num"><?php echo number_format( $this_month ); ?></div><div class="vs-label">This Month</div></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin:18px 0;">
+	<?php AdminComponents::statCard( number_format( $total ), 'Total Visits', 'chart-bar' ); ?>
+	<?php AdminComponents::statCard( number_format( $total_unique ), 'Unique IPs (all time)', 'admin-users' ); ?>
+	<?php AdminComponents::statCard( number_format( $today ), 'Visits Today', 'chart-bar' ); ?>
+	<?php AdminComponents::statCard( number_format( $today_unique ), 'Unique IPs Today', 'admin-users' ); ?>
+	<?php AdminComponents::statCard( number_format( $this_month ), 'This Month', 'calendar-alt' ); ?>
 </div>
 
-<h3>Last 12 Months</h3>
-<div class="vs-monthly-grid">
+<?php AdminComponents::card( 'Last 12 Months', '' ); ?>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:-16px;">
 <?php foreach ( array_reverse( $monthly ) as $row ) : ?>
-	<div class="vs-month-card">
-		<div class="vs-mn"><?php echo esc_html( $row['month'] ); ?></div>
-		<div class="vs-mc"><?php echo number_format( (int) $row['visits'] ); ?></div>
-		<div class="vs-mu"><?php echo number_format( (int) $row['unique_visitors'] ); ?> unique</div>
+	<div class="ah-card" style="padding:12px;text-align:center;">
+		<div style="font-weight:600;font-size:0.85rem;color:var(--ah-text);"><?php echo esc_html( $row['month'] ); ?></div>
+		<div style="font-size:1.4rem;font-weight:700;color:var(--ah-primary);"><?php echo number_format( (int) $row['visits'] ); ?></div>
+		<div style="font-size:0.76rem;color:var(--ah-muted);"><?php echo number_format( (int) $row['unique_visitors'] ); ?> unique</div>
 	</div>
 <?php endforeach; ?>
 <?php if ( empty( $monthly ) ) : ?>
-	<p style="color:#9ca3af;grid-column:1/-1;">No data yet.</p>
+	<p style="color:var(--ah-muted);grid-column:1/-1;">No data yet.</p>
 <?php endif; ?>
 </div>
 
@@ -106,130 +77,154 @@ echo '</div>';
 <?php /* ── TOP PAGES ── */ ?>
 <?php if ( 'pages' === $tab ) : ?>
 
-<h3>Top Pages by Visits</h3>
 <?php
 $max_v = ! empty( $top_pages ) ? (int) $top_pages[0]['visits'] : 1;
-?>
-<table class="vs-table">
-	<thead><tr>
-		<th>#</th><th>Page Slug</th><th>Visits</th><th>Unique Visitors</th><th>Traffic Bar</th>
-	</tr></thead>
-	<tbody>
-	<?php foreach ( $top_pages as $i => $row ) : ?>
-		<tr>
-			<td><?php echo $i + 1; ?></td>
-			<td><a href="<?php echo esc_url( $row['page_url'] ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $row['page_slug'] ?: $row['page_url'] ); ?></a></td>
-			<td><?php echo number_format( (int) $row['visits'] ); ?></td>
-			<td><?php echo number_format( (int) $row['unique_visitors'] ); ?></td>
-			<td>
-				<div class="vs-bar-wrap">
-					<div class="vs-bar" style="width:<?php echo esc_attr( round( ( (int) $row['visits'] / $max_v ) * 200 ) ); ?>px;"></div>
-					<span style="font-size:0.78rem;color:#9ca3af;"><?php echo round( ( (int) $row['visits'] / max( 1, $total ) ) * 100, 1 ); ?>%</span>
-				</div>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	<?php if ( empty( $top_pages ) ) : ?><tr><td colspan="5" style="color:#9ca3af;text-align:center;padding:24px;">No data yet.</td></tr><?php endif; ?>
-	</tbody>
-</table>
+$top_rows = array();
+foreach ( $top_pages as $i => $row ) {
+	$r = new \stdClass();
+	$r->rank = $i + 1;
+	$r->page_url = $row['page_url'];
+	$r->page_slug = $row['page_slug'] ?: $row['page_url'];
+	$r->visits = number_format( (int) $row['visits'] );
+	$r->unique = number_format( (int) $row['unique_visitors'] );
+	$r->bar_width = round( ( (int) $row['visits'] / $max_v ) * 200 );
+	$r->bar_pct = round( ( (int) $row['visits'] / max( 1, $total ) ) * 100, 1 );
+	$top_rows[] = $r;
+}
+ob_start();
+AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => '#', 'style' => 'width:40px', 'render' => function ( $r ) { return $r->rank; } ),
+		array( 'label' => 'Page Slug', 'render' => function ( $r ) {
+			return '<a href="' . esc_url( $r->page_url ) . '" target="_blank" rel="noopener">' . esc_html( $r->page_slug ) . '</a>';
+		} ),
+		array( 'label' => 'Visits', 'render' => function ( $r ) { return $r->visits; } ),
+		array( 'label' => 'Unique Visitors', 'render' => function ( $r ) { return $r->unique; } ),
+		array( 'label' => 'Traffic Bar', 'render' => function ( $r ) {
+			return '<div style="display:flex;align-items:center;gap:8px;"><div style="height:8px;border-radius:4px;background:var(--ah-primary);width:' . esc_attr( $r->bar_width ) . 'px;"></div><span style="font-size:0.78rem;color:var(--ah-muted);">' . $r->bar_pct . '%</span></div>';
+		} ),
+	),
+	'items'         => $top_rows,
+	'empty_message' => 'No data yet.',
+) );
+AdminComponents::card( 'Top Pages by Visits', ob_get_clean() ); ?>
 
 <?php endif; ?>
 
 <?php /* ── MONTHLY ── */ ?>
 <?php if ( 'monthly' === $tab ) : ?>
 
-<h3>Monthly Breakdown (last 12 months)</h3>
-<table class="vs-table">
-	<thead><tr><th>Month</th><th>Total Visits</th><th>Unique Visitors</th></tr></thead>
-	<tbody>
-	<?php foreach ( array_reverse( $monthly ) as $row ) : ?>
-		<tr>
-			<td><?php echo esc_html( $row['month'] ); ?></td>
-			<td><?php echo number_format( (int) $row['visits'] ); ?></td>
-			<td><?php echo number_format( (int) $row['unique_visitors'] ); ?></td>
-		</tr>
-	<?php endforeach; ?>
-	<?php if ( empty( $monthly ) ) : ?><tr><td colspan="3" style="color:#9ca3af;text-align:center;padding:24px;">No data yet.</td></tr><?php endif; ?>
-	</tbody>
-</table>
+<?php
+$monthly_rows = array();
+foreach ( array_reverse( $monthly ) as $row ) {
+	$r = new \stdClass();
+	$r->month = $row['month'];
+	$r->visits = number_format( (int) $row['visits'] );
+	$r->unique = number_format( (int) $row['unique_visitors'] );
+	$monthly_rows[] = $r;
+}
+ob_start();
+AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => 'Month', 'render' => function ( $r ) { return esc_html( $r->month ); } ),
+		array( 'label' => 'Total Visits', 'render' => function ( $r ) { return $r->visits; } ),
+		array( 'label' => 'Unique Visitors', 'render' => function ( $r ) { return $r->unique; } ),
+	),
+	'items'         => $monthly_rows,
+	'empty_message' => 'No data yet.',
+) );
+AdminComponents::card( 'Monthly Breakdown (last 12 months)', ob_get_clean() ); ?>
 
 <?php endif; ?>
 
 <?php /* ── IP ADDRESSES ── */ ?>
 <?php if ( 'ips' === $tab ) : ?>
 
-<h3>IP Address Summary (top 100)</h3>
-<table class="vs-table">
-	<thead><tr><th>IP Address</th><th>Total Visits</th><th>First Seen</th><th>Last Seen</th></tr></thead>
-	<tbody>
-	<?php foreach ( $ip_list as $row ) : ?>
-		<tr>
-			<td><code><?php echo esc_html( $row['ip_address'] ); ?></code></td>
-			<td><?php echo number_format( (int) $row['visits'] ); ?></td>
-			<td><?php echo esc_html( $row['first_seen'] ); ?></td>
-			<td><?php echo esc_html( $row['last_seen'] ); ?></td>
-		</tr>
-	<?php endforeach; ?>
-	<?php if ( empty( $ip_list ) ) : ?><tr><td colspan="4" style="color:#9ca3af;text-align:center;padding:24px;">No data yet.</td></tr><?php endif; ?>
-	</tbody>
-</table>
+<?php
+$ip_rows = array();
+foreach ( $ip_list as $row ) {
+	$r = new \stdClass();
+	$r->ip = $row['ip_address'];
+	$r->visits = number_format( (int) $row['visits'] );
+	$r->first = $row['first_seen'];
+	$r->last = $row['last_seen'];
+	$ip_rows[] = $r;
+}
+ob_start();
+AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => 'IP Address', 'render' => function ( $r ) { return '<code>' . esc_html( $r->ip ) . '</code>'; } ),
+		array( 'label' => 'Total Visits', 'render' => function ( $r ) { return $r->visits; } ),
+		array( 'label' => 'First Seen', 'render' => function ( $r ) { return esc_html( $r->first ); } ),
+		array( 'label' => 'Last Seen', 'render' => function ( $r ) { return esc_html( $r->last ); } ),
+	),
+	'items'         => $ip_rows,
+	'empty_message' => 'No data yet.',
+) );
+AdminComponents::card( 'IP Address Summary (top 100)', ob_get_clean() ); ?>
 
 <?php endif; ?>
 
 <?php /* ── RECENT VISITS ── */ ?>
 <?php if ( 'recent' === $tab ) : ?>
 
-<h3>Last 30 Visits</h3>
-<table class="vs-table">
-	<thead><tr><th>Time</th><th>IP</th><th>Page</th><th>Referrer</th></tr></thead>
-	<tbody>
-	<?php foreach ( $recent as $row ) : ?>
-		<tr>
-			<td style="white-space:nowrap;"><?php echo esc_html( $row['visited_at'] ); ?></td>
-			<td><code><?php echo esc_html( $row['ip_address'] ); ?></code></td>
-			<td><a href="<?php echo esc_url( $row['page_url'] ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $row['page_slug'] ?: $row['page_url'] ); ?></a></td>
-			<td style="font-size:0.8rem;color:#9ca3af;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="<?php echo esc_attr( $row['referrer'] ); ?>"><?php echo esc_html( $row['referrer'] ?: '-' ); ?></td>
-		</tr>
-	<?php endforeach; ?>
-	<?php if ( empty( $recent ) ) : ?><tr><td colspan="4" style="color:#9ca3af;text-align:center;padding:24px;">No data yet.</td></tr><?php endif; ?>
-	</tbody>
-</table>
+<?php
+$recent_rows = array();
+foreach ( $recent as $row ) {
+	$r = new \stdClass();
+	$r->time = $row['visited_at'];
+	$r->ip = $row['ip_address'];
+	$r->page_url = $row['page_url'];
+	$r->page_slug = $row['page_slug'] ?: $row['page_url'];
+	$r->referrer = $row['referrer'] ?: '-';
+	$recent_rows[] = $r;
+}
+ob_start();
+AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => 'Time', 'style' => 'white-space:nowrap', 'render' => function ( $r ) { return esc_html( $r->time ); } ),
+		array( 'label' => 'IP', 'render' => function ( $r ) { return '<code>' . esc_html( $r->ip ) . '</code>'; } ),
+		array( 'label' => 'Page', 'render' => function ( $r ) {
+			return '<a href="' . esc_url( $r->page_url ) . '" target="_blank" rel="noopener">' . esc_html( $r->page_slug ) . '</a>';
+		} ),
+		array( 'label' => 'Referrer', 'style' => 'font-size:0.8rem;color:var(--ah-muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;', 'render' => function ( $r ) {
+			return '<span title="' . esc_attr( $r->referrer ) . '">' . esc_html( $r->referrer ) . '</span>';
+		} ),
+	),
+	'items'         => $recent_rows,
+	'empty_message' => 'No data yet.',
+) );
+AdminComponents::card( 'Last 30 Visits', ob_get_clean() ); ?>
 
 <?php endif; ?>
 
 <?php /* ── MANAGE ── */ ?>
 <?php if ( 'manage' === $tab ) : ?>
 
-<h3>Prune Old Records</h3>
-<p style="color:#6b7280;font-size:0.88rem;">Delete visitor logs older than a set number of days. This cannot be undone.</p>
+<?php ob_start(); ?>
 <form method="post">
 	<?php wp_nonce_field( 'adn_prune_visitors' ); ?>
-	<table class="form-table" style="max-width:400px;">
-		<tr>
-			<th><label for="prune_days">Delete records older than</label></th>
-			<td>
-				<select name="prune_days" id="prune_days">
-					<option value="0">Everything (clear all)</option>
-					<option value="1">1 day</option>
-					<option value="7">1 week</option>
-					<option value="30">30 days</option>
-					<option value="60">60 days</option>
-					<option value="90" selected>90 days</option>
-					<option value="180">180 days</option>
-					<option value="365">1 year</option>
-				</select>
-			</td>
-		</tr>
-	</table>
+	<?php
+	$prune_select = '<select name="prune_days" id="prune_days" style="max-width:400px;">'
+		. '<option value="0">Everything (clear all)</option>'
+		. '<option value="1">1 day</option>'
+		. '<option value="7">1 week</option>'
+		. '<option value="30">30 days</option>'
+		. '<option value="60">60 days</option>'
+		. '<option value="90" selected>90 days</option>'
+		. '<option value="180">180 days</option>'
+		. '<option value="365">1 year</option>'
+		. '</select>';
+	AdminComponents::formRow( 'Delete records older than', $prune_select );
+	?>
 	<p>
-		<button type="submit" name="adn_prune_visitors" class="button button-secondary" onclick="return confirm('Delete old visitor records? This cannot be undone.');">
+		<button type="submit" name="adn_prune_visitors" class="ah-btn ah-btn-danger ah-confirm-delete" data-title="Prune Visitor Records" data-confirm="Old visitor logs will be deleted permanently.">
 			Prune Records
 		</button>
 	</p>
 </form>
+<?php AdminComponents::card( 'Prune Old Records', ob_get_clean() ); ?>
 
-<hr style="margin:28px 0;">
-<h3>Current Database Size</h3>
 <?php
 global $wpdb;
 $tbl  = $wpdb->prefix . 'ah_visitor_logs';
@@ -239,7 +234,7 @@ $size = $wpdb->get_row( $wpdb->prepare(
 	$tbl
 ), ARRAY_A );
 if ( $size ) {
-	echo '<p>Table <code>' . esc_html( $tbl ) . '</code>: approx. <strong>' . esc_html( number_format( (int) $size['rows'] ) ) . ' rows</strong>, <strong>' . esc_html( $size['size_mb'] ) . ' MB</strong>.</p>';
+	AdminComponents::card( 'Current Database Size', '<p>Table <code>' . esc_html( $tbl ) . '</code>: approx. <strong>' . esc_html( number_format( (int) $size['rows'] ) ) . ' rows</strong>, <strong>' . esc_html( $size['size_mb'] ) . ' MB</strong>.</p>' );
 }
 ?>
 

@@ -2,7 +2,7 @@
 /**
  * components/sections/faqs_footer.php - FAQ section shown above the footer.
  *
- * Reuses the same markup/classes as pages/page-faqs.php (.section-faqs,
+ * Reuses the same markup/classes as pages/PageFaqs.php (.section-faqs,
  * .faqs-main, parts/faq_list) so it renders identically to the real /faqs/
  * page - just without its sidebar column.
  *

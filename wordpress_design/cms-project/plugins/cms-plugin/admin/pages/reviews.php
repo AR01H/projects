@@ -63,83 +63,101 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 	$notice = 'Review deleted.';
 }
 ?>
-<div class="wrap ah-wrap">
-  <h1><span class="dashicons dashicons-star-filled"></span> Reviews &amp; Testimonials</h1>
-  <?php if ( $notice ) : ?><div class="ah-notice ah-notice-<?php echo esc_attr( $n_type ); ?>"><?php echo esc_html( $notice ); ?></div><?php endif; ?>
-
-  <?php if ( $action === 'list' ) :
+<?php if ( $action === 'list' ) :
     $search = sanitize_text_field( $_GET['s'] ?? '' );
     $status = sanitize_key( $_GET['status'] ?? '' );
     $paged  = AH_Pagination::current_page();
     $result = $model->get_paginated( $paged, $search, $status );
     $items  = $result['items']; $meta = $result['meta'];
-  ?>
-    <div class="ah-table-top">
-      <form class="ah-search-form" method="get">
-        <input type="hidden" name="page" value="ah-reviews">
-        <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search reviews…">
-        <select name="status">
-          <option value="">All Status</option>
-          <option value="active" <?php selected( $status, 'active' ); ?>>Active</option>
-          <option value="inactive" <?php selected( $status, 'inactive' ); ?>>Inactive</option>
-        </select>
-        <button class="ah-btn ah-btn-secondary">Filter</button>
-      </form>
-      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-reviews', 'action' => 'add' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ Add Review</a>
-    </div>
 
-    <div class="ah-table-wrap">
-      <table class="ah-table ah-sortable-list" data-model="reviews">
-        <thead>
-          <tr><th></th><th>Reviewer</th><th>Review</th><th>Rating</th><th>Type</th><th>Source</th><th>Featured</th><th>Status</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-          <?php if ( empty( $items ) ) : ?>
-            <tr><td colspan="9" style="text-align:center;color:var(--ah-muted);padding:32px;">No reviews yet. Click "+ Add Review" to add one.</td></tr>
-          <?php endif; ?>
-          <?php foreach ( $items as $rv ) :
+    \Ah\Cms\Admin\Components\AdminComponents::listPage( array(
+      'icon'        => 'star-filled',
+      'title'       => 'Reviews & Testimonials',
+      'description' => 'Collect and display client reviews and testimonials.',
+      'notice'      => $notice,
+      'notice_type' => $n_type,
+      'filter_bar'  => array(
+        'page_slug'          => 'ah-reviews',
+        'search_placeholder' => 'Search reviews…',
+        'search_value'       => $search,
+        'filters'            => array(
+          array(
+            'name'     => 'status',
+            'options'  => array(
+              ''        => 'All Status',
+              'active'  => 'Active',
+              'inactive' => 'Inactive',
+            ),
+            'selected' => $status,
+          ),
+        ),
+        'add_url'   => add_query_arg( array( 'page' => 'ah-reviews', 'action' => 'add' ), admin_url( 'admin.php' ) ),
+        'add_label' => '+ Add Review',
+      ),
+      'table' => array(
+        'columns' => array(
+          array( 'label' => 'Reviewer', 'render' => function ( $rv ) {
             $img_url = $rv->reviewer_image_id ? wp_get_attachment_image_url( (int) $rv->reviewer_image_id, 'thumbnail' ) : '';
-          ?>
-            <tr data-id="<?php echo esc_attr( $rv->id ); ?>">
-              <td class="ah-sort-handle">&#9776;</td>
-              <td>
-                <?php if ( $img_url ) : ?>
-                  <img src="<?php echo esc_url( $img_url ); ?>" style="width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px;">
-                <?php endif; ?>
-                <strong><?php echo esc_html( $rv->reviewer_name ); ?></strong>
-                <?php if ( $rv->reviewer_title ) : ?>
-                  <br><small style="color:var(--ah-muted);"><?php echo esc_html( $rv->reviewer_title ); ?></small>
-                <?php endif; ?>
-              </td>
-              <td style="max-width:260px;"><small style="color:var(--ah-muted);"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $rv->review_text ), 12 ) ); ?></small></td>
-              <td class="ah-stars"><?php echo str_repeat( '★', (int) $rv->rating ) . str_repeat( '☆', 5 - (int) $rv->rating ); ?></td>
-              <td><?php $ct_model->render_badges( 'review', (int) $rv->id ); ?></td>
-              <td><?php echo esc_html( $rv->source ); ?></td>
-              <td><?php echo $rv->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-'; ?></td>
-              <td><span class="ah-badge ah-badge-<?php echo esc_attr( $rv->status ); ?>"><?php echo esc_html( $rv->status ); ?></span></td>
-              <td class="row-actions">
-                <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-reviews', 'action' => 'edit', 'id' => $rv->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
-                <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-reviews', 'delete_id' => $rv->id ), admin_url( 'admin.php' ) ), 'ah_del_review' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete this review?');">Delete</a>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-    <?php echo AH_Pagination::render( $meta ); ?>
+            $html = '';
+            if ( $img_url ) {
+              $html .= '<img src="' . esc_url( $img_url ) . '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px;">';
+            }
+            $html .= '<strong>' . esc_html( $rv->reviewer_name ) . '</strong>';
+            if ( $rv->reviewer_title ) {
+              $html .= '<br><small style="color:var(--ah-muted);">' . esc_html( $rv->reviewer_title ) . '</small>';
+            }
+            return $html;
+          } ),
+          array( 'label' => 'Review', 'style' => 'max-width:260px;', 'render' => function ( $rv ) {
+            return '<small style="color:var(--ah-muted);">' . esc_html( wp_trim_words( wp_strip_all_tags( $rv->review_text ), 12 ) ) . '</small>';
+          } ),
+          array( 'label' => 'Rating', 'render' => function ( $rv ) {
+            return '<span class="ah-stars">' . str_repeat( '★', (int) $rv->rating ) . str_repeat( '☆', 5 - (int) $rv->rating ) . '</span>';
+          } ),
+          array( 'label' => 'Type', 'render' => function ( $rv ) use ( $ct_model ) {
+            ob_start();
+            $ct_model->render_badges( 'review', (int) $rv->id );
+            return ob_get_clean();
+          } ),
+          array( 'key' => 'source', 'label' => 'Source' ),
+          array( 'label' => 'Featured', 'render' => function ( $rv ) {
+            return $rv->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-';
+          } ),
+          array( 'label' => 'Status', 'render' => function ( $rv ) {
+            return \Ah\Cms\Admin\Components\AdminComponents::statusBadge( $rv->status );
+          } ),
+        ),
+        'items'         => $items,
+        'sortable'      => true,
+        'model'         => 'reviews',
+        'empty_message' => 'No reviews yet. Click "+ Add Review" to add one.',
+        'actions'       => function ( $rv ) {
+          $edit_url = add_query_arg( array( 'page' => 'ah-reviews', 'action' => 'edit', 'id' => $rv->id ), admin_url( 'admin.php' ) );
+          $del_url  = add_query_arg( array( 'page' => 'ah-reviews', 'delete_id' => $rv->id ), admin_url( 'admin.php' ) );
+          $html = '<a href="' . esc_url( $edit_url ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>';
+          ob_start();
+          \Ah\Cms\Admin\Components\AdminComponents::confirmDelete( $del_url, 'ah_del_review' );
+          $html .= ob_get_clean();
+          return $html;
+        },
+      ),
+      'pagination' => $meta,
+    ) );
 
-  <?php
     if ( isset( $_GET['img_deleted'] ) ) {
-      echo '<div class="ah-notice ah-notice-success">Image removed.</div>';
+      \Ah\Cms\Admin\Components\AdminComponents::notice( 'Image removed.', 'success' );
     }
-  ?>
-  <?php else :
+  endif;
+  if ( $action !== 'list' ) :
     $item        = $edit_id ? $model->find( $edit_id ) : null;
     $img_id      = $item ? (int) $item->reviewer_image_id : 0;
     $img_url     = $img_id ? wp_get_attachment_image_url( $img_id, 'medium' ) : '';
     $occ_images  = $edit_id ? $model->get_images( $edit_id ) : [];
   ?>
-    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-reviews' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-bottom:16px;display:inline-flex;">&larr; Back to Reviews</a>
+  <div class="wrap ah-wrap">
+    <?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'star-filled', 'Reviews & Testimonials', 'Collect and display client reviews and testimonials.' ); ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, $n_type ); ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::backLink( admin_url( 'admin.php?page=ah-reviews' ), '← Back to Reviews' ); ?>
 
     <form method="post">
       <?php wp_nonce_field( 'ah_save_review', 'ah_reviews_nonce' ); ?>
@@ -147,24 +165,13 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 
         <!-- Left column: main content -->
         <div>
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Reviewer Details</h2></div>
-            <div class="ah-form-row">
-              <label>Reviewer Name *</label>
-              <input type="text" name="reviewer_name" value="<?php echo esc_attr( $item->reviewer_name ?? '' ); ?>" required>
-            </div>
-            <div class="ah-form-row">
-              <label>Title / Company <small style="font-weight:400;color:var(--ah-muted);">(e.g. "First-Time Buyer" or "Google Review")</small></label>
-              <input type="text" name="reviewer_title" value="<?php echo esc_attr( $item->reviewer_title ?? '' ); ?>">
-            </div>
-            <div class="ah-form-row">
-              <label>Mini Description <small style="font-weight:400;color:var(--ah-muted);">(short bio or context - shown below name)</small></label>
-              <input type="text" name="short_desc" value="<?php echo esc_attr( $item->short_desc ?? '' ); ?>" placeholder="e.g. Bought first home in London, 2024">
-            </div>
-          </div>
+          <?php ob_start(); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Reviewer Name *', '<input type="text" name="reviewer_name" value="' . esc_attr( $item->reviewer_name ?? '' ) . '" required>' ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Title / Company <small style="font-weight:400;color:var(--ah-muted);">(e.g. "First-Time Buyer" or "Google Review")</small>', '<input type="text" name="reviewer_title" value="' . esc_attr( $item->reviewer_title ?? '' ) . '">' ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Mini Description <small style="font-weight:400;color:var(--ah-muted);">(short bio or context - shown below name)</small>', '<input type="text" name="short_desc" value="' . esc_attr( $item->short_desc ?? '' ) . '" placeholder="e.g. Bought first home in London, 2024">' ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Reviewer Details', ob_get_clean() ); ?>
 
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Review Text</h2></div>
+          <?php ob_start(); ?>
             <?php
             wp_editor(
               $item->review_text ?? '',
@@ -182,16 +189,10 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               )
             );
             ?>
-          </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Review Text', ob_get_clean() ); ?>
 
           <!-- ── Occasion / Gallery Images ──────────────────────────────── -->
-          <div class="ah-card">
-            <div class="ah-card-header" style="display:flex;align-items:center;justify-content:space-between;">
-              <h2 style="margin:0;">Occasion Images</h2>
-              <button type="button" id="rv-add-images" class="ah-btn ah-btn-secondary ah-btn-sm">
-                <span class="dashicons dashicons-plus-alt2" style="font-size:15px;line-height:1.4;"></span> Add Images
-              </button>
-            </div>
+          <?php ob_start(); ?>
             <p style="font-size:12px;color:var(--ah-muted);margin:0 0 14px;">
               Add photos from the occasion - wedding, event, party etc. Drag to reorder.
             </p>
@@ -209,7 +210,8 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
                   <input type="hidden" name="review_image_ids[]" value="<?php echo esc_attr( $occ->image_id ); ?>">
                   <img src="<?php echo esc_url( $occ_url ); ?>" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--ah-border,#e0e0e0);display:block;">
                   <a href="<?php echo esc_url( $del_url ); ?>"
-                     onclick="return confirm('Remove this image?')"
+                     class="ah-confirm-delete"
+                     data-confirm="Remove this image?"
                      style="position:absolute;top:-6px;right:-6px;background:#e53e3e;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;line-height:1;text-decoration:none;"
                      title="Remove">✕</a>
                 </div>
@@ -219,72 +221,66 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
             <?php if ( ! $edit_id ) : ?>
               <p style="font-size:12px;color:var(--ah-muted);margin-top:10px;font-style:italic;">Save the review first, then add occasion images.</p>
             <?php endif; ?>
-          </div>
+          <?php
+          ob_start();
+          ?>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div></div>
+              <button type="button" id="rv-add-images" class="ah-btn ah-btn-secondary ah-btn-sm">
+                <span class="dashicons dashicons-plus-alt2" style="font-size:15px;line-height:1.4;"></span> Add Images
+              </button>
+            </div>
+            <?php echo ob_get_clean(); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Occasion Images', ob_get_clean() ); ?>
         </div>
 
         <!-- Right column: settings -->
         <div>
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Reviewer Photo</h2></div>
-            <div class="ah-image-picker">
-              <img src="<?php echo esc_url( $img_url ); ?>"
-                   class="ah-image-preview <?php echo $img_url ? 'visible' : ''; ?>"
-                   alt=""
-                   style="width:100px;height:100px;border-radius:50%;object-fit:cover;display:block;margin-bottom:12px;">
-              <div class="ah-image-picker-btns">
-                <input type="hidden" class="ah-image-id" name="reviewer_image_id" value="<?php echo esc_attr( $img_id ); ?>">
-                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Photo</button>
-                <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
-              </div>
-            </div>
-          </div>
+          <?php ob_start(); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'reviewer_image_id', 'Reviewer Photo', $img_id, array( 'type' => 'media' ) ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Reviewer Photo', ob_get_clean() ); ?>
 
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Review Type</h2></div>
+          <?php ob_start(); ?>
             <p style="font-size:12px;color:var(--ah-muted);margin:0 0 12px;">Tag this review as Customer, Partner, or Event so it appears in the right section on the website.</p>
             <?php $ct_model->render_picker( 'review', $edit_id ); ?>
-          </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Review Type', ob_get_clean() ); ?>
 
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Review Settings</h2></div>
-            <div class="ah-form-row">
-              <label>Rating</label>
-              <select name="rating">
-                <?php for ( $r = 5; $r >= 1; $r-- ) : ?>
-                  <option value="<?php echo $r; ?>" <?php selected( (int) ( $item->rating ?? 5 ), $r ); ?>><?php echo str_repeat( '★', $r ) . str_repeat( '☆', 5 - $r ); ?> (<?php echo $r; ?>/5)</option>
-                <?php endfor; ?>
-              </select>
-            </div>
-            <div class="ah-form-row">
-              <label>Source</label>
-              <select name="source">
-                <?php foreach ( array( 'manual' => 'Manual / Direct', 'google' => 'Google', 'facebook' => 'Facebook', 'other' => 'Other' ) as $src => $lbl ) : ?>
-                  <option value="<?php echo esc_attr( $src ); ?>" <?php selected( $item->source ?? 'manual', $src ); ?>><?php echo esc_html( $lbl ); ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="ah-form-row">
-              <label>Featured</label>
-              <select name="is_featured">
-                <option value="0" <?php selected( (int) ( $item->is_featured ?? 0 ), 0 ); ?>>No</option>
-                <option value="1" <?php selected( (int) ( $item->is_featured ?? 0 ), 1 ); ?>>Yes - show on homepage</option>
-              </select>
-            </div>
-            <div class="ah-form-row">
-              <label>Sort Order</label>
-              <input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>" min="0">
-            </div>
-            <div class="ah-form-row">
-              <label>Status</label>
-              <select name="status">
-                <option value="active" <?php selected( $item->status ?? 'active', 'active' ); ?>>Active</option>
-                <option value="inactive" <?php selected( $item->status ?? '', 'inactive' ); ?>>Inactive</option>
-              </select>
-            </div>
+          <?php ob_start(); ?>
+            <?php
+            $rating_select = '<select name="rating">';
+            for ( $r = 5; $r >= 1; $r-- ) {
+              $rating_select .= '<option value="' . $r . '"' . selected( (int) ( $item->rating ?? 5 ), $r, false ) . '>' . str_repeat( '★', $r ) . str_repeat( '☆', 5 - $r ) . ' (' . $r . '/5)</option>';
+            }
+            $rating_select .= '</select>';
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Rating', $rating_select ); ?>
+            <?php
+            $source_select = '<select name="source">';
+            foreach ( array( 'manual' => 'Manual / Direct', 'google' => 'Google', 'facebook' => 'Facebook', 'other' => 'Other' ) as $src => $lbl ) {
+              $source_select .= '<option value="' . esc_attr( $src ) . '"' . selected( $item->source ?? 'manual', $src, false ) . '>' . esc_html( $lbl ) . '</option>';
+            }
+            $source_select .= '</select>';
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Source', $source_select ); ?>
+            <?php
+            $featured_select = '<select name="is_featured">';
+            $featured_select .= '<option value="0"' . selected( (int) ( $item->is_featured ?? 0 ), 0, false ) . '>No</option>';
+            $featured_select .= '<option value="1"' . selected( (int) ( $item->is_featured ?? 0 ), 1, false ) . '>Yes - show on homepage</option>';
+            $featured_select .= '</select>';
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Featured', $featured_select ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Sort Order', '<input type="number" name="sort_order" value="' . esc_attr( $item->sort_order ?? 0 ) . '" min="0">' ); ?>
+            <?php
+            $status_select = '<select name="status">';
+            $status_select .= '<option value="active"' . selected( $item->status ?? 'active', 'active', false ) . '>Active</option>';
+            $status_select .= '<option value="inactive"' . selected( $item->status ?? '', 'inactive', false ) . '>Inactive</option>';
+            $status_select .= '</select>';
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Status', $status_select ); ?>
             <button type="submit" class="ah-btn ah-btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
               <span class="dashicons dashicons-saved"></span> <?php echo $item ? 'Update Review' : 'Save Review'; ?>
             </button>
-          </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Review Settings', ob_get_clean() ); ?>
         </div>
 
       </div>

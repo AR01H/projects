@@ -26,7 +26,7 @@ $rotations = [ '-3deg', '4deg', '-2deg', '5deg', '-4deg', '2deg' ];
 		] );
 		?>
 
-		<div class="nt-gallery-hanging__clothesline">
+		<div class="nt-gallery-hanging__clothesline" data-nt-lightbox>
 			<!-- The rope spanning across -->
 			<div class="nt-gallery-hanging__rope"></div>
 

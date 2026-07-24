@@ -119,27 +119,26 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 <div class="wrap ah-wrap">
 
   <?php if ( $notice ) : list( $nt, $nm ) = explode( ':', $notice, 2 ); ?>
-    <div class="ah-notice ah-notice-<?php echo 'success' === $nt ? 'success' : 'warning'; ?>"><?php echo esc_html( $nm ); ?></div>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::notice( esc_html( $nm ), 'success' === $nt ? 'success' : 'warning' ); ?>
   <?php endif; ?>
 
   <div class="nl-header">
-    <h1><span class="dashicons dashicons-email-alt"></span> Newsletter</h1>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'email-alt', 'Newsletter', 'Build subscriber lists and compose newsletter campaigns.' ); ?>
     <?php if ( 'subscribers' === $active_tab ) : ?>
     <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'export_csv' => 1 ), admin_url( 'admin.php' ) ), 'ah_nl_export' ) ); ?>" class="ah-btn ah-btn-secondary">Export CSV</a>
     <button class="ah-btn ah-btn-primary" id="nl-add-btn">+ Add Subscriber</button>
     <?php endif; ?>
   </div>
 
-  <!-- Tab nav -->
   <div class="nl-tab-nav">
     <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'subscribers' === $active_tab ? 'on' : ''; ?>">
-      Subscribers <span style="background:#e5e7eb;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700"><?php echo esc_html( $count_all ); ?></span>
+      Subscribers <span class="ah-badge"><?php echo esc_html( $count_all ); ?></span>
     </a>
     <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'send' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'send' === $active_tab ? 'on' : ''; ?>">
       ✉ Send Newsletter
     </a>
     <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'history' ), admin_url( 'admin.php' ) ) ); ?>" class="<?php echo 'history' === $active_tab ? 'on' : ''; ?>">
-      History <span style="background:#e5e7eb;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700"><?php echo esc_html( count( $bcast_log ) ); ?></span>
+      History <span class="ah-badge"><?php echo esc_html( count( $bcast_log ) ); ?></span>
     </a>
   </div>
 
@@ -161,9 +160,9 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 
   <!-- Stats row -->
   <div class="nl-stats">
-    <div class="nl-stat-box"><div class="nl-stat-num"><?php echo esc_html( $count_all ); ?></div><div class="nl-stat-lbl">Total</div></div>
-    <div class="nl-stat-box"><div class="nl-stat-num" style="color:#16a34a"><?php echo esc_html( $count_act ); ?></div><div class="nl-stat-lbl">Active</div></div>
-    <div class="nl-stat-box"><div class="nl-stat-num" style="color:#dc2626"><?php echo esc_html( $count_uns ); ?></div><div class="nl-stat-lbl">Unsubscribed</div></div>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::statCard( esc_html( $count_all ), 'Total', 'admin-users' ); ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::statCard( esc_html( $count_act ), 'Active', 'yes-alt' ); ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::statCard( esc_html( $count_uns ), 'Unsubscribed', 'dismiss' ); ?>
   </div>
 
   <!-- Filter pills -->
@@ -179,43 +178,41 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
   </div>
 
   <?php if ( $rows ) : ?>
-  <div class="ah-table-wrap">
-    <table class="ah-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Email</th>
-          <th>Name</th>
-          <th>Source</th>
-          <th>Status</th>
-          <th>Subscribed</th>
-          <th>Unsubscribed</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ( $rows as $row ) :
-          $is_active = 'active' === $row['status'];
-        ?>
-        <tr>
-          <td style="color:var(--ah-muted);font-size:12px"><?php echo esc_html( $row['id'] ); ?></td>
-          <td><strong><?php echo esc_html( $row['email'] ); ?></strong></td>
-          <td><?php echo esc_html( $row['name'] ); ?></td>
-          <td><span style="background:#f3f4f6;border-radius:4px;padding:2px 8px;font-size:12px"><?php echo esc_html( $row['source'] ); ?></span></td>
-          <td><span class="nl-status-badge nlsb-<?php echo esc_attr( $row['status'] ); ?>"><?php echo esc_html( ucfirst( $row['status'] ) ); ?></span></td>
-          <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $row['created_at'] ) ) ); ?></small></td>
-          <td><small><?php echo $row['unsubscribed_at'] ? esc_html( wp_date( 'M j, Y', strtotime( $row['unsubscribed_at'] ) ) ) : '<span style="color:var(--ah-muted)">-</span>'; ?></small></td>
-          <td style="white-space:nowrap">
-            <?php if ( $is_active ) : ?>
-            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'unsub' => $row['email'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_unsub' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="return confirm('Mark as unsubscribed?')">Unsubscribe</a>
-            <?php endif; ?>
-            <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'del_sub' => $row['id'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_del' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Permanently delete this subscriber?')">Delete</a>
-          </td>
-        </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+    'columns' => array(
+      array( 'label' => '#', 'render' => function ( $row ) {
+        return '<span style="color:var(--ah-muted);font-size:12px">' . esc_html( $row['id'] ) . '</span>';
+      } ),
+      array( 'label' => 'Email', 'render' => function ( $row ) {
+        return '<strong>' . esc_html( $row['email'] ) . '</strong>';
+      } ),
+      array( 'label' => 'Name', 'render' => function ( $row ) {
+        return esc_html( $row['name'] );
+      } ),
+      array( 'label' => 'Source', 'render' => function ( $row ) {
+        return '<span style="background:#f3f4f6;border-radius:4px;padding:2px 8px;font-size:12px">' . esc_html( $row['source'] ) . '</span>';
+      } ),
+      array( 'label' => 'Status', 'render' => function ( $row ) {
+        return '<span class="nl-status-badge nlsb-' . esc_attr( $row['status'] ) . '">' . esc_html( ucfirst( $row['status'] ) ) . '</span>';
+      } ),
+      array( 'label' => 'Subscribed', 'render' => function ( $row ) {
+        return '<small>' . esc_html( wp_date( 'M j, Y', strtotime( $row['created_at'] ) ) ) . '</small>';
+      } ),
+      array( 'label' => 'Unsubscribed', 'render' => function ( $row ) {
+        return '<small>' . ( $row['unsubscribed_at'] ? esc_html( wp_date( 'M j, Y', strtotime( $row['unsubscribed_at'] ) ) ) : '<span style="color:var(--ah-muted)">-</span>' ) . '</small>';
+      } ),
+    ),
+    'items'         => $rows,
+    'empty_message' => 'No subscribers yet.',
+    'actions'       => function ( $row ) use ( $filter ) {
+      $html = '';
+      if ( 'active' === $row['status'] ) {
+        $html .= '<a href="' . esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'unsub' => $row['email'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_unsub' ) ) . '" class="ah-btn ah-btn-secondary ah-btn-sm ah-confirm-delete" data-confirm="Mark as unsubscribed?">Unsubscribe</a> ';
+      }
+      $html .= '<a href="' . esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'del_sub' => $row['id'], 'filter' => $filter ), admin_url( 'admin.php' ) ), 'ah_nl_del' ) ) . '" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-confirm="Permanently delete this subscriber?">Delete</a>';
+      return $html;
+    },
+  ) ); ?>
 
   <?php if ( $total_pages > 1 ) : ?>
   <div style="margin-top:16px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
@@ -229,19 +226,17 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
   <?php endif; ?>
 
   <?php else : ?>
-    <div class="ah-card" style="text-align:center;padding:48px;color:var(--ah-muted)">
-      <p style="font-size:1.1rem;margin:0">No subscribers yet<?php echo $filter ? ' with status <strong>' . esc_html( $filter ) . '</strong>' : ''; ?>.</p>
-      <p style="margin:8px 0 0;font-size:13px">Use the newsletter signup widget on your site, or add subscribers manually above.</p>
-    </div>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::emptyState(
+      'No subscribers yet' . ( $filter ? ' with status "' . esc_html( $filter ) . '"' : '' ) . '. Use the newsletter signup widget on your site, or add subscribers manually above.'
+    ); ?>
   <?php endif; ?>
 
   <?php elseif ( 'send' === $active_tab ) : ?>
   <!-- ═══════════════════════ SEND NEWSLETTER ═══════════════════════ -->
-  <div class="ah-card">
-    <div class="ah-card-header"><h2>Compose &amp; Send</h2></div>
+  <?php ob_start(); ?>
 
     <?php if ( $count_act < 1 ) : ?>
-      <div class="ah-notice ah-notice-warning" style="margin:0">No active subscribers yet - add some first.</div>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::notice( 'No active subscribers yet - add some first.', 'warning' ); ?>
     <?php else : ?>
 
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:#1e40af">
@@ -251,21 +246,13 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
     <form method="post" id="nl-send-form">
       <?php wp_nonce_field( 'ah_nl_send', 'ah_nl_send_nonce' ); ?>
 
-      <div class="nl-send-grid">
-        <div class="ah-form-row">
-          <label>From Name</label>
-          <input type="text" name="nl_from_name" value="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" placeholder="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-        </div>
-        <div class="ah-form-row">
-          <label>From Email</label>
-          <input type="email" name="nl_from_email" value="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>">
-        </div>
-      </div>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+        array( 'From Name', '<input type="text" name="nl_from_name" value="' . esc_attr( get_bloginfo( 'name' ) ) . '" placeholder="' . esc_attr( get_bloginfo( 'name' ) ) . '">' ),
+        array( 'From Email', '<input type="email" name="nl_from_email" value="' . esc_attr( get_option( 'admin_email' ) ) . '">' ),
+      ) ); ?>
 
-      <div class="ah-form-row" style="margin-bottom:16px">
-        <label>Subject *</label>
-        <input type="text" name="nl_subject" required placeholder="e.g. Your monthly update from <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?>" style="font-size:15px;padding:10px 14px">
-      </div>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Subject *', '<input type="text" name="nl_subject" required placeholder="e.g. Your monthly update from ' . esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ) . '" style="font-size:15px;padding:10px 14px">', '', 'nl-subject-row' ); ?>
+      <style>#nl-subject-row { margin-bottom:16px; }</style>
 
       <div class="nl-body-wrap">
         <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
@@ -279,7 +266,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
-        <button type="submit" class="ah-btn ah-btn-primary" style="font-size:15px;padding:10px 28px" onclick="return confirm('Send this newsletter to <?php echo esc_js( $count_act ); ?> subscriber(s) now?')">
+        <button type="submit" class="ah-btn ah-btn-primary ah-confirm-delete" style="font-size:15px;padding:10px 28px" data-confirm="Send this newsletter to <?php echo esc_js( $count_act ); ?> subscriber(s) now?">
           Send to <?php echo esc_html( $count_act ); ?> Subscriber<?php echo $count_act !== 1 ? 's' : ''; ?> →
         </button>
         <span style="font-size:12px;color:#6b7280">This action cannot be undone.</span>
@@ -287,39 +274,32 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
     </form>
 
     <?php endif; ?>
-  </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Compose &amp; Send', ob_get_clean() ); ?>
 
   <?php elseif ( 'history' === $active_tab ) : ?>
   <!-- ═══════════════════════ SEND HISTORY ═══════════════════════ -->
-  <div class="ah-card">
-    <div class="ah-card-header"><h2>Broadcast History</h2><span style="font-size:13px;color:var(--ah-muted)">Last 50 sends</span></div>
-    <?php if ( $bcast_log ) : ?>
-    <div class="ah-table-wrap">
-      <table class="ah-table">
-        <thead>
-          <tr>
-            <th>Subject</th>
-            <th style="width:100px;text-align:center">Sent</th>
-            <th style="width:100px;text-align:center">Failed</th>
-            <th style="width:160px">Date &amp; Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ( $bcast_log as $entry ) : ?>
-          <tr class="nl-hist-row">
-            <td><?php echo esc_html( $entry['subject'] ); ?></td>
-            <td style="text-align:center"><span style="color:#16a34a;font-weight:600"><?php echo esc_html( $entry['sent'] ); ?></span></td>
-            <td style="text-align:center"><?php echo $entry['failed'] > 0 ? '<span style="color:#dc2626;font-weight:600">' . esc_html( $entry['failed'] ) . '</span>' : '<span style="color:var(--ah-muted)">0</span>'; ?></td>
-            <td><small><?php echo esc_html( wp_date( 'M j, Y g:i a', strtotime( $entry['sent_at'] ) ) ); ?></small></td>
-          </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-    <?php else : ?>
-      <div class="nl-hist-empty">No newsletters sent yet.</div>
-    <?php endif; ?>
-  </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Broadcast History', '<span style="font-size:13px;color:var(--ah-muted);">Last 50 sends</span>'
+    . ( $bcast_log ? \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+      'columns' => array(
+        array( 'label' => 'Subject', 'render' => function ( $entry ) {
+          return esc_html( $entry['subject'] );
+        } ),
+        array( 'label' => 'Sent', 'style' => 'width:100px;text-align:center', 'render' => function ( $entry ) {
+          return '<span style="color:#16a34a;font-weight:600">' . esc_html( $entry['sent'] ) . '</span>';
+        } ),
+        array( 'label' => 'Failed', 'style' => 'width:100px;text-align:center', 'render' => function ( $entry ) {
+          return $entry['failed'] > 0
+            ? '<span style="color:#dc2626;font-weight:600">' . esc_html( $entry['failed'] ) . '</span>'
+            : '<span style="color:var(--ah-muted)">0</span>';
+        } ),
+        array( 'label' => 'Date & Time', 'style' => 'width:160px', 'render' => function ( $entry ) {
+          return '<small>' . esc_html( wp_date( 'M j, Y g:i a', strtotime( $entry['sent_at'] ) ) ) . '</small>';
+        } ),
+      ),
+      'items'         => $bcast_log,
+      'empty_message' => 'No newsletters sent yet.',
+    ) ) : \Ah\Cms\Admin\Components\AdminComponents::emptyState( 'No newsletters sent yet.' ) )
+  ); ?>
 
   <?php endif; ?>
 

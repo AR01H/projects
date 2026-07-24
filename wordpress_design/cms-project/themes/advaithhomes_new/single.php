@@ -15,7 +15,7 @@
  *   _adn_key_takeaways     string   JSON-encoded string[] for the takeaways box
  *   _adn_category_tag      string   display category name override
  *
- * Assets: single.css + single.js are auto-enqueued via explode_function.php
+ * Assets: single.css + single.js are auto-enqueued via ThemeHelpers.php
  * when is_single() is true - no Template Name comment needed here.
  *
  * RULE: No hardcoded content or data reads here - only structure.
@@ -24,9 +24,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-wp_enqueue_style( 'adn-page-contact-style', get_template_directory_uri() . '/assets/css/contact.css', array(), ADN_THEME_VERSION );
+// CSS/JS now loaded centrally via AssetLoader (wp_enqueue_scripts hook)
 
-require_once ADN_THEME_DIR . '/intermediate/post_logical.php';
 
 /*
  * Set up the WP post loop so all template tags (the_title, the_content, etc.)
@@ -36,7 +35,7 @@ if ( have_posts() ) {
 	the_post();
 }
 
-$ctx = adn_post_get_context();
+$ctx = \Adn\Theme\Feature\Article\Controller\ArticleController::getContext();
 
 get_header();
 ?>

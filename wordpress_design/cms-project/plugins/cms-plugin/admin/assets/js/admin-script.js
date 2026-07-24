@@ -103,20 +103,48 @@
   var mediaFrame;
   var currentPicker;
 
-  function ahPickerSetImage($picker, id, url) {
+  var VIDEO_EXTS = ['mp4','webm','ogv','ogg','mov','avi'];
+
+  function ahIsVideoUrl(url) {
+    if (!url) return false;
+    var ext = url.split('?')[0].split('.').pop().toLowerCase();
+    return VIDEO_EXTS.indexOf(ext) !== -1;
+  }
+
+  function ahPickerSetMedia($picker, id, url, isVideo) {
     $picker.find('.ah-image-id').val(id);
-    $picker.find('.ah-image-preview').attr('src', url).addClass('visible').css('display', 'block');
     $picker.find('.ah-image-placeholder').hide();
     $picker.addClass('has-image');
-    $picker.find('.ah-pick-image').text('Change Image');
+
+    // Remove any existing preview
+    $picker.find('.ah-image-preview-wrap').remove();
+
+    if (isVideo) {
+      $picker.prepend(
+        '<div class="ah-image-preview-wrap visible">' +
+          '<video class="ah-video-preview" src="' + url + '" controls muted style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;"></video>' +
+        '</div>'
+      );
+      $picker.find('.ah-pick-image').text('Change Video');
+    } else {
+      $picker.prepend(
+        '<div class="ah-image-preview-wrap visible">' +
+          '<img class="ah-image-preview" src="' + url + '" alt="">' +
+        '</div>'
+      );
+      $picker.find('.ah-pick-image').text('Change Image');
+    }
   }
 
   function ahPickerClearImage($picker) {
     $picker.find('.ah-image-id').val(0);
+    $picker.find('.ah-image-preview-wrap').remove();
     $picker.find('.ah-image-preview').removeClass('visible').css('display', '').attr('src', '');
     $picker.find('.ah-image-placeholder').show();
     $picker.removeClass('has-image');
-    $picker.find('.ah-pick-image').text('Choose Image');
+    var type = $picker.data('picker-type') || 'image';
+    var labels = { image: 'Choose Image', video: 'Choose Video', media: 'Choose Media' };
+    $picker.find('.ah-pick-image').text(labels[type] || 'Choose Image');
   }
 
   // Initialise state on page load for all pickers
@@ -124,18 +152,27 @@
     $('.ah-image-picker').each(function () {
       var $picker  = $(this);
       var $preview = $picker.find('.ah-image-preview');
+      var $video   = $picker.find('.ah-video-preview');
 
       // Inject placeholder if not already present
       if ( ! $picker.find('.ah-image-placeholder').length ) {
+        var type = $picker.data('picker-type') || 'image';
+        var icons = { image: 'format-image', video: 'video-alt3', media: 'format-image' };
+        var labels = { image: 'Click to choose image', video: 'Click to choose video', media: 'Click to choose image or video' };
         $picker.prepend(
           '<div class="ah-image-placeholder">' +
-            '<span class="dashicons dashicons-format-image"></span>' +
-            '<span>Click to choose image</span>' +
+            '<span class="dashicons dashicons-' + (icons[type] || 'format-image') + '"></span>' +
+            '<span>' + (labels[type] || 'Click to choose') + '</span>' +
           '</div>'
         );
       }
 
-      if ($preview.hasClass('visible') && $preview.attr('src')) {
+      if ($video.length && $video.attr('src')) {
+        $video.css('display', 'block');
+        $picker.addClass('has-image');
+        $picker.find('.ah-image-placeholder').hide();
+        $picker.find('.ah-pick-image').text('Change Video');
+      } else if ($preview.hasClass('visible') && $preview.attr('src')) {
         $preview.css('display', 'block');
         $picker.addClass('has-image');
         $picker.find('.ah-image-placeholder').hide();
@@ -148,21 +185,47 @@
     e.preventDefault();
     currentPicker = $(this).closest('.ah-image-picker');
 
-    if (mediaFrame) {
+    var pickerType = currentPicker.data('picker-type') || 'image';
+
+    // Reuse frame only if same picker type, otherwise destroy and recreate
+    if (mediaFrame && mediaFrame._ahPickerType === pickerType) {
       mediaFrame.open();
       return;
     }
+    if (mediaFrame) {
+      mediaFrame.destroy();
+      mediaFrame = null;
+    }
+
+    var libraryType, frameTitle, buttonText;
+
+    if (pickerType === 'video') {
+      libraryType = 'video';
+      frameTitle  = 'Select Video';
+      buttonText  = 'Use this video';
+    } else if (pickerType === 'media') {
+      libraryType = '';
+      frameTitle  = 'Select Image or Video';
+      buttonText  = 'Use this media';
+    } else {
+      libraryType = 'image';
+      frameTitle  = 'Select Image';
+      buttonText  = 'Use this image';
+    }
+
+    var frameOpts = {
+      title: frameTitle,
+      button: { text: buttonText },
+      multiple: false
+    };
+    if (libraryType) {
+      frameOpts.library = { type: libraryType };
+    }
 
     // Capture in a local variable so the 'select' handler always has a valid
-    // frame reference. 'mediaFrame' is nulled by 'close' (which fires before
-    // 'select' in WP), and 'this' inside 'select' is the Selection Collection
-    // (not the Frame), so neither works - only the closure variable is safe.
-    var frame = wp.media({
-      title: 'Select Image',
-      button: { text: 'Use this image' },
-      multiple: false,
-      library: { type: 'image' }
-    });
+    // frame reference.
+    var frame = wp.media(frameOpts);
+    frame._ahPickerType = pickerType;
     mediaFrame = frame;
 
     frame.on('select', function () {
@@ -170,11 +233,19 @@
       var model     = selection ? selection.first() : null;
       if ( ! model ) return;
       var attach = model.toJSON();
-      var url = ( attach.sizes && attach.sizes.large  && attach.sizes.large.url  )
-             || ( attach.sizes && attach.sizes.medium && attach.sizes.medium.url )
-             || attach.url || '';
+      var mime   = attach.mime || '';
+      var isVideo = mime.indexOf('video/') === 0 || ahIsVideoUrl(attach.url);
+
+      var url;
+      if (isVideo) {
+        url = attach.url || '';
+      } else {
+        url = ( attach.sizes && attach.sizes.large  && attach.sizes.large.url  )
+           || ( attach.sizes && attach.sizes.medium && attach.sizes.medium.url )
+           || attach.url || '';
+      }
       if ( ! url ) return;
-      ahPickerSetImage(currentPicker, attach.id, url);
+      ahPickerSetMedia(currentPicker, attach.id, url, isVideo);
     });
 
     frame.open();

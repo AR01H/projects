@@ -7,11 +7,14 @@
  * heading, button) is read from admin/data/signature_flavours.json - nothing
  * is hardcoded. Sepia tone is applied in CSS so any photo blends into the
  * vintage palette.
+ *
+ * Switch data per page with `source` (defaults to signature_flavours).
  */
 defined( 'ABSPATH' ) || exit;
 
-$data    = nt_data( 'signature_flavours' );
-$bottles = $data['bottles'] ?? array();
+$sf_source = ( isset( $source ) && $source ) ? (string) $source : 'signature_flavours';
+$data      = nt_data( $sf_source );
+$bottles   = $data['bottles'] ?? array();
 if ( empty( $bottles ) ) {
 	return;
 }

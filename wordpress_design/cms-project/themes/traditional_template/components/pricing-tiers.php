@@ -7,6 +7,7 @@
  * so it works for franchise investment levels, service packages, membership
  * plans, room types, etc. Nothing here is tied to one industry.
  *
+ * Switch data per page with `source` (defaults to pricing_tiers).
  * Data: admin/data/pricing_tiers.json
  *   tag, title (em allowed), sub
  *   tiers[]      { name, price, note, badge, features[] }
@@ -16,8 +17,9 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$data  = nt_data( 'pricing_tiers' );
-$tiers = ( is_array( $data ) && ! empty( $data['tiers'] ) ) ? (array) $data['tiers'] : array();
+$pt_source = ( isset( $source ) && $source ) ? (string) $source : 'pricing_tiers';
+$data      = nt_data( $pt_source );
+$tiers     = ( is_array( $data ) && ! empty( $data['tiers'] ) ) ? (array) $data['tiers'] : array();
 if ( empty( $tiers ) ) {
 	return;
 }

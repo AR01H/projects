@@ -353,11 +353,11 @@ function adn_calculator_full_page_render() {
 	if ( '' === $key || ! adn_calculator_exists( $key ) ) {
 		return;
 	}
-	// Normalise so page-tool-single.php (which re-reads $_GET directly) sees
+	// Normalise so PageToolSingle.php (which re-reads $_GET directly) sees
 	// the key regardless of whether it arrived via the pretty path or the query string.
 	$_GET['ah_calc_page'] = $key;
 	$base     = realpath( ADN_THEME_DIR . '/pages' );
-	$template = realpath( ADN_THEME_DIR . '/pages/page-tool-single.php' );
+	$template = realpath( ADN_THEME_DIR . '/pages/PageToolSingle.php' );
 	if ( $base && $template && 0 === strpos( $template, $base ) && is_file( $template ) ) {
 		// The pretty path (/calculators/{key}/) has no matching WP child page, so
 		// WordPress already flagged this request as a 404 before template_redirect

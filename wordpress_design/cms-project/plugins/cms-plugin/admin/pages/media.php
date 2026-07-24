@@ -39,66 +39,72 @@ $items  = $result['items'];
 $meta   = $result['meta'];
 ?>
 <div class="wrap ah-wrap">
-  <h1><span class="dashicons dashicons-images-alt2"></span> <?php esc_html_e( 'Media Library', 'ah-theme' ); ?></h1>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'images-alt2', 'Media Library', 'Browse, upload, and manage images and media files.' ); ?>
 
-  <?php if ( $notice ) : ?><div class="ah-notice ah-notice-success"><?php echo esc_html( $notice ); ?></div><?php endif; ?>
+  <?php if ( $notice ) : ?><?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, 'success' ); ?><?php endif; ?>
 
   <!-- Upload Form -->
-  <div class="ah-card" style="margin-bottom:20px;">
-    <div class="ah-card-header"><h2>Upload New File</h2></div>
+  <?php ob_start(); ?>
     <form method="post" enctype="multipart/form-data" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
       <?php wp_nonce_field( 'ah_upload_media', 'ah_media_nonce' ); ?>
-      <div class="ah-form-row" style="margin:0;flex:1;min-width:260px;">
-        <label>Select File</label>
-        <input type="file" name="media_file" accept="image/*,application/pdf,video/mp4" required>
-      </div>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Select File', '<input type="file" name="media_file" accept="image/*,application/pdf,video/*" required style="display:block;width:100%;">' ); ?>
       <button type="submit" class="ah-btn ah-btn-primary" style="margin-bottom:0;">Upload</button>
     </form>
-  </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Upload New File', ob_get_clean() ); ?>
 
   <!-- Filters -->
-  <div class="ah-table-top">
-    <form class="ah-search-form" method="get">
-      <input type="hidden" name="page" value="ah-media">
-      <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search files…">
-      <select name="mime">
-        <option value="">All Types</option>
-        <option value="image" <?php selected( $mime, 'image' ); ?>>Images</option>
-        <option value="application/pdf" <?php selected( $mime, 'application/pdf' ); ?>>PDFs</option>
-        <option value="video" <?php selected( $mime, 'video' ); ?>>Videos</option>
-      </select>
-      <button class="ah-btn ah-btn-secondary">Filter</button>
-    </form>
-    <span style="color:var(--ah-muted);font-size:13px;"><?php echo number_format_i18n( $meta['total'] ); ?> files</span>
-  </div>
+  <?php
+  \Ah\Cms\Admin\Components\AdminComponents::filterBar( array(
+    'page_slug'          => 'ah-media',
+    'search_placeholder' => 'Search files…',
+    'search_value'       => $search,
+    'hidden_inputs'      => array(),
+    'filters'            => array(
+      array(
+        'name'     => 'mime',
+        'options'  => array(
+          ''                => 'All Types',
+          'image'           => 'Images',
+          'application/pdf' => 'PDFs',
+          'video'           => 'Videos',
+        ),
+        'selected' => $mime,
+      ),
+    ),
+  ) );
+  ?>
 
   <!-- Grid -->
-  <div class="ah-media-grid">
-    <?php foreach ( $items as $item ) :
-      $is_img = str_starts_with( $item->mime_type, 'image/' );
+  <?php
+  ob_start();
+  foreach ( $items as $item ) :
+    $is_img = str_starts_with( $item->mime_type, 'image/' );
     ?>
-      <div class="ah-media-item">
-        <?php if ( $is_img ) : ?>
-          <img src="<?php echo esc_url( $item->file_url ); ?>" alt="<?php echo esc_attr( $item->alt_text ); ?>" loading="lazy">
-        <?php else : ?>
-          <div style="height:100px;display:flex;align-items:center;justify-content:center;background:var(--ah-bg-light);">
-            <span class="dashicons dashicons-media-default" style="font-size:36px;color:var(--ah-muted);"></span>
-          </div>
-        <?php endif; ?>
-        <div class="media-name" title="<?php echo esc_attr( $item->file_name ); ?>"><?php echo esc_html( $item->file_name ); ?></div>
-        <div class="media-actions">
-          <a href="<?php echo esc_url( $item->file_url ); ?>" target="_blank" class="ah-btn ah-btn-secondary ah-btn-icon" title="View"><span class="dashicons dashicons-visibility"></span></a>
-          <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-media', 'delete_id' => $item->id ), admin_url( 'admin.php' ) ), 'ah_delete_media' ) ); ?>"
-             class="ah-btn ah-btn-danger ah-btn-icon"
-             title="Delete"
-             onclick="return confirm('Delete this file?');">
-            <span class="dashicons dashicons-trash"></span>
-          </a>
+    <div class="ah-media-item">
+      <?php if ( $is_img ) : ?>
+        <img src="<?php echo esc_url( $item->file_url ); ?>" alt="<?php echo esc_attr( $item->alt_text ); ?>" loading="lazy">
+      <?php else : ?>
+        <div style="height:100px;display:flex;align-items:center;justify-content:center;background:var(--ah-bg-light);">
+          <span class="dashicons dashicons-media-default" style="font-size:36px;color:var(--ah-muted);"></span>
         </div>
+      <?php endif; ?>
+      <div class="media-name" title="<?php echo esc_attr( $item->file_name ); ?>"><?php echo esc_html( $item->file_name ); ?></div>
+      <div class="media-actions">
+        <a href="<?php echo esc_url( $item->file_url ); ?>" target="_blank" class="ah-btn ah-btn-secondary ah-btn-icon" title="View"><span class="dashicons dashicons-visibility"></span></a>
+        <?php echo \Ah\Cms\Admin\Components\AdminComponents::confirmDelete(
+          wp_nonce_url( add_query_arg( array( 'page' => 'ah-media', 'delete_id' => $item->id ), admin_url( 'admin.php' ) ), 'ah_delete_media' ),
+          'ah_delete_media'
+        ); ?>
       </div>
-    <?php endforeach; ?>
-    <?php if ( ! $items ) : ?><p style="color:var(--ah-muted);">No files found.</p><?php endif; ?>
-  </div>
+    </div>
+    <?php
+  endforeach;
+  if ( ! $items ) :
+    \Ah\Cms\Admin\Components\AdminComponents::emptyState( 'No files found.' );
+  endif;
+  $grid_content = ob_get_clean();
+  echo '<div class="ah-media-grid">' . $grid_content . '</div>';
+  ?>
 
   <?php echo AH_Pagination::render( $meta ); ?>
 </div>

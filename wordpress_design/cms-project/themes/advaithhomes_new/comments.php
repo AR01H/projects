@@ -3,7 +3,7 @@
  * comments.php - Custom comments template for advaithhomes_new.
  *
  * Called via comments_template() from single.php.
- * Render callbacks live in includes/comment-callbacks.php (loaded in functions.php)
+ * Render callbacks live in includes/CommentCallbacks.php (loaded in functions.php)
  * so they are also available to the AJAX handlers.
  *
  * Initial page load: first 10 approved comments rendered server-side.

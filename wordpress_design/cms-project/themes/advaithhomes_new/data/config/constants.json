@@ -1,0 +1,29 @@
+{
+    "_comment": "Feature flags and operational limits. Toggle features without code changes.",
+    "features": {
+        "enable_newsletter": true,
+        "enable_whatsapp": true,
+        "enable_comments": true,
+        "enable_search": true,
+        "enable_calculators": true,
+        "enable_experts": true,
+        "enable_guidance": true,
+        "enable_news": true,
+        "enable_coming_soon": false,
+        "enable_cookie_consent": true,
+        "enable_analytics_consent": true,
+        "enable_floating_contact": true
+    },
+    "limits": {
+        "news_per_page": 12,
+        "guides_per_page": 12,
+        "tools_per_page": 12,
+        "faqs_per_page": 50,
+        "reviews_per_page": 10,
+        "search_min_length": 3,
+        "newsletter_max_per_page": 3
+    },
+    "social": {
+        "share_platforms": ["facebook", "twitter", "linkedin", "whatsapp", "email"]
+    }
+}

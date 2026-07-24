@@ -340,7 +340,7 @@ section{
   background: var(--color-white);
   overflow: hidden;
   border-bottom: 1px solid var(--color-border);
-  min-height: 600px;
+  min-height: 90vh;
   max-height: 100vh;
 }
 .hero-home-inner {
@@ -352,8 +352,8 @@ section{
   align-items: center;
   height: 100%;
   min-height: inherit;
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 75px;
+  padding-bottom: 45px;
 }
 
 /* Mobile diagram strip - hidden on desktop, shown below the hero on mobile */
@@ -371,7 +371,7 @@ section{
 .hero-title { 
   margin-bottom: var(--space-1); 
   font-family: var(--font-display, Georgia, serif);
-  font-size: clamp(2.0rem, 4vw, 3.0rem);
+  font-size: clamp(2.0rem, 4vw, 2.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: #1a2332;
@@ -391,7 +391,7 @@ section{
   margin-top: 24px;
   margin-bottom: 12px;
 }
-.hero-desc { font-size: 1rem; color: var(--color-black); margin-bottom: var(--space-5); max-width: 50vw;    margin-top: 32px; }
+.hero-desc { font-size: 0.8rem; color: var(--color-black); margin-bottom: var(--space-5); max-width: 50vw;    margin-top: 32px; }
 .hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .hero-trust {
   display: flex;
@@ -559,9 +559,12 @@ section{
   .phb-premium ~ .container .page-hero-content,
   .phb-premium ~ .container .tools-hero-content {
     min-height: auto;
-    padding-top: 60px !important;
-    padding-bottom: 80px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
   }
+	.hero-home {
+		min-height:500px;
+	}
 }
 
 /* Post Sidebar Chunk Buttons */
@@ -798,7 +801,7 @@ section{
   }
   .phb-premium .phb-overlay {
     /* On mobile, fade from top to bottom instead of left to right so all text is readable */
-    background: linear-gradient(to bottom, rgba(14,23,20, 0.95) 0%, rgba(14,23,20, 0.85) 50%, rgba(14,23,20, 0.4) 100%);
+    /*background: linear-gradient(to bottom, rgba(14,23,20, 0.95) 0%, rgba(14,23,20, 0.85) 50%, rgba(14,23,20, 0.4) 100%); */
   }
 }
 

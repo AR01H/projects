@@ -334,12 +334,222 @@
 		onScroll();
 	}
 
+	/**
+	 * Image lightbox - generic and opt-in, no library.
+	 *
+	 * Mark a container with data-nt-lightbox; every <img> inside it becomes
+	 * clickable and opens full-screen. Images in the SAME container form a
+	 * gallery you can page through (arrows / swipe-free prev-next buttons).
+	 * Caption comes from the image's data-caption, else its alt text.
+	 *
+	 *   <div data-nt-lightbox> <img src alt data-caption> ... </div>
+	 *
+	 * Keyboard: Esc closes, Left/Right navigate. Focus returns to the opener.
+	 */
+	function initLightbox() {
+		var groups = document.querySelectorAll('[data-nt-lightbox]');
+		if (!groups.length) { return; }
+
+		var overlay, imgEl, capEl, current = [], index = 0, opener = null;
+
+		function build() {
+			overlay = document.createElement('div');
+			overlay.className = 'nt-lightbox';
+			overlay.setAttribute('role', 'dialog');
+			overlay.setAttribute('aria-modal', 'true');
+			overlay.setAttribute('aria-label', 'Image viewer');
+			overlay.innerHTML =
+				'<button type="button" class="nt-lightbox__close" aria-label="Close">&times;</button>' +
+				'<button type="button" class="nt-lightbox__nav nt-lightbox__nav--prev" aria-label="Previous image">&#8249;</button>' +
+				'<figure class="nt-lightbox__figure">' +
+					'<img class="nt-lightbox__img" src="" alt="">' +
+					'<figcaption class="nt-lightbox__cap"></figcaption>' +
+				'</figure>' +
+				'<button type="button" class="nt-lightbox__nav nt-lightbox__nav--next" aria-label="Next image">&#8250;</button>';
+			document.body.appendChild(overlay);
+			imgEl = overlay.querySelector('.nt-lightbox__img');
+			capEl = overlay.querySelector('.nt-lightbox__cap');
+
+			overlay.querySelector('.nt-lightbox__close').addEventListener('click', close);
+			overlay.querySelector('.nt-lightbox__nav--prev').addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
+			overlay.querySelector('.nt-lightbox__nav--next').addEventListener('click', function (e) { e.stopPropagation(); step(1); });
+			overlay.addEventListener('click', function (e) { if (e.target === overlay) { close(); } });
+			document.addEventListener('keydown', function (e) {
+				if (!overlay.classList.contains('is-open')) { return; }
+				if (e.key === 'Escape') { close(); }
+				if (e.key === 'ArrowLeft') { step(-1); }
+				if (e.key === 'ArrowRight') { step(1); }
+			});
+		}
+
+		function show() {
+			var img = current[index];
+			if (!img) { return; }
+			imgEl.src = img.currentSrc || img.src;
+			imgEl.alt = img.alt || '';
+			var cap = img.getAttribute('data-caption') || img.alt || '';
+			capEl.textContent = cap;
+			capEl.hidden = (cap === '');
+			var multi = current.length > 1;
+			overlay.querySelector('.nt-lightbox__nav--prev').hidden = !multi;
+			overlay.querySelector('.nt-lightbox__nav--next').hidden = !multi;
+		}
+		function step(dir) {
+			if (!current.length) { return; }
+			index = (index + dir + current.length) % current.length;
+			show();
+		}
+		function open(list, i, from) {
+			if (!overlay) { build(); }
+			current = list; index = i; opener = from || null;
+			show();
+			overlay.classList.add('is-open');
+			document.body.classList.add('nt-lightbox-open');
+			overlay.querySelector('.nt-lightbox__close').focus();
+		}
+		function close() {
+			if (!overlay) { return; }
+			overlay.classList.remove('is-open');
+			document.body.classList.remove('nt-lightbox-open');
+			if (opener && typeof opener.focus === 'function') { opener.focus(); }
+		}
+
+		groups.forEach(function (group) {
+			var imgs = Array.prototype.slice.call(group.querySelectorAll('img'));
+			if (!imgs.length) { return; }
+			imgs.forEach(function (img, i) {
+				img.classList.add('nt-lightbox-trigger');
+				if (!img.hasAttribute('tabindex')) { img.setAttribute('tabindex', '0'); }
+				img.setAttribute('role', 'button');
+				img.addEventListener('click', function () { open(imgs, i, img); });
+				img.addEventListener('keydown', function (e) {
+					if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(imgs, i, img); }
+				});
+			});
+		});
+	}
+
+	/**
+	 * Tag filtering - generic, data-attribute driven, no config.
+	 *
+	 *   <div data-nt-filter>
+	 *     <button data-nt-filter-btn="all">All</button>
+	 *     <button data-nt-filter-btn="classic">Classic</button>
+	 *     <article data-nt-filter-item data-tags="classic herbal"> … </article>
+	 *     <p data-nt-filter-empty hidden>Nothing here</p>
+	 *   </div>
+	 *
+	 * "all" (or an empty key) shows everything. Progressive enhancement: with
+	 * JS off every item stays visible, so content is never script-dependent.
+	 */
+	function initFilters() {
+		var scopes = document.querySelectorAll('[data-nt-filter]');
+		scopes.forEach(function (scope) {
+			var buttons = scope.querySelectorAll('[data-nt-filter-btn]');
+			var items   = scope.querySelectorAll('[data-nt-filter-item]');
+			var empty   = scope.querySelector('[data-nt-filter-empty]');
+			if (!buttons.length || !items.length) { return; }
+
+			function apply(key) {
+				var shown = 0;
+				items.forEach(function (item) {
+					var tags = (item.getAttribute('data-tags') || '').split(/\s+/);
+					var show = (!key || key === 'all' || tags.indexOf(key) !== -1);
+					item.hidden = !show;
+					if (show) { shown++; }
+				});
+				if (empty) { empty.hidden = (shown > 0); }
+			}
+
+			buttons.forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					buttons.forEach(function (b) {
+						b.classList.toggle('is-active', b === btn);
+						b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+					});
+					apply(btn.getAttribute('data-nt-filter-btn'));
+				});
+			});
+
+			var initial = scope.querySelector('[data-nt-filter-btn].is-active');
+			apply(initial ? initial.getAttribute('data-nt-filter-btn') : 'all');
+		});
+	}
+
+	/**
+	 * Scroll UI: a reading-progress rule across the top of the page and a
+	 * back-to-top button that appears once you are well down the page.
+	 *
+	 * Both elements are created here rather than in a template, so nothing in
+	 * the markup has to opt in and no page can end up with a duplicate. Skipped
+	 * entirely on pages too short to scroll meaningfully.
+	 */
+	function initScrollUI() {
+		var doc = document.documentElement;
+		if (!document.body) { return; }
+
+		var progress = document.createElement('div');
+		progress.className = 'nt-progress';
+
+		var toTop = document.createElement('button');
+		toTop.type = 'button';
+		toTop.className = 'nt-totop';
+		toTop.setAttribute('aria-label', 'Back to top');
+		toTop.innerHTML = '<span aria-hidden="true">&#8593;</span>';
+
+		document.body.appendChild(progress);
+		document.body.appendChild(toTop);
+
+		var ticking = false;
+
+		function update() {
+			ticking = false;
+			var max = (doc.scrollHeight || 0) - window.innerHeight;
+			if (max <= 40) {
+				progress.style.transform = 'scaleX(0)';
+				toTop.classList.remove('is-visible');
+				return;
+			}
+			var y = window.pageYOffset || doc.scrollTop || 0;
+			var ratio = Math.min(1, Math.max(0, y / max));
+			progress.style.transform = 'scaleX(' + ratio + ')';
+			toTop.classList.toggle('is-visible', y > window.innerHeight * 0.8);
+		}
+
+		function onScroll() {
+			if (ticking) { return; }
+			ticking = true;
+			window.requestAnimationFrame(update);
+		}
+
+		toTop.addEventListener('click', function () {
+			var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+			// Send focus somewhere sensible at the top instead of leaving it on
+			// a button that is about to fade out.
+			var target = document.querySelector('header a, header button, #nt-main');
+			if (target) {
+				if (!target.hasAttribute('tabindex') && target.id === 'nt-main') {
+					target.setAttribute('tabindex', '-1');
+				}
+				target.focus({ preventScroll: true });
+			}
+		});
+
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll);
+		update();
+	}
+
 	function init() {
 		initAjaxForms();
 		initModals();
 		initWizards();
 		initMediaCarousels();
 		initNavScroll();
+		initLightbox();
+		initFilters();
+		initScrollUI();
 	}
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', init);

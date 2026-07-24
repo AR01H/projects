@@ -20,42 +20,26 @@ $total_media    = $media_model->count();
 $recent_posts = $posts_model->get_paginated( 1, array( 'order' => 'DESC', 'limit' => 5 ) )['items'];
 ?>
 <div class="wrap ah-wrap">
-  <h1><span class="dashicons dashicons-admin-home"></span> <?php esc_html_e( 'CMS Dashboard', 'ah-theme' ); ?></h1>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'admin-home', 'CMS Dashboard', 'Overview of your site content, recent activity, and quick actions.' ); ?>
 
   <!-- Stats Grid -->
   <div class="ah-stats-grid">
-    <?php
-    $stats = array(
-      array( 'label' => 'Pages',         'value' => $total_pages,    'icon' => 'dashicons-admin-page',    'link' => admin_url('admin.php?page=ah-pages') ),
-      array( 'label' => 'Posts',         'value' => $total_posts,    'icon' => 'dashicons-edit',           'link' => admin_url('admin.php?page=ah-posts') ),
-      array( 'label' => 'Reviews',       'value' => $total_reviews,  'icon' => 'dashicons-star-filled',    'link' => admin_url('admin.php?page=ah-reviews') ),
-      array( 'label' => 'FAQs',          'value' => $total_faqs,     'icon' => 'dashicons-editor-help',    'link' => admin_url('admin.php?page=ah-faqs') ),
-      array( 'label' => 'Media Files',   'value' => $total_media,    'icon' => 'dashicons-images-alt2',    'link' => admin_url('admin.php?page=ah-media') ),
-    );
-    foreach ( $stats as $s ) : ?>
-      <a href="<?php echo esc_url( $s['link'] ); ?>" style="text-decoration:none;">
-        <div class="ah-stat-card">
-          <div class="stat-icon dashicons <?php echo esc_attr( $s['icon'] ); ?>"></div>
-          <div class="stat-number"><?php echo esc_html( $s['value'] ); ?></div>
-          <div class="stat-label"><?php echo esc_html( $s['label'] ); ?></div>
-        </div>
-      </a>
-    <?php endforeach; ?>
+    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-pages' ) ); ?>" style="text-decoration:none;"><?php \Ah\Cms\Admin\Components\AdminComponents::statCard( $total_pages, 'Pages', 'dashicons-admin-page' ); ?></a>
+    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-posts' ) ); ?>" style="text-decoration:none;"><?php \Ah\Cms\Admin\Components\AdminComponents::statCard( $total_posts, 'Posts', 'dashicons-edit' ); ?></a>
+    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-reviews' ) ); ?>" style="text-decoration:none;"><?php \Ah\Cms\Admin\Components\AdminComponents::statCard( $total_reviews, 'Reviews', 'dashicons-star-filled' ); ?></a>
+    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-faqs' ) ); ?>" style="text-decoration:none;"><?php \Ah\Cms\Admin\Components\AdminComponents::statCard( $total_faqs, 'FAQs', 'dashicons-editor-help' ); ?></a>
+    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-media' ) ); ?>" style="text-decoration:none;"><?php \Ah\Cms\Admin\Components\AdminComponents::statCard( $total_media, 'Media Files', 'dashicons-images-alt2' ); ?></a>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-    <!-- Quick Links -->
-    <div class="ah-card">
-      <div class="ah-card-header">
-        <h2><?php esc_html_e( 'Quick Actions', 'ah-theme' ); ?></h2>
-      </div>
+    <?php ob_start(); ?>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <?php
         $links = array(
           array( 'url' => 'ah-posts&action=add',     'label' => '+ New Post',     'icon' => 'dashicons-edit'         ),
           array( 'url' => 'ah-reviews&action=add',   'label' => '+ New Review',   'icon' => 'dashicons-star-filled'  ),
           array( 'url' => 'ah-faqs&action=add',      'label' => '+ New FAQ',      'icon' => 'dashicons-editor-help'  ),
-          array( 'url' => 'ah-settings',             'label' => 'Site Settings',  'icon' => 'dashicons-admin-settings'),
+          array( 'url' => 'ah-cms-settings',         'label' => 'Site Settings',  'icon' => 'dashicons-admin-settings'),
         );
         foreach ( $links as $l ) : ?>
           <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $l['url'] ) ); ?>" class="ah-btn ah-btn-secondary" style="justify-content:center;">
@@ -63,7 +47,6 @@ $recent_posts = $posts_model->get_paginated( 1, array( 'order' => 'DESC', 'limit
           </a>
         <?php endforeach; ?>
       </div>
-    </div>
-
+    <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Quick Actions', ob_get_clean() ); ?>
   </div><!-- /grid -->
 </div>

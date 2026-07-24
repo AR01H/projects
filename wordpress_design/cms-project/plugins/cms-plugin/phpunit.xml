@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    verbose="true"
+    failOnRisky="true"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Repository">
+            <directory>tests/Repository/</directory>
+        </testsuite>
+        <testsuite name="Service">
+            <directory>tests/Service/</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">src/</directory>
+        </include>
+        <exclude>
+            <directory>src/Feature/*/Controller/</directory>
+            <directory>src/Feature/*/View/</directory>
+        </exclude>
+    </coverage>
+</phpunit>

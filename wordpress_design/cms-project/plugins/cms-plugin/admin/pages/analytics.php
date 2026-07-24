@@ -17,16 +17,8 @@ if ( $action === 'edit' && $report_id && ! $report ) {
      EDIT / ADD VIEW
 ══════════════════════════════════════════════════════════════ -->
 
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
-	<h1 style="margin:0">
-		<span class="dashicons dashicons-chart-bar"></span>
-		<?php echo $report ? esc_html( $report->name ) : 'New Report'; ?>
-	</h1>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-analytics' ) ); ?>"
-	   class="ah-btn ah-btn-secondary" style="margin-left:auto">
-		&larr; Back to Reports
-	</a>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::backLink( admin_url( 'admin.php?page=ah-analytics' ), '← Back to Reports' ); ?>
+<h2 style="margin:0 0 6px;font-size:1.15rem;"><?php echo $report ? esc_html( $report->name ) : 'New Report'; ?></h2>
 <p style="color:var(--ah-muted);margin-bottom:24px">
 	Write a SELECT query, run it to preview results, then save + export.
 </p>
@@ -34,74 +26,48 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 <div style="display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start">
 
 	<!-- Query editor -->
-	<div class="ah-card" style="padding:20px">
+	<?php ob_start(); ?>
 		<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-			<div>
-				<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
-					Report Name *
-				</label>
-				<input id="ar-name" type="text" class="regular-text"
-				       value="<?php echo esc_attr( $report->name ?? '' ); ?>"
-				       placeholder="Monthly Active Users" style="width:100%">
-			</div>
-			<div>
-				<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
-					Description
-				</label>
-				<input id="ar-desc" type="text" class="regular-text"
-				       value="<?php echo esc_attr( $report->description ?? '' ); ?>"
-				       placeholder="Optional note" style="width:100%">
-			</div>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Report Name *', '<input id="ar-name" type="text" class="regular-text" value="' . esc_attr( $report->name ?? '' ) . '" placeholder="Monthly Active Users" style="width:100%">' ); ?>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Description', '<input id="ar-desc" type="text" class="regular-text" value="' . esc_attr( $report->description ?? '' ) . '" placeholder="Optional note" style="width:100%">' ); ?>
 		</div>
 
 		<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-			<div>
-				<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
-					Report Type
-				</label>
-				<select id="ar-type" style="width:100%;max-width:none">
-					<option value="sql" <?php selected( $report->report_type ?? 'sql', 'sql' ); ?>>SQL Query</option>
-					<option value="php" <?php selected( $report->report_type ?? 'sql', 'php' ); ?>>PHP Code</option>
-				</select>
-			</div>
-			<div>
-				<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
-					API Visibility
-				</label>
-				<select id="ar-api-vis" style="width:100%;max-width:none">
-					<option value="private" <?php selected( $report->api_visibility ?? 'private', 'private' ); ?>>Private (Admin Only)</option>
-					<option value="public" <?php selected( $report->api_visibility ?? 'private', 'public' ); ?>>Public (Anyone)</option>
-				</select>
-			</div>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Report Type',
+				'<select id="ar-type" style="width:100%;max-width:none">'
+				. '<option value="sql"' . selected( $report->report_type ?? 'sql', 'sql', false ) . '>SQL Query</option>'
+				. '<option value="php"' . selected( $report->report_type ?? 'sql', 'php', false ) . '>PHP Code</option>'
+				. '</select>'
+			); ?>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'API Visibility',
+				'<select id="ar-api-vis" style="width:100%;max-width:none">'
+				. '<option value="private"' . selected( $report->api_visibility ?? 'private', 'private', false ) . '>Private (Admin Only)</option>'
+				. '<option value="public"' . selected( $report->api_visibility ?? 'private', 'public', false ) . '>Public (Anyone)</option>'
+				. '</select>'
+			); ?>
 		</div>
 
 		<?php if ( $report && $report->id ) : ?>
 		<div style="margin-bottom:14px;background:#f8fafc;padding:10px;border-radius:4px;font-size:12px;display:flex;align-items:center;gap:10px">
-			<strong style="color:var(--ah-muted)">API Endpoint:</strong> 
+			<strong style="color:var(--ah-muted)">API Endpoint:</strong>
 			<code style="background:transparent;padding:0;color:#0369a1"><?php echo esc_url( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ); ?></code>
-			<button type="button" class="ah-btn ah-btn-secondary" style="padding:2px 6px;font-size:10px" onclick="navigator.clipboard.writeText('<?php echo esc_js( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ); ?>');alert('Copied!')">Copy</button>
+			<button type="button" class="ah-btn ah-btn-secondary" style="padding:2px 6px;font-size:10px" onclick="navigator.clipboard.writeText('<?php echo esc_js( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ) ; ?>');alert('Copied!')">Copy</button>
 		</div>
 		<?php endif; ?>
 
 		<div id="ar-sql-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'php' ? 'display:none' : ''; ?>">
-			<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
-				SQL Query * <span style="font-weight:400;text-transform:none;letter-spacing:0">(SELECT, DESC, SHOW CREATE)</span>
-			</label>
-			<textarea id="ar-sql" rows="12"
-					style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6"
-					placeholder="SELECT * FROM wp_posts WHERE post_status = 'publish' LIMIT 20"
-			><?php echo esc_textarea( $report->query_sql ?? '' ); ?></textarea>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'SQL Query * <span style="font-weight:400;text-transform:none;letter-spacing:0">(SELECT, DESC, SHOW CREATE)</span>',
+				'<textarea id="ar-sql" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6" placeholder="SELECT * FROM wp_posts WHERE post_status = \'publish\' LIMIT 20">'
+				. esc_textarea( $report->query_sql ?? '' ) . '</textarea>'
+			); ?>
 		</div>
 
 		<div id="ar-php-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'sql' ? 'display:none' : ''; ?>">
-			<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ah-muted);margin-bottom:6px">
-				PHP Code * <span style="font-weight:400;text-transform:none;letter-spacing:0">(Must return an array of arrays)</span>
-			</label>
-			<textarea id="ar-php" rows="12"
-					style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6"
-					placeholder="$data = [];&#10;foreach ( get_users() as $u ) {&#10;    $data[] = [ 'ID' => $u->ID, 'Login' => $u->user_login ];&#10;}&#10;return $data;"
-			><?php echo esc_textarea( $report->query_php ?? '' ); ?></textarea>
-			<p style="font-size:11px;color:var(--ah-muted);margin:6px 0 0">Security warning: This code is executed via `eval()`. Do not use untrusted input.</p>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'PHP Code * <span style="font-weight:400;text-transform:none;letter-spacing:0">(Must return an array of arrays)</span>',
+				'<textarea id="ar-php" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6" placeholder="$data = [];&#10;foreach ( get_users() as $u ) {&#10;    $data[] = [ \'ID\' => $u->ID, \'Login\' => $u->user_login ];&#10;}&#10;return $data;">'
+				. esc_textarea( $report->query_php ?? '' ) . '</textarea>'
+				. '<p style="font-size:11px;color:var(--ah-muted);margin:6px 0 0">Security warning: This code is executed via `eval()`. Do not use untrusted input.</p>'
+			); ?>
 		</div>
 
 		<div style="display:flex;gap:10px;margin-top:12px;align-items:center">
@@ -114,42 +80,30 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 			<span id="ar-save-status" style="font-size:13px;color:var(--ah-muted)"></span>
 			<span style="margin-left:auto;font-size:12px;color:var(--ah-muted)" id="ar-exec-info"></span>
 		</div>
-	</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Query Editor', ob_get_clean() ); ?>
 
 	<!-- Sidebar -->
 	<div style="display:flex;flex-direction:column;gap:16px">
 
 		<!-- Table reference -->
-		<div class="ah-card" style="padding:16px">
-			<h3 style="font-size:13px;font-weight:700;margin:0 0 10px">Available Tables</h3>
-			<?php
-			global $wpdb;
-			$tables = $wpdb->get_col( 'SHOW TABLES' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			sort( $tables );
-			?>
-			<div style="max-height:220px;overflow-y:auto">
-				<?php foreach ( $tables as $t ) : ?>
-				<div class="ar-tbl-row" data-table="<?php echo esc_attr( $t ); ?>"
-				     style="font-size:12px;font-family:monospace;padding:4px 8px;border-radius:4px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
-				     title="Click to insert table name">
-					<?php echo esc_html( $t ); ?>
-				</div>
-				<?php endforeach; ?>
-			</div>
-			<p style="font-size:11px;color:var(--ah-muted);margin:8px 0 0">Click a table name to insert it at cursor position.</p>
-		</div>
+		<?php
+		global $wpdb;
+		$tables = $wpdb->get_col( 'SHOW TABLES' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		sort( $tables );
+		$_tbl_content = '<div style="max-height:220px;overflow-y:auto">';
+		foreach ( $tables as $t ) {
+			$_tbl_content .= '<div class="ar-tbl-row" data-table="' . esc_attr( $t ) . '" style="font-size:12px;font-family:monospace;padding:4px 8px;border-radius:4px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="Click to insert table name">' . esc_html( $t ) . '</div>';
+		}
+		$_tbl_content .= '</div><p style="font-size:11px;color:var(--ah-muted);margin:8px 0 0">Click a table name to insert it at cursor position.</p>';
+		?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Available Tables', $_tbl_content ); ?>
 
 		<!-- Run history -->
 		<?php if ( $report ) : ?>
-		<div class="ah-card" style="padding:16px" id="ar-history-wrap">
-			<h3 style="font-size:13px;font-weight:700;margin:0 0 10px">
-				Run History
-				<button id="ar-load-history" class="ah-btn ah-btn-secondary"
-				        style="float:right;padding:2px 8px;font-size:11px"
-				        data-report-id="<?php echo esc_attr( $report->id ); ?>">Load</button>
-			</h3>
+		<?php ob_start(); ?>
+			<button id="ar-load-history" class="ah-btn ah-btn-secondary ah-btn-sm" style="float:right" data-report-id="<?php echo esc_attr( $report->id ); ?>">Load</button>
 			<div id="ar-history-list" style="font-size:12px;color:var(--ah-muted)">Click Load to show history.</div>
-		</div>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Run History', ob_get_clean() ); ?>
 		<?php endif; ?>
 
 	</div>
@@ -158,7 +112,7 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 
 <!-- Results area - always visible -->
 <div id="ar-results-wrap" style="margin-top:24px">
-	<div class="ah-card" style="padding:20px">
+	<?php ob_start(); ?>
 		<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
 			<h2 style="margin:0;font-size:15px">Results</h2>
 			<span id="ar-results-meta" style="font-size:13px;color:var(--ah-muted)"></span>
@@ -192,7 +146,7 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 			<table class="ah-table" id="ar-results-table" style="display:none;font-size:12px"></table>
 		</div>
 		<div id="ar-export-link" style="margin-top:10px;font-size:13px"></div>
-	</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Results', ob_get_clean() ); ?>
 </div>
 
 <input type="hidden" id="ar-report-id" value="<?php echo esc_attr( $report->id ?? 0 ); ?>">
@@ -203,16 +157,18 @@ if ( $action === 'edit' && $report_id && ! $report ) {
      LIST VIEW
 ══════════════════════════════════════════════════════════════ -->
 
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-	<h1 style="margin:0"><span class="dashicons dashicons-chart-bar"></span> Analytics Reports</h1>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit' ) ); ?>"
-	   class="ah-btn ah-btn-primary" style="margin-left:auto">
-		+ New Report
-	</a>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'chart-bar', 'Analytics Reports', 'View traffic reports, page performance, and visitor insights.' ); ?>
+<?php ob_start(); ?>
+	<div style="display:flex;justify-content:flex-end;">
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit' ) ); ?>"
+		   class="ah-btn ah-btn-primary">
+			+ New Report
+		</a>
+	</div>
+<?php echo ob_get_clean(); ?>
 
 <?php if ( isset( $_GET['deleted'] ) ) : ?>
-	<div class="notice notice-success is-dismissible"><p>Report deleted.</p></div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::notice( 'Report deleted.', 'success' ); ?>
 <?php endif; ?>
 
 <?php
@@ -220,81 +176,57 @@ $reports = ( new AH_Analytics_Report_Model() )->all_with_last_result();
 ?>
 
 <?php if ( empty( $reports ) ) : ?>
-<div class="ah-card" style="padding:48px;text-align:center;color:var(--ah-muted)">
-	<span class="dashicons dashicons-chart-bar" style="font-size:2.5rem;height:auto;width:auto;margin-bottom:12px;display:block;opacity:.4"></span>
-	<p style="font-size:15px;margin-bottom:16px">No reports yet.</p>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit' ) ); ?>"
-	   class="ah-btn ah-btn-primary">Create Your First Report</a>
-</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::emptyState( 'No reports yet. Create your first report to get started.', 'chart-bar' ); ?>
+	<div style="text-align:center;margin-top:12px;">
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit' ) ); ?>"
+		   class="ah-btn ah-btn-primary">Create Your First Report</a>
+	</div>
 <?php else : ?>
-<div class="ah-table-wrap">
-<table class="ah-table">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Description</th>
-			<th style="width:130px">Last Run</th>
-			<th style="width:70px;text-align:center">Runs</th>
-			<th style="width:90px;text-align:center">Last Status</th>
-			<th style="width:70px;text-align:center">Rows</th>
-			<th style="width:60px;text-align:center">ms</th>
-			<th style="width:160px">Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-	<?php foreach ( $reports as $r ) :
-		$status_colors = [ 'success' => '#dcfce7|#16a34a', 'error' => '#fee2e2|#dc2626' ];
-		[ $sbg, $sfg ] = explode( '|', $status_colors[ $r->last_status ?? '' ] ?? '#f1f5f9|#64748b' );
-	?>
-	<tr>
-		<td>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit&id=' . $r->id ) ); ?>"
-			   style="font-weight:600">
-				<?php echo esc_html( $r->name ); ?>
-			</a>
-		</td>
-		<td style="color:var(--ah-muted);max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-			<?php echo esc_html( $r->description ?: '-' ); ?>
-		</td>
-		<td style="font-size:12px;color:var(--ah-muted)">
-			<?php echo $r->last_run_at ? esc_html( wp_date( 'M j Y g:i a', strtotime( $r->last_run_at ) ) ) : '<em>Never</em>'; ?>
-		</td>
-		<td style="text-align:center"><?php echo (int) $r->run_count; ?></td>
-		<td style="text-align:center">
-			<?php if ( $r->last_status ) : ?>
-			<span style="background:<?php echo esc_attr( $sbg ); ?>;color:<?php echo esc_attr( $sfg ); ?>;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">
-				<?php echo esc_html( strtoupper( $r->last_status ) ); ?>
-			</span>
-			<?php else : echo '-'; endif; ?>
-		</td>
-		<td style="text-align:center"><?php echo $r->last_row_count !== null ? (int) $r->last_row_count : '-'; ?></td>
-		<td style="text-align:center;font-size:11px;color:var(--ah-muted)"><?php echo $r->last_exec_ms !== null ? (int) $r->last_exec_ms : '-'; ?></td>
-		<td>
-			<div style="display:flex;gap:6px;flex-wrap:wrap">
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit&id=' . $r->id ) ); ?>"
-				   class="ah-btn ah-btn-secondary" style="font-size:11px;padding:3px 8px">Edit</a>
-				<?php if ( $r->last_status === 'success' ) : ?>
-				<button class="ah-btn ah-btn-secondary ar-quick-export" style="font-size:11px;padding:3px 8px"
-				        data-report-id="<?php echo esc_attr( $r->id ); ?>" data-format="csv" title="Export last result as CSV">
-					CSV
-				</button>
-				<button class="ah-btn ah-btn-secondary ar-quick-export" style="font-size:11px;padding:3px 8px"
-				        data-report-id="<?php echo esc_attr( $r->id ); ?>" data-format="json" title="Export last result as JSON">
-					JSON
-				</button>
-				<?php endif; ?>
-				<button class="ah-btn ar-delete-btn" style="font-size:11px;padding:3px 8px;background:#fee2e2;color:#dc2626;border:1px solid #fca5a5"
-				        data-id="<?php echo esc_attr( $r->id ); ?>"
-				        data-name="<?php echo esc_attr( $r->name ); ?>">
-					Delete
-				</button>
-			</div>
-		</td>
-	</tr>
-	<?php endforeach; ?>
-	</tbody>
-</table>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => 'Name', 'render' => function ( $r ) {
+			return '<a href="' . esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit&id=' . $r->id ) ) . '" style="font-weight:600">'
+				. esc_html( $r->name ) . '</a>';
+		} ),
+		array( 'label' => 'Description', 'render' => function ( $r ) {
+			return '<span style="color:var(--ah-muted);max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block">'
+				. esc_html( $r->description ?: '-' ) . '</span>';
+		} ),
+		array( 'label' => 'Last Run', 'style' => 'width:130px', 'render' => function ( $r ) {
+			return '<span style="font-size:12px;color:var(--ah-muted)">'
+				. ( $r->last_run_at ? esc_html( wp_date( 'M j Y g:i a', strtotime( $r->last_run_at ) ) ) : '<em>Never</em>' ) . '</span>';
+		} ),
+		array( 'label' => 'Runs', 'style' => 'width:70px;text-align:center', 'render' => function ( $r ) {
+			return (int) $r->run_count;
+		} ),
+		array( 'label' => 'Last Status', 'style' => 'width:90px;text-align:center', 'render' => function ( $r ) {
+			if ( ! $r->last_status ) return '-';
+			$status_colors = [ 'success' => '#dcfce7|#16a34a', 'error' => '#fee2e2|#dc2626' ];
+			[ $sbg, $sfg ] = explode( '|', $status_colors[ $r->last_status ] ?? '#f1f5f9|#64748b' );
+			return '<span style="background:' . esc_attr( $sbg ) . ';color:' . esc_attr( $sfg ) . ';padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">'
+				. esc_html( strtoupper( $r->last_status ) ) . '</span>';
+		} ),
+		array( 'label' => 'Rows', 'style' => 'width:70px;text-align:center', 'render' => function ( $r ) {
+			return $r->last_row_count !== null ? (int) $r->last_row_count : '-';
+		} ),
+		array( 'label' => 'ms', 'style' => 'width:60px;text-align:center', 'render' => function ( $r ) {
+			return '<span style="font-size:11px;color:var(--ah-muted)">' . ( $r->last_exec_ms !== null ? (int) $r->last_exec_ms : '-' ) . '</span>';
+		} ),
+	),
+	'items'         => $reports,
+	'empty_message' => 'No reports yet.',
+	'actions'       => function ( $r ) {
+		$html = '<div style="display:flex;gap:6px;flex-wrap:wrap">';
+		$html .= '<a href="' . esc_url( admin_url( 'admin.php?page=ah-analytics&action=edit&id=' . $r->id ) ) . '" class="ah-btn ah-btn-secondary" style="font-size:11px;padding:3px 8px">Edit</a>';
+		if ( $r->last_status === 'success' ) {
+			$html .= '<button class="ah-btn ah-btn-secondary ar-quick-export" style="font-size:11px;padding:3px 8px" data-report-id="' . esc_attr( $r->id ) . '" data-format="csv" title="Export last result as CSV">CSV</button>';
+			$html .= '<button class="ah-btn ah-btn-secondary ar-quick-export" style="font-size:11px;padding:3px 8px" data-report-id="' . esc_attr( $r->id ) . '" data-format="json" title="Export last result as JSON">JSON</button>';
+		}
+		$html .= '<button class="ah-btn ar-delete-btn" style="font-size:11px;padding:3px 8px;background:#fee2e2;color:#dc2626;border:1px solid #fca5a5" data-id="' . esc_attr( $r->id ) . '" data-name="' . esc_attr( $r->name ) . '">Delete</button>';
+		$html .= '</div>';
+		return $html;
+	},
+) ); ?>
 <?php endif; ?>
 
 <?php endif; /* end list/edit switch */ ?>

@@ -27,7 +27,7 @@ class NT_Section_Renderer {
 	 * JSON registry file (admin/data/<DATA_KEY>.json) that maps page keys to
 	 * an ordered list of section definitions.
 	 */
-	const DATA_KEY = 'page_sections';
+	public const DATA_KEY = 'page_sections';
 
 	/**
 	 * Render every section registered for a page, in order.
@@ -58,11 +58,17 @@ class NT_Section_Renderer {
 	 * Render one section definition.
 	 *
 	 * Section shape (all keys optional except `component`):
-	 *   component (string)  components/<component>.php to render. Required.
-	 *   key       (string)  visibility toggle via sections.json (nt_section_visible).
-	 *   header    (string)  merge page_headers.json[header] into the context
-	 *                       (used with component "parts/page_header").
-	 *   args      (object)  extra context passed to the component.
+	 *   component (string)        components/<component>.php to render. Required.
+	 *   key       (string)        visibility toggle via sections.json (nt_section_visible).
+	 *   header    (string)        merge page_headers.json[header] into the context
+	 *                             (used with component "parts/page_header").
+	 *   args      (object)        extra context passed to the component.
+	 *   variant   (string|array)  design variant(s) - wraps the section in
+	 *                             .nt-variant.nt-variant--<name> so the SAME
+	 *                             component can look different on each page
+	 *                             (e.g. "dark", "compact", "split") with no PHP
+	 *                             or component change. See "SECTION VARIANTS" in
+	 *                             assets/css/vintage.css for the available names.
 	 *
 	 * @param array $section
 	 */
@@ -78,14 +84,49 @@ class NT_Section_Renderer {
 			return;
 		}
 
-		$context = self::build_context( $section );
-
-		if ( function_exists( 'nt_component' ) ) {
-			// nt_component() realpath-guards the path and extracts $context into
-			// variables, so parts/page_header gets $title/$subtitle/etc while a
-			// plain section component just reads its own JSON and ignores context.
-			nt_component( $component, $context );
+		if ( ! function_exists( 'nt_component' ) ) {
+			return;
 		}
+
+		$context = self::build_context( $section );
+		$wrapper = self::variant_class( $section );
+
+		// The variant wrapper is what lets one component carry many designs:
+		// CSS targets `.nt-variant--dark .nt-reviews { … }` etc.
+		if ( '' !== $wrapper ) {
+			echo '<div class="' . esc_attr( $wrapper ) . '">';
+		}
+
+		// nt_component() realpath-guards the path and extracts $context into
+		// variables, so parts/page_header gets $title/$subtitle/etc while a
+		// plain section component just reads its own JSON and ignores context.
+		nt_component( $component, $context );
+
+		if ( '' !== $wrapper ) {
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Build the variant wrapper class list for a section, or '' when the section
+	 * declares no variant. Accepts a single string or an array of names.
+	 *
+	 * @param array $section
+	 * @return string
+	 */
+	protected static function variant_class( array $section ): string {
+		if ( empty( $section['variant'] ) ) {
+			return '';
+		}
+		$variants = is_array( $section['variant'] ) ? $section['variant'] : array( $section['variant'] );
+		$classes  = array( 'nt-variant' );
+		foreach ( $variants as $variant ) {
+			$slug = sanitize_html_class( (string) $variant );
+			if ( '' !== $slug ) {
+				$classes[] = 'nt-variant--' . $slug;
+			}
+		}
+		return ( count( $classes ) > 1 ) ? implode( ' ', $classes ) : '';
 	}
 
 	/**

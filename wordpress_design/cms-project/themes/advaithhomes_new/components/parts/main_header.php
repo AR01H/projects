@@ -60,9 +60,10 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                         $_nd  = isset( $item['description'] ) ? (string) $item['description'] : '';
                         $_img = isset( $item['panel_image'] ) ? (string) $item['panel_image'] : '';
                         $_ni  = isset( $item['icon'] )        ? (string) $item['icon']        : '';
+                        $_cc  = isset( $item['css_class'] )   ? (string) $item['css_class']   : '';
                         $_has_rich = '' !== $_nd || '' !== $_img || '' !== $_ni;
                         ?>
-                        <div class="nav-item has-dropdown">
+                        <div class="nav-item has-dropdown<?php echo $_cc ? ' ' . esc_attr( $_cc ) : ''; ?>">
                             <a href="<?php echo $url; ?>" class="nav-link" aria-haspopup="true" aria-expanded="false">
                                 <?php echo esc_html( $label ); ?>
                                 <span class="nav-caret" aria-hidden="true">▾</span>
@@ -71,8 +72,9 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                                 <div class="nav-dropdown__links">
                                     <?php foreach ( $children as $child ) : ?>
                                         <?php $child = (array) $child; ?>
+                                        <?php $_scc = isset( $child['css_class'] ) ? (string) $child['css_class'] : ''; ?>
                                         <a href="<?php echo esc_url( adn_link( isset( $child['url'] ) ? $child['url'] : '' ) ); ?>"
-                                           class="nav-dropdown-link<?php echo ! empty( $child['highlight'] ) ? ' nav-link--highlight' : ''; ?>" role="menuitem"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
+                                           class="nav-dropdown-link<?php echo ! empty( $child['highlight'] ) ? ' nav-link--highlight' : ''; ?><?php echo $_scc ? ' ' . esc_attr( $_scc ) : ''; ?>" role="menuitem"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
                                     <?php endforeach; ?>
                                 </div>
                                 <?php if ( '' !== $_img || '' !== $_nd ) : ?>
@@ -93,7 +95,8 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                             </div>
                         </div>
                     <?php else : ?>
-                        <a href="<?php echo $url; ?>" class="nav-link"><?php echo esc_html( $label ); ?></a>
+                        <?php $_cc = isset( $item['css_class'] ) ? (string) $item['css_class'] : ''; ?>
+                        <a href="<?php echo $url; ?>" class="nav-link<?php echo $_cc ? ' ' . esc_attr( $_cc ) : ''; ?>"><?php echo esc_html( $label ); ?></a>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </nav>
@@ -156,9 +159,10 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
         $label    = isset( $item['label'] ) ? $item['label'] : '';
         $url      = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
         $children = isset( $item['children'] ) ? (array) $item['children'] : array();
+        $_mcc     = isset( $item['css_class'] ) ? (string) $item['css_class'] : '';
         ?>
         <?php if ( ! empty( $children ) ) : ?>
-            <div class="mobile-nav-group">
+            <div class="mobile-nav-group<?php echo $_mcc ? ' ' . esc_attr( $_mcc ) : ''; ?>">
                 <button type="button" class="mobile-nav-toggle" aria-expanded="false">
                     <span><?php echo esc_html( $label ); ?></span>
                     <span class="mobile-nav-caret" aria-hidden="true">▾</span>
@@ -166,13 +170,14 @@ $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/sear
                 <div class="mobile-submenu" hidden>
                     <?php foreach ( $children as $child ) : ?>
                         <?php $child = (array) $child; ?>
+                        <?php $_scc = isset( $child['css_class'] ) ? (string) $child['css_class'] : ''; ?>
                         <a href="<?php echo esc_url( adn_link( isset( $child['url'] ) ? $child['url'] : '' ) ); ?>"
-                           class="mobile-subnav-link<?php echo ! empty( $child['highlight'] ) ? ' nav-link--highlight' : ''; ?>"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
+                           class="mobile-subnav-link<?php echo ! empty( $child['highlight'] ) ? ' nav-link--highlight' : ''; ?><?php echo $_scc ? ' ' . esc_attr( $_scc ) : ''; ?>"><?php echo esc_html( isset( $child['label'] ) ? $child['label'] : '' ); ?></a>
                     <?php endforeach; ?>
                 </div>
             </div>
         <?php else : ?>
-            <a href="<?php echo $url; ?>" class="mobile-nav-link"><?php echo esc_html( $label ); ?></a>
+            <a href="<?php echo $url; ?>" class="mobile-nav-link<?php echo $_mcc ? ' ' . esc_attr( $_mcc ) : ''; ?>"><?php echo esc_html( $label ); ?></a>
         <?php endif; ?>
     <?php endforeach; ?>
 

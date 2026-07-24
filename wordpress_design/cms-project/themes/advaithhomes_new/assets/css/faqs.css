@@ -10,7 +10,7 @@
 .faqs-page-layout {
     display: grid;
     grid-template-columns: 1fr 300px;
-    gap: var(--space-10);
+    gap: var(--space-8);
     align-items: start;
 }
 

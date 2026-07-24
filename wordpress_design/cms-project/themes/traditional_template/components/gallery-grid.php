@@ -3,10 +3,13 @@
  * Generic image gallery strip/grid.
  * Desktop: all cards in one row (horizontal scroll if overflow).
  * Mobile (≤767px): single-card carousel with dots + arrows + swipe.
+ *
+ * Switch data per page with `source` (defaults to gallery).
  */
 defined( 'ABSPATH' ) || exit;
 
-$_d       = nt_data('gallery') ?: [];
+$gg_source = ( isset( $source ) && $source ) ? (string) $source : 'gallery';
+$_d       = nt_data( $gg_source ) ?: [];
 $tag      = $args['tag']      ?? $_d['tag'] ?? 'Gallery';
 $title    = $args['title']    ?? $_d['title'] ?? 'Our Gallery';
 $body     = $args['body']     ?? $_d['body'] ?? '';
@@ -38,7 +41,7 @@ $next_id      = esc_attr( $id ) . '-next';
 		] ); ?>
 
 		<div class="nt-gstrip fade-up" data-id="<?php echo esc_attr( $id ); ?>">
-			<div class="nt-gstrip__track" id="<?php echo $track_id; ?>">
+			<div class="nt-gstrip__track" id="<?php echo $track_id; ?>" data-nt-lightbox>
 				<?php foreach ( $images as $i => $img ) : ?>
 					<div class="nt-gstrip__card<?php echo $i === 0 ? ' active' : ''; ?>">
 						<img src="<?php echo esc_url( $img['src'] ?? $img ); ?>"

@@ -62,9 +62,9 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 }
 ?>
 <div class="wrap ah-wrap">
-  <h1><span class="dashicons dashicons-calendar-alt"></span> Events &amp; Hire Packages</h1>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'calendar-alt', 'Events &amp; Hire Packages', 'Manage upcoming events, open days, and hire package listings.' ); ?>
   <?php if ( $notice ) : ?>
-    <div class="ah-notice ah-notice-<?php echo esc_attr( $n_type ); ?>"><?php echo esc_html( $notice ); ?></div>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, $n_type ); ?>
   <?php endif; ?>
 
   <?php if ( $action === 'list' ) :
@@ -75,91 +75,69 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
     $items  = $result['items'];
     $meta   = $result['meta'];
   ?>
-    <div class="ah-table-top">
-      <form class="ah-search-form" method="get">
-        <input type="hidden" name="page" value="ah-events">
-        <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search events…">
-        <select name="status">
-          <option value="">All Status</option>
-          <option value="active"   <?php selected( $status, 'active' ); ?>>Active</option>
-          <option value="inactive" <?php selected( $status, 'inactive' ); ?>>Inactive</option>
-        </select>
-        <button class="ah-btn ah-btn-secondary">Filter</button>
-      </form>
-      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-events', 'action' => 'add' ), admin_url( 'admin.php' ) ) ); ?>"
-         class="ah-btn ah-btn-primary">+ Add Event</a>
-    </div>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::filterBar( array(
+      'page_slug'          => 'ah-events',
+      'search_placeholder' => 'Search events…',
+      'search_value'       => $search,
+      'filters'            => array(
+        array(
+          'name'     => 'status',
+          'options'  => array(
+            ''        => 'All Status',
+            'active'  => 'Active',
+            'inactive' => 'Inactive',
+          ),
+          'selected' => $status,
+        ),
+      ),
+      'add_url'   => add_query_arg( array( 'page' => 'ah-events', 'action' => 'add' ), admin_url( 'admin.php' ) ),
+      'add_label' => '+ Add Event',
+    ) ); ?>
 
-    <div class="ah-table-wrap">
-      <table class="ah-table ah-sortable-list" data-model="events">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Icon</th>
-            <th>Title</th>
-            <th>Color</th>
-            <th>Items</th>
-            <th>Featured</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if ( empty( $items ) ) : ?>
-            <tr>
-              <td colspan="8" style="text-align:center;color:var(--ah-muted);padding:32px;">
-                No events yet. Click "+ Add Event" to create one.
-              </td>
-            </tr>
-          <?php endif; ?>
-          <?php foreach ( $items as $ev ) :
-            $ev_items = $ev->items ? json_decode( $ev->items, true ) : array();
-          ?>
-            <tr data-id="<?php echo esc_attr( $ev->id ); ?>">
-              <td class="ah-sort-handle">&#9776;</td>
-              <td style="font-size:2rem;line-height:1;"><?php echo esc_html( $ev->icon ); ?></td>
-              <td>
-                <strong><?php echo esc_html( $ev->title ); ?></strong>
-                <?php if ( $ev->description ) : ?>
-                  <br><small style="color:var(--ah-muted);"><?php echo esc_html( wp_trim_words( $ev->description, 10 ) ); ?></small>
-                <?php endif; ?>
-              </td>
-              <td>
-                <span class="ah-badge" style="background:<?php echo esc_attr( self_color_bg( $ev->color ?? 'green' ) ); ?>;color:#fff;">
-                  <?php echo esc_html( $colors[ $ev->color ] ?? $ev->color ); ?>
-                </span>
-              </td>
-              <td>
-                <?php if ( ! empty( $ev_items ) ) : ?>
-                  <small style="color:var(--ah-muted);"><?php echo count( $ev_items ); ?> bullet<?php echo count( $ev_items ) !== 1 ? 's' : ''; ?></small>
-                <?php else : ?>
-                  <small style="color:var(--ah-muted);">-</small>
-                <?php endif; ?>
-              </td>
-              <td>
-                <?php echo $ev->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-'; ?>
-              </td>
-              <td>
-                <span class="ah-badge ah-badge-<?php echo esc_attr( $ev->status ); ?>">
-                  <?php echo esc_html( $ev->status ); ?>
-                </span>
-              </td>
-              <td class="row-actions">
-                <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-events', 'action' => 'edit', 'id' => $ev->id ), admin_url( 'admin.php' ) ) ); ?>"
-                   class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
-                <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-events', 'delete_id' => $ev->id ), admin_url( 'admin.php' ) ), 'ah_del_event' ) ); ?>"
-                   class="ah-btn ah-btn-danger ah-btn-sm"
-                   onclick="return confirm('Delete this event package?');">Delete</a>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-    <?php echo AH_Pagination::render( $meta ); ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+      'columns' => array(
+        array( 'label' => '', 'render' => function ( $ev ) {
+          return '<span style="font-size:2rem;line-height:1;">' . esc_html( $ev->icon ) . '</span>';
+        } ),
+        array( 'label' => 'Title', 'render' => function ( $ev ) {
+          $html = '<strong>' . esc_html( $ev->title ) . '</strong>';
+          if ( $ev->description ) {
+            $html .= '<br><small style="color:var(--ah-muted);">' . esc_html( wp_trim_words( $ev->description, 10 ) ) . '</small>';
+          }
+          return $html;
+        } ),
+        array( 'label' => 'Color', 'render' => function ( $ev ) use ( $colors ) {
+          return '<span class="ah-badge" style="background:' . esc_attr( self_color_bg( $ev->color ?? 'green' ) ) . ';color:#fff;">'
+               . esc_html( $colors[ $ev->color ] ?? $ev->color ) . '</span>';
+        } ),
+        array( 'label' => 'Items', 'render' => function ( $ev ) {
+          $ev_items = $ev->items ? json_decode( $ev->items, true ) : array();
+          if ( ! empty( $ev_items ) ) {
+            return '<small style="color:var(--ah-muted);">' . count( $ev_items ) . ' bullet' . ( count( $ev_items ) !== 1 ? 's' : '' ) . '</small>';
+          }
+          return '<small style="color:var(--ah-muted);">-</small>';
+        } ),
+        array( 'label' => 'Featured', 'render' => function ( $ev ) {
+          return $ev->is_featured ? '<span class="ah-badge ah-badge-active">Yes</span>' : '-';
+        } ),
+        array( 'label' => 'Status', 'render' => function ( $ev ) {
+          return \Ah\Cms\Admin\Components\AdminComponents::statusBadge( $ev->status );
+        } ),
+      ),
+      'items'    => $items,
+      'sortable' => true,
+      'model'    => 'events',
+      'actions'  => function ( $ev ) {
+        $edit_url = add_query_arg( array( 'page' => 'ah-events', 'action' => 'edit', 'id' => $ev->id ), admin_url( 'admin.php' ) );
+        $del_url  = wp_nonce_url( add_query_arg( array( 'page' => 'ah-events', 'delete_id' => $ev->id ), admin_url( 'admin.php' ) ), 'ah_del_event' );
+        return '<a href="' . esc_url( $edit_url ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>'
+             . '<a href="' . esc_url( $del_url ) . '" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-title="Delete Event" data-confirm="This event will be permanently removed.">Delete</a>';
+      },
+    ) ); ?>
 
-    <div class="ah-card" style="margin-top:24px;max-width:700px;">
-      <div class="ah-card-header"><h2>How It Works</h2></div>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::pagination( $meta ); ?>
+
+    <?php ob_start(); ?>
       <p style="color:var(--ah-muted);font-size:13px;margin:0 0 8px;">
         Events created here appear on the <strong>homepage preview</strong> and the <strong>Events &amp; Hire page</strong> of the Cane House website.
         Each package can have a different colour theme to make the page visually varied.
@@ -169,15 +147,14 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
       <p style="color:var(--ah-muted);font-size:13px;margin:0;">
         You can also bulk-import events via <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-import&tab=events' ) ); ?>">Data Import → Events</a>.
       </p>
-    </div>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'How It Works', ob_get_clean() ); ?>
 
   <?php else :
     $item     = $edit_id ? $model->find( $edit_id ) : null;
     $ev_items = $item && $item->items ? json_decode( $item->items, true ) : array();
     $items_text = implode( "\n", (array) $ev_items );
   ?>
-    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-events' ) ); ?>"
-       class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-bottom:16px;display:inline-flex;">&larr; Back to Events</a>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::backLink( admin_url( 'admin.php?page=ah-events' ), '← Back to Events' ); ?>
 
     <form method="post">
       <?php wp_nonce_field( 'ah_save_event', 'ah_events_nonce' ); ?>
@@ -185,124 +162,73 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 
         <!-- Left: main content -->
         <div>
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Event Details</h2></div>
+          <?php ob_start(); ?>
             <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;align-items:end;">
-              <div class="ah-form-row">
-                <label>Icon / Emoji</label>
-                <input type="text" name="icon" value="<?php echo esc_attr( $item->icon ?? '🎉' ); ?>"
-                       style="font-size:1.6rem;padding:0.5rem;text-align:center;" maxlength="10">
-              </div>
-              <div class="ah-form-row">
-                <label>Event Title <span style="color:var(--ah-danger);">*</span></label>
-                <input type="text" name="title" value="<?php echo esc_attr( $item->title ?? '' ); ?>"
-                       placeholder="e.g. Wedding Package" required>
-              </div>
+              <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Icon / Emoji', '<input type="text" name="icon" value="' . esc_attr( $item->icon ?? '🎉' ) . '" style="font-size:1.6rem;padding:0.5rem;text-align:center;" maxlength="10">' ); ?>
+              <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Event Title <span style="color:var(--ah-danger);">*</span>', '<input type="text" name="title" value="' . esc_attr( $item->title ?? '' ) . '" placeholder="e.g. Wedding Package" required>' ); ?>
             </div>
-            <div class="ah-form-row">
-              <label>Description <small style="font-weight:400;color:var(--ah-muted);">(shown as subtitle on the card)</small></label>
-              <textarea name="description" rows="3" placeholder="Brief description of this event type…"><?php echo esc_textarea( $item->description ?? '' ); ?></textarea>
-            </div>
-          </div>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Description <small style="font-weight:400;color:var(--ah-muted);">(shown as subtitle on the card)</small>', '<textarea name="description" rows="3" placeholder="Brief description of this event type…">' . esc_textarea( $item->description ?? '' ) . '</textarea>' ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Event Details', ob_get_clean() ); ?>
 
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Bullet Points / Inclusions</h2></div>
+          <?php ob_start(); ?>
             <p style="color:var(--ah-muted);font-size:12px;margin:0 0 10px;">
               Enter one bullet point per line. These appear as the feature list on the event card.
             </p>
-            <div class="ah-form-row">
-              <label>Items <small style="font-weight:400;color:var(--ah-muted);">(one per line)</small></label>
-              <textarea name="items_raw" rows="8"
-                        placeholder="Live sugarcane pressing&#10;Up to 200 servings&#10;2 flavour options&#10;Setup & takedown included"
-                        style="font-family:monospace;"><?php echo esc_textarea( $items_text ); ?></textarea>
-            </div>
-          </div>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Items <small style="font-weight:400;color:var(--ah-muted);">(one per line)</small>', '<textarea name="items_raw" rows="8" placeholder="Live sugarcane pressing&#10;Up to 200 servings&#10;2 flavour options&#10;Setup & takedown included" style="font-family:monospace;">' . esc_textarea( $items_text ) . '</textarea>' ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Bullet Points / Inclusions', ob_get_clean() ); ?>
         </div>
 
         <!-- Right: settings -->
         <div>
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Display Settings</h2></div>
-            <div class="ah-form-row">
-              <label>Colour Theme</label>
-              <select name="color">
-                <?php foreach ( $colors as $val => $lbl ) : ?>
-                  <option value="<?php echo esc_attr( $val ); ?>"
-                          <?php selected( $item->color ?? 'green', $val ); ?>
-                          style="background:<?php echo esc_attr( self_color_bg( $val ) ); ?>;color:#fff;">
-                    <?php echo esc_html( $lbl ); ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-              <p class="description" style="font-size:11px;margin-top:4px;color:var(--ah-muted);">
-                Sets the accent colour on the event card.
-              </p>
-            </div>
-            <div class="ah-form-row">
-              <label>Show on Homepage</label>
-              <select name="is_featured">
-                <option value="0" <?php selected( (int) ( $item->is_featured ?? 0 ), 0 ); ?>>No</option>
-                <option value="1" <?php selected( (int) ( $item->is_featured ?? 0 ), 1 ); ?>>Yes - show in homepage preview</option>
-              </select>
-            </div>
-            <div class="ah-form-row">
-              <label>Sort Order</label>
-              <input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>" min="0">
-            </div>
-            <div class="ah-form-row">
-              <label>Status</label>
-              <select name="status">
-                <option value="active"   <?php selected( $item->status ?? 'active', 'active' ); ?>>Active</option>
-                <option value="inactive" <?php selected( $item->status ?? '',        'inactive' ); ?>>Inactive</option>
-              </select>
-            </div>
-          </div>
+          <?php ob_start(); ?>
+            <?php
+            $color_opts = array();
+            foreach ( $colors as $val => $lbl ) {
+              $color_opts[ $val ] = $lbl;
+            }
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Colour Theme',
+              '<select name="color">'
+              . implode( '', array_map( function( $val ) use ( $item, $colors ) {
+                  return '<option value="' . esc_attr( $val ) . '"' . selected( $item->color ?? 'green', $val, false ) . ' style="background:' . esc_attr( self_color_bg( $val ) ) . ';color:#fff;">' . esc_html( $colors[ $val ] ) . '</option>';
+              }, array_keys( $colors ) ) )
+              . '</select>'
+              . '<p class="description" style="font-size:11px;margin-top:4px;color:var(--ah-muted);">Sets the accent colour on the event card.</p>'
+            ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Show on Homepage',
+              '<select name="is_featured"><option value="0"' . selected( (int) ( $item->is_featured ?? 0 ), 0, false ) . '>No</option><option value="1"' . selected( (int) ( $item->is_featured ?? 0 ), 1, false ) . '>Yes - show in homepage preview</option></select>'
+            ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Sort Order', '<input type="number" name="sort_order" value="' . esc_attr( $item->sort_order ?? 0 ) . '" min="0">' ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Status',
+              '<select name="status"><option value="active"' . selected( $item->status ?? 'active', 'active', false ) . '>Active</option><option value="inactive"' . selected( $item->status ?? '', 'inactive', false ) . '>Inactive</option></select>'
+            ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Display Settings', ob_get_clean() ); ?>
 
-          <div class="ah-card" style="border-color:#3b82f6;background:#f0f9ff;">
-            <div class="ah-card-header"><h2 style="color:#1e40af;">📧 Email Notifications</h2></div>
+          <?php ob_start(); ?>
             <p style="color:#1e40af;font-size:12px;margin:0 0 12px;">
               When someone submits a booking for this event, automatically fire a trigger to send email notifications via the Rules Engine.
             </p>
-            <div class="ah-form-row">
-              <label style="display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:0;">
-                <input type="checkbox" name="notify_on_booking" value="1"
-                       <?php checked( (int) ( $item->notify_on_booking ?? 0 ), 1 ); ?>>
-                <span>Enable email notifications for bookings</span>
-              </label>
-              <p class="description" style="font-size:11px;margin-top:4px;color:#1e40af;">
-                When enabled, booking submissions will trigger the Rules Engine to send configured emails.
-              </p>
-            </div>
-            <div class="ah-form-row">
-              <label>Trigger Event Name <small style="font-weight:400;color:#666;">(shown in Rules Engine)</small></label>
-              <input type="text" name="booking_trigger_name"
-                     value="<?php echo esc_attr( $item->booking_trigger_name ?? '' ); ?>"
-                     placeholder="e.g. booking_wedding, booking_corporate"
-                     style="font-family:monospace;font-size:12px;">
-              <p class="description" style="font-size:11px;margin-top:4px;color:#666;">
-                In the <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager' ) ); ?>" target="_blank" style="color:#1e40af;">Workflow Manager</a>,
-                create a rule with this trigger name to send emails. If left blank, will use: <code style="background:#fff;border:1px solid #ddd;padding:2px 5px;border-radius:3px;">booking_event_<?php echo esc_html( $edit_id ?: '{id}' ); ?></code>
-              </p>
-            </div>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( '',
+              '<label style="display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:0;"><input type="checkbox" name="notify_on_booking" value="1" ' . checked( (int) ( $item->notify_on_booking ?? 0 ), 1, false ) . '><span>Enable email notifications for bookings</span></label>'
+              . '<p class="description" style="font-size:11px;margin-top:4px;color:#1e40af;">When enabled, booking submissions will trigger the Rules Engine to send configured emails.</p>'
+            ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Trigger Event Name <small style="font-weight:400;color:#666;">(shown in Rules Engine)</small>',
+              '<input type="text" name="booking_trigger_name" value="' . esc_attr( $item->booking_trigger_name ?? '' ) . '" placeholder="e.g. booking_wedding, booking_corporate" style="font-family:monospace;font-size:12px;">'
+              . '<p class="description" style="font-size:11px;margin-top:4px;color:#666;">In the <a href="' . esc_url( admin_url( 'admin.php?page=ah-workflow-manager' ) ) . '" target="_blank" style="color:#1e40af;">Workflow Manager</a>, create a rule with this trigger name to send emails. If left blank, will use: <code style="background:#fff;border:1px solid #ddd;padding:2px 5px;border-radius:3px;">booking_event_' . esc_html( $edit_id ?: '{id}' ) . '</code></p>'
+            ); ?>
             <button type="submit" class="ah-btn ah-btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
               <span class="dashicons dashicons-saved"></span>
               <?php echo $item ? 'Update Event' : 'Save Event'; ?>
             </button>
-          </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Email Notifications', ob_get_clean() ); ?>
 
-          <div class="ah-card" style="background:var(--ah-bg-light);">
-            <div class="ah-card-header"><h2>Colour Preview</h2></div>
+          <?php ob_start(); ?>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <?php foreach ( $colors as $val => $lbl ) : ?>
-                <div style="
-                  width:60px;height:60px;border-radius:12px;
-                  background:<?php echo esc_attr( self_color_bg( $val ) ); ?>;
-                  display:flex;align-items:center;justify-content:center;
-                  font-size:10px;color:#fff;font-weight:700;text-align:center;
-                  line-height:1.2;"><?php echo esc_html( explode( ' ', $lbl )[0] ); ?></div>
+                <div style="width:60px;height:60px;border-radius:12px;background:<?php echo esc_attr( self_color_bg( $val ) ); ?>;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700;text-align:center;line-height:1.2;"><?php echo esc_html( explode( ' ', $lbl )[0] ); ?></div>
               <?php endforeach; ?>
             </div>
-          </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Colour Preview', ob_get_clean() ); ?>
         </div>
 
       </div>

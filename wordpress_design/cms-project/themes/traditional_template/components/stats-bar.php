@@ -3,8 +3,9 @@
  * Stats bar - a row of headline numbers (farms / glasses / outlets / years).
  *
  * Self-contained + JSON-driven: reads admin/data/stats.json (key => number).
- * Renders nothing when there are no stats. Extracted from page-home so the
- * home page can be fully section-registry driven like every other page.
+ * Switch data per page with `source`. Renders nothing when there are no stats.
+ * Extracted from page-home so the home page can be fully section-registry
+ * driven like every other page.
  *
  * Icons are generic emoji keyed by stat name; CSS tones them to the vintage
  * palette. To re-skin, edit stats.json (and add an icon mapping below if a new
@@ -12,7 +13,8 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$stats = nt_data( 'stats' ) ?: array();
+$sb_source = ( isset( $source ) && $source ) ? (string) $source : 'stats';
+$stats     = nt_data( $sb_source ) ?: array();
 if ( empty( $stats ) || ! is_array( $stats ) ) {
 	return;
 }

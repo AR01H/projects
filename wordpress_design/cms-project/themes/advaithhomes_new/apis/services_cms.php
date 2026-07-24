@@ -601,7 +601,7 @@ function adn_cms_guides_by_category( $limit = 10, $topic_ids = array() ) {
 
 /**
  * All published WP posts linked to a single taxonomy term slug.
- * Used by the topic category page (page-topic_category_guide.php).
+ * Used by the topic category page (PageTopicCategoryGuide.php).
  *
  * @param string $term_slug  Slug from wp_ah_taxonomies.
  * @param int    $limit

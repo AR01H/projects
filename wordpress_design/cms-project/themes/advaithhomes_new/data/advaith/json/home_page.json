@@ -86,7 +86,7 @@
         "title": "🔥 Hot Topics",
         "items": [
         ],
-        "cta": { "label": "Explore All →", "url": "/guides/" }
+        "cta": { "label": "Explore →", "url": "/guides/" }
     },
     "tools": {
         "heading": { "title": "Popular Calculators", "link_label": "View all →", "link_url": "/calculators/" },

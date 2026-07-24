@@ -57,8 +57,8 @@ $type_labels    = AH_Resources_Model::type_labels();
 $context_labels = AH_Resources_Model::context_labels();
 ?>
 <div class="wrap ah-wrap">
-<h1><span class="dashicons dashicons-video-alt3"></span> Resources</h1>
-<?php if ( $notice ) : ?><div class="ah-notice ah-notice-<?php echo esc_attr( $n_type ); ?>"><?php echo esc_html( $notice ); ?></div><?php endif; ?>
+<?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'video-alt3', 'Resources', 'Add videos, documents, and embedded content for the resources section.' ); ?>
+<?php if ( $notice ) : ?><?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, $n_type ); ?><?php endif; ?>
 
 <?php if ( $action === 'list' ) :
 	$search  = sanitize_text_field( $_GET['s'] ?? '' );
@@ -70,94 +70,75 @@ $context_labels = AH_Resources_Model::context_labels();
 	$items   = $result['items'];
 	$meta    = $result['meta'];
 ?>
-<div class="ah-table-top" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
-	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit' ), admin_url( 'admin.php' ) ) ); ?>" class="button button-primary">+ Add Resource</a>
-	<form method="get" style="display:flex;gap:6px;flex-wrap:wrap;flex:1;">
-		<input type="hidden" name="page" value="ah-resources">
-		<input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search…" style="min-width:180px;">
-		<select name="type_filter">
-			<option value="">All Types</option>
-			<?php foreach ( $type_labels as $k => $v ) : ?>
-				<option value="<?php echo esc_attr( $k ); ?>"<?php selected( $f_type, $k ); ?>><?php echo esc_html( $v ); ?></option>
-			<?php endforeach; ?>
-		</select>
-		<select name="status_filter">
-			<option value="">All Statuses</option>
-			<option value="active"<?php selected( $f_stat, 'active' ); ?>>Active</option>
-			<option value="inactive"<?php selected( $f_stat, 'inactive' ); ?>>Inactive</option>
-		</select>
-		<button type="submit" class="button">Filter</button>
-	</form>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::filterBar( array(
+	'page_slug'          => 'ah-resources',
+	'search_placeholder' => 'Search…',
+	'search_value'       => $search,
+	'filters'            => array(
+		array(
+			'name'     => 'type_filter',
+			'options'  => array_merge( array( '' => 'All Types' ), $type_labels ),
+			'selected' => $f_type,
+		),
+		array(
+			'name'     => 'status_filter',
+			'options'  => array( '' => 'All Statuses', 'active' => 'Active', 'inactive' => 'Inactive' ),
+			'selected' => $f_stat,
+		),
+	),
+	'add_url'   => add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit' ), admin_url( 'admin.php' ) ),
+	'add_label' => '+ Add Resource',
+) ); ?>
 
-<table class="wp-list-table widefat fixed striped">
-	<thead>
-		<tr>
-			<th style="width:40px;">ID</th>
-			<th>Title</th>
-			<th style="width:150px;">Type</th>
-			<th style="width:80px;">Order</th>
-			<th style="width:80px;">Status</th>
-			<th style="width:130px;">Shortcode</th>
-			<th style="width:110px;">Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-	<?php if ( empty( $items ) ) : ?>
-		<tr><td colspan="8" style="text-align:center;padding:24px;color:#999;">No resources yet. <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit' ), admin_url( 'admin.php' ) ) ); ?>">Add one →</a></td></tr>
-	<?php else : ?>
-		<?php foreach ( $items as $item ) :
-			$edit_url   = add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit', 'id' => $item->id ), admin_url( 'admin.php' ) );
-			$delete_url = wp_nonce_url( add_query_arg( array( 'page' => 'ah-resources', 'delete_id' => $item->id ), admin_url( 'admin.php' ) ), 'ah_del_resource' );
-			$ctx_parts  = array_filter( explode( ',', (string) $item->context ) );
-			$ctx_labels = array_map( function( $c ) use ( $context_labels ) { return $context_labels[ $c ] ?? $c; }, $ctx_parts );
-		?>
-		<tr>
-			<td><?php echo esc_html( $item->id ); ?></td>
-			<td>
-				<strong><a href="<?php echo esc_url( $edit_url ); ?>"><?php echo esc_html( $item->title ?: '(no title)' ); ?></a></strong>
-				<?php if ( $item->url ) : ?>
-					<br><small style="color:#999;"><?php echo esc_html( mb_strimwidth( (string) $item->url, 0, 60, '…' ) ); ?></small>
-				<?php endif; ?>
-			</td>
-			<td><?php echo esc_html( $type_labels[ $item->type ] ?? $item->type ); ?></td>
-			<td><?php echo esc_html( $item->sort_order ); ?></td>
-			<td><span style="color:<?php echo $item->status === 'active' ? '#22c55e' : '#6b7280'; ?>;"><?php echo esc_html( $item->status ); ?></span></td>
-			<td><code style="font-size:11px;">[ah_resource id="<?php echo esc_attr( $item->id ); ?>"]</code></td>
-			<td>
-				<a href="<?php echo esc_url( $edit_url ); ?>" class="button button-small">Edit</a>
-				<a href="<?php echo esc_url( $delete_url ); ?>" class="button button-small ah-confirm-delete" style="color:#dc2626;">Del</a>
-			</td>
-		</tr>
-		<?php endforeach; ?>
-	<?php endif; ?>
-	</tbody>
-</table>
+<?php
+\Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => 'ID', 'style' => 'width:40px', 'render' => function ( $item ) {
+			return esc_html( $item->id );
+		} ),
+		array( 'label' => 'Title', 'render' => function ( $item ) use ( $type_labels ) {
+			$edit_url = add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit', 'id' => $item->id ), admin_url( 'admin.php' ) );
+			$html = '<strong><a href="' . esc_url( $edit_url ) . '">' . esc_html( $item->title ?: '(no title)' ) . '</a></strong>';
+			if ( $item->url ) {
+				$html .= '<br><small style="color:#999;">' . esc_html( mb_strimwidth( (string) $item->url, 0, 60, '…' ) ) . '</small>';
+			}
+			return $html;
+		} ),
+		array( 'label' => 'Type', 'style' => 'width:150px', 'render' => function ( $item ) use ( $type_labels ) {
+			return esc_html( $type_labels[ $item->type ] ?? $item->type );
+		} ),
+		array( 'label' => 'Order', 'style' => 'width:80px', 'render' => function ( $item ) {
+			return esc_html( $item->sort_order );
+		} ),
+		array( 'label' => 'Status', 'style' => 'width:80px', 'render' => function ( $item ) {
+			return \Ah\Cms\Admin\Components\AdminComponents::statusBadge( $item->status );
+		} ),
+		array( 'label' => 'Shortcode', 'style' => 'width:130px', 'render' => function ( $item ) {
+			return '<code style="font-size:11px;">[ah_resource id="' . esc_attr( $item->id ) . '"]</code>';
+		} ),
+	),
+	'items'         => $items,
+	'empty_message' => 'No resources yet.',
+	'actions'       => function ( $item ) {
+		$edit_url   = add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit', 'id' => $item->id ), admin_url( 'admin.php' ) );
+		$delete_url = wp_nonce_url( add_query_arg( array( 'page' => 'ah-resources', 'delete_id' => $item->id ), admin_url( 'admin.php' ) ), 'ah_del_resource' );
+		$html = '<a href="' . esc_url( $edit_url ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>';
+		ob_start();
+		\Ah\Cms\Admin\Components\AdminComponents::confirmDelete( $delete_url );
+		$html .= ob_get_clean();
+		return $html;
+	},
+) ); ?>
 
-<?php if ( $meta['total_pages'] > 1 ) : ?>
-<div class="tablenav bottom" style="margin-top:12px;">
-	<div class="tablenav-pages">
-		<?php
-		$page_url = add_query_arg( array( 'page' => 'ah-resources', 's' => $search, 'type_filter' => $f_type, 'ctx_filter' => $f_ctx, 'status_filter' => $f_stat ), admin_url( 'admin.php' ) );
-		for ( $pg = 1; $pg <= $meta['total_pages']; $pg++ ) :
-			$is_cur = ( $pg === $paged );
-		?>
-		<a href="<?php echo esc_url( add_query_arg( 'paged', $pg, $page_url ) ); ?>"
-		   class="button<?php echo $is_cur ? ' button-primary' : ''; ?>"
-		   style="margin:0 1px;"><?php echo esc_html( $pg ); ?></a>
-		<?php endfor; ?>
-		<span style="margin-left:8px;color:#666;"><?php echo esc_html( $meta['total'] ); ?> total</span>
-	</div>
-</div>
-<?php endif; ?>
+<?php echo AH_Pagination::render( $meta ); ?>
 
-<div style="margin-top:20px;padding:14px 16px;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;">
+<?php ob_start(); ?>
 	<strong>Shortcode Reference:</strong><br>
 	<code>[ah_resource id="1"]</code> - embed a single resource by ID<br>
 	<code>[ah_resources context="category" type="youtube" limit="3"]</code> - list resources by context/type<br>
 	<code>[ah_resources context="home" show_title="1" show_desc="1"]</code> - with title and description<br>
 	<em>Available contexts: <?php echo esc_html( implode( ', ', array_keys( $context_labels ) ) ); ?></em>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::formSection( 'Shortcode Reference', ob_get_clean() ); ?>
 
 <?php elseif ( $action === 'edit' ) :
 	$item = $edit_id ? $model->find( $edit_id ) : null;
@@ -175,7 +156,7 @@ $context_labels = AH_Resources_Model::context_labels();
 		'status'        => $item ? $item->status        : 'active',
 	);
 ?>
-<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-resources' ), admin_url( 'admin.php' ) ) ); ?>" class="button" style="margin-bottom:16px;">← Back to list</a>
+<?php \Ah\Cms\Admin\Components\AdminComponents::backLink( add_query_arg( array( 'page' => 'ah-resources' ), admin_url( 'admin.php' ) ), '← Back to list' ); ?>
 
 <form method="post" action="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit', 'id' => $edit_id ?: '' ), admin_url( 'admin.php' ) ) ); ?>">
 <?php wp_nonce_field( 'ah_save_resource', '_ah_res_nonce' ); ?>
@@ -184,78 +165,40 @@ $context_labels = AH_Resources_Model::context_labels();
 
 <div>
 	<!-- Core fields -->
-	<div class="ah-card" style="margin-bottom:16px;">
-		<h3 style="margin:0 0 16px;">Resource Details</h3>
-
-		<table class="form-table" style="margin:0;">
-			<tr>
-				<th style="width:130px;">Type</th>
-				<td>
-					<select name="type" id="res-type" style="min-width:220px;">
-						<?php foreach ( $type_labels as $k => $lbl ) : ?>
-							<option value="<?php echo esc_attr( $k ); ?>"<?php selected( $v['type'], $k ); ?>><?php echo esc_html( $lbl ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>Title / Label</th>
-				<td><input type="text" name="title" value="<?php echo esc_attr( $v['title'] ); ?>" style="width:100%;" placeholder="Label name printed on the card"></td>
-			</tr>
-			<tr>
-				<th>Highlight Label</th>
-				<td>
-					<input type="text" name="highlight_label" value="<?php echo esc_attr( $v['highlight_label'] ); ?>" style="width:240px;" placeholder="e.g. Image · Instagram · Video" maxlength="40">
-					<p class="description">Short tag shown on the card. Type anything — Image, Video, Instagram, etc.</p>
-				</td>
-			</tr>
-			<tr id="row-url">
-				<th><label id="url-label">URL</label></th>
-				<td><input type="url" name="url" value="<?php echo esc_url( $v['url'] ); ?>" style="width:100%;" placeholder="https://…" id="res-url"></td>
-			</tr>
-			<tr id="row-embed">
-				<th>Embed Code</th>
-				<td>
-					<textarea name="embed_code" rows="5" style="width:100%;font-family:monospace;font-size:12px;" placeholder="Paste the embed/iframe code here…"><?php echo esc_textarea( $v['embed_code'] ); ?></textarea>
-					<p class="description">For Instagram, Facebook, TikTok, Twitter: paste the platform's embed code here, or just paste the URL above (WordPress will try to auto-embed).</p>
-				</td>
-			</tr>
-			<tr>
-				<th>Thumbnail URL</th>
-				<td><input type="url" name="thumbnail_url" value="<?php echo esc_url( $v['thumbnail_url'] ); ?>" style="width:100%;" placeholder="Optional override thumbnail image URL"></td>
-			</tr>
-			<tr>
-				<th><label>Link URL</label></th>
-				<td>
-					<input type="url" name="link_url" value="<?php echo esc_url( $v['link_url'] ); ?>" style="width:100%;" placeholder="https://… (optional — shows a Learn More link on front end)">
-					<p class="description">If set, a "Learn more →" link is shown below this resource wherever it appears on the site.</p>
-				</td>
-			</tr>
-		</table>
-	</div>
+	<?php ob_start(); ?>
+		<?php
+		$type_select = '<select name="type" id="res-type" style="min-width:220px;">';
+		foreach ( $type_labels as $k => $lbl ) {
+			$type_select .= '<option value="' . esc_attr( $k ) . '"' . selected( $v['type'], $k, false ) . '>' . esc_html( $lbl ) . '</option>';
+		}
+		$type_select .= '</select>';
+		?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Type', $type_select ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Title / Label', '<input type="text" name="title" value="' . esc_attr( $v['title'] ) . '" style="width:100%;" placeholder="Label name printed on the card">' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Highlight Label', '<input type="text" name="highlight_label" value="' . esc_attr( $v['highlight_label'] ) . '" style="width:240px;" placeholder="e.g. Image · Instagram · Video" maxlength="40"><p class="description">Short tag shown on the card. Type anything — Image, Video, Instagram, etc.</p>' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( '<label id="url-label">URL</label>', '<input type="url" name="url" value="' . esc_url( $v['url'] ) . '" style="width:100%;" placeholder="https://…" id="res-url">', '', 'row-url' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Embed Code', '<textarea name="embed_code" rows="5" style="width:100%;font-family:monospace;font-size:12px;" placeholder="Paste the embed/iframe code here…">' . esc_textarea( $v['embed_code'] ) . '</textarea><p class="description">For Instagram, Facebook, TikTok, Twitter: paste the platform\'s embed code here, or just paste the URL above (WordPress will try to auto-embed).</p>', '', 'row-embed' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Thumbnail URL', '<input type="url" name="thumbnail_url" value="' . esc_url( $v['thumbnail_url'] ) . '" style="width:100%;" placeholder="Optional override thumbnail image URL">' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Link URL', '<input type="url" name="link_url" value="' . esc_url( $v['link_url'] ) . '" style="width:100%;" placeholder="https://… (optional — shows a Learn More link on front end)"><p class="description">If set, a "Learn more →" link is shown below this resource wherever it appears on the site.</p>' ); ?>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Resource Details', ob_get_clean() ); ?>
 </div>
 
 <div>
 	<!-- Settings sidebar -->
-	<div class="ah-card" style="margin-bottom:16px;">
-		<h3 style="margin:0 0 14px;">Publish</h3>
-		<label><strong>Status</strong></label><br>
-		<select name="status" style="width:100%;margin:4px 0 12px;">
-			<option value="active"<?php selected( $v['status'], 'active' ); ?>>Active</option>
-			<option value="inactive"<?php selected( $v['status'], 'inactive' ); ?>>Inactive</option>
-		</select>
-
-		<label><strong>Sort Order</strong></label><br>
-		<input type="number" name="sort_order" value="<?php echo esc_attr( $v['sort_order'] ); ?>" style="width:100%;margin:4px 0 12px;" min="0">
-
-		<button type="submit" class="button button-primary" style="width:100%;">Save Resource</button>
-	</div>
+	<?php
+	$status_select = '<select name="status" style="width:100%;margin:4px 0 12px;">'
+		. '<option value="active"' . selected( $v['status'], 'active', false ) . '>Active</option>'
+		. '<option value="inactive"' . selected( $v['status'], 'inactive', false ) . '>Inactive</option>'
+		. '</select>';
+	?>
+	<?php ob_start(); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( '<strong>Status</strong>', $status_select ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( '<strong>Sort Order</strong>', '<input type="number" name="sort_order" value="' . esc_attr( $v['sort_order'] ) . '" style="width:100%;margin:4px 0 12px;" min="0">' ); ?>
+		<button type="submit" class="ah-btn ah-btn-primary" style="width:100%;">Save Resource</button>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Publish', ob_get_clean() ); ?>
 
 	<?php if ( $edit_id ) : ?>
-	<div class="ah-card">
-		<h3 style="margin:0 0 10px;">Shortcode</h3>
-		<code>[ah_resource id="<?php echo esc_attr( $edit_id ); ?>"]</code>
-	</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Shortcode', '<code>[ah_resource id="' . esc_attr( $edit_id ) . '"]</code>' ); ?>
 	<?php endif; ?>
 </div>
 

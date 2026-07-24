@@ -472,6 +472,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    border-bottom: 1px solid grey;
 }
 
 .news-card-title a {

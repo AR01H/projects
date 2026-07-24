@@ -1,0 +1,32 @@
+{
+    "_comment": "Default SEO metadata. Pages can override via their own JSON.",
+    "defaults": {
+        "title_suffix": " | ADVAITH HOMES",
+        "og_type": "website",
+        "og_locale": "en_GB",
+        "twitter_card": "summary_large_image",
+        "robots": "index, follow"
+    },
+    "pages": {
+        "home": {
+            "title": "UK Property Guides, Calculators & Expert Advice | ADVAITH HOMES",
+            "description": "Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK."
+        },
+        "guides": {
+            "title": "Property Guides | ADVAITH HOMES",
+            "description": "Browse our complete library of property guides covering buying, selling and moving home in the UK."
+        },
+        "tools": {
+            "title": "Property Calculators | ADVAITH HOMES",
+            "description": "Free property calculators for stamp duty, mortgage repayments, affordability and more."
+        },
+        "news": {
+            "title": "Property News & Insights | ADVAITH HOMES",
+            "description": "Latest property news, market updates and expert insights."
+        },
+        "contact": {
+            "title": "Contact Us | ADVAITH HOMES",
+            "description": "Get in touch with our property experts. We're here to help."
+        }
+    }
+}

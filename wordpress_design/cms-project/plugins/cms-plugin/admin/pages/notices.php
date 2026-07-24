@@ -22,102 +22,113 @@ if ( ! empty( $_GET['err'] ) ) {
 }
 ?>
 <div class="wrap ah-wrap">
-	<h1><span class="dashicons dashicons-megaphone"></span> Site Notices</h1>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'megaphone', 'Site Notices', 'Display sitewide announcement bars with scheduling and targeting.' ); ?>
 	<?php
 	$_flash_map = array( 'saved' => 'Notice saved.', 'deleted' => 'Notice deleted.', 'updated' => 'Notice updated.' );
-	if ( $flash && isset( $_flash_map[ $flash ] ) ) : ?>
-	<div class="ah-notice ah-notice-success"><?php echo esc_html( $_flash_map[ $flash ] ); ?></div>
-	<?php endif; ?>
+	if ( $flash && isset( $_flash_map[ $flash ] ) ) :
+		\Ah\Cms\Admin\Components\AdminComponents::notice( $_flash_map[ $flash ], 'success' );
+	endif;
+	?>
 	<?php if ( ! empty( $errors ) ) : ?>
-	<div class="ah-notice ah-notice-error" style="border-left-color:#dc2626;background:#fef2f2;">
-		<strong>Please fix the following:</strong>
-		<ul style="margin:.4rem 0 0 1.2rem;padding:0;">
-			<?php foreach ( $errors as $e ) : ?><li><?php echo esc_html( $e ); ?></li><?php endforeach; ?>
-		</ul>
-	</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::notice( 'Please fix: ' . implode( ', ', $errors ), 'error' ); ?>
 	<?php endif; ?>
 
 <?php if ( $action === 'list' ) :
-	$result = $model->get_paginated_list( AH_Pagination::current_page() );
+	$search = sanitize_text_field( $_GET['s'] ?? '' );
+	$status = sanitize_key( $_GET['status'] ?? '' );
+	$result = $model->get_paginated_list( AH_Pagination::current_page(), $search, $status );
 	$items  = $result['items']; $meta = $result['meta'];
 ?>
-	<div class="ah-table-top">
-		<p style="color:var(--ah-muted);margin:0;">Multiple popups, each with its own trigger, slug scope, and frequency. They queue - one shows at a time.</p>
-		<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-notices', 'action' => 'add' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ Add Notice</a>
-	</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::filterBar( array(
+		'page_slug'          => 'ah-notices',
+		'search_placeholder' => 'Search notices…',
+		'search_value'       => $search,
+		'filters'            => array(
+			array(
+				'name'     => 'status',
+				'options'  => array( '' => 'All Status', 'active' => 'Active', 'inactive' => 'Inactive' ),
+				'selected' => $status,
+			),
+		),
+		'add_url'   => add_query_arg( array( 'page' => 'ah-notices', 'action' => 'add' ), admin_url( 'admin.php' ) ),
+		'add_label' => '+ Add Notice',
+	) ); ?>
 
-	<div class="ah-table-wrap">
-		<table class="ah-table">
-			<thead><tr><th>Title</th><th>Trigger</th><th>Scope</th><th>Frequency</th><th>Status</th><th>Actions</th></tr></thead>
-			<tbody>
-			<?php foreach ( $items as $item ) : ?>
-				<tr>
-					<td><strong><?php echo esc_html( $item->title ); ?></strong><?php if ( $item->message ) echo '<br><small style="color:var(--ah-muted);">' . esc_html( wp_trim_words( $item->message, 10 ) ) . '</small>'; ?></td>
-					<td>
-						<?php if ( $item->trigger_type === 'immediate' ) echo '<span class="ah-badge">On Load</span>'; ?>
-						<?php if ( $item->trigger_type === 'exit-intent' ) echo '<span class="ah-badge" style="background:#fef9c3;color:#92400e;">Exit Intent</span>'; ?>
-						<?php if ( $item->trigger_type === 'delay' ) echo '<span class="ah-badge" style="background:#ede9fe;color:#5b21b6;">After ' . (int) $item->trigger_delay . 's</span>'; ?>
-					</td>
-					<td>
-						<?php if ( $item->scope === 'slugs' && $item->slugs ) : ?>
-							<small style="font-family:monospace;"><?php echo esc_html( $item->slugs ); ?></small>
-						<?php else : ?>
-							<em style="color:var(--ah-muted);">All pages</em>
-						<?php endif; ?>
-					</td>
-					<td><?php
-						$_freq_labels = array(
-							'daily'     => 'Daily',
-							'weekly'    => 'Weekly',
-							'session'   => 'Per session',
-							'once_ever' => 'Once ever',
-							'always'    => 'Every visit',
-						);
-						if ( $item->frequency === 'custom' ) {
-							$_cm = (int) ( $item->frequency_custom_mins ?? 60 );
-							echo esc_html( 'Every ' . floor( $_cm / 60 ) . 'h ' . ( $_cm % 60 ) . 'm' );
-						} else {
-							echo esc_html( $_freq_labels[ $item->frequency ] ?? ucfirst( $item->frequency ) );
-						}
-					?></td>
-					<td><span class="ah-badge ah-badge-<?php echo esc_attr( $item->status ); ?>"><?php echo esc_html( $item->status ); ?></span></td>
-					<td class="row-actions">
-						<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-notices', 'action' => 'edit', 'id' => $item->id ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
-						<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'action' => 'ah_toggle_notice', 'toggle_id' => $item->id ), admin_url( 'admin-post.php' ) ), 'ah_toggle_sn' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm"><?php echo $item->status === 'active' ? 'Pause' : 'Enable'; ?></a>
-						<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'action' => 'ah_delete_notice', 'delete_id' => $item->id ), admin_url( 'admin-post.php' ) ), 'ah_del_sn' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Delete this notice?');">Delete</a>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-			<?php if ( empty( $items ) ) : ?>
-				<tr><td colspan="6" style="text-align:center;color:var(--ah-muted);padding:32px;">No notices yet. Click + Add Notice to create one.</td></tr>
-			<?php endif; ?>
-			</tbody>
-		</table>
-	</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+		'columns' => array(
+			array( 'label' => 'Title', 'render' => function ( $item ) {
+				$html = '<strong>' . esc_html( $item->title ) . '</strong>';
+				if ( $item->message ) {
+					$html .= '<br><small style="color:var(--ah-muted);">' . esc_html( wp_trim_words( $item->message, 10 ) ) . '</small>';
+				}
+				return $html;
+			} ),
+			array( 'label' => 'Trigger', 'render' => function ( $item ) {
+				$html = '';
+				if ( $item->trigger_type === 'immediate' ) $html .= '<span class="ah-badge">On Load</span>';
+				if ( $item->trigger_type === 'exit-intent' ) $html .= '<span class="ah-badge" style="background:#fef9c3;color:#92400e;">Exit Intent</span>';
+				if ( $item->trigger_type === 'delay' ) $html .= '<span class="ah-badge" style="background:#ede9fe;color:#5b21b6;">After ' . (int) $item->trigger_delay . 's</span>';
+				return $html;
+			} ),
+			array( 'label' => 'Scope', 'render' => function ( $item ) {
+				if ( $item->scope === 'slugs' && $item->slugs ) {
+					return '<small style="font-family:monospace;">' . esc_html( $item->slugs ) . '</small>';
+				}
+				return '<em style="color:var(--ah-muted);">All pages</em>';
+			} ),
+			array( 'label' => 'Frequency', 'render' => function ( $item ) {
+				$_freq_labels = array(
+					'daily'     => 'Daily',
+					'weekly'    => 'Weekly',
+					'session'   => 'Per session',
+					'once_ever' => 'Once ever',
+					'always'    => 'Every visit',
+				);
+				if ( $item->frequency === 'custom' ) {
+					$_cm = (int) ( $item->frequency_custom_mins ?? 60 );
+					return esc_html( 'Every ' . floor( $_cm / 60 ) . 'h ' . ( $_cm % 60 ) . 'm' );
+				}
+				return esc_html( $_freq_labels[ $item->frequency ] ?? ucfirst( $item->frequency ) );
+			} ),
+			array( 'label' => 'Status', 'render' => function ( $item ) {
+				return \Ah\Cms\Admin\Components\AdminComponents::statusBadge( $item->status );
+			} ),
+		),
+		'items'         => $items,
+		'empty_message' => 'No notices yet. Click + Add Notice to create one.',
+		'actions'       => function ( $item ) {
+			$edit_url = add_query_arg( array( 'page' => 'ah-notices', 'action' => 'edit', 'id' => $item->id ), admin_url( 'admin.php' ) );
+			$toggle_url = esc_url( wp_nonce_url( add_query_arg( array( 'action' => 'ah_toggle_notice', 'toggle_id' => $item->id ), admin_url( 'admin-post.php' ) ), 'ah_toggle_sn' ) );
+			$del_url = esc_url( wp_nonce_url( add_query_arg( array( 'action' => 'ah_delete_notice', 'delete_id' => $item->id ), admin_url( 'admin-post.php' ) ), 'ah_del_sn' ) );
+			$toggle_label = $item->status === 'active' ? 'Pause' : 'Enable';
+			return '<a href="' . esc_url( $edit_url ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>'
+				 . '<a href="' . $toggle_url . '" class="ah-btn ah-btn-secondary ah-btn-sm">' . esc_html( $toggle_label ) . '</a>'
+				 . '<a href="' . $del_url . '" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-title="Delete &quot;' . esc_attr( $item->title ) . '&quot;" data-confirm="This notice will be permanently removed.">Delete</a>';
+			// Note: cannot use confirmDelete() here because the URL is already built in the callback
+		},
+	) ); ?>
+
 	<?php echo AH_Pagination::render( $meta ); ?>
 
 <?php else :
 	$item = $edit_id ? $model->find( $edit_id ) : null;
 ?>
-	<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-notices' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">&larr; Back to notices</a>
+	<div class="nl-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+		<?php \Ah\Cms\Admin\Components\AdminComponents::backLink( admin_url( 'admin.php?page=ah-notices' ), '← Back to notices' ); ?>
 		<h2 style="margin:0;font-size:1.15rem;"><?php echo $item ? 'Edit Notice' : 'New Notice'; ?></h2>
 		<div style="display:flex;gap:8px;">
 			<?php if ( $item ) : ?>
-			<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'action' => 'ah_delete_notice', 'delete_id' => $item->id ), admin_url( 'admin-post.php' ) ), 'ah_del_sn' ) ); ?>"
-			   class="ah-btn ah-btn-sm" style="color:#b91c1c;border-color:#fca5a5;" onclick="return confirm('Delete this notice?');">Delete</a>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::confirmDelete(
+				admin_url( 'admin-post.php' ) . '?action=ah_delete_notice&delete_id=' . $item->id,
+				'ah_del_sn'
+			); ?>
 			<?php endif; ?>
 			<button type="submit" form="ah-notice-form" class="ah-btn ah-btn-primary ah-btn-sm">Save Notice</button>
 		</div>
 	</div>
 
 	<?php if ( ! empty( $errors ) ) : ?>
-	<div style="background:#fef2f2;border-left:4px solid #dc2626;padding:12px 16px;border-radius:6px;margin-bottom:14px;">
-		<strong style="color:#b91c1c;">Please fix the following:</strong>
-		<ul style="margin:.4rem 0 0 1.2rem;padding:0;color:#b91c1c;">
-			<?php foreach ( $errors as $e ) : ?><li><?php echo esc_html( $e ); ?></li><?php endforeach; ?>
-		</ul>
-	</div>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::notice( 'Please fix: ' . implode( ', ', $errors ), 'error' ); ?>
 	<?php endif; ?>
 
 	<div style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;">
@@ -129,265 +140,214 @@ if ( ! empty( $_GET['err'] ) ) {
 			<?php wp_nonce_field( 'ah_save_site_notice', 'ah_sn_nonce' ); ?>
 
 			<!-- Content -->
-			<div class="ah-card" style="margin-bottom:16px;">
-				<div class="ah-card-header" style="padding-bottom:4px;"><h3 style="margin:0;font-size:.95rem;font-weight:700;">Content</h3></div>
+			<?php
+			$_badge_name_hex = array( 'green'=>'#15803d','red'=>'#b91c1c','blue'=>'#1d4ed8','orange'=>'#c2410c','purple'=>'#7c3aed' );
+			$_badge_raw      = $item->badge_color ?? 'green';
+			$_badge_hex      = $_badge_name_hex[ $_badge_raw ] ?? ( preg_match( '/^#[0-9a-fA-F]{6}$/', $_badge_raw ) ? $_badge_raw : '#15803d' );
+			?>
+			<?php ob_start(); ?>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+					array( 'Title *', '<input type="text" id="pv-title" name="title" value="' . esc_attr( $item->title ?? '' ) . '" placeholder="e.g. Limited Time Offer" required>' ),
+					array( 'Status',
+						'<select name="status">'
+						. '<option value="active"' . selected( $item->status ?? 'active', 'active', false ) . '>&#9679; Active</option>'
+						. '<option value="inactive"' . selected( $item->status ?? '', 'inactive', false ) . '>&#9675; Draft</option>'
+						. '</select>'
+					),
+				) ); ?>
 
-				<div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;" class="ah-form-row">
-					<div>
-						<label>Title *</label>
-						<input type="text" id="pv-title" name="title" value="<?php echo esc_attr( $item->title ?? '' ); ?>" placeholder="e.g. Limited Time Offer" required>
-					</div>
-					<div>
-						<label>Status</label>
-						<select name="status">
-							<option value="active"   <?php selected( $item->status ?? 'active', 'active' ); ?>>&#9679; Active</option>
-							<option value="inactive" <?php selected( $item->status ?? '', 'inactive' ); ?>>&#9675; Draft</option>
-						</select>
-					</div>
-				</div>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Message <small>(short description below the title)</small>', '<textarea id="pv-message" name="message" rows="2" placeholder="e.g. Get 20% off all bookings this weekend">' . esc_textarea( $item->message ?? '' ) . '</textarea>' ); ?>
 
-				<div class="ah-form-row">
-					<label>Message <small>(short description below the title)</small></label>
-					<textarea id="pv-message" name="message" rows="2" placeholder="e.g. Get 20% off all bookings this weekend"><?php echo esc_textarea( $item->message ?? '' ); ?></textarea>
-				</div>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+					array( 'Badge Label', '<input type="text" id="pv-badge-text" name="badge_text" value="' . esc_attr( $item->badge_text ?? '' ) . '" placeholder="e.g. New, Hot Deal, Important">' ),
+					array( 'Badge Colour', '<div style="display:flex;gap:10px;align-items:center;margin-top:6px;"><input type="color" name="badge_color" id="pv-badge-color" value="' . esc_attr( $_badge_hex ) . '" style="width:48px;height:36px;padding:2px 3px;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;background:#fff;"><span id="pv-badge-color-sample" style="padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Badge</span></div>' ),
+				) ); ?>
 
-				<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-					<div class="ah-form-row">
-						<label>Badge Label</label>
-						<input type="text" id="pv-badge-text" name="badge_text" value="<?php echo esc_attr( $item->badge_text ?? '' ); ?>" placeholder="e.g. New, Hot Deal, Important">
-					</div>
-					<div class="ah-form-row">
-						<label>Badge Colour</label>
-						<?php
-						$_badge_name_hex = array( 'green'=>'#15803d','red'=>'#b91c1c','blue'=>'#1d4ed8','orange'=>'#c2410c','purple'=>'#7c3aed' );
-						$_badge_raw      = $item->badge_color ?? 'green';
-						$_badge_hex      = $_badge_name_hex[ $_badge_raw ] ?? ( preg_match( '/^#[0-9a-fA-F]{6}$/', $_badge_raw ) ? $_badge_raw : '#15803d' );
-						?>
-						<div style="display:flex;gap:10px;align-items:center;margin-top:6px;">
-							<input type="color" name="badge_color" id="pv-badge-color" value="<?php echo esc_attr( $_badge_hex ); ?>"
-							       style="width:48px;height:36px;padding:2px 3px;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;background:#fff;">
-							<span id="pv-badge-color-sample" style="padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Badge</span>
-						</div>
-					</div>
-				</div>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+					array( 'Button Label', '<input type="text" id="pv-btn-label" name="button_label" value="' . esc_attr( $item->button_label ?? '' ) . '" placeholder="e.g. Book Now">' ),
+					array( 'Button URL', '<input type="text" id="pv-btn-url" name="button_url" value="' . esc_attr( $item->button_url ?? '' ) . '" placeholder="/contact or #section or https://…">' ),
+				) ); ?>
 
-				<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-					<div class="ah-form-row">
-						<label>Button Label</label>
-						<input type="text" id="pv-btn-label" name="button_label" value="<?php echo esc_attr( $item->button_label ?? '' ); ?>" placeholder="e.g. Book Now">
-					</div>
-					<div class="ah-form-row">
-						<label>Button URL</label>
-						<input type="text" id="pv-btn-url" name="button_url" value="<?php echo esc_attr( $item->button_url ?? '' ); ?>" placeholder="/contact or #section or https://…">
-					</div>
-				</div>
-
-				<div class="ah-form-row">
-					<label>Banner Image <small>(optional · 520×280 recommended)</small></label>
-					<div style="display:flex;gap:8px;align-items:center;">
-						<input type="text" id="pv-image" name="image" value="<?php echo esc_attr( $item->image ?? '' ); ?>" placeholder="Paste URL or use picker →" style="flex:1;">
-						<button type="button" id="ah-sn-media-btn" class="ah-btn ah-btn-secondary ah-btn-sm" style="white-space:nowrap;">&#128247; Choose</button>
-					</div>
-					<div id="pv-img-thumb" style="margin-top:6px;<?php echo ( $item->image ?? '' ) ? '' : 'display:none;'; ?>">
-						<img src="<?php echo esc_url( $item->image ?? '' ); ?>" style="max-height:80px;border-radius:6px;border:1px solid #e5e7eb;">
-						<button type="button" id="ah-sn-img-clear" style="margin-left:6px;background:none;border:none;color:#b91c1c;cursor:pointer;font-size:12px;">&#10005; Remove</button>
-					</div>
-				</div>
-			</div>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Banner Image <small>(optional · 520×280 recommended)</small>',
+					'<div style="display:flex;gap:8px;align-items:center;">'
+					. '<input type="text" id="pv-image" name="image" value="' . esc_attr( $item->image ?? '' ) . '" placeholder="Paste URL or use picker →" style="flex:1;">'
+					. '<button type="button" id="ah-sn-media-btn" class="ah-btn ah-btn-secondary ah-btn-sm" style="white-space:nowrap;">&#128247; Choose</button>'
+					. '</div>'
+					. '<div id="pv-img-thumb" style="margin-top:6px;' . ( ( $item->image ?? '' ) ? '' : 'display:none;' ) . '">'
+					. '<img src="' . esc_url( $item->image ?? '' ) . '" style="max-height:80px;border-radius:6px;border:1px solid #e5e7eb;">'
+					. '<button type="button" id="ah-sn-img-clear" style="margin-left:6px;background:none;border:none;color:#b91c1c;cursor:pointer;font-size:12px;">&#10005; Remove</button>'
+					. '</div>'
+				); ?>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Content', ob_get_clean() ); ?>
 
 			<!-- Appearance -->
-			<div class="ah-card" style="margin-bottom:16px;">
-				<div class="ah-card-header" style="padding-bottom:4px;"><h3 style="margin:0;font-size:.95rem;font-weight:700;">Appearance</h3></div>
-				<div class="ah-form-row">
-					<label>Popup Style</label>
-					<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
-						<label class="ah-style-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">
-							<input type="radio" name="position" value="modal" id="pv-pos-modal" <?php checked( $item->position ?? 'modal', 'modal' ); ?> style="margin-top:3px;flex-shrink:0;">
-							<div>
-								<strong style="font-size:.9rem;">Centre modal</strong><br>
-								<small style="color:var(--ah-muted);">Full-screen overlay, centred popup. Great for important announcements.</small>
-								<div style="margin-top:8px;background:#f3f4f6;border-radius:6px;padding:8px;font-size:10px;text-align:center;color:#6b7280;">
-									<div style="background:#fff;border-radius:4px;padding:4px 8px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);">📋 Notice popup</div>
-								</div>
-							</div>
-						</label>
-						<label class="ah-style-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">
-							<input type="radio" name="position" value="corner" id="pv-pos-corner" <?php checked( $item->position ?? '', 'corner' ); ?> style="margin-top:3px;flex-shrink:0;">
-							<div>
-								<strong style="font-size:.9rem;">Corner card</strong><br>
-								<small style="color:var(--ah-muted);">Slides up from bottom-right. No backdrop - less intrusive.</small>
-								<div style="margin-top:8px;background:#f3f4f6;border-radius:6px;padding:8px;text-align:right;font-size:10px;color:#6b7280;height:32px;position:relative;">
-									<div style="background:#fff;border-radius:4px;padding:3px 7px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);position:absolute;bottom:6px;right:6px;">📌 card</div>
-								</div>
-							</div>
-						</label>
-					</div>
-				</div>
-			</div>
+			<?php ob_start(); ?>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Popup Style',
+					'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">'
+					. '<label class="ah-style-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">'
+					. '<input type="radio" name="position" value="modal" id="pv-pos-modal" ' . checked( $item->position ?? 'modal', 'modal', false ) . ' style="margin-top:3px;flex-shrink:0;">'
+					. '<div><strong style="font-size:.9rem;">Centre modal</strong><br><small style="color:var(--ah-muted);">Full-screen overlay, centred popup. Great for important announcements.</small>'
+					. '<div style="margin-top:8px;background:#f3f4f6;border-radius:6px;padding:8px;font-size:10px;text-align:center;color:#6b7280;"><div style="background:#fff;border-radius:4px;padding:4px 8px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);">📋 Notice popup</div></div></div></label>'
+					. '<label class="ah-style-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">'
+					. '<input type="radio" name="position" value="corner" id="pv-pos-corner" ' . checked( $item->position ?? '', 'corner', false ) . ' style="margin-top:3px;flex-shrink:0;">'
+					. '<div><strong style="font-size:.9rem;">Corner card</strong><br><small style="color:var(--ah-muted);">Slides up from bottom-right. No backdrop - less intrusive.</small>'
+					. '<div style="margin-top:8px;background:#f3f4f6;border-radius:6px;padding:8px;text-align:right;font-size:10px;color:#6b7280;height:32px;position:relative;"><div style="background:#fff;border-radius:4px;padding:3px 7px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);position:absolute;bottom:6px;right:6px;">📌 card</div></div></div></label>'
+					. '</div>'
+				); ?>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Appearance', ob_get_clean() ); ?>
 
 			<!-- Behaviour -->
-			<div class="ah-card" style="margin-bottom:16px;">
-				<div class="ah-card-header" style="padding-bottom:4px;"><h3 style="margin:0;font-size:.95rem;font-weight:700;">Behaviour</h3></div>
+			<?php ob_start(); ?>
 
-				<div class="ah-form-row">
-					<label>When to show</label>
-					<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:8px;">
-						<?php
-						$triggers = array(
-							'immediate'   => array( '⚡', 'On page load',   'Shows immediately when the page opens' ),
-							'exit-intent' => array( '🚪', 'Exit intent',    'Fires when cursor moves toward the browser bar' ),
-							'delay'       => array( '⏱', 'After delay',    'Wait N seconds before showing' ),
-							'scroll'      => array( '📜', 'On scroll',      'Show after visitor scrolls X% down the page' ),
-						);
-						foreach ( $triggers as $tval => $td ) : ?>
-						<label class="ah-trig-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;transition:border-color .15s;">
-							<input type="radio" name="trigger_type" value="<?php echo esc_attr( $tval ); ?>" <?php checked( $item->trigger_type ?? 'immediate', $tval ); ?> style="display:none;">
-							<span style="font-size:22px;"><?php echo $td[0]; ?></span>
-							<strong style="font-size:.82rem;"><?php echo esc_html( $td[1] ); ?></strong>
-							<small style="color:var(--ah-muted);font-size:.75rem;"><?php echo esc_html( $td[2] ); ?></small>
-						</label>
-						<?php endforeach; ?>
-					</div>
-					<div id="sn-delay-row" style="margin-top:10px;display:<?php echo ( ( $item->trigger_type ?? '' ) === 'delay' ) ? 'flex' : 'none'; ?>;align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;">
-						<label style="font-size:.88rem;color:var(--ah-muted);">Show after</label>
-						<input type="number" name="trigger_delay" value="<?php echo (int) ( $item->trigger_delay ?? 5 ); ?>" min="1" max="300" style="width:70px;">
-						<label style="font-size:.88rem;color:var(--ah-muted);">seconds</label>
-					</div>
-					<div id="sn-scroll-row" style="margin-top:10px;display:<?php echo ( ( $item->trigger_type ?? '' ) === 'scroll' ) ? 'flex' : 'none'; ?>;align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;">
-						<label style="font-size:.88rem;color:var(--ah-muted);">Show after visitor scrolls</label>
-						<input type="number" name="trigger_scroll" value="<?php echo (int) ( $item->trigger_scroll ?? 50 ); ?>" min="0" max="100" style="width:70px;">
-						<label style="font-size:.88rem;color:var(--ah-muted);">% of the page</label>
-					</div>
+				<?php
+				$_triggers_html = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:8px;">';
+				$triggers = array(
+					'immediate'   => array( '⚡', 'On page load',   'Shows immediately when the page opens' ),
+					'exit-intent' => array( '🚪', 'Exit intent',    'Fires when cursor moves toward the browser bar' ),
+					'delay'       => array( '⏱', 'After delay',    'Wait N seconds before showing' ),
+					'scroll'      => array( '📜', 'On scroll',      'Show after visitor scrolls X% down the page' ),
+				);
+				foreach ( $triggers as $tval => $td ) {
+					$_triggers_html .= '<label class="ah-trig-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;transition:border-color .15s;">';
+					$_triggers_html .= '<input type="radio" name="trigger_type" value="' . esc_attr( $tval ) . '" ' . checked( $item->trigger_type ?? 'immediate', $tval, false ) . ' style="display:none;">';
+					$_triggers_html .= '<span style="font-size:22px;">' . $td[0] . '</span>';
+					$_triggers_html .= '<strong style="font-size:.82rem;">' . esc_html( $td[1] ) . '</strong>';
+					$_triggers_html .= '<small style="color:var(--ah-muted);font-size:.75rem;">' . esc_html( $td[2] ) . '</small>';
+					$_triggers_html .= '</label>';
+				}
+				$_triggers_html .= '</div>';
+				$_triggers_html .= '<div id="sn-delay-row" style="margin-top:10px;display:' . ( ( $item->trigger_type ?? '' ) === 'delay' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;">';
+				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">Show after</label>';
+				$_triggers_html .= '<input type="number" name="trigger_delay" value="' . (int) ( $item->trigger_delay ?? 5 ) . '" min="1" max="300" style="width:70px;">';
+				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">seconds</label>';
+				$_triggers_html .= '</div>';
+				$_triggers_html .= '<div id="sn-scroll-row" style="margin-top:10px;display:' . ( ( $item->trigger_type ?? '' ) === 'scroll' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;">';
+				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">Show after visitor scrolls</label>';
+				$_triggers_html .= '<input type="number" name="trigger_scroll" value="' . (int) ( $item->trigger_scroll ?? 50 ) . '" min="0" max="100" style="width:70px;">';
+				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">% of the page</label>';
+				$_triggers_html .= '</div>';
+				\Ah\Cms\Admin\Components\AdminComponents::formRow( 'When to show', $_triggers_html );
+			?>
+
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Which pages',
+					'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">'
+					. '<label class="ah-scope-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">'
+					. '<input type="radio" name="scope" value="all" ' . checked( $item->scope ?? 'all', 'all', false ) . '>'
+					. '<div><strong style="font-size:.88rem;">All pages</strong><br><small style="color:var(--ah-muted);">Shows on every page of the site</small></div>'
+					. '</label>'
+					. '<label class="ah-scope-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">'
+					. '<input type="radio" name="scope" value="slugs" ' . checked( $item->scope ?? '', 'slugs', false ) . '>'
+					. '<div><strong style="font-size:.88rem;">Specific pages</strong><br><small style="color:var(--ah-muted);">Target by slug (comma-separated)</small></div>'
+					. '</label>'
+					. '</div>'
+					. '<div id="sn-slugs-row" style="margin-top:8px;display:' . ( ( $item->scope ?? 'all' ) === 'slugs' ? 'block' : 'none' ) . ';">'
+					. '<input type="text" name="slugs" value="' . esc_attr( $item->slugs ?? '' ) . '" placeholder="buying, selling, guides" style="width:100%;">'
+					. '<small style="color:var(--ah-muted);">Enter slugs without slashes. Each page tracks its own dismiss - closing on /buying won\'t hide it on /selling.</small>'
+					. '</div>'
+				); ?>
+
+				<?php
+				$_freqs_html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">';
+				$freqs = array(
+					'daily'     => array( '📅', 'Once per day',     'Resets at midnight. Resets if content changes.' ),
+					'weekly'    => array( '🗓', 'Once per week',    'Resets 7 days after last dismiss.' ),
+					'session'   => array( '🔄', 'Per session',      'Resets when visitor closes their tab.' ),
+					'once_ever' => array( '🔒', 'Only once - ever', 'Permanently dismissed. Never shows again.' ),
+					'always'    => array( '♾', 'Every page load',  'No dismiss memory. Use sparingly.' ),
+					'custom'    => array( '⏰', 'Custom interval',  'Show again after your own time (e.g. every 2 hrs).' ),
+				);
+				$_custom_total = (int) ( $item->frequency_custom_mins ?? 60 );
+				$_custom_hrs   = (int) floor( $_custom_total / 60 );
+				$_custom_min   = $_custom_total % 60;
+				foreach ( $freqs as $fval => $fd ) {
+					$_freqs_html .= '<label class="ah-freq-opt" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">';
+					$_freqs_html .= '<input type="radio" name="frequency" value="' . esc_attr( $fval ) . '" ' . checked( $item->frequency ?? 'daily', $fval, false ) . ' style="margin-top:3px;flex-shrink:0;">';
+					$_freqs_html .= '<div><span style="font-size:15px;">' . $fd[0] . '</span> <strong style="font-size:.85rem;">' . esc_html( $fd[1] ) . '</strong><br><small style="color:var(--ah-muted);">' . esc_html( $fd[2] ) . '</small></div>';
+					$_freqs_html .= '</label>';
+				}
+				$_freqs_html .= '</div>';
+				$_freqs_html .= '<div id="sn-freq-custom-row" style="margin-top:10px;display:' . ( ( $item->frequency ?? '' ) === 'custom' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;flex-wrap:wrap;">';
+				$_freqs_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">Show again every</label>';
+				$_freqs_html .= '<input type="number" id="sn-freq-hours" value="' . esc_attr( $_custom_hrs ) . '" min="0" max="999" style="width:70px;">';
+				$_freqs_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">hrs</label>';
+				$_freqs_html .= '<input type="number" id="sn-freq-mins" value="' . esc_attr( $_custom_min ) . '" min="0" max="59" style="width:70px;">';
+				$_freqs_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">mins</label>';
+				$_freqs_html .= '<input type="hidden" name="frequency_custom_mins" id="sn-freq-custom-mins" value="' . esc_attr( max( 1, $_custom_total ) ) . '">';
+				$_freqs_html .= '<small style="color:var(--ah-muted);width:100%;margin-top:2px;">Stored in visitor\'s browser. Minimum 1 minute.</small>';
+				$_freqs_html .= '</div>';
+				\Ah\Cms\Admin\Components\AdminComponents::formRow( 'How often', $_freqs_html );
+				?>
+
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Device targeting <small>(who sees this notice)</small>',
+					'<div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">'
+					. '<label style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
+					. '<input type="radio" name="device" value="all" ' . checked( $item->device ?? 'all', 'all', false ) . '> 🖥 All devices</label>'
+					. '<label style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
+					. '<input type="radio" name="device" value="desktop" ' . checked( $item->device ?? '', 'desktop', false ) . '> 💻 Desktop only</label>'
+					. '<label style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
+					. '<input type="radio" name="device" value="mobile" ' . checked( $item->device ?? '', 'mobile', false ) . '> 📱 Mobile only</label>'
+					. '</div>'
+				); ?>
+
+				<?php
+				$_date_html = '';
+				$_months = array( 1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'May',6=>'Jun',7=>'Jul',8=>'Aug',9=>'Sep',10=>'Oct',11=>'Nov',12=>'Dec' );
+				$_cur_yr = (int) gmdate('Y');
+				$_years  = range( $_cur_yr, $_cur_yr + 5 );
+				ob_start();
+				foreach ( array( 'show_from' => 'From', 'show_until' => 'Until' ) as $_fn => $_fl ) :
+					$_dt  = $item->$_fn ?? '';
+					$_day = $_dt ? (int) gmdate('j', strtotime($_dt)) : 0;
+					$_mon = $_dt ? (int) gmdate('n', strtotime($_dt)) : 0;
+					$_yr  = $_dt ? (int) gmdate('Y', strtotime($_dt)) : 0;
+				?>
+				<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;">
+					<span style="font-size:.82rem;font-weight:600;width:36px;color:var(--ah-muted);"><?php echo esc_html( $_fl ); ?></span>
+					<select class="ah-date-part" data-field="<?php echo esc_attr( $_fn ); ?>" data-part="d" style="width:72px;">
+						<option value="0">Day</option>
+						<?php for ( $d = 1; $d <= 31; $d++ ) : ?><option value="<?php echo $d; ?>" <?php selected( $_day, $d ); ?>><?php echo $d; ?></option><?php endfor; ?>
+					</select>
+					<select class="ah-date-part" data-field="<?php echo esc_attr( $_fn ); ?>" data-part="m" style="width:80px;">
+						<option value="0">Month</option>
+						<?php foreach ( $_months as $mn => $ml ) : ?><option value="<?php echo $mn; ?>" <?php selected( $_mon, $mn ); ?>><?php echo esc_html( $ml ); ?></option><?php endforeach; ?>
+					</select>
+					<select class="ah-date-part" data-field="<?php echo esc_attr( $_fn ); ?>" data-part="y" style="width:90px;">
+						<option value="0">Year</option>
+						<?php foreach ( $_years as $yr ) : ?><option value="<?php echo $yr; ?>" <?php selected( $_yr, $yr ); ?>><?php echo $yr; ?></option><?php endforeach; ?>
+					</select>
+					<input type="hidden" name="<?php echo esc_attr( $_fn ); ?>" class="ah-date-hidden" data-field="<?php echo esc_attr( $_fn ); ?>" value="<?php echo esc_attr( $_dt ); ?>">
 				</div>
-
-				<div class="ah-form-row">
-					<label>Which pages</label>
-					<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
-						<label class="ah-scope-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">
-							<input type="radio" name="scope" value="all" <?php checked( $item->scope ?? 'all', 'all' ); ?>>
-							<div><strong style="font-size:.88rem;">All pages</strong><br><small style="color:var(--ah-muted);">Shows on every page of the site</small></div>
-						</label>
-						<label class="ah-scope-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">
-							<input type="radio" name="scope" value="slugs" <?php checked( $item->scope ?? '', 'slugs' ); ?>>
-							<div><strong style="font-size:.88rem;">Specific pages</strong><br><small style="color:var(--ah-muted);">Target by slug (comma-separated)</small></div>
-						</label>
-					</div>
-					<div id="sn-slugs-row" style="margin-top:8px;display:<?php echo ( ( $item->scope ?? 'all' ) === 'slugs' ) ? 'block' : 'none'; ?>;">
-						<input type="text" name="slugs" value="<?php echo esc_attr( $item->slugs ?? '' ); ?>" placeholder="buying, selling, guides" style="width:100%;">
-						<small style="color:var(--ah-muted);">Enter slugs without slashes. Each page tracks its own dismiss - closing on /buying won't hide it on /selling.</small>
-					</div>
+				<?php endforeach; ?>
+				<div style="margin-top:8px;">
+					<button type="button" id="ah-sn-clear-dates" class="ah-btn ah-btn-secondary ah-btn-sm">✕ Clear both dates</button>
 				</div>
+				<small style="color:var(--ah-muted);">Notice hides itself outside this range even when status is Active.</small>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Active date range <small>(leave blank = always show)</small>', ob_get_clean() ); ?>
 
-				<div class="ah-form-row">
-					<label>How often</label>
-					<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
-						<?php
-							$freqs = array(
-							'daily'     => array( '📅', 'Once per day',     'Resets at midnight. Resets if content changes.' ),
-							'weekly'    => array( '🗓', 'Once per week',    'Resets 7 days after last dismiss.' ),
-							'session'   => array( '🔄', 'Per session',      'Resets when visitor closes their tab.' ),
-							'once_ever' => array( '🔒', 'Only once - ever', 'Permanently dismissed. Never shows again.' ),
-							'always'    => array( '♾', 'Every page load',  'No dismiss memory. Use sparingly.' ),
-							'custom'    => array( '⏰', 'Custom interval',  'Show again after your own time (e.g. every 2 hrs).' ),
-						);
-						$_custom_total = (int) ( $item->frequency_custom_mins ?? 60 );
-						$_custom_hrs   = (int) floor( $_custom_total / 60 );
-						$_custom_min   = $_custom_total % 60;
-						foreach ( $freqs as $fval => $fd ) : ?>
-						<label class="ah-freq-opt" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">
-							<input type="radio" name="frequency" value="<?php echo esc_attr( $fval ); ?>" <?php checked( $item->frequency ?? 'daily', $fval ); ?> style="margin-top:3px;flex-shrink:0;">
-							<div>
-								<span style="font-size:15px;"><?php echo $fd[0]; ?></span>
-								<strong style="font-size:.85rem;"> <?php echo esc_html( $fd[1] ); ?></strong><br>
-								<small style="color:var(--ah-muted);"><?php echo esc_html( $fd[2] ); ?></small>
-							</div>
-						</label>
-						<?php endforeach; ?>
-						</div>
-						<div id="sn-freq-custom-row" style="margin-top:10px;display:<?php echo ( ( $item->frequency ?? '' ) === 'custom' ) ? 'flex' : 'none'; ?>;align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;flex-wrap:wrap;">
-							<label style="font-size:.88rem;color:var(--ah-muted);">Show again every</label>
-							<input type="number" id="sn-freq-hours" value="<?php echo esc_attr( $_custom_hrs ); ?>" min="0" max="999" style="width:70px;">
-							<label style="font-size:.88rem;color:var(--ah-muted);">hrs</label>
-							<input type="number" id="sn-freq-mins" value="<?php echo esc_attr( $_custom_min ); ?>" min="0" max="59" style="width:70px;">
-							<label style="font-size:.88rem;color:var(--ah-muted);">mins</label>
-							<input type="hidden" name="frequency_custom_mins" id="sn-freq-custom-mins" value="<?php echo esc_attr( max( 1, $_custom_total ) ); ?>">
-							<small style="color:var(--ah-muted);width:100%;margin-top:2px;">Stored in visitor's browser. Minimum 1 minute.</small>
-						</div>
-					</div>
-				<div class="ah-form-row">
-					<label>Device targeting <small>(who sees this notice)</small></label>
-					<div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
-						<?php foreach ( array( 'all' => '🖥 All devices', 'desktop' => '💻 Desktop only', 'mobile' => '📱 Mobile only' ) as $dval => $dlabel ) : ?>
-						<label style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">
-							<input type="radio" name="device" value="<?php echo esc_attr( $dval ); ?>" <?php checked( $item->device ?? 'all', $dval ); ?>>
-							<?php echo esc_html( $dlabel ); ?>
-						</label>
-						<?php endforeach; ?>
-					</div>
-				</div>
-
-				<div class="ah-form-row">
-					<label>Active date range <small>(leave blank = always show)</small></label>
-					<?php
-					$_months = array( 1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'May',6=>'Jun',7=>'Jul',8=>'Aug',9=>'Sep',10=>'Oct',11=>'Nov',12=>'Dec' );
-					$_cur_yr = (int) gmdate('Y');
-					$_years  = range( $_cur_yr, $_cur_yr + 5 );
-
-					foreach ( array( 'show_from' => 'From', 'show_until' => 'Until' ) as $_fn => $_fl ) :
-						$_dt  = $item->$_fn ?? '';
-						$_day = $_dt ? (int) gmdate('j', strtotime($_dt)) : 0;
-						$_mon = $_dt ? (int) gmdate('n', strtotime($_dt)) : 0;
-						$_yr  = $_dt ? (int) gmdate('Y', strtotime($_dt)) : 0;
-					?>
-					<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;">
-						<span style="font-size:.82rem;font-weight:600;width:36px;color:var(--ah-muted);"><?php echo esc_html( $_fl ); ?></span>
-						<select class="ah-date-part" data-field="<?php echo esc_attr( $_fn ); ?>" data-part="d" style="width:72px;">
-							<option value="0">Day</option>
-							<?php for ( $d = 1; $d <= 31; $d++ ) : ?><option value="<?php echo $d; ?>" <?php selected( $_day, $d ); ?>><?php echo $d; ?></option><?php endfor; ?>
-						</select>
-						<select class="ah-date-part" data-field="<?php echo esc_attr( $_fn ); ?>" data-part="m" style="width:80px;">
-							<option value="0">Month</option>
-							<?php foreach ( $_months as $mn => $ml ) : ?><option value="<?php echo $mn; ?>" <?php selected( $_mon, $mn ); ?>><?php echo esc_html( $ml ); ?></option><?php endforeach; ?>
-						</select>
-						<select class="ah-date-part" data-field="<?php echo esc_attr( $_fn ); ?>" data-part="y" style="width:90px;">
-							<option value="0">Year</option>
-							<?php foreach ( $_years as $yr ) : ?><option value="<?php echo $yr; ?>" <?php selected( $_yr, $yr ); ?>><?php echo $yr; ?></option><?php endforeach; ?>
-						</select>
-						<input type="hidden" name="<?php echo esc_attr( $_fn ); ?>" class="ah-date-hidden" data-field="<?php echo esc_attr( $_fn ); ?>" value="<?php echo esc_attr( $_dt ); ?>">
-					</div>
-					<?php endforeach; ?>
-					<div style="margin-top:8px;">
-						<button type="button" id="ah-sn-clear-dates" class="ah-btn ah-btn-secondary ah-btn-sm">✕ Clear both dates</button>
-					</div>
-					<small style="color:var(--ah-muted);">Notice hides itself outside this range even when status is Active.</small>
-				</div>
-
-				<div class="ah-form-row">
-					<label>Auto-close <small>(0 = visitor must dismiss manually)</small></label>
-					<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
-						<input type="number" name="auto_close" value="<?php echo (int) ( $item->auto_close ?? 0 ); ?>" min="0" max="120" style="width:80px;">
-						<span style="color:var(--ah-muted);font-size:.88rem;">seconds - notice closes itself (0 = off)</span>
-					</div>
-				</div>
-
-				<div class="ah-form-row" style="max-width:160px;">
-					<label>Sort Order <small>(lower shows first)</small></label>
-					<input type="number" name="sort_order" value="<?php echo (int) ( $item->sort_order ?? 0 ); ?>">
-				</div>
-			</div>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+				array( 'Auto-close <small>(0 = visitor must dismiss manually)</small>',
+					'<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">'
+					. '<input type="number" name="auto_close" value="' . (int) ( $item->auto_close ?? 0 ) . '" min="0" max="120" style="width:80px;">'
+					. '<span style="color:var(--ah-muted);font-size:.88rem;">seconds - notice closes itself (0 = off)</span>'
+					. '</div>'
+				),
+				array( 'Sort Order <small>(lower shows first)</small>',
+					'<input type="number" name="sort_order" value="' . (int) ( $item->sort_order ?? 0 ) . '">'
+				),
+			) ); ?>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Behaviour', ob_get_clean() ); ?>
 
 			<div id="ah-sn-form-errors" style="display:none;margin-bottom:14px;background:#fef2f2;border-left:4px solid #dc2626;padding:12px 16px;border-radius:6px;color:#b91c1c;font-size:.92rem;"></div>
 
 			<div style="display:flex;align-items:center;gap:12px;">
 				<button type="submit" id="ah-sn-submit" class="ah-btn ah-btn-primary">Save Notice</button>
-				<a href="<?php echo esc_url( add_query_arg( 'page', 'ah-notices', admin_url( 'admin.php' ) ) ); ?>" style="color:var(--ah-muted);font-size:.88rem;">&#8592; Cancel</a>
+				<a href="<?php echo esc_url( add_query_arg( 'page', 'ah-notices', admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary">← Cancel</a>
 			</div>
 		</form>
 
 		<!-- ── Right: live preview ────────────────────────────────────────── -->
 		<div style="position:sticky;top:80px;">
-			<div class="ah-card">
-				<div class="ah-card-header" style="padding-bottom:4px;"><h3 style="margin:0;font-size:.92rem;font-weight:700;">Live Preview</h3></div>
+			<?php ob_start(); ?>
 				<div style="margin-top:8px;">
 					<div id="pv-wrap" style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#f3f4f6;min-height:200px;display:flex;align-items:center;justify-content:center;padding:16px;position:relative;">
 						<div id="pv-popup" style="background:#fff;border-radius:12px;width:100%;overflow:hidden;box-shadow:0 8px 32px rgba(10,25,47,.18);">
@@ -410,7 +370,7 @@ if ( ! empty( $_GET['err'] ) ) {
 					</div>
 					<p style="font-size:.78rem;color:var(--ah-muted);margin:6px 0 0;text-align:center;">Preview updates as you type</p>
 				</div>
-			</div>
+			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Live Preview', ob_get_clean() ); ?>
 		</div>
 	</div>
 

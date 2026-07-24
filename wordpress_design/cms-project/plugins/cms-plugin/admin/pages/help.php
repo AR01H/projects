@@ -2,6 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
+use Ah\Cms\Admin\Components\AdminComponents;
+
 $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 ?>
 <div class="wrap ah-wrap">
@@ -45,8 +47,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 <div class="ah-help-hero">
   <div class="ah-hero-icon">📖</div>
   <div>
-    <h1>Help &amp; Guide</h1>
-    <p>Everything you need to know about managing your website with the CMS ADMIN. Pick a topic below to get started.</p>
+    <?php AdminComponents::pageHeader( 'editor-help', 'Help &amp; Guide', 'Everything you need to know about managing your website with the CMS ADMIN.' ); ?>
   </div>
 </div>
 
@@ -73,7 +74,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
 <!-- ══════════ QUICK START ══════════ -->
 <div id="help-quick-start" class="ah-help-panel<?php echo $active_tab === 'quick-start' ? ' active' : ''; ?>">
-  <div class="ah-card" style="padding:24px;">
+  <?php ob_start(); ?>
 
     <div class="ah-help-section">
       <h2>Welcome to CMS ADMIN</h2>
@@ -110,12 +111,12 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
       </div>
     </div>
 
-  </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
 </div>
 
 <!-- ══════════ CONTENT ══════════ -->
 <div id="help-content" class="ah-help-panel<?php echo $active_tab === 'content' ? ' active' : ''; ?>">
-  <div class="ah-card" style="padding:24px;">
+  <?php ob_start(); ?>
 
     <div class="ah-help-section">
       <h2>News Bar</h2>
@@ -169,11 +170,12 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     </div>
 
   </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
 </div>
 
 <!-- ══════════ PAGE SECTIONS ══════════ -->
 <div id="help-page-sections" class="ah-help-panel<?php echo $active_tab === 'page-sections' ? ' active' : ''; ?>">
-  <div class="ah-card" style="padding:24px;">
+  <?php ob_start(); ?>
 
     <div class="ah-help-section">
       <h2>How Page Sections Work</h2>
@@ -209,11 +211,12 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     </div>
 
   </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
 </div>
 
 <!-- ══════════ POST EDITOR ══════════ -->
 <div id="help-post-editor" class="ah-help-panel<?php echo $active_tab === 'post-editor' ? ' active' : ''; ?>">
-  <div class="ah-card" style="padding:24px;">
+  <?php ob_start(); ?>
 
     <div class="ah-help-section">
       <h2>Creating a Post from a Template</h2>
@@ -294,11 +297,12 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     </div>
 
   </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
 </div>
 
 <!-- ══════════ TOOLS ══════════ -->
 <div id="help-tools" class="ah-help-panel<?php echo $active_tab === 'tools' ? ' active' : ''; ?>">
-  <div class="ah-card" style="padding:24px;">
+  <?php ob_start(); ?>
 
     <div class="ah-help-section">
       <h2>Page Builder</h2>
@@ -368,11 +372,12 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     </div>
 
   </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
 </div>
 
 <!-- ══════════ TROUBLESHOOTING ══════════ -->
 <div id="help-troubleshoot" class="ah-help-panel<?php echo $active_tab === 'troubleshoot' ? ' active' : ''; ?>">
-  <div class="ah-card" style="padding:24px;">
+  <?php ob_start(); ?>
 
     <div class="ah-help-section">
       <h2>Common Issues &amp; Fixes</h2>
@@ -440,6 +445,7 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     </div>
 
   </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
 </div>
 
 </div><!-- .wrap -->

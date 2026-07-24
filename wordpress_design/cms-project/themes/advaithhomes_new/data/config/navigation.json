@@ -1,0 +1,26 @@
+{
+    "_comment": "All navigation in one place. Change labels, URLs, order — no PHP.",
+    "main": [
+        { "label": "Guides", "url": "/guides/", "icon": "📚" },
+        { "label": "Calculators", "url": "/calculators/", "icon": "🧮" },
+        { "label": "News", "url": "/news/", "icon": "📰" },
+        { "label": "Ask an Expert", "url": "/ask-expert/", "icon": "🤝" },
+        { "label": "Contact", "url": "/contact/", "icon": "💬" }
+    ],
+    "mobile": [
+        { "label": "Home", "url": "/", "icon": "🏠" },
+        { "label": "Guides", "url": "/guides/", "icon": "📚" },
+        { "label": "Calculators", "url": "/calculators/", "icon": "🧮" },
+        { "label": "News", "url": "/news/", "icon": "📰" },
+        { "label": "Expert", "url": "/ask-expert/", "icon": "🤝" },
+        { "label": "Contact", "url": "/contact/", "icon": "💬" }
+    ],
+    "cta": {
+        "label": "Get Guidance",
+        "url": "/ask-expert/"
+    },
+    "breadcrumbs": {
+        "home_label": "Home",
+        "separator": "/"
+    }
+}

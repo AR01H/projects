@@ -1,0 +1,27 @@
+{
+    "_comment": "Change this file to rebrand the entire site. No PHP changes needed.",
+    "name": "ADVAITH HOMES",
+    "tagline": "Property Made Simple",
+    "description": "Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.",
+    "copyright_year": "2025",
+    "copyright_text": "© 2025 ADVAITH HOMES. All rights reserved.",
+    "made_with": "Made with ♥ in the UK",
+    "disclaimer": "Information on this website is general guidance only and does not constitute legal, financial or professional advice.",
+    "logo": {
+        "icon": "🏠",
+        "name": "ADVAITH",
+        "subtitle": "HOMES",
+        "url": "/"
+    },
+    "contact": {
+        "email": "contact@advaithhomes.co.uk",
+        "whatsapp": "+44 7747 223 762",
+        "phone": "",
+        "address": ""
+    },
+    "social": [
+        { "platform": "facebook", "url": "#", "label": "Facebook" },
+        { "platform": "instagram", "url": "#", "label": "Instagram" },
+        { "platform": "youtube", "url": "#", "label": "YouTube" }
+    ]
+}

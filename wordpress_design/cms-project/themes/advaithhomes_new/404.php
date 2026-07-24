@@ -8,6 +8,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+get_header();
+
 $chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
 adn_page_open( array( 'chrome' => $chrome, 'breadcrumb' => array() ) );
@@ -69,3 +71,4 @@ adn_page_open( array( 'chrome' => $chrome, 'breadcrumb' => array() ) );
 
 <?php
 adn_page_close( array( 'chrome' => $chrome ) );
+get_footer();

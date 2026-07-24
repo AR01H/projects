@@ -1,0 +1,24 @@
+{
+  "tag": "What We Stand For",
+  "title": "Our <em>Values</em>",
+  "sub": "Three things we will not compromise on, whatever the season.",
+  "image": "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=72&auto=format&fit=crop",
+  "alt": "Cane fields at harvest",
+  "items": [
+    {
+      "icon": "❦",
+      "title": "Purity",
+      "text": "Pure ingredients and nothing else - no concentrates, no preservatives, no compromise."
+    },
+    {
+      "icon": "✦",
+      "title": "Quality",
+      "text": "Hygiene and consistency at every counter, checked batch by batch, every single day."
+    },
+    {
+      "icon": "❀",
+      "title": "Tradition",
+      "text": "Honouring the old methods that made this worth drinking in the first place."
+    }
+  ]
+}

@@ -47,11 +47,7 @@ if ( isset( $_GET['trash_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah
 
 $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
 ?>
-<div class="wrap ah-wrap">
-  <h1><span class="dashicons dashicons-admin-page"></span> Pages Manager</h1>
-  <?php if ( $notice ) : ?><div class="ah-notice ah-notice-<?php echo esc_attr( $n_type ); ?>"><?php echo esc_html( $notice ); ?></div><?php endif; ?>
-
-  <?php if ( $action === 'list' ) :
+<?php if ( $action === 'list' ) :
     $paged    = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
     $search   = sanitize_text_field( $_GET['s'] ?? '' );
     $status_f = sanitize_key( $_GET['status'] ?? '' );
@@ -59,142 +55,153 @@ $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
     if ( $search ) $q_args['s'] = $search;
     $q = new WP_Query( $q_args );
     $pages = $q->posts; $total = $q->found_posts; $pages_count = (int) ceil( $total / 20 );
-  ?>
-    <div class="ah-table-top">
-      <form class="ah-search-form" method="get">
-        <input type="hidden" name="page" value="ah-pages">
-        <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search pages…">
-        <select name="status">
-          <option value="">All Statuses</option>
-          <?php foreach ( array( 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ) as $sv => $sl ) : ?>
-            <option value="<?php echo $sv; ?>" <?php selected( $status_f, $sv ); ?>><?php echo $sl; ?></option>
-          <?php endforeach; ?>
-        </select>
-        <button class="ah-btn ah-btn-secondary">Filter</button>
-      </form>
-      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-pages', 'action' => 'add' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">+ New Page</a>
-    </div>
 
-    <div class="ah-table-wrap">
-      <table class="ah-table">
-        <thead><tr><th>Title</th><th>Slug</th><th>Status</th><th>Template</th><th>Modified</th><th>Actions</th></tr></thead>
-        <tbody>
-          <?php if ( empty( $pages ) ) : ?><tr><td colspan="6" style="text-align:center;color:var(--ah-muted);padding:32px;">No pages found.</td></tr><?php endif; ?>
-          <?php foreach ( $pages as $pg ) :
+    $all_templates_for_table = $all_templates;
+    \Ah\Cms\Admin\Components\AdminComponents::listPage( array(
+      'icon'        => 'admin-page',
+      'title'       => 'Pages Manager',
+      'description' => 'Create and manage static pages with templates and featured images.',
+      'notice'      => $notice,
+      'notice_type' => $n_type,
+      'filter_bar'  => array(
+        'page_slug'          => 'ah-pages',
+        'search_placeholder' => 'Search pages…',
+        'search_value'       => $search,
+        'filters'            => array(
+          array(
+            'name'     => 'status',
+            'options'  => array_merge( array( '' => 'All Statuses' ), array( 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ) ),
+            'selected' => $status_f,
+          ),
+        ),
+        'add_url'   => add_query_arg( array( 'page' => 'ah-pages', 'action' => 'add' ), admin_url( 'admin.php' ) ),
+        'add_label' => '+ New Page',
+      ),
+      'table' => array(
+        'columns' => array(
+          array( 'label' => 'Title', 'render' => function ( $pg ) {
+            $html = '<strong>' . esc_html( $pg->post_title ?: '(no title)' ) . '</strong>';
+            if ( $pg->post_parent ) $html .= '<small style="color:var(--ah-muted);display:block;">Child of: ' . esc_html( get_the_title( $pg->post_parent ) ) . '</small>';
+            return $html;
+          } ),
+          array( 'label' => 'Slug', 'render' => function ( $pg ) {
+            return '<code>' . esc_html( $pg->post_name ) . '</code>';
+          } ),
+          array( 'label' => 'Status', 'render' => function ( $pg ) {
+            $badge = array( 'publish' => 'active', 'draft' => 'draft', 'private' => 'inactive', 'pending' => 'draft' );
+            $label = array( 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' );
+            return '<span class="ah-badge ah-badge-' . esc_attr( $badge[ $pg->post_status ] ?? 'draft' ) . '">' . esc_html( $label[ $pg->post_status ] ?? $pg->post_status ) . '</span>';
+          } ),
+          array( 'label' => 'Template', 'render' => function ( $pg ) use ( $all_templates_for_table ) {
             $tpl      = get_page_template_slug( $pg->ID );
-            $tpl_name = $tpl ? ( $all_templates[ $tpl ] ?? basename( $tpl ) ) : 'Default';
-            $badge    = array( 'publish' => 'active', 'draft' => 'draft', 'private' => 'inactive', 'pending' => 'draft' );
-            $label    = array( 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' );
-          ?>
-            <tr>
-              <td><strong><?php echo esc_html( $pg->post_title ?: '(no title)' ); ?></strong>
-                <?php if ( $pg->post_parent ) : ?><small style="color:var(--ah-muted);display:block;">Child of: <?php echo esc_html( get_the_title( $pg->post_parent ) ); ?></small><?php endif; ?>
-              </td>
-              <td><code><?php echo esc_html( $pg->post_name ); ?></code></td>
-              <td><span class="ah-badge ah-badge-<?php echo esc_attr( $badge[ $pg->post_status ] ?? 'draft' ); ?>"><?php echo esc_html( $label[ $pg->post_status ] ?? $pg->post_status ); ?></span></td>
-              <td><small><?php echo esc_html( $tpl_name ); ?></small></td>
-              <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $pg->post_modified ) ) ); ?></small></td>
-              <td class="row-actions">
-                <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-pages', 'action' => 'edit', 'id' => $pg->ID ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
-                <?php if ( $pg->post_status === 'publish' ) : ?><a href="<?php echo esc_url( get_permalink( $pg->ID ) ); ?>" target="_blank" class="ah-btn ah-btn-secondary ah-btn-sm">View</a><?php endif; ?>
-                <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-pages', 'trash_id' => $pg->ID ), admin_url( 'admin.php' ) ), 'ah_trash_page' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Move to trash?');">Trash</a>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-    <?php echo AH_Pagination::render( array( 'total' => $total, 'total_pages' => $pages_count, 'current_page' => $paged ) ); ?>
+            $tpl_name = $tpl ? ( $all_templates_for_table[ $tpl ] ?? basename( $tpl ) ) : 'Default';
+            return '<small>' . esc_html( $tpl_name ) . '</small>';
+          } ),
+          array( 'label' => 'Modified', 'render' => function ( $pg ) {
+            return '<small>' . esc_html( wp_date( 'M j, Y', strtotime( $pg->post_modified ) ) ) . '</small>';
+          } ),
+        ),
+        'items'         => $pages,
+        'empty_message' => 'No pages found.',
+        'actions'       => function ( $pg ) {
+          $edit_url = add_query_arg( array( 'page' => 'ah-pages', 'action' => 'edit', 'id' => $pg->ID ), admin_url( 'admin.php' ) );
+          $trash_url = wp_nonce_url( add_query_arg( array( 'page' => 'ah-pages', 'trash_id' => $pg->ID ), admin_url( 'admin.php' ) ), 'ah_trash_page' );
+          $html = '<a href="' . esc_url( $edit_url ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>';
+          if ( $pg->post_status === 'publish' ) {
+            $html .= '<a href="' . esc_url( get_permalink( $pg->ID ) ) . '" target="_blank" class="ah-btn ah-btn-secondary ah-btn-sm">View</a>';
+          }
+          ob_start();
+          \Ah\Cms\Admin\Components\AdminComponents::confirmDelete( $trash_url );
+          $html .= ob_get_clean();
+          return $html;
+        },
+      ),
+      'pagination' => array( 'total' => $total, 'total_pages' => $pages_count, 'current_page' => $paged ),
+    ) );
 
-  <?php else :
+  else :
     $wp_page   = $edit_id ? get_post( $edit_id ) : null;
     $thumb_id  = $wp_page ? (int) get_post_thumbnail_id( $wp_page->ID ) : 0;
     $thumb_url = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'medium' ) : '';
     $cur_tpl   = $wp_page ? get_page_template_slug( $wp_page->ID ) : '';
   ?>
-    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-pages' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm" style="margin-bottom:16px;display:inline-flex;">&larr; Back to Pages</a>
+  <div class="wrap ah-wrap">
+    <?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'admin-page', 'Pages Manager', 'Create and manage static pages with templates and featured images.' ); ?>
+    <?php if ( $notice ) : ?><?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, $n_type ); ?><?php endif; ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::backLink( admin_url( 'admin.php?page=ah-pages' ), '← Back to Pages' ); ?>
 
     <form method="post">
       <?php wp_nonce_field( 'ah_wp_page_save', 'ah_pages_nonce' ); ?>
       <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start;">
         <div>
-          <div class="ah-card">
-            <div class="ah-form-row">
-              <label>Page Title *</label>
-              <input type="text" name="page_title" value="<?php echo esc_attr( $wp_page->post_title ?? '' ); ?>" class="ah-generate-slug-source" data-slug-target="#ah-page-slug" required style="font-size:16px;font-weight:600;">
-            </div>
-            <div class="ah-form-row">
-              <label>Slug (URL)</label>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span style="color:var(--ah-muted);font-size:12px;"><?php echo esc_html( trailingslashit( home_url() ) ); ?></span>
-                <input type="text" name="page_slug" id="ah-page-slug" value="<?php echo esc_attr( $wp_page->post_name ?? '' ); ?>" class="ah-slug-field" style="flex:1;"
-                     <?php if ( ! empty( $wp_page->post_name ) ) echo 'data-manual="1"'; ?>>
-              <?php if ( ! empty( $wp_page->post_name ) ) : ?>
-                <small style="color:var(--ah-muted);font-size:11px;display:block;margin-top:4px;">
-                  Slug is locked - editing the title won't change it.
-                  <a href="#" style="color:var(--ah-primary);" onclick="document.getElementById('ah-page-slug').removeAttribute('data-manual');jQuery('#ah-page-slug').data('manual',false);this.parentNode.remove();return false;">Unlock to regenerate</a>
-                </small>
-              <?php endif; ?>
-              </div>
-            </div>
-            <div class="ah-form-row"><label>Excerpt</label><textarea name="page_excerpt" rows="2"><?php echo esc_textarea( $wp_page->post_excerpt ?? '' ); ?></textarea></div>
-          </div>
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Page Content</h2></div>
+          <?php ob_start(); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Page Title *', '<input type="text" name="page_title" value="' . esc_attr( $wp_page->post_title ?? '' ) . '" class="ah-generate-slug-source" data-slug-target="#ah-page-slug" required style="font-size:16px;font-weight:600;">' ); ?>
+            <?php
+            $slug_input = '<div style="display:flex;align-items:center;gap:8px;">'
+              . '<span style="color:var(--ah-muted);font-size:12px;">' . esc_html( trailingslashit( home_url() ) ) . '</span>'
+              . '<input type="text" name="page_slug" id="ah-page-slug" value="' . esc_attr( $wp_page->post_name ?? '' ) . '" class="ah-slug-field" style="flex:1;"'
+              . ( ! empty( $wp_page->post_name ) ? ' data-manual="1"' : '' ) . '>';
+            if ( ! empty( $wp_page->post_name ) ) {
+              $slug_input .= '<small style="color:var(--ah-muted);font-size:11px;display:block;margin-top:4px;">'
+                . 'Slug is locked - editing the title won\'t change it. '
+                . '<a href="#" style="color:var(--ah-primary);" onclick="document.getElementById(\'ah-page-slug\').removeAttribute(\'data-manual\');jQuery(\'#ah-page-slug\').data(\'manual\',false);this.parentNode.remove();return false;">Unlock to regenerate</a>'
+                . '</small>';
+            }
+            $slug_input .= '</div>';
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Slug (URL)', $slug_input ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Excerpt', '<textarea name="page_excerpt" rows="2">' . esc_textarea( $wp_page->post_excerpt ?? '' ) . '</textarea>' ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Page Details', ob_get_clean() ); ?>
+          <?php ob_start(); ?>
             <p style="margin:0 0 10px;color:var(--ah-muted);font-size:13px;">Paste raw HTML, inline styles, scripts, and custom markup here.</p>
             <textarea name="page_content" id="page_content" rows="28" style="width:100%;min-height:420px;font-family:Consolas,Monaco,monospace;font-size:13px;line-height:1.6;resize:vertical;"><?php echo esc_textarea( $wp_page->post_content ?? '' ); ?></textarea>
-          </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Page Content', ob_get_clean() ); ?>
         </div>
 
         <div>
-                    <div class="ah-card">
-            <div class="ah-card-header"><h2>Featured Image</h2></div>
-            <div class="ah-image-picker">
-              <img src="<?php echo esc_url( $thumb_url ); ?>" class="ah-image-preview <?php echo $thumb_url ? 'visible' : ''; ?>" alt="" style="width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;border-radius:6px;">
-              <div class="ah-image-picker-btns" style="margin-top:8px;">
-                <input type="hidden" class="ah-image-id" name="featured_image_id" value="<?php echo esc_attr( $thumb_id ); ?>">
-                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Set Image</button>
-                <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
-              </div>
-            </div>
-          </div>
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Publish</h2></div>
-            <div class="ah-form-row"><label>Status</label>
-              <select name="page_status">
-                <option value="publish" <?php selected( $wp_page->post_status ?? 'draft', 'publish' ); ?>>Published</option>
-                <option value="draft"   <?php selected( $wp_page->post_status ?? 'draft', 'draft' ); ?>>Draft</option>
-                <option value="private" <?php selected( $wp_page->post_status ?? '', 'private' ); ?>>Private</option>
-                <option value="pending" <?php selected( $wp_page->post_status ?? '', 'pending' ); ?>>Pending Review</option>
-              </select>
-            </div>
+          <?php ob_start(); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'featured_image_id', 'Featured Image / Video', $thumb_id, array( 'type' => 'media' ) ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Featured Image', ob_get_clean() ); ?>
+          <?php ob_start(); ?>
+            <?php
+            $status_select = '<select name="page_status">'
+              . '<option value="publish"' . selected( $wp_page->post_status ?? 'draft', 'publish', false ) . '>Published</option>'
+              . '<option value="draft"' . selected( $wp_page->post_status ?? 'draft', 'draft', false ) . '>Draft</option>'
+              . '<option value="private"' . selected( $wp_page->post_status ?? '', 'private', false ) . '>Private</option>'
+              . '<option value="pending"' . selected( $wp_page->post_status ?? '', 'pending', false ) . '>Pending Review</option>'
+              . '</select>';
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Status', $status_select ); ?>
             <?php if ( $wp_page && $wp_page->post_status === 'publish' ) : ?>
-              <div class="ah-form-row"><a href="<?php echo esc_url( get_permalink( $wp_page->ID ) ); ?>" target="_blank" class="ah-btn ah-btn-secondary ah-btn-sm" style="width:100%;justify-content:center;">View Page</a></div>
+              <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( '', '<a href="' . esc_url( get_permalink( $wp_page->ID ) ) . '" target="_blank" class="ah-btn ah-btn-secondary ah-btn-sm" style="width:100%;justify-content:center;">View Page</a>' ); ?>
             <?php endif; ?>
             <button type="submit" class="ah-btn ah-btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
               <span class="dashicons dashicons-saved"></span> <?php echo $wp_page ? 'Update Page' : 'Publish Page'; ?>
             </button>
-          </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Publish', ob_get_clean() ); ?>
 
+          <?php
+          $tpl_select = '<select name="page_template">';
+          foreach ( $all_templates as $tf => $tl ) {
+            $tpl_select .= '<option value="' . esc_attr( $tf ) . '"' . selected( $cur_tpl, $tf, false ) . '>' . esc_html( $tl ) . '</option>';
+          }
+          $tpl_select .= '</select>';
+          ob_start();
+          \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Template', $tpl_select );
+          ?>
           <div class="ah-card ah-hidden">
             <div class="ah-card-header"><h2>Template</h2></div>
-            <div class="ah-form-row"><label>Template</label>
-              <select name="page_template">
-                <?php foreach ( $all_templates as $tf => $tl ) : ?>
-                  <option value="<?php echo esc_attr( $tf ); ?>" <?php selected( $cur_tpl, $tf ); ?>><?php echo esc_html( $tl ); ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
+            <?php echo ob_get_clean(); ?>
           </div>
           <style>.ah-hidden{display:none;}</style>
 
           <?php if ( $wp_page ) : ?>
-            <div class="ah-card" style="border-color:var(--ah-danger);">
-              <div class="ah-card-header"><h2 style="color:var(--ah-danger);">Danger Zone</h2></div>
-              <button type="submit" name="trash_page" value="1" class="ah-btn ah-btn-danger" style="width:100%;justify-content:center;" onclick="return confirm('Move to trash?');">
+            <?php ob_start(); ?>
+              <button type="submit" name="trash_page" value="1" class="ah-btn ah-btn-danger" style="width:100%;justify-content:center;">
                 <span class="dashicons dashicons-trash"></span> Move to Trash
               </button>
-            </div>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Danger Zone', ob_get_clean() ); ?>
+            <style>.ah-card:last-child { border-color: var(--ah-danger); }</style>
           <?php endif; ?>
         </div>
       </div>

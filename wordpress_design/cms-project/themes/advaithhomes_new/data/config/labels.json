@@ -1,0 +1,131 @@
+{
+    "_comment": "ALL site labels in one place. Client can rename any label here without touching PHP. Changed labels take effect on next page load.",
+
+    "brand": {
+        "name": "ADVAITH HOMES",
+        "icon": "🏠",
+        "industry": "Property",
+        "location": "UK",
+        "domain_noun": "Property",
+        "expert_noun": "Expert"
+    },
+
+    "navigation": {
+        "main": [
+            { "label": "Guides", "url": "/guides/", "icon": "📚" },
+            { "label": "Calculators", "url": "/calculators/", "icon": "🧮" },
+            { "label": "News", "url": "/news/", "icon": "📰" },
+            { "label": "Ask an Expert", "url": "/ask-an-expert/", "icon": "🤝" },
+            { "label": "Contact", "url": "/contact/", "icon": "💬" }
+        ],
+        "mobile": [
+            { "label": "Home", "url": "/", "icon": "🏠" },
+            { "label": "Guides", "url": "/guides/", "icon": "📚" },
+            { "label": "Calculators", "url": "/calculators/", "icon": "🧮" },
+            { "label": "News", "url": "/news/", "icon": "📰" },
+            { "label": "Expert", "url": "/ask-an-expert/", "icon": "🤝" },
+            { "label": "Contact", "url": "/contact/", "icon": "💬" }
+        ],
+        "cta_label": "Get Guidance",
+        "cta_url": "/ask-an-expert/"
+    },
+
+    "taxonomy": {
+        "parent": "Guide",
+        "parent_plural": "Guides",
+        "section": "Category",
+        "section_plural": "Topics",
+        "content": "Article",
+        "content_plural": "Articles"
+    },
+
+    "features": {
+        "tools_noun": "Calculator",
+        "tools_plural": "Calculators",
+        "news_noun": "News",
+        "news_label": "News & Insights",
+        "expert_label": "Ask an Expert",
+        "guidance_label": "Get Expert Guidance",
+        "contact_label": "Contact Us"
+    },
+
+    "labels": {
+        "popular": "Popular",
+        "latest_news": "Latest News",
+        "latest_updates": "Latest Updates",
+        "featured_in": "Featured In",
+        "hot_topics": "Hot Topics",
+        "view_all": "View All",
+        "explore": "Explore",
+        "read_more": "Read More",
+        "load_more": "Load More",
+        "newsletter": "Stay Updated",
+        "search": "Search",
+        "categories": "Categories",
+        "resources": "Resources",
+        "guides": "Guides & Insights",
+        "calculators": "Popular Calculators",
+        "featured": "Featured",
+        "all": "All"
+    },
+
+    "buttons": {
+        "explore_all": "Explore all",
+        "explore_arrow": "Explore",
+        "view_all": "View all →",
+        "get_started": "Get Started →",
+        "ask_expert": "Ask an Expert",
+        "contact_us": "Contact Us",
+        "learn_more": "Learn More",
+        "subscribe": "Subscribe",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "add_new": "Add New",
+        "back": "← Back"
+    },
+
+    "urls": {
+        "home": "/",
+        "guides": "/guides/",
+        "news": "/news/",
+        "tools": "/calculators/",
+        "expert": "/ask-an-expert/",
+        "guidance": "/guidance/",
+        "contact": "/contact/",
+        "faqs": "/faqs/"
+    },
+
+    "sidebar": {
+        "browse_category": "Browse by Category",
+        "related_guides": "Related Guides",
+        "view_all_faqs": "View all FAQs",
+        "newsletter_heading": "Stay Updated",
+        "newsletter_desc": "Get the latest guides and expert tips delivered to your inbox.",
+        "expert_help_heading": "Need Expert Help?",
+        "expert_help_subtitle": "Get personalised guidance from our experts.",
+        "contact_for_help_heading": "Contact for Help",
+        "contact_for_help_desc": "Not sure which expert to choose? Get in touch and we'll guide you.",
+        "browse_guides": "Browse Guides"
+    },
+
+    "cta": {
+        "nav_label": "Get Guidance",
+        "hero_primary": "Get Started →",
+        "hero_secondary": "Ask an Expert",
+        "newsletter_heading": "Stay informed about"
+    },
+
+    "icons": {
+        "tools": "🧮",
+        "tools_hero": "🏠🧮",
+        "expert_hero": "🤝",
+        "expert_avatar": "👤",
+        "expert_all": "⭐",
+        "guide_parent": "📚",
+        "guide_fallback": "🏡",
+        "search": "🔍",
+        "enquiry": "💬",
+        "hot_topics": "🔥"
+    }
+}

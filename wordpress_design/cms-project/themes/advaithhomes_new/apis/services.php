@@ -259,9 +259,10 @@ function adn_chrome_plugin_nav() {
 				continue;
 			}
 			$children[] = array(
-					'label'     => $sub_label,
-					'url'       => $sub_url,
-					'highlight' => ! empty( $sub['highlight'] ),
+					'label'      => $sub_label,
+					'url'        => $sub_url,
+					'highlight'  => ! empty( $sub['highlight'] ),
+					'css_class'  => isset( $sub['css_class'] ) ? (string) $sub['css_class'] : '',
 				);
 		}
 
@@ -271,6 +272,7 @@ function adn_chrome_plugin_nav() {
 			'description' => isset( $item['description'] )  ? (string) $item['description']  : '',
 			'icon'        => isset( $item['icon'] )         ? (string) $item['icon']         : '',
 			'panel_image' => isset( $item['panel_image'] )  ? (string) $item['panel_image']  : '',
+			'css_class'   => isset( $item['css_class'] )    ? (string) $item['css_class']    : '',
 		);
 		if ( 'dropdown' === $type && ! empty( $children ) ) {
 			$node['children'] = $children;

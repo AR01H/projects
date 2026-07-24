@@ -94,7 +94,7 @@ function adn_route_page_definitions( $template ) {
  * string form. WordPress 404s this on its own (the "news" WP Page has no real
  * child page named <slug>) - this intercepts that 404 the same way
  * adn_route_page_definitions() does: de-flag it, force a 200, and hand off to
- * page-newsall.php with the slug already resolved via a query var.
+ * PageNewsall.php with the slug already resolved via a query var.
  */
 function adn_route_news_single_slug( $template ) {
 	if ( ! is_404() || ! defined( 'SITE_NEWS_URL' ) ) {
@@ -125,7 +125,7 @@ function adn_route_news_single_slug( $template ) {
 	}
 
 	$base = realpath( ADN_THEME_DIR . '/pages' );
-	$file = realpath( ADN_THEME_DIR . '/pages/page-newsall.php' );
+	$file = realpath( ADN_THEME_DIR . '/pages/PageNewsall.php' );
 	if ( ! $base || ! $file || 0 !== strpos( $file, $base ) || ! is_file( $file ) ) {
 		return $template;
 	}
@@ -174,8 +174,8 @@ function adn_suppress_canonical_for_term_slugs( $redirect_url, $requested_url ) 
  * Dynamic CMS term router (priority 99).
  *
  * Intercepts single-segment slugs that match active rows in
- * ah_taxonomy_parent_terms (→ page-category_guide.php) or
- * ah_taxonomies (→ page-topic_category_guide.php).
+ * ah_taxonomy_parent_terms (→ PageCategoryGuide.php) or
+ * ah_taxonomies (→ PageTopicCategoryGuide.php).
  *
  * Runs for both 404s and non-404s so that WP posts whose slug matches a
  * CMS term slug are correctly overridden rather than served as single posts.
@@ -233,7 +233,7 @@ function adn_route_parent_term_template( $template ) {
 			return $parts;
 		} );
 		set_query_var( 'adn_cat_slug', $slug );
-		return get_template_directory() . '/pages/page-category_guide.php';
+		return get_template_directory() . '/pages/PageCategoryGuide.php';
 	}
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		error_log( sprintf( 'adn_route_parent_term_template: no parent-term row for slug="%s" (table=%s)', $slug, $table ) );
@@ -277,5 +277,5 @@ function adn_route_parent_term_template( $template ) {
 	} );
 	set_query_var( 'adn_guide_term_slug', $slug );
 
-	return get_template_directory() . '/pages/page-topic_category_guide.php';
+	return get_template_directory() . '/pages/PageTopicCategoryGuide.php';
 }

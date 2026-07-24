@@ -1,0 +1,18 @@
+{
+    "name": "adn/theme",
+    "description": "ADN theme — presentation layer for the CMS plugin",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Adn\\Theme\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

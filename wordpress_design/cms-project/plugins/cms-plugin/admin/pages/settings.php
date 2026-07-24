@@ -5,7 +5,7 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 $model  = new AH_Settings_Model();
 $notice = '';
 $n_type = 'success';
-$group  = sanitize_key( $_GET['group'] ?? 'general' );
+$group  = sanitize_key( $_GET['tab'] ?? $_GET['group'] ?? 'general' );
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_settings_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_settings_nonce'], 'ah_save_settings' ) ) wp_die( 'Security check failed.' );
@@ -63,32 +63,38 @@ if ( ! function_exists( 'ah_settings_image_url' ) ) {
 			return '';
 		}
 
+		// Try image thumbnail first (works for images/GIFs).
 		$url = wp_get_attachment_image_url( $img_id, 'medium' );
 		if ( $url ) {
 			return esc_url( $url );
 		}
 
-		return class_exists( 'AH_Media_Model' ) ? ( new AH_Media_Model() )->get_url( $img_id ) : '';
+		// Fall back to raw attachment URL (works for videos/audio).
+		$url = wp_get_attachment_url( $img_id );
+		if ( $url ) {
+			return esc_url( $url );
+		}
+
+		return '';
 	}
 }
 ?>
 <div class="wrap ah-wrap">
-  <h1><span class="dashicons dashicons-admin-settings"></span> <?php esc_html_e( 'Site Settings', 'ah-theme' ); ?></h1>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'admin-settings', 'Site Settings', 'Store site-wide key-value settings organised by group.' ); ?>
 
   <?php if ( $notice ) : ?>
-    <?php echo ah_form_set_highlighted( $notice, $n_type ); ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, $n_type ); ?>
   <?php endif; ?>
 
-  <div class="ah-tabs">
-    <?php foreach ( $g_list as $g ) : ?>
-      <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-settings', 'group' => $g ), admin_url( 'admin.php' ) ) ); ?>"
-         class="ah-tab <?php echo $g === $group ? 'active' : ''; ?>">
-        <?php echo esc_html( ucfirst( $g ) ); ?>
-      </a>
-    <?php endforeach; ?>
-  </div>
+  <?php
+  $settings_tabs = array();
+  foreach ( $g_list as $g ) {
+    $settings_tabs[ $g ] = ucfirst( $g );
+  }
+  \Ah\Cms\Admin\Components\AdminComponents::tabBarUrl( $settings_tabs, $group );
+  ?>
 
-  <div class="ah-card">
+  <?php ob_start(); ?>
     <form method="post">
       <?php wp_nonce_field( 'ah_save_settings', 'ah_settings_nonce' ); ?>
       <?php if ( empty( $current ) ) : ?>
@@ -107,15 +113,7 @@ if ( ! function_exists( 'ah_settings_image_url' ) ) {
           <?php if ( $ft === 'textarea' ) : ?>
             <textarea id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" rows="4"><?php echo esc_textarea( $val ); ?></textarea>
           <?php elseif ( $ft === 'image' ) : ?>
-            <div class="ah-image-picker">
-              <?php $img_url = ah_settings_image_url( (string) $val ); ?>
-              <img src="<?php echo esc_url( $img_url ); ?>" class="ah-image-preview <?php echo $img_url ? 'visible' : ''; ?>" alt="">
-              <div class="ah-image-picker-btns">
-                <input type="hidden" id="setting_<?php echo esc_attr( $sk ); ?>" class="ah-image-id" name="image_settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>">
-                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-pick-image">Choose Image</button>
-                <button type="button" class="ah-btn ah-btn-sm ah-remove-image" style="color:var(--ah-danger);">Remove</button>
-              </div>
-            </div>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'image_settings[' . esc_attr( $sk ) . ']', '', $val, array( 'id' => 'setting_' . esc_attr( $sk ), 'type' => 'media' ) ); ?>
           <?php elseif ( $ft === 'color' ) : ?>
             <input type="text" id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>" class="wp-color-picker-field">
           <?php elseif ( $ft === 'toggle' ) : ?>
@@ -128,7 +126,7 @@ if ( ! function_exists( 'ah_settings_image_url' ) ) {
           ?>
             <input type="<?php echo esc_attr( $it ); ?>" id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>">
           <?php endif; ?>
-          <button type="submit" form="delete_setting_<?php echo esc_attr( $sk ); ?>" class="ah-btn ah-btn-danger ah-btn-sm" title="Delete setting" style="position:absolute;top:0;right:0;" onclick="return confirm('Delete setting &quot;<?php echo esc_js( $sk ); ?>&quot;?');">
+          <button type="submit" form="delete_setting_<?php echo esc_attr( $sk ); ?>" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-confirm="Delete setting &quot;<?php echo esc_js( $sk ); ?>&quot;?" title="Delete setting" style="position:absolute;top:0;right:0;">
             <span class="dashicons dashicons-trash" style="font-size:14px;width:14px;height:14px;margin:0;"></span>
           </button>
         </div>
@@ -147,40 +145,36 @@ if ( ! function_exists( 'ah_settings_image_url' ) ) {
         <input type="hidden" name="delete_setting_key" value="<?php echo esc_attr( $sk ); ?>">
       </form>
     <?php endforeach; ?>
-  </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Site Settings', ob_get_clean() ); ?>
 
-  <div class="ah-card" style="margin-top:20px;border-top:3px solid var(--ah-primary);">
-    <div class="ah-card-header"><h2>Add New Setting</h2></div>
+  <?php ob_start(); ?>
     <form method="post">
       <?php wp_nonce_field( 'ah_save_settings', 'ah_settings_nonce' ); ?>
       <input type="hidden" name="add_setting" value="1">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
-        <div class="ah-form-row">
-          <label>Key * <small style="font-weight:400;color:var(--ah-muted);">(e.g. site_tagline)</small></label>
-          <input type="text" name="new_key" placeholder="setting_key" pattern="[a-z0-9_]+" required>
-        </div>
-        <div class="ah-form-row"><label>Label</label><input type="text" name="new_label" placeholder="Human-readable label"></div>
-        <div class="ah-form-row">
-          <label>Group</label>
-          <select name="new_group">
-            <?php foreach ( $all_groups as $ag ) : ?>
-              <option value="<?php echo esc_attr( $ag ); ?>" <?php selected( $ag, $group ); ?>><?php echo esc_html( ucfirst( $ag ) ); ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="ah-form-row">
-          <label>Field Type</label>
-          <select name="new_type">
-            <?php foreach ( array( 'text','email','url','phone','textarea','color','image','toggle','json' ) as $ft ) : ?>
-              <option value="<?php echo $ft; ?>"><?php echo ucfirst( $ft ); ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="ah-form-row" style="grid-column:span 2;"><label>Default Value</label><input type="text" name="new_val" placeholder=""></div>
-      </div>
+      <?php
+      $group_select = '<select name="new_group">';
+      foreach ( $all_groups as $ag ) {
+        $group_select .= '<option value="' . esc_attr( $ag ) . '"' . selected( $ag, $group, false ) . '>' . esc_html( ucfirst( $ag ) ) . '</option>';
+      }
+      $group_select .= '</select>';
+      ?>
+      <?php
+      $type_select = '<select name="new_type">';
+      foreach ( array( 'text','email','url','phone','textarea','color','image','toggle','json' ) as $ft ) {
+        $type_select .= '<option value="' . esc_attr( $ft ) . '">' . esc_html( ucfirst( $ft ) ) . '</option>';
+      }
+      $type_select .= '</select>';
+      ?>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+        array( 'Key * <small style="font-weight:400;color:var(--ah-muted);">(e.g. site_tagline)</small>', '<input type="text" name="new_key" placeholder="setting_key" pattern="[a-z0-9_]+" required>' ),
+        array( 'Label', '<input type="text" name="new_label" placeholder="Human-readable label">' ),
+        array( 'Group', $group_select ),
+        array( 'Field Type', $type_select ),
+        array( 'Default Value', '<input type="text" name="new_val" placeholder="">' ),
+      ) ); ?>
       <button type="submit" class="ah-btn ah-btn-primary">
         <span class="dashicons dashicons-plus-alt"></span> Add Setting
       </button>
     </form>
-  </div>
+  <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Add New Setting', ob_get_clean() ); ?>
 </div>

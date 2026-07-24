@@ -40,7 +40,7 @@ define( 'AH_PLUGIN_URL',    AH_THEME_URL );
 define( 'AH_PLUGIN_VERSION', AH_THEME_VERSION );
 define( 'AH_DB_VERSION_KEY', 'ah_cms_db_version' );
 
-require_once AH_THEME_DIR . '/inc/class-autoloader.php';
+require_once AH_THEME_DIR . '/inc/Autoloader.php';
 AH_Autoloader::register();
 
 AH_Theme_Setup::init();

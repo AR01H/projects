@@ -30,7 +30,7 @@ class ADN_Rules {
 
 	// ── Front-end form triggers ───────────────────────────────────────────────
 
-	/** General contact form submission (pages/page-contact.php). */
+	/** General contact form submission (pages/PageContact.php). */
 	const CONTACT_FORM      = 'advaith_contact_form';
 
 	/** Property / buying enquiry submission. */

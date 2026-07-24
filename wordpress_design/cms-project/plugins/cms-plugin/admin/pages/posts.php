@@ -311,23 +311,23 @@ function ah_post_templates(): array {
 
 function ah_render_template_field( array $f ): void {
 	$style = 'width:100%;box-sizing:border-box;';
-	?>
-	<div class="ah-form-row" style="margin-bottom:10px;">
-	  <label style="font-size:.8rem;margin-bottom:4px;display:block;font-weight:600;">
-	    <?php echo esc_html( $f['label'] ); ?>
-	    <?php if ( ! empty( $f['hint'] ) ) : ?><small style="font-weight:400;opacity:.65;">(<?php echo esc_html( $f['hint'] ); ?>)</small><?php endif; ?>
-	  </label>
-	  <?php if ( $f['type'] === 'text' ) : ?>
-	    <input type="text" name="<?php echo esc_attr( $f['name'] ); ?>" placeholder="<?php echo esc_attr( $f['placeholder'] ?? '' ); ?>" style="<?php echo $style; ?>" <?php echo ! empty( $f['required'] ) ? 'required' : ''; ?>>
-	  <?php elseif ( $f['type'] === 'textarea' ) : ?>
-	    <textarea name="<?php echo esc_attr( $f['name'] ); ?>" rows="<?php echo esc_attr( $f['rows'] ?? 2 ); ?>" placeholder="<?php echo esc_attr( $f['placeholder'] ?? '' ); ?>" style="<?php echo $style; ?>"></textarea>
-	  <?php elseif ( $f['type'] === 'number' ) : ?>
-	    <input type="number" name="<?php echo esc_attr( $f['name'] ); ?>" min="<?php echo esc_attr( $f['min'] ?? 1 ); ?>" max="<?php echo esc_attr( $f['max'] ?? 10 ); ?>" value="<?php echo esc_attr( $f['default'] ?? 3 ); ?>" style="<?php echo $style; ?>">
-	  <?php elseif ( $f['type'] === 'category' ) : ?>
-	    <?php wp_dropdown_categories( array( 'name' => $f['name'], 'show_option_none' => '- No Category -', 'option_none_value' => 0, 'hide_empty' => false, 'style' => $style ) ); ?>
-	  <?php endif; ?>
-	</div>
-	<?php
+	$input = '';
+	if ( $f['type'] === 'text' ) {
+		$input = '<input type="text" name="' . esc_attr( $f['name'] ) . '" placeholder="' . esc_attr( $f['placeholder'] ?? '' ) . '" style="' . $style . '"' . ( ! empty( $f['required'] ) ? ' required' : '' ) . '>';
+	} elseif ( $f['type'] === 'textarea' ) {
+		$input = '<textarea name="' . esc_attr( $f['name'] ) . '" rows="' . esc_attr( $f['rows'] ?? 2 ) . '" placeholder="' . esc_attr( $f['placeholder'] ?? '' ) . '" style="' . $style . '"></textarea>';
+	} elseif ( $f['type'] === 'number' ) {
+		$input = '<input type="number" name="' . esc_attr( $f['name'] ) . '" min="' . esc_attr( $f['min'] ?? 1 ) . '" max="' . esc_attr( $f['max'] ?? 10 ) . '" value="' . esc_attr( $f['default'] ?? 3 ) . '" style="' . $style . '">';
+	} elseif ( $f['type'] === 'category' ) {
+		ob_start();
+		wp_dropdown_categories( array( 'name' => $f['name'], 'show_option_none' => '- No Category -', 'option_none_value' => 0, 'hide_empty' => false, 'style' => $style ) );
+		$input = ob_get_clean();
+	}
+	$label = esc_html( $f['label'] );
+	if ( ! empty( $f['hint'] ) ) {
+		$label .= ' <small style="font-weight:400;opacity:.65;">(' . esc_html( $f['hint'] ) . ')</small>';
+	}
+	\Ah\Cms\Admin\Components\AdminComponents::formRow( $label, $input );
 }
 
 // ── POST: save from custom editor ─────────────────────────────────────────────
@@ -473,8 +473,8 @@ if ( $action === 'edit-custom' ) {
 }
 ?>
 <div class="wrap ah-wrap">
-<h1><span class="dashicons dashicons-edit"></span> Posts / Blog</h1>
-<?php if ( $notice ) : ?><div class="ah-notice ah-notice-success"><?php echo esc_html( $notice ); ?></div><?php endif; ?>
+<?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'edit', 'Posts / Blog', 'Create, edit, and manage blog posts with the rich-text editor.' ); ?>
+<?php if ( $notice ) : ?><?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, 'success' ); ?><?php endif; ?>
 
 <?php /* ══════════════ TEMPLATES VIEW ══════════════ */ ?>
 <?php if ( $action === 'templates' ) :
@@ -488,7 +488,7 @@ if ( $action === 'edit-custom' ) {
 
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
     <?php foreach ( $tpls as $tpl_key => $tpl ) : ?>
-      <div class="ah-card" style="padding:0;overflow:hidden;">
+      <?php ob_start(); ?>
         <div style="background:var(--ah-primary,#1e40af);color:#fff;padding:20px 24px;">
           <div style="font-size:2rem;margin-bottom:8px;"><?php echo $tpl['icon']; ?></div>
           <h3 style="margin:0 0 4px;color:#fff;"><?php echo esc_html( $tpl['label'] ); ?></h3>
@@ -513,7 +513,7 @@ if ( $action === 'edit-custom' ) {
             </div>
           </form>
         </div>
-      </div>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
     <?php endforeach; ?>
   </div>
 
@@ -543,7 +543,7 @@ if ( $action === 'edit-custom' ) {
   $section_count  = count( $saved_sections );
 ?>
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
-    <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-posts' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">&larr; All Posts</a>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::backLink( admin_url( 'admin.php?page=ah-posts' ), '← All Posts' ); ?>
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="ah-badge ah-badge-<?php echo esc_attr( $post->post_status === 'publish' ? 'active' : 'draft' ); ?>"><?php echo esc_html( ucfirst( $post->post_status ) ); ?></span>
       <a href="<?php echo esc_url( $wp_edit_url ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Switch to WP Editor</a>
@@ -563,16 +563,10 @@ if ( $action === 'edit-custom' ) {
       <!-- ── Main editor column ── -->
       <div>
         <!-- Title & Excerpt -->
-        <div class="ah-card" style="padding:20px;margin-bottom:16px;">
-          <div class="ah-form-row" style="margin-bottom:12px;">
-            <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Post Title</label>
-            <input type="text" name="post_title" value="<?php echo esc_attr( $post->post_title ); ?>" placeholder="Post title…" style="width:100%;box-sizing:border-box;font-size:1.25rem;font-weight:600;">
-          </div>
-          <div class="ah-form-row">
-            <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Short Summary <small style="font-weight:400;opacity:.65;">(excerpt shown in listings)</small></label>
-            <textarea name="post_excerpt" rows="2" placeholder="A short summary of what this post covers…" style="width:100%;box-sizing:border-box;"><?php echo esc_textarea( $post->post_excerpt ); ?></textarea>
-          </div>
-        </div>
+        <?php ob_start(); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Post Title', '<input type="text" name="post_title" value="' . esc_attr( $post->post_title ) . '" placeholder="Post title…" style="width:100%;box-sizing:border-box;font-size:1.25rem;font-weight:600;">' ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Short Summary <small style="font-weight:400;opacity:.65;">(excerpt shown in listings)</small>', '<textarea name="post_excerpt" rows="2" placeholder="A short summary of what this post covers…" style="width:100%;box-sizing:border-box;">' . esc_textarea( $post->post_excerpt ) . '</textarea>' ); ?>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Post Details', ob_get_clean() ); ?>
 
         <!-- Sections builder -->
         <div id="ah-sections-builder">
@@ -584,8 +578,7 @@ if ( $action === 'edit-custom' ) {
         </div>
 
         <!-- Add section toolbar -->
-        <div class="ah-card" style="padding:16px;margin-bottom:16px;">
-          <p style="margin:0 0 10px;font-size:.85rem;font-weight:600;color:var(--ah-muted);">Add a section:</p>
+        <?php ob_start(); ?>
           <div style="display:flex;flex-wrap:wrap;gap:8px;">
             <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-add-sec" data-type="heading">+ Heading</button>
             <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-add-sec" data-type="paragraph">+ Paragraph</button>
@@ -594,53 +587,37 @@ if ( $action === 'edit-custom' ) {
             <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-add-sec" data-type="quote">+ Quote</button>
             <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-add-sec" data-type="cta">+ CTA Button</button>
           </div>
-        </div>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::formSection( 'Add a section', ob_get_clean() ); ?>
       </div>
 
       <!-- ── Sidebar ── -->
       <div>
         <!-- Save actions -->
-        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-            <button type="submit" name="post_status_override" value="draft" onclick="document.querySelector('[name=post_status]').value='draft';"
-                    class="ah-btn ah-btn-secondary" style="justify-content:center;">Save Draft</button>
-            <button type="submit" name="post_status_override" value="publish" onclick="document.querySelector('[name=post_status]').value='publish';"
-                    class="ah-btn ah-btn-primary" style="justify-content:center;">Publish</button>
-          </div>
-          <div class="ah-form-row">
-            <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Status</label>
-            <select name="post_status" style="width:100%;box-sizing:border-box;">
-              <?php foreach ( [ 'draft' => 'Draft', 'publish' => 'Published', 'private' => 'Private', 'pending' => 'Pending Review' ] as $sv => $sl ) : ?>
-                <option value="<?php echo $sv; ?>" <?php selected( $post->post_status, $sv ); ?>><?php echo $sl; ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-          <div class="ah-form-row" style="margin-top:8px;">
-            <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Publish Date <small style="font-weight:400;opacity:.65;">(leave blank for now)</small></label>
-            <input type="datetime-local" name="post_date" value="<?php echo esc_attr( $pub_date_raw ); ?>" style="width:100%;box-sizing:border-box;">
-          </div>
-        </div>
+        <?php ob_start(); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+            array( '', '<button type="submit" name="post_status_override" value="draft" onclick="document.querySelector(\'[name=post_status]\').value=\'draft\';" class="ah-btn ah-btn-secondary" style="justify-content:center;">Save Draft</button>' ),
+            array( '', '<button type="submit" name="post_status_override" value="publish" onclick="document.querySelector(\'[name=post_status]\').value=\'publish\';" class="ah-btn ah-btn-primary" style="justify-content:center;">Publish</button>' ),
+          ) ); ?>
+          <?php
+          $status_select = '<select name="post_status" style="width:100%;box-sizing:border-box;">';
+          foreach ( [ 'draft' => 'Draft', 'publish' => 'Published', 'private' => 'Private', 'pending' => 'Pending Review' ] as $sv => $sl ) {
+            $status_select .= '<option value="' . esc_attr( $sv ) . '"' . selected( $post->post_status, $sv, false ) . '>' . esc_html( $sl ) . '</option>';
+          }
+          $status_select .= '</select>';
+          ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Status', $status_select ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Publish Date <small style="font-weight:400;opacity:.65;">(leave blank for now)</small>', '<input type="datetime-local" name="post_date" value="' . esc_attr( $pub_date_raw ) . '" style="width:100%;box-sizing:border-box;">' ); ?>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Save Actions', ob_get_clean() ); ?>
 
         <!-- Post Settings -->
-        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
-          <h4 style="margin:0 0 10px;font-size:.9rem;">Post Settings</h4>
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;font-weight:600;margin-bottom:6px;">
-            <input type="checkbox" name="is_featured" value="1" <?php checked( $is_featured ); ?>>
-            ⭐ Featured Post
-          </label>
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;font-weight:600;margin-bottom:6px;">
-            <input type="checkbox" name="is_popular" value="1" <?php checked( $is_popular ); ?>>
-            🔥 Popular Post
-          </label>
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;font-weight:600;">
-            <input type="checkbox" name="is_suggested" value="1" <?php checked( $is_suggested ); ?>>
-            💡 Suggested Post
-          </label>
-        </div>
+        <?php ob_start(); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::field( 'checkbox', 'is_featured', '⭐ Featured Post', $is_featured ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::field( 'checkbox', 'is_popular', '🔥 Popular Post', $is_popular ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::field( 'checkbox', 'is_suggested', '💡 Suggested Post', $is_suggested ); ?>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Post Settings', ob_get_clean() ); ?>
 
         <!-- Categories -->
-        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
-          <h4 style="margin:0 0 10px;font-size:.9rem;">Categories</h4>
+        <?php ob_start(); ?>
           <div style="max-height:150px;overflow-y:auto;">
             <?php if ( $all_cats ) : ?>
               <?php foreach ( $all_cats as $cat ) : ?>
@@ -655,41 +632,22 @@ if ( $action === 'edit-custom' ) {
               <p style="font-size:.82rem;opacity:.6;margin:0;">No categories yet - <a href="<?php echo esc_url( admin_url( 'edit-tags.php?taxonomy=category' ) ); ?>">add one</a>.</p>
             <?php endif; ?>
           </div>
-        </div>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Categories', ob_get_clean() ); ?>
 
         <!-- Tags -->
-        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
-          <h4 style="margin:0 0 10px;font-size:.9rem;">Tags</h4>
-          <input type="text" name="post_tags" value="<?php echo esc_attr( $tags_str ); ?>" placeholder="tag1, tag2, tag3" style="width:100%;box-sizing:border-box;">
-          <p style="font-size:.75rem;opacity:.6;margin:4px 0 0;">Separate with commas.</p>
-        </div>
+        <?php ob_start(); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Tags', '<input type="text" name="post_tags" value="' . esc_attr( $tags_str ) . '" placeholder="tag1, tag2, tag3" style="width:100%;box-sizing:border-box;">', 'Separate with commas.' ); ?>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Tags', ob_get_clean() ); ?>
 
         <!-- Global Terms -->
-        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
-          <h4 style="margin:0 0 10px;font-size:.9rem;">CMS Taxonomy Terms</h4>
+        <?php ob_start(); ?>
           <?php ( new AH_Content_Taxonomy_Model() )->render_picker( 'wp_post', $edit_id ); ?>
-        </div>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'CMS Taxonomy Terms', ob_get_clean() ); ?>
 
         <!-- Featured Image -->
-        <div class="ah-card" style="padding:16px;margin-bottom:12px;">
-          <h4 style="margin:0 0 10px;font-size:.9rem;">Featured Image</h4>
-          <div class="ah-image-picker" style="width:100%;">
-            <input type="hidden" name="featured_image_id" class="ah-image-id" value="<?php echo esc_attr( $feat_img_id ); ?>">
-            <img class="ah-image-preview<?php echo $feat_img_url ? ' visible' : ''; ?>" src="<?php echo esc_url( $feat_img_url ); ?>" style="<?php echo $feat_img_url ? 'display:block;' : ''; ?>width:100%;height:auto;border-radius:4px;margin-bottom:8px;">
-            <?php if ( ! $feat_img_url ) : ?>
-              <div class="ah-image-placeholder" style="text-align:center;padding:20px;border:2px dashed #e2e8f0;border-radius:4px;margin-bottom:8px;cursor:pointer;">
-                <span class="dashicons dashicons-format-image" style="font-size:2rem;display:block;margin-bottom:4px;opacity:.4;"></span>
-                <span style="font-size:.82rem;opacity:.5;">Click to choose image</span>
-              </div>
-            <?php endif; ?>
-            <div style="display:flex;gap:6px;">
-              <button type="button" class="ah-pick-image ah-btn ah-btn-secondary ah-btn-sm" style="flex:1;"><?php echo $feat_img_url ? 'Change Image' : 'Choose Image'; ?></button>
-              <?php if ( $feat_img_url ) : ?>
-                <button type="button" class="ah-remove-image ah-btn ah-btn-danger ah-btn-sm">✕</button>
-              <?php endif; ?>
-            </div>
-          </div>
-        </div>
+        <?php ob_start(); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'featured_image_id', 'Featured Image / Video', $feat_img_id, array( 'type' => 'media' ) ); ?>
+        <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Featured Image', ob_get_clean() ); ?>
       </div><!-- /sidebar -->
     </div><!-- /grid -->
   </form>
@@ -968,223 +926,126 @@ if ( $action === 'edit-custom' ) {
 <?php /* ══════════════ LIST VIEW ══════════════ */ ?>
 <?php else : ?>
 
-  <div class="ah-table-top">
-    <form class="ah-search-form" method="get" style="flex-wrap:wrap;gap:6px;">
-      <input type="hidden" name="page" value="ah-posts">
-      <input type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="Search posts…" style="min-width:160px;">
-      <select name="status">
-        <option value="">All Statuses</option>
-        <?php foreach ( [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ] as $sv => $sl ) : ?>
-          <option value="<?php echo $sv; ?>" <?php selected( $status_f, $sv ); ?>><?php echo $sl; ?></option>
-        <?php endforeach; ?>
-      </select>
-      <select name="cat">
-        <option value="0">All Categories</option>
-        <?php foreach ( get_categories( [ 'hide_empty' => false ] ) as $_fc ) : ?>
-          <option value="<?php echo esc_attr( $_fc->term_id ); ?>" <?php selected( $cat_f, $_fc->term_id ); ?>><?php echo esc_html( $_fc->name ); ?></option>
-        <?php endforeach; ?>
-      </select>
-      <select name="author_id">
-        <option value="0">All Authors</option>
-        <?php foreach ( get_users( [ 'capability' => 'edit_posts', 'orderby' => 'display_name' ] ) as $_fu ) : ?>
-          <option value="<?php echo esc_attr( $_fu->ID ); ?>" <?php selected( $author_f, $_fu->ID ); ?>><?php echo esc_html( $_fu->display_name ); ?></option>
-        <?php endforeach; ?>
-      </select>
-      <select name="flag">
-        <option value="">All Posts</option>
-        <option value="featured"  <?php selected( $flag_f, 'featured' ); ?>>⭐ Featured</option>
-        <option value="popular"   <?php selected( $flag_f, 'popular' ); ?>>🔥 Popular</option>
-        <option value="suggested" <?php selected( $flag_f, 'suggested' ); ?>>💡 Suggested</option>
-      </select>
-      <button class="ah-btn ah-btn-secondary">Filter</button>
-      <?php if ( $search || $status_f || $cat_f || $author_f || $flag_f ) : ?>
-        <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-posts' ) ); ?>" class="ah-btn ah-btn-secondary" style="opacity:.7;">✕ Clear</a>
-      <?php endif; ?>
-    </form>
-    <div style="display:flex;gap:8px;">
-      <a href="<?php echo esc_url( admin_url( 'post-new.php' ) ); ?>" class="ah-btn ah-btn-secondary">+ Blank Post</a>
-      <a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'templates' ], admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-primary">📋 From Template</a>
-    </div>
-  </div>
+  <?php
+  $status_opts = array( '' => 'All Statuses' );
+  foreach ( [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ] as $sv => $sl ) {
+    $status_opts[ $sv ] = $sl;
+  }
+  $cat_opts = array( '0' => 'All Categories' );
+  foreach ( get_categories( [ 'hide_empty' => false ] ) as $_fc ) {
+    $cat_opts[ $_fc->term_id ] = $_fc->name;
+  }
+  $author_opts = array( '0' => 'All Authors' );
+  foreach ( get_users( [ 'capability' => 'edit_posts', 'orderby' => 'display_name' ] ) as $_fu ) {
+    $author_opts[ $_fu->ID ] = $_fu->display_name;
+  }
+  $flag_opts = array( '' => 'All Posts', 'featured' => '⭐ Featured', 'popular' => '🔥 Popular', 'suggested' => '💡 Suggested' );
+  \Ah\Cms\Admin\Components\AdminComponents::filterBar( array(
+    'page_slug'          => 'ah-posts',
+    'search_placeholder' => 'Search posts…',
+    'search_value'       => $search,
+    'filters'            => array(
+      array( 'name' => 'status',     'options' => $status_opts, 'selected' => $status_f ),
+      array( 'name' => 'cat',        'options' => $cat_opts,    'selected' => $cat_f ),
+      array( 'name' => 'author_id',  'options' => $author_opts, 'selected' => $author_f ),
+      array( 'name' => 'flag',       'options' => $flag_opts,   'selected' => $flag_f ),
+    ),
+    'add_url'   => add_query_arg( [ 'page' => 'ah-posts', 'action' => 'templates' ], admin_url( 'admin.php' ) ),
+    'add_label' => '📋 From Template',
+  ) );
+  ?>
 
   <?php if ( empty( $posts_list ) ) : ?>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px;">
-      <a href="<?php echo esc_url( admin_url( 'post-new.php' ) ); ?>"
-         class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
+      <?php ob_start(); ?>
         <div style="font-size:2.5rem;margin-bottom:12px;">✍️</div>
         <h3 style="margin:0 0 8px;">Blank Post</h3>
         <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Open the WordPress editor with a blank post - write freely.</p>
-      </a>
-      <a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'templates' ], admin_url( 'admin.php' ) ) ); ?>"
-         class="ah-card" style="text-decoration:none;color:inherit;text-align:center;padding:36px 24px;transition:box-shadow .15s;border-top:3px solid var(--ah-primary);" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">
+      <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', '<a href="' . esc_url( admin_url( 'post-new.php' ) ) . '" style="text-decoration:none;color:inherit;text-align:center;display:block;transition:box-shadow .15s;" onmouseover="this.style.boxShadow=\'0 4px 20px rgba(0,0,0,.1)\'" onmouseout="this.style.boxShadow=\'\'">' . ob_get_clean() . '</a>' ); ?>
+      <?php ob_start(); ?>
         <div style="font-size:2.5rem;margin-bottom:12px;">📋</div>
         <h3 style="margin:0 0 8px;">From Template</h3>
         <p style="color:var(--ah-muted);margin:0;font-size:.85rem;">Choose a pre-filled template - Blog, News, Guide, Case Study, FAQ.</p>
-      </a>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', '<a href="' . esc_url( add_query_arg( [ 'page' => 'ah-posts', 'action' => 'templates' ], admin_url( 'admin.php' ) ) ) . '" style="text-decoration:none;color:inherit;text-align:center;display:block;transition:box-shadow .15s;border-top:3px solid var(--ah-primary);" onmouseover="this.style.boxShadow=\'0 4px 20px rgba(0,0,0,.1)\'" onmouseout="this.style.boxShadow=\'\'">' . ob_get_clean() . '</a>' ); ?>
     </div>
   <?php else : ?>
-    <div class="ah-table-wrap">
-      <table class="ah-table">
-        <thead>
-          <tr><th>Title</th><th>WP Categories</th><th>CMS Terms</th><th>Status</th><th>Editor</th><th>Author</th><th>Modified</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-          <?php
-          $qe_tax_model  = class_exists( 'AH_Content_Taxonomy_Model' ) ? new AH_Content_Taxonomy_Model() : null;
-          $qe_tax_groups = $qe_tax_model ? $qe_tax_model->get_active_terms_grouped() : [];
-          foreach ( $posts_list as $p ) :
-            $cats        = get_the_category( $p->ID );
-            $author      = get_the_author_meta( 'display_name', $p->post_author );
-            $editor_mode = get_post_meta( $p->ID, '_ah_editor_mode', true ) ?: 'gutenberg';
-            $edit_url    = $editor_mode === 'custom'
-              ? add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $p->ID ], admin_url( 'admin.php' ) )
-              : get_edit_post_link( $p->ID );
-            $badge       = [ 'publish' => 'active', 'draft' => 'draft', 'private' => 'inactive', 'pending' => 'draft' ];
-            $label       = [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ];
-            $qe_term_ids   = $qe_tax_model ? $qe_tax_model->get_term_ids( 'wp_post', (int) $p->ID ) : [];
-            $qe_is_feat    = (bool) get_post_meta( $p->ID, '_ah_is_featured', true );
-            $qe_is_popular = (bool) get_post_meta( $p->ID, '_ah_is_popular', true );
-            $qe_is_sug     = (bool) get_post_meta( $p->ID, '_ah_is_suggested', true );
-            $qe_hl_raw     = get_post_meta( $p->ID, '_ah_highlight_links', true );
-            $qe_hl_links   = json_decode( $qe_hl_raw ?: '[]', true );
-            if ( ! is_array( $qe_hl_links ) ) $qe_hl_links = [];
-          ?>
-            <tr>
-              <td>
-                <strong><?php echo esc_html( $p->post_title ?: '(no title)' ); ?></strong>
-                <?php if ( $p->post_excerpt ) : ?>
-                  <small style="color:var(--ah-muted);display:block;"><?php echo esc_html( wp_trim_words( $p->post_excerpt, 10 ) ); ?></small>
-                <?php endif; ?>
-              </td>
-              <td><small><?php echo $cats ? esc_html( implode( ', ', wp_list_pluck( $cats, 'name' ) ) ) : '-'; ?></small></td>
-              <td><?php ( new AH_Content_Taxonomy_Model() )->render_badges( 'wp_post', (int) $p->ID ); ?></td>
-              <td><span class="ah-badge ah-badge-<?php echo esc_attr( $badge[ $p->post_status ] ?? 'draft' ); ?>"><?php echo esc_html( $label[ $p->post_status ] ?? $p->post_status ); ?></span></td>
-              <td><small style="opacity:.7;"><?php echo $editor_mode === 'custom' ? '📝 Form' : '🖊 WP'; ?></small></td>
-              <td><small><?php echo esc_html( $author ); ?></small></td>
-              <td><small><?php echo esc_html( wp_date( 'M j, Y', strtotime( $p->post_modified ) ) ); ?></small></td>
-              <td class="row-actions">
-                <a href="<?php echo esc_url( $edit_url ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>
-                <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-open" data-id="<?php echo esc_attr( $p->ID ); ?>">Edit Meta</button>
-                <?php if ( $p->post_status === 'publish' ) : ?>
-                  <a href="<?php echo esc_url( get_permalink( $p->ID ) ); ?>" target="_blank" class="ah-btn ah-btn-secondary ah-btn-sm">View</a>
-                <?php endif; ?>
-                <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'page' => 'ah-posts', 'trash_id' => $p->ID ], admin_url( 'admin.php' ) ), 'ah_trash_post' ) ); ?>"
-                   class="ah-btn ah-btn-danger ah-btn-sm" onclick="return confirm('Move to trash?');">Trash</a>
-              </td>
-            </tr>
-            <tr class="ah-qe-holder">
-              <td colspan="8" style="padding:0;border:0;">
-                <div class="ah-qe-modal" id="ah-qe-<?php echo esc_attr( $p->ID ); ?>" role="dialog" aria-modal="true" aria-hidden="true">
-                  <div class="ah-qe-backdrop" data-id="<?php echo esc_attr( $p->ID ); ?>"></div>
-                  <div class="ah-qe-card" role="document">
-
-                    <!-- Header -->
-                    <header class="ah-qe-head">
-                      <div class="ah-qe-head-l">
-                        <span class="ah-qe-pill">Meta</span>
-                        <strong class="ah-qe-head-title"><?php echo esc_html( wp_trim_words( $p->post_title ?: '(no title)', 10 ) ); ?></strong>
-                      </div>
-                      <button type="button" class="ah-qe-x ah-qe-close" data-id="<?php echo esc_attr( $p->ID ); ?>" aria-label="Close">&times;</button>
-                    </header>
-
-                    <!-- Scrollable body -->
-                    <div class="ah-qe-body">
-
-                      <div class="ah-qe-grid">
-                        <!-- Flags -->
-                        <section class="ah-qe-sec ah-qe-sec--flags">
-                          <div class="ah-qe-sec-h">Post Flags</div>
-                          <label class="ah-qe-flag">
-                            <input type="checkbox" class="ah-qe-featured" <?php checked( $qe_is_feat ); ?> style="accent-color:#f59e0b;">
-                            <span>⭐ Featured</span>
-                          </label>
-                          <label class="ah-qe-flag">
-                            <input type="checkbox" class="ah-qe-popular" <?php checked( $qe_is_popular ); ?> style="accent-color:#ef4444;">
-                            <span>🔥 Popular</span>
-                          </label>
-                          <label class="ah-qe-flag ah-qe-flag--last">
-                            <input type="checkbox" class="ah-qe-suggested" <?php checked( $qe_is_sug ); ?> style="accent-color:#3b82f6;">
-                            <span>💡 Suggested</span>
-                          </label>
-                        </section>
-
-                        <!-- CMS Taxonomy Terms -->
-                        <section class="ah-qe-sec">
-                          <div class="ah-qe-sec-h">CMS Taxonomy Terms</div>
-                          <?php if ( ! empty( $qe_tax_groups ) ) : ?>
-                            <div style="display:flex;flex-direction:column;gap:10px;">
-                            <?php foreach ( $qe_tax_groups as $grp ) : ?>
-                              <?php if ( empty( $grp['items'] ) ) continue; ?>
-                              <div>
-                                <div class="ah-qe-sub-h"><?php echo esc_html( $grp['label'] ); ?></div>
-                                <div style="display:flex;flex-wrap:wrap;gap:4px;">
-                                  <?php foreach ( $grp['items'] as $term ) :
-                                    $checked = in_array( (int) $term->id, $qe_term_ids, true );
-                                  ?>
-                                    <label class="ah-qe-chip<?php echo $checked ? ' is-on' : ''; ?>">
-                                      <input type="checkbox" class="ah-qe-term" value="<?php echo esc_attr( $term->id ); ?>" <?php checked( $checked ); ?> style="margin:0;display:none;">
-                                      <?php echo esc_html( $term->name ); ?>
-                                    </label>
-                                  <?php endforeach; ?>
-                                </div>
-                              </div>
-                            <?php endforeach; ?>
-                            </div>
-                          <?php else : ?>
-                            <p style="font-size:.82rem;color:#94a3b8;margin:0;">No taxonomy terms yet - <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-taxonomy' ) ); ?>">add some →</a></p>
-                          <?php endif; ?>
-                        </section>
-                      </div>
-
-                      <!-- Highlight Links -->
-                      <section class="ah-qe-sec" style="margin-top:14px;">
-                        <div class="ah-qe-sec-h">🔗 Highlight Links <span class="ah-qe-hint">(shown as highlight buttons in the blog sidebar)</span></div>
-                        <div id="ah-qe-hl-rows-<?php echo esc_attr( $p->ID ); ?>">
-                          <?php foreach ( $qe_hl_links as $hl ) : ?>
-                          <div class="ah-qe-hl-row" style="display:flex;gap:6px;margin-bottom:6px;align-items:center;">
-                            <input type="text" class="ah-qe-hl-name" value="<?php echo esc_attr( $hl['name'] ?? '' ); ?>" placeholder="Label"
-                                   style="flex:1;min-width:0;padding:6px 9px;border:1px solid #d1dae8;border-radius:6px;font-size:.82rem;outline:none;">
-                            <input type="text" class="ah-qe-hl-url"  value="<?php echo esc_attr( $hl['url'] ?? '' ); ?>"  placeholder="/slug/ or URL"
-                                   style="flex:1.6;min-width:0;padding:6px 9px;border:1px solid #d1dae8;border-radius:6px;font-size:.82rem;outline:none;">
-                            <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-remove" style="flex-shrink:0;padding:3px 8px;">✕</button>
-                          </div>
-                          <?php endforeach; ?>
-                        </div>
-                        <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-add"
-                                data-id="<?php echo esc_attr( $p->ID ); ?>"
-                                style="margin-top:4px;font-size:.78rem;">+ Add Link</button>
-                      </section>
-
-                      <!-- Related Content ( articles, static components, external/support) -->
-                      <section class="ah-qe-sec" style="margin-top:14px;">
-                        <div class="ah-qe-sec-h">🧩 Related Content <span class="ah-qe-hint">(articles, static components, external &amp; support links - grouped by section)</span></div>
-                        <?php ( new AH_Related_Links_Model() )->render_admin_panel( 'wp_post', (int) $p->ID ); ?>
-                      </section>
-
-                    </div><!-- /.ah-qe-body -->
-
-                    <!-- Sticky footer -->
-                    <footer class="ah-qe-foot">
-                      <button type="button" class="ah-btn ah-btn-secondary ah-qe-close" data-id="<?php echo esc_attr( $p->ID ); ?>">Cancel</button>
-                      <button type="button" class="ah-btn ah-btn-primary ah-qe-save" data-id="<?php echo esc_attr( $p->ID ); ?>">Save Changes</button>
-                    </footer>
-
-                  </div><!-- /.ah-qe-card -->
-                </div><!-- /.ah-qe-modal -->
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
+    <?php
+    $qe_tax_model  = class_exists( 'AH_Content_Taxonomy_Model' ) ? new AH_Content_Taxonomy_Model() : null;
+    $qe_tax_groups = $qe_tax_model ? $qe_tax_model->get_active_terms_grouped() : [];
+    $posts_table_rows = array();
+    foreach ( $posts_list as $p ) {
+      $p_cats      = get_the_category( $p->ID );
+      $p_author    = get_the_author_meta( 'display_name', $p->post_author );
+      $p_editor    = get_post_meta( $p->ID, '_ah_editor_mode', true ) ?: 'gutenberg';
+      $p_edit_url  = $p_editor === 'custom'
+        ? add_query_arg( [ 'page' => 'ah-posts', 'action' => 'edit-custom', 'id' => $p->ID ], admin_url( 'admin.php' ) )
+        : get_edit_post_link( $p->ID );
+      $posts_table_rows[] = (object) array(
+        'ID'             => $p->ID,
+        'post_title'     => $p->post_title,
+        'post_excerpt'   => $p->post_excerpt,
+        'post_status'    => $p->post_status,
+        'post_modified'  => $p->post_modified,
+        'cats'           => $p_cats,
+        'author'         => $p_author,
+        'editor_mode'    => $p_editor,
+        'edit_url'       => $p_edit_url,
+      );
+    }
+    ?>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+      'columns' => array(
+        array( 'label' => 'Title', 'render' => function ( $p ) {
+          $html = '<strong>' . esc_html( $p->post_title ?: '(no title)' ) . '</strong>';
+          if ( $p->post_excerpt ) {
+            $html .= '<small style="color:var(--ah-muted);display:block;">' . esc_html( wp_trim_words( $p->post_excerpt, 10 ) ) . '</small>';
+          }
+          return $html;
+        } ),
+        array( 'label' => 'WP Categories', 'render' => function ( $p ) {
+          return '<small>' . ( $p->cats ? esc_html( implode( ', ', wp_list_pluck( $p->cats, 'name' ) ) ) : '-' ) . '</small>';
+        } ),
+        array( 'label' => 'CMS Terms', 'render' => function ( $p ) {
+          ob_start();
+          ( new AH_Content_Taxonomy_Model() )->render_badges( 'wp_post', (int) $p->ID );
+          return ob_get_clean();
+        } ),
+        array( 'label' => 'Status', 'render' => function ( $p ) {
+          $badge = [ 'publish' => 'active', 'draft' => 'draft', 'private' => 'inactive', 'pending' => 'draft' ];
+          $label = [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'pending' => 'Pending' ];
+          return '<span class="ah-badge ah-badge-' . esc_attr( $badge[ $p->post_status ] ?? 'draft' ) . '">' . esc_html( $label[ $p->post_status ] ?? $p->post_status ) . '</span>';
+        } ),
+        array( 'label' => 'Editor', 'render' => function ( $p ) {
+          return '<small style="opacity:.7;">' . ( $p->editor_mode === 'custom' ? '📝 Form' : '🖊 WP' ) . '</small>';
+        } ),
+        array( 'label' => 'Author', 'render' => function ( $p ) {
+          return '<small>' . esc_html( $p->author ) . '</small>';
+        } ),
+        array( 'label' => 'Modified', 'render' => function ( $p ) {
+          return '<small>' . esc_html( wp_date( 'M j, Y', strtotime( $p->post_modified ) ) ) . '</small>';
+        } ),
+        array( 'label' => 'Actions', 'render' => function ( $p ) {
+          $html  = '<a href="' . esc_url( $p->edit_url ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a> ';
+          $html .= '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-open" data-id="' . esc_attr( $p->ID ) . '">Edit Meta</button> ';
+          if ( $p->post_status === 'publish' ) {
+            $html .= '<a href="' . esc_url( get_permalink( $p->ID ) ) . '" target="_blank" class="ah-btn ah-btn-secondary ah-btn-sm">View</a> ';
+          }
+          $trash_url = wp_nonce_url( add_query_arg( [ 'page' => 'ah-posts', 'trash_id' => $p->ID ], admin_url( 'admin.php' ) ), 'ah_trash_post' );
+          $html .= '<a href="' . esc_url( $trash_url ) . '" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-title="Delete Post" data-confirm="This post will be moved to trash.">Delete</a>';
+          return $html;
+        } ),
+      ),
+      'items'         => $posts_table_rows,
+      'empty_message' => 'No posts found.',
+    ) ); ?>
 
     <?php if ( $pages_count > 1 ) : ?>
-      <div style="margin-top:16px;display:flex;gap:6px;">
-        <?php for ( $pg = 1; $pg <= $pages_count; $pg++ ) : ?>
-          <a href="<?php echo esc_url( add_query_arg( [ 'page' => 'ah-posts', 'paged' => $pg ], admin_url( 'admin.php' ) ) ); ?>"
-             class="ah-btn ah-btn-sm <?php echo $pg === $paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?>"><?php echo $pg; ?></a>
-        <?php endfor; ?>
-      </div>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::pagination( array(
+        'total'    => $total,
+        'per_page' => 20,
+        'current'  => $paged,
+        'base'     => add_query_arg( 'paged', '%#%', admin_url( 'admin.php?page=ah-posts' ) ),
+      ) ); ?>
     <?php endif; ?>
   <?php endif; ?>
 

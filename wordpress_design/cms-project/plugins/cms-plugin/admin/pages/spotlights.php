@@ -119,15 +119,13 @@ if ( isset( $_GET['toggle_item'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 
 if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 ?>
 <div class="wrap ah-wrap">
-<h1><span class="dashicons dashicons-star-half"></span> Spotlights</h1>
-<?php if ( $notice ) : ?>
-<div class="ah-notice ah-notice-<?php echo esc_attr( $n_type ); ?>"><?php echo esc_html( $notice ); ?></div>
-<?php endif; ?>
+<?php \Ah\Cms\Admin\Components\AdminComponents::pageHeader( 'star-half', 'Spotlights', 'Create spotlight term groups and items for the homepage feature section.' ); ?>
+<?php \Ah\Cms\Admin\Components\AdminComponents::notice( $notice, $n_type ); ?>
 
-<nav class="ah-tabs" style="margin:12px 0 20px">
-	<a href="<?php echo ah_sp_url( array( 'tab' => 'terms' ) ); ?>" class="ah-tab<?php echo $tab === 'terms' ? ' ah-tab--active' : ''; ?>">Terms</a>
-	<a href="<?php echo ah_sp_url( array( 'tab' => 'items' ) ); ?>" class="ah-tab<?php echo $tab === 'items' ? ' ah-tab--active' : ''; ?>">Items</a>
-</nav>
+<?php \Ah\Cms\Admin\Components\AdminComponents::tabBarUrl( array(
+	'terms' => 'Terms',
+	'items' => 'Items',
+), $tab ); ?>
 
 <?php /* ============================================================  TERMS  ============================================================ */ ?>
 <?php if ( $tab === 'terms' ) : ?>
@@ -135,69 +133,101 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 <?php if ( $action === 'add' || $action === 'edit' ) :
 	$term = ( $action === 'edit' && $id ) ? $terms_model->find( $id ) : null;
 ?>
-<div class="ah-form-card" style="max-width:640px">
-	<h2><?php echo $action === 'edit' ? 'Edit Term' : 'Add Term'; ?></h2>
+<?php \Ah\Cms\Admin\Components\AdminComponents::backLink( ah_sp_url( array( 'tab' => 'terms' ) ), '← Back' ); ?>
+<?php ob_start(); ?>
 	<form method="post">
 		<?php wp_nonce_field( 'ah_save_spotlight', 'ah_spotlights_nonce' ); ?>
 		<input type="hidden" name="save_term" value="1">
-		<table class="form-table">
-			<tr><th><label>Name</label></th>
-				<td><input type="text" name="term_name" value="<?php echo esc_attr( $term->name ?? '' ); ?>" class="regular-text" required></td></tr>
-			<tr><th><label>Slug</label></th>
-				<td><input type="text" name="term_slug" value="<?php echo esc_attr( $term->slug ?? '' ); ?>" class="regular-text" placeholder="auto-generated"></td></tr>
-			<tr><th><label>Description</label></th>
-				<td><textarea name="term_desc" rows="2" class="large-text"><?php echo esc_textarea( $term->description ?? '' ); ?></textarea></td></tr>
-			<tr><th><label>Max display</label></th>
-				<td><input type="number" name="max_display" value="<?php echo esc_attr( $term->max_display ?? 10 ); ?>" min="1" max="50" style="width:80px">
-					<p class="description">Widget shows up to this many active items.</p></td></tr>
-			<tr><th><label>Sort Order</label></th>
-				<td><input type="number" name="sort_order" value="<?php echo esc_attr( $term->sort_order ?? 0 ); ?>" style="width:80px"></td></tr>
-			<tr><th>Active</th>
-				<td><label><input type="checkbox" name="is_active" value="1" <?php checked( isset( $term->is_active ) ? (int) $term->is_active : 1 ); ?>> Enabled</label></td></tr>
-		</table>
-		<p>
-			<button type="submit" class="button button-primary">Save Term</button>
-			<a href="<?php echo ah_sp_url( array( 'tab' => 'terms' ) ); ?>" class="button">Cancel</a>
-		</p>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Name', '<input type="text" name="term_name" value="' . esc_attr( $term->name ?? '' ) . '" class="regular-text" required>' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Slug', '<input type="text" name="term_slug" value="' . esc_attr( $term->slug ?? '' ) . '" class="regular-text" placeholder="auto-generated">' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Description', '<textarea name="term_desc" rows="2" class="large-text">' . esc_textarea( $term->description ?? '' ) . '</textarea>' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+			array( 'Max display', '<input type="number" name="max_display" value="' . esc_attr( $term->max_display ?? 10 ) . '" min="1" max="50" style="width:80px"><p class="description">Widget shows up to this many active items.</p>' ),
+			array( 'Sort Order', '<input type="number" name="sort_order" value="' . esc_attr( $term->sort_order ?? 0 ) . '" style="width:80px">' ),
+		) ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::field( 'checkbox', 'is_active', 'Enabled', isset( $term->is_active ) ? (int) $term->is_active : 1 ); ?>
+		<div style="display:flex;gap:8px;align-items:center;margin-top:12px;">
+			<button type="submit" class="ah-btn ah-btn-primary">Save Term</button>
+			<a href="<?php echo ah_sp_url( array( 'tab' => 'terms' ) ); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
+		</div>
 	</form>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::card( $action === 'edit' ? 'Edit Term' : 'Add Term', ob_get_clean() ); ?>
 
 <?php else :
 	$all_terms = $terms_model->all( array( 'order_by' => 'sort_order', 'order' => 'ASC' ) );
+	$term_search = sanitize_text_field( $_GET['s'] ?? '' );
+	$term_status = sanitize_key( $_GET['status'] ?? '' );
+
+	// Filter terms
+	if ( $term_search || $term_status ) {
+		$filtered = array();
+		foreach ( $all_terms as $t ) {
+			if ( $term_search && stripos( $t->name, $term_search ) === false && stripos( $t->slug, $term_search ) === false ) {
+				continue;
+			}
+			if ( $term_status === 'active' && ! $t->is_active ) {
+				continue;
+			}
+			if ( $term_status === 'inactive' && $t->is_active ) {
+				continue;
+			}
+			$filtered[] = $t;
+		}
+		$all_terms = $filtered;
+	}
 ?>
-<p><a href="<?php echo ah_sp_url( array( 'tab' => 'terms', 'action' => 'add' ) ); ?>" class="button button-primary">+ Add Term</a></p>
+<?php \Ah\Cms\Admin\Components\AdminComponents::filterBar( array(
+	'page_slug'          => 'ah-spotlights',
+	'search_placeholder' => 'Search terms…',
+	'search_value'       => $term_search,
+	'hidden_inputs'      => array( 'tab' => 'terms' ),
+	'filters'            => array(
+		array(
+			'name'     => 'status',
+			'options'  => array( '' => 'All Status', 'active' => 'Active', 'inactive' => 'Inactive' ),
+			'selected' => $term_status,
+		),
+	),
+	'add_url'   => ah_sp_url( array( 'tab' => 'terms', 'action' => 'add' ) ),
+	'add_label' => '+ Add Term',
+) ); ?>
 <?php if ( $all_terms ) : ?>
-<table class="wp-list-table widefat fixed striped">
-	<thead><tr><th>Name</th><th>Slug</th><th>Max</th><th>Items</th><th>Active</th><th>Actions</th></tr></thead>
-	<tbody>
-	<?php foreach ( $all_terms as $t ) : ?>
-	<tr>
-		<td><strong><?php echo esc_html( $t->name ); ?></strong></td>
-		<td><code><?php echo esc_html( $t->slug ); ?></code></td>
-		<td><?php echo (int) $t->max_display; ?></td>
-		<td><a href="<?php echo ah_sp_url( array( 'tab' => 'items', 'term_id' => $t->id ) ); ?>"><?php echo $terms_model->item_count( (int) $t->id ); ?></a></td>
-		<td>
-			<a href="<?php echo esc_url( wp_nonce_url( ah_sp_url( array( 'tab' => 'terms', 'toggle_term' => $t->id ) ), 'ah_tog_sp_term' ) ); ?>">
-				<?php echo $t->is_active ? '<span style="color:#16a34a">● Active</span>' : '<span style="color:#9ca3af">● Inactive</span>'; ?>
-			</a>
-		</td>
-		<td>
-			<a href="<?php echo ah_sp_url( array( 'tab' => 'terms', 'action' => 'edit', 'id' => $t->id ) ); ?>">Edit</a> &nbsp;|&nbsp;
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;margin:0;padding:0">
-				<input type="hidden" name="action" value="ah_delete_spotlight_term">
-				<?php wp_nonce_field( 'ah_del_sp_term' ); ?>
-				<input type="hidden" name="delete_term" value="<?php echo (int) $t->id; ?>">
-				<button type="submit" class="button-link" onclick="return confirm('Delete term and all its items?')" style="color:#b91c1c;border:none;background:none;padding:0">Delete</button>
-			</form>
-			<!-- fallback GET delete (hidden) -->
-			<a href="<?php echo esc_url( wp_nonce_url( ah_sp_url( array( 'tab' => 'terms', 'delete_term' => $t->id ) ), 'ah_del_sp_term' ) ); ?>" style="display:none">Delete (GET)</a>
-		</td>
-	</tr>
-	<?php endforeach; ?>
-	</tbody>
-</table>
+<?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => 'Name', 'render' => function ( $t ) {
+			return '<strong>' . esc_html( $t->name ) . '</strong>';
+		} ),
+		array( 'label' => 'Slug', 'render' => function ( $t ) {
+			return '<code>' . esc_html( $t->slug ) . '</code>';
+		} ),
+		array( 'label' => 'Max', 'render' => function ( $t ) {
+			return (int) $t->max_display;
+		} ),
+		array( 'label' => 'Items', 'render' => function ( $t ) use ( $terms_model ) {
+			return '<a href="' . esc_url( ah_sp_url( array( 'tab' => 'items', 'term_id' => $t->id ) ) ) . '">' . $terms_model->item_count( (int) $t->id ) . '</a>';
+		} ),
+		array( 'label' => 'Active', 'render' => function ( $t ) {
+			$url = esc_url( wp_nonce_url( ah_sp_url( array( 'tab' => 'terms', 'toggle_term' => $t->id ) ), 'ah_tog_sp_term' ) );
+			return $t->is_active
+				? '<a href="' . $url . '" style="color:#16a34a">● Active</a>'
+				: '<a href="' . $url . '" style="color:#9ca3af">● Inactive</a>';
+		} ),
+	),
+	'items'         => $all_terms,
+	'empty_message' => 'No terms yet.',
+	'actions'       => function ( $t ) {
+		$html = '<a href="' . esc_url( ah_sp_url( array( 'tab' => 'terms', 'action' => 'edit', 'id' => $t->id ) ) ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>';
+		$html .= '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" style="display:inline;margin:0;padding:0">';
+		$html .= '<input type="hidden" name="action" value="ah_delete_spotlight_term">';
+		$html .= wp_nonce_field( 'ah_del_sp_term', '_wpnonce', false );
+		$html .= '<input type="hidden" name="delete_term" value="' . (int) $t->id . '">';
+		$html .= '<button type="submit" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-title="Delete &quot;' . esc_attr( $t->name ) . '&quot;" data-confirm="This term and all its items will be deleted.">Delete</button>';
+		$html .= '</form>';
+		return $html;
+	},
+) ); ?>
 <?php else : ?>
-<p>No terms yet. <a href="<?php echo ah_sp_url( array( 'tab' => 'terms', 'action' => 'add' ) ); ?>">Add the first one.</a></p>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::emptyState( 'No terms yet.', 'star-half' ); ?>
 <?php endif; ?>
 <?php endif; ?>
 
@@ -208,111 +238,101 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 	if ( $action === 'add' || $action === 'edit' ) :
 		$item = ( $action === 'edit' && $id ) ? $items_model->find( $id ) : null;
 ?>
-<div class="ah-form-card" style="max-width:680px">
-	<h2><?php echo $action === 'edit' ? 'Edit Item' : 'Add Item'; ?></h2>
+<?php \Ah\Cms\Admin\Components\AdminComponents::backLink( ah_sp_url( array( 'tab' => 'items', 'term_id' => $term_id ) ), '← Back' ); ?>
+<?php ob_start(); ?>
 	<form method="post">
 		<?php wp_nonce_field( 'ah_save_spotlight', 'ah_spotlights_nonce' ); ?>
 		<input type="hidden" name="save_item" value="1">
-		<table class="form-table">
-			<tr><th><label>Term</label></th>
-				<td>
-					<select name="term_id" required>
-						<option value="">- select -</option>
-						<?php foreach ( $active_terms as $t ) : ?>
-						<option value="<?php echo (int) $t->id; ?>" <?php selected( isset( $item->term_id ) ? (int) $item->term_id : $term_id, (int) $t->id ); ?>>
-							<?php echo esc_html( $t->name ); ?> (<?php echo esc_html( $t->slug ); ?>)
-						</option>
-						<?php endforeach; ?>
-					</select>
-				</td></tr>
-			<tr><th><label>Icon</label></th>
-				<td><input type="text" name="icon" value="<?php echo esc_attr( $item->icon ?? '' ); ?>" class="regular-text" placeholder="fa-solid fa-heart  or emoji 🌿">
-					<p class="description">Font Awesome class string or a single emoji.</p></td></tr>
-			<tr><th><label>Title</label></th>
-				<td><input type="text" name="title" value="<?php echo esc_attr( $item->title ?? '' ); ?>" class="large-text" required></td></tr>
-			<tr><th><label>Description</label></th>
-				<td><textarea name="description" rows="2" class="large-text"><?php echo esc_textarea( $item->description ?? '' ); ?></textarea></td></tr>
-			<tr><th><label>Point Value</label></th>
-				<td><input type="text" name="point_value" value="<?php echo esc_attr( $item->point_value ?? '' ); ?>" style="width:120px" placeholder="100+"></td></tr>
-			<tr><th><label>Point Label</label></th>
-				<td><input type="text" name="point_label" value="<?php echo esc_attr( $item->point_label ?? '' ); ?>" class="regular-text" placeholder="Properties Listed"></td></tr>
-			<tr><th><label>Link URL</label></th>
-				<td><input type="text" name="link_url" value="<?php echo esc_attr( $item->link_url ?? '' ); ?>" class="large-text" placeholder="https://… or /slug/ or #section"></td></tr>
-			<tr><th><label>Link Label</label></th>
-				<td><input type="text" name="link_label" value="<?php echo esc_attr( $item->link_label ?? '' ); ?>" class="regular-text" placeholder="Learn more"></td></tr>
-			<tr><th>Show Link</th>
-				<td><label><input type="checkbox" name="show_link" value="1" <?php checked( (int) ( $item->show_link ?? 0 ) ); ?>> Display link on card</label></td></tr>
-			<tr><th><label>Sort Order</label></th>
-				<td><input type="number" name="sort_order" value="<?php echo esc_attr( $item->sort_order ?? 0 ); ?>" style="width:80px"></td></tr>
-			<tr><th>Active</th>
-				<td><label><input type="checkbox" name="is_active" value="1" <?php checked( isset( $item->is_active ) ? (int) $item->is_active : 1 ); ?>> Enabled</label></td></tr>
-		</table>
-		<p>
-			<button type="submit" class="button button-primary">Save Item</button>
-			<a href="<?php echo ah_sp_url( array( 'tab' => 'items', 'term_id' => $term_id ) ); ?>" class="button">Cancel</a>
-		</p>
+		<?php
+		$term_select = '<select name="term_id" required><option value="">- select -</option>';
+		foreach ( $active_terms as $t ) {
+			$term_select .= '<option value="' . (int) $t->id . '"' . selected( isset( $item->term_id ) ? (int) $item->term_id : $term_id, (int) $t->id, false ) . '>'
+				. esc_html( $t->name ) . ' (' . esc_html( $t->slug ) . ')</option>';
+		}
+		$term_select .= '</select>';
+		?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Term', $term_select ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Icon', '<input type="text" name="icon" value="' . esc_attr( $item->icon ?? '' ) . '" class="regular-text" placeholder="fa-solid fa-heart  or emoji 🌿"><p class="description">Font Awesome class string or a single emoji.</p>' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Title', '<input type="text" name="title" value="' . esc_attr( $item->title ?? '' ) . '" class="large-text" required>' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Description', '<textarea name="description" rows="2" class="large-text">' . esc_textarea( $item->description ?? '' ) . '</textarea>' ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+			array( 'Point Value', '<input type="text" name="point_value" value="' . esc_attr( $item->point_value ?? '' ) . '" style="width:120px" placeholder="100+">' ),
+			array( 'Point Label', '<input type="text" name="point_label" value="' . esc_attr( $item->point_label ?? '' ) . '" class="regular-text" placeholder="Properties Listed">' ),
+		) ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+			array( 'Link URL', '<input type="text" name="link_url" value="' . esc_attr( $item->link_url ?? '' ) . '" class="large-text" placeholder="https://… or /slug/ or #section">' ),
+			array( 'Link Label', '<input type="text" name="link_label" value="' . esc_attr( $item->link_label ?? '' ) . '" class="regular-text" placeholder="Learn more">' ),
+		) ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::field( 'checkbox', 'show_link', 'Display link on card', (int) ( $item->show_link ?? 0 ) ); ?>
+		<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+			array( 'Sort Order', '<input type="number" name="sort_order" value="' . esc_attr( $item->sort_order ?? 0 ) . '" style="width:80px">' ),
+			array( '', \Ah\Cms\Admin\Components\AdminComponents::field( 'checkbox', 'is_active', 'Enabled', isset( $item->is_active ) ? (int) $item->is_active : 1 ) ),
+		) ); ?>
+		<div style="display:flex;gap:8px;align-items:center;margin-top:12px;">
+			<button type="submit" class="ah-btn ah-btn-primary">Save Item</button>
+			<a href="<?php echo ah_sp_url( array( 'tab' => 'items', 'term_id' => $term_id ) ); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
+		</div>
 	</form>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::card( $action === 'edit' ? 'Edit Item' : 'Add Item', ob_get_clean() ); ?>
 
 <?php else :
 	$result = $items_model->get_paginated_for_admin( AH_Pagination::current_page(), $term_id );
 	$items  = $result['items'];
 ?>
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
-	<a href="<?php echo ah_sp_url( array( 'tab' => 'items', 'action' => 'add', 'term_id' => $term_id ) ); ?>" class="button button-primary">+ Add Item</a>
-	<form method="get" style="display:flex;gap:6px;align-items:center">
-		<input type="hidden" name="page" value="ah-spotlights">
-		<input type="hidden" name="tab" value="items">
-		<select name="term_id" onchange="this.form.submit()" style="height:30px">
-			<option value="">All terms</option>
-			<?php foreach ( $active_terms as $t ) : ?>
-			<option value="<?php echo (int) $t->id; ?>" <?php selected( $term_id, (int) $t->id ); ?>>
-				<?php echo esc_html( $t->name ); ?>
-			</option>
-			<?php endforeach; ?>
-		</select>
-	</form>
-</div>
+<?php \Ah\Cms\Admin\Components\AdminComponents::filterBar( array(
+	'page_slug'          => 'ah-spotlights',
+	'search_placeholder' => 'Search items…',
+	'hidden_inputs'      => array( 'tab' => 'items', 'term_id' => $term_id ),
+	'add_url'            => ah_sp_url( array( 'tab' => 'items', 'action' => 'add', 'term_id' => $term_id ) ),
+	'add_label'          => '+ Add Item',
+	'filters'            => array(
+		array(
+			'name'     => 'term_id',
+			'options'  => array_merge( array( '' => 'All terms' ), array_combine( array_column( $active_terms, 'id' ), array_map( fn( $t ) => $t->name, $active_terms ) ) ),
+			'selected' => $term_id,
+		),
+	),
+) ); ?>
 
 <?php if ( $items ) : ?>
-<table class="wp-list-table widefat fixed striped">
-	<thead><tr>
-		<th style="width:36px">Icon</th><th>Title</th><th>Point</th><th>Term</th><th>Link</th><th>Active</th><th>Actions</th>
-	</tr></thead>
-	<tbody>
-	<?php foreach ( $items as $item ) : ?>
-	<tr>
-		<td style="font-size:1.2rem;line-height:1"><?php echo esc_html( $item->icon ); ?></td>
-		<td>
-			<strong><?php echo esc_html( $item->title ); ?></strong>
-			<?php if ( $item->description ) : ?><br><small style="color:#6b7280"><?php echo esc_html( wp_trim_words( $item->description, 8 ) ); ?></small><?php endif; ?>
-		</td>
-		<td><?php if ( $item->point_value ) : ?><strong><?php echo esc_html( $item->point_value ); ?></strong><br><small><?php echo esc_html( $item->point_label ); ?></small><?php endif; ?></td>
-		<td><?php $t_row = $terms_model->find( (int) $item->term_id ); echo $t_row ? '<code>' . esc_html( $t_row->slug ) . '</code>' : '-'; ?></td>
-		<td><?php echo $item->show_link && $item->link_url ? '<span style="color:#16a34a">✓</span>' : '-'; ?></td>
-		<td>
-			<a href="<?php echo esc_url( wp_nonce_url( ah_sp_url( array( 'tab' => 'items', 'toggle_item' => $item->id, 'term_id' => $term_id ) ), 'ah_tog_sp_item' ) ); ?>">
-				<?php echo $item->is_active ? '<span style="color:#16a34a">●</span>' : '<span style="color:#9ca3af">●</span>'; ?>
-			</a>
-		</td>
-		<td>
-			<a href="<?php echo ah_sp_url( array( 'tab' => 'items', 'action' => 'edit', 'id' => $item->id, 'term_id' => $term_id ) ); ?>">Edit</a> &nbsp;|&nbsp;
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;margin:0;padding:0">
-				<input type="hidden" name="action" value="ah_delete_spotlight_item">
-				<input type="hidden" name="term_id" value="<?php echo (int) $term_id; ?>">
-				<?php wp_nonce_field( 'ah_del_sp_item' ); ?>
-				<input type="hidden" name="delete_item" value="<?php echo (int) $item->id; ?>">
-				<button type="submit" class="button-link" onclick="return confirm('Delete this item?')" style="color:#b91c1c;border:none;background:none;padding:0">Delete</button>
-			</form>
-			<!-- fallback GET delete (kept for compatibility but hidden) -->
-			<a href="<?php echo esc_url( wp_nonce_url( ah_sp_url( array( 'tab' => 'items', 'delete_item' => $item->id, 'term_id' => $term_id ) ), 'ah_del_sp_item' ) ); ?>" style="display:none">Delete (GET)</a>
-		</td>
-	</tr>
-	<?php endforeach; ?>
-	</tbody>
-</table>
+<?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
+	'columns' => array(
+		array( 'label' => 'Icon', 'style' => 'width:36px', 'render' => function ( $item ) {
+			return '<span style="font-size:1.2rem;line-height:1">' . esc_html( $item->icon ) . '</span>';
+		} ),
+		array( 'label' => 'Title', 'render' => function ( $item ) {
+			$html = '<strong>' . esc_html( $item->title ) . '</strong>';
+			if ( $item->description ) $html .= '<br><small style="color:#6b7280">' . esc_html( wp_trim_words( $item->description, 8 ) ) . '</small>';
+			return $html;
+		} ),
+		array( 'label' => 'Point', 'render' => function ( $item ) {
+			if ( ! $item->point_value ) return '-';
+			return '<strong>' . esc_html( $item->point_value ) . '</strong><br><small>' . esc_html( $item->point_label ) . '</small>';
+		} ),
+		array( 'label' => 'Term', 'render' => function ( $item ) use ( $items_model ) {
+			$t_row = $items_model instanceof AH_Spotlight_Terms_Model ? $items_model->find( (int) $item->term_id ) : null;
+			return $t_row ? '<code>' . esc_html( $t_row->slug ) . '</code>' : '-';
+		} ),
+		array( 'label' => 'Link', 'render' => function ( $item ) {
+			return $item->show_link && $item->link_url ? '<span style="color:#16a34a">✓</span>' : '-';
+		} ),
+	),
+	'items'         => $items,
+	'empty_message' => 'No items found.',
+	'actions'       => function ( $item ) use ( $term_id ) {
+		$html = '<a href="' . esc_url( ah_sp_url( array( 'tab' => 'items', 'action' => 'edit', 'id' => $item->id, 'term_id' => $term_id ) ) ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>';
+		$html .= '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" style="display:inline;margin:0;padding:0">';
+		$html .= '<input type="hidden" name="action" value="ah_delete_spotlight_item">';
+		$html .= '<input type="hidden" name="term_id" value="' . (int) $term_id . '">';
+		$html .= wp_nonce_field( 'ah_del_sp_item', '_wpnonce', false );
+		$html .= '<input type="hidden" name="delete_item" value="' . (int) $item->id . '">';
+		$html .= '<button type="submit" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-title="Delete &quot;' . esc_attr( $item->title ) . '&quot;" data-confirm="This spotlight item will be permanently removed.">Delete</button>';
+		$html .= '</form>';
+		return $html;
+	},
+) ); ?>
 <?php else : ?>
-<p>No items found. <a href="<?php echo ah_sp_url( array( 'tab' => 'items', 'action' => 'add' ) ); ?>">Add the first spotlight.</a></p>
+	<?php \Ah\Cms\Admin\Components\AdminComponents::emptyState( 'No items found. Add the first spotlight.', 'star-half' ); ?>
 <?php endif; ?>
 <?php endif; ?>
 <?php endif; ?>

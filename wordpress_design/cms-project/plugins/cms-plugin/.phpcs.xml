@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ruleset name="CMS Plugin Coding Standards">
+    <description>WordPress Coding Standards + PSR-12 for the CMS Plugin</description>
+
+    <!-- What to scan -->
+    <file>.</file>
+
+    <!-- Exclude vendor, node_modules, and non-PHP files -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/.git/*</exclude-pattern>
+    <exclude-pattern>*/docs/*</exclude-pattern>
+    <exclude-pattern>*/database/migrations/*</exclude-pattern>
+
+    <!-- Use WordPress Coding Standards -->
+    <rule ref="WordPress">
+        <!-- Allow short array syntax -->
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+    </rule>
+
+    <!-- PHP version check -->
+    <config name="minimum_supported_wp" value="5.6"/>
+    <config name="testVersion" value="7.4-"/>
+
+    <!-- Show colors and progress -->
+    <arg value="sp"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="8"/>
+
+    <!-- Prefixes: all custom classes must start with AH_ -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array">
+                <element value="AH"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Text domain must be ah-theme -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="ah-theme"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Allow file-level docblocks on bootstrap files -->
+    <rule ref="WordPress.Files.FileName">
+        <exclude-pattern>ah-cms.php</exclude-pattern>
+        <exclude-pattern>functions.php</exclude-pattern>
+    </rule>
+</ruleset>
