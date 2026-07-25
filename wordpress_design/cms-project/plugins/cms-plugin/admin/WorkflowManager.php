@@ -190,64 +190,64 @@ $var_profiles = AH_Workflow_Manager::get_var_profiles();
 .re-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 .re-header h1{margin:0;flex:1;font-size:1.4rem}
 .re-tbl{border-collapse:collapse;width:100%}
-.re-tbl th{font-size:11.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;background:#f9fafb;border-bottom:1px solid #e5e7eb;white-space:nowrap}
-.re-tbl td{padding:10px 12px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
-.re-tbl tr:hover td{background:#fafafa}
-.re-section{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px 22px;margin-bottom:16px}
-.re-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#6b7280;margin:0 0 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.re-tbl th{font-size:11.5px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;background:var(--ah-bg-light);border-bottom:1px solid var(--ah-border);white-space:nowrap}
+.re-tbl td{padding:10px 12px;border-bottom:1px solid var(--ah-bg-light);vertical-align:middle}
+.re-tbl tr:hover td{background:var(--ah-bg-light)}
+.re-section{background:#fff;border:1px solid var(--ah-border);border-radius:10px;padding:20px 22px;margin-bottom:16px}
+.re-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ah-muted);margin:0 0 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .re-section-title>span{flex:1}
 .re-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.re-row input,.re-row select{padding:7px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;background:#fff;box-sizing:border-box}
-.re-row input:focus,.re-row select:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.1)}
-.re-act-card{border:1.5px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px}
-.re-act-card[data-type="send_email"]{border-top:3px solid #3b82f6}
+.re-row input,.re-row select{padding:7px 10px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;font-family:inherit;background:#fff;box-sizing:border-box}
+.re-row input:focus,.re-row select:focus{outline:none;border-color:var(--ah-primary);box-shadow:0 0 0 2px rgba(37,99,235,.1)}
+.re-act-card{border:1.5px solid var(--ah-border);border-radius:8px;padding:14px 16px;margin-bottom:10px}
+.re-act-card[data-type="send_email"]{border-top:3px solid var(--ah-primary)}
 .re-act-card[data-type="whatsapp"]{border-top:3px solid #22c55e}
 .re-act-card[data-type="http_request"]{border-top:3px solid #8b5cf6}
 .re-act-card-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:600;font-size:14px}
 .re-act-card-head .re-rm{margin-left:auto}
 .re-field-group{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
 .re-field-group:last-child{margin-bottom:0}
-.re-field-group label{font-size:11.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px}
+.re-field-group label{font-size:11.5px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px}
 .re-field-group label small{text-transform:none;font-weight:400;letter-spacing:0;font-size:11px}
-.re-field-group input,.re-field-group select,.re-field-group textarea{padding:7px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;width:100%;box-sizing:border-box;background:#fff}
-.re-field-group input:focus,.re-field-group select:focus,.re-field-group textarea:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.1)}
+.re-field-group input,.re-field-group select,.re-field-group textarea{padding:7px 10px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;font-family:inherit;width:100%;box-sizing:border-box;background:#fff}
+.re-field-group input:focus,.re-field-group select:focus,.re-field-group textarea:focus{outline:none;border-color:var(--ah-primary);box-shadow:0 0 0 2px rgba(37,99,235,.1)}
 .re-field-group textarea{resize:vertical;min-height:60px}
 .re-act-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .re-act-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .re-act-grid-7030{display:grid;grid-template-columns:70% calc(30% - 10px);gap:10px}
 @media(max-width:900px){.re-act-grid-2,.re-act-grid-3,.re-act-grid-7030{grid-template-columns:1fr}}
-.re-rm{background:none;border:none;color:#9ca3af;cursor:pointer;font-size:16px;padding:3px 5px;line-height:1;border-radius:4px}
-.re-rm:hover{color:#ef4444;background:#fef2f2}
+.re-rm{background:none;border:none;color:var(--ah-muted);cursor:pointer;font-size:16px;padding:3px 5px;line-height:1;border-radius:4px}
+.re-rm:hover{color:var(--ah-danger);background:var(--ah-bg-light)}
 .re-preset-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
-.re-preset-chip{display:inline-block;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;color:#334155;cursor:pointer;transition:background .15s}
-.re-preset-chip:hover{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
-.re-trigger-pill{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
-.re-code-box{background:#1e293b;color:#e2e8f0;border-radius:8px;padding:12px 16px;font-size:12px;font-family:monospace;margin:0;overflow-x:auto;line-height:1.6}
-.re-code-hl{color:#7dd3fc}
-.re-st-active{color:#16a34a;font-weight:600;font-size:12px}
-.re-st-inactive{color:#9ca3af;font-weight:500;font-size:12px}
-.re-empty{text-align:center;padding:48px 24px;color:#9ca3af}
-details.re-adv{border:1px solid #e5e7eb;border-radius:6px;margin-top:8px}
-details.re-adv summary{padding:8px 12px;font-size:12px;font-weight:600;color:#6b7280;cursor:pointer;list-style:none;user-select:none}
+.re-preset-chip{display:inline-block;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;color:var(--ah-text);cursor:pointer;transition:background .15s}
+.re-preset-chip:hover{background:var(--ah-bg-light);border-color:var(--ah-border);color:var(--ah-primary-dark)}
+.re-trigger-pill{display:inline-flex;align-items:center;gap:5px;background:var(--ah-bg-light);color:var(--ah-primary-dark);border:1px solid var(--ah-border);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
+.re-code-box{background:var(--ah-text);color:var(--ah-border);border-radius:8px;padding:12px 16px;font-size:12px;font-family:monospace;margin:0;overflow-x:auto;line-height:1.6}
+.re-code-hl{color:var(--ah-border)}
+.re-st-active{color:var(--ah-success);font-weight:600;font-size:12px}
+.re-st-inactive{color:var(--ah-muted);font-weight:500;font-size:12px}
+.re-empty{text-align:center;padding:48px 24px;color:var(--ah-muted)}
+details.re-adv{border:1px solid var(--ah-border);border-radius:6px;margin-top:8px}
+details.re-adv summary{padding:8px 12px;font-size:12px;font-weight:600;color:var(--ah-muted);cursor:pointer;list-style:none;user-select:none}
 details.re-adv summary::-webkit-details-marker{display:none}
-details.re-adv[open] summary{border-bottom:1px solid #e5e7eb}
+details.re-adv[open] summary{border-bottom:1px solid var(--ah-border)}
 details.re-adv .re-adv-body{padding:12px}
-.re-html-row{display:flex;align-items:center;gap:7px;font-size:13px;color:#374151;padding:4px 0;cursor:pointer}
+.re-html-row{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ah-text);padding:4px 0;cursor:pointer}
 .re-html-row input[type=checkbox]{width:15px;height:15px;cursor:pointer;margin:0}
 /* Channel cards */
-.re-ch-card{border:1.5px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px;background:#fff}
+.re-ch-card{border:1.5px solid var(--ah-border);border-radius:8px;padding:14px 16px;margin-bottom:10px;background:#fff}
 .re-ch-card-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.re-ch-card-head strong{font-size:13px;font-weight:600;color:#1e293b;flex:1}
-.re-ch-id-badge{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;font-family:monospace}
+.re-ch-card-head strong{font-size:13px;font-weight:600;color:var(--ah-text);flex:1}
+.re-ch-id-badge{background:var(--ah-bg-light);color:var(--ah-primary-dark);border:1px solid var(--ah-border);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;font-family:monospace}
 /* Custom variable rows */
 .re-var-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.re-var-row input{padding:7px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;background:#fff;box-sizing:border-box}
-.re-var-row input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.1)}
-.re-var-key-badge{font-family:monospace;font-size:11.5px;color:#6b7280;white-space:nowrap}
+.re-var-row input{padding:7px 10px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;font-family:inherit;background:#fff;box-sizing:border-box}
+.re-var-row input:focus{outline:none;border-color:var(--ah-primary);box-shadow:0 0 0 2px rgba(37,99,235,.1)}
+.re-var-key-badge{font-family:monospace;font-size:11.5px;color:var(--ah-muted);white-space:nowrap}
 /* Condition groups */
-.re-cond-group{border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:10px;background:#fafafa}
-.re-cond-group-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;font-weight:600;color:#374151}
-.re-cond-group-head select{font-size:12px;padding:3px 8px;border:1.5px solid #d1d5db;border-radius:6px;font-weight:600;background:#fff}
+.re-cond-group{border:1.5px solid var(--ah-border);border-radius:8px;padding:12px 14px;margin-bottom:10px;background:var(--ah-bg-light)}
+.re-cond-group-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;font-weight:600;color:var(--ah-text)}
+.re-cond-group-head select{font-size:12px;padding:3px 8px;border:1.5px solid var(--ah-border);border-radius:6px;font-weight:600;background:#fff}
 .re-cond-group-head .re-rm{margin-left:auto}
 /* Wait action card */
 .re-act-card[data-type="wait"]{border-top:3px solid #f59e0b}
@@ -284,7 +284,7 @@ details.re-adv .re-adv-body{padding:12px}
 	?>
 
 <?php if ( ! in_array( $view, array( 'config', 'logs', 'evallog', 'blocked' ), true ) ) : ?>
-<p style="color:#6b7280;font-size:13px;margin:-8px 0 20px">
+<p style="color:var(--ah-muted);font-size:13px;margin:-8px 0 20px">
 	Automate anything. Define a <strong>trigger name</strong>, set optional <strong>conditions</strong>, and run <strong>actions</strong> - send emails, WhatsApp messages, or call any API. Use <code>{{field_key}}</code> tokens in action text.
 </p>
 <?php endif; ?>
@@ -317,7 +317,7 @@ details.re-adv .re-adv-body{padding:12px}
 				<input type="checkbox" id="re-s-frozen" style="margin:0;" <?php echo ! empty( $editing->settings['frozen'] ) ? 'checked' : ''; ?>>
 				<span style="font-weight:600;">Freeze rule</span>
 			</label>
-			<p style="margin:0;font-size:12px;color:#6b7280;">Prevent this rule from firing while keeping it saved.</p>
+			<p style="margin:0;font-size:12px;color:var(--ah-muted);">Prevent this rule from firing while keeping it saved.</p>
 		</div>
 	</div>
 </div>
@@ -334,18 +334,18 @@ details.re-adv .re-adv-body{padding:12px}
 	</div>
 
 	<div class="re-preset-chips">
-		<span style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Quick fill:</span>
+		<span style="font-size:11px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px">Quick fill:</span>
 		<?php foreach ( $trigger_presets as $k => $label ) : if ( 'custom' === $k ) continue; ?>
 		<span class="re-preset-chip" data-val="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $label ); ?></span>
 		<?php endforeach; ?>
 	</div>
 
 	<div style="margin-top:14px">
-		<div style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">PHP - fire this trigger from anywhere in your code:</div>
+		<div style="font-size:11px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">PHP - fire this trigger from anywhere in your code:</div>
 		<pre class="re-code-box">AH_Workflow_Manager::evaluate( '<span class="re-code-hl" id="re-code-trigger"><?php echo esc_html( $editing->trigger_name ); ?></span>', [
     'field_key' =&gt; $value,
     'email'     =&gt; $email,
-    <span style="color:#64748b">// ... any key =&gt; value pairs become {tokens} in actions</span>
+    <span style="color:var(--ah-muted)">// ... any key =&gt; value pairs become {tokens} in actions</span>
 ] );</pre>
 	</div>
 </div>
@@ -353,13 +353,13 @@ details.re-adv .re-adv-body{padding:12px}
 <!-- Form Field Reference Helper (visible when trigger = form_submit) -->
 <?php $_ffh_forms = class_exists( 'AH_Form_Builder' ) ? AH_Form_Builder::get_all() : array(); ?>
 <?php if ( $_ffh_forms ) : ?>
-<div class="re-section" id="re-form-field-helper" style="<?php echo 'form_submit' !== $editing->trigger_name ? 'display:none;' : ''; ?>background:#f0f9ff;border-color:#bae6fd">
-	<div class="re-section-title" style="color:#0369a1"><span>📋 Form Field Reference</span></div>
-	<p style="font-size:12px;color:#0c4a6e;margin:-4px 0 12px">
+<div class="re-section" id="re-form-field-helper" style="<?php echo 'form_submit' !== $editing->trigger_name ? 'display:none;' : ''; ?>background:var(--ah-bg-light);border-color:var(--ah-border)">
+	<div class="re-section-title" style="color:var(--ah-primary)"><span>📋 Form Field Reference</span></div>
+	<p style="font-size:12px;color:var(--ah-text);margin:-4px 0 12px">
 		Pick a form to see its field keys. <strong>Click any chip</strong> to insert it into the last focused condition field - or copies to clipboard. Use <code>{field_key}</code> as tokens in action body/subject. Add condition <code>form_id = N</code> to target only one specific form.
 	</p>
 	<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-		<select id="re-form-picker" style="padding:7px 12px;border:1.5px solid #7dd3fc;border-radius:6px;font-size:13px;background:#fff;min-width:220px">
+		<select id="re-form-picker" style="padding:7px 12px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;background:#fff;min-width:220px">
 			<option value="">-- Select a form to inspect --</option>
 			<?php foreach ( $_ffh_forms as $_ffh_f ) : ?>
 			<option value="<?php echo (int) $_ffh_f->id; ?>"><?php echo esc_html( $_ffh_f->name ); ?> (ID #<?php echo (int) $_ffh_f->id; ?>)</option>
@@ -367,7 +367,7 @@ details.re-adv .re-adv-body{padding:12px}
 		</select>
 	</div>
 	<div id="re-field-chips" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px;align-items:center">
-		<span style="font-size:12px;color:#7dd3fc;font-style:italic">Select a form above to see its field keys...</span>
+		<span style="font-size:12px;color:var(--ah-border);font-style:italic">Select a form above to see its field keys...</span>
 	</div>
 </div>
 <?php endif; ?>
@@ -376,28 +376,28 @@ details.re-adv .re-adv-body{padding:12px}
 <div class="re-section">
 	<div class="re-section-title">
 		<span>🔍 Conditions - IF</span>
-		<select name="re_conditions_match" id="re-match" style="font-size:12px;padding:4px 8px;border:1.5px solid #d1d5db;border-radius:6px;font-weight:600;background:#fff">
+		<select name="re_conditions_match" id="re-match" style="font-size:12px;padding:4px 8px;border:1.5px solid var(--ah-border);border-radius:6px;font-weight:600;background:#fff">
 			<option value="all" <?php selected( $editing->conditions_match, 'all' ); ?>>ALL groups match</option>
 			<option value="any" <?php selected( $editing->conditions_match, 'any' ); ?>>ANY group matches</option>
 		</select>
 		<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" id="re-add-group">+ Add Group</button>
 	</div>
 	<div id="re-conds"></div>
-	<p id="re-conds-empty" style="color:#9ca3af;font-size:13px;margin:0">
+	<p id="re-conds-empty" style="color:var(--ah-muted);font-size:13px;margin:0">
 		No conditions - rule fires on <em>every</em> matching trigger. Click <strong>+ Add Group</strong> to filter.
 	</p>
-	<p style="font-size:12px;color:#6b7280;margin:8px 0 0">
+	<p style="font-size:12px;color:var(--ah-muted);margin:8px 0 0">
 		Each group combines its own conditions with AND/ANY. Groups themselves are then combined by the top-level ALL/ANY above.
 	</p>
 </div>
 
 <!-- Rule Settings (dedup / cooldown) -->
 <details class="re-adv re-section" style="padding:0">
-	<summary style="padding:14px 18px;font-size:13px;font-weight:600;color:#374151;cursor:pointer;list-style:none;user-select:none;display:flex;align-items:center;gap:8px">
-		⚙️ Rule Settings <span style="font-weight:400;font-size:12px;color:#9ca3af">(deduplication &amp; cooldown)</span>
+	<summary style="padding:14px 18px;font-size:13px;font-weight:600;color:var(--ah-text);cursor:pointer;list-style:none;user-select:none;display:flex;align-items:center;gap:8px">
+		⚙️ Rule Settings <span style="font-weight:400;font-size:12px;color:var(--ah-muted)">(deduplication &amp; cooldown)</span>
 	</summary>
-	<div style="padding:0 18px 16px;border-top:1px solid #e5e7eb;margin-top:0">
-		<p style="font-size:12px;color:#6b7280;margin:12px 0 14px">Prevent this rule from firing too often. Use <code>{field_key}</code> in Dedup Key to deduplicate per-contact (e.g. <code>{email}</code>).</p>
+	<div style="padding:0 18px 16px;border-top:1px solid var(--ah-border);margin-top:0">
+		<p style="font-size:12px;color:var(--ah-muted);margin:12px 0 14px">Prevent this rule from firing too often. Use <code>{field_key}</code> in Dedup Key to deduplicate per-contact (e.g. <code>{email}</code>).</p>
 		<div class="re-act-grid-3">
 			<div class="re-field-group">
 				<label>Dedup Key <small>(token to deduplicate by)</small></label>
@@ -413,9 +413,9 @@ details.re-adv .re-adv-body{padding:12px}
 			</div>
 		</div>
 		
-		<div style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb">
+		<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--ah-border)">
 			<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-				<h3 style="margin:0;font-size:12px;font-weight:600;color:#374151">Custom Variables</h3>
+				<h3 style="margin:0;font-size:12px;font-weight:600;color:var(--ah-text)">Custom Variables</h3>
 			</div>
 			
 			<div class="re-field-group" style="margin-bottom:16px;max-width:300px">
@@ -428,18 +428,18 @@ details.re-adv .re-adv-body{padding:12px}
 					</option>
 					<?php endforeach; ?>
 				</select>
-				<p style="font-size:11px;color:#6b7280;margin:4px 0 0">Select a predefined group of variables to inject.</p>
+				<p style="font-size:11px;color:var(--ah-muted);margin:4px 0 0">Select a predefined group of variables to inject.</p>
 			</div>
 
 			<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-				<h3 style="margin:0;font-size:12px;font-weight:600;color:#374151">Rule-specific Variables</h3>
+				<h3 style="margin:0;font-size:12px;font-weight:600;color:var(--ah-text)">Rule-specific Variables</h3>
 				<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" id="re-add-rule-var">+ Add Variable</button>
 			</div>
-			<p style="font-size:11px;color:#6b7280;margin:-4px 0 10px">Define custom variables to use in your actions. The <strong>Key</strong> becomes a placeholder (e.g. <code>{{my_key}}</code>) which gets replaced by the <strong>Value</strong>. These override profile variables.</p>
+			<p style="font-size:11px;color:var(--ah-muted);margin:-4px 0 10px">Define custom variables to use in your actions. The <strong>Key</strong> becomes a placeholder (e.g. <code>{{my_key}}</code>) which gets replaced by the <strong>Value</strong>. These override profile variables.</p>
 			
 			<div style="display:grid;grid-template-columns:160px 1fr auto;gap:6px;margin-bottom:8px">
-				<div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Key</div>
-				<div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Value</div>
+				<div style="font-size:11px;font-weight:700;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px">Key</div>
+				<div style="font-size:11px;font-weight:700;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px">Value</div>
 				<div></div>
 			</div>
 			<div id="re-rule-vars"></div>
@@ -460,7 +460,7 @@ details.re-adv .re-adv-body{padding:12px}
 		</div>
 	</div>
 	<div id="re-actions"></div>
-	<p id="re-actions-empty" style="color:#9ca3af;font-size:13px;margin:0">No actions yet. Use the buttons above to add one.</p>
+	<p id="re-actions-empty" style="color:var(--ah-muted);font-size:13px;margin:0">No actions yet. Use the buttons above to add one.</p>
 </div>
 
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -475,12 +475,12 @@ details.re-adv .re-adv-body{padding:12px}
 
 <?php elseif ( 'list' === $view || ! in_array( $view, array( 'config', 'logs', 'evallog', 'blocked' ), true ) ) : /* ════════ RULES LIST ════════ */ ?>
 
-<form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
+<form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:10px 14px">
 	<input type="hidden" name="page" value="ah-workflow-manager">
 	<input type="hidden" name="view" value="list">
 	<input type="text" name="re_s" value="<?php echo esc_attr( $re_search ); ?>" placeholder="Search rule / trigger…"
-		style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:200px">
-	<select name="re_status" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff">
+		style="padding:6px 10px;border:1px solid var(--ah-border);border-radius:6px;font-size:12px;width:200px">
+	<select name="re_status" style="padding:6px 10px;border:1px solid var(--ah-border);border-radius:6px;font-size:12px;background:#fff">
 		<option value=""         <?php selected( $re_status_f, '' );         ?>>All Statuses</option>
 		<option value="active"   <?php selected( $re_status_f, 'active' );   ?>>✅ Active</option>
 		<option value="inactive" <?php selected( $re_status_f, 'inactive' ); ?>>⏸ Inactive</option>
@@ -489,7 +489,7 @@ details.re-adv .re-adv-body{padding:12px}
 	<?php if ( $re_search || $re_status_f ) : ?>
 	<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager&view=list' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
 	<?php endif; ?>
-	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo count( $all_rules ); ?> / <?php echo count( $all_rules_raw ); ?> rules</span>
+	<span style="margin-left:auto;font-size:12px;color:var(--ah-muted)"><?php echo count( $all_rules ); ?> / <?php echo count( $all_rules_raw ); ?> rules</span>
 </form>
 
 <?php if ( $all_rules ) : ?>
@@ -516,26 +516,26 @@ details.re-adv .re-adv-body{padding:12px}
 				}, $r->actions );
 			?>
 			<tr>
-				<td style="color:var(--ah-muted,#9ca3af);font-size:12px">#<?php echo esc_html( $r->id ); ?></td>
+				<td style="color:var(--ah-muted,var(--ah-muted));font-size:12px">#<?php echo esc_html( $r->id ); ?></td>
 				<td style="font-weight:600"><?php echo esc_html( $r->name ?: '(untitled)' ); ?></td>
 				<td>
 					<span class="re-trigger-pill"><?php echo esc_html( $preset_label ?? $r->trigger_name ); ?></span>
 					<?php if ( $preset_label ) : ?>
-					<br><code style="font-size:10px;color:#9ca3af"><?php echo esc_html( $r->trigger_name ); ?></code>
+					<br><code style="font-size:10px;color:var(--ah-muted)"><?php echo esc_html( $r->trigger_name ); ?></code>
 					<?php endif; ?>
 				</td>
-				<td style="font-size:12px;color:#6b7280">
+				<td style="font-size:12px;color:var(--ah-muted)">
 					<?php $cc = count( $r->conditions );
 					echo $cc ? esc_html( $cc . ' condition' . ( 1 !== $cc ? 's' : '' ) . ' (' . $r->conditions_match . ')' ) : '-'; ?>
 				</td>
 				<td style="font-size:12px">
 					<?php foreach ( $action_pills as $ap ) : ?>
-					<span style="display:inline-block;background:#f1f5f9;border-radius:4px;padding:2px 7px;margin:1px;font-size:11px"><?php echo esc_html( $ap ); ?></span>
+					<span style="display:inline-block;background:var(--ah-bg-light);border-radius:4px;padding:2px 7px;margin:1px;font-size:11px"><?php echo esc_html( $ap ); ?></span>
 					<?php endforeach;
 					if ( ! $action_pills ) echo '-'; ?>
 				</td>
 				<td style="text-align:center;font-size:13px"><?php echo esc_html( number_format( (int) $r->run_count ) ); ?></td>
-				<td style="font-size:12px;color:#6b7280">
+				<td style="font-size:12px;color:var(--ah-muted)">
 					<?php echo $r->last_run ? esc_html( wp_date( 'M j, Y g:i a', strtotime( $r->last_run ) ) ) : '-'; ?>
 				</td>
 				<td style="text-align:center">
@@ -555,7 +555,7 @@ details.re-adv .re-adv-body{padding:12px}
 <?php else : ?>
 <div class="ah-card re-empty">
 	<div style="font-size:3rem;margin-bottom:12px">⚙️</div>
-	<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:#374151">No rules yet</h2>
+	<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:var(--ah-text)">No rules yet</h2>
 	<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'edit', 'rule_id' => '0' ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn ah-btn-primary">+ Create First Rule</a>
 </div>
@@ -581,17 +581,17 @@ if ( 'config' === $view ) :
 <input type="hidden" name="cfg_var_profiles_json" id="cfg-profiles-json" value="<?php echo esc_attr( wp_json_encode( $var_profiles ) ); ?>">
 
 <!-- ── Global Freeze ── -->
-<div class="re-section" style="background:<?php echo '1' === $cfg['global_freeze'] ? '#fef2f2' : '#f9fafb'; ?>;border-color:<?php echo '1' === $cfg['global_freeze'] ? '#fca5a5' : '#e5e7eb'; ?>">
-	<div class="re-section-title" style="color:<?php echo '1' === $cfg['global_freeze'] ? '#b91c1c' : '#111827'; ?>"><span>🔒 Global Freeze</span></div>
-	<p style="font-size:12px;color:#6b7280;margin:-4px 0 14px">
+<div class="re-section" style="background:<?php echo '1' === $cfg['global_freeze'] ? 'var(--ah-bg-light)' : 'var(--ah-bg-light)'; ?>;border-color:<?php echo '1' === $cfg['global_freeze'] ? 'var(--ah-border)' : 'var(--ah-border)'; ?>">
+	<div class="re-section-title" style="color:<?php echo '1' === $cfg['global_freeze'] ? 'var(--ah-danger)' : 'var(--ah-text)'; ?>"><span>🔒 Global Freeze</span></div>
+	<p style="font-size:12px;color:var(--ah-muted);margin:-4px 0 14px">
 		When enabled, <strong>no rules will fire at all</strong> - evaluate() exits immediately. Use this as an emergency kill-switch without deactivating individual rules.
 	</p>
-	<label class="re-html-row" style="font-weight:600;color:<?php echo '1' === $cfg['global_freeze'] ? '#b91c1c' : '#374151'; ?>">
+	<label class="re-html-row" style="font-weight:600;color:<?php echo '1' === $cfg['global_freeze'] ? 'var(--ah-danger)' : 'var(--ah-text)'; ?>">
 		<input type="checkbox" name="cfg_global_freeze" value="1"<?php checked( $cfg['global_freeze'], '1' ); ?>>
 		Freeze all Workflow Manager activity
 	</label>
 	<?php if ( '1' === $cfg['global_freeze'] ) : ?>
-	<p style="margin:10px 0 0;padding:8px 12px;background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;font-size:12px;color:#b91c1c;font-weight:600">
+	<p style="margin:10px 0 0;padding:8px 12px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;font-size:12px;color:var(--ah-danger);font-weight:600">
 		⚠️ Workflow Manager is currently FROZEN - no rules are firing.
 	</p>
 	<?php endif; ?>
@@ -603,12 +603,12 @@ if ( 'config' === $view ) :
 		<span>📨 Email Channels / SMTP Profiles</span>
 		<button type="button" id="re-add-channel" class="ah-btn ah-btn-secondary ah-btn-sm">+ Add Channel</button>
 	</div>
-	<p style="font-size:12px;color:#6b7280;margin:-4px 0 14px">
+	<p style="font-size:12px;color:var(--ah-muted);margin:-4px 0 14px">
 		Define named SMTP senders (Gmail, Microsoft 365, Mailgun, etc.). Each email action can select a channel via the
 		<strong>Send via Channel</strong> dropdown. Leave action channel blank to use the site default SMTP.
 	</p>
 	<div id="re-channels"></div>
-	<p id="re-channels-empty" style="color:#9ca3af;font-size:13px;margin:0">No channels yet - click <strong>+ Add Channel</strong> to add one.</p>
+	<p id="re-channels-empty" style="color:var(--ah-muted);font-size:13px;margin:0">No channels yet - click <strong>+ Add Channel</strong> to add one.</p>
 </div>
 
 
@@ -618,18 +618,18 @@ if ( 'config' === $view ) :
 		<span>🔑 Custom Config Variables</span>
 		<button type="button" id="re-add-var" class="ah-btn ah-btn-secondary ah-btn-sm">+ Add Variable</button>
 	</div>
-	<p style="font-size:12px;color:#6b7280;margin:-4px 0 10px">
+	<p style="font-size:12px;color:var(--ah-muted);margin:-4px 0 10px">
 		Define reusable key-value pairs available as <code>{{config_key}}</code> tokens in all rule actions.
 		Use for: email addresses, phone numbers, API endpoints, names - anything you want to configure once and reuse everywhere.
 	</p>
 	<div style="display:grid;grid-template-columns:160px 1fr 1fr auto;gap:6px;margin-bottom:8px">
-		<div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;padding:4px 0">Key (slug)</div>
-		<div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;padding:4px 0">Label</div>
-		<div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;padding:4px 0">Value</div>
+		<div style="font-size:11px;font-weight:700;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;padding:4px 0">Key (slug)</div>
+		<div style="font-size:11px;font-weight:700;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;padding:4px 0">Label</div>
+		<div style="font-size:11px;font-weight:700;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;padding:4px 0">Value</div>
 		<div></div>
 	</div>
 	<div id="re-custom-vars"></div>
-	<p id="re-vars-empty" style="color:#9ca3af;font-size:13px;margin:0">No variables yet - click <strong>+ Add Variable</strong> to add one.</p>
+	<p id="re-vars-empty" style="color:var(--ah-muted);font-size:13px;margin:0">No variables yet - click <strong>+ Add Variable</strong> to add one.</p>
 </div>
 
 <!-- Variable Profiles ────────────────────────────────────────────────────── -->
@@ -638,11 +638,11 @@ if ( 'config' === $view ) :
 		<span>📂 Variable Profiles (Groups)</span>
 		<button type="button" id="re-add-profile" class="ah-btn ah-btn-secondary ah-btn-sm">+ Add Profile</button>
 	</div>
-	<p style="font-size:12px;color:#6b7280;margin:-4px 0 10px">
+	<p style="font-size:12px;color:var(--ah-muted);margin:-4px 0 10px">
 		Create named profiles containing sets of variables. In a rule's settings, you can select one of these profiles and all its variables will be injected into that rule's context automatically (e.g. <code>{{my_var}}</code>).
 	</p>
 	<div id="re-profiles"></div>
-	<p id="re-profiles-empty" style="color:#9ca3af;font-size:13px;margin:0">No profiles yet - click <strong>+ Add Profile</strong> to add one.</p>
+	<p id="re-profiles-empty" style="color:var(--ah-muted);font-size:13px;margin:0">No profiles yet - click <strong>+ Add Profile</strong> to add one.</p>
 </div>
 
 <!-- Cron / Retry ────────────────────────────────────────────────────────── -->
@@ -661,7 +661,7 @@ if ( 'config' === $view ) :
 			</label>
 		</div>
 	</div>
-	<p style="font-size:12px;color:#6b7280;margin:8px 0 0">
+	<p style="font-size:12px;color:var(--ah-muted);margin:8px 0 0">
 		<?php if ( $next_cron ) : ?>
 		✅ Cron is scheduled - next run: <strong><?php echo esc_html( wp_date( 'M j, Y g:i:s a', $next_cron ) ); ?></strong>
 		<?php else : ?>
@@ -671,15 +671,15 @@ if ( 'config' === $view ) :
 </div>
 
 <!-- Token reference ────────────────────────────────────────────────────── -->
-<div class="re-section" style="background:#f0fdf4;border-color:#86efac">
-	<div class="re-section-title" style="color:#15803d"><span>📌 Available {{config_xxx}} tokens</span></div>
-	<p style="font-size:12px;color:#166534;margin:0 0 10px">Use any of these in action templates (To, Subject, Body, URL, etc.)</p>
+<div class="re-section" style="background:var(--ah-bg-light);border-color:var(--ah-border)">
+	<div class="re-section-title" style="color:var(--ah-success)"><span>📌 Available {{config_xxx}} tokens</span></div>
+	<p style="font-size:12px;color:var(--ah-success);margin:0 0 10px">Use any of these in action templates (To, Subject, Body, URL, etc.)</p>
 	<div style="display:flex;flex-wrap:wrap;gap:6px">
 		<?php foreach ( AH_Workflow_Manager::get_config() as $k => $v ) : ?>
-		<code style="background:#dcfce7;border:1px solid #86efac;border-radius:4px;padding:3px 8px;font-size:12px;color:#166534">{{config_<?php echo esc_html( $k ); ?>}}</code>
+		<code style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:4px;padding:3px 8px;font-size:12px;color:var(--ah-success)">{{config_<?php echo esc_html( $k ); ?>}}</code>
 		<?php endforeach; ?>
 		<?php foreach ( $custom_vars as $cv ) : if ( empty( $cv['key'] ) ) continue; ?>
-		<code style="background:#dbeafe;border:1px solid #93c5fd;border-radius:4px;padding:3px 8px;font-size:12px;color:#1d4ed8"
+		<code style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:4px;padding:3px 8px;font-size:12px;color:var(--ah-primary-dark)"
 		      title="<?php echo esc_attr( $cv['label'] ?? $cv['key'] ); ?>">{{config_<?php echo esc_html( $cv['key'] ); ?>}}</code>
 		<?php endforeach; ?>
 	</div>
@@ -699,14 +699,14 @@ $_pend = (int) $wpdb->get_var( $wpdb->prepare(
 	$_max
 ) );
 ?>
-<div class="re-section" style="border-color:#fbbf24;background:#fffbeb">
-	<div class="re-section-title" style="color:#92400e"><span>▶ Manual Trigger - Run Pending Now</span></div>
-	<p style="font-size:13px;color:#78350f;margin:-4px 0 14px">
+<div class="re-section" style="border-color:var(--ah-warning);background:var(--ah-bg-light)">
+	<div class="re-section-title" style="color:var(--ah-warning)"><span>▶ Manual Trigger - Run Pending Now</span></div>
+	<p style="font-size:13px;color:var(--ah-text);margin:-4px 0 14px">
 		Bypass the cron schedule and process all queued actions right now.
 		<?php if ( $_pend > 0 ) : ?>
-		<strong style="color:#b45309"><?php echo number_format( $_pend ); ?> item<?php echo 1 !== $_pend ? 's' : ''; ?> waiting</strong> (pending + retryable failed).
+		<strong style="color:var(--ah-warning)"><?php echo number_format( $_pend ); ?> item<?php echo 1 !== $_pend ? 's' : ''; ?> waiting</strong> (pending + retryable failed).
 		<?php else : ?>
-		<span style="color:#16a34a">✅ Nothing pending - queue is empty.</span>
+		<span style="color:var(--ah-success)">✅ Nothing pending - queue is empty.</span>
 		<?php endif; ?>
 	</p>
 	<form method="post">
@@ -731,50 +731,50 @@ $_active_rules   = $_rules_exists
 	: array();
 $_last_tf        = sanitize_text_field( $_GET['tf'] ?? '' );
 ?>
-<div class="re-section" style="border-color:#c7d2fe;background:#eef2ff">
-	<div class="re-section-title" style="color:#4338ca"><span>🔍 Diagnostics &amp; Test Fire</span></div>
+<div class="re-section" style="border-color:var(--ah-border);background:var(--ah-bg-light)">
+	<div class="re-section-title" style="color:var(--ah-primary)"><span>🔍 Diagnostics &amp; Test Fire</span></div>
 
 	<!-- Table health -->
 	<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px">
-		<div style="background:#fff;border:1px solid #e0e7ff;border-radius:8px;padding:10px 16px;font-size:13px;min-width:200px">
-			<div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Trigger Logs Table</div>
+		<div style="background:#fff;border:1px solid var(--ah-bg-light);border-radius:8px;padding:10px 16px;font-size:13px;min-width:200px">
+			<div style="font-size:11px;font-weight:700;color:var(--ah-primary);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Trigger Logs Table</div>
 			<?php if ( $_logs_exists ) : ?>
-			<span style="color:#16a34a;font-weight:600">✅ <?php echo esc_html( $_diag_logs_tbl ); ?></span><br>
-			<span style="font-size:11px;color:#6b7280"><?php echo number_format( (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$_diag_logs_tbl}`" ) ); ?> total rows</span>
+			<span style="color:var(--ah-success);font-weight:600">✅ <?php echo esc_html( $_diag_logs_tbl ); ?></span><br>
+			<span style="font-size:11px;color:var(--ah-muted)"><?php echo number_format( (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$_diag_logs_tbl}`" ) ); ?> total rows</span>
 			<?php else : ?>
-			<span style="color:#dc2626;font-weight:600">❌ Table missing</span><br>
-			<span style="font-size:11px;color:#dc2626">Deactivate &amp; reactivate the plugin to create it.</span>
+			<span style="color:var(--ah-danger);font-weight:600">❌ Table missing</span><br>
+			<span style="font-size:11px;color:var(--ah-danger)">Deactivate &amp; reactivate the plugin to create it.</span>
 			<?php endif; ?>
 		</div>
-		<div style="background:#fff;border:1px solid #e0e7ff;border-radius:8px;padding:10px 16px;font-size:13px;min-width:200px">
-			<div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Active Rules</div>
+		<div style="background:#fff;border:1px solid var(--ah-bg-light);border-radius:8px;padding:10px 16px;font-size:13px;min-width:200px">
+			<div style="font-size:11px;font-weight:700;color:var(--ah-primary);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Active Rules</div>
 			<?php if ( $_active_rules ) : ?>
-			<span style="color:#16a34a;font-weight:600">✅ <?php echo count( $_active_rules ); ?> active</span>
-			<ul style="margin:4px 0 0;padding-left:16px;font-size:12px;color:#374151">
+			<span style="color:var(--ah-success);font-weight:600">✅ <?php echo count( $_active_rules ); ?> active</span>
+			<ul style="margin:4px 0 0;padding-left:16px;font-size:12px;color:var(--ah-text)">
 				<?php foreach ( $_active_rules as $_r ) : ?>
 				<li>#<?php echo (int)$_r->id; ?> &ldquo;<?php echo esc_html( $_r->name ); ?>&rdquo; → <code><?php echo esc_html( $_r->trigger_name ); ?></code> (<?php echo (int)$_r->run_count; ?> runs)</li>
 				<?php endforeach; ?>
 			</ul>
 			<?php else : ?>
-			<span style="color:#d97706;font-weight:600">⚠️ No active rules</span>
+			<span style="color:var(--ah-warning);font-weight:600">⚠️ No active rules</span>
 			<?php endif; ?>
 		</div>
-		<div style="background:#fff;border:1px solid #e0e7ff;border-radius:8px;padding:10px 16px;font-size:13px;min-width:220px">
-			<div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">PHP Error Log</div>
-			<span style="font-size:12px;color:#6b7280">Check <code>wp-content/debug.log</code> for<br><code>AH_Workflow_Manager::evaluate()</code> errors<br>after submitting a form.</span>
+		<div style="background:#fff;border:1px solid var(--ah-bg-light);border-radius:8px;padding:10px 16px;font-size:13px;min-width:220px">
+			<div style="font-size:11px;font-weight:700;color:var(--ah-primary);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">PHP Error Log</div>
+			<span style="font-size:12px;color:var(--ah-muted)">Check <code>wp-content/debug.log</code> for<br><code>AH_Workflow_Manager::evaluate()</code> errors<br>after submitting a form.</span>
 		</div>
 	</div>
 
 	<!-- Test fire -->
-	<div style="border-top:1px solid #c7d2fe;padding-top:14px;margin-top:4px">
-		<div style="font-size:12px;font-weight:700;color:#4338ca;margin-bottom:8px">▶ Test Fire a Trigger</div>
-		<p style="font-size:12px;color:#4f46e5;margin:0 0 10px">
+	<div style="border-top:1px solid var(--ah-border);padding-top:14px;margin-top:4px">
+		<div style="font-size:12px;font-weight:700;color:var(--ah-primary);margin-bottom:8px">▶ Test Fire a Trigger</div>
+		<p style="font-size:12px;color:var(--ah-primary);margin:0 0 10px">
 			Manually call <code>AH_Workflow_Manager::evaluate()</code> with a dummy context. If the trigger matches an active rule, a new <strong>Pending</strong> entry should appear in Trigger Logs immediately.
 		</p>
 		<form method="post" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
 			<?php wp_nonce_field( 'ah_test_fire', 'ah_re_test_fire_nonce' ); ?>
 			<div style="display:flex;flex-direction:column;gap:3px">
-				<label style="font-size:11px;font-weight:600;color:#6366f1;text-transform:uppercase;letter-spacing:.4px">Trigger Name</label>
+				<label style="font-size:11px;font-weight:600;color:var(--ah-primary);text-transform:uppercase;letter-spacing:.4px">Trigger Name</label>
 				<input type="text" name="test_trigger_name" value="<?php echo esc_attr( $_last_tf ?: ( $_active_rules ? $_active_rules[0]->trigger_name : 'consultation_submitted' ) ); ?>"
 				       style="padding:7px 10px;border:1.5px solid #a5b4fc;border-radius:6px;font-size:13px;min-width:240px;background:#fff"
 				       placeholder="e.g. consultation_submitted" required>
@@ -782,7 +782,7 @@ $_last_tf        = sanitize_text_field( $_GET['tf'] ?? '' );
 			<button type="submit" class="ah-btn ah-btn-primary" style="margin-top:18px">▶ Fire Test</button>
 		</form>
 		<?php if ( $_last_tf && ( sanitize_key( $_GET['notice'] ?? '' ) === 'test_fired' ) ) : ?>
-		<p style="font-size:12px;color:#16a34a;margin:8px 0 0">
+		<p style="font-size:12px;color:var(--ah-success);margin:8px 0 0">
 			✅ Fired <code><?php echo esc_html( $_last_tf ); ?></code> - now check the
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager&view=logs' ) ); ?>">Trigger Logs</a> tab for a new Pending entry.
 			If nothing appeared, the trigger name doesn't match any active rule, or the table is missing.
@@ -818,11 +818,11 @@ if ( 'logs' === $view ) :
 ?>
 
 <!-- Filters bar -->
-<form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
+<form method="get" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:10px 14px">
 	<input type="hidden" name="page"  value="ah-workflow-manager">
 	<input type="hidden" name="view"  value="logs">
 
-	<select name="log_status" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff">
+	<select name="log_status" style="padding:6px 10px;border:1px solid var(--ah-border);border-radius:6px;font-size:12px;background:#fff">
 		<option value="all"     <?php selected( $log_filters['status'], 'all' );     ?>>All Statuses</option>
 		<option value="pending" <?php selected( $log_filters['status'], 'pending' ); ?>>⏳ Pending</option>
 		<option value="sent"    <?php selected( $log_filters['status'], 'sent' );    ?>>✅ Sent</option>
@@ -830,7 +830,7 @@ if ( 'logs' === $view ) :
 		<option value="unsent"  <?php selected( $log_filters['status'], 'unsent' );  ?>>⛔ Unsent</option>
 	</select>
 
-	<select name="log_action" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff">
+	<select name="log_action" style="padding:6px 10px;border:1px solid var(--ah-border);border-radius:6px;font-size:12px;background:#fff">
 		<option value="all"          <?php selected( $log_filters['action_type'], 'all' );          ?>>All Actions</option>
 		<option value="send_email"   <?php selected( $log_filters['action_type'], 'send_email' );   ?>>📧 Email</option>
 		<option value="whatsapp"     <?php selected( $log_filters['action_type'], 'whatsapp' );     ?>>💬 WhatsApp</option>
@@ -839,18 +839,18 @@ if ( 'logs' === $view ) :
 
 	<input type="text" name="log_search" value="<?php echo esc_attr( $log_filters['search'] ); ?>"
 		placeholder="Search rule / trigger…"
-		style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:180px">
+		style="padding:6px 10px;border:1px solid var(--ah-border);border-radius:6px;font-size:12px;width:180px">
 
 	<button type="submit" class="ah-btn ah-btn-primary ah-btn-sm">Filter</button>
 	<?php if ( $filter_qs ) : ?>
 	<a href="<?php echo esc_url( $base_url ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
 	<?php endif; ?>
 
-	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo number_format( $total_logs ); ?> entries</span>
+	<span style="margin-left:auto;font-size:12px;color:var(--ah-muted)"><?php echo number_format( $total_logs ); ?> entries</span>
 </form>
 
 <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 10px">
-	<p style="color:#6b7280;font-size:12px;margin:0">
+	<p style="color:var(--ah-muted);font-size:12px;margin:0">
 		Failed entries with fewer than <strong><?php echo esc_html( AH_Workflow_Manager::get_config()['retry_max_attempts'] ); ?> attempts</strong> are automatically retried by the cron.
 	</p>
 	<?php if ( $total_logs > 0 ) : ?>
@@ -875,12 +875,12 @@ if ( 'logs' === $view ) :
 			<tbody>
 			<?php foreach ( $logs as $lg ) :
 				$status_map = array(
-					'sent'    => array( 'label' => '✅ Sent',    'color' => '#16a34a' ),
-					'failed'  => array( 'label' => '❌ Failed',  'color' => '#dc2626' ),
-					'pending' => array( 'label' => '⏳ Pending', 'color' => '#d97706' ),
-					'unsent'  => array( 'label' => '⛔ Unsent',  'color' => '#6b7280' ),
+					'sent'    => array( 'label' => '✅ Sent',    'color' => 'var(--ah-success)' ),
+					'failed'  => array( 'label' => '❌ Failed',  'color' => 'var(--ah-danger)' ),
+					'pending' => array( 'label' => '⏳ Pending', 'color' => 'var(--ah-warning)' ),
+					'unsent'  => array( 'label' => '⛔ Unsent',  'color' => 'var(--ah-muted)' ),
 				);
-				$st  = $status_map[ $lg->status ] ?? array( 'label' => ucfirst( $lg->status ), 'color' => '#374151' );
+				$st  = $status_map[ $lg->status ] ?? array( 'label' => ucfirst( $lg->status ), 'color' => 'var(--ah-text)' );
 				$act_labels = array( 'send_email' => '📧 Email', 'whatsapp' => '💬 WhatsApp', 'http_request' => '🌐 HTTP' );
 				$time = $lg->sent_at ?: $lg->failed_at ?: $lg->created_at;
 				$ctx_data = json_decode( $lg->context_data ?? '{}', true ) ?: array();
@@ -888,7 +888,7 @@ if ( 'logs' === $view ) :
 				$det_id = 're-det-lg-' . (int) $lg->id;
 			?>
 			<tr>
-				<td style="color:#9ca3af;font-size:12px">#<?php echo (int) $lg->id; ?></td>
+				<td style="color:var(--ah-muted);font-size:12px">#<?php echo (int) $lg->id; ?></td>
 				<td style="font-weight:600;font-size:13px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
 					<?php echo esc_html( $lg->rule_name ?: '(deleted rule)' ); ?>
 				</td>
@@ -898,10 +898,10 @@ if ( 'logs' === $view ) :
 					<?php echo $st['label']; ?>
 				</td>
 				<td style="text-align:center;font-size:13px"><?php echo (int) $lg->attempts; ?></td>
-				<td style="font-size:11px;color:#6b7280;white-space:nowrap">
+				<td style="font-size:11px;color:var(--ah-muted);white-space:nowrap">
 					<?php echo $time ? esc_html( wp_date( 'M j g:i a', strtotime( $time ) ) ) : '-'; ?>
 				</td>
-				<td style="font-size:11px;color:#dc2626;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="<?php echo esc_attr( $lg->error_message ?? '' ); ?>">
+				<td style="font-size:11px;color:var(--ah-danger);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="<?php echo esc_attr( $lg->error_message ?? '' ); ?>">
 					<?php echo esc_html( $lg->error_message ? mb_strimwidth( $lg->error_message, 0, 60, '…' ) : '' ); ?>
 				</td>
 				<td style="white-space:nowrap">
@@ -910,7 +910,7 @@ if ( 'logs' === $view ) :
 					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'retry_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_retry_log' ) ); ?>"
 					   class="ah-btn ah-btn-secondary ah-btn-sm">Retry</a>
 					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'unsent_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_unsent_log' ) ); ?>"
-					   class="ah-btn ah-btn-secondary ah-btn-sm ah-confirm-delete" title="Stop retrying this entry" style="color:#dc2626"
+					   class="ah-btn ah-btn-secondary ah-btn-sm ah-confirm-delete" title="Stop retrying this entry" style="color:var(--ah-danger)"
 					   data-title="Cancel Action" data-confirm="Stop retrying this action?">Cancel</a>
 					<?php endif; ?>
 					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'del_log' => $lg->id ), admin_url( 'admin.php' ) ), 'ah_del_log' ) ); ?>"
@@ -919,29 +919,29 @@ if ( 'logs' === $view ) :
 			</tr>
 
 			<!-- Details Row -->
-			<tr id="<?php echo esc_attr( $det_id ); ?>" style="display:none;background:#f9fafb">
-				<td colspan="9" style="padding:16px;border-bottom:2px solid #e5e7eb">
+			<tr id="<?php echo esc_attr( $det_id ); ?>" style="display:none;background:var(--ah-bg-light)">
+				<td colspan="9" style="padding:16px;border-bottom:2px solid var(--ah-border)">
 					<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
 						<!-- Input Context Data -->
 						<div style="min-width:0;">
-							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">📥 Input Data (Context)</h4>
+							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:var(--ah-text)">📥 Input Data (Context)</h4>
 							<?php if ( $ctx_data ) : ?>
-							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:12px">
+							<div style="background:#fff;border:1px solid var(--ah-border);border-radius:6px;overflow:hidden;font-size:12px">
 								<?php foreach ( $ctx_data as $key => $val ) : ?>
-								<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6;display:flex;gap:12px">
-									<strong style="color:#6b7280;min-width:100px;word-break:break-word"><?php echo esc_html( $key ); ?>:</strong>
-                                    <span title="<?php echo esc_attr( (string) $val ); ?>" style="color:#374151;word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $val, 0, 100, '…' ) ); ?></span>
+								<div style="padding:8px 12px;border-bottom:1px solid var(--ah-bg-light);display:flex;gap:12px">
+									<strong style="color:var(--ah-muted);min-width:100px;word-break:break-word"><?php echo esc_html( $key ); ?>:</strong>
+                                    <span title="<?php echo esc_attr( (string) $val ); ?>" style="color:var(--ah-text);word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $val, 0, 100, '…' ) ); ?></span>
 								</div>
 								<?php endforeach; ?>
 							</div>
 							<?php else : ?>
-							<p style="color:#9ca3af;font-size:12px;margin:0">No context data</p>
+							<p style="color:var(--ah-muted);font-size:12px;margin:0">No context data</p>
 							<?php endif; ?>
 						</div>
 
 						<!-- Action Details -->
 						<div style="min-width:0;">
-							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">
+							<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:var(--ah-text)">
 								<?php
 								$action_icons = array( 'send_email' => '📧', 'whatsapp' => '💬', 'http_request' => '🌐' );
 								echo $action_icons[ $lg->action_type ] ?? '•';
@@ -949,7 +949,7 @@ if ( 'logs' === $view ) :
 								Action Details
 							</h4>
 							<?php if ( 'send_email' === $lg->action_type && $act_cfg ) : ?>
-							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:12px">
+							<div style="background:#fff;border:1px solid var(--ah-border);border-radius:6px;overflow:hidden;font-size:12px">
 								<?php
 								// Email specific fields
 								$email_fields = array(
@@ -964,35 +964,35 @@ if ( 'logs' === $view ) :
 									$val = $act_cfg[ $field_key ];
 									if ( is_array( $val ) ) $val = implode( ', ', $val );
 								?>
-								<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6">
-									<strong style="color:#6b7280;display:block;margin-bottom:4px"><?php echo esc_html( $field_label ); ?>:</strong>
-                  <span title="<?php echo esc_attr( (string) $val ); ?>" style="color:#374151;display:block;word-break:break-word;font-family:monospace;font-size:11px;background:#f9fafb;padding:6px;border-radius:4px">
+								<div style="padding:8px 12px;border-bottom:1px solid var(--ah-bg-light)">
+									<strong style="color:var(--ah-muted);display:block;margin-bottom:4px"><?php echo esc_html( $field_label ); ?>:</strong>
+                  <span title="<?php echo esc_attr( (string) $val ); ?>" style="color:var(--ah-text);display:block;word-break:break-word;font-family:monospace;font-size:11px;background:var(--ah-bg-light);padding:6px;border-radius:4px">
                     <?php echo esc_html( mb_strimwidth( (string) $val, 0, 150, '…' ) ); ?>
                   </span>
 								</div>
 								<?php endforeach; ?>
 							</div>
 							<?php elseif ( $act_cfg ) : ?>
-							<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:11px;font-family:monospace">
-								<pre style="margin:0;padding:8px 12px;overflow-x:auto;color:#374151;white-space:pre-wrap;word-break:break-all;"><?php echo esc_html( wp_json_encode( $act_cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
+							<div style="background:#fff;border:1px solid var(--ah-border);border-radius:6px;overflow:hidden;font-size:11px;font-family:monospace">
+								<pre style="margin:0;padding:8px 12px;overflow-x:auto;color:var(--ah-text);white-space:pre-wrap;word-break:break-all;"><?php echo esc_html( wp_json_encode( $act_cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
 							</div>
 							<?php else : ?>
-							<p style="color:#9ca3af;font-size:12px;margin:0">No action config</p>
+							<p style="color:var(--ah-muted);font-size:12px;margin:0">No action config</p>
 							<?php endif; ?>
 						</div>
 					</div>
 
 					<?php if ( $lg->error_message ) : ?>
-					<div style="margin-top:16px;padding:12px;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px">
-						<h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:#991b1b">❌ Error Message / Debug Log</h4>
-						<pre style="margin:0;font-size:12px;color:#7f1d1d;word-break:break-all;font-family:monospace;white-space:pre-wrap;background:transparent;border:none;padding:0"><?php echo esc_html( $lg->error_message ); ?></pre>
+					<div style="margin-top:16px;padding:12px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px">
+						<h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:var(--ah-danger)">❌ Error Message / Debug Log</h4>
+						<pre style="margin:0;font-size:12px;color:var(--ah-danger);word-break:break-all;font-family:monospace;white-space:pre-wrap;background:transparent;border:none;padding:0"><?php echo esc_html( $lg->error_message ); ?></pre>
 					</div>
 					<?php endif; ?>
 
           <?php if ( $lg->response_summary ) : ?>
-          <div style="margin-top:16px;padding:12px;background:#f0fdf4;border:1px solid #86efac;border-radius:6px">
-            <h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:#166534">✅ Response Summary</h4>
-            <pre style="margin:0;font-size:12px;color:#064e3b;word-break:break-all;font-family:monospace;white-space:pre-wrap;background:transparent;border:none;padding:0"><?php echo esc_html( $lg->response_summary ); ?></pre>
+          <div style="margin-top:16px;padding:12px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px">
+            <h4 style="margin:0 0 8px;font-size:12px;font-weight:600;color:var(--ah-success)">✅ Response Summary</h4>
+            <pre style="margin:0;font-size:12px;color:var(--ah-success);word-break:break-all;font-family:monospace;white-space:pre-wrap;background:transparent;border:none;padding:0"><?php echo esc_html( $lg->response_summary ); ?></pre>
           </div>
           <?php endif; ?>
 				</td>
@@ -1006,7 +1006,7 @@ if ( 'logs' === $view ) :
 
 <?php if ( $total_pages > 1 ) : ?>
 <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;align-items:center">
-	<span style="font-size:12px;color:#6b7280">Page <?php echo $log_paged; ?> of <?php echo $total_pages; ?></span>
+	<span style="font-size:12px;color:var(--ah-muted)">Page <?php echo $log_paged; ?> of <?php echo $total_pages; ?></span>
 	<?php for ( $p = 1; $p <= $total_pages; $p++ ) : ?>
 	<a href="<?php echo esc_url( add_query_arg( array_merge( $filter_qs, array( 'page' => 'ah-workflow-manager', 'view' => 'logs', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn <?php echo $p === $log_paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?> ah-btn-sm"><?php echo $p; ?></a>
@@ -1017,8 +1017,8 @@ if ( 'logs' === $view ) :
 <?php else : ?>
 <div class="ah-card re-empty">
 	<div style="font-size:2.5rem;margin-bottom:12px">📋</div>
-	<h2 style="font-family:inherit;font-size:1rem;margin:0 0 6px;color:#374151">No log entries yet</h2>
-	<p style="color:#9ca3af;font-size:13px;margin:0">Entries appear here each time a rule fires.</p>
+	<h2 style="font-family:inherit;font-size:1rem;margin:0 0 6px;color:var(--ah-text)">No log entries yet</h2>
+	<p style="color:var(--ah-muted);font-size:13px;margin:0">Entries appear here each time a rule fires.</p>
 </div>
 <?php endif; ?>
 
@@ -1050,24 +1050,24 @@ if ( 'evallog' === $view ) :
 	$ev_filter_qs = array_filter( array( 'ev_search' => $ev_search ) );
 ?>
 
-<p style="color:#6b7280;font-size:13px;margin:-8px 0 16px">
+<p style="color:var(--ah-muted);font-size:13px;margin:-8px 0 16px">
 	One row is recorded for <strong>every</strong> <code>AH_Workflow_Manager::evaluate()</code> call - even when no rule matched.
 	Use it to confirm a trigger actually fired, and see how many rules it found vs. ran.
 </p>
 
 <!-- Toolbar: search + clear all -->
-<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:10px 14px">
 	<form method="get" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0">
 		<input type="hidden" name="page" value="ah-workflow-manager">
 		<input type="hidden" name="view" value="evallog">
 		<input type="text" name="ev_search" value="<?php echo esc_attr( $ev_search ); ?>" placeholder="Search trigger…"
-			style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;width:200px">
+			style="padding:6px 10px;border:1px solid var(--ah-border);border-radius:6px;font-size:12px;width:200px">
 		<button type="submit" class="ah-btn ah-btn-primary ah-btn-sm">Filter</button>
 		<?php if ( $ev_filter_qs ) : ?>
 		<a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-workflow-manager&view=evallog' ) ); ?>" class="ah-btn ah-btn-secondary ah-btn-sm">Clear</a>
 		<?php endif; ?>
 	</form>
-	<span style="margin-left:auto;font-size:12px;color:#9ca3af"><?php echo number_format( $ev_total ); ?> entries</span>
+	<span style="margin-left:auto;font-size:12px;color:var(--ah-muted)"><?php echo number_format( $ev_total ); ?> entries</span>
 	<?php if ( $ev_total > 0 ) : ?>
 	<form method="post" style="margin:0" class="ah-confirm-delete" data-title="Clear All Logs" data-confirm="Delete ALL evaluate-log entries? This cannot be undone.">
 		<?php wp_nonce_field( 'ah_clear_evallog', 'ah_re_clear_evallog_nonce' ); ?>
@@ -1094,17 +1094,17 @@ if ( 'evallog' === $view ) :
 				$ev_det_id  = 're-det-ev-' . (int) $ev->id;
 				$found      = (int) $ev->rules_found;
 				$fired      = (int) $ev->rules_fired;
-				$fire_color = $fired > 0 ? '#16a34a' : ( $found > 0 ? '#d97706' : '#9ca3af' );
+				$fire_color = $fired > 0 ? 'var(--ah-success)' : ( $found > 0 ? 'var(--ah-warning)' : 'var(--ah-muted)' );
 			?>
 			<tr>
-				<td style="color:#9ca3af;font-size:12px">#<?php echo (int) $ev->id; ?></td>
+				<td style="color:var(--ah-muted);font-size:12px">#<?php echo (int) $ev->id; ?></td>
 				<td><code style="font-size:11px"><?php echo esc_html( $ev->trigger_name ); ?></code></td>
 				<td style="text-align:center;font-size:13px"><?php echo $found; ?></td>
 				<td style="text-align:center;font-size:13px;font-weight:600;color:<?php echo $fire_color; ?>"><?php echo $fired; ?></td>
-				<td style="font-size:12px;color:#6b7280">
+				<td style="font-size:12px;color:var(--ah-muted)">
 					<?php echo $ev_ctx ? esc_html( count( $ev_ctx ) . ' field' . ( 1 !== count( $ev_ctx ) ? 's' : '' ) ) : '-'; ?>
 				</td>
-				<td style="font-size:11px;color:#6b7280;white-space:nowrap">
+				<td style="font-size:11px;color:var(--ah-muted);white-space:nowrap">
 					<?php echo $ev->created_at ? esc_html( wp_date( 'M j, Y g:i a', strtotime( $ev->created_at ) ) ) : '-'; ?>
 				</td>
 				<td style="white-space:nowrap">
@@ -1117,16 +1117,16 @@ if ( 'evallog' === $view ) :
 				</td>
 			</tr>
 			<?php if ( $ev_ctx ) : ?>
-			<tr id="<?php echo esc_attr( $ev_det_id ); ?>" style="display:none;background:#f9fafb">
-				<td colspan="7" style="padding:16px;border-bottom:2px solid #e5e7eb">
-					<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:#374151">📥 Context Data</h4>
-					<div style="background:#fff;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;font-size:12px;max-width:640px">
+			<tr id="<?php echo esc_attr( $ev_det_id ); ?>" style="display:none;background:var(--ah-bg-light)">
+				<td colspan="7" style="padding:16px;border-bottom:2px solid var(--ah-border)">
+					<h4 style="margin:0 0 12px;font-size:13px;font-weight:600;color:var(--ah-text)">📥 Context Data</h4>
+					<div style="background:#fff;border:1px solid var(--ah-border);border-radius:6px;overflow:hidden;font-size:12px;max-width:640px">
 						<?php foreach ( $ev_ctx as $k => $v ) :
 							if ( is_array( $v ) ) $v = wp_json_encode( $v );
 						?>
-						<div style="padding:8px 12px;border-bottom:1px solid #f3f4f6;display:flex;gap:12px">
-							<strong style="color:#6b7280;min-width:120px;word-break:break-word"><?php echo esc_html( $k ); ?>:</strong>
-							<span style="color:#374151;word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $v, 0, 200, '…' ) ); ?></span>
+						<div style="padding:8px 12px;border-bottom:1px solid var(--ah-bg-light);display:flex;gap:12px">
+							<strong style="color:var(--ah-muted);min-width:120px;word-break:break-word"><?php echo esc_html( $k ); ?>:</strong>
+							<span style="color:var(--ah-text);word-break:break-word"><?php echo esc_html( mb_strimwidth( (string) $v, 0, 200, '…' ) ); ?></span>
 						</div>
 						<?php endforeach; ?>
 					</div>
@@ -1141,7 +1141,7 @@ if ( 'evallog' === $view ) :
 
 <?php if ( $ev_pages > 1 ) : ?>
 <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;align-items:center">
-	<span style="font-size:12px;color:#6b7280">Page <?php echo $ev_paged; ?> of <?php echo $ev_pages; ?></span>
+	<span style="font-size:12px;color:var(--ah-muted)">Page <?php echo $ev_paged; ?> of <?php echo $ev_pages; ?></span>
 	<?php for ( $p = 1; $p <= $ev_pages; $p++ ) : ?>
 	<a href="<?php echo esc_url( add_query_arg( array_merge( $ev_filter_qs, array( 'page' => 'ah-workflow-manager', 'view' => 'evallog', 'paged' => $p ) ), admin_url( 'admin.php' ) ) ); ?>"
 	   class="ah-btn <?php echo $p === $ev_paged ? 'ah-btn-primary' : 'ah-btn-secondary'; ?> ah-btn-sm"><?php echo $p; ?></a>
@@ -1152,8 +1152,8 @@ if ( 'evallog' === $view ) :
 <?php else : ?>
 <div class="ah-card re-empty">
 	<div style="font-size:2.5rem;margin-bottom:12px">🧪</div>
-	<h2 style="font-family:inherit;font-size:1rem;margin:0 0 6px;color:#374151"><?php echo $ev_search ? 'No matching entries' : 'No evaluate calls logged yet'; ?></h2>
-	<p style="color:#9ca3af;font-size:13px;margin:0">A row is added here every time <code>AH_Workflow_Manager::evaluate()</code> runs.</p>
+	<h2 style="font-family:inherit;font-size:1rem;margin:0 0 6px;color:var(--ah-text)"><?php echo $ev_search ? 'No matching entries' : 'No evaluate calls logged yet'; ?></h2>
+	<p style="color:var(--ah-muted);font-size:13px;margin:0">A row is added here every time <code>AH_Workflow_Manager::evaluate()</code> runs.</p>
 </div>
 <?php endif; ?>
 
@@ -1167,15 +1167,15 @@ if ( 'blocked' === $view ) :
 	$blocked_list = AH_Workflow_Manager::get_blocked_emails();
 ?>
 <div class="ah-card">
-	<div style="padding:20px 22px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+	<div style="padding:20px 22px;border-bottom:1px solid var(--ah-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
 		<div>
 			<h2 style="font-size:1.2rem;margin:0 0 6px;display:flex;align-items:center;gap:8px">🚫 Blocked Email Addresses</h2>
-			<p style="font-size:13px;color:#6b7280;margin:0">Emails in this list will never receive messages sent through the Rules Engine - regardless of which rule triggers them.</p>
+			<p style="font-size:13px;color:var(--ah-muted);margin:0">Emails in this list will never receive messages sent through the Rules Engine - regardless of which rule triggers them.</p>
 		</div>
 		<form method="post" style="display:flex;gap:8px;align-items:center;margin:0">
 			<?php wp_nonce_field( 'ah_block_add', 'ah_re_block_add_nonce' ); ?>
 			<input type="email" name="block_email" required placeholder="email@example.com"
-				style="padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;min-width:260px;box-sizing:border-box">
+				style="padding:8px 12px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;min-width:260px;box-sizing:border-box">
 			<button type="submit" class="ah-btn ah-btn-danger" style="white-space:nowrap">Block Email</button>
 		</form>
 	</div>
@@ -1194,7 +1194,7 @@ if ( 'blocked' === $view ) :
 		<tbody>
 			<?php foreach ( $blocked_list as $i => $be ) : ?>
 			<tr>
-				<td style="color:#9ca3af;font-size:12px"><?php echo esc_html( $i + 1 ); ?></td>
+				<td style="color:var(--ah-muted);font-size:12px"><?php echo esc_html( $i + 1 ); ?></td>
 				<td><code style="font-size:13px"><?php echo esc_html( $be ); ?></code></td>
 				<td>
 					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-workflow-manager', 'view' => 'blocked', 'unblock' => rawurlencode( $be ) ), admin_url( 'admin.php' ) ), 'ah_unblock' ) ); ?>"
@@ -1207,10 +1207,10 @@ if ( 'blocked' === $view ) :
 	</table>
 	</div>
 	<?php else : ?>
-	<div style="text-align:center;padding:48px 24px;color:#9ca3af">
+	<div style="text-align:center;padding:48px 24px;color:var(--ah-muted)">
 		<div style="font-size:2.5rem;margin-bottom:12px">✅</div>
-		<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:#374151">No emails blocked yet</h2>
-		<p style="color:#9ca3af;font-size:13px;margin:0">Add an address above to prevent it from ever receiving rule-triggered emails.</p>
+		<h2 style="font-family:inherit;font-size:1.1rem;margin:0 0 8px;color:var(--ah-text)">No emails blocked yet</h2>
+		<p style="color:var(--ah-muted);font-size:13px;margin:0">Add an address above to prevent it from ever receiving rule-triggered emails.</p>
 	</div>
 	<?php endif; ?>
 </div>
@@ -1248,22 +1248,22 @@ jQuery(function ($) {
     var fid = $(this).val();
     var $ch = $('#re-field-chips');
     if (!fid) {
-      $ch.html('<span style="font-size:12px;color:#7dd3fc;font-style:italic">Select a form above to see its field keys...</span>');
+      $ch.html('<span style="font-size:12px;color:var(--ah-border);font-style:italic">Select a form above to see its field keys...</span>');
       return;
     }
-    $ch.html('<span style="font-size:12px;color:#7dd3fc">Loading...</span>');
+    $ch.html('<span style="font-size:12px;color:var(--ah-border)">Loading...</span>');
     $.post(ajaxurl, { action: 'ah_get_form_fields', form_id: fid, nonce: ahReNonce }, function (r) {
       if (!r.success || !r.data.fields.length) {
-        $ch.html('<span style="font-size:12px;color:#dc2626">No fields found for this form.</span>');
+        $ch.html('<span style="font-size:12px;color:var(--ah-danger)">No fields found for this form.</span>');
         return;
       }
-      var s = buildFFHChip('form_id', 'Condition: target this specific form (form_id = ' + fid + ')', '#dbeafe', '#93c5fd', '#1d4ed8') + ' ';
+      var s = buildFFHChip('form_id', 'Condition: target this specific form (form_id = ' + fid + ')', 'var(--ah-bg-light)', 'var(--ah-border)', 'var(--ah-primary-dark)') + ' ';
       r.data.fields.forEach(function (f) {
-        s += buildFFHChip(f.field_key, f.label + ' - use as {' + f.field_key + '} in action body', '#f0f9ff', '#7dd3fc', '#0369a1') + ' ';
+        s += buildFFHChip(f.field_key, f.label + ' - use as {' + f.field_key + '} in action body', 'var(--ah-bg-light)', 'var(--ah-border)', 'var(--ah-primary)') + ' ';
       });
       $ch.html(s);
     }).fail(function () {
-      $ch.html('<span style="font-size:12px;color:#dc2626">Error loading fields. Check nonce / login.</span>');
+      $ch.html('<span style="font-size:12px;color:var(--ah-danger)">Error loading fields. Check nonce / login.</span>');
     });
   });
 
@@ -1275,7 +1275,7 @@ jQuery(function ($) {
       navigator.clipboard.writeText(key);
     }
     var $c = $(this), orig = $c.attr('style');
-    $c.css({ background: '#dcfce7', 'border-color': '#86efac', color: '#166534' });
+    $c.css({ background: 'var(--ah-bg-light)', 'border-color': 'var(--ah-border)', color: 'var(--ah-success)' });
     setTimeout(function () { $c.attr('style', orig); }, 700);
   });
 
@@ -1382,29 +1382,29 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="send_email">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">📧 Send Email</strong>',
-          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:var(--ah-text)"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
-        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
         '<div class="re-field-group"><label>Send via Channel <small>(SMTP profile - leave default for site mail)</small></label>',
           buildChannelSel(d.channel_id || ''), '</div>',
-        '<div class="re-field-group" style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#f9fafb;margin:12px 0">',
+        '<div class="re-field-group" style="border:1px solid var(--ah-border);border-radius:6px;padding:12px;background:var(--ah-bg-light);margin:12px 0">',
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">',
-            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">To Recipients <small>(email or {{field_key}})</small></label>',
+            '<label style="margin:0;font-size:12px;font-weight:600;color:var(--ah-text)">To Recipients <small>(email or {{field_key}})</small></label>',
             '<button type="button" class="re-add-to-btn ah-btn ah-btn-secondary ah-btn-sm" data-add="to">+ Add</button>',
           '</div>',
           '<div class="re-to-list"></div>',
         '</div>',
-        '<div class="re-field-group" style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#f9fafb;margin:12px 0">',
+        '<div class="re-field-group" style="border:1px solid var(--ah-border);border-radius:6px;padding:12px;background:var(--ah-bg-light);margin:12px 0">',
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">',
-            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">CC Recipients <small>(optional)</small></label>',
+            '<label style="margin:0;font-size:12px;font-weight:600;color:var(--ah-text)">CC Recipients <small>(optional)</small></label>',
             '<button type="button" class="re-add-to-btn ah-btn ah-btn-secondary ah-btn-sm" data-add="cc">+ Add</button>',
           '</div>',
           '<div class="re-cc-list"></div>',
         '</div>',
-        '<div class="re-field-group" style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#f9fafb;margin:12px 0">',
+        '<div class="re-field-group" style="border:1px solid var(--ah-border);border-radius:6px;padding:12px;background:var(--ah-bg-light);margin:12px 0">',
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">',
-            '<label style="margin:0;font-size:12px;font-weight:600;color:#374151">BCC Recipients <small>(optional)</small></label>',
+            '<label style="margin:0;font-size:12px;font-weight:600;color:var(--ah-text)">BCC Recipients <small>(optional)</small></label>',
             '<button type="button" class="re-add-to-btn ah-btn ah-btn-secondary ah-btn-sm" data-add="bcc">+ Add</button>',
           '</div>',
           '<div class="re-bcc-list"></div>',
@@ -1436,7 +1436,7 @@ jQuery(function ($) {
     // Helper to add recipient rows
     function addRecipientRow(type, value) {
       var $row = $('<div style="display:flex;gap:6px;margin-bottom:6px">'+
-        '<input type="text" class="re-a-'+type+'-val" placeholder="email@example.com or {{field}}" style="flex:1;padding:6px 10px;border:1.5px solid #d1d5db;border-radius:6px;font-size:12px" value="'+(value||'')+'">'+
+        '<input type="text" class="re-a-'+type+'-val" placeholder="email@example.com or {{field}}" style="flex:1;padding:6px 10px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:12px" value="'+(value||'')+'">'+
         '<button type="button" class="ah-btn ah-btn-danger ah-btn-sm" style="padding:6px 10px">Remove</button>'+
         '</div>');
       $row.find('button').on('click', function(){
@@ -1482,10 +1482,10 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="whatsapp">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">💬 WhatsApp</strong>',
-          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:var(--ah-text)"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
-        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
         '<div class="re-act-grid-2">',
           '<div class="re-field-group"><label>API URL</label>',
             '<input type="url" class="re-a-wa-url" placeholder="https://api.wati.io/api/v1/sendMessage"></div>',
@@ -1535,10 +1535,10 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="http_request">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">🌐 HTTP Request</strong>',
-          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:var(--ah-text)"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
-        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
         '<div class="re-act-grid-7030">',
           '<div class="re-field-group"><label>URL <small>(use {{field_key}})</small></label>',
             '<input type="url" class="re-a-http-url" placeholder="https://api.example.com/webhook"></div>',
@@ -1606,10 +1606,10 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="wait">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">⏱ Wait / Delay</strong>',
-          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:var(--ah-text)"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
-        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
         '<div class="re-row" style="align-items:center;gap:12px;flex-wrap:nowrap">',
           '<div class="re-field-group" style="margin:0;flex:0 0 140px">',
             '<label>Duration</label>',
@@ -1619,7 +1619,7 @@ jQuery(function ($) {
             '<label>Unit</label>',
             unitSel,
           '</div>',
-          '<p style="margin:18px 0 0;font-size:12px;color:#9ca3af;flex:1">',
+          '<p style="margin:18px 0 0;font-size:12px;color:var(--ah-muted);flex:1">',
             'Actions below this card will be queued and run after the delay.',
           '</p>',
         '</div>',
@@ -1651,10 +1651,10 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="update_option">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">🔧 Update WP Option</strong>',
-          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:var(--ah-text)"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
-        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
         '<div class="re-act-grid-2">',
           '<div class="re-field-group"><label>Option Key <small>(wp_options name)</small></label>',
             '<input type="text" class="re-a-opt-key" placeholder="my_plugin_setting"></div>',
@@ -1690,10 +1690,10 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="curl_command">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">💻 Raw cURL Command</strong>',
-          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:var(--ah-text)"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
-        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
         '<div class="re-field-group"><label>cURL String <small>(e.g. curl -X POST ... - use {{field_key}} tokens)</small></label>',
           '<textarea class="re-a-curl-str" rows="5" placeholder="curl -X POST https://api.example.com/webhook \\&#10;-H \'Content-Type: application/json\' \\&#10;-d \'{\&quot;name\&quot;: \&quot;{{name}}\&quot;}\'"></textarea></div>',
         '</div>',
@@ -1723,13 +1723,13 @@ jQuery(function ($) {
       '<div class="re-act-card" data-type="code">',
         '<div class="re-act-card-head" style="cursor:pointer; margin-bottom:0;">',
           '<strong style="flex:1;">🧩 CODE</strong>',
-          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:#374151"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
+          '<label style="display:inline-flex;align-items:center;gap:8px;margin-right:12px;font-weight:400;color:var(--ah-text)"><input type="checkbox" class="re-a-enabled"' + (enabled ? ' checked' : '') + '> Enabled</label>',
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-a-toggle" style="margin-left:8px;">' + (isNew ? 'Collapse' : 'Expand') + '</button>',
         '</div>',
-        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-a-body-container" style="display:' + (isNew ? 'block' : 'none') + '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
           '<div class="re-field-group"><label>PHP Code <small>(allowed expressions only; unsafe DB/filesystem calls are blocked)</small></label>',
             '<textarea class="re-a-code" rows="6" placeholder="date(\'Y-m-d\')"></textarea></div>',
-          '<p style="font-size:12px;color:#6b7280;margin:0">Use {{field_key}} tokens. Dangerous functions like exec/system/file/db updates are blocked.</p>',
+          '<p style="font-size:12px;color:var(--ah-muted);margin:0">Use {{field_key}} tokens. Dangerous functions like exec/system/file/db updates are blocked.</p>',
         '</div>',
       '</div>'
     ].join(''));
@@ -1958,7 +1958,7 @@ jQuery(function ($) {
           '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-ch-toggle" style="margin-left:8px;">', (isNew ? 'Collapse' : 'Expand'), '</button>',
           '<button type="button" class="re-rm re-ch-rm" title="Remove channel" style="margin-left:8px;">✕</button>',
         '</div>',
-        '<div class="re-ch-body" style="display:', isNew ? 'block' : 'none', '; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">',
+        '<div class="re-ch-body" style="display:', isNew ? 'block' : 'none', '; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">',
         '<div class="re-act-grid-3">',
           '<div class="re-field-group"><label>Channel ID <small>(unique slug)</small></label><input type="text" class="re-ch-id" placeholder="gmail_support"></div>',
           '<div class="re-field-group"><label>Channel Name</label><input type="text" class="re-ch-cname" placeholder="Support Gmail"></div>',
@@ -2159,8 +2159,8 @@ jQuery(function ($) {
           <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-prof-toggle" style="margin-left:8px;">${isNew ? 'Collapse' : 'Expand'}</button>
           <button type="button" class="re-rm re-prof-rm" title="Remove Profile" style="margin-left:8px;">✕</button>
         </div>
-        <div class="re-prof-body" style="display:${isNew ? 'block' : 'none'}; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:16px;">
-          <div class="re-act-grid-2" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e5e7eb">
+        <div class="re-prof-body" style="display:${isNew ? 'block' : 'none'}; margin-top:12px; border-top:1px solid var(--ah-border); padding-top:16px;">
+          <div class="re-act-grid-2" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--ah-border)">
             <div class="re-field-group">
               <label>Profile ID <small>(a-z, 0-9, underscores)</small></label>
               <input type="text" class="re-prof-id" placeholder="e.g. sales_team">
@@ -2173,7 +2173,7 @@ jQuery(function ($) {
           
           <div class="re-prof-vars-container">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-              <label style="font-size:11.5px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin:0">Profile Variables</label>
+              <label style="font-size:11.5px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;margin:0">Profile Variables</label>
               <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm re-prof-add-var">+ Add Var</button>
             </div>
             <div class="re-prof-vars-list"></div>

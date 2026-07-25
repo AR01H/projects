@@ -87,6 +87,11 @@
   ],
   "about": [
     {
+      "component": "movie-header/header",
+      "key": "about_hero",
+      "header": "about"
+    },
+    {
       "component": "company-history",
       "key": "about_history"
     },
@@ -131,7 +136,7 @@
   ],
   "products": [
     {
-      "component": "parts/page_header",
+      "component": "movie-header/header",
       "key": "products_hero",
       "header": "products"
     },
@@ -179,6 +184,11 @@
   ],
   "gallery": [
     {
+      "component": "movie-header/header",
+      "key": "gallery_hero",
+      "header": "gallery"
+    },
+    {
       "component": "gallery-grid",
       "key": "gallery"
     },
@@ -206,6 +216,11 @@
     }
   ],
   "franchise": [
+    {
+      "component": "movie-header/header",
+      "key": "franchise_hero",
+      "header": "franchise"
+    },
     {
       "component": "franchise-section",
       "key": "franchise"
@@ -258,7 +273,7 @@
   ],
   "events": [
     {
-      "component": "parts/page_header",
+      "component": "movie-header/header",
       "key": "events_hero",
       "header": "events"
     },
@@ -301,6 +316,11 @@
   ],
   "order": [
     {
+      "component": "movie-header/header",
+      "key": "order_hero",
+      "header": "order"
+    },
+    {
       "component": "order-to-deliver",
       "key": "order"
     },
@@ -339,7 +359,7 @@
   ],
   "contact": [
     {
-      "component": "parts/page_header",
+      "component": "movie-header/header",
       "key": "contact_hero",
       "header": "contact"
     },

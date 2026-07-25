@@ -12,6 +12,8 @@ defined( 'ABSPATH' ) || exit;
 
 <?php if ( nt_section_visible( 'site_decor' ) ) nt_component( 'parts/site-decor' ); ?>
 
+<?php nt_component( 'parts/svg_defs' ); ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>

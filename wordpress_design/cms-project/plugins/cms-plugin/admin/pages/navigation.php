@@ -63,7 +63,7 @@ if ( empty( $footer['legal_links'] ) ) {
 					$panel_display    = $has_panel ? 'block' : 'none';
 					$panel_image_html = '<div class="ah-media-picker">'
 						. '<input type="url" name="nav_items[' . esc_attr( $nav_index ) . '][panel_image]" value="' . $panel_image_url . '" class="regular-text ah-media-url" placeholder="https://… or use Select Image">'
-						. '<button type="button" class="button ah-media-select-btn">Select Image</button>'
+						. '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-media-select-btn">Select Image</button>'
 						. '<img src="' . $panel_src . '" class="ah-media-preview" style="max-width:120px;max-height:70px;display:' . $panel_display . ';margin-top:6px;border-radius:4px;">'
 						. '</div>';
 
@@ -204,37 +204,37 @@ if ( empty( $footer['legal_links'] ) ) {
 	flex-shrink: 0;
 }
 .ah-placement-badge.is-active { opacity: 1; }
-.ah-badge-header { color: #166534; background: #dcfce7; border-color: #86efac; }
-.ah-badge-footer { color: #1e40af; background: #dbeafe; border-color: #93c5fd; }
+.ah-badge-header { color: var(--ah-success); background: var(--ah-bg-light); border-color: var(--ah-border); }
+.ah-badge-footer { color: var(--ah-primary); background: var(--ah-bg-light); border-color: var(--ah-border); }
 .ah-nav-builder-wrap { max-width: 1080px; }
-.ah-builder-note { color: #64748b; margin: 0 0 16px; font-size: 13px; }
+.ah-builder-note { color: var(--ah-muted); margin: 0 0 16px; font-size: 13px; }
 .ah-builder-actions { display:flex; gap:10px; margin:0 0 16px; }
 .ah-builder-stack { display: flex; flex-direction: column; gap: 14px; }
-.ah-builder-item, .ah-submenu-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; }
+.ah-builder-item, .ah-submenu-item { background: var(--ah-bg-light); border: 1px solid var(--ah-border); border-radius: 10px; padding: 16px; }
 .ah-builder-item__bar, .ah-builder-inline-head, .ah-submenu-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .ah-builder-inline-head strong, .ah-builder-item__bar strong { flex: 1; }
-.ah-builder-handle { cursor: grab; color: #94a3b8; font-weight: 700; letter-spacing: 1px; user-select: none; }
-.ah-toggle-item { border: 0; background: transparent; color: #64748b; font-size: 18px; line-height: 1; cursor: pointer; padding: 0 4px; }
-.ah-toggle-item:hover { color: #0f172a; }
-.ah-toggle-subitem { border: 0; background: transparent; color: #64748b; font-size: 16px; line-height: 1; cursor: pointer; padding: 0 4px; }
-.ah-toggle-subitem:hover { color: #0f172a; }
+.ah-builder-handle { cursor: grab; color: var(--ah-muted); font-weight: 700; letter-spacing: 1px; user-select: none; }
+.ah-toggle-item { border: 0; background: transparent; color: var(--ah-muted); font-size: 18px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.ah-toggle-item:hover { color: var(--ah-text); }
+.ah-toggle-subitem { border: 0; background: transparent; color: var(--ah-muted); font-size: 16px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.ah-toggle-subitem:hover { color: var(--ah-text); }
 .ah-builder-item__body { padding-top: 4px; }
 .ah-submenu-item__body { padding-top: 4px; }
 .ah-builder-item:not(.is-open) .ah-builder-item__bar { margin-bottom: 0; }
 .ah-submenu-item:not(.is-open) .ah-builder-inline-head { margin-bottom: 0; }
 .ah-builder-grid { display: grid; gap: 12px; }
-.ah-builder-grid label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; color: #0f172a; }
-.ah-builder-grid label span { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #64748b; }
+.ah-builder-grid label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; color: var(--ah-text); }
+.ah-builder-grid label span { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--ah-muted); }
 .ah-builder-grid input[type="text"], .ah-builder-grid textarea, .ah-builder-grid select { width: 100%; max-width: 100%; }
-.ah-field-help { color:#64748b; font-size:12px; font-weight:500; margin-top:4px; }
+.ah-field-help { color:var(--ah-muted); font-size:12px; font-weight:500; margin-top:4px; }
 .ah-builder-grid--nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .ah-builder-grid--submenu, .ah-builder-grid--footer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .ah-checkbox-field { flex-direction: row !important; align-items: center; gap: 8px !important; padding-top: 24px; }
-.ah-checkbox-field span { font-size: 14px !important; text-transform: none !important; letter-spacing: 0 !important; color: #0f172a !important; }
-.ah-submenu-wrap { margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px; }
+.ah-checkbox-field span { font-size: 14px !important; text-transform: none !important; letter-spacing: 0 !important; color: var(--ah-text) !important; }
+.ah-submenu-wrap { margin-top: 16px; border-top: 1px solid var(--ah-border); padding-top: 16px; }
 .ah-suggest-wrap { position: relative; }
 .ah-suggestion-item { display: flex; justify-content: space-between; gap: 10px; }
-.ah-suggestion-item small { color: #94a3b8; }
+.ah-suggestion-item small { color: var(--ah-muted); }
 .ah-builder-item.is-dragging, .ah-submenu-item.is-dragging { opacity: .75; box-shadow: 0 10px 26px rgba(15, 23, 42, .10); }
 @media (max-width: 782px) {
 	.ah-builder-grid--nav, .ah-builder-grid--submenu, .ah-builder-grid--footer { grid-template-columns: 1fr; }
@@ -283,7 +283,7 @@ if ( empty( $footer['legal_links'] ) ) {
 					'<span class="ah-builder-handle">::</span>' +
 					'<strong>Submenu Link</strong>' +
 					'<button type="button" class="ah-toggle-subitem" aria-expanded="true" aria-label="Toggle submenu link">▾</button>' +
-					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+					'<button type="button" class="ah-btn ah-btn-danger ah-btn-sm ah-remove-item">Remove</button>' +
 				'</div>' +
 				'<div class="ah-submenu-item__body">' +
 				'<div class="ah-builder-grid ah-builder-grid--submenu">' +
@@ -305,7 +305,7 @@ if ( empty( $footer['legal_links'] ) ) {
 				'<div class="ah-builder-inline-head">' +
 					'<span class="ah-builder-handle">::</span>' +
 					'<strong>Footer Link</strong>' +
-					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+					'<button type="button" class="ah-btn ah-btn-danger ah-btn-sm ah-remove-item">Remove</button>' +
 				'</div>' +
 				'<div class="ah-builder-grid ah-builder-grid--submenu">' +
 					createSuggestBlock() +
@@ -322,7 +322,7 @@ if ( empty( $footer['legal_links'] ) ) {
 				'<div class="ah-builder-inline-head">' +
 					'<span class="ah-builder-handle">::</span>' +
 					'<strong>Legal Link</strong>' +
-					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+					'<button type="button" class="ah-btn ah-btn-danger ah-btn-sm ah-remove-item">Remove</button>' +
 				'</div>' +
 				'<div class="ah-builder-grid ah-builder-grid--submenu">' +
 					createSuggestBlock() +
@@ -339,7 +339,7 @@ if ( empty( $footer['legal_links'] ) ) {
 					'<span class="ah-builder-handle" title="Drag to reorder">::</span>' +
 					'<strong>Menu Item</strong>' +
 					'<button type="button" class="ah-toggle-item" aria-expanded="true" aria-label="Toggle menu item">▾</button>' +
-					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+					'<button type="button" class="ah-btn ah-btn-danger ah-btn-sm ah-remove-item">Remove</button>' +
 				'</div>' +
 				'<div class="ah-builder-item__body">' +
 				'<div class="ah-builder-grid ah-builder-grid--nav">' +
@@ -350,11 +350,11 @@ if ( empty( $footer['legal_links'] ) ) {
 					'<label><span>Icon / Note</span>' + createInput('nav_items[' + index + '][icon]', '', '', 'Optional') + '</label>' +
 					'<label><span>Short Description</span>' + createInput('nav_items[' + index + '][description]', '', '', 'Optional helper text') + '</label>' +
 					'<label><span>CSS Class</span>' + createInput('nav_items[' + index + '][css_class]', '', '', 'e.g. custom-nav-item') + '</label>' +
-					'<label class="ah-dropdown-only ah-media-field"><span>Panel Image</span><div class="ah-media-picker"><input type="url" name="nav_items[' + index + '][panel_image]" value="" class="regular-text ah-media-url" placeholder="https://… or use Select Image"><button type="button" class="button ah-media-select-btn">Select Image</button><img class="ah-media-preview" style="max-width:120px;max-height:70px;display:none;margin-top:6px;border-radius:4px;"></div></label>' +
+					'<label class="ah-dropdown-only ah-media-field"><span>Panel Image</span><div class="ah-media-picker"><input type="url" name="nav_items[' + index + '][panel_image]" value="" class="regular-text ah-media-url" placeholder="https://… or use Select Image"><button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-media-select-btn">Select Image</button><img class="ah-media-preview" style="max-width:120px;max-height:70px;display:none;margin-top:6px;border-radius:4px;"></div></label>' +
 					'<label class="ah-checkbox-field"><input type="checkbox" name="nav_items[' + index + '][visible]" value="1" checked><span>Show this menu item</span></label>' +
 				'</div>' +
 				'<div class="ah-submenu-wrap" style="display:none">' +
-					'<div class="ah-submenu-head"><h3>Submenu Links</h3><button type="button" class="button ah-add-submenu">+ Add Submenu Link</button></div>' +
+					'<div class="ah-submenu-head"><h3>Submenu Links</h3><button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-add-submenu">+ Add Submenu Link</button></div>' +
 					'<div class="ah-builder-stack ah-submenu-list"></div>' +
 				'</div>' +
 				'</div>' +
@@ -368,11 +368,11 @@ if ( empty( $footer['legal_links'] ) ) {
 					'<span class="ah-builder-handle">::</span>' +
 					'<strong>Footer Column</strong>' +
 					'<button type="button" class="ah-toggle-item" aria-expanded="false" aria-label="Toggle footer column">▸</button>' +
-					'<button type="button" class="button-link-delete ah-remove-item">Remove</button>' +
+					'<button type="button" class="ah-btn ah-btn-danger ah-btn-sm ah-remove-item">Remove</button>' +
 				'</div>' +
 				'<div class="ah-builder-item__body" style="display:none">' +
 				'<label><span>Column Title</span>' + createInput('footer_columns[' + index + '][title]', '', 'ah-column-title-input', '') + '</label>' +
-				'<div class="ah-submenu-head"><h3>Links</h3><button type="button" class="button ah-add-footer-link">+ Add Footer Link</button></div>' +
+				'<div class="ah-submenu-head"><h3>Links</h3><button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-add-footer-link">+ Add Footer Link</button></div>' +
 				'<div class="ah-builder-stack ah-footer-links"></div>' +
 				'</div>' +
 			'</div>';

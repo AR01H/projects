@@ -567,14 +567,16 @@
 	position: relative;
 	background: var(--trad-green);
 	color: var(--trad-cream);
-	padding: 80px 0 0;
+	/* Generous top padding: the torn edge eats into the first ~22px, so the
+	   content needs clearance or it crowds the tear. */
+	padding: 118px 0 0;
 	margin-top: 0;
 }
 .nt-footer__inner {
 	display: grid;
 	grid-template-columns: 1.6fr 1fr 1fr 1fr;
 	gap: 30px;
-	padding-bottom: 15px;
+	padding-top: 15px;
 }
 .nt-footer__col {
 	position: relative;
@@ -654,16 +656,70 @@
 	z-index: 2;
 }
 
-/* ─── TORN EDGES ─────────────────────────────────────────────── */
+/* ─── TORN EDGES ─────────────────────────────────────────────────────
+   The footer is CUT, not covered. It used to be covered: a wavy shape
+   painted over the top of the footer in a hardcoded cream (#faf0d8),
+   which only lined up when the section above happened to be that exact
+   cream, and repeated visibly every 300px on a wide screen.
+
+   Masking the footer instead means the tear reveals whatever is actually
+   behind it, so it is correct under every section and carries no colour
+   of its own. Two mask layers, added together: a torn strip along the top
+   and a plain block for the rest.
+   ─────────────────────────────────────────────────────────────────── */
+.nt-footer {
+	-webkit-mask-image: var(--nt-torn-top), linear-gradient(#000, #000);
+	        mask-image: var(--nt-torn-top), linear-gradient(#000, #000);
+	-webkit-mask-size: 100% 44px, 100% calc(100% - 42px);
+	        mask-size: 100% 44px, 100% calc(100% - 42px);
+	-webkit-mask-position: top center, bottom center;
+	        mask-position: top center, bottom center;
+	-webkit-mask-repeat: no-repeat, no-repeat;
+	        mask-repeat: no-repeat, no-repeat;
+}
+
+/* Light bumps across the whole footer: the same relief filter over a neutral
+   grey, blended in `overlay` at low strength, so the green reads as textured
+   card stock rather than flat ink. Clipped by the footer's mask, so the
+   texture stops at the tear. Sits above the content on purpose - grain over
+   the type is what makes it look printed rather than screened. */
+.nt-footer::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: var(--nt-bump-neutral);
+	filter: url(#nt-bump-2);
+	mix-blend-mode: overlay;
+	opacity: 0.2;
+	pointer-events: none;
+	z-index: 3;
+}
+@media (max-width: 700px), (prefers-reduced-motion: reduce) {
+	.nt-footer::after { display: none; }
+}
+
+/* The lip along the tear: a light band, clipped to the ragged shape by the
+   footer's own mask, and given relief by the bump filter so the cut reads
+   as torn card stock with a raised edge rather than a flat notch. */
 .nt-footer__torn-edge-top {
 	position: absolute;
-	top: -1px;
+	top: 0;
 	left: 0;
 	width: 100%;
-	height: 10px;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='10'%3E%3Cpath d='M0,0 C 12,6 28,1 40,4 C 55,7 65,0 80,5 C 100,9 110,2 120,4 C 135,7 150,1 160,3 C 175,6 190,8 200,4 C 215,0 230,7 240,5 C 255,2 270,8 280,4 C 290,1 295,4 300,5 L300,0 L0,0 Z' fill='%23faf0d8' /%3E%3C/svg%3E");
-	background-repeat: repeat-x;
-	z-index: 10;
+	height: 46px;
+	background-image: none;
+	background: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--trad-gold) 62%, transparent) 0%,
+		color-mix(in srgb, var(--trad-gold) 16%, transparent) 45%,
+		transparent 100%
+	);
+	filter: url(#nt-bump-1);
+	pointer-events: none;
+	z-index: 2;
+}
+@media (max-width: 700px), (prefers-reduced-motion: reduce) {
+	.nt-footer__torn-edge-top { filter: none; }
 }
 .nt-footer__torn-edge-bottom {
 	width: 100%;
@@ -751,34 +807,68 @@
 	padding-bottom: 8px;
 	transition: background 0.35s ease, box-shadow 0.35s ease;
 }
+/* The paper texture moves onto the bar itself as a second background layer,
+   which frees ::before to carry the grain + relief (see below). */
+.nt-nav {
+	background-image:
+		var(--texture-paper),
+		linear-gradient(180deg, var(--trad-bg) 0%, var(--trad-bg-alt) 100%) !important;
+}
+
+/* Header grain + bumps: film grain over a neutral grey, lit by the relief
+   filter and blended in `overlay`, so the bar reads as a strip of textured
+   card rather than a flat toolbar. Same recipe as the footer. */
 .nt-nav::before {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background-image: var(--texture-paper);
+	background-color: var(--nt-bump-neutral);
+	background-image: var(--nt-grain);
+	background-size: 180px 180px;
+	filter: url(#nt-bump-1);
+	mix-blend-mode: overlay;
+	opacity: 0.26;
 	pointer-events: none;
+}
+@media (max-width: 700px), (prefers-reduced-motion: reduce) {
+	.nt-nav::before { filter: none; opacity: 0.16; }
 }
 /* Site content: push everything below the now-fixed header, except the home
    page where the header intentionally blends over the hero (body.nt-hero-top).
    The extra offset clears the logo artwork, which intentionally hangs below
    the nav bar itself (see .nt-nav__logo-img height + negative margin below). */
 body:not(.nt-hero-top) .nt-main {
-	padding-top: calc(var(--nt-nav-height) + 70px);
+	/* +70px was sized when the first section had no padding of its own. Every
+	   inner page now opens with a section that brings its own, so this only
+	   has to clear the logo, which hangs ~40px below the bar. */
+	padding-top: calc(var(--nt-nav-height) + 42px);
 }
 @media (max-width: 900px) {
 	body:not(.nt-hero-top) .nt-main {
 		padding-top: calc(var(--nt-nav-height) + 30px);
 	}
 }
-/* Soft organic wave edge at the bottom */
+/* Torn edge along the bottom of the bar.
+   This was a smooth wave tiled every 200px in a hardcoded cream (#ecd7aa) -
+   the repeat was obvious on a wide screen and the colour could not follow the
+   palette. Now it is a flat strip in a palette colour, cut to shape by a mask,
+   so it never repeats and re-skins with the theme.
+
+   Masking the strip rather than the header matters: the logo hangs BELOW the
+   bar on a negative margin, and a mask on .nt-nav would slice it off. */
 .nt-nav::after {
 	content: '';
 	position: absolute;
-	left: 0; right: 0; bottom: -8px;
-	height: 10px;
-	background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 10" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 L200,0 L200,5 Q175,10 150,5 T100,5 T50,5 T0,5 Z" fill="%23ecd7aa"/></svg>');
-	background-size: 200px 10px;
-	background-repeat: repeat-x;
+	left: 0; right: 0; bottom: -20px;
+	height: 26px;
+	background: var(--trad-bg);
+	-webkit-mask-image: var(--nt-torn-bottom);
+	        mask-image: var(--nt-torn-bottom);
+	-webkit-mask-size: 100% 100%;
+	        mask-size: 100% 100%;
+	-webkit-mask-repeat: no-repeat;
+	        mask-repeat: no-repeat;
+	pointer-events: none;
 	z-index: 10;
 }
 .nt-nav__logo-box {
@@ -1515,7 +1605,13 @@ body.design-traditional .nt-nav__cta-btn:hover {
 	padding: 14px 28px;
 	background-color: var(--trad-green);
 	background-image: var(--texture-paper); /* Adds subtle paper texture to the button */
-	color: var(--trad-gold) !important;
+	/* NOT !important. This is the base green button, and gold type is right on
+	   it - but an !important here also won every FILLED-gold modifier that
+	   comes later (.nt-cta-band__btn, .nt-newsletter__btn), painting gold text
+	   on a gold button: a visible button with an invisible label. The only
+	   other .btn colour rule is in main.css, which loads first, so ordinary
+	   specificity is enough. */
+	color: var(--trad-gold);
 	font-family: var(--nt-font-display, 'Playfair Display', serif); /* Use elegant serif */
 	font-weight: 700;
 	font-size: 1.15rem;
@@ -2734,10 +2830,16 @@ body.design-traditional::after {
 			transparent 55%,
 			color-mix(in srgb, var(--trad-green-dark) 10%, transparent) 100%);
 }
+/* Lift real content above the vignette overlay above (z-index: 0).
+   .nt-nav is deliberately NOT in this list. It is `position: fixed`, and this
+   rule - (0,2,0) - outranked the header's own `position: fixed` (0,1,0), so
+   the bar dropped out of fixed positioning and into normal flow. That left it
+   sitting ~78px down the page behind a dead parchment band, and it scrolled
+   away with the content instead of staying pinned. It carries z-index: 500 of
+   its own, so it never needed this rule to clear the overlay. */
 body.design-traditional .nt-main,
 body.design-traditional .site-main,
 body.design-traditional main,
-body.design-traditional .nt-nav,
 body.design-traditional .nt-footer,
 body.design-traditional footer { position: relative; z-index: 1; }
 
@@ -3048,12 +3150,121 @@ body.design-traditional .nt-gstrip__card:nth-child(4n+2) { transform: rotate( 1.
 body.design-traditional .nt-gstrip__card:nth-child(4n+3) { transform: rotate( 0.6deg) translateY(-5px); }
 body.design-traditional .nt-gstrip__card:nth-child(4n+4) { transform: rotate(-0.9deg) translateY( 2px); }
 
-/* Handwritten caption in vintage ink. */
+/* ── Gallery strip: readable header tile + working desktop controls ──────
+   Two problems fixed here, both carried over from legacy.css:
+
+   1. The header tile was pinned at `flex: 0 0 150px`, so a three-word title
+      wrapped onto three lines and its body copy sat at 0.74rem / 60% opacity -
+      illegible. It now scales with the container and keeps a floor width.
+
+   2. `.nt-gstrip__nav { display: none }` above 767px hid every control, while
+      the track kept `overflow-x: auto` with a hidden scrollbar. On desktop the
+      photos ran off the edge with nothing to say so and no way to page through
+      them. The desktop pair below is driven by initStripCarousel(), which also
+      removes them when the photos already fit.
+   ─────────────────────────────────────────────────────────────────────── */
+body.design-traditional .nt-gallery-strip-section .nt-section-header {
+	flex: 0 0 clamp(200px, 23%, 300px);
+	padding: 26px 22px;
+}
+body.design-traditional .nt-gallery-strip-section .section-title {
+	font-size: clamp(1.3rem, 1.9vw, 1.72rem);
+	line-height: 1.15;
+}
+body.design-traditional .nt-gallery-strip-section .nt-section-body {
+	color: rgba(253, 251, 247, 0.82);
+	font-size: 0.86rem;
+	line-height: 1.55;
+	margin-top: 10px;
+}
+body.design-traditional .nt-gallery-strip-section .nt-section-tag {
+	font-size: 0.7rem;
+	letter-spacing: 0.2em;
+}
+
+/* min-width: 0 is what makes the strip scroll at all. .nt-gstrip is a flex
+   item (flex: 1) and flex items default to min-width: auto, so it grew to its
+   content and pushed the photos past the container edge instead of letting the
+   track clamp to 100% and scroll inside itself. With the overflow on the wrong
+   element, the track measured scrollWidth === clientWidth and the JS correctly
+   concluded there was nothing to page through. */
+.nt-gstrip { position: relative; min-width: 0; }
+
+/* Edge fades: the only honest signal that the row continues past the cut.
+   Each is removed once that end is reached (classes set by the JS). */
+.nt-gstrip.has-overflow::before,
+.nt-gstrip.has-overflow::after {
+	content: '';
+	position: absolute; top: 0; bottom: 0; width: 54px;
+	pointer-events: none; z-index: 2;
+	transition: opacity 0.25s ease;
+}
+.nt-gstrip.has-overflow::before {
+	left: 0;
+	background: linear-gradient(90deg, var(--trad-bg-alt) 0%, transparent 100%);
+}
+.nt-gstrip.has-overflow::after {
+	right: 0;
+	background: linear-gradient(270deg, var(--trad-bg-alt) 0%, transparent 100%);
+}
+.nt-gstrip.is-start::before,
+.nt-gstrip.is-end::after { opacity: 0; }
+
+.nt-gstrip__track:focus-visible { outline: 3px solid var(--trad-gold); outline-offset: 4px; }
+
+.nt-gstrip__scroll-nav {
+	display: flex; justify-content: center; gap: 12px; margin-top: 18px;
+}
+.nt-gstrip__scroll-nav[hidden] { display: none; }
+.nt-gstrip__scroll-btn {
+	width: 42px; height: 42px; display: grid; place-items: center;
+	font-size: 1.15rem; line-height: 1; cursor: pointer;
+	color: var(--trad-green);
+	background: var(--trad-cream);
+	border: 1.5px solid var(--trad-border);
+	border-radius: 50%;
+	transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+.nt-gstrip__scroll-btn:hover:not(:disabled) {
+	background: var(--trad-green); color: var(--trad-gold); border-color: var(--trad-gold);
+}
+.nt-gstrip__scroll-btn:disabled { opacity: 0.35; cursor: default; }
+.nt-gstrip__scroll-btn:focus-visible { outline: 3px solid var(--trad-gold); outline-offset: 3px; }
+
+/* Below 768px the legacy one-card carousel takes over, so the scroll pair
+   would be a second set of controls doing something different. */
+@media (max-width: 767px) {
+	.nt-gstrip__scroll-nav { display: none !important; }
+	.nt-gstrip.has-overflow::before,
+	.nt-gstrip.has-overflow::after { display: none; }
+}
+
+/* Handwritten caption, written on the mount below the photo.
+   The carried-over legacy rule floats this caption over the bottom of the
+   image and relies on a dark gradient scrim for legibility. The vintage skin
+   drops that scrim and inks the text dark, which left dark text sitting on a
+   photo - unreadable, and wrong for a polaroid anyway, where the writing goes
+   on the white border. So it is taken out of the overlay and put back in
+   normal flow, inside the card's paper mount. */
 body.design-traditional .nt-gallery-polaroid__caption,
 body.design-traditional .nt-gstrip__caption {
+	position: static;
+	inset: auto;
+	padding: 9px 4px 3px;
+	text-align: center;
 	font-family: var(--nt-font-accent);
 	color: color-mix(in srgb, var(--trad-ink) 78%, var(--trad-green) 22%);
 	background: none;
+}
+body.design-traditional .nt-gstrip__caption strong {
+	font-weight: 600;
+	font-size: 0.92rem;
+	color: var(--trad-green);
+}
+body.design-traditional .nt-gstrip__caption span {
+	font-size: 0.78rem;
+	opacity: 0.82;
+	font-style: italic;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -3376,6 +3587,37 @@ body.design-traditional .nt-tiers { padding: 38px 0; }
 .nt-location__link:hover { color: var(--trad-gold); }
 
 /* ── Newsletter ── */
+/* ── Dark bands: keep their own colour, and keep their accent readable ──
+   legacy.css carries two rules that quietly beat any single-class component
+   rule, because both are prefixed with the body class:
+
+     body.design-traditional section { background-color: var(--trad-bg) }  (0,1,2)
+     body.design-traditional em      { color: var(--trad-red) }            (0,1,2)
+
+   The first repaints any self-coloured band back to parchment; the second
+   turns every script accent burgundy, which is fine on parchment and close
+   to unreadable on dark green. Both are answered here in one place, at
+   (0,2,x), rather than sprinkling !important through the components. */
+body.design-traditional .nt-ticker { background: var(--trad-green-dark, var(--trad-green)); }
+
+body.design-traditional :is(
+	.nt-newsletter__title,
+	.nt-cta-band__title,
+	.nt-section-header-dark__title,
+	.nt-videofeat__title
+) em,
+body.design-traditional .nt-variant--dark :is(h2, h3, .section-title) em {
+	color: var(--trad-gold);
+}
+
+/* The body prefix is load-bearing, not decoration.
+   legacy.css carries `body.design-traditional section { background-color:
+   var(--trad-bg) }` - specificity (0,1,1). A bare `.nt-newsletter` is (0,1,0),
+   so it LOST, and this band rendered as parchment while its type stayed cream:
+   an invisible heading, invisible note, and a Subscribe button with no
+   readable label. Any component that paints itself a colour other than the
+   parchment default needs to clear that bar. */
+body.design-traditional .nt-newsletter,
 .nt-newsletter {
 	padding: 40px 0; background: var(--trad-green);
 	border-block: 1px solid rgba(195,161,53,0.55); text-align: center;
@@ -3687,11 +3929,9 @@ body.nt-lightbox-open { overflow: hidden; }
 	display: block; width: 100%; height: 210px; object-fit: cover;
 	filter: sepia(0.4) saturate(0.85);
 }
-/* Aged edge so the photo sits inside the card rather than on top of it. */
-.nt-fcard__media::after {
-	content: ''; position: absolute; inset: 0; pointer-events: none;
-	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12), inset 0 -22px 34px -22px rgba(0, 0, 0, 0.45);
-}
+/* No inset frame here: the photo already carries a torn edge (see ROUGH PHOTO
+   TREATMENT), and a straight box-shadow drawn over it cuts the ragged edge
+   back into a rectangle. */
 .nt-fcard__body { padding: 16px 18px 18px; }
 .nt-fcard__name {
 	font-family: var(--nt-font-display); color: var(--trad-green);
@@ -3928,4 +4168,392 @@ body.nt-lightbox-open { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
 	.nt-totop { transition: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ROUGH PHOTO TREATMENT
+   Every photo in the page body is given a hand-cut edge, a warm grade and
+   a film-grain wash, so stock photography stops looking like stock.
+
+   How it works, and why it is done this way:
+
+   - The torn edge is a MASK, not a filter. Each --nt-torn-* below is a tiny
+     SVG holding one white rectangle pushed out of shape by feTurbulence.
+     The browser rasterises that SVG once and reuses it for every image, so
+     the whole site costs four small bitmaps. Running the same turbulence as
+     a live `filter: url()` on 40 images per page would repaint each one.
+
+   - Four seeds, cycled across the page in document order by initRoughPhotos()
+     in common.js, so no two neighbouring photos are cut the same way. With
+     JS off every image simply uses variant 1 - still torn, just uniform.
+
+   - The grade is declared inside :where() so it carries ZERO specificity.
+     Components that already set their own `filter` (the sepia shelf on
+     signature bottles, the filter cards) keep it; everything else inherits
+     the house grade.
+
+   Opt out of the whole treatment with class="nt-no-rough" - used for logos,
+   mascots and ornaments. SVGs are skipped automatically.
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+	--nt-photo-grade: sepia(0.24) saturate(0.92) contrast(1.06);
+
+	--nt-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23g)' opacity='0.55'/></svg>");
+
+	--nt-torn-1: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.016' numOctaves='4' seed='11' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='11' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='3' fill='white' filter='url(%23t)'/></svg>");
+	--nt-torn-2: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.022' numOctaves='3' seed='29' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='9' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='6' fill='white' filter='url(%23t)'/></svg>");
+	--nt-torn-3: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.013' numOctaves='4' seed='47' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='13' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='8' y='8' width='304' height='204' rx='2' fill='white' filter='url(%23t)'/></svg>");
+	--nt-torn-4: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.019' numOctaves='3' seed='63' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='10' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='8' fill='white' filter='url(%23t)'/></svg>");
+
+	/* Edge tear for a full-width band (the footer). Drawn 1200 wide so that
+	   stretching to a desktop viewport barely scales it and the tear keeps its
+	   grain; the rect overhangs the sides and bottom so only the TOP edge of
+	   the shape lands inside the box and gets cut. */
+	--nt-torn-top: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='44' preserveAspectRatio='none'><filter id='e'><feTurbulence type='fractalNoise' baseFrequency='0.011 0.055' numOctaves='3' seed='19' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='21' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-30' y='22' width='1280' height='90' fill='white' filter='url(%23e)'/></svg>");
+
+	/* Mirror of --nt-torn-top for a band torn along its BOTTOM edge (the
+	   header). The rect overhangs the top and sides so only the bottom edge
+	   of the shape lands inside the box. */
+	--nt-torn-bottom: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='26' preserveAspectRatio='none'><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='0.013 0.06' numOctaves='3' seed='41' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='14' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-30' y='-40' width='1280' height='55' fill='white' filter='url(%23b)'/></svg>");
+
+	/* Mid grey is the no-op colour for `overlay` blending: the bump filter
+	   lights it, and only the light and shade it adds show through. Any other
+	   fill would tint whatever it sits on. */
+	--nt-bump-neutral: #808080;
+}
+
+/* Zero-specificity house grade - any component filter overrides it. */
+:where(.site-main) :where(img) { filter: var(--nt-photo-grade); }
+
+.site-main img:not(.nt-no-rough):not([src$=".svg"]) {
+	-webkit-mask-image: var(--nt-torn-1);
+	        mask-image: var(--nt-torn-1);
+	-webkit-mask-size: 100% 100%;
+	        mask-size: 100% 100%;
+	-webkit-mask-repeat: no-repeat;
+	        mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	        mask-position: center;
+}
+.site-main img[data-rough="2"] { -webkit-mask-image: var(--nt-torn-2); mask-image: var(--nt-torn-2); }
+.site-main img[data-rough="3"] { -webkit-mask-image: var(--nt-torn-3); mask-image: var(--nt-torn-3); }
+.site-main img[data-rough="4"] { -webkit-mask-image: var(--nt-torn-4); mask-image: var(--nt-torn-4); }
+
+/* A ragged photo sitting inside a card wants a hair of breathing room, or the
+   torn edge reads as a rendering fault rather than a cut edge. */
+.site-main [class*="__media"] { padding: 3px; }
+
+/* Page-wide film grain. Fixed, so it does not scroll with the content and
+   reads as grain in the print rather than texture on the objects. */
+.site-main::after {
+	content: '';
+	position: fixed; inset: 0;
+	background-image: var(--nt-grain);
+	background-size: 180px 180px;
+	mix-blend-mode: multiply;
+	opacity: 0.055;
+	pointer-events: none;
+	z-index: 9996;
+}
+
+/* Heavier cut for standalone feature photos - opt in per component. */
+.nt-rough-strong img,
+img.nt-rough-strong {
+	-webkit-mask-image: var(--nt-torn-3);
+	        mask-image: var(--nt-torn-3);
+	filter: var(--nt-photo-grade) contrast(1.1);
+}
+
+/* ── Bumps ────────────────────────────────────────────────────────────
+   Some photos are lit as if pressed into textured stock: a turbulence
+   field is lit by a distant light and multiplied back over the image
+   (see components/parts/svg_defs.php for the two filters).
+
+   Deliberately NOT every image. initRoughPhotos() bumps roughly one in
+   three, so the relief reads as the paper varying across the page rather
+   than a plugin switched on globally - and the cost stays bounded, since
+   feDiffuseLighting is the one genuinely expensive thing here.
+
+   The grade is repeated inside each rule because `filter` is a single
+   property: setting the bump alone would drop the house grade, and these
+   attribute selectors outrank the per-component sepia rules. */
+.site-main img[data-bump="1"] { filter: var(--nt-photo-grade) url(#nt-bump-1); }
+.site-main img[data-bump="2"] { filter: var(--nt-photo-grade) url(#nt-bump-2); }
+
+/* Hover already returns colour on gallery photos; keep the relief but let
+   the sepia lift so the two effects do not fight. */
+body.design-traditional .nt-gstrip__card:hover .nt-gstrip__img[data-bump="1"] { filter: sepia(0.16) saturate(1) url(#nt-bump-1); }
+body.design-traditional .nt-gstrip__card:hover .nt-gstrip__img[data-bump="2"] { filter: sepia(0.16) saturate(1) url(#nt-bump-2); }
+
+.nt-svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Filters this heavy are a poor trade on small screens and on machines
+   asking for less motion/effect, so the bump is dropped there. */
+@media (max-width: 700px), (prefers-reduced-motion: reduce) {
+	.site-main img[data-bump] { filter: var(--nt-photo-grade); }
+}
+
+@media print {
+	.site-main::after { display: none; }
+	.site-main img { -webkit-mask-image: none; mask-image: none; filter: none; }
+}
+
+/* Click-to-play video (initVideoFacade in assets/js/common.js).
+   The injected iframe has to fill the poster's box exactly, or the section
+   jumps height the moment someone presses play. */
+.nt-videofeat__media.is-playing { display: block; background: #000; }
+.nt-videofeat__frame {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 260px;
+	aspect-ratio: 16 / 9;
+	border: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SIGNATURE FLAVOURS - REDESIGNED  (components/signature-flavours.php)
+
+   Was: a flat row of rounded photo cards sitting on a hairline rule, with
+   the name and tagline stacked underneath - the same shape as every other
+   card grid on the site, so the section had no identity of its own.
+
+   Now: an apothecary shelf. Each bottle stands in an arched niche cut into
+   the wall, the shelf plank is drawn underneath in CSS, and the name hangs
+   off the bottle on a paper tag. The bottles sit at slightly different
+   heights so the row reads as hand-placed rather than laid out.
+
+   Same markup, same JSON - this is a re-skin, not a rewrite.
+   ══════════════════════════════════════════════════════════════════════ */
+body.design-traditional .nt-bottles__shelf {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-end;
+	gap: 0 clamp(14px, 2.4vw, 42px);
+	padding: 0 clamp(10px, 3vw, 46px) 0;
+	border-bottom: 0;
+	box-shadow: none;
+	position: relative;
+}
+
+/* The shelf plank the bottles stand on: a board with a lit top edge, a dark
+   under-shadow and two end brackets. */
+body.design-traditional .nt-bottles__shelf::after {
+	content: '';
+	position: absolute;
+	left: 0; right: 0; bottom: 0;
+	height: 16px;
+	border-radius: 3px;
+	background-image: linear-gradient(180deg,
+		color-mix(in srgb, var(--trad-gold) 55%, #fff) 0 2px,
+		#7a5326 2px 6px,
+		#5d3d1a 6px 12px,
+		#3f2810 12px 100%);
+	box-shadow: 0 8px 16px rgba(60, 40, 12, 0.35);
+}
+
+body.design-traditional .nt-bottle {
+	margin: 0 0 26px;
+	width: clamp(126px, 15vw, 176px);
+	text-align: center;
+	position: relative;
+	transition: transform 0.35s ease;
+}
+/* Hand-placed: three different rests, cycled. */
+body.design-traditional .nt-bottle:nth-child(3n+1) { margin-bottom: 26px; }
+body.design-traditional .nt-bottle:nth-child(3n+2) { margin-bottom: 34px; }
+body.design-traditional .nt-bottle:nth-child(3n+3) { margin-bottom: 30px; }
+body.design-traditional .nt-bottle:hover { transform: translateY(-10px); }
+
+/* Arched niche: the bottle stands INSIDE the wall, not on a card. */
+body.design-traditional .nt-bottle__frame {
+	height: clamp(170px, 21vw, 250px);
+	border-radius: 50% 50% 6px 6px / 34% 34% 4px 4px;
+	overflow: hidden;
+	background-color: #f1e6cb;
+	background-image: var(--texture-paper);
+	border: 1.5px solid var(--trad-border);
+	box-shadow:
+		inset 0 10px 22px rgba(70, 48, 16, 0.5),
+		inset 0 -6px 14px rgba(70, 48, 16, 0.32),
+		0 6px 14px rgba(60, 40, 12, 0.22);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+body.design-traditional .nt-bottle__img {
+	width: 100%; height: 100%; object-fit: cover;
+	filter: sepia(0.5) saturate(1.05) contrast(0.98);
+	transition: filter 0.35s ease, transform 0.35s ease;
+}
+body.design-traditional .nt-bottle:hover .nt-bottle__img {
+	filter: sepia(0.12) saturate(1.15);
+	transform: scale(1.05);
+}
+
+/* Paper tag, hung off the niche on a short string. */
+body.design-traditional .nt-bottle__cap {
+	position: relative;
+	display: block;
+	margin: 20px auto 0;
+	width: max-content;
+	max-width: 100%;
+	padding: 8px 15px 9px;
+	background-color: #f6edd6;
+	background-image: var(--texture-paper);
+	border: 1px solid var(--trad-border);
+	border-radius: 4px 10px 4px 9px;
+	box-shadow: 0 4px 9px rgba(60, 40, 12, 0.22);
+	transform: rotate(-1.4deg);
+}
+body.design-traditional .nt-bottle:nth-child(even) .nt-bottle__cap { transform: rotate(1.6deg); }
+
+/* The string, and the eyelet it passes through. */
+body.design-traditional .nt-bottle__cap::before {
+	content: '';
+	position: absolute;
+	left: 50%; top: -19px;
+	width: 1px; height: 19px;
+	background: color-mix(in srgb, var(--trad-ink) 45%, transparent);
+}
+body.design-traditional .nt-bottle__cap::after {
+	content: '';
+	position: absolute;
+	left: 50%; top: 4px;
+	width: 5px; height: 5px;
+	margin-left: -2.5px;
+	border-radius: 50%;
+	border: 1px solid color-mix(in srgb, var(--trad-ink) 45%, transparent);
+	background: transparent;
+}
+
+body.design-traditional .nt-bottle__name {
+	display: block;
+	font-family: var(--nt-font-display);
+	font-weight: 700;
+	font-size: clamp(0.86rem, 1.1vw, 1rem);
+	color: var(--trad-green);
+	margin-top: 6px;
+}
+body.design-traditional .nt-bottle__tagline {
+	display: block;
+	font-family: var(--nt-font-accent, cursive);
+	font-style: normal;
+	font-size: clamp(0.82rem, 1vw, 0.95rem);
+	color: var(--trad-gold);
+	opacity: 1;
+}
+
+body.design-traditional .nt-bottles__cta { margin-top: clamp(26px, 3vw, 44px); }
+
+@media (max-width: 620px) {
+	body.design-traditional .nt-bottles__shelf { gap: 0 12px; padding-inline: 4px; }
+	body.design-traditional .nt-bottle { width: 44%; min-width: 118px; }
+	body.design-traditional .nt-bottle__cap { padding: 6px 10px 7px; }
+}
+
+/* The niche is the shape here, so these photos opt out of the torn-edge mask -
+   a ragged image inside an arch just leaves cream gaps at the corners and the
+   arch stops reading. */
+body.design-traditional .nt-bottle__img {
+	-webkit-mask-image: none;
+	        mask-image: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   POSTS PREVIEW - REDESIGNED  (components/posts-preview.php)
+
+   Was: a plain auto-fit card grid - photo, date, title, excerpt - visually
+   identical to the filter cards and the benefit cards two sections away.
+
+   Now: a newspaper clipping. The first item runs wide as the lead story
+   with its photo beside the text; the rest sit under a rule as column
+   items with a date slug. Type is set tighter and the cards lose their
+   borders, so the block reads as a printed page rather than more cards.
+   ══════════════════════════════════════════════════════════════════════ */
+body.design-traditional .nt-posts__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+	margin-top: clamp(20px, 2.6vw, 32px);
+}
+@media (min-width: 820px) {
+	body.design-traditional .nt-posts__grid {
+		grid-template-columns: repeat(3, 1fr);
+		column-gap: clamp(20px, 2.6vw, 38px);
+	}
+	/* Lead story spans the full measure. */
+	body.design-traditional .nt-posts__card:first-child { grid-column: 1 / -1; }
+	body.design-traditional .nt-posts__card:first-child .nt-posts__link {
+		display: grid;
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+		align-items: center;
+		gap: clamp(20px, 3vw, 44px);
+	}
+	body.design-traditional .nt-posts__card:first-child .nt-posts__media { margin: 0; }
+	body.design-traditional .nt-posts__card:first-child .nt-posts__media img { height: clamp(210px, 24vw, 320px); }
+	body.design-traditional .nt-posts__card:first-child .nt-posts__title { font-size: clamp(1.3rem, 2.1vw, 1.95rem); }
+	body.design-traditional .nt-posts__card:first-child .nt-posts__excerpt { font-size: 0.95rem; }
+	body.design-traditional .nt-posts__card:first-child :is(.nt-posts__date, .nt-posts__title, .nt-posts__excerpt) { padding-inline: 0; }
+}
+
+body.design-traditional .nt-posts__card {
+	background: none;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	padding-block: clamp(16px, 2vw, 24px);
+	/* Column rules, the way a page is set - not card borders. */
+	border-top: 1px solid var(--trad-border);
+}
+body.design-traditional .nt-posts__card:first-child { border-top: 0; padding-top: 0; }
+body.design-traditional .nt-posts__card:hover { border-color: var(--trad-gold); }
+
+body.design-traditional .nt-posts__link { padding: 0; }
+body.design-traditional .nt-posts__media { margin: 0 0 12px; overflow: hidden; }
+body.design-traditional .nt-posts__media img {
+	height: 168px;
+	transition: transform 0.4s ease, filter 0.4s ease;
+	filter: sepia(0.45) saturate(0.85) contrast(1.02);
+}
+body.design-traditional .nt-posts__card:hover .nt-posts__media img {
+	transform: scale(1.04);
+	filter: sepia(0.14) saturate(1.05);
+}
+
+/* Date as a printed slug rather than a coloured label. */
+body.design-traditional .nt-posts__date {
+	padding-inline: 0;
+	font-family: var(--nt-font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.2em;
+	color: var(--trad-ink);
+	opacity: 0.62;
+}
+body.design-traditional .nt-posts__title {
+	padding-inline: 0;
+	font-size: clamp(1rem, 1.3vw, 1.12rem);
+	line-height: 1.25;
+	margin: 6px 0 7px;
+}
+body.design-traditional .nt-posts__card:hover .nt-posts__title { color: var(--trad-gold); }
+body.design-traditional .nt-posts__excerpt {
+	padding-inline: 0;
+	font-size: 0.86rem;
+	line-height: 1.6;
+	opacity: 0.82;
+}
+
+/* Lead story with no featured image: collapse to a single column instead of
+   leaving the photo half of the grid empty and the headline stranded in the
+   right-hand cell. WordPress posts without a thumbnail are the common case on
+   a fresh install, so this is the state most sites see first. */
+@media (min-width: 820px) {
+	body.design-traditional .nt-posts__card:first-child .nt-posts__link:not(:has(.nt-posts__media)) {
+		display: block;
+		max-width: 68ch;
+		margin-inline: auto;
+		text-align: center;
+	}
 }

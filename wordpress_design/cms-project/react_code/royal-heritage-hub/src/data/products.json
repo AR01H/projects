@@ -1,0 +1,897 @@
+[
+  {
+    "id": "prod-001",
+    "slug": "kondapalli-dancing-couple",
+    "name": "Kondapalli Dancing Couple Figurine",
+    "shortDescription": "Hand-carved and hand-painted traditional dancing couple set.",
+    "description": "A signature Kondapalli piece depicting a traditional dancing couple, carved from softwood (Tella Poniki) and finished with vibrant natural pigments. Each figure is shaped, dried, and painted entirely by hand by artisans in Kondapalli village, Andhra Pradesh \u2014 a craft recognised with a Geographical Indication (GI) tag.",
+    "categoryId": "cat-kondapalli",
+    "categorySlug": "kondapalli-bommalu",
+    "collectionIds": [
+      "col-best-sellers",
+      "col-handcrafted-picks"
+    ],
+    "price": 1499,
+    "compareAtPrice": 1899,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-001/900/900",
+      "https://picsum.photos/seed/prod-001-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-001/700/875",
+    "sku": "RHH-KDL-001",
+    "stock": 14,
+    "lowStockThreshold": 5,
+    "rating": 4.8,
+    "reviewCount": 32,
+    "reviews": [
+      {
+        "id": "rev-001",
+        "author": "Ananya R.",
+        "rating": 5,
+        "title": "Absolutely stunning",
+        "comment": "The detailing is incredible for a handmade piece. Looks perfect on our console table.",
+        "date": "2026-05-12",
+        "verified": true
+      },
+      {
+        "id": "rev-002",
+        "author": "Vikram S.",
+        "rating": 4,
+        "title": "Beautiful, minor paint chip",
+        "comment": "Lovely craftsmanship, arrived with a tiny paint chip on the base but overall very happy.",
+        "date": "2026-04-02",
+        "verified": true
+      }
+    ],
+    "variants": [],
+    "tags": [
+      "kondapalli",
+      "handpainted",
+      "figurine",
+      "gi-tagged"
+    ],
+    "isBestSeller": true,
+    "isNewArrival": false,
+    "isFeatured": true,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2025-11-02",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Tella Poniki Softwood, Natural Pigments",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "18cm x 10cm x 22cm",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "420g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Kondapalli, Andhra Pradesh, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ],
+    "makerName": "Ramesh Naidu"
+  },
+  {
+    "id": "prod-002",
+    "slug": "wooden-elephant-pair",
+    "name": "Hand-Carved Wooden Elephant Pair",
+    "shortDescription": "Auspicious pair of hand-carved elephants for home entrance decor.",
+    "description": "A finely carved pair of elephants, symbolising good luck and prosperity, ideal for entryways and console tables. Carved from sustainably sourced mango wood with a natural matte finish that highlights the wood grain.",
+    "categoryId": "cat-wooden-decor",
+    "categorySlug": "wooden-decor",
+    "collectionIds": [
+      "col-best-sellers"
+    ],
+    "price": 2299,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-002/900/900",
+      "https://picsum.photos/seed/prod-002-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-002/700/875",
+    "sku": "RHH-WDD-002",
+    "stock": 22,
+    "lowStockThreshold": 5,
+    "rating": 4.7,
+    "reviewCount": 48,
+    "reviews": [
+      {
+        "id": "rev-010",
+        "author": "Priya M.",
+        "rating": 5,
+        "title": "Perfect entrance piece",
+        "comment": "These elephants look stunning by our front door. Great weight and finish.",
+        "date": "2026-04-18",
+        "verified": true
+      },
+      {
+        "id": "rev-011",
+        "author": "Karan D.",
+        "rating": 4,
+        "title": "Lovely, slightly smaller than expected",
+        "comment": "Beautiful craftsmanship but check dimensions carefully before ordering.",
+        "date": "2026-03-02",
+        "verified": true
+      }
+    ],
+    "variants": [],
+    "tags": [
+      "elephant",
+      "entrance decor",
+      "auspicious"
+    ],
+    "isBestSeller": true,
+    "isNewArrival": false,
+    "isFeatured": true,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2025-09-14",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Mango Wood",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "25cm x 12cm x 18cm (pair)",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "1.1kg",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Saharanpur, Uttar Pradesh, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ],
+    "makerName": "Imran Khan"
+  },
+  {
+    "id": "prod-003",
+    "slug": "carved-wooden-temple",
+    "name": "Hand-Carved Wooden Temple / Mandir",
+    "shortDescription": "Intricately carved wooden pooja mandir with detailed jaali work.",
+    "description": "A compact wooden temple designed for home pooja spaces, featuring hand-carved jaali (lattice) panels, a domed canopy, and a deep teak-toned finish. Includes a small shelf for idols and diyas.",
+    "categoryId": "cat-temple-decor",
+    "categorySlug": "temple-decor",
+    "collectionIds": [
+      "col-festive"
+    ],
+    "price": 6499,
+    "compareAtPrice": 7999,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-003/900/900",
+      "https://picsum.photos/seed/prod-003-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-003/700/875",
+    "sku": "RHH-TMP-003",
+    "stock": 6,
+    "lowStockThreshold": 3,
+    "rating": 4.9,
+    "reviewCount": 21,
+    "reviews": [],
+    "variants": [],
+    "tags": [
+      "temple",
+      "mandir",
+      "pooja",
+      "jaali"
+    ],
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "isFeatured": true,
+    "isLimitedEdition": false,
+    "isFestive": true,
+    "createdAt": "2026-06-01",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Sheesham Wood",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "45cm x 30cm x 60cm",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "6.2kg",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Jodhpur, Rajasthan, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ],
+    "makerName": "Suresh Mistry"
+  },
+  {
+    "id": "prod-004",
+    "slug": "hand-painted-wall-panel",
+    "name": "Hand-Painted Wooden Wall Panel \u2014 Peacock Motif",
+    "shortDescription": "Traditional peacock motif wall art hand-painted on solid wood.",
+    "description": "A striking wall panel featuring a hand-painted peacock design inspired by Rajasthani miniature art, sealed with a protective matte varnish. Comes with a ready-to-hang mount.",
+    "categoryId": "cat-wall-decor",
+    "categorySlug": "wall-decor",
+    "collectionIds": [
+      "col-new-arrivals"
+    ],
+    "price": 3299,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-004/900/900",
+      "https://picsum.photos/seed/prod-004-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-004/700/875",
+    "sku": "RHH-WLD-004",
+    "stock": 11,
+    "lowStockThreshold": 4,
+    "rating": 4.6,
+    "reviewCount": 15,
+    "reviews": [],
+    "variants": [],
+    "tags": [
+      "wall art",
+      "peacock",
+      "handpainted"
+    ],
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "isFeatured": false,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2026-06-20",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Mango Wood, Acrylic Paint",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "60cm x 45cm",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "1.8kg",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Udaipur, Rajasthan, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ],
+    "makerName": "Meera Devi"
+  },
+  {
+    "id": "prod-005",
+    "slug": "carved-jewellery-box-brass-inlay",
+    "name": "Carved Wooden Jewellery Box with Brass Inlay",
+    "shortDescription": "Velvet-lined jewellery box with hand-carved motifs and brass detailing.",
+    "description": "A heirloom-style jewellery box carved from sheesham wood, featuring intricate brass inlay work along the edges and a soft velvet-lined interior with multiple compartments.",
+    "categoryId": "cat-jewellery-boxes",
+    "categorySlug": "jewellery-boxes",
+    "collectionIds": [
+      "col-gift-collections"
+    ],
+    "price": 1899,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-005/900/900",
+      "https://picsum.photos/seed/prod-005-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-005/700/875",
+    "sku": "RHH-JWB-005",
+    "stock": 3,
+    "lowStockThreshold": 5,
+    "rating": 4.7,
+    "reviewCount": 27,
+    "reviews": [],
+    "variants": [],
+    "tags": [
+      "jewellery box",
+      "brass inlay",
+      "gift"
+    ],
+    "isBestSeller": true,
+    "isNewArrival": false,
+    "isFeatured": false,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2025-12-11",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Sheesham Wood, Brass, Velvet",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "20cm x 15cm x 10cm",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "650g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Saharanpur, Uttar Pradesh, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ]
+  },
+  {
+    "id": "prod-006",
+    "slug": "brass-ganesha-idol",
+    "name": "Brass Ganesha Idol \u2014 Lost Wax Cast",
+    "shortDescription": "Traditional brass Ganesha idol, cast using ancient lost-wax technique.",
+    "description": "A finely detailed Ganesha idol cast in solid brass using the traditional lost-wax (Dhokra-inspired) technique, hand-finished and polished to a warm golden sheen.",
+    "categoryId": "cat-brass-decor",
+    "categorySlug": "brass-decor",
+    "collectionIds": [
+      "col-festive"
+    ],
+    "price": 2799,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-006/900/900",
+      "https://picsum.photos/seed/prod-006-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-006/700/875",
+    "sku": "RHH-BRS-006",
+    "stock": 18,
+    "lowStockThreshold": 5,
+    "rating": 4.9,
+    "reviewCount": 40,
+    "reviews": [
+      {
+        "id": "rev-012",
+        "author": "Deepa S.",
+        "rating": 5,
+        "title": "Gorgeous finish",
+        "comment": "The brass Ganesha is even more beautiful in person. Perfect for our pooja room.",
+        "date": "2026-05-30",
+        "verified": true
+      },
+      {
+        "id": "rev-013",
+        "author": "Arjun N.",
+        "rating": 5,
+        "title": "Exceeded expectations",
+        "comment": "Heavy, well-cast, and arrived very well packaged.",
+        "date": "2026-02-14",
+        "verified": true
+      }
+    ],
+    "variants": [],
+    "tags": [
+      "brass",
+      "ganesha",
+      "idol",
+      "pooja"
+    ],
+    "isBestSeller": true,
+    "isNewArrival": false,
+    "isFeatured": true,
+    "isLimitedEdition": false,
+    "isFestive": true,
+    "createdAt": "2025-10-05",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Solid Brass",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "15cm x 10cm x 18cm",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "1.4kg",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Moradabad, Uttar Pradesh, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ]
+  },
+  {
+    "id": "prod-007",
+    "slug": "wooden-village-set-miniature",
+    "name": "Kondapalli Wooden Village Set (6-piece)",
+    "shortDescription": "Miniature hand-painted village scene set of six figures.",
+    "description": "A charming six-piece set capturing everyday rural life \u2014 a farmer, a well, a bullock cart, and more \u2014 all hand-carved and painted in the Kondapalli tradition.",
+    "categoryId": "cat-village-sets",
+    "categorySlug": "village-sets",
+    "collectionIds": [
+      "col-handcrafted-picks",
+      "col-limited-edition"
+    ],
+    "price": 2199,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-007/900/900",
+      "https://picsum.photos/seed/prod-007-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-007/700/875",
+    "sku": "RHH-VLG-007",
+    "stock": 9,
+    "lowStockThreshold": 4,
+    "rating": 4.8,
+    "reviewCount": 19,
+    "reviews": [],
+    "variants": [],
+    "tags": [
+      "village set",
+      "miniature",
+      "kondapalli"
+    ],
+    "isBestSeller": false,
+    "isNewArrival": false,
+    "isFeatured": true,
+    "isLimitedEdition": true,
+    "isFestive": false,
+    "createdAt": "2026-01-18",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Tella Poniki Softwood, Natural Pigments",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "Set of 6, avg. 8cm each",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "900g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Kondapalli, Andhra Pradesh, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ],
+    "makerName": "Lakshmi Prasad"
+  },
+  {
+    "id": "prod-008",
+    "slug": "wooden-serving-tray-set",
+    "name": "Hand-Painted Wooden Serving Tray Set",
+    "shortDescription": "Set of 2 nesting trays with traditional floral hand-painting.",
+    "description": "A set of two nesting wooden serving trays finished with hand-painted floral motifs and a food-safe lacquer coating \u2014 perfect for festive entertaining.",
+    "categoryId": "cat-kitchen-decor",
+    "categorySlug": "kitchen-decor",
+    "collectionIds": [
+      "col-new-arrivals"
+    ],
+    "price": 1699,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-008/900/900",
+      "https://picsum.photos/seed/prod-008-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-008/700/875",
+    "sku": "RHH-KTC-008",
+    "stock": 25,
+    "lowStockThreshold": 6,
+    "rating": 4.5,
+    "reviewCount": 12,
+    "reviews": [],
+    "variants": [],
+    "tags": [
+      "serving tray",
+      "kitchen decor",
+      "handpainted"
+    ],
+    "isBestSeller": false,
+    "isNewArrival": true,
+    "isFeatured": false,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2026-06-28",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Mango Wood, Food-Safe Lacquer",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "35cm x 25cm (large), 28cm x 20cm (small)",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "780g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Channapatna, Karnataka, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ]
+  },
+  {
+    "id": "prod-009",
+    "slug": "wooden-name-plate-personalized",
+    "name": "Personalised Hand-Carved Wooden Name Plate",
+    "shortDescription": "Custom engraved wooden name plate for your home entrance.",
+    "description": "A durable teak-wood name plate with laser-guided hand finishing, customised with your family name and house number, sealed with weatherproof varnish for outdoor use.",
+    "categoryId": "cat-wooden-decor",
+    "categorySlug": "wooden-decor",
+    "collectionIds": [
+      "col-gift-collections"
+    ],
+    "price": 1299,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-009/900/900",
+      "https://picsum.photos/seed/prod-009-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-009/700/875",
+    "sku": "RHH-NPL-009",
+    "stock": 40,
+    "lowStockThreshold": 10,
+    "rating": 4.4,
+    "reviewCount": 33,
+    "reviews": [],
+    "variants": [],
+    "tags": [
+      "name plate",
+      "personalised",
+      "outdoor"
+    ],
+    "isBestSeller": false,
+    "isNewArrival": false,
+    "isFeatured": false,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2025-08-22",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Teak Wood",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "30cm x 15cm",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "550g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Kerala, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ]
+  },
+  {
+    "id": "prod-010",
+    "slug": "wooden-animal-toy-set-kids",
+    "name": "Channapatna Wooden Animal Toy Set",
+    "shortDescription": "Non-toxic lacquered wooden animal toys, safe for toddlers.",
+    "description": "A vibrant 5-piece animal toy set from the Channapatna craft tradition, made with vegetable-dye lacquer that is completely non-toxic and safe for children.",
+    "categoryId": "cat-wooden-toys",
+    "categorySlug": "wooden-toys",
+    "collectionIds": [
+      "col-best-sellers",
+      "col-handcrafted-picks"
+    ],
+    "price": 999,
+    "compareAtPrice": 1299,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-010/900/900",
+      "https://picsum.photos/seed/prod-010-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-010/700/875",
+    "sku": "RHH-TOY-010",
+    "stock": 55,
+    "lowStockThreshold": 15,
+    "rating": 4.9,
+    "reviewCount": 61,
+    "reviews": [
+      {
+        "id": "rev-014",
+        "author": "Meera J.",
+        "rating": 5,
+        "title": "My toddler loves these",
+        "comment": "Safe, colorful, and well made. Bought a second set as a gift.",
+        "date": "2026-06-01",
+        "verified": true
+      },
+      {
+        "id": "rev-015",
+        "author": "Rohit P.",
+        "rating": 5,
+        "title": "Great quality for the price",
+        "comment": "Non-toxic finish as promised, my daughter chews on everything so this mattered a lot.",
+        "date": "2026-01-20",
+        "verified": false
+      }
+    ],
+    "variants": [],
+    "tags": [
+      "kids toys",
+      "non-toxic",
+      "channapatna"
+    ],
+    "isBestSeller": true,
+    "isNewArrival": false,
+    "isFeatured": true,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2025-07-30",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Ivory Wood, Vegetable Dye Lacquer",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "Set of 5, avg. 6cm each",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "400g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Channapatna, Karnataka, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ]
+  },
+  {
+    "id": "prod-011",
+    "slug": "wooden-pen-stand-carved",
+    "name": "Hand-Carved Wooden Desk Pen Stand",
+    "shortDescription": "Elegant carved pen stand for office and study desks.",
+    "description": "A refined desk accessory hand-carved from rosewood with a subtle floral border, finished in a rich walnut polish. Fits up to 6 pens.",
+    "categoryId": "cat-wooden-decor",
+    "categorySlug": "wooden-decor",
+    "collectionIds": [
+      "col-corporate-gifts"
+    ],
+    "price": 799,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-011/900/900",
+      "https://picsum.photos/seed/prod-011-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-011/700/875",
+    "sku": "RHH-PEN-011",
+    "stock": 30,
+    "lowStockThreshold": 8,
+    "rating": 4.3,
+    "reviewCount": 9,
+    "reviews": [],
+    "variants": [],
+    "tags": [
+      "pen stand",
+      "office decor",
+      "corporate gift"
+    ],
+    "isBestSeller": false,
+    "isNewArrival": false,
+    "isFeatured": false,
+    "isLimitedEdition": false,
+    "isFestive": false,
+    "createdAt": "2025-06-15",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Rosewood",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "12cm x 8cm x 6cm",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "300g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Mysore, Karnataka, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ]
+  },
+  {
+    "id": "prod-012",
+    "slug": "brass-diya-set-festive",
+    "name": "Brass Diya Set (Set of 5)",
+    "shortDescription": "Hand-cast brass diyas for festive lighting, set of 5.",
+    "description": "A beautifully cast set of five brass diyas with a traditional lotus-petal base, ideal for Diwali and other festive occasions.",
+    "categoryId": "cat-brass-decor",
+    "categorySlug": "brass-decor",
+    "collectionIds": [
+      "col-festive",
+      "col-limited-edition"
+    ],
+    "price": 1199,
+    "compareAtPrice": 1499,
+    "currency": "INR",
+    "images": [
+      "https://picsum.photos/seed/prod-012/900/900",
+      "https://picsum.photos/seed/prod-012-alt/900/900"
+    ],
+    "thumbnail": "https://picsum.photos/seed/prod-012/700/875",
+    "sku": "RHH-DIY-012",
+    "stock": 60,
+    "lowStockThreshold": 15,
+    "rating": 4.7,
+    "reviewCount": 44,
+    "reviews": [
+      {
+        "id": "rev-016",
+        "author": "Anita K.",
+        "rating": 4,
+        "title": "Beautiful for Diwali",
+        "comment": "Used these all through Diwali, still look brand new.",
+        "date": "2026-06-05",
+        "verified": true
+      }
+    ],
+    "variants": [],
+    "tags": [
+      "diya",
+      "festive",
+      "brass",
+      "diwali"
+    ],
+    "isBestSeller": true,
+    "isNewArrival": false,
+    "isFeatured": true,
+    "isLimitedEdition": true,
+    "isFestive": true,
+    "createdAt": "2026-06-10",
+    "specs": [
+      {
+        "key": "material",
+        "label": "Material",
+        "value": "Solid Brass",
+        "highlight": true
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "value": "Set of 5, avg. 7cm diameter",
+        "highlight": true
+      },
+      {
+        "key": "weight",
+        "label": "Weight",
+        "value": "600g",
+        "highlight": false
+      },
+      {
+        "key": "origin",
+        "label": "Origin",
+        "value": "Moradabad, Uttar Pradesh, India",
+        "highlight": false
+      }
+    ],
+    "qualityBadges": [
+      "Handmade"
+    ]
+  }
+]

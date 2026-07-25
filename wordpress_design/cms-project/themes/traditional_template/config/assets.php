@@ -27,6 +27,10 @@ return array(
 		'vintage'    => 'assets/css/vintage.css',
 		'components' => 'assets/css/components.css',
 		'utilities'  => 'assets/css/utilities.css',
+		// Component-scoped sheet. Lives beside its own markup rather than in
+		// assets/css/ because the movie header is a self-contained prop - its
+		// ~400 rules would swamp vintage.css and are useless without it.
+		'movie-header' => 'components/movie-header/header.css',
 	),
 
 	// Front-end JS - loaded in footer, in this order. 'common' also receives
@@ -35,6 +39,9 @@ return array(
 		'common'        => 'assets/js/common.js',
 		'legacy'        => 'assets/js/legacy.js',
 		'main'          => 'assets/js/main.js',
+		// Fits the movie header's editable headline to the board. No-ops on
+		// pages without one.
+		'movie-header'  => 'components/movie-header/header.js',
 		// scroll-to-top.js removed: the footer's #nt-scroll-to-top button
 		// (driven by initScrollToTop() in legacy.js) is the single back-to-top.
 	),

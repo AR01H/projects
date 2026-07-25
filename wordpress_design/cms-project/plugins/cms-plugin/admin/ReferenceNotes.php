@@ -133,14 +133,10 @@ if ( isset( $_GET['delete_note'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 
 							</div>
 
 							<style>
-							.rn-toolbar{display:flex;flex-wrap:wrap;gap:2px;padding:6px 10px;background:#f1f5f9;border-bottom:1px solid var(--ah-border);}
-							.rn-toolbar button{background:none;border:1px solid transparent;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px;color:var(--ah-text);transition:all .12s;line-height:1;}
-							.rn-toolbar button:hover{background:#e2e8f0;border-color:var(--ah-border);}
-							.rn-toolbar .rn-sep{width:1px;background:var(--ah-border);margin:2px 4px;flex-shrink:0;}
 							.rn-note-item{border:1px solid var(--ah-border);border-radius:var(--ah-radius);margin-bottom:8px;overflow:hidden;transition:box-shadow .15s;}
 							.rn-note-item:hover{box-shadow:0 2px 8px rgba(0,0,0,.06);}
 							.rn-note-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--ah-bg-light);cursor:pointer;user-select:none;transition:background .15s;}
-							.rn-note-header:hover{background:#e9ecef;}
+							.rn-note-header:hover{background:var(--ah-border);}
 							.rn-note-header .rn-toggle{font-size:12px;color:var(--ah-muted);transition:transform .2s;flex-shrink:0;width:16px;text-align:center;}
 							.rn-note-item.open .rn-toggle{transform:rotate(90deg);}
 							.rn-note-header .rn-note-title-static{flex:1;font-weight:600;font-size:13px;color:var(--ah-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -169,29 +165,29 @@ if ( isset( $_GET['delete_note'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 
 									</div>
 									<div class="rn-note-body">
 										<input type="hidden" name="notes[<?php echo $ni; ?>][title]" value="<?php echo esc_attr( $note['title'] ?? '' ); ?>">
-										<div class="rn-toolbar" data-editor="notes[<?php echo $ni; ?>][content]">
+										<div class="ah-toolbar" data-editor="notes[<?php echo $ni; ?>][content]">
 											<button type="button" title="Bold" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<strong>','</strong>')"><strong>B</strong></button>
 											<button type="button" title="Italic" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<em>','</em>')"><em>I</em></button>
 											<button type="button" title="Underline" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<u>','</u>')"><u>U</u></button>
 											<button type="button" title="Strikethrough" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<s>','</s>')"><s>S</s></button>
-											<div class="rn-sep"></div>
+											<div class="ah-sep"></div>
 											<button type="button" title="Heading 2" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<h2>','</h2>')">H2</button>
 											<button type="button" title="Heading 3" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<h3>','</h3>')">H3</button>
-											<div class="rn-sep"></div>
+											<div class="ah-sep"></div>
 											<button type="button" title="Bullet List" onclick="event.stopPropagation();rnInsertList('notes[<?php echo $ni; ?>][content]','ul')">&#8226; List</button>
 											<button type="button" title="Numbered List" onclick="event.stopPropagation();rnInsertList('notes[<?php echo $ni; ?>][content]','ol')">1. List</button>
-											<div class="rn-sep"></div>
+											<div class="ah-sep"></div>
 											<button type="button" title="Link" onclick="event.stopPropagation();rnInsertLink('notes[<?php echo $ni; ?>][content]')">&#128279;</button>
 											<button type="button" title="Code" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<code>','</code>')">&lt;/&gt;</button>
 											<button type="button" title="Code Block" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<pre>','</pre>')">{ }</button>
 											<button type="button" title="Blockquote" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<blockquote>','</blockquote>')">&#8220;</button>
-											<div class="rn-sep"></div>
+											<div class="ah-sep"></div>
 											<button type="button" title="Horizontal Rule" onclick="event.stopPropagation();rnInsert('notes[<?php echo $ni; ?>][content]','<hr>','')">---</button>
 											<button type="button" title="Table" onclick="event.stopPropagation();rnInsertTable('notes[<?php echo $ni; ?>][content]')">&#9638;</button>
 											<div style="flex:1"></div>
 											<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'ah-ref-notes', 'action' => 'edit', 'edit' => $edit_id, 'delete_fi' => $edit_id, 'delete_note' => $ni ), admin_url( 'admin.php' ) ), 'ah_del_rn_note' ) ); ?>" class="ah-btn ah-btn-danger ah-btn-sm ah-confirm-delete" data-title="Delete Note" data-confirm="Delete this note?" onclick="event.stopPropagation();">&#10005; Delete</a>
 										</div>
-										<textarea name="notes[<?php echo $ni; ?>][content]" rows="10" placeholder="Write steps, instructions or content. Use the toolbar above for formatting." style="width:100%;border:none;padding:12px 14px;font-family:monospace;font-size:13px;line-height:1.6;resize:vertical;box-sizing:border-box;background:#fdfdfd;"><?php echo esc_textarea( $note['content'] ?? '' ); ?></textarea>
+										<textarea name="notes[<?php echo $ni; ?>][content]" rows="10" placeholder="Write steps, instructions or content. Use the toolbar above for formatting." style="width:100%;border:none;padding:12px 14px;font-family:monospace;font-size:13px;line-height:1.6;resize:vertical;box-sizing:border-box;background:var(--ah-bg-light);"><?php echo esc_textarea( $note['content'] ?? '' ); ?></textarea>
 									</div>
 								</div>
 								<?php endforeach; ?>
@@ -356,29 +352,29 @@ jQuery(function ($) {
 			+ '</div>'
 			+ '<div class="rn-note-body">'
 			+ '<input type="hidden" name="' + titleName + '" value="">'
-			+ '<div class="rn-toolbar" data-editor="' + name + '">'
+			+ '<div class="ah-toolbar" data-editor="' + name + '">'
 			+ '<button type="button" title="Bold" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<strong>\',\'</strong>\')"><strong>B</strong></button>'
 			+ '<button type="button" title="Italic" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<em>\',\'</em>\')"><em>I</em></button>'
 			+ '<button type="button" title="Underline" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<u>\',\'</u>\')"><u>U</u></button>'
 			+ '<button type="button" title="Strikethrough" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<s>\',\'</s>\')"><s>S</s></button>'
-			+ '<div class="rn-sep"></div>'
+			+ '<div class="ah-sep"></div>'
 			+ '<button type="button" title="Heading 2" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<h2>\',\'</h2>\')">H2</button>'
 			+ '<button type="button" title="Heading 3" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<h3>\',\'</h3>\')">H3</button>'
-			+ '<div class="rn-sep"></div>'
+			+ '<div class="ah-sep"></div>'
 			+ '<button type="button" title="Bullet List" onclick="event.stopPropagation();rnInsertList(\'' + name + '\',\'ul\')">&#8226; List</button>'
 			+ '<button type="button" title="Numbered List" onclick="event.stopPropagation();rnInsertList(\'' + name + '\',\'ol\')">1. List</button>'
-			+ '<div class="rn-sep"></div>'
+			+ '<div class="ah-sep"></div>'
 			+ '<button type="button" title="Link" onclick="event.stopPropagation();rnInsertLink(\'' + name + '\')">&#128279;</button>'
 			+ '<button type="button" title="Code" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<code>\',\'</code>\')">&lt;/&gt;</button>'
 			+ '<button type="button" title="Code Block" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<pre>\',\'</pre>\')">{ }</button>'
 			+ '<button type="button" title="Blockquote" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<blockquote>\',\'</blockquote>\')">&#8220;</button>'
-			+ '<div class="rn-sep"></div>'
+			+ '<div class="ah-sep"></div>'
 			+ '<button type="button" title="Horizontal Rule" onclick="event.stopPropagation();rnInsert(\'' + name + '\',\'<hr>\',\'\')">---</button>'
 			+ '<button type="button" title="Table" onclick="event.stopPropagation();rnInsertTable(\'' + name + '\')">&#9638;</button>'
 			+ '<div style="flex:1"></div>'
 			+ '<button type="button" class="ah-btn ah-btn-danger ah-btn-sm rn-del-note">&#10005; Delete</button>'
 			+ '</div>'
-			+ '<textarea name="' + name + '" rows="10" placeholder="Write content here. Use the toolbar above for formatting." style="width:100%;border:none;padding:12px 14px;font-family:monospace;font-size:13px;line-height:1.6;resize:vertical;box-sizing:border-box;background:#fdfdfd;"></textarea>'
+			+ '<textarea name="' + name + '" rows="10" placeholder="Write content here. Use the toolbar above for formatting." style="width:100%;border:none;padding:12px 14px;font-family:monospace;font-size:13px;line-height:1.6;resize:vertical;box-sizing:border-box;background:var(--ah-bg-light);"></textarea>'
 			+ '</div>'
 			+ '</div>';
 		list.append(html);

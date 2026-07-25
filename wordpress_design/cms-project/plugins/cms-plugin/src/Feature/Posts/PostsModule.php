@@ -14,6 +14,6 @@ class PostsModule {
 	}
 	public static function enqueueAssets( string $hook ): void {
 		if ( strpos( $hook, 'ah-posts' ) === false ) { return; }
-		wp_enqueue_style( 'ah-posts', AH_PLUGIN_URL . '/src/Feature/Posts/Assets/css/posts.css', [], '1.0' );
+		// Posts page styles are inline in posts.php
 	}
 }

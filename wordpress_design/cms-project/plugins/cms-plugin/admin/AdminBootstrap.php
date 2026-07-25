@@ -55,11 +55,11 @@ class AH_Admin_Bootstrap {
 				return;
 			}
 			echo '<div style="position:fixed;bottom:0;left:0;right:0;z-index:999999;'
-				. 'background:#fff0f0;border-top:4px solid #dc2626;padding:16px 20px;'
+				. 'background:var(--ah-bg-light);border-top:4px solid var(--ah-danger);padding:16px 20px;'
 				. 'font-family:monospace;font-size:13px;line-height:1.6;">';
-			echo '<strong style="color:#dc2626;">&#9888; Fatal Error (admin-only)</strong><br>';
+			echo '<strong style="color:var(--ah-danger);">&#9888; Fatal Error (admin-only)</strong><br>';
 			echo esc_html( $e['message'] ) . '<br>';
-			echo '<small style="color:#6b7280;">'
+			echo '<small style="color:var(--ah-muted);">'
 				. esc_html( str_replace( ABSPATH, '', $e['file'] ) )
 				. ' &nbsp;line&nbsp;' . (int) $e['line'] . '</small>';
 			echo '</div>';
@@ -316,7 +316,7 @@ CSS;
 
 		if ( '' === $html ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:sans-serif;padding:40px;color:#374151;"><p>No content found' . ( $slug ? ' for <code>' . esc_html( $slug ) . '</code>' : '' ) . '.</p></body></html>';
+			echo '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:sans-serif;padding:40px;color:var(--ah-text);"><p>No content found' . ( $slug ? ' for <code>' . esc_html( $slug ) . '</code>' : '' ) . '.</p></body></html>';
 			exit;
 		}
 

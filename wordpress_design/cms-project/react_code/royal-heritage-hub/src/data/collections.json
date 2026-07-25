@@ -1,0 +1,85 @@
+[
+  {
+    "id": "col-best-sellers",
+    "slug": "best-sellers",
+    "name": "Best Sellers",
+    "description": "Our most-loved handcrafted pieces, chosen again and again.",
+    "image": "https://picsum.photos/seed/rhh-col-best-sellers/800/600",
+    "productIds": [
+      "prod-001",
+      "prod-002",
+      "prod-005",
+      "prod-006",
+      "prod-010",
+      "prod-012"
+    ]
+  },
+  {
+    "id": "col-new-arrivals",
+    "slug": "new-arrivals",
+    "name": "New Arrivals",
+    "description": "Freshly added to the collection this season.",
+    "image": "https://picsum.photos/seed/rhh-col-new-arrivals/800/600",
+    "productIds": [
+      "prod-003",
+      "prod-004",
+      "prod-008"
+    ]
+  },
+  {
+    "id": "col-festive",
+    "slug": "festive-collections",
+    "name": "Festive Collections",
+    "description": "Curated for Diwali, weddings, and celebration season.",
+    "image": "https://picsum.photos/seed/rhh-col-festive-collections/800/600",
+    "productIds": [
+      "prod-003",
+      "prod-006",
+      "prod-012"
+    ]
+  },
+  {
+    "id": "col-gift-collections",
+    "slug": "gift-collections",
+    "name": "Gift Collections",
+    "description": "Thoughtfully packaged gifts for every relationship.",
+    "image": "https://picsum.photos/seed/rhh-col-gift-collections/800/600",
+    "productIds": [
+      "prod-005",
+      "prod-009"
+    ]
+  },
+  {
+    "id": "col-corporate-gifts",
+    "slug": "corporate-gifts",
+    "name": "Corporate Gifts",
+    "description": "Elegant handcrafted gifting for clients and teams.",
+    "image": "https://picsum.photos/seed/rhh-col-corporate-gifts/800/600",
+    "productIds": [
+      "prod-011"
+    ]
+  },
+  {
+    "id": "col-limited-edition",
+    "slug": "limited-edition",
+    "name": "Limited Edition",
+    "description": "Rare, small-batch pieces \u2014 once sold out, they're gone.",
+    "image": "https://picsum.photos/seed/rhh-col-limited-edition/800/600",
+    "productIds": [
+      "prod-007",
+      "prod-012"
+    ]
+  },
+  {
+    "id": "col-handcrafted-picks",
+    "slug": "handcrafted-picks",
+    "name": "Handcrafted Picks",
+    "description": "Editor's picks celebrating exceptional artisan skill.",
+    "image": "https://picsum.photos/seed/rhh-col-handcrafted-picks/800/600",
+    "productIds": [
+      "prod-001",
+      "prod-007",
+      "prod-010"
+    ]
+  }
+]

@@ -50,7 +50,7 @@ $gs_nonce  = wp_create_nonce( 'ah_custom_code' );
 				<p style="color:var(--ah-text);font-size:13px;font-weight:600;margin:0 0 4px;">CSS</p>
 				<p style="color:var(--ah-muted);font-size:12px;margin:0 0 8px;">No <code>&lt;style&gt;</code> tags needed. Loads in <code>&lt;head&gt;</code>.</p>
 				<textarea id="ah-gs-css" rows="15"
-					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#cdd6f4;padding:14px;border-radius:6px;border:1px solid #313244;"
+					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-text);padding:14px;border-radius:6px;border:1px solid var(--ah-text);"
 					placeholder="/* Example: Christmas theme */&#10;body { --color-primary: #c0392b; }"
 				><?php echo esc_textarea( $gs_css ); ?></textarea>
 			</div>
@@ -59,7 +59,7 @@ $gs_nonce  = wp_create_nonce( 'ah_custom_code' );
 				<p style="color:var(--ah-text);font-size:13px;font-weight:600;margin:0 0 4px;">JavaScript</p>
 				<p style="color:var(--ah-muted);font-size:12px;margin:0 0 8px;">No <code>&lt;script&gt;</code> tags needed. Loads in <code>&lt;footer&gt;</code>.</p>
 				<textarea id="ah-gs-js" rows="15"
-					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#a6e3a1;padding:14px;border-radius:6px;border:1px solid #313244;"
+					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-success);padding:14px;border-radius:6px;border:1px solid var(--ah-text);"
 					placeholder="// Example: Sitewide tracking&#10;console.log('Global JS loaded!');"
 				><?php echo esc_textarea( $gs_js ); ?></textarea>
 			</div>
@@ -128,7 +128,7 @@ $gs_nonce  = wp_create_nonce( 'ah_custom_code' );
 						<div id="ah-cc-panel-css" class="ah-cc-panel" style="padding-top:12px;">
 							<p style="color:var(--ah-muted);font-size:12px;margin:0 0 6px;">Plain CSS rules - no <code>&lt;style&gt;</code> tags needed.</p>
 							<textarea id="ah-cc-css" name="css" rows="24"
-								style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#cdd6f4;padding:14px;border-radius:6px;border:1px solid #313244;box-sizing:border-box;"
+								style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-text);padding:14px;border-radius:6px;border:1px solid var(--ah-text);box-sizing:border-box;"
 								placeholder="/* Example */&#10;.some-class {&#10;  word-break: break-word;&#10;}"
 							><?php echo esc_textarea( $edit_row ? ( $edit_row->css ?? '' ) : '' ); ?></textarea>
 						</div>
@@ -136,7 +136,7 @@ $gs_nonce  = wp_create_nonce( 'ah_custom_code' );
 						<div id="ah-cc-panel-js" class="ah-cc-panel" style="padding-top:12px;display:none;">
 							<p style="color:var(--ah-muted);font-size:12px;margin:0 0 6px;">Plain JavaScript - no <code>&lt;script&gt;</code> tags needed. Runs at footer.</p>
 							<textarea id="ah-cc-js" name="js" rows="24"
-								style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:#1e1e2e;color:#a6e3a1;padding:14px;border-radius:6px;border:1px solid #313244;box-sizing:border-box;"
+								style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-success);padding:14px;border-radius:6px;border:1px solid var(--ah-text);box-sizing:border-box;"
 								placeholder="// Example&#10;document.querySelectorAll('.dynamic-text').forEach(function(el) {&#10;  el.style.wordBreak = 'break-word';&#10;});"
 							><?php echo esc_textarea( $edit_row ? ( $edit_row->js ?? '' ) : '' ); ?></textarea>
 						</div>
@@ -208,8 +208,8 @@ $gs_nonce  = wp_create_nonce( 'ah_custom_code' );
 				} ),
 				array( 'label' => 'Code', 'render' => function ( $r ) {
 					$html = '';
-					if ( $r->has_css ) $html .= '<span class="ah-badge" style="background:#dbeafe;color:#1d4ed8;">CSS</span> ';
-					if ( $r->has_js )  $html .= '<span class="ah-badge" style="background:#dcfce7;color:#15803d;">JS</span>';
+					if ( $r->has_css ) $html .= '<span class="ah-badge" style="background:var(--ah-bg-light);color:var(--ah-primary-dark);">CSS</span> ';
+					if ( $r->has_js )  $html .= '<span class="ah-badge" style="background:var(--ah-bg-light);color:var(--ah-success);">JS</span>';
 					return $html ?: '<span style="color:var(--ah-muted);font-size:12px;">Empty</span>';
 				} ),
 				array( 'label' => 'Status', 'render' => function ( $r ) {

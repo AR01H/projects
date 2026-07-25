@@ -47,6 +47,13 @@ class AH_Autoloader {
 		'AH_Uploader'         => 'helper/Uploader.php',
 		'AH_Notice_Helper'    => 'helper/NoticeHelper.php',
 		'AH_Banners_Helper'   => 'helper/BannersHelper.php',
+		'AH_File_Links_Helper' => 'helper/FileLinksHelper.php',
+		'AH_Featured_In_Helper' => 'helper/FeaturedInHelper.php',
+		'AH_Posts_Helper'       => 'helper/PostsHelper.php',
+		'AH_Spotlights_Helper'  => 'helper/SpotlightsHelper.php',
+		'AH_Events_Helper'      => 'helper/EventsHelper.php',
+		'AH_Settings_Helper'    => 'helper/SettingsHelper.php',
+		'AH_Page_Builder_Helper' => 'helper/PageBuilderHelper.php',
 
 		// Admin
 		'AH_Analytics_Model'           => 'models/AnalyticsModel.php',
@@ -72,6 +79,11 @@ class AH_Autoloader {
 		'AH_Newsletter'       => 'inc/Newsletter.php',
 		'AH_Workflow_Manager' => 'inc/WorkflowManager.php',
 		'AH_Cache'            => 'inc/AhCache.php',
+
+		// Abstracts
+		'Ah\Cms\Admin\Abstracts\AbstractListPage'   => 'src/Admin/Abstracts/AbstractListPage.php',
+		'Ah\Cms\Admin\Abstracts\AbstractAjaxHandler' => 'src/Admin/Abstracts/AbstractAjaxHandler.php',
+		'Ah\Cms\Admin\Abstracts\AbstractCrudModel'   => 'src/Admin/Abstracts/AbstractCrudModel.php',
 
 		// Services (migrated from ah-cms.php)
 		'AH_Redirect_Service'        => 'src/Feature/Redirect/Service/AH_Redirect_Service.php',

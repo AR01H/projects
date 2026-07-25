@@ -11,8 +11,8 @@ use Ah\Cms\Admin\Components\AdminComponents;
 
 		<!-- Flush Rewrite Rules -->
 		<div class="ah-card ah-action-card">
-			<div class="ah-action-icon" style="background:#eff6ff;">
-				<span class="dashicons dashicons-update" style="color:#2563eb;"></span>
+			<div class="ah-action-icon" style="background:var(--ah-bg-light);">
+				<span class="dashicons dashicons-update" style="color:var(--ah-primary);"></span>
 			</div>
 			<h3>Flush Rewrite Rules</h3>
 			<p>Regenerate WordPress permalink rules. Run this after adding new page slugs or custom post types.</p>
@@ -22,8 +22,8 @@ use Ah\Cms\Admin\Components\AdminComponents;
 
 		<!-- Clear Transients -->
 		<div class="ah-card ah-action-card">
-			<div class="ah-action-icon" style="background:#f0fdf4;">
-				<span class="dashicons dashicons-trash" style="color:#16a34a;"></span>
+			<div class="ah-action-icon" style="background:var(--ah-bg-light);">
+				<span class="dashicons dashicons-trash" style="color:var(--ah-success);"></span>
 			</div>
 			<h3>Clear Cache</h3>
 			<p>Delete all WordPress transient cache entries from the database. Useful when stale cached data causes issues.</p>
@@ -33,8 +33,8 @@ use Ah\Cms\Admin\Components\AdminComponents;
 
 		<!-- DB Health Check -->
 		<div class="ah-card ah-action-card">
-			<div class="ah-action-icon" style="background:#f0fdf4;">
-				<span class="dashicons dashicons-database" style="color:#16a34a;"></span>
+			<div class="ah-action-icon" style="background:var(--ah-bg-light);">
+				<span class="dashicons dashicons-database" style="color:var(--ah-success);"></span>
 			</div>
 			<h3>DB Health Check</h3>
 			<p>Verify that all required <code>wp_ah_*</code> tables exist in the database and report any that are missing.</p>
@@ -44,8 +44,8 @@ use Ah\Cms\Admin\Components\AdminComponents;
 
 		<!-- Clear Audit Log -->
 		<div class="ah-card ah-action-card">
-			<div class="ah-action-icon" style="background:#fff7ed;">
-				<span class="dashicons dashicons-list-view" style="color:#ea580c;"></span>
+			<div class="ah-action-icon" style="background:var(--ah-bg-light);">
+				<span class="dashicons dashicons-list-view" style="color:var(--ah-warning);"></span>
 			</div>
 			<h3>Clear Audit Log</h3>
 			<p>Truncate the audit log table. All recorded create / update / delete events will be permanently removed.</p>
@@ -55,8 +55,8 @@ use Ah\Cms\Admin\Components\AdminComponents;
 
 		<!-- Clear Form Submissions -->
 		<div class="ah-card ah-action-card">
-			<div class="ah-action-icon" style="background:#fdf2f8;">
-				<span class="dashicons dashicons-email" style="color:#9333ea;"></span>
+			<div class="ah-action-icon" style="background:var(--ah-bg-light);">
+				<span class="dashicons dashicons-email" style="color:var(--ah-primary);"></span>
 			</div>
 			<h3>Clear Form Submissions</h3>
 			<p>Delete all visitor submissions captured by the Form Builder. Useful when cleaning up test submissions.</p>
@@ -64,11 +64,11 @@ use Ah\Cms\Admin\Components\AdminComponents;
 			<div class="ah-action-result"></div>
 		</div>
 
-		<div class="ah-card ah-action-card" style="border-top:3px solid #dc2626;">
-			<div class="ah-action-icon" style="background:#fef2f2;">
-				<span class="dashicons dashicons-database" style="color:#dc2626;"></span>
+		<div class="ah-card ah-action-card" style="border-top:3px solid var(--ah-danger);">
+			<div class="ah-action-icon" style="background:var(--ah-bg-light);">
+				<span class="dashicons dashicons-database" style="color:var(--ah-danger);"></span>
 			</div>
-			<h3 style="color:#dc2626;">Schema Set up</h3>
+			<h3 style="color:var(--ah-danger);">Schema Set up</h3>
 			<p>Install Whole Pending Schemas</p>
 			<button class="ah-btn ah-btn-danger ah-action-btn"
 				data-action="ah_schema_setup"
@@ -78,11 +78,11 @@ use Ah\Cms\Admin\Components\AdminComponents;
 		</div>
 
 		<!-- Delete & Create Schema -->
-		<div class="ah-card ah-action-card" style="border-top:3px solid #dc2626;">
-			<div class="ah-action-icon" style="background:#fef2f2;">
-				<span class="dashicons dashicons-database" style="color:#dc2626;"></span>
+		<div class="ah-card ah-action-card" style="border-top:3px solid var(--ah-danger);">
+			<div class="ah-action-icon" style="background:var(--ah-bg-light);">
+				<span class="dashicons dashicons-database" style="color:var(--ah-danger);"></span>
 			</div>
-			<h3 style="color:#dc2626;">Delete &amp; Create Schema</h3>
+			<h3 style="color:var(--ah-danger);">Delete &amp; Create Schema</h3>
 			<p>Drop <strong>all</strong> <code>wp_ah_*</code> tables and rebuild them from scratch. Default settings and seed data will be restored. <strong>All content will be permanently lost.</strong></p>
 			<button class="ah-btn ah-btn-danger ah-action-btn"
 				data-action="ah_rebuild_schema"
@@ -131,8 +131,8 @@ use Ah\Cms\Admin\Components\AdminComponents;
 	border-radius: 4px;
 	display: none;
 }
-.ah-action-result.ok  { display:block; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
-.ah-action-result.err { display:block; background:#fef2f2; color:#b91c1c; border:1px solid #fecaca; }
+.ah-action-result.ok  { display:block; background:var(--ah-bg-light); color:var(--ah-success); border:1px solid var(--ah-border); }
+.ah-action-result.err { display:block; background:var(--ah-bg-light); color:var(--ah-danger); border:1px solid var(--ah-border); }
 .ah-action-btn[disabled] { opacity:.6; cursor:not-allowed; }
 </style>
 

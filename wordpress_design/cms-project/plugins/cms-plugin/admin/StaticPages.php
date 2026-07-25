@@ -111,8 +111,8 @@ $search = sanitize_text_field( $_GET['s'] ?? '' );
 					<div>
 						<?php if ( $edit_slug ) : ?>
 						<?php AdminComponents::formRow( 'Shortcode',
-							'<div style="background:#f0f4ff;border:1px solid #c5d0e6;border-radius:6px;padding:10px 14px;">'
-							. '<code style="display:block;font-size:12px;color:#1e3a5f;word-break:break-all;">[ah_static_page slug="' . esc_attr( $edit_slug ) . '"]</code>'
+							'<div style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;padding:10px 14px;">'
+							. '<code style="display:block;font-size:12px;color:var(--ah-text);word-break:break-all;">[ah_static_page slug="' . esc_attr( $edit_slug ) . '"]</code>'
 							. '</div>'
 						); ?>
 						<?php AdminComponents::formRow( 'Quick Links', implode( '', array_filter( array(
@@ -186,7 +186,7 @@ $search = sanitize_text_field( $_GET['s'] ?? '' );
 						: '<span class="ah-badge ah-badge-draft">No WP Page</span>';
 				} ),
 				array( 'label' => 'Shortcode', 'render' => function ( $r ) {
-					return '<code style="font-size:11px;background:#f0f4ff;color:#3b5bdb;padding:2px 6px;border-radius:3px;border:1px solid #c5d0e6;" title="Click to copy" class="ah-copy-shortcode" data-sc=\'[ah_static_page slug="' . esc_attr( $r->slug ) . '"]\'>[ah_static_page slug="' . esc_html( $r->slug ) . '"]</code>';
+					return '<code style="font-size:11px;background:var(--ah-bg-light);color:var(--ah-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--ah-border);" title="Click to copy" class="ah-copy-shortcode" data-sc=\'[ah_static_page slug="' . esc_attr( $r->slug ) . '"]\'>[ah_static_page slug="' . esc_html( $r->slug ) . '"]</code>';
 				} ),
 			),
 			'items'         => $rows,
@@ -212,7 +212,7 @@ jQuery(function ($) {
 		if (navigator.clipboard) {
 			navigator.clipboard.writeText(sc).then(function () {
 				var orig = $el.text();
-				$el.text('Copied!').css('background','#d1fae5').css('color','#065f46');
+				$el.text('Copied!').css('background','var(--ah-bg-light)').css('color','var(--ah-success)');
 				setTimeout(function(){ $el.text(orig).css('background','').css('color',''); }, 1500);
 			});
 		}

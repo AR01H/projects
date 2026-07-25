@@ -208,7 +208,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
               ?>
                 <div class="rv-img-tile" style="position:relative;width:90px;cursor:move;">
                   <input type="hidden" name="review_image_ids[]" value="<?php echo esc_attr( $occ->image_id ); ?>">
-                  <img src="<?php echo esc_url( $occ_url ); ?>" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--ah-border,#e0e0e0);display:block;">
+                  <img src="<?php echo esc_url( $occ_url ); ?>" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--ah-border,var(--ah-border));display:block;">
                   <a href="<?php echo esc_url( $del_url ); ?>"
                      class="ah-confirm-delete"
                      data-confirm="Remove this image?"
@@ -320,7 +320,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
             tile.style.cssText = 'position:relative;width:90px;cursor:move;';
             tile.innerHTML =
               '<input type="hidden" name="review_image_ids[]" value="' + att.id + '">' +
-              '<img src="' + thumb + '" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--ah-border,#e0e0e0);display:block;">' +
+              '<img src="' + thumb + '" style="width:90px;height:90px;object-fit:cover;border-radius:6px;border:2px solid var(--ah-border,var(--ah-border));display:block;">' +
               '<button type="button" class="rv-remove-new" title="Remove" style="position:absolute;top:-6px;right:-6px;background:#e53e3e;color:#fff;border-radius:50%;width:20px;height:20px;border:none;cursor:pointer;font-size:12px;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;">✕</button>';
 
             tile.querySelector('.rv-remove-new').addEventListener('click', function(){

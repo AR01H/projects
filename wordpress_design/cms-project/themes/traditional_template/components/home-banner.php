@@ -82,7 +82,7 @@ $bg_image    = $b->image       ?? '';
 			
 			<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>"
 				 alt="The Cane House Mascot"
-				 class="nt-hero-vintage__mascot-img">
+				 class="nt-hero-vintage__mascot-img nt-no-rough">
 		</div>
 	</div>
 

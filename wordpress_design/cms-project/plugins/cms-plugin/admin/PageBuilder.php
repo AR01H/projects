@@ -9,28 +9,9 @@ $action  = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = (int) ( $_GET['id'] ?? 0 );
 $content_tax_m = new AH_Content_Taxonomy_Model();
 
-// ── Template presets ──────────────────────────────────────────────────────────
+// ── Template presets ──
 function ah_builder_templates(): array {
-	return array(
-		'faq' => array(
-			'label' => 'FAQ Page', 'icon' => '❓', 'desc' => 'Hero + accordion + links + CTA',
-			'blocks' => array(
-				array( 'type' => 'hero', 'data' => array( 'heading' => 'Frequently Asked Questions', 'subheading' => 'Find answers to the most common property questions.', 'bg' => 'light' ) ),
-				array( 'type' => 'faq', 'data' => array( 'heading' => 'Buying a Property', 'items' => array( array( 'q' => 'How long does buying a property take?', 'a' => 'The average property purchase takes 8–12 weeks from offer to completion, though this varies based on the chain and legal complexity.' ), array( 'q' => 'Do I need a solicitor?', 'a' => 'Yes, a conveyancing solicitor is required to handle the legal transfer of ownership.' ), array( 'q' => 'What is stamp duty?', 'a' => 'Stamp Duty Land Tax (SDLT) is a tax payable on property purchases above £250,000 (£425,000 for first-time buyers).' ) ) ) ),
-				array( 'type' => 'faq', 'data' => array( 'heading' => 'Selling a Property', 'items' => array( array( 'q' => 'How do I value my property?', 'a' => 'We offer free, accurate market valuations based on comparable sales and current market conditions.' ), array( 'q' => 'What fees are involved in selling?', 'a' => 'Typical costs include estate agent fees (1–3%), conveyancing, and any early mortgage repayment charges.' ) ) ) ),
-				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Still Have Questions?', 'text' => 'Speak to one of our experts for personalised advice.', 'btn1_text' => 'Book Free Call', 'btn1_url' => '/free-consultation/', 'theme' => 'dark' ) ),
-			),
-		),
-		'guide' => array(
-			'label' => 'Guide / Article', 'icon' => '📖', 'desc' => 'Hero + rich text + links + CTA',
-			'blocks' => array(
-				array( 'type' => 'hero', 'data' => array( 'heading' => 'First-Time Buyers Guide', 'subheading' => 'Everything you need to know about buying your first home in the UK.', 'bg' => 'light' ) ),
-				array( 'type' => 'text_block', 'data' => array( 'content' => '<p>Buying your first home is one of the biggest financial decisions you\'ll make. This guide walks you through every stage - from saving your deposit to getting the keys.</p><h2>Step 1: Get Your Finances in Order</h2><p>Before you start viewing properties, understand your budget. Most lenders require at least a 5% deposit, though 10% gives you access to better mortgage rates.</p><h2>Step 2: Get a Mortgage in Principle</h2><p>A mortgage in principle (MIP) shows sellers you\'re a serious buyer and helps you understand your maximum borrowing.</p>' ) ),
-				array( 'type' => 'links_list', 'data' => array( 'heading' => 'Related Guides', 'cols' => '2', 'links' => array( array( 'label' => 'Understanding Stamp Duty', 'url' => '/guides/stamp-duty/', 'icon' => '💷', 'desc' => 'How much will you pay?' ), array( 'label' => 'Help to Buy Explained', 'url' => '/guides/help-to-buy/', 'icon' => '🏛️', 'desc' => 'Government schemes for first-time buyers' ), array( 'label' => 'Mortgage Guide', 'url' => '/guides/mortgages/', 'icon' => '🏦', 'desc' => 'Types, rates and how to apply' ), array( 'label' => 'Conveyancing Process', 'url' => '/guides/conveyancing/', 'icon' => '📋', 'desc' => 'Legal steps explained simply' ) ) ) ),
-				array( 'type' => 'cta_banner', 'data' => array( 'heading' => 'Need Personal Guidance?', 'text' => 'Our experts are happy to answer your questions for free.', 'btn1_text' => 'Book Free Consultation', 'btn1_url' => '/free-consultation/', 'theme' => 'gold' ) ),
-			),
-		),
-	);
+	return AH_Page_Builder_Helper::templates();
 }
 
 // ── POST handlers ─────────────────────────────────────────────────────────────
@@ -218,7 +199,7 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
     <?php foreach ( $tpls as $tpl_key => $tpl ) : ?>
       <div class="ah-card" style="padding:0;overflow:hidden;">
-        <div style="background:var(--ah-primary,#1e40af);color:#fff;padding:20px 24px;">
+        <div style="background:var(--ah-primary,var(--ah-primary));color:#fff;padding:20px 24px;">
           <div style="font-size:2rem;margin-bottom:8px;"><?php echo $tpl['icon']; ?></div>
           <h3 style="margin:0 0 4px;color:#fff;"><?php echo esc_html( $tpl['label'] ); ?></h3>
           <p style="margin:0;opacity:.8;font-size:.82rem;"><?php echo esc_html( $tpl['desc'] ); ?></p>
@@ -256,16 +237,16 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-builder-topbar {
   display:flex; align-items:center; justify-content:space-between; gap:12px;
   padding:10px 20px; background:#fff;
-  border-bottom:1px solid #e5e7eb; box-shadow:0 1px 6px rgba(0,0,0,.05);
+  border-bottom:1px solid var(--ah-border); box-shadow:0 1px 6px rgba(0,0,0,.05);
   margin:0 -20px;  z-index:100;
 }
 .ah-builder-topbar input[type=text] {
-  border:1px solid #d1d5db; border-radius:7px; padding:7px 12px;
+  border:1px solid var(--ah-border); border-radius:7px; padding:7px 12px;
   font-size:.9rem; font-weight:600; max-width:300px;
   transition:border-color .15s,box-shadow .15s;
 }
 .ah-builder-topbar input[type=text]:focus {
-  outline:none; border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.12);
+  outline:none; border-color:var(--ah-primary); box-shadow:0 0 0 3px rgba(59,130,246,.12);
 }
 .ah-builder-topbar .ah-btn { padding:7px 16px; font-size:.8rem; }
 
@@ -273,7 +254,7 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-builder-wrap {
   display:grid; grid-template-columns:232px 1fr 236px;
   gap:0; height:calc(100vh - 108px); overflow:hidden; margin:0 -20px;
-  border:1px solid #e5e7eb;
+  border:1px solid var(--ah-border);
 }
 
 /* ── Left palette ──────────────────────────────────── */
@@ -288,7 +269,7 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-palette h4:first-child { margin-top:4px; }
 .ah-palette-block {
   display:flex; align-items:center; gap:9px; padding:8px 10px; border-radius:7px;
-  cursor:pointer; font-size:.79rem; font-weight:500; color:#9ca3af;
+  cursor:pointer; font-size:.79rem; font-weight:500; color:var(--ah-muted);
   transition:background .12s,color .12s,transform .1s; margin-bottom:2px;
 }
 .ah-palette-block:hover { background:rgba(255,255,255,.1); color:#fff; transform:translateX(2px); }
@@ -299,31 +280,31 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-canvas-wrap { overflow-y:auto; background:#f1f3f6; padding:18px 16px; }
 .ah-canvas { min-height:calc(100vh - 180px); }
 .ah-canvas-empty {
-  text-align:center; padding:56px 20px; color:#9ca3af;
-  border:2px dashed #d1d5db; border-radius:12px; background:#fff; margin-top:4px;
+  text-align:center; padding:56px 20px; color:var(--ah-muted);
+  border:2px dashed var(--ah-border); border-radius:12px; background:#fff; margin-top:4px;
 }
 .ah-canvas-empty .icon { font-size:2.8rem; margin-bottom:10px; }
 
 /* Canvas blocks */
 .ah-canvas-block {
-  background:#fff; border-radius:10px; border:1.5px solid #e5e7eb;
+  background:#fff; border-radius:10px; border:1.5px solid var(--ah-border);
   margin-bottom:10px; overflow:hidden; transition:box-shadow .15s,border-color .15s;
 }
-.ah-canvas-block:hover { box-shadow:0 3px 14px rgba(0,0,0,.07); border-color:#d1d5db; }
-.ah-canvas-block.ah-block-active { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.1); }
+.ah-canvas-block:hover { box-shadow:0 3px 14px rgba(0,0,0,.07); border-color:var(--ah-border); }
+.ah-canvas-block.ah-block-active { border-color:var(--ah-primary); box-shadow:0 0 0 3px rgba(59,130,246,.1); }
 
 .ah-block-header {
   display:flex; align-items:center; gap:8px; padding:10px 14px;
-  background:#f9fafb; cursor:pointer; user-select:none;
+  background:var(--ah-bg-light); cursor:pointer; user-select:none;
 }
-.ah-canvas-block.ah-block-active .ah-block-header { background:#eff6ff; }
+.ah-canvas-block.ah-block-active .ah-block-header { background:var(--ah-bg-light); }
 
-.ah-block-handle { cursor:grab; color:#d1d5db; font-size:.9rem; transition:color .15s; flex-shrink:0; }
-.ah-block-handle:hover { color:#6b7280; }
+.ah-block-handle { cursor:grab; color:var(--ah-border); font-size:.9rem; transition:color .15s; flex-shrink:0; }
+.ah-block-handle:hover { color:var(--ah-muted); }
 .ah-block-handle:active { cursor:grabbing; }
 
 .ah-block-title {
-  flex:1; font-size:.81rem; font-weight:600; color:#374151;
+  flex:1; font-size:.81rem; font-weight:600; color:var(--ah-text);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;
 }
 .ah-block-type-badge {
@@ -333,11 +314,11 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-block-actions { display:flex; align-items:center; gap:2px; flex-shrink:0; }
 .ah-block-actions button {
   background:none; border:none; cursor:pointer; padding:4px 6px;
-  color:#9ca3af; border-radius:5px; font-size:.8rem; line-height:1;
+  color:var(--ah-muted); border-radius:5px; font-size:.8rem; line-height:1;
   transition:background .12s,color .12s;
 }
-.ah-block-actions button:hover { background:#f3f4f6; color:#374151; }
-.ah-block-actions .ah-delete-block:hover { color:#ef4444; background:#fef2f2; }
+.ah-block-actions button:hover { background:var(--ah-bg-light); color:var(--ah-text); }
+.ah-block-actions .ah-delete-block:hover { color:var(--ah-danger); background:var(--ah-bg-light); }
 .ah-block-actions .ah-toggle-block { font-size:.7rem; transition:background .12s,color .12s,transform .2s; }
 .ah-canvas-block.ah-block-active .ah-toggle-block { transform:rotate(180deg); }
 
@@ -346,16 +327,16 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-canvas-block.ah-block-active .ah-block-body { display:block; }
 .ah-block-body .ah-form-row { margin-bottom:10px; }
 .ah-block-body label {
-  font-size:.72rem; font-weight:700; color:#6b7280; display:block;
+  font-size:.72rem; font-weight:700; color:var(--ah-muted); display:block;
   margin-bottom:3px; text-transform:uppercase; letter-spacing:.04em;
 }
 .ah-block-body input, .ah-block-body textarea, .ah-block-body select {
-  width:100%; border:1px solid #e5e7eb; border-radius:6px;
+  width:100%; border:1px solid var(--ah-border); border-radius:6px;
   padding:6px 9px; font-size:.82rem; box-sizing:border-box;
   transition:border-color .15s,box-shadow .15s;
 }
 .ah-block-body input:focus, .ah-block-body textarea:focus, .ah-block-body select:focus {
-  outline:none; border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,.1);
+  outline:none; border-color:var(--ah-primary); box-shadow:0 0 0 2px rgba(59,130,246,.1);
 }
 .ah-block-body textarea { resize:vertical; min-height:76px; }
 .ah-block-body .wp-editor-wrap { max-width:none; }
@@ -363,55 +344,55 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-block-body .mce-container, .ah-block-body .quicktags-toolbar { box-sizing:border-box; }
 
 /* Repeater */
-.ah-repeater { border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; margin-top:6px; background:#fafafa; }
+.ah-repeater { border:1px solid var(--ah-border); border-radius:8px; overflow:hidden; margin-top:6px; background:var(--ah-bg-light); }
 .ah-repeater-row {
   display:grid; gap:6px; padding:10px 32px 10px 10px;
-  border-bottom:1px solid #f0f0f0; position:relative; background:#fff;
+  border-bottom:1px solid var(--ah-border); position:relative; background:#fff;
 }
 .ah-repeater-row:last-of-type { border-bottom:none; }
-.ah-repeater-row label { font-size:.68rem; color:#9ca3af; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+.ah-repeater-row label { font-size:.68rem; color:var(--ah-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
 .ah-repeater-row .ah-remove-row {
   position:absolute; top:8px; right:8px; background:none; border:none;
-  cursor:pointer; color:#d1d5db; font-size:.75rem; line-height:1;
+  cursor:pointer; color:var(--ah-border); font-size:.75rem; line-height:1;
   padding:3px 5px; border-radius:4px; transition:color .12s,background .12s;
 }
-.ah-repeater-row .ah-remove-row:hover { color:#ef4444; background:#fef2f2; }
+.ah-repeater-row .ah-remove-row:hover { color:var(--ah-danger); background:var(--ah-bg-light); }
 .ah-add-row {
   display:flex; align-items:center; justify-content:center; gap:4px;
-  padding:7px 12px; color:#3b82f6; font-size:.78rem; font-weight:600;
-  cursor:pointer; background:#f8fbff; border:none; width:100%;
+  padding:7px 12px; color:var(--ah-primary); font-size:.78rem; font-weight:600;
+  cursor:pointer; background:var(--ah-bg-light); border:none; width:100%;
   transition:background .12s;
 }
-.ah-add-row:hover { background:#dbeafe; }
+.ah-add-row:hover { background:var(--ah-bg-light); }
 
 /* ── Right settings panel ────────────────────────── */
 .ah-settings-panel {
-  background:#fff; border-left:1px solid #e5e7eb;
+  background:#fff; border-left:1px solid var(--ah-border);
   padding:14px 12px; overflow-y:auto;
 }
 .ah-settings-panel h4 {
   font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
-  color:#9ca3af; margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid #f3f4f6;
+  color:var(--ah-muted); margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid var(--ah-bg-light);
 }
 .ah-settings-panel .ah-form-row { margin-bottom:10px; }
 .ah-settings-panel label {
-  font-size:.7rem; font-weight:700; color:#6b7280; display:block;
+  font-size:.7rem; font-weight:700; color:var(--ah-muted); display:block;
   margin-bottom:3px; text-transform:uppercase; letter-spacing:.04em;
 }
 /* .ah-settings-panel input, */
  .ah-settings-panel select, .ah-settings-panel textarea {
-  width:100%; border:1px solid #e5e7eb; border-radius:6px;
+  width:100%; border:1px solid var(--ah-border); border-radius:6px;
   padding:6px 8px; font-size:.8rem; box-sizing:border-box;
   transition:border-color .15s,box-shadow .15s;
 }
 .ah-settings-panel input:focus, .ah-settings-panel select:focus, .ah-settings-panel textarea:focus {
-  outline:none; border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,.1);
+  outline:none; border-color:var(--ah-primary); box-shadow:0 0 0 2px rgba(59,130,246,.1);
 }
-.ah-settings-panel small { display:block; font-size:.68rem; color:#9ca3af; margin-top:3px; word-break:break-all; line-height:1.4; }
+.ah-settings-panel small { display:block; font-size:.68rem; color:var(--ah-muted); margin-top:3px; word-break:break-all; line-height:1.4; }
 
 /* Drag helpers */
-.ui-sortable-helper { box-shadow:0 12px 36px rgba(0,0,0,.18) !important; border-color:#3b82f6 !important; }
-.ui-sortable-placeholder { background:#eff6ff; border:2px dashed #93c5fd; border-radius:10px; margin-bottom:10px; }
+.ui-sortable-helper { box-shadow:0 12px 36px rgba(0,0,0,.18) !important; border-color:var(--ah-primary) !important; }
+.ui-sortable-placeholder { background:var(--ah-bg-light); border:2px dashed var(--ah-border); border-radius:10px; margin-bottom:10px; }
 </style>
 
 <form id="ah-builder-form" method="post">
@@ -532,7 +513,7 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
         <?php $content_tax_m->render_picker( 'builder_page', $edit_id ); ?>
       </div>
 
-      <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0">
+      <hr style="border:none;border-top:1px solid var(--ah-border);margin:16px 0">
       <h4>Layout</h4>
 
       <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
@@ -548,7 +529,7 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
         <label for="ahb_show_footer" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show site footer</label>
       </div>
 
-      <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0">
+      <hr style="border:none;border-top:1px solid var(--ah-border);margin:16px 0">
       <h4>Bottom CTA</h4>
 
       <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
@@ -594,11 +575,11 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
       </div>
 
       <?php if ( $current_page ) : ?>
-        <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0">
+        <hr style="border:none;border-top:1px solid var(--ah-border);margin:16px 0">
         <h4>Danger Zone</h4>
         <div>
           <button type="submit" form="ah-builder-delete-form" name="delete_page" value="1" class="ah-confirm-delete" data-title="Delete Page" data-confirm="This page and all its content will be permanently deleted."
-                  style="width:100%;background:#fef2f2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;padding:8px;cursor:pointer;font-size:.82rem;font-weight:600">
+                  style="width:100%;background:var(--ah-bg-light);color:var(--ah-danger);border:1px solid var(--ah-border);border-radius:6px;padding:8px;cursor:pointer;font-size:.82rem;font-weight:600">
             🗑 Delete Page
           </button>
         </div>
@@ -621,7 +602,7 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 // ── Block definitions ────────────────────────────────────────────────────────
 var BLOCK_DEFS = {
   hero: {
-    label: 'Hero Banner', icon: '🎯', color: '#4f46e5',
+    label: 'Hero Banner', icon: '🎯', color: 'var(--ah-primary)',
     fields: [
       { key:'eyebrow',     label:'Eyebrow Text',         type:'text',     ph:'Trusted Buyer\'s Agents'    },
       { key:'heading',     label:'Heading',              type:'text',     ph:'Welcome to our service'     },
@@ -639,7 +620,7 @@ var BLOCK_DEFS = {
     ]
   },
   section_heading: {
-    label: 'Section Heading', icon: '📌', color: '#0891b2',
+    label: 'Section Heading', icon: '📌', color: 'var(--ah-primary)',
     fields: [
       { key:'eyebrow',    label:'Eyebrow',    type:'text',   ph:'Our Approach'    },
       { key:'title',      label:'Title',      type:'text',   ph:'Section Title'   },
@@ -655,13 +636,13 @@ var BLOCK_DEFS = {
     ]
   },
   spacer: {
-    label: 'Spacer', icon: '↕️', color: '#9ca3af',
+    label: 'Spacer', icon: '↕️', color: 'var(--ah-muted)',
     fields: [
       { key:'height', label:'Height (px)', type:'text', ph:'40' },
     ]
   },
   cards: {
-    label: 'Card Grid', icon: '🃏', color: '#7c3aed',
+    label: 'Card Grid', icon: '🃏', color: 'var(--ah-primary)',
     fields: [
       { key:'heading',    label:'Section Heading', type:'text',   ph:'Our Features' },
       { key:'cols',       label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
@@ -680,7 +661,7 @@ var BLOCK_DEFS = {
     }
   },
   cta_banner: {
-    label: 'CTA Banner', icon: '📣', color: '#b45309',
+    label: 'CTA Banner', icon: '📣', color: 'var(--ah-warning)',
     fields: [
       { key:'eyebrow',   label:'Eyebrow',      type:'text',     ph:'Ready to start?'       },
       { key:'heading',   label:'Heading',      type:'text',     ph:'Ready to get started?' },
@@ -694,7 +675,7 @@ var BLOCK_DEFS = {
     ]
   },
   stats_row: {
-    label: 'Stats Row', icon: '📊', color: '#0369a1',
+    label: 'Stats Row', icon: '📊', color: 'var(--ah-primary)',
     fields: [
       { key:'heading', label:'Section Heading', type:'text', ph:'By the Numbers' },
     ],
@@ -710,7 +691,7 @@ var BLOCK_DEFS = {
     }
   },
   faq: {
-    label: 'FAQ Accordion', icon: '❓', color: '#7c3aed',
+    label: 'FAQ Accordion', icon: '❓', color: 'var(--ah-primary)',
     fields: [
       { key:'heading', label:'Section Heading', type:'text', ph:'Common Questions' },
     ],
@@ -723,7 +704,7 @@ var BLOCK_DEFS = {
     }
   },
   button_row: {
-    label: 'Button Row', icon: '🔘', color: '#be185d',
+    label: 'Button Row', icon: '🔘', color: 'var(--ah-primary)',
     fields: [
       { key:'align', label:'Alignment', type:'select', options:['center','left','right'], def:'center' },
     ],
@@ -737,7 +718,7 @@ var BLOCK_DEFS = {
     }
   },
   links_list: {
-    label: 'Links List', icon: '🔗', color: '#0891b2',
+    label: 'Links List', icon: '🔗', color: 'var(--ah-primary)',
     fields: [
       { key:'heading', label:'Heading',   type:'text',   ph:'Useful Links' },
       { key:'cols',    label:'Columns',   type:'select', options:['1','2','3'], def:'2' },
@@ -776,7 +757,7 @@ var BLOCK_DEFS = {
     }
   },
   testimonial: {
-    label: 'Testimonial', icon: '💬', color: '#0891b2',
+    label: 'Testimonial', icon: '💬', color: 'var(--ah-primary)',
     fields: [
       { key:'quote',   label:'Quote',       type:'textarea', ph:'Working with them transformed our property search…' },
       { key:'name',    label:'Author Name', type:'text',     ph:'Sarah & James T.'    },
@@ -789,7 +770,7 @@ var BLOCK_DEFS = {
     ]
   },
   steps: {
-    label: 'Steps / Process', icon: '🔢', color: '#7c3aed',
+    label: 'Steps / Process', icon: '🔢', color: 'var(--ah-primary)',
     fields: [
       { key:'heading',   label:'Section Heading', type:'text',   ph:'How It Works' },
       { key:'layout',    label:'Layout',          type:'select', options:['vertical','horizontal'], def:'vertical' },
@@ -806,14 +787,14 @@ var BLOCK_DEFS = {
     }
   },
   divider: {
-    label: 'Divider', icon: '➖', color: '#9ca3af',
+    label: 'Divider', icon: '➖', color: 'var(--ah-muted)',
     fields: [
       { key:'style', label:'Style',         type:'select', options:['line','ornament','dots'], def:'line' },
       { key:'label', label:'Optional Label',type:'text',   ph:'- or -' },
     ]
   },
   alert: {
-    label: 'Alert / Notice', icon: '📢', color: '#b45309',
+    label: 'Alert / Notice', icon: '📢', color: 'var(--ah-warning)',
     fields: [
       { key:'type',        label:'Type',        type:'select', options:['info','success','warning','tip'], def:'info' },
       { key:'title',       label:'Title',       type:'text',   ph:'Did you know?'       },
@@ -838,7 +819,7 @@ var BLOCK_DEFS = {
     }
   },
   gallery: {
-    label: 'Gallery', icon: '🖼️', color: '#7c3aed',
+    label: 'Gallery', icon: '🖼️', color: 'var(--ah-primary)',
     fields: [
       { key:'heading', label:'Section Heading', type:'text',   ph:'Our Properties'          },
       { key:'cols',    label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
@@ -854,7 +835,7 @@ var BLOCK_DEFS = {
     }
   },
   video: {
-    label: 'Video Embed', icon: '▶️', color: '#dc2626',
+    label: 'Video Embed', icon: '▶️', color: 'var(--ah-danger)',
     fields: [
       { key:'url',     label:'YouTube / Vimeo URL', type:'text', ph:'https://www.youtube.com/watch?v=…' },
       { key:'caption', label:'Caption',             type:'text', ph:'Optional caption below video'       },
@@ -870,7 +851,7 @@ var BLOCK_DEFS = {
     ]
   },
   logo_strip: {
-    label: 'Logo Strip', icon: '🏷️', color: '#6b7280',
+    label: 'Logo Strip', icon: '🏷️', color: 'var(--ah-muted)',
     fields: [
       { key:'heading', label:'Label / Heading', type:'text', ph:'Trusted by leading firms' },
       { key:'bg',      label:'Background',      type:'select', options:['white','alt'], def:'white' },
@@ -885,7 +866,7 @@ var BLOCK_DEFS = {
     }
   },
   timeline: {
-    label: 'Timeline', icon: '📅', color: '#0891b2',
+    label: 'Timeline', icon: '📅', color: 'var(--ah-primary)',
     fields: [
       { key:'heading', label:'Section Heading', type:'text', ph:'Our Journey' },
       { key:'bg',      label:'Background',      type:'select', options:['white','alt'], def:'white' },
@@ -901,7 +882,7 @@ var BLOCK_DEFS = {
     }
   },
   pricing: {
-    label: 'Pricing Card', icon: '💰', color: '#b45309',
+    label: 'Pricing Card', icon: '💰', color: 'var(--ah-warning)',
     fields: [
       { key:'heading',    label:'Section Heading', type:'text',     ph:'Our Fees'                 },
       { key:'subtitle',   label:'Section Subtitle',type:'text',     ph:'Simple, transparent pricing' },
@@ -921,7 +902,7 @@ var BLOCK_DEFS = {
     }
   },
   pull_quote: {
-    label: 'Pull Quote', icon: '❝', color: '#b45309',
+    label: 'Pull Quote', icon: '❝', color: 'var(--ah-warning)',
     fields: [
       { key:'quote', label:'Quote Text', type:'textarea', ph:'The most important thing is to find the right property at the right price.' },
       { key:'size',  label:'Size',       type:'select',   options:['md','lg'], def:'md'     },
@@ -946,7 +927,7 @@ var BLOCK_DEFS = {
     }
   },
   download: {
-    label: 'Download Button', icon: '⬇️', color: '#0369a1',
+    label: 'Download Button', icon: '⬇️', color: 'var(--ah-primary)',
     fields: [
       { key:'label',    label:'Label',         type:'text',   ph:'First-Time Buyer Guide'         },
       { key:'url',      label:'File URL',      type:'text',   ph:'/wp-content/uploads/guide.pdf'  },
@@ -956,7 +937,7 @@ var BLOCK_DEFS = {
     ]
   },
   tabs: {
-    label: 'Tabs', icon: '🗂️', color: '#4f46e5',
+    label: 'Tabs', icon: '🗂️', color: 'var(--ah-primary)',
     fields: [
       { key:'heading', label:'Section Heading', type:'text', ph:'' },
     ],
@@ -970,7 +951,7 @@ var BLOCK_DEFS = {
     }
   },
   comparison: {
-    label: 'Comparison Table', icon: '⚖️', color: '#7c3aed',
+    label: 'Comparison Table', icon: '⚖️', color: 'var(--ah-primary)',
     fields: [
       { key:'heading', label:'Section Heading', type:'text', ph:'Why use a Buyer\'s Agent?' },
       { key:'col1',    label:'Column 1 Label',  type:'text', ph:'With Us'                   },
@@ -986,7 +967,7 @@ var BLOCK_DEFS = {
     }
   },
   notice_bar: {
-    label: 'Notice Bar', icon: '📯', color: '#b45309',
+    label: 'Notice Bar', icon: '📯', color: 'var(--ah-warning)',
     fields: [
       { key:'text',  label:'Message',    type:'text',   ph:'Limited spaces available - book your free consultation today' },
       { key:'cta',   label:'CTA Text',   type:'text',   ph:'Book Now'    },
@@ -995,7 +976,7 @@ var BLOCK_DEFS = {
     ]
   },
   contact_card: {
-    label: 'Contact Card', icon: '📇', color: '#0891b2',
+    label: 'Contact Card', icon: '📇', color: 'var(--ah-primary)',
     fields: [
       { key:'photo',   label:'Photo URL',  type:'text',     ph:'/wp-content/uploads/agent.jpg' },
       { key:'name',    label:'Name',       type:'text',     ph:'James Whitmore'                },
@@ -1164,7 +1145,7 @@ function buildRepeaterRow(fields, data, blockId, repKey, ri) {
   var html = '<div class="ah-repeater-row" style="grid-template-columns: repeat('+Math.min(fields.length,2)+',1fr)">';
   fields.forEach(function(f){
     var val = data[f.key]||'';
-    html += '<div><label style="font-size:.72rem;color:#9ca3af">'+esc(f.label)+'</label>';
+    html += '<div><label style="font-size:.72rem;color:var(--ah-muted)">'+esc(f.label)+'</label>';
     if (f.type==='textarea') {
       html += '<textarea data-block-id="'+blockId+'" data-repeater="'+repKey+'" data-rep-index="'+ri+'" data-field="'+f.key+'" rows="2">'+esc(val)+'</textarea>';
     } else if (f.type==='select') {
@@ -1326,7 +1307,7 @@ function esc(s) {
 function hexToLight(hex) {
   return hex.replace(/^#/, '').length === 6
     ? 'rgba('+parseInt(hex.slice(1,3),16)+','+parseInt(hex.slice(3,5),16)+','+parseInt(hex.slice(5,7),16)+',.1)'
-    : '#f3f4f6';
+    : 'var(--ah-bg-light)';
 }
 
 // ── Init ─────────────────────────────────────────────────────────────────────

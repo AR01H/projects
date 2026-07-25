@@ -9,38 +9,38 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 <div class="wrap ah-wrap">
 
 <style>
-.ah-help-hero{background:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);color:#fff;padding:32px 36px;border-radius:10px;margin-bottom:24px;display:flex;align-items:center;gap:20px;}
+.ah-help-hero{background:linear-gradient(135deg,var(--ah-primary) 0%,var(--ah-primary) 100%);color:#fff;padding:32px 36px;border-radius:10px;margin-bottom:24px;display:flex;align-items:center;gap:20px;}
 .ah-help-hero h1{margin:0 0 6px;color:#fff;font-size:1.6rem;}
 .ah-help-hero p{margin:0;opacity:.85;font-size:.95rem;}
 .ah-help-hero .ah-hero-icon{font-size:3.5rem;flex-shrink:0;}
 .ah-help-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
-.ah-help-tab{padding:8px 16px;border:2px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;font-size:.85rem;font-weight:500;color:#475569;text-decoration:none;display:inline-block;transition:all .15s;}
-.ah-help-tab:hover,.ah-help-tab.active{border-color:#1e40af;background:#1e40af;color:#fff;}
+.ah-help-tab{padding:8px 16px;border:2px solid var(--ah-border);border-radius:6px;background:#fff;cursor:pointer;font-size:.85rem;font-weight:500;color:var(--ah-text);text-decoration:none;display:inline-block;transition:all .15s;}
+.ah-help-tab:hover,.ah-help-tab.active{border-color:var(--ah-primary);background:var(--ah-primary);color:#fff;}
 .ah-help-panel{display:none;}
 .ah-help-panel.active{display:block;}
 .ah-help-section{margin-bottom:28px;}
-.ah-help-section h2{font-size:1.1rem;font-weight:700;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;color:#1e293b;}
-.ah-help-section h3{font-size:.95rem;font-weight:600;margin:16px 0 6px;color:#334155;}
-.ah-help-section p,.ah-help-section li{font-size:.875rem;line-height:1.7;color:#475569;}
+.ah-help-section h2{font-size:1.1rem;font-weight:700;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ah-border);color:var(--ah-text);}
+.ah-help-section h3{font-size:.95rem;font-weight:600;margin:16px 0 6px;color:var(--ah-text);}
+.ah-help-section p,.ah-help-section li{font-size:.875rem;line-height:1.7;color:var(--ah-text);}
 .ah-help-section ul,.ah-help-section ol{padding-left:20px;margin:6px 0 12px;}
 .ah-help-section li{margin-bottom:4px;}
 .ah-step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;}
-.ah-step-num{background:#1e40af;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;margin-top:2px;}
+.ah-step-num{background:var(--ah-primary);color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;margin-top:2px;}
 .ah-step-body{flex:1;}
-.ah-step-body strong{display:block;font-size:.875rem;margin-bottom:2px;color:#1e293b;}
+.ah-step-body strong{display:block;font-size:.875rem;margin-bottom:2px;color:var(--ah-text);}
 .ah-step-body p{margin:0;font-size:.82rem;}
-.ah-tip{background:#f0f9ff;border-left:3px solid #38bdf8;padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:.82rem;color:#0c4a6e;line-height:1.6;}
-.ah-tip strong{color:#0369a1;}
-.ah-warn{background:#fffbeb;border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:.82rem;color:#78350f;line-height:1.6;}
+.ah-tip{background:var(--ah-bg-light);border-left:3px solid #38bdf8;padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:.82rem;color:var(--ah-text);line-height:1.6;}
+.ah-tip strong{color:var(--ah-primary);}
+.ah-warn{background:var(--ah-bg-light);border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:.82rem;color:var(--ah-text);line-height:1.6;}
 .ah-feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:12px 0;}
-.ah-feature-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center;}
+.ah-feature-card{background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:14px;text-align:center;}
 .ah-feature-card .icon{font-size:1.8rem;margin-bottom:6px;}
-.ah-feature-card strong{display:block;font-size:.82rem;margin-bottom:4px;color:#1e293b;}
-.ah-feature-card p{font-size:.75rem;color:#64748b;margin:0;}
-.ah-kbd{display:inline-block;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:3px;padding:1px 6px;font-size:.78rem;font-family:monospace;color:#334155;}
+.ah-feature-card strong{display:block;font-size:.82rem;margin-bottom:4px;color:var(--ah-text);}
+.ah-feature-card p{font-size:.75rem;color:var(--ah-muted);margin:0;}
+.ah-kbd{display:inline-block;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:3px;padding:1px 6px;font-size:.78rem;font-family:monospace;color:var(--ah-text);}
 .ah-section-ref{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:.82rem;margin:8px 0;}
-.ah-section-ref dt{font-weight:600;color:#1e293b;white-space:nowrap;}
-.ah-section-ref dd{color:#475569;margin:0;}
+.ah-section-ref dt{font-weight:600;color:var(--ah-text);white-space:nowrap;}
+.ah-section-ref dd{color:var(--ah-text);margin:0;}
 </style>
 
 <!-- Hero -->
@@ -112,7 +112,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
     </div>
 
   <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
-</div>
 
 <!-- ══════════ CONTENT ══════════ -->
 <div id="help-content" class="ah-help-panel<?php echo $active_tab === 'content' ? ' active' : ''; ?>">
@@ -171,7 +170,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
   </div>
   <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
-</div>
 
 <!-- ══════════ PAGE SECTIONS ══════════ -->
 <div id="help-page-sections" class="ah-help-panel<?php echo $active_tab === 'page-sections' ? ' active' : ''; ?>">
@@ -212,7 +210,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
   </div>
   <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
-</div>
 
 <!-- ══════════ POST EDITOR ══════════ -->
 <div id="help-post-editor" class="ah-help-panel<?php echo $active_tab === 'post-editor' ? ' active' : ''; ?>">
@@ -298,7 +295,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
   </div>
   <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
-</div>
 
 <!-- ══════════ TOOLS ══════════ -->
 <div id="help-tools" class="ah-help-panel<?php echo $active_tab === 'tools' ? ' active' : ''; ?>">
@@ -373,7 +369,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
   </div>
   <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
-</div>
 
 <!-- ══════════ TROUBLESHOOTING ══════════ -->
 <div id="help-troubleshoot" class="ah-help-panel<?php echo $active_tab === 'troubleshoot' ? ' active' : ''; ?>">
@@ -446,7 +441,6 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
 
   </div>
   <?php \Ah\Cms\Admin\Components\AdminComponents::card( '', ob_get_clean() ); ?>
-</div>
 
 </div><!-- .wrap -->
 
@@ -469,3 +463,4 @@ $active_tab = sanitize_key( $_GET['tab'] ?? 'quick-start' );
   });
 })();
 </script>
+</div>

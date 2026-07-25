@@ -1,0 +1,34 @@
+[
+  {
+    "id": "col-best-sellers",
+    "slug": "best-sellers",
+    "name": "Best Sellers",
+    "description": "Our most-reordered pickles, loved by customers again and again.",
+    "image": "https://picsum.photos/seed/pickle-col-bestsellers/800/600",
+    "productIds": ["pkl-001", "pkl-002"]
+  },
+  {
+    "id": "col-new-arrivals",
+    "slug": "new-arrivals",
+    "name": "New Arrivals",
+    "description": "Freshly jarred and just added to the shelf.",
+    "image": "https://picsum.photos/seed/pickle-col-newarrivals/800/600",
+    "productIds": ["pkl-003"]
+  },
+  {
+    "id": "col-gift-jars",
+    "slug": "gift-jars",
+    "name": "Gift Jar Sets",
+    "description": "Beautifully packaged pickle sets, ready to gift.",
+    "image": "https://picsum.photos/seed/pickle-col-gift/800/600",
+    "productIds": ["pkl-004", "pkl-005"]
+  },
+  {
+    "id": "col-festive",
+    "slug": "festive-collections",
+    "name": "Festive Collections",
+    "description": "Curated pickle gifting for the festive season.",
+    "image": "https://picsum.photos/seed/pickle-col-festive/800/600",
+    "productIds": ["pkl-005"]
+  }
+]

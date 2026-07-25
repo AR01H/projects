@@ -9,30 +9,6 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
 use Ah\Cms\Admin\Components\AdminComponents;
 
-if ( ! defined( 'AH_FI_OPTION' ) ) { define( 'AH_FI_OPTION', 'ah_featured_in_sections' ); }
-
-/* ── helpers ── */
-function ah_fi_get_all(): array {
-	$raw = get_option( AH_FI_OPTION, '' );
-	$dec = $raw ? json_decode( $raw, true ) : array();
-	return is_array( $dec ) ? $dec : array();
-}
-
-function ah_fi_save_all( array $sections ): void {
-	update_option( AH_FI_OPTION, wp_json_encode( array_values( $sections ) ) );
-}
-
-function ah_fi_find( string $id ): ?array {
-	foreach ( ah_fi_get_all() as $s ) {
-		if ( isset( $s['id'] ) && $s['id'] === $id ) { return $s; }
-	}
-	return null;
-}
-
-function ah_fi_url( array $args = array() ): string {
-	return esc_url( add_query_arg( array_merge( array( 'page' => 'ah-featured-in' ), $args ), admin_url( 'admin.php' ) ) );
-}
-
 /* ── state ── */
 $action  = sanitize_key( $_GET['action'] ?? 'list' );
 $edit_id = sanitize_key( $_GET['id'] ?? '' );
@@ -45,8 +21,8 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['ah_fi_del_nonce'] )
 		$notice = 'Security check failed.'; $n_type = 'error';
 	} else {
 		$del_id   = sanitize_key( $_POST['del_section_id'] ?? '' );
-		$sections = array_values( array_filter( ah_fi_get_all(), fn( $s ) => ( $s['id'] ?? '' ) !== $del_id ) );
-		ah_fi_save_all( $sections );
+		$sections = array_values( array_filter( AH_Featured_In_Helper::get_all(), fn( $s ) => ( $s['id'] ?? '' ) !== $del_id ) );
+		AH_Featured_In_Helper::save_all( $sections );
 		$notice  = 'Section deleted.';
 		$action  = 'list';
 	}
@@ -72,14 +48,14 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['ah_fi_save_nonce'] 
 			$notice = 'Section ID is required.'; $n_type = 'error';
 		} else {
 			$new_section = array( 'id' => $sid, 'heading' => $heading, 'logos' => $logos );
-			$all         = ah_fi_get_all();
+			$all         = AH_Featured_In_Helper::get_all();
 			$replaced    = false;
 			foreach ( $all as &$s ) {
 				if ( ( $s['id'] ?? '' ) === $sid ) { $s = $new_section; $replaced = true; break; }
 			}
 			unset( $s );
 			if ( ! $replaced ) { $all[] = $new_section; }
-			ah_fi_save_all( $all );
+			AH_Featured_In_Helper::save_all( $all );
 			$notice  = 'Section saved.';
 			$action  = 'list';
 			$edit_id = '';
@@ -87,7 +63,7 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['ah_fi_save_nonce'] 
 	}
 }
 
-$all_sections = ah_fi_get_all();
+$all_sections = AH_Featured_In_Helper::get_all();
 ?>
 <div class="wrap ah-wrap">
 	<?php AdminComponents::pageHeader( 'awards', 'Featured In - Logo Strips', 'Create named logo strips. Use the section ID in any page template to display whichever strip you need.' ); ?>
@@ -100,17 +76,17 @@ $all_sections = ah_fi_get_all();
 		<?php if ( empty( $all_sections ) ) : ?>
 			<?php AdminComponents::emptyState( 'No sections yet. Create your first logo strip.', 'awards' ); ?>
 			<div style="text-align:center;margin-top:12px;">
-				<a href="<?php echo ah_fi_url( array( 'action' => 'new' ) ); ?>" class="ah-btn ah-btn-primary">+ New Section</a>
+				<a href="<?php echo AH_Featured_In_Helper::url( array( 'action' => 'new' ) ); ?>" class="ah-btn ah-btn-primary">+ New Section</a>
 			</div>
 		<?php else : ?>
 			<div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
-				<a href="<?php echo ah_fi_url( array( 'action' => 'new' ) ); ?>" class="ah-btn ah-btn-primary">+ New Section</a>
+				<a href="<?php echo AH_Featured_In_Helper::url( array( 'action' => 'new' ) ); ?>" class="ah-btn ah-btn-primary">+ New Section</a>
 			</div>
 			<?php
 			$fi_rows = array();
 			foreach ( $all_sections as $sec ) {
 				$logo_count = count( $sec['logos'] ?? array() );
-				$edit_url   = ah_fi_url( array( 'action' => 'edit', 'id' => esc_attr( $sec['id'] ?? '' ) ) );
+				$edit_url   = AH_Featured_In_Helper::url( array( 'action' => 'edit', 'id' => esc_attr( $sec['id'] ?? '' ) ) );
 				$del_nonce  = wp_create_nonce( 'ah_fi_delete' );
 				$actions_html = '<a href="' . esc_url( $edit_url ) . '" class="ah-btn ah-btn-secondary ah-btn-sm">Edit</a>'
 					. '<form method="post" style="display:inline;margin:0;padding:0">'
@@ -159,12 +135,12 @@ $all_sections = ah_fi_get_all();
 	<?php else : ?>
 		<?php
 		$is_edit    = 'edit' === $action && '' !== $edit_id;
-		$existing   = $is_edit ? ah_fi_find( $edit_id ) : null;
+		$existing   = $is_edit ? AH_Featured_In_Helper::find( $edit_id ) : null;
 		$fi_id      = $existing['id']      ?? ( sanitize_key( $_POST['fi_id'] ?? '' ) );
 		$fi_heading = $existing['heading'] ?? sanitize_text_field( wp_unslash( $_POST['fi_heading'] ?? 'As featured in:' ) );
 		$fi_logos   = $existing['logos']   ?? array();
 		?>
-		<?php AdminComponents::backLink( ah_fi_url() ); ?>
+		<?php AdminComponents::backLink( AH_Featured_In_Helper::url() ); ?>
 
 		<form method="post">
 			<?php wp_nonce_field( 'ah_fi_save', 'ah_fi_save_nonce' ); ?>
@@ -181,7 +157,7 @@ $all_sections = ah_fi_get_all();
 
 			<div id="ah-fi-logos" class="ah-builder-stack" style="margin-top:-16px;">
 				<?php foreach ( $fi_logos as $i => $logo ) : ?>
-					<div class="ah-fi-logo-row" style="display:grid;grid-template-columns:1fr 1fr 1fr 28px;gap:10px;align-items:end;background:#f8fafc;border:1px solid var(--ah-border);border-radius:var(--ah-radius);padding:12px 14px;">
+					<div class="ah-fi-logo-row" style="display:grid;grid-template-columns:1fr 1fr 1fr 28px;gap:10px;align-items:end;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:var(--ah-radius);padding:12px 14px;">
 						<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--ah-text-muted);">
 							Image URL
 							<input type="url" name="fi_logos[<?php echo esc_attr( $i ); ?>][image_url]" value="<?php echo esc_attr( $logo['image_url'] ?? '' ); ?>" class="regular-text" placeholder="https://…/logo.png">
@@ -204,7 +180,7 @@ $all_sections = ah_fi_get_all();
 
 			<div style="display:flex;align-items:center;gap:12px;margin-top:16px;">
 				<button type="submit" class="ah-btn ah-btn-primary"><?php echo $is_edit ? 'Save Changes' : 'Create Section'; ?></button>
-				<a href="<?php echo ah_fi_url(); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
+				<a href="<?php echo AH_Featured_In_Helper::url(); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
 			</div>
 		</form>
 
@@ -215,7 +191,7 @@ $all_sections = ah_fi_get_all();
 			if (!list || !addBtn) return;
 
 			function rowHtml(i) {
-				return '<div class="ah-fi-logo-row" style="display:grid;grid-template-columns:1fr 1fr 1fr 28px;gap:10px;align-items:end;background:#f8fafc;border:1px solid var(--ah-border);border-radius:var(--ah-radius);padding:12px 14px;">' +
+				return '<div class="ah-fi-logo-row" style="display:grid;grid-template-columns:1fr 1fr 1fr 28px;gap:10px;align-items:end;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:var(--ah-radius);padding:12px 14px;">' +
 					'<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--ah-text-muted);">Image URL<input type="url" name="fi_logos[' + i + '][image_url]" class="regular-text" placeholder="https://…/logo.png"></label>' +
 					'<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--ah-text-muted);">Link <small style="font-weight:400">(optional)</small><input type="url" name="fi_logos[' + i + '][link]" class="regular-text" placeholder="https://…"></label>' +
 					'<label style="display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--ah-text-muted);">Label / Alt<input type="text" name="fi_logos[' + i + '][label]" class="regular-text" placeholder="e.g. BBC"></label>' +

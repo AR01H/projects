@@ -121,35 +121,35 @@ $page_slug   = 'ah-newsletter';
 <style>
 .nl-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
 .nl-header h1{margin:0;flex:1}
-.nl-tab-nav{display:flex;gap:2px;border-bottom:2px solid #e5e7eb;margin-bottom:24px}
-.nl-tab-nav a{padding:10px 20px;text-decoration:none;font-weight:500;font-size:14px;color:#6b7280;border-radius:6px 6px 0 0;border:1px solid transparent;border-bottom:none;margin-bottom:-2px}
-.nl-tab-nav a.on{color:#2563eb;background:#fff;border-color:#e5e7eb;border-bottom-color:#fff}
-.nl-tab-nav a:hover:not(.on){color:#1f2937;background:#f9fafb}
+.nl-tab-nav{display:flex;gap:2px;border-bottom:2px solid var(--ah-border);margin-bottom:24px}
+.nl-tab-nav a{padding:10px 20px;text-decoration:none;font-weight:500;font-size:14px;color:var(--ah-muted);border-radius:6px 6px 0 0;border:1px solid transparent;border-bottom:none;margin-bottom:-2px}
+.nl-tab-nav a.on{color:var(--ah-primary);background:#fff;border-color:var(--ah-border);border-bottom-color:#fff}
+.nl-tab-nav a:hover:not(.on){color:var(--ah-text);background:var(--ah-bg-light)}
 .nl-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.nl-stat-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px 22px;min-width:130px;text-align:center}
-.nl-stat-num{font-size:2rem;font-weight:700;line-height:1;color:#1f2937}
-.nl-stat-lbl{font-size:12px;color:#6b7280;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.nl-stat-box{background:#fff;border:1px solid var(--ah-border);border-radius:10px;padding:16px 22px;min-width:130px;text-align:center}
+.nl-stat-num{font-size:2rem;font-weight:700;line-height:1;color:var(--ah-text)}
+.nl-stat-lbl{font-size:12px;color:var(--ah-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
 .nl-filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
-.nl-filter-pill{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:2px solid #e5e7eb;background:#fff;color:#6b7280;text-decoration:none;transition:all .15s}
-.nl-filter-pill:hover{border-color:#2563eb;color:#2563eb}
-.nl-filter-pill.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.nl-filter-pill{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:2px solid var(--ah-border);background:#fff;color:var(--ah-muted);text-decoration:none;transition:all .15s}
+.nl-filter-pill:hover{border-color:var(--ah-primary);color:var(--ah-primary)}
+.nl-filter-pill.on{background:var(--ah-primary);color:#fff;border-color:var(--ah-primary)}
 .nl-status-badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11.5px;font-weight:600}
-.nlsb-active{background:#d1fae5;color:#065f46}
-.nlsb-unsubscribed{background:#fee2e2;color:#991b1b}
-.nl-add-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px 22px;margin-bottom:20px;display:none}
+.nlsb-active{background:var(--ah-bg-light);color:var(--ah-success)}
+.nlsb-unsubscribed{background:var(--ah-bg-light);color:var(--ah-danger)}
+.nl-add-box{background:#fff;border:1px solid var(--ah-border);border-radius:10px;padding:18px 22px;margin-bottom:20px;display:none}
 .nl-add-box h3{margin:0 0 12px;font-size:15px}
 .nl-add-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
-.nl-add-row input{padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box}
+.nl-add-row input{padding:8px 12px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;width:100%;box-sizing:border-box}
 .nl-send-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .nl-send-grid .ah-form-row{margin:0}
 .nl-body-wrap{margin-bottom:16px}
-.nl-body-wrap textarea{width:100%;min-height:220px;font-size:13.5px;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:8px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.6}
-.nl-body-wrap textarea:focus{outline:none;border-color:#2563eb}
+.nl-body-wrap textarea{width:100%;min-height:220px;font-size:13.5px;padding:10px 12px;border:1.5px solid var(--ah-border);border-radius:8px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.6}
+.nl-body-wrap textarea:focus{outline:none;border-color:var(--ah-primary)}
 .nl-token-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.nl-token{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:3px 10px;font-family:monospace;font-size:12px;color:#334155;cursor:pointer;user-select:all}
-.nl-token:hover{background:#dbeafe;border-color:#2563eb}
-.nl-re-info{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#166534}
-.nl-re-info a{color:#166534;font-weight:600}
+.nl-token{background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:5px;padding:3px 10px;font-family:monospace;font-size:12px;color:var(--ah-text);cursor:pointer;user-select:all}
+.nl-token:hover{background:var(--ah-bg-light);border-color:var(--ah-primary)}
+.nl-re-info{background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--ah-success)}
+.nl-re-info a{color:var(--ah-success);font-weight:600}
 .nl-hist-row td{font-size:13px}
 .nl-hist-empty{text-align:center;padding:40px;color:var(--ah-muted)}
 </style>
@@ -191,8 +191,8 @@ $page_slug   = 'ah-newsletter';
     <form method="post">
       <?php wp_nonce_field( 'ah_nl_add', 'ah_nl_add_nonce' ); ?>
       <div class="nl-add-row">
-        <div><label style="font-size:12px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Email *</label><input type="email" name="nl_email" required placeholder="email@example.com"></div>
-        <div><label style="font-size:12px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Name</label><input type="text" name="nl_name" placeholder="Full name (optional)"></div>
+        <div><label style="font-size:12px;font-weight:600;color:var(--ah-muted);display:block;margin-bottom:4px">Email *</label><input type="email" name="nl_email" required placeholder="email@example.com"></div>
+        <div><label style="font-size:12px;font-weight:600;color:var(--ah-muted);display:block;margin-bottom:4px">Name</label><input type="text" name="nl_name" placeholder="Full name (optional)"></div>
         <div style="padding-bottom:1px"><button type="submit" class="ah-btn ah-btn-primary">Add</button></div>
       </div>
     </form>
@@ -205,7 +205,7 @@ $page_slug   = 'ah-newsletter';
   </div>
 
   <div class="nl-filter-bar">
-    <span style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px">Show:</span>
+    <span style="font-size:12px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.5px">Show:</span>
     <?php
     $pill_opts = array( '' => 'All (' . $count_all . ')', 'active' => 'Active (' . $count_act . ')', 'unsubscribed' => 'Unsubscribed (' . $count_uns . ')' );
     foreach ( $pill_opts as $pv => $pl ) :
@@ -228,7 +228,7 @@ $page_slug   = 'ah-newsletter';
         return esc_html( $row['name'] );
       } ),
       array( 'label' => 'Source', 'render' => function ( $row ) {
-        return '<span style="background:#f3f4f6;border-radius:4px;padding:2px 8px;font-size:12px">' . esc_html( $row['source'] ) . '</span>';
+        return '<span style="background:var(--ah-bg-light);border-radius:4px;padding:2px 8px;font-size:12px">' . esc_html( $row['source'] ) . '</span>';
       } ),
       array( 'label' => 'Status', 'render' => function ( $row ) {
         return '<span class="nl-status-badge nlsb-' . esc_attr( $row['status'] ) . '">' . esc_html( ucfirst( $row['status'] ) ) . '</span>';
@@ -254,7 +254,7 @@ $page_slug   = 'ah-newsletter';
 
   <?php if ( $total_pages > 1 ) : ?>
   <div style="margin-top:16px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-    <span style="font-size:13px;color:#6b7280">Page <?php echo esc_html( $paged ); ?> of <?php echo esc_html( $total_pages ); ?> (<?php echo esc_html( $total ); ?> total)</span>
+    <span style="font-size:13px;color:var(--ah-muted)">Page <?php echo esc_html( $paged ); ?> of <?php echo esc_html( $total_pages ); ?> (<?php echo esc_html( $total ); ?> total)</span>
     <?php for ( $p = 1; $p <= $total_pages; $p++ ) :
       $pu = add_query_arg( array( 'page' => $page_slug, 'tab' => 'subscribers', 'filter' => $filter, 'paged' => $p ), admin_url( 'admin.php' ) );
     ?>
@@ -288,7 +288,7 @@ $page_slug   = 'ah-newsletter';
     <form method="post" id="nl-send-form">
       <?php wp_nonce_field( 'ah_nl_send', 'ah_nl_send_nonce' ); ?>
 
-      <div class="nl-send-grid" style="margin-bottom:16px; border-bottom: 1px solid #e5e7eb; padding-bottom:16px;">
+      <div class="nl-send-grid" style="margin-bottom:16px; border-bottom: 1px solid var(--ah-border); padding-bottom:16px;">
         <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Target Recipients',
           '<div style="display:flex;gap:20px;margin-top:8px;">'
           . '<label style="font-weight:normal;cursor:pointer;"><input type="radio" name="nl_target_type" value="all" checked id="target-all"> 👥 All Active Subscribers (' . esc_html( $count_act ) . ')</label>'
@@ -328,27 +328,27 @@ $page_slug   = 'ah-newsletter';
       ) ); ?>
 
       <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Subject', '<input type="text" name="nl_subject" placeholder="e.g. Your update from ' . esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ) . '" style="font-size:15px;padding:10px 14px">', '', 'nl-subject-row' ); ?>
-      <style>#nl-subject-row { margin-bottom:16px; }</style>
+      
 
-      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Extra Custom Variables (One per line: <code>key|value</code>)', '<textarea name="nl_custom_vars" style="font-family:monospace;height:80px;" placeholder="discount|20% Off&#10;date|July 31st"></textarea>', '<p class="description" style="margin-top:5px;font-size:12px;color:#6b7280;">Use tokens like <code>{discount}</code> or <code>{date}</code> inside the email subject or body. They will be replaced dynamically before sending.</p>' ); ?>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Extra Custom Variables (One per line: <code>key|value</code>)', '<textarea name="nl_custom_vars" style="font-family:monospace;height:80px;" placeholder="discount|20% Off&#10;date|July 31st"></textarea>', '<p class="description" style="margin-top:5px;font-size:12px;color:var(--ah-muted);">Use tokens like <code>{discount}</code> or <code>{date}</code> inside the email subject or body. They will be replaced dynamically before sending.</p>' ); ?>
 
       <div class="nl-body-wrap">
-        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body</label>
-        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">Tokens replaced before passing to Rules Engine - click to insert:</div>
+        <label style="font-size:12px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body</label>
+        <div style="margin-bottom:8px;font-size:12px;color:var(--ah-muted)">Tokens replaced before passing to Rules Engine - click to insert:</div>
         <div class="nl-token-bar">
           <span class="nl-token" title="Subscriber name">{name}</span>
           <span class="nl-token" title="Unsubscribe link URL">{unsubscribe_url}</span>
           <span class="nl-token" title="Subscriber email">{email}</span>
         </div>
         <textarea name="nl_body" placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;To unsubscribe: {unsubscribe_url}"></textarea>
-        <div style="font-size:12px;color:#6b7280;margin-top:6px">Body is passed as <code>{body}</code> token to the Rules Engine rule. An unsubscribe line is also appended automatically.</div>
+        <div style="font-size:12px;color:var(--ah-muted);margin-top:6px">Body is passed as <code>{body}</code> token to the Rules Engine rule. An unsubscribe line is also appended automatically.</div>
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
         <button type="submit" class="ah-btn ah-btn-primary ah-confirm-delete" style="font-size:15px;padding:10px 28px" data-confirm="Confirm sending this notification via Rules Engine now?">
           Send Notification →
         </button>
-        <span style="font-size:12px;color:#6b7280">This action cannot be undone.</span>
+        <span style="font-size:12px;color:var(--ah-muted)">This action cannot be undone.</span>
       </div>
     </form>
 
@@ -364,7 +364,7 @@ $page_slug   = 'ah-newsletter';
           return esc_html( $entry['subject'] );
         } ),
         array( 'label' => 'Subscribers', 'style' => 'width:120px;text-align:center', 'render' => function ( $entry ) {
-          return '<span style="color:#16a34a;font-weight:600">' . esc_html( $entry['sent'] ) . '</span>';
+          return '<span style="color:var(--ah-success);font-weight:600">' . esc_html( $entry['sent'] ) . '</span>';
         } ),
         array( 'label' => 'Date & Time', 'style' => 'width:160px', 'render' => function ( $entry ) {
           return '<small>' . esc_html( wp_date( 'M j, Y g:i a', strtotime( $entry['sent_at'] ) ) ) . '</small>';
@@ -382,7 +382,7 @@ $page_slug   = 'ah-newsletter';
   <?php
   ob_start();
     ?>
-    <p style="color:#6b7280;font-size:13px;margin:0 0 24px;">These variables are available inside your <strong>Workflow Manager</strong> rule actions when triggered by the News Letter sender. Use the <code>{{variable}}</code> syntax in any action field.</p>
+    <p style="color:var(--ah-muted);font-size:13px;margin:0 0 24px;">These variables are available inside your <strong>Workflow Manager</strong> rule actions when triggered by the News Letter sender. Use the <code>{{variable}}</code> syntax in any action field.</p>
 
     <!-- INDIVIDUAL MODE -->
     <?php ob_start(); ?>
@@ -432,7 +432,7 @@ $page_slug   = 'ah-newsletter';
     <?php \Ah\Cms\Admin\Components\AdminComponents::card( '✉️ BCC Group Mode — Available in the single group trigger', ob_get_clean() ); ?>
 
     <!-- TIPS -->
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;font-size:13px;color:#166534;">
+    <div style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:16px 20px;font-size:13px;color:var(--ah-success);">
       <strong>💡 Tips:</strong>
       <ul style="margin:8px 0 0 18px;padding:0;line-height:1.9;">
         <li>Use <code>{{email}}</code> in the <strong>TO</strong> field of your Email Action for Individual Mode.</li>

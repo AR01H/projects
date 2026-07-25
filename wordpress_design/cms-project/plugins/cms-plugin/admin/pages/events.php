@@ -205,16 +205,16 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
           <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Display Settings', ob_get_clean() ); ?>
 
           <?php ob_start(); ?>
-            <p style="color:#1e40af;font-size:12px;margin:0 0 12px;">
+            <p style="color:var(--ah-primary);font-size:12px;margin:0 0 12px;">
               When someone submits a booking for this event, automatically fire a trigger to send email notifications via the Rules Engine.
             </p>
             <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( '',
               '<label style="display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:0;"><input type="checkbox" name="notify_on_booking" value="1" ' . checked( (int) ( $item->notify_on_booking ?? 0 ), 1, false ) . '><span>Enable email notifications for bookings</span></label>'
-              . '<p class="description" style="font-size:11px;margin-top:4px;color:#1e40af;">When enabled, booking submissions will trigger the Rules Engine to send configured emails.</p>'
+              . '<p class="description" style="font-size:11px;margin-top:4px;color:var(--ah-primary);">When enabled, booking submissions will trigger the Rules Engine to send configured emails.</p>'
             ); ?>
-            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Trigger Event Name <small style="font-weight:400;color:#666;">(shown in Rules Engine)</small>',
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Trigger Event Name <small style="font-weight:400;color:var(--ah-muted);">(shown in Rules Engine)</small>',
               '<input type="text" name="booking_trigger_name" value="' . esc_attr( $item->booking_trigger_name ?? '' ) . '" placeholder="e.g. booking_wedding, booking_corporate" style="font-family:monospace;font-size:12px;">'
-              . '<p class="description" style="font-size:11px;margin-top:4px;color:#666;">In the <a href="' . esc_url( admin_url( 'admin.php?page=ah-workflow-manager' ) ) . '" target="_blank" style="color:#1e40af;">Workflow Manager</a>, create a rule with this trigger name to send emails. If left blank, will use: <code style="background:#fff;border:1px solid #ddd;padding:2px 5px;border-radius:3px;">booking_event_' . esc_html( $edit_id ?: '{id}' ) . '</code></p>'
+              . '<p class="description" style="font-size:11px;margin-top:4px;color:var(--ah-muted);">In the <a href="' . esc_url( admin_url( 'admin.php?page=ah-workflow-manager' ) ) . '" target="_blank" style="color:var(--ah-primary);">Workflow Manager</a>, create a rule with this trigger name to send emails. If left blank, will use: <code style="background:#fff;border:1px solid var(--ah-border);padding:2px 5px;border-radius:3px;">booking_event_' . esc_html( $edit_id ?: '{id}' ) . '</code></p>'
             ); ?>
             <button type="submit" class="ah-btn ah-btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
               <span class="dashicons dashicons-saved"></span>
@@ -242,13 +242,5 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
  * Map color slug → a hex background for the admin swatch.
  */
 function self_color_bg( string $color ): string {
-	$map = array(
-		'green'  => '#4a8c2a',
-		'amber'  => '#d97706',
-		'teal'   => '#0891b2',
-		'purple' => '#7c3aed',
-		'coral'  => '#e11d48',
-		'indigo' => '#3730a3',
-	);
-	return $map[ $color ] ?? '#4a8c2a';
+	return AH_Events_Helper::color_bg( $color );
 }

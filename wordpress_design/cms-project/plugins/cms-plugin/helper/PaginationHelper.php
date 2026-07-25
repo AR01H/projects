@@ -10,9 +10,9 @@ class AH_Pagination {
 	 * @param string $base_url  URL without 'paged' param
 	 */
 	public static function render( array $meta, string $base_url = '' ): string {
-		$total = (int) $meta['total'];
-		$total_pages = (int) $meta['total_pages'];
-		$current = (int) $meta['current_page'];
+		$total = (int) ( $meta['total'] ?? 0 );
+		$total_pages = (int) ( $meta['total_pages'] ?? 1 );
+		$current = (int) ( $meta['current_page'] ?? 1 );
 		$per_page = (int) ( $meta['per_page'] ?? 20 );
 
 		if ( $total_pages <= 1 ) {

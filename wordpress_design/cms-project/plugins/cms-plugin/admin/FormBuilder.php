@@ -86,8 +86,8 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 /* ── Fields table ── */
 #fb-tbl{border-collapse:collapse;width:100%}
 #fb-tbl th{font-size:11.5px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.5px;padding:10px 10px;background:var(--ah-bg-light);border-bottom:1px solid var(--ah-border);white-space:nowrap}
-#fb-tbl td{padding:8px 10px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
-#fb-tbl tr:hover td{background:#fafafa}
+#fb-tbl td{padding:8px 10px;border-bottom:1px solid var(--ah-bg-light);vertical-align:middle}
+#fb-tbl tr:hover td{background:var(--ah-bg-light)}
 #fb-tbl td input[type="text"],#fb-tbl td textarea,#fb-tbl td select{width:100%;font-size:13px;padding:7px 10px;border:1.5px solid var(--ah-border);border-radius:6px;font-family:inherit;background:#fff;box-sizing:border-box}
 #fb-tbl td input:focus,#fb-tbl td textarea:focus,#fb-tbl td select:focus{outline:none;border-color:var(--ah-primary);box-shadow:0 0 0 2px rgba(37,99,235,.1)}
 #fb-tbl td textarea{min-height:66px;resize:vertical}
@@ -95,27 +95,27 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 .fb-drag:active{cursor:grabbing}
 .fb-chk{width:18px!important;height:18px;cursor:pointer;accent-color:var(--ah-primary);transform:scale(1.2)}
 .fb-hidden{display:none!important}
-.fb-ghost{opacity:.35;background:#eff6ff!important}
+.fb-ghost{opacity:.35;background:var(--ah-bg-light)!important}
 /* ── Shortcode pill ── */
-.fb-sc-pill{display:inline-flex;align-items:center;gap:8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;font-family:monospace;font-size:13px;color:#334155}
+.fb-sc-pill{display:inline-flex;align-items:center;gap:8px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;padding:7px 12px;font-family:monospace;font-size:13px;color:var(--ah-text)}
 .fb-sc-copy{background:var(--ah-primary);color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap}
 .fb-sc-copy:hover{background:var(--ah-primary-dark)}
 /* ── Submissions ── */
 .sub-data-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px}
-.sub-data-item{background:#f8fafc;border:1px solid var(--ah-border);border-radius:6px;padding:10px 12px}
+.sub-data-item{background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;padding:10px 12px}
 .sub-data-lbl{font-size:11px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .sub-data-val{font-size:13.5px;color:var(--ah-text);word-break:break-word}
-.sub-row-open td{background:#f0f9ff!important}
+.sub-row-open td{background:var(--ah-bg-light)!important}
 .sub-meta-box{background:#fff;border:1px solid var(--ah-border);border-radius:8px;padding:14px 16px;margin-top:14px;display:grid;grid-template-columns:200px 1fr auto;gap:12px;align-items:start}
 .sub-status-select{padding:7px 10px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;background:#fff}
 .sub-notes-ta{width:100%;font-size:13px;padding:7px 10px;border:1.5px solid var(--ah-border);border-radius:6px;font-family:inherit;min-height:60px;resize:vertical;box-sizing:border-box}
 .sub-notes-ta:focus{outline:none;border-color:var(--ah-primary)}
 .sub-save-btn{padding:8px 18px;background:var(--ah-success);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;white-space:nowrap}
-.sub-save-btn:hover{background:#15803d}
+.sub-save-btn:hover{background:var(--ah-success)}
 .sub-status-badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11.5px;font-weight:600;text-transform:capitalize}
-.ssb-new{background:#fef3c7;color:#92400e}.ssb-read{background:#dbeafe;color:#1e40af}.ssb-replied{background:#d1fae5;color:#065f46}.ssb-closed{background:#f3f4f6;color:#4b5563}
+.ssb-new{background:#fef3c7;color:var(--ah-warning)}.ssb-read{background:var(--ah-bg-light);color:var(--ah-primary)}.ssb-replied{background:var(--ah-bg-light);color:var(--ah-success)}.ssb-closed{background:var(--ah-bg-light);color:#4b5563}
 /* ── Disable-rules flag ── */
-.fb-flag-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #f3f4f6;margin-top:12px}
+.fb-flag-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--ah-bg-light);margin-top:12px}
 .fb-flag-row label{margin:0;font-size:13px;color:var(--ah-text);cursor:pointer}
 @media (max-width:782px) {
   .sub-meta-box{grid-template-columns:1fr}
@@ -482,7 +482,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 					return $html;
 				} ),
 				array( 'label' => 'Shortcode', 'render' => function ( $r ) {
-					return '<code style="font-size:11px;background:#f0f4ff;color:#3b5bdb;padding:2px 6px;border-radius:3px;border:1px solid #c5d0e6;">[ah_form id="' . esc_html( $r->id ) . '"]</code>';
+					return '<code style="font-size:11px;background:var(--ah-bg-light);color:var(--ah-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--ah-border);">[ah_form id="' . esc_html( $r->id ) . '"]</code>';
 				} ),
 			),
 			'items'         => $rows,
@@ -612,18 +612,9 @@ jQuery(function ($) {
 		$('#fb-fields-json').val(JSON.stringify(fields));
 	});
 
-	// ── Copy shortcode ──
+	// ── Copy shortcode - use global ahCopy ──
 	$(document).on('click', '#fb-sc-copy', function () {
-		var sc = $('#fb-sc-text').text();
-		if (navigator.clipboard) {
-			navigator.clipboard.writeText(sc);
-		} else {
-			var ta = $('<textarea>').val(sc).appendTo('body').select();
-			document.execCommand('copy');
-			ta.remove();
-		}
-		$(this).text('Copied!');
-		setTimeout(function () { $('#fb-sc-copy').text('Copy'); }, 2000);
+		ahCopy($('#fb-sc-text').text(), $(this), 'Copied!');
 	});
 
 	// ── Expand/collapse submission rows ──
@@ -652,7 +643,7 @@ jQuery(function ($) {
 		}, function (res) {
 			$btn.prop('disabled', false).text('Save');
 			$msg.show().text(res.success ? 'Saved!' : (res.data && res.data.message ? res.data.message : 'Error'));
-			$msg.css('color', res.success ? '#16a34a' : '#dc2626');
+			$msg.css('color', res.success ? 'var(--ah-success)' : 'var(--ah-danger)');
 			if (res.success) {
 				var $badge = $btn.closest('tr').prev('.fb-sub-row').find('.sub-status-badge');
 				$badge.attr('class', 'sub-status-badge ssb-' + status).text(status);
@@ -660,7 +651,7 @@ jQuery(function ($) {
 			setTimeout(function () { $msg.fadeOut(400); }, 2500);
 		}).fail(function () {
 			$btn.prop('disabled', false).text('Save');
-			$msg.show().css('color','#dc2626').text('Request failed.');
+			$msg.show().css('color','var(--ah-danger)').text('Request failed.');
 			setTimeout(function () { $msg.fadeOut(400); }, 2500);
 		});
 	});

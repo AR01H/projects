@@ -142,7 +142,7 @@ $pos_opts   = array( 'top' => 'Top', 'middle' => 'Middle', 'bottom' => 'Bottom' 
 					if ( ! $r->image ) return '<span style="color:var(--ah-muted);">—</span>';
 					$ext = strtolower( pathinfo( wp_parse_url( $r->image, PHP_URL_PATH ) ?? '', PATHINFO_EXTENSION ) );
 					if ( in_array( $ext, array( 'mp4', 'webm', 'ogv', 'ogg', 'mov' ), true ) ) {
-						return '<span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:24px;background:#1e293b;border-radius:4px;color:#fff;font-size:10px;">&#9654;</span>';
+						return '<span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:24px;background:var(--ah-text);border-radius:4px;color:#fff;font-size:10px;">&#9654;</span>';
 					}
 					return '<img src="' . esc_url( $r->image ) . '" style="width:40px;height:24px;object-fit:cover;border-radius:4px;">';
 				} ),

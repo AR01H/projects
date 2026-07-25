@@ -78,10 +78,10 @@ $active_cnt = count( array_filter( (array) $rules, fn( $r ) => $r->is_active ) )
 [ $nt, $nm ] = $notice ? explode( ':', $notice, 2 ) : [ '', '' ];
 
 $type_meta = array(
-	'301'  => array( 'label' => '301 Permanent', 'color' => '#1d4ed8', 'bg' => '#eff6ff', 'border' => '#93c5fd', 'icon' => '↪' ),
-	'302'  => array( 'label' => '302 Temporary', 'color' => '#d97706', 'bg' => '#fffbeb', 'border' => '#fbbf24', 'icon' => '⇄' ),
-	'exit' => array( 'label' => 'Exit Link',      'color' => '#7c3aed', 'bg' => '#f5f3ff', 'border' => '#c4b5fd', 'icon' => '↗' ),
-	'410'  => array( 'label' => '410 Gone',       'color' => '#b91c1c', 'bg' => '#fef2f2', 'border' => '#fca5a5', 'icon' => '✕' ),
+	'301'  => array( 'label' => '301 Permanent', 'color' => 'var(--ah-primary-dark)', 'bg' => 'var(--ah-bg-light)', 'border' => 'var(--ah-border)', 'icon' => '↪' ),
+	'302'  => array( 'label' => '302 Temporary', 'color' => 'var(--ah-warning)', 'bg' => 'var(--ah-bg-light)', 'border' => 'var(--ah-warning)', 'icon' => '⇄' ),
+	'exit' => array( 'label' => 'Exit Link',      'color' => 'var(--ah-primary)', 'bg' => 'var(--ah-bg-light)', 'border' => 'var(--ah-border)', 'icon' => '↗' ),
+	'410'  => array( 'label' => '410 Gone',       'color' => 'var(--ah-danger)', 'bg' => 'var(--ah-bg-light)', 'border' => 'var(--ah-border)', 'icon' => '✕' ),
 );
 ?>
 <div class="wrap ah-wrap">
@@ -93,7 +93,7 @@ $type_meta = array(
 <?php endif; ?>
 
 <?php /* ── Created banner ── */ if ( $created ) : ?>
-<div style="background:linear-gradient(135deg,#1d4ed8 0%,#7c3aed 100%);border-radius:12px;padding:20px 24px;margin:12px 0 20px;color:#fff;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+<div style="background:linear-gradient(135deg,var(--ah-primary-dark) 0%,var(--ah-primary) 100%);border-radius:12px;padding:20px 24px;margin:12px 0 20px;color:#fff;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
 	<span style="font-size:28px;">🎉</span>
 	<div style="flex:1;min-width:200px;">
 		<div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:4px;">Short link ready</div>
@@ -122,7 +122,7 @@ $type_meta = array(
 		<?php foreach ( array(
 			array( 'v' => count( $rules ),            'l' => 'Total Links',  'c' => 'var(--ah-primary)' ),
 			array( 'v' => $active_cnt,                'l' => 'Active',       'c' => 'var(--ah-success)' ),
-			array( 'v' => number_format($total_hits), 'l' => 'Total Clicks', 'c' => '#7c3aed' ),
+			array( 'v' => number_format($total_hits), 'l' => 'Total Clicks', 'c' => 'var(--ah-primary)' ),
 		) as $s ) : ?>
 		<div style="background:#fff;border:1px solid var(--ah-border);border-radius:10px;padding:12px 18px;min-width:110px;">
 			<div style="font-size:20px;font-weight:700;color:<?php echo esc_attr( $s['c'] ); ?>;"><?php echo esc_html( $s['v'] ); ?></div>
@@ -158,7 +158,7 @@ $type_meta = array(
 					<!-- Short URL -->
 					<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
 						<code id="url-<?php echo (int) $r->id; ?>"
-						      style="font-size:12px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:5px;padding:2px 8px;color:#1d4ed8;font-weight:600;">
+						      style="font-size:12px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:5px;padding:2px 8px;color:var(--ah-primary-dark);font-weight:600;">
 							<?php echo esc_html( $short ); ?>
 						</code>
 						<button type="button" class="ah-copy-btn ah-btn ah-btn-sm"
@@ -171,7 +171,7 @@ $type_meta = array(
 					<div style="display:flex;align-items:center;gap:5px;">
 						<span style="color:var(--ah-muted);font-size:11px;"><?php echo esc_html( $tm['icon'] ); ?></span>
 						<?php if ( '410' === $r->type ) : ?>
-							<em style="font-size:11px;color:#b91c1c;">- page permanently removed</em>
+							<em style="font-size:11px;color:var(--ah-danger);">- page permanently removed</em>
 						<?php elseif ( $r->target_url ) : ?>
 							<span style="font-size:11px;color:var(--ah-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;"
 							      title="<?php echo esc_attr( $r->target_url ); ?>">
@@ -189,7 +189,7 @@ $type_meta = array(
 					</span>
 				</td>
 				<td style="padding:12px 14px;text-align:center;">
-					<span style="font-size:16px;font-weight:700;color:<?php echo $r->hit_count > 0 ? '#7c3aed' : 'var(--ah-muted)'; ?>;">
+					<span style="font-size:16px;font-weight:700;color:<?php echo $r->hit_count > 0 ? 'var(--ah-primary)' : 'var(--ah-muted)'; ?>;">
 						<?php echo number_format( (int) $r->hit_count ); ?>
 					</span>
 				</td>
@@ -201,7 +201,7 @@ $type_meta = array(
 							<?php wp_nonce_field( 'ah_redirect_action', 'ah_redirect_nonce' ); ?>
 							<input type="hidden" name="toggle_id" value="<?php echo (int) $r->id; ?>">
 							<button type="submit" class="ah-btn ah-btn-sm"
-							        style="<?php echo $r->is_active ? 'color:#92400e;' : 'color:var(--ah-success);'; ?>">
+							        style="<?php echo $r->is_active ? 'color:var(--ah-warning);' : 'color:var(--ah-success);'; ?>">
 								<?php echo $r->is_active ? 'Pause' : 'Enable'; ?>
 							</button>
 						</form>
@@ -236,7 +236,7 @@ $type_meta = array(
 			<?php if ( $edit_rule ) : ?>
 				<span style="font-size:18px;">✏️</span> Edit Link
 			<?php else : ?>
-				<span style="font-size:18px;color:#7c3aed;">🔗</span> Create Short Link
+				<span style="font-size:18px;color:var(--ah-primary);">🔗</span> Create Short Link
 			<?php endif; ?>
 		</h2>
 	</div>
@@ -253,8 +253,8 @@ $type_meta = array(
 			<label style="font-weight:700;font-size:13px;display:block;margin-bottom:6px;">
 				Destination URL
 				<span style="color:var(--ah-danger);">*</span>
-				<span id="ah-ext-badge" style="display:none;margin-left:6px;font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd;">↗ External</span>
-				<span id="ah-int-badge" style="display:none;margin-left:6px;font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;">⌂ Internal</span>
+				<span id="ah-ext-badge" style="display:none;margin-left:6px;font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;background:var(--ah-bg-light);color:var(--ah-primary);border:1px solid var(--ah-border);">↗ External</span>
+				<span id="ah-int-badge" style="display:none;margin-left:6px;font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;background:var(--ah-bg-light);color:var(--ah-success);border:1px solid var(--ah-border);">⌂ Internal</span>
 			</label>
 			<input type="text" name="target_url" id="ah-rdr-target"
 			       value="<?php echo esc_attr( $edit_rule ? $edit_rule->target_url : '' ); ?>"
@@ -279,7 +279,7 @@ $type_meta = array(
 				       placeholder="my-link"
 				       style="border-radius:0;border-left:none;border-right:none;flex:1;font-size:13px;">
 				<button type="button" id="ah-gen-slug"
-				        style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-left:none;border-radius:0 6px 6px 0;padding:0 12px;cursor:pointer;font-size:13px;color:#7c3aed;font-weight:600;white-space:nowrap;"
+				        style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-left:none;border-radius:0 6px 6px 0;padding:0 12px;cursor:pointer;font-size:13px;color:var(--ah-primary);font-weight:600;white-space:nowrap;"
 				        title="Generate random code">🎲</button>
 			</div>
 			<div id="ah-slug-preview" style="margin-top:5px;font-size:11px;color:var(--ah-muted);display:none;">
@@ -304,10 +304,10 @@ $type_meta = array(
 				</label>
 				<?php endforeach; ?>
 			</div>
-			<div id="ah-gone-tip" style="display:none;margin-top:8px;padding:8px 12px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;font-size:12px;color:#b91c1c;">
+			<div id="ah-gone-tip" style="display:none;margin-top:8px;padding:8px 12px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;font-size:12px;color:var(--ah-danger);">
 				410 Gone - no destination needed. Tells Google this page is permanently removed.
 			</div>
-			<div id="ah-exit-tip" style="display:none;margin-top:8px;padding:8px 12px;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:6px;font-size:12px;color:#7c3aed;">
+			<div id="ah-exit-tip" style="display:none;margin-top:8px;padding:8px 12px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;font-size:12px;color:var(--ah-primary);">
 				Exit Link - shows a "leaving site" page before sending the visitor to the destination.
 			</div>
 		</div>
@@ -366,7 +366,7 @@ jQuery(function ($) {
 
 	/* ── Target URL field: resolve slug → full URL preview ── */
 	var $targetField   = $('#ah-rdr-target');
-	var $resolvedBox   = $('<div id="ah-resolved-preview" style="display:none;margin-top:6px;padding:7px 10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;font-size:12px;color:#166534;"></div>').insertAfter( $targetField.closest('.ah-form-row').find('p.description').length ? $targetField.closest('.ah-form-row').find('p') : $targetField );
+	var $resolvedBox   = $('<div id="ah-resolved-preview" style="display:none;margin-top:6px;padding:7px 10px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;font-size:12px;color:var(--ah-success);"></div>').insertAfter( $targetField.closest('.ah-form-row').find('p.description').length ? $targetField.closest('.ah-form-row').find('p') : $targetField );
 
 	$targetField.on('input', function () {
 		var v      = $.trim( this.value );

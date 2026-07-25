@@ -54,28 +54,7 @@ sort( $all_groups );
 
 if ( ! function_exists( 'ah_settings_image_url' ) ) {
 	function ah_settings_image_url( string $value ): string {
-		if ( filter_var( $value, FILTER_VALIDATE_URL ) ) {
-			return esc_url( $value );
-		}
-
-		$img_id = absint( $value );
-		if ( ! $img_id ) {
-			return '';
-		}
-
-		// Try image thumbnail first (works for images/GIFs).
-		$url = wp_get_attachment_image_url( $img_id, 'medium' );
-		if ( $url ) {
-			return esc_url( $url );
-		}
-
-		// Fall back to raw attachment URL (works for videos/audio).
-		$url = wp_get_attachment_url( $img_id );
-		if ( $url ) {
-			return esc_url( $url );
-		}
-
-		return '';
+		return AH_Settings_Helper::image_url( $value );
 	}
 }
 ?>

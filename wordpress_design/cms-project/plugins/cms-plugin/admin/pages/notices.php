@@ -66,8 +66,8 @@ if ( ! empty( $_GET['err'] ) ) {
 			array( 'label' => 'Trigger', 'render' => function ( $item ) {
 				$html = '';
 				if ( $item->trigger_type === 'immediate' ) $html .= '<span class="ah-badge">On Load</span>';
-				if ( $item->trigger_type === 'exit-intent' ) $html .= '<span class="ah-badge" style="background:#fef9c3;color:#92400e;">Exit Intent</span>';
-				if ( $item->trigger_type === 'delay' ) $html .= '<span class="ah-badge" style="background:#ede9fe;color:#5b21b6;">After ' . (int) $item->trigger_delay . 's</span>';
+				if ( $item->trigger_type === 'exit-intent' ) $html .= '<span class="ah-badge" style="background:var(--ah-bg-light);color:var(--ah-warning);">Exit Intent</span>';
+				if ( $item->trigger_type === 'delay' ) $html .= '<span class="ah-badge" style="background:var(--ah-bg-light);color:var(--ah-primary);">After ' . (int) $item->trigger_delay . 's</span>';
 				return $html;
 			} ),
 			array( 'label' => 'Scope', 'render' => function ( $item ) {
@@ -141,9 +141,9 @@ if ( ! empty( $_GET['err'] ) ) {
 
 			<!-- Content -->
 			<?php
-			$_badge_name_hex = array( 'green'=>'#15803d','red'=>'#b91c1c','blue'=>'#1d4ed8','orange'=>'#c2410c','purple'=>'#7c3aed' );
+			$_badge_name_hex = array( 'green'=>'var(--ah-success)','red'=>'var(--ah-danger)','blue'=>'var(--ah-primary-dark)','orange'=>'var(--ah-warning)','purple'=>'var(--ah-primary)' );
 			$_badge_raw      = $item->badge_color ?? 'green';
-			$_badge_hex      = $_badge_name_hex[ $_badge_raw ] ?? ( preg_match( '/^#[0-9a-fA-F]{6}$/', $_badge_raw ) ? $_badge_raw : '#15803d' );
+			$_badge_hex      = $_badge_name_hex[ $_badge_raw ] ?? ( preg_match( '/^#[0-9a-fA-F]{6}$/', $_badge_raw ) ? $_badge_raw : 'var(--ah-success)' );
 			?>
 			<?php ob_start(); ?>
 				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
@@ -160,7 +160,7 @@ if ( ! empty( $_GET['err'] ) ) {
 
 				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
 					array( 'Badge Label', '<input type="text" id="pv-badge-text" name="badge_text" value="' . esc_attr( $item->badge_text ?? '' ) . '" placeholder="e.g. New, Hot Deal, Important">' ),
-					array( 'Badge Colour', '<div style="display:flex;gap:10px;align-items:center;margin-top:6px;"><input type="color" name="badge_color" id="pv-badge-color" value="' . esc_attr( $_badge_hex ) . '" style="width:48px;height:36px;padding:2px 3px;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;background:#fff;"><span id="pv-badge-color-sample" style="padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Badge</span></div>' ),
+					array( 'Badge Colour', '<div style="display:flex;gap:10px;align-items:center;margin-top:6px;"><input type="color" name="badge_color" id="pv-badge-color" value="' . esc_attr( $_badge_hex ) . '" style="width:48px;height:36px;padding:2px 3px;border:1px solid var(--ah-border);border-radius:6px;cursor:pointer;background:#fff;"><span id="pv-badge-color-sample" style="padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Badge</span></div>' ),
 				) ); ?>
 
 				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
@@ -174,8 +174,8 @@ if ( ! empty( $_GET['err'] ) ) {
 					. '<button type="button" id="ah-sn-media-btn" class="ah-btn ah-btn-secondary ah-btn-sm" style="white-space:nowrap;">&#128247; Choose</button>'
 					. '</div>'
 					. '<div id="pv-img-thumb" style="margin-top:6px;' . ( ( $item->image ?? '' ) ? '' : 'display:none;' ) . '">'
-					. '<img src="' . esc_url( $item->image ?? '' ) . '" style="max-height:80px;border-radius:6px;border:1px solid #e5e7eb;">'
-					. '<button type="button" id="ah-sn-img-clear" style="margin-left:6px;background:none;border:none;color:#b91c1c;cursor:pointer;font-size:12px;">&#10005; Remove</button>'
+					. '<img src="' . esc_url( $item->image ?? '' ) . '" style="max-height:80px;border-radius:6px;border:1px solid var(--ah-border);">'
+					. '<button type="button" id="ah-sn-img-clear" style="margin-left:6px;background:none;border:none;color:var(--ah-danger);cursor:pointer;font-size:12px;">&#10005; Remove</button>'
 					. '</div>'
 				); ?>
 			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Content', ob_get_clean() ); ?>
@@ -184,14 +184,14 @@ if ( ! empty( $_GET['err'] ) ) {
 			<?php ob_start(); ?>
 				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Popup Style',
 					'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">'
-					. '<label class="ah-style-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">'
+					. '<label class="ah-style-card" style="cursor:pointer;border:2px solid var(--ah-border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">'
 					. '<input type="radio" name="position" value="modal" id="pv-pos-modal" ' . checked( $item->position ?? 'modal', 'modal', false ) . ' style="margin-top:3px;flex-shrink:0;">'
 					. '<div><strong style="font-size:.9rem;">Centre modal</strong><br><small style="color:var(--ah-muted);">Full-screen overlay, centred popup. Great for important announcements.</small>'
-					. '<div style="margin-top:8px;background:#f3f4f6;border-radius:6px;padding:8px;font-size:10px;text-align:center;color:#6b7280;"><div style="background:#fff;border-radius:4px;padding:4px 8px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);">📋 Notice popup</div></div></div></label>'
-					. '<label class="ah-style-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">'
+					. '<div style="margin-top:8px;background:var(--ah-bg-light);border-radius:6px;padding:8px;font-size:10px;text-align:center;color:var(--ah-muted);"><div style="background:#fff;border-radius:4px;padding:4px 8px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);">📋 Notice popup</div></div></div></label>'
+					. '<label class="ah-style-card" style="cursor:pointer;border:2px solid var(--ah-border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">'
 					. '<input type="radio" name="position" value="corner" id="pv-pos-corner" ' . checked( $item->position ?? '', 'corner', false ) . ' style="margin-top:3px;flex-shrink:0;">'
 					. '<div><strong style="font-size:.9rem;">Corner card</strong><br><small style="color:var(--ah-muted);">Slides up from bottom-right. No backdrop - less intrusive.</small>'
-					. '<div style="margin-top:8px;background:#f3f4f6;border-radius:6px;padding:8px;text-align:right;font-size:10px;color:#6b7280;height:32px;position:relative;"><div style="background:#fff;border-radius:4px;padding:3px 7px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);position:absolute;bottom:6px;right:6px;">📌 card</div></div></div></label>'
+					. '<div style="margin-top:8px;background:var(--ah-bg-light);border-radius:6px;padding:8px;text-align:right;font-size:10px;color:var(--ah-muted);height:32px;position:relative;"><div style="background:#fff;border-radius:4px;padding:3px 7px;display:inline-block;box-shadow:0 1px 4px rgba(0,0,0,.12);position:absolute;bottom:6px;right:6px;">📌 card</div></div></div></label>'
 					. '</div>'
 				); ?>
 			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Appearance', ob_get_clean() ); ?>
@@ -208,7 +208,7 @@ if ( ! empty( $_GET['err'] ) ) {
 					'scroll'      => array( '📜', 'On scroll',      'Show after visitor scrolls X% down the page' ),
 				);
 				foreach ( $triggers as $tval => $td ) {
-					$_triggers_html .= '<label class="ah-trig-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;transition:border-color .15s;">';
+					$_triggers_html .= '<label class="ah-trig-card" style="cursor:pointer;border:2px solid var(--ah-border);border-radius:8px;padding:10px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;transition:border-color .15s;">';
 					$_triggers_html .= '<input type="radio" name="trigger_type" value="' . esc_attr( $tval ) . '" ' . checked( $item->trigger_type ?? 'immediate', $tval, false ) . ' style="display:none;">';
 					$_triggers_html .= '<span style="font-size:22px;">' . $td[0] . '</span>';
 					$_triggers_html .= '<strong style="font-size:.82rem;">' . esc_html( $td[1] ) . '</strong>';
@@ -216,12 +216,12 @@ if ( ! empty( $_GET['err'] ) ) {
 					$_triggers_html .= '</label>';
 				}
 				$_triggers_html .= '</div>';
-				$_triggers_html .= '<div id="sn-delay-row" style="margin-top:10px;display:' . ( ( $item->trigger_type ?? '' ) === 'delay' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;">';
+				$_triggers_html .= '<div id="sn-delay-row" style="margin-top:10px;display:' . ( ( $item->trigger_type ?? '' ) === 'delay' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:var(--ah-bg-light);padding:10px 12px;border-radius:8px;">';
 				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">Show after</label>';
 				$_triggers_html .= '<input type="number" name="trigger_delay" value="' . (int) ( $item->trigger_delay ?? 5 ) . '" min="1" max="300" style="width:70px;">';
 				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">seconds</label>';
 				$_triggers_html .= '</div>';
-				$_triggers_html .= '<div id="sn-scroll-row" style="margin-top:10px;display:' . ( ( $item->trigger_type ?? '' ) === 'scroll' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;">';
+				$_triggers_html .= '<div id="sn-scroll-row" style="margin-top:10px;display:' . ( ( $item->trigger_type ?? '' ) === 'scroll' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:var(--ah-bg-light);padding:10px 12px;border-radius:8px;">';
 				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">Show after visitor scrolls</label>';
 				$_triggers_html .= '<input type="number" name="trigger_scroll" value="' . (int) ( $item->trigger_scroll ?? 50 ) . '" min="0" max="100" style="width:70px;">';
 				$_triggers_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">% of the page</label>';
@@ -231,11 +231,11 @@ if ( ! empty( $_GET['err'] ) ) {
 
 				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Which pages',
 					'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">'
-					. '<label class="ah-scope-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">'
+					. '<label class="ah-scope-card" style="cursor:pointer;border:2px solid var(--ah-border);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">'
 					. '<input type="radio" name="scope" value="all" ' . checked( $item->scope ?? 'all', 'all', false ) . '>'
 					. '<div><strong style="font-size:.88rem;">All pages</strong><br><small style="color:var(--ah-muted);">Shows on every page of the site</small></div>'
 					. '</label>'
-					. '<label class="ah-scope-card" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">'
+					. '<label class="ah-scope-card" style="cursor:pointer;border:2px solid var(--ah-border);border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:center;transition:border-color .15s;">'
 					. '<input type="radio" name="scope" value="slugs" ' . checked( $item->scope ?? '', 'slugs', false ) . '>'
 					. '<div><strong style="font-size:.88rem;">Specific pages</strong><br><small style="color:var(--ah-muted);">Target by slug (comma-separated)</small></div>'
 					. '</label>'
@@ -260,13 +260,13 @@ if ( ! empty( $_GET['err'] ) ) {
 				$_custom_hrs   = (int) floor( $_custom_total / 60 );
 				$_custom_min   = $_custom_total % 60;
 				foreach ( $freqs as $fval => $fd ) {
-					$_freqs_html .= '<label class="ah-freq-opt" style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">';
+					$_freqs_html .= '<label class="ah-freq-opt" style="cursor:pointer;border:2px solid var(--ah-border);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s;">';
 					$_freqs_html .= '<input type="radio" name="frequency" value="' . esc_attr( $fval ) . '" ' . checked( $item->frequency ?? 'daily', $fval, false ) . ' style="margin-top:3px;flex-shrink:0;">';
 					$_freqs_html .= '<div><span style="font-size:15px;">' . $fd[0] . '</span> <strong style="font-size:.85rem;">' . esc_html( $fd[1] ) . '</strong><br><small style="color:var(--ah-muted);">' . esc_html( $fd[2] ) . '</small></div>';
 					$_freqs_html .= '</label>';
 				}
 				$_freqs_html .= '</div>';
-				$_freqs_html .= '<div id="sn-freq-custom-row" style="margin-top:10px;display:' . ( ( $item->frequency ?? '' ) === 'custom' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:#f9fafb;padding:10px 12px;border-radius:8px;flex-wrap:wrap;">';
+				$_freqs_html .= '<div id="sn-freq-custom-row" style="margin-top:10px;display:' . ( ( $item->frequency ?? '' ) === 'custom' ? 'flex' : 'none' ) . ';align-items:center;gap:8px;background:var(--ah-bg-light);padding:10px 12px;border-radius:8px;flex-wrap:wrap;">';
 				$_freqs_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">Show again every</label>';
 				$_freqs_html .= '<input type="number" id="sn-freq-hours" value="' . esc_attr( $_custom_hrs ) . '" min="0" max="999" style="width:70px;">';
 				$_freqs_html .= '<label style="font-size:.88rem;color:var(--ah-muted);">hrs</label>';
@@ -280,11 +280,11 @@ if ( ! empty( $_GET['err'] ) ) {
 
 				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Device targeting <small>(who sees this notice)</small>',
 					'<div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">'
-					. '<label style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
+					. '<label style="cursor:pointer;border:2px solid var(--ah-border);border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
 					. '<input type="radio" name="device" value="all" ' . checked( $item->device ?? 'all', 'all', false ) . '> 🖥 All devices</label>'
-					. '<label style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
+					. '<label style="cursor:pointer;border:2px solid var(--ah-border);border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
 					. '<input type="radio" name="device" value="desktop" ' . checked( $item->device ?? '', 'desktop', false ) . '> 💻 Desktop only</label>'
-					. '<label style="cursor:pointer;border:2px solid #e5e7eb;border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
+					. '<label style="cursor:pointer;border:2px solid var(--ah-border);border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:.88rem;transition:border-color .15s;" class="ah-device-card">'
 					. '<input type="radio" name="device" value="mobile" ' . checked( $item->device ?? '', 'mobile', false ) . '> 📱 Mobile only</label>'
 					. '</div>'
 				); ?>
@@ -337,7 +337,7 @@ if ( ! empty( $_GET['err'] ) ) {
 			) ); ?>
 			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Behaviour', ob_get_clean() ); ?>
 
-			<div id="ah-sn-form-errors" style="display:none;margin-bottom:14px;background:#fef2f2;border-left:4px solid #dc2626;padding:12px 16px;border-radius:6px;color:#b91c1c;font-size:.92rem;"></div>
+			<div id="ah-sn-form-errors" style="display:none;margin-bottom:14px;background:var(--ah-bg-light);border-left:4px solid var(--ah-danger);padding:12px 16px;border-radius:6px;color:var(--ah-danger);font-size:.92rem;"></div>
 
 			<div style="display:flex;align-items:center;gap:12px;">
 				<button type="submit" id="ah-sn-submit" class="ah-btn ah-btn-primary">Save Notice</button>
@@ -349,24 +349,24 @@ if ( ! empty( $_GET['err'] ) ) {
 		<div style="position:sticky;top:80px;">
 			<?php ob_start(); ?>
 				<div style="margin-top:8px;">
-					<div id="pv-wrap" style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#f3f4f6;min-height:200px;display:flex;align-items:center;justify-content:center;padding:16px;position:relative;">
+					<div id="pv-wrap" style="border:1px solid var(--ah-border);border-radius:10px;overflow:hidden;background:var(--ah-bg-light);min-height:200px;display:flex;align-items:center;justify-content:center;padding:16px;position:relative;">
 						<div id="pv-popup" style="background:#fff;border-radius:12px;width:100%;overflow:hidden;box-shadow:0 8px 32px rgba(10,25,47,.18);">
 							<div id="pv-img-bar" style="position:relative;">
 								<img id="pv-img-el" src="" alt="" style="width:100%;height:120px;object-fit:cover;display:none;">
-								<div id="pv-color-bar" style="height:5px;background:linear-gradient(90deg,#2d5a44,#3b82f6);"></div>
+								<div id="pv-color-bar" style="height:5px;background:linear-gradient(90deg,var(--ah-success),var(--ah-primary));"></div>
 								<span id="pv-badge-on-img" style="display:none;position:absolute;top:8px;left:10px;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;"></span>
 							</div>
 							<div style="padding:12px 14px 14px;position:relative;">
-								<button style="position:absolute;top:8px;right:8px;background:#f3f4f6;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;color:#6b7280;cursor:default;">×</button>
+								<button style="position:absolute;top:8px;right:8px;background:var(--ah-bg-light);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;color:var(--ah-muted);cursor:default;">×</button>
 								<span id="pv-badge-above" style="display:none;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:7px;display:inline-block;"></span>
-								<div id="pv-title-el" style="font-size:.95rem;font-weight:700;color:#0a192f;padding-right:24px;line-height:1.3;">Notice Title</div>
-								<div id="pv-message-el" style="font-size:.8rem;color:#6b7280;margin-top:5px;line-height:1.5;display:none;"></div>
+								<div id="pv-title-el" style="font-size:.95rem;font-weight:700;color:var(--ah-text);padding-right:24px;line-height:1.3;">Notice Title</div>
+								<div id="pv-message-el" style="font-size:.8rem;color:var(--ah-muted);margin-top:5px;line-height:1.5;display:none;"></div>
 								<div id="pv-btn-wrap" style="margin-top:10px;display:none;">
-									<a id="pv-btn-el" href="#" onclick="return false;" style="display:inline-block;background:#0a192f;color:#fff;padding:.35rem 1rem;border-radius:7px;font-size:.8rem;font-weight:600;text-decoration:none;">Book Now</a>
+									<a id="pv-btn-el" href="#" onclick="return false;" style="display:inline-block;background:var(--ah-text);color:#fff;padding:.35rem 1rem;border-radius:7px;font-size:.8rem;font-weight:600;text-decoration:none;">Book Now</a>
 								</div>
 							</div>
 						</div>
-						<div id="pv-corner-badge" style="display:none;position:absolute;bottom:16px;right:16px;background:#fff;border-radius:10px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.15);font-size:.78rem;color:#0a192f;font-weight:600;max-width:160px;">Corner preview</div>
+						<div id="pv-corner-badge" style="display:none;position:absolute;bottom:16px;right:16px;background:#fff;border-radius:10px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.15);font-size:.78rem;color:var(--ah-text);font-weight:600;max-width:160px;">Corner preview</div>
 					</div>
 					<p style="font-size:.78rem;color:var(--ah-muted);margin:6px 0 0;text-align:center;">Preview updates as you type</p>
 				</div>
@@ -379,7 +379,7 @@ if ( ! empty( $_GET['err'] ) ) {
 	.ah-trig-card:has(input:checked),
 	.ah-scope-card:has(input:checked),
 	.ah-freq-opt:has(input:checked),
-	.ah-device-card:has(input:checked) { border-color:var(--color-primary,#0a192f) !important; background:#f8faff; }
+	.ah-device-card:has(input:checked) { border-color:var(--color-primary,var(--ah-text)) !important; background:#f8faff; }
 </style>
 <?php endif; ?>
 </div>
@@ -498,7 +498,7 @@ jQuery(function ($) {
 	}
 
 	function syncBadgeColorSample() {
-		var hex = $('#pv-badge-color').val() || '#15803d';
+		var hex = $('#pv-badge-color').val() || 'var(--ah-success)';
 		$('#pv-badge-color-sample').css({ background: hexToRgba(hex, 0.13), color: hex });
 	}
 	$('#pv-badge-color').on('input change', syncBadgeColorSample);
@@ -508,7 +508,7 @@ jQuery(function ($) {
 		var title      = $.trim( $('#pv-title').val() )   || 'Notice Title';
 		var message    = $.trim( $('#pv-message').val() );
 		var badgeText  = $.trim( $('#pv-badge-text').val() );
-		var badgeColor = $('#pv-badge-color').val() || '#15803d';
+		var badgeColor = $('#pv-badge-color').val() || 'var(--ah-success)';
 		var pal        = { bg: hexToRgba(badgeColor, 0.13), color: badgeColor };
 		var btnLabel   = $.trim( $('#pv-btn-label').val() );
 		var imgUrl     = $.trim( $('#pv-image').val() );
@@ -586,8 +586,8 @@ jQuery(function ($) {
 });
 </script>
 <style>
-.ah-field-error { border-color:#dc2626 !important; background:#fff5f5 !important; box-shadow:0 0 0 2px rgba(220,38,38,.15) !important; }
+.ah-field-error { border-color:var(--ah-danger) !important; background:#fff5f5 !important; box-shadow:0 0 0 2px rgba(220,38,38,.15) !important; }
 .ah-trig-card { text-align:center; }
 .ah-trig-card input { display:none; }
-.ah-sn-card-sel { border-color:#0a192f !important; background:#f8faff !important; }
+.ah-sn-card-sel { border-color:var(--ah-text) !important; background:#f8faff !important; }
 </style>

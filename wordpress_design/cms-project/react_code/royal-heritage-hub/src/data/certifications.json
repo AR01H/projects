@@ -1,0 +1,42 @@
+[
+  {
+    "id": "cert-001",
+    "title": "GI Tag Certification — Kondapalli Bommalu",
+    "issuedBy": "Geographical Indications Registry, Government of India",
+    "certificateNumber": "GI App. No. 210",
+    "date": "2013-08-05",
+    "description": "Kondapalli Bommalu (Kondapalli Toys) is officially recognised as a Geographical Indication by the Government of India, confirming its authentic origin and traditional craftsmanship from Kondapalli village, Andhra Pradesh. This certification protects the craft's heritage and ensures only genuine artisans from the region can market products under this name.",
+    "image": "https://picsum.photos/seed/cert-gi-tag/900/700",
+    "imageSide": "left"
+  },
+  {
+    "id": "cert-002",
+    "title": "MSME Udyam Registration",
+    "issuedBy": "Ministry of Micro, Small & Medium Enterprises, Government of India",
+    "certificateNumber": "UDYAM-AP-XX-XXXXXXX",
+    "date": "2024-01-10",
+    "description": "Royal Heritage Hub is a registered Micro, Small & Medium Enterprise under the Udyam Registration scheme, confirming our status as a recognised small business supporting India's artisan economy and eligible for government MSME support programs.",
+    "image": "https://picsum.photos/seed/cert-msme/900/700",
+    "imageSide": "right"
+  },
+  {
+    "id": "cert-003",
+    "title": "Export Promotion Council Membership",
+    "issuedBy": "Export Promotion Council for Handicrafts (EPCH), Government of India",
+    "certificateNumber": "EPCH/MEM/XXXXX",
+    "date": "2024-03-18",
+    "description": "As a registered member of the Export Promotion Council for Handicrafts, we meet government-set standards for quality, ethical sourcing, and fair-trade practices in the export of Indian handcrafted goods.",
+    "image": "https://picsum.photos/seed/cert-epch/900/700",
+    "imageSide": "left"
+  },
+  {
+    "id": "cert-004",
+    "title": "GST Registration Certificate",
+    "issuedBy": "Goods and Services Tax Network, Government of India",
+    "certificateNumber": "GSTIN: XXAAAAA0000A1Z5",
+    "date": "2023-11-02",
+    "description": "Royal Heritage Hub is a fully GST-registered business, ensuring transparent and compliant taxation on every order placed through our platform.",
+    "image": "https://picsum.photos/seed/cert-gst/900/700",
+    "imageSide": "right"
+  }
+]

@@ -81,36 +81,36 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 <style>
 .nl-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
 .nl-header h1{margin:0;flex:1}
-.nl-tab-nav{display:flex;gap:2px;border-bottom:2px solid #e5e7eb;margin-bottom:24px}
-.nl-tab-nav a{padding:10px 20px;text-decoration:none;font-weight:500;font-size:14px;color:#6b7280;border-radius:6px 6px 0 0;border:1px solid transparent;border-bottom:none;margin-bottom:-2px}
-.nl-tab-nav a.on{color:#2563eb;background:#fff;border-color:#e5e7eb;border-bottom-color:#fff}
-.nl-tab-nav a:hover:not(.on){color:#1f2937;background:#f9fafb}
+.nl-tab-nav{display:flex;gap:2px;border-bottom:2px solid var(--ah-border);margin-bottom:24px}
+.nl-tab-nav a{padding:10px 20px;text-decoration:none;font-weight:500;font-size:14px;color:var(--ah-muted);border-radius:6px 6px 0 0;border:1px solid transparent;border-bottom:none;margin-bottom:-2px}
+.nl-tab-nav a.on{color:var(--ah-primary);background:#fff;border-color:var(--ah-border);border-bottom-color:#fff}
+.nl-tab-nav a:hover:not(.on){color:var(--ah-text);background:var(--ah-bg-light)}
 .nl-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.nl-stat-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px 22px;min-width:130px;text-align:center}
-.nl-stat-num{font-size:2rem;font-weight:700;line-height:1;color:#1f2937}
-.nl-stat-lbl{font-size:12px;color:#6b7280;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.nl-stat-box{background:#fff;border:1px solid var(--ah-border);border-radius:10px;padding:16px 22px;min-width:130px;text-align:center}
+.nl-stat-num{font-size:2rem;font-weight:700;line-height:1;color:var(--ah-text)}
+.nl-stat-lbl{font-size:12px;color:var(--ah-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
 .nl-filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
-.nl-filter-pill{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:2px solid #e5e7eb;background:#fff;color:#6b7280;text-decoration:none;transition:all .15s}
-.nl-filter-pill:hover{border-color:#2563eb;color:#2563eb}
-.nl-filter-pill.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.nl-filter-pill{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:2px solid var(--ah-border);background:#fff;color:var(--ah-muted);text-decoration:none;transition:all .15s}
+.nl-filter-pill:hover{border-color:var(--ah-primary);color:var(--ah-primary)}
+.nl-filter-pill.on{background:var(--ah-primary);color:#fff;border-color:var(--ah-primary)}
 .nl-status-badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11.5px;font-weight:600}
-.nlsb-active{background:#d1fae5;color:#065f46}
-.nlsb-unsubscribed{background:#fee2e2;color:#991b1b}
-.nl-add-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px 22px;margin-bottom:20px;display:none}
+.nlsb-active{background:var(--ah-bg-light);color:var(--ah-success)}
+.nlsb-unsubscribed{background:var(--ah-bg-light);color:var(--ah-danger)}
+.nl-add-box{background:#fff;border:1px solid var(--ah-border);border-radius:10px;padding:18px 22px;margin-bottom:20px;display:none}
 .nl-add-box h3{margin:0 0 12px;font-size:15px}
 .nl-add-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
-.nl-add-row input{padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box}
+.nl-add-row input{padding:8px 12px;border:1.5px solid var(--ah-border);border-radius:6px;font-size:13px;width:100%;box-sizing:border-box}
 /* Send form */
 .nl-send-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .nl-send-grid .ah-form-row{margin:0}
 .nl-body-wrap{margin-bottom:16px}
-.nl-body-wrap textarea{width:100%;min-height:220px;font-size:13.5px;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:8px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.6}
-.nl-body-wrap textarea:focus{outline:none;border-color:#2563eb}
+.nl-body-wrap textarea{width:100%;min-height:220px;font-size:13.5px;padding:10px 12px;border:1.5px solid var(--ah-border);border-radius:8px;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.6}
+.nl-body-wrap textarea:focus{outline:none;border-color:var(--ah-primary)}
 .nl-token-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.nl-token{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:3px 10px;font-family:monospace;font-size:12px;color:#334155;cursor:pointer;user-select:all}
-.nl-token:hover{background:#dbeafe;border-color:#2563eb}
-.nl-preview-box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:13px}
-.nl-preview-box strong{color:#1f2937}
+.nl-token{background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:5px;padding:3px 10px;font-family:monospace;font-size:12px;color:var(--ah-text);cursor:pointer;user-select:all}
+.nl-token:hover{background:var(--ah-bg-light);border-color:var(--ah-primary)}
+.nl-preview-box{background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:14px 18px;margin-top:16px;font-size:13px}
+.nl-preview-box strong{color:var(--ah-text)}
 /* History */
 .nl-hist-row td{font-size:13px}
 .nl-hist-empty{text-align:center;padding:40px;color:var(--ah-muted)}
@@ -151,8 +151,8 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
     <form method="post">
       <?php wp_nonce_field( 'ah_nl_add', 'ah_nl_add_nonce' ); ?>
       <div class="nl-add-row">
-        <div><label style="font-size:12px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Email *</label><input type="email" name="nl_email" required placeholder="email@example.com"></div>
-        <div><label style="font-size:12px;font-weight:600;color:#6b7280;display:block;margin-bottom:4px">Name</label><input type="text" name="nl_name" placeholder="Full name (optional)"></div>
+        <div><label style="font-size:12px;font-weight:600;color:var(--ah-muted);display:block;margin-bottom:4px">Email *</label><input type="email" name="nl_email" required placeholder="email@example.com"></div>
+        <div><label style="font-size:12px;font-weight:600;color:var(--ah-muted);display:block;margin-bottom:4px">Name</label><input type="text" name="nl_name" placeholder="Full name (optional)"></div>
         <div style="padding-bottom:1px"><button type="submit" class="ah-btn ah-btn-primary">Add</button></div>
       </div>
     </form>
@@ -167,7 +167,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 
   <!-- Filter pills -->
   <div class="nl-filter-bar">
-    <span style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px">Show:</span>
+    <span style="font-size:12px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.5px">Show:</span>
     <?php
     $pill_opts = array( '' => 'All (' . $count_all . ')', 'active' => 'Active (' . $count_act . ')', 'unsubscribed' => 'Unsubscribed (' . $count_uns . ')' );
     foreach ( $pill_opts as $pv => $pl ) :
@@ -190,7 +190,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
         return esc_html( $row['name'] );
       } ),
       array( 'label' => 'Source', 'render' => function ( $row ) {
-        return '<span style="background:#f3f4f6;border-radius:4px;padding:2px 8px;font-size:12px">' . esc_html( $row['source'] ) . '</span>';
+        return '<span style="background:var(--ah-bg-light);border-radius:4px;padding:2px 8px;font-size:12px">' . esc_html( $row['source'] ) . '</span>';
       } ),
       array( 'label' => 'Status', 'render' => function ( $row ) {
         return '<span class="nl-status-badge nlsb-' . esc_attr( $row['status'] ) . '">' . esc_html( ucfirst( $row['status'] ) ) . '</span>';
@@ -216,7 +216,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 
   <?php if ( $total_pages > 1 ) : ?>
   <div style="margin-top:16px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-    <span style="font-size:13px;color:#6b7280">Page <?php echo esc_html( $paged ); ?> of <?php echo esc_html( $total_pages ); ?> (<?php echo esc_html( $total ); ?> total)</span>
+    <span style="font-size:13px;color:var(--ah-muted)">Page <?php echo esc_html( $paged ); ?> of <?php echo esc_html( $total_pages ); ?> (<?php echo esc_html( $total ); ?> total)</span>
     <?php for ( $p = 1; $p <= $total_pages; $p++ ) :
       $pu = add_query_arg( array( 'page' => 'ah-newsletter', 'tab' => 'subscribers', 'filter' => $filter, 'paged' => $p ), admin_url( 'admin.php' ) );
     ?>
@@ -239,7 +239,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
       <?php \Ah\Cms\Admin\Components\AdminComponents::notice( 'No active subscribers yet - add some first.', 'warning' ); ?>
     <?php else : ?>
 
-    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:#1e40af">
+    <div style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:var(--ah-primary)">
       This will send directly to <strong><?php echo esc_html( $count_act ); ?> active subscriber(s)</strong>. Every email includes an automatic unsubscribe link at the bottom.
     </div>
 
@@ -252,24 +252,24 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
       ) ); ?>
 
       <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Subject *', '<input type="text" name="nl_subject" required placeholder="e.g. Your monthly update from ' . esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ) . '" style="font-size:15px;padding:10px 14px">', '', 'nl-subject-row' ); ?>
-      <style>#nl-subject-row { margin-bottom:16px; }</style>
+      
 
       <div class="nl-body-wrap">
-        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
-        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">You can use these tokens - click to copy:</div>
+        <label style="font-size:12px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
+        <div style="margin-bottom:8px;font-size:12px;color:var(--ah-muted)">You can use these tokens - click to copy:</div>
         <div class="nl-token-bar">
           <span class="nl-token" title="Replaced with subscriber's first name">{name}</span>
           <span class="nl-token" title="Replaced with the unsubscribe link URL">{unsubscribe_url}</span>
         </div>
         <textarea name="nl_body" required placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;Best regards,&#10;The <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?> Team"></textarea>
-        <div style="font-size:12px;color:#6b7280;margin-top:6px">Plain text only. An unsubscribe line is automatically appended to every email.</div>
+        <div style="font-size:12px;color:var(--ah-muted);margin-top:6px">Plain text only. An unsubscribe line is automatically appended to every email.</div>
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
         <button type="submit" class="ah-btn ah-btn-primary ah-confirm-delete" style="font-size:15px;padding:10px 28px" data-confirm="Send this newsletter to <?php echo esc_js( $count_act ); ?> subscriber(s) now?">
           Send to <?php echo esc_html( $count_act ); ?> Subscriber<?php echo $count_act !== 1 ? 's' : ''; ?> →
         </button>
-        <span style="font-size:12px;color:#6b7280">This action cannot be undone.</span>
+        <span style="font-size:12px;color:var(--ah-muted)">This action cannot be undone.</span>
       </div>
     </form>
 
@@ -285,11 +285,11 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
           return esc_html( $entry['subject'] );
         } ),
         array( 'label' => 'Sent', 'style' => 'width:100px;text-align:center', 'render' => function ( $entry ) {
-          return '<span style="color:#16a34a;font-weight:600">' . esc_html( $entry['sent'] ) . '</span>';
+          return '<span style="color:var(--ah-success);font-weight:600">' . esc_html( $entry['sent'] ) . '</span>';
         } ),
         array( 'label' => 'Failed', 'style' => 'width:100px;text-align:center', 'render' => function ( $entry ) {
           return $entry['failed'] > 0
-            ? '<span style="color:#dc2626;font-weight:600">' . esc_html( $entry['failed'] ) . '</span>'
+            ? '<span style="color:var(--ah-danger);font-weight:600">' . esc_html( $entry['failed'] ) . '</span>'
             : '<span style="color:var(--ah-muted)">0</span>';
         } ),
         array( 'label' => 'Date & Time', 'style' => 'width:160px', 'render' => function ( $entry ) {

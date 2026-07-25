@@ -100,7 +100,7 @@ $context_labels = AH_Resources_Model::context_labels();
 			$edit_url = add_query_arg( array( 'page' => 'ah-resources', 'action' => 'edit', 'id' => $item->id ), admin_url( 'admin.php' ) );
 			$html = '<strong><a href="' . esc_url( $edit_url ) . '">' . esc_html( $item->title ?: '(no title)' ) . '</a></strong>';
 			if ( $item->url ) {
-				$html .= '<br><small style="color:#999;">' . esc_html( mb_strimwidth( (string) $item->url, 0, 60, '…' ) ) . '</small>';
+				$html .= '<br><small style="color:var(--ah-muted);">' . esc_html( mb_strimwidth( (string) $item->url, 0, 60, '…' ) ) . '</small>';
 			}
 			return $html;
 		} ),

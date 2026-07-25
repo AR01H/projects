@@ -336,4 +336,82 @@
     });
   });
 
+  // ----------------------------------------------------------------
+  // Reusable: Copy to clipboard
+  // Usage: ahCopy(text) or ahCopy(text, $btn, 'Copied!')
+  // ----------------------------------------------------------------
+  window.ahCopy = function (text, $btn, successText) {
+    successText = successText || 'Copied!';
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () {
+        if ($btn) {
+          var orig = $btn.text();
+          $btn.text(successText);
+          setTimeout(function () { $btn.text(orig); }, 2000);
+        }
+      });
+    } else {
+      var tmp = document.createElement('textarea');
+      tmp.value = text;
+      document.body.appendChild(tmp);
+      tmp.select();
+      document.execCommand('copy');
+      document.body.removeChild(tmp);
+      if ($btn) {
+        var orig = $btn.text();
+        $btn.text(successText);
+        setTimeout(function () { $btn.text(orig); }, 2000);
+      }
+    }
+  };
+
+  // ----------------------------------------------------------------
+  // Reusable: Toast / status message
+  // Usage: ahToast($('#msg'), 'Saved!', 'success') or ahToast($('#msg'), 'Error', 'error')
+  // ----------------------------------------------------------------
+  window.ahToast = function ($el, message, type, duration) {
+    duration = duration || 3000;
+    var colors = { success: 'var(--ah-success)', error: 'var(--ah-danger)', warning: 'var(--ah-warning)', info: 'var(--ah-primary)' };
+    $el.css('color', colors[type] || colors.info).text(message).show();
+    setTimeout(function () { $el.fadeOut(400); }, duration);
+  };
+
+  // ----------------------------------------------------------------
+  // Reusable: AJAX save with toast feedback
+  // Usage: ahAjaxSave({ action: 'my_action', id: 1 }, $('#msg'), function(res){ ... })
+  // ----------------------------------------------------------------
+  window.ahAjaxSave = function (data, $msg, callback) {
+    data.nonce = nonce;
+    $.post(ajax, data, function (res) {
+      if (res.success) {
+        ahToast($msg, res.data && res.data.message ? res.data.message : 'Saved!', 'success');
+      } else {
+        ahToast($msg, res.data && res.data.message ? res.data.message : 'Error.', 'error');
+      }
+      if (callback) callback(res);
+    }, 'json').fail(function () {
+      ahToast($msg, 'Request failed.', 'error');
+    });
+  };
+
+  // ----------------------------------------------------------------
+  // Reusable: Click-to-copy on any element
+  // Usage: <span class="ah-copy" data-text="value">Click to copy</span>
+  // ----------------------------------------------------------------
+  $(document).on('click', '.ah-copy', function (e) {
+    e.preventDefault();
+    var text = $(this).data('text') || $(this).text();
+    ahCopy(text, $(this));
+  });
+
+  // ----------------------------------------------------------------
+  // Reusable: SlideToggle on click
+  // Usage: <button class="ah-toggle" data-target="#panel">Toggle</button>
+  // ----------------------------------------------------------------
+  $(document).on('click', '.ah-toggle', function (e) {
+    e.preventDefault();
+    var target = $(this).data('target');
+    if (target) $(target).slideToggle(200);
+  });
+
 })(jQuery);

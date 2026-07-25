@@ -541,6 +541,163 @@
 		update();
 	}
 
+	/**
+	 * Rough photo treatment: hands each body image one of four torn-edge cuts,
+	 * cycling in document order so neighbouring photos are never cut alike.
+	 *
+	 * The cut itself is a CSS mask (see ROUGH PHOTO TREATMENT in vintage.css);
+	 * all this does is deal out the variant. With JS off every image keeps
+	 * variant 1, so the look degrades to "uniform" rather than "missing".
+	 *
+	 * Skipped: anything marked .nt-no-rough (logos, mascots, ornaments) and
+	 * every SVG, which is line art rather than photography.
+	 */
+	function initRoughPhotos() {
+		var imgs = document.querySelectorAll('.site-main img:not(.nt-no-rough)');
+		var n = 0;
+		Array.prototype.forEach.call(imgs, function (img) {
+			var src = img.getAttribute('src') || '';
+			if (/\.svg(\?|$)/i.test(src)) { return; }
+			img.setAttribute('data-rough', String((n % 4) + 1));
+
+			// Bumps go on roughly one photo in three, alternating the two
+			// lighting filters. Not every image: the relief should read as the
+			// paper varying down the page, not as an effect left switched on.
+			// It is also the expensive part, so keeping it to a third bounds
+			// the cost on image-heavy pages.
+			if (n % 3 === 1) {
+				img.setAttribute('data-bump', (n % 6 === 1) ? '1' : '2');
+			}
+			n++;
+		});
+	}
+
+	/**
+	 * Strip carousel: pages a horizontally scrollable track with prev/next.
+	 *
+	 *   <div data-nt-strip>
+	 *     <div data-nt-strip-track> …cards… </div>
+	 *     <div data-nt-strip-nav hidden>
+	 *       <button data-nt-strip-prev>…</button>
+	 *       <button data-nt-strip-next>…</button>
+	 *     </div>
+	 *   </div>
+	 *
+	 * GENERIC: any overflowing row of cards, not just photos.
+	 *
+	 * It scrolls the track rather than toggling a class on one "active" card,
+	 * because on desktop the whole row is visible - there is nothing to toggle.
+	 * The nav starts `hidden` in the markup and is only revealed once the
+	 * content is measured as actually overflowing, so a strip that fits never
+	 * shows controls that do nothing. Buttons disable at each end.
+	 *
+	 * The track is focusable, so the strip is keyboard-scrollable even before
+	 * these buttons exist.
+	 */
+	function initStripCarousel() {
+		var strips = document.querySelectorAll('[data-nt-strip]');
+
+		Array.prototype.forEach.call(strips, function (strip) {
+			var track = strip.querySelector('[data-nt-strip-track]');
+			var nav   = strip.querySelector('[data-nt-strip-nav]');
+			var prev  = strip.querySelector('[data-nt-strip-prev]');
+			var next  = strip.querySelector('[data-nt-strip-next]');
+			if (!track || !nav || !prev || !next) { return; }
+
+			function overflowing() {
+				return track.scrollWidth - track.clientWidth > 4;
+			}
+
+			// One "page" is a card's width where we can measure one, so paging
+			// lands on a card edge instead of mid-photo; otherwise ~85% of the
+			// viewport, which always leaves a sliver of context.
+			function step() {
+				var card = track.firstElementChild;
+				var gap  = 20;
+				if (card && card.offsetWidth) {
+					var perPage = Math.max(1, Math.floor(track.clientWidth / (card.offsetWidth + gap)));
+					return perPage * (card.offsetWidth + gap);
+				}
+				return Math.round(track.clientWidth * 0.85);
+			}
+
+			function sync() {
+				var more = overflowing();
+				nav.hidden = !more;
+				strip.classList.toggle('has-overflow', more);
+				if (!more) {
+					strip.classList.remove('is-start', 'is-end');
+					return;
+				}
+				var max    = track.scrollWidth - track.clientWidth;
+				var atStart = track.scrollLeft <= 2;
+				var atEnd   = track.scrollLeft >= max - 2;
+				strip.classList.toggle('is-start', atStart);
+				strip.classList.toggle('is-end', atEnd);
+				prev.disabled = atStart;
+				next.disabled = atEnd;
+			}
+
+			function page(dir) {
+				var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+				track.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+			}
+
+			prev.addEventListener('click', function () { page(-1); });
+			next.addEventListener('click', function () { page(1); });
+			track.addEventListener('scroll', sync, { passive: true });
+			window.addEventListener('resize', sync);
+
+			// Images are lazy-loaded, so scrollWidth is not final at DOMContent
+			// -loaded. Re-measure as they arrive.
+			Array.prototype.forEach.call(track.querySelectorAll('img'), function (img) {
+				if (!img.complete) { img.addEventListener('load', sync, { once: true }); }
+			});
+
+			sync();
+		});
+	}
+
+	/**
+	 * Click-to-play video. Upgrades a plain link into an in-place player.
+	 *
+	 *   <div data-nt-video-host>
+	 *     <img …poster…>
+	 *     <a data-nt-video="<embed url>" href="<watch url>">▶</a>
+	 *   </div>
+	 *
+	 * Nothing is requested from the video host until the click, so no embed
+	 * script and no third-party cookie is set on visitors who never press play.
+	 * The anchor keeps its real href, so with JS off it still opens the video.
+	 */
+	function initVideoFacade() {
+		var triggers = document.querySelectorAll('[data-nt-video]');
+
+		Array.prototype.forEach.call(triggers, function (trigger) {
+			trigger.addEventListener('click', function (e) {
+				var src = trigger.getAttribute('data-nt-video');
+				var host = trigger.closest('[data-nt-video-host]');
+				if (!src || !host) { return; }   // fall through to the plain link
+
+				e.preventDefault();
+
+				var frame = document.createElement('iframe');
+				frame.src = src;
+				frame.title = trigger.getAttribute('aria-label') || 'Video';
+				frame.loading = 'lazy';
+				frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+				frame.referrerPolicy = 'strict-origin-when-cross-origin';
+				frame.setAttribute('allowfullscreen', '');
+				frame.className = 'nt-videofeat__frame';
+
+				host.innerHTML = '';
+				host.appendChild(frame);
+				host.classList.add('is-playing');
+				frame.focus();
+			});
+		});
+	}
+
 	function init() {
 		initAjaxForms();
 		initModals();
@@ -550,6 +707,9 @@
 		initLightbox();
 		initFilters();
 		initScrollUI();
+		initRoughPhotos();
+		initStripCarousel();
+		initVideoFacade();
 	}
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', init);

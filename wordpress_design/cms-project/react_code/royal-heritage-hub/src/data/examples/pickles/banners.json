@@ -1,0 +1,53 @@
+{
+  "hero": [
+    {
+      "id": "hero-1",
+      "title": "Small-Batch. Sun-Cured. No Shortcuts.",
+      "subtitle": "Traditional pickles made the way grandmothers have always made them — no preservatives, ever.",
+      "ctaLabel": "Shop Best Sellers",
+      "ctaLink": "/shop?sort=best-selling",
+      "image": "https://picsum.photos/seed/pickle-hero-1/1800/1000",
+      "theme": "dark"
+    },
+    {
+      "id": "hero-2",
+      "title": "The Festive Gift Jar Set",
+      "subtitle": "Four bestselling pickles, beautifully packaged for gifting.",
+      "ctaLabel": "Shop Gift Jars",
+      "ctaLink": "/collections/gift-jars",
+      "image": "https://picsum.photos/seed/pickle-hero-2/1800/1000",
+      "theme": "light"
+    }
+  ],
+  "promo": [
+    {
+      "id": "promo-1",
+      "title": "Free Shipping Above ₹999",
+      "subtitle": "Delivered fresh across India in 2–7 business days.",
+      "ctaLabel": "Learn More",
+      "ctaLink": "/shipping-policy",
+      "image": "https://picsum.photos/seed/pickle-promo-1/1200/500",
+      "theme": "light"
+    }
+  ],
+  "pageHeroes": {
+    "shop": {
+      "id": "page-hero-shop",
+      "title": "The Full Pantry",
+      "subtitle": "Every jar, every flavor, in one place.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/pickle-pagehero-shop/1800/650",
+      "theme": "dark"
+    },
+    "about": {
+      "id": "page-hero-about",
+      "title": "Our Story",
+      "subtitle": "Recipes passed down, never diluted.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/pickle-pagehero-about/1800/650",
+      "theme": "dark"
+    }
+  }
+}

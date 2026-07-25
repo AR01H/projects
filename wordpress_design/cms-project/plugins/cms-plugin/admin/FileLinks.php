@@ -6,62 +6,12 @@ use Ah\Cms\Admin\Components\AdminComponents;
 
 $fl_model = new AH_File_Links_Model();
 
-// ── Ensure table exists (auto-creates on first visit) ──
-$fl_table = $fl_model->table();
-$wpdb->query( "
-	CREATE TABLE IF NOT EXISTS `{$fl_table}` (
-		`id`            INT UNSIGNED     NOT NULL AUTO_INCREMENT,
-		`original_name` VARCHAR(255)     NOT NULL DEFAULT '',
-		`stored_name`   VARCHAR(255)     NOT NULL DEFAULT '',
-		`file_path`     VARCHAR(500)     NOT NULL DEFAULT '',
-		`mime_type`     VARCHAR(150)     NOT NULL DEFAULT '',
-		`file_size`     BIGINT UNSIGNED  NOT NULL DEFAULT 0,
-		`uploaded_by`   INT UNSIGNED     DEFAULT NULL,
-		`created_at`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-		PRIMARY KEY (`id`),
-		KEY `idx_fl_created` (`created_at`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-" );
-
-// ── Helpers ──
-function ah_fl_human_size( int $bytes ): string {
-	if ( $bytes >= 1073741824 ) return round( $bytes / 1073741824, 1 ) . ' GB';
-	if ( $bytes >= 1048576 )    return round( $bytes / 1048576,    1 ) . ' MB';
-	if ( $bytes >= 1024 )       return round( $bytes / 1024,       1 ) . ' KB';
-	return $bytes . ' B';
-}
-
-function ah_fl_type_meta( string $mime ): array {
-	if ( str_starts_with( $mime, 'image/' ) )        return [ 'label' => 'Image',    'icon' => 'format-image',      'color' => '#7c3aed' ];
-	if ( $mime === 'application/pdf' )               return [ 'label' => 'PDF',      'icon' => 'media-document',    'color' => '#dc2626' ];
-	if ( str_starts_with( $mime, 'video/' ) )        return [ 'label' => 'Video',    'icon' => 'video-alt3',        'color' => '#2563eb' ];
-	if ( str_starts_with( $mime, 'audio/' ) )        return [ 'label' => 'Audio',    'icon' => 'format-audio',      'color' => '#d97706' ];
-	if ( str_starts_with( $mime, 'text/' ) )         return [ 'label' => 'Text',     'icon' => 'text',              'color' => '#16a34a' ];
-	if ( in_array( $mime, [ 'application/zip', 'application/x-rar-compressed', 'application/x-7z-compressed' ], true ) )
-	                                                 return [ 'label' => 'Archive',  'icon' => 'media-archive',     'color' => '#64748b' ];
-	if ( str_contains( $mime, 'spreadsheet' ) || str_contains( $mime, 'excel' ) || str_contains( $mime, 'csv' ) )
-	                                                 return [ 'label' => 'Sheet',    'icon' => 'media-spreadsheet', 'color' => '#16a34a' ];
-	if ( str_contains( $mime, 'word' ) || str_contains( $mime, 'document' ) )
-	                                                 return [ 'label' => 'Doc',      'icon' => 'media-text',        'color' => '#1d4ed8' ];
-	if ( str_contains( $mime, 'presentation' ) || str_contains( $mime, 'powerpoint' ) )
-	                                                 return [ 'label' => 'Slides',   'icon' => 'slides',            'color' => '#ea580c' ];
-	                                                 return [ 'label' => 'File',     'icon' => 'media-default',     'color' => '#64748b' ];
-}
-
-function ah_fl_get_url( string $file_path ): string {
-	$upload = wp_upload_dir();
-	return trailingslashit( $upload['baseurl'] ) . 'ah-files/' . ltrim( $file_path, '/' );
-}
-
-function ah_fl_get_disk_path( string $file_path ): string {
-	$upload = wp_upload_dir();
-	return trailingslashit( $upload['basedir'] ) . 'ah-files/' . ltrim( $file_path, '/' );
-}
+// ── Ensure table exists ──
+AH_File_Links_Model::install_table();
 
 $notice      = '';
 $notice_type = 'success';
-$upload_dir  = wp_upload_dir();
-$base_dir    = trailingslashit( $upload_dir['basedir'] ) . 'ah-files';
+$base_dir    = AH_File_Links_Helper::get_base_dir();
 $action      = sanitize_key( $_GET['action'] ?? 'list' );
 
 // Ensure upload directory + index.php guard exist
@@ -117,49 +67,24 @@ if (
 // ── Handle delete ──
 if ( isset( $_GET['delete_fl'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah_del_file_link' ) ) {
 	$del_id  = (int) $_GET['delete_fl'];
-	$del_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$fl_table}` WHERE id = %d", $del_id ) );
+	$del_row = $fl_model->find( $del_id );
 	if ( $del_row ) {
-		$disk_path = ah_fl_get_disk_path( $del_row->file_path );
+		$disk_path = AH_File_Links_Helper::get_disk_path( $del_row->file_path );
 		if ( file_exists( $disk_path ) ) @unlink( $disk_path );
-		$wpdb->delete( $fl_table, array( 'id' => $del_id ), array( '%d' ) );
-		AH_DB_Helper::log_action( 'delete', 'file_links', $del_id );
+		$fl_model->delete_file( $del_id );
 		$notice = "'{$del_row->original_name}' deleted.";
 	}
 	$action = 'list';
 }
 
 // ── Fetch files ──
-$search   = sanitize_text_field( $_GET['s'] ?? '' );
-$type_f   = sanitize_key( $_GET['fl_type'] ?? '' );
-$paged    = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
-$per_page = 20;
+$search = sanitize_text_field( $_GET['s'] ?? '' );
+$type_f = sanitize_key( $_GET['fl_type'] ?? '' );
+$paged  = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
 
-$where_parts = array();
-if ( $search ) {
-	$where_parts[] = $wpdb->prepare( '(original_name LIKE %s OR mime_type LIKE %s)', '%' . $wpdb->esc_like( $search ) . '%', '%' . $wpdb->esc_like( $search ) . '%' );
-}
-if ( $type_f ) {
-	switch ( $type_f ) {
-		case 'image': $where_parts[] = "mime_type LIKE 'image/%'"; break;
-		case 'video': $where_parts[] = "mime_type LIKE 'video/%'"; break;
-		case 'audio': $where_parts[] = "mime_type LIKE 'audio/%'"; break;
-		case 'pdf':   $where_parts[] = "mime_type = 'application/pdf'"; break;
-		case 'doc':   $where_parts[] = "(mime_type LIKE '%word%' OR mime_type LIKE '%document%')"; break;
-		case 'sheet': $where_parts[] = "(mime_type LIKE '%spreadsheet%' OR mime_type LIKE '%excel%' OR mime_type LIKE '%csv%')"; break;
-	}
-}
-$where_sql = $where_parts ? ' WHERE ' . implode( ' AND ', $where_parts ) : '';
-
-$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$fl_table}`" . $where_sql );
-$offset = ( $paged - 1 ) * $per_page;
-$files  = $wpdb->get_results(
-	$wpdb->prepare(
-		"SELECT * FROM `{$fl_table}`{$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d",
-		$per_page, $offset
-	)
-) ?: array();
-
-$meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
+$result = $fl_model->get_paginated( $paged, $search, $type_f );
+$files  = $result['items'];
+$meta   = $result['meta'];
 ?>
 <div class="wrap ah-wrap">
 	<?php AdminComponents::pageHeader( 'admin-links', 'File Links', 'Upload and manage downloadable files with automatic link generation.' ); ?>
@@ -233,15 +158,15 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
 
 		$rows = array();
 		foreach ( $files as $f ) {
-			$meta_type = ah_fl_type_meta( $f->mime_type );
-			$file_url  = ah_fl_get_url( $f->file_path );
-			$disk_ok   = file_exists( ah_fl_get_disk_path( $f->file_path ) );
+			$meta_type = AH_File_Links_Helper::type_meta( $f->mime_type );
+			$file_url  = AH_File_Links_Helper::get_url( $f->file_path );
+			$disk_ok   = file_exists( AH_File_Links_Helper::get_disk_path( $f->file_path ) );
 
 			$row = new \stdClass();
 			$row->id            = (int) $f->id;
 			$row->original_name = $f->original_name;
 			$row->mime_type     = $f->mime_type;
-			$row->file_size     = ah_fl_human_size( (int) $f->file_size );
+			$row->file_size     = AH_File_Links_Helper::human_size( (int) $f->file_size );
 			$row->file_url      = $file_url;
 			$row->created_at    = $f->created_at;
 			$row->disk_ok       = $disk_ok;
@@ -310,7 +235,7 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
   });
 
   dropzone.addEventListener('dragover', function(e){
-    e.preventDefault(); this.style.borderColor = 'var(--ah-primary)'; this.style.background = '#eff6ff';
+    e.preventDefault(); this.style.borderColor = 'var(--ah-primary)'; this.style.background = 'var(--ah-bg-light)';
   });
   dropzone.addEventListener('dragleave', function(){
     this.style.borderColor = 'var(--ah-border)'; this.style.background = 'var(--ah-bg-light)';
@@ -328,21 +253,14 @@ $meta = AH_DB_Helper::paginate_meta( $total, $per_page, $paged );
     });
   }
 
-  // Copy link buttons
+  // Copy link buttons - use global ahCopy
   document.addEventListener('click', function(e){
     var btn = e.target.closest('.ah-copy-link');
     if (!btn) return;
     var url  = btn.dataset.url;
     var icon = btn.querySelector('.dashicons');
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(url).then(function(){
-        if (icon) { icon.className = 'dashicons dashicons-yes'; setTimeout(function(){ icon.className = 'dashicons dashicons-clipboard'; }, 2000); }
-      });
-    } else {
-      var tmp = document.createElement('input'); tmp.value = url; document.body.appendChild(tmp); tmp.select();
-      document.execCommand('copy'); document.body.removeChild(tmp);
-      if (icon) { icon.className = 'dashicons dashicons-yes'; setTimeout(function(){ icon.className = 'dashicons dashicons-clipboard'; }, 2000); }
-    }
+    ahCopy(url);
+    if (icon) { icon.className = 'dashicons dashicons-yes'; setTimeout(function(){ icon.className = 'dashicons dashicons-clipboard'; }, 2000); }
   });
 
   // Select-all on link input click

@@ -4,128 +4,17 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
 $notice = '';
 
-// ── Sections array → Gutenberg block HTML ─────────────────────────────────────
+// ── Sections array → Gutenberg block HTML ──
 function ah_sections_to_blocks( array $sections ): string {
-	$out = '';
-	foreach ( $sections as $s ) {
-		switch ( $s['type'] ?? '' ) {
-			case 'heading':
-				$lvl  = in_array( (int) ( $s['level'] ?? 2 ), [ 2, 3, 4 ], true ) ? (int) $s['level'] : 2;
-				$text = esc_html( $s['text'] ?? '' );
-				$tag  = "h{$lvl}";
-				$out .= "<!-- wp:heading {\"level\":{$lvl}} -->\n<{$tag}>{$text}</{$tag}>\n<!-- /wp:heading -->\n\n";
-				break;
-			case 'paragraph':
-				$text = wp_kses_post( $s['text'] ?? '' );
-				$out .= "<!-- wp:html -->\n{$text}\n<!-- /wp:html -->\n\n";
-				break;
-			case 'list':
-				$items = array_values( array_filter( (array) ( $s['items'] ?? [] ) ) );
-				if ( $items ) {
-					$ordered = ! empty( $s['ordered'] );
-					$tag     = $ordered ? 'ol' : 'ul';
-					$attr    = $ordered ? ' {"ordered":true}' : '';
-					$lis     = implode( '', array_map( fn( $i ) => '<li>' . esc_html( $i ) . '</li>', $items ) );
-					$out    .= "<!-- wp:list{$attr} -->\n<{$tag}>{$lis}</{$tag}>\n<!-- /wp:list -->\n\n";
-				}
-				break;
-			case 'table':
-				$headers = (array) ( $s['headers'] ?? [] );
-				$rows    = (array) ( $s['rows'] ?? [] );
-				$thead   = '';
-				if ( $headers ) {
-					$ths   = implode( '', array_map( fn( $h ) => '<th>' . esc_html( $h ) . '</th>', $headers ) );
-					$thead = "<thead><tr>{$ths}</tr></thead>";
-				}
-				$tbody_rows = '';
-				foreach ( $rows as $row ) {
-					$tds         = implode( '', array_map( fn( $c ) => '<td>' . esc_html( $c ) . '</td>', (array) $row ) );
-					$tbody_rows .= "<tr>{$tds}</tr>";
-				}
-				$tbody = $tbody_rows ? "<tbody>{$tbody_rows}</tbody>" : '';
-				if ( $thead || $tbody ) {
-					$out .= "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table>{$thead}{$tbody}</table></figure>\n<!-- /wp:table -->\n\n";
-				}
-				break;
-			case 'quote':
-				$text     = wp_kses_post( $s['text'] ?? '' );
-				$cite     = esc_html( $s['cite'] ?? '' );
-				$cite_tag = $cite ? "<cite>- {$cite}</cite>" : '';
-				$out     .= "<!-- wp:html -->\n<blockquote class=\"wp-block-quote\">{$text}{$cite_tag}</blockquote>\n<!-- /wp:html -->\n\n";
-				break;
-			case 'cta':
-				$text = esc_html( $s['text'] ?? 'Learn More' );
-				$url  = esc_url( $s['url'] ?? '#' );
-				$out .= "<!-- wp:buttons -->\n<div class=\"wp-block-buttons\"><!-- wp:button -->\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link\" href=\"{$url}\">{$text}</a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons -->\n\n";
-				break;
-		}
-	}
-	return trim( $out );
+	return AH_Posts_Helper::sections_to_blocks( $sections );
 }
 
-// ── Default sections per template type ────────────────────────────────────────
+// ── Default sections per template type ──
 function ah_template_default_sections( string $tpl_key, array $overrides = [] ): array {
-	switch ( $tpl_key ) {
-		case 'blog':
-			return [
-				[ 'type' => 'paragraph', 'text' => "Start with a strong opening paragraph that hooks the reader and tells them what they'll learn from this post." ],
-				[ 'type' => 'heading',   'level' => '2', 'text' => 'Main Section Heading' ],
-				[ 'type' => 'paragraph', 'text' => 'Expand on your main point here. Use clear, simple language and back it up with examples or data.' ],
-				[ 'type' => 'heading',   'level' => '2', 'text' => 'Key Takeaways' ],
-				[ 'type' => 'list',      'ordered' => false, 'items' => [ 'First important point from this post', 'Second important point', 'Third important point' ] ],
-				[ 'type' => 'cta',       'text' => 'Book a Free Consultation', 'url' => '/free-consultation/' ],
-			];
-		case 'news':
-			$lead = $overrides['lead_paragraph'] ?? 'Summarise the key news in one or two sentences. Cover who, what, when, and why it matters.';
-			return [
-				[ 'type' => 'paragraph', 'text' => $lead ],
-				[ 'type' => 'paragraph', 'text' => 'Expand on the story here. Provide context, background, and additional detail that readers need to understand the news fully.' ],
-				[ 'type' => 'heading',   'level' => '2', 'text' => 'What This Means for You' ],
-				[ 'type' => 'paragraph', 'text' => 'Explain the practical impact for your audience. How does this news affect them directly?' ],
-				[ 'type' => 'cta',       'text' => 'Contact Us Today', 'url' => '/contact/' ],
-			];
-		case 'guide':
-			$count    = max( 2, min( 10, (int) ( $overrides['step_count'] ?? 3 ) ) );
-			$sections = [ [ 'type' => 'paragraph', 'text' => "This guide walks you through the complete process step by step. Follow these steps for the best results." ] ];
-			for ( $i = 1; $i <= $count; $i++ ) {
-				if ( $i === 1 )          $title = 'Get Prepared';
-				elseif ( $i === $count ) $title = 'Review and Confirm';
-				else                     $title = 'Take Action';
-				$sections[] = [ 'type' => 'heading',   'level' => '2', 'text' => "Step {$i}: {$title}" ];
-				$sections[] = [ 'type' => 'paragraph', 'text' => "Describe step {$i} in detail here. Include any tips or warnings the reader should know." ];
-			}
-			$sections[] = [ 'type' => 'cta', 'text' => 'Speak to an Expert', 'url' => '/free-consultation/' ];
-			return $sections;
-		case 'casestudy':
-			$name  = $overrides['client_name']  ?? 'Client Name, Location';
-			$quote = $overrides['client_quote'] ?? 'Add a genuine client quote here - it builds trust and makes the story real.';
-			return [
-				[ 'type' => 'heading',   'level' => '2', 'text' => 'The Challenge' ],
-				[ 'type' => 'paragraph', 'text' => "Describe the client's situation and what problem they were facing. What made it difficult?" ],
-				[ 'type' => 'heading',   'level' => '2', 'text' => 'Our Approach' ],
-				[ 'type' => 'paragraph', 'text' => 'Explain how you stepped in and what you did differently. What specific action made the difference?' ],
-				[ 'type' => 'heading',   'level' => '2', 'text' => 'The Result' ],
-				[ 'type' => 'paragraph', 'text' => 'Share the outcome - use specific numbers or outcomes where possible.' ],
-				[ 'type' => 'quote',     'text' => $quote, 'cite' => $name ],
-				[ 'type' => 'cta',       'text' => 'Book Your Free Consultation', 'url' => '/free-consultation/' ],
-			];
-		case 'faq':
-			$topic    = $overrides['faq_topic'] ?? '';
-			$count    = max( 2, min( 10, (int) ( $overrides['faq_count'] ?? 3 ) ) );
-			$intro    = 'We get asked these questions' . ( $topic ? ' about ' . $topic : '' ) . ' all the time. Here are clear, honest answers.';
-			$sections = [ [ 'type' => 'paragraph', 'text' => $intro ] ];
-			for ( $i = 1; $i <= $count; $i++ ) {
-				$sections[] = [ 'type' => 'heading',   'level' => '2', 'text' => "Q: Add your question {$i} here?" ];
-				$sections[] = [ 'type' => 'paragraph', 'text' => 'A: Provide a clear, helpful answer here. Avoid jargon and speak directly to what the reader needs to know.' ];
-			}
-			$sections[] = [ 'type' => 'cta', 'text' => 'Get in Touch', 'url' => '/contact/' ];
-			return $sections;
-		default:
-			return [];
-	}
+	return AH_Posts_Helper::template_default_sections( $tpl_key, $overrides );
 }
 
-// ── Render a section card (PHP - for both new and loaded sections) ─────────────
+// ── Render a section card (PHP - for both new and loaded sections) ──
 function ah_render_section_card( array $s, bool $first = false, bool $last = false ): void {
 	$type   = $s['type'] ?? '';
 	$labels = [
@@ -137,7 +26,7 @@ function ah_render_section_card( array $s, bool $first = false, bool $last = fal
 		'cta'       => '⬡ CTA Button',
 	];
 	$label  = $labels[ $type ] ?? $type;
-	$cell   = 'padding:4px;border:1px solid #cbd5e1;';
+	$cell   = 'padding:4px;border:1px solid var(--ah-border);';
 	?>
 	<div class="ah-card ah-section-card" data-type="<?php echo esc_attr( $type ); ?>" style="margin-bottom:12px;padding:16px;">
 	  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -201,7 +90,7 @@ function ah_render_section_card( array $s, bool $first = false, bool $last = fal
 	                <thead>
 	                  <tr>
 	                    <?php foreach ( $headers as $h ) : ?>
-	                      <th style="<?php echo $cell; ?>background:#f8fafc;"><input type="text" value="<?php echo esc_attr( $h ); ?>" placeholder="Header" style="width:100%;min-width:80px;box-sizing:border-box;"></th>
+	                      <th style="<?php echo $cell; ?>background:var(--ah-bg-light);"><input type="text" value="<?php echo esc_attr( $h ); ?>" placeholder="Header" style="width:100%;min-width:80px;box-sizing:border-box;"></th>
 	                    <?php endforeach; ?>
 	                  </tr>
 	                </thead>
@@ -244,69 +133,15 @@ function ah_render_section_card( array $s, bool $first = false, bool $last = fal
 
 // ── Helpers used by template POST ─────────────────────────────────────────────
 function ah_generate_guide_content( int $count ): string {
-	return ah_sections_to_blocks( ah_template_default_sections( 'guide', [ 'step_count' => $count ] ) );
+	return AH_Posts_Helper::generate_guide_content( $count );
 }
 function ah_generate_faq_content( string $topic, int $count ): string {
-	return ah_sections_to_blocks( ah_template_default_sections( 'faq', [ 'faq_topic' => $topic, 'faq_count' => $count ] ) );
+	return AH_Posts_Helper::generate_faq_content( $topic, $count );
 }
 
-// ── Post templates ────────────────────────────────────────────────────────────
+// ── Post templates ──
 function ah_post_templates(): array {
-	return array(
-		'blog' => array(
-			'label'   => 'Blog Post',
-			'icon'    => '✍️',
-			'desc'    => 'Standard blog post with intro, body sections and conclusion',
-			'excerpt' => 'A short summary of what this post covers - edit to match your topic.',
-			'fields'  => array(
-				array( 'type' => 'text',     'name' => 'post_title',    'label' => 'Post Title',    'placeholder' => 'My Blog Post Title',  'required' => true ),
-				array( 'type' => 'textarea', 'name' => 'post_excerpt',  'label' => 'Short Summary', 'hint' => 'shown in listings',          'rows' => 2, 'placeholder' => 'A short summary of what this post covers…' ),
-				array( 'type' => 'category', 'name' => 'post_category', 'label' => 'Category' ),
-			),
-		),
-		'news' => array(
-			'label'   => 'News Article',
-			'icon'    => '📰',
-			'desc'    => 'News-style format with headline, lead paragraph and body',
-			'excerpt' => 'Brief summary of the news - who, what, when, where.',
-			'fields'  => array(
-				array( 'type' => 'text',     'name' => 'post_title',     'label' => 'Headline',       'placeholder' => 'Company News: Your Headline Here', 'required' => true ),
-				array( 'type' => 'textarea', 'name' => 'lead_paragraph', 'label' => 'Lead Paragraph', 'hint' => 'who, what, when, where', 'rows' => 3, 'placeholder' => 'Summarise the key news in 1–2 sentences…' ),
-			),
-		),
-		'guide' => array(
-			'label'   => 'Step-by-Step Guide',
-			'icon'    => '📋',
-			'desc'    => 'How-to guide with numbered steps and tips',
-			'excerpt' => 'A complete guide to help you understand and navigate the process.',
-			'fields'  => array(
-				array( 'type' => 'text',   'name' => 'post_title', 'label' => 'Guide Title',     'placeholder' => 'How to Get Started With…', 'required' => true ),
-				array( 'type' => 'number', 'name' => 'step_count', 'label' => 'Number of Steps', 'min' => 2, 'max' => 10, 'default' => 3 ),
-			),
-		),
-		'casestudy' => array(
-			'label'   => 'Client Story / Case Study',
-			'icon'    => '🏆',
-			'desc'    => 'Client success story with challenge, solution and result',
-			'excerpt' => 'How we helped a client achieve their goal - read the full story.',
-			'fields'  => array(
-				array( 'type' => 'text',     'name' => 'post_title',   'label' => 'Case Study Title', 'placeholder' => 'How We Helped [Client] Achieve [Goal]', 'required' => true ),
-				array( 'type' => 'text',     'name' => 'client_name',  'label' => 'Client Name',      'placeholder' => 'e.g. Jane Smith, Melbourne' ),
-				array( 'type' => 'textarea', 'name' => 'client_quote', 'label' => 'Client Quote',     'rows' => 2, 'placeholder' => '"The team made the whole process so easy…"' ),
-			),
-		),
-		'faq' => array(
-			'label'   => 'FAQ / Q&amp;A Post',
-			'icon'    => '❓',
-			'desc'    => 'Question and answer format - great for SEO',
-			'excerpt' => 'Answers to the most common questions about this topic.',
-			'fields'  => array(
-				array( 'type' => 'text',   'name' => 'post_title', 'label' => 'Post Title',          'placeholder' => 'Common Questions About…', 'required' => true ),
-				array( 'type' => 'text',   'name' => 'faq_topic',  'label' => 'Topic / Subject',     'placeholder' => 'e.g. first home buyer grants' ),
-				array( 'type' => 'number', 'name' => 'faq_count',  'label' => 'Number of Q&A Pairs', 'min' => 2, 'max' => 10, 'default' => 3 ),
-			),
-		),
-	);
+	return AH_Posts_Helper::post_templates();
 }
 
 function ah_render_template_field( array $f ): void {
@@ -489,7 +324,7 @@ if ( $action === 'edit-custom' ) {
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
     <?php foreach ( $tpls as $tpl_key => $tpl ) : ?>
       <?php ob_start(); ?>
-        <div style="background:var(--ah-primary,#1e40af);color:#fff;padding:20px 24px;">
+        <div style="background:var(--ah-primary,var(--ah-primary));color:#fff;padding:20px 24px;">
           <div style="font-size:2rem;margin-bottom:8px;"><?php echo $tpl['icon']; ?></div>
           <h3 style="margin:0 0 4px;color:#fff;"><?php echo esc_html( $tpl['label'] ); ?></h3>
           <p style="margin:0;opacity:.8;font-size:.82rem;"><?php echo esc_html( $tpl['desc'] ); ?></p>
@@ -752,7 +587,7 @@ if ( $action === 'edit-custom' ) {
       );
     },
     table: function() {
-      var cell = 'padding:4px;border:1px solid #cbd5e1;';
+      var cell = 'padding:4px;border:1px solid var(--ah-border);';
       return buildCard('table', '⊞ Table',
         '<div style="margin-bottom:8px;">' +
         '<button type="button" class="ah-table-add-row ah-btn ah-btn-secondary ah-btn-sm">+ Row</button>' +
@@ -760,8 +595,8 @@ if ( $action === 'edit-custom' ) {
         '</div>' +
         '<div style="overflow-x:auto;"><table class="ah-table-editor" style="border-collapse:collapse;width:100%;">' +
         '<thead><tr>' +
-        '<th style="' + cell + 'background:#f8fafc;"><input type="text" placeholder="Header 1" style="width:100%;min-width:80px;box-sizing:border-box;"></th>' +
-        '<th style="' + cell + 'background:#f8fafc;"><input type="text" placeholder="Header 2" style="width:100%;min-width:80px;box-sizing:border-box;"></th>' +
+        '<th style="' + cell + 'background:var(--ah-bg-light);"><input type="text" placeholder="Header 1" style="width:100%;min-width:80px;box-sizing:border-box;"></th>' +
+        '<th style="' + cell + 'background:var(--ah-bg-light);"><input type="text" placeholder="Header 2" style="width:100%;min-width:80px;box-sizing:border-box;"></th>' +
         '</tr></thead>' +
         '<tbody><tr>' +
         '<td style="' + cell + '"><input type="text" placeholder="Cell" style="width:100%;min-width:80px;box-sizing:border-box;"></td>' +
@@ -851,7 +686,7 @@ if ( $action === 'edit-custom' ) {
   });
 
   // ── Table: add row/column ───────────────────────────────────────────────────
-  var cellStyle = 'padding:4px;border:1px solid #cbd5e1;';
+  var cellStyle = 'padding:4px;border:1px solid var(--ah-border);';
   $(document).on('click', '.ah-table-add-row', function() {
     var $table = $(this).closest('.ah-section-card').find('.ah-table-editor');
     var cols   = $table.find('thead tr th').length || 2;
@@ -864,7 +699,7 @@ if ( $action === 'edit-custom' ) {
   $(document).on('click', '.ah-table-add-col', function() {
     var $table = $(this).closest('.ah-section-card').find('.ah-table-editor');
     var cols   = $table.find('thead tr th').length + 1;
-    $table.find('thead tr').append('<th style="' + cellStyle + 'background:#f8fafc;"><input type="text" placeholder="Header ' + cols + '" style="width:100%;min-width:80px;box-sizing:border-box;"></th>');
+    $table.find('thead tr').append('<th style="' + cellStyle + 'background:var(--ah-bg-light);"><input type="text" placeholder="Header ' + cols + '" style="width:100%;min-width:80px;box-sizing:border-box;"></th>');
     $table.find('tbody tr').each(function() {
       $(this).append('<td style="' + cellStyle + '"><input type="text" placeholder="Cell" style="width:100%;min-width:80px;box-sizing:border-box;"></td>');
     });
@@ -1051,6 +886,115 @@ if ( $action === 'edit-custom' ) {
 
 <?php endif; ?>
 
+<?php
+// ── Render Edit Meta modals for each post ──
+if ( ! empty( $posts_list ) && isset( $qe_tax_model ) && $qe_tax_model ) :
+  foreach ( $posts_list as $mp ) :
+    $mp_id     = (int) $mp->ID;
+    $mp_feat   = get_post_meta( $mp_id, '_ah_is_featured', true );
+    $mp_pop    = get_post_meta( $mp_id, '_ah_is_popular', true );
+    $mp_sug    = get_post_meta( $mp_id, '_ah_is_suggested', true );
+    $mp_hl     = json_decode( get_post_meta( $mp_id, '_ah_highlight_links', true ) ?: '[]', true );
+    $mp_rl     = ( new AH_Related_Links_Model() )->get_for( 'wp_post', $mp_id );
+    $mp_terms  = $qe_tax_model->get_terms( 'wp_post', $mp_id );
+    $mp_term_ids = wp_list_pluck( $mp_terms, 'id' );
+?>
+<div class="ah-qe-modal" id="ah-qe-<?php echo $mp_id; ?>" aria-hidden="true">
+  <div class="ah-qe-backdrop"></div>
+  <div class="ah-qe-card">
+    <div class="ah-qe-head">
+      <div class="ah-qe-head-l">
+        <span class="ah-qe-head-title"><?php echo esc_html( $mp->post_title ); ?></span>
+        <span class="ah-qe-pill"><?php echo esc_html( $mp->post_status ); ?></span>
+      </div>
+      <button type="button" class="ah-qe-close ah-qe-x" aria-label="Close">&times;</button>
+    </div>
+    <div class="ah-qe-body">
+      <div class="ah-qe-grid">
+        <!-- Left column: Flags + Highlight Links -->
+        <div>
+          <div class="ah-qe-sec">
+            <div class="ah-qe-sec-h">Post Flags</div>
+            <label class="ah-qe-flag"><input type="checkbox" class="ah-qe-featured" value="1" <?php checked( $mp_feat, '1' ); ?>> Featured</label>
+            <label class="ah-qe-flag"><input type="checkbox" class="ah-qe-popular" value="1" <?php checked( $mp_pop, '1' ); ?>> Popular</label>
+            <label class="ah-qe-flag ah-qe-flag--last"><input type="checkbox" class="ah-qe-suggested" value="1" <?php checked( $mp_sug, '1' ); ?>> Suggested</label>
+          </div>
+          <div class="ah-qe-sec" style="margin-top:12px;">
+            <div class="ah-qe-sec-h" style="display:flex;justify-content:space-between;align-items:center;">Highlight Links <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-add" data-id="<?php echo $mp_id; ?>">+ Add</button></div>
+            <div id="ah-qe-hl-rows-<?php echo $mp_id; ?>">
+              <?php if ( ! empty( $mp_hl ) && is_array( $mp_hl ) ) : ?>
+                <?php foreach ( $mp_hl as $hl ) : ?>
+                  <div class="ah-qe-hl-row" style="display:flex;gap:6px;margin-bottom:5px;align-items:center;">
+                    <input type="text" class="ah-qe-hl-name" placeholder="Label" value="<?php echo esc_attr( $hl['name'] ?? '' ); ?>" style="flex:1;min-width:0;padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                    <input type="text" class="ah-qe-hl-url" placeholder="/slug/ or URL" value="<?php echo esc_attr( $hl['url'] ?? '' ); ?>" style="flex:1.6;min-width:0;padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                    <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-remove" style="flex-shrink:0;padding:3px 8px;">&#10005;</button>
+                  </div>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </div>
+          </div>
+        </div>
+        <!-- Right column: Taxonomy + Related Content -->
+        <div>
+          <div class="ah-qe-sec">
+            <div class="ah-qe-sec-h">CMS Taxonomy Terms</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <?php foreach ( $qe_tax_groups as $key => $group ) : ?>
+                <?php if ( empty( $group['items'] ) ) continue; ?>
+                <div style="margin-bottom:8px;width:100%;">
+                  <div class="ah-qe-sub-h"><?php echo esc_html( $group['label'] ); ?></div>
+                  <?php foreach ( $group['items'] as $t ) :
+                    $checked = in_array( (int) $t->id, $mp_term_ids );
+                  ?>
+                    <label class="ah-qe-chip <?php echo $checked ? 'is-on' : ''; ?>">
+                      <input type="checkbox" class="ah-qe-term" value="<?php echo (int) $t->id; ?>" <?php checked( $checked ); ?>>
+                      <span><?php echo esc_html( $t->name ); ?></span>
+                    </label>
+                  <?php endforeach; ?>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+          <div class="ah-qe-sec" style="margin-top:12px;">
+            <div class="ah-qe-sec-h" style="display:flex;justify-content:space-between;align-items:center;">Related Content <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-rl-add">+ Add</button></div>
+            <div class="ah-rl-wrap">
+              <div class="ah-rl-rows">
+                <?php if ( ! empty( $mp_rl ) && is_array( $mp_rl ) ) : ?>
+                  <?php foreach ( $mp_rl as $rl ) : ?>
+                    <div class="ah-rl-row" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px;">
+                      <input type="text" class="ah-rl-label" placeholder="Label" value="<?php echo esc_attr( $rl->label ?? '' ); ?>" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                      <input type="text" class="ah-rl-url" placeholder="URL" value="<?php echo esc_attr( $rl->url ?? '' ); ?>" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                      <select class="ah-rl-type" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;">
+                        <?php
+                        $rl_types = array( 'article' => 'Article', 'external' => 'External', 'support' => 'Support', 'image' => 'Image', 'calculator' => 'Calculator', 'static_component' => 'Component' );
+                        $rl_type  = $rl->link_type ?? 'external';
+                        ?>
+                        <?php foreach ( $rl_types as $k => $v ) : ?>
+                          <option value="<?php echo esc_attr( $k ); ?>" <?php selected( $rl_type, $k ); ?>><?php echo esc_html( $v ); ?></option>
+                        <?php endforeach; ?>
+                      </select>
+                      <input type="text" class="ah-rl-container" placeholder="Container" value="<?php echo esc_attr( $rl->container ?? '' ); ?>" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                      <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-rl-remove" style="grid-column:span 2;flex-shrink:0;padding:3px 8px;">&#10005; Remove</button>
+                    </div>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ah-qe-foot">
+      <button type="button" class="ah-btn ah-btn-secondary ah-qe-close">Cancel</button>
+      <button type="button" class="ah-btn ah-btn-primary ah-qe-save" data-id="<?php echo $mp_id; ?>">Save Changes</button>
+    </div>
+  </div>
+</div>
+<?php
+  endforeach;
+endif;
+?>
+
 <style>
 /* ── Edit-Meta modal ─────────────────────────────────────────────────────── */
 body.ah-qe-lock { overflow: hidden; }
@@ -1075,42 +1019,42 @@ body.ah-qe-lock { overflow: hidden; }
   flex: 0 0 auto;
 }
 .ah-qe-head-l { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.ah-qe-head-title { font-size: .95rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ah-qe-pill { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #1e40af; background: #e8efff; padding: 3px 9px; border-radius: 5px; flex: 0 0 auto; }
-.ah-qe-x { border: 0; background: transparent; font-size: 1.5rem; line-height: 1; cursor: pointer; color: #64748b; padding: 0 6px; border-radius: 6px; }
-.ah-qe-x:hover { background: #f1f5f9; color: #0f172a; }
+.ah-qe-head-title { font-size: .95rem; color: var(--ah-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ah-qe-pill { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--ah-primary); background: #e8efff; padding: 3px 9px; border-radius: 5px; flex: 0 0 auto; }
+.ah-qe-x { border: 0; background: transparent; font-size: 1.5rem; line-height: 1; cursor: pointer; color: var(--ah-muted); padding: 0 6px; border-radius: 6px; }
+.ah-qe-x:hover { background: var(--ah-bg-light); color: var(--ah-text); }
 .ah-qe-body { padding: 18px 20px; overflow-y: auto; }
 .ah-qe-foot { padding: 13px 20px; border-top: 1px solid #eef2f9; background: #fafbff; display: flex; justify-content: flex-end; gap: 10px; flex: 0 0 auto; }
 .ah-qe-grid { display: grid; grid-template-columns: 210px 1fr; gap: 16px; align-items: start; }
 @media (max-width: 782px) { .ah-qe-grid { grid-template-columns: 1fr; } }
 .ah-qe-sec { background: #fff; border: 1px solid #e2ecf9; border-radius: 10px; padding: 13px 15px; }
-.ah-qe-sec-h { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #64748b; margin-bottom: 10px; }
-.ah-qe-hint { font-weight: 400; font-size: .68rem; text-transform: none; letter-spacing: 0; color: #94a3b8; }
-.ah-qe-sub-h { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: #94a3b8; margin-bottom: 5px; }
-.ah-qe-flag { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: .85rem; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+.ah-qe-sec-h { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--ah-muted); margin-bottom: 10px; }
+.ah-qe-hint { font-weight: 400; font-size: .68rem; text-transform: none; letter-spacing: 0; color: var(--ah-muted); }
+.ah-qe-sub-h { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--ah-muted); margin-bottom: 5px; }
+.ah-qe-flag { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: .85rem; padding: 6px 0; border-bottom: 1px solid var(--ah-bg-light); }
 .ah-qe-flag input { width: 15px; height: 15px; }
 .ah-qe-flag--last { border-bottom: 0; }
-.ah-qe-chip { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; padding: 4px 11px; border: 1px solid #d1dae8; border-radius: 20px; cursor: pointer; background: #fff; user-select: none; transition: all .12s; }
+.ah-qe-chip { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; padding: 4px 11px; border: 1px solid var(--ah-border); border-radius: 20px; cursor: pointer; background: #fff; user-select: none; transition: all .12s; }
 .ah-qe-chip:hover { border-color: #b9c6e0; }
 .ah-qe-chip.is-on { border-color: #4f7cf5; background: #e8efff; color: #1a49c4; }
 </style>
 
 <script>
 (function($){
-  function openModal(id){
+  function qeOpenModal(id){
     $('.ah-qe-modal.is-open').removeClass('is-open').attr('aria-hidden','true');
     $('#ah-qe-' + id).addClass('is-open').attr('aria-hidden','false');
     $('body').addClass('ah-qe-lock');
   }
-  function closeModals(){
+  function qeCloseModals(){
     $('.ah-qe-modal.is-open').removeClass('is-open').attr('aria-hidden','true');
     $('body').removeClass('ah-qe-lock');
   }
   $(document).on('click', '.ah-qe-open', function() {
-    openModal($(this).data('id'));
+    qeOpenModal($(this).data('id'));
   });
   $(document).on('click', '.ah-qe-close, .ah-qe-backdrop', function() {
-    closeModals();
+    qeCloseModals();
   });
   /* Esc closes the open modal */
   $(document).on('keydown', function(e){
@@ -1129,8 +1073,8 @@ body.ah-qe-lock { overflow: hidden; }
     var id = $(this).data('id');
     $('#ah-qe-hl-rows-' + id).append(
       '<div class="ah-qe-hl-row" style="display:flex;gap:6px;margin-bottom:5px;align-items:center;">' +
-      '<input type="text" class="ah-qe-hl-name" placeholder="Label" style="flex:1;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">' +
-      '<input type="text" class="ah-qe-hl-url"  placeholder="/slug/ or URL" style="flex:1.6;min-width:0;padding:4px 8px;border:1px solid #d1dae8;border-radius:4px;font-size:.82rem;outline:none;">' +
+      '<input type="text" class="ah-qe-hl-name" placeholder="Label" style="flex:1;min-width:0;padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">' +
+      '<input type="text" class="ah-qe-hl-url"  placeholder="/slug/ or URL" style="flex:1.6;min-width:0;padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">' +
       '<button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-qe-hl-remove" style="flex-shrink:0;padding:3px 8px;">✕</button>' +
       '</div>'
     );

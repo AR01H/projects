@@ -20,7 +20,7 @@ $notice  = '';
 $n_type  = 'success';
 
 function ah_sp_url( array $args ): string {
-	return esc_url( add_query_arg( array_merge( array( 'page' => 'ah-spotlights' ), $args ), admin_url( 'admin.php' ) ) );
+	return AH_Spotlights_Helper::url( $args );
 }
 
 /* ================================================================
@@ -209,8 +209,8 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 		array( 'label' => 'Active', 'render' => function ( $t ) {
 			$url = esc_url( wp_nonce_url( ah_sp_url( array( 'tab' => 'terms', 'toggle_term' => $t->id ) ), 'ah_tog_sp_term' ) );
 			return $t->is_active
-				? '<a href="' . $url . '" style="color:#16a34a">● Active</a>'
-				: '<a href="' . $url . '" style="color:#9ca3af">● Inactive</a>';
+				? '<a href="' . $url . '" style="color:var(--ah-success)">● Active</a>'
+				: '<a href="' . $url . '" style="color:var(--ah-muted)">● Inactive</a>';
 		} ),
 	),
 	'items'         => $all_terms,
@@ -302,7 +302,7 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 		} ),
 		array( 'label' => 'Title', 'render' => function ( $item ) {
 			$html = '<strong>' . esc_html( $item->title ) . '</strong>';
-			if ( $item->description ) $html .= '<br><small style="color:#6b7280">' . esc_html( wp_trim_words( $item->description, 8 ) ) . '</small>';
+			if ( $item->description ) $html .= '<br><small style="color:var(--ah-muted)">' . esc_html( wp_trim_words( $item->description, 8 ) ) . '</small>';
 			return $html;
 		} ),
 		array( 'label' => 'Point', 'render' => function ( $item ) {
@@ -314,7 +314,7 @@ if ( isset( $_GET['deleted'] ) ) { $notice = 'Deleted successfully.'; }
 			return $t_row ? '<code>' . esc_html( $t_row->slug ) . '</code>' : '-';
 		} ),
 		array( 'label' => 'Link', 'render' => function ( $item ) {
-			return $item->show_link && $item->link_url ? '<span style="color:#16a34a">✓</span>' : '-';
+			return $item->show_link && $item->link_url ? '<span style="color:var(--ah-success)">✓</span>' : '-';
 		} ),
 	),
 	'items'         => $items,

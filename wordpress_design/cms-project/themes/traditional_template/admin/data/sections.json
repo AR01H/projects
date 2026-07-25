@@ -8,22 +8,17 @@
   "reviews": true,
   "faqs": true,
   "contact": true,
-
   "photo_carousel": true,
-  "site_decor": true,
-
+  "site_decor": false,
   "about_history": true,
   "about_experience": true,
   "about_certifications": true,
-
   "products_hero": true,
   "products_bottles": true,
   "product_menu": true,
   "products_list": true,
   "product_benefits": true,
-
   "media_banner": true,
-
   "gallery": true,
   "franchise": true,
   "events": true,

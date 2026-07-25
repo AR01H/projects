@@ -154,11 +154,11 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
           <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Description', '<textarea name="pt_description" rows="3">' . esc_textarea( $pt_item->description ?? '' ) . '</textarea>' ); ?>
           <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Colour',
             '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
-            . '<input type="color" name="pt_color" value="' . esc_attr( $pt_item->color ?? '#1e40af' ) . '" style="width:44px;height:36px;padding:2px;border-radius:6px;border:1px solid #ddd;cursor:pointer;">'
+            . '<input type="color" name="pt_color" value="' . esc_attr( $pt_item->color ?? 'var(--ah-primary)' ) . '" style="width:44px;height:36px;padding:2px;border-radius:6px;border:1px solid var(--ah-border);cursor:pointer;">'
             . '<div style="display:flex;flex-wrap:wrap;gap:5px;">'
             . implode( '', array_map( function ( $c ) {
                 return '<span onclick="this.closest(\'form\').querySelector(\'[name=pt_color]\').value=\'' . esc_js( $c ) . '\'" style="width:22px;height:22px;border-radius:4px;background:' . esc_attr( $c ) . ';cursor:pointer;border:2px solid transparent;" title="' . esc_attr( $c ) . '"></span>';
-            }, [ '#1e40af','#15803d','#b45309','#9333ea','#dc2626','#0891b2','#be185d','#374151' ] ) )
+            }, [ 'var(--ah-primary)','var(--ah-success)','var(--ah-warning)','var(--ah-primary)','var(--ah-danger)','var(--ah-primary)','var(--ah-primary)','var(--ah-text)' ] ) )
             . '</div></div>'
           ); ?>
           </div>
@@ -195,7 +195,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
     <?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
           'columns' => array(
             array( 'label' => '', 'render' => function ( $pt ) {
-              $dot_color = ! empty( $pt->color ) ? $pt->color : '#94a3b8';
+              $dot_color = ! empty( $pt->color ) ? $pt->color : 'var(--ah-muted)';
               return '<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:' . esc_attr( $dot_color ) . ';vertical-align:middle;" title="' . esc_attr( $pt->color ?? 'no colour' ) . '"></span>';
             } ),
             array( 'label' => 'Name', 'render' => function ( $pt ) {
@@ -348,6 +348,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
           ) ); ?>
           <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Status', '<select name="status"><option value="active"' . selected( $item->status ?? 'active', 'active', false ) . '>Active</option><option value="inactive"' . selected( $item->status ?? '', 'inactive', false ) . '>Inactive</option></select>' ); ?>
         </div>
+        </div>
       </form>
     <?php \Ah\Cms\Admin\Components\AdminComponents::card( $item ? 'Edit Term' : 'Add Term', ob_get_clean() ); ?>
 
@@ -395,7 +396,7 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
         array( 'label' => 'Group', 'render' => function ( $term ) use ( $parent_map ) {
           $pt_obj = isset( $term->parent_term_id ) ? ( $parent_map[ (int) $term->parent_term_id ] ?? null ) : null;
           if ( $pt_obj ) {
-            $dot = ! empty( $pt_obj->color ) ? $pt_obj->color : '#94a3b8';
+            $dot = ! empty( $pt_obj->color ) ? $pt_obj->color : 'var(--ah-muted)';
             return '<span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><span style="flex-shrink:0;width:10px;height:10px;border-radius:50%;background:' . esc_attr( $dot ) . ';"></span>' . esc_html( ( $pt_obj->icon_emoji ? $pt_obj->icon_emoji . ' ' : '' ) . $pt_obj->name ) . '</span>';
           }
           return '<small style="opacity:.4;">-</small>';

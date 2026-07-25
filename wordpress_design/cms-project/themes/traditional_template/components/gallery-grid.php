@@ -40,8 +40,10 @@ $next_id      = esc_attr( $id ) . '-next';
 			'wrapper_base' => 'nt-section-header fade-up',
 		] ); ?>
 
-		<div class="nt-gstrip fade-up" data-id="<?php echo esc_attr( $id ); ?>">
-			<div class="nt-gstrip__track" id="<?php echo $track_id; ?>" data-nt-lightbox>
+		<div class="nt-gstrip fade-up" data-id="<?php echo esc_attr( $id ); ?>" data-nt-strip>
+			<div class="nt-gstrip__track" id="<?php echo $track_id; ?>" data-nt-lightbox data-nt-strip-track
+			     tabindex="0" role="region"
+			     aria-label="<?php esc_attr_e( 'Photo strip, scrollable', NT_TEXT_DOMAIN ); ?>">
 				<?php foreach ( $images as $i => $img ) : ?>
 					<div class="nt-gstrip__card<?php echo $i === 0 ? ' active' : ''; ?>">
 						<img src="<?php echo esc_url( $img['src'] ?? $img ); ?>"
@@ -58,6 +60,23 @@ $next_id      = esc_attr( $id ) . '-next';
 						<?php endif; ?>
 					</div>
 				<?php endforeach; ?>
+			</div>
+
+			<?php /*
+			   Desktop controls. Separate from the mobile nav below on purpose:
+			   the two carousels work by different mechanisms and must not share
+			   buttons. Mobile shows ONE card and legacy.js toggles .active
+			   between them; desktop shows the whole row and scrolls the track.
+			   initStripCarousel() in common.js drives these and removes them
+			   entirely when the photos already fit, so they are never dead.
+			*/ ?>
+			<div class="nt-gstrip__scroll-nav" data-nt-strip-nav hidden>
+				<button type="button" class="nt-gstrip__scroll-btn" data-nt-strip-prev
+				        aria-label="<?php esc_attr_e( 'Scroll photos left', NT_TEXT_DOMAIN ); ?>"
+				        aria-controls="<?php echo $track_id; ?>">&#8592;</button>
+				<button type="button" class="nt-gstrip__scroll-btn" data-nt-strip-next
+				        aria-label="<?php esc_attr_e( 'Scroll photos right', NT_TEXT_DOMAIN ); ?>"
+				        aria-controls="<?php echo $track_id; ?>">&#8594;</button>
 			</div>
 
 			<!-- Mobile carousel nav -->

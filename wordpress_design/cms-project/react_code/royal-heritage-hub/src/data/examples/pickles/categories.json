@@ -1,0 +1,56 @@
+[
+  {
+    "id": "cat-mango",
+    "slug": "mango-pickles",
+    "name": "Mango Pickles",
+    "description": "Sun-ripened raw mango, hand-cut and pickled in cold-pressed oil with traditional spice blends.",
+    "image": "https://picsum.photos/seed/pickle-mango/800/1000",
+    "productCount": 6,
+    "featured": true
+  },
+  {
+    "id": "cat-lemon",
+    "slug": "lemon-pickles",
+    "name": "Lemon Pickles",
+    "description": "Tangy, sun-cured lemon pickles made in small batches with no artificial preservatives.",
+    "image": "https://picsum.photos/seed/pickle-lemon/800/1000",
+    "productCount": 4,
+    "featured": true
+  },
+  {
+    "id": "cat-mixed-veg",
+    "slug": "mixed-vegetable-pickles",
+    "name": "Mixed Vegetable Pickles",
+    "description": "A crunchy medley of seasonal vegetables pickled in a robust, spiced masala.",
+    "image": "https://picsum.photos/seed/pickle-mixedveg/800/1000",
+    "productCount": 5,
+    "featured": true
+  },
+  {
+    "id": "cat-garlic",
+    "slug": "garlic-pickles",
+    "name": "Garlic Pickles",
+    "description": "Bold, aromatic garlic pickled whole in a fiery red chili masala.",
+    "image": "https://picsum.photos/seed/pickle-garlic/800/1000",
+    "productCount": 3,
+    "featured": false
+  },
+  {
+    "id": "cat-chili",
+    "slug": "chili-pickles",
+    "name": "Chili Pickles",
+    "description": "Whole green and red chilies pickled for those who love serious heat.",
+    "image": "https://picsum.photos/seed/pickle-chili/800/1000",
+    "productCount": 4,
+    "featured": true
+  },
+  {
+    "id": "cat-gift-jars",
+    "slug": "gift-jars",
+    "name": "Gift Jar Sets",
+    "description": "Beautifully packaged pickle sampler jars, perfect for gifting.",
+    "image": "https://picsum.photos/seed/pickle-gift/800/1000",
+    "productCount": 4,
+    "featured": true
+  }
+]

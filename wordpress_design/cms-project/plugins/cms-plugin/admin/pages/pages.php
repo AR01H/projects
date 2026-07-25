@@ -189,11 +189,10 @@ $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
           ob_start();
           \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Template', $tpl_select );
           ?>
-          <div class="ah-card ah-hidden">
-            <div class="ah-card-header"><h2>Template</h2></div>
+          <div class="ah-card ah-hidden">            <div class="ah-card-header"><h2>Template</h2></div>
             <?php echo ob_get_clean(); ?>
           </div>
-          <style>.ah-hidden{display:none;}</style>
+
 
           <?php if ( $wp_page ) : ?>
             <?php ob_start(); ?>
@@ -201,7 +200,7 @@ $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
                 <span class="dashicons dashicons-trash"></span> Move to Trash
               </button>
             <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Danger Zone', ob_get_clean() ); ?>
-            <style>.ah-card:last-child { border-color: var(--ah-danger); }</style>
+            
           <?php endif; ?>
         </div>
       </div>

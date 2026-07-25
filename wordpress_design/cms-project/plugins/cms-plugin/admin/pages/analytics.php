@@ -48,23 +48,23 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 		</div>
 
 		<?php if ( $report && $report->id ) : ?>
-		<div style="margin-bottom:14px;background:#f8fafc;padding:10px;border-radius:4px;font-size:12px;display:flex;align-items:center;gap:10px">
+		<div style="margin-bottom:14px;background:var(--ah-bg-light);padding:10px;border-radius:4px;font-size:12px;display:flex;align-items:center;gap:10px">
 			<strong style="color:var(--ah-muted)">API Endpoint:</strong>
-			<code style="background:transparent;padding:0;color:#0369a1"><?php echo esc_url( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ); ?></code>
+			<code style="background:transparent;padding:0;color:var(--ah-primary)"><?php echo esc_url( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ); ?></code>
 			<button type="button" class="ah-btn ah-btn-secondary" style="padding:2px 6px;font-size:10px" onclick="navigator.clipboard.writeText('<?php echo esc_js( home_url( '/wp-json/ah-analytics/v1/report/' . $report->id ) ) ; ?>');alert('Copied!')">Copy</button>
 		</div>
 		<?php endif; ?>
 
 		<div id="ar-sql-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'php' ? 'display:none' : ''; ?>">
 			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'SQL Query * <span style="font-weight:400;text-transform:none;letter-spacing:0">(SELECT, DESC, SHOW CREATE)</span>',
-				'<textarea id="ar-sql" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6" placeholder="SELECT * FROM wp_posts WHERE post_status = \'publish\' LIMIT 20">'
+				'<textarea id="ar-sql" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid var(--ah-border);border-radius:6px;resize:vertical;background:var(--ah-text);color:var(--ah-text);line-height:1.6" placeholder="SELECT * FROM wp_posts WHERE post_status = \'publish\' LIMIT 20">'
 				. esc_textarea( $report->query_sql ?? '' ) . '</textarea>'
 			); ?>
 		</div>
 
 		<div id="ar-php-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'sql' ? 'display:none' : ''; ?>">
 			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'PHP Code * <span style="font-weight:400;text-transform:none;letter-spacing:0">(Must return an array of arrays)</span>',
-				'<textarea id="ar-php" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid #ddd;border-radius:6px;resize:vertical;background:#1e1e2e;color:#cdd6f4;line-height:1.6" placeholder="$data = [];&#10;foreach ( get_users() as $u ) {&#10;    $data[] = [ \'ID\' => $u->ID, \'Login\' => $u->user_login ];&#10;}&#10;return $data;">'
+				'<textarea id="ar-php" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid var(--ah-border);border-radius:6px;resize:vertical;background:var(--ah-text);color:var(--ah-text);line-height:1.6" placeholder="$data = [];&#10;foreach ( get_users() as $u ) {&#10;    $data[] = [ \'ID\' => $u->ID, \'Login\' => $u->user_login ];&#10;}&#10;return $data;">'
 				. esc_textarea( $report->query_php ?? '' ) . '</textarea>'
 				. '<p style="font-size:11px;color:var(--ah-muted);margin:6px 0 0">Security warning: This code is executed via `eval()`. Do not use untrusted input.</p>'
 			); ?>
@@ -129,7 +129,7 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 		<!-- Idle placeholder -->
 		<div id="ar-results-placeholder" style="text-align:center;padding:40px 20px;color:var(--ah-muted)">
 			<span class="dashicons dashicons-database" style="font-size:2rem;height:auto;width:auto;opacity:.3;display:block;margin-bottom:10px"></span>
-			<p style="margin:0;font-size:13px">Write a query above and press <strong>Run Query</strong> (or <kbd style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:11px">Ctrl+Enter</kbd>) to see results here.</p>
+			<p style="margin:0;font-size:13px">Write a query above and press <strong>Run Query</strong> (or <kbd style="background:var(--ah-bg-light);padding:1px 5px;border-radius:3px;font-size:11px">Ctrl+Enter</kbd>) to see results here.</p>
 		</div>
 
 		<!-- Loading skeleton -->
@@ -141,7 +141,7 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 			<div class="ar-skeleton" style="height:24px;border-radius:4px;width:88%"></div>
 		</div>
 
-		<div id="ar-results-error" style="display:none;color:#dc2626;font-size:13px;padding:10px;background:#fef2f2;border-radius:6px;border:1px solid #fca5a5"></div>
+		<div id="ar-results-error" style="display:none;color:var(--ah-danger);font-size:13px;padding:10px;background:var(--ah-bg-light);border-radius:6px;border:1px solid var(--ah-border)"></div>
 		<div style="overflow-x:auto">
 			<table class="ah-table" id="ar-results-table" style="display:none;font-size:12px"></table>
 		</div>
@@ -201,8 +201,8 @@ $reports = ( new AH_Analytics_Report_Model() )->all_with_last_result();
 		} ),
 		array( 'label' => 'Last Status', 'style' => 'width:90px;text-align:center', 'render' => function ( $r ) {
 			if ( ! $r->last_status ) return '-';
-			$status_colors = [ 'success' => '#dcfce7|#16a34a', 'error' => '#fee2e2|#dc2626' ];
-			[ $sbg, $sfg ] = explode( '|', $status_colors[ $r->last_status ] ?? '#f1f5f9|#64748b' );
+			$status_colors = [ 'success' => 'var(--ah-bg-light)|var(--ah-success)', 'error' => 'var(--ah-bg-light)|var(--ah-danger)' ];
+			[ $sbg, $sfg ] = explode( '|', $status_colors[ $r->last_status ] ?? 'var(--ah-bg-light)|var(--ah-muted)' );
 			return '<span style="background:' . esc_attr( $sbg ) . ';color:' . esc_attr( $sfg ) . ';padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">'
 				. esc_html( strtoupper( $r->last_status ) ) . '</span>';
 		} ),
@@ -222,7 +222,7 @@ $reports = ( new AH_Analytics_Report_Model() )->all_with_last_result();
 			$html .= '<button class="ah-btn ah-btn-secondary ar-quick-export" style="font-size:11px;padding:3px 8px" data-report-id="' . esc_attr( $r->id ) . '" data-format="csv" title="Export last result as CSV">CSV</button>';
 			$html .= '<button class="ah-btn ah-btn-secondary ar-quick-export" style="font-size:11px;padding:3px 8px" data-report-id="' . esc_attr( $r->id ) . '" data-format="json" title="Export last result as JSON">JSON</button>';
 		}
-		$html .= '<button class="ah-btn ar-delete-btn" style="font-size:11px;padding:3px 8px;background:#fee2e2;color:#dc2626;border:1px solid #fca5a5" data-id="' . esc_attr( $r->id ) . '" data-name="' . esc_attr( $r->name ) . '">Delete</button>';
+		$html .= '<button class="ah-btn ar-delete-btn" style="font-size:11px;padding:3px 8px;background:var(--ah-bg-light);color:var(--ah-danger);border:1px solid var(--ah-border)" data-id="' . esc_attr( $r->id ) . '" data-name="' . esc_attr( $r->name ) . '">Delete</button>';
 		$html .= '</div>';
 		return $html;
 	},
@@ -233,7 +233,7 @@ $reports = ( new AH_Analytics_Report_Model() )->all_with_last_result();
 </div><!-- .wrap -->
 
 <style>
-.ar-tbl-row:hover { background:#f1f5f9; }
+.ar-tbl-row:hover { background:var(--ah-bg-light); }
 .hidden { display:none !important; }
 
 /* Skeleton shimmer */
@@ -242,7 +242,7 @@ $reports = ( new AH_Analytics_Report_Model() )->all_with_last_result();
 	100% { background-position:  600px 0; }
 }
 .ar-skeleton {
-	background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+	background: linear-gradient(90deg, var(--ah-bg-light) 25%, var(--ah-border) 50%, var(--ah-bg-light) 75%);
 	background-size: 600px 100%;
 	animation: ar-shimmer 1.4s infinite linear;
 }
@@ -349,7 +349,7 @@ jQuery(function($){
 			var tbody  = '<tbody>' + d.rows.map(function(row){
 				return '<tr>' + d.columns.map(function(c){
 					var v = row[c];
-					return '<td>' + ( v === null ? '<em style="color:#94a3b8">NULL</em>' : $('<span>').text(String(v)).html() ) + '</td>';
+					return '<td>' + ( v === null ? '<em style="color:var(--ah-muted)">NULL</em>' : $('<span>').text(String(v)).html() ) + '</td>';
 				}).join('') + '</tr>';
 			}).join('') + '</tbody>';
 			$table.html( thead + tbody ).show();
@@ -480,14 +480,14 @@ jQuery(function($){
 		}, function(res){
 			$btn.text('✓ Save Report').prop('disabled', false);
 			if ( res.success ) {
-				$('#ar-save-status').css('color','#16a34a').text('Saved!');
+				$('#ar-save-status').css('color','var(--ah-success)').text('Saved!');
 				if ( ! id || id === '0' ) {
 					/* Redirect to edit page for the new report */
 					window.location.href = listUrl + '&action=edit&id=' + res.data.id + '&saved=1';
 				}
 				setTimeout(function(){ $('#ar-save-status').text(''); }, 2500);
 			} else {
-				$('#ar-save-status').css('color','#dc2626').text( res.data.message || 'Save failed.' );
+				$('#ar-save-status').css('color','var(--ah-danger)').text( res.data.message || 'Save failed.' );
 			}
 		});
 	});
@@ -511,7 +511,7 @@ jQuery(function($){
 			$btn.text( '↓ ' + fmt.toUpperCase() ).prop('disabled', false);
 			if ( res.success ) {
 				$('#ar-export-link').html(
-					'<a href="' + res.data.file_url + '" target="_blank" style="color:#2563eb;font-size:13px">&#8599; ' +
+					'<a href="' + res.data.file_url + '" target="_blank" style="color:var(--ah-primary);font-size:13px">&#8599; ' +
 					$('<span>').text(res.data.filename).html() +
 					' (' + res.data.row_count + ' rows)</a>'
 				);
@@ -533,9 +533,9 @@ jQuery(function($){
 			var rows = res.data.history;
 			if ( ! rows.length ) { $('#ar-history-list').text('No runs recorded yet.'); return; }
 			var html = rows.map(function(r){
-				var col = r.status === 'success' ? '#16a34a' : '#dc2626';
-				var exp = r.export_file ? ' · <a href="javascript:void(0)" class="ar-hist-load" data-rid="'+rid+'" data-resid="'+r.id+'" style="color:#2563eb">re-export</a>' : '';
-				return '<div style="padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:12px">' +
+				var col = r.status === 'success' ? 'var(--ah-success)' : 'var(--ah-danger)';
+				var exp = r.export_file ? ' · <a href="javascript:void(0)" class="ar-hist-load" data-rid="'+rid+'" data-resid="'+r.id+'" style="color:var(--ah-primary)">re-export</a>' : '';
+				return '<div style="padding:5px 0;border-bottom:1px solid var(--ah-bg-light);font-size:12px">' +
 					'<span style="color:' + col + ';font-weight:700">' + r.status.toUpperCase() + '</span> ' +
 					r.run_at + ' · ' + r.row_count + ' rows · ' + r.exec_ms + 'ms' + exp +
 					'</div>';

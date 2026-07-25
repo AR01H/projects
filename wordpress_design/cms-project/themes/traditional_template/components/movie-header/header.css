@@ -1,0 +1,592 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   MOVIE-TITLE HEADER  (components/movie-header/header.php)
+
+   A carved wooden signboard with a stone frame, gold medallion, embossed gold
+   lettering, curved footer text and vector side ornaments.
+
+   Built with HTML + CSS + SVG only. No canvas, and no image in the title - the
+   lettering is real text, so it stays selectable, translatable and readable by
+   assistive tech. The metal finish is a clipped gradient over a stack of
+   shadows; the depth under it is a second copy of the same string drawn from
+   `data-text` on a pseudo-element, which needs no extra markup and never
+   reaches the accessibility tree.
+
+   Every colour and measurement is a variable in the block below. Re-skinning
+   the board for another trade is editing that block - nothing else.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.nt-mh {
+	/* ── Timber ─────────────────────────────────────────────────────── */
+	--wood-darkest: #2b1710;
+	--wood-dark:    #3d2115;
+	--wood-mid:     #5b3420;
+	--wood-warm:    #714224;
+	--wood-light:   #8a5631;
+
+	/* ── Gold / brass ───────────────────────────────────────────────── */
+	--gold-1: #d9b46a;
+	--gold-2: #c08d3a;
+	--gold-3: #94631f;
+	--gold-4: #6a4213;
+	--gold-deep: #5d3206;
+
+	/* ── Stone frame ────────────────────────────────────────────────── */
+	--stone:        #cfc6b6;
+	--stone-light:  #efe7d7;
+	--stone-shade:  #9a8f7c;
+	--stone-deep:   #5f574a;
+
+	/* ── Ink + light ────────────────────────────────────────────────── */
+	--ink:          #1b0f07;
+	--ink-soft:     rgba(27, 15, 7, 0.55);
+	--sheen:        rgba(255, 238, 198, 0.62);
+	--sunlight:     rgba(255, 226, 160, 0.16);
+	--shadow:       rgba(24, 13, 5, 0.45);
+	--shadow-deep:  rgba(24, 13, 5, 0.7);
+
+	/* ── Finish (all overridable from page_headers.json -> style) ───────
+	   Tuned MATTE, not varnished: aged timber scatters light, it does not
+	   reflect it. Gloss is deliberately low and the grain and cracks carry
+	   the surface instead. Raise --gloss-opacity for a polished board. */
+	--grain-opacity:  0.62;
+	--relief-opacity: 0;
+	--cracks-opacity: 0.55;
+	--gloss-opacity:  0;
+	--shade-opacity:  1;
+	--title-lift: -16px;
+
+	/* ── Geometry ───────────────────────────────────────────────────── */
+	--board-max: 1200px;
+	/* Spec height is 420px; capped lower here because the arch plus the arc
+	   text already give the board its presence, and the extra 90px was empty
+	   timber between the headline and the curve. */
+	--board-h: clamp(218px, 25vw, 356px);
+	--frame-w: clamp(11px, 1.5vw, 22px);
+	--orn-size: clamp(96px, 13vw, 190px);
+
+	/* The banner outline, as a mask. Top edge rises to the middle, bottom edge
+	   drops away from it, ends cut square for the metal caps.
+	   The whole path is pushed out of true by feTurbulence, so the edge is
+	   hand-cut rather than machine-smooth - the same trick the photographs use
+	   elsewhere in this theme, and the reason the plank reads as carved. */
+	--banner: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='340' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.008 0.02' numOctaves='3' seed='13' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='9' xChannelSelector='R' yChannelSelector='G'/></filter><path d='M 10,72 C 260,10 940,10 1190,72 L 1190,284 C 940,326 260,326 10,284 Z' fill='white' filter='url(%23r)'/></svg>");
+
+	position: relative;
+	/* Top padding is small on purpose: .nt-main above already clears the
+	   header, and the kicker below adds the medallion's clearance. Three
+	   stacked paddings is what put ~270px of blank parchment above the
+	   board. */
+	padding: clamp(8px, 1.4vw, 20px) 0 clamp(18px, 2.6vw, 38px);
+	overflow: hidden;
+	isolation: isolate;
+}
+
+.nt-mh__sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ── Cinematic ground: warm light from above, vignette at the edges ─────── */
+.nt-mh::before,
+.nt-mh::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: -1;
+}
+.nt-mh::before {
+	background:
+		radial-gradient(120% 82% at 50% -14%, var(--sunlight) 0%, transparent 62%),
+		radial-gradient(80% 60% at 50% 18%, rgba(255, 236, 186, 0.1) 0%, transparent 70%);
+}
+.nt-mh::after {
+	background: radial-gradient(120% 110% at 50% 42%, transparent 52%, rgba(24, 13, 5, 0.22) 100%);
+}
+
+.nt-mh__stage {
+	position: relative;
+	width: 100%;
+	max-width: var(--board-max);
+	margin-inline: auto;
+	padding-inline: clamp(12px, 2vw, 26px);
+	text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KICKER  - the small credit line above the board
+   ══════════════════════════════════════════════════════════════════════════ */
+.nt-mh__kicker {
+	/* Clearance for the medallion, which hangs 46% of its height above the
+	   board. Without it the badge lands on top of this line. */
+	margin: 0 0 clamp(24px, 3vw, 44px);
+	font-family: var(--nt-font-display, 'Playfair Display', serif);
+	font-size: clamp(0.62rem, 1vw, 0.84rem);
+	font-weight: 700;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+	/* Darker gold than the on-board text: this line sits on the pale page, not
+	   on timber, and the lighter golds wash out against parchment. */
+	color: var(--gold-4);
+	text-shadow: 0 1px 0 rgba(255, 248, 230, 0.7);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RIG  - ornament / board / ornament
+   The ornaments overlap the board slightly (negative margin) so the assembly
+   reads as one prop rather than three boxes in a row.
+   ══════════════════════════════════════════════════════════════════════════ */
+.nt-mh__rig {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.nt-mh__orn {
+	flex: 0 0 var(--orn-size);
+	width: var(--orn-size);
+	height: var(--orn-size);
+	align-self: center;
+	filter: drop-shadow(0 10px 16px var(--shadow));
+}
+.nt-mh__orn svg,
+.nt-mh__orn img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* The artwork ships as gold line-work on a near-black field, which would drop a
+   dark rectangle onto the parchment. Inverting it turns the field light and the
+   line-work dark, and `multiply` then discards the light field - leaving the
+   engraving alone, in ink, the way a period print would sit on the page.
+   Cheaper and better supported than a luminance mask. */
+.nt-mh__orn img {
+	filter: invert(1) grayscale(1) sepia(1) saturate(2.4) hue-rotate(-14deg) contrast(1.35) brightness(0.82);
+	mix-blend-mode: multiply;
+	opacity: var(--orn-opacity, 0.82);
+}
+.nt-mh__orn--left  { margin-right: calc(var(--orn-size) / -3.1); }
+.nt-mh__orn--right { margin-left:  calc(var(--orn-size) / -3.1); transform: scaleX(-1); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BOARD  - stone frame outside, carved teak inside, arched at the top
+
+   The frame is drawn with stacked box-shadows rather than a wrapper element:
+   an outer bevel, a hard stone ring, an inner shadow where the timber sits
+   below the stone, and a cast shadow on the ground.
+   ══════════════════════════════════════════════════════════════════════════ */
+/* The board is a positioning shell only. Frame and timber are separate
+   absolutely-positioned layers beneath the lettering, because both need the
+   banner silhouette applied as a MASK - and a mask on this element would take
+   the headline, the medallion and the arc text with it. */
+.nt-mh__board {
+	position: relative;
+	flex: 1 1 auto;
+	min-width: 0;
+	min-height: var(--board-h);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	filter: drop-shadow(0 16px 26px var(--shadow)) drop-shadow(0 34px 52px rgba(24, 13, 5, 0.26));
+}
+
+/* Banner silhouette: bowed up along the top edge, bowed down along the bottom,
+   so the plank reads as bent rather than as a rectangle with rounded corners.
+   border-radius cannot express this - only one curve per corner, and none
+   across the middle of an edge. */
+.nt-mh__frame,
+.nt-mh__panel {
+	position: absolute;
+	pointer-events: none;
+	-webkit-mask-image: var(--banner);
+	        mask-image: var(--banner);
+	-webkit-mask-size: 100% 100%;
+	        mask-size: 100% 100%;
+	-webkit-mask-repeat: no-repeat;
+	        mask-repeat: no-repeat;
+}
+
+.nt-mh__frame {
+	inset: 0;
+	background-image: linear-gradient(
+		180deg,
+		var(--stone-light) 0%,
+		var(--stone)       36%,
+		var(--stone-shade) 78%,
+		var(--stone-deep)  100%
+	);
+}
+
+/* Inset by the frame width, then the SAME mask stretched to the smaller box -
+   which is exactly the inner outline of the banner. */
+.nt-mh__panel {
+	inset: var(--frame-w);
+	overflow: hidden;
+	background-color: var(--wood-mid);
+	background-image:
+		/* Plain timber by default - artwork behind the headline competed with
+		   it. A page can opt back in from JSON by setting --board-art to a
+		   url(); the blend and sizing slots below stay in place for it. */
+		var(--board-art, none),
+		linear-gradient(180deg, rgba(20, 10, 5, 0.52) 0%, transparent 22%, transparent 74%, rgba(20, 10, 5, 0.58) 100%),
+		linear-gradient(180deg,
+			var(--wood-warm)  0%,
+			var(--wood-mid)   26%,
+			var(--wood-light) 48%,
+			var(--wood-mid)   66%,
+			var(--wood-dark)  100%);
+	background-size: cover, auto, auto;
+	background-position: center, center, center;
+	background-blend-mode: var(--board-art-blend, soft-light), normal, normal;
+}
+
+/* ── Horizontal wood grain ─────────────────────────────────────────────────
+   Two repeating gradients at slightly different periods, so the pattern does
+   not read as regular stripes. */
+.nt-mh__grain {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: var(--grain-opacity);
+	/* `overlay` was lightening as much as it darkened, which is what turned the
+	   surface into a bright tiled pattern. Wood grain only ever darkens. */
+	mix-blend-mode: multiply;
+	background-image:
+		/* Four line sets on co-prime periods (3/7/11/19px). Because the periods
+		   share no common factor they do not line up again for 4389px - longer
+		   than the board - so there is no repeat to spot. */
+		repeating-linear-gradient(180deg, rgba(38, 20, 9, 0.30) 0 1px, transparent 1px 3px),
+		repeating-linear-gradient(180deg, rgba(38, 20, 9, 0.20) 0 1px, transparent 1px 7px),
+		repeating-linear-gradient(180deg, rgba(20, 10, 4, 0.26) 0 2px, transparent 2px 11px),
+		repeating-linear-gradient(180deg, rgba(20, 10, 4, 0.16) 0 1px, transparent 1px 19px),
+		/* Long, soft cathedral figure drifting across the plank. */
+		linear-gradient(93deg,
+			rgba(20, 10, 4, 0.16) 0%,
+			transparent 14%,
+			rgba(20, 10, 4, 0.12) 31%,
+			transparent 47%,
+			rgba(20, 10, 4, 0.17) 63%,
+			transparent 79%,
+			rgba(20, 10, 4, 0.13) 100%);
+}
+
+/* ── Sheen: barely there.
+   This was a bright diagonal varnish sweep, which read as new lacquer rather
+   than old wood. An aged board catches a little soft light along the top
+   arris and nothing else - so what is left is one low, wide gradient. */
+.nt-mh__gloss {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: var(--gloss-opacity);
+	background: linear-gradient(180deg, rgba(255, 246, 226, 0.55) 0%, transparent 22%);
+}
+
+/* ── Splits: a couple of near-vertical checks, the way a plank actually
+   splits along the grain. The previous set ran diagonally across the whole
+   board and read as an X drawn on it rather than as timber. ─────────────── */
+.nt-mh__cracks {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: var(--cracks-opacity);
+	background-image:
+		linear-gradient(91deg, transparent 21.7%, rgba(18, 9, 3, 0.34) 21.9%, transparent 22.1%),
+		linear-gradient(89deg, transparent 63.4%, rgba(18, 9, 3, 0.26) 63.6%, transparent 63.8%),
+		linear-gradient(90.5deg, transparent 84.2%, rgba(18, 9, 3, 0.22) 84.35%, transparent 84.5%);
+}
+
+/* ── Rivets: brass studs pinning the timber to the frame ────────────────── */
+.nt-mh__rivets {
+	position: absolute;
+	inset: calc(var(--frame-w) * 0.4);
+	border-radius: inherit;
+	pointer-events: none;
+	background-repeat: no-repeat;
+	background-size: 13px 13px;
+	background-image:
+		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%),
+		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%),
+		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%),
+		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%);
+	background-position: 3.5% 34%, 96.5% 34%, 8% 88%, 92% 88%;
+	filter: drop-shadow(0 1px 1px rgba(20, 10, 5, 0.85));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BUMPS + SHADE  - relief on the timber, and light modelled across the bow
+
+   The board is a bent plank, so it cannot be lit flat: the middle catches the
+   light and the two ends fall away. That modelling is the `shade` layer. On
+   top of it the `relief` layer runs the theme's bump filter over a neutral
+   grey, blended in overlay, which raises the grain into something you can
+   almost feel rather than a printed stripe.
+   ══════════════════════════════════════════════════════════════════════════ */
+.nt-mh__panel .nt-mh__relief,
+.nt-mh__shade {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.nt-mh__relief {
+	background-color: var(--nt-bump-neutral, #808080);
+	background-image: var(--nt-grain);
+	background-size: 170px 170px;
+	filter: url(#nt-bump-2);
+	mix-blend-mode: overlay;
+	opacity: var(--relief-opacity);
+}
+
+/* Light across the bow + shade pooling into the ends and the frame. */
+.nt-mh__shade {
+	opacity: var(--shade-opacity);
+	background:
+		linear-gradient(90deg, rgba(18, 9, 4, 0.62) 0%, transparent 18%, transparent 82%, rgba(18, 9, 4, 0.62) 100%),
+		radial-gradient(120% 96% at 50% 50%, transparent 46%, rgba(18, 9, 4, 0.5) 100%);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TITLE  - the carved metal headline
+
+   Three layers stacked in place:
+     1. ::before  the sunken cut - the same text, dark, offset down, thickened
+                  with a stroke so it reads as a chiselled trough.
+     2. the text  a gold gradient clipped to the glyphs.
+     3. ::after   a hairline top highlight, where light catches the bevel.
+
+   The gradient is clipped with background-clip:text, which makes the glyph
+   fill transparent - so `text-shadow` on this element would vanish. That is
+   why the depth lives on ::before instead of in a shadow stack here.
+   ══════════════════════════════════════════════════════════════════════════ */
+.nt-mh__title {
+	position: relative;
+	z-index: 3;
+	margin: 0;
+	width: 100%;
+	padding: 0 clamp(14px, 2.4vw, 38px);
+	font-size: 0;          /* no stray text node metrics around the SVG */
+	line-height: 0;
+}
+
+.nt-mh__title-svg {
+	display: block;
+	transform: translateY(var(--title-lift));
+	width: 100%;
+	height: auto;
+	overflow: visible;
+	filter: drop-shadow(0 8px 12px rgba(20, 10, 5, 0.62));
+}
+
+/* Gradient stops. Set here, in CSS, because var() does not resolve inside SVG
+   presentation attributes. */
+.nt-mh__g1 { stop-color: var(--gold-1); }
+.nt-mh__g2 { stop-color: var(--gold-2); }
+.nt-mh__g3 { stop-color: var(--gold-3); }
+.nt-mh__g4 { stop-color: var(--gold-4); }
+.nt-mh__g5 { stop-color: #55350f; }
+
+.nt-mh__type text {
+	/* Curved script face. The theme already loads Dancing Script as
+	   --nt-font-accent, so this costs no extra webfont request. */
+	font-family: var(--nt-font-accent, 'Dancing Script'), 'Noto Sans Telugu', cursive;
+	font-weight: 700;
+}
+
+/* The extruded side wall. Stroked as well as filled so each stepped copy is
+   fractionally fatter than the face and reads as a wall, not a blur. */
+.nt-mh__type-cut {
+	stroke-width: 17px;
+	stroke-linejoin: round;
+	paint-order: stroke fill;
+}
+
+/* The face: gold, with a dark rim so it separates from the timber, and a warm
+   inner line so the gold does not end abruptly against the dark. */
+.nt-mh__type-face {
+	stroke: var(--ink);
+	stroke-width: 7px;
+	stroke-linejoin: round;
+	paint-order: stroke fill;
+}
+
+
+/* The small curved line above the headline. */
+.nt-mh__sub-text {
+	font-family: var(--nt-font-display, 'Playfair Display', serif);
+	font-size: 34px;
+	font-weight: 700;
+	letter-spacing: 5px;
+	text-transform: uppercase;
+	fill: var(--gold-1);
+	stroke: rgba(24, 12, 5, 0.92);
+	stroke-width: 3.4px;
+	paint-order: stroke fill;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LOWER ARC TEXT  - set along a curve with SVG textPath
+   ══════════════════════════════════════════════════════════════════════════ */
+/* aspect-ratio must MATCH the viewBox. With a fixed height instead, the
+   element's ratio (very wide) disagreed with the viewBox's (6.3:1), and
+   `meet` scaled the whole drawing down to fit the height - so the curve
+   collapsed into a short, almost-straight line floating mid-board. Deriving
+   the height from the ratio keeps the arc spanning the full width. */
+.nt-mh__arc {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1200 / 190;
+	max-height: 46%;
+	z-index: 3;
+	pointer-events: none;
+	overflow: visible;
+}
+.nt-mh__arc-text {
+	font-family: var(--nt-font-display, 'Playfair Display', serif);
+	font-size: 25px;             /* scales with the viewBox, not the viewport */
+	font-weight: 700;
+	letter-spacing: 3.2px;
+	text-transform: uppercase;
+	fill: var(--gold-1);
+	stroke: rgba(24, 12, 5, 0.85);
+	stroke-width: 2.6px;
+	paint-order: stroke fill;
+	filter: drop-shadow(0 2px 3px rgba(20, 10, 5, 0.8));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MEDALLION  - crowning the arch, half above the board edge
+   ══════════════════════════════════════════════════════════════════════════ */
+.nt-mh__medal {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: clamp(56px, 8vw, 112px);
+	height: clamp(56px, 8vw, 112px);
+	transform: translate(-50%, -46%);
+	z-index: 4;
+	filter: drop-shadow(0 6px 12px rgba(20, 10, 5, 0.6));
+}
+.nt-mh__medal svg { display: block; width: 100%; height: 100%; }
+
+/* Warm bloom behind the badge */
+.nt-mh__medal::before {
+	content: '';
+	position: absolute;
+	inset: -46%;
+	z-index: -1;
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(255, 214, 122, 0.45) 0%, rgba(255, 214, 122, 0) 70%);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RIBBON  - slung under the board
+   ══════════════════════════════════════════════════════════════════════════ */
+.nt-mh__ribbon {
+	position: relative;
+	margin: clamp(12px, 2vw, 26px) auto 0;
+	width: fit-content;
+	max-width: min(92%, 620px);
+	padding: clamp(6px, 1vw, 11px) clamp(24px, 4vw, 52px);
+	font-family: var(--nt-font-display, 'Playfair Display', serif);
+	font-size: clamp(0.6rem, 1vw, 0.82rem);
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--gold-1);
+	background-color: var(--wood-dark);
+	background-image: linear-gradient(180deg, var(--wood-warm) 0%, var(--wood-dark) 100%);
+	border: 2px solid var(--gold-4);
+	border-radius: 3px;
+	box-shadow:
+		inset 0 1px 0 rgba(255, 226, 176, 0.22),
+		inset 0 -2px 6px rgba(18, 9, 4, 0.7),
+		0 8px 16px var(--shadow);
+	text-shadow: 0 1px 0 rgba(20, 10, 5, 0.9);
+}
+/* Swallow-tail ends, cut from the same timber */
+.nt-mh__ribbon::before,
+.nt-mh__ribbon::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	width: clamp(14px, 2vw, 26px);
+	height: 100%;
+	background-image: linear-gradient(180deg, var(--wood-mid) 0%, var(--wood-darkest) 100%);
+	transform: translateY(-50%);
+	z-index: -1;
+}
+.nt-mh__ribbon::before {
+	left: calc(clamp(14px, 2vw, 26px) * -0.72);
+	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 46% 50%);
+}
+.nt-mh__ribbon::after {
+	right: calc(clamp(14px, 2vw, 26px) * -0.72);
+	clip-path: polygon(0 0, 100% 0, 54% 50%, 100% 100%, 0 100%);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   The board keeps its arch and its proportions; the ornaments are the first
+   thing to go, because below a tablet they are the detail nobody can read.
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+	.nt-mh__orn { flex-basis: clamp(72px, 11vw, 120px); width: clamp(72px, 11vw, 120px); height: clamp(72px, 11vw, 120px); }
+}
+
+@media (max-width: 640px) {
+	.nt-mh__orn { display: none; }
+	.nt-mh__arc-text { font-size: 30px; letter-spacing: 2px; }
+	.nt-mh__ribbon { letter-spacing: 0.16em; }
+	.nt-mh__rivets { background-position: 5% 30%, 95% 30%, 9% 90%, 91% 90%; }
+}
+
+@media (max-width: 420px) {
+	.nt-mh__arc { display: none; }   /* too narrow to set legibly on a curve */
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PREFERENCES + PRINT
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+	.nt-mh * { transition: none !important; animation: none !important; }
+}
+
+@media (prefers-contrast: more) {
+	/* Clipped-gradient text is the first thing to fail a contrast check, so in
+	   high-contrast mode the headline drops back to a flat, solid fill. */
+	.nt-mh__title-shell {
+		color: var(--gold-1);
+		background: none;
+		-webkit-background-clip: border-box;
+		        background-clip: border-box;
+	}
+	.nt-mh__title-shell::before,
+	.nt-mh__title-shell::after { display: none; }
+}
+
+@media print {
+	.nt-mh { padding: 12px 0; }
+	.nt-mh::before,
+	.nt-mh::after,
+	.nt-mh__grain,
+	.nt-mh__gloss,
+	.nt-mh__cracks,
+	.nt-mh__rivets,
+	.nt-mh__orn,
+	.nt-mh__medal { display: none; }
+	.nt-mh__board {
+		min-height: 0;
+		border: 2px solid #000;
+		background: none;
+		box-shadow: none;
+	}
+	.nt-mh__title-shell {
+		color: #000;
+		background: none;
+		-webkit-background-clip: border-box;
+		        background-clip: border-box;
+	}
+	.nt-mh__title-shell::before,
+	.nt-mh__title-shell::after { display: none; }
+	.nt-mh__kicker,
+	.nt-mh__ribbon { color: #000; text-shadow: none; }
+}

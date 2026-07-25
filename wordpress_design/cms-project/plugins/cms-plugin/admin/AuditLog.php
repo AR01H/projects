@@ -40,7 +40,7 @@ $actions_list = array( 'create', 'update', 'delete', 'login' );
     $row->id = $log->id;
     $row->time = wp_date( 'M j Y g:i a', strtotime( $log->created_at ) );
     $row->action = strtoupper( $log->action );
-    $row->action_color = array( 'create' => '#dcfce7', 'update' => '#fef9c3', 'delete' => '#fee2e2', 'login' => '#dbeafe' )[ $log->action ] ?? '#f1f5f9';
+    $row->action_color = array( 'create' => 'var(--ah-bg-light)', 'update' => 'var(--ah-bg-light)', 'delete' => 'var(--ah-bg-light)', 'login' => 'var(--ah-bg-light)' )[ $log->action ] ?? 'var(--ah-bg-light)';
     $row->table_name = $log->table_name ?: '-';
     $row->record_id = $log->record_id;
     $row->user_id = $log->user_id;
@@ -72,8 +72,8 @@ $actions_list = array( 'create', 'update', 'delete', 'login' );
       array( 'label' => 'Details', 'render' => function ( $r ) {
         if ( ! $r->old_values && ! $r->new_values ) return '-';
         $html = '<details><summary style="cursor:pointer;font-size:12px;color:var(--ah-primary);">View</summary>';
-        if ( $r->old_values ) $html .= '<pre style="font-size:10px;max-height:120px;overflow:auto;background:#f8fafc;padding:6px;border-radius:4px;">Before: ' . esc_html( $r->old_values ) . '</pre>';
-        if ( $r->new_values ) $html .= '<pre style="font-size:10px;max-height:120px;overflow:auto;background:#f8fafc;padding:6px;border-radius:4px;">After: ' . esc_html( $r->new_values ) . '</pre>';
+        if ( $r->old_values ) $html .= '<pre style="font-size:10px;max-height:120px;overflow:auto;background:var(--ah-bg-light);padding:6px;border-radius:4px;">Before: ' . esc_html( $r->old_values ) . '</pre>';
+        if ( $r->new_values ) $html .= '<pre style="font-size:10px;max-height:120px;overflow:auto;background:var(--ah-bg-light);padding:6px;border-radius:4px;">After: ' . esc_html( $r->new_values ) . '</pre>';
         $html .= '</details>';
         return $html;
       } ),

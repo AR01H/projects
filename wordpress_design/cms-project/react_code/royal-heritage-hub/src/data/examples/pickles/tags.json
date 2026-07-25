@@ -1,0 +1,16 @@
+[
+  { "tag": "mango", "label": "Mango", "parentTag": null },
+  { "tag": "spicy", "label": "Spicy", "parentTag": null },
+  { "tag": "traditional", "label": "Traditional", "parentTag": null },
+  { "tag": "andhra", "label": "Andhra Style", "parentTag": "traditional" },
+  { "tag": "garlic", "label": "Garlic", "parentTag": null },
+  { "tag": "vegan", "label": "Vegan", "parentTag": null },
+  { "tag": "lemon", "label": "Lemon", "parentTag": null },
+  { "tag": "tangy", "label": "Tangy", "parentTag": "lemon" },
+  { "tag": "sun-cured", "label": "Sun-Cured", "parentTag": "traditional" },
+  { "tag": "mixed-vegetable", "label": "Mixed Vegetable", "parentTag": null },
+  { "tag": "crunchy", "label": "Crunchy", "parentTag": "mixed-vegetable" },
+  { "tag": "gift", "label": "Gift", "parentTag": null },
+  { "tag": "festive", "label": "Festive", "parentTag": "gift" },
+  { "tag": "sampler", "label": "Sampler Set", "parentTag": "gift" }
+]
