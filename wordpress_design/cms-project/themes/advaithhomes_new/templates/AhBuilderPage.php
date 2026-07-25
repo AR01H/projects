@@ -25,7 +25,7 @@ $page_opts = (array) get_option( 'ah_bp_' . (int) $pg->id . '_opts', array() );
 $chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
 // Header / footer visibility (URL params override DB settings for embed / preview mode).
-$bare      = ! empty( $_GET['bare'] ) || ( ! empty( $_GET['content'] ) && 'true' === (string) $_GET['content'] );
+$bare      = ! empty( $_GET['bare'] ) || ! empty( $_GET['dialog'] ) || ( ! empty( $_GET['content'] ) && 'true' === (string) $_GET['content'] );
 $no_header = $bare || ! empty( $_GET['no_header'] ) || ( isset( $page_opts['show_header'] ) && ! $page_opts['show_header'] );
 $no_footer = $bare || ! empty( $_GET['no_footer'] ) || ( isset( $page_opts['show_footer'] ) && ! $page_opts['show_footer'] );
 

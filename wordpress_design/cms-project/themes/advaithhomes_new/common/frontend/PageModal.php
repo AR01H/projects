@@ -44,7 +44,8 @@ function adn_render_page_modal(): void {
 				if (spinner) spinner.style.display = 'none';
 				iframe.style.display = 'block';
 			};
-			iframe.src = url;
+			var sep = url.indexOf('?') === -1 ? '?' : '&';
+			iframe.src = url + sep + 'dialog=true';
 		}
 		modal.style.display = 'flex';
 		document.body.style.overflow = 'hidden';

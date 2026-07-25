@@ -64,6 +64,24 @@ class AssetLoader {
 		self::loadConditionalAssets();
 		self::loadPageSpecific();
 		self::loadTracking();
+		self::loadEmbedMode();
+	}
+
+	/**
+	 * Load embed-mode CSS when ?embed=1 is on contact/guidance pages.
+	 */
+	private static function loadEmbedMode(): void {
+		if ( empty( $_GET['embed'] ) && empty( $_GET['dialog'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			return;
+		}
+		$template = self::getCurrentTemplate();
+		if ( ! in_array( $template, [ 'PageContact', 'PageGuidance' ], true ) ) {
+			return;
+		}
+		$path = \ADN_THEME_DIR . '/assets/css/embed-mode.css';
+		if ( \file_exists( $path ) ) {
+			\wp_enqueue_style( 'adn-embed-mode-style', \ADN_THEME_URI . '/assets/css/embed-mode.css', [], self::version( $path ) );
+		}
 	}
 
 	/**

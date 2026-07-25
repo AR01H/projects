@@ -1,0 +1,42 @@
+/* ── Embed Mode ─────────────────────────────────────────────
+ * Loaded when ?embed=1 or ?dialog=true is present.
+ * Hides header, footer, WhatsApp, scroll-to-top, breadcrumb.
+ */
+.site-header,
+.site-nav,
+.main-header,
+.main-nav,
+.site-footer,
+.main-footer,
+.footer-section,
+.scroll-to-top,
+.scroll-progress,
+.adn-preheader,
+#adn-page-loader,
+.whatsapp-float,
+.floating-contact,
+.site-notice-bar,
+.cookie-banner,
+.adn-newsbar,
+.newsbar,
+.breadcrumb,
+.breadcrumbs,
+[aria-label="breadcrumb"],
+.nav-breadcrumb {
+	display: none !important;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #fff;
+}
+
+.container {
+	max-width: 100%;
+	padding: 0;
+}
+
+.page-hero {
+	padding-top: 20px;
+}

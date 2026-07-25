@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$_adn_embed = ! empty( $_GET['embed'] ); // phpcs:ignore WordPress.Security.NonceVerification
+$_adn_embed = ! empty( $_GET['embed'] ) || ! empty( $_GET['dialog'] ); // phpcs:ignore WordPress.Security.NonceVerification
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -20,7 +20,6 @@ $_adn_embed = ! empty( $_GET['embed'] ); // phpcs:ignore WordPress.Security.Nonc
 	<?php wp_head(); ?>
 	<?php if ( $_adn_embed ) : ?>
 	<style>
-		/* Embed mode: hide nav, header, footer, sidebar, floating elements */
 		.site-header, .site-nav, .main-header, .main-nav,
 		.site-footer, .main-footer, .footer-section,
 		.scroll-to-top, .scroll-progress,
