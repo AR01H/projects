@@ -1,0 +1,331 @@
+/* ==========================================================================
+   ELEMENT-ANIMATIONS.CSS — Royal Heritage Hub
+   Ready-to-use animation classes for specific UI elements.
+   Apply directly in JSX: <div className="el-fade-in-up"> or <button className="el-pop">.
+   ========================================================================== */
+
+/* ─── Entrance Animations ─── */
+
+/* Fade in from below */
+.el-fade-in-up {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: elFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fade in from above */
+.el-fade-in-down {
+  opacity: 0;
+  transform: translateY(-16px);
+  animation: elFadeInDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fade in from left */
+.el-fade-in-left {
+  opacity: 0;
+  transform: translateX(-16px);
+  animation: elFadeInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fade in from right */
+.el-fade-in-right {
+  opacity: 0;
+  transform: translateX(16px);
+  animation: elFadeInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scale pop in */
+.el-pop {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: elPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Rotate + fade in */
+.el-rotate-in {
+  opacity: 0;
+  transform: rotate(-8deg) scale(0.9);
+  animation: elRotateIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Interactive Animations ─── */
+
+/* Button press effect */
+.el-press {
+  transition: transform 0.15s ease;
+}
+.el-press:active {
+  transform: scale(0.95);
+}
+
+/* Card lift on hover */
+.el-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease;
+}
+.el-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -8px rgba(139, 69, 19, 0.15);
+}
+
+/* Icon spin on hover */
+.el-spin-hover {
+  transition: transform 0.4s ease;
+}
+.el-spin-hover:hover {
+  transform: rotate(180deg);
+}
+
+/* Arrow slide right on hover */
+.el-arrow-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.3s ease;
+}
+.el-arrow-right:hover {
+  gap: 8px;
+}
+
+/* Underline grow from left */
+.el-underline {
+  position: relative;
+}
+.el-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.el-underline:hover::after {
+  width: 100%;
+}
+
+/* Glow pulse */
+.el-glow {
+  transition: box-shadow 0.3s ease;
+}
+.el-glow:hover {
+  box-shadow: 0 0 20px rgba(200, 155, 60, 0.25);
+}
+
+/* Border draw on hover */
+.el-border-draw {
+  position: relative;
+  overflow: hidden;
+}
+.el-border-draw::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--color-primary);
+  transform: scaleX(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.el-border-draw:hover::before {
+  transform: scaleX(1);
+}
+
+/* ─── Decorative Animations ─── */
+
+/* Floating bounce */
+.el-float {
+  animation: elFloat 3s ease-in-out infinite;
+}
+
+/* Gentle sway */
+.el-sway {
+  animation: elSway 4s ease-in-out infinite;
+}
+
+/* Shimmer effect (loading placeholder) */
+.el-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-cream) 0%,
+    var(--color-bg-light) 50%,
+    var(--color-bg-cream) 100%
+  );
+  background-size: 200% 100%;
+  animation: elShimmer 1.5s ease-in-out infinite;
+}
+
+/* Pulse dot */
+.el-pulse-dot {
+  animation: elPulseDot 2s ease-in-out infinite;
+}
+
+/* Gradient shift */
+.el-gradient-shift {
+  background-size: 200% 200%;
+  animation: elGradientShift 3s ease infinite;
+}
+
+/* ─── Text Animations ─── */
+
+/* Typewriter effect */
+.el-typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--color-primary);
+  white-space: nowrap;
+  animation: elTypewriter 2s steps(30) forwards,
+             elCursor 0.7s step-end infinite;
+}
+
+/* Text reveal (clip from bottom) */
+.el-text-reveal {
+  clip-path: inset(100% 0 0 0);
+  animation: elTextReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Notification / Badge Animations ─── */
+
+/* Badge pop in */
+.el-badge-pop {
+  animation: elBadgePop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Shake (error/attention) */
+.el-shake {
+  animation: elShake 0.5s ease;
+}
+
+/* Success checkmark draw */
+.el-check-draw {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: elCheckDraw 0.4s 0.2s ease forwards;
+}
+
+/* ─── Page Transition ─── */
+
+/* Page enter from right */
+.el-page-enter {
+  opacity: 0;
+  transform: translateX(30px);
+  animation: elPageEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Keyframes ─── */
+
+@keyframes elFadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes elFadeInDown {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes elFadeInLeft {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes elFadeInRight {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes elPop {
+  0% { opacity: 0; transform: scale(0.8); }
+  60% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes elRotateIn {
+  to { opacity: 1; transform: rotate(0) scale(1); }
+}
+
+@keyframes elFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes elSway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+}
+
+@keyframes elShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes elPulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.7; }
+}
+
+@keyframes elGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes elTypewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes elCursor {
+  50% { border-color: transparent; }
+}
+
+@keyframes elTextReveal {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes elBadgePop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes elShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@keyframes elCheckDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes elPageEnter {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Reduced Motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  .el-fade-in-up,
+  .el-fade-in-down,
+  .el-fade-in-left,
+  .el-fade-in-right,
+  .el-pop,
+  .el-rotate-in,
+  .el-float,
+  .el-sway,
+  .el-shimmer,
+  .el-pulse-dot,
+  .el-gradient-shift,
+  .el-typewriter,
+  .el-text-reveal,
+  .el-badge-pop,
+  .el-shake,
+  .el-page-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .el-underline::after,
+  .el-border-draw::before {
+    transition: none;
+  }
+}

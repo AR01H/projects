@@ -19,8 +19,17 @@ export const ROUTES = {
   cart: '/cart',
   checkout: '/checkout',
   about: '/about',
+  artisans: '/artisans',
+  craftRegions: '/craft-regions',
   contact: '/contact',
   faqs: '/faqs',
+  // ── Auth ──
+  login: '/login',
+  register: '/register',
+  profile: '/profile',
+  // ── Orders ──
+  orders: '/orders',
+  orderDetail: '/orders/:orderId',
 } as const;
 
 export function buildRoute(

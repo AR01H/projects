@@ -21,6 +21,7 @@ export function applyTheme() {
     '--color-bg': colors.bg,
     '--color-bg-light': colors.bgLight,
     '--color-bg-cream': colors.bgCream,
+    '--color-surface': colors.surface,
     '--color-dark': colors.dark,
     '--color-dark-soft': colors.darkSoft,
     '--color-text-primary': colors.textPrimary,

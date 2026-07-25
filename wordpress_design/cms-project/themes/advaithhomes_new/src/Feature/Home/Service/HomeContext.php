@@ -74,6 +74,28 @@ class HomeContext {
 						$hero['media_mobile'] = $_mobile_media;
 					}
 				}
+
+				// Collect additional banners from repeater
+				$_extra = isset( $_hs['hero_banners'] ) && is_array( $_hs['hero_banners'] ) ? $_hs['hero_banners'] : array();
+				if ( ! empty( $_extra ) ) {
+					$slides = array(
+						array( 'image' => $hero['image'], 'media' => $hero['media'], 'media_mobile' => $hero['media_mobile'] ),
+					);
+					foreach ( $_extra as $_banner ) {
+						if ( empty( $_banner['image'] ) ) { continue; }
+						$_d = adn_settings_media_url_type( (string) $_banner['image'] );
+						if ( '' === $_d['url'] ) { continue; }
+						$_m = null;
+						if ( ! empty( $_banner['image_mobile'] ) ) {
+							$_m = adn_settings_media_url_type( (string) $_banner['image_mobile'] );
+							if ( '' === $_m['url'] ) { $_m = null; }
+						}
+						$slides[] = array( 'image' => $_d['url'], 'media' => $_d, 'media_mobile' => $_m );
+					}
+					if ( count( $slides ) > 1 ) {
+						$hero['slides'] = $slides;
+					}
+				}
 			}
 		}
 
@@ -187,8 +209,8 @@ class HomeContext {
 			return $cached;
 		}
 
-		$data   = adn_service_home_data();
-		$chrome = adn_service_site_chrome();
+		$data   = function_exists( 'adn_service_home_data' ) ? adn_service_home_data() : array();
+		$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
 		$ctx = array(
 			'chrome'      => is_array( $chrome ) ? $chrome : array(),
@@ -215,7 +237,7 @@ class HomeContext {
 			return $cache[ $section ];
 		}
 
-		$data = adn_service_home_data();
+		$data = function_exists( 'adn_service_home_data' ) ? adn_service_home_data() : array();
 		$ctx  = array();
 
 		switch ( $section ) {
@@ -313,6 +335,7 @@ class HomeContext {
 		$cards     = array();
 		$overrides = get_option( 'adn_journey_card_images', array() );
 		if ( ! is_array( $overrides ) ) { $overrides = array(); }
+		if ( ! function_exists( 'adn_cms_guide_parents' ) ) { return $cards; }
 		foreach ( adn_cms_guide_parents() as $i => $term ) {
 			$name = $term->name ?? '';
 			if ( '' === $name ) { continue; }
@@ -411,12 +434,16 @@ class HomeContext {
 			$pid    = (int) $post->ID;
 			$row    = $pids[ $pid ] ?? array();
 			$_thumb = get_the_post_thumbnail_url( $pid, 'medium' ) ?: '';
+			$_stamp = ! empty( $post->post_date ) ? $post->post_date : '';
 			$_desc  = ! empty( $post->post_excerpt ) ? wp_trim_words( wp_strip_all_tags( $post->post_excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( $post->post_content ), 15 );
 			$items[] = array(
 				'title'       => get_the_title( $pid ),
 				'description' => $_desc,
 				'thumbnail'   => $_thumb,
 				'url'         => get_permalink( $pid ),
+				'date'        => $_stamp ? date_i18n( 'M j, Y', strtotime( $_stamp ) ) : '',
+				'overlay'     => ! empty( $row['badge'] ) ? (string) $row['badge'] : '',
+				'badge_lines' => ! empty( $row['badge_lines'] ) ? (array) $row['badge_lines'] : array(),
 				'icon'        => $row['icon'] ?? '📰',
 				'badge'       => $row['badge'] ?? '',
 				'gradient'    => $row['gradient'] ?? '',
@@ -452,11 +479,13 @@ class HomeContext {
 			$row = $pids[ $pid ] ?? array();
 			$_thumb = get_the_post_thumbnail_url( $pid, 'medium' ) ?: '';
 			$_desc  = ! empty( $post->post_excerpt ) ? wp_trim_words( wp_strip_all_tags( $post->post_excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( $post->post_content ), 15 );
+			$_icon  = ! empty( $row['icon'] ) ? \sanitize_text_field( $row['icon'] ) : '🔥';
 			$items[] = array(
 				'title'       => get_the_title( $pid ),
 				'description' => $_desc,
 				'thumbnail'   => $_thumb,
 				'url'         => get_permalink( $pid ),
+				'icon'        => $_icon,
 				'gradient'    => $row['gradient'] ?? '',
 				'badge'       => $row['badge'] ?? '',
 			);
@@ -466,7 +495,7 @@ class HomeContext {
 
 	// ── CMS tool items ──────────────────────────────────────────
 	public static function cmsToolItems() {
-		$registry  = adn_calculators();
+		$registry  = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
 		$meta_all  = get_option( 'adn_calculators_meta', array() );
 		$items     = array();
 		foreach ( $registry as $key => $calc ) {
@@ -479,8 +508,8 @@ class HomeContext {
 			}
 			$items[] = array(
 				'icon'      => ! empty( $calc['icon'] ) ? (string) $calc['icon'] : adn_term( 'icons.tools', '🧮' ),
-				'name'      => $calc['title'] ?? '',
-				'url'       => $meta['card_url'] ?? adn_calc_page_url( $key ),
+				'title'     => $calc['title'] ?? '',
+				'url'       => ! empty( $meta['card_url'] ) ? (string) $meta['card_url'] : adn_calc_page_url( $key ),
 				'thumbnail' => $_thumb,
 				'highlight' => $meta['highlight'] ?? '',
 				'desc'      => $meta['desc'] ?? '',

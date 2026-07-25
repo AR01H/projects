@@ -7,6 +7,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { TagPill } from '@/components/common/TagPill';
 import { Reveal } from '@/components/common/Reveal';
 import { ROUTES } from '@/config/routes';
+import { SEO } from '@/components/common/SEO';
 import type { Product } from '@/types/product';
 
 export default function TagCollectionPage() {
@@ -47,6 +48,7 @@ export default function TagCollectionPage() {
 
   return (
     <div>
+      <SEO title={currentTag?.label ? `#${currentTag.label}` : tag ?? 'Tag'} description={`Products tagged with ${currentTag?.label ?? tag ?? ''} from Royal Heritage Hub's handcrafted collection.`} />
       <PageHero pageKey="shop" fallbackTitle={`#${currentTag?.label ?? tag ?? ''}`} />
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">

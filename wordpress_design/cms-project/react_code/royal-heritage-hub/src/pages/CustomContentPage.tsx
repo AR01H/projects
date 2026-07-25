@@ -3,6 +3,7 @@ import { getCustomContentPage } from '@/config/customContentPages';
 import { PageHero } from '@/components/common/PageHero';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { EmptyState } from '@/components/common/EmptyState';
+import { SEO } from '@/components/common/SEO';
 
 export default function CustomContentPage() {
   const { pageKey } = useParams();
@@ -21,6 +22,7 @@ export default function CustomContentPage() {
 
   return (
     <div>
+      <SEO title={page.title} description={page.description ?? `${page.title} — Royal Heritage Hub`} />
       <PageHero pageKey="faqs" fallbackTitle={page.title} />
 
       <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">

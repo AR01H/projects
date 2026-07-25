@@ -75,3 +75,26 @@
     white-space: nowrap;
     padding: 0 2rem; /* spacing between items */
 }
+
+
+.adn-page-modal__spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 500px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+.adn-page-modal__spinner-icon {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e5e7eb;
+    border-top-color: var(--client-color);
+    border-radius: 50%;
+    animation: adn-modal-spin 0.7s linear infinite;
+}
+@keyframes adn-modal-spin {
+    to { transform: rotate(360deg); }
+}

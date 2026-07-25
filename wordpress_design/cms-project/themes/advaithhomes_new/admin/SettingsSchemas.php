@@ -55,8 +55,15 @@ function adn_settings_schemas() {
 			'title'  => __( 'Home Sections', ADN_TEXT_DOMAIN ),
 			'intro'  => __( 'Show or hide each section of the home page.', ADN_TEXT_DOMAIN ),
 			'fields' => array(
-				array( 'key' => 'home_banner', 'type' => 'media', 'label' => __( 'Home banner (desktop)', ADN_TEXT_DOMAIN ), 'desc' => __( 'Upload or select an image, GIF, or video for the home page banner (desktop/tablet).', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'home_banner', 'type' => 'media', 'label' => __( 'Home banner (desktop)', ADN_TEXT_DOMAIN ), 'desc' => __( 'Upload or select an image, GIF, or video for the home page banner (desktop/tablet). This is the primary banner.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'home_banner_mobile', 'type' => 'media', 'label' => __( 'Home banner (mobile)', ADN_TEXT_DOMAIN ), 'desc' => __( 'Optional - a separate image, GIF, or video shown on mobile screens only. Leave empty to reuse the desktop banner.', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'hero_banners', 'type' => 'repeater', 'label' => __( 'Additional banners', ADN_TEXT_DOMAIN ),
+					'desc' => __( 'Add extra banners that rotate with the primary banner in a carousel. Each banner has a desktop image and optional mobile image.', ADN_TEXT_DOMAIN ),
+					'subfields' => array(
+						array( 'key' => 'image',        'type' => 'media', 'label' => __( 'Desktop image / GIF / video', ADN_TEXT_DOMAIN ) ),
+						array( 'key' => 'image_mobile',  'type' => 'media', 'label' => __( 'Mobile image (optional)', ADN_TEXT_DOMAIN ), 'desc' => __( 'Leave empty to reuse the desktop image on mobile.', ADN_TEXT_DOMAIN ) ),
+					),
+				),
 				array( 'key' => 'hero',        'type' => 'toggle', 'label' => __( 'Hero', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'journey',     'type' => 'toggle', 'label' => __( 'Journey cards', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'news',        'type' => 'toggle', 'label' => __( 'News / Regulations / Hot topics', ADN_TEXT_DOMAIN ), 'default' => 1 ),

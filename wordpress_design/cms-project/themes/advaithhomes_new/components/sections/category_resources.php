@@ -58,7 +58,7 @@ $uid = 'res-car-' . ( ++$_res_carousel_uid );
 		<?php /* ── Media ── */ ?>
 		<?php if ( $is_video && $vid_id ) : ?>
 		<div class="res-card-lib__media">
-			<img src="<?php echo esc_url( $card_thumb ); ?>" alt="<?php echo $title; ?>" loading="lazy">
+			<img src="<?php echo esc_url( $card_thumb ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
 						<button class="res-card-lib__play" aria-label="Play"
 				data-vid="<?php echo esc_attr( $vid_id ); ?>"
 				data-type="<?php echo esc_attr( $type ); ?>">
@@ -72,7 +72,7 @@ $uid = 'res-car-' . ( ++$_res_carousel_uid );
 		<?php elseif ( $is_social ) : ?>
 		<div class="res-card-lib__media">
 			<?php if ( $card_thumb ) : ?>
-				<img src="<?php echo esc_url( $card_thumb ); ?>" alt="<?php echo $title; ?>" loading="lazy">
+				<img src="<?php echo esc_url( $card_thumb ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
 			<?php else : ?>
 				<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:44px;background:var(--slate-100);">
 					<?php echo esc_html( $icon_map[ $type ] ?? '🔗' ); ?>
@@ -98,7 +98,7 @@ $uid = 'res-car-' . ( ++$_res_carousel_uid );
 		<?php elseif ( 'embed' === $type ) : ?>
 		<?php if ( $card_thumb ) : ?>
 		<div class="res-card-lib__media">
-			<img src="<?php echo esc_url( $card_thumb ); ?>" alt="<?php echo $title; ?>" loading="lazy">
+			<img src="<?php echo esc_url( $card_thumb ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
 						<?php if ( $url || $link_url ) : ?>
 			<div class="res-card-lib__link-overlay" aria-hidden="true">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
@@ -145,9 +145,9 @@ $uid = 'res-car-' . ( ++$_res_carousel_uid );
 		<?php /* ── Body — only render if there is content to show ── */ ?>
 		<?php $ext_href = $link_url ?: ( $is_social ? $url : '' ); ?>
 		<?php if ( $title || $ext_href || $link_url ) : ?>
-		<div class="res-card-lib__body">
+			<div class="res-card-lib__body">
 			<div class="res-card-lib__row">
-				<?php if ( $title ) : ?><p class="res-card-lib__title"><?php echo $title; ?></p><?php endif; ?>
+				<?php if ( $title ) : ?><p class="res-card-lib__title"><?php echo esc_html( $title ); ?></p><?php endif; ?>
 				<?php if ( $ext_href ) : ?>
 				<a href="<?php echo esc_url( $ext_href ); ?>" target="_blank" rel="noopener noreferrer" class="res-card-lib__extbtn" aria-label="Open link">
 					<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">

@@ -14,6 +14,10 @@ import { Testimonials } from '@/components/home/Testimonials';
 import { InstagramGallery } from '@/components/home/InstagramGallery';
 import { Newsletter } from '@/components/home/Newsletter';
 import { FAQSection } from '@/components/home/FAQSection';
+import { ArtisanSpotlight } from '@/components/home/ArtisanSpotlight';
+import { CraftRegions } from '@/components/home/CraftRegions';
+import { GITaggedShowcase } from '@/components/home/GITaggedShowcase';
+import { SEO } from '@/components/common/SEO';
 import { productsApi } from '@/api/products';
 import { ROUTES } from '@/config/routes';
 import { SITE_CONFIG } from '@/config/site';
@@ -21,6 +25,10 @@ import { SITE_CONFIG } from '@/config/site';
 export default function HomePage() {
   return (
     <>
+      <SEO
+        title={SITE_CONFIG.brand.name}
+        description={SITE_CONFIG.brand.tagline + ' — ' + SITE_CONFIG.microcopy.footerDescription}
+      />
       <Hero />
       <CategoryStrip />
 
@@ -46,6 +54,8 @@ export default function HomePage() {
 
       <FeaturedCategories />
 
+      <GITaggedShowcase />
+
       <DealOfTheDay />
 
       <ShopByOccasion />
@@ -62,13 +72,15 @@ export default function HomePage() {
 
       <ShopByMaterial />
 
+      <CraftRegions />
+
       <WhyChooseUs />
 
       <ProductRail
         eyebrow="Editor's Picks"
-        title="Handcrafted Picks"
-        description="Pieces our team can't stop recommending."
-        viewAllLink="/collections/handcrafted-picks"
+        title={`${SITE_CONFIG.terminology.qualityAdjective} Picks`}
+        description={`${SITE_CONFIG.terminology.productUnitPlural.charAt(0).toUpperCase() + SITE_CONFIG.terminology.productUnitPlural.slice(1)} our team can't stop recommending.`}
+        viewAllLink="/collections/handpicked-picks"
         fetcher={() => productsApi.getFeatured(8)}
       />
 
@@ -83,6 +95,8 @@ export default function HomePage() {
       />
 
       <CraftsmanshipStory />
+
+      <ArtisanSpotlight />
 
       <ProductRail
         eyebrow="Thoughtfully Curated"

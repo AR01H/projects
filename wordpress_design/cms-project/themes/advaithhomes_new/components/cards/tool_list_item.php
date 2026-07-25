@@ -15,7 +15,7 @@ $icon      = isset( $item['icon'] )  ? $item['icon']           : '';
 $index     = isset( $item['index'] ) ? (int) $item['index'] : 0;
 ?>
 <a
-	href="<?php echo $url; ?>"
+	href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>"
 	class="calc-list-item"
 	data-category="<?php echo esc_attr( $cats_safe ); ?>"
 	data-index="<?php echo esc_attr( (string) $index ); ?>"

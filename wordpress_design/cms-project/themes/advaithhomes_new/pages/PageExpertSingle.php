@@ -1,5 +1,7 @@
 <?php
 /**
+ * Template Name: Expert Single
+ *
  * pages/PageExpertSingle.php - Individual expert profile page.
  *
  * Served by template_redirect for /ask-expert/{slug}/ (or the legacy

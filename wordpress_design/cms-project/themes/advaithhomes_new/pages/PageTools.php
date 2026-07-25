@@ -77,7 +77,7 @@ if ( $has_featured || $has_suggested ) :
 					?>
 						<div class="tc-suggested-card">
 							<div class="tc-suggested-content">
-								<span class="tc-featured-badge"><?php esc_html_e( 'Suggested', ADN_TEXT_DOMAIN ); ?></span>
+								<span class="tc-featured-badge"><?php echo esc_html( adn_term( 'tools_page.suggested_badge', 'Suggested' ) ); ?></span>
 								<span class="tc-suggested-icon" aria-hidden="true"><?php echo adn_icon( isset( $sug['icon'] ) ? $sug['icon'] : '🧮' ); ?></span>
 								<h3 class="tc-suggested-title"><?php echo esc_html( isset( $sug['title'] ) ? $sug['title'] : '' ); ?></h3>
 								<?php if ( '' !== $sug_desc ) : ?>
@@ -94,7 +94,7 @@ if ( $has_featured || $has_suggested ) :
 									</ul>
 								<?php endif; ?>
 								<a href="<?php echo esc_url( adn_link( isset( $sug['url'] ) ? $sug['url'] : '' ) ); ?>" class="tc-suggested-btn">
-									<?php echo esc_html( 'Calculate' ); ?>
+									<?php echo esc_html( adn_term( 'tools_page.calculate_btn', 'Calculate' ) ); ?>
 									<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 								</a>
 							</div>
@@ -119,13 +119,13 @@ if ( $has_featured || $has_suggested ) :
 			<?php /* ── Featured Calculator widget ── */ ?>
 			<?php if ( $has_featured ) :
 				$fc = $ctx['featured_tools'][0];
-				$fc_title = ! empty( $fc['featured_title'] ) ? $fc['featured_title'] : $fc['title'];
-				$fc_desc  = ! empty( $fc['featured_desc'] )  ? $fc['featured_desc']  : $fc['desc'];
-				$fc_badge = ! empty( $fc['highlight'] ) ? $fc['highlight'] : 'MOST USED';
+				$fc_title = ! empty( $fc['featured_title'] ) ? $fc['featured_title'] : ( $fc['name'] ?? $fc['title'] ?? '' );
+				$fc_desc  = ! empty( $fc['featured_desc'] )  ? $fc['featured_desc']  : ( $fc['desc'] ?? '' );
+				$fc_badge = ! empty( $fc['highlight'] ) ? $fc['highlight'] : adn_term( 'tools_page.most_used_badge', 'MOST USED' );
 				$benefits = array_filter( array(
-					! empty( $fc['benefit_1'] ) ? $fc['benefit_1'] : 'Instant & accurate estimations',
-					! empty( $fc['benefit_2'] ) ? $fc['benefit_2'] : '100% free to use, no sign-up',
-					! empty( $fc['benefit_3'] ) ? $fc['benefit_3'] : 'Based on latest UK property rules',
+					! empty( $fc['benefit_1'] ) ? $fc['benefit_1'] : adn_term( 'tools_page.benefit_1', 'Instant & accurate estimations' ),
+					! empty( $fc['benefit_2'] ) ? $fc['benefit_2'] : adn_term( 'tools_page.benefit_2', '100% free to use, no sign-up' ),
+					! empty( $fc['benefit_3'] ) ? $fc['benefit_3'] : adn_term( 'tools_page.benefit_3', 'Based on latest UK property rules' ),
 					! empty( $fc['benefit_4'] ) ? $fc['benefit_4'] : '',
 				) );
 			?>
@@ -147,7 +147,7 @@ if ( $has_featured || $has_suggested ) :
 					</ul>
 					<?php endif; ?>
 					<a href="<?php echo esc_url( $fc['url'] ); ?>" class="tc-featured-btn">
-						<?php echo esc_html( 'Calculate' ); ?>
+						<?php echo esc_html( adn_term( 'tools_page.calculate_btn', 'Calculate' ) ); ?>
 						<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 					</a>
 				</div>

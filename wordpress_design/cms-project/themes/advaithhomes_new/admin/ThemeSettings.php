@@ -281,6 +281,158 @@ class ADN_Theme_Settings {
 				<?php
 				break;
 
+			case 'repeater':
+				wp_enqueue_media();
+				$items      = isset( $value ) && is_array( $value ) ? $value : array();
+				$subfields  = isset( $field['subfields'] ) ? $field['subfields'] : array();
+				$repeater_id = 'adn-repeater-' . sanitize_key( $field['key'] );
+				?>
+				<div class="adn-repeater" id="<?php echo esc_attr( $repeater_id ); ?>">
+					<div class="adn-repeater-items">
+						<?php if ( ! empty( $items ) ) : ?>
+							<?php foreach ( $items as $_idx => $_item ) : ?>
+								<div class="adn-repeater-item" style="border:1px solid #ddd;padding:12px;margin-bottom:10px;background:#fafafa;position:relative;">
+									<button type="button" class="button button-small adn-repeater-remove" style="position:absolute;top:8px;right:8px;color:#b32d2e;" title="<?php esc_attr_e( 'Remove', ADN_TEXT_DOMAIN ); ?>">&times;</button>
+									<?php foreach ( $subfields as $_sf ) :
+										$_sf_key   = $_sf['key'];
+										$_sf_type  = $_sf['type'] ?? 'text';
+										$_sf_label = $_sf['label'] ?? $_sf_key;
+										$_sf_desc  = $_sf['desc'] ?? '';
+										$_sf_val   = $_item[ $_sf_key ] ?? '';
+										$_sf_name  = $name . '[' . $_idx . '][' . $_sf_key . ']';
+										?>
+										<div style="margin-bottom:8px;">
+											<label style="display:block;font-weight:600;margin-bottom:3px;"><?php echo esc_html( $_sf_label ); ?></label>
+											<?php if ( 'media' === $_sf_type ) :
+												$_resolved  = adn_settings_media_url_type( (string) $_sf_val );
+												$_media_url = $_resolved['url'];
+												$_media_tp  = $_resolved['type'];
+												?>
+												<div class="adn-media-picker" style="display:flex;align-items:flex-start;gap:10px;">
+													<div style="width:80px;height:80px;border:1px solid #ddd;background:#f0f0f1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+														<img src="<?php echo esc_url( $_media_url ); ?>" class="adn-media-preview-img" style="max-width:100%;max-height:100%;display:<?php echo ( $_media_url && 'image' === $_media_tp ) ? 'block' : 'none'; ?>;" alt="">
+														<video src="<?php echo esc_url( $_media_url ); ?>" class="adn-media-preview-video" muted loop autoplay playsinline style="max-width:100%;max-height:100%;display:<?php echo ( $_media_url && 'video' === $_media_tp ) ? 'block' : 'none'; ?>;"></video>
+													</div>
+													<div>
+														<input type="hidden" name="<?php echo esc_attr( $_sf_name ); ?>" value="<?php echo esc_attr( (string) $_sf_val ); ?>" class="adn-media-id">
+														<button type="button" class="button adn-pick-media small"><?php esc_html_e( 'Choose', ADN_TEXT_DOMAIN ); ?></button>
+														<button type="button" class="button adn-remove-media small" style="color:#b32d2e;display:<?php echo $_media_url ? 'inline-block' : 'none'; ?>;"><?php esc_html_e( 'Remove', ADN_TEXT_DOMAIN ); ?></button>
+													</div>
+												</div>
+											<?php else : ?>
+												<input type="text" name="<?php echo esc_attr( $_sf_name ); ?>" value="<?php echo esc_attr( (string) $_sf_val ); ?>" class="regular-text">
+											<?php endif; ?>
+											<?php if ( '' !== $_sf_desc ) : ?>
+												<p class="description" style="margin-top:3px;"><?php echo esc_html( $_sf_desc ); ?></p>
+											<?php endif; ?>
+										</div>
+									<?php endforeach; ?>
+								</div>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<button type="button" class="button adn-repeater-add" style="margin-top:5px;">
+						<i class="fa-solid fa-plus" aria-hidden="true"></i>
+						<?php esc_html_e( 'Add Banner', ADN_TEXT_DOMAIN ); ?>
+					</button>
+				</div>
+				<script>
+				(function(){
+					var wrap = document.getElementById(<?php echo wp_json_encode( $repeater_id ); ?>);
+					if (!wrap) return;
+					var itemsWrap = wrap.querySelector('.adn-repeater-items');
+					var addBtn    = wrap.querySelector('.adn-repeater-add');
+					var idx       = itemsWrap.querySelectorAll('.adn-repeater-item').length;
+					var subfields = <?php echo wp_json_encode( $subfields ); ?>;
+					var fieldName = <?php echo wp_json_encode( $name ); ?>;
+
+					function bindRemove(btn) {
+						btn.addEventListener('click', function(e) {
+							e.preventDefault();
+							btn.closest('.adn-repeater-item').remove();
+						});
+					}
+					wrap.querySelectorAll('.adn-repeater-remove').forEach(bindRemove);
+
+					addBtn.addEventListener('click', function(e) {
+						e.preventDefault();
+						var html = '<div class="adn-repeater-item" style="border:1px solid #ddd;padding:12px;margin-bottom:10px;background:#fafafa;position:relative;">' +
+							'<button type="button" class="button button-small adn-repeater-remove" style="position:absolute;top:8px;right:8px;color:#b32d2e;" title="Remove">&times;</button>';
+						subfields.forEach(function(sf) {
+							var sfName = fieldName + '[' + idx + '][' + sf.key + ']';
+							html += '<div style="margin-bottom:8px;">' +
+								'<label style="display:block;font-weight:600;margin-bottom:3px;">' + (sf.label || sf.key) + '</label>';
+							if (sf.type === 'media') {
+								html += '<div class="adn-media-picker" style="display:flex;align-items:flex-start;gap:10px;">' +
+									'<div style="width:80px;height:80px;border:1px solid #ddd;background:#f0f0f1;display:flex;align-items:center;justify-content:center;">' +
+										'<img src="" class="adn-media-preview-img" style="max-width:100%;max-height:100%;display:none;" alt="">' +
+										'<video src="" class="adn-media-preview-video" muted loop autoplay playsinline style="max-width:100%;max-height:100%;display:none;"></video>' +
+									'</div>' +
+									'<div>' +
+										'<input type="hidden" name="' + sfName + '" value="" class="adn-media-id">' +
+										'<button type="button" class="button adn-pick-media small">Choose</button>' +
+										'<button type="button" class="button adn-remove-media small" style="color:#b32d2e;display:none;">Remove</button>' +
+									'</div></div>';
+							} else {
+								html += '<input type="text" name="' + sfName + '" value="" class="regular-text">';
+							}
+							if (sf.desc) html += '<p class="description" style="margin-top:3px;">' + sf.desc + '</p>';
+							html += '</div>';
+						});
+						html += '</div>';
+						var temp = document.createElement('div');
+						temp.innerHTML = html;
+						var newItem = temp.firstChild;
+						itemsWrap.appendChild(newItem);
+						bindRemove(newItem.querySelector('.adn-repeater-remove'));
+						initMediaPickers(newItem);
+						idx++;
+					});
+
+					function initMediaPickers(scope) {
+						if (typeof wp === 'undefined' || !wp.media) return;
+						(scope || wrap).querySelectorAll('.adn-media-picker').forEach(function(picker) {
+							var $picker = jQuery(picker);
+							var $input = $picker.find('.adn-media-id');
+							var $previewImg = $picker.find('.adn-media-preview-img');
+							var $previewVideo = $picker.find('.adn-media-preview-video');
+							var $remove = $picker.find('.adn-remove-media');
+							var frame;
+							$picker.find('.adn-pick-media').on('click', function(e) {
+								e.preventDefault();
+								if (frame) { frame.open(); return; }
+								frame = wp.media({ title: 'Select Image, GIF or Video', button: { text: 'Use this media' }, multiple: false, library: { type: ['image','video'] } });
+								frame.on('select', function() {
+									var att = frame.state().get('selection').first().toJSON();
+									$input.val(att.id);
+									if (att.type === 'video') {
+										$previewVideo.attr('src', att.url)[0].load();
+										$previewVideo.show();
+										$previewImg.hide();
+									} else {
+										var url = att.sizes && att.sizes.medium ? att.sizes.medium.url : att.url;
+										$previewImg.attr('src', url).show();
+										$previewVideo.hide();
+									}
+									$remove.show();
+								});
+								frame.open();
+							});
+							$remove.on('click', function(e) {
+								e.preventDefault();
+								$input.val('');
+								$previewImg.attr('src', '').hide();
+								$previewVideo.attr('src', '').hide();
+								$(this).hide();
+							});
+						});
+					}
+					initMediaPickers();
+				})();
+				</script>
+				<?php
+				break;
+
 			case 'text':
 			default:
 				printf(
@@ -347,6 +499,23 @@ class ADN_Theme_Settings {
 				case 'media':
 					// Value is a wp.media attachment ID or a direct URL - plain text either way.
 					$clean[ $key ] = sanitize_text_field( (string) $input );
+					break;
+
+				case 'repeater':
+					$items     = is_array( $input ) ? $input : array();
+					$subfields = isset( $field['subfields'] ) ? $field['subfields'] : array();
+					$clean_items = array();
+					foreach ( $items as $_item ) {
+						if ( ! is_array( $_item ) ) { continue; }
+						$_clean = array();
+						foreach ( $subfields as $_sf ) {
+							$_sf_key = $_sf['key'];
+							$_val    = isset( $_item[ $_sf_key ] ) ? $_item[ $_sf_key ] : '';
+							$_clean[ $_sf_key ] = sanitize_text_field( (string) $_val );
+						}
+						$clean_items[] = $_clean;
+					}
+					$clean[ $key ] = $clean_items;
 					break;
 
 				case 'text':

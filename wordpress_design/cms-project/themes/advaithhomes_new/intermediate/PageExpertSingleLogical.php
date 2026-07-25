@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/ExpertSingleContext.php';
+require_once __DIR__ . '/../src/Feature/AskExpert/Service/ExpertSingleContext.php';
 
 function adn_expert_single_get_context( $slug ) {
 	return \Adn\Theme\Service\ExpertSingleContext::getContext( $slug );

@@ -22,6 +22,14 @@ function adn_get_parent_term_calculator_cards( $parent_slug, $limit = 0 ) {
 	$items     = array();
 	$parent_slug_lc = strtolower( $parent_slug );
 
+	// Check category-level selected_keys (from admin → Category → Calculators tab)
+	$cat_selected = array();
+	if ( class_exists( 'AH_Category_Settings' ) ) {
+		$cs_all = \AH_Category_Settings::get_all( $parent_slug );
+		$cs_calc = $cs_all['calculators'] ?? array();
+		$cat_selected = isset( $cs_calc['selected_keys'] ) && is_array( $cs_calc['selected_keys'] ) ? $cs_calc['selected_keys'] : array();
+	}
+
 	foreach ( $all_tools as $ckey => $creg ) {
 		$cmeta = isset( $meta_all[ $ckey ] ) && is_array( $meta_all[ $ckey ] ) ? $meta_all[ $ckey ] : array();
 		if ( array_key_exists( 'enabled', $cmeta ) && empty( $cmeta['enabled'] ) ) {
@@ -31,13 +39,17 @@ function adn_get_parent_term_calculator_cards( $parent_slug, $limit = 0 ) {
 			continue;
 		}
 
-		$_pt_list = ! empty( $cmeta['parent_terms'] ) && is_array( $cmeta['parent_terms'] ) ? $cmeta['parent_terms'] : array();
-		if ( empty( $_pt_list ) ) {
-			continue;
+		if ( ! empty( $cat_selected ) ) {
+			// Category admin has explicit selections — ONLY show those
+			$matched = in_array( $ckey, $cat_selected, true );
+		} else {
+			// No category selections — fall back to calculator's parent_terms
+			$_pt_list = ! empty( $cmeta['parent_terms'] ) && is_array( $cmeta['parent_terms'] ) ? $cmeta['parent_terms'] : array();
+			$_pt_lc = array_map( 'strtolower', array_map( 'trim', $_pt_list ) );
+			$matched = in_array( $parent_slug_lc, $_pt_lc, true );
 		}
 
-		$_pt_lc = array_map( 'strtolower', array_map( 'trim', $_pt_list ) );
-		if ( ! in_array( $parent_slug_lc, $_pt_lc, true ) ) {
+		if ( ! $matched ) {
 			continue;
 		}
 

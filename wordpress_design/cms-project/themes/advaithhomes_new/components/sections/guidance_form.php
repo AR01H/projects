@@ -4,7 +4,7 @@
  * Props: $form { heading, help_label, help_placeholder, help_options[],
  *                iam_label, iam_placeholder, iam_options[],
  *                time_label, time_placeholder, time_options[],
- *                contact_methods[] { key, label }, submit_label }
+ *                contact_methods[] { key, label }, submit_label, validation{} }
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -21,11 +21,12 @@ $_tp      = esc_attr( isset( $_f['time_placeholder'] ) ? (string) $_f['time_plac
 $_topts   = isset( $_f['time_options'] )                ? (array) $_f['time_options']      : array();
 $_methods = isset( $_f['contact_methods'] )             ? (array) $_f['contact_methods']   : array();
 $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_label']     : SITE_BTN_SUBMIT_REQUEST );
+$_rules   = isset( $_f['validation'] )                  ? (array) $_f['validation']        : array();
 ?>
 <div class="guidance-form-card">
 	<h2><?php echo $_hdg; ?></h2>
 
-	<form class="guidance-request-form" id="guidanceRequestForm" onsubmit="return false;">
+	<form class="guidance-request-form" id="guidanceRequestForm" onsubmit="return false;" data-validation="<?php echo esc_attr( wp_json_encode( $_rules ) ); ?>">
 
 		<div class="form-group">
 			<label class="form-label" for="guidanceHelpWith"><?php echo $_hl; ?> <span class="form-required">*</span></label>
@@ -97,18 +98,19 @@ $_submit  = esc_html( isset( $_f['submit_label'] )     ? (string) $_f['submit_la
 			<?php endif; ?>
 		</div>
 
-		<label class="consent-row">
-			<input type="checkbox" name="consent" id="guidanceConsent" required />
-			<span>
+		<label class="consent-toggle-row">
+			<input type="checkbox" name="consent" id="guidanceConsent" required class="consent-toggle-input" />
+			<span class="consent-toggle-switch"></span>
+			<span class="consent-toggle-text">
 				<?php
 				$_pp_url = esc_url( home_url( FORM_CONSENT_PRIVACY_URL ) );
 				$_tc_url = esc_url( home_url( FORM_CONSENT_TERMS_URL ) );
 				printf(
 					esc_html( FORM_GUIDANCE_CONSENT_TEXT_TEMPLATE ),
-					'<a href="' . $_tc_url . '" target="_blank" rel="noopener">',
+					'<a href="javascript:void(0)" onclick="adnOpenPageModal(\'' . esc_js( $_tc_url ) . '\', \'Terms &amp; Conditions\')">',
 					esc_html( FORM_CONSENT_TERMS_LABEL ),
 					'</a>',
-					'<a href="' . $_pp_url . '" target="_blank" rel="noopener">',
+					'<a href="javascript:void(0)" onclick="adnOpenPageModal(\'' . esc_js( $_pp_url ) . '\', \'Privacy Policy\')">',
 					esc_html( FORM_CONSENT_PRIVACY_LABEL ),
 					'</a>'
 				);

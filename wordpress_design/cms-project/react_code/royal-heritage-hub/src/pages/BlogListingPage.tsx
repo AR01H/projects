@@ -6,6 +6,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { Reveal } from '@/components/common/Reveal';
 import { buildRoute, ROUTES } from '@/config/routes';
 import { cn } from '@/utils/cn';
+import { SEO } from '@/components/common/SEO';
 import type { BlogCategory, BlogPost } from '@/types/product';
 
 export default function BlogListingPage() {
@@ -30,6 +31,7 @@ export default function BlogListingPage() {
 
   return (
     <div>
+      <SEO title="Blog" description="Discover handcrafted stories, artisan insights, and guides from India's finest craft traditions." />
       <PageHero pageKey="faqs" fallbackTitle="The Journal" />
 
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">

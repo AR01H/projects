@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once ADN_THEME_DIR . '/intermediate/PageHomeLogical.php';
-require_once __DIR__ . '/../src/Service/ToolsContext.php';
+require_once __DIR__ . '/../src/Feature/Tools/Service/ToolsContext.php';
 
 function adn_calculators_get_context() {
 	return \Adn\Theme\Service\ToolsContext::getContext();

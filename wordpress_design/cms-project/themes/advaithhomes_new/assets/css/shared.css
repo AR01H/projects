@@ -7,6 +7,39 @@
    ============================================================ */
 
 /* ============================================
+   GLOBAL: Fix empty <p> tags from WordPress editor
+   When user presses Enter in editor, WP adds <p></p> which
+   creates unwanted whitespace. This removes empty paragraphs.
+   ============================================ */
+p:empty {
+  display: none;
+  margin: 0;
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+}
+/* Also hide <p> tags that only contain <br> or whitespace */
+p:only-child:empty,
+p br:only-child {
+  display: none;
+}
+/* Reduce spacing between consecutive <p> tags in content */
+.entry-content p,
+.article-body p,
+.post-content p,
+.page-content p,
+.news-single-content p {
+  margin-bottom: 0.8em;
+}
+.entry-content p:last-child,
+.article-body p:last-child,
+.post-content p:last-child,
+.page-content p:last-child,
+.news-single-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
    ADVAITH HOMES - Main Stylesheet
    ============================================ */
 
@@ -356,6 +389,65 @@ section{
   padding-bottom: 45px;
 }
 
+/* ── Hero Carousel (when 2 banners are set) ────────────────── */
+.hero-carousel {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-carousel__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.hero-carousel__slide--active {
+  opacity: 1;
+}
+.hero-carousel__bg {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.hero-carousel__bg img,
+.hero-carousel__bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-carousel__bg picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-carousel__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 25, 47, 0.35);
+}
+.hero-carousel__dots {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+.hero-carousel__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s;
+  padding: 0;
+}
+.hero-carousel__dot--active {
+  background: #fff;
+}
+
 /* Mobile diagram strip - hidden on desktop, shown below the hero on mobile */
 .hero-diagram-mobile {
   display: none;
@@ -374,7 +466,7 @@ section{
   font-size: clamp(2.0rem, 4vw, 2.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: #1a2332;
+  color: #fff;
   line-height: 1.25;
 }
 .hero-title .accent { 
@@ -387,11 +479,11 @@ section{
   display: block;
   font-size: clamp(1.4rem, 2.8vw, 2.0rem);
   font-weight: 500;
-  color: #1a2332;
+  color: #fff;
   margin-top: 24px;
   margin-bottom: 12px;
 }
-.hero-desc { font-size: 0.8rem; color: var(--color-black); margin-bottom: var(--space-5); max-width: 50vw;    margin-top: 32px; }
+.hero-desc { font-size: 0.8rem; color: #fff; margin-bottom: var(--space-5); max-width: 50vw;    margin-top: 32px; }
 .hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .hero-trust {
   display: flex;
@@ -797,11 +889,20 @@ section{
   .phb-bg-asset--desktop { display: none; }
   .phb-bg-asset--mobile { display: block; }
   .phb-overlay {
-    background: #ffffffcc;
+    background: linear-gradient(
+      to bottom,
+      rgba(15,25,20,0.82) 0%,
+      rgba(15,25,20,0.88) 50%,
+      rgba(15,25,20,0.95) 100%
+    );
   }
   .phb-premium .phb-overlay {
-    /* On mobile, fade from top to bottom instead of left to right so all text is readable */
-    /*background: linear-gradient(to bottom, rgba(14,23,20, 0.95) 0%, rgba(14,23,20, 0.85) 50%, rgba(14,23,20, 0.4) 100%); */
+    background: linear-gradient(
+      to bottom,
+      rgba(15,25,20,0.85) 0%,
+      rgba(15,25,20,0.90) 50%,
+      rgba(15,25,20,0.95) 100%
+    );
   }
 }
 
@@ -1043,18 +1144,34 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 @media (max-width: 900px) {
   .page-hero {
     max-height: none;
-    padding-top: 60px;
-    padding-bottom: 20px;
+    padding-top: 50px;
+    padding-bottom: 24px;
   }
   .page-hero .container { 
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     padding-top: 20px;
     padding-bottom: 20px;
   }
   .page-hero-content {
     max-width: 100%;
     padding-right: 0;
+    text-align: center;
+  }
+  .page-hero h1 {
+    color: #fff;
+    text-align: center;
+  }
+  .page-hero p {
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    max-width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-breadcrumb {
+    justify-content: center;
   }
   .page-hero-static-info {
     display: none;
@@ -1062,10 +1179,34 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
   .page-hero-services { display: none; }
 }
 
+@media (max-width: 1024px) {
+  .page-hero p {
+    font-size: 0.7rem !important;
+    line-height: 1.5 !important;
+  }
+  /* Handle <p> tags from WordPress editor inside hero */
+  .page-hero-content p {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  .page-hero-content p:last-child {
+    margin-bottom: 0;
+  }
+}
+
 .page-hero h1 {
   font-size: clamp(1.9rem, 3.5vw, 2.9rem);
   margin-bottom: 14px;
   color: var(--color-text, #1a2332);
+}
+
+/* Handle <p> tags from WordPress editor inside hero - prevent nested <p> issues */
+.page-hero-content p {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+.page-hero-content p:last-child {
+  margin-bottom: 0;
 }
 
 .page-hero p {
@@ -1204,12 +1345,15 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
 }
 
 @media (max-width: 768px) {
-  .page-hero { min-height: 260px; }
-  .page-hero-content {  max-width: 100%; }
+  .page-hero { min-height: 320px; }
+  .page-hero-content {  max-width: 100%; text-align: center; }
+  .page-hero h1 { color: #fff; text-align: center; }
+  .page-hero p { color: rgba(255,255,255,0.85); text-align: center; max-width: 90%; margin-left: auto; margin-right: auto; }
   .page-hero-bar-inner { gap: 10px 20px; }
+  .hero-breadcrumb { justify-content: center; }
   .hero-home-inner .hero-desc,.page-hero p{
     max-width: 100vw;
-    font-size: 0.7rem;
+    font-size: 0.88rem;
   }
 }
 
@@ -2465,6 +2609,9 @@ a.mini-card, div.mini-card {
 .ht-widget__icon {
   font-size: 1.3rem;
   line-height: 1;
+}
+/* Only apply color filter to font-awesome icons, not emojis */
+.ht-widget__icon i {
   filter: brightness(0) invert(1);
 }
 
@@ -3579,6 +3726,18 @@ a.mini-card, div.mini-card {
   white-space: nowrap;
   font-size: 0.62rem;
   color: var(--color-black);
+}
+/* Link label with arrow */
+.spotlight-card__link-label {
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--color-primary, #1e3a2f);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+a.sp-metric-card:hover .spotlight-card__link-label {
+  color: var(--color-accent);
 }
 .sp-metric-card__icon {
   width: 50px;
@@ -4925,7 +5084,7 @@ a.jny2-step:hover .jny2-step__label::after {
   padding: 0;
   overflow: hidden;
 }
-.calcs-popular-grid .calc-card-media { border-radius: 0; aspect-ratio: 16 / 7; }
+.calcs-popular-grid .calc-card-media { border-radius: 0; aspect-ratio: 16 / 9; }
 .calcs-popular-grid .calc-card-body { padding: 12px 14px 14px; }
 
 .calcs-popular-grid .calc-card-name { font-size: 0.88rem; text-align: left; }
@@ -7691,4 +7850,234 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 .parent-term-category-list {
   margin-top:15px;
   margin-bottom:15px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE HERO — Mobile & Tablet Improvements
+   Better text readability, spacing, and contrast on small screens
+   ══════════════════════════════════════════════════════════════ */
+
+/* Tablet (768px - 1024px) - Dark overlay, reduced height */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .page-hero {
+    min-height: 380px;
+    max-height: 500px;
+    padding-top: 40px;
+    padding-bottom: 30px;
+  }
+  .page-hero .container {
+    gap: 0;
+    padding: 0 32px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .page-hero-content {
+    max-width: 70%;
+    padding-right: 0;
+    text-align: center;
+  }
+  .page-hero h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.16;
+    margin-bottom: 14px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.01em;
+  }
+  .page-hero p {
+    font-size: 0.95rem;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+    text-align: center;
+  }
+  .hero-breadcrumb {
+    margin-bottom: 12px;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-bc-item {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+  }
+  .hero-bc-active {
+    color: rgba(255,255,255,0.85);
+  }
+  .hero-bc-sep {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    margin-bottom: 14px;
+    background: rgba(176,141,87,0.15);
+    color: #B08D57;
+    text-align: center;
+    display: inline-block;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .page-hero-static-info {
+    display: none;
+  }
+  .page-hero-services { display: none; }
+}
+
+/* Mobile Large (600px - 768px) - Dark overlay, centered */
+@media (max-width: 768px) and (min-width: 601px) {
+  .page-hero {
+    min-height: 360px;
+    padding-top: 30px;
+    padding-bottom: 28px;
+  }
+  .page-hero .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 0 24px;
+    text-align: center;
+  }
+  .page-hero-content {
+    max-width: 100%;
+    padding-right: 0;
+    text-align: center;
+  }
+  .page-hero h1 {
+    font-size: clamp(1.8rem, 5.5vw, 2.2rem);
+    line-height: 1.16;
+    margin-bottom: 12px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.01em;
+  }
+  .page-hero p {
+    font-size: 0.92rem;
+    max-width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+    text-align: center;
+  }
+  .hero-breadcrumb {
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-bc-item {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.65);
+  }
+  .hero-bc-active {
+    color: rgba(255,255,255,0.85);
+  }
+  .hero-bc-sep {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+  }
+  .page-hero-static-info {
+    display: none;
+  }
+  .page-hero-services {
+    display: none;
+  }
+}
+
+/* Mobile Small (max 600px) - Dark overlay style */
+@media (max-width: 600px) {
+  .page-hero {
+    min-height: 320px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .page-hero .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .page-hero-content {
+    max-width: 100%;
+    padding-right: 0;
+    text-align: center;
+  }
+  .page-hero h1 {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.01em;
+  }
+  .page-hero p {
+    font-size: 0.9rem;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+    margin-bottom: 8px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+    text-align: center;
+  }
+  .hero-breadcrumb {
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-bc-item {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.65);
+  }
+  .hero-bc-active {
+    color: rgba(255,255,255,0.85);
+  }
+  .hero-bc-sep {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.4);
+  }
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    padding: 4px 10px;
+    margin-bottom: 12px;
+    background: rgba(176,141,87,0.15);
+    color: #B08D57;
+    text-align: center;
+    display: inline-block;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .page-hero-static-info {
+    display: none;
+  }
+  .page-hero-services {
+    display: none;
+  }
+  .page-hero-bar {
+    padding: 10px 0;
+  }
+  .page-hero-bar-inner {
+    gap: 8px 14px;
+  }
 }

@@ -1,8 +1,12 @@
 import { StaticPage } from './StaticPage';
+import { SEO } from '@/components/common/SEO';
+import { SITE_CONFIG } from '@/config/site';
 
 export default function ReturnPolicyPage() {
   return (
-    <StaticPage title="Return Policy">
+    <>
+      <SEO title="Return Policy" description="Learn about our return and exchange policy for handcrafted products at Royal Heritage Hub." />
+      <StaticPage title="Return Policy">
       <p>
         We want you to love your handcrafted piece. If something isn't right, most items are eligible
         for return or exchange within 7 days of delivery, provided they are unused and in their original packaging.
@@ -16,9 +20,10 @@ export default function ReturnPolicyPage() {
         unless damaged in transit.
       </p>
       <p>
-        To start a return, contact us at royalheritagehub@gmail.com with your order number and photos
+        To start a return, contact us at <a href={SITE_CONFIG.contact.emailHref} className="text-[var(--color-primary)] underline">{SITE_CONFIG.contact.email}</a> with your order number and photos
         of the item.
       </p>
-    </StaticPage>
+      </StaticPage>
+    </>
   );
 }

@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '@/store/useCartStore';
+import { useCouponStore } from '@/store/useCouponStore';
 import { useFormatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/common/Button';
 import { EmptyState } from '@/components/common/EmptyState';
@@ -16,8 +18,14 @@ export function CartDrawer() {
   const subtotal = useCartStore((s) => s.subtotal());
   const formatCurrency = useFormatCurrency();
 
+  const appliedCoupon = useCouponStore((s) => s.appliedCoupon);
+  const couponError = useCouponStore((s) => s.error);
+  const applyCoupon = useCouponStore((s) => s.apply);
+  const [couponInput, setCouponInput] = useState('');
+
   if (!isOpen) return null;
 
+  const discountAmount = appliedCoupon ? subtotal * appliedCoupon.discount : 0;
   const remainingForFreeShipping = Math.max(0, SHIPPING.freeShippingThreshold - subtotal);
 
   return (
@@ -105,14 +113,39 @@ export function CartDrawer() {
 
         {items.length > 0 && (
           <div className="border-t border-[var(--color-border)] px-6 py-5">
-            <div className="mb-4 flex items-center justify-between">
+            {/* Coupon input */}
+            <div className="mb-4 flex gap-2">
+              <input
+                value={couponInput}
+                onChange={(e) => setCouponInput(e.target.value)}
+                placeholder="Coupon code"
+                className="w-full rounded-[var(--radius-btn)] border border-[var(--color-border)] bg-[var(--color-bg-cream)] px-3 py-2 text-xs outline-none"
+              />
+              <Button variant="outline" size="sm" onClick={() => { applyCoupon(couponInput); setCouponInput(''); }}>
+                Apply
+              </Button>
+            </div>
+            {couponError && <p className="mb-2 text-xs text-[var(--color-danger)]">{couponError}</p>}
+            {appliedCoupon && (
+              <p className="mb-2 text-xs text-[var(--color-success)]">
+                "{appliedCoupon.code}" — {appliedCoupon.discount * 100}% off applied
+              </p>
+            )}
+
+            <div className="flex items-center justify-between">
               <span className="text-sm text-[var(--color-text-secondary)]">Subtotal</span>
               <span className="font-display text-lg text-[var(--color-text-primary)]">
                 {formatCurrency(subtotal)}
               </span>
             </div>
+            {appliedCoupon && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-[var(--color-success)]">Discount</span>
+                <span className="text-sm text-[var(--color-success)]">−{formatCurrency(discountAmount)}</span>
+              </div>
+            )}
             <Link to={ROUTES.checkout} onClick={() => toggleCart(false)}>
-              <Button variant="primary" fullWidth size="lg">
+              <Button variant="primary" fullWidth size="lg" className="mt-4">
                 Proceed to Checkout
               </Button>
             </Link>

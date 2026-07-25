@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/GuidesContext.php';
+require_once __DIR__ . '/../src/Feature/GuidesListing/Service/GuidesContext.php';
 
 function adn_guides_news_items( $limit = 3 ) {
 	return \Adn\Theme\Service\GuidesContext::newsItems( $limit );

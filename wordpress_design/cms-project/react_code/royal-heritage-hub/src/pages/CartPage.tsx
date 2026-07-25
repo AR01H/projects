@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useCartStore } from '@/store/useCartStore';
+import { useCouponStore } from '@/store/useCouponStore';
 import { useFormatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/common/Button';
 import { EmptyState } from '@/components/common/EmptyState';
@@ -8,12 +9,7 @@ import { PageHero } from '@/components/common/PageHero';
 import { SITE_CONFIG } from '@/config/site';
 import { ROUTES } from '@/config/routes';
 import { SHIPPING } from '@/config/constants';
-
-const VALID_COUPONS: Record<string, number> = {
-  WELCOME10: 0.1,
-  FIRSTORDER: 0.1,
-  FESTIVAL20: 0.2,
-};
+import { SEO } from '@/components/common/SEO';
 
 export default function CartPage() {
   const items = useCartStore((s) => s.items);
@@ -22,19 +18,14 @@ export default function CartPage() {
   const subtotal = useCartStore((s) => s.subtotal());
   const formatCurrency = useFormatCurrency();
 
+  const appliedCoupon = useCouponStore((s) => s.appliedCoupon);
+  const couponError = useCouponStore((s) => s.error);
+  const applyCoupon = useCouponStore((s) => s.apply);
   const [couponInput, setCouponInput] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
-  const [couponError, setCouponError] = useState('');
 
-  function applyCoupon() {
-    const code = couponInput.trim().toUpperCase();
-    if (VALID_COUPONS[code]) {
-      setAppliedCoupon({ code, discount: VALID_COUPONS[code] });
-      setCouponError('');
-    } else {
-      setCouponError('Invalid or expired coupon code');
-      setAppliedCoupon(null);
-    }
+  function handleApplyCoupon() {
+    applyCoupon(couponInput);
+    setCouponInput('');
   }
 
   const discountAmount = appliedCoupon ? subtotal * appliedCoupon.discount : 0;
@@ -44,6 +35,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24">
+        <SEO title="Shopping Bag" description="Review the items in your Royal Heritage Hub shopping bag." />
         <EmptyState
           title="Your bag is empty"
           description={SITE_CONFIG.microcopy.emptyCartDescription}
@@ -59,6 +51,7 @@ export default function CartPage() {
 
   return (
     <div>
+      <SEO title="Shopping Bag" description="Review the items in your Royal Heritage Hub shopping bag." />
       <PageHero pageKey="cart" fallbackTitle="Your Bag" />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="font-display text-3xl text-[var(--color-text-primary)] sm:text-4xl">Shopping Bag</h1>
@@ -112,7 +105,7 @@ export default function CartPage() {
               placeholder="Coupon code"
               className="w-full rounded-[var(--radius-btn)] border border-[var(--color-border)] bg-[var(--color-bg-cream)] px-3 py-2.5 text-sm outline-none"
             />
-            <Button variant="outline" size="sm" onClick={applyCoupon}>
+            <Button variant="outline" size="sm" onClick={handleApplyCoupon}>
               Apply
             </Button>
           </div>

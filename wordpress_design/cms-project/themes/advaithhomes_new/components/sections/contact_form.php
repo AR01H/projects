@@ -1,7 +1,7 @@
 <?php
 /**
  * components/sections/contact_form.php
- * Props: $form { heading, description, enquiry_types[], submit_label }
+ * Props: $form { heading, description, enquiry_types[], contact_methods[], help_timing[], submit_label, validation{} }
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -9,7 +9,10 @@ $_f      = isset( $form ) ? (array) $form : array();
 $_hdg    = esc_html( isset( $_f['heading'] )      ? (string) $_f['heading']      : SITE_SECTION_CONTACT_FORM );
 $_desc   = esc_html( isset( $_f['description'] )  ? (string) $_f['description']  : '' );
 $_types  = isset( $_f['enquiry_types'] )           ? (array) $_f['enquiry_types'] : array();
+$_methods = isset( $_f['contact_methods'] )        ? (array) $_f['contact_methods'] : array();
+$_timing = isset( $_f['help_timing'] )             ? (array) $_f['help_timing']   : array();
 $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'] : SITE_BTN_CONTACT_SUBMIT );
+$_rules  = isset( $_f['validation'] )              ? (array) $_f['validation']    : array();
 ?>
 <div class="contact-form-card">
 	<h2><?php echo $_hdg; ?></h2>
@@ -17,7 +20,7 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 		<p class="contact-form-desc"><?php echo $_desc; ?></p>
 	<?php endif; ?>
 
-	<form class="contact-enquiry-form" id="contactEnquiryForm" onsubmit="return false;">
+	<form class="contact-enquiry-form" id="contactEnquiryForm" onsubmit="return false;" data-validation="<?php echo esc_attr( wp_json_encode( $_rules ) ); ?>">
 
 		<?php if ( ! empty( $_types ) ) : ?>
 		<div class="form-group">
@@ -65,18 +68,49 @@ $_submit = esc_html( isset( $_f['submit_label'] )  ? (string) $_f['submit_label'
 			<textarea id="contactMessage" name="message" rows="5" placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_MESSAGE ); ?>" required></textarea>
 		</div>
 
-		<label class="consent-row">
-			<input type="checkbox" name="consent" required id="contactConsent" />
-			<span>
+		<?php if ( ! empty( $_timing ) || ! empty( $_methods ) ) : ?>
+		<div class="form-row">
+			<?php if ( ! empty( $_timing ) ) : ?>
+			<div class="form-group">
+				<label class="form-label" for="helpTiming"><?php esc_html_e( 'When do you need help?', ADN_TEXT_DOMAIN ); ?></label>
+				<select id="helpTiming" name="help_timing">
+					<option value=""><?php esc_html_e( 'Select...', ADN_TEXT_DOMAIN ); ?></option>
+					<?php foreach ( $_timing as $_t ) : ?>
+						<option value="<?php echo esc_attr( $_t ); ?>"><?php echo esc_html( $_t ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<?php endif; ?>
+			<?php if ( ! empty( $_methods ) ) : ?>
+			<div class="form-group">
+				<label class="form-label" for="contactMethod"><?php esc_html_e( 'Preferred Contact Method', ADN_TEXT_DOMAIN ); ?></label>
+				<select id="contactMethod" name="contact_method">
+					<option value=""><?php esc_html_e( 'Select...', ADN_TEXT_DOMAIN ); ?></option>
+					<?php foreach ( $_methods as $_m ) :
+						$_mk = esc_attr( isset( $_m['key'] ) ? (string) $_m['key'] : '' );
+						$_ml = esc_html( isset( $_m['label'] ) ? (string) $_m['label'] : '' );
+					?>
+						<option value="<?php echo $_mk; ?>"><?php echo $_ml; ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+
+		<label class="consent-toggle-row">
+			<input type="checkbox" name="consent" required id="contactConsent" class="consent-toggle-input" />
+			<span class="consent-toggle-switch"></span>
+			<span class="consent-toggle-text">
 				<?php
 				$_pp_url = esc_url( home_url( FORM_CONSENT_PRIVACY_URL ) );
 				$_tc_url = esc_url( home_url( FORM_CONSENT_TERMS_URL ) );
 				printf(
 					esc_html( FORM_CONTACT_CONSENT_TEXT_TEMPLATE ),
-					'<a href="' . $_tc_url . '" target="_blank" rel="noopener">',
+					'<a href="javascript:void(0)" onclick="adnOpenPageModal(\'' . esc_js( $_tc_url ) . '\', \'Terms &amp; Conditions\')">',
 					esc_html( FORM_CONSENT_TERMS_LABEL ),
 					'</a>',
-					'<a href="' . $_pp_url . '" target="_blank" rel="noopener">',
+					'<a href="javascript:void(0)" onclick="adnOpenPageModal(\'' . esc_js( $_pp_url ) . '\', \'Privacy Policy\')">',
 					esc_html( FORM_CONSENT_PRIVACY_LABEL ),
 					'</a>',
 					esc_html( SITE_BRAND_NAME )

@@ -57,14 +57,17 @@ if ( $_is_compact ) {
 				$_has_link = ! empty( $_sp->show_link ) && ! empty( $_sp->link_url );
 				$_url      = $_has_link ? adn_link( (string) $_sp->link_url ) : '';
 				$_tag      = ! empty( $_sp->description ) ? (string) $_sp->description : '';
+				$_title    = (string) $_sp->title;
 			?>
 				<?php if ( $_url ) : ?>
-				<a href="<?php echo esc_url( $_url ); ?>" class="sp-metric-card">
+				<a href="<?php echo esc_url( $_url ); ?>" class="sp-metric-card" title="<?php echo esc_attr( $_title ); ?>">
 				<?php else : ?>
-				<div class="sp-metric-card">
+				<div class="sp-metric-card" title="<?php echo esc_attr( $_title ); ?>">
 				<?php endif; ?>
 					<div class="sp-metric-card__body">
-						<span class="sp-metric-card__label"><?php echo esc_html( (string) $_sp->title ); ?></span>
+						<?php if ( '' !== $_tag ) : ?>
+							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
+						<?php endif; ?>
 						<?php if ( '' !== $_val || '' !== $_lbl ) : ?>
 							<div class="sp-metric-detail_label">
 								<?php if ( '' !== $_val ) : ?>
@@ -76,10 +79,7 @@ if ( $_is_compact ) {
 							</div>
 						<?php endif; ?>
 						<?php if ( ! empty( $_sp->link_label ) ) : ?>
-							<span class="spotlight-card__count"><?php echo esc_html( (string) $_sp->link_label ); ?></span>
-						<?php endif; ?>
-						<?php if ( '' !== $_tag ) : ?>
-							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
+							<span class="spotlight-card__link-label"><?php echo esc_html( (string) $_sp->link_label ); ?><?php if ( $_url ) : ?> <i class="fa-solid fa-arrow-right" aria-hidden="true" style="font-size:0.7em;"></i><?php endif; ?></span>
 						<?php endif; ?>
 					</div>
 					<?php if ( '' !== $_icon ) : ?>
@@ -125,7 +125,7 @@ if ( $_is_compact ) {
 	<div class="sp-panel mini_card_container_design spotlight-panel" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
 		<div class="spotlight-grid">
 			<div class="list-widget-header">
-				<h3><?= $_heading ?></h3>
+				<h3><?php echo esc_html( $_heading ); ?></h3>
 			</div>
 
 			<div class="spotlight-items">

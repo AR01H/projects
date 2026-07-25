@@ -417,6 +417,11 @@
     text-decoration: underline;
 }
 
+/* Guidance consent toggle — inherit shared toggle styles, adjust font size */
+.guidance-request-form .consent-toggle-row {
+    font-size: 0.82rem;
+}
+
 .guidance-submit-btn {
     width: 100%;
     padding: 12px 24px;

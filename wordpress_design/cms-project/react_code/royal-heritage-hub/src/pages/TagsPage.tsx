@@ -3,6 +3,7 @@ import { tagsApi, type TagSummary } from '@/api/tags';
 import { PageHero } from '@/components/common/PageHero';
 import { TagPill } from '@/components/common/TagPill';
 import { Reveal } from '@/components/common/Reveal';
+import { SEO } from '@/components/common/SEO';
 
 export default function TagsPage() {
   const [topLevelTags, setTopLevelTags] = useState<TagSummary[]>([]);
@@ -19,6 +20,7 @@ export default function TagsPage() {
 
   return (
     <div>
+      <SEO title="Tags" description="Browse and explore our collection through the lens of what makes each handcrafted piece unique." />
       <PageHero pageKey="shop" fallbackTitle="Browse by Tag" />
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
         <Reveal className="mb-10 text-center">

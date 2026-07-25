@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '@/store/useCartStore';
+import { useCouponStore } from '@/store/useCouponStore';
 import { useFormatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/common/Button';
 import { EmptyState } from '@/components/common/EmptyState';
 import { ROUTES } from '@/config/routes';
 import { SHIPPING } from '@/config/constants';
 import { SITE_CONFIG } from '@/config/site';
+import { SEO } from '@/components/common/SEO';
 
 type PaymentMethod = 'upi' | 'card' | 'netbanking' | 'cod';
 
@@ -25,13 +27,42 @@ export default function CheckoutPage() {
   const formatCurrency = useFormatCurrency();
   const PAYMENT_METHODS = getPaymentMethods(formatCurrency);
 
+  // Coupon state from store
+  const appliedCoupon = useCouponStore((s) => s.appliedCoupon);
+  const couponDiscount = useCouponStore((s) => s.discountAmount);
+  const couponFreeShipping = useCouponStore((s) => s.freeShipping);
+  const couponFreeGift = useCouponStore((s) => s.freeGift);
+  const couponTierLabel = useCouponStore((s) => s.tierLabel);
+  const couponError = useCouponStore((s) => s.error);
+  const couponLoading = useCouponStore((s) => s.loading);
+  const validateCoupon = useCouponStore((s) => s.validate);
+  const removeCoupon = useCouponStore((s) => s.remove);
+
+  const [couponInput, setCouponInput] = useState('');
   const [payment, setPayment] = useState<PaymentMethod>('upi');
   const [placing, setPlacing] = useState(false);
   const [placed, setPlaced] = useState(false);
 
-  const shipping = subtotal >= SHIPPING.freeShippingThreshold ? 0 : SHIPPING.defaultShippingCharge;
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const shipping = couponFreeShipping ? 0 : (subtotal >= SHIPPING.freeShippingThreshold ? 0 : SHIPPING.defaultShippingCharge);
   const codCharge = payment === 'cod' ? SHIPPING.codCharge : 0;
-  const total = subtotal + shipping + codCharge;
+  const total = Math.max(0, subtotal - couponDiscount + shipping + codCharge);
+
+  function handleApplyCoupon() {
+    validateCoupon(couponInput, subtotal, itemCount);
+    setCouponInput('');
+  }
+
+  function handleRemoveCoupon() {
+    removeCoupon();
+  }
+
+  function handleCouponKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleApplyCoupon();
+    }
+  }
 
   function placeOrder(e: React.FormEvent) {
     e.preventDefault();
@@ -45,6 +76,7 @@ export default function CheckoutPage() {
   if (items.length === 0 && !placed) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24">
+        <SEO title="Checkout" description="Complete your purchase securely at Royal Heritage Hub." />
         <EmptyState
           title="Your bag is empty"
           description={SITE_CONFIG.microcopy.emptyCheckoutDescription}
@@ -61,6 +93,7 @@ export default function CheckoutPage() {
   if (placed) {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
+        <SEO title="Checkout" description="Complete your purchase securely at Royal Heritage Hub." />
         <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-success)]/15">
           <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="var(--color-success)" strokeWidth="2">
             <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
@@ -82,6 +115,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <SEO title="Checkout" description="Complete your purchase securely at Royal Heritage Hub." />
       <h1 className="font-display text-3xl text-[var(--color-text-primary)] sm:text-4xl">Checkout</h1>
 
       <form onSubmit={placeOrder} className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_380px]">
@@ -135,8 +169,11 @@ export default function CheckoutPage() {
           </section>
         </div>
 
+        {/* Order Summary Sidebar */}
         <div className="h-fit rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-light)] p-6">
           <h2 className="font-display text-lg text-[var(--color-text-primary)]">Order Summary</h2>
+
+          {/* Items */}
           <div className="mt-4 flex flex-col gap-3 divide-y divide-[var(--color-border)]">
             {items.map((item) => (
               <div key={item.id} className="flex justify-between gap-3 pt-3 first:pt-0 text-sm">
@@ -150,30 +187,108 @@ export default function CheckoutPage() {
             ))}
           </div>
 
+          {/* Coupon Input */}
+          <div className="mt-4">
+            {appliedCoupon ? (
+              <div className="rounded-lg border border-[var(--color-success)]/30 bg-[var(--color-success)]/5 p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-[var(--color-success)]">
+                      {appliedCoupon.badge && <span className="mr-1 inline-block rounded px-1.5 py-0.5 text-[0.6rem] font-bold" style={{ backgroundColor: appliedCoupon.bgColor, color: appliedCoupon.textColor }}>{appliedCoupon.badge}</span>}
+                      {appliedCoupon.code}
+                    </p>
+                    <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">{appliedCoupon.description}</p>
+                    {couponTierLabel && <p className="mt-0.5 text-xs text-[var(--color-success)]">{couponTierLabel}</p>}
+                  </div>
+                  <button type="button" onClick={handleRemoveCoupon} className="text-xs text-[var(--color-danger)] hover:underline">Remove</button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                  onKeyDown={handleCouponKeyDown}
+                  placeholder="Enter coupon code"
+                  className="w-full rounded-[var(--radius-btn)] border border-[var(--color-border)] bg-[var(--color-bg-cream)] px-3 py-2 text-sm outline-none uppercase"
+                />
+                <Button variant="outline" size="sm" onClick={handleApplyCoupon} isLoading={couponLoading}>
+                  Apply
+                </Button>
+              </div>
+            )}
+            {couponError && <p className="mt-1 text-xs text-[var(--color-danger)]">{couponError}</p>}
+          </div>
+
+          {/* Price Breakdown */}
           <div className="mt-5 flex flex-col gap-2 border-t border-[var(--color-border)] pt-4 text-sm">
             <div className="flex justify-between text-[var(--color-text-secondary)]">
-              <span>Subtotal</span>
+              <span>Subtotal ({itemCount} items)</span>
               <span>{formatCurrency(subtotal)}</span>
             </div>
-            <div className="flex justify-between text-[var(--color-text-secondary)]">
-              <span>Shipping</span>
-              <span>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span>
-            </div>
+
+            {/* Discount */}
+            {couponDiscount > 0 && (
+              <div className="flex justify-between text-[var(--color-success)]">
+                <span>Discount</span>
+                <span>−{formatCurrency(couponDiscount)}</span>
+              </div>
+            )}
+
+            {/* Free Shipping */}
+            {couponFreeShipping && shipping === 0 && (
+              <div className="flex justify-between text-[var(--color-success)]">
+                <span>Shipping</span>
+                <span className="font-semibold">FREE (coupon)</span>
+              </div>
+            )}
+            {!couponFreeShipping && (
+              <div className="flex justify-between text-[var(--color-text-secondary)]">
+                <span>Shipping</span>
+                <span>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span>
+              </div>
+            )}
+
+            {/* COD Charge */}
             {codCharge > 0 && (
               <div className="flex justify-between text-[var(--color-text-secondary)]">
                 <span>COD Charge</span>
                 <span>{formatCurrency(codCharge)}</span>
               </div>
             )}
+
+            {/* Free Gift */}
+            {couponFreeGift && (
+              <div className="flex items-center gap-2 rounded-lg bg-[var(--color-success)]/10 px-3 py-2 text-xs text-[var(--color-success)]">
+                <span>🎁</span>
+                <span>Free gift: {couponFreeGift.productName} (×{couponFreeGift.quantity})</span>
+              </div>
+            )}
+
+            {/* Total */}
             <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-display text-base text-[var(--color-text-primary)]">
               <span>Total</span>
               <span>{formatCurrency(total)}</span>
             </div>
+
+            {/* Savings callout */}
+            {couponDiscount > 0 && (
+              <p className="text-center text-xs font-medium text-[var(--color-success)]">
+                You're saving {formatCurrency(couponDiscount)} on this order!
+              </p>
+            )}
           </div>
 
           <Button type="submit" variant="primary" fullWidth size="lg" isLoading={placing} className="mt-6">
-            Place Order
+            Place Order · {formatCurrency(total)}
           </Button>
+
+          {/* Trust signals */}
+          <div className="mt-4 flex justify-center gap-4 text-[0.65rem] text-[var(--color-text-muted)]">
+            <span>🔒 Secure</span>
+            <span>📦 Easy Returns</span>
+            <span>✅ Genuine Products</span>
+          </div>
         </div>
       </form>
     </div>

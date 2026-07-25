@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/HomeContext.php';
+require_once __DIR__ . '/../src/Feature/Home/Service/HomeContext.php';
 
 function adn_home_repository(): \Adn\Theme\Repository\HomeRepository {
 	return \Adn\Theme\Service\HomeContext::repository();

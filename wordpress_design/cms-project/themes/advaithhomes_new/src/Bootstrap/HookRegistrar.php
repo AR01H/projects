@@ -34,7 +34,7 @@ class HookRegistrar {
 						if ( isset( $_GET['clear_cache'] ) ) {
 							$redirect_url = \remove_query_arg( 'clear_cache' );
 							\wp_safe_redirect( $redirect_url );
-							\exit;
+							exit;
 						}
 					}
 				}
@@ -61,6 +61,7 @@ class HookRegistrar {
 	private static function registerFrontend(): void {
 		\add_action( 'wp_footer', 'adn_render_site_notice_popup' );
 		\add_action( 'wp_footer', 'adn_render_floating_contact' );
+		\add_action( 'wp_footer', 'adn_render_page_modal' );
 		\add_action( 'wp_head', 'adn_reveal_gate', 1 );
 		\add_action( 'wp_footer', 'adn_reveal_runtime', 30 );
 		\add_action( 'template_redirect', 'adn_expert_full_page_render', 0 );

@@ -28,6 +28,18 @@ export interface SiteConfig {
     /** e.g. "piece" / "jar" / "bottle" / "batch" — used in "12 {unit}" copy */
     productUnitSingular: string;
     productUnitPlural: string;
+    /** e.g. "Heritage" / "Tradition" / "Legacy" / "Art" */
+    heritageWord: string;
+    /** e.g. "Indian" / "Local" / "Regional" — origin descriptor */
+    originWord: string;
+    /** e.g. "Artisans" / "Makers" / "Craftspeople" / "Chefs" */
+    makersPlural: string;
+    /** e.g. "Regions" / "Origins" / "Sources" */
+    regionsWord: string;
+    /** e.g. "GI Tagged" / "Organic" / "Certified" */
+    certificationWord: string;
+    /** e.g. "Handpicked" / "Curated" / "Selected" */
+    curatedWord: string;
   };
 
   /** Homepage hero fallback + brand story copy, used across Hero/About/Footer */
@@ -105,6 +117,12 @@ export const SITE_CONFIG: SiteConfig = {
     productProcessNoun: 'Craft',
     productUnitSingular: 'piece',
     productUnitPlural: 'pieces',
+    heritageWord: 'Heritage',
+    originWord: 'Indian',
+    makersPlural: 'Artisans',
+    regionsWord: 'Regions',
+    certificationWord: 'GI Tagged',
+    curatedWord: 'Handpicked',
   },
   story: {
     heroEyebrow: 'Royal Heritage Hub',

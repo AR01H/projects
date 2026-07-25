@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/GuidesListingContext.php';
+require_once __DIR__ . '/../src/Feature/GuidesListing/Service/GuidesListingContext.php';
 
 function adn_guides_listing_get_context( $slug = '' ) {
 	return \Adn\Theme\Service\GuidesListingContext::getContext( $slug );

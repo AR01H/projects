@@ -4,6 +4,7 @@ import { categoryApi } from '@/api/category';
 import { PageHero } from '@/components/common/PageHero';
 import { Reveal } from '@/components/common/Reveal';
 import { buildRoute, ROUTES } from '@/config/routes';
+import { SEO } from '@/components/common/SEO';
 import type { Category } from '@/types/product';
 
 export default function CategoriesPage() {
@@ -15,6 +16,7 @@ export default function CategoriesPage() {
 
   return (
     <div>
+      <SEO title="Categories" description="Browse our full range of handcrafted Indian products organised by craft tradition." />
       <PageHero pageKey="collections" fallbackTitle="All Categories" />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <h1 className="font-display text-3xl text-[var(--color-text-primary)] sm:text-4xl">All Categories</h1>

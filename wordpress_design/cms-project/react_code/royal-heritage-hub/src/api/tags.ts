@@ -1,5 +1,6 @@
 import { productsApi } from './products';
 import { apiClient } from './client';
+import { MOCK_TAGS } from '@/data/mockData';
 import type { Product } from '@/types/product';
 
 export interface TagMeta {
@@ -16,9 +17,7 @@ export interface TagSummary {
 }
 
 async function getTagMeta(): Promise<TagMeta[]> {
-  if (apiClient.useMock) {
-    return apiClient.mock<TagMeta[]>(() => import('@/data/tags.json') as unknown as Promise<{ default: TagMeta[] }>);
-  }
+  if (apiClient.useMock) return MOCK_TAGS;
   return [];
 }
 

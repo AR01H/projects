@@ -29,7 +29,7 @@ function buildUrl(path: string, params?: RequestOptions['params']): string {
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { params, ...init } = options;
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), API_CONFIG.timeoutMs);
+  const timeout = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT_MS);
 
   try {
     const res = await fetch(buildUrl(path, params), {

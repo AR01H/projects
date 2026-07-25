@@ -48,7 +48,7 @@ switch ( $section ) {
 			<section class="news-three-col<?php echo $_sp_active ? ' news-three-col--has-sp' : ''; ?>">
 				<div class="container">
 					<?php adn_component( 'parts/section_headers/section_header', array(
-						'heading' => array( 'title' => adn_term( 'labels.news_section', '' ) ),
+						'heading' => array( 'title' => adn_term( 'labels.news_section', 'Latest News & Updates' ) ),
 						'center'  => true,
 					) ); ?>
 					<?php if ( $_sp_active ) : ?>

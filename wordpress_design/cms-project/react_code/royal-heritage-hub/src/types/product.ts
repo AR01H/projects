@@ -41,6 +41,8 @@ export interface Product {
   compareAtPrice?: number;
   currency: string;
   images: string[];
+  /** Optional product video URL (.mp4 or YouTube/Vimeo embed) */
+  videoUrl?: string;
   thumbnail: string;
   sku: string;
   /** Dynamic, vertical-defined facts — replaces fixed material/origin/dimensions fields */

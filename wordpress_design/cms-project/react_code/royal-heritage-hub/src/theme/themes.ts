@@ -19,6 +19,7 @@ export interface ThemeTokens {
     bg: string;
     bgLight: string;
     bgCream: string;
+    surface: string;
     dark: string;
     darkSoft: string;
     textPrimary: string;
@@ -54,6 +55,7 @@ export const THEMES: Record<string, ThemeTokens> = {
       bg: '#FAF8F3',
       bgLight: '#FFFDF9',
       bgCream: '#F5F0E6',
+      surface: '#FEFCF8',
       dark: '#2D2A26',
       darkSoft: '#46403A',
       textPrimary: '#2D2A26',
@@ -85,6 +87,7 @@ export const THEMES: Record<string, ThemeTokens> = {
       bg: '#F3ECDD',
       bgLight: '#FBF7EE',
       bgCream: '#EDE2CB',
+      surface: '#F8F2E4',
       dark: '#2B2018',
       darkSoft: '#40332A',
       textPrimary: '#2B2018',
@@ -116,6 +119,7 @@ export const THEMES: Record<string, ThemeTokens> = {
       bg: '#FFF8EF',
       bgLight: '#FFFDF7',
       bgCream: '#FBEBD4',
+      surface: '#FFFCF5',
       dark: '#3A1F1F',
       darkSoft: '#522C2C',
       textPrimary: '#3A1F1F',
@@ -147,6 +151,7 @@ export const THEMES: Record<string, ThemeTokens> = {
       bg: '#FFFFFF',
       bgLight: '#FFFFFF',
       bgCream: '#F5F5F3',
+      surface: '#FAFAFA',
       dark: '#141414',
       darkSoft: '#2A2A2A',
       textPrimary: '#141414',
@@ -178,6 +183,7 @@ export const THEMES: Record<string, ThemeTokens> = {
       bg: '#FFF6EC',
       bgLight: '#FFFDF9',
       bgCream: '#FBE8D1',
+      surface: '#FFFBF5',
       dark: '#321518',
       darkSoft: '#4A2226',
       textPrimary: '#321518',

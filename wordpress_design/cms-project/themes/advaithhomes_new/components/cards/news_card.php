@@ -14,7 +14,7 @@ $bg_class = isset( $item['bg_class'] ) && '' !== $item['bg_class'] ? ' news-card
 $url      = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
 ?>
 <div class="news-card" data-cat="<?php echo esc_attr( $cat_key ); ?>">
-	<a href="<?php echo $url; ?>" class="news-card-img<?php echo $bg_class; ?>" tabindex="-1" aria-hidden="true">
+	<a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>" class="news-card-img<?php echo $bg_class; ?>" tabindex="-1" aria-hidden="true">
 		<?php
 		$thumbnail = ! empty( $item['thumbnail'] ) ? (string) $item['thumbnail'] : '';
 		if ( empty( $thumbnail ) ) {

@@ -67,16 +67,16 @@ $_bg = ( isset( $card['gradient'] ) && $card['gradient'] )
 		<?php if ( $_desc ) : ?>
 		<p class="jny-card__desc" title="<?= esc_attr($_desc)?>"><?php echo esc_html( $_desc ); ?></p>
 		<?php endif; ?>
-		<?php if ( $is_restricted ) {
-			echo '<span class="jny-card__cta"> '.adn_icon('⚡').'Coming Soon</span>';
-		}else{
-			echo "<span class='jny-card__cta'>
-				{$_cta_label}
-				<svg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg' width='13' height='13' aria-hidden='true'>
-					<path d='M2 8h12M9 3l5 5-5 5' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/>
+		<?php if ( $is_restricted ) { ?>
+			<span class="jny-card__cta"><?php echo adn_icon( '⚡' ); ?><?php esc_html_e( 'Coming Soon', ADN_TEXT_DOMAIN ); ?></span>
+		<?php } else { ?>
+			<span class="jny-card__cta">
+				<?php echo esc_html( $_cta_label ); ?>
+				<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13" aria-hidden="true">
+					<path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
-			</span>";		
-		} ?>		
+			</span>
+		<?php } ?>		
 	</div>
 
 </a>

@@ -1,5 +1,6 @@
 import { apiClient } from './client';
 import { ENDPOINTS } from './endpoints';
+import { MOCK_BANNERS } from '@/data/mockData';
 import type { Banner } from '@/types/product';
 
 interface BannersResponse {
@@ -9,9 +10,7 @@ interface BannersResponse {
 }
 
 async function getBanners(): Promise<BannersResponse> {
-  if (apiClient.useMock) {
-    return apiClient.mock<BannersResponse>(() => import('@/data/banners.json') as unknown as Promise<{ default: BannersResponse }>);
-  }
+  if (apiClient.useMock) return MOCK_BANNERS;
   return apiClient.get<BannersResponse>(ENDPOINTS.banners.list);
 }
 

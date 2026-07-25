@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/GuidanceContext.php';
+require_once __DIR__ . '/../src/Feature/Guidance/Service/GuidanceContext.php';
 
 function adn_guidance_get_context() {
 	return \Adn\Theme\Service\GuidanceContext::getContext();

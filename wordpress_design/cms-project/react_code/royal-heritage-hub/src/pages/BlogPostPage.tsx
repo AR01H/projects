@@ -6,6 +6,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { TagPill } from '@/components/common/TagPill';
 import { Reveal } from '@/components/common/Reveal';
 import { buildRoute, ROUTES } from '@/config/routes';
+import { SEO } from '@/components/common/SEO';
 import type { BlogCategory, BlogPost } from '@/types/product';
 
 export default function BlogPostPage() {
@@ -41,6 +42,7 @@ export default function BlogPostPage() {
 
   return (
     <div>
+      <SEO title={post.title} description={post.excerpt} />
       <div className="relative aspect-[16/8] w-full overflow-hidden sm:aspect-[21/8]">
         <img src={post.coverImage} alt={post.title} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark)]/85 via-[var(--color-dark)]/25 to-transparent" />

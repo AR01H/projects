@@ -1,11 +1,10 @@
 import { apiClient } from './client';
 import { ENDPOINTS } from './endpoints';
+import { MOCK_COLLECTIONS } from '@/data/mockData';
 import type { Collection } from '@/types/product';
 
 async function getAllCollections(): Promise<Collection[]> {
-  if (apiClient.useMock) {
-    return apiClient.mock<Collection[]>(() => import('@/data/collections.json'));
-  }
+  if (apiClient.useMock) return MOCK_COLLECTIONS;
   return apiClient.get<Collection[]>(ENDPOINTS.collections.list);
 }
 

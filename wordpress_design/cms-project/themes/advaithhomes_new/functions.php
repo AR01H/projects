@@ -50,28 +50,35 @@ require_once ADN_THEME_DIR . '/src/Service/AssetLoader.php';
 require_once ADN_THEME_DIR . '/src/Repository/CategoryRepository.php';
 require_once ADN_THEME_DIR . '/src/Repository/HomeRepository.php';
 require_once ADN_THEME_DIR . '/src/Repository/TopicCategoryRepository.php';
+require_once ADN_THEME_DIR . '/src/Shared/SidebarBuilder.php';
+require_once ADN_THEME_DIR . '/src/Shared/NewsletterBuilder.php';
+require_once ADN_THEME_DIR . '/src/Shared/BreadcrumbBuilder.php';
+require_once ADN_THEME_DIR . '/src/Shared/RelatedPostsBuilder.php';
+require_once ADN_THEME_DIR . '/src/Shared/PaginationBuilder.php';
 
 // ===========================
 // LOAD SERVICE CONTEXT CLASSES (used by intermediate wrappers)
 // ===========================
-require_once ADN_THEME_DIR . '/src/Service/HomeContext.php';
-require_once ADN_THEME_DIR . '/src/Service/CategoryContext.php';
-require_once ADN_THEME_DIR . '/src/Service/TopicCategoryContext.php';
-require_once ADN_THEME_DIR . '/src/Service/AskExpertContext.php';
-require_once ADN_THEME_DIR . '/src/Service/ContactContext.php';
-require_once ADN_THEME_DIR . '/src/Service/GuidesContext.php';
-require_once ADN_THEME_DIR . '/src/Service/GuidesListingContext.php';
-require_once ADN_THEME_DIR . '/src/Service/NewsContext.php';
-require_once ADN_THEME_DIR . '/src/Service/ToolsContext.php';
-require_once ADN_THEME_DIR . '/src/Service/ToolSingleContext.php';
-require_once ADN_THEME_DIR . '/src/Service/ExpertSingleContext.php';
-require_once ADN_THEME_DIR . '/src/Service/GuidanceContext.php';
-require_once ADN_THEME_DIR . '/src/Service/GuideContext.php';
-require_once ADN_THEME_DIR . '/src/Service/PostContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/Home/Service/HomeContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/CategoryGuide/Service/CategoryContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/CategoryGuide/Service/TopicCategoryContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/AskExpert/Service/AskExpertContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/Form/Service/FormOptionsRegistry.php';
+require_once ADN_THEME_DIR . '/src/Feature/Contact/Service/ContactContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/GuidesListing/Service/GuidesContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/GuidesListing/Service/GuidesListingContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/News/Service/NewsContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/Tools/Service/ToolsContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/Tools/Service/ToolSingleContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/AskExpert/Service/ExpertSingleContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/Guidance/Service/GuidanceContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/CategoryGuide/Service/GuideContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/Article/Service/PostContext.php';
 
 // ===========================
 // LOAD FEATURE CONTROLLERS
 // ===========================
+require_once ADN_THEME_DIR . '/src/Feature/Form/Service/FormOptionsRegistry.php';
 require_once ADN_THEME_DIR . '/src/Feature/Home/Controller/HomeController.php';
 require_once ADN_THEME_DIR . '/src/Feature/Contact/Controller/ContactController.php';
 require_once ADN_THEME_DIR . '/src/Feature/Guidance/Controller/GuidanceController.php';
@@ -104,6 +111,7 @@ if ( is_admin() ) {
 require_once ADN_THEME_DIR . '/common/cache/ThemeCache.php';
 require_once ADN_THEME_DIR . '/common/frontend/SiteNotice.php';
 require_once ADN_THEME_DIR . '/common/frontend/FloatingContact.php';
+require_once ADN_THEME_DIR . '/common/frontend/PageModal.php';
 require_once ADN_THEME_DIR . '/common/frontend/ScrollReveal.php';
 require_once ADN_THEME_DIR . '/common/frontend/ComingSoon.php';
 require_once ADN_THEME_DIR . '/common/ajax/ExpertAjax.php';

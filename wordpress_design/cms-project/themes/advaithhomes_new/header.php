@@ -9,6 +9,8 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+$_adn_embed = ! empty( $_GET['embed'] ); // phpcs:ignore WordPress.Security.NonceVerification
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -16,9 +18,24 @@ defined( 'ABSPATH' ) || exit;
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?php wp_head(); ?>
+	<?php if ( $_adn_embed ) : ?>
+	<style>
+		/* Embed mode: hide nav, header, footer, sidebar, floating elements */
+		.site-header, .site-nav, .main-header, .main-nav,
+		.site-footer, .main-footer, .footer-section,
+		.scroll-to-top, .scroll-progress,
+		.adn-preheader, #adn-page-loader,
+		.whatsapp-float, .floating-contact,
+		.site-notice-bar, .cookie-banner,
+		.adn-newsbar, .newsbar { display: none !important; }
+		body { margin: 0; padding: 16px; background: #fff; }
+		.container { max-width: 100%; padding: 0; }
+	</style>
+	<?php endif; ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<?php if ( ! $_adn_embed ) : ?>
 <?php
 // ── Pre-header bar (home page only) ─────────────────────────────────────────
 if ( is_front_page() ) {
@@ -54,3 +71,4 @@ if ( is_front_page() ) {
 </div>
 <?php endif; ?>
 <div class="scroll-progress"></div>
+<?php endif; ?>

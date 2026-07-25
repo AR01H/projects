@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/ToolSingleContext.php';
+require_once __DIR__ . '/../src/Feature/Tools/Service/ToolSingleContext.php';
 
 function adn_calculator_single_get_context( $key ) {
 	return \Adn\Theme\Service\ToolSingleContext::getContext( $key );

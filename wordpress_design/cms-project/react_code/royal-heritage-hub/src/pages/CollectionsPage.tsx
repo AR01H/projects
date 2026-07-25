@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { collectionsApi } from '@/api/collections';
 import { PageHero } from '@/components/common/PageHero';
 import { SITE_CONFIG } from '@/config/site';
+import { SEO } from '@/components/common/SEO';
 import type { Collection } from '@/types/product';
 
 export default function CollectionsPage() {
@@ -14,6 +15,7 @@ export default function CollectionsPage() {
 
   return (
     <div>
+      <SEO title="Collections" description="Explore our curated collections of handcrafted Indian art, furniture, toys, and home decor." />
       <PageHero pageKey="collections" fallbackTitle="Collections" />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="font-display text-3xl text-[var(--color-text-primary)] sm:text-4xl">Collections</h1>

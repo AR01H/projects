@@ -1,5 +1,7 @@
 <?php
 /**
+ * Template Name: Tool Single
+ *
  * pages/PageToolSingle.php - Individual tool detail page.
  *
  * Served by template_redirect for /calculators/{key}/ (or the legacy

@@ -49,7 +49,8 @@ export function BlogNavDropdown() {
       </button>
 
       {open && (
-        <div className="glass-surface animate-fade-in-up absolute left-1/2 top-full z-50 mt-3 w-[420px] -translate-x-1/2 rounded-[var(--radius-card)] p-5 shadow-[var(--shadow-hover)]">
+        <div className="animate-fade-in-up absolute left-1/2 top-full z-50 pt-3 -translate-x-1/2">
+          <div className="w-[420px] rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-light)] p-5 shadow-[var(--shadow-hover)]">
           <div className="grid grid-cols-2 gap-6">
             <div>
               <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
@@ -100,6 +101,7 @@ export function BlogNavDropdown() {
                 ))}
               </div>
             </div>
+          </div>
           </div>
         </div>
       )}

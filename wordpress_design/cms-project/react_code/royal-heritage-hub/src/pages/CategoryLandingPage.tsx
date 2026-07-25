@@ -8,6 +8,7 @@ import { Button } from '@/components/common/Button';
 import { PageLoader } from '@/components/common/Skeleton';
 import { Breadcrumbs, type BreadcrumbItem } from '@/components/common/Breadcrumbs';
 import { buildRoute, ROUTES } from '@/config/routes';
+import { SEO } from '@/components/common/SEO';
 import type { Category, Product } from '@/types/product';
 
 export default function CategoryLandingPage() {
@@ -48,6 +49,7 @@ export default function CategoryLandingPage() {
 
   return (
     <div>
+      <SEO title={category.name} description={category.description} />
       {/* Full-bleed editorial hero, unique per category */}
       <section className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/7]">
         <img src={category.image} alt={category.name} className="h-full w-full object-cover" />

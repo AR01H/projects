@@ -1,11 +1,10 @@
 import { apiClient } from './client';
 import { ENDPOINTS } from './endpoints';
+import { MOCK_CATEGORIES } from '@/data/mockData';
 import type { Category } from '@/types/product';
 
 async function getAllCategories(): Promise<Category[]> {
-  if (apiClient.useMock) {
-    return apiClient.mock<Category[]>(() => import('@/data/categories.json'));
-  }
+  if (apiClient.useMock) return MOCK_CATEGORIES;
   return apiClient.get<Category[]>(ENDPOINTS.categories.list);
 }
 

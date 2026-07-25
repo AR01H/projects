@@ -7,13 +7,13 @@ defined( 'ABSPATH' ) || exit;
 class UrlHelper {
 
 	public static function prettyPathSlug( string $base_url ): string {
-		$path = wp_parse_url( $base_url, PHP_URL_PATH );
-		if ( ! $path || '/' === $path ) {
+		$raw    = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		$path   = trim( (string) parse_url( $raw, PHP_URL_PATH ), '/' );
+		$prefix = trim( (string) $base_url, '/' ) . '/';
+		if ( '' === $path || 0 !== strpos( $path, $prefix ) ) {
 			return '';
 		}
-		$slug = trim( $path, '/' );
-		$slug = preg_replace( '/-guides?$/', '', $slug );
-		return ucwords( str_replace( array( '-', '_' ), ' ', $slug ) );
+		return sanitize_title( substr( $path, strlen( $prefix ) ) );
 	}
 
 	public static function expertProfileUrl( string $slug ): string {

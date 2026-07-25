@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { CONTACT } from '@/config/constants';
 import { Button } from '@/components/common/Button';
 import { PageHero } from '@/components/common/PageHero';
+import { SEO } from '@/components/common/SEO';
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
 
   return (
     <div>
+      <SEO title="Contact Us" description="Get in touch with Royal Heritage Hub for orders, bulk gifting, or custom handcrafted pieces." />
       <PageHero pageKey="contact" fallbackTitle="Get in Touch" />
       <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
       <h1 className="font-display text-3xl text-[var(--color-text-primary)] sm:text-4xl">Get in Touch</h1>

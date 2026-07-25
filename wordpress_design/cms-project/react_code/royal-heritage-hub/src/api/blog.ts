@@ -1,18 +1,16 @@
 import { apiClient } from './client';
+import { MOCK_BLOG_POSTS, MOCK_BLOG_CATEGORIES } from '@/data/mockData';
 import type { BlogCategory, BlogPost } from '@/types/product';
 
 async function getAllPosts(): Promise<BlogPost[]> {
   if (apiClient.useMock) {
-    const posts = await apiClient.mock<BlogPost[]>(() => import('@/data/blogPosts.json'));
-    return [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return [...MOCK_BLOG_POSTS].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
   return [];
 }
 
 async function getAllCategories(): Promise<BlogCategory[]> {
-  if (apiClient.useMock) {
-    return apiClient.mock<BlogCategory[]>(() => import('@/data/blogCategories.json'));
-  }
+  if (apiClient.useMock) return MOCK_BLOG_CATEGORIES;
   return [];
 }
 

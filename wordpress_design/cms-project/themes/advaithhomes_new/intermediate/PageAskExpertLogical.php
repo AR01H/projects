@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/AskExpertContext.php';
+require_once __DIR__ . '/../src/Feature/AskExpert/Service/AskExpertContext.php';
 
 function adn_ask_expert_sidebar_data() {
 	return \Adn\Theme\Service\AskExpertContext::sidebarData();

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Template Name: Topic Category Guide
+ *
  * pages/PageTopicCategoryGuide.php
  *
  * Topic/category listing page - articles within one taxonomy term.
@@ -230,9 +232,9 @@ adn_component( 'sections/page_hero', array(
 			<?php /* Latest updates for this category */ ?>
 			<?php if ( ! empty( $ctx['sidebar']['latest_updates'] ) ) : ?>
 				<?php adn_component( 'parts/sidebar_link_list', array( 'list' => array(
-					'heading'  => 'Latest Updates',
+					'heading'  => adn_term( 'category_page.latest_updates', 'Latest Updates' ),
 					'items'    => $ctx['sidebar']['latest_updates'],
-					'view_all' => array( 'label' => 'All updates →', 'url' => home_url( '/' . $ctx['slug'] . '/' ) ),
+					'view_all' => array( 'label' => adn_term( 'category_page.all_updates', 'All updates →' ), 'url' => home_url( '/' . $ctx['slug'] . '/' ) ),
 				) ) ); ?>
 			<?php endif; ?>
 
@@ -258,15 +260,15 @@ adn_component( 'sections/page_hero', array(
 	<div class="container">
 		<?php adn_component( 'sections/news_three_col', array(
 			'news' => array(
-				'heading' => array( 'title' => '⭐ Featured', 'link_label' => '', 'link_url' => '' ),
+				'heading' => array( 'title' => '⭐ ' . adn_term( 'category_page.featured', 'Featured' ), 'link_label' => '', 'link_url' => '' ),
 				'items'   => $_f_items,
 			),
 			'regulations' => array(
-				'heading' => array( 'title' => '🔥 Popular' ),
+				'heading' => array( 'title' => '🔥 ' . adn_term( 'category_page.popular', 'Popular' ) ),
 				'items'   => $_p_items,
 			),
 			'hot_topics' => array(
-				'title' => '💡 Suggested',
+				'title' => '💡 ' . adn_term( 'category_page.suggested', 'Suggested' ),
 				'items' => $_s_items,
 				'cta'   => array(),
 			),
@@ -281,8 +283,8 @@ adn_component( 'sections/page_hero', array(
 	<div class="container">
 		<?php adn_component( 'parts/section_headers/section_header', array(
 			'heading' => array(
-				'title'      => 'More ' . ( $parent ? esc_html( $parent->name ) : 'Topic' ) . ' Guides',
-				'link_label' => $parent ? 'View all →' : '',
+				'title'      => sprintf( esc_html__( 'More %s Guides', ADN_TEXT_DOMAIN ), $parent ? esc_html( $parent->name ) : esc_html__( 'Topic', ADN_TEXT_DOMAIN ) ),
+				'link_label' => $parent ? adn_term( 'category_page.view_all', 'View all →' ) : '',
 				'link_url'   => $parent ? home_url( '/' . trim( $parent->slug, '/' ) . '/' ) : '',
 			),
 			'tag' => 'h2',

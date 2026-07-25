@@ -66,11 +66,11 @@ function adn_page_close( array $ctx ) {
 
 // ── Language Helpers ──────────────────────────────────────────────────────
 function adn_get_allowed_languages() {
-	return \Adn\Theme\Helper\LanguageHelper::getAllowed();
+	return \Adn\Theme\Helper\LanguageHelper::getAllowedLanguages();
 }
 
 function getLanguageStrings( $lang ) {
-	return \Adn\Theme\Helper\LanguageHelper::getStrings( $lang );
+	return \Adn\Theme\Helper\LanguageHelper::getLanguageStrings( $lang );
 }
 
 function lang_translate( $title, $lang = '' ) {
@@ -78,7 +78,7 @@ function lang_translate( $title, $lang = '' ) {
 }
 
 function adn_get_current_language() {
-	return \Adn\Theme\Helper\LanguageHelper::getCurrent();
+	return \Adn\Theme\Helper\LanguageHelper::getCurrentLanguage();
 }
 
 function adn_set_language_cookie() {
@@ -86,7 +86,7 @@ function adn_set_language_cookie() {
 }
 
 function adn_visitor_has_cookie_category( $category ) {
-	return \Adn\Theme\Helper\LanguageHelper::hasCookieCategory( $category );
+	return isset( $_COOKIE[ 'adn_cat_' . $category ] ) && '1' === $_COOKIE[ 'adn_cat_' . $category ];
 }
 
 // ── URL Helpers ───────────────────────────────────────────────────────────

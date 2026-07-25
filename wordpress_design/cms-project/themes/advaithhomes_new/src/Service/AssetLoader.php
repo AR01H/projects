@@ -26,7 +26,10 @@ class AssetLoader {
 		'adn-premium-style'    => '/assets/css/premium_styles.css',
 		'adn-resources-style'  => '/assets/css/resources.css',
 		'adn-faqs-style'       => '/assets/css/faqs.css',
-		'adn-contact-style'    => '/assets/css/contact.css'
+		'adn-contact-style'    => '/assets/css/contact.css',
+		'adn-article-style'    => '/assets/css/article.css',
+		'adn-single-style'     => '/assets/css/single.css',
+
 	];
 
 	/** Core JS loaded on every page. */
@@ -52,8 +55,6 @@ class AssetLoader {
 
 	/** JS loaded only on single posts. */
 	private const SINGLE_CSS = [
-		'adn-single-style'  => '/assets/css/single.css',
-		'adn-article-style' => '/assets/css/article.css',
 		'adn-cardner-style' => '/assets/css/article_cardner.css',
 	];
 
@@ -84,6 +85,9 @@ class AssetLoader {
 	private static function loadCoreJs(): void {
 		foreach ( self::CORE_JS as $handle => $file ) {
 			$path = \ADN_THEME_DIR . $file;
+			if ( ! \file_exists( $path ) || \filesize( $path ) === 0 ) {
+				continue;
+			}
 			$ver  = self::version( $path );
 			\wp_enqueue_script( $handle, \ADN_THEME_URI . $file, [ 'jquery' ], $ver, true );
 		}

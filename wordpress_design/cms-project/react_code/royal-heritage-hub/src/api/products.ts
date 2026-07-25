@@ -1,5 +1,6 @@
 import { apiClient } from './client';
 import { ENDPOINTS } from './endpoints';
+import { MOCK_PRODUCTS } from '@/data/mockData';
 import type { Product } from '@/types/product';
 
 export interface ProductFilters {
@@ -8,6 +9,7 @@ export interface ProductFilters {
   minPrice?: number;
   maxPrice?: number;
   material?: string;
+  tag?: string;
   minRating?: number;
   inStockOnly?: boolean;
   search?: string;
@@ -15,9 +17,7 @@ export interface ProductFilters {
 }
 
 async function getAllProducts(): Promise<Product[]> {
-  if (apiClient.useMock) {
-    return apiClient.mock<Product[]>(() => import('@/data/products.json'));
-  }
+  if (apiClient.useMock) return MOCK_PRODUCTS;
   return apiClient.get<Product[]>(ENDPOINTS.products.list);
 }
 
@@ -40,6 +40,9 @@ export function filterProducts(products: Product[], filters: ProductFilters): Pr
     result = result.filter((p) =>
       p.specs.some((s) => s.value.toLowerCase().includes(filters.material!.toLowerCase()))
     );
+  }
+  if (filters.tag) {
+    result = result.filter((p) => p.tags.includes(filters.tag!));
   }
   if (filters.minRating !== undefined) {
     result = result.filter((p) => p.rating >= filters.minRating!);

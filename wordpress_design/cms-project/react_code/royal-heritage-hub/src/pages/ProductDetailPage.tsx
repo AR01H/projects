@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { productsApi } from '@/api/products';
 import { categoryApi } from '@/api/category';
@@ -15,6 +15,12 @@ import { Breadcrumbs, type BreadcrumbItem } from '@/components/common/Breadcrumb
 import { ProductRail } from '@/components/home/ProductRail';
 import { RecentlyViewed } from '@/components/home/RecentlyViewed';
 import { TagPill } from '@/components/common/TagPill';
+import { ImageZoom } from '@/components/product/ImageZoom';
+import { StickyBuyBar } from '@/components/product/StickyBuyBar';
+import { VariantSelector } from '@/components/product/VariantSelector';
+import { ReviewForm } from '@/components/common/ReviewForm';
+import { NotifyWhenAvailable } from '@/components/common/NotifyWhenAvailable';
+import { SEO } from '@/components/common/SEO';
 import { SHIPPING } from '@/config/constants';
 import { SITE_CONFIG } from '@/config/site';
 import { buildRoute, ROUTES } from '@/config/routes';
@@ -29,6 +35,9 @@ export default function ProductDetailPage() {
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [tab, setTab] = useState<Tab>('description');
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const addToBagRef = useRef<HTMLDivElement>(null);
 
   const addItem = useCartStore((s) => s.addItem);
   const toggleWishlist = useWishlistStore((s) => s.toggle);
@@ -36,11 +45,28 @@ export default function ProductDetailPage() {
   const trackViewed = useRecentlyViewedStore((s) => s.track);
   const formatCurrency = useFormatCurrency();
 
+  const selectedVariant = product?.variants.find((v) => v.id === selectedVariantId);
+  const effectivePrice = product ? product.price + (selectedVariant?.priceModifier ?? 0) : 0;
+
+  const handleAddToBag = useCallback(() => {
+    if (product && product.stock > 0) addItem(product, quantity, selectedVariantId ?? undefined);
+  }, [product, quantity, addItem, selectedVariantId]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    if (addToBagRef.current) observer.observe(addToBagRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!productSlug) return;
     setProduct(undefined);
     setActiveImage(0);
     setQuantity(1);
+    setSelectedVariantId(null);
     productsApi.getBySlug(productSlug).then((p) => setProduct(p ?? null));
   }, [productSlug]);
 
@@ -75,6 +101,12 @@ export default function ProductDetailPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <SEO
+        title={product.name}
+        description={product.shortDescription}
+        image={product.thumbnail}
+        type="product"
+      />
       <Breadcrumbs
         items={[
           { label: 'Shop', href: ROUTES.shop },
@@ -88,28 +120,73 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
         {/* Gallery */}
         <div>
-          <div className="group aspect-square w-full overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-bg-cream)] shadow-[var(--shadow-card)]">
-            <img
+          {/* Main media — video or image */}
+          {activeImage === -1 && product.videoUrl ? (
+            <div className="aspect-square w-full overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-dark)] shadow-[var(--shadow-card)]">
+              {product.videoUrl.includes('youtube.com') || product.videoUrl.includes('youtu.be') ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${product.videoUrl.includes('youtu.be') ? product.videoUrl.split('/').pop() : new URL(product.videoUrl).searchParams.get('v')}`}
+                  className="h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={`${product.name} video`}
+                />
+              ) : product.videoUrl.includes('vimeo.com') ? (
+                <iframe
+                  src={`https://player.vimeo.com/video/${product.videoUrl.split('/').pop()}`}
+                  className="h-full w-full"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title={`${product.name} video`}
+                />
+              ) : (
+                <video
+                  src={product.videoUrl}
+                  controls
+                  className="h-full w-full object-cover"
+                  poster={product.thumbnail}
+                />
+              )}
+            </div>
+          ) : (
+            <ImageZoom
               src={product.images[activeImage] || product.thumbnail}
               alt={product.name}
-              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-125"
+              className="aspect-square w-full rounded-[var(--radius-card)] bg-[var(--color-bg-cream)] shadow-[var(--shadow-card)]"
             />
-          </div>
-          {product.images.length > 1 && (
-            <div className="mt-4 flex gap-3">
-              {product.images.map((img, i) => (
-                <button
-                  key={img}
-                  onClick={() => setActiveImage(i)}
-                  className={`h-20 w-20 overflow-hidden rounded-[var(--radius-btn)] border-2 transition-colors ${
-                    i === activeImage ? 'border-[var(--color-primary)]' : 'border-transparent'
-                  }`}
-                >
-                  <img src={img} alt="" className="h-full w-full object-cover" />
-                </button>
-              ))}
-            </div>
           )}
+
+          {/* Thumbnails */}
+          <div className="mt-4 flex gap-3">
+            {/* Video thumbnail */}
+            {product.videoUrl && (
+              <button
+                onClick={() => setActiveImage(-1)}
+                className={`relative h-20 w-20 overflow-hidden rounded-[var(--radius-btn)] border-2 transition-colors ${
+                  activeImage === -1 ? 'border-[var(--color-primary)]' : 'border-transparent'
+                }`}
+              >
+                <img src={product.thumbnail} alt="Video" className="h-full w-full object-cover" />
+                <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-dark)]/40">
+                  <svg viewBox="0 0 24 24" className="h-8 w-8 text-white" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </button>
+            )}
+            {/* Image thumbnails */}
+            {product.images.map((img, i) => (
+              <button
+                key={img}
+                onClick={() => setActiveImage(i)}
+                className={`h-20 w-20 overflow-hidden rounded-[var(--radius-btn)] border-2 transition-colors ${
+                  activeImage === i ? 'border-[var(--color-primary)]' : 'border-transparent'
+                }`}
+              >
+                <img src={img} alt="" className="h-full w-full object-cover" />
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Info */}
@@ -139,11 +216,16 @@ export default function ProductDetailPage() {
 
           <div className="mt-5 flex items-baseline gap-3">
             <span className="font-display text-3xl text-[var(--color-primary)]">
-              {formatCurrency(product.price)}
+              {formatCurrency(effectivePrice)}
             </span>
             {product.compareAtPrice && (
               <span className="text-lg text-[var(--color-text-muted)] line-through">
                 {formatCurrency(product.compareAtPrice)}
+              </span>
+            )}
+            {selectedVariant?.priceModifier !== undefined && selectedVariant.priceModifier !== 0 && (
+              <span className="text-xs text-[var(--color-text-muted)]">
+                ({selectedVariant.priceModifier > 0 ? '+' : ''}{formatCurrency(selectedVariant.priceModifier)} for {selectedVariant.label})
               </span>
             )}
           </div>
@@ -151,6 +233,15 @@ export default function ProductDetailPage() {
           <p className="mt-5 text-sm leading-relaxed text-[var(--color-text-secondary)]">
             {product.shortDescription}
           </p>
+
+          {/* Variant selector */}
+          <div className="mt-5">
+            <VariantSelector
+              variants={product.variants}
+              selectedVariantId={selectedVariantId}
+              onSelect={setSelectedVariantId}
+            />
+          </div>
 
           {product.specs.some((s) => s.highlight) && (
             <div className="mt-4 flex flex-wrap gap-4">
@@ -210,12 +301,12 @@ export default function ProductDetailPage() {
             </button>
           </div>
 
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+          <div ref={addToBagRef} className="mt-4 flex flex-col gap-3 sm:flex-row">
             <Button
               variant="primary"
               size="lg"
               disabled={isOutOfStock}
-              onClick={() => addItem(product, quantity)}
+              onClick={handleAddToBag}
               className="flex-1"
             >
               {isOutOfStock ? 'Out of Stock' : 'Add to Bag'}
@@ -230,6 +321,9 @@ export default function ProductDetailPage() {
               Buy Now
             </Button>
           </div>
+
+          {/* Back-in-stock notify */}
+          {isOutOfStock && <NotifyWhenAvailable productName={product.name} />}
 
           <div className="mt-5 flex items-center gap-2 rounded-[var(--radius-btn)] bg-[var(--color-bg-cream)] px-4 py-3 text-xs text-[var(--color-text-secondary)]">
             <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="none" stroke="var(--color-primary)" strokeWidth="1.8">
@@ -310,6 +404,12 @@ export default function ProductDetailPage() {
                     </div>
                   ))
                 )}
+
+                {/* Write a Review form */}
+                <ReviewForm productId={product.id} onSubmitted={() => {
+                  // Refresh product data to show new review
+                  productsApi.getBySlug(product.slug).then((p) => setProduct(p ?? null));
+                }} />
               </div>
             )}
 
@@ -338,6 +438,14 @@ export default function ProductDetailPage() {
       />
 
       <RecentlyViewed />
+
+      <StickyBuyBar
+        product={product}
+        quantity={quantity}
+        onAddToBag={handleAddToBag}
+        visible={showStickyBar}
+        effectivePrice={effectivePrice}
+      />
     </div>
   );
 }

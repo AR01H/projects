@@ -4,6 +4,8 @@
     { "label": "Categories", "href": "/categories", "icon": "categories" },
     { "label": "Collections", "href": "/collections", "icon": "collections" },
     { "label": "Browse by Tag", "href": "/tags", "icon": "tags" },
+    { "label": "Our Artisans", "href": "/artisans", "icon": "about" },
+    { "label": "Craft Regions", "href": "/craft-regions", "icon": "about" },
     { "label": "Blog", "href": "/blog", "icon": "blog" },
     { "label": "Customer Reviews", "href": "/reviews", "icon": "reviews" },
     { "label": "About Us", "href": "/about", "icon": "about" },

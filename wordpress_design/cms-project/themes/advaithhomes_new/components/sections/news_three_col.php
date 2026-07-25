@@ -82,17 +82,25 @@ foreach ( isset( $regulations['items'] ) ? (array) $regulations['items'] : array
 $topic_cards = array();
 foreach ( isset( $hot_topics['items'] ) ? (array) $hot_topics['items'] : array() as $_it ) {
 	$_tthumb = isset( $_it['thumbnail'] ) ? (string) $_it['thumbnail'] : '';
+	$_title_raw = '';
+	if ( isset( $_it['title'] ) && '' !== (string) $_it['title'] ) {
+		$_title_raw = (string) $_it['title'];
+	} elseif ( isset( $_it['text'] ) && '' !== (string) $_it['text'] ) {
+		$_title_raw = (string) $_it['text'];
+	} elseif ( isset( $_it['label'] ) && '' !== (string) $_it['label'] ) {
+		$_title_raw = (string) $_it['label'];
+	}
 	$_tcard  = array(
-		'title' => isset( $_it['text'] ) ? (string) $_it['text'] : '',
+		'title' => $_title_raw,
 		'url'   => isset( $_it['url'] )  ? (string) $_it['url']  : '',
-		'icon'  => isset( $_it['icon'] ) ? (string) $_it['icon'] : '',
+		'icon'  => ! empty( $_it['icon'] ) ? (string) $_it['icon'] : '🔥',
 	);
-	
+
 	if ( '' === $_tthumb ) {
 		$_tthumb = get_template_directory_uri() . THEME_DEFAULT_TOPIC_IMG . '?v=' . LOCAL_CACHE_VERSION;
 	}
 	$_tcard['img_url'] = $_tthumb;
-	
+
 	$topic_cards[] = $_tcard;
 }
 

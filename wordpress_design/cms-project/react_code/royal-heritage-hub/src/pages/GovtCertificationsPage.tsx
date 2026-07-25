@@ -5,6 +5,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { Reveal } from '@/components/common/Reveal';
 import { Badge } from '@/components/common/Badge';
 import type { CertificationEntry } from '@/types/product';
+import { SEO } from '@/components/common/SEO';
 
 export default function GovtCertificationsPage() {
   const [certifications, setCertifications] = useState<CertificationEntry[] | null>(null);
@@ -15,6 +16,7 @@ export default function GovtCertificationsPage() {
 
   return (
     <div>
+      <SEO title="Certifications" description="View our government certifications and registrations that verify compliance with Indian regulations." />
       <PageHero pageKey="faqs" fallbackTitle="Government Certifications" />
 
       <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">

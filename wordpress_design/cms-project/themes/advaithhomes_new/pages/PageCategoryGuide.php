@@ -274,7 +274,7 @@ adn_component( 'sections/page_hero', array(
 	// ── Hot topics heading ──
 	$_cat_ht_heading = ! empty( $ctx['popular_posts']['heading']['title'] )
 		? (string) $ctx['popular_posts']['heading']['title']
-		: 'Popular Guides';
+		: adn_term( 'category_page.popular_guides', 'Popular Guides' );
 ?>
 <section class="news-three-col cat-latest-updates-section">
 	<div class="container">
@@ -283,7 +283,7 @@ adn_component( 'sections/page_hero', array(
 			'news' => array(
 				'heading' => isset( $ctx['regulations']['heading'] )
 					? $ctx['regulations']['heading']
-					: array( 'title' => 'Latest Updates', 'link_label' => 'View all →', 'link_url' => SITE_NEWS_URL ),
+					: array( 'title' => adn_term( 'category_page.latest_updates', 'Latest Updates' ), 'link_label' => adn_term( 'category_page.view_all', 'View all →' ), 'link_url' => SITE_NEWS_URL ),
 				'items'   => $ctx['regulations']['items'],
 			),
 			'hot_topics' => ! empty( $_cat_ht_items ) ? array(

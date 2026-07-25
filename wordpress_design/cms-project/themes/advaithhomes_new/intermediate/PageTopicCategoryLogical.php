@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/TopicCategoryContext.php';
+require_once __DIR__ . '/../src/Feature/CategoryGuide/Service/TopicCategoryContext.php';
 
 function adn_topic_category_repository(): \Adn\Theme\Repository\TopicCategoryRepository {
 	return \Adn\Theme\Service\TopicCategoryContext::repository();

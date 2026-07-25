@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/../src/Service/ContactContext.php';
+require_once __DIR__ . '/../src/Feature/Contact/Service/ContactContext.php';
 
 function adn_contact_get_context() {
 	return \Adn\Theme\Service\ContactContext::getContext();

@@ -4,9 +4,8 @@ namespace Adn\Theme\Service;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * CategoryContext - Builds the full context array for category pages.
- *
- * Big getContext() is split into small focused methods for reusability.
+ * CategoryContext - Builds context for category pages.
+ * Split into small focused methods.
  */
 class CategoryContext {
 
@@ -47,7 +46,7 @@ class CategoryContext {
 		}
 	}
 
-	// ── Hero data ───────────────────────────────────────────────
+	// ── Hero section ────────────────────────────────────────────
 	public static function buildHero( string $slug, array $term, array $cs_all ): array {
 		$name = ! empty( $term['name'] ) ? (string) $term['name'] : ucwords( str_replace( '-', ' ', $slug ) );
 		$desc = $term['description'] ?? '';
@@ -83,10 +82,7 @@ class CategoryContext {
 	}
 
 	public static function buildBreadcrumb( string $name ): array {
-		return array(
-			array( 'label' => PAGE_TITLE_HOME, 'url' => '/' ),
-			array( 'label' => $name,           'url' => null ),
-		);
+		return \Adn\Theme\Shared\BreadcrumbBuilder::category( $name );
 	}
 
 	// ── Guides section ──────────────────────────────────────────
@@ -101,7 +97,7 @@ class CategoryContext {
 		);
 	}
 
-	// ── Regulations / News section ──────────────────────────────
+	// ── Regulations section ─────────────────────────────────────
 	public static function buildRegulations( string $slug ): array {
 		return array(
 			'heading' => array(
@@ -182,36 +178,134 @@ class CategoryContext {
 	// ── Sidebar section ─────────────────────────────────────────
 	public static function buildSidebar( string $slug, array $cs_all ): array {
 		$cs_sidebar = $cs_all['sidebar'] ?? array();
-		$cs_pp      = $cs_all['popular_posts'] ?? array();
-		$cs_ft      = $cs_all['featured_topics'] ?? array();
-		$cs_ht      = $cs_all['hot_topics'] ?? array();
-		$cs_sp      = $cs_all['spotlights'] ?? array();
 
-		$sidebar = array();
-		$sidebar['groups'] = function_exists( 'adn_get_all_parent_terms_for_sidebar' )
-			? adn_get_all_parent_terms_for_sidebar( $slug )
-			: array();
-		$sidebar['popular_posts'] = $cs_pp;
-		$sidebar['featured_topics'] = $cs_ft;
-		$sidebar['hot_topics'] = $cs_ht;
-		$sidebar['calculators'] = $cs_all['calculators'] ?? array();
-		$sidebar['spotlights'] = $cs_sp;
-		$sidebar['news'] = array(
-			'heading' => $cs_sidebar['news_heading'] ?? adn_term( 'sidebar.latest_news', 'Latest News' ),
-			'items' => self::cmsNews( $slug, 4 ),
+		// Hot Topics - shape items for sidebar component
+		$hot_topics = array();
+		$cs_ht = $cs_all['hot_topics'] ?? array();
+		if ( ! empty( $cs_ht['items'] ) && is_array( $cs_ht['items'] ) ) {
+			$ht_items = array();
+			foreach ( $cs_ht['items'] as $t ) {
+				if ( empty( $t['label'] ) && empty( $t['name'] ) ) { continue; }
+				$ht_items[] = array(
+					'icon'  => ! empty( $t['icon'] )  ? (string) $t['icon']  : '',
+					'label' => ! empty( $t['label'] ) ? (string) $t['label'] : (string) ( $t['name'] ?? '' ),
+					'url'   => ! empty( $t['url'] )   ? (string) $t['url']   : '#',
+				);
+			}
+			if ( ! empty( $ht_items ) ) {
+				$hot_topics = array(
+					'heading'  => ! empty( $cs_ht['heading'] ) ? (string) $cs_ht['heading'] : adn_term( 'category_page.hot_topics_heading', '🔥 Hot Topics' ),
+					'items'    => $ht_items,
+					'view_all' => array(
+						'label' => ! empty( $cs_ht['view_all_label'] ) ? (string) $cs_ht['view_all_label'] : '',
+						'url'   => ! empty( $cs_ht['view_all_url'] )   ? (string) $cs_ht['view_all_url']   : '',
+					),
+				);
+			}
+		}
+
+		// Featured Topics - shape items for sidebar component
+		$featured_topics = array();
+		$cs_ft = $cs_all['featured_topics'] ?? array();
+		if ( ! empty( $cs_ft['items'] ) && is_array( $cs_ft['items'] ) ) {
+			$ft_items = array();
+			foreach ( $cs_ft['items'] as $t ) {
+				if ( empty( $t['name'] ) && empty( $t['label'] ) ) { continue; }
+				$ft_items[] = array(
+					'icon'  => ! empty( $t['icon'] ) ? (string) $t['icon'] : '',
+					'label' => ! empty( $t['name'] ) ? (string) $t['name'] : (string) ( $t['label'] ?? '' ),
+					'url'   => ! empty( $t['url'] )  ? (string) $t['url']  : '#',
+				);
+			}
+			if ( ! empty( $ft_items ) ) {
+				$featured_topics = array(
+					'heading' => ! empty( $cs_ft['heading'] ) ? (string) $cs_ft['heading'] : adn_term( 'category_page.browse_topics_heading', 'Browse Topics' ),
+					'items'   => $ft_items,
+				);
+			}
+		}
+
+		return array(
+			'groups' => function_exists( 'adn_get_all_parent_terms_for_sidebar' )
+				? adn_get_all_parent_terms_for_sidebar( $slug )
+				: array(),
+			'popular_posts'    => $cs_all['popular_posts'] ?? array(),
+			'featured_topics'  => $featured_topics,
+			'hot_topics'       => $hot_topics,
+			'calculators'      => $cs_all['calculators'] ?? array(),
+			'spotlights'       => $cs_all['spotlights'] ?? array(),
+			'news' => array(
+				'heading' => $cs_sidebar['news_heading'] ?? adn_term( 'sidebar.latest_news', 'Latest News' ),
+				'items' => self::cmsNews( $slug, 4 ),
+			),
+			'contact' => $cs_sidebar['contact'] ?? array(),
 		);
-		$sidebar['contact'] = $cs_sidebar['contact'] ?? array();
-		return $sidebar;
 	}
 
-	// ── CTA section ─────────────────────────────────────────────
-	public static function buildCta( array $cs_all ): array {
-		return $cs_all['cta_banner'] ?? array();
-	}
+	// ── CTA + FAQs ──────────────────────────────────────────────
+	public static function buildCta( array $cs_all ): array { return $cs_all['cta_banner'] ?? array(); }
 
-	// ── FAQs section ────────────────────────────────────────────
-	public static function buildFaqs( array $cs_all ): array {
-		return $cs_all['faqs'] ?? array();
+	public static function buildFaqs( array $cs_all, string $name = '' ): array {
+		$cs_faqs = $cs_all['faqs'] ?? array();
+		if ( empty( $cs_faqs['items'] ) || ! is_array( $cs_faqs['items'] ) ) {
+			return array();
+		}
+
+		// Collect FAQ IDs from admin settings
+		$_faq_ids = array();
+		foreach ( (array) $cs_faqs['items'] as $_fi ) {
+			if ( ! empty( $_fi['faq_id'] ) ) {
+				$_faq_ids[] = (int) $_fi['faq_id'];
+			}
+			if ( count( $_faq_ids ) >= 100 ) { break; }
+		}
+		$_faq_ids = array_filter( $_faq_ids );
+
+		if ( empty( $_faq_ids ) ) {
+			return array();
+		}
+
+		// Load FAQ items from the ah_faqs database table
+		global $wpdb;
+		$_faq_table = $wpdb->prefix . 'ah_faqs';
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $_faq_table ) ) !== $_faq_table ) {
+			return array();
+		}
+
+		$_placeholders = implode( ',', array_fill( 0, count( $_faq_ids ), '%d' ) );
+		$_faq_rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT id, question, answer, link_url, link_text FROM `{$_faq_table}` WHERE id IN ({$_placeholders}) AND status = 'active'",
+				...$_faq_ids
+			)
+		);
+
+		// Restore admin-defined order
+		$_id_pos = array_flip( $_faq_ids );
+		usort( $_faq_rows, function ( $a, $b ) use ( $_id_pos ) {
+			return ( isset( $_id_pos[ $a->id ] ) ? $_id_pos[ $a->id ] : 0 )
+			     - ( isset( $_id_pos[ $b->id ] ) ? $_id_pos[ $b->id ] : 0 );
+		} );
+
+		$_faq_built = array();
+		foreach ( $_faq_rows as $_fr ) {
+			$_faq_built[] = array(
+				'id'        => (int)    $_fr->id,
+				'question'  => (string) $_fr->question,
+				'answer'    => (string) $_fr->answer,
+				'link_url'  => (string) ( $_fr->link_url  ?? '' ),
+				'link_text' => (string) ( $_fr->link_text ?? '' ),
+			);
+		}
+
+		if ( empty( $_faq_built ) ) {
+			return array();
+		}
+
+		return array(
+			'heading' => ! empty( $cs_faqs['heading'] ) ? (string) $cs_faqs['heading'] : sprintf( '%s FAQs', $name ),
+			'items'   => $_faq_built,
+		);
 	}
 
 	// ── Main getContext ─────────────────────────────────────────
@@ -220,9 +314,7 @@ class CategoryContext {
 		$cache_key = 'page_category_context_' . $slug;
 
 		$cached = self::cacheGet( $cache_key );
-		if ( false !== $cached ) {
-			return $cached;
-		}
+		if ( false !== $cached ) { return $cached; }
 
 		$repo   = self::repository();
 		$chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
@@ -244,7 +336,7 @@ class CategoryContext {
 			'calculators'   => self::buildCalculators( $slug, $name, $cs_all ),
 			'sidebar'       => self::buildSidebar( $slug, $cs_all ),
 			'cta_banner'    => self::buildCta( $cs_all ),
-			'faqs'          => self::buildFaqs( $cs_all ),
+			'faqs'          => self::buildFaqs( $cs_all, $name ),
 			'spotlights'    => $cs_all['spotlights'] ?? array(),
 			'chrome'        => $chrome,
 		);
@@ -254,142 +346,99 @@ class CategoryContext {
 	}
 
 	// ── CMS guides data ─────────────────────────────────────────
+	// NOTE: adn_cms_guides_by_category() returns TERM objects with:
+	//   category_name, _term_slug, _term_desc, term_icon, term_image_id, parent_name, parent_icon
+	// NOT WP post objects. Properties like $post->ID, $post->title, $post->featured_image_id do NOT exist.
 	public static function cmsGuides( $slug ) {
-		if ( ! function_exists( 'adn_cms_guides_by_category' ) ) {
-			return array();
-		}
+		if ( ! function_exists( 'adn_cms_guides_by_category' ) ) { return array(); }
 		$repo = self::repository();
 		$topic_ids = array();
 		if ( $slug !== '' && function_exists( 'adn_cms_available' ) && adn_cms_available() ) {
 			$parent = $repo->get_parent_term_by_slug( $slug );
 			if ( $parent && function_exists( 'adn_cms_topics' ) ) {
-				$children = adn_cms_topics( (int) $parent->id, 50 );
-				foreach ( (array) $children as $child ) {
-					if ( ! empty( $child->id ) ) {
-						$topic_ids[] = (int) $child->id;
-					}
+				foreach ( adn_cms_topics( (int) $parent->id, 50 ) as $child ) {
+					if ( ! empty( $child->id ) ) { $topic_ids[] = (int) $child->id; }
 				}
 			}
 			if ( empty( $topic_ids ) && $parent ) {
 				$topic_ids = $repo->get_child_topic_ids( (int) $parent->id );
 			}
-			if ( ! empty( $parent ) && empty( $topic_ids ) ) {
-				return array();
-			}
+			if ( ! empty( $parent ) && empty( $topic_ids ) ) { return array(); }
 		}
-		$rows  = adn_cms_guides_by_category( 1200, $topic_ids );
+		$rows = adn_cms_guides_by_category( 1200, $topic_ids );
 		$items = array();
-		foreach ( $rows as $i => $post ) {
-			$cat_name = isset( $post->category_name ) ? (string) $post->category_name : '';
+		foreach ( $rows as $term ) {
+			$cat_name = $term->category_name ?? '';
 			if ( '' === $cat_name ) { continue; }
+			// Thumbnail: term_image_id on term objects (NOT featured_image_id or $post->ID)
 			$_thumb = '';
-			if ( ! empty( $post->ID ) ) {
-				$_u = get_the_post_thumbnail_url( $post->ID, 'medium' );
-				if ( ! $_u ) { $_u = get_the_post_thumbnail_url( $post->ID, 'full' ); }
+			if ( ! empty( $term->term_image_id ) ) {
+				$_u = wp_get_attachment_image_url( (int) $term->term_image_id, 'medium' );
 				if ( $_u ) { $_thumb = (string) $_u; }
 			}
-			if ( empty( $_thumb ) && ! empty( $post->featured_image_id ) ) {
-				$_u = wp_get_attachment_image_url( (int) $post->featured_image_id, 'medium' );
-				if ( $_u ) { $_thumb = (string) $_u; }
-			}
-			$_desc = ! empty( $post->excerpt )
-				? wp_trim_words( wp_strip_all_tags( $post->excerpt ), 15 )
-				: wp_trim_words( wp_strip_all_tags( $post->content ?? '' ), 15 );
+			// URL: _term_slug builds category page URL (NOT adn_cms_post_url which expects WP post objects)
+			$_url = ! empty( $term->_term_slug )
+				? home_url( '/' . trim( (string) $term->_term_slug, '/' ) . '/' )
+				: '#';
 			$items[] = array(
 				'thumbnail'   => $_thumb,
-				'icon'        => '📋',
-				'title'       => (string) $post->title,
-				'url'         => function_exists( 'adn_cms_post_url' ) ? adn_cms_post_url( $post ) : '#',
-				'description' => $_desc,
+				'icon'        => $term->term_icon ?? $term->parent_icon ?? '📋',
+				'title'       => (string) $cat_name,
+				'url'         => $_url,
+				'description' => wp_trim_words( wp_strip_all_tags( $term->_term_desc ?? '' ), 15 ),
 			);
-		}
-		if ( count( $items ) < 6 ) {
-			$wp_posts = get_posts( array( 'numberposts' => 6 - count( $items ), 'post_status' => 'publish' ) );
-			foreach ( $wp_posts as $p ) {
-				$_thumb = get_the_post_thumbnail_url( $p->ID, 'medium' ) ?: get_the_post_thumbnail_url( $p->ID, 'full' );
-				$_desc = ! empty( $p->post_excerpt ) ? wp_trim_words( wp_strip_all_tags( $p->post_excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( $p->post_content ), 15 );
-				$items[] = array(
-					'thumbnail'   => $_thumb ?: '',
-					'icon'        => '📋',
-					'title'       => get_the_title( $p->ID ),
-					'url'         => get_permalink( $p->ID ),
-					'description' => $_desc,
-				);
-			}
 		}
 		return $items;
 	}
 
-	// ── Latest updates / news ───────────────────────────────────
+	// ── Latest updates ──────────────────────────────────────────
 	public static function latestUpdates( $slug, $limit = 4 ) {
 		$items = array();
 		if ( function_exists( 'adn_cms_articles_for_parent' ) ) {
-			$rows = adn_cms_articles_for_parent( $slug, $limit );
-			foreach ( (array) $rows as $post ) {
+			foreach ( adn_cms_articles_for_parent( $slug, $limit ) as $post ) {
 				if ( empty( $post->title ) ) { continue; }
 				$_thumb = '';
 				if ( ! empty( $post->ID ) ) {
-					$_u = get_the_post_thumbnail_url( $post->ID, 'medium' );
-					if ( ! $_u ) { $_u = get_the_post_thumbnail_url( $post->ID, 'full' ); }
+					$_u = get_the_post_thumbnail_url( $post->ID, 'medium' ) ?: get_the_post_thumbnail_url( $post->ID, 'full' );
 					if ( $_u ) { $_thumb = (string) $_u; }
 				}
 				if ( empty( $_thumb ) && ! empty( $post->featured_image_id ) ) {
 					$_u = wp_get_attachment_image_url( (int) $post->featured_image_id, 'medium' );
 					if ( $_u ) { $_thumb = (string) $_u; }
 				}
-				$_desc = ! empty( $post->excerpt ) ? wp_trim_words( wp_strip_all_tags( $post->excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( $post->content ?? '' ), 15 );
 				$items[] = array(
 					'thumbnail'   => $_thumb,
 					'icon'        => '📋',
 					'title'       => (string) $post->title,
 					'url'         => function_exists( 'adn_cms_post_url' ) ? adn_cms_post_url( $post ) : '#',
-					'description' => $_desc,
-				);
-			}
-		}
-		if ( count( $items ) < $limit ) {
-			$wp_posts = get_posts( array( 'numberposts' => $limit - count( $items ), 'post_status' => 'publish' ) );
-			foreach ( $wp_posts as $p ) {
-				$_thumb = get_the_post_thumbnail_url( $p->ID, 'medium' ) ?: get_the_post_thumbnail_url( $p->ID, 'full' );
-				$_desc = ! empty( $p->post_excerpt ) ? wp_trim_words( wp_strip_all_tags( $p->post_excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( $p->post_content ), 15 );
-				$items[] = array(
-					'thumbnail'   => $_thumb ?: '',
-					'icon'        => '📋',
-					'title'       => get_the_title( $p->ID ),
-					'url'         => get_permalink( $p->ID ),
-					'description' => $_desc,
+					'description' => wp_trim_words( wp_strip_all_tags( $post->excerpt ?? $post->content ?? '' ), 15 ),
 				);
 			}
 		}
 		return $items;
 	}
 
-	// ── CMS news data ───────────────────────────────────────────
+	// ── CMS news ────────────────────────────────────────────────
 	public static function cmsNews( $slug, $limit = 4 ) {
-		if ( ! function_exists( 'adn_cms_articles_for_parent' ) ) {
-			return array();
-		}
+		if ( ! function_exists( 'adn_cms_articles_for_parent' ) ) { return array(); }
 		$items = array();
-		$rows = adn_cms_articles_for_parent( $slug, $limit );
-		foreach ( (array) $rows as $post ) {
+		foreach ( adn_cms_articles_for_parent( $slug, $limit ) as $post ) {
 			if ( empty( $post->title ) ) { continue; }
 			$_thumb = '';
 			if ( ! empty( $post->ID ) ) {
-				$_u = get_the_post_thumbnail_url( $post->ID, 'medium' );
-				if ( ! $_u ) { $_u = get_the_post_thumbnail_url( $post->ID, 'full' ); }
+				$_u = get_the_post_thumbnail_url( $post->ID, 'medium' ) ?: get_the_post_thumbnail_url( $post->ID, 'full' );
 				if ( $_u ) { $_thumb = (string) $_u; }
 			}
 			if ( empty( $_thumb ) && ! empty( $post->featured_image_id ) ) {
 				$_u = wp_get_attachment_image_url( (int) $post->featured_image_id, 'medium' );
 				if ( $_u ) { $_thumb = (string) $_u; }
 			}
-			$_desc = ! empty( $post->excerpt ) ? wp_trim_words( wp_strip_all_tags( $post->excerpt ), 15 ) : wp_trim_words( wp_strip_all_tags( $post->content ?? '' ), 15 );
 			$items[] = array(
 				'thumbnail'   => $_thumb,
 				'icon'        => '📰',
 				'title'       => (string) $post->title,
 				'url'         => function_exists( 'adn_cms_post_url' ) ? adn_cms_post_url( $post ) : '#',
-				'description' => $_desc,
+				'description' => wp_trim_words( wp_strip_all_tags( $post->excerpt ?? $post->content ?? '' ), 15 ),
 			);
 		}
 		return $items;

@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { CartDrawer } from './CartDrawer';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
+import { SocialProofToast } from '@/components/common/SocialProofToast';
 import { useCartStore } from '@/store/useCartStore';
 import { useWishlistStore } from '@/store/useWishlistStore';
 
@@ -23,6 +24,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <main className="flex-1">{children}</main>
       <Footer />
       <CartDrawer />
+      <SocialProofToast />
     </div>
   );
 }

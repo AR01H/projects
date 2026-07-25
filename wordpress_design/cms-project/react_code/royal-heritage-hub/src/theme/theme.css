@@ -19,6 +19,7 @@
   --color-bg: #FAF8F3;
   --color-bg-light: #FFFDF9;
   --color-bg-cream: #F5F0E6;
+  --color-surface: #FEFCF8;
 
   --color-dark: #2D2A26;
   --color-dark-soft: #46403A;
@@ -65,6 +66,11 @@
     background-color: var(--color-bg);
     color: var(--color-text-primary);
     font-family: var(--font-body);
+  }
+  #root {
+    overflow-x: clip;
+    min-height: 100vh;
+    width: 100%;
   }
   h1, h2, h3, h4, .font-display {
     font-family: var(--font-display);
@@ -183,6 +189,121 @@
 }
 
 /* ==========================================================================
+   HEADER — GLASS UI + PAPER GRAIN TEXTURE
+   ========================================================================== */
+.header-grain {
+  background: color-mix(in srgb, var(--color-bg-light) 92%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+
+.header-grain > .header-grain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='hg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='5' seed='42' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hg)'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
+  animation: grainShift 9s steps(10) infinite;
+}
+
+.header-grain > *:not(.header-grain-overlay) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Announcement strip with dark grain */
+.header-strip {
+  background: var(--color-dark);
+  overflow: hidden;
+}
+
+.header-strip-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='sg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23sg)'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  animation: grainShift 7s steps(8) infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-grain > .header-grain-overlay,
+  .header-strip-grain {
+    animation: none;
+  }
+}
+
+/* ---- Enhanced card hover effects ---- */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ---- Section divider — elegant gold line ---- */
+.section-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-dark));
+  border: none;
+  margin: 0 auto;
+}
+
+/* ---- Stagger animation delays for children ---- */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 80ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 160ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 320ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 480ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 560ms; }
+
+/* ---- Line clamp utilities ---- */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- Smooth page transitions ---- */
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-enter {
+  animation: pageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ---- Reduced motion overrides ---- */
+@media (prefers-reduced-motion: reduce) {
+  .card-hover:hover {
+    transform: none;
+  }
+  .page-enter {
+    animation: none;
+  }
+  .stagger-children > * {
+    animation-delay: 0ms !important;
+  }
+}
+
+/* ==========================================================================
    FOOTER — PREMIUM GRAIN + ROUGH EDGE EFFECTS
    ========================================================================== */
 
@@ -200,48 +321,65 @@
   90% { transform: translate(-1%, -2%); }
 }
 
-/* ---- FOOTER GRAIN — dual-layer animated film grain ---- */
+@keyframes grainShiftSlow {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(1%, -2%) rotate(0.5deg); }
+  50% { transform: translate(-2%, 1%) rotate(-0.3deg); }
+  75% { transform: translate(2%, 2%) rotate(0.2deg); }
+}
+
+/* ---- FOOTER GRAIN — aged brass / vintage parchment texture ---- */
 .footer-grain {
   position: relative;
   overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-bg-cream) 95%, var(--color-secondary) 5%) 0%,
+    color-mix(in srgb, var(--color-bg-cream) 90%, var(--color-secondary) 10%) 100%
+  );
 }
 
-/* Layer 1: Fine grain — high-frequency, low-opacity, overlay blend */
-.footer-grain::before {
-  content: "";
+/* Layer 1: Warm brass-stained base — radial blobs */
+.footer-grain > .footer-grain-overlay {
   position: absolute;
-  /* Oversize 4x to allow grainShift to move without revealing edges */
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  opacity: 0.12;
+  inset: 0;
   pointer-events: none;
   z-index: 1;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
+  opacity: 1;
+  background:
+    /* Warm brass glow top-left */
+    radial-gradient(ellipse at 15% 20%, color-mix(in srgb, #C89B3C 6%, transparent) 0%, transparent 40%),
+    /* Aged stain center */
+    radial-gradient(ellipse at 50% 50%, color-mix(in srgb, #A08060 5%, transparent) 0%, transparent 45%),
+    /* Dark smudge bottom-right */
+    radial-gradient(ellipse at 80% 80%, color-mix(in srgb, #8B7355 6%, transparent) 0%, transparent 35%),
+    /* Tiny brass specks */
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, #C89B3C 3%, transparent) 0%, transparent 2%),
+    radial-gradient(circle at 70% 20%, color-mix(in srgb, #8B7355 3%, transparent) 0%, transparent 1.5%),
+    radial-gradient(circle at 40% 70%, color-mix(in srgb, #C89B3C 2%, transparent) 0%, transparent 2%),
+    radial-gradient(circle at 85% 65%, color-mix(in srgb, #6B5D4A 4%, transparent) 0%, transparent 1.8%),
+    radial-gradient(circle at 25% 85%, color-mix(in srgb, #A08060 3%, transparent) 0%, transparent 2%),
+    /* Warm overall tint */
+    linear-gradient(180deg, color-mix(in srgb, #D4C4A8 3%, transparent) 0%, color-mix(in srgb, #C8B898 2%, transparent) 100%);
+}
+
+/* Layer 2: Fine noise grain — paper fiber texture */
+.footer-grain > .footer-vignette {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' seed='15' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
   animation: grainShift 8s steps(10) infinite;
 }
 
-/* Layer 2: Coarse grain — larger颗粒, multiply blend for warmth */
-.footer-grain::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  opacity: 0.06;
-  pointer-events: none;
-  z-index: 1;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.45' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)'/%3E%3C/svg%3E");
-  background-size: 250px 250px;
-  animation: grainShift 12s steps(8) infinite reverse;
-}
-
-.footer-grain > * {
+/* All other children sit above grain */
+.footer-grain > *:not(.footer-grain-overlay):not(.footer-vignette) {
   position: relative;
   z-index: 2;
 }
@@ -261,7 +399,6 @@
   pointer-events: none;
   z-index: 10;
   background: var(--color-bg);
-  /* Multi-segment organic path — each Q/T curve creates natural-looking rips */
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 50' preserveAspectRatio='none'%3E%3Cpath d='M0,28 Q8,18 16,24 Q24,12 32,22 Q40,8 48,20 Q56,28 64,18 Q72,10 80,22 Q88,30 96,16 Q104,6 112,20 Q120,26 128,14 Q136,8 144,22 Q152,30 160,18 Q168,10 176,24 Q184,28 192,16 Q200,8 208,20 Q216,26 224,14 Q232,6 240,22 Q248,28 256,16 Q264,10 272,24 Q280,30 288,18 Q296,8 304,22 Q312,26 320,14 Q328,6 336,20 Q344,28 352,16 Q360,10 368,22 Q376,30 384,18 Q392,8 400,24 Q408,28 416,14 Q424,6 432,22 Q440,26 448,16 Q456,10 464,20 Q472,28 480,14 Q488,6 496,22 Q504,28 512,16 Q520,8 528,24 Q536,30 544,18 Q552,10 560,22 Q568,26 576,14 Q584,6 592,20 Q600,28 608,16 Q616,10 624,22 Q632,30 640,18 Q648,8 656,24 Q664,28 672,14 Q680,6 688,22 Q696,26 704,16 Q712,8 720,20 Q728,28 736,14 Q744,6 752,22 Q760,28 768,16 Q776,10 784,24 Q792,30 800,18 Q808,8 816,22 Q824,26 832,14 Q840,6 848,20 Q856,28 864,16 Q872,10 880,22 Q888,30 896,18 Q904,8 912,24 Q920,28 928,14 Q936,6 944,22 Q952,26 960,16 Q968,8 976,20 Q984,28 992,14 Q1000,6 1008,22 Q1016,28 1024,16 Q1032,10 1040,24 Q1048,30 1056,18 Q1064,8 1072,22 Q1080,26 1088,14 Q1096,6 1104,20 Q1112,28 1120,16 Q1128,10 1136,22 Q1144,30 1152,18 Q1160,8 1168,24 Q1176,28 1184,14 Q1192,6 1200,22 Q1208,26 1216,16 Q1224,10 1232,20 Q1240,28 1248,14 Q1256,6 1264,22 Q1272,28 1280,16 Q1288,10 1296,24 Q1304,30 1312,18 Q1320,8 1328,22 Q1336,26 1344,14 Q1352,6 1360,20 Q1368,28 1376,16 Q1384,10 1392,22 Q1400,26 1408,18 Q1416,12 1424,22 Q1432,28 1440,20 L1440,50 L0,50 Z' fill='white'/%3E%3C/svg%3E");
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 50' preserveAspectRatio='none'%3E%3Cpath d='M0,28 Q8,18 16,24 Q24,12 32,22 Q40,8 48,20 Q56,28 64,18 Q72,10 80,22 Q88,30 96,16 Q104,6 112,20 Q120,26 128,14 Q136,8 144,22 Q152,30 160,18 Q168,10 176,24 Q184,28 192,16 Q200,8 208,20 Q216,26 224,14 Q232,6 240,22 Q248,28 256,16 Q264,10 272,24 Q280,30 288,18 Q296,8 304,22 Q312,26 320,14 Q328,6 336,20 Q344,28 352,16 Q360,10 368,22 Q376,30 384,18 Q392,8 400,24 Q408,28 416,14 Q424,6 432,22 Q440,26 448,16 Q456,10 464,20 Q472,28 480,14 Q488,6 496,22 Q504,28 512,16 Q520,8 528,24 Q536,30 544,18 Q552,10 560,22 Q568,26 576,14 Q584,6 592,20 Q600,28 608,16 Q616,10 624,22 Q632,30 640,18 Q648,8 656,24 Q664,28 672,14 Q680,6 688,22 Q696,26 704,16 Q712,8 720,20 Q728,28 736,14 Q744,6 752,22 Q760,28 768,16 Q776,10 784,24 Q792,30 800,18 Q808,8 816,22 Q824,26 832,14 Q840,6 848,20 Q856,28 864,16 Q872,10 880,22 Q888,30 896,18 Q904,8 912,24 Q920,28 928,14 Q936,6 944,22 Q952,26 960,16 Q968,8 976,20 Q984,28 992,14 Q1000,6 1008,22 Q1016,28 1024,16 Q1032,10 1040,24 Q1048,30 1056,18 Q1064,8 1072,22 Q1080,26 1088,14 Q1096,6 1104,20 Q1112,28 1120,16 Q1128,10 1136,22 Q1144,30 1152,18 Q1160,8 1168,24 Q1176,28 1184,14 Q1192,6 1200,22 Q1208,26 1216,16 Q1224,10 1232,20 Q1240,28 1248,14 Q1256,6 1264,22 Q1272,28 1280,16 Q1288,10 1296,24 Q1304,30 1312,18 Q1320,8 1328,22 Q1336,26 1344,14 Q1352,6 1360,20 Q1368,28 1376,16 Q1384,10 1392,22 Q1400,26 1408,18 Q1416,12 1424,22 Q1432,28 1440,20 L1440,50 L0,50 Z' fill='white'/%3E%3C/svg%3E");
   mask-size: 100% 100%;
@@ -292,11 +429,12 @@
 
 /* ---- Footer trust badge hover ---- */
 .footer-trust-badge {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .footer-trust-badge:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px -6px rgba(139, 69, 19, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -8px rgba(139, 69, 19, 0.15);
+  border-color: color-mix(in srgb, var(--color-secondary) 40%, transparent);
 }
 
 /* ---- Footer certification pill ---- */
@@ -310,7 +448,7 @@
 
 /* ---- Footer social icon ring ---- */
 .footer-social-icon {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .footer-social-icon:hover {
   transform: translateY(-2px) scale(1.1);
@@ -318,8 +456,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .footer-grain::before,
-  .footer-grain::after {
+  .footer-grain > .footer-grain-overlay {
+    /* Stains are static — no animation needed */
+  }
+  .footer-grain > .footer-vignette {
     animation: none;
   }
   .footer-trust-badge:hover {

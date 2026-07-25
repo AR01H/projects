@@ -44,7 +44,10 @@
         "verified": true
       }
     ],
-    "variants": [],
+    "variants": [
+      { "id": "v-classic", "label": "Classic Finish", "type": "finish", "value": "Classic", "priceModifier": 0, "inStock": true },
+      { "id": "v-gold", "label": "Gold Accent", "type": "finish", "value": "Gold", "priceModifier": 300, "inStock": true }
+    ],
     "tags": [
       "kondapalli",
       "handpainted",
@@ -131,7 +134,11 @@
         "verified": true
       }
     ],
-    "variants": [],
+    "variants": [
+      { "id": "v-sm", "label": "Small (15cm)", "type": "size", "value": "Small", "priceModifier": -800, "inStock": true },
+      { "id": "v-md", "label": "Medium (25cm)", "type": "size", "value": "Medium", "priceModifier": 0, "inStock": true },
+      { "id": "v-lg", "label": "Large (35cm)", "type": "size", "value": "Large", "priceModifier": 1200, "inStock": true }
+    ],
     "tags": [
       "elephant",
       "entrance decor",
@@ -199,7 +206,11 @@
     "rating": 4.9,
     "reviewCount": 21,
     "reviews": [],
-    "variants": [],
+    "variants": [
+      { "id": "v-std", "label": "Standard", "type": "size", "value": "Standard", "priceModifier": 0, "inStock": true },
+      { "id": "v-grd", "label": "Grand (w/ drawers)", "type": "size", "value": "Grand", "priceModifier": 2500, "inStock": true },
+      { "id": "v-roy", "label": "Royal (full carved)", "type": "size", "value": "Royal", "priceModifier": 5000, "inStock": false }
+    ],
     "tags": [
       "temple",
       "mandir",
@@ -419,7 +430,11 @@
         "verified": true
       }
     ],
-    "variants": [],
+    "variants": [
+      { "id": "v-sm", "label": "4 inch", "type": "size", "value": "4 inch", "priceModifier": -1000, "inStock": true },
+      { "id": "v-md", "label": "6 inch", "type": "size", "value": "6 inch", "priceModifier": 0, "inStock": true },
+      { "id": "v-lg", "label": "8 inch", "type": "size", "value": "8 inch", "priceModifier": 1500, "inStock": true }
+    ],
     "tags": [
       "brass",
       "ganesha",
@@ -851,7 +866,11 @@
         "verified": true
       }
     ],
-    "variants": [],
+    "variants": [
+      { "id": "v-3", "label": "Set of 3", "type": "set", "value": "3 diyas", "priceModifier": -400, "inStock": true },
+      { "id": "v-5", "label": "Set of 5", "type": "set", "value": "5 diyas", "priceModifier": 0, "inStock": true },
+      { "id": "v-10", "label": "Set of 10", "type": "set", "value": "10 diyas", "priceModifier": 800, "inStock": true }
+    ],
     "tags": [
       "diya",
       "festive",
