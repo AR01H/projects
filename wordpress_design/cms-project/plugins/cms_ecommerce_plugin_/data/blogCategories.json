@@ -1,0 +1,7 @@
+[
+  { "id": "cat-craft-stories", "slug": "craft-stories", "name": "Craft Stories" },
+  { "id": "cat-artisan-spotlight", "slug": "artisan-spotlight", "name": "Artisan Spotlight" },
+  { "id": "cat-gifting-guides", "slug": "gifting-guides", "name": "Gifting Guides" },
+  { "id": "cat-care-tips", "slug": "care-tips", "name": "Care & Maintenance" },
+  { "id": "cat-festivals", "slug": "festivals", "name": "Festivals & Traditions" }
+]

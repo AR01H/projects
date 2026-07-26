@@ -5,10 +5,10 @@ import type { StoreSettings } from '@/types';
 export const settingsApi = {
   getAll: () => safe(async (): Promise<StoreSettings> => {
     if (apiClient.useMock) return MOCK_SETTINGS;
-    return apiClient.get<StoreSettings>('/api/admin/settings');
+    return apiClient.get<StoreSettings>('/admin/settings');
   }),
   update: (data: Partial<StoreSettings>) => safe(async () => {
     if (apiClient.useMock) return { ...MOCK_SETTINGS, ...data } as StoreSettings;
-    return apiClient.put<StoreSettings>('/api/admin/settings', data);
+    return apiClient.put<StoreSettings>('/admin/settings', data);
   }),
 };

@@ -1,0 +1,197 @@
+{
+  "hero": [
+    {
+      "id": "hero-featured",
+      "title": "Heritage, Hand-Carved.",
+      "subtitle": "Discover authentic Kondapalli wooden toys and heirloom crafts, made by master artisans across India.",
+      "ctaLabel": "Shop Featured Collections",
+      "ctaLink": "/collections/handcrafted-picks",
+      "image": "https://picsum.photos/seed/rhh-hero-featured/1800/1000",
+      "theme": "light"
+    },
+    {
+      "id": "hero-new-arrivals",
+      "title": "Newly Arrived",
+      "subtitle": "Fresh from the artisan's workbench — the newest pieces in the Royal Heritage Hub collection.",
+      "ctaLabel": "Shop New Arrivals",
+      "ctaLink": "/shop?sort=newest",
+      "image": "https://picsum.photos/seed/rhh-hero-newarrivals/1800/1000",
+      "theme": "dark"
+    },
+    {
+      "id": "hero-best-sellers",
+      "title": "Loved Again and Again",
+      "subtitle": "Our most-gifted, most-reordered handcrafted pieces — see what everyone's choosing.",
+      "ctaLabel": "Shop Best Sellers",
+      "ctaLink": "/shop?sort=best-selling",
+      "image": "https://picsum.photos/seed/rhh-hero-bestsellers/1800/1000",
+      "theme": "light"
+    },
+    {
+      "id": "hero-festival",
+      "title": "Festival Season Edit",
+      "subtitle": "Hand-painted decor and gifting collections, curated for the season of light.",
+      "ctaLabel": "Explore Festive Specials",
+      "ctaLink": "/collections/festive-collections",
+      "image": "https://picsum.photos/seed/rhh-hero-festival/1800/1000",
+      "theme": "dark"
+    },
+    {
+      "id": "hero-limited",
+      "title": "Rare & Small-Batch",
+      "subtitle": "Limited edition pieces, once sold out they are never made again.",
+      "ctaLabel": "Shop Limited Edition",
+      "ctaLink": "/collections/limited-edition",
+      "image": "https://picsum.photos/seed/rhh-hero-limited/1800/1000",
+      "theme": "light"
+    },
+    {
+      "id": "hero-seasonal",
+      "title": "The Monsoon Edit",
+      "subtitle": "Warm wooden tones and cozy home accents for the season ahead.",
+      "ctaLabel": "Shop Seasonal Offers",
+      "ctaLink": "/shop",
+      "image": "https://picsum.photos/seed/rhh-hero-seasonal/1800/1000",
+      "theme": "dark"
+    },
+    {
+      "id": "hero-free-shipping",
+      "title": "Free Shipping, Always Worth It",
+      "subtitle": "Enjoy complimentary delivery across India on every order above ₹999.",
+      "ctaLabel": "Start Shopping",
+      "ctaLink": "/shop",
+      "image": "https://picsum.photos/seed/rhh-hero-shipping/1800/1000",
+      "theme": "light"
+    },
+    {
+      "id": "hero-discount",
+      "title": "Exclusive 20% Off",
+      "subtitle": "For a limited time, enjoy 20% off select handcrafted collections with code FESTIVAL20.",
+      "ctaLabel": "Claim the Offer",
+      "ctaLink": "/shop",
+      "image": "https://picsum.photos/seed/rhh-hero-discount/1800/1000",
+      "theme": "dark"
+    }
+  ],
+  "promo": [
+    {
+      "id": "promo-shipping",
+      "title": "Free Shipping Above ₹999",
+      "subtitle": "Delivered across India in 2–7 business days.",
+      "ctaLabel": "Learn More",
+      "ctaLink": "/shipping-policy",
+      "image": "https://picsum.photos/seed/rhh-promo-shipping/1200/500",
+      "theme": "light"
+    },
+    {
+      "id": "promo-corporate",
+      "title": "Corporate & Wedding Gifting",
+      "subtitle": "Bulk orders, custom packaging, and personalised gift messages.",
+      "ctaLabel": "Enquire Now",
+      "ctaLink": "/contact",
+      "image": "https://picsum.photos/seed/rhh-promo-corporate/1200/500",
+      "theme": "dark"
+    },
+    {
+      "id": "promo-deal-of-day",
+      "title": "Deal of the Day",
+      "subtitle": "Today only — up to 30% off on select brass decor.",
+      "ctaLabel": "Grab the Deal",
+      "ctaLink": "/shop?category=brass-decor",
+      "image": "https://picsum.photos/seed/rhh-promo-deal/1200/500",
+      "theme": "dark"
+    },
+    {
+      "id": "promo-story",
+      "title": "Meet the Artisans",
+      "subtitle": "Every piece carries the hand of the maker — read their stories.",
+      "ctaLabel": "Read the Story",
+      "ctaLink": "/about",
+      "image": "https://picsum.photos/seed/rhh-promo-story/1200/500",
+      "theme": "light"
+    },
+    {
+      "id": "promo-limited-time",
+      "title": "Limited Time: Buy 2 Get 1",
+      "subtitle": "On all Kondapalli miniature figurines, this week only.",
+      "ctaLabel": "Shop the Offer",
+      "ctaLink": "/shop?category=kondapalli-bommalu",
+      "image": "https://picsum.photos/seed/rhh-promo-b2g1/1200/500",
+      "theme": "dark"
+    },
+    {
+      "id": "promo-gift",
+      "title": "Gift Wrapping, On the House",
+      "subtitle": "Complimentary festive gift wrap on every order this season.",
+      "ctaLabel": "Shop Gifts",
+      "ctaLink": "/collections/gift-collections",
+      "image": "https://picsum.photos/seed/rhh-promo-giftwrap/1200/500",
+      "theme": "light"
+    }
+  ],
+  "pageHeroes": {
+    "shop": {
+      "id": "page-hero-shop",
+      "title": "The Full Collection",
+      "subtitle": "Every handcrafted piece, in one place — filter by category, material, and occasion.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/rhh-pagehero-shop/1800/650",
+      "theme": "dark"
+    },
+    "collections": {
+      "id": "page-hero-collections",
+      "title": "Curated Collections",
+      "subtitle": "Groupings of our finest handcrafted work, organised by story and season.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/rhh-pagehero-collections/1800/650",
+      "theme": "light"
+    },
+    "about": {
+      "id": "page-hero-about",
+      "title": "Our Story",
+      "subtitle": "Four hundred years of craft, carried forward by hand.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/rhh-pagehero-about/1800/650",
+      "theme": "dark"
+    },
+    "contact": {
+      "id": "page-hero-contact",
+      "title": "Get in Touch",
+      "subtitle": "Questions about an order, custom piece, or bulk gifting? We're here to help.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/rhh-pagehero-contact/1800/650",
+      "theme": "light"
+    },
+    "wishlist": {
+      "id": "page-hero-wishlist",
+      "title": "Your Wishlist",
+      "subtitle": "Pieces you love, saved for whenever you're ready.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/rhh-pagehero-wishlist/1800/500",
+      "theme": "dark"
+    },
+    "cart": {
+      "id": "page-hero-cart",
+      "title": "Your Bag",
+      "subtitle": "Almost there — review your handcrafted picks before checkout.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/rhh-pagehero-cart/1800/500",
+      "theme": "light"
+    },
+    "faqs": {
+      "id": "page-hero-faqs",
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about shopping with Royal Heritage Hub.",
+      "ctaLabel": "",
+      "ctaLink": "",
+      "image": "https://picsum.photos/seed/rhh-pagehero-faqs/1800/500",
+      "theme": "dark"
+    }
+  }
+}

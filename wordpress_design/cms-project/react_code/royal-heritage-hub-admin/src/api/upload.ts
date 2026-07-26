@@ -58,7 +58,7 @@ async function uploadFile(file: File): Promise<UploadedFile> {
   // Real: multipart upload
   const formData = new FormData();
   formData.append('file', file);
-  const res = await fetch(`${apiClient.useMock ? '/mock' : ''}/api/admin/upload`, {
+  const res = await fetch(`/admin/upload`, {
     method: 'POST',
     body: formData,
   });
@@ -75,11 +75,11 @@ export const uploadApi = {
 
   getAll: () => safe(async (): Promise<UploadedFile[]> => {
     if (apiClient.useMock) return getStoredFiles();
-    return apiClient.get<UploadedFile[]>('/api/admin/uploads');
+    return apiClient.get<UploadedFile[]>('/admin/uploads');
   }),
 
   delete: (id: string) => safe(async () => {
     if (apiClient.useMock) { removeStoredFile(id); return true; }
-    return apiClient.delete<boolean>(`/api/admin/uploads/${id}`);
+    return apiClient.delete<boolean>(`/admin/uploads/${id}`);
   }),
 };

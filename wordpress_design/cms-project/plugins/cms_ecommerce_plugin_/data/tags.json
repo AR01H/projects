@@ -1,0 +1,177 @@
+[
+  {
+    "tag": "kondapalli",
+    "label": "Kondapalli",
+    "parentTag": null
+  },
+  {
+    "tag": "handpainted",
+    "label": "Hand-Painted",
+    "parentTag": null
+  },
+  {
+    "tag": "figurine",
+    "label": "Figurine",
+    "parentTag": "handpainted"
+  },
+  {
+    "tag": "gi-tagged",
+    "label": "GI Tagged",
+    "parentTag": null
+  },
+  {
+    "tag": "elephant",
+    "label": "Elephant",
+    "parentTag": null
+  },
+  {
+    "tag": "entrance decor",
+    "label": "Entrance Decor",
+    "parentTag": null
+  },
+  {
+    "tag": "auspicious",
+    "label": "Auspicious",
+    "parentTag": null
+  },
+  {
+    "tag": "temple",
+    "label": "Temple",
+    "parentTag": null
+  },
+  {
+    "tag": "mandir",
+    "label": "Mandir",
+    "parentTag": "temple"
+  },
+  {
+    "tag": "pooja",
+    "label": "Pooja",
+    "parentTag": "temple"
+  },
+  {
+    "tag": "jaali",
+    "label": "Jaali Work",
+    "parentTag": null
+  },
+  {
+    "tag": "wall art",
+    "label": "Wall Art",
+    "parentTag": null
+  },
+  {
+    "tag": "peacock",
+    "label": "Peacock Motif",
+    "parentTag": "wall art"
+  },
+  {
+    "tag": "jewellery box",
+    "label": "Jewellery Box",
+    "parentTag": null
+  },
+  {
+    "tag": "brass inlay",
+    "label": "Brass Inlay",
+    "parentTag": "jewellery box"
+  },
+  {
+    "tag": "gift",
+    "label": "Gift",
+    "parentTag": null
+  },
+  {
+    "tag": "brass",
+    "label": "Brass",
+    "parentTag": null
+  },
+  {
+    "tag": "ganesha",
+    "label": "Ganesha",
+    "parentTag": "brass"
+  },
+  {
+    "tag": "idol",
+    "label": "Idol",
+    "parentTag": "brass"
+  },
+  {
+    "tag": "village set",
+    "label": "Village Set",
+    "parentTag": null
+  },
+  {
+    "tag": "miniature",
+    "label": "Miniature",
+    "parentTag": "village set"
+  },
+  {
+    "tag": "serving tray",
+    "label": "Serving Tray",
+    "parentTag": null
+  },
+  {
+    "tag": "kitchen decor",
+    "label": "Kitchen Decor",
+    "parentTag": null
+  },
+  {
+    "tag": "name plate",
+    "label": "Name Plate",
+    "parentTag": null
+  },
+  {
+    "tag": "personalised",
+    "label": "Personalised",
+    "parentTag": null
+  },
+  {
+    "tag": "outdoor",
+    "label": "Outdoor",
+    "parentTag": null
+  },
+  {
+    "tag": "kids toys",
+    "label": "Kids Toys",
+    "parentTag": null
+  },
+  {
+    "tag": "non-toxic",
+    "label": "Non-Toxic",
+    "parentTag": "kids toys"
+  },
+  {
+    "tag": "channapatna",
+    "label": "Channapatna",
+    "parentTag": null
+  },
+  {
+    "tag": "pen stand",
+    "label": "Pen Stand",
+    "parentTag": null
+  },
+  {
+    "tag": "office decor",
+    "label": "Office Decor",
+    "parentTag": null
+  },
+  {
+    "tag": "corporate gift",
+    "label": "Corporate Gift",
+    "parentTag": "gift"
+  },
+  {
+    "tag": "diya",
+    "label": "Diya",
+    "parentTag": null
+  },
+  {
+    "tag": "festive",
+    "label": "Festive",
+    "parentTag": null
+  },
+  {
+    "tag": "diwali",
+    "label": "Diwali",
+    "parentTag": "festive"
+  }
+]

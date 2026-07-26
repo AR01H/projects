@@ -14,7 +14,8 @@ interface RequestOptions extends RequestInit {
 }
 
 function buildUrl(path: string, params?: RequestOptions['params']): string {
-  const url = new URL(`${getApiBaseUrl()}${path}`, window.location.origin);
+  const base = getApiBaseUrl().replace(/\/+$/, '');
+  const url = new URL(`${base}${path}`, window.location.origin);
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined) url.searchParams.set(key, String(value));
@@ -23,26 +24,39 @@ function buildUrl(path: string, params?: RequestOptions['params']): string {
   return url.toString();
 }
 
-/**
- * Real HTTP request — used once USE_MOCK is false / a live backend exists.
- */
+function getAuthToken(): string | null {
+  try {
+    return localStorage.getItem('cms_token');
+  } catch {
+    return null;
+  }
+}
+
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { params, ...init } = options;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT_MS);
 
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(init.headers as Record<string, string> || {}),
+  };
+
+  const token = getAuthToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   try {
     const res = await fetch(buildUrl(path, params), {
       ...init,
       signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        ...init.headers,
-      },
+      headers,
     });
 
     if (!res.ok) {
-      throw new ApiError(`Request failed: ${res.statusText}`, res.status);
+      const body = await res.json().catch(() => ({}));
+      throw new ApiError(body?.message || body?.data || `Request failed: ${res.statusText}`, res.status);
     }
     return (await res.json()) as T;
   } finally {
@@ -50,10 +64,6 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   }
 }
 
-/**
- * Mock loader — reads static JSON bundled with the app.
- * Simulates network latency so loading states are exercised in dev.
- */
 async function mockRequest<T>(loader: () => Promise<{ default: T }>, delayMs = 350): Promise<T> {
   const [mod] = await Promise.all([
     loader(),

@@ -10,13 +10,13 @@ export interface CartItem {
   variantId?: string;
 }
 
+interface ApiResponse<T> { data: T; }
+
 function readLocalCart(): CartItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.cart);
     return raw ? (JSON.parse(raw) as CartItem[]) : [];
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
 function writeLocalCart(items: CartItem[]) {
@@ -26,35 +26,33 @@ function writeLocalCart(items: CartItem[]) {
 export const cartApi = {
   get: async (): Promise<CartItem[]> => {
     if (apiClient.useMock) return readLocalCart();
-    return apiClient.get<CartItem[]>(ENDPOINTS.cart.get);
+    try {
+      const res = await apiClient.get<ApiResponse<CartItem[]>>(ENDPOINTS.cart.get);
+      return res.data ?? res as unknown as CartItem[];
+    } catch { return []; }
   },
 
   addItem: async (product: Product, quantity = 1, variantId?: string): Promise<CartItem[]> => {
     if (apiClient.useMock) {
       const items = readLocalCart();
-      const existing = items.find(
-        (i) => i.product.id === product.id && i.variantId === variantId
-      );
-      if (existing) {
-        existing.quantity += quantity;
-      } else {
-        items.push({ id: `${product.id}-${variantId ?? 'default'}`, product, quantity, variantId });
-      }
+      const existing = items.find((i) => i.product.id === product.id && i.variantId === variantId);
+      if (existing) existing.quantity += quantity;
+      else items.push({ id: `${product.id}-${variantId ?? 'default'}`, product, quantity, variantId });
       writeLocalCart(items);
       return items;
     }
-    return apiClient.post<CartItem[]>(ENDPOINTS.cart.add, { productId: product.id, quantity, variantId });
+    const res = await apiClient.post<ApiResponse<CartItem[]>>(ENDPOINTS.cart.add, { productId: product.id, quantity, variantId });
+    return res.data ?? res as unknown as CartItem[];
   },
 
   updateQuantity: async (itemId: string, quantity: number): Promise<CartItem[]> => {
     if (apiClient.useMock) {
-      const items = readLocalCart()
-        .map((i) => (i.id === itemId ? { ...i, quantity } : i))
-        .filter((i) => i.quantity > 0);
+      const items = readLocalCart().map((i) => (i.id === itemId ? { ...i, quantity } : i)).filter((i) => i.quantity > 0);
       writeLocalCart(items);
       return items;
     }
-    return apiClient.put<CartItem[]>(ENDPOINTS.cart.update(itemId), { quantity });
+    const res = await apiClient.put<ApiResponse<CartItem[]>>(ENDPOINTS.cart.update(itemId), { quantity });
+    return res.data ?? res as unknown as CartItem[];
   },
 
   removeItem: async (itemId: string): Promise<CartItem[]> => {
@@ -63,7 +61,8 @@ export const cartApi = {
       writeLocalCart(items);
       return items;
     }
-    return apiClient.delete<CartItem[]>(ENDPOINTS.cart.remove(itemId));
+    const res = await apiClient.delete<ApiResponse<CartItem[]>>(ENDPOINTS.cart.remove(itemId));
+    return res.data ?? res as unknown as CartItem[];
   },
 
   clear: async (): Promise<void> => {

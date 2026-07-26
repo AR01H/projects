@@ -1,7 +1,3 @@
-/**
- * Orders API — Create, List, Detail, Tracking
- */
-
 import { apiClient } from './client';
 import { ENDPOINTS } from './endpoints';
 import { STORAGE_KEYS } from '@/config/storage';
@@ -66,6 +62,8 @@ export interface CreateOrderInput {
   total: number;
 }
 
+interface ApiResponse<T> { data: T; }
+
 function readLocalOrders(): Order[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.orders);
@@ -96,56 +94,46 @@ function buildTracking(status: OrderStatus, createdAt: string): OrderTrackingSte
 }
 
 export const ordersApi = {
-  // ── Create order ──
   create: async (input: CreateOrderInput): Promise<Order> => {
     if (apiClient.useMock) {
       const order: Order = {
-        id: `ORD-${Date.now()}`,
-        userId: 'current-user',
-        items: input.items,
-        subtotal: input.subtotal,
-        shipping: input.shipping,
-        discount: input.discount,
-        codCharge: input.codCharge,
-        total: input.total,
-        address: input.address,
-        paymentMethod: input.paymentMethod,
-        couponCode: input.couponCode,
-        status: 'placed',
-        tracking: buildTracking('placed', new Date().toISOString()),
-        notes: input.notes,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        id: `ORD-${Date.now()}`, userId: 'current-user', items: input.items,
+        subtotal: input.subtotal, shipping: input.shipping, discount: input.discount,
+        codCharge: input.codCharge, total: input.total, address: input.address,
+        paymentMethod: input.paymentMethod, couponCode: input.couponCode,
+        status: 'placed', tracking: buildTracking('placed', new Date().toISOString()),
+        notes: input.notes, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
       };
       const orders = readLocalOrders();
       orders.unshift(order);
       writeLocalOrders(orders);
       return order;
     }
-    return apiClient.post<Order>(ENDPOINTS.orders.create, input);
+    const res = await apiClient.post<ApiResponse<Order>>(ENDPOINTS.orders.create, input);
+    return res.data ?? res as unknown as Order;
   },
 
-  // ── List orders ──
   getAll: async (): Promise<Order[]> => {
     if (apiClient.useMock) return readLocalOrders();
-    return apiClient.get<Order[]>(ENDPOINTS.orders.list);
+    try {
+      const res = await apiClient.get<ApiResponse<Order[]>>(ENDPOINTS.orders.list);
+      return res.data ?? res as unknown as Order[];
+    } catch { return []; }
   },
 
-  // ── Get single order ──
   getById: async (orderId: string): Promise<Order | undefined> => {
-    if (apiClient.useMock) {
-      return readLocalOrders().find((o) => o.id === orderId);
-    }
-    return apiClient.get<Order>(ENDPOINTS.orders.detail(orderId));
+    if (apiClient.useMock) return readLocalOrders().find((o) => o.id === orderId);
+    try {
+      const res = await apiClient.get<ApiResponse<Order>>(ENDPOINTS.orders.detail(orderId));
+      return res.data ?? res as unknown as Order;
+    } catch { return undefined; }
   },
 
-  // ── Get tracking ──
   getTracking: async (orderId: string): Promise<OrderTrackingStep[]> => {
     const order = await ordersApi.getById(orderId);
     return order?.tracking || [];
   },
 
-  // ── Cancel order ──
   cancel: async (orderId: string): Promise<Order> => {
     if (apiClient.useMock) {
       const orders = readLocalOrders();
@@ -156,6 +144,7 @@ export const ordersApi = {
       writeLocalOrders(orders);
       return orders[idx];
     }
-    return apiClient.put<Order>(`${ENDPOINTS.orders.detail(orderId)}/cancel`, {});
+    const res = await apiClient.put<ApiResponse<Order>>(ENDPOINTS.orders.cancel(orderId), {});
+    return res.data ?? res as unknown as Order;
   },
 };

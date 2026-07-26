@@ -1,17 +1,24 @@
 import { apiClient } from './client';
+import { ENDPOINTS } from './endpoints';
 import { MOCK_BLOG_POSTS, MOCK_BLOG_CATEGORIES } from '@/data/mockData';
 import type { BlogCategory, BlogPost } from '@/types/product';
 
+interface ApiResponse<T> { data: T; }
+
 async function getAllPosts(): Promise<BlogPost[]> {
-  if (apiClient.useMock) {
-    return [...MOCK_BLOG_POSTS].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }
-  return [];
+  if (apiClient.useMock) return [...MOCK_BLOG_POSTS].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  try {
+    const res = await apiClient.get<ApiResponse<BlogPost[]>>(ENDPOINTS.blog.posts);
+    return res.data ?? res as unknown as BlogPost[];
+  } catch { return []; }
 }
 
 async function getAllCategories(): Promise<BlogCategory[]> {
   if (apiClient.useMock) return MOCK_BLOG_CATEGORIES;
-  return [];
+  try {
+    const res = await apiClient.get<ApiResponse<BlogCategory[]>>(ENDPOINTS.blog.categories);
+    return res.data ?? res as unknown as BlogCategory[];
+  } catch { return []; }
 }
 
 export const blogApi = {
@@ -19,8 +26,14 @@ export const blogApi = {
   getAllCategories,
 
   getBySlug: async (slug: string): Promise<BlogPost | undefined> => {
-    const all = await getAllPosts();
-    return all.find((p) => p.slug === slug);
+    if (apiClient.useMock) {
+      const all = await getAllPosts();
+      return all.find((p) => p.slug === slug);
+    }
+    try {
+      const res = await apiClient.get<ApiResponse<BlogPost>>(ENDPOINTS.blog.post(slug));
+      return res.data ?? res as unknown as BlogPost;
+    } catch { return undefined; }
   },
 
   getByCategory: async (categorySlug: string): Promise<BlogPost[]> => {

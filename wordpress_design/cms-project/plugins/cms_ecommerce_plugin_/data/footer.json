@@ -1,0 +1,55 @@
+{
+  "quickLinks": [
+    { "label": "Shop", "href": "/shop", "icon": "shop" },
+    { "label": "Categories", "href": "/categories", "icon": "categories" },
+    { "label": "Collections", "href": "/collections", "icon": "collections" },
+    { "label": "Browse by Tag", "href": "/tags", "icon": "tags" },
+    { "label": "Our Artisans", "href": "/artisans", "icon": "about" },
+    { "label": "Craft Regions", "href": "/craft-regions", "icon": "about" },
+    { "label": "Blog", "href": "/blog", "icon": "blog" },
+    { "label": "Customer Reviews", "href": "/reviews", "icon": "reviews" },
+    { "label": "About Us", "href": "/about", "icon": "about" },
+    { "label": "Contact", "href": "/contact", "icon": "contact" }
+  ],
+  "policyLinks": [
+    { "label": "Shipping Policy", "href": "/shipping-policy" },
+    { "label": "Return Policy", "href": "/return-policy" },
+    { "label": "Privacy Policy", "href": "/privacy-policy" },
+    { "label": "Terms & Conditions", "href": "/terms" },
+    { "label": "Government Certifications", "href": "/certifications" },
+    { "label": "FAQs", "href": "/faqs" }
+  ],
+  "socialLinks": [
+    { "platform": "Instagram", "url": "https://instagram.com/royalheritagehub", "icon": "instagram" },
+    { "platform": "Facebook", "url": "https://facebook.com/royalheritagehub", "icon": "facebook" },
+    { "platform": "Pinterest", "url": "https://pinterest.com/royalheritagehub", "icon": "pinterest" },
+    { "platform": "YouTube", "url": "https://youtube.com/@royalheritagehub", "icon": "youtube" },
+    { "platform": "WhatsApp", "url": "https://wa.me/917887699208", "icon": "whatsapp" }
+  ],
+  "paymentMethods": [
+    { "name": "UPI", "icon": "upi" },
+    { "name": "Visa", "icon": "visa" },
+    { "name": "Mastercard", "icon": "mastercard" },
+    { "name": "RuPay", "icon": "rupay" },
+    { "name": "Net Banking", "icon": "netbanking" },
+    { "name": "COD", "icon": "cod" }
+  ],
+  "trustBadges": [
+    { "label": "100% Handcrafted", "description": "Every piece made by hand", "icon": "handcrafted" },
+    { "label": "GI Tag Certified", "description": "Geographical Indication protected", "icon": "certified" },
+    { "label": "Free Shipping", "description": "On orders above \u20b9999", "icon": "shipping" },
+    { "label": "Secure Payments", "description": "UPI, Cards & COD supported", "icon": "secure" }
+  ],
+  "certifications": [
+    { "name": "GI Tag", "description": "Geographical Indication" },
+    { "name": "MSME", "description": "Udyam Registered" },
+    { "name": "EPCH", "description": "Export Promotion Council" },
+    { "name": "GST", "description": "Tax Compliant" }
+  ],
+  "workingHours": {
+    "label": "Business Hours",
+    "days": "Monday – Saturday",
+    "time": "10:00 AM – 6:00 PM IST",
+    "closed": "Closed on Sundays & Public Holidays"
+  }
+}

@@ -8,12 +8,12 @@ import type { BlogPost, BlogCategory } from '@/types';
 
 async function getAllPosts(): Promise<BlogPost[]> {
   if (apiClient.useMock) return MOCK_BLOG_POSTS;
-  return apiClient.get<BlogPost[]>('/api/admin/blog/posts');
+  return apiClient.get<BlogPost[]>('/admin/blog/posts');
 }
 
 async function getAllCategories(): Promise<BlogCategory[]> {
   if (apiClient.useMock) return MOCK_BLOG_CATEGORIES;
-  return apiClient.get<BlogCategory[]>('/api/admin/blog/categories');
+  return apiClient.get<BlogCategory[]>('/admin/blog/categories');
 }
 
 export const blogApi = {
@@ -21,14 +21,14 @@ export const blogApi = {
   getAllCategories: () => safe(getAllCategories),
   createPost: (data: Partial<BlogPost>) => safe(async () => {
     if (apiClient.useMock) return { ...data, id: `post-${Date.now()}` } as BlogPost;
-    return apiClient.post<BlogPost>('/api/admin/blog/posts', data);
+    return apiClient.post<BlogPost>('/admin/blog/posts', data);
   }),
   updatePost: (id: string, data: Partial<BlogPost>) => safe(async () => {
     if (apiClient.useMock) return data as BlogPost;
-    return apiClient.put<BlogPost>(`/api/admin/blog/posts/${id}`, data);
+    return apiClient.put<BlogPost>(`/admin/blog/posts/${id}`, data);
   }),
   deletePost: (id: string) => safe(async () => {
     if (apiClient.useMock) return true;
-    return apiClient.delete<boolean>(`/api/admin/blog/posts/${id}`);
+    return apiClient.delete<boolean>(`/admin/blog/posts/${id}`);
   }),
 };

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "post-001",
+    "slug": "the-400-year-history-of-kondapalli-toys",
+    "title": "The 400-Year History of Kondapalli Toys",
+    "excerpt": "How a small village in Andhra Pradesh became the home of one of India's most cherished toy-making traditions.",
+    "content": [
+      "Kondapalli, a small village near Vijayawada, has been home to a unique wood-toy-making tradition for over four centuries. Artisans here, known as Nakarshalu, carve figures from Tella Poniki, a lightweight softwood native to the surrounding hills.",
+      "The craft earned a Geographical Indication (GI) tag in 2013, recognising it as a cultural product unique to the region. Each figure — whether a dancing couple, a mythological character, or a village scene — is carved, dried, and hand-painted using techniques passed down within families.",
+      "Today, only a few hundred artisan families continue the tradition, making every purchase a direct contribution to keeping this heritage craft alive."
+    ],
+    "coverImage": "https://picsum.photos/seed/blog-kondapalli-history/1200/700",
+    "categorySlug": "craft-stories",
+    "author": "Royal Heritage Hub Editorial",
+    "date": "2026-05-12",
+    "readMinutes": 4,
+    "tags": ["kondapalli", "history", "gi-tagged"]
+  },
+  {
+    "id": "post-002",
+    "slug": "meet-ramesh-naidu-master-carver",
+    "title": "Meet Ramesh Naidu, Master Carver of Kondapalli",
+    "excerpt": "A conversation with a third-generation artisan about craft, patience, and keeping tradition alive.",
+    "content": [
+      "Ramesh Naidu has been carving Kondapalli figures since he was twelve years old, learning at his grandfather's workbench. Today, at 54, he is one of the most respected artisans in the village.",
+      "\"Every piece takes at least three days,\" he explains. \"Cutting the wood, shaping it, drying it in the sun, then painting — there are no shortcuts if you want it to last.\"",
+      "Ramesh now trains his own apprentices, hoping to pass the craft to a generation that has more distractions than he ever did. Every dancing-couple figurine sold through Royal Heritage Hub carries a small part of his story."
+    ],
+    "coverImage": "https://picsum.photos/seed/blog-ramesh-naidu/1200/700",
+    "categorySlug": "artisan-spotlight",
+    "author": "Royal Heritage Hub Editorial",
+    "date": "2026-04-28",
+    "readMinutes": 5,
+    "tags": ["artisan", "kondapalli"]
+  },
+  {
+    "id": "post-003",
+    "slug": "how-to-choose-a-handcrafted-housewarming-gift",
+    "title": "How to Choose a Handcrafted Housewarming Gift",
+    "excerpt": "A short guide to picking a gift that feels personal, useful, and built to last.",
+    "content": [
+      "Housewarming gifts walk a fine line between decorative and useful. Handcrafted pieces solve this naturally — a carved wooden tray, a brass diya set, or a personalised name plate all serve a purpose while adding warmth to a new home.",
+      "Consider the recipient's existing decor style. A minimal home might suit a single striking wall panel; a more traditional space could welcome a full pooja set or a temple.",
+      "When in doubt, gift sets (like our festive jar or decor bundles) let the receiver enjoy variety without you having to guess a single 'right' item."
+    ],
+    "coverImage": "https://picsum.photos/seed/blog-housewarming-gift/1200/700",
+    "categorySlug": "gifting-guides",
+    "author": "Royal Heritage Hub Editorial",
+    "date": "2026-06-02",
+    "readMinutes": 3,
+    "tags": ["gifting", "housewarming"]
+  },
+  {
+    "id": "post-004",
+    "slug": "caring-for-your-hand-painted-wooden-decor",
+    "title": "Caring for Your Hand-Painted Wooden Decor",
+    "excerpt": "Simple habits to keep your handcrafted pieces looking new for decades.",
+    "content": [
+      "Hand-painted wooden pieces are more delicate than machine-lacquered ones, but a little care goes a long way. Keep pieces away from direct, prolonged sunlight, which can fade natural pigments over time.",
+      "Dust with a soft, dry cloth rather than water or chemical cleaners — moisture can lift paint from softwood bases like Tella Poniki.",
+      "If a piece is used outdoors or in humid rooms, a yearly light coat of furniture wax can help protect the finish without altering its appearance."
+    ],
+    "coverImage": "https://picsum.photos/seed/blog-wooden-care/1200/700",
+    "categorySlug": "care-tips",
+    "author": "Royal Heritage Hub Editorial",
+    "date": "2026-03-15",
+    "readMinutes": 3,
+    "tags": ["care", "handpainted"]
+  },
+  {
+    "id": "post-005",
+    "slug": "diwali-decor-traditions-across-india",
+    "title": "Diwali Decor Traditions Across India",
+    "excerpt": "From brass diyas to rangoli, how different regions celebrate the festival of lights.",
+    "content": [
+      "Diwali decor varies beautifully across India. In the south, brass and bronze diyas are polished and arranged in elaborate rows, often alongside kolam patterns drawn at the doorstep.",
+      "In the north, strings of marigold and mango leaves frame doorways, while diyas are floated in water bowls as part of the evening ritual.",
+      "Across regions, the constant is light — however it's expressed, the goal is always to welcome prosperity and push back the dark."
+    ],
+    "coverImage": "https://picsum.photos/seed/blog-diwali-traditions/1200/700",
+    "categorySlug": "festivals",
+    "author": "Royal Heritage Hub Editorial",
+    "date": "2026-06-20",
+    "readMinutes": 4,
+    "tags": ["diwali", "festive", "traditions"]
+  }
+]

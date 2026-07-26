@@ -1,28 +1,40 @@
-/**
- * Admin API Client — Same mock/API approach as storefront
- */
-
 import { API_CONFIG, getApiBaseUrl } from '@/config/api';
 
 export class ApiError extends Error {
   status: number;
   constructor(message: string, status: number) {
     super(message);
+    this.name = 'ApiError';
     this.status = status;
   }
+}
+
+function getAuthToken(): string | null {
+  try { return localStorage.getItem('cms_admin_token'); } catch { return null; }
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT_MS);
 
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options.headers as Record<string, string> || {}),
+  };
+
+  const token = getAuthToken();
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
   try {
     const res = await fetch(`${getApiBaseUrl()}${path}`, {
       ...options,
       signal: controller.signal,
-      headers: { 'Content-Type': 'application/json', ...options.headers },
+      headers,
     });
-    if (!res.ok) throw new ApiError(`Request failed: ${res.statusText}`, res.status);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new ApiError(body?.message || body?.data || `Request failed: ${res.statusText}`, res.status);
+    }
     return (await res.json()) as T;
   } finally {
     clearTimeout(timeout);

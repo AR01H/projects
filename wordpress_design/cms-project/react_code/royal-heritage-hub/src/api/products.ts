@@ -16,71 +16,38 @@ export interface ProductFilters {
   sortBy?: 'newest' | 'best-selling' | 'featured' | 'price-asc' | 'price-desc' | 'rating';
 }
 
+interface ProductsResponse { data: Product[]; }
+interface ProductResponse { data: Product; }
+
 async function getAllProducts(): Promise<Product[]> {
   if (apiClient.useMock) return MOCK_PRODUCTS;
-  return apiClient.get<Product[]>(ENDPOINTS.products.list);
+  const res = await apiClient.get<ProductsResponse>(ENDPOINTS.products.list);
+  return res.data ?? res as unknown as Product[];
 }
 
 export function filterProducts(products: Product[], filters: ProductFilters): Product[] {
   let result = [...products];
 
-  if (filters.categorySlug) {
-    result = result.filter((p) => p.categorySlug === filters.categorySlug);
-  }
-  if (filters.collectionSlug) {
-    // resolved by caller via collection productIds, kept here for API symmetry
-  }
-  if (filters.minPrice !== undefined) {
-    result = result.filter((p) => p.price >= filters.minPrice!);
-  }
-  if (filters.maxPrice !== undefined) {
-    result = result.filter((p) => p.price <= filters.maxPrice!);
-  }
-  if (filters.material) {
-    result = result.filter((p) =>
-      p.specs.some((s) => s.value.toLowerCase().includes(filters.material!.toLowerCase()))
-    );
-  }
-  if (filters.tag) {
-    result = result.filter((p) => p.tags.includes(filters.tag!));
-  }
-  if (filters.minRating !== undefined) {
-    result = result.filter((p) => p.rating >= filters.minRating!);
-  }
-  if (filters.inStockOnly) {
-    result = result.filter((p) => p.stock > 0);
-  }
+  if (filters.categorySlug) result = result.filter((p) => p.categorySlug === filters.categorySlug);
+  if (filters.minPrice !== undefined) result = result.filter((p) => p.price >= filters.minPrice!);
+  if (filters.maxPrice !== undefined) result = result.filter((p) => p.price <= filters.maxPrice!);
+  if (filters.material) result = result.filter((p) => p.specs.some((s) => s.value.toLowerCase().includes(filters.material!.toLowerCase())));
+  if (filters.tag) result = result.filter((p) => p.tags.includes(filters.tag!));
+  if (filters.minRating !== undefined) result = result.filter((p) => p.rating >= filters.minRating!);
+  if (filters.inStockOnly) result = result.filter((p) => p.stock > 0);
   if (filters.search) {
     const q = filters.search.toLowerCase();
-    result = result.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q)) ||
-        p.specs.some((s) => s.value.toLowerCase().includes(q))
-    );
+    result = result.filter((p) => p.name.toLowerCase().includes(q) || p.tags.some((t) => t.toLowerCase().includes(q)));
   }
 
   switch (filters.sortBy) {
-    case 'newest':
-      result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      break;
-    case 'price-asc':
-      result.sort((a, b) => a.price - b.price);
-      break;
-    case 'price-desc':
-      result.sort((a, b) => b.price - a.price);
-      break;
-    case 'rating':
-      result.sort((a, b) => b.rating - a.rating);
-      break;
-    case 'best-selling':
-      result.sort((a, b) => Number(b.isBestSeller) - Number(a.isBestSeller));
-      break;
-    case 'featured':
-      result.sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured));
-      break;
+    case 'newest': result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); break;
+    case 'price-asc': result.sort((a, b) => a.price - b.price); break;
+    case 'price-desc': result.sort((a, b) => b.price - a.price); break;
+    case 'rating': result.sort((a, b) => b.rating - a.rating); break;
+    case 'best-selling': result.sort((a, b) => Number(b.isBestSeller) - Number(a.isBestSeller)); break;
+    case 'featured': result.sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured)); break;
   }
-
   return result;
 }
 
@@ -88,8 +55,14 @@ export const productsApi = {
   getAll: getAllProducts,
 
   getBySlug: async (slug: string): Promise<Product | undefined> => {
-    const all = await getAllProducts();
-    return all.find((p) => p.slug === slug);
+    if (apiClient.useMock) {
+      const all = await getAllProducts();
+      return all.find((p) => p.slug === slug);
+    }
+    try {
+      const res = await apiClient.get<ProductResponse>(ENDPOINTS.products.detail(slug));
+      return res.data ?? res as unknown as Product;
+    } catch { return undefined; }
   },
 
   getFiltered: async (filters: ProductFilters): Promise<Product[]> => {
@@ -124,9 +97,7 @@ export const productsApi = {
 
   getRelated: async (product: Product, limit = 4): Promise<Product[]> => {
     const all = await getAllProducts();
-    return all
-      .filter((p) => p.id !== product.id && p.categoryId === product.categoryId)
-      .slice(0, limit);
+    return all.filter((p) => p.id !== product.id && p.categoryId === product.categoryId).slice(0, limit);
   },
 
   getByIds: async (ids: string[]): Promise<Product[]> => {
@@ -152,9 +123,7 @@ export const productsApi = {
 
   getByMaterial: async (materialKeyword: string, limit = 8): Promise<Product[]> => {
     const all = await getAllProducts();
-    return all
-      .filter((p) => p.specs.some((s) => s.value.toLowerCase().includes(materialKeyword.toLowerCase())))
-      .slice(0, limit);
+    return all.filter((p) => p.specs.some((s) => s.value.toLowerCase().includes(materialKeyword.toLowerCase()))).slice(0, limit);
   },
 
   getRecentlyViewed: async (ids: string[]): Promise<Product[]> => {
@@ -165,8 +134,6 @@ export const productsApi = {
 
   getFrequentlyBoughtTogether: async (product: Product, limit = 3): Promise<Product[]> => {
     const all = await getAllProducts();
-    return all
-      .filter((p) => p.id !== product.id && p.categoryId !== product.categoryId)
-      .slice(0, limit);
+    return all.filter((p) => p.id !== product.id && p.categoryId !== product.categoryId).slice(0, limit);
   },
 };

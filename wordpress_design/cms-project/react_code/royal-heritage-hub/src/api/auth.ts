@@ -1,10 +1,5 @@
-/**
- * Auth API — Login, Register, Profile, Logout
- */
-
 import { apiClient } from './client';
 import { ENDPOINTS } from './endpoints';
-import { STORAGE_KEYS } from '@/config/storage';
 
 export interface User {
   id: string;
@@ -15,92 +10,84 @@ export interface User {
 }
 
 interface AuthResponse {
-  user: User;
-  token: string;
+  data: {
+    user: User;
+    token: string;
+  };
 }
+
+interface ProfileResponse {
+  data: User;
+}
+
+const TOKEN_KEY = 'cms_token';
+const USER_KEY = 'cms_user';
 
 function readLocalUser(): User | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.user);
+    const raw = localStorage.getItem(USER_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch { return null; }
 }
 
 function writeLocalUser(user: User | null) {
-  if (user) localStorage.setItem(STORAGE_KEYS.user, JSON.stringify(user));
-  else localStorage.removeItem(STORAGE_KEYS.user);
+  if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
+  else localStorage.removeItem(USER_KEY);
 }
 
 function readLocalToken(): string | null {
-  return localStorage.getItem(STORAGE_KEYS.token);
+  return localStorage.getItem(TOKEN_KEY);
 }
 
 function writeLocalToken(token: string | null) {
-  if (token) localStorage.setItem(STORAGE_KEYS.token, token);
-  else localStorage.removeItem(STORAGE_KEYS.token);
+  if (token) localStorage.setItem(TOKEN_KEY, token);
+  else localStorage.removeItem(TOKEN_KEY);
 }
 
 export const authApi = {
-  // ── Current user state ──
   getCurrentUser: (): User | null => readLocalUser(),
   getToken: (): string | null => readLocalToken(),
   isAuthenticated: (): boolean => !!readLocalToken(),
 
-  // ── Login ──
-  login: async (email: string, password: string): Promise<AuthResponse> => {
+  login: async (email: string, password: string): Promise<{ user: User; token: string }> => {
     if (apiClient.useMock) {
-      // Mock: any email/password combo works, create user on the fly
-      const user: User = {
-        id: `user-${Date.now()}`,
-        name: email.split('@')[0],
-        email,
-        createdAt: new Date().toISOString(),
-      };
+      const user: User = { id: `user-${Date.now()}`, name: email.split('@')[0], email, createdAt: new Date().toISOString() };
       const token = `mock-token-${Date.now()}`;
       writeLocalUser(user);
       writeLocalToken(token);
       return { user, token };
     }
     const res = await apiClient.post<AuthResponse>(ENDPOINTS.auth.login, { email, password });
-    writeLocalUser(res.user);
-    writeLocalToken(res.token);
-    return res;
+    writeLocalUser(res.data.user);
+    writeLocalToken(res.data.token);
+    return res.data;
   },
 
-  // ── Register ──
-  register: async (name: string, email: string, password: string, phone?: string): Promise<AuthResponse> => {
+  register: async (name: string, email: string, password: string, phone?: string): Promise<{ user: User; token: string }> => {
     if (apiClient.useMock) {
-      const user: User = {
-        id: `user-${Date.now()}`,
-        name,
-        email,
-        phone,
-        createdAt: new Date().toISOString(),
-      };
+      const user: User = { id: `user-${Date.now()}`, name, email, phone, createdAt: new Date().toISOString() };
       const token = `mock-token-${Date.now()}`;
       writeLocalUser(user);
       writeLocalToken(token);
       return { user, token };
     }
     const res = await apiClient.post<AuthResponse>(ENDPOINTS.auth.register, { name, email, password, phone });
-    writeLocalUser(res.user);
-    writeLocalToken(res.token);
-    return res;
+    writeLocalUser(res.data.user);
+    writeLocalToken(res.data.token);
+    return res.data;
   },
 
-  // ── Get profile ──
   getProfile: async (): Promise<User> => {
     if (apiClient.useMock) {
       const user = readLocalUser();
       if (!user) throw new Error('Not logged in');
       return user;
     }
-    const user = await apiClient.get<User>(ENDPOINTS.auth.me);
-    writeLocalUser(user);
-    return user;
+    const res = await apiClient.get<ProfileResponse>(ENDPOINTS.auth.me);
+    writeLocalUser(res.data);
+    return res.data;
   },
 
-  // ── Update profile ──
   updateProfile: async (data: Partial<User>): Promise<User> => {
     if (apiClient.useMock) {
       const user = readLocalUser();
@@ -109,15 +96,14 @@ export const authApi = {
       writeLocalUser(updated);
       return updated;
     }
-    const user = await apiClient.put<User>(ENDPOINTS.auth.me, data);
-    writeLocalUser(user);
-    return user;
+    const res = await apiClient.post<{ data: User }>(ENDPOINTS.auth.me + '?_method=PUT', data);
+    writeLocalUser(res.data);
+    return res.data;
   },
 
-  // ── Logout ──
   logout: async (): Promise<void> => {
     if (!apiClient.useMock) {
-      await apiClient.post(ENDPOINTS.auth.logout);
+      try { await apiClient.post(ENDPOINTS.auth.logout); } catch { /* ignore */ }
     }
     writeLocalUser(null);
     writeLocalToken(null);

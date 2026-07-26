@@ -3,9 +3,12 @@ import { ENDPOINTS } from './endpoints';
 import { MOCK_CATEGORIES } from '@/data/mockData';
 import type { Category } from '@/types/product';
 
+interface CategoriesResponse { data: Category[]; }
+
 async function getAllCategories(): Promise<Category[]> {
   if (apiClient.useMock) return MOCK_CATEGORIES;
-  return apiClient.get<Category[]>(ENDPOINTS.categories.list);
+  const res = await apiClient.get<CategoriesResponse>(ENDPOINTS.categories.list);
+  return res.data ?? res as unknown as Category[];
 }
 
 export const categoryApi = {
@@ -21,26 +24,22 @@ export const categoryApi = {
     return all.find((c) => c.slug === slug);
   },
 
-  /** Top-level categories only (no parentSlug) */
   getTopLevel: async (): Promise<Category[]> => {
     const all = await getAllCategories();
     return all.filter((c) => !c.parentSlug);
   },
 
-  /** Direct children of a given parent category slug */
   getChildren: async (parentSlug: string): Promise<Category[]> => {
     const all = await getAllCategories();
     return all.filter((c) => c.parentSlug === parentSlug);
   },
 
-  /** The parent category of a given category, if any */
   getParent: async (category: Category): Promise<Category | undefined> => {
     if (!category.parentSlug) return undefined;
     const all = await getAllCategories();
     return all.find((c) => c.slug === category.parentSlug);
   },
 
-  /** Full ancestor chain, root-first, for breadcrumb rendering */
   getAncestors: async (category: Category): Promise<Category[]> => {
     const all = await getAllCategories();
     const chain: Category[] = [];
@@ -55,7 +54,6 @@ export const categoryApi = {
     return chain;
   },
 
-  /** Category tree grouped as { parent, children[] } for top-level categories that have children */
   getTree: async (): Promise<{ parent: Category; children: Category[] }[]> => {
     const all = await getAllCategories();
     const topLevel = all.filter((c) => !c.parentSlug);

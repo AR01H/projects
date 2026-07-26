@@ -1,11 +1,6 @@
 /**
  * Unified API Service — single entry point for all data operations.
  * Every call goes through here. Handles loading, errors, and caching.
- *
- * Usage:
- *   import { api } from '@/api';
- *   const products = await api.products.getAll();
- *   const cart = await api.cart.getItems();
  */
 
 import { productsApi, type ProductFilters } from './products';
@@ -18,9 +13,12 @@ import { reviewsApi } from './reviews';
 import { certificationsApi } from './certifications';
 import { cartApi } from './cart';
 import { wishlistApi } from './wishlist';
+import { couponsApi } from './coupons';
+import { ordersApi } from './orders';
+import { paymentApi } from './payment';
+import { footerApi } from './footer';
+import { authApi } from './auth';
 import type { Product, Category, BlogPost } from '@/types/product';
-
-// ─── Standard response wrapper ───
 
 interface ApiResponse<T> {
   data: T;
@@ -36,8 +34,6 @@ function fail<T>(message: string): ApiResponse<T> {
   return { data: null as unknown as T, error: message, loading: false };
 }
 
-// ─── Central error handler ───
-
 async function safe<T>(fn: () => Promise<T>): Promise<ApiResponse<T>> {
   try {
     const data = await fn();
@@ -48,9 +44,18 @@ async function safe<T>(fn: () => Promise<T>): Promise<ApiResponse<T>> {
   }
 }
 
-// ─── API Service ───
-
 export const api = {
+  // ── Auth ──
+  auth: {
+    login: (email: string, password: string) => safe(() => authApi.login(email, password)),
+    register: (name: string, email: string, password: string, phone?: string) => safe(() => authApi.register(name, email, password, phone)),
+    logout: () => safe(() => authApi.logout()),
+    getProfile: () => safe(() => authApi.getProfile()),
+    updateProfile: (data: Partial<any>) => safe(() => authApi.updateProfile(data)),
+    getCurrentUser: () => authApi.getCurrentUser(),
+    isAuthenticated: () => authApi.isAuthenticated(),
+  },
+
   // ── Products ──
   products: {
     getAll: () => safe(() => productsApi.getAll()),
@@ -126,6 +131,11 @@ export const api = {
     getAll: () => safe(() => certificationsApi.getAll()),
   },
 
+  // ── Footer ──
+  footer: {
+    getAll: () => safe(() => footerApi.getAll()),
+  },
+
   // ── Cart ──
   cart: {
     getItems: () => safe(() => cartApi.get()),
@@ -140,10 +150,32 @@ export const api = {
     getItems: () => safe(() => wishlistApi.get()),
     add: (product: Product) => safe(() => wishlistApi.add(product)),
     remove: (productId: string) => safe(() => wishlistApi.remove(productId)),
+    updateNotes: (productId: string, notes: string) => safe(() => wishlistApi.updateNotes(productId, notes)),
+    clear: () => safe(() => wishlistApi.clear()),
+    getShared: (ids: string[]) => safe(() => wishlistApi.getShared(ids)),
+  },
+
+  // ── Coupons ──
+  coupons: {
+    validate: (code: string, subtotal: number, itemCount?: number) => safe(() => couponsApi.validate(code, subtotal, itemCount)),
+    apply: (code: string) => safe(() => couponsApi.apply(code)),
+    getAll: () => safe(() => couponsApi.getAll()),
+  },
+
+  // ── Orders ──
+  orders: {
+    create: (input: any) => safe(() => ordersApi.create(input)),
+    getAll: () => safe(() => ordersApi.getAll()),
+    getById: (orderId: string) => safe(() => ordersApi.getById(orderId)),
+    cancel: (orderId: string) => safe(() => ordersApi.cancel(orderId)),
+  },
+
+  // ── Payment ──
+  payment: {
+    pay: (amount: number, method: string) => safe(() => paymentApi.pay(amount, method)),
+    verify: (paymentId: string, orderId: string) => safe(() => paymentApi.verify(paymentId, orderId)),
   },
 };
-
-// ─── Re-export types ───
 
 export type { ApiResponse };
 export type { ProductFilters } from './products';

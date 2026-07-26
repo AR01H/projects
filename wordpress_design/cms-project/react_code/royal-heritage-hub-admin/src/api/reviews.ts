@@ -4,7 +4,7 @@ import type { Review } from '@/types';
 
 async function getAll(): Promise<Review[]> {
   if (apiClient.useMock) return MOCK_REVIEWS;
-  return apiClient.get<Review[]>('/api/admin/reviews');
+  return apiClient.get<Review[]>('/admin/reviews');
 }
 
 export const reviewsApi = {
@@ -12,7 +12,7 @@ export const reviewsApi = {
   getById: (id: string) => safe(async () => { const all = await getAll(); return all.find((r) => r.id === id) ?? null; }),
   delete: (id: string) => safe(async () => {
     if (apiClient.useMock) return true;
-    return apiClient.delete<boolean>(`/api/admin/reviews/${id}`);
+    return apiClient.delete<boolean>(`/admin/reviews/${id}`);
   }),
   getStats: () => safe(async () => {
     const all = await getAll();

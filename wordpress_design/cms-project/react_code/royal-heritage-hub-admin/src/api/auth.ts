@@ -30,7 +30,7 @@ export const authApi = {
       writeLocal(user); writeToken(token);
       return { user, token };
     }
-    const res = await apiClient.post<{ user: AdminUser; token: string }>('/api/admin/auth/login', { email, password });
+    const res = await apiClient.post<{ user: AdminUser; token: string }>('/admin/auth/login', { email, password });
     writeLocal(res.user); writeToken(res.token);
     return res;
   },
@@ -39,6 +39,6 @@ export const authApi = {
 
   getProfile: async (): Promise<AdminUser> => {
     if (apiClient.useMock) { const u = readLocal(); if (!u) throw new Error('Not logged in'); return u; }
-    return apiClient.get<AdminUser>('/api/admin/auth/me');
+    return apiClient.get<AdminUser>('/admin/auth/me');
   },
 };

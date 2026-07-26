@@ -1,0 +1,98 @@
+[
+  {
+    "id": "cat-kondapalli",
+    "slug": "kondapalli-bommalu",
+    "name": "Kondapalli Bommalu",
+    "description": "Hand-carved and hand-painted wooden toys from the artisan village of Kondapalli, Andhra Pradesh \u2014 a GI-tagged craft tradition over 400 years old.",
+    "image": "https://picsum.photos/seed/rhh-kondapalli/800/1000",
+    "productCount": 8,
+    "featured": true,
+    "parentSlug": "wooden-toys"
+  },
+  {
+    "id": "cat-wooden-toys",
+    "slug": "wooden-toys",
+    "name": "Wooden Toys",
+    "description": "Timeless handcrafted toys, safe and beautifully finished for generations of play.",
+    "image": "https://picsum.photos/seed/rhh-woodtoys/800/1000",
+    "productCount": 10,
+    "featured": true
+  },
+  {
+    "id": "cat-wooden-decor",
+    "slug": "wooden-decor",
+    "name": "Wooden Decor",
+    "description": "Statement wooden pieces that bring warmth and heritage craftsmanship into every room.",
+    "image": "https://picsum.photos/seed/rhh-woodendecor/800/1000",
+    "productCount": 12,
+    "featured": true
+  },
+  {
+    "id": "cat-temple-decor",
+    "slug": "temple-decor",
+    "name": "Temple & Pooja Decor",
+    "description": "Intricately carved wooden temples and pooja essentials for your sacred space.",
+    "image": "https://picsum.photos/seed/rhh-temple/800/1000",
+    "productCount": 6,
+    "featured": true,
+    "parentSlug": "wooden-decor"
+  },
+  {
+    "id": "cat-wall-decor",
+    "slug": "wall-decor",
+    "name": "Wall Decor",
+    "description": "Hand-painted wooden wall art and traditional motifs to transform any wall.",
+    "image": "https://picsum.photos/seed/rhh-walldecor/800/1000",
+    "productCount": 7,
+    "featured": false,
+    "parentSlug": "wooden-decor"
+  },
+  {
+    "id": "cat-jewellery-boxes",
+    "slug": "jewellery-boxes",
+    "name": "Jewellery Boxes",
+    "description": "Hand-carved wooden jewellery boxes finished with brass inlay and fine detailing.",
+    "image": "https://picsum.photos/seed/rhh-jewelbox/800/1000",
+    "productCount": 5,
+    "featured": false,
+    "parentSlug": "wooden-decor"
+  },
+  {
+    "id": "cat-brass-decor",
+    "slug": "brass-decor",
+    "name": "Brass Decor",
+    "description": "Gleaming brass artefacts and idols, cast using traditional lost-wax techniques.",
+    "image": "https://picsum.photos/seed/rhh-brass/800/1000",
+    "productCount": 6,
+    "featured": true
+  },
+  {
+    "id": "cat-gift-items",
+    "slug": "gift-items",
+    "name": "Gift Collections",
+    "description": "Curated handcrafted gift sets for every occasion \u2014 festive, corporate, or personal.",
+    "image": "https://picsum.photos/seed/rhh-gifts/800/1000",
+    "productCount": 9,
+    "featured": true
+  },
+  {
+    "id": "cat-village-sets",
+    "slug": "village-sets",
+    "name": "Village Sets",
+    "description": "Miniature hand-painted village scenes capturing everyday rural life in wood.",
+    "image": "https://picsum.photos/seed/rhh-village/800/1000",
+    "productCount": 4,
+    "featured": false,
+    "parentSlug": "wooden-toys"
+  },
+  {
+    "id": "cat-kitchen-decor",
+    "slug": "kitchen-decor",
+    "name": "Kitchen Decor",
+    "description": "Handcrafted wooden trays, spice boxes, and kitchen accents.",
+    "image": "https://picsum.photos/seed/rhh-kitchen/800/1000",
+    "productCount": 5,
+    "featured": false,
+    "parentSlug": "wooden-decor"
+  }
+]

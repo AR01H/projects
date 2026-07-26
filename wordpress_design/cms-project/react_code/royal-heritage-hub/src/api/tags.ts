@@ -1,5 +1,6 @@
 import { productsApi } from './products';
 import { apiClient } from './client';
+import { ENDPOINTS } from './endpoints';
 import { MOCK_TAGS } from '@/data/mockData';
 import type { Product } from '@/types/product';
 
@@ -16,16 +17,19 @@ export interface TagSummary {
   parentTag: string | null;
 }
 
+interface ApiResponse<T> { data: T; }
+
 async function getTagMeta(): Promise<TagMeta[]> {
   if (apiClient.useMock) return MOCK_TAGS;
-  return [];
+  try {
+    const res = await apiClient.get<ApiResponse<TagMeta[]>>(ENDPOINTS.tags.list);
+    const items = res.data ?? res as unknown as TagMeta[];
+    return items.map((t: any) => ({ tag: t.tag || t.slug, label: t.label || t.name, parentTag: t.parentTag || null }));
+  } catch { return []; }
 }
 
 function fallbackLabel(tag: string): string {
-  return tag
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
+  return tag.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
 export const tagsApi = {
@@ -42,12 +46,7 @@ export const tagsApi = {
     return Array.from(counts.entries())
       .map(([tag, count]) => {
         const m = metaByTag.get(tag);
-        return {
-          tag,
-          label: m?.label ?? fallbackLabel(tag),
-          count,
-          parentTag: m?.parentTag ?? null,
-        };
+        return { tag, label: m?.label ?? fallbackLabel(tag), count, parentTag: m?.parentTag ?? null };
       })
       .sort((a, b) => b.count - a.count);
   },
@@ -57,24 +56,13 @@ export const tagsApi = {
     return products.filter((p) => p.tags.includes(tag));
   },
 
-  getPopular: async (limit = 12): Promise<TagSummary[]> => {
-    const all = await tagsApi.getAll();
-    return all.slice(0, limit);
-  },
+  getPopular: async (limit = 12): Promise<TagSummary[]> => (await tagsApi.getAll()).slice(0, limit),
 
-  /** Top-level tags only (no parentTag) */
-  getTopLevel: async (): Promise<TagSummary[]> => {
-    const all = await tagsApi.getAll();
-    return all.filter((t) => !t.parentTag);
-  },
+  getTopLevel: async (): Promise<TagSummary[]> => (await tagsApi.getAll()).filter((t) => !t.parentTag),
 
-  /** Direct children of a given parent tag */
-  getChildren: async (parentTag: string): Promise<TagSummary[]> => {
-    const all = await tagsApi.getAll();
-    return all.filter((t) => t.parentTag === parentTag);
-  },
+  getChildren: async (parentTag: string): Promise<TagSummary[]> =>
+    (await tagsApi.getAll()).filter((t) => t.parentTag === parentTag),
 
-  /** The parent tag summary for a given tag, if any */
   getParent: async (tag: string): Promise<TagSummary | undefined> => {
     const all = await tagsApi.getAll();
     const current = all.find((t) => t.tag === tag);

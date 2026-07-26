@@ -1,8 +1,5 @@
-/**
- * Footer API — Footer data from mock or backend
- */
-
 import { apiClient } from './client';
+import { ENDPOINTS } from './endpoints';
 import { MOCK_FOOTER } from '@/data/mockData';
 
 export interface FooterLink {
@@ -30,6 +27,9 @@ export interface FooterData {
 export const footerApi = {
   getAll: async (): Promise<FooterData> => {
     if (apiClient.useMock) return MOCK_FOOTER as FooterData;
-    return apiClient.get<FooterData>('/api/footer');
+    try {
+      const res = await apiClient.get<{ data: FooterData }>(ENDPOINTS.footer.get);
+      return res.data ?? (MOCK_FOOTER as FooterData);
+    } catch { return MOCK_FOOTER as FooterData; }
   },
 };
