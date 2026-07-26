@@ -148,7 +148,7 @@ if ( ( '' !== $_ah_news_slug || $_ah_news_id > 0 ) && function_exists( 'adn_cms_
 					<?php /* Content */ ?>
 					<?php if ( '' !== $_nb_content ) : ?>
 						<div class="news-single-content article-body">
-							<?php echo wp_kses_post( $_nb_content ); ?>
+							<?php echo do_shortcode( wp_kses_post( $_nb_content ) ); ?>
 						</div>
 					<?php endif; ?>
 

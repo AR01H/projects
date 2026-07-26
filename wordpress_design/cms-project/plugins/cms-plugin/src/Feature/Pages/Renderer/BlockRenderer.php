@@ -131,7 +131,10 @@ class BlockRenderer {
 
 			// ── Cards grid ────────────────────────────────────────────────────────
 			case 'cards':
-				$cards      = $d['cards'] ?? array();
+				// $d['source'] opts into live data instead of the manually-typed $d['cards']
+				// array - e.g. 'latest_news' / 'latest_posts'. Unset or 'manual' (the
+				// default) keeps the original static behaviour exactly as before.
+				$cards      = self::resolveDynamicCards( $d ) ?? ( $d['cards'] ?? array() );
 				$cols       = max( 1, min( 4, (int) ( $d['cols'] ?? 3 ) ) );
 				$grid_class = $cols > 1 ? 'grid-' . $cols : '';
 				$sec_cls    = ( $d['bg'] ?? 'white' ) === 'alt' ? 'section section--alt' : 'section';
@@ -1010,5 +1013,58 @@ class BlockRenderer {
 				</section>
 				<?php break;
 		}
+	}
+
+	/**
+	 * Builds a $cards array from a live data source instead of the manually-typed
+	 * $d['cards'] array, for the 'cards' block. Returns null (fall back to the
+	 * static array) when $d['source'] is unset/'manual' or an unknown value.
+	 */
+	private static function resolveDynamicCards( array $d ): ?array {
+		$source = $d['source'] ?? 'manual';
+		if ( 'manual' === $source || '' === $source ) {
+			return null;
+		}
+		$limit = max( 1, (int) ( $d['source_limit'] ?? 4 ) );
+
+		if ( 'latest_news' === $source ) {
+			if ( ! function_exists( 'adn_cms_newsbar_items' ) ) {
+				return array();
+			}
+			$cards = array();
+			foreach ( adn_cms_newsbar_items( $limit ) as $n ) {
+				$cards[] = array(
+					'title'     => (string) ( $n->text ?? '' ),
+					'text'      => wp_trim_words( wp_strip_all_tags( (string) ( $n->excerpt ?: ( $n->content ?? '' ) ) ), 20 ),
+					'link_url'  => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( (int) $n->id, (string) ( $n->slug ?? '' ) ) : '',
+					'link_text' => 'Read more',
+				);
+			}
+			return $cards;
+		}
+
+		if ( 'latest_posts' === $source ) {
+			$q     = new \WP_Query( array(
+				'post_type'      => 'post',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+				'no_found_rows'  => true,
+			) );
+			$cards = array();
+			foreach ( $q->posts as $p ) {
+				$cards[] = array(
+					'title'     => get_the_title( $p ),
+					'text'      => wp_trim_words( wp_strip_all_tags( $p->post_excerpt ?: $p->post_content ), 20 ),
+					'link_url'  => get_permalink( $p ),
+					'link_text' => 'Read more',
+				);
+			}
+			wp_reset_postdata();
+			return $cards;
+		}
+
+		return null;
 	}
 }

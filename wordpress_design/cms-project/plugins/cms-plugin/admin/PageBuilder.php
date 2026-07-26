@@ -648,6 +648,8 @@ var BLOCK_DEFS = {
       { key:'cols',       label:'Columns',         type:'select', options:['2','3','4'], def:'3' },
       { key:'bg',         label:'Background',      type:'select', options:['white','alt'], def:'white' },
       { key:'card_style', label:'Card Style',      type:'select', options:['feat','value','plain'], def:'feat' },
+      { key:'source',       label:'Data Source', type:'select', options:['manual','latest_news','latest_posts'], def:'manual' },
+      { key:'source_limit', label:'Items to Show (when not Manual)', type:'text', ph:'4' },
     ],
     repeater: {
       key: 'cards', label: 'Cards', addLabel: '+ Add Card',

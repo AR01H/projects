@@ -24,7 +24,7 @@
         "class": "contact-guidance-card"
     },
     "contact": {
-        "icon": "fa-solid fa-envelope",
+        "icon": "fa-solid fa-phone",
         "heading": "Contact for Help",
         "description": "Have a general enquiry or need assistance? Send us your message and our team will get back to you shortly.",
         "button_label": "Contact Us",

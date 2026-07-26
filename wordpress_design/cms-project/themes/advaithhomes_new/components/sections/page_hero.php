@@ -99,8 +99,7 @@ $_hero_is_video = adn_is_video_url( $_hero_img );
 			}
 			?>
 			<?php if ( '' !== trim( wp_strip_all_tags( $_hero_desc ) ) ) : ?>
-				<?php /* Strip <p> tags from editor content to avoid nested <p><p>...</p></p> */ ?>
-				<p><?php echo wp_kses_post( wpautop( ( $_hero_desc ), false ) ); ?></p>
+				<span class="hero-desc"><?php echo wp_kses_post( $_hero_desc ); ?></span>
 			<?php endif; ?>
 
 			<?php adn_component( 'parts/hero_share', array( 'share' => $share ?? null ) ); ?>

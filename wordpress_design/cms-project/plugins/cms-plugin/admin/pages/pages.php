@@ -14,7 +14,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 		wp_trash_post( $edit_id );
 		$notice = 'Page moved to trash.'; $action = 'list'; $edit_id = 0;
 	} else {
-		$title    = sanitize_text_field( $_POST['page_title'] ?? '' );
+		$title    = sanitize_text_field( wp_unslash( $_POST['page_title'] ?? '' ) );
 		$slug     = sanitize_title( $_POST['page_slug'] ?: $title );
 		$status   = in_array( $_POST['page_status'] ?? 'draft', array( 'publish','draft','private','pending' ), true ) ? $_POST['page_status'] : 'draft';
 		$template = sanitize_text_field( $_POST['page_template'] ?? '' );
@@ -99,9 +99,14 @@ $all_templates  = array( '' => 'Default Template' ) + array_flip( get_page_templ
             return '<span class="ah-badge ah-badge-' . esc_attr( $badge[ $pg->post_status ] ?? 'draft' ) . '">' . esc_html( $label[ $pg->post_status ] ?? $pg->post_status ) . '</span>';
           } ),
           array( 'label' => 'Template', 'render' => function ( $pg ) use ( $all_templates_for_table ) {
-            $tpl      = get_page_template_slug( $pg->ID );
-            $tpl_name = $tpl ? ( $all_templates_for_table[ $tpl ] ?? basename( $tpl ) ) : 'Default';
-            return '<small>' . esc_html( $tpl_name ) . '</small>';
+            $tpl = get_page_template_slug( $pg->ID );
+            if ( ! $tpl ) {
+              return '<small style="color:var(--ah-muted);">— Default —</small>';
+            }
+            $tpl_name = $all_templates_for_table[ $tpl ] ?? basename( $tpl );
+            return '<span class="ah-badge ah-badge-new" title="Code-controlled: layout comes from the ' . esc_attr( $tpl ) . ' template file. Only the fields that template actually reads will affect this page.">'
+              . '<span class="dashicons dashicons-editor-code" style="font-size:12px;width:12px;height:12px;line-height:1.4;vertical-align:-1px;"></span> '
+              . esc_html( $tpl_name ) . '</span>';
           } ),
           array( 'label' => 'Modified', 'render' => function ( $pg ) {
             return '<small>' . esc_html( wp_date( 'M j, Y', strtotime( $pg->post_modified ) ) ) . '</small>';
@@ -193,12 +198,15 @@ $all_templates  = array( '' => 'Default Template' ) + array_flip( get_page_templ
           }
           $tpl_select .= '</select>';
           ob_start();
-          \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Template', $tpl_select );
+          \Ah\Cms\Admin\Components\AdminComponents::formRow( '', $tpl_select );
+          if ( $cur_tpl ) {
+            echo '<p style="font-size:12px;color:var(--ah-muted);margin:6px 0 0;">'
+              . '<span class="dashicons dashicons-editor-code" style="font-size:13px;width:13px;height:13px;vertical-align:-2px;"></span> '
+              . 'Code-controlled: this page\'s layout comes from <code>' . esc_html( $cur_tpl ) . '</code>. '
+              . 'Only the fields that template actually reads will affect what shows on the page.</p>';
+          }
+          \Ah\Cms\Admin\Components\AdminComponents::card( 'Template', ob_get_clean() );
           ?>
-          <div class="ah-card">
-            <div class="ah-card-header"><h2>Template</h2></div>
-            <?php echo ob_get_clean(); ?>
-          </div>
 
 
           <?php if ( $wp_page ) : ?>

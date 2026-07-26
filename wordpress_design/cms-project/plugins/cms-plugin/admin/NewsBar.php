@@ -11,14 +11,14 @@ $edit_id       = (int) ( $_GET['id'] ?? 0 );
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	if ( ! wp_verify_nonce( $_POST['ah_newsbar_nonce'] ?? '', 'ah_save_newsbar' ) ) wp_die( 'Security.' );
-	$_title       = sanitize_text_field( $_POST['text'] ?? '' );
+	$_title       = sanitize_text_field( wp_unslash( $_POST['text'] ?? '' ) );
 	$_slug_input  = sanitize_title( wp_unslash( $_POST['slug'] ?? '' ) );
 	$data = array(
-		'label'      => sanitize_text_field( $_POST['label'] ?? '' ),
+		'label'      => sanitize_text_field( wp_unslash( $_POST['label'] ?? '' ) ),
 		'text'       => $_title,
 		'slug'       => $model->unique_slug_from_title( $_slug_input ?: $_title, $edit_id ),
 		'excerpt'    => wp_kses_post( wp_unslash( $_POST['excerpt'] ?? '' ) ),
-		'content'    => wp_kses_post( $_POST['content'] ?? '' ),
+		'content'    => wp_kses_post( wp_unslash( $_POST['content'] ?? '' ) ),
 		'image_id'   => (int) ( $_POST['image_id'] ?? 0 ) ?: null,
 		'link_url'   => esc_url_raw( $_POST['link_url'] ?? '' ),
 		'link_target'=> in_array( $_POST['link_target'] ?? '_self', array( '_self', '_blank' ), true ) ? $_POST['link_target'] : '_self',

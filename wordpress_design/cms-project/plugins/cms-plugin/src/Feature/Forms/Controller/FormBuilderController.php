@@ -281,7 +281,7 @@ class FormBuilderController {
 		?>
 <style>
 @keyframes ah-spin{to{transform:rotate(360deg)}}
-.ah-fw{max-width:640px}
+.ah-fw{max-width:100%}
 .ah-fw .ah-sp{animation:ah-spin .8s linear infinite;display:none}
 .ah-fw .ah-req{color:#e53935;margin-left:2px}
 /* Form fields */
@@ -289,7 +289,7 @@ class FormBuilderController {
 .ch-form-label{display:block;font-size:14px;font-weight:600;color:#1f2937;margin-bottom:7px}
 .ch-form-input,
 .ch-form-textarea,
-.ch-form-select{width:100%;padding:12px 16px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;font-family:inherit;color:#111827;background:#fff;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;outline:none;appearance:none}
+.ch-form-select{width:100%;padding:6px 8px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;font-family:inherit;color:#111827;background:#fff;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;outline:none;appearance:none}
 .ch-form-input:focus,
 .ch-form-textarea:focus,
 .ch-form-select:focus{border-color:#1a3c5e;box-shadow:0 0 0 3px rgba(26,60,94,.1)}
@@ -303,7 +303,8 @@ class FormBuilderController {
 .ch-form-submit:active{transform:scale(.98)}
 .ch-form-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
 /* Feedback messages */
-.ch-form-feedback{display:none;border-radius:8px;padding:12px 16px;font-size:14px;margin-bottom:16px}
+.ch-form-feedback{display:none;border-radius:8px;padding:6px 8px;font-size:14px;margin-bottom:0}
+.ch-form-feedback + .ch-form-feedback{margin-top:10px}
 .ch-form-feedback.success{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
 .ch-form-feedback.error{display:block;background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
 /* Agreement section */
@@ -311,14 +312,19 @@ class FormBuilderController {
 .ch-agr-iframe-wrap{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:14px}
 .ch-agr-iframe{width:100%;height:240px;border:none;display:block}
 .ch-form-agreement .ch-agreement-label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:14px;line-height:1.6;font-weight:400;color:#374151}
-.ch-form-agreement .ch-agreement-chk{margin-top:3px;flex-shrink:0;width:17px;height:17px;cursor:pointer;accent-color:#1a3c5e}
+/* Agreement toggle switch (replaces the plain checkbox) */
+.ch-toggle-switch{position:relative;display:inline-block;flex-shrink:0;width:40px;height:22px;margin-top:1px}
+.ch-toggle-switch .ch-agreement-chk{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+.ch-toggle-track{position:absolute;inset:0;background:#d1d5db;border-radius:999px;transition:background .15s}
+.ch-toggle-track::before{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.ch-toggle-switch .ch-agreement-chk:checked + .ch-toggle-track{background:var(--client-color,#1a3c5e)}
+.ch-toggle-switch .ch-agreement-chk:checked + .ch-toggle-track::before{transform:translateX(18px)}
+.ch-toggle-switch .ch-agreement-chk:focus-visible + .ch-toggle-track{box-shadow:0 0 0 3px var(--client-color,#1a3c5e)}
 .ch-terms-link{color:#1a3c5e;text-decoration:underline;font-weight:600;margin-left:3px;margin-right:3px}
 .ch-terms-link:hover{color:#15304d}
 </style>
 
 <div class="ah-fw" id="<?php echo esc_attr( $uid ); ?>">
-  <div class="ch-form-feedback" role="alert"><span></span></div>
-  <div class="ch-form-feedback" role="alert"><span></span></div>
 
   <form novalidate>
     <input type="hidden" name="nonce"   value="<?php echo esc_attr( $nonce ); ?>">
@@ -399,7 +405,7 @@ class FormBuilderController {
       $agr_url  = $agr['url'];
       $agr_type = $agr['type'];
     ?>
-    <div style="margin-bottom:20px">
+    <div style="margin-bottom:14px">
       <?php if ( $agr_type === 'iframe' && $agr_url ) : ?>
         <div class="ch-agr-iframe-wrap">
           <iframe class="ch-agr-iframe" src="<?php echo esc_url( $agr_url ); ?>" loading="lazy" title="<?php echo esc_attr( $agr['link_text'] ); ?>"></iframe>
@@ -407,7 +413,10 @@ class FormBuilderController {
       <?php endif; ?>
       <div class="ch-form-group ch-form-agreement" style="margin-bottom:0">
         <label class="ch-agreement-label" for="<?php echo $agr_uid; ?>">
-          <input type="checkbox" class="ch-agreement-chk" id="<?php echo $agr_uid; ?>" name="ah_agreement" value="1" required>
+          <span class="ch-toggle-switch">
+            <input type="checkbox" class="ch-agreement-chk" id="<?php echo $agr_uid; ?>" name="ah_agreement" value="1" required>
+            <span class="ch-toggle-track"></span>
+          </span>
           <span>
             <?php if ( $agr['before'] ) echo esc_html( $agr['before'] ); ?>
             <?php if ( $agr_url && $agr_type === 'link' ) : ?>
@@ -463,12 +472,15 @@ class FormBuilderController {
     <?php endif; ?>
 
     <?php $submit_label = ! empty( $form->submit_label ) ? $form->submit_label : 'Send Message'; ?>
-    <div>
-      <button type="submit" class="ch-form-submit ah-sb">
+    <div style="margin-bottom:14px">
+      <button type="submit" class="ch-form-submit ah-sb btn btn-primary">
         <svg class="ah-sp" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10" stroke-dasharray="31 62"/></svg>
         <span class="ah-bt"><?php echo esc_html( $submit_label ); ?></span>
       </button>
     </div>
+
+    <div class="ch-form-feedback" role="alert"><span></span></div>
+    <div class="ch-form-feedback" role="alert"><span></span></div>
   </form>
 </div>
 
@@ -483,6 +495,11 @@ class FormBuilderController {
   var fb  = w.querySelectorAll('.ch-form-feedback');
   var sc  = fb[0];
   var ec  = fb[1];
+  var agr = w.querySelector('.ch-agreement-chk');
+  if (agr) {
+    btn.disabled = !agr.checked;
+    agr.addEventListener('change', function () { btn.disabled = !agr.checked; });
+  }
   function msg(el, type, txt) {
     sc.className = 'ch-form-feedback';
     ec.className = 'ch-form-feedback';
@@ -509,12 +526,12 @@ class FormBuilderController {
         btn.disabled = true; btt.textContent = 'Sent'; sp.style.display = 'none'; btn.style.opacity = '0.55'; btn.style.cursor = 'not-allowed';
       } else {
         msg(ec, 'error', r.data && r.data.message ? r.data.message : 'Something went wrong.');
-        btn.disabled = false; btt.textContent = '<?php echo esc_js( $submit_label ); ?>'; sp.style.display = 'none';
+        btn.disabled = agr ? !agr.checked : false; btt.textContent = '<?php echo esc_js( $submit_label ); ?>'; sp.style.display = 'none';
       }
     })
     .catch(function(){
       msg(ec, 'error', 'Network error. Please try again.');
-      btn.disabled = false; btt.textContent = 'Send Message'; sp.style.display = 'none';
+      btn.disabled = agr ? !agr.checked : false; btt.textContent = 'Send Message'; sp.style.display = 'none';
     });
   });
 })();

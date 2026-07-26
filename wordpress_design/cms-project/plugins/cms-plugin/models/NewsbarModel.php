@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 class AH_Newsbar_Model extends AH_Model_Base {
 
 	protected string $table_suffix = 'news_bar_items';
-	protected int $per_page = 5;
+	protected int $per_page = 16;
 
 	public function get_active(): array {
 		global $wpdb;
