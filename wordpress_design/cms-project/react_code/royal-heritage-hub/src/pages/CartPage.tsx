@@ -20,11 +20,11 @@ export default function CartPage() {
 
   const appliedCoupon = useCouponStore((s) => s.appliedCoupon);
   const couponError = useCouponStore((s) => s.error);
-  const applyCoupon = useCouponStore((s) => s.apply);
+  const applyCoupon = useCouponStore((s) => s.validate);
   const [couponInput, setCouponInput] = useState('');
 
   function handleApplyCoupon() {
-    applyCoupon(couponInput);
+    applyCoupon(couponInput, subtotal, items.length);
     setCouponInput('');
   }
 

@@ -16,7 +16,7 @@ export function ArtisanSpotlight() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    productsApi.getAll().then(({ data }) => { if (data) setProducts(data); });
+    productsApi.getAll().then((data) => { if (data) setProducts(data); });
   }, []);
 
   const artisans = useMemo<Artisan[]>(() => {

@@ -77,7 +77,7 @@ function NavItem({
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     clearTimeout(timerRef.current);

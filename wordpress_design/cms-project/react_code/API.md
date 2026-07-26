@@ -143,20 +143,14 @@ interface ProductFilters {
 | `addItem(product, quantity?, variantId?)` | `Product, number, string?` | `CartItem[]` |
 | `updateQuantity(itemId, quantity)` | `string, number` | `CartItem[]` |
 | `removeItem(itemId)` | `string` | `CartItem[]` |
-| `clear()` | — | `void` |
 
-### Wishlist (`src/api/wishlist.ts` + `src/api/wishlistEnhanced.ts`)
+### Wishlist (`src/api/wishlist.ts`)
 
 | Method | Parameters | Returns |
 |--------|-----------|---------|
-| `get()` | — | `WishlistItem[]` |
-| `add(product, notes?)` | `Product, string?` | `WishlistItem[]` |
-| `remove(productId)` | `string` | `WishlistItem[]` |
-| `toggle(product)` | `Product` | `{ added, items }` |
-| `moveToCart(productId, cartApi)` | `string, any` | `{ wishlist, cart }` |
-| `clear()` | — | `void` |
-| `generateShareLink()` | — | `string` |
-| `loadShared(idsParam)` | `string` | `WishlistItem[]` |
+| `get()` | — | `Product[]` |
+| `add(product)` | `Product` | `Product[]` |
+| `remove(productId)` | `string` | `Product[]` |
 
 ### Coupons (`src/api/coupons.ts`)
 
@@ -454,8 +448,8 @@ interface ProductFilters {
 | Banners | `/banners`, `/banners/hero`, `/banners/promo`, `/banners/page/:key` | — | — | — |
 | Blog | `/blog/posts`, `/blog/posts/:slug`, `/blog/posts/:slug/related`, `/blog/categories`, `/blog/tags` | — | — | — |
 | Reviews | `/reviews`, `/reviews/stats` | `/products/:id/reviews` | — | — |
-| Cart | `/cart` | `/cart/items` | `/cart/items/:id` | `/cart/items/:id`, `/cart` |
-| Wishlist | `/wishlist` | `/wishlist/items`, `/wishlist/toggle`, `/wishlist/shared` | `/wishlist/items/:id` | `/wishlist/items/:id`, `/wishlist` |
+| Cart | `/cart` | `/cart/items` | `/cart/items/:id` | `/cart/items/:id` |
+| Wishlist | `/wishlist` | `/wishlist/items` | — | `/wishlist/items/:id` |
 | Coupons | `/coupons` | `/coupons/validate`, `/coupons/apply` | — | — |
 | Auth | `/auth/me` | `/auth/login`, `/auth/register`, `/auth/logout` | `/auth/me` | — |
 | Orders | `/orders`, `/orders/:id`, `/orders/:id/tracking` | `/orders` | `/orders/:id/cancel` | — |

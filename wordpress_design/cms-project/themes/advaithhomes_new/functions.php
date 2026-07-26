@@ -106,6 +106,22 @@ if ( is_admin() ) {
 }
 
 // ===========================
+// OOP CLASSES (loaded before their wrapper files)
+// ===========================
+require_once ADN_THEME_DIR . '/src/Feature/Ajax/ExpertAjaxHandler.php';
+require_once ADN_THEME_DIR . '/src/Feature/Ajax/PostAjaxHandler.php';
+require_once ADN_THEME_DIR . '/src/Feature/Ajax/CommentAjaxHandler.php';
+require_once ADN_THEME_DIR . '/src/Feature/Frontend/FloatingContactRenderer.php';
+require_once ADN_THEME_DIR . '/src/Feature/Frontend/SiteNoticeRenderer.php';
+require_once ADN_THEME_DIR . '/src/Feature/Frontend/ScrollRevealHandler.php';
+require_once ADN_THEME_DIR . '/src/Feature/Cache/ThemeCacheHandler.php';
+require_once ADN_THEME_DIR . '/src/Feature/Filters/CacheBustingFilter.php';
+require_once ADN_THEME_DIR . '/src/Feature/Shortcodes/ThemeShortcodes.php';
+require_once ADN_THEME_DIR . '/src/Feature/Calculators/CalculatorMergeHelper.php';
+require_once ADN_THEME_DIR . '/src/Helper/SidebarHelper.php';
+require_once ADN_THEME_DIR . '/src/Service/SeoService.php';
+
+// ===========================
 // COMMON FUNCTIONS (organized by concern)
 // ===========================
 require_once ADN_THEME_DIR . '/common/cache/ThemeCache.php';

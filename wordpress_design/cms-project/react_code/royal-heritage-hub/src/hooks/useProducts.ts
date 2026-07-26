@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { productsApi, type ProductFilters } from '@/api/products';
 import type { Product } from '@/types/product';
 

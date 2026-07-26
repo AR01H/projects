@@ -15,14 +15,13 @@ import { SearchAutocomplete } from '@/components/common/SearchAutocomplete';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [scrollDir, setScrollDir] = useState<'up' | 'down'>('up');
   const lastScrollY = useRef(0);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState<string | null>(null);
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
-  const megaMenuTimeout = useRef<ReturnType<typeof setTimeout>>();
+  const megaMenuTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const headerRef = useRef<HTMLElement>(null);
 
   const itemCount = useCartStore((s) => s.itemCount());
@@ -33,9 +32,6 @@ export function Header() {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 12);
-      if (y > 80) {
-        setScrollDir(y > lastScrollY.current ? 'down' : 'up');
-      }
       lastScrollY.current = y;
     };
     window.addEventListener('scroll', onScroll, { passive: true });

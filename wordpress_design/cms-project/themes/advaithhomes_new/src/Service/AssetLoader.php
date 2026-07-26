@@ -238,7 +238,7 @@ class AssetLoader {
 		}
 
 		if ( $template === 'PageNewsall' ) {
-			\wp_localize_script( 'adn-page-newsall-script', 'adnNews', [
+			\wp_localize_script( 'adn-PageNewsall-script', 'adnNews', [
 				'apiBase'    => \rest_url( ADN_API_NS . '/news' ),
 				'restNonce'  => \wp_create_nonce( 'wp_rest' ),
 				'defaultImg' => \get_template_directory_uri() . THEME_DEFAULT_NEWS_IMG . '?v=' . LOCAL_CACHE_VERSION,
@@ -254,7 +254,7 @@ class AssetLoader {
 		}
 
 		if ( $template === 'PageAskExpert' ) {
-			\wp_localize_script( 'adn-page-ask-expert-script', 'adnExpert', [
+			\wp_localize_script( 'adn-PageAskExpert-script', 'adnExpert', [
 				'ajaxUrl'     => \admin_url( 'admin-ajax.php' ),
 				'nonce'       => \wp_create_nonce( 'adn_expert_contact' ),
 				'unlockNonce' => \wp_create_nonce( 'adn_expert_unlock' ),

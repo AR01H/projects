@@ -239,6 +239,7 @@ class CategoryContext {
 				'items' => self::cmsNews( $slug, 4 ),
 			),
 			'contact' => $cs_sidebar['contact'] ?? array(),
+			'sidebar_cards' => \Adn\Theme\Shared\SidebarBuilder::sidebarCards( array( 'experts' ) ),
 		);
 	}
 

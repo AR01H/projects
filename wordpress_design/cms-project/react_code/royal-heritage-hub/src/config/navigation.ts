@@ -40,7 +40,7 @@ function buildLevel4Tags(categorySlug: string): NavItem[] {
 }
 
 function buildLevel3Subcategories(parentSlug: string): NavItem[] {
-  return categories
+  return MOCK_CATEGORIES
     .filter((c) => c.parentSlug === parentSlug)
     .map((c) => ({
       label: c.name,
@@ -51,7 +51,7 @@ function buildLevel3Subcategories(parentSlug: string): NavItem[] {
 }
 
 function buildLevel2Categories(): NavItem[] {
-  const topLevel = categories.filter((c) => !c.parentSlug);
+  const topLevel = MOCK_CATEGORIES.filter((c) => !c.parentSlug);
   return topLevel.map((c) => ({
     label: c.name,
     href: buildRoute(ROUTES.category, { categorySlug: c.slug }),
@@ -61,7 +61,7 @@ function buildLevel2Categories(): NavItem[] {
 }
 
 function buildCollectionsMenu(): NavItem[] {
-  return collections.map((col) => ({
+  return MOCK_COLLECTIONS.map((col) => ({
     label: col.name,
     href: buildRoute(ROUTES.collection, { collectionSlug: col.slug }),
     image: col.image,

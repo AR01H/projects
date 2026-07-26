@@ -21,6 +21,12 @@ export const PICKLE_SITE_CONFIG: SiteConfig = {
     productProcessNoun: 'Recipe',
     productUnitSingular: 'jar',
     productUnitPlural: 'jars',
+    heritageWord: 'Tradition',
+    originWord: 'Indian',
+    makersPlural: 'Makers',
+    regionsWord: 'Regions',
+    certificationWord: 'Organic',
+    curatedWord: 'Selected',
   },
   story: {
     heroEyebrow: "Lakshmi's Kitchen",

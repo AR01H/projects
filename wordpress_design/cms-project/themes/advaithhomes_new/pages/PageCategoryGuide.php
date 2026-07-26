@@ -182,9 +182,9 @@ adn_component( 'sections/page_hero', array(
 				<?php adn_component( 'parts/sidebar_featured_topics', array( 'featured_topics' => $ctx['sidebar']['featured_topics'] ) ); ?>
 			<?php endif; ?>
 
-			<?php /* ── Expert Help / Need Help From a Professional? ── */ ?>
-			<?php if ( ! empty( $ctx['sidebar']['expert_help'] ) ) : ?>
-				<?php adn_component( 'parts/sidebar_expert_help', array( 'expert_help' => $ctx['sidebar']['expert_help'] ) ); ?>
+			<?php /* ── Sidebar Cards (guides, experts, guidance, contact, news, calculators) ── */ ?>
+			<?php if ( ! empty( $ctx['sidebar']['sidebar_cards'] ) ) : ?>
+				<?php adn_component( 'parts/sidebar_cards', array( 'sidebar_cards' => $ctx['sidebar']['sidebar_cards'] ) ); ?>
 			<?php endif; ?>
 
 			<?php /* ── Quick Links ── */ ?>

@@ -50,7 +50,7 @@ adn_page_open( $_open_ctx );
 <?php endif; ?>
 
 <?php /* ============================== SEARCH BAR ============================== */ ?>
-<!-- <?php adn_component( 'sections/tools_search_bar', array( 'search' => $ctx['search'] ) ); ?> -->
+<?php // adn_component( 'sections/tools_search_bar', array( 'search' => $ctx['search'] ?? '' ) ); ?>
 
 <?php /* ============================== POPULAR / QUICK ACCESS ============================== */ ?>
 <?php if ( ! empty( $ctx['popular_tools'] ) ) : ?>

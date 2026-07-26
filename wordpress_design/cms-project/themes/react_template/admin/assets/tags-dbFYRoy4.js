@@ -1,0 +1,1 @@
+import{_ as e,v as t,y as n}from"./index-CNlV_oGq.js";async function r(){return t.useMock?e:t.get(`/api/admin/tags`)}var i={getAll:()=>n(r),create:e=>n(async()=>t.useMock?{...e}:t.post(`/api/admin/tags`,e)),update:(e,r)=>n(async()=>t.useMock?r:t.put(`/api/admin/tags/${e}`,r)),delete:e=>n(async()=>t.useMock?!0:t.delete(`/api/admin/tags/${e}`))};export{i as t};

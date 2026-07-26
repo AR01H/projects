@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { APP_NAME, CONTACT, COPYRIGHT_YEAR } from '@/config/constants';
 import { SITE_CONFIG } from '@/config/site';
@@ -21,7 +21,7 @@ const PAYMENT_ICONS: Record<string, string> = {
   cod: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z',
 };
 
-const TRUST_ICONS: Record<string, JSX.Element> = {
+const TRUST_ICONS: Record<string, React.ReactNode> = {
   handcrafted: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
       <path d="M18 8c0 3.31-2.69 6-6 6s-6-2.69-6-6 2.69-6 6-6 6 2.69 6 6z" />

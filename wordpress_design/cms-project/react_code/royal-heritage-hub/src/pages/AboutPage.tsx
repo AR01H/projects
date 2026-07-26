@@ -59,7 +59,7 @@ export default function AboutPage() {
   const [certifications, setCertifications] = useState<CertificationEntry[]>([]);
 
   useEffect(() => {
-    certificationsApi.getAll().then(({ data }) => { if (data) setCertifications(data); });
+    certificationsApi.getAll().then((data) => { if (data) setCertifications(data); });
   }, []);
 
   return (

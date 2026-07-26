@@ -1,0 +1,120 @@
+<?php
+namespace Adn\Theme\Feature\Shortcodes;
+
+defined( 'ABSPATH' ) || exit;
+
+class ThemeShortcodes {
+
+	public static function getParentTermCalculatorCards( $parent_slug, $limit = 0 ) {
+		$parent_slug = sanitize_key( (string) $parent_slug );
+		if ( '' === $parent_slug || ! function_exists( 'adn_calculators' ) ) {
+			return array();
+		}
+
+		$all_tools = adn_calculators();
+		$meta_all  = get_option( 'adn_calculators_meta', array() );
+		$items     = array();
+		$parent_slug_lc = strtolower( $parent_slug );
+
+		$cat_selected = array();
+		if ( class_exists( 'AH_Category_Settings' ) ) {
+			$cs_all = \AH_Category_Settings::get_all( $parent_slug );
+			$cs_calc = $cs_all['calculators'] ?? array();
+			$cat_selected = isset( $cs_calc['selected_keys'] ) && is_array( $cs_calc['selected_keys'] ) ? $cs_calc['selected_keys'] : array();
+		}
+
+		foreach ( $all_tools as $ckey => $creg ) {
+			$cmeta = isset( $meta_all[ $ckey ] ) && is_array( $meta_all[ $ckey ] ) ? $meta_all[ $ckey ] : array();
+			if ( array_key_exists( 'enabled', $cmeta ) && empty( $cmeta['enabled'] ) ) {
+				continue;
+			}
+			if ( ! empty( $cmeta['hidden_from_listing'] ) ) {
+				continue;
+			}
+
+			if ( ! empty( $cat_selected ) ) {
+				$matched = in_array( $ckey, $cat_selected, true );
+			} else {
+				$_pt_list = ! empty( $cmeta['parent_terms'] ) && is_array( $cmeta['parent_terms'] ) ? $cmeta['parent_terms'] : array();
+				$_pt_lc = array_map( 'strtolower', array_map( 'trim', $_pt_list ) );
+				$matched = in_array( $parent_slug_lc, $_pt_lc, true );
+			}
+
+			if ( ! $matched ) {
+				continue;
+			}
+
+			$thumb = '';
+			if ( ! empty( $cmeta['thumbnail_id'] ) ) {
+				$t = wp_get_attachment_image_url( (int) $cmeta['thumbnail_id'], 'thumbnail' );
+				$thumb = $t ? (string) $t : '';
+			}
+
+			$desc = '';
+			if ( ! empty( $cmeta['desc'] ) ) {
+				$desc = wp_strip_all_tags( (string) $cmeta['desc'] );
+			} elseif ( ! empty( $cmeta['description'] ) ) {
+				$desc = wp_strip_all_tags( (string) $cmeta['description'] );
+			} elseif ( ! empty( $creg['description'] ) ) {
+				$desc = wp_strip_all_tags( (string) $creg['description'] );
+			}
+			if ( $desc !== '' ) {
+				$desc = wp_trim_words( $desc, 12 );
+			}
+
+			$items[] = array(
+				'key'       => sanitize_key( $ckey ),
+				'icon'      => ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $creg['icon'] ) ? (string) $creg['icon'] : '🧮' ),
+				'label'     => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $creg['title'] ) ? (string) $creg['title'] : $ckey ),
+				'desc'      => $desc,
+				'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : adn_calc_page_url( $ckey ),
+				'thumbnail' => $thumb,
+				'highlight' => ! empty( $cmeta['highlight'] ) ? (string) $cmeta['highlight'] : '',
+			);
+
+			if ( $limit > 0 && count( $items ) >= $limit ) {
+				break;
+			}
+		}
+
+		return $items;
+	}
+
+	public static function catCalculators( $atts ) {
+		$atts = shortcode_atts( array( 'slug' => '' ), $atts, 'adn_cat_calculators' );
+		$slug = sanitize_key( $atts['slug'] );
+		if ( ! $slug ) {
+			return '';
+		}
+
+		$items = self::getParentTermCalculatorCards( $slug );
+		if ( empty( $items ) ) {
+			return '';
+		}
+
+		ob_start();
+		echo '<div class="tool-grid tool-grid--7col">';
+		foreach ( $items as $card ) {
+			adn_component( 'cards/tool_card', array( 'card' => array(
+				'icon' => $card['icon'],
+				'name' => $card['label'],
+				'desc' => $card['desc'] ?? '',
+				'url'  => $card['url'],
+			) ) );
+		}
+		echo '</div>';
+		return ob_get_clean();
+	}
+
+	public static function cookiePreferences( $atts ) {
+		ob_start();
+		?>
+		<div class="adn-cookie-prefs-embed">
+			<div data-adn-cookie-prefs="embed">
+				<noscript><?php esc_html_e( 'Enable JavaScript to manage your cookie preferences.', ADN_TEXT_DOMAIN ); ?></noscript>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+}

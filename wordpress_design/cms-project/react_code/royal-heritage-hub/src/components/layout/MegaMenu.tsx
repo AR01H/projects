@@ -10,7 +10,7 @@ interface MegaMenuProps {
 
 export function MegaMenu({ items, isOpen, onClose }: MegaMenuProps) {
   const [activeL2, setActiveL2] = useState<string | null>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     if (!isOpen) {
@@ -21,10 +21,6 @@ export function MegaMenu({ items, isOpen, onClose }: MegaMenuProps) {
   function handleL2Enter(label: string) {
     clearTimeout(timeoutRef.current);
     setActiveL2(label);
-  }
-
-  function handleL2Leave() {
-    timeoutRef.current = setTimeout(() => setActiveL2(null), 150);
   }
 
   if (!isOpen) return null;

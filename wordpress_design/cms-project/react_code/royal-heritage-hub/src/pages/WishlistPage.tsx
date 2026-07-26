@@ -15,7 +15,7 @@ import { SEO } from '@/components/common/SEO';
 export default function WishlistPage() {
   const items = useWishlistStore((s) => s.items);
   const isLoading = useWishlistStore((s) => s.isLoading);
-  const remove = useWishlistStore((s) => s.remove);
+  const toggle = useWishlistStore((s) => s.toggle);
   const addItem = useCartStore((s) => s.addItem);
   const [copied, setCopied] = useState(false);
   const [movingId, setMovingId] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export default function WishlistPage() {
     if (!product) return;
     setMovingId(productId);
     await addItem(product, 1);
-    await remove(productId);
+    await toggle(product);
     setMovingId(null);
   }
 
@@ -99,7 +99,7 @@ export default function WishlistPage() {
                       </Link>
 
                       <div className="mt-1.5">
-                        <Rating value={product.rating} reviewCount={product.reviewCount} size="xs" />
+                        <Rating value={product.rating} reviewCount={product.reviewCount} size="sm" />
                       </div>
 
                       <div className="mt-2 flex items-baseline gap-2">
@@ -126,7 +126,7 @@ export default function WishlistPage() {
                           {isOutOfStock ? texts.product.outOfStock : 'Move to Cart'}
                         </Button>
                         <button
-                          onClick={() => remove(product.id)}
+                          onClick={() => { const p = items.find((i) => i.id === product.id); if (p) toggle(p); }}
                           className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-danger)] hover:text-[var(--color-danger)]"
                           aria-label="Remove from wishlist"
                         >

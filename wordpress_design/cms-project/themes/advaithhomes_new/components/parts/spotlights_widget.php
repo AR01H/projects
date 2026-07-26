@@ -43,8 +43,6 @@ $rows = $wpdb->get_results( $wpdb->prepare(
 
 if ( empty( $rows ) ) { return; }
 
-$_heading = '' !== $_sp_title ? $_sp_title : (string) $term->name;
-
 if ( $_is_compact ) {
 
 	?>
@@ -64,10 +62,8 @@ if ( $_is_compact ) {
 				<?php else : ?>
 				<div class="sp-metric-card" title="<?php echo esc_attr( $_title ); ?>">
 				<?php endif; ?>
-					<div class="sp-metric-card__body">
-						<?php if ( '' !== $_tag ) : ?>
-							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
-						<?php endif; ?>
+				<div class="sp-metric-card__body">
+						<span class="sp-metric-card__label"><?php echo esc_attr( $_title ); ?></span>
 						<?php if ( '' !== $_val || '' !== $_lbl ) : ?>
 							<div class="sp-metric-detail_label">
 								<?php if ( '' !== $_val ) : ?>
@@ -77,6 +73,9 @@ if ( $_is_compact ) {
 									<span class="sp-metric-card__meta"><?php echo esc_html( $_lbl ); ?></span>
 								<?php endif; ?>
 							</div>
+						<?php endif; ?>
+						<?php if ( '' !== $_tag ) : ?>
+							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
 						<?php endif; ?>
 						<?php if ( ! empty( $_sp->link_label ) ) : ?>
 							<span class="spotlight-card__link-label"><?php echo esc_html( (string) $_sp->link_label ); ?><?php if ( $_url ) : ?> <i class="fa-solid fa-arrow-right" aria-hidden="true" style="font-size:0.7em;"></i><?php endif; ?></span>

@@ -38,6 +38,75 @@ $search_value       = get_search_query();
 // needed): returns published posts/pages matching the typed query. Passed as a
 // data-attribute so the JS works under both pretty and plain permalinks.
 $search_suggest = function_exists( 'rest_url' ) ? esc_url( rest_url( 'wp/v2/search' ) ) : '';
+
+/* ── Short News Ticker (above header, home page only) ── */
+$_sn_ticker_html = '';
+if ( is_front_page() ) {
+    $_sn_settings = get_option( 'adn_home_sections', array() );
+    $_sn_raw      = isset( $_sn_settings['short_news_items'] ) ? (string) $_sn_settings['short_news_items'] : '';
+    if ( '' !== trim( $_sn_raw ) ) {
+        $_sn_items = array();
+        foreach ( array_filter( array_map( 'trim', explode( "\n", $_sn_raw ) ) ) as $_line ) {
+            $_parts   = explode( '|', $_line, 3 );
+            $_sn_title = trim( $_parts[0] ?? '' );
+            $_sn_url   = trim( $_parts[1] ?? '#' );
+            $_sn_icon  = trim( $_parts[2] ?? '' );
+            if ( '' !== $_sn_title ) {
+                $_sn_items[] = array( 'title' => $_sn_title, 'url' => $_sn_url, 'icon' => $_sn_icon );
+            }
+        }
+        if ( ! empty( $_sn_items ) ) {
+            ob_start();
+?>
+<div class="short-news-ticker">
+    <div class="container">
+        <div class="short-news-ticker__inner">
+            <div class="short-news-ticker__track" id="shortNewsTicker">
+                <?php foreach ( $_sn_items as $_sn ) : ?>
+                    <a href="<?php echo esc_url( $_sn['url'] ); ?>" class="short-news-ticker__item">
+                        <?php if ( '' !== $_sn['icon'] ) : ?>
+                            <i class="<?php echo esc_attr( $_sn['icon'] ); ?>" aria-hidden="true"></i>
+                        <?php endif; ?>
+                        <span><?php echo wp_kses_post( $_sn['title'] ); ?></span>
+                    </a>
+                <?php endforeach; ?>
+                <?php foreach ( $_sn_items as $_sn ) : ?>
+                    <a href="<?php echo esc_url( $_sn['url'] ); ?>" class="short-news-ticker__item" aria-hidden="true">
+                        <?php if ( '' !== $_sn['icon'] ) : ?>
+                            <i class="<?php echo esc_attr( $_sn['icon'] ); ?>" aria-hidden="true"></i>
+                        <?php endif; ?>
+                        <span><?php echo wp_kses_post( $_sn['title'] ); ?></span>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+(function(){
+    var track = document.getElementById('shortNewsTicker');
+    if (!track) return;
+    var speed = 30, isPaused = false, pos = 0;
+    function scroll() {
+        if (isPaused) { requestAnimationFrame(scroll); return; }
+        pos -= speed / 60;
+        if (Math.abs(pos) >= track.scrollWidth / 2) pos = 0;
+        track.style.transform = 'translateX(' + pos + 'px)';
+        requestAnimationFrame(scroll);
+    }
+    track.addEventListener('mouseenter', function(){ isPaused = true; });
+    track.addEventListener('mouseleave', function(){ isPaused = false; });
+    track.addEventListener('touchstart', function(){ isPaused = true; }, {passive:true});
+    track.addEventListener('touchend', function(){ isPaused = false; });
+    scroll();
+})();
+</script>
+<?php
+            $_sn_ticker_html = ob_get_clean();
+        }
+    }
+}
+echo $_sn_ticker_html;
 ?>
 <header class="site-header" id="siteHeader">
     <div class="container">

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Reveal } from '@/components/common/Reveal';
 import { SITE_CONFIG } from '@/config/site';

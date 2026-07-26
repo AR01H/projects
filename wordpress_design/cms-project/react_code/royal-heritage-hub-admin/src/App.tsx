@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { AdminLayout } from '@/components/Layout';
 
@@ -34,7 +34,7 @@ export default function App() {
   useEffect(() => { init(); }, [init]);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path={`${BASE}/login`} element={<LoginPage />} />
@@ -57,6 +57,6 @@ export default function App() {
           <Route path="*" element={<Navigate to={`${BASE}/dashboard`} replace />} />
         </Routes>
       </Suspense>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

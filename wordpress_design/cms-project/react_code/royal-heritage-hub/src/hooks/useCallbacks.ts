@@ -15,7 +15,7 @@ import type { Product } from '@/types/product';
 // ─── Mega Menu Callbacks ───
 
 export function useMegaMenuCallbacks() {
-  const megaMenuTimeout = useRef<ReturnType<typeof setTimeout>>();
+  const megaMenuTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const setMegaMenuOpen = useRef<(val: string | null) => void>(() => {});
 
   const handleMegaEnter = useCallback((label: string) => {
@@ -55,7 +55,7 @@ export function useCartCallbacks() {
   }, [updateQuantity]);
 
   const handleClearCart = useCallback(async () => {
-    await useCartStore.getState().clear?.();
+    await useCartStore.getState().removeItem;
   }, []);
 
   return { handleAddToCart, handleRemoveFromCart, handleUpdateQuantity, handleClearCart, toggleCart };
@@ -64,30 +64,25 @@ export function useCartCallbacks() {
 // ─── Wishlist Callbacks ───
 
 export function useWishlistCallbacks() {
-  const addItem = useWishlistStore((s) => s.addItem);
-  const remove = useWishlistStore((s) => s.remove);
+  const toggle = useWishlistStore((s) => s.toggle);
   const items = useWishlistStore((s) => s.items);
 
   const handleToggleWishlist = useCallback(async (product: Product) => {
-    const isWishlisted = items.some((p) => p.id === product.id);
-    if (isWishlisted) {
-      await remove(product.id);
-    } else {
-      await addItem(product);
-    }
-  }, [items, addItem, remove]);
+    await toggle(product);
+  }, [toggle]);
 
   const handleRemoveFromWishlist = useCallback(async (productId: string) => {
-    await remove(productId);
-  }, [remove]);
+    const product = items.find((p) => p.id === productId);
+    if (product) await toggle(product);
+  }, [items, toggle]);
 
   const handleMoveToCart = useCallback(async (productId: string) => {
     const product = items.find((p) => p.id === productId);
     if (!product) return;
     const addItemCart = useCartStore.getState().addItem;
     await addItemCart(product, 1);
-    await remove(productId);
-  }, [items, remove]);
+    await toggle(product);
+  }, [items, toggle]);
 
   const isWishlisted = useCallback((productId: string) => {
     return items.some((p) => p.id === productId);

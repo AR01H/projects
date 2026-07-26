@@ -141,12 +141,12 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
           if ( $pt_item ) $pt_form_args['id'] = $edit_id;
           $pt_img_id  = $pt_item ? (int) ( $pt_item->image_id ?? 0 ) : 0;
         ?>
-        <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:16px;">
-          <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'parent-terms' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
-          <button type="submit" name="save_parent_term" value="1" class="ah-btn ah-btn-primary">Save</button>
-        </div>
         <form method="post" action="<?php echo esc_url( add_query_arg( $pt_form_args, admin_url( 'admin.php' ) ) ); ?>">
           <?php wp_nonce_field( 'ah_save_parent_term', 'ah_pt_nonce' ); ?>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:16px;">
+            <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'parent-terms' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
+            <button type="submit" name="save_parent_term" value="1" class="ah-btn ah-btn-primary">Save</button>
+          </div>
           <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
           <div>
           <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Name *', '<input type="text" name="pt_name" value="' . esc_attr( $pt_item->name ?? '' ) . '" class="ah-generate-slug-source" data-slug-target="#pt-slug" required>' ); ?>
@@ -313,12 +313,12 @@ $tab    = sanitize_key( $_GET['tab'] ?? 'terms' );
   <?php if ( $action === 'add' || $action === 'edit' ) : ?>
     <?php \Ah\Cms\Admin\Components\AdminComponents::backLink( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'terms' ), admin_url( 'admin.php' ) ) ); ?>
     <?php ob_start(); ?>
-      <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:16px;">
-        <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'terms' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
-        <button type="submit" name="save_term" value="1" class="ah-btn ah-btn-primary">Save</button>
-      </div>
       <form method="post">
         <?php wp_nonce_field( 'ah_save_taxonomy', 'ah_tax_nonce' ); ?>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:16px;">
+          <a href="<?php echo esc_url( add_query_arg( array( 'page' => 'ah-taxonomy', 'tab' => 'terms' ), admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary">Cancel</a>
+          <button type="submit" name="save_term" value="1" class="ah-btn ah-btn-primary">Save</button>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
         <!-- Left: Text fields -->
         <div>

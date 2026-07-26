@@ -1,0 +1,1 @@
+import{o as e}from"./mockData-BsQC0oE-.js";import{t}from"./client-BB50bU1K.js";import{t as n}from"./endpoints-Dd8UN1zh.js";async function r(){return t.useMock?e:t.get(n.collections.list)}var i={getAll:r,getBySlug:async e=>(await r()).find(t=>t.slug===e)};export{i as t};

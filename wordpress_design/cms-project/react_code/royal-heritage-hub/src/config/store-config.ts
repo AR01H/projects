@@ -45,6 +45,21 @@ export interface StoreConfig {
     craftWord: string;      // e.g., "Craft", "Recipe", "Blend"
   };
 
+  // ── Terminology (optional) ──
+  terminology?: {
+    qualityAdjective: string;
+    makerLabel: string;
+    productProcessNoun: string;
+    productUnitSingular: string;
+    productUnitPlural: string;
+    heritageWord: string;
+    originWord: string;
+    makersPlural: string;
+    regionsWord: string;
+    certificationWord: string;
+    curatedWord: string;
+  };
+
   // ── Theme Colors ──
   colors: {
     primary: string;        // main brand color

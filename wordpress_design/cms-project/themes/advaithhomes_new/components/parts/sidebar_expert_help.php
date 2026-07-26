@@ -1,6 +1,6 @@
 <?php
 /**
- * components/parts/sidebar_expert_help.php - Sidebar: Expert Help panel.
+ * components/parts/sidebar_expert_help.php - Sidebar: Expert Help CTA panel.
  *
  * Props: $expert_help { heading, subtitle, experts[], cta { label, url } }
  */
@@ -12,40 +12,35 @@ $experts     = isset( $expert_help['experts'] ) ? (array) $expert_help['experts'
 $cta         = isset( $expert_help['cta'] )     ? (array) $expert_help['cta']     : array();
 
 if ( empty( $cta['label'] ) && empty( $expert_help['heading'] ) ) { return; }
-?>
-<div class="sw-panel">
-	<div class="sw-header">
-		<h3 class="sw-title"><?php echo esc_html( isset( $expert_help['heading'] ) ? $expert_help['heading'] : adn_term( 'sidebar.expert_help_heading', 'Need Expert Help?' ) ); ?></h3>
-	</div>
 
-	<?php if ( ! empty( $expert_help['subtitle'] ) ) : ?>
-		<p class="sw-subtitle"><?php echo esc_html( $expert_help['subtitle'] ); ?></p>
-	<?php endif; ?>
+$_heading  = ! empty( $expert_help['heading'] )  ? $expert_help['heading']  : adn_term( 'sidebar.expert_help_heading', 'Need Expert Help?' );
+$_subtitle = ! empty( $expert_help['subtitle'] ) ? $expert_help['subtitle'] : adn_term( 'sidebar.expert_help_subtitle', 'Get personalised guidance from our property experts.' );
+$_btn_label = ! empty( $cta['label'] ) ? $cta['label'] : adn_term( 'sidebar.expert_help_cta', 'Talk to an Expert' );
+$_btn_url   = ! empty( $cta['url'] )   ? $cta['url']   : home_url( SITE_CONTACT_URL );
+?>
+<div class="expert-help-card">
+	<div class="expert-help-card__icon">
+		<i class="fa-solid fa-headset" aria-hidden="true"></i>
+	</div>
+	<h3 class="expert-help-card__title"><?php echo esc_html( $_heading ); ?></h3>
+	<p class="expert-help-card__desc"><?php echo esc_html( $_subtitle ); ?></p>
 
 	<?php if ( ! empty( $experts ) ) : ?>
-		<div class="sw-list" role="list">
-			<?php foreach ( $experts as $expert ) : ?>
-			<div class="sw-item">
-				<a href="<?php echo esc_url( adn_link( isset( $expert['url'] ) ? $expert['url'] : '' ) ); ?>" class="sw-item-link">
-					<span class="sw-item-icon" aria-hidden="true"><?php echo adn_icon( isset( $expert['icon'] ) ? $expert['icon'] : '' ); ?></span>
-					<span class="sw-item-label">
-						<?php echo esc_html( isset( $expert['name'] ) ? $expert['name'] : '' ); ?>
-						<?php if ( ! empty( $expert['desc'] ) ) : ?>
-							<span class="sw-item-meta"><?php echo esc_html( $expert['desc'] ); ?></span>
-						<?php endif; ?>
-					</span>
-					<span class="sw-item-arrow" aria-hidden="true">›</span>
+		<div class="expert-help-card__experts">
+			<?php foreach ( array_slice( $experts, 0, 3 ) as $expert ) : ?>
+				<a href="<?php echo esc_url( adn_link( isset( $expert['url'] ) ? $expert['url'] : '' ) ); ?>" class="expert-help-card__expert" title="<?php echo esc_attr( isset( $expert['name'] ) ? $expert['name'] : '' ); ?>">
+					<?php if ( ! empty( $expert['avatar'] ) ) : ?>
+						<img src="<?php echo esc_url( $expert['avatar'] ); ?>" alt="<?php echo esc_attr( isset( $expert['name'] ) ? $expert['name'] : '' ); ?>" class="expert-help-card__avatar">
+					<?php else : ?>
+						<span class="expert-help-card__avatar expert-help-card__avatar--placeholder"><?php echo esc_html( mb_substr( isset( $expert['name'] ) ? $expert['name'] : '?', 0, 1 ) ); ?></span>
+					<?php endif; ?>
 				</a>
-			</div>
 			<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
 
-	<?php if ( ! empty( $cta['label'] ) ) : ?>
-		<div class="sw-footer">
-			<a href="<?php echo esc_url( adn_link( isset( $cta['url'] ) ? $cta['url'] : '' ) ); ?>" class="sw-cta-btn">
-				<?php echo esc_html( $cta['label'] ); ?>
-			</a>
-		</div>
-	<?php endif; ?>
+	<a href="<?php echo esc_url( $_btn_url ); ?>" class="expert-help-card__btn">
+		<?php echo esc_html( $_btn_label ); ?>
+		<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+	</a>
 </div>

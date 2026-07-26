@@ -47,7 +47,7 @@ get_header();
 <?php /* ============================== BREADCRUMB ============================== */ ?>
 <?php if ( ! empty( $ctx['breadcrumb'] ) ) : ?>
 	<?php adn_component( 'sections/page_hero', array(
-		'hero'       => $ctx['article'],
+		'hero'       => $ctx['header'] ?? array(),
 		'breadcrumb' => $ctx['breadcrumb'],
 		'share'      => isset($ctx['share']) ? $ctx['share'] : null,
 		'cms_terms'  => isset($ctx['cms_terms']) ? $ctx['cms_terms'] : null,

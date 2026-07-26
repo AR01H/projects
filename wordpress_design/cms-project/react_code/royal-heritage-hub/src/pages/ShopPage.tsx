@@ -83,7 +83,7 @@ export default function ShopPage() {
   }, [allProducts, activeCategory, search, sortBy, inStockOnly, maxPrice, selectedTag, selectedMaterial]);
 
   const currentCategory = categories.find((c) => c.slug === activeCategory);
-  const activeSort = SORT_OPTIONS.find((o) => o.value === sortBy);
+  void SORT_OPTIONS.find((o) => o.value === sortBy);
 
   const [categoryAncestors, setCategoryAncestors] = useState<Category[]>([]);
   useEffect(() => {

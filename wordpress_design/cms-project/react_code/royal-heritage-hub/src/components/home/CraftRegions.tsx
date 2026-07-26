@@ -28,7 +28,7 @@ export function CraftRegions() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    productsApi.getAll().then(({ data }) => { if (data) setProducts(data); });
+    productsApi.getAll().then((data) => { if (data) setProducts(data); });
   }, []);
 
   const regions = useMemo<CraftRegion[]>(() => {

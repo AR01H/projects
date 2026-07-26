@@ -5,7 +5,6 @@ import { Rating } from '@/components/common/Rating';
 import { Reveal } from '@/components/common/Reveal';
 import { HorizontalScroller } from '@/components/common/HorizontalScroller';
 import { buildRoute, ROUTES } from '@/config/routes';
-import { SITE_CONFIG } from '@/config/site';
 import { SEO } from '@/components/common/SEO';
 
 const VIDEO_REVIEWS = [

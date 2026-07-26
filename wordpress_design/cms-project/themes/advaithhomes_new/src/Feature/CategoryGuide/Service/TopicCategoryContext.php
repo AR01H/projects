@@ -231,9 +231,8 @@ class TopicCategoryContext {
 			}
 		}
 
-		// Expert help
-		$sidebar['expert_help'] = $sidebar_builder::expertHelp();
-		$sidebar['expert_help']['experts'] = array();
+		// Sidebar cards (guides, experts, guidance, contact, news, calculators)
+		$sidebar['sidebar_cards'] = $sidebar_builder::sidebarCards( array( 'experts' ) );
 
 		// Sidebar news
 		$_news_items = $sidebar_builder::latestNews( 3 );

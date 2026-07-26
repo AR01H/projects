@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Button } from './Button';
 
 interface ReviewFormProps {
+  productId?: string;
   onSubmitted: () => void;
 }
 
-export function ReviewForm({ onSubmitted }: ReviewFormProps) {
+export function ReviewForm({ productId: _productId, onSubmitted }: ReviewFormProps) {
   const [rating, setRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [title, setTitle] = useState('');

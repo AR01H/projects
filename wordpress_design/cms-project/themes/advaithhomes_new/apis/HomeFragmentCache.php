@@ -25,10 +25,18 @@ function adn_home_frag_key( string $section ): string {
 }
 
 function adn_home_frag_get( string $section ) {
+	// Admins always see fresh content — no fragment cache.
+	if ( is_user_logged_in() ) {
+		return false;
+	}
 	return get_transient( adn_home_frag_key( $section ) );
 }
 
 function adn_home_frag_set( string $section, string $html ): void {
+	// Never store fragment when admin is logged in or cache-clear param is present.
+	if ( is_user_logged_in() || isset( $_GET['clear_cache'] ) || isset( $_GET['cache_clear'] ) ) {
+		return;
+	}
 	set_transient( adn_home_frag_key( $section ), $html, ADN_HOME_FRAG_TTL );
 }
 

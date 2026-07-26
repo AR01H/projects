@@ -65,6 +65,8 @@ function adn_settings_schemas() {
 					),
 				),
 				array( 'key' => 'hero',        'type' => 'toggle', 'label' => __( 'Hero', ADN_TEXT_DOMAIN ), 'default' => 1 ),
+				array( 'key' => 'short_news_items', 'type' => 'textarea', 'label' => __( 'Short News ticker', ADN_TEXT_DOMAIN ),
+					'desc' => __( 'Add news items to show a scrolling ticker below the hero. One item per line: <strong>Title|URL|icon</strong> (e.g. <code>New Stamp Duty Rules|https://example.com/rules|fa-solid fa-file-invoice</code>). Leave empty to hide.', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'journey',     'type' => 'toggle', 'label' => __( 'Journey cards', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'news',        'type' => 'toggle', 'label' => __( 'News / Regulations / Hot topics', ADN_TEXT_DOMAIN ), 'default' => 1 ),
 				array( 'key' => 'calculators', 'type' => 'toggle', 'label' => __( 'Calculators', ADN_TEXT_DOMAIN ), 'default' => 1 ),

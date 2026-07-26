@@ -190,4 +190,22 @@ class SidebarBuilder {
 			'recent_news'  => self::sidebarRecentNews( 5 ),
 		);
 	}
+
+	// ── Sidebar Cards (from sidebar_cards.json) ─────────────────
+	// Used by: CategoryGuide, TopicCategoryGuide
+	// @param array $keys Optional. Only include these keys (e.g. ['experts']). Empty = all.
+	public static function sidebarCards( array $keys = array() ): array {
+		$json_path = \ADN_THEME_DIR . '/data/' . ( defined( 'DATA_FILES' ) ? DATA_FILES : 'advaith' ) . '/json/sidebar_cards.json';
+		if ( ! \file_exists( $json_path ) ) {
+			return array();
+		}
+		$raw = \json_decode( \file_get_contents( $json_path ), true );
+		if ( ! is_array( $raw ) ) {
+			return array();
+		}
+		if ( ! empty( $keys ) ) {
+			$raw = array_intersect_key( $raw, array_flip( $keys ) );
+		}
+		return array( 'items' => array_values( $raw ) );
+	}
 }

@@ -80,7 +80,7 @@ async function payWithRazorpay(config: PaymentConfig, amount: number): Promise<P
 
 async function payWithStripe(config: PaymentConfig, amount: number): Promise<PaymentResult> {
   try {
-    const response = await fetch(`${apiClient.useMock ? '/mock' : ''}/api/payment/create-intent`, {
+    await fetch(`${apiClient.useMock ? '/mock' : ''}/api/payment/create-intent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount, currency: config.currency }),

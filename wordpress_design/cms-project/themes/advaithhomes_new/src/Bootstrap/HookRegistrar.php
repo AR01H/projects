@@ -23,30 +23,14 @@ class HookRegistrar {
 	}
 
 	private static function registerCache(): void {
-		\add_action( 'init', function() {
-			if ( \class_exists( 'ADN_Cache' ) ) {
-				if ( \is_admin() && isset( $_POST['clear_cache'] ) && \current_user_can( 'manage_options' ) ) {
-					\ADN_Cache::clear_all();
-				}
-				if ( isset( $_GET['clear_cache'] ) || isset( $_GET['cache_clear'] ) ) {
-					if ( \current_user_can( 'manage_options' ) || ! \is_user_logged_in() ) {
-						\ADN_Cache::clear_all();
-						if ( isset( $_GET['clear_cache'] ) ) {
-							$redirect_url = \remove_query_arg( 'clear_cache' );
-							\wp_safe_redirect( $redirect_url );
-							exit;
-						}
-					}
-				}
-			}
-		} );
-
 		\add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
 			if ( ! \is_admin() || ! \current_user_can( 'manage_options' ) ) {
 				return;
 			}
-			$current_url = \admin_url();
-			$clear_url = \add_query_arg( 'clear_cache', '1', $current_url );
+			$clear_url = \add_query_arg(
+				array( 'page' => 'adn-theme-admin-actions', 'subtab' => 'cache' ),
+				\admin_url( 'admin.php' )
+			);
 			$wp_admin_bar->add_node( array(
 				'id'    => 'adn-clear-cache',
 				'title' => '⚡ Clear Cache',
@@ -67,6 +51,9 @@ class HookRegistrar {
 		\add_action( 'template_redirect', 'adn_expert_full_page_render', 0 );
 		\add_action( 'template_redirect', 'adn_check_coming_soon' );
 		\add_action( 'init', 'adn_set_language_cookie' );
+
+		// Render FAQs attached to the current page's slug (from admin FAQ → attached_slug field)
+		// NOTE: Moved to PageHelper::close() to render BEFORE footer, not after via wp_footer
 
 		// Centralized asset loading (replaces scattered wp_enqueue calls in page templates)
 		\add_action( 'wp_enqueue_scripts', [ \Adn\Theme\Service\AssetLoader::class, 'load' ] );
@@ -120,6 +107,13 @@ class HookRegistrar {
 
 	private static function registerFilters(): void {
 		\add_filter( 'rest_url_prefix', function() { return 'api'; } );
+		// Ensure $wp_rewrite is initialized before REST API tries to use it
+		\add_action( 'init', function() {
+			global $wp_rewrite;
+			if ( ! $wp_rewrite instanceof \WP_Rewrite ) {
+				$wp_rewrite = new \WP_Rewrite();
+			}
+		}, 1 );
 		\add_filter( 'wp_lazy_loading_enabled', '__return_true' );
 		\add_filter( 'the_content', 'adn_add_img_lazy_attr', 10 );
 		\add_filter( 'adn_calculators', 'adn_merge_db_calculators' );

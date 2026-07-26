@@ -48,7 +48,7 @@ export const MOCK_FOOTER: typeof footerJson = footerJson as typeof footerJson;
 // ── Storefront Coupons ──
 export type StorefrontCouponType =
   | 'percentage' | 'fixed' | 'free_shipping' | 'buy_x_get_y'
-  | 'buy_x_get_percent' | 'first_order' | 'flash_sale' | 'tiered'
+  | 'buy_x_get_percent' | 'category_percent' | 'first_order' | 'flash_sale' | 'tiered'
   | 'cart_threshold' | 'free_gift' | 'volume' | 'birthday'
   | 'seasonal' | 'clearance' | 'referral' | 'loyalty';
 

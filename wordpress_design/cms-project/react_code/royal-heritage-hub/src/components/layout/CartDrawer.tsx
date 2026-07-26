@@ -20,7 +20,7 @@ export function CartDrawer() {
 
   const appliedCoupon = useCouponStore((s) => s.appliedCoupon);
   const couponError = useCouponStore((s) => s.error);
-  const applyCoupon = useCouponStore((s) => s.apply);
+  const applyCoupon = useCouponStore((s) => s.validate);
   const [couponInput, setCouponInput] = useState('');
 
   if (!isOpen) return null;
@@ -121,7 +121,7 @@ export function CartDrawer() {
                 placeholder="Coupon code"
                 className="w-full rounded-[var(--radius-btn)] border border-[var(--color-border)] bg-[var(--color-bg-cream)] px-3 py-2 text-xs outline-none"
               />
-              <Button variant="outline" size="sm" onClick={() => { applyCoupon(couponInput); setCouponInput(''); }}>
+              <Button variant="outline" size="sm" onClick={() => { applyCoupon(couponInput, subtotal, items.length); setCouponInput(''); }}>
                 Apply
               </Button>
             </div>

@@ -16,7 +16,7 @@ export function SearchAutocomplete({ query, onSelect }: SearchAutocompleteProps)
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const formatCurrency = useFormatCurrency();
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     if (query.trim().length < 2) {

@@ -6,9 +6,10 @@ import type { Banner } from '@/types/product';
 interface PageHeroProps {
   pageKey: string;
   fallbackTitle?: string;
+  fallbackSubtitle?: string;
 }
 
-export function PageHero({ pageKey, fallbackTitle }: PageHeroProps) {
+export function PageHero({ pageKey, fallbackTitle, fallbackSubtitle }: PageHeroProps) {
   const [banner, setBanner] = useState<Banner | null | undefined>(undefined);
 
   useEffect(() => {
@@ -22,9 +23,14 @@ export function PageHero({ pageKey, fallbackTitle }: PageHeroProps) {
   if (banner === null) {
     return (
       <div className="flex aspect-[4/1] w-full items-center justify-center bg-[var(--color-dark)]">
-        <h1 className="font-display text-3xl text-[var(--color-bg-light)] sm:text-4xl">
-          {fallbackTitle}
-        </h1>
+        <div className="text-center">
+          <h1 className="font-display text-3xl text-[var(--color-bg-light)] sm:text-4xl">
+            {fallbackTitle}
+          </h1>
+          {fallbackSubtitle && (
+            <p className="mt-2 text-sm text-[var(--color-bg-light)]/80">{fallbackSubtitle}</p>
+          )}
+        </div>
       </div>
     );
   }

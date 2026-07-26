@@ -12,8 +12,8 @@ export function GITaggedShowcase() {
   const [certifications, setCertifications] = useState<CertificationEntry[]>([]);
 
   useEffect(() => {
-    productsApi.getAll().then(({ data }) => { if (data) setProducts(data); });
-    certificationsApi.getAll().then(({ data }) => { if (data) setCertifications(data); });
+    productsApi.getAll().then((data) => { if (data) setProducts(data); });
+    certificationsApi.getAll().then((data) => { if (data) setCertifications(data); });
   }, []);
 
   const giProducts = useMemo(() => {
