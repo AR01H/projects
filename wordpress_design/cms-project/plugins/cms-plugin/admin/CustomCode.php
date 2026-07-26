@@ -50,7 +50,7 @@ $gs_nonce  = wp_create_nonce( 'ah_custom_code' );
 				<p style="color:var(--ah-text);font-size:13px;font-weight:600;margin:0 0 4px;">CSS</p>
 				<p style="color:var(--ah-muted);font-size:12px;margin:0 0 8px;">No <code>&lt;style&gt;</code> tags needed. Loads in <code>&lt;head&gt;</code>.</p>
 				<textarea id="ah-gs-css" rows="15"
-					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-text);padding:14px;border-radius:6px;border:1px solid var(--ah-text);"
+					style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-bg-light);padding:14px;border-radius:6px;border:1px solid var(--ah-text);"
 					placeholder="/* Example: Christmas theme */&#10;body { --color-primary: #c0392b; }"
 				><?php echo esc_textarea( $gs_css ); ?></textarea>
 			</div>
@@ -128,7 +128,7 @@ $gs_nonce  = wp_create_nonce( 'ah_custom_code' );
 						<div id="ah-cc-panel-css" class="ah-cc-panel" style="padding-top:12px;">
 							<p style="color:var(--ah-muted);font-size:12px;margin:0 0 6px;">Plain CSS rules - no <code>&lt;style&gt;</code> tags needed.</p>
 							<textarea id="ah-cc-css" name="css" rows="24"
-								style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-text);padding:14px;border-radius:6px;border:1px solid var(--ah-text);box-sizing:border-box;"
+								style="width:100%;font-family:monospace;font-size:12.5px;line-height:1.6;resize:vertical;background:var(--ah-text);color:var(--ah-bg-light);padding:14px;border-radius:6px;border:1px solid var(--ah-text);box-sizing:border-box;"
 								placeholder="/* Example */&#10;.some-class {&#10;  word-break: break-word;&#10;}"
 							><?php echo esc_textarea( $edit_row ? ( $edit_row->css ?? '' ) : '' ); ?></textarea>
 						</div>

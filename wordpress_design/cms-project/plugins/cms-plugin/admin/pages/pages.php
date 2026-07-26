@@ -19,7 +19,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 		$status   = in_array( $_POST['page_status'] ?? 'draft', array( 'publish','draft','private','pending' ), true ) ? $_POST['page_status'] : 'draft';
 		$template = sanitize_text_field( $_POST['page_template'] ?? '' );
 		$thumb_id = (int) ( $_POST['featured_image_id'] ?? 0 );
-		$excerpt  = sanitize_textarea_field( $_POST['page_excerpt'] ?? '' );
+		$excerpt_raw = isset( $_POST['page_excerpt'] ) ? wp_unslash( $_POST['page_excerpt'] ) : '';
+		$excerpt     = ( current_user_can( 'unfiltered_html' ) || current_user_can( 'manage_options' ) ) ? $excerpt_raw : wp_kses_post( $excerpt_raw );
 		$page_content_raw = isset( $_POST['page_content'] ) ? wp_unslash( $_POST['page_content'] ) : '';
 		$page_content = ( current_user_can( 'unfiltered_html' ) || current_user_can( 'manage_options' ) ) ? $page_content_raw : wp_kses_post( $page_content_raw );
 		$page_data = array( 'post_type' => 'page', 'post_title' => $title, 'post_content' => $page_content, 'post_name' => $slug, 'post_status' => $status, 'post_excerpt' => $excerpt, 'page_template' => $template );
@@ -28,8 +29,11 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_pages_nonce'] ) 
 		if ( is_wp_error( $result ) ) { $notice = 'Error: ' . $result->get_error_message(); $n_type = 'error'; }
 		else {
 			$saved_id = (int) $result;
-			if ( $thumb_id ) set_post_thumbnail( $saved_id, $thumb_id );
-			else delete_post_thumbnail( $saved_id );
+			// set_post_thumbnail() refuses non-image attachments (silently deletes the meta
+			// instead), but this field explicitly supports video too, so write the meta directly.
+			if ( $thumb_id ) update_post_meta( $saved_id, '_thumbnail_id', $thumb_id );
+			else delete_post_meta( $saved_id, '_thumbnail_id' );
+			if ( ! $template ) delete_post_meta( $saved_id, '_wp_page_template' ); // wp_insert_post() ignores an empty page_template, so clear it ourselves
 			if ( ! $edit_id ) {
 				flush_rewrite_rules( false ); // refresh routing so new slug is immediately accessible
 			}
@@ -45,7 +49,9 @@ if ( isset( $_GET['trash_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'ah
 	$notice = 'Page moved to trash.';
 }
 
-$all_templates  = array( '' => 'Default Template' ) + get_page_templates();
+// get_page_templates() returns [ 'Human Name' => 'file/path.php' ]; flip it to [ file => name ]
+// so the <option value> below is the file path WP core actually validates against, not the name.
+$all_templates  = array( '' => 'Default Template' ) + array_flip( get_page_templates() );
 ?>
 <?php if ( $action === 'list' ) :
     $paged    = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
@@ -150,7 +156,7 @@ $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
             $slug_input .= '</div>';
             ?>
             <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Slug (URL)', $slug_input ); ?>
-            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Excerpt', '<textarea name="page_excerpt" rows="2">' . esc_textarea( $wp_page->post_excerpt ?? '' ) . '</textarea>' ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Description', '<textarea name="page_excerpt" rows="2">' . esc_textarea( $wp_page->post_excerpt ?? '' ) . '</textarea>' ); ?>
           <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Page Details', ob_get_clean() ); ?>
           <?php ob_start(); ?>
             <p style="margin:0 0 10px;color:var(--ah-muted);font-size:13px;">Paste raw HTML, inline styles, scripts, and custom markup here.</p>
@@ -160,7 +166,7 @@ $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
 
         <div>
           <?php ob_start(); ?>
-            <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'featured_image_id', 'Featured Image / Video', $thumb_id, array( 'type' => 'media' ) ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'featured_image_id', 'Featured Image', $thumb_id, array( 'type' => 'media' ) ); ?>
           <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Featured Image', ob_get_clean() ); ?>
           <?php ob_start(); ?>
             <?php
@@ -189,7 +195,8 @@ $all_templates  = array( '' => 'Default Template' ) + get_page_templates();
           ob_start();
           \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Template', $tpl_select );
           ?>
-          <div class="ah-card ah-hidden">            <div class="ah-card-header"><h2>Template</h2></div>
+          <div class="ah-card">
+            <div class="ah-card-header"><h2>Template</h2></div>
             <?php echo ob_get_clean(); ?>
           </div>
 

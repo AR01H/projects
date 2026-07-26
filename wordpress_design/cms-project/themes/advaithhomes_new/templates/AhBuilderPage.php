@@ -93,8 +93,13 @@ $breadcrumb = array(
 // ── Open: header + native page hero ───────────────────────────────────────────
 if ( ! $no_header ) {
 
-	// adn_page_open renders get_header() + nav. Pass empty breadcrumb here because
-	// the breadcrumb is rendered *inside* the page_hero component below.
+	// get_header() outputs the DOCTYPE/<head>/wp_head()/<body> shell (that's where
+	// enqueued CSS/JS actually print) - adn_page_open() only renders the nav
+	// component, it does NOT include get_header(). Both are required.
+	get_header();
+
+	// Pass empty breadcrumb here because the breadcrumb is rendered *inside* the
+	// page_hero component below.
 	adn_page_open( array( 'chrome' => $chrome, 'breadcrumb' => array() ) );
 
 	// Full-bleed theme hero - same component used on every other site page.
@@ -202,7 +207,10 @@ document.querySelectorAll('.ah-alert[data-dismissible="1"]').forEach(function(el
 <?php
 // ── Close: footer ─────────────────────────────────────────────────────────────
 if ( ! $no_footer ) {
+	// adn_page_close() only renders the footer component - get_footer() is what
+	// prints wp_footer() (enqueued JS) plus the closing </body></html> tags.
 	adn_page_close( array( 'chrome' => $chrome ) );
+	get_footer();
 } else {
 	wp_footer();
 	?>

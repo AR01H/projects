@@ -3791,7 +3791,8 @@ html.adn-reveal .acard-stat::before {
     position: relative !important;
 }
 
-.guide-card-img img {
+.guide-card-img img,
+.guide-card-img video {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
@@ -3799,7 +3800,8 @@ html.adn-reveal .acard-stat::before {
     border-radius: 0 !important;
 }
 
-.guide-card:hover .guide-card-img img {
+.guide-card:hover .guide-card-img img,
+.guide-card:hover .guide-card-img video {
     transform: scale(1.05) !important;
 }
 

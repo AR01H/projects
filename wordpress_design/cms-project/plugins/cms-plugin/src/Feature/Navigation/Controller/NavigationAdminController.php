@@ -9,15 +9,24 @@ class NavigationAdminController {
 		check_admin_referer( 'ah_cms_navigation' );
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorised' );
 
+		// The active tab is always present in the form, unlike the repeater arrays below —
+		// those disappear from $_POST entirely once their last row is removed, so isset()
+		// on them can't tell "tab not submitted" apart from "submitted with zero items".
+		$active_tab              = sanitize_key( $_POST['active_tab'] ?? '' );
+		$is_main_nav_tab         = 'main-nav' === $active_tab;
+		$is_footer_settings_tab  = 'footer-settings' === $active_tab;
+		$is_footer_columns_tab   = 'footer-columns' === $active_tab;
+		$is_footer_legal_tab     = 'footer-legal' === $active_tab;
+
 		// Load existing data first — only overwrite fields from the submitted tab.
 		$existing_nav = self::normalize_navigation( json_decode( get_option( 'ah_cms_navigation', '[]' ), true ) ?? array() );
 		$existing_cta = json_decode( get_option( 'ah_cms_nav_cta', '{}' ), true ) ?? array();
 		$existing_footer = json_decode( get_option( 'ah_cms_footer', '{}' ), true ) ?? array();
 
 		// ── Main Navigation (only submitted on main-nav tab) ──
-		if ( isset( $_POST['nav_items'] ) ) {
+		if ( $is_main_nav_tab ) {
 			$nav_items = array();
-			foreach ( (array) $_POST['nav_items'] as $item ) {
+			foreach ( (array) ( $_POST['nav_items'] ?? array() ) as $item ) {
 				$label = sanitize_text_field( $item['label'] ?? '' );
 				if ( $label === '' ) {
 					continue;
@@ -54,7 +63,7 @@ class NavigationAdminController {
 			$existing_nav = $nav_items;
 		}
 
-		if ( isset( $_POST['nav_cta'] ) ) {
+		if ( $is_main_nav_tab ) {
 			$existing_cta = array(
 				'label' => sanitize_text_field( $_POST['nav_cta']['label'] ?? 'Get Guidance' ),
 				'url'   => self::clean_nav_url( (string) ( $_POST['nav_cta']['url'] ?? '/ask-expert/' ) ),
@@ -62,7 +71,7 @@ class NavigationAdminController {
 		}
 
 		// ── Footer Settings + Columns + Legal Links (only submitted on their tabs) ──
-		if ( isset( $_POST['footer_brand_description'] ) || isset( $_POST['footer_badge_text'] ) || isset( $_POST['footer_cta'] ) ) {
+		if ( $is_footer_settings_tab ) {
 			$existing_footer['brand_description'] = wp_kses_post( $_POST['footer_brand_description'] ?? $existing_footer['brand_description'] ?? '' );
 			$existing_footer['badge_text']        = sanitize_text_field( $_POST['footer_badge_text'] ?? $existing_footer['badge_text'] ?? '' );
 			$existing_footer['cta']               = array(
@@ -71,9 +80,9 @@ class NavigationAdminController {
 			);
 		}
 
-		if ( isset( $_POST['footer_columns'] ) ) {
+		if ( $is_footer_columns_tab ) {
 			$footer_columns = array();
-			foreach ( (array) $_POST['footer_columns'] as $column ) {
+			foreach ( (array) ( $_POST['footer_columns'] ?? array() ) as $column ) {
 				$title = sanitize_text_field( $column['title'] ?? '' );
 				$items = array();
 				foreach ( (array) ( $column['items'] ?? array() ) as $item ) {
@@ -98,9 +107,9 @@ class NavigationAdminController {
 			$existing_footer['columns'] = $footer_columns;
 		}
 
-		if ( isset( $_POST['footer_legal_links'] ) ) {
+		if ( $is_footer_legal_tab ) {
 			$legal_links = array();
-			foreach ( (array) $_POST['footer_legal_links'] as $item ) {
+			foreach ( (array) ( $_POST['footer_legal_links'] ?? array() ) as $item ) {
 				$label = sanitize_text_field( $item['label'] ?? '' );
 				$url   = self::clean_nav_url( (string) ( $item['url'] ?? '' ) );
 				if ( $label === '' || $url === '' ) {
@@ -114,27 +123,29 @@ class NavigationAdminController {
 			$existing_footer['legal_links'] = $legal_links;
 		}
 
-		// Save only the options that were updated
-		if ( isset( $_POST['nav_items'] ) ) {
+		// Save only the option(s) for the tab that was actually submitted.
+		if ( $is_main_nav_tab ) {
 			\update_option( 'ah_cms_navigation', \wp_json_encode( $existing_nav ) );
-		}
-		if ( isset( $_POST['nav_cta'] ) ) {
 			\update_option( 'ah_cms_nav_cta', \wp_json_encode( $existing_cta ) );
 		}
-		if ( isset( $_POST['footer_brand_description'] ) || isset( $_POST['footer_badge_text'] ) || isset( $_POST['footer_cta'] ) || isset( $_POST['footer_columns'] ) || isset( $_POST['footer_legal_links'] ) ) {
+		if ( $is_footer_settings_tab || $is_footer_columns_tab || $is_footer_legal_tab ) {
 			\update_option( 'ah_cms_footer', \wp_json_encode( $existing_footer ) );
 		}
 
 		$redirect_args = array( 'page' => 'ah-navigation', 'saved' => '1' );
-		if ( ! empty( $_POST['active_tab'] ) ) {
-			$redirect_args['tab'] = \sanitize_key( $_POST['active_tab'] );
+		if ( $active_tab ) {
+			$redirect_args['tab'] = $active_tab;
 		}
 		\AH_Admin_Bootstrap::redirect( \add_query_arg( $redirect_args, \admin_url( 'admin.php' ) ) );
 	}
 
 	public static function get_navigation_data(): array {
-		$opt = self::decode_option( get_option( 'ah_cms_navigation', array() ) );
-		if ( empty( $opt ) ) {
+		// A deliberately emptied list ('[]') must NOT fall back to the legacy option — only
+		// an option that was never saved at all should. get_option()'s own "not found" signal
+		// (returning our sentinel default) is what tells those two cases apart; empty() can't.
+		$raw = get_option( 'ah_cms_navigation', '__ah_unset__' );
+		$opt = ( '__ah_unset__' === $raw ) ? null : self::decode_option( $raw );
+		if ( null === $opt ) {
 			$opt = self::decode_option( get_option( 'ah_theme_navigation', array() ) );
 		}
 
@@ -155,8 +166,10 @@ class NavigationAdminController {
 	}
 
 	public static function get_footer_data(): array {
-		$opt = self::decode_option( get_option( 'ah_cms_footer', array() ) );
-		if ( empty( $opt ) ) {
+		// Same reasoning as get_navigation_data(): distinguish "never saved" from "saved empty".
+		$raw = get_option( 'ah_cms_footer', '__ah_unset__' );
+		$opt = ( '__ah_unset__' === $raw ) ? null : self::decode_option( $raw );
+		if ( null === $opt ) {
 			$opt = self::decode_option( get_option( 'ah_theme_footer', array() ) );
 		}
 

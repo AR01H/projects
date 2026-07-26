@@ -1037,6 +1037,20 @@ class AH_DB_Schema {
 				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 				KEY idx_status (status)
 			) ENGINE=InnoDB {$cs}",
+
+			// 73. File Links (uploaded files with generated public download links)
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_file_links` (
+				`id`            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				`original_name` VARCHAR(255) NOT NULL DEFAULT '',
+				`stored_name`   VARCHAR(255) NOT NULL DEFAULT '',
+				`file_path`     VARCHAR(500) NOT NULL DEFAULT '',
+				`mime_type`     VARCHAR(150) NOT NULL DEFAULT '',
+				`file_size`     BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				`uploaded_by`   BIGINT UNSIGNED DEFAULT NULL,
+				`created_at`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				KEY `idx_mime_type`  (`mime_type`),
+				KEY `idx_created_at` (`created_at`)
+			) ENGINE=InnoDB {$cs}",
 		);
 	}
 }

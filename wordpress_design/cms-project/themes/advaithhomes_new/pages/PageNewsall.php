@@ -157,7 +157,7 @@ if ( ( '' !== $_ah_news_slug || $_ah_news_id > 0 ) && function_exists( 'adn_cms_
 						<div class="news-single-source">
 							<span class="news-single-source-label">
 								<?php if ( '' !== $_nb_excerpt ) : ?>
-									<?php echo esc_html( $_nb_excerpt ); ?>
+									<?php echo wp_kses_post( $_nb_excerpt ); ?>
 								<?php else : ?>
 									<?php esc_html_e( 'Read the original article at the source:', ADN_TEXT_DOMAIN ); ?>
 								<?php endif; ?>

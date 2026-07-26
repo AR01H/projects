@@ -129,7 +129,7 @@
     } else {
       $picker.prepend(
         '<div class="ah-image-preview-wrap visible">' +
-          '<img class="ah-image-preview" src="' + url + '" alt="">' +
+          '<img class="ah-image-preview visible" src="' + url + '" alt="">' +
         '</div>'
       );
       $picker.find('.ah-pick-image').text('Change Image');

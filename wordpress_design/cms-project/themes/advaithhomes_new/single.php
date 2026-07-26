@@ -173,7 +173,7 @@ get_header();
 			</div>
 
 			<?php /* Feedback row + social share */ ?>
-			<?php adn_component( 'sections/post_feedback', array( 'share' => $ctx['share'] ) ); ?>
+			<?php adn_component( 'sections/post_feedback', array( 'share' => $ctx['share'] ?? array() ) ); ?>
 
 			<?php /* Author box */ ?>
 			<!-- <?php adn_component( 'sections/post_author', array( 'author' => $ctx['author'] ) ); ?> -->

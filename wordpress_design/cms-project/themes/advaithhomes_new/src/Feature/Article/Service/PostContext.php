@@ -100,6 +100,44 @@ class PostContext {
 		return array();
 	}
 
+	// ── Share section ───────────────────────────────────────────
+	public static function buildShare( $post ): array {
+		return array(
+			'url'   => get_permalink( $post ),
+			'title' => get_the_title( $post ),
+		);
+	}
+
+	// ── Highlight links (sidebar) ────────────────────────────────
+	// Admin: Edit Meta modal on ah-posts, saved to _ah_highlight_links postmeta.
+	public static function buildHighlightLinks( $post ): array {
+		$raw   = get_post_meta( $post->ID, '_ah_highlight_links', true );
+		$items = $raw ? json_decode( $raw, true ) : array();
+		return is_array( $items ) ? $items : array();
+	}
+
+	// ── Related content (sidebar) ────────────────────────────────
+	// Admin: Edit Meta modal on ah-posts, saved via AH_Related_Links_Model::sync().
+	// Reshapes get_grouped()'s [{container, items:[{label,url,...}]}] into the
+	// {container => [{icon,title,url}]} shape parts/post_sidebar_related_content.php expects.
+	public static function buildRelatedContent( $post ): array {
+		if ( ! class_exists( 'AH_Related_Links_Model' ) ) {
+			return array();
+		}
+		$grouped = ( new \AH_Related_Links_Model() )->get_grouped( 'wp_post', $post->ID );
+		$related_content = array();
+		foreach ( $grouped as $group ) {
+			$related_content[ $group['container'] ] = array_map( static function ( $item ) {
+				return array(
+					'icon'  => $item['icon']  ?? '',
+					'title' => $item['label'] ?? '',
+					'url'   => $item['url']   ?? '',
+				);
+			}, $group['items'] );
+		}
+		return $related_content;
+	}
+
 	// ── Main getContext ─────────────────────────────────────────
 	public static function getContext() {
 		global $post;
@@ -123,6 +161,9 @@ class PostContext {
 			'body'          => self::buildBody(),
 			'disclaimer'    => self::buildDisclaimer(),
 			'feedback'      => self::buildFeedback(),
+			'share'         => self::buildShare( $post ),
+			'highlight_links' => self::buildHighlightLinks( $post ),
+			'related_content' => self::buildRelatedContent( $post ),
 			'author'        => self::buildAuthor(),
 			'sidebar'       => $sidebar,
 			'chrome'        => $chrome,

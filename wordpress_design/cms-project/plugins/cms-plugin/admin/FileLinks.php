@@ -7,7 +7,6 @@ use Ah\Cms\Admin\Components\AdminComponents;
 $fl_model = new AH_File_Links_Model();
 
 // ── Ensure table exists ──
-AH_File_Links_Model::install_table();
 
 $notice      = '';
 $notice_type = 'success';

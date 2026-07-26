@@ -216,7 +216,7 @@
 }
 .nav-dropdown__links {
     flex: 1;
-    padding: 10px 6px;
+    /* padding: 10px 6px; */
 }
 /* Right: image + description */
 .nav-dropdown__media {

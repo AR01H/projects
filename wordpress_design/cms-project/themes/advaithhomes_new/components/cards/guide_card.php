@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 $card       = isset( $card ) && is_array( $card ) ? $card : array();
 $_gc_imgurl = isset( $card['image'] ) ? (string) $card['image'] : '';
 $_gc_icon   = isset( $card['icon'] ) ? $card['icon'] : '';
+$_gc_is_video = function_exists( 'adn_is_video_url' ) && adn_is_video_url( $_gc_imgurl );
 
 // Fallback to default category image if none is provided
 if ( empty( $_gc_imgurl ) ) {
@@ -19,7 +20,13 @@ if ( empty( $_gc_imgurl ) ) {
 
     <?php if ( '' !== $_gc_imgurl ) : ?>
     <div class="guide-card-img">
+        <?php if ( $_gc_is_video ) : ?>
+            <?php /* Card is a still-frame preview only - no controls/autoplay. Seeking to
+                     #t=0.5 avoids the black/blank frame most videos start on at 0:00. */ ?>
+            <video src="<?php echo esc_url( $_gc_imgurl ); ?>#t=0.5" muted playsinline preload="metadata" aria-label="<?php echo esc_attr( isset($card['title']) ? $card['title'] : '' ); ?>"></video>
+        <?php else : ?>
         <img src="<?php echo esc_url( $_gc_imgurl ); ?>" alt="<?php echo esc_attr( isset($card['title']) ? $card['title'] : '' ); ?>" loading="lazy" />
+        <?php endif; ?>
         <?php if ( ! empty( $card['category'] ) ) : ?>
             <span class="guide-card-badge">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14"><path d="M4 19.5v-15A2.5 2.5 0 016.5 2H20v20H6.5a2.5 2.5 0 01-2.5-2.5zM6.5 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 6h6M10 10h6M10 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>

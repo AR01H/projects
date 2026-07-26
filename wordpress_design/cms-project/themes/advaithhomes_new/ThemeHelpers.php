@@ -36,6 +36,17 @@ function adn_versioned_url( string $url ): string {
     $sep = ( false === strpos( $url, '?' ) ) ? '?v=' : '&v=';
     return $url . $sep . $ver;
 }
+/**
+ * Does this URL point to a video file? Matches the admin media picker's own
+ * extension check (plugins/cms-plugin/src/Admin/Components/AdminComponents.php).
+ */
+function adn_is_video_url( string $url ): bool {
+    if ( '' === $url ) {
+        return false;
+    }
+    $ext = strtolower( pathinfo( wp_parse_url( $url, PHP_URL_PATH ) ?: '', PATHINFO_EXTENSION ) );
+    return in_array( $ext, array( 'mp4', 'webm', 'ogv', 'ogg', 'mov', 'avi' ), true );
+}
 function adn_enqueue_common_css() {
 
     $styles = array(
@@ -52,9 +63,6 @@ function adn_enqueue_common_css() {
         'adn-premium-style'    => '/assets/css/premium_styles.css',
         'adn-contact-style'    => '/assets/css/contact.css',
         'adn-cookie-consent-style' => '/assets/css/cookie-consent.css',
-        // FAQ styling is loaded globally, not per-page: adn_render_slug_attached_faqs()
-        // (adn_page_close) can print an Attached-Slug FAQ on any template, so the
-        // component it reuses (parts/faq_list) needs its CSS available everywhere.
         'adn-faqs-style'       => '/assets/css/faqs.css',
     );
     foreach ( $styles as $handle => $file ) {

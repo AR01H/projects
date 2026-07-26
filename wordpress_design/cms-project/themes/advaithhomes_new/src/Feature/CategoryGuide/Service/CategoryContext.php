@@ -371,10 +371,13 @@ class CategoryContext {
 		foreach ( $rows as $term ) {
 			$cat_name = $term->category_name ?? '';
 			if ( '' === $cat_name ) { continue; }
-			// Thumbnail: term_image_id on term objects (NOT featured_image_id or $post->ID)
+			// Thumbnail: term_image_id on term objects (NOT featured_image_id or $post->ID).
+			// wp_get_attachment_url() (not the image-only wp_get_attachment_image_url()) so a
+			// video picked in wp-admin still resolves to a URL - guide_card.php shows a still
+			// frame from it via adn_is_video_url() rather than silently falling back to default.
 			$_thumb = '';
 			if ( ! empty( $term->term_image_id ) ) {
-				$_u = wp_get_attachment_image_url( (int) $term->term_image_id, 'medium' );
+				$_u = wp_get_attachment_url( (int) $term->term_image_id );
 				if ( $_u ) { $_thumb = (string) $_u; }
 			}
 			// URL: _term_slug builds category page URL (NOT adn_cms_post_url which expects WP post objects)
@@ -382,7 +385,7 @@ class CategoryContext {
 				? home_url( '/' . trim( (string) $term->_term_slug, '/' ) . '/' )
 				: '#';
 			$items[] = array(
-				'thumbnail'   => $_thumb,
+				'image'       => $_thumb, // cards/guide_card.php reads $card['image'], not 'thumbnail'
 				'icon'        => $term->term_icon ?? $term->parent_icon ?? '📋',
 				'title'       => (string) $cat_name,
 				'url'         => $_url,

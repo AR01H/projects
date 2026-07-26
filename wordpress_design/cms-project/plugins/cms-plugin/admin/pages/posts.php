@@ -198,8 +198,10 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['ah_custom_editor_no
 	wp_set_post_categories( $post_id, $cats );
 	if ( $tags_raw ) wp_set_post_tags( $post_id, $tags_raw );
 	( new AH_Content_Taxonomy_Model() )->sync_terms( 'wp_post', $post_id, $_POST['taxonomy_ids'] ?? array() );
-	if ( $feat_img_id ) set_post_thumbnail( $post_id, $feat_img_id );
-	else delete_post_thumbnail( $post_id );
+	// set_post_thumbnail() refuses non-image attachments (silently deletes the meta
+	// instead), but this field explicitly supports video too, so write the meta directly.
+	if ( $feat_img_id ) update_post_meta( $post_id, '_thumbnail_id', $feat_img_id );
+	else delete_post_meta( $post_id, '_thumbnail_id' );
 	update_post_meta( $post_id, '_ah_sections', wp_slash( wp_json_encode( $sections ) ) );
 	update_post_meta( $post_id, '_ah_editor_mode', 'custom' );
 	update_post_meta( $post_id, '_ah_is_featured',  ! empty( $_POST['is_featured'] )  ? '1' : '0' );
@@ -481,7 +483,7 @@ if ( $action === 'edit-custom' ) {
 
         <!-- Featured Image -->
         <?php ob_start(); ?>
-          <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'featured_image_id', 'Featured Image / Video', $feat_img_id, array( 'type' => 'media' ) ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'featured_image_id', 'Featured Image', $feat_img_id, array( 'type' => 'media' ) ); ?>
         <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Featured Image', ob_get_clean() ); ?>
       </div><!-- /sidebar -->
     </div><!-- /grid -->
@@ -957,6 +959,7 @@ if ( ! empty( $posts_list ) && isset( $qe_tax_model ) && $qe_tax_model ) :
           </div>
           <div class="ah-qe-sec" style="margin-top:12px;">
             <div class="ah-qe-sec-h" style="display:flex;justify-content:space-between;align-items:center;">Related Content <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-rl-add">+ Add</button></div>
+            <?php $rl_types = array( 'article' => 'Article', 'external' => 'External', 'support' => 'Support', 'image' => 'Image', 'calculator' => 'Calculator', 'static_component' => 'Component' ); ?>
             <div class="ah-rl-wrap">
               <div class="ah-rl-rows">
                 <?php if ( ! empty( $mp_rl ) && is_array( $mp_rl ) ) : ?>
@@ -965,10 +968,7 @@ if ( ! empty( $posts_list ) && isset( $qe_tax_model ) && $qe_tax_model ) :
                       <input type="text" class="ah-rl-label" placeholder="Label" value="<?php echo esc_attr( $rl->label ?? '' ); ?>" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
                       <input type="text" class="ah-rl-url" placeholder="URL" value="<?php echo esc_attr( $rl->url ?? '' ); ?>" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
                       <select class="ah-rl-type" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;">
-                        <?php
-                        $rl_types = array( 'article' => 'Article', 'external' => 'External', 'support' => 'Support', 'image' => 'Image', 'calculator' => 'Calculator', 'static_component' => 'Component' );
-                        $rl_type  = $rl->link_type ?? 'external';
-                        ?>
+                        <?php $rl_type = $rl->link_type ?? 'external'; ?>
                         <?php foreach ( $rl_types as $k => $v ) : ?>
                           <option value="<?php echo esc_attr( $k ); ?>" <?php selected( $rl_type, $k ); ?>><?php echo esc_html( $v ); ?></option>
                         <?php endforeach; ?>
@@ -978,6 +978,19 @@ if ( ! empty( $posts_list ) && isset( $qe_tax_model ) && $qe_tax_model ) :
                     </div>
                   <?php endforeach; ?>
                 <?php endif; ?>
+              </div>
+              <div class="ah-rl-template" style="display:none;">
+                <div class="ah-rl-row" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px;">
+                  <input type="text" class="ah-rl-label" placeholder="Label" value="" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                  <input type="text" class="ah-rl-url" placeholder="URL" value="" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                  <select class="ah-rl-type" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;">
+                    <?php foreach ( $rl_types as $k => $v ) : ?>
+                      <option value="<?php echo esc_attr( $k ); ?>" <?php selected( 'external', $k ); ?>><?php echo esc_html( $v ); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                  <input type="text" class="ah-rl-container" placeholder="Container" value="" style="padding:4px 8px;border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem;outline:none;">
+                  <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm ah-rl-remove" style="grid-column:span 2;flex-shrink:0;padding:3px 8px;">&#10005; Remove</button>
+                </div>
               </div>
             </div>
           </div>
@@ -1058,7 +1071,7 @@ body.ah-qe-lock { overflow: hidden; }
   });
   /* Esc closes the open modal */
   $(document).on('keydown', function(e){
-    if (e.key === 'Escape' || e.keyCode === 27) closeModals();
+    if (e.key === 'Escape' || e.keyCode === 27) qeCloseModals();
   });
   /* Chip toggle: click label → toggle checkbox + restyle via class */
   $(document).on('click', '.ah-qe-chip', function(e) {
@@ -1084,9 +1097,12 @@ body.ah-qe-lock { overflow: hidden; }
     $(this).closest('.ah-qe-hl-row').remove();
   });
 
-  /* Related Content: add row (clone the per-panel hidden template) */
+  /* Related Content: add row (clone the per-panel hidden template).
+     The button lives in .ah-qe-sec-h, a SIBLING of .ah-rl-wrap (not an
+     ancestor), so .closest('.ah-rl-wrap') never matches - go up to the
+     shared .ah-qe-sec container first, then find the wrap inside it. */
   $(document).on('click', '.ah-rl-add', function() {
-    var $wrap = $(this).closest('.ah-rl-wrap');
+    var $wrap = $(this).closest('.ah-qe-sec').find('.ah-rl-wrap').first();
     var $tmpl = $wrap.find('.ah-rl-template .ah-rl-row').first();
     if ( ! $tmpl.length ) { return; }
     $wrap.find('.ah-rl-rows').first().append( $tmpl.clone() );

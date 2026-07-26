@@ -26,13 +26,23 @@ class AH_Builder_Page_Service {
 		$page = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE slug = %s AND status = 'active'", $slug ) );
 		if ( ! $page ) return;
 
+		// A real page was found - correct the 404 the main query already decided on,
+		// otherwise this renders fine but still ships as "404 Not Found" to browsers,
+		// crawlers, and anything else that checks the response status.
+		global $wp_query;
+		$wp_query->is_404 = false;
+		status_header( 200 );
+
 		$GLOBALS['ah_builder_page'] = $page;
 
 		add_action( 'wp_enqueue_scripts', function () {
+			// 'ah-variables' (from the legacy AH_Asset_Loader) is never registered in this
+			// project - only the theme's own Adn\Theme\Service\AssetLoader runs, which
+			// registers the same variables.css under 'adn-varaibles-style'.
 			wp_enqueue_style(
 				'ah-builder-page',
 				AH_PLUGIN_URL . '/assets/css/builder-page.css',
-				[ 'ah-variables' ],
+				[ 'adn-varaibles-style' ],
 				AH_PLUGIN_VERSION
 			);
 		} );

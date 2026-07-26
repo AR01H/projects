@@ -57,14 +57,14 @@ if ( $action === 'edit' && $report_id && ! $report ) {
 
 		<div id="ar-sql-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'php' ? 'display:none' : ''; ?>">
 			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'SQL Query * <span style="font-weight:400;text-transform:none;letter-spacing:0">(SELECT, DESC, SHOW CREATE)</span>',
-				'<textarea id="ar-sql" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid var(--ah-border);border-radius:6px;resize:vertical;background:var(--ah-text);color:var(--ah-text);line-height:1.6" placeholder="SELECT * FROM wp_posts WHERE post_status = \'publish\' LIMIT 20">'
+				'<textarea id="ar-sql" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid var(--ah-border);border-radius:6px;resize:vertical;background:var(--ah-text);color:var(--ah-bg-light);line-height:1.6" placeholder="SELECT * FROM wp_posts WHERE post_status = \'publish\' LIMIT 20">'
 				. esc_textarea( $report->query_sql ?? '' ) . '</textarea>'
 			); ?>
 		</div>
 
 		<div id="ar-php-wrap" style="<?php echo ( $report->report_type ?? 'sql' ) === 'sql' ? 'display:none' : ''; ?>">
 			<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'PHP Code * <span style="font-weight:400;text-transform:none;letter-spacing:0">(Must return an array of arrays)</span>',
-				'<textarea id="ar-php" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid var(--ah-border);border-radius:6px;resize:vertical;background:var(--ah-text);color:var(--ah-text);line-height:1.6" placeholder="$data = [];&#10;foreach ( get_users() as $u ) {&#10;    $data[] = [ \'ID\' => $u->ID, \'Login\' => $u->user_login ];&#10;}&#10;return $data;">'
+				'<textarea id="ar-php" rows="12" style="width:100%;font-family:monospace;font-size:13px;padding:12px;border:1.5px solid var(--ah-border);border-radius:6px;resize:vertical;background:var(--ah-text);color:var(--ah-bg-light);line-height:1.6" placeholder="$data = [];&#10;foreach ( get_users() as $u ) {&#10;    $data[] = [ \'ID\' => $u->ID, \'Login\' => $u->user_login ];&#10;}&#10;return $data;">'
 				. esc_textarea( $report->query_php ?? '' ) . '</textarea>'
 				. '<p style="font-size:11px;color:var(--ah-muted);margin:6px 0 0">Security warning: This code is executed via `eval()`. Do not use untrusted input.</p>'
 			); ?>

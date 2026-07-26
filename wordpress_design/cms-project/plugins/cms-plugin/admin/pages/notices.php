@@ -168,13 +168,17 @@ if ( ! empty( $_GET['err'] ) ) {
 					array( 'Button URL', '<input type="text" id="pv-btn-url" name="button_url" value="' . esc_attr( $item->button_url ?? '' ) . '" placeholder="/contact or #section or https://…">' ),
 				) ); ?>
 
-				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Banner Image <small>(optional · 520×280 recommended)</small>',
+				<?php
+				$_sn_image    = $item->image ?? '';
+				$_sn_is_video = (bool) preg_match( '/\.(mp4|webm|ogv|ogg|mov|avi)(\?.*)?$/i', $_sn_image );
+				\Ah\Cms\Admin\Components\AdminComponents::formRow( 'Banner Image / Video <small>(optional · 520×280 recommended)</small>',
 					'<div style="display:flex;gap:8px;align-items:center;">'
-					. '<input type="text" id="pv-image" name="image" value="' . esc_attr( $item->image ?? '' ) . '" placeholder="Paste URL or use picker →" style="flex:1;">'
+					. '<input type="text" id="pv-image" name="image" value="' . esc_attr( $_sn_image ) . '" placeholder="Paste URL or use picker →" style="flex:1;">'
 					. '<button type="button" id="ah-sn-media-btn" class="ah-btn ah-btn-secondary ah-btn-sm" style="white-space:nowrap;">&#128247; Choose</button>'
 					. '</div>'
-					. '<div id="pv-img-thumb" style="margin-top:6px;' . ( ( $item->image ?? '' ) ? '' : 'display:none;' ) . '">'
-					. '<img src="' . esc_url( $item->image ?? '' ) . '" style="max-height:80px;border-radius:6px;border:1px solid var(--ah-border);">'
+					. '<div id="pv-img-thumb" style="margin-top:6px;' . ( $_sn_image ? '' : 'display:none;' ) . '">'
+					. '<img id="pv-img-thumb-img" src="' . esc_url( $_sn_image ) . '" style="max-height:80px;border-radius:6px;border:1px solid var(--ah-border);display:' . ( $_sn_is_video ? 'none' : 'block' ) . ';">'
+					. '<video id="pv-img-thumb-video" src="' . esc_url( $_sn_image ) . '" muted style="max-height:80px;border-radius:6px;border:1px solid var(--ah-border);display:' . ( $_sn_is_video ? 'block' : 'none' ) . ';">' . '</video>'
 					. '<button type="button" id="ah-sn-img-clear" style="margin-left:6px;background:none;border:none;color:var(--ah-danger);cursor:pointer;font-size:12px;">&#10005; Remove</button>'
 					. '</div>'
 				); ?>
@@ -353,6 +357,7 @@ if ( ! empty( $_GET['err'] ) ) {
 						<div id="pv-popup" style="background:#fff;border-radius:12px;width:100%;overflow:hidden;box-shadow:0 8px 32px rgba(10,25,47,.18);">
 							<div id="pv-img-bar" style="position:relative;">
 								<img id="pv-img-el" src="" alt="" style="width:100%;height:120px;object-fit:cover;display:none;">
+								<video id="pv-video-el" src="" muted loop autoplay style="width:100%;height:120px;object-fit:cover;display:none;"></video>
 								<div id="pv-color-bar" style="height:5px;background:linear-gradient(90deg,var(--ah-success),var(--ah-primary));"></div>
 								<span id="pv-badge-on-img" style="display:none;position:absolute;top:8px;left:10px;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;"></span>
 							</div>
@@ -474,10 +479,13 @@ jQuery(function ($) {
 
 	// ── Media picker ─────────────────────────────────────────────────────
 	var mediaFrame;
+	function isVideoUrl(url) {
+		return /\.(mp4|webm|ogv|ogg|mov|avi)(\?.*)?$/i.test(String(url || ''));
+	}
 	$('#ah-sn-media-btn').on('click', function (e) {
 		e.preventDefault();
 		if (mediaFrame) { mediaFrame.open(); return; }
-		mediaFrame = wp.media({ title: 'Choose Banner Image', button: { text: 'Use image' }, multiple: false, library: { type: 'image' } });
+		mediaFrame = wp.media({ title: 'Choose Banner Image or Video', button: { text: 'Use media' }, multiple: false });
 		mediaFrame.on('select', function () {
 			var att = mediaFrame.state().get('selection').first().toJSON();
 			$('#pv-image').val(att.url).trigger('input');
@@ -521,18 +529,31 @@ jQuery(function ($) {
 		// Button
 		if (btnLabel) { $('#pv-btn-el').text(btnLabel); $('#pv-btn-wrap').show(); } else { $('#pv-btn-wrap').hide(); }
 
-		// Image / colour bar
+		// Image / video / colour bar
+		var imgIsVideo = isVideoUrl(imgUrl);
 		if (imgUrl) {
-			$('#pv-img-el').attr('src', imgUrl).show();
+			if (imgIsVideo) {
+				$('#pv-video-el').attr('src', imgUrl).show();
+				$('#pv-img-el').hide();
+			} else {
+				$('#pv-img-el').attr('src', imgUrl).show();
+				$('#pv-video-el').hide();
+			}
 			$('#pv-color-bar').hide();
 			$('#pv-thumb').show();
 		} else {
-			$('#pv-img-el').hide();
+			$('#pv-img-el, #pv-video-el').hide();
 			$('#pv-color-bar').show();
 		}
-		// Image thumb in form
+		// Image/video thumb in form
 		if (imgUrl) {
-			$('#pv-img-thumb img').attr('src', imgUrl);
+			if (imgIsVideo) {
+				$('#pv-img-thumb-video').attr('src', imgUrl).show();
+				$('#pv-img-thumb-img').hide();
+			} else {
+				$('#pv-img-thumb-img').attr('src', imgUrl).show();
+				$('#pv-img-thumb-video').hide();
+			}
 			$('#pv-img-thumb').show();
 		} else {
 			$('#pv-img-thumb').hide();

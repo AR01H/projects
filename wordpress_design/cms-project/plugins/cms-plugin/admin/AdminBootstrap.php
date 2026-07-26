@@ -146,9 +146,13 @@ class AH_Admin_Bootstrap {
 				var cancelBtn = modal.querySelector(".ah-modal-cancel");
 				var pendingHref = "";
 				var pendingTarget = "";
-				function openModal(href, title, message, target) {
+				var pendingForm = null;
+				var pendingSubmitter = null;
+				function openModal(href, title, message, target, form, submitter) {
 					pendingHref = href;
 					pendingTarget = target || "";
+					pendingForm = form || null;
+					pendingSubmitter = submitter || null;
 					titleEl.textContent = title || "Confirm Action";
 					msgEl.textContent = message || "Are you sure? This cannot be undone.";
 					confirmBtn.textContent = "Yes, Delete";
@@ -158,13 +162,32 @@ class AH_Admin_Bootstrap {
 					modal.classList.remove("is-visible");
 					pendingHref = "";
 					pendingTarget = "";
+					pendingForm = null;
+					pendingSubmitter = null;
 				}
 				document.addEventListener("click", function(e){
 					var btn = e.target.closest(".ah-confirm-delete");
 					if (!btn) return;
 					e.preventDefault();
 					e.stopPropagation();
-					openModal(btn.getAttribute("href"), btn.dataset.title, btn.dataset.confirm, btn.dataset.target);
+
+					var href = btn.getAttribute("href");
+					var form = null;
+					var submitter = null;
+					// Not a link: this is a submit-button (optionally targeting another
+					// form via the `form="id"` attribute) or the <form> itself carries
+					// the class. Either way there is no href, so it must be submitted.
+					if (!href) {
+						if (btn.tagName === "FORM") {
+							form = btn;
+							submitter = e.target.closest("button[type=submit], input[type=submit]");
+						} else {
+							submitter = btn;
+							form = btn.getAttribute("form") ? document.getElementById(btn.getAttribute("form")) : btn.closest("form");
+						}
+					}
+
+					openModal(href, btn.dataset.title, btn.dataset.confirm, btn.dataset.target, form, submitter);
 				});
 				confirmBtn.addEventListener("click", function(e){
 					e.preventDefault();
@@ -173,6 +196,18 @@ class AH_Admin_Bootstrap {
 						closeModal();
 					} else if (pendingHref) {
 						window.location.href = pendingHref;
+					} else if (pendingForm) {
+						var submitted = false;
+						if (typeof pendingForm.requestSubmit === "function") {
+							try {
+								pendingForm.requestSubmit(pendingSubmitter || undefined);
+								submitted = true;
+							} catch (err) { /* submitter didn\'t belong to this form; fall back below */ }
+						}
+						if (!submitted) {
+							pendingForm.submit();
+						}
+						closeModal();
 					}
 				});
 				cancelBtn.addEventListener("click", function(e){

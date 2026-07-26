@@ -39,18 +39,20 @@ $_trust = isset( $hero['trust_items'] ) && is_array( $hero['trust_items'] )
 	: array();
 
 $_default_img  = get_template_directory_uri() . THEME_DEFAULT_HERO_IMG;
-// hero['bg_url'] wins; then hero['image_id'] wins; else WP featured image; else default.
-$_hero_img_id  = ! empty( $hero['image_id'] ) ? (int) $hero['image_id'] : 0;
-$_hero_img     = ! empty( $hero['bg_url'] ) 
+// hero['bg_url'] wins (used as-is, e.g. external URLs); then hero['image_id'] wins; else the page's
+// featured media. Resolved via get_post_thumbnail_id()/wp_get_attachment_url() rather than the
+// image-only wp_get_attachment_image_url()/get_the_post_thumbnail_url(), so a video picked in
+// wp-admin (Featured Image / Video field) renders instead of silently falling back to $_default_img.
+$_hero_img_id  = ! empty( $hero['image_id'] ) ? (int) $hero['image_id'] : (int) get_post_thumbnail_id( get_the_ID() );
+$_hero_img     = ! empty( $hero['bg_url'] )
 	? (string) $hero['bg_url']
-	: adn_versioned_url( $_hero_img_id
-		? ( wp_get_attachment_image_url( $_hero_img_id, 'full' ) ?: $_default_img )
-		: ( get_the_post_thumbnail_url( get_the_ID(), 'full' ) ?: $_default_img ) );
+	: adn_versioned_url( ( $_hero_img_id ? wp_get_attachment_url( $_hero_img_id ) : '' ) ?: $_default_img );
+$_hero_is_video = adn_is_video_url( $_hero_img );
 
 ?>
 <section class="page-hero">
 
-	<?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img ) ); ?>
+	<?php adn_component( 'sections/page_hero_bg_banner', array( 'hero_img' => $_hero_img, 'media_type' => $_hero_is_video ? 'video' : 'image' ) ); ?>
 
 	<div class="container">
 		<div class="page-hero-content">
@@ -92,13 +94,13 @@ $_hero_img     = ! empty( $hero['bg_url'] )
 				$_hero_post    = get_post();
 				$_hero_excerpt = $_hero_post ? trim( (string) $_hero_post->post_excerpt ) : '';
 				if ( '' !== $_hero_excerpt ) {
-					$_hero_desc = esc_html( $_hero_excerpt );
+					$_hero_desc = ( $_hero_excerpt );
 				}
 			}
 			?>
 			<?php if ( '' !== trim( wp_strip_all_tags( $_hero_desc ) ) ) : ?>
 				<?php /* Strip <p> tags from editor content to avoid nested <p><p>...</p></p> */ ?>
-				<p><?php echo wp_kses_post( wpautop( wp_strip_all_tags( $_hero_desc ), false ) ); ?></p>
+				<p><?php echo wp_kses_post( wpautop( ( $_hero_desc ), false ) ); ?></p>
 			<?php endif; ?>
 
 			<?php adn_component( 'parts/hero_share', array( 'share' => $share ?? null ) ); ?>

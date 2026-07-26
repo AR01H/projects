@@ -366,9 +366,11 @@ class HomeContext {
 		foreach ( adn_cms_guides_by_category( $count, $topic_ids ) as $i => $post ) {
 			$cat_name = $post->category_name ?? '';
 			if ( '' === $cat_name ) { continue; }
+			// wp_get_attachment_url() (not the image-only wp_get_attachment_image_url()) so a
+			// video term thumbnail still resolves - guide_card.php shows a still frame from it.
 			$_term_img_url = '';
 			if ( ! empty( $post->term_image_id ) ) {
-				$_tiu = wp_get_attachment_image_url( (int) $post->term_image_id, 'medium' );
+				$_tiu = wp_get_attachment_url( (int) $post->term_image_id );
 				$_term_img_url = $_tiu ? (string) $_tiu : '';
 			}
 			$items[] = array(

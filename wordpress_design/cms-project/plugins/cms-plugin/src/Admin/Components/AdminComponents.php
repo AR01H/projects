@@ -396,10 +396,12 @@ class AdminComponents {
 			$choose_label = 'Choose Media';
 		}
 
+		$picker_class = 'ah-image-picker' . ( ! empty( $opts['compact'] ) ? ' ah-image-picker--compact' : '' );
+
 		echo '<div class="ah-form-row">';
 		echo '<label>' . esc_html( $label ) . '</label>';
-		echo '<div class="ah-image-picker" data-picker-type="' . esc_attr( $type ) . '">';
-		echo '<input type="hidden" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id_attr ) . '" value="' . esc_attr( $value ) . '">';
+		echo '<div class="' . esc_attr( $picker_class ) . '" data-picker-type="' . esc_attr( $type ) . '">';
+		echo '<input type="hidden" class="ah-image-id" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id_attr ) . '" value="' . esc_attr( $value ) . '">';
 
 		// Preview.
 		if ( $url ) {
@@ -409,7 +411,7 @@ class AdminComponents {
 				echo '</div>';
 			} else {
 				echo '<div class="ah-image-preview-wrap visible">';
-				echo '<img class="ah-image-preview" src="' . esc_url( $url ) . '" alt="">';
+				echo '<img class="ah-image-preview visible" src="' . esc_url( $url ) . '" alt="">';
 				echo '</div>';
 			}
 		} else {

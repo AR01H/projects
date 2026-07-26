@@ -92,7 +92,7 @@ if ( ! function_exists( 'ah_settings_image_url' ) ) {
           <?php if ( $ft === 'textarea' ) : ?>
             <textarea id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" rows="4"><?php echo esc_textarea( $val ); ?></textarea>
           <?php elseif ( $ft === 'image' ) : ?>
-            <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'image_settings[' . esc_attr( $sk ) . ']', '', $val, array( 'id' => 'setting_' . esc_attr( $sk ), 'type' => 'media' ) ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::mediaField( 'image_settings[' . esc_attr( $sk ) . ']', '', $val, array( 'id' => 'setting_' . esc_attr( $sk ), 'type' => 'media', 'compact' => true ) ); ?>
           <?php elseif ( $ft === 'color' ) : ?>
             <input type="text" id="setting_<?php echo esc_attr( $sk ); ?>" name="settings[<?php echo esc_attr( $sk ); ?>]" value="<?php echo esc_attr( $val ); ?>" class="wp-color-picker-field">
           <?php elseif ( $ft === 'toggle' ) : ?>

@@ -31,10 +31,12 @@ add_action( 'wp_head', function() use ( $desc ) {
 
 
 if ( ! $no_header ) {
+	// get_header() prints the DOCTYPE/<head>/wp_head()/<body> shell (where enqueued
+	// CSS/JS actually output) - adn_page_open() only renders the nav component, it
+	// does NOT include get_header(). Both are needed, not either/or.
+	get_header();
 	if ( function_exists( 'adn_page_open' ) ) {
 		adn_page_open( array( 'chrome' => $chrome ) );
-	} else {
-		get_header();
 	}
 } else {
 	// Bare mode: skip theme chrome but still emit wp_head() so styles/scripts load.
@@ -116,11 +118,12 @@ document.querySelectorAll('.ah-steps').forEach(function(el){obs.observe(el);});
 
 <?php
 if ( ! $no_footer ) {
+	// adn_page_close() only renders the footer component - get_footer() is what
+	// prints wp_footer() (enqueued JS) plus the closing </body></html> tags.
 	if ( function_exists( 'adn_page_close' ) ) {
 		adn_page_close( array( 'chrome' => $chrome ) );
-	} else {
-		get_footer();
 	}
+	get_footer();
 } else {
 	// Bare mode: skip theme chrome but still emit wp_footer() so scripts load.
 	wp_footer();

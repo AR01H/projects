@@ -8,6 +8,27 @@ class AH_File_Links_Model extends AH_Model_Base {
 
 	protected string $table_suffix = 'file_links';
 
+	private static bool $table_ready = false;
+
+	/**
+	 * The table DDL lives ONLY in AH_DB_Schema (table 73) - the single source of
+	 * truth. This guard just self-heals: if the table is somehow missing (e.g. the
+	 * version upgrade hasn't run yet), it triggers the idempotent installer once.
+	 * Mirrors AH_Related_Links_Model::ensure_table().
+	 */
+	public static function ensure_table(): void {
+		if ( self::$table_ready ) {
+			return;
+		}
+		global $wpdb;
+		$table  = AH_DB_Helper::table( 'file_links' );
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+		if ( ! $exists && class_exists( 'AH_DB_Installer' ) ) {
+			AH_DB_Installer::install();
+		}
+		self::$table_ready = true;
+	}
+
 	/**
 	 * Get paginated file list with optional search and type filter.
 	 */

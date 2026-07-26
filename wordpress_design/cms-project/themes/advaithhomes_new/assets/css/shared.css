@@ -2979,11 +2979,13 @@ a.mini-card, div.mini-card {
   flex-shrink: 0;
   position: relative;
 }
-.guide-card-img img {
+.guide-card-img img,
+.guide-card-img video {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.38s ease;
 }
-.guide-card:hover .guide-card-img img { transform: scale(1.06); }
+.guide-card:hover .guide-card-img img,
+.guide-card:hover .guide-card-img video { transform: scale(1.06); }
 .guide-card-icon {
   display: inline-block;
   transition: transform 0.38s ease;

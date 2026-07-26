@@ -17,7 +17,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		'label'      => sanitize_text_field( $_POST['label'] ?? '' ),
 		'text'       => $_title,
 		'slug'       => $model->unique_slug_from_title( $_slug_input ?: $_title, $edit_id ),
-		'excerpt'    => sanitize_text_field( $_POST['excerpt'] ?? '' ),
+		'excerpt'    => wp_kses_post( wp_unslash( $_POST['excerpt'] ?? '' ) ),
 		'content'    => wp_kses_post( $_POST['content'] ?? '' ),
 		'image_id'   => (int) ( $_POST['image_id'] ?? 0 ) ?: null,
 		'link_url'   => esc_url_raw( $_POST['link_url'] ?? '' ),
@@ -162,7 +162,7 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
 
         <?php
         $nb_img_id  = (int) ( $item->image_id ?? 0 );
-        AdminComponents::mediaField( 'image_id', 'Thumbnail Image / Video', $nb_img_id, array( 'type' => 'media' ) );
+        AdminComponents::mediaField( 'image_id', 'Thumbnail Image', $nb_img_id, array( 'type' => 'media', 'compact' => true ) );
         ?>
 
         <?php AdminComponents::formRow( 'Link URL', '<input type="text" name="link_url" value="' . esc_attr( $item->link_url ?? '' ) . '" class="regular-text">' ); ?>
