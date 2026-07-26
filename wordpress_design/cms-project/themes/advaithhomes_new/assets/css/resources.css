@@ -2,7 +2,7 @@
 /* Carousel wrapper */
 .res-carousel {
 	position: relative;
-	margin-top: 32px;
+	margin-top: 16px;
 }
 
 /* Track - single scrollable row */
@@ -370,6 +370,6 @@
 }
 
 @media (max-width: 680px) {
-	.res-card-lib { flex: 0 0 272px; width: 272px; }
+	.res-card-lib { flex: 0 0 272px; width: 272px;  height: 220px; }
 	.res-carousel__btn { display: none; }
 }

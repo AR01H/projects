@@ -69,4 +69,12 @@ class CartController {
         $wpdb->delete( "{$wpdb->prefix}rh_cart", [ 'id' => $request->get_param( 'id' ), 'user_id' => $user->ID ] );
         return $this->get_cart( $request );
     }
+
+    public function clear_cart( \WP_REST_Request $request ): \WP_REST_Response {
+        global $wpdb;
+        $user = Middleware::get_user();
+        if ( ! $user ) return Response::error( 'Unauthorized.', 401 );
+        $wpdb->delete( "{$wpdb->prefix}rh_cart", [ 'user_id' => $user->ID ] );
+        return Response::success( [] );
+    }
 }

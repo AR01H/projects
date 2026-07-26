@@ -20,12 +20,12 @@ if ( empty( $journey ) && empty( $terms ) ) { return; }
 ?>
 <?php if ( ! empty( $terms ) ) : ?>
 <div class="category-control-centre__spotlights ">
-	<?php foreach ( $terms as $_term_slug ) : ?>
-		<?php adn_component( 'parts/spotlights_widget', array(
-			'term_slug' => $_term_slug,
-			'compact'   => true,
-		) ); ?>
-	<?php endforeach; ?>
+	<?php foreach ( $terms as $_term_slug ) :
+		$_sp_props = \Adn\Theme\Service\SpotlightService::buildProps( $_term_slug );
+		if ( $_sp_props ) :
+	?>
+		<?php adn_component( 'parts/spotlights_widget', array_merge( $_sp_props, array( 'mode' => 'compact' ) ) ); ?>
+	<?php endif; endforeach; ?>
 </div>
 <?php endif; ?>
 

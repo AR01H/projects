@@ -653,10 +653,18 @@ function adn_link( $url ) {
 	if ( '' === $url ) {
 		return '#';
 	}
-	if ( '#' === $url[0] || preg_match( '#^(https?:)?//#i', $url ) ) {
+	if ( '#' === $url[0] ) {
 		return $url;
 	}
 	if ( preg_match( '#^(mailto|tel|sms|callto):#i', $url ) ) {
+		return $url;
+	}
+	// Rewrite production domain to current domain (dev/staging compatibility).
+	$current_host = wp_parse_url( home_url( '' ), PHP_URL_HOST );
+	if ( preg_match( '#^https?://([^/]+)#i', $url, $m ) && $m[1] !== $current_host ) {
+		$url = preg_replace( '#^https?://[^/]+#', home_url( '' ), $url, 1 );
+	}
+	if ( preg_match( '#^(https?:)?//#i', $url ) ) {
 		return $url;
 	}
 	if ( '/' === $url[0] ) {

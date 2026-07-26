@@ -59,7 +59,7 @@ if ( is_front_page() ) {
             ob_start();
 ?>
 <div class="short-news-ticker">
-    <div class="container">
+    <div class="">
         <div class="short-news-ticker__inner">
             <div class="short-news-ticker__track" id="shortNewsTicker">
                 <?php foreach ( $_sn_items as $_sn ) : ?>

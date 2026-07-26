@@ -120,6 +120,7 @@ require_once ADN_THEME_DIR . '/src/Feature/Shortcodes/ThemeShortcodes.php';
 require_once ADN_THEME_DIR . '/src/Feature/Calculators/CalculatorMergeHelper.php';
 require_once ADN_THEME_DIR . '/src/Helper/SidebarHelper.php';
 require_once ADN_THEME_DIR . '/src/Service/SeoService.php';
+require_once ADN_THEME_DIR . '/src/Service/SpotlightService.php';
 
 // ===========================
 // COMMON FUNCTIONS (organized by concern)

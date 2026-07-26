@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Frontend renderer for pages created in the Page Builder.
  * Loaded by the template_redirect hook in ah-cms.php.

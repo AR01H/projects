@@ -31,7 +31,7 @@ if ( empty( $items ) ) { return; }
 			<p class="sc-card__desc"><?php echo esc_html( $_desc ); ?></p>
 		<?php endif; ?>
 		<?php if ( '' !== $_label ) : ?>
-			<a href="<?php echo esc_url( adn_link( $_url ) ); ?>" class="sc-card__btn">
+			<a href="<?php echo esc_url( adn_link( $_url ) ); ?>" class="sc-card__btn btn btn-primary">
 				<?php echo esc_html( $_label ); ?>
 				<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
 			</a>

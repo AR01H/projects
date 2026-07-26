@@ -622,7 +622,7 @@ filter: brightness(0.92);
 		flex: 1;
 	}
 	.guides-grid.search-results-grid {
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(3, 1fr);
 	}
 }
 

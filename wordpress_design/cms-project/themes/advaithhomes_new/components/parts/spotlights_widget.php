@@ -1,69 +1,48 @@
 <?php
 /**
  * components/parts/spotlights_widget.php
- * Spotlight panel - two rendering modes.
+ * Spotlight panel - pure presentation, receives data via props.
  *
  * Props:
- *   term_slug    string  required
- *   max_items    int     optional - override term's max_display
- *   widget_title string  optional - override heading
- *   sidebar      bool    optional - true = sw-panel via sidebar_link_list
- *                                   false (default) = sp-panel via list_widget
- *   compact      bool    optional - true = metric cards for category top band
+ *   heading   string  section heading
+ *   items[]   array   shaped items from SpotlightService::buildProps()
+ *   slug      string  spotlight term slug (for data attributes)
+ *   mode      string  'compact' | 'sidebar' | 'section'
+ *   tag       string  heading tag: h2|h3|h4 (default: h4)
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$_sp_slug    = isset( $term_slug )    ? sanitize_key( (string) $term_slug )  : '';
-$_sp_max     = isset( $max_items )    ? (int) $max_items                      : 0;
-$_sp_title   = isset( $widget_title ) ? (string) $widget_title               : '';
-$_is_sidebar = ! empty( $sidebar );
-$_is_compact  = ! empty( $compact );
+$heading = isset( $heading ) ? (string) $heading : '';
+$items   = isset( $items ) && is_array( $items ) ? $items : array();
+$slug    = isset( $slug )  ? (string) $slug : '';
+$mode    = isset( $mode )  ? (string) $mode : 'section';
 
-if ( '' === $_sp_slug ) { return; }
+if ( empty( $items ) ) { return; }
 
-global $wpdb;
-$tbl_terms = $wpdb->prefix . 'ah_spotlight_terms';
-$tbl_items = $wpdb->prefix . 'ah_spotlights';
+$htag = isset( $tag ) && in_array( $tag, array( 'h2', 'h3', 'h4' ), true ) ? $tag : 'h4';
 
-$term = $wpdb->get_row( $wpdb->prepare(
-	"SELECT * FROM `{$tbl_terms}` WHERE slug = %s AND is_active = 1 LIMIT 1",
-	$_sp_slug
-) );
-
-if ( ! $term ) { return; }
-
-$limit = $_sp_max > 0 ? $_sp_max : (int) $term->max_display;
-
-$rows = $wpdb->get_results( $wpdb->prepare(
-	"SELECT * FROM `{$tbl_items}` WHERE term_id = %d AND is_active = 1 ORDER BY sort_order ASC, id ASC LIMIT %d",
-	(int) $term->id,
-	$limit
-) );
-
-if ( empty( $rows ) ) { return; }
-
-if ( $_is_compact ) {
-
+/* ── Compact mode: metric cards for category top band / home ── */
+if ( 'compact' === $mode ) {
 	?>
-	<div class="sp-metrics-panel" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
+	<div class="sp-metrics-panel" data-term="<?php echo esc_attr( $slug ); ?>">
 		<div class="sp-metrics-grid">
-			<?php foreach ( $rows as $_sp ) :
-				$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
-				$_val      = trim( (string) ( $_sp->point_value ?? '' ) );
-				$_lbl      = trim( (string) ( $_sp->point_label ?? '' ) );
-				$_has_link = ! empty( $_sp->show_link ) && ! empty( $_sp->link_url );
-				$_url      = $_has_link ? adn_link( (string) $_sp->link_url ) : '';
-				$_tag      = ! empty( $_sp->description ) ? (string) $_sp->description : '';
-				$_title    = (string) $_sp->title;
+			<?php foreach ( $items as $_item ) :
+				$_val   = $_item['value'] ?? '';
+				$_lbl   = $_item['label'] ?? '';
+				$_url   = $_item['url'] ?? '';
+				$_title = $_item['title'] ?? '';
+				$_tag   = $_item['description'] ?? '';
+				$_icon  = $_item['icon'] ?? '';
+				$_link_label = $_item['link_label'] ?? '';
 			?>
-				<?php if ( $_url ) : ?>
+				<?php if ( '' !== $_url ) : ?>
 				<a href="<?php echo esc_url( $_url ); ?>" class="sp-metric-card" title="<?php echo esc_attr( $_title ); ?>">
 				<?php else : ?>
 				<div class="sp-metric-card" title="<?php echo esc_attr( $_title ); ?>">
 				<?php endif; ?>
 				<div class="sp-metric-card__body">
-						<span class="sp-metric-card__label"><?php echo esc_attr( $_title ); ?></span>
+						<span class="sp-metric-card__label"><?php echo esc_html( $_title ); ?></span>
 						<?php if ( '' !== $_val || '' !== $_lbl ) : ?>
 							<div class="sp-metric-detail_label">
 								<?php if ( '' !== $_val ) : ?>
@@ -77,14 +56,14 @@ if ( $_is_compact ) {
 						<?php if ( '' !== $_tag ) : ?>
 							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
 						<?php endif; ?>
-						<?php if ( ! empty( $_sp->link_label ) ) : ?>
-							<span class="spotlight-card__link-label"><?php echo esc_html( (string) $_sp->link_label ); ?><?php if ( $_url ) : ?> <i class="fa-solid fa-arrow-right" aria-hidden="true" style="font-size:0.7em;"></i><?php endif; ?></span>
+						<?php if ( '' !== $_link_label ) : ?>
+							<span class="spotlight-card__link-label"><?php echo esc_html( $_link_label ); ?><?php if ( '' !== $_url ) : ?> <i class="fa-solid fa-arrow-right" aria-hidden="true" style="font-size:0.7em;"></i><?php endif; ?></span>
 						<?php endif; ?>
 					</div>
 					<?php if ( '' !== $_icon ) : ?>
-						<span class="sp-metric-card__icon" aria-hidden="true"><?php echo adn_icon( $_icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="sp-metric-card__icon" aria-hidden="true"><?php echo \adn_icon( $_icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					<?php endif; ?>
-				<?php if ( $_url ) : ?>
+				<?php if ( '' !== $_url ) : ?>
 				</a>
 				<?php else : ?>
 				</div>
@@ -93,60 +72,57 @@ if ( $_is_compact ) {
 		</div>
 	</div>
 	<?php
+	return;
+}
 
-} elseif ( $_is_sidebar ) {
+/* ── Sidebar mode: compact sw-panel list ── */
+if ( 'sidebar' === $mode ) {
+	$_sidebar_items = array();
+	foreach ( $items as $_item ) {
+		$_val  = $_item['value'] ?? '';
+		$_lbl  = $_item['label'] ?? '';
+		$_meta = ( '' !== $_val && '' !== $_lbl ) ? $_val . ' ' . $_lbl : ( '' !== $_val ? $_val : $_lbl );
 
-	/* ── Sidebar mode: compact sw-panel list ── */
-	$_items = array();
-	foreach ( $rows as $_sp ) {
-		$_icon = trim( (string) ( $_sp->icon ?? '' ) );
-		$_val  = trim( (string) ( $_sp->point_value ?? '' ) );
-		$_lbl  = trim( (string) ( $_sp->point_label ?? '' ) );
-		$_meta = '' !== $_val && '' !== $_lbl ? $_val . ' ' . $_lbl : ( '' !== $_val ? $_val : $_lbl );
-
-		$_items[] = array(
-			'icon'  => '' !== $_icon ? $_icon : mb_strtoupper( mb_substr( (string) $_sp->title, 0, 1 ) ),
-			'label' => (string) $_sp->title,
+		$_sidebar_items[] = array(
+			'icon'  => ! empty( $_item['icon'] ) ? $_item['icon'] : mb_strtoupper( mb_substr( $_item['title'] ?? '', 0, 1 ) ),
+			'label' => $_item['title'] ?? '',
 			'meta'  => $_meta,
-			'url'   => $_has_link ? adn_link( (string) $_sp->link_url ) : '',
+			'url'   => $_item['url'] ?? '',
 		);
 	}
 
-	adn_component( 'parts/sidebar_link_list', array( 'list' => array(
-		'heading' => $_heading,
-		'items'   => $_items,
+	\adn_component( 'parts/sidebar_link_list', array( 'list' => array(
+		'heading' => $heading,
+		'items'   => $_sidebar_items,
 	) ) );
+	return;
+}
 
-} else {
+/* ── Section mode: sp-panel via spotlight_card ── */
+?>
+<div class="sp-panel mini_card_container_design spotlight-panel" data-term="<?php echo esc_attr( $slug ); ?>">
+	<div class="spotlight-grid">
+		<div class="list-widget-header">
+			<h3><?php echo esc_html( $heading ); ?></h3>
+		</div>
 
-	/* ── Section mode: sp-panel via list_widget ── */
-	?>
-	<div class="sp-panel mini_card_container_design spotlight-panel" data-term="<?php echo esc_attr( $_sp_slug ); ?>">
-		<div class="spotlight-grid">
-			<div class="list-widget-header">
-				<h3><?php echo esc_html( $_heading ); ?></h3>
-			</div>
-
-			<div class="spotlight-items">
-			<?php foreach ( $rows as $_sp ) :
-				$_icon     = trim( (string) ( $_sp->icon ?? '' ) );
-				$_val      = trim( (string) ( $_sp->point_value ?? '' ) );
-				$_lbl      = trim( (string) ( $_sp->point_label ?? '' ) );
-				$_has_link = ! empty( $_sp->show_link ) && ! empty( $_sp->link_url );
-				$card = array(
-					'icon' => '' !== $_icon ? $_icon : mb_strtoupper( mb_substr( (string) $_sp->title, 0, 1 ) ),
-					'title' => (string) $_sp->title,
-					'tag' => $_lbl,
-					'meta' => $_val,
-					'thumb_label' => ! empty( $_sp->link_label ) ? (string) $_sp->link_label : '',
-					'desc' => ! empty( $_sp->description ) ? (string) $_sp->description : '',
-					'url' => $_has_link ? adn_link( (string) $_sp->link_url ) : '',
-				);
-				adn_component( 'cards/spotlight_card', array( 'card' => $card ) );
-			endforeach; ?>
-			</div>
+		<div class="spotlight-items">
+		<?php foreach ( $items as $_item ) :
+			$_icon  = $_item['icon'] ?? '';
+			$_val   = $_item['value'] ?? '';
+			$_lbl   = $_item['label'] ?? '';
+			$card   = array(
+				'icon'        => '' !== $_icon ? $_icon : mb_strtoupper( mb_substr( $_item['title'] ?? '', 0, 1 ) ),
+				'title'       => $_item['title'] ?? '',
+				'tag'         => $_lbl,
+				'meta'        => $_val,
+				'thumb_label' => $_item['link_label'] ?? '',
+				'desc'        => $_item['description'] ?? '',
+				'url'         => $_item['url'] ?? '',
+			);
+			\adn_component( 'cards/spotlight_card', array( 'card' => $card ) );
+		endforeach; ?>
 		</div>
 	</div>
-	<?php
-
-}
+</div>
+<?php

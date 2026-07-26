@@ -1392,7 +1392,6 @@
     border: 1px solid var(--color-border, #e5e7eb);
     border-radius: var(--radius-md, 12px);
     padding: 14px 20px;
-    margin-bottom: var(--space-8);
 }
 
 /* Helpful button */
@@ -2020,7 +2019,6 @@
 .adn-comments-section {
     margin-top: 10px;
     padding-top: var(--space-2);
-    border-top: 2px solid var(--color-border, #e5e7eb);
 }
 
 /* ── Comments header row (count + filter tabs) ── */
@@ -2228,7 +2226,6 @@
 
 /* ── Comment form card ── */
 .adn-comment-form-wrap {
-    margin-top: 28px;
     padding: 20px 20px 24px;
     background: var(--color-white);
     border: 1px solid var(--client-color);
@@ -2237,8 +2234,8 @@
 .adn-comment-note {
     font-size: 0.8rem;
     color: var(--color-black, #9ca3af);
-    margin: 0 0 20px;
-    padding-bottom: var(--space-5);
+    /* margin: 0 0 20px;
+    padding-bottom: var(--space-5); */
     border-bottom: 1px solid var(--color-border, #f3f4f6);
 }
 .adn-required { color: var(--color-danger, #e53e3e); margin-left: 2px; }

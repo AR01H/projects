@@ -26,6 +26,9 @@ use CMS_ECOMMERCE\Controllers\UploadController;
 use CMS_ECOMMERCE\Controllers\AdminController;
 use CMS_ECOMMERCE\Controllers\DashboardController;
 use CMS_ECOMMERCE\Controllers\MigrationController;
+use CMS_ECOMMERCE\Controllers\ContactController;
+use CMS_ECOMMERCE\Controllers\NewsletterController;
+use CMS_ECOMMERCE\Controllers\NotifyController;
 
 return [
 
@@ -77,6 +80,7 @@ return [
     // ══════════════════════════════════════════════
     'GET /reviews'               => [ReviewController::class, 'get_reviews'],
     'GET /reviews/stats'         => [ReviewController::class, 'get_stats'],
+    'POST /reviews'              => [ReviewController::class, 'create_review', 'auth'],
 
     // ══════════════════════════════════════════════
     //  CERTIFICATIONS — Public
@@ -94,12 +98,20 @@ return [
     'GET /footer'                => [FooterController::class, 'get_all'],
 
     // ══════════════════════════════════════════════
+    //  CONTACT & NEWSLETTER — Public
+    // ══════════════════════════════════════════════
+    'POST /contact'              => [ContactController::class, 'submit'],
+    'POST /newsletter'           => [NewsletterController::class, 'subscribe'],
+    'POST /notify'               => [NotifyController::class, 'subscribe'],
+
+    // ══════════════════════════════════════════════
     //  CART — Authenticated
     // ══════════════════════════════════════════════
     'GET /cart'                  => [CartController::class, 'get_cart', 'auth'],
     'POST /cart/items'           => [CartController::class, 'add_item', 'auth'],
     'PUT /cart/items/{id}'       => [CartController::class, 'update_item', 'auth'],
     'DELETE /cart/items/{id}'    => [CartController::class, 'remove_item', 'auth'],
+    'DELETE /cart'               => [CartController::class, 'clear_cart', 'auth'],
 
     // ══════════════════════════════════════════════
     //  WISHLIST — Authenticated

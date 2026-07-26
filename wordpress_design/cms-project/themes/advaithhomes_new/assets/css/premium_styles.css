@@ -260,7 +260,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .tools-listing-page           { padding: 28px 0    !important; }
 .need-help-section            { padding: 22px 0    !important; }
 /* .jny2-wrap                    { padding: 28px 0    !important; } */
-.search-page-body             { padding: 20px 0 32px !important; }
 
 .cat-guide-hero-section       { padding: 24px 0 18px !important; }
 .cat-guide-articles-section   { padding: 24px 0 32px !important; }
@@ -1547,7 +1546,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 .news-single-more .list-widget-header {
     margin-bottom: 8px !important;
-    padding-bottom: 10px !important;
+    padding: 5px !important;
     border-bottom: 2px solid rgba(176,141,87,.4) !important;
 }
 .news-single-more .list-widget-header h2,
@@ -1564,7 +1563,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 }
 /* Compact list rows inside the bar */
 .news-single-more .mini-card {
-    padding: 14px 12px !important;
+    /* padding: 14px 12px !important; */
     min-height: 0 !important;
     border: none !important;
     border-left: 3px solid transparent !important;
@@ -1586,7 +1585,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     display: none !important;
 }
 .news-single-more .mini-card-title {
-    font-size: 0.95rem !important;
     font-weight: 700 !important;
     color: var(--text-primary, #111816) !important;
     line-height: 1.35 !important;
@@ -1598,7 +1596,6 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 .news-single-more .mini-card-tag {
     background: transparent !important;
     color: var(--secondary-color, #B08D57) !important;
-    font-size: 0.65rem !important;
     font-weight: 800 !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
@@ -1621,7 +1618,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 @media (max-width: 640px) {
     .news-cats-search-input { width: 140px !important; }
     .news-cats-search-input:focus { width: 180px !important; }
-    .news-single-article { padding: 16px 16px !important; }
+    .news-single-article { padding: 2px 2px !important; }
 }
 
 
@@ -2979,7 +2976,7 @@ html.adn-reveal .acard-stat::before {
     gap: 24px !important;
     overflow: hidden !important;
     position: relative !important;
-    height: 100% !important;
+    /* height: 100% !important; */
     box-shadow: 0 8px 32px rgba(12, 32, 24, 0.2) !important;
 }
 

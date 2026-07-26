@@ -51,11 +51,14 @@ switch ( $section ) {
 						'heading' => array( 'title' => adn_term( 'labels.news_section', 'Latest News & Updates' ) ),
 						'center'  => true,
 					) ); ?>
-					<?php if ( $_sp_active ) : ?>
+					<?php if ( $_sp_active ) :
+						$_sp_props = \Adn\Theme\Service\SpotlightService::buildProps( $_sp_term_slug );
+						if ( $_sp_props ) :
+					?>
 					<div class="news-spotlight-upside" style="margin-bottom: 24px;">
-						<?php adn_component( 'parts/spotlights_widget', array( 'term_slug' => $_sp_term_slug, 'compact' => true ) ); ?>
+						<?php adn_component( 'parts/spotlights_widget', array_merge( $_sp_props, array( 'mode' => 'compact' ) ) ); ?>
 					</div>
-					<?php endif; ?>
+					<?php endif; endif; ?>
 					
 					<div class="news-sp-row <?php echo ( adn_home_section_visible( 'news' ) && $_has_news_data ) ? 'news-sp-row--4col' : ''; ?>">
 						<?php if ( adn_home_section_visible( 'news' ) && $_has_news_data ) : ?>
