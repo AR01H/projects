@@ -1051,6 +1051,20 @@ class AH_DB_Schema {
 				KEY `idx_mime_type`  (`mime_type`),
 				KEY `idx_created_at` (`created_at`)
 			) ENGINE=InnoDB {$cs}",
+
+			// 74. Shortcuts (admin-defined shortcodes: HTML + CSS template with {{variable}} substitution)
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_shortcuts` (
+				`id`         BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+				`tag`        VARCHAR(80) NOT NULL DEFAULT '',
+				`label`      VARCHAR(190) NOT NULL DEFAULT '',
+				`html`       LONGTEXT,
+				`css`        LONGTEXT,
+				`status`     VARCHAR(20) NOT NULL DEFAULT 'draft',
+				`created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				`updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				UNIQUE KEY `uq_shortcut_tag` (`tag`),
+				KEY `idx_status` (`status`)
+			) ENGINE=InnoDB {$cs}",
 		);
 	}
 }

@@ -65,6 +65,7 @@ class AH_Autoloader {
 		'AH_Newsletters_Model'      => 'models/NewsletterModel.php',
 		'AH_Custom_Code_Model'      => 'models/CustomCodeModel.php',
 		'AH_File_Links_Model'       => 'models/FileLinksModel.php',
+		'AH_Shortcuts_Model'        => 'models/ShortcutsModel.php',
 
 		// Term Manager
 		'AH_Term_Manager'           => 'inc/TermManager.php',

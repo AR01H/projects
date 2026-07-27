@@ -65,6 +65,36 @@ class AssetLoader {
 		self::loadPageSpecific();
 		self::loadTracking();
 		self::loadEmbedMode();
+		self::loadBlockRenderer();
+	}
+
+	/**
+	 * Page Builder block-renderer CSS - loaded only on builder pages.
+	 *
+	 * $GLOBALS['ah_builder_page'] is set by AH_Builder_Page_Service::handleFrontend()
+	 * on template_redirect (priority 5), well before wp_enqueue_scripts fires, so
+	 * it's a reliable "this is a builder-rendered page" signal here.
+	 *
+	 * Two files, loaded in cascade order: the plugin's own theme-agnostic
+	 * structural CSS first, then this theme's color/typography design layer
+	 * (block-render-page-styles.css) on top of it.
+	 */
+	private static function loadBlockRenderer(): void {
+		if ( empty( $GLOBALS['ah_builder_page'] ) ) {
+			return;
+		}
+
+		if ( \defined( 'AH_PLUGIN_URL' ) && \defined( 'AH_PLUGIN_DIR' ) ) {
+			$base_path = \AH_PLUGIN_DIR . '/assets/css/block-render-base.css';
+			if ( \file_exists( $base_path ) ) {
+				\wp_enqueue_style( 'ah-block-render-base', \AH_PLUGIN_URL . '/assets/css/block-render-base.css', [ 'adn-varaibles-style' ], self::version( $base_path ) );
+			}
+		}
+
+		$page_path = \ADN_THEME_DIR . '/assets/css/block-render-page-styles.css';
+		if ( \file_exists( $page_path ) ) {
+			\wp_enqueue_style( 'ah-block-render-page-styles', \ADN_THEME_URI . '/assets/css/block-render-page-styles.css', [ 'ah-block-render-base' ], self::version( $page_path ) );
+		}
 	}
 
 	/**

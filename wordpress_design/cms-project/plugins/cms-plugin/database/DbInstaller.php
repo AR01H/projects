@@ -25,6 +25,12 @@ class AH_DB_Installer {
 		}
 
 		AH_DB_Foreign_Keys::apply();
+		// apply() re-adds a handful of known-broken constraints (columns that
+		// actually store WP user/attachment IDs, FK'd against ah_admin_users/
+		// ah_media's own unrelated ID space) - drop them again immediately so
+		// install() is self-consistent no matter who calls it (Rebuild Schema,
+		// Schema Setup, a fresh activation, or maybe_upgrade() below).
+		AH_DB_Foreign_Keys::drop_broken();
 		AH_DB_Seed::run();
 
 		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' );
@@ -35,7 +41,6 @@ class AH_DB_Installer {
 	public static function maybe_upgrade(): void {
 		if ( get_option( AH_DB_VERSION_KEY ) !== AH_THEME_VERSION ) {
 			self::install();
-			AH_DB_Foreign_Keys::drop_broken();
 			AH_DB_Migrations::run();
 		}
 	}

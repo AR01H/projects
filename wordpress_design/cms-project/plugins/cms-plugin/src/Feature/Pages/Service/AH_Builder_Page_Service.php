@@ -35,17 +35,12 @@ class AH_Builder_Page_Service {
 
 		$GLOBALS['ah_builder_page'] = $page;
 
-		add_action( 'wp_enqueue_scripts', function () {
-			// 'ah-variables' (from the legacy AH_Asset_Loader) is never registered in this
-			// project - only the theme's own Adn\Theme\Service\AssetLoader runs, which
-			// registers the same variables.css under 'adn-varaibles-style'.
-			wp_enqueue_style(
-				'ah-builder-page',
-				AH_PLUGIN_URL . '/assets/css/builder-page.css',
-				[ 'adn-varaibles-style' ],
-				AH_PLUGIN_VERSION
-			);
-		} );
+		// CSS is enqueued by the theme's Adn\Theme\Service\AssetLoader::loadBlockRenderer(),
+		// which runs on the normal wp_enqueue_scripts hook and checks $GLOBALS['ah_builder_page']
+		// (set above). It loads plugins/cms-plugin/assets/css/block-render-base.css (structural,
+		// theme-agnostic) followed by the theme's own block-render-page-styles.css (colors/type) -
+		// see plans/streamed-frolicking-hopcroft.md Phase 1. The old builder-page.css this used to
+		// enqueue directly is superseded by those two files and no longer loaded.
 
 		require_once AH_PLUGIN_DIR . '/inc/BuilderBlockRenderer.php';
 

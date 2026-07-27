@@ -37,60 +37,13 @@ add_action( 'wp_head', function () use ( $desc ) {
 	}
 } );
 
-// ── Hero data ──────────────────────────────────────────────────────────────────
-// If the first block is a hero, pull its content into the theme's native page_hero
-// component so the page matches every other page on the site.
-// The builder hero block is consumed here and skipped from the content loop below.
+// A hero block (first position or anywhere else) is no longer pulled out into
+// the native page_hero component - every block, hero included, renders
+// through the normal loop below via BlockRenderer::renderHero(), using the
+// theme's block-render-page-styles.css design.
+$body_blocks = $blocks;
 
-$first_block   = ! empty( $blocks ) ? $blocks[0] : null;
-$first_is_hero = is_array( $first_block ) && ( $first_block['type'] ?? '' ) === 'hero';
-$hero_ctas     = array();   // CTA buttons extracted from a builder hero block.
-$body_blocks   = $blocks;   // Blocks that go into <main>.
-
-if ( $first_is_hero ) {
-	$_hd = $first_block['data'] ?? array();
-
-	$hero_data = array(
-		'eyebrow'     => (string) ( $_hd['eyebrow']    ?? '' ),
-		'title'       => wp_strip_all_tags( (string) ( $_hd['heading']    ?? $title ) ),
-		'description' => wp_strip_all_tags( (string) ( $_hd['subheading'] ?? $desc  ) ),
-	);
-
-	// Preserve any CTA buttons the builder hero had - they'll render below the hero.
-	if ( ! empty( $_hd['cta1_text'] ) ) {
-		$hero_ctas[] = array(
-			'text'  => (string) $_hd['cta1_text'],
-			'url'   => (string) ( $_hd['cta1_url'] ?? '#' ),
-			'class' => 'btn-gold btn-lg',
-		);
-	}
-	if ( ! empty( $_hd['cta2_text'] ) ) {
-		$hero_ctas[] = array(
-			'text'  => (string) $_hd['cta2_text'],
-			'url'   => (string) ( $_hd['cta2_url'] ?? '#' ),
-			'class' => 'btn-outline btn-lg',
-		);
-	}
-
-	// Skip the first block in the content loop - we rendered it as the native hero.
-	$body_blocks = array_slice( $blocks, 1 );
-
-} else {
-	// No hero block: use the page title / meta description.
-	$hero_data = array(
-		'eyebrow'     => '',
-		'title'       => $title,
-		'description' => $desc,
-	);
-}
-
-// ── Breadcrumb ────────────────────────────────────────────────────────────────
-$breadcrumb = array(
-	array( 'label' => 'Home', 'url' => home_url( '/' ) ),
-	array( 'label' => $title, 'url' => '' ),
-);
-
-// ── Open: header + native page hero ───────────────────────────────────────────
+// ── Open: header only ───────────────────────────────────────────────────────
 if ( ! $no_header ) {
 
 	// get_header() outputs the DOCTYPE/<head>/wp_head()/<body> shell (that's where
@@ -98,17 +51,7 @@ if ( ! $no_header ) {
 	// component, it does NOT include get_header(). Both are required.
 	get_header();
 
-	// Pass empty breadcrumb here because the breadcrumb is rendered *inside* the
-	// page_hero component below.
 	adn_page_open( array( 'chrome' => $chrome, 'breadcrumb' => array() ) );
-
-	// Full-bleed theme hero - same component used on every other site page.
-	if ( function_exists( 'adn_component' ) ) {
-		adn_component( 'sections/page_hero', array(
-			'hero'       => $hero_data,
-			'breadcrumb' => $breadcrumb,
-		) );
-	}
 
 } else {
 	// Bare / embedded mode: emit a minimal HTML shell so styles and scripts still load.
@@ -124,19 +67,6 @@ if ( ! $no_header ) {
 }
 ?>
 
-<?php /* ── CTA buttons from a builder hero block (shown just below the site hero) ── */ ?>
-<?php if ( ! $no_header && ! empty( $hero_ctas ) ) : ?>
-<div class="section section--sm" style="padding-top:0;padding-bottom:32px;">
-	<div class="container" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
-		<?php foreach ( $hero_ctas as $_cta ) : ?>
-			<a href="<?php echo esc_url( $_cta['url'] ); ?>" class="btn <?php echo esc_attr( $_cta['class'] ); ?>">
-				<?php echo esc_html( $_cta['text'] ); ?>
-			</a>
-		<?php endforeach; ?>
-	</div>
-</div>
-<?php endif; ?>
-
 <?php /* ── Main content ─────────────────────────────────────────────────────────── */ ?>
 <main id="ah-builder-page" class="ah-builder-main" style="min-height:40vh;">
 
@@ -146,7 +76,7 @@ if ( ! $no_header ) {
 	ah_render_builder_block( $_t, $_d );
 endforeach; ?>
 
-<?php if ( empty( $body_blocks ) && empty( $hero_ctas ) ) : ?>
+<?php if ( empty( $body_blocks ) ) : ?>
 	<div style="text-align:center;padding:80px 20px;color:#9ca3af;">
 		<p>This page has no content yet.</p>
 	</div>

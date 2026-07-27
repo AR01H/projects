@@ -74,7 +74,13 @@ class CacheManager {
 	 */
 	public static function clear_all( $cid = null, $table = null, $wildcard = false ) {
 		if ( class_exists( 'ADN_Cache' ) ) {
-			ADN_Cache::clear_all();
+			// Leading \ required: this file is in namespace Ah\Cms\Cache, so an
+			// unqualified `ADN_Cache::clear_all()` here resolves (at compile
+			// time) to the non-existent Ah\Cms\Cache\ADN_Cache and fatals -
+			// class_exists('ADN_Cache') itself is a plain string, so it's
+			// unaffected and correctly finds the theme's real global class,
+			// masking the bug until this line actually runs.
+			\ADN_Cache::clear_all();
 		}
 
 		if ( null === $cid && null === $table ) {

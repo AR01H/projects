@@ -391,8 +391,59 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 .ah-settings-panel small { display:block; font-size:.68rem; color:var(--ah-muted); margin-top:3px; word-break:break-all; line-height:1.4; }
 
 /* Drag helpers */
-.ui-sortable-helper { box-shadow:0 12px 36px rgba(0,0,0,.18) !important; border-color:var(--ah-primary) !important; }
+.ui-sortable-helper { box-shadow:0 12px 36px rgba(0,0,0,.18) !important; border-color:var(--ah-primary) !important; opacity:.92; }
 .ui-sortable-placeholder { background:var(--ah-bg-light); border:2px dashed var(--ah-border); border-radius:10px; margin-bottom:10px; }
+
+/* ── Visual polish ──────────────────────────────────────────────────────── */
+
+.ah-builder-topbar .ah-btn {
+  transition:transform .15s cubic-bezier(.16,1,.3,1), box-shadow .15s ease, background .15s ease;
+}
+.ah-builder-topbar .ah-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,.08); }
+.ah-builder-topbar .ah-btn:active { transform:translateY(0) scale(.97); }
+
+/* Palette: accent reveal + icon pop + staggered entrance */
+.ah-palette-block {
+  position:relative; overflow:hidden;
+  transition:background .15s ease,color .15s ease,transform .18s cubic-bezier(.16,1,.3,1);
+  animation:ahPaletteFadeIn .35s cubic-bezier(.16,1,.3,1) both;
+}
+.ah-palette-block::before {
+  content:''; position:absolute; left:0; top:8px; bottom:8px; width:3px; border-radius:2px;
+  background:linear-gradient(180deg,var(--ah-primary),#60a5fa);
+  transform:scaleY(0); transform-origin:center; transition:transform .18s cubic-bezier(.16,1,.3,1);
+}
+.ah-palette-block:hover::before { transform:scaleY(1); }
+.ah-palette-block:hover .icon { transform:scale(1.18); }
+.ah-palette-block .icon { transition:transform .18s cubic-bezier(.16,1,.3,1); display:inline-block; }
+@keyframes ahPaletteFadeIn { from { opacity:0; transform:translateX(-6px); } to { opacity:1; transform:translateX(0); } }
+
+/* Canvas: smoother easing + block-added entrance */
+.ah-canvas-block {
+  transition:box-shadow .2s cubic-bezier(.16,1,.3,1), border-color .2s cubic-bezier(.16,1,.3,1), transform .2s cubic-bezier(.16,1,.3,1);
+}
+.ah-canvas-block.ah-block-just-added { animation:ahBlockAddedIn .35s cubic-bezier(.16,1,.3,1) both; }
+@keyframes ahBlockAddedIn { from { opacity:0; transform:translateY(10px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+.ah-block-toggle-icon { transition:transform .2s cubic-bezier(.16,1,.3,1); }
+
+/* Settings panel: collapsible section cards */
+.ah-settings-section {
+  background:#fff; border:1px solid var(--ah-border); border-radius:10px;
+  margin-bottom:10px; overflow:hidden;
+}
+.ah-settings-section__head {
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:10px 12px; background:var(--ah-bg-light); border:none; cursor:pointer; text-align:left;
+}
+.ah-settings-section__title {
+  font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--ah-muted);
+}
+.ah-settings-section__chevron { font-size:.75rem; color:var(--ah-muted); transition:transform .2s cubic-bezier(.16,1,.3,1); }
+.ah-settings-section.is-open .ah-settings-section__chevron { transform:rotate(180deg); }
+.ah-settings-section__body { display:none; padding:12px; }
+.ah-settings-section.is-open .ah-settings-section__body { display:block; animation:ahSectionOpen .18s cubic-bezier(.16,1,.3,1) both; }
+@keyframes ahSectionOpen { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+.ah-settings-section--danger .ah-settings-section__title { color:var(--ah-danger); }
 </style>
 
 <form id="ah-builder-form" method="post">
@@ -481,109 +532,137 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 
     <!-- RIGHT: Page Settings -->
     <div class="ah-settings-panel">
-      <h4>Page Settings</h4>
 
-      <div class="ah-form-row">
-        <label>URL Slug</label>
-        <input type="text" name="page_slug" id="page-slug"
-               value="<?php echo esc_attr( $current_page->slug ?? '' ); ?>"
-               placeholder="my-custom-page">
-        <?php if ( $current_page ) : ?>
-          <small style="color:var(--ah-text-muted);font-size:.75rem;display:block;margin-top:4px">
-            <?php echo esc_html( home_url( '/' . $current_page->slug . '/' ) ); ?>
-          </small>
-        <?php endif; ?>
-      </div>
+      <div class="ah-settings-section is-open">
+        <button type="button" class="ah-settings-section__head">
+          <span class="ah-settings-section__title">Page Settings</span>
+          <span class="ah-settings-section__chevron">▾</span>
+        </button>
+        <div class="ah-settings-section__body">
 
-      <div class="ah-form-row">
-        <label>Meta Title</label>
-        <input type="text" name="meta_title"
-               value="<?php echo esc_attr( $current_page->meta_title ?? '' ); ?>"
-               placeholder="SEO title">
-      </div>
+          <div class="ah-form-row">
+            <label>URL Slug</label>
+            <input type="text" name="page_slug" id="page-slug"
+                   value="<?php echo esc_attr( $current_page->slug ?? '' ); ?>"
+                   placeholder="my-custom-page">
+            <?php if ( $current_page ) : ?>
+              <small style="color:var(--ah-text-muted);font-size:.75rem;display:block;margin-top:4px">
+                <?php echo esc_html( home_url( '/' . $current_page->slug . '/' ) ); ?>
+              </small>
+            <?php endif; ?>
+          </div>
 
-      <div class="ah-form-row">
-        <label>Meta Description</label>
-        <textarea name="meta_desc" rows="3"
-                  placeholder="SEO description"><?php echo esc_textarea( $current_page->meta_description ?? '' ); ?></textarea>
-      </div>
+          <div class="ah-form-row">
+            <label>Meta Title</label>
+            <input type="text" name="meta_title"
+                   value="<?php echo esc_attr( $current_page->meta_title ?? '' ); ?>"
+                   placeholder="SEO title">
+          </div>
 
-      <div class="ah-form-row">
-        <label>Taxonomy Terms</label>
-        <?php $content_tax_m->render_picker( 'builder_page', $edit_id ); ?>
-      </div>
+          <div class="ah-form-row">
+            <label>Meta Description</label>
+            <textarea name="meta_desc" rows="3"
+                      placeholder="SEO description"><?php echo esc_textarea( $current_page->meta_description ?? '' ); ?></textarea>
+          </div>
 
-      <hr style="border:none;border-top:1px solid var(--ah-border);margin:16px 0">
-      <h4>Layout</h4>
+          <div class="ah-form-row">
+            <label>Taxonomy Terms</label>
+            <?php $content_tax_m->render_picker( 'builder_page', $edit_id ); ?>
+          </div>
 
-      <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <input type="checkbox" name="show_header" id="ahb_show_header" value="1"
-               <?php checked( (int) ( $page_opts['show_header'] ?? 1 ), 1 ); ?>
-               style="width:auto;margin:0;">
-        <label for="ahb_show_header" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show site header</label>
-      </div>
-      <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <input type="checkbox" name="show_footer" id="ahb_show_footer" value="1"
-               <?php checked( (int) ( $page_opts['show_footer'] ?? 1 ), 1 ); ?>
-               style="width:auto;margin:0;">
-        <label for="ahb_show_footer" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show site footer</label>
-      </div>
-
-      <hr style="border:none;border-top:1px solid var(--ah-border);margin:16px 0">
-      <h4>Bottom CTA</h4>
-
-      <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <input type="checkbox" name="cta_enabled" id="ahb_cta_enabled" value="1"
-               <?php checked( (int) ( $page_opts['cta_enabled'] ?? 0 ), 1 ); ?>
-               style="width:auto;margin:0;">
-        <label for="ahb_cta_enabled" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show bottom CTA section</label>
-      </div>
-      <div id="ahb-cta-fields" style="<?php echo empty( $page_opts['cta_enabled'] ) ? 'display:none;' : ''; ?>">
-        <div class="ah-form-row">
-          <label>Heading</label>
-          <input type="text" name="cta_heading" value="<?php echo esc_attr( $page_opts['cta_heading'] ?? '' ); ?>" placeholder="Still have questions?">
         </div>
-        <div class="ah-form-row">
-          <label>Description</label>
-          <textarea name="cta_text" rows="2" placeholder="Speak to one of our experts."><?php echo esc_textarea( $page_opts['cta_text'] ?? '' ); ?></textarea>
+      </div>
+
+      <div class="ah-settings-section is-open">
+        <button type="button" class="ah-settings-section__head">
+          <span class="ah-settings-section__title">Layout</span>
+          <span class="ah-settings-section__chevron">▾</span>
+        </button>
+        <div class="ah-settings-section__body">
+
+          <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <input type="checkbox" name="show_header" id="ahb_show_header" value="1"
+                   <?php checked( (int) ( $page_opts['show_header'] ?? 1 ), 1 ); ?>
+                   style="width:auto;margin:0;">
+            <label for="ahb_show_header" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show site header</label>
+          </div>
+          <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <input type="checkbox" name="show_footer" id="ahb_show_footer" value="1"
+                   <?php checked( (int) ( $page_opts['show_footer'] ?? 1 ), 1 ); ?>
+                   style="width:auto;margin:0;">
+            <label for="ahb_show_footer" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show site footer</label>
+          </div>
+
         </div>
-        <div class="ah-form-row">
-          <label>Button 1 Text</label>
-          <input type="text" name="cta_btn1_text" value="<?php echo esc_attr( $page_opts['cta_btn1_text'] ?? '' ); ?>" placeholder="Get in Touch">
-        </div>
-        <div class="ah-form-row">
-          <label>Button 1 URL</label>
-          <input type="text" name="cta_btn1_url" value="<?php echo esc_attr( $page_opts['cta_btn1_url'] ?? '' ); ?>" placeholder="/contact/">
-        </div>
-        <div class="ah-form-row">
-          <label>Button 2 Text <span style="font-weight:400;color:var(--ah-muted)">(optional)</span></label>
-          <input type="text" name="cta_btn2_text" value="<?php echo esc_attr( $page_opts['cta_btn2_text'] ?? '' ); ?>" placeholder="Learn More">
-        </div>
-        <div class="ah-form-row">
-          <label>Button 2 URL</label>
-          <input type="text" name="cta_btn2_url" value="<?php echo esc_attr( $page_opts['cta_btn2_url'] ?? '' ); ?>" placeholder="/about/">
-        </div>
-        <div class="ah-form-row">
-          <label>Theme</label>
-          <select name="cta_theme">
-            <option value="dark"  <?php selected( $page_opts['cta_theme'] ?? 'dark', 'dark' ); ?>>Dark</option>
-            <option value="gold"  <?php selected( $page_opts['cta_theme'] ?? '',      'gold' ); ?>>Gold</option>
-            <option value="light" <?php selected( $page_opts['cta_theme'] ?? '',      'light' ); ?>>Light</option>
-            <option value="blue"  <?php selected( $page_opts['cta_theme'] ?? '',      'blue' ); ?>>Blue</option>
-          </select>
+      </div>
+
+      <div class="ah-settings-section is-open">
+        <button type="button" class="ah-settings-section__head">
+          <span class="ah-settings-section__title">Bottom CTA</span>
+          <span class="ah-settings-section__chevron">▾</span>
+        </button>
+        <div class="ah-settings-section__body">
+
+          <div class="ah-form-row" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <input type="checkbox" name="cta_enabled" id="ahb_cta_enabled" value="1"
+                   <?php checked( (int) ( $page_opts['cta_enabled'] ?? 0 ), 1 ); ?>
+                   style="width:auto;margin:0;">
+            <label for="ahb_cta_enabled" style="margin:0;text-transform:none;font-size:.82rem;font-weight:500;">Show bottom CTA section</label>
+          </div>
+          <div id="ahb-cta-fields" style="<?php echo empty( $page_opts['cta_enabled'] ) ? 'display:none;' : ''; ?>">
+            <div class="ah-form-row">
+              <label>Heading</label>
+              <input type="text" name="cta_heading" value="<?php echo esc_attr( $page_opts['cta_heading'] ?? '' ); ?>" placeholder="Still have questions?">
+            </div>
+            <div class="ah-form-row">
+              <label>Description</label>
+              <textarea name="cta_text" rows="2" placeholder="Speak to one of our experts."><?php echo esc_textarea( $page_opts['cta_text'] ?? '' ); ?></textarea>
+            </div>
+            <div class="ah-form-row">
+              <label>Button 1 Text</label>
+              <input type="text" name="cta_btn1_text" value="<?php echo esc_attr( $page_opts['cta_btn1_text'] ?? '' ); ?>" placeholder="Get in Touch">
+            </div>
+            <div class="ah-form-row">
+              <label>Button 1 URL</label>
+              <input type="text" name="cta_btn1_url" value="<?php echo esc_attr( $page_opts['cta_btn1_url'] ?? '' ); ?>" placeholder="/contact/">
+            </div>
+            <div class="ah-form-row">
+              <label>Button 2 Text <span style="font-weight:400;color:var(--ah-muted)">(optional)</span></label>
+              <input type="text" name="cta_btn2_text" value="<?php echo esc_attr( $page_opts['cta_btn2_text'] ?? '' ); ?>" placeholder="Learn More">
+            </div>
+            <div class="ah-form-row">
+              <label>Button 2 URL</label>
+              <input type="text" name="cta_btn2_url" value="<?php echo esc_attr( $page_opts['cta_btn2_url'] ?? '' ); ?>" placeholder="/about/">
+            </div>
+            <div class="ah-form-row">
+              <label>Theme</label>
+              <select name="cta_theme">
+                <option value="dark"  <?php selected( $page_opts['cta_theme'] ?? 'dark', 'dark' ); ?>>Dark</option>
+                <option value="gold"  <?php selected( $page_opts['cta_theme'] ?? '',      'gold' ); ?>>Gold</option>
+                <option value="light" <?php selected( $page_opts['cta_theme'] ?? '',      'light' ); ?>>Light</option>
+                <option value="blue"  <?php selected( $page_opts['cta_theme'] ?? '',      'blue' ); ?>>Blue</option>
+              </select>
+            </div>
+          </div>
+
         </div>
       </div>
 
       <?php if ( $current_page ) : ?>
-        <hr style="border:none;border-top:1px solid var(--ah-border);margin:16px 0">
-        <h4>Danger Zone</h4>
-        <div>
-          <button type="submit" form="ah-builder-delete-form" name="delete_page" value="1" class="ah-confirm-delete" data-title="Delete Page" data-confirm="This page and all its content will be permanently deleted."
-                  style="width:100%;background:var(--ah-bg-light);color:var(--ah-danger);border:1px solid var(--ah-border);border-radius:6px;padding:8px;cursor:pointer;font-size:.82rem;font-weight:600">
-            🗑 Delete Page
+        <div class="ah-settings-section ah-settings-section--danger">
+          <button type="button" class="ah-settings-section__head">
+            <span class="ah-settings-section__title">Danger Zone</span>
+            <span class="ah-settings-section__chevron">▾</span>
           </button>
+          <div class="ah-settings-section__body">
+            <button type="submit" form="ah-builder-delete-form" name="delete_page" value="1" class="ah-confirm-delete" data-title="Delete Page" data-confirm="This page and all its content will be permanently deleted."
+                    style="width:100%;background:var(--ah-bg-light);color:var(--ah-danger);border:1px solid var(--ah-border);border-radius:6px;padding:8px;cursor:pointer;font-size:.82rem;font-weight:600">
+              🗑 Delete Page
+            </button>
+          </div>
         </div>
       <?php endif; ?>
+
     </div>
 
   </div><!-- /builder-wrap -->
@@ -1223,7 +1302,8 @@ $('.ah-palette-block').on('click', function(){
   renderCanvas();
   // Auto-expand the new block
   var $new = $('#ah-canvas .ah-canvas-block:last');
-  $new.addClass('ah-block-active');
+  $new.addClass('ah-block-active ah-block-just-added');
+  setTimeout(function(){ $new.removeClass('ah-block-just-added'); }, 400);
   initRichEditors();
   $new[0].scrollIntoView({behavior:'smooth', block:'center'});
 });
@@ -1312,8 +1392,21 @@ function hexToLight(hex) {
     : 'var(--ah-bg-light)';
 }
 
+// ── Collapsible settings-panel sections ───────────────────────────────────────
+$(document).on('click', '.ah-settings-section__head', function(){
+  $(this).closest('.ah-settings-section').toggleClass('is-open');
+});
+
 // ── Init ─────────────────────────────────────────────────────────────────────
-renderCanvas();
+// Deferred to document-ready: jquery-ui-sortable (a dependency of the
+// footer-loaded ah-admin-script) isn't available yet at the point this inline
+// script block itself executes, so calling renderCanvas() (-> makeSortable())
+// synchronously here would throw "$(...).sortable is not a function" whenever
+// the page loads with existing blocks. By document-ready, footer scripts have
+// already run.
+$(function(){
+  renderCanvas();
+});
 
 // ── Layout / CTA toggles ──────────────────────────────────────────────────────
 $('#ahb_cta_enabled').on('change', function(){

@@ -50,6 +50,60 @@ class HookRegistrar {
 			\add_shortcode( 'ah_resource', [ 'AH_Resource_Shortcode', 'render' ] );
 			\add_shortcode( 'ah_resources', [ 'AH_Resources_Shortcode', 'render' ] );
 		} );
+
+		self::registerDynamicShortcuts();
+	}
+
+	/**
+	 * One WP shortcode per active row in ah_shortcuts (admin: Shortcuts submenu),
+	 * tag `ah_sc_{row->tag}` so a custom shortcut can never collide with a tag
+	 * registered anywhere else - no hardcoded collision list to maintain.
+	 * `{{variable}}` tokens in the stored HTML are replaced with the matching
+	 * shortcode attribute, always HTML-escaped (attribute values may come from
+	 * a lower-privileged post author, not just the manage_options admin who
+	 * wrote the template). Per-shortcut CSS, if any, is collected as each
+	 * shortcode actually fires and printed once per tag on `wp_footer` - pages
+	 * that use no custom shortcuts print nothing extra.
+	 */
+	private static function registerDynamicShortcuts(): void {
+		$used_css = []; // tag => css, populated only for tags that actually render on this request.
+
+		\add_action( 'init', function () use ( &$used_css ): void {
+			if ( ! \class_exists( 'AH_Shortcuts_Model' ) ) {
+				return;
+			}
+			foreach ( ( new \AH_Shortcuts_Model() )->get_active() as $row ) {
+				if ( '' === (string) $row->tag ) {
+					continue;
+				}
+				\add_shortcode( 'ah_sc_' . $row->tag, function ( $atts, $content = null ) use ( $row, &$used_css ) {
+					if ( '' === (string) $row->html ) {
+						return '';
+					}
+					$atts = \is_array( $atts ) ? $atts : [];
+					if ( null !== $content ) {
+						$atts['content'] = $content;
+					}
+					$html = \preg_replace_callback(
+						'/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/',
+						function ( $m ) use ( $atts ) {
+							return isset( $atts[ $m[1] ] ) ? \esc_html( (string) $atts[ $m[1] ] ) : '';
+						},
+						(string) $row->html
+					);
+					if ( '' !== (string) $row->css && ! isset( $used_css[ $row->tag ] ) ) {
+						$used_css[ $row->tag ] = (string) $row->css;
+					}
+					return \do_shortcode( $html );
+				} );
+			}
+		}, 20 );
+
+		\add_action( 'wp_footer', function () use ( &$used_css ): void {
+			foreach ( $used_css as $tag => $css ) {
+				echo '<style id="ah-sc-' . \esc_attr( $tag ) . '-css">' . $css . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted admin-authored CSS, same model as AH_Custom_Code_Service.
+			}
+		} );
 	}
 
 	private static function registerCron(): void {

@@ -34,6 +34,7 @@ class AH_Admin_Menus {
 			// ── Forms & Communication ─────────────────────────────────
 			['title' => 'Form Builder',         'menu' => 'Form Builder',         'slug' => 'ah-form-builder',  'callback' => 'page_form_builder' ],
 			['title' => 'News Letter',        'menu' => 'News Letter',        'slug' => 'ah-newsletter',    'callback' => 'page_newsletter'   ],
+			['title' => 'Shortcuts',            'menu' => 'Shortcuts',            'slug' => 'ah-shortcuts',     'callback' => 'page_shortcuts'    ],
 			// ── Assets ────────────────────────────────────────────────
 			['title' => 'Media Library',        'menu' => 'Media Library',        'slug' => 'ah-media',         'callback' => 'page_media'        ],
 			['title' => 'File Links',           'menu' => 'File Links',           'slug' => 'ah-file-links',    'callback' => 'page_file_links'   ],
@@ -103,6 +104,7 @@ class AH_Admin_Menus {
 	public static function page_file_links()     { self::load( 'FileLinks'     ); }
 	public static function page_builder()         { self::load( 'PageBuilder'    ); }
 	public static function page_form_builder()   { self::load( 'FormBuilder'   ); }
+	public static function page_shortcuts()      { self::load( 'Shortcuts'      ); }
 	public static function page_newsletter()     { self::load( 'notifications'  ); }
 	public static function page_workflow_manager() { self::load( 'WorkflowManager' ); }
 	public static function page_admin_actions()  { self::load( 'AdminActions'  ); }
