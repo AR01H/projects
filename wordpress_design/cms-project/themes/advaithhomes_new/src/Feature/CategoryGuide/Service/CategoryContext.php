@@ -158,7 +158,7 @@ class CategoryContext {
 		}
 		return array(
 			'heading' => array(
-				'title'      => $cs_calc['heading'] ?? sprintf( adn_term( 'category_page.calculators_heading', '%s for %s' ), SITE_TOOLS_PLURAL, $name ),
+				'title'      => strlen($cs_calc['heading']) > 0 ? $cs_calc['heading'] : sprintf( adn_term( 'category_page.calculators_heading', '%s %s' ), 'Related' ,SITE_TOOLS_PLURAL ),
 				'link_label' => adn_term( 'category_page.related_tools_heading', 'View all →' ),
 				'link_url'   => SITE_CALCULATORS_URL,
 			),

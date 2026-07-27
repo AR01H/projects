@@ -2520,7 +2520,7 @@ a.mini-card, div.mini-card {
   justify-content: space-between;
   position: relative;
   padding-bottom: var(--space-2);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   border-bottom: 1px solid var(--color-border);
   gap: var(--space-3);
 }
@@ -2552,7 +2552,7 @@ a.mini-card, div.mini-card {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
   flex: 1;
   justify-content: flex-start; /* stretch to fill container height */
 }
@@ -2651,7 +2651,7 @@ a.mini-card, div.mini-card {
 
 /* ── Mobile ── */
 @media (max-width: 700px) {
-  .ht-widget__list { gap: 8px; justify-content: flex-start; }
+  .ht-widget__list { gap: 6px; justify-content: flex-start; }
   .list-widget-items { justify-content: flex-start; }
   .ht-widget__link { height: 52px; gap: 8px; }
   .ht-widget__icon-box { width: 42px; min-width: 42px; height: 42px; }

@@ -51,8 +51,8 @@ $_rules   = isset( $_f['validation'] )                  ? (array) $_f['validatio
 
 		<div class="form-row">
 			<div class="form-group">
-				<label class="form-label" for="guidancePhone"><?php esc_html_e( 'Phone Number', ADN_TEXT_DOMAIN ); ?></label>
-				<input type="tel" id="guidancePhone" name="phone" placeholder="+44 7700 000000" />
+				<label class="form-label" for="guidancePhone"><?php esc_html_e( 'Phone Number', ADN_TEXT_DOMAIN ); ?><span class="form-required">*</span></label>
+				<input type="tel" id="guidancePhone" name="phone" placeholder="+44 7700 000000" required/>
 			</div>
 			<div class="form-group">
 				<label class="form-label" for="guidanceIAm"><?php echo $_il; ?> <span class="form-required">*</span></label>

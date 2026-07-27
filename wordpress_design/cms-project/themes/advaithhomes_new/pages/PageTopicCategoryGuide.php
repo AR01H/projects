@@ -262,6 +262,9 @@ adn_component( 'sections/page_hero', array(
 			'news' => array(
 				'heading' => array( 'title' => '⭐ ' . adn_term( 'category_page.featured', 'Featured' ), 'link_label' => '', 'link_url' => '' ),
 				'items'   => $_f_items,
+				// Same uniform row style as the Suggested column below, not the
+				// magazine hero+list layout (that's for the Home page's News feed).
+				'style'   => 'row_list',
 			),
 			'regulations' => array(
 				'heading' => array( 'title' => '🔥 ' . adn_term( 'category_page.popular', 'Popular' ) ),

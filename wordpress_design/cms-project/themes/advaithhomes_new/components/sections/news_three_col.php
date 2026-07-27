@@ -3,9 +3,16 @@
  * components/sections/news_three_col.php - Section: News + Regulations + Hot Topics
  *
  * Props:
- *   $news        { heading, items[] { gradient, title, date, tag, url } }
+ *   $news        { heading, style?, items[] { gradient, title, date, tag, url } }
  *   $regulations { heading, items[] { badge_lines[], title, url } }
  *   $hot_topics  { title, items[] { icon, text, desc, url }, cta { label, url } }
+ *
+ *   $news['style'] === 'row_list' opts the news column into the same
+ *   uniform icon-box/title/photo row style the hot_topics column uses
+ *   (parts/hot_topics_widget), instead of the magazine hero+list layout
+ *   (parts/news_list_widget) that layout normally gets whenever a
+ *   hot_topics column is also present. Existing callers (Home page's
+ *   Latest News, etc.) don't pass this, so their layout is unchanged.
  *
  * All three columns rendered via parts/list_widget → cards/mini_card.
  */
@@ -16,6 +23,7 @@ $news        = isset( $news )        && is_array( $news )        ? $news        
 $news2       = isset( $news2 )       && is_array( $news2 )       ? $news2       : array();
 $regulations = isset( $regulations ) && is_array( $regulations ) ? $regulations : array();
 $hot_topics  = isset( $hot_topics )  && is_array( $hot_topics )  ? $hot_topics  : array();
+$news_style  = isset( $news['style'] ) ? (string) $news['style'] : '';
 
 /* ── Remap each column's items to mini_card props ── */
 
@@ -117,18 +125,31 @@ if ( $num_cols > 1 && ( ( isset( $is_home_news ) && $is_home_news ) || ! empty( 
 	<div class="news-three-inner <?php echo $has_2fr_class; ?>">
 
 		<?php if ( ! empty( $news_cards ) ) :
-		// Use hero card layout when: explicitly flagged home news, OR when hot_topics column is present.
-		$_use_hero = ( isset( $is_home_news ) && $is_home_news ) || ! empty( $topic_cards );
+		// Use hero card layout when: explicitly flagged home news, OR when hot_topics column is present -
+		// unless this column opted into the hot_topics row-list style instead (see $news_style above).
+		$_use_hero = 'row_list' !== $news_style && ( ( isset( $is_home_news ) && $is_home_news ) || ! empty( $topic_cards ) );
 		?>
 		<div class="news-col news-col--news <?php echo $_use_hero ? 'news-col--news-2fr' : ''; ?> mini_card_container_design">
 			<div class="news-widget">
 				<?php
-				$widget_type = $_use_hero ? 'parts/news_list_widget' : 'parts/list_widget';
-				adn_component( $widget_type, array( 'widget' => array(
-					'heading' => isset( $news['heading'] ) ? (array) $news['heading'] : array(),
-					'items'   => $news_cards,
-					'tag'     => 'h4',
-				) ) );
+				if ( 'row_list' === $news_style ) :
+					adn_component( 'parts/hot_topics_widget', array( 'widget' => array(
+						'heading' => isset( $news['heading']['title'] ) ? (string) $news['heading']['title'] : '',
+						'items'   => $news_cards,
+						'cta'     => array(
+							'label' => isset( $news['heading']['link_label'] ) ? (string) $news['heading']['link_label'] : '',
+							'url'   => isset( $news['heading']['link_url'] )   ? (string) $news['heading']['link_url']   : '',
+						),
+						'tag'     => 'h4',
+					) ) );
+				else :
+					$widget_type = $_use_hero ? 'parts/news_list_widget' : 'parts/list_widget';
+					adn_component( $widget_type, array( 'widget' => array(
+						'heading' => isset( $news['heading'] ) ? (array) $news['heading'] : array(),
+						'items'   => $news_cards,
+						'tag'     => 'h4',
+					) ) );
+				endif;
 				?>
 			</div>
 		</div>

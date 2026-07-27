@@ -159,9 +159,7 @@ class FormOptionsRegistry {
 		array( 'key' => 'email',    'label' => 'Email' ),
 		array( 'key' => 'phone',    'label' => 'Phone' ),
 		array( 'key' => 'whatsapp', 'label' => 'WhatsApp' ),
-		array( 'key' => 'video-call', 'label' => 'Video Call' ),
-		array( 'key' => 'in-person', 'label' => 'In Person Meeting' ),
-		array( 'key' => 'text',     'label' => 'Text Message' ),
+		array( 'key' => 'any',     'label' => 'Any Method' ),
 	);
 
 	// ══════════════════════════════════════════════════════════════
@@ -172,8 +170,6 @@ class FormOptionsRegistry {
 		array( 'key' => 'email',      'label' => 'Email' ),
 		array( 'key' => 'phone',      'label' => 'Phone' ),
 		array( 'key' => 'whatsapp',   'label' => 'WhatsApp' ),
-		array( 'key' => 'video-call', 'label' => 'Video Call' ),
-		array( 'key' => 'in-person',  'label' => 'In Person Meeting' ),
 		array( 'key' => 'any',        'label' => 'Any Method' ),
 	);
 
