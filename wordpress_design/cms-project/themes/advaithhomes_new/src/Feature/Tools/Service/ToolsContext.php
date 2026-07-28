@@ -119,12 +119,13 @@ class ToolsContext {
 				'name'       => $calc['title'] ?? '',
 				'title'      => $calc['title'] ?? '',
 				'categories' => isset( $meta['categories'] ) && is_array( $meta['categories'] ) ? $meta['categories'] : ( ! empty( $meta['category'] ) ? array( $meta['category'] ) : array( 'general' ) ),
-				'desc'       => $meta['desc'] ?? '',
-				'url'        => ! empty( $meta['card_url'] ) ? (string) $meta['card_url'] : adn_calc_page_url( $key ),
-				'thumbnail'  => $_thumb,
-				'highlight'  => $meta['highlight'] ?? '',
-				'category'   => $meta['category'] ?? 'general',
-				'popular'    => ! empty( $meta['is_popular'] ),
+				'desc'         => $meta['desc'] ?? '',
+				'updated_date' => $meta['updated_date'] ?? '',
+				'url'          => ! empty( $meta['card_url'] ) ? (string) $meta['card_url'] : adn_calc_page_url( $key ),
+				'thumbnail'    => $_thumb,
+				'highlight'    => $meta['highlight'] ?? '',
+				'category'     => $meta['category'] ?? 'general',
+				'popular'      => ! empty( $meta['is_popular'] ),
 			);
 		}
 		return $items;

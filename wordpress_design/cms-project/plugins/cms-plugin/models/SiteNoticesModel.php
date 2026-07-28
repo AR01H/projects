@@ -47,7 +47,10 @@ class AH_Site_Notices_Model extends AH_Model_Base {
 
 		$clean = array(
 			'title'          => sanitize_text_field( $data['title']        ?? '' ),
-			'message'        => sanitize_textarea_field( $data['message']  ?? '' ),
+			// Trusted admin HTML (manage_options-gated), not plain text - same model
+			// as AH_Custom_Code_Service / AH_Shortcuts_Model. Rendered via wp_kses_post()
+			// on the frontend too, so the message line supports basic formatting/links.
+			'message'        => wp_kses_post( $data['message']  ?? '' ),
 			'image'          => esc_url_raw( $data['image']                ?? '' ) ?: null,
 			'button_label'   => sanitize_text_field( $data['button_label'] ?? '' ) ?: null,
 			'button_url'     => sanitize_text_field( $data['button_url']   ?? '' ) ?: null,

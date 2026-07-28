@@ -26,10 +26,11 @@ class ToolSingleContext {
 	// ── Hero section ────────────────────────────────────────────
 	public static function buildHero( array $calc, array $meta ): array {
 		return array(
-			'title'       => $calc['title'] ?? '',
-			'description' => $meta['desc'] ?? '',
-			'bg_icon'     => ! empty( $calc['icon'] ) ? $calc['icon'] : '🧮',
-			'image_id'    => ! empty( $meta['thumbnail_id'] ) ? (int) $meta['thumbnail_id'] : 0,
+			'title'        => $calc['title'] ?? '',
+			'description'  => $meta['desc'] ?? '',
+			'updated_date' => $meta['updated_date'] ?? '',
+			'bg_icon'      => ! empty( $calc['icon'] ) ? $calc['icon'] : '🧮',
+			'image_id'     => ! empty( $meta['thumbnail_id'] ) ? (int) $meta['thumbnail_id'] : 0,
 		);
 	}
 

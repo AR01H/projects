@@ -53,11 +53,13 @@ $grid_items     = array_slice( $all_tools, 4 );
 			<?php foreach ( $featured_items as $tool ) : ?>
 				<?php
 				$tool_card = array(
-					'icon'      => $tool['icon'] ?? '🧮',
-					'name'      => $tool['title'] ?? '',
-					'url'       => $tool['url'] ?? '',
-					'thumbnail' => isset( $tool['thumbnail'] ) && '' !== $tool['thumbnail'] ? (string) $tool['thumbnail'] : '',
-					'highlight' => ! empty( $tool['highlight'] ) ? (string) $tool['highlight'] : '',
+					'icon'         => $tool['icon'] ?? '🧮',
+					'name'         => $tool['title'] ?? '',
+					'desc'         => $tool['desc'] ?? '',
+					'url'          => $tool['url'] ?? '',
+					'thumbnail'    => isset( $tool['thumbnail'] ) && '' !== $tool['thumbnail'] ? (string) $tool['thumbnail'] : '',
+					'highlight'    => ! empty( $tool['highlight'] ) ? (string) $tool['highlight'] : '',
+					'updated_date' => $tool['updated_date'] ?? '',
 				);
 				adn_component( 'cards/tool_card', array( 'card' => $tool_card ) );
 				?>
@@ -103,10 +105,11 @@ $grid_items     = array_slice( $all_tools, 4 );
 						foreach ( $all_tools as $idx => $item ) :
 							$cats  = implode( ' ', array_map( 'sanitize_key', (array)($item['categories']??[]) ) );
 							adn_component( 'cards/tool_list_item', array( 'item' => array(							'index'      => $idx,								'categories' => isset( $item['categories'] ) ? (array) $item['categories'] : array(),
-								'icon'       => $item['icon'] ?? '🧮',
-								'title'      => $item['title'] ?? '',
-								'desc'       => $item['desc'] ?? '',
-								'url'        => $item['url'] ?? '',
+								'icon'         => $item['icon'] ?? '🧮',
+								'title'        => $item['title'] ?? '',
+								'desc'         => $item['desc'] ?? '',
+								'updated_date' => $item['updated_date'] ?? '',
+								'url'          => $item['url'] ?? '',
 							) ) );
 						endforeach; ?>
 					</div>

@@ -8,8 +8,6 @@ if ( ! class_exists( 'AH_Enquiry_Model' ) ) {
 	return;
 }
 
-AH_Enquiry_Model::install_table();
-
 $status_options = array(
 	'new'         => 'New',
 	'in-progress' => 'In Progress',

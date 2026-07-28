@@ -11,6 +11,70 @@
         bindEnquiryTypes();
         bindContactSubmit();
         bindSidebarFaqs();
+        bindLiveValidation();
+    }
+
+    /* Live validation: red border on a required field once it's been left
+       empty/invalid, cleared as soon as it becomes valid. The submit button
+       stays disabled until every required field is valid - not just consent. */
+    function bindLiveValidation() {
+        var form = document.getElementById( 'contactEnquiryForm' );
+        if ( ! form ) { return; }
+
+        var watched = [
+            form.querySelector( '[name="name"]' ),
+            form.querySelector( '[name="email"]' ),
+            form.querySelector( '[name="message"]' )
+        ];
+
+        watched.forEach( function ( el ) {
+            if ( ! el ) { return; }
+            el.addEventListener( 'blur', function () { markFieldValidity( el, isFieldValid( el ) ); } );
+            el.addEventListener( 'input', function () {
+                if ( isFieldValid( el ) ) { markFieldValidity( el, true ); }
+                updateSubmitButtonState( form );
+            } );
+        } );
+
+        var consentInput = form.querySelector( '[name="consent"]' );
+        if ( consentInput ) {
+            consentInput.addEventListener( 'change', function () { updateSubmitButtonState( form ); } );
+        }
+
+        updateSubmitButtonState( form );
+    }
+
+    function isFieldValid( el ) {
+        if ( ! el ) { return true; }
+        if ( 'email' === el.type ) { return el.value.trim() !== '' && isValidContactEmail( el.value.trim() ); }
+        if ( 'checkbox' === el.type ) { return el.checked; }
+        return el.value.trim() !== '';
+    }
+
+    function markFieldValidity( el, isValid ) {
+        if ( ! el ) { return; }
+        el.classList.toggle( 'field-invalid', ! isValid );
+    }
+
+    /* Re-checks every required field (name, email, message, consent, and the
+       enquiry-type grid when present) and only enables Submit when all of
+       them are valid - previously this only checked the consent toggle. */
+    function updateSubmitButtonState( form ) {
+        var btn = form.querySelector( '.contact-submit-btn' );
+        if ( ! btn ) { return; }
+
+        var ok = isFieldValid( form.querySelector( '[name="name"]' ) )
+            && isFieldValid( form.querySelector( '[name="email"]' ) )
+            && isFieldValid( form.querySelector( '[name="message"]' ) )
+            && isFieldValid( form.querySelector( '[name="consent"]' ) );
+
+        var typeGrid = document.getElementById( 'enquiryTypeGrid' );
+        if ( typeGrid ) {
+            var typeInput = form.querySelector( '[name="enquiry_type"]' );
+            ok = ok && !! ( typeInput && typeInput.value.trim() !== '' );
+        }
+
+        btn.disabled = ! ok;
     }
 
     function bindSidebarFaqs() {
@@ -47,6 +111,10 @@
                 /* Clear any validation error on the grid */
                 var errEl = grid.parentElement.querySelector( '.enquiry-type-error' );
                 if ( errEl ) { errEl.remove(); }
+                grid.classList.remove( 'field-invalid' );
+
+                var form = grid.closest( 'form' );
+                if ( form ) { updateSubmitButtonState( form ); }
             } );
         } );
     }
@@ -83,17 +151,21 @@
                 typeErr.textContent = 'Please select what best describes you.';
                 typeGrid.parentElement.appendChild( typeErr );
             }
+            typeGrid.classList.add( 'field-invalid' );
             typeGrid.scrollIntoView( { behavior: 'smooth', block: 'center' } );
             return;
         }
 
         if ( ! nameInput || ! nameInput.value.trim() ) {
+            markFieldValidity( nameInput, false );
             return showContactMsg( form, 'Your name is required.', true );
         }
         if ( ! emailInput || ! isValidContactEmail( emailInput.value.trim() ) ) {
+            markFieldValidity( emailInput, false );
             return showContactMsg( form, 'Please enter a valid email address.', true );
         }
         if ( ! msgInput || ! msgInput.value.trim() ) {
+            markFieldValidity( msgInput, false );
             return showContactMsg( form, 'Please tell us how we can help.', true );
         }
         if ( ! consentInput || ! consentInput.checked ) {
@@ -110,7 +182,6 @@
         fd.append( 'action', 'ah_contact_submit' );
         fd.append( 'nonce',  adnEnquiry.nonce );
         fd.append( 'client_timestamp', new Date().toISOString() );
-        debugger;
 
         fetch( adnEnquiry.ajaxUrl, { method: 'POST', body: fd } )
             .then( function ( r ) { return r.text(); } )
@@ -124,6 +195,7 @@
                 if ( submitBtn ) { submitBtn.disabled = false; submitBtn.innerHTML = origHTML; }
                 if ( res.success ) {
                     form.reset();
+                    lockContactForm( form );
                     showContactMsg( form, res.data && res.data.message ? res.data.message : "Thank you! We'll be in touch shortly.", false );
                 } else {
                     var errMsg = res.data && res.data.message ? res.data.message : 'Something went wrong. Please try again.';
@@ -134,6 +206,16 @@
                 if ( submitBtn ) { submitBtn.disabled = false; submitBtn.innerHTML = origHTML; }
                 showContactMsg( form, 'Could not connect. Please try again.', true );
             } );
+    }
+
+    /* Disable every field/button in the form after a successful submission,
+       so the same form can't be filled in and sent again. */
+    function lockContactForm( form ) {
+        form.querySelectorAll( 'input:not([type=hidden]), textarea, select, button' ).forEach( function ( el ) {
+            el.disabled     = true;
+            el.style.opacity = '0.55';
+            el.style.cursor  = 'not-allowed';
+        } );
     }
 
     function showContactMsg( form, text, isError ) {

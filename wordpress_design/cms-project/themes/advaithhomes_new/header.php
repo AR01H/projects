@@ -26,6 +26,7 @@ $_adn_embed = ! empty( $_GET['embed'] ) || ! empty( $_GET['dialog'] ); // phpcs:
 		.adn-preheader, #adn-page-loader,
 		.whatsapp-float, .floating-contact,
 		.site-notice-bar, .cookie-banner,
+		.tools-hero-section, .page-hero,
 		.adn-newsbar, .newsbar { display: none !important; }
 		body { margin: 0; padding: 16px; background: #fff; }
 		.container { max-width: 100%; padding: 0; }

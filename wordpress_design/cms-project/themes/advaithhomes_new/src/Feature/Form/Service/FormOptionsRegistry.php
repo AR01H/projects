@@ -28,34 +28,22 @@ class FormOptionsRegistry {
 	// ══════════════════════════════════════════════════════════════
 
 	private static array $enquiry_types = array(
-		array( 'key' => 'buying',           'icon' => '🏠', 'label' => 'Buying a Home' ),
-		array( 'key' => 'selling',          'icon' => '🔑', 'label' => 'Selling a Home' ),
 		array( 'key' => 'moving',           'icon' => '🚚', 'label' => 'Moving Home' ),
 		array( 'key' => 'new-to-uk',        'icon' => '🇬🇧', 'label' => 'New to the UK' ),
 		array( 'key' => 'mortgage',         'icon' => '💰', 'label' => 'Mortgage Question' ),
 		array( 'key' => 'conveyancing',     'icon' => '📋', 'label' => 'Conveyancing Question' ),
 		array( 'key' => 'survey',           'icon' => '🔍', 'label' => 'Survey Question' ),
-		array( 'key' => 'stamp-duty',       'icon' => '📊', 'label' => 'Stamp Duty Question' ),
 		array( 'key' => 'first-time-buyer', 'icon' => '🎯', 'label' => 'First Time Buyer' ),
-		array( 'key' => 'help-to-buy',      'icon' => '🏗️', 'label' => 'Help to Buy' ),
 		array( 'key' => 'shared-ownership', 'icon' => '🤝', 'label' => 'Shared Ownership' ),
 		array( 'key' => 'remortgage',       'icon' => '🔄', 'label' => 'Remortgage' ),
 		array( 'key' => 'equity-release',   'icon' => '💎', 'label' => 'Equity Release' ),
 		array( 'key' => 'property-invest',  'icon' => '📈', 'label' => 'Property Investment' ),
 		array( 'key' => 'legal-advice',     'icon' => '⚖️', 'label' => 'Legal Advice' ),
-		array( 'key' => 'insurance',        'icon' => '🛡️', 'label' => 'Insurance Question' ),
-		array( 'key' => 'energy-rating',    'icon' => '⚡', 'label' => 'Energy Rating' ),
-		array( 'key' => 'property-report',  'icon' => '📄', 'label' => 'Property Report' ),
-		array( 'key' => 'auction',          'icon' => '🔨', 'label' => 'Property Auction' ),
-		array( 'key' => 'leasehold',        'icon' => '📜', 'label' => 'Leasehold Question' ),
 		array( 'key' => 'freehold',         'icon' => '🏡', 'label' => 'Freehold Question' ),
-		array( 'key' => 'council-tax',      'icon' => '🏛️', 'label' => 'Council Tax' ),
 		array( 'key' => 'rental',           'icon' => '🏢', 'label' => 'Rental Property' ),
 		array( 'key' => 'commercial',       'icon' => '🏪', 'label' => 'Commercial Property' ),
-		array( 'key' => 'referral',         'icon' => '📞', 'label' => 'Referral' ),
-		array( 'key' => 'feedback',         'icon' => '💬', 'label' => 'Feedback' ),
 		array( 'key' => 'complaint',        'icon' => '⚠️', 'label' => 'Complaint' ),
-		array( 'key' => 'general',          'icon' => '💬', 'label' => 'General Property Question' ),
+		array( 'key' => 'general',          'icon' => '💬', 'label' => 'General Question' ),
 	);
 
 	private static array $cms_term_icons = array(

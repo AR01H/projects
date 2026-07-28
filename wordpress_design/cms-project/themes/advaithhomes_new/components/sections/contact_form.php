@@ -125,12 +125,5 @@ $_rules  = isset( $_f['validation'] )              ? (array) $_f['validation']  
 
 	</form>
 </div>
-<script>
-(function(){
-	var cb  = document.getElementById('contactConsent');
-	var btn = document.getElementById('contactSubmitBtn');
-	if ( cb && btn ) {
-		cb.addEventListener('change', function(){ btn.disabled = !cb.checked; });
-	}
-}());
-</script>
+<?php /* Submit-button gating + red-border validation for all required fields
+         (not just consent) now lives in assets/js/contact.js. */ ?>

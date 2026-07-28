@@ -531,7 +531,7 @@
 @media (max-width: 768px) {
 	.hero-desc {
 		font-size: 0.95rem;
-		line-height: 1.6;
+		line-height: 1.3;
 		display: -webkit-box;
 		/* -webkit-line-clamp: 4;
 		-webkit-box-orient: vertical;

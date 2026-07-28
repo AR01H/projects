@@ -1,7 +1,7 @@
 <?php
 /**
  * components/cards/tool_card.php - Component: Calculator Card
- * Props: $card { icon, name, url, thumbnail?, highlight? }
+ * Props: $card { icon, name, url, thumbnail?, highlight?, desc?, updated_date? }
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -44,6 +44,9 @@ if ( isset( $card['data_index'] ) ) {
 		<div class="calc-card-name"><?php echo esc_html( ! empty( $card['name'] ) ? $card['name'] : ( ! empty( $card['title'] ) ? $card['title'] : '' ) ); ?></div>
 		<?php if ( ! empty( $card['desc'] ) ) : ?>
 			<p class="card-desc-text"><?php echo esc_html( (string) $card['desc'] ); ?></p>
+		<?php endif; ?>
+		<?php if ( ! empty( $card['updated_date'] ) ) : ?>
+			<p class="card-updated-date"><?php echo esc_html( sprintf( __( 'Updated %s', ADN_TEXT_DOMAIN ), date_i18n( 'M j, Y', strtotime( (string) $card['updated_date'] ) ) ) ); ?></p>
 		<?php endif; ?>
 	</div>
 </a>

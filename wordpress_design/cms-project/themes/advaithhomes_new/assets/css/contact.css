@@ -232,6 +232,20 @@
     box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
 }
 
+/* ── Required-field validation state (empty/invalid on blur) ──────── */
+.contact-enquiry-form input.field-invalid,
+.contact-enquiry-form select.field-invalid,
+.contact-enquiry-form textarea.field-invalid {
+    border-color: var(--color-danger, #e53e3e) !important;
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.08);
+}
+
+.enquiry-type-grid.field-invalid {
+    outline: 1.5px solid var(--color-danger, #e53e3e);
+    outline-offset: 6px;
+    border-radius: 8px;
+}
+
 .form-group textarea,
 .contact-enquiry-form textarea,
 .guidance-request-form textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
@@ -429,6 +443,13 @@
     font-size: 1rem;
     padding: 14px 24px;
     margin-bottom: 10px;
+}
+
+.contact-submit-btn:disabled,
+.guidance-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.4);
 }
 
 /* ── Contact Method Checkboxes (guidance form) ──────────────── */
@@ -981,6 +1002,7 @@
     border-radius: var(--radius-sm);
     font-size: 0.875rem;
     font-weight: 500;
+    margin-top: var(--space-4);
     margin-bottom: var(--space-4);
     line-height: 1.5;
 }

@@ -193,6 +193,14 @@ $example_js = '(function () {
 				</tr>
 
 				<tr>
+					<th scope="row"><?php esc_html_e( 'Updated Date', ADN_TEXT_DOMAIN ); ?></th>
+					<td>
+						<input type="date" name="meta_updated_date" value="<?php echo esc_attr( isset( $f_meta['updated_date'] ) ? $f_meta['updated_date'] : '' ); ?>">
+						<p class="description"><?php esc_html_e( 'Optional. Shown as an extra line below the description on the calculator card.', ADN_TEXT_DOMAIN ); ?></p>
+					</td>
+				</tr>
+
+				<tr>
 					<th scope="row"><?php esc_html_e( 'Categories / Parent Terms', ADN_TEXT_DOMAIN ); ?></th>
 					<td>
 						<?php

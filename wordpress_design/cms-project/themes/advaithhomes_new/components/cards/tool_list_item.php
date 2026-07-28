@@ -1,6 +1,6 @@
 <?php
 /**
- * components/cards/tool_list_item.php - Calculator grid card (icon + title + desc + arrow).
+ * components/cards/tool_list_item.php - Calculator grid card (icon + title + desc + updated_date? + arrow).
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -8,11 +8,12 @@ defined( 'ABSPATH' ) || exit;
 $item      = isset( $item ) && is_array( $item ) ? $item : array();
 $cats_raw  = isset( $item['categories'] ) ? (array) $item['categories'] : array();
 $cats_safe = implode( ' ', array_map( 'sanitize_key', $cats_raw ) );
-$url       = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
-$title     = isset( $item['title'] ) ? (string) $item['title'] : '';
-$desc      = isset( $item['desc'] )  ? (string) $item['desc']  : '';
-$icon      = isset( $item['icon'] )  ? $item['icon']           : '';
-$index     = isset( $item['index'] ) ? (int) $item['index'] : 0;
+$url          = esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) );
+$title        = isset( $item['title'] ) ? (string) $item['title'] : '';
+$desc         = isset( $item['desc'] )  ? (string) $item['desc']  : '';
+$updated_date = isset( $item['updated_date'] ) ? (string) $item['updated_date'] : '';
+$icon         = isset( $item['icon'] )  ? $item['icon']           : '';
+$index        = isset( $item['index'] ) ? (int) $item['index'] : 0;
 ?>
 <a
 	href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>"
@@ -33,6 +34,9 @@ $index     = isset( $item['index'] ) ? (int) $item['index'] : 0;
 	<?php if ( $desc ) : ?>
 		<div class="calc-list-desc">
 			<p><?php echo esc_html( $desc ); ?></p>
+			<?php if ( $updated_date ) : ?>
+				<p class="calc-list-updated-date"><?php echo esc_html( sprintf( __( 'Updated %s', ADN_TEXT_DOMAIN ), date_i18n( 'M j, Y', strtotime( $updated_date ) ) ) ); ?></p>
+			<?php endif; ?>
 		</div>
 	<?php endif; ?>
 	<div class="calc-list-item-bottom">

@@ -2,7 +2,7 @@
 /**
  * components/sections/tools_popular.php
  * Popular calculators — widget card matching site design language.
- * Props: $popular_tools[] { icon, title, desc, url, highlight? }
+ * Props: $popular_tools[] { icon, title, desc, updated_date?, url, highlight? }
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -17,12 +17,13 @@ if ( empty( $popular_tools ) ) { return; }
 		<div class="popular-tools-grid">
 			<?php foreach ( $popular_tools as $calc ) : ?>
 				<?php adn_component( 'cards/tool_card', array( 'card' => array(
-					'icon'      => isset( $calc['icon'] ) ? $calc['icon'] : '🧮',
-					'name'      => isset( $calc['title'] ) ? $calc['title'] : '',
-					'desc'      => isset( $calc['desc'] ) ? $calc['desc'] : '',
-					'url'       => isset( $calc['url'] ) ? $calc['url'] : '',
-					'thumbnail' => isset( $calc['thumbnail'] ) && '' !== $calc['thumbnail'] ? (string) $calc['thumbnail'] : '',
-					'highlight' => isset( $calc['highlight'] ) && $calc['highlight'] ? (string) $calc['highlight'] : '',
+					'icon'         => isset( $calc['icon'] ) ? $calc['icon'] : '🧮',
+					'name'         => isset( $calc['title'] ) ? $calc['title'] : '',
+					'desc'         => isset( $calc['desc'] ) ? $calc['desc'] : '',
+					'updated_date' => isset( $calc['updated_date'] ) ? $calc['updated_date'] : '',
+					'url'          => isset( $calc['url'] ) ? $calc['url'] : '',
+					'thumbnail'    => isset( $calc['thumbnail'] ) && '' !== $calc['thumbnail'] ? (string) $calc['thumbnail'] : '',
+					'highlight'    => isset( $calc['highlight'] ) && $calc['highlight'] ? (string) $calc['highlight'] : '',
 				) ) ); ?>
 			<?php endforeach; ?>
 		</div>

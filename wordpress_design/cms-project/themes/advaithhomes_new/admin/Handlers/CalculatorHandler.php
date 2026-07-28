@@ -166,8 +166,12 @@ class ADN_Calculator_Handler extends ADN_Base_Handler {
 			array_map( 'trim', explode( ',', self::post_text( 'meta_categories' ) ) )
 		));
 
+		$posted_updated_date = self::post_text( 'meta_updated_date' );
+		$updated_date        = preg_match( '/^\d{4}-\d{2}-\d{2}$/', $posted_updated_date ) ? $posted_updated_date : '';
+
 		$all[ $key ] = array_merge( $all[ $key ] ?? array(), array(
 			'desc'                => self::post_textarea( 'meta_desc' ),
+			'updated_date'        => $updated_date,
 			'categories'          => $raw_cats,
 			'parent_terms'        => $raw_cats,
 			'thumbnail_id'        => absint( $_POST['meta_thumbnail_id'] ?? 0 ),

@@ -131,9 +131,8 @@ if ( ! empty( $_GET['err'] ) ) {
 	<?php \Ah\Cms\Admin\Components\AdminComponents::notice( 'Please fix: ' . implode( ', ', $errors ), 'error' ); ?>
 	<?php endif; ?>
 
-	<div style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;">
+	<div>
 
-		<!-- ── Left: form fields ──────────────────────────────────────────── -->
 		<form id="ah-notice-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 			<input type="hidden" name="action"  value="ah_save_notice">
 			<input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>">
@@ -156,7 +155,7 @@ if ( ! empty( $_GET['err'] ) ) {
 					),
 				) ); ?>
 
-				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Message <small>(short description below the title)</small>', '<textarea id="pv-message" name="message" rows="2" placeholder="e.g. Get 20% off all bookings this weekend">' . esc_textarea( $item->message ?? '' ) . '</textarea>' ); ?>
+				<?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Message <small>(short description below the title - basic HTML allowed, e.g. &lt;b&gt;, &lt;a href&gt;)</small>', '<textarea id="pv-message" name="message" rows="2" placeholder="e.g. Get 20% off all bookings this weekend">' . esc_textarea( $item->message ?? '' ) . '</textarea>' ); ?>
 
 				<?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
 					array( 'Badge Label', '<input type="text" id="pv-badge-text" name="badge_text" value="' . esc_attr( $item->badge_text ?? '' ) . '" placeholder="e.g. New, Hot Deal, Important">' ),
@@ -348,35 +347,6 @@ if ( ! empty( $_GET['err'] ) ) {
 				<a href="<?php echo esc_url( add_query_arg( 'page', 'ah-notices', admin_url( 'admin.php' ) ) ); ?>" class="ah-btn ah-btn-secondary">← Cancel</a>
 			</div>
 		</form>
-
-		<!-- ── Right: live preview ────────────────────────────────────────── -->
-		<div style="position:sticky;top:80px;">
-			<?php ob_start(); ?>
-				<div style="margin-top:8px;">
-					<div id="pv-wrap" style="border:1px solid var(--ah-border);border-radius:10px;overflow:hidden;background:var(--ah-bg-light);min-height:200px;display:flex;align-items:center;justify-content:center;padding:16px;position:relative;">
-						<div id="pv-popup" style="background:#fff;border-radius:12px;width:100%;overflow:hidden;box-shadow:0 8px 32px rgba(10,25,47,.18);">
-							<div id="pv-img-bar" style="position:relative;">
-								<img id="pv-img-el" src="" alt="" style="width:100%;height:120px;object-fit:cover;display:none;">
-								<video id="pv-video-el" src="" muted loop autoplay style="width:100%;height:120px;object-fit:cover;display:none;"></video>
-								<div id="pv-color-bar" style="height:5px;background:linear-gradient(90deg,var(--ah-success),var(--ah-primary));"></div>
-								<span id="pv-badge-on-img" style="display:none;position:absolute;top:8px;left:10px;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;"></span>
-							</div>
-							<div style="padding:12px 14px 14px;position:relative;">
-								<button style="position:absolute;top:8px;right:8px;background:var(--ah-bg-light);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;color:var(--ah-muted);cursor:default;">×</button>
-								<span id="pv-badge-above" style="display:none;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:7px;display:inline-block;"></span>
-								<div id="pv-title-el" style="font-size:.95rem;font-weight:700;color:var(--ah-text);padding-right:24px;line-height:1.3;">Notice Title</div>
-								<div id="pv-message-el" style="font-size:.8rem;color:var(--ah-muted);margin-top:5px;line-height:1.5;display:none;"></div>
-								<div id="pv-btn-wrap" style="margin-top:10px;display:none;">
-									<a id="pv-btn-el" href="#" onclick="return false;" style="display:inline-block;background:var(--ah-text);color:#fff;padding:.35rem 1rem;border-radius:7px;font-size:.8rem;font-weight:600;text-decoration:none;">Book Now</a>
-								</div>
-							</div>
-						</div>
-						<div id="pv-corner-badge" style="display:none;position:absolute;bottom:16px;right:16px;background:#fff;border-radius:10px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.15);font-size:.78rem;color:var(--ah-text);font-weight:600;max-width:160px;">Corner preview</div>
-					</div>
-					<p style="font-size:.78rem;color:var(--ah-muted);margin:6px 0 0;text-align:center;">Preview updates as you type</p>
-				</div>
-			<?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Live Preview', ob_get_clean() ); ?>
-		</div>
 	</div>
 
 	<style>
@@ -522,9 +492,9 @@ jQuery(function ($) {
 		var imgUrl     = $.trim( $('#pv-image').val() );
 		var isCorner   = $('#pv-pos-corner').is(':checked');
 
-		// Title & message
+		// Title & message (message supports basic HTML, so render it like the frontend does)
 		$('#pv-title-el').text(title);
-		if (message) { $('#pv-message-el').text(message).show(); } else { $('#pv-message-el').hide(); }
+		if (message) { $('#pv-message-el').html(message).show(); } else { $('#pv-message-el').hide(); }
 
 		// Button
 		if (btnLabel) { $('#pv-btn-el').text(btnLabel); $('#pv-btn-wrap').show(); } else { $('#pv-btn-wrap').hide(); }

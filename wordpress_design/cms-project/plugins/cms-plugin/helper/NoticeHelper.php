@@ -76,7 +76,7 @@ class AH_Notice_Helper {
 		foreach ( $to_render as $n ) :
 			$id         = (int) $n->id;
 			$title      = esc_html( $n->title );
-			$message    = esc_html( $n->message ?? '' );
+			$message    = wp_kses_post( $n->message ?? '' ); // trusted admin HTML - see AH_Site_Notices_Model::save_notice()
 			$image      = esc_url( $n->image ?? '' );
 			$is_video   = (bool) preg_match( '/\.(mp4|webm|ogv|ogg|mov|avi)(\?.*)?$/i', $n->image ?? '' );
 			$btn_label  = esc_html( $n->button_label ?? '' );
@@ -88,7 +88,9 @@ class AH_Notice_Helper {
 		<?php if ( $is_corner ) : ?>
 		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-corner ah-sn-popup--corner" role="dialog" aria-label="<?php echo $title; ?>"
 		     style="display:none;position:fixed;bottom:24px;right:24px;z-index:99999;width:320px;max-width:calc(100vw - 32px);">
-			<div class="ah-sn-card ah-sn-card--corner" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(10,25,47,.22);border:1px solid rgba(0,0,0,.06);">
+			<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close"
+			        style="position:absolute;top:-13px;right:-13px;z-index:2;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50%;width:26px;height:26px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;box-shadow:0 2px 8px rgba(10,25,47,.18);">&times;</button>
+			<div class="ah-sn-card ah-sn-card--corner" style="position:relative;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(10,25,47,.22);border:1px solid rgba(0,0,0,.06);">
 				<?php if ( $image ) : ?>
 				<div class="ah-sn-media ah-sn-media--corner" style="width:100%;height:160px;overflow:hidden;background:#f3f4f6;position:relative;">
 					<?php if ( $is_video ) : ?>
@@ -105,8 +107,6 @@ class AH_Notice_Helper {
 					<?php if ( $badge && ! $image ) : ?>
 					<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;"><?php echo $badge; ?></span>
 					<?php endif; ?>
-					<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close"
-					        style="position:absolute;top:10px;right:10px;background:#f3f4f6;border:none;border-radius:50%;width:26px;height:26px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;">&times;</button>
 					<h3 style="margin:0 28px 6px 0;font-size:1rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.35;"><?php echo $title; ?></h3>
 					<?php if ( $message ) : ?>
 					<p style="margin:0 0 12px;color:#6b7280;font-size:.82rem;line-height:1.55;"><?php echo $message; ?></p>
@@ -122,34 +122,36 @@ class AH_Notice_Helper {
 		     style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:1rem;">
 			<div class="ah-sn-backdrop ah-sn-backdrop--modal" data-id="<?php echo $id; ?>"
 			     style="position:absolute;inset:0;background:rgba(10,25,47,.55);backdrop-filter:blur(3px);"></div>
-			<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:4px;max-width:520px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
-				<?php if ( $image ) : ?>
-				<div class="ah-sn-media ah-sn-media--modal" style="width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
-					<?php if ( $is_video ) : ?>
-					<video class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+			<div class="ah-sn-card-wrap" style="position:relative;max-width:520px;width:100%;">
+				<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close"
+				        style="position:absolute;top:-16px;right:-16px;z-index:2;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;box-shadow:0 2px 10px rgba(10,25,47,.2);">&times;</button>
+				<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:4px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
+					<?php if ( $image ) : ?>
+					<div class="ah-sn-media ah-sn-media--modal" style="width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
+						<?php if ( $is_video ) : ?>
+						<video class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+						<?php else : ?>
+						<img class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+						<?php endif; ?>
+						<?php if ( $badge ) : ?>
+						<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;letter-spacing:.05em;text-transform:uppercase;"><?php echo $badge; ?></span>
+						<?php endif; ?>
+					</div>
 					<?php else : ?>
-					<img class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+					<div style="width:100%;height:5px;background:linear-gradient(90deg,var(--color-primary,#2d5a44),<?php echo esc_attr( $bpal['bg'] ); ?>);"></div>
 					<?php endif; ?>
-					<?php if ( $badge ) : ?>
-					<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;letter-spacing:.05em;text-transform:uppercase;"><?php echo $badge; ?></span>
-					<?php endif; ?>
-				</div>
-				<?php else : ?>
-				<div style="width:100%;height:5px;background:linear-gradient(90deg,var(--color-primary,#2d5a44),<?php echo esc_attr( $bpal['bg'] ); ?>);"></div>
-				<?php endif; ?>
-				<div style="padding:10px;position:relative;">
-					<?php if ( $badge && ! $image ) : ?>
-					<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;"><?php echo $badge; ?></span>
-					<?php endif; ?>
-					<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close"
-					        style="position:absolute;top:16px;right:16px;background:#f3f4f6;border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;">&times;</button>
-					<h2 style="margin:0 36px .6rem 0;font-size:1.35rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.3;"><?php echo $title; ?></h2>
-					<?php if ( $message ) : ?>
-					<p style="margin:0 0 1.4rem;color:#555;font-size:.95rem;line-height:1.6;"><?php echo $message; ?></p>
-					<?php endif; ?>
-					<?php if ( $btn_label && $btn_url ) : ?>
-					<a href="<?php echo $btn_url; ?>" class="btn btn-primary button"><?php echo $btn_label; ?></a>
-					<?php endif; ?>
+					<div style="padding:10px;position:relative;">
+						<?php if ( $badge && ! $image ) : ?>
+						<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;"><?php echo $badge; ?></span>
+						<?php endif; ?>
+						<h2 style="margin:0 36px .6rem 0;font-size:1.35rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.3;"><?php echo $title; ?></h2>
+						<?php if ( $message ) : ?>
+						<p style="margin:0 0 1.4rem;color:#555;font-size:.95rem;line-height:1.6;"><?php echo $message; ?></p>
+						<?php endif; ?>
+						<?php if ( $btn_label && $btn_url ) : ?>
+						<a href="<?php echo $btn_url; ?>" class="btn btn-primary button"><?php echo $btn_label; ?></a>
+						<?php endif; ?>
+					</div>
 				</div>
 			</div>
 		</div>

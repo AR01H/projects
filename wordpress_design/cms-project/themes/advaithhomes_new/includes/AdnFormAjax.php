@@ -56,13 +56,15 @@ class ADN_Form_Ajax {
 			wp_send_json_success( array( 'message' => 'Thank you! We will be in touch shortly.' ) );
 		}
 
-		$name         = sanitize_text_field(     wp_unslash( isset( $_POST['name'] )         ? $_POST['name']         : '' ) );
-		$email        = sanitize_email(          wp_unslash( isset( $_POST['email'] )        ? $_POST['email']        : '' ) );
-		$whatsapp     = sanitize_text_field(     wp_unslash( isset( $_POST['whatsapp'] )     ? $_POST['whatsapp']     : '' ) );
-		$postcode     = sanitize_text_field(     wp_unslash( isset( $_POST['postcode'] )     ? $_POST['postcode']     : '' ) );
-		$enquiry_type = sanitize_key(            wp_unslash( isset( $_POST['enquiry_type'] ) ? $_POST['enquiry_type'] : '' ) );
-		$message      = sanitize_textarea_field( wp_unslash( isset( $_POST['message'] )      ? $_POST['message']      : '' ) );
-		$consent      = ! empty( $_POST['consent'] );
+		$name           = sanitize_text_field(     wp_unslash( isset( $_POST['name'] )           ? $_POST['name']           : '' ) );
+		$email          = sanitize_email(          wp_unslash( isset( $_POST['email'] )          ? $_POST['email']          : '' ) );
+		$whatsapp       = sanitize_text_field(     wp_unslash( isset( $_POST['whatsapp'] )       ? $_POST['whatsapp']       : '' ) );
+		$postcode       = sanitize_text_field(     wp_unslash( isset( $_POST['postcode'] )       ? $_POST['postcode']       : '' ) );
+		$enquiry_type   = sanitize_key(            wp_unslash( isset( $_POST['enquiry_type'] )   ? $_POST['enquiry_type']   : '' ) );
+		$message        = sanitize_textarea_field( wp_unslash( isset( $_POST['message'] )        ? $_POST['message']       : '' ) );
+		$help_timing    = sanitize_text_field(     wp_unslash( isset( $_POST['help_timing'] )    ? $_POST['help_timing']    : '' ) );
+		$contact_method = sanitize_key(            wp_unslash( isset( $_POST['contact_method'] ) ? $_POST['contact_method'] : '' ) );
+		$consent        = ! empty( $_POST['consent'] );
 
 		if ( '' === $name )        { wp_send_json_error( array( 'message' => 'Your name is required.' ) ); }
 		if ( ! is_email( $email ) ) { wp_send_json_error( array( 'message' => 'Please enter a valid email address.' ) ); }
@@ -77,16 +79,17 @@ class ADN_Form_Ajax {
 		$user_agent = sanitize_text_field( isset( $_SERVER['HTTP_USER_AGENT'] ) ? wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : '' );
 
 		$all_data = array(
-			'name'         => $name,
-			'email'        => $email,
-			'whatsapp'     => $whatsapp,
-			'postcode'     => $postcode,
-			'enquiry_type' => $enquiry_type,
-			'message'      => $message,
-			'consent'      => 'agreed',
+			'name'           => $name,
+			'email'          => $email,
+			'whatsapp'       => $whatsapp,
+			'postcode'       => $postcode,
+			'enquiry_type'   => $enquiry_type,
+			'message'        => $message,
+			'help_timing'    => $help_timing,
+			'contact_method' => $contact_method,
+			'consent'        => 'agreed',
 		);
 
-		AH_Enquiry_Model::maybe_install();
 		$id = AH_Enquiry_Model::create( 'contact', $name, $email, $enquiry_type, $all_data, $ip, $region, $user_agent );
 
 		if ( ! $id ) {
@@ -144,11 +147,13 @@ class ADN_Form_Ajax {
 		$requirement    = sanitize_textarea_field( wp_unslash( isset( $_POST['requirement'] )  ? $_POST['requirement']  : '' ) );
 		$time_frame     = sanitize_text_field(    wp_unslash( isset( $_POST['time_frame'] )   ? $_POST['time_frame']   : '' ) );
 		$contact_method = isset( $_POST['contact_method'] ) ? array_map( 'sanitize_key', (array) $_POST['contact_method'] ) : array();
+		$consent        = ! empty( $_POST['consent'] );
 
 		if ( '' === $help_with )   { wp_send_json_error( array( 'message' => 'Please select what you need help with.' ) ); }
 		if ( '' === $name )        { wp_send_json_error( array( 'message' => 'Your name is required.' ) ); }
 		if ( ! is_email( $email ) ) { wp_send_json_error( array( 'message' => 'Please enter a valid email address.' ) ); }
 		if ( '' === $requirement ) { wp_send_json_error( array( 'message' => 'Please describe your requirement.' ) ); }
+		if ( ! $consent )          { wp_send_json_error( array( 'message' => 'Please agree to the privacy policy.' ) ); }
 
 		$ip         = sanitize_text_field( isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '' );
 		$region     = sanitize_text_field(
@@ -166,9 +171,9 @@ class ADN_Form_Ajax {
 			'requirement'    => $requirement,
 			'time_frame'     => $time_frame,
 			'contact_method' => $contact_method,
+			'consent'        => 'agreed',
 		);
 
-		AH_Enquiry_Model::maybe_install();
 		$id = AH_Enquiry_Model::create( 'guidance', $name, $email, $help_with, $all_data, $ip, $region, $user_agent );
 
 		if ( ! $id ) {
@@ -179,7 +184,7 @@ class ADN_Form_Ajax {
 		$server_timestamp = current_time( 'mysql' );
 
 		if ( class_exists( 'AH_Workflow_Manager' ) ) {
-			AH_Workflow_Manager::evaluate( 'guidance_submit', array(
+			AH_Workflow_Manager::evaluate( 'guidance_submit', array_merge( array(
 				'full_name'        => $name,
 				'email'            => $email,
 				'phone'            => $phone,
@@ -188,7 +193,7 @@ class ADN_Form_Ajax {
 				'i_am'             => $i_am,
 				'client_timestamp' => $client_timestamp,
 				'server_timestamp' => $server_timestamp,
-			) );
+			), $all_data ) );
 		}
 
 		wp_send_json_success( array( 'message' => "Thank you {$name}! We'll connect you with the right expert shortly." ) );

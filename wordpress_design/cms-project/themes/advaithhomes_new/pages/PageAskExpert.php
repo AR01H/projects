@@ -66,7 +66,7 @@ adn_page_open( $_open_ctx );
 		<?php if ( ! empty( $ctx['has_locked'] ) && empty( $ctx['is_unlocked'] ) ) : ?>
 		<div class="expert-unlock-bar" id="expertUnlockBar" role="region" aria-label="<?php esc_attr_e( 'Unlock expert profiles', ADN_TEXT_DOMAIN ); ?>">
 			<i class="fa-solid fa-lock eub-icon" aria-hidden="true"></i>
-			<span class="eub-text"><?php esc_html_e( 'Some profiles are restricted. Enter the password to view all experts.', ADN_TEXT_DOMAIN ); ?></span>
+			<span class="eub-text"><?php esc_html_e( 'Enter the password to view all experts.', ADN_TEXT_DOMAIN ); ?></span>
 			<div class="eub-form-row">
 				<input type="text" id="expertUnlockPw" class="eub-input"
 					placeholder="<?php esc_attr_e( 'Enter password…', ADN_TEXT_DOMAIN ); ?>"

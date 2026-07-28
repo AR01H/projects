@@ -509,12 +509,13 @@ class HomeContext {
 				$_thumb = $_t ? (string) $_t : '';
 			}
 			$items[] = array(
-				'icon'      => ! empty( $calc['icon'] ) ? (string) $calc['icon'] : adn_term( 'icons.tools', '🧮' ),
-				'title'     => $calc['title'] ?? '',
-				'url'       => ! empty( $meta['card_url'] ) ? (string) $meta['card_url'] : adn_calc_page_url( $key ),
-				'thumbnail' => $_thumb,
-				'highlight' => $meta['highlight'] ?? '',
-				'desc'      => $meta['desc'] ?? '',
+				'icon'         => ! empty( $calc['icon'] ) ? (string) $calc['icon'] : adn_term( 'icons.tools', '🧮' ),
+				'title'        => $calc['title'] ?? '',
+				'url'          => ! empty( $meta['card_url'] ) ? (string) $meta['card_url'] : adn_calc_page_url( $key ),
+				'thumbnail'    => $_thumb,
+				'highlight'    => $meta['highlight'] ?? '',
+				'desc'         => $meta['desc'] ?? '',
+				'updated_date' => $meta['updated_date'] ?? '',
 			);
 		}
 		return $items;

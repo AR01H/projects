@@ -63,13 +63,14 @@ class ThemeShortcodes {
 			}
 
 			$items[] = array(
-				'key'       => sanitize_key( $ckey ),
-				'icon'      => ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $creg['icon'] ) ? (string) $creg['icon'] : '🧮' ),
-				'label'     => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $creg['title'] ) ? (string) $creg['title'] : $ckey ),
-				'desc'      => $desc,
-				'url'       => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : adn_calc_page_url( $ckey ),
-				'thumbnail' => $thumb,
-				'highlight' => ! empty( $cmeta['highlight'] ) ? (string) $cmeta['highlight'] : '',
+				'key'          => sanitize_key( $ckey ),
+				'icon'         => ! empty( $cmeta['icon'] ) ? (string) $cmeta['icon'] : ( ! empty( $creg['icon'] ) ? (string) $creg['icon'] : '🧮' ),
+				'label'        => ! empty( $cmeta['label'] ) ? (string) $cmeta['label'] : ( ! empty( $creg['title'] ) ? (string) $creg['title'] : $ckey ),
+				'desc'         => $desc,
+				'updated_date' => ! empty( $cmeta['updated_date'] ) ? (string) $cmeta['updated_date'] : '',
+				'url'          => ! empty( $cmeta['card_url'] ) ? (string) $cmeta['card_url'] : adn_calc_page_url( $ckey ),
+				'thumbnail'    => $thumb,
+				'highlight'    => ! empty( $cmeta['highlight'] ) ? (string) $cmeta['highlight'] : '',
 			);
 
 			if ( $limit > 0 && count( $items ) >= $limit ) {
@@ -96,10 +97,11 @@ class ThemeShortcodes {
 		echo '<div class="tool-grid tool-grid--7col">';
 		foreach ( $items as $card ) {
 			adn_component( 'cards/tool_card', array( 'card' => array(
-				'icon' => $card['icon'],
-				'name' => $card['label'],
-				'desc' => $card['desc'] ?? '',
-				'url'  => $card['url'],
+				'icon'         => $card['icon'],
+				'name'         => $card['label'],
+				'desc'         => $card['desc'] ?? '',
+				'updated_date' => $card['updated_date'] ?? '',
+				'url'          => $card['url'],
 			) ) );
 		}
 		echo '</div>';

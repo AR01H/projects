@@ -11,6 +11,7 @@
  *     eyebrow     string   optional tag/label above the title
  *     title       string   h1 text
  *     description string   paragraph
+ *     updated_date string  optional 'YYYY-MM-DD' - prints "Updated M j, Y" under the description
  *     trust_items array    string[]  OR  [{icon, title/label, subtitle/note}]
  *     stats       array    [{value, label}]  - merged with top-level $stats
  *   }
@@ -100,6 +101,10 @@ $_hero_is_video = adn_is_video_url( $_hero_img );
 			?>
 			<?php if ( '' !== trim( wp_strip_all_tags( $_hero_desc ) ) ) : ?>
 				<span class="hero-desc"><?php echo wp_kses_post( $_hero_desc ); ?></span>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $hero['updated_date'] ) ) : ?>
+				<span class="hero-updated-date"><?php echo esc_html( sprintf( __( 'Updated %s', ADN_TEXT_DOMAIN ), date_i18n( 'M j, Y', strtotime( (string) $hero['updated_date'] ) ) ) ); ?></span>
 			<?php endif; ?>
 
 			<?php adn_component( 'parts/hero_share', array( 'share' => $share ?? null ) ); ?>
