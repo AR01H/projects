@@ -467,7 +467,6 @@ jQuery(function ($) {
 		$('#pv-image').val('').trigger('input');
 	});
 
-	// ── Live preview ──────────────────────────────────────────────────────
 	function hexToRgba(hex, alpha) {
 		var r = parseInt(hex.slice(1,3), 16) || 0;
 		var g = parseInt(hex.slice(3,5), 16) || 0;
@@ -482,42 +481,11 @@ jQuery(function ($) {
 	$('#pv-badge-color').on('input change', syncBadgeColorSample);
 	syncBadgeColorSample();
 
-	function updatePreview() {
-		var title      = $.trim( $('#pv-title').val() )   || 'Notice Title';
-		var message    = $.trim( $('#pv-message').val() );
-		var badgeText  = $.trim( $('#pv-badge-text').val() );
-		var badgeColor = $('#pv-badge-color').val() || 'var(--ah-success)';
-		var pal        = { bg: hexToRgba(badgeColor, 0.13), color: badgeColor };
-		var btnLabel   = $.trim( $('#pv-btn-label').val() );
-		var imgUrl     = $.trim( $('#pv-image').val() );
-		var isCorner   = $('#pv-pos-corner').is(':checked');
-
-		// Title & message (message supports basic HTML, so render it like the frontend does)
-		$('#pv-title-el').text(title);
-		if (message) { $('#pv-message-el').html(message).show(); } else { $('#pv-message-el').hide(); }
-
-		// Button
-		if (btnLabel) { $('#pv-btn-el').text(btnLabel); $('#pv-btn-wrap').show(); } else { $('#pv-btn-wrap').hide(); }
-
-		// Image / video / colour bar
-		var imgIsVideo = isVideoUrl(imgUrl);
+	// Small thumbnail shown under the Image URL field (not the removed live preview panel)
+	function updateImageThumb() {
+		var imgUrl = $.trim( $('#pv-image').val() );
 		if (imgUrl) {
-			if (imgIsVideo) {
-				$('#pv-video-el').attr('src', imgUrl).show();
-				$('#pv-img-el').hide();
-			} else {
-				$('#pv-img-el').attr('src', imgUrl).show();
-				$('#pv-video-el').hide();
-			}
-			$('#pv-color-bar').hide();
-			$('#pv-thumb').show();
-		} else {
-			$('#pv-img-el, #pv-video-el').hide();
-			$('#pv-color-bar').show();
-		}
-		// Image/video thumb in form
-		if (imgUrl) {
-			if (imgIsVideo) {
+			if (isVideoUrl(imgUrl)) {
 				$('#pv-img-thumb-video').attr('src', imgUrl).show();
 				$('#pv-img-thumb-img').hide();
 			} else {
@@ -528,33 +496,9 @@ jQuery(function ($) {
 		} else {
 			$('#pv-img-thumb').hide();
 		}
-
-		// Badge
-		if (badgeText) {
-			if (imgUrl) {
-				$('#pv-badge-on-img').text(badgeText).css({ background: pal.bg, color: pal.color }).show();
-				$('#pv-badge-above').hide();
-			} else {
-				$('#pv-badge-on-img').hide();
-				$('#pv-badge-above').text(badgeText).css({ background: pal.bg, color: pal.color }).show();
-			}
-		} else {
-			$('#pv-badge-on-img, #pv-badge-above').hide();
-		}
-
-		// Corner vs modal layout hint
-		if (isCorner) {
-			$('#pv-popup').css({ maxWidth: '220px', margin: '0 0 0 auto' });
-			$('#pv-wrap').css({ justifyContent: 'flex-end', alignItems: 'flex-end' });
-		} else {
-			$('#pv-popup').css({ maxWidth: '100%', margin: '0' });
-			$('#pv-wrap').css({ justifyContent: 'center', alignItems: 'center' });
-		}
 	}
-
-	// Trigger preview update on any input change
-	$('#ah-notice-form').on('input change', updatePreview);
-	updatePreview(); // initial render
+	$('#pv-image').on('input change', updateImageThumb);
+	updateImageThumb(); // initial render
 
 	// ── Form validation ───────────────────────────────────────────────────
 	$('#ah-sn-submit').closest('form').on('submit', function (e) {
