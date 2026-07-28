@@ -276,7 +276,6 @@ class AH_Ajax_Handlers {
 		self::verify();
 		$form_id = (int) ( $_POST['form_id'] ?? 0 );
 		if ( ! $form_id ) wp_send_json_error( array( 'message' => 'Missing form_id.' ) );
-		AH_Form_Builder::install_tables();
 		$fields = AH_Form_Builder::get_fields( $form_id );
 		wp_send_json_success( array(
 			'fields' => array_map( static function ( $f ) {
@@ -315,7 +314,6 @@ class AH_Ajax_Handlers {
 			wp_send_json_error( array( 'message' => 'Invalid form.' ) );
 		}
 
-		AH_Form_Builder::install_tables();
 		$form   = AH_Form_Builder::get( $form_id );
 		$fields = AH_Form_Builder::get_fields( $form_id );
 
@@ -329,13 +327,20 @@ class AH_Ajax_Handlers {
 
 		foreach ( $fields as $field ) {
 			$key = $field->field_key;
-			$raw = isset( $_POST[ $key ] ) ? $_POST[ $key ] : '';
+			$raw = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : '';
 
-			$val = ( 'textarea' === $field->field_type )
-				? sanitize_textarea_field( wp_unslash( $raw ) )
-				: ( ( 'url' === $field->field_type )
-					? esc_url_raw( $raw )
-					: sanitize_text_field( wp_unslash( $raw ) ) );
+			if ( 'checkbox' === $field->field_type && is_array( $raw ) ) {
+				// Multi-select checkbox groups post as key[] => [value1, value2, ...].
+				$val = implode( ', ', array_filter( array_map( 'sanitize_text_field', $raw ) ) );
+			} elseif ( is_array( $raw ) ) {
+				$val = ''; // Unexpected array for a non-checkbox field - ignore rather than fatal.
+			} elseif ( 'textarea' === $field->field_type ) {
+				$val = sanitize_textarea_field( $raw );
+			} elseif ( 'url' === $field->field_type ) {
+				$val = esc_url_raw( $raw );
+			} else {
+				$val = sanitize_text_field( $raw );
+			}
 
 			if ( $field->is_required && '' === $val ) {
 				wp_send_json_error( array( 'message' => $field->label . ' is required.' ) );
@@ -391,7 +396,6 @@ class AH_Ajax_Handlers {
 		$status = sanitize_key( isset( $_POST['sub_status'] ) ? wp_unslash( $_POST['sub_status'] ) : 'new' );
 		$notes  = sanitize_textarea_field( wp_unslash( isset( $_POST['admin_notes'] ) ? $_POST['admin_notes'] : '' ) );
 
-		AH_Form_Builder::maybe_upgrade_submissions();
 		if ( AH_Form_Builder::update_submission_meta( $id, $status, $notes ) ) {
 			wp_send_json_success( array( 'message' => 'Saved.' ) );
 		} else {
@@ -573,6 +577,7 @@ class AH_Ajax_Handlers {
 		self::verify();
 		global $wpdb;
 		AH_DB_Installer::install();
+		AH_DB_Migrations::run();
 
 		wp_send_json_success( array(
 			'message' => "Schema Completed",

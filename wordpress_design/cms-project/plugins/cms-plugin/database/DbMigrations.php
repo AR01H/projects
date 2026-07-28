@@ -15,6 +15,7 @@ class AH_DB_Migrations {
 		self::banners_mobile_image();
 		self::events_notification_columns();
 		self::reviews_short_desc();
+		self::reviews_division_columns();
 		self::news_bar_content();
 		self::news_bar_image();
 		self::news_bar_label_excerpt();
@@ -33,6 +34,13 @@ class AH_DB_Migrations {
 		self::ensure_resources_table();
 		self::resources_link_url();
 		self::resources_highlight_label();
+
+		// Form Builder tables (originally created ad-hoc from FormBuilderController;
+		// moved here so they're only ever created/altered via the standard schema flow)
+		self::forms_settings_columns();
+		self::form_fields_description();
+		self::form_fields_widen_type();
+		self::form_submissions_status_columns();
 
 		// Data migrations
 		self::required_settings();
@@ -68,6 +76,25 @@ class AH_DB_Migrations {
 
 	public static function reviews_short_desc(): void {
 		self::add_column_if_missing( 'ah_reviews', 'short_desc', 'VARCHAR(400) DEFAULT NULL AFTER `reviewer_title`' );
+	}
+
+	/**
+	 * Replaces the taxonomy-based "Review Type" picker with two plain columns:
+	 * division_category (internal grouping key) and representing (display label).
+	 */
+	public static function reviews_division_columns(): void {
+		self::add_column_if_missing( 'ah_reviews', 'division_category', 'VARCHAR(100) DEFAULT NULL AFTER `short_desc`' );
+		self::add_column_if_missing( 'ah_reviews', 'representing', 'VARCHAR(200) DEFAULT NULL AFTER `division_category`' );
+
+		global $wpdb;
+		$t = $wpdb->prefix . 'ah_reviews';
+		$has_index = $wpdb->get_var( $wpdb->prepare(
+			"SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND INDEX_NAME = 'idx_division'",
+			DB_NAME, $t
+		) );
+		if ( ! $has_index ) {
+			$wpdb->query( "ALTER TABLE `{$t}` ADD INDEX `idx_division` (`division_category`)" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
 	}
 
 	public static function news_bar_content(): void {
@@ -151,6 +178,49 @@ class AH_DB_Migrations {
 	public static function ensure_resources_table(): void {
 		if ( class_exists( 'AH_Resources_Model' ) ) {
 			AH_Resources_Model::ensure_table();
+		}
+	}
+
+	public static function forms_settings_columns(): void {
+		self::add_column_if_missing( 'ah_forms', 'disable_rules', 'TINYINT(1) NOT NULL DEFAULT 0 AFTER `status`' );
+		self::add_column_if_missing( 'ah_forms', 'submit_label',  "VARCHAR(200) NOT NULL DEFAULT '' AFTER `success_message`" );
+		self::add_column_if_missing( 'ah_forms', 'custom_css',    'LONGTEXT DEFAULT NULL AFTER `disable_rules`' );
+		self::add_column_if_missing( 'ah_forms', 'custom_js',     'LONGTEXT DEFAULT NULL AFTER `custom_css`' );
+	}
+
+	public static function form_fields_description(): void {
+		self::add_column_if_missing( 'ah_form_fields', 'description', 'TEXT DEFAULT NULL AFTER `options`' );
+	}
+
+	/**
+	 * Older installs had `ah_form_fields.field_type` as an ENUM that drifted out of
+	 * sync with the field-type whitelist (missing radio/checkbox/daterange/color/
+	 * markup - silently coercing those saves to '' under non-strict SQL mode).
+	 * Widen to VARCHAR once so no future field type ever needs a matching migration.
+	 */
+	public static function form_fields_widen_type(): void {
+		global $wpdb;
+		$t    = $wpdb->prefix . 'ah_form_fields';
+		$type = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = 'field_type'",
+			DB_NAME, $t
+		) );
+		if ( $type && 0 === stripos( $type, 'enum' ) ) {
+			$wpdb->query( "ALTER TABLE `{$t}` MODIFY COLUMN `field_type` VARCHAR(20) NOT NULL DEFAULT 'text'" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+	}
+
+	public static function form_submissions_status_columns(): void {
+		global $wpdb;
+		$t = $wpdb->prefix . 'ah_form_submissions';
+		self::add_column_if_missing( 'ah_form_submissions', 'sub_status',  "VARCHAR(20) NOT NULL DEFAULT 'new' AFTER `ip_address`" );
+		self::add_column_if_missing( 'ah_form_submissions', 'admin_notes', "TEXT NOT NULL DEFAULT '' AFTER `sub_status`" );
+		$has_index = $wpdb->get_var( $wpdb->prepare(
+			"SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND INDEX_NAME = 'idx_status'",
+			DB_NAME, $t
+		) );
+		if ( ! $has_index ) {
+			$wpdb->query( "ALTER TABLE `{$t}` ADD INDEX `idx_status` (`sub_status`)" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 	}
 

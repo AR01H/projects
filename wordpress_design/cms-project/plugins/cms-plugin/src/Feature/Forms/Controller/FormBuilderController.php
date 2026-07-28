@@ -6,104 +6,6 @@ defined( 'ABSPATH' ) || exit;
 
 class FormBuilderController {
 
-	// ── Tables ───────────────────────────────────────────────────────────────
-
-	const SUB_DB_VERSION = '3';
-	const SUB_DB_OPTION  = 'ah_form_sub_db_v';
-
-	public static function install_tables(): void {
-		global $wpdb;
-		$p  = $wpdb->prefix;
-		$cs = $wpdb->get_charset_collate();
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$p}ah_forms` (
-			`id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			`name`            VARCHAR(200) NOT NULL DEFAULT '',
-			`notify_email`    VARCHAR(200) DEFAULT NULL,
-			`success_message` VARCHAR(500) NOT NULL DEFAULT 'Thank you! We will get back to you shortly.',
-			`submit_label`    VARCHAR(200) NOT NULL DEFAULT '',
-			`status`          ENUM('active','inactive') NOT NULL DEFAULT 'active',
-			`disable_rules`   TINYINT(1) NOT NULL DEFAULT 0,
-			`created_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (`id`)
-		) ENGINE=InnoDB {$cs}" );
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$p}ah_form_fields` (
-			`id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			`form_id`     INT UNSIGNED NOT NULL,
-			`label`       VARCHAR(200) NOT NULL DEFAULT '',
-			`field_key`   VARCHAR(100) NOT NULL DEFAULT '',
-			`field_type`  ENUM('text','email','tel','textarea','select','number','date','url','hidden') NOT NULL DEFAULT 'text',
-			`placeholder` VARCHAR(300) DEFAULT '',
-			`options`     JSON DEFAULT NULL,
-			`description` TEXT DEFAULT NULL,
-			`is_required` TINYINT(1) NOT NULL DEFAULT 0,
-			`sort_order`  INT NOT NULL DEFAULT 0,
-			PRIMARY KEY (`id`),
-			KEY `idx_form` (`form_id`)
-		) ENGINE=InnoDB {$cs}" );
-
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$p}ah_form_submissions` (
-			`id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-			`form_id`     INT UNSIGNED NOT NULL,
-			`data`        JSON NOT NULL,
-			`ip_address`  VARCHAR(45) DEFAULT NULL,
-			`sub_status`  VARCHAR(20) NOT NULL DEFAULT 'new',
-			`admin_notes` TEXT NOT NULL DEFAULT '',
-			`created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (`id`),
-			KEY `idx_form`    (`form_id`),
-			KEY `idx_status`  (`sub_status`),
-			KEY `idx_created` (`created_at`)
-		) ENGINE=InnoDB {$cs}" );
-
-		self::maybe_upgrade_submissions();
-	}
-
-	/** Add new columns to existing submissions table (safe to call on upgrade). */
-	public static function maybe_upgrade_submissions(): void {
-		global $wpdb;
-		if ( get_option( self::SUB_DB_OPTION ) === self::SUB_DB_VERSION ) { return; }
-		$t = $wpdb->prefix . 'ah_form_submissions';
-		$cols = $wpdb->get_results( "SHOW COLUMNS FROM `{$t}`", ARRAY_A );
-		if ( ! $cols ) { update_option( self::SUB_DB_OPTION, self::SUB_DB_VERSION ); return; }
-		$existing = array_column( $cols, 'Field' );
-		if ( ! in_array( 'sub_status', $existing, true ) ) {
-			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `sub_status` VARCHAR(20) NOT NULL DEFAULT 'new' AFTER `ip_address`" );
-			$wpdb->query( "ALTER TABLE `{$t}` ADD INDEX `idx_status` (`sub_status`)" );
-		}
-		if ( ! in_array( 'admin_notes', $existing, true ) ) {
-			$wpdb->query( "ALTER TABLE `{$t}` ADD COLUMN `admin_notes` TEXT NOT NULL DEFAULT '' AFTER `sub_status`" );
-		}
-		$ft = $wpdb->prefix . 'ah_forms';
-		$fcols = $wpdb->get_results( "SHOW COLUMNS FROM `{$ft}`", ARRAY_A );
-		if ( $fcols ) {
-			$fexisting = array_column( $fcols, 'Field' );
-			if ( ! in_array( 'disable_rules', $fexisting, true ) ) {
-				$wpdb->query( "ALTER TABLE `{$ft}` ADD COLUMN `disable_rules` TINYINT(1) NOT NULL DEFAULT 0 AFTER `status`" );
-			}
-			if ( ! in_array( 'submit_label', $fexisting, true ) ) {
-				$wpdb->query( "ALTER TABLE `{$ft}` ADD COLUMN `submit_label` VARCHAR(200) NOT NULL DEFAULT '' AFTER `success_message`" );
-			}
-		}
-
-		// ── ah_form_fields: add description column + hidden ENUM value ──
-		$ff = $wpdb->prefix . 'ah_form_fields';
-		$ff_cols = $wpdb->get_results( "SHOW COLUMNS FROM `{$ff}`", ARRAY_A );
-		if ( $ff_cols ) {
-			$ff_existing = array_column( $ff_cols, 'Field' );
-			if ( ! in_array( 'description', $ff_existing, true ) ) {
-				$wpdb->query( "ALTER TABLE `{$ff}` ADD COLUMN `description` TEXT DEFAULT NULL AFTER `options`" );
-			}
-			$ff_type_map = array_column( $ff_cols, 'Type', 'Field' );
-			if ( isset( $ff_type_map['field_type'] ) && false === strpos( $ff_type_map['field_type'], 'hidden' ) ) {
-				$wpdb->query( "ALTER TABLE `{$ff}` MODIFY COLUMN `field_type` ENUM('text','email','tel','textarea','select','number','date','url','hidden') NOT NULL DEFAULT 'text'" );
-			}
-		}
-
-		update_option( self::SUB_DB_OPTION, self::SUB_DB_VERSION );
-	}
-
 	// ── Form CRUD ────────────────────────────────────────────────────────────
 
 	public static function get_all(): array {
@@ -264,7 +166,6 @@ class FormBuilderController {
 	// ── Shortcode renderer ───────────────────────────────────────────────────
 
 	public static function render( array $atts ): string {
-		self::install_tables();
 		$form_id = (int) ( $atts['id'] ?? 0 );
 		$form    = $form_id ? self::get( $form_id ) : null;
 		$fields  = $form_id ? self::get_fields( $form_id ) : array();
@@ -285,7 +186,7 @@ class FormBuilderController {
 .ah-fw .ah-sp{animation:ah-spin .8s linear infinite;display:none}
 .ah-fw .ah-req{color:#e53935;margin-left:2px}
 /* Form fields */
-.ch-form-group{margin-bottom:20px}
+.ch-form-group{margin-bottom:6px}
 .ch-form-label{display:block;font-size:14px;font-weight:600;color:#1f2937;margin-bottom:7px}
 .ch-form-input,
 .ch-form-textarea,
@@ -305,8 +206,8 @@ class FormBuilderController {
 /* Feedback messages */
 .ch-form-feedback{display:none;border-radius:8px;padding:6px 8px;font-size:14px;margin-bottom:0}
 .ch-form-feedback + .ch-form-feedback{margin-top:10px}
-.ch-form-feedback.success{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
-.ch-form-feedback.error{display:block;background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.ch-form-feedback.success{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;margin-bottom: 10px;}
+.ch-form-feedback.error{display:block;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;margin-bottom: 10px;}
 /* Agreement section */
 .ch-agr-intro{font-size:14px;line-height:1.7;color:#4b5563;margin-bottom:14px;padding:14px 16px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px}
 .ch-agr-iframe-wrap{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:14px}
@@ -323,6 +224,11 @@ class FormBuilderController {
 .ch-terms-link{color:#1a3c5e;text-decoration:underline;font-weight:600;margin-left:3px;margin-right:3px}
 .ch-terms-link:hover{color:#15304d}
 </style>
+<?php if ( ! empty( $form->custom_css ) ) : ?>
+<style id="ah-form-<?php echo (int) $form_id; ?>-css">
+<?php echo $form->custom_css; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted, manage_options-only input, same model as AH_Custom_Code_Service. ?>
+</style>
+<?php endif; ?>
 
 <div class="ah-fw" id="<?php echo esc_attr( $uid ); ?>">
 
@@ -353,23 +259,23 @@ class FormBuilderController {
         <?php elseif ( 'select' === $f->field_type && ! empty( $f->options ) ) : ?>
           <select class="ch-form-select" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
             <option value=""><?php echo esc_html( $f->placeholder ?: '- Select an option -' ); ?></option>
-            <?php foreach ( $f->options as $opt ) : ?><option value="<?php echo esc_attr( $opt ); ?>"><?php echo esc_html( $opt ); ?></option><?php endforeach; ?>
+            <?php foreach ( $f->options as $opt ) : $po = self::parse_option( $opt ); ?><option value="<?php echo esc_attr( $po['value'] ); ?>"><?php echo esc_html( $po['label'] ); ?></option><?php endforeach; ?>
           </select>
         <?php elseif ( 'radio' === $f->field_type && ! empty( $f->options ) ) : ?>
           <div class="ch-form-radio-group" style="display:flex;flex-direction:column;gap:8px;">
-            <?php foreach ( $f->options as $opt ) : ?>
+            <?php foreach ( $f->options as $opt ) : $po = self::parse_option( $opt ); ?>
               <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
-                <input type="radio" name="<?php echo $fname; ?>" value="<?php echo esc_attr( $opt ); ?>" <?php echo $freq ? ' required' : ''; ?> style="accent-color:#1a3c5e;">
-                <?php echo esc_html( $opt ); ?>
+                <input type="radio" name="<?php echo $fname; ?>" value="<?php echo esc_attr( $po['value'] ); ?>" <?php echo $freq ? ' required' : ''; ?> style="accent-color:#1a3c5e;">
+                <?php echo esc_html( $po['label'] ); ?>
               </label>
             <?php endforeach; ?>
           </div>
         <?php elseif ( 'checkbox' === $f->field_type && ! empty( $f->options ) ) : ?>
           <div class="ch-form-checkbox-group" style="display:flex;flex-direction:column;gap:8px;">
-            <?php foreach ( $f->options as $idx => $opt ) : ?>
+            <?php foreach ( $f->options as $idx => $opt ) : $po = self::parse_option( $opt ); ?>
               <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
-                <input type="checkbox" name="<?php echo $fname; ?>[]" value="<?php echo esc_attr( $opt ); ?>" style="accent-color:#1a3c5e;" <?php echo ( $freq && $idx === 0 ) ? ' data-required-group="true"' : ''; ?>>
-                <?php echo esc_html( $opt ); ?>
+                <input type="checkbox" name="<?php echo $fname; ?>[]" value="<?php echo esc_attr( $po['value'] ); ?>" style="accent-color:#1a3c5e;" <?php echo ( $freq && $idx === 0 ) ? ' data-required-group="true"' : ''; ?>>
+                <?php echo esc_html( $po['label'] ); ?>
               </label>
             <?php endforeach; ?>
           </div>
@@ -389,6 +295,13 @@ class FormBuilderController {
             <input type="color" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" <?php echo $freq ? ' required' : ''; ?> style="width:44px;height:44px;padding:2px;border:1px solid #d1d5db;border-radius:4px;cursor:pointer;">
             <span style="font-size:13px;color:#6b7280;"><?php echo esc_html( $f->placeholder ?: 'Select a color' ); ?></span>
           </div>
+        <?php elseif ( in_array( $f->field_type, array( 'select', 'radio', 'checkbox' ), true ) ) : ?>
+          <?php /* Options-based type with no options saved - render nothing rather than a
+             broken lone <input type="radio"/checkbox/select"> with no choices. Re-open this
+             field in the Form Builder and add its options to fix it properly. */ ?>
+          <?php if ( current_user_can( 'manage_options' ) ) : ?>
+            <p class="ch-form-desc" style="color:#b91c1c;">⚠ "<?php echo esc_html( $f->label ); ?>" has no options configured - edit this field in the Form Builder.</p>
+          <?php endif; ?>
         <?php else : ?>
           <input class="ch-form-input" type="<?php echo esc_attr( $f->field_type ); ?>" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>>
         <?php endif; ?>
@@ -536,6 +449,13 @@ class FormBuilderController {
   });
 })();
 </script>
+<?php if ( ! empty( $form->custom_js ) ) : ?>
+<script id="ah-form-<?php echo (int) $form_id; ?>-js">
+(function(){
+<?php echo $form->custom_js; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted, manage_options-only input, same model as AH_Custom_Code_Service. ?>
+})();
+</script>
+<?php endif; ?>
 		<?php
 		return ob_get_clean();
 	}
@@ -577,6 +497,25 @@ class FormBuilderController {
 
 	public static function allowed_type( string $t ): string {
 		return in_array( $t, array( 'text', 'email', 'tel', 'textarea', 'select', 'radio', 'checkbox', 'number', 'date', 'daterange', 'color', 'url', 'hidden', 'markup' ), true ) ? $t : 'text';
+	}
+
+	/**
+	 * A saved select/radio/checkbox option is either a plain string (value === label)
+	 * or "value|Label" so the submitted value can stay clean/simple while the
+	 * displayed label carries spaces, punctuation, or emoji. Splits on the first "|"
+	 * only, so a label that itself contains "|" still works.
+	 */
+	public static function parse_option( string $raw ): array {
+		$raw = trim( $raw );
+		if ( false !== strpos( $raw, '|' ) ) {
+			list( $value, $label ) = explode( '|', $raw, 2 );
+			$value = trim( $value );
+			$label = trim( $label );
+			if ( '' !== $value ) {
+				return array( 'value' => $value, 'label' => ( '' !== $label ) ? $label : $value );
+			}
+		}
+		return array( 'value' => $raw, 'label' => $raw );
 	}
 
 	public static function field_type_label( string $type ): string {

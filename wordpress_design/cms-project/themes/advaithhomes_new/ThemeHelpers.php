@@ -301,6 +301,10 @@ function adn_get_page_definitions() {
             'title'    => PAGE_TITLE_FAQS,
             'template' => 'pages/PageFaqs.php',
         ),
+        trim( SITE_REVIEWS_URL, '/' ) => array(
+            'title'    => PAGE_TITLE_REVIEWS,
+            'template' => 'pages/PageReviews.php',
+        ),
         // Slug must match COMING_SOON_PAGE_SLUG so the coming-soon redirect target exists.
         COMING_SOON_PAGE_SLUG => array(
             'title'    => 'Coming Soon',

@@ -240,6 +240,7 @@ class AssetLoader {
 			'PageCategoryGuide' => [ 'css' => '/assets/css/guidance.css',   'js' => '/assets/js/guidance.js' ],
 			'PageTopicCategoryGuide' => [ 'css' => '/assets/css/guidance.css', 'js' => '/assets/js/guidance.js' ],
 			'PageFaqs'         => [ 'css' => '/assets/css/faqs.css',         'js' => '/assets/js/faqs.js' ],
+			'PageReviews'      => [ 'css' => '/assets/css/reviews.css' ],
 		];
 
 		$template = self::getCurrentTemplate();

@@ -148,6 +148,18 @@ foreach ( $_deferred as $_df ) :
 endforeach;
 ?>
 
+<?php /* ============================== CLIENT REVIEWS ============================== */ ?>
+<?php
+$_home_reviews = class_exists( 'AH_Reviews_Model' ) ? ( new AH_Reviews_Model() )->get_carousel_reviews( 8 ) : array();
+if ( ! empty( $_home_reviews ) ) :
+?>
+<section class="reviews-carousel-section">
+	<div class="container">
+		<?php adn_component( 'sections/reviews_carousel', array( 'reviews' => array( 'items' => $_home_reviews ) ) ); ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <?php /* ============================== NEWSLETTER ============================== */ ?>
 <?php if ( adn_home_section_visible( 'newsletter' ) ) : ?>
 <section class="newsletter-cta">

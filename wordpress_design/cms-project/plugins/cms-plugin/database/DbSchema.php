@@ -357,6 +357,8 @@ class AH_DB_Schema {
 				reviewer_name     VARCHAR(200) NOT NULL,
 				reviewer_title    VARCHAR(200),
 				short_desc        VARCHAR(400) DEFAULT NULL,
+				division_category VARCHAR(100) DEFAULT NULL,
+				representing      VARCHAR(200) DEFAULT NULL,
 				reviewer_image_id INT UNSIGNED,
 				review_text       TEXT NOT NULL,
 				rating            TINYINT UNSIGNED DEFAULT 5,
@@ -368,7 +370,8 @@ class AH_DB_Schema {
 				created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 				updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				KEY idx_status (status),
-				KEY idx_featured (is_featured)
+				KEY idx_featured (is_featured),
+				KEY idx_division (division_category)
 			) ENGINE=InnoDB {$cs}",
 
 			// 28. Reviews Section Header
@@ -1064,6 +1067,52 @@ class AH_DB_Schema {
 				`updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				UNIQUE KEY `uq_shortcut_tag` (`tag`),
 				KEY `idx_status` (`status`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 75. Forms (Form Builder - form-level settings)
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_forms` (
+				`id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`name`            VARCHAR(200) NOT NULL DEFAULT '',
+				`notify_email`    VARCHAR(200) DEFAULT NULL,
+				`success_message` VARCHAR(500) NOT NULL DEFAULT 'Thank you! We will get back to you shortly.',
+				`submit_label`    VARCHAR(200) NOT NULL DEFAULT '',
+				`status`          ENUM('active','inactive') NOT NULL DEFAULT 'active',
+				`disable_rules`   TINYINT(1) NOT NULL DEFAULT 0,
+				`custom_css`      LONGTEXT DEFAULT NULL,
+				`custom_js`       LONGTEXT DEFAULT NULL,
+				`created_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 76. Form Fields (Form Builder - per-form field definitions)
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_form_fields` (
+				`id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`form_id`     INT UNSIGNED NOT NULL,
+				`label`       VARCHAR(200) NOT NULL DEFAULT '',
+				`field_key`   VARCHAR(100) NOT NULL DEFAULT '',
+				`field_type`  VARCHAR(20) NOT NULL DEFAULT 'text',
+				`placeholder` VARCHAR(300) DEFAULT '',
+				`options`     JSON DEFAULT NULL,
+				`description` TEXT DEFAULT NULL,
+				`is_required` TINYINT(1) NOT NULL DEFAULT 0,
+				`sort_order`  INT NOT NULL DEFAULT 0,
+				PRIMARY KEY (`id`),
+				KEY `idx_form` (`form_id`)
+			) ENGINE=InnoDB {$cs}",
+
+			// 77. Form Submissions (Form Builder - visitor-submitted entries)
+			"CREATE TABLE IF NOT EXISTS `{$p}ah_form_submissions` (
+				`id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`form_id`     INT UNSIGNED NOT NULL,
+				`data`        JSON NOT NULL,
+				`ip_address`  VARCHAR(45) DEFAULT NULL,
+				`sub_status`  VARCHAR(20) NOT NULL DEFAULT 'new',
+				`admin_notes` TEXT NOT NULL DEFAULT '',
+				`created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `idx_form`    (`form_id`),
+				KEY `idx_status`  (`sub_status`),
+				KEY `idx_created` (`created_at`)
 			) ENGINE=InnoDB {$cs}",
 		);
 	}

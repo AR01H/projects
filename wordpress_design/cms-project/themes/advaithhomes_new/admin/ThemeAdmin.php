@@ -157,7 +157,7 @@ class ADN_Theme_Admin {
 	}
 
 	public static function hide_plugin_menus(): void {
-		remove_submenu_page( 'ah-dashboard', 'ah-reviews' );
+		// remove_submenu_page( 'ah-dashboard', 'ah-reviews' );
 		remove_submenu_page( 'ah-dashboard', 'ah-client-stories' );
 	}
 

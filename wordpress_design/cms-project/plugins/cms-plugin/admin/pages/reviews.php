@@ -3,7 +3,6 @@ defined( 'ABSPATH' ) || exit;
 if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
 $model   = new AH_Reviews_Model();
-$ct_model = new AH_Content_Taxonomy_Model();
 $notice  = '';
 $n_type  = 'success';
 $action  = sanitize_key( $_GET['action'] ?? 'list' );
@@ -15,15 +14,17 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	$img_id = (int) ( $_POST['reviewer_image_id'] ?? 0 );
 
 	$data = array(
-		'reviewer_name'  => sanitize_text_field( $_POST['reviewer_name'] ?? '' ),
-		'reviewer_title' => sanitize_text_field( $_POST['reviewer_title'] ?? '' ),
-		'short_desc'     => sanitize_text_field( $_POST['short_desc'] ?? '' ),
-		'review_text'    => wp_kses_post( $_POST['review_text'] ?? '' ),
-		'rating'         => min( 5, max( 1, (int) ( $_POST['rating'] ?? 5 ) ) ),
-		'source'         => sanitize_key( $_POST['source'] ?? 'manual' ),
-		'is_featured'    => (int) ( $_POST['is_featured'] ?? 0 ),
-		'sort_order'     => (int) ( $_POST['sort_order'] ?? 0 ),
-		'status'         => sanitize_key( $_POST['status'] ?? 'active' ),
+		'reviewer_name'     => sanitize_text_field( $_POST['reviewer_name'] ?? '' ),
+		'reviewer_title'    => sanitize_text_field( $_POST['reviewer_title'] ?? '' ),
+		'short_desc'        => sanitize_text_field( $_POST['short_desc'] ?? '' ),
+		'division_category' => sanitize_text_field( $_POST['division_category'] ?? '' ),
+		'representing'      => array_key_exists( $_POST['representing'] ?? '', AH_Reviews_Model::representing_variants() ) ? $_POST['representing'] : 'big_box',
+		'review_text'       => wp_kses_post( $_POST['review_text'] ?? '' ),
+		'rating'            => min( 5, max( 1, (int) ( $_POST['rating'] ?? 5 ) ) ),
+		'source'            => sanitize_key( $_POST['source'] ?? 'manual' ),
+		'is_featured'       => (int) ( $_POST['is_featured'] ?? 0 ),
+		'sort_order'        => (int) ( $_POST['sort_order'] ?? 0 ),
+		'status'            => sanitize_key( $_POST['status'] ?? 'active' ),
 	);
 
 	// Store WP attachment ID directly - FK to ah_media dropped in maybe_upgrade
@@ -37,10 +38,6 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	} else {
 		$saved_id = $model->create( $data );
 	}
-
-	// Save taxonomy terms
-	$taxonomy_ids = array_map( 'absint', (array) ( $_POST['taxonomy_ids'] ?? [] ) );
-	$ct_model->sync_terms( 'review', (int) $saved_id, $taxonomy_ids );
 
 	// Save occasion images
 	$raw_img_ids = array_map( 'absint', (array) ( $_POST['review_image_ids'] ?? [] ) );
@@ -114,10 +111,11 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
           array( 'label' => 'Rating', 'render' => function ( $rv ) {
             return '<span class="ah-stars">' . str_repeat( '★', (int) $rv->rating ) . str_repeat( '☆', 5 - (int) $rv->rating ) . '</span>';
           } ),
-          array( 'label' => 'Type', 'render' => function ( $rv ) use ( $ct_model ) {
-            ob_start();
-            $ct_model->render_badges( 'review', (int) $rv->id );
-            return ob_get_clean();
+          array( 'label' => 'Division', 'render' => function ( $rv ) {
+            $labels = AH_Reviews_Model::representing_variants();
+            $html   = empty( $rv->division_category ) ? '-' : '<strong>' . esc_html( $rv->division_category ) . '</strong>';
+            $html  .= '<br><small style="color:var(--ah-muted);">' . esc_html( $labels[ $rv->representing ] ?? reset( $labels ) ) . '</small>';
+            return $html;
           } ),
           array( 'key' => 'source', 'label' => 'Source' ),
           array( 'label' => 'Featured', 'render' => function ( $rv ) {
@@ -241,9 +239,29 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
           <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Reviewer Photo', ob_get_clean() ); ?>
 
           <?php ob_start(); ?>
-            <p style="font-size:12px;color:var(--ah-muted);margin:0 0 12px;">Tag this review as Customer, Partner, or Event so it appears in the right section on the website.</p>
-            <?php $ct_model->render_picker( 'review', $edit_id ); ?>
-          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Review Type', ob_get_clean() ); ?>
+            <p style="font-size:12px;color:var(--ah-muted);margin:0 0 12px;">Internal grouping - not shown on the site unless your template chooses to.</p>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Division Category <small style="font-weight:400;color:var(--ah-muted);">(internal key, e.g. "sales")</small>', '<input type="text" name="division_category" value="' . esc_attr( $item->division_category ?? '' ) . '">' ); ?>
+            <?php
+            $representing_select = '<select name="representing">';
+            foreach ( AH_Reviews_Model::representing_variants() as $rv => $rl ) {
+              $representing_select .= '<option value="' . esc_attr( $rv ) . '"' . selected( $item->representing ?? 'big_box', $rv, false ) . '>' . esc_html( $rl ) . '</option>';
+            }
+            $representing_select .= '</select>';
+            ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Representing <small style="font-weight:400;color:var(--ah-muted);">(card size/style used by the [ah_review] shortcode)</small>', $representing_select ); ?>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Division', ob_get_clean() ); ?>
+
+          <?php if ( $edit_id ) :
+            $sc_string = '[ah_review id="' . $edit_id . '"]';
+          ?>
+          <?php ob_start(); ?>
+            <p style="font-size:12px;color:var(--ah-muted);margin:0 0 12px;">Paste this anywhere (any page/post) to show just this review. Renders empty automatically if Status is set to Inactive.</p>
+            <div style="display:flex;align-items:center;gap:8px;background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:6px;padding:7px 12px;font-family:monospace;font-size:13px;">
+              <input type="text" id="ah-review-sc-usage" readonly value="<?php echo esc_attr( $sc_string ); ?>" style="flex:1;border:none;background:transparent;font-family:inherit;font-size:inherit;">
+              <button type="button" class="ah-btn ah-btn-secondary ah-btn-sm" onclick="var el=document.getElementById('ah-review-sc-usage');el.select();navigator.clipboard.writeText(el.value);this.textContent='Copied!';setTimeout(()=>this.textContent='📋 Copy',1200);">📋 Copy</button>
+            </div>
+          <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Shortcode', ob_get_clean() ); ?>
+          <?php endif; ?>
 
           <?php ob_start(); ?>
             <?php

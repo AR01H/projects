@@ -96,6 +96,7 @@ class AH_Autoloader {
 		'AH_StaticPage_Shortcode'    => 'src/Feature/Pages/Shortcode/AH_StaticPage_Shortcode.php',
 		'AH_Resource_Shortcode'      => 'src/Feature/Resources/Shortcode/AH_Resource_Shortcode.php',
 		'AH_Resources_Shortcode'     => 'src/Feature/Resources/Shortcode/AH_Resources_Shortcode.php',
+		'AH_Review_Shortcode'        => 'src/Feature/Reviews/Shortcode/AH_Review_Shortcode.php',
 
 		// REST Controllers (migrated from ah-cms.php)
 		'AH_Analytics_Rest_Controller' => 'src/Feature/Analytics/Rest/AH_Analytics_Rest_Controller.php',

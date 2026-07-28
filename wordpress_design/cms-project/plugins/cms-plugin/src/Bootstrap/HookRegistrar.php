@@ -49,6 +49,7 @@ class HookRegistrar {
 			\add_shortcode( 'ah_static_page', [ 'AH_StaticPage_Shortcode', 'render' ] );
 			\add_shortcode( 'ah_resource', [ 'AH_Resource_Shortcode', 'render' ] );
 			\add_shortcode( 'ah_resources', [ 'AH_Resources_Shortcode', 'render' ] );
+			\add_shortcode( 'ah_review', [ 'AH_Review_Shortcode', 'render' ] );
 		} );
 
 		self::registerDynamicShortcuts();

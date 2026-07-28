@@ -39,6 +39,16 @@ class AH_Reviews_Model extends AH_Model_Base {
 		) );
 	}
 
+	/** Up to $limit active reviews for a carousel (e.g. Home page), ordered by sort_order. */
+	public function get_carousel_reviews( int $limit = 8 ): array {
+		return $this->all( array(
+			'where'    => "status = 'active'",
+			'order_by' => 'sort_order',
+			'order'    => 'ASC',
+			'limit'    => max( 1, $limit ),
+		) );
+	}
+
 	// ── Occasion / Gallery Images ──────────────────────────────────────────────
 
 	private function images_table(): string {
@@ -139,5 +149,58 @@ class AH_Reviews_Model extends AH_Model_Base {
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		return $wpdb->get_results( $sql ) ?: array();
+	}
+
+	/**
+	 * Available `representing` layouts for [ah_review id="X"] - key => admin-facing label.
+	 * Single source of truth for the admin dropdown, list-table label, and save-time
+	 * validation. Add a new layout by adding a key here + models/reviews/render-{key}.php
+	 * (defining ah_review_render_{key}()) + a case in render_review() below.
+	 */
+	public static function representing_variants(): array {
+		return array(
+			'big_box'     => 'Big Box (full card)',
+			'mini_card'   => 'Mini Card (compact)',
+			'with_photos' => 'With Photos (card + photo strip)',
+			'full_story'  => 'Full Story (untruncated text + photo gallery)',
+		);
+	}
+
+	/**
+	 * Self-contained single-review card markup, used by [ah_review id="X"].
+	 * Each layout is its own file in models/reviews/ (a plain function per
+	 * file) so every design is independently easy to find and edit. Every
+	 * file ships its own scoped <style> so it renders consistently regardless
+	 * of which theme/page it's dropped into (mirrors AH_Form_Builder::render()).
+	 */
+	public static function render_review( object $r ): string {
+		require_once __DIR__ . '/reviews/render-big.php';
+		require_once __DIR__ . '/reviews/render-mini.php';
+		require_once __DIR__ . '/reviews/render-lightbox.php';
+		require_once __DIR__ . '/reviews/render-with-photos.php';
+		require_once __DIR__ . '/reviews/render-full-story.php';
+
+		switch ( (string) ( $r->representing ?? '' ) ) {
+			case 'mini_card':
+				return ah_review_render_mini( $r );
+			case 'with_photos':
+				return ah_review_render_with_photos( $r );
+			case 'full_story':
+				return ah_review_render_full_story( $r );
+			default:
+				return ah_review_render_big( $r );
+		}
+	}
+
+	/**
+	 * Fixed-design card for horizontal carousels (e.g. Home page) - NOT one of
+	 * the admin-selectable `representing` layouts. Every review renders the
+	 * same compact design here regardless of its own `representing` value, so
+	 * a carousel of mixed reviews still looks uniform. Review text is clamped
+	 * to 4 lines with an ellipsis.
+	 */
+	public static function render_carousel_card( object $r ): string {
+		require_once __DIR__ . '/reviews/render-carousel-card.php';
+		return ah_review_render_carousel_card( $r );
 	}
 }

@@ -58,7 +58,7 @@ if ( empty( $_gc_imgurl ) ) {
         </p>
         
         <div class="guide-card-footer">
-            <span class="read-more"><?php echo esc_html( isset( $card['read_more'] ) ? $card['read_more'] : SITE_BTN_EXPLORE_ARROW ); ?></span>
+            <span class="btn btn-primary"><?php echo esc_html( isset( $card['read_more'] ) ? $card['read_more'] : SITE_BTN_EXPLORE_ARROW ); ?></span>
         </div>
     </div>
 </a>

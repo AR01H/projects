@@ -96,6 +96,7 @@ define( 'SITE_EXPERT_URL',      adn_term( 'urls.expert',      '/ask-expert/' ) )
 define( 'SITE_GUIDANCE_URL',    adn_term( 'urls.guidance',    '/guidance/' ) );
 define( 'SITE_CONTACT_URL',     adn_term( 'urls.contact',     '/contact/' ) );
 define( 'SITE_FAQS_URL',        adn_term( 'urls.faqs',        '/faqs/' ) );
+define( 'SITE_REVIEWS_URL',     adn_term( 'urls.reviews',     '/reviews/' ) );
 
 // ===========================
 // CTA COPY
@@ -259,6 +260,7 @@ define( 'CONTENT_VIEW_ALL_TOOLS',      adn_term( 'content.view_all_tools',      
 define( 'PAGE_TITLE_HOME',     adn_term( 'page_titles.home',     'Home' ) );
 define( 'PAGE_TITLE_CONTACT',  adn_term( 'page_titles.contact',  SITE_CONTACT_LABEL ) );
 define( 'PAGE_TITLE_FAQS',     adn_term( 'page_titles.faqs',     'FAQs' ) );
+define( 'PAGE_TITLE_REVIEWS',  adn_term( 'page_titles.reviews',  'Client Reviews' ) );
 define( 'PAGE_TITLE_NEWS',     adn_term( 'page_titles.news',     SITE_NEWS_LABEL ) );
 define( 'PAGE_TITLE_GUIDES',   adn_term( 'page_titles.guides',   SITE_CONTENT_PLURAL ) );
 define( 'PAGE_TITLE_TOOLS',    adn_term( 'page_titles.tools',    SITE_TOOLS_PLURAL ) );

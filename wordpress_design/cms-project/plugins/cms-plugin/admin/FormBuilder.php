@@ -4,9 +4,6 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 
 use Ah\Cms\Admin\Components\AdminComponents;
 
-AH_Form_Builder::install_tables();
-AH_Form_Builder::maybe_upgrade_submissions();
-
 $notice     = '';
 $n_type     = 'success';
 $action     = sanitize_key( $_GET['action'] ?? 'list' );
@@ -49,6 +46,8 @@ if ( isset( $_POST['ah_save_form_nonce'] ) ) {
 		'submit_label'    => sanitize_text_field( $_POST['submit_label'] ?? '' ),
 		'status'          => sanitize_key( $_POST['form_status'] ?? 'active' ),
 		'disable_rules'   => isset( $_POST['disable_rules'] ) ? 1 : 0,
+		'custom_css'      => wp_unslash( $_POST['custom_css'] ?? '' ),
+		'custom_js'       => wp_unslash( $_POST['custom_js'] ?? '' ),
 	) );
 	$raw    = wp_unslash( $_POST['fields_json'] ?? '[]' );
 	$parsed = json_decode( $raw, true );
@@ -171,6 +170,22 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 				</div>
 			</div>
 
+			<!-- Custom CSS / JS (this form only) -->
+			<div class="ah-card" style="margin-bottom:20px">
+				<div class="ah-card-header"><h2>Custom CSS / JS</h2></div>
+				<p style="font-size:13px;color:var(--ah-muted);margin:0 0 16px">Applies only to this form. CSS is wrapped in a <code>&lt;style&gt;</code> tag; JS is wrapped in <code>&lt;script&gt;(function(){ ... })();&lt;/script&gt;</code> so variables don't leak globally.</p>
+				<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+					<div class="ah-form-row" style="margin:0">
+						<label>Custom CSS</label>
+						<textarea name="custom_css" rows="8" style="width:100%;font-family:monospace;font-size:12.5px;padding:8px 10px;border:1.5px solid var(--ah-border);border-radius:6px;box-sizing:border-box;resize:vertical" placeholder=".ch-form-submit { background: #1a3c5e; }"><?php echo esc_textarea( $current->custom_css ?? '' ); ?></textarea>
+					</div>
+					<div class="ah-form-row" style="margin:0">
+						<label>Custom JS</label>
+						<textarea name="custom_js" rows="8" style="width:100%;font-family:monospace;font-size:12.5px;padding:8px 10px;border:1.5px solid var(--ah-border);border-radius:6px;box-sizing:border-box;resize:vertical" placeholder="// runs after the form renders"><?php echo esc_textarea( $current->custom_js ?? '' ); ?></textarea>
+					</div>
+				</div>
+			</div>
+
 			<!-- Agreement / Terms section -->
 			<div class="ah-card" style="margin-bottom:20px">
 				<div class="ah-card-header" style="gap:16px">
@@ -248,14 +263,21 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 								<th style="min-width:160px">Field Label</th>
 								<th style="width:148px">Type</th>
 								<th>Placeholder / Value</th>
-								<th style="width:180px">Dropdown Options <small style="font-weight:400;text-transform:none">(one per line)</small></th>
+								<th style="width:180px">Dropdown Options <small style="font-weight:400;text-transform:none">(one per line, or <code>value|Label</code>)</small></th>
 								<th style="min-width:160px">Description <small style="font-weight:400;text-transform:none">(help text)</small></th>
 								<th style="width:70px;text-align:center">Required</th>
 								<th style="width:46px"></th>
 							</tr>
 						</thead>
 						<tbody id="fb-body">
-							<?php foreach ( $fields as $f ) : ?>
+							<?php foreach ( $fields as $f ) :
+								// Mirrors applyTypeUI() in the script below exactly, so a saved radio/
+								// checkbox/select field shows its Options editor (and hides Placeholder)
+								// from the very first paint - not just after JS re-applies it on load.
+								$_fb_is_choice = in_array( $f->field_type, array( 'select', 'radio', 'checkbox' ), true );
+								$_fb_is_hidden = 'hidden' === $f->field_type;
+								$_fb_is_markup = 'markup' === $f->field_type;
+							?>
 							<tr class="fb-row" data-key="<?php echo esc_attr( $f->field_key ); ?>">
 								<td><span class="fb-drag">&#x2807;</span></td>
 								<td><input type="text" class="fb-label" value="<?php echo esc_attr( $f->label ); ?>" placeholder="Field label"></td>
@@ -264,10 +286,10 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 										<?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>" <?php selected( $f->field_type, $tv ); ?>><?php echo esc_html( $tl ); ?></option><?php endforeach; ?>
 									</select>
 								</td>
-								<td><input type="text" class="fb-ph<?php echo 'select' === $f->field_type ? ' fb-hidden' : ''; ?>" value="<?php echo esc_attr( $f->placeholder ?? '' ); ?>" placeholder="Placeholder text"></td>
-								<td><textarea class="fb-opts<?php echo 'select' !== $f->field_type ? ' fb-hidden' : ''; ?>" rows="3" placeholder="Option A&#10;Option B&#10;Option C"><?php echo esc_textarea( implode( "\n", $f->options ?? array() ) ); ?></textarea></td>
-								<td class="<?php echo 'hidden' === $f->field_type ? ' fb-hidden' : ''; ?>"><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"><?php echo esc_textarea( $f->description ?? '' ); ?></textarea></td>
-								<td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"<?php checked( $f->is_required && 'hidden' !== $f->field_type ); ?><?php echo 'hidden' === $f->field_type ? ' disabled style="opacity:.3"' : ''; ?>></td>
+								<td><input type="text" class="fb-ph<?php echo ( $_fb_is_choice || $_fb_is_markup ) ? ' fb-hidden' : ''; ?>" value="<?php echo esc_attr( $f->placeholder ?? '' ); ?>" placeholder="<?php echo $_fb_is_hidden ? 'Value sent with form' : 'Placeholder text'; ?>"></td>
+								<td><textarea class="fb-opts<?php echo ! $_fb_is_choice ? ' fb-hidden' : ''; ?>" rows="3" placeholder="Option A&#10;red|Red Apple &#x1F34E;&#10;Option C"><?php echo esc_textarea( implode( "\n", $f->options ?? array() ) ); ?></textarea></td>
+								<td class="<?php echo $_fb_is_hidden ? ' fb-hidden' : ''; ?>"><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"><?php echo esc_textarea( $f->description ?? '' ); ?></textarea></td>
+								<td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"<?php checked( $f->is_required && ! $_fb_is_hidden && ! $_fb_is_markup ); ?><?php echo ( $_fb_is_hidden || $_fb_is_markup ) ? ' disabled style="opacity:.3"' : ''; ?>></td>
 								<td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
 							</tr>
 							<?php endforeach; ?>
@@ -277,7 +299,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 								<td><input type="text" class="fb-label" value="" placeholder="Field label"></td>
 								<td><select class="fb-type"><?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>"><?php echo esc_html( $tl ); ?></option><?php endforeach; ?></select></td>
 								<td><input type="text" class="fb-ph" value="" placeholder="Placeholder text"></td>
-								<td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;Option B&#10;Option C"></textarea></td>
+								<td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;red|Red Apple &#x1F34E;&#10;Option C"></textarea></td>
 								<td><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"></textarea></td>
 								<td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
 								<td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
@@ -300,7 +322,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 				<td><input type="text" class="fb-label" value="" placeholder="Field label"></td>
 				<td><select class="fb-type"><?php foreach ( $field_types as $tv => $tl ) : ?><option value="<?php echo esc_attr( $tv ); ?>"><?php echo esc_html( $tl ); ?></option><?php endforeach; ?></select></td>
 				<td><input type="text" class="fb-ph" value="" placeholder="Placeholder text"></td>
-				<td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;Option B&#10;Option C"></textarea></td>
+				<td><textarea class="fb-opts fb-hidden" rows="3" placeholder="Option A&#10;red|Red Apple &#x1F34E;&#10;Option C"></textarea></td>
 				<td><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"></textarea></td>
 				<td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
 				<td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
