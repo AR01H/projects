@@ -143,7 +143,7 @@ class AH_Notice_Helper {
 					<?php else : ?>
 					<div style="width:100%;height:5px;flex-shrink:0;background:linear-gradient(90deg,var(--color-primary,#2d5a44),<?php echo esc_attr( $bpal['bg'] ); ?>);"></div>
 					<?php endif; ?>
-					<div style="padding:22px 24px 24px;overflow-y:auto;">
+					<div style="padding:16px 18px 18px;overflow-y:auto;">
 						<?php if ( $badge && ! $image ) : ?>
 						<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;"><?php echo $badge; ?></span>
 						<?php endif; ?>

@@ -99,15 +99,32 @@
 
 .ah-palette__list { padding: 6px; }
 
-.ah-palette h4 {
+/* Category header doubles as the collapse toggle for its group. */
+.ah-palette__cat {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 6px;
+	width: 100%;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-align: left;
 	font-size: .58rem;
+	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: .12em;
 	margin: 10px 0 4px;
-	padding: 0 6px;
+	padding: 2px 6px;
 	color: #6b7688;
 }
-.ah-palette h4:first-child { margin-top: 2px; }
+.ah-palette__group:first-child .ah-palette__cat { margin-top: 2px; }
+.ah-palette__cat-chev { font-size: .7rem; transition: transform .18s ease; }
+.ah-palette__group.is-collapsed .ah-palette__cat-chev { transform: rotate(-90deg); }
+.ah-palette__group.is-collapsed .ah-palette-block { display: none; }
+/* While searching, matches must show even inside a collapsed category. */
+.ah-palette.is-searching .ah-palette__group.is-collapsed .ah-palette-block { display: flex; }
+.ah-palette.is-searching .ah-palette-block.is-filtered-out { display: none; }
 
 .ah-palette-block {
 	display: flex;
@@ -144,6 +161,28 @@
 /* ── Middle: canvas ────────────────────────────────────────────────────── */
 .ah-canvas-wrap { background: #f1f3f6; padding: 14px; }
 .ah-canvas { min-height: 100%; }
+
+/* Canvas toolbar (block count + collapse-all). Hidden via .is-hidden rather than
+   jQuery .toggle(), which would force display:block and break this flex row. */
+.ah-canvas-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 8px;
+	padding: 0 2px;
+}
+.ah-canvas-count { font-size: .72rem; font-weight: 600; }
+.ah-canvas-collapse {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: .72rem;
+	font-weight: 600;
+	padding: 3px 7px;
+	border-radius: 5px;
+}
+.ah-canvas-toolbar.is-hidden { display: none; }
 
 .ah-canvas-empty {
 	text-align: center;

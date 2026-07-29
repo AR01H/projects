@@ -270,56 +270,56 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 
       <div class="ah-palette__list">
         <div class="ah-palette__group">
-          <h4>Layout</h4>
-          <div class="ah-palette-block" data-type="hero">          <span class="icon">🎯</span> Hero Banner</div>
-          <div class="ah-palette-block" data-type="section_heading"><span class="icon">📌</span> Section Heading</div>
-          <div class="ah-palette-block" data-type="text_block">    <span class="icon">📝</span> Rich Text</div>
-          <div class="ah-palette-block" data-type="columns">       <span class="icon">⬛</span> 2-Col Text</div>
-          <div class="ah-palette-block" data-type="tabs">          <span class="icon">🗂️</span> Tabs</div>
-          <div class="ah-palette-block" data-type="divider">       <span class="icon">➖</span> Divider</div>
-          <div class="ah-palette-block" data-type="spacer">        <span class="icon">↕️</span> Spacer</div>
+          <button type="button" class="ah-palette__cat"><span>Layout</span><span class="ah-palette__cat-chev" aria-hidden="true">▾</span></button>
+          <div class="ah-palette-block" data-cat="layout" data-type="hero">          <span class="icon">🎯</span> Hero Banner</div>
+          <div class="ah-palette-block" data-cat="layout" data-type="section_heading"><span class="icon">📌</span> Section Heading</div>
+          <div class="ah-palette-block" data-cat="layout" data-type="text_block">    <span class="icon">📝</span> Rich Text</div>
+          <div class="ah-palette-block" data-cat="layout" data-type="columns">       <span class="icon">⬛</span> 2-Col Text</div>
+          <div class="ah-palette-block" data-cat="layout" data-type="tabs">          <span class="icon">🗂️</span> Tabs</div>
+          <div class="ah-palette-block" data-cat="layout" data-type="divider">       <span class="icon">➖</span> Divider</div>
+          <div class="ah-palette-block" data-cat="layout" data-type="spacer">        <span class="icon">↕️</span> Spacer</div>
         </div>
 
         <div class="ah-palette__group">
-          <h4>Media</h4>
-          <div class="ah-palette-block" data-type="gallery">       <span class="icon">🖼️</span> Gallery</div>
-          <div class="ah-palette-block" data-type="video">         <span class="icon">▶️</span> Video Embed</div>
-          <div class="ah-palette-block" data-type="map_embed">     <span class="icon">📍</span> Map Embed</div>
-          <div class="ah-palette-block" data-type="logo_strip">    <span class="icon">🏷️</span> Logo Strip</div>
+          <button type="button" class="ah-palette__cat"><span>Media</span><span class="ah-palette__cat-chev" aria-hidden="true">▾</span></button>
+          <div class="ah-palette-block" data-cat="media" data-type="gallery">       <span class="icon">🖼️</span> Gallery</div>
+          <div class="ah-palette-block" data-cat="media" data-type="video">         <span class="icon">▶️</span> Video Embed</div>
+          <div class="ah-palette-block" data-cat="media" data-type="map_embed">     <span class="icon">📍</span> Map Embed</div>
+          <div class="ah-palette-block" data-cat="media" data-type="logo_strip">    <span class="icon">🏷️</span> Logo Strip</div>
         </div>
 
         <div class="ah-palette__group">
-          <h4>Content</h4>
-          <div class="ah-palette-block" data-type="cards">         <span class="icon">🃏</span> Card Grid</div>
-          <div class="ah-palette-block" data-type="image_text">    <span class="icon">🖼️</span> Image + Text</div>
-          <div class="ah-palette-block" data-type="testimonial">   <span class="icon">💬</span> Testimonial</div>
-          <div class="ah-palette-block" data-type="steps">         <span class="icon">🔢</span> Steps / Process</div>
-          <div class="ah-palette-block" data-type="timeline">      <span class="icon">📅</span> Timeline</div>
-          <div class="ah-palette-block" data-type="icon_list">     <span class="icon">✅</span> Icon List</div>
-          <div class="ah-palette-block" data-type="pull_quote">    <span class="icon">❝</span> Pull Quote</div>
-          <div class="ah-palette-block" data-type="comparison">    <span class="icon">⚖️</span> Comparison Table</div>
-          <div class="ah-palette-block" data-type="pricing">       <span class="icon">💰</span> Pricing Card</div>
+          <button type="button" class="ah-palette__cat"><span>Content</span><span class="ah-palette__cat-chev" aria-hidden="true">▾</span></button>
+          <div class="ah-palette-block" data-cat="content" data-type="cards">         <span class="icon">🃏</span> Card Grid</div>
+          <div class="ah-palette-block" data-cat="content" data-type="image_text">    <span class="icon">🖼️</span> Image + Text</div>
+          <div class="ah-palette-block" data-cat="content" data-type="testimonial">   <span class="icon">💬</span> Testimonial</div>
+          <div class="ah-palette-block" data-cat="content" data-type="steps">         <span class="icon">🔢</span> Steps / Process</div>
+          <div class="ah-palette-block" data-cat="content" data-type="timeline">      <span class="icon">📅</span> Timeline</div>
+          <div class="ah-palette-block" data-cat="content" data-type="icon_list">     <span class="icon">✅</span> Icon List</div>
+          <div class="ah-palette-block" data-cat="content" data-type="pull_quote">    <span class="icon">❝</span> Pull Quote</div>
+          <div class="ah-palette-block" data-cat="content" data-type="comparison">    <span class="icon">⚖️</span> Comparison Table</div>
+          <div class="ah-palette-block" data-cat="content" data-type="pricing">       <span class="icon">💰</span> Pricing Card</div>
         </div>
 
         <div class="ah-palette__group">
-          <h4>Action</h4>
-          <div class="ah-palette-block" data-type="cta_banner">    <span class="icon">📣</span> CTA Banner</div>
-          <div class="ah-palette-block" data-type="stats_row">     <span class="icon">📊</span> Stats Row</div>
-          <div class="ah-palette-block" data-type="faq">           <span class="icon">❓</span> FAQ Accordion</div>
-          <div class="ah-palette-block" data-type="alert">         <span class="icon">📢</span> Alert / Notice</div>
-          <div class="ah-palette-block" data-type="notice_bar">    <span class="icon">📯</span> Notice Bar</div>
-          <div class="ah-palette-block" data-type="download">      <span class="icon">⬇️</span> Download Button</div>
+          <button type="button" class="ah-palette__cat"><span>Action</span><span class="ah-palette__cat-chev" aria-hidden="true">▾</span></button>
+          <div class="ah-palette-block" data-cat="action" data-type="cta_banner">    <span class="icon">📣</span> CTA Banner</div>
+          <div class="ah-palette-block" data-cat="action" data-type="stats_row">     <span class="icon">📊</span> Stats Row</div>
+          <div class="ah-palette-block" data-cat="action" data-type="faq">           <span class="icon">❓</span> FAQ Accordion</div>
+          <div class="ah-palette-block" data-cat="action" data-type="alert">         <span class="icon">📢</span> Alert / Notice</div>
+          <div class="ah-palette-block" data-cat="action" data-type="notice_bar">    <span class="icon">📯</span> Notice Bar</div>
+          <div class="ah-palette-block" data-cat="action" data-type="download">      <span class="icon">⬇️</span> Download Button</div>
         </div>
 
         <div class="ah-palette__group">
-          <h4>People &amp; Contact</h4>
-          <div class="ah-palette-block" data-type="contact_card">  <span class="icon">📇</span> Contact Card</div>
+          <button type="button" class="ah-palette__cat"><span>People &amp; Contact</span><span class="ah-palette__cat-chev" aria-hidden="true">▾</span></button>
+          <div class="ah-palette-block" data-cat="people" data-type="contact_card">  <span class="icon">📇</span> Contact Card</div>
         </div>
 
         <div class="ah-palette__group">
-          <h4>Navigation</h4>
-          <div class="ah-palette-block" data-type="button_row">    <span class="icon">🔘</span> Button Row</div>
-          <div class="ah-palette-block" data-type="links_list">    <span class="icon">🔗</span> Links List</div>
+          <button type="button" class="ah-palette__cat"><span>Navigation</span><span class="ah-palette__cat-chev" aria-hidden="true">▾</span></button>
+          <div class="ah-palette-block" data-cat="nav" data-type="button_row">    <span class="icon">🔘</span> Button Row</div>
+          <div class="ah-palette-block" data-cat="nav" data-type="links_list">    <span class="icon">🔗</span> Links List</div>
         </div>
 
         <div class="ah-palette__empty">No blocks match that search.</div>
@@ -328,6 +328,12 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 
     <!-- MIDDLE: Canvas -->
     <div class="ah-canvas-wrap">
+      <?php /* Block count + collapse-all: with a dozen expanded blocks the canvas
+               becomes a very long scroll with no way to get an overview. */ ?>
+      <div class="ah-canvas-toolbar" id="ah-canvas-toolbar">
+        <span class="ah-canvas-count" id="ah-canvas-count">0 blocks</span>
+        <button type="button" class="ah-canvas-collapse" id="ah-canvas-collapse">Collapse all</button>
+      </div>
       <div class="ah-canvas" id="ah-canvas">
         <div class="ah-canvas-empty" id="ah-canvas-empty">
           <div class="icon">🧱</div>
@@ -488,6 +494,21 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 'use strict';
 
 // ── Block definitions ────────────────────────────────────────────────────────
+/* Block type -> palette category. Emitted as data-cat on each canvas block so
+   the stylesheet can colour-code blocks by family. Colour lives in CSS, never
+   here: the theme design layer owns appearance. */
+var BLOCK_CATS = {
+  hero:'layout', section_heading:'layout', text_block:'layout', columns:'layout',
+  tabs:'layout', divider:'layout', spacer:'layout',
+  gallery:'media', video:'media', map_embed:'media', logo_strip:'media',
+  cards:'content', image_text:'content', testimonial:'content', steps:'content',
+  timeline:'content', icon_list:'content', pull_quote:'content', comparison:'content', pricing:'content',
+  cta_banner:'action', stats_row:'action', faq:'action', alert:'action',
+  notice_bar:'action', download:'action',
+  contact_card:'people',
+  button_row:'nav', links_list:'nav'
+};
+
 var BLOCK_DEFS = {
   hero: {
     label: 'Hero Banner', icon: '🎯', color: 'var(--ah-primary)',
@@ -912,6 +933,10 @@ function renderCanvas() {
     makeSortable();
     initRichEditors();
   }
+
+  // Toolbar reflects the current canvas; hidden entirely when there's nothing yet.
+  $('#ah-canvas-count').text(blocks.length + (blocks.length === 1 ? ' block' : ' blocks'));
+  $('#ah-canvas-toolbar').toggleClass('is-hidden', blocks.length === 0);
 }
 
 function buildBlockHTML(block) {
@@ -920,12 +945,12 @@ function buildBlockHTML(block) {
   var id = block._id;
   var data = block.data || {};
 
-  var html = '<div class="ah-canvas-block" data-block-id="'+id+'" data-type="'+block.type+'">';
+  var html = '<div class="ah-canvas-block" data-block-id="'+id+'" data-type="'+block.type+'" data-cat="'+(BLOCK_CATS[block.type]||'')+'">';
   html += '<div class="ah-block-header">';
   html += '<span class="ah-block-handle" title="Drag to reorder">☰</span>';
   html += '<span style="font-size:.9rem;margin-right:4px">'+def.icon+'</span>';
   html += '<span class="ah-block-title">'+(data.heading||data.title||data.content||def.label).substring(0,40)+'</span>';
-  html += '<span class="ah-block-type-badge" style="background:'+hexToLight(def.color)+';color:'+def.color+'">'+def.label+'</span>';
+  html += '<span class="ah-block-type-badge">'+def.label+'</span>';
   html += '<div class="ah-block-actions">';
   html += '<button type="button" class="ah-toggle-block" title="Edit block">▼</button>';
   html += '<button type="button" class="ah-duplicate-block" title="Duplicate block">⧉</button>';
@@ -1111,8 +1136,30 @@ var $palette      = $('#ah-palette');
 var $paletteGroup = $palette.find('.ah-palette__group');
 var $searchInput  = $('#ah-block-search');
 
+/* Collapse-all / expand-all every block on the canvas. TinyMCE instances are
+   re-initialised on expand because they only attach to active blocks. */
+$(document).on('click', '#ah-canvas-collapse', function(){
+  var $open = $('#ah-canvas .ah-canvas-block.ah-block-active');
+  if ($open.length) {
+    destroyRichEditors();
+    $('#ah-canvas .ah-canvas-block').removeClass('ah-block-active');
+    $(this).text('Expand all');
+  } else {
+    $('#ah-canvas .ah-canvas-block').addClass('ah-block-active');
+    initRichEditors();
+    $(this).text('Collapse all');
+  }
+});
+
+/* Collapse a category. Purely visual - collapsed groups are still searchable,
+   because searching adds .is-searching which overrides the collapsed state. */
+$(document).on('click', '.ah-palette__cat', function(){
+  $(this).closest('.ah-palette__group').toggleClass('is-collapsed');
+});
+
 $searchInput.on('input', function(){
   var q = $.trim(this.value).toLowerCase();
+  $palette.toggleClass('is-searching', q !== '');
   if (!q) {
     $palette.removeClass('is-empty');
     $paletteGroup.removeClass('is-filtered-out').find('.ah-palette-block').removeClass('is-filtered-out');
@@ -1255,11 +1302,9 @@ $('#ah-builder-form').on('submit', function(){
 function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function hexToLight(hex) {
-  return hex.replace(/^#/, '').length === 6
-    ? 'rgba('+parseInt(hex.slice(1,3),16)+','+parseInt(hex.slice(3,5),16)+','+parseInt(hex.slice(5,7),16)+',.1)'
-    : 'var(--ah-bg-light)';
-}
+/* hexToLight() removed: it only parsed 6-digit hex, but 24 of 29 block defs pass
+   CSS custom-property strings like 'var(--ah-primary)', so they all silently fell
+   back to the same flat grey badge. Badge colour is now data-cat driven in CSS. */
 
 // ── Collapsible settings-panel sections ───────────────────────────────────────
 $(document).on('click', '.ah-settings-section__head', function(){

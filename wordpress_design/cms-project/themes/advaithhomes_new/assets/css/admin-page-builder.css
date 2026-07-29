@@ -26,7 +26,25 @@
 	--pb-shadow-sm:  0 1px 2px rgba(16, 21, 31, .05);
 	--pb-shadow-md:  0 4px 14px rgba(16, 21, 31, .08);
 	--pb-ease:       cubic-bezier(.16, 1, .3, 1);
+
+	/* One hue per block family. Used for the palette bullet, the canvas card's
+	   left spine and its type badge, so a block is identifiable at a glance in
+	   both panels instead of every badge being the same grey. */
+	--pb-cat-layout:  #3b82f6;
+	--pb-cat-media:   #8b5cf6;
+	--pb-cat-content: #0ea5e9;
+	--pb-cat-action:  #f59e0b;
+	--pb-cat-people:  #14b8a6;
+	--pb-cat-nav:     #64748b;
 }
+
+/* Resolve the family hue once per element; children just use var(--pb-cat). */
+[data-cat="layout"]  { --pb-cat: var(--pb-cat-layout); }
+[data-cat="media"]   { --pb-cat: var(--pb-cat-media); }
+[data-cat="content"] { --pb-cat: var(--pb-cat-content); }
+[data-cat="action"]  { --pb-cat: var(--pb-cat-action); }
+[data-cat="people"]  { --pb-cat: var(--pb-cat-people); }
+[data-cat="nav"]     { --pb-cat: var(--pb-cat-nav); }
 
 /* ── Top bar ───────────────────────────────────────────────────────────── */
 .ah-builder-topbar {
@@ -73,7 +91,13 @@
 	border-color: rgba(255, 255, 255, .34);
 }
 
-.ah-palette h4 { color: #6d7a8f; font-weight: 700; }
+.ah-palette__cat {
+	color: #6d7a8f;
+	border-radius: 5px;
+	transition: color .15s var(--pb-ease), background .15s var(--pb-ease);
+}
+.ah-palette__cat:hover { color: #aab6c8; background: rgba(255, 255, 255, .05); }
+.ah-palette__cat-chev { opacity: .7; }
 
 .ah-palette-block {
 	position: relative;
@@ -81,7 +105,7 @@
 	color: #b9c3d2;
 	transition: background .15s var(--pb-ease), color .15s var(--pb-ease), transform .18s var(--pb-ease);
 }
-/* Accent bar wipes in from the left edge on hover. */
+/* Accent bar wipes in from the left edge on hover, in the block's family hue. */
 .ah-palette-block::before {
 	content: '';
 	position: absolute;
@@ -90,7 +114,7 @@
 	bottom: 6px;
 	width: 3px;
 	border-radius: 2px;
-	background: linear-gradient(180deg, var(--pb-accent), #60a5fa);
+	background: var(--pb-cat, var(--pb-accent));
 	transform: scaleY(0);
 	transition: transform .18s var(--pb-ease);
 }
@@ -109,12 +133,27 @@
 /* ── Canvas ────────────────────────────────────────────────────────────── */
 .ah-canvas-wrap { background: #eef1f6; }
 
-.ah-canvas-empty {
-	border-color: #d7dde7;
-	color: var(--pb-muted);
-	background: #fff;
+.ah-canvas-count { color: var(--pb-muted); }
+.ah-canvas-collapse {
+	color: var(--pb-accent);
+	transition: background .15s var(--pb-ease);
 }
-.ah-canvas-empty p { color: var(--pb-muted); }
+.ah-canvas-collapse:hover { background: var(--pb-accent-sub); }
+
+/* Empty state: softer, less "error box", with the first line carrying weight. */
+.ah-canvas-empty {
+	border-color: #d3dae5;
+	color: var(--pb-muted);
+	background: linear-gradient(#fff, #fbfcfe);
+	border-radius: 12px;
+}
+.ah-canvas-empty .icon { opacity: .5; }
+.ah-canvas-empty p { color: var(--pb-muted); font-size: .84rem; }
+.ah-canvas-empty p:first-of-type {
+	color: var(--pb-ink);
+	font-weight: 600;
+	font-size: .92rem;
+}
 
 .ah-canvas-block {
 	border-color: var(--pb-line);
@@ -133,7 +172,23 @@
 .ah-block-handle { color: #c3cbd8; transition: color .15s var(--pb-ease); }
 .ah-block-handle:hover { color: var(--pb-muted); }
 
-.ah-block-type-badge { background: var(--pb-accent-sub); color: var(--pb-accent); }
+/* Badge takes its family hue; falls back to neutral for an unmapped type. */
+.ah-block-type-badge {
+	background: #eef1f6; /* fallback for browsers without color-mix() */
+	background: color-mix(in srgb, var(--pb-cat, var(--pb-muted)) 12%, transparent);
+	color: var(--pb-cat, var(--pb-muted));
+	font-weight: 700;
+}
+/* Colour spine down the left edge of the card - the fastest way to scan a long
+   canvas and see where one section ends and the next begins. */
+.ah-canvas-block {
+	position: relative;
+	padding-left: 3px;
+	background-image: linear-gradient(var(--pb-cat, transparent), var(--pb-cat, transparent));
+	background-size: 3px 100%;
+	background-repeat: no-repeat;
+	background-position: left top;
+}
 
 .ah-block-actions button {
 	color: var(--pb-muted);
@@ -234,14 +289,18 @@
 .ah-settings-section--danger .ah-settings-section__title { color: #dc2626; }
 
 /* ── Drag feedback ─────────────────────────────────────────────────────── */
+/* Lifted + slightly tilted so the dragged card clearly reads as "in hand". */
 .ui-sortable-helper {
-	box-shadow: 0 12px 34px rgba(16, 21, 31, .18) !important;
+	box-shadow: 0 16px 40px rgba(16, 21, 31, .22) !important;
 	border-color: var(--pb-accent) !important;
+	transform: rotate(-.6deg);
 }
 .ui-sortable-placeholder {
 	background: var(--pb-accent-sub);
 	border-color: #a9c2f5;
 }
+/* Grabbing anywhere in the builder shows the grab cursor, not a text caret. */
+.ah-canvas.ui-sortable-disabled { cursor: default; }
 
 @media (prefers-reduced-motion: reduce) {
 	.ah-canvas-block.ah-block-just-added,
