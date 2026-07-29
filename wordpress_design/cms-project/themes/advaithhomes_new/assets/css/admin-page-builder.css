@@ -1,0 +1,252 @@
+/**
+ * admin-page-builder.css - Page Builder admin DESIGN layer (theme-level).
+ *
+ * Loaded only on the Page Builder screen, AFTER the plugin's structural layer
+ * (plugins/cms-plugin/admin/assets/css/page-builder-base.css, handle
+ * ah-page-builder-base). The base file owns layout/mechanics; this file owns
+ * colour, type, depth and motion only - so the plugin stays usable on any theme
+ * and this can be swapped per-brand without touching plugin code.
+ *
+ * Same split as block-render-base.css (plugin) + block-render-page-styles.css
+ * (theme) already used for frontend Page Builder output.
+ *
+ * Density is deliberate: spacing here matches the base layer and is not padded
+ * out - the builder is a dense working tool, not a marketing page.
+ */
+
+.ah-builder-wrap,
+.ah-builder-topbar {
+	--pb-ink:        #10151f;
+	--pb-muted:      #64748b;
+	--pb-line:       #e4e8ef;
+	--pb-accent:     #2563eb;
+	--pb-accent-sub: rgba(37, 99, 235, .10);
+	--pb-panel:      #1b212e;
+	--pb-panel-hi:   #262e3d;
+	--pb-shadow-sm:  0 1px 2px rgba(16, 21, 31, .05);
+	--pb-shadow-md:  0 4px 14px rgba(16, 21, 31, .08);
+	--pb-ease:       cubic-bezier(.16, 1, .3, 1);
+}
+
+/* ── Top bar ───────────────────────────────────────────────────────────── */
+.ah-builder-topbar {
+	border-bottom-color: var(--pb-line);
+	box-shadow: var(--pb-shadow-sm);
+}
+.ah-builder-topbar__back {
+	color: var(--pb-muted);
+	border-radius: 5px;
+	padding: 2px 6px;
+	transition: color .15s var(--pb-ease), background .15s var(--pb-ease);
+}
+.ah-builder-topbar__back:hover { color: var(--pb-ink); background: #f1f4f9; }
+
+.ah-builder-topbar input[type="text"] {
+	color: var(--pb-ink);
+	border-color: var(--pb-line);
+	transition: border-color .15s var(--pb-ease), box-shadow .15s var(--pb-ease);
+}
+.ah-builder-topbar input[type="text"]:focus,
+.ah-builder-topbar select:focus {
+	outline: none;
+	border-color: var(--pb-accent);
+	box-shadow: 0 0 0 3px var(--pb-accent-sub);
+}
+.ah-builder-topbar select { color: var(--pb-ink); border-color: var(--pb-line); }
+
+.ah-builder-topbar .ah-btn {
+	transition: transform .15s var(--pb-ease), box-shadow .15s var(--pb-ease), background .15s var(--pb-ease);
+}
+.ah-builder-topbar .ah-btn:hover { transform: translateY(-1px); box-shadow: var(--pb-shadow-md); }
+.ah-builder-topbar .ah-btn:active { transform: translateY(0) scale(.98); }
+
+/* ── Left palette ──────────────────────────────────────────────────────── */
+.ah-palette,
+.ah-palette__search { background: var(--pb-panel); }
+.ah-palette { color: #c2cbd9; }
+
+.ah-palette__search input {
+	transition: border-color .15s var(--pb-ease), background .15s var(--pb-ease);
+}
+.ah-palette__search input:focus {
+	background: rgba(255, 255, 255, .1);
+	border-color: rgba(255, 255, 255, .34);
+}
+
+.ah-palette h4 { color: #6d7a8f; font-weight: 700; }
+
+.ah-palette-block {
+	position: relative;
+	overflow: hidden;
+	color: #b9c3d2;
+	transition: background .15s var(--pb-ease), color .15s var(--pb-ease), transform .18s var(--pb-ease);
+}
+/* Accent bar wipes in from the left edge on hover. */
+.ah-palette-block::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 6px;
+	bottom: 6px;
+	width: 3px;
+	border-radius: 2px;
+	background: linear-gradient(180deg, var(--pb-accent), #60a5fa);
+	transform: scaleY(0);
+	transition: transform .18s var(--pb-ease);
+}
+.ah-palette-block:hover {
+	background: var(--pb-panel-hi);
+	color: #fff;
+	transform: translateX(2px);
+}
+.ah-palette-block:hover::before { transform: scaleY(1); }
+.ah-palette-block:active { transform: translateX(2px) scale(.98); }
+.ah-palette-block .icon { transition: transform .18s var(--pb-ease); }
+.ah-palette-block:hover .icon { transform: scale(1.15); }
+
+.ah-palette__empty { color: #6d7a8f; font-style: italic; }
+
+/* ── Canvas ────────────────────────────────────────────────────────────── */
+.ah-canvas-wrap { background: #eef1f6; }
+
+.ah-canvas-empty {
+	border-color: #d7dde7;
+	color: var(--pb-muted);
+	background: #fff;
+}
+.ah-canvas-empty p { color: var(--pb-muted); }
+
+.ah-canvas-block {
+	border-color: var(--pb-line);
+	box-shadow: var(--pb-shadow-sm);
+	transition: box-shadow .2s var(--pb-ease), border-color .2s var(--pb-ease), transform .2s var(--pb-ease);
+}
+.ah-canvas-block:hover { box-shadow: var(--pb-shadow-md); }
+.ah-canvas-block.ah-block-active {
+	border-color: var(--pb-accent);
+	box-shadow: 0 0 0 3px var(--pb-accent-sub), var(--pb-shadow-md);
+}
+
+.ah-block-header { background: #f7f9fc; transition: background .15s var(--pb-ease); }
+.ah-canvas-block:hover .ah-block-header { background: #f2f5fa; }
+.ah-block-title { color: var(--pb-ink); }
+.ah-block-handle { color: #c3cbd8; transition: color .15s var(--pb-ease); }
+.ah-block-handle:hover { color: var(--pb-muted); }
+
+.ah-block-type-badge { background: var(--pb-accent-sub); color: var(--pb-accent); }
+
+.ah-block-actions button {
+	color: var(--pb-muted);
+	transition: background .12s var(--pb-ease), color .12s var(--pb-ease);
+}
+.ah-block-actions button:hover { background: #eef1f6; color: var(--pb-ink); }
+.ah-block-actions .ah-duplicate-block:hover { background: var(--pb-accent-sub); color: var(--pb-accent); }
+.ah-block-actions .ah-delete-block:hover { background: #fee2e2; color: #dc2626; }
+.ah-block-actions .ah-toggle-block { transition: transform .2s var(--pb-ease); }
+.ah-canvas-block.ah-block-active .ah-toggle-block { transform: rotate(180deg); }
+
+/* Entrance animation when a block is added from the palette. */
+.ah-canvas-block.ah-block-just-added { animation: pbBlockIn .35s var(--pb-ease) both; }
+@keyframes pbBlockIn {
+	from { opacity: 0; transform: translateY(10px) scale(.98); }
+	to   { opacity: 1; transform: none; }
+}
+
+/* Block body fields */
+.ah-block-body { border-top-color: #eef1f6; }
+.ah-block-body label { color: var(--pb-muted); }
+/* Full-width rows get a little breathing room from the paired rows above them,
+   so a textarea or repeater reads as its own group rather than a stray cell. */
+.ah-block-body .ah-form-row--textarea,
+.ah-block-body .ah-form-row--repeater { margin-top: 2px; }
+.ah-block-body input,
+.ah-block-body textarea,
+.ah-block-body select {
+	border-color: var(--pb-line);
+	color: var(--pb-ink);
+	transition: border-color .15s var(--pb-ease), box-shadow .15s var(--pb-ease);
+}
+.ah-block-body input:focus,
+.ah-block-body textarea:focus,
+.ah-block-body select:focus {
+	outline: none;
+	border-color: var(--pb-accent);
+	box-shadow: 0 0 0 2px var(--pb-accent-sub);
+}
+
+/* Repeater */
+.ah-repeater { border-color: var(--pb-line); background: #f7f9fc; }
+.ah-repeater-row { border-bottom-color: var(--pb-line); }
+.ah-repeater-row label { color: var(--pb-muted); }
+.ah-repeater-row .ah-remove-row {
+	color: #c3cbd8;
+	transition: color .12s var(--pb-ease), background .12s var(--pb-ease);
+}
+.ah-repeater-row .ah-remove-row:hover { color: #dc2626; background: #fee2e2; }
+.ah-add-row {
+	color: var(--pb-accent);
+	transition: background .12s var(--pb-ease);
+}
+.ah-add-row:hover { background: #eaf0fb; }
+
+/* ── Right settings panel ──────────────────────────────────────────────── */
+.ah-settings-panel { border-left-color: var(--pb-line); }
+.ah-settings-panel label { color: var(--pb-muted); }
+.ah-settings-panel small { color: var(--pb-muted); }
+.ah-settings-panel input[type="text"],
+.ah-settings-panel select,
+.ah-settings-panel textarea {
+	border-color: var(--pb-line);
+	color: var(--pb-ink);
+	transition: border-color .15s var(--pb-ease), box-shadow .15s var(--pb-ease);
+}
+.ah-settings-panel input[type="text"]:focus,
+.ah-settings-panel select:focus,
+.ah-settings-panel textarea:focus {
+	outline: none;
+	border-color: var(--pb-accent);
+	box-shadow: 0 0 0 2px var(--pb-accent-sub);
+}
+
+.ah-settings-section {
+	border-color: var(--pb-line);
+	box-shadow: var(--pb-shadow-sm);
+}
+.ah-settings-section__head {
+	background: #f7f9fc;
+	transition: background .15s var(--pb-ease);
+}
+.ah-settings-section__head:hover { background: #f0f4fa; }
+.ah-settings-section__title { color: var(--pb-muted); }
+.ah-settings-section__chevron {
+	color: var(--pb-muted);
+	font-size: .72rem;
+	transition: transform .2s var(--pb-ease);
+}
+.ah-settings-section.is-open .ah-settings-section__chevron { transform: rotate(180deg); }
+.ah-settings-section.is-open .ah-settings-section__body { animation: pbSectionIn .18s var(--pb-ease) both; }
+@keyframes pbSectionIn {
+	from { opacity: 0; transform: translateY(-4px); }
+	to   { opacity: 1; transform: none; }
+}
+.ah-settings-section--danger { border-color: #f3d0d0; }
+.ah-settings-section--danger .ah-settings-section__head { background: #fdf3f3; }
+.ah-settings-section--danger .ah-settings-section__title { color: #dc2626; }
+
+/* ── Drag feedback ─────────────────────────────────────────────────────── */
+.ui-sortable-helper {
+	box-shadow: 0 12px 34px rgba(16, 21, 31, .18) !important;
+	border-color: var(--pb-accent) !important;
+}
+.ui-sortable-placeholder {
+	background: var(--pb-accent-sub);
+	border-color: #a9c2f5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ah-canvas-block.ah-block-just-added,
+	.ah-settings-section.is-open .ah-settings-section__body { animation: none; }
+	.ah-palette-block,
+	.ah-palette-block .icon,
+	.ah-builder-topbar .ah-btn { transition: none; }
+}

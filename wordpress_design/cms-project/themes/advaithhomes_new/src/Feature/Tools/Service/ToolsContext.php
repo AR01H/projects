@@ -80,22 +80,67 @@ class ToolsContext {
 	}
 
 	// ── Categories section ──────────────────────────────────────
+	/**
+	 * Filter pills for /calculators/, built from each calculator's
+	 * "Categories / Parent Terms" admin field.
+	 *
+	 * Must aggregate the SAME field the cards are tagged with - $meta['categories']
+	 * (plural array of parent-term slugs, written by CalculatorHandler::save_calc_meta).
+	 * This previously read $meta['category'] (singular), a key the admin never writes,
+	 * so every calculator collapsed to one bogus "general" pill whose count was 0 -
+	 * and tools_all.php drops any pill with a count below 1, leaving only "All".
+	 *
+	 * Labels resolve to the real parent-term names (e.g. "buying-a-home" ->
+	 * "Buying a Home") and keep the admin's parent-term ordering.
+	 */
 	public static function buildCategories(): array {
-		$categories = array();
-		$registry   = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
-		$meta_all   = get_option( 'adn_calculators_meta', array() );
-		$cat_map    = array();
+		$registry = function_exists( 'adn_calculators' ) ? adn_calculators() : array();
+		$meta_all = get_option( 'adn_calculators_meta', array() );
 
-		foreach ( $registry as $key => $calc ) {
-			$meta  = $meta_all[ $key ] ?? array();
-			$cat   = $meta['category'] ?? 'general';
-			$label = $meta['category_label'] ?? ucwords( str_replace( '-', ' ', $cat ) );
-			if ( ! isset( $cat_map[ $cat ] ) ) {
-				$cat_map[ $cat ] = array( 'key' => $cat, 'slug' => $cat, 'label' => $label, 'count' => 0 );
+		// Parent-term slug => display name, in the admin's own sort order.
+		$labels = array();
+		if ( function_exists( 'adn_cms_guide_parents' ) ) {
+			foreach ( adn_cms_guide_parents( 50 ) as $pt ) {
+				$pt_slug = isset( $pt->slug ) ? sanitize_key( $pt->slug ) : '';
+				if ( '' !== $pt_slug ) {
+					$labels[ $pt_slug ] = (string) ( $pt->name ?? '' );
+				}
 			}
-			$cat_map[ $cat ]['count']++;
 		}
-		return array_values( $cat_map );
+
+		$cat_map = array();
+		foreach ( $registry as $key => $calc ) {
+			$meta = $meta_all[ $key ] ?? array();
+
+			// Hidden calculators are excluded from $all_tools, so counting them here
+			// would produce pill badges that don't match the visible cards.
+			if ( ! empty( $meta['hidden_from_listing'] ) ) { continue; }
+
+			$cats = ( ! empty( $meta['categories'] ) && is_array( $meta['categories'] ) )
+				? $meta['categories']
+				: ( ! empty( $meta['category'] ) ? array( $meta['category'] ) : array() ); // legacy single-value fallback
+
+			foreach ( $cats as $cat ) {
+				$cat = sanitize_key( $cat );
+				if ( '' === $cat ) { continue; }
+				if ( ! isset( $cat_map[ $cat ] ) ) {
+					$label = $labels[ $cat ] ?? '';
+					if ( '' === $label ) { $label = ucwords( str_replace( '-', ' ', $cat ) ); }
+					$cat_map[ $cat ] = array( 'key' => $cat, 'slug' => $cat, 'label' => $label, 'count' => 0 );
+				}
+				$cat_map[ $cat ]['count']++;
+			}
+		}
+
+		// Follow the parent-term order set in the CMS; anything unrecognised trails after.
+		$ordered = array();
+		foreach ( array_keys( $labels ) as $slug ) {
+			if ( isset( $cat_map[ $slug ] ) ) {
+				$ordered[] = $cat_map[ $slug ];
+				unset( $cat_map[ $slug ] );
+			}
+		}
+		return array_merge( $ordered, array_values( $cat_map ) );
 	}
 
 	// ── Tools items section ─────────────────────────────────────
@@ -115,6 +160,9 @@ class ToolsContext {
 			}
 
 			$items[] = array(
+				// Calculator key, so a consumer can map an item back to its admin
+				// meta row (used by the featured/suggested picker below).
+				'key'        => $key,
 				'icon'       => ! empty( $calc['icon'] ) ? (string) $calc['icon'] : adn_term( 'icons.tools', '🧮' ),
 				'name'       => $calc['title'] ?? '',
 				'title'      => $calc['title'] ?? '',
@@ -129,6 +177,22 @@ class ToolsContext {
 			);
 		}
 		return $items;
+	}
+
+	/**
+	 * Copy the admin's featured-card copy onto a tool item.
+	 *
+	 * buildToolsItems() intentionally carries only what every card needs; these
+	 * fields are used solely by the featured/suggested hero cards on
+	 * /calculators/ (PageTools.php reads $fc['featured_title'], $fc['benefit_1']…).
+	 * Without this the card always fell through to the generic terms.json text
+	 * even when the calculator had its own copy set in wp-admin.
+	 */
+	private static function withFeaturedMeta( array $item, array $meta ): array {
+		foreach ( array( 'featured_title', 'featured_desc', 'benefit_1', 'benefit_2', 'benefit_3', 'benefit_4' ) as $field ) {
+			$item[ $field ] = isset( $meta[ $field ] ) ? (string) $meta[ $field ] : '';
+		}
+		return $item;
 	}
 
 	// ── Popular tools section ───────────────────────────────────
@@ -161,19 +225,32 @@ class ToolsContext {
 		$all_tools = self::buildToolsItems();
 		$popular   = self::buildPopularTools();
 
-		// Featured & suggested tools for the featured section
-		$featured_tools = array();
+		// ── Featured & suggested tools ──────────────────────────────────────
+		// Driven by the admin's "Featured Calculator" / "Suggestion Calculator"
+		// toggles (meta is_featured / is_suggestion). These previously picked
+		// whichever calculator merely had a highlight badge, so the toggles were
+		// ignored and the featured card showed the wrong calculator with generic
+		// fallback benefit text.
+		$meta_all        = get_option( 'adn_calculators_meta', array() );
+		$featured_tools  = array();
 		$suggested_tools = array();
-		$meta_all = get_option( 'adn_calculators_meta', array() );
+
+		// The toggles are authoritative: nothing flagged means the card is simply
+		// not shown. No "pick something anyway" fallback - that's what made an
+		// unflagged calculator appear as Suggested.
 		foreach ( $all_tools as $item ) {
-			if ( empty( $featured_tools ) && ! empty( $item['highlight'] ) ) {
-				$featured_tools[] = $item;
+			$m = $meta_all[ $item['key'] ?? '' ] ?? array();
+			if ( ! empty( $m['is_featured'] ) ) {
+				$featured_tools[] = self::withFeaturedMeta( $item, $m );
+				break;
 			}
 		}
-		// Pick a suggested tool (first popular that isn't the featured one)
-		foreach ( $popular as $item ) {
-			if ( empty( $featured_tools ) || $item['url'] !== ( $featured_tools[0]['url'] ?? '' ) ) {
-				$suggested_tools[] = $item;
+
+		$featured_url = $featured_tools[0]['url'] ?? '';
+		foreach ( $all_tools as $item ) {
+			$m = $meta_all[ $item['key'] ?? '' ] ?? array();
+			if ( ! empty( $m['is_suggestion'] ) && $item['url'] !== $featured_url ) {
+				$suggested_tools[] = self::withFeaturedMeta( $item, $m );
 				break;
 			}
 		}

@@ -107,9 +107,10 @@ class AH_Notice_Helper {
 					<?php if ( $badge && ! $image ) : ?>
 					<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;"><?php echo $badge; ?></span>
 					<?php endif; ?>
-					<h3 style="margin:0 28px 6px 0;font-size:1rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.35;"><?php echo $title; ?></h3>
+					<?php /* No right margin - close button sits outside the card. */ ?>
+					<h3 style="margin:0 0 6px;font-size:1rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.35;overflow-wrap:anywhere;"><?php echo $title; ?></h3>
 					<?php if ( $message ) : ?>
-					<p style="margin:0 0 12px;color:#6b7280;font-size:.82rem;line-height:1.55;"><?php echo $message; ?></p>
+					<div style="margin:0 0 12px;color:#6b7280;font-size:.82rem;line-height:1.55;overflow-wrap:anywhere;"><?php echo $message; ?></div>
 					<?php endif; ?>
 					<?php if ( $btn_label && $btn_url ) : ?>
 					<a href="<?php echo $btn_url; ?>" style="display:inline-block;background:var(--color-primary,#0a192f);color:#fff;padding:.45rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;text-decoration:none;"><?php echo $btn_label; ?></a>
@@ -125,31 +126,38 @@ class AH_Notice_Helper {
 			<div class="ah-sn-card-wrap" style="position:relative;max-width:520px;width:100%;">
 				<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close"
 				        style="position:absolute;top:-16px;right:-16px;z-index:2;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;box-shadow:0 2px 10px rgba(10,25,47,.2);">&times;</button>
-				<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:4px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
+				<?php /* Column flex + max-height so a long message scrolls inside the
+				       card instead of running off the viewport. */ ?>
+				<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:14px;width:100%;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
 					<?php if ( $image ) : ?>
-					<div class="ah-sn-media ah-sn-media--modal" style="width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
+					<div class="ah-sn-media ah-sn-media--modal" style="width:100%;aspect-ratio:16/9;flex-shrink:0;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
 						<?php if ( $is_video ) : ?>
 						<video class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
 						<?php else : ?>
 						<img class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
 						<?php endif; ?>
 						<?php if ( $badge ) : ?>
-						<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;letter-spacing:.05em;text-transform:uppercase;"><?php echo $badge; ?></span>
+						<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 2px 8px rgba(10,25,47,.18);"><?php echo $badge; ?></span>
 						<?php endif; ?>
 					</div>
 					<?php else : ?>
-					<div style="width:100%;height:5px;background:linear-gradient(90deg,var(--color-primary,#2d5a44),<?php echo esc_attr( $bpal['bg'] ); ?>);"></div>
+					<div style="width:100%;height:5px;flex-shrink:0;background:linear-gradient(90deg,var(--color-primary,#2d5a44),<?php echo esc_attr( $bpal['bg'] ); ?>);"></div>
 					<?php endif; ?>
-					<div style="padding:10px;position:relative;">
+					<div style="padding:22px 24px 24px;overflow-y:auto;">
 						<?php if ( $badge && ! $image ) : ?>
-						<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;"><?php echo $badge; ?></span>
+						<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;"><?php echo $badge; ?></span>
 						<?php endif; ?>
-						<h2 style="margin:0 36px .6rem 0;font-size:1.35rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.3;"><?php echo $title; ?></h2>
+						<?php /* No right margin: the close button sits outside the card now. */ ?>
+						<h2 style="margin:0 0 .5rem;font-size:1.3rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.3;overflow-wrap:anywhere;"><?php echo $title; ?></h2>
 						<?php if ( $message ) : ?>
-						<p style="margin:0 0 1.4rem;color:#555;font-size:.95rem;line-height:1.6;"><?php echo $message; ?></p>
+						<?php /* overflow-wrap:anywhere stops a long unbroken string (pasted URL,
+							   stray keyboard mash) from pushing the card wider than the screen. */ ?>
+						<div style="margin:0 0 1.25rem;color:#4b5563;font-size:.94rem;line-height:1.65;overflow-wrap:anywhere;"><?php echo $message; ?></div>
 						<?php endif; ?>
 						<?php if ( $btn_label && $btn_url ) : ?>
-						<a href="<?php echo $btn_url; ?>" class="btn btn-primary button"><?php echo $btn_label; ?></a>
+						<?php /* Styled inline rather than relying on theme .btn classes, so the
+							   notice looks right on any theme the plugin is paired with. */ ?>
+						<a href="<?php echo $btn_url; ?>" class="btn btn-primary button" style="display:inline-block;background:var(--color-primary,#0a192f);color:#fff;padding:.6rem 1.4rem;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;line-height:1.2;"><?php echo $btn_label; ?></a>
 						<?php endif; ?>
 					</div>
 				</div>

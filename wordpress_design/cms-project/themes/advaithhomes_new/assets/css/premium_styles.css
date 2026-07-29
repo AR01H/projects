@@ -2719,6 +2719,9 @@ html.adn-reveal .acard-stat::before {
     box-shadow: none !important;
     overflow: visible !important;
     height: auto !important;
+    /* Gap before the Featured card below - their shared parent is a plain block
+       wrapper with no grid gap, so the two dark cards otherwise sit flush. */
+    margin-bottom: 16px !important;
 }
 
 .tc-suggested-widget .tc-widget-header {

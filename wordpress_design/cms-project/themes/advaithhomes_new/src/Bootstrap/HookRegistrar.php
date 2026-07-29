@@ -62,7 +62,38 @@ class HookRegistrar {
 	private static function registerAdmin(): void {
 		if ( \is_admin() ) {
 			// Theme admin loaded from functions.php via require_once
+			\add_action( 'admin_enqueue_scripts', [ self::class, 'enqueueAdminDesignLayer' ] );
 		}
+	}
+
+	/**
+	 * Theme design layer for the CMS plugin's Page Builder screen.
+	 *
+	 * The plugin ships only structure (handle: ah-page-builder-base); this adds
+	 * the brand colour/typography/motion on top. Declared as a dependency so it
+	 * always loads AFTER the base and can override it, and it no-ops when the
+	 * plugin isn't active - the theme must not style a screen that isn't there.
+	 */
+	public static function enqueueAdminDesignLayer( string $hook ): void {
+		if ( \strpos( $hook, 'ah-page-builder' ) === false ) {
+			return;
+		}
+		if ( ! \wp_style_is( 'ah-page-builder-base', 'registered' ) ) {
+			return;
+		}
+
+		$rel  = '/assets/css/admin-page-builder.css';
+		$path = \ADN_THEME_DIR . $rel;
+		if ( ! \file_exists( $path ) ) {
+			return;
+		}
+
+		\wp_enqueue_style(
+			'adn-admin-page-builder',
+			\ADN_THEME_URI . $rel,
+			[ 'ah-page-builder-base' ],
+			(string) \filemtime( $path )
+		);
 	}
 
 	private static function registerDatabase(): void {

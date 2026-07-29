@@ -115,6 +115,18 @@ class AH_Admin_Bootstrap {
 		);
 		wp_add_inline_style( 'ah-admin-style', self::sidebar_icons_css() );
 
+		// Page Builder screen only: structural layer for the drag-and-drop UI.
+		// The active theme may enqueue its own design layer on top of this
+		// (handle: ah-page-builder-base) - see themes/*/src/Bootstrap/HookRegistrar.
+		if ( strpos( $hook, 'ah-page-builder' ) !== false ) {
+			wp_enqueue_style(
+				'ah-page-builder-base',
+				AH_THEME_URL . '/admin/assets/css/page-builder-base.css',
+				array( 'ah-admin-style' ),
+				AH_THEME_VERSION
+			);
+		}
+
 		wp_enqueue_script(
 			'ah-admin-script',
 			AH_THEME_URL . '/admin/assets/js/admin-script.js',

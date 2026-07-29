@@ -1,0 +1,395 @@
+/**
+ * page-builder-base.css - Page Builder admin STRUCTURE layer (plugin-level).
+ *
+ * Layout mechanics only: grid, scroll regions, drag states, collapse behaviour,
+ * form-control sizing. Deliberately plain - colours/typography/polish belong to
+ * the theme design layer (themes/*\/assets/css/admin-page-builder.css), which is
+ * enqueued AFTER this file and overrides it. This file alone must still produce
+ * a fully usable builder on any theme, including none.
+ *
+ * Mirrors the block-render-base.css (plugin) + block-render-page-styles.css
+ * (theme) split already used for frontend Page Builder output.
+ */
+
+/* ── Shell ─────────────────────────────────────────────────────────────── */
+/* Full-bleed: cancel the WP content padding so the builder owns the viewport. */
+.ah-builder-topbar,
+.ah-builder-wrap { margin-left: -20px; margin-right: -20px; }
+
+.ah-builder-topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 8px 16px;
+	background: #fff;
+	border-bottom: 1px solid var(--ah-border, #e2e8f0);
+	position: sticky;
+	top: 32px; /* under the WP admin bar */
+	z-index: 100;
+}
+.ah-builder-topbar__group { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ah-builder-topbar__back { text-decoration: none; font-size: 1.1rem; line-height: 1; flex-shrink: 0; }
+.ah-builder-topbar input[type="text"] {
+	border: 1px solid var(--ah-border, #e2e8f0);
+	border-radius: 6px;
+	padding: 6px 10px;
+	font-size: .88rem;
+	font-weight: 600;
+	max-width: 300px;
+	min-width: 0;
+}
+.ah-builder-topbar select {
+	border: 1px solid var(--ah-border, #e2e8f0);
+	border-radius: 6px;
+	padding: 5px 8px;
+	font-size: .8rem;
+}
+.ah-builder-topbar .ah-btn { padding: 6px 14px; font-size: .8rem; }
+
+@media screen and (max-width: 782px) {
+	.ah-builder-topbar { top: 46px; }
+}
+
+/* ── 3-column grid ─────────────────────────────────────────────────────── */
+.ah-builder-wrap {
+	display: grid;
+	grid-template-columns: 226px minmax(0, 1fr) 250px;
+	height: calc(100vh - 34px - 49px); /* viewport - adminbar - topbar */
+	overflow: hidden;
+	border-top: 1px solid var(--ah-border, #e2e8f0);
+}
+
+/* Each column scrolls independently. min-height:0 is required for a grid child
+   to be allowed to shrink below its content and scroll instead of overflowing. */
+.ah-palette,
+.ah-canvas-wrap,
+.ah-settings-panel { overflow-y: auto; min-height: 0; }
+
+/* ── Left: block palette ───────────────────────────────────────────────── */
+.ah-palette {
+	background: #1f2430;
+	color: #c9d1e0;
+	border-right: 1px solid rgba(255, 255, 255, .06);
+	display: flex;
+	flex-direction: column;
+}
+
+/* Search sits above the scrolling list and stays put. */
+.ah-palette__search {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	padding: 8px;
+	background: #1f2430;
+	border-bottom: 1px solid rgba(255, 255, 255, .07);
+}
+.ah-palette__search input {
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid rgba(255, 255, 255, .14);
+	border-radius: 6px;
+	padding: 6px 9px;
+	font-size: .78rem;
+	background: rgba(255, 255, 255, .06);
+	color: #e8edf5;
+}
+.ah-palette__search input::placeholder { color: #7d8798; }
+.ah-palette__search input:focus { outline: none; border-color: rgba(255, 255, 255, .3); }
+
+.ah-palette__list { padding: 6px; }
+
+.ah-palette h4 {
+	font-size: .58rem;
+	text-transform: uppercase;
+	letter-spacing: .12em;
+	margin: 10px 0 4px;
+	padding: 0 6px;
+	color: #6b7688;
+}
+.ah-palette h4:first-child { margin-top: 2px; }
+
+.ah-palette-block {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 8px;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: .78rem;
+	font-weight: 500;
+	margin-bottom: 1px;
+	user-select: none;
+}
+.ah-palette-block .icon {
+	font-size: .92rem;
+	width: 18px;
+	text-align: center;
+	flex-shrink: 0;
+}
+.ah-palette-block:hover { background: rgba(255, 255, 255, .09); color: #fff; }
+
+/* Search filtering: JS toggles these, CSS owns the hiding. */
+.ah-palette-block.is-filtered-out,
+.ah-palette__group.is-filtered-out { display: none; }
+.ah-palette__empty {
+	display: none;
+	padding: 14px 8px;
+	font-size: .76rem;
+	text-align: center;
+	color: #6b7688;
+}
+.ah-palette.is-empty .ah-palette__empty { display: block; }
+
+/* ── Middle: canvas ────────────────────────────────────────────────────── */
+.ah-canvas-wrap { background: #f1f3f6; padding: 14px; }
+.ah-canvas { min-height: 100%; }
+
+.ah-canvas-empty {
+	text-align: center;
+	padding: 40px 16px;
+	border: 2px dashed var(--ah-border, #e2e8f0);
+	border-radius: 10px;
+	background: #fff;
+}
+.ah-canvas-empty .icon { font-size: 2.2rem; margin-bottom: 6px; }
+.ah-canvas-empty p { margin: 2px 0; }
+
+/* Canvas block cards */
+.ah-canvas-block {
+	background: #fff;
+	border: 1px solid var(--ah-border, #e2e8f0);
+	border-radius: 8px;
+	margin-bottom: 8px;
+	overflow: hidden;
+}
+
+.ah-block-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	background: var(--ah-bg-light, #f8fafc);
+	cursor: pointer;
+	user-select: none;
+}
+.ah-block-handle { cursor: grab; flex-shrink: 0; font-size: .85rem; }
+.ah-block-handle:active { cursor: grabbing; }
+.ah-block-title {
+	flex: 1;
+	min-width: 0;
+	font-size: .8rem;
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.ah-block-type-badge {
+	font-size: .6rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .05em;
+	padding: 2px 6px;
+	border-radius: 20px;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+.ah-block-actions { display: flex; align-items: center; gap: 1px; flex-shrink: 0; }
+.ah-block-actions button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 3px 5px;
+	border-radius: 4px;
+	font-size: .78rem;
+	line-height: 1;
+}
+
+/* Body is collapsed until the card is active. */
+.ah-block-body {
+	display: none;
+	padding: 12px;
+	border-top: 1px solid var(--ah-border, #e2e8f0);
+}
+.ah-canvas-block.ah-block-active .ah-block-body { display: block; }
+
+/* Short controls (text/select) pair up two-per-row; long ones span the width.
+   A 13-field block like Hero renders ~7 rows instead of 13, so the whole block
+   fits on screen without scrolling. Falls back to single-column when narrow. */
+.ah-block-body {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+	gap: 8px 10px;
+	align-items: start;
+}
+.ah-block-body .ah-form-row { margin-bottom: 0; min-width: 0; }
+.ah-block-body .ah-form-row--textarea,
+.ah-block-body .ah-form-row--repeater { grid-column: 1 / -1; }
+.ah-block-body label {
+	display: block;
+	font-size: .7rem;
+	font-weight: 700;
+	margin-bottom: 2px;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+}
+.ah-block-body input,
+.ah-block-body textarea,
+.ah-block-body select {
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid var(--ah-border, #e2e8f0);
+	border-radius: 5px;
+	padding: 5px 8px;
+	font-size: .8rem;
+}
+.ah-block-body textarea { resize: vertical; min-height: 70px; }
+/* TinyMCE/quicktags inside a block body must not blow out the column width. */
+.ah-block-body .wp-editor-wrap { max-width: none; }
+.ah-block-body .wp-editor-wrap textarea { border-radius: 0; }
+.ah-block-body .mce-container,
+.ah-block-body .quicktags-toolbar { box-sizing: border-box; }
+
+/* Repeater rows */
+.ah-repeater {
+	border: 1px solid var(--ah-border, #e2e8f0);
+	border-radius: 6px;
+	overflow: hidden;
+	margin-top: 5px;
+}
+.ah-repeater-row {
+	display: grid;
+	gap: 5px;
+	padding: 8px 28px 8px 8px;
+	border-bottom: 1px solid var(--ah-border, #e2e8f0);
+	position: relative;
+	background: #fff;
+}
+.ah-repeater-row:last-of-type { border-bottom: none; }
+.ah-repeater-row label {
+	font-size: .66rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+}
+.ah-repeater-row .ah-remove-row {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: .72rem;
+	line-height: 1;
+	padding: 2px 4px;
+	border-radius: 3px;
+}
+.ah-add-row {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	width: 100%;
+	padding: 6px 10px;
+	border: none;
+	cursor: pointer;
+	font-size: .76rem;
+	font-weight: 600;
+	background: var(--ah-bg-light, #f8fafc);
+}
+
+/* ── Right: settings panel ─────────────────────────────────────────────── */
+.ah-settings-panel {
+	background: #fff;
+	border-left: 1px solid var(--ah-border, #e2e8f0);
+	padding: 10px;
+}
+.ah-settings-panel .ah-form-row { margin-bottom: 8px; }
+.ah-settings-panel label {
+	display: block;
+	font-size: .68rem;
+	font-weight: 700;
+	margin-bottom: 2px;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+}
+.ah-settings-panel input[type="text"],
+.ah-settings-panel select,
+.ah-settings-panel textarea {
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid var(--ah-border, #e2e8f0);
+	border-radius: 5px;
+	padding: 5px 8px;
+	font-size: .79rem;
+}
+.ah-settings-panel textarea { resize: vertical; }
+.ah-settings-panel small {
+	display: block;
+	font-size: .67rem;
+	margin-top: 2px;
+	word-break: break-all;
+	line-height: 1.35;
+}
+/* Inline checkbox rows shouldn't inherit the full-width field sizing. */
+.ah-settings-row--inline { display: flex; align-items: center; gap: 7px; }
+.ah-settings-row--inline input[type="checkbox"] { width: auto; margin: 0; flex-shrink: 0; }
+.ah-settings-row--inline label {
+	margin: 0;
+	text-transform: none;
+	letter-spacing: 0;
+	font-size: .8rem;
+	font-weight: 500;
+}
+
+/* Collapsible sections */
+.ah-settings-section {
+	border: 1px solid var(--ah-border, #e2e8f0);
+	border-radius: 8px;
+	margin-bottom: 8px;
+	overflow: hidden;
+}
+.ah-settings-section__head {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 8px 10px;
+	background: var(--ah-bg-light, #f8fafc);
+	border: none;
+	cursor: pointer;
+	text-align: left;
+}
+.ah-settings-section__title {
+	font-size: .68rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .07em;
+}
+.ah-settings-section__body { display: none; padding: 10px; }
+.ah-settings-section.is-open .ah-settings-section__body { display: block; }
+
+/* ── Drag feedback ─────────────────────────────────────────────────────── */
+.ui-sortable-helper { opacity: .92; }
+.ui-sortable-placeholder {
+	visibility: visible !important;
+	background: rgba(0, 0, 0, .04);
+	border: 2px dashed var(--ah-border, #e2e8f0);
+	border-radius: 8px;
+	margin-bottom: 8px;
+}
+
+/* ── Narrow screens: stop the 3-col grid collapsing into unusable slivers ─ */
+@media screen and (max-width: 1100px) {
+	.ah-builder-wrap {
+		grid-template-columns: 1fr;
+		height: auto;
+		overflow: visible;
+	}
+	.ah-palette,
+	.ah-canvas-wrap,
+	.ah-settings-panel { overflow: visible; max-height: none; }
+	.ah-palette { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, .06); }
+	.ah-settings-panel { border-left: none; border-top: 1px solid var(--ah-border, #e2e8f0); }
+}

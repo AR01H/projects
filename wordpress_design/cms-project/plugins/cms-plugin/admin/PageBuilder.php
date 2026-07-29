@@ -230,221 +230,6 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 <?php /* ══════════════ BUILDER VIEW ══════════════ */ ?>
 <?php else : ?>
 
-<style>
-/* ── Page Builder Styles ───────────────────────────────────────────────── */
-
-/* Top bar */
-.ah-builder-topbar {
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  padding:10px 20px; background:#fff;
-  border-bottom:1px solid var(--ah-border); box-shadow:0 1px 6px rgba(0,0,0,.05);
-  margin:0 -20px;  z-index:100;
-}
-.ah-builder-topbar input[type=text] {
-  border:1px solid var(--ah-border); border-radius:7px; padding:7px 12px;
-  font-size:.9rem; font-weight:600; max-width:300px;
-  transition:border-color .15s,box-shadow .15s;
-}
-.ah-builder-topbar input[type=text]:focus {
-  outline:none; border-color:var(--ah-primary); box-shadow:0 0 0 3px rgba(59,130,246,.12);
-}
-.ah-builder-topbar .ah-btn { padding:7px 16px; font-size:.8rem; }
-
-/* 3-column grid */
-.ah-builder-wrap {
-  display:grid; grid-template-columns:232px 1fr 236px;
-  gap:0; height:calc(100vh - 108px); overflow:hidden; margin:0 -20px;
-  border:1px solid var(--ah-border);
-}
-
-/* ── Left palette ──────────────────────────────────── */
-.ah-palette {
-  background:#181e2e; color:#c9d1e0; overflow-y:auto;
-  padding:10px 8px; border-right:1px solid rgba(255,255,255,.05);
-}
-.ah-palette h4 {
-  font-size:.58rem; text-transform:uppercase; letter-spacing:.13em; color:#4b5563;
-  margin:14px 0 5px; padding:0 8px;
-}
-.ah-palette h4:first-child { margin-top:4px; }
-.ah-palette-block {
-  display:flex; align-items:center; gap:9px; padding:8px 10px; border-radius:7px;
-  cursor:pointer; font-size:.79rem; font-weight:500; color:var(--ah-muted);
-  transition:background .12s,color .12s,transform .1s; margin-bottom:2px;
-}
-.ah-palette-block:hover { background:rgba(255,255,255,.1); color:#fff; transform:translateX(2px); }
-.ah-palette-block:active { transform:scale(.96); }
-.ah-palette-block .icon { font-size:.95rem; width:20px; text-align:center; flex-shrink:0; }
-
-/* ── Canvas ──────────────────────────────────────── */
-.ah-canvas-wrap { overflow-y:auto; background:#f1f3f6; padding:18px 16px; }
-.ah-canvas { min-height:calc(100vh - 180px); }
-.ah-canvas-empty {
-  text-align:center; padding:56px 20px; color:var(--ah-muted);
-  border:2px dashed var(--ah-border); border-radius:12px; background:#fff; margin-top:4px;
-}
-.ah-canvas-empty .icon { font-size:2.8rem; margin-bottom:10px; }
-
-/* Canvas blocks */
-.ah-canvas-block {
-  background:#fff; border-radius:10px; border:1.5px solid var(--ah-border);
-  margin-bottom:10px; overflow:hidden; transition:box-shadow .15s,border-color .15s;
-}
-.ah-canvas-block:hover { box-shadow:0 3px 14px rgba(0,0,0,.07); border-color:var(--ah-border); }
-.ah-canvas-block.ah-block-active { border-color:var(--ah-primary); box-shadow:0 0 0 3px rgba(59,130,246,.1); }
-
-.ah-block-header {
-  display:flex; align-items:center; gap:8px; padding:10px 14px;
-  background:var(--ah-bg-light); cursor:pointer; user-select:none;
-}
-.ah-canvas-block.ah-block-active .ah-block-header { background:var(--ah-bg-light); }
-
-.ah-block-handle { cursor:grab; color:var(--ah-border); font-size:.9rem; transition:color .15s; flex-shrink:0; }
-.ah-block-handle:hover { color:var(--ah-muted); }
-.ah-block-handle:active { cursor:grabbing; }
-
-.ah-block-title {
-  flex:1; font-size:.81rem; font-weight:600; color:var(--ah-text);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;
-}
-.ah-block-type-badge {
-  font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
-  padding:2px 7px; border-radius:20px; white-space:nowrap; flex-shrink:0;
-}
-.ah-block-actions { display:flex; align-items:center; gap:2px; flex-shrink:0; }
-.ah-block-actions button {
-  background:none; border:none; cursor:pointer; padding:4px 6px;
-  color:var(--ah-muted); border-radius:5px; font-size:.8rem; line-height:1;
-  transition:background .12s,color .12s;
-}
-.ah-block-actions button:hover { background:var(--ah-bg-light); color:var(--ah-text); }
-.ah-block-actions .ah-delete-block:hover { color:var(--ah-danger); background:var(--ah-bg-light); }
-.ah-block-actions .ah-toggle-block { font-size:.7rem; transition:background .12s,color .12s,transform .2s; }
-.ah-canvas-block.ah-block-active .ah-toggle-block { transform:rotate(180deg); }
-
-/* Block body */
-.ah-block-body { padding:14px 16px; display:none; border-top:1px solid #f0f2f5; }
-.ah-canvas-block.ah-block-active .ah-block-body { display:block; }
-.ah-block-body .ah-form-row { margin-bottom:10px; }
-.ah-block-body label {
-  font-size:.72rem; font-weight:700; color:var(--ah-muted); display:block;
-  margin-bottom:3px; text-transform:uppercase; letter-spacing:.04em;
-}
-.ah-block-body input, .ah-block-body textarea, .ah-block-body select {
-  width:100%; border:1px solid var(--ah-border); border-radius:6px;
-  padding:6px 9px; font-size:.82rem; box-sizing:border-box;
-  transition:border-color .15s,box-shadow .15s;
-}
-.ah-block-body input:focus, .ah-block-body textarea:focus, .ah-block-body select:focus {
-  outline:none; border-color:var(--ah-primary); box-shadow:0 0 0 2px rgba(59,130,246,.1);
-}
-.ah-block-body textarea { resize:vertical; min-height:76px; }
-.ah-block-body .wp-editor-wrap { max-width:none; }
-.ah-block-body .wp-editor-wrap textarea { border-radius:0; }
-.ah-block-body .mce-container, .ah-block-body .quicktags-toolbar { box-sizing:border-box; }
-
-/* Repeater */
-.ah-repeater { border:1px solid var(--ah-border); border-radius:8px; overflow:hidden; margin-top:6px; background:var(--ah-bg-light); }
-.ah-repeater-row {
-  display:grid; gap:6px; padding:10px 32px 10px 10px;
-  border-bottom:1px solid var(--ah-border); position:relative; background:#fff;
-}
-.ah-repeater-row:last-of-type { border-bottom:none; }
-.ah-repeater-row label { font-size:.68rem; color:var(--ah-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
-.ah-repeater-row .ah-remove-row {
-  position:absolute; top:8px; right:8px; background:none; border:none;
-  cursor:pointer; color:var(--ah-border); font-size:.75rem; line-height:1;
-  padding:3px 5px; border-radius:4px; transition:color .12s,background .12s;
-}
-.ah-repeater-row .ah-remove-row:hover { color:var(--ah-danger); background:var(--ah-bg-light); }
-.ah-add-row {
-  display:flex; align-items:center; justify-content:center; gap:4px;
-  padding:7px 12px; color:var(--ah-primary); font-size:.78rem; font-weight:600;
-  cursor:pointer; background:var(--ah-bg-light); border:none; width:100%;
-  transition:background .12s;
-}
-.ah-add-row:hover { background:var(--ah-bg-light); }
-
-/* ── Right settings panel ────────────────────────── */
-.ah-settings-panel {
-  background:#fff; border-left:1px solid var(--ah-border);
-  padding:14px 12px; overflow-y:auto;
-}
-.ah-settings-panel h4 {
-  font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
-  color:var(--ah-muted); margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid var(--ah-bg-light);
-}
-.ah-settings-panel .ah-form-row { margin-bottom:10px; }
-.ah-settings-panel label {
-  font-size:.7rem; font-weight:700; color:var(--ah-muted); display:block;
-  margin-bottom:3px; text-transform:uppercase; letter-spacing:.04em;
-}
-/* .ah-settings-panel input, */
- .ah-settings-panel select, .ah-settings-panel textarea {
-  width:100%; border:1px solid var(--ah-border); border-radius:6px;
-  padding:6px 8px; font-size:.8rem; box-sizing:border-box;
-  transition:border-color .15s,box-shadow .15s;
-}
-.ah-settings-panel input:focus, .ah-settings-panel select:focus, .ah-settings-panel textarea:focus {
-  outline:none; border-color:var(--ah-primary); box-shadow:0 0 0 2px rgba(59,130,246,.1);
-}
-.ah-settings-panel small { display:block; font-size:.68rem; color:var(--ah-muted); margin-top:3px; word-break:break-all; line-height:1.4; }
-
-/* Drag helpers */
-.ui-sortable-helper { box-shadow:0 12px 36px rgba(0,0,0,.18) !important; border-color:var(--ah-primary) !important; opacity:.92; }
-.ui-sortable-placeholder { background:var(--ah-bg-light); border:2px dashed var(--ah-border); border-radius:10px; margin-bottom:10px; }
-
-/* ── Visual polish ──────────────────────────────────────────────────────── */
-
-.ah-builder-topbar .ah-btn {
-  transition:transform .15s cubic-bezier(.16,1,.3,1), box-shadow .15s ease, background .15s ease;
-}
-.ah-builder-topbar .ah-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,.08); }
-.ah-builder-topbar .ah-btn:active { transform:translateY(0) scale(.97); }
-
-/* Palette: accent reveal + icon pop + staggered entrance */
-.ah-palette-block {
-  position:relative; overflow:hidden;
-  transition:background .15s ease,color .15s ease,transform .18s cubic-bezier(.16,1,.3,1);
-  animation:ahPaletteFadeIn .35s cubic-bezier(.16,1,.3,1) both;
-}
-.ah-palette-block::before {
-  content:''; position:absolute; left:0; top:8px; bottom:8px; width:3px; border-radius:2px;
-  background:linear-gradient(180deg,var(--ah-primary),#60a5fa);
-  transform:scaleY(0); transform-origin:center; transition:transform .18s cubic-bezier(.16,1,.3,1);
-}
-.ah-palette-block:hover::before { transform:scaleY(1); }
-.ah-palette-block:hover .icon { transform:scale(1.18); }
-.ah-palette-block .icon { transition:transform .18s cubic-bezier(.16,1,.3,1); display:inline-block; }
-@keyframes ahPaletteFadeIn { from { opacity:0; transform:translateX(-6px); } to { opacity:1; transform:translateX(0); } }
-
-/* Canvas: smoother easing + block-added entrance */
-.ah-canvas-block {
-  transition:box-shadow .2s cubic-bezier(.16,1,.3,1), border-color .2s cubic-bezier(.16,1,.3,1), transform .2s cubic-bezier(.16,1,.3,1);
-}
-.ah-canvas-block.ah-block-just-added { animation:ahBlockAddedIn .35s cubic-bezier(.16,1,.3,1) both; }
-@keyframes ahBlockAddedIn { from { opacity:0; transform:translateY(10px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
-.ah-block-toggle-icon { transition:transform .2s cubic-bezier(.16,1,.3,1); }
-
-/* Settings panel: collapsible section cards */
-.ah-settings-section {
-  background:#fff; border:1px solid var(--ah-border); border-radius:10px;
-  margin-bottom:10px; overflow:hidden;
-}
-.ah-settings-section__head {
-  width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px;
-  padding:10px 12px; background:var(--ah-bg-light); border:none; cursor:pointer; text-align:left;
-}
-.ah-settings-section__title {
-  font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--ah-muted);
-}
-.ah-settings-section__chevron { font-size:.75rem; color:var(--ah-muted); transition:transform .2s cubic-bezier(.16,1,.3,1); }
-.ah-settings-section.is-open .ah-settings-section__chevron { transform:rotate(180deg); }
-.ah-settings-section__body { display:none; padding:12px; }
-.ah-settings-section.is-open .ah-settings-section__body { display:block; animation:ahSectionOpen .18s cubic-bezier(.16,1,.3,1) both; }
-@keyframes ahSectionOpen { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
-.ah-settings-section--danger .ah-settings-section__title { color:var(--ah-danger); }
-</style>
 
 <form id="ah-builder-form" method="post">
   <?php wp_nonce_field( 'ah_builder_save', 'ah_builder_nonce' ); ?>
@@ -452,19 +237,19 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
 
   <!-- Top Bar -->
   <div class="ah-builder-topbar">
-    <div style="display:flex;align-items:center;gap:12px">
+    <div class="ah-builder-topbar__group">
       <a href="<?php echo esc_url( admin_url( 'admin.php?page=ah-page-builder' ) ); ?>"
-         style="color:var(--ah-text-muted);text-decoration:none;font-size:1.2rem" title="Back to pages">←</a>
+         class="ah-builder-topbar__back" title="Back to pages">←</a>
       <input type="text" name="page_title" id="page-title"
              value="<?php echo esc_attr( $current_page->title ?? '' ); ?>"
-             placeholder="Page Title…" required style="font-weight:600;">
+             placeholder="Page Title…" required>
     </div>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div class="ah-builder-topbar__group">
       <?php if ( $current_page ) : ?>
         <a href="<?php echo esc_url( home_url( '/' . esc_attr( $current_page->slug ) . '/' ) ); ?>"
-           target="_blank" class="ah-btn ah-btn-secondary" style="padding:7px 14px;font-size:.8rem">👁 Preview</a>
+           target="_blank" class="ah-btn ah-btn-secondary">👁 Preview</a>
       <?php endif; ?>
-      <select name="page_status" style="border:1px solid var(--ah-border);border-radius:4px;font-size:.82rem">
+      <select name="page_status">
         <option value="draft" <?php selected( $current_page->status ?? 'draft', 'draft' ); ?>>Draft</option>
         <option value="active" <?php selected( $current_page->status ?? '', 'active' ); ?>>Published</option>
       </select>
@@ -476,47 +261,69 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
   <div class="ah-builder-wrap">
 
     <!-- LEFT: Block Palette -->
-    <div class="ah-palette">
-      <h4>Layout</h4>
-      <div class="ah-palette-block" data-type="hero">          <span class="icon">🎯</span> Hero Banner</div>
-      <div class="ah-palette-block" data-type="section_heading"><span class="icon">📌</span> Section Heading</div>
-      <div class="ah-palette-block" data-type="text_block">    <span class="icon">📝</span> Rich Text</div>
-      <div class="ah-palette-block" data-type="columns">       <span class="icon">⬛</span> 2-Col Text</div>
-      <div class="ah-palette-block" data-type="tabs">          <span class="icon">🗂️</span> Tabs</div>
-      <div class="ah-palette-block" data-type="divider">       <span class="icon">➖</span> Divider</div>
-      <div class="ah-palette-block" data-type="spacer">        <span class="icon">↕️</span> Spacer</div>
+    <div class="ah-palette" id="ah-palette">
 
-      <h4>Media</h4>
-      <div class="ah-palette-block" data-type="gallery">       <span class="icon">🖼️</span> Gallery</div>
-      <div class="ah-palette-block" data-type="video">         <span class="icon">▶️</span> Video Embed</div>
-      <div class="ah-palette-block" data-type="map_embed">     <span class="icon">📍</span> Map Embed</div>
-      <div class="ah-palette-block" data-type="logo_strip">    <span class="icon">🏷️</span> Logo Strip</div>
+      <?php /* No name attr: this filter box must never be submitted with the form. */ ?>
+      <div class="ah-palette__search">
+        <input type="search" id="ah-block-search" placeholder="Search blocks…" autocomplete="off">
+      </div>
 
-      <h4>Content</h4>
-      <div class="ah-palette-block" data-type="cards">         <span class="icon">🃏</span> Card Grid</div>
-      <div class="ah-palette-block" data-type="image_text">    <span class="icon">🖼️</span> Image + Text</div>
-      <div class="ah-palette-block" data-type="testimonial">   <span class="icon">💬</span> Testimonial</div>
-      <div class="ah-palette-block" data-type="steps">         <span class="icon">🔢</span> Steps / Process</div>
-      <div class="ah-palette-block" data-type="timeline">      <span class="icon">📅</span> Timeline</div>
-      <div class="ah-palette-block" data-type="icon_list">     <span class="icon">✅</span> Icon List</div>
-      <div class="ah-palette-block" data-type="pull_quote">    <span class="icon">❝</span> Pull Quote</div>
-      <div class="ah-palette-block" data-type="comparison">    <span class="icon">⚖️</span> Comparison Table</div>
-      <div class="ah-palette-block" data-type="pricing">       <span class="icon">💰</span> Pricing Card</div>
+      <div class="ah-palette__list">
+        <div class="ah-palette__group">
+          <h4>Layout</h4>
+          <div class="ah-palette-block" data-type="hero">          <span class="icon">🎯</span> Hero Banner</div>
+          <div class="ah-palette-block" data-type="section_heading"><span class="icon">📌</span> Section Heading</div>
+          <div class="ah-palette-block" data-type="text_block">    <span class="icon">📝</span> Rich Text</div>
+          <div class="ah-palette-block" data-type="columns">       <span class="icon">⬛</span> 2-Col Text</div>
+          <div class="ah-palette-block" data-type="tabs">          <span class="icon">🗂️</span> Tabs</div>
+          <div class="ah-palette-block" data-type="divider">       <span class="icon">➖</span> Divider</div>
+          <div class="ah-palette-block" data-type="spacer">        <span class="icon">↕️</span> Spacer</div>
+        </div>
 
-      <h4>Action</h4>
-      <div class="ah-palette-block" data-type="cta_banner">    <span class="icon">📣</span> CTA Banner</div>
-      <div class="ah-palette-block" data-type="stats_row">     <span class="icon">📊</span> Stats Row</div>
-      <div class="ah-palette-block" data-type="faq">           <span class="icon">❓</span> FAQ Accordion</div>
-      <div class="ah-palette-block" data-type="alert">         <span class="icon">📢</span> Alert / Notice</div>
-      <div class="ah-palette-block" data-type="notice_bar">    <span class="icon">📯</span> Notice Bar</div>
-      <div class="ah-palette-block" data-type="download">      <span class="icon">⬇️</span> Download Button</div>
+        <div class="ah-palette__group">
+          <h4>Media</h4>
+          <div class="ah-palette-block" data-type="gallery">       <span class="icon">🖼️</span> Gallery</div>
+          <div class="ah-palette-block" data-type="video">         <span class="icon">▶️</span> Video Embed</div>
+          <div class="ah-palette-block" data-type="map_embed">     <span class="icon">📍</span> Map Embed</div>
+          <div class="ah-palette-block" data-type="logo_strip">    <span class="icon">🏷️</span> Logo Strip</div>
+        </div>
 
-      <h4>People & Contact</h4>
-      <div class="ah-palette-block" data-type="contact_card">  <span class="icon">📇</span> Contact Card</div>
+        <div class="ah-palette__group">
+          <h4>Content</h4>
+          <div class="ah-palette-block" data-type="cards">         <span class="icon">🃏</span> Card Grid</div>
+          <div class="ah-palette-block" data-type="image_text">    <span class="icon">🖼️</span> Image + Text</div>
+          <div class="ah-palette-block" data-type="testimonial">   <span class="icon">💬</span> Testimonial</div>
+          <div class="ah-palette-block" data-type="steps">         <span class="icon">🔢</span> Steps / Process</div>
+          <div class="ah-palette-block" data-type="timeline">      <span class="icon">📅</span> Timeline</div>
+          <div class="ah-palette-block" data-type="icon_list">     <span class="icon">✅</span> Icon List</div>
+          <div class="ah-palette-block" data-type="pull_quote">    <span class="icon">❝</span> Pull Quote</div>
+          <div class="ah-palette-block" data-type="comparison">    <span class="icon">⚖️</span> Comparison Table</div>
+          <div class="ah-palette-block" data-type="pricing">       <span class="icon">💰</span> Pricing Card</div>
+        </div>
 
-      <h4>Navigation</h4>
-      <div class="ah-palette-block" data-type="button_row">    <span class="icon">🔘</span> Button Row</div>
-      <div class="ah-palette-block" data-type="links_list">    <span class="icon">🔗</span> Links List</div>
+        <div class="ah-palette__group">
+          <h4>Action</h4>
+          <div class="ah-palette-block" data-type="cta_banner">    <span class="icon">📣</span> CTA Banner</div>
+          <div class="ah-palette-block" data-type="stats_row">     <span class="icon">📊</span> Stats Row</div>
+          <div class="ah-palette-block" data-type="faq">           <span class="icon">❓</span> FAQ Accordion</div>
+          <div class="ah-palette-block" data-type="alert">         <span class="icon">📢</span> Alert / Notice</div>
+          <div class="ah-palette-block" data-type="notice_bar">    <span class="icon">📯</span> Notice Bar</div>
+          <div class="ah-palette-block" data-type="download">      <span class="icon">⬇️</span> Download Button</div>
+        </div>
+
+        <div class="ah-palette__group">
+          <h4>People &amp; Contact</h4>
+          <div class="ah-palette-block" data-type="contact_card">  <span class="icon">📇</span> Contact Card</div>
+        </div>
+
+        <div class="ah-palette__group">
+          <h4>Navigation</h4>
+          <div class="ah-palette-block" data-type="button_row">    <span class="icon">🔘</span> Button Row</div>
+          <div class="ah-palette-block" data-type="links_list">    <span class="icon">🔗</span> Links List</div>
+        </div>
+
+        <div class="ah-palette__empty">No blocks match that search.</div>
+      </div>
     </div>
 
     <!-- MIDDLE: Canvas -->
@@ -596,7 +403,9 @@ $page_opts       = $edit_id ? (array) get_option( 'ah_bp_' . $edit_id . '_opts',
         </div>
       </div>
 
-      <div class="ah-settings-section is-open">
+      <?php /* Collapsed by default: 8 fields behind its own enable toggle, and
+               leaving it open pushed Page Settings and Layout off-screen. */ ?>
+      <div class="ah-settings-section">
         <button type="button" class="ah-settings-section__head">
           <span class="ah-settings-section__title">Bottom CTA</span>
           <span class="ah-settings-section__chevron">▾</span>
@@ -1119,6 +928,7 @@ function buildBlockHTML(block) {
   html += '<span class="ah-block-type-badge" style="background:'+hexToLight(def.color)+';color:'+def.color+'">'+def.label+'</span>';
   html += '<div class="ah-block-actions">';
   html += '<button type="button" class="ah-toggle-block" title="Edit block">▼</button>';
+  html += '<button type="button" class="ah-duplicate-block" title="Duplicate block">⧉</button>';
   html += '<button type="button" class="ah-delete-block" title="Delete block">✕</button>';
   html += '</div>';
   html += '</div>';
@@ -1128,7 +938,9 @@ function buildBlockHTML(block) {
   // Regular fields
   def.fields.forEach(function(f){
     var val = data[f.key] !== undefined ? data[f.key] : (f.def||'');
-    html += '<div class="ah-form-row"><label>'+esc(f.label)+'</label>';
+    // Type modifier lets CSS lay short controls out two-per-row while textareas
+    // (and repeaters below) still span the full width.
+    html += '<div class="ah-form-row ah-form-row--'+(f.type||'text')+'"><label>'+esc(f.label)+'</label>';
     if (f.type === 'textarea') {
       var richClass = block.type === 'text_block' && f.key === 'content' ? ' class="ah-rich-editor"' : '';
       var richId = block.type === 'text_block' && f.key === 'content' ? ' id="ah-rich-editor-'+id+'"' : '';
@@ -1146,7 +958,7 @@ function buildBlockHTML(block) {
   // Common fields (anchor + padding) - appended to every block
   COMMON_FIELDS.forEach(function(f){
     var val = data[f.key] !== undefined ? data[f.key] : (f.def||'');
-    html += '<div class="ah-form-row"><label>'+esc(f.label)+'</label>';
+    html += '<div class="ah-form-row ah-form-row--'+(f.type||'text')+'"><label>'+esc(f.label)+'</label>';
     if (f.type === 'select') {
       html += '<select data-block-id="'+id+'" data-field="'+f.key+'">';
       (f.options||[]).forEach(function(o){ html += '<option value="'+o+'"'+(val===o?' selected':'')+'>'+o+'</option>'; });
@@ -1161,7 +973,7 @@ function buildBlockHTML(block) {
   if (def.repeater) {
     var rep = def.repeater;
     var items = data[rep.key] || [];
-    html += '<div class="ah-form-row"><label>'+esc(rep.label)+'</label>';
+    html += '<div class="ah-form-row ah-form-row--repeater"><label>'+esc(rep.label)+'</label>';
     html += '<div class="ah-repeater" data-block-id="'+id+'" data-repeater="'+rep.key+'">';
     if (items.length === 0) items = [{}]; // always show at least one row
     items.forEach(function(item, ri){
@@ -1291,6 +1103,42 @@ function syncField($el) {
 
 // ── Event Handlers ────────────────────────────────────────────────────────────
 // Add block from palette
+/* ── Palette search ──────────────────────────────────────────────────────
+   Filters by visible label AND data-type, so "cta" finds "CTA Banner" and
+   "notice_bar" finds "Notice Bar". Category headings hide when every block
+   inside them is filtered out. CSS owns the actual hiding via .is-filtered-out. */
+var $palette      = $('#ah-palette');
+var $paletteGroup = $palette.find('.ah-palette__group');
+var $searchInput  = $('#ah-block-search');
+
+$searchInput.on('input', function(){
+  var q = $.trim(this.value).toLowerCase();
+  if (!q) {
+    $palette.removeClass('is-empty');
+    $paletteGroup.removeClass('is-filtered-out').find('.ah-palette-block').removeClass('is-filtered-out');
+    return;
+  }
+  var anyVisible = false;
+  $paletteGroup.each(function(){
+    var $group = $(this), groupHas = false;
+    $group.find('.ah-palette-block').each(function(){
+      var $b    = $(this);
+      var hay   = ($b.text() + ' ' + ($b.data('type') || '')).toLowerCase();
+      var match = hay.indexOf(q) !== -1;
+      $b.toggleClass('is-filtered-out', !match);
+      if (match) { groupHas = true; }
+    });
+    $group.toggleClass('is-filtered-out', !groupHas);
+    if (groupHas) { anyVisible = true; }
+  });
+  $palette.toggleClass('is-empty', !anyVisible);
+});
+
+/* Enter inside the search box must filter, never submit/save the page. */
+$searchInput.on('keydown', function(e){
+  if (e.key === 'Enter' || e.which === 13) { e.preventDefault(); }
+});
+
 $('.ah-palette-block').on('click', function(){
   var type = $(this).data('type');
   var def  = BLOCK_DEFS[type];
@@ -1310,12 +1158,33 @@ $('.ah-palette-block').on('click', function(){
 
 // Toggle block expand/collapse
 $(document).on('click', '.ah-block-header', function(e){
-  if ($(e.target).is('.ah-block-handle, .ah-delete-block')) return;
+  if ($(e.target).is('.ah-block-handle, .ah-delete-block, .ah-duplicate-block')) return;
   var $block = $(this).closest('.ah-canvas-block');
   $block.toggleClass('ah-block-active');
   if ($block.hasClass('ah-block-active')) {
     initRichEditors();
   }
+});
+
+// Duplicate block - deep-copies the block's data (repeater rows included) and
+// inserts the copy directly below the original, so a configured block with many
+// fields can be reused without re-entering everything.
+$(document).on('click', '.ah-duplicate-block', function(e){
+  e.stopPropagation();
+  var bid = parseInt($(this).closest('.ah-canvas-block').data('block-id'));
+  var idx = -1;
+  for (var i = 0; i < blocks.length; i++) { if (blocks[i]._id === bid) { idx = i; break; } }
+  if (idx === -1) return;
+
+  var copy = JSON.parse(JSON.stringify(blocks[idx]));
+  copy._id = ++blockIdCounter;
+  blocks.splice(idx + 1, 0, copy);
+  renderCanvas();
+
+  var $new = $('#ah-canvas .ah-canvas-block[data-block-id="' + copy._id + '"]');
+  $new.addClass('ah-block-just-added');
+  setTimeout(function(){ $new.removeClass('ah-block-just-added'); }, 400);
+  if ($new[0]) { $new[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 });
 
 // Delete block

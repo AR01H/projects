@@ -97,6 +97,57 @@ class CategoryContext {
 		);
 	}
 
+	/**
+	 * Popular Guides - the posts hand-picked in
+	 * wp-admin -> Category Pages -> {term} -> Content -> Popular Posts.
+	 *
+	 * Admin stores only WordPress post IDs ([{post_id:365},...]); title/URL/image
+	 * are resolved fresh here on every build (as the admin screen promises), so
+	 * renaming or re-slugging a post is reflected without re-saving the term.
+	 * Unpublished/trashed/deleted picks are skipped rather than rendering dead links.
+	 *
+	 * Returns the same { heading:{title}, items:[{title,url,image}] } shape as
+	 * buildGuides()/buildRegulations() so consumers can treat all three alike -
+	 * note the admin saves `heading` as a plain string, which is normalised here.
+	 */
+	public static function buildPopularPosts( array $cs_all ): array {
+		$cs_pp = $cs_all['popular_posts'] ?? array();
+
+		$heading = '';
+		if ( isset( $cs_pp['heading'] ) ) {
+			$heading = is_array( $cs_pp['heading'] )
+				? (string) ( $cs_pp['heading']['title'] ?? '' )
+				: (string) $cs_pp['heading'];
+		}
+
+		$items = array();
+		foreach ( (array) ( $cs_pp['items'] ?? array() ) as $row ) {
+			$pid = isset( $row['post_id'] ) ? (int) $row['post_id'] : 0;
+			if ( $pid < 1 ) { continue; }
+
+			$post = get_post( $pid );
+			if ( ! $post || 'publish' !== $post->post_status ) { continue; }
+
+			$img = get_the_post_thumbnail_url( $pid, 'medium' );
+
+			$items[] = array(
+				// Decoded to plain UTF-8: get_the_title() runs wptexturize, which turns
+				// "-" into the entity "&#8211;". Consumers esc_html() this, which would
+				// re-escape the "&" and print the entity literally. Decode once here.
+				'title' => html_entity_decode( get_the_title( $pid ), ENT_QUOTES, 'UTF-8' ),
+				'url'   => (string) get_permalink( $pid ),
+				'image' => $img ? (string) $img : '',
+			);
+		}
+
+		return array(
+			'heading' => array(
+				'title' => '' !== $heading ? $heading : adn_term( 'category_page.popular_guides', 'Popular Guides' ),
+			),
+			'items'   => $items,
+		);
+	}
+
 	// ── Regulations section ─────────────────────────────────────
 	public static function buildRegulations( string $slug ): array {
 		return array(
@@ -229,7 +280,10 @@ class CategoryContext {
 			'groups' => function_exists( 'adn_get_all_parent_terms_for_sidebar' )
 				? adn_get_all_parent_terms_for_sidebar( $slug )
 				: array(),
-			'popular_posts'    => $cs_all['popular_posts'] ?? array(),
+			// Same resolved array as $ctx['popular_posts'] - deliberately not the raw
+			// $cs_all value, so the sidebar and the Popular Guides column can never
+			// drift apart (they did: this used to hand back unresolved post IDs).
+			'popular_posts'    => self::buildPopularPosts( $cs_all ),
 			'featured_topics'  => $featured_topics,
 			'hot_topics'       => $hot_topics,
 			'calculators'      => $cs_all['calculators'] ?? array(),
@@ -332,6 +386,7 @@ class CategoryContext {
 			'breadcrumb'    => self::buildBreadcrumb( $name ),
 			'hero'          => self::buildHero( $slug, $term_data, $cs_all ),
 			'guides'        => self::buildGuides( $slug ),
+			'popular_posts' => self::buildPopularPosts( $cs_all ),
 			'regulations'   => self::buildRegulations( $slug ),
 			'journey'       => self::buildJourney( $cs_all, $name ),
 			'calculators'   => self::buildCalculators( $slug, $name, $cs_all ),
