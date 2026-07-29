@@ -8,6 +8,9 @@ defined( 'ABSPATH' ) || exit;
  * each tile opens the shared lightbox) followed by the full review text
  * underneath - nothing hidden behind a click/hover. Used by
  * AH_Reviews_Model::render_review() for representing = 'with_photos'.
+ *
+ * Theme-level override of plugins/cms-plugin/models/reviews/render-with-photos.php -
+ * see render-big.php's own header comment for how the override resolves.
  */
 function ah_review_render_with_photos( object $r ): string {
 	$uid        = 'ah_review_' . (int) $r->id;

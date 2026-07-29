@@ -16,6 +16,7 @@ class AH_DB_Migrations {
 		self::events_notification_columns();
 		self::reviews_short_desc();
 		self::reviews_division_columns();
+		self::reviews_story_columns();
 		self::news_bar_content();
 		self::news_bar_image();
 		self::news_bar_label_excerpt();
@@ -95,6 +96,16 @@ class AH_DB_Migrations {
 		if ( ! $has_index ) {
 			$wpdb->query( "ALTER TABLE `{$t}` ADD INDEX `idx_division` (`division_category`)" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
+	}
+
+	/**
+	 * story_title / stat_line back the 'property_deck' and 'case_study'
+	 * representing layouts (a headline like "The Mehta Family's First Home"
+	 * and a one-line result highlight like "Negotiation Win: £27,500 Saved").
+	 */
+	public static function reviews_story_columns(): void {
+		self::add_column_if_missing( 'ah_reviews', 'story_title', 'VARCHAR(150) DEFAULT NULL AFTER `representing`' );
+		self::add_column_if_missing( 'ah_reviews', 'stat_line',   'VARCHAR(150) DEFAULT NULL AFTER `story_title`' );
 	}
 
 	public static function news_bar_content(): void {

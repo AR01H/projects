@@ -100,7 +100,9 @@ $uid = 'rvc-' . ( ++$_rvc_uid );
 		var scrollable = isScrollable();
 		prev.classList.toggle('rvc-hidden', !scrollable);
 		next.classList.toggle('rvc-hidden', !scrollable);
-		dotsW.style.display = ( scrollable && total > 1 ) ? 'flex' : 'none';
+		/* Class, not inline display: CSS decides whether dots are actually shown
+		   (small screens only) - an inline style would beat the media query. */
+		dotsW.classList.toggle( 'is-available', scrollable && total > 1 );
 		if (!scrollable) return;
 		prev.disabled = track.scrollLeft < 2;
 		next.disabled = atEnd();

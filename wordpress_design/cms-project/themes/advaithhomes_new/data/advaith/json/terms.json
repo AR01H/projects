@@ -144,6 +144,7 @@
         "expert":           "Ask an Expert",
         "guidance":         "Get Expert Guidance",
         "faqs":             "Frequently Asked Questions",
+        "reviews":          "Client Reviews",
         "search":           "Search Results",
         "coming_soon":      "Coming Soon"
     },
@@ -177,6 +178,17 @@
         "hero_description": "Discover one of the UK's growing collections of property guides, bringing together practical information, expert insights, helpful checklists, calculators and answers to frequently asked questions—all in one place. Whether you're just starting your property journey or preparing for your next move, our guides are designed to simplify complex topics and help you make better property decisions with confidence.",
         "meta_description": "Browse our complete library of property guides covering buying, selling and moving home in the UK.",
         "sidebar_browse_heading": "Browse by Topic"
+    },
+
+    "reviews_page": {
+        "hero_description": "",
+        "section_spotlight":     "Client Spotlights",
+        "section_property_deck": "Explore Our Success Stories",
+        "section_full_story":    "Full Stories",
+        "section_case_study":    "Case Studies",
+        "section_with_photos":   "Reviews with Photos",
+        "section_standard":      "Client Reviews",
+        "section_quick":         "Quick Feedback"
     },
 
     "sidebar": {

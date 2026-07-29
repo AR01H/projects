@@ -66,6 +66,32 @@ class AssetLoader {
 		self::loadTracking();
 		self::loadEmbedMode();
 		self::loadBlockRenderer();
+		self::loadReviewCards();
+	}
+
+	/**
+	 * Review card design CSS — loaded on EVERY frontend page, not just the
+	 * /reviews/ listing or Home carousel. [ah_review id="X"] is a real
+	 * WordPress shortcode (AH_Review_Shortcode) that can be dropped into any
+	 * page or post's content, so there's no single template to key this off
+	 * the way loadBlockRenderer() keys off $GLOBALS['ah_builder_page'].
+	 *
+	 * Same two-file cascade as loadBlockRenderer(): the plugin's own
+	 * theme-agnostic structural CSS first, then this theme's color/font
+	 * design layer (review-cards-theme.css) on top of it.
+	 */
+	private static function loadReviewCards(): void {
+		if ( \defined( 'AH_PLUGIN_URL' ) && \defined( 'AH_PLUGIN_DIR' ) ) {
+			$base_path = \AH_PLUGIN_DIR . '/assets/css/review-cards-base.css';
+			if ( \file_exists( $base_path ) ) {
+				\wp_enqueue_style( 'ah-review-cards-base', \AH_PLUGIN_URL . '/assets/css/review-cards-base.css', [ 'adn-varaibles-style' ], self::version( $base_path ) );
+			}
+		}
+
+		$theme_path = \ADN_THEME_DIR . '/assets/css/review-cards-theme.css';
+		if ( \file_exists( $theme_path ) ) {
+			\wp_enqueue_style( 'ah-review-cards-theme', \ADN_THEME_URI . '/assets/css/review-cards-theme.css', [ 'ah-review-cards-base' ], self::version( $theme_path ) );
+		}
 	}
 
 	/**

@@ -6,6 +6,9 @@ defined( 'ABSPATH' ) || exit;
  * mini description teaser. Back (hover on desktop, tap on mobile): the full
  * review text on a gold gradient. Used by AH_Reviews_Model::render_review()
  * for representing = 'big_box' (the default).
+ *
+ * Theme-level override of plugins/cms-plugin/models/reviews/render-big.php -
+ * see render-big.php's own header comment for how the override resolves.
  */
 function ah_review_render_big( object $r ): string {
 	$uid     = 'ah_review_' . (int) $r->id;

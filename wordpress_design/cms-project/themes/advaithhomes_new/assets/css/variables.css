@@ -150,3 +150,24 @@
     --color-pill-selling-bg:   #fce7f3;
     --color-pill-selling-text: #831843;
 }
+/* ── Mobile display font ──────────────────────────────────────────────────
+   Playfair Display is a high-contrast serif: its hairline strokes thin out and
+   read as scratchy/uneven at phone sizes. Below 768px the display face falls
+   back to Inter - the only other family self-hosted in fonts.css, so this adds
+   no extra webfont request and keeps the type system to two families.
+   Weight and tracking are nudged so headings still read as headings rather
+   than as body copy. */
+@media (max-width: 768px) {
+    :root {
+        --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+        /* .fi-label in shared.css reads --font-heading and falls back to a
+           literal 'Playfair Display', so it needs the token set explicitly. */
+        --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    h1, h2, h3, h4,
+    .fi-label {
+        letter-spacing: -0.015em;
+        font-weight: 700;
+    }
+}

@@ -2,20 +2,25 @@
 /**
  * Template Name: Reviews
  *
- * pages/PageReviews.php - Paginated listing of active client reviews from
- * AH_Reviews_Model. Each card renders via AH_Reviews_Model::render_review(),
- * so the "big_box" / "mini_card" / "full_story" layout each review uses is
- * whatever was chosen for it in the CMS admin (Representing field) - the
- * page itself doesn't hardcode a single card design.
+ * pages/PageReviews.php - Listing of active client reviews from
+ * AH_Reviews_Model, organised into one section per card design (Spotlight /
+ * Property Deck / Full Story / Case Study / With Photos / Client Reviews /
+ * Quick Feedback) instead of a single interleaved list - so each design
+ * reads as its own showcase rather than being scattered wherever an admin's
+ * sort_order happened to place it. Section order/headings: see
+ * REVIEW_SECTIONS below. Spotlight and Property Deck render via their own
+ * section components (a synced slider/fan-carousel needs the whole group of
+ * reviews at once); every other section loops AH_Reviews_Model::render_review()
+ * per card, whatever layout was chosen for it in the CMS admin (Representing
+ * field) - see AH_Reviews_Model::representing_variants().
  */
 
 defined( 'ABSPATH' ) || exit;
 
 get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
-// ── Page + pagination ────────────────────────────────────────────────────
+// ── Page + reviews ────────────────────────────────────────────────────────
 $page_id = get_queried_object_id();
-$paged   = isset( $_GET['paged'] ) ? max( 1, absint( $_GET['paged'] ) ) : 1;
 
 $review_header = null;
 if ( class_exists( 'AH_Reviews_Model' ) ) {
@@ -26,20 +31,48 @@ if ( class_exists( 'AH_Reviews_Model' ) ) {
     }
 }
 
-$items = array();
-$meta  = array( 'total' => 0, 'total_pages' => 1, 'current_page' => 1 );
+// One section per `representing` type, in display order. 'mini_card' tiles
+// into a compact grid (reviews-grid); 'case_study' tiles into a wider 3-col
+// grid (reviews-grid-case); every other type is a full-width stacked row
+// (reviews-grid-full) - matches the card CSS. 'spotlight' and 'property_deck'
+// are rendered by their own section components instead of the generic grid
+// (see the 'grid' value below is only used as a fallback/CSS class for them).
+$REVIEW_SECTIONS = array(
+    'spotlight'     => array( 'heading' => adn_term( 'reviews_page.section_spotlight',     'Client Spotlights' ),   'grid' => 'full' ),
+    'property_deck' => array( 'heading' => adn_term( 'reviews_page.section_property_deck', 'Explore Our Success Stories' ), 'grid' => 'full' ),
+    'full_story'    => array( 'heading' => adn_term( 'reviews_page.section_full_story',    'Full Stories' ),        'grid' => 'full' ),
+    'case_study'    => array( 'heading' => adn_term( 'reviews_page.section_case_study',    'Case Studies' ),        'grid' => 'case' ),
+    'with_photos'   => array( 'heading' => adn_term( 'reviews_page.section_with_photos',   'Reviews with Photos' ), 'grid' => 'full' ),
+    'big_box'       => array( 'heading' => adn_term( 'reviews_page.section_standard',      'Client Reviews' ),      'grid' => 'full' ),
+    'mini_card'     => array( 'heading' => adn_term( 'reviews_page.section_quick',         'Quick Feedback' ),      'grid' => 'mini' ),
+);
+
+$grouped = array_fill_keys( array_keys( $REVIEW_SECTIONS ), array() );
+$items   = array();
 if ( class_exists( 'AH_Reviews_Model' ) ) {
     try {
-        $result = ( new AH_Reviews_Model() )->get_paginated( $paged, '', 'active' );
-        $items  = isset( $result['items'] ) ? (array) $result['items'] : array();
-        $meta   = isset( $result['meta'] )  ? (array) $result['meta']  : $meta;
+        $items = ( new AH_Reviews_Model() )->all( array(
+            'where'    => "status = 'active'",
+            'order_by' => 'sort_order',
+            'order'    => 'ASC',
+        ) );
+        foreach ( $items as $_review ) {
+            $_type = (string) ( $_review->representing ?? '' );
+            if ( isset( $grouped[ $_type ] ) ) {
+                $grouped[ $_type ][] = $_review;
+            } else {
+                // Unrecognised/empty representing value - render_review() itself
+                // already falls back to Big Box for these, so group them there too.
+                $grouped['big_box'][] = $_review;
+            }
+        }
     } catch ( Throwable $e ) {
         $items = array();
     }
 }
 
 $_header_heading     = is_object( $review_header ) && ! empty( $review_header->heading )     ? (string) $review_header->heading     : PAGE_TITLE_REVIEWS;
-$_header_description = is_object( $review_header ) && ! empty( $review_header->description ) ? (string) $review_header->description : '';
+$_header_description = is_object( $review_header ) && ! empty( $review_header->description ) ? (string) $review_header->description : adn_term( 'reviews_page.hero_description', '' );
 
 // ── Page chrome ────────────────────────────────────────────────────────────
 $chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
@@ -79,41 +112,37 @@ adn_page_open( $ctx );
     <?php if ( empty( $items ) ) : ?>
         <p class="muted"><?php esc_html_e( 'No reviews available yet. Please check back soon.', ADN_TEXT_DOMAIN ); ?></p>
     <?php else : ?>
-        <?php
-        // Mini Card reviews tile together in a compact multi-column grid; every
-        // other layout (Big Box / With Photos / Full Story) is 100% width by
-        // design, so each one gets its own full-width row instead of being
-        // squeezed into a grid cell. Consecutive same-kind reviews share one
-        // wrapper; a type change closes the previous wrapper and opens the next.
-        $_open_group = null;
-        foreach ( $items as $_review ) :
-            $_group = ( 'mini_card' === ( $_review->representing ?? '' ) ) ? 'mini' : 'full';
-            if ( $_group !== $_open_group ) :
-                if ( $_open_group ) : ?></div><?php endif; ?>
-                <div class="<?php echo 'mini' === $_group ? 'reviews-grid' : 'reviews-grid-full'; ?>">
-                <?php $_open_group = $_group;
-            endif; ?>
-            <div class="reviews-grid__item">
-                <?php echo AH_Reviews_Model::render_review( $_review ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_review() already escapes every field internally. ?>
-            </div>
-        <?php endforeach; ?>
-        <?php if ( $_open_group ) : ?></div><?php endif; ?>
-
-        <?php
-        $_current = isset( $meta['current_page'] ) ? (int) $meta['current_page'] : 1;
-        $_total   = isset( $meta['total_pages'] )  ? (int) $meta['total_pages']  : 1;
+        <?php foreach ( $REVIEW_SECTIONS as $_type => $_section ) :
+            $_reviews = $grouped[ $_type ];
+            if ( empty( $_reviews ) ) continue; // no empty section headers
+            $_grid_class = array( 'mini' => 'reviews-grid', 'case' => 'reviews-grid-case' )[ $_section['grid'] ] ?? 'reviews-grid-full';
         ?>
-        <?php if ( $_total > 1 ) : ?>
-            <nav class="pagination reviews-pagination" role="navigation" aria-label="<?php echo esc_attr__( 'Pagination', ADN_TEXT_DOMAIN ); ?>">
-                <?php for ( $p = 1; $p <= $_total; $p++ ) : ?>
-                    <a
-                        class="page-btn<?php echo $p === $_current ? ' active' : ''; ?>"
-                        <?php echo $p === $_current ? 'aria-current="page"' : ''; ?>
-                        href="<?php echo esc_url( add_query_arg( 'paged', $p, home_url( SITE_REVIEWS_URL ) ) ); ?>"
-                    ><?php echo esc_html( (string) $p ); ?></a>
-                <?php endfor; ?>
-            </nav>
-        <?php endif; ?>
+            <section class="reviews-section reviews-section--<?php echo esc_attr( $_type ); ?>">
+                <?php if ( 'spotlight' === $_type ) : ?>
+                    <?php adn_component( 'sections/reviews_spotlight_slider', array(
+                        'reviews' => $_reviews,
+                        'heading' => $_section['heading'],
+                    ) ); ?>
+                <?php elseif ( 'property_deck' === $_type ) : ?>
+                    <?php adn_component( 'sections/reviews_property_deck', array(
+                        'reviews' => $_reviews,
+                        'heading' => $_section['heading'],
+                    ) ); ?>
+                <?php else : ?>
+                    <?php adn_component( 'parts/section_headers/section_header', array(
+                        'heading' => array( 'title' => $_section['heading'], 'link_label' => '', 'link_url' => '' ),
+                        'tag'     => 'h2',
+                    ) ); ?>
+                    <div class="<?php echo esc_attr( $_grid_class ); ?>">
+                        <?php foreach ( $_reviews as $_review ) : ?>
+                            <div class="reviews-grid__item">
+                                <?php echo AH_Reviews_Model::render_review( $_review ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_review() already escapes every field internally. ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </section>
+        <?php endforeach; ?>
     <?php endif; ?>
 
 </div><!-- /.reviews-page-layout -->

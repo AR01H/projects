@@ -39,14 +39,30 @@ class AH_Reviews_Model extends AH_Model_Base {
 		) );
 	}
 
-	/** Up to $limit active reviews for a carousel (e.g. Home page), ordered by sort_order. */
+	/**
+	 * Reviews for the Home page carousel.
+	 *
+	 * The admin's Featured control is labelled "Yes - show on homepage", so
+	 * featured reviews lead. If there are fewer featured than $limit, the
+	 * remaining slots are topped up with the other active reviews rather than
+	 * leaving the carousel short - so the row always looks full.
+	 *
+	 * Ordered in one query (is_featured DESC, then sort_order) instead of via
+	 * all(), because AH_DB_Helper::get_list() runs order_by through
+	 * sanitize_key() and would mangle a multi-column ORDER BY.
+	 */
 	public function get_carousel_reviews( int $limit = 8 ): array {
-		return $this->all( array(
-			'where'    => "status = 'active'",
-			'order_by' => 'sort_order',
-			'order'    => 'ASC',
-			'limit'    => max( 1, $limit ),
-		) );
+		global $wpdb;
+		$t     = $this->table();
+		$limit = max( 1, $limit );
+
+		return $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM `{$t}`
+			 WHERE status = 'active'
+			 ORDER BY is_featured DESC, sort_order ASC, id ASC
+			 LIMIT %d",
+			$limit
+		) ) ?: array();
 	}
 
 	// ── Occasion / Gallery Images ──────────────────────────────────────────────
@@ -159,34 +175,68 @@ class AH_Reviews_Model extends AH_Model_Base {
 	 */
 	public static function representing_variants(): array {
 		return array(
-			'big_box'     => 'Big Box (full card)',
-			'mini_card'   => 'Mini Card (compact)',
-			'with_photos' => 'With Photos (card + photo strip)',
-			'full_story'  => 'Full Story (untruncated text + photo gallery)',
+			'big_box'       => 'Big Box (name, title, mini desc + full text)',
+			'mini_card'     => 'Mini Card (name, role + short quote)',
+			'spotlight'     => 'Spotlight (big quote + round portrait, wide)',
+			'with_photos'   => 'With Photos (card + scrollable photo strip)',
+			'full_story'    => 'Full Story (untruncated text + photo gallery)',
+			'property_deck' => 'Property Deck (headline + quote + result stat)',
+			'case_study'    => 'Case Study (cover photo + title + tap to reveal)',
 		);
 	}
 
 	/**
+	 * Load a review card component, preferring the active theme's own copy.
+	 *
+	 * Every design lives in models/reviews/{$filename} here in the plugin as
+	 * the default (so the plugin still works standalone with any theme), but
+	 * a theme can fully own the design by shipping
+	 * components/reviews/{$filename} with the same function name - that copy
+	 * is what actually loads, via locate_template() (the same override
+	 * pattern AH_Builder_Page_Service uses for templates/AhBuilderPage.php).
+	 * Only one of the two ever gets require_once'd, so there's no duplicate
+	 * function definition either way.
+	 */
+	private static function require_review_file( string $filename ): void {
+		$theme_path = function_exists( 'locate_template' ) ? locate_template( 'components/reviews/' . $filename ) : '';
+		require_once $theme_path ?: __DIR__ . '/reviews/' . $filename;
+	}
+
+	/**
 	 * Self-contained single-review card markup, used by [ah_review id="X"].
-	 * Each layout is its own file in models/reviews/ (a plain function per
-	 * file) so every design is independently easy to find and edit. Every
-	 * file ships its own scoped <style> so it renders consistently regardless
-	 * of which theme/page it's dropped into (mirrors AH_Form_Builder::render()).
+	 * Each layout is its own file (a plain function per file) so every design
+	 * is independently easy to find and edit - see require_review_file()
+	 * above for where that file actually loads from. Styling lives in
+	 * plugins/cms-plugin/assets/css/review-cards-base.css (structural) + the
+	 * active theme's review-cards-theme.css (brand colors/fonts), both
+	 * enqueued on every frontend page via Adn\Theme\Service\AssetLoader -
+	 * needed because [ah_review] is a real shortcode that can land on any
+	 * page/post, not just a template this code controls.
 	 */
 	public static function render_review( object $r ): string {
-		require_once __DIR__ . '/reviews/render-big.php';
-		require_once __DIR__ . '/reviews/render-mini.php';
-		require_once __DIR__ . '/reviews/render-lightbox.php';
-		require_once __DIR__ . '/reviews/render-with-photos.php';
-		require_once __DIR__ . '/reviews/render-full-story.php';
+		self::require_review_file( 'render-big.php' );
+		self::require_review_file( 'render-mini.php' );
+		self::require_review_file( 'render-spotlight.php' );
+		self::require_review_file( 'render-lightbox.php' );
+		self::require_review_file( 'render-flip-behavior.php' );
+		self::require_review_file( 'render-with-photos.php' );
+		self::require_review_file( 'render-full-story.php' );
+		self::require_review_file( 'render-property-deck.php' );
+		self::require_review_file( 'render-case-study.php' );
 
 		switch ( (string) ( $r->representing ?? '' ) ) {
 			case 'mini_card':
 				return ah_review_render_mini( $r );
+			case 'spotlight':
+				return ah_review_render_spotlight( $r );
 			case 'with_photos':
 				return ah_review_render_with_photos( $r );
 			case 'full_story':
 				return ah_review_render_full_story( $r );
+			case 'property_deck':
+				return ah_review_render_property_deck( $r );
+			case 'case_study':
+				return ah_review_render_case_study( $r );
 			default:
 				return ah_review_render_big( $r );
 		}
@@ -200,7 +250,7 @@ class AH_Reviews_Model extends AH_Model_Base {
 	 * to 4 lines with an ellipsis.
 	 */
 	public static function render_carousel_card( object $r ): string {
-		require_once __DIR__ . '/reviews/render-carousel-card.php';
+		self::require_review_file( 'render-carousel-card.php' );
 		return ah_review_render_carousel_card( $r );
 	}
 }

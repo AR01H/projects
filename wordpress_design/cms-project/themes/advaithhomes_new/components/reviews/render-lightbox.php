@@ -7,6 +7,9 @@ defined( 'ABSPATH' ) || exit;
  * every card just marks its <img> with class="ah-rv-lightbox-trigger" and a
  * data-full="<large image url>" attribute; a single delegated click listener
  * (registered here) opens the one shared overlay for any of them.
+ *
+ * Theme-level override of plugins/cms-plugin/models/reviews/render-lightbox.php -
+ * see render-big.php in this folder for how the override resolves.
  */
 function ah_review_render_lightbox_once(): string {
 	static $printed = false;

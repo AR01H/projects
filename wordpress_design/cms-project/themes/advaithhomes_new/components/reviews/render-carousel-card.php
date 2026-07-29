@@ -6,6 +6,9 @@ defined( 'ABSPATH' ) || exit;
  * horizontal track. Review text is clamped to 4 lines with an ellipsis
  * (CSS line-clamp, backed by a server-side word-trim fallback for browsers
  * that don't support it). Used by AH_Reviews_Model::render_carousel_card().
+ *
+ * Theme-level override of plugins/cms-plugin/models/reviews/render-carousel-card.php -
+ * see render-big.php in this folder for how the override resolves.
  */
 function ah_review_render_carousel_card( object $r ): string {
 	$uid       = 'ah_review_car_' . (int) $r->id;

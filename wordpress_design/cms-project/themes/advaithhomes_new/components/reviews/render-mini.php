@@ -6,6 +6,9 @@ defined( 'ABSPATH' ) || exit;
  * Back (hover on desktop, tap on mobile): the full, untruncated quote on a
  * gold gradient - no more 14-word trim, since flipping already reveals it
  * in full. Used by AH_Reviews_Model::render_review() for representing = 'mini_card'.
+ *
+ * Theme-level override of plugins/cms-plugin/models/reviews/render-mini.php -
+ * see render-big.php's own header comment for how the override resolves.
  */
 function ah_review_render_mini( object $r ): string {
 	$uid     = 'ah_review_' . (int) $r->id;

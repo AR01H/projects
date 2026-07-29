@@ -1,0 +1,36 @@
+/**
+ * review-cards-theme.css — themes/advaithhomes_new
+ *
+ * Brand design layer over plugins/cms-plugin/assets/css/review-cards-base.css
+ * (loaded straight after it — see Adn\Theme\Service\AssetLoader::loadReviewCards()).
+ * Every card variant already reads --rv-accent / --rv-gold / --rv-border /
+ * --rv-ink / --rv-muted, so this file stays small: point those tokens at the
+ * site's real palette/display font instead of the plugin's generic fallbacks,
+ * plus a couple of accent touches so Reviews reads distinctly from FAQ.
+ */
+
+.ah-review-card {
+	--rv-accent: var(--client-color);
+	--rv-gold:   var(--secondary-color);
+	--rv-border: var(--color-border);
+	--rv-ink:    var(--text-primary);
+	--rv-muted:  var(--text-muted);
+}
+
+/* Gold stars site-wide, in place of the plugin's generic amber. */
+.ah-review-card .ah-rv-stars { color: var(--rv-gold); }
+
+/* Quote glyphs pick up the gold accent instead of amber. */
+.ah-review-card--big .ah-rv-text::before,
+.ah-review-card--with-photos .ah-rv-text::before,
+.ah-review-card--full-story .ah-rv-text::before,
+.ah-review-card--carousel .ah-rv-text::before {
+	color: var(--rv-gold);
+	opacity: .55;
+}
+
+/* Names in the two largest layouts pick up the site's display serif. */
+.ah-review-card--big .ah-rv-name,
+.ah-review-card--full-story .ah-rv-name {
+	font-family: var(--font-display);
+}

@@ -53,6 +53,9 @@
 .rvc-carousel__btn[disabled],
 .rvc-carousel__btn.rvc-hidden { opacity: 0; pointer-events: none; }
 
+/* Dots are a touch affordance: on desktop the prev/next arrows already show
+   there's more to see, so dots are redundant there. JS adds .is-available when
+   the track actually overflows; the media query below decides if they render. */
 .rvc-carousel__dots {
 	display: none;
 	justify-content: center;
@@ -74,6 +77,9 @@
 	transform: scale(1.3);
 }
 
+/* Small screens: arrows go (no hover, and they cover the cards), dots come in
+   as the swipe position indicator - but only when the track actually scrolls. */
 @media (max-width: 782px) {
 	.rvc-carousel__btn { display: none; }
+	.rvc-carousel__dots.is-available { display: flex; }
 }

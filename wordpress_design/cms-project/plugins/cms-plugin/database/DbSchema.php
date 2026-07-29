@@ -359,6 +359,8 @@ class AH_DB_Schema {
 				short_desc        VARCHAR(400) DEFAULT NULL,
 				division_category VARCHAR(100) DEFAULT NULL,
 				representing      VARCHAR(200) DEFAULT NULL,
+				story_title       VARCHAR(150) DEFAULT NULL,
+				stat_line         VARCHAR(150) DEFAULT NULL,
 				reviewer_image_id INT UNSIGNED,
 				review_text       TEXT NOT NULL,
 				rating            TINYINT UNSIGNED DEFAULT 5,

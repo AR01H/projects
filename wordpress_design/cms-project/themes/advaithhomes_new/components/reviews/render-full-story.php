@@ -5,6 +5,9 @@ defined( 'ABSPATH' ) || exit;
  * "Full Story" review card - larger spotlight layout: full rich review text +
  * the complete occasion image gallery. Used by AH_Reviews_Model::render_review()
  * for representing = 'full_story'.
+ *
+ * Theme-level override of plugins/cms-plugin/models/reviews/render-full-story.php -
+ * see render-big.php in this folder for how the override resolves.
  */
 function ah_review_render_full_story( object $r ): string {
 	$uid     = 'ah_review_' . (int) $r->id;
