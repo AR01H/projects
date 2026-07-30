@@ -8253,9 +8253,10 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
 
 /* ── Short News Ticker (home page) ────────────────────────────── */
 .short-news-ticker {
-  background: var(--client-color, #203c3e);
+  background: var(--color-accent);
   padding: 6px 0;
   overflow: hidden;
+  color: white;
 }
 .short-news-ticker__inner {
   overflow: hidden;
@@ -8273,7 +8274,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   gap: 8px;
   font-size: 0.8rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,1);
   text-decoration: none;
   white-space: nowrap;
   padding: 0 20px;
