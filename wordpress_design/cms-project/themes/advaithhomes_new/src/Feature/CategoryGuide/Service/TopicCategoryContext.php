@@ -288,9 +288,9 @@ class TopicCategoryContext {
 
 		if ( empty( $_post_ids ) ) { return $_hl_panels; }
 		$_flag_defs = array(
-			'featured'  => array( 'meta_key' => '_ah_is_featured',  'heading' => '⭐ Featured',  'fa' => 'fa-star' ),
-			'popular'   => array( 'meta_key' => '_ah_is_popular',   'heading' => '🔥 Popular',   'fa' => 'fa-fire' ),
-			'suggested' => array( 'meta_key' => '_ah_is_suggested', 'heading' => '💡 Suggested', 'fa' => 'fa-lightbulb' ),
+			'featured'  => array( 'meta_key' => '_ah_is_featured',  'heading' => '⭐ Featured',  'fa' => 'fa-solid fa-star' ),
+			'popular'   => array( 'meta_key' => '_ah_is_popular',   'heading' => '🔥 Popular',   'fa' => 'fa-solid fa-fire' ),
+			'suggested' => array( 'meta_key' => '_ah_is_suggested', 'heading' => '💡 Suggested', 'fa' => 'fa-solid fa-lightbulb' ),
 		);
 
 		foreach ( $_flag_defs as $_fkey => $_fdef ) {

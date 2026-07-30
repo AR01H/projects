@@ -1512,6 +1512,7 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
     border-color: rgba(32,60,62,.18) !important;
     background: rgba(32,60,62,.03) !important;
     border-radius: 10px !important;
+    margin-bottom: 2px;
 }
 
 /* ─── 19j. Single view — tighten padding everywhere ──────────

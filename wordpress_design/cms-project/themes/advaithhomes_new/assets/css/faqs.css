@@ -181,6 +181,16 @@
     margin-bottom: 0;
 }
 
+.faq-a-body a {
+    color: var(--client-color-3, #0b2b2f);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.faq-a-body a:hover {
+    color: var(--color-accent);
+}
+
 .faq-link {
     padding: 0 20px 16px;
     margin: 0;
@@ -188,12 +198,12 @@
 
 .faq-link a {
     font-size: 0.85rem;
-    color: var(--client-color-10, #0b2b2f);
-    text-decoration: none;
+    color: var(--client-color-3, #0b2b2f);
+    text-decoration: underline;
     font-weight: 500;
 }
 
-.faq-link a:hover { text-decoration: underline; }
+.faq-link a:hover { color:var(--color-accent); }
 
 /* ── Sidebar: shared label + heading inside contact-alt-box ─────── */
 

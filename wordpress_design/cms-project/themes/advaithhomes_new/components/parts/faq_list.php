@@ -34,7 +34,7 @@ if ( empty( $faqs ) ) { return; }
 			</summary>
 			<div class="faq-a">
 				<?php if ( '' !== trim( $_a ) ) : ?>
-					<div class="faq-a-body"><?php echo wp_kses_post( wpautop( wp_trim_words( $_a, 500, '' ) ) ); ?></div>
+					<div class="faq-a-body"><?php echo wp_kses_post( wpautop( $_a ) ); ?></div>
 				<?php endif; ?>
 				<?php if ( '' !== trim( $_lu ) ) : ?>
 					<p class="faq-link">

@@ -828,10 +828,11 @@ section{
 .premium-btn-outline {
   border: 1px solid rgba(176,141,87,0.5) !important;
   color: #fff !important;
+  background: var(--color-accent);
 }
 .premium-btn-outline:hover {
-  border-color: var(--secondary-color, #B08D57) !important;
-  background-color: rgba(176,141,87,0.1) !important;
+  border: 1px solid var(--client-color-400) !important;
+  background: var(--client-color-600) !important;
 }
 .phb-premium ~ .container .hero-actions {
   display: flex;
