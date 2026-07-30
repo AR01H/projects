@@ -298,7 +298,24 @@ class CategoryContext {
 	}
 
 	// ── CTA + FAQs ──────────────────────────────────────────────
-	public static function buildCta( array $cs_all ): array { return $cs_all['cta_banner'] ?? array(); }
+	/**
+	 * components/parts/cta_banner.php expects a nested 'cta' => { label, url }
+	 * sub-array, but the admin (admin/Handlers/CategoryHandler.php) saves the
+	 * button as flat 'btn_label' / 'btn_url' keys - passing the raw settings
+	 * straight through (as this used to) left the button permanently empty,
+	 * since $cta_banner['cta']['label'] never existed. Map it here instead of
+	 * changing the shared component, since this is its only real caller.
+	 */
+	public static function buildCta( array $cs_all ): array {
+		$cta = $cs_all['cta_banner'] ?? array();
+		if ( ! empty( $cta['btn_label'] ) ) {
+			$cta['cta'] = array(
+				'label' => $cta['btn_label'],
+				'url'   => $cta['btn_url'] ?? '',
+			);
+		}
+		return $cta;
+	}
 
 	public static function buildFaqs( array $cs_all, string $name = '' ): array {
 		$cs_faqs = $cs_all['faqs'] ?? array();

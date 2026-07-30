@@ -3868,6 +3868,8 @@ html.adn-reveal .acard-stat::before {
 .guide-card-footer {
     margin-top: auto !important;
     border-top: 1px solid #f3f4f6 !important;
+    display: flex;
+    justify-content: center;
 }
 
 .guide-card .read-more {

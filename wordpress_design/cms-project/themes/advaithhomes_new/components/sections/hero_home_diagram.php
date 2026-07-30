@@ -27,8 +27,10 @@ $nodes   = isset( $diagram['nodes'] ) ? (array) $diagram['nodes'] : array();
 		?></span>
 	</div>
 	<div class="process-nodes">
-		<?php foreach ( array_values( $nodes ) as $i => $node ) : ?>
-			<div class="process-node node-<?php echo esc_attr( (string) ( $i + 1 ) ); ?>">
+		<?php foreach ( array_values( $nodes ) as $i => $node ) :
+			$is_start = ( 0 === $i );
+		?>
+			<div class="process-node node-<?php echo esc_attr( (string) ( $i + 1 ) ); ?><?php echo $is_start ? ' process-node--start' : ''; ?>">
 				<div class="process-node-icon"><?php echo adn_icon( isset( $node['icon'] ) ? $node['icon'] : '' ); ?></div>
 				<div class="process-node-label"><?php echo esc_html( isset( $node['label'] ) ? $node['label'] : '' ); ?></div>
 			</div>

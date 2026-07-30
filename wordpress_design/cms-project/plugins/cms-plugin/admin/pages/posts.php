@@ -878,10 +878,10 @@ if ( $action === 'edit-custom' ) {
 
     <?php if ( $pages_count > 1 ) : ?>
       <?php \Ah\Cms\Admin\Components\AdminComponents::pagination( array(
-        'total'    => $total,
-        'per_page' => 20,
-        'current'  => $paged,
-        'base'     => add_query_arg( 'paged', '%#%', admin_url( 'admin.php?page=ah-posts' ) ),
+        'total'        => $total,
+        'per_page'     => 20,
+        'current_page' => $paged,
+        'total_pages'  => $pages_count,
       ) ); ?>
     <?php endif; ?>
   <?php endif; ?>
