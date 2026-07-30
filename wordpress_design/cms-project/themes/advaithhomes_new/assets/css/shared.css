@@ -2695,6 +2695,14 @@ a.mini-card, div.mini-card {
   }
 }
 
+/* ── Tablet: also hide the image + excerpt on the news hero card ── */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .news-hero-card__img-wrap,
+  .news-hero-card__content .news-hero-card__excerpt {
+    display: none !important;
+  }
+}
+
 /* ── Align ONLY Advaith Updates mini-cards to Hot Topics style ── */
 .news-col--regulations .mini-card {
   display: flex !important;
@@ -7561,7 +7569,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
 
 @media (max-width: 600px) {
     .fi-inner  { padding: 0 16px; gap: 12px; }
-    .fi-logo img { height: 38px; }
+    .fi-logo img { height: 70px; }
     .fi-track  { gap: 0; }
     .fi-logo   { margin-right: 40px; }
     .fi-label::before,

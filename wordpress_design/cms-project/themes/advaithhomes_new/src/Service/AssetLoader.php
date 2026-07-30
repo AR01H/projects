@@ -67,6 +67,7 @@ class AssetLoader {
 		self::loadEmbedMode();
 		self::loadBlockRenderer();
 		self::loadReviewCards();
+		self::loadBlockquoteFonts();
 	}
 
 	/**
@@ -92,6 +93,27 @@ class AssetLoader {
 		if ( \file_exists( $theme_path ) ) {
 			\wp_enqueue_style( 'ah-review-cards-theme', \ADN_THEME_URI . '/assets/css/review-cards-theme.css', [ 'ah-review-cards-base' ], self::version( $theme_path ) );
 		}
+	}
+
+	/**
+	 * Decorative fonts (Edu VIC WA NT Hand, Fondamento) - loaded sitewide so
+	 * any component can use them (currently .article-body blockquote).
+	 * Loaded live from Google (not self-hosted like fonts.css) per explicit
+	 * decision to accept the pre-consent third-party request for these two
+	 * decorative faces.
+	 */
+	private static function loadBlockquoteFonts(): void {
+		\add_action( 'wp_head', static function () {
+			echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+			echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+		}, 1 );
+
+		\wp_enqueue_style(
+			'adn-blockquote-fonts',
+			'https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Hand:wght@400..700&family=Fondamento:ital@0;1&display=swap',
+			[],
+			null
+		);
 	}
 
 	/**

@@ -40,6 +40,7 @@ if ( empty( $_cats ) ) return;
 				</button>
 			<?php endif; ?>
 		</div>
+		<div class="expert-cats-fade" id="expertCatsFade" aria-hidden="true"></div>
 	</div>
 </div>
 
@@ -48,13 +49,26 @@ if ( empty( $_cats ) ) return;
 	document.addEventListener('DOMContentLoaded', function() {
 		var toggle = document.getElementById('expertCatsToggle');
 		var container = document.getElementById('expertCatsContainer');
-		if (!toggle || !container) return;
-		
-		toggle.addEventListener('click', function() {
-			var isExpanded = container.classList.toggle('is-expanded');
-			toggle.setAttribute('aria-expanded', isExpanded);
-			toggle.querySelector('span').textContent = isExpanded ? '- Show Less' : '+ More';
-		});
+		var fade = document.getElementById('expertCatsFade');
+
+		if (toggle && container) {
+			toggle.addEventListener('click', function() {
+				var isExpanded = container.classList.toggle('is-expanded');
+				toggle.setAttribute('aria-expanded', isExpanded);
+				toggle.querySelector('span').textContent = isExpanded ? '- Show Less' : '+ More';
+			});
+		}
+
+		if (container && fade) {
+			var updateFade = function() {
+				var hasOverflow = container.scrollWidth > container.clientWidth + 2;
+				var atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 2;
+				fade.classList.toggle('is-visible', hasOverflow && !atEnd);
+			};
+			container.addEventListener('scroll', updateFade, { passive: true });
+			window.addEventListener('resize', updateFade);
+			updateFade();
+		}
 	});
 })();
 </script>
