@@ -159,7 +159,7 @@
    than as body copy. */
 @media (max-width: 768px) {
     :root {
-        --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+        /* --font-display: 'Inter', system-ui, -apple-system, sans-serif; */
         /* .fi-label in shared.css reads --font-heading and falls back to a
            literal 'Playfair Display', so it needs the token set explicitly. */
         --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
