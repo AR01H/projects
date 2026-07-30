@@ -344,3 +344,116 @@
 		max-width: 320px;
 	}
 }
+
+/* ── Showcase Gallery (sections/showcase_gallery.php) ───────────────────────
+   Pinterest-style masonry via CSS columns - no JS needed. Each tile's own
+   height comes from its image's natural aspect ratio; "large" tiles span 2
+   columns wide (set via width_class in the admin) for visual variety. */
+.showcase-gallery__description {
+	max-width: 640px;
+	margin: 0 auto 28px;
+	text-align: center;
+	color: var(--text-muted, #7a6f65);
+	font-size: 15px;
+	line-height: 1.7;
+}
+
+.showcase-gallery {
+	column-count: 3;
+	column-gap: 16px;
+}
+
+.showcase-gallery__tile {
+	break-inside: avoid;
+	margin-bottom: 16px;
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 4px 16px rgba(28, 22, 15, .06);
+}
+
+.showcase-gallery__tile img {
+	width: 100%;
+	height: auto;
+	display: block;
+	cursor: zoom-in;
+	transition: transform .3s ease;
+}
+
+.showcase-gallery__tile img:hover {
+	transform: scale(1.03);
+}
+
+.showcase-gallery__tile--full {
+	column-span: all;
+}
+
+/* Video tiles - fixed 16:9 (videos don't have a natural aspect ratio to
+   drive the masonry the way photos do), play-icon overlay, and an optional
+   caption. Thumbnail is the admin's uploaded image, an auto-detected
+   YouTube frame, or (if neither) the gold gradient fallback below. */
+.showcase-gallery__tile--video a {
+	position: relative;
+	display: block;
+	aspect-ratio: 16/9;
+	cursor: pointer;
+}
+
+.showcase-gallery__tile--video img {
+	height: 100%;
+	object-fit: cover;
+}
+
+.showcase-gallery__video-fallback {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(165deg, var(--secondary-color, #b08d57) 0%, #2b1d10 100%);
+}
+
+.showcase-gallery__play {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, .92);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
+	transition: transform .2s ease, background .2s ease;
+}
+
+.showcase-gallery__play::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 54%;
+	transform: translate(-50%, -50%);
+	border-style: solid;
+	border-width: 9px 0 9px 15px;
+	border-color: transparent transparent transparent var(--client-color, #203c3e);
+}
+
+.showcase-gallery__tile--video a:hover .showcase-gallery__play {
+	transform: translate(-50%, -50%) scale(1.08);
+	background: #fff;
+}
+
+.showcase-gallery__video-title {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 24px 14px 12px;
+	background: linear-gradient(180deg, transparent, rgba(15, 12, 8, .78));
+	color: #fff;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+@media (max-width: 900px) {
+	.showcase-gallery { column-count: 2; }
+}
+
+@media (max-width: 560px) {
+	.showcase-gallery { column-count: 1; }
+}

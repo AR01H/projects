@@ -24,7 +24,7 @@ class AH_Admin_Menus {
 			['title' => 'Featured In',          'menu' => 'Featured In',          'slug' => 'ah-featured-in',   'callback' => 'page_featured_in'  ],
 			['title' => 'Spotlights',           'menu' => 'Spotlights',           'slug' => 'ah-spotlights',    'callback' => 'page_spotlights'   ],
 			['title' => 'News Bar',             'menu' => 'News Bar',             'slug' => 'ah-news-bar',      'callback' => 'page_news_bar'     ],
-			['title' => 'Client Stories',       'menu' => 'Client Stories',       'slug' => 'ah-client-stories','callback' => 'page_client_stories'],
+			['title' => 'Showcase Gallery',     'menu' => 'Showcase Gallery',     'slug' => 'ah-client-stories','callback' => 'page_client_stories'],
 			['title' => 'Reviews',              'menu' => 'Reviews',              'slug' => 'ah-reviews',       'callback' => 'page_reviews'      ],
 			['title' => 'FAQs',                 'menu' => 'FAQs',                 'slug' => 'ah-faqs',          'callback' => 'page_faqs'         ],
 			['title' => 'Resources',            'menu' => 'Resources',            'slug' => 'ah-resources',     'callback' => 'page_resources'    ],

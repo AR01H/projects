@@ -14,14 +14,14 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	$img_id = (int) ( $_POST['reviewer_image_id'] ?? 0 );
 
 	$data = array(
-		'reviewer_name'     => sanitize_text_field( $_POST['reviewer_name'] ?? '' ),
-		'reviewer_title'    => sanitize_text_field( $_POST['reviewer_title'] ?? '' ),
-		'short_desc'        => sanitize_text_field( $_POST['short_desc'] ?? '' ),
-		'division_category' => sanitize_text_field( $_POST['division_category'] ?? '' ),
-		'story_title'       => sanitize_text_field( $_POST['story_title'] ?? '' ),
-		'stat_line'         => sanitize_text_field( $_POST['stat_line'] ?? '' ),
+		'reviewer_name'     => sanitize_text_field( wp_unslash( $_POST['reviewer_name'] ?? '' ) ),
+		'reviewer_title'    => sanitize_text_field( wp_unslash( $_POST['reviewer_title'] ?? '' ) ),
+		'short_desc'        => sanitize_text_field( wp_unslash( $_POST['short_desc'] ?? '' ) ),
+		'division_category' => sanitize_text_field( wp_unslash( $_POST['division_category'] ?? '' ) ),
+		'story_title'       => sanitize_text_field( wp_unslash( $_POST['story_title'] ?? '' ) ),
+		'stat_line'         => sanitize_textarea_field( wp_unslash( $_POST['stat_line'] ?? '' ) ),
 		'representing'      => array_key_exists( $_POST['representing'] ?? '', AH_Reviews_Model::representing_variants() ) ? $_POST['representing'] : 'big_box',
-		'review_text'       => wp_kses_post( $_POST['review_text'] ?? '' ),
+		'review_text'       => wp_kses_post( wp_unslash( $_POST['review_text'] ?? '' ) ),
 		'rating'            => min( 5, max( 1, (int) ( $_POST['rating'] ?? 5 ) ) ),
 		'source'            => sanitize_key( $_POST['source'] ?? 'manual' ),
 		'is_featured'       => (int) ( $_POST['is_featured'] ?? 0 ),
@@ -254,9 +254,9 @@ if ( isset( $_GET['delete_id'] ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'a
           <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Division', ob_get_clean() ); ?>
 
           <?php ob_start(); ?>
-            <p style="font-size:12px;color:var(--ah-muted);margin:0 0 12px;">Only used by the Property Deck and Case Study layouts - ignored by every other Representing type.</p>
+            <p style="font-size:12px;color:var(--ah-muted);margin:0 0 12px;">Only used by the Property Deck, Case Study and Big Box layouts - ignored by every other Representing type.</p>
             <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Story Title <small style="font-weight:400;color:var(--ah-muted);">(headline, e.g. "The Mehta Family\'s First Home")</small>', '<input type="text" name="story_title" value="' . esc_attr( $item->story_title ?? '' ) . '">' ); ?>
-            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Highlight Stat <small style="font-weight:400;color:var(--ah-muted);">(result line, e.g. "Negotiation Win: £27,500 Saved")</small>', '<input type="text" name="stat_line" value="' . esc_attr( $item->stat_line ?? '' ) . '">' ); ?>
+            <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Highlight Stat(s) <small style="font-weight:400;color:var(--ah-muted);">(one per line, format "Label: Value" - e.g. "Access: Off-Market" - Big Box shows these as a stat breakdown; Property Deck uses only the first line)</small>', '<textarea name="stat_line" rows="3" placeholder="Access: Off-Market&#10;Price: -5% Under">' . esc_textarea( $item->stat_line ?? '' ) . '</textarea>' ); ?>
           <?php \Ah\Cms\Admin\Components\AdminComponents::card( 'Story Details', ob_get_clean() ); ?>
 
           <?php if ( $edit_id ) :

@@ -43,31 +43,43 @@
 .ah-rv-flip-back { transform: rotateY(180deg); }
 .ah-rv-flip-hint { display: block; margin-top: 10px; font-size: 11px; font-weight: 700; letter-spacing: .03em; color: var(--rv-gold); }
 
+/* Centered name fallback for cards whose design leads with a photo but has
+   none for this particular review (Big Box, Property Deck) - fills the
+   photo's spot with the reviewer's name instead of leaving it blank. */
+.ah-rv-name-fallback { display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--font-display, Georgia, serif); font-weight: 700; color: #fff; padding: 16px; }
+
 /* ── Big Box ─────────────────────────────────────────────────────────────── */
-/* Flip card: front = name/title/stars/mini-desc teaser, back = the full
-   review text on the same gold gradient Property Deck uses, for a
-   consistent "flip reveals gold" language across the Reviews page. */
+/* Flip card: front = cover photo + story title + mini description (a
+   summary card, like Case Study). Back = "The Outcome" - the full review
+   text as a quote, then a label/value stat breakdown parsed from the
+   admin's Highlight Stat(s) field, on the same gold gradient Property Deck
+   uses, for a consistent "flip reveals gold" language across the page. */
 .ah-review-card--big {
 	width: 100%;
-	height: 280px;
+	height: 360px;
 	border-radius: 16px;
 	box-shadow: 0 4px 20px rgba(28, 22, 15, .05);
 	transition: box-shadow .2s ease;
 }
 .ah-review-card--big:hover { box-shadow: 0 16px 36px rgba(28, 22, 15, .10); }
 .ah-review-card--big .ah-rv-flip-front,
-.ah-review-card--big .ah-rv-flip-back { padding: 26px 28px; border-radius: 16px; }
-.ah-review-card--big .ah-rv-flip-front { background: #fff; border: 1px solid var(--rv-border); display: flex; flex-direction: column; }
-.ah-review-card--big .ah-rv-flip-back { background: linear-gradient(165deg, var(--rv-gold) 0%, #2b1d10 100%); display: flex; flex-direction: column; justify-content: center; }
-.ah-review-card--big .ah-rv-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.ah-review-card--big .ah-rv-avatar { width: 84px; aspect-ratio: 16/9; height: auto; border-radius: 8px; object-fit: cover; flex-shrink: 0; box-shadow: 0 0 0 3px #fff, 0 0 0 5px rgba(245, 158, 11, .28); }
-.ah-review-card--big .ah-rv-name { font-weight: 700; font-size: 16.5px; color: var(--rv-accent); line-height: 1.3; }
-.ah-review-card--big .ah-rv-title { font-size: 12.5px; color: var(--rv-muted); }
-.ah-review-card--big .ah-rv-stars { color: #f59e0b; font-size: 14px; letter-spacing: 1px; margin-bottom: 10px; }
-.ah-review-card--big .ah-rv-mini-desc { font-size: 12.5px; font-weight: 600; color: var(--rv-accent); margin: 0 0 8px; line-height: 1.5; }
-.ah-review-card--big .ah-rv-flip-back .ah-rv-text { font-size: 14.5px; line-height: 1.75; color: #fff; margin: 0; }
-.ah-review-card--big .ah-rv-flip-back .ah-rv-text::before { content: "\201C"; font-family: Georgia, "Times New Roman", serif; font-size: 2.2em; line-height: 0; color: rgba(255, 255, 255, .5); vertical-align: -.32em; margin-right: 3px; }
-.ah-review-card--big .ah-rv-flip-back .ah-rv-name { color: rgba(255, 255, 255, .8); font-size: 13px; margin-top: 14px; }
+.ah-review-card--big .ah-rv-flip-back { border-radius: 16px; }
+.ah-review-card--big .ah-rv-flip-front { background: #fff; border: 1px solid var(--rv-border); display: flex; flex-direction: column; overflow: hidden; }
+.ah-review-card--big .ah-rv-flip-front--no-photo { background: linear-gradient(165deg, var(--rv-gold) 0%, #2b1d10 100%); border: none; }
+.ah-review-card--big .ah-rv-flip-front--no-photo .ah-rv-name-fallback { flex: 1; font-size: 1.3rem; }
+.ah-review-card--big .ah-rv-bb-cover { width: 100%; height: 190px; object-fit: cover; flex-shrink: 0; }
+.ah-review-card--big .ah-rv-bb-body { padding: 18px 22px 20px; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.ah-review-card--big .ah-rv-bb-title { font-family: var(--font-display, Georgia, serif); font-weight: 700; font-size: 1.1rem; color: var(--rv-ink); margin-bottom: 8px; line-height: 1.3; }
+.ah-review-card--big .ah-rv-mini-desc { font-size: 12.5px; font-weight: 500; color: var(--rv-muted); margin: 0 0 8px; line-height: 1.5; }
+
+.ah-review-card--big .ah-rv-flip-back { background: linear-gradient(165deg, var(--rv-gold) 0%, #2b1d10 100%); padding: 26px 28px; display: flex; flex-direction: column; }
+.ah-review-card--big .ah-rv-bb-outcome-title { font-family: var(--font-display, Georgia, serif); font-weight: 700; font-size: 1.15rem; color: #fff; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, .25); }
+.ah-review-card--big .ah-rv-flip-back .ah-rv-text { font-size: 13.5px; line-height: 1.65; color: rgba(255, 255, 255, .92); font-style: italic; margin: 0 0 14px; }
+.ah-review-card--big .ah-rv-bb-stats { background: rgba(0, 0, 0, .18); border-radius: 12px; padding: 4px 16px; margin-top: auto; }
+.ah-review-card--big .ah-rv-bb-stat-row { padding: 10px 0; }
+.ah-review-card--big .ah-rv-bb-stat-row + .ah-rv-bb-stat-row { border-top: 1px solid rgba(255, 255, 255, .12); }
+.ah-review-card--big .ah-rv-bb-stat-label { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; color: rgba(255, 255, 255, .55); margin-bottom: 2px; }
+.ah-review-card--big .ah-rv-bb-stat-value { font-size: 14px; font-weight: 600; color: #fff; }
 
 /* ── Mini Card ───────────────────────────────────────────────────────────── */
 /* Flip card: front = name/role/stars, back = the full untruncated quote
@@ -118,9 +130,10 @@
 }
 
 /* ── With Photos ─────────────────────────────────────────────────────────── */
-/* Static, no flip - a photo grid collage up top (up to 4 tiles, "+N"
-   overflow badge on the last one covering any extra photos) with the full
-   review text underneath. Nothing is hidden behind an interaction. */
+/* Static, no flip, full-width (one per row) - a flexible grid showing EVERY
+   photo (no cap, no "+N" badge; the shared lightbox has its own prev/next to
+   step through the rest) with the full review text underneath. Nothing is
+   hidden behind an interaction. */
 .ah-review-card--with-photos {
 	width: 100%;
 	border-radius: 16px;
@@ -132,23 +145,32 @@
 }
 .ah-review-card--with-photos:hover { box-shadow: 0 16px 36px rgba(28, 22, 15, .10); transform: translateY(-2px); }
 
-.ah-review-card--with-photos .ah-rv-wp-grid { display: grid; gap: 3px; height: 220px; }
-.ah-review-card--with-photos .ah-rv-wp-grid--1 { grid-template-columns: 1fr; }
-.ah-review-card--with-photos .ah-rv-wp-grid--2 { grid-template-columns: 1fr 1fr; }
-.ah-review-card--with-photos .ah-rv-wp-grid--3,
-.ah-review-card--with-photos .ah-rv-wp-grid--4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-.ah-review-card--with-photos .ah-rv-wp-grid--3 .ah-rv-wp-tile:first-child { grid-row: 1 / 3; }
-.ah-review-card--with-photos .ah-rv-wp-tile { position: relative; overflow: hidden; }
+.ah-review-card--with-photos .ah-rv-wp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px; }
+.ah-review-card--with-photos .ah-rv-wp-tile { position: relative; overflow: hidden; aspect-ratio: 4/3; }
 .ah-review-card--with-photos .ah-rv-wp-tile img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; transition: transform .2s ease; }
 .ah-review-card--with-photos .ah-rv-wp-tile img:hover { transform: scale(1.05); }
-.ah-review-card--with-photos .ah-rv-wp-tile--more::after { content: attr(data-more); position: absolute; inset: 0; background: rgba(15, 12, 8, .6); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; }
 
 .ah-review-card--with-photos .ah-rv-wp-body { padding: 20px 22px 22px; }
-.ah-review-card--with-photos .ah-rv-stars { color: #f59e0b; font-size: 14px; letter-spacing: 1px; margin-bottom: 8px; }
+/* Name/title/stars/badge all grouped together on the left, not spread
+   across the full card width - on a full-width (one-per-row) card,
+   justify-content:space-between left a huge empty gap between the name and
+   a far-flung star rating. */
+.ah-review-card--with-photos .ah-rv-wp-head { margin-bottom: 4px; }
+.ah-review-card--with-photos .ah-rv-wp-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ah-review-card--with-photos .ah-rv-stars { color: #f59e0b; font-size: 14px; letter-spacing: 1px; }
 .ah-review-card--with-photos .ah-rv-name { font-weight: 700; font-size: 15.5px; color: var(--rv-accent); line-height: 1.3; }
-.ah-review-card--with-photos .ah-rv-title { font-size: 12.5px; color: var(--rv-muted); margin-bottom: 8px; }
-.ah-review-card--with-photos .ah-rv-photo-badge { display: inline-block; width: fit-content; margin-bottom: 10px; font-size: 12px; font-weight: 700; color: var(--rv-gold); background: rgba(176, 141, 87, .12); border-radius: 999px; padding: 4px 10px; }
+.ah-review-card--with-photos .ah-rv-title { font-size: 12.5px; color: var(--rv-muted); }
+.ah-review-card--with-photos .ah-rv-photo-badge { display: inline-block; width: fit-content; font-size: 12px; font-weight: 700; color: var(--rv-gold); background: rgba(176, 141, 87, .12); border-radius: 999px; padding: 3px 9px; margin: 0; }
 .ah-review-card--with-photos .ah-rv-text { font-size: 14px; line-height: 1.7; color: var(--rv-ink); margin: 0; }
+.ah-review-card--with-photos .ah-rv-text p { margin: 0 0 10px; }
+.ah-review-card--with-photos .ah-rv-text p:last-child { margin-bottom: 0; }
+/* "Read more" excerpt toggle (native <details>, no JS) - only used when the
+   review text is long enough to need collapsing (see $needs_toggle in the
+   PHP). Expanding replaces the excerpt with the full (HTML-supporting) text. */
+.ah-review-card--with-photos .ah-rv-wp-preview { font-size: 14px; line-height: 1.7; color: var(--rv-ink); cursor: pointer; list-style: none; }
+.ah-review-card--with-photos .ah-rv-wp-preview::-webkit-details-marker { display: none; }
+.ah-review-card--with-photos .ah-rv-wp-more { color: var(--rv-gold); font-weight: 700; font-size: 12.5px; white-space: nowrap; }
+.ah-review-card--with-photos .ah-rv-wp-details[open] .ah-rv-wp-preview { display: none; }
 
 /* ── Full Story ──────────────────────────────────────────────────────────── */
 /* Gold top bar + warm-tinted background + a corner tag mark this out as the
@@ -212,6 +234,15 @@
 .ah-rv-lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0, 0, 0, .4); }
 .ah-rv-lightbox-close { position: absolute; top: 18px; right: 22px; background: rgba(255, 255, 255, .12); border: none; color: #fff; width: 38px; height: 38px; border-radius: 50%; font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .ah-rv-lightbox-close:hover { background: rgba(255, 255, 255, .22); }
+/* Prev/next - steps through the other photos in the same review's gallery
+   (see the JS in render-lightbox.php); hidden via inline style when that
+   review only has one photo. */
+.ah-rv-lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, .12); border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1; }
+.ah-rv-lightbox-nav svg { width: 22px; height: 22px; }
+.ah-rv-lightbox-nav:hover { background: rgba(255, 255, 255, .22); }
+.ah-rv-lightbox-nav--prev { left: 18px; }
+.ah-rv-lightbox-nav--next { right: 18px; }
+.ah-rv-lightbox-count { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); color: rgba(255, 255, 255, .85); font-size: 13px; font-weight: 600; background: rgba(0, 0, 0, .35); padding: 4px 12px; border-radius: 999px; }
 
 /* ── Case Study ──────────────────────────────────────────────────────────── */
 /* Photo-forward summary card: full-bleed cover image, headline, short
@@ -236,8 +267,28 @@
    Standalone gold-gradient card for [ah_review id="X"]. The fanned multi-card
    carousel this design is built for lives in the theme's
    sections/reviews_property_deck.php (needs the whole group at once). */
-.ah-review-card--property-deck { width: 260px; aspect-ratio: 3/4; box-sizing: border-box; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(165deg, var(--rv-gold, #b08d57) 0%, #2b1d10 100%); box-shadow: 0 14px 34px rgba(28, 22, 15, .22); position: relative; overflow: hidden; }
+/* Flip card: front is a plain white identity card (portrait/initials, name,
+   role); back is the original gold gradient "story" design (title, quote,
+   mini desc, name, role, stat) - the color/rotate flip you get by
+   clicking/tapping or hovering. */
+.ah-review-card--property-deck { width: 260px; aspect-ratio: 3/4; box-sizing: border-box; border-radius: 20px; box-shadow: 0 14px 34px rgba(28, 22, 15, .22); position: relative; }
+.ah-review-card--property-deck .ah-rv-flip-front,
+.ah-review-card--property-deck .ah-rv-flip-back { padding: 24px; border-radius: 20px; overflow: hidden; }
+.ah-review-card--property-deck .ah-rv-flip-front { background: #fff; border: 1px solid var(--rv-border); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; }
+.ah-review-card--property-deck .ah-rv-flip-back { background: linear-gradient(165deg, var(--rv-gold, #b08d57) 0%, #2b1d10 100%); display: flex; flex-direction: column; justify-content: flex-end; }
+
+.ah-review-card--property-deck .ah-rv-pd-front-portrait { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--rv-gold); }
+.ah-review-card--property-deck .ah-rv-pd-front-initials { width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(176, 141, 87, .12); color: var(--rv-gold); font-family: var(--font-display, Georgia, serif); font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+.ah-review-card--property-deck .ah-rv-pd-front-name { font-family: var(--font-display, Georgia, serif); font-weight: 700; font-size: 1.05rem; color: var(--rv-ink); }
+.ah-review-card--property-deck .ah-rv-pd-front-role { font-size: 12.5px; color: var(--rv-muted); margin-top: -2px; }
+
 .ah-review-card--property-deck .ah-rv-pd-portrait { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; position: absolute; top: 20px; left: 20px; box-shadow: 0 0 0 3px rgba(255, 255, 255, .3); }
-.ah-review-card--property-deck .ah-rv-pd-quote { color: #fff; font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin: 0 0 10px; }
+/* No portrait - centers the name in the same top strip the portrait would
+   occupy, instead of leaving it empty. */
+.ah-review-card--property-deck .ah-rv-name-fallback { position: absolute; top: 20px; left: 20px; right: 20px; padding: 0; font-size: 1rem; color: rgba(255, 255, 255, .9); line-height: 1.3; }
+.ah-review-card--property-deck .ah-rv-pd-title { font-family: var(--font-display, Georgia, serif); font-weight: 700; font-size: 1.05rem; color: #fff; margin: 0 0 8px; line-height: 1.3; }
+.ah-review-card--property-deck .ah-rv-pd-quote { color: #fff; font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin: 0 0 8px; }
+.ah-review-card--property-deck .ah-rv-pd-mini-desc { color: rgba(255, 255, 255, .78); font-size: .82rem; font-weight: 500; line-height: 1.4; margin: 0 0 10px; }
 .ah-review-card--property-deck .ah-rv-pd-name { color: rgba(255, 255, 255, .88); font-size: 13px; font-weight: 700; }
+.ah-review-card--property-deck .ah-rv-pd-role { color: rgba(255, 255, 255, .62); font-size: 11.5px; margin-top: 1px; }
 .ah-review-card--property-deck .ah-rv-pd-stat { color: var(--rv-gold, #e8c98a); background: rgba(255, 255, 255, .12); display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }

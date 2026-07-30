@@ -1952,6 +1952,11 @@ a.hero-bc-item:hover { color: var(--color-primary, #1e6fbf); }
    ============================================ */
 .news-three-col { background: var(--color-bg-section); }
 .section-header--center {
+  /* .section-header is display:flex (space-between, for the h2 + "View all"
+     link layout) - text-align:center alone does nothing for a flex child.
+     justify-content:center is what actually centers the heading when there's
+     no link sharing the row. */
+  justify-content: center !important;
   text-align: center;
   margin-bottom: var(--space-2);
   position: relative;

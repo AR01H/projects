@@ -23,6 +23,7 @@ class AH_Autoloader {
 		'AH_Pages_Model'      => 'models/PagesModel.php',
 		'AH_Nav_Model'        => 'models/NavModel.php',
 		'AH_Reviews_Model'    => 'models/ReviewsModel.php',
+		'AH_Client_Stories_Model' => 'models/ClientStoriesModel.php',
 		'AH_Faqs_Model'       => 'models/FaqsModel.php',
 		'AH_Posts_Model'      => 'models/PostsModel.php',
 		'AH_Taxonomy_Model'        => 'models/TaxonomyModel.php',

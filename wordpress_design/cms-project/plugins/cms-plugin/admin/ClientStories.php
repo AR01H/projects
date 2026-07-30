@@ -5,8 +5,8 @@ if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Access denied.' );
 use Ah\Cms\Admin\Components\AdminComponents;
 
 $pages_m = new AH_Pages_Model();
-$media_m = new AH_Media_Model();
 $notice  = '';
+$n_type  = 'success';
 
 $cs_page = $pages_m->get_by_type( 'client_stories' );
 $page_id = $cs_page ? (int) $cs_page->id : 0;
@@ -19,26 +19,48 @@ $cs_journey_t= AH_DB_Helper::table( 'client_users_journey' );
 $cs_gallery_t= AH_DB_Helper::table( 'client_gallery' );
 $cs_video_t  = AH_DB_Helper::table( 'client_video_links' );
 
+if ( $_SERVER['REQUEST_METHOD'] === 'POST' && ! wp_verify_nonce( $_POST['ah_cs_nonce'] ?? '', 'ah_save_client_stories' ) ) {
+	// Every failure mode below used to fail completely silently (page just
+	// reloaded with no feedback) - a stale nonce (tab left open a long time)
+	// is the most common real-world cause, so it gets a clear message instead
+	// of looking like the button did nothing.
+	$notice = 'Your session expired before this was saved - please try again.';
+	$n_type = 'error';
+}
+
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' && wp_verify_nonce( $_POST['ah_cs_nonce'] ?? '', 'ah_save_client_stories' ) ) {
 
 	if ( isset( $_POST['save_header'] ) ) {
 		$existing = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM `{$cs_header_t}` WHERE page_id = %d", $page_id ) );
 		$data = array( 'page_id' => $page_id, 'heading' => sanitize_text_field( $_POST['heading'] ?? '' ), 'information' => sanitize_textarea_field( $_POST['information'] ?? '' ), 'is_visible' => (int) ( $_POST['is_visible'] ?? 1 ), 'updated_by' => get_current_user_id() ?: null );
-		$existing ? $wpdb->update( $cs_header_t, $data, array( 'id' => (int) $existing ) ) : $wpdb->insert( $cs_header_t, $data );
-		$notice = 'Header saved.';
+		$ok = $existing ? $wpdb->update( $cs_header_t, $data, array( 'id' => (int) $existing ) ) : $wpdb->insert( $cs_header_t, $data );
+		if ( false === $ok ) {
+			$notice = 'Could not save the header: ' . $wpdb->last_error;
+			$n_type = 'error';
+		} else {
+			$notice = 'Header saved.';
+		}
 	}
 
 	if ( isset( $_POST['save_gallery_item'] ) ) {
 		$image_id = (int) ( $_POST['gallery_image_id'] ?? 0 );
-		if ( $image_id ) {
-			$wpdb->insert( $cs_gallery_t, array(
+		if ( ! $image_id ) {
+			$notice = 'Choose an image before clicking "Add Image" - nothing was selected.';
+			$n_type = 'error';
+		} else {
+			$inserted = $wpdb->insert( $cs_gallery_t, array(
 				'page_id'    => $page_id,
 				'image_id'   => $image_id,
 				'width_class'=> sanitize_key( $_POST['width_class'] ?? 'medium' ),
 				'sort_order' => (int) ( $_POST['sort_order'] ?? 0 ),
 				'status'     => 'active',
 			) );
-			$notice = 'Gallery image added.';
+			if ( false === $inserted ) {
+				$notice = 'Could not save the gallery image: ' . $wpdb->last_error;
+				$n_type = 'error';
+			} else {
+				$notice = 'Gallery image added.';
+			}
 		}
 	}
 
@@ -52,8 +74,13 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && wp_verify_nonce( $_POST['ah_cs_non
 			'sort_order'   => (int) ( $_POST['vid_sort'] ?? 0 ),
 			'status'       => 'active',
 		);
-		$vid_id ? $wpdb->update( $cs_video_t, $vdata, array( 'id' => $vid_id ) ) : $wpdb->insert( $cs_video_t, $vdata );
-		$notice = 'Video saved.';
+		$ok = $vid_id ? $wpdb->update( $cs_video_t, $vdata, array( 'id' => $vid_id ) ) : $wpdb->insert( $cs_video_t, $vdata );
+		if ( false === $ok ) {
+			$notice = 'Could not save the video link: ' . $wpdb->last_error;
+			$n_type = 'error';
+		} else {
+			$notice = 'Video saved.';
+		}
 	}
 }
 
@@ -73,9 +100,9 @@ $gallery = $page_id ? $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$cs_g
 $videos  = $page_id ? $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$cs_video_t}` WHERE page_id = %d ORDER BY sort_order ASC", $page_id ) ) : array();
 ?>
 <div class="wrap ah-wrap">
-  <?php AdminComponents::pageHeader( 'format-gallery', 'Client Stories', 'Manage the client stories page header, gallery, and video links.' ); ?>
-  <?php if ( $notice ) : ?><?php AdminComponents::notice( $notice, 'success' ); ?><?php endif; ?>
-  <?php if ( ! $page_id ) : ?><?php AdminComponents::notice( 'Client Stories page not found. Create it in Pages Manager first.', 'warning' ); ?><?php return; endif; ?>
+  <?php AdminComponents::pageHeader( 'format-gallery', 'Showcase Gallery', 'Manage the showcase gallery page header, gallery, and video links.' ); ?>
+  <?php if ( $notice ) : ?><?php AdminComponents::notice( $notice, $n_type ); ?><?php endif; ?>
+  <?php if ( ! $page_id ) : ?><?php AdminComponents::notice( 'Showcase Gallery page not found. Create it in Pages Manager first.', 'warning' ); ?><?php return; endif; ?>
 
   <?php AdminComponents::tabBarUrl( array(
     'header'  => 'Page Header',
@@ -95,7 +122,7 @@ $videos  = $page_id ? $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$cs_v
         ?>
         <button type="submit" name="save_header" value="1" class="ah-btn ah-btn-primary">Save Header</button>
       </form>
-    <?php AdminComponents::card( 'Client Stories Page Header', ob_get_clean() ); ?>
+    <?php AdminComponents::card( 'Showcase Gallery Page Header', ob_get_clean() ); ?>
 
   <?php elseif ( $tab === 'gallery' ) : ?>
     <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start;">
@@ -103,7 +130,12 @@ $videos  = $page_id ? $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$cs_v
       <div>
         <div class="ah-media-grid">
           <?php foreach ( $gallery as $gi ) :
-            $img_url = $media_m->get_url( (int) $gi->image_id );
+            // image_id is a real WP attachment ID (the media picker JS stores
+            // wp.media()'s selection directly) - not an ah_media custom-table
+            // row id, so this reads it the same way the rest of the plugin
+            // does now (AH_Media_Model::get_url() queries the old, unrelated
+            // ah_media table and returns '' for these, hence the broken images).
+            $img_url = wp_get_attachment_image_url( (int) $gi->image_id, 'medium' );
           ?>
             <div class="ah-media-item">
               <img src="<?php echo esc_url( $img_url ); ?>" alt="" loading="lazy">

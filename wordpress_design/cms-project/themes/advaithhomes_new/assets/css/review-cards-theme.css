@@ -17,8 +17,10 @@
 	--rv-muted:  var(--text-muted);
 }
 
-/* Gold stars site-wide, in place of the plugin's generic amber. */
-.ah-review-card .ah-rv-stars { color: var(--rv-gold); }
+/* Client-color stars site-wide, in place of the plugin's generic amber -
+   every star sits on a white/light card face, so this is safe everywhere
+   (nothing currently puts a star rating on a dark gradient back face). */
+.ah-review-card .ah-rv-stars { color: var(--rv-accent); }
 
 /* Quote glyphs pick up the gold accent instead of amber. */
 .ah-review-card--big .ah-rv-text::before,

@@ -175,7 +175,7 @@ class AH_Reviews_Model extends AH_Model_Base {
 	 */
 	public static function representing_variants(): array {
 		return array(
-			'big_box'       => 'Big Box (name, title, mini desc + full text)',
+			'big_box'       => 'Big Box (cover photo + title, flips to "The Outcome" stat breakdown)',
 			'mini_card'     => 'Mini Card (name, role + short quote)',
 			'spotlight'     => 'Spotlight (big quote + round portrait, wide)',
 			'with_photos'   => 'With Photos (card + scrollable photo strip)',
@@ -183,6 +183,30 @@ class AH_Reviews_Model extends AH_Model_Base {
 			'property_deck' => 'Property Deck (headline + quote + result stat)',
 			'case_study'    => 'Case Study (cover photo + title + tap to reveal)',
 		);
+	}
+
+	/**
+	 * Parse the admin's "Highlight Stat(s)" field into label/value rows.
+	 * Each non-empty line is one row - "Label: Value" splits on the first
+	 * colon; a line with no colon becomes a value-only row (empty label).
+	 * Used by the Big Box "Outcome" breakdown; Property Deck just reads the
+	 * first line's raw text as its single badge.
+	 *
+	 * @return array<int, array{label: string, value: string}>
+	 */
+	public static function parse_stat_lines( string $raw ): array {
+		$pairs = array();
+		foreach ( preg_split( '/\r\n|\r|\n/', trim( $raw ) ) as $line ) {
+			$line = trim( $line );
+			if ( '' === $line ) continue;
+			if ( false !== strpos( $line, ':' ) ) {
+				list( $label, $value ) = explode( ':', $line, 2 );
+				$pairs[] = array( 'label' => trim( $label ), 'value' => trim( $value ) );
+			} else {
+				$pairs[] = array( 'label' => '', 'value' => $line );
+			}
+		}
+		return $pairs;
 	}
 
 	/**
