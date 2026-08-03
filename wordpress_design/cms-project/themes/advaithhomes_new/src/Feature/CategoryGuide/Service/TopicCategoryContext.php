@@ -365,12 +365,13 @@ class TopicCategoryContext {
 		}
 		foreach ( adn_get_parent_term_calculator_cards( $parent_slug, 7 ) as $card ) {
 			$calc_items[] = array(
-				'icon'      => $card['icon'],
-				'title'     => $card['label'],
-				'desc'      => $card['desc'] ?? '',
-				'url'       => $card['url'],
-				'thumbnail' => $card['thumbnail'],
-				'highlight' => $card['highlight'],
+				'icon'         => $card['icon'],
+				'title'        => $card['label'],
+				'desc'         => $card['desc'] ?? '',
+				'updated_date' => $card['updated_date'] ?? '',
+				'url'          => $card['url'],
+				'thumbnail'    => $card['thumbnail'],
+				'highlight'    => $card['highlight'],
 			);
 		}
 		if ( empty( $calc_items ) ) { return array(); }

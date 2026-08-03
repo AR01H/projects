@@ -215,12 +215,13 @@ class CategoryContext {
 			),
 			'items' => array_map( static function( $item ) {
 				return array(
-					'icon'      => $item['icon'],
-					'name'      => $item['label'],
-					'desc'      => $item['desc'] ?? '',
-					'url'       => $item['url'],
-					'thumbnail' => $item['thumbnail'],
-					'highlight' => $item['highlight'] ?? '',
+					'icon'         => $item['icon'],
+					'name'         => $item['label'],
+					'desc'         => $item['desc'] ?? '',
+					'updated_date' => $item['updated_date'] ?? '',
+					'url'          => $item['url'],
+					'thumbnail'    => $item['thumbnail'],
+					'highlight'    => $item['highlight'] ?? '',
 				);
 			}, $items ),
 		);

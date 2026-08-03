@@ -6187,6 +6187,9 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   flex-direction: column;
   gap: 10px;
   height: 100%;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
 }
 .phg-icon-wrap {
   width: 48px;
@@ -6209,6 +6212,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   text-transform: uppercase;
   color: var(--color-accent, #c9a84c);
   margin-top: 2px;
+  text-align: center;
 }
 .phg-name {
   font-family: var(--font-display, 'Playfair Display', Georgia, serif);
@@ -6245,8 +6249,6 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   text-decoration: none;
   backdrop-filter: blur(4px);
   transition: background 0.18s, gap 0.18s, border-color 0.18s;
-  align-self: flex-start;
-  margin-top: auto;
 }
 .phg-cta:hover {
   background: rgba(255,255,255,0.28);

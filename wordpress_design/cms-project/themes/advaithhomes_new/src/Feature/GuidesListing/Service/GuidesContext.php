@@ -57,7 +57,7 @@ class GuidesContext {
 			// Fetch child topics for the right panel
 			$topics = array();
 			if ( function_exists( 'adn_cms_topics' ) ) {
-				foreach ( adn_cms_topics( $term_id, 10 ) as $topic ) {
+				foreach ( adn_cms_topics( $term_id, 1000 ) as $topic ) {
 					$t_name = $topic->name ?? '';
 					$t_slug = $topic->slug ?? '';
 					if ( '' === $t_name ) { continue; }
