@@ -96,6 +96,14 @@ if ( $_is_carousel ) :
 			slides[cur].classList.add('hero-carousel__slide--active');
 			slides[cur].setAttribute('aria-hidden', 'false');
 			if (dots[cur]) { dots[cur].classList.add('hero-carousel__dot--active'); }
+
+			/* Switching slides only toggles CSS visibility - a <video> on a
+			   newly-active slide never got told to play (and the outgoing one
+			   keeps decoding in the background), so drive playback manually. */
+			var prevVideo = slides[prev].querySelector('.hero-carousel__video');
+			if (prevVideo) { prevVideo.pause(); }
+			var curVideo = slides[cur].querySelector('.hero-carousel__video');
+			if (curVideo) { curVideo.currentTime = 0; curVideo.play().catch(function(){}); }
 		}
 		function startTimer() {
 			clearInterval(timer);
