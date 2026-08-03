@@ -136,6 +136,14 @@ class AskExpertContext {
 			}
 		}
 
+		// Alphabetical by display label - "All Experts" stays pinned first below.
+		uasort( $db_cat_keys, static function ( $a, $b ) {
+			return strcasecmp(
+				ucwords( str_replace( array( '-', '_' ), ' ', $a ) ),
+				ucwords( str_replace( array( '-', '_' ), ' ', $b ) )
+			);
+		} );
+
 		$categories = array(
 			array( 'key' => 'all', 'label' => \adn_term( 'expert_page.filter_all_experts', 'All Experts' ), 'icon' => \adn_term( 'icons.expert_all', '⭐' ), 'active' => true ),
 		);
