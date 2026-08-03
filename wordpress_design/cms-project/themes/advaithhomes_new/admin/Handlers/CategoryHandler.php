@@ -82,6 +82,22 @@ class ADN_Category_Handler extends ADN_Base_Handler {
 			'view_all_url'  => esc_url_raw( $raw_ht['view_all_url'] ?? '' ),
 		) );
 
+		// Popular Posts.
+		$raw_pp = isset( $_POST['popular_posts'] ) && is_array( $_POST['popular_posts'] ) ? wp_unslash( $_POST['popular_posts'] ) : array();
+		$pp_items = array();
+		if ( ! empty( $raw_pp['items'] ) && is_array( $raw_pp['items'] ) ) {
+			foreach ( $raw_pp['items'] as $it ) {
+				$post_id = absint( $it['post_id'] ?? 0 );
+				if ( $post_id > 0 ) {
+					$pp_items[] = array( 'post_id' => $post_id );
+				}
+			}
+		}
+		AH_Category_Settings::save( $slug, 'popular_posts', array(
+			'heading' => sanitize_text_field( $raw_pp['heading'] ?? '' ),
+			'items'   => $pp_items,
+		) );
+
 		// Featured Topics.
 		$raw_ft = isset( $_POST['featured_topics'] ) && is_array( $_POST['featured_topics'] ) ? wp_unslash( $_POST['featured_topics'] ) : array();
 		$ft_items = array();
