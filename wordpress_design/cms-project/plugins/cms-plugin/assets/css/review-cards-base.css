@@ -26,6 +26,7 @@
 	--rv-muted:  var(--text-muted, #6b6259);
 	box-sizing: border-box;
 	font-family: inherit;
+	position: relative;
 }
 
 /* ── Flip mechanics (Big Box / Mini Card / With Photos) ─────────────────────
@@ -224,6 +225,32 @@
 .ah-review-card--carousel .ah-rv-stars { color: #f59e0b; font-size: 13px; letter-spacing: 1px; margin-bottom: 8px; }
 .ah-review-card--carousel .ah-rv-text { font-size: 13px; line-height: 1.6; color: var(--rv-ink); margin: 0; min-height: 6.4em; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .ah-review-card--carousel .ah-rv-text::before { content: "\201C"; font-family: Georgia, "Times New Roman", serif; font-size: 1.8em; line-height: 0; color: rgba(245, 158, 11, .4); vertical-align: -.28em; margin-right: 2px; }
+
+/* Small reusable "read more" trigger - shown only when the clamped text
+   above actually got truncated; opens the shared text modal below. Not
+   scoped to .ah-review-card--carousel so any other card type can reuse it -
+   absolutely positioned against .ah-review-card's own position:relative. */
+.ah-rv-expand-btn { display: inline-flex; align-items: center; justify-content: center; position: absolute; top: 10px; right: 10px; width: 26px; height: 26px; padding: 0; border: none; border-radius: 50%; background: rgba(0, 0, 0, .06); color: var(--rv-accent); cursor: pointer; transition: background .15s ease; z-index: 1; }
+.ah-rv-expand-btn:hover { background: rgba(0, 0, 0, .12); }
+.ah-rv-expand-btn svg { width: 14px; height: 14px; }
+
+/* ── Shared "full review" text popup (see models/reviews/render-text-modal.php) ──
+   Same overlay language as the photo lightbox below, sized for prose instead
+   of an image. Markup + open/close JS are print-once-injected at first use -
+   only the CSS moved here. */
+.ah-rv-text-modal { display: none; position: fixed; inset: 0; background: rgba(15, 17, 16, .72); z-index: 99999; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; }
+.ah-rv-text-modal.is-open { display: flex; }
+.ah-rv-text-modal-panel { position: relative; background: #fff; border-radius: 14px; max-width: 560px; width: 100%; max-height: 82vh; overflow-y: auto; padding: 32px 28px 28px; box-shadow: 0 24px 60px rgba(0, 0, 0, .35); }
+.ah-rv-text-modal-close { position: absolute; top: 14px; right: 14px; background: rgba(15, 17, 16, .06); border: none; color: var(--rv-ink); width: 34px; height: 34px; border-radius: 50%; font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.ah-rv-text-modal-close:hover { background: rgba(15, 17, 16, .12); }
+.ah-rv-modal-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.ah-rv-modal-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.ah-rv-modal-name { font-weight: 700; font-size: 16px; color: var(--rv-accent); }
+.ah-rv-modal-title { font-size: 12.5px; color: var(--rv-muted); }
+.ah-rv-modal-stars { color: #f59e0b; font-size: 15px; letter-spacing: 1px; margin-bottom: 14px; }
+.ah-rv-modal-text { font-size: 15px; line-height: 1.75; color: var(--rv-ink); }
+.ah-rv-modal-text p { margin: 0 0 12px; }
+.ah-rv-modal-text p:last-child { margin-bottom: 0; }
 
 /* ── Shared lightbox (With Photos strip, Full Story gallery) ───────────────
    Markup + open/close JS are still print-once-injected at first use (see

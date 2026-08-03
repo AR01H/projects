@@ -275,6 +275,7 @@ class AH_Reviews_Model extends AH_Model_Base {
 	 */
 	public static function render_carousel_card( object $r ): string {
 		self::require_review_file( 'render-carousel-card.php' );
+		self::require_review_file( 'render-text-modal.php' );
 		return ah_review_render_carousel_card( $r );
 	}
 }
