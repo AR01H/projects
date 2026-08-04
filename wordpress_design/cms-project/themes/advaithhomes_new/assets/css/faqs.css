@@ -170,11 +170,11 @@
 }
 
 .faq-a-body p {
-    margin: 0 0 10px;
+    /* margin: 0 0 10px; */
     color: var(--ah-text-muted, #374151);
     font-size: 0.9rem;
     line-height: 1.25;
-    padding: 10px 14px;
+    padding: 4px 14px;
 }
 
 .faq-a-body p:last-of-type {
@@ -351,4 +351,26 @@
     .faq-link {
         padding: 0 16px 14px;
     }
+}
+
+.faq-item .faq-a-body ul,
+.faq-item .faq-a-body ol {
+    padding: 0px;
+    margin: 1px 0px 0px 40px;
+    border-radius: 4px;
+    color: grey;
+    font-size: small;
+    list-style: auto !important;
+}
+.faq-item .faq-a-body ul{
+    list-style: circle;
+}
+
+.faq-item .faq-a-body li:marker {
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+    text-indent: 0px !important;
+    text-align: start !important;
+    text-align-last: auto !important;
 }
