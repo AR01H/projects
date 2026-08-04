@@ -53,7 +53,7 @@
     'use strict';
 
     var CK_KEY       = 'adn_cookie_consent_v1';
-    var ACCEPT_DAYS  = 365;
+    var ACCEPT_DAYS  = 30;
     var REJECT_HOURS = 20;
     var REJECT_DAYS  = REJECT_HOURS / 24;
     var REJECT_MS    = REJECT_HOURS * 3600000;
