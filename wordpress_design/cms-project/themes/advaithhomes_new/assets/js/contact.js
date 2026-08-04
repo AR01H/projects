@@ -195,8 +195,8 @@
                 if ( submitBtn ) { submitBtn.disabled = false; submitBtn.innerHTML = origHTML; }
                 if ( res.success ) {
                     form.reset();
-                    lockContactForm( form );
                     showContactMsg( form, res.data && res.data.message ? res.data.message : "Thank you! We'll be in touch shortly.", false );
+                    lockContactForm( form ); // after the message, so "Send Another Message" appears below it
                 } else {
                     var errMsg = res.data && res.data.message ? res.data.message : 'Something went wrong. Please try again.';
                     showContactMsg( form, errMsg, true );
@@ -208,14 +208,47 @@
             } );
     }
 
-    /* Disable every field/button in the form after a successful submission,
-       so the same form can't be filled in and sent again. */
+    /* Disable every field/button in the form right after a successful submission,
+       so an accidental double-click can't send it twice - then add a button to
+       deliberately unlock it again, since the visitor may want to send a follow-up
+       or correct something without reloading the whole page. */
     function lockContactForm( form ) {
         form.querySelectorAll( 'input:not([type=hidden]), textarea, select, button' ).forEach( function ( el ) {
             el.disabled     = true;
             el.style.opacity = '0.55';
             el.style.cursor  = 'not-allowed';
         } );
+
+        var unlockBtn = document.createElement( 'button' );
+        unlockBtn.type = 'button';
+        unlockBtn.className = 'btn btn-secondary contact-unlock-btn';
+        unlockBtn.textContent = 'Send Another Message';
+        unlockBtn.addEventListener( 'click', function () { unlockContactForm( form ); } );
+        form.appendChild( unlockBtn );
+    }
+
+    function unlockContactForm( form ) {
+        form.querySelectorAll( 'input:not([type=hidden]), textarea, select, button' ).forEach( function ( el ) {
+            el.disabled      = false;
+            el.style.opacity = '';
+            el.style.cursor  = '';
+        } );
+
+        var unlockBtn = form.querySelector( '.contact-unlock-btn' );
+        if ( unlockBtn ) { unlockBtn.remove(); }
+
+        /* form.reset() (already run on success) clears the hidden enquiry_type
+           value but not the button grid's own active/aria-pressed state. */
+        var grid = document.getElementById( 'enquiryTypeGrid' );
+        if ( grid ) {
+            grid.querySelectorAll( '.enquiry-type-btn' ).forEach( function ( b ) {
+                b.classList.remove( 'active' );
+                b.setAttribute( 'aria-pressed', 'false' );
+            } );
+        }
+
+        clearContactMsg( form );
+        updateSubmitButtonState( form ); // fields are now empty again - Submit goes back to disabled until refilled
     }
 
     function showContactMsg( form, text, isError ) {

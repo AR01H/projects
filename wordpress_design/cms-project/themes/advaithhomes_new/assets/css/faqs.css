@@ -174,7 +174,7 @@
     color: var(--ah-text-muted, #374151);
     font-size: 0.9rem;
     line-height: 1.25;
-    padding: 4px 14px;
+    padding: 7px 14px;
 }
 
 .faq-a-body p:last-of-type {
