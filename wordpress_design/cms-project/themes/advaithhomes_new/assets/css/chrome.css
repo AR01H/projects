@@ -5,7 +5,7 @@
    chrome.css - Site chrome: layout primitives, buttons, and the
    header / navigation / search / footer that wrap every page.
 
-   Loaded site-wide via adn_enqueue_common_css().
+   Loaded site-wide via AssetLoader::loadCoreCss().
 
    NOTE: This file defines NO :root color palette on purpose - it
    uses the same `var(--token, #fallback)` pattern as the page

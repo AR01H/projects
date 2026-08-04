@@ -6,15 +6,17 @@ defined( 'ABSPATH' ) || exit;
 
 class ADN_Admin_Actions_Handler extends ADN_Base_Handler {
 
-	/** Clear all caches (object, transients, fragments, filesystem, OPcache). */
-	public static function handle_clear_cache(): void {
-		self::verify_request( 'adn_clear_cache' );
-
-		// Save cache enabled state.
-		if ( isset( $_POST['_wp_http_referer'] ) ) {
-			update_option( 'ah_cache_enabled', isset( $_POST['ah_cache_enabled'] ) ? '1' : '0' );
-		}
-
+	/**
+	 * Flush object cache, theme transients, home-fragment cache, filesystem
+	 * cache, OPcache, and any known host/plugin page cache. Shared by the
+	 * manual "Clear Cache" action and the cookie re-ask actions below - a
+	 * version-number bump means nothing to visitors if a stale copy of
+	 * get_option( 'adn_cookie_consent_*_version' ) keeps being served from
+	 * object cache / OPcache / a page cache on production.
+	 *
+	 * @return string[] Labels of what was cleared, for the admin notice.
+	 */
+	private static function flush_all_caches(): array {
 		$cleared = array();
 
 		if ( function_exists( 'wp_cache_flush' ) ) {
@@ -49,6 +51,43 @@ class ADN_Admin_Actions_Handler extends ADN_Base_Handler {
 			$cleared[] = 'OPcache';
 		}
 
+		// Known host/plugin page caches - a stale full-page cache would keep
+		// serving old version numbers baked into the localized script output.
+		if ( function_exists( 'rocket_clean_domain' ) ) {
+			rocket_clean_domain();
+			$cleared[] = 'WP Rocket';
+		}
+		if ( has_action( 'litespeed_purge_all' ) ) {
+			do_action( 'litespeed_purge_all' );
+			$cleared[] = 'LiteSpeed Cache';
+		}
+		if ( function_exists( 'w3tc_flush_all' ) ) {
+			w3tc_flush_all();
+			$cleared[] = 'W3 Total Cache';
+		}
+		if ( function_exists( 'wp_cache_clear_cache' ) ) {
+			wp_cache_clear_cache();
+			$cleared[] = 'WP Super Cache';
+		}
+		if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
+			sg_cachepress_purge_cache();
+			$cleared[] = 'SiteGround Cache';
+		}
+
+		return $cleared;
+	}
+
+	/** Clear all caches (object, transients, fragments, filesystem, OPcache). */
+	public static function handle_clear_cache(): void {
+		self::verify_request( 'adn_clear_cache' );
+
+		// Save cache enabled state.
+		if ( isset( $_POST['_wp_http_referer'] ) ) {
+			update_option( 'ah_cache_enabled', isset( $_POST['ah_cache_enabled'] ) ? '1' : '0' );
+		}
+
+		$cleared = self::flush_all_caches();
+
 		$msg = ! empty( $cleared )
 			? sprintf( __( 'Cache cleared: %s.', ADN_TEXT_DOMAIN ), implode( ', ', $cleared ) )
 			: __( 'Nothing to clear.', ADN_TEXT_DOMAIN );
@@ -63,7 +102,7 @@ class ADN_Admin_Actions_Handler extends ADN_Base_Handler {
 		update_option( 'adn_cookie_consent_accept_version', (int) get_option( 'adn_cookie_consent_accept_version', 1 ) + 1 );
 		update_option( 'adn_cookie_consent_reject_version', (int) get_option( 'adn_cookie_consent_reject_version', 1 ) + 1 );
 
-		if ( class_exists( 'ADN_Cache' ) ) { ADN_Cache::clear_all(); }
+		self::flush_all_caches();
 
 		self::redirect_success( 'admin-actions', 'cache', __( 'Cookie consent will be re-asked for every visitor on their next page load.', ADN_TEXT_DOMAIN ) );
 	}
@@ -74,7 +113,7 @@ class ADN_Admin_Actions_Handler extends ADN_Base_Handler {
 
 		update_option( 'adn_cookie_consent_reject_version', (int) get_option( 'adn_cookie_consent_reject_version', 1 ) + 1 );
 
-		if ( class_exists( 'ADN_Cache' ) ) { ADN_Cache::clear_all(); }
+		self::flush_all_caches();
 
 		self::redirect_success( 'admin-actions', 'cache', __( 'Cookie consent will be re-asked only for visitors who previously rejected.', ADN_TEXT_DOMAIN ) );
 	}

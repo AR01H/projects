@@ -401,10 +401,12 @@ class AssetLoader {
 	 * Get file version for cache busting.
 	 */
 	private static function version( string $path ): int {
+		if ( \file_exists( $path ) ) {
+			return \filemtime( $path );
+		}
 		if ( \defined( 'LOCAL_CACHE_VERSION' ) ) {
 			return LOCAL_CACHE_VERSION;
 		}
-		$default = \defined( 'ADN_THEME_VERSION' ) ? \ADN_THEME_VERSION : 1;
-		return \file_exists( $path ) ? \filemtime( $path ) : $default;
+		return \defined( 'ADN_THEME_VERSION' ) ? \ADN_THEME_VERSION : 1;
 	}
 }

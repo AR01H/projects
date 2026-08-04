@@ -4,7 +4,7 @@
  * One cookie: 'adn_cookie_consent', JSON payload:
  *   '{"v":<version>,"analytics":0|1,"advertising":0|1,"ts":<unix-ms>}'
  *   - Fully accepted or partial (either category on) → expires in 365 days.
- *   - Fully rejected (both categories off)           → expires in 24 hours
+ *   - Fully rejected (both categories off)           → expires in 20 hours
  *     (banner shows again after that automatically).
  * "Necessary" cookies are not stored in the payload at all - they are always
  * on and never shown to the visitor as a toggle.
@@ -45,14 +45,18 @@
  *                              analytics/ads tags in real time as the visitor edits
  *                              their preferences, not only on first decision.
  *   .openPreferences()         → opens the "Manage Preferences" modal on demand.
+ *   .reset()                   → immediately erases the consent cookie (no reload) -
+ *                              for manual testing; the banner shows again on next
+ *                              init() / page load, same as a version mismatch.
  */
 ( function () {
     'use strict';
 
-    var CK_KEY       = 'adn_cookie_consent';
+    var CK_KEY       = 'adn_cookie_consent_v1';
     var ACCEPT_DAYS  = 365;
-    var REJECT_DAYS  = 1;
-    var REJECT_MS    = REJECT_DAYS * 86400000;
+    var REJECT_HOURS = 20;
+    var REJECT_DAYS  = REJECT_HOURS / 24;
+    var REJECT_MS    = REJECT_HOURS * 3600000;
 
     function acceptVersion() {
         return ( window.adnConsentCfg && window.adnConsentCfg.acceptVersion ) || '1';
@@ -226,8 +230,8 @@
             '<div class="acb-inner">'
           +   '<div class="acb-text">'
           +     '<p class="acb-msg">We use cookies to remember your preferences and improve your experience on our site. '
-          +     'Read our <a href="' + policyUrl() + '" target="_blank" rel="noopener noreferrer" class="acb-link">Cookie Policy</a> to learn more.</p>'
-          +     '<button type="button" id="adn-cookie-manage" class="acb-manage-link">Manage Preferences</button>'
+          +     'Read our <a href="' + policyUrl() + '" target="_blank" rel="noopener noreferrer" class="acb-link">Cookie Policy</a> to learn more. '
+          +     '<button type="button" id="adn-cookie-manage" class="acb-manage-link">Manage Preferences</button></p>'
           +   '</div>'
           +   '<div class="acb-actions">'
           +     '<button type="button" id="adn-cookie-reject" class="acb-btn acb-btn--reject">Reject</button>'
@@ -407,12 +411,14 @@
         _modal.className = 'adn-cookie-modal';
         _modal.innerHTML =
             '<div class="acm-backdrop"></div>'
-          + '<div class="acm-dialog" role="dialog" aria-modal="true" aria-label="Cookie preferences">'
+          + '<div class="acm-wrap">'
           +   '<button type="button" class="acm-close" aria-label="Close">&times;</button>'
-          +   '<h2 class="acm-heading">Cookie Preferences</h2>'
-          +   '<p class="acm-intro">Choose which optional cookies we can use. Read our '
-          +     '<a href="' + policyUrl() + '" target="_blank" rel="noopener noreferrer">Cookie Policy</a> for full details.</p>'
-          +   '<div class="acm-body"></div>'
+          +   '<div class="acm-dialog" role="dialog" aria-modal="true" aria-label="Cookie preferences">'
+          +     '<h2 class="acm-heading">Cookie Preferences</h2>'
+          +     '<p class="acm-intro">Choose which optional cookies we can use. Read our '
+          +       '<a href="' + policyUrl() + '" target="_blank" rel="noopener noreferrer">Cookie Policy</a> for full details.</p>'
+          +     '<div class="acm-body"></div>'
+          +   '</div>'
           + '</div>';
         document.body.appendChild( _modal );
         renderPreferencesForm( _modal.querySelector( '.acm-body' ), { onDone: closePreferences } );
@@ -478,6 +484,7 @@
         savePreferences : savePreferences,
         onCategoryChange: onCategoryChange,
         openPreferences : openPreferences,
+        reset           : function () { ckErase( CK_KEY ); },
     };
 
 } )();

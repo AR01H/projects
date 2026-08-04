@@ -3,7 +3,11 @@
     "allow": [
       "Bash(cat)",
       "Bash(php /c/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/e22c24a7-5b5b-4ac6-b55a-0863ed1279d8/scratchpad/cleanup_shortcuts.php)",
-      "Bash(php -l \"l:/MY-GITHUB/AR01H/projects/wordpress_design/cms-project/plugins/cms-plugin/admin/Shortcuts.php\")"
+      "Bash(php -l \"l:/MY-GITHUB/AR01H/projects/wordpress_design/cms-project/plugins/cms-plugin/admin/Shortcuts.php\")",
+      "Bash(php -l ThemeHelpers.php)",
+      "Bash(php -l admin/Handlers/AdminActionsHandler.php)",
+      "Bash(php -l includes/core_routing.php)",
+      "Bash(node --check assets/js/cookie-consent.js)"
     ]
   }
 }

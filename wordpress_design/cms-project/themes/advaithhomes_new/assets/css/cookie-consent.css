@@ -55,8 +55,8 @@
 }
 
 .acb-manage-link {
-    display: inline-block;
-    margin-top: 6px;
+    display: inline;
+    margin-left: 2px;
     padding: 0;
     background: none;
     border: none;
@@ -118,9 +118,12 @@
 
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 600px) {
-    .acb-inner   { flex-direction: column; align-items: flex-start; gap: 14px; }
-    .acb-actions { width: 100%; }
-    .acb-btn     { flex: 1; }
+    .adn-cookie-banner { padding: 14px 0; }
+    .acb-inner        { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 16px; }
+    .acb-msg          { font-size: 0.8125rem; line-height: 1.45; }
+    .acb-manage-link  { margin-left: 2px; font-size: 0.75rem; }
+    .acb-actions      { width: 100%; gap: 8px; }
+    .acb-btn          { flex: 1; padding: 8px 16px; }
 }
 
 /* ============================================================
@@ -153,10 +156,16 @@
     background: rgba(15, 23, 42, 0.55);
 }
 
-.acm-dialog {
+.acm-wrap {
     position: relative;
     width: 100%;
     max-width: 520px;
+}
+
+.acm-dialog {
+    position: relative;
+    z-index: 1;
+    width: 100%;
     max-height: calc(100vh - 40px);
     overflow-y: auto;
     background: var(--color-white, #fff);
@@ -171,14 +180,17 @@
     transform: translateY(0) scale(1);
 }
 
+/* Floats outside the dialog card, on the dark backdrop - not inside .acm-dialog,
+   which would clip it via that element's own overflow-y: auto. */
 .acm-close {
     position: absolute;
-    top: 14px;
-    right: 14px;
+    top: -14px;
+    right: -14px;
+    z-index: 2;
     width: 32px;
     height: 32px;
     border: none;
-    background: var(--color-surface, #f3f4f6);
+    background: var(--color-white, #fff);
     color: var(--color-text, #2c3e50);
     border-radius: 50%;
     font-size: 1.25rem;
@@ -187,11 +199,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     transition: background 0.2s;
 }
 
 .acm-close:hover {
-    background: var(--color-border, #e5e0d8);
+    background: var(--color-surface, #f3f4f6);
 }
 
 .acm-heading {
@@ -199,7 +212,6 @@
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-heading, var(--color-text, #2c3e50));
-    padding-right: 32px;
 }
 
 .acm-intro {

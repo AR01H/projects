@@ -54,7 +54,11 @@ if ( function_exists( 'adn_component' ) ) {
 	<div class="section section--md">
 		<div class="container">
 			<div class="adn-wp-page__content">
-				<?php the_content(); ?>
+				<?php
+				remove_filter( 'the_content', 'wpautop' );
+				the_content();
+				add_filter( 'the_content', 'wpautop' );
+				?>
 			</div>
 		</div>
 	</div>

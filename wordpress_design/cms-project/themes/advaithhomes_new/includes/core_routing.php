@@ -25,7 +25,7 @@ add_filter( 'template_include', 'adn_route_news_single_slug', 97 );
  *     set a 200 status, inject a document title, and return the template file.
  *
  * Sets adn_virtual_template query var to the template basename (without .php)
- * so adn_enqueue_template_specific_assets() can load the right CSS/JS.
+ * so AssetLoader::getCurrentTemplate() can load the right CSS/JS.
  */
 function adn_route_page_definitions( $template ) {
 	if ( ! function_exists( 'adn_get_page_definitions' ) ) {
