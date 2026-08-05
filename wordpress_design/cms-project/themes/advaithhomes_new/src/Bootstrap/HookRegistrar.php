@@ -148,18 +148,21 @@ class HookRegistrar {
 		\add_filter( 'wp_lazy_loading_enabled', '__return_true' );
 		\add_filter( 'the_content', 'adn_add_img_lazy_attr', 10 );
 		\add_filter( 'adn_calculators', 'adn_merge_db_calculators' );
-		\add_filter( 'wp_get_attachment_url', function( $url, $id ) {
-			return $url . '?v=' . LOCAL_CACHE_VERSION;
-		}, 10, 2 );
-		\add_filter( 'wp_get_attachment_image_src', function( $image, $id, $size ) {
-			if ( \is_array( $image ) && ! empty( $image[0] ) ) {
-				$image[0] = \add_query_arg( 'v', LOCAL_CACHE_VERSION, $image[0] );
-			}
-			return $image;
-		}, 10, 3 );
-		\add_filter( 'the_content', function( $content ) {
-			return \str_replace( 'src=', 'src=?v=' . LOCAL_CACHE_VERSION . '&amp;', $content );
-		} );
+		/*
+		 * Cache-busting (?v=LOCAL_CACHE_VERSION). All four delegate to
+		 * CacheBustingFilter, which is careful about things a naive string
+		 * append/replace gets wrong: it keeps the version INSIDE the quotes,
+		 * picks ?/& correctly when the URL already has a query string, skips
+		 * URLs that are already versioned, and leaves EXTERNAL URLs alone
+		 * (versioning a third-party embed can break it).
+		 *
+		 * Content images only - never a blanket rewrite of every src= in the
+		 * content, which would corrupt <iframe>/<script>/<video> embeds too.
+		 */
+		\add_filter( 'wp_get_attachment_url', 'adn_cache_bust_attachment_url' );
+		\add_filter( 'wp_get_attachment_image_src', 'adn_cache_bust_attachment_image_src' );
+		\add_filter( 'the_content', 'adn_cache_bust_content_images' );
+		\add_filter( 'the_content', 'adn_cache_bust_content_bg_images' );
 		\add_filter( 'pre_get_posts', function( $query ) {
 			if ( $query->is_search() && ! \is_admin() ) {
 				$query->set( 'posts_per_page', 12 );
