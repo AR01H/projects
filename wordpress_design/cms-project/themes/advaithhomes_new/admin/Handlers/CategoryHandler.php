@@ -133,6 +133,23 @@ class ADN_Category_Handler extends ADN_Base_Handler {
 			'items'   => $faq_items,
 		) );
 
+		// Spotlights. Stored as [ 'terms' => [ slug, ... ] ] - the shape SubTerm.php
+		// reads back and PageCategoryGuide renders from.
+		$raw_sp   = isset( $_POST['spotlights'] ) && is_array( $_POST['spotlights'] ) ? wp_unslash( $_POST['spotlights'] ) : array();
+		$sp_terms = array();
+		if ( ! empty( $raw_sp['terms'] ) && is_array( $raw_sp['terms'] ) ) {
+			foreach ( $raw_sp['terms'] as $sp_slug ) {
+				$sp_slug = sanitize_key( $sp_slug );
+				// Skip the "- Select term -" blank and ignore duplicate rows.
+				if ( '' !== $sp_slug && ! in_array( $sp_slug, $sp_terms, true ) ) {
+					$sp_terms[] = $sp_slug;
+				}
+			}
+		}
+		AH_Category_Settings::save( $slug, 'spotlights', array(
+			'terms' => $sp_terms,
+		) );
+
 		// CTA Banner.
 		$raw_cta = isset( $_POST['cta_banner'] ) && is_array( $_POST['cta_banner'] ) ? wp_unslash( $_POST['cta_banner'] ) : array();
 		AH_Category_Settings::save( $slug, 'cta_banner', array(
