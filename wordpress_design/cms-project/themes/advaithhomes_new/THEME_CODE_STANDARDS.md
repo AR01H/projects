@@ -197,7 +197,8 @@ return $ctx;
 ### Do's
 - Use `adn_term()` for all site terminology
 - Use `adn_component()` to render components
-- Use `adn_link()` for internal URLs
+- Use `adn_link()` for every stored URL — it resolves site paths via `home_url()` and passes external URLs through untouched. Never wrap a stored URL in `home_url()` directly; that corrupts external links.
+- Pair it with `adn_link_target_attr( $raw_url )` so external links open in a new tab with `rel="noopener noreferrer"`
 - Cache Context results with `ADN_Cache`
 - Split large functions into small `build*` methods
 - Register SEO with `adn_seo_register()`

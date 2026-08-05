@@ -7,7 +7,8 @@
       "Bash(php -l ThemeHelpers.php)",
       "Bash(php -l admin/Handlers/AdminActionsHandler.php)",
       "Bash(php -l includes/core_routing.php)",
-      "Bash(node --check assets/js/cookie-consent.js)"
+      "Bash(node --check assets/js/cookie-consent.js)",
+      "Bash(rg -n --pcre2 'href=\"<\\\\?php echo \\(?!esc_url\\\\\\(\\\\s*adn_link\\)' components pages *.php)"
     ]
   }
 }
