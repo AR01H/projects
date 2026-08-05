@@ -54,7 +54,7 @@ if ( 'compact' === $mode ) {
 							</div>
 						<?php endif; ?>
 						<?php if ( '' !== $_tag ) : ?>
-							<span class="sp-metric-card__desc"><?php echo esc_html( $_tag ); ?></span>
+							<span class="sp-metric-card__desc" title="<?php echo esc_html( $_tag ); ?>"><?php echo esc_html( $_tag ); ?></span>
 						<?php endif; ?>
 						<?php if ( '' !== $_link_label ) : ?>
 							<span class="spotlight-card__link-label"><?php echo esc_html( $_link_label ); ?><?php if ( '' !== $_url ) : ?> <i class="fa-solid fa-arrow-right" aria-hidden="true" style="font-size:0.7em;"></i><?php endif; ?></span>
