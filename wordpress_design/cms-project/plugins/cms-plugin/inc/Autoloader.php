@@ -55,6 +55,7 @@ class AH_Autoloader {
 		'AH_Events_Helper'      => 'helper/EventsHelper.php',
 		'AH_Settings_Helper'    => 'helper/SettingsHelper.php',
 		'AH_Page_Builder_Helper' => 'helper/PageBuilderHelper.php',
+		'AH_Microsoft_Graph_Mailer' => 'helper/MicrosoftGraphMailerHelper.php',
 
 		// Admin
 		'AH_Analytics_Model'           => 'models/AnalyticsModel.php',

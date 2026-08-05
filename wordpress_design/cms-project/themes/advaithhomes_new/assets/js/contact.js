@@ -196,7 +196,7 @@
                 if ( res.success ) {
                     form.reset();
                     showContactMsg( form, res.data && res.data.message ? res.data.message : "Thank you! We'll be in touch shortly.", false );
-                    lockContactForm( form ); // after the message, so "Send Another Message" appears below it
+                    resetContactFormState( form ); // stays open so a follow-up can be typed straight away
                 } else {
                     var errMsg = res.data && res.data.message ? res.data.message : 'Something went wrong. Please try again.';
                     showContactMsg( form, errMsg, true );
@@ -208,35 +208,11 @@
             } );
     }
 
-    /* Disable every field/button in the form right after a successful submission,
-       so an accidental double-click can't send it twice - then add a button to
-       deliberately unlock it again, since the visitor may want to send a follow-up
-       or correct something without reloading the whole page. */
-    function lockContactForm( form ) {
-        form.querySelectorAll( 'input:not([type=hidden]), textarea, select, button' ).forEach( function ( el ) {
-            el.disabled     = true;
-            el.style.opacity = '0.55';
-            el.style.cursor  = 'not-allowed';
-        } );
-
-        var unlockBtn = document.createElement( 'button' );
-        unlockBtn.type = 'button';
-        unlockBtn.className = 'btn btn-secondary contact-unlock-btn';
-        unlockBtn.textContent = 'Send Another Message';
-        unlockBtn.addEventListener( 'click', function () { unlockContactForm( form ); } );
-        form.appendChild( unlockBtn );
-    }
-
-    function unlockContactForm( form ) {
-        form.querySelectorAll( 'input:not([type=hidden]), textarea, select, button' ).forEach( function ( el ) {
-            el.disabled      = false;
-            el.style.opacity = '';
-            el.style.cursor  = '';
-        } );
-
-        var unlockBtn = form.querySelector( '.contact-unlock-btn' );
-        if ( unlockBtn ) { unlockBtn.remove(); }
-
+    /* After a successful send the form stays fully editable so a visitor can send a
+       follow-up straight away. Double submits are already prevented by the submit
+       button disabling itself for the duration of the request, and by Submit going
+       back to disabled here until the empty fields are filled in again. */
+    function resetContactFormState( form ) {
         /* form.reset() (already run on success) clears the hidden enquiry_type
            value but not the button grid's own active/aria-pressed state. */
         var grid = document.getElementById( 'enquiryTypeGrid' );
@@ -247,8 +223,12 @@
             } );
         }
 
-        clearContactMsg( form );
-        updateSubmitButtonState( form ); // fields are now empty again - Submit goes back to disabled until refilled
+        /* Drop any leftover invalid styling from the submission that just succeeded. */
+        form.querySelectorAll( '.field-invalid' ).forEach( function ( el ) {
+            el.classList.remove( 'field-invalid' );
+        } );
+
+        updateSubmitButtonState( form ); // fields are empty again - Submit disabled until refilled
     }
 
     function showContactMsg( form, text, isError ) {

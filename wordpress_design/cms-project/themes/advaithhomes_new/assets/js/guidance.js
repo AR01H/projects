@@ -85,7 +85,15 @@
 		var el       = document.createElement( 'div' );
 		el.className = 'guidance-form-msg ' + ( isError ? 'is-error' : 'is-success' );
 		el.textContent = text;
-		form.insertBefore( el, form.firstChild );
+
+		/* Directly under the submit button - that is where the visitor is looking
+		   once they click it. At the top of the form it is off-screen on a long form. */
+		var btn = form.querySelector( '.guidance-submit-btn' );
+		if ( btn ) {
+			btn.insertAdjacentElement( 'afterend', el );
+		} else {
+			form.appendChild( el );
+		}
 		el.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );
 	}
 

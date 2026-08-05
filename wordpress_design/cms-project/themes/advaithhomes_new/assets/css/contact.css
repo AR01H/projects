@@ -1019,13 +1019,6 @@
     border: 1px solid var(--color-error-border);
 }
 
-.contact-unlock-btn {
-    width: 100%;
-    justify-content: center;
-    font-size: 1rem;
-    padding: 14px 24px;
-}
-
 /* ── Address + Map block ───────────────────────────────────────── */
 .contact-address-text {
     font-size: 0.875rem;
