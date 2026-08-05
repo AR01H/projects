@@ -1,4 +1,12 @@
 {
+  "_comment": "Footer content. 'labels' holds the column headings and small bits of chrome text - edit them here instead of in components/parts/main_footer.php.",
+  "labels": {
+    "quick_links_heading": "Quick Links",
+    "products_heading": "Our Products",
+    "contact_heading": "Contact Us",
+    "connect_label": "Connect:",
+    "rights_text": "All Rights Reserved."
+  },
   "brand": {
     "logo_image": "assets/images/logotext.png",
     "tagline": "Bringing you the authentic, traditional taste of freshly pressed sugarcane. We serve nature's finest extracts, crafted with love, hygiene, and a passion for health. Pure Sugarcane. Pure Love."

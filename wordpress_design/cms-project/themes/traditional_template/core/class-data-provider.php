@@ -49,38 +49,14 @@ class NT_Data_Provider {
 	}
 
 	/**
-	 * Generic fetching logic: try Plugin Model -> JSON fallback.
+	 * Generic fetching logic - reads the matching admin/data/<feature>.json file.
+	 *
+	 * To back a feature with a database/plugin model instead, add a
+	 * get_<feature>() method to this class (see get_faqs() below for the
+	 * pattern: try the model, fall through to JSON on empty/error). get()
+	 * routes to that method automatically and never reaches this fallback.
 	 */
 	private static function fetch_generic( $feature, $args ) {
-		$model_map = array(
-			'spotlights'   => 'AH_Spotlights_Model',
-			'newsbar'      => 'AH_Newsbar_Model',
-			'faqs'         => 'AH_FAQs_Model',
-			'resources'    => 'AH_Resources_Model',
-			'features_in'  => 'AH_Features_In_Model',
-			'home_banner'  => 'AH_Home_Banners_Model',
-			'site_notices' => 'AH_Site_Notices_Model',
-			'navigation'   => 'AH_Nav_Model',
-			'posts'        => 'AH_Posts_Model',
-		);
-
-		if ( false ) {
-			$model_class = $model_map[ $feature ];
-			$model       = new $model_class();
-
-			if ( method_exists( $model, 'get_active' ) ) {
-				$data = $model->get_active( $args['limit'] ?? 0 );
-				if ( ! empty( $data ) ) {
-					return $data;
-				}
-			} elseif ( method_exists( $model, 'get_all' ) ) {
-				$data = $model->get_all();
-				if ( ! empty( $data ) ) {
-					return $data;
-				}
-			}
-		}
-
 		return self::fetch_json( $feature );
 	}
 
@@ -122,12 +98,5 @@ class NT_Data_Provider {
 			}
 		}
 		return self::fetch_json( 'faqs' );
-	}
-
-	/**
-	 * Example: Custom logic for fetching Spotlights.
-	 */
-	private static function get_spotlights( $args ) {
-		return self::fetch_generic( 'spotlights', $args );
 	}
 }

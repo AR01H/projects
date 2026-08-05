@@ -1,15 +1,47 @@
-# New Theme Template - Architecture
+# The Cane House - Architecture
 
-A WordPress starter theme where **everything is a registry array executed by a
+A WordPress theme where **everything is a registry array executed by a
 generic loop** (the Drupal "info array + hook" style). You describe pages,
 AJAX calls, REST routes, redirects and admin screens as data; the engines do
 the wiring. You never write routing, enqueue, nonce or menu code per feature.
 
+> Built on the `new_theme_template` starter. It still uses that starter's
+> `nt_` function prefix and `NT_` constants throughout - see §6 if you ever
+> want to rename them.
+
 ```
 DATA (you edit)                    ENGINES (you don't edit)
 config/*.php  ── arrays ──────▶    core/*.php  ── loops + security
-admin/data/*.json ── content ─▶    nt_data() / nt_terms_tree()
+admin/data/*.json ── content ─▶    nt_data() / NT_Data_Provider
 ```
+
+---
+
+## 0. "I just want to change some text"
+
+You almost never need to touch PHP. All user-facing copy lives in
+`admin/data/*.json`, read with `nt_data('<file>')` or
+`NT_Data_Provider::get('<file>')`. Edit the JSON, reload the page.
+
+| I want to change... | Edit this file |
+|---|---|
+| Header nav links, dropdowns | `admin/data/nav.json` → `header` |
+| Header button ("BOOK US / YOUR EVENT") | `admin/data/nav.json` → `cta` |
+| Footer links, products, socials, brand tagline | `admin/data/footer.json` |
+| Footer column headings, "Connect:", copyright | `admin/data/footer.json` → `labels` |
+| Floating toolbar buttons, screen-reader labels | `admin/data/ui.json` |
+| "Our Story" section (heading, body, stamp, button) | `admin/data/about.json` |
+| Which sections appear on a page, and in what order | `admin/data/page_sections.json` |
+| Whether a section shows at all | `admin/data/sections.json` |
+| Brand name / phone / email | `config/theme.php` (`NT_BRAND_*`) |
+
+Everything else follows the same rule: a component named
+`components/foo.php` reads `admin/data/foo.json`. `COMPONENTS.md` lists every
+component and the JSON file it reads.
+
+**Rule for new work:** never hardcode a user-facing string in a component.
+Read it from JSON with a sensible `?? 'fallback'` default, so the theme still
+renders if the key is missing.
 
 ---
 

@@ -1,0 +1,18 @@
+{
+  "_comment": "Shared chrome / UI text that isn't owned by one page or section - floating toolbar, scroll-to-top, accessibility labels. Read via nt_data('ui'). Edit here instead of in the component PHP.",
+
+  "floating_toolbar": {
+    "order_label": "ORDER NOW",
+    "order_aria": "Order Now",
+    "order_url": "/order/",
+    "whatsapp_label": "WHATSAPP CHAT",
+    "whatsapp_aria": "WhatsApp Chat"
+  },
+
+  "aria": {
+    "scroll_to_top": "Scroll to top",
+    "open_menu": "Open menu",
+    "home": "Home",
+    "mobile_nav": "Mobile Navigation"
+  }
+}

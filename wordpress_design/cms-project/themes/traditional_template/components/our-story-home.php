@@ -5,46 +5,71 @@
  */
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * All text/images below come from admin/data/about.json (first entry).
+ * Edit the copy there - nothing user-facing should be hardcoded in this file.
+ */
 $about = NT_Data_Provider::get('about');
 $about = ( is_array($about) && !empty($about) ) ? (array) $about[0] : [];
 
-$photo   = $about['image']          ?? 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?auto=format&fit=crop&w=700&q=80';
-$machine = $about['machine_image']  ?? 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80';
+$photo     = $about['image']         ?? '';
+$photo_alt = $about['image_alt']     ?? '';
+$machine   = $about['machine_image'] ?? '';
 
-$paras = [
-	$about['body_1'] ?? 'The concept was born from simple memories of childhood summers – the sound of a traditional press, the joy of watching fresh juice being made, and the taste that stayed with us forever.',
-	$about['body_2'] ?? 'Today, we carry that tradition forward, serving fresh, natural refreshments while you watch – pure cane, pressed right in front of you.',
-	'A taste of home. A tradition shared across generations.',
-];
+$tag         = $about['tag']          ?? '';
+$head_lead   = $about['heading_lead'] ?? ( $about['title'] ?? '' );
+$head_em     = $about['heading_em']   ?? '';
+$subtitle    = $about['subtitle']     ?? '';
+$stamp_1     = $about['stamp_line1']  ?? '';
+$stamp_2     = $about['stamp_line2']  ?? '';
+$cta_label   = $about['cta_label']    ?? '';
+$cta_url     = $about['cta_url']      ?? '/about/';
+
+// Body copy: any body_N key, in order, so you can add body_4+ in JSON without touching PHP.
+$paras = [];
+foreach ( $about as $k => $v ) {
+	if ( 0 === strpos( (string) $k, 'body_' ) && '' !== trim( (string) $v ) ) {
+		$paras[] = (string) $v;
+	}
+}
 ?>
 <section class="nt-tstory" id="our-story">
 	<div class="container nt-tstory__inner">
 
 		<!-- Left: Vintage photo with stamp -->
 		<figure class="nt-tstory__photo">
-			<img src="<?php echo esc_url( $photo ); ?>" alt="Our story photo" loading="lazy">
-			<span class="nt-tstory__stamp" aria-hidden="true">
-				<span>Made Fresh</span>
-				<strong>Every Day</strong>
-			</span>
+			<?php if ( $photo ) : ?>
+				<img src="<?php echo esc_url( $photo ); ?>" alt="<?php echo esc_attr( $photo_alt ); ?>" loading="lazy">
+			<?php endif; ?>
+			<?php if ( $stamp_1 || $stamp_2 ) : ?>
+				<span class="nt-tstory__stamp" aria-hidden="true">
+					<span><?php echo esc_html( $stamp_1 ); ?></span>
+					<strong><?php echo esc_html( $stamp_2 ); ?></strong>
+				</span>
+			<?php endif; ?>
 		</figure>
 
 		<!-- Centre: text content -->
 		<div class="nt-tstory__text">
-			<span class="nt-section-tag">Our Heritage</span>
+			<?php if ( $tag ) : ?>
+				<span class="nt-section-tag"><?php echo esc_html( $tag ); ?></span>
+			<?php endif; ?>
 			<h2 class="nt-tstory__heading">
-				Our <em>Story</em>
+				<?php echo esc_html( $head_lead ); ?><?php if ( $head_em ) : ?> <em><?php echo esc_html( $head_em ); ?></em><?php endif; ?>
 			</h2>
-			<p class="nt-tstory__script">
-				Bringing Back Memories For Some<br>
-				Creating New Memories For Others
-			</p>
+			<?php if ( $subtitle ) : ?>
+				<p class="nt-tstory__script">
+					<?php echo wp_kses( $subtitle, array( 'br' => array(), 'em' => array(), 'strong' => array() ) ); ?>
+				</p>
+			<?php endif; ?>
 			<?php foreach ( $paras as $p ) : ?>
 				<p class="nt-tstory__body"><?php echo esc_html( $p ); ?></p>
 			<?php endforeach; ?>
-			<a href="<?php echo esc_url( home_url('/about/') ); ?>" class="btn">
-				Read Our Story &rarr;
-			</a>
+			<?php if ( $cta_label ) : ?>
+				<a href="<?php echo esc_url( nt_link( $cta_url ) ); ?>" class="btn">
+					<?php echo esc_html( $cta_label ); ?> &rarr;
+				</a>
+			<?php endif; ?>
 		</div>
 
 		<!-- Right: press machine photo -->

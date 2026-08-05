@@ -9,6 +9,15 @@ $footer_links  = $footer_data['quick_links'] ?? [];
 $products      = $footer_data['products'] ?? [];
 $bottom_links  = $footer_data['bottom_links'] ?? [];
 
+// Column headings + small chrome strings - edit in admin/data/footer.json ("labels").
+$labels        = $footer_data['labels'] ?? [];
+$lbl_quick     = $labels['quick_links_heading'] ?? 'Quick Links';
+$lbl_products  = $labels['products_heading']    ?? 'Our Products';
+$lbl_contact   = $labels['contact_heading']     ?? 'Contact Us';
+$lbl_connect   = $labels['connect_label']       ?? 'Connect:';
+$lbl_rights    = $labels['rights_text']         ?? 'All Rights Reserved.';
+$aria_top      = nt_data('ui')['aria']['scroll_to_top'] ?? 'Scroll to top';
+
 $brand_data    = $footer_data['brand'] ?? [];
 $brand_logo    = $brand_data['logo_image'] ?? '';
 $brand_name    = $brand_data['name'] ?? NT_BRAND_NAME;
@@ -68,7 +77,7 @@ if ( $footer_bg ) {
 
 			<!-- Quick Links -->
 			<div class="nt-footer__col">
-				<h4 class="nt-footer__heading">Quick Links</h4>
+				<h4 class="nt-footer__heading"><?php echo esc_html( $lbl_quick ); ?></h4>
 				<ul class="nt-footer__links">
 					<?php foreach ( $footer_links as $link ) : ?>
 						<li>
@@ -82,7 +91,7 @@ if ( $footer_bg ) {
 
 			<!-- Our Products -->
 			<div class="nt-footer__col">
-				<h4 class="nt-footer__heading">Our Products</h4>
+				<h4 class="nt-footer__heading"><?php echo esc_html( $lbl_products ); ?></h4>
 				<ul class="nt-footer__links">
 					<?php foreach ( $products as $p ) : ?>
 						<li>
@@ -96,7 +105,7 @@ if ( $footer_bg ) {
 
 			<!-- Contact -->
 			<div class="nt-footer__col">
-				<h4 class="nt-footer__heading">Contact Us</h4>
+				<h4 class="nt-footer__heading"><?php echo esc_html( $lbl_contact ); ?></h4>
 				<?php if ($phone) : ?>
 					<p style="margin:0 0 8px; font-size:0.9rem;">
 						<a href="tel:<?php echo esc_attr(preg_replace('/[^+0-9]/', '', $phone)); ?>"
@@ -121,7 +130,7 @@ if ( $footer_bg ) {
 				
 				<?php if ( $nt_socials ) : ?>
 					<div style="display:flex; gap:16px; margin-top:24px; flex-wrap:wrap; align-items:center;">
-						<span style="font-size:0.8rem; text-transform:uppercase; color:var(--trad-gold); letter-spacing:0.1em; margin-right:4px;">Connect:</span>
+						<span style="font-size:0.8rem; text-transform:uppercase; color:var(--trad-gold); letter-spacing:0.1em; margin-right:4px;"><?php echo esc_html( $lbl_connect ); ?></span>
 						<?php foreach ( $nt_socials as $net => $url ) : 
 							$icon_file = in_array($net, ['instagram', 'youtube', 'facebook', 'whatsapp']) ? 'social-' . $net . '.svg' : 'default-social.svg';
 							$icon_svg = '<img src="' . esc_url( get_template_directory_uri() . '/assets/images/icons/' . $icon_file ) . '" alt="' . esc_attr( ucfirst( $net ) ) . '" width="22" height="22" />';
@@ -149,13 +158,13 @@ if ( $footer_bg ) {
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
-			<span>&copy; <?php echo esc_html($year); ?> <?php echo esc_html(NT_BRAND_NAME); ?>. All Rights Reserved.</span>
+			<span>&copy; <?php echo esc_html($year); ?> <?php echo esc_html($brand_name); ?>. <?php echo esc_html( $lbl_rights ); ?></span>
 		</div>
 	</div>
 </footer>
 
 <!-- Scroll to Top -->
-<button id="nt-scroll-to-top" class="nt-scroll-to-top" aria-label="Scroll to top">
+<button id="nt-scroll-to-top" class="nt-scroll-to-top" aria-label="<?php echo esc_attr( $aria_top ); ?>">
 	<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
 		 stroke-linecap="round" aria-hidden="true" class="nt-scroll-arrow">
 		<path d="M7 14.5l5-5 5 5"/>

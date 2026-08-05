@@ -5,12 +5,26 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$nav_items   = nt_data('nav')['header'] ?? [];
+$nav_data    = nt_data('nav');
+$nav_items   = $nav_data['header'] ?? [];
 $site_data   = nt_data('site');
 $logo_path   = $site_data['brand']['logoImage'] ?? 'assets/images/logo.png';
 $has_logo    = has_custom_logo();
 $current_url = trailingslashit( strtok( $_SERVER['REQUEST_URI'], '?' ) );
 $brand_name  = NT_BRAND_NAME;
+
+// Header CTA button - edit in admin/data/nav.json ("cta").
+$cta          = $nav_data['cta'] ?? [];
+$cta_line1    = $cta['line1']        ?? 'BOOK US';
+$cta_line2    = $cta['line2']        ?? 'YOUR EVENT';
+$cta_mobile   = $cta['mobile_label'] ?? 'Book Us For Your Event';
+$cta_url      = $cta['url']          ?? '/#contact';
+
+// Accessibility labels - edit in admin/data/ui.json ("aria").
+$aria         = nt_data('ui')['aria'] ?? [];
+$aria_home    = $aria['home']       ?? 'Home';
+$aria_menu    = $aria['open_menu']  ?? 'Open menu';
+$aria_mobnav  = $aria['mobile_nav'] ?? 'Mobile Navigation';
 
 function nt_nav_is_active( $url, $current ) {
 	return trailingslashit( $url ) === $current ? ' is-active' : '';
@@ -22,7 +36,7 @@ function nt_nav_is_active( $url, $current ) {
 		<div class="nt-nav__inner">
 
 			<!-- Brand / Logo -->
-			<a href="<?php echo esc_url( home_url('/') ); ?>" class="nt-nav__logo" aria-label="Home">
+			<a href="<?php echo esc_url( home_url('/') ); ?>" class="nt-nav__logo" aria-label="<?php echo esc_attr( $aria_home ); ?>">
 				<?php if ( $has_logo ) :
 					the_custom_logo();
 				else : ?>
@@ -61,17 +75,17 @@ function nt_nav_is_active( $url, $current ) {
 
 			<!-- CTA + Hamburger -->
 			<div class="nt-nav__actions">
-				<a href="<?php echo esc_url( home_url('/#contact') ); ?>" class="nt-nav__cta-btn">
+				<a href="<?php echo esc_url( nt_link( $cta_url ) ); ?>" class="nt-nav__cta-btn">
 					<span class="nt-nav__cta-text">
-						<span class="nt-nav__cta-line1">BOOK US</span>
-						<span class="nt-nav__cta-line2">YOUR EVENT</span>
+						<span class="nt-nav__cta-line1"><?php echo esc_html( $cta_line1 ); ?></span>
+						<span class="nt-nav__cta-line2"><?php echo esc_html( $cta_line2 ); ?></span>
 					</span>
 					<span class="nt-nav__cta-icon">
 						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2h14v20H5V2z"/><path d="M9 6h6"/><path d="M12 6v8"/><path d="M9 14h6"/><circle cx="12" cy="18" r="1.5"/></svg>
 					</span>
 				</a>
 				<button class="nt-nav__hamburger" id="nt-hamburger"
-						aria-label="Open menu" aria-expanded="false" aria-controls="nt-mobile-nav">
+						aria-label="<?php echo esc_attr( $aria_menu ); ?>" aria-expanded="false" aria-controls="nt-mobile-nav">
 					<span></span><span></span><span></span>
 				</button>
 			</div>
@@ -81,7 +95,7 @@ function nt_nav_is_active( $url, $current ) {
 </header>
 
 <!-- Mobile Nav -->
-<nav class="nt-mobile-nav" id="nt-mobile-nav" aria-label="Mobile Navigation">
+<nav class="nt-mobile-nav" id="nt-mobile-nav" aria-label="<?php echo esc_attr( $aria_mobnav ); ?>">
 	<?php foreach ( (array) $nav_items as $item ) : ?>
 		<?php $has_children = !empty($item['children']); ?>
 		<div class="nt-mobile-nav__item <?php echo $has_children ? 'nt-nav__has-sub' : ''; ?>">
@@ -100,7 +114,7 @@ function nt_nav_is_active( $url, $current ) {
 			<?php endif; ?>
 		</div>
 	<?php endforeach; ?>
-	<a href="<?php echo esc_url( home_url('/#contact') ); ?>" class="nt-mobile-nav__cta">
-		Book Us For Your Event
+	<a href="<?php echo esc_url( nt_link( $cta_url ) ); ?>" class="nt-mobile-nav__cta">
+		<?php echo esc_html( $cta_mobile ); ?>
 	</a>
 </nav>
