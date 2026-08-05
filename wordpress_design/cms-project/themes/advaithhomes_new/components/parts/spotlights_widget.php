@@ -39,7 +39,7 @@ if ( 'compact' === $mode ) {
 				<?php if ( '' !== $_url ) : ?>
 				<a href="<?php echo esc_url( $_url ); ?>" class="sp-metric-card" title="<?php echo esc_attr( $_tag ); ?>">
 				<?php else : ?>
-				<div class="sp-metric-card" title="<?php echo esc_attr( $_title ); ?>">
+				<div class="sp-metric-card" title="<?php echo esc_attr( $_tag ); ?>">
 				<?php endif; ?>
 				<div class="sp-metric-card__body">
 						<span class="sp-metric-card__label"><?php echo esc_html( $_title ); ?></span>
