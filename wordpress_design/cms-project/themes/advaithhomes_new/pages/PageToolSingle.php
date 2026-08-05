@@ -152,7 +152,7 @@ adn_page_open( $_open_ctx );
 					<div class="tools-sidebar-help<?php echo $_c_cls ? ' ' . esc_attr( $_c_cls ) : ''; ?>">
 						<h4><i class="<?php echo esc_attr( $_c_icon ); ?>" style="margin-right:8px;"></i><?php echo esc_html( $_c_head ); ?></h4>
 						<p><?php echo esc_html( $_c_desc ); ?></p>
-						<a href="<?php echo esc_url( home_url( $_c_url ) ); ?>" class="tools-help-btn">
+						<a href="<?php echo esc_url( adn_link( $_c_url ) ); ?>" class="tools-help-btn">
 							<?php echo esc_html( $_c_btn ); ?> &rarr;
 						</a>
 					</div>

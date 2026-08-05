@@ -639,14 +639,50 @@ function adn_parse_marquee_settings( $settings ) {
 }
 
 /**
- * Resolve a JSON-stored link for output:
- *  - ""            → "#"
- *  - "#..."        → unchanged (placeholder anchors)
- *  - "http(s)"     → unchanged (external)
- *  - "mailto:"     → unchanged (email)
- *  - "tel:"        → unchanged (phone)
- *  - "callto:"     → unchanged (phone)
- *  - "/path/"      → home_url( "/path/" )
+ * Does this URL point at another site? Only what WordPress is configured with
+ * (Settings → General) counts as "this site"; a port and a leading "www." are
+ * ignored so the comparison does not produce false positives.
+ *
+ * Relative paths, "#anchors", mailto: and tel: have no host and are internal.
+ */
+function adn_is_external_url( $url ) {
+	$url = trim( (string) $url );
+	if ( '' === $url ) {
+		return false;
+	}
+	if ( 0 === strpos( $url, '//' ) ) {
+		$url = 'http:' . $url; // protocol-relative - give wp_parse_url a scheme.
+	}
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+	if ( ! $host ) {
+		return false;
+	}
+	$normalise = static function ( $h ) {
+		$h = strtolower( trim( (string) $h ) );
+		$h = preg_replace( '#:\d+$#', '', $h );
+		return preg_replace( '#^www\.#', '', $h );
+	};
+	return ! in_array(
+		$normalise( $host ),
+		array(
+			$normalise( wp_parse_url( home_url( '/' ), PHP_URL_HOST ) ),
+			$normalise( wp_parse_url( site_url( '/' ), PHP_URL_HOST ) ),
+		),
+		true
+	);
+}
+
+/**
+ * Resolve a JSON/DB-stored link for output:
+ *  - ""                      → "#"
+ *  - "#..."                  → unchanged (placeholder anchors)
+ *  - "mailto:/tel:/sms:"     → unchanged
+ *  - "https://other.com/x"   → unchanged. An external URL is ALWAYS output
+ *                              exactly as entered, never re-pointed at this
+ *                              domain - that is what broke every off-site link.
+ *  - "https://<this site>/x" → normalised through home_url(), so a link saved
+ *                              with the wrong scheme still resolves cleanly
+ *  - "/path/" | "path/"      → home_url( "/path/" )
  */
 function adn_link( $url ) {
 	$url = trim( (string) $url );
@@ -659,16 +695,20 @@ function adn_link( $url ) {
 	if ( preg_match( '#^(mailto|tel|sms|callto):#i', $url ) ) {
 		return $url;
 	}
-	// Rewrite production domain to current domain (dev/staging compatibility).
-	$current_host = wp_parse_url( home_url( '' ), PHP_URL_HOST );
-	if ( preg_match( '#^https?://([^/]+)#i', $url, $m ) && $m[1] !== $current_host ) {
-		$url = preg_replace( '#^https?://[^/]+#', home_url( '' ), $url, 1 );
-	}
 	if ( preg_match( '#^(https?:)?//#i', $url ) ) {
-		return $url;
-	}
-	if ( '/' === $url[0] ) {
-		return home_url( $url );
+		if ( adn_is_external_url( $url ) ) {
+			return $url;
+		}
+		// Our own host: keep the path, take scheme/host from home_url().
+		$parts = wp_parse_url( 0 === strpos( $url, '//' ) ? 'http:' . $url : $url );
+		$path  = isset( $parts['path'] ) ? $parts['path'] : '/';
+		if ( ! empty( $parts['query'] ) ) {
+			$path .= '?' . $parts['query'];
+		}
+		if ( ! empty( $parts['fragment'] ) ) {
+			$path .= '#' . $parts['fragment'];
+		}
+		return home_url( '/' . ltrim( $path, '/' ) );
 	}
 	return home_url( '/' . ltrim( $url, '/' ) );
 }
