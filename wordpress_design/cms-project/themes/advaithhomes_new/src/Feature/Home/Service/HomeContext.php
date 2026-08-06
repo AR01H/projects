@@ -403,7 +403,7 @@ class HomeContext {
 				'date_full'   => $stamp ? date_i18n( 'M jS, Y', strtotime( $stamp ) ) : '',
 				'tag'         => (string) ( $item->label ?? '' ),
 				'gradient'    => adn_cms_gradient( $i ),
-				'thumbnail'   => ! empty( $item->image_id ) ? ( wp_get_attachment_image_url( (int) $item->image_id, 'thumbnail' ) ?: '' ) : '',
+				'thumbnail'   => ! empty( $item->image_id ) ? ( wp_get_attachment_image_url( (int) $item->image_id, 'large' ) ?: '' ) : '',
 				'url'         => function_exists( 'adn_newsbar_item_url' ) ? adn_newsbar_item_url( $item->id, $item->slug ?? '' ) : '#',
 			);
 		}
@@ -505,7 +505,7 @@ class HomeContext {
 			if ( ! empty( $meta['hidden_from_listing'] ) || empty( $meta['is_popular'] ) ) { continue; }
 			$_thumb = '';
 			if ( ! empty( $meta['thumbnail_id'] ) ) {
-				$_t = wp_get_attachment_image_url( (int) $meta['thumbnail_id'], 'thumbnail' );
+				$_t = wp_get_attachment_image_url( (int) $meta['thumbnail_id'], 'large' );
 				$_thumb = $_t ? (string) $_t : '';
 			}
 			$items[] = array(
