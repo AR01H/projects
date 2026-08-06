@@ -297,7 +297,7 @@ $page_slug   = 'ah-newsletter';
           '<div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;">'
           . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="active" checked id="target-active"> 👥 Active Subscribers (' . esc_html( $count_act ) . ')</label>'
           . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="unsubscribed" id="target-unsubscribed"> 🚫 Unsubscribed (' . esc_html( $count_uns ) . ')</label>'
-          . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="all" id="target-all"> 🌍 All Subscribers (' . esc_html( $count_all ) . ')</label>'
+          . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="all" id="target-all"> 🌍 All Subscribers (Active & Unsubscribed) (' . esc_html( $count_all ) . ')</label>'
           . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="test" id="target-test"> 📧 Test Email Only</label>'
           . '</div>'
         ); ?>

@@ -266,8 +266,8 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
       <?php \Ah\Cms\Admin\Components\AdminComponents::notice( 'No active subscribers yet - add some first.', 'warning' ); ?>
     <?php else : ?>
 
-    <div style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:var(--ah-primary)">
-      This will send directly to <strong><?php echo esc_html( $count_act ); ?> active subscriber(s)</strong>. Every email includes an automatic unsubscribe link at the bottom.
+    <div class="nl-info-box" style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:var(--ah-primary)">
+      <span id="nl-target-info">This will send directly to <strong><?php echo esc_html( $count_act ); ?> active subscriber(s)</strong>.</span> Every email includes an automatic unsubscribe link at the bottom.
     </div>
 
     <form method="post" id="nl-send-form">
@@ -294,7 +294,7 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
       ?>
 
       <?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
-        array( 'Target Recipients', '<select name="nl_target_type" id="nl-target-type" style="width:100%"><option value="active">Active Subscribers</option><option value="unsubscribed">Unsubscribed</option><option value="all">All Subscribers</option><option value="test">Test Email Only</option></select>' ),
+        array( 'Target Recipients', '<select name="nl_target_type" id="nl-target-type" style="width:100%"><option value="active">Active Subscribers</option><option value="unsubscribed">Unsubscribed</option><option value="all">All Subscribers (Active & Unsubscribed)</option><option value="test">Test Email Only</option></select>' ),
         array( 'Test Email Address', '<input type="email" name="nl_test_email" id="nl-test-email" placeholder="test@example.com" class="regular-text" style="width:100%">' ),
       ) ); ?>
 
@@ -362,21 +362,36 @@ jQuery(function ($) {
     $('#nl-add-box').slideToggle(180);
   });
 
-  // Toggle test email input when recipient type changes
+  var nlCounts = {
+    active: <?php echo (int) $count_act; ?>,
+    unsubscribed: <?php echo (int) $count_uns; ?>,
+    all: <?php echo (int) $count_all; ?>
+  };
+
+  // Toggle test email input and dynamic labels when recipient type changes
   $('#nl-target-type').on('change', function () {
-    if ($(this).val() === 'test') {
+    var type = $(this).val();
+    if (type === 'test') {
       $('#nl-test-email').prop('disabled', false).prop('required', true).focus();
+      $('#nl-target-info').html('This will send directly to <strong>the test email address</strong>.');
+      $('#nl-send-btn').html('Send to Test Email →');
     } else {
       $('#nl-test-email').prop('disabled', true).prop('required', false).val('');
+      var c = nlCounts[type] || 0;
+      var lbl = type === 'all' ? 'total subscriber(s)' : type + ' subscriber(s)';
+      $('#nl-target-info').html('This will send directly to <strong>' + c + ' ' + lbl + '</strong>.');
+      $('#nl-send-btn').html('Send to ' + c + ' Subscriber' + (c !== 1 ? 's' : '') + ' →');
     }
   });
 
   // Send button — custom confirm dialog (not the generic delete confirm)
-  $('#nl-send-btn').on('click', function () {
-    var count = <?php echo (int) $count_act; ?>;
-    var target = $('#nl-target-type').val() === 'test'
+  $('#nl-send-btn').on('click', function (e) {
+    e.preventDefault();
+    var type = $('#nl-target-type').val();
+    var c = nlCounts[type] || 0;
+    var target = type === 'test'
       ? 'the test address (' + $('#nl-test-email').val() + ')'
-      : count + ' subscriber(s)';
+      : c + ' subscriber(s)';
     if ( ! window.confirm( 'Send this newsletter to ' + target + ' now? This cannot be undone.' ) ) {
       return;
     }
