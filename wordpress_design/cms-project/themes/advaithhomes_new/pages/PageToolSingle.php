@@ -15,10 +15,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
-
 // CSS/JS now loaded centrally via AssetLoader (wp_enqueue_scripts hook)
 
+/* get_header() runs after the SEO block below: adn_seo_head_output() is hooked to
+   wp_head priority 1, so registering afterwards never reaches the head. It also
+   keeps the header out of the not-found branch, which hands off to 404.php - and
+   that template opens with its own get_header(). */
 $_calc_key = sanitize_key( wp_unslash( isset( $_GET['ah_calc_page'] ) ? $_GET['ah_calc_page'] : '' ) );
 
 $ctx = \Adn\Theme\Feature\Tools\Controller\ToolSingleController::getContext( $_calc_key );
@@ -49,6 +51,8 @@ adn_seo_register( array(
 		'url'         => $_calc_url,
 	),
 ) );
+
+get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
 // Breadcrumb renders inside the hero - suppress from adn_page_open.
 $_open_ctx               = $ctx;

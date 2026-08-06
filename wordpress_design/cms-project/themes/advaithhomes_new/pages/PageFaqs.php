@@ -8,9 +8,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
-
 // CSS/JS now loaded centrally via AssetLoader (wp_enqueue_scripts hook)
+
+/* Data + SEO are gathered first; get_header() comes after adn_seo_register()
+   below, because adn_seo_head_output() is hooked to wp_head at priority 1. */
 
 // ── FAQ data (Global only, grouped by section) ──────────────────────────────
 $page_id    = get_queried_object_id();
@@ -73,6 +74,8 @@ adn_seo_register( array(
 	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
 	'schema_faqs' => $_faq_seo_items,
 ) );
+
+get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
 adn_page_open( $ctx );
 ?>

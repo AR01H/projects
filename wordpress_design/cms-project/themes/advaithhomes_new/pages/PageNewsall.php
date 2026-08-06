@@ -19,7 +19,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header();
+/* get_header() is called separately in each branch below, after that branch's
+   adn_seo_register(): adn_seo_head_output() is hooked to wp_head at priority 1,
+   so a title/canonical registered after the header never reaches the head. */
 
 /* ── Single news item view ──────────────────────────────────────────────── */
 /* /news/<slug>/ (set as the ah_news query var by adn_route_news_single_slug()
@@ -113,6 +115,8 @@ if ( ( '' !== $_ah_news_slug || $_ah_news_id > 0 ) && function_exists( 'adn_cms_
 				'label'   => $_nb_label,
 			),
 		) );
+
+		get_header();
 
 		adn_page_open( $_nb_ctx );
 		?>
@@ -259,6 +263,8 @@ adn_seo_register( array(
 	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
 	'noindex'     => isset( $_GET['paged'] ) && (int) $_GET['paged'] > 1,
 ) );
+
+get_header();
 
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();

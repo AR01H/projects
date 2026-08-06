@@ -17,7 +17,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
+/* get_header() runs after adn_seo_register() further down - adn_seo_head_output()
+   is hooked to wp_head at priority 1, so registering later misses the head. */
 
 // ── Page + reviews ────────────────────────────────────────────────────────
 $page_id = get_queried_object_id();
@@ -122,6 +123,8 @@ adn_seo_register( array(
     'canonical'   => defined( 'SITE_REVIEWS_URL' ) ? home_url( SITE_REVIEWS_URL ) : '',
     'breadcrumb'  => $ctx['breadcrumb'],
 ) );
+
+get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
 adn_page_open( $ctx );
 ?>

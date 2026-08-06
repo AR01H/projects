@@ -9,12 +9,13 @@ defined( 'ABSPATH' ) || exit;
 $_cs_title = esc_html( adn_term( 'coming_soon.title', 'Coming Soon' ) );
 $_cs_desc  = esc_html( adn_term( 'coming_soon.description', 'We\'re working on something exciting. Stay tuned!' ) );
 
-get_header();
-
+// Register SEO before get_header() - adn_seo_head_output() runs on wp_head priority 1.
 adn_seo_register( array(
 	'title'       => $_cs_title,
 	'description' => $_cs_desc,
 ) );
+
+get_header();
 ?>
 
 <section class="coming-soon">

@@ -14,10 +14,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
-
 // CSS/JS now loaded centrally via AssetLoader (wp_enqueue_scripts hook)
 
+/* get_header() runs after the SEO block below: adn_seo_head_output() is hooked to
+   wp_head priority 1, so registering afterwards never reaches the head. It also
+   keeps the header out of the not-found branch, which hands off to 404.php - and
+   that template opens with its own get_header(). */
 $_expert_slug = sanitize_key( wp_unslash( isset( $_GET['ah_expert'] ) ? $_GET['ah_expert'] : '' ) );
 
 $ctx = \Adn\Theme\Feature\AskExpert\Controller\ExpertSingleController::getContext( $_expert_slug );
@@ -55,6 +57,8 @@ adn_seo_register( array(
 		'url'       => $_exp_url,
 	),
 ) );
+
+get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
 // Breadcrumb renders inside the hero - suppress from adn_page_open.
 $_open_ctx               = $ctx;

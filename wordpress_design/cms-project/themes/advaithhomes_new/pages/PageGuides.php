@@ -20,9 +20,10 @@ defined( 'ABSPATH' ) || exit;
 
 $ctx = adn_guides_get_context();
 
-get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
-
 // CSS/JS now loaded centrally via AssetLoader (wp_enqueue_scripts hook)
+
+/* get_header() comes after adn_seo_register() below - adn_seo_head_output() is
+   hooked to wp_head at priority 1, so anything registered later misses the head. */
 
 $_seo_title = isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']                       : '';
 $_seo_desc  = isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '';
@@ -71,6 +72,8 @@ adn_seo_register( array(
 		'items'       => $_seo_col_items,
 	) : array(),
 ) );
+
+get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();

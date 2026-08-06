@@ -16,16 +16,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header();
-
 $ctx = \Adn\Theme\Feature\Guidance\Controller\GuidanceController::getContext();
 
+// Register SEO before get_header() - adn_seo_head_output() runs on wp_head priority 1.
 adn_seo_register( array(
 	'title'       => isset( $ctx['hero']['title'] )       ? (string) $ctx['hero']['title']       : '',
 	'description' => isset( $ctx['hero']['description'] ) ? wp_strip_all_tags( (string) $ctx['hero']['description'] ) : '',
 	'canonical'   => defined( 'SITE_GUIDANCE_URL' ) ? home_url( SITE_GUIDANCE_URL ) : '',
 	'breadcrumb'  => isset( $ctx['breadcrumb'] )          ? $ctx['breadcrumb']                   : array(),
 ) );
+
+get_header();
 
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();

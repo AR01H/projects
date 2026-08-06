@@ -16,14 +16,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header();
-
 $ctx = \Adn\Theme\Feature\AskExpert\Controller\AskExpertController::getContext();
 
-
+// Register SEO before get_header() - adn_seo_head_output() runs on wp_head priority 1.
 adn_seo_register( array(
 	'description' => isset( $ctx['meta_description'] ) ? (string) $ctx['meta_description'] : '',
 ) );
+
+get_header();
 
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
