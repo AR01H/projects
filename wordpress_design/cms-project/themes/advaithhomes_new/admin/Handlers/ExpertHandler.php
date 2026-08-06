@@ -13,8 +13,8 @@ class ADN_Expert_Handler extends ADN_Base_Handler {
 			wp_die( esc_html__( 'Expert DB class not available.', ADN_TEXT_DOMAIN ) );
 		}
 
-		$edit_id = absint( $_POST['edit_id'] ?? 0 );
-		$is_edit = $edit_id > 0;
+		$edit_slug = sanitize_key( wp_unslash( $_POST['edit_slug'] ?? '' ) );
+		$is_edit   = '' !== $edit_slug;
 
 		$name  = self::post_text( 'name' );
 		$slug  = sanitize_title( self::post_text( 'expert_slug' ) );
@@ -30,7 +30,6 @@ class ADN_Expert_Handler extends ADN_Base_Handler {
 		AH_Expert_DB::maybe_install();
 
 		$saved = AH_Expert_DB::save( array(
-			'id'            => $edit_id,
 			'expert_slug'   => $slug,
 			'name'          => $name,
 			'title'         => $title,
@@ -64,9 +63,13 @@ class ADN_Expert_Handler extends ADN_Base_Handler {
 			wp_die( esc_html__( 'Expert DB class not available.', ADN_TEXT_DOMAIN ) );
 		}
 
-		$id = absint( $_POST['expert_id'] ?? 0 );
-		if ( $id > 0 ) {
-			AH_Expert_DB::delete( $id );
+		$slug = sanitize_key( wp_unslash( $_POST['expert_slug'] ?? '' ) );
+		if ( '' === $slug ) {
+			self::redirect_error( 'experts', 'list', __( 'No expert specified - nothing was deleted.', ADN_TEXT_DOMAIN ) );
+		}
+
+		if ( ! AH_Expert_DB::delete( $slug ) ) {
+			self::redirect_error( 'experts', 'list', __( 'Expert could not be deleted.', ADN_TEXT_DOMAIN ) );
 		}
 		self::redirect_success( 'experts', 'list', __( 'Expert deleted.', ADN_TEXT_DOMAIN ) );
 	}

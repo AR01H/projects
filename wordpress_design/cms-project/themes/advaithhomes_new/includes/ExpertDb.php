@@ -127,11 +127,13 @@ class AH_Expert_DB {
 		return true;
 	}
 
-	/** Delete an expert row by slug. */
+	/** Delete an expert row by slug. Returns true when a row was removed. */
 	public static function delete( $slug ) {
 		global $wpdb;
-		if ( ! self::table_exists() ) { return; }
-		$wpdb->delete( self::table(), array( 'expert_slug' => sanitize_key( $slug ) ) );
+		if ( ! self::table_exists() ) { return false; }
+		$slug = sanitize_key( $slug );
+		if ( '' === $slug ) { return false; }
+		return (bool) $wpdb->delete( self::table(), array( 'expert_slug' => $slug ) );
 	}
 
 	/** Create / upgrade the table via dbDelta. */
