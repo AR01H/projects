@@ -101,7 +101,18 @@ class AH_Microsoft_Graph_Mailer {
 		}
 		if ( ! is_array( $list ) ) {
 			$list = explode( ',', (string) $list );
+		} else {
+			$flat = array();
+			foreach ( $list as $item ) {
+				if ( is_string( $item ) && strpos( $item, ',' ) !== false ) {
+					$flat = array_merge( $flat, explode( ',', $item ) );
+				} else {
+					$flat[] = $item;
+				}
+			}
+			$list = $flat;
 		}
+		
 		$out = array();
 		foreach ( $list as $email ) {
 			$email = trim( (string) $email );

@@ -23,10 +23,10 @@ function adn_settings_schemas() {
 			'intro'  => __( 'Overrides the home hero. Leave a field blank to keep the theme default.', ADN_TEXT_DOMAIN ),
 			'fields' => array(
 				/* ── Heading & copy ── */
-				array( 'key' => 'heading_1',      'type' => 'text',     'label' => __( 'Heading line 1', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'heading_accent',  'type' => 'text',     'label' => __( 'Heading line 2 (accent colour)', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'heading_3',       'type' => 'text',     'label' => __( 'Heading line 3', ADN_TEXT_DOMAIN ) ),
-				array( 'key' => 'description',     'type' => 'textarea', 'label' => __( 'Description', ADN_TEXT_DOMAIN ) ),
+				array( 'key' => 'heading_1',       'type' => 'html',          'label' => __( 'Heading line 1', ADN_TEXT_DOMAIN ), 'desc' => 'HTML is allowed.' ),
+				array( 'key' => 'heading_accent',  'type' => 'html',          'label' => __( 'Heading line 2 (accent colour)', ADN_TEXT_DOMAIN ), 'desc' => 'HTML is allowed.' ),
+				array( 'key' => 'heading_3',       'type' => 'html',          'label' => __( 'Heading line 3', ADN_TEXT_DOMAIN ), 'desc' => 'HTML is allowed.' ),
+				array( 'key' => 'description',     'type' => 'html_textarea', 'label' => __( 'Description', ADN_TEXT_DOMAIN ), 'desc' => 'HTML is allowed.' ),
 				/* ── Call-to-action buttons ── */
 				array( 'key' => 'cta1_label', 'type' => 'text', 'label' => __( 'Primary button label', ADN_TEXT_DOMAIN ) ),
 				array( 'key' => 'cta1_url',   'type' => 'text', 'label' => __( 'Primary button URL', ADN_TEXT_DOMAIN ) ),

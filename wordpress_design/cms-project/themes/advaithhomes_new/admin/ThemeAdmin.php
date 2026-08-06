@@ -64,6 +64,8 @@ class ADN_Theme_Admin {
 		add_action( 'admin_post_adn_sync_pages',           array( 'ADN_Admin_Actions_Handler', 'handle_sync_pages' ) );
 		add_action( 'admin_post_adn_flush_rewrites',       array( 'ADN_Admin_Actions_Handler', 'handle_flush_rewrites' ) );
 		add_action( 'admin_post_adn_install_contact_rule', array( 'ADN_Admin_Actions_Handler', 'handle_install_contact_rule' ) );
+		add_action( 'admin_post_adn_clear_contact_inbox',  array( 'ADN_Admin_Actions_Handler', 'handle_clear_contact_inbox' ) );
+		add_action( 'admin_post_adn_clear_guidance_inbox', array( 'ADN_Admin_Actions_Handler', 'handle_clear_guidance_inbox' ) );
 	}
 
 	// ── Tab Registry ───────────────────────────────────────────────────────

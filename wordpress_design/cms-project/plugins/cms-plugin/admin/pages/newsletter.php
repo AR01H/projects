@@ -52,11 +52,38 @@ if ( isset( $_POST['ah_nl_add_nonce'] ) ) {
 if ( isset( $_POST['ah_nl_send_nonce'] ) ) {
 	if ( ! wp_verify_nonce( $_POST['ah_nl_send_nonce'], 'ah_nl_send' ) ) wp_die( 'Security.' );
 	$subject    = sanitize_text_field( wp_unslash( isset( $_POST['nl_subject'] )    ? $_POST['nl_subject']    : '' ) );
-	$body       = sanitize_textarea_field( wp_unslash( isset( $_POST['nl_body'] )   ? $_POST['nl_body']      : '' ) );
+	$body       = wp_unslash( isset( $_POST['nl_body'] )   ? $_POST['nl_body']      : '' ); // Allow HTML/formatting if needed, sanitize below if plain text
 	$from_name  = sanitize_text_field( wp_unslash( isset( $_POST['nl_from_name'] )  ? $_POST['nl_from_name'] : '' ) );
 	$from_email = sanitize_email( wp_unslash( isset( $_POST['nl_from_email'] )      ? $_POST['nl_from_email']: '' ) );
+
+	$delivery_mode = isset( $_POST['nl_delivery_mode'] ) ? sanitize_key( $_POST['nl_delivery_mode'] ) : 'individual';
+	$target_type   = isset( $_POST['nl_target_type'] ) ? sanitize_key( $_POST['nl_target_type'] ) : 'all';
+	$test_email    = $target_type === 'test' && isset( $_POST['nl_test_email'] ) ? sanitize_email( wp_unslash( $_POST['nl_test_email'] ) ) : '';
+
+	$custom_vars_raw = isset( $_POST['nl_custom_vars'] ) ? wp_unslash( $_POST['nl_custom_vars'] ) : '';
+	$custom_vars = array();
+	if ( $custom_vars_raw ) {
+		$lines = explode( "\n", $custom_vars_raw );
+		foreach ( $lines as $line ) {
+			if ( strpos( $line, ':' ) !== false ) {
+				list( $k, $v ) = explode( ':', $line, 2 );
+				$custom_vars[ trim( $k ) ] = trim( $v );
+			}
+		}
+	}
+
+	$rule_id = isset( $_POST['nl_rule_id'] ) ? (int) $_POST['nl_rule_id'] : 0;
+
+	$extra_args = array(
+		'delivery_mode' => $delivery_mode,
+		'target_type'   => $target_type,
+		'test_email'    => $test_email,
+		'custom_vars'   => $custom_vars,
+		'rule_id'       => $rule_id,
+	);
+
 	if ( $subject && $body ) {
-		$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email );
+		$result = AH_Newsletter::send_broadcast( $subject, $body, $from_name, $from_email, $extra_args );
 		AH_Newsletter::log_broadcast( $subject, $result['sent'], $result['failed'] );
 		$notice = 'success:Sent to ' . $result['sent'] . ' subscriber(s).' . ( $result['failed'] ? ' ' . $result['failed'] . ' failed.' : '' );
 		$active_tab = 'send';
@@ -252,21 +279,45 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
       ) ); ?>
 
       <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Subject *', '<input type="text" name="nl_subject" required placeholder="e.g. Your monthly update from ' . esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ) . '" style="font-size:15px;padding:10px 14px">', '', 'nl-subject-row' ); ?>
-      
+
+      <?php
+      // Build rule options for the Trigger Target Rule dropdown
+      $nl_all_rules = class_exists( 'AH_Workflow_Manager' ) ? AH_Workflow_Manager::get_all() : array();
+      $nl_rule_opts = '<option value="" disabled selected>— Select a rule —</option>';
+      foreach ( $nl_all_rules as $r ) {
+        if ( 'active' === $r->status ) {
+          $nl_rule_opts .= '<option value="' . esc_attr( $r->id ) . '">' . esc_html( $r->name . ' (ID: ' . $r->id . ' - Trigger: ' . $r->trigger_name . ')' ) . '</option>';
+        }
+      }
+      $nl_rule_select = '<select name="nl_rule_id" required style="width:100%">' . $nl_rule_opts . '</select>';
+      \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Trigger Target Rule <span style="color:var(--ah-danger)">*</span>', $nl_rule_select, 'The Workflow Manager rule that will handle delivery. Required.', 'nl-rule-row' );
+      ?>
+
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+        array( 'Target Recipients', '<select name="nl_target_type" id="nl-target-type" style="width:100%"><option value="active">Active Subscribers</option><option value="unsubscribed">Unsubscribed</option><option value="all">All Subscribers</option><option value="test">Test Email Only</option></select>' ),
+        array( 'Test Email Address', '<input type="email" name="nl_test_email" id="nl-test-email" placeholder="test@example.com" class="regular-text" style="width:100%">' ),
+      ) ); ?>
+
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
+        array( 'Delivery Mode', '<select name="nl_delivery_mode" style="width:100%"><option value="bcc">BCC (Single Workflow Trigger)</option><option value="individual">Individual (Trigger per Subscriber)</option></select>' ),
+        array( 'Extra Custom Variables', '<textarea name="nl_custom_vars" placeholder="key:value&#10;another_key:another_value" style="width:100%;height:60px;font-family:monospace;font-size:12px;padding:8px"></textarea>' ),
+      ) ); ?>
 
       <div class="nl-body-wrap">
         <label style="font-size:12px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body *</label>
         <div style="margin-bottom:8px;font-size:12px;color:var(--ah-muted)">You can use these tokens - click to copy:</div>
         <div class="nl-token-bar">
-          <span class="nl-token" title="Replaced with subscriber's first name">{name}</span>
-          <span class="nl-token" title="Replaced with the unsubscribe link URL">{unsubscribe_url}</span>
+          <span class="nl-token" title="Subscriber's first name">{{newsletter_name}}</span>
+          <span class="nl-token" title="Personalized unsubscribe link">{{newsletter_unsubscribe_url}}</span>
+          <span class="nl-token" title="Subscriber's email address">{{newsletter_email}}</span>
+          <span class="nl-token" title="The subject you typed above">{{newsletter_subject}}</span>
         </div>
         <textarea name="nl_body" required placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;Best regards,&#10;The <?php echo esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ); ?> Team"></textarea>
-        <div style="font-size:12px;color:var(--ah-muted);margin-top:6px">Plain text only. An unsubscribe line is automatically appended to every email.</div>
+        <div style="font-size:12px;color:var(--ah-muted);margin-top:6px">An unsubscribe line is automatically appended to every email.</div>
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
-        <button type="submit" class="ah-btn ah-btn-primary ah-confirm-delete" style="font-size:15px;padding:10px 28px" data-confirm="Send this newsletter to <?php echo esc_js( $count_act ); ?> subscriber(s) now?">
+        <button type="button" id="nl-send-btn" class="ah-btn ah-btn-primary" style="font-size:15px;padding:10px 28px">
           Send to <?php echo esc_html( $count_act ); ?> Subscriber<?php echo $count_act !== 1 ? 's' : ''; ?> →
         </button>
         <span style="font-size:12px;color:var(--ah-muted)">This action cannot be undone.</span>
@@ -309,6 +360,34 @@ $bcast_log   = AH_Newsletter::get_broadcast_log();
 jQuery(function ($) {
   $('#nl-add-btn').on('click', function () {
     $('#nl-add-box').slideToggle(180);
+  });
+
+  // Toggle test email input when recipient type changes
+  $('#nl-target-type').on('change', function () {
+    if ($(this).val() === 'test') {
+      $('#nl-test-email').prop('disabled', false).prop('required', true).focus();
+    } else {
+      $('#nl-test-email').prop('disabled', true).prop('required', false).val('');
+    }
+  });
+
+  // Send button — custom confirm dialog (not the generic delete confirm)
+  $('#nl-send-btn').on('click', function () {
+    var count = <?php echo (int) $count_act; ?>;
+    var target = $('#nl-target-type').val() === 'test'
+      ? 'the test address (' + $('#nl-test-email').val() + ')'
+      : count + ' subscriber(s)';
+    if ( ! window.confirm( 'Send this newsletter to ' + target + ' now? This cannot be undone.' ) ) {
+      return;
+    }
+    // Validate rule selection
+    var ruleSelect = document.querySelector('select[name="nl_rule_id"]');
+    if ( ruleSelect && ( ! ruleSelect.value || ruleSelect.value === '' ) ) {
+      alert( 'Please select a Trigger Target Rule before sending.' );
+      ruleSelect.focus();
+      return;
+    }
+    $('#nl-send-form').trigger('submit');
   });
 
   // Click token to insert at cursor in textarea

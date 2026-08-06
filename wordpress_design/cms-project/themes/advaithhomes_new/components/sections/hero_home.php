@@ -150,11 +150,11 @@ if ( $_is_carousel ) :
             foreach ( array_values( $title_lines ) as $i => $line ) {
                 $text = isset( $line['text'] ) ? $line['text'] : '';
                 if ( ! empty( $line['accent'] ) ) {
-                    echo '<span class="accent">' . esc_html( $text ) . '</span>';
+                    echo '<span class="accent">' . $text . '</span>';
                 } else if($i==2) {
-                    echo '<span class="hero-sub-line">'.esc_html( $text ).'</span>';
+                    echo '<span class="hero-sub-line">' . $text . '</span>';
                 }else{
-                    echo esc_html( $text );
+                    echo $text;
                 }
                 if ( $i < $line_count - 1 ) {
                     // echo '<br>';
@@ -162,7 +162,7 @@ if ( $_is_carousel ) :
             }
             ?>
         </h1>
-        <p class="hero-desc"><?php echo esc_html( isset( $hero['description'] ) ? $hero['description'] : '' ); ?></p>
+        <p class="hero-desc"><?php echo isset( $hero['description'] ) ? $hero['description'] : ''; ?></p>
         <div class="hero-actions">
             <?php foreach ( $actions as $action ) :
                 $style = isset( $action['style'] ) && 'outline' === $action['style'] ? 'btn-outline premium-btn-outline' : 'btn-primary premium-btn-dark';

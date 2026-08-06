@@ -233,4 +233,24 @@ class ADN_Admin_Actions_Handler extends ADN_Base_Handler {
 			sprintf( __( 'Imported %d settings group(s).', ADN_TEXT_DOMAIN ), $count )
 		);
 	}
+
+	/** Clear Contact Inbox */
+	public static function handle_clear_contact_inbox(): void {
+		self::verify_request( 'adn_clear_contact_inbox' );
+		if ( class_exists( 'AH_Enquiry_Model' ) ) {
+			global $wpdb;
+			$wpdb->delete( AH_Enquiry_Model::table(), array( 'form_type' => 'contact' ) );
+		}
+		self::redirect_success( 'contact-inbox', '', 'Contact inbox cleared.' );
+	}
+
+	/** Clear Guidance Inbox */
+	public static function handle_clear_guidance_inbox(): void {
+		self::verify_request( 'adn_clear_guidance_inbox' );
+		if ( class_exists( 'AH_Enquiry_Model' ) ) {
+			global $wpdb;
+			$wpdb->delete( AH_Enquiry_Model::table(), array( 'form_type' => 'guidance' ) );
+		}
+		self::redirect_success( 'guidance-inbox', '', 'Guidance inbox cleared.' );
+	}
 }

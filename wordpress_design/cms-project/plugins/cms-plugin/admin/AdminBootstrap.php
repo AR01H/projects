@@ -167,7 +167,7 @@ class AH_Admin_Bootstrap {
 					pendingSubmitter = submitter || null;
 					titleEl.textContent = title || "Confirm Action";
 					msgEl.textContent = message || "Are you sure? This cannot be undone.";
-					confirmBtn.textContent = "Yes, Delete";
+					confirmBtn.textContent = "Yes";
 					modal.classList.add("is-visible");
 				}
 				function closeModal() {

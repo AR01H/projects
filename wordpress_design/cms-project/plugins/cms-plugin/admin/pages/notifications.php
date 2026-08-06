@@ -74,13 +74,15 @@ if ( isset( $_POST['ah_nl_send_nonce'] ) ) {
 				}
 			}
 
+			$target_type = isset( $_POST['nl_target_type'] ) ? sanitize_key( $_POST['nl_target_type'] ) : 'all';
+
 			$extra_args = array(
 				'rule_id'       => isset( $_POST['nl_workflow_rule'] ) ? (int) $_POST['nl_workflow_rule'] : 0,
 				'custom_vars'   => $custom_vars_arr,
 				'delivery_mode' => isset( $_POST['nl_delivery_mode'] ) ? sanitize_key( $_POST['nl_delivery_mode'] ) : 'individual',
+				'target_type'   => $target_type,
 			);
 
-			$target_type = isset( $_POST['nl_target_type'] ) ? sanitize_key( $_POST['nl_target_type'] ) : 'all';
 			if ( 'test' === $target_type ) {
 				$extra_args['test_email'] = sanitize_email( wp_unslash( $_POST['nl_test_email'] ?? '' ) );
 				if ( ! is_email( $extra_args['test_email'] ) ) {
@@ -117,6 +119,8 @@ $total_pages = max( 1, (int) ceil( $total / $per_page ) );
 $bcast_log   = AH_Newsletter::get_broadcast_log();
 $re_url      = admin_url( 'admin.php?page=ah-workflow-manager' );
 $page_slug   = 'ah-newsletter';
+
+
 ?>
 <style>
 .nl-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
@@ -282,7 +286,7 @@ $page_slug   = 'ah-newsletter';
     <div class="nl-re-info">
       🔔 Sending fires the <strong>Notification – Send</strong> trigger in the <a href="<?php echo esc_url( $re_url ); ?>">Rules Engine</a> once per subscriber.
       Create a rule with that trigger to choose how to deliver it - <strong>Email, WhatsApp, Webhook</strong>, or any combination.
-      Available tokens in your rule actions: <code>{email}</code> <code>{name}</code> <code>{subject}</code> <code>{body}</code> <code>{from_name}</code> <code>{from_email}</code> <code>{unsubscribe_url}</code>
+      Available tokens in your rule actions: <code>{{newsletter_email}}</code> <code>{{newsletter_name}}</code> <code>{{newsletter_subject}}</code> <code>{{newsletter_body}}</code> <code>{{newsletter_from_name}}</code> <code>{{newsletter_from_email}}</code> <code>{{newsletter_unsubscribe_url}}</code>
     </div>
 
     <form method="post" id="nl-send-form">
@@ -290,9 +294,11 @@ $page_slug   = 'ah-newsletter';
 
       <div class="nl-send-grid" style="margin-bottom:16px; border-bottom: 1px solid var(--ah-border); padding-bottom:16px;">
         <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Target Recipients',
-          '<div style="display:flex;gap:20px;margin-top:8px;">'
-          . '<label style="font-weight:normal;cursor:pointer;"><input type="radio" name="nl_target_type" value="all" checked id="target-all"> 👥 All Active Subscribers (' . esc_html( $count_act ) . ')</label>'
-          . '<label style="font-weight:normal;cursor:pointer;"><input type="radio" name="nl_target_type" value="test" id="target-test"> 📧 Test Email Only</label>'
+          '<div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;">'
+          . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="active" checked id="target-active"> 👥 Active Subscribers (' . esc_html( $count_act ) . ')</label>'
+          . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="unsubscribed" id="target-unsubscribed"> 🚫 Unsubscribed (' . esc_html( $count_uns ) . ')</label>'
+          . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="all" id="target-all"> 🌍 All Subscribers (' . esc_html( $count_all ) . ')</label>'
+          . '<label style="font-weight:normal;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;"><input type="radio" name="nl_target_type" value="test" id="target-test"> 📧 Test Email Only</label>'
           . '</div>'
         ); ?>
         <div class="ah-form-row" id="delivery-mode-wrapper">
@@ -316,36 +322,39 @@ $page_slug   = 'ah-newsletter';
           $active_rules[] = $rule;
         }
       }
-      $rule_select = '<select name="nl_workflow_rule" style="width:100%;">'
-        . '<option value="0">Default (Run all active rules matching trigger \'notification_send\')</option>';
+      $rule_select = '<select name="nl_workflow_rule" required style="width:100%;">';
+      $rule_select .= '<option value="" disabled selected>— Select a rule —</option>';
       foreach ( $active_rules as $ar ) {
         $rule_select .= '<option value="' . (int) $ar->id . '">' . esc_html( $ar->name . ' (ID: ' . $ar->id . ' - Trigger: ' . $ar->trigger_name . ')' ) . '</option>';
+      }
+      if ( empty( $active_rules ) ) {
+        $rule_select .= '<option value="" disabled>⚠ No active rules found — create one first</option>';
       }
       $rule_select .= '</select>';
       ?>
       <?php \Ah\Cms\Admin\Components\AdminComponents::formGrid( array(
-        array( 'Trigger Target Rule (Rules Engine)', $rule_select ),
+        array( 'Trigger Target Rule (Rules Engine) <span style="color:var(--ah-danger)">*</span>', $rule_select ),
       ) ); ?>
 
-      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Subject', '<input type="text" name="nl_subject" placeholder="e.g. Your update from ' . esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ) . '" style="font-size:15px;padding:10px 14px">', '', 'nl-subject-row' ); ?>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Subject <span style="color:var(--ah-danger)">*</span>', '<input type="text" name="nl_subject" placeholder="e.g. Your update from ' . esc_attr( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : 'Your Company' ) . '" style="font-size:15px;padding:10px 14px">', '', 'nl-subject-row' ); ?>
       
 
-      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Extra Custom Variables (One per line: <code>key|value</code>)', '<textarea name="nl_custom_vars" style="font-family:monospace;height:80px;" placeholder="discount|20% Off&#10;date|July 31st"></textarea>', '<p class="description" style="margin-top:5px;font-size:12px;color:var(--ah-muted);">Use tokens like <code>{discount}</code> or <code>{date}</code> inside the email subject or body. They will be replaced dynamically before sending.</p>' ); ?>
+      <?php \Ah\Cms\Admin\Components\AdminComponents::formRow( 'Extra Custom Variables (One per line: <code>key|value</code>)', '<textarea name="nl_custom_vars" style="font-family:monospace;height:80px;" placeholder="discount|20% Off&#10;date|July 31st"></textarea>', '<p class="description" style="margin-top:5px;font-size:12px;color:var(--ah-muted);">Use tokens like <code>{{discount}}</code> or <code>{{date}}</code> inside the email subject or body. They will be replaced dynamically before sending.</p>' ); ?>
 
       <div class="nl-body-wrap">
         <label style="font-size:12px;font-weight:600;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:6px">Message Body</label>
         <div style="margin-bottom:8px;font-size:12px;color:var(--ah-muted)">Tokens replaced before passing to Rules Engine - click to insert:</div>
         <div class="nl-token-bar">
-          <span class="nl-token" title="Subscriber name">{name}</span>
-          <span class="nl-token" title="Unsubscribe link URL">{unsubscribe_url}</span>
-          <span class="nl-token" title="Subscriber email">{email}</span>
+          <span class="nl-token" title="Subscriber name">{{newsletter_name}}</span>
+          <span class="nl-token" title="Unsubscribe link URL">{{newsletter_unsubscribe_url}}</span>
+          <span class="nl-token" title="Subscriber email">{{newsletter_email}}</span>
         </div>
-        <textarea name="nl_body" placeholder="Hi {name},&#10;&#10;Here's your update...&#10;&#10;To unsubscribe: {unsubscribe_url}"></textarea>
-        <div style="font-size:12px;color:var(--ah-muted);margin-top:6px">Body is passed as <code>{body}</code> token to the Rules Engine rule. An unsubscribe line is also appended automatically.</div>
+        <textarea name="nl_body" placeholder="Hi {{newsletter_name}},&#10;&#10;Here's your update...&#10;&#10;To unsubscribe: {{newsletter_unsubscribe_url}}"></textarea>
+        <div style="font-size:12px;color:var(--ah-muted);margin-top:6px">Body is passed as <code>{{newsletter_body}}</code> token to the Rules Engine rule. An unsubscribe line is also appended automatically.</div>
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
-        <button type="submit" class="ah-btn ah-btn-primary ah-confirm-delete" style="font-size:15px;padding:10px 28px" data-confirm="Confirm sending this notification via Rules Engine now?">
+        <button type="button" id="nl-notif-send-btn" class="ah-btn ah-btn-primary" style="font-size:15px;padding:10px 28px">
           Send Notification →
         </button>
         <span style="font-size:12px;color:var(--ah-muted)">This action cannot be undone.</span>
@@ -388,21 +397,17 @@ $page_slug   = 'ah-newsletter';
     <?php ob_start(); ?>
     <?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
       'columns' => array(
-        array( 'label' => 'Variable', 'style' => 'width:220px', 'render' => function ( $v ) { return '<code>' . esc_html( $v[0] ) . '</code>'; } ),
+        array( 'label' => 'Variable', 'style' => 'width:260px', 'render' => function ( $v ) { return '<code>' . esc_html( $v[0] ) . '</code>'; } ),
         array( 'label' => 'Description', 'render' => function ( $v ) { return esc_html( $v[1] ); } ),
         array( 'label' => 'Example Value', 'render' => function ( $v ) { return '<code>' . esc_html( $v[2] ) . '</code>'; } ),
       ),
       'items' => array(
-        array( '{{email}}', 'The subscriber\'s email address', 'alice@example.com' ),
-        array( '{{name}}', 'The subscriber\'s name', 'Alice' ),
-        array( '{{unsubscribe_url}}', 'Personalized unsubscribe link for this subscriber', 'https://site.com/?unsub=abc123' ),
-        array( '{{newsletter_subject}}', 'Subject you typed in the Compose form', 'July Newsletter' ),
-        array( '{{newsletter_body}}', 'Message body you typed in the Compose form (tokens already replaced)', 'Hi Alice, here\'s your update...' ),
-        array( '{{subject}}', 'Shorthand for newsletter_subject', 'July Newsletter' ),
-        array( '{{body}}', 'Shorthand for newsletter_body', 'Hi Alice, here\'s your update...' ),
-        array( '{{from_name}}', 'Sender name override (if set in compose form)', esc_html( get_bloginfo( 'name' ) ) ),
-        array( '{{from_email}}', 'Sender email override (if set in compose form)', esc_html( get_option( 'admin_email' ) ) ),
-        array( '{{your_custom_key}}', 'Any key you added in "Extra Custom Variables" box', '20% Off' ),
+        array( '{{newsletter_email}}',          'The subscriber\'s email address',                                   'alice@example.com' ),
+        array( '{{newsletter_name}}',           'The subscriber\'s name',                                            'Alice' ),
+        array( '{{newsletter_unsubscribe_url}}','Personalized unsubscribe link for this subscriber',                 'https://site.com/?unsub=abc123' ),
+        array( '{{newsletter_subject}}',        'Subject you typed in the Compose form',                             'July Newsletter' ),
+        array( '{{newsletter_body}}',           'Message body you typed in the Compose form (tokens already replaced)', 'Hi Alice, here\'s your update...' ),
+        array( '{{your_custom_key}}',           'Any key you added in "Extra Custom Variables" box (e.g. discount|20% Off)', '20% Off' ),
       ),
       'empty_message' => '',
     ) ); ?>
@@ -412,20 +417,18 @@ $page_slug   = 'ah-newsletter';
     <?php ob_start(); ?>
     <?php \Ah\Cms\Admin\Components\AdminComponents::dataTable( array(
       'columns' => array(
-        array( 'label' => 'Variable', 'style' => 'width:220px', 'render' => function ( $v ) { return '<code>' . esc_html( $v[0] ) . '</code>'; } ),
+        array( 'label' => 'Variable', 'style' => 'width:260px', 'render' => function ( $v ) { return '<code>' . esc_html( $v[0] ) . '</code>'; } ),
         array( 'label' => 'Description', 'render' => function ( $v ) { return esc_html( $v[1] ); } ),
         array( 'label' => 'Example Value', 'render' => function ( $v ) { return '<code>' . esc_html( $v[2] ) . '</code>'; } ),
       ),
       'items' => array(
-        array( '{{subscriber_emails}}', 'All active subscriber emails, comma-separated', 'alice@.., bob@.., carol@..' ),
-        array( '{{subscriber_count}}', 'Total number of active subscribers being sent to', '142' ),
-        array( '{{subscriber_names}}', 'All subscriber names, comma-separated', 'Alice, Bob, Carol' ),
-        array( '{{newsletter_subject}}', 'Subject you typed in the Compose form', 'July Newsletter' ),
-        array( '{{newsletter_body}}', 'Message body you typed in the Compose form', 'Here\'s your update...' ),
-        array( '{{subject}}', 'Shorthand for newsletter_subject', 'July Newsletter' ),
-        array( '{{body}}', 'Shorthand for newsletter_body', 'Here\'s your update...' ),
-        array( '{{email}}', 'The "TO" address (sender/admin email) used as the visible recipient', 'admin@site.com' ),
-        array( '{{your_custom_key}}', 'Any key you added in "Extra Custom Variables" box', '20% Off' ),
+        array( '{{newsletter_subject}}',   'Subject you typed in the Compose form',              'July Newsletter' ),
+        array( '{{newsletter_body}}',      'Message body you typed in the Compose form',         'Here\'s your update...' ),
+        array( '{{subscriber_emails}}',    'All active subscriber emails, comma-separated',      'alice@.., bob@.., carol@..' ),
+        array( '{{subscriber_names}}',     'All subscriber names, comma-separated',              'Alice, Bob, Carol' ),
+        array( '{{subscriber_count}}',     'Total number of active subscribers being sent to',   '142' ),
+        array( '{{newsletter_email}}',     'The "TO" address (sender/admin email) used as the visible recipient', 'admin@site.com' ),
+        array( '{{your_custom_key}}',      'Any key you added in "Extra Custom Variables" box (e.g. discount|20% Off)', '20% Off' ),
       ),
       'empty_message' => '',
     ) ); ?>
@@ -435,13 +438,46 @@ $page_slug   = 'ah-newsletter';
     <div style="background:var(--ah-bg-light);border:1px solid var(--ah-border);border-radius:8px;padding:16px 20px;font-size:13px;color:var(--ah-success);">
       <strong>💡 Tips:</strong>
       <ul style="margin:8px 0 0 18px;padding:0;line-height:1.9;">
-        <li>Use <code>{{email}}</code> in the <strong>TO</strong> field of your Email Action for Individual Mode.</li>
+        <li>Use <code>{{newsletter_email}}</code> in the <strong>TO</strong> field of your Email Action for Individual Mode.</li>
         <li>Leave the <strong>BCC</strong> field empty in BCC Group Mode — it is filled automatically.</li>
         <li>Use <code>{{newsletter_subject}}</code> and <code>{{newsletter_body}}</code> in your Email Action to pass through what you typed in the Compose form.</li>
         <li>For <strong>HTTP Request / cURL / CODE</strong> actions, use <code>{{subscriber_emails}}</code> to get the full comma-separated list.</li>
         <li>Custom Variables typed in the form (e.g. <code>discount|20% Off</code>) become <code>{{discount}}</code> automatically.</li>
       </ul>
     </div>
+
+    <!-- CODE ACTION EXAMPLE -->
+    <?php ob_start(); ?>
+    <p style="font-size:13px;color:var(--ah-muted);margin:0 0 16px;">Copy this into a <strong>Code Action</strong> in your Workflow Manager rule. Replace credential placeholders with your actual Microsoft Graph values. The <code>{{newsletter_*}}</code> tokens are filled automatically at send time.</p>
+    <pre style="background:#0f172a;color:#e2e8f0;border-radius:8px;padding:20px 24px;font-size:12.5px;line-height:1.7;overflow-x:auto;margin:0;white-space:pre-wrap;word-break:break-all;">// ── Credentials (set once in your rule)
+$tenantId     = "{{tenant_id}}";
+$clientId     = "{{client_id}}";
+$clientSecret = "{{client_secret}}";
+$senderMail   = "{{from_sender_mail}}";
+$senderName   = "{{from_sender_name}}";
+
+// ── Newsletter content (injected automatically by the Newsletter sender)
+$subject = "{{newsletter_subject}}";   // subject from Compose form
+$body    = "{{newsletter_body}}";      // message body from Compose form
+
+// ── Individual Mode: send to each subscriber
+$to  = ["{{newsletter_email}}"];       // subscriber email
+$cc  = [];
+$bcc = [];
+
+// ── BCC Group Mode: send once to all subscribers
+// $to  = [$senderMail];
+// $bcc = [{{subscriber_emails}}];    // comma-separated list
+
+try {
+    $emailer = new AH_Microsoft_Graph_Mailer(
+        $tenantId, $clientId, $clientSecret, $senderMail, $senderName
+    );
+    $emailer->send($subject, $body, $to, $cc, $bcc);
+} catch (Exception $e) {
+    throw $e; // let the Workflow log it
+}</pre>
+    <?php \Ah\Cms\Admin\Components\AdminComponents::card( '⚙️ Code Action Example — Microsoft Graph Mailer', ob_get_clean() ); ?>
   <?php
   $vars_content = ob_get_clean();
   echo $vars_content;
@@ -474,6 +510,42 @@ jQuery(function ($) {
       $('#delivery-mode-wrapper').show();
       $('input[name="nl_test_email"]').removeAttr('required');
     }
+  });
+
+  // Send Notification — custom confirm (not the generic delete confirm)
+  $('#nl-notif-send-btn').on('click', function () {
+    var ruleSelect = $('select[name="nl_workflow_rule"]');
+    var subject    = $('input[name="nl_subject"]').val().trim();
+    var isTest     = $('#target-test').is(':checked');
+    var testAddr   = $('input[name="nl_test_email"]').val().trim();
+
+    // Validate: rule must be selected
+    if ( ! ruleSelect.val() ) {
+      alert( '⚠ Please select a Trigger Target Rule before sending.' );
+      ruleSelect.focus();
+      return;
+    }
+
+    // Validate: subject is required
+    if ( ! subject ) {
+      alert( '⚠ Please enter a Subject before sending.' );
+      $('input[name="nl_subject"]').focus();
+      return;
+    }
+
+    // Validate: test email required when test mode selected
+    if ( isTest && ! testAddr ) {
+      alert( '⚠ Please enter a Test Recipient Email address.' );
+      $('input[name="nl_test_email"]').focus();
+      return;
+    }
+
+    var count  = <?php echo (int) $count_act; ?>;
+    var target = isTest ? 'the test address (' + testAddr + ')' : count + ' subscriber(s)';
+    if ( ! window.confirm( 'Send this notification to ' + target + ' now? This cannot be undone.' ) ) {
+      return;
+    }
+    $('#nl-send-form').trigger('submit');
   });
 });
 </script>

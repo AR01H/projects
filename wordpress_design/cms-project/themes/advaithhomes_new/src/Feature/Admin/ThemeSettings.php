@@ -106,6 +106,7 @@ class ThemeSettings {
 		$name = 'fields[' . $field['key'] . ']';
 
 		switch ( $field['type'] ) {
+			case 'html_textarea':
 			case 'textarea':
 				printf(
 					'<textarea name="%s" rows="3" class="large-text">%s</textarea>',
@@ -194,6 +195,7 @@ class ThemeSettings {
 				self::renderRepeater( $name, $items, $subfields, $repeater_id );
 				break;
 
+			case 'html':
 			case 'text':
 			default:
 				printf(
@@ -499,6 +501,15 @@ class ThemeSettings {
 			$input = $raw[ $key ] ?? null;
 
 			switch ( $field['type'] ) {
+				case 'html_textarea':
+				case 'html':
+					if ( \current_user_can( 'unfiltered_html' ) ) {
+						$clean[ $key ] = (string) $input;
+					} else {
+						$clean[ $key ] = \wp_kses_post( (string) $input );
+					}
+					break;
+
 				case 'textarea':
 					$clean[ $key ] = \sanitize_textarea_field( (string) $input );
 					break;

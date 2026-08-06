@@ -41,7 +41,7 @@ class ADN_Home_Handler extends ADN_Base_Handler {
 		update_option( 'adn_home_newsblocks', $data );
 
 		wp_safe_redirect( add_query_arg(
-			array( 'page' => self::tab_url( 'home' ), 'subtab' => 'newsblocks', 'adn_saved' => 'regulations' ),
+			array( 'page' => 'adn-theme-home', 'subtab' => 'newsblocks', 'adn_saved' => 'regulations' ),
 			admin_url( 'admin.php' )
 		) );
 		exit;

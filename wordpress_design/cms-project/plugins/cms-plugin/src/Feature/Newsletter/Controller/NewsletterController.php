@@ -190,7 +190,7 @@ class NewsletterController {
 	 * @param string $from_email
 	 */
 	public static function send_broadcast( string $subject, string $body, string $from_name = '', string $from_email = '', array $extra_args = array() ): array {
-		if ( ! self::table_exists() )             { return array( 'sent' => 0, 'failed' => 0 ); }
+		if ( ! self::table_exists() )              { return array( 'sent' => 0, 'failed' => 0 ); }
 		if ( ! class_exists( 'AH_Workflow_Manager' ) ) { return array( 'sent' => 0, 'failed' => 0 ); }
 
 		$target_rule_id = isset( $extra_args['rule_id'] ) ? (int) $extra_args['rule_id'] : 0;
@@ -206,8 +206,10 @@ class NewsletterController {
 			$from_name  = $from_name  ?: '';
 		}
 
-		// Route targeting: specific test email OR all active subscribers
-		if ( '' !== $test_email ) {
+		// Route targeting: specific test email OR based on target_type
+		$target_type = isset( $extra_args['target_type'] ) ? sanitize_key( $extra_args['target_type'] ) : 'active';
+		
+		if ( 'test' === $target_type && '' !== $test_email ) {
 			$subscribers = array(
 				array(
 					'email'  => $test_email,
@@ -216,7 +218,13 @@ class NewsletterController {
 				)
 			);
 		} else {
-			$subscribers = self::get_all( 'active', 5000, 0 );
+			$status_filter = ''; // default to all
+			if ( 'active' === $target_type ) {
+				$status_filter = 'active';
+			} elseif ( 'unsubscribed' === $target_type ) {
+				$status_filter = 'unsubscribed';
+			}
+			$subscribers = self::get_all( $status_filter, 5000, 0 );
 		}
 
 		$delivery_mode = isset( $extra_args['delivery_mode'] ) ? sanitize_key( $extra_args['delivery_mode'] ) : 'individual';
@@ -235,12 +243,12 @@ class NewsletterController {
 			$to_email = $from_email ?: get_option( 'admin_email' );
 			$unsub    = self::unsub_url( $to_email );
 
-			// Replace tokens in body
-			$replace_keys = array( '{name}', '{unsubscribe_url}', '{email}' );
-			$replace_vals = array( 'Subscriber', $unsub,          $to_email );
+			// Replace tokens in body (support {{newsletter_token}} formats)
+			$replace_keys = array( '{{name}}', '{{newsletter_name}}', '{{unsubscribe_url}}', '{{newsletter_unsubscribe_url}}', '{{email}}', '{{newsletter_email}}' );
+			$replace_vals = array( 'Subscriber', 'Subscriber', $unsub, $unsub, $to_email, $to_email );
 
 			foreach ( $custom_vars as $c_key => $c_val ) {
-				$replace_keys[] = '{' . $c_key . '}';
+				$replace_keys[] = '{{' . $c_key . '}}';
 				$replace_vals[] = $c_val;
 			}
 
@@ -257,16 +265,19 @@ class NewsletterController {
 			}
 
 			$context = array(
-				'email'              => $to_email,
-				'name'               => 'Subscriber',
-				'unsubscribe_url'    => $unsub,
-				'newsletter_subject' => $subject,
-				'newsletter_body'    => $body_rendered,
-				'_direct_bcc'        => $bcc_emails,
+				'email'                      => $to_email,
+				'newsletter_email'           => $to_email,
+				'name'                       => 'Subscriber',
+				'newsletter_name'            => 'Subscriber',
+				'unsubscribe_url'            => $unsub,
+				'newsletter_unsubscribe_url' => $unsub,
+				'newsletter_subject'         => $subject,
+				'newsletter_body'            => $body_rendered,
+				'_direct_bcc'               => $bcc_emails,
 				// Group-level variables for HTTP Request / CODE / cURL actions
-				'subscriber_emails'  => implode( ', ', $bcc_emails ),
-				'subscriber_names'   => implode( ', ', $bcc_names ),
-				'subscriber_count'   => count( $bcc_emails ),
+				'subscriber_emails'         => implode( ', ', $bcc_emails ),
+				'subscriber_names'          => implode( ', ', $bcc_names ),
+				'subscriber_count'          => count( $bcc_emails ),
 			);
 
 			if ( '' !== $subject ) {
@@ -275,12 +286,7 @@ class NewsletterController {
 			if ( '' !== $body_rendered ) {
 				$context['body'] = $body_rendered;
 			}
-			if ( '' !== $from_name ) {
-				$context['from_name'] = $from_name;
-			}
-			if ( '' !== $from_email ) {
-				$context['from_email'] = $from_email;
-			}
+
 
 			// Custom variables
 			foreach ( $custom_vars as $c_key => $c_val ) {
@@ -291,7 +297,7 @@ class NewsletterController {
 				$context['_target_rule_id'] = $target_rule_id;
 			}
 
-			AH_Workflow_Manager::evaluate( 'notification_send', $context, true );
+			\AH_Workflow_Manager::evaluate( 'notification_send', $context, true );
 
 			return array( 'sent' => count( $bcc_emails ), 'failed' => 0 );
 		}
@@ -303,13 +309,13 @@ class NewsletterController {
 			$unsub = self::unsub_url( $sub['email'] );
 			$name  = '' !== $sub['name'] ? $sub['name'] : 'there';
 
-			// Build target tokens list
-			$replace_keys = array( '{name}', '{unsubscribe_url}', '{email}' );
-			$replace_vals = array( $name,    $unsub,              $sub['email'] );
+			// Build target tokens list (support {{newsletter_token}} formats)
+			$replace_keys = array( '{{name}}', '{{newsletter_name}}', '{{unsubscribe_url}}', '{{newsletter_unsubscribe_url}}', '{{email}}', '{{newsletter_email}}' );
+			$replace_vals = array( $name, $name, $unsub, $unsub, $sub['email'], $sub['email'] );
 
 			// Incorporate custom tags if defined
 			foreach ( $custom_vars as $c_key => $c_val ) {
-				$replace_keys[] = '{' . $c_key . '}';
+				$replace_keys[] = '{{' . $c_key . '}}';
 				$replace_vals[] = $c_val;
 			}
 
@@ -320,11 +326,14 @@ class NewsletterController {
 			}
 
 			$context = array(
-				'email'              => $sub['email'],
-				'name'               => $name,
-				'unsubscribe_url'    => $unsub,
-				'newsletter_subject' => $subject,
-				'newsletter_body'    => $body_rendered,
+				'email'                      => $sub['email'],
+				'newsletter_email'           => $sub['email'],
+				'name'                       => $name,
+				'newsletter_name'            => $name,
+				'unsubscribe_url'            => $unsub,
+				'newsletter_unsubscribe_url' => $unsub,
+				'newsletter_subject'         => $subject,
+				'newsletter_body'            => $body_rendered,
 			);
 
 			if ( '' !== $subject ) {
@@ -334,10 +343,12 @@ class NewsletterController {
 				$context['body'] = $body_rendered;
 			}
 			if ( '' !== $from_name ) {
-				$context['from_name'] = $from_name;
+				$context['from_name']             = $from_name;
+				$context['newsletter_from_name']  = $from_name;
 			}
 			if ( '' !== $from_email ) {
-				$context['from_email'] = $from_email;
+				$context['from_email']            = $from_email;
+				$context['newsletter_from_email'] = $from_email;
 			}
 
 			// Inject custom vars directly into rule context so actions can use them via {{var}}
@@ -349,7 +360,7 @@ class NewsletterController {
 				$context['_target_rule_id'] = $target_rule_id;
 			}
 
-			AH_Workflow_Manager::evaluate( 'notification_send', $context, true );
+			\AH_Workflow_Manager::evaluate( 'notification_send', $context, true );
 			$sent++;
 		}
 

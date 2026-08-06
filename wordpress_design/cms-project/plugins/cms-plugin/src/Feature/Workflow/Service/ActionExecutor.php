@@ -100,7 +100,11 @@ class ActionExecutor {
 	 */
 	public static function fill( string $tpl, array $ctx ): string {
 		foreach ( $ctx as $k => $v ) {
-			$val = (string) $v;
+			if ( is_array( $v ) || is_object( $v ) ) {
+				$val = wp_json_encode( $v );
+			} else {
+				$val = (string) $v;
+			}
 			$tpl = str_replace( '{{' . $k . '}}', $val, $tpl );
 			$tpl = str_replace( '((' . $k . '))', $val, $tpl );
 		}

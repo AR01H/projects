@@ -37,7 +37,7 @@ $badge_map = array(
 $enq_nonce = wp_create_nonce( 'ah_admin_nonce' );
 ?>
 
-<ul class="subsubsub" style="margin-bottom:8px;">
+<ul class="subsubsub" style="margin-bottom:8px; width: 100%;">
 	<li>
 		<a href="<?php echo esc_url( $base_url ); ?>" <?php echo '' === $filter ? 'class="current"' : ''; ?>>
 			All <span class="count">(<?php echo esc_html( $all_count ); ?>)</span>
@@ -52,6 +52,9 @@ $enq_nonce = wp_create_nonce( 'ah_admin_nonce' );
 		</a>
 	</li>
 	<?php endforeach; ?>
+	<li style="float: right;">
+		<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=adn_clear_contact_inbox' ), 'adn_clear_contact_inbox' ) ); ?>" class="button button-secondary" onclick="return confirm('Are you sure you want to permanently delete ALL messages in the contact inbox? This action cannot be undone.');" style="color: #dc3232; border-color: #dc3232;">Clear All Messages</a>
+	</li>
 </ul>
 
 <table class="wp-list-table widefat fixed striped">
