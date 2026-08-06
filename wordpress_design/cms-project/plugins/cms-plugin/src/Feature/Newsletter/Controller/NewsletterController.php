@@ -255,7 +255,6 @@ class NewsletterController {
 			$body_rendered = '';
 			if ( '' !== $body ) {
 				$body_rendered = str_replace( $replace_keys, $replace_vals, $body );
-				$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
 			}
 
 			// Build aggregated subscriber variables
@@ -322,7 +321,6 @@ class NewsletterController {
 			$body_rendered = '';
 			if ( '' !== $body ) {
 				$body_rendered = str_replace( $replace_keys, $replace_vals, $body );
-				$body_rendered .= "\n\n---\nTo unsubscribe, visit: " . $unsub;
 			}
 
 			$context = array(
