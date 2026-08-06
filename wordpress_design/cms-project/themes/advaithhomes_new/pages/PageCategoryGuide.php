@@ -23,11 +23,12 @@ defined( 'ABSPATH' ) || exit;
 
 $ctx = \Adn\Theme\Feature\CategoryGuide\Controller\CategoryGuideController::getContext();
 
-get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
-
 // CSS/JS now loaded centrally via AssetLoader (wp_enqueue_scripts hook)
 
-// ── SEO: register title, description, canonical, breadcrumb for this category page ──
+/* ── SEO: register title, description, canonical, breadcrumb for this category page ──
+   Must run BEFORE get_header(): adn_seo_head_output() is hooked to wp_head at
+   priority 1, so anything registered afterwards never reaches <title>, og:*,
+   canonical or the JSON-LD schema. */
 $_seo_title = isset( $ctx['hero']['title'] ) ? (string) $ctx['hero']['title'] : '';
 $_seo_desc  = '';
 if ( ! empty( $ctx['meta']['meta_description'] ) ) {
@@ -89,6 +90,8 @@ adn_seo_register( array(
 		'items'       => $_cat_col_items,
 	) : array(),
 ) );
+
+get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
 // Breadcrumb renders inside the hero banner - skip it from adn_page_open().
 $_open_ctx                = $ctx;

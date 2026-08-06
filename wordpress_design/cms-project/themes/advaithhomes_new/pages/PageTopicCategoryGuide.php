@@ -20,8 +20,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
-
+/* SEO must be registered BEFORE get_header(): adn_seo_head_output() runs on
+   wp_head priority 1, so anything registered after the header is emitted too
+   late and the page falls back to a generic <title> and empty og/canonical. */
 $ctx = \Adn\Theme\Feature\CategoryGuide\Controller\CategoryGuideController::getTopicContext();
 
 $term      = $ctx['term'] ? (object) $ctx['term'] : null;
@@ -76,6 +77,8 @@ adn_seo_register( array(
 		'items'       => $_col_items,
 	),
 ) );
+
+get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 
 $_open_ctx               = $ctx;
 $_open_ctx['breadcrumb'] = array();
