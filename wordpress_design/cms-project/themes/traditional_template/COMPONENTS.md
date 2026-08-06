@@ -135,10 +135,101 @@ Any `key` absent from `sections.json` **defaults to visible**. Add it with
 | `newsletter` | `newsletter.json` | ✅ | home, about, products, gallery *(compact)*, events |
 | `faqs` | `faqs.json` | ✅ | home, franchise *(soft)*, events *(dark)*, order *(soft)*, contact *(soft)* |
 
+### Portal sections
+
+| Component | Reads | source? | Used on |
+|---|---|:--:|---|
+| `quick-links` | `quick_links.json` *(or `blocks.json` keys)* | ✅ | home, faq *(compact)* |
+| `promo-block` | `blocks.json` — **the shared library** | *(keys)* | home *(soft)*, careers, blog, legal |
+| `info-cards` | `info_cards.json` | ✅ | contact, faq *(compact)* |
+| `logo-strip` | `logo_strip.json` | ✅ | home *(compact)*, reviews *(compact)* |
+| `downloads` | `downloads.json` | ✅ | services, faq |
+| `tabs` | `tabs.json` | ✅ | services *(soft)* → `tabs_services` |
+| `split-feature` | `split_feature.json` | ✅ | services |
+| `careers` | `careers.json`, `form_apply.json` | ✅ | careers |
+| `map-embed` | `map.json` | ✅ | contact |
+| `paper-story` | `paper_story.json` | ✅ | about |
+| `legal-document` | `legal_*.json` | ✅ | privacy-policy, cookie-policy, terms |
+
+### Parts
+
+| Part | Reads | Notes |
+|---|---|---|
+| `parts/alert` | *(args)* | Inline alert box — call it with `nt_alert()`, not directly |
+| `parts/breadcrumbs` | `breadcrumbs.json` | Builds itself from the page registry; JSON only overrides |
+| `parts/stamp` | *(args)* | **The** ink stamp. SVG arcs, so the lower ring is never upside down |
+| `parts/leaf-drift` | `decor.json → leaves` | Drifting cane leaves; skips the front page and reduced-motion |
+| `parts/blog-sidebar` | `blog.json → sidebar` | Every block switched on individually |
+
 ### Available but not currently placed
 
 `events-quote`, `features-in`, `franchise-enquiry`, `spotlights`, `newsbar`,
 `floating-popup` (the latter two are chrome, rendered by header/footer).
+
+---
+
+## 2b. The shared message library — write it once
+
+`admin/data/blocks.json` holds small reusable "say this, link there" entries:
+
+```jsonc
+"read_blogs": {
+  "tag": "The Journal",
+  "title": "Read the blog",
+  "text": "This is where we write about sugarcane…",
+  "label": "Click here to read",
+  "url": "/blog/",
+  "icon": "file"
+}
+```
+
+Name the **key** anywhere that wording is wanted — a promo card, a quick-link
+tile, a sidebar box — and every placement updates together when you edit it:
+
+```jsonc
+{ "component": "promo-block", "args": { "blocks": ["read_blogs", "get_brochure"] } }
+{ "component": "quick-links", "args": { "blocks": ["order_online", "book_event"] } }
+```
+
+A per-placement tweak without touching the library:
+`[{ "block": "visit_us", "label": "Find the counter" }]`.
+
+A block with `dialog` instead of `url` opens that dialog rather than
+navigating — so the same entry is a link on one page and a popup on another.
+
+---
+
+## 2c. Dialogs, alerts and the cookie banner
+
+These have **no PHP template**. PHP ships the data, the browser builds the
+markup — see `src/README.md` for why.
+
+**Declare a dialog** in `admin/data/dialogs.json`, then open it from anywhere:
+
+```php
+<button <?php nt_dialog_trigger( 'brochure' ); ?>>Get the brochure</button>
+```
+
+The trigger also queues the dialog, so a page that never mentions it ships none
+of its payload. A dialog can host any `admin/data/form_*.json` through its
+`form` key — the same definitions the inline forms use.
+
+**From JavaScript**, the same object shape works:
+
+```js
+NT.dialog.show({ title: 'Order received', tone: 'success', body: '…',
+                 actions: [{ label: 'Track it', url: '/order/' }] });
+NT.alert('Saved.');                    // themed window.alert
+NT.confirm({ body: 'Delete this?' });  // → Promise<boolean>
+NT.toast('Copied', 'success');
+NT.alerts.render(form, { tone: 'error', body: '…' });
+```
+
+Declarative confirmation with no page script:
+`<a data-nt-confirm="Are you sure?" data-nt-confirm-danger href="…">`.
+
+**Every user-facing word** comes from `admin/data/ui.json` (`labels`, `aria`,
+`behaviour`) — nothing is hard-coded in PHP, JS or CSS.
 
 ---
 
@@ -186,7 +277,15 @@ its own script, and every one degrades to working HTML with JS off.
 | Lightbox | `data-nt-lightbox` on a container | every `<img>` inside becomes clickable; arrows + Esc; caption from `data-caption` or `alt` |
 | Filter tabs | `data-nt-filter` scope + `data-nt-filter-btn` / `data-nt-filter-item[data-tags]` | `data-nt-filter-empty` element shows when a filter matches nothing |
 | AJAX forms | `data-nt-ajax-form` | posts to a registered AJAX action; nonce supplied by `window.ntSite` |
-| Reading progress + back to top | *(nothing)* | injected on every page by `initScrollUI()` |
+| Reading progress + back to top | *(nothing)* | injected on every page by `initScrollUI()`; it defers to the footer's own button rather than adding a second one |
+| Dialogs | `nt_dialog_trigger('key')` | built in the browser from `dialogs.json` when first opened |
+| Confirmation | `data-nt-confirm="Are you sure?"` | on a link, button or form; `data-nt-confirm-danger` for the red action |
+| Copy to clipboard | `data-nt-copy="text"` | shows a toast on success |
+| Tabs | `data-nt-tabs` scope + `data-nt-tab` / `data-nt-tab-panel` | with JS off every panel renders stacked with its own heading |
+| Paper story | `data-nt-story` + `data-nt-story-sheet` | click, arrows, keyboard or swipe; reads top-to-bottom with JS off |
+| Drifting leaves | `nt_component('parts/leaf-drift')` | randomised per load; removed entirely under `prefers-reduced-motion` |
+| Native share | `data-nt-share` + `data-nt-share-native` | uses the device share sheet; hidden where there is none. No third-party buttons |
+| Side dock | *(nothing)* | on phones the floating toolbar tucks away while scrolling down |
 
 ---
 

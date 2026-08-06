@@ -1,0 +1,17 @@
+{
+  "_doc": "A row of marks (components/logo-strip.php): stockists, press, partners, awards, payment methods. Set 'marquee': true to scroll the row slowly - it pauses on hover and stops entirely under reduced-motion. An item with no 'image' falls back to its name set in the display face, so the strip is useful before any logo files exist.",
+
+  "tag": "In Good Company",
+  "title": "Stocked and <em>spoken about</em>",
+  "sub": "",
+  "marquee": true,
+
+  "items": [
+    { "name": "Borough Market" },
+    { "name": "The Grocer" },
+    { "name": "Slow Food UK" },
+    { "name": "Eastside Weekly" },
+    { "name": "Harvest Guild" },
+    { "name": "Green Retail Awards" }
+  ]
+}

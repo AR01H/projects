@@ -1,36 +1,82 @@
 <?php
 /**
- * Post card - mini cinematic "poster" card matching the poster page header:
- * full-bleed sepia photo with title/date overlaid on a dark gradient scrim.
+ * components/cards/post_card.php - one article in a listing.
  *
- * Context: 'post_id' (int, required).
+ * A pressed-paper journal card: a sepia photo up top, then the date, the
+ * title, a couple of lines of the piece and how long it takes to read.
  *
- *   nt_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+ * It fills whatever grid cell it is dropped into, which is what the previous
+ * version did not - it carried a fixed width from the old theme and sat in
+ * the corner of its column looking broken.
  *
- * Keep the markup in sync with the JS renderer in assets/js/pages/news.js
- * (both produce .nt-card items).
+ * A post with no featured image gets a drawn placeholder in the palette
+ * rather than an emoji, so an unillustrated blog still looks deliberate.
+ *
+ * Context:
+ *   post_id (int)    Defaults to the current post in the loop.
+ *   compact (bool)   Tighter card for sidebars and related-post rows.
+ *
+ * Keep the shape in step with the JS renderer in assets/js/pages/news.js -
+ * both produce .nt-card items.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$post_id = isset( $post_id ) ? (int) $post_id : get_the_ID();
-if ( ! $post_id ) {
+$nt_pid = isset( $post_id ) ? (int) $post_id : get_the_ID();
+if ( ! $nt_pid ) {
 	return;
 }
-$nt_thumb = get_the_post_thumbnail_url( $post_id, 'nt-card' );
+
+$nt_compact = ! empty( $compact );
+$nt_thumb   = get_the_post_thumbnail_url( $nt_pid, 'large' );
+$nt_terms   = get_the_category( $nt_pid );
+$nt_cat     = ( ! empty( $nt_terms ) && ! is_wp_error( $nt_terms ) ) ? $nt_terms[0]->name : '';
+
+// Reading time from the real word count, rounded up, minimum one minute.
+$nt_words   = str_word_count( wp_strip_all_tags( (string) get_post_field( 'post_content', $nt_pid ) ) );
+$nt_minutes = max( 1, (int) ceil( $nt_words / 200 ) );
+$nt_read    = sprintf( NT_Ui::label( 'minutes_read', '%s min read' ), (string) $nt_minutes );
 ?>
-<article class="nt-card">
-	<a class="nt-card-link" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
-		<div class="nt-card-media"<?php echo $nt_thumb ? ' style="background-image:url(\'' . esc_url( $nt_thumb ) . '\');"' : ''; ?>>
-			<?php if ( ! $nt_thumb ) : ?><span class="nt-card-media-empty" aria-hidden="true">🌾</span><?php endif; ?>
-			<span class="nt-card-media__scrim" aria-hidden="true"></span>
-			<div class="nt-card-media__overlay">
-				<span class="nt-card-meta"><?php echo esc_html( get_the_date( '', $post_id ) ); ?></span>
-				<h3 class="nt-card-title"><?php echo esc_html( get_the_title( $post_id ) ); ?></h3>
-			</div>
+<article class="nt-card<?php echo $nt_compact ? ' nt-card--compact' : ''; ?>">
+	<a class="nt-card-link" href="<?php echo esc_url( get_permalink( $nt_pid ) ); ?>">
+
+		<div class="nt-card-media">
+			<?php if ( $nt_thumb ) : ?>
+				<img class="nt-card-img" src="<?php echo esc_url( $nt_thumb ); ?>"
+				     alt="" loading="lazy" decoding="async">
+			<?php else : ?>
+				<span class="nt-card-media-empty" aria-hidden="true">
+					<?php NT_Icons::render( 'wheat' ); ?>
+				</span>
+			<?php endif; ?>
+
+			<?php if ( '' !== $nt_cat ) : ?>
+				<span class="nt-card-cat"><?php echo esc_html( $nt_cat ); ?></span>
+			<?php endif; ?>
 		</div>
+
 		<div class="nt-card-body">
-			<p class="nt-card-excerpt"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $post_id ) ), 18, '…' ) ); ?></p>
+			<p class="nt-card-meta">
+				<span class="nt-card-meta__item">
+					<?php NT_Icons::render( 'calendar' ); ?>
+					<?php echo esc_html( get_the_date( '', $nt_pid ) ); ?>
+				</span>
+				<span class="nt-card-meta__item">
+					<?php NT_Icons::render( 'clock' ); ?>
+					<?php echo esc_html( $nt_read ); ?>
+				</span>
+			</p>
+
+			<h3 class="nt-card-title"><?php echo esc_html( get_the_title( $nt_pid ) ); ?></h3>
+
+			<p class="nt-card-excerpt">
+				<?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $nt_pid ) ), $nt_compact ? 12 : 22, '…' ) ); ?>
+			</p>
+
+			<span class="nt-card-more">
+				<?php echo esc_html( NT_Ui::label( 'read_more' ) ); ?>
+				<?php NT_Icons::render( 'arrow-right' ); ?>
+			</span>
 		</div>
 	</a>
 </article>

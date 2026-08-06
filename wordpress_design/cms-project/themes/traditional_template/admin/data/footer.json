@@ -24,16 +24,19 @@
   ],
   "quick_links": [
     { "label": "Home", "url": "/" },
-    { "label": "About Us", "url": "/about/" },
-    { "label": "Flavours", "url": "/menu/" },
-    { "label": "Our Journey", "url": "/our-journey/" },
+    { "label": "Our Story", "url": "/about/" },
+    { "label": "What We Do", "url": "/services/" },
+    { "label": "Flavours", "url": "/products/" },
+    { "label": "The Journal", "url": "/blog/" },
     { "label": "Franchise", "url": "/franchise/" },
-    { "label": "Gallery", "url": "/gallery/" },
+    { "label": "Work With Us", "url": "/careers/" },
+    { "label": "Help & FAQs", "url": "/faq/" },
     { "label": "Contact", "url": "/contact/" }
   ],
   "bottom_links": [
     { "label": "Privacy Policy", "url": "/privacy-policy/" },
-    { "label": "Cookie Policy", "url": "/cookie-policy/" }
+    { "label": "Cookie Policy", "url": "/cookie-policy/" },
+    { "label": "Terms & Conditions", "url": "/terms/" }
   ],
   "socials": {
     "instagram": "https://instagram.com/",

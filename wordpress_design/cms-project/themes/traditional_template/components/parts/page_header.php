@@ -35,8 +35,15 @@ $image    = isset( $image ) ? (string) $image : '';
 $meta     = isset( $meta ) ? (string) $meta : '';
 $is_poster = '' !== $image;
 ?>
-<div class="nt-page-header<?php echo $is_poster ? ' nt-page-header--poster' : ''; ?>"
+<div class="nt-page-header nt-has-leaves<?php echo $is_poster ? ' nt-page-header--poster' : ''; ?>"
 	<?php if ( $is_poster ) : ?>style="background-image:url('<?php echo esc_url( $image ); ?>');"<?php endif; ?>>
+
+	<?php
+	// Drifting cane leaves behind the heading. The part skips the front page
+	// and reduced-motion visitors by itself, so no condition is needed here.
+	nt_component( 'parts/leaf-drift' );
+	?>
+
 	<?php if ( $is_poster ) : ?>
 		<div class="nt-page-header__scrim" aria-hidden="true"></div>
 		<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/corner-ornament.svg' ); ?>" class="nt-page-header__corner nt-page-header__corner--tl" alt="" aria-hidden="true">

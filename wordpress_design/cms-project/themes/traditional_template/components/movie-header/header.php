@@ -195,9 +195,17 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 	return $mh_uid . '-' . $suffix;
 };
 ?>
-<section class="nt-mh nt-mh--<?php echo esc_attr( $mh_ornament ); ?>"
+<section class="nt-mh nt-mh--<?php echo esc_attr( $mh_ornament ); ?> nt-has-leaves"
          aria-labelledby="<?php echo esc_attr( $mh_id( 'title' ) ); ?>"
          <?php echo $mh_style_attr ? 'style="' . esc_attr( $mh_style_attr ) . '"' : ''; ?>>
+
+	<?php
+	// The drifting "air" layer: cane leaves lift off the ground and float up
+	// behind the board. The part removes itself on the front page and under
+	// prefers-reduced-motion, so this call is safe everywhere.
+	// See components/parts/leaf-drift.php + admin/data/decor.json -> "leaves".
+	nt_component( 'parts/leaf-drift' );
+	?>
 
 	<?php if ( $mh_sprite ) : ?>
 		<div class="nt-mh__sprite" aria-hidden="true"><?php echo $mh_sprite; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- theme-owned static SVG sprite. ?></div>

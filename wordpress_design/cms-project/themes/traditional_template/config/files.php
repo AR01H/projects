@@ -17,11 +17,20 @@ return array(
 
 	'always' => array(
 		'admin/includes/terms.php',   // Term-level labels + JSON-backed term tree helpers.
-		// ── Feature: Page Sections (OOP) ──
+
+		// ── Features (OOP) ──
 		// Each feature lives in its own src/<Feature>/ folder as a class; the
 		// class is the "intermediate" layer between templates (UI) and JSON data.
+		// Order matters: a class may only depend on ones listed above it.
+		'src/Ui/class-icons.php',                  // NT_Icons   - the shared inline-SVG icon set.
+		'src/Ui/class-ui.php',                     // NT_Ui      - tones, sizes + every shared label (ui.json).
+		'src/Dialogs/class-dialog.php',            // NT_Dialog  - dialogs.json -> the browser's dialog registry.
+		'src/Dialogs/class-alert.php',             // NT_Alert   - inline alerts + site_notices.json.
+		'src/Content/class-blocks.php',            // NT_Blocks  - the shared blocks.json message library.
+		'src/Consent/class-consent.php',           // NT_Consent - cookie consent config (cookies.json).
 		'src/Sections/class-section-renderer.php', // NT_Section_Renderer - renders page_sections.json.
-		'includes/site-helpers.php',  // nt_section_visible() + nt_render_sections() thin wrappers.
+
+		'includes/site-helpers.php',  // Thin wrappers: nt_render_sections(), nt_icon(), nt_alert(), nt_dialog()…
 		// 'includes/data-services.php',
 		// 'includes/shortcodes.php',
 	),

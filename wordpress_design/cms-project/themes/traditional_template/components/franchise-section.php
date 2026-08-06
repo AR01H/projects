@@ -31,9 +31,24 @@ $cta_btn_link      = $f_data['cta_btn_link'] ?? '';
 	<div class="container nt-franchise-hero__inner">
 		<?php if ( ! empty($stamp_lines) ) : ?>
 		<div class="nt-vintage-stamp">
-			<span><?php echo wp_kses( $stamp_lines[0] ?? '', ['br'=>[]] ); ?></span>
-			<?php if ( isset($stamp_lines[1]) ) : ?><hr><span><?php echo esc_html($stamp_lines[1]); ?></span><?php endif; ?>
-			<?php if ( isset($stamp_lines[2]) ) : ?><hr><span><?php echo esc_html($stamp_lines[2]); ?></span><?php endif; ?>
+			<?php
+			/*
+			 * The shared stamp (components/parts/stamp.php). This used to be
+			 * three rotated spans, which came out with the lower ring upside
+			 * down and the middle line running outside the circle. The shared
+			 * component sets both rings on real SVG arcs and fits the struck
+			 * line to the die, so it is right at any size.
+			 *
+			 * stamp_lines stays the same three strings in franchise.json:
+			 * upper ring, struck line, lower ring.
+			 */
+			nt_component( 'parts/stamp', array(
+				'top'    => wp_strip_all_tags( (string) ( $stamp_lines[0] ?? '' ) ),
+				'middle' => (string) ( $stamp_lines[1] ?? '' ),
+				'bottom' => (string) ( $stamp_lines[2] ?? '' ),
+				'size'   => 186,
+			) );
+			?>
 		</div>
 		<?php endif; ?>
 		<div>

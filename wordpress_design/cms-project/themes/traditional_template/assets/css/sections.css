@@ -1,0 +1,2264 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   REUSABLE SECTIONS
+   ---------------------------------------------------------------------------
+   The portal sections added on top of the original band set: promo blocks,
+   quick-link tiles, info cards, logo strips, downloads, tabs, careers, split
+   features, the map facade, the paper story, the blog archive, legal pages
+   and the cookie banner.
+
+   Loaded AFTER vintage.css (config/assets.php), so it wins on shared
+   selectors without !important.
+
+   PALETTE RULE: no raw hex below. Every colour is a --trad-* / --nt-* token
+   from variables.css, or a color-mix of them - a re-skin stays a
+   variables-only edit.
+
+   MOBILE: each block carries its own breakpoint work at the end of its
+   section rather than in one lump at the bottom, so a component and its
+   small-screen behaviour are read together.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+	--nt-sec-radius: 12px 16px 10px 18px;   /* the hand-cut card corner */
+	--nt-sec-gap: clamp(18px, 2.4vw, 30px);
+	--nt-sec-pad: clamp(48px, 7vw, 96px);
+	--nt-sec-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* A shared card surface: aged sheet, hairline frame, hand-cut corners. */
+.nt-promo__card,
+.nt-quicklink,
+.nt-infocard,
+.nt-download,
+.nt-tabs__panel,
+.nt-job,
+.nt-side-block,
+.nt-story__paper {
+	background-color: var(--trad-paper, var(--trad-cream));
+	background-image: var(--texture-paper);
+	border: 1.5px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. PROMO BLOCKS   (components/promo-block.php - the shared blocks.json)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-promo { padding: var(--nt-sec-pad) 0; }
+.nt-promo__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: var(--nt-sec-gap);
+}
+.nt-promo--rows .nt-promo__grid { grid-template-columns: 1fr; }
+.nt-promo--single .nt-promo__grid { max-width: 640px; margin-inline: auto; }
+
+.nt-promo__card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	padding: clamp(22px, 2.6vw, 32px);
+	transition: transform 0.28s var(--nt-sec-ease), box-shadow 0.28s;
+}
+.nt-promo__card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 16px 34px rgba(15, 28, 11, 0.14);
+}
+.nt-promo__icon {
+	font-size: 1.7rem;
+	line-height: 1;
+	color: var(--trad-gold);
+}
+.nt-promo__figure { margin: 0 0 4px; width: 100%; border-radius: 8px; overflow: hidden; }
+.nt-promo__figure img { display: block; width: 100%; height: auto; filter: sepia(0.35) saturate(0.9); }
+.nt-promo__tag {
+	font-size: 0.66rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-promo__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+	color: var(--trad-green);
+	margin: 0;
+}
+.nt-promo__text {
+	font-size: 0.95rem;
+	line-height: 1.65;
+	color: var(--trad-ink);
+	margin: 0;
+	flex: 1 1 auto;
+}
+.nt-promo__cta,
+.nt-quicklink__go,
+.nt-split__cta,
+.nt-tabs__link,
+.nt-story__link,
+.nt-map__link,
+.nt-infocard__action {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	font-size: 0.74rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--trad-green);
+	text-decoration: none;
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	transition: color 0.22s, gap 0.22s;
+}
+.nt-promo__cta:hover,
+.nt-split__cta:hover,
+.nt-tabs__link:hover,
+.nt-story__link:hover,
+.nt-map__link:hover,
+.nt-infocard__action:hover {
+	color: var(--trad-gold);
+	gap: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. QUICK LINKS   (components/quick-links.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-quicklinks { padding: var(--nt-sec-pad) 0; }
+.nt-quicklinks__grid {
+	display: grid;
+	gap: var(--nt-sec-gap);
+	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+.nt-quicklinks--2 .nt-quicklinks__grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.nt-quicklinks--3 .nt-quicklinks__grid { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+
+/* The WHOLE tile is the control, so the touch target is the card, not a link. */
+.nt-quicklink {
+	display: flex;
+	flex-direction: column;
+	gap: 9px;
+	padding: clamp(22px, 2.6vw, 30px);
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+	font: inherit;
+	color: inherit;
+	position: relative;
+	overflow: hidden;
+	transition: transform 0.28s var(--nt-sec-ease), border-color 0.28s, box-shadow 0.28s;
+}
+/* A gold wash sweeps up from the base on hover - the "lift" without moving
+   text, which keeps the tile readable mid-transition. */
+.nt-quicklink::after {
+	content: "";
+	position: absolute;
+	inset: auto 0 0 0;
+	height: 3px;
+	background: var(--trad-gold);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.32s var(--nt-sec-ease);
+}
+.nt-quicklink:hover,
+.nt-quicklink:focus-visible {
+	transform: translateY(-5px);
+	border-color: var(--trad-gold);
+	box-shadow: 0 18px 38px rgba(15, 28, 11, 0.16);
+}
+.nt-quicklink:hover::after,
+.nt-quicklink:focus-visible::after { transform: scaleX(1); }
+
+.nt-quicklink__icon {
+	font-size: 1.9rem;
+	line-height: 1;
+	color: var(--trad-gold);
+}
+.nt-quicklink__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.28rem;
+	color: var(--trad-green);
+	line-height: 1.25;
+}
+.nt-quicklink__text {
+	font-size: 0.92rem;
+	line-height: 1.6;
+	color: var(--trad-ink);
+	flex: 1 1 auto;
+}
+.nt-quicklink__go { margin-top: 4px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. INFO CARDS   (components/info-cards.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-infocards { padding: var(--nt-sec-pad) 0; }
+.nt-infocards__grid {
+	display: grid;
+	gap: var(--nt-sec-gap);
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.nt-infocard {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: clamp(20px, 2.4vw, 28px);
+	text-align: center;
+	align-items: center;
+}
+.nt-infocard__icon {
+	font-size: 1.6rem;
+	line-height: 1;
+	color: var(--trad-gold);
+	margin-bottom: 4px;
+}
+.nt-infocard__label {
+	font-size: 0.66rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-infocard__value {
+	font-family: var(--nt-font-display);
+	font-size: 1.16rem;
+	color: var(--trad-green);
+	text-decoration: none;
+	word-break: break-word;
+}
+a.nt-infocard__value:hover { color: var(--trad-gold); }
+.nt-infocard__note {
+	font-size: 0.85rem;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	opacity: 0.9;
+}
+.nt-infocard__action { margin-top: 8px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   4. LOGO STRIP   (components/logo-strip.php)
+   Sepia by default so a row of clashing brand colours never breaks the page.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-logos { padding: clamp(34px, 5vw, 64px) 0; }
+.nt-logos__track {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: clamp(24px, 5vw, 64px);
+}
+.nt-logos__item {
+	display: inline-flex;
+	align-items: center;
+	text-decoration: none;
+	filter: sepia(0.6) saturate(0.5) opacity(0.62);
+	transition: filter 0.3s;
+}
+.nt-logos__item:hover { filter: sepia(0.15) saturate(1) opacity(1); }
+.nt-logos__item img { max-height: 46px; width: auto; display: block; }
+.nt-logos__name {
+	font-family: var(--nt-font-display);
+	font-size: 1.12rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--trad-green);
+	white-space: nowrap;
+}
+
+/* Marquee: the PHP prints the row twice, so -50% is exactly one loop. */
+.nt-logos--marquee .nt-logos__track {
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	width: max-content;
+	animation: nt-logos-scroll 46s linear infinite;
+}
+.nt-logos--marquee { overflow: hidden; }
+.nt-logos--marquee .nt-logos__track:hover { animation-play-state: paused; }
+@keyframes nt-logos-scroll {
+	from { transform: translateX(0); }
+	to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+	.nt-logos--marquee .nt-logos__track {
+		animation: none;
+		width: auto;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   5. DOWNLOADS   (components/downloads.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-downloads { padding: var(--nt-sec-pad) 0; }
+.nt-downloads__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 14px;
+	max-width: 880px;
+	margin-inline: auto;
+}
+.nt-download {
+	display: flex;
+	align-items: center;
+	gap: clamp(14px, 2vw, 22px);
+	padding: clamp(16px, 2vw, 22px);
+	transition: border-color 0.26s, transform 0.26s var(--nt-sec-ease);
+}
+.nt-download:hover { border-color: var(--trad-gold); transform: translateX(4px); }
+
+.nt-download__badge {
+	flex: 0 0 auto;
+	width: 58px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	color: var(--trad-green);
+	font-size: 1.5rem;
+	line-height: 1;
+}
+.nt-download__kind {
+	font-size: 0.58rem;
+	letter-spacing: 0.14em;
+	padding: 2px 6px;
+	border-radius: 3px;
+	background: var(--trad-green);
+	color: var(--trad-cream);
+}
+.nt-download__copy { flex: 1 1 auto; min-width: 0; }
+.nt-download__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.14rem;
+	color: var(--trad-green);
+	margin: 0 0 3px;
+}
+.nt-download__text {
+	font-size: 0.92rem;
+	line-height: 1.55;
+	color: var(--trad-ink);
+	margin: 0;
+}
+.nt-download__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	margin: 6px 0 0;
+	font-size: 0.74rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	opacity: 0.85;
+}
+.nt-download__btn {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 11px 20px;
+	border: 1.5px solid var(--trad-green);
+	border-radius: 8px;
+	background: transparent;
+	color: var(--trad-green);
+	font-family: var(--nt-font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color 0.22s, color 0.22s;
+}
+.nt-download__btn:hover { background: var(--trad-green); color: var(--trad-cream); }
+
+@media (max-width: 640px) {
+	.nt-download { flex-wrap: wrap; }
+	.nt-download__badge { width: auto; flex-direction: row; }
+	.nt-download__btn { width: 100%; justify-content: center; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   6. TABS   (components/tabs.php)
+   With JS off .is-enhanced is never added, so every panel stays visible and
+   keeps its own heading - the content is never trapped behind a script.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-tabs { padding: var(--nt-sec-pad) 0; }
+.nt-tabs__strip {
+	display: none;                      /* only meaningful once JS is running */
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px;
+	margin-bottom: 28px;
+	padding-bottom: 14px;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-border) 70%, transparent);
+}
+.nt-tabs__scope.is-enhanced .nt-tabs__strip { display: flex; }
+.nt-tabs__scope.is-enhanced .nt-tabs__fallback-heading { display: none; }
+.nt-tabs__scope.is-enhanced .nt-tabs__panel { border: 0; background: none; padding: 0; }
+
+.nt-tabs__tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 11px 20px;
+	border: 1.5px solid transparent;
+	border-radius: 8px 8px 0 0;
+	background: transparent;
+	font-family: var(--nt-font-body);
+	font-size: 0.78rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	cursor: pointer;
+	transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+.nt-tabs__tab:hover { color: var(--trad-green); }
+.nt-tabs__tab.is-active {
+	color: var(--trad-green);
+	border-color: var(--trad-border);
+	border-bottom-color: transparent;
+	background: var(--trad-paper, var(--trad-cream));
+}
+.nt-tabs__icon { font-size: 1.05rem; line-height: 1; color: var(--trad-gold); }
+
+.nt-tabs__panel { padding: clamp(20px, 2.6vw, 30px); }
+.nt-tabs__panel + .nt-tabs__panel { margin-top: 18px; }
+.nt-tabs__scope.is-enhanced .nt-tabs__panel + .nt-tabs__panel { margin-top: 0; }
+.nt-tabs__fallback-heading {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	margin: 0 0 12px;
+}
+
+.nt-tabs__inner {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: clamp(22px, 4vw, 48px);
+	align-items: center;
+}
+.nt-tabs__figure { margin: 0; border-radius: var(--nt-sec-radius); overflow: hidden; border: 1px solid var(--trad-border); }
+.nt-tabs__figure img { display: block; width: 100%; height: auto; filter: sepia(0.34) saturate(0.92); }
+.nt-tabs__heading {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+	color: var(--trad-green);
+	margin: 0 0 12px;
+}
+.nt-tabs__text { font-size: 1rem; line-height: 1.7; color: var(--trad-ink); margin: 0 0 12px; }
+
+.nt-tabs__points,
+.nt-split__points,
+.nt-job__points {
+	list-style: none;
+	margin: 0 0 16px;
+	padding: 0;
+	display: grid;
+	gap: 9px;
+}
+.nt-tabs__points li,
+.nt-split__points li,
+.nt-job__points li {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	font-size: 0.96rem;
+	line-height: 1.55;
+	color: var(--trad-ink);
+}
+.nt-tabs__points .nt-icon,
+.nt-split__points .nt-icon,
+.nt-job__points .nt-icon {
+	color: var(--trad-gold);
+	margin-top: 0.22em;
+	font-size: 1rem;
+}
+
+@media (max-width: 860px) {
+	.nt-tabs__inner { grid-template-columns: 1fr; }
+	.nt-tabs__strip {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		justify-content: flex-start;
+		scrollbar-width: none;
+	}
+	.nt-tabs__strip::-webkit-scrollbar { display: none; }
+	.nt-tabs__tab { white-space: nowrap; flex: 0 0 auto; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   7. CAREERS   (components/careers.php - native <details>, works with no JS)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-careers { padding: var(--nt-sec-pad) 0; }
+.nt-careers__list { display: grid; gap: 14px; max-width: 900px; margin-inline: auto; }
+
+.nt-job { overflow: hidden; transition: border-color 0.24s; }
+.nt-job[open] { border-color: var(--trad-gold); }
+.nt-job__summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: clamp(16px, 2vw, 22px);
+	cursor: pointer;
+	list-style: none;
+}
+.nt-job__summary::-webkit-details-marker { display: none; }
+.nt-job__head { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.nt-job__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.1rem, 2vw, 1.35rem);
+	color: var(--trad-green);
+}
+.nt-job__meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.nt-job__chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 4px 10px;
+	border: 1px solid var(--trad-border);
+	border-radius: 999px;
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-job__chip .nt-icon { color: var(--trad-gold); font-size: 0.9rem; }
+.nt-job__toggle {
+	flex: 0 0 auto;
+	color: var(--trad-green);
+	font-size: 1.2rem;
+	transition: transform 0.28s var(--nt-sec-ease);
+}
+.nt-job[open] .nt-job__toggle { transform: rotate(180deg); }
+
+.nt-job__body {
+	padding: 0 clamp(16px, 2vw, 22px) clamp(18px, 2vw, 24px);
+	border-top: 1px dashed color-mix(in srgb, var(--trad-border) 70%, transparent);
+	padding-top: 18px;
+}
+.nt-job__text { font-size: 0.98rem; line-height: 1.7; color: var(--trad-ink); margin: 0 0 16px; }
+.nt-job__block { margin-bottom: 14px; }
+.nt-job__subhead {
+	font-family: var(--nt-font-body);
+	font-size: 0.7rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	margin: 0 0 8px;
+}
+.nt-job__foot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	padding-top: 14px;
+	border-top: 1px solid color-mix(in srgb, var(--trad-border) 55%, transparent);
+}
+.nt-job__closes {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	font-size: 0.76rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-job__closes .nt-icon { color: var(--trad-gold); }
+.nt-job__apply {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 22px;
+	border: 1.5px solid var(--trad-green);
+	border-radius: 8px;
+	background: var(--trad-green);
+	color: var(--trad-cream);
+	font-family: var(--nt-font-body);
+	font-size: 0.74rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: background-color 0.22s, color 0.22s, transform 0.22s;
+}
+.nt-job__apply:hover {
+	background: var(--trad-gold);
+	border-color: var(--trad-gold);
+	color: var(--trad-green-dark);
+	transform: translateY(-2px);
+}
+
+@media (max-width: 560px) {
+	.nt-job__summary { align-items: flex-start; }
+	.nt-job__apply { width: 100%; justify-content: center; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   8. SPLIT FEATURE   (components/split-feature.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-split { padding: var(--nt-sec-pad) 0; }
+.nt-split__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: clamp(26px, 5vw, 68px);
+	align-items: center;
+	padding: clamp(26px, 4vw, 46px) 0;
+}
+.nt-split__row + .nt-split__row {
+	border-top: 1px dashed color-mix(in srgb, var(--trad-border) 60%, transparent);
+}
+/* Flipping is done by column order, NOT direction:rtl - the reading order in
+   the DOM stays image-then-copy for a screen reader either way. */
+.nt-split__row.is-flipped .nt-split__figure { order: 2; }
+.nt-split__row.is-flipped .nt-split__copy { order: 1; }
+
+.nt-split__figure {
+	margin: 0;
+	position: relative;
+	border: 1px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+	overflow: hidden;
+	box-shadow: 0 14px 34px rgba(15, 28, 11, 0.13);
+}
+.nt-split__figure img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	aspect-ratio: 4 / 3;
+	filter: sepia(0.36) saturate(0.9);
+	transition: transform 0.6s var(--nt-sec-ease), filter 0.4s;
+}
+.nt-split__row:hover .nt-split__figure img { transform: scale(1.03); filter: sepia(0.2) saturate(1); }
+.nt-split__caption {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 22px 16px 10px;
+	background: linear-gradient(180deg, transparent, rgba(15, 28, 11, 0.66));
+	color: var(--trad-cream);
+	font-size: 0.76rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+.nt-split__kicker {
+	display: block;
+	font-size: 0.68rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-gold);
+	margin-bottom: 10px;
+}
+.nt-split__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.5rem, 3.2vw, 2.3rem);
+	line-height: 1.18;
+	color: var(--trad-green);
+	margin: 0 0 14px;
+}
+.nt-split__title em {
+	font-family: var(--nt-font-accent);
+	font-style: normal;
+	color: var(--trad-gold);
+}
+.nt-split__text { font-size: 1rem; line-height: 1.72; color: var(--trad-ink); margin: 0 0 14px; }
+
+@media (max-width: 860px) {
+	.nt-split__row { grid-template-columns: 1fr; }
+	/* On one column the flip is meaningless - keep the photo first every time. */
+	.nt-split__row.is-flipped .nt-split__figure,
+	.nt-split__row.is-flipped .nt-split__copy { order: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   9. MAP FACADE   (components/map-embed.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-map { padding: var(--nt-sec-pad) 0; }
+.nt-map__frame {
+	position: relative;
+	border: 2px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+	overflow: hidden;
+	aspect-ratio: 16 / 7;
+	background: var(--trad-bg-alt);
+	box-shadow: 0 16px 40px rgba(15, 28, 11, 0.16);
+}
+.nt-map__poster {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: sepia(0.5) saturate(0.7) contrast(0.95);
+}
+.nt-map__frame.is-playing .nt-map__poster,
+.nt-map__frame.is-playing .nt-map__play { display: none; }
+.nt-map__frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+.nt-map__play {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	text-decoration: none;
+	background: color-mix(in srgb, var(--trad-green-dark) 34%, transparent);
+	transition: background-color 0.3s;
+}
+.nt-map__play:hover { background: color-mix(in srgb, var(--trad-green-dark) 18%, transparent); }
+.nt-map__pin {
+	width: 62px;
+	height: 62px;
+	display: grid;
+	place-items: center;
+	border-radius: 50%;
+	background: var(--trad-cream);
+	border: 2px solid var(--trad-gold);
+	color: var(--trad-green);
+	font-size: 1.6rem;
+	box-shadow: 0 8px 22px rgba(15, 28, 11, 0.3);
+}
+.nt-map__play-label {
+	font-size: 0.74rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--trad-cream);
+	background: color-mix(in srgb, var(--trad-green-dark) 70%, transparent);
+	padding: 7px 16px;
+	border-radius: 999px;
+}
+
+.nt-map__foot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	margin-top: 18px;
+}
+.nt-map__address {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	font-family: var(--nt-font-display);
+	font-size: 1.1rem;
+	color: var(--trad-green);
+	margin: 0;
+}
+.nt-map__address .nt-icon { color: var(--trad-gold); }
+.nt-map__note { font-size: 0.9rem; color: var(--trad-ink-soft, var(--trad-ink)); margin: 4px 0 0; }
+
+@media (max-width: 640px) {
+	.nt-map__frame { aspect-ratio: 4 / 3; }
+	.nt-map__pin { width: 50px; height: 50px; font-size: 1.3rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   10. PAPER STORY   (components/paper-story.php)
+   A pile of aged sheets. The top one lifts away and the next comes forward.
+   Before JS runs there is no .is-enhanced, so the sheets simply stack down
+   the page in order and the whole story is readable.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-story { padding: var(--nt-sec-pad) 0; }
+
+.nt-story__desk { position: relative; }
+.nt-story__desk:focus-visible { outline: 2px dashed var(--trad-gold); outline-offset: 12px; }
+
+.nt-story__stack { display: grid; gap: 18px; }
+
+/* Enhanced: every sheet occupies the SAME grid cell, so they truly overlap. */
+.nt-story__desk.is-enhanced .nt-story__stack {
+	position: relative;
+	gap: 0;
+	min-height: 520px;
+	perspective: 1600px;
+}
+.nt-story__desk.is-enhanced .nt-story__sheet {
+	position: absolute;
+	inset: 0;
+	cursor: pointer;
+	transition:
+		transform 0.62s var(--nt-sec-ease),
+		opacity 0.5s var(--nt-sec-ease);
+	transform-origin: 50% 100%;
+}
+
+/* Sheets still to be read peek out from under the top one, each one further
+   back and slightly smaller - the depth cue that says "there is more here". */
+.nt-story__desk.is-enhanced .nt-story__sheet.is-waiting {
+	transform:
+		translateY(calc(var(--nt-sheet-offset, 1) * 14px))
+		scale(calc(1 - var(--nt-sheet-offset, 1) * 0.028))
+		rotate(calc(var(--nt-sheet-offset, 1) * 0.5deg));
+	opacity: clamp(0, calc(1.15 - var(--nt-sheet-offset, 1) * 0.34), 1);
+	pointer-events: none;
+}
+.nt-story__desk.is-enhanced .nt-story__sheet.is-current {
+	transform: none;
+	opacity: 1;
+	pointer-events: auto;
+}
+/* Read sheets are lifted off to the left, as if set aside on the desk. */
+.nt-story__desk.is-enhanced .nt-story__sheet.is-done {
+	transform: translate(-42%, -8%) rotate(-7deg) scale(0.96);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.nt-story__paper {
+	position: relative;
+	height: 100%;
+	padding: clamp(24px, 3.4vw, 44px);
+	box-shadow: 0 18px 44px rgba(15, 28, 11, 0.18);
+	overflow: hidden;
+}
+/* The inner hairline: the "line inside a line" of an old printed document. */
+.nt-story__paper::before {
+	content: "";
+	position: absolute;
+	inset: 10px;
+	border: 1px solid color-mix(in srgb, var(--trad-border) 55%, transparent);
+	border-radius: 6px;
+	pointer-events: none;
+}
+/* A folded top-right corner, so a sheet reads as paper rather than a card. */
+.nt-story__fold {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 46px;
+	height: 46px;
+	background: linear-gradient(225deg,
+		var(--trad-bg-alt) 0%,
+		var(--trad-bg-alt) 50%,
+		transparent 50%);
+	border-left: 1px solid var(--trad-border);
+	border-bottom: 1px solid var(--trad-border);
+}
+.nt-story__pin {
+	position: absolute;
+	top: 14px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: var(--trad-gold);
+	box-shadow: 0 2px 5px rgba(15, 28, 11, 0.4);
+}
+
+.nt-story__head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 18px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-border) 60%, transparent);
+}
+.nt-story__chapter,
+.nt-story__year {
+	font-size: 0.68rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-story__year { color: var(--trad-gold); }
+
+.nt-story__cols {
+	display: grid;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+	gap: clamp(20px, 3vw, 38px);
+	align-items: start;
+}
+.nt-story__photo {
+	position: relative;
+	margin: 0;
+	border: 1px solid var(--trad-border);
+	border-radius: 8px 12px 8px 10px;
+	overflow: hidden;
+	transform: rotate(-1.2deg);
+}
+.nt-story__photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	filter: sepia(0.55) saturate(0.75) contrast(1.02);
+}
+.nt-story__stamp {
+	position: absolute;
+	right: 8px;
+	bottom: 8px;
+	font-size: 0.6rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--trad-cream);
+	background: color-mix(in srgb, var(--trad-green-dark) 72%, transparent);
+	border: 1px solid color-mix(in srgb, var(--trad-gold) 60%, transparent);
+	padding: 4px 9px;
+	border-radius: 3px;
+}
+.nt-story__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.4rem, 2.8vw, 2.05rem);
+	line-height: 1.2;
+	color: var(--trad-green);
+	margin: 0 0 12px;
+}
+.nt-story__text { font-size: 1rem; line-height: 1.72; color: var(--trad-ink); margin: 0 0 12px; }
+.nt-story__quote {
+	display: flex;
+	gap: 10px;
+	margin: 16px 0;
+	padding: 14px 16px;
+	border-left: 3px solid var(--trad-gold);
+	background: color-mix(in srgb, var(--trad-gold) 7%, transparent);
+	font-family: var(--nt-font-accent);
+	font-size: 1.22rem;
+	line-height: 1.5;
+	color: var(--trad-green);
+}
+.nt-story__quote-mark { color: var(--trad-gold); flex: 0 0 auto; margin-top: 0.2em; }
+
+.nt-story__controls {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+	margin-top: 22px;
+}
+.nt-story__nav {
+	width: 44px;
+	height: 44px;
+	display: grid;
+	place-items: center;
+	border: 1.5px solid var(--trad-border);
+	border-radius: 50%;
+	background: var(--trad-paper, var(--trad-cream));
+	color: var(--trad-green);
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: border-color 0.22s, color 0.22s, transform 0.22s, opacity 0.22s;
+}
+.nt-story__nav:hover:not(:disabled) {
+	border-color: var(--trad-gold);
+	color: var(--trad-gold);
+	transform: scale(1.06);
+}
+.nt-story__nav:disabled { opacity: 0.35; cursor: default; }
+
+.nt-story__dots { display: flex; gap: 8px; }
+.nt-story__dot {
+	width: 9px;
+	height: 9px;
+	padding: 0;
+	border: 1px solid var(--trad-border);
+	border-radius: 50%;
+	background: transparent;
+	cursor: pointer;
+	transition: background-color 0.22s, transform 0.22s, border-color 0.22s;
+}
+.nt-story__dot.is-active {
+	background: var(--trad-gold);
+	border-color: var(--trad-gold);
+	transform: scale(1.35);
+}
+.nt-story__counter {
+	font-size: 0.7rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	min-width: 64px;
+	text-align: center;
+}
+
+@media (max-width: 860px) {
+	.nt-story__cols { grid-template-columns: 1fr; }
+	.nt-story__desk.is-enhanced .nt-story__stack { min-height: 640px; }
+}
+@media (max-width: 560px) {
+	.nt-story__desk.is-enhanced .nt-story__stack { min-height: 700px; }
+	.nt-story__fold { width: 32px; height: 32px; }
+	.nt-story__counter { min-width: 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.nt-story__desk.is-enhanced .nt-story__sheet { transition: opacity 0.2s; }
+	.nt-story__desk.is-enhanced .nt-story__sheet.is-waiting,
+	.nt-story__desk.is-enhanced .nt-story__sheet.is-done { transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   11. BLOG ARCHIVE   (pages/page-blog.php + parts/blog-sidebar.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-blog__wrap {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 300px;
+	gap: clamp(28px, 4vw, 56px);
+	padding-block: clamp(36px, 5vw, 68px);
+	align-items: start;
+}
+.nt-blog__intro {
+	font-size: 1.05rem;
+	line-height: 1.75;
+	color: var(--trad-ink);
+	max-width: 62ch;
+	margin: 14px 0 30px;
+}
+/* auto-FIT, not auto-fill: with one or two posts the empty tracks collapse
+   and the cards fill the column, instead of a single narrow card sitting
+   marooned beside a row of blank space. */
+.nt-blog__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+	gap: var(--nt-sec-gap);
+}
+
+.nt-pagination {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 40px;
+}
+.nt-pagination .page-numbers {
+	min-width: 42px;
+	height: 42px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 12px;
+	border: 1.5px solid var(--trad-border);
+	border-radius: 8px;
+	background: var(--trad-paper, var(--trad-cream));
+	color: var(--trad-green);
+	font-family: var(--nt-font-body);
+	font-size: 0.9rem;
+	text-decoration: none;
+	transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.nt-pagination .page-numbers:hover { border-color: var(--trad-gold); color: var(--trad-gold); }
+.nt-pagination .page-numbers.current {
+	background: var(--trad-green);
+	border-color: var(--trad-green);
+	color: var(--trad-cream);
+}
+.nt-pagination .page-numbers.dots { border-color: transparent; background: none; }
+
+.nt-blog__side { display: grid; gap: 18px; position: sticky; top: calc(var(--nt-nav-height) + 20px); }
+.nt-side-block { padding: 20px; }
+.nt-side-block__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.08rem;
+	color: var(--trad-green);
+	margin: 0 0 12px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-border) 60%, transparent);
+}
+.nt-side-search { position: relative; display: flex; }
+.nt-side-search .nt-form-input { width: 100%; padding-right: 44px; }
+.nt-side-search__go {
+	position: absolute;
+	right: 6px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 32px;
+	height: 32px;
+	display: grid;
+	place-items: center;
+	border: 0;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--trad-green);
+	cursor: pointer;
+}
+.nt-side-search__go:hover { color: var(--trad-gold); }
+
+.nt-side-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.nt-side-list a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 7px 0;
+	font-size: 0.94rem;
+	color: var(--trad-ink);
+	text-decoration: none;
+	border-bottom: 1px dashed color-mix(in srgb, var(--trad-border) 45%, transparent);
+	transition: color 0.2s;
+}
+.nt-side-list a:hover { color: var(--trad-gold); }
+.nt-side-list__count {
+	font-size: 0.72rem;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	opacity: 0.75;
+}
+
+.nt-side-posts { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.nt-side-post a { display: flex; gap: 11px; align-items: center; text-decoration: none; }
+.nt-side-post__thumb {
+	flex: 0 0 auto;
+	width: 56px;
+	height: 56px;
+	border-radius: 6px;
+	overflow: hidden;
+	border: 1px solid var(--trad-border);
+}
+.nt-side-post__thumb img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.4); }
+.nt-side-post__copy { display: grid; gap: 3px; min-width: 0; }
+.nt-side-post__title {
+	font-family: var(--nt-font-display);
+	font-size: 0.98rem;
+	line-height: 1.3;
+	color: var(--trad-green);
+}
+.nt-side-post a:hover .nt-side-post__title { color: var(--trad-gold); }
+.nt-side-post__date {
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+
+.nt-side-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.nt-side-tag {
+	padding: 5px 11px;
+	border: 1px solid var(--trad-border);
+	border-radius: 999px;
+	font-size: 0.74rem;
+	color: var(--trad-ink);
+	text-decoration: none;
+	transition: border-color 0.2s, color 0.2s;
+}
+.nt-side-tag:hover { border-color: var(--trad-gold); color: var(--trad-gold); }
+
+.nt-side-block--promo { text-align: center; }
+.nt-side-promo__icon { font-size: 1.6rem; color: var(--trad-gold); display: block; margin-bottom: 8px; }
+.nt-side-block--promo .nt-side-block__title { border-bottom: 0; padding-bottom: 0; }
+.nt-side-promo__text { font-size: 0.9rem; line-height: 1.6; color: var(--trad-ink); margin: 0 0 12px; }
+.nt-side-promo__cta {
+	display: inline-block;
+	padding: 10px 18px;
+	border: 1.5px solid var(--trad-green);
+	border-radius: 8px;
+	background: transparent;
+	color: var(--trad-green);
+	font-family: var(--nt-font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color 0.22s, color 0.22s;
+}
+.nt-side-promo__cta:hover { background: var(--trad-green); color: var(--trad-cream); }
+
+@media (max-width: 900px) {
+	.nt-blog__wrap { grid-template-columns: 1fr; }
+	.nt-blog__side { position: static; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   12. LEGAL DOCUMENT   (components/legal-document.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-legal { padding: clamp(36px, 5vw, 72px) 0; }
+.nt-legal__wrap { max-width: 940px; }
+.nt-legal__head { margin-bottom: 32px; }
+.nt-legal__title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(2rem, 5vw, 3.1rem);
+	color: var(--trad-green);
+	margin: 14px 0 10px;
+}
+.nt-legal__updated {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	font-size: 0.74rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	margin: 0 0 14px;
+}
+.nt-legal__updated .nt-icon { color: var(--trad-gold); }
+.nt-legal__intro { font-size: 1.08rem; line-height: 1.75; color: var(--trad-ink); max-width: 66ch; margin: 0; }
+
+.nt-legal__body {
+	display: grid;
+	grid-template-columns: 250px minmax(0, 1fr);
+	gap: clamp(26px, 4vw, 54px);
+	align-items: start;
+}
+.nt-legal__toc {
+	position: sticky;
+	top: calc(var(--nt-nav-height) + 20px);
+	padding: 20px;
+	background-color: var(--trad-paper, var(--trad-cream));
+	background-image: var(--texture-paper);
+	border: 1.5px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+}
+.nt-legal__toc-title {
+	font-family: var(--nt-font-body);
+	font-size: 0.68rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	margin: 0 0 12px;
+}
+.nt-legal__toc-list { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.nt-legal__toc-list a {
+	font-size: 0.9rem;
+	line-height: 1.4;
+	color: var(--trad-ink);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+.nt-legal__toc-list a:hover { color: var(--trad-gold); }
+
+.nt-legal__clause { scroll-margin-top: calc(var(--nt-nav-height) + 24px); }
+.nt-legal__clause + .nt-legal__clause {
+	margin-top: 30px;
+	padding-top: 30px;
+	border-top: 1px dashed color-mix(in srgb, var(--trad-border) 60%, transparent);
+}
+.nt-legal__clause-title {
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.25rem, 2.4vw, 1.62rem);
+	color: var(--trad-green);
+	margin: 0 0 12px;
+}
+.nt-legal__clause-no {
+	font-family: var(--nt-font-body);
+	font-size: 0.8rem;
+	letter-spacing: 0.1em;
+	color: var(--trad-gold);
+	flex: 0 0 auto;
+}
+.nt-legal__text { font-size: 1rem; line-height: 1.78; color: var(--trad-ink); margin: 0 0 12px; }
+.nt-legal__points { margin: 0 0 12px; padding-left: 20px; display: grid; gap: 7px; }
+.nt-legal__points li { font-size: 0.98rem; line-height: 1.65; color: var(--trad-ink); }
+.nt-legal__contact { margin-top: 32px; }
+
+@media (max-width: 860px) {
+	.nt-legal__body { grid-template-columns: 1fr; }
+	.nt-legal__toc { position: static; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   13. COOKIE CONSENT   (built by assets/js/cookie-consent.js)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-consent {
+	position: fixed;
+	z-index: 1900;
+	left: clamp(12px, 3vw, 26px);
+	right: clamp(12px, 3vw, 26px);
+	bottom: clamp(12px, 3vw, 26px);
+	opacity: 0;
+	transform: translateY(22px);
+	transition: opacity 0.36s var(--nt-sec-ease), transform 0.36s var(--nt-sec-ease);
+}
+.nt-consent.is-in { opacity: 1; transform: none; }
+.nt-consent--corner { left: auto; max-width: 420px; }
+
+.nt-consent__paper {
+	display: flex;
+	align-items: center;
+	gap: clamp(14px, 2vw, 22px);
+	padding: clamp(16px, 2.2vw, 24px);
+	background-color: var(--trad-cream);
+	background-image: var(--texture-paper);
+	border: 2px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+	box-shadow: 0 22px 54px rgba(15, 28, 11, 0.3);
+	max-width: 1160px;
+	margin-inline: auto;
+}
+.nt-consent--corner .nt-consent__paper { flex-direction: column; align-items: flex-start; }
+
+.nt-consent__icon { flex: 0 0 auto; font-size: 1.7rem; color: var(--trad-gold); line-height: 1; }
+.nt-consent__copy { flex: 1 1 auto; min-width: 0; }
+.nt-consent__kicker {
+	display: block;
+	font-size: 0.64rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	margin-bottom: 4px;
+}
+.nt-consent__title {
+	font-family: var(--nt-font-display);
+	font-size: 1.16rem;
+	color: var(--trad-green);
+	margin: 0 0 4px;
+}
+.nt-consent__text { font-size: 0.93rem; line-height: 1.6; color: var(--trad-ink); margin: 0; }
+.nt-consent__policy { color: var(--trad-green); text-decoration: underline; text-underline-offset: 3px; }
+.nt-consent__policy:hover { color: var(--trad-gold); }
+
+.nt-consent__actions { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 9px; }
+.nt-consent__btn {
+	padding: 11px 20px;
+	border-radius: 8px;
+	border: 1.5px solid var(--trad-green);
+	font-family: var(--nt-font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: background-color 0.22s, color 0.22s, border-color 0.22s;
+}
+.nt-consent__btn--primary { background: var(--trad-green); color: var(--trad-cream); }
+.nt-consent__btn--primary:hover { background: var(--trad-gold); border-color: var(--trad-gold); color: var(--trad-green-dark); }
+.nt-consent__btn--ghost {
+	background: transparent;
+	color: var(--trad-green);
+	border-color: color-mix(in srgb, var(--trad-border) 90%, transparent);
+}
+.nt-consent__btn--ghost:hover { border-color: var(--trad-green); }
+
+/* Preferences panel rows */
+.nt-consent__list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 12px; text-align: left; }
+.nt-consent__row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 16px;
+	border: 1px solid var(--trad-border);
+	border-radius: 10px;
+	background: color-mix(in srgb, var(--trad-bg) 45%, transparent);
+}
+.nt-consent__row.is-locked { opacity: 0.86; }
+.nt-consent__row-copy { display: grid; gap: 3px; min-width: 0; }
+.nt-consent__row-label { font-family: var(--nt-font-display); font-size: 1.02rem; color: var(--trad-green); }
+.nt-consent__row-text { font-size: 0.86rem; line-height: 1.55; color: var(--trad-ink); }
+.nt-consent__always {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	flex: 0 0 auto;
+	font-size: 0.66rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-consent__always .nt-icon { color: var(--trad-gold); }
+
+/* The switch: a brass toggle rather than a default checkbox. */
+.nt-consent__switch { flex: 0 0 auto; position: relative; display: inline-flex; cursor: pointer; }
+.nt-consent__switch input {
+	position: absolute;
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	cursor: pointer;
+}
+.nt-consent__slider {
+	width: 50px;
+	height: 27px;
+	border-radius: 999px;
+	border: 1.5px solid var(--trad-border);
+	background: color-mix(in srgb, var(--trad-bg-alt) 80%, transparent);
+	position: relative;
+	transition: background-color 0.24s, border-color 0.24s;
+}
+.nt-consent__slider::after {
+	content: "";
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 19px;
+	height: 19px;
+	border-radius: 50%;
+	background: var(--trad-cream);
+	border: 1px solid var(--trad-border);
+	transition: transform 0.24s var(--nt-sec-ease);
+}
+.nt-consent__switch input:checked + .nt-consent__slider {
+	background: var(--trad-green);
+	border-color: var(--trad-green);
+}
+.nt-consent__switch input:checked + .nt-consent__slider::after {
+	transform: translateX(23px);
+	border-color: var(--trad-gold);
+}
+.nt-consent__switch input:focus-visible + .nt-consent__slider {
+	outline: 2px solid var(--trad-gold);
+	outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+	.nt-consent__paper { flex-direction: column; align-items: flex-start; }
+	.nt-consent__actions { width: 100%; }
+	.nt-consent__btn { flex: 1 1 auto; text-align: center; }
+	.nt-consent__row { flex-direction: row; align-items: flex-start; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   14. GROUND ART under the drifting leaves
+   The PNG is generated from the palette by tools/generate-backgrounds.php.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-leaves__ground {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: clamp(90px, 16vh, 190px);
+	background-repeat: repeat-x;
+	background-position: bottom center;
+	background-size: auto 100%;
+	opacity: 0.5;
+	pointer-events: none;
+}
+/* On a photo-backed poster header the art needs to sit lighter or it turns
+   the bottom of the image into a smudge. */
+.nt-page-header--poster .nt-leaves__ground { opacity: 0.32; }
+
+@media (max-width: 640px) {
+	.nt-leaves__ground { height: clamp(60px, 12vh, 110px); opacity: 0.38; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   15. SHARED MOBILE PASS
+   Everything above already carries its own breakpoints; these are the rules
+   that only make sense once, across the whole new section set.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+	:root { --nt-sec-pad: clamp(34px, 9vw, 56px); }
+
+	.nt-promo__grid,
+	.nt-quicklinks__grid,
+	.nt-infocards__grid { grid-template-columns: 1fr; }
+
+	.nt-quicklink,
+	.nt-promo__card { padding: 20px; }
+
+	/* Kickers stay legible: the wide desktop tracking becomes unreadable at
+	   small sizes on a narrow column. */
+	.nt-promo__tag,
+	.nt-infocard__label,
+	.nt-split__kicker,
+	.nt-story__chapter,
+	.nt-story__year { letter-spacing: 0.16em; }
+}
+
+/* Touch devices: hover lifts stick after a tap, so drop them entirely. */
+@media (hover: none) {
+	.nt-promo__card:hover,
+	.nt-quicklink:hover,
+	.nt-download:hover,
+	.nt-job__apply:hover { transform: none; }
+	.nt-split__row:hover .nt-split__figure img { transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   16. THE STAMP   (components/parts/stamp.php)
+   One ink stamp for the whole site. Everything is drawn from the palette, so
+   the same die works in ink green, gold or red without a second asset.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-stamp {
+	--nt-stamp-colour: var(--trad-green);
+	display: inline-block;
+	width: var(--nt-stamp-size, 168px);
+	height: var(--nt-stamp-size, 168px);
+	transform: rotate(var(--nt-stamp-tilt, -8deg));
+	/* A rubber stamp never prints solid - the pad leaves the ink patchy and
+	   the edges soft. The mask breaks the print up; the blur softens it. */
+	-webkit-mask-image: var(--texture-paper);
+	        mask-image: var(--texture-paper);
+	-webkit-mask-size: 180px 180px;
+	        mask-size: 180px 180px;
+	opacity: 0.92;
+	pointer-events: none;
+}
+.nt-stamp--gold { --nt-stamp-colour: var(--trad-gold); }
+.nt-stamp--red  { --nt-stamp-colour: color-mix(in srgb, var(--trad-ink) 42%, #8c2f21 58%); }
+
+.nt-stamp__svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+.nt-stamp__ring {
+	fill: none;
+	stroke: var(--nt-stamp-colour);
+	stroke-width: 5;
+}
+.nt-stamp__ring--thin { stroke-width: 1.6; }
+.nt-stamp__pip { fill: var(--nt-stamp-colour); }
+.nt-stamp__rule { stroke: var(--nt-stamp-colour); stroke-width: 1.6; }
+
+.nt-stamp__arc {
+	fill: var(--nt-stamp-colour);
+	font-family: var(--nt-font-body, Georgia, serif);
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: 3.4px;
+	text-transform: uppercase;
+}
+/* The lower ring runs along the INSIDE of its arc, so it needs pushing down
+   off the path or the letters sit on top of the line. */
+.nt-stamp__arc--bottom { dominant-baseline: hanging; }
+
+.nt-stamp__mid {
+	fill: var(--nt-stamp-colour);
+	font-family: var(--nt-font-display, Georgia, serif);
+	font-size: 25px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+.nt-stamp__mid--two { font-size: 20px; }
+
+.nt-stamp__small {
+	fill: var(--nt-stamp-colour);
+	font-family: var(--nt-font-body, Georgia, serif);
+	font-size: 11px;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+}
+
+/* The old franchise stamp was a background image on a fixed box - clear both
+   so the shared component is the only thing drawing anything there. */
+.nt-vintage-stamp {
+	background: none !important;
+	width: auto !important;
+	height: auto !important;
+	display: inline-block;
+}
+
+@media (max-width: 640px) {
+	.nt-stamp { width: min(var(--nt-stamp-size, 168px), 132px); height: min(var(--nt-stamp-size, 168px), 132px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   17. ARTICLE CARDS   (components/cards/post_card.php)
+   The card carried a fixed width from the old theme and sat in the corner of
+   its grid cell. It fills the cell now, and reads as a pressed-paper clipping.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-blog__grid .nt-card,
+.nt-grid .nt-card,
+.nt-card {
+	width: auto;
+	max-width: none;
+	min-width: 0;
+	display: flex;
+	background-color: var(--trad-paper, var(--trad-cream));
+	background-image: var(--texture-paper);
+	border: 1.5px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+	overflow: hidden;
+	transition: transform 0.3s var(--nt-sec-ease), box-shadow 0.3s, border-color 0.3s;
+}
+.nt-card:hover {
+	transform: translateY(-5px);
+	border-color: var(--trad-gold);
+	box-shadow: 0 18px 38px rgba(15, 28, 11, 0.16);
+}
+.nt-card-link {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	text-decoration: none;
+	color: inherit;
+}
+
+.nt-card-media {
+	position: relative;
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	background:
+		radial-gradient(120% 100% at 50% 0%,
+			color-mix(in srgb, var(--trad-gold) 16%, transparent),
+			transparent 70%),
+		var(--trad-bg-alt);
+	display: grid;
+	place-items: center;
+	border-bottom: 1px solid var(--trad-border);
+}
+.nt-card-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: sepia(0.34) saturate(0.92);
+	transition: transform 0.6s var(--nt-sec-ease), filter 0.4s;
+}
+.nt-card:hover .nt-card-img { transform: scale(1.05); filter: sepia(0.16) saturate(1); }
+
+/* No featured image: a drawn mark in the palette, not a stray emoji. */
+/* No featured image: fill the frame with a large drawn mark on a warmer
+   ground, so an unillustrated post looks intentional rather than broken. */
+.nt-card-media-empty {
+	font-size: clamp(3.6rem, 9vw, 5.2rem);
+	color: color-mix(in srgb, var(--trad-green) 26%, transparent);
+}
+.nt-card-media:has(.nt-card-media-empty) {
+	background:
+		repeating-linear-gradient(135deg,
+			transparent 0 12px,
+			color-mix(in srgb, var(--trad-border) 22%, transparent) 12px 13px),
+		var(--trad-bg-alt);
+}
+
+.nt-card-cat {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	padding: 5px 11px;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--trad-green-dark) 82%, transparent);
+	border: 1px solid color-mix(in srgb, var(--trad-gold) 55%, transparent);
+	color: var(--trad-cream);
+	font-size: 0.62rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.nt-card-body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: clamp(16px, 2vw, 22px);
+	flex: 1 1 auto;
+}
+.nt-card-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	margin: 0;
+	font-size: 0.68rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-card-meta__item { display: inline-flex; align-items: center; gap: 5px; }
+.nt-card-meta__item .nt-icon { color: var(--trad-gold); font-size: 0.9rem; }
+
+.nt-card-title {
+	font-family: var(--nt-font-display);
+	font-size: clamp(1.15rem, 2vw, 1.4rem);
+	line-height: 1.28;
+	color: var(--trad-green);
+	margin: 0;
+	transition: color 0.24s;
+}
+.nt-card:hover .nt-card-title { color: var(--trad-gold); }
+
+.nt-card-excerpt {
+	font-size: 0.94rem;
+	line-height: 1.62;
+	color: var(--trad-ink);
+	margin: 0;
+	flex: 1 1 auto;
+}
+.nt-card-more {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	margin-top: 4px;
+	font-size: 0.7rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--trad-green);
+	transition: gap 0.24s, color 0.24s;
+}
+.nt-card:hover .nt-card-more { gap: 12px; color: var(--trad-gold); }
+
+/* Compact variant for sidebars and related rows: photo beside the copy. */
+.nt-card--compact .nt-card-link { flex-direction: row; }
+.nt-card--compact .nt-card-media { flex: 0 0 110px; aspect-ratio: 1; border-bottom: 0; border-right: 1px solid var(--trad-border); }
+.nt-card--compact .nt-card-body { padding: 12px 14px; }
+.nt-card--compact .nt-card-excerpt { display: none; }
+
+@media (max-width: 560px) {
+	.nt-card--compact .nt-card-link { flex-direction: column; }
+	.nt-card--compact .nt-card-media { flex: none; aspect-ratio: 3 / 2; border-right: 0; border-bottom: 1px solid var(--trad-border); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   18. THE ARTICLE   (single.php)
+   Built around the measure. Everything else - meta, tags, share, next/prev -
+   hangs off that one column so the eye never has to re-find the line start.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-entry__wrap {
+	max-width: 44rem;              /* ~68 characters, the comfortable measure */
+	margin-inline: auto;
+	padding-block: clamp(28px, 4vw, 52px);
+}
+
+.nt-entry__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 20px;
+	margin: 14px 0 26px;
+	padding-bottom: 18px;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-border) 60%, transparent);
+	font-size: 0.72rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-entry__meta-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	text-decoration: none;
+	color: inherit;
+}
+.nt-entry__meta-item .nt-icon { color: var(--trad-gold); font-size: 0.95rem; }
+a.nt-entry__meta-item:hover { color: var(--trad-gold); }
+
+/* Body copy. Larger and looser than the rest of the site - a page of prose is
+   read, not scanned, and the theme's normal density is too tight for it. */
+.nt-entry-content {
+	font-size: 1.08rem;
+	line-height: 1.85;
+	color: var(--trad-ink);
+}
+.nt-entry-content > * + * { margin-top: 1.15em; }
+.nt-entry-content h2,
+.nt-entry-content h3 {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	line-height: 1.25;
+	margin-top: 1.8em;
+}
+.nt-entry-content h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+.nt-entry-content h3 { font-size: clamp(1.25rem, 2.4vw, 1.5rem); }
+
+/* The opening line gets a raised capital, the way a printed piece would. */
+.nt-entry-content > p:first-of-type::first-letter {
+	float: left;
+	font-family: var(--nt-font-display);
+	font-size: 3.4em;
+	line-height: 0.82;
+	padding: 0.06em 0.1em 0 0;
+	color: var(--trad-green);
+}
+
+.nt-entry-content a {
+	color: var(--trad-green);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--trad-gold) 70%, transparent);
+	text-underline-offset: 3px;
+}
+.nt-entry-content a:hover { color: var(--trad-gold); }
+
+.nt-entry-content blockquote {
+	margin: 1.8em 0;
+	padding: 18px 22px;
+	border-left: 3px solid var(--trad-gold);
+	background: color-mix(in srgb, var(--trad-gold) 7%, transparent);
+	font-family: var(--nt-font-display);
+	font-size: 1.22rem;
+	line-height: 1.6;
+	color: var(--trad-green);
+}
+.nt-entry-content img {
+	max-width: 100%;
+	height: auto;
+	border: 1px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+}
+.nt-entry-content ul,
+.nt-entry-content ol { padding-left: 1.3em; }
+.nt-entry-content li + li { margin-top: 0.45em; }
+.nt-entry-content hr {
+	border: 0;
+	height: 1px;
+	margin: 2.4em 0;
+	background: linear-gradient(90deg, transparent, var(--trad-border), transparent);
+}
+
+.nt-entry__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+
+.nt-entry__share {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin-top: 28px;
+	padding-top: 22px;
+	border-top: 1px solid color-mix(in srgb, var(--trad-border) 60%, transparent);
+}
+.nt-entry__share-label {
+	font-size: 0.68rem;
+	letter-spacing: var(--nt-tracking-kicker);
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	margin-right: 4px;
+}
+.nt-entry__share-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 9px 16px;
+	border: 1.5px solid var(--trad-border);
+	border-radius: 8px;
+	background: transparent;
+	color: var(--trad-green);
+	font-family: var(--nt-font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.nt-entry__share-btn:hover {
+	border-color: var(--trad-gold);
+	color: var(--trad-gold);
+	background: color-mix(in srgb, var(--trad-gold) 8%, transparent);
+}
+
+.nt-entry__nav {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 14px;
+	margin-top: 36px;
+}
+.nt-entry__nav-link {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px 18px;
+	background-color: var(--trad-paper, var(--trad-cream));
+	background-image: var(--texture-paper);
+	border: 1.5px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+	text-decoration: none;
+	transition: border-color 0.22s, transform 0.22s var(--nt-sec-ease);
+}
+.nt-entry__nav-link:hover { border-color: var(--trad-gold); transform: translateY(-3px); }
+.nt-entry__nav-link--next { text-align: right; justify-content: flex-end; }
+.nt-entry__nav-link .nt-icon { color: var(--trad-gold); font-size: 1.2rem; flex: 0 0 auto; }
+.nt-entry__nav-link small {
+	display: block;
+	font-size: 0.64rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	margin-bottom: 3px;
+}
+.nt-entry__nav-link strong {
+	display: block;
+	font-family: var(--nt-font-display);
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--trad-green);
+}
+
+.nt-related { padding: var(--nt-sec-pad) 0; }
+
+@media (max-width: 640px) {
+	.nt-entry__nav { grid-template-columns: 1fr; }
+	.nt-entry__nav-link--next { text-align: left; justify-content: flex-start; flex-direction: row-reverse; }
+	.nt-entry-content { font-size: 1.02rem; line-height: 1.78; }
+	.nt-entry-content > p:first-of-type::first-letter { font-size: 2.9em; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   19. COMMENTS   (comments.php)
+   A footnote to the article, not a second article - so it stays in the same
+   measure and stays quiet.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-comments { padding: 0 0 clamp(40px, 6vw, 80px); }
+.nt-comments__wrap {
+	max-width: 44rem;
+	margin-inline: auto;
+	padding-inline: clamp(14px, 3vw, 24px);
+}
+.nt-comments__title {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	font-family: var(--nt-font-display);
+	font-size: 1.24rem;
+	color: var(--trad-green);
+	margin: 0 0 20px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-border) 60%, transparent);
+}
+.nt-comments__title .nt-icon { color: var(--trad-gold); }
+.nt-comments__title--form { margin-top: 34px; }
+
+.nt-comments__list { list-style: none; margin: 0 0 10px; padding: 0; }
+.nt-comments__list .comment,
+.nt-comments__list .pingback { list-style: none; }
+.nt-comments__list .children { list-style: none; margin: 14px 0 0 clamp(14px, 4vw, 38px); padding: 0; }
+
+.nt-comments__list article,
+.nt-comments__list .comment-body {
+	padding: 16px 18px;
+	margin-bottom: 12px;
+	background-color: var(--trad-paper, var(--trad-cream));
+	background-image: var(--texture-paper);
+	border: 1px solid var(--trad-border);
+	border-radius: var(--nt-sec-radius);
+}
+.nt-comments__list .comment-author {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	font-size: 1rem;
+}
+.nt-comments__list .comment-author img {
+	border-radius: 50%;
+	border: 1px solid var(--trad-border);
+	filter: sepia(0.35);
+}
+.nt-comments__list .comment-metadata,
+.nt-comments__list .comment-metadata a {
+	font-size: 0.68rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--trad-ink-soft, var(--trad-ink));
+	text-decoration: none;
+}
+.nt-comments__list .comment-content { font-size: 0.98rem; line-height: 1.7; color: var(--trad-ink); }
+.nt-comments__list .reply a {
+	display: inline-block;
+	margin-top: 6px;
+	font-size: 0.68rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--trad-green);
+	text-decoration: none;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-gold) 60%, transparent);
+}
+.nt-comments__list .reply a:hover { color: var(--trad-gold); }
+
+.nt-comments__form .nt-form-group { margin-bottom: 14px; }
+.nt-comments__form .comment-notes,
+.nt-comments__form .comment-form-cookies-consent {
+	font-size: 0.84rem;
+	color: var(--trad-ink-soft, var(--trad-ink));
+}
+.nt-comments__form .comment-form-cookies-consent {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   20. THE CONSENT BANNER ON A PHONE
+   ---------------------------------------------------------------------------
+   At 430px the three buttons stayed on one row and the last one ran off the
+   right edge, so "Accept all" - the one most people want - was the one they
+   could not reach.
+
+   Below 560px it becomes a bottom sheet: full width, buttons stacked with the
+   primary action on top and closest to the thumb, and the copy clamped to
+   three lines so the banner never takes over the screen.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 560px) {
+	.nt-consent,
+	.nt-consent--corner {
+		left: 0;
+		right: 0;
+		bottom: 0;
+		max-width: none;
+	}
+	.nt-consent__paper {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 12px;
+		padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+		border-radius: 16px 16px 0 0;
+		border-bottom: 0;
+	}
+	.nt-consent__icon { display: none; }
+
+	/* Enough to make the decision, not the whole policy - the full text is one
+	   tap away behind the policy link that stays in place. */
+	.nt-consent__text {
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		font-size: 0.88rem;
+	}
+
+	.nt-consent__actions {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 8px;
+		width: 100%;
+	}
+	/* Accept spans the row and sits on top: the common answer, under the thumb. */
+	.nt-consent__btn--primary { grid-column: 1 / -1; order: -1; }
+	.nt-consent__btn { width: 100%; padding: 13px 12px; }
+
+	.nt-consent__row { flex-direction: column; align-items: flex-start; gap: 10px; }
+	.nt-consent__switch { align-self: flex-end; margin-top: -34px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   21. VINTAGE DENSITY PASS   (deliberately last - it tightens what came above)
+   ---------------------------------------------------------------------------
+   Two faults, seen on the live site rather than in the code:
+
+   1. TOO MUCH AIR. Bands were 80-96px top and bottom, cards had 32px of
+      padding, and every section header added another 40px underneath. Three
+      generous spacings stacked at every seam, so a page of five sections spent
+      more height on nothing than on content.
+
+   2. IT DID NOT READ AS VINTAGE. Generous whitespace with a floating card grid
+      is the language of a modern marketing page - putting it in sepia does not
+      change that. Old printed matter is DENSE and RULED: narrow gutters, hair
+      rules between everything, small caps sitting on a line, and ornaments in
+      the gaps instead of empty space.
+
+   So: pull the spacing in hard, and spend what is left on rules and ornament.
+   Nothing here changes structure - it is padding, borders and type.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+	/* One rhythm for the whole site instead of a number per section. */
+	--nt-band-pad: clamp(30px, 3.6vw, 58px);
+	--nt-sec-pad:  clamp(30px, 3.6vw, 58px);
+	--nt-sec-gap:  clamp(14px, 1.5vw, 22px);
+
+	/* A hair rule, the workhorse of a printed page. */
+	--nt-rule: 1px solid color-mix(in srgb, var(--trad-border) 62%, transparent);
+	--nt-rule-strong: 1px solid color-mix(in srgb, var(--trad-border) 95%, transparent);
+}
+
+/* ── The bands ────────────────────────────────────────────────────────────
+   Every section that was hard-coded at 80px comes back to the shared token.
+   Listed explicitly rather than with a wildcard so a full-bleed hero, the
+   stats band and the page header keep the height they were designed with. */
+body.design-traditional :is(
+	.nt-promo, .nt-quicklinks, .nt-infocards, .nt-downloads, .nt-tabs,
+	.nt-careers, .nt-split, .nt-map, .nt-story, .nt-related, .nt-logos,
+	.nt-reviews, .nt-faqs, .nt-flavours, .nt-bottles, .nt-locations,
+	.nt-milestones, .nt-values, .nt-team, .nt-process, .nt-newsletter,
+	.nt-gallery-hanging, .nt-franchise-why, .nt-otd-section,
+	.nt-events-preview-section
+) {
+	padding-block: var(--nt-band-pad);
+}
+
+/* ── Section headers ──────────────────────────────────────────────────────
+   Were: kicker, 40px, title, 14px rule, 40px, content. Now the header is one
+   tight unit and the rule under it doubles as the separator, which is how a
+   printed page does it - the line IS the spacing. */
+body.design-traditional .nt-section-center {
+	margin-bottom: clamp(20px, 2.4vw, 34px);
+	padding-bottom: clamp(12px, 1.4vw, 18px);
+	position: relative;
+}
+body.design-traditional .nt-section-center .nt-section-tag,
+body.design-traditional .nt-section-center .section-tag {
+	margin-bottom: 6px;
+	font-size: 0.64rem;
+	letter-spacing: var(--nt-tracking-kicker);
+}
+body.design-traditional .nt-section-center .section-title,
+body.design-traditional .nt-section-center h2 {
+	margin: 0 0 8px;
+	line-height: 1.12;
+}
+body.design-traditional .nt-section-center .section-body {
+	margin: 0 auto;
+	max-width: 58ch;
+	line-height: 1.6;
+}
+
+/* The double rule under a heading: a long hair line with a short heavy one
+   centred over it, and a lozenge where they cross. Printers set headings
+   this way for four hundred years; it costs no vertical space because it
+   sits inside the padding the header already has. */
+body.design-traditional .nt-section-center::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	transform: translateX(-50%);
+	width: min(320px, 60%);
+	height: 3px;
+	background:
+		linear-gradient(90deg, transparent, var(--trad-border) 18%, var(--trad-border) 82%, transparent) 0 0 / 100% 1px no-repeat,
+		linear-gradient(90deg, var(--trad-gold), var(--trad-gold)) 50% 2px / 64px 1px no-repeat;
+}
+
+/* ── Cards: less padding, more frame ──────────────────────────────────────
+   The card was 32px of padding around the copy. Half that, and give the
+   saved space to a proper double border - the frame is what makes a block
+   read as printed rather than as a floating tile. */
+body.design-traditional :is(.nt-promo__card, .nt-quicklink, .nt-infocard) {
+	padding: clamp(16px, 1.6vw, 22px);
+	border-radius: 3px;                 /* printed blocks are square-cut */
+	box-shadow: 0 0 0 1px color-mix(in srgb, var(--trad-border) 34%, transparent);
+}
+body.design-traditional :is(.nt-promo__card, .nt-quicklink, .nt-infocard)::before {
+	content: "";
+	position: absolute;
+	inset: 4px;
+	border: var(--nt-rule);
+	pointer-events: none;
+	opacity: 0.5;
+}
+body.design-traditional :is(.nt-promo__card, .nt-quicklink) { position: relative; }
+
+/* Hover lifts belong to a modern card. A printed block does not float - it
+   darkens its rule and warms its paper, which is what ink does. */
+body.design-traditional :is(.nt-promo__card, .nt-quicklink):hover {
+	transform: none;
+	box-shadow: 0 0 0 1px var(--trad-gold);
+	background-color: color-mix(in srgb, var(--trad-paper) 92%, var(--trad-gold) 8%);
+}
+body.design-traditional .nt-quicklink:hover { border-color: var(--trad-gold); }
+
+/* ── Split rows: ruled, not spaced ────────────────────────────────────────
+   The rows were separated by ~90px of nothing. A rule and a third of the gap
+   separates them better, and looks like a page rather than a slide deck. */
+body.design-traditional .nt-split__row {
+	padding-block: clamp(20px, 2.4vw, 32px);
+	gap: clamp(20px, 3vw, 44px);
+	align-items: start;
+}
+body.design-traditional .nt-split__row + .nt-split__row { border-top: var(--nt-rule); }
+body.design-traditional .nt-split__title { margin-bottom: 8px; }
+body.design-traditional .nt-split__text { margin-bottom: 8px; line-height: 1.65; }
+body.design-traditional .nt-split__kicker { margin-bottom: 6px; }
+body.design-traditional .nt-split__points { margin-bottom: 10px; gap: 5px; }
+
+/* Photographs: deeper sepia and an aged mount, so they sit ON the page
+   instead of hovering above it. */
+body.design-traditional :is(.nt-split__figure, .nt-tabs__figure, .nt-story__photo) {
+	border-radius: 2px;
+	box-shadow:
+		0 0 0 6px var(--trad-paper, var(--trad-cream)),
+		0 0 0 7px var(--trad-border),
+		0 10px 22px rgba(15, 28, 11, 0.16);
+}
+body.design-traditional :is(.nt-split__figure, .nt-tabs__figure) img {
+	filter: sepia(0.46) saturate(0.82) contrast(1.04) brightness(0.98);
+}
+
+/* ── Lists and copy ───────────────────────────────────────────────────────
+   Tighter leading, and the tick list set on rules like a printed schedule. */
+body.design-traditional :is(.nt-split__points, .nt-tabs__points) li {
+	padding-block: 5px;
+	border-bottom: 1px dotted color-mix(in srgb, var(--trad-border) 55%, transparent);
+}
+body.design-traditional :is(.nt-split__points, .nt-tabs__points) li:last-child { border-bottom: 0; }
+
+/* ── Grids ────────────────────────────────────────────────────────────────
+   Narrower gutters, and the columns ruled apart the way a broadsheet is. */
+body.design-traditional :is(.nt-promo__grid, .nt-quicklinks__grid, .nt-infocards__grid) {
+	gap: var(--nt-sec-gap);
+}
+
+/* ── The container frame ──────────────────────────────────────────────────
+   The ornate framing in vintage.css pads its parchment cards generously.
+   Bring that in too, or the frame and the band double up. */
+body.design-traditional :is(
+	.nt-bottles, .nt-flavours, .nt-reviews, .nt-gallery-hanging,
+	.nt-franchise-why, .nt-events-preview-section, .nt-otd-section
+) > :is(.container, .nt-container) {
+	padding: clamp(22px, 2.6vw, 36px) clamp(16px, 2.4vw, 30px);
+}
+body.design-traditional .nt-faqs > .nt-container {
+	padding: clamp(22px, 2.6vw, 36px) clamp(16px, 2.4vw, 30px);
+}
+
+/* ── Small caps everywhere a label appears ────────────────────────────────
+   One tracking value, one weight. Mixed tracking is the fastest way to lose
+   a period look. */
+body.design-traditional :is(
+	.nt-promo__tag, .nt-infocard__label, .nt-split__kicker, .nt-story__chapter,
+	.nt-story__year, .nt-card-meta, .nt-download__meta, .nt-job__chip,
+	.nt-entry__meta, .nt-crumbs__item, .nt-section-tag
+) {
+	font-family: var(--nt-font-body);
+	font-weight: 600;
+}
+
+@media (max-width: 640px) {
+	:root { --nt-band-pad: clamp(24px, 6vw, 38px); }
+
+	body.design-traditional .nt-section-center { margin-bottom: 18px; }
+	body.design-traditional .nt-split__row { padding-block: 18px; }
+	/* The photo mount is expensive at this width - keep the rule, drop the mat. */
+	body.design-traditional :is(.nt-split__figure, .nt-tabs__figure, .nt-story__photo) {
+		box-shadow: 0 0 0 3px var(--trad-paper, var(--trad-cream)), 0 0 0 4px var(--trad-border);
+	}
+}
+
+/* ── The seam between two bands ───────────────────────────────────────────
+   Each band pads itself top AND bottom, so at every join the two paddings
+   add up: two 52px bands meeting produced 104px of empty parchment, plus
+   whatever the last row inside the first one contributed. That single seam
+   was the biggest source of the wasted height.
+
+   Fix: the band above gives up its bottom padding when another band follows
+   it, and the join is marked with a hair rule instead. One padding, one line
+   - which is how a printed page separates two blocks. A band with its own
+   background (the dark and soft variants, the stats bar) keeps its bottom
+   padding, because there the padding is holding a colour, not just air. */
+
+body.design-traditional :is(
+	.nt-promo, .nt-quicklinks, .nt-infocards, .nt-downloads, .nt-tabs,
+	.nt-careers, .nt-split, .nt-map, .nt-story, .nt-related, .nt-logos
+):not(.nt-variant--dark *):has(+ *) {
+	padding-bottom: 0;
+}
+
+/* The rule that replaces it. Inset from the page edge so it reads as a
+   printer's rule rather than a full-bleed divider. */
+body.design-traditional :is(
+	.nt-promo, .nt-quicklinks, .nt-infocards, .nt-downloads, .nt-tabs,
+	.nt-careers, .nt-split, .nt-map, .nt-story, .nt-related, .nt-logos
+) + :is(
+	.nt-promo, .nt-quicklinks, .nt-infocards, .nt-downloads, .nt-tabs,
+	.nt-careers, .nt-split, .nt-map, .nt-story, .nt-related, .nt-logos
+)::before {
+	content: "";
+	display: block;
+	width: min(1160px, 88%);
+	height: 1px;
+	margin: 0 auto var(--nt-band-pad);
+	background: linear-gradient(90deg,
+		transparent,
+		color-mix(in srgb, var(--trad-border) 85%, transparent) 15%,
+		color-mix(in srgb, var(--trad-border) 85%, transparent) 85%,
+		transparent);
+}
+
+/* The last row inside a band should not add its own bottom padding on top of
+   the band's - that was the third spacing in the stack. */
+body.design-traditional .nt-split__row:last-child { padding-bottom: 0; }
+body.design-traditional .nt-split__row:first-child { padding-top: 0; }
+
+/* A variant wrapper is a plain div around the section, so the :has() rule
+   above cannot see through it. Give the wrapper the same treatment. */
+body.design-traditional .nt-variant:has(+ .nt-variant) > section:not([class*="--dark"]) {
+	padding-bottom: 0;
+}

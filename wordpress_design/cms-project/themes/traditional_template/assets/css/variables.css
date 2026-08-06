@@ -1,32 +1,57 @@
-/* ─── Authentic Vintage Core Variables ─── */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&display=swap');
+/* ─── Authentic Vintage Core Variables ─────────────────────────────────────
+   THE ONLY place colours and faces are defined. Everything else in the theme
+   references these tokens, so re-skinning to another brand or another trade
+   is an edit to this file alone - never a hunt through component CSS.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* Faces, in one request.
+   Cormorant Garamond is the display face: an old-style garamond with the tall
+   ascenders and fine hairlines that carry the "printed a long time ago" look
+   the reference sets its headlines in. EB Garamond runs the body text at
+   reading size, where Cormorant's thin strokes would fall apart. Dancing
+   Script stays for the handwritten accent word, Luckiest Guy for chunky
+   signage. Lora is kept as a body fallback for anything still asking for it. */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&display=swap');
 
 :root {
-	/* ─── Typography ─── */
-	--nt-font-body: 'Lora', Georgia, serif;
-	--nt-font-display: 'Playfair Display', Georgia, serif;
+	/* ─── Typography ───
+	   Display and body are deliberately DIFFERENT garamonds. Same family for
+	   both makes long pages read flat; a high-contrast display face over a
+	   sturdier text face is what gives the reference its printed feel. */
+	--nt-font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+	--nt-font-body: 'EB Garamond', 'Lora', Georgia, serif;
 	--nt-font-accent: 'Dancing Script', cursive;
 	--nt-font-chunky: 'Luckiest Guy', sans-serif;
+
+	/* Small-caps kickers ("SINCE 1912") are set wide - the letterspacing is a
+	   token because every kicker in the theme has to agree on it. */
+	--nt-tracking-kicker: 0.28em;
+	--nt-tracking-nav: 0.18em;
 
 	/* ─── Navigation ─── */
 	--nt-nav-height: 82px;
 
-	/* ─── Tactile Vintage Palette ─── */
-	--trad-bg: #ecd7aa; /* Deeper parchment paper */
-	--trad-bg-alt: #e3cc9e;
-	--trad-green: #183e16; /* Deep vintage ink green matching screenshot */
+	/* ─── Tactile Vintage Palette ───
+	   Warmed and lightened toward the reference: the paper is closer to a real
+	   aged sheet than to card, and the ink is a warm sepia-brown rather than a
+	   flat near-black. The greens and gold are unchanged, so every existing
+	   component keeps its accents. */
+	--trad-bg: #efe6d3;         /* Aged paper - lighter and airier than before */
+	--trad-bg-alt: #e6d9be;     /* The shaded/alternate band */
+	--trad-paper: #f6f0e2;      /* The lightest sheet, for cards on the page */
+	--trad-green: #183e16;      /* Deep vintage ink green */
 	--trad-green-dark: #0f1c0b;
-	--trad-gold: #c3a135; /* Brighter yellow-gold matching screenshot */
+	--trad-gold: #c3a135;       /* Brighter yellow-gold */
 	--trad-cream: #fdfbf7;
-	--trad-ink: #2b2b2b;
-	--trad-border: #bda26f;
-	
+	--trad-ink: #4a3a2a;        /* Warm sepia-brown body ink, not near-black */
+	--trad-ink-soft: #6b5540;   /* Secondary text */
+	--trad-border: #c8b48a;     /* Hairline rules and card edges */
+
 	/* ─── Textures & Shadows ─── */
 	/* Parchment texture overlay - stronger fiber noise */
 	--texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.12"/></svg>');
-	
-	
-	--shadow-soft: 0 4px 15px rgba(26,54,20,0.15);
+
+	--shadow-soft: 0 4px 15px rgba(26, 54, 20, 0.15);
 }
 
 body.design-traditional {

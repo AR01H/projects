@@ -29,10 +29,18 @@ You almost never need to touch PHP. All user-facing copy lives in
 | Header button ("BOOK US / YOUR EVENT") | `admin/data/nav.json` → `cta` |
 | Footer links, products, socials, brand tagline | `admin/data/footer.json` |
 | Footer column headings, "Connect:", copyright | `admin/data/footer.json` → `labels` |
-| Floating toolbar buttons, screen-reader labels | `admin/data/ui.json` |
+| **Every shared button/aria label** (OK, Cancel, Read more, Copied…) | `admin/data/ui.json` → `labels` / `aria` |
+| Floating toolbar buttons | `admin/data/ui.json` → `floating_toolbar` |
 | "Our Story" section (heading, body, stamp, button) | `admin/data/about.json` |
 | Which sections appear on a page, and in what order | `admin/data/page_sections.json` |
 | Whether a section shows at all | `admin/data/sections.json` |
+| **A message reused in several places** ("Read the blog…") | `admin/data/blocks.json` |
+| **Popups / dialogs** | `admin/data/dialogs.json` |
+| **The announcement strip** | `admin/data/site_notices.json` |
+| **Cookie banner text, categories, re-ask versions** | `admin/data/cookies.json` |
+| Breadcrumb wording and nesting | `admin/data/breadcrumbs.json` |
+| Policy pages (privacy / cookies / terms) | `admin/data/legal_*.json` + `legal.json` |
+| Drifting leaves and the ground artwork | `admin/data/decor.json` → `leaves` |
 | Brand name / phone / email | `config/theme.php` (`NT_BRAND_*`) |
 
 Everything else follows the same rule: a component named
@@ -240,7 +248,40 @@ later via the `nt_data_my-thing` filter when a real source arrives.
 ### Add a component
 Create `components/cards/team_card.php`, render with
 `nt_component( 'cards/team_card', array( 'member' => $row ) )` - context keys
-become local variables. Style it in `assets/css/components.css`.
+become local variables. Style it in `assets/css/sections.css`.
+
+### Add a dialog
+1. `admin/data/dialogs.json` - one entry (title, tone, body, optional `form`
+   naming any `admin/data/form_*.json`, optional `actions`).
+2. Open it from anywhere:
+   ```php
+   <button <?php nt_dialog_trigger( 'brochure' ); ?>>Get the brochure</button>
+   ```
+
+There is **no step three, and no markup to write**. The trigger queues the
+dialog, PHP ships its data as `window.ntUi.dialogs`, and `assets/js/ui-kit.js`
+builds it the first time it is opened - so a page that never mentions it
+carries none of its weight. The same object shape works from JS:
+`NT.dialog.show({ … })`, `NT.alert()`, `NT.confirm()`, `NT.toast()`.
+
+### Reuse one message in several places
+Put it in `admin/data/blocks.json` under a key, then name that key wherever it
+is wanted (`promo-block`, `quick-links`, the blog sidebar). Editing the entry
+updates every placement at once. See `COMPONENTS.md` §2b.
+
+---
+
+## 3b. Where things are rendered
+
+| Kind | Rendered by | Why |
+|---|---|---|
+| Page sections, articles, inline alerts | **PHP** | It is content: it has to exist for a crawler and without JS |
+| Dialogs, notice strip, cookie banner, toasts | **the browser**, from data PHP ships | Overlay chrome cannot work without JS anyway, and a dialog nobody opens should cost nothing |
+
+The dividing line: **overlay chrome is built in the browser, page content is
+rendered on the server.** `src/README.md` gives the reasoning; the PHP classes
+and the JS classes mirror each other, so there is one mental model rather than
+two renderers to keep in step by hand.
 
 ---
 

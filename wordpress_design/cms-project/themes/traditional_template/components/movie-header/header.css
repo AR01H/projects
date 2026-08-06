@@ -103,12 +103,19 @@
 
 .nt-mh__stage {
 	position: relative;
+	/* border-box, explicitly. This element is width:100% AND padded, so under
+	   content-box its border box came out 100% + 2x padding - wider than the
+	   viewport. Everything inside inherits that extra width, which is why the
+	   board ran off the right edge on a phone and the headline lost its last
+	   letter. */
+	box-sizing: border-box;
 	width: 100%;
 	max-width: var(--board-max);
 	margin-inline: auto;
 	padding-inline: clamp(12px, 2vw, 26px);
 	text-align: center;
 }
+.nt-mh, .nt-mh *, .nt-mh *::before, .nt-mh *::after { box-sizing: border-box; }
 
 /* ══════════════════════════════════════════════════════════════════════════
    KICKER  - the small credit line above the board
@@ -380,17 +387,40 @@
 .nt-mh__g4 { stop-color: var(--gold-4); }
 .nt-mh__g5 { stop-color: #55350f; }
 
+/* THE HEADLINE FACE.
+   Was Dancing Script - a casual handwriting face - carved 17px deep. At the
+   size a page title runs, that combination read as a fairground sign rather
+   than a hand-painted one: the script's thick joins filled in, and the deep
+   extrusion turned every letter into a slab.
+
+   A signwriter letters a board like this in wide serif capitals, and so does
+   the reference. The face is the theme's display serif (Cormorant Garamond
+   via --nt-font-display), set in caps with generous tracking, and the carve
+   is shallow - engraved into the timber, not moulded on top of it.
+
+   Both are variables, so a site that DOES want the script look sets
+   --title-face: var(--nt-font-accent) and --type-cut-width: 17px in its
+   page_headers.json style block and gets the old treatment back. */
+.nt-mh {
+	--title-face: var(--nt-font-display, 'Cormorant Garamond', Georgia, serif);
+	--title-weight: 600;
+	--title-tracking: 0.06em;
+	--title-case: uppercase;
+	--type-cut-width: 7px;
+}
+
 .nt-mh__type text {
-	/* Curved script face. The theme already loads Dancing Script as
-	   --nt-font-accent, so this costs no extra webfont request. */
-	font-family: var(--nt-font-accent, 'Dancing Script'), 'Noto Sans Telugu', cursive;
-	font-weight: 700;
+	font-family: var(--title-face), 'Noto Sans Telugu', serif;
+	font-weight: var(--title-weight);
+	letter-spacing: var(--title-tracking);
+	text-transform: var(--title-case);
 }
 
 /* The extruded side wall. Stroked as well as filled so each stepped copy is
-   fractionally fatter than the face and reads as a wall, not a blur. */
+   fractionally fatter than the face and reads as a wall, not a blur. Shallow
+   by default - see the note above. */
 .nt-mh__type-cut {
-	stroke-width: 17px;
+	stroke-width: var(--type-cut-width);
 	stroke-linejoin: round;
 	paint-order: stroke fill;
 }
@@ -590,3 +620,204 @@
 	.nt-mh__kicker,
 	.nt-mh__ribbon { color: #000; text-shadow: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CANE-WORK BANNER  (deliberately the last block - it re-dresses the board)
+   --------------------------------------------------------------------------
+   The board above is a generic carved sign. This layer gives it the trade it
+   belongs to: a mill board bound to cut cane, in molasses timber, with the
+   fibre of the stalk running through the grain and twine holding it together.
+
+   Nothing new is added to the markup - every element used here already
+   exists (.nt-mh__frame, __panel, __grain, __rivets, __orn, __medal). That
+   keeps the treatment removable: delete this block and the plain board comes
+   straight back.
+
+   Turn it off for one page from page_headers.json:
+     "style": { "cane_work": 0 }   ->  --cane-work: 0
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.nt-mh {
+	--cane-work: 1;
+
+	/* Molasses and jaggery - the colours of boiled cane sugar, which is what
+	   this trade actually looks like. Warmer and redder than plain timber. */
+	--cane-dark:  #2f1a0c;
+	--cane-mid:   #58300f;
+	--cane-warm:  #7d4a16;
+	--cane-light: #a9702c;
+	--cane-husk:  #c9a86a;
+	--twine:      #b99a63;
+}
+
+/* ── 1. The frame becomes bound cane, not cut stone ───────────────────────
+   Two vertical stalks down the sides with their joint rings, and the frame
+   colour warmed from grey stone to dry husk. The rings are a repeating
+   gradient rather than elements, so the count follows the board height. */
+.nt-mh__frame {
+	background:
+		/* left stalk */
+		linear-gradient(90deg,
+			var(--cane-husk) 0%,
+			color-mix(in srgb, var(--cane-husk) 78%, var(--cane-dark)) 40%,
+			var(--cane-husk) 100%) left / var(--frame-w) 100% no-repeat,
+		/* right stalk */
+		linear-gradient(90deg,
+			var(--cane-husk) 0%,
+			color-mix(in srgb, var(--cane-husk) 78%, var(--cane-dark)) 40%,
+			var(--cane-husk) 100%) right / var(--frame-w) 100% no-repeat,
+		/* joint rings, banded down both stalks */
+		repeating-linear-gradient(180deg,
+			transparent 0 26px,
+			color-mix(in srgb, var(--cane-dark) 42%, transparent) 26px 29px) left / var(--frame-w) 100% no-repeat,
+		repeating-linear-gradient(180deg,
+			transparent 0 26px,
+			color-mix(in srgb, var(--cane-dark) 42%, transparent) 26px 29px) right / var(--frame-w) 100% no-repeat,
+		/* the rest of the frame, kept as before but warmed */
+		linear-gradient(180deg, var(--stone-light) 0%, var(--stone) 46%, var(--stone-shade) 100%);
+}
+
+/* ── 2. Cane fibre through the timber ─────────────────────────────────────
+   Real cane splits along the stalk, so the grain runs in long vertical
+   threads with the horizontal saw-lines of the milled board crossing them. */
+.nt-mh__grain {
+	background-image:
+		repeating-linear-gradient(90deg,
+			transparent 0 3px,
+			color-mix(in srgb, var(--cane-dark) 26%, transparent) 3px 4px,
+			transparent 4px 9px),
+		repeating-linear-gradient(90deg,
+			transparent 0 17px,
+			color-mix(in srgb, var(--cane-light) 20%, transparent) 17px 18px),
+		repeating-linear-gradient(180deg,
+			transparent 0 22px,
+			color-mix(in srgb, var(--cane-dark) 20%, transparent) 22px 23px);
+}
+
+/* ── 3. Molasses timber ──────────────────────────────────────────────────── */
+.nt-mh__panel {
+	background:
+		radial-gradient(120% 90% at 50% 8%,
+			color-mix(in srgb, var(--cane-light) 55%, transparent) 0%,
+			transparent 62%),
+		linear-gradient(180deg,
+			var(--cane-warm) 0%,
+			var(--cane-mid) 38%,
+			var(--cane-dark) 100%);
+}
+
+/* ── 4. Twine, not rivets ─────────────────────────────────────────────────
+   The four studs become wraps of binding twine at the corners - the way a
+   board is actually lashed to a pole on a working stall. */
+.nt-mh__rivets {
+	background:
+		repeating-linear-gradient(52deg,
+			var(--twine) 0 3px,
+			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 4% 16% / 30px 20px no-repeat,
+		repeating-linear-gradient(-52deg,
+			var(--twine) 0 3px,
+			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 96% 16% / 30px 20px no-repeat,
+		repeating-linear-gradient(-52deg,
+			var(--twine) 0 3px,
+			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 4% 84% / 30px 20px no-repeat,
+		repeating-linear-gradient(52deg,
+			var(--twine) 0 3px,
+			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 96% 84% / 30px 20px no-repeat;
+	filter: drop-shadow(0 1px 2px rgba(24, 13, 5, 0.55));
+}
+
+/* ── 5. The medallion reads as the mill wheel it already resembles ─────────
+   TWO WRONG ELEMENTS BEFORE THIS ONE. A box-shadow on .nt-mh__medal drew a
+   SQUARE frame (it is a square positioning box), and moving it to ::before
+   drew a circle twice the badge's size - because ::before is the warm bloom
+   at inset:-46%, not the badge face.
+
+   drop-shadow is the right tool: it follows the SVG's own alpha, so the ring
+   traces the badge itself whatever shape or size it is. */
+.nt-mh__medal {
+	filter:
+		drop-shadow(0 0 1.5px color-mix(in srgb, var(--cane-dark) 75%, transparent))
+		drop-shadow(0 6px 12px rgba(20, 10, 5, 0.6));
+}
+
+/* ── 6. Side artwork sits IN the scene rather than beside it ──────────────
+   The cane illustrations were floating clear of the board; dropping them and
+   tucking them behind its edge makes the board look propped among the crop. */
+.nt-mh__orn {
+	align-self: flex-end;
+	margin-bottom: -2%;
+	filter: sepia(0.35) saturate(0.85) drop-shadow(0 6px 10px rgba(24, 13, 5, 0.3));
+	opacity: 0.95;
+}
+
+/* ── 7. Kicker, in the small caps the rest of the theme uses ─────────────── */
+.nt-mh__kicker {
+	font-family: var(--nt-font-body, Georgia, serif);
+	letter-spacing: var(--nt-tracking-kicker, 0.28em);
+	color: color-mix(in srgb, var(--trad-ink, #4a3a2a) 78%, transparent);
+}
+
+/* Opt out per page: "style": { "cane_work": 0 } in page_headers.json. */
+.nt-mh[style*="--cane-work: 0"] .nt-mh__frame,
+.nt-mh[style*="--cane-work:0"] .nt-mh__frame {
+	background: linear-gradient(180deg, var(--stone-light) 0%, var(--stone) 46%, var(--stone-shade) 100%);
+}
+
+@media (max-width: 640px) {
+	/* The twine wraps are unreadable at this size and just add noise. */
+	.nt-mh__rivets { display: none; }
+	.nt-mh__grain { background-size: 60% auto; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THE BOARD ON A PHONE
+   --------------------------------------------------------------------------
+   The board is tuned for a wide screen: a tall plank, thick frame, and a side
+   ornament at each end that claims --orn-size and only pulls a third of it
+   back. On a narrow screen that leaves the timber itself almost no width, and
+   the headline has to shrink to nothing to fit inside it.
+
+   Below 720px the ornaments go (they are decoration, and there is no room for
+   them), the frame thins, the board is allowed to be shorter, and the
+   headline gets tighter tracking and a shallower carve so it can be set
+   larger in the space that is left.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 720px) {
+	.nt-mh {
+		--board-h: clamp(150px, 40vw, 210px);
+		--frame-w: 9px;
+		padding: 6px 0 18px;
+	}
+	.nt-mh__stage { padding-inline: 10px; }
+
+	/* Decoration with nowhere to go. Hiding them is what gives the board its
+	   width back - each one was taking two thirds of --orn-size off it. */
+	.nt-mh__orn { display: none; }
+
+	/* Belt and braces on a shape this decorative: the board is masked, the
+	   ornaments use negative margins and the headline SVG is overflow:visible,
+	   so pin the whole assembly to the viewport rather than trusting every
+	   ancestor to be exactly the right width. */
+	.nt-mh { max-width: 100vw; overflow-x: clip; }
+	.nt-mh__stage { max-width: 100vw; }
+	.nt-mh__rig,
+	.nt-mh__board { width: 100%; max-width: calc(100vw - 20px); }
+
+	/* The headline is SVG with a fixed viewBox, so it scales with the box.
+	   Letting it use the full width, with a little less tracking, is what
+	   brings the first and last letters back inside the frame. */
+	.nt-mh__title { padding-inline: 6px; }
+	.nt-mh { --title-tracking: 0.02em; --type-cut-width: 5px; }
+
+	.nt-mh__kicker { margin-bottom: 18px; font-size: 0.6rem; letter-spacing: 0.22em; }
+	.nt-mh__sub-text { font-size: 30px; letter-spacing: 3px; }
+}
+
+@media (max-width: 480px) {
+	.nt-mh { --board-h: clamp(132px, 44vw, 180px); }
+	/* The lower curve is the first thing to become unreadable at this width. */
+	.nt-mh__arc { display: none; }
+}
+
+

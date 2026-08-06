@@ -1,0 +1,78 @@
+{
+  "_doc": "Dialog registry, rendered by NT_Dialog (src/Dialogs/class-dialog.php). Each key is a dialog id; open it from any element with <button <?php nt_dialog_trigger('key'); ?>>. The markup is printed once in the footer only on pages that reference it. Keys: title, kicker, tone (info|success|warning|error|note|question), icon (NT_Icons name or emoji), size (sm|md|lg|full), body (string or array of paragraphs), html (rich text), image, list[] (ticked bullets), form (admin/data/<name>.json rendered as a real form), actions[] { label, url, style: primary|ghost|danger, dialog_close, new_tab, action }, dismissible, global (print on every page), auto_open (ms after load), once (storage key so auto_open fires once per visitor), class. The '_doc' key is ignored.",
+
+  "welcome": {
+    "kicker": "Since 1985",
+    "title": "Welcome to the counter",
+    "tone": "note",
+    "icon": "leaf",
+    "size": "md",
+    "body": [
+      "Every glass we pour is pressed the same morning it is served, from cane cut on farms we have worked with for four decades.",
+      "Have a look around - the story starts with our journey from field to glass."
+    ],
+    "actions": [
+      { "label": "Read our story", "url": "/about/", "style": "primary" },
+      { "label": "Not now", "style": "ghost", "dialog_close": true }
+    ],
+    "auto_open": 6000,
+    "once": "welcome-2026",
+    "dismissible": true,
+    "global": false
+  },
+
+  "brochure": {
+    "kicker": "Free download",
+    "title": "Get the brochure",
+    "tone": "info",
+    "icon": "download",
+    "size": "md",
+    "body": "Tell us where to send it and the full range sheet, prices and delivery areas are on the way.",
+    "list": [
+      "Full flavour range with pack sizes",
+      "Wholesale and event pricing",
+      "Delivery areas and lead times"
+    ],
+    "form": "form_brochure",
+    "dismissible": true
+  },
+
+  "callback": {
+    "kicker": "We will ring you",
+    "title": "Request a callback",
+    "tone": "question",
+    "icon": "phone",
+    "size": "sm",
+    "body": "Leave a number and a good time - one of the team will call you back the same working day.",
+    "form": "form_callback",
+    "dismissible": true
+  },
+
+  "hours": {
+    "kicker": "Before you travel",
+    "title": "Opening hours",
+    "tone": "info",
+    "icon": "clock",
+    "size": "sm",
+    "body": "Counter hours change with the season. The times on the contact page are always the current ones.",
+    "actions": [
+      { "label": "See this week's hours", "url": "/contact/", "style": "primary" },
+      { "label": "Close", "style": "ghost", "dialog_close": true }
+    ],
+    "dismissible": true
+  },
+
+  "delivery": {
+    "kicker": "Good to know",
+    "title": "Delivery cut-off",
+    "tone": "warning",
+    "icon": "truck",
+    "size": "sm",
+    "body": "Orders placed after 4pm are pressed and sent the next working morning, so the juice reaches you cold and fresh.",
+    "actions": [
+      { "label": "Start an order", "url": "/order/", "style": "primary" },
+      { "label": "Close", "style": "ghost", "dialog_close": true }
+    ],
+    "dismissible": true
+  }
+}

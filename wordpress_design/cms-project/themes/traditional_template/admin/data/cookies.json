@@ -1,0 +1,52 @@
+{
+  "_doc": "Cookie consent, read by NT_Consent (src/Consent/class-consent.php) and handed to assets/js/cookie-consent.js. VERSIONS: bump accept_version to re-ask EVERYONE; bump reject_version to re-ask only the people who declined. A full rejection is stored for reject_hours only, so the banner returns by itself. Categories marked required (and any category keyed 'necessary') are always on, never shown as a switch and never written into the stored cookie. Every word below is what the visitor reads - nothing is hard-coded in PHP or JS.",
+
+  "enabled": true,
+  "cookie_name": "nt_cookie_consent",
+  "accept_version": "1",
+  "reject_version": "1",
+  "accept_days": 365,
+  "reject_hours": 20,
+  "position": "bottom",
+
+  "banner": {
+    "aria": "Cookie notice",
+    "kicker": "A quick note",
+    "title": "We use a few cookies",
+    "text": "Some keep the site working, the rest only help us see which pages people actually read. You choose.",
+    "policy_label": "Read the cookie policy",
+    "policy_url": "/cookie-policy/",
+    "accept_all": "Accept all",
+    "reject_all": "Reject all",
+    "manage": "Manage",
+    "save_prefs": "Save my choices",
+    "always_on": "Always on",
+    "saved_toast": "Your cookie choices are saved.",
+    "prefs_kicker": "Your choice",
+    "prefs_title": "Cookie preferences",
+    "prefs_text": "Switch off anything you would rather we did not use. You can change this any time from the footer."
+  },
+
+  "categories": [
+    {
+      "key": "necessary",
+      "label": "Strictly necessary",
+      "text": "Remembering your basket, your cookie choice and keeping forms secure. The site cannot work without these.",
+      "required": true
+    },
+    {
+      "key": "analytics",
+      "label": "Analytics",
+      "text": "Anonymous counts of which pages get read, so we know what to write more of.",
+      "required": false,
+      "default": false
+    },
+    {
+      "key": "marketing",
+      "label": "Marketing",
+      "text": "Lets us show our own offers to people who have visited before. No data is sold, ever.",
+      "required": false,
+      "default": false
+    }
+  ]
+}

@@ -490,15 +490,29 @@
 
 		var progress = document.createElement('div');
 		progress.className = 'nt-progress';
-
-		var toTop = document.createElement('button');
-		toTop.type = 'button';
-		toTop.className = 'nt-totop';
-		toTop.setAttribute('aria-label', 'Back to top');
-		toTop.innerHTML = '<span aria-hidden="true">&#8593;</span>';
-
 		document.body.appendChild(progress);
-		document.body.appendChild(toTop);
+
+		/* THE PAGE HAD TWO BACK-TO-TOP BUTTONS.
+		   The footer already ships a vintage one (#nt-scroll-to-top, the
+		   glass that fills as you scroll, driven by legacy.js) and this
+		   function was appending a second plain one beside it - two round
+		   buttons stacked in the same corner.
+
+		   The footer's is the designed one, so it wins. This only builds a
+		   fallback when the footer button is absent, which is the case for a
+		   template that does not call get_footer(). */
+		var toTop = document.getElementById('nt-scroll-to-top');
+		var ownsButton = false;
+
+		if (!toTop) {
+			toTop = document.createElement('button');
+			toTop.type = 'button';
+			toTop.className = 'nt-totop';
+			toTop.setAttribute('aria-label', 'Back to top');
+			toTop.innerHTML = '<span aria-hidden="true">&#8593;</span>';
+			document.body.appendChild(toTop);
+			ownsButton = true;
+		}
 
 		var ticking = false;
 
@@ -717,5 +731,11 @@
 		init();
 	}
 
-	window.NT = { ajax: ajax, rest: rest, el: el, debounce: debounce, openModal: openModal, closeModal: closeModal };
+	// bindForms is exposed so ui-kit.js can wire a form that was built at
+	// runtime (a dialog form, for instance) without duplicating this logic.
+	window.NT = Object.assign(window.NT || {}, {
+		ajax: ajax, rest: rest, el: el, debounce: debounce,
+		openModal: openModal, closeModal: closeModal,
+		bindForms: initAjaxForms
+	});
 }());

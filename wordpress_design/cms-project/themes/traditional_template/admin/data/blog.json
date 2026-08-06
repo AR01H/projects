@@ -1,0 +1,15 @@
+{
+  "_doc": "The STANDARD blog archive (pages/page-blog.php). Sidebar blocks are switched on individually; each may be `true` or an object with its own heading. 'blocks' pulls promo cards from the SHARED library in blocks.json, so the wording is edited once and reused. Sections above/below the listing live in page_sections.json under 'blog_before' / 'blog_after'.",
+
+  "per_page": 9,
+  "intro": "Notes from the field, the press and the counter - what we are picking, pouring and learning this season.",
+  "empty_text": "Nothing published here yet. The first story is being written.",
+
+  "sidebar": {
+    "search": { "show": true, "placeholder": "Search the journal" },
+    "categories": { "show": true, "heading": "Browse by" },
+    "recent": { "show": true, "heading": "Latest stories", "count": 4 },
+    "tags": { "show": true, "heading": "Topics" },
+    "blocks": ["get_brochure", "visit_us"]
+  }
+}

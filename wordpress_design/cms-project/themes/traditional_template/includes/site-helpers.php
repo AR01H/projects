@@ -79,3 +79,115 @@ function nt_render_sections( $page_key ) {
 		NT_Section_Renderer::render_page( (string) $page_key );
 	}
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UI KIT - thin template-facing wrappers.
+
+   All the logic lives in the feature classes (src/Ui/, src/Dialogs/); these
+   one-liners exist so templates read as plain English. See src/README.md.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * An inline SVG icon from the shared set (src/Ui/class-icons.php).
+ *
+ *   nt_icon( 'download' );                    // echo
+ *   $svg = nt_icon( 'download', '', false );  // return
+ *
+ * @param string $name  Icon name - see NT_Icons::names().
+ * @param string $class Extra CSS class(es).
+ * @param bool   $echo  Echo (default) or return.
+ * @return string
+ */
+function nt_icon( $name, $class = '', $echo = true ) {
+	$svg = class_exists( 'NT_Icons' ) ? NT_Icons::get( (string) $name, (string) $class ) : '';
+	if ( $echo ) {
+		echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput -- constant SVG, class escaped in NT_Icons.
+	}
+	return $svg;
+}
+
+/**
+ * Render an inline alert / note box (src/Dialogs/class-alert.php).
+ *
+ *   nt_alert( array( 'tone' => 'warning', 'title' => '…', 'body' => '…' ) );
+ *
+ * @param array $args See NT_Alert::normalise().
+ */
+function nt_alert( $args = array() ) {
+	if ( class_exists( 'NT_Alert' ) ) {
+		NT_Alert::render( (array) $args );
+	}
+}
+
+/**
+ * Print the attributes that turn any element into a dialog trigger, and queue
+ * that dialog for output in the footer (src/Dialogs/class-dialog.php).
+ *
+ *   <button <?php nt_dialog_trigger( 'brochure' ); ?>>Get the brochure</button>
+ *
+ * Prints nothing when the id is not declared in admin/data/dialogs.json, so a
+ * typo degrades to an inert button instead of a JS error.
+ *
+ * @param string $id Dialog key in dialogs.json.
+ */
+function nt_dialog_trigger( $id ) {
+	if ( class_exists( 'NT_Dialog' ) ) {
+		echo NT_Dialog::trigger_attrs( (string) $id ); // phpcs:ignore WordPress.Security.EscapeOutput -- attributes escaped in the class.
+	}
+}
+
+/**
+ * Register a dialog that is NOT in dialogs.json - one a component builds out
+ * of its own content, such as an application form per job opening.
+ *
+ *   $id = nt_dialog_add( 'apply-driver', array(
+ *       'title' => 'Delivery driver',
+ *       'form'  => 'form_apply',
+ *   ) );
+ *   <button type="button" data-nt-dialog-open="<?php echo esc_attr( $id ); ?>">…
+ *
+ * Returns the DOM id the browser will use. Like every other dialog, the
+ * markup is built client-side from this data - nothing is printed here.
+ *
+ * @param string $id  Unique id for this request.
+ * @param array  $def Same shape as a dialogs.json entry.
+ * @return string DOM id.
+ */
+function nt_dialog_add( $id, $def = array() ) {
+	if ( ! class_exists( 'NT_Dialog' ) ) {
+		return '';
+	}
+	return NT_Dialog::add( (string) $id, (array) $def );
+}
+
+/**
+ * A shared UI string from admin/data/ui.json -> labels (src/Ui/class-ui.php).
+ * Keeps button wording ("Cancel", "Read more") out of PHP and JS.
+ *
+ * @param string $key     Label key.
+ * @param string $default Fallback when the JSON has no value.
+ * @return string
+ */
+function nt_label( $key, $default = '' ) {
+	return class_exists( 'NT_Ui' ) ? NT_Ui::label( (string) $key, (string) $default ) : (string) $default;
+}
+
+/**
+ * Hand assets/js/ui-kit.js everything it needs as `window.ntUi`: the labels
+ * and aria strings from ui.json, the tone icons, the timings, the site
+ * notices that apply today, and the data for every dialog this page can open.
+ * The browser builds that markup - PHP never prints a dialog or a notice.
+ *
+ * WHY wp_footer AND NOT wp_enqueue_scripts: the dialog payload is built from
+ * a queue that fills up as sections render (a component calling
+ * nt_dialog_trigger() adds to it). wp_enqueue_scripts runs in the <head>,
+ * long before any of that has happened, so the queue would always be empty.
+ * Priority 1 is still ahead of wp_print_footer_scripts (priority 20).
+ */
+add_action( 'wp_footer', 'nt_localize_ui_kit', 1 );
+function nt_localize_ui_kit() {
+	if ( ! class_exists( 'NT_Ui' ) || ! wp_script_is( 'nt-ui-kit', 'registered' ) ) {
+		return;
+	}
+	wp_add_inline_script( 'nt-ui-kit', 'window.ntUi=' . wp_json_encode( NT_Ui::js_config() ) . ';', 'before' );
+}

@@ -1,0 +1,1279 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   UI KIT  -  the shared "common design" layer
+   ---------------------------------------------------------------------------
+   ONE look for every dialog, alert, toast, notice, breadcrumb and icon on the
+   site, plus the drifting-leaf layer used behind inner-page headings.
+
+   Loaded AFTER vintage.css (see config/assets.php), so anything here wins on
+   a shared selector without needing !important.
+
+   PALETTE RULE: not one raw hex below. Every colour is a --trad-* / --nt-*
+   token from assets/css/variables.css (or a color-mix of them), so re-skinning
+   this theme to another brand is still a variables-only edit.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+	/* Tone accents, derived from the palette so a re-skin carries them along. */
+	--nt-tone-info:     var(--trad-green);
+	--nt-tone-success:  color-mix(in srgb, var(--trad-green) 78%, #2f7d32 22%);
+	--nt-tone-warning:  color-mix(in srgb, var(--trad-gold) 82%, var(--trad-ink) 18%);
+	--nt-tone-error:    color-mix(in srgb, var(--trad-ink) 55%, #8c2f21 45%);
+	--nt-tone-note:     var(--trad-border);
+	--nt-tone-question: color-mix(in srgb, var(--trad-green) 60%, var(--trad-gold) 40%);
+
+	--nt-ui-radius:  14px 18px 12px 16px;   /* hand-cut, never machine-square */
+	--nt-ui-shade:   0 22px 60px rgba(15, 28, 11, 0.34);
+	--nt-ui-ease:    cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ─── Shared icon sizing ─────────────────────────────────────────────────── */
+.nt-icon {
+	width: 1em;
+	height: 1em;
+	display: inline-block;
+	vertical-align: -0.14em;
+	flex: 0 0 auto;
+}
+.nt-icon-emoji {
+	display: inline-block;
+	line-height: 1;
+	filter: sepia(0.55) saturate(0.75) brightness(0.96);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. DIALOG   (components/parts/dialog.php - native <dialog>)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+dialog.nt-dialog {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	max-width: min(94vw, 640px);
+	max-height: min(88vh, 900px);
+	overflow: visible;
+	color: var(--trad-ink);
+}
+dialog.nt-dialog::backdrop {
+	background: color-mix(in srgb, var(--trad-green-dark) 68%, transparent);
+	backdrop-filter: blur(3px) saturate(0.9);
+	-webkit-backdrop-filter: blur(3px) saturate(0.9);
+}
+
+/* Widths come from the JSON `size` key. */
+dialog.nt-dialog--sm   { max-width: min(94vw, 460px); }
+dialog.nt-dialog--md   { max-width: min(94vw, 640px); }
+dialog.nt-dialog--lg   { max-width: min(94vw, 880px); }
+dialog.nt-dialog--full { max-width: 94vw; }
+
+.nt-dialog__shell {
+	margin: 0;
+	display: block;
+	max-height: inherit;
+}
+
+/* The parchment sheet itself: aged paper, a double rule and a torn-ish edge. */
+.nt-dialog__paper {
+	position: relative;
+	background-color: var(--trad-cream);
+	background-image: var(--texture-paper);
+	border: 2px solid var(--trad-border);
+	border-radius: var(--nt-ui-radius);
+	box-shadow:
+		0 0 0 1px color-mix(in srgb, var(--trad-gold) 45%, transparent),
+		var(--nt-ui-shade);
+	padding: clamp(26px, 4vw, 42px) clamp(20px, 3.6vw, 40px) clamp(22px, 3.4vw, 34px);
+	max-height: inherit;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+/* The classic "line inside a line" vintage detail. */
+.nt-dialog__paper::before {
+	content: "";
+	position: absolute;
+	inset: 8px;
+	border: 1px solid color-mix(in srgb, var(--trad-border) 60%, transparent);
+	border-radius: 8px;
+	pointer-events: none;
+}
+
+/* Tone shows as the top edge of the sheet - never as a coloured background,
+   which would fight the parchment. */
+.nt-dialog--info     .nt-dialog__paper { border-top: 5px solid var(--nt-tone-info); }
+.nt-dialog--success  .nt-dialog__paper { border-top: 5px solid var(--nt-tone-success); }
+.nt-dialog--warning  .nt-dialog__paper { border-top: 5px solid var(--nt-tone-warning); }
+.nt-dialog--error    .nt-dialog__paper { border-top: 5px solid var(--nt-tone-error); }
+.nt-dialog--note     .nt-dialog__paper { border-top: 5px solid var(--nt-tone-note); }
+.nt-dialog--question .nt-dialog__paper { border-top: 5px solid var(--nt-tone-question); }
+
+/* Corner ornaments - the same flourish the footer and page headers use. */
+.nt-dialog__corner {
+	position: absolute;
+	width: 26px;
+	height: 26px;
+	pointer-events: none;
+	border-color: color-mix(in srgb, var(--trad-gold) 70%, transparent);
+	border-style: solid;
+	border-width: 0;
+	opacity: 0.85;
+}
+.nt-dialog__corner--tl { top: 14px;    left: 14px;    border-top-width: 2px; border-left-width: 2px;  border-top-left-radius: 6px; }
+.nt-dialog__corner--tr { top: 14px;    right: 14px;   border-top-width: 2px; border-right-width: 2px; border-top-right-radius: 6px; }
+.nt-dialog__corner--bl { bottom: 14px; left: 14px;    border-bottom-width: 2px; border-left-width: 2px;  border-bottom-left-radius: 6px; }
+.nt-dialog__corner--br { bottom: 14px; right: 14px;   border-bottom-width: 2px; border-right-width: 2px; border-bottom-right-radius: 6px; }
+
+.nt-dialog__close {
+	position: absolute;
+	top: 12px;
+	right: 14px;
+	z-index: 2;
+	width: 36px;
+	height: 36px;
+	display: grid;
+	place-items: center;
+	border: 1px solid transparent;
+	border-radius: 50%;
+	background: transparent;
+	color: var(--trad-green);
+	font-size: 20px;
+	cursor: pointer;
+	transition: color 0.22s, border-color 0.22s, transform 0.3s var(--nt-ui-ease);
+}
+.nt-dialog__close:hover,
+.nt-dialog__close:focus-visible {
+	color: var(--trad-gold);
+	border-color: color-mix(in srgb, var(--trad-gold) 55%, transparent);
+	transform: rotate(90deg);
+}
+
+.nt-dialog__head {
+	text-align: center;
+	padding: 0 26px 4px;
+}
+.nt-dialog__icon {
+	display: block;
+	font-size: 30px;
+	line-height: 1;
+	margin: 0 auto 12px;
+	color: var(--trad-gold);
+}
+.nt-dialog--error   .nt-dialog__icon { color: var(--nt-tone-error); }
+.nt-dialog--success .nt-dialog__icon { color: var(--nt-tone-success); }
+
+.nt-dialog__kicker {
+	display: block;
+	font-family: var(--nt-font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--trad-ink) 62%, transparent);
+	margin-bottom: 8px;
+}
+.nt-dialog__title {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	font-size: clamp(1.4rem, 3.2vw, 2rem);
+	line-height: 1.18;
+	margin: 0;
+}
+.nt-dialog__title em {
+	font-family: var(--nt-font-accent);
+	font-style: normal;
+	color: var(--trad-gold);
+}
+.nt-dialog__rule {
+	display: block;
+	width: 96px;
+	height: 1px;
+	margin: 14px auto 0;
+	background: linear-gradient(90deg,
+		transparent,
+		color-mix(in srgb, var(--trad-gold) 85%, transparent) 50%,
+		transparent);
+	position: relative;
+}
+.nt-dialog__rule::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 6px;
+	height: 6px;
+	transform: translate(-50%, -50%) rotate(45deg);
+	background: var(--trad-gold);
+}
+
+.nt-dialog__body { padding: 18px 6px 4px; }
+.nt-dialog__text,
+.nt-dialog__rich p {
+	font-family: var(--nt-font-body);
+	color: color-mix(in srgb, var(--trad-ink) 88%, transparent);
+	font-size: 1rem;
+	line-height: 1.68;
+	margin: 0 0 12px;
+	text-align: center;
+}
+.nt-dialog--lg .nt-dialog__text,
+.nt-dialog--full .nt-dialog__text { text-align: left; }
+
+.nt-dialog__figure {
+	margin: 0 0 18px;
+	border: 1px solid var(--trad-border);
+	border-radius: 12px 16px 10px 18px;
+	overflow: hidden;
+}
+.nt-dialog__figure img {
+	display: block;
+	width: 100%;
+	height: auto;
+	filter: sepia(0.35) saturate(0.9);
+}
+
+.nt-dialog__list {
+	list-style: none;
+	margin: 4px 0 8px;
+	padding: 0;
+	display: grid;
+	gap: 10px;
+	text-align: left;
+}
+.nt-dialog__list li {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	font-family: var(--nt-font-body);
+	color: var(--trad-ink);
+	line-height: 1.55;
+}
+.nt-dialog__tick {
+	color: var(--trad-gold);
+	font-size: 1.05rem;
+	margin-top: 0.18em;
+}
+
+.nt-dialog__form { margin-top: 6px; text-align: left; }
+.nt-dialog__form .nt-form-submit { width: 100%; }
+
+.nt-dialog__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	justify-content: center;
+	padding-top: 18px;
+	margin-top: 6px;
+	border-top: 1px dashed color-mix(in srgb, var(--trad-border) 70%, transparent);
+}
+.nt-dialog__btn {
+	appearance: none;
+	font-family: var(--nt-font-body);
+	font-size: 0.82rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	padding: 13px 26px;
+	border-radius: 8px;
+	border: 1.5px solid var(--trad-green);
+	cursor: pointer;
+	text-decoration: none;
+	transition: background-color 0.22s, color 0.22s, border-color 0.22s, transform 0.22s;
+}
+.nt-dialog__btn--primary {
+	background: var(--trad-green);
+	color: var(--trad-cream);
+}
+.nt-dialog__btn--primary:hover {
+	background: var(--trad-gold);
+	border-color: var(--trad-gold);
+	color: var(--trad-green-dark);
+	transform: translateY(-2px);
+}
+.nt-dialog__btn--ghost {
+	background: transparent;
+	color: var(--trad-green);
+	border-color: color-mix(in srgb, var(--trad-border) 90%, transparent);
+}
+.nt-dialog__btn--ghost:hover {
+	border-color: var(--trad-green);
+	background: color-mix(in srgb, var(--trad-green) 8%, transparent);
+}
+.nt-dialog__btn--danger {
+	background: var(--nt-tone-error);
+	border-color: var(--nt-tone-error);
+	color: var(--trad-cream);
+}
+.nt-dialog__btn--danger:hover { filter: brightness(1.12); transform: translateY(-2px); }
+
+/* Entrance: the sheet is laid down on the desk. */
+@media (prefers-reduced-motion: no-preference) {
+	dialog.nt-dialog[open] .nt-dialog__paper {
+		animation: nt-dialog-in 0.34s var(--nt-ui-ease) both;
+	}
+	dialog.nt-dialog[open]::backdrop {
+		animation: nt-fade-in 0.28s ease both;
+	}
+}
+@keyframes nt-dialog-in {
+	from { opacity: 0; transform: translateY(18px) scale(0.97) rotate(-0.4deg); }
+	to   { opacity: 1; transform: none; }
+}
+@keyframes nt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Stop the page behind a dialog from scrolling. */
+html.nt-dialog-open { overflow: hidden; }
+
+/* The footer wrapper NT_Dialog prints its queued dialogs into. */
+.nt-dialog-stack { display: contents; }
+
+/* Fallback for browsers with no <dialog> support: the element is shown via
+   the `open` attribute, so give it the overlay the ::backdrop would have. */
+@supports not selector(dialog::backdrop) {
+	dialog.nt-dialog[open] {
+		position: fixed;
+		inset: 0;
+		z-index: 2000;
+		display: grid;
+		place-items: center;
+		width: 100%;
+		max-width: 100%;
+		height: 100%;
+		padding: 20px;
+		background: color-mix(in srgb, var(--trad-green-dark) 68%, transparent);
+	}
+	dialog.nt-dialog:not([open]) { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. INLINE ALERT   (components/parts/alert.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-alert {
+	position: relative;
+	display: flex;
+	gap: 14px;
+	align-items: flex-start;
+	padding: 16px 18px;
+	margin: 0 0 20px;
+	background-color: color-mix(in srgb, var(--trad-cream) 92%, var(--trad-bg) 8%);
+	background-image: var(--texture-paper);
+	border: 1px solid var(--trad-border);
+	border-left: 4px solid var(--nt-tone-note);
+	border-radius: 10px 14px 8px 12px;
+	overflow: hidden;
+	transition: height 0.3s var(--nt-ui-ease), opacity 0.24s, margin 0.3s, padding 0.3s;
+}
+.nt-alert--compact { padding: 11px 14px; gap: 10px; font-size: 0.93rem; }
+.nt-alert.is-closing { opacity: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; }
+
+.nt-alert--info     { border-left-color: var(--nt-tone-info); }
+.nt-alert--success  { border-left-color: var(--nt-tone-success); }
+.nt-alert--warning  { border-left-color: var(--nt-tone-warning); }
+.nt-alert--error    { border-left-color: var(--nt-tone-error); }
+.nt-alert--question { border-left-color: var(--nt-tone-question); }
+
+.nt-alert__icon {
+	font-size: 1.25rem;
+	line-height: 1;
+	margin-top: 0.12em;
+	color: var(--trad-green);
+}
+.nt-alert--warning .nt-alert__icon { color: var(--nt-tone-warning); }
+.nt-alert--error   .nt-alert__icon { color: var(--nt-tone-error); }
+.nt-alert--success .nt-alert__icon { color: var(--nt-tone-success); }
+
+.nt-alert__content { flex: 1 1 auto; min-width: 0; }
+.nt-alert__title {
+	font-family: var(--nt-font-display);
+	color: var(--trad-green);
+	font-size: 1.02rem;
+	margin: 0 0 4px;
+}
+.nt-alert__text,
+.nt-alert__rich p {
+	font-family: var(--nt-font-body);
+	color: color-mix(in srgb, var(--trad-ink) 86%, transparent);
+	font-size: 0.95rem;
+	line-height: 1.62;
+	margin: 0;
+}
+.nt-alert__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 8px;
+	font-family: var(--nt-font-body);
+	font-size: 0.82rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--trad-green);
+	text-decoration: none;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-gold) 70%, transparent);
+}
+.nt-alert__link:hover { color: var(--trad-gold); }
+
+.nt-alert__close,
+.nt-noticebar__close {
+	flex: 0 0 auto;
+	width: 28px;
+	height: 28px;
+	display: grid;
+	place-items: center;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: color-mix(in srgb, var(--trad-ink) 60%, transparent);
+	cursor: pointer;
+	font-size: 15px;
+	transition: color 0.2s, background-color 0.2s;
+}
+.nt-alert__close:hover,
+.nt-noticebar__close:hover {
+	color: var(--trad-green);
+	background: color-mix(in srgb, var(--trad-green) 10%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. NOTICE BAR   (components/notice-bar.php)
+   Sits directly under the fixed header, so it must not add its own top gap.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-noticebar { position: relative; z-index: 400; }
+.nt-noticebar__item {
+	background: linear-gradient(180deg,
+		var(--trad-green) 0%,
+		var(--trad-green-dark) 100%);
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-gold) 55%, transparent);
+	overflow: hidden;
+	transition: height 0.3s var(--nt-ui-ease), opacity 0.24s;
+}
+.nt-noticebar__item.is-closing { opacity: 0; }
+.nt-noticebar__item--warning { background: linear-gradient(180deg, var(--nt-tone-warning) 0%, color-mix(in srgb, var(--nt-tone-warning) 78%, var(--trad-ink)) 100%); }
+.nt-noticebar__item--error   { background: linear-gradient(180deg, var(--nt-tone-error) 0%, color-mix(in srgb, var(--nt-tone-error) 80%, var(--trad-ink)) 100%); }
+
+.nt-noticebar__inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px clamp(14px, 3vw, 28px);
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+.nt-noticebar__icon {
+	color: var(--trad-gold);
+	font-size: 1.05rem;
+	line-height: 1;
+}
+.nt-noticebar__badge {
+	font-family: var(--nt-font-body);
+	font-size: 0.64rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: var(--trad-gold);
+	color: var(--trad-green-dark);
+	white-space: nowrap;
+}
+.nt-noticebar__text {
+	flex: 1 1 260px;
+	margin: 0;
+	font-family: var(--nt-font-body);
+	font-size: 0.92rem;
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--trad-cream) 92%, transparent);
+}
+.nt-noticebar__text strong { color: var(--trad-cream); font-weight: 600; }
+.nt-noticebar__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--nt-font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	padding: 8px 16px;
+	border: 1px solid color-mix(in srgb, var(--trad-gold) 70%, transparent);
+	border-radius: 6px;
+	background: transparent;
+	color: var(--trad-gold);
+	text-decoration: none;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: background-color 0.2s, color 0.2s;
+}
+.nt-noticebar__cta:hover {
+	background: var(--trad-gold);
+	color: var(--trad-green-dark);
+}
+.nt-noticebar__close { color: color-mix(in srgb, var(--trad-cream) 70%, transparent); }
+.nt-noticebar__close:hover { color: var(--trad-cream); background: rgba(253, 251, 247, 0.12); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   4. TOASTS   (NT.toast)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-toasts {
+	position: fixed;
+	right: clamp(12px, 3vw, 28px);
+	bottom: clamp(12px, 3vw, 28px);
+	z-index: 2100;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	max-width: min(92vw, 380px);
+	pointer-events: none;
+}
+.nt-toast {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	padding: 13px 18px;
+	background-color: var(--trad-cream);
+	background-image: var(--texture-paper);
+	border: 1.5px solid var(--trad-border);
+	border-left: 4px solid var(--nt-tone-success);
+	border-radius: 10px 14px 8px 12px;
+	box-shadow: 0 14px 34px rgba(15, 28, 11, 0.28);
+	font-family: var(--nt-font-body);
+	font-size: 0.93rem;
+	color: var(--trad-ink);
+	cursor: pointer;
+	pointer-events: auto;
+	opacity: 0;
+	transform: translateX(22px);
+	transition: opacity 0.3s var(--nt-ui-ease), transform 0.3s var(--nt-ui-ease);
+}
+.nt-toast.is-in { opacity: 1; transform: none; }
+.nt-toast--info     { border-left-color: var(--nt-tone-info); }
+.nt-toast--warning  { border-left-color: var(--nt-tone-warning); }
+.nt-toast--error    { border-left-color: var(--nt-tone-error); }
+.nt-toast--note     { border-left-color: var(--nt-tone-note); }
+.nt-toast--question { border-left-color: var(--nt-tone-question); }
+.nt-toast__icon { color: var(--trad-green); font-size: 1.1rem; line-height: 1; }
+.nt-toast--error .nt-toast__icon { color: var(--nt-tone-error); }
+.nt-toast__text { flex: 1 1 auto; line-height: 1.45; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   5. BREADCRUMBS   (components/parts/breadcrumbs.php)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-crumbs { padding: 4px 0 2px; }
+.nt-crumbs__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 2px;
+}
+.nt-crumbs__item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--nt-font-body);
+	font-size: 0.7rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+.nt-crumbs__link {
+	color: color-mix(in srgb, var(--trad-ink) 62%, transparent);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+.nt-crumbs__link:hover { color: var(--trad-gold); }
+.nt-crumbs__current { color: var(--trad-green); }
+.nt-crumbs__sep {
+	color: color-mix(in srgb, var(--trad-border) 90%, transparent);
+	font-size: 0.72rem;
+	margin: 0 4px;
+}
+/* On a dark or photo background the trail flips to cream. */
+.nt-crumbs--on-dark .nt-crumbs__link { color: color-mix(in srgb, var(--trad-cream) 72%, transparent); }
+.nt-crumbs--on-dark .nt-crumbs__current { color: var(--trad-gold); }
+.nt-crumbs--on-dark .nt-crumbs__sep { color: color-mix(in srgb, var(--trad-cream) 45%, transparent); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   6. DRIFTING LEAVES   (components/parts/leaf-drift.php)
+   The "air" layer: sepia cane leaves float up through every inner-page
+   heading band. Home is deliberately excluded (body.nt-inner gates it in
+   the component), and the whole layer is removed under reduced-motion.
+   Each leaf's path is randomised per load in assets/js/ui-kit.js.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-leaves {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	pointer-events: none;
+	z-index: 1;
+}
+.nt-leaf {
+	position: absolute;
+	bottom: -12%;
+	left: var(--nt-leaf-x, 50%);
+	width: clamp(16px, 2.4vw, 34px);
+	height: auto;
+	opacity: 0;
+	color: var(--trad-green);
+	will-change: transform, opacity;
+}
+.nt-leaves.is-drifting .nt-leaf {
+	animation:
+		nt-leaf-rise var(--nt-leaf-duration, 24s) linear var(--nt-leaf-delay, 0s) infinite,
+		nt-leaf-sway var(--nt-leaf-sway, 5s) ease-in-out var(--nt-leaf-delay, 0s) infinite alternate;
+}
+.nt-leaf svg { width: 100%; height: auto; display: block; }
+
+@keyframes nt-leaf-rise {
+	0%   { opacity: 0;                       transform: translate3d(0, 0, 0) rotate(0deg) scale(var(--nt-leaf-scale, 1)); }
+	8%   { opacity: var(--nt-leaf-fade, 0.3); }
+	88%  { opacity: var(--nt-leaf-fade, 0.3); }
+	100% { opacity: 0; transform: translate3d(var(--nt-leaf-drift, 40px), -128%, 0) rotate(var(--nt-leaf-spin, 180deg)) scale(var(--nt-leaf-scale, 1)); }
+}
+@keyframes nt-leaf-sway {
+	from { margin-left: -14px; }
+	to   { margin-left: 14px; }
+}
+
+/* Anything the leaves float behind must sit above them. */
+.nt-has-leaves { position: relative; }
+.nt-has-leaves > *:not(.nt-leaves) { position: relative; z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+	.nt-leaves { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   7. MOBILE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+	dialog.nt-dialog,
+	dialog.nt-dialog--sm,
+	dialog.nt-dialog--md,
+	dialog.nt-dialog--lg,
+	dialog.nt-dialog--full {
+		max-width: 100%;
+		max-height: 100%;
+		width: 100%;
+		margin: auto auto 0;          /* slide up from the bottom edge */
+	}
+	.nt-dialog__paper {
+		border-radius: 18px 18px 0 0;
+		border-bottom: 0;
+		padding: 30px 18px 24px;
+		max-height: 90vh;
+	}
+	.nt-dialog__paper::before { inset: 6px 6px 0; border-bottom: 0; }
+	.nt-dialog__corner--bl,
+	.nt-dialog__corner--br { display: none; }
+	.nt-dialog__head { padding: 0 30px 4px; }
+	.nt-dialog__title { font-size: 1.32rem; }
+	.nt-dialog__actions { flex-direction: column-reverse; }
+	.nt-dialog__btn { width: 100%; text-align: center; }
+
+	@media (prefers-reduced-motion: no-preference) {
+		dialog.nt-dialog[open] .nt-dialog__paper {
+			animation: nt-sheet-up 0.32s var(--nt-ui-ease) both;
+		}
+	}
+
+	.nt-noticebar__inner { padding: 9px 14px; gap: 9px; }
+	.nt-noticebar__text { flex-basis: 100%; order: 3; font-size: 0.86rem; }
+	.nt-noticebar__cta { order: 4; }
+	.nt-noticebar__close { order: 2; margin-left: auto; }
+
+	.nt-toasts {
+		left: 12px;
+		right: 12px;
+		bottom: 12px;
+		max-width: none;
+	}
+	.nt-crumbs__item { font-size: 0.64rem; letter-spacing: 0.12em; }
+	.nt-alert { padding: 14px; gap: 11px; }
+}
+
+@keyframes nt-sheet-up {
+	from { opacity: 0; transform: translateY(40px); }
+	to   { opacity: 1; transform: none; }
+}
+
+/* Fine-pointer only: keep hover lifts off touch devices, where they stick. */
+@media (hover: none) {
+	.nt-dialog__btn:hover { transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   8. ROUGH-CUT BUTTONS
+   ---------------------------------------------------------------------------
+   A button on a hand-printed sign is stamped or cut, never die-punched: the
+   edge wanders, the ink sits unevenly, and no two are quite the same shape.
+
+   HOW: the edge is a MASK, not a filter. A filter would displace the label
+   with the box and turn small caps to mush; a mask only decides which pixels
+   survive, so the text inside stays perfectly crisp while the outline goes
+   ragged. The mask is one inline SVG - a rounded rect pushed out of true by
+   feTurbulence - stretched to whatever size the button happens to be
+   (preserveAspectRatio="none"), so it never needs a size per button.
+
+   A mask clips box-shadow, so the lift is re-created with filter:drop-shadow,
+   which follows the masked alpha and therefore follows the ragged edge too.
+
+   Opt out on any single button with class="nt-no-rough".
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+	/* Three cuts, so buttons sitting next to each other are not identical.
+	   Only the `seed` differs - the wobble is the same strength throughout. */
+	--nt-cut-1: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.035 0.09' numOctaves='3' seed='7' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='5' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
+	--nt-cut-2: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.07' numOctaves='3' seed='23' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='6' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='7' fill='%23fff' filter='url(%23r)'/></svg>");
+	--nt-cut-3: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.028 0.11' numOctaves='2' seed='41' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4.5' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='9' fill='%23fff' filter='url(%23r)'/></svg>");
+}
+
+.nt-dialog__btn,
+.nt-consent__btn,
+.nt-download__btn,
+.nt-job__apply,
+.nt-side-promo__cta,
+.nt-noticebar__cta,
+.nt-form-submit,
+body.design-traditional .nt-btn,
+body.design-traditional .btn {
+	position: relative;
+	-webkit-mask-image: var(--nt-cut-1);
+	        mask-image: var(--nt-cut-1);
+	-webkit-mask-size: 100% 100%;
+	        mask-size: 100% 100%;
+	-webkit-mask-repeat: no-repeat;
+	        mask-repeat: no-repeat;
+	/* The mask eats the box-shadow; drop-shadow honours the cut instead. */
+	box-shadow: none;
+	filter: drop-shadow(0 2px 3px rgba(15, 28, 11, 0.22));
+	transition:
+		background-color 0.22s, color 0.22s, border-color 0.22s,
+		transform 0.22s, filter 0.22s;
+}
+
+/* Vary the cut down a row of buttons so a group never looks stamped out. */
+.nt-dialog__btn:nth-child(2n),
+.nt-consent__btn:nth-child(2n),
+.nt-download__btn:nth-child(2n) {
+	-webkit-mask-image: var(--nt-cut-2);
+	        mask-image: var(--nt-cut-2);
+}
+.nt-dialog__btn:nth-child(3n),
+.nt-consent__btn:nth-child(3n) {
+	-webkit-mask-image: var(--nt-cut-3);
+	        mask-image: var(--nt-cut-3);
+}
+
+/* Uneven ink: a faint grain over the fill, so the colour is not perfectly
+   flat the way a printed block never is. Behind the label, never over it. */
+.nt-dialog__btn::before,
+.nt-consent__btn::before,
+.nt-job__apply::before,
+.nt-download__btn::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-image: var(--texture-paper);
+	opacity: 0.5;
+	mix-blend-mode: multiply;
+	pointer-events: none;
+	z-index: 0;
+}
+.nt-dialog__btn > *,
+.nt-consent__btn > *,
+.nt-job__apply > *,
+.nt-download__btn > * { position: relative; z-index: 1; }
+
+/* HOVER COLOURS, stated once and explicitly.
+   Two things were working against the label on hover: the multiply grain
+   above darkens whatever fill is underneath it, and several of these buttons
+   only changed their background, leaving the text at its resting colour on a
+   fill it was never chosen against. Each pair below is set together, so the
+   label always has a colour picked for the background it lands on. */
+.nt-dialog__btn--primary:hover,
+.nt-consent__btn--primary:hover,
+.nt-job__apply:hover,
+.nt-download__btn:hover,
+.nt-side-promo__cta:hover,
+body.design-traditional .nt-btn:hover {
+	background-color: var(--trad-gold);
+	border-color: var(--trad-gold);
+	color: var(--trad-green-dark);
+}
+.nt-dialog__btn--ghost:hover,
+.nt-consent__btn--ghost:hover {
+	background-color: color-mix(in srgb, var(--trad-green) 10%, transparent);
+	border-color: var(--trad-green);
+	color: var(--trad-green);
+}
+.nt-dialog__btn--danger:hover {
+	background-color: color-mix(in srgb, var(--nt-tone-error) 88%, #000);
+	border-color: color-mix(in srgb, var(--nt-tone-error) 88%, #000);
+	color: var(--trad-cream);
+}
+/* The notice strip sits on dark green, so its button inverts the other way. */
+.nt-noticebar__cta:hover {
+	background-color: var(--trad-gold);
+	border-color: var(--trad-gold);
+	color: var(--trad-green-dark);
+}
+/* Lift the grain on hover so the fresh fill reads at full strength under the
+   label instead of being muddied by it. */
+.nt-dialog__btn:hover::before,
+.nt-consent__btn:hover::before,
+.nt-job__apply:hover::before,
+.nt-download__btn:hover::before { opacity: 0.28; }
+
+/* Pressing a stamp pushes it into the paper. */
+.nt-dialog__btn:active,
+.nt-consent__btn:active,
+.nt-download__btn:active,
+.nt-job__apply:active,
+.nt-noticebar__cta:active,
+body.design-traditional .nt-btn:active {
+	transform: translateY(1px);
+	filter: drop-shadow(0 1px 1px rgba(15, 28, 11, 0.3));
+}
+
+/* A mask clips the focus ring too, so the ring is drawn as a shadow the
+   drop-shadow filter can carry - keyboard focus must never be invisible. */
+.nt-dialog__btn:focus-visible,
+.nt-consent__btn:focus-visible,
+.nt-download__btn:focus-visible,
+.nt-job__apply:focus-visible,
+.nt-noticebar__cta:focus-visible,
+body.design-traditional .nt-btn:focus-visible {
+	outline: none;
+	filter:
+		drop-shadow(0 0 0 2px var(--trad-gold))
+		drop-shadow(0 2px 3px rgba(15, 28, 11, 0.22));
+}
+
+/* Escape hatch, and a safety net: without mask support the button simply
+   keeps its normal rectangle rather than losing its shadow for nothing. */
+.nt-no-rough { -webkit-mask-image: none !important; mask-image: none !important; }
+@supports not ((-webkit-mask-image: url(#a)) or (mask-image: url(#a))) {
+	.nt-dialog__btn,
+	.nt-consent__btn,
+	.nt-download__btn,
+	.nt-job__apply,
+	.nt-noticebar__cta,
+	body.design-traditional .nt-btn {
+		filter: none;
+		box-shadow: 0 2px 4px rgba(15, 28, 11, 0.2);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   9. OVERLAY + HEADER FIXES
+   Two faults that only showed once a wizard modal was opened on an inner page.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* (a) THE WIZARD MODAL SAT UNDER THE HEADER.
+   Its z-index:2000 was being judged inside the content's own stacking context
+   (an ancestor carries position:relative; z-index:1), so the fixed header at
+   z-index:500 painted over it and clipped the modal's title. The structural
+   half of the fix is NTOverlayEscape in ui-kit.js, which reparents overlays to
+   <body>; these rules are the visual half - a value that clears every other
+   fixed layer, and a box that is centred and fully reachable instead of
+   pinned to the top edge behind the bar. */
+.nt-bk-modal,
+.nt-modal {
+	z-index: 2400;
+	align-items: center;                       /* was flex-start: title hid behind the nav */
+	padding: clamp(14px, 4vh, 40px) clamp(12px, 3vw, 28px);
+}
+.nt-bk-modal-backdrop { z-index: 0; }
+.nt-bk-modal-box,
+.nt-modal__box {
+	position: relative;
+	z-index: 1;
+	max-height: min(88vh, 900px);
+	margin: auto;
+}
+/* The scroll area, not the page, takes the overflow - so the close button and
+   the step bar stay put while the form scrolls under them. */
+.nt-bk-modal-scroll {
+	max-height: min(88vh, 900px);
+	overscroll-behavior: contain;
+}
+
+/* On a phone the modal becomes a full sheet, which is the only shape that
+   leaves room for a keyboard. */
+@media (max-width: 640px) {
+	.nt-bk-modal,
+	.nt-modal { padding: 0; align-items: stretch; }
+	.nt-bk-modal-box,
+	.nt-modal__box {
+		max-height: 100%;
+		height: 100%;
+		border-radius: 0 !important;
+		margin: 0;
+	}
+	.nt-bk-modal-scroll { max-height: none; padding: 2.6rem 1.1rem 1.4rem; }
+}
+
+/* (b) THE LOGO HUNG TOO FAR OUT OF THE BAR.
+   A 120px mark on an 82px bar with -80px of negative margin left the plaque
+   dangling almost its own height below the header, over whatever came next -
+   and over an open modal. Sized so the plaque still breaks the bottom edge
+   (that overhang is the intended look) but by a hand's width, not half a
+   logo. .nt-main's top padding is matched to it just below. */
+.nt-nav__logo {
+	padding: 5px 12px 10px !important;
+	margin-top: -10px !important;
+	margin-bottom: -30px !important;
+	border-radius: 0 0 20px 20px !important;
+	box-shadow: 0 6px 14px rgba(15, 28, 11, 0.13) !important;
+}
+.nt-nav__logo-img,
+.custom-logo { height: 92px !important; }
+
+body:not(.nt-hero-top) .nt-main { padding-top: calc(var(--nt-nav-height) + 34px); }
+
+@media (max-width: 900px) {
+	.nt-nav__logo {
+		padding: 4px 9px 8px !important;
+		margin-top: -8px !important;
+		margin-bottom: -22px !important;
+	}
+	.nt-nav__logo-img,
+	.custom-logo { height: 66px !important; }
+	body:not(.nt-hero-top) .nt-main { padding-top: calc(var(--nt-nav-height) + 24px); }
+}
+@media (max-width: 560px) {
+	.nt-nav__logo-img,
+	.custom-logo { height: 54px !important; }
+	.nt-nav__logo { margin-bottom: -16px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   10. MOBILE FLOATING TOOLBAR
+   ---------------------------------------------------------------------------
+   On a phone the side toolbar was a 70px slab of two stacked labelled buttons
+   pinned across the middle of the right edge - it covered a fifth of the
+   readable width and sat on top of the back-to-top button.
+
+   On small screens it becomes what a phone actually wants: two icon-only
+   pills tucked against the edge, out of the reading column, with the labels
+   kept for assistive tech only. It also slides fully out of the way while the
+   visitor is scrolling down and returns the moment they stop or scroll back,
+   so it never blocks what is being read.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+	.nt-floating-toolbar {
+		top: auto;
+		bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+		transform: none;
+		gap: 8px;
+		padding-right: 8px;
+		transition: transform 0.32s var(--nt-ui-ease), opacity 0.28s;
+	}
+
+	/* Slid away: only a sliver stays, enough to grab and bring back. */
+	.nt-floating-toolbar.is-tucked {
+		transform: translateX(calc(100% - 14px));
+		opacity: 0.55;
+	}
+
+	.nt-ftoolbar-btn {
+		width: 48px;
+		height: 48px;
+		padding: 0;
+		border: 1px solid var(--trad-gold);
+		border-radius: 50%;
+		box-shadow: 0 6px 16px rgba(15, 28, 11, 0.28);
+	}
+	.nt-ftoolbar-btn:hover,
+	.nt-ftoolbar-btn:active { transform: none; }
+
+	/* The label still exists for a screen reader; it is only hidden visually. */
+	.nt-ftoolbar-label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		clip-path: inset(50%);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	/* Keep back-to-top clear of the pills instead of under them. */
+	#nt-scroll-to-top,
+	.nt-totop {
+		bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+		right: 14px !important;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   11. NO SIDEWAYS SCROLL
+   ---------------------------------------------------------------------------
+   This design is full of things that deliberately reach past their box - the
+   banner mask, the drifting leaves, the hanging logo, ornaments with negative
+   margins, marquee tracks. Any one of them getting a few pixels wrong on a
+   narrow screen drags the whole document wider than the viewport, and every
+   centred heading on the page shifts off-centre with it.
+
+   `clip` rather than `hidden` on purpose: hidden turns the body into a scroll
+   container, which breaks `position: sticky` (the blog sidebar and the legal
+   contents list both rely on it). clip trims the overflow and changes nothing
+   else.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body { overflow-x: clip; }
+
+@supports not (overflow: clip) {
+	/* Older engines: accept the scroll-container side effect rather than
+	   leave the page scrolling sideways. */
+	body { overflow-x: hidden; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   12. MOBILE NAV - THE INVISIBLE SUBMENU
+   ---------------------------------------------------------------------------
+   The drawer panel is dark green, and .nt-mobile-nav__submenu a was set to
+   var(--trad-green) - green ink on a green panel. The links were rendering
+   and taking up their full height the whole time; they just could not be
+   seen, so every dropdown showed as a tall blank gap with a rule beside it.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-mobile-nav__submenu {
+	padding-left: 16px;
+	margin-top: 4px;
+	border-left: 1px solid color-mix(in srgb, var(--trad-gold) 45%, transparent);
+}
+.nt-mobile-nav__submenu a {
+	color: color-mix(in srgb, var(--trad-cream) 82%, transparent);
+	padding: 9px 0;
+	font-size: 0.92rem;
+	letter-spacing: 0.04em;
+	border-bottom: 1px dashed color-mix(in srgb, var(--trad-cream) 14%, transparent);
+}
+.nt-mobile-nav__submenu a:last-child { border-bottom: 0; }
+.nt-mobile-nav__submenu a:hover,
+.nt-mobile-nav__submenu a:focus-visible { color: var(--trad-gold); }
+
+/* The drawer was also spaced like a desktop menu - tighten it so the whole
+   nav is reachable without scrolling on a short screen. */
+.nt-mobile-nav__item { margin-bottom: 4px; }
+.nt-mobile-nav__link { padding: 11px 0; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   13. THE FLOATING SHORTCUT, ON THE LEFT
+   One button now, and on the left, where it is clear of the back-to-top and
+   of the right-hand edge most thumbs scroll along.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nt-floating-toolbar--left {
+	right: auto;
+	left: 0;
+}
+.nt-floating-toolbar--left .nt-ftoolbar-btn {
+	border-left: 0;
+	border-right: 2px solid var(--trad-gold);
+	box-shadow: 2px 2px 10px rgba(15, 28, 11, 0.15);
+}
+.nt-floating-toolbar--left .nt-ftoolbar-btn:hover { transform: translateX(6px); }
+
+@media (max-width: 767px) {
+	.nt-floating-toolbar--left { padding-right: 0; padding-left: 8px; }
+	/* Tucking now slides it off the LEFT edge, not the right. */
+	.nt-floating-toolbar--left.is-tucked { transform: translateX(calc(-100% + 14px)); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   14. THE MOBILE DRAWER - ARRANGEMENT
+   ---------------------------------------------------------------------------
+   Three things were wrong with the way it was laid out:
+
+   1. MIXED ALIGNMENT. legacy.css sets .nt-mobile-nav__link { text-align:
+      center }, but the submenu links are left-aligned - so a parent sat in
+      the middle of the drawer with its children ranged down the left, and
+      the eye had no single edge to follow.
+   2. EVERY DROPDOWN WAS OPEN. Three parents with three or four children each
+      made the drawer several screens tall, with the top-level items - the
+      ones most people are looking for - scattered between them.
+   3. THE FLOATING BUTTONS SAT ON TOP OF IT. The WhatsApp shortcut and the
+      back-to-top button are fixed, so they stayed over the open drawer.
+
+   Everything now hangs off one left edge, the branches collapse (NTMobileNav
+   in ui-kit.js adds the toggles), and the floating furniture gets out of the
+   way while the drawer is open.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body.design-traditional .nt-mobile-nav {
+	align-items: stretch;
+	padding: 8px clamp(16px, 5vw, 26px) 28px;
+	gap: 0;
+}
+
+/* One left edge for the whole drawer. */
+body.design-traditional .nt-mobile-nav__link,
+body.design-traditional .nt-mobile-nav__submenu a {
+	text-align: left;
+}
+
+/* The parent row: name on the left, toggle on the right, on one hair rule. */
+.nt-mobile-nav__row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+body.design-traditional .nt-mobile-nav__item {
+	margin: 0;
+	border-bottom: 1px solid color-mix(in srgb, var(--trad-cream) 12%, transparent);
+}
+body.design-traditional .nt-mobile-nav__link {
+	flex: 1 1 auto;
+	display: block;
+	padding: 14px 0;
+	font-family: var(--nt-font-display);
+	font-size: 1.06rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	border-radius: 0;
+	background: none;
+}
+body.design-traditional .nt-mobile-nav__link:hover,
+body.design-traditional .nt-mobile-nav__link.is-active {
+	background: none;
+	color: var(--trad-gold);
+}
+
+.nt-mobile-nav__toggle {
+	flex: 0 0 auto;
+	width: 40px;
+	height: 40px;
+	display: grid;
+	place-items: center;
+	border: 1px solid color-mix(in srgb, var(--trad-gold) 40%, transparent);
+	border-radius: 50%;
+	background: transparent;
+	color: var(--trad-gold);
+	font-size: 1rem;
+	cursor: pointer;
+	transition: transform 0.28s var(--nt-ui-ease), background-color 0.22s;
+}
+.nt-mobile-nav__toggle:hover { background: color-mix(in srgb, var(--trad-gold) 14%, transparent); }
+.nt-nav__has-sub.is-open .nt-mobile-nav__toggle { transform: rotate(180deg); }
+
+/* Collapsed by default; the grid-rows trick animates to the content's own
+   height without anyone having to measure it in JS. */
+body.design-traditional .nt-mobile-nav__submenu {
+	display: grid;
+	grid-template-rows: 0fr;
+	margin: 0;
+	padding-left: 14px;
+	border-left: 1px solid color-mix(in srgb, var(--trad-gold) 40%, transparent);
+	overflow: hidden;
+	transition: grid-template-rows 0.3s var(--nt-ui-ease), margin 0.3s, opacity 0.24s;
+	opacity: 0;
+}
+body.design-traditional .nt-nav__has-sub.is-open .nt-mobile-nav__submenu {
+	grid-template-rows: 1fr;
+	margin: 0 0 12px;
+	opacity: 1;
+}
+/* The single wrapper NTMobileNav puts the links in - see the note there for
+   why the links cannot be direct children. It must be allowed to shrink
+   below its content, or 0fr has nothing to collapse to. */
+body.design-traditional .nt-mobile-nav__subinner {
+	min-height: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+body.design-traditional .nt-mobile-nav__submenu a {
+	display: block;
+	padding: 10px 0;
+	font-size: 0.94rem;
+	border-bottom: 1px dashed color-mix(in srgb, var(--trad-cream) 12%, transparent);
+}
+body.design-traditional .nt-mobile-nav__submenu a:last-child { border-bottom: 0; }
+
+body.design-traditional .nt-mobile-nav__cta {
+	margin-top: 18px;
+	text-align: center;
+}
+
+/* Without JS there are no toggles, so nothing would open - show every
+   submenu instead. A drawer that is too long beats a drawer that is dead. */
+body.design-traditional .nt-mobile-nav:not([data-nt-mnav-bound]) .nt-mobile-nav__submenu {
+	grid-template-rows: 1fr;
+	opacity: 1;
+}
+
+/* The fixed furniture stands down while the drawer is open.
+   The consent banner is in this list too: it sits at z-index 1900 against the
+   drawer's 499, so with a branch expanded it covered the last nav links and
+   the CTA - exactly the items someone opening the menu is reaching for. The
+   menu wins while it is open; the banner comes straight back when it closes,
+   so the decision is still put to the visitor. */
+body:has(.nt-mobile-nav.open) :is(
+	.nt-floating-toolbar, #nt-scroll-to-top, .nt-totop, .nt-consent, .nt-toasts
+) {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   15. THE DRAWER HAS TO SCROLL
+   ---------------------------------------------------------------------------
+   legacy.css pins the drawer with `position: fixed; top: <nav height>; left:
+   0; right: 0` - and no bottom, no height and no overflow. So it grows as
+   tall as its content and anything past the bottom of the screen is simply
+   unreachable: with a branch expanded, the last links and the CTA were off
+   the end of the world with nothing to scroll.
+
+   Giving it a bottom edge turns it into a box with a known height, and
+   overflow-y makes that box scrollable.
+
+   `100dvh`, not `100vh`: on a phone `vh` is measured against the viewport
+   with the browser's toolbars HIDDEN, so a `100vh` panel is always taller
+   than what you can actually see and the last item stays cut off. `dvh`
+   follows the toolbars as they collapse. The `vh` line above it is the
+   fallback for engines that do not know `dvh` yet.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body.design-traditional .nt-mobile-nav {
+	bottom: 0;
+	max-height: calc(100vh - var(--nt-nav-height));
+	max-height: calc(100dvh - var(--nt-nav-height));
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	/* Stop the page behind it scrolling once the drawer hits its end. */
+	overscroll-behavior: contain;
+	/* Clear of the home indicator on a phone with no hardware button. */
+	padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+}
+
+/* A thin themed scrollbar rather than the OS default over the dark panel. */
+body.design-traditional .nt-mobile-nav {
+	scrollbar-width: thin;
+	scrollbar-color: color-mix(in srgb, var(--trad-gold) 55%, transparent) transparent;
+}
+body.design-traditional .nt-mobile-nav::-webkit-scrollbar { width: 6px; }
+body.design-traditional .nt-mobile-nav::-webkit-scrollbar-track { background: transparent; }
+body.design-traditional .nt-mobile-nav::-webkit-scrollbar-thumb {
+	background: color-mix(in srgb, var(--trad-gold) 45%, transparent);
+	border-radius: 999px;
+}
+
+/* While the drawer is open the page behind it should stay put - otherwise a
+   scroll that starts on the drawer and runs past its end drags the article
+   underneath, and closing the menu leaves you somewhere you never went. */
+body:has(.nt-mobile-nav.open) {
+	overflow: hidden;
+	touch-action: none;
+}
+/* …but the drawer itself must still take the gesture. */
+body:has(.nt-mobile-nav.open) .nt-mobile-nav { touch-action: pan-y; }

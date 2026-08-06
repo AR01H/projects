@@ -72,6 +72,46 @@
     "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80",
     "ornament_image": "assets/images/backgrounds/sideedge1.png"
   },
+  "services": {
+    "kicker": "Three Ways To Drink It",
+    "subtitle": "Counter, Crate Or Event",
+    "title": "What We Do",
+    "arc_text": "Press • Bottle • Deliver • Pour",
+    "ornament": "crossed",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "careers": {
+    "kicker": "Join The Counter",
+    "subtitle": "Small Team, Long Season",
+    "title": "Work With Us",
+    "arc_text": "Field • Press • Counter • Road",
+    "ornament": "rope",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "faq": {
+    "kicker": "Ask Us Anything",
+    "subtitle": "The Questions We Get Most",
+    "title": "Help & Answers",
+    "arc_text": "Orders • Delivery • Events • Trade",
+    "ornament": "chain",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "reviews": {
+    "kicker": "In Their Words",
+    "subtitle": "Counters, Crates & Occasions",
+    "title": "What People Say",
+    "arc_text": "Regulars • Buyers • Hosts • Partners",
+    "ornament": "rope",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "blog": {
+    "kicker": "From The Field",
+    "subtitle": "Notes, Seasons & Stories",
+    "title": "The Journal",
+    "arc_text": "Harvest • Press • Counter • Season",
+    "ornament": "botanical",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
   "news": {
     "tag": "Our Blog",
     "icon": "📰",

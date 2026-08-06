@@ -1,0 +1,46 @@
+{
+  "_doc": "Document shelf (components/downloads.php). Give an item a 'file' path to download it straight away, or a 'dialog' key from dialogs.json to ask for an email first. 'kind' is the badge text (PDF, XLSX, DOC) and 'icon' any NT_Icons name.",
+
+  "tag": "Take It With You",
+  "title": "Papers & <em>price lists</em>",
+  "sub": "Everything a buyer, an event planner or a future franchisee usually asks for.",
+
+  "items": [
+    {
+      "icon": "file",
+      "kind": "PDF",
+      "title": "The full range brochure",
+      "text": "Every blend we press, the pack sizes, and what each one tastes like.",
+      "size": "2.4 MB",
+      "updated": "Updated this season",
+      "dialog": "brochure"
+    },
+    {
+      "icon": "receipt",
+      "kind": "PDF",
+      "title": "Wholesale price list",
+      "text": "Trade pricing by volume, delivery areas and minimum order sizes.",
+      "size": "480 KB",
+      "updated": "Reviewed quarterly",
+      "dialog": "brochure"
+    },
+    {
+      "icon": "shield",
+      "kind": "PDF",
+      "title": "Allergen and nutrition sheet",
+      "text": "A full breakdown for every drink on the board, mixers included.",
+      "size": "310 KB",
+      "updated": "Updated this season",
+      "dialog": "brochure"
+    },
+    {
+      "icon": "briefcase",
+      "kind": "PDF",
+      "title": "Franchise information pack",
+      "text": "The three counter formats, what each one costs, and what we provide.",
+      "size": "3.1 MB",
+      "updated": "Current",
+      "dialog": "brochure"
+    }
+  ]
+}

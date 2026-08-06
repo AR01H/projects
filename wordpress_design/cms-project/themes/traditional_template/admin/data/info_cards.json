@@ -1,0 +1,42 @@
+{
+  "_doc": "At-a-glance tiles (components/info-cards.php). 'type' decides what the value does: tel | mail | map | link | dialog | copy. A 'dialog' value must be a key from dialogs.json. 'copy' puts the value on the visitor's clipboard and shows a toast.",
+
+  "tag": "Reach Us",
+  "title": "Everything in <em>one place</em>",
+  "sub": "Call, write, visit, or let us call you.",
+
+  "items": [
+    {
+      "icon": "phone",
+      "label": "Call the counter",
+      "value": "+44 7770 461939",
+      "note": "Monday to Saturday, 9am - 7pm",
+      "type": "tel"
+    },
+    {
+      "icon": "mail",
+      "label": "Write to us",
+      "value": "hello@thecanehouseuk.com",
+      "note": "We answer within one working day",
+      "type": "mail"
+    },
+    {
+      "icon": "pin",
+      "label": "Find the counter",
+      "value": "123 Market Row, London",
+      "note": "Two minutes from the station",
+      "type": "map",
+      "url": "https://maps.google.com/?q=Market+Row+London",
+      "link_label": "Get directions"
+    },
+    {
+      "icon": "chat",
+      "label": "Prefer to talk?",
+      "value": "Request a callback",
+      "note": "Pick a time that suits you",
+      "type": "dialog",
+      "dialog": "callback",
+      "link_label": "Book a time"
+    }
+  ]
+}

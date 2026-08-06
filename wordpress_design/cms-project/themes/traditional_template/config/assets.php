@@ -26,6 +26,12 @@ return array(
 		'main'       => 'assets/css/main.css',
 		'vintage'    => 'assets/css/vintage.css',
 		'components' => 'assets/css/components.css',
+		// The shared UI layer (dialogs, alerts, toasts, notice bar,
+		// breadcrumbs, drifting leaves) and the reusable portal sections.
+		// Both load AFTER vintage.css so they win on any shared selector
+		// without needing !important.
+		'ui-kit'     => 'assets/css/ui-kit.css',
+		'sections'   => 'assets/css/sections.css',
 		'utilities'  => 'assets/css/utilities.css',
 		// Component-scoped sheet. Lives beside its own markup rather than in
 		// assets/css/ because the movie header is a self-contained prop - its
@@ -39,6 +45,13 @@ return array(
 		'common'        => 'assets/js/common.js',
 		'legacy'        => 'assets/js/legacy.js',
 		'main'          => 'assets/js/main.js',
+		// The UI kit RENDERS the dialogs, the notice strip and the cookie
+		// banner in the browser from data PHP ships as window.ntUi /
+		// window.ntConsent - so none of that markup is in the document for
+		// anyone who never opens it. Must load after 'common' (it extends
+		// window.NT and reuses its AJAX form binder).
+		'ui-kit'         => 'assets/js/ui-kit.js',
+		'cookie-consent' => 'assets/js/cookie-consent.js',
 		// Fits the movie header's editable headline to the board. No-ops on
 		// pages without one.
 		'movie-header'  => 'components/movie-header/header.js',

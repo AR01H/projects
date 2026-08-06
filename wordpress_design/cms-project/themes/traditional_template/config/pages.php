@@ -45,11 +45,22 @@ return array(
 		'aliases'  => array( 'contact-us' ),
 	),
 
+	// Two ways to list posts, both kept on purpose:
+	//   'news' - the bespoke screen (live search + Load More over REST).
+	//   'blog' - the STANDARD archive: server-rendered, numbered pagination,
+	//            a sidebar, works with JS off. Copy this entry into any site
+	//            built on the template and it works immediately.
 	'news' => array(
 		'title'    => 'News & Updates',
 		'template' => 'pages/page-news.php',
 		'css'      => array( 'assets/css/pages/news.css' ),
 		'js'       => array( 'assets/js/pages/news.js' ),
+	),
+
+	'blog' => array(
+		'title'    => 'The Journal',
+		'template' => 'pages/page-blog.php',
+		'aliases'  => array( 'journal', 'articles' ),
 	),
 
 	// Slug must equal NT_COMING_SOON_SLUG (config/theme.php) so the
@@ -63,11 +74,13 @@ return array(
 	'about' => array(
 		'title'    => 'Our Story',
 		'template' => 'pages/page-about.php',
+		'aliases'  => array( 'our-journey', 'our-story' ),
 	),
-	
+
 	'products' => array(
 		'title'    => 'Products',
 		'template' => 'pages/page-products.php',
+		'aliases'  => array( 'menu', 'flavours', 'cane-gur' ),
 	),
 	
 	'gallery' => array(
@@ -88,5 +101,55 @@ return array(
 	'order' => array(
 		'title'    => 'Order',
 		'template' => 'pages/page-order.php',
+		'aliases'  => array( 'order-rates' ),
+	),
+
+	// ── Added so the header/footer nav has no dead links ──────────────────
+	// nav.json and footer.json already pointed at /menu/, /our-journey/,
+	// /privacy-policy/ and /cookie-policy/. The first two are just other
+	// names for pages that exist (added as aliases above/below); the rest
+	// are real pages now.
+
+	'services' => array(
+		'title'    => 'What We Do',
+		'template' => 'pages/page-services.php',
+	),
+
+	'careers' => array(
+		'title'    => 'Work With Us',
+		'template' => 'pages/page-careers.php',
+		'aliases'  => array( 'jobs' ),
+	),
+
+	'faq' => array(
+		'title'    => 'Help & FAQs',
+		'template' => 'pages/page-faq.php',
+		'aliases'  => array( 'faqs', 'help' ),
+	),
+
+	'reviews' => array(
+		'title'    => 'Reviews',
+		'template' => 'pages/page-reviews.php',
+		'aliases'  => array( 'testimonials' ),
+	),
+
+	// Three policies, ONE template. Which document each renders is mapped in
+	// admin/data/legal.json - adding a fourth needs no new PHP file.
+	'privacy-policy' => array(
+		'title'    => 'Privacy Policy',
+		'template' => 'pages/page-legal.php',
+		'aliases'  => array( 'privacy' ),
+	),
+
+	'cookie-policy' => array(
+		'title'    => 'Cookie Policy',
+		'template' => 'pages/page-legal.php',
+		'aliases'  => array( 'cookies' ),
+	),
+
+	'terms' => array(
+		'title'    => 'Terms & Conditions',
+		'template' => 'pages/page-legal.php',
+		'aliases'  => array( 'terms-conditions' ),
 	),
 );

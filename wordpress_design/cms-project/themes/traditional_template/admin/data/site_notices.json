@@ -1,13 +1,34 @@
-[
-  {
-    "id": 1,
-    "title": "Welcome to our new site!",
-    "message": "We have just launched our brand new experience.",
-    "button_label": "Learn More",
-    "button_url": "/about/",
-    "badge_text": "New",
-    "badge_color": "green",
-    "position": "corner",
-    "status": "active"
-  }
-]
+{
+  "_doc": "The announcement strip under the header (components/notice-bar.php, filtered by NT_Alert::notices()). Keys per notice: id (stable - the visitor's dismissal is remembered against it, so give re-worded messages a NEW id), tone (info|success|warning|error|note|question), icon (NT_Icons name or emoji), badge_text, title, message, button_label + button_url, or button_label + dialog (a key from dialogs.json), pages (array of page keys, or omit for every page), starts / ends (site-timezone dates - omit for always), dismissible, status (active|draft).",
+
+  "items": [
+    {
+      "id": "delivery-cutoff-2026",
+      "tone": "info",
+      "icon": "truck",
+      "badge_text": "Delivery",
+      "title": "Same-day pressing:",
+      "message": "orders placed before 4pm leave the counter the same afternoon.",
+      "button_label": "See the cut-off",
+      "dialog": "delivery",
+      "pages": ["home", "order", "products"],
+      "dismissible": true,
+      "status": "active"
+    },
+    {
+      "id": "harvest-season-2026",
+      "tone": "success",
+      "icon": "leaf",
+      "badge_text": "In season",
+      "title": "Harvest is in.",
+      "message": "This month's cane is pressing sweeter than any batch since spring.",
+      "button_label": "Taste the range",
+      "button_url": "/products/",
+      "pages": ["all"],
+      "starts": "",
+      "ends": "",
+      "dismissible": true,
+      "status": "draft"
+    }
+  ]
+}

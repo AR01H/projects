@@ -1,0 +1,12 @@
+{
+  "_doc": "The portal tile board (components/quick-links.php). Tiles can be written inline under 'items', or pulled from the SHARED library in blocks.json by naming keys under 'blocks' - use the library whenever the same wording also appears elsewhere on the site, so you only ever edit it once. 'columns' is 2, 3 or 4.",
+
+  "tag": "Start Here",
+  "title": "What can we get you?",
+  "sub": "The four things most people come to us for.",
+  "columns": 4,
+
+  "blocks": ["order_online", "book_event", "the_range", "read_blogs"],
+
+  "items": []
+}
