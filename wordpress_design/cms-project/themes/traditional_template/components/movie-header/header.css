@@ -123,7 +123,7 @@
 .nt-mh__kicker {
 	/* Clearance for the medallion, which hangs 46% of its height above the
 	   board. Without it the badge lands on top of this line. */
-	margin: 0 0 clamp(24px, 3vw, 44px);
+	margin: 0 ;
 	font-family: var(--nt-font-display, 'Playfair Display', serif);
 	font-size: clamp(0.62rem, 1vw, 0.84rem);
 	font-weight: 700;
@@ -195,8 +195,7 @@
    so the plank reads as bent rather than as a rectangle with rounded corners.
    border-radius cannot express this - only one curve per corner, and none
    across the middle of an edge. */
-.nt-mh__frame,
-.nt-mh__panel {
+.nt-mh__frame{
 	position: absolute;
 	pointer-events: none;
 	-webkit-mask-image: var(--banner);
@@ -216,29 +215,6 @@
 		var(--stone-shade) 78%,
 		var(--stone-deep)  100%
 	);
-}
-
-/* Inset by the frame width, then the SAME mask stretched to the smaller box -
-   which is exactly the inner outline of the banner. */
-.nt-mh__panel {
-	inset: var(--frame-w);
-	overflow: hidden;
-	background-color: var(--wood-mid);
-	background-image:
-		/* Plain timber by default - artwork behind the headline competed with
-		   it. A page can opt back in from JSON by setting --board-art to a
-		   url(); the blend and sizing slots below stay in place for it. */
-		var(--board-art, none),
-		linear-gradient(180deg, rgba(20, 10, 5, 0.52) 0%, transparent 22%, transparent 74%, rgba(20, 10, 5, 0.58) 100%),
-		linear-gradient(180deg,
-			var(--wood-warm)  0%,
-			var(--wood-mid)   26%,
-			var(--wood-light) 48%,
-			var(--wood-mid)   66%,
-			var(--wood-dark)  100%);
-	background-size: cover, auto, auto;
-	background-position: center, center, center;
-	background-blend-mode: var(--board-art-blend, soft-light), normal, normal;
 }
 
 /* ── Horizontal wood grain ─────────────────────────────────────────────────
@@ -297,22 +273,7 @@
 		linear-gradient(90.5deg, transparent 84.2%, rgba(18, 9, 3, 0.22) 84.35%, transparent 84.5%);
 }
 
-/* ── Rivets: brass studs pinning the timber to the frame ────────────────── */
-.nt-mh__rivets {
-	position: absolute;
-	inset: calc(var(--frame-w) * 0.4);
-	border-radius: inherit;
-	pointer-events: none;
-	background-repeat: no-repeat;
-	background-size: 13px 13px;
-	background-image:
-		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%),
-		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%),
-		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%),
-		radial-gradient(circle at 50% 38%, var(--gold-1) 0%, var(--gold-3) 52%, var(--gold-deep) 78%, transparent 80%);
-	background-position: 3.5% 34%, 96.5% 34%, 8% 88%, 92% 88%;
-	filter: drop-shadow(0 1px 1px rgba(20, 10, 5, 0.85));
-}
+
 
 /* ══════════════════════════════════════════════════════════════════════════
    BUMPS + SHADE  - relief on the timber, and light modelled across the bow
@@ -323,21 +284,12 @@
    grey, blended in overlay, which raises the grain into something you can
    almost feel rather than a printed stripe.
    ══════════════════════════════════════════════════════════════════════════ */
-.nt-mh__panel .nt-mh__relief,
 .nt-mh__shade {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
 }
 
-.nt-mh__relief {
-	background-color: var(--nt-bump-neutral, #808080);
-	background-image: var(--nt-grain);
-	background-size: 170px 170px;
-	filter: url(#nt-bump-2);
-	mix-blend-mode: overlay;
-	opacity: var(--relief-opacity);
-}
 
 /* Light across the bow + shade pooling into the ends and the frame. */
 .nt-mh__shade {
@@ -485,28 +437,6 @@
 /* ══════════════════════════════════════════════════════════════════════════
    MEDALLION  - crowning the arch, half above the board edge
    ══════════════════════════════════════════════════════════════════════════ */
-.nt-mh__medal {
-	position: absolute;
-	top: 0;
-	left: 50%;
-	width: clamp(56px, 8vw, 112px);
-	height: clamp(56px, 8vw, 112px);
-	transform: translate(-50%, -46%);
-	z-index: 4;
-	filter: drop-shadow(0 6px 12px rgba(20, 10, 5, 0.6));
-}
-.nt-mh__medal svg { display: block; width: 100%; height: 100%; }
-
-/* Warm bloom behind the badge */
-.nt-mh__medal::before {
-	content: '';
-	position: absolute;
-	inset: -46%;
-	z-index: -1;
-	border-radius: 50%;
-	background: radial-gradient(circle, rgba(255, 214, 122, 0.45) 0%, rgba(255, 214, 122, 0) 70%);
-}
-
 /* ══════════════════════════════════════════════════════════════════════════
    RIBBON  - slung under the board
    ══════════════════════════════════════════════════════════════════════════ */
@@ -566,7 +496,6 @@
 	.nt-mh__orn { display: none; }
 	.nt-mh__arc-text { font-size: 30px; letter-spacing: 2px; }
 	.nt-mh__ribbon { letter-spacing: 0.16em; }
-	.nt-mh__rivets { background-position: 5% 30%, 95% 30%, 9% 90%, 91% 90%; }
 }
 
 @media (max-width: 420px) {
@@ -600,9 +529,7 @@
 	.nt-mh__grain,
 	.nt-mh__gloss,
 	.nt-mh__cracks,
-	.nt-mh__rivets,
 	.nt-mh__orn,
-	.nt-mh__medal { display: none; }
 	.nt-mh__board {
 		min-height: 0;
 		border: 2px solid #000;
@@ -706,45 +633,11 @@
 			var(--cane-dark) 100%);
 }
 
-/* ── 4. Twine, not rivets ─────────────────────────────────────────────────
-   The four studs become wraps of binding twine at the corners - the way a
-   board is actually lashed to a pole on a working stall. */
-.nt-mh__rivets {
-	background:
-		repeating-linear-gradient(52deg,
-			var(--twine) 0 3px,
-			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 4% 16% / 30px 20px no-repeat,
-		repeating-linear-gradient(-52deg,
-			var(--twine) 0 3px,
-			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 96% 16% / 30px 20px no-repeat,
-		repeating-linear-gradient(-52deg,
-			var(--twine) 0 3px,
-			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 4% 84% / 30px 20px no-repeat,
-		repeating-linear-gradient(52deg,
-			var(--twine) 0 3px,
-			color-mix(in srgb, var(--twine) 62%, var(--cane-dark)) 3px 6px) 96% 84% / 30px 20px no-repeat;
-	filter: drop-shadow(0 1px 2px rgba(24, 13, 5, 0.55));
-}
-
-/* ── 5. The medallion reads as the mill wheel it already resembles ─────────
-   TWO WRONG ELEMENTS BEFORE THIS ONE. A box-shadow on .nt-mh__medal drew a
-   SQUARE frame (it is a square positioning box), and moving it to ::before
-   drew a circle twice the badge's size - because ::before is the warm bloom
-   at inset:-46%, not the badge face.
-
-   drop-shadow is the right tool: it follows the SVG's own alpha, so the ring
-   traces the badge itself whatever shape or size it is. */
-.nt-mh__medal {
-	filter:
-		drop-shadow(0 0 1.5px color-mix(in srgb, var(--cane-dark) 75%, transparent))
-		drop-shadow(0 6px 12px rgba(20, 10, 5, 0.6));
-}
 
 /* ── 6. Side artwork sits IN the scene rather than beside it ──────────────
    The cane illustrations were floating clear of the board; dropping them and
    tucking them behind its edge makes the board look propped among the crop. */
 .nt-mh__orn {
-	align-self: flex-end;
 	margin-bottom: -2%;
 	filter: sepia(0.35) saturate(0.85) drop-shadow(0 6px 10px rgba(24, 13, 5, 0.3));
 	opacity: 0.95;
@@ -765,7 +658,6 @@
 
 @media (max-width: 640px) {
 	/* The twine wraps are unreadable at this size and just add noise. */
-	.nt-mh__rivets { display: none; }
 	.nt-mh__grain { background-size: 60% auto; }
 }
 

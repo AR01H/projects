@@ -227,19 +227,6 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 
 			<div class="nt-mh__board">
 
-				<?php /* Frame and timber are separate masked layers so the banner
-				         silhouette (bowed top AND bottom) can be cut from both,
-				         while the lettering above them stays unmasked. */ ?>
-				<span class="nt-mh__frame" aria-hidden="true"></span>
-				<span class="nt-mh__panel" aria-hidden="true">
-					<span class="nt-mh__grain"></span>
-					<span class="nt-mh__relief"></span>
-					<span class="nt-mh__shade"></span>
-					<span class="nt-mh__gloss"></span>
-					<span class="nt-mh__cracks"></span>
-				</span>
-				<span class="nt-mh__rivets" aria-hidden="true"></span>
-
 				<h1 class="nt-mh__title" id="<?php echo esc_attr( $mh_id( 'title' ) ); ?>" data-nt-mh-fit>
 					<svg class="nt-mh__title-svg" viewBox="0 0 1200 330"
 					     preserveAspectRatio="xMidYMid meet" focusable="false"

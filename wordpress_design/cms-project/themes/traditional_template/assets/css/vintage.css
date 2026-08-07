@@ -576,7 +576,7 @@
 	display: grid;
 	grid-template-columns: 1.6fr 1fr 1fr 1fr;
 	gap: 30px;
-	padding-top: 15px;
+	padding-top: 25px;
 }
 .nt-footer__col {
 	position: relative;
@@ -833,29 +833,7 @@
 @media (max-width: 700px), (prefers-reduced-motion: reduce) {
 	.nt-nav::before { filter: none; opacity: 0.16; }
 }
-/* Site content: push everything below the now-fixed header, except the home
-   page where the header intentionally blends over the hero (body.nt-hero-top).
-   The extra offset clears the logo artwork, which intentionally hangs below
-   the nav bar itself (see .nt-nav__logo-img height + negative margin below). */
-body:not(.nt-hero-top) .nt-main {
-	/* +70px was sized when the first section had no padding of its own. Every
-	   inner page now opens with a section that brings its own, so this only
-	   has to clear the logo, which hangs ~40px below the bar. */
-	padding-top: calc(var(--nt-nav-height) + 42px);
-}
-@media (max-width: 900px) {
-	body:not(.nt-hero-top) .nt-main {
-		padding-top: calc(var(--nt-nav-height) + 30px);
-	}
-}
-/* Torn edge along the bottom of the bar.
-   This was a smooth wave tiled every 200px in a hardcoded cream (#ecd7aa) -
-   the repeat was obvious on a wide screen and the colour could not follow the
-   palette. Now it is a flat strip in a palette colour, cut to shape by a mask,
-   so it never repeats and re-skins with the theme.
 
-   Masking the strip rather than the header matters: the logo hangs BELOW the
-   bar on a negative margin, and a mask on .nt-nav would slice it off. */
 .nt-nav::after {
 	content: '';
 	position: absolute;
@@ -3418,7 +3396,7 @@ body.design-traditional .nt-page-hero {
 	padding-bottom: 1.75rem !important;
 }
 /* Trim the gap the fixed nav reserves before the first section. */
-body.nt-inner .nt-main { padding-top: calc(var(--nt-nav-height) + 16px); }
+body.nt-inner .nt-main { padding-top: 16px; }
 
 /* Catch-all: every remaining emoji-as-icon slot gets the same vintage-ink
    monochrome treatment, so no full-colour glyph survives anywhere. */
@@ -4277,7 +4255,6 @@ img.nt-rough-strong {
    The grade is repeated inside each rule because `filter` is a single
    property: setting the bump alone would drop the house grade, and these
    attribute selectors outrank the per-component sepia rules. */
-.site-main img[data-bump="1"] { filter: var(--nt-photo-grade) url(#nt-bump-1); }
 .site-main img[data-bump="2"] { filter: var(--nt-photo-grade) url(#nt-bump-2); }
 
 /* Hover already returns colour on gallery photos; keep the relief but let

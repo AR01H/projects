@@ -931,8 +931,6 @@ body.design-traditional .nt-btn:focus-visible {
 .nt-nav__logo-img,
 .custom-logo { height: 92px !important; }
 
-body:not(.nt-hero-top) .nt-main { padding-top: calc(var(--nt-nav-height) + 34px); }
-
 @media (max-width: 900px) {
 	.nt-nav__logo {
 		padding: 4px 9px 8px !important;
@@ -941,7 +939,6 @@ body:not(.nt-hero-top) .nt-main { padding-top: calc(var(--nt-nav-height) + 34px)
 	}
 	.nt-nav__logo-img,
 	.custom-logo { height: 66px !important; }
-	body:not(.nt-hero-top) .nt-main { padding-top: calc(var(--nt-nav-height) + 24px); }
 }
 @media (max-width: 560px) {
 	.nt-nav__logo-img,
