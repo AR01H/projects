@@ -59,20 +59,200 @@ class AH_Notice_Helper {
 		}
 		?>
 		<?php
+		// Legacy named colours; the admin colour picker saves a plain hex now.
 		$badge_palette = array(
-			'green'  => array( 'bg' => 'grey', 'color' => '#15803d' ),
-			'red'    => array( 'bg' => 'grey', 'color' => '#b91c1c' ),
-			'blue'   => array( 'bg' => 'grey', 'color' => '#1d4ed8' ),
-			'orange' => array( 'bg' => 'grey', 'color' => '#c2410c' ),
-			'purple' => array( 'bg' => 'grey', 'color' => '#7c3aed' ),
+			'green'  => '#15803d',
+			'red'    => '#b91c1c',
+			'blue'   => '#1d4ed8',
+			'orange' => '#c2410c',
+			'purple' => '#7c3aed',
 		);
 		$resolve_badge = static function( string $color ) use ( $badge_palette ): array {
-			if ( isset( $badge_palette[ $color ] ) ) return $badge_palette[ $color ];
-			if ( preg_match( '/^#[0-9a-fA-F]{6}$/', $color ) ) {
-				return array( 'bg' => $badge_palette[$color]['bg']??'grey', 'color' => $color );
+			if ( isset( $badge_palette[ $color ] ) ) {
+				$hex = $badge_palette[ $color ];
+			} elseif ( preg_match( '/^#[0-9a-fA-F]{6}$/', $color ) ) {
+				$hex = strtolower( $color );
+			} else {
+				$hex = $badge_palette['green'];
 			}
-			return ['bg'=>'grey','color'=>$badge_palette['green']];
+
+			$r = (int) hexdec( substr( $hex, 1, 2 ) );
+			$g = (int) hexdec( substr( $hex, 3, 2 ) );
+			$b = (int) hexdec( substr( $hex, 5, 2 ) );
+
+			// Perceived luminance picks the label colour, so a pale pick (yellow,
+			// mint) gets dark text instead of white-on-white.
+			$lum = ( 0.2126 * $r + 0.7152 * $g + 0.0722 * $b ) / 255;
+
+			return array(
+				'bg'    => $hex,
+				'color' => $lum > 0.62 ? '#111827' : '#ffffff',
+				'glow'  => sprintf( 'rgba(%d,%d,%d,.40)', $r, $g, $b ),
+			);
 		};
+
+		// Badge colours are the only per-notice values that were inline, so they
+		// become id-scoped custom properties and the markup carries no style attribute.
+		$notice_vars = '';
+		foreach ( $to_render as $n ) {
+			$p = $resolve_badge( $n->badge_color ?? 'green' );
+			$notice_vars .= sprintf(
+				"\t\t#ah-sn-%d { --ah-sn-badge-bg:%s; --ah-sn-badge-color:%s; --ah-sn-badge-glow:%s; }\n",
+				(int) $n->id,
+				$p['bg'],
+				$p['color'],
+				$p['glow']
+			);
+		}
+		?>
+		<?php /* Styles first so nothing flashes before the rules parse. */ ?>
+		<style id="ah-sn-styles">
+<?php echo $notice_vars; // phpcs:ignore WordPress.Security.EscapeOutput -- built from the badge palette above. ?>
+
+		/* ── Modal shell ─────────────────────────────────────────────────── */
+		.ah-sn-modal {
+			display:none;
+			position:fixed; inset:0; z-index:99999;
+			align-items:center; justify-content:center;
+			padding:1rem;
+		}
+		.ah-sn-popup .ah-sn-backdrop--modal {
+			position:absolute; inset:0;
+			background:rgba(10,25,47,.55);
+			backdrop-filter:blur(3px);
+		}
+		.ah-sn-popup .ah-sn-card-wrap { position:relative; max-width:520px; width:100%; }
+		.ah-sn-popup .ah-sn-card--modal {
+			position:relative; z-index:1;
+			background:#fff; border-radius:4px;
+			width:100%; max-height:88vh;
+			display:flex; flex-direction:column; overflow:hidden;
+			box-shadow:0 24px 64px rgba(10,25,47,.28);
+		}
+
+		/* ── Corner shell ────────────────────────────────────────────────── */
+		.ah-sn-corner {
+			display:none;
+			position:fixed; bottom:24px; right:24px; z-index:99999;
+			width:320px; max-width:calc(100vw - 32px);
+		}
+		.ah-sn-popup .ah-sn-card--corner {
+			position:relative;
+			background:#fff; border-radius:16px; overflow:hidden;
+			box-shadow:0 12px 40px rgba(10,25,47,.22);
+			border:1px solid rgba(0,0,0,.06);
+		}
+
+		/* ── Close button ────────────────────────────────────────────────── */
+		.ah-sn-popup .ah-sn-close {
+			position:absolute; z-index:2;
+			background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:50%;
+			cursor:pointer;
+			display:flex; align-items:center; justify-content:center;
+			color:#6b7280;
+		}
+		.ah-sn-modal .ah-sn-close {
+			top:-16px; right:-16px;
+			width:32px; height:32px; font-size:18px;
+			box-shadow:0 2px 10px rgba(10,25,47,.2);
+		}
+		.ah-sn-corner .ah-sn-close {
+			top:-13px; right:-13px;
+			width:26px; height:26px; font-size:15px;
+			box-shadow:0 2px 8px rgba(10,25,47,.18);
+		}
+
+		/* ── Media ───────────────────────────────────────────────────────── */
+		.ah-sn-popup .ah-sn-media--modal {
+			width:100%; aspect-ratio:16/9; flex-shrink:0;
+			overflow:hidden; background:var(--color-primary,#0a192f);
+			position:relative;
+		}
+		.ah-sn-popup .ah-sn-media--corner {
+			width:100%; height:160px;
+			overflow:hidden; background:#f3f4f6;
+			position:relative;
+		}
+		.ah-sn-popup .ah-sn-image { width:100%; height:100%; display:block; }
+		.ah-sn-popup .ah-sn-image--modal  { object-fit:fit; }
+		.ah-sn-popup .ah-sn-image--corner { object-fit:cover; }
+
+		/* ── Badge ───────────────────────────────────────────────────────── */
+		.ah-sn-popup .ah-sn-badge {
+			display:inline-flex; align-items:center;
+			background:var(--ah-sn-badge-bg,#15803d);
+			color:var(--ah-sn-badge-color,#fff);
+			font-size:10px; font-weight:800;
+			line-height:1; white-space:nowrap;
+			border-radius:999px;
+			text-transform:uppercase; letter-spacing:.09em;
+			/* Hairline highlight on top + tinted glow below lifts the pill off the photo. */
+			box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 2px 8px var(--ah-sn-badge-glow,rgba(10,25,47,.35));
+		}
+		.ah-sn-popup .ah-sn-badge--over { position:absolute; }
+		/* Own right-aligned line rather than a float, so the heading keeps the
+		   full width instead of wrapping around the pill. */
+		.ah-sn-popup .ah-sn-badge--inline { display:flex; width:fit-content; }
+
+		/* Sits top-right of the banner; the close button clears it by sitting
+		   outside the card, so the two never overlap. */
+		.ah-sn-modal .ah-sn-badge          { padding:6px 12px; }
+		.ah-sn-modal .ah-sn-badge--over    { top:14px; right:16px; }
+		.ah-sn-modal .ah-sn-badge--inline  { margin:0 0 14px auto; }
+
+		.ah-sn-corner .ah-sn-badge         { padding:5px 10px; letter-spacing:.08em; }
+		.ah-sn-corner .ah-sn-badge--over   { top:10px; right:12px; }
+		.ah-sn-corner .ah-sn-badge--inline { margin:0 0 10px auto; }
+
+		/* ── Content ─────────────────────────────────────────────────────── */
+		.ah-sn-popup .ah-sn-content--modal  { padding:16px 18px 18px; overflow-y:auto; }
+		.ah-sn-popup .ah-sn-content--corner { padding:14px 16px 16px; position:relative; }
+
+		.ah-sn-popup .ah-sn-title {
+			font-weight:700;
+			color:var(--color-primary,#0a192f);
+			overflow-wrap:anywhere;
+		}
+		.ah-sn-popup .ah-sn-title--modal  { margin:0 0 .5rem; font-size:1.3rem; line-height:1.3; }
+		.ah-sn-popup .ah-sn-title--corner { margin:0 0 6px;   font-size:1rem;   line-height:1.35; }
+
+		/* overflow-wrap:anywhere stops a long unbroken string (pasted URL,
+		   stray keyboard mash) from pushing the card wider than the screen. */
+		.ah-sn-popup .ah-sn-msg { overflow-wrap:anywhere; }
+		.ah-sn-popup .ah-sn-msg--modal  { margin:0 0 1.25rem; color:#4b5563; font-size:.94rem; line-height:1.65; }
+		.ah-sn-popup .ah-sn-msg--corner { margin:0 0 12px;    color:#6b7280; font-size:.82rem; line-height:1.55; }
+
+		/* Styled here rather than relying on theme .btn classes, so the
+		   notice looks right on any theme the plugin is paired with. */
+		.ah-sn-popup .ah-sn-btn {
+			display:inline-block;
+			background:var(--color-primary,#0a192f);
+			color:#fff;
+			border-radius:8px;
+			font-weight:600;
+			text-decoration:none;
+		}
+		.ah-sn-popup .ah-sn-btn--modal  { padding:.6rem 1.4rem;  font-size:.9rem;  line-height:1.2; }
+		.ah-sn-popup .ah-sn-btn--corner { padding:.45rem 1.1rem; font-size:.82rem; }
+
+		.ah-sn-title.ah-sn-title--modal{
+			display:none;
+		}
+		/* ── Show / hide + motion ────────────────────────────────────────── */
+		.ah-sn-modal.ah-sn-show { display:flex !important; animation:ahSnModalIn .28s ease both; }
+		@keyframes ahSnModalIn { from { opacity:0; } to { opacity:1; } }
+		.ah-sn-modal.ah-sn-show > div:nth-child(2) { animation:ahSnCardIn .3s ease both; }
+		@keyframes ahSnCardIn { from { opacity:0;transform:translateY(28px) scale(.96); } to { opacity:1;transform:none; } }
+
+		.ah-sn-corner.ah-sn-show { display:block !important; animation:ahSnCornerIn .35s cubic-bezier(.22,.68,0,1.2) both; }
+		@keyframes ahSnCornerIn { from { opacity:0;transform:translateY(40px); } to { opacity:1;transform:none; } }
+
+		@media (max-width:540px) {
+			.ah-sn-corner { bottom:12px !important; right:12px !important; width:calc(100vw - 24px) !important; }
+		}
+		</style>
+
+		<?php
 		foreach ( $to_render as $n ) :
 			$id         = (int) $n->id;
 			$title      = esc_html( $n->title );
@@ -82,82 +262,71 @@ class AH_Notice_Helper {
 			$btn_label  = esc_html( $n->button_label ?? '' );
 			$btn_url    = esc_url( $n->button_url ?? '' );
 			$badge      = esc_html( $n->badge_text ?? '' );
-			$bpal       = $resolve_badge( $n->badge_color ?? 'green' );
 			$is_corner  = ( $n->position ?? 'modal' ) === 'corner';
 		?>
 		<?php if ( $is_corner ) : ?>
-		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-corner ah-sn-popup--corner" role="dialog" aria-label="<?php echo $title; ?>"
-		     style="display:none;position:fixed;bottom:24px;right:24px;z-index:99999;width:320px;max-width:calc(100vw - 32px);">
-			<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close"
-			        style="position:absolute;top:-13px;right:-13px;z-index:2;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50%;width:26px;height:26px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;box-shadow:0 2px 8px rgba(10,25,47,.18);">&times;</button>
-			<div class="ah-sn-card ah-sn-card--corner" style="position:relative;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(10,25,47,.22);border:1px solid rgba(0,0,0,.06);">
+		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-corner ah-sn-popup--corner" role="dialog" aria-label="<?php echo $title; ?>">
+			<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close">&times;</button>
+			<div class="ah-sn-card ah-sn-card--corner">
 				<?php if ( $image ) : ?>
-				<div class="ah-sn-media ah-sn-media--corner" style="width:100%;height:160px;overflow:hidden;background:#f3f4f6;position:relative;">
+				<div class="ah-sn-media ah-sn-media--corner">
 					<?php if ( $is_video ) : ?>
-					<video class="ah-sn-image ah-sn-image--corner" src="<?php echo $image; ?>" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+					<video class="ah-sn-image ah-sn-image--corner" src="<?php echo $image; ?>" autoplay muted loop playsinline></video>
 					<?php else : ?>
-					<img class="ah-sn-image ah-sn-image--corner" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+					<img class="ah-sn-image ah-sn-image--corner" src="<?php echo $image; ?>" alt="">
 					<?php endif; ?>
 					<?php if ( $badge ) : ?>
-					<span style="position:absolute;top:10px;left:12px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;"><?php echo $badge; ?></span>
+					<span class="ah-sn-badge ah-sn-badge--over"><?php echo $badge; ?></span>
 					<?php endif; ?>
 				</div>
 				<?php endif; ?>
-				<div style="padding:14px 16px 16px;position:relative;">
+				<div class="ah-sn-content ah-sn-content--corner">
 					<?php if ( $badge && ! $image ) : ?>
-					<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;"><?php echo $badge; ?></span>
+					<span class="ah-sn-badge ah-sn-badge--inline"><?php echo $badge; ?></span>
 					<?php endif; ?>
 					<?php /* No right margin - close button sits outside the card. */ ?>
-					<h3 style="margin:0 0 6px;font-size:1rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.35;overflow-wrap:anywhere;"><?php echo $title; ?></h3>
+					<h3 class="ah-sn-title ah-sn-title--corner"><?php echo $title; ?></h3>
 					<?php if ( $message ) : ?>
-					<div style="margin:0 0 12px;color:#6b7280;font-size:.82rem;line-height:1.55;overflow-wrap:anywhere;"><?php echo $message; ?></div>
+					<div class="ah-sn-msg ah-sn-msg--corner"><?php echo $message; ?></div>
 					<?php endif; ?>
 					<?php if ( $btn_label && $btn_url ) : ?>
-					<a href="<?php echo $btn_url; ?>" style="display:inline-block;background:var(--color-primary,#0a192f);color:#fff;padding:.45rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;text-decoration:none;"><?php echo $btn_label; ?></a>
+					<a href="<?php echo $btn_url; ?>" class="ah-sn-btn ah-sn-btn--corner"><?php echo $btn_label; ?></a>
 					<?php endif; ?>
 				</div>
 			</div>
 		</div>
 		<?php else : ?>
-		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-modal ah-sn-popup--modal" role="dialog" aria-modal="true"
-		     style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:1rem;">
-			<div class="ah-sn-backdrop ah-sn-backdrop--modal" data-id="<?php echo $id; ?>"
-			     style="position:absolute;inset:0;background:rgba(10,25,47,.55);backdrop-filter:blur(3px);"></div>
-			<div class="ah-sn-card-wrap" style="position:relative;max-width:520px;width:100%;">
-				<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close"
-				        style="position:absolute;top:-16px;right:-16px;z-index:2;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;box-shadow:0 2px 10px rgba(10,25,47,.2);">&times;</button>
+		<div id="ah-sn-<?php echo $id; ?>" class="ah-sn-popup ah-sn-modal ah-sn-popup--modal" role="dialog" aria-modal="true">
+			<div class="ah-sn-backdrop ah-sn-backdrop--modal" data-id="<?php echo $id; ?>"></div>
+			<div class="ah-sn-card-wrap">
+				<button class="ah-sn-close" data-id="<?php echo $id; ?>" aria-label="Close">&times;</button>
 				<?php /* Column flex + max-height so a long message scrolls inside the
 				       card instead of running off the viewport. */ ?>
-				<div class="ah-sn-card ah-sn-card--modal" style="position:relative;z-index:1;background:#fff;border-radius:14px;width:100%;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(10,25,47,.28);">
+				<div class="ah-sn-card ah-sn-card--modal">
 					<?php if ( $image ) : ?>
-					<div class="ah-sn-media ah-sn-media--modal" style="width:100%;aspect-ratio:16/9;flex-shrink:0;overflow:hidden;background:var(--color-primary,#0a192f);position:relative;">
+					<div class="ah-sn-media ah-sn-media--modal">
 						<?php if ( $is_video ) : ?>
-						<video class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+						<video class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" autoplay muted loop playsinline></video>
 						<?php else : ?>
-						<img class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+						<img class="ah-sn-image ah-sn-image--modal" src="<?php echo $image; ?>" alt="">
 						<?php endif; ?>
 						<?php if ( $badge ) : ?>
-						<span style="position:absolute;top:14px;left:16px;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 2px 8px rgba(10,25,47,.18);"><?php echo $badge; ?></span>
+						<span class="ah-sn-badge ah-sn-badge--over"><?php echo $badge; ?></span>
 						<?php endif; ?>
 					</div>
 					<?php else : ?>
-					<div style="width:100%;height:5px;flex-shrink:0;background:linear-gradient(90deg,var(--color-primary,#2d5a44),<?php echo esc_attr( $bpal['bg'] ); ?>);"></div>
 					<?php endif; ?>
-					<div style="padding:16px 18px 18px;overflow-y:auto;">
+					<div class="ah-sn-content ah-sn-content--modal">
 						<?php if ( $badge && ! $image ) : ?>
-						<span style="display:inline-block;background:<?php echo esc_attr( $bpal['bg'] ); ?>;color:<?php echo esc_attr( $bpal['color'] ); ?>;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;"><?php echo $badge; ?></span>
+						<span class="ah-sn-badge ah-sn-badge--inline"><?php echo $badge; ?></span>
 						<?php endif; ?>
 						<?php /* No right margin: the close button sits outside the card now. */ ?>
-						<h2 style="margin:0 0 .5rem;font-size:1.3rem;font-weight:700;color:var(--color-primary,#0a192f);line-height:1.3;overflow-wrap:anywhere;"><?php echo $title; ?></h2>
+						<h2 class="ah-sn-title ah-sn-title--modal"><?php echo $title; ?></h2>
 						<?php if ( $message ) : ?>
-						<?php /* overflow-wrap:anywhere stops a long unbroken string (pasted URL,
-							   stray keyboard mash) from pushing the card wider than the screen. */ ?>
-						<div style="margin:0 0 1.25rem;color:#4b5563;font-size:.94rem;line-height:1.65;overflow-wrap:anywhere;"><?php echo $message; ?></div>
+						<div class="ah-sn-msg ah-sn-msg--modal"><?php echo $message; ?></div>
 						<?php endif; ?>
 						<?php if ( $btn_label && $btn_url ) : ?>
-						<?php /* Styled inline rather than relying on theme .btn classes, so the
-							   notice looks right on any theme the plugin is paired with. */ ?>
-						<a href="<?php echo $btn_url; ?>" class="btn btn-primary button" style="display:inline-block;background:var(--color-primary,#0a192f);color:#fff;padding:.6rem 1.4rem;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;line-height:1.2;"><?php echo $btn_label; ?></a>
+						<a href="<?php echo $btn_url; ?>" class="btn btn-primary button ah-sn-btn ah-sn-btn--modal"><?php echo $btn_label; ?></a>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -165,22 +334,6 @@ class AH_Notice_Helper {
 		</div>
 		<?php endif; ?>
 		<?php endforeach; ?>
-
-		<style>
-		.ah-sn-modal { display:none; }
-		.ah-sn-modal.ah-sn-show { display:flex !important; animation:ahSnModalIn .28s ease both; }
-		@keyframes ahSnModalIn { from { opacity:0; } to { opacity:1; } }
-		.ah-sn-modal.ah-sn-show > div:nth-child(2) { animation:ahSnCardIn .3s ease both; }
-		@keyframes ahSnCardIn { from { opacity:0;transform:translateY(28px) scale(.96); } to { opacity:1;transform:none; } }
-
-		.ah-sn-corner { display:none; }
-		.ah-sn-corner.ah-sn-show { display:block !important; animation:ahSnCornerIn .35s cubic-bezier(.22,.68,0,1.2) both; }
-		@keyframes ahSnCornerIn { from { opacity:0;transform:translateY(40px); } to { opacity:1;transform:none; } }
-
-		@media (max-width:540px) {
-			.ah-sn-corner { bottom:12px !important; right:12px !important; width:calc(100vw - 24px) !important; }
-		}
-		</style>
 
 		<script>
 		(function () {
