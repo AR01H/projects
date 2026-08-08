@@ -20,9 +20,9 @@
  * ADD A SETTINGS SCREEN (3 steps, no PHP handlers to write):
  *   1. Add a subtab under 'tabs' pointing at a view file.
  *   2. Add an option group under 'options' listing field => type.
- *   3. Create the view: a form posting action=nt_save_{group}
+ *   3. Create the view: a form posting action=app_save_{group}
  *      (see admin/tabs/settings/sub-general.php for the pattern).
- *   Read values anywhere with nt_option( 'group', 'field', 'default' ).
+ *   Read values anywhere with app_option( 'group', 'field', 'default' ).
  *
  * Field types -> sanitizer:
  *   text -> sanitize_text_field   textarea -> sanitize_textarea_field
@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || exit;
 return array(
 
 	'menu' => array(
-		'slug'       => 'nt-theme',
+		'slug'       => 'app-theme',
 		'page_title' => 'Theme Control Center',
 		'menu_title' => 'Theme',
 		'capability' => 'manage_options',
@@ -108,7 +108,7 @@ return array(
 			),
 		),
 
-		// Sidebar submenu 2: contact form inbox (nt_submissions table -
+		// Sidebar submenu 2: contact form inbox (app_submissions table -
 		// see config/database.php + handlers/ajax/contact.php).
 		'contact_inbox' => array(
 			'label' => 'Contact Submissions',
@@ -129,7 +129,7 @@ return array(
 	//   - capability + nonce are checked BEFORE the callback runs,
 	//   - the callback returns a status message shown back on the tab.
 	// Render a group of tools on any admin view with:
-	//   nt_admin_tools_render( 'maintenance' );
+	//   app_admin_tools_render( 'maintenance' );
 	//
 	// ADD A TOOL (2 steps): add an entry here + write the callback in
 	// admin/includes/tools.php. No handler/nonce/form code needed.
@@ -140,7 +140,7 @@ return array(
 			'title'    => 'Clear Object Cache',
 			'desc'     => 'Flush the WordPress object cache (wp_cache_flush).',
 			'button'   => 'Clear Cache',
-			'callback' => 'nt_tool_clear_object_cache',
+			'callback' => 'app_tool_clear_object_cache',
 			'group'    => 'maintenance',
 		),
 
@@ -148,7 +148,7 @@ return array(
 			'title'    => 'Clear Transients',
 			'desc'     => 'Delete all transients from the options table (cached API calls, expired leftovers).',
 			'button'   => 'Clear Transients',
-			'callback' => 'nt_tool_clear_transients',
+			'callback' => 'app_tool_clear_transients',
 			'group'    => 'maintenance',
 		),
 
@@ -156,7 +156,7 @@ return array(
 			'title'    => 'Flush Rewrite Rules',
 			'desc'     => 'Rebuild permalinks. Run after changing page slugs or REST routes.',
 			'button'   => 'Flush',
-			'callback' => 'nt_tool_flush_rewrites',
+			'callback' => 'app_tool_flush_rewrites',
 			'group'    => 'maintenance',
 		),
 
@@ -164,7 +164,7 @@ return array(
 			'title'    => 'Sync Pages',
 			'desc'     => 'Create WP page rows for every entry in config/pages.php (existing pages are skipped) and set the front page.',
 			'button'   => 'Sync Now',
-			'callback' => 'nt_tool_sync_pages',
+			'callback' => 'app_tool_sync_pages',
 			'group'    => 'pages',
 		),
 
@@ -172,7 +172,7 @@ return array(
 			'title'    => 'Export Settings',
 			'desc'     => 'Download all theme option groups as a JSON file.',
 			'button'   => 'Download JSON',
-			'callback' => 'nt_tool_export_settings',
+			'callback' => 'app_tool_export_settings',
 			'group'    => 'import-export',
 		),
 
@@ -180,7 +180,7 @@ return array(
 			'title'    => 'Install All Tables',
 			'desc'     => 'Check every table in config/database.php and create any that are missing (dbDelta - safe to re-run).',
 			'button'   => 'Install / Repair All',
-			'callback' => 'nt_tool_install_tables',
+			'callback' => 'app_tool_install_tables',
 			'group'    => 'database',
 		),
 
@@ -190,26 +190,26 @@ return array(
 			'title'    => 'Import Settings',
 			'desc'     => 'Restore theme option groups from an exported JSON file.',
 			'button'   => 'Import',
-			'callback' => 'nt_tool_import_settings',
+			'callback' => 'app_tool_import_settings',
 			'group'    => '_hidden',
 		),
 
 		// Per-table install button, rendered per row by sub-database.php.
 		'install_table' => array(
 			'title'    => 'Install Table',
-			'callback' => 'nt_tool_install_table',
+			'callback' => 'app_tool_install_table',
 			'group'    => '_hidden',
 		),
 
 		// Contact Submissions row actions (forms rendered by tab-contact-inbox.php).
 		'submission_status' => array(
 			'title'    => 'Update Submission Status',
-			'callback' => 'nt_tool_submission_status',
+			'callback' => 'app_tool_submission_status',
 			'group'    => '_hidden',
 		),
 		'submission_delete' => array(
 			'title'    => 'Delete Submission',
-			'callback' => 'nt_tool_submission_delete',
+			'callback' => 'app_tool_submission_delete',
 			'group'    => '_hidden',
 		),
 	),
@@ -218,7 +218,7 @@ return array(
 	'options' => array(
 
 		'general' => array(
-			'option' => 'nt_general',
+			'option' => 'app_general',
 			'fields' => array(
 				'tagline'      => 'text',
 				'phone'        => 'text',
@@ -229,7 +229,7 @@ return array(
 		),
 
 		'social' => array(
-			'option' => 'nt_social',
+			'option' => 'app_social',
 			'fields' => array(
 				'facebook'  => 'url',
 				'instagram' => 'url',

@@ -30,7 +30,7 @@ return array(
 		'src/Consent/class-consent.php',           // NT_Consent - cookie consent config (cookies.json).
 		'src/Sections/class-section-renderer.php', // NT_Section_Renderer - renders page_sections.json.
 
-		'includes/site-helpers.php',  // Thin wrappers: nt_render_sections(), nt_icon(), nt_alert(), nt_dialog()…
+		'includes/site-helpers.php',  // Thin wrappers: app_render_sections(), app_icon(), app_alert(), app_dialog()…
 		// 'includes/data-services.php',
 		// 'includes/shortcodes.php',
 	),

@@ -17,9 +17,9 @@
  */
 defined( 'ABSPATH' ) || exit;
 ?>
-<svg class="nt-svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+<svg class="app-svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
 	<defs>
-		<filter id="nt-bump-1" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+		<filter id="app-bump-1" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
 			<feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="3" seed="5" result="grain"/>
 			<feDiffuseLighting in="grain" lighting-color="#ffffff" surfaceScale="1.5" result="relief">
 				<feDistantLight azimuth="232" elevation="62"/>
@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 			             k1="1.02" k2="0" k3="0" k4="-0.02"/>
 		</filter>
 
-		<filter id="nt-bump-2" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+		<filter id="app-bump-2" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
 			<feTurbulence type="fractalNoise" baseFrequency="0.42" numOctaves="4" seed="23" result="grain"/>
 			<feDiffuseLighting in="grain" lighting-color="#fffaf0" surfaceScale="2.1" result="relief">
 				<feDistantLight azimuth="145" elevation="55"/>

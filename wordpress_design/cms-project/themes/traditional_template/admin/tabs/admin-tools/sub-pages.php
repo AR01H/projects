@@ -6,11 +6,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
-nt_admin_tools_render( 'pages' );
+app_admin_tools_render( 'pages' );
 ?>
 
 <h2><?php esc_html_e( 'Page Registry Status', NT_TEXT_DOMAIN ); ?></h2>
-<table class="widefat striped nt-admin-table">
+<table class="widefat striped app-admin-table">
 	<thead>
 		<tr>
 			<th><?php esc_html_e( 'Slug', NT_TEXT_DOMAIN ); ?></th>
@@ -20,7 +20,7 @@ nt_admin_tools_render( 'pages' );
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ( nt_config( 'pages' ) as $nt_slug => $nt_def ) : ?>
+		<?php foreach ( app_config( 'pages' ) as $nt_slug => $nt_def ) : ?>
 			<?php
 			$nt_template = (string) ( $nt_def['template'] ?? '' );
 			$nt_file_ok  = '' !== $nt_template && is_file( NT_THEME_DIR . '/' . $nt_template );

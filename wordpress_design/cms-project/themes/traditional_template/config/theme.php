@@ -7,7 +7,7 @@
  *
  * To rebrand this template for a new site:
  *   1. Change the values below.
- *   2. Find/replace the function prefix:  nt_  -> yourprefix_
+ *   2. Find/replace the function prefix:  app_  -> yourprefix_
  *      and the constant prefix:           NT_  -> YOURPREFIX_
  *      (see ARCHITECTURE.md, "Renaming the prefix").
  */
@@ -32,7 +32,7 @@ define( 'NT_BRAND_EMAIL', 'hello@thecanehouseuk.com' );
 // ---------------------------------------------------------------------------
 // Global content term levels (the old core_terms.php).
 // The 3-level content hierarchy used across templates, admin labels and
-// queries. nt_term_label() / nt_terms_tree() (admin/includes/terms.php) and
+// queries. app_term_label() / app_terms_tree() (admin/includes/terms.php) and
 // the demo tree in admin/data/terms.json build on these.
 // ---------------------------------------------------------------------------
 define( 'NT_TERM_PARENT',  'Guide' );     // level 1, e.g. Guide / Topic / Service

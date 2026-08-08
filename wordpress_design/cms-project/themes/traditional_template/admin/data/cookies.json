@@ -11,7 +11,7 @@
 
   "banner": {
     "aria": "Cookie notice",
-    "kicker": "A quick note",
+    "kicker": "",
     "title": "We use a few cookies",
     "text": "Some keep the site working, the rest only help us see which pages people actually read. You choose.",
     "policy_label": "Read the cookie policy",

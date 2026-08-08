@@ -14,7 +14,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $sb_source = ( isset( $source ) && $source ) ? (string) $source : 'stats';
-$stats     = nt_data( $sb_source ) ?: array();
+$stats     = app_data( $sb_source ) ?: array();
 if ( empty( $stats ) || ! is_array( $stats ) ) {
 	return;
 }
@@ -26,8 +26,8 @@ $icons = array(
 	'years'   => '🏆',
 );
 ?>
-<div class="nt-stats-bar">
-	<div class="nt-stats-bar__inner container">
+<div class="app-stats-bar">
+	<div class="app-stats-bar__inner container">
 		<?php foreach ( $stats as $key => $value ) :
 			$icon = $icons[ $key ] ?? '';
 			// Format: 'M+' for very large counts (glasses), '+' otherwise.
@@ -39,11 +39,11 @@ $icons = array(
 			}
 			$label = ucfirst( (string) $key );
 		?>
-			<div class="nt-stats-bar__item">
-				<span class="nt-stats-bar__icon"><?php echo esc_html( $icon ); ?></span>
+			<div class="app-stats-bar__item">
+				<span class="app-stats-bar__icon"><?php echo esc_html( $icon ); ?></span>
 				<div>
-					<div class="nt-stats-bar__num"><?php echo esc_html( $display ); ?></div>
-					<div class="nt-stats-bar__label"><?php echo esc_html( $label ); ?></div>
+					<div class="app-stats-bar__num"><?php echo esc_html( $display ); ?></div>
+					<div class="app-stats-bar__label"><?php echo esc_html( $label ); ?></div>
 				</div>
 			</div>
 		<?php endforeach; ?>

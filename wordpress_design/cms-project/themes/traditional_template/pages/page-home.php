@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
-<div class="site-main nt-trad-home" id="main-content">
-	<?php nt_render_sections( 'home' ); ?>
+<div class="site-main app-trad-home" id="main-content">
+	<?php app_render_sections( 'home' ); ?>
 </div>
 <?php get_footer(); ?>

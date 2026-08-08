@@ -40,13 +40,13 @@ $nt_block_cfg = static function ( $key ) use ( $nt_side ) {
 
 <?php $nt_search = $nt_block_cfg( 'search' ); ?>
 <?php if ( ! empty( $nt_search['show'] ) ) : ?>
-	<div class="nt-side-block nt-side-block--search">
-		<form class="nt-side-search" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-			<label class="screen-reader-text" for="nt-blog-search"><?php echo esc_html( NT_Ui::label( 'search' ) ); ?></label>
-			<input id="nt-blog-search" class="nt-form-input" type="search" name="s"
+	<div class="app-side-block app-side-block--search">
+		<form class="app-side-search" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+			<label class="screen-reader-text" for="app-blog-search"><?php echo esc_html( NT_Ui::label( 'search' ) ); ?></label>
+			<input id="app-blog-search" class="app-form-input" type="search" name="s"
 			       placeholder="<?php echo esc_attr( $nt_search['placeholder'] ?? NT_Ui::label( 'search' ) ); ?>"
 			       value="<?php echo esc_attr( get_search_query() ); ?>">
-			<button type="submit" class="nt-side-search__go" aria-label="<?php echo esc_attr( NT_Ui::label( 'search' ) ); ?>">
+			<button type="submit" class="app-side-search__go" aria-label="<?php echo esc_attr( NT_Ui::label( 'search' ) ); ?>">
 				<?php NT_Icons::render( 'search' ); ?>
 			</button>
 		</form>
@@ -59,16 +59,16 @@ if ( ! empty( $nt_cats['show'] ) ) :
 	$nt_terms = get_categories( array( 'hide_empty' => true ) );
 	if ( ! empty( $nt_terms ) && ! is_wp_error( $nt_terms ) ) :
 		?>
-		<div class="nt-side-block">
+		<div class="app-side-block">
 			<?php if ( ! empty( $nt_cats['heading'] ) ) : ?>
-				<h3 class="nt-side-block__title"><?php echo esc_html( $nt_cats['heading'] ); ?></h3>
+				<h3 class="app-side-block__title"><?php echo esc_html( $nt_cats['heading'] ); ?></h3>
 			<?php endif; ?>
-			<ul class="nt-side-list">
+			<ul class="app-side-list">
 				<?php foreach ( $nt_terms as $nt_term ) : ?>
 					<li>
 						<a href="<?php echo esc_url( get_category_link( $nt_term->term_id ) ); ?>">
 							<span><?php echo esc_html( $nt_term->name ); ?></span>
-							<span class="nt-side-list__count"><?php echo esc_html( (string) $nt_term->count ); ?></span>
+							<span class="app-side-list__count"><?php echo esc_html( (string) $nt_term->count ); ?></span>
 						</a>
 					</li>
 				<?php endforeach; ?>
@@ -89,22 +89,22 @@ if ( ! empty( $nt_recent['show'] ) ) :
 	) );
 	if ( ! empty( $nt_recent_posts ) ) :
 		?>
-		<div class="nt-side-block">
+		<div class="app-side-block">
 			<?php if ( ! empty( $nt_recent['heading'] ) ) : ?>
-				<h3 class="nt-side-block__title"><?php echo esc_html( $nt_recent['heading'] ); ?></h3>
+				<h3 class="app-side-block__title"><?php echo esc_html( $nt_recent['heading'] ); ?></h3>
 			<?php endif; ?>
-			<ul class="nt-side-posts">
+			<ul class="app-side-posts">
 				<?php foreach ( $nt_recent_posts as $nt_post ) : ?>
-					<li class="nt-side-post">
+					<li class="app-side-post">
 						<a href="<?php echo esc_url( get_permalink( $nt_post ) ); ?>">
 							<?php if ( has_post_thumbnail( $nt_post ) ) : ?>
-								<span class="nt-side-post__thumb">
+								<span class="app-side-post__thumb">
 									<?php echo get_the_post_thumbnail( $nt_post, 'thumbnail', array( 'loading' => 'lazy', 'alt' => '' ) ); ?>
 								</span>
 							<?php endif; ?>
-							<span class="nt-side-post__copy">
-								<span class="nt-side-post__title"><?php echo esc_html( get_the_title( $nt_post ) ); ?></span>
-								<span class="nt-side-post__date"><?php echo esc_html( get_the_date( '', $nt_post ) ); ?></span>
+							<span class="app-side-post__copy">
+								<span class="app-side-post__title"><?php echo esc_html( get_the_title( $nt_post ) ); ?></span>
+								<span class="app-side-post__date"><?php echo esc_html( get_the_date( '', $nt_post ) ); ?></span>
 							</span>
 						</a>
 					</li>
@@ -122,13 +122,13 @@ if ( ! empty( $nt_tags['show'] ) ) :
 	$nt_tag_list = get_tags( array( 'hide_empty' => true, 'number' => 18 ) );
 	if ( ! empty( $nt_tag_list ) && ! is_wp_error( $nt_tag_list ) ) :
 		?>
-		<div class="nt-side-block">
+		<div class="app-side-block">
 			<?php if ( ! empty( $nt_tags['heading'] ) ) : ?>
-				<h3 class="nt-side-block__title"><?php echo esc_html( $nt_tags['heading'] ); ?></h3>
+				<h3 class="app-side-block__title"><?php echo esc_html( $nt_tags['heading'] ); ?></h3>
 			<?php endif; ?>
-			<div class="nt-side-tags">
+			<div class="app-side-tags">
 				<?php foreach ( $nt_tag_list as $nt_tag ) : ?>
-					<a class="nt-side-tag" href="<?php echo esc_url( get_tag_link( $nt_tag->term_id ) ); ?>">
+					<a class="app-side-tag" href="<?php echo esc_url( get_tag_link( $nt_tag->term_id ) ); ?>">
 						<?php echo esc_html( $nt_tag->name ); ?>
 					</a>
 				<?php endforeach; ?>
@@ -144,24 +144,24 @@ endif;
 // the site uses, so the wording is edited in exactly one place.
 foreach ( NT_Blocks::many( (array) ( $nt_side['blocks'] ?? array() ) ) as $nt_promo ) :
 	?>
-	<div class="nt-side-block nt-side-block--promo">
+	<div class="app-side-block app-side-block--promo">
 		<?php if ( '' !== $nt_promo['icon'] ) : ?>
-			<span class="nt-side-promo__icon" aria-hidden="true">
+			<span class="app-side-promo__icon" aria-hidden="true">
 				<?php echo NT_Icons::get_or_text( $nt_promo['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 			</span>
 		<?php endif; ?>
-		<h3 class="nt-side-block__title"><?php echo esc_html( $nt_promo['title'] ); ?></h3>
+		<h3 class="app-side-block__title"><?php echo esc_html( $nt_promo['title'] ); ?></h3>
 		<?php if ( '' !== $nt_promo['text'] ) : ?>
-			<p class="nt-side-promo__text"><?php echo esc_html( $nt_promo['text'] ); ?></p>
+			<p class="app-side-promo__text"><?php echo esc_html( $nt_promo['text'] ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( '' !== $nt_promo['label'] ) : ?>
 			<?php if ( '' !== $nt_promo['dialog'] && NT_Dialog::exists( $nt_promo['dialog'] ) ) : ?>
-				<button class="nt-side-promo__cta" <?php nt_dialog_trigger( $nt_promo['dialog'] ); ?>>
+				<button class="app-side-promo__cta" <?php app_dialog_trigger( $nt_promo['dialog'] ); ?>>
 					<?php echo esc_html( $nt_promo['label'] ); ?>
 				</button>
 			<?php elseif ( '' !== $nt_promo['url'] ) : ?>
-				<a class="nt-side-promo__cta" href="<?php echo esc_url( nt_link( $nt_promo['url'] ) ); ?>">
+				<a class="app-side-promo__cta" href="<?php echo esc_url( app_link( $nt_promo['url'] ) ); ?>">
 					<?php echo esc_html( $nt_promo['label'] ); ?>
 				</a>
 			<?php endif; ?>

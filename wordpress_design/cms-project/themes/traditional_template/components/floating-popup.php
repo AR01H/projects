@@ -18,7 +18,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$ui      = nt_data( 'ui' )['floating_toolbar'] ?? array();
+$ui      = app_data( 'ui' )['floating_toolbar'] ?? array();
 $socials = NT_Data_Provider::get( 'footer' )['socials'] ?? array();
 
 $side = ( 'left' === ( $ui['side'] ?? 'right' ) ) ? 'left' : 'right';
@@ -49,17 +49,17 @@ if ( empty( $buttons ) ) {
 	return;
 }
 ?>
-<div class="nt-floating-toolbar nt-floating-toolbar--<?php echo esc_attr( $side ); ?>">
+<div class="app-floating-toolbar app-floating-toolbar--<?php echo esc_attr( $side ); ?>">
 	<?php foreach ( $buttons as $nt_btn ) : ?>
-		<a href="<?php echo esc_url( nt_link( $nt_btn['url'] ) ); ?>"
-		   class="nt-ftoolbar-btn"
+		<a href="<?php echo esc_url( app_link( $nt_btn['url'] ) ); ?>"
+		   class="app-ftoolbar-btn"
 		   aria-label="<?php echo esc_attr( $nt_btn['aria'] ); ?>"
 			<?php if ( $nt_btn['external'] ) : ?>target="_blank" rel="noopener"<?php endif; ?>>
-			<span class="nt-ftoolbar-icon" aria-hidden="true">
+			<span class="app-ftoolbar-icon" aria-hidden="true">
 				<?php echo NT_Icons::get_or_text( $nt_btn['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 			</span>
 			<?php if ( '' !== $nt_btn['label'] ) : ?>
-				<span class="nt-ftoolbar-label"><?php echo esc_html( $nt_btn['label'] ); ?></span>
+				<span class="app-ftoolbar-label"><?php echo esc_html( $nt_btn['label'] ); ?></span>
 			<?php endif; ?>
 		</a>
 	<?php endforeach; ?>

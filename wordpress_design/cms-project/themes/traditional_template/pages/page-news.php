@@ -18,12 +18,12 @@ $nt_news     = new WP_Query( array(
 	'posts_per_page'      => $nt_per_page,
 	'ignore_sticky_posts' => true,
 ) );
-$nt_hdr = nt_data( 'page_headers' )['news'] ?? array();
+$nt_hdr = app_data( 'page_headers' )['news'] ?? array();
 ?>
-<div class="nt-container nt-section">
+<div class="app-container app-section">
 
 	<?php
-	nt_component( 'parts/page_header', array(
+	app_component( 'parts/page_header', array(
 		'tag'      => $nt_hdr['tag']      ?? '',
 		'icon'     => $nt_hdr['icon']     ?? '',
 		'title'    => $nt_hdr['title']    ?? __( 'News & Updates', NT_TEXT_DOMAIN ),
@@ -32,24 +32,24 @@ $nt_hdr = nt_data( 'page_headers' )['news'] ?? array();
 	) );
 	?>
 
-	<div class="nt-news-controls">
+	<div class="app-news-controls">
 		<input type="search" placeholder="<?php esc_attr_e( 'Search news...', NT_TEXT_DOMAIN ); ?>" data-nt-news-search>
 	</div>
 
-	<div class="nt-grid nt-grid-3" data-nt-news-grid data-per-page="<?php echo esc_attr( (string) $nt_per_page ); ?>" data-total-pages="<?php echo esc_attr( (string) $nt_news->max_num_pages ); ?>">
+	<div class="app-grid app-grid-3" data-nt-news-grid data-per-page="<?php echo esc_attr( (string) $nt_per_page ); ?>" data-total-pages="<?php echo esc_attr( (string) $nt_news->max_num_pages ); ?>">
 		<?php
 		while ( $nt_news->have_posts() ) {
 			$nt_news->the_post();
-			nt_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+			app_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
 		}
 		wp_reset_postdata();
 		?>
 	</div>
 
-	<p class="nt-center">
-		<button class="nt-btn" data-nt-news-more <?php echo ( $nt_news->max_num_pages <= 1 ) ? 'hidden' : ''; ?>><?php esc_html_e( 'Load More', NT_TEXT_DOMAIN ); ?></button>
+	<p class="app-center">
+		<button class="app-btn" data-nt-news-more <?php echo ( $nt_news->max_num_pages <= 1 ) ? 'hidden' : ''; ?>><?php esc_html_e( 'Load More', NT_TEXT_DOMAIN ); ?></button>
 	</p>
-	<p class="nt-center nt-news-status" data-nt-news-status role="status" aria-live="polite"></p>
+	<p class="app-center app-news-status" data-nt-news-status role="status" aria-live="polite"></p>
 
 </div>
 <?php

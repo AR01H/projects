@@ -33,7 +33,7 @@ class NT_Ui {
 
 	/**
 	 * tone => icon name in NT_Icons. The array KEY is also the CSS modifier,
-	 * i.e. tone "warning" renders `.nt-alert--warning` / `.nt-dialog--warning`.
+	 * i.e. tone "warning" renders `.app-alert--warning` / `.app-dialog--warning`.
 	 */
 	public const TONES = array(
 		'info'     => 'info',
@@ -126,7 +126,7 @@ class NT_Ui {
 		if ( null !== $merged ) {
 			return $merged;
 		}
-		$data   = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$data   = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		$json   = ( is_array( $data ) && ! empty( $data['labels'] ) && is_array( $data['labels'] ) ) ? $data['labels'] : array();
 		$merged = array_merge( self::LABEL_FALLBACKS, array_map( 'strval', $json ) );
 		return $merged;
@@ -136,7 +136,7 @@ class NT_Ui {
 	 * An accessibility string from admin/data/ui.json -> "aria".
 	 */
 	public static function aria( string $key, string $default = '' ): string {
-		$data = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		$map  = ( is_array( $data ) && ! empty( $data['aria'] ) && is_array( $data['aria'] ) ) ? $data['aria'] : array();
 		return ( isset( $map[ $key ] ) && '' !== trim( (string) $map[ $key ] ) ) ? (string) $map[ $key ] : $default;
 	}
@@ -146,7 +146,7 @@ class NT_Ui {
 	 * such as toast duration). Kept out of CSS/JS so timings are editable too.
 	 */
 	public static function setting( string $key, $default = null ) {
-		$data = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		$map  = ( is_array( $data ) && ! empty( $data['behaviour'] ) && is_array( $data['behaviour'] ) ) ? $data['behaviour'] : array();
 		return array_key_exists( $key, $map ) ? $map[ $key ] : $default;
 	}
@@ -169,7 +169,7 @@ class NT_Ui {
 	 * and builds the markup. No user-facing copy and no markup template lives
 	 * in the JavaScript.
 	 *
-	 * Built at footer time (see nt_localize_ui_kit) so the dialog queue is
+	 * Built at footer time (see app_localize_ui_kit) so the dialog queue is
 	 * complete: only dialogs something on the page actually referenced are
 	 * shipped.
 	 *
@@ -197,14 +197,14 @@ class NT_Ui {
 				'tone'          => self::DEFAULT_TONE,
 				'size'          => self::DEFAULT_SIZE,
 				'toastDuration' => (int) self::setting( 'toast_duration', 5000 ),
-				'noticeStore'   => (string) self::setting( 'notice_store', 'nt_dismissed_notices' ),
-				'dialogStore'   => (string) self::setting( 'dialog_store', 'nt_seen_dialogs' ),
+				'noticeStore'   => (string) self::setting( 'notice_store', 'app_dismissed_notices' ),
+				'dialogStore'   => (string) self::setting( 'dialog_store', 'app_seen_dialogs' ),
 			),
 			// Data for the two things the browser renders on its own.
 			'dialogs'  => class_exists( 'NT_Dialog' ) ? NT_Dialog::js_dialogs() : array(),
 			'notices'  => class_exists( 'NT_Alert' ) ? NT_Alert::notices() : array(),
 			// Where the notice strip is inserted, in preference order.
-			'noticeMount' => '#nt-nav, .nt-nav, header',
+			'noticeMount' => '#app-nav, .app-nav, header',
 		);
 	}
 }

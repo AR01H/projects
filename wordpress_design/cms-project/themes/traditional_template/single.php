@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_hdr = nt_data( 'page_headers' )['blog_post'] ?? array();
+$nt_hdr = app_data( 'page_headers' )['blog_post'] ?? array();
 
 while ( have_posts() ) :
 	the_post();
@@ -38,7 +38,7 @@ while ( have_posts() ) :
 		$nt_poster_img = $nt_hdr['fallback_image'] ?? '';
 	}
 
-	nt_component( 'parts/page_header', array(
+	app_component( 'parts/page_header', array(
 		'tag'   => ( ! empty( $nt_cats ) && ! is_wp_error( $nt_cats ) ) ? $nt_cats[0]->name : ( $nt_hdr['tag'] ?? '' ),
 		'icon'  => $nt_hdr['icon'] ?? '',
 		'title' => get_the_title(),
@@ -46,48 +46,48 @@ while ( have_posts() ) :
 	) );
 	?>
 
-	<article <?php post_class( 'nt-entry nt-single' ); ?>>
-		<div class="container nt-entry__wrap">
+	<article <?php post_class( 'app-entry app-single' ); ?>>
+		<div class="container app-entry__wrap">
 
 			<?php
-			nt_component( 'parts/breadcrumbs', array(
+			app_component( 'parts/breadcrumbs', array(
 				'items' => array(
-					array( 'label' => nt_label( 'read_more', 'Journal' ), 'url' => nt_page_url( 'blog' ) ),
+					array( 'label' => app_label( 'read_more', 'Journal' ), 'url' => app_page_url( 'blog' ) ),
 					array( 'label' => get_the_title() ),
 				),
 			) );
 			?>
 
-			<div class="nt-entry__meta fade-up">
-				<span class="nt-entry__meta-item">
+			<div class="app-entry__meta fade-up">
+				<span class="app-entry__meta-item">
 					<?php NT_Icons::render( 'calendar' ); ?>
 					<?php echo esc_html( get_the_date() ); ?>
 				</span>
-				<span class="nt-entry__meta-item">
+				<span class="app-entry__meta-item">
 					<?php NT_Icons::render( 'user' ); ?>
 					<?php echo esc_html( get_the_author() ); ?>
 				</span>
 				<?php if ( ! empty( $nt_cats ) && ! is_wp_error( $nt_cats ) ) : ?>
-					<a class="nt-entry__meta-item" href="<?php echo esc_url( get_category_link( $nt_cats[0]->term_id ) ); ?>">
+					<a class="app-entry__meta-item" href="<?php echo esc_url( get_category_link( $nt_cats[0]->term_id ) ); ?>">
 						<?php NT_Icons::render( 'tag' ); ?>
 						<?php echo esc_html( $nt_cats[0]->name ); ?>
 					</a>
 				<?php endif; ?>
-				<span class="nt-entry__meta-item">
+				<span class="app-entry__meta-item">
 					<?php NT_Icons::render( 'clock' ); ?>
 					<?php echo esc_html( sprintf( NT_Ui::label( 'minutes_read', '%s min read' ), (string) $nt_mins ) ); ?>
 				</span>
 			</div>
 
-			<div class="nt-entry-content fade-up"><?php the_content(); ?></div>
+			<div class="app-entry-content fade-up"><?php the_content(); ?></div>
 
 			<?php
 			$nt_tags = get_the_tags( $nt_id );
 			if ( ! empty( $nt_tags ) && ! is_wp_error( $nt_tags ) ) :
 				?>
-				<div class="nt-entry__tags fade-up">
+				<div class="app-entry__tags fade-up">
 					<?php foreach ( $nt_tags as $nt_tag ) : ?>
-						<a class="nt-side-tag" href="<?php echo esc_url( get_tag_link( $nt_tag->term_id ) ); ?>">
+						<a class="app-side-tag" href="<?php echo esc_url( get_tag_link( $nt_tag->term_id ) ); ?>">
 							<?php echo esc_html( $nt_tag->name ); ?>
 						</a>
 					<?php endforeach; ?>
@@ -100,16 +100,16 @@ while ( have_posts() ) :
 			// fallback and works everywhere. No third-party script is loaded, so
 			// reading an article sets no cookie from anybody else.
 			?>
-			<div class="nt-entry__share fade-up"
+			<div class="app-entry__share fade-up"
 			     data-nt-share
 			     data-share-title="<?php echo esc_attr( get_the_title() ); ?>"
 			     data-share-url="<?php echo esc_url( get_permalink() ); ?>">
-				<span class="nt-entry__share-label"><?php echo esc_html( NT_Ui::label( 'share' ) ); ?></span>
-				<button type="button" class="nt-entry__share-btn" data-nt-share-native hidden>
+				<span class="app-entry__share-label"><?php echo esc_html( NT_Ui::label( 'share' ) ); ?></span>
+				<button type="button" class="app-entry__share-btn" data-nt-share-native hidden>
 					<?php NT_Icons::render( 'share' ); ?>
 					<span><?php echo esc_html( NT_Ui::label( 'share' ) ); ?></span>
 				</button>
-				<button type="button" class="nt-entry__share-btn" data-nt-copy="<?php echo esc_url( get_permalink() ); ?>">
+				<button type="button" class="app-entry__share-btn" data-nt-copy="<?php echo esc_url( get_permalink() ); ?>">
 					<?php NT_Icons::render( 'link' ); ?>
 					<span><?php echo esc_html( NT_Ui::label( 'copy', 'Copy link' ) ); ?></span>
 				</button>
@@ -121,9 +121,9 @@ while ( have_posts() ) :
 			$nt_next = get_next_post();
 			if ( $nt_prev || $nt_next ) :
 				?>
-				<nav class="nt-entry__nav fade-up" aria-label="<?php echo esc_attr( NT_Ui::aria( 'post_nav', 'More articles' ) ); ?>">
+				<nav class="app-entry__nav fade-up" aria-label="<?php echo esc_attr( NT_Ui::aria( 'post_nav', 'More articles' ) ); ?>">
 					<?php if ( $nt_prev ) : ?>
-						<a class="nt-entry__nav-link nt-entry__nav-link--prev" href="<?php echo esc_url( get_permalink( $nt_prev ) ); ?>">
+						<a class="app-entry__nav-link app-entry__nav-link--prev" href="<?php echo esc_url( get_permalink( $nt_prev ) ); ?>">
 							<?php NT_Icons::render( 'arrow-left' ); ?>
 							<span>
 								<small><?php echo esc_html( NT_Ui::label( 'previous' ) ); ?></small>
@@ -133,7 +133,7 @@ while ( have_posts() ) :
 					<?php endif; ?>
 
 					<?php if ( $nt_next ) : ?>
-						<a class="nt-entry__nav-link nt-entry__nav-link--next" href="<?php echo esc_url( get_permalink( $nt_next ) ); ?>">
+						<a class="app-entry__nav-link app-entry__nav-link--next" href="<?php echo esc_url( get_permalink( $nt_next ) ); ?>">
 							<span>
 								<small><?php echo esc_html( NT_Ui::label( 'next' ) ); ?></small>
 								<strong><?php echo esc_html( get_the_title( $nt_next ) ); ?></strong>
@@ -162,17 +162,17 @@ while ( have_posts() ) :
 
 		if ( $nt_related->have_posts() ) :
 			?>
-			<section class="nt-related">
+			<section class="app-related">
 				<div class="container">
-					<div class="nt-section-center">
-						<div class="nt-section-tag"><?php echo esc_html( nt_label( 'read_more' ) ); ?></div>
+					<div class="app-section-center">
+						<div class="app-section-tag"><?php echo esc_html( app_label( 'read_more' ) ); ?></div>
 						<h2 class="section-title"><?php esc_html_e( 'Keep reading', NT_TEXT_DOMAIN ); ?></h2>
 					</div>
-					<div class="nt-blog__grid">
+					<div class="app-blog__grid">
 						<?php
 						while ( $nt_related->have_posts() ) {
 							$nt_related->the_post();
-							nt_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+							app_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
 						}
 						?>
 					</div>

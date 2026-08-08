@@ -17,15 +17,15 @@ $features = [
 $photo    = 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=80';
 $book_url = home_url('/events/');
 ?>
-<section class="nt-events-trad" id="events-catering">
-	<div class="container nt-events-trad__inner">
+<section class="app-events-trad" id="events-catering">
+	<div class="container app-events-trad__inner">
 
-		<div class="nt-events-trad__text">
-			<span class="nt-section-tag">Events & Catering</span>
-			<h2 class="nt-events-trad__title">Make Your Event<br><em>A Memory</em></h2>
-			<p class="nt-events-trad__sub">Live Pressed. Naturally Refreshing.</p>
+		<div class="app-events-trad__text">
+			<span class="app-section-tag">Events & Catering</span>
+			<h2 class="app-events-trad__title">Make Your Event<br><em>A Memory</em></h2>
+			<p class="app-events-trad__sub">Live Pressed. Naturally Refreshing.</p>
 
-			<ul class="nt-events-trad__feature-list">
+			<ul class="app-events-trad__feature-list">
 				<?php foreach ( $features as $f ) : ?>
 					<li>
 						<span style="font-size:1.2rem;"><?php echo esc_html($f['icon']); ?></span>
@@ -42,7 +42,7 @@ $book_url = home_url('/events/');
 		<div>
 			<img src="<?php echo esc_url($photo); ?>"
 				 alt="Live event stall"
-				 class="nt-events-trad__img"
+				 class="app-events-trad__img"
 				 loading="lazy">
 		</div>
 

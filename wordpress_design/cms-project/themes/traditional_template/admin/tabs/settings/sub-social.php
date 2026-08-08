@@ -1,14 +1,14 @@
 <?php
 /**
  * Site Settings -> Social Links. Rendered in the footer by
- * components/parts/main_footer.php via nt_option( 'social' ).
+ * components/parts/main_footer.php via app_option( 'social' ).
  */
 
 defined( 'ABSPATH' ) || exit;
 
-nt_admin_form_open( 'social' );
+app_admin_form_open( 'social' );
 
-nt_admin_fields( 'social', array(
+app_admin_fields( 'social', array(
 	'facebook'  => array( 'label' => 'Facebook' ),
 	'instagram' => array( 'label' => 'Instagram' ),
 	'youtube'   => array( 'label' => 'YouTube' ),
@@ -16,4 +16,4 @@ nt_admin_fields( 'social', array(
 	'whatsapp'  => array( 'label' => 'WhatsApp', 'help' => __( 'Number with country code, e.g. +919999999999.', NT_TEXT_DOMAIN ) ),
 ) );
 
-nt_admin_form_close();
+app_admin_form_close();

@@ -2,7 +2,7 @@
 /**
  * config/setup.php - Theme supports, nav menus, image sizes.
  *
- * Consumed by nt_setup_theme() in core/bootstrap.php (after_setup_theme).
+ * Consumed by app_setup_theme() in core/bootstrap.php (after_setup_theme).
  * Add an entry here; the engine loops - no extra code needed.
  */
 
@@ -29,7 +29,7 @@ return array(
 
 	// add_image_size() - name => array( width, height, crop ).
 	'image_sizes' => array(
-		'nt-card' => array( 400, 300, true ),
-		'nt-hero' => array( 1600, 700, true ),
+		'app-card' => array( 400, 300, true ),
+		'app-hero' => array( 1600, 700, true ),
 	),
 );

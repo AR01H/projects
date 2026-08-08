@@ -4,6 +4,6 @@
  * Placeholder: add hero sliders, counters, etc. here.
  */
 (function () {
-	'use strict';
-	// Intentionally minimal - page-specific scripts start here.
-}());
+  "use strict";
+  // Intentionally minimal - page-specific scripts start here.
+})();

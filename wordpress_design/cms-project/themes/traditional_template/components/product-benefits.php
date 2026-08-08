@@ -10,49 +10,49 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$content = nt_data( 'content' )['product_benefits'] ?? [];
+$content = app_data( 'content' )['product_benefits'] ?? [];
 $tag   = $args['tag']   ?? $content['tag']   ?? 'WHY US';
 $title = $args['title'] ?? $content['heading'] ?? 'The Benefits';
 $body  = $args['body']  ?? $content['body']  ?? '';
 
-$items   = $args['items'] ?? nt_data( 'benefits_items' ) ?? [];
+$items   = $args['items'] ?? app_data( 'benefits_items' ) ?? [];
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 
-<section class="nt-benefits-section section">
+<section class="app-benefits-section section">
 	<div class="container wrapper">
 		<?php get_template_part( 'components/parts/section-header', null, [
 			'tag'   => $tag,
 			'title' => $title,
 			'body'  => $body,
 		] ); ?>
-		<div class="nt-ben-grid grid fade-up" id="nt-ben-track">
+		<div class="app-ben-grid grid fade-up" id="app-ben-track">
 			<?php foreach ( $items as $item ) : ?>
-				<div class="nt-ben-card card">
-					<div class="nt-ben-icon"><?php echo esc_html( $item['icon'] ?? '🌿' ); ?></div>
-					<h3 class="nt-ben-title"><?php echo esc_html( $item['title'] ?? '' ); ?></h3>
-					<p class="nt-ben-text"><?php echo esc_html( $item['text'] ?? '' ); ?></p>
+				<div class="app-ben-card card">
+					<div class="app-ben-icon"><?php echo esc_html( $item['icon'] ?? '🌿' ); ?></div>
+					<h3 class="app-ben-title"><?php echo esc_html( $item['title'] ?? '' ); ?></h3>
+					<p class="app-ben-text"><?php echo esc_html( $item['text'] ?? '' ); ?></p>
 					<?php if ( ! empty( $item['stat'] ) ) : ?>
-						<div class="nt-ben-stat"><?php echo esc_html( $item['stat'] ); ?></div>
+						<div class="app-ben-stat"><?php echo esc_html( $item['stat'] ); ?></div>
 					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>
 
-		<div class="nt-ben-nav">
-			<button class="nt-ben-btn button" id="nt-ben-prev" aria-label="Previous">&#8592;</button>
-			<span class="nt-ben-count" id="nt-ben-count">1 / <?php echo (int) count( $items ); ?></span>
-			<button class="nt-ben-btn button" id="nt-ben-next" aria-label="Next">&#8594;</button>
+		<div class="app-ben-nav">
+			<button class="app-ben-btn button" id="app-ben-prev" aria-label="Previous">&#8592;</button>
+			<span class="app-ben-count" id="app-ben-count">1 / <?php echo (int) count( $items ); ?></span>
+			<button class="app-ben-btn button" id="app-ben-next" aria-label="Next">&#8594;</button>
 		</div>
 	</div>
 </section>
 <script>
 (function(){
-	var track   = document.getElementById('nt-ben-track');
-	var counter = document.getElementById('nt-ben-count');
+	var track   = document.getElementById('app-ben-track');
+	var counter = document.getElementById('app-ben-count');
 	var total   = <?php echo (int) count( $items ); ?>;
 	if ( !track ) return;
-	var cards   = Array.from( track.querySelectorAll('.nt-ben-card') );
+	var cards   = Array.from( track.querySelectorAll('.app-ben-card') );
 	var current = 0;
 
 	function goTo( idx ) {
@@ -62,11 +62,11 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 		if ( counter ) counter.textContent = (idx + 1) + ' / ' + total;
 	}
 
-	if (document.getElementById('nt-ben-prev')) {
-		document.getElementById('nt-ben-prev').addEventListener('click', function(){ goTo( current - 1 ); });
+	if (document.getElementById('app-ben-prev')) {
+		document.getElementById('app-ben-prev').addEventListener('click', function(){ goTo( current - 1 ); });
 	}
-	if (document.getElementById('nt-ben-next')) {
-		document.getElementById('nt-ben-next').addEventListener('click', function(){ goTo( current + 1 ); });
+	if (document.getElementById('app-ben-next')) {
+		document.getElementById('app-ben-next').addEventListener('click', function(){ goTo( current + 1 ); });
 	}
 
 	var ticking = false;

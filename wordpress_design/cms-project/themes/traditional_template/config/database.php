@@ -6,9 +6,9 @@
  *   - theme activation installs every table automatically,
  *   - Theme -> Admin Tools -> Database shows each table's status with an
  *     "Install / Repair" button per table (checked and installed one by one),
- *   - nt_db_table( 'key' ) returns the full prefixed table name for queries.
+ *   - app_db_table( 'key' ) returns the full prefixed table name for queries.
  *
- * ADD A TABLE (2 steps): add an entry here, then use nt_db_table( 'key' )
+ * ADD A TABLE (2 steps): add an entry here, then use app_db_table( 'key' )
  * in your handlers. No installer code - the engine runs dbDelta.
  *
  * Schema placeholders (replaced by the engine):
@@ -24,7 +24,7 @@ return array(
 
 	// Contact form submissions - powers the "Contact Submissions" submenu.
 	'submissions' => array(
-		'table'  => 'nt_submissions',
+		'table'  => 'app_submissions',
 		'desc'   => 'Contact form submissions inbox.',
 		'schema' => "CREATE TABLE {table} (
 			id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -42,7 +42,7 @@ return array(
 
 	// Example - copy this shape for the next site-specific table:
 	// 'enquiries' => array(
-	//     'table'  => 'nt_enquiries',
+	//     'table'  => 'app_enquiries',
 	//     'desc'   => 'Guidance enquiry submissions.',
 	//     'schema' => "CREATE TABLE {table} ( ... ) {charset};",
 	// ),

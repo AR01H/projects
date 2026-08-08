@@ -1,69 +1,161 @@
-/* ─── Authentic Vintage Core Variables ─────────────────────────────────────
-   THE ONLY place colours and faces are defined. Everything else in the theme
-   references these tokens, so re-skinning to another brand or another trade
-   is an edit to this file alone - never a hunt through component CSS.
-   ──────────────────────────────────────────────────────────────────────── */
-
-/* Faces, in one request.
-   Cormorant Garamond is the display face: an old-style garamond with the tall
-   ascenders and fine hairlines that carry the "printed a long time ago" look
-   the reference sets its headlines in. EB Garamond runs the body text at
-   reading size, where Cormorant's thin strokes would fall apart. Dancing
-   Script stays for the handwritten accent word, Luckiest Guy for chunky
-   signage. Lora is kept as a body fallback for anything still asking for it. */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&display=swap');
-
+@import url(https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&display=swap);
 :root {
-	/* ─── Typography ───
-	   Display and body are deliberately DIFFERENT garamonds. Same family for
-	   both makes long pages read flat; a high-contrast display face over a
-	   sturdier text face is what gives the reference its printed feel. */
-	--nt-font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-	--nt-font-body: 'EB Garamond', 'Lora', Georgia, serif;
-	--nt-font-accent: 'Dancing Script', cursive;
-	--nt-font-chunky: 'Luckiest Guy', sans-serif;
+  --app-inner-accent: color-mix(
+    in srgb,
+    var(--trad-gold) 82%,
+    var(--trad-green) 18%
+  );
+  --app-flourish: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='16' viewBox='0 0 170 16'><g fill='none' stroke='%23b8962f' stroke-width='1.3' stroke-linecap='round'><path d='M6 8c26 0 34-5 56-1'/><path d='M164 8c-26 0-34-5-56-1'/></g><path d='M85 2.5l5.2 5.5-5.2 5.5-5.2-5.5z' fill='%23b8962f'/></svg>");
+  --client-color-1: #1e3a0e;
+  --client-color-2: #2d5016;
+  --client-color-3: #4a7c23;
+  --client-color-4: #8cb85a;
+  --client-color-5: #d4e8b4;
+  --client-color-6: #efe3c0;
+  --client-color-7: #c9a84c;
+  --client-color-8: #a88230;
+  --client-color-9: rgba(201, 168, 76, 0.3);
+  --client-color-10: #d8bd62;
+  --client-color-11: #faf3e0;
+  --client-color-12: #f0e4c0;
+  --client-color-13: #16280a;
+  --client-color-14: rgba(255, 248, 220, 0.06);
+  --client-color-15: #24300f;
+  --client-color-16: #6a7550;
+  --client-color-17: rgba(36, 48, 15, 0.62);
+  --client-color-18: rgba(30, 58, 14, 0.12);
+  --client-color-19: rgba(30, 58, 14, 0.22);
+  --client-color-20: rgba(178, 150, 96, 0.45);
+  --client-color-15-muted: #6a7550;
+  --cur-default: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236abf3a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232d5a1b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M5%202%20L5%2024%20L10%2018%20L14%2026%20L17.5%2024.2%20L13.5%2016.5%20L21%2016.5%20Z%22%20fill%3D%22url%28%23g1%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M7%205%20L7%2019%20L10%2016%22%20fill%3D%22none%22%20stroke%3D%22%23c8e830%22%20stroke-width%3D%220.8%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%225%22%20cy%3D%222%22%20r%3D%222%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
+      0 0,
+    default;
+  --cur-pointer: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g2%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%220%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23fdfff8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23d8f0b0%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M10%2028%20C7%2028%205%2026%205%2023%20L5%2013%20C5%2011.9%205.9%2011%207%2011%20C7.6%2011%208.1%2011.3%208.5%2011.7%20L8.5%208%20C8.5%206.9%209.4%206%2010.5%206%20C11.6%206%2012.5%206.9%2012.5%208%20L12.5%207.5%20C12.5%206.4%2013.4%205.5%2014.5%205.5%20C15.6%205.5%2016.5%206.4%2016.5%207.5%20L16.5%208%20C16.5%206.9%2017.4%206%2018.5%206%20C19.6%206%2020.5%206.9%2020.5%208%20L20.5%209%20C20.5%207.9%2021.4%207%2022.5%207%20C23.6%207%2024.5%207.9%2024.5%209%20L24.5%2018%20C24.5%2023.5%2020.5%2028%2015.5%2028%20Z%22%20fill%3D%22url%28%23g2%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221.2%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cline%20x1%3D%2212.5%22%20y1%3D%228%22%20x2%3D%2212.5%22%20y2%3D%2213%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%220.7%22%20opacity%3D%220.5%22%2F%3E%3Cline%20x1%3D%2216.5%22%20y1%3D%227.5%22%20x2%3D%2216.5%22%20y2%3D%2213%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%220.7%22%20opacity%3D%220.5%22%2F%3E%3Cline%20x1%3D%2220.5%22%20y1%3D%228%22%20x2%3D%2220.5%22%20y2%3D%2213%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%220.7%22%20opacity%3D%220.5%22%2F%3E%3Cellipse%20cx%3D%2210.5%22%20cy%3D%226.5%22%20rx%3D%221.5%22%20ry%3D%221%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%2210.5%22%20cy%3D%2215%22%20r%3D%220.8%22%20fill%3D%22%23a8d96e%22%20opacity%3D%220.6%22%2F%3E%3Ccircle%20cx%3D%2214.5%22%20cy%3D%2214%22%20r%3D%220.8%22%20fill%3D%22%23a8d96e%22%20opacity%3D%220.6%22%2F%3E%3Ccircle%20cx%3D%2218.5%22%20cy%3D%2214.5%22%20r%3D%220.8%22%20fill%3D%22%23a8d96e%22%20opacity%3D%220.6%22%2F%3E%3C%2Fsvg%3E")
+      9 1,
+    pointer;
+  --cur-text: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cline%20x1%3D%2216%22%20y1%3D%224%22%20x2%3D%2216%22%20y2%3D%2228%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M10%204%20Q13%203%2016%204%20Q19%203%2022%204%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M10%2028%20Q13%2029%2016%2028%20Q19%2029%2022%2028%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%2215.2%22%20cy%3D%2215.2%22%20r%3D%220.7%22%20fill%3D%22%23fdfff8%22%20opacity%3D%220.9%22%2F%3E%3Cline%20x1%3D%2213.5%22%20y1%3D%2210%22%20x2%3D%2212%22%20y2%3D%2210%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2213.5%22%20y1%3D%2222%22%20x2%3D%2212%22%20y2%3D%2222%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2218.5%22%20y1%3D%2210%22%20x2%3D%2220%22%20y2%3D%2210%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2218.5%22%20y1%3D%2222%22%20x2%3D%2220%22%20y2%3D%2222%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E")
+      16 16,
+    text;
+  --cur-crosshair: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2211%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%226%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%2F%3E%3Cline%20x1%3D%2216%22%20y1%3D%222%22%20x2%3D%2216%22%20y2%3D%229%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2216%22%20y1%3D%2223%22%20x2%3D%2216%22%20y2%3D%2230%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%222%22%20y1%3D%2216%22%20x2%3D%229%22%20y2%3D%2216%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2223%22%20y1%3D%2216%22%20x2%3D%2230%22%20y2%3D%2216%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.8%22%2F%3E%3Cline%20x1%3D%2223.8%22%20y1%3D%228.2%22%20x2%3D%2225.2%22%20y2%3D%226.8%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%228.2%22%20y1%3D%228.2%22%20x2%3D%226.8%22%20y2%3D%226.8%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2223.8%22%20y1%3D%2223.8%22%20x2%3D%2225.2%22%20y2%3D%2225.2%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%228.2%22%20y1%3D%2223.8%22%20x2%3D%226.8%22%20y2%3D%2225.2%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E")
+      16 16,
+    crosshair;
+  --cur-grab: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g5%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%220%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23fdfff8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23e4f5cc%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%226%22%20y%3D%225%22%20width%3D%224%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22url%28%23g5%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%2F%3E%3Crect%20x%3D%2211.5%22%20y%3D%223%22%20width%3D%224%22%20height%3D%2214%22%20rx%3D%222%22%20fill%3D%22url%28%23g5%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%223.5%22%20width%3D%224%22%20height%3D%2213.5%22%20rx%3D%222%22%20fill%3D%22url%28%23g5%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%2F%3E%3Crect%20x%3D%2222.5%22%20y%3D%225%22%20width%3D%224%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22url%28%23g5%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%2F%3E%3Cpath%20d%3D%22M6%2015%20L6%2022%20C6%2025.3%208.7%2028%2012%2028%20L20%2028%20C23.3%2028%2026%2025.3%2026%2022%20L26%2015%20Z%22%20fill%3D%22url%28%23g5%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8%2015%20Q16%2013%2024%2015%22%20fill%3D%22none%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%2F%3E%3Cellipse%20cx%3D%228%22%20cy%3D%225.5%22%20rx%3D%221.5%22%20ry%3D%221%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.4%22%2F%3E%3Cellipse%20cx%3D%2213.5%22%20cy%3D%223.5%22%20rx%3D%221.5%22%20ry%3D%221%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.4%22%2F%3E%3Cellipse%20cx%3D%2219%22%20cy%3D%224%22%20rx%3D%221.5%22%20ry%3D%221%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.4%22%2F%3E%3Cellipse%20cx%3D%2224.5%22%20cy%3D%225.5%22%20rx%3D%221.5%22%20ry%3D%221%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.4%22%2F%3E%3C%2Fsvg%3E")
+      16 5,
+    grab;
+  --cur-grabbing: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g6%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%220%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234a8c2a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232d5a1b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%227%22%20y%3D%229%22%20width%3D%224.5%22%20height%3D%225%22%20rx%3D%222.2%22%20fill%3D%22url%28%23g6%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%2F%3E%3Crect%20x%3D%2212.5%22%20y%3D%228%22%20width%3D%224.5%22%20height%3D%225%22%20rx%3D%222.2%22%20fill%3D%22url%28%23g6%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%228.5%22%20width%3D%224.5%22%20height%3D%225%22%20rx%3D%222.2%22%20fill%3D%22url%28%23g6%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%2F%3E%3Cpath%20d%3D%22M6%2019%20C4%2018%204%2013%206.5%2012%20L8.5%2011.5%20L8.5%2014%20L7%2014.5%20C6%2015%206%2017%207%2018%20Z%22%20fill%3D%22url%28%23g6%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2213%22%20width%3D%2216%22%20height%3D%2211%22%20rx%3D%223.5%22%20fill%3D%22url%28%23g6%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%2F%3E%3Cellipse%20cx%3D%229.25%22%20cy%3D%2213%22%20rx%3D%221.5%22%20ry%3D%220.7%22%20fill%3D%22%236abf3a%22%20opacity%3D%220.6%22%2F%3E%3Cellipse%20cx%3D%2214.75%22%20cy%3D%2212%22%20rx%3D%221.5%22%20ry%3D%220.7%22%20fill%3D%22%236abf3a%22%20opacity%3D%220.6%22%2F%3E%3Cellipse%20cx%3D%2220.25%22%20cy%3D%2212.5%22%20rx%3D%221.5%22%20ry%3D%220.7%22%20fill%3D%22%236abf3a%22%20opacity%3D%220.6%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2220%22%20width%3D%2216%22%20height%3D%222%22%20rx%3D%221%22%20fill%3D%22%23c8e830%22%20opacity%3D%220.3%22%2F%3E%3C%2Fsvg%3E")
+      16 14,
+    grabbing;
+  --cur-zoom-in: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g7%22%20x1%3D%2220%25%22%20y1%3D%2220%25%22%20x2%3D%2280%25%22%20y2%3D%2280%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23e4f5cc%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23a8d96e%22%20stop-opacity%3D%220.5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%2210%22%20fill%3D%22url%28%23g7%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221.8%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%227.5%22%20fill%3D%22none%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%220.6%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20d%3D%22M8%208%20Q10%207%2012%209%22%20fill%3D%22none%22%20stroke%3D%22%23fdfff8%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.8%22%2F%3E%3Cline%20x1%3D%2213%22%20y1%3D%229%22%20x2%3D%2213%22%20y2%3D%2217%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%229%22%20y1%3D%2213%22%20x2%3D%2217%22%20y2%3D%2213%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2220.5%22%20y1%3D%2220.5%22%20x2%3D%2229%22%20y2%3D%2229%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2220.5%22%20y1%3D%2220.5%22%20x2%3D%2229%22%20y2%3D%2229%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%221.2%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
+      13 13,
+    zoom-in;
+  --cur-zoom-out: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g8%22%20x1%3D%2220%25%22%20y1%3D%2220%25%22%20x2%3D%2280%25%22%20y2%3D%2280%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23e4f5cc%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23a8d96e%22%20stop-opacity%3D%220.5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%2210%22%20fill%3D%22url%28%23g8%29%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221.8%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%227.5%22%20fill%3D%22none%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%220.6%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20d%3D%22M8%208%20Q10%207%2012%209%22%20fill%3D%22none%22%20stroke%3D%22%23fdfff8%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.8%22%2F%3E%3Cline%20x1%3D%229%22%20y1%3D%2213%22%20x2%3D%2217%22%20y2%3D%2213%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2220.5%22%20y1%3D%2220.5%22%20x2%3D%2229%22%20y2%3D%2229%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2220.5%22%20y1%3D%2220.5%22%20x2%3D%2229%22%20y2%3D%2229%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%221.2%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
+      13 13,
+    zoom-out;
+  --cur-not-allowed: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g9%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23fce8e8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23f5c4c4%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2213%22%20fill%3D%22url%28%23g9%29%22%20stroke%3D%22%23c0392b%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2210%22%20fill%3D%22none%22%20stroke%3D%22%23e74c3c%22%20stroke-width%3D%220.5%22%20opacity%3D%220.4%22%2F%3E%3Cline%20x1%3D%226%22%20y1%3D%226%22%20x2%3D%2226%22%20y2%3D%2226%22%20stroke%3D%22%23c0392b%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%223.5%22%20r%3D%221.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2228.5%22%20r%3D%221.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%223.5%22%20cy%3D%2216%22%20r%3D%221.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2228.5%22%20cy%3D%2216%22%20r%3D%221.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
+      16 16,
+    not-allowed;
+  --cur-wait: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g10%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23e4f5cc%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23d8f0b0%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2212%22%20fill%3D%22none%22%20stroke%3D%22%23d8f0b0%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M16%204%20A12%2012%200%201%201%204.8%2020%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%227%22%20fill%3D%22url%28%23g10%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%223%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.8%22%2F%3E%3Cline%20x1%3D%2216%22%20y1%3D%2211%22%20x2%3D%2216%22%20y2%3D%229.5%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2216%22%20y1%3D%2221%22%20x2%3D%2216%22%20y2%3D%2222.5%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2211%22%20y1%3D%2216%22%20x2%3D%229.5%22%20y2%3D%2216%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2221%22%20y1%3D%2216%22%20x2%3D%2222.5%22%20y2%3D%2216%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E")
+      16 16,
+    wait;
+  --cur-progress: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2236%22%20height%3D%2236%22%20viewBox%3D%220%200%2036%2036%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22ga%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236abf3a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232d5a1b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M4%202%20L4%2022%20L9%2016.5%20L13%2024%20L16.5%2022.2%20L12.5%2014.5%20L18.5%2014.5%20Z%22%20fill%3D%22url%28%23ga%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.5%205%20L5.5%2018%20L9%2015%22%20fill%3D%22none%22%20stroke%3D%22%23c8e830%22%20stroke-width%3D%220.8%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.6%22%2F%3E%3Ccircle%20cx%3D%2227%22%20cy%3D%2227%22%20r%3D%227%22%20fill%3D%22none%22%20stroke%3D%22%23d8f0b0%22%20stroke-width%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M27%2020%20A7%207%200%200%201%2034%2027%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2227%22%20cy%3D%2227%22%20r%3D%222.2%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.7%22%2F%3E%3C%2Fsvg%3E")
+      4 2,
+    progress;
+  --cur-col-resize: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cline%20x1%3D%2216%22%20y1%3D%224%22%20x2%3D%2216%22%20y2%3D%2228%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%223%203%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M4%2016%20L10%2011%20L10%2014%20L14%2014%20L14%2018%20L10%2018%20L10%2021%20Z%22%20fill%3D%22%232d5a1b%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.7%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M28%2016%20L22%2011%20L22%2014%20L18%2014%20L18%2018%20L22%2018%20L22%2021%20Z%22%20fill%3D%22%232d5a1b%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.7%22%20stroke-linejoin%3D%22round%22%2F%3E%3Crect%20x%3D%2214.5%22%20y%3D%2214.5%22%20width%3D%223%22%20height%3D%223%22%20rx%3D%220.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%20transform%3D%22rotate%2845%2016%2016%29%22%2F%3E%3C%2Fsvg%3E")
+      16 16,
+    col-resize;
+  --cur-row-resize: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cline%20x1%3D%224%22%20y1%3D%2216%22%20x2%3D%2228%22%20y2%3D%2216%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%223%203%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M16%204%20L11%2010%20L14%2010%20L14%2014%20L18%2014%20L18%2010%20L21%2010%20Z%22%20fill%3D%22%232d5a1b%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.7%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M16%2028%20L11%2022%20L14%2022%20L14%2018%20L18%2018%20L18%2022%20L21%2022%20Z%22%20fill%3D%22%232d5a1b%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.7%22%20stroke-linejoin%3D%22round%22%2F%3E%3Crect%20x%3D%2214.5%22%20y%3D%2214.5%22%20width%3D%223%22%20height%3D%223%22%20rx%3D%220.5%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%20transform%3D%22rotate%2845%2016%2016%29%22%2F%3E%3C%2Fsvg%3E")
+      16 16,
+    row-resize;
+  --cur-move: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M16%203%20L12%208%20L14.5%208%20L14.5%2014%20L8%2014%20L8%2011.5%20L3%2016%20L8%2020.5%20L8%2018%20L14.5%2018%20L14.5%2024%20L12%2024%20L16%2029%20L20%2024%20L17.5%2024%20L17.5%2018%20L24%2018%20L24%2020.5%20L29%2016%20L24%2011.5%20L24%2014%20L17.5%2014%20L17.5%208%20L20%208%20Z%22%20fill%3D%22%232d5a1b%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%223.5%22%20fill%3D%22%23e4f5cc%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%221.8%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
+      16 16,
+    move;
+  --cur-help: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2236%22%20height%3D%2236%22%20viewBox%3D%220%200%2036%2036%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22gb%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236abf3a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232d5a1b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M4%202%20L4%2022%20L9%2016.5%20L13%2024%20L16.5%2022.2%20L12.5%2014.5%20L18.5%2014.5%20Z%22%20fill%3D%22url%28%23gb%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2227%22%20cy%3D%2211%22%20r%3D%228%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221.2%22%2F%3E%3Ccircle%20cx%3D%2227%22%20cy%3D%2211%22%20r%3D%225.5%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20d%3D%22M24.5%208.5%20C24.5%206.5%2027%205.5%2028.5%207%20C29.5%208%2029%209.5%2027.5%2010.5%20C27%2010.9%2027%2011.5%2027%2012%22%20fill%3D%22none%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2227%22%20cy%3D%2214%22%20r%3D%221%22%20fill%3D%22%232d5a1b%22%2F%3E%3C%2Fsvg%3E")
+      4 2,
+    help;
+  --cur-copy: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2236%22%20height%3D%2236%22%20viewBox%3D%220%200%2036%2036%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22gc%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236abf3a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232d5a1b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M4%202%20L4%2022%20L9%2016.5%20L13%2024%20L16.5%2022.2%20L12.5%2014.5%20L18.5%2014.5%20Z%22%20fill%3D%22url%28%23gc%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%20stroke-linejoin%3D%22round%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2217%22%20width%3D%2213%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23e4f5cc%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221%22%2F%3E%3Crect%20x%3D%2216%22%20y%3D%2214%22%20width%3D%2213%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23fdfff8%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221.2%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2219%22%20x2%3D%2226%22%20y2%3D%2219%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2222%22%20x2%3D%2226%22%20y2%3D%2222%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2225%22%20x2%3D%2223%22%20y2%3D%2225%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M25%2014%20L29%2014%20L29%2018%20Z%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
+      4 2,
+    copy;
+  --app-sec-radius: 12px 16px 10px 18px;
+  --app-sec-gap: clamp(18px, 2.4vw, 30px);
+  --app-sec-pad: clamp(48px, 7vw, 96px);
+  --app-sec-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --app-sec-pad: clamp(34px, 9vw, 56px);
+  --app-band-pad: clamp(30px, 3.6vw, 58px);
+  --app-sec-pad: clamp(30px, 3.6vw, 58px);
+  --app-sec-gap: clamp(14px, 1.5vw, 22px);
+  --app-rule: 1px solid color-mix(in srgb, var(--trad-border) 62%, transparent);
+  --app-rule-strong: 1px solid
+    color-mix(in srgb, var(--trad-border) 95%, transparent);
+  --app-band-pad: clamp(24px, 6vw, 38px);
+  --app-tone-info: var(--trad-green);
+  --app-tone-success: color-mix(in srgb, var(--trad-green) 78%, #2f7d32 22%);
+  --app-tone-warning: color-mix(
+    in srgb,
+    var(--trad-gold) 82%,
+    var(--trad-ink) 18%
+  );
+  --app-tone-error: color-mix(in srgb, var(--trad-ink) 55%, #8c2f21 45%);
+  --app-tone-note: var(--trad-border);
+  --app-tone-question: color-mix(
+    in srgb,
+    var(--trad-green) 60%,
+    var(--trad-gold) 40%
+  );
+  --app-ui-radius: 14px 18px 12px 16px;
+  --app-ui-shade: 0 22px 60px rgba(15, 28, 11, 0.34);
+  --app-ui-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --app-cut-1: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.035 0.09' numOctaves='3' seed='7' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='5' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
+  --app-cut-2: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.07' numOctaves='3' seed='23' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='6' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='7' fill='%23fff' filter='url(%23r)'/></svg>");
+  --app-cut-3: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.028 0.11' numOctaves='2' seed='41' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4.5' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='9' fill='%23fff' filter='url(%23r)'/></svg>");
 
-	/* Small-caps kickers ("SINCE 1912") are set wide - the letterspacing is a
-	   token because every kicker in the theme has to agree on it. */
-	--nt-tracking-kicker: 0.28em;
-	--nt-tracking-nav: 0.18em;
+  --app-photo-grade: sepia(0.24) saturate(0.92) contrast(1.06);
+  --app-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23g)' opacity='0.55'/></svg>");
+  --app-torn-1: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.016' numOctaves='4' seed='11' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='11' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='3' fill='white' filter='url(%23t)'/></svg>");
+  --app-torn-2: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.022' numOctaves='3' seed='29' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='9' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='6' fill='white' filter='url(%23t)'/></svg>");
+  --app-torn-3: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.013' numOctaves='4' seed='47' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='13' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='8' y='8' width='304' height='204' rx='2' fill='white' filter='url(%23t)'/></svg>");
+  --app-torn-4: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.019' numOctaves='3' seed='63' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='10' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='8' fill='white' filter='url(%23t)'/></svg>");
+  --app-torn-top: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='44' preserveAspectRatio='none'><filter id='e' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.011 0.055' numOctaves='3' seed='19' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='21' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-30' y='22' width='1280' height='90' fill='white' filter='url(%23e)'/></svg>");
+  --app-torn-bottom: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='26' preserveAspectRatio='none'><filter id='b' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.013 0.06' numOctaves='3' seed='41' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='14' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-30' y='-40' width='1280' height='55' fill='white' filter='url(%23b)'/></svg>");
+  --app-bump-neutral: #808080;
 
-	/* ─── Navigation ─── */
-	--nt-nav-height: 82px;
-
-	/* ─── Tactile Vintage Palette ───
-	   Warmed and lightened toward the reference: the paper is closer to a real
-	   aged sheet than to card, and the ink is a warm sepia-brown rather than a
-	   flat near-black. The greens and gold are unchanged, so every existing
-	   component keeps its accents. */
-	--trad-bg: #efe6d3;         /* Aged paper - lighter and airier than before */
-	--trad-bg-alt: #e6d9be;     /* The shaded/alternate band */
-	--trad-paper: #f6f0e2;      /* The lightest sheet, for cards on the page */
-	--trad-green: #183e16;      /* Deep vintage ink green */
-	--trad-green-dark: #0f1c0b;
-	--trad-gold: #c3a135;       /* Brighter yellow-gold */
-	--trad-cream: #fdfbf7;
-	--trad-ink: #4a3a2a;        /* Warm sepia-brown body ink, not near-black */
-	--trad-ink-soft: #6b5540;   /* Secondary text */
-	--trad-border: #c8b48a;     /* Hairline rules and card edges */
-
-	/* ─── Textures & Shadows ─── */
-	/* Parchment texture overlay - stronger fiber noise */
-	--texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.12"/></svg>');
-
-	--shadow-soft: 0 4px 15px rgba(26, 54, 20, 0.15);
+  --app-font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --app-font-body: "EB Garamond", "Lora", Georgia, serif;
+  --app-font-accent: "Dancing Script", cursive;
+  --app-font-chunky: "Luckiest Guy", sans-serif;
+  --app-tracking-kicker: 0.28em;
+  --app-tracking-nav: 0.18em;
+  --app-nav-height: 82px;
+  --app-container: 1280px;
+  --app-section-pad: 80px;
+  --app-section-pad-sm: 40px;
+  --trad-bg: #efe6d3;
+  --trad-bg-alt: #e6d9be;
+  --trad-paper: #f6f0e2;
+  --trad-green: #183e16;
+  --trad-green-dark: #0f1c0b;
+  --trad-gold: #c3a135;
+  --trad-cream: #fdfbf7;
+  --trad-ink: #4a3a2a;
+  --trad-ink-soft: #6b5540;
+  --trad-border: #c8b48a;
+  --texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.12"/></svg>');
+  --shadow-soft: 0 4px 15px rgba(26, 54, 20, 0.15);
 }
-
 body.design-traditional {
-	font-family: var(--nt-font-body);
-	background-color: var(--trad-bg);
-	background-image: var(--texture-paper);
-	color: var(--trad-ink);
-	-webkit-font-smoothing: antialiased;
+  font-family: var(--app-font-body);
+  background-color: var(--trad-bg);
+  background-image: var(--texture-paper);
+  color: var(--trad-ink);
+  -webkit-font-smoothing: antialiased;
 }
-
-h1, h2, h3, h4, h5, h6, .nt-font-display {
-	font-family: var(--nt-font-display);
-	color: var(--trad-green);
-	letter-spacing: 0.02em;
+.app-font-display,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--app-font-display);
+  color: var(--trad-green);
+  letter-spacing: 0.02em;
 }

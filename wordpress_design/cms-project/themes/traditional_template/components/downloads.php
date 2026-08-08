@@ -22,7 +22,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'downloads';
-$nt_data  = nt_data( $nt_src );
+$nt_data  = app_data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 if ( empty( $nt_items ) ) {
 	return;
@@ -32,18 +32,18 @@ $nt_tag   = (string) ( $nt_data['tag'] ?? '' );
 $nt_title = (string) ( $nt_data['title'] ?? '' );
 $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 ?>
-<section class="nt-downloads" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
+<section class="app-downloads" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
 	<div class="container">
 
 		<?php if ( $nt_tag || $nt_title || $nt_sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $nt_tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
+			<div class="app-section-center">
+				<?php if ( $nt_tag ) : ?><div class="app-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
 				<?php if ( $nt_title ) : ?><h2 class="section-title"><?php echo wp_kses( $nt_title, array( 'em' => array() ) ); ?></h2><?php endif; ?>
 				<?php if ( $nt_sub ) : ?><p class="section-body"><?php echo esc_html( $nt_sub ); ?></p><?php endif; ?>
 			</div>
 		<?php endif; ?>
 
-		<ul class="nt-downloads__list">
+		<ul class="app-downloads__list">
 			<?php
 			foreach ( $nt_items as $nt_item ) :
 				$nt_item      = (array) $nt_item;
@@ -55,22 +55,22 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 				$nt_dialog = (string) ( $nt_item['dialog'] ?? '' );
 				$nt_kind   = strtoupper( (string) ( $nt_item['kind'] ?? '' ) );
 				?>
-				<li class="nt-download">
-					<span class="nt-download__badge" aria-hidden="true">
+				<li class="app-download">
+					<span class="app-download__badge" aria-hidden="true">
 						<?php echo NT_Icons::get_or_text( (string) ( $nt_item['icon'] ?? 'file' ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 						<?php if ( '' !== $nt_kind ) : ?>
-							<span class="nt-download__kind"><?php echo esc_html( $nt_kind ); ?></span>
+							<span class="app-download__kind"><?php echo esc_html( $nt_kind ); ?></span>
 						<?php endif; ?>
 					</span>
 
-					<div class="nt-download__copy">
-						<h3 class="nt-download__title"><?php echo esc_html( $nt_item_name ); ?></h3>
+					<div class="app-download__copy">
+						<h3 class="app-download__title"><?php echo esc_html( $nt_item_name ); ?></h3>
 						<?php if ( ! empty( $nt_item['text'] ) ) : ?>
-							<p class="nt-download__text"><?php echo esc_html( $nt_item['text'] ); ?></p>
+							<p class="app-download__text"><?php echo esc_html( $nt_item['text'] ); ?></p>
 						<?php endif; ?>
 
 						<?php if ( ! empty( $nt_item['size'] ) || ! empty( $nt_item['updated'] ) ) : ?>
-							<p class="nt-download__meta">
+							<p class="app-download__meta">
 								<?php if ( ! empty( $nt_item['size'] ) ) : ?>
 									<span><?php echo esc_html( $nt_item['size'] ); ?></span>
 								<?php endif; ?>
@@ -82,12 +82,12 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 					</div>
 
 					<?php if ( '' !== $nt_dialog && NT_Dialog::exists( $nt_dialog ) ) : ?>
-						<button class="nt-download__btn" <?php nt_dialog_trigger( $nt_dialog ); ?>>
+						<button class="app-download__btn" <?php app_dialog_trigger( $nt_dialog ); ?>>
 							<?php NT_Icons::render( 'download' ); ?>
 							<span><?php echo esc_html( NT_Ui::label( 'download' ) ); ?></span>
 						</button>
 					<?php elseif ( '' !== $nt_file ) : ?>
-						<a class="nt-download__btn" href="<?php echo esc_url( nt_link( $nt_file ) ); ?>" download
+						<a class="app-download__btn" href="<?php echo esc_url( app_link( $nt_file ) ); ?>" download
 							<?php if ( ! empty( $nt_item['new_tab'] ) ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>>
 							<?php NT_Icons::render( 'download' ); ?>
 							<span><?php echo esc_html( NT_Ui::label( 'download' ) ); ?></span>

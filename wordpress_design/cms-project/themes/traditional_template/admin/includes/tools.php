@@ -3,7 +3,7 @@
  * admin/includes/tools.php - Admin Tool callbacks.
  *
  * Each function backs one entry in the config/admin.php 'tools' registry.
- * They run ONLY through nt_admin_run_tool() (core/admin.php), which has
+ * They run ONLY through app_admin_run_tool() (core/admin.php), which has
  * already checked capability + nonce - so the body is just the action.
  * Return the status message to show; download-type tools exit themselves.
  */
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Flush the WordPress object cache.
  */
-function nt_tool_clear_object_cache() {
+function app_tool_clear_object_cache() {
 	wp_cache_flush();
 	return __( 'Object cache flushed.', NT_TEXT_DOMAIN );
 }
@@ -22,7 +22,7 @@ function nt_tool_clear_object_cache() {
  * Delete ALL transients (and their timeout rows) from the options table.
  * The LIKE patterns are fixed literals (underscores escaped), no user input.
  */
-function nt_tool_clear_transients() {
+function app_tool_clear_transients() {
 	global $wpdb;
 	$deleted = (int) $wpdb->query(
 		"DELETE FROM {$wpdb->options}
@@ -37,7 +37,7 @@ function nt_tool_clear_transients() {
 /**
  * Rebuild permalinks.
  */
-function nt_tool_flush_rewrites() {
+function app_tool_flush_rewrites() {
 	flush_rewrite_rules();
 	return __( 'Rewrite rules flushed.', NT_TEXT_DOMAIN );
 }
@@ -45,8 +45,8 @@ function nt_tool_flush_rewrites() {
 /**
  * Create WP page rows for the config/pages.php registry (idempotent).
  */
-function nt_tool_sync_pages() {
-	$created = nt_sync_pages();
+function app_tool_sync_pages() {
+	$created = app_sync_pages();
 	/* translators: %d: number of created pages */
 	return sprintf( __( '%d page(s) created.', NT_TEXT_DOMAIN ), $created );
 }
@@ -54,8 +54,8 @@ function nt_tool_sync_pages() {
 /**
  * Install / repair EVERY table registered in config/database.php.
  */
-function nt_tool_install_tables() {
-	$results = nt_db_install_all();
+function app_tool_install_tables() {
+	$results = app_db_install_all();
 	$ok      = count( array_filter( $results ) );
 	/* translators: 1: installed count, 2: registered count */
 	return sprintf( __( '%1$d of %2$d table(s) installed / verified.', NT_TEXT_DOMAIN ), $ok, count( $results ) );
@@ -65,22 +65,22 @@ function nt_tool_install_tables() {
  * Install / repair ONE registered table (the per-row button on the
  * Admin Tools -> Database screen posts the table key).
  */
-function nt_tool_install_table() {
+function app_tool_install_table() {
 	$key = isset( $_POST['table_key'] ) ? sanitize_key( wp_unslash( $_POST['table_key'] ) ) : '';
-	if ( '' === $key || ! array_key_exists( $key, nt_config( 'database' ) ) ) {
+	if ( '' === $key || ! array_key_exists( $key, app_config( 'database' ) ) ) {
 		return __( 'Unknown table key.', NT_TEXT_DOMAIN );
 	}
-	return nt_db_install( $key )
+	return app_db_install( $key )
 		/* translators: %s: table name */
-		? sprintf( __( 'Table "%s" installed / verified.', NT_TEXT_DOMAIN ), nt_db_table( $key ) )
+		? sprintf( __( 'Table "%s" installed / verified.', NT_TEXT_DOMAIN ), app_db_table( $key ) )
 		/* translators: %s: table name */
-		: sprintf( __( 'Table "%s" could NOT be created - check the schema.', NT_TEXT_DOMAIN ), nt_db_table( $key ) );
+		: sprintf( __( 'Table "%s" could NOT be created - check the schema.', NT_TEXT_DOMAIN ), app_db_table( $key ) );
 }
 
 /**
  * Contact Submissions: toggle a row between 'new' and 'read'.
  */
-function nt_tool_submission_status() {
+function app_tool_submission_status() {
 	global $wpdb;
 	$id     = isset( $_POST['submission_id'] ) ? absint( $_POST['submission_id'] ) : 0;
 	$status = isset( $_POST['new_status'] ) ? sanitize_key( wp_unslash( $_POST['new_status'] ) ) : '';
@@ -88,7 +88,7 @@ function nt_tool_submission_status() {
 		return __( 'Invalid request.', NT_TEXT_DOMAIN );
 	}
 	$updated = $wpdb->update(
-		nt_db_table( 'submissions' ),
+		app_db_table( 'submissions' ),
 		array( 'status' => $status ),
 		array( 'id' => $id ),
 		array( '%s' ),
@@ -103,13 +103,13 @@ function nt_tool_submission_status() {
 /**
  * Contact Submissions: delete a row permanently.
  */
-function nt_tool_submission_delete() {
+function app_tool_submission_delete() {
 	global $wpdb;
 	$id = isset( $_POST['submission_id'] ) ? absint( $_POST['submission_id'] ) : 0;
 	if ( ! $id ) {
 		return __( 'Invalid request.', NT_TEXT_DOMAIN );
 	}
-	$deleted = $wpdb->delete( nt_db_table( 'submissions' ), array( 'id' => $id ), array( '%d' ) );
+	$deleted = $wpdb->delete( app_db_table( 'submissions' ), array( 'id' => $id ), array( '%d' ) );
 	return $deleted
 		? __( 'Submission deleted.', NT_TEXT_DOMAIN )
 		: __( 'Delete failed.', NT_TEXT_DOMAIN );
@@ -119,11 +119,11 @@ function nt_tool_submission_delete() {
  * Export every option group (config/admin.php 'options') as a JSON download.
  * Exits after streaming - no redirect.
  */
-function nt_tool_export_settings() {
-	$admin  = nt_config( 'admin' );
+function app_tool_export_settings() {
+	$admin  = app_config( 'admin' );
 	$groups = array();
 	foreach ( (array) ( $admin['options'] ?? array() ) as $group => $def ) {
-		$groups[ $group ] = get_option( (string) ( $def['option'] ?? 'nt_' . $group ), array() );
+		$groups[ $group ] = get_option( (string) ( $def['option'] ?? 'app_' . $group ), array() );
 	}
 
 	$payload = array(
@@ -145,11 +145,11 @@ function nt_tool_export_settings() {
  * are declared in config/admin.php are accepted, and every value passes the
  * same type sanitizer used by the save engine.
  */
-function nt_tool_import_settings() {
-	if ( empty( $_FILES['nt_import_file'] ) || ! is_array( $_FILES['nt_import_file'] ) ) {
+function app_tool_import_settings() {
+	if ( empty( $_FILES['app_import_file'] ) || ! is_array( $_FILES['app_import_file'] ) ) {
 		return __( 'No file uploaded.', NT_TEXT_DOMAIN );
 	}
-	$file = $_FILES['nt_import_file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+	$file = $_FILES['app_import_file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 
 	if ( ! empty( $file['error'] ) || empty( $file['tmp_name'] ) || ! is_uploaded_file( $file['tmp_name'] ) ) {
 		return __( 'Upload failed. Please try again.', NT_TEXT_DOMAIN );
@@ -163,7 +163,7 @@ function nt_tool_import_settings() {
 		return __( 'Not a valid settings export file.', NT_TEXT_DOMAIN );
 	}
 
-	$admin    = nt_config( 'admin' );
+	$admin    = app_config( 'admin' );
 	$imported = 0;
 	foreach ( (array) ( $admin['options'] ?? array() ) as $group => $def ) {
 		if ( ! isset( $payload['groups'][ $group ] ) || ! is_array( $payload['groups'][ $group ] ) ) {
@@ -172,9 +172,9 @@ function nt_tool_import_settings() {
 		$incoming = $payload['groups'][ $group ];
 		$clean    = array();
 		foreach ( (array) ( $def['fields'] ?? array() ) as $key => $type ) {
-			$clean[ $key ] = nt_admin_sanitize( $type, $incoming[ $key ] ?? '' );
+			$clean[ $key ] = app_admin_sanitize( $type, $incoming[ $key ] ?? '' );
 		}
-		update_option( (string) ( $def['option'] ?? 'nt_' . $group ), $clean );
+		update_option( (string) ( $def['option'] ?? 'app_' . $group ), $clean );
 		$imported++;
 	}
 

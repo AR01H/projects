@@ -1,12 +1,21 @@
-/* Small single-purpose utility classes. Keep this file tiny. */
-
-.nt-center { text-align: center; }
-.nt-right { text-align: right; }
-
-.nt-mt-0 { margin-top: 0; }
-.nt-mb-0 { margin-bottom: 0; }
-
-.nt-hidden { display: none !important; }
-
-.nt-muted { color: var(--nt-ink-soft); }
-.nt-small { font-size: var(--nt-fs-sm); }
+.app-center {
+  text-align: center;
+}
+.app-right {
+  text-align: right;
+}
+.app-mt-0 {
+  margin-top: 0;
+}
+.app-mb-0 {
+  margin-bottom: 0;
+}
+.app-hidden {
+  display: none !important;
+}
+.app-muted {
+  color: var(--app-ink-soft);
+}
+.app-small {
+  font-size: var(--app-fs-sm);
+}

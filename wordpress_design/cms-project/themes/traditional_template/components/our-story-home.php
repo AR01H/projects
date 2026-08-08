@@ -33,16 +33,16 @@ foreach ( $about as $k => $v ) {
 	}
 }
 ?>
-<section class="nt-tstory" id="our-story">
-	<div class="container nt-tstory__inner">
+<section class="app-tstory" id="our-story">
+	<div class="container app-tstory__inner">
 
 		<!-- Left: Vintage photo with stamp -->
-		<figure class="nt-tstory__photo">
+		<figure class="app-tstory__photo">
 			<?php if ( $photo ) : ?>
 				<img src="<?php echo esc_url( $photo ); ?>" alt="<?php echo esc_attr( $photo_alt ); ?>" loading="lazy">
 			<?php endif; ?>
 			<?php if ( $stamp_1 || $stamp_2 ) : ?>
-				<span class="nt-tstory__stamp" aria-hidden="true">
+				<span class="app-tstory__stamp" aria-hidden="true">
 					<span><?php echo esc_html( $stamp_1 ); ?></span>
 					<strong><?php echo esc_html( $stamp_2 ); ?></strong>
 				</span>
@@ -50,30 +50,30 @@ foreach ( $about as $k => $v ) {
 		</figure>
 
 		<!-- Centre: text content -->
-		<div class="nt-tstory__text">
+		<div class="app-tstory__text">
 			<?php if ( $tag ) : ?>
-				<span class="nt-section-tag"><?php echo esc_html( $tag ); ?></span>
+				<span class="app-section-tag"><?php echo esc_html( $tag ); ?></span>
 			<?php endif; ?>
-			<h2 class="nt-tstory__heading">
+			<h2 class="app-tstory__heading">
 				<?php echo esc_html( $head_lead ); ?><?php if ( $head_em ) : ?> <em><?php echo esc_html( $head_em ); ?></em><?php endif; ?>
 			</h2>
 			<?php if ( $subtitle ) : ?>
-				<p class="nt-tstory__script">
+				<p class="app-tstory__script">
 					<?php echo wp_kses( $subtitle, array( 'br' => array(), 'em' => array(), 'strong' => array() ) ); ?>
 				</p>
 			<?php endif; ?>
 			<?php foreach ( $paras as $p ) : ?>
-				<p class="nt-tstory__body"><?php echo esc_html( $p ); ?></p>
+				<p class="app-tstory__body"><?php echo esc_html( $p ); ?></p>
 			<?php endforeach; ?>
 			<?php if ( $cta_label ) : ?>
-				<a href="<?php echo esc_url( nt_link( $cta_url ) ); ?>" class="btn">
+				<a href="<?php echo esc_url( app_link( $cta_url ) ); ?>" class="btn">
 					<?php echo esc_html( $cta_label ); ?> &rarr;
 				</a>
 			<?php endif; ?>
 		</div>
 
 		<!-- Right: press machine photo -->
-		<div class="nt-tstory__machine" aria-hidden="true">
+		<div class="app-tstory__machine" aria-hidden="true">
 			<img src="<?php echo esc_url( $machine ); ?>" alt="" loading="lazy">
 		</div>
 

@@ -13,8 +13,8 @@
  * no icon needs its own colour rule, and a re-skin to another brand changes
  * nothing here.
  *
- * Usage (PHP):   nt_icon( 'download' );            // echo
- *                $svg = nt_icon( 'download', '', false );  // return
+ * Usage (PHP):   app_icon( 'download' );            // echo
+ *                $svg = app_icon( 'download', '', false );  // return
  * Usage (data):  any JSON `icon` key may name an icon from self::names().
  *
  * SAFETY: the SVG bodies are hard-coded constants in this file, never user
@@ -183,7 +183,7 @@ class NT_Icons {
 			return '';
 		}
 
-		$classes = trim( 'nt-icon nt-icon--' . sanitize_html_class( $name ) . ' ' . $class );
+		$classes = trim( 'app-icon app-icon--' . sanitize_html_class( $name ) . ' ' . $class );
 		$dims    = $size > 0 ? ' width="' . (int) $size . '" height="' . (int) $size . '"' : '';
 
 		return '<svg class="' . esc_attr( $classes ) . '" viewBox="' . self::VIEWBOX . '"' . $dims
@@ -219,7 +219,7 @@ class NT_Icons {
 		if ( self::exists( strtolower( $value ) ) ) {
 			return self::get( $value, $class );
 		}
-		return '<span class="' . esc_attr( trim( 'nt-icon-emoji ' . $class ) ) . '" aria-hidden="true">'
+		return '<span class="' . esc_attr( trim( 'app-icon-emoji ' . $class ) ) . '" aria-hidden="true">'
 			. esc_html( $value ) . '</span>';
 	}
 }

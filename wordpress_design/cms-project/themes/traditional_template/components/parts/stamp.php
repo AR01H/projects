@@ -27,7 +27,7 @@
  *   tilt     int     Degrees of rotation. Default -8, like a hand stamp.
  *   class    string  Extra class.
  *
- *   nt_component( 'parts/stamp', array(
+ *   app_component( 'parts/stamp', array(
  *       'top'    => 'Family Business',
  *       'bottom' => 'Full Support',
  *       'middle' => 'Proven Model',
@@ -55,14 +55,14 @@ $nt_tilt = max( -25, min( 25, (int) ( $tilt ?? -8 ) ) );
 
 // Unique ids: several stamps can share a page, and duplicate SVG ids would
 // make every one of them follow the first one's arcs.
-$nt_uid = 'nt-stamp-' . wp_unique_id();
+$nt_uid = 'app-stamp-' . wp_unique_id();
 
 // Accessible name: the whole stamp read as one phrase.
 $nt_label = trim( implode( ' — ', array_filter( array_merge( array( $nt_top ), $nt_middle, array( $nt_bottom, $nt_small ) ) ) ) );
 ?>
-<span class="nt-stamp nt-stamp--<?php echo esc_attr( $nt_tone ); ?> <?php echo esc_attr( $class ?? '' ); ?>"
-      style="--nt-stamp-size:<?php echo esc_attr( (string) $nt_size ); ?>px;--nt-stamp-tilt:<?php echo esc_attr( (string) $nt_tilt ); ?>deg;">
-	<svg class="nt-stamp__svg" viewBox="0 0 200 200" role="img"
+<span class="app-stamp app-stamp--<?php echo esc_attr( $nt_tone ); ?> <?php echo esc_attr( $class ?? '' ); ?>"
+      style="--app-stamp-size:<?php echo esc_attr( (string) $nt_size ); ?>px;--app-stamp-tilt:<?php echo esc_attr( (string) $nt_tilt ); ?>deg;">
+	<svg class="app-stamp__svg" viewBox="0 0 200 200" role="img"
 	     aria-label="<?php echo esc_attr( $nt_label ); ?>">
 		<defs>
 			<?php /* Upper arc: drawn left-to-right OVER the top, so the text
@@ -79,11 +79,11 @@ $nt_label = trim( implode( ' — ', array_filter( array_merge( array( $nt_top ),
 
 		<?php /* Two rings: a heavy outer and a hairline inner, the way a real
 		         die is cut. */ ?>
-		<circle class="nt-stamp__ring" cx="100" cy="100" r="92" />
-		<circle class="nt-stamp__ring nt-stamp__ring--thin" cx="100" cy="100" r="80" />
+		<circle class="app-stamp__ring" cx="100" cy="100" r="92" />
+		<circle class="app-stamp__ring app-stamp__ring--thin" cx="100" cy="100" r="80" />
 
 		<?php if ( '' !== $nt_top ) : ?>
-			<text class="nt-stamp__arc">
+			<text class="app-stamp__arc">
 				<textPath href="#<?php echo esc_attr( $nt_uid ); ?>-top" startOffset="50%" text-anchor="middle">
 					<?php echo esc_html( $nt_top ); ?>
 				</textPath>
@@ -91,7 +91,7 @@ $nt_label = trim( implode( ' — ', array_filter( array_merge( array( $nt_top ),
 		<?php endif; ?>
 
 		<?php if ( '' !== $nt_bottom ) : ?>
-			<text class="nt-stamp__arc nt-stamp__arc--bottom">
+			<text class="app-stamp__arc app-stamp__arc--bottom">
 				<textPath href="#<?php echo esc_attr( $nt_uid ); ?>-bottom" startOffset="50%" text-anchor="middle">
 					<?php echo esc_html( $nt_bottom ); ?>
 				</textPath>
@@ -102,8 +102,8 @@ $nt_label = trim( implode( ' — ', array_filter( array_merge( array( $nt_top ),
 		// Side stars, the usual separators between the two arcs of a die.
 		if ( '' !== $nt_top && '' !== $nt_bottom ) :
 			?>
-			<circle class="nt-stamp__pip" cx="16" cy="100" r="3.4"/>
-			<circle class="nt-stamp__pip" cx="184" cy="100" r="3.4"/>
+			<circle class="app-stamp__pip" cx="16" cy="100" r="3.4"/>
+			<circle class="app-stamp__pip" cx="184" cy="100" r="3.4"/>
 		<?php endif; ?>
 
 		<?php if ( ! empty( $nt_middle ) ) : ?>
@@ -111,8 +111,8 @@ $nt_label = trim( implode( ' — ', array_filter( array_merge( array( $nt_top ),
 			// Rules above and below the struck line - the classic die layout.
 			$nt_two = count( $nt_middle ) > 1;
 			?>
-			<line class="nt-stamp__rule" x1="44" y1="<?php echo $nt_two ? '76' : '84'; ?>" x2="156" y2="<?php echo $nt_two ? '76' : '84'; ?>"/>
-			<line class="nt-stamp__rule" x1="44" y1="<?php echo $nt_two ? '128' : '120'; ?>" x2="156" y2="<?php echo $nt_two ? '128' : '120'; ?>"/>
+			<line class="app-stamp__rule" x1="44" y1="<?php echo $nt_two ? '76' : '84'; ?>" x2="156" y2="<?php echo $nt_two ? '76' : '84'; ?>"/>
+			<line class="app-stamp__rule" x1="44" y1="<?php echo $nt_two ? '128' : '120'; ?>" x2="156" y2="<?php echo $nt_two ? '128' : '120'; ?>"/>
 
 			<?php foreach ( $nt_middle as $nt_i => $nt_line ) : ?>
 				<?php
@@ -120,7 +120,7 @@ $nt_label = trim( implode( ' — ', array_filter( array_merge( array( $nt_top ),
 				// the die instead of running out over the ring.
 				$nt_y = $nt_two ? ( 96 + $nt_i * 24 ) : 108;
 				?>
-				<text class="nt-stamp__mid<?php echo $nt_two ? ' nt-stamp__mid--two' : ''; ?>"
+				<text class="app-stamp__mid<?php echo $nt_two ? ' app-stamp__mid--two' : ''; ?>"
 				      x="100" y="<?php echo esc_attr( (string) $nt_y ); ?>"
 				      text-anchor="middle"
 				      textLength="<?php echo $nt_two ? '104' : '112'; ?>"
@@ -131,7 +131,7 @@ $nt_label = trim( implode( ' — ', array_filter( array_merge( array( $nt_top ),
 		<?php endif; ?>
 
 		<?php if ( '' !== $nt_small ) : ?>
-			<text class="nt-stamp__small" x="100" y="<?php echo empty( $nt_middle ) ? '112' : '146'; ?>" text-anchor="middle">
+			<text class="app-stamp__small" x="100" y="<?php echo empty( $nt_middle ) ? '112' : '146'; ?>" text-anchor="middle">
 				<?php echo esc_html( $nt_small ); ?>
 			</text>
 		<?php endif; ?>

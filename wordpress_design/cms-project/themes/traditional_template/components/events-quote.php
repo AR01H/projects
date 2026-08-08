@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 $settings = [];
 $phone    = defined( 'CONTACT_NUMBER' ) ? CONTACT_NUMBER : '';
 
-$content    = nt_data( 'content' )['events_quote'] ?? [];
+$content    = app_data( 'content' )['events_quote'] ?? [];
 $tag        = $args['tag']          ?? $content['tag']        ?? '';
 $title      = $args['title']        ?? $content['heading']    ?? '';
 $body       = $args['body']         ?? $content['body']       ?? '';
@@ -26,19 +26,19 @@ $event_types = $args['event_types'] ?? ['Wedding', 'Corporate', 'Birthday', 'Oth
 $allowed     = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 
-<section id="quote" class="nt-events-quote-section">
+<section id="quote" class="app-events-quote-section">
 	<div class="container">
-		<div class="nt-quote-layout">
+		<div class="app-quote-layout">
 			<div class="fade-left" style="color:var(--client-color-11);">
 				<div class="section-tag" style="color:var(--client-color-7);"><?php echo esc_html( $tag ); ?></div>
 				<h2 class="section-title" style="color:var(--client-color-11);"><?php echo wp_kses( $title, $allowed ); ?></h2>
 				<p class="section-body" style="color:rgba(255,255,255,0.7);"><?php echo esc_html( $body ); ?></p>
 				<?php if ( $phone ) : ?>
-					<div class="nt-contact-detail" style="margin-top:2rem;">
-						<div class="nt-cd-icon">📞</div>
+					<div class="app-contact-detail" style="margin-top:2rem;">
+						<div class="app-cd-icon">📞</div>
 						<div>
-							<div class="nt-cd-label">Call or WhatsApp</div>
-							<div class="nt-cd-val">
+							<div class="app-cd-label">Call or WhatsApp</div>
+							<div class="app-cd-val">
 								<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>" style="color:white;">
 									<?php echo esc_html( $phone ); ?>
 								</a>
@@ -47,9 +47,9 @@ $allowed     = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 					</div>
 				<?php endif; ?>
 			</div>
-			<div class="nt-contact-form fade-right">
-				<div class="nt-form-title"><?php echo esc_html( $form_title ); ?></div>
-				<div id="nt-form-msg" class="nt-form-feedback" style="display:none;" role="alert"></div>
+			<div class="app-contact-form fade-right">
+				<div class="app-form-title"><?php echo esc_html( $form_title ); ?></div>
+				<div id="app-form-msg" class="app-form-feedback" style="display:none;" role="alert"></div>
 				<?php
 				// Map $event_types array to options associative array
 				$type_options = ['' => 'Select event type...'];
@@ -58,52 +58,52 @@ $allowed     = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 				}
 				
 				get_template_part( 'components/parts/generic-form', null, [
-					'id'     => 'nt-contact-form',
-					'action' => 'nt_contact_submit',
+					'id'     => 'app-contact-form',
+					'action' => 'app_contact_submit',
 					'submit' => 'Send Event Enquiry 🥤',
 					'fields' => [
 						[
 							'type'     => 'hidden',
-							'id'       => 'nt-enquiry-type',
-							'name'     => 'nt_enquiry',
+							'id'       => 'app-enquiry-type',
+							'name'     => 'app_enquiry',
 							'value'    => $enq_type,
 						],
 						[
 							'type'     => 'text',
-							'id'       => 'nt_name',
-							'name'     => 'nt_name',
+							'id'       => 'app_name',
+							'name'     => 'app_name',
 							'label'    => 'Your Name',
 							'placeholder' => 'Full name',
 							'required' => true,
 						],
 						[
 							'type'     => 'email',
-							'id'       => 'nt_email',
-							'name'     => 'nt_email',
+							'id'       => 'app_email',
+							'name'     => 'app_email',
 							'label'    => 'Email',
 							'placeholder' => 'you@email.com',
 							'required' => true,
 						],
 						[
 							'type'     => 'tel',
-							'id'       => 'nt_phone',
-							'name'     => 'nt_phone',
+							'id'       => 'app_phone',
+							'name'     => 'app_phone',
 							'label'    => 'Phone / WhatsApp',
 							'placeholder' => '+44 ...',
 							'required' => false,
 						],
 						[
 							'type'     => 'select',
-							'id'       => 'nt_event_type',
-							'name'     => 'nt_event_type',
+							'id'       => 'app_event_type',
+							'name'     => 'app_event_type',
 							'label'    => 'Event Type',
 							'options'  => $type_options,
 							'required' => false,
 						],
 						[
 							'type'     => 'textarea',
-							'id'       => 'nt_message',
-							'name'     => 'nt_message',
+							'id'       => 'app_message',
+							'name'     => 'app_message',
 							'label'    => 'Message (date, location, guest count…)',
 							'placeholder' => 'Tell us more - event date, venue, number of guests...',
 							'required' => false,

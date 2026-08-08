@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-function nt_ajax_search_posts() {
+function app_ajax_search_posts() {
 	$q = sanitize_text_field( wp_unslash( $_POST['q'] ?? '' ) );
 	if ( mb_strlen( $q ) < 2 ) {
 		wp_send_json_success( array( 'results' => array() ) );

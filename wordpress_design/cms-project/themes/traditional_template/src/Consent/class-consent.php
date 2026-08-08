@@ -68,12 +68,12 @@ class NT_Consent {
 		if ( null !== $config ) {
 			return $config;
 		}
-		$data = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 
 		$config = array(
 			'enabled'        => ! empty( $data['enabled'] ),
-			'cookie_name'    => (string) ( $data['cookie_name'] ?? 'nt_cookie_consent' ),
+			'cookie_name'    => (string) ( $data['cookie_name'] ?? 'app_cookie_consent' ),
 			'accept_version' => (string) ( $data['accept_version'] ?? '1' ),
 			'reject_version' => (string) ( $data['reject_version'] ?? '1' ),
 			'accept_days'    => max( 1, (int) ( $data['accept_days'] ?? 365 ) ),
@@ -177,7 +177,7 @@ class NT_Consent {
 			'rejectHours'   => $config['reject_hours'],
 			'position'      => $config['position'],
 			'categories'    => $categories,
-			'policyUrl'     => '' !== self::text( 'policy_url' ) ? nt_link( self::text( 'policy_url' ) ) : '',
+			'policyUrl'     => '' !== self::text( 'policy_url' ) ? app_link( self::text( 'policy_url' ) ) : '',
 			'text'          => array(
 				'aria'         => self::text( 'aria', 'Cookie notice' ),
 				'kicker'       => self::text( 'kicker' ),
@@ -206,11 +206,11 @@ class NT_Consent {
 	 * Hand the config to the script.
 	 */
 	public static function localize(): void {
-		if ( ! self::enabled() || ! wp_script_is( 'nt-cookie-consent', 'registered' ) ) {
+		if ( ! self::enabled() || ! wp_script_is( 'app-cookie-consent', 'registered' ) ) {
 			return;
 		}
 		wp_add_inline_script(
-			'nt-cookie-consent',
+			'app-cookie-consent',
 			'window.ntConsent=' . wp_json_encode( self::js_config() ) . ';',
 			'before'
 		);

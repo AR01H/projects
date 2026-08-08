@@ -1,16 +1,16 @@
 <?php
 /**
  * Dashboard tab - the architecture at a glance: what each registry contains
- * and where to edit it. Included by nt_admin_render_page().
+ * and where to edit it. Included by app_admin_render_page().
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$nt_pages     = nt_config( 'pages' );
-$nt_ajax      = nt_config( 'ajax' );
-$nt_rest      = nt_config( 'rest' );
-$nt_redirects = nt_config( 'redirects' );
-$nt_routes    = nt_config( 'routes' );
+$nt_pages     = app_config( 'pages' );
+$nt_ajax      = app_config( 'ajax' );
+$nt_rest      = app_config( 'rest' );
+$nt_redirects = app_config( 'redirects' );
+$nt_routes    = app_config( 'routes' );
 
 $nt_cards = array(
 	array(
@@ -46,10 +46,10 @@ $nt_cards = array(
 );
 ?>
 
-<div class="nt-admin-cards">
+<div class="app-admin-cards">
 	<?php foreach ( $nt_cards as $nt_card ) : ?>
-		<div class="nt-admin-card">
-			<span class="nt-admin-card-count"><?php echo esc_html( (string) $nt_card['count'] ); ?></span>
+		<div class="app-admin-card">
+			<span class="app-admin-card-count"><?php echo esc_html( (string) $nt_card['count'] ); ?></span>
 			<h3><?php echo esc_html( $nt_card['title'] ); ?></h3>
 			<p><?php echo esc_html( $nt_card['desc'] ); ?></p>
 			<code><?php echo esc_html( $nt_card['file'] ); ?></code>
@@ -58,7 +58,7 @@ $nt_cards = array(
 </div>
 
 <h2><?php esc_html_e( 'Registered Pages', NT_TEXT_DOMAIN ); ?></h2>
-<table class="widefat striped nt-admin-table">
+<table class="widefat striped app-admin-table">
 	<thead>
 		<tr>
 			<th><?php esc_html_e( 'Slug', NT_TEXT_DOMAIN ); ?></th>
@@ -75,7 +75,7 @@ $nt_cards = array(
 			$nt_page_url = ! empty( $nt_def['front'] ) ? home_url( '/' ) : home_url( '/' . $nt_slug . '/' );
 			?>
 			<tr>
-				<td><code>/<?php echo esc_html( (string) $nt_slug ); ?>/</code><?php echo ! empty( $nt_def['front'] ) ? ' <span class="nt-badge">' . esc_html__( 'front', NT_TEXT_DOMAIN ) . '</span>' : ''; ?></td>
+				<td><code>/<?php echo esc_html( (string) $nt_slug ); ?>/</code><?php echo ! empty( $nt_def['front'] ) ? ' <span class="app-badge">' . esc_html__( 'front', NT_TEXT_DOMAIN ) . '</span>' : ''; ?></td>
 				<td><?php echo esc_html( (string) ( $nt_def['title'] ?? '' ) ); ?></td>
 				<td><code><?php echo esc_html( (string) ( $nt_def['template'] ?? '' ) ); ?></code></td>
 				<td><?php echo $nt_exists ? esc_html__( 'created', NT_TEXT_DOMAIN ) : esc_html__( 'virtual (serves anyway)', NT_TEXT_DOMAIN ); ?></td>

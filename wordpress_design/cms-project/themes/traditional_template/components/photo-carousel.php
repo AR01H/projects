@@ -5,16 +5,16 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$images  = nt_data( 'photo_carousel' ) ?? [];
+$images  = app_data( 'photo_carousel' ) ?? [];
 if ( empty( $images ) ) return;
 
-$content = nt_data( 'content' )['photo_carousel'] ?? [];
+$content = app_data( 'content' )['photo_carousel'] ?? [];
 
 // We'll use a fixed set of rotations so they look organic but don't jump around on page load.
 $rotations = [ '-3deg', '4deg', '-2deg', '5deg', '-4deg', '2deg' ];
 ?>
 
-<section class="nt-gallery-hanging" id="gallery">
+<section class="app-gallery-hanging" id="gallery">
 	<div class="container">
 		<?php
 		// Light header: this section sits on parchment, so the dark-background
@@ -26,28 +26,28 @@ $rotations = [ '-3deg', '4deg', '-2deg', '5deg', '-4deg', '2deg' ];
 		] );
 		?>
 
-		<div class="nt-gallery-hanging__clothesline" data-nt-lightbox>
+		<div class="app-gallery-hanging__clothesline" data-nt-lightbox>
 			<!-- The rope spanning across -->
-			<div class="nt-gallery-hanging__rope"></div>
+			<div class="app-gallery-hanging__rope"></div>
 
 			<!-- The hanging polaroids -->
-			<div class="nt-gallery-hanging__items">
+			<div class="app-gallery-hanging__items">
 				<?php foreach ( $images as $i => $img ) : 
 					$rot = $rotations[ $i % count($rotations) ];
 				?>
-					<div class="nt-gallery-polaroid" style="--rot: <?php echo $rot; ?>;">
+					<div class="app-gallery-polaroid" style="--rot: <?php echo $rot; ?>;">
 						<!-- The wooden clothespin -->
-						<div class="nt-gallery-polaroid__pin"></div>
+						<div class="app-gallery-polaroid__pin"></div>
 						
-						<div class="nt-gallery-polaroid__inner">
-							<div class="nt-gallery-polaroid__photo">
+						<div class="app-gallery-polaroid__inner">
+							<div class="app-gallery-polaroid__photo">
 								<img src="<?php echo esc_url( $img['src'] ?? '' ); ?>"
 									 alt="<?php echo esc_attr( $img['label'] ?? 'Gallery image' ); ?>"
 									 loading="lazy">
 							</div>
 							
 							<?php if ( ! empty( $img['label'] ) ) : ?>
-								<div class="nt-gallery-polaroid__caption">
+								<div class="app-gallery-polaroid__caption">
 									<?php echo esc_html( $img['label'] ); ?>
 								</div>
 							<?php endif; ?>

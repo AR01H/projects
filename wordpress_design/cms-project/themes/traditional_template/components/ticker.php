@@ -16,7 +16,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $tk_source = ( isset( $source ) && $source ) ? (string) $source : 'ticker';
-$data      = nt_data( $tk_source );
+$data      = app_data( $tk_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 $items     = array_values( array_filter( array_map( 'strval', $items ), 'strlen' ) );
 if ( empty( $items ) ) {
@@ -27,15 +27,15 @@ $speed = isset( $data['speed'] ) ? (float) $data['speed'] : 0;
 $speed = ( $speed > 0 ) ? min( 200, max( 8, $speed ) ) : 32;
 $style = 'animation-duration:' . $speed . 's';
 ?>
-<section class="nt-ticker" aria-label="<?php esc_attr_e( 'Highlights', NT_TEXT_DOMAIN ); ?>">
-	<div class="nt-ticker__viewport">
+<section class="app-ticker" aria-label="<?php esc_attr_e( 'Highlights', NT_TEXT_DOMAIN ); ?>">
+	<div class="app-ticker__viewport">
 		<?php for ( $pass = 0; $pass < 2; $pass++ ) : ?>
-			<ul class="nt-ticker__track" style="<?php echo esc_attr( $style ); ?>"
+			<ul class="app-ticker__track" style="<?php echo esc_attr( $style ); ?>"
 				<?php echo ( 1 === $pass ) ? 'aria-hidden="true"' : ''; ?>>
 				<?php foreach ( $items as $item ) : ?>
-					<li class="nt-ticker__item">
-						<span class="nt-ticker__text"><?php echo esc_html( $item ); ?></span>
-						<span class="nt-ticker__sep" aria-hidden="true">&#10022;</span>
+					<li class="app-ticker__item">
+						<span class="app-ticker__text"><?php echo esc_html( $item ); ?></span>
+						<span class="app-ticker__sep" aria-hidden="true">&#10022;</span>
 					</li>
 				<?php endforeach; ?>
 			</ul>

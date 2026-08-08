@@ -49,7 +49,7 @@
  *    'section_class'   string   class on <section>                    default: '{prefix}-section'
  *    'container_class' string   class on inner container <div>        default: 'container'
  *    'layout_class'    string   class on the two-column layout <div>  default: '{prefix}-layout'
- *    'prefix'          string   CSS class prefix for all parts        default: 'nt-mini'
+ *    'prefix'          string   CSS class prefix for all parts        default: 'app-mini'
  *
  *  HEADER  (forwarded to components/section-header)
  *    'tag'             string   Eyebrow label
@@ -75,9 +75,9 @@
  *  NAVIGATION CLASSES
  *    'nav_class'       string   Class on nav wrapper                  default: '{prefix}-nav'
  *    'dots_class'      string   Class on dots row                     default: '{prefix}-dots'
- *    'dot_class'       string   Class on each dot button              default: 'nt-dot'
+ *    'dot_class'       string   Class on each dot button              default: 'app-dot'
  *    'arrows_class'    string   Class on arrows wrapper               default: '{prefix}-arrows'
- *    'btn_class'       string   Class on prev/next buttons            default: 'nt-v-btn'
+ *    'btn_class'       string   Class on prev/next buttons            default: 'app-v-btn'
  *
  *  NAVIGATION IDS + LABELS
  *    'dots_id'         string   id on dots row                        default: '{prefix}-dots'
@@ -110,7 +110,7 @@ defined( 'ABSPATH' ) || exit;
 
 /* ── Read args ─────────────────────────────────────────────────────────────── */
 
-$p = sanitize_html_class( $args['prefix'] ?? 'nt-mini' );
+$p = sanitize_html_class( $args['prefix'] ?? 'app-mini' );
 
 $section_id      = $args['section_id']      ?? "{$p}-section";
 $section_class   = $args['section_class']   ?? "{$p}-section";
@@ -138,9 +138,9 @@ $default_icon      = $args['default_icon']      ?? '✅';
 /* Navigation */
 $nav_class    = $args['nav_class']    ?? "{$p}-nav";
 $dots_class   = $args['dots_class']   ?? "{$p}-dots";
-$dot_class    = $args['dot_class']    ?? 'nt-dot';
+$dot_class    = $args['dot_class']    ?? 'app-dot';
 $arrows_class = $args['arrows_class'] ?? "{$p}-arrows";
-$btn_class    = $args['btn_class']    ?? 'nt-v-btn';
+$btn_class    = $args['btn_class']    ?? 'app-v-btn';
 $dots_id      = $args['dots_id']      ?? "{$p}-dots";
 $prev_id      = $args['prev_id']      ?? "{$p}-prev";
 $next_id      = $args['next_id']      ?? "{$p}-next";
@@ -264,7 +264,7 @@ if ( empty( $items ) ) return;
 						<?php foreach ( $items as $i => $cert ) : ?>
 							<?php if ( !empty($cert['image']) ) : ?>
 								<button type="button" 
-								        class="nt-visual-trigger <?php echo $i === 0 ? 'active' : ''; ?>" 
+								        class="app-visual-trigger <?php echo $i === 0 ? 'active' : ''; ?>" 
 								        style="border:none;background:none;padding:0;cursor:pointer;<?php echo $i === 0 ? '' : 'display:none;'; ?>" 
 								        data-carousel-index="<?php echo $i; ?>" 
 								        onclick="document.getElementById('<?php echo esc_js($section_id); ?>-popup-img').src = this.dataset.img; document.getElementById('<?php echo esc_js($section_id); ?>-dialog').showModal();"
@@ -294,7 +294,7 @@ if ( empty( $items ) ) return;
 		'id'      => $section_id . '-dialog',
 		'title'   => 'Certificate',
 		'content' => $dialog_content,
-		'class'   => 'nt-cert-dialog'
+		'class'   => 'app-cert-dialog'
 	] );
 ?>
 <script>
@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	var cards = section.querySelectorAll('.<?php echo esc_js($card_class); ?>');
 	var dots = section.querySelectorAll('.<?php echo esc_js($dot_class); ?>');
-	var visuals = section.querySelectorAll('.nt-visual-trigger');
+	var visuals = section.querySelectorAll('.app-visual-trigger');
 	
 	function setActive(index) {
 		if (index < 0) index = cards.length - 1;

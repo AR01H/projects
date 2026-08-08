@@ -15,8 +15,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-function nt_ajax_lead_submit() {
-	$skip = array( 'action', 'nonce', '_wpnonce', '_wp_http_referer', 'nt_form_label' );
+function app_ajax_lead_submit() {
+	$skip = array( 'action', 'nonce', '_wpnonce', '_wp_http_referer', 'app_form_label' );
 
 	$fields = array();
 	foreach ( (array) $_POST as $key => $value ) {
@@ -58,7 +58,7 @@ function nt_ajax_lead_submit() {
 		$name = __( 'Website lead', NT_TEXT_DOMAIN );
 	}
 
-	$form_label = sanitize_text_field( wp_unslash( $_POST['nt_form_label'] ?? __( 'Enquiry', NT_TEXT_DOMAIN ) ) );
+	$form_label = sanitize_text_field( wp_unslash( $_POST['app_form_label'] ?? __( 'Enquiry', NT_TEXT_DOMAIN ) ) );
 
 	// Human-readable message from every submitted field.
 	$lines = array( 'Form: ' . $form_label );
@@ -71,11 +71,11 @@ function nt_ajax_lead_submit() {
 
 	// Save to the inbox table (install lazily if needed).
 	global $wpdb;
-	if ( ! nt_db_table_exists( 'submissions' ) ) {
-		nt_db_install( 'submissions' );
+	if ( ! app_db_table_exists( 'submissions' ) ) {
+		app_db_install( 'submissions' );
 	}
 	$saved = $wpdb->insert(
-		nt_db_table( 'submissions' ),
+		app_db_table( 'submissions' ),
 		array(
 			'name'       => $name,
 			'email'      => $email,
@@ -87,7 +87,7 @@ function nt_ajax_lead_submit() {
 		array( '%s', '%s', '%s', '%s', '%s', '%s' )
 	);
 
-	$to      = nt_option( 'general', 'email', get_option( 'admin_email' ) );
+	$to      = app_option( 'general', 'email', get_option( 'admin_email' ) );
 	$subject = sprintf( '[%s] %s: %s', NT_BRAND_NAME, $form_label, $name );
 	$headers = array(
 		'Content-Type: text/plain; charset=UTF-8',

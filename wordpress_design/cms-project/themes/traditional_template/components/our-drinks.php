@@ -11,16 +11,16 @@ $drinks   = array_slice( $flavours, 0, 6 );
 
 if ( empty($drinks) ) return;
 ?>
-<section class="nt-flavours" id="our-drinks">
+<section class="app-flavours" id="our-drinks">
 	<div class="container">
 
-		<div class="nt-flavours__header">
-			<span class="nt-section-tag">Pressed Fresh, Served Cool</span>
-			<h2 class="nt-flavours__title">Our <em>Signature Flavours</em></h2>
-			<p class="nt-flavours__sub">Crafted naturally. Served perfectly.</p>
+		<div class="app-flavours__header">
+			<span class="app-section-tag">Pressed Fresh, Served Cool</span>
+			<h2 class="app-flavours__title">Our <em>Signature Flavours</em></h2>
+			<p class="app-flavours__sub">Crafted naturally. Served perfectly.</p>
 		</div>
 
-		<div class="nt-flavours__grid">
+		<div class="app-flavours__grid">
 			<?php foreach ( $drinks as $fl ) :
 				$fl   = (array) $fl;
 				$name = $fl['name'] ?? '';
@@ -28,19 +28,19 @@ if ( empty($drinks) ) return;
 				$img  = $fl['image'] ?? ( $fl['src'] ?? '' );
 				if ( '' === trim( (string) $name ) ) continue;
 			?>
-			<article class="nt-flavour-card">
+			<article class="app-flavour-card">
 				<?php if ( $img ) : ?>
 					<img src="<?php echo esc_url( $img ); ?>"
 						 alt="<?php echo esc_attr( $name ); ?>"
-						 class="nt-flavour-card__img"
+						 class="app-flavour-card__img"
 						 loading="lazy">
 				<?php else : ?>
-					<div class="nt-flavour-card__img" style="background: var(--trad-bg-alt); display:flex; align-items:center; justify-content:center; font-size:3rem;">🥤</div>
+					<div class="app-flavour-card__img" style="background: var(--trad-bg-alt); display:flex; align-items:center; justify-content:center; font-size:3rem;">🥤</div>
 				<?php endif; ?>
-				<div class="nt-flavour-card__body">
-					<h3 class="nt-flavour-card__name"><?php echo esc_html( $name ); ?></h3>
+				<div class="app-flavour-card__body">
+					<h3 class="app-flavour-card__name"><?php echo esc_html( $name ); ?></h3>
 					<?php if ( $desc ) : ?>
-						<p class="nt-flavour-card__desc"><?php echo esc_html( $desc ); ?></p>
+						<p class="app-flavour-card__desc"><?php echo esc_html( $desc ); ?></p>
 					<?php endif; ?>
 				</div>
 			</article>

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * Templates gate each section with this so any block can be shown or hidden
  * by editing ONE JSON file, no template edits:
  *
- *   <?php if ( nt_section_visible( 'stats' ) ) : ?>
+ *   <?php if ( app_section_visible( 'stats' ) ) : ?>
  *       ... section markup ...
  *   <?php endif; ?>
  *
@@ -24,10 +24,10 @@ defined( 'ABSPATH' ) || exit;
  * @param bool   $default Value when the key is absent. Default true.
  * @return bool
  */
-function nt_section_visible( $key, $default = true ) {
+function app_section_visible( $key, $default = true ) {
 	static $map = null;
 	if ( null === $map ) {
-		$data = nt_data( 'sections' );
+		$data = app_data( 'sections' );
 		$map  = is_array( $data ) ? $data : array();
 	}
 	if ( ! array_key_exists( $key, $map ) ) {
@@ -43,8 +43,8 @@ function nt_section_visible( $key, $default = true ) {
  * file, killing every script after it (mobile nav toggle, carousels, wizards).
  * WordPress ships jQuery registered but not loaded; enqueue it so legacy.js runs.
  */
-add_action( 'wp_enqueue_scripts', 'nt_enqueue_jquery_for_legacy', 5 );
-function nt_enqueue_jquery_for_legacy() {
+add_action( 'wp_enqueue_scripts', 'app_enqueue_jquery_for_legacy', 5 );
+function app_enqueue_jquery_for_legacy() {
 	wp_enqueue_script( 'jquery' );
 }
 
@@ -67,14 +67,14 @@ add_filter( 'do_redirect_guess_404_permalink', '__return_false' );
  * the intermediate layer holding all "what to render / in what order / is it
  * visible / with what context" logic. Page templates only ever call this:
  *
- *     nt_render_sections( 'home' );
+ *     app_render_sections( 'home' );
  *
  * Adding, re-ordering or toggling a section is a one-line edit in
  * page_sections.json - no PHP change. See the class docblock for the JSON shape.
  *
  * @param string $page_key Key into page_sections.json (e.g. 'home', 'about').
  */
-function nt_render_sections( $page_key ) {
+function app_render_sections( $page_key ) {
 	if ( class_exists( 'NT_Section_Renderer' ) ) {
 		NT_Section_Renderer::render_page( (string) $page_key );
 	}
@@ -90,15 +90,15 @@ function nt_render_sections( $page_key ) {
 /**
  * An inline SVG icon from the shared set (src/Ui/class-icons.php).
  *
- *   nt_icon( 'download' );                    // echo
- *   $svg = nt_icon( 'download', '', false );  // return
+ *   app_icon( 'download' );                    // echo
+ *   $svg = app_icon( 'download', '', false );  // return
  *
  * @param string $name  Icon name - see NT_Icons::names().
  * @param string $class Extra CSS class(es).
  * @param bool   $echo  Echo (default) or return.
  * @return string
  */
-function nt_icon( $name, $class = '', $echo = true ) {
+function app_icon( $name, $class = '', $echo = true ) {
 	$svg = class_exists( 'NT_Icons' ) ? NT_Icons::get( (string) $name, (string) $class ) : '';
 	if ( $echo ) {
 		echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput -- constant SVG, class escaped in NT_Icons.
@@ -109,11 +109,11 @@ function nt_icon( $name, $class = '', $echo = true ) {
 /**
  * Render an inline alert / note box (src/Dialogs/class-alert.php).
  *
- *   nt_alert( array( 'tone' => 'warning', 'title' => '…', 'body' => '…' ) );
+ *   app_alert( array( 'tone' => 'warning', 'title' => '…', 'body' => '…' ) );
  *
  * @param array $args See NT_Alert::normalise().
  */
-function nt_alert( $args = array() ) {
+function app_alert( $args = array() ) {
 	if ( class_exists( 'NT_Alert' ) ) {
 		NT_Alert::render( (array) $args );
 	}
@@ -123,14 +123,14 @@ function nt_alert( $args = array() ) {
  * Print the attributes that turn any element into a dialog trigger, and queue
  * that dialog for output in the footer (src/Dialogs/class-dialog.php).
  *
- *   <button <?php nt_dialog_trigger( 'brochure' ); ?>>Get the brochure</button>
+ *   <button <?php app_dialog_trigger( 'brochure' ); ?>>Get the brochure</button>
  *
  * Prints nothing when the id is not declared in admin/data/dialogs.json, so a
  * typo degrades to an inert button instead of a JS error.
  *
  * @param string $id Dialog key in dialogs.json.
  */
-function nt_dialog_trigger( $id ) {
+function app_dialog_trigger( $id ) {
 	if ( class_exists( 'NT_Dialog' ) ) {
 		echo NT_Dialog::trigger_attrs( (string) $id ); // phpcs:ignore WordPress.Security.EscapeOutput -- attributes escaped in the class.
 	}
@@ -140,7 +140,7 @@ function nt_dialog_trigger( $id ) {
  * Register a dialog that is NOT in dialogs.json - one a component builds out
  * of its own content, such as an application form per job opening.
  *
- *   $id = nt_dialog_add( 'apply-driver', array(
+ *   $id = app_dialog_add( 'apply-driver', array(
  *       'title' => 'Delivery driver',
  *       'form'  => 'form_apply',
  *   ) );
@@ -153,7 +153,7 @@ function nt_dialog_trigger( $id ) {
  * @param array  $def Same shape as a dialogs.json entry.
  * @return string DOM id.
  */
-function nt_dialog_add( $id, $def = array() ) {
+function app_dialog_add( $id, $def = array() ) {
 	if ( ! class_exists( 'NT_Dialog' ) ) {
 		return '';
 	}
@@ -168,7 +168,7 @@ function nt_dialog_add( $id, $def = array() ) {
  * @param string $default Fallback when the JSON has no value.
  * @return string
  */
-function nt_label( $key, $default = '' ) {
+function app_label( $key, $default = '' ) {
 	return class_exists( 'NT_Ui' ) ? NT_Ui::label( (string) $key, (string) $default ) : (string) $default;
 }
 
@@ -180,14 +180,14 @@ function nt_label( $key, $default = '' ) {
  *
  * WHY wp_footer AND NOT wp_enqueue_scripts: the dialog payload is built from
  * a queue that fills up as sections render (a component calling
- * nt_dialog_trigger() adds to it). wp_enqueue_scripts runs in the <head>,
+ * app_dialog_trigger() adds to it). wp_enqueue_scripts runs in the <head>,
  * long before any of that has happened, so the queue would always be empty.
  * Priority 1 is still ahead of wp_print_footer_scripts (priority 20).
  */
-add_action( 'wp_footer', 'nt_localize_ui_kit', 1 );
-function nt_localize_ui_kit() {
-	if ( ! class_exists( 'NT_Ui' ) || ! wp_script_is( 'nt-ui-kit', 'registered' ) ) {
+add_action( 'wp_footer', 'app_localize_ui_kit', 1 );
+function app_localize_ui_kit() {
+	if ( ! class_exists( 'NT_Ui' ) || ! wp_script_is( 'app-ui-kit', 'registered' ) ) {
 		return;
 	}
-	wp_add_inline_script( 'nt-ui-kit', 'window.ntUi=' . wp_json_encode( NT_Ui::js_config() ) . ';', 'before' );
+	wp_add_inline_script( 'app-ui-kit', 'window.ntUi=' . wp_json_encode( NT_Ui::js_config() ) . ';', 'before' );
 }

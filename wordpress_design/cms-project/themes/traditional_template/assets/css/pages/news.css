@@ -1,16 +1,19 @@
 /* News page styles - loaded only on 'news' (config/pages.php). */
 
-.nt-news-controls {
-	max-width: 420px;
-	margin: 0 auto 32px;
+.app-news-controls {
+  max-width: 420px;
+  margin: 0 auto 32px;
 }
 
-.nt-news-controls input {
-	width: 100%;
-	padding: 10px 16px;
-	border: 1px solid var(--nt-line);
-	border-radius: 999px;
-	font: inherit;
+.app-news-controls input {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--app-line);
+  border-radius: 999px;
+  font: inherit;
 }
 
-.nt-news-status { color: var(--nt-ink-soft); min-height: 1.4em; }
+.app-news-status {
+  color: var(--app-ink-soft);
+  min-height: 1.4em;
+}

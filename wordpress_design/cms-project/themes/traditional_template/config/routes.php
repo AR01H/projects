@@ -32,7 +32,7 @@
  *             "SELECT id, name FROM `{$t}` WHERE slug = %s AND status = 'active' LIMIT 1",
  *             $slug
  *         ) );
- *         return $row ? array( 'nt_term_slug' => $slug, 'nt_term_id' => (int) $row->id ) : false;
+ *         return $row ? array( 'app_term_slug' => $slug, 'app_term_id' => (int) $row->id ) : false;
  *     },
  *     'template' => 'pages/page-category.php',
  *     'title'    => function ( $slug ) { return ucwords( str_replace( '-', ' ', $slug ) ); },

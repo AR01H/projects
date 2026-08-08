@@ -6,13 +6,13 @@ defined( 'ABSPATH' ) || exit;
 ?>
 </main>
 
-<?php nt_component( 'parts/main_footer' ); ?>
+<?php app_component( 'parts/main_footer' ); ?>
 
 <?php get_template_part( 'components/floating-popup' ); ?>
 
-<?php if ( nt_section_visible( 'site_decor' ) ) nt_component( 'parts/site-decor' ); ?>
+<?php if ( app_section_visible( 'site_decor' ) ) app_component( 'parts/site-decor' ); ?>
 
-<?php nt_component( 'parts/svg_defs' ); ?>
+<?php app_component( 'parts/svg_defs' ); ?>
 
 <?php wp_footer(); ?>
 </body>

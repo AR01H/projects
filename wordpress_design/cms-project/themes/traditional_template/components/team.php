@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $tm_source = ( isset( $source ) && $source ) ? (string) $source : 'team';
-$data      = nt_data( $tm_source );
+$data      = app_data( $tm_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 if ( empty( $items ) ) {
 	return;
@@ -18,20 +18,16 @@ $tag   = $data['tag']   ?? '';
 $title = $data['title'] ?? '';
 $sub   = $data['sub']   ?? '';
 ?>
-<section class="nt-team" id="team">
+<section class="app-team" id="team">
 	<div class="container">
 
-		<?php if ( $tag || $title || $sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
-				<?php if ( $title ) : ?>
-					<h2 class="section-title"><?php echo wp_kses( $title, array( 'em' => array() ) ); ?></h2>
-				<?php endif; ?>
-				<?php if ( $sub ) : ?><p class="section-body"><?php echo esc_html( $sub ); ?></p><?php endif; ?>
-			</div>
-		<?php endif; ?>
+		<?php get_template_part( 'components/parts/section-header', null, array(
+	'tag'   => $tag ?? '',
+	'title' => $title ?? '',
+	'body'  => $sub ?? ''
+) ); ?>
 
-		<div class="nt-team__grid">
+		<div class="app-team__grid">
 			<?php foreach ( $items as $item ) :
 				$item = (array) $item;
 				$name = $item['name'] ?? '';
@@ -39,18 +35,18 @@ $sub   = $data['sub']   ?? '';
 					continue;
 				}
 			?>
-				<article class="nt-team__card">
+				<article class="app-team__card">
 					<?php if ( ! empty( $item['photo'] ) ) : ?>
-						<figure class="nt-team__photo">
+						<figure class="app-team__photo">
 							<img src="<?php echo esc_url( $item['photo'] ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy">
 						</figure>
 					<?php endif; ?>
-					<h3 class="nt-team__name"><?php echo esc_html( $name ); ?></h3>
+					<h3 class="app-team__name"><?php echo esc_html( $name ); ?></h3>
 					<?php if ( ! empty( $item['role'] ) ) : ?>
-						<span class="nt-team__role"><?php echo esc_html( $item['role'] ); ?></span>
+						<span class="app-team__role"><?php echo esc_html( $item['role'] ); ?></span>
 					<?php endif; ?>
 					<?php if ( ! empty( $item['bio'] ) ) : ?>
-						<p class="nt-team__bio"><?php echo esc_html( $item['bio'] ); ?></p>
+						<p class="app-team__bio"><?php echo esc_html( $item['bio'] ); ?></p>
 					<?php endif; ?>
 				</article>
 			<?php endforeach; ?>

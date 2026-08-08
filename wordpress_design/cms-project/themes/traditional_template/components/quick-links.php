@@ -26,7 +26,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'quick_links';
-$nt_data = nt_data( $nt_src );
+$nt_data = app_data( $nt_src );
 
 // Inline items first, then anything pulled from the shared block library.
 $nt_tiles = array();
@@ -68,18 +68,18 @@ $nt_tag     = (string) ( $nt_data['tag'] ?? '' );
 $nt_title   = (string) ( $nt_data['title'] ?? '' );
 $nt_sub     = (string) ( $nt_data['sub'] ?? '' );
 ?>
-<section class="nt-quicklinks nt-quicklinks--<?php echo esc_attr( (string) $nt_columns ); ?>" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
+<section class="app-quicklinks app-quicklinks--<?php echo esc_attr( (string) $nt_columns ); ?>" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
 	<div class="container">
 
 		<?php if ( $nt_tag || $nt_title || $nt_sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $nt_tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
+			<div class="app-section-center">
+				<?php if ( $nt_tag ) : ?><div class="app-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
 				<?php if ( $nt_title ) : ?><h2 class="section-title"><?php echo wp_kses( $nt_title, array( 'em' => array() ) ); ?></h2><?php endif; ?>
 				<?php if ( $nt_sub ) : ?><p class="section-body"><?php echo esc_html( $nt_sub ); ?></p><?php endif; ?>
 			</div>
 		<?php endif; ?>
 
-		<div class="nt-quicklinks__grid">
+		<div class="app-quicklinks__grid">
 			<?php
 			foreach ( $nt_tiles as $nt_tile ) :
 				$nt_is_dialog = ( '' !== $nt_tile['dialog'] && NT_Dialog::exists( $nt_tile['dialog'] ) );
@@ -91,27 +91,27 @@ $nt_sub     = (string) ( $nt_data['sub'] ?? '' );
 				// small "click here" on a phone.
 				$nt_el = $nt_is_dialog ? 'button' : 'a';
 				?>
-				<<?php echo $nt_el; ?> class="nt-quicklink"
+				<<?php echo $nt_el; ?> class="app-quicklink"
 					<?php if ( $nt_is_dialog ) : ?>
-						<?php nt_dialog_trigger( $nt_tile['dialog'] ); ?>
+						<?php app_dialog_trigger( $nt_tile['dialog'] ); ?>
 					<?php else : ?>
-						href="<?php echo esc_url( nt_link( $nt_tile['url'] ) ); ?>"
+						href="<?php echo esc_url( app_link( $nt_tile['url'] ) ); ?>"
 						<?php if ( $nt_tile['new_tab'] ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>
 					<?php endif; ?>>
 
 					<?php if ( '' !== $nt_tile['icon'] ) : ?>
-						<span class="nt-quicklink__icon" aria-hidden="true">
+						<span class="app-quicklink__icon" aria-hidden="true">
 							<?php echo NT_Icons::get_or_text( $nt_tile['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 						</span>
 					<?php endif; ?>
 
-					<span class="nt-quicklink__title"><?php echo esc_html( $nt_tile['title'] ); ?></span>
+					<span class="app-quicklink__title"><?php echo esc_html( $nt_tile['title'] ); ?></span>
 
 					<?php if ( '' !== $nt_tile['text'] ) : ?>
-						<span class="nt-quicklink__text"><?php echo esc_html( $nt_tile['text'] ); ?></span>
+						<span class="app-quicklink__text"><?php echo esc_html( $nt_tile['text'] ); ?></span>
 					<?php endif; ?>
 
-					<span class="nt-quicklink__go">
+					<span class="app-quicklink__go">
 						<?php echo esc_html( '' !== $nt_tile['label'] ? $nt_tile['label'] : NT_Ui::label( 'read_more' ) ); ?>
 						<?php NT_Icons::render( 'arrow-right' ); ?>
 					</span>

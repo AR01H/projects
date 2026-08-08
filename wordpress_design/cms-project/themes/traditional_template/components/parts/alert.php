@@ -9,7 +9,7 @@
  *
  * Rendered through NT_Alert::render() so every key below is guaranteed set.
  *
- *   nt_alert( array( 'tone' => 'warning', 'title' => …, 'body' => … ) );
+ *   app_alert( array( 'tone' => 'warning', 'title' => …, 'body' => … ) );
  *
  * Context: tone title body html icon link_label link_url dismissible
  *          compact dismiss_id class
@@ -22,8 +22,8 @@ if ( '' === trim( $title ) && '' === trim( $body ) && '' === trim( $html ) ) {
 }
 
 $nt_classes = trim(
-	'nt-alert nt-alert--' . sanitize_html_class( $tone )
-	. ( $compact ? ' nt-alert--compact' : '' )
+	'app-alert app-alert--' . sanitize_html_class( $tone )
+	. ( $compact ? ' app-alert--compact' : '' )
 	. ' ' . $class
 );
 ?>
@@ -31,25 +31,25 @@ $nt_classes = trim(
      role="<?php echo ( 'error' === $tone || 'warning' === $tone ) ? 'alert' : 'note'; ?>"
 	<?php if ( '' !== $dismiss_id ) : ?>data-nt-alert-remember="<?php echo esc_attr( $dismiss_id ); ?>"<?php endif; ?>>
 
-	<span class="nt-alert__icon" aria-hidden="true">
+	<span class="app-alert__icon" aria-hidden="true">
 		<?php echo NT_Icons::get_or_text( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 	</span>
 
-	<div class="nt-alert__content">
+	<div class="app-alert__content">
 		<?php if ( '' !== $title ) : ?>
-			<p class="nt-alert__title"><?php echo esc_html( $title ); ?></p>
+			<p class="app-alert__title"><?php echo esc_html( $title ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( '' !== $body ) : ?>
-			<p class="nt-alert__text"><?php echo esc_html( $body ); ?></p>
+			<p class="app-alert__text"><?php echo esc_html( $body ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( '' !== $html ) : ?>
-			<div class="nt-alert__rich"><?php echo wp_kses_post( $html ); ?></div>
+			<div class="app-alert__rich"><?php echo wp_kses_post( $html ); ?></div>
 		<?php endif; ?>
 
 		<?php if ( '' !== $link_label && '' !== $link_url ) : ?>
-			<a class="nt-alert__link" href="<?php echo esc_url( nt_link( $link_url ) ); ?>">
+			<a class="app-alert__link" href="<?php echo esc_url( app_link( $link_url ) ); ?>">
 				<?php echo esc_html( $link_label ); ?>
 				<?php NT_Icons::render( 'arrow-right' ); ?>
 			</a>
@@ -57,7 +57,7 @@ $nt_classes = trim(
 	</div>
 
 	<?php if ( $dismissible ) : ?>
-		<button type="button" class="nt-alert__close" data-nt-alert-close
+		<button type="button" class="app-alert__close" data-nt-alert-close
 		        aria-label="<?php echo esc_attr( NT_Ui::label( 'dismiss' ) ); ?>">
 			<?php NT_Icons::render( 'close' ); ?>
 		</button>

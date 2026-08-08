@@ -27,7 +27,7 @@ return array(
 		// Paged post listing - powers the News page "Load More".
 		'posts' => array(
 			'methods'  => 'GET',
-			'callback' => 'nt_rest_posts',
+			'callback' => 'app_rest_posts',
 			'file'     => 'handlers/rest/posts.php',
 			'args'     => array(
 				'page' => array(

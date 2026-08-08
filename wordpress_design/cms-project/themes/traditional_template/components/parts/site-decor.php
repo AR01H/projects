@@ -9,7 +9,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$decor = nt_data( 'decor' );
+$decor = app_data( 'decor' );
 if ( empty( $decor['enabled'] ) ) {
 	return;
 }
@@ -17,15 +17,15 @@ if ( empty( $decor['enabled'] ) ) {
 $left    = $decor['left']['image']  ?? '';
 $right   = $decor['right']['image'] ?? '';
 $opacity = isset( $decor['opacity'] ) ? (float) $decor['opacity'] : 0.18;
-$style   = '--nt-decor-opacity:' . esc_attr( $opacity ) . ';';
+$style   = '--app-decor-opacity:' . esc_attr( $opacity ) . ';';
 ?>
-<div class="nt-site-decor" aria-hidden="true" style="<?php echo esc_attr( $style ); ?>">
+<div class="app-site-decor" aria-hidden="true" style="<?php echo esc_attr( $style ); ?>">
 	<?php if ( $left ) : ?>
-		<span class="nt-site-decor__edge nt-site-decor__edge--left"
+		<span class="app-site-decor__edge app-site-decor__edge--left"
 		      style="background-image:url('<?php echo esc_url( get_template_directory_uri() . '/' . ltrim( $left, '/' ) ); ?>');"></span>
 	<?php endif; ?>
 	<?php if ( $right ) : ?>
-		<span class="nt-site-decor__edge nt-site-decor__edge--right"
+		<span class="app-site-decor__edge app-site-decor__edge--right"
 		      style="background-image:url('<?php echo esc_url( get_template_directory_uri() . '/' . ltrim( $right, '/' ) ); ?>');"></span>
 	<?php endif; ?>
 </div>

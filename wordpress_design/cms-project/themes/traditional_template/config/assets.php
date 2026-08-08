@@ -6,7 +6,7 @@
  * entry in config/pages.php (or config/routes.php for dynamic routes).
  *
  * core/assets.php loops these arrays:
- *   - handle prefix 'nt-' is added automatically,
+ *   - handle prefix 'app-' is added automatically,
  *   - version = filemtime() so browsers re-fetch the moment you save a file,
  *   - missing files are skipped silently (never a 404).
  */
@@ -19,7 +19,7 @@ return array(
 	// legacy.css is a low-priority base from the previous theme; it loads BEFORE
 	// the vintage design system so vintage/components win on shared selectors
 	// (otherwise the old theme clobbers the reskin - e.g. it was resetting
-	// .nt-stats-bar back to a pale background).
+	// .app-stats-bar back to a pale background).
 	'css' => array(
 		'variables'  => 'assets/css/variables.css',
 		'legacy'     => 'assets/css/legacy.css',
@@ -55,7 +55,7 @@ return array(
 		// Fits the movie header's editable headline to the board. No-ops on
 		// pages without one.
 		'movie-header'  => 'components/movie-header/header.js',
-		// scroll-to-top.js removed: the footer's #nt-scroll-to-top button
+		// scroll-to-top.js removed: the footer's #app-scroll-to-top button
 		// (driven by initScrollToTop() in legacy.js) is the single back-to-top.
 	),
 

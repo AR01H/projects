@@ -11,15 +11,15 @@
 
 defined( 'ABSPATH' ) || exit;
 
-function nt_handle_redirects() {
+function app_handle_redirects() {
 	if ( is_admin() || wp_doing_ajax() || wp_doing_cron() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 		return;
 	}
 
-	$path = nt_request_path();
+	$path = app_request_path();
 
 	// 1. Rule table.
-	$rules = nt_config( 'redirects' );
+	$rules = app_config( 'redirects' );
 	if ( '' !== $path && isset( $rules[ $path ] ) ) {
 		$rule   = $rules[ $path ];
 		$to     = (string) ( $rule['to'] ?? '' );

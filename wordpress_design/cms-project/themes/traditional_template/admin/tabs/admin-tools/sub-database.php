@@ -7,9 +7,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-nt_admin_tools_render( 'database' );
+app_admin_tools_render( 'database' );
 
-$nt_status = nt_db_status();
+$nt_status = app_db_status();
 ?>
 
 <h2><?php esc_html_e( 'Registered Tables', NT_TEXT_DOMAIN ); ?></h2>
@@ -17,7 +17,7 @@ $nt_status = nt_db_status();
 <?php if ( ! $nt_status ) : ?>
 	<p><?php esc_html_e( 'No tables registered yet. Add entries in config/database.php.', NT_TEXT_DOMAIN ); ?></p>
 <?php else : ?>
-	<table class="widefat striped nt-admin-table">
+	<table class="widefat striped app-admin-table">
 		<thead>
 			<tr>
 				<th><?php esc_html_e( 'Key', NT_TEXT_DOMAIN ); ?></th>
@@ -42,10 +42,10 @@ $nt_status = nt_db_status();
 					</td>
 					<td>
 						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin:0;">
-							<input type="hidden" name="action" value="nt_tool_install_table">
+							<input type="hidden" name="action" value="app_tool_install_table">
 							<input type="hidden" name="table_key" value="<?php echo esc_attr( (string) $nt_key ); ?>">
-							<?php nt_admin_location_fields(); ?>
-							<?php wp_nonce_field( 'nt_tool_install_table' ); ?>
+							<?php app_admin_location_fields(); ?>
+							<?php wp_nonce_field( 'app_tool_install_table' ); ?>
 							<?php submit_button( $nt_row['exists'] ? __( 'Repair', NT_TEXT_DOMAIN ) : __( 'Install', NT_TEXT_DOMAIN ), 'secondary small', 'submit', false ); ?>
 						</form>
 					</td>

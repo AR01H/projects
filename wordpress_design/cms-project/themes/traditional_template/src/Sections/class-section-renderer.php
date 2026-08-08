@@ -47,7 +47,7 @@ class NT_Section_Renderer {
 	 * @return array<int,array>
 	 */
 	public static function sections_for( string $page_key ): array {
-		$map = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$map = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		if ( ! is_array( $map ) || empty( $map[ $page_key ] ) || ! is_array( $map[ $page_key ] ) ) {
 			return array();
 		}
@@ -59,12 +59,12 @@ class NT_Section_Renderer {
 	 *
 	 * Section shape (all keys optional except `component`):
 	 *   component (string)        components/<component>.php to render. Required.
-	 *   key       (string)        visibility toggle via sections.json (nt_section_visible).
+	 *   key       (string)        visibility toggle via sections.json (app_section_visible).
 	 *   header    (string)        merge page_headers.json[header] into the context
 	 *                             (used with component "parts/page_header").
 	 *   args      (object)        extra context passed to the component.
 	 *   variant   (string|array)  design variant(s) - wraps the section in
-	 *                             .nt-variant.nt-variant--<name> so the SAME
+	 *                             .app-variant.app-variant--<name> so the SAME
 	 *                             component can look different on each page
 	 *                             (e.g. "dark", "compact", "split") with no PHP
 	 *                             or component change. See "SECTION VARIANTS" in
@@ -80,11 +80,11 @@ class NT_Section_Renderer {
 
 		// Visibility (admin/data/sections.json). Missing key = visible.
 		$key = isset( $section['key'] ) ? (string) $section['key'] : '';
-		if ( '' !== $key && function_exists( 'nt_section_visible' ) && ! nt_section_visible( $key ) ) {
+		if ( '' !== $key && function_exists( 'app_section_visible' ) && ! app_section_visible( $key ) ) {
 			return;
 		}
 
-		if ( ! function_exists( 'nt_component' ) ) {
+		if ( ! function_exists( 'app_component' ) ) {
 			return;
 		}
 
@@ -92,15 +92,15 @@ class NT_Section_Renderer {
 		$wrapper = self::variant_class( $section );
 
 		// The variant wrapper is what lets one component carry many designs:
-		// CSS targets `.nt-variant--dark .nt-reviews { … }` etc.
+		// CSS targets `.app-variant--dark .app-reviews { … }` etc.
 		if ( '' !== $wrapper ) {
 			echo '<div class="' . esc_attr( $wrapper ) . '">';
 		}
 
-		// nt_component() realpath-guards the path and extracts $context into
+		// app_component() realpath-guards the path and extracts $context into
 		// variables, so parts/page_header gets $title/$subtitle/etc while a
 		// plain section component just reads its own JSON and ignores context.
-		nt_component( $component, $context );
+		app_component( $component, $context );
 
 		if ( '' !== $wrapper ) {
 			echo '</div>';
@@ -119,11 +119,11 @@ class NT_Section_Renderer {
 			return '';
 		}
 		$variants = is_array( $section['variant'] ) ? $section['variant'] : array( $section['variant'] );
-		$classes  = array( 'nt-variant' );
+		$classes  = array( 'app-variant' );
 		foreach ( $variants as $variant ) {
 			$slug = sanitize_html_class( (string) $variant );
 			if ( '' !== $slug ) {
-				$classes[] = 'nt-variant--' . $slug;
+				$classes[] = 'app-variant--' . $slug;
 			}
 		}
 		return ( count( $classes ) > 1 ) ? implode( ' ', $classes ) : '';
@@ -140,8 +140,8 @@ class NT_Section_Renderer {
 	protected static function build_context( array $section ): array {
 		$context = ( isset( $section['args'] ) && is_array( $section['args'] ) ) ? $section['args'] : array();
 
-		if ( ! empty( $section['header'] ) && function_exists( 'nt_data' ) ) {
-			$headers = nt_data( 'page_headers' );
+		if ( ! empty( $section['header'] ) && function_exists( 'app_data' ) ) {
+			$headers = app_data( 'page_headers' );
 			$name    = (string) $section['header'];
 			$hdr     = ( is_array( $headers ) && isset( $headers[ $name ] ) && is_array( $headers[ $name ] ) ) ? $headers[ $name ] : array();
 			// Inline args win over the shared header block.

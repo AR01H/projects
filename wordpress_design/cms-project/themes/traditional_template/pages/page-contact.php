@@ -7,7 +7,7 @@
 defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
-<div class="nt-contact-page">
-	<?php nt_render_sections( 'contact' ); ?>
+<div class="app-contact-page">
+	<?php app_render_sections( 'contact' ); ?>
 </div>
 <?php get_footer(); ?>

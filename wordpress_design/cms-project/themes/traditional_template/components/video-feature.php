@@ -20,14 +20,14 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-if ( ! function_exists( 'nt_video_embed_url' ) ) {
+if ( ! function_exists( 'app_video_embed_url' ) ) {
 	/**
 	 * Turn a watch URL into an autoplaying embed URL.
 	 *
 	 * @param string $url Any YouTube or Vimeo link.
 	 * @return string Embed URL, or '' when the host is not recognised.
 	 */
-	function nt_video_embed_url( $url ) {
+	function app_video_embed_url( $url ) {
 		$url = trim( (string) $url );
 		if ( '' === $url ) {
 			return '';
@@ -69,7 +69,7 @@ if ( ! function_exists( 'nt_video_embed_url' ) ) {
 }
 
 $vf_source = ( isset( $source ) && $source ) ? (string) $source : 'video_feature';
-$data      = nt_data( $vf_source );
+$data      = app_data( $vf_source );
 $title     = ( is_array( $data ) && ! empty( $data['title'] ) ) ? $data['title'] : '';
 if ( '' === $title ) {
 	return;
@@ -79,19 +79,19 @@ $body   = $data['body']      ?? '';
 $image  = $data['image']     ?? '';
 $alt    = $data['alt']       ?? '';
 $video  = $data['video_url'] ?? '';
-$embed  = nt_video_embed_url( $video );
+$embed  = app_video_embed_url( $video );
 $button = $data['button']    ?? '';
 $points = ( ! empty( $data['points'] ) ) ? (array) $data['points'] : array();
 ?>
-<section class="nt-videofeat" id="video-feature">
-	<div class="container nt-videofeat__inner">
+<section class="app-videofeat" id="video-feature">
+	<div class="container app-videofeat__inner">
 
-		<div class="nt-videofeat__media"<?php echo $embed ? ' data-nt-video-host' : ''; ?>>
+		<div class="app-videofeat__media"<?php echo $embed ? ' data-nt-video-host' : ''; ?>>
 			<?php if ( $image ) : ?>
 				<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="lazy">
 			<?php endif; ?>
 			<?php if ( $video ) : ?>
-				<a class="nt-videofeat__play" href="<?php echo esc_url( $video ); ?>"
+				<a class="app-videofeat__play" href="<?php echo esc_url( $video ); ?>"
 				   target="_blank" rel="noopener noreferrer"
 				   <?php echo $embed ? 'data-nt-video="' . esc_url( $embed ) . '"' : ''; ?>
 				   aria-label="<?php esc_attr_e( 'Play video', NT_TEXT_DOMAIN ); ?>">
@@ -100,13 +100,13 @@ $points = ( ! empty( $data['points'] ) ) ? (array) $data['points'] : array();
 			<?php endif; ?>
 		</div>
 
-		<div class="nt-videofeat__copy">
-			<?php if ( $tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
-			<h2 class="nt-videofeat__title"><?php echo wp_kses( $title, array( 'em' => array() ) ); ?></h2>
-			<?php if ( $body ) : ?><p class="nt-videofeat__body"><?php echo esc_html( $body ); ?></p><?php endif; ?>
+		<div class="app-videofeat__copy">
+			<?php if ( $tag ) : ?><div class="app-section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
+			<h2 class="app-videofeat__title"><?php echo wp_kses( $title, array( 'em' => array() ) ); ?></h2>
+			<?php if ( $body ) : ?><p class="app-videofeat__body"><?php echo esc_html( $body ); ?></p><?php endif; ?>
 
 			<?php if ( ! empty( $points ) ) : ?>
-				<ul class="nt-videofeat__points">
+				<ul class="app-videofeat__points">
 					<?php foreach ( $points as $point ) : ?>
 						<li><?php echo esc_html( (string) $point ); ?></li>
 					<?php endforeach; ?>
@@ -114,7 +114,7 @@ $points = ( ! empty( $data['points'] ) ) ? (array) $data['points'] : array();
 			<?php endif; ?>
 
 			<?php if ( $button && $video ) : ?>
-				<a class="btn nt-videofeat__btn" href="<?php echo esc_url( $video ); ?>" target="_blank" rel="noopener noreferrer">
+				<a class="btn app-videofeat__btn" href="<?php echo esc_url( $video ); ?>" target="_blank" rel="noopener noreferrer">
 					<?php echo esc_html( $button ); ?>
 				</a>
 			<?php endif; ?>

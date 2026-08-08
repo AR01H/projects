@@ -2,15 +2,15 @@
 $spotlights = NT_Data_Provider::get('spotlights');
 if (empty($spotlights)) return;
 ?>
-<section class="nt-spotlights">
-    <div class="nt-container nt-grid">
+<section class="app-spotlights">
+    <div class="app-container app-grid">
         <?php foreach ($spotlights as $spot): 
             $spot = (object)$spot;
         ?>
-        <div class="nt-spotlight-card">
-            <div class="nt-spotlight-icon"><?php echo esc_html($spot->icon ?? ''); ?></div>
-            <h3 class="nt-spotlight-title"><?php echo esc_html($spot->title ?? ''); ?></h3>
-            <p class="nt-spotlight-desc"><?php echo esc_html($spot->description ?? ''); ?></p>
+        <div class="app-spotlight-card">
+            <div class="app-spotlight-icon"><?php echo esc_html($spot->icon ?? ''); ?></div>
+            <h3 class="app-spotlight-title"><?php echo esc_html($spot->title ?? ''); ?></h3>
+            <p class="app-spotlight-desc"><?php echo esc_html($spot->description ?? ''); ?></p>
         </div>
         <?php endforeach; ?>
     </div>

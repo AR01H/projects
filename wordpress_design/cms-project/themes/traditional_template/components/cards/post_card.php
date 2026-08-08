@@ -17,7 +17,7 @@
  *   compact (bool)   Tighter card for sidebars and related-post rows.
  *
  * Keep the shape in step with the JS renderer in assets/js/pages/news.js -
- * both produce .nt-card items.
+ * both produce .app-card items.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -37,43 +37,43 @@ $nt_words   = str_word_count( wp_strip_all_tags( (string) get_post_field( 'post_
 $nt_minutes = max( 1, (int) ceil( $nt_words / 200 ) );
 $nt_read    = sprintf( NT_Ui::label( 'minutes_read', '%s min read' ), (string) $nt_minutes );
 ?>
-<article class="nt-card<?php echo $nt_compact ? ' nt-card--compact' : ''; ?>">
-	<a class="nt-card-link" href="<?php echo esc_url( get_permalink( $nt_pid ) ); ?>">
+<article class="app-card<?php echo $nt_compact ? ' app-card--compact' : ''; ?>">
+	<a class="app-card-link" href="<?php echo esc_url( get_permalink( $nt_pid ) ); ?>">
 
-		<div class="nt-card-media">
+		<div class="app-card-media">
 			<?php if ( $nt_thumb ) : ?>
-				<img class="nt-card-img" src="<?php echo esc_url( $nt_thumb ); ?>"
+				<img class="app-card-img" src="<?php echo esc_url( $nt_thumb ); ?>"
 				     alt="" loading="lazy" decoding="async">
 			<?php else : ?>
-				<span class="nt-card-media-empty" aria-hidden="true">
+				<span class="app-card-media-empty" aria-hidden="true">
 					<?php NT_Icons::render( 'wheat' ); ?>
 				</span>
 			<?php endif; ?>
 
 			<?php if ( '' !== $nt_cat ) : ?>
-				<span class="nt-card-cat"><?php echo esc_html( $nt_cat ); ?></span>
+				<span class="app-card-cat"><?php echo esc_html( $nt_cat ); ?></span>
 			<?php endif; ?>
 		</div>
 
-		<div class="nt-card-body">
-			<p class="nt-card-meta">
-				<span class="nt-card-meta__item">
+		<div class="app-card-body">
+			<p class="app-card-meta">
+				<span class="app-card-meta__item">
 					<?php NT_Icons::render( 'calendar' ); ?>
 					<?php echo esc_html( get_the_date( '', $nt_pid ) ); ?>
 				</span>
-				<span class="nt-card-meta__item">
+				<span class="app-card-meta__item">
 					<?php NT_Icons::render( 'clock' ); ?>
 					<?php echo esc_html( $nt_read ); ?>
 				</span>
 			</p>
 
-			<h3 class="nt-card-title"><?php echo esc_html( get_the_title( $nt_pid ) ); ?></h3>
+			<h3 class="app-card-title"><?php echo esc_html( get_the_title( $nt_pid ) ); ?></h3>
 
-			<p class="nt-card-excerpt">
+			<p class="app-card-excerpt">
 				<?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $nt_pid ) ), $nt_compact ? 12 : 22, '…' ) ); ?>
 			</p>
 
-			<span class="nt-card-more">
+			<span class="app-card-more">
 				<?php echo esc_html( NT_Ui::label( 'read_more' ) ); ?>
 				<?php NT_Icons::render( 'arrow-right' ); ?>
 			</span>

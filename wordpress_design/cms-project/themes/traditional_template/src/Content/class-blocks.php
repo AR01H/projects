@@ -28,7 +28,7 @@
  *
  * …referenced anywhere by its KEY:
  *
- *   PHP        nt_block( 'read_blogs' )                  -> the array
+ *   PHP        app_block( 'read_blogs' )                  -> the array
  *   Section    { "component": "promo-block", "args": { "block": "read_blogs" } }
  *   Any list   "blocks": [ "read_blogs", "visit_us" ]    (see self::many)
  *
@@ -57,7 +57,7 @@ class NT_Blocks {
 		if ( null !== $blocks ) {
 			return $blocks;
 		}
-		$data = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 		unset( $data['_doc'] );
 

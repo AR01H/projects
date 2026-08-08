@@ -4,12 +4,12 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$settings = []; // nt_data('site') could be used here
-$phone    = nt_option( 'general', 'phone', NT_BRAND_PHONE );
-$email    = nt_option( 'general', 'email', NT_BRAND_EMAIL );
-$address  = nt_option( 'general', 'address' );
+$settings = []; // app_data('site') could be used here
+$phone    = app_option( 'general', 'phone', NT_BRAND_PHONE );
+$email    = app_option( 'general', 'email', NT_BRAND_EMAIL );
+$address  = app_option( 'general', 'address' );
 
-$content = nt_data( 'content' )['contact_section'] ?? [];
+$content = app_data( 'content' )['contact_section'] ?? [];
 $sec_tag   = $content['tag']        ?? 'Get in Touch';
 $sec_title = $content['title']      ?? 'Contact Us';
 $sec_body  = $content['body']       ?? 'We would love to hear from you.';
@@ -27,18 +27,18 @@ $trad_photo   = $content['photo'] ?? 'https://images.unsplash.com/photo-15196714
 $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 ?>
 
-<section id="contact" class="nt-contact-section">
-	<div class="nt-contact-info fade-left">
-		<div class="nt-section-tag"><?php echo esc_html( $sec_tag ); ?></div>
-		<h2 class="nt-section-title"><?php echo wp_kses( $sec_title, [ 'span' => [ 'class' => [] ] ] ); ?></h2>
-		<p class="nt-section-body" style="margin-top:.8rem;margin-bottom:2rem;"><?php echo esc_html( $sec_body ); ?></p>
+<section id="contact" class="app-contact-section">
+	<div class="app-contact-info fade-left">
+		<div class="app-section-tag"><?php echo esc_html( $sec_tag ); ?></div>
+		<h2 class="app-section-title"><?php echo wp_kses( $sec_title, [ 'span' => [ 'class' => [] ] ] ); ?></h2>
+		<p class="app-section-body" style="margin-top:.8rem;margin-bottom:2rem;"><?php echo esc_html( $sec_body ); ?></p>
 
 		<?php if ( $phone ) : ?>
-			<div class="nt-contact-detail">
-				<div class="nt-cd-icon" aria-hidden="true">📞</div>
+			<div class="app-contact-detail">
+				<div class="app-cd-icon" aria-hidden="true">📞</div>
 				<div>
-					<div class="nt-cd-label">Call Us</div>
-					<div class="nt-cd-val">
+					<div class="app-cd-label">Call Us</div>
+					<div class="app-cd-val">
 						<a href="tel:<?php echo esc_attr( preg_replace( '/[^+0-9]/', '', $phone ) ); ?>">
 							<?php echo esc_html( $phone ); ?>
 						</a>
@@ -48,11 +48,11 @@ $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 		<?php endif; ?>
 
 		<?php if ( $email ) : ?>
-			<div class="nt-contact-detail">
-				<div class="nt-cd-icon" aria-hidden="true">📧</div>
+			<div class="app-contact-detail">
+				<div class="app-cd-icon" aria-hidden="true">📧</div>
 				<div>
-					<div class="nt-cd-label">Email Us</div>
-					<div class="nt-cd-val">
+					<div class="app-cd-label">Email Us</div>
+					<div class="app-cd-val">
 						<a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
 					</div>
 				</div>
@@ -62,43 +62,43 @@ $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 		foreach ( $contact_details as $key => $detail ) :
 			if ( empty( $detail['value'] ) ) continue;
 		?>
-			<div class="nt-contact-detail">
-				<div class="nt-cd-icon" aria-hidden="true"><?php echo $detail['icon']; ?></div>
+			<div class="app-contact-detail">
+				<div class="app-cd-icon" aria-hidden="true"><?php echo $detail['icon']; ?></div>
 				<div>
-					<div class="nt-cd-label"><?php echo $detail['label']; ?></div>
-					<div class="nt-cd-val"><?php echo esc_html( $detail['value'] ); ?></div>
+					<div class="app-cd-label"><?php echo $detail['label']; ?></div>
+					<div class="app-cd-val"><?php echo esc_html( $detail['value'] ); ?></div>
 				</div>
 			</div>
 		<?php endforeach; ?>
 
-		<figure class="nt-contact-polaroid" aria-hidden="true">
-			<span class="nt-contact-pin"></span>
-			<div class="nt-contact-polaroid__mount">
+		<figure class="app-contact-polaroid" aria-hidden="true">
+			<span class="app-contact-pin"></span>
+			<div class="app-contact-polaroid__mount">
 				<img src="<?php echo esc_url( $trad_photo ); ?>" alt="" loading="lazy">
 			</div>
-			<figcaption class="nt-contact-polaroid__cap"><?php echo esc_html( $trad_caption ); ?></figcaption>
+			<figcaption class="app-contact-polaroid__cap"><?php echo esc_html( $trad_caption ); ?></figcaption>
 		</figure>
 	</div>
 
-	<div class="nt-contact-form fade-right">
-		<span class="nt-form-clip" aria-hidden="true"></span>
-		<span class="nt-contact-stamp" aria-hidden="true">
-			<span class="nt-contact-stamp__top">Freshly Pressed</span>
-			<span class="nt-contact-stamp__big">100%</span>
-			<span class="nt-contact-stamp__bot">Natural</span>
+	<div class="app-contact-form fade-right">
+		<span class="app-form-clip" aria-hidden="true"></span>
+		<span class="app-contact-stamp" aria-hidden="true">
+			<span class="app-contact-stamp__top">Freshly Pressed</span>
+			<span class="app-contact-stamp__big">100%</span>
+			<span class="app-contact-stamp__bot">Natural</span>
 		</span>
 		
-		<div class="nt-form-title"><?php echo esc_html( $form_title ); ?></div>
+		<div class="app-form-title"><?php echo esc_html( $form_title ); ?></div>
 
 		<?php
 		get_template_part( 'components/parts/generic-form', null, [
-			'id'     => 'nt-home-contact-form',
+			'id'     => 'app-home-contact-form',
 			'action' => 'contact_submit',
 			'submit' => 'Send Message 🥤',
 			'fields' => [
 				[
 					'type'     => 'text',
-					'id'       => 'nt-hc-name',
+					'id'       => 'app-hc-name',
 					'name'     => 'name',
 					'label'    => 'Full Name',
 					'placeholder' => 'Your name',
@@ -106,7 +106,7 @@ $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 				],
 				[
 					'type'     => 'email',
-					'id'       => 'nt-hc-email',
+					'id'       => 'app-hc-email',
 					'name'     => 'email',
 					'label'    => 'Email Address',
 					'placeholder' => 'you@email.com',
@@ -114,7 +114,7 @@ $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 				],
 				[
 					'type'     => 'tel',
-					'id'       => 'nt-hc-phone',
+					'id'       => 'app-hc-phone',
 					'name'     => 'phone',
 					'label'    => 'Phone Number',
 					'placeholder' => '+44 ...',
@@ -122,7 +122,7 @@ $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 				],
 				[
 					'type'     => 'text',
-					'id'       => 'nt-hc-subject',
+					'id'       => 'app-hc-subject',
 					'name'     => 'subject',
 					'label'    => 'Subject',
 					'placeholder' => 'Subject',
@@ -130,7 +130,7 @@ $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 				],
 				[
 					'type'     => 'textarea',
-					'id'       => 'nt-hc-message',
+					'id'       => 'app-hc-message',
 					'name'     => 'message',
 					'label'    => 'Message',
 					'placeholder' => 'Tell us more...',

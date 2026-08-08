@@ -17,7 +17,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $ct_source = ( isset( $source ) && $source ) ? (string) $source : 'compare_table';
-$data      = nt_data( $ct_source );
+$data      = app_data( $ct_source );
 $plans     = ( is_array( $data ) && ! empty( $data['plans'] ) ) ? array_values( (array) $data['plans'] ) : array();
 $rows      = ( is_array( $data ) && ! empty( $data['rows'] ) ) ? (array) $data['rows'] : array();
 if ( empty( $plans ) || empty( $rows ) ) {
@@ -44,32 +44,28 @@ $cell = static function ( $value ) {
 	return array( 'text', (string) $value );
 };
 ?>
-<section class="nt-compare" id="compare-table">
+<section class="app-compare" id="compare-table">
 	<div class="container">
 
-		<?php if ( $tag || $title || $sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
-				<?php if ( $title ) : ?>
-					<h2 class="section-title"><?php echo wp_kses( $title, array( 'em' => array() ) ); ?></h2>
-				<?php endif; ?>
-				<?php if ( $sub ) : ?><p class="section-body"><?php echo esc_html( $sub ); ?></p><?php endif; ?>
-			</div>
-		<?php endif; ?>
+		<?php get_template_part( 'components/parts/section-header', null, array(
+	'tag'   => $tag ?? '',
+	'title' => $title ?? '',
+	'body'  => $sub ?? ''
+) ); ?>
 
-		<div class="nt-compare__scroll" tabindex="0" role="region"
+		<div class="app-compare__scroll" tabindex="0" role="region"
 		     aria-label="<?php esc_attr_e( 'Comparison table', NT_TEXT_DOMAIN ); ?>">
-			<table class="nt-compare__table">
+			<table class="app-compare__table">
 				<thead>
 					<tr>
-						<th scope="col" class="nt-compare__corner"><span class="screen-reader-text"><?php esc_html_e( 'Feature', NT_TEXT_DOMAIN ); ?></span></th>
+						<th scope="col" class="app-compare__corner"><span class="screen-reader-text"><?php esc_html_e( 'Feature', NT_TEXT_DOMAIN ); ?></span></th>
 						<?php foreach ( $plans as $plan ) :
 							$plan = (array) $plan;
 						?>
-							<th scope="col" class="nt-compare__plan<?php echo ! empty( $plan['featured'] ) ? ' is-featured' : ''; ?>">
-								<span class="nt-compare__plan-name"><?php echo esc_html( $plan['name'] ?? '' ); ?></span>
+							<th scope="col" class="app-compare__plan<?php echo ! empty( $plan['featured'] ) ? ' is-featured' : ''; ?>">
+								<span class="app-compare__plan-name"><?php echo esc_html( $plan['name'] ?? '' ); ?></span>
 								<?php if ( ! empty( $plan['note'] ) ) : ?>
-									<span class="nt-compare__plan-note"><?php echo esc_html( $plan['note'] ); ?></span>
+									<span class="app-compare__plan-note"><?php echo esc_html( $plan['note'] ); ?></span>
 								<?php endif; ?>
 							</th>
 						<?php endforeach; ?>
@@ -86,13 +82,13 @@ $cell = static function ( $value ) {
 						$values = array_slice( array_pad( $values, $count, '' ), 0, $count );
 					?>
 						<tr>
-							<th scope="row" class="nt-compare__label"><?php echo esc_html( $label ); ?></th>
+							<th scope="row" class="app-compare__label"><?php echo esc_html( $label ); ?></th>
 							<?php foreach ( $values as $i => $value ) :
 								list( $kind, $text ) = $cell( $value );
 								$plan_i  = (array) $plans[ $i ];
 								$featured = ! empty( $plan_i['featured'] ) ? ' is-featured' : '';
 							?>
-								<td class="nt-compare__cell nt-compare__cell--<?php echo esc_attr( $kind ); ?><?php echo esc_attr( $featured ); ?>"
+								<td class="app-compare__cell app-compare__cell--<?php echo esc_attr( $kind ); ?><?php echo esc_attr( $featured ); ?>"
 								    data-plan="<?php echo esc_attr( $plan_i['name'] ?? '' ); ?>">
 									<?php if ( 'yes' === $kind ) : ?>
 										<span aria-hidden="true">&#10003;</span>
@@ -112,7 +108,7 @@ $cell = static function ( $value ) {
 		</div>
 
 		<?php if ( $footnote ) : ?>
-			<p class="nt-compare__footnote"><?php echo esc_html( $footnote ); ?></p>
+			<p class="app-compare__footnote"><?php echo esc_html( $footnote ); ?></p>
 		<?php endif; ?>
 
 	</div>

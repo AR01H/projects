@@ -1,196 +1,222 @@
-/* ================================================================
-   TRADITIONAL TEMPLATE – MAIN CSS
-   Vintage parchment / antique sugarcane aesthetic.
-   ================================================================ */
-
-/* ─── Reset ─────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
-
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
 body {
-	margin: 0;
-	font-family: var(--nt-font-body);
-	font-size: var(--nt-fs-base);
-	line-height: 1.7;
-	color: var(--nt-ink);
-	background: var(--trad-bg);
-	padding-top: var(--nt-nav-height, 72px);
+  margin: 0;
+  font-family: var(--app-font-body);
+  font-size: var(--app-fs-base);
+  line-height: 1.7;
+  color: var(--app-ink);
+  background: var(--trad-bg);
+  padding-top: var(--app-nav-height, 72px);
 }
-
-img { max-width: 100%; height: auto; display: block; }
-a   { color: var(--trad-green); text-decoration: none; }
-a:hover { color: var(--trad-gold); }
-
-h1, h2, h3, h4, h5 {
-	font-family: var(--nt-font-display);
-	line-height: 1.2;
-	margin: 0 0 0.5em;
-	color: var(--trad-ink);
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
-h1 { font-size: var(--nt-fs-h1); }
-h2 { font-size: var(--nt-fs-h2); }
-h3 { font-size: var(--nt-fs-h3); }
-
-p { margin: 0 0 1em; }
-
-/* ─── Containers ──────────────────────────────────────────── */
+a {
+  color: var(--trad-green);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--trad-gold);
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--app-font-display);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+  color: var(--trad-ink);
+}
+h1 {
+  font-size: var(--app-fs-h1);
+}
+h2 {
+  font-size: var(--app-fs-h2);
+}
+h3 {
+  font-size: var(--app-fs-h3);
+}
+p {
+  margin: 0 0 1em;
+}
 .container,
-.nt-container {
-	max-width: var(--nt-container);
-	margin: 0 auto;
-	padding: 0 24px;
+.app-container {
+  margin: 0 auto;
+  padding: 0 24px;
 }
-
-/* ─── Accessibility ───────────────────────────────────────── */
 .screen-reader-text {
-	position: absolute !important;
-	width: 1px; height: 1px;
-	margin: -1px; padding: 0;
-	overflow: hidden;
-	clip: rect(0 0 0 0);
-	border: 0;
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
 }
 .skip-link:focus {
-	position: fixed;
-	top: 8px; left: 8px;
-	z-index: 9999;
-	width: auto; height: auto;
-	clip: auto;
-	background: var(--trad-green);
-	color: var(--trad-cream);
-	padding: 8px 14px;
-	border-radius: 4px;
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  clip: auto;
+  background: var(--trad-green);
+  color: var(--trad-cream);
+  padding: 8px 14px;
+  border-radius: 4px;
+}
+.app-section {
+  padding: var(--app-section-pad) 0;
+}
+.app-section-alt {
+  background: var(--trad-bg-alt);
+}
+.app-section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--trad-gold);
+  font-family: var(--app-font-display);
+  margin-bottom: 12px;
+}
+.app-section-tag::after,
+.app-section-tag::before {
+  content: "" !important;
+  display: block !important;
+  width: 32px !important;
+  height: 1px !important;
+  background: var(--trad-gold) !important;
 }
 
-/* ─── Sections ────────────────────────────────────────────── */
-.nt-section { padding: var(--nt-section-pad) 0; }
-.nt-section-alt { background: var(--trad-bg-alt); }
-
-/* Vintage decorative divider */
-.nt-section-tag {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	font-size: 0.72rem;
-	font-weight: 700;
-	letter-spacing: 0.18em;
-	text-transform: uppercase;
-	color: var(--trad-gold);
-	font-family: var(--nt-font-display);
-	margin-bottom: 12px;
-}
-.nt-section-tag::before,
-.nt-section-tag::after {
-	content: '';
-	display: block;
-	width: 32px;
-	height: 1px;
-	background: var(--trad-gold);
+.app-section-flourish {
+  display: block;
+  width: 170px;
+  height: 16px;
+  margin: 12px auto 0;
+  background: var(--app-flourish) center/contain no-repeat;
 }
 
-/* ─── Vintage Border Utility ──────────────────────────────── */
 .vintage-border {
-	border: 2px solid var(--trad-border);
-	border-radius: var(--nt-radius);
+  border: 2px solid var(--trad-border);
+  border-radius: var(--app-radius);
 }
-
-/* ─── Buttons ─────────────────────────────────────────────── */
 .btn,
 .btn-primary {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	padding: 12px 28px;
-	background: var(--trad-green);
-	color: var(--trad-cream);
-	font-family: var(--nt-font-display);
-	font-weight: 600;
-	font-size: 0.82rem;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	border: 2px solid var(--trad-green);
-	border-radius: var(--nt-radius);
-	cursor: pointer;
-	transition: var(--nt-transition);
-	text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 28px;
+  background: var(--trad-green);
+  color: var(--trad-cream);
+  font-family: var(--app-font-display);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 2px solid var(--trad-green);
+  border-radius: var(--app-radius);
+  cursor: pointer;
+  transition: var(--app-transition);
+  text-decoration: none;
 }
-.btn:hover,
-.btn-primary:hover {
-	background: transparent;
-	color: var(--trad-green);
+.btn-primary:hover,
+.btn:hover {
+  background: 0 0;
+  color: var(--trad-green);
 }
-
 .btn-gold,
 .btn-outline-gold {
-	background: var(--trad-gold);
-	border-color: var(--trad-gold);
-	color: var(--trad-green);
+  background: var(--trad-gold);
+  border-color: var(--trad-gold);
+  color: var(--trad-green);
 }
 .btn-gold:hover {
-	background: transparent;
-	color: var(--trad-gold);
+  background: 0 0;
+  color: var(--trad-gold);
 }
-
 .btn-outline {
-	background: transparent;
-	border: 2px solid var(--trad-green);
-	color: var(--trad-green);
+  background: 0 0;
+  border: 2px solid var(--trad-green);
+  color: var(--trad-green);
 }
 .btn-outline:hover {
-	background: var(--trad-green);
-	color: var(--trad-cream);
+  background: var(--trad-green);
+  color: var(--trad-cream);
 }
-
-/* ─── Grid helpers ────────────────────────────────────────── */
-.nt-grid   { display: grid; gap: var(--nt-gap); }
-.nt-grid-2 { grid-template-columns: repeat(2, 1fr); }
-.nt-grid-3 { grid-template-columns: repeat(3, 1fr); }
-.nt-grid-4 { grid-template-columns: repeat(4, 1fr); }
-
-/* ─── Cards ───────────────────────────────────────────────── */
-.nt-card {
-	background: var(--trad-bg-alt);
-	border: 1px solid var(--trad-border);
-	border-radius: var(--nt-radius);
-	overflow: hidden;
+.app-grid {
+  display: grid;
+  gap: var(--app-gap);
 }
-
-/* ─── Forms ───────────────────────────────────────────────── */
-input, textarea, select {
-	width: 100%;
-	font-family: var(--nt-font-body);
-	font-size: var(--nt-fs-base);
-	padding: 10px 14px;
-	border: 1px solid var(--trad-border);
-	border-radius: var(--nt-radius);
-	background: var(--trad-cream);
-	color: var(--trad-ink);
-	outline: none;
-	transition: border-color var(--nt-transition);
+.app-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
 }
-input:focus, textarea:focus {
-	border-color: var(--trad-gold);
+.app-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
 }
-
-/* ─── Footer base ─────────────────────────────────────────── */
-.nt-footer {
-	background: var(--trad-green);
-	color: var(--trad-cream);
+.app-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
 }
-.nt-footer a {
-	color: rgba(250,240,216,0.74);
+.app-card {
+  background: var(--trad-bg-alt);
+  border: 1px solid var(--trad-border);
+  border-radius: var(--app-radius);
+  overflow: hidden;
 }
-.nt-footer a:hover {
-	color: var(--trad-gold);
+input,
+select,
+textarea {
+  width: 100%;
+  font-family: var(--app-font-body);
+  font-size: var(--app-fs-base);
+  padding: 10px 14px;
+  border: 1px solid var(--trad-border);
+  border-radius: var(--app-radius);
+  background: var(--trad-cream);
+  color: var(--trad-ink);
+  outline: 0;
+  transition: border-color var(--app-transition);
 }
-
-/* ─── Responsive ──────────────────────────────────────────── */
+input:focus,
+textarea:focus {
+  border-color: var(--trad-gold);
+}
+.app-footer {
+  background: var(--trad-green);
+  color: var(--trad-cream);
+}
+.app-footer a {
+  color: rgba(250, 240, 216, 0.74);
+}
+.app-footer a:hover {
+  color: var(--trad-gold);
+}
 @media (max-width: 900px) {
-	.nt-grid-3 { grid-template-columns: repeat(2, 1fr); }
-	.nt-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .app-grid-3,
+  .app-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media (max-width: 600px) {
-	.container, .nt-container { padding: 0 16px; }
-	.nt-grid-2,
-	.nt-grid-3,
-	.nt-grid-4 { grid-template-columns: 1fr; }
+  .container,
+  .app-container {
+    padding: 0 16px;
+  }
+  .app-grid-2,
+  .app-grid-3,
+  .app-grid-4 {
+    grid-template-columns: 1fr;
+  }
 }

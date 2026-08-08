@@ -17,7 +17,7 @@
  *
  * …and opened from anywhere with no PHP markup at all:
  *
- *   <button <?php nt_dialog_trigger( 'brochure' ); ?>>Get the brochure</button>
+ *   <button <?php app_dialog_trigger( 'brochure' ); ?>>Get the brochure</button>
  *
  * WHERE THE MARKUP COMES FROM: nowhere on the server. This class only
  * validates the data and ships it to the page as `window.ntUi.dialogs`;
@@ -46,10 +46,10 @@ class NT_Dialog {
 
 	/**
 	 * Prefix for the DOM id JS gives the built element, so a dialog declared
-	 * as "brochure" becomes #nt-dialog-brochure and can never collide with a
+	 * as "brochure" becomes #app-dialog-brochure and can never collide with a
 	 * section id.
 	 */
-	public const ID_PREFIX = 'nt-dialog-';
+	public const ID_PREFIX = 'app-dialog-';
 
 	/**
 	 * Dialog ids referenced by this page, so only their data is shipped.
@@ -76,7 +76,7 @@ class NT_Dialog {
 		if ( null !== $registry ) {
 			return $registry;
 		}
-		$data = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 		unset( $data['_doc'] );
 
@@ -215,7 +215,7 @@ class NT_Dialog {
 			}
 			$actions[] = array(
 				'label'        => $label,
-				'url'          => '' !== (string) ( $action['url'] ?? '' ) ? nt_link( (string) $action['url'] ) : '',
+				'url'          => '' !== (string) ( $action['url'] ?? '' ) ? app_link( (string) $action['url'] ) : '',
 				'style'        => in_array( (string) ( $action['style'] ?? 'primary' ), array( 'primary', 'ghost', 'danger' ), true )
 					? (string) $action['style'] : 'primary',
 				'new_tab'      => ! empty( $action['new_tab'] ),
@@ -234,7 +234,7 @@ class NT_Dialog {
 			'icon'        => (string) ( $def['icon'] ?? NT_Ui::tone_icon( $tone ) ),
 			'size'        => NT_Ui::size( $def['size'] ?? '' ),
 			'body'        => array_values( $body ),
-			'image'       => '' !== (string) ( $def['image'] ?? '' ) ? nt_link( (string) $def['image'] ) : '',
+			'image'       => '' !== (string) ( $def['image'] ?? '' ) ? app_link( (string) $def['image'] ) : '',
 			'image_alt'   => (string) ( $def['image_alt'] ?? '' ),
 			'list'        => array_values( array_filter( array_map( 'strval', (array) ( $def['list'] ?? array() ) ) ) ),
 			'form'        => self::form_data( (string) ( $def['form'] ?? '' ) ),
@@ -257,10 +257,10 @@ class NT_Dialog {
 	 * @return array Empty when there is no form.
 	 */
 	protected static function form_data( string $name ): array {
-		if ( '' === $name || ! function_exists( 'nt_data' ) ) {
+		if ( '' === $name || ! function_exists( 'app_data' ) ) {
 			return array();
 		}
-		$form = nt_data( $name );
+		$form = app_data( $name );
 		if ( empty( $form ) || ! is_array( $form ) ) {
 			return array();
 		}
@@ -281,7 +281,7 @@ class NT_Dialog {
 		}
 
 		return array(
-			'id'     => (string) ( $form['id'] ?? 'nt-form-' . sanitize_html_class( $name ) ),
+			'id'     => (string) ( $form['id'] ?? 'app-form-' . sanitize_html_class( $name ) ),
 			'action' => (string) ( $form['action'] ?? '' ),
 			'submit' => (string) ( $form['submit'] ?? NT_Ui::label( 'submit' ) ),
 			'class'  => (string) ( $form['class'] ?? '' ),

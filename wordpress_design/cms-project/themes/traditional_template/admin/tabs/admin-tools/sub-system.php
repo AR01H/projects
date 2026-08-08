@@ -19,13 +19,13 @@ $nt_rows = array(
 	__( 'Coming soon mode', NT_TEXT_DOMAIN ) => ( defined( 'NT_COMING_SOON' ) && NT_COMING_SOON ) ? 'ON (visitors redirected)' : 'off',
 	__( 'Permalinks', NT_TEXT_DOMAIN )       => get_option( 'permalink_structure' ) ?: __( 'Plain (consider pretty permalinks)', NT_TEXT_DOMAIN ),
 	__( 'Active plugins', NT_TEXT_DOMAIN )   => (string) count( (array) get_option( 'active_plugins', array() ) ),
-	__( 'Registered pages', NT_TEXT_DOMAIN ) => (string) count( nt_config( 'pages' ) ),
-	__( 'AJAX actions', NT_TEXT_DOMAIN )     => (string) count( nt_config( 'ajax' ) ),
-	__( 'REST routes', NT_TEXT_DOMAIN )      => (string) count( (array) ( nt_config( 'rest' )['routes'] ?? array() ) ),
+	__( 'Registered pages', NT_TEXT_DOMAIN ) => (string) count( app_config( 'pages' ) ),
+	__( 'AJAX actions', NT_TEXT_DOMAIN )     => (string) count( app_config( 'ajax' ) ),
+	__( 'REST routes', NT_TEXT_DOMAIN )      => (string) count( (array) ( app_config( 'rest' )['routes'] ?? array() ) ),
 );
 ?>
 
-<table class="widefat striped nt-admin-table" style="max-width:640px;">
+<table class="widefat striped app-admin-table" style="max-width:640px;">
 	<tbody>
 		<?php foreach ( $nt_rows as $nt_label => $nt_value ) : ?>
 			<tr>

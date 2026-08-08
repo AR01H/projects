@@ -11,7 +11,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-function nt_rest_posts( WP_REST_Request $request ) {
+function app_rest_posts( WP_REST_Request $request ) {
 	$page     = max( 1, (int) $request['page'] );
 	$per_page = min( 24, max( 1, (int) $request['per_page'] ) );
 	$search   = (string) $request['search'];
@@ -33,7 +33,7 @@ function nt_rest_posts( WP_REST_Request $request ) {
 			'url'     => get_permalink( $p ),
 			'date'    => get_the_date( '', $p ),
 			'excerpt' => wp_trim_words( wp_strip_all_tags( get_the_excerpt( $p ) ), 20, '…' ),
-			'thumb'   => (string) get_the_post_thumbnail_url( $p, 'nt-card' ),
+			'thumb'   => (string) get_the_post_thumbnail_url( $p, 'app-card' ),
 		);
 	}
 

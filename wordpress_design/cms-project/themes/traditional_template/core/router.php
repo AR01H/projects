@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Resolve a theme-relative template path safely. Returns absolute path or ''.
  */
-function nt_resolve_template( $rel ) {
+function app_resolve_template( $rel ) {
 	$base = realpath( NT_THEME_DIR . '/pages' );
 	$file = realpath( NT_THEME_DIR . '/' . ltrim( (string) $rel, '/' ) );
 	if ( $base && $file && 0 === strpos( $file, $base ) && is_file( $file ) ) {
@@ -35,7 +35,7 @@ function nt_resolve_template( $rel ) {
  * Mark the current request as a successful page render (used when we rescue
  * a 404 into a virtual page) and set the document title.
  */
-function nt_router_force_page( $title = '' ) {
+function app_router_force_page( $title = '' ) {
 	global $wp_query;
 	if ( $wp_query->is_404 ) {
 		status_header( 200 );
@@ -59,12 +59,12 @@ function nt_router_force_page( $title = '' ) {
 /**
  * Static page router - one generic loop over config/pages.php.
  */
-function nt_router_static_pages( $template ) {
-	$path          = nt_request_path();
+function app_router_static_pages( $template ) {
+	$path          = app_request_path();
 	$is_global_404 = is_404();
 
-	foreach ( nt_config( 'pages' ) as $slug => $def ) {
-		$file = nt_resolve_template( $def['template'] ?? '' );
+	foreach ( app_config( 'pages' ) as $slug => $def ) {
+		$file = app_resolve_template( $def['template'] ?? '' );
 		if ( '' === $file ) {
 			continue;
 		}
@@ -88,11 +88,11 @@ function nt_router_static_pages( $template ) {
 		}
 
 		if ( $is_virtual ) {
-			nt_router_force_page( (string) ( $def['title'] ?? '' ) );
+			app_router_force_page( (string) ( $def['title'] ?? '' ) );
 		}
 
 		// Let core/assets.php know which registry entry is rendering.
-		set_query_var( 'nt_active_page', (string) $slug );
+		set_query_var( 'app_active_page', (string) $slug );
 
 		return $file;
 	}
@@ -103,8 +103,8 @@ function nt_router_static_pages( $template ) {
 /**
  * Dynamic route router - loops config/routes.php for single-segment paths.
  */
-function nt_router_dynamic_routes( $template ) {
-	$path = nt_request_path();
+function app_router_dynamic_routes( $template ) {
+	$path = app_request_path();
 
 	// Only single-segment top-level paths: /buying/ yes, /buying/step-2/ no.
 	if ( '' === $path || false !== strpos( $path, '/' ) ) {
@@ -116,7 +116,7 @@ function nt_router_dynamic_routes( $template ) {
 		return $template;
 	}
 
-	foreach ( nt_config( 'routes' ) as $route_key => $rule ) {
+	foreach ( app_config( 'routes' ) as $route_key => $rule ) {
 		if ( empty( $rule['match'] ) || ! is_callable( $rule['match'] ) ) {
 			continue;
 		}
@@ -125,7 +125,7 @@ function nt_router_dynamic_routes( $template ) {
 			continue;
 		}
 
-		$file = nt_resolve_template( $rule['template'] ?? '' );
+		$file = app_resolve_template( $rule['template'] ?? '' );
 		if ( '' === $file ) {
 			continue;
 		}
@@ -134,12 +134,12 @@ function nt_router_dynamic_routes( $template ) {
 		if ( is_callable( $title ) ) {
 			$title = (string) call_user_func( $title, $slug );
 		}
-		nt_router_force_page( $title );
+		app_router_force_page( $title );
 
 		foreach ( $vars as $var => $value ) {
 			set_query_var( $var, $value );
 		}
-		set_query_var( 'nt_active_route', (string) $route_key );
+		set_query_var( 'app_active_route', (string) $route_key );
 
 		return $file;
 	}
@@ -152,8 +152,8 @@ function nt_router_dynamic_routes( $template ) {
  * (e.g. a WP post slug colliding with a DB term slug). Keep matchers cheap -
  * they can run here and again at template_include on the same request.
  */
-function nt_router_suppress_canonical( $redirect_url, $requested_url ) {
-	$routes = nt_config( 'routes' );
+function app_router_suppress_canonical( $redirect_url, $requested_url ) {
+	$routes = app_config( 'routes' );
 	if ( empty( $routes ) ) {
 		return $redirect_url;
 	}
@@ -177,10 +177,10 @@ function nt_router_suppress_canonical( $redirect_url, $requested_url ) {
  *
  * @return int Number of pages created.
  */
-function nt_sync_pages() {
+function app_sync_pages() {
 	$created = 0;
 
-	foreach ( nt_config( 'pages' ) as $slug => $def ) {
+	foreach ( app_config( 'pages' ) as $slug => $def ) {
 		if ( isset( $def['create'] ) && false === $def['create'] ) {
 			continue;
 		}

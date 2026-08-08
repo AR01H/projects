@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-function nt_ajax_contact_submit() {
+function app_ajax_contact_submit() {
 	$name    = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
 	$email   = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
 	$phone   = sanitize_text_field( wp_unslash( $_POST['phone'] ?? '' ) );
@@ -34,11 +34,11 @@ function nt_ajax_contact_submit() {
 	// is registered in config/database.php; install lazily just in case the
 	// theme was updated without re-activation.
 	global $wpdb;
-	if ( ! nt_db_table_exists( 'submissions' ) ) {
-		nt_db_install( 'submissions' );
+	if ( ! app_db_table_exists( 'submissions' ) ) {
+		app_db_install( 'submissions' );
 	}
 	$saved = $wpdb->insert(
-		nt_db_table( 'submissions' ),
+		app_db_table( 'submissions' ),
 		array(
 			'name'       => $name,
 			'email'      => $email,
@@ -51,7 +51,7 @@ function nt_ajax_contact_submit() {
 	);
 
 	// 2. Notify by email (best effort - the inbox row is the source of truth).
-	$to      = nt_option( 'general', 'email', get_option( 'admin_email' ) );
+	$to      = app_option( 'general', 'email', get_option( 'admin_email' ) );
 	$subject = sprintf( '[%s] Contact form: %s', NT_BRAND_NAME, $name );
 	$body    = "Name: {$name}\nEmail: {$email}\nPhone: {$phone}\n\nMessage:\n{$message}";
 	$headers = array(

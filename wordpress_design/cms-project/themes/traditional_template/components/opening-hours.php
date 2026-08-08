@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $oh_source = ( isset( $source ) && $source ) ? (string) $source : 'opening_hours';
-$data      = nt_data( $oh_source );
+$data      = app_data( $oh_source );
 $days      = ( is_array( $data ) && ! empty( $data['days'] ) ) ? (array) $data['days'] : array();
 if ( empty( $days ) ) {
 	return;
@@ -98,36 +98,36 @@ if ( empty( $rows ) ) {
 	return;
 }
 ?>
-<section class="nt-hours" id="opening-hours">
-	<div class="container nt-hours__inner">
+<section class="app-hours" id="opening-hours">
+	<div class="container app-hours__inner">
 
-		<div class="nt-hours__intro">
-			<?php if ( $tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
+		<div class="app-hours__intro">
+			<?php if ( $tag ) : ?><div class="app-section-tag"><?php echo esc_html( $tag ); ?></div><?php endif; ?>
 			<?php if ( $title ) : ?>
 				<h2 class="section-title"><?php echo wp_kses( $title, array( 'em' => array() ) ); ?></h2>
 			<?php endif; ?>
 
-			<p class="nt-hours__status <?php echo $is_open ? 'is-open' : 'is-closed'; ?>">
-				<span class="nt-hours__dot" aria-hidden="true"></span>
+			<p class="app-hours__status <?php echo $is_open ? 'is-open' : 'is-closed'; ?>">
+				<span class="app-hours__dot" aria-hidden="true"></span>
 				<?php echo $is_open ? esc_html__( 'Open now', NT_TEXT_DOMAIN ) : esc_html__( 'Closed right now', NT_TEXT_DOMAIN ); ?>
 			</p>
 
 			<?php if ( $sub ) : ?><p class="section-body"><?php echo esc_html( $sub ); ?></p><?php endif; ?>
-			<?php if ( $note ) : ?><p class="nt-hours__note"><?php echo esc_html( $note ); ?></p><?php endif; ?>
+			<?php if ( $note ) : ?><p class="app-hours__note"><?php echo esc_html( $note ); ?></p><?php endif; ?>
 		</div>
 
-		<table class="nt-hours__table">
+		<table class="app-hours__table">
 			<caption class="screen-reader-text"><?php esc_html_e( 'Opening hours by day', NT_TEXT_DOMAIN ); ?></caption>
 			<tbody>
 				<?php foreach ( $rows as $row ) : ?>
-					<tr class="nt-hours__row<?php echo $row['is_today'] ? ' is-today' : ''; ?><?php echo $row['closed'] ? ' is-shut' : ''; ?>">
-						<th scope="row" class="nt-hours__day">
+					<tr class="app-hours__row<?php echo $row['is_today'] ? ' is-today' : ''; ?><?php echo $row['closed'] ? ' is-shut' : ''; ?>">
+						<th scope="row" class="app-hours__day">
 							<?php echo esc_html( $row['label'] ); ?>
 							<?php if ( $row['is_today'] ) : ?>
-								<span class="nt-hours__today"><?php esc_html_e( 'Today', NT_TEXT_DOMAIN ); ?></span>
+								<span class="app-hours__today"><?php esc_html_e( 'Today', NT_TEXT_DOMAIN ); ?></span>
 							<?php endif; ?>
 						</th>
-						<td class="nt-hours__time"><?php echo esc_html( $row['value'] ); ?></td>
+						<td class="app-hours__time"><?php echo esc_html( $row['value'] ); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

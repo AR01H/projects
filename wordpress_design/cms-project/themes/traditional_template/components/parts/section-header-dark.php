@@ -3,7 +3,7 @@
  * Section header - dark-background variant.
  *
  * Same eyebrow-tag + accented-title + body pattern used across the vintage
- * design (see .nt-flavours__title, .nt-bottles__title, .nt-reviews__title),
+ * design (see .app-flavours__title, .app-bottles__title, .app-reviews__title),
  * but in gold/cream so it reads on a dark photo or wood background instead
  * of the light parchment used by components/parts/section-header.php.
  *
@@ -24,14 +24,14 @@ if ( ! $tag && ! $title && ! $body ) {
 	return;
 }
 ?>
-<div class="nt-section-header-dark<?php echo $class ? ' ' . esc_attr( $class ) : ''; ?>">
+<div class="app-section-header-dark<?php echo $class ? ' ' . esc_attr( $class ) : ''; ?>">
 	<?php if ( $tag ) : ?>
-		<span class="nt-section-header-dark__tag"><?php echo esc_html( $tag ); ?></span>
+		<span class="app-section-header-dark__tag"><?php echo esc_html( $tag ); ?></span>
 	<?php endif; ?>
 	<?php if ( $title ) : ?>
-		<h2 class="nt-section-header-dark__title"><?php echo wp_kses( $title, array( 'em' => array(), 'span' => array( 'class' => array() ), 'br' => array() ) ); ?></h2>
+		<h2 class="app-section-header-dark__title"><?php echo wp_kses( $title, array( 'em' => array(), 'span' => array( 'class' => array() ), 'br' => array() ) ); ?></h2>
 	<?php endif; ?>
 	<?php if ( $body ) : ?>
-		<p class="nt-section-header-dark__body"><?php echo esc_html( $body ); ?></p>
+		<p class="app-section-header-dark__body"><?php echo esc_html( $body ); ?></p>
 	<?php endif; ?>
 </div>

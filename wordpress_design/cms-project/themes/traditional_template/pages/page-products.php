@@ -6,6 +6,6 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
 <div class="site-main">
-	<?php nt_render_sections( 'products' ); ?>
+	<?php app_render_sections( 'products' ); ?>
 </div>
 <?php get_footer(); ?>

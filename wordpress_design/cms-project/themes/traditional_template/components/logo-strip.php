@@ -21,7 +21,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'logo_strip';
-$nt_data  = nt_data( $nt_src );
+$nt_data  = app_data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 if ( empty( $nt_items ) ) {
 	return;
@@ -32,18 +32,18 @@ $nt_title   = (string) ( $nt_data['title'] ?? '' );
 $nt_sub     = (string) ( $nt_data['sub'] ?? '' );
 $nt_marquee = ! empty( $nt_data['marquee'] );
 ?>
-<section class="nt-logos<?php echo $nt_marquee ? ' nt-logos--marquee' : ''; ?>" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
+<section class="app-logos<?php echo $nt_marquee ? ' app-logos--marquee' : ''; ?>" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
 	<div class="container">
 
 		<?php if ( $nt_tag || $nt_title || $nt_sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $nt_tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
+			<div class="app-section-center">
+				<?php if ( $nt_tag ) : ?><div class="app-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
 				<?php if ( $nt_title ) : ?><h2 class="section-title"><?php echo wp_kses( $nt_title, array( 'em' => array() ) ); ?></h2><?php endif; ?>
 				<?php if ( $nt_sub ) : ?><p class="section-body"><?php echo esc_html( $nt_sub ); ?></p><?php endif; ?>
 			</div>
 		<?php endif; ?>
 
-		<div class="nt-logos__track">
+		<div class="app-logos__track">
 			<?php
 			// A marquee needs the row twice so the loop has no visible seam.
 			$nt_passes = $nt_marquee ? 2 : 1;
@@ -58,19 +58,19 @@ $nt_marquee = ! empty( $nt_data['marquee'] );
 					$nt_url = (string) ( $nt_item['url'] ?? '' );
 					$nt_tag_name = ( '' !== $nt_url ) ? 'a' : 'span';
 					?>
-					<<?php echo $nt_tag_name; ?> class="nt-logos__item"
+					<<?php echo $nt_tag_name; ?> class="app-logos__item"
 						<?php if ( '' !== $nt_url ) : ?>
-							href="<?php echo esc_url( nt_link( $nt_url ) ); ?>"
+							href="<?php echo esc_url( app_link( $nt_url ) ); ?>"
 							<?php if ( ! empty( $nt_item['new_tab'] ) ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>
 						<?php endif; ?>
 						<?php if ( $nt_pass > 0 ) : ?>aria-hidden="true"<?php endif; ?>>
 
 						<?php if ( '' !== $nt_image ) : ?>
-							<img src="<?php echo esc_url( nt_link( $nt_image ) ); ?>"
+							<img src="<?php echo esc_url( app_link( $nt_image ) ); ?>"
 							     alt="<?php echo esc_attr( $nt_item_name ); ?>"
 							     loading="lazy" decoding="async">
 						<?php else : ?>
-							<span class="nt-logos__name"><?php echo esc_html( $nt_item_name ); ?></span>
+							<span class="app-logos__name"><?php echo esc_html( $nt_item_name ); ?></span>
 						<?php endif; ?>
 					</<?php echo $nt_tag_name; ?>>
 					<?php

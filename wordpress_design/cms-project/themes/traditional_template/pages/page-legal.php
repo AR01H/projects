@@ -21,23 +21,23 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_map      = nt_data( 'legal' );
-$nt_page_key = (string) get_query_var( 'nt_active_page' );
+$nt_map      = app_data( 'legal' );
+$nt_page_key = (string) get_query_var( 'app_active_page' );
 
 // Fall back to the first document in the map, so a page registered here but
 // not yet listed still renders something rather than a blank screen.
 $nt_documents = is_array( $nt_map['documents'] ?? null ) ? $nt_map['documents'] : array();
 $nt_source    = (string) ( $nt_documents[ $nt_page_key ] ?? reset( $nt_documents ) );
 ?>
-<div id="main-content" class="site-main nt-legal-page">
+<div id="main-content" class="site-main app-legal-page">
 	<?php
 	if ( '' !== $nt_source ) {
-		nt_component( 'legal-document', array( 'source' => $nt_source ) );
+		app_component( 'legal-document', array( 'source' => $nt_source ) );
 	}
 
 	// Anything the JSON wants under every policy - a contact promo, the
 	// "change your cookie choices" link, a newsletter sign-up.
-	nt_render_sections( 'legal_after' );
+	app_render_sections( 'legal_after' );
 	?>
 </div>
 <?php get_footer(); ?>

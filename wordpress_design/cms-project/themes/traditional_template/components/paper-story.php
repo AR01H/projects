@@ -31,7 +31,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'paper_story';
-$nt_data = nt_data( $nt_src );
+$nt_data = app_data( $nt_src );
 
 $nt_sheets = array();
 foreach ( (array) ( $nt_data['sheets'] ?? array() ) as $nt_sheet ) {
@@ -50,18 +50,18 @@ $nt_sub      = (string) ( $nt_data['sub'] ?? '' );
 $nt_autoplay = max( 0, (int) ( $nt_data['autoplay'] ?? 0 ) );
 $nt_total    = count( $nt_sheets );
 ?>
-<section class="nt-story" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
+<section class="app-story" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
 	<div class="container">
 
 		<?php if ( $nt_tag || $nt_title || $nt_sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $nt_tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
+			<div class="app-section-center">
+				<?php if ( $nt_tag ) : ?><div class="app-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
 				<?php if ( $nt_title ) : ?><h2 class="section-title"><?php echo wp_kses( $nt_title, array( 'em' => array() ) ); ?></h2><?php endif; ?>
 				<?php if ( $nt_sub ) : ?><p class="section-body"><?php echo esc_html( $nt_sub ); ?></p><?php endif; ?>
 			</div>
 		<?php endif; ?>
 
-		<div class="nt-story__desk"
+		<div class="app-story__desk"
 		     data-nt-story
 		     data-nt-story-autoplay="<?php echo esc_attr( (string) $nt_autoplay ); ?>"
 		     tabindex="0"
@@ -69,53 +69,53 @@ $nt_total    = count( $nt_sheets );
 		     aria-roledescription="carousel"
 		     aria-label="<?php echo esc_attr( NT_Ui::aria( 'story', 'Story pages' ) ); ?>">
 
-			<div class="nt-story__stack">
+			<div class="app-story__stack">
 				<?php foreach ( $nt_sheets as $nt_i => $nt_sheet ) : ?>
-					<article class="nt-story__sheet" data-nt-story-sheet
-					         style="--nt-sheet-i:<?php echo esc_attr( (string) $nt_i ); ?>;">
-						<div class="nt-story__paper">
+					<article class="app-story__sheet" data-nt-story-sheet
+					         style="--app-sheet-i:<?php echo esc_attr( (string) $nt_i ); ?>;">
+						<div class="app-story__paper">
 
-							<header class="nt-story__head">
+							<header class="app-story__head">
 								<?php if ( ! empty( $nt_sheet['chapter'] ) ) : ?>
-									<span class="nt-story__chapter"><?php echo esc_html( $nt_sheet['chapter'] ); ?></span>
+									<span class="app-story__chapter"><?php echo esc_html( $nt_sheet['chapter'] ); ?></span>
 								<?php endif; ?>
 								<?php if ( ! empty( $nt_sheet['year'] ) ) : ?>
-									<span class="nt-story__year"><?php echo esc_html( $nt_sheet['year'] ); ?></span>
+									<span class="app-story__year"><?php echo esc_html( $nt_sheet['year'] ); ?></span>
 								<?php endif; ?>
 							</header>
 
-							<div class="nt-story__cols">
+							<div class="app-story__cols">
 								<?php if ( ! empty( $nt_sheet['image'] ) ) : ?>
-									<figure class="nt-story__photo">
-										<img src="<?php echo esc_url( nt_link( $nt_sheet['image'] ) ); ?>"
+									<figure class="app-story__photo">
+										<img src="<?php echo esc_url( app_link( $nt_sheet['image'] ) ); ?>"
 										     alt="<?php echo esc_attr( $nt_sheet['image_alt'] ?? '' ); ?>"
 										     loading="lazy" decoding="async">
 										<?php if ( ! empty( $nt_sheet['stamp'] ) ) : ?>
-											<figcaption class="nt-story__stamp"><?php echo esc_html( $nt_sheet['stamp'] ); ?></figcaption>
+											<figcaption class="app-story__stamp"><?php echo esc_html( $nt_sheet['stamp'] ); ?></figcaption>
 										<?php endif; ?>
 									</figure>
 								<?php endif; ?>
 
-								<div class="nt-story__copy">
+								<div class="app-story__copy">
 									<?php if ( ! empty( $nt_sheet['title'] ) ) : ?>
-										<h3 class="nt-story__title"><?php echo esc_html( $nt_sheet['title'] ); ?></h3>
+										<h3 class="app-story__title"><?php echo esc_html( $nt_sheet['title'] ); ?></h3>
 									<?php endif; ?>
 
 									<?php if ( ! empty( $nt_sheet['text'] ) ) : ?>
 										<?php foreach ( (array) $nt_sheet['text'] as $nt_para ) : ?>
-											<p class="nt-story__text"><?php echo esc_html( $nt_para ); ?></p>
+											<p class="app-story__text"><?php echo esc_html( $nt_para ); ?></p>
 										<?php endforeach; ?>
 									<?php endif; ?>
 
 									<?php if ( ! empty( $nt_sheet['quote'] ) ) : ?>
-										<blockquote class="nt-story__quote">
-											<?php NT_Icons::render( 'quote', 'nt-story__quote-mark' ); ?>
+										<blockquote class="app-story__quote">
+											<?php NT_Icons::render( 'quote', 'app-story__quote-mark' ); ?>
 											<span><?php echo esc_html( $nt_sheet['quote'] ); ?></span>
 										</blockquote>
 									<?php endif; ?>
 
 									<?php if ( ! empty( $nt_sheet['link_label'] ) && ! empty( $nt_sheet['link_url'] ) ) : ?>
-										<a class="nt-story__link" href="<?php echo esc_url( nt_link( $nt_sheet['link_url'] ) ); ?>">
+										<a class="app-story__link" href="<?php echo esc_url( app_link( $nt_sheet['link_url'] ) ); ?>">
 											<?php echo esc_html( $nt_sheet['link_label'] ); ?>
 											<?php NT_Icons::render( 'arrow-right' ); ?>
 										</a>
@@ -123,29 +123,29 @@ $nt_total    = count( $nt_sheets );
 								</div>
 							</div>
 
-							<span class="nt-story__pin" aria-hidden="true"></span>
-							<span class="nt-story__fold" aria-hidden="true"></span>
+							<span class="app-story__pin" aria-hidden="true"></span>
+							<span class="app-story__fold" aria-hidden="true"></span>
 						</div>
 					</article>
 				<?php endforeach; ?>
 			</div>
 
-			<div class="nt-story__controls">
-				<button type="button" class="nt-story__nav" data-nt-story-prev
+			<div class="app-story__controls">
+				<button type="button" class="app-story__nav" data-nt-story-prev
 				        aria-label="<?php echo esc_attr( NT_Ui::aria( 'prev_page', NT_Ui::label( 'previous' ) ) ); ?>">
 					<?php NT_Icons::render( 'chevron-left' ); ?>
 				</button>
 
-				<div class="nt-story__dots">
+				<div class="app-story__dots">
 					<?php foreach ( $nt_sheets as $nt_i => $nt_sheet ) : ?>
-						<button type="button" class="nt-story__dot" data-nt-story-dot
+						<button type="button" class="app-story__dot" data-nt-story-dot
 						        aria-label="<?php echo esc_attr( trim( (string) ( $nt_sheet['chapter'] ?? '' ) . ' ' . (string) ( $nt_sheet['title'] ?? ( $nt_i + 1 ) ) ) ); ?>"></button>
 					<?php endforeach; ?>
 				</div>
 
-				<span class="nt-story__counter" data-nt-story-counter aria-live="polite">1 / <?php echo esc_html( (string) $nt_total ); ?></span>
+				<span class="app-story__counter" data-nt-story-counter aria-live="polite">1 / <?php echo esc_html( (string) $nt_total ); ?></span>
 
-				<button type="button" class="nt-story__nav" data-nt-story-next
+				<button type="button" class="app-story__nav" data-nt-story-next
 				        aria-label="<?php echo esc_attr( NT_Ui::aria( 'next_page', NT_Ui::label( 'next' ) ) ); ?>">
 					<?php NT_Icons::render( 'chevron-right' ); ?>
 				</button>

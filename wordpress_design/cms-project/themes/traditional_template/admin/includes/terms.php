@@ -7,8 +7,8 @@
  * (like Guide -> Category -> Article on a sample site) plus helpers that read
  * the demo tree from admin/data/terms.json until a real CMS/DB is wired in.
  *
- * To plug in a real data source later, ONLY rewrite nt_terms_tree() (or hook
- * the 'nt_terms_tree' filter) - every template already goes through it.
+ * To plug in a real data source later, ONLY rewrite app_terms_tree() (or hook
+ * the 'app_terms_tree' filter) - every template already goes through it.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,10 +17,10 @@ defined( 'ABSPATH' ) || exit;
  * Term level registry: level key => labels.
  * Base labels come from the GLOBAL constants in config/theme.php
  * (NT_TERM_PARENT / NT_TERM_SECTION / NT_TERM_CONTENT); plurals default to
- * label + 's' and can be overridden through the 'nt_term_levels' filter.
+ * label + 's' and can be overridden through the 'app_term_levels' filter.
  */
-function nt_term_levels() {
-	return apply_filters( 'nt_term_levels', array(
+function app_term_levels() {
+	return apply_filters( 'app_term_levels', array(
 		'parent'  => array( 'label' => NT_TERM_PARENT,  'plural' => NT_TERM_PARENT . 's' ),
 		'section' => array( 'label' => NT_TERM_SECTION, 'plural' => 'Categories' ),
 		'content' => array( 'label' => NT_TERM_CONTENT, 'plural' => NT_TERM_CONTENT . 's' ),
@@ -28,10 +28,10 @@ function nt_term_levels() {
 }
 
 /**
- * Label for a term level: nt_term_label( 'parent' ) -> 'Guide'.
+ * Label for a term level: app_term_label( 'parent' ) -> 'Guide'.
  */
-function nt_term_label( $level, $plural = false ) {
-	$levels = nt_term_levels();
+function app_term_label( $level, $plural = false ) {
+	$levels = app_term_levels();
 	$key    = $plural ? 'plural' : 'label';
 	return (string) ( $levels[ $level ][ $key ] ?? ucfirst( (string) $level ) );
 }
@@ -50,8 +50,8 @@ function nt_term_label( $level, $plural = false ) {
  *   ...
  * )
  */
-function nt_terms_tree() {
-	$tree = nt_data( 'terms' );
+function app_terms_tree() {
+	$tree = app_data( 'terms' );
 	$tree = isset( $tree['tree'] ) && is_array( $tree['tree'] ) ? $tree['tree'] : array();
-	return apply_filters( 'nt_terms_tree', $tree );
+	return apply_filters( 'app_terms_tree', $tree );
 }

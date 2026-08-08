@@ -16,7 +16,7 @@ $lbl_products  = $labels['products_heading']    ?? 'Our Products';
 $lbl_contact   = $labels['contact_heading']     ?? 'Contact Us';
 $lbl_connect   = $labels['connect_label']       ?? 'Connect:';
 $lbl_rights    = $labels['rights_text']         ?? 'All Rights Reserved.';
-$aria_top      = nt_data('ui')['aria']['scroll_to_top'] ?? 'Scroll to top';
+$aria_top      = app_data('ui')['aria']['scroll_to_top'] ?? 'Scroll to top';
 
 $brand_data    = $footer_data['brand'] ?? [];
 $brand_logo    = $brand_data['logo_image'] ?? '';
@@ -24,17 +24,17 @@ $brand_name    = $brand_data['name'] ?? NT_BRAND_NAME;
 $brand_est     = $brand_data['established'] ?? '';
 $brand_tagline = $brand_data['tagline'] ?? (defined('NT_BRAND_TAGLINE') ? NT_BRAND_TAGLINE : '');
 
-$phone         = nt_option('general', 'phone', NT_BRAND_PHONE);
-$email         = nt_option('general', 'email', NT_BRAND_EMAIL);
-$address       = nt_option('general', 'address');
+$phone         = app_option('general', 'phone', NT_BRAND_PHONE);
+$email         = app_option('general', 'email', NT_BRAND_EMAIL);
+$address       = app_option('general', 'address');
 $has_logo      = has_custom_logo();
 $year          = gmdate('Y');
 $nt_socials    = array_filter( (array) ($footer_data['socials'] ?? []) );
 
 $footer_bg     = $footer_data['background']['image'] ?? '';
-$footer_classes = 'nt-footer';
+$footer_classes = 'app-footer';
 if ( is_front_page() || is_home() ) {
-	$footer_classes .= ' nt-footer--home';
+	$footer_classes .= ' app-footer--home';
 }
 $footer_style = '';
 if ( $footer_bg ) {
@@ -43,45 +43,45 @@ if ( $footer_bg ) {
 ?>
 
 <footer class="<?php echo esc_attr( $footer_classes ); ?>" role="contentinfo"<?php echo $footer_style; ?>>
-	<div class="nt-footer__torn-edge-top"></div>
+	<div class="app-footer__torn-edge-top"></div>
 	<!-- Decorative Corners -->
-	<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/corner-ornament.svg' ); ?>" class="nt-footer__corner nt-footer__corner--left" alt="" aria-hidden="true" />
-	<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/corner-ornament.svg' ); ?>" class="nt-footer__corner nt-footer__corner--right" alt="" aria-hidden="true" />
+	<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/corner-ornament.svg' ); ?>" class="app-footer__corner app-footer__corner--left" alt="" aria-hidden="true" />
+	<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/corner-ornament.svg' ); ?>" class="app-footer__corner app-footer__corner--right" alt="" aria-hidden="true" />
 
 	<div class="container">
-		<div class="nt-footer__inner">
+		<div class="app-footer__inner">
 
 			<!-- Brand Column -->
-			<div class="nt-footer__col">
-				<a href="<?php echo esc_url( home_url('/') ); ?>" class="nt-footer__logo-link">
+			<div class="app-footer__col">
+				<a href="<?php echo esc_url( home_url('/') ); ?>" class="app-footer__logo-link">
 					<?php if ( $has_logo ) :
 						the_custom_logo();
 					elseif ( $brand_logo ) : ?>
-						<img src="<?php echo esc_url( get_template_directory_uri() . '/' . $brand_logo ); ?>" alt="<?php echo esc_attr( $brand_name ); ?> Logo" class="nt-footer__brand-img" style=" margin-bottom: 12px; display: block;" />
+						<img src="<?php echo esc_url( get_template_directory_uri() . '/' . $brand_logo ); ?>" alt="<?php echo esc_attr( $brand_name ); ?> Logo" class="app-footer__brand-img" style=" margin-bottom: 12px; display: block;" />
 					<?php else : ?>
-						<div class="nt-footer__brand-fallback">
-							<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/brand-star.svg' ); ?>" class="nt-footer__brand-icon" alt="" aria-hidden="true" />
-							<div class="nt-footer__brand-name"><?php echo esc_html( $brand_name ); ?></div>
+						<div class="app-footer__brand-fallback">
+							<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/brand-star.svg' ); ?>" class="app-footer__brand-icon" alt="" aria-hidden="true" />
+							<div class="app-footer__brand-name"><?php echo esc_html( $brand_name ); ?></div>
 							<?php if ( $brand_est ) : ?>
-								<div class="nt-footer__brand-est"><?php echo esc_html( $brand_est ); ?></div>
+								<div class="app-footer__brand-est"><?php echo esc_html( $brand_est ); ?></div>
 							<?php endif; ?>
 						</div>
 					<?php endif; ?>
 				</a>
 				<?php if ( $brand_tagline ) : ?>
-					<p class="nt-footer__tagline">
+					<p class="app-footer__tagline">
 						<?php echo esc_html( $brand_tagline ); ?>
 					</p>
 				<?php endif; ?>
 			</div>
 
 			<!-- Quick Links -->
-			<div class="nt-footer__col">
-				<h4 class="nt-footer__heading"><?php echo esc_html( $lbl_quick ); ?></h4>
-				<ul class="nt-footer__links">
+			<div class="app-footer__col">
+				<h4 class="app-footer__heading"><?php echo esc_html( $lbl_quick ); ?></h4>
+				<ul class="app-footer__links">
 					<?php foreach ( $footer_links as $link ) : ?>
 						<li>
-							<a href="<?php echo esc_url( nt_link($link['url'] ?? '#') ); ?>">
+							<a href="<?php echo esc_url( app_link($link['url'] ?? '#') ); ?>">
 								<?php echo esc_html($link['label'] ?? ''); ?>
 							</a>
 						</li>
@@ -90,9 +90,9 @@ if ( $footer_bg ) {
 			</div>
 
 			<!-- Our Products -->
-			<div class="nt-footer__col">
-				<h4 class="nt-footer__heading"><?php echo esc_html( $lbl_products ); ?></h4>
-				<ul class="nt-footer__links">
+			<div class="app-footer__col">
+				<h4 class="app-footer__heading"><?php echo esc_html( $lbl_products ); ?></h4>
+				<ul class="app-footer__links">
 					<?php foreach ( $products as $p ) : ?>
 						<li>
 							<a href="<?php echo esc_url( home_url($p['url']) ); ?>">
@@ -104,8 +104,8 @@ if ( $footer_bg ) {
 			</div>
 
 			<!-- Contact -->
-			<div class="nt-footer__col">
-				<h4 class="nt-footer__heading"><?php echo esc_html( $lbl_contact ); ?></h4>
+			<div class="app-footer__col">
+				<h4 class="app-footer__heading"><?php echo esc_html( $lbl_contact ); ?></h4>
 				<?php if ($phone) : ?>
 					<p style="margin:0 0 8px; font-size:0.9rem;">
 						<a href="tel:<?php echo esc_attr(preg_replace('/[^+0-9]/', '', $phone)); ?>"
@@ -145,14 +145,14 @@ if ( $footer_bg ) {
 				<?php endif; ?>
 			</div>
 
-		</div><!-- /.nt-footer__inner -->
+		</div><!-- /.app-footer__inner -->
 
-		<div class="nt-footer__torn-edge-bottom"></div>
-		<div class="nt-footer__bottom">
+		<div class="app-footer__torn-edge-bottom"></div>
+		<div class="app-footer__bottom">
 			<?php if ( ! empty( $bottom_links ) ) : ?>
-				<div class="nt-footer__policies">
+				<div class="app-footer__policies">
 					<?php foreach ( $bottom_links as $link ) : ?>
-						<a href="<?php echo esc_url( nt_link($link['url'] ?? '#') ); ?>">
+						<a href="<?php echo esc_url( app_link($link['url'] ?? '#') ); ?>">
 							<?php echo esc_html($link['label'] ?? ''); ?>
 						</a>
 					<?php endforeach; ?>
@@ -164,9 +164,9 @@ if ( $footer_bg ) {
 </footer>
 
 <!-- Scroll to Top -->
-<button id="nt-scroll-to-top" class="nt-scroll-to-top" aria-label="<?php echo esc_attr( $aria_top ); ?>">
+<button id="app-scroll-to-top" class="app-scroll-to-top" aria-label="<?php echo esc_attr( $aria_top ); ?>">
 	<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-		 stroke-linecap="round" aria-hidden="true" class="nt-scroll-arrow">
+		 stroke-linecap="round" aria-hidden="true" class="app-scroll-arrow">
 		<path d="M7 14.5l5-5 5 5"/>
 	</svg>
 </button>

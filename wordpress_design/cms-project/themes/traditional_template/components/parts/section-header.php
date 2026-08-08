@@ -16,7 +16,7 @@
  *  dark          bool    Preset dark-background colour overrides
  *  wrapper_class string  Extra class on the wrapper div
  *  wrapper_style string  Inline style on the wrapper div
- *  wrapper_base  string  Base class(es) for wrapper (default: 'nt-section-center fade-up')
+ *  wrapper_base  string  Base class(es) for wrapper (default: 'app-section-center fade-up')
  *  no_wrapper    bool    Output elements with no surrounding div (for embedded layouts)
  */
 defined( 'ABSPATH' ) || exit;
@@ -35,7 +35,7 @@ $body_style    = $args['body_style']    ?? '';
 $dark          = ! empty( $args['dark'] );
 $wrapper_class = $args['wrapper_class'] ?? '';
 $wrapper_style = $args['wrapper_style'] ?? '';
-$wrapper_base  = $args['wrapper_base']  ?? 'nt-section-center fade-up';
+$wrapper_base  = $args['wrapper_base']  ?? 'app-section-center fade-up';
 $no_wrapper    = ! empty( $args['no_wrapper'] );
 
 if ( ! $tag && ! $title && ! $body ) return;
@@ -64,6 +64,7 @@ $wrapper_cls = trim( $wrapper_base . ' ' . $wrapper_class );
 	<?php endif; ?>
 	<?php if ( $title ) : ?>
 		<<?php echo $title_tag; ?> class="<?php echo esc_attr( $title_class ); ?>"<?php echo $title_style ? ' style="' . esc_attr( $title_style ) . '"' : ''; ?>><?php echo wp_kses( $title, $allowed_kses ); ?></<?php echo $title_tag; ?>>
+		<div class="app-section-flourish" aria-hidden="true"></div>
 	<?php endif; ?>
 	<?php if ( $body ) : ?>
 		<p class="<?php echo esc_attr( $body_class ); ?>"<?php echo $body_style ? ' style="' . esc_attr( $body_style ) . '"' : ''; ?>><?php echo esc_html( $body ); ?></p>

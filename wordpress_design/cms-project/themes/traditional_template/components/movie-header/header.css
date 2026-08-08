@@ -15,124 +15,145 @@
    the board for another trade is editing that block - nothing else.
    ══════════════════════════════════════════════════════════════════════════ */
 
-.nt-mh {
-	/* ── Timber ─────────────────────────────────────────────────────── */
-	--wood-darkest: #2b1710;
-	--wood-dark:    #3d2115;
-	--wood-mid:     #5b3420;
-	--wood-warm:    #714224;
-	--wood-light:   #8a5631;
+.app-mh {
+  /* ── Timber ─────────────────────────────────────────────────────── */
+  --wood-darkest: #2b1710;
+  --wood-dark: #3d2115;
+  --wood-mid: #5b3420;
+  --wood-warm: #714224;
+  --wood-light: #8a5631;
 
-	/* ── Gold / brass ───────────────────────────────────────────────── */
-	--gold-1: #d9b46a;
-	--gold-2: #c08d3a;
-	--gold-3: #94631f;
-	--gold-4: #6a4213;
-	--gold-deep: #5d3206;
+  /* ── Gold / brass ───────────────────────────────────────────────── */
+  --gold-1: #d9b46a;
+  --gold-2: #c08d3a;
+  --gold-3: #94631f;
+  --gold-4: #6a4213;
+  --gold-deep: #5d3206;
 
-	/* ── Stone frame ────────────────────────────────────────────────── */
-	--stone:        #cfc6b6;
-	--stone-light:  #efe7d7;
-	--stone-shade:  #9a8f7c;
-	--stone-deep:   #5f574a;
+  /* ── Stone frame ────────────────────────────────────────────────── */
+  --stone: #cfc6b6;
+  --stone-light: #efe7d7;
+  --stone-shade: #9a8f7c;
+  --stone-deep: #5f574a;
 
-	/* ── Ink + light ────────────────────────────────────────────────── */
-	--ink:          #1b0f07;
-	--ink-soft:     rgba(27, 15, 7, 0.55);
-	--sheen:        rgba(255, 238, 198, 0.62);
-	--sunlight:     rgba(255, 226, 160, 0.16);
-	--shadow:       rgba(24, 13, 5, 0.45);
-	--shadow-deep:  rgba(24, 13, 5, 0.7);
+  /* ── Ink + light ────────────────────────────────────────────────── */
+  --ink: #1b0f07;
+  --ink-soft: rgba(27, 15, 7, 0.55);
+  --sheen: rgba(255, 238, 198, 0.62);
+  --sunlight: rgba(255, 226, 160, 0.16);
+  --shadow: rgba(24, 13, 5, 0.45);
+  --shadow-deep: rgba(24, 13, 5, 0.7);
 
-	/* ── Finish (all overridable from page_headers.json -> style) ───────
+  /* ── Finish (all overridable from page_headers.json -> style) ───────
 	   Tuned MATTE, not varnished: aged timber scatters light, it does not
 	   reflect it. Gloss is deliberately low and the grain and cracks carry
 	   the surface instead. Raise --gloss-opacity for a polished board. */
-	--grain-opacity:  0.62;
-	--relief-opacity: 0;
-	--cracks-opacity: 0.55;
-	--gloss-opacity:  0;
-	--shade-opacity:  1;
-	--title-lift: -16px;
+  --grain-opacity: 0.62;
+  --relief-opacity: 0;
+  --cracks-opacity: 0.55;
+  --gloss-opacity: 0;
+  --shade-opacity: 1;
+  --title-lift: -16px;
 
-	/* ── Geometry ───────────────────────────────────────────────────── */
-	--board-max: 1200px;
-	/* Spec height is 420px; capped lower here because the arch plus the arc
+  /* ── Geometry ───────────────────────────────────────────────────── */
+  --board-max: 1200px;
+  /* Spec height is 420px; capped lower here because the arch plus the arc
 	   text already give the board its presence, and the extra 90px was empty
 	   timber between the headline and the curve. */
-	--board-h: clamp(218px, 25vw, 356px);
-	--frame-w: clamp(11px, 1.5vw, 22px);
-	--orn-size: clamp(96px, 13vw, 190px);
+  --board-h: clamp(218px, 25vw, 356px);
+  --frame-w: clamp(11px, 1.5vw, 22px);
+  --orn-size: clamp(96px, 13vw, 190px);
 
-	/* The banner outline, as a mask. Top edge rises to the middle, bottom edge
+  /* The banner outline, as a mask. Top edge rises to the middle, bottom edge
 	   drops away from it, ends cut square for the metal caps.
 	   The whole path is pushed out of true by feTurbulence, so the edge is
 	   hand-cut rather than machine-smooth - the same trick the photographs use
 	   elsewhere in this theme, and the reason the plank reads as carved. */
-	--banner: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='340' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.008 0.02' numOctaves='3' seed='13' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='9' xChannelSelector='R' yChannelSelector='G'/></filter><path d='M 10,72 C 260,10 940,10 1190,72 L 1190,284 C 940,326 260,326 10,284 Z' fill='white' filter='url(%23r)'/></svg>");
+  --banner: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='340' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.008 0.02' numOctaves='3' seed='13' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='9' xChannelSelector='R' yChannelSelector='G'/></filter><path d='M 10,72 C 260,10 940,10 1190,72 L 1190,284 C 940,326 260,326 10,284 Z' fill='white' filter='url(%23r)'/></svg>");
 
-	position: relative;
-	/* Top padding is small on purpose: .nt-main above already clears the
+  position: relative;
+  /* Top padding is small on purpose: .app-main above already clears the
 	   header, and the kicker below adds the medallion's clearance. Three
 	   stacked paddings is what put ~270px of blank parchment above the
 	   board. */
-	padding: clamp(8px, 1.4vw, 20px) 0 clamp(18px, 2.6vw, 38px);
-	overflow: hidden;
-	isolation: isolate;
+  padding: clamp(8px, 1.4vw, 20px) 0 clamp(18px, 2.6vw, 38px);
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.nt-mh__sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.app-mh__sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
 
 /* ── Cinematic ground: warm light from above, vignette at the edges ─────── */
-.nt-mh::before,
-.nt-mh::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	pointer-events: none;
-	z-index: -1;
+.app-mh::before,
+.app-mh::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
 }
-.nt-mh::before {
-	background:
-		radial-gradient(120% 82% at 50% -14%, var(--sunlight) 0%, transparent 62%),
-		radial-gradient(80% 60% at 50% 18%, rgba(255, 236, 186, 0.1) 0%, transparent 70%);
+.app-mh::before {
+  background: radial-gradient(
+      120% 82% at 50% -14%,
+      var(--sunlight) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      80% 60% at 50% 18%,
+      rgba(255, 236, 186, 0.1) 0%,
+      transparent 70%
+    );
 }
-.nt-mh::after {
-	background: radial-gradient(120% 110% at 50% 42%, transparent 52%, rgba(24, 13, 5, 0.22) 100%);
+.app-mh::after {
+  background: radial-gradient(
+    120% 110% at 50% 42%,
+    transparent 52%,
+    rgba(24, 13, 5, 0.22) 100%
+  );
 }
 
-.nt-mh__stage {
-	position: relative;
-	/* border-box, explicitly. This element is width:100% AND padded, so under
+.app-mh__stage {
+  position: relative;
+  /* border-box, explicitly. This element is width:100% AND padded, so under
 	   content-box its border box came out 100% + 2x padding - wider than the
 	   viewport. Everything inside inherits that extra width, which is why the
 	   board ran off the right edge on a phone and the headline lost its last
 	   letter. */
-	box-sizing: border-box;
-	width: 100%;
-	max-width: var(--board-max);
-	margin-inline: auto;
-	padding-inline: clamp(12px, 2vw, 26px);
-	text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--board-max);
+  margin-inline: auto;
+  padding-inline: clamp(12px, 2vw, 26px);
+  text-align: center;
 }
-.nt-mh, .nt-mh *, .nt-mh *::before, .nt-mh *::after { box-sizing: border-box; }
+.app-mh,
+.app-mh *,
+.app-mh *::before,
+.app-mh *::after {
+  box-sizing: border-box;
+}
 
 /* ══════════════════════════════════════════════════════════════════════════
    KICKER  - the small credit line above the board
    ══════════════════════════════════════════════════════════════════════════ */
-.nt-mh__kicker {
-	/* Clearance for the medallion, which hangs 46% of its height above the
+.app-mh__kicker {
+  /* Clearance for the medallion, which hangs 46% of its height above the
 	   board. Without it the badge lands on top of this line. */
-	margin: 0 ;
-	font-family: var(--nt-font-display, 'Playfair Display', serif);
-	font-size: clamp(0.62rem, 1vw, 0.84rem);
-	font-weight: 700;
-	letter-spacing: 0.3em;
-	text-transform: uppercase;
-	/* Darker gold than the on-board text: this line sits on the pale page, not
+  margin: 0;
+  font-family: var(--app-font-display, "Playfair Display", serif);
+  font-size: clamp(0.62rem, 1vw, 0.84rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  /* Darker gold than the on-board text: this line sits on the pale page, not
 	   on timber, and the lighter golds wash out against parchment. */
-	color: var(--gold-4);
-	text-shadow: 0 1px 0 rgba(255, 248, 230, 0.7);
+  color: var(--gold-4);
+  text-shadow: 0 1px 0 rgba(255, 248, 230, 0.7);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -140,34 +161,45 @@
    The ornaments overlap the board slightly (negative margin) so the assembly
    reads as one prop rather than three boxes in a row.
    ══════════════════════════════════════════════════════════════════════════ */
-.nt-mh__rig {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+.app-mh__rig {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.nt-mh__orn {
-	flex: 0 0 var(--orn-size);
-	width: var(--orn-size);
-	height: var(--orn-size);
-	align-self: center;
-	filter: drop-shadow(0 10px 16px var(--shadow));
+.app-mh__orn {
+  flex: 0 0 var(--orn-size);
+  width: var(--orn-size);
+  height: var(--orn-size);
+  align-self: center;
+  filter: drop-shadow(0 10px 16px var(--shadow));
 }
-.nt-mh__orn svg,
-.nt-mh__orn img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.app-mh__orn svg,
+.app-mh__orn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 /* The artwork ships as gold line-work on a near-black field, which would drop a
    dark rectangle onto the parchment. Inverting it turns the field light and the
    line-work dark, and `multiply` then discards the light field - leaving the
    engraving alone, in ink, the way a period print would sit on the page.
    Cheaper and better supported than a luminance mask. */
-.nt-mh__orn img {
-	filter: invert(1) grayscale(1) sepia(1) saturate(2.4) hue-rotate(-14deg) contrast(1.35) brightness(0.82);
-	mix-blend-mode: multiply;
-	opacity: var(--orn-opacity, 0.82);
+.app-mh__orn img {
+  filter: invert(1) grayscale(1) sepia(1) saturate(2.4) hue-rotate(-14deg)
+    contrast(1.35) brightness(0.82);
+  mix-blend-mode: multiply;
+  opacity: var(--orn-opacity, 0.82);
 }
-.nt-mh__orn--left  { margin-right: calc(var(--orn-size) / -3.1); }
-.nt-mh__orn--right { margin-left:  calc(var(--orn-size) / -3.1); transform: scaleX(-1); }
+.app-mh__orn--left {
+  margin-right: calc(var(--orn-size) / -3.1);
+}
+.app-mh__orn--right {
+  margin-left: calc(var(--orn-size) / -3.1);
+  transform: scaleX(-1);
+}
 
 /* ══════════════════════════════════════════════════════════════════════════
    BOARD  - stone frame outside, carved teak inside, arched at the top
@@ -180,100 +212,135 @@
    absolutely-positioned layers beneath the lettering, because both need the
    banner silhouette applied as a MASK - and a mask on this element would take
    the headline, the medallion and the arc text with it. */
-.nt-mh__board {
-	position: relative;
-	flex: 1 1 auto;
-	min-width: 0;
-	min-height: var(--board-h);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	filter: drop-shadow(0 16px 26px var(--shadow)) drop-shadow(0 34px 52px rgba(24, 13, 5, 0.26));
+.app-mh__board {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: var(--board-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 16px 26px var(--shadow))
+    drop-shadow(0 34px 52px rgba(24, 13, 5, 0.26));
 }
 
 /* Banner silhouette: bowed up along the top edge, bowed down along the bottom,
    so the plank reads as bent rather than as a rectangle with rounded corners.
    border-radius cannot express this - only one curve per corner, and none
    across the middle of an edge. */
-.nt-mh__frame{
-	position: absolute;
-	pointer-events: none;
-	-webkit-mask-image: var(--banner);
-	        mask-image: var(--banner);
-	-webkit-mask-size: 100% 100%;
-	        mask-size: 100% 100%;
-	-webkit-mask-repeat: no-repeat;
-	        mask-repeat: no-repeat;
+.app-mh__frame {
+  position: absolute;
+  pointer-events: none;
+  -webkit-mask-image: var(--banner);
+  mask-image: var(--banner);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
-.nt-mh__frame {
-	inset: 0;
-	background-image: linear-gradient(
-		180deg,
-		var(--stone-light) 0%,
-		var(--stone)       36%,
-		var(--stone-shade) 78%,
-		var(--stone-deep)  100%
-	);
+.app-mh__frame {
+  inset: 0;
+  background-image: linear-gradient(
+    180deg,
+    var(--stone-light) 0%,
+    var(--stone) 36%,
+    var(--stone-shade) 78%,
+    var(--stone-deep) 100%
+  );
 }
 
 /* ── Horizontal wood grain ─────────────────────────────────────────────────
    Two repeating gradients at slightly different periods, so the pattern does
    not read as regular stripes. */
-.nt-mh__grain {
-	position: absolute;
-	inset: 0;
-	pointer-events: none;
-	opacity: var(--grain-opacity);
-	/* `overlay` was lightening as much as it darkened, which is what turned the
+.app-mh__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  /* `overlay` was lightening as much as it darkened, which is what turned the
 	   surface into a bright tiled pattern. Wood grain only ever darkens. */
-	mix-blend-mode: multiply;
-	background-image:
+  mix-blend-mode: multiply;
+  background-image:
 		/* Four line sets on co-prime periods (3/7/11/19px). Because the periods
 		   share no common factor they do not line up again for 4389px - longer
 		   than the board - so there is no repeat to spot. */
-		repeating-linear-gradient(180deg, rgba(38, 20, 9, 0.30) 0 1px, transparent 1px 3px),
-		repeating-linear-gradient(180deg, rgba(38, 20, 9, 0.20) 0 1px, transparent 1px 7px),
-		repeating-linear-gradient(180deg, rgba(20, 10, 4, 0.26) 0 2px, transparent 2px 11px),
-		repeating-linear-gradient(180deg, rgba(20, 10, 4, 0.16) 0 1px, transparent 1px 19px),
-		/* Long, soft cathedral figure drifting across the plank. */
-		linear-gradient(93deg,
-			rgba(20, 10, 4, 0.16) 0%,
-			transparent 14%,
-			rgba(20, 10, 4, 0.12) 31%,
-			transparent 47%,
-			rgba(20, 10, 4, 0.17) 63%,
-			transparent 79%,
-			rgba(20, 10, 4, 0.13) 100%);
+    repeating-linear-gradient(
+      180deg,
+      rgba(38, 20, 9, 0.3) 0 1px,
+      transparent 1px 3px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(38, 20, 9, 0.2) 0 1px,
+      transparent 1px 7px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(20, 10, 4, 0.26) 0 2px,
+      transparent 2px 11px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(20, 10, 4, 0.16) 0 1px,
+      transparent 1px 19px
+    ),
+    /* Long, soft cathedral figure drifting across the plank. */
+      linear-gradient(
+        93deg,
+        rgba(20, 10, 4, 0.16) 0%,
+        transparent 14%,
+        rgba(20, 10, 4, 0.12) 31%,
+        transparent 47%,
+        rgba(20, 10, 4, 0.17) 63%,
+        transparent 79%,
+        rgba(20, 10, 4, 0.13) 100%
+      );
 }
 
 /* ── Sheen: barely there.
    This was a bright diagonal varnish sweep, which read as new lacquer rather
    than old wood. An aged board catches a little soft light along the top
    arris and nothing else - so what is left is one low, wide gradient. */
-.nt-mh__gloss {
-	position: absolute;
-	inset: 0;
-	pointer-events: none;
-	opacity: var(--gloss-opacity);
-	background: linear-gradient(180deg, rgba(255, 246, 226, 0.55) 0%, transparent 22%);
+.app-mh__gloss {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--gloss-opacity);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 246, 226, 0.55) 0%,
+    transparent 22%
+  );
 }
 
 /* ── Splits: a couple of near-vertical checks, the way a plank actually
    splits along the grain. The previous set ran diagonally across the whole
    board and read as an X drawn on it rather than as timber. ─────────────── */
-.nt-mh__cracks {
-	position: absolute;
-	inset: 0;
-	pointer-events: none;
-	opacity: var(--cracks-opacity);
-	background-image:
-		linear-gradient(91deg, transparent 21.7%, rgba(18, 9, 3, 0.34) 21.9%, transparent 22.1%),
-		linear-gradient(89deg, transparent 63.4%, rgba(18, 9, 3, 0.26) 63.6%, transparent 63.8%),
-		linear-gradient(90.5deg, transparent 84.2%, rgba(18, 9, 3, 0.22) 84.35%, transparent 84.5%);
+.app-mh__cracks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--cracks-opacity);
+  background-image: linear-gradient(
+      91deg,
+      transparent 21.7%,
+      rgba(18, 9, 3, 0.34) 21.9%,
+      transparent 22.1%
+    ),
+    linear-gradient(
+      89deg,
+      transparent 63.4%,
+      rgba(18, 9, 3, 0.26) 63.6%,
+      transparent 63.8%
+    ),
+    linear-gradient(
+      90.5deg,
+      transparent 84.2%,
+      rgba(18, 9, 3, 0.22) 84.35%,
+      transparent 84.5%
+    );
 }
-
-
 
 /* ══════════════════════════════════════════════════════════════════════════
    BUMPS + SHADE  - relief on the timber, and light modelled across the bow
@@ -284,19 +351,27 @@
    grey, blended in overlay, which raises the grain into something you can
    almost feel rather than a printed stripe.
    ══════════════════════════════════════════════════════════════════════════ */
-.nt-mh__shade {
-	position: absolute;
-	inset: 0;
-	pointer-events: none;
+.app-mh__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-
 /* Light across the bow + shade pooling into the ends and the frame. */
-.nt-mh__shade {
-	opacity: var(--shade-opacity);
-	background:
-		linear-gradient(90deg, rgba(18, 9, 4, 0.62) 0%, transparent 18%, transparent 82%, rgba(18, 9, 4, 0.62) 100%),
-		radial-gradient(120% 96% at 50% 50%, transparent 46%, rgba(18, 9, 4, 0.5) 100%);
+.app-mh__shade {
+  opacity: var(--shade-opacity);
+  background: linear-gradient(
+      90deg,
+      rgba(18, 9, 4, 0.62) 0%,
+      transparent 18%,
+      transparent 82%,
+      rgba(18, 9, 4, 0.62) 100%
+    ),
+    radial-gradient(
+      120% 96% at 50% 50%,
+      transparent 46%,
+      rgba(18, 9, 4, 0.5) 100%
+    );
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -312,32 +387,42 @@
    fill transparent - so `text-shadow` on this element would vanish. That is
    why the depth lives on ::before instead of in a shadow stack here.
    ══════════════════════════════════════════════════════════════════════════ */
-.nt-mh__title {
-	position: relative;
-	z-index: 3;
-	margin: 0;
-	width: 100%;
-	padding: 0 clamp(14px, 2.4vw, 38px);
-	font-size: 0;          /* no stray text node metrics around the SVG */
-	line-height: 0;
+.app-mh__title {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  width: 100%;
+  padding: 0 clamp(14px, 2.4vw, 38px);
+  font-size: 0; /* no stray text node metrics around the SVG */
+  line-height: 0;
 }
 
-.nt-mh__title-svg {
-	display: block;
-	transform: translateY(var(--title-lift));
-	width: 100%;
-	height: auto;
-	overflow: visible;
-	filter: drop-shadow(0 8px 12px rgba(20, 10, 5, 0.62));
+.app-mh__title-svg {
+  display: block;
+  transform: translateY(var(--title-lift));
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 8px 12px rgba(20, 10, 5, 0.62));
 }
 
 /* Gradient stops. Set here, in CSS, because var() does not resolve inside SVG
    presentation attributes. */
-.nt-mh__g1 { stop-color: var(--gold-1); }
-.nt-mh__g2 { stop-color: var(--gold-2); }
-.nt-mh__g3 { stop-color: var(--gold-3); }
-.nt-mh__g4 { stop-color: var(--gold-4); }
-.nt-mh__g5 { stop-color: #55350f; }
+.app-mh__g1 {
+  stop-color: var(--gold-1);
+}
+.app-mh__g2 {
+  stop-color: var(--gold-2);
+}
+.app-mh__g3 {
+  stop-color: var(--gold-3);
+}
+.app-mh__g4 {
+  stop-color: var(--gold-4);
+}
+.app-mh__g5 {
+  stop-color: #55350f;
+}
 
 /* THE HEADLINE FACE.
    Was Dancing Script - a casual handwriting face - carved 17px deep. At the
@@ -347,57 +432,56 @@
 
    A signwriter letters a board like this in wide serif capitals, and so does
    the reference. The face is the theme's display serif (Cormorant Garamond
-   via --nt-font-display), set in caps with generous tracking, and the carve
+   via --app-font-display), set in caps with generous tracking, and the carve
    is shallow - engraved into the timber, not moulded on top of it.
 
    Both are variables, so a site that DOES want the script look sets
-   --title-face: var(--nt-font-accent) and --type-cut-width: 17px in its
+   --title-face: var(--app-font-accent) and --type-cut-width: 17px in its
    page_headers.json style block and gets the old treatment back. */
-.nt-mh {
-	--title-face: var(--nt-font-display, 'Cormorant Garamond', Georgia, serif);
-	--title-weight: 600;
-	--title-tracking: 0.06em;
-	--title-case: uppercase;
-	--type-cut-width: 7px;
+.app-mh {
+  --title-face: var(--app-font-display, "Cormorant Garamond", Georgia, serif);
+  --title-weight: 600;
+  --title-tracking: 0.06em;
+  --title-case: uppercase;
+  --type-cut-width: 7px;
 }
 
-.nt-mh__type text {
-	font-family: var(--title-face), 'Noto Sans Telugu', serif;
-	font-weight: var(--title-weight);
-	letter-spacing: var(--title-tracking);
-	text-transform: var(--title-case);
+.app-mh__type text {
+  font-family: var(--title-face), "Noto Sans Telugu", serif;
+  font-weight: var(--title-weight);
+  letter-spacing: var(--title-tracking);
+  text-transform: var(--title-case);
 }
 
 /* The extruded side wall. Stroked as well as filled so each stepped copy is
    fractionally fatter than the face and reads as a wall, not a blur. Shallow
    by default - see the note above. */
-.nt-mh__type-cut {
-	stroke-width: var(--type-cut-width);
-	stroke-linejoin: round;
-	paint-order: stroke fill;
+.app-mh__type-cut {
+  stroke-width: var(--type-cut-width);
+  stroke-linejoin: round;
+  paint-order: stroke fill;
 }
 
 /* The face: gold, with a dark rim so it separates from the timber, and a warm
    inner line so the gold does not end abruptly against the dark. */
-.nt-mh__type-face {
-	stroke: var(--ink);
-	stroke-width: 7px;
-	stroke-linejoin: round;
-	paint-order: stroke fill;
+.app-mh__type-face {
+  stroke: var(--ink);
+  stroke-width: 7px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
 }
 
-
 /* The small curved line above the headline. */
-.nt-mh__sub-text {
-	font-family: var(--nt-font-display, 'Playfair Display', serif);
-	font-size: 34px;
-	font-weight: 700;
-	letter-spacing: 5px;
-	text-transform: uppercase;
-	fill: var(--gold-1);
-	stroke: rgba(24, 12, 5, 0.92);
-	stroke-width: 3.4px;
-	paint-order: stroke fill;
+.app-mh__sub-text {
+  font-family: var(--app-font-display, "Playfair Display", serif);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  fill: var(--gold-1);
+  stroke: rgba(24, 12, 5, 0.92);
+  stroke-width: 3.4px;
+  paint-order: stroke fill;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -408,30 +492,30 @@
    `meet` scaled the whole drawing down to fit the height - so the curve
    collapsed into a short, almost-straight line floating mid-board. Deriving
    the height from the ratio keeps the arc spanning the full width. */
-.nt-mh__arc {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	width: 100%;
-	height: auto;
-	aspect-ratio: 1200 / 190;
-	max-height: 46%;
-	z-index: 3;
-	pointer-events: none;
-	overflow: visible;
+.app-mh__arc {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 190;
+  max-height: 46%;
+  z-index: 3;
+  pointer-events: none;
+  overflow: visible;
 }
-.nt-mh__arc-text {
-	font-family: var(--nt-font-display, 'Playfair Display', serif);
-	font-size: 25px;             /* scales with the viewBox, not the viewport */
-	font-weight: 700;
-	letter-spacing: 3.2px;
-	text-transform: uppercase;
-	fill: var(--gold-1);
-	stroke: rgba(24, 12, 5, 0.85);
-	stroke-width: 2.6px;
-	paint-order: stroke fill;
-	filter: drop-shadow(0 2px 3px rgba(20, 10, 5, 0.8));
+.app-mh__arc-text {
+  font-family: var(--app-font-display, "Playfair Display", serif);
+  font-size: 25px; /* scales with the viewBox, not the viewport */
+  font-weight: 700;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  fill: var(--gold-1);
+  stroke: rgba(24, 12, 5, 0.85);
+  stroke-width: 2.6px;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 2px 3px rgba(20, 10, 5, 0.8));
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -440,47 +524,55 @@
 /* ══════════════════════════════════════════════════════════════════════════
    RIBBON  - slung under the board
    ══════════════════════════════════════════════════════════════════════════ */
-.nt-mh__ribbon {
-	position: relative;
-	margin: clamp(12px, 2vw, 26px) auto 0;
-	width: fit-content;
-	max-width: min(92%, 620px);
-	padding: clamp(6px, 1vw, 11px) clamp(24px, 4vw, 52px);
-	font-family: var(--nt-font-display, 'Playfair Display', serif);
-	font-size: clamp(0.6rem, 1vw, 0.82rem);
-	font-weight: 700;
-	letter-spacing: 0.24em;
-	text-transform: uppercase;
-	color: var(--gold-1);
-	background-color: var(--wood-dark);
-	background-image: linear-gradient(180deg, var(--wood-warm) 0%, var(--wood-dark) 100%);
-	border: 2px solid var(--gold-4);
-	border-radius: 3px;
-	box-shadow:
-		inset 0 1px 0 rgba(255, 226, 176, 0.22),
-		inset 0 -2px 6px rgba(18, 9, 4, 0.7),
-		0 8px 16px var(--shadow);
-	text-shadow: 0 1px 0 rgba(20, 10, 5, 0.9);
+.app-mh__ribbon {
+  position: relative;
+  margin: clamp(12px, 2vw, 26px) auto 0;
+  width: fit-content;
+  max-width: min(92%, 620px);
+  padding: clamp(6px, 1vw, 11px) clamp(24px, 4vw, 52px);
+  font-family: var(--app-font-display, "Playfair Display", serif);
+  font-size: clamp(0.6rem, 1vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-1);
+  background-color: var(--wood-dark);
+  background-image: linear-gradient(
+    180deg,
+    var(--wood-warm) 0%,
+    var(--wood-dark) 100%
+  );
+  border: 2px solid var(--gold-4);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 226, 176, 0.22),
+    inset 0 -2px 6px rgba(18, 9, 4, 0.7),
+    0 8px 16px var(--shadow);
+  text-shadow: 0 1px 0 rgba(20, 10, 5, 0.9);
 }
 /* Swallow-tail ends, cut from the same timber */
-.nt-mh__ribbon::before,
-.nt-mh__ribbon::after {
-	content: '';
-	position: absolute;
-	top: 50%;
-	width: clamp(14px, 2vw, 26px);
-	height: 100%;
-	background-image: linear-gradient(180deg, var(--wood-mid) 0%, var(--wood-darkest) 100%);
-	transform: translateY(-50%);
-	z-index: -1;
+.app-mh__ribbon::before,
+.app-mh__ribbon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: clamp(14px, 2vw, 26px);
+  height: 100%;
+  background-image: linear-gradient(
+    180deg,
+    var(--wood-mid) 0%,
+    var(--wood-darkest) 100%
+  );
+  transform: translateY(-50%);
+  z-index: -1;
 }
-.nt-mh__ribbon::before {
-	left: calc(clamp(14px, 2vw, 26px) * -0.72);
-	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 46% 50%);
+.app-mh__ribbon::before {
+  left: calc(clamp(14px, 2vw, 26px) * -0.72);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 46% 50%);
 }
-.nt-mh__ribbon::after {
-	right: calc(clamp(14px, 2vw, 26px) * -0.72);
-	clip-path: polygon(0 0, 100% 0, 54% 50%, 100% 100%, 0 100%);
+.app-mh__ribbon::after {
+  right: calc(clamp(14px, 2vw, 26px) * -0.72);
+  clip-path: polygon(0 0, 100% 0, 54% 50%, 100% 100%, 0 100%);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -489,63 +581,88 @@
    thing to go, because below a tablet they are the detail nobody can read.
    ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
-	.nt-mh__orn { flex-basis: clamp(72px, 11vw, 120px); width: clamp(72px, 11vw, 120px); height: clamp(72px, 11vw, 120px); }
+  .app-mh__orn {
+    flex-basis: clamp(72px, 11vw, 120px);
+    width: clamp(72px, 11vw, 120px);
+    height: clamp(72px, 11vw, 120px);
+  }
 }
 
 @media (max-width: 640px) {
-	.nt-mh__orn { display: none; }
-	.nt-mh__arc-text { font-size: 30px; letter-spacing: 2px; }
-	.nt-mh__ribbon { letter-spacing: 0.16em; }
+  .app-mh__orn {
+    display: none;
+  }
+  .app-mh__arc-text {
+    font-size: 30px;
+    letter-spacing: 2px;
+  }
+  .app-mh__ribbon {
+    letter-spacing: 0.16em;
+  }
 }
 
 @media (max-width: 420px) {
-	.nt-mh__arc { display: none; }   /* too narrow to set legibly on a curve */
+  .app-mh__arc {
+    display: none;
+  } /* too narrow to set legibly on a curve */
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
    PREFERENCES + PRINT
    ══════════════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-	.nt-mh * { transition: none !important; animation: none !important; }
+  .app-mh * {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
 @media (prefers-contrast: more) {
-	/* Clipped-gradient text is the first thing to fail a contrast check, so in
+  /* Clipped-gradient text is the first thing to fail a contrast check, so in
 	   high-contrast mode the headline drops back to a flat, solid fill. */
-	.nt-mh__title-shell {
-		color: var(--gold-1);
-		background: none;
-		-webkit-background-clip: border-box;
-		        background-clip: border-box;
-	}
-	.nt-mh__title-shell::before,
-	.nt-mh__title-shell::after { display: none; }
+  .app-mh__title-shell {
+    color: var(--gold-1);
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+  }
+  .app-mh__title-shell::before,
+  .app-mh__title-shell::after {
+    display: none;
+  }
 }
 
 @media print {
-	.nt-mh { padding: 12px 0; }
-	.nt-mh::before,
-	.nt-mh::after,
-	.nt-mh__grain,
-	.nt-mh__gloss,
-	.nt-mh__cracks,
-	.nt-mh__orn,
-	.nt-mh__board {
-		min-height: 0;
-		border: 2px solid #000;
-		background: none;
-		box-shadow: none;
-	}
-	.nt-mh__title-shell {
-		color: #000;
-		background: none;
-		-webkit-background-clip: border-box;
-		        background-clip: border-box;
-	}
-	.nt-mh__title-shell::before,
-	.nt-mh__title-shell::after { display: none; }
-	.nt-mh__kicker,
-	.nt-mh__ribbon { color: #000; text-shadow: none; }
+  .app-mh {
+    padding: 12px 0;
+  }
+  .app-mh::before,
+  .app-mh::after,
+  .app-mh__grain,
+  .app-mh__gloss,
+  .app-mh__cracks,
+  .app-mh__orn,
+  .app-mh__board {
+    min-height: 0;
+    border: 2px solid #000;
+    background: none;
+    box-shadow: none;
+  }
+  .app-mh__title-shell {
+    color: #000;
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+  }
+  .app-mh__title-shell::before,
+  .app-mh__title-shell::after {
+    display: none;
+  }
+  .app-mh__kicker,
+  .app-mh__ribbon {
+    color: #000;
+    text-shadow: none;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -556,7 +673,7 @@
    fibre of the stalk running through the grain and twine holding it together.
 
    Nothing new is added to the markup - every element used here already
-   exists (.nt-mh__frame, __panel, __grain, __rivets, __orn, __medal). That
+   exists (.app-mh__frame, __panel, __grain, __rivets, __orn, __medal). That
    keeps the treatment removable: delete this block and the plain board comes
    straight back.
 
@@ -564,101 +681,133 @@
      "style": { "cane_work": 0 }   ->  --cane-work: 0
    ══════════════════════════════════════════════════════════════════════════ */
 
-.nt-mh {
-	--cane-work: 1;
+.app-mh {
+  --cane-work: 1;
 
-	/* Molasses and jaggery - the colours of boiled cane sugar, which is what
+  /* Molasses and jaggery - the colours of boiled cane sugar, which is what
 	   this trade actually looks like. Warmer and redder than plain timber. */
-	--cane-dark:  #2f1a0c;
-	--cane-mid:   #58300f;
-	--cane-warm:  #7d4a16;
-	--cane-light: #a9702c;
-	--cane-husk:  #c9a86a;
-	--twine:      #b99a63;
+  --cane-dark: #2f1a0c;
+  --cane-mid: #58300f;
+  --cane-warm: #7d4a16;
+  --cane-light: #a9702c;
+  --cane-husk: #c9a86a;
+  --twine: #b99a63;
 }
 
 /* ── 1. The frame becomes bound cane, not cut stone ───────────────────────
    Two vertical stalks down the sides with their joint rings, and the frame
    colour warmed from grey stone to dry husk. The rings are a repeating
    gradient rather than elements, so the count follows the board height. */
-.nt-mh__frame {
-	background:
+.app-mh__frame {
+  background:
 		/* left stalk */
-		linear-gradient(90deg,
-			var(--cane-husk) 0%,
-			color-mix(in srgb, var(--cane-husk) 78%, var(--cane-dark)) 40%,
-			var(--cane-husk) 100%) left / var(--frame-w) 100% no-repeat,
-		/* right stalk */
-		linear-gradient(90deg,
-			var(--cane-husk) 0%,
-			color-mix(in srgb, var(--cane-husk) 78%, var(--cane-dark)) 40%,
-			var(--cane-husk) 100%) right / var(--frame-w) 100% no-repeat,
-		/* joint rings, banded down both stalks */
-		repeating-linear-gradient(180deg,
-			transparent 0 26px,
-			color-mix(in srgb, var(--cane-dark) 42%, transparent) 26px 29px) left / var(--frame-w) 100% no-repeat,
-		repeating-linear-gradient(180deg,
-			transparent 0 26px,
-			color-mix(in srgb, var(--cane-dark) 42%, transparent) 26px 29px) right / var(--frame-w) 100% no-repeat,
-		/* the rest of the frame, kept as before but warmed */
-		linear-gradient(180deg, var(--stone-light) 0%, var(--stone) 46%, var(--stone-shade) 100%);
+    linear-gradient(
+        90deg,
+        var(--cane-husk) 0%,
+        color-mix(in srgb, var(--cane-husk) 78%, var(--cane-dark)) 40%,
+        var(--cane-husk) 100%
+      )
+      left / var(--frame-w) 100% no-repeat,
+    /* right stalk */
+      linear-gradient(
+        90deg,
+        var(--cane-husk) 0%,
+        color-mix(in srgb, var(--cane-husk) 78%, var(--cane-dark)) 40%,
+        var(--cane-husk) 100%
+      )
+      right / var(--frame-w) 100% no-repeat,
+    /* joint rings, banded down both stalks */
+      repeating-linear-gradient(
+        180deg,
+        transparent 0 26px,
+        color-mix(in srgb, var(--cane-dark) 42%, transparent) 26px 29px
+      )
+      left / var(--frame-w) 100% no-repeat,
+    repeating-linear-gradient(
+        180deg,
+        transparent 0 26px,
+        color-mix(in srgb, var(--cane-dark) 42%, transparent) 26px 29px
+      )
+      right / var(--frame-w) 100% no-repeat,
+    /* the rest of the frame, kept as before but warmed */
+      linear-gradient(
+        180deg,
+        var(--stone-light) 0%,
+        var(--stone) 46%,
+        var(--stone-shade) 100%
+      );
 }
 
 /* ── 2. Cane fibre through the timber ─────────────────────────────────────
    Real cane splits along the stalk, so the grain runs in long vertical
    threads with the horizontal saw-lines of the milled board crossing them. */
-.nt-mh__grain {
-	background-image:
-		repeating-linear-gradient(90deg,
-			transparent 0 3px,
-			color-mix(in srgb, var(--cane-dark) 26%, transparent) 3px 4px,
-			transparent 4px 9px),
-		repeating-linear-gradient(90deg,
-			transparent 0 17px,
-			color-mix(in srgb, var(--cane-light) 20%, transparent) 17px 18px),
-		repeating-linear-gradient(180deg,
-			transparent 0 22px,
-			color-mix(in srgb, var(--cane-dark) 20%, transparent) 22px 23px);
+.app-mh__grain {
+  background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0 3px,
+      color-mix(in srgb, var(--cane-dark) 26%, transparent) 3px 4px,
+      transparent 4px 9px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 17px,
+      color-mix(in srgb, var(--cane-light) 20%, transparent) 17px 18px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 22px,
+      color-mix(in srgb, var(--cane-dark) 20%, transparent) 22px 23px
+    );
 }
 
 /* ── 3. Molasses timber ──────────────────────────────────────────────────── */
-.nt-mh__panel {
-	background:
-		radial-gradient(120% 90% at 50% 8%,
-			color-mix(in srgb, var(--cane-light) 55%, transparent) 0%,
-			transparent 62%),
-		linear-gradient(180deg,
-			var(--cane-warm) 0%,
-			var(--cane-mid) 38%,
-			var(--cane-dark) 100%);
+.app-mh__panel {
+  background: radial-gradient(
+      120% 90% at 50% 8%,
+      color-mix(in srgb, var(--cane-light) 55%, transparent) 0%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      var(--cane-warm) 0%,
+      var(--cane-mid) 38%,
+      var(--cane-dark) 100%
+    );
 }
-
 
 /* ── 6. Side artwork sits IN the scene rather than beside it ──────────────
    The cane illustrations were floating clear of the board; dropping them and
    tucking them behind its edge makes the board look propped among the crop. */
-.nt-mh__orn {
-	margin-bottom: -2%;
-	filter: sepia(0.35) saturate(0.85) drop-shadow(0 6px 10px rgba(24, 13, 5, 0.3));
-	opacity: 0.95;
+.app-mh__orn {
+  margin-bottom: -2%;
+  filter: sepia(0.35) saturate(0.85)
+    drop-shadow(0 6px 10px rgba(24, 13, 5, 0.3));
+  opacity: 0.95;
 }
 
 /* ── 7. Kicker, in the small caps the rest of the theme uses ─────────────── */
-.nt-mh__kicker {
-	font-family: var(--nt-font-body, Georgia, serif);
-	letter-spacing: var(--nt-tracking-kicker, 0.28em);
-	color: color-mix(in srgb, var(--trad-ink, #4a3a2a) 78%, transparent);
+.app-mh__kicker {
+  font-family: var(--app-font-body, Georgia, serif);
+  letter-spacing: var(--app-tracking-kicker, 0.28em);
+  color: color-mix(in srgb, var(--trad-ink, #4a3a2a) 78%, transparent);
 }
 
 /* Opt out per page: "style": { "cane_work": 0 } in page_headers.json. */
-.nt-mh[style*="--cane-work: 0"] .nt-mh__frame,
-.nt-mh[style*="--cane-work:0"] .nt-mh__frame {
-	background: linear-gradient(180deg, var(--stone-light) 0%, var(--stone) 46%, var(--stone-shade) 100%);
+.app-mh[style*="--cane-work: 0"] .app-mh__frame,
+.app-mh[style*="--cane-work:0"] .app-mh__frame {
+  background: linear-gradient(
+    180deg,
+    var(--stone-light) 0%,
+    var(--stone) 46%,
+    var(--stone-shade) 100%
+  );
 }
 
 @media (max-width: 640px) {
-	/* The twine wraps are unreadable at this size and just add noise. */
-	.nt-mh__grain { background-size: 60% auto; }
+  /* The twine wraps are unreadable at this size and just add noise. */
+  .app-mh__grain {
+    background-size: 60% auto;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -676,40 +825,66 @@
    ══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 720px) {
-	.nt-mh {
-		--board-h: clamp(150px, 40vw, 210px);
-		--frame-w: 9px;
-		padding: 6px 0 18px;
-	}
-	.nt-mh__stage { padding-inline: 10px; }
+  .app-mh {
+    --board-h: clamp(150px, 40vw, 210px);
+    --frame-w: 9px;
+    padding: 6px 0 18px;
+  }
+  .app-mh__stage {
+    padding-inline: 10px;
+  }
 
-	/* Decoration with nowhere to go. Hiding them is what gives the board its
+  /* Decoration with nowhere to go. Hiding them is what gives the board its
 	   width back - each one was taking two thirds of --orn-size off it. */
-	.nt-mh__orn { display: none; }
+  .app-mh__orn {
+    display: none;
+  }
 
-	/* Belt and braces on a shape this decorative: the board is masked, the
+  /* Belt and braces on a shape this decorative: the board is masked, the
 	   ornaments use negative margins and the headline SVG is overflow:visible,
 	   so pin the whole assembly to the viewport rather than trusting every
 	   ancestor to be exactly the right width. */
-	.nt-mh { max-width: 100vw; overflow-x: clip; }
-	.nt-mh__stage { max-width: 100vw; }
-	.nt-mh__rig,
-	.nt-mh__board { width: 100%; max-width: calc(100vw - 20px); }
+  .app-mh {
+    max-width: 100vw;
+    overflow-x: clip;
+  }
+  .app-mh__stage {
+    max-width: 100vw;
+  }
+  .app-mh__rig,
+  .app-mh__board {
+    width: 100%;
+    max-width: calc(100vw - 20px);
+  }
 
-	/* The headline is SVG with a fixed viewBox, so it scales with the box.
+  /* The headline is SVG with a fixed viewBox, so it scales with the box.
 	   Letting it use the full width, with a little less tracking, is what
 	   brings the first and last letters back inside the frame. */
-	.nt-mh__title { padding-inline: 6px; }
-	.nt-mh { --title-tracking: 0.02em; --type-cut-width: 5px; }
+  .app-mh__title {
+    padding-inline: 6px;
+  }
+  .app-mh {
+    --title-tracking: 0.02em;
+    --type-cut-width: 5px;
+  }
 
-	.nt-mh__kicker { margin-bottom: 18px; font-size: 0.6rem; letter-spacing: 0.22em; }
-	.nt-mh__sub-text { font-size: 30px; letter-spacing: 3px; }
+  .app-mh__kicker {
+    margin-bottom: 18px;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+  }
+  .app-mh__sub-text {
+    font-size: 30px;
+    letter-spacing: 3px;
+  }
 }
 
 @media (max-width: 480px) {
-	.nt-mh { --board-h: clamp(132px, 44vw, 180px); }
-	/* The lower curve is the first thing to become unreadable at this width. */
-	.nt-mh__arc { display: none; }
+  .app-mh {
+    --board-h: clamp(132px, 44vw, 180px);
+  }
+  /* The lower curve is the first thing to become unreadable at this width. */
+  .app-mh__arc {
+    display: none;
+  }
 }
-
-

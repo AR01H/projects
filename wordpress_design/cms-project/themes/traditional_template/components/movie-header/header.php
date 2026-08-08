@@ -180,7 +180,7 @@ foreach ( $mh_vars as $mh_var => $mh_val ) {
 	$mh_style_attr .= $mh_var . ':' . $mh_val . ';';
 }
 
-// Inline the sprite once per request. Symbol ids are namespaced nt-mh-*.
+// Inline the sprite once per request. Symbol ids are namespaced app-mh-*.
 $mh_sprite      = '';
 $mh_sprite_real = realpath( get_theme_file_path( 'components/movie-header/icons.svg' ) );
 $mh_theme_real  = realpath( get_theme_file_path( '' ) );
@@ -190,12 +190,12 @@ if ( $mh_sprite_real && $mh_theme_real && 0 === strpos( $mh_sprite_real, $mh_the
 
 // Unique per instance: SVG ids are document-global, and two boards on one page
 // would otherwise share a gradient and a path.
-$mh_uid = 'nt-mh-' . wp_rand( 1000, 9999 );
+$mh_uid = 'app-mh-' . wp_rand( 1000, 9999 );
 $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 	return $mh_uid . '-' . $suffix;
 };
 ?>
-<section class="nt-mh nt-mh--<?php echo esc_attr( $mh_ornament ); ?> nt-has-leaves"
+<section class="app-mh app-mh--<?php echo esc_attr( $mh_ornament ); ?> app-has-leaves"
          aria-labelledby="<?php echo esc_attr( $mh_id( 'title' ) ); ?>"
          <?php echo $mh_style_attr ? 'style="' . esc_attr( $mh_style_attr ) . '"' : ''; ?>>
 
@@ -204,31 +204,44 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 	// behind the board. The part removes itself on the front page and under
 	// prefers-reduced-motion, so this call is safe everywhere.
 	// See components/parts/leaf-drift.php + admin/data/decor.json -> "leaves".
-	nt_component( 'parts/leaf-drift' );
+	app_component( 'parts/leaf-drift' );
 	?>
 
 	<?php if ( $mh_sprite ) : ?>
-		<div class="nt-mh__sprite" aria-hidden="true"><?php echo $mh_sprite; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- theme-owned static SVG sprite. ?></div>
+		<div class="app-mh__sprite" aria-hidden="true"><?php echo $mh_sprite; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- theme-owned static SVG sprite. ?></div>
 	<?php endif; ?>
 
-	<div class="nt-mh__stage">
+	<div class="app-mh__stage">
 
 		<?php if ( $mh_kicker ) : ?>
-			<p class="nt-mh__kicker"><?php echo esc_html( $mh_kicker ); ?></p>
+			<p class="app-mh__kicker"><?php echo esc_html( $mh_kicker ); ?></p>
 		<?php endif; ?>
 
-		<div class="nt-mh__rig">
+		<div class="app-mh__rig">
 
 			<?php if ( $mh_orn_url ) : ?>
-				<span class="nt-mh__orn nt-mh__orn--left" aria-hidden="true">
+				<span class="app-mh__orn app-mh__orn--left" aria-hidden="true">
 					<img src="<?php echo esc_url( $mh_orn_url ); ?>" alt="" loading="lazy" decoding="async">
 				</span>
 			<?php endif; ?>
 
-			<div class="nt-mh__board">
+			<div class="app-mh__board">
 
-				<h1 class="nt-mh__title" id="<?php echo esc_attr( $mh_id( 'title' ) ); ?>" data-nt-mh-fit>
-					<svg class="nt-mh__title-svg" viewBox="0 0 1200 330"
+				<?php /* Frame and timber are separate masked layers so the banner
+				         silhouette (bowed top AND bottom) can be cut from both,
+				         while the lettering above them stays unmasked. */ ?>
+				<span class="app-mh__frame" aria-hidden="true"></span>
+				<span class="app-mh__panel" aria-hidden="true">
+					<span class="app-mh__grain"></span>
+					<span class="app-mh__relief"></span>
+					<span class="app-mh__shade"></span>
+					<span class="app-mh__gloss"></span>
+					<span class="app-mh__cracks"></span>
+				</span>
+				<span class="app-mh__rivets" aria-hidden="true"></span>
+
+				<h1 class="app-mh__title" id="<?php echo esc_attr( $mh_id( 'title' ) ); ?>" data-nt-mh-fit>
+					<svg class="app-mh__title-svg" viewBox="0 0 1200 330"
 					     preserveAspectRatio="xMidYMid meet" focusable="false"
 					     data-nt-mh-size="<?php echo esc_attr( (string) $mh_size ); ?>">
 						<defs>
@@ -238,12 +251,12 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 							         renders black. The colours are applied from header.css. */ ?>
 							<linearGradient id="<?php echo esc_attr( $mh_id( 'gold' ) ); ?>"
 							                gradientUnits="userSpaceOnUse" x1="0" y1="122" x2="0" y2="300">
-								<stop class="nt-mh__g1" offset="0%"/>
-								<stop class="nt-mh__g1" offset="18%"/>
-								<stop class="nt-mh__g2" offset="44%"/>
-								<stop class="nt-mh__g3" offset="68%"/>
-								<stop class="nt-mh__g4" offset="90%"/>
-								<stop class="nt-mh__g5" offset="100%"/>
+								<stop class="app-mh__g1" offset="0%"/>
+								<stop class="app-mh__g1" offset="18%"/>
+								<stop class="app-mh__g2" offset="44%"/>
+								<stop class="app-mh__g3" offset="68%"/>
+								<stop class="app-mh__g4" offset="90%"/>
+								<stop class="app-mh__g5" offset="100%"/>
 							</linearGradient>
 
 							<!-- The headline rides over a hill: low at the ends, high in
@@ -257,7 +270,7 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 						</defs>
 
 						<?php if ( $mh_subtitle ) : ?>
-							<text class="nt-mh__sub-text" aria-hidden="true">
+							<text class="app-mh__sub-text" aria-hidden="true">
 								<textPath href="#<?php echo esc_attr( $mh_id( 'curve-sub' ) ); ?>"
 								          startOffset="50%" text-anchor="middle">
 									<?php echo esc_html( $mh_subtitle ); ?>
@@ -265,7 +278,7 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 							</text>
 						<?php endif; ?>
 
-						<g class="nt-mh__type" filter="url(#nt-mh-rough-type)" font-size="<?php echo esc_attr( (string) $mh_size ); ?>"
+						<g class="app-mh__type" filter="url(#app-mh-rough-type)" font-size="<?php echo esc_attr( (string) $mh_size ); ?>"
 						   letter-spacing="<?php echo esc_attr( (string) $mh_track ); ?>">
 
 							<?php
@@ -284,7 +297,7 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 							foreach ( $mh_depth as $mh_step ) :
 								?>
 								<g transform="translate(0 <?php echo esc_attr( (string) $mh_step[0] ); ?>)" aria-hidden="true">
-									<text class="nt-mh__type-cut" fill="<?php echo esc_attr( $mh_step[1] ); ?>"
+									<text class="app-mh__type-cut" fill="<?php echo esc_attr( $mh_step[1] ); ?>"
 									      stroke="<?php echo esc_attr( $mh_step[1] ); ?>">
 										<textPath href="#<?php echo esc_attr( $mh_id( 'curve' ) ); ?>"
 										          startOffset="50%" text-anchor="middle"><?php echo esc_html( $mh_title ); ?></textPath>
@@ -293,7 +306,7 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 							<?php endforeach; ?>
 
 							<?php /* The face. This is the copy screen readers announce. */ ?>
-							<text class="nt-mh__type-face"
+							<text class="app-mh__type-face"
 							      fill="url(#<?php echo esc_attr( $mh_id( 'gold' ) ); ?>)">
 								<textPath href="#<?php echo esc_attr( $mh_id( 'curve' ) ); ?>"
 								          startOffset="50%" text-anchor="middle"><?php echo esc_html( $mh_title ); ?></textPath>
@@ -304,29 +317,29 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 				</h1>
 
 				<?php if ( $mh_arc ) : ?>
-					<svg class="nt-mh__arc" viewBox="0 0 1200 150"
+					<svg class="app-mh__arc" viewBox="0 0 1200 150"
 					     preserveAspectRatio="xMidYMid meet"
 					     role="img" aria-label="<?php echo esc_attr( $mh_arc ); ?>" focusable="false">
 						<defs>
 							<path id="<?php echo esc_attr( $mh_id( 'arc' ) ); ?>"
 							      d="M 150,44 Q 600,150 1050,44" fill="none"/>
 						</defs>
-						<text class="nt-mh__arc-text">
+						<text class="app-mh__arc-text">
 							<textPath href="#<?php echo esc_attr( $mh_id( 'arc' ) ); ?>"
 							          startOffset="50%" text-anchor="middle"><?php echo esc_html( $mh_arc ); ?></textPath>
 						</text>
 					</svg>
 				<?php endif; ?>
 
-				<span class="nt-mh__medal" aria-hidden="true">
+				<span class="app-mh__medal" aria-hidden="true">
 					<svg viewBox="0 0 120 120" role="presentation" focusable="false">
-						<use href="#nt-mh-medallion"></use>
+						<use href="#app-mh-medallion"></use>
 					</svg>
 				</span>
 			</div>
 
 			<?php if ( $mh_orn_url ) : ?>
-				<span class="nt-mh__orn nt-mh__orn--right" aria-hidden="true">
+				<span class="app-mh__orn app-mh__orn--right" aria-hidden="true">
 					<img src="<?php echo esc_url( $mh_orn_url ); ?>" alt="" loading="lazy" decoding="async">
 				</span>
 			<?php endif; ?>
@@ -334,7 +347,7 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 		</div>
 
 		<?php if ( $mh_ribbon ) : ?>
-			<p class="nt-mh__ribbon"><span><?php echo esc_html( $mh_ribbon ); ?></span></p>
+			<p class="app-mh__ribbon"><span><?php echo esc_html( $mh_ribbon ); ?></span></p>
 		<?php endif; ?>
 
 	</div>

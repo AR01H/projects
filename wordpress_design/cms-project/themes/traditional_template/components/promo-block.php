@@ -40,51 +40,51 @@ $nt_tag    = $tag   ?? '';
 $nt_title  = $title ?? '';
 $nt_sub    = $sub   ?? '';
 ?>
-<section class="nt-promo nt-promo--<?php echo esc_attr( $nt_layout ); ?>">
+<section class="app-promo app-promo--<?php echo esc_attr( $nt_layout ); ?>">
 	<div class="container">
 
 		<?php if ( $nt_tag || $nt_title || $nt_sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $nt_tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
+			<div class="app-section-center">
+				<?php if ( $nt_tag ) : ?><div class="app-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
 				<?php if ( $nt_title ) : ?><h2 class="section-title"><?php echo wp_kses( $nt_title, array( 'em' => array() ) ); ?></h2><?php endif; ?>
 				<?php if ( $nt_sub ) : ?><p class="section-body"><?php echo esc_html( $nt_sub ); ?></p><?php endif; ?>
 			</div>
 		<?php endif; ?>
 
-		<div class="nt-promo__grid">
+		<div class="app-promo__grid">
 			<?php foreach ( $nt_blocks as $nt_b ) : ?>
-				<article class="nt-promo__card">
+				<article class="app-promo__card">
 
 					<?php if ( '' !== $nt_b['image'] ) : ?>
-						<figure class="nt-promo__figure">
-							<img src="<?php echo esc_url( nt_link( $nt_b['image'] ) ); ?>" alt="" loading="lazy" decoding="async">
+						<figure class="app-promo__figure">
+							<img src="<?php echo esc_url( app_link( $nt_b['image'] ) ); ?>" alt="" loading="lazy" decoding="async">
 						</figure>
 					<?php elseif ( '' !== $nt_b['icon'] ) : ?>
-						<span class="nt-promo__icon" aria-hidden="true">
+						<span class="app-promo__icon" aria-hidden="true">
 							<?php echo NT_Icons::get_or_text( $nt_b['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 						</span>
 					<?php endif; ?>
 
 					<?php if ( '' !== $nt_b['tag'] ) : ?>
-						<span class="nt-promo__tag"><?php echo esc_html( $nt_b['tag'] ); ?></span>
+						<span class="app-promo__tag"><?php echo esc_html( $nt_b['tag'] ); ?></span>
 					<?php endif; ?>
 
 					<?php if ( '' !== $nt_b['title'] ) : ?>
-						<h3 class="nt-promo__title"><?php echo esc_html( $nt_b['title'] ); ?></h3>
+						<h3 class="app-promo__title"><?php echo esc_html( $nt_b['title'] ); ?></h3>
 					<?php endif; ?>
 
 					<?php if ( '' !== $nt_b['text'] ) : ?>
-						<p class="nt-promo__text"><?php echo esc_html( $nt_b['text'] ); ?></p>
+						<p class="app-promo__text"><?php echo esc_html( $nt_b['text'] ); ?></p>
 					<?php endif; ?>
 
 					<?php if ( '' !== $nt_b['label'] ) : ?>
 						<?php if ( '' !== $nt_b['dialog'] && NT_Dialog::exists( $nt_b['dialog'] ) ) : ?>
-							<button class="nt-promo__cta" <?php nt_dialog_trigger( $nt_b['dialog'] ); ?>>
+							<button class="app-promo__cta" <?php app_dialog_trigger( $nt_b['dialog'] ); ?>>
 								<?php echo esc_html( $nt_b['label'] ); ?>
 								<?php NT_Icons::render( 'arrow-right' ); ?>
 							</button>
 						<?php elseif ( '' !== $nt_b['url'] ) : ?>
-							<a class="nt-promo__cta" href="<?php echo esc_url( nt_link( $nt_b['url'] ) ); ?>"
+							<a class="app-promo__cta" href="<?php echo esc_url( app_link( $nt_b['url'] ) ); ?>"
 								<?php if ( $nt_b['new_tab'] ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>>
 								<?php echo esc_html( $nt_b['label'] ); ?>
 								<?php NT_Icons::render( 'arrow-right' ); ?>

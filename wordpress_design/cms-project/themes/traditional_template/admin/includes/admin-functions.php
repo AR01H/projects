@@ -13,8 +13,8 @@ defined( 'ABSPATH' ) || exit;
  * Example: small "theme is registry-driven" hint on the Pages list screen,
  * so editors know registered pages are managed from the Theme panel.
  */
-add_action( 'admin_notices', 'nt_admin_pages_hint' );
-function nt_admin_pages_hint() {
+add_action( 'admin_notices', 'app_admin_pages_hint' );
+function app_admin_pages_hint() {
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 	if ( ! $screen || 'edit-page' !== $screen->id ) {
 		return;

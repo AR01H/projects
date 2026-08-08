@@ -4,11 +4,11 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-// The theme's virtual router (core/router.php) stamps nt_active_page on every
+// The theme's virtual router (core/router.php) stamps app_active_page on every
 // request, including before a real WP "front page" option is configured -
 // check both so the blended-header state works whether or not the site has
 // been through Admin -> Pages -> Sync Now yet.
-$nt_is_home = is_front_page() || 'home' === (string) get_query_var( 'nt_active_page' );
+$nt_is_home = is_front_page() || 'home' === (string) get_query_var( 'app_active_page' );
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -22,11 +22,11 @@ $nt_is_home = is_front_page() || 'home' === (string) get_query_var( 'nt_active_p
 // artwork and flourish dividers. See "INNER PAGE DECORATIVE LAYER" in
 // assets/css/vintage.css. Home stays deliberately cleaner.
 ?>
-<body <?php body_class( $nt_is_home ? 'design-traditional nt-hero-top' : 'design-traditional nt-inner' ); ?>>
+<body <?php body_class( $nt_is_home ? 'design-traditional app-hero-top' : 'design-traditional app-inner' ); ?>>
 <?php wp_body_open(); ?>
 
-<a class="skip-link screen-reader-text" href="#nt-main"><?php esc_html_e( 'Skip to content', NT_TEXT_DOMAIN ); ?></a>
+<a class="skip-link screen-reader-text" href="#app-main"><?php esc_html_e( 'Skip to content', NT_TEXT_DOMAIN ); ?></a>
 
-<?php nt_component( 'parts/main_header' ); ?>
+<?php app_component( 'parts/main_header' ); ?>
 
-<main id="nt-main" class="nt-main">
+<main id="app-main" class="app-main">

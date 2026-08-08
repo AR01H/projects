@@ -64,7 +64,7 @@ class NT_Data_Provider {
 	 * Read JSON data from the admin/data/ directory.
 	 */
 	private static function fetch_json( $feature ) {
-		return nt_data( $feature );
+		return app_data( $feature );
 	}
 
 	// ----------------------------------------------------------------------

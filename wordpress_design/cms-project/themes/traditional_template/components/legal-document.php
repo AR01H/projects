@@ -29,7 +29,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'legal_privacy';
-$nt_doc  = nt_data( $nt_src );
+$nt_doc  = app_data( $nt_src );
 $nt_secs = ( is_array( $nt_doc ) && ! empty( $nt_doc['sections'] ) ) ? (array) $nt_doc['sections'] : array();
 if ( empty( $nt_secs ) ) {
 	return;
@@ -43,36 +43,36 @@ foreach ( $nt_secs as $nt_i => $nt_sec ) {
 	$nt_secs[ $nt_i ]    = $nt_sec;
 }
 ?>
-<section class="nt-legal">
-	<div class="container nt-legal__wrap">
+<section class="app-legal">
+	<div class="container app-legal__wrap">
 
-		<div class="nt-legal__head">
-			<?php nt_component( 'parts/breadcrumbs' ); ?>
+		<div class="app-legal__head">
+			<?php app_component( 'parts/breadcrumbs' ); ?>
 
 			<?php if ( ! empty( $nt_doc['title'] ) ) : ?>
-				<h1 class="nt-legal__title"><?php echo esc_html( $nt_doc['title'] ); ?></h1>
+				<h1 class="app-legal__title"><?php echo esc_html( $nt_doc['title'] ); ?></h1>
 			<?php endif; ?>
 
 			<?php if ( ! empty( $nt_doc['updated'] ) ) : ?>
-				<p class="nt-legal__updated">
+				<p class="app-legal__updated">
 					<?php NT_Icons::render( 'calendar' ); ?>
 					<?php echo esc_html( $nt_doc['updated'] ); ?>
 				</p>
 			<?php endif; ?>
 
 			<?php if ( ! empty( $nt_doc['intro'] ) ) : ?>
-				<p class="nt-legal__intro"><?php echo esc_html( $nt_doc['intro'] ); ?></p>
+				<p class="app-legal__intro"><?php echo esc_html( $nt_doc['intro'] ); ?></p>
 			<?php endif; ?>
 		</div>
 
-		<div class="nt-legal__body">
+		<div class="app-legal__body">
 
 			<?php if ( count( $nt_secs ) > 1 ) : ?>
-				<nav class="nt-legal__toc" aria-label="<?php echo esc_attr( $nt_doc['toc_heading'] ?? '' ); ?>">
+				<nav class="app-legal__toc" aria-label="<?php echo esc_attr( $nt_doc['toc_heading'] ?? '' ); ?>">
 					<?php if ( ! empty( $nt_doc['toc_heading'] ) ) : ?>
-						<h2 class="nt-legal__toc-title"><?php echo esc_html( $nt_doc['toc_heading'] ); ?></h2>
+						<h2 class="app-legal__toc-title"><?php echo esc_html( $nt_doc['toc_heading'] ); ?></h2>
 					<?php endif; ?>
-					<ol class="nt-legal__toc-list">
+					<ol class="app-legal__toc-list">
 						<?php foreach ( $nt_secs as $nt_sec ) : ?>
 							<?php if ( '' === $nt_sec['heading'] ) { continue; } ?>
 							<li><a href="#<?php echo esc_attr( $nt_sec['id'] ); ?>"><?php echo esc_html( $nt_sec['heading'] ); ?></a></li>
@@ -81,22 +81,22 @@ foreach ( $nt_secs as $nt_i => $nt_sec ) {
 				</nav>
 			<?php endif; ?>
 
-			<div class="nt-legal__clauses">
+			<div class="app-legal__clauses">
 				<?php foreach ( $nt_secs as $nt_n => $nt_sec ) : ?>
-					<article class="nt-legal__clause" id="<?php echo esc_attr( $nt_sec['id'] ); ?>">
+					<article class="app-legal__clause" id="<?php echo esc_attr( $nt_sec['id'] ); ?>">
 						<?php if ( '' !== $nt_sec['heading'] ) : ?>
-							<h2 class="nt-legal__clause-title">
-								<span class="nt-legal__clause-no"><?php echo esc_html( sprintf( '%02d', $nt_n + 1 ) ); ?></span>
+							<h2 class="app-legal__clause-title">
+								<span class="app-legal__clause-no"><?php echo esc_html( sprintf( '%02d', $nt_n + 1 ) ); ?></span>
 								<?php echo esc_html( $nt_sec['heading'] ); ?>
 							</h2>
 						<?php endif; ?>
 
 						<?php foreach ( (array) ( $nt_sec['text'] ?? array() ) as $nt_para ) : ?>
-							<p class="nt-legal__text"><?php echo esc_html( $nt_para ); ?></p>
+							<p class="app-legal__text"><?php echo esc_html( $nt_para ); ?></p>
 						<?php endforeach; ?>
 
 						<?php if ( ! empty( $nt_sec['points'] ) ) : ?>
-							<ul class="nt-legal__points">
+							<ul class="app-legal__points">
 								<?php foreach ( (array) $nt_sec['points'] as $nt_point ) : ?>
 									<li><?php echo esc_html( $nt_point ); ?></li>
 								<?php endforeach; ?>
@@ -109,14 +109,14 @@ foreach ( $nt_secs as $nt_i => $nt_sec ) {
 			<?php if ( ! empty( $nt_doc['contact'] ) ) : ?>
 				<?php
 				$nt_contact = (array) $nt_doc['contact'];
-				nt_alert( array(
+				app_alert( array(
 					'tone'       => 'info',
 					'icon'       => 'mail',
 					'title'      => $nt_contact['heading'] ?? '',
 					'body'       => $nt_contact['text'] ?? '',
 					'link_label' => $nt_contact['email'] ?? '',
 					'link_url'   => ! empty( $nt_contact['email'] ) ? 'mailto:' . sanitize_email( $nt_contact['email'] ) : '',
-					'class'      => 'nt-legal__contact',
+					'class'      => 'app-legal__contact',
 				) );
 				?>
 			<?php endif; ?>

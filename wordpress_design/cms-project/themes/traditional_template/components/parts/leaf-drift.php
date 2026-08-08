@@ -33,7 +33,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$nt_decor  = nt_data( 'decor' );
+$nt_decor  = app_data( 'decor' );
 $nt_leaves = ( isset( $nt_decor['leaves'] ) && is_array( $nt_decor['leaves'] ) ) ? $nt_decor['leaves'] : array();
 
 if ( empty( $nt_leaves['enabled'] ) ) {
@@ -42,7 +42,7 @@ if ( empty( $nt_leaves['enabled'] ) ) {
 
 // Never on the pages listed in JSON (home by default) - the front page keeps
 // its own cleaner treatment.
-$nt_page_key = (string) get_query_var( 'nt_active_page' );
+$nt_page_key = (string) get_query_var( 'app_active_page' );
 $nt_pages_off = array_map( 'strval', (array) ( $nt_leaves['pages_off'] ?? array( 'home' ) ) );
 if ( in_array( $nt_page_key, $nt_pages_off, true ) || is_front_page() ) {
 	return;
@@ -70,11 +70,11 @@ $nt_shape_svg = array(
 	'seed'  => '<svg viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M9 0c5 4 7 8 7 11a7 7 0 1 1-14 0C2 8 4 4 9 0Z"/></svg>',
 );
 ?>
-<div class="nt-leaves <?php echo esc_attr( $class ?? '' ); ?>" data-nt-leaves aria-hidden="true"
-     style="--nt-leaf-ceiling:<?php echo esc_attr( (string) $nt_ceiling ); ?>;">
+<div class="app-leaves <?php echo esc_attr( $class ?? '' ); ?>" data-nt-leaves aria-hidden="true"
+     style="--app-leaf-ceiling:<?php echo esc_attr( (string) $nt_ceiling ); ?>;">
 
 	<?php if ( '' !== $nt_ground ) : ?>
-		<span class="nt-leaves__ground"
+		<span class="app-leaves__ground"
 		      style="background-image:url('<?php echo esc_url( get_template_directory_uri() . '/' . ltrim( $nt_ground, '/' ) ); ?>');"></span>
 	<?php endif; ?>
 
@@ -83,7 +83,7 @@ $nt_shape_svg = array(
 		$nt_shape = $nt_shapes[ $nt_i % count( $nt_shapes ) ];
 		$nt_svg   = $nt_shape_svg[ $nt_shape ] ?? $nt_shape_svg['leaf'];
 		?>
-		<span class="nt-leaf nt-leaf--<?php echo esc_attr( sanitize_html_class( $nt_shape ) ); ?>">
+		<span class="app-leaf app-leaf--<?php echo esc_attr( sanitize_html_class( $nt_shape ) ); ?>">
 			<?php echo $nt_svg; // phpcs:ignore WordPress.Security.EscapeOutput -- constant decorative SVG. ?>
 		</span>
 	<?php endfor; ?>

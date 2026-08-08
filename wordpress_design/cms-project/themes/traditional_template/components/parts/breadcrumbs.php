@@ -24,8 +24,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$nt_cfg   = nt_data( 'breadcrumbs' );
-$nt_pages = nt_config( 'pages' );
+$nt_cfg   = app_data( 'breadcrumbs' );
+$nt_pages = app_config( 'pages' );
 
 $nt_home_label = (string) ( $nt_cfg['home_label'] ?? '' );
 if ( '' === $nt_home_label ) {
@@ -63,7 +63,7 @@ if ( isset( $items ) && is_array( $items ) && ! empty( $items ) ) {
 		$nt_trail[] = array( 'label' => $nt_label, 'url' => (string) ( $nt_item['url'] ?? '' ) );
 	}
 } else {
-	$nt_key = isset( $page ) ? (string) $page : (string) get_query_var( 'nt_active_page' );
+	$nt_key = isset( $page ) ? (string) $page : (string) get_query_var( 'app_active_page' );
 	if ( '' === $nt_key || ! empty( $nt_pages[ $nt_key ]['front'] ) ) {
 		return; // The front page has nowhere to go back to.
 	}
@@ -84,7 +84,7 @@ if ( isset( $items ) && is_array( $items ) && ! empty( $items ) ) {
 	foreach ( $nt_chain as $nt_crumb_key ) {
 		$nt_trail[] = array(
 			'label' => $nt_label_for( $nt_crumb_key ),
-			'url'   => ( $nt_crumb_key === $nt_key ) ? '' : nt_page_url( $nt_crumb_key ),
+			'url'   => ( $nt_crumb_key === $nt_key ) ? '' : app_page_url( $nt_crumb_key ),
 		);
 	}
 }
@@ -96,18 +96,18 @@ if ( empty( $nt_trail ) ) {
 array_unshift( $nt_trail, array( 'label' => $nt_home_label, 'url' => home_url( '/' ) ) );
 $nt_last = count( $nt_trail ) - 1;
 ?>
-<nav class="nt-crumbs <?php echo esc_attr( $class ?? '' ); ?>" aria-label="<?php echo esc_attr( NT_Ui::aria( 'breadcrumb', 'Breadcrumb' ) ); ?>">
-	<ol class="nt-crumbs__list">
+<nav class="app-crumbs <?php echo esc_attr( $class ?? '' ); ?>" aria-label="<?php echo esc_attr( NT_Ui::aria( 'breadcrumb', 'Breadcrumb' ) ); ?>">
+	<ol class="app-crumbs__list">
 		<?php foreach ( $nt_trail as $nt_i => $nt_crumb ) : ?>
-			<li class="nt-crumbs__item">
+			<li class="app-crumbs__item">
 				<?php if ( '' !== $nt_crumb['url'] && $nt_i !== $nt_last ) : ?>
-					<a class="nt-crumbs__link" href="<?php echo esc_url( $nt_crumb['url'] ); ?>"><?php echo esc_html( $nt_crumb['label'] ); ?></a>
+					<a class="app-crumbs__link" href="<?php echo esc_url( $nt_crumb['url'] ); ?>"><?php echo esc_html( $nt_crumb['label'] ); ?></a>
 				<?php else : ?>
-					<span class="nt-crumbs__current" aria-current="page"><?php echo esc_html( $nt_crumb['label'] ); ?></span>
+					<span class="app-crumbs__current" aria-current="page"><?php echo esc_html( $nt_crumb['label'] ); ?></span>
 				<?php endif; ?>
 
 				<?php if ( $nt_i !== $nt_last ) : ?>
-					<span class="nt-crumbs__sep" aria-hidden="true">
+					<span class="app-crumbs__sep" aria-hidden="true">
 						<?php echo NT_Icons::get_or_text( $nt_separator ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 					</span>
 				<?php endif; ?>

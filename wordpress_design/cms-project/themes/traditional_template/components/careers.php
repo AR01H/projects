@@ -22,7 +22,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'careers';
-$nt_data  = nt_data( $nt_src );
+$nt_data  = app_data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 
 $nt_tag   = (string) ( $nt_data['tag'] ?? '' );
@@ -36,12 +36,12 @@ if ( empty( $nt_items ) && '' === $nt_empty ) {
 	return;
 }
 ?>
-<section class="nt-careers" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
+<section class="app-careers" id="<?php echo esc_attr( sanitize_html_class( $nt_src ) ); ?>">
 	<div class="container">
 
 		<?php if ( $nt_tag || $nt_title || $nt_sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $nt_tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
+			<div class="app-section-center">
+				<?php if ( $nt_tag ) : ?><div class="app-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
 				<?php if ( $nt_title ) : ?><h2 class="section-title"><?php echo wp_kses( $nt_title, array( 'em' => array() ) ); ?></h2><?php endif; ?>
 				<?php if ( $nt_sub ) : ?><p class="section-body"><?php echo esc_html( $nt_sub ); ?></p><?php endif; ?>
 			</div>
@@ -51,7 +51,7 @@ if ( empty( $nt_items ) && '' === $nt_empty ) {
 			<?php
 			// No openings today - say so warmly rather than rendering an
 			// empty shelf, and keep the speculative route open.
-			nt_alert( array(
+			app_alert( array(
 				'tone'       => 'note',
 				'icon'       => 'briefcase',
 				'body'       => $nt_empty,
@@ -60,7 +60,7 @@ if ( empty( $nt_items ) && '' === $nt_empty ) {
 			) );
 			?>
 		<?php else : ?>
-			<div class="nt-careers__list">
+			<div class="app-careers__list">
 				<?php
 				foreach ( $nt_items as $nt_i => $nt_job ) :
 					$nt_job      = (array) $nt_job;
@@ -73,7 +73,7 @@ if ( empty( $nt_items ) && '' === $nt_empty ) {
 					// title travels with the enquiry - so the shared lead
 					// handler needs no per-role code and the page carries no
 					// dialog markup for roles nobody opens.
-					$nt_job_dialog = nt_dialog_add( 'apply-' . sanitize_title( $nt_job_name ) . '-' . $nt_i, array(
+					$nt_job_dialog = app_dialog_add( 'apply-' . sanitize_title( $nt_job_name ) . '-' . $nt_i, array(
 						'kicker' => (string) ( $nt_data['dialog_kicker'] ?? '' ),
 						'title'  => $nt_job_name,
 						'tone'   => 'question',
@@ -83,28 +83,28 @@ if ( empty( $nt_items ) && '' === $nt_empty ) {
 						'form'   => $nt_form,
 					) );
 					?>
-					<details class="nt-job">
-						<summary class="nt-job__summary">
-							<span class="nt-job__head">
-								<span class="nt-job__title"><?php echo esc_html( $nt_job_name ); ?></span>
-								<span class="nt-job__meta">
+					<details class="app-job">
+						<summary class="app-job__summary">
+							<span class="app-job__head">
+								<span class="app-job__title"><?php echo esc_html( $nt_job_name ); ?></span>
+								<span class="app-job__meta">
 									<?php if ( ! empty( $nt_job['location'] ) ) : ?>
-										<span class="nt-job__chip"><?php NT_Icons::render( 'pin' ); ?><?php echo esc_html( $nt_job['location'] ); ?></span>
+										<span class="app-job__chip"><?php NT_Icons::render( 'pin' ); ?><?php echo esc_html( $nt_job['location'] ); ?></span>
 									<?php endif; ?>
 									<?php if ( ! empty( $nt_job['type'] ) ) : ?>
-										<span class="nt-job__chip"><?php NT_Icons::render( 'clock' ); ?><?php echo esc_html( $nt_job['type'] ); ?></span>
+										<span class="app-job__chip"><?php NT_Icons::render( 'clock' ); ?><?php echo esc_html( $nt_job['type'] ); ?></span>
 									<?php endif; ?>
 									<?php if ( ! empty( $nt_job['salary'] ) ) : ?>
-										<span class="nt-job__chip"><?php NT_Icons::render( 'coin' ); ?><?php echo esc_html( $nt_job['salary'] ); ?></span>
+										<span class="app-job__chip"><?php NT_Icons::render( 'coin' ); ?><?php echo esc_html( $nt_job['salary'] ); ?></span>
 									<?php endif; ?>
 								</span>
 							</span>
-							<span class="nt-job__toggle" aria-hidden="true"><?php NT_Icons::render( 'chevron-down' ); ?></span>
+							<span class="app-job__toggle" aria-hidden="true"><?php NT_Icons::render( 'chevron-down' ); ?></span>
 						</summary>
 
-						<div class="nt-job__body">
+						<div class="app-job__body">
 							<?php if ( ! empty( $nt_job['summary'] ) ) : ?>
-								<p class="nt-job__text"><?php echo esc_html( $nt_job['summary'] ); ?></p>
+								<p class="app-job__text"><?php echo esc_html( $nt_job['summary'] ); ?></p>
 							<?php endif; ?>
 
 							<?php
@@ -116,11 +116,11 @@ if ( empty( $nt_items ) && '' === $nt_empty ) {
 									continue;
 								}
 								?>
-								<div class="nt-job__block">
+								<div class="app-job__block">
 									<?php if ( '' !== $nt_list_label ) : ?>
-										<h4 class="nt-job__subhead"><?php echo esc_html( $nt_list_label ); ?></h4>
+										<h4 class="app-job__subhead"><?php echo esc_html( $nt_list_label ); ?></h4>
 									<?php endif; ?>
-									<ul class="nt-job__points">
+									<ul class="app-job__points">
 										<?php foreach ( (array) $nt_job[ $nt_list_key ] as $nt_point ) : ?>
 											<li><?php NT_Icons::render( 'check' ); ?><span><?php echo esc_html( $nt_point ); ?></span></li>
 										<?php endforeach; ?>
@@ -128,15 +128,15 @@ if ( empty( $nt_items ) && '' === $nt_empty ) {
 								</div>
 							<?php endforeach; ?>
 
-							<div class="nt-job__foot">
+							<div class="app-job__foot">
 								<?php if ( ! empty( $nt_job['closes'] ) ) : ?>
-									<span class="nt-job__closes">
+									<span class="app-job__closes">
 										<?php NT_Icons::render( 'calendar' ); ?>
 										<?php echo esc_html( $nt_job['closes'] ); ?>
 									</span>
 								<?php endif; ?>
 
-								<button type="button" class="nt-job__apply"
+								<button type="button" class="app-job__apply"
 								        data-nt-dialog-open="<?php echo esc_attr( $nt_job_dialog ); ?>"
 								        aria-haspopup="dialog">
 									<?php echo esc_html( $nt_apply ); ?>

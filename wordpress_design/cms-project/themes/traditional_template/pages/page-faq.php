@@ -13,6 +13,6 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
 <div id="main-content" class="site-main">
-	<?php nt_render_sections( 'faq' ); ?>
+	<?php app_render_sections( 'faq' ); ?>
 </div>
 <?php get_footer(); ?>

@@ -10,20 +10,20 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$dialog_id = $args['id'] ?? 'nt-generic-dialog';
+$dialog_id = $args['id'] ?? 'app-generic-dialog';
 $title     = $args['title'] ?? '';
 $content   = $args['content'] ?? '';
 $class     = $args['class'] ?? '';
 ?>
-<dialog id="<?php echo esc_attr( $dialog_id ); ?>" class="nt-dialog <?php echo esc_attr( $class ); ?>">
-	<div class="nt-dialog-content card">
-		<header class="nt-dialog-header">
+<dialog id="<?php echo esc_attr( $dialog_id ); ?>" class="app-dialog <?php echo esc_attr( $class ); ?>">
+	<div class="app-dialog-content card">
+		<header class="app-dialog-header">
 			<?php if ( $title ) : ?>
-				<h3 class="nt-dialog-title"><?php echo esc_html( $title ); ?></h3>
+				<h3 class="app-dialog-title"><?php echo esc_html( $title ); ?></h3>
 			<?php endif; ?>
-			<button class="nt-dialog-close" aria-label="Close dialog" onclick="document.getElementById('<?php echo esc_js( $dialog_id ); ?>').close();">&times;</button>
+			<button class="app-dialog-close" aria-label="Close dialog" onclick="document.getElementById('<?php echo esc_js( $dialog_id ); ?>').close();">&times;</button>
 		</header>
-		<div class="nt-dialog-body">
+		<div class="app-dialog-body">
 			<?php echo $content; ?>
 		</div>
 	</div>

@@ -7,7 +7,7 @@
  * The quiet half of the dialog system: messages that sit IN the page rather
  * than over it.
  *
- *   - Inline alert   nt_alert( array( 'tone' => 'warning', 'body' => '…' ) )
+ *   - Inline alert   app_alert( array( 'tone' => 'warning', 'body' => '…' ) )
  *                    A framed parchment note used inside any section or form.
  *   - Site notices   the strip under the header, driven by
  *                    admin/data/site_notices.json - scheduled, per-page and
@@ -61,8 +61,8 @@ class NT_Alert {
 	 *   class       string  Extra class.
 	 */
 	public static function render( array $args ): void {
-		if ( function_exists( 'nt_component' ) ) {
-			nt_component( 'parts/alert', self::normalise( $args ) );
+		if ( function_exists( 'app_component' ) ) {
+			app_component( 'parts/alert', self::normalise( $args ) );
 		}
 	}
 
@@ -108,7 +108,7 @@ class NT_Alert {
 	 * @return array<int,array>
 	 */
 	public static function notices( string $page_key = '' ): array {
-		$raw = function_exists( 'nt_data' ) ? nt_data( self::DATA_KEY ) : array();
+		$raw = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
 		if ( ! is_array( $raw ) ) {
 			return array();
 		}
@@ -116,7 +116,7 @@ class NT_Alert {
 		$items = ( isset( $raw['items'] ) && is_array( $raw['items'] ) ) ? $raw['items'] : $raw;
 
 		if ( '' === $page_key ) {
-			$page_key = (string) get_query_var( 'nt_active_page' );
+			$page_key = (string) get_query_var( 'app_active_page' );
 		}
 		$now = (int) current_time( 'timestamp' );
 

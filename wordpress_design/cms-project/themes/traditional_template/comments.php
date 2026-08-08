@@ -23,11 +23,11 @@ if ( post_password_required() ) {
 
 $nt_count = (int) get_comments_number();
 ?>
-<section class="nt-comments" id="comments">
-	<div class="nt-comments__wrap">
+<section class="app-comments" id="comments">
+	<div class="app-comments__wrap">
 
 		<?php if ( $nt_count > 0 ) : ?>
-			<h2 class="nt-comments__title">
+			<h2 class="app-comments__title">
 				<?php NT_Icons::render( 'chat' ); ?>
 				<?php
 				printf(
@@ -38,7 +38,7 @@ $nt_count = (int) get_comments_number();
 				?>
 			</h2>
 
-			<ol class="nt-comments__list">
+			<ol class="app-comments__list">
 				<?php
 				wp_list_comments( array(
 					'style'       => 'ol',
@@ -52,7 +52,7 @@ $nt_count = (int) get_comments_number();
 			<?php
 			// Only printed when the thread is actually paginated.
 			the_comments_pagination( array(
-				'class'     => 'nt-pagination',
+				'class'     => 'app-pagination',
 				'prev_text' => esc_html( NT_Ui::label( 'previous' ) ),
 				'next_text' => esc_html( NT_Ui::label( 'next' ) ),
 			) );
@@ -63,17 +63,17 @@ $nt_count = (int) get_comments_number();
 		if ( comments_open() ) {
 
 			comment_form( array(
-				'class_form'         => 'nt-form nt-comments__form',
+				'class_form'         => 'app-form app-comments__form',
 				'title_reply'        => esc_html__( 'Leave a note', NT_TEXT_DOMAIN ),
 				'title_reply_to'     => esc_html__( 'Reply to %s', NT_TEXT_DOMAIN ),
 				'cancel_reply_link'  => esc_html( NT_Ui::label( 'cancel' ) ),
 				'label_submit'       => esc_html( NT_Ui::label( 'submit' ) ),
-				'class_submit'       => 'nt-btn nt-form-submit',
-				'title_reply_before' => '<h2 class="nt-comments__title nt-comments__title--form">',
+				'class_submit'       => 'app-btn app-form-submit',
+				'title_reply_before' => '<h2 class="app-comments__title app-comments__title--form">',
 				'title_reply_after'  => '</h2>',
 				'comment_field'      => sprintf(
-					'<p class="nt-form-group nt-form-row"><label class="nt-form-label" for="comment">%1$s</label>'
-					. '<textarea class="nt-form-textarea" id="comment" name="comment" rows="5" required></textarea></p>',
+					'<p class="app-form-group app-form-row"><label class="app-form-label" for="comment">%1$s</label>'
+					. '<textarea class="app-form-textarea" id="comment" name="comment" rows="5" required></textarea></p>',
 					esc_html__( 'Your note', NT_TEXT_DOMAIN )
 				),
 			) );
@@ -82,7 +82,7 @@ $nt_count = (int) get_comments_number();
 
 			// Closed, but there is a thread worth showing - say why it is closed
 			// rather than leaving a form-shaped hole.
-			nt_alert( array(
+			app_alert( array(
 				'tone'    => 'note',
 				'body'    => __( 'Comments are closed on this piece.', NT_TEXT_DOMAIN ),
 				'compact' => true,

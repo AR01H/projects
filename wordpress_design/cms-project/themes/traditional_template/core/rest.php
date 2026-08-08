@@ -12,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Registration loop - hooked on rest_api_init by the bootstrap.
  */
-function nt_register_rest_routes() {
-	$cfg = nt_config( 'rest' );
+function app_register_rest_routes() {
+	$cfg = app_config( 'rest' );
 	$ns  = (string) ( $cfg['namespace'] ?? 'nt/v1' );
 
 	foreach ( (array) ( $cfg['routes'] ?? array() ) as $route => $def ) {
@@ -32,11 +32,11 @@ function nt_register_rest_routes() {
 			'args'                => (array) ( $def['args'] ?? array() ),
 			'callback'            => static function ( $request ) use ( $def, $route ) {
 				if ( ! empty( $def['file'] ) ) {
-					nt_require_theme_file( $def['file'] );
+					app_require_theme_file( $def['file'] );
 				}
 				$callback = $def['callback'] ?? '';
 				if ( ! is_callable( $callback ) ) {
-					return new WP_Error( 'nt_no_handler', 'Handler not found for route: ' . $route, array( 'status' => 500 ) );
+					return new WP_Error( 'app_no_handler', 'Handler not found for route: ' . $route, array( 'status' => 500 ) );
 				}
 				return call_user_func( $callback, $request );
 			},

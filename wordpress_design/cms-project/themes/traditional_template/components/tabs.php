@@ -23,7 +23,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'tabs';
-$nt_data = nt_data( $nt_src );
+$nt_data = app_data( $nt_src );
 
 $nt_tabs = array();
 foreach ( (array) ( $nt_data['tabs'] ?? array() ) as $nt_i => $nt_tab ) {
@@ -45,30 +45,30 @@ $nt_tag   = (string) ( $nt_data['tag'] ?? '' );
 $nt_title = (string) ( $nt_data['title'] ?? '' );
 $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 ?>
-<section class="nt-tabs" id="<?php echo esc_attr( $nt_scope ); ?>">
+<section class="app-tabs" id="<?php echo esc_attr( $nt_scope ); ?>">
 	<div class="container">
 
 		<?php if ( $nt_tag || $nt_title || $nt_sub ) : ?>
-			<div class="nt-section-center">
-				<?php if ( $nt_tag ) : ?><div class="nt-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
+			<div class="app-section-center">
+				<?php if ( $nt_tag ) : ?><div class="app-section-tag"><?php echo esc_html( $nt_tag ); ?></div><?php endif; ?>
 				<?php if ( $nt_title ) : ?><h2 class="section-title"><?php echo wp_kses( $nt_title, array( 'em' => array() ) ); ?></h2><?php endif; ?>
 				<?php if ( $nt_sub ) : ?><p class="section-body"><?php echo esc_html( $nt_sub ); ?></p><?php endif; ?>
 			</div>
 		<?php endif; ?>
 
-		<div class="nt-tabs__scope" data-nt-tabs>
+		<div class="app-tabs__scope" data-nt-tabs>
 
-			<div class="nt-tabs__strip" role="tablist" aria-label="<?php echo esc_attr( NT_Ui::aria( 'tabs', 'Section tabs' ) ); ?>">
+			<div class="app-tabs__strip" role="tablist" aria-label="<?php echo esc_attr( NT_Ui::aria( 'tabs', 'Section tabs' ) ); ?>">
 				<?php foreach ( $nt_tabs as $nt_i => $nt_tab ) : ?>
 					<button type="button"
-					        class="nt-tabs__tab<?php echo 0 === $nt_i ? ' is-active' : ''; ?>"
+					        class="app-tabs__tab<?php echo 0 === $nt_i ? ' is-active' : ''; ?>"
 					        data-nt-tab="<?php echo esc_attr( $nt_tab['key'] ); ?>"
 					        role="tab"
 					        id="<?php echo esc_attr( $nt_scope . '-tab-' . $nt_tab['key'] ); ?>"
 					        aria-controls="<?php echo esc_attr( $nt_scope . '-panel-' . $nt_tab['key'] ); ?>"
 					        aria-selected="<?php echo 0 === $nt_i ? 'true' : 'false'; ?>">
 						<?php if ( ! empty( $nt_tab['icon'] ) ) : ?>
-							<span class="nt-tabs__icon" aria-hidden="true">
+							<span class="app-tabs__icon" aria-hidden="true">
 								<?php echo NT_Icons::get_or_text( (string) $nt_tab['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 							</span>
 						<?php endif; ?>
@@ -78,7 +78,7 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 			</div>
 
 			<?php foreach ( $nt_tabs as $nt_i => $nt_tab ) : ?>
-				<div class="nt-tabs__panel<?php echo 0 === $nt_i ? ' is-active' : ''; ?>"
+				<div class="app-tabs__panel<?php echo 0 === $nt_i ? ' is-active' : ''; ?>"
 				     data-nt-tab-panel="<?php echo esc_attr( $nt_tab['key'] ); ?>"
 				     id="<?php echo esc_attr( $nt_scope . '-panel-' . $nt_tab['key'] ); ?>"
 				     role="tabpanel"
@@ -86,28 +86,28 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 				     tabindex="0">
 
 					<?php // Only visible when JS has NOT upgraded the block - see .is-enhanced in CSS. ?>
-					<h3 class="nt-tabs__fallback-heading"><?php echo esc_html( $nt_tab['label'] ); ?></h3>
+					<h3 class="app-tabs__fallback-heading"><?php echo esc_html( $nt_tab['label'] ); ?></h3>
 
-					<div class="nt-tabs__inner">
+					<div class="app-tabs__inner">
 						<?php if ( ! empty( $nt_tab['image'] ) ) : ?>
-							<figure class="nt-tabs__figure">
-								<img src="<?php echo esc_url( nt_link( (string) $nt_tab['image'] ) ); ?>"
+							<figure class="app-tabs__figure">
+								<img src="<?php echo esc_url( app_link( (string) $nt_tab['image'] ) ); ?>"
 								     alt="<?php echo esc_attr( $nt_tab['image_alt'] ?? '' ); ?>"
 								     loading="lazy" decoding="async">
 							</figure>
 						<?php endif; ?>
 
-						<div class="nt-tabs__copy">
+						<div class="app-tabs__copy">
 							<?php if ( ! empty( $nt_tab['heading'] ) ) : ?>
-								<h3 class="nt-tabs__heading"><?php echo esc_html( $nt_tab['heading'] ); ?></h3>
+								<h3 class="app-tabs__heading"><?php echo esc_html( $nt_tab['heading'] ); ?></h3>
 							<?php endif; ?>
 
 							<?php foreach ( (array) ( $nt_tab['text'] ?? array() ) as $nt_para ) : ?>
-								<p class="nt-tabs__text"><?php echo esc_html( $nt_para ); ?></p>
+								<p class="app-tabs__text"><?php echo esc_html( $nt_para ); ?></p>
 							<?php endforeach; ?>
 
 							<?php if ( ! empty( $nt_tab['points'] ) ) : ?>
-								<ul class="nt-tabs__points">
+								<ul class="app-tabs__points">
 									<?php foreach ( (array) $nt_tab['points'] as $nt_point ) : ?>
 										<li>
 											<?php NT_Icons::render( 'check' ); ?>
@@ -118,7 +118,7 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 							<?php endif; ?>
 
 							<?php if ( ! empty( $nt_tab['link_label'] ) && ! empty( $nt_tab['link_url'] ) ) : ?>
-								<a class="nt-tabs__link" href="<?php echo esc_url( nt_link( (string) $nt_tab['link_url'] ) ); ?>">
+								<a class="app-tabs__link" href="<?php echo esc_url( app_link( (string) $nt_tab['link_url'] ) ); ?>">
 									<?php echo esc_html( $nt_tab['link_label'] ); ?>
 									<?php NT_Icons::render( 'arrow-right' ); ?>
 								</a>

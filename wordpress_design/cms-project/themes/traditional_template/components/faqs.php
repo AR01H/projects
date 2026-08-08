@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $faq_source = ( isset( $source ) && $source ) ? (string) $source : 'faqs';
-$raw        = nt_data( $faq_source );
+$raw        = app_data( $faq_source );
 
 if ( is_array( $raw ) && isset( $raw['items'] ) ) {
 	$faqs    = (array) $raw['items'];
@@ -30,19 +30,19 @@ if ( empty( $faqs ) ) {
 }
 
 if ( '' === $heading ) {
-	$content = nt_data( 'content' )['faqs'] ?? array();
+	$content = app_data( 'content' )['faqs'] ?? array();
 	$heading = $content['heading'] ?? __( 'Frequently Asked Questions', NT_TEXT_DOMAIN );
 }
 ?>
-<section class="nt-faqs">
-	<div class="nt-container">
-		<h2 class="nt-section-title"><?php echo wp_kses_post( $heading ); ?></h2>
-		<div class="nt-faq-list">
+<section class="app-faqs">
+	<div class="app-container">
+		<h2 class="app-section-title"><?php echo wp_kses_post( $heading ); ?></h2>
+		<div class="app-faq-list">
 			<?php foreach ( $faqs as $faq ) :
 				$faq = (object) $faq; ?>
-				<details class="nt-faq-item">
-					<summary class="nt-faq-q"><?php echo esc_html( $faq->question ?? '' ); ?></summary>
-					<div class="nt-faq-a"><?php echo wp_kses_post( $faq->answer ?? '' ); ?></div>
+				<details class="app-faq-item">
+					<summary class="app-faq-q"><?php echo esc_html( $faq->question ?? '' ); ?></summary>
+					<div class="app-faq-a"><?php echo wp_kses_post( $faq->answer ?? '' ); ?></div>
 				</details>
 			<?php endforeach; ?>
 		</div>

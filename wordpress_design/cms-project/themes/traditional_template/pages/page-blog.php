@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_blog     = nt_data( 'blog' );
+$nt_blog     = app_data( 'blog' );
 $nt_per_page = max( 1, (int) ( $nt_blog['per_page'] ?? 9 ) );
 $nt_paged    = max( 1, (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
 
@@ -36,30 +36,30 @@ $nt_query = new WP_Query( array(
 	'ignore_sticky_posts' => false,
 ) );
 ?>
-<div id="main-content" class="site-main nt-blog">
+<div id="main-content" class="site-main app-blog">
 
 	<?php
 	// The page header board, then anything the JSON wants above the listing.
-	nt_render_sections( 'blog_before' );
+	app_render_sections( 'blog_before' );
 	?>
 
-	<div class="container nt-blog__wrap">
+	<div class="container app-blog__wrap">
 
-		<div class="nt-blog__main">
+		<div class="app-blog__main">
 
-			<?php nt_component( 'parts/breadcrumbs' ); ?>
+			<?php app_component( 'parts/breadcrumbs' ); ?>
 
 			<?php if ( ! empty( $nt_blog['intro'] ) ) : ?>
-				<p class="nt-blog__intro"><?php echo esc_html( $nt_blog['intro'] ); ?></p>
+				<p class="app-blog__intro"><?php echo esc_html( $nt_blog['intro'] ); ?></p>
 			<?php endif; ?>
 
 			<?php if ( $nt_query->have_posts() ) : ?>
 
-				<div class="nt-blog__grid">
+				<div class="app-blog__grid">
 					<?php
 					while ( $nt_query->have_posts() ) :
 						$nt_query->the_post();
-						nt_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+						app_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
 					endwhile;
 					?>
 				</div>
@@ -78,7 +78,7 @@ $nt_query = new WP_Query( array(
 
 				if ( ! empty( $nt_links ) ) :
 					?>
-					<nav class="nt-pagination" aria-label="<?php echo esc_attr( NT_Ui::aria( 'pagination', 'Pagination' ) ); ?>">
+					<nav class="app-pagination" aria-label="<?php echo esc_attr( NT_Ui::aria( 'pagination', 'Pagination' ) ); ?>">
 						<?php foreach ( $nt_links as $nt_link_html ) : ?>
 							<?php echo wp_kses_post( $nt_link_html ); ?>
 						<?php endforeach; ?>
@@ -90,7 +90,7 @@ $nt_query = new WP_Query( array(
 			<?php else : ?>
 
 				<?php
-				nt_alert( array(
+				app_alert( array(
 					'tone' => 'note',
 					'icon' => 'file',
 					'body' => (string) ( $nt_blog['empty_text'] ?? '' ),
@@ -103,14 +103,14 @@ $nt_query = new WP_Query( array(
 		</div>
 
 		<?php if ( ! empty( $nt_blog['sidebar'] ) ) : ?>
-			<aside class="nt-blog__side">
-				<?php nt_component( 'parts/blog-sidebar', array( 'config' => (array) $nt_blog['sidebar'] ) ); ?>
+			<aside class="app-blog__side">
+				<?php app_component( 'parts/blog-sidebar', array( 'config' => (array) $nt_blog['sidebar'] ) ); ?>
 			</aside>
 		<?php endif; ?>
 
 	</div>
 
-	<?php nt_render_sections( 'blog_after' ); ?>
+	<?php app_render_sections( 'blog_after' ); ?>
 
 </div>
 <?php get_footer(); ?>
