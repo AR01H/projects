@@ -4,18 +4,20 @@
  *
  * Tables install automatically on theme activation, and one-by-one from
  * Theme -> Admin Tools -> Database. Queries against these tables use
- * app_db_table( 'key' ) for the name and $wpdb->prepare()/insert()/update()
+ * self::table( 'key' ) for the name and $wpdb->prepare()/insert()/update()
  * for the SQL - always.
  */
 
 defined( 'ABSPATH' ) || exit;
 
+class App_Database {
+
 /**
  * Full prefixed table name for a registry key: 'submissions' -> wp_nt_submissions.
  */
-function app_db_table( $key ) {
+public static function table( $key ) {
 	global $wpdb;
-	$tables = app_config( 'database' );
+	$tables = App_Theme::config( 'database' );
 	$name   = (string) ( $tables[ $key ]['table'] ?? 'app_' . sanitize_key( $key ) );
 	return $wpdb->prefix . $name;
 }
@@ -23,9 +25,9 @@ function app_db_table( $key ) {
 /**
  * Does the table exist in MySQL right now?
  */
-function app_db_table_exists( $key ) {
+public static function table_exists( $key ) {
 	global $wpdb;
-	$table = app_db_table( $key );
+	$table = self::table( $key );
 	return $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) === $table;
 }
 
@@ -34,9 +36,9 @@ function app_db_table_exists( $key ) {
  *
  * @return bool True when the table exists after the run.
  */
-function app_db_install( $key ) {
+public static function install( $key ) {
 	global $wpdb;
-	$tables = app_config( 'database' );
+	$tables = App_Theme::config( 'database' );
 	$schema = (string) ( $tables[ $key ]['schema'] ?? '' );
 	if ( '' === $schema ) {
 		return false;
@@ -44,14 +46,14 @@ function app_db_install( $key ) {
 
 	$sql = str_replace(
 		array( '{table}', '{charset}' ),
-		array( app_db_table( $key ), $wpdb->get_charset_collate() ),
+		array( self::table( $key ), $wpdb->get_charset_collate() ),
 		$schema
 	);
 
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	dbDelta( $sql );
 
-	return app_db_table_exists( $key );
+	return self::table_exists( $key );
 }
 
 /**
@@ -59,10 +61,10 @@ function app_db_install( $key ) {
  *
  * @return array key => bool (installed ok?)
  */
-function app_db_install_all() {
+public static function install_all() {
 	$results = array();
-	foreach ( array_keys( app_config( 'database' ) ) as $key ) {
-		$results[ $key ] = app_db_install( $key );
+	foreach ( array_keys( App_Theme::config( 'database' ) ) as $key ) {
+		$results[ $key ] = self::install( $key );
 	}
 	return $results;
 }
@@ -72,14 +74,16 @@ function app_db_install_all() {
  *
  * @return array key => array( table, desc, exists )
  */
-function app_db_status() {
+public static function status() {
 	$status = array();
-	foreach ( app_config( 'database' ) as $key => $def ) {
+	foreach ( App_Theme::config( 'database' ) as $key => $def ) {
 		$status[ $key ] = array(
-			'table'  => app_db_table( $key ),
+			'table'  => self::table( $key ),
 			'desc'   => (string) ( $def['desc'] ?? '' ),
-			'exists' => app_db_table_exists( $key ),
+			'exists' => self::table_exists( $key ),
 		);
 	}
 	return $status;
+}
+
 }

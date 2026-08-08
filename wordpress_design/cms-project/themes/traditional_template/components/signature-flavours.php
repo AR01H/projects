@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $sf_source = ( isset( $source ) && $source ) ? (string) $source : 'signature_flavours';
-$data      = app_data( $sf_source );
+$data      = App_Helpers::data( $sf_source );
 $bottles   = $data['bottles'] ?? array();
 if ( empty( $bottles ) ) {
 	return;
@@ -72,7 +72,7 @@ $button = $data['button'] ?? array();
 
 		<?php if ( ! empty( $button['label'] ) ) : ?>
 			<div class="app-bottles__cta">
-				<a href="<?php echo esc_url( app_link( $button['url'] ?? '#' ) ); ?>" class="btn">
+				<a href="<?php echo esc_url( App_Helpers::link( $button['url'] ?? '#' ) ); ?>" class="btn">
 					<?php echo esc_html( $button['label'] ); ?> &rarr;
 				</a>
 			</div>

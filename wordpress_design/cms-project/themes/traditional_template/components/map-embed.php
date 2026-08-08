@@ -21,7 +21,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'map';
-$nt_data  = app_data( $nt_src );
+$nt_data  = App_Helpers::data( $nt_src );
 $nt_embed = (string) ( $nt_data['embed_url'] ?? '' );
 $nt_link  = (string) ( $nt_data['link_url'] ?? '' );
 if ( '' === $nt_embed && '' === $nt_link ) {
@@ -48,7 +48,7 @@ $nt_play   = (string) ( $nt_data['play_label'] ?? '' );
 		<div class="app-map__frame" data-nt-video-host>
 			<?php if ( '' !== $nt_poster ) : ?>
 				<img class="app-map__poster"
-				     src="<?php echo esc_url( app_link( $nt_poster ) ); ?>"
+				     src="<?php echo esc_url( App_Helpers::link( $nt_poster ) ); ?>"
 				     alt="<?php echo esc_attr( $nt_data['poster_alt'] ?? '' ); ?>"
 				     loading="lazy" decoding="async">
 			<?php endif; ?>

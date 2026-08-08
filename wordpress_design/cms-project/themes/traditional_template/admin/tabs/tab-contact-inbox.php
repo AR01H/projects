@@ -10,13 +10,13 @@ defined( 'ABSPATH' ) || exit;
 
 global $wpdb;
 
-if ( ! app_db_table_exists( 'submissions' ) ) {
+if ( ! App_Database::table_exists( 'submissions' ) ) {
 	echo '<p>' . esc_html__( 'The submissions table is not installed yet.', NT_TEXT_DOMAIN ) . ' ';
-	echo '<a href="' . esc_url( app_admin_url( 'dashboard_tools', 'admin_tools', 'database' ) ) . '">' . esc_html__( 'Install it under Admin Tools -> Database.', NT_TEXT_DOMAIN ) . '</a></p>';
+	echo '<a href="' . esc_url( App_Admin::url( 'dashboard_tools', 'admin_tools', 'database' ) ) . '">' . esc_html__( 'Install it under Admin Tools -> Database.', NT_TEXT_DOMAIN ) . '</a></p>';
 	return;
 }
 
-$nt_table    = app_db_table( 'submissions' );
+$nt_table    = App_Database::table( 'submissions' );
 $nt_per_page = 20;
 
 // Status filter (?status=new|read) - whitelisted.
@@ -51,14 +51,14 @@ if ( '' === $nt_filter ) {
 }
 
 $nt_total_pages = max( 1, (int) ceil( $nt_total / $nt_per_page ) );
-$nt_base_url    = app_admin_url( 'contact_inbox' );
+$nt_base_url    = App_Admin::url( 'contact_inbox' );
 
 /** Small helper for the per-row action forms (status toggle / delete). */
 $nt_row_form = static function ( $action, $id, $label, $extra = array() ) {
 	echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" style="display:inline;margin:0 4px 0 0;">';
 	echo '<input type="hidden" name="action" value="' . esc_attr( 'app_tool_' . $action ) . '">';
 	echo '<input type="hidden" name="submission_id" value="' . esc_attr( (string) $id ) . '">';
-	app_admin_location_fields();
+	App_Admin::location_fields();
 	foreach ( $extra as $k => $v ) {
 		echo '<input type="hidden" name="' . esc_attr( $k ) . '" value="' . esc_attr( $v ) . '">';
 	}

@@ -6,4 +6,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-app_admin_tools_render( 'maintenance' );
+App_Admin::tools_render( 'maintenance' );

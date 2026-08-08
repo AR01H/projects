@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $pp_source = ( isset( $source ) && $source ) ? (string) $source : 'posts_preview';
-$data      = app_data( $pp_source );
+$data      = App_Helpers::data( $pp_source );
 $count     = isset( $data['count'] ) ? max( 1, (int) $data['count'] ) : 3;
 
 $nt_pp_query = new WP_Query( array(
@@ -66,7 +66,7 @@ $button_url = $data['button_url'] ?? '';
 
 		<?php if ( $button && $button_url ) : ?>
 			<p class="app-posts__cta">
-				<a class="btn" href="<?php echo esc_url( app_link( $button_url ) ); ?>"><?php echo esc_html( $button ); ?></a>
+				<a class="btn" href="<?php echo esc_url( App_Helpers::link( $button_url ) ); ?>"><?php echo esc_html( $button ); ?></a>
 			</p>
 		<?php endif; ?>
 

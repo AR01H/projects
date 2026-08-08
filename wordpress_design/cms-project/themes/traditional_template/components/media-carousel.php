@@ -10,7 +10,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$data   = app_data( 'home_media' );
+$data   = App_Helpers::data( 'home_media' );
 $slides = $data['slides'] ?? array();
 if ( empty( $slides ) ) {
 	return;
@@ -58,7 +58,7 @@ $tag      = $data['tag'] ?? '';
 						<?php if ( $heading ) : ?><h2 class="app-media-slide__heading"><?php echo esc_html( $heading ); ?></h2><?php endif; ?>
 						<?php if ( $text ) : ?><p class="app-media-slide__text"><?php echo esc_html( $text ); ?></p><?php endif; ?>
 						<?php if ( ! empty( $cta['label'] ) ) : ?>
-							<a class="btn" href="<?php echo esc_url( app_link( $cta['url'] ?? '#' ) ); ?>"><?php echo esc_html( $cta['label'] ); ?> &rarr;</a>
+							<a class="btn" href="<?php echo esc_url( App_Helpers::link( $cta['url'] ?? '#' ) ); ?>"><?php echo esc_html( $cta['label'] ); ?> &rarr;</a>
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>

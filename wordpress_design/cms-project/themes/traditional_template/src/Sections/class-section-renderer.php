@@ -47,7 +47,7 @@ class NT_Section_Renderer {
 	 * @return array<int,array>
 	 */
 	public static function sections_for( string $page_key ): array {
-		$map = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
+		$map = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
 		if ( ! is_array( $map ) || empty( $map[ $page_key ] ) || ! is_array( $map[ $page_key ] ) ) {
 			return array();
 		}
@@ -84,7 +84,7 @@ class NT_Section_Renderer {
 			return;
 		}
 
-		if ( ! function_exists( 'app_component' ) ) {
+		if ( ! is_callable( array( 'App_Helpers', 'component' ) ) ) {
 			return;
 		}
 
@@ -97,10 +97,10 @@ class NT_Section_Renderer {
 			echo '<div class="' . esc_attr( $wrapper ) . '">';
 		}
 
-		// app_component() realpath-guards the path and extracts $context into
+		// App_Helpers::component() realpath-guards the path and extracts $context into
 		// variables, so parts/page_header gets $title/$subtitle/etc while a
 		// plain section component just reads its own JSON and ignores context.
-		app_component( $component, $context );
+		App_Helpers::component( $component, $context );
 
 		if ( '' !== $wrapper ) {
 			echo '</div>';
@@ -140,8 +140,8 @@ class NT_Section_Renderer {
 	protected static function build_context( array $section ): array {
 		$context = ( isset( $section['args'] ) && is_array( $section['args'] ) ) ? $section['args'] : array();
 
-		if ( ! empty( $section['header'] ) && function_exists( 'app_data' ) ) {
-			$headers = app_data( 'page_headers' );
+		if ( ! empty( $section['header'] ) && is_callable( array( 'App_Helpers', 'data' ) ) ) {
+			$headers = App_Helpers::data( 'page_headers' );
 			$name    = (string) $section['header'];
 			$hdr     = ( is_array( $headers ) && isset( $headers[ $name ] ) && is_array( $headers[ $name ] ) ) ? $headers[ $name ] : array();
 			// Inline args win over the shared header block.

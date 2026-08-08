@@ -9,11 +9,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class App_Rest {
+
 /**
  * Registration loop - hooked on rest_api_init by the bootstrap.
  */
-function app_register_rest_routes() {
-	$cfg = app_config( 'rest' );
+public static function register_routes() {
+	$cfg = App_Theme::config( 'rest' );
 	$ns  = (string) ( $cfg['namespace'] ?? 'nt/v1' );
 
 	foreach ( (array) ( $cfg['routes'] ?? array() ) as $route => $def ) {
@@ -32,7 +34,7 @@ function app_register_rest_routes() {
 			'args'                => (array) ( $def['args'] ?? array() ),
 			'callback'            => static function ( $request ) use ( $def, $route ) {
 				if ( ! empty( $def['file'] ) ) {
-					app_require_theme_file( $def['file'] );
+					App_Helpers::require_theme_file( $def['file'] );
 				}
 				$callback = $def['callback'] ?? '';
 				if ( ! is_callable( $callback ) ) {
@@ -42,4 +44,6 @@ function app_register_rest_routes() {
 			},
 		) );
 	}
+}
+
 }

@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $oh_source = ( isset( $source ) && $source ) ? (string) $source : 'opening_hours';
-$data      = app_data( $oh_source );
+$data      = App_Helpers::data( $oh_source );
 $days      = ( is_array( $data ) && ! empty( $data['days'] ) ) ? (array) $data['days'] : array();
 if ( empty( $days ) ) {
 	return;

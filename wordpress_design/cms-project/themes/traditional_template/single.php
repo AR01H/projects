@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_hdr = app_data( 'page_headers' )['blog_post'] ?? array();
+$nt_hdr = App_Helpers::data( 'page_headers' )['blog_post'] ?? array();
 
 while ( have_posts() ) :
 	the_post();
@@ -38,7 +38,7 @@ while ( have_posts() ) :
 		$nt_poster_img = $nt_hdr['fallback_image'] ?? '';
 	}
 
-	app_component( 'parts/page_header', array(
+	App_Helpers::component( 'parts/page_header', array(
 		'tag'   => ( ! empty( $nt_cats ) && ! is_wp_error( $nt_cats ) ) ? $nt_cats[0]->name : ( $nt_hdr['tag'] ?? '' ),
 		'icon'  => $nt_hdr['icon'] ?? '',
 		'title' => get_the_title(),
@@ -50,9 +50,9 @@ while ( have_posts() ) :
 		<div class="container app-entry__wrap">
 
 			<?php
-			app_component( 'parts/breadcrumbs', array(
+			App_Helpers::component( 'parts/breadcrumbs', array(
 				'items' => array(
-					array( 'label' => app_label( 'read_more', 'Journal' ), 'url' => app_page_url( 'blog' ) ),
+					array( 'label' => app_label( 'read_more', 'Journal' ), 'url' => App_Helpers::page_url( 'blog' ) ),
 					array( 'label' => get_the_title() ),
 				),
 			) );
@@ -172,7 +172,7 @@ while ( have_posts() ) :
 						<?php
 						while ( $nt_related->have_posts() ) {
 							$nt_related->the_post();
-							app_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+							App_Helpers::component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
 						}
 						?>
 					</div>

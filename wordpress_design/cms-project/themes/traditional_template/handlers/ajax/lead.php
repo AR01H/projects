@@ -71,11 +71,11 @@ function app_ajax_lead_submit() {
 
 	// Save to the inbox table (install lazily if needed).
 	global $wpdb;
-	if ( ! app_db_table_exists( 'submissions' ) ) {
-		app_db_install( 'submissions' );
+	if ( ! App_Database::table_exists( 'submissions' ) ) {
+		App_Database::install( 'submissions' );
 	}
 	$saved = $wpdb->insert(
-		app_db_table( 'submissions' ),
+		App_Database::table( 'submissions' ),
 		array(
 			'name'       => $name,
 			'email'      => $email,
@@ -87,7 +87,7 @@ function app_ajax_lead_submit() {
 		array( '%s', '%s', '%s', '%s', '%s', '%s' )
 	);
 
-	$to      = app_option( 'general', 'email', get_option( 'admin_email' ) );
+	$to      = App_Helpers::option( 'general', 'email', get_option( 'admin_email' ) );
 	$subject = sprintf( '[%s] %s: %s', NT_BRAND_NAME, $form_label, $name );
 	$headers = array(
 		'Content-Type: text/plain; charset=UTF-8',

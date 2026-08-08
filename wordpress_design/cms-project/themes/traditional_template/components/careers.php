@@ -22,7 +22,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'careers';
-$nt_data  = app_data( $nt_src );
+$nt_data  = App_Helpers::data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 
 $nt_tag   = (string) ( $nt_data['tag'] ?? '' );

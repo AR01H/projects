@@ -1,16 +1,16 @@
 <?php
 /**
  * Dashboard tab - the architecture at a glance: what each registry contains
- * and where to edit it. Included by app_admin_render_page().
+ * and where to edit it. Included by App_Admin::render_page().
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$nt_pages     = app_config( 'pages' );
-$nt_ajax      = app_config( 'ajax' );
-$nt_rest      = app_config( 'rest' );
-$nt_redirects = app_config( 'redirects' );
-$nt_routes    = app_config( 'routes' );
+$nt_pages     = App_Theme::config( 'pages' );
+$nt_ajax      = App_Theme::config( 'ajax' );
+$nt_rest      = App_Theme::config( 'rest' );
+$nt_redirects = App_Theme::config( 'redirects' );
+$nt_routes    = App_Theme::config( 'routes' );
 
 $nt_cards = array(
 	array(

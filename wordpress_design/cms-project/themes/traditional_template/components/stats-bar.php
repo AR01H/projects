@@ -14,7 +14,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $sb_source = ( isset( $source ) && $source ) ? (string) $source : 'stats';
-$stats     = app_data( $sb_source ) ?: array();
+$stats     = App_Helpers::data( $sb_source ) ?: array();
 if ( empty( $stats ) || ! is_array( $stats ) ) {
 	return;
 }

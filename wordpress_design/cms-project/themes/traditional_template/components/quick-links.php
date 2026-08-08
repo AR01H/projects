@@ -26,7 +26,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'quick_links';
-$nt_data = app_data( $nt_src );
+$nt_data = App_Helpers::data( $nt_src );
 
 // Inline items first, then anything pulled from the shared block library.
 $nt_tiles = array();
@@ -95,7 +95,7 @@ $nt_sub     = (string) ( $nt_data['sub'] ?? '' );
 					<?php if ( $nt_is_dialog ) : ?>
 						<?php app_dialog_trigger( $nt_tile['dialog'] ); ?>
 					<?php else : ?>
-						href="<?php echo esc_url( app_link( $nt_tile['url'] ) ); ?>"
+						href="<?php echo esc_url( App_Helpers::link( $nt_tile['url'] ) ); ?>"
 						<?php if ( $nt_tile['new_tab'] ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>
 					<?php endif; ?>>
 

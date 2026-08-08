@@ -16,7 +16,7 @@
  *   'image'    (string, optional)  Background photo URL - switches to poster mode.
  *   'meta'     (string, optional)  Small line under the title (e.g. post date/author).
  *
- *   app_component( 'parts/page_header', array(
+ *   App_Helpers::component( 'parts/page_header', array(
  *       'tag'      => 'Our Blog',
  *       'icon'     => '📰',
  *       'title'    => 'News & Updates',
@@ -41,7 +41,7 @@ $is_poster = '' !== $image;
 	<?php
 	// Drifting cane leaves behind the heading. The part skips the front page
 	// and reduced-motion visitors by itself, so no condition is needed here.
-	app_component( 'parts/leaf-drift' );
+	App_Helpers::component( 'parts/leaf-drift' );
 	?>
 
 	<?php if ( $is_poster ) : ?>

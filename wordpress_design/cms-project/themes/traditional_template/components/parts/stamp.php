@@ -27,7 +27,7 @@
  *   tilt     int     Degrees of rotation. Default -8, like a hand stamp.
  *   class    string  Extra class.
  *
- *   app_component( 'parts/stamp', array(
+ *   App_Helpers::component( 'parts/stamp', array(
  *       'top'    => 'Family Business',
  *       'bottom' => 'Full Support',
  *       'middle' => 'Proven Model',

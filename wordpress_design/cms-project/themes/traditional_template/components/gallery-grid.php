@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $gg_source = ( isset( $source ) && $source ) ? (string) $source : 'gallery';
-$_d       = app_data( $gg_source ) ?: [];
+$_d       = App_Helpers::data( $gg_source ) ?: [];
 $tag      = $args['tag']      ?? $_d['tag'] ?? 'Gallery';
 $title    = $args['title']    ?? $_d['title'] ?? 'Our Gallery';
 $body     = $args['body']     ?? $_d['body'] ?? '';

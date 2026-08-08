@@ -24,8 +24,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$nt_cfg   = app_data( 'breadcrumbs' );
-$nt_pages = app_config( 'pages' );
+$nt_cfg   = App_Helpers::data( 'breadcrumbs' );
+$nt_pages = App_Theme::config( 'pages' );
 
 $nt_home_label = (string) ( $nt_cfg['home_label'] ?? '' );
 if ( '' === $nt_home_label ) {
@@ -84,7 +84,7 @@ if ( isset( $items ) && is_array( $items ) && ! empty( $items ) ) {
 	foreach ( $nt_chain as $nt_crumb_key ) {
 		$nt_trail[] = array(
 			'label' => $nt_label_for( $nt_crumb_key ),
-			'url'   => ( $nt_crumb_key === $nt_key ) ? '' : app_page_url( $nt_crumb_key ),
+			'url'   => ( $nt_crumb_key === $nt_key ) ? '' : App_Helpers::page_url( $nt_crumb_key ),
 		);
 	}
 }

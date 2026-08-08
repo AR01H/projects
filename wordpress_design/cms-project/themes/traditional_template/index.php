@@ -9,14 +9,14 @@ get_header();
 ?>
 <div class="app-container app-section">
 
-	<?php app_component( 'parts/page_header', array( 'title' => get_the_archive_title() ?: get_bloginfo( 'name' ) ) ); ?>
+	<?php App_Helpers::component( 'parts/page_header', array( 'title' => get_the_archive_title() ?: get_bloginfo( 'name' ) ) ); ?>
 
 	<?php if ( have_posts() ) : ?>
 		<div class="app-grid app-grid-3">
 			<?php
 			while ( have_posts() ) {
 				the_post();
-				app_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+				App_Helpers::component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
 			}
 			?>
 		</div>

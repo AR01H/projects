@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-app_admin_tools_render( 'import-export' );
+App_Admin::tools_render( 'import-export' );
 ?>
 
 <div class="app-admin-tools">
@@ -16,7 +16,7 @@ app_admin_tools_render( 'import-export' );
 		<p><?php esc_html_e( 'Upload a JSON file exported above. Only option groups declared in config/admin.php are accepted; every value is re-sanitized on import.', NT_TEXT_DOMAIN ); ?></p>
 		<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 			<input type="hidden" name="action" value="app_tool_import_settings">
-			<?php app_admin_location_fields(); ?>
+			<?php App_Admin::location_fields(); ?>
 			<?php wp_nonce_field( 'app_tool_import_settings' ); ?>
 			<p><input type="file" name="app_import_file" accept=".json,application/json" required></p>
 			<?php submit_button( __( 'Import', NT_TEXT_DOMAIN ), 'secondary', 'submit', false ); ?>

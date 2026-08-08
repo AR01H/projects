@@ -5,10 +5,10 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$images  = app_data( 'photo_carousel' ) ?? [];
+$images  = App_Helpers::data( 'photo_carousel' ) ?? [];
 if ( empty( $images ) ) return;
 
-$content = app_data( 'content' )['photo_carousel'] ?? [];
+$content = App_Helpers::data( 'content' )['photo_carousel'] ?? [];
 
 // We'll use a fixed set of rotations so they look organic but don't jump around on page load.
 $rotations = [ '-3deg', '4deg', '-2deg', '5deg', '-4deg', '2deg' ];

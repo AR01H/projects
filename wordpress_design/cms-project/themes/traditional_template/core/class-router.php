@@ -19,10 +19,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class App_Router {
+
 /**
  * Resolve a theme-relative template path safely. Returns absolute path or ''.
  */
-function app_resolve_template( $rel ) {
+public static function resolve_template( $rel ) {
 	$base = realpath( NT_THEME_DIR . '/pages' );
 	$file = realpath( NT_THEME_DIR . '/' . ltrim( (string) $rel, '/' ) );
 	if ( $base && $file && 0 === strpos( $file, $base ) && is_file( $file ) ) {
@@ -35,7 +37,7 @@ function app_resolve_template( $rel ) {
  * Mark the current request as a successful page render (used when we rescue
  * a 404 into a virtual page) and set the document title.
  */
-function app_router_force_page( $title = '' ) {
+public static function force_page( $title = '' ) {
 	global $wp_query;
 	if ( $wp_query->is_404 ) {
 		status_header( 200 );
@@ -59,12 +61,12 @@ function app_router_force_page( $title = '' ) {
 /**
  * Static page router - one generic loop over config/pages.php.
  */
-function app_router_static_pages( $template ) {
-	$path          = app_request_path();
+public static function static_pages( $template ) {
+	$path          = App_Helpers::request_path();
 	$is_global_404 = is_404();
 
-	foreach ( app_config( 'pages' ) as $slug => $def ) {
-		$file = app_resolve_template( $def['template'] ?? '' );
+	foreach ( App_Theme::config( 'pages' ) as $slug => $def ) {
+		$file = App_Router::resolve_template( $def['template'] ?? '' );
 		if ( '' === $file ) {
 			continue;
 		}
@@ -88,7 +90,7 @@ function app_router_static_pages( $template ) {
 		}
 
 		if ( $is_virtual ) {
-			app_router_force_page( (string) ( $def['title'] ?? '' ) );
+			self::force_page( (string) ( $def['title'] ?? '' ) );
 		}
 
 		// Let core/assets.php know which registry entry is rendering.
@@ -103,8 +105,8 @@ function app_router_static_pages( $template ) {
 /**
  * Dynamic route router - loops config/routes.php for single-segment paths.
  */
-function app_router_dynamic_routes( $template ) {
-	$path = app_request_path();
+public static function dynamic_routes( $template ) {
+	$path = App_Helpers::request_path();
 
 	// Only single-segment top-level paths: /buying/ yes, /buying/step-2/ no.
 	if ( '' === $path || false !== strpos( $path, '/' ) ) {
@@ -116,7 +118,7 @@ function app_router_dynamic_routes( $template ) {
 		return $template;
 	}
 
-	foreach ( app_config( 'routes' ) as $route_key => $rule ) {
+	foreach ( App_Theme::config( 'routes' ) as $route_key => $rule ) {
 		if ( empty( $rule['match'] ) || ! is_callable( $rule['match'] ) ) {
 			continue;
 		}
@@ -125,7 +127,7 @@ function app_router_dynamic_routes( $template ) {
 			continue;
 		}
 
-		$file = app_resolve_template( $rule['template'] ?? '' );
+		$file = App_Router::resolve_template( $rule['template'] ?? '' );
 		if ( '' === $file ) {
 			continue;
 		}
@@ -134,7 +136,7 @@ function app_router_dynamic_routes( $template ) {
 		if ( is_callable( $title ) ) {
 			$title = (string) call_user_func( $title, $slug );
 		}
-		app_router_force_page( $title );
+		self::force_page( $title );
 
 		foreach ( $vars as $var => $value ) {
 			set_query_var( $var, $value );
@@ -152,8 +154,8 @@ function app_router_dynamic_routes( $template ) {
  * (e.g. a WP post slug colliding with a DB term slug). Keep matchers cheap -
  * they can run here and again at template_include on the same request.
  */
-function app_router_suppress_canonical( $redirect_url, $requested_url ) {
-	$routes = app_config( 'routes' );
+public static function suppress_canonical( $redirect_url, $requested_url ) {
+	$routes = App_Theme::config( 'routes' );
 	if ( empty( $routes ) ) {
 		return $redirect_url;
 	}
@@ -177,10 +179,10 @@ function app_router_suppress_canonical( $redirect_url, $requested_url ) {
  *
  * @return int Number of pages created.
  */
-function app_sync_pages() {
+public static function sync_pages() {
 	$created = 0;
 
-	foreach ( app_config( 'pages' ) as $slug => $def ) {
+	foreach ( App_Theme::config( 'pages' ) as $slug => $def ) {
 		if ( isset( $def['create'] ) && false === $def['create'] ) {
 			continue;
 		}
@@ -219,4 +221,39 @@ function app_sync_pages() {
 	}
 
 	return $created;
+}
+
+
+	public static function handle_redirects() {
+		if ( is_admin() || wp_doing_ajax() || wp_doing_cron() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+			return;
+		}
+
+		$path = App_Helpers::request_path();
+
+		// 1. Rule table.
+		$rules = App_Theme::config( 'redirects' );
+		if ( '' !== $path && isset( $rules[ $path ] ) ) {
+			$rule   = $rules[ $path ];
+			$to     = (string) ( $rule['to'] ?? '' );
+			$status = (int) ( $rule['status'] ?? 301 );
+			if ( '' !== $to ) {
+				$dest = preg_match( '#^https?://#i', $to ) ? $to : home_url( $to );
+				wp_safe_redirect( $dest, in_array( $status, array( 301, 302, 307, 308 ), true ) ? $status : 301 );
+				exit;
+			}
+		}
+
+		// 2. Coming-soon gate.
+		if ( defined( 'NT_COMING_SOON' ) && true === NT_COMING_SOON ) {
+			if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+				return;
+			}
+			if ( is_page( NT_COMING_SOON_SLUG ) || NT_COMING_SOON_SLUG === $path ) {
+				return;
+			}
+			wp_safe_redirect( home_url( '/' . NT_COMING_SOON_SLUG . '/' ), 302 );
+			exit;
+		}
+	}
 }

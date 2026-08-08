@@ -22,7 +22,7 @@
  *   2. Add an option group under 'options' listing field => type.
  *   3. Create the view: a form posting action=app_save_{group}
  *      (see admin/tabs/settings/sub-general.php for the pattern).
- *   Read values anywhere with app_option( 'group', 'field', 'default' ).
+ *   Read values anywhere with App_Helpers::option( 'group', 'field', 'default' ).
  *
  * Field types -> sanitizer:
  *   text -> sanitize_text_field   textarea -> sanitize_textarea_field
@@ -129,7 +129,7 @@ return array(
 	//   - capability + nonce are checked BEFORE the callback runs,
 	//   - the callback returns a status message shown back on the tab.
 	// Render a group of tools on any admin view with:
-	//   app_admin_tools_render( 'maintenance' );
+	//   App_Admin::tools_render( 'maintenance' );
 	//
 	// ADD A TOOL (2 steps): add an entry here + write the callback in
 	// admin/includes/tools.php. No handler/nonce/form code needed.

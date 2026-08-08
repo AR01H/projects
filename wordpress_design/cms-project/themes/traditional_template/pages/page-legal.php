@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_map      = app_data( 'legal' );
+$nt_map      = App_Helpers::data( 'legal' );
 $nt_page_key = (string) get_query_var( 'app_active_page' );
 
 // Fall back to the first document in the map, so a page registered here but
@@ -32,7 +32,7 @@ $nt_source    = (string) ( $nt_documents[ $nt_page_key ] ?? reset( $nt_documents
 <div id="main-content" class="site-main app-legal-page">
 	<?php
 	if ( '' !== $nt_source ) {
-		app_component( 'legal-document', array( 'source' => $nt_source ) );
+		App_Helpers::component( 'legal-document', array( 'source' => $nt_source ) );
 	}
 
 	// Anything the JSON wants under every policy - a contact promo, the

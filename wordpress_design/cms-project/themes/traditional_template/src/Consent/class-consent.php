@@ -68,7 +68,7 @@ class NT_Consent {
 		if ( null !== $config ) {
 			return $config;
 		}
-		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
+		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 
 		$config = array(
@@ -177,7 +177,7 @@ class NT_Consent {
 			'rejectHours'   => $config['reject_hours'],
 			'position'      => $config['position'],
 			'categories'    => $categories,
-			'policyUrl'     => '' !== self::text( 'policy_url' ) ? app_link( self::text( 'policy_url' ) ) : '',
+			'policyUrl'     => '' !== self::text( 'policy_url' ) ? App_Helpers::link( self::text( 'policy_url' ) ) : '',
 			'text'          => array(
 				'aria'         => self::text( 'aria', 'Cookie notice' ),
 				'kicker'       => self::text( 'kicker' ),

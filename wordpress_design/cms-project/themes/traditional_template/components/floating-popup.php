@@ -18,7 +18,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$ui      = app_data( 'ui' )['floating_toolbar'] ?? array();
+$ui      = App_Helpers::data( 'ui' )['floating_toolbar'] ?? array();
 $socials = NT_Data_Provider::get( 'footer' )['socials'] ?? array();
 
 $side = ( 'left' === ( $ui['side'] ?? 'right' ) ) ? 'left' : 'right';
@@ -51,7 +51,7 @@ if ( empty( $buttons ) ) {
 ?>
 <div class="app-floating-toolbar app-floating-toolbar--<?php echo esc_attr( $side ); ?>">
 	<?php foreach ( $buttons as $nt_btn ) : ?>
-		<a href="<?php echo esc_url( app_link( $nt_btn['url'] ) ); ?>"
+		<a href="<?php echo esc_url( App_Helpers::link( $nt_btn['url'] ) ); ?>"
 		   class="app-ftoolbar-btn"
 		   aria-label="<?php echo esc_attr( $nt_btn['aria'] ); ?>"
 			<?php if ( $nt_btn['external'] ) : ?>target="_blank" rel="noopener"<?php endif; ?>>

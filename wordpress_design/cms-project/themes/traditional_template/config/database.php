@@ -6,9 +6,9 @@
  *   - theme activation installs every table automatically,
  *   - Theme -> Admin Tools -> Database shows each table's status with an
  *     "Install / Repair" button per table (checked and installed one by one),
- *   - app_db_table( 'key' ) returns the full prefixed table name for queries.
+ *   - App_Database::table( 'key' ) returns the full prefixed table name for queries.
  *
- * ADD A TABLE (2 steps): add an entry here, then use app_db_table( 'key' )
+ * ADD A TABLE (2 steps): add an entry here, then use App_Database::table( 'key' )
  * in your handlers. No installer code - the engine runs dbDelta.
  *
  * Schema placeholders (replaced by the engine):

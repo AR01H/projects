@@ -29,7 +29,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'legal_privacy';
-$nt_doc  = app_data( $nt_src );
+$nt_doc  = App_Helpers::data( $nt_src );
 $nt_secs = ( is_array( $nt_doc ) && ! empty( $nt_doc['sections'] ) ) ? (array) $nt_doc['sections'] : array();
 if ( empty( $nt_secs ) ) {
 	return;
@@ -47,7 +47,7 @@ foreach ( $nt_secs as $nt_i => $nt_sec ) {
 	<div class="container app-legal__wrap">
 
 		<div class="app-legal__head">
-			<?php app_component( 'parts/breadcrumbs' ); ?>
+			<?php App_Helpers::component( 'parts/breadcrumbs' ); ?>
 
 			<?php if ( ! empty( $nt_doc['title'] ) ) : ?>
 				<h1 class="app-legal__title"><?php echo esc_html( $nt_doc['title'] ); ?></h1>

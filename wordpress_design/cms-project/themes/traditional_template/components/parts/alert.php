@@ -49,7 +49,7 @@ $nt_classes = trim(
 		<?php endif; ?>
 
 		<?php if ( '' !== $link_label && '' !== $link_url ) : ?>
-			<a class="app-alert__link" href="<?php echo esc_url( app_link( $link_url ) ); ?>">
+			<a class="app-alert__link" href="<?php echo esc_url( App_Helpers::link( $link_url ) ); ?>">
 				<?php echo esc_html( $link_label ); ?>
 				<?php NT_Icons::render( 'arrow-right' ); ?>
 			</a>

@@ -31,7 +31,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'paper_story';
-$nt_data = app_data( $nt_src );
+$nt_data = App_Helpers::data( $nt_src );
 
 $nt_sheets = array();
 foreach ( (array) ( $nt_data['sheets'] ?? array() ) as $nt_sheet ) {
@@ -87,7 +87,7 @@ $nt_total    = count( $nt_sheets );
 							<div class="app-story__cols">
 								<?php if ( ! empty( $nt_sheet['image'] ) ) : ?>
 									<figure class="app-story__photo">
-										<img src="<?php echo esc_url( app_link( $nt_sheet['image'] ) ); ?>"
+										<img src="<?php echo esc_url( App_Helpers::link( $nt_sheet['image'] ) ); ?>"
 										     alt="<?php echo esc_attr( $nt_sheet['image_alt'] ?? '' ); ?>"
 										     loading="lazy" decoding="async">
 										<?php if ( ! empty( $nt_sheet['stamp'] ) ) : ?>
@@ -115,7 +115,7 @@ $nt_total    = count( $nt_sheets );
 									<?php endif; ?>
 
 									<?php if ( ! empty( $nt_sheet['link_label'] ) && ! empty( $nt_sheet['link_url'] ) ) : ?>
-										<a class="app-story__link" href="<?php echo esc_url( app_link( $nt_sheet['link_url'] ) ); ?>">
+										<a class="app-story__link" href="<?php echo esc_url( App_Helpers::link( $nt_sheet['link_url'] ) ); ?>">
 											<?php echo esc_html( $nt_sheet['link_label'] ); ?>
 											<?php NT_Icons::render( 'arrow-right' ); ?>
 										</a>

@@ -6,7 +6,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-app_admin_tools_render( 'pages' );
+App_Admin::tools_render( 'pages' );
 ?>
 
 <h2><?php esc_html_e( 'Page Registry Status', NT_TEXT_DOMAIN ); ?></h2>
@@ -20,7 +20,7 @@ app_admin_tools_render( 'pages' );
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ( app_config( 'pages' ) as $nt_slug => $nt_def ) : ?>
+		<?php foreach ( App_Theme::config( 'pages' ) as $nt_slug => $nt_def ) : ?>
 			<?php
 			$nt_template = (string) ( $nt_def['template'] ?? '' );
 			$nt_file_ok  = '' !== $nt_template && is_file( NT_THEME_DIR . '/' . $nt_template );

@@ -61,8 +61,8 @@ class NT_Alert {
 	 *   class       string  Extra class.
 	 */
 	public static function render( array $args ): void {
-		if ( function_exists( 'app_component' ) ) {
-			app_component( 'parts/alert', self::normalise( $args ) );
+		if ( is_callable( array( 'App_Helpers', 'component' ) ) ) {
+			App_Helpers::component( 'parts/alert', self::normalise( $args ) );
 		}
 	}
 
@@ -108,7 +108,7 @@ class NT_Alert {
 	 * @return array<int,array>
 	 */
 	public static function notices( string $page_key = '' ): array {
-		$raw = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
+		$raw = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
 		if ( ! is_array( $raw ) ) {
 			return array();
 		}

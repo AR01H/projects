@@ -21,7 +21,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'logo_strip';
-$nt_data  = app_data( $nt_src );
+$nt_data  = App_Helpers::data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 if ( empty( $nt_items ) ) {
 	return;
@@ -60,13 +60,13 @@ $nt_marquee = ! empty( $nt_data['marquee'] );
 					?>
 					<<?php echo $nt_tag_name; ?> class="app-logos__item"
 						<?php if ( '' !== $nt_url ) : ?>
-							href="<?php echo esc_url( app_link( $nt_url ) ); ?>"
+							href="<?php echo esc_url( App_Helpers::link( $nt_url ) ); ?>"
 							<?php if ( ! empty( $nt_item['new_tab'] ) ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>
 						<?php endif; ?>
 						<?php if ( $nt_pass > 0 ) : ?>aria-hidden="true"<?php endif; ?>>
 
 						<?php if ( '' !== $nt_image ) : ?>
-							<img src="<?php echo esc_url( app_link( $nt_image ) ); ?>"
+							<img src="<?php echo esc_url( App_Helpers::link( $nt_image ) ); ?>"
 							     alt="<?php echo esc_attr( $nt_item_name ); ?>"
 							     loading="lazy" decoding="async">
 						<?php else : ?>

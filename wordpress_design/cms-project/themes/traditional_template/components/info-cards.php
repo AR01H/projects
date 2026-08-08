@@ -24,7 +24,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'info_cards';
-$nt_data  = app_data( $nt_src );
+$nt_data  = App_Helpers::data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 if ( empty( $nt_items ) ) {
 	return;
@@ -51,7 +51,7 @@ $nt_href_for = static function ( array $item ) {
 		case 'map':
 		case 'link':
 		default:
-			return '' !== $url ? app_link( $url ) : '';
+			return '' !== $url ? App_Helpers::link( $url ) : '';
 	}
 };
 ?>

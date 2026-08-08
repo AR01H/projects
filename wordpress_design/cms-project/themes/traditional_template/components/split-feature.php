@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'split_feature';
-$nt_data = app_data( $nt_src );
+$nt_data = App_Helpers::data( $nt_src );
 $nt_rows = ( is_array( $nt_data ) && ! empty( $nt_data['rows'] ) ) ? (array) $nt_data['rows'] : array();
 if ( empty( $nt_rows ) ) {
 	return;
@@ -56,7 +56,7 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 
 				<?php if ( ! empty( $nt_row['image'] ) ) : ?>
 					<figure class="app-split__figure">
-						<img src="<?php echo esc_url( app_link( (string) $nt_row['image'] ) ); ?>"
+						<img src="<?php echo esc_url( App_Helpers::link( (string) $nt_row['image'] ) ); ?>"
 						     alt="<?php echo esc_attr( $nt_row['image_alt'] ?? '' ); ?>"
 						     loading="lazy" decoding="async">
 						<?php if ( ! empty( $nt_row['caption'] ) ) : ?>
@@ -91,7 +91,7 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 								<?php NT_Icons::render( 'arrow-right' ); ?>
 							</button>
 						<?php elseif ( ! empty( $nt_row['link_url'] ) ) : ?>
-							<a class="app-split__cta" href="<?php echo esc_url( app_link( (string) $nt_row['link_url'] ) ); ?>">
+							<a class="app-split__cta" href="<?php echo esc_url( App_Helpers::link( (string) $nt_row['link_url'] ) ); ?>">
 								<?php echo esc_html( $nt_row['link_label'] ); ?>
 								<?php NT_Icons::render( 'arrow-right' ); ?>
 							</a>

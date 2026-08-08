@@ -12,7 +12,7 @@ get_header();
 	<?php
 	while ( have_posts() ) {
 		the_post();
-		app_component( 'parts/page_header', array( 'title' => get_the_title() ) );
+		App_Helpers::component( 'parts/page_header', array( 'title' => get_the_title() ) );
 		?>
 		<article <?php post_class( 'app-entry' ); ?>>
 			<div class="app-entry-content"><?php the_content(); ?></div>

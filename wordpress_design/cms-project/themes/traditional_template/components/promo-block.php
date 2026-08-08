@@ -57,7 +57,7 @@ $nt_sub    = $sub   ?? '';
 
 					<?php if ( '' !== $nt_b['image'] ) : ?>
 						<figure class="app-promo__figure">
-							<img src="<?php echo esc_url( app_link( $nt_b['image'] ) ); ?>" alt="" loading="lazy" decoding="async">
+							<img src="<?php echo esc_url( App_Helpers::link( $nt_b['image'] ) ); ?>" alt="" loading="lazy" decoding="async">
 						</figure>
 					<?php elseif ( '' !== $nt_b['icon'] ) : ?>
 						<span class="app-promo__icon" aria-hidden="true">
@@ -84,7 +84,7 @@ $nt_sub    = $sub   ?? '';
 								<?php NT_Icons::render( 'arrow-right' ); ?>
 							</button>
 						<?php elseif ( '' !== $nt_b['url'] ) : ?>
-							<a class="app-promo__cta" href="<?php echo esc_url( app_link( $nt_b['url'] ) ); ?>"
+							<a class="app-promo__cta" href="<?php echo esc_url( App_Helpers::link( $nt_b['url'] ) ); ?>"
 								<?php if ( $nt_b['new_tab'] ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>>
 								<?php echo esc_html( $nt_b['label'] ); ?>
 								<?php NT_Icons::render( 'arrow-right' ); ?>

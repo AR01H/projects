@@ -1,18 +1,18 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$packages = app_data( 'hire_packages' ) ?: [];
+$packages = App_Helpers::data( 'hire_packages' ) ?: [];
 $limit    = $args['limit'] ?? 3;
 if ( $limit > 0 ) {
 	$packages = array_slice( $packages, 0, $limit );
 }
 if ( empty( $packages ) ) return;
 
-$content = app_data( 'content' )['events_preview'] ?? [];
+$content = App_Helpers::data( 'content' )['events_preview'] ?? [];
 $section_tag   = $args['tag']        ?? $content['tag']     ?? '';
 $section_title = $args['heading']    ?? $content['heading'] ?? '';
 $section_body  = $args['body']       ?? $content['body']    ?? '';
-$more_url      = $args['more_url']   ?? app_page_url( 'events' );
+$more_url      = $args['more_url']   ?? App_Helpers::page_url( 'events' );
 $more_label    = $args['more_label'] ?? $content['more_label'] ?? 'View All Event Packages →';
 ?>
 
@@ -76,6 +76,6 @@ get_template_part( 'components/parts/form-modal', null, array(
 	'id'     => 'app-events-modal',
 	'title'  => __( 'Book Your Event 🎉', NT_TEXT_DOMAIN ),
 	'sub'    => __( 'Live juice counter for weddings, parties & corporate events.', NT_TEXT_DOMAIN ),
-	'config' => app_data( 'form_events' ),
+	'config' => App_Helpers::data( 'form_events' ),
 ) );
 ?>

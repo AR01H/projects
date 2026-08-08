@@ -58,10 +58,10 @@ $bg_image    = $b->image       ?? '';
 			</p>
 
 			<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-				<a href="<?php echo esc_url( app_link($btn_url) ); ?>" class="btn-primary">
+				<a href="<?php echo esc_url( App_Helpers::link($btn_url) ); ?>" class="btn-primary">
 					<span><?php echo wp_kses( $btn_text, ['br'=>[]] ); ?></span>
 					<span class="app-vintage-btn-icon" aria-hidden="true">
-						<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 10h6 M12 10v6 M12 18h.01"/></svg>
+						<?php App_Helpers::svg('icon-order'); ?>
 					</span>
 				</a>
 				<a href="#events-catering" class="btn-secondary">
@@ -70,10 +70,9 @@ $bg_image    = $b->image       ?? '';
 			</div>
 			
 			<div class="app-hero-vintage__checks" style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; font-weight: 600; color: var(--trad-green);">
-				<span>&#10003; No Added Sugar</span>
-				<span>&#10003; No Preservatives</span>
-				<span>&#10003; Pressed Live</span>
-				<span>&#10003; Served Chilled</span>
+				<?php foreach ( App_Helpers::data('hero_checks', []) as $check ) : ?>
+					<span>&#10003; <?php echo esc_html( $check ); ?></span>
+				<?php endforeach; ?>
 			</div>
 		</div>
 

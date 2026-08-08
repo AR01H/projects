@@ -23,7 +23,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'tabs';
-$nt_data = app_data( $nt_src );
+$nt_data = App_Helpers::data( $nt_src );
 
 $nt_tabs = array();
 foreach ( (array) ( $nt_data['tabs'] ?? array() ) as $nt_i => $nt_tab ) {
@@ -91,7 +91,7 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 					<div class="app-tabs__inner">
 						<?php if ( ! empty( $nt_tab['image'] ) ) : ?>
 							<figure class="app-tabs__figure">
-								<img src="<?php echo esc_url( app_link( (string) $nt_tab['image'] ) ); ?>"
+								<img src="<?php echo esc_url( App_Helpers::link( (string) $nt_tab['image'] ) ); ?>"
 								     alt="<?php echo esc_attr( $nt_tab['image_alt'] ?? '' ); ?>"
 								     loading="lazy" decoding="async">
 							</figure>
@@ -118,7 +118,7 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 							<?php endif; ?>
 
 							<?php if ( ! empty( $nt_tab['link_label'] ) && ! empty( $nt_tab['link_url'] ) ) : ?>
-								<a class="app-tabs__link" href="<?php echo esc_url( app_link( (string) $nt_tab['link_url'] ) ); ?>">
+								<a class="app-tabs__link" href="<?php echo esc_url( App_Helpers::link( (string) $nt_tab['link_url'] ) ); ?>">
 									<?php echo esc_html( $nt_tab['link_label'] ); ?>
 									<?php NT_Icons::render( 'arrow-right' ); ?>
 								</a>

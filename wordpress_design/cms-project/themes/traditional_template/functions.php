@@ -11,4 +11,5 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/core/bootstrap.php';
+require_once __DIR__ . '/core/class-theme.php';
+App_Theme::init();

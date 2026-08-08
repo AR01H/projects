@@ -22,19 +22,21 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class App_Admin {
+
 /**
  * Wire everything - called from the bootstrap when is_admin().
  */
-function app_admin_boot() {
-	add_action( 'admin_menu', 'app_admin_register_menu' );
-	add_action( 'admin_enqueue_scripts', 'app_admin_enqueue_assets' );
+public static function boot() {
+	add_action( 'admin_menu', array( 'App_Admin', 'register_menu' ) );
+	add_action( 'admin_enqueue_scripts', array( 'App_Admin', 'enqueue_assets' ) );
 
-	$admin = app_config( 'admin' );
+	$admin = App_Theme::config( 'admin' );
 
 	// One save endpoint per option group - generic handler, zero per-group code.
 	foreach ( (array) ( $admin['options'] ?? array() ) as $group => $def ) {
 		add_action( 'admin_post_nt_save_' . $group, static function () use ( $group, $def ) {
-			app_admin_save_options( $group, $def );
+			self::save_options( $group, $def );
 		} );
 	}
 
@@ -42,13 +44,13 @@ function app_admin_boot() {
 	// generic runner enforces capability + nonce before every callback.
 	foreach ( (array) ( $admin['tools'] ?? array() ) as $key => $tool ) {
 		add_action( 'admin_post_nt_tool_' . $key, static function () use ( $key, $tool ) {
-			app_admin_run_tool( $key, $tool );
+			self::run_tool( $key, $tool );
 		} );
 	}
 }
 
-function app_admin_menu_cfg() {
-	$admin = app_config( 'admin' );
+public static function menu_cfg() {
+	$admin = App_Theme::config( 'admin' );
 	return wp_parse_args( (array) ( $admin['menu'] ?? array() ), array(
 		'slug'       => 'app-theme',
 		'page_title' => 'Theme',
@@ -62,16 +64,16 @@ function app_admin_menu_cfg() {
 /**
  * The sidebar submenu registry.
  */
-function app_admin_submenus() {
-	return (array) ( app_config( 'admin' )['submenus'] ?? array() );
+public static function submenus() {
+	return (array) ( App_Theme::config( 'admin' )['submenus'] ?? array() );
 }
 
 /**
  * The WP admin page slug serving a submenu (parent slug for the first one).
  */
-function app_admin_page_slug( $submenu ) {
-	$menu     = app_admin_menu_cfg();
-	$submenus = app_admin_submenus();
+public static function page_slug( $submenu ) {
+	$menu     = self::menu_cfg();
+	$submenus = self::submenus();
 	if ( '' === $submenu || $submenu === (string) array_key_first( $submenus ) ) {
 		return $menu['slug'];
 	}
@@ -82,40 +84,40 @@ function app_admin_page_slug( $submenu ) {
  * Sidebar registration:
  *   Theme -> one add_submenu_page per 'submenus' entry.
  */
-function app_admin_register_menu() {
-	$menu = app_admin_menu_cfg();
+public static function register_menu() {
+	$menu = self::menu_cfg();
 
 	add_menu_page(
 		$menu['page_title'],
 		$menu['menu_title'],
 		$menu['capability'],
 		$menu['slug'],
-		'app_admin_render_page',
+		array( 'App_Admin', 'render_page' ),
 		$menu['icon'],
 		$menu['position']
 	);
 
-	foreach ( app_admin_submenus() as $key => $def ) {
+	foreach ( self::submenus() as $key => $def ) {
 		$label = wp_strip_all_tags( (string) ( $def['label'] ?? $key ) );
 		add_submenu_page(
 			$menu['slug'],
 			$label,
 			$label,
 			$menu['capability'],
-			app_admin_page_slug( (string) $key ),
-			'app_admin_render_page'
+			self::page_slug( (string) $key ),
+			array( 'App_Admin', 'render_page' )
 		);
 	}
 }
 
-function app_admin_enqueue_assets( $hook ) {
-	if ( false === strpos( (string) $hook, app_admin_menu_cfg()['slug'] ) ) {
+public static function enqueue_assets( $hook ) {
+	if ( false === strpos( (string) $hook, self::menu_cfg()['slug'] ) ) {
 		return;
 	}
 	wp_enqueue_media();
-	$assets = app_config( 'assets' );
-	app_enqueue_list( $assets['admin_css'] ?? array(), 'css', 'app-admin' );
-	app_enqueue_list( $assets['admin_js'] ?? array(), 'js', 'app-admin' );
+	$assets = App_Theme::config( 'assets' );
+	App_Assets::enqueue_list( $assets['admin_css'] ?? array(), 'css', 'app-admin' );
+	App_Assets::enqueue_list( $assets['admin_js'] ?? array(), 'js', 'app-admin' );
 }
 
 // ---------------------------------------------------------------------------
@@ -127,9 +129,9 @@ function app_admin_enqueue_assets( $hook ) {
  * Current sidebar submenu, derived from the WP page slug
  * (?page=nt-theme-contact_inbox -> 'contact_inbox').
  */
-function app_admin_current_submenu() {
-	$submenus = app_admin_submenus();
-	$slug     = app_admin_menu_cfg()['slug'];
+public static function current_submenu() {
+	$submenus = self::submenus();
+	$slug     = self::menu_cfg()['slug'];
 	$page     = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
 
 	$prefix = $slug . '-';
@@ -145,9 +147,9 @@ function app_admin_current_submenu() {
 /**
  * Current pill tab (?tab=) within the current submenu.
  */
-function app_admin_current_tab() {
-	$submenus = app_admin_submenus();
-	$tabs     = (array) ( $submenus[ app_admin_current_submenu() ]['tabs'] ?? array() );
+public static function current_tab() {
+	$submenus = self::submenus();
+	$tabs     = (array) ( $submenus[ self::current_submenu() ]['tabs'] ?? array() );
 	if ( ! $tabs ) {
 		return '';
 	}
@@ -161,10 +163,10 @@ function app_admin_current_tab() {
 /**
  * Current small pill subtab (?subtab=) within the current tab.
  */
-function app_admin_current_subtab() {
-	$submenus = app_admin_submenus();
-	$tabs     = (array) ( $submenus[ app_admin_current_submenu() ]['tabs'] ?? array() );
-	$tab      = app_admin_current_tab();
+public static function current_subtab() {
+	$submenus = self::submenus();
+	$tabs     = (array) ( $submenus[ self::current_submenu() ]['tabs'] ?? array() );
+	$tab      = self::current_tab();
 	$subs     = (array) ( $tabs[ $tab ]['subtabs'] ?? array() );
 	if ( ! $subs ) {
 		return '';
@@ -179,13 +181,13 @@ function app_admin_current_subtab() {
 /**
  * URL of a theme admin screen.
  *
- *   app_admin_url()                                        -> first submenu
- *   app_admin_url( 'contact_inbox' )                       -> a submenu
- *   app_admin_url( 'dashboard_tools', 'admin_tools' )      -> a tab
- *   app_admin_url( 'dashboard_tools', 'admin_tools', 'database' ) -> a subtab
+ *   self::url()                                        -> first submenu
+ *   self::url( 'contact_inbox' )                       -> a submenu
+ *   self::url( 'dashboard_tools', 'admin_tools' )      -> a tab
+ *   self::url( 'dashboard_tools', 'admin_tools', 'database' ) -> a subtab
  */
-function app_admin_url( $submenu = '', $tab = '', $subtab = '' ) {
-	$args = array( 'page' => app_admin_page_slug( (string) $submenu ) );
+public static function url( $submenu = '', $tab = '', $subtab = '' ) {
+	$args = array( 'page' => self::page_slug( (string) $submenu ) );
 	if ( '' !== $tab ) {
 		$args['tab'] = $tab;
 	}
@@ -203,21 +205,21 @@ function app_admin_url( $submenu = '', $tab = '', $subtab = '' ) {
  * Renders every submenu screen: notices + pill tab bar + pill subtab bar +
  * whitelisted view include.
  */
-function app_admin_render_page() {
-	if ( ! current_user_can( app_admin_menu_cfg()['capability'] ) ) {
+public static function render_page() {
+	if ( ! current_user_can( self::menu_cfg()['capability'] ) ) {
 		wp_die( esc_html__( 'You do not have permission to access this page.', NT_TEXT_DOMAIN ) );
 	}
 
-	$submenus = app_admin_submenus();
-	$submenu  = app_admin_current_submenu();
+	$submenus = self::submenus();
+	$submenu  = self::current_submenu();
 	$tabs     = (array) ( $submenus[ $submenu ]['tabs'] ?? array() );
-	$tab      = app_admin_current_tab();
-	$subtab   = app_admin_current_subtab();
+	$tab      = self::current_tab();
+	$subtab   = self::current_subtab();
 
 	$submenu_label = wp_strip_all_tags( (string) ( $submenus[ $submenu ]['label'] ?? $submenu ) );
 
 	echo '<div class="wrap app-admin-wrap">';
-	echo '<h1>' . esc_html( app_admin_menu_cfg()['menu_title'] . ' — ' . $submenu_label ) . '</h1>';
+	echo '<h1>' . esc_html( self::menu_cfg()['menu_title'] . ' — ' . $submenu_label ) . '</h1>';
 
 	// Notices (set by the save/tools handlers via query args).
 	if ( isset( $_GET['updated'] ) ) {
@@ -232,8 +234,8 @@ function app_admin_render_page() {
 	if ( count( $tabs ) > 1 ) {
 		echo '<div class="app-tabbar">';
 		foreach ( $tabs as $key => $def ) {
-			echo app_admin_pill_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the builder.
-				app_admin_url( $submenu, $key ),
+			echo self::pill_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the builder.
+				self::url( $submenu, $key ),
 				(string) ( $def['icon'] ?? '' ),
 				wp_strip_all_tags( (string) ( $def['label'] ?? $key ) ),
 				$key === $tab
@@ -247,8 +249,8 @@ function app_admin_render_page() {
 	if ( $subs ) {
 		echo '<div class="app-tabbar app-tabbar-sub">';
 		foreach ( $subs as $key => $def ) {
-			echo app_admin_pill_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the builder.
-				app_admin_url( $submenu, $tab, $key ),
+			echo self::pill_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the builder.
+				self::url( $submenu, $tab, $key ),
 				(string) ( $def['icon'] ?? '' ),
 				wp_strip_all_tags( (string) ( $def['label'] ?? $key ) ),
 				$key === $subtab
@@ -273,7 +275,7 @@ function app_admin_render_page() {
 /**
  * One pill-style nav button (fully escaped here; callers echo the result).
  */
-function app_admin_pill_link( $url, $icon, $label, $active ) {
+public static function pill_link( $url, $icon, $label, $active ) {
 	$class = 'app-tabbtn' . ( $active ? ' is-active' : '' );
 	$html  = '<a class="' . esc_attr( $class ) . '" href="' . esc_url( $url ) . '"' . ( $active ? ' aria-current="page"' : '' ) . '>';
 	if ( '' !== (string) $icon ) {
@@ -287,16 +289,16 @@ function app_admin_pill_link( $url, $icon, $label, $active ) {
  * The three hidden location fields every admin form posts, so handlers can
  * redirect back to the exact screen the user was on.
  */
-function app_admin_location_fields() {
-	echo '<input type="hidden" name="app_submenu" value="' . esc_attr( app_admin_current_submenu() ) . '">';
-	echo '<input type="hidden" name="app_tab" value="' . esc_attr( app_admin_current_tab() ) . '">';
-	echo '<input type="hidden" name="app_subtab" value="' . esc_attr( app_admin_current_subtab() ) . '">';
+public static function location_fields() {
+	echo '<input type="hidden" name="app_submenu" value="' . esc_attr( self::current_submenu() ) . '">';
+	echo '<input type="hidden" name="app_tab" value="' . esc_attr( self::current_tab() ) . '">';
+	echo '<input type="hidden" name="app_subtab" value="' . esc_attr( self::current_subtab() ) . '">';
 }
 
 /**
- * Read the posted location fields back as an app_admin_url() argument list.
+ * Read the posted location fields back as an self::url() argument list.
  */
-function app_admin_posted_location() {
+public static function posted_location() {
 	return array(
 		isset( $_POST['app_submenu'] ) ? sanitize_key( wp_unslash( $_POST['app_submenu'] ) ) : '',
 		isset( $_POST['app_tab'] ) ? sanitize_key( wp_unslash( $_POST['app_tab'] ) ) : '',
@@ -311,7 +313,7 @@ function app_admin_posted_location() {
 /**
  * Sanitize one value by its declared type (config/admin.php 'fields').
  */
-function app_admin_sanitize( $type, $raw ) {
+public static function sanitize( $type, $raw ) {
 	switch ( $type ) {
 		case 'textarea': return sanitize_textarea_field( (string) $raw );
 		case 'email':    return sanitize_email( (string) $raw );
@@ -328,8 +330,8 @@ function app_admin_sanitize( $type, $raw ) {
 /**
  * Shared admin-post handler for every option group.
  */
-function app_admin_save_options( $group, $def ) {
-	if ( ! current_user_can( app_admin_menu_cfg()['capability'] ) ) {
+public static function save_options( $group, $def ) {
+	if ( ! current_user_can( self::menu_cfg()['capability'] ) ) {
 		wp_die( esc_html__( 'Permission denied.', NT_TEXT_DOMAIN ) );
 	}
 	check_admin_referer( 'app_save_' . $group );
@@ -340,12 +342,12 @@ function app_admin_save_options( $group, $def ) {
 	$clean = array();
 	foreach ( $fields as $key => $type ) {
 		$raw           = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : '';
-		$clean[ $key ] = app_admin_sanitize( $type, $raw );
+		$clean[ $key ] = self::sanitize( $type, $raw );
 	}
 	update_option( $option, $clean );
 
-	list( $submenu, $tab, $subtab ) = app_admin_posted_location();
-	wp_safe_redirect( add_query_arg( 'updated', '1', app_admin_url( $submenu, $tab, $subtab ) ) );
+	list( $submenu, $tab, $subtab ) = self::posted_location();
+	wp_safe_redirect( add_query_arg( 'updated', '1', self::url( $submenu, $tab, $subtab ) ) );
 	exit;
 }
 
@@ -357,15 +359,15 @@ function app_admin_save_options( $group, $def ) {
  * Open a settings form bound to an option group. Prints the admin-post
  * action, nonce and current location hidden fields.
  */
-function app_admin_form_open( $group ) {
+public static function form_open( $group ) {
 	echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
 	echo '<input type="hidden" name="action" value="' . esc_attr( 'app_save_' . $group ) . '">';
-	app_admin_location_fields();
+	self::location_fields();
 	wp_nonce_field( 'app_save_' . $group );
 	echo '<table class="form-table" role="presentation"><tbody>';
 }
 
-function app_admin_form_close( $button_label = '' ) {
+public static function form_close( $button_label = '' ) {
 	echo '</tbody></table>';
 	submit_button( '' !== $button_label ? $button_label : __( 'Save Changes', NT_TEXT_DOMAIN ) );
 	echo '</form>';
@@ -375,15 +377,15 @@ function app_admin_form_close( $button_label = '' ) {
  * Render form rows from a labels array - types come from config/admin.php,
  * so a view never re-declares them.
  *
- *   app_admin_fields( 'general', array(
+ *   self::fields( 'general', array(
  *       'tagline' => array( 'label' => 'Tagline', 'help' => 'Shown in the header.' ),
  *       'email'   => array( 'label' => 'Public Email' ),
  *   ) );
  */
-function app_admin_fields( $group, $rows ) {
-	$admin  = app_config( 'admin' );
+public static function fields( $group, $rows ) {
+	$admin  = App_Theme::config( 'admin' );
 	$types  = (array) ( $admin['options'][ $group ]['fields'] ?? array() );
-	$values = app_option( $group );
+	$values = App_Helpers::option( $group );
 
 	foreach ( (array) $rows as $key => $row ) {
 		$type  = (string) ( $types[ $key ] ?? 'text' );
@@ -427,22 +429,22 @@ function app_admin_fields( $group, $rows ) {
  * the callback. The callback returns a status message (or exits itself for
  * download-type tools like the settings export).
  */
-function app_admin_run_tool( $key, $tool ) {
-	if ( ! current_user_can( app_admin_menu_cfg()['capability'] ) ) {
+public static function run_tool( $key, $tool ) {
+	if ( ! current_user_can( self::menu_cfg()['capability'] ) ) {
 		wp_die( esc_html__( 'Permission denied.', NT_TEXT_DOMAIN ) );
 	}
 	check_admin_referer( 'app_tool_' . $key );
 
 	if ( ! empty( $tool['file'] ) ) {
-		app_require_theme_file( $tool['file'] );
+		App_Helpers::require_theme_file( $tool['file'] );
 	}
 	$callback = $tool['callback'] ?? '';
 	$message  = is_callable( $callback )
 		? (string) call_user_func( $callback )
 		: 'Tool handler missing: ' . $key;
 
-	list( $submenu, $tab, $subtab ) = app_admin_posted_location();
-	wp_safe_redirect( add_query_arg( 'app_msg', rawurlencode( $message ), app_admin_url( $submenu, $tab, $subtab ) ) );
+	list( $submenu, $tab, $subtab ) = self::posted_location();
+	wp_safe_redirect( add_query_arg( 'app_msg', rawurlencode( $message ), self::url( $submenu, $tab, $subtab ) ) );
 	exit;
 }
 
@@ -450,13 +452,13 @@ function app_admin_run_tool( $key, $tool ) {
  * Render the tool cards of one group as nonce'd one-click forms.
  * Used by the admin-tools/sub-*.php views:
  *
- *   app_admin_tools_render( 'maintenance' );
+ *   self::tools_render( 'maintenance' );
  *
  * Tools with group '_hidden' are never rendered here - they have their own
  * custom form in a view (e.g. the settings import upload form).
  */
-function app_admin_tools_render( $group = '' ) {
-	$tools = (array) ( app_config( 'admin' )['tools'] ?? array() );
+public static function tools_render( $group = '' ) {
+	$tools = (array) ( App_Theme::config( 'admin' )['tools'] ?? array() );
 
 	echo '<div class="app-admin-tools">';
 	foreach ( $tools as $key => $tool ) {
@@ -469,10 +471,12 @@ function app_admin_tools_render( $group = '' ) {
 		echo '<p>' . esc_html( (string) ( $tool['desc'] ?? '' ) ) . '</p>';
 		echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
 		echo '<input type="hidden" name="action" value="' . esc_attr( 'app_tool_' . $key ) . '">';
-		app_admin_location_fields();
+		self::location_fields();
 		wp_nonce_field( 'app_tool_' . $key );
 		submit_button( (string) ( $tool['button'] ?? __( 'Run', NT_TEXT_DOMAIN ) ), 'secondary', 'submit', false );
 		echo '</form></div>';
 	}
 	echo '</div>';
+}
+
 }

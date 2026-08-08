@@ -42,7 +42,7 @@ $cta_btn_link      = $f_data['cta_btn_link'] ?? '';
 			 * stamp_lines stays the same three strings in franchise.json:
 			 * upper ring, struck line, lower ring.
 			 */
-			app_component( 'parts/stamp', array(
+			App_Helpers::component( 'parts/stamp', array(
 				'top'    => wp_strip_all_tags( (string) ( $stamp_lines[0] ?? '' ) ),
 				'middle' => (string) ( $stamp_lines[1] ?? '' ),
 				'bottom' => (string) ( $stamp_lines[2] ?? '' ),
@@ -116,6 +116,6 @@ get_template_part( 'components/parts/form-modal', null, array(
 	'id'     => 'app-franchise-modal',
 	'title'  => __( 'Franchise Enquiry 💼', NT_TEXT_DOMAIN ),
 	'sub'    => __( 'Tell us a little about you - we reply within 24 hours.', NT_TEXT_DOMAIN ),
-	'config' => app_data( 'form_franchise' ),
+	'config' => App_Helpers::data( 'form_franchise' ),
 ) );
 ?>

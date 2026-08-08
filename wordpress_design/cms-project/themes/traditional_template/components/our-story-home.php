@@ -66,7 +66,7 @@ foreach ( $about as $k => $v ) {
 				<p class="app-tstory__body"><?php echo esc_html( $p ); ?></p>
 			<?php endforeach; ?>
 			<?php if ( $cta_label ) : ?>
-				<a href="<?php echo esc_url( app_link( $cta_url ) ); ?>" class="btn">
+				<a href="<?php echo esc_url( App_Helpers::link( $cta_url ) ); ?>" class="btn">
 					<?php echo esc_html( $cta_label ); ?> &rarr;
 				</a>
 			<?php endif; ?>

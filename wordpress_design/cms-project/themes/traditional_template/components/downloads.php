@@ -22,7 +22,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'downloads';
-$nt_data  = app_data( $nt_src );
+$nt_data  = App_Helpers::data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 if ( empty( $nt_items ) ) {
 	return;
@@ -87,7 +87,7 @@ $nt_sub   = (string) ( $nt_data['sub'] ?? '' );
 							<span><?php echo esc_html( NT_Ui::label( 'download' ) ); ?></span>
 						</button>
 					<?php elseif ( '' !== $nt_file ) : ?>
-						<a class="app-download__btn" href="<?php echo esc_url( app_link( $nt_file ) ); ?>" download
+						<a class="app-download__btn" href="<?php echo esc_url( App_Helpers::link( $nt_file ) ); ?>" download
 							<?php if ( ! empty( $nt_item['new_tab'] ) ) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>>
 							<?php NT_Icons::render( 'download' ); ?>
 							<span><?php echo esc_html( NT_Ui::label( 'download' ) ); ?></span>

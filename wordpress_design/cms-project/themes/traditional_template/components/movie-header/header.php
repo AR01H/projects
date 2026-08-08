@@ -204,7 +204,7 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 	// behind the board. The part removes itself on the front page and under
 	// prefers-reduced-motion, so this call is safe everywhere.
 	// See components/parts/leaf-drift.php + admin/data/decor.json -> "leaves".
-	app_component( 'parts/leaf-drift' );
+	App_Helpers::component( 'parts/leaf-drift' );
 	?>
 
 	<?php if ( $mh_sprite ) : ?>

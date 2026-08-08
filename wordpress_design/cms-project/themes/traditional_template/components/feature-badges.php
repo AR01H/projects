@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $fb_source = ( isset( $source ) && $source ) ? (string) $source : 'feature_badges';
-$data      = app_data( $fb_source );
+$data      = App_Helpers::data( $fb_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 if ( empty( $items ) ) {
 	return;

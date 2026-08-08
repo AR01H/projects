@@ -4,12 +4,12 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$settings = []; // app_data('site') could be used here
-$phone    = app_option( 'general', 'phone', NT_BRAND_PHONE );
-$email    = app_option( 'general', 'email', NT_BRAND_EMAIL );
-$address  = app_option( 'general', 'address' );
+$settings = []; // App_Helpers::data('site') could be used here
+$phone    = App_Helpers::option( 'general', 'phone', NT_BRAND_PHONE );
+$email    = App_Helpers::option( 'general', 'email', NT_BRAND_EMAIL );
+$address  = App_Helpers::option( 'general', 'address' );
 
-$content = app_data( 'content' )['contact_section'] ?? [];
+$content = App_Helpers::data( 'content' )['contact_section'] ?? [];
 $sec_tag   = $content['tag']        ?? 'Get in Touch';
 $sec_title = $content['title']      ?? 'Contact Us';
 $sec_body  = $content['body']       ?? 'We would love to hear from you.';

@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $ms_source = ( isset( $source ) && $source ) ? (string) $source : 'milestones';
-$data      = app_data( $ms_source );
+$data      = App_Helpers::data( $ms_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 if ( empty( $items ) ) {
 	return;

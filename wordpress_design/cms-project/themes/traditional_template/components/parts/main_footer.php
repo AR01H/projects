@@ -16,7 +16,7 @@ $lbl_products  = $labels['products_heading']    ?? 'Our Products';
 $lbl_contact   = $labels['contact_heading']     ?? 'Contact Us';
 $lbl_connect   = $labels['connect_label']       ?? 'Connect:';
 $lbl_rights    = $labels['rights_text']         ?? 'All Rights Reserved.';
-$aria_top      = app_data('ui')['aria']['scroll_to_top'] ?? 'Scroll to top';
+$aria_top      = App_Helpers::data('ui')['aria']['scroll_to_top'] ?? 'Scroll to top';
 
 $brand_data    = $footer_data['brand'] ?? [];
 $brand_logo    = $brand_data['logo_image'] ?? '';
@@ -24,9 +24,9 @@ $brand_name    = $brand_data['name'] ?? NT_BRAND_NAME;
 $brand_est     = $brand_data['established'] ?? '';
 $brand_tagline = $brand_data['tagline'] ?? (defined('NT_BRAND_TAGLINE') ? NT_BRAND_TAGLINE : '');
 
-$phone         = app_option('general', 'phone', NT_BRAND_PHONE);
-$email         = app_option('general', 'email', NT_BRAND_EMAIL);
-$address       = app_option('general', 'address');
+$phone         = App_Helpers::option('general', 'phone', NT_BRAND_PHONE);
+$email         = App_Helpers::option('general', 'email', NT_BRAND_EMAIL);
+$address       = App_Helpers::option('general', 'address');
 $has_logo      = has_custom_logo();
 $year          = gmdate('Y');
 $nt_socials    = array_filter( (array) ($footer_data['socials'] ?? []) );
@@ -81,7 +81,7 @@ if ( $footer_bg ) {
 				<ul class="app-footer__links">
 					<?php foreach ( $footer_links as $link ) : ?>
 						<li>
-							<a href="<?php echo esc_url( app_link($link['url'] ?? '#') ); ?>">
+							<a href="<?php echo esc_url( App_Helpers::link($link['url'] ?? '#') ); ?>">
 								<?php echo esc_html($link['label'] ?? ''); ?>
 							</a>
 						</li>
@@ -152,7 +152,7 @@ if ( $footer_bg ) {
 			<?php if ( ! empty( $bottom_links ) ) : ?>
 				<div class="app-footer__policies">
 					<?php foreach ( $bottom_links as $link ) : ?>
-						<a href="<?php echo esc_url( app_link($link['url'] ?? '#') ); ?>">
+						<a href="<?php echo esc_url( App_Helpers::link($link['url'] ?? '#') ); ?>">
 							<?php echo esc_html($link['label'] ?? ''); ?>
 						</a>
 					<?php endforeach; ?>

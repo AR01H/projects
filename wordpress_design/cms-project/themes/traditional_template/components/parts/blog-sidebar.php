@@ -161,7 +161,7 @@ foreach ( NT_Blocks::many( (array) ( $nt_side['blocks'] ?? array() ) ) as $nt_pr
 					<?php echo esc_html( $nt_promo['label'] ); ?>
 				</button>
 			<?php elseif ( '' !== $nt_promo['url'] ) : ?>
-				<a class="app-side-promo__cta" href="<?php echo esc_url( app_link( $nt_promo['url'] ) ); ?>">
+				<a class="app-side-promo__cta" href="<?php echo esc_url( App_Helpers::link( $nt_promo['url'] ) ); ?>">
 					<?php echo esc_html( $nt_promo['label'] ); ?>
 				</a>
 			<?php endif; ?>

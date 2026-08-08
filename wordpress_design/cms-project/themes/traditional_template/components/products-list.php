@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$_d        = app_data( 'flavours' ) ?: [];
+$_d        = App_Helpers::data( 'flavours' ) ?: [];
 $types     = $_d['caneTypes'] ?? [];
 $textures  = $_d['textures'] ?? [];
 $flavours  = $_d['flavours'] ?? [];

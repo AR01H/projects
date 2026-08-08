@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $loc_source = ( isset( $source ) && $source ) ? (string) $source : 'locations';
-$data       = app_data( $loc_source );
+$data       = App_Helpers::data( $loc_source );
 $items      = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 if ( empty( $items ) ) {
 	return;

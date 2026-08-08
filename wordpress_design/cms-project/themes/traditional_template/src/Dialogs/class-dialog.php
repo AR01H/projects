@@ -76,7 +76,7 @@ class NT_Dialog {
 		if ( null !== $registry ) {
 			return $registry;
 		}
-		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
+		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 		unset( $data['_doc'] );
 
@@ -215,7 +215,7 @@ class NT_Dialog {
 			}
 			$actions[] = array(
 				'label'        => $label,
-				'url'          => '' !== (string) ( $action['url'] ?? '' ) ? app_link( (string) $action['url'] ) : '',
+				'url'          => '' !== (string) ( $action['url'] ?? '' ) ? App_Helpers::link( (string) $action['url'] ) : '',
 				'style'        => in_array( (string) ( $action['style'] ?? 'primary' ), array( 'primary', 'ghost', 'danger' ), true )
 					? (string) $action['style'] : 'primary',
 				'new_tab'      => ! empty( $action['new_tab'] ),
@@ -234,7 +234,7 @@ class NT_Dialog {
 			'icon'        => (string) ( $def['icon'] ?? NT_Ui::tone_icon( $tone ) ),
 			'size'        => NT_Ui::size( $def['size'] ?? '' ),
 			'body'        => array_values( $body ),
-			'image'       => '' !== (string) ( $def['image'] ?? '' ) ? app_link( (string) $def['image'] ) : '',
+			'image'       => '' !== (string) ( $def['image'] ?? '' ) ? App_Helpers::link( (string) $def['image'] ) : '',
 			'image_alt'   => (string) ( $def['image_alt'] ?? '' ),
 			'list'        => array_values( array_filter( array_map( 'strval', (array) ( $def['list'] ?? array() ) ) ) ),
 			'form'        => self::form_data( (string) ( $def['form'] ?? '' ) ),
@@ -257,10 +257,10 @@ class NT_Dialog {
 	 * @return array Empty when there is no form.
 	 */
 	protected static function form_data( string $name ): array {
-		if ( '' === $name || ! function_exists( 'app_data' ) ) {
+		if ( '' === $name || ! is_callable( array( 'App_Helpers', 'data' ) ) ) {
 			return array();
 		}
-		$form = app_data( $name );
+		$form = App_Helpers::data( $name );
 		if ( empty( $form ) || ! is_array( $form ) ) {
 			return array();
 		}

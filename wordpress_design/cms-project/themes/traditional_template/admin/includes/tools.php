@@ -3,7 +3,7 @@
  * admin/includes/tools.php - Admin Tool callbacks.
  *
  * Each function backs one entry in the config/admin.php 'tools' registry.
- * They run ONLY through app_admin_run_tool() (core/admin.php), which has
+ * They run ONLY through App_Admin::run_tool() (core/admin.php), which has
  * already checked capability + nonce - so the body is just the action.
  * Return the status message to show; download-type tools exit themselves.
  */
@@ -46,7 +46,7 @@ function app_tool_flush_rewrites() {
  * Create WP page rows for the config/pages.php registry (idempotent).
  */
 function app_tool_sync_pages() {
-	$created = app_sync_pages();
+	$created = App_Router::sync_pages();
 	/* translators: %d: number of created pages */
 	return sprintf( __( '%d page(s) created.', NT_TEXT_DOMAIN ), $created );
 }
@@ -55,7 +55,7 @@ function app_tool_sync_pages() {
  * Install / repair EVERY table registered in config/database.php.
  */
 function app_tool_install_tables() {
-	$results = app_db_install_all();
+	$results = App_Database::install_all();
 	$ok      = count( array_filter( $results ) );
 	/* translators: 1: installed count, 2: registered count */
 	return sprintf( __( '%1$d of %2$d table(s) installed / verified.', NT_TEXT_DOMAIN ), $ok, count( $results ) );
@@ -67,14 +67,14 @@ function app_tool_install_tables() {
  */
 function app_tool_install_table() {
 	$key = isset( $_POST['table_key'] ) ? sanitize_key( wp_unslash( $_POST['table_key'] ) ) : '';
-	if ( '' === $key || ! array_key_exists( $key, app_config( 'database' ) ) ) {
+	if ( '' === $key || ! array_key_exists( $key, App_Theme::config( 'database' ) ) ) {
 		return __( 'Unknown table key.', NT_TEXT_DOMAIN );
 	}
-	return app_db_install( $key )
+	return App_Database::install( $key )
 		/* translators: %s: table name */
-		? sprintf( __( 'Table "%s" installed / verified.', NT_TEXT_DOMAIN ), app_db_table( $key ) )
+		? sprintf( __( 'Table "%s" installed / verified.', NT_TEXT_DOMAIN ), App_Database::table( $key ) )
 		/* translators: %s: table name */
-		: sprintf( __( 'Table "%s" could NOT be created - check the schema.', NT_TEXT_DOMAIN ), app_db_table( $key ) );
+		: sprintf( __( 'Table "%s" could NOT be created - check the schema.', NT_TEXT_DOMAIN ), App_Database::table( $key ) );
 }
 
 /**
@@ -88,7 +88,7 @@ function app_tool_submission_status() {
 		return __( 'Invalid request.', NT_TEXT_DOMAIN );
 	}
 	$updated = $wpdb->update(
-		app_db_table( 'submissions' ),
+		App_Database::table( 'submissions' ),
 		array( 'status' => $status ),
 		array( 'id' => $id ),
 		array( '%s' ),
@@ -109,7 +109,7 @@ function app_tool_submission_delete() {
 	if ( ! $id ) {
 		return __( 'Invalid request.', NT_TEXT_DOMAIN );
 	}
-	$deleted = $wpdb->delete( app_db_table( 'submissions' ), array( 'id' => $id ), array( '%d' ) );
+	$deleted = $wpdb->delete( App_Database::table( 'submissions' ), array( 'id' => $id ), array( '%d' ) );
 	return $deleted
 		? __( 'Submission deleted.', NT_TEXT_DOMAIN )
 		: __( 'Delete failed.', NT_TEXT_DOMAIN );
@@ -120,7 +120,7 @@ function app_tool_submission_delete() {
  * Exits after streaming - no redirect.
  */
 function app_tool_export_settings() {
-	$admin  = app_config( 'admin' );
+	$admin  = App_Theme::config( 'admin' );
 	$groups = array();
 	foreach ( (array) ( $admin['options'] ?? array() ) as $group => $def ) {
 		$groups[ $group ] = get_option( (string) ( $def['option'] ?? 'app_' . $group ), array() );
@@ -163,7 +163,7 @@ function app_tool_import_settings() {
 		return __( 'Not a valid settings export file.', NT_TEXT_DOMAIN );
 	}
 
-	$admin    = app_config( 'admin' );
+	$admin    = App_Theme::config( 'admin' );
 	$imported = 0;
 	foreach ( (array) ( $admin['options'] ?? array() ) as $group => $def ) {
 		if ( ! isset( $payload['groups'][ $group ] ) || ! is_array( $payload['groups'][ $group ] ) ) {
@@ -172,7 +172,7 @@ function app_tool_import_settings() {
 		$incoming = $payload['groups'][ $group ];
 		$clean    = array();
 		foreach ( (array) ( $def['fields'] ?? array() ) as $key => $type ) {
-			$clean[ $key ] = app_admin_sanitize( $type, $incoming[ $key ] ?? '' );
+			$clean[ $key ] = App_Admin::sanitize( $type, $incoming[ $key ] ?? '' );
 		}
 		update_option( (string) ( $def['option'] ?? 'app_' . $group ), $clean );
 		$imported++;

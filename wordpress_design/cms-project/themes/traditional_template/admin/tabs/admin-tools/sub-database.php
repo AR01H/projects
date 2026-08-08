@@ -7,9 +7,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-app_admin_tools_render( 'database' );
+App_Admin::tools_render( 'database' );
 
-$nt_status = app_db_status();
+$nt_status = App_Database::status();
 ?>
 
 <h2><?php esc_html_e( 'Registered Tables', NT_TEXT_DOMAIN ); ?></h2>
@@ -44,7 +44,7 @@ $nt_status = app_db_status();
 						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin:0;">
 							<input type="hidden" name="action" value="app_tool_install_table">
 							<input type="hidden" name="table_key" value="<?php echo esc_attr( (string) $nt_key ); ?>">
-							<?php app_admin_location_fields(); ?>
+							<?php App_Admin::location_fields(); ?>
 							<?php wp_nonce_field( 'app_tool_install_table' ); ?>
 							<?php submit_button( $nt_row['exists'] ? __( 'Repair', NT_TEXT_DOMAIN ) : __( 'Install', NT_TEXT_DOMAIN ), 'secondary small', 'submit', false ); ?>
 						</form>

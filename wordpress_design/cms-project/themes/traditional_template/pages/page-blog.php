@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_blog     = app_data( 'blog' );
+$nt_blog     = App_Helpers::data( 'blog' );
 $nt_per_page = max( 1, (int) ( $nt_blog['per_page'] ?? 9 ) );
 $nt_paged    = max( 1, (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
 
@@ -47,7 +47,7 @@ $nt_query = new WP_Query( array(
 
 		<div class="app-blog__main">
 
-			<?php app_component( 'parts/breadcrumbs' ); ?>
+			<?php App_Helpers::component( 'parts/breadcrumbs' ); ?>
 
 			<?php if ( ! empty( $nt_blog['intro'] ) ) : ?>
 				<p class="app-blog__intro"><?php echo esc_html( $nt_blog['intro'] ); ?></p>
@@ -59,7 +59,7 @@ $nt_query = new WP_Query( array(
 					<?php
 					while ( $nt_query->have_posts() ) :
 						$nt_query->the_post();
-						app_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+						App_Helpers::component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
 					endwhile;
 					?>
 				</div>
@@ -104,7 +104,7 @@ $nt_query = new WP_Query( array(
 
 		<?php if ( ! empty( $nt_blog['sidebar'] ) ) : ?>
 			<aside class="app-blog__side">
-				<?php app_component( 'parts/blog-sidebar', array( 'config' => (array) $nt_blog['sidebar'] ) ); ?>
+				<?php App_Helpers::component( 'parts/blog-sidebar', array( 'config' => (array) $nt_blog['sidebar'] ) ); ?>
 			</aside>
 		<?php endif; ?>
 

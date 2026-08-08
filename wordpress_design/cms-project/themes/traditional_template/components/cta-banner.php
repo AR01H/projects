@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $cta_source = ( isset( $source ) && $source ) ? (string) $source : 'cta_default';
-$data       = app_data( $cta_source );
+$data       = App_Helpers::data( $cta_source );
 $title      = ( is_array( $data ) && ! empty( $data['title'] ) ) ? $data['title'] : '';
 if ( '' === $title ) {
 	return;
@@ -43,7 +43,7 @@ $buttons = ( ! empty( $data['buttons'] ) ) ? (array) $data['buttons'] : array();
 					$style = ( 'ghost' === ( $btn['style'] ?? '' ) ) ? ' app-cta-band__btn--ghost' : '';
 				?>
 					<a class="btn app-cta-band__btn<?php echo esc_attr( $style ); ?>"
-					   href="<?php echo esc_url( app_link( $btn['url'] ?? '#' ) ); ?>">
+					   href="<?php echo esc_url( App_Helpers::link( $btn['url'] ?? '#' ) ); ?>">
 						<?php echo esc_html( $label ); ?>
 					</a>
 				<?php endforeach; ?>

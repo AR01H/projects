@@ -57,7 +57,7 @@ class NT_Blocks {
 		if ( null !== $blocks ) {
 			return $blocks;
 		}
-		$data = function_exists( 'app_data' ) ? app_data( self::DATA_KEY ) : array();
+		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 		unset( $data['_doc'] );
 

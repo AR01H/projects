@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $vl_source = ( isset( $source ) && $source ) ? (string) $source : 'values';
-$data      = app_data( $vl_source );
+$data      = App_Helpers::data( $vl_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 if ( empty( $items ) ) {
 	return;

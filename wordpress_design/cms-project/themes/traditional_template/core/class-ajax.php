@@ -13,14 +13,16 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class App_Ajax {
+
 /**
  * Registration loop - hooked on init by the bootstrap.
  */
-function app_register_ajax_actions() {
-	foreach ( app_config( 'ajax' ) as $action => $def ) {
+public static function register_actions() {
+	foreach ( App_Theme::config( 'ajax' ) as $action => $def ) {
 		$action   = sanitize_key( $action );
 		$dispatch = static function () use ( $action, $def ) {
-			app_ajax_dispatch( $action, $def );
+			self::dispatch( $action, $def );
 		};
 		add_action( 'wp_ajax_nt_' . $action, $dispatch );
 		if ( ! empty( $def['public'] ) ) {
@@ -32,7 +34,7 @@ function app_register_ajax_actions() {
 /**
  * The dispatcher every action runs through.
  */
-function app_ajax_dispatch( $action, $def ) {
+public static function dispatch( $action, $def ) {
 
 	// 1. Nonce (on unless explicitly disabled in the registry).
 	if ( ! isset( $def['nonce'] ) || false !== $def['nonce'] ) {
@@ -48,7 +50,7 @@ function app_ajax_dispatch( $action, $def ) {
 
 	// 3. Lazy-load the handler file, then call it.
 	if ( ! empty( $def['file'] ) ) {
-		app_require_theme_file( $def['file'] );
+		App_Helpers::require_theme_file( $def['file'] );
 	}
 	$callback = $def['callback'] ?? '';
 	if ( ! is_callable( $callback ) ) {
@@ -59,4 +61,6 @@ function app_ajax_dispatch( $action, $def ) {
 
 	// Callbacks should reply with wp_send_json_*; this is a safety net.
 	wp_send_json_error( array( 'message' => 'Handler returned no response.' ), 500 );
+}
+
 }

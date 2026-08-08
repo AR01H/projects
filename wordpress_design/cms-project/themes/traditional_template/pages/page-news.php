@@ -18,12 +18,12 @@ $nt_news     = new WP_Query( array(
 	'posts_per_page'      => $nt_per_page,
 	'ignore_sticky_posts' => true,
 ) );
-$nt_hdr = app_data( 'page_headers' )['news'] ?? array();
+$nt_hdr = App_Helpers::data( 'page_headers' )['news'] ?? array();
 ?>
 <div class="app-container app-section">
 
 	<?php
-	app_component( 'parts/page_header', array(
+	App_Helpers::component( 'parts/page_header', array(
 		'tag'      => $nt_hdr['tag']      ?? '',
 		'icon'     => $nt_hdr['icon']     ?? '',
 		'title'    => $nt_hdr['title']    ?? __( 'News & Updates', NT_TEXT_DOMAIN ),
@@ -40,7 +40,7 @@ $nt_hdr = app_data( 'page_headers' )['news'] ?? array();
 		<?php
 		while ( $nt_news->have_posts() ) {
 			$nt_news->the_post();
-			app_component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
+			App_Helpers::component( 'cards/post_card', array( 'post_id' => get_the_ID() ) );
 		}
 		wp_reset_postdata();
 		?>

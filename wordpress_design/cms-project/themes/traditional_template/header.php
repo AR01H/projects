@@ -27,6 +27,6 @@ $nt_is_home = is_front_page() || 'home' === (string) get_query_var( 'app_active_
 
 <a class="skip-link screen-reader-text" href="#app-main"><?php esc_html_e( 'Skip to content', NT_TEXT_DOMAIN ); ?></a>
 
-<?php app_component( 'parts/main_header' ); ?>
+<?php App_Helpers::component( 'parts/main_header' ); ?>
 
 <main id="app-main" class="app-main">
