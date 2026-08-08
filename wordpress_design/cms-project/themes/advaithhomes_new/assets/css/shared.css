@@ -2696,8 +2696,7 @@ a.mini-card, div.mini-card {
   }
 }
 
-/* ── Tablet: also hide the image + excerpt on the news hero card ── */
-@media (max-width: 1024px) and (min-width: 769px) {
+@media (max-width: 996px) {
   .news-hero-card__img-wrap,
   .news-hero-card__content .news-hero-card__excerpt {
     display: none !important;
@@ -5636,6 +5635,11 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
   .topic-articles-grid .glc .glc-img { aspect-ratio: 16 / 9; }
   .guides-listing-inner { grid-template-columns: 1fr; }
   .guides-sidebar { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+}
+
+/* Tablet / mobile: the hero stacks, so it no longer needs the desktop top gap. */
+@media (max-width: 992px) {
+  .hero-home-inner { padding-top: 15px; }
 }
 
 @media (max-width: 768px) {

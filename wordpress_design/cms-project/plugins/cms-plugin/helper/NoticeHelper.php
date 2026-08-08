@@ -112,7 +112,7 @@ class AH_Notice_Helper {
 		/* ── Modal shell ─────────────────────────────────────────────────── */
 		.ah-sn-modal {
 			display:none;
-			position:fixed; inset:0; z-index:99999;
+			position:fixed; inset:0; z-index:9999999999;
 			align-items:center; justify-content:center;
 			padding:1rem;
 		}

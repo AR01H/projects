@@ -643,7 +643,8 @@ filter: brightness(0.92);
     position: relative;
     z-index: 1000;
 }
-body.nav-open .adn-preheader {
+body.nav-open .adn-preheader
+,body.nav-open .short-news-ticker {
     display: none !important;
 }
 
