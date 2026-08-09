@@ -5,12 +5,32 @@
         "og_type": "website",
         "og_locale": "en_GB",
         "twitter_card": "summary_large_image",
-        "robots": "index, follow"
+        "robots": "index, follow",
+        "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers."
     },
     "pages": {
         "home": {
             "title": "UK Property Guides, Calculators & Expert Advice | ADVAITH HOMES",
-            "description": "Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK."
+            "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers.",
+            "type": "website",
+            "keywords": [
+                "UK property guides",
+                "property calculators",
+                "expert property advice",
+                "buying a home",
+                "selling a home",
+                "moving home"
+            ]
+        },
+        "coming_soon": {
+            "title": "Coming Soon | ADVAITH HOMES",
+            "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers.",
+            "type": "website",
+            "keywords": [
+                "ADVAITH HOMES",
+                "coming soon",
+                "UK property"
+            ]
         },
         "guides": {
             "title": "Property Guides | ADVAITH HOMES",

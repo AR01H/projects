@@ -2,7 +2,7 @@
     "_comment": "Change this file to rebrand the entire site. No PHP changes needed.",
     "name": "ADVAITH HOMES",
     "tagline": "Property Made Simple",
-    "description": "Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.",
+    "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers.",
     "copyright_year": "2025",
     "copyright_text": "© 2025 ADVAITH HOMES. All rights reserved.",
     "made_with": "Made with ♥ in the UK",
@@ -17,7 +17,12 @@
         "email": "contact@advaithhomes.co.uk",
         "whatsapp": "+44 7747 223 762",
         "phone": "",
-        "address": ""
+        "address": "",
+        "email_label": "Email us",
+        "call_label": "Call us",
+        "phone_label": "Phone Number",
+        "phone_placeholder": "+44 7700 000000",
+        "whatsapp_placeholder": "+xx xxxx xxx xxx"
     },
     "social": [
         { "platform": "facebook", "url": "#", "label": "Facebook" },

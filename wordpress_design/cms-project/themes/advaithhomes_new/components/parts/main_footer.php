@@ -109,19 +109,19 @@ if ( $show_desc || $show_badge || $show_cta ) :
 
                 <div class="footer-topbar-nl">
                     <div class="footer-topbar-nl-text">
-                        <strong><?php echo esc_html( defined( 'SITE_NEWSLETTER_TITLE' ) ? SITE_NEWSLETTER_TITLE : 'Stay Informed, Stay Ahead' ); ?></strong>
-                        <span><?php echo esc_html( defined( 'SITE_NEWSLETTER_DESC' ) ? SITE_NEWSLETTER_DESC : 'The latest property news, guides and expert insights' ); ?></span>
+                        <strong><?php echo esc_html( SITE_NEWSLETTER_HEADING ); ?></strong>
+                        <span><?php echo esc_html( SITE_NEWSLETTER_DESC ); ?></span>
                     </div>
                     <form class="footer-nl-form adn-nl-form" onsubmit="return false;"
                           data-nonce="<?php echo esc_attr( $nl_nonce ); ?>"
                           data-ajaxurl="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>">
                         <div class="footer-nl-row">
                             <input type="email" name="nl_email" class="adn-nl-email"
-                                   placeholder="<?php echo esc_attr( defined( 'SITE_NEWSLETTER_PH' ) ? SITE_NEWSLETTER_PH : 'Add your email here' ); ?>"
+                                   placeholder="<?php echo esc_attr( SITE_NEWSLETTER_PH ); ?>"
                                    aria-label="Email address" required />
-                            <button type="submit" class="adn-nl-btn footer-nl-btn">
-                                <?php echo esc_html( defined( 'SITE_BTN_SUBSCRIBE' ) ? SITE_BTN_SUBSCRIBE : 'Subscribe' ); ?>
-                            </button>
+                        <button type="submit" class="adn-nl-btn footer-nl-btn">
+                            <?php echo esc_html( defined( 'SITE_BTN_SUBSCRIBE' ) ? SITE_BTN_SUBSCRIBE : 'Subscribe' ); ?>
+                        </button>
                         </div>
                         <div class="adn-nl-msg" style="display:none;margin-top:8px;font-size:13px;font-weight:500"></div>
                     </form>

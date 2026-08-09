@@ -106,6 +106,8 @@ define( 'SITE_NAV_CTA_URL',        SITE_EXPERT_URL );
 define( 'SITE_HERO_CTA_PRIMARY',   adn_term( 'cta.hero_primary',     'Get Started →' ) );
 define( 'SITE_HERO_CTA_SECONDARY', adn_term( 'cta.hero_secondary',   'Ask an Expert' ) );
 define( 'SITE_NEWSLETTER_HEADING', adn_term( 'cta.newsletter_heading', 'Stay informed about ' . SITE_INDUSTRY ) );
+define( 'SITE_NEWSLETTER_DESC',    adn_term( 'sidebar.newsletter_desc', '' ) );
+define( 'SITE_NEWSLETTER_PH',      adn_term( 'sidebar.newsletter_placeholder', adn_term( 'placeholders.email', '' ) ) );
 
 // ===========================
 // CONTENT LABELS

@@ -31,10 +31,18 @@ $ctx = \Adn\Theme\Feature\Home\Controller\HomeController::getContext( array( 'ba
 /* Must run BEFORE get_header(): adn_seo_head_output() is hooked to wp_head at
    priority 1, so anything registered afterwards never reaches the description
    or og:image tags. */
-adn_seo_register( array(
-	'description' => isset( $ctx['hero']['description'] ) ? (string) $ctx['hero']['description'] : get_bloginfo( 'description' ),
-	'image'       => isset( $ctx['hero']['image'] )       ? (string) $ctx['hero']['image']       : '',
+$_home_seo = \Adn\Theme\Service\SeoService::pageConfig( 'home', array(
+	'title'       => get_bloginfo( 'name' ),
+	'description' => get_bloginfo( 'description' ),
+	'type'        => 'website',
 ) );
+if ( isset( $ctx['hero']['description'] ) && '' !== trim( (string) $ctx['hero']['description'] ) ) {
+	$_home_seo['description'] = (string) $ctx['hero']['description'];
+}
+if ( isset( $ctx['hero']['image'] ) && '' !== trim( (string) $ctx['hero']['image'] ) ) {
+	$_home_seo['image'] = (string) $ctx['hero']['image'];
+}
+adn_seo_register( $_home_seo );
 
 get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook
 

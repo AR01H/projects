@@ -30,8 +30,8 @@ function _ah_info( string $key, string $fallback ): string {
 	return ( isset( $_ah_info[ $key ] ) && '' !== $_ah_info[ $key ] ) ? $_ah_info[ $key ] : $fallback;
 }
 
-// ── Company / contact ────────────────────────────────────────────────────────
-define( 'COMPANY_NAME',              _ah_info( 'company_name',   'Advaith Homes' ) );
+// Company / contact
+define( 'COMPANY_NAME',              _ah_info( 'company_name',   get_bloginfo( 'name' ) ) );
 // contact_phone is the canonical key; fall back to legacy 'phone'.
 define( 'COMPANY_PHONE_NO',          _ah_info( 'contact_phone',  _ah_info( 'phone', '' ) ) );
 define( 'COMPANY_EXTENDED_PHONE_NO', _ah_info( 'contact_phone',  _ah_info( 'phone', '' ) ) );

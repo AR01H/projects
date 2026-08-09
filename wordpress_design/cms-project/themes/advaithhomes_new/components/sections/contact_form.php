@@ -55,7 +55,7 @@ $_rules  = isset( $_f['validation'] )              ? (array) $_f['validation']  
 		<div class="form-row">
 			<div class="form-group">
 				<label class="form-label" for="contactWhatsApp"><?php echo esc_html( FORM_WHATSAPP_LABEL ); ?> <span class="form-optional"><?php echo esc_html( FORM_OPTIONAL_SUFFIX ); ?></span></label>
-				<input type="tel" id="contactWhatsApp" name="whatsapp" placeholder="<?php echo esc_attr( SITE_PLACEHOLDER_WHATSAPP ); ?>" />
+				<input type="tel" id="contactWhatsApp" name="whatsapp" placeholder="<?php echo esc_attr( defined( 'COMPANY_WHATSAPP_PLACEHOLDER' ) ? COMPANY_WHATSAPP_PLACEHOLDER : SITE_PLACEHOLDER_WHATSAPP ); ?>" />
 			</div>
 			<div class="form-group">
 				<label class="form-label" for="contactPostcode"><?php echo esc_html( FORM_POSTCODE_LABEL ); ?> <span class="form-optional"><?php echo esc_html( FORM_OPTIONAL_SUFFIX ); ?></span></label>

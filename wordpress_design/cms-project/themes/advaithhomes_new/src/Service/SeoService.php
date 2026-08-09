@@ -5,6 +5,69 @@ defined( 'ABSPATH' ) || exit;
 
 class SeoService {
 
+	private static ?array $config = null;
+
+	private static function readJson( string $path ): array {
+		if ( ! file_exists( $path ) ) {
+			return array();
+		}
+		$raw = file_get_contents( $path );
+		$cfg = json_decode( $raw, true );
+		return is_array( $cfg ) ? $cfg : array();
+	}
+
+	public static function config(): array {
+		if ( null !== self::$config ) {
+			return self::$config;
+		}
+
+		$custom = ( defined( 'DATA_FILES' ) && DATA_FILES ) ? trim( DATA_FILES, '/' ) . '/' : '';
+		$paths  = array(
+			get_template_directory() . '/data/' . $custom . 'config/seo.json',
+			get_template_directory() . '/data/config/seo.json',
+		);
+
+		foreach ( $paths as $path ) {
+			if ( file_exists( $path ) ) {
+				self::$config = self::readJson( $path );
+				return self::$config;
+			}
+		}
+
+		self::$config = array();
+		return self::$config;
+	}
+
+	public static function getConfigValue( string $key, $default = '' ) {
+		$config = self::config();
+		$parts  = explode( '.', $key );
+		$value  = $config;
+
+		foreach ( $parts as $part ) {
+			if ( is_array( $value ) && array_key_exists( $part, $value ) ) {
+				$value = $value[ $part ];
+			} else {
+				return $default;
+			}
+		}
+
+		return $value;
+	}
+
+	public static function pageConfig( string $page, array $default = array() ): array {
+		$pages = self::getConfigValue( 'pages', array() );
+		if ( ! is_array( $pages ) ) {
+			return $default;
+		}
+
+		$page = sanitize_key( $page );
+		if ( '' === $page || empty( $pages[ $page ] ) || ! is_array( $pages[ $page ] ) ) {
+			return $default;
+		}
+
+		return array_merge( $default, $pages[ $page ] );
+	}
+
 	public static function register( array $meta ): void {
 		$GLOBALS['adn_seo'] = array_merge( $GLOBALS['adn_seo'] ?? array(), $meta );
 	}
@@ -43,7 +106,7 @@ class SeoService {
 				$desc    = wp_strip_all_tags( $excerpt );
 			}
 			if ( '' === $desc ) {
-				$desc = (string) get_bloginfo( 'description' );
+				$desc = (string) self::getConfigValue( 'defaults.description', get_bloginfo( 'description' ) );
 			}
 		}
 		$desc = wp_strip_all_tags( $desc );

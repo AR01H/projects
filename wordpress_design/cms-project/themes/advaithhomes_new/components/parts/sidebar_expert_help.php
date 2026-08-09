@@ -14,7 +14,7 @@ $cta         = isset( $expert_help['cta'] )     ? (array) $expert_help['cta']   
 if ( empty( $cta['label'] ) && empty( $expert_help['heading'] ) ) { return; }
 
 $_heading  = ! empty( $expert_help['heading'] )  ? $expert_help['heading']  : adn_term( 'sidebar.expert_help_heading', 'Need Expert Help?' );
-$_subtitle = ! empty( $expert_help['subtitle'] ) ? $expert_help['subtitle'] : adn_term( 'sidebar.expert_help_subtitle', 'Get personalised guidance from our property experts.' );
+$_subtitle = ! empty( $expert_help['subtitle'] ) ? $expert_help['subtitle'] : adn_term( 'sidebar.expert_help_subtitle', '' );
 $_btn_label = ! empty( $cta['label'] ) ? $cta['label'] : adn_term( 'sidebar.expert_help_cta', 'Talk to an Expert' );
 $_btn_url   = ! empty( $cta['url'] )   ? $cta['url']   : home_url( SITE_CONTACT_URL );
 ?>

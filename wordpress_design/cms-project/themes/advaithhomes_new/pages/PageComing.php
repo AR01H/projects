@@ -6,14 +6,14 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$_cs_title = esc_html( adn_term( 'coming_soon.title', 'Coming Soon' ) );
-$_cs_desc  = esc_html( adn_term( 'coming_soon.description', 'We\'re working on something exciting. Stay tuned!' ) );
+$__cs_page = \Adn\Theme\Service\SeoService::pageConfig( 'coming_soon', array(
+	'type'        => 'website',
+) );
+$_cs_title = esc_html( (string) ( $__cs_page['title'] ?? '' ) );
+$_cs_desc  = esc_html( (string) ( $__cs_page['description'] ?? '' ) );
 
 // Register SEO before get_header() - adn_seo_head_output() runs on wp_head priority 1.
-adn_seo_register( array(
-	'title'       => $_cs_title,
-	'description' => $_cs_desc,
-) );
+adn_seo_register( $__cs_page );
 
 get_header();
 ?>

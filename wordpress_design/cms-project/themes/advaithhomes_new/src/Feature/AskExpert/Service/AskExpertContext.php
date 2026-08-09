@@ -32,7 +32,7 @@ class AskExpertContext {
 			: ( \get_the_title() ?: SITE_EXPERT_LABEL );
 		$hero_desc = ( ! empty( $banner['info'] ) )
 			? (string) $banner['info']
-			: \adn_term( 'expert_page.hero_desc_default', 'Not sure what to do next? Every property journey is different, and the right advice can make all the difference. Connect with our trusted professionals who can help you understand your options, answer your questions and guide you towards making confident, informed decisions based on your individual circumstances.' );
+			: \adn_term( 'expert_page.hero_desc_default', '' );
 
 		return array(
 			'title'       => $hero_title,
@@ -215,7 +215,7 @@ class AskExpertContext {
 
 		$meta = array(
 			'page_title'       => \get_the_title() ?: SITE_EXPERT_LABEL,
-			'meta_description' => \adn_term( 'expert_page.meta_desc_default', 'Connect with vetted UK professionals - mortgage advisers, solicitors, surveyors, buyer-side agents and more.' ),
+			'meta_description' => \adn_term( 'expert_page.meta_desc_default', '' ),
 		);
 
 		$categories = self::buildCategories( $db_experts, $use_db );
@@ -223,9 +223,9 @@ class AskExpertContext {
 
 		$cant_find_cta = array(
 			'icon'         => \adn_term( 'icons.search', '🔍' ),
-			'heading'      => \adn_term( 'expert_page.cant_find_heading', "Can't find the right expert?" ),
-			'desc'         => \adn_term( 'expert_page.cant_find_desc', "Tell us what you need and we'll recommend the best expert for your situation." ),
-			'button_label' => \adn_term( 'expert_page.cant_find_btn', 'Get Matched Now' ),
+			'heading'      => \adn_term( 'expert_page.cant_find_heading', '' ),
+			'desc'         => \adn_term( 'expert_page.cant_find_desc', '' ),
+			'button_label' => \adn_term( 'expert_page.cant_find_btn', '' ),
 			'button_url'   => SITE_GUIDANCE_URL,
 		);
 

@@ -132,7 +132,6 @@ adn_page_open( $_open_ctx );
 			?>
 		</div>
 
-		<?php /* "Can't find the right expert?" banner */ ?>
 		<?php if ( ! empty( $ctx['cant_find_cta'] ) ) : ?>
 			<div style="margin-top:28px;">
 				<?php adn_component( 'sections/expert_cant_find', array( 'cant_find_cta' => $ctx['cant_find_cta'] ) ); ?>

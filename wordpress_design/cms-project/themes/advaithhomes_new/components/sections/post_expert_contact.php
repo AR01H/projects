@@ -3,7 +3,7 @@
  * components/sections/post_expert_contact.php
  *
  * Expert + contact block rendered below article comments on single posts.
- * Contact data (whatsapp / phone / email) comes from DB via adn_service_contact_data(),
+ * Contact data (whatsapp / phone / email) comes from DB-backed adn_service_contact_data(),
  * same source as the /contact page — never hardcoded here.
  *
  * Props: $experts (array), $contact (array)
@@ -25,7 +25,7 @@ $nav_tiles = array(
 	array( 'icon' => adn_icon('📚'), 'label' => 'Guides',         'url' => '/guides/' ),
 );
 
-/* ── Right panel: contact from DB/JSON only ── */
+/* ── Right panel: contact from JSON only ── */
 $contact_sidebar = isset( $contact_data['contact_sidebar'] ) && is_array( $contact_data['contact_sidebar'] ) ? $contact_data['contact_sidebar'] : array();
 $whatsapp        = isset( $contact_sidebar['whatsapp'] ) && is_array( $contact_sidebar['whatsapp'] ) ? $contact_sidebar['whatsapp'] : array();
 $phone           = isset( $contact_sidebar['phone'] )    && is_array( $contact_sidebar['phone'] )    ? $contact_sidebar['phone']    : array();
@@ -40,7 +40,7 @@ $email           = isset( $contact_sidebar['email'] )    && is_array( $contact_s
 			<?php echo esc_html( ! empty( $hero['title'] ) ? $hero['title'] : 'Need Professional Help?' ); ?>
 		</h3>
 		<p class="pec-sub">
-			<?php echo esc_html( ! empty( $hero['description'] ) ? $hero['description'] : 'Connect with trusted property professionals who can guide you at every step.' ); ?>
+			<?php echo esc_html( ! empty( $hero['description'] ) ? $hero['description'] : adn_term( 'content.need_help_description', '' ) ); ?>
 		</p>
 
 		<div class="pec-types">
@@ -87,7 +87,7 @@ $email           = isset( $contact_sidebar['email'] )    && is_array( $contact_s
 				<?php if ( ! empty( $phone['number'] ) ) : ?>
 					<span class="pec-contact-meta"><?php echo esc_html( $phone['number'] ); ?></span>
 				<?php endif; ?>
-				<span class="pec-contact-link"><?php echo esc_html( isset( $phone['button_label'] ) ? $phone['button_label'] : 'Call Us' ); ?> →</span>
+				<span class="pec-contact-link"><?php echo esc_html( isset( $phone['button_label'] ) ? $phone['button_label'] : SITE_SIDEBAR_CONTACT_BTN ); ?> →</span>
 			</div>
 		</a>
 		<?php endif; ?>

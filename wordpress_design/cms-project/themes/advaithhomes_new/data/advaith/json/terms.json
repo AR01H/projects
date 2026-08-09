@@ -9,7 +9,7 @@
         "domain_noun":      "Property",
         "expert_noun":      "Property Expert",
         "copyright_year":   "2025",
-        "description":      "Independent property information, smart tools and expert insights for buyers, sellers and house movers in the UK.",
+        "description":      "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers.",
         "disclaimer":       "Information on this website is general guidance only and does not constitute legal, financial or professional advice. Please seek expert advice for your specific situation."
     },
 
@@ -151,7 +151,7 @@
 
     "coming_soon": {
         "title":            "Coming Soon",
-        "description":      "We're working on something exciting. Stay tuned!"
+        "description":      "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers."
     },
 
     "tools_page": {

@@ -307,7 +307,7 @@ function adn_get_page_definitions() {
         ),
         // Slug must match COMING_SOON_PAGE_SLUG so the coming-soon redirect target exists.
         COMING_SOON_PAGE_SLUG => array(
-            'title'    => 'Coming Soon',
+            'title'    => adn_term( 'page_titles.coming_soon', '' ),
             'template' => 'pages/PageComing.php',
         ),
     );

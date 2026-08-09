@@ -27,8 +27,8 @@ class GuidesContext {
 	public static function buildHero(): array {
 		return array(
 			'eyebrow'     => adn_term( 'guides_page.hero_eyebrow', 'Explore' ),
-			'title'       => adn_term( 'guides_page.hero_title', 'Guides & Resources' ),
-			'description' => adn_term( 'guides_page.hero_desc', 'Expert guidance to help you navigate property decisions.' ),
+			'title'       => adn_term( 'guides_page.hero_title', '' ),
+			'description' => adn_term( 'guides_page.hero_desc', '' ),
 			'bg_icon'     => adn_term( 'icons.guide_parent', '📚' ),
 		);
 	}
@@ -125,8 +125,8 @@ class GuidesContext {
 		$ctx = array(
 			'meta'       => array(
 				'slug'             => 'guides',
-				'page_title'       => adn_term( 'guides_page.hero_title', 'Guides & Resources' ) . ' - ' . SITE_BRAND_NAME,
-				'meta_description' => adn_term( 'guides_page.hero_desc', 'Expert guidance to help you navigate property decisions.' ),
+				'page_title'       => adn_term( 'guides_page.hero_title', '' ) . ' - ' . SITE_BRAND_NAME,
+				'meta_description' => adn_term( 'guides_page.hero_desc', '' ),
 			),
 			'breadcrumb' => $breadcrumb_builder::guidesListing(),
 			'hero'       => self::buildHero(),

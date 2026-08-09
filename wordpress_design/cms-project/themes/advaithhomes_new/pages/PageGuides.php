@@ -119,11 +119,12 @@ adn_page_open( $_open_ctx );
 			<?php /* ── Expert Help (From JSON) ── */ ?>
 			<?php
 			$_catalog = class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'sidebar_cards' ) : array();
-			if ( isset( $_catalog['experts'] ) ) :
 				adn_component( 'cards/sidebar_contact_card', array(
-					'card' => (array) $_catalog['experts']
+					'card' => $_catalog['experts'] ?? []
 				) );
-			endif; 
+				adn_component( 'cards/sidebar_contact_card', array(
+					'card' => $_catalog['contact']??[]
+				) );
 			?>
 
 		</aside>
